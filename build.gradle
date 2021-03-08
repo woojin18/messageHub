@@ -1,0 +1,104 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.4.RELEASE'
+	}
+	repositories {
+		maven { url "https://repo1.maven.org/maven2" }
+		maven { url "https://repo.spring.io/milestone" }
+		maven { url 'https://repo.spring.io/libs-snapshot' }
+		
+		mavenLocal()
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+compileJava.dependsOn(processResources)
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+tasks.withType(JavaCompile) {
+	options.compilerArgs = ["-Xlint:unchecked", "-Xlint:deprecation", "-parameters"]
+}
+
+repositories {
+	maven { url "https://repo1.maven.org/maven2" }
+	maven { url "https://repo.spring.io/milestone" }
+	maven { url 'https://repo.spring.io/libs-snapshot' }
+	
+	mavenLocal()
+	mavenCentral()
+}
+
+dependencies {
+
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.1.4.RELEASE'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.1.4.RELEASE'
+	compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.1.4.RELEASE'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: '2.1.4.RELEASE'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '2.1.4.RELEASE'
+	
+	// spring jdbc
+	compile group: 'org.springframework', name: 'spring-jdbc', version: '5.1.5.RELEASE'  // db 연동 시 필요 ( rcs-gw-common autoconfigure 실행 방지)
+	
+	compile group: 'joda-time', name: 'joda-time', version: '2.10.8'
+	
+	// mysql(mariadb driver)
+	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.6.0'
+
+	// mybatis
+	compile group: 'org.mybatis', name: 'mybatis-spring', version: '1.3.1'
+	compile group: 'org.mybatis', name: 'mybatis', version: '3.4.4'
+		
+	// lombok
+	compileOnly 'org.projectlombok:lombok:1.18.6'
+	annotationProcessor 'org.projectlombok:lombok:1.18.6'
+	
+	// ssl
+	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.8'
+	compile group: 'org.apache.httpcomponents', name: 'httpasyncclient', version: '4.1.4'
+    
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+    
+	
+	compile fileTree(dir:'libs', include:'*.jar')
+	compile project(':cm-web-common')
+	
+	compile group: 'org.apache.poi', name: 'poi', version: '3.16'
+}
+
+ext['springCloudVersion'] = 'Greenwich.SR3'
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+configurations {
+	all {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+		exclude module: "logback-classic"
+	}
+}
+
+bootJar {
+    enabled = true
+	baseName = 'cloud-svc-front'
+	version = '1.0'
+}
+
+jar {
+    enabled = false
+}
+
+

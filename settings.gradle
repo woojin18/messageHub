@@ -1,0 +1,4 @@
+rootProject.name = 'cm-web-front'
+
+include   ':cm-web-common'
+project(':cm-web-common').projectDir = new File(settingsDir, '../cm-web-common')

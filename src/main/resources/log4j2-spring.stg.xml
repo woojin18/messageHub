@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="DEBUG" >
+	<Properties>
+		<Property name="app-name">cloud-web-sample</Property>
+		<Property name="log-path">logs/sample</Property>
+		<Property name="log-path-efs">efs/logs/sample</Property>
+	</Properties>
+	<appenders>
+  		<Console name="console" >
+   			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %m%n%wEx" />
+  		</Console>
+  		
+		<RollingFile name="service_file" fileName="${log-path}/service/${hostName}.log" filePattern="${log-path}/service/%d{yyyyMMdd}/${hostName}-%i.log">
+   			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %m%n%wEx" />
+   			<Policies>
+    			<SizeBasedTriggeringPolicy size="500MB" /> <!-- 이 용량이 초과되면 아래 DefaultRolloverStrategy 정책만큼 넘버링  -->
+    			<TimeBasedTriggeringPolicy /><!-- Rotated everyday -->
+   			</Policies>
+			<DefaultRolloverStrategy max="500" fileIndex="min" />
+  		</RollingFile>
+
+		<RollingFile name="alive_file" fileName="${log-path-efs}/alive/cloud-web-sample.log" filePattern="${log-path-efs}/alive/%d{yyyyMMdd}/cloud-web-sample-alive.log">
+   			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %m%n%wEx" />
+   			<Policies>
+    			<CronTriggeringPolicy schedule="0 0 0 * * ?" />
+   			</Policies>
+  		</RollingFile>
+  		
+		<RollingFile name="error_file" fileName="${log-path-efs}/error/cloud-web-sample.log" filePattern="${log-path-efs}/error/$${date:yyyyMMdd}/cloud-web-sample.log">
+   			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${hostName}] [%20.20t] [%-40.40logger{39}] (%-4L) : %m%n%wEx" />
+   			<Policies>
+    			<CronTriggeringPolicy schedule="0 0 0 * * ?" />
+   			</Policies>
+  		</RollingFile>
+  		
+  	</appenders>
+
+	<loggers>
+  		<root level="debug" >
+   			<appender-ref ref="service_file" />
+   			<appender-ref ref="error_file" level="error" />
+  		</root>
+
+		<logger name="kr.co.uplus.rcs.common.cmd.HealthCheckCmd" level="debug"  >
+			<appender-ref ref="alive_file" />
+		</logger>
+		
+		<logger name="org.apache" level="info" />
+  		<logger name="org.springframework" level="info" />
+		<logger name="io.lettuce.core" level="info" />
+		<logger name="org.mybatis" level="info" />
+		<logger name="io.netty" level="info" />
+		
+ 	</loggers>
+</configuration>

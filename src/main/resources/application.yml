@@ -1,0 +1,248 @@
+server:
+  port: 7070
+
+---
+spring:
+  profiles: local
+  application:
+    name: cloud-svc-sample
+  mvc:
+    static-path-pattern: /static/**
+  servlet:
+    multipart:
+      max-file-size: 15MB 
+      max-request-size: 15MB
+      
+app.props:
+  jwt:
+    key-string: LcDVU5pmcXIakjK6yw/TJw==
+    private-token-expiration: 1800
+    part1: JwtPart1
+    part2: JwtPart2
+    access-token-expiration: 180
+    refresh-token-expiration: 1800
+    header: Authorization
+    prefix: "Bearer "
+
+logging:
+  config: classpath:log4j2-spring.local.xml
+
+datasource: 
+  rcs:
+    driver-class-name: org.mariadb.jdbc.Driver
+    jdbc-url: jdbc:mysql://dev.ectech.co.kr:40906/cloud?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    username: cloud
+    password: test1234
+    pool-name: hikari-cp
+    maximum-pool-size: 10
+    minimum-idle: 5
+    connectionTimeout: 10000
+    idleTimeout: 600000
+    validationTimeout: 5000
+    maxLifetime: 1800000
+    cachePrepStmts: true
+    prepStmtCacheSize: 250
+    prepStmtCacheSqlLimit: 2048
+    useServerPrepStmts: true
+    useLocalSessionState: true 
+    rewriteBatchedStatements: true
+    cacheResultSetMetadata: true  
+    cacheServerConfiguration: true
+    elideSetAutoCommits: true
+    maintainTimeStats: false
+  continue-on-error: true
+    
+mongodb:
+  uri: mongodb://cloud:test1234@dev.ectech.co.kr:40917/cloud?authSource=cloud&authMechanism=SCRAM-SHA-256
+  database: cloud
+  connectionsPerHost: 30
+  connectionsPerHostMin: 10
+  maxWaitTime: 5000
+  socketTimeout: 10000
+  connectTimeout: 5000
+      
+---
+spring:
+  profiles: dev
+  application:
+    name: cloud-svc-sample
+  mvc:
+    static-path-pattern: /static/**
+    contentnegotiation:
+      favor-parameter: true
+      favor-path-extension: true
+      media-types:
+        xls: application/vnd.ms-excel
+  servlet:
+    multipart:
+      max-file-size: 15MB 
+      max-request-size: 15MB
+      
+app.props:
+  jwt:
+    key-string: LcDVU5pmcXIakjK6yw/TJw==
+    private-token-expiration: 1800
+    part1: JwtPart1
+    part2: JwtPart2
+    access-token-expiration: 180
+    refresh-token-expiration: 1800
+    header: Authorization
+    prefix: "Bearer "
+
+logging:
+  config: classpath:log4j2-spring.local.xml
+
+datasource: 
+  rcs:
+    driver-class-name: org.mariadb.jdbc.Driver
+    jdbc-url: jdbc:mysql://15.165.121.147:3306/rcs?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    username: rcs
+    password: rcsrcs
+    pool-name: hikari-cp
+    maximum-pool-size: 10
+    minimum-idle: 5
+    connectionTimeout: 10000
+    idleTimeout: 600000
+    validationTimeout: 5000
+    maxLifetime: 1800000
+    cachePrepStmts: true
+    prepStmtCacheSize: 250
+    prepStmtCacheSqlLimit: 2048
+    useServerPrepStmts: true
+    useLocalSessionState: true 
+    rewriteBatchedStatements: true
+    cacheResultSetMetadata: true  
+    cacheServerConfiguration: true
+    elideSetAutoCommits: true
+    maintainTimeStats: false
+  continue-on-error: true
+  
+mongodb:
+  uri: mongodb://cloud:test1234@dev.ectech.co.kr:40917/cloud?authSource=cloud&authMechanism=SCRAM-SHA-256
+  database: cloud
+  connectionsPerHost: 30
+  connectionsPerHostMin: 10
+  maxWaitTime: 5000
+  socketTimeout: 10000
+  connectTimeout: 5000
+    
+---
+spring:
+  profiles: stg
+  application:
+    name: cloud-svc-sample
+  mvc:
+    static-path-pattern: /static/**
+  servlet:
+    multipart:
+      max-file-size: 15MB 
+      max-request-size: 15MB
+      
+app.props:
+  jwt:
+    key-string: LcDVU5pmcXIakjK6yw/TJw==
+    private-token-expiration: 1800
+    part1: JwtPart1
+    part2: JwtPart2
+    access-token-expiration: 180
+    refresh-token-expiration: 1800
+    header: Authorization
+    prefix: "Bearer "
+
+logging:
+  config: classpath:log4j2-spring.local.xml
+
+datasource: 
+  rcs:
+    driver-class-name: org.mariadb.jdbc.Driver
+    jdbc-url: jdbc:mysql://15.165.121.147:3306/rcs?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    username: rcs
+    password: rcsrcs
+    pool-name: hikari-cp
+    maximum-pool-size: 10
+    minimum-idle: 5
+    connectionTimeout: 10000
+    idleTimeout: 600000
+    validationTimeout: 5000
+    maxLifetime: 1800000
+    cachePrepStmts: true
+    prepStmtCacheSize: 250
+    prepStmtCacheSqlLimit: 2048
+    useServerPrepStmts: true
+    useLocalSessionState: true 
+    rewriteBatchedStatements: true
+    cacheResultSetMetadata: true  
+    cacheServerConfiguration: true
+    elideSetAutoCommits: true
+    maintainTimeStats: false
+  continue-on-error: true
+  
+mongodb:
+  uri: mongodb://cloud:test1234@dev.ectech.co.kr:40917/cloud?authSource=cloud&authMechanism=SCRAM-SHA-256
+  database: cloud
+  connectionsPerHost: 30
+  connectionsPerHostMin: 10
+  maxWaitTime: 5000
+  socketTimeout: 10000
+  connectTimeout: 5000
+    
+---
+spring:
+  profiles: prd
+  application:
+    name: cloud-svc-sample
+  mvc:
+    static-path-pattern: /static/**
+  servlet:
+    multipart:
+      max-file-size: 15MB 
+      max-request-size: 15MB
+      
+app.props:
+  jwt:
+    key-string: LcDVU5pmcXIakjK6yw/TJw==
+    private-token-expiration: 1800
+    part1: JwtPart1
+    part2: JwtPart2
+    access-token-expiration: 180
+    refresh-token-expiration: 1800
+    header: Authorization
+    prefix: "Bearer "
+
+logging:
+  config: classpath:log4j2-spring.local.xml
+
+datasource: 
+  rcs:
+    driver-class-name: org.mariadb.jdbc.Driver
+    jdbc-url: jdbc:mysql://15.165.121.147:3306/rcs?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    username: rcs
+    password: rcsrcs
+    pool-name: hikari-cp
+    maximum-pool-size: 10
+    minimum-idle: 5
+    connectionTimeout: 10000
+    idleTimeout: 600000
+    validationTimeout: 5000
+    maxLifetime: 1800000
+    cachePrepStmts: true
+    prepStmtCacheSize: 250
+    prepStmtCacheSqlLimit: 2048
+    useServerPrepStmts: true
+    useLocalSessionState: true 
+    rewriteBatchedStatements: true
+    cacheResultSetMetadata: true  
+    cacheServerConfiguration: true
+    elideSetAutoCommits: true
+    maintainTimeStats: false
+  continue-on-error: true
+    
+mongodb:
+  uri: mongodb://cloud:test1234@dev.ectech.co.kr:40917/cloud?authSource=cloud&authMechanism=SCRAM-SHA-256
+  database: cloud
+  connectionsPerHost: 30
+  connectionsPerHostMin: 10
+  maxWaitTime: 5000
+  socketTimeout: 10000
+  connectTimeout: 5000
+  

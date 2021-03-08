@@ -1,0 +1,23 @@
+### java ###
+.gradle/
+bin/
+build/
+logs/
+fileHashes.lock
+buildOutputCleanup.lock
+*.class
+frontend/node_modules
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
