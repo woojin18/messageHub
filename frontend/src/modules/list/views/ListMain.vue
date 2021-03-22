@@ -23,7 +23,8 @@
     <div>
       <button @click="fnInsertListPop">등록</button>
       <input type="file" @change="readFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
-      <button @click="fnExcelDownload">엑셀다운로드</button>
+      <button @click="fnExcelDownload">엑셀다운로드(axios)</button>
+      <button @click="fnXlsxDownload">엑셀다운로드(.xlsx)</button>
       <a href="/listCtl/excelDownload">test</a>
       <InsertLayer :title="layerTitle" :layerView.sync="layerView"></InsertLayer>
       <UpdateLayer :title="updateLayerTitle" :layerView.sync="updateLayerView" :updateSeq="updateLayerSeq"></UpdateLayer>
@@ -204,6 +205,22 @@
           "paging" : vm.pagingCnt
         }
         listApi.excelDownload(params)
+      },
+      // 엑셀 다운로드 
+      fnXlsxDownload() {
+        var colLabels = ["No", "컬럼1", "컬럼2", "컬럼3", "컬럼4", "컬럼5", "컬럼6"];
+
+        var colIds = ["SEQ", "COL1", "COL2", "COL3", "COL4", "COL5", "COL6"];
+        
+        var numColIds = ["COL3"];
+        var sheetTitle = "엑셀 다운로드 샘플";
+        var excelFileName = "Excel Sample";
+        var figureColIds = [];
+        var fieldSearchParamArray = new Array();
+          fieldSearchParamArray[0] = "col1";
+          fieldSearchParamArray[1] = "col2";
+    
+       this.$fnExportExcelToSvc(colLabels, colIds, numColIds, sheetTitle, excelFileName, "/listCtl/xlsxDownload", fieldSearchParamArray , figureColIds);
       },
       // select 박스 선택시 리스트 재출력
       fnSelected(selected) {

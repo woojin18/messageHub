@@ -1,7 +1,12 @@
 package kr.co.uplus.cloud.list;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -92,5 +97,42 @@ public class ListController {
 		
 		return model;
 		
+	}
+	
+	@PostMapping(path="/xlsxDownload", produces="application/vnd.ms-excel")
+	public ModelAndView xlsxDownload(
+			@RequestParam(value = "col1", defaultValue = "") String col1,
+			@RequestParam(value = "col2", defaultValue = "") String col2,
+			
+			@RequestParam(value = "sheetTitle", defaultValue = "") String sheetTitle,
+			@RequestParam(value = "excelFileName", defaultValue = "") String excelFileName,
+			@RequestParam(value = "colLabels", required = false) String[] colLabels,
+			@RequestParam(value = "colIds", required = false) String[] colIds,
+			@RequestParam(value = "numColIds", required = false) String[] numColIds,
+			@RequestParam(value = "figureColIds", required = false) String[] figureColIds,
+			HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("col1", col1);
+		params.put("col2", col2);
+		params.put("rowsFront", 0);
+		params.put("rowsEnd", 100);
+		List list = listSvc.testXlsList(params);
+		
+		List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sheetTitle", sheetTitle);
+		map.put("colLabels", colLabels);
+		map.put("colIds", colIds);
+		map.put("numColIds", numColIds);
+		map.put("figureColIds", figureColIds);
+		map.put("colDataList", list);
+		sheetList.add(map);
+		
+//		ModelAndView model = new ModelAndView("commonXlsView");
+		ModelAndView model = new ModelAndView("commonXlsxView");
+		model.addObject("excelFileName", excelFileName);
+		model.addObject("sheetList", sheetList);
+		
+		return model;
 	}
 }
