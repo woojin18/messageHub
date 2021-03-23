@@ -29,8 +29,8 @@ logging:
 
 datasource: 
   rcs:
-    driver-class-name: org.mariadb.jdbc.Driver
-    jdbc-url: jdbc:mysql://dev.ectech.co.kr:40906/cloud?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    jdbc-url: jdbc:log4jdbc:mariadb://dev.ectech.co.kr:40906/cloud?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: cloud
     password: test1234
     pool-name: hikari-cp
@@ -94,8 +94,8 @@ logging:
 
 datasource: 
   rcs:
-    driver-class-name: org.mariadb.jdbc.Driver
-    jdbc-url: jdbc:mysql://15.165.121.147:3306/rcs?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    jdbc-url: jdbc:log4jdbc:mariadb://dev.ectech.co.kr:40906/cloud?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: rcs
     password: rcsrcs
     pool-name: hikari-cp
@@ -154,8 +154,8 @@ logging:
 
 datasource: 
   rcs:
-    driver-class-name: org.mariadb.jdbc.Driver
-    jdbc-url: jdbc:mysql://15.165.121.147:3306/rcs?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    jdbc-url: jdbc:log4jdbc:mariadb://dev.ectech.co.kr:40906/cloud?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: rcs
     password: rcsrcs
     pool-name: hikari-cp
@@ -214,8 +214,8 @@ logging:
 
 datasource: 
   rcs:
-    driver-class-name: org.mariadb.jdbc.Driver
-    jdbc-url: jdbc:mysql://15.165.121.147:3306/rcs?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    jdbc-url: jdbc:log4jdbc:mariadb://dev.ectech.co.kr:40906/cloud?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: rcs
     password: rcsrcs
     pool-name: hikari-cp
