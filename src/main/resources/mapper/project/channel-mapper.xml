@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="channel">
+
+	<select id="selectRcsBrandList" resultType="HashMap">
+		SELECT	A.BRAND_ID
+		,		A.CORP_ID
+		,		A.BRAND_NAME
+		,		A.BRAND_DESC
+		,		A.BRAND_KEY
+		,		A.CATEGORY_ID
+		,		A.SUB_CATEGORY_ID
+		,		A.BRAND_INFO
+		,		A.REG_DT
+		,		A.REQ_DT
+		,		B.APPROVAL_DT
+		FROM	CM_RCS_BRAND_REQ A
+		INNER JOIN CM_RCS_BRAND B
+			ON A.BRAND_ID = B.BRAND_ID
+		WHERE	1=1
+		ORDER BY SEQ DESC
+		LIMIT ${rowsFront}, #{rowsEnd}
+	</select>
+	
+</mapper>

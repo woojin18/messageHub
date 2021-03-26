@@ -18,6 +18,10 @@ module.exports = {
       '^/listCtl': {
         target: 'http://localhost:7070',
         changeOrigin: true
+      },
+      '^/projectApi': {
+        target: 'http://localhost:7070',
+        changeOrigin: true
       }
     }
   },

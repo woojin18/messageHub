@@ -8,6 +8,8 @@ import WebSampleLayout from './views/WebSampleLayout.vue';
 import homeRoutes from './modules/home/router';
 import loginRoutes from './modules/login/router';
 import listRoutes from './modules/list/router';
+import channelRoutes from './modules/channel/router';
+import projectRoutes from './modules/project/router';
 
 Vue.use(Router)
 
@@ -31,7 +33,9 @@ const router = new Router({
         },
         ...loginRoutes,
         ...homeRoutes,
-        ...listRoutes
+        ...listRoutes,
+        ...channelRoutes,
+        ...projectRoutes
       ]
     },
     {path: '*', redirect: '/view/error/404'}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="channel">
+
+	<select id="selectProjectList" resultType="HashMap">
+		SELECT	A.PROJECT_ID
+		,		A.CORP_ID
+		,		A.PROJECT_NAME
+		,		A.PAY_TYPE
+		,		A.BILL_ID
+		,		A.SMART_CH_CODE
+		,		A.PRICE_INFO
+		,		A.SUBBILL_YN
+		,		A.SUBBILL_START_DAY
+		,		A.REG_DT
+		,		A.UPD_DT
+		,		A.ALARM_USE_YN
+		,		A.ALARM_REQ_DT
+		,		A.ALARM_AMOUNT
+		,		A.USE_YN
+		,		A.USE_CH_GRP_INFO
+		,		A.NOPAY_YN
+		FROM	CM_PROJECT A
+		WHERE	1=1
+		ORDER BY PROJECT_ID DESC
+		LIMIT ${rowsFront}, #{rowsEnd}
+	</select>
+	
+</mapper>
