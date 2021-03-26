@@ -1,0 +1,78 @@
+<? 
+	include("./sub/backOffice_header.html");
+	include("./sub/backOffice_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader">
+				<h2>발송일별 통계</h2>
+				<a href="#self" class="btnStyle1 absolute top0 right0" onClick="window.location.reload()">새로고침 <i class="fal fa-redo"></i></a>
+			</div>
+
+		
+			<!-- 본문 -->
+			
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="menuBox">
+						<div>
+							<h4 class="font-normal inline-block width90 vertical-middle">조회기간</h4>
+							<input type="text" class="datepicker inputStyle maxWidth160"><span style="padding:0 11px">~</span><input type="text" class="datepicker inputStyle maxWidth160">
+							<ul class="tab_s2 ml20">
+								<li><a href="#">오늘</a></li>
+								<li class="active"><a href="#">1주일</a></li>
+								<li><a href="#">15일</a></li>
+								<li><a href="#">1개월</a></li>
+							</ul>
+						</div>
+						<div class="mt20 of_h">
+							<h4 class="font-normal inline-block width90">고객사</h4>
+							<input type="text" class="inputStyle width200">
+							<a href="#self" class="btnStyle2 gray vertical-bottom ml10">고객사 불러오기</a>
+							<a href="#self" class="btnStyle2 float-right">검색</a>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<ul class="tab_s4_1 of-h mt80" style="width:100%">
+				<li class="inline-block text-center">
+					<p class="tab_maintext mb20">Push</p>
+					<p class="tab_subtext mb20">총 <strong>62</strong>건</p>
+					<p class="inline-block color1 pr10 border-right"><span class="number">85<span class="font-size15">%</span><br></span><span class="text">성공</span></p>
+					<p class="inline-block pl10"><span class="number">15<span class="font-size15">%</span><br></span><span class="text">실패</span></p>					
+				</li>
+				<li class="inline-block text-center">
+					<p class="tab_maintext mb20">RCS</p>
+					<p class="tab_subtext mb20">총 <strong>23</strong>건</p>
+					<p class="inline-block color1 pr10 border-right"><span class="number">92<span class="font-size15">%</span><br></span><span class="text">성공</span></p>
+					<p class="inline-block pl10"><span class="number">8<span class="font-size15">%</span><br></span><span class="text">실패</span></p>					
+				</li>
+				<li class="inline-block text-center">
+					<p class="tab_maintext mb20">카카오톡</p>
+					<p class="tab_subtext mb20">총 <strong>12</strong>건</p>
+					<p class="inline-block color1 pr10 border-right"><span class="number">92<span class="font-size15">%</span><br></span><span class="text">성공</span></p>
+					<p class="inline-block pl10"><span class="number">8<span class="font-size15">%</span><br></span><span class="text">실패</span></p>					
+				</li>
+				<li class="inline-block text-center">
+					<p class="tab_maintext mb20">SMS/MMS</p>
+					<p class="tab_subtext mb20">총 <strong>19</strong>건</p>
+					<p class="inline-block color1 pr10 border-right"><span class="number">77<span class="font-size15">%</span><br></span><span class="text">성공</span></p>
+					<p class="inline-block pl10"><span class="number">23<span class="font-size15">%</span><br></span><span class="text">실패</span></p>					
+				</li>
+			</ul>
+			<img src="common/images/chart_sub03_1.svg" alt="차트01" class="img_chart01 img-responsive">
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+
+	
+	
+<? 
+	include("./sub/backOffice_footer.html");
+?> 

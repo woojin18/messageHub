@@ -1,0 +1,201 @@
+<? 
+	include("./sub/backOffice_header.html");
+	include("./sub/backOffice_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader">
+				<h2>고객사 상세</h2>
+				<a href="#self" class="btnStyle1 absolute top0 right0" onClick="window.location.reload()" title="프로젝트 목록 새로고침">새로고침 <i class="fal fa-redo"></i></a>
+			</div>
+
+			<!-- 본문 -->
+
+			<div class="row mt20">
+				<div class="col-xs-12">	
+				
+					<h4 class="lc-1 mb30">프로젝트 목록</h4>
+					<div class="of_h">
+						<div class="float-right">
+							<a href="#self" class="btnStyle3 black font13 minWidth120" data-toggle="modal" data-target="#project" title="프로젝트 생성">프로젝트 생성</a>
+							<a href="#self" class="btnStyle3 gray font13 minWidth120 left ml10" title="엑셀 다운로드">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
+						</div>
+					</div>
+					<table id="client2" class="table_skin1 tbl-striped" style="width:100%">
+						<caption>No., 프로젝트명, 결제조건, 생성자, 서비스, 멤버, 최종접속일, 관리를 제공하는 표</caption>
+						<colgroup>
+							<col style="width:3%">
+							<col style="width:5%">
+							<col>
+							<col style="width:10%">
+							<col style="width:20%">
+							<col style="width:10%">
+							<col style="width:10%">
+							<col style="width:15%">
+							<col style="width:6%">
+						</colgroup>
+						<thead>
+							<tr>
+							<th class="text-center lc-1"><div class="boardCheck"><input type="checkbox" id="check1" class="boardCheckStyle" value="미사용"><label for="check1"></label></div></th>
+							<th class="text-center lc-1">No.</th>
+							<th class="text-center lc-1">프로젝트명</th>
+							<th class="text-center lc-1">결제조건</th>
+							<th class="text-center lc-1">생성자</th>
+							<th class="text-center lc-1">서비스</th>
+							<th class="text-center lc-1">멤버</th>
+							<th class="text-center lc-1">최종접속일</th>
+							<th class="text-center lc-1 end">관리</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+							<td class="text-center"><div class="boardCheck"><input type="checkbox" id="check2" class="boardCheckStyle" value="미사용"><label for="check2"></label></div></td>
+							<td class="text-center">5</td>
+							<td>엘지유플러스프로젝트</td>
+							<td class="text-center lc-1">선불</td>
+							<td class="text-center lc-1">admin@naver.com</td>
+							<td class="text-center">4개</td>
+							<td class="text-center lc-1">1명</td>
+							<td class="text-center">2021.02.08 00:00:00</td>
+							<td class="text-center end lc-1"><a href="#self" class="btnStyle6" title="엘지유플러스프로젝트 상세">상세</a></td>
+							</tr>	
+							<tr>
+							<td class="text-center"><div class="boardCheck"><input type="checkbox" id="check3" class="boardCheckStyle" value="미사용"><label for="check3"></label></div></td>
+							<td class="text-center">4</td>
+							<td>테스트프로젝트</td>
+							<td class="text-center lc-1">후불</td>
+							<td class="text-center lc-1">admin@naver.com</td>
+							<td class="text-center">5개</td>
+							<td class="text-center lc-1">0명</td>
+							<td class="text-center">2021.02.08 00:00:00</td>
+							<td class="text-center end lc-1"><a href="#self" class="btnStyle6" title="테스트프로젝트 상세">상세</a></td>
+							</tr>
+							<tr>
+							<td class="text-center"><div class="boardCheck"><input type="checkbox" id="check4" class="boardCheckStyle" value="미사용"><label for="check4"></label></div></td>
+							<td class="text-center">3</td>
+							<td>엘지유플러스프로젝트</td>
+							<td class="text-center lc-1">선불</td>
+							<td class="text-center lc-1">admin@naver.com</td>
+							<td class="text-center">4개</td>
+							<td class="text-center lc-1">1명</td>
+							<td class="text-center">2021.02.08 00:00:00</td>
+							<td class="text-center end lc-1"><a href="#self" class="btnStyle6" title="엘지유플러스프로젝트 상세">상세</a></td>
+							</tr>
+							<tr>
+							<td class="text-center"><div class="boardCheck"><input type="checkbox" id="check5" class="boardCheckStyle" value="미사용"><label for="check5"></label></div></td>
+							<td class="text-center">2</td>
+							<td>테스트프로젝트</td>
+							<td class="text-center lc-1">후불</td>
+							<td class="text-center lc-1">admin@naver.com</td>
+							<td class="text-center">5개</td>
+							<td class="text-center lc-1">0명</td>
+							<td class="text-center">2021.02.08 00:00:00</td>
+							<td class="text-center end lc-1"><a href="#self" class="btnStyle6" title="테스트프로젝트 상세">상세</a></td>
+							</tr>
+							<tr>
+							<td class="text-center"><div class="boardCheck"><input type="checkbox" id="check6" class="boardCheckStyle" value="미사용"><label for="check6"></label></div></td>
+							<td class="text-center">1</td>
+							<td>엘지유플러스프로젝트</td>
+							<td class="text-center lc-1">선불</td>
+							<td class="text-center lc-1">admin@naver.com</td>
+							<td class="text-center">4개</td>
+							<td class="text-center lc-1">1명</td>
+							<td class="text-center">2021.02.08 00:00:00</td>
+							<td class="text-center end lc-1"><a href="#self" class="btnStyle6" title="엘지유플러스프로젝트 상세">상세</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+
+			<div class="float-right">
+				<a href="#self" class="btnStyle4 red minWidth120" data-toggle="modal" data-target="#Modify" title="수정">수정</a>
+				<a href="#self" class="btnStyle4 white minWidth120" title="취소">취소</a>
+			</div>
+
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+	
+	<!-- Modify Modal -->
+	<div class="modal fade modalStyle" id="Modify" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="float-left">
+						<h5 class="lc-1">고객사 수정</h5>
+						<p class="mt5 lc-1">고객사 수정을 하시겠습니까?</p>
+					</div>
+					<div class="float-right">
+						<a href="#self" class="btnStyle4 red" title="수정">수정</a>
+						<a href="#self" class="btnStyle4 gray ml5" data-dismiss="modal" title="취소">취소</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- project Modal -->
+	<div class="modal fade modalStyle" id="project" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div>
+						<h5 class="lc-1">프로젝트 등록</h5>
+						<hr>
+						<div class="mt20">
+						<h4 class="font-normal inline-block width90">프로젝트명 *</h4>
+						<input type="text" class="inputStyle width291" title="프로젝트명 입력란">
+						<a href="#self" class="btnStyle7" title="프로젝트 등록 중복체크">중복체크</a>
+						<div class="mt15">
+							<h4 class="font-normal inline-block width90" title="프로젝트명 입력란">프로젝트 설명</h4>
+							<input type="text" class="inputStyle input2" title="프로젝트 설명 입력란">
+						</div>
+						<div class="mt30">
+							<h4 class="font-normal inline-block width90 mt5">결재조건 *</h4>
+							<input type="radio" name="payment" value="Y" class="cBox" id="payment01" checked=""> <label for="payment01" class="payment mr30">선불</label>
+							<input type="radio" name="payment" value="N" class="cBox" id="payment02"> <label for="payment02" class="payment">후불</label>
+							
+						</div>
+						<p class="mt30 lc-1 Modaltext">* 프로젝트별 결제조건(선/후불)을 선택할 수 있으며,<br>&nbsp;&nbsp;&nbsp;프로젝트 등록 후 선택된 결제조건은 변경이 불가합니다.</p>
+						
+					</div>
+					
+					</div>
+					<div class="text-center mt40">
+						<a href="#self" class="btnStyle3 black font14" data-toggle="modal" data-target="#Register" title="등록">등록</a>
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Register Modal -->
+	<div class="modal fade modalStyle" id="Register" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="float-left">
+						<h5 class="lc-1">프로젝트 등록</h5>
+						<p class="mt5 lc-1">프로젝트를 등록 하시겠습니까?</p>
+					</div>
+					<div class="float-right">
+						<a href="#self" class="btnStyle4 red" title="저장">저장</a>
+						<a href="#self" class="btnStyle4 gray ml5" data-dismiss="modal" title="취소">취소</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+<? 
+	include("./sub/backOffice_footer.html");
+?> 

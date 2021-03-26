@@ -1,0 +1,271 @@
+<? 
+	include("./sub/admin_header.html");
+	include("./sub/admin_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader mb20">
+				<h2>비트큐브 프로젝트</h2>
+			</div>
+
+			<!-- 본문 -->
+			<div class="contentBody">
+				<ul class="tab_s3">
+					<li><a href="#self" class="width120">대시보드</a></li>
+					<li class="active"><a href="#self" class="width120">기본정보</a></li>
+					<li><a href="#self" class="width120">멤버관리</a></li>
+					<li><a href="#self" class="width120">채널관리</a></li>
+					<li><a href="#self" class="width120">발신번호관리</a></li>
+					<li><a href="#self" class="width120">스팸관리</a></li>
+				</ul>			
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12">
+					<h4 class="lc-1 mt50 mb15">프로젝트 기본정보</h4>
+					<div class="Dashboard01 fl border-line">					
+						<div class="mt15 of_h">
+							<h4 class="font-normal float-left ml20 vertical-top" style="width:10%">프로젝트명 *</h4>
+							<div style="width:88%" class="of_h">
+								<div style="width:83%">
+									<input type="text" class="inputStyle float-left">
+								</div>
+								<div style="width:15%" class="float-right">
+									<a href="#self" class="btnStyle7 minWidthAuto" style="width:100%">중복체크</a>
+								</div>
+							</div>
+						</div>
+						<div class="mt15 of_h">
+							<h4 class="font-normal float-left ml20 vertical-top" style="width:10%">프로젝트 설명</h4>
+							<input type="text" class="inputStyle float-left" style="width: 88%; height:160px">
+						</div>
+						<div class="mt30 of_h">
+							<h4 class="font-normal float-left mt5 ml20" style="width:10%">결재조건 *</h4>
+							<div style="width:88%">
+								<p class="color4 float-left">선불</p>
+							</div>
+							
+						</div>
+						<div class="mt30 of_h">
+							<h4 class="font-normal float-left mt5 ml20" style="width:10%">사용여부</h4>
+							<div style="width:88%">
+								<input type="radio" name="use" value="Y" class="cBox" id="yes" checked=""> <label for="yes" class="payment mr30">예</label>
+								<input type="radio" name="use" value="N" class="cBox" id="no"> <label for="no" class="payment">아니요</label>							
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="Dashboard01 pd0 of_h">
+						<h4 class="lc-1 mt40 mb20 block">API Key 관리</h4>
+						<p class="font-size12 color4 mt20 inline-block">* 프로젝트 API Key는 5개까지 발급받을 수 있으며, 서비스 이용 시 인증에 사용됩니다. </p>
+						<a href="#self" class="btnStyle3 gray font13 minWidth120 float-right" data-toggle="modal" data-target="#key">KEY 생성<i class="far fa-plus-circle ml10"></i></a>
+						<table class="table_skin1" style="width:100%">
+							<colgroup>
+								<col>
+								<col style="width:20%">
+								<col style="width:10%">
+								<col style="width:20%">
+								<col style="width:15%">
+							</colgroup>
+							<thead>
+								<tr>
+								<th class="text-center">API Key 명</th>
+								<th class="text-center">API Key</th>
+								<th class="text-center">대표여부</th>
+								<th class="text-center">생성일</th>
+								<th class="text-center end">관리</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="text-left">PUSH_01 (광고성)</td>
+									<td class="text-center">12312313123</td>
+									<td class="text-center">예</td>
+									<td class="text-center">2021.01.20</td>
+									<td class="text-center end"><a href="#self" class="btnStyle8 mr5">수정</a></td>
+								</tr>
+								<tr>
+									<td class="text-left">PUSH_01 (광고성)</td>
+									<td class="text-center">12312313123</td>
+									<td class="text-center">예</td>
+									<td class="text-center">2021.01.20</td>
+									<td class="text-center end"><a href="#self" class="btnStyle8 mr5">수정</a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="Dashboard01 pd0">
+						<h4 class="lc-1 mt40 mb20 block">사용채널 선택</h4>
+						<table id="admin_sub03_1_project1" class="table_skin1 tbl-striped-odd mt0" style="width:100%">
+							<colgroup>
+								<col style="width:65%">
+								<col>
+							</colgroup>
+							<tbody>
+								<tr>
+								<td class="text-left">RCS</td>
+								<td class= "end">
+								<input type="radio" name="RCS" value="Y" class="cBox" id="yes1" checked=""> <label for="yes1" class="payment mr30">사용</label>
+								<input type="radio" name="RCS" value="N" class="cBox" id="no1"> <label for="no1" class="payment">미사용</label>	
+								</td>							
+								</tr>
+								<tr>
+								<td class="text-left">SMS/MMS</td>
+								<td class="end">
+								<input type="radio" name="SMS/MMS" value="Y" class="cBox" id="yes2" checked=""> <label for="yes2" class="payment mr30">사용</label>
+								<input type="radio" name="SMS/MMS" value="N" class="cBox" id="no2"> <label for="no2" class="payment">미사용</label>	
+								</td>							
+								</tr>
+								<tr>
+								<td class="text-left">PUSH</td>
+								<td class="end">
+								<input type="radio" name="PUSH" value="Y" class="cBox" id="yes3" checked=""> <label for="yes3" class="payment mr30">사용</label>
+								<input type="radio" name="PUSH" value="N" class="cBox" id="no3"> <label for="no3" class="payment">미사용</label>	
+								</td>							
+								</tr>
+								<tr>
+								<td class="text-left">카카오 알림톡</td>
+								<td class="end">
+								<input type="radio" name="kakao1" value="Y" class="cBox" id="yes4" checked=""> <label for="yes4" class="payment mr30">사용</label>
+								<input type="radio" name="kakao1" value="N" class="cBox" id="no4"> <label for="no4" class="payment">미사용</label>	
+								</td>							
+								</tr>
+								<tr>
+								<td class="text-left">카카오 친구톡</td>
+								<td class="end">
+								<input type="radio" name="kakao2" value="Y" class="cBox" id="yes5" checked=""> <label for="yes5" class="payment mr30">사용</label>
+								<input type="radio" name="kakao2" value="N" class="cBox" id="no5"> <label for="no5" class="payment">미사용</label>	
+								</td>							
+								</tr>
+								<tr>
+								<td class="text-left">SMS MO</td>
+								<td class="end">
+								<input type="radio" name="SMS-MO" value="Y" class="cBox" id="yes6" checked=""> <label for="yes6" class="payment mr30">사용</label>
+								<input type="radio" name="SMS-MO" value="N" class="cBox" id="no6"> <label for="no6" class="payment">미사용</label>	
+								</td>							
+								</tr>
+								<tr>
+								<td class="text-left">MMS MO</td>
+								<td class="end">
+								<input type="radio" name="MMS-MO" value="Y" class="cBox" id="yes7" checked=""> <label for="yes7" class="payment mr30">사용</label>
+								<input type="radio" name="MMS-MO" value="N" class="cBox" id="no7"> <label for="no7" class="payment">미사용</label>	
+								</td>							
+								</tr>
+							</tbody>
+						</table>
+						<p class="font-size12 color4 mt20">* 채널 설정을 위해서는  반드시 해당 채널을 [사용]으로 선택하셔야 합니다. </p>
+					</div>
+				</div>
+			</div>
+
+			<div class="text-center mt50">
+				<a href="#self" class="btnStyle4 red minWidth120" data-toggle="modal" data-target="#Modify">저장</a>
+				<a href="#self" class="btnStyle4 white minWidth120">취소</a>
+			</div>
+
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+
+	<!-- key Modal -->
+	<div class="modal fade modalStyle" id="key" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div>
+						<h5 class="lc-1">API Key 상세</h5>
+						<hr>
+						<div class="of_h">
+							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt15">API KEY</h4></div>
+							<div class="float-left" style="width:76%">
+								<input type="text" class="inputStyle">
+							</div>
+						</div>
+						<div class="of_h mt10">
+							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt15">API KEY 명</h4></div>
+							<div class="float-left" style="width:76%">
+								<input type="text" class="inputStyle">
+							</div>
+						</div>
+						<div class="of_h mt30">
+							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt3">알람 사용 여부</h4></div>
+							<div class="float-left" style="width:76%">
+								<input type="radio" name="agree3" value="Y" class="cBox" id="agree3-1" checked=""> <label for="agree3-1" class="font-normal mr30">사용</label>
+								<input type="radio" name="agree3" value="N" class="cBox" id="agree3-2"> <label for="agree3-2" class="font-normal">미사용</label>
+							</div>
+						</div>
+						<div class="of_h mt30">
+							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt15">일 발송건수 제한</h4></div>
+							<div class="float-left" style="width:76%">
+								<input type="radio" name="limited1" value="Y" class="cBox vertical-middle" id="limited1-1" checked=""> <label for="limited1-1" class="payment font-normal mr30">무제한</label>
+								<input type="radio" name="limited1" value="N" class="cBox vertical-middle" id="limited1-2"> <label for="limited1-2" class="payment font-normal">제한</label>
+								<span class="payment mr10 ml40">일</span><input type="text" class="inputStyle vertical-middle" style="width:13%"><span class="vertical-middle payment ml10">건</span>
+							</div>
+						</div>
+						<div class="of_h mt30">
+							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt15">월 발송건수 제한</h4></div>
+							<div class="float-left" style="width:76%">
+								<input type="radio" name="limited2" value="Y" class="cBox vertical-middle" id="limited2-1" checked=""> <label for="limited2-1" class="payment font-normal mr30">무제한</label>
+								<input type="radio" name="limited2" value="N" class="cBox vertical-middle" id="limited2-2"> <label for="limited2-2" class="payment font-normal">제한</label>
+								<span class="payment mr10 ml40">월</span><input type="text" class="inputStyle vertical-middle" style="width:13%"><span class="vertical-middle payment ml10">건</span>
+							</div>
+						</div>
+						<div class="of_h mt10">
+							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt15">고객사 접속 IP</h4></div>
+							<div class="float-left" style="width:76%">
+								<div class="float-left" style="width:70%"><input type="text" class="inputStyle"></div>
+								<div class="float-left ml10" style="width:20%"><a href="#self" class="btnStyle7 vertical-middle minWidth46"><i class="far fa-plus"></i></a></div>
+							</div>
+							<div class="float-right mt10" style="width:76%">
+								<div class="float-left" style="width:70%"><input type="text" class="inputStyle"></div>
+								<div class="float-left ml10" style="width:27%">
+									<a href="#self" class="btnStyle7 vertical-middle minWidth46"><i class="far fa-plus"></i></a>
+									<a href="#self" class="btnStyle7 vertical-middle minWidth46 float-right"><i class="far fa-minus"></i></a>
+								</div>
+							</div>
+						</div>
+						<div class="of_h mt30">
+							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt0">발송 레포트<br>수신여부</h4></div>
+							<div class="float-left" style="width:76%">
+								<input type="radio" name="agree1" value="Y" class="cBox" id="agree1-1" checked=""> <label for="agree1-1" class="font-normal mr30">예</label>
+								<input type="radio" name="agree1" value="N" class="cBox" id="agree1-2"> <label for="agree1-2" class="font-normal">아니요</label>
+							</div>
+						</div>
+						<div class="of_h mt30">
+							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt0">웹용 발송시간<br>제한 사용여부</h4></div>
+							<div class="float-left" style="width:76%">
+								<input type="radio" name="agree2" value="Y" class="cBox" id="agree2-1" checked=""> <label for="agree2-1" class="font-normal mr30">예</label>
+								<input type="radio" name="agree2" value="N" class="cBox" id="agree2-2"> <label for="agree2-2" class="font-normal">아니요</label>
+							</div>
+							<div class="float-right mt10" style="width:76%">
+								<input type="time" name="stime1" class="inputStyle vertical-middle" style="width:39%" value="" title="00:00"><span style="padding:0 11px" class="vertical-middle">~</span><input type="time" name="etime1" class="inputStyle vertical-middle" style="width:39%" value="" title="00:00">
+							</div>
+						</div>
+					</div>					
+				</div>
+				<div class="text-center mb40">
+					<a href="#self" class="btnStyle3 black font14" data-toggle="modal" data-target="#Register">생성</a>
+					<a href="#self" class="btnStyle3 white font14" data-dismiss="modal">취소</a>						
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+<? 
+	include("./sub/admin_footer.html");
+?> 

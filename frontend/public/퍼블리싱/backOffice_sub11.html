@@ -1,0 +1,214 @@
+<? 
+	include("./sub/backOffice_header.html");
+	include("./sub/backOffice_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader">
+				<h2>스마트 채널관리</h2>
+				<a href="#self" class="btnStyle1 absolute top0 right0" onClick="window.location.reload()" title="새로고침">새로고침 <i class="fal fa-redo"></i></a>
+			</div>
+
+		
+			<!-- 본문 -->
+			
+			<div class="row mt50">
+				<div class="col-xs-12">		
+					<div class="of_h mb20">
+						<div class="float-right">
+							<a href="#self" class="btnStyle3 black font13 minWidth120" data-toggle="modal" data-target="#Registration" title="등록">등록</a>
+							<a href="#self" class="btnStyle3 gray font13 minWidth120 ml10" title="다운로드">다운로드</a>
+						</div>
+					</div>
+
+					<table id="backOffice_sub11" class="table_skin1 tbl-striped mt10" style="width:100%">
+						<caption>스마트 채널관리의 스마트 메시지 코드, 템플릿 ID, 구성 채널, 설명,	사용여부, 등록자, 등록일자를 제공하는 표</caption>
+						<thead>
+							<tr>
+							<th class="text-center">스마트 메시지 코드</th>
+							<th class="text-center">템플릿 ID</th>
+							<th class="text-center">구성 채널</th>
+							<th class="text-center">설명</th>
+							<th class="text-center">사용여부</th>
+							<th class="text-center">등록자</th>
+							<th class="text-center end">등록일자</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>						
+							<td class="text-center">SM_INFO</td>
+							<td class="text-center">스마트정보단문</td>
+							<td class="text-center">푸시 템플릿1</td>
+							<td class="text-center">정보성 단문 메시지 발송</td>
+							<td class="text-center">Y</td>
+							<td class="text-center">홍길동</td>
+							<td class="text-center end">2021.02.08 00:00:00</td>
+							</tr>
+							<tr>						
+							<td class="text-center">SM_AD</td>
+							<td class="text-center">스마트이미지</td>
+							<td class="text-center">푸시 이미지 템플릿1</td>
+							<td class="text-center">광고성 단문 메시지 발송</td>
+							<td class="text-center">Y</td>
+							<td class="text-center">홍길동</td>
+							<td class="text-center end">2021.02.08 00:00:00</td>
+							</tr>
+							<tr>						
+							<td class="text-center">SM_INFO</td>
+							<td class="text-center">스마트정보단문</td>
+							<td class="text-center">푸시 템플릿1</td>
+							<td class="text-center">정보성 단문 메시지 발송</td>
+							<td class="text-center">Y</td>
+							<td class="text-center">홍길동</td>
+							<td class="text-center end">2021.02.08 00:00:00</td>
+							</tr>
+							<tr>						
+							<td class="text-center">SM_AD</td>
+							<td class="text-center">스마트이미지</td>
+							<td class="text-center">푸시 이미지 템플릿1</td>
+							<td class="text-center">광고성 단문 메시지 발송</td>
+							<td class="text-center">Y</td>
+							<td class="text-center">홍길동</td>
+							<td class="text-center end">2021.02.08 00:00:00</td>
+							</tr>
+							<tr>						
+							<td class="text-center">SM_INFO</td>
+							<td class="text-center">스마트정보단문</td>
+							<td class="text-center">푸시 템플릿1</td>
+							<td class="text-center">정보성 단문 메시지 발송</td>
+							<td class="text-center">Y</td>
+							<td class="text-center">홍길동</td>
+							<td class="text-center end">2021.02.08 00:00:00</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+
+	<!-- Registration Modal -->
+	<div class="modal fade modalStyle" id="Registration" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" style="width:815px">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h5 class="lc-1">서비스 등록/수정</h5>
+					<hr>
+					<div class="of_h mt20">
+						<div class="float-left" style="width:15%"><h4 class="font-normal font-size14 mt15">상품코드*</h4></div>
+						<div class="float-left" style="width:85%">
+							<input type="text" class="inputStyle" title="상품코드 입력란">
+						</div>
+					</div>
+					<div class="of_h mt10">
+						<div class="float-left" style="width:15%"><h4 class="font-normal font-size14 mt15">서비스 상품 명*</h4></div>
+						<div class="float-left" style="width:85%">
+							<input type="text" class="inputStyle" title="서비스 상품명 입력란">
+						</div>
+					</div>
+					<div class="of_h mt20">
+						<div class="float-left" style="width:15%"><h4 class="font-normal font-size14 mt5">메시지 구분</h4></div>
+						<div class="float-left" style="width:85%">
+							<input type="radio" name="Message" value="Y" class="cBox" id="Message01" checked=""> <label for="Message01" class="payment mr30 font-size14 vertical-bottom">광고성</label>
+							<input type="radio" name="Message" value="N" class="cBox" id="Message02"> <label for="Message02" class="payment font-size14 vertical-bottom">정보성</label>	
+						</div>
+					</div>
+					<div class="of_h mt20">
+						<div class="float-left" style="width:15%"><h4 class="font-normal font-size14 mt5 ">상품 선택*</h4></div>
+						<div class="float-left border-line" style="width:85%; padding:20px">
+							<div class="of_h">
+								<div class="float-left" style="width:15%"><p class="font-normal font-size14">SMS/MMS</p></div>
+								<div class="float-left" style="width:85%">
+									<input type="radio" name="SMS-MMS" value="Y" class="cBox" id="SMS"> <label for="SMS" class="mr20 font-normal font-size14">SMS</label>
+									<input type="radio" name="SMS-MMS" value="N" class="cBox" id="LMS"> <label for="LMS" class="mr20 font-normal font-size14">LMS</label>	
+									<input type="radio" name="SMS-MMS" value="N" class="cBox" id="MMS"> <label for="MMS" class="font-normal font-size14">MMS</label>	
+								</div>
+							</div>
+							<div class="of_h mt20">
+								<div class="float-left" style="width:15%"><p class="font-normal font-size14">RCS</p></div>
+								<div class="float-left" style="width:85%">
+									<div>
+										<input type="radio" name="RCS01" value="Y" class="cBox" id="RCS01_1"> <label for="RCS01_1" class="mr20 font-normal font-size14">승인(서술)</label>
+										<input type="radio" name="RCS01" value="N" class="cBox" id="RCS01_2"> <label for="RCS01_2" class="font-normal font-size14">승인/스타일</label>	
+									</div>
+									<div class="mt10">
+										<input type="radio" name="RCS02" value="Y" class="cBox" id="RCS02_1"> <label for="RCS02_1" class="mr20 font-normal font-size14">프리스타일</label>
+										<input type="radio" name="RCS02" value="N" class="cBox" id="RCS02_2"> <label for="RCS02_2" class="mr20 font-normal font-size14">Text(SMS)</label>	
+										<input type="radio" name="RCS02" value="N" class="cBox" id="RCS02_3"> <label for="RCS02_3" class="font-normal font-size14">Text(LMS)</label>	
+									</div>
+									<div class="mt10">
+										<input type="radio" name="RCS03" value="Y" class="cBox" id="RCS03_1"> <label for="RCS03_1" class="mr20 font-normal font-size14">가로형(short)</label>
+										<input type="radio" name="RCS03" value="Y" class="cBox" id="RCS03_2"> <label for="RCS03_2" class="mr20 font-normal font-size14">가로형(tall)</label>
+										<input type="radio" name="RCS03" value="Y" class="cBox" id="RCS03_3"> <label for="RCS03_3" class="mr20 font-normal font-size14">세로형(short)</label>
+										<input type="radio" name="RCS03" value="N" class="cBox" id="RCS03_4"> <label for="RCS03_4" class="font-normal font-size14">세로형(tall)</label>	
+									</div>
+									<div class="mt10">
+										<input type="radio" name="RCS04" value="Y" class="cBox vertical-middle" id="RCS04_1"> <label for="RCS04_1" class="mr20 font-normal font-size14">캐러셀(short)</label>
+										<input type="radio" name="RCS04" value="Y" class="cBox vertical-middle" id="RCS04_2"> <label for="RCS04_2" class="font-normal font-size14">캐러셀(tall)</label>
+										<select name="backOffice11_1" class="selectStyle2 ml20" style="width:20%" title="캐러셀 선택란">
+											<option value="">3</option>
+											<option value="">2</option>
+											<option value="">1</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<hr>
+							<div class="of_h">
+								<div class="float-left" style="width:15%"><p class="font-normal font-size14">카카오</p></div>
+								<div class="float-left" style="width:85%">
+									<input type="radio" name="kakao" value="Y" class="cBox" id="kakao01"> <label for="kakao01" class="mr20 font-normal font-size14">알림톡</label>
+									<input type="radio" name="kakao" value="N" class="cBox" id="kakao02"> <label for="kakao02" class="font-normal font-size14">친구톡</label>	
+								</div>
+							</div>
+							<hr>
+							<div class="of_h">
+								<div class="float-left" style="width:15%"><p class="font-normal font-size14">Push</p></div>
+								<div class="float-left" style="width:85%">
+									<input type="radio" name="Push" value="Y" class="cBox" id="Push"> <label for="Push" class="font-normal font-size14">Push</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="of_h mt20">
+						<div class="float-left" style="width:15%"><h4 class="font-normal font-size14 mt10">서비스 상품 명*</h4></div>
+						<div class="float-left" style="width:85%">
+							<a href="#self" class="btnStyle3 gray2 font14 minWidth120" title="Push">Push</a>
+							<a href="#self" class="btnStyle3 gray2 font14 minWidth120 ml10" title="Push">Push</a>
+							<a href="#self" class="btnStyle3 gray2 font14 minWidth120 ml10" title="카카오톡">카카오톡</a>
+							<a href="#self" class="btnStyle3 gray2 font14 minWidth120 ml10" title="SMS/MMS">SMS/MMS</a>
+							<div class="mt15 text-center">
+								<a href="#" title="이전버튼"><i class="far fa-chevron-left"></i></a>
+								<a href="#" title="다음버튼"><i class="far fa-chevron-right"></i></a>
+							</div>
+						</div>
+					</div>
+					<div class="of_h mt20">
+						<div class="float-left" style="width:15%"><h4 class="font-normal font-size14 mt5">사용여부</h4></div>
+						<div class="float-left" style="width:85%">
+							<input type="radio" name="use" value="Y" class="cBox ml10" id="yes" checked=""> <label for="yes" class="payment mr30 font-size14">예</label>
+							<input type="radio" name="use" value="N" class="cBox" id="no"> <label for="no" class="payment font-size14">아니오</label>			
+						</div>
+					</div>					
+
+					<div class="text-center mt60">
+						<a href="#self" class="btnStyle3 black font14" title="저장">저장</a>
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>						
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	
+<? 
+	include("./sub/backOffice_footer.html");
+?> 

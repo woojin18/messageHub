@@ -1,0 +1,295 @@
+<? 
+	include("./sub/admin_header.html");
+	include("./sub/admin_lnb.html");
+?>
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader">
+				<h2>주소록</h2>
+			</div>
+
+			<!-- 본문 -->
+
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="menuBox">						
+						<div>
+							<h4 class="font-normal inline-block" style="width:12%">주소록 선택</h4>
+							<select name="admin0601_1" class="selectStyle3" style="width:25%">
+								<option value="">주소록을 선택해 주세요</option>
+							</select>
+							<a href="#self" class="btnStyle2 ml20 width120" data-toggle="modal" data-target="#Making">만들기</a>
+							<p class="fons-size14 color4 mt10" style="margin-left:12.5%">주소록 설명입니다.</p>
+						</div>						
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt30">
+				<div class="col-xs-4">
+					<div class="fl border-line" style="width:100%; height:537px">	
+						<div class="bb-d5" style="padding:25px">
+							<h4 class="lc-1 font-size18">테스트 주소록</h4>
+						</div>
+						<div class="bb-d5" style="padding:25px; height:374px">							
+							
+							<!-- addList -->
+							<ul class="addList">
+								<li class="addList_minus"><a href="#self"><i class="fal fa-minus-square addIcon"></i>엘지유플러스 (14)</a>
+									<ul>
+										<li><a href="#self">관리팀(1)</a></li>
+										<li class="addList_minus"><a href="#self"><i class="fal fa-minus-square addIcon"></i>마케팅팀 (6)</a>
+											<ul>
+												<li><a href="#self" class="active">통합메시징팀 (5)</a></li>
+												<li class="last"><a href="#self">테스트팀 (1)</a></li>
+											</ul>
+										</li>
+										<li class="addList_plus"><a href="#self"><i class="fal fa-plus-square addIcon"></i>신규 사업팀 (2)</a>
+											<ul>
+												<li><a href="#self">통합메시징팀 (5)</a></li>
+												<li><a href="#self">통합메시징팀 (5)</a></li>
+												<li><a href="#self">통합메시징팀 (5)</a></li>
+												<li class="last"><a href="#self">테스트팀 (1)</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<!-- //addList -->
+
+						</div>
+						<div style="padding:25px 10px" class="of_h">
+							<div class="of_h text-right">
+								<div class="of_h" style="width:100%">
+									<a href="#self" class="btnStyle3 gray font13 mr10" style="width:42%">하위 카테고리 추가</a>
+									<a href="#self" class="btnStyle3 gray font13" style="width:42%">카테고리 삭제</a>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="col-xs-8">
+					<div class="fl border-line" style="width:100%">	
+						<div class="bb-d5" style="padding:25px">
+							<h4 class="lc-1 font-size18">구성원</h4>
+						</div>
+						<div class="bb-d5">
+							<!-- table -->
+							<table class="table_skin4"  style="width:100%">
+								<colgroup>
+									<col style="width:10%">
+									<col style="width:20%">
+									<col style="width:30%">
+									<col>
+								</colgroup>
+								<tbody>
+									<tr>
+									<td class="text-cneter"><div class="consolCheck ml10"><input type="checkbox" id="check1" class="checkStyle2" value="check1"><label for="check1"></label></div></td>
+									<td class="text-left color4 font-size16">고길동</td>
+									<td class="text-left color4 font-size16">designhon@gmail.com</td>
+									<td class="text-cneter color4 end font-size16">010-6736-****</td>
+									</tr>	
+									<tr>
+									<td class="text-cneter"><div class="consolCheck ml10"><input type="checkbox" id="check2" class="checkStyle2" value="check2"><label for="check2"></label></div></td>
+									<td class="text-left color4 font-size16">둘리</td>
+									<td class="text-left color4 font-size16">designhon@gmail.com</td>
+									<td class="text-cneter color4 end font-size16">010-6736-****</td>
+									</tr>
+									<tr>
+									<td class="text-cneter"><div class="consolCheck ml10"><input type="checkbox" id="check3" class="checkStyle2" value="check3"><label for="check3"></label></div></td>
+									<td class="text-left color4 font-size16">도우너</td>
+									<td class="text-left color4 font-size16">designhon@gmail.com</td>
+									<td class="text-cneter color4 end font-size16">010-6736-****</td>
+									</tr>
+									<tr>
+									<td class="text-cneter"><div class="consolCheck ml10"><input type="checkbox" id="check4" class="checkStyle2" value="check4"><label for="check4"></label></div></td>
+									<td class="text-left color4 font-size16">또치</td>
+									<td class="text-left color4 font-size16">designhon@gmail.com</td>
+									<td class="text-cneter color4 end font-size16">010-6736-****</td>
+									</tr>
+									<tr>
+									<td class="text-cneter"><div class="consolCheck ml10"><input type="checkbox" id="check5" class="checkStyle2" value="check5"><label for="check5"></label></div></td>
+									<td class="text-left color4 font-size16">마이콜</td>
+									<td class="text-left color4 font-size16">designhon@gmail.com</td>
+									<td class="text-cneter color4 end font-size16">010-6736-****</td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- //table -->
+						</div>
+
+						<div class="bb-d5 height120">
+						
+						</div>
+						<div style="padding:25px">
+							<div class="of_h">
+								<div class="float-right">
+									<a href="#self" class="btnStyle3 gray font13 width160" data-toggle="modal" data-target="#Recipient">수신자 등록</a>
+									<a href="#self" class="btnStyle3 gray font13 width160 ml10" data-toggle="modal" data-target="#member">구성원 추가</a>
+									<a href="#self" class="btnStyle3 white font13 width160 ml10">구성원 삭제</a>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+
+
+	<!-- Making Modal -->
+	<div class="modal fade modalStyle" id="Making" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="of_h">
+						<h5 class="lc-1">주소록 등록</h5>
+						<hr>
+						<div class="mt20">
+							<h4 class="font-normal inline-block width90">주소록명 *</h4>
+							<input type="text" class="inputStyle width414">
+						</div>
+						<div class="mt15">
+							<h4 class="font-normal inline-block width90">주소록 설명</h4>
+							<input type="text" class="inputStyle width414">
+						</div>
+						<div class="mt15">
+							<h4 class="font-normal inline-block width90">정렬순서</h4>
+							<input type="text" class="inputStyle width414">
+						</div>
+						<div class="mt15">
+							<h4 class="font-normal inline-block width90">타 프로젝트<br>사용여부 *</h4>
+							<input type="radio" name="pro0601" value="Y" class="cBox vertical-middle" id="pro0601_1" checked=""> <label for="pro0601_1" class="payment mr30 font-size14">사용</label>
+							<input type="radio" name="pro0601" value="N" class="cBox vertical-middle" id="pro0601_2"> <label for="pro0601_2" class="payment font-size14">미사용</label>	
+						</div>
+						<div class="mt15">
+							<h4 class="font-normal inline-block width90">프로젝트</h4>
+							<select name="admin0601_2" class="selectStyle3 width414">
+								<option value="">전체</option>
+							</select>
+						</div>
+						<p class="mt30 lc-1 Modaltext" style="margin:0"><i class="far fa-info-circle"></i> 타프로젝트 사용여부를 전용을 선택하신 경우 프로젝트를 선택하셔야 합니다.</p>
+					</div>
+					<div class="text-center mt40">
+						<a href="#self" class="btnStyle3 black font14"  data-toggle="modal" data-target="#Register_id_y">등록</a>
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal">취소</a>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Recipient Modal -->
+	<div class="modal fade modalStyle" id="Recipient" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="of_h">
+						<h5 class="lc-1">수신자 등록</h5>
+						<hr>
+						<div class="mt20">
+							<h4 class="font-normal inline-block width90">수신자명 *</h4>
+							<input type="text" class="inputStyle width414">
+						</div>
+						<div class="mt15">
+							<h4 class="font-normal inline-block width90">수신자 아이디</h4>
+							<input type="text" class="inputStyle width414">
+						</div>
+						<div class="mt15">
+							<h4 class="font-normal inline-block width90">휴대폰번호 *</h4>
+							<input type="text" class="inputStyle width414">
+						</div>
+						<div class="mt15">
+							<h4 class="font-normal inline-block width90">카테고리</h4>
+							<input type="text" class="inputStyle width414">
+						</div>
+						<div class="mt15">
+							<h4 class="font-normal inline-block width90 mt5">사용여부</h4>
+							<input type="radio" name="use" value="Y" class="cBox vertical-middle" id="yes" checked=""> <label for="yes" class="payment mr30 font-size14">사용</label>
+							<input type="radio" name="use" value="N" class="cBox vertical-middle" id="no"> <label for="no" class="payment font-size14">미사용</label>	
+						</div>
+						
+					</div>
+					<div class="text-center mt40">
+						<a href="#self" class="btnStyle3 black font14"  data-toggle="modal" data-target="#Register_id_y">등록</a>
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal">취소</a>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- member Modal -->
+	<div class="modal fade modalStyle" id="member" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="of_h">
+						<h5 class="lc-1">구성원 추가</h5>
+						<hr>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="menuBox" style="padding: 20px">						
+									<div>
+										<select name="admin0601_3" class="selectStyle3" style="width:30%">
+											<option value="">수신자명</option>
+										</select>
+										<input type="text" class="inputStyle ml10" style="width:37%; height: 48px">
+
+										<a href="#self" class="btnStyle2 ml20 width120">검색</a>
+									</div>						
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-xs-12">									
+								<!-- table -->
+								<table  class="table_skin1 bt-000 tbl-striped">
+									<thead>
+										<tr>
+										<th class="text-center lc-1">사용자명</th>
+										<th class="text-center lc-1">아이디</th>
+										<th class="text-center lc-1 end">휴대폰 번호</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+										<td class="text-center">홍길동</td>
+										<td class="text-center">test@abc.net</td>
+										<td class="text-center end">010-****-2612</td>
+										</tr>	
+										<tr>
+										<td class="text-center">김장수</td>
+										<td class="text-center">uplus@test.net</td>
+										<td class="text-center end">010-****-2613</td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- //table -->
+							</div>			
+						</div>
+						
+					</div>
+					<div class="text-center mt40">
+						<a href="#self" class="btnStyle3 black font14"  data-toggle="modal" data-target="#Register_id_y">등록</a>
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal">취소</a>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+<? 
+	include("./sub/admin_footer.html");
+?> 

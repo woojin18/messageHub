@@ -1,0 +1,947 @@
+<? 
+	include("./sub/backOffice_header.html");
+	include("./sub/backOffice_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader">
+				<h2>스마트 채널관리</h2>
+				<a href="#self" class="btnStyle1 absolute top0 right0" onClick="window.location.reload()" title="새로고침">새로고침 <i class="fal fa-redo"></i></a>
+			</div>
+
+		
+			<!-- 본문 -->
+			
+			<div class="row mt50">
+				<div class="col-xs-2">
+					<h4 class="font-size20 color000">사업자 정보</h4>
+				</div>
+				<div class="col-xs-7">
+					<div class="of_h">
+						<div class="float-left" style="width:15%"><h4 class="font-normal mt10">사업자번호 *</h4></div>
+						<div class="float-right" style="width:72%">
+							<input type="text" class="inputStyle">
+						</div>
+					</div>
+
+					<div class="of_h mt20">
+						<div class="float-left" style="width:15%"><h4 class="font-normal mt10">사업자명 *</h4></div>
+						<div class="float-right" style="width:72%">
+							<input type="text" class="inputStyle">
+						</div>
+					</div>
+
+					<div class="of_h mt20">
+						<div class="float-left" style="width:15%"><h4 class="font-normal mt10">대표자명 *</h4></div>
+						<div class="float-right" style="width:72%">
+							<input type="text" class="inputStyle">
+						</div>
+					</div>
+
+					<div class="of_h mt20">
+						<div class="float-left" style="width:15%"><h4 class="font-normal mt10">업태 *</h4></div>
+						<div class="float-right" style="width:72%">
+							<div class="float-left" style="width:40%"><input type="text" class="inputStyle"></div>
+							<div class="float-right" style="width:56%">
+								<div class="float-left" style="width:30%"><h4 class="font-normal mt10">종목 *</h4></div>
+								<div class="float-right" style="width:68%"><input type="text" class="inputStyle"></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="of_h mt20">
+						<div class="float-left" style="width:15%"><h4 class="font-normal mt10">사업장주소*</h4></div>
+						<div class="float-right" style="width:72%">
+							<div class="float-left" style="width:75%"><input type="text" class="inputStyle" placeholder="주소입력"></div>
+							<div class="float-right" style="width:22%"><a href="#self" class="btnStyle7 vertical-middle" style="min-width:auto; width:100%">주소 조회</a></div>					
+						</div>
+						<div class="float-right mt10" style="width:72%"><input type="text" class="inputStyle" placeholder="상세주소 입력"></div>
+					</div>
+
+					<div class="of_h mt20">
+						<div class="float-left" style="width:15%"><h4 class="font-normal mt10">유선전화번호</h4></div>
+						<div class="float-right" style="width:72%">
+							<input type="text" class="inputStyle" placeholder="전화번호 ( - 없이 입력 )">
+						</div>
+					</div>
+
+					<div class="of_h mt20">
+						<div class="float-left" style="width:15%"><h4 class="font-normal mt10">사업자등록증*</h4></div>
+						<div class="float-right" style="width:72%">
+							<div class="float-left" style="width:75%"><input type="text" class="inputStyle" placeholder="파일첨부"></div>
+							<div class="float-right" style="width:22%"><a href="#self" class="btnStyle7 vertical-middle" style="min-width:auto; width:100%">파일첨부</a></div>					
+						</div>
+						<div class="float-right font-size12 color3 mt5" style="width:72%"><i class="far fa-info-circle"></i> PDF, JPG, JPEG, PNG 형식으로 등록해주세요. (최대용량: 5MB)</div>
+					</div>
+
+					<div class="of_h mt20">
+						<div class="float-left" style="width:15%"><h4 class="font-normal mt0">관심고객</h4></div>
+						<div class="float-right" style="width:72%">
+							<div class="float-left" style="width:13%"><input type="checkbox" id="Chat" class="checkStyle2" value="Chat"><label for="Chat"></label></div>
+							<div class="float-left" style="width:87%">
+								<h4 class="font-normal inline-block mt0 mr30">무과금고객</h4>
+								<input type="checkbox" id="Chat1" class="checkStyle2" value="Chat1"><label for="Chat1"></label>
+							</div>					
+						</div>
+					</div>
+
+					<div class="of_h mt20">
+						<div class="float-left" style="width:15%"><h4 class="font-normal mt10">도메인이름*</h4></div>
+						<div class="float-right" style="width:72%">
+							<div class="float-left" style="width:75%"><input type="text" class="inputStyle" placeholder="파일첨부"></div>
+							<div class="float-right" style="width:22%"><a href="#self" class="btnStyle7 vertical-middle" style="min-width:auto; width:100%">중복체크</a></div>					
+						</div>
+					</div>
+					
+					<div class="mt20 float-right">
+						<a href="#self" class="btnStyle5 red float-left width120">수정</a>
+						<a href="#self" class="btnStyle5 white float-left ml10 width120">취소</a>
+					</div>
+				</div>
+
+				<div class="col-xs-3">
+				</div>				
+			</div>
+
+			<div class="row mt50">
+				<div class="col-xs-12">	
+					<table id="backOffice_sub13" class="table_skin1 tbl-striped mt10" style="width:100%">
+						<thead>
+							<tr>
+							<th class="text-center">No</th>
+							<th class="text-center">프로젝트명</th>
+							<th class="text-center">결제조건</th>
+							<th class="text-center">생성자</th>
+							<th class="text-center">서비스</th>
+							<th class="text-center">멤버</th>
+							<th class="text-center end">등록일자</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>						
+							<td class="text-center">5</td>
+							<td class="text-center">엘지유플러스프로젝트</td>
+							<td class="text-center">선불</td>
+							<td class="text-center">admin@naver.com</td>
+							<td class="text-center">4개</td>
+							<td class="text-center">1명</td>
+							<td class="text-center end">2021-01-02 10:00:01</td>
+							</tr>
+							<tr>						
+							<td class="text-center">4</td>
+							<td class="text-center">테스트프로젝트</td>
+							<td class="text-center">후불</td>
+							<td class="text-center">admin@naver.com</td>
+							<td class="text-center">5개</td>
+							<td class="text-center">0명</td>
+							<td class="text-center end">2021-01-02 10:00:01</td>
+							</tr>
+							<tr>						
+							<td class="text-center">3</td>
+							<td class="text-center">엘지유플러스프로젝트</td>
+							<td class="text-center">선불</td>
+							<td class="text-center">admin@naver.com</td>
+							<td class="text-center">4개</td>
+							<td class="text-center">1명</td>
+							<td class="text-center end">2021-01-02 10:00:01</td>
+							</tr>
+							<tr>						
+							<td class="text-center">2</td>
+							<td class="text-center">테스트프로젝트</td>
+							<td class="text-center">후불</td>
+							<td class="text-center">admin@naver.com</td>
+							<td class="text-center">5개</td>
+							<td class="text-center">0명</td>
+							<td class="text-center end">2021-01-02 10:00:01</td>
+							</tr>
+							<tr>						
+							<td class="text-center">1</td>
+							<td class="text-center">엘지유플러스프로젝트</td>
+							<td class="text-center">선불</td>
+							<td class="text-center">admin@naver.com</td>
+							<td class="text-center">4개</td>
+							<td class="text-center">1명</td>
+							<td class="text-center end">2021-01-02 10:00:01</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="text-center mt50">
+				<a href="#self" class="inline-block width180" data-toggle="modal" data-target="#modal01"><h4>API Key 상세</h4></a>
+				<a href="#self" class="inline-block width180" data-toggle="modal" data-target="#modal02"><h4>서비스채널 상세1</h4></a>
+				<a href="#self" class="inline-block width180" data-toggle="modal" data-target="#modal03"><h4>서비스채널 상세2</h4></a>
+				<a href="#self" class="inline-block width180" data-toggle="modal" data-target="#modal04"><h4>RCS 템플릿 상세1</h4></a>
+				<a href="#self" class="inline-block width180" data-toggle="modal" data-target="#modal05"><h4>RCS 템플릿 상세2</h4></a>
+			</div>
+
+
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+
+	<!-- modal01 Modal -->
+	<div class="modal fade modalStyle" id="modal01" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h5 class="lc-1">API Key 상세</h5>
+					<hr>
+					<div class="of_h mt20">
+						<div class="float-left" style="width:31%"><h4 class="font-normal">API KEY</h4></div>
+						<div class="float-right" style="width:67%">
+							<input type="text" class="inputStyle">
+						</div>
+					</div>
+					<div class="of_h mt10">
+						<div class="float-left" style="width:31%"><h4 class="font-normal">API KEY명</h4></div>
+						<div class="float-right" style="width:67%">
+							<input type="text" class="inputStyle">
+						</div>
+					</div>
+					<div class="of_h mt10">
+						<div class="float-left" style="width:31%"><h4 class="font-normal mt5">알람 사용 여부</h4></div>
+						<div class="float-right" style="width:67%">
+							<input type="radio" name="use5" value="Y" class="cBox" id="use5-1" checked=""> <label for="use5-1" class="payment mr30 font-size14">사용</label>
+							<input type="radio" name="use5" value="N" class="cBox" id="use5-2"> <label for="use5-2" class="payment font-size14">미사용</label>	
+						</div>
+					</div>
+					<div class="of_h mt10">
+						<div class="float-left" style="width:31%"><h4 class="font-normal mt10">일 최대발송금액</h4></div>
+						<div class="float-right" style="width:67%">
+							<div class="float-left" style="width:41%">
+								<input type="radio" name="limit5" value="Y" class="cBox" id="limit5-1" checked=""> <label for="limit5-1" class="payment mt10 mr20 font-size14">무제한</label>
+								<input type="radio" name="limit5" value="N" class="cBox" id="limit5-2"> <label for="limit5-2" class="payment mt10 font-size14">제한</label>
+							</div>
+							<div class="float-left" style="width:55%">
+								<span class="ml20 mr10">월</span><input type="text" class="inputStyle input3" style="width:40%"><span class="ml10">원</span>
+							</div>
+						</div>
+					</div>
+					<div class="of_h mt10">
+						<div class="float-left" style="width:31%"><h4 class="font-normal mt10">월 최다발송금액</h4></div>
+						<div class="float-right" style="width:67%">
+							<div class="float-left" style="width:41%">
+								<input type="radio" name="limit6" value="Y" class="cBox" id="limit6-1" checked=""> <label for="limit6-1" class="payment mt10 mr20 font-size14">무제한</label>
+								<input type="radio" name="limit6" value="N" class="cBox" id="limit6-2"> <label for="limit6-2" class="payment mt10 font-size14">제한</label>
+							</div>
+							<div class="float-left" style="width:55%">
+								<span class="ml20 mr10">월</span><input type="text" class="inputStyle input3" style="width:40%"><span class="ml10">원</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="of_h mt10">
+						<div class="float-left" style="width:31%"><h4 class="font-normal mt10">고객사접속 IP</h4></div>
+						<div class="float-right" style="width:67%">
+							<div class="float-left" style="width:84%"><input type="text" class="inputStyle"></div>
+							<div class="float-right" style="width:14%"><a href="#self"><i class="fal fa-plus-square color3 mt15 ml10"></i></a></div>
+						</div>
+						<div class="float-right mt10" style="width:67%">
+							<div class="float-left" style="width:84%"><input type="text" class="inputStyle"></div>
+							<div class="float-right" style="width:14%">
+								<a href="#self"><i class="fal fa-plus-square color3 mt15 ml10"></i></a>
+								<a href="#self"><i class="fal fa-minus-square color3 mt15 ml10"></i></a>		
+							</div>
+						</div>
+					</div>
+
+					<div class="of_h mt10">
+						<div class="float-left" style="width:31%"><h4 class="font-normal mt5">발송레포트 수신여부</h4></div>
+						<div class="float-right" style="width:67%">
+							<input type="radio" name="yes5" value="Y" class="cBox" id="yes5-1" checked=""> <label for="yes5-1" class="payment mr30 font-size14">사용</label>
+							<input type="radio" name="yes5" value="N" class="cBox" id="yes5-2"> <label for="yes5-2" class="payment font-size14">미사용</label>	
+						</div>
+					</div>
+
+					<div class="of_h mt10">
+						<div class="float-left" style="width:31%"><h4 class="font-normal mt5">웹용발송시간제한 사용여부</h4></div>
+						<div class="float-right" style="width:67%">
+							<input type="radio" name="yes6" value="Y" class="cBox" id="yes6-1" checked=""> <label for="yes6-1" class="payment mr30 font-size14">사용</label>
+							<input type="radio" name="yes6" value="N" class="cBox" id="yes6-2"> <label for="yes6-2" class="payment font-size14">미사용</label>	
+						</div>
+						<div class="float-right mt10" style="width:67%">
+							<input type="time" name="stime1" class="inputStyle vertical-middle" style="width:39%" value="" title="00:00"><span style="padding:0 11px" class="vertical-middle">~</span><input type="time" name="etime1" class="inputStyle vertical-middle" style="width:39%" value="" title="00:00">
+						</div>
+					</div>
+
+					<div class="of_h mt10">
+						<div class="float-left" style="width:31%"><h4 class="font-normal mt5">수정ID</h4></div>
+						<div class="float-right" style="width:67%">
+							<p class="font-size14 color5 inline-block vertical-bottom">siga77@bitcube.co.kr</p>		
+						</div>
+					</div>
+
+					<div class="of_h mt10">
+						<div class="float-left" style="width:31%"><h4 class="font-normal mt5">수정일시</h4></div>
+						<div class="float-right" style="width:67%">
+							<p class="font-size14 color5 inline-block vertical-bottom">2021.03.12</p>	
+						</div>
+					</div>
+
+					<div class="text-center mt60">
+						<a href="#self" class="btnStyle3 black font14">수정</a>
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal">취소</a>						
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- modal02 Modal -->
+	<div class="modal fade modalStyle" id="modal02" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h5 class="lc-1">서비스채널 상세</h5>
+					<hr>
+					<div class="of_h mt20">
+						<div class="float-left" style="width:31%"><h4 class="font-normal mt5">고객사명</h4></div>
+						<div class="float-right" style="width:67%">
+							<p class="font-size14 color5 inline-block vertical-bottom">테스트 고객사</p>	
+						</div>
+					</div>
+					<div class="of_h mt10">
+						<div class="float-left" style="width:31%"><h4 class="font-normal mt5">프로젝트명</h4></div>
+						<div class="float-right" style="width:67%">
+							<p class="font-size14 color5 inline-block vertical-bottom">테스트프로젝트</p>	
+						</div>
+					</div>
+					<div class="of_h mt10">
+						<div class="float-left" style="width:31%"><h4 class="font-normal mt5">APP ID명 *</h4></div>
+						<div class="float-right" style="width:67%">
+							<p class="font-size14 color5 inline-block vertical-bottom">PUSH_APP_01</p>	
+						</div>
+					</div>
+					<div class="of_h mt10">
+						<div class="float-left" style="width:31%"><h4 class="font-normal mt5">알람 사용 여부</h4></div>
+						<div class="float-right" style="width:67%">
+							<input type="radio" name="use6" value="Y" class="cBox" id="use6-1" checked=""> <label for="use6-1" class="payment mr30 font-size14">공용</label>
+							<input type="radio" name="use6" value="N" class="cBox" id="use6-2"> <label for="use6-2" class="payment font-size14">전용</label>	
+						</div>
+					</div>
+
+					<div class="mt10">
+						<div class="boardCheck inline-block vertical-middle"><input type="checkbox" id="check1" class="boardCheckStyle" value="미사용"><label for="check1"></label></div>
+						<h4 class="font-normal inline-block vertical-baseline ml10" style="width:32%">안드로이드(FCM)</h4>
+						<div class="border-line mt10" style="padding:15px 20px">
+							<p class="font-size12 color4"><i class="far fa-info-circle"></i> Android 푸시 메시지 발송에 필요한 API Key입니다. 등록시 유효성을 검증합니다.</p>
+							<div class="mt10">
+								<h4 class="font-normal inline-block" style="width:26%">Package name</h4>
+								<input type="text" class="inputStyle input3" style="width:72%">
+							</div>
+							<div class="mt10">
+								<h4 class="font-normal inline-block" style="width:26%">FCM Server Key</h4>
+								<input type="text" class="inputStyle input3" style="width:72%">
+							</div>
+							<div class="mt10">
+								<h4 class="font-normal inline-block" style="width:26%">Sender ID</h4>
+								<input type="text" class="inputStyle input3" style="width:72%">
+							</div>
+						</div>				
+					</div>
+
+					<div class="mt10">
+						<div class="boardCheck inline-block vertical-middle"><input type="checkbox" id="check2" class="boardCheckStyle" value="미사용"><label for="check2"></label></div>
+						<h4 class="font-normal inline-block vertical-baseline ml10" style="width:32%">IOS(APNS)</h4>
+						<div class="border-line mt10" style="padding:15px 20px">
+							<div class="mt10">
+								<h4 class="font-normal inline-block" style="width:26%">P8인증서</h4>
+								<input type="text" class="inputStyle input3" style="width:72%">
+							</div>
+							<div class="mt10">
+								<h4 class="font-normal inline-block" style="width:26%">Bundle ID</h4>
+								<input type="text" class="inputStyle input3" style="width:72%">
+								<input type="radio" name="Bundle" value="Y" class="cBox" id="yesBundle1" checked="" style="margin-left:28%"><label for="yesBundle1" class="payment mr30 font-size12" style="margin-left:28%">APNS App ID 별도</label>
+							</div>
+							<div class="mt10">
+								<h4 class="font-normal inline-block" style="width:26%">Team ID</h4>
+								<input type="text" class="inputStyle input3" style="width:72%">
+							</div>
+							<div class="mt10">
+								<h4 class="font-normal inline-block" style="width:26%">Key ID</h4>
+								<input type="text" class="inputStyle input3" style="width:72%">
+							</div>
+						</div>				
+					</div>
+
+					<div class="text-center mt60">
+						<a href="#self" class="btnStyle3 black font14" data-dismiss="modal">닫기</a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- modal03 Modal -->
+	<div class="modal fade modalStyle" id="modal03" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" style="width:1020px">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h5 class="lc-1">서비스채널 상세</h5>
+					<hr>
+					<div class="row">
+						<div class="col-xs-7 of_h">								
+							<div class="of_h">
+								<h4 class="font-normal float-left" style="width:28%">API Key</h4>
+								<input type="text" class="inputStyle float-left" style="width:72%">
+							</div>
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left" style="width:28%">브랜드명 *</h4>
+								<input type="text" class="inputStyle float-left" style="width:72%">
+							</div>								
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left vertical-top" style="width:28%">브랜드 설명</h4>
+								<input type="text" class="inputStyle float-left" style="width:72%; height:160px">
+							</div>				
+											
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left mt5" style="width:28%">타 프로젝트 사용여부</h4>
+								<div class="float-left; width:72%">
+									<input type="radio" name="use" value="Y" class="cBox" id="yes" checked=""> <label for="yes" class="payment mr30 font-size14">공용</label>
+									<input type="radio" name="use" value="N" class="cBox" id="no"> <label for="no" class="payment font-size14">전용</label>		
+								</div>
+							</div>
+
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left" style="width:28%">타 프로젝트 사용여부</h4>
+								<a href="#self" class="btnStyle7 minWidthAuto" style="width:17%">파일선택</a>				
+								<p class="font-size12 color3 mt10 inline-block ml10 vertical-sub" style="width:50%">최대사이즈 : 1080X1080px / 1:1 비율 권장 /<br>파일형식 : jpg, png (최대 1MB)</p>
+							</div>
+
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left" style="width:28%">프로필이미지 *</h4>
+								<a href="#self" class="btnStyle7 minWidthAuto" style="width:17%">파일선택</a>				
+								<p class="font-size12 color3 mt10 inline-block ml10 vertical-sub" style="width:50%">최대사이즈 : 1080X1080px / 1:1 비율 권장 /<br>파일형식 : jpg, png (최대 1MB)</p>
+							</div>
+							
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left" style="width:28%">전화번호 *</h4>
+								<input type="text" class="inputStyle float-left" style="width: 72%">
+							</div>
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left" style="width:28%">메뉴버튼설정 *</h4>
+								<div class="float-left" style="width:72%">
+									<div class="consolCheck" style="width:19%"><input type="checkbox" id="Chat2" class="checkStyle2" value="Chat2"><label for="Chat2" class="font-size14">Chat</label></div>
+									<div class="consolCheck" style="width:19%"><input type="checkbox" id="Call" class="checkStyle2" value="Call"><label for="Call" class="font-size14">Call</label></div>
+									<div class="consolCheck" style="width:19%"><input type="checkbox" id="Web" class="checkStyle2" value="Web"><label for="Web" class="font-size14">Web</label></div>
+									<div class="consolCheck" style="width:19%"><input type="checkbox" id="Store" class="checkStyle2" value="Store"><label for="Store" class="font-size14">Store</label></div>
+									<div class="consolCheck" style="width:19%"><input type="checkbox" id="Order" class="checkStyle2" value="Order"><label for="Order" class="font-size14">Order</label></div>
+								</div>
+								<div class="ml_28 float-left mt10" style="width:72%">
+									<div class="consolCheck" style="width:19%"><input type="checkbox" id="Buy" class="checkStyle2" value="Buy"><label for="Buy" class="font-size14">Buy</label></div>
+									<div class="consolCheck" style="width:19%"><input type="checkbox" id="Ticket" class="checkStyle2" value="Ticket"><label for="Ticket" class="font-size14">Ticket</label></div>
+									<div class="consolCheck" style="width:22%"><input type="checkbox" id="More-Info" class="checkStyle2" value="More-Info"><label for="More-Info" class="font-size14">More Info</label></div>
+								</div>
+							</div>
+							<div class="of_h mt10">
+								<div class="float-right" style="width:72%">
+									<div class="float-left" style="width:15%"><h4 class="font-normal mt10">Web *</h4></div>
+									<div class="float-right" style="width:80%">
+										<input type="text" class="inputStyle">
+									</div>
+								</div>
+							</div>
+							<div class="of_h mt10">
+								<div class="float-right" style="width:72%">
+									<div class="float-left" style="width:15%"><h4 class="font-normal mt10">Store *</h4></div>
+									<div class="float-right" style="width:80%">
+										<input type="text" class="inputStyle">
+									</div>
+								</div>
+							</div>
+							
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left" style="width:28%">카테고리 1 *</h4>
+								<select name="backOffice13_1" class="float-left selectStyle3" style="width:72%">
+									<option value="">카테고리 1</option>
+								</select>
+							</div>
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left" style="width:28%">카테고리 2 *</h4>
+								<select name="backOffice13_2" class="selectStyle3" style="width:72%">
+									<option value="">카테고리 2</option>
+								</select>
+							</div>
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left" style="width:28%">카테고리 3 *</h4>
+								<select name="backOffice13_3" class="selectStyle3" style="width:72%">
+									<option value="">카테고리 3</option>
+								</select>
+							</div>
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left" style="width:28%">홈페이지 주소</h4>
+								<select name="backOffice13_4" class="selectStyle3" style="width:72%">
+									<option value="">홈페이지 주소</option>
+								</select>
+							</div>
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left" style="width:28%">이메일</h4>
+								<input type="text" class="inputStyle float-left mr20 vertical-baseline" style="width:31%"><span>@</span><input type="text" class="inputStyle ml20 vertical-baseline" style="width:31%">
+								<select name="backOffice13_5" class="selectStyle3 ml_28 mt10" style="width:72%">
+									<option value="">이메일</option>
+								</select>
+							</div>
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left" style="width:28%">이메일</h4>
+								<input type="text" class="inputStyle" style="width:32%">
+								<a href="#self" class="btnStyle7 vertical-middle ml10 minWidthAuto" style="width:17%">파일선택</a>
+							</div>
+							<div style="margin-left:28%">
+								<input type="text" class="inputStyle float-left mt10" style="width:100%">
+								<input type="text" class="inputStyle float-left mt10" style="width:100%">				
+							</div>
+						</div>	
+						<div class="col-xs-5 phone1">
+						<!--
+							<div class="text">
+								<p class="text-main font-size12">전화번호</p>
+								<p class="text-sub font-size10">02-333-3333</p>
+							</div>
+							<div class="mt15 ml60">
+								<p class="text-main font-size12">웹사이트</p>
+								<p class="text-sub font-size10">http://www.uplus.co.kr</p>
+							</div>
+							<div class="mt15 ml60">
+								<p class="text-main font-size12">이메일</p>
+								<p class="text-sub font-size10">test@uplus.co.kr</p>
+							</div>
+							<div class="mt15 ml60">
+								<p class="text-main font-size12">주소</p>
+								<p class="text-sub font-size10">03909 서울특별시 마포구 매봉산로 45<br>(상암동, KBS미디어센터) 100호</p>
+							</div>
+						-->
+
+							<!-- phoneWrap -->
+							<div class="phoneWrap">
+								<img src="common/images/phone_01.svg" alt="프리 템플릿">
+								<div class="phoneTextWrap2">
+									<div>
+										<div class="text">
+											<p class="text-main">전화번호</p>
+											<p class="text-sub">02-333-3333</p>
+										</div>
+										<div class="text mt15">
+											<p class="text-main">웹사이트</p>
+											<p class="text-sub">http://www.uplus.co.kr</p>
+										</div>
+										<div class="text mt15">
+											<p class="text-main">이메일</p>
+											<p class="text-sub">test@uplus.co.kr</p>
+										</div>
+										<div class="text mt15">
+											<p class="text-main">주소</p>
+											<p class="text-sub">03909 서울특별시 마포구 매봉산로 45<br>(상암동, KBS미디어센터) 100호</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- //phoneWrap -->
+						</div>							
+
+					</div>
+					<div class="text-center mt60">
+						<a href="#self" class="btnStyle3 black font14" data-dismiss="modal">닫기</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- modal04 Modal -->
+	<div class="modal fade modalStyle" id="modal04" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" style="width:1280px">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h5 class="lc-1">RCS 템플릿 상세</h5>
+					<hr>
+					<div class="row mt20">
+						<div class="col-xs-12 of_h">	
+							<p class="fonst-size16 color4 border-line Dashboard01">RCS 템플릿은 서술형과 스타일형으로만 작성이 가능합니다.<br>RCS 템플릿은 승인과정을 통해서 등록이 됩니다. (저장 상태에서는 수정/삭제가 가능하고 승인요청 후에는 수정/삭제가 불가능 합니다.)<br>상태가 승인인 템플릿은 RCS 메시지 발송을 할 수 있습니다.</p>	
+						</div>						
+					</div>
+					<div class="row mt30">
+						<div class="col-xs-12">
+							<div class="menuBox">	
+								<div class="">
+									<h4 class="font-normal inline-block width90">템플릿 명</h4>
+									<input type="text" class="inputStyle maxWidth350 vertical-middle">
+									<p class="inline-block font-size14 color3 ml10">0/30자</p>
+									<h4 class="font-normal inline-block width90 ml120">템플릿코드</h4>
+									<input type="text" class="inputStyle maxWidth350">
+								</div>
+								<div class="mt20">
+									<h4 class="font-normal inline-block width90">브랜드명</h4>
+									<select name="backOffice13_6" class="selectStyle3 maxWidth350">
+										<option value="">전체</option>
+										<option value="">대기</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<ul class="mt30 tab_s5">
+						<li class="active"><a href="#">서술형<img src="/common/images/question-mark.png" alt="question-mark" class="ml10 vertical-middle"></a></li>
+						<li><a href="#">스타일형<img src="/common/images/question-mark.png" alt="question-mark" class="ml10 vertical-middle"></a></li>
+					</ul>
+
+					<div class="Dashboard01 border-line">
+						<div class="row">
+							<div class="phone2 inline-block" style="width:30%">
+								<div class="text">
+									<!-- phoneWrap -->
+									<div class="phoneWrap">
+										<img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
+										<div class="phoneTextWrap">
+											<div class="phoneText1">
+												<p><i class="fal fa-cart-arrow-down mr10"></i> 주문</p>
+												<p class="mt15">{{name}}입니다.{{date}} 할인/특가<br>상품을 안내해 드립니다.<br>본 알림은 {{name}} 회원전용 서비스입니다.</p>
+												<p class="text-center font-size13 mt20" style="color:#69C8FF">사이트 연결</p>
+											</div>
+										</div>
+									</div>
+									<!-- //phoneWrap -->
+								</div>
+
+							</div>	
+							<div class="of_h inline-block vertical-top" style="width:69%">								
+								<div class="mt10 of_h">
+									<h4 class="font-normal float-left" style="width:15%">유형 *</h4>
+									<select name="backOffice13_7" class="float-left selectStyle3" style="width:85%">
+										<option value="">유형</option>
+									</select>
+								</div>				
+								<div class="mt10 of_h">
+									<h4 class="font-normal float-left vertical-top" style="width:15%">내용 *</h4>
+									<input type="text" class="inputStyle float-left" style="width:85%; height:160px">
+									<p class="font-size12 color4 float-right mt5">0/90자</p>
+								</div>	
+								<div class="mt10 of_h">
+									<h4 class="font-normal float-left" style="width:15%">버튼</h4>
+									<table id="backOffie_sub13_1" class="table_skin1 mt10" style="width:85%">
+									  <colgroup>
+										  <col style="width:20%">
+										  <col style="width:20%">
+										  <col>
+										  <col style="width:15%">
+									  </colgroup>
+									  <thead>
+										<tr>
+										  <th class="text-center">타입</th>
+										  <th class="text-center">버튼이름</th>
+										  <th class="text-center">버튼링크</th>
+										  <th class="text-center end">구분</th>
+										</tr>
+									  </thead>
+										<tbody>
+										  <tr>						
+											<td class="text-left" rowspan="2">
+												<select name="backOffice13_8" class="float-left selectStyle3">
+													<option value="">1</option>
+												</select>
+											</td>
+											<td class="text-center" rowspan="2"><input type="text" class="inputStyle float-left"></td>
+											<td class="text-left">
+												<h4 class="font-normal float-left" style="width:20%">Mobile</h4>
+												<input type="text" class="inputStyle float-left" style="width:80%">
+											</td>
+											<td class="text-center end" rowspan="2">
+												<a href="#self"><i class="fal fa-plus plus-box"></i></a>
+												<a href="#self" class="ml10"><i class="fal fa-minus plus-box"></i></a>
+										    </td>
+										  </tr>
+										  <tr>						
+											<td class="text-left">
+												<h4 class="font-normal float-left" style="width:20%">PC</h4>
+												<input type="text" class="inputStyle float-left" style="width:80%">
+											</td>
+										  </tr>
+										</tbody>
+									</table>
+									<div class="consolCheck mt20" style="width:100%"><input type="checkbox" id="information" class="checkStyle2" value="information"><label for="information" class="font-size14">정보성 메시지만 보낼 수 있으며, 광고 등 정책에 위배되는 메시지 발송 시  템플릿 사용이 중지될 수 있음을 동의합니다.</label></div>
+								</div>	
+							</div>														
+						</div>
+					</div>
+					<div class="text-center mt60">
+						<a href="#self" class="btnStyle3 black font14" data-dismiss="modal">닫기</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- modal05 Modal -->
+	<div class="modal fade modalStyle" id="modal05" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" style="width:1280px">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h5 class="lc-1">RCS 템플릿 상세</h5>
+					<hr>
+					
+					<div class="row">
+						<div class="phone3 inline-block" style="width:30%">
+							<!--
+							<div class="text">
+								<div class="mr20">
+									<p class="text-main"><i class="fal fa-envelope-open-text"></i> 알림톡 도착</p>
+								</div>
+								<div class="mt30">
+									<p class="text-sub_1">부제목</p>
+									<p class="text-sub">템플릿 강조 제목</p>
+								</div>
+								<div class="mt35">
+									<p class="text-sub_2">템플릿 테스트입니다.</p>
+								</div>
+							</div>
+							-->
+							<!-- phoneWrap -->
+							<div class="phoneWrap">
+								<img src="common/images/phone_03.svg" alt="프리 템플릿">
+								<div class="phoneTextWrap2">
+									<div>
+										<div class="mr20">
+											<p class="text-main"><i class="fal fa-envelope-open-text"></i> 알림톡 도착</p>
+										</div>
+										<div class="mt30">
+											<p class="text-sub_1">부제목</p>
+											<p class="text-sub">템플릿 강조 제목</p>
+										</div>
+										<div class="mt35">
+											<p class="text-sub_2">템플릿 테스트입니다.</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- //phoneWrap -->
+
+
+						</div>	
+						<div class="of_h inline-block vertical-top" style="width:69%">								
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left" style="width:15%">플러스친구 ID</h4>
+								<select name="backOffice13_9" class="float-left selectStyle3" style="width:85%">
+									<option value="">플러스친구 ID</option>
+								</select>
+							</div>
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left vertical-top" style="width:15%">템플릿명 *</h4>
+								<input type="text" class="inputStyle float-left" style="width:85%">
+							</div>
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left vertical-top" style="width:15%">템플릿강조유형</h4>
+								<div class="float-left; width:85%">
+									<input type="radio" name="choose" value="none" class="cBox" id="none" checked=""> <label for="none" class="payment mr30 font-size14">선택 안 함</label>
+									<input type="radio" name="choose" value="Emphasis" class="cBox" id="Emphasis"> <label for="Emphasis" class="payment font-size14">강조 표기형</label>		
+								</div>
+							</div>
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left vertical-top" style="width:15%">템플릿강조제목 *</h4>
+								<input type="text" class="inputStyle float-left" style="width:85%">
+							</div>
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left vertical-top" style="width:15%">템플릿강조부제목 *</h4>
+								<input type="text" class="inputStyle float-left" style="width:85%">
+							</div>
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left vertical-top" style="width:15%">내용 *</h4>
+								<input type="text" class="inputStyle float-left" style="width:85%; height:160px">
+							</div>	
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left" style="width:15%">카테고리 *</h4>
+								<select name="backOffice13_10" class="float-left selectStyle3" style="width:42%">
+									<option value="">카테고리</option>
+								</select>
+								<select name="backOffice13_11" class="selectStyle3 float-right" style="width:42%">
+									<option value="">중분류</option>
+								</select>
+							</div>
+
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left" style="width:15%">버튼<a href="#self" class="btnStyle10 vertical-bottom ml10 font-size14">추가 &nbsp;&nbsp;&nbsp; +</a></h4>
+
+								
+								<table id="backOffie_sub13_2" class="table_skin1 mt10" style="width:85%">
+									  <colgroup>
+										  <col style="width:20%">
+										  <col style="width:20%">
+										  <col>
+										  <col style="width:15%">
+									  </colgroup>
+									  <thead>
+										<tr>
+										  <th class="text-center">타입</th>
+										  <th class="text-center">버튼이름</th>
+										  <th class="text-center">버튼링크</th>
+										  <th class="text-center end"></th>
+										</tr>
+									  </thead>
+										<tbody>
+										  <tr>						
+											<td class="text-left">
+												<select name="backOffice13_12" class="float-left selectStyle3 height26">
+													<option value="">타입</option>
+												</select>
+											</td>
+											<td class="text-center"><input type="text" class="inputStyle float-left height26"></td>
+											<td class="text-left of_h">
+												<p class="font-normal float-left vertical-top" style="width:20%">Description</p>												
+											</td>
+											<td class="text-center end">
+												<a href="#self" class="btnStyle9 minWidthAuto">삭제</a>
+										    </td>
+										  </tr>
+
+										  <tr>	
+											<td class="text-left" rowspan="2">
+												<select name="backOffice13_13" class="float-left selectStyle3 height26">
+													<option value="">타입</option>
+												</select>
+											</td>
+											<td class="text-center" rowspan="2"><input type="text" class="inputStyle float-left height26"></td>
+											<td class="text-left">
+												<p class="font-normal float-left" style="width:20%">Mobile</p>
+												<input type="text" class="inputStyle float-left height26" style="width:80%">
+											</td>											
+											<td class="text-center end" rowspan="2">
+												<a href="#self" class="btnStyle9 minWidthAuto">삭제</a>
+										    </td>
+										  </tr>
+										  <tr>
+											<td class="text-left">
+												<p class="font-normal float-left" style="width:20%">PC</p>
+												<input type="text" class="inputStyle float-left height26" style="width:80%">
+											</td>
+										  </tr>
+										  <tr>	
+											<td class="text-left" rowspan="2">
+												<select name="backOffice13_14" class="float-left selectStyle3 height26">
+													<option value="">타입</option>
+												</select>
+											</td>
+											<td class="text-center" rowspan="2"><input type="text" class="inputStyle float-left height26"></td>
+											<td class="text-left">
+												<p class="font-normal float-left" style="width:20%">Mobile</p>
+												<input type="text" class="inputStyle float-left height26" style="width:80%">
+											</td>											
+											<td class="text-center end" rowspan="2">
+												<a href="#self" class="btnStyle9 minWidthAuto">삭제</a>
+										    </td>
+										  </tr>
+										  <tr>
+											<td class="text-left">
+												<p class="font-normal float-left" style="width:20%">PC</p>
+												<input type="text" class="inputStyle float-left height26" style="width:80%">
+											</td>
+										  </tr>
+
+										  <tr>						
+											<td class="text-left">
+												<select name="backOffice13_15" class="float-left selectStyle3 height26">
+													<option value="">타입</option>
+												</select>
+											</td>
+											<td class="text-center"><input type="text" class="inputStyle float-left height26"></td>
+											<td class="text-left of_h"></td>
+											<td class="text-center end">
+												<a href="#self" class="btnStyle9 minWidthAuto">삭제</a>
+										    </td>
+										  </tr>
+										  <tr>						
+											<td class="text-left">
+												<select name="backOffice13_16" class="float-left selectStyle3 height26">
+													<option value="">타입</option>
+												</select>
+											</td>
+											<td class="text-center"><input type="text" class="inputStyle float-left height26"></td>
+											<td class="text-left of_h"></td>
+											<td class="text-center end">
+												<a href="#self" class="btnStyle9 minWidthAuto">삭제</a>
+										    </td>
+										  </tr>
+										  <tr>						
+											<td class="text-left">
+												<select name="backOffice13_17" class="float-left selectStyle3 height26">
+													<option value="">타입</option>
+												</select>
+											</td>
+											<td class="text-center"><input type="text" class="inputStyle float-left height26"></td>
+											<td class="text-left of_h"></td>
+											<td class="text-center end">
+												<a href="#self" class="btnStyle9 minWidthAuto">삭제</a>
+										    </td>
+										  </tr>
+										  <tr>						
+											<td class="text-left">
+												<select name="backOffice13_18" class="float-left selectStyle3 height26">
+													<option value="">타입</option>
+												</select>
+											</td>
+											<td class="text-center"><input type="text" class="inputStyle float-left height26"></td>
+											<td class="text-left of_h"></td>
+											<td class="text-center end">
+												<a href="#self" class="btnStyle9 minWidthAuto">삭제</a>
+										    </td>
+										  </tr>
+										  <tr>						
+											<td class="text-left">
+												<select name="backOffice13_19" class="float-left selectStyle3 height26">
+													<option value="">타입</option>
+												</select>
+											</td>
+											<td class="text-center"><input type="text" class="inputStyle float-left height26"></td>
+											<td class="text-left of_h"></td>
+											<td class="text-center end">
+												<a href="#self" class="btnStyle9 minWidthAuto">삭제</a>
+										    </td>
+										  </tr>
+
+										</tbody>
+									</table>
+							</div>	
+
+
+
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left vertical-top" style="width:15%; height:160px">테스트 수신번호 *</h4>
+								<div class="float-left; width:85%">
+									<input type="radio" name="test" value="test1" class="cBox" id="test1" checked=""> <label for="test1" class="payment mr30 font-size14">자동테스트 여부</label>
+									<input type="radio" name="test" value="transfer" class="cBox" id="transfer"> <label for="transfer" class="payment font-size14">자동이관 여부</label>		
+								</div>
+								<div style="width:85%">
+									<input type="text" class="inputStyle mt10 vertical-baseline" style="width:65%"><a href="#self" class="ml10"><i class="fal fa-plus color4 plus-box"></i></a>
+									<input type="text" class="inputStyle mt10 vertical-baseline" style="width:65%"><a href="#self" class="ml10"><i class="fal fa-minus color4 plus-box"></i></a>
+									<input type="text" class="inputStyle mt10 vertical-baseline" style="width:65%"><a href="#self" class="ml10"><i class="fal fa-minus color4 plus-box"></i></a>
+								</div>
+							</div>
+							<div class="mt10 of_h">
+								<h4 class="font-normal float-left vertical-top" style="width:15%; height:100px">변수 정보</h4>
+								<div style="width:85%">
+									<input type="text" class="inputStyle mt10 vertical-baseline" style="width:31%"><input type="text" class="inputStyle ml20 mt10 vertical-baseline" style="width:31%"><a href="#self" class="ml10"><i class="fal fa-plus color4 plus-box"></i></a>
+									<input type="text" class="inputStyle mt10 vertical-baseline" style="width:31%"><input type="text" class="inputStyle ml20 mt10 vertical-baseline" style="width:31%"><a href="#self" class="ml10"><i class="fal fa-minus color4 plus-box"></i></a>
+								</div>
+							</div>
+							
+						</div>														
+					</div>
+					
+					<div class="text-center mt60">
+						<a href="#self" class="btnStyle3 black font14" data-dismiss="modal">닫기</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<? 
+	include("./sub/backOffice_footer.html");
+?> 

@@ -1,0 +1,404 @@
+<? 
+	include("./sub/backOffice_header.html");
+	include("./sub/backOffice_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader">
+				<h2>메뉴관리</h2>
+				<a href="#self" class="btnStyle1 absolute top0 right0" title="메뉴관리를 조회합니다">조회</a>
+			</div>
+
+			<!-- 본문 -->
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="Menu01 menuBox">					
+						<div class="Menu01_1">
+							<h4 class="lc-1 text-left">서비스</h4>		
+							<select name="backOffice02_1" class="selectStyle width180 ml20" title="서비스 선택란">
+								<option value="Admin Console">Admin Console</option>
+								<option value="Admin Console">Admin Console</option>
+								<option value="Admin Console">Admin Console</option>
+								<option value="Admin Console">Admin Console</option>
+							</select>
+						</div>
+						<div class="Menu01_2">
+							<h4 class="lc-1 text-left">사용여부</h4>		
+							<select name="backOffice02_2" class="selectStyle width90 ml20" title="사용여부 선택란">
+								<option value="사용">사용</option>
+								<option value="사용">사용</option>
+							</select>
+						</div>					
+					</div>
+				</div>
+			</div>
+			<div class="row mt20 row-no-margin borderC2">
+				<div class="col-xs-8 Menu02">							
+					<h4 class="lc-1">메뉴조회</h4>
+					<p class="fr text-right"><span class="color1">메뉴등록</span><br><i class="fal fa-info-circle"></i><span class="tb_subText">메뉴등록은 상위메뉴를 선택한 후 등록버튼을 클릭하세요.</span></p>
+					<table id="menuTable1" class="table_skin1 nowrap" style="width:100%">
+						<caption>No., 구분, 메뉴코드, 메뉴명, 서비스, 출력순서, 사용여부, 연결된 권한을 제공하는 표</caption>
+						<colgroup>
+							<col style="width:2%">
+							<col style="width:15%">
+							<col style="width:11%">
+							<col style="width:11%">
+							<col style="width:8%">
+							<col style="width:10%">
+							<col style="width:9%">
+							<col style="width:24%">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+							<th class="text-center lc-1">No.</th>
+							<th class="text-center lc-1">구분</th>
+							<th class="text-center lc-1">메뉴코드</th>
+							<th class="text-center lc-1">메뉴명</th>
+							<th class="text-center lc-1">서비스</th>
+							<th class="text-center lc-1">출력순서</th>
+							<th class="text-center lc-1">사용여부</th>
+							<th class="text-center lc-1">연결된 권한</th>
+							<th class="text-center lc-1 end">경로URL</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+							<td class="text-center">1</td>
+							<td><i class="fal fa-folder-minus"></i>Back Office</td>
+							<td>Bo</td>
+							<td class="text-center lc-1">Back Office</td>
+							<td class="text-center lc-1">운영사</td>
+							<td class="text-center lc-1">0</td>
+							<td class="text-center lc-1">사용</td>
+							<td></td>
+							<td class="end lc-1">/menu/order/cart/ad</td>
+							</tr>
+							<tr>
+							<td class="text-center">2</td>
+							<td class="lc-1"><i class="fal fa-folder-minus ml15"></i>대메뉴</td>
+							<td>adm_order</td>
+							<td class="text-center lc-1">주문관리</td>
+							<td class="text-center lc-1">운영사</td>
+							<td class="text-center lc-1">100</td>
+							<td class="text-center lc-1">사용</td>
+							<td>주문관리영역, 주문읽기영역, 주문관리영역, 주문읽기영역</td>
+							<td class="end">/menu/order/cart/ad/menu/order/cart/ad</td>
+							</tr>
+							<tr>
+							<td class="text-center">3</td>
+							<td class="lc-1"><i class="fal fa-folder-minus ml30"></i>중메뉴</td>
+							<td>adm_order_list</td>
+							<td class="text-center lc-1">주문관리</td>
+							<td class="text-center lc-1">운영사</td>
+							<td class="text-center lc-1">110</td>
+							<td class="text-center lc-1">사용</td>
+							<td>주문관리영역, 주문읽기영역</td>
+							<td class="end">/menu/order/cart/ad</td>
+							</tr>
+							<tr>
+							<td class="text-center">4</td>
+							<td class="lc-1"><i class="fal fa-folder ml45"></i>소메뉴</td>
+							<td>adm_order_request</td>
+							<td class="text-center lc-1">역주문</td>
+							<td class="text-center lc-1">운영사</td>
+							<td class="text-center lc-1">110</td>
+							<td class="text-center lc-1">사용</td>
+							<td>주문관리영역</td>
+							<td class="end">/menu/order/cart/ad</td>
+							</tr>
+							<tr>
+							<td class="text-center">5</td>
+							<td class="lc-1"><i class="fal fa-folder ml45"></i>소메뉴</td>
+							<td>adm_order_list_src</td>
+							<td class="text-center lc-1">주문조회</td>
+							<td class="text-center lc-1">운영사</td>
+							<td class="text-center lc-1">112</td>
+							<td class="text-center lc-1">사용</td>
+							<td>주문관리영역, 주문읽기영역</td>
+							<td class="end">/menu/order/cart/ad</td>
+							</tr>
+							<tr>
+							<td class="text-center">6</td>
+							<td class="lc-1"><i class="fal fa-folder ml45"></i>소메뉴</td>
+							<td>adm_orderpre_pay</td>
+							<td class="text-center lc-1">수동주문처리</td>
+							<td class="text-center lc-1">운영사</td>
+							<td class="text-center lc-1">117</td>
+							<td class="text-center lc-1">사용</td>
+							<td>주문관리영역, 주문읽기영역</td>
+							<td class="end">/menu/order/cart/ad</td>
+							</tr>
+							<tr>
+							<td class="text-center">7</td>
+							<td class="lc-1"><i class="fal fa-folder ml45"></i>소메뉴</td>
+							<td>adm_order_price_chg</td>
+							<td class="text-center lc-1">여신주문처리</td>
+							<td class="text-center lc-1">운영사</td>
+							<td class="text-center lc-1">118</td>
+							<td class="text-center lc-1">사용</td>
+							<td>주문관리영역</td>
+							<td class="end">/menu/order/cart/ad</td>
+							</tr>
+							<tr>
+							<td class="text-center">8</td>
+							<td class="lc-1"><i class="fal fa-folder-minus ml30"></i>중메뉴</td>
+							<td>adm_order_deli</td>
+							<td class="text-center lc-1">배송관리</td>
+							<td class="text-center lc-1">운영사</td>
+							<td class="text-center lc-1">120</td>
+							<td class="text-center lc-1">사용</td>
+							<td>주문관리영역, 주문읽기영역</td>
+							<td class="end">/menu/order/cart/ad</td>
+							</tr>
+							<tr>
+							<td class="text-center">9</td>
+							<td class="lc-1"><i class="fal fa-folder ml45"></i>소메뉴</td>
+							<td>adm_order_purc</td>
+							<td class="text-center lc-1">주문접수</td>
+							<td class="text-center lc-1">운영사</td>
+							<td class="text-center lc-1">122</td>
+							<td class="text-center lc-1">사용</td>
+							<td>주문관리영역, 주문읽기영역</td>
+							<td class="end">/menu/order/cart/ad</td>
+							</tr>
+							<tr>
+							<td class="text-center">10</td>
+							<td class="lc-1"><i class="fal fa-folder ml45"></i>소메뉴</td>
+							<td>adm_order_deli_proc</td>
+							<td class="text-center lc-1">배송처리</td>
+							<td class="text-center lc-1">운영사</td>
+							<td class="text-center lc-1">123</td>
+							<td class="text-center lc-1">사용</td>
+							<td>주문관리영역, 주문읽기영역</td>
+							<td class="end">/menu/order/cart/ad</td>
+							</tr>
+							<tr>
+							<td class="text-center">11</td>
+							<td class="lc-1"><i class="fal fa-folder-minus ml15"></i>대메뉴</td>
+							<td>adm_organ</td>
+							<td class="text-center lc-1">고객관리</td>
+							<td class="text-center lc-1">운영사</td>
+							<td class="text-center lc-1">200</td>
+							<td class="text-center lc-1">사용</td>
+							<td>주문관리영역</td>
+							<td class="end">/menu/order/cart/ad</td>
+							</tr>
+							<tr>
+							<td class="text-center">12</td>
+							<td class="lc-1"><i class="fal fa-folder-minus ml15"></i>대메뉴</td>
+							<td>adm_member</td>
+							<td class="text-center lc-1">회원가입</td>
+							<td class="text-center lc-1">운영사</td>
+							<td class="text-center lc-1">300</td>
+							<td class="text-center lc-1">사용</td>
+							<td>회원관리영역</td>
+							<td class="end">/menu/order/cart/ad</td>
+							</tr>
+							<tr>
+							<td class="text-center">13</td>
+							<td class="lc-1"><i class="fal fa-folder-minus ml15"></i>대메뉴</td>
+							<td>adm_chart</td>
+							<td class="text-center lc-1">통계</td>
+							<td class="text-center lc-1">운영사</td>
+							<td class="text-center lc-1">400</td>
+							<td class="text-center lc-1">사용</td>
+							<td>주문통계영역</td>
+							<td class="end">/menu/order/cart/ad</td>
+							</tr>						  
+						</tbody>
+					</table>					
+				</div>
+				<div class="col-xs-4 Menu03">
+					<div class="">
+						<div>
+							<h4 class="lc-1"><span class="color1">[주문조회]</span>메뉴와 <span class="color2">연결된</span> 화면권한</h4>
+							<p class="tb_subText mt5"><i class="fal fa-info-circle"></i>메뉴의 화면권한 연결은 메뉴바를 드래그하여 이동하시면 됩니다.</p>
+							<div class="table_back mt10 pd_b55">
+								<table class="tbl_use_skin">
+								  <caption>화면권한코드, 화면권한명, 사용여부, 연결된 영역을 제공하는 표</caption>
+								  <colgroup>
+									  <col style="width:30px">
+									  <col style="width:100px">
+									  <col style="width:80px">
+									  <col style="width:70px">
+									  <col>
+								  </colgroup>
+								  <thead>
+									<tr>
+									  <th class="text-center"></th>
+									  <th class="text-center">화면권한코드</th>
+									  <th class="text-center">화면권한명</th>
+									  <th class="text-center">사용여부</th>
+									  <th class="text-center end">연결된 영역</th>
+									</tr>
+								  </thead>
+								</table>
+
+								<table class="tbl_use_skin mt10 draggable">
+								   <caption>화면권한코드, 화면권한명, 사용여부, 연결된 영역을 제공하는 표</caption>
+								  <colgroup>
+									  <col style="width:30px">
+									  <col style="width:100px">
+									  <col style="width:80px">
+									  <col style="width:70px">
+									  <col>
+								  </colgroup>
+									<tbody>
+									   <tr>
+										<td class="text-center"><i class="fal fa-bars"></i></td>
+										<td>comm_read</td>
+										<td class="text-center">공통조회</td>
+										<td class="text-center">사용</td>
+										<td class="end">주문관리영역, 주문읽기영역</td>
+									  </tr>
+									</tbody>
+								</table>
+
+								<table  class="tbl_use_skin mt10 draggable">
+								   <caption>화면권한코드, 화면권한명, 사용여부, 연결된 영역을 제공하는 표</caption>
+								  <colgroup>
+									  <col style="width:30px">
+									  <col style="width:100px">
+									  <col style="width:80px">
+									  <col style="width:70px">
+									  <col>
+								  </colgroup>
+									<tbody>
+									  <tr>
+										<td><i class="fal fa-bars"></i></td>
+										<td>comm_save</td>
+										<td class="text-center">공통저장</td>
+										<td class="text-center">사용</td>
+										<td class="end">주문관리영역, 주문읽기영역</td>
+									  </tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="text-center"><i class="far fa-retweet"></i></div>
+						</div>
+
+						<div>
+							<h4 class="lc-1"><span class="color1">[주문조회]</span>메뉴와 <span class="color2">연결 안 된</span> 화면권한<a href="#self" class="editIcon" title="주문조회]메뉴와 연결 안 된 화면권한 작성"><i class="fal fa-edit"></i></a></h4>
+							<div class="table_back mt10">
+								<table class="tbl_use_skin">
+								   <caption>화면권한코드, 화면권한명, 사용여부, 연결된 영역을 제공하는 표</caption>
+								  <colgroup>
+									  <col style="width:30px">
+									  <col style="width:100px">
+									  <col style="width:80px">
+									  <col style="width:70px">
+									  <col>
+								  </colgroup>
+								  <thead>
+									<tr>
+									  <th class="text-center"></th>
+									  <th class="text-center">화면권한코드</th>
+									  <th class="text-center">화면권한명</th>
+									  <th class="text-center">사용여부</th>
+									  <th class="text-center end">연결된 영역</th>
+									</tr>
+								  </thead>
+								</table>
+
+								<table class="tbl_use_skin mt10 draggable">
+								   <colgroup>
+									  <col style="width:30px">
+									  <col style="width:100px">
+									  <col style="width:80px">
+									  <col style="width:70px">
+									  <col>
+								  </colgroup>
+									<tbody>
+									   <tr>
+										<td><i class="fal fa-bars"></i></td>
+										<td>Bidding</td>
+										<td class="text-center">투찰</td>
+										<td class="text-center">사용</td>
+										<td class="end">입찰처리/이력</td>
+									  </tr>
+									</tbody>
+								</table>
+
+								<table class="tbl_use_skin mt10 draggable">
+								   <colgroup>
+									  <col style="width:30px">
+									  <col style="width:100px">
+									  <col style="width:80px">
+									  <col style="width:70px">
+									  <col>
+								  </colgroup>
+									<tbody>
+									  <tr>
+										<td><i class="fal fa-bars"></i></td>
+										<td>comm_save</td>
+										<td class="text-center">공통저장</td>
+										<td class="text-center">사용</td>
+										<td class="end">주문관리영역, 주문읽기영역</td>
+									  </tr>
+									</tbody>
+								</table>
+
+								<table class="tbl_use_skin mt10 draggable">
+								   <colgroup>
+									  <col style="width:30px">
+									  <col style="width:100px">
+									  <col style="width:80px">
+									  <col style="width:70px">
+									  <col>
+								  </colgroup>
+									<tbody>
+									   <tr>
+										<td><i class="fal fa-bars"></i></td>
+										<td>comm_read</td>
+										<td class="text-center">공통조회</td>
+										<td class="text-center">사용</td>
+										<td class="end">주문관리영역, 주문읽기영역</td>
+									  </tr>
+									</tbody>
+								</table>
+
+								<table class="tbl_use_skin mt10 draggable">
+								   <colgroup>
+									  <col style="width:30px">
+									  <col style="width:100px">
+									  <col style="width:80px">
+									  <col style="width:70px">
+									  <col>
+								  </colgroup>
+									<tbody>
+									  <tr>
+										<td><i class="fal fa-bars"></i></td>
+										<td>comm_save</td>
+										<td class="text-center">공통저장</td>
+										<td class="text-center">사용</td>
+										<td class="end">주문관리영역, 주문읽기영역</td>
+									  </tr>
+									</tbody>
+								</table>
+							
+								<div class="pagination2 text-center mt10">
+									<a href="#"><i class="far fa-chevron-left" title="이전 페이지로 이동"></i></a>
+									<a href="#" class="number" title="1페이지로 이동">1</a>
+									<a href="#" class="number" title="2페이지로 이동">2</a>
+									<a href="#"><i class="far fa-chevron-right" title="다음 페이지로 이동"></i></a>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+
+	
+<? 
+	include("./sub/backOffice_footer.html");
+?> 

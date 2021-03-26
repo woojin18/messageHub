@@ -1,0 +1,719 @@
+<? 
+	include("./sub/userConsole_header.html");
+	include("./sub/userConsole_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader">
+				<h2>Push 발송</h2>
+				<a href="#self" class="btnStyle1 absolute top0 right0" onClick="window.location.reload()" title="Push 발송 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+			</div>
+
+			<!-- 본문 -->
+			<div class="row">
+				<div class="col-xs-4">
+					<!-- phoneWrap -->
+					<div class="phoneWrap">
+						<img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
+						<div class="phoneTextWrap">
+							<div class="phoneText1">
+								<p>내용이 들어갑니다</p>
+							</div>
+						</div>
+					</div>
+					<!-- //phoneWrap -->
+					<div class="phone_04_btn">
+						<a href="#self" class="btnStyle3 black font-size14" title="Push">Push</a>
+						<a href="#self" class="btnStyle3 white font-size14" title="Push">SMS</a>						
+					</div>
+				</div>
+				<div class="col-xs-8">
+					<div class="row user-phone">
+						<div class="col-xs-3 ">
+							<p class="main-text">01  발송정보</p>
+						</div>
+						<div class="col-xs-9">
+							<a href="#self" class="btnStyle3_1 gray font-size13 minwidthAuto height45" style="width:21%" data-toggle="modal" data-target="#Tamplet" title="템플릿 불러오기">템플릿 불러오기</a>
+							<div class="of_h mt30">
+								<div style="width:18%" class="float-left">
+									<p class="sub-text">발송정책 *</p>
+								</div>
+								<div style="width:82%">
+									<input type="radio" name="send" value="ALL" class="cBox" id="ALL" checked=""> <label for="ALL" class="payment mr30 radio mt0">광고성ALL</label>
+									<input type="radio" name="send" value="FCM" class="cBox" id="FCM"> <label for="FCM" class="payment mr30 radio mt0">FCM</label>
+									<input type="radio" name="send" value="APNS" class="cBox" id="APNS"> <label for="APNS" class="payment radio mt0">APNS</label>
+								</div>
+							</div>
+							<div class="of_h mt30">
+								<div style="width:18%" class="float-left">
+									<p class="sub-text">메시지구분 *</p>
+								</div>
+								<div style="width:82%">
+									<input type="radio" name="Sortation" value="ad" class="cBox" id="ad" checked=""> <label for="ad" class="payment mr30 radio mt0">광고성</label>
+									<input type="radio" name="Sortation" value="info" class="cBox" id="info"> <label for="info" class="payment radio mt0">정보성</label>
+								</div>
+							</div>							
+						</div>
+						
+					</div>
+					<hr class="mt50">
+
+					<div class="row user-phone mt50">
+						<div class="col-xs-3 ">
+							<p class="main-text">02  메시지 내용</p>
+						</div>
+						<div class="col-xs-9">
+							<a href="#self" class="btnStyle3_1 gray font-size13 minwidthAuto width130" data-toggle="modal" data-target="#contents" title="메시지 내용입력">내용입력</a>
+							<a href="#self" class="btnStyle3_1 gray font-size13 minwidthAuto width130" data-toggle="modal" data-target="#send" title="대체발송 발신번호">대체발송 발신번호</a>
+							<div class="of_h mt30">
+								<div style="width:18%" class="float-left">
+									<p class="sub-text">메시지타입 *</p>
+								</div>
+								<div style="width:82%">
+									<input type="radio" name="content" value="txt" class="cBox" id="txt" checked=""> <label for="txt" class="payment mr30 radio mt0">기본</label>
+									<input type="radio" name="content" value="img" class="cBox" id="img"> <label for="img" class="payment radio mt0">이미지</label>
+								</div>
+							</div>
+							<div class="of_h mt30">
+								<div style="width:18%" class="float-left">
+									<p class="sub-text mt10">이미지</p>
+								</div>
+								<div class="of_h" style="width:82%">
+									<a href="#self" class="btnStyle3_1 gray font-size13 minwidthAuto" style="width:21%" data-toggle="modal" data-target="#image" title="이미지선택">이미지선택</a>
+									<input type="text" class="inputStyle float-right" style="width:77%">
+								</div>
+							</div>
+							<div class="of_h mt30">
+								<div style="width:18%" class="float-left">
+									<p class="sub-text">대체발송</p>
+								</div>
+								<div style="width:82%">
+									<input type="radio" name="alternative" value="none" class="cBox" id="none" checked=""> <label for="none" class="payment mr30 radio mt0">미사용</label>
+									<input type="radio" name="alternative" value="SMS" class="cBox" id="SMS"> <label for="SMS" class="payment mr30 radio mt0">SMS</label>
+									<input type="radio" name="alternative" value="LMS" class="cBox" id="LMS"> <label for="LMS" class="payment mr30 radio mt0">LMS</label>
+									<input type="radio" name="alternative" value="MMS" class="cBox" id="MMS"> <label for="MMS" class="payment radio mt0">MMS</label>
+								</div>
+							</div>							
+						</div>
+						
+					</div>
+					<hr class="mt50">
+
+					<div class="row user-phone mt50">
+						<div class="col-xs-3 ">
+							<p class="main-text">03  수신자 선택</p>
+						</div>
+						<div class="col-xs-9">
+							<div class="of_h">
+								<div style="width:18%" class="height40 float-left">
+									<p class="sub-text">수신자 *</p>
+								</div>
+								<div style="width:82%">
+									<div>										
+										<input type="radio" name="Recipient" value="Directly" class="cBox" id="Directly" checked=""> <label for="Directly" class="payment mr30 radio mt0" data-toggle="modal" data-target="#Direct-input">수신자 직접입력</label>
+									
+										<input type="radio" name="Recipient" value="search" class="cBox" id="search"> <label for="search" class="payment radio mr30 mt0" data-toggle="modal" data-target="#Address">주소록 검색</label>
+									</div>
+									<div class="mt5">
+										<input type="radio" name="Recipient" value="all" class="cBox" id="all"> <label for="all" class="payment radio mr30 mt0">앱사용자 전체발송</label>
+										<input type="radio" name="Recipient" value="excel" class="cBox" id="excel"> <label for="excel" class="payment radio mt0">엑셀 업로드 <i class="far fa-arrow-to-top"></i></label>
+									</div>
+								</div>
+							</div>
+							<div class="of_h mt30">
+								<div style="width:18%" class="float-left">
+									<p class="sub-text mt10">APP_ID</p>
+								</div>
+								<div class="of_h" style="width:82%">
+									<select name="userConsole02_1" class="selectStyle3 height45 font-size14" style="width:30%">
+										<option value="">APP_ID</option>
+									</select>
+									<input type="text" class="inputStyle float-right" style="width:68%">
+									<p class="font-size16 mt10">수신자 : 0명</p>
+									<div class="float-right" style="width:100%">
+										<textarea class="textareaStyle height120 mt20" placeholder="변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.&#13;예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다."></textarea>
+									</div>
+								</div>
+							</div>
+													
+						</div>
+						
+					</div>
+					<hr class="mt50">
+
+					<div class="row user-phone mt50">
+						<div class="col-xs-3 ">
+							<p class="main-text">04  발송옵션 선택</p>
+						</div>
+						<div class="col-xs-9">
+							<div class="of_h">
+								<div style="width:18%" class="float-left">
+									<p class="sub-text">발송시간 *</p>
+								</div>
+								<div style="width:82%">
+									<input type="radio" name="time" value="right" class="cBox" id="right" checked=""> <label for="right" class="payment mr30 radio mt0">즉시</label>
+									<input type="radio" name="time" value="Reservation" class="cBox" id="Reservation"> <label for="Reservation" class="payment radio mt0">예약</label>								
+								</div>
+							</div>
+							<div class="of_h mt30">
+								<div style="width:18%" class="float-left">
+									<p class="sub-text mt10">태그</p>
+								</div>
+								<div class="of_h" style="width:82%">
+									<input type="text" class="inputStyle mt5 height45" style="width:100%">
+								</div>
+							</div>
+													
+						</div>
+						
+					</div>
+				</div>			
+			</div>
+
+			<div class="mt30 float-right">
+				<a href="#self" class="btnStyle5 white float-left width120" title="테스트 발송" data-toggle="modal" data-target="#test">테스트 발송</a>
+				<a href="#self" class="btnStyle5 red float-left ml10 width120" title="발송">발송</a>
+			</div>
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+
+
+	<!-- Tamplet Modal -->
+	<div class="modal fade modalStyle" id="Tamplet" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" style="width:1120px">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div>
+						<h5 class="lc-1">템플릿 선택</h5>
+						<hr>
+						<div class="row row-no-margin">
+							<div class="col-xs-4 border-line2" style="height:569px; padding:30px">
+								<p class="font-size14; color000">템플릿 검색</p>
+								<div class="mt20">
+									<input type="text" class="inputStyle height40" style="width:70%">
+									<a href="#self" class="btnStyle3 gray font-size13 minwidthAuto height40 float-right" style="width:20%" title="메시지 내용 조회">조회</a>
+								</div>
+								<div class="mt40">
+									<p class="font-size14 color000 inline-block">템플릿 검색</p>
+									<p class="color000 inline-block  float-right font-size12">총 15건</p>
+								</div>
+								<div class="mt20 border-line2" style="height:354px; overflow-y:scroll;">
+									<ul class="fons-size14 color4">
+										<li class="bb-ddd" style="padding:13px">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd" style="padding:13px">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd" style="padding:13px">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd" style="padding:13px">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd" style="padding:13px">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd" style="padding:13px">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd" style="padding:13px">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd" style="padding:13px">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd" style="padding:13px">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd" style="padding:13px">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd" style="padding:13px">푸시 템플릿1(템플릿 제목)</li>
+									</ul>									
+								</div>
+							</div>
+							<div class="col-xs-4 of_h">
+								<ul class="float-left line-height3em ml60 font-size14 color000">
+									<li>메시지구분</li>
+									<li>메시지타입</li>
+									<li>타 프로젝트 사용여부</li>
+									<li>템플릿명</li>
+									<li>제목</li>
+									<li>내용</li>
+									<li>이미지</li>
+								</ul>
+								<ul class="line-height3em ml30 inline-block font-size14 color4">
+									<li>광고성</li>
+									<li>이미지</li>
+									<li>공용</li>
+									<li>푸시 템플릿1</li>
+									<li>템플릿 제목</li>
+									<li>템플릿 내용</li>
+									<li>test.jpg</li>
+								</ul>
+							</div>
+							<div class="col-xs-4">
+								<img src="common/images/phoneMockup2.svg" alt="샘플이미지">
+							</div>
+						</div>						
+					</div>						
+					<div class="text-center mb40">
+						<a href="#self" class="btnStyle3 black font14" data-toggle="modal" title="템플릿 선택">템플릿 선택</a>
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="취소">취소</a>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+	<!-- contents Modal -->
+	<div class="modal fade modalStyle" id="contents" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					
+					<div class="of_h">
+						<div class="float-left" style="width:20%"><h4 class="font-normal font-size14 mt15">제목</h4></div>
+						<div class="float-right" style="width:79%">
+							<input type="text" class="inputStyle" title="제목 입력란">
+						</div>
+					</div>
+
+					<div class="of_h mt15">
+						<div class="float-left" style="width:20%"><h4 class="font-normal font-size14 mt15">내용 *</h4></div>
+						<div class="float-right" style="width:79%">
+							<input type="text" class="inputStyle height120" title="내용 입력란">
+						</div>
+						<p class="font-size12 color5 lc-1 mt5" style="margin-left:21%">광고성 메시지 발송 시, 자동으로 광고가 표기 됩니다.</p>
+						<div class="float-right mt10" style="width:79%">
+							<input type="text" class="inputStyle" title="내용 입력란">
+						</div>
+						<p class="font-size12 color5 lc-1 mt5" style="margin-left:21%">푸시 수신거부 방법을 입력해주세요. 푸시 메시지에 (수신거부:거부 방법)이 포함됩니다.</p>
+					</div>
+
+					<div class="of_h mt15">
+						<div class="float-left" style="width:20%"><h4 class="font-normal font-size14 mt15">부가정보(EXT)</h4></div>
+						<div class="float-right" style="width:79%">
+							<input type="text" class="inputStyle" title="부가정보(EXT) 입력란">
+						</div>
+					</div>
+								
+
+					<div class="text-center mt60">
+						<a href="#self" class="btnStyle3 black font14" title="입력">입력</a>
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>						
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- send Modal -->
+	<div class="modal fade modalStyle" id="send" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					
+					<div class="of_h">
+						<div class="float-left" style="width:32%"><h4 class="font-normal font-size14 mt15">대체발송 발신번호</h4></div>
+						<select name="userConsole02_2" class="selectStyle3 height45 font-size14 float-right" style="width:66%">
+							<option value="">선택하세요</option>
+						</select>
+					</div>
+
+					<div class="of_h mt15">
+						<div class="float-left" style="width:32%"><h4 class="font-normal font-size14 mt15">광고성메시지 수신거부번호</h4></div>
+						<div class="float-right" style="width:66%">
+							<input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란">
+						</div>
+					</div>
+
+					<div class="of_h mt15">
+						<div class="float-left" style="width:32%"><h4 class="font-normal font-size14 mt15">제목</h4></div>
+						<div class="float-right" style="width:66%">
+							<input type="text" class="inputStyle" title="제목 입력란">
+						</div>
+					</div>
+
+					<div class="of_h mt15">
+						<div class="float-left" style="width:32%"><h4 class="font-normal font-size14 mt15">내용</h4></div>
+						<div class="float-right" style="width:66%">
+							<input type="text" class="inputStyle height120" title="내용 입력란">
+						</div>
+					</div>
+					
+					<div class="of_h mt15">
+						<div class="float-left" style="width:32%"><h4 class="font-normal font-size14 mt15">이미지</h4></div>
+						<div class="of_h float-right" style="width:66%">
+							<a href="#self" class="btnStyle3_1 gray font-size13 minwidthAuto" style="width:28%" title="메시지 내용 이미지선택">이미지선택</a>
+							<input type="text" class="inputStyle float-right" style="width:68%">
+						</div>
+					</div>
+
+					<div class="text-center mt60">
+						<a href="#self" class="btnStyle3 black font14" title="입력">입력</a>
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>						
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- image Modal -->
+	<div class="modal fade modalStyle" id="image" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" style="width:785px">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h5 class="lc-1">통합 이미지 관리</h5>
+					<hr>
+					<div class="of_h">
+						<p class="font-size14 color000 inline-block mt15" style="font-weight:700">업로드 한 이미지</p>
+						<div class="float-right">
+							<a href="#self" class="btnStyle3 black font-size14 width120" data-toggle="modal" data-target="#image-add" title="이미지 추가">이미지 추가</a>
+							<a href="#self" class="btnStyle3 gray font-size14 width120" title="삭제">삭제</a>						
+						</div>
+					</div>
+								
+					<div class="row mt10">
+						<div class="col-xs-12">
+							<!-- table -->
+							<table class="table_skin1 mt20" style="width:100%">
+								<caption>수신자 추가의 사용자명, 아이디, 이용권한을 제공하는 표</caption>
+							  <colgroup>
+								<col style="width:3%">
+								<col style="width:10%">
+								<col style="width:10%">								
+								<col style="width:18%">
+								<col style="width:20%">
+								<col>
+								<col style="width:16%">
+							  </colgroup>
+							  <thead>
+								<tr>
+								  <th class="text-center lc-1"><div class="consolCheck ml10"><input type="checkbox" id="check1" class="checkStyle2" value="check1"><label for="check1"></label></div></th>
+								  <th class="text-center lc-1">File ID</th>
+								  <th class="text-center lc-1">파일명</th>
+								  <th class="text-center lc-1">사용채널</th>
+								  <th class="text-center lc-1">업로드일시</th>
+								  <th class="text-center lc-1">미리보기</th>
+								  <th class="text-center lc-1 end">선택</th>
+								</tr>
+							  </thead>
+								<tbody>
+								   <tr>
+									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check2" class="checkStyle2" value="check2"><label for="check2"></label></div></td>
+									<td class="text-center">124</td>
+									<td class="text-left">CMwS1.jpg</td>									
+									<td class="text-left">푸시, RCS</td>
+									<td class="text-center">2021-01-01 09:30</td>
+									<td class="text-center"><a href="#self" title="미리보기"><i class="far fa-search"></i></a></td>
+									<td class="text-center end"><a href="#self" class="btnStyle6 vertical-middle" style="min-width:auto; width:100%" title="선택">선택</a></td>
+								  </tr>
+								   <tr>
+									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check3" class="checkStyle2" value="check3"><label for="check3"></label></div></td>
+									<td class="text-center">125</td>
+									<td class="text-left">이벤트1.jpg</td>									
+									<td class="text-left">푸시, 친구톡</td>
+									<td class="text-center">2021-01-01 09:30</td>
+									<td class="text-center"><a href="#self" title="미리보기"><i class="far fa-search"></i></a></td>
+									<td class="text-center end"><a href="#self" class="btnStyle6 vertical-middle" style="min-width:auto; width:100%" title="선택">선택</a></td>
+								  </tr>
+								   <tr>
+									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check4" class="checkStyle2" value="check4"><label for="check4"></label></div></td>
+									<td class="text-center">126</td>
+									<td class="text-left">이벤트2.jpg</td>									
+									<td class="text-left">푸시, RCS, MMS</td>
+									<td class="text-center">2021-01-01 09:30</td>
+									<td class="text-center"><a href="#self" title="미리보기"><i class="far fa-search"></i></a></td>
+									<td class="text-center end"><a href="#self" class="btnStyle6 vertical-middle" style="min-width:auto; width:100%" title="선택">선택</a></td>
+								  </tr>
+								  <tr>
+									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check5" class="checkStyle2" value="check5"><label for="check5"></label></div></td>
+									<td class="text-center" colspan="4">업로드 한 이미지가 없습니다.</td>
+									<td></td>
+									<td class="text-center end"><a href="#self" class="btnStyle6 vertical-middle" style="min-width:auto; width:100%" title="선택">선택</a></td>
+								  </tr>
+								</tbody>
+							</table>
+							<!-- //table -->
+						</div>							
+					</div>
+
+					<!-- pagination -->
+					<div class="row mt40">
+						<div class="col-xs-12">
+							<div class="pagination1 text-center">
+								<a href="#" title="10페이지 이전 페이지로 이동"><i class="far fa-chevron-double-left"></i></a>
+								<a href="#" title="이전 페이지로 이동"><i class="far fa-chevron-left"></i></a>
+								<a href="#" title="1페이지로 이동" class="number active">1</a>
+								<a href="#" title="2페이지로 이동" class="number">2</a>
+								<a href="#" title="3페이지로 이동" class="number">3</a>
+								<a href="#" title="4페이지로 이동" class="number">4</a>
+								<a href="#" title="5페이지로 이동" class="number">5</a>
+								<a href="#" title="다음 페이지로 이동"><i class="far fa-chevron-right"></i></a>
+								<a href="#" title="10페이지 다음 페이지로 이동"><i class="far fa-chevron-double-right"></i></a>
+							</div>
+						</div>
+					</div>
+					<!-- //pagination -->
+
+					<div class="border-line2 bgColor_f7 mt30" style="padding:20px">
+						<ul class="font-size13 color5 line-height2em">
+							<li>•  이미지는 .JPG 또는 PNG 형식만 지원합니다.</li>
+							<li>•  이미지 크기는 일반 이미지 5MB 이하여야합니다. </li>
+							<li>•  이미지는 가로 길이는 최소 500px, 세로 길이는 최소 250px 이상이어야합니다.</li>
+							<li>•  이미지의 가로:세로 비율은 2:1 이상, 3:4 이하여야 합니다.</li>
+						</ul>
+					</div>
+
+					<div class="text-center mt60">
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>						
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- image-add Modal -->
+	<div class="modal fade modalStyle" id="image-add" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" style="width:785px">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h5 class="lc-1">이미지 업로드</h5>
+					<hr>
+					<div class="of_h">
+						<p class="font-size14 color000 inline-block mt15" style="font-weight:700">이미지 사용채널</p>						
+					</div>
+					<div class="consolCheck vertical-top mt20" style="width:100%">
+						<input type="checkbox" id="imgPush" class="checkStyle2" value="Push"><label for="imgPush" class="font-size16" style="width:13%">Push</label>
+						<input type="checkbox" id="imgRCS" class="checkStyle2" value="RCS"><label for="imgRCS" class="font-size16" style="width:13%">RCS</label>
+						<input type="checkbox" id="imgtalk" class="checkStyle2" value="talk"><label for="imgtalk" class="font-size16" style="width:13%">친구톡</label>						
+						<input type="checkbox" id="imgMMS1" class="checkStyle2" value="MMS"><label for="imgMMS1" class="font-size16" style="width:13%">MMS</label>
+					</div>
+
+					<div class="border-line mt20" style="width:100%; padding:130px 0">
+						<p class="font-size13 color5 text-center">이미지 영역</p>
+					</div>												
+
+					<div class="text-center mt60">
+						<a href="#self" class="btnStyle3 black font14" title="업로드">업로드</a>
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>						
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- test Modal -->
+	<div class="modal fade modalStyle" id="test" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" style="width:821px">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h5 class="lc-1">테스트 발송</h5>
+					<hr>
+																
+					<div class="of_h">
+						<div class="inline-block float-left text-center" style="width:19%; background:#505050"><p class="inline-block colorfff" style="padding:12px">* APP 로그인ID</p></div>
+						<input type="text" class="inputStyle float-left ml20" style="width:24%" title="APP 로그인ID 입력란1">
+						<input type="text" class="inputStyle float-left ml20" style="width:24%" title="APP 로그인ID 입력란2">
+						<input type="text" class="inputStyle float-left ml20" style="width:24%" title="APP 로그인ID 입력란3">
+					</div>
+					
+					<div class="of_h mt10">
+						<div class="inline-block float-left text-center" style="width:19%; background:#505050"><p class="inline-block colorfff" style="padding:12px">변수1</p></div>
+						<input type="text" class="inputStyle float-left ml20" style="width:24%" title="변수1 입력란1">
+						<input type="text" class="inputStyle float-left ml20" style="width:24%" title="변수1 입력란2">
+						<input type="text" class="inputStyle float-left ml20" style="width:24%" title="변수1 입력란3">
+					</div>
+
+					<div class="of_h mt10">
+						<div class="inline-block float-left text-center" style="width:19%; background:#505050"><p class="inline-block colorfff" style="padding:12px">변수2</p></div>
+						<input type="text" class="inputStyle float-left ml20" style="width:24%" title="변수2 입력란1">
+						<input type="text" class="inputStyle float-left ml20" style="width:24%" title="변수2 입력란2">
+						<input type="text" class="inputStyle float-left ml20" style="width:24%" title="변수2 입력란3">
+					</div>
+
+					<div class="of_h mt10">
+						<div class="inline-block float-left text-center" style="width:19%; background:#505050"><p class="inline-block colorfff" style="padding:12px">변수3</p></div>
+						<input type="text" class="inputStyle float-left ml20" style="width:24%" title="변수3 입력란1">
+						<input type="text" class="inputStyle float-left ml20" style="width:24%" title="변수3 입력란2">
+						<input type="text" class="inputStyle float-left ml20" style="width:24%" title="변수3 입력란3">
+					</div>
+
+					<div class="text-center mt60">
+						<a href="#self" class="btnStyle3 black font14" title="발송">발송</a>
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>						
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Direct-input Modal -->
+	<div class="modal fade modalStyle" id="Direct-input" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" style="width:821px">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h5 class="lc-1">수신자 직접입력</h5>
+					<hr>
+					<div class="of_h">
+						<p class="font-size14 color000 inline-block mt15">입력 후 선택 버튼을 누르면 수신자에 추가됩니다. </p>
+						<div class="float-right">
+							<a href="#self" class="btnStyle3 black font-size14 width120" title="수신자 추가">수신자 추가</a>
+						</div>
+					</div>											
+															
+					<div class="of_h mt20">
+						<div class="inline-block float-left text-center" style="width:31.5%; background:#505050"><p class="inline-block colorfff" style="padding:12px">* APP 로그인ID</p></div>
+						<div class="inline-block float-left text-center ml20" style="width:31.5%; background:#505050"><p class="inline-block colorfff" style="padding:12px">* APP 로그인ID</p></div>
+						<div class="inline-block float-left text-center ml20" style="width:31.5%; background:#505050"><p class="inline-block colorfff" style="padding:12px">* APP 로그인ID</p></div>
+					</div>
+
+					<div class="of_h mt10">					
+						<input type="text" class="inputStyle float-left" style="width:31.5%" title="APP 로그인ID 입력란1">
+						<input type="text" class="inputStyle float-left ml20" style="width:31.5%" title="휴대폰번호 입력란1">
+						<input type="text" class="inputStyle float-left ml20" style="width:31.5%" title="변수1 입력란1">
+					</div>
+					<div class="of_h mt10">					
+						<input type="text" class="inputStyle float-left" style="width:31.5%" title="APP 로그인ID 입력란2">
+						<input type="text" class="inputStyle float-left ml20" style="width:31.5%" title="휴대폰번호 입력란2">
+						<input type="text" class="inputStyle float-left ml20" style="width:31.5%" title="변수1 입력란2">
+					</div>
+					<div class="of_h mt10">					
+						<input type="text" class="inputStyle float-left" style="width:31.5%" title="APP 로그인ID 입력란3">
+						<input type="text" class="inputStyle float-left ml20" style="width:31.5%" title="휴대폰번호 입력란3">
+						<input type="text" class="inputStyle float-left ml20" style="width:31.5%" title="변수1 입력란3">
+					</div>
+					
+					
+
+					<div class="text-center mt60">
+						<a href="#self" class="btnStyle3 black font14" title="선택">선택</a>
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>						
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Address Modal -->
+	<div class="modal fade modalStyle" id="Address" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" style="width:821px">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h5 class="lc-1">수신 주소록 검색</h5>
+					<hr>
+					<div class="of_h">
+						<select name="userConsole02_1" class="selectStyle3 height45 font-size14" style="width:28%">
+							<option value="">APP_ID</option>
+						</select>
+						<input type="text" class="inputStyle" style="width:60%">
+						<a href="#self" class="btnStyle3_1 gray font-size14 float-right" style="width:10%" title="검색">검색</a>
+					</div>
+					<p class="font-size14 color5 mt20 mb20">조직 조회 후 체크된 사용자를 선택하면  수신자에 추가됩니다. </p>
+					
+					<div class="row row-no-margin">
+						<div class="col-xs-5 border-line2" style="height:308px">
+							<div style="padding:25px">							
+								
+								<!-- addList -->
+								<ul class="addList">
+									<li class="addList_minus"><a href="#self"><i class="fal fa-minus-square addIcon"></i><i class="fad fa-folder-open color3"></i> 회사명</a>
+										<ul>
+											<li class="addList_plus"><a href="#self"><i class="fal fa-plus-square addIcon"></i><i class="fad fa-folder color3"></i> 부서명2</a></li>
+										</ul>
+									</li>
+								</ul>
+								<!-- //addList -->
+
+							</div>
+						</div>
+						<div class="col-xs-7" style="padding-right:0">
+							<!-- table -->
+							<table class="table_skin1 mt0" style="width:100%">
+								<caption>수신자 추가의 사용자명, 아이디, 이용권한을 제공하는 표</caption>
+							  <colgroup>
+								<col style="width:5%">							
+								<col style="width:16%">
+								<col style="width:20%">
+								<col>
+								<col style="width:16%">
+							  </colgroup>
+							  <thead>
+								<tr>
+								  <th class="text-center lc-1"><div class="consolCheck ml10"><input type="checkbox" id="check6" class="checkStyle2" value="check6"><label for="check6"></label></div></th>
+								  <th class="text-center lc-1">수신자명</th>
+								  <th class="text-center lc-1">APP<br>로그인ID</th>
+								  <th class="text-center lc-1">휴대폰번호</th>
+								  <th class="text-center lc-1 end">변수1</th>
+								</tr>
+							  </thead>
+								<tbody>
+								   <tr>
+									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check7" class="checkStyle2" value="check17"><label for="check7"></label></div></td>
+									<td class="text-center">TPM0</td>
+									<td class="text-left">312</td>									
+									<td class="text-left">010-3456-7890</td>
+									<td class="text-center end"></td>
+								  </tr>
+								   <tr>
+									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check8" class="checkStyle2" value="check8"><label for="check8"></label></div></td>
+									<td class="text-center">TPM0</td>
+									<td class="text-left">312</td>									
+									<td class="text-left">010-3456-7890</td>
+									<td class="text-center end"></td>
+								  </tr>
+								  <tr>
+									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check9" class="checkStyle2" value="check9"><label for="check9"></label></div></td>
+									<td class="text-center">TPM0</td>
+									<td class="text-left">312</td>									
+									<td class="text-left">010-3456-7890</td>
+									<td class="text-center end"></td>
+								  </tr>
+								  <tr>
+									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check10" class="checkStyle2" value="check10"><label for="check10"></label></div></td>
+									<td class="text-center">TPM0</td>
+									<td class="text-left">312</td>									
+									<td class="text-left">010-3456-7890</td>
+									<td class="text-center end"></td>
+								  </tr>
+								  <tr>
+									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check11" class="checkStyle2" value="check11"><label for="check11"></label></div></td>
+									<td class="text-center">TPM0</td>
+									<td class="text-left">312</td>									
+									<td class="text-left">010-3456-7890</td>
+									<td class="text-center end"></td>
+								  </tr>
+								</tbody>
+							</table>
+							<!-- //table -->
+
+							<!-- pagination -->
+							<div class="row mt40">
+								<div class="col-xs-12">
+									<div class="pagination1 text-center">
+										<a href="#" title="10페이지 이전 페이지로 이동"><i class="far fa-chevron-double-left"></i></a>
+										<a href="#" title="이전 페이지로 이동"><i class="far fa-chevron-left"></i></a>
+										<a href="#" title="1페이지로 이동" class="number active">1</a>
+										<a href="#" title="2페이지로 이동" class="number">2</a>
+										<a href="#" title="3페이지로 이동" class="number">3</a>
+										<a href="#" title="4페이지로 이동" class="number">4</a>
+										<a href="#" title="5페이지로 이동" class="number">5</a>
+										<a href="#" title="다음 페이지로 이동"><i class="far fa-chevron-right"></i></a>
+										<a href="#" title="10페이지 다음 페이지로 이동"><i class="far fa-chevron-double-right"></i></a>
+									</div>
+								</div>
+							</div>
+							<!-- //pagination -->
+						</div>
+					</div>
+					
+					
+
+					<div class="text-center mt60">
+						<a href="#self" class="btnStyle3 black font14" title="선택">선택</a>
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>						
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+<? 
+	include("./sub/userConsole_footer.html");
+?> 

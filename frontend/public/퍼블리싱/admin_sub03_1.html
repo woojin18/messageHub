@@ -1,0 +1,161 @@
+<? 
+	include("./sub/admin_header.html");
+	include("./sub/admin_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader mb20">
+				<h2>비트큐브 프로젝트</h2>
+			</div>
+
+			<!-- 본문 -->
+			<div class="contentBody">
+				<ul class="tab_s3">
+					<li class="active"><a href="#self" class="width120" title="대시보드 페이지로 이동">대시보드</a></li>
+					<li><a href="#self" class="width120" title="기본정보 페이지로 이동">기본정보</a></li>
+					<li><a href="#self" class="width120" title="멤버관리 페이지로 이동">멤버관리</a></li>
+					<li><a href="#self" class="width120" title="채널관리 페이지로 이동">채널관리</a></li>
+					<li><a href="#self" class="width120" title="발신번호관리 페이지로 이동">발신번호관리</a></li>
+					<li><a href="#self" class="width120" title="스팸관리 페이지로 이동">스팸관리</a></li>
+				</ul>			
+			</div>
+
+			<h4 class="lc-1 mt40 mb15">채널별 성공/실패율 현황</h4>
+			<div>
+				<ul class="tab_s4 of-h" style="width:100%">
+					<li style="width:16.6%">
+						<a href="#self" class="inline-block text-center">
+							<p class="tab_maintext mb40">PUSH 전체</p>
+							<p class="inline-block color1 pr10 border-right"><span class="number">55<br></span><span class="text">성공</span></p>
+							<p class="inline-block pl10"><span class="number">0<br></span><span class="text">실패</span></p>					
+						</a>
+					</li>
+					<li style="width:16.6%">
+						<a href="#self" class="inline-block text-center">
+							<p class="tab_maintext mb40">RCS 전체</p>
+							<p class="inline-block color1 pr10 border-right"><span class="number">0<br></span><span class="text">성공</span></p>
+							<p class="inline-block pl10"><span class="number">0<br></span><span class="text">실패</span></p>					
+						</a>
+					</li>
+					<li style="width:16.6%">
+						<a href="#self" class="inline-block text-center">
+							<p class="tab_maintext mb40">알림톡 전체</p>
+							<p class="inline-block color1 pr10 border-right"><span class="number">-<br></span><span class="text">성공</span></p>
+							<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
+						</a>
+					</li>
+					<li style="width:16.6%">
+						<a href="#self" class="inline-block text-center">
+							<p class="tab_maintext mb40">친구톡 전체</p>
+							<p class="inline-block color1 pr10 border-right"><span class="number">-<br></span><span class="text">성공</span></p>
+							<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
+						</a>
+					</li>
+					<li style="width:16.6%">
+						<a href="#self" class="inline-block text-center">
+							<p class="tab_maintext mb40">SMS 전체</p>
+							<p class="inline-block color1 pr10 border-right"><span class="number">-<br></span><span class="text">성공</span></p>
+							<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
+						</a>
+					</li>
+					<li style="width:16.6%">
+						<a href="#self" class="inline-block text-center">
+							<p class="tab_maintext mb40">MO 전체</p>
+							<p class="inline-block color1 pr10 border-right"><span class="number">-<br></span><span class="text">성공</span></p>
+							<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="mt20">
+				<div class="date"><a href="#"><i class="far fa-chevron-left"></i></a>2020.12.27 ~ 2021.01.03<a href="#"><i class="far fa-chevron-right"></i></a></div>
+				<ul class="tab_s ml20">
+					<li><a href="#">오늘</a></li>
+					<li class="active"><a href="#">1주일</a></li>
+				</ul>
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-12">
+					<h4 class="lc-1 mb20 mt40">발송통계</h4>
+					<img src="common/images/chart_sub03_1.svg" alt="차트01" class="img_chart01 img-responsive mt20">
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="Dashboard01 pd0">
+						<h4 class="lc-1 mt40 mb20">공지사항</h4>
+						<table class="table_skin1" style="width:100%">
+							<colgroup>
+							<col style="width:10%">
+							<col>
+							<col style="width:10%">
+							<col style="width:15%">
+							<col style="width:15%">
+							</colgroup>
+							<thead>
+								<tr>
+								<th class="text-center">No.</th>
+								<th class="text-center">공지사항 제목</th>
+								<th class="text-center">공지구분</th>
+								<th class="text-center">등록자</th>
+								<th class="text-center end">등록일자</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="text-center">5</td>
+									<td class="text-left">SMS MO</td>
+									<td class="text-center">안내</td>
+									<td class="text-center">siga77@bitcube.co.kr</td>
+									<td class="text-center end">2021.02.08 00:00:00</td>
+								</tr>
+								<tr>
+									<td class="text-center">4</td>
+									<td class="text-left">SMS MO</td>
+									<td class="text-center">안내</td>
+									<td class="text-center">James@bitcube.co.kr</td>
+									<td class="text-center end">2021.02.08 00:00:00</td>
+								</tr>
+								<tr>
+									<td class="text-center">3</td>
+									<td class="text-left">SMS MO</td>
+									<td class="text-center">안내</td>
+									<td class="text-center">Lucia@bitcube.co.kr</td>
+									<td class="text-center end">2021.02.08 00:00:00</td>
+								</tr>
+								<tr>
+									<td class="text-center">2</td>
+									<td class="text-left">SMS MO</td>
+									<td class="text-center">안내</td>
+									<td class="text-center">hong@bitcube.co.kr</td>
+									<td class="text-center end">2021.02.08 00:00:00</td>
+								</tr>
+								<tr>
+									<td class="text-center">1</td>
+									<td class="text-left">SMS MO</td>
+									<td class="text-center">안내</td>
+									<td class="text-center">siga77@bitcube.co.kr</td>
+									<td class="text-center end">2021.02.08 00:00:00</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+
+	
+<? 
+	include("./sub/admin_footer.html");
+?> 
