@@ -1,34 +1,40 @@
 <template>
 
-  <article id="content" class="content">
+  <article class="content">
     
-    <div class="login_wrap">
-      <div class="box_login">
-        <div class="top_title_area">
-          <h2 class="h2_title"> <img src="@/assets/images/common/logo_login.png" alt="유플러스 RCS"></h2>
+    <div class="login-form">
+      <div class="main-div shadow-sm">
+        <h2 class="text-center">시스템관리자 로그인</h2>
+        <div class="form-group">
+          <p>이메일</p>
+          <input  type="email" class="form-control" id="inputEmail" placeholder="이메일 주소를 입력하세요"
+                  name="userId" v-model="userId" :maxlength="15" v-focus @keyup.enter="ajaxlogin">
         </div>
-        
-        <ul class="input_area">
-          <!--<li><span class="custom_input big">
-              <input type="text" placeholder="고객아이디" name="corpId" v-model="corpId" :maxlength="15" ></span></li>  -->
-          <li><span class="custom_input big">
-              <input type="text" placeholder="아이디" name="userId" v-model="userId" :maxlength="15" v-focus @keyup.enter="ajaxlogin"></span></li>
-          <li><span class="custom_input big">
-              <input type="password" placeholder="비밀번호" name="userPwd" v-model="userPwd" :maxlength="20" @keyup.enter="ajaxlogin"></span></li>
-        </ul>
+        <div class="form-group">
+          <p>비밀번호	</p>
+          <input  type="password" class="form-control" id="inputPassword" placeholder="비밀번호를 입력하세요"
+                  name="loginPwd" v-model="loginPwd" :maxlength="20" @keyup.enter="ajaxlogin">
+        </div>
         <!-- 에러메세지 출력 -->
         <div class="message_area" v-if="errors.length">
           <p class="text_error">{{ errors[0] }}</p>
         </div>
-        <div class="check_area"><span class="custom_checkbox">
-            <input type="checkbox" id="saveId" ref="chkSaveId">
-            <label for="saveId">아이디 저장</label></span></div>
-        <!-- -->
-        <div class="btn_wrap row">
-          <a href="javascript:void(0);" class="btn big point on" @click.prevent="ajaxlogin"><span>로그인</span></a>
-        </div>
-        
+
+        <div class="row">
+          <div class="checkbox col-md-6">
+            <div class="checks">
+              <input type="checkbox" id="saveId" class="checkStyle" ref="chkSaveId">
+              <label for="saveId">아이디 저장</label>
+            </div>
+          </div>
+          <div class="forgot  col-md-6">
+              <a href="reset.html">비밀번호 분실</a>
+          </div>
+        </div>	
+        <button type="submit" class="btn btn-primary" @click.prevent="ajaxlogin">로그인</button>
+        <p class="bottom_text text-center">시스템 지원이 필요한가요?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><a href="#">시스템 문의</a></span></p>
       </div>
+      <p class="botto-text text-center">Copyright©LG Plus Corp. All Rights Reserved.</p>
     </div>
     
   </article>
@@ -44,7 +50,7 @@
       return {
         errors: [],
         userId: '',
-        userPwd: ''
+        loginPwd: ''
       };
     },
     created() {
@@ -84,7 +90,7 @@
         this.errors = [];
 
         if (!this.userId) this.errors.push('아이디를 입력해 주세요.');
-        if (!this.userPwd) this.errors.push('비밀번호를 입력해 주세요.');
+        if (!this.loginPwd) this.errors.push('비밀번호를 입력해 주세요.');
 
         return this.errors.length == 0;
       },
@@ -99,7 +105,7 @@
         var params = {
           //"corpId": this.corpId,
           "userId": this.userId,
-          "userPwd": this.userPwd,
+          "userPwd": this.loginPwd,
         }
         
         loginApi.login(params).then(function(response) {
