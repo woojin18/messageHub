@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="template">
+
+	<select id="qrySelectPushTemplate" parameterType="string" resultType="hashmap">
+		/* 푸시 템플릿 리스트 조회 */
+		SELECT
+			TMPLT_ID,
+			TMPLT_NAME,
+			MSG_TYPE,
+			MSG_KIND,
+			PROJECT_ID,
+			TMPLT_TITLE,
+			TMPLT_CONTENT,
+			RCVBLC_NUMBER,
+			ADTN_INFO,
+			IMG_URL,
+			/*TO_DATE(REG_DT, 'YYYY-MM-DD HH24:MI:SS') AS REG_DT,*/
+			REG_DT,
+			REG_ID,
+			/*TO_DATE(UPD_DT, 'YYYY-MM-DD HH24:MI:SS') AS UPD_DT,*/
+			UPD_DT,
+			UPD_ID
+		FROM
+			CM_PUSH_TMPLT
+	</select>
+	
+	
+	<insert id="qryInsertPushTemplate" parameterType="hashmap">
+		/* 푸시 템플릿 등록 */
+		INSERT INTO CM_PUSH_TMPLT
+		(
+			TMPLT_ID, TMPLT_NAME, MSG_TYPE, MSG_KIND
+		)
+		VALUES
+		(
+    		#{tmpltId}, #{tmpltName}, #{msgType}, #{msgKind}
+   		)
+	</insert>
+
+	<update id="qryUpdatePushTemplate" parameterType="hashmap">
+		/* 푸시 템플릿 수정 */
+		UPDATE CM_PUSH_TMPLT
+		SET
+			TMPLT_NAME = #{tmpltName},
+			MSG_TYPE = #{msgType},
+			MSG_KIND = #{msgKind}
+		WHERE TMPLT_ID = #{tmpltId}
+	</update>
+
+	<select id="qrySelectRcsTemplate" parameterType="string" resultType="hashmap">
+		/* RCS 템플릿 리스트 조회 */
+		SELECT
+			TMPLT_ID,
+			MESSAGEBASEFORM_ID,
+			BRAND_ID,
+			CORP_ID,
+			TMPLT_NAME,
+			AGENCY_ID,
+			PRODUCT_CODE,
+			MESSAGEBASE_INFO,
+			APPROVAL_STATUS,
+			REG_ID,
+			UPD_ID,
+			USE_YN,
+			REG_DT,
+			UPD_DT,
+			APPROVAL_DT
+		FROM
+			CM_RCS_MSGBASE
+	</select>
+
+	<select id="qrySelectKakaoTalkTemplate" parameterType="string" resultType="hashmap">
+		/* 알림톡 템플릿 리스트 조회 */
+		SELECT
+			KKO_CH_ID,
+			PROJECT_ID,
+			TMPLT_CODE,
+			TMPLT_NAME,
+			TMPLT_CONTENT,
+			TMPLT_EMPHASIZE_TITLE,
+			TMPLT_EMPHASIZE_DESC,
+			TMPLT_BUTTONS,
+			REG_DT,
+			APPROVAL_DT,
+			FINAL_TEST_SENDER_DT,
+			TMPLT_RELEASE_REQ_DT
+		FROM
+			CM_KKO_TMPLT
+	</select>
+
+	<select id="qrySelectFriendTalkTemplate" parameterType="string" resultType="hashmap">
+		/* 친구톡 템플릿 리스트 조회 */
+		SELECT
+			TMPLT_ID,
+			TMPLT_NAME,
+			MSG_KIND,
+			PROJECT_ID,
+			TMPLT_CONTENT,
+			IMG_URL,
+			TMPLT_BUTTONS,
+			REG_DT,
+			REG_ID,
+			UPD_DT,
+			UPD_ID
+		FROM
+			CM_FRIENDTALK_TMPLT
+	</select>
+
+	<insert id="qryInsertFriendTalkTemplate" parameterType="hashmap">
+		/* 친구톡 템플릿 등록 */
+		INSERT INTO CM_FRIENDTALK_TMPLT
+		(
+			TMPLT_ID, TMPLT_NAME, MSG_KIND, PROJECT_ID
+		)
+		VALUES
+		(
+    		#{tmpltId}, #{tmpltName}, #{msgKind}, #{projectId}
+   		)
+	</insert>
+
+	<update id="qryUpdateFriendTalkTemplate" parameterType="hashmap">
+		/* 친구톡 템플릿 수정 */
+		UPDATE CM_FRIENDTALK_TMPLT
+		SET
+			TMPLT_NAME = #{tmpltName},
+			MSG_KIND = #{msgKind},
+			TMPLT_CONTENT = #{tmpltContent}
+		WHERE TMPLT_ID = #{tmpltId}
+	</update>
+
+	<select id="qrySelectSmsTemplate" parameterType="string" resultType="hashmap">
+		/* SMS/MMS 템플릿 리스트 조회 */
+		SELECT
+			TMPLT_ID,
+			TMPLT_NAME,
+			TMPLT_DESC,
+			SENDER_TYPE,
+			PROJECT_ID,
+			MSG_KIND,
+			TMPLT_TITLE,
+			TMPLT_CONTENT,
+			RCVBLC_NUMBER,
+			IMG_URL,
+			REG_DT,
+			REG_ID,
+			UPD_DT,
+			UPD_ID
+		FROM
+			CM_SMS_TMPLT
+	</select>
+
+	<insert id="qryInsertSmsTemplate" parameterType="hashmap">
+		/* SMS/MMS 템플릿 등록 */
+		INSERT INTO CM_SMS_TMPLT
+		(
+			TMPLT_ID, TMPLT_NAME, TMPLT_DESC, SENDER_TYPE
+		)
+		VALUES
+		(
+    		#{tmpltId}, #{tmpltName}, #{tmpltDesc}, #{senderType}
+   		)
+	</insert>
+
+	<update id="qryUpdateSmsTemplate" parameterType="hashmap">
+		/* SMS/MMS 템플릿 수정 */
+		UPDATE CM_SMS_TMPLT
+		SET
+			TMPLT_NAME = #{tmpltName},
+			TMPLT_DESC = #{tmpltDesc},
+			SENDER_TYPE = #{senderType}
+		WHERE TMPLT_ID = #{tmpltId}
+	</update>
+
+	<select id="qrySelectMultiSendTemplate" parameterType="string" resultType="hashmap">
+		/* 통합발송 템플릿 리스트 조회 */
+		SELECT
+			PROJECT_ID,
+			TMPLT_CODE,
+			TMPLT_INFO,
+			TMPLT_TYPE,
+			MSG_KIND,
+			OTHER_PROJECT_USE_YN,
+			REG_DT,
+			UPD_DT
+		FROM
+			CM_SMART_TMPLT
+		WHERE TMPLT_TYPE = 'M'
+	</select>
+
+	<insert id="qryInsertMultiSendTemplate" parameterType="hashmap">
+		/* 통합발송 템플릿 등록 */
+		INSERT INTO CM_SMART_TMPLT
+		(
+			PROJECT_ID, TMPLT_CODE, TMPLT_INFO, TMPLT_TYPE, MSG_KIND, OTHER_PROJECT_USE_YN, REG_DT, UPD_DT
+		)
+		VALUES
+		(
+    		#{projectId}, #{tmpltCode}, #{tmpltInfo}, 'M', #{msgKind}, #{otherProjectUseYn}, SYSDATE, SYSDATE
+   		)
+	</insert>
+
+	<update id="qryUpdateMultiSendTemplate" parameterType="hashmap">
+		/* 통합발송 템플릿 수정 */
+		UPDATE CM_SMART_TMPLT
+		SET
+			TMPLT_INFO = #{tmpltInfo},
+			MSG_KIND = #{msgKind},
+			OTHER_PROJECT_USE_YN = #{otherProjectUseYn},
+			UPD_DT = SYSDATE
+		WHERE PROJECT_ID = #{projectId}
+		AND		TMPLT_CODE = #{tmpltCode}
+		AND		TMPLT_TYPE = 'M'
+	</update>
+
+	<select id="qrySelectSmartTemplate" parameterType="string" resultType="hashmap">
+		/* 스마트발송 템플릿 리스트 조회 */
+		SELECT
+			PROJECT_ID,
+			TMPLT_CODE,
+			TMPLT_INFO,
+			TMPLT_TYPE,
+			MSG_KIND,
+			OTHER_PROJECT_USE_YN,
+			REG_DT,
+			UPD_DT
+		FROM
+			CM_SMART_TMPLT
+		WHERE TMPLT_TYPE = 'S'
+	</select>
+
+	<insert id="qryInsertSmartTemplate" parameterType="hashmap">
+		/* 스마트발송 템플릿 등록 */
+		INSERT INTO CM_SMART_TMPLT
+		(
+			PROJECT_ID, TMPLT_CODE, TMPLT_INFO, TMPLT_TYPE, MSG_KIND, OTHER_PROJECT_USE_YN, REG_DT, UPD_DT
+		)
+		VALUES
+		(
+    		#{projectId}, #{tmpltCode}, #{tmpltInfo}, 'S', #{msgKind}, #{otherProjectUseYn}, SYSDATE, SYSDATE
+   		)
+	</insert>
+
+	<update id="qryUpdateSmartTemplate" parameterType="hashmap">
+		/* 스마트발송 템플릿 수정 */
+		UPDATE CM_SMART_TMPLT
+		SET
+			TMPLT_INFO = #{tmpltInfo},
+			MSG_KIND = #{msgKind},
+			OTHER_PROJECT_USE_YN = #{otherProjectUseYn},
+			UPD_DT = SYSDATE
+		WHERE PROJECT_ID = #{projectId}
+		AND		TMPLT_CODE = #{tmpltCode}
+		AND		TMPLT_TYPE = 'S'
+	</update>
+
+</mapper>
