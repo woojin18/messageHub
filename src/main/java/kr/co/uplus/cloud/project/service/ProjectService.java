@@ -92,8 +92,6 @@ public class ProjectService {
 //					generalDao.insertGernal("project.insertProjectUser", ownerUserMap);
 //				}
 			// 사용자 기본 멤버로 추가
-			// 사용자쪽 및 세션 개발이 안되서 임시로 값 입력
-			
 			generalDao.insertGernal("project.insertProjectUser", params);
 			
 			// -------------------------------------------------------------------------------------------------------------------------------------

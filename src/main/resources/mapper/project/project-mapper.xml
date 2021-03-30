@@ -38,7 +38,13 @@
 				) AS USE_CH
 		FROM	CM_PROJECT A
 		WHERE	1=1
-		AND		DEL_YN != 'Y'
+		AND		A.DEL_YN != 'Y'
+		<if test="src_project_name != '' and src_project_name != null ">
+		AND A.PROJECT_NAME LIKE CONCAT('%', #{src_project_name}, '%')
+		</if>
+		<if test="src_use_yn != '' and src_use_yn != null ">
+		AND A.USE_YN = #{src_use_yn}
+		</if>
 		ORDER BY PROJECT_ID DESC
 		LIMIT ${rowsFront}, #{rowsEnd}
 	</select>
@@ -47,7 +53,7 @@
 		/* project.checkProjectNameDuplicate */
 		SELECT	COUNT(PROJECT_ID) AS CNT
 		FROM	CM_PROJECT
-		WHERE	PROJECT_NAME = #{project_name}
+		WHERE	PROJECT_NAME = #{check_project_name}
 	</select>
 	
 	<select id="selectProjectMaxId" resultType="int">
