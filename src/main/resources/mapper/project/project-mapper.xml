@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="channel">
+<mapper namespace="project">
 
 	<select id="selectProjectList" resultType="HashMap">
+		/* project.selectProjectList */
 		SELECT	A.PROJECT_ID
 		,		A.CORP_ID
 		,		A.PROJECT_NAME
 		,		A.PAY_TYPE
+		,		CASE 
+					WHEN A.PAY_TYPE = 'Y' THEN '선불'
+					WHEN A.PAY_TYPE = 'N' THEN '후불'
+					ELSE ''
+				END AS PAY_TYPE_NAME
 		,		A.BILL_ID
 		,		A.SMART_CH_CODE
 		,		A.PRICE_INFO
@@ -20,10 +26,168 @@
 		,		A.USE_YN
 		,		A.USE_CH_GRP_INFO
 		,		A.NOPAY_YN
+		,		( SELECT COUNT(USER_ID) FROM CM_PROJECT_USER WHERE PROJECT_ID = A.PROJECT_ID ) AS PROJECT_MEMBER_CNT
+		,		REPLACE(JSON_EXTRACT(PRICE_INFO, '$.RCS[0]'), "\"", "") AS RCS_YN
+		,		REPLACE(JSON_EXTRACT(PRICE_INFO, '$.PUSH[0]'), "\"", "") AS PUSH_YN
+		,		REPLACE(JSON_EXTRACT(PRICE_INFO, '$.KAKAO[0]'), "\"", "") AS KAKAO_YN
+		,		REPLACE(JSON_EXTRACT(PRICE_INFO, '$.MO[0]'), "\"", "") AS MO_YN
+		,		CONCAT(	CASE WHEN JSON_EXTRACT(PRICE_INFO, '$.MO[0]') = 'Y' THEN 'MO,' ELSE '' END
+					,	CASE WHEN JSON_EXTRACT(PRICE_INFO, '$.RCS[0]') = 'Y' THEN 'RCS,' ELSE '' END
+					,	CASE WHEN JSON_EXTRACT(PRICE_INFO, '$.PUSH[0]') = 'Y' THEN 'PUSH,' ELSE '' END
+					,	CASE WHEN JSON_EXTRACT(PRICE_INFO, '$.KAKAO[0]') = 'Y' THEN 'KAKAO' ELSE '' END
+				) AS USE_CH
 		FROM	CM_PROJECT A
 		WHERE	1=1
+		AND		DEL_YN != 'Y'
 		ORDER BY PROJECT_ID DESC
 		LIMIT ${rowsFront}, #{rowsEnd}
 	</select>
 	
+	<select id="checkProjectNameDuplicate" resultType="int">
+		/* project.checkProjectNameDuplicate */
+		SELECT	COUNT(PROJECT_ID) AS CNT
+		FROM	CM_PROJECT
+		WHERE	PROJECT_NAME = #{project_name}
+	</select>
+	
+	<select id="selectProjectMaxId" resultType="int">
+		/* project.selectProjectMaxId */
+		SELECT	MAX(PROJECT_ID) + 1 AS project_max_id
+		FROM	CM_PROJECT
+	</select>
+	
+	<insert id="insertProject">
+		/* project.insertProject */
+		INSERT CM_PROJECT
+		(
+			PROJECT_ID
+		,	CORP_ID
+		,	PROJECT_NAME
+		,	PAY_TYPE
+		,	BILL_ID
+		,	SMART_CH_CODE
+		,	PRICE_INFO
+		,	SUBBILL_YN
+		,	REG_DT
+		,	USE_YN
+		,	DEL_YN
+		)
+		VALUES
+		(
+			#{project_id}
+		,	#{corp_id}
+		,	#{project_name}
+		,	#{pay_type}
+		,	#{bill_id}
+		,	''
+		,	#{price_info}
+		,	''
+		,	NOW()
+		,	#{use_yn}
+		,	'N'
+		)
+	</insert>
+	
+	<update id="updateProject">
+		/* project.updateProject */
+		UPDATE	CM_PROJECT
+		SET		USE_YN = #{use_yn}
+		WHERE	PROJECT_ID = #{project_id}
+	</update>
+	
+	<update id="updateProjectBillId">
+		/* project.updateProjectBillId */
+		UPDATE	CM_PROJECT
+		SET		BILL_ID = #{bill_id}
+		WHERE	PROJECT_ID = #{project_id}
+	</update>
+	
+	<select id="selectProjectOwnerUser" resultType="hashMap">
+		/* project.selectProjectOwnerUser */
+		SELECT * 
+		FROM CM_CORP CC
+		INNER JOIN CM_USER CU 
+			ON CC.CORP_ID  = CU.CORP_ID 
+		INNER JOIN CM_USER_ROLE CUR 
+			ON CU.USER_ID  = CUR.USER_ID 
+		WHERE	CC.CORP_ID = #{corp_id}
+		AND		CUR.ROLE_CD = 'OWNER'
+	</select>
+	
+	<insert id="insertProjectUser">
+		/* project.insertProjectUser */
+		INSERT	CM_PROJECT_USER
+		(
+			PROJECT_ID
+		,	CORP_ID
+		,	USER_ID
+		,	USER_PRIVILEGETYPE
+		,	REG_ID
+		,	REG_DT
+		)
+		VALUES
+		(
+			#{project_id}
+		,	#{corp_id}
+		,	#{user_id}
+		,	'Y'
+		,	#{user_id}
+		,	NOW()
+		)
+	</insert>
+	
+	<select id="selectApikeyMaxId" resultType="int">
+		/* project.selectApikeyMaxId */
+		SELECT	IFNULL(MAX(API_KEY),0) + 1 AS api_max_id
+		FROM	CM_APIKEY
+	</select>
+	
+	<insert id="insertProjectApiKey">
+		/* project.insertProjectApiKey */
+		INSERT	CM_APIKEY
+		(
+			API_KEY
+		,	CORP_ID
+		,	PROJECT_ID
+		)
+		VALUES
+		(
+			#{api_key}
+		,	#{corp_id}
+		,	#{project_id}
+		)
+	</insert>
+	
+	<select id="selectProjectUseCnt" resultType="int">
+		/* project.selectProjectUseCnt */
+		SELECT
+		(
+			SELECT	COUNT(MSG_KEY) AS CNT
+			FROM	CM_MSG
+			WHERE	PROJECT_ID = #{project_id}
+		) + (
+			SELECT	COUNT(WEB_REQ_ID) AS CNT
+			FROM	CM_WEB_MSG
+			WHERE	PROJECT_ID = #{project_id}
+		) AS CNT
+	</select>
+	
+	<delete id="deleteProject">
+		/* project.deleteProject */
+		UPDATE	CM_PROJECT
+		SET		DEL_YN = 'Y'
+		WHERE	PROJECT_ID = #{project_id}
+	</delete>
+	
+	<delete id="deleteProjectUser">
+		/* project.deleteProjectUser */
+		DELETE FROM CM_PROJECT_USER
+		WHERE	PROJECT_ID = #{project_id}
+	</delete>
+	
+	<delete id="deleteProjectApiKey">
+		/* project.deleteProjectApiKey */
+		DELETE FROM CM_APIKEY
+		WHERE	PROJECT_ID = #{project_id}
+	</delete>
 </mapper>

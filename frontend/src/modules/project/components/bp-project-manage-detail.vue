@@ -1,85 +1,106 @@
 <template>
-  <div  
-    class="modal modalStyle" id="confirm"
+  <div class="modal fade modalStyle" id="confirm"
+    tabindex="-1" role="dialog" aria-hidden="true"
     @click.self="fnClose"
-    tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
   >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body">
-          <!-- 인풋 -->
-          <div>
-            <div>
-              <h5 class="lc-1"> > 사용채널 선택</h5>
-              <hr>
-              <div class="mt15">
-                <h4 class="font-normal inline-block width90">프로젝트 명 *</h4>
-                <input id="project_name" name="project_name" class="inputStyle width291">
-              </div>
-              <div class="mt15">
-                <h4 class="font-normal inline-block width90">프로젝트 설명</h4>
-                <textarea></textarea>
-              </div>
-              <div class="mt15">
-                <h4 class="font-normal inline-block width90">결제 유형 *</h4>
-                <input type="radio">선불
-                <input type="radio">후불
-                * 프로젝트별 결제유형(선/후불)을 선택할 수 있으며, 프로젝트 등록 후 선택된 결제유형은 변경이 불가합니다.
-              </div>
-              <div class="mt15">
-                <h4 class="font-normal inline-block width90">사용 여부 *</h4>
-                <input type="radio">예
-                <input type="radio">아니오
-              </div>
-            </div>
-            <div>
-                <h5 class="lc-1"> > 사용채널 선택</h5>
-                <hr>
-                <div class="mt15">
-                  RCS
-                  <input type="radio">사용
-                  <input type="radio">미사용
-                  <br>
-                  SMS/MMS
-                  <input type="radio">사용
-                  <input type="radio">미사용
-                  <br>
-                  PUSH
-                  <input type="radio">사용
-                  <input type="radio">미사용
-                  <br>
-                  카카오톡
-                  <input type="radio">사용
-                  <input type="radio">미사용
-                  <br>
-                  MO
-                  <input type="radio">사용
-                  <input type="radio">미사용
-                </div>
-            </div>
-        </div>
-          <!-- 인풋 -->
-          <!-- 버튼 -->
-            <div class="text-center mt40">
-                <button @click="fnSave">
-                <a class="btnStyle3 black font14" data-toggle="modal">저장</a>
-                </button>
-                <button @click="fnDelete">
-                <a class="btnStyle3 black font14" data-toggle="modal">삭제</a>
-                </button>
-                <button @click="$emit('update:visible', !visible)">
-                <a href="#self" class="btnStyle3 white font14" data-dismiss="modal">닫기</a>
-                </button>						
-            </div>
-          <!-- 버튼 -->
-        </div>
-      </div>
-    </div>
-  </div>
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div>
+						<h5 class="lc-1">프로젝트 등록</h5>
+						<hr>
+						<div class="mt20 of_h">
+							<h4 class="font-normal inline-block float-left" style="width:20%">프로젝트명 *</h4>
+							<div style="width:80%" class="of_h">
+								<div style="width:75%">
+									<input id="project_name" type="text" class="inputStyle float-left" title="프로젝트명 입력란">
+								</div>
+								<div style="width:23%" class="float-right">
+									<a @click="fnCheckProjectName" class="btnStyle7 minWidthAuto" style="width:100%" title="중복체크">중복체크</a>
+                  <input type="hidden" id="checkYn" value="N"> 
+								</div>
+							</div>
+							<div class="mt15 of_h">
+								<h4 class="font-normal inline-block float-left" style="width:20%">프로젝트 설명</h4>
+								<div style="width:78%" class="of_h">
+									<input id="project_desc" type="text" class="inputStyle input2" style="width:100%" title="프로젝트 설명 입력란">
+								</div>
+							</div>
+							<div class="mt30 of_h">
+								<h4 class="font-normal inline-block float-left mt5" style="width:20%">결재조건 *</h4>
+								<input type="radio" name="pay_type" value="Y" class="cBox" id="payment01" checked=""> <label for="payment01" class="payment mr30 font-size12">선불</label>
+								<input type="radio" name="pay_type" value="N" class="cBox" id="payment02"> <label for="payment02" class="payment font-size12">후불</label>								
+							</div>
+							<p class="mt10 lc-1 font-size12 color3" style="margin-left:20%">프로젝트별 결제조건(선/후불)을 선택할 수 있으며, 프로젝트 등록 후 선택된 <br>결제조건은 변경이 불가합니다.</p>
+							<div class="mt30 of_h">
+								<h4 class="font-normal inline-block mt5" style="width:20%">사용여부</h4>
+								<input type="radio" name="use_yn" value="Y" class="cBox" id="yes" checked=""> <label for="yes" class="payment mr30 font-size12">예</label>
+								<input type="radio" name="use_yn" value="N" class="cBox" id="no"> <label for="no" class="payment font-size12">아니요</label>							
+							</div>
+							<div class="mt30 of_h">
+								<h4 class="font-normal inline-block mt15" style="width:20%">사용채널선택</h4>
+								<table  id="admin_sub03_1_project1" class="table_skin1 tbl-striped-odd mt0 float-right" style="width:80%">
+								  <colgroup>
+                    <col style="width:50%">
+                    <col>
+								  </colgroup>
+									<tbody>
+									  <tr>
+                      <td class="text-left end">RCS</td>
+                      <td class="text-right end">
+                        <input type="radio" name="radio_rcs" value="Y" class="cBox" id="yes1" checked=""> <label for="yes1" class="payment mr30 font-size12">사용</label>
+                        <input type="radio" name="radio_rcs" value="N" class="cBox" id="no1"> <label for="no1" class="payment font-size12">미사용</label>	
+                      </td>							
+									  </tr>
+									  <tr>
+                      <td class="text-left end">SMS/MMS</td>
+                      <td class="text-right end">
+                        <input type="radio" name="radio_mms" value="Y" class="cBox" id="yes2" checked=""> <label for="yes2" class="payment mr30 font-size12">사용</label>
+                        <input type="radio" name="radio_mms" value="N" class="cBox" id="no2"> <label for="no2" class="payment font-size12">미사용</label>	
+                      </td>							
+									  </tr>
+									  <tr>
+                      <td class="text-left end">PUSH</td>
+                      <td class="text-right end">
+                        <input type="radio" name="radio_push" value="Y" class="cBox" id="yes3" checked=""> <label for="yes3" class="payment mr30 font-size12">사용</label>
+                        <input type="radio" name="radio_push" value="N" class="cBox" id="no3"> <label for="no3" class="payment font-size12">미사용</label>	
+                      </td>							
+									  </tr>
+									  <tr>
+                      <td class="text-left end">카카오</td>
+                      <td class="text-right end">
+                        <input type="radio" name="radio_kko" value="Y" class="cBox" id="yes4" checked=""> <label for="yes4" class="payment mr30 font-size12">사용</label>
+                        <input type="radio" name="radio_kko" value="N" class="cBox" id="no4"> <label for="no4" class="payment font-size12">미사용</label>	
+                      </td>							
+									  </tr>
+									  <tr>
+                      <td class="text-left end">MO</td>
+                      <td class="text-right end">
+                        <input type="radio" name="radio_mo" value="Y" class="cBox" id="yes6" checked=""> <label for="yes6" class="payment mr30 font-size12">사용</label>
+                        <input type="radio" name="radio_mo" value="N" class="cBox" id="no6"> <label for="no6" class="payment font-size12">미사용</label>	
+                      </td>							
+									  </tr>
+									</tbody>
+								</table>
+								
+							</div>
+							
+						</div>
+					
+					</div>
+					<div class="text-center mt40">
+						<a @click="fnSave" class="btnStyle3 black font14" data-toggle="modal" data-target="#Register" title="등록">등록</a>
+						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
-/* import MenuApi from "@/modules/system/service/MenuManageApi"; */
+import projectApi from '../service/projectApi'
+import tokenSvc from '@/common/token-service';
 
 export default {
   name: 'MenuManagePopup',
@@ -97,11 +118,7 @@ export default {
       type: String,
       require: false,
     },
-    rowData : {
-      type: Object,
-      require: false,
-    },
-    parRowData  : {
+    row_data : {
       type: Object,
       require: false,
     }
@@ -110,6 +127,32 @@ export default {
     visible: function(newVal, oldVal) {
       if(newVal) {
         $("#confirm").modal("show");
+      }
+    },
+    row_data: function(newVal, oldVal) {
+      if(this.save_status === 'C'){
+        $("#project_name").val('');
+        $("#project_desc").val('');
+        $('input:radio[name=pay_type]:input[value="Y"]').prop("checked", true);
+        $('input:radio[name=use_yn]:input[value="Y"]').prop("checked", true);
+
+        $('input:radio[name=radio_rcs]:input[value="Y"]').prop("checked", true);
+        $('input:radio[name=radio_mms]:input[value="Y"]').prop("checked", true);
+        $('input:radio[name=radio_push]:input[value="Y"]').prop("checked", true);
+        $('input:radio[name=radio_kakao]:input[value="Y"]').prop("checked", true);
+        $('input:radio[name=radio_mo]:input[value="Y"]').prop("checked", true);
+        
+      } else if(this.save_status === 'R' || this.save_status === 'U'){
+        $("#project_name").val(this.row_data.PROJECT_NAME);
+        $("#project_desc").val(this.row_data.PROJECT_NAME);
+        $('input:radio[name=pay_type]:input[value="' + this.row_data.PAY_TYPE + '"]').prop("checked", true);
+        $('input:radio[name=use_yn]:input[value="' + this.row_data.USE_YN + '"]').prop("checked", true);
+
+        $('input:radio[name=radio_rcs]:input[value="' + this.row_data.RCS_YN + '"]').prop("checked", true);
+        $('input:radio[name=radio_mms]:input[value="' + this.row_data.SMSMMS_YN + '"]').prop("checked", true);
+        $('input:radio[name=radio_push]:input[value="' + this.row_data.PUSH_YN + '"]').prop("checked", true);
+        $('input:radio[name=radio_kakao]:input[value="' + this.row_data.KAKAO_YN + '"]').prop("checked", true);
+        $('input:radio[name=radio_mo]:input[value="' + this.row_data.MO_YN + '"]').prop("checked", true);
       }
     }
   },
@@ -120,26 +163,54 @@ export default {
     fnClose(){
       this.$emit('update:visible', false);
     },
+    // 프로젝트명 중복체크
+    fnCheckProjectName(){
+      var check_project_name = $("#project_name").val();
+
+      if( check_project_name === '' ){
+        alert("프로젝트명을 입력해주세요.");
+        return;
+      }
+
+      var params = {
+        check_project_name : check_project_name
+      }
+
+      projectApi.checkProjectNameDuplicate(params).then(response =>{
+        var result = response.data;
+        if(result.success) {
+          alert("사용가능한 프로젝트명입니다.");
+          $("#checkYn").val("Y");
+        } else {
+          alert("중복된 프로젝트명입니다.");
+          $("#checkYn").val("N");
+        }
+      });
+    },
     // 등록, 수정
     fnSave(){
-      var parMenuRow = this.parRowData;
+      if( 'N' === $("#checkYn").val() ) {
+        alert("중복체크를 먼저 해주세요.");
+        return;
+      }
+
       var params = {
-          /* "menus_cd"      : $("#menus_cd").val(),
-          "menus_name"    : $("#menus_name").val(),
-          "img_tag"      : $("#img_tag").val(),
-          "top_menus_cd" : parMenuRow.MENUS_CD,
-          "par_menus_cd" : parMenuRow.PAR_MENUS_CD,
-          "menus_level"  : (parMenuRow.MENUS_LEVEL) + 1,
-          "dis_order"    : $("#dis_order").val(),
-          "svc_type_cd"  : $("#svc_type_cd").val(),
-          "fixed_menus_yn"   : 1,
-          "use_yn"       : $("#use_yn").val(),
-          "web_url"      : $("#web_url").val(), */
-          "sts" : this.save_status
+          "project_name"    : $("#project_name").val(),
+          "project_desc"    : $("#project_desc").val(),
+          "pay_type"        : $("input[name='pay_type']:checked").val(),
+          "use_yn"          : $("input[name='use_yn']:checked").val(),
+          "radio_rcs"       : $("input[name='radio_rcs']:checked").val(),
+          "radio_mms"       : $("input[name='radio_mms']:checked").val(),
+          "radio_push"      : $("input[name='radio_push']:checked").val(),
+          "radio_kko"       : $("input[name='radio_kko']:checked").val(),
+          "radio_mo"        : $("input[name='radio_mo']:checked").val(),
+          "sts"             : this.save_status,
+          "userDto"         : tokenSvc.getToken().principal    
       };
 
-      /* MenuApi.saveMenuList(params).then(response =>{
+      projectApi.saveProject(params).then(response =>{
         var result = response.data;
+
         if(result.success) {
           alert("저장되었습니다.");
           // 창닫기
@@ -147,9 +218,9 @@ export default {
           // 부모창 리스트 조회
           this.$parent.fnSearch();
         } else {
-          alert("저장에 실패.");
+          alert(result.message);
         }
-      }); */
+      });
     },
     // 삭제
     fnDelete(){

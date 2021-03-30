@@ -22,6 +22,7 @@ public class ProjectController {
 	@Autowired
 	ProjectService projectService;
 	
+	// 프로젝트 리스트 조회
 	@PostMapping("/selectProjectList")
 	public RestResult<?> selectProjectList(
 				@RequestBody Map<String, Object> params,
@@ -38,5 +39,33 @@ public class ProjectController {
 		params.put("rowsEnd", rows);
 		
 		return projectService.selectProjectList(params);
+    }
+	
+	// 프로젝트명 중복 조회
+	@PostMapping("/checkProjectNameDuplicate")
+	public RestResult<?> checkProjectNameDuplicate(
+				@RequestBody Map<String, Object> params,
+				HttpServletRequest request,
+				HttpServletResponse response) throws Exception {
+		
+		return projectService.checkProjectNameDuplicate(params);
+    }
+	
+
+	// 프로젝트 저장
+	@PostMapping("/saveProject")
+	public RestResult<?> saveProject(
+				@RequestBody Map<String, Object> params,
+				HttpServletRequest request,
+				HttpServletResponse response) {
+		System.err.println("////////////////////////////////////////////////////");
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		try {
+			projectService.saveProject(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
     }
 }
