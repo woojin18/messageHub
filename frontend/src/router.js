@@ -10,6 +10,7 @@ import loginRoutes from './modules/login/router';
 import listRoutes from './modules/list/router';
 import channelRoutes from './modules/channel/router';
 import projectRoutes from './modules/project/router';
+import messageRoutes from './modules/message/router';
 
 Vue.use(Router)
 
@@ -35,7 +36,8 @@ const router = new Router({
         ...homeRoutes,
         ...listRoutes,
         ...channelRoutes,
-        ...projectRoutes
+        ...projectRoutes,
+        ...messageRoutes
       ]
     },
     {path: '*', redirect: '/view/error/404'}

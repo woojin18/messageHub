@@ -26,6 +26,12 @@ app.props:
 
 logging:
   config: classpath:log4j2-spring.local.xml
+  
+file.props:
+  img:
+    upload-path: /frontend/src/assets/images/uploadImage/
+    limit-size: 5000000  #5M
+    permit-exten: jpg, jpeg, png, gif
 
 datasource: 
   rcs:
@@ -91,6 +97,12 @@ app.props:
 
 logging:
   config: classpath:log4j2-spring.local.xml
+  
+file.props:
+  img:
+    upload-path: /frontend/src/img/uploadImg/  #TODO - dev path
+    limit-size: 5000000  #5M
+    permit-exten: jpg, jpeg, png, gif
 
 datasource: 
   rcs:
@@ -151,6 +163,12 @@ app.props:
 
 logging:
   config: classpath:log4j2-spring.local.xml
+  
+file.props:
+  img:
+    upload-path: /frontend/src/img/uploadImg/ #TODO - stg path
+    limit-size: 5000000  #5M
+    permit-exten: jpg, jpeg, png, gif
 
 datasource: 
   rcs:
@@ -211,6 +229,12 @@ app.props:
 
 logging:
   config: classpath:log4j2-spring.local.xml
+  
+file.props:
+  img:
+    upload-path: /frontend/src/img/uploadImg/  #TODO - prd path
+    limit-size: 5000000  #5M
+    permit-exten: jpg, jpeg, png, gif
 
 datasource: 
   rcs:
