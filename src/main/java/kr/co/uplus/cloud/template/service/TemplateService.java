@@ -457,7 +457,7 @@ public class TemplateService {
 	 */
 	private String getTemplateId(String prefix) {
 		// 템플릿ID 날짜형식(8자리 - 년월일시)
-		String body = dateUtil.getCurrnetDate("yyyyMMddHH");
+		String body = dateUtil.getCurrnetDate("yyMMddHH");
 
 		// 템플릿ID 접미사
 		String suffix = suffixGen(5);
