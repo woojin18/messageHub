@@ -1,11 +1,8 @@
 package kr.co.uplus.cloud.template.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +12,7 @@ import kr.co.uplus.cloud.common.consts.Const;
 import kr.co.uplus.cloud.common.consts.DB;
 import kr.co.uplus.cloud.sample.dto.RestResult;
 import kr.co.uplus.cloud.utils.CommonUtils;
+import kr.co.uplus.cloud.utils.DateUtil;
 import kr.co.uplus.cloud.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
 
@@ -34,6 +32,9 @@ public class TemplateService {
 
 	@Autowired
 	private GeneralDao generalDao;
+
+	@Autowired
+	private static DateUtil dateUtil;
 
 	/**
 	 * 푸시 템플릿 리스트 조회
@@ -455,9 +456,7 @@ public class TemplateService {
 		String prefix = Const.TMPLT_PREFIX;
 
 		// 템플릿ID 날짜형식(8자리 - 년월일시)
-		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHH");
-		Date time = new Date();
-		String body = format.format(time);
+		String body = dateUtil.getCurrnetDate("yyyyMMddHH");
 
 		// 템플릿ID 접미사
 		String suffix = suffixGen(5);
