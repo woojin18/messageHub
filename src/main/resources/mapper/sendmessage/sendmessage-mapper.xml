@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sendMessage">
+
+	<insert id="qryInsertSendPushMessage" parameterType="hashmap">
+		/* 푸시 메시지 발송내역 등록 */
+		INSERT INTO CM_WEB_MSG
+		(
+			WEB_REQ_ID,
+			CORP_ID,
+			PROJECT_ID,
+			API_KEY,
+			CH_GRP,
+			CH,
+			MSG_INFO,
+			CU_INFO,
+			SENDER_CNT,
+			CALLBACK,
+			CAMPAIGN_ID,
+			SENDER_TYPE,
+			STATUS,
+			GW_RESULT_CODE,
+			GW_RESULT_DESC,
+			RESV_SENDER_YN,
+			REG_DT,
+			REQ_DT,
+		)
+		VALUES
+		(
+    		#{webReqId},
+    		#{corpId},
+    		#{projectId},
+    		#{apiKey},
+    		#{chGrp},
+    		#{ch},
+    		#{msgInfo},
+    		#{cuInfo},
+    		#{senderCnt},
+    		#{callback},
+    		#{campaignId},
+    		#{senderType},
+    		#{status},
+    		#{gwResultCode},
+    		#{gwResultDesc},
+    		#{resvSenderYn},
+    		SYSDATE,
+    		SYSDATE
+   		)
+	</insert>
+
+</mapper>
