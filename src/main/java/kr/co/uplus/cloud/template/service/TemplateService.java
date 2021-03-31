@@ -81,7 +81,7 @@ public class TemplateService {
 			// insert
 		} else {
 			// TODO : TMPLT_ID 생성로직 필요
-			String tmplt_id = getTemplateId();
+			String tmplt_id = getTemplateId(Const.TMPLT_PREFIX);
 			params.put("TMPLT_ID", tmplt_id);
 			resultCnt = generalDao.insertGernal(DB.QRY_INSERT_PUSH_TMPLT, params);
 		}
@@ -451,10 +451,11 @@ public class TemplateService {
 		return rtn;
 	}
 
-	private String getTemplateId() {
-		// 템플릿ID 접두사
-		String prefix = Const.TMPLT_PREFIX;
-
+	/**
+	 * 템플릿ID 생성
+	 * @return
+	 */
+	private String getTemplateId(String prefix) {
 		// 템플릿ID 날짜형식(8자리 - 년월일시)
 		String body = dateUtil.getCurrnetDate("yyyyMMddHH");
 
@@ -467,6 +468,11 @@ public class TemplateService {
 		return tmpltId;
 	}
 
+	/**
+	 * 5자리 난수 생성
+	 * @param len
+	 * @return
+	 */
 	private String suffixGen(int len) {
 
 		Random rand = new Random();
