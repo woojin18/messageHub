@@ -25,7 +25,7 @@ import kr.co.uplus.cloud.template.service.TemplateService;
  * @Version : 1.0 Copyright 2020 LG Uplus Corp. All Rights Reserved.
  */
 @RestController
-@RequestMapping("/template")
+@RequestMapping("/api/public/template")
 public class TemplateController {
 
 	@Autowired
@@ -33,7 +33,7 @@ public class TemplateController {
 
 	/**
 	 * 푸시 템플릿 리스트 조회
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -54,52 +54,50 @@ public class TemplateController {
 	}
 
 	/**
-	 * 푸시 템플릿 등록처리
-	 * 
+	 * 푸시 템플릿 단건 조회
 	 * @param request
 	 * @param response
 	 * @param params
 	 * @return
 	 */
-	@PostMapping("/addPushTmplt")
-	public RestResult<?> addPushTemplate(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody Map<String, Object> params) {
-		RestResult<Object> rtn = new RestResult<Object>();
+	@PostMapping("/selectPushTmpltInfo")
+    public RestResult<?> selectPushTmpltInfo(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = tmpltSvc.selectPushTemplateList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+        }
 
-		try {
-			rtn = tmpltSvc.addPushTemplate(params);
-		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
-		}
-		return rtn;
-	}
+        return rtn;
+    }
 
 	/**
-	 * 푸시 템플릿 수정처리
-	 * 
+	 * 푸시 템플릿 저장처리
 	 * @param request
 	 * @param response
 	 * @param params
 	 * @return
 	 */
-	@PostMapping("/updatePushTmplt")
-	public RestResult<?> updatePushTemplate(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody Map<String, Object> params) {
-		RestResult<Object> rtn = new RestResult<Object>();
+	@PostMapping("/savePushTmplt")
+    public RestResult<?> savePushTmplt(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
 
-		try {
-			rtn = tmpltSvc.updatePushTemplate(params);
-		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
-		}
-		return rtn;
-	}
+        try {
+            rtn = tmpltSvc.savePushTemplate(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+        }
+        return rtn;
+    }
 
 	/**
 	 * RCS 템플릿 리스트 조회
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -121,7 +119,7 @@ public class TemplateController {
 
 	/**
 	 * RCS 템플릿 등록처리
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -143,7 +141,7 @@ public class TemplateController {
 
 	/**
 	 * RCS 템플릿 수정처리
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -165,7 +163,7 @@ public class TemplateController {
 
 	/**
 	 * 알림톡 템플릿 리스트 조회
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -187,7 +185,7 @@ public class TemplateController {
 
 	/**
 	 * 알림톡 템플릿 등록처리
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -209,7 +207,7 @@ public class TemplateController {
 
 	/**
 	 * 알림톡 템플릿 수정처리
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -231,7 +229,7 @@ public class TemplateController {
 
 	/**
 	 * 친구톡 템플릿 리스트 조회
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -253,7 +251,7 @@ public class TemplateController {
 
 	/**
 	 * 친구톡 템플릿 등록처리
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -275,7 +273,7 @@ public class TemplateController {
 
 	/**
 	 * 친구톡 템플릿 수정처리
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -297,7 +295,7 @@ public class TemplateController {
 
 	/**
 	 * SMS/MMS 템플릿 리스트 조회
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -319,7 +317,7 @@ public class TemplateController {
 
 	/**
 	 * SMS/MMS 템플릿 등록처리
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -341,7 +339,7 @@ public class TemplateController {
 
 	/**
 	 * SMS/MMS 템플릿 수정처리
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -363,7 +361,7 @@ public class TemplateController {
 
 	/**
 	 * 통합발송 템플릿 리스트 조회
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -385,7 +383,7 @@ public class TemplateController {
 
 	/**
 	 * 통합발송 템플릿 등록처리
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -407,7 +405,7 @@ public class TemplateController {
 
 	/**
 	 * 통합발송 템플릿 수정처리
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -429,7 +427,7 @@ public class TemplateController {
 
 	/**
 	 * 스마트발송 템플릿 리스트 조회
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -451,7 +449,7 @@ public class TemplateController {
 
 	/**
 	 * 스마트발송 템플릿 등록처리
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -473,7 +471,7 @@ public class TemplateController {
 
 	/**
 	 * 스마트발송 템플릿 수정처리
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
