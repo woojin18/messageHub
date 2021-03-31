@@ -1,0 +1,25 @@
+package kr.co.uplus.cloud.common.consts;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class Const {
+	public static final String KEY_MDC_LOG = "logKey";
+	public static final String KEY_LOG_OBJ = "logObj";
+	public static final String KEY_LOAD_USER = "loadUser"; // UserDetailsService에서 로딩하는 사용자정보
+	public static final String KEY_TOKEN_EXIST = "jwtTokenExist";
+
+	public static final List<String> NOT_LOG_PARAMS = Arrays.asList("userPwd", "curPwd", "newPwd", "cfmPwd");
+
+	public static final int SESSION_EXPIRED = 418;
+
+	// 정책
+	public static final int PWD_EXPIRE_DAYS = 90; // 비밀번호 만료기간 (일)
+	public static final int MAX_LOGIN_FAIL = 5; // 5회 로그인 실패하면 계정 잠김
+	public static final int AUTHNUM_EXPIRE_MINS = 3; // 인증번호 만료기간 (분)
+	public static final int MAX_AUTHNUM_FAIL = 5; // 5회 인증번호 검증 실패하면 발행 잠김
+	public static final int AUTHNUM_LOCK_EXPIRE_MINS = 30; // 인증번호발행 잠김 만료기간 (분)
+
+	// 템플릿 ID 첨두
+	public static final String TMPLT_PREFIX = "TPL";
+}
