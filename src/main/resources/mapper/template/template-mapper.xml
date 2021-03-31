@@ -75,7 +75,7 @@
 		WHERE TMPLT_ID = #{tmpltId}
 	</update>
 
-	<select id="selectRcsTemplate" parameterType="string" resultType="hashmap">
+	<select id="selectRcsTemplate" parameterType="string" resultType="camel">
 		/* template.selectRcsTemplate RCS 템플릿 리스트 조회 */
 		SELECT
 			TMPLT_ID,
@@ -97,7 +97,7 @@
 			CM_RCS_MSGBASE
 	</select>
 
-	<select id="selectKakaoTalkTemplate" parameterType="string" resultType="hashmap">
+	<select id="selectKakaoTalkTemplate" parameterType="string" resultType="camel">
 		/* template.selectKakaoTalkTemplate 알림톡 템플릿 리스트 조회 */
 		SELECT
 			KKO_CH_ID,
@@ -116,7 +116,7 @@
 			CM_KKO_TMPLT
 	</select>
 
-	<select id="selectFriendTalkTemplate" parameterType="string" resultType="hashmap">
+	<select id="selectFriendTalkTemplate" parameterType="string" resultType="camel">
 		/* template.selectFriendTalkTemplate 친구톡 템플릿 리스트 조회 */
 		SELECT
 			TMPLT_ID,
@@ -156,7 +156,7 @@
 		WHERE TMPLT_ID = #{tmpltId}
 	</update>
 
-	<select id="selectSmsTemplate" parameterType="string" resultType="hashmap">
+	<select id="selectSmsTemplate" parameterType="string" resultType="camel">
 		/* template.selectSmsTemplate SMS/MMS 템플릿 리스트 조회 */
 		SELECT
 			TMPLT_ID,
@@ -199,7 +199,7 @@
 		WHERE TMPLT_ID = #{tmpltId}
 	</update>
 
-	<select id="selectMultiSendTemplate" parameterType="string" resultType="hashmap">
+	<select id="selectMultiSendTemplate" parameterType="string" resultType="camel">
 		/* template.selectMultiSendTemplate 통합발송 템플릿 리스트 조회 */
 		SELECT
 			PROJECT_ID,
@@ -240,7 +240,7 @@
 		AND		TMPLT_TYPE = 'M'
 	</update>
 
-	<select id="selectSmartTemplate" parameterType="string" resultType="hashmap">
+	<select id="selectSmartTemplate" parameterType="string" resultType="camel">
 		/* template.selectSmartTemplate 스마트발송 템플릿 리스트 조회 */
 		SELECT
 			PROJECT_ID,
