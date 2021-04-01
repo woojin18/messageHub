@@ -3,7 +3,7 @@
 
 <mapper namespace="template">
 
-    <select id="selectPushTemplate" parameterType="string" resultType="hashmap">
+    <select id="selectPushTemplate" parameterType="string" resultType="camel">
     /* template.selectPushTemplate 푸시 템플릿 리스트 조회 */
         SELECT
             TMPLT_ID
@@ -22,10 +22,36 @@
             , UPD_ID
         FROM CM_PUSH_TMPLT
         WHERE 1=1
-        <if test="TMPLT_ID != '' and TMPLT_ID != null ">
-            AND TMPLT_ID = #{TMPLT_ID}
+        <if test="searchText != '' and searchText != null ">
+            <if test="searchCondi == 'tmpltId' ">
+            AND TMPLT_ID LIKE CONCAT('%', #{searchText}, '%')
+            </if>
+            <if test="searchCondi == 'tmpltName' ">
+            AND TMPLT_NAME LIKE CONCAT('%', #{searchText}, '%')
+            </if>
         </if>
-	</select>
+        <if test="searchStartDate != '' and searchStartDate != null ">
+            <if test="searchEndDate != '' and searchEndDate != null ">
+            AND REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
+            </if>
+        </if>
+        <if test="searchOthPrjUseYn != null and searchOthPrjUseYn.size != 0 ">
+            AND OTHER_PROJECT_USE_YN IN
+            <foreach collection="searchOthPrjUseYn" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
+        </if>
+        <if test="tmpltId != '' and tmpltId != null ">
+            AND TMPLT_ID = #{tmpltId}
+        </if>
+        ORDER BY REG_DT DESC
+    </select>
+
+    <delete id="deletePushTemplate" parameterType="hashmap">
+    /* template.deletePushTemplate - 푸시 템플릿 삭제 */
+        DELETE
+        FROM CM_PUSH_TMPLT
+        WHERE TMPLT_ID IN
+        <foreach collection="tmpltIds" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
+    </delete>
 
 
     <insert id="insertPushTemplate" parameterType="hashmap">
@@ -48,32 +74,40 @@
             , UPD_DT
             , UPD_ID
         ) VALUES (
-            #{TMPLT_ID}
-            , #{TMPLT_NAME}
-            , #{MSG_TYPE}
-            , #{MSG_KIND}
-            , #{OTHER_PROJECT_USE_YN}
-            , #{TMPLT_TITLE}
-            , #{TMPLT_CONTENT}
-            , #{RCVBLC_NUMBER}
-            , #{ADTN_INFO}
-            , #{IMG_URL}
+            #{tmpltId}
+            , #{tmpltName}
+            , #{msgType}
+            , #{msgKind}
+            , #{otherProjectUseYn}
+            , #{tmpltTitle}
+            , #{tmpltContent}
+            , #{rcvblcNumber}
+            , #{adtnInfo}
+            , #{imgUrl}
             , NOW()
-            , #{REG_ID}
+            , #{loginId}
             , NOW()
-            , #{UPD_ID}
+            , #{loginId}
         )
-	</insert>
+    </insert>
 
-	<update id="updatePushTemplate" parameterType="hashmap">
-		/* template.updatePushTemplate 푸시 템플릿 수정 */
-		UPDATE CM_PUSH_TMPLT
-		SET
-			TMPLT_NAME = #{tmpltName},
-			MSG_TYPE = #{msgType},
-			MSG_KIND = #{msgKind}
-		WHERE TMPLT_ID = #{tmpltId}
-	</update>
+    <update id="updatePushTemplate" parameterType="hashmap">
+    /* template.insertPushTemplate - 푸시 템플릿 수정 */
+        UPDATE CM_PUSH_TMPLT
+        SET
+            TMPLT_NAME = #{tmpltName}
+            , MSG_TYPE = #{msgType}
+            , MSG_KIND = #{msgKind}
+            , OTHER_PROJECT_USE_YN = #{otherProjectUseYn}
+            , TMPLT_TITLE = #{tmpltTitle}
+            , TMPLT_CONTENT = #{tmpltContent}
+            , RCVBLC_NUMBER = #{rcvblcNumber}
+            , ADTN_INFO = #{adtnInfo}
+            , IMG_URL = #{imgUrl}
+            , UPD_DT = NOW()
+            , UPD_ID = #{loginId}
+        WHERE TMPLT_ID = #{tmpltId}
+    </update>
 
 	<select id="selectRcsTemplate" parameterType="string" resultType="camel">
 		/* template.selectRcsTemplate RCS 템플릿 리스트 조회 */

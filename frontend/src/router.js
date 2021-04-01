@@ -12,6 +12,7 @@ import listRoutes from './modules/list/router';
 import channelRoutes from './modules/channel/router';
 import projectRoutes from './modules/project/router';
 import messageRoutes from './modules/message/router';
+import templateRoutes from './modules/template/router';
 
 Vue.use(Router)
 
@@ -38,7 +39,8 @@ const router = new Router({
         ...listRoutes,
         ...channelRoutes,
         ...projectRoutes,
-        ...messageRoutes
+        ...messageRoutes,
+        ...templateRoutes
       ]
     },
     {
