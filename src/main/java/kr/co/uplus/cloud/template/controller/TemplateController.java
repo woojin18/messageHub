@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import kr.co.uplus.cloud.sample.dto.RestResult;
+import kr.co.uplus.cloud.common.dto.RestResult;
 import kr.co.uplus.cloud.template.service.TemplateService;
 
 /**
@@ -59,94 +59,99 @@ public class TemplateController {
 
 	/**
 	 * 푸시 템플릿 단건 조회
+	 * 
 	 * @param request
 	 * @param response
 	 * @param params
 	 * @return
 	 */
 	@PostMapping("/selectPushTmpltInfo")
-    public RestResult<?> selectPushTmpltInfo(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody Map<String, Object> params) {
-        RestResult<Object> rtn = new RestResult<Object>();
-        try {
-            rtn = tmpltSvc.selectPushTemplateList(params);
-        } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
-        }
+	public RestResult<?> selectPushTmpltInfo(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = tmpltSvc.selectPushTemplateList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
 
-        return rtn;
-    }
+		return rtn;
+	}
 
 	/**
 	 * 푸시 템플릿 저장처리
+	 * 
 	 * @param request
 	 * @param response
 	 * @param params
 	 * @return
 	 */
 	@PostMapping("/savePushTmplt")
-    public RestResult<?> savePushTmplt(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody Map<String, Object> params) {
-        RestResult<Object> rtn = new RestResult<Object>();
+	public RestResult<?> savePushTmplt(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
 
-        try {
-            rtn = tmpltSvc.savePushTemplate(params);
-        } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
-        }
-        return rtn;
-    }
+		try {
+			rtn = tmpltSvc.savePushTemplate(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		return rtn;
+	}
 
-    /**
-     * 푸시 템플릿 삭제처리
-     * @param request
-     * @param response
-     * @param params
-     * @return
-     */
-    @PostMapping("/deletePushTmplt")
-    public RestResult<?> deletePushTmplt(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody Map<String, Object> params) {
-        RestResult<Object> rtn = new RestResult<Object>();
-        try {
-            rtn = tmpltSvc.deletePushTemplate(params);
-        } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
-        }
+	/**
+	 * 푸시 템플릿 삭제처리
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/deletePushTmplt")
+	public RestResult<?> deletePushTmplt(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = tmpltSvc.deletePushTemplate(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
 
-        return rtn;
-    }
+		return rtn;
+	}
 
-    /**
-     * 푸쉬템플릿 엑셀다운로드
-     * @param request
-     * @param response
-     * @param params
-     * @return
-     * @throws Exception
-     */
-    @PostMapping(path="/excelDownloadPushTmplt")
-    public ModelAndView excelDownloadPushTmplt(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody Map<String, Object> params) throws Exception {
-        List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("sheetTitle", "푸시 템플릿 리스트");
-        map.put("colLabels", new String[] {"템플릿 ID", "템플릿명", "타 프로젝트 사용여부", "메시지타입", "메시지구분", "등록자", "등록일자"});
-        map.put("colIds", new String[] {"tmpltId", "tmpltName", "otherProjectUseYn", "msgType", "msgKind", "regId", "regDt"});
-        map.put("numColIds",  new String[] {});
-        map.put("figureColIds", new String[] {});
-        map.put("colDataList", tmpltSvc.selectPushTemplateList(params).getData());
-        sheetList.add(map);
+	/**
+	 * 푸쉬템플릿 엑셀다운로드
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping(path = "/excelDownloadPushTmplt")
+	public ModelAndView excelDownloadPushTmplt(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) throws Exception {
+		List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sheetTitle", "푸시 템플릿 리스트");
+		map.put("colLabels", new String[] { "템플릿 ID", "템플릿명", "타 프로젝트 사용여부", "메시지타입", "메시지구분", "등록자", "등록일자" });
+		map.put("colIds",
+				new String[] { "tmpltId", "tmpltName", "otherProjectUseYn", "msgType", "msgKind", "regId", "regDt" });
+		map.put("numColIds", new String[] {});
+		map.put("figureColIds", new String[] {});
+		map.put("colDataList", tmpltSvc.selectPushTemplateList(params).getData());
+		sheetList.add(map);
 
-        ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "test");
-        model.addObject("sheetList", sheetList);
+		ModelAndView model = new ModelAndView("commonXlsxView");
+		model.addObject("excelFileName", "test");
+		model.addObject("sheetList", sheetList);
 
-        return model;
-    }
+		return model;
+	}
 
 	/**
 	 * RCS 템플릿 리스트 조회

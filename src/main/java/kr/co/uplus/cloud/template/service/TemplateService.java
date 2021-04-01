@@ -2,7 +2,6 @@ package kr.co.uplus.cloud.template.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.uplus.cloud.common.consts.Const;
 import kr.co.uplus.cloud.common.consts.DB;
-import kr.co.uplus.cloud.sample.dto.RestResult;
+import kr.co.uplus.cloud.common.dto.RestResult;
 import kr.co.uplus.cloud.utils.CommonUtils;
 import kr.co.uplus.cloud.utils.DateUtil;
 import kr.co.uplus.cloud.utils.GeneralDao;
@@ -33,8 +32,15 @@ public class TemplateService {
 	@Autowired
 	private GeneralDao generalDao;
 
+	@Autowired
+	private DateUtil dateUtil;
+
+	@Autowired
+	private CommonUtils commonUtil;
+
 	/**
 	 * 푸시 템플릿 리스트 조회
+	 * 
 	 * @param params
 	 * @return
 	 * @throws Exception
@@ -49,57 +55,59 @@ public class TemplateService {
 		return rtn;
 	}
 
-    /**
-     * 푸시 템플릿 저장 처리
-     * @param params
-     * @return
-     * @throws Exception
-     */
-    public RestResult<Object> savePushTemplate(Map<String, Object> params) throws Exception {
-        RestResult<Object> rtn = new RestResult<Object>();
-        int resultCnt = 0;
+	/**
+	 * 푸시 템플릿 저장 처리
+	 * 
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> savePushTemplate(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		int resultCnt = 0;
 
-        // update
-        if (params.containsKey("tmpltId") && StringUtils.isNotBlank(CommonUtils.getString(params.get("tmpltId")))) {
-            resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_PUSH_TMPLT, params);
-        // insert
-        } else {
-            String tmpltId = getTemplateId(Const.TMPLT_PREFIX);
-            params.put("tmpltId", tmpltId);
-            resultCnt = generalDao.insertGernal(DB.QRY_INSERT_PUSH_TMPLT, params);
-        }
+		// update
+		if (params.containsKey("tmpltId") && StringUtils.isNotBlank(CommonUtils.getString(params.get("tmpltId")))) {
+			resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_PUSH_TMPLT, params);
+			// insert
+		} else {
+			String tmpltId = getTemplateId(Const.TMPLT_PREFIX);
+			params.put("tmpltId", tmpltId);
+			resultCnt = generalDao.insertGernal(DB.QRY_INSERT_PUSH_TMPLT, params);
+		}
 
-        if (resultCnt <= 0) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
-        } else {
-            rtn.setSuccess(true);
-            rtn.setData(params);
-        }
+		if (resultCnt <= 0) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		} else {
+			rtn.setSuccess(true);
+			rtn.setData(params);
+		}
 
-        return rtn;
-    }
+		return rtn;
+	}
 
-    /**
-     * 푸시 템플릿 삭제 처리
-     * @param params
-     * @return
-     * @throws Exception
-     */
-    public RestResult<Object> deletePushTemplate(Map<String, Object> params) throws Exception {
-        RestResult<Object> rtn = new RestResult<Object>();
+	/**
+	 * 푸시 템플릿 삭제 처리
+	 * 
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> deletePushTemplate(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
 
-        int resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_PUSH_TMPLT, params);
-        if (resultCnt <= 0) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
-        } else {
-            rtn.setSuccess(true);
-            rtn.setData(params);
-        }
+		int resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_PUSH_TMPLT, params);
+		if (resultCnt <= 0) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		} else {
+			rtn.setSuccess(true);
+			rtn.setData(params);
+		}
 
-        return rtn;
-    }
+		return rtn;
+	}
 
 	/**
 	 * RCS 템플릿 리스트 조회
@@ -457,38 +465,20 @@ public class TemplateService {
 
 	/**
 	 * 템플릿ID 생성
+	 * 
 	 * @return
 	 */
 	private String getTemplateId(String prefix) {
 		// 템플릿ID 날짜형식(8자리 - 년월일시)
-		String body = DateUtil.getCurrnetDate("yyMMddHH");
+		String body = dateUtil.getCurrnetDate("yyMMddHH");
 
 		// 템플릿ID 접미사
-		String suffix = suffixGen(5);
+		String suffix = commonUtil.randomGeneration(5);
 
 		// 템플릿ID
 		String tmpltId = prefix + body + suffix;
 
 		return tmpltId;
-	}
-
-	/**
-	 * 5자리 난수 생성
-	 * @param len
-	 * @return
-	 */
-	private String suffixGen(int len) {
-
-		Random rand = new Random();
-		String numStr = ""; // 난수가 저장될 변수
-
-		for (int i = 0; i < len; i++) {
-			// 0~9 까지 난수 생성
-			String ran = Integer.toString(rand.nextInt(10));
-			// 중복 허용시 numStr에 append
-			numStr += ran;
-		}
-		return numStr;
 	}
 
 }
