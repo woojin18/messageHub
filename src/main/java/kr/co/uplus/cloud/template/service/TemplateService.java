@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.uplus.cloud.common.consts.Const;
 import kr.co.uplus.cloud.common.consts.DB;
-import kr.co.uplus.cloud.sample.dto.RestResult;
+import kr.co.uplus.cloud.common.dto.RestResult;
 import kr.co.uplus.cloud.utils.CommonUtils;
 import kr.co.uplus.cloud.utils.DateUtil;
 import kr.co.uplus.cloud.utils.GeneralDao;
@@ -35,6 +35,8 @@ public class TemplateService {
 
 	@Autowired
 	private static DateUtil dateUtil;
+
+	private static CommonUtils commonUtil;
 
 	/**
 	 * 푸시 템플릿 리스트 조회
@@ -453,6 +455,7 @@ public class TemplateService {
 
 	/**
 	 * 템플릿ID 생성
+	 * 
 	 * @return
 	 */
 	private String getTemplateId(String prefix) {
@@ -460,31 +463,12 @@ public class TemplateService {
 		String body = dateUtil.getCurrnetDate("yyMMddHH");
 
 		// 템플릿ID 접미사
-		String suffix = suffixGen(5);
+		String suffix = commonUtil.randomGeneration(5);
 
 		// 템플릿ID
 		String tmpltId = prefix + body + suffix;
 
 		return tmpltId;
-	}
-
-	/**
-	 * 5자리 난수 생성
-	 * @param len
-	 * @return
-	 */
-	private String suffixGen(int len) {
-
-		Random rand = new Random();
-		String numStr = ""; // 난수가 저장될 변수
-
-		for (int i = 0; i < len; i++) {
-			// 0~9 까지 난수 생성
-			String ran = Integer.toString(rand.nextInt(10));
-			// 중복 허용시 numStr에 append
-			numStr += ran;
-		}
-		return numStr;
 	}
 
 }

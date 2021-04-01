@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import kr.co.uplus.cloud.sample.dto.RestResult;
+import kr.co.uplus.cloud.common.dto.RestResult;
 import kr.co.uplus.cloud.template.service.TemplateService;
 
 /**
@@ -55,45 +55,47 @@ public class TemplateController {
 
 	/**
 	 * 푸시 템플릿 단건 조회
+	 * 
 	 * @param request
 	 * @param response
 	 * @param params
 	 * @return
 	 */
 	@PostMapping("/selectPushTmpltInfo")
-    public RestResult<?> selectPushTmpltInfo(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody Map<String, Object> params) {
-        RestResult<Object> rtn = new RestResult<Object>();
-        try {
-            rtn = tmpltSvc.selectPushTemplateList(params);
-        } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
-        }
+	public RestResult<?> selectPushTmpltInfo(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = tmpltSvc.selectPushTemplateList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
 
-        return rtn;
-    }
+		return rtn;
+	}
 
 	/**
 	 * 푸시 템플릿 저장처리
+	 * 
 	 * @param request
 	 * @param response
 	 * @param params
 	 * @return
 	 */
 	@PostMapping("/savePushTmplt")
-    public RestResult<?> savePushTmplt(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody Map<String, Object> params) {
-        RestResult<Object> rtn = new RestResult<Object>();
+	public RestResult<?> savePushTmplt(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
 
-        try {
-            rtn = tmpltSvc.savePushTemplate(params);
-        } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
-        }
-        return rtn;
-    }
+		try {
+			rtn = tmpltSvc.savePushTemplate(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		return rtn;
+	}
 
 	/**
 	 * RCS 템플릿 리스트 조회
