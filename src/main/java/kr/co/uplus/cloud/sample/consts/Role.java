@@ -4,17 +4,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum Role {
-	ADMIN("ADMIN")
-	, USER("USER");
-	
+	ADMIN("ADMIN"), USER("USER"), BO("BACK OFFICE");
+
 	private String value;
 	private String desc;
+
 	private Role(String value) {
 		this.value = value;
 	}
+
 	public String getValue() {
 		return value;
 	}
+
 	public String getDesc() {
 		return desc;
 	}
@@ -25,6 +27,7 @@ public enum Role {
 			lookup.put(e.getValue(), e);
 		}
 	}
+
 	public static Role find(String value) {
 		return lookup.get(value);
 	}

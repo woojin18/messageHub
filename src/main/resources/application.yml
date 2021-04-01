@@ -59,7 +59,7 @@ datasource:
   continue-on-error: true
     
 mongodb:
-  uri: mongodb://cm_console:test1234@dev.ectech.co.kr:40917/cm_console?authSource=cloud&authMechanism=SCRAM-SHA-256
+  uri: mongodb://cm_console:test1234@dev.ectech.co.kr:40917/cm_console?authSource=cm_console&authMechanism=SCRAM-SHA-256
   database: cm_console
   connectionsPerHost: 30
   connectionsPerHostMin: 10
@@ -130,7 +130,7 @@ datasource:
   continue-on-error: true
   
 mongodb:
-  uri: mongodb://cm_console:test1234@dev.ectech.co.kr:40917/cm_console?authSource=cloud&authMechanism=SCRAM-SHA-256
+  uri: mongodb://cm_console:test1234@dev.ectech.co.kr:40917/cm_console?authSource=cm_console&authMechanism=SCRAM-SHA-256
   database: cm_console
   connectionsPerHost: 30
   connectionsPerHostMin: 10
@@ -196,7 +196,7 @@ datasource:
   continue-on-error: true
   
 mongodb:
-  uri: mongodb://cm_console:test1234@dev.ectech.co.kr:40917/cm_console?authSource=cloud&authMechanism=SCRAM-SHA-256
+  uri: mongodb://cm_console:test1234@dev.ectech.co.kr:40917/cm_console?authSource=cm_console&authMechanism=SCRAM-SHA-256
   database: cm_console
   connectionsPerHost: 30
   connectionsPerHostMin: 10
@@ -262,7 +262,7 @@ datasource:
   continue-on-error: true
     
 mongodb:
-  uri: mongodb://cm_console:test1234@dev.ectech.co.kr:40917/cm_console?authSource=cloud&authMechanism=SCRAM-SHA-256
+  uri: mongodb://cm_console:test1234@dev.ectech.co.kr:40917/cm_console?authSource=cm_console&authMechanism=SCRAM-SHA-256
   database: cm_console
   connectionsPerHost: 30
   connectionsPerHostMin: 10

@@ -4,12 +4,34 @@
 <mapper namespace="sample">
 
 	<select id="qrySelectUserName" parameterType="string" resultType="kr.co.uplus.cloud.sample.model.AuthUser">
-		SELECT 
-			USER_ID, USER_PWD, STATUS, ROLE
-		FROM
-			CLOUD_TEST_USER
-		WHERE
-			USER_ID = #{userId}
+	/* sample.qrySelectUserName */
+		SELECT	USER.USER_ID
+		,		USER.LOGIN_ID
+		,		USER.USER_NAME
+		,		USER.LOGIN_PWD AS USER_PWD
+		,		USER.PWD_UPD_DT
+		,		USER.HP_NUMBER
+		,		USER.RECENT_CONN_DT
+		,		USER.SMS_CERTIFY_NUMBER
+		,		USER.LOGIN_FAIL_CNT
+		,		USER.MAIL_CERTIFY_NUMBER
+		,		USER.MAIL_CERTIFY_SENDER_DT
+		,		USER.APPROVAL_STATUS
+		,		USER.USER_PRIVILEGETYPE
+		,		USER.DEL_YN
+		,		USER.REG_ID
+		,		USER.REG_DT
+		,		USER.UPD_DT
+		,		CASE
+					WHEN USER.APPROVAL_STATUS = 'Y' THEN 'USE'
+					WHEN IFNULL(USER.LOGIN_FAIL_CNT, 0) > 5 THEN 'LOCK'
+					ELSE 'NOTUSE'
+				END AS STATUS
+		,		ROLE.ROLE_CD		AS ROLE
+		FROM	CM_USER USER
+		LEFT OUTER JOIN cm_bo.CM_USER_ROLE ROLE
+			ON USER.USER_ID = ROLE.USER_ID
+		WHERE	USER.LOGIN_ID = #{userId}
 	</select>
 	
 	
