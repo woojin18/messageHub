@@ -1,5 +1,7 @@
 package kr.co.uplus.cloud.sample.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -53,6 +55,15 @@ public class AuthController {
 
 		return authSvc.logout(request, response);
 	}
+
+	@PostMapping("/auth/getMenuForRole")
+	public RestResult<?> getMenuForRole(
+				@RequestBody Map<String, Object> params,
+				HttpServletRequest request,
+				HttpServletResponse response) throws Exception {
+		return authSvc.getMenuForRole(params, request, response);
+    }
+	
 	
 	@PostMapping("/public/token")
 	public RestResult<?> publicToken(

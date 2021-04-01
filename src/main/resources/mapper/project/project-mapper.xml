@@ -18,7 +18,7 @@
 		,		A.PRICE_INFO
 		,		A.SUBBILL_YN
 		,		A.SUBBILL_START_DAY
-		,		A.REG_DT
+		,		DATE_FORMAT(A.REG_DT, '%Y-%m-%d') AS REG_DT
 		,		A.UPD_DT
 		,		A.ALARM_USE_YN
 		,		A.ALARM_REQ_DT

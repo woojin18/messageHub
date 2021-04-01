@@ -2,6 +2,7 @@ package kr.co.uplus.cloud.sample.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +37,7 @@ import kr.co.uplus.cloud.sample.jwt.JwtService;
 import kr.co.uplus.cloud.sample.model.AuthUser;
 import kr.co.uplus.cloud.sample.model.PublicToken;
 import kr.co.uplus.cloud.sample.utils.SpringUtils;
+import kr.co.uplus.cloud.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -59,6 +61,9 @@ public class AuthService implements UserDetailsService {
 	
 	@Autowired
 	private AuthUserDao dao;
+
+	@Autowired
+	private GeneralDao generalDao;
 
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		log.debug("username = [{}]", username);
@@ -155,5 +160,35 @@ public class AuthService implements UserDetailsService {
 		}
 		return savedRequest.getRedirectUrl();
 	}
-	
+
+	// 메뉴 조회
+	@SuppressWarnings({ "unchecked" })
+	public RestResult<?> getMenuForRole(
+			Map<String, Object> params,
+			HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		params.put("user_id", params.get("user_id"));
+		params.put("role_cd", params.get("role_cd"));
+		params.put("menus_level", "0");
+		List<Object> rtnList = generalDao.selectGernalList("sample.getMenuForRole", params);
+
+		for(Object rtnMap : rtnList) {
+			params.put("menus_level", "1");
+			params.put("top_menus_cd", ((Map<String, Object>) rtnMap).get("MENUS_CD"));
+			List<Object> childList = generalDao.selectGernalList("sample.getMenuForRole", params);
+			for(Object childMap : childList) {
+				params.put("menus_level", "2");
+				params.put("top_menus_cd", ((Map<String, Object>) childMap).get("MENUS_CD"));
+				List<Object> child2List = generalDao.selectGernalList("sample.getMenuForRole", params);
+				((Map<String, Object>) childMap).put("children", child2List);
+			}
+			((Map<String, Object>) rtnMap).put("children", childList);
+		}
+		
+		rtn.setData(rtnList);
+		
+		return rtn;
+	}
 }

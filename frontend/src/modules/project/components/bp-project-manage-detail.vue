@@ -1,7 +1,7 @@
 <template>
   <div class="modal fade modalStyle" id="confirm"
     tabindex="-1" role="dialog" aria-hidden="true"
-    @click.self="fnClose"
+    @click="fnClose"
   >
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -89,8 +89,8 @@
 					
 					</div>
 					<div class="text-center mt40">
-						<a @click="fnSave" class="btnStyle3 black font14" data-toggle="modal" data-target="#Register" title="등록">등록</a>
-						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>						
+						<a @click="fnSave" class="btnStyle3 black font14" data-toggle="modal" data-target="#Register">등록</a>
+						<a @click="fnClose" class="btnStyle3 white font14">닫기</a>						
 					</div>
 				</div>
 			</div>
@@ -127,6 +127,8 @@ export default {
     visible: function(newVal, oldVal) {
       if(newVal) {
         $("#confirm").modal("show");
+      } else {
+        $("#confirm").modal("hide");
       }
     },
     row_data: function(newVal, oldVal) {
@@ -157,11 +159,12 @@ export default {
     }
   },
   mounted() {
+    var vm = this;
   },
   methods: {
     // 닫기
     fnClose(){
-      this.$emit('update:visible', false);
+      this.visible = !this.visible;
     },
     // 프로젝트명 중복체크
     fnCheckProjectName(){
@@ -173,7 +176,7 @@ export default {
       }
 
       var params = {
-        check_project_name : check_project_name
+        "check_project_name" : check_project_name
       }
 
       projectApi.checkProjectNameDuplicate(params).then(response =>{
@@ -189,12 +192,13 @@ export default {
     },
     // 등록, 수정
     fnSave(){
-      if( 'N' === $("#checkYn").val() ) {
+      if( $("#checkYn").val() === 'N' && this.save_status === 'C' ) {
         alert("중복체크를 먼저 해주세요.");
         return;
       }
 
       var params = {
+          "project_id"      : this.row_data.PROJECT_ID,
           "project_name"    : $("#project_name").val(),
           "project_desc"    : $("#project_desc").val(),
           "pay_type"        : $("input[name='pay_type']:checked").val(),
@@ -213,34 +217,14 @@ export default {
 
         if(result.success) {
           alert("저장되었습니다.");
-          // 창닫기
-          this.$emit('update:visible', false);
           // 부모창 리스트 조회
           this.$parent.fnSearch();
+          // 창닫기
+          //this.visible = !this.visible;
         } else {
           alert(result.message);
         }
       });
-    },
-    // 삭제
-    fnDelete(){
-      var params = {
-          "menus_cd" : $("#menus_cd").val(),
-          "sts" : "D"
-      };
-
-      /* MenuApi.saveMenuList(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          alert("삭제되었습니다.");
-          // 창닫기
-          this.fnClose();
-          // 부모창 리스트 조회
-          this.$parent.fnSearch();
-        } else {
-          alert("저장에 실패.");
-        }
-      }); */
     }
   },
 }

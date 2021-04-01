@@ -221,9 +221,7 @@ export default {
       },
     // 상세창
     fnProjectDetail(data) {
-      this.visible = !this.visible;
-      this.save_status = 'R';
-      this.row_data = data;
+      this.$router.push( {name:"chan-rcs",params:{"projectId" : data.PROJECT_ID}} );
     },
     // 수정창
     fnProjectUpdate(data) {
