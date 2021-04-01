@@ -1,35 +1,25 @@
 <template>
   <section v-if="isLogin == true && isErrPage == false">
-    <div class="header_wrap" :class="{active: navActive}" @mouseleave="navClose">
-      <header class="header">
-        <h1 class="logo"><a href="javascript:void(0);" @click="clickMenu('/home', 'Y');"> <img src="../assets/images/common/logo.png" alt="Web Sample"></a></h1>
-        <nav>
-          <ul @mouseover="navOpen">
-            <li v-for="child in menuList" :key="child.menuId" class="node1">
-              <a href="javascript:void(0);" :data-menu-id="child.menuId" :data-edit-yn="child.editYn" :data-menu-url="child.url" v-if="child.useYn == 'Y'" @click="clickMenu(child.url, child.useYn);">{{ child.menuNm }}</a>
-              <a href="javascript:void(0);" :data-menu-id="child.menuId" :data-edit-yn="child.editYn" :data-menu-url="child.url" v-if="runModeType == 'POC' && child.useYn == 'N'">{{ child.menuNm }}
-                <div class="box_tooltip">
-                  <p>서비스 준비중</p>
-                </div>
-              </a>
-
-              <ul class="sub_menu" v-if="child.children.length > 0">
-                <li v-for="child2 in child.children" :key="child2.menuId" class="node2">
-                  <a href="javascript:void(0);" :data-menu-id="child2.menuId" :data-edit-yn="child2.editYn" :data-menu-url="child2.url" v-if="child2.useYn == 'Y'" @click="clickMenu(child2.url, child2.useYn);">{{ child2.menuNm }}</a>
-                  <a href="javascript:void(0);" :data-menu-id="child2.menuId" :data-edit-yn="child2.editYn" :data-menu-url="child2.url" v-if="runModeType == 'POC' && child2.useYn == 'N'">{{ child2.menuNm }}
-                    <div class="box_tooltip">
-                      <p>서비스 준비중</p>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </li>
+    <header id="headerTop" class="bgColorGray">
+      <h1><img src="../../public/se2/images/logo.png" alt="LGU+ 통합메시징클라우드 로고"></h1>
+      <p class="adminName">관리자 콘솔</p>
+      <ul class="adminUtil">
+        <li><a href="#self" class="btnGuideBlack">사용자콘솔</a></li>
+        <li><a href="#self" class="btnGuideBlack">이용 가이드</a></li>
+        <li class="ml20"><a href="#self" class="bellIcon active"><i class="fas fa-bell"></i></a></li>
+        <li>
+          <a href="#self" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i> designhon@gmail.com</a>	
+          <ul class="dropdown-menu userDrop" role="menu">
+            <li><a href="#" data-toggle="modal" data-target="#Client">고객사 정보</a></li>
+            <li><a href="#">캐시관리</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#Member-information">회원정보</a></li>
+            <li><a href="#">나의 문의내역</a></li>
+            <li><a href="#">공지사항</a></li>
+            <li><a href="#">로그아웃</a></li>
           </ul>
-          <div class="empty_wrap"><span class="emptyspace"></span></div> <!-- 191214 추가 -->
-          <div class="util_wrap"><a href="javascript:void(0);" class="btn_user logout" @click="clickLogout">로그아웃</a></div> <!-- 191214 수정 -->
-        </nav>
-      </header>
-    </div>
+        </li>
+      </ul>
+    </header>
     <div :class="{ active : navActive }" class="header_dimm"></div>
   </section>
 </template>
@@ -40,7 +30,7 @@ import tokenSvc from '@/common/token-service';
 import { mapGetters } from 'vuex';
 
 export default {
-  name: "webSampleHeader",
+  name: "webHeader",
   data() {
     return {
       menuList: null,

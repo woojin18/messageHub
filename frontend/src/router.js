@@ -3,7 +3,8 @@ import Router from 'vue-router';
 import searchcondition from './store'
 import tokenSvc from '@/common/token-service';
 
-import WebSampleLayout from './views/WebSampleLayout.vue';
+import WebNaviLayout from './views/WebNaviLayout.vue';
+import WebLayout from './views/WebLayout.vue';
 
 import homeRoutes from './modules/home/router';
 import loginRoutes from './modules/login/router';
@@ -20,7 +21,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      component: WebSampleLayout,
+      component: WebNaviLayout,
       children: [
         {
           path: '/view/error/404',
@@ -38,6 +39,23 @@ const router = new Router({
         ...channelRoutes,
         ...projectRoutes,
         ...messageRoutes
+      ]
+    },
+    {
+      path: '/login',
+      component: WebLayout,
+      children: [
+        {
+          path: '/view/error/404',
+          component: () => import('./views/ErrorPage404.vue'),
+          meta: { public: true }
+        },
+        {
+          path: '/view/error/500',
+          component: () => import('./views/ErrorPage500.vue'),
+          meta: { public: true }
+        },
+        ...loginRoutes,
       ]
     },
     {path: '*', redirect: '/view/error/404'}

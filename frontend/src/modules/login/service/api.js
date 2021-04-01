@@ -8,7 +8,12 @@ const logout = () => {
     return httpClient.get('/api/auth/logout', {headers: {"show-layer": "Yes"}});
 };
 
+const getMenuForRole = (params) => {
+    return httpClient.post('/api/auth/getMenuForRole', params, { headers: {"show-layer": "Yes"} });
+};
+
 export default {
     login,
-    logout
+    logout,
+    getMenuForRole
 };

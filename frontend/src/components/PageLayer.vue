@@ -1,16 +1,28 @@
 <template>
     
     <span>
-        <ul>
+        <!-- <ul>
         <li @click="fnAllDecrease()">맨 앞으로</li>
         <li @click="fnOneDecrease()">한칸 앞으로 </li>
         <li v-for="(pageCntList, index) in pageCntList()" @click="fnPageClick(pageCntList)">{{pageCntList}}</li>
         <li @click="fnOneIncrease()">한칸 뒤로</li>
         <li @click="fnAllIncrease()">맨 뒤로</li>
-        </ul>
-
+        </ul> -->
+        <div class="row mt40">
+            <div class="col-xs-12">
+                <div class="pagination1 text-center">
+                    <a @click="fnAllDecrease()"><i class="far fa-chevron-double-left"></i></a>
+                    <a @click="fnOneDecrease()"><i class="far fa-chevron-left"></i></a>
+                    <!-- <a v-for="(pageCntList, index) in pageCntList()" @click="fnPageClick(pageCntList)" :key="index" class="number active">{{pageCntList}}</a> -->
+                    <li v-for="(pageCntList, index) in pageCntList()" @click="fnPageClick(pageCntList)" :key="index"><a @click="fnPageClick(pageCntList)">{{pageCntList}}</a></li>
+                    <a @click="fnOneIncrease()"><i class="far fa-chevron-right"></i></a>
+                    <a @click="fnAllIncrease()"><i class="far fa-chevron-double-right"></i></a>
+                </div>
+            </div>
+        </div>
     </span>
     
+			
 
 
 </template>
