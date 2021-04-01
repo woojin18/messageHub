@@ -36,8 +36,8 @@ file.props:
 datasource: 
   rcs:
     driver-class-name: org.mariadb.jdbc.Driver
-    jdbc-url: jdbc:mysql://dev.ectech.co.kr:40906/cloud?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
-    username: cloud
+    jdbc-url: jdbc:mysql://dev.ectech.co.kr:40906/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    username: cm_console
     password: test1234
     pool-name: hikari-cp
     maximum-pool-size: 10
@@ -59,8 +59,8 @@ datasource:
   continue-on-error: true
     
 mongodb:
-  uri: mongodb://cloud:test1234@dev.ectech.co.kr:40917/cloud?authSource=cloud&authMechanism=SCRAM-SHA-256
-  database: cloud
+  uri: mongodb://cm_console:test1234@dev.ectech.co.kr:40917/cm_console?authSource=cloud&authMechanism=SCRAM-SHA-256
+  database: cm_console
   connectionsPerHost: 30
   connectionsPerHostMin: 10
   maxWaitTime: 5000
@@ -130,8 +130,8 @@ datasource:
   continue-on-error: true
   
 mongodb:
-  uri: mongodb://cloud:test1234@dev.ectech.co.kr:40917/cloud?authSource=cloud&authMechanism=SCRAM-SHA-256
-  database: cloud
+  uri: mongodb://cm_console:test1234@dev.ectech.co.kr:40917/cm_console?authSource=cloud&authMechanism=SCRAM-SHA-256
+  database: cm_console
   connectionsPerHost: 30
   connectionsPerHostMin: 10
   maxWaitTime: 5000
@@ -196,8 +196,8 @@ datasource:
   continue-on-error: true
   
 mongodb:
-  uri: mongodb://cloud:test1234@dev.ectech.co.kr:40917/cloud?authSource=cloud&authMechanism=SCRAM-SHA-256
-  database: cloud
+  uri: mongodb://cm_console:test1234@dev.ectech.co.kr:40917/cm_console?authSource=cloud&authMechanism=SCRAM-SHA-256
+  database: cm_console
   connectionsPerHost: 30
   connectionsPerHostMin: 10
   maxWaitTime: 5000
@@ -262,8 +262,8 @@ datasource:
   continue-on-error: true
     
 mongodb:
-  uri: mongodb://cloud:test1234@dev.ectech.co.kr:40917/cloud?authSource=cloud&authMechanism=SCRAM-SHA-256
-  database: cloud
+  uri: mongodb://cm_console:test1234@dev.ectech.co.kr:40917/cm_console?authSource=cloud&authMechanism=SCRAM-SHA-256
+  database: cm_console
   connectionsPerHost: 30
   connectionsPerHostMin: 10
   maxWaitTime: 5000
