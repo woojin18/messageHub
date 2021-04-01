@@ -6,6 +6,7 @@ public class DB {
 	public final static String QRY_SELECT_PUSH_TMPLT = "template.selectPushTemplate";
 	public final static String QRY_INSERT_PUSH_TMPLT = "template.insertPushTemplate";
 	public final static String QRY_UPDATE_PUSH_TMPLT = "template.updatePushTemplate";
+	public final static String QRY_DELETE_PUSH_TMPLT = "template.deletePushTemplate";
 	// RCS 템플릿
 	public final static String QRY_SELECT_RCS_TMPLT = "template.selectRcsTemplate";
 	// 알림톡 템플릿
