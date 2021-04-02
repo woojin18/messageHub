@@ -3,6 +3,7 @@
     tabindex="-1" role="dialog" aria-hidden="true"
     @click="fnClose"
   >
+    <!-- @click="fnClose" -->
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -89,8 +90,9 @@
 					
 					</div>
 					<div class="text-center mt40">
-						<a @click="fnSave" class="btnStyle3 black font14" data-toggle="modal" data-target="#Register">등록</a>
-						<a @click="fnClose" class="btnStyle3 white font14">닫기</a>						
+						<a @click="fnSave" class="btnStyle3 black font14" >등록</a>
+						<!-- <a @click="fnClose" class="btnStyle3 white font14">닫기</a>						 -->
+            <a href="#self" class="btnStyle3 white font14">닫기</a>						
 					</div>
 				</div>
 			</div>
@@ -164,7 +166,7 @@ export default {
   methods: {
     // 닫기
     fnClose(){
-      this.visible = !this.visible;
+      this.$emit('update:visible', false);
     },
     // 프로젝트명 중복체크
     fnCheckProjectName(){
@@ -220,7 +222,7 @@ export default {
           // 부모창 리스트 조회
           this.$parent.fnSearch();
           // 창닫기
-          //this.visible = !this.visible;
+          this.fnClose();
         } else {
           alert(result.message);
         }

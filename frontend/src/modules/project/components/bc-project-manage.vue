@@ -1,6 +1,5 @@
 <template>
   <div>
-  <!-- <div id="content"> -->
     <modal 
       :modal_title.sync="modal_title" 
       :visible.sync="visible"
@@ -221,7 +220,7 @@ export default {
       },
     // 상세창
     fnProjectDetail(data) {
-      this.$router.push( {name:"chan-rcs",params:{"projectId" : data.PROJECT_ID}} );
+      this.$router.push( {name:"chan-rcs",params:{"projectId" : data.PROJECT_ID, "projectName" : data.PROJECT_NAME}} );
     },
     // 수정창
     fnProjectUpdate(data) {

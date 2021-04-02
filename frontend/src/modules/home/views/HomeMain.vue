@@ -2,7 +2,7 @@
   <div class="home">
     <br>
     <HomeMain msg="HomeMain" />
-    <button v-on:click="createdTest">TEST</button>
+    <button><a href="/project/manage"> testtttttttttttt </a></button>
     <br>
 
   </div>

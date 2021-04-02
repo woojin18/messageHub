@@ -1,32 +1,43 @@
 <template>
-  <div id="content">
+  <div>
+    <modalTmplt 
+      :visibleTmplt.sync="visibleTmplt"
+      :row_data="row_data"
+    >
+    </modalTmplt>
+    <modalCallback 
+      :visibleCallback.sync="visibleCallback"
+      :row_data="row_data"
+    >
+    </modalCallback>
+    
 		<article>
 			<div class="contentHeader mb20">
-				<h2>비트큐브 프로젝트</h2>
+				<h2>{{this.projectName}}</h2>
 			</div>
 
 			<!-- 본문 -->
 			<div class="contentBody mb40">
 				<ul class="tab_s3">
-					<li><a href="#self" class="width120">대시보드</a></li>
-					<li><a href="#self" class="width120">기본정보</a></li>
-					<li><a href="#self" class="width120">멤버관리</a></li>
-					<li class="active"><a href="#self" class="width120">채널관리</a></li>
-					<li><a href="#self" class="width120">발신번호관리</a></li>
-					<li><a href="#self" class="width120">스팸관리</a></li>
+					<li @click="fnMoveMainTab('dashBoard')"><a class="width120">대시보드</a></li>
+					<li @click="fnMoveMainTab('info')"><a class="width120">기본정보</a></li>
+					<li @click="fnMoveMainTab('member')"><a class="width120">멤버관리</a></li>
+					<li @click="fnMoveMainTab('channel')" class="active"><a class="width120">채널관리</a></li>
+					<li @click="fnMoveMainTab('callback')"><a class="width120">발신번호관리</a></li>
+					<li @click="fnMoveMainTab('spam')"><a class="width120">스팸관리</a></li>
 				</ul>			
 			</div>
 			<ul class="tabStyle tab6 bgColor_tapGray mt30">
-				<li class="active"><a href="#">RCS</a></li>
-				<li><a href="#">SMS/MMS</a></li>
-				<li><a href="#">PUSH</a></li>
-				<li><a href="#">카카오톡</a></li>
-				<li><a href="#">MO</a></li>
+				<li @click="fnMoveSubTab('chan-rcs')" class="active"><a>RCS</a></li>
+				<li @click="fnMoveSubTab('chan-smsmms')"><a>SMS/MMS</a></li>
+				<li @click="fnMoveSubTab('chan-push')"><a>PUSH</a></li>
+				<li @click="fnMoveSubTab('chan-kakao')"><a>카카오톡</a></li>
+				<li @click="fnMoveSubTab('chan-mo')"><a>MO</a></li>
 			</ul>
 			
 			<ul class="mt30 tab_s5">
-				<li class="active"><a href="#">브랜드 관리정보</a></li>
-				<li><a href="#">메시지 포맷정보</a></li>
+				<li class="active"><a>브랜드 관리정보</a></li>
+				<li><a>메시지 포맷정보</a></li>
 			</ul>
 
       <!-- 검색창 -->
@@ -40,7 +51,7 @@
                   <option value="brandName">브랜드 명</option>
                 </select>
 								<input id="srcBrandText" type="text" class="inputStyle ml20 vertical-baseline" style="width:65%">
-								<button @click="fnSearch"><a class="btnStyle2 float-right">검색</a></button>
+								<a @click="fnSearch" class="btnStyle2 float-right">검색</a>
 							</div>						
 						</div>
 					</div>
@@ -100,10 +111,12 @@
                     {{ data.other_project_use_yn }}
                   </td>
                   <td>
-                    {{ data.tmpl_cnt }}
+                    <!-- {{ data.tmpl_cnt }} -->
+                    <a @click="fnRcsTmpltDetail(data)">11111111111111</a>
                   </td>
                   <td>
-                    {{ data.num_cnt }}
+                    <!-- {{ data.num_cnt }} -->
+                    <a @click="fnRcsCallbackDetail(data)">222222222222222</a>
                   </td>
                   <td>
                     {{ data.appr_yn }}
@@ -124,15 +137,15 @@
 				<div class="row mt40">
 					<div class="col-xs-12">
 						<div class="pagination1 text-center">
-							<a href="#" title="10페이지 이전 페이지로 이동"><i class="far fa-chevron-double-left"></i></a>
-							<a href="#" title="이전 페이지로 이동"><i class="far fa-chevron-left"></i></a>
-							<a href="#" title="1페이지로 이동" class="number active">1</a>
-							<a href="#" title="2페이지로 이동" class="number">2</a>
-							<a href="#" title="3페이지로 이동" class="number">3</a>
-							<a href="#" title="4페이지로 이동" class="number">4</a>
-							<a href="#" title="5페이지로 이동" class="number">5</a>
-							<a href="#" title="다음 페이지로 이동"><i class="far fa-chevron-right"></i></a>
-							<a href="#" title="10페이지 다음 페이지로 이동"><i class="far fa-chevron-double-right"></i></a>
+							<a title="10페이지 이전 페이지로 이동"><i class="far fa-chevron-double-left"></i></a>
+							<a title="이전 페이지로 이동"><i class="far fa-chevron-left"></i></a>
+							<a title="1페이지로 이동" class="number active">1</a>
+							<a title="2페이지로 이동" class="number">2</a>
+							<a title="3페이지로 이동" class="number">3</a>
+							<a title="4페이지로 이동" class="number">4</a>
+							<a title="5페이지로 이동" class="number">5</a>
+							<a title="다음 페이지로 이동"><i class="far fa-chevron-right"></i></a>
+							<a title="10페이지 다음 페이지로 이동"><i class="far fa-chevron-double-right"></i></a>
 						</div>
 					</div>
 				</div>
@@ -156,10 +169,15 @@ import Api from '../service/api'
 import SelectLayer from '@/components/SelectLayer.vue';
 import PageLayer from '@/components/PageLayer.vue';
 
+import modalTmplt from "./bp-chan-rcs-tmplt-cnt.vue";
+import modalCallback from "./bp-chan-rcs-callback-cnt.vue";
+
 export default {
   components: {
       SelectLayer
     , PageLayer
+    , modalTmplt
+    , modalCallback
   },
   data() {
     return {
@@ -175,15 +193,26 @@ export default {
       items : [],
       count : 0,
       // 프로젝트 정보
-      projectId : ''
+      projectId : '',
+      projectName : '',
+      visibleTmplt : false,  // 레이어 팝업 
+      visibleCallback : false,  // 레이어 팝업
+      row_data : {}
     }
   },
   mounted() {
     var vm = this;
     this.projectId = this.$route.params.projectId;
+    this.projectName = this.$route.params.projectName;
     this.fnSearch();
   },
   methods: {
+    fnMoveMainTab(moveTabName){
+      this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
+    },
+    fnMoveSubTab(moveTabName){
+      this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
+    },
     // 검색
     fnSearch() {
       var vm = this;
@@ -214,7 +243,16 @@ export default {
       this.updateLayerTitle = "리스트 수정";
       this.updateLayerSeq = this.items[row].SEQ;  */
     },
-
+    // 등록 템플릿 상세 
+    fnRcsTmpltDetail(data){
+      this.visibleTmplt = !this.visibleTmplt;
+      this.row_data = data;
+    },
+    // 등록 발신번호 상세 
+    fnRcsCallbackDetail(data){
+      this.visibleCallback = !this.visibleCallback;
+      this.row_data = data;
+    },
     // select 박스 선택시 리스트 재출력
     fnSelected(selected) {
       this.selected = selected;
