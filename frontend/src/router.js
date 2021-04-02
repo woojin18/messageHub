@@ -21,6 +21,23 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: '/login',
+      component: WebLayout,
+      children: [
+        {
+          path: '/view/error/404',
+          component: () => import('./views/ErrorPage404.vue'),
+          meta: { public: true }
+        },
+        {
+          path: '/view/error/500',
+          component: () => import('./views/ErrorPage500.vue'),
+          meta: { public: true }
+        },
+        ...loginRoutes,
+      ]
+    },
+    {
       path: '/',
       component: WebNaviLayout,
       children: [
@@ -41,23 +58,6 @@ const router = new Router({
         ...projectRoutes,
         ...messageRoutes,
         ...templateRoutes
-      ]
-    },
-    {
-      path: '/login',
-      component: WebLayout,
-      children: [
-        {
-          path: '/view/error/404',
-          component: () => import('./views/ErrorPage404.vue'),
-          meta: { public: true }
-        },
-        {
-          path: '/view/error/500',
-          component: () => import('./views/ErrorPage500.vue'),
-          meta: { public: true }
-        },
-        ...loginRoutes,
       ]
     },
     {path: '*', redirect: '/view/error/404'}
