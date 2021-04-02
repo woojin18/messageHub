@@ -3,25 +3,7 @@
 
 <mapper namespace="template">
 
-    <select id="selectPushTemplate" parameterType="string" resultType="camel">
-    /* template.selectPushTemplate 푸시 템플릿 리스트 조회 */
-        SELECT
-            TMPLT_ID
-            , TMPLT_NAME
-            , MSG_TYPE
-            , MSG_KIND
-            , OTHER_PROJECT_USE_YN
-            , TMPLT_TITLE
-            , TMPLT_CONTENT
-            , RCVBLC_NUMBER
-            , ADTN_INFO
-            , IMG_URL
-            , REG_DT
-            , REG_ID
-            , UPD_DT
-            , UPD_ID
-        FROM CM_PUSH_TMPLT
-        WHERE 1=1
+    <sql id ="wherePushTemplate">
         <if test="searchText != '' and searchText != null ">
             <if test="searchCondi == 'tmpltId' ">
             AND TMPLT_ID LIKE CONCAT('%', #{searchText}, '%')
@@ -42,7 +24,43 @@
         <if test="tmpltId != '' and tmpltId != null ">
             AND TMPLT_ID = #{tmpltId}
         </if>
+    </sql>
+
+    <select id="selectPushTemplateListCnt" parameterType="string" resultType="int">
+    /* template.selectPushTemplate 푸시 템플릿 리스트 카운트 조회 */
+        SELECT
+            COUNT(*) AS CNT
+        FROM CM_PUSH_TMPLT
+        WHERE 1=1
+        <include refid="wherePushTemplate"/>
         ORDER BY REG_DT DESC
+    </select>
+
+    <select id="selectPushTemplateList" parameterType="string" resultType="camel">
+    /* template.selectPushTemplate 푸시 템플릿 리스트 조회 */
+        SELECT
+            @ROWNUM := @ROWNUM + 1 AS ROWNUM
+            , TMPLT_ID
+            , TMPLT_NAME
+            , MSG_TYPE
+            , MSG_KIND
+            , OTHER_PROJECT_USE_YN
+            , TMPLT_TITLE
+            , TMPLT_CONTENT
+            , RCVBLC_NUMBER
+            , ADTN_INFO
+            , IMG_URL
+            , REG_DT
+            , REG_ID
+            , UPD_DT
+            , UPD_ID
+        FROM CM_PUSH_TMPLT, (SELECT @ROWNUM:=0) TMP
+        WHERE 1=1
+        <include refid="wherePushTemplate"/>
+        ORDER BY REG_DT DESC
+        <if test='pagingYn == "Y" '>
+        LIMIT ${offset}, #{rowSize}
+        </if>
     </select>
 
     <delete id="deletePushTemplate" parameterType="hashmap">

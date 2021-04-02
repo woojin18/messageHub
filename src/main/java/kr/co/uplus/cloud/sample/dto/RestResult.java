@@ -7,8 +7,15 @@ public class RestResult<T> implements IResult<ResultCode, T> {
 	protected ResultCode code;
 	protected String message;
 	protected T data;
+	protected int dataTotalCnt;
 
-	public RestResult() {
+    public int getDataTotalCnt() {
+        return dataTotalCnt;
+    }
+    public void setDataTotalCnt(int dataTotalCnt) {
+        this.dataTotalCnt = dataTotalCnt;
+    }
+    public RestResult() {
 	}
 	public RestResult(boolean success) {
 		this.success = success;
@@ -41,6 +48,6 @@ public class RestResult<T> implements IResult<ResultCode, T> {
 		this.data = data;
 		return this;
 	}
-	
+
 
 }

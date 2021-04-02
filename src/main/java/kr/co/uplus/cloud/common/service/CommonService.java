@@ -123,12 +123,11 @@ public class CommonService {
 
         //DB 등록
         Map<String, Object> seqParams = new HashMap<>();
-        seqParams.put("attach_file_seq", "");
         seqParams.put("corp_id", "TEST_CORP_ID");    //TODO : 고객 ID(로그인세션에서 가져오자)
         seqParams.put("use_ch_info", useCh);
         seqParams.put("origin_file_name", fileName);
-        seqParams.put("attach_file_name", uplaodFileName);
-        seqParams.put("attach_file_path", uplaodFileFullPath);
+        seqParams.put("image_file_name", uplaodFileName);
+        seqParams.put("image_file_path", uplaodFileFullPath);
         seqParams.put("reg_id", loginId);    //TODO : 로그인 ID(로그인세션에서 가져오자)
         seqParams.put("upd_id", loginId);    //TODO : 로그인 ID(로그인세션에서 가져오자)
         generalDao.insertGernal("common.insertImageFile", seqParams);
@@ -154,7 +153,7 @@ public class CommonService {
             RowBounds rowBounds = new RowBounds((selPage-1)*selPageCnt, selPageCnt);
             params.put("rowBounds", rowBounds);
 
-            rtn.setPageInfo(pageInfo);
+            //rtn.setPageInfo(pageInfo);
         }
 
         List<Object> rtnList = generalDao.selectGernalList("common.selectImageList", params);

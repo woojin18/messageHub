@@ -10,8 +10,8 @@
             CORP_ID
             , USE_CH_INFO
             , ORIGIN_FILE_NAME
-            , ATTACH_FILE_NAME
-            , ATTACH_FILE_PATH
+            , IMAGE_FILE_NAME
+            , IMAGE_FILE_PATH
             , REG_DT
             , UPD_DT
             , REG_ID
@@ -22,8 +22,8 @@
             #{corp_id}
             , #{use_ch_info}
             , #{origin_file_name}
-            , #{attach_file_name}
-            , #{attach_file_path}
+            , #{image_file_name}
+            , #{image_file_path}
             , NOW()
             , NOW()
             , #{reg_id}
@@ -34,12 +34,12 @@
     <select id="selectImageList" resultType="hashmap">
     /* common.selectImageList - 고객사별 이미지 조회 */
         SELECT
-            ATTACH_FILE_SEQ
+            IMAGE_FILE_SEQ
             , CORP_ID
             , USE_CH_INFO
             , ORIGIN_FILE_NAME
-            , ATTACH_FILE_NAME
-            , ATTACH_FILE_PATH
+            , IMAGE_FILE_NAME
+            , IMAGE_FILE_PATH
             , REG_DT
             , UPD_DT
             , REG_ID

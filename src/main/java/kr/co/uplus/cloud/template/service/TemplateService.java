@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import kr.co.uplus.cloud.common.consts.Const;
 import kr.co.uplus.cloud.common.consts.DB;
 import kr.co.uplus.cloud.common.dto.RestResult;
+import kr.co.uplus.cloud.dto.PageDto;
 import kr.co.uplus.cloud.utils.CommonUtils;
 import kr.co.uplus.cloud.utils.DateUtil;
 import kr.co.uplus.cloud.utils.GeneralDao;
@@ -32,82 +33,84 @@ public class TemplateService {
 	@Autowired
 	private GeneralDao generalDao;
 
-	@Autowired
-	private DateUtil dateUtil;
-
-	@Autowired
-	private CommonUtils commonUtil;
-
 	/**
-	 * 푸시 템플릿 리스트 조회
-	 * 
-	 * @param params
-	 * @return
-	 * @throws Exception
-	 */
-	public RestResult<Object> selectPushTemplateList(Map<String, Object> params) throws Exception {
+     * 푸시 템플릿 리스트 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectPushTemplateList(Map<String, Object> params) throws Exception {
 
-		RestResult<Object> rtn = new RestResult<Object>();
+        RestResult<Object> rtn = new RestResult<Object>();
 
-		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_PUSH_TMPLT, params);
-		rtn.setData(rtnList);
+        if(params.containsKey("pageNo")
+                && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+                && params.containsKey("rowSize")
+                && CommonUtils.isNotEmptyObject(params.get("rowSize"))) {
+            PageDto pageDto = rtn.getPageInfo();
+            pageDto.setPageInfo(params);
+            //카운트 쿼리 실행
+            int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_PUSH_TMPLT_LIST_CNT, params);
+            pageDto.setTotCnt(listCnt);
+        }
 
-		return rtn;
-	}
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_PUSH_TMPLT_LIST, params);
+        rtn.setData(rtnList);
 
-	/**
-	 * 푸시 템플릿 저장 처리
-	 * 
-	 * @param params
-	 * @return
-	 * @throws Exception
-	 */
-	public RestResult<Object> savePushTemplate(Map<String, Object> params) throws Exception {
-		RestResult<Object> rtn = new RestResult<Object>();
-		int resultCnt = 0;
+        return rtn;
+    }
 
-		// update
-		if (params.containsKey("tmpltId") && StringUtils.isNotBlank(CommonUtils.getString(params.get("tmpltId")))) {
-			resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_PUSH_TMPLT, params);
-			// insert
-		} else {
-			String tmpltId = getTemplateId(Const.TMPLT_PREFIX);
-			params.put("tmpltId", tmpltId);
-			resultCnt = generalDao.insertGernal(DB.QRY_INSERT_PUSH_TMPLT, params);
-		}
+    /**
+     * 푸시 템플릿 저장 처리
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> savePushTemplate(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        int resultCnt = 0;
 
-		if (resultCnt <= 0) {
-			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
-		} else {
-			rtn.setSuccess(true);
-			rtn.setData(params);
-		}
+        // update
+        if (params.containsKey("tmpltId") && StringUtils.isNotBlank(CommonUtils.getString(params.get("tmpltId")))) {
+            resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_PUSH_TMPLT, params);
+        // insert
+        } else {
+            String tmpltId = getTemplateId(Const.TMPLT_PREFIX);
+            params.put("tmpltId", tmpltId);
+            resultCnt = generalDao.insertGernal(DB.QRY_INSERT_PUSH_TMPLT, params);
+        }
 
-		return rtn;
-	}
+        if (resultCnt <= 0) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+        } else {
+            rtn.setSuccess(true);
+            rtn.setData(params);
+        }
 
-	/**
-	 * 푸시 템플릿 삭제 처리
-	 * 
-	 * @param params
-	 * @return
-	 * @throws Exception
-	 */
-	public RestResult<Object> deletePushTemplate(Map<String, Object> params) throws Exception {
-		RestResult<Object> rtn = new RestResult<Object>();
+        return rtn;
+    }
 
-		int resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_PUSH_TMPLT, params);
-		if (resultCnt <= 0) {
-			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
-		} else {
-			rtn.setSuccess(true);
-			rtn.setData(params);
-		}
+    /**
+     * 푸시 템플릿 삭제 처리
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> deletePushTemplate(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
 
-		return rtn;
-	}
+        int resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_PUSH_TMPLT, params);
+        if (resultCnt <= 0) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+        } else {
+            rtn.setSuccess(true);
+            rtn.setData(params);
+        }
+
+        return rtn;
+    }
 
 	/**
 	 * RCS 템플릿 리스트 조회
@@ -465,15 +468,15 @@ public class TemplateService {
 
 	/**
 	 * 템플릿ID 생성
-	 * 
+	 *
 	 * @return
 	 */
 	private String getTemplateId(String prefix) {
 		// 템플릿ID 날짜형식(8자리 - 년월일시)
-		String body = dateUtil.getCurrnetDate("yyMMddHH");
+		String body = DateUtil.getCurrnetDate("yyMMddHH");
 
 		// 템플릿ID 접미사
-		String suffix = commonUtil.randomGeneration(5);
+		String suffix = CommonUtils.randomGeneration(5);
 
 		// 템플릿ID
 		String tmpltId = prefix + body + suffix;

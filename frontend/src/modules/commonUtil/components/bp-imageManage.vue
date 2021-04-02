@@ -1,6 +1,6 @@
 <template>
   <div class="imageManagePopup"
-    v-if="imgMngOpen" 
+    v-if="imgMngOpen"
     @click.self="fnClose">
     <div class="imageManagePopup__dialog">
       <hr/>
@@ -27,13 +27,13 @@
           </thead>
           <tbody id="contants">
             <tr v-for="(contant, idx) in contants" v-bind:key="contant">
-              <td>{{contant.ATTACH_FILE_SEQ}}</td>
+              <td>{{contant.IMAGE_FILE_SEQ}}</td>
               <td>{{contant.ORIGIN_FILE_NAME}}</td>
               <td>{{contant.CORP_ID}}</td>
               <td>{{contant.REG_DT}}</td>
               <td>
-                <!-- <img :src="contant.ATTACH_FILE_PATH" style="width: 30px; height: 30px; object-fit: contain;"/> -->
-                
+                <!-- <img :src="contant.IMAGE_FILE_PATH" style="width: 30px; height: 30px; object-fit: contain;"/> -->
+
                 <!-- <img :src="require('@/assets/images/msgSendImg/20210325_266588433653732025.jpg')" style="width: 500px; height: 250px; object-fit: contain;"/> -->
                 <img :src="contant.imageFullPath" style="width: 30px; height: 30px; object-fit: contain;"/>
               </td>
@@ -81,9 +81,9 @@ export default {
           this.contants = result.data;
         }
 
-        this.contants.forEach(function(obj, idx){
+        this.contants.forEach(function(obj){
           //TODO : 이미지 서버로 업로드 위치 변경되서 수정
-          obj['imageFullPath'] = require("@/assets/images/uploadImage/"+obj.ATTACH_FILE_NAME);
+          obj['imageFullPath'] = require("@/assets/images/uploadImage/"+obj.IMAGE_FILE_NAME);
         });
       });
     },
@@ -134,7 +134,7 @@ $module: 'imageManagePopup';
     overflow-y: scroll;
   }
   &__btn {
-    text-align: right; 
+    text-align: right;
     padding-top: 10px;
   }
 }
