@@ -1,0 +1,192 @@
+<template>
+  <div>
+    <modal
+      :visible.sync="visible"
+      :row_data="row_data"
+    >
+    </modal>
+    
+		<article>
+			<div class="contentHeader mb20">
+				<h2>{{this.projectName}}</h2>
+			</div>
+
+			<!-- 본문 -->
+			<div class="contentBody mb40">
+				<ul class="tab_s3">
+					<li @click="fnMoveMainTab('dashBoard')"><a class="width120">대시보드</a></li>
+					<li @click="fnMoveMainTab('info')"><a class="width120">기본정보</a></li>
+					<li @click="fnMoveMainTab('member')"><a class="width120">멤버관리</a></li>
+					<li @click="fnMoveMainTab('channel')" class="active"><a class="width120">채널관리</a></li>
+					<li @click="fnMoveMainTab('callback')"><a class="width120">발신번호관리</a></li>
+					<li @click="fnMoveMainTab('spam')"><a class="width120">스팸관리</a></li>
+				</ul>			
+			</div>
+			<ul class="tabStyle tab6 bgColor_tapGray mt30">
+				<li @click="fnMoveSubTab('chan-rcs')"><a>RCS</a></li>
+				<li @click="fnMoveSubTab('chan-smsmms')"><a>SMS/MMS</a></li>
+				<li @click="fnMoveSubTab('chan-push')" class="active"><a>PUSH</a></li>
+				<li @click="fnMoveSubTab('chan-kakao')"><a>카카오톡</a></li>
+				<li @click="fnMoveSubTab('chan-mo')"><a>MO</a></li>
+			</ul>
+			
+			<h4 class="mt40">Push APP ID 관리</h4>
+			<p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i> APP ID는 5개까지 발급받을 수 있으며, 서비스 이용 시 인증에 사용됩니다.</p>
+			
+			<div class="row">
+				<div class="col-xs-12">		
+					<div class="of_h">
+						<div class="float-right">
+							<a href="#self" class="btnStyle3 gray font13 minWidth120 ml10">발신번호 등록 안내</a>
+						</div>
+					</div>
+				</div>			
+			</div>	
+
+			<div class="Dashboard01 border-line">
+        <!-- 검색창 -->
+				<!-- <div class="row">
+					<div class="col-xs-12">
+						<div class="menuBox">						
+							<div>
+                <select id="srcBrandType">
+                  <option value="brandId">브랜드 아이디</option>
+                  <option value="brandName">브랜드 명</option>
+                </select>
+								<input id="srcBrandText" type="text" class="inputStyle ml20 vertical-baseline" style="width:65%">
+								<a @click="fnSearch" class="btnStyle2 float-right">검색</a>
+							</div>						
+						</div>
+					</div>
+				</div> -->
+        <!-- 검색창 --> 
+
+
+				<div class="row mt20">
+					<div class="col-xs-12">		
+						<div class="of_h">
+							<div class="float-right">
+								<a @click="fnReg" class="btnStyle3 gray font13 minWidth120">발신번호 등록 안내</a>
+							</div>
+						</div>
+					</div>			
+				</div>
+
+				
+
+        <!-- 그리드 -->
+				<div class="row mt20">
+					<div class="col-xs-12">
+            <table  class="table_skin1 bt-000 tbl-striped">
+              <colgroup>
+                <col style="width:15%">
+                <col>
+                <col style="width:15%">
+                <col style="width:15%">
+                <col style="width:10%">
+                <col style="width:15%">
+              </colgroup>
+              <thead>
+                <tr>
+                <th class="text-center lc-1">APP ID 명</th>
+                <th class="text-center lc-1">APP ID</th>
+                <th class="text-center lc-1">FCM 인증서 등록여부</th>
+                <th class="text-center lc-1">APNS 인증서 등록여부</th>
+                <th class="text-center lc-1">생성일</th>
+                <th class="text-center lc-1 end">관리</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                <td class="text-center">PUSH_APP_01</td>
+                <td class="text-center">B3a1ef685ac84de692471252b6eda121</td>
+                <td class="text-center">예</td>
+                <td class="text-center">아니오</td>
+                <td class="text-center">2021-01-02</td>
+                <td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
+                </tr>
+                <tr>
+                <td class="text-center">PUSH_APP_02</td>
+                <td class="text-center">B3a1ef685ac84de692471252b6eda122</td>
+                <td class="text-center">예</td>
+                <td class="text-center">아니오</td>
+                <td class="text-center">2021-01-02</td>
+                <td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
+                </tr>
+                <tr>
+                <td class="text-center">PUSH_APP_03</td>
+                <td class="text-center">B3a1ef685ac84de692471252b6eda123</td>
+                <td class="text-center">예</td>
+                <td class="text-center">아니오</td>
+                <td class="text-center">2021-01-02</td>
+                <td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
+                </tr>
+                <tr>
+                <td class="text-center">PUSH_APP_04</td>
+                <td class="text-center">B3a1ef685ac84de692471252b6eda124</td>
+                <td class="text-center">예</td>
+                <td class="text-center">아니오</td>
+                <td class="text-center">2021-01-02</td>
+                <td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
+                </tr>
+              </tbody>
+            </table>
+					</div>			
+				</div>
+
+			</div>
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+</template>
+
+
+<script>
+import Api from '../service/api'
+import modal from "./bp-chan-rcs-tmplt-cnt.vue";
+
+export default {
+  components: {
+    modal
+  },
+  data() {
+    return {
+      // 프로젝트 정보
+      projectId : '',
+      projectName : '',
+      visible : false,  // 레이어 팝업 
+    }
+  },
+  mounted() {
+    var vm = this;
+    this.projectId = this.$route.params.projectId;
+    this.projectName = this.$route.params.projectName;
+    //this.fnSearch();
+  },
+  methods: {
+    fnMoveMainTab(moveTabName){
+      this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
+    },
+    fnMoveSubTab(moveTabName){
+      this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
+    },
+    // 검색
+    fnSearch() {
+      var vm = this;
+      var params = {
+        "projectId"     : this.projectId
+      }
+       
+      Api.selectRcsBrandList(params).then(response =>{
+        vm.items = response.data.data;
+      });
+    },
+    // 등록 템플릿 상세 
+    fnReg(){
+      this.visible = !this.visible;
+    }
+  }
+}
+</script>
