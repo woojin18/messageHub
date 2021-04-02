@@ -17,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.uplus.cloud.common.dto.RestResult;
 import kr.co.uplus.cloud.template.service.TemplateService;
+import kr.co.uplus.cloud.utils.DateUtil;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * <pre>
@@ -28,6 +30,7 @@ import kr.co.uplus.cloud.template.service.TemplateService;
  * @Date : 2021.03.25.
  * @Version : 1.0 Copyright 2020 LG Uplus Corp. All Rights Reserved.
  */
+@Log4j2
 @RestController
 @RequestMapping("/api/public/template")
 public class TemplateController {
@@ -52,6 +55,7 @@ public class TemplateController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
 		}
 
 		return rtn;
@@ -59,7 +63,7 @@ public class TemplateController {
 
 	/**
 	 * 푸시 템플릿 단건 조회
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -74,6 +78,7 @@ public class TemplateController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
 		}
 
 		return rtn;
@@ -81,7 +86,7 @@ public class TemplateController {
 
 	/**
 	 * 푸시 템플릿 저장처리
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -97,13 +102,14 @@ public class TemplateController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
 		}
 		return rtn;
 	}
 
 	/**
 	 * 푸시 템플릿 삭제처리
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -118,6 +124,7 @@ public class TemplateController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
 		}
 
 		return rtn;
@@ -125,7 +132,7 @@ public class TemplateController {
 
 	/**
 	 * 푸쉬템플릿 엑셀다운로드
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -139,15 +146,14 @@ public class TemplateController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sheetTitle", "푸시 템플릿 리스트");
 		map.put("colLabels", new String[] { "템플릿 ID", "템플릿명", "타 프로젝트 사용여부", "메시지타입", "메시지구분", "등록자", "등록일자" });
-		map.put("colIds",
-				new String[] { "tmpltId", "tmpltName", "otherProjectUseYn", "msgType", "msgKind", "regId", "regDt" });
+        map.put("colIds", new String[] {"tmpltId", "tmpltName", "otherProjectUseYn", "msgType", "msgKind", "regId", "regDt"});
 		map.put("numColIds", new String[] {});
 		map.put("figureColIds", new String[] {});
 		map.put("colDataList", tmpltSvc.selectPushTemplateList(params).getData());
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-		model.addObject("excelFileName", "test");
+        model.addObject("excelFileName", "pushTemplate_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;

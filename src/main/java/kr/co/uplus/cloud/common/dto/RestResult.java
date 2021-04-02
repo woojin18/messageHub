@@ -1,7 +1,6 @@
 package kr.co.uplus.cloud.common.dto;
 
-import java.util.Map;
-
+import kr.co.uplus.cloud.dto.PageDto;
 import kr.co.uplus.cloud.sample.consts.ResultCode;
 
 public class RestResult<T> implements IResult<ResultCode, T> {
@@ -9,7 +8,7 @@ public class RestResult<T> implements IResult<ResultCode, T> {
     protected ResultCode code;
     protected String message;
     protected T data;
-    protected Map<String, Object> pageInfo;
+    protected PageDto pageInfo = new PageDto();
 
     public RestResult() {
     }
@@ -44,11 +43,10 @@ public class RestResult<T> implements IResult<ResultCode, T> {
         this.data = data;
         return this;
     }
-    public Map<String, Object> getPageInfo() {
+    public PageDto getPageInfo() {
         return pageInfo;
     }
-    public void setPageInfo(Map<String, Object> pageInfo) {
+    public void setPageInfo(PageDto pageInfo) {
         this.pageInfo = pageInfo;
     }
-
 }

@@ -14,7 +14,8 @@
                     <a @click="fnAllDecrease()"><i class="far fa-chevron-double-left"></i></a>
                     <a @click="fnOneDecrease()"><i class="far fa-chevron-left"></i></a>
                     <!-- <a v-for="(pageCntList, index) in pageCntList()" @click="fnPageClick(pageCntList)" :key="index" class="number active">{{pageCntList}}</a> -->
-                    <li v-for="(pageCntList, index) in pageCntList()" @click="fnPageClick(pageCntList)" :key="index"><a @click="fnPageClick(pageCntList)">{{pageCntList}}</a></li>
+                    <!-- <li v-for="(pageCntList, index) in pageCntList()" @click="fnPageClick(pageCntList)" :key="index"><a @click="fnPageClick(pageCntList)">{{pageCntList}}</a></li> -->
+                    <a v-for="(pageCntList, index) in pageCntList()" @click="fnPageClick(pageCntList)" :key="index" :class="[pageSltClass.numberClass, pageCntList==pageNum ? pageSltClass.activeClass : '']">{{pageCntList}}</a>
                     <a @click="fnOneIncrease()"><i class="far fa-chevron-right"></i></a>
                     <a @click="fnAllIncrease()"><i class="far fa-chevron-double-right"></i></a>
                 </div>
@@ -48,9 +49,13 @@ export default {
                 list.push(i);
             }
             return list;
-        }   
+        },
+        pageSltClass:{
+            numberClass: 'number',
+            activeClass: 'active'
+        }
     }),
-  methods: {
+    methods: {
     fnPageClick(pageCntList) {
         this.pageNum = pageCntList;
         this.$emit('fnClick', this.pageNum);
