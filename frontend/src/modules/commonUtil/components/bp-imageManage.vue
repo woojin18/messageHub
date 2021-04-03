@@ -83,7 +83,8 @@ export default {
 
         this.contants.forEach(function(obj){
           //TODO : 이미지 서버로 업로드 위치 변경되서 수정
-          obj['imageFullPath'] = require("@/assets/images/uploadImage/"+obj.IMAGE_FILE_NAME);
+          //obj['imageFullPath'] = require("@/assets/images/uploadImage/"+obj.IMAGE_FILE_NAME);
+          obj['imageFullPath'] = obj.IMAGE_FILE_PATH;
         });
       });
     },
