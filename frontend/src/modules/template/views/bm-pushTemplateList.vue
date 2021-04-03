@@ -218,7 +218,7 @@ export default {
 
       var params = Object.create(this.searchData);
       params.pageNo = this.pagingCnt;
-      params.rowSize = this.selected;
+      params.listSize = this.selected;
 
       await TemplateApi.selectPushTmpltList(params).then(response =>{
         var result = response.data;

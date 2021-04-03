@@ -59,7 +59,7 @@
         <include refid="wherePushTemplate"/>
         ORDER BY REG_DT DESC
         <if test='pagingYn == "Y" '>
-        LIMIT ${offset}, #{rowSize}
+        LIMIT ${offset}, #{listSize}
         </if>
     </select>
 
