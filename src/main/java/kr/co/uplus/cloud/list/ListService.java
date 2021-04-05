@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.co.uplus.cloud.sample.dto.RestResult;
+import kr.co.uplus.cloud.common.dto.RestResult;
 
 @Service
 public class ListService {

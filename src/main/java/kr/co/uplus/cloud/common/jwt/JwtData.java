@@ -1,4 +1,4 @@
-package kr.co.uplus.cloud.sample.jwt;
+package kr.co.uplus.cloud.common.jwt;
 
 import lombok.Data;
 

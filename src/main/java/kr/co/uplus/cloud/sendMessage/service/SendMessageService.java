@@ -1,12 +1,11 @@
 package kr.co.uplus.cloud.sendMessage.service;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.co.uplus.cloud.sample.dto.RestResult;
+import kr.co.uplus.cloud.common.dto.RestResult;
 import kr.co.uplus.cloud.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
 

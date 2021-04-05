@@ -1,4 +1,4 @@
-package kr.co.uplus.cloud.sample.utils;
+package kr.co.uplus.cloud.common.utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import kr.co.uplus.cloud.sample.model.AuthUser;
+import kr.co.uplus.cloud.common.model.AuthUser;
 
 public class SpringUtils {
 
@@ -31,12 +31,12 @@ public class SpringUtils {
 		ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		return sra.getRequest();
 	}
-	
+
 	public static HttpServletResponse getCurrentResponse() {
 		ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		return sra.getResponse();
 	}
-	
+
 	public static String getCurrentRequestIp() {
 		HttpServletRequest req = getCurrentRequest();
 		String ip = req.getHeader("X-FORWARDED-FOR");
@@ -45,7 +45,7 @@ public class SpringUtils {
 		}
 		return ip;
 	}
-	
+
 	public static AuthUser getCurrentUser() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth == null || "anonymousUser".equals(auth.getPrincipal().toString()))
@@ -64,17 +64,16 @@ public class SpringUtils {
 		if (user == null) {
 			throw new RuntimeException("USER_NOT_FOUND");
 		}
-		
+
 		String userId = user.getUsername();
 		Collection<? extends GrantedAuthority> roles = user.getAuthorities();
-		
+
 		if (roles.size() == 0) {
 			throw new RuntimeException("ROLE_NOT_FOUND:" + userId);
-		}
-		else if (roles.size() > 1) {
+		} else if (roles.size() > 1) {
 			throw new RuntimeException("MANY_ROLES_FOUND:" + userId);
 		}
-		
+
 		return roles.toArray()[0].toString();
 	}
 
@@ -82,17 +81,18 @@ public class SpringUtils {
 		AuthUser user = getCurrentUser();
 		if (user == null)
 			return false;
-		
+
 		List<String> aroles = Arrays.asList(roles);
 		for (GrantedAuthority auth : user.getAuthorities()) {
 			if (aroles.contains(auth.toString()))
 				return true;
 		}
-		
+
 		return false;
 	}
 
-	private static final Class[] MAPPING_ANNOTATIONS = {RequestMapping.class, GetMapping.class, PostMapping.class, PutMapping.class, DeleteMapping.class, PatchMapping.class};
+	private static final Class[] MAPPING_ANNOTATIONS = { RequestMapping.class, GetMapping.class, PostMapping.class,
+			PutMapping.class, DeleteMapping.class, PatchMapping.class };
 
 	public static Annotation findMappingAnnotation(AnnotatedElement element) {
 		for (Class<? extends Annotation> clazz : MAPPING_ANNOTATIONS) {
@@ -100,22 +100,21 @@ public class SpringUtils {
 			if (anno != null)
 				return anno;
 		}
-		
+
 		if (element instanceof Method) {
 			Method method = (Method) element;
 			return AnnotationUtils.findAnnotation(method, RequestMapping.class);
-		}
-		else {
+		} else {
 			Class<?> clazz = (Class<?>) element;
 			return AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
 		}
 	}
-	
+
 	public static String[] getMappingUrl(AnnotatedElement element) {
 		Annotation anno = findMappingAnnotation(element);
 		return (String[]) AnnotationUtils.getValue(anno);
 	}
-	
+
 	public static String getWebTemplateVersion() {
 		Package pack = SpringUtils.class.getPackage();
 		return String.format("%s-%s.jar",

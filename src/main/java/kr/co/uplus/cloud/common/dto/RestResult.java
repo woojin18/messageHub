@@ -1,7 +1,7 @@
 package kr.co.uplus.cloud.common.dto;
 
 import kr.co.uplus.cloud.dto.PageDto;
-import kr.co.uplus.cloud.sample.consts.ResultCode;
+import kr.co.uplus.cloud.common.consts.ResultCode;
 
 public class RestResult<T> implements IResult<ResultCode, T> {
     protected boolean success = true;

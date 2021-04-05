@@ -1,4 +1,4 @@
-package kr.co.uplus.cloud.sample.jwt;
+package kr.co.uplus.cloud.common.jwt;
 
 import java.util.Collection;
 import java.util.List;
@@ -10,9 +10,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import kr.co.uplus.cloud.sample.model.AuthUser;
+import kr.co.uplus.cloud.common.model.AuthUser;
 
-@JsonIgnoreProperties({ "status", "userPwd", "enabled", "accountNonExpired", "accountNonLocked", "credentialsNonExpired" })
+@JsonIgnoreProperties({ "status", "userPwd", "enabled", "accountNonExpired", "accountNonLocked",
+		"credentialsNonExpired" })
 public class JwtUser extends AuthUser {
 	private static final long serialVersionUID = -1233591656437541107L;
 
@@ -28,7 +29,7 @@ public class JwtUser extends AuthUser {
 		JwtUser u = new JwtUser();
 		u.setUserId((String) principal.get("userId"));
 		u.setUserNm((String) principal.get("userNm"));
-		
+
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		Collection<? extends GrantedAuthority> authorities = ((List<Map>) principal.get("authorities")).stream()
 				.map(o -> new SimpleGrantedAuthority((String) o.get("authority"))).collect(Collectors.toList());

@@ -1,4 +1,4 @@
-package kr.co.uplus.cloud.sample.model;
+package kr.co.uplus.cloud.common.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

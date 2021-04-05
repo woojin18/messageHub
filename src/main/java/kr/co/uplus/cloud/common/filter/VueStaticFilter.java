@@ -1,4 +1,4 @@
-package kr.co.uplus.cloud.sample.filter;
+package kr.co.uplus.cloud.common.filter;
 
 import java.io.IOException;
 
