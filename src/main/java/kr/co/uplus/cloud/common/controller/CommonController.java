@@ -42,7 +42,7 @@ public class CommonController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("파일등록에 실패하였습니다.");
-            log.error("File Upload Exception : {}", e);
+            log.error("{} Error : {}", this.getClass(), e);
         }
 
         return rtn;
@@ -56,11 +56,29 @@ public class CommonController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
-            params.put("corp_id", "TEST_CORP_ID");    //TODO : 고객 ID(로그인세션에서 가져오자)
             rtn = commonService.selectImageList(params);
         } catch(Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
+    // 고객사별 이미지 삭제
+    @PostMapping("/deleteImageFile")
+    public RestResult<?> deleteImageFile(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = commonService.deleteImageFile(params);
+        } catch(Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
         }
 
         return rtn;

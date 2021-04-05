@@ -1,36 +1,38 @@
 <template>
-  <div class="imageUploadPopup"
-    v-if="imgUploadOpen">
-    <div class="imageUploadPopup__dialog">
-      <hr/>
-      <span>이미지 업로드</span>
-      <br/>
-      <hr/>
-      <span>이미지 사용채널</span>
-      <br/>
-      <input type="checkbox" id="push" value="PUSH" v-model="chkboxUseCh">
-      <label for="push">푸시</label>
-      <input type="checkbox" id="rcs" value="RCS" v-model="chkboxUseCh">
-      <label for="rcs">RCS</label>
-      <input type="checkbox" id="friendtalk" value="FRIENDTALK" v-model="chkboxUseCh">
-      <label for="friendtalk">친구톡</label>
-      <input type="checkbox" id="mms" value="MMS" v-model="chkboxUseCh">
-      <label for="mms">MMS</label>
-      <hr/>
+  <div v-if="imgUploadOpen" @click.self="fnClose" class="modalStyle" id="image-add" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width:785px">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h5 class="lc-1">이미지 업로드</h5>
+          <hr>
+          <div class="of_h">
+            <p class="font-size14 color000 inline-block mt15" style="font-weight:700">이미지 사용채널</p>
+          </div>
+          <div class="consolCheck vertical-top mt20" style="width:100%">
+            <input type="checkbox" id="imgPush" class="checkStyle2" value="PUSH" v-model="chkboxUseCh">
+            <label for="imgPush" class="font-size16" style="width:13%">푸시</label>
+            <input type="checkbox" id="imgRCS" class="checkStyle2" value="RCS" v-model="chkboxUseCh">
+            <label for="imgRCS" class="font-size16" style="width:13%">RCS</label>
+            <input type="checkbox" id="imgtalk" class="checkStyle2" value="FRIENDTALK" v-model="chkboxUseCh">
+            <label for="imgtalk" class="font-size16" style="width:13%">친구톡</label>
+            <input type="checkbox" id="imgMMS1" class="checkStyle2" value="MMS" v-model="chkboxUseCh">
+            <label for="imgMMS1" class="font-size16" style="width:13%">MMS</label>
+          </div>
 
+          <div class="border-line mt20" style="width:100%;">
+            <p v-if="!imageUrl" class="font-size13 color5 text-center" style="margin:130px 0;">이미지 영역</p>
+            <img v-if="imageUrl" :src="imageUrl" style="top:0;left:0;width:700px;height:260px;object-fit: contain;"/>
+          </div>
 
-      <hr/>
-      <input ref="imageInput" type="file" hidden @change="fnImagePreview">
-      <div style="width: 500px; height: 250px">
-        <img v-if="imageUrl" :src="imageUrl" style="width: 500px; height: 250px; object-fit: contain;"/>
-        <!-- <img :src="require('@/img/uploadImg/20210329_4518486852014528442.jpg')" style="width: 500px; height: 250px; object-fit: contain;"/> -->
+          <div class="text-center mt60">
+            <input ref="imageInput" type="file" @change="fnImagePreview" style="display:none;">
+            <a @click="fnFindImgFile" class="btnStyle3 black font14 mr5" title="파일찾기">파일찾기</a>
+            <a @click="fnUploadFile" class="btnStyle3 black font14 mr5" title="업로드">업로드</a>
+            <a @click="fnClose" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>
+          </div>
+
+        </div>
       </div>
-      <hr/>
-
-      <button type="button" @click="fnFindImgFile">파일찾기</button>
-      <button @click="fnUploadFile">업로드</button>
-      <button @click="fnUplaodCancle" color="primary" style="background-color : #1976d2 !important">취소</button>
-      <hr/>
     </div>
   </div>
 </template>
@@ -52,7 +54,7 @@ export default {
     return {
         files: [],
         chkboxUseCh: [],
-        imageUrl: null,
+        imageUrl: '',
     }
   },
   methods: {
@@ -60,12 +62,8 @@ export default {
     fnClose(){
       this.files = [];
       this.chkboxUseCh = [];
-      this.imageUrl = null;
+      this.imageUrl = '';
       this.$emit('update:imgUploadOpen', false)
-    },
-    fnUplaodCancle(){
-      this.fnClose();
-      this.$parent.fnOpenImageManagePopUp();
     },
     //체크값 json형식으로 변환
     fnGetUsechJson(){
@@ -105,13 +103,10 @@ export default {
           }
         }
       ).then( response => {
-        console.log(response.data);
-
         if(response.data != null && response.data.success){
           alert("등록되었습니다.");
-          // 창닫기
-          // TODO: 로컬에서 이미지 파일 업로드 후 이미지읽어 오는 속도가 프로젝트 갱신속도가 빨라서 임시 주석
-          //this.fnUplaodCancle();
+          this.$parent.fnSearch();
+          this.fnClose();
         } else {
           if(typeof(response.data.message) !== 'undefined' || response.data.message !== null) {
             alert(response.data.message);
@@ -124,28 +119,22 @@ export default {
       .catch(function () {
         alert("등록에 실패했습니다.");
       });
-
     },
-
-
     //파일찾기 클릭시
     fnFindImgFile() {
       this.$refs.imageInput.click();
     },
     //이미지미리보기 클릭시
     fnImagePreview(e) {
-      //console.log(e.target.files)
-      const file = e.target.files[0]; // Get first index in files
+      var file = e.target.files[0]; // Get first index in files
       this.imageUrl = URL.createObjectURL(file); // Create File URL
     }
-
-
   }
 }
 </script>
 
 <style lang="scss">
-$module: 'imageUploadPopup';
+$module: 'modalStyle';
 .#{$module} {
   // This is modal bg
   background-color: rgba(0,0,0,.7);
@@ -154,63 +143,5 @@ $module: 'imageUploadPopup';
   overflow: auto;
   margin: 0;
   z-index: 9999;
-  //This is modal layer
-  &__dialog{
-    left: 30%;
-    top: 15%;
-    width: 600px;
-    position: absolute;
-    background: #fff;
-    margin-bottom: 50px;
-  }
-
-  &__header {
-    font-size: 28px;
-    font-weight: bold;
-    line-height: 1.29;
-    padding: 16px 16px 0 25px;
-    position: relative;
-  }
-  &__body {
-    padding: 25px;
-    min-height: 150px;
-    max-height: 412px;
-    overflow-y: scroll;
-  }
-  &__btn {
-    text-align: right; 
-    padding-top: 10px;
-  }
-}
-.example-drag .drop-active {
-top: 0;
-bottom: 0;
-right: 0;
-left: 0;
-position: fixed;
-z-index: 9999;
-opacity: .6;
-text-align: center;
-width:100%;
-background: #000;
-}
-.example-drag .drop-active h3 {
-margin: -.5em 0 0;
-position: absolute;
-top: 50%;
-left: 0;
-right: 0;
--webkit-transform: translateY(-50%);
--ms-transform: translateY(-50%);
-transform: translateY(-50%);
-font-size: 40px;
-color: #fff;
-padding: 0;
-}
-
-input[type="checkbox"] {
-  width: auto;
-  height: auto;
-  -webkit-appearance: auto;
 }
 </style>

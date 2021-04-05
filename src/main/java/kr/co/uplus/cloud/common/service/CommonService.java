@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -19,7 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.uplus.cloud.common.consts.DB;
 import kr.co.uplus.cloud.common.dto.RestResult;
+import kr.co.uplus.cloud.dto.PageDto;
 import kr.co.uplus.cloud.utils.CommonUtils;
 import kr.co.uplus.cloud.utils.DateUtil;
 import kr.co.uplus.cloud.utils.GeneralDao;
@@ -123,13 +125,12 @@ public class CommonService {
 
         //DB 등록
         Map<String, Object> seqParams = new HashMap<>();
-        seqParams.put("corp_id", "TEST_CORP_ID");    //TODO : 고객 ID(로그인세션에서 가져오자)
-        seqParams.put("use_ch_info", useCh);
-        seqParams.put("origin_file_name", fileName);
-        seqParams.put("image_file_name", uplaodFileName);
-        seqParams.put("image_file_path", uplaodFileFullPath);
-        seqParams.put("reg_id", loginId);    //TODO : 로그인 ID(로그인세션에서 가져오자)
-        seqParams.put("upd_id", loginId);    //TODO : 로그인 ID(로그인세션에서 가져오자)
+        seqParams.put("corpId", "TEST_CORP_ID");    //TODO : 고객 ID(로그인세션에서 가져오자)
+        seqParams.put("useChInfo", useCh);
+        seqParams.put("originFileName", fileName);
+        seqParams.put("imageFileName", uplaodFileName);
+        seqParams.put("imageFilePath", uplaodFileFullPath);
+        seqParams.put("loginId", loginId);
         generalDao.insertGernal("common.insertImageFile", seqParams);
 
         rtn.setSuccess(true);
@@ -141,23 +142,79 @@ public class CommonService {
     //고객사별 이미지 조회
     public RestResult<Object> selectImageList(Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
-        Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
 
-        if(pageInfo != null && !pageInfo.isEmpty()) {
-            int selPage     = CommonUtils.getInt(pageInfo.get("selPage"));
-            int selPageCnt  = CommonUtils.getInt(pageInfo.get("selPageCnt"));
-
-            int rowNum = generalDao.selectGernalCount("code.selectCodeTypeList_count", params);
-            pageInfo.put("rowNum", rowNum);
-
-            RowBounds rowBounds = new RowBounds((selPage-1)*selPageCnt, selPageCnt);
-            params.put("rowBounds", rowBounds);
-
-            //rtn.setPageInfo(pageInfo);
+        if(params.containsKey("pageNo")
+                && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+                && params.containsKey("listSize")
+                && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+            PageDto pageDto = rtn.getPageInfo();
+            pageDto.setPageInfo(params);
+            //카운트 쿼리 실행
+            int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_IMAGE_LIST_CNT, params);
+            pageDto.setTotCnt(listCnt);
         }
 
-        List<Object> rtnList = generalDao.selectGernalList("common.selectImageList", params);
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_IMAGE_LIST, params);
         rtn.setData(rtnList);
+
+        return rtn;
+    }
+
+    /**
+     * 이미지 삭제
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public RestResult<Object> deleteImageFile(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_IMAGE_LIST, params);
+        String uploadDirPath = this.imgUploadPath;
+
+        //TODO : 이미지가 서버가 따로 존재. 로컬만 테스트를 위해 경로를 현프로젝트 밑으로..
+        //TODO : 추후 이미지서버를 알면 업로드 로직을 변경하자
+        if(Arrays.stream(env.getActiveProfiles()).anyMatch(
+                env -> env.equalsIgnoreCase("local"))){
+            Path prjRelPath = Paths.get("");
+            String prjAbsPath = prjRelPath.toAbsolutePath().toString();
+            uploadDirPath = prjAbsPath + this.imgUploadPath;
+        }
+
+        if(CollectionUtils.isEmpty(rtnList)) {
+            rtn.setSuccess(false);
+            rtn.setMessage("삭제할 데이터가 존재하지 않습니다.");
+            return rtn;
+        }
+
+        File file = null;
+        Map<String, Object> imgMap = null;
+
+        //파일삭제(파일삭제여부와 관계없이 로우삭제->파일삭제 후 DB 삭제시 이슈)
+        for(Object imgObj :rtnList) {
+            try {
+                imgMap = (Map<String, Object>) imgObj;
+                if(imgMap.containsKey("imageFileName")
+                        && CommonUtils.isNotEmptyObject(imgMap.get("imageFileName"))) {
+                    file = new File(uploadDirPath+imgMap.get("imageFileName"));
+                    if( file.exists() ){
+                        file.delete();
+                    }
+                }
+            } catch (Exception e) {
+                log.error("File Delete Error : {}", e);
+            }
+        }
+
+        //데이터삭제
+        int resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_IMAGE, params);
+        if (resultCnt <= 0) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+        } else {
+            rtn.setSuccess(true);
+            rtn.setData(params);
+        }
 
         return rtn;
     }

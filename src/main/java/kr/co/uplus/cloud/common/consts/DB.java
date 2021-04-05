@@ -2,6 +2,10 @@ package kr.co.uplus.cloud.common.consts;
 
 public class DB {
 
+    //공통
+    public final static String QRY_SELECT_IMAGE_LIST_CNT = "common.selectImageListCnt";
+    public final static String QRY_SELECT_IMAGE_LIST = "common.selectImageList";
+    public final static String QRY_DELETE_IMAGE = "common.deleteImage";
 	// 로그인
 	public final static String QRY_SELECT_USERNAME	= "login.qrySelectUserName";
 	public final static String QRY_INSERT_USERNAME	= "login.qryInsertAuthUser";

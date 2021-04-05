@@ -3,7 +3,7 @@
 
 <mapper namespace="template">
 
-    <sql id ="wherePushTemplate">
+    <sql id ="whereSelectPushTemplateList">
         <if test="searchText != '' and searchText != null ">
             <if test="searchCondi == 'tmpltId' ">
             AND TMPLT_ID LIKE CONCAT('%', #{searchText}, '%')
@@ -26,17 +26,16 @@
         </if>
     </sql>
 
-    <select id="selectPushTemplateListCnt" parameterType="string" resultType="int">
+    <select id="selectPushTemplateListCnt" parameterType="hashmap" resultType="int">
     /* template.selectPushTemplate 푸시 템플릿 리스트 카운트 조회 */
         SELECT
             COUNT(*) AS CNT
         FROM CM_PUSH_TMPLT
         WHERE 1=1
-        <include refid="wherePushTemplate"/>
-        ORDER BY REG_DT DESC
+        <include refid="whereSelectPushTemplateList"/>
     </select>
 
-    <select id="selectPushTemplateList" parameterType="string" resultType="camel">
+    <select id="selectPushTemplateList" parameterType="hashmap" resultType="camel">
     /* template.selectPushTemplate 푸시 템플릿 리스트 조회 */
         SELECT
             @ROWNUM := @ROWNUM + 1 AS ROWNUM
@@ -56,7 +55,7 @@
             , UPD_ID
         FROM CM_PUSH_TMPLT, (SELECT @ROWNUM:=0) TMP
         WHERE 1=1
-        <include refid="wherePushTemplate"/>
+        <include refid="whereSelectPushTemplateList"/>
         ORDER BY REG_DT DESC
         <if test='pagingYn == "Y" '>
         LIMIT ${offset}, #{listSize}
