@@ -5,6 +5,7 @@ import tokenSvc from '@/common/token-service';
 
 import WebNaviLayout from './views/WebNaviLayout.vue';
 import WebLayout from './views/WebLayout.vue';
+import LoginLayout from './views/LoginLayout.vue';
 
 import homeRoutes from './modules/home/router';
 import loginRoutes from './modules/login/router';
@@ -13,6 +14,7 @@ import channelRoutes from './modules/channel/router';
 import projectRoutes from './modules/project/router';
 import messageRoutes from './modules/message/router';
 import templateRoutes from './modules/template/router';
+import signUpRoutes from './modules/signUp/router';
 
 Vue.use(Router)
 
@@ -22,7 +24,7 @@ const router = new Router({
   routes: [
     {
       path: '/login',
-      component: WebLayout,
+      component: LoginLayout,
       children: [
         {
           path: '/view/error/404',
@@ -35,6 +37,7 @@ const router = new Router({
           meta: { public: true }
         },
         ...loginRoutes,
+        ...signUpRoutes
       ]
     },
     {
@@ -57,7 +60,7 @@ const router = new Router({
         ...channelRoutes,
         ...projectRoutes,
         ...messageRoutes,
-        ...templateRoutes
+        ...templateRoutes,
       ]
     },
     {path: '*', redirect: '/view/error/404'}
@@ -69,7 +72,7 @@ router.beforeEach((to, from, next) => {
   const loggedIn = !!tokenSvc.getToken();
 
   if (!isPublic && !loggedIn) {
-    return next('/login');
+    //return next('/login');
   }
 
   to.matched.some(record => {

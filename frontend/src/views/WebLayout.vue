@@ -1,5 +1,5 @@
 <template>
-  <body class="loginBg1">
+  <div class="loginBg1">
       <div class="container">
         <router-view :key="$route.fullPath"></router-view>
       </div>
@@ -7,7 +7,7 @@
       <div class="loading_layer">
         <div class="loader"></div>
       </div>
-  </body>
+  </div>
 </template>
 
 <script>

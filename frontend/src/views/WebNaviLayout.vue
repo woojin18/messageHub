@@ -1,5 +1,5 @@
 <template>
-  <body>
+  <div>
       <web-header></web-header>
       <!-- <tree-menu></tree-menu> -->
       <article>
@@ -12,7 +12,7 @@
       <div class="loading_layer">
         <div class="loader"></div>
       </div>
-  </body>
+  </div>
 </template>
 
 <script>

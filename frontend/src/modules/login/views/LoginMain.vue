@@ -1,44 +1,36 @@
 <template>
 
   <article class="content">
-    
-    <div class="login-form">
-      <div class="main-div shadow-sm">
-        <h2 class="text-center">시스템관리자 로그인</h2>
-        <div class="form-group">
-          <p>이메일</p>
-          <input  type="email" class="form-control" id="inputEmail" placeholder="이메일 주소를 입력하세요"
-                  name="userId" v-model="userId" :maxlength="15" v-focus @keyup.enter="ajaxlogin">
-        </div>
-        <div class="form-group">
-          <p>비밀번호	</p>
-          <input  type="password" class="form-control" id="inputPassword" placeholder="비밀번호를 입력하세요"
-                  name="loginPwd" v-model="loginPwd" :maxlength="20" @keyup.enter="ajaxlogin">
-        </div>
-        <!-- 에러메세지 출력 -->
-        <div class="message_area" v-if="errors.length">
-          <p class="text_error">{{ errors[0] }}</p>
-        </div>
 
-        <div class="row">
-          <div class="checkbox col-md-6">
-            <div class="checks">
-              <input type="checkbox" id="saveId" class="checkStyle" ref="chkSaveId">
-              <label for="saveId">아이디 저장</label>
-            </div>
-          </div>
-          <div class="forgot  col-md-6">
-              <a href="reset.html">비밀번호 분실</a>
-          </div>
-        </div>	
-        <button type="submit" class="btn btn-primary" @click.prevent="ajaxlogin">로그인</button>
-        <p class="bottom_text text-center">시스템 지원이 필요한가요?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><a href="#">시스템 문의</a></span></p>
+  <section class="userSection width540 mt150">
+		<!-- userLogin-form -->
+		<div class="userLogin-form">
+			<h2 class="text-center">U+ 통합메시징 클라우드 로그인</h2>
+			<input type="email" class="form-control" id="inputEmail" placeholder="이메일 주소를 입력하세요"
+             name="userId" v-model="userId" :maxlength="15" v-focus @keyup.enter="ajaxlogin">
+			<input type="password" class="form-control mt20" id="inputPassword" placeholder="비밀번호를 입력하세요"
+             name="loginPwd" v-model="loginPwd" :maxlength="20" @keyup.enter="ajaxlogin"> 
+             <!-- 에러메세지 출력 -->
+      <div class="message_area" v-if="errors.length">
+        <p class="text_error">{{ errors[0] }}</p>
       </div>
-      <p class="botto-text text-center">Copyright©LG Plus Corp. All Rights Reserved.</p>
-    </div>
-    
+			<div class="row mt20">
+				<div class="checkbox col-md-6">
+					<div class="checks">
+						<input type="checkbox" id="chkID" class="checkStyle4" value="아이디 저장" ref="chkSaveId">
+            <label for="chkID">아이디 저장</label>	
+					</div>
+				</div>
+				<div class="forgot col-md-6">
+					 <a href="user_find_id.html">아이디 찾기</a><span>·</span><a href="user_find_pw.html"><i class="fas fa-lock-alt mr5"></i> 비밀번호 분실</a>
+				</div>
+			</div>	
+			<button type="submit" class="btn btn-login mt45" data-toggle="modal" data-target="#smsAcc" @click.prevent="ajaxlogin">로그인</button>
+		<!--	<a href="user_join.html" class="btn btn-join mt15">회원가입</a> -->
+		</div>
+		<!-- //userLogin-form -->
+	</section>
   </article>
-
 </template>
 
 <script>
@@ -153,6 +145,9 @@
             }
           }
         });
+      },
+      signUp: function() {
+        this.$router.push({name : "signUp"});
       }
     }
   };
