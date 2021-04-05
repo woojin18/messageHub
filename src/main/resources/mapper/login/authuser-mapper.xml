@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="login">
+
+	<select id="qrySelectUserName" parameterType="string" resultType="kr.co.uplus.cloud.common.model.AuthUser">
+	/* sample.qrySelectUserName */
+		SELECT
+			user.USER_ID,
+			user.LOGIN_ID,
+			user.USER_NAME,
+			user.LOGIN_PWD AS USER_PWD,
+			user.PWD_UPD_DT,
+			user.HP_NUMBER,
+			user.RECENT_CONN_DT,
+			user.SMS_CERTIFY_NUMBER,
+			user.LOGIN_FAIL_CNT,
+			user.MAIL_CERTIFY_NUMBER,
+			user.MAIL_CERTIFY_SENDER_DT,
+			user.APPROVAL_STATUS,
+			user.USER_PRIVILEGETYPE,
+			user.DEL_YN,
+			user.REG_ID,
+			user.REG_DT,
+			user.UPD_DT,
+			CASE
+				WHEN user.APPROVAL_STATUS = 'Y' THEN 'USE'
+				WHEN IFNULL(user.LOGIN_FAIL_CNT, 0) > 5 THEN 'LOCK'
+				ELSE 'NOTUSE'
+			END AS STATUS,
+			role.ROLE_CD AS ROLE
+		FROM CM_USER user
+			LEFT OUTER JOIN cm_bo.CM_USER_ROLE role
+				ON user.USER_ID = role.USER_ID
+		WHERE	user.LOGIN_ID = #{userId}
+	</select>
+	
+	
+	<select id="qryInsertAuthUser" parameterType="kr.co.uplus.cloud.common.model.AuthUser" resultType="Integer">
+		INSERT INTO CLOUD_TEST_USER
+		(
+			USER_ID, USER_PWD, STATUS, ROLE
+		)
+		VALUES
+		(
+    		#{userId}, #{userPwd}, #{status}, #{role}
+   		)
+	</select>
+
+</mapper>

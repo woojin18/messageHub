@@ -1,14 +1,13 @@
-package kr.co.uplus.cloud.sample.model;
+package kr.co.uplus.cloud.common.model;
 
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import kr.co.uplus.cloud.sample.consts.Role;
-import kr.co.uplus.cloud.sample.consts.UserStatus;
+import kr.co.uplus.cloud.common.consts.Role;
+import kr.co.uplus.cloud.common.consts.UserStatus;
 import lombok.Data;
-
 
 @Data
 public class AuthUser implements UserDetails {

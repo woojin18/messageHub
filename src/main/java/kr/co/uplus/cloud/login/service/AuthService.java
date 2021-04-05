@@ -1,4 +1,4 @@
-package kr.co.uplus.cloud.sample.service;
+package kr.co.uplus.cloud.login.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,18 +25,18 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import kr.co.uplus.cloud.sample.config.SecurityConfig;
-import kr.co.uplus.cloud.sample.consts.Const;
-import kr.co.uplus.cloud.sample.consts.ResultCode;
-import kr.co.uplus.cloud.sample.crypto.Sha256PasswordEncoder;
-import kr.co.uplus.cloud.sample.dao.AuthUserDao;
-import kr.co.uplus.cloud.sample.dto.RestResult;
-import kr.co.uplus.cloud.sample.handler.LoginFailureHandler;
-import kr.co.uplus.cloud.sample.handler.LoginSuccessHandler;
-import kr.co.uplus.cloud.sample.jwt.JwtService;
-import kr.co.uplus.cloud.sample.model.AuthUser;
-import kr.co.uplus.cloud.sample.model.PublicToken;
-import kr.co.uplus.cloud.sample.utils.SpringUtils;
+import kr.co.uplus.cloud.common.config.SecurityConfig;
+import kr.co.uplus.cloud.common.consts.Const;
+import kr.co.uplus.cloud.common.consts.ResultCode;
+import kr.co.uplus.cloud.common.crypto.Sha256PasswordEncoder;
+import kr.co.uplus.cloud.common.dao.AuthUserDao;
+import kr.co.uplus.cloud.common.dto.RestResult;
+import kr.co.uplus.cloud.common.handler.LoginFailureHandler;
+import kr.co.uplus.cloud.common.handler.LoginSuccessHandler;
+import kr.co.uplus.cloud.common.jwt.JwtService;
+import kr.co.uplus.cloud.common.model.AuthUser;
+import kr.co.uplus.cloud.common.model.PublicToken;
+import kr.co.uplus.cloud.common.utils.SpringUtils;
 import kr.co.uplus.cloud.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
 
@@ -58,7 +58,7 @@ public class AuthService implements UserDetailsService {
 
 	@Autowired
 	private Sha256PasswordEncoder sha256;
-	
+
 	@Autowired
 	private AuthUserDao dao;
 
@@ -84,16 +84,21 @@ public class AuthService implements UserDetailsService {
 		return user;
 	}
 
-	public RestResult<?> chkLogin(AuthUser user, HttpServletRequest request, HttpServletResponse response) {
+	public RestResult<?> chkLogin(Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
 		Authentication authentication = null;
 
+		String userId = (String) params.get("userId");
+		String userPwd = (String) params.get("userPwd");
+
 		try {
-			user.setUserPwd(sha256.encode(user.getPassword()));
-			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUserId(), user.getPassword());
+			params.put("userPwd", sha256.encode(userPwd));
+			userPwd = (String) params.get("userPwd");
+			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userId, userPwd);
 			authentication = authManager.authenticate(token);
 
 		} catch (AuthenticationException e) {
-			request.setAttribute(SecurityConfig.LOGIN_ID_PARAM, user.getUserId());
+			request.setAttribute(SecurityConfig.LOGIN_ID_PARAM, userId);
 			ResultCode resultCode = loginFailureHandler.process(request, response, e);
 
 			return new RestResult<String>(false).setCode(resultCode);
@@ -111,12 +116,15 @@ public class AuthService implements UserDetailsService {
 		return new RestResult<String>().setData(nextUrl);
 	}
 
-	public RestResult<?> genPublicToken(@RequestBody AuthUser user) {
+	public RestResult<?> genPublicToken(@RequestBody Map<String, Object> params) {
 		Authentication authentication = null;
 
+		String userId = (String) params.get("userId");
+		String userPwd = (String) params.get("userPwd");
+
 		try {
-			user.setUserPwd(sha256.encode(user.getPassword()));
-			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUserId(),user.getPassword());
+			params.put("userPwd", sha256.encode(userPwd));
+			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userId, userPwd);
 			authentication = authManager.authenticate(token);
 		} catch (AuthenticationException e) {
 			return new RestResult<String>(false);
@@ -163,22 +171,20 @@ public class AuthService implements UserDetailsService {
 
 	// 메뉴 조회
 	@SuppressWarnings({ "unchecked" })
-	public RestResult<?> getMenuForRole(
-			Map<String, Object> params,
-			HttpServletRequest request,
+	public RestResult<?> getMenuForRole(Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-		
+
 		params.put("user_id", params.get("user_id"));
 		params.put("role_cd", params.get("role_cd"));
 		params.put("menus_level", "0");
 		List<Object> rtnList = generalDao.selectGernalList("sample.getMenuForRole", params);
 
-		for(Object rtnMap : rtnList) {
+		for (Object rtnMap : rtnList) {
 			params.put("menus_level", "1");
 			params.put("top_menus_cd", ((Map<String, Object>) rtnMap).get("MENUS_CD"));
 			List<Object> childList = generalDao.selectGernalList("sample.getMenuForRole", params);
-			for(Object childMap : childList) {
+			for (Object childMap : childList) {
 				params.put("menus_level", "2");
 				params.put("top_menus_cd", ((Map<String, Object>) childMap).get("MENUS_CD"));
 				List<Object> child2List = generalDao.selectGernalList("sample.getMenuForRole", params);
@@ -186,9 +192,9 @@ public class AuthService implements UserDetailsService {
 			}
 			((Map<String, Object>) rtnMap).put("children", childList);
 		}
-		
+
 		rtn.setData(rtnList);
-		
+
 		return rtn;
 	}
 }

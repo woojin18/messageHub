@@ -1,4 +1,4 @@
-package kr.co.uplus.cloud.sample;
+package kr.co.uplus.cloud.common;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -19,9 +19,9 @@ import lombok.extern.log4j.Log4j2;
  *
  * </pre>
  *
- * @author  : savrani (Son Wang Gu)
- * @Date    : 2019. 3. 22.
- * @Version : 
+ * @author : savrani (Son Wang Gu)
+ * @Date : 2019. 3. 22.
+ * @Version :
  */
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @EnableScheduling
@@ -31,16 +31,16 @@ import lombok.extern.log4j.Log4j2;
 		@ComponentScan("kr.co.uplus.config.mybatis"),
 		@ComponentScan("kr.co.uplus.config.mongo"),
 	})
-public class CloudWebSampleApplication {
+public class CloudWebApplication {
 
 	public static void main(String[] args) throws Exception {
 		if (System.getProperty(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME) == null) {
 			System.setProperty(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME, "local");
 		}
-		
-		SpringApplication.run(CloudWebSampleApplication.class, args);
+
+		SpringApplication.run(CloudWebApplication.class, args);
 	}
-	
+
 	@PostConstruct
 	public void onStartup() {
 		log.info("################ System-up start ################");
