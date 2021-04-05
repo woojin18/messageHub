@@ -45,8 +45,8 @@ public class TemplateService {
 
         if(params.containsKey("pageNo")
                 && CommonUtils.isNotEmptyObject(params.get("pageNo"))
-                && params.containsKey("rowSize")
-                && CommonUtils.isNotEmptyObject(params.get("rowSize"))) {
+                && params.containsKey("listSize")
+                && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
             PageDto pageDto = rtn.getPageInfo();
             pageDto.setPageInfo(params);
             //카운트 쿼리 실행
