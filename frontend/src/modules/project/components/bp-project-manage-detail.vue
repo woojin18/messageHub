@@ -1,7 +1,7 @@
 <template>
   <div class="modal fade modalStyle" id="confirm"
     tabindex="-1" role="dialog" aria-hidden="true"
-    @click="fnClose"
+    
   >
     <!-- @click="fnClose" -->
 		<div class="modal-dialog">
@@ -12,13 +12,9 @@
 						<hr>
 						<div class="mt20 of_h">
 							<h4 class="font-normal inline-block float-left" style="width:20%">프로젝트명 *</h4>
-							<div style="width:80%" class="of_h">
-								<div style="width:75%">
+							<div style="width:78%" class="of_h">
+								<div>
 									<input id="project_name" type="text" class="inputStyle float-left" title="프로젝트명 입력란">
-								</div>
-								<div style="width:23%" class="float-right">
-									<a @click="fnCheckProjectName" class="btnStyle7 minWidthAuto" style="width:100%" title="중복체크">중복체크</a>
-                  <input type="hidden" id="checkYn" value="N"> 
 								</div>
 							</div>
 							<div class="mt15 of_h">
@@ -92,7 +88,7 @@
 					<div class="text-center mt40">
 						<a @click="fnSave" class="btnStyle3 black font14" >등록</a>
 						<!-- <a @click="fnClose" class="btnStyle3 white font14">닫기</a>						 -->
-            <a href="#self" class="btnStyle3 white font14">닫기</a>						
+            <a @click="fnClose" class="btnStyle3 white font14">닫기</a>						
 					</div>
 				</div>
 			</div>
@@ -194,11 +190,6 @@ export default {
     },
     // 등록, 수정
     fnSave(){
-      if( $("#checkYn").val() === 'N' && this.save_status === 'C' ) {
-        alert("중복체크를 먼저 해주세요.");
-        return;
-      }
-
       var params = {
           "project_id"      : this.row_data.PROJECT_ID,
           "project_name"    : $("#project_name").val(),

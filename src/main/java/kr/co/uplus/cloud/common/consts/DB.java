@@ -39,4 +39,8 @@ public class DB {
 	public final static String QRY_INSERT_SEND_PUSH_MSG = "sendMessage.qryInsertSendPushMessage";
 	// RCS 채널 브랜드 정보
 	public final static String QRY_SELECT_RCS_BRANDLIST = "channel.selectRcsBrandList";
+	// RCS 등록 템플릿 조회
+	public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";
+	// RCS 발신번호 상세
+	public final static String QRY_SELECT_RCS_CALLBACKLIST = "channel.selectRcsCallbackList";
 }

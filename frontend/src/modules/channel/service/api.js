@@ -8,7 +8,12 @@ const selectRcsRegTmpltList = (params) => {
     return httpClient.post('/projectApi/channel/selectRcsRegTmpltList', params, { headers: {"show-layer": "Yes"} });
 };
 
+const selectRcsCallbackList = (params) => {
+    return httpClient.post('/projectApi/channel/selectRcsCallbackList', params, { headers: {"show-layer": "Yes"} });
+};
+
 export default {
     selectRcsBrandList,
-    selectRcsRegTmpltList
+    selectRcsRegTmpltList,
+    selectRcsCallbackList
 };

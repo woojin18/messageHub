@@ -70,4 +70,41 @@
 <!-- 		ORDER BY REG_DT DESC -->
 	</select>
 	
+	
+	<select id="selectRcsRegTmpltList" resultType="camel">
+		/* channel.selectRcsRegTmpltList */
+		SELECT	MESSAGEBASE_ID
+		,		MESSAGEBASEFORM_ID
+		,		BRAND_ID
+		,		CORP_ID
+		,		TMPLT_NAME
+		,		PRODUCT_CODE
+		,		MESSAGEBASE_INFO
+		,		APPROVAL_STATUS
+		,		REG_ID
+		,		UPD_ID
+		,		USE_YN
+		,		REG_DT
+		,		UPD_DT
+		,		APPROVAL_DT
+		FROM	cm.CM_RCS_MSGBASE
+		WHERE	BRAND_ID = #{brandId}
+	</select>
+	
+	<select id="selectRcsCallbackList" resultType="camel">
+		/* channel.selectRcsCallbackList */
+		SELECT	CHATBOT_ID
+		,		BRAND_ID
+		,		CORP_ID
+		,		SVC_TYPE
+		,		CHATBOT_INFO
+		,		APPROVAL_STATUS
+		,		USE_YN
+		,		REG_DT
+		,		UPD_DT
+		,		APPROVAL_DT
+		FROM	CM_RCS_CHATBOT
+		WHERE	BRAND_ID = #{brandId}
+	</select>
+	
 </mapper>
