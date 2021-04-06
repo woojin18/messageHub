@@ -36,8 +36,8 @@
 			</ul>
 			
 			<ul class="mt30 tab_s5">
-				<li class="active"><a>브랜드 관리정보</a></li>
-				<li><a>메시지 포맷정보</a></li>
+				<li @click="fnMoveRcsTab('brand')" class="active"><a>브랜드 관리정보</a></li>
+				<li @click="fnMoveRcsTab('message')"><a>메시지 포맷정보</a></li>
 			</ul>
 
       <!-- 검색창 -->
@@ -112,11 +112,11 @@
                   </td>
                   <td>
                     <!-- {{ data.tmpl_cnt }} -->
-                    <a @click="fnRcsTmpltDetail(data)">11111111111111</a>
+                    <a class="color:blue; text-decoration: underline; cursor:pointer;" @click="fnRcsTmpltDetail(data)">11111111111111</a>
                   </td>
                   <td>
                     <!-- {{ data.num_cnt }} -->
-                    <a @click="fnRcsCallbackDetail(data)">222222222222222</a>
+                    <a class="color:blue; text-decoration: underline; cursor:pointer;" @click="fnRcsCallbackDetail(data)">222222222222222</a>
                   </td>
                   <td>
                     {{ data.appr_yn }}
@@ -212,6 +212,15 @@ export default {
     },
     fnMoveSubTab(moveTabName){
       this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
+    },
+    fnMoveRcsTab(moveTabName){
+      var pageName = 'chan-rcs';
+      if( moveTabName === 'brand' ){
+        pageName = 'chan-rcs';
+      } else if( moveTabName === 'message' ){
+        pageName = 'chan-rcs-message';
+      }
+      this.$router.push( {name : pageName, params : {"projectId" : this.projectId, "projectName" : this.projectName }} );
     },
     // 검색
     fnSearch() {

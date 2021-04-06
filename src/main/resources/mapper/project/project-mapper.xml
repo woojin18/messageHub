@@ -69,6 +69,7 @@
 			PROJECT_ID
 		,	CORP_ID
 		,	PROJECT_NAME
+		,	PROJECT_DESC
 		,	PAY_TYPE
 		,	BILL_ID
 		,	SMART_CH_CODE
@@ -83,8 +84,9 @@
 			#{project_id}
 		,	#{corp_id}
 		,	#{project_name}
+		,	#{project_desc}
 		,	#{pay_type}
-		,	#{bill_id}
+		,	'B12345'
 		,	''
 		,	#{price_info}
 		,	''
@@ -127,7 +129,6 @@
 			PROJECT_ID
 		,	CORP_ID
 		,	USER_ID
-		,	USER_PRIVILEGETYPE
 		,	REG_ID
 		,	REG_DT
 		)
@@ -136,7 +137,6 @@
 			#{project_id}
 		,	#{corp_id}
 		,	#{user_id}
-		,	'Y'
 		,	#{user_id}
 		,	NOW()
 		)

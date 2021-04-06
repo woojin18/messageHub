@@ -1,4 +1,5 @@
 import rsc from '../views/bm-chan-rsc'
+import rcsMessage from '../views/bm-chan-rsc-message'
 import rcsDetail from '../views/bm-chan-rcs-detail'
 
 import smsmms from '../views/bm-chan-smsmms'
@@ -15,6 +16,12 @@ export default [
         name: 'chan-rcs',
         props: true,
         component: rsc
+    },
+    {
+        path: '/project/channel/rcsMessage',
+        name: 'chan-rcs-message',
+        props: true,
+        component: rcsMessage
     },
     {
         path: '/project/channel/rcsDetail',
