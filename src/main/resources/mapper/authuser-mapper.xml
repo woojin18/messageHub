@@ -46,4 +46,44 @@
    		)
 	</select>
 
+	<select id="getMenuForRole" parameterType="string" resultType="hashmap">
+		/* sample.getMenuForRole */
+		SELECT 	MENUS_CD
+		,		CASE
+					WHEN MENUS_LEVEL = 0 THEN '운영사'
+					WHEN MENUS_LEVEL = 1 THEN '대메뉴'
+					WHEN MENUS_LEVEL = 2 THEN '중메뉴'
+				END AS GUBUN
+		,		MENUS_NAME
+		,		IMG_TAG
+		,		TOP_MENUS_CD
+		,		PAR_MENUS_CD
+		,		MENUS_LEVEL
+		,		DIS_ORDER
+		,		SVC_TYPE_CD
+		,		FIXED_MENUS_YN
+		,		USE_YN
+		,		WEB_URL
+		,		REG_ID
+		,		REG_DT
+		FROM	cm_bo.CM_MENU
+		WHERE	1 = 1
+		AND		MENUS_LEVEL = #{menus_level}
+		AND		USE_YN = 'Y'
+		<if test="menus_level != 0">
+		AND		TOP_MENUS_CD = #{top_menus_cd}
+		AND		MENUS_CD IN (
+			SELECT B.MENUS_CD 
+			FROM cm_bo.CM_USER_ROLE  A
+			INNER JOIN cm_bo.CM_ROLE_MENU_ACTIVITY B
+				ON A.ROLE_CD  = B.ROLE_CD 
+			WHERE	A.USER_ID = #{user_id}
+			AND		B.ROLE_CD = #{role_cd}
+		)
+		</if>
+		<if test="svc_type_cd != '' and svc_type_cd != null" >
+		AND		SVC_TYPE_CD = #{svc_type_cd}
+		</if>
+		ORDER BY DIS_ORDER
+	</select>
 </mapper>
