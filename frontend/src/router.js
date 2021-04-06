@@ -15,6 +15,7 @@ import projectRoutes from './modules/project/router';
 import messageRoutes from './modules/message/router';
 import templateRoutes from './modules/template/router';
 import signUpRoutes from './modules/signUp/router';
+import cashRoutes from './modules/cash/router';
 
 Vue.use(Router)
 
@@ -61,6 +62,7 @@ const router = new Router({
         ...projectRoutes,
         ...messageRoutes,
         ...templateRoutes,
+        ...cashRoutes
       ]
     },
     {path: '*', redirect: '/view/error/404'}
