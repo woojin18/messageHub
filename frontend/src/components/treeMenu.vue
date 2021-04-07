@@ -11,7 +11,12 @@
         <!-- 중메뉴 -->
         <li class="on"><a href="/home"><i class="fas fa-tv-alt navIcon"></i><span>대시보드</span></a></li>
         <li v-for="(item, i) in treeData" :key="i" @click="fnOpenDepth2(i)">
-          <a>
+          <a v-if="item.WEB_URL != ''" v-bind:href="item.WEB_URL">
+            <i v-html="item.IMG_TAG"></i>
+            <span>{{item.MENUS_NAME}}</span>
+            <i class="far fa-chevron-down navArrow"></i>
+          </a>
+          <a v-if="item.WEB_URL == ''">
             <i v-html="item.IMG_TAG"></i>
             <span>{{item.MENUS_NAME}}</span>
             <i class="far fa-chevron-down navArrow"></i>
@@ -60,7 +65,9 @@ export default {
     fnMenuList(){
       var params = {
         "user_id"    : tokenSvc.getToken().principal.userId,
-        "role_cd"    : tokenSvc.getToken().principal.role
+        //"role_cd"    : tokenSvc.getToken().principal.role
+        "role_cd"    : 'ADM_CD',
+        "svc_type_cd" : 'AC'
       };
       
       api.getMenuForRole(params).then(response =>{
