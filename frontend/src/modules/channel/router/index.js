@@ -1,9 +1,11 @@
 import rsc from '../views/bm-chan-rsc'
+import rcsMessage from '../views/bm-chan-rsc-message'
 import rcsDetail from '../views/bm-chan-rcs-detail'
 
 import smsmms from '../views/bm-chan-smsmms'
 
 import push from '../views/bm-chan-push'
+import pushDetail from '../views/bm-chan-push-detail'
 
 import kakao from '../views/bm-chan-kakao'
 
@@ -15,6 +17,12 @@ export default [
         name: 'chan-rcs',
         props: true,
         component: rsc
+    },
+    {
+        path: '/project/channel/rcsMessage',
+        name: 'chan-rcs-message',
+        props: true,
+        component: rcsMessage
     },
     {
         path: '/project/channel/rcsDetail',
@@ -33,6 +41,12 @@ export default [
         name: 'chan-push',
         props: true,
         component: push
+    },
+    {
+        path: '/project/channel/pushDetail',
+        name: 'chan-push-detail',
+        props: true,
+        component: pushDetail
     },
     {
         path: '/project/channel/kakao',

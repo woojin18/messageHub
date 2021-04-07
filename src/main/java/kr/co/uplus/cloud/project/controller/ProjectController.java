@@ -51,7 +51,6 @@ public class ProjectController {
 	@PostMapping("/saveProject")
 	public RestResult<?> saveProject(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) {
-		System.err.println("////////////////////////////////////////////////////");
 		RestResult<Object> rtn = new RestResult<Object>(true);
 		try {
 			projectService.saveProject(params);

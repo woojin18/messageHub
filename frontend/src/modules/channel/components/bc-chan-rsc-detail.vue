@@ -40,10 +40,10 @@
 						<p class="float-left font-size18" style="width:28%">API Key</p>
 						<input id="apiKey" type="text" class="inputStyle float-left" style="width:72%">
 					</div>
-          <div class="of_h">
+					<div class="of_h">
 						<p class="float-left font-size18" style="width:28%">API Secret Key</p>
 						<input id="apiSecretKey" type="text" class="inputStyle float-left" style="width:54%">
-            <a  class="btnStyle7 minWidthAuto float-right" style="width:17%">중복확인</a>
+						<a  class="btnStyle7 minWidthAuto float-right" style="width:17%">중복확인</a>
 					</div>
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">브랜드명 *</p>
@@ -129,20 +129,20 @@
 						<input id="email1" type="text" class="inputStyle float-left mr20" style="width:31%">@<input id="email2" type="text" class="inputStyle ml20" style="width:31%; margin-left: 10px !important;">
 						<select id="emailSelect" class="selectStyle3 ml_28 mt10" style="width:72%">
 							<option value="1" selected>직접입력</option>
-              <option value="naver.com">naver.com</option>
-              <option value="hanmail.net">hanmail.net</option>
-              <option value="hotmail.com">hotmail.com</option>
-              <option value="nate.com">nate.com</option>
-              <option value="yahoo.co.kr">yahoo.co.kr</option>
-              <option value="empas.com">empas.com</option>
-              <option value="dreamwiz.com">dreamwiz.com</option>
-              <option value="freechal.com">freechal.com</option>
-              <option value="lycos.co.kr">lycos.co.kr</option>
-              <option value="korea.com">korea.com</option>
-              <option value="gmail.com">gmail.com</option>
-              <option value="hanmir.com">hanmir.com</option>
-              <option value="paran.com">paran.com</option>
-              <option value="daum.com">daum.com</option>
+							<option value="naver.com">naver.com</option>
+							<option value="hanmail.net">hanmail.net</option>
+							<option value="hotmail.com">hotmail.com</option>
+							<option value="nate.com">nate.com</option>
+							<option value="yahoo.co.kr">yahoo.co.kr</option>
+							<option value="empas.com">empas.com</option>
+							<option value="dreamwiz.com">dreamwiz.com</option>
+							<option value="freechal.com">freechal.com</option>
+							<option value="lycos.co.kr">lycos.co.kr</option>
+							<option value="korea.com">korea.com</option>
+							<option value="gmail.com">gmail.com</option>
+							<option value="hanmir.com">hanmir.com</option>
+							<option value="paran.com">paran.com</option>
+							<option value="daum.com">daum.com</option>
 						</select>
 					</div>
 					<div class="mt20 of_h">
@@ -193,11 +193,11 @@
 						</div>						
 					</div>
 					<div class="mt20 float-right">
-						<a v-if="this.save_status = 'C'" @click="fnSaveRcsDetail" class="btnStyle5 red float-left width120">저장</a>
-						<a v-if="this.save_status = 'C'" @click="fnSaveRcsDetail" class="btnStyle5 red float-left ml10 width120">승인요청</a>
-            <a v-if="this.save_status = 'U'" @click="fnSaveRcsDetail" class="btnStyle5 red float-left ml10 width120">수정요청</a>
-            <a v-if="this.save_status = 'U'" @click="fnSaveRcsDetail" class="btnStyle5 red float-left ml10 width120">삭제요청</a>
-						<a @click="fnSaveRcsDetail" class="btnStyle5 white float-left ml10 width120">목록</a>
+						<a v-if="this.save_status == 'C'" @click="fnSaveRcsDetail" class="btnStyle5 red float-left width120">저장</a>
+						<a v-if="this.save_status == 'C'" @click="fnSaveRcsDetail" class="btnStyle5 red float-left ml10 width120">승인요청</a>
+						<a v-if="this.save_status == 'U'" @click="fnSaveRcsDetail" class="btnStyle5 red float-left ml10 width120">수정요청</a>
+						<a v-if="this.save_status == 'U'" @click="fnSaveRcsDetail" class="btnStyle5 red float-left ml10 width120">삭제요청</a>
+						<a @click="fnBack" class="btnStyle5 white float-left ml10 width120">목록</a>
 					</div>
 				</div>	
         <!-- 인풋 -->
@@ -226,14 +226,15 @@ export default {
   mounted() {
     this.projectId = this.$route.params.projectId;
     this.save_status = this.$route.params.save_status;
-
-    console.log(this.save_status);
   },
   methods: {
     // 닫기
     fnClose(){
       this.$emit('update:visible', false);
     },
+	fnBack(){
+		this.$router.go(-1);
+	},
     // 등록, 수정
     fnSaveRcsDetail(){
       var parMenuRow = this.parRowData;
@@ -285,6 +286,6 @@ export default {
         }
       }); */
     }
-  },
+  }
 }
 </script>

@@ -92,7 +92,7 @@
             <p class="main-text font-size18">내용 *</p>
           </div>
           <div class="float-left" style="width:72%">
-            <textarea class="textareaStyle height120" placeholder="" v-model="rowData.tmpltContent" maxlength="2000"></textarea>
+            <textarea class="textareaStyle height120" placeholder="" v-model="rowData.tmpltContent" maxlength="512"></textarea>
             <div v-if="rowData.msgKind == 'A'">
               <p class="color5 font-size13">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
               <input type="text" id="rcvblcNumber" name="rcvblcNumber" class="inputStyle float-right mt10" title="내용 입력란" v-model="rowData.rcvblcNumber" placeholder="설정 > 푸시 알림 설정 변경" maxlength="45">
@@ -114,11 +114,11 @@
           </div>
           <div class="float-left" style="width:72%">
             <div class="of_h">
-              <a @click="fnOpenImageManagePopUp" class="btnStyle3_1 gray font-size13 minwidthAuto" style="width:25%" data-toggle="modal" data-target="#image2" title="이미지선택">이미지선택</a>
+              <a @click="fnOpenImageManagePopUp" class="btnStyle3_1 gray font-size13 minwidthAuto" style="width:25%" title="이미지선택">이미지선택</a>
+
               <ul class="float-right attachList" style="width:73%; padding:11px 15px; height:45px;">
-                <!-- <li><a href="#self" class="ellipsis-3">{{rowData.imgUrl}} <i v-if="rowData.imgUrl != ''" class="fal fa-times"></i></a></li> -->
-                <li><span class="ellipsis-3">{{rowData.imgUrl}}</span> <i v-if="fnIsEmpty(rowData.imgUrl) != ''" class="fal fa-times"></i></li>
-              </ul>
+                  <li><a @click="fnDelImg">{{fnSubString(rowData.imgUrl, 0, 35)}}  <i v-if="!fnIsEmpty(rowData.imgUrl)" class="fal fa-times"></i></a></li>
+                </ul>
             </div>
           </div>
         </div>
@@ -149,10 +149,7 @@ export default {
       type: Object,
       require: false,
       default: function() {
-        return {
-          //imgUrl : '',
-          //tmpltName: ''
-        }
+        return {'imgUrl':''}
       }
     }
   },
@@ -165,10 +162,24 @@ export default {
     }
   },
   mounted() {
-
     this.fnSetTemplateInfo();
   },
   methods: {
+    fnDelImg(){
+      this.rowData.imgUrl = '';
+    },
+    fnSubString(str, sIdx, length){
+      var shortStr = ''
+      if(!this.fnIsEmpty(str)){
+        shortStr = str.toString();
+        if(shortStr.length > length){
+          shortStr = shortStr.substring(sIdx, length) + '...  ';
+        } else {
+          shortStr = shortStr + '  ';
+        }
+      }
+      return shortStr;
+    },
     //빈값확인
     fnIsEmpty(str){
       if(str) return false;
@@ -288,19 +299,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-@mixin ellipsis($line-cnt, $line-height) {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: $line-cnt; /* 라인수 */
-  -webkit-box-orient: vertical;
-  word-wrap:break-word;
-  line-height: $line-height;
-  height: $line-height * $line-cnt; /* line-height 가 1.2em 이고 3라인을 자르기 때문에 height는 1.2em * 3 = 3.6em */
-}
-.ellipsis-3 {
-  @include ellipsis(1, 1.3em);
-}
-</style>

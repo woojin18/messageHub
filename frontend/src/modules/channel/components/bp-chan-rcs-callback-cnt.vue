@@ -27,7 +27,7 @@
                 <th>승인완료일</th>
               </thead>
               <tbody>
-                <tr v-for="(data, index) in items" :key="index">
+                <tr v-for="(data, index) in callbackItems" :key="index">
                   <td>
                     {{ index + 1 }}
                   </td>
@@ -80,7 +80,7 @@ export default {
       // 현재 페이징 위치
       pagingCnt : 1,
       // 리스트 
-      items : [],
+      callbackItems : [],
       count : 0
     }
   },
@@ -104,6 +104,7 @@ export default {
       }
     },
     row_data: function(newVal, oldVal) {
+      this.fnSearchRegCallback();
     }
   },
   mounted() {
@@ -114,30 +115,16 @@ export default {
     fnClose(){
       this.$emit('update:visibleCallback', false);
     },
-    // 등록, 수정
-    fnSearchRegTmplt(){
-      if( $("#checkYn").val() === 'N' && this.save_status === 'C' ) {
-        alert("중복체크를 먼저 해주세요.");
-        return;
-      }
-
+    // 조회
+    fnSearchRegCallback(){
       var params = {
-          "project_id"      : this.row_data.projectId,
-          "brand_id"      : this.row_data.brandId,
+          "brand_id"    : this.row_data.brandId,
+          "rows"        : 15,
+          "paging"      : 1
       };
 
       rcsApi.selectRcsRegTmpltList(params).then(response =>{
-        var result = response.data;
-
-        if(result.success) {
-          alert("저장되었습니다.");
-          // 부모창 리스트 조회
-          this.$parent.fnSearch();
-          // 창닫기
-          this.fnClose();
-        } else {
-          alert(result.message);
-        }
+        this.callbackItems = response.data.data;
       });
     }
   }

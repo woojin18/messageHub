@@ -1,7 +1,9 @@
 package kr.co.uplus.cloud.project.service;
 
 import java.util.List;
+
 import java.util.Map;
+import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +36,7 @@ public class ProjectService {
 		RestResult<Object> rtn = new RestResult<Object>(true);
 
 		int checkCnt = generalDao.selectGernalCount("project.checkProjectNameDuplicate", params);
-
+		
 		if (checkCnt > 0) {
 			rtn.setSuccess(false);
 		} else {
@@ -55,11 +57,8 @@ public class ProjectService {
 		params.put("user_id", userMap.get("userId"));
 
 		if ("C".equals(sts)) {
-			// SEQ MAX 값 처리 (임시)
-			int project_max_id = Integer.parseInt(
-					CommonUtils.getString(generalDao.selectGernalObject("project.selectProjectMaxId", params)));
-
-			params.put("project_id", project_max_id);
+			// 프로젝트 ID ( 시분초 + pjt )
+			params.put("project_id", CommonUtils.generationSringToHex("pjt"));
 			// 고객사가 개발이 안되서 임시로 고객사 코드 입력
 			params.put("corp_id", "CORP_ID");
 
@@ -97,10 +96,8 @@ public class ProjectService {
 			// -------------------------------------------------------------------------------------------------------------------------------------
 
 			// API관리키 관리 insert
-			// API 채번 룰 필요 --> 임시로 max값
-			int api_max_id = Integer.parseInt(
-					CommonUtils.getString(generalDao.selectGernalObject("project.selectApikeyMaxId", params)));
-			params.put("api_key", api_max_id);
+			params.put("api_key", CommonUtils.generationSringToHex("api"));
+			
 			// not null 조건들의 디폴트 값 필요함 ==> 다 널처리
 			generalDao.insertGernal("project.insertProjectApiKey", params);
 
@@ -108,6 +105,12 @@ public class ProjectService {
 			// 후불의 경우 청구ID 관리 ?
 			if ("N".equals(CommonUtils.getString(params.get("pay_type")))) {
 				generalDao.updateGernal("project.updateProjectBillId", params);
+			}
+			
+			
+			int i = 1;
+			if( i ==1 ) {
+				throw new Exception("testtttttt");
 			}
 		} else if ("U".equals(sts)) {
 			generalDao.updateGernal("project.updateProject", params);

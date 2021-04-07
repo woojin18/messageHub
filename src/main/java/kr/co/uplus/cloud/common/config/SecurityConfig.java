@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public static final String LOGIN_FAIL_URL = "/login?error=true";
 	public static final String LOGIN_SUCC_URL = "/home";
 	public static final String LOGOUT_URL = "/api/auth/logout";
+	public static final String MENUBAR_URL = "/api/auth/getMenuForRole";
 	private static final String API_URL = "/api/**";
 	public static final String PUBLIC_API_URL = "/api/public/**"; // 내부에서 인증없이 호출하는 API
 	public static final String LIST_API_URL = "/listCtl/**";
@@ -77,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // CORS preflight 요청은
 																								// 인증처리를 하지 않도록 설정
 				.antMatchers("/", PUBLIC_API_URL, LOGIN_FORM_URL, LOGIN_API_URL, SAMPLE_API_URL, LOGOUT_URL, LIST_API_URL,
-						PROJECT_API_URL)
+						PROJECT_API_URL, MENUBAR_URL)
 				.permitAll().antMatchers(API_URL).authenticated().anyRequest().authenticated();
 	}
 

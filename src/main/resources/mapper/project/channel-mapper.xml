@@ -7,25 +7,18 @@
 		,		MAX(A.CORP_ID) AS CORP_ID
 		,		MAX(A.BRAND_NAME) AS BRAND_NAME
 		,		MAX(A.BRAND_DESC) AS BRAND_DESC
-<!-- 		,		MAX(A.BRAND_KEY) AS BRAND_KEY -->
-<!-- 		,		MAX(A.CATEGORY_ID) AS CATEGORY_ID  -->
-<!-- 		,		MAX(A.SUB_CATEGORY_ID) AS SUB_CATEGORY_ID -->
-<!-- 		,		MAX(A.BRAND_INFO) AS BRAND_INFO -->
-<!-- 		,		MAX(A.REG_DT) AS REG_DT -->
-<!-- 		,		MAX(A.REQ_DT) AS REQ_DT -->
-<!-- 		,		'' -->
+		,		'N' AS OTHER_PROJECT_USE_YN
+		
+		,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
+					FROM	cm_console.CM_RCS_TMP_MSGBASE
+					WHERE	BRAND_ID  = A.BRAND_ID 
+				) AS TMPL_CNT
+		,		( 	SELECT	COUNT(CHATBOT_ID) 
+					FROM	cm.CM_RCS_CHATBOT
+					WHERE	BRAND_ID  = A.BRAND_ID 
+				) AS CALLBACK_CNT
 		FROM	cm.CM_RCS_BRAND_REQ A
 		WHERE	A.PROJECT_ID = #{projectId}
-<!-- 		<if test="srcBrandText != '' and srcBrandText != null" > -->
-<!-- 			<choose> -->
-<!-- 				<when test="srcBrandType == 'brandId'.toString() "> -->
-<!-- 				AND	A.BRAND_ID = #{srcBrandText} -->
-<!-- 				</when> -->
-<!-- 				<when test="srcBrandType == 'brandName'.toString() "> -->
-<!-- 				AND	A.BRAND_NAME = #{srcBrandText} -->
-<!-- 				</when> -->
-<!-- 			</choose> -->
-<!-- 		</if> -->
 		GROUP BY A.BRAND_ID
 <!-- 		UNION ALL -->
 <!-- 		SELECT	A.BRAND_ID -->
@@ -68,6 +61,43 @@
 <!-- 			</choose> -->
 <!-- 		</if> -->
 <!-- 		ORDER BY REG_DT DESC -->
+	</select>
+	
+	
+	<select id="selectRcsRegTmpltList" resultType="camel">
+		/* channel.selectRcsRegTmpltList */
+		SELECT	MESSAGEBASE_ID
+		,		MESSAGEBASEFORM_ID
+		,		BRAND_ID
+		,		CORP_ID
+		,		TMPLT_NAME
+		,		PRODUCT_CODE
+		,		MESSAGEBASE_INFO
+		,		APPROVAL_STATUS
+		,		REG_ID
+		,		UPD_ID
+		,		USE_YN
+		,		REG_DT
+		,		UPD_DT
+		,		APPROVAL_DT
+		FROM	cm.CM_RCS_MSGBASE
+		WHERE	BRAND_ID = #{brandId}
+	</select>
+	
+	<select id="selectRcsCallbackList" resultType="camel">
+		/* channel.selectRcsCallbackList */
+		SELECT	CHATBOT_ID
+		,		BRAND_ID
+		,		CORP_ID
+		,		SVC_TYPE
+		,		CHATBOT_INFO
+		,		APPROVAL_STATUS
+		,		USE_YN
+		,		REG_DT
+		,		UPD_DT
+		,		APPROVAL_DT
+		FROM	CM_RCS_CHATBOT
+		WHERE	BRAND_ID = #{brandId}
 	</select>
 	
 </mapper>

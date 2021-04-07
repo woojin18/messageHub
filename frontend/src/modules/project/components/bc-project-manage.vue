@@ -110,8 +110,7 @@
           <table cellspacing="0" id="list" class="table_skin1 tbl-striped" style="width:100%">
             <thead>
               <th>No.</th>
-              <th>프로젝트</th>
-              <th>프로젝트ID</th>
+              <th>프로젝트명</th>
               <th>이용 서비스</th>
               <th>생성일</th>
               <th>결재유형</th>
@@ -127,9 +126,6 @@
                 <td>
                   <!-- <a href="javascript:void(0);" @click="fnUpdateListPop(index)">{{ data.COL1 }}</a> -->
                   {{ data.PROJECT_NAME }}
-                </td>
-                <td>
-                  {{ data.PROJECT_ID }}
                 </td>
                 <td>
                   {{ data.USE_CH_LIST }}
