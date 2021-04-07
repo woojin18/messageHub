@@ -108,15 +108,13 @@
                     {{ data.brandId }}
                   </td>
                   <td>
-                    {{ data.other_project_use_yn }}
+                    {{ data.otherProjectUseYn }}
                   </td>
                   <td>
-                    <!-- {{ data.tmpl_cnt }} -->
-                    <a class="color:blue; text-decoration: underline; cursor:pointer;" @click="fnRcsTmpltDetail(data)">11111111111111</a>
+                    <a class="color:blue; text-decoration: underline; cursor:pointer;" @click="fnRcsTmpltDetail(data)">{{ data.tmplCnt }}</a>
                   </td>
                   <td>
-                    <!-- {{ data.num_cnt }} -->
-                    <a class="color:blue; text-decoration: underline; cursor:pointer;" @click="fnRcsCallbackDetail(data)">222222222222222</a>
+                    <a class="color:blue; text-decoration: underline; cursor:pointer;" @click="fnRcsCallbackDetail(data)">{{ data.callbackCnt }}</a>
                   </td>
                   <td>
                     {{ data.appr_yn }}

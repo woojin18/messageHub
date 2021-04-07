@@ -27,7 +27,7 @@
                 <th>승인완료일</th>
               </thead>
               <tbody>
-                <tr v-for="(data, index) in items" :key="index">
+                <tr v-for="(data, index) in callbackItems" :key="index">
                   <td>
                     {{ index + 1 }}
                   </td>

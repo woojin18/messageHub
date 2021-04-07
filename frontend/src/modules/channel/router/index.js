@@ -5,6 +5,7 @@ import rcsDetail from '../views/bm-chan-rcs-detail'
 import smsmms from '../views/bm-chan-smsmms'
 
 import push from '../views/bm-chan-push'
+import pushDetail from '../views/bm-chan-push-detail'
 
 import kakao from '../views/bm-chan-kakao'
 
@@ -40,6 +41,12 @@ export default [
         name: 'chan-push',
         props: true,
         component: push
+    },
+    {
+        path: '/project/channel/pushDetail',
+        name: 'chan-push-detail',
+        props: true,
+        component: pushDetail
     },
     {
         path: '/project/channel/kakao',

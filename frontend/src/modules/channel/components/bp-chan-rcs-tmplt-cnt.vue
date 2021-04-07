@@ -28,7 +28,7 @@
                 <th>사용여부</th>
               </thead>
               <tbody>
-                <tr v-for="(data, index) in items" :key="index">
+                <tr v-for="(data, index) in tmpltItems" :key="index">
                   <td>
                     {{ index + 1 }}
                   </td>

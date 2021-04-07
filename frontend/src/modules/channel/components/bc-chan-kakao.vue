@@ -164,7 +164,6 @@ export default {
     }
   },
   mounted() {
-    var vm = this;
     this.projectId = this.$route.params.projectId;
     this.projectName = this.$route.params.projectName;
     //this.fnSearch();

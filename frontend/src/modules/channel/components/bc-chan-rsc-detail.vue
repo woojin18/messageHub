@@ -226,8 +226,6 @@ export default {
   mounted() {
     this.projectId = this.$route.params.projectId;
     this.save_status = this.$route.params.save_status;
-
-    console.log(this.save_status);
   },
   methods: {
     // 닫기

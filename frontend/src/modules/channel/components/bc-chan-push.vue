@@ -33,35 +33,7 @@
 			<h4 class="mt40">Push APP ID 관리</h4>
 			<p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i> APP ID는 5개까지 발급받을 수 있으며, 서비스 이용 시 인증에 사용됩니다.</p>
 			
-			<div class="row">
-				<div class="col-xs-12">		
-					<div class="of_h">
-						<div class="float-right">
-							<a href="#self" class="btnStyle3 gray font13 minWidth120 ml10">발신번호 등록 안내</a>
-						</div>
-					</div>
-				</div>			
-			</div>	
-
 			<div class="Dashboard01 border-line">
-        <!-- 검색창 -->
-				<!-- <div class="row">
-					<div class="col-xs-12">
-						<div class="menuBox">						
-							<div>
-                <select id="srcBrandType">
-                  <option value="brandId">브랜드 아이디</option>
-                  <option value="brandName">브랜드 명</option>
-                </select>
-								<input id="srcBrandText" type="text" class="inputStyle ml20 vertical-baseline" style="width:65%">
-								<a @click="fnSearch" class="btnStyle2 float-right">검색</a>
-							</div>						
-						</div>
-					</div>
-				</div> -->
-        <!-- 검색창 --> 
-
-
 				<div class="row mt20">
 					<div class="col-xs-12">		
 						<div class="of_h">
@@ -160,7 +132,6 @@ export default {
     }
   },
   mounted() {
-    var vm = this;
     this.projectId = this.$route.params.projectId;
     this.projectName = this.$route.params.projectName;
     //this.fnSearch();
@@ -185,8 +156,9 @@ export default {
     },
     // 등록 템플릿 상세 
     fnReg(){
-      this.visible = !this.visible;
+      this.$router.push( {name:"chan-push-detail",params:{"projectId" : this.projectId, "save_status" : 'C' }} );
     }
+    
   }
 }
 </script>
