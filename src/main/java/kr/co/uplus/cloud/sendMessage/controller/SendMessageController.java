@@ -25,32 +25,47 @@ import kr.co.uplus.cloud.sendMessage.service.SendMessageService;
  * @Version : 1.0 Copyright 2020 LG Uplus Corp. All Rights Reserved.
  */
 @RestController
-@RequestMapping("/send/message")
+@RequestMapping("/api/public/sendMessage")
 public class SendMessageController {
 
-	@Autowired
-	private SendMessageService sendMsgService;
+    @Autowired
+    private SendMessageService sendMsgService;
 
-	/**
-	 * 푸시 메시지 발송처리
-	 * 
-	 * @param request
-	 * @param response
-	 * @param params
-	 * @return
-	 */
-	@PostMapping("/push")
-	public RestResult<?> sendPushMessage(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody Map<String, Object> params) {
-		RestResult<Object> rtn = new RestResult<Object>();
-		try {
-			rtn = sendMsgService.sendPushMessage(params);
-		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
-		}
+    @PostMapping("/selectAppIdList")
+    public RestResult<?> selectAppIdList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = sendMsgService.selectAppIdList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+        }
+        return rtn;
+    }
 
-		return rtn;
-	}
+
+
+    /**
+     * 푸시 메시지 발송처리
+     *
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/push")
+    public RestResult<?> sendPushMessage(HttpServletRequest request, HttpServletResponse response,
+        	@RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = sendMsgService.sendPushMessage(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+        }
+
+        return rtn;
+    }
 
 }

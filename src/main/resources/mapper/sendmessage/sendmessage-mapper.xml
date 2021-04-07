@@ -3,50 +3,59 @@
 
 <mapper namespace="sendMessage">
 
-	<insert id="qryInsertSendPushMessage" parameterType="hashmap">
-		/* 푸시 메시지 발송내역 등록 */
-		INSERT INTO CM_WEB_MSG
-		(
-			WEB_REQ_ID,
-			CORP_ID,
-			PROJECT_ID,
-			API_KEY,
-			CH_GRP,
-			CH,
-			MSG_INFO,
-			CU_INFO,
-			SENDER_CNT,
-			CALLBACK,
-			CAMPAIGN_ID,
-			SENDER_TYPE,
-			STATUS,
-			GW_RESULT_CODE,
-			GW_RESULT_DESC,
-			RESV_SENDER_YN,
-			REG_DT,
-			REQ_DT,
-		)
-		VALUES
-		(
-    		#{webReqId},
-    		#{corpId},
-    		#{projectId},
-    		#{apiKey},
-    		#{chGrp},
-    		#{ch},
-    		#{msgInfo},
-    		#{cuInfo},
-    		#{senderCnt},
-    		#{callback},
-    		#{campaignId},
-    		#{senderType},
-    		#{status},
-    		#{gwResultCode},
-    		#{gwResultDesc},
-    		#{resvSenderYn},
-    		SYSDATE,
-    		SYSDATE
-   		)
-	</insert>
+    <select id="selectAppIdList" parameterType="hashmap" resultType="camel">
+    /* sendMessage.selectAppIdList APP ID 리스트 조회 */
+        SELECT APLN_ID
+        FROM CM_PUSH_SET
+        WHERE 1=1
+            AND CORP_ID = #{corpId}
+            AND OTHER_PROJECT_USE_YN = 'Y' OR PROJECT_ID = #{projectId}
+    </select>
+
+    <insert id="qryInsertSendPushMessage" parameterType="hashmap">
+        /* 푸시 메시지 발송내역 등록 */
+        INSERT INTO CM_WEB_MSG
+        (
+            WEB_REQ_ID,
+            CORP_ID,
+            PROJECT_ID,
+            API_KEY,
+            CH_GRP,
+            CH,
+            MSG_INFO,
+            CU_INFO,
+            SENDER_CNT,
+            CALLBACK,
+            CAMPAIGN_ID,
+            SENDER_TYPE,
+            STATUS,
+            GW_RESULT_CODE,
+            GW_RESULT_DESC,
+            RESV_SENDER_YN,
+            REG_DT,
+            REQ_DT,
+        )
+        VALUES
+        (
+            #{webReqId},
+            #{corpId},
+            #{projectId},
+            #{apiKey},
+            #{chGrp},
+            #{ch},
+            #{msgInfo},
+            #{cuInfo},
+            #{senderCnt},
+            #{callback},
+            #{campaignId},
+            #{senderType},
+            #{status},
+            #{gwResultCode},
+            #{gwResultDesc},
+            #{resvSenderYn},
+            SYSDATE,
+            SYSDATE
+           )
+    </insert>
 
 </mapper>

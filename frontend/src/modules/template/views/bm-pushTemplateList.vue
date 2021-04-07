@@ -103,7 +103,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(contant, idx) in contants" v-bind:key="contant">
+            <tr v-for="(contant, idx) in contants" :key="contant.tmpltId">
               <td class="text-center">
                 <input type="checkbox" :id="'listCheck_'+idx" class="boardCheckStyle" :value="contant.tmpltId" v-model="listChkBox">
                 <label :for="'listCheck_'+idx"></label>
@@ -157,8 +157,7 @@ export default {
           'searchOthPrjUseYn' : []
         }
       }
-    },
-    contants: []
+    }
   },
   mounted() {
     this.fnSearch();
@@ -171,7 +170,8 @@ export default {
       selected : 10,  // select 박스 value (출력 갯수 이벤트)
       pagingCnt : 1,  // 현재 페이징 위치
       totCnt : 0,  //전체 리스트 수
-      offset : 0  //페이지 시작점
+      offset : 0, //페이지 시작점
+      contants: []
     }
   },
   methods: {
@@ -212,7 +212,7 @@ export default {
         }
       }
 
-      var params = Object.create(this.searchData);
+      var params = this.searchData;
       params.pageNo = this.pagingCnt;
       params.listSize = this.selected;
 
