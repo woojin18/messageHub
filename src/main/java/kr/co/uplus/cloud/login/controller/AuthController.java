@@ -36,15 +36,11 @@ public class AuthController {
 	public RestResult<?> login(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) {
 
-		System.out.println("asd4f5asd45f4asd65f4asd6");
-
 		return authSvc.chkLogin(params, request, response);
 	}
 
 	@GetMapping("/auth/logoutTest")
 	public RestResult<?> logoutTest(HttpServletRequest request, HttpServletResponse response) {
-
-		System.out.println("asdfasdfasdfasdfsdf");
 
 		return authSvc.logout(request, response);
 	}
@@ -69,8 +65,6 @@ public class AuthController {
 
 	@GetMapping("/testmapping/test")
 	public RestResult<?> test(HttpServletRequest request, HttpServletResponse response) {
-
-		System.out.println("123123123");
 
 		return authSvc.logout(request, response);
 	}

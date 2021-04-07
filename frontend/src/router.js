@@ -72,7 +72,7 @@ router.beforeEach((to, from, next) => {
   const loggedIn = !!tokenSvc.getToken();
 
   if (!isPublic && !loggedIn) {
-    //return next('/login');
+   // return next('/login');
   }
 
   to.matched.some(record => {

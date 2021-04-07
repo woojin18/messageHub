@@ -1,15 +1,15 @@
 <template>
   <div>
-    <signUp />
+    <mailSend />
   </div>
 </template>
 
 <script>
-import signUp from '../components/signUp.vue';
+import mailSend from '../components/mailSend.vue';
 
 export default {
   components: {
-    signUp
+    mailSend
   }
 }
 </script>

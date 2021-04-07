@@ -31,7 +31,7 @@ const fnConfirm = (cTitle, cMessage, cButtonView, cButton, cCallBack) => {
 }
 
 const fnAlert = (cTitle) => {
-  this.fnConfirm(cTitle, "", false, "", "");
+  fnConfirm(cTitle, "", false, "", "");
 }
 
 Vue.component('confirm', {
@@ -85,5 +85,6 @@ Vue.component('confirm', {
 });
 
 export default {
-  fnConfirm
+  fnConfirm,
+  fnAlert
 };
