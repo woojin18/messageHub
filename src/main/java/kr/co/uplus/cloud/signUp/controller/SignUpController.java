@@ -21,7 +21,6 @@ public class SignUpController {
 	public RedirectView test (RedirectAttributes redirect, HttpServletResponse response, HttpServletRequest req) {
 		req.setAttribute("test", "test");
 		return new RedirectView("http://localhost:3000/signUpMain");
-		 
 	}
 }
  
