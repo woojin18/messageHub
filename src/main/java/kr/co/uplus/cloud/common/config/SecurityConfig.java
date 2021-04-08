@@ -29,9 +29,8 @@ import kr.co.uplus.cloud.common.jwt.JwtProperties;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	private static final String LOGIN_FORM_URL = "/login";
+	public static final String LOGIN_FORM_URL = "/login";
 	public static final String LOGIN_API_URL = "/api/auth/login";
-	public static final String SAMPLE_API_URL = "/sample/**"; 
 	public static final String LOGIN_FAIL_URL = "/login?error=true";
 	public static final String LOGIN_SUCC_URL = "/home";
 	public static final String LOGOUT_URL = "/api/auth/logout";
@@ -77,7 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.authenticationEntryPoint(new MixedAuthenticationEntryPoint(LOGIN_FORM_URL, REST_API_URLS)).and()
 				.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // CORS preflight 요청은
 																								// 인증처리를 하지 않도록 설정
-				.antMatchers("/", PUBLIC_API_URL, LOGIN_FORM_URL, LOGIN_API_URL, SAMPLE_API_URL, LOGOUT_URL, LIST_API_URL,
+				.antMatchers("/", PUBLIC_API_URL, LOGIN_FORM_URL, LOGIN_API_URL, LOGOUT_URL, LIST_API_URL,
 						PROJECT_API_URL, MENUBAR_URL)
 				.permitAll().antMatchers(API_URL).authenticated().anyRequest().authenticated();
 	}

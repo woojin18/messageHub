@@ -36,11 +36,15 @@ public class AuthController {
 	public RestResult<?> login(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) {
 
+		System.out.println("Start CheckLogin!!!");
+
 		return authSvc.chkLogin(params, request, response);
 	}
 
-	@GetMapping("/auth/logoutTest")
+	@GetMapping("/auth/logout")
 	public RestResult<?> logoutTest(HttpServletRequest request, HttpServletResponse response) {
+
+		System.out.println("Logout!!!");
 
 		return authSvc.logout(request, response);
 	}
