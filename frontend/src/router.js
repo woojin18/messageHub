@@ -21,12 +21,12 @@ import cashRoutes from './modules/cash/router';
 Vue.use(Router)
 
 const requireAuth = () => (to, from, next) => {
-	console.log(store.state.isLogin);
+	alert(store.state.isLogin);
 	if (store.state.isLogin) {
-		return next()
+		return next();
 	}
-	next('/login')
-}
+	next('/login');
+};
 
 const router = new Router({
 	mode: 'history',
@@ -53,7 +53,7 @@ const router = new Router({
 		{
 			path: '/',
 			component: WebNaviLayout,
-			beforeEnter: requireAuth(),
+			// beforeEnter: requireAuth(),
 			children: [
 				{
 					path: '/view/error/404',
