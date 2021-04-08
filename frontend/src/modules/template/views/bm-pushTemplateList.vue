@@ -47,13 +47,13 @@
                 <input type="checkbox" id="searchOthPrjUseYn_IMAGE" class="checkStyle2" value="N" v-model="searchData.searchOthPrjUseYn">
                 <label for="searchOthPrjUseYn_IMAGE">전용</label>
               </div>
-              <a @click="fnSearch" class="btnStyle2 float-right" title="통합발송 검색">검색</a>  
+              <a @click="fnSearch" class="btnStyle2 float-right" title="통합발송 검색">검색</a>
             </div>
           </div>
         </div>
       </div>
     </div>
-    
+
     <div class="of_h mt20">
       <div class="float-right">
         <router-link :to="{ name: 'pushTemplateManage' }" tag="a" class="btnStyle3 black font13 minWidth120 mr10" title="엑셀 다운로드">템플릿 등록</router-link>
@@ -64,7 +64,7 @@
 
     <div class="row">
       <div class="col-xs-12">
-        
+
         <!-- 15개씩 보기 -->
         <div class="of_h mb20">
           <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
@@ -127,7 +127,7 @@
 
     <!-- pagination -->
     <div id="pageContent">
-      <PageLayer @fnClick="fnClick" :listTotalCnt="totCnt" :selected="selected" ref="updatePaging"></PageLayer>
+      <PageLayer @fnClick="fnClick" :listTotalCnt="totCnt" :selected="listSize" ref="updatePaging"></PageLayer>
     </div>
 
   </div>
@@ -153,7 +153,7 @@ export default {
           'searchCondi' : 'tmpltName',
           'searchText' : '',
           'searchStartDate' : '2021-03-30',
-          'searchEndDate' : '2021-04-01',
+          'searchEndDate' : '2021-04-08',
           'searchOthPrjUseYn' : []
         }
       }
@@ -167,8 +167,8 @@ export default {
       othPrjUseYnAllSelected: false,
       listAllChecked: false,
       listChkBox: [],
-      selected : 10,  // select 박스 value (출력 갯수 이벤트)
-      pagingCnt : 1,  // 현재 페이징 위치
+      listSize : 10,  // select 박스 value (출력 갯수 이벤트)
+      pageNo : 1,  // 현재 페이징 위치
       totCnt : 0,  //전체 리스트 수
       offset : 0, //페이지 시작점
       contants: []
@@ -213,8 +213,8 @@ export default {
       }
 
       var params = this.searchData;
-      params.pageNo = this.pagingCnt;
-      params.listSize = this.selected;
+      params.pageNo = this.pageNo;
+      params.listSize = this.listSize;
 
       await TemplateApi.selectPushTmpltList(params).then(response =>{
         var result = response.data;
@@ -235,7 +235,7 @@ export default {
         this.searchData.searchOthPrjUseYn = [];
       }
     },
-    //리스트 전체 체크박스 
+    //리스트 전체 체크박스
     fnListChkAll(){
       var vm = this;
       if(this.listAllChecked){
@@ -247,13 +247,13 @@ export default {
       }
     },
     // select 박스 선택시 리스트 재출력
-    fnSelected(selected) {
-      this.selected = selected;
+    fnSelected(listSize) {
+      this.listSize = Number(listSize);
       this.$refs.updatePaging.fnAllDecrease();
     },
     // page 선택
     fnClick(pageNum) {
-      this.pagingCnt = pageNum;
+      this.pageNo = pageNum;
       this.fnSearch();
       //this.$refs.updatePaging.fnAllDecrease();
     }
