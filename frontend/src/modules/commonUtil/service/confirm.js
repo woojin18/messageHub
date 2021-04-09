@@ -6,37 +6,39 @@
 해당 파일을 import한 뒤
 import confirm from "@/modules/commonUtil/service/confirm"
 
-confirm 태그를 넣어준다.
-<confirm></confirm>
+alert창을 쓸 경우
+confirm.fnAlert("타이틀", "메세지");
 
-confirm.fnConfirm("타이틀", "메세지", callback 버튼 여부, "callback 버튼", "callback 버튼 클릭 시 callback메소드");
+confirm창을 쓸 경우 이벤트버스를 import하고
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
+
+eventBus.$on('callbackEventBus', this.fnCallback);
+confirm.fnConfirm("타이틀", "메세지", "callback 버튼텍스트");
 
 로 사용할 수 있다.
 
 callback메소드는 반드시 해당 파일을 imoport한 페이지에 존재하여야 한다.
 
-부모창에서 공통 컨펌창을 사용하면서 팝업창에서 공통 컴펌창을 사용할 경우
-팝업창에는 태그는 넣지않아야 하며 callback메소드는 사용할 수 없다.
-
 예시는 테스트 메뉴를 확인
 */
+import Vue from "vue";
+import {eventBus} from "./eventBus";
 
-import Vue from 'vue';
-var eventBus = new Vue();
-
-const fnConfirm = (cTitle, cMessage, cButtonView, cButton, cCallBack) => {
-  var confirmData = {"cTitle" : cTitle, "cMessage" : cMessage, "cButtonView" : cButtonView, "cButton" : cButton, "cCallBack" : cCallBack}
+const fnAlert = (cTitle, cMessage) => {
+  var confirmData = {"cTitle" : cTitle, "cMessage" : cMessage, "cButtonView" : false, "cButton" : ""}
   eventBus.$emit('confirmEventBus', confirmData);
   $("#confirm").modal("show");
 }
 
-const fnAlert = (cTitle) => {
-  fnConfirm(cTitle, "", false, "", "");
+const fnConfirm = (cTitle, cMessage, cButton) => {
+  var confirmData = {"cTitle" : cTitle, "cMessage" : cMessage, "cButtonView" : true, "cButton" : cButton}
+  eventBus.$emit('confirmEventBus', confirmData);
+  $("#confirm").modal("show");
 }
 
 Vue.component('confirm', {
   template: 
-    '<div class="modal modalStyle" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
+    '<div class="modal modalStyle" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">'
     +  '<div class="modal-dialog">'
     +    '<div class="modal-content">'
     +      '<div class="modal-body">'
@@ -59,7 +61,6 @@ Vue.component('confirm', {
         vm.cMessage = value.cMessage;
         vm.cButtonView = value.cButtonView;
         vm.cButton = value.cButton;
-        vm.cCallBack = value.cCallBack;
       });
   },
   data() {
@@ -67,18 +68,18 @@ Vue.component('confirm', {
         cTitle: "",
         cMessage: "",
         cButtonView: true,
-        cButton: "",
-        cCallBack: ""
+        cButton: ""
     }
   },
   methods: {
     fnCallback: function() {
-      if(this.cCallBack) {
-        eval("this.$parent." + this.cCallBack + "()");
+      if(this.cButtonView) {
+        eventBus.$emit('callbackEventBus');
       }
       this.fnConfirmHide();
     },
     fnConfirmHide: function() {
+      eventBus.$off('callbackEventBus');
       $("#confirm").modal("hide");
     }
   }

@@ -197,10 +197,10 @@ export default {
 	  // 약관 동의 체크 validation
 	  termsValidation() {
 		  if(!this.agree1){
-			  confirm.fnAlert("서비스 이용약관 동의는 필수입니다.");
+			  confirm.fnAlert("", "서비스 이용약관 동의는 필수입니다.");
 			  return false;
 		  } else if(!this.agree2) {
-			  confirm.fnConfirm("개인정보수집 및 이용동의는 필수입니다.", "", false, "", "");
+			  confirm.fnAlert("", "개인정보수집 및 이용동의는 필수입니다.");
 			  return false;
 		  } else {
 			  return true;
@@ -211,7 +211,7 @@ export default {
 	  emailValidation() {
 		  var email = this.email;
 			if(email == "" || email == null){
-				confirm.fnAlert("인증메일 발송을 위한 email을 입력해 주세요.");
+				confirm.fnAlert("", "인증메일 발송을 위한 email을 입력해 주세요.");
 				return false;
 			} else {
 				return true;
