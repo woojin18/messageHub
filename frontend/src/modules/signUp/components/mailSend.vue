@@ -8,7 +8,6 @@
 
 		<div class="text-center mt70"><a href="user_join3.html" @click.prevent="joinHome" class="btn btn-login maxWidth260">홈으로 이동</a></div>
 	</section>
-	<confirm></confirm>
 	</div>
 </template>
 

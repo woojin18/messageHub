@@ -119,8 +119,6 @@
 		</div>
 		<div class="text-center mt70"><a href="#self" class="btn btn-login">가입완료</a></div>
 	</section>
-
-	<confirm></confirm>
 	</div>
 </template>
 

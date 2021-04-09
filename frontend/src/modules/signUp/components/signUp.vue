@@ -155,7 +155,6 @@
 		</div>
 	</div>
 	<!-- //provisionView2 Modal -->
-	<confirm></confirm>
 	</div>
 </template>
 

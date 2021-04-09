@@ -6,6 +6,7 @@
 			<section id="content">
 				<router-view :key="$route.fullPath"></router-view>
 				<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+				<confirm></confirm>
 			</section>
 		</article>
 		<!-- 로딩레이어-->
@@ -18,6 +19,7 @@
 <script>
 import WebHeader from "../components/WebHeader";
 import treeMenu from "../components/treeMenu";
+import confirm from "@/modules/commonUtil/service/confirm"
 
 export default {
 	name: "webNaviLayout",
