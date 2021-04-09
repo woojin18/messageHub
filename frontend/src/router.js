@@ -3,8 +3,6 @@ import Router from 'vue-router';
 import searchcondition from './store'
 import tokenSvc from '@/common/token-service';
 
-import store from './modules/login/store'
-
 import WebNaviLayout from './views/WebNaviLayout.vue';
 import LoginLayout from './views/LoginLayout.vue';
 
@@ -19,14 +17,6 @@ import signUpRoutes from './modules/signUp/router';
 import cashRoutes from './modules/cash/router';
 
 Vue.use(Router)
-
-const requireAuth = () => (to, from, next) => {
-	alert(store.state.isLogin);
-	if (store.state.isLogin) {
-		return next();
-	}
-	next('/login');
-};
 
 const router = new Router({
 	mode: 'history',
