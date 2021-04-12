@@ -26,24 +26,34 @@
                 </div>
               </div>
               <div class="col-xs-4 of_h">
-                <ul class="float-left line-height3em ml60 font-size14 color000">
-                  <li>메시지구분</li>
-                  <li>메시지타입</li>
-                  <li>타 프로젝트 사용여부</li>
-                  <li>템플릿명</li>
-                  <li>제목</li>
-                  <li>내용</li>
-                  <li v-if="templateData.msgType == 'IMAGE'">이미지</li>
-                </ul>
-                <ul class="line-height3em ml30 inline-block font-size14 color4">
-                  <li>{{templateData.msgKind}}</li>
-                  <li>{{templateData.msgType}}</li>
-                  <li>{{templateData.otherProjectUseYn}}</li>
-                  <li>{{templateData.tmpltName}}</li>
-                  <li>{{templateData.tmpltTitle}}</li>
-                  <li>{{templateData.tmpltContent}}</li>
-                  <li v-if="templateData.msgType == 'IMAGE'">{{templateData.imgUrl}}</li>
-                </ul>
+                <div class="of_h">
+                  <div style="width:41%" class="float-left line-height3em ml30 font-size14 color000">메시지구분</div>
+                  <div style="width:40%" class="float-right ml30 inline-block font-size14 color4 line-height1-5em mt10">{{templateData.msgKind}}</div>
+                </div>
+                <div class="of_h">
+                  <div style="width:41%" class="float-left line-height3em ml30 font-size14 color000">메시지타입</div>
+                  <div style="width:40%" class="float-right ml30 inline-block font-size14 color4 line-height1-5em mt10">{{templateData.msgType}}</div>
+                </div>
+                <div class="of_h">
+                  <div style="width:41%" class="float-left line-height3em ml30 font-size14 color000">타 프로젝트 사용여부</div>
+                  <div style="width:40%" class="float-right ml30 inline-block font-size14 color4 line-height1-5em mt10">{{templateData.otherProjectUseYn}}</div>
+                </div>
+                <div class="of_h">
+                  <div style="width:41%" class="float-left line-height3em ml30 font-size14 color000">템플릿명</div>
+                  <div style="width:40%" class="float-right ml30 inline-block font-size14 color4 line-height1-5em mt10">{{templateData.tmpltName}}</div>
+                </div>
+                <div class="of_h">
+                  <div style="width:41%" class="float-left line-height3em ml30 font-size14 color000">제목</div>
+                  <div style="width:40%" class="float-right ml30 inline-block font-size14 color4 line-height1-5em mt10">{{templateData.tmpltTitle}}</div>
+                </div>
+                <div class="of_h">
+                  <div style="width:41%" class="float-left line-height3em ml30 font-size14 color000">내용</div>
+                  <div style="width:40%" class="float-right ml30 inline-block font-size14 color4 line-height1-5em mt10">{{templateData.tmpltContent}}</div>
+                </div>
+                <div class="of_h">
+                  <div style="width:41%" class="float-left line-height3em ml30 font-size14 color000">이미지</div>
+                  <div v-if="templateData.msgType == 'IMAGE'" style="width:40%" class="float-right ml30 inline-block font-size14 color4 line-height1-5em mt10">{{templateData.imgUrl}}</div>
+                </div>
               </div>
               <div class="col-xs-4">
                 <!-- phoneWrap -->
@@ -51,7 +61,7 @@
                   <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
                   <div class="phoneTextWrap">
                     <div class="phoneText2">
-                      <p v-if="fnIsEmpty(templateData.tmpltTitle)">템플릿 제목</p>
+                      <p v-if="fnIsEmpty(templateData.tmpltTitle)">제목</p>
                       <p v-else>{{templateData.tmpltTitle}}</p>
                     </div>
                     <div v-if="templateData.msgType == 'IMAGE' && fnIsEmpty(templateData.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
@@ -165,16 +175,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-$module: 'modalStyle';
-.#{$module} {
-  // This is modal bg
-  background-color: rgba(0,0,0,.7);
-  top: 0; right: 0; bottom: 0; left: 0;
-  position: fixed;
-  overflow: auto;
-  margin: 0;
-  z-index: 9999;
-}
-</style>

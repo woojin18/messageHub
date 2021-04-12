@@ -37,6 +37,7 @@ public class DB {
 	public final static String QRY_UPDATE_SMART_TMPLT = "template.updateSmartTemplate";
 	// 푸시메시지 발송
     public final static String QRY_SELECT_APP_ID_LIST = "sendMessage.selectAppIdList";
+    public final static String QRY_SELECT_CALLBACK_LIST = "sendMessage.selectCallbackList";
 	public final static String QRY_INSERT_SEND_PUSH_MSG = "sendMessage.qryInsertSendPushMessage";
 	// RCS 채널 브랜드 정보
 	public final static String QRY_SELECT_RCS_BRANDLIST = "channel.selectRcsBrandList";

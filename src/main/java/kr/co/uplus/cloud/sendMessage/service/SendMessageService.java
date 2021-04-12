@@ -28,6 +28,12 @@ public class SendMessageService {
     @Autowired
     private GeneralDao generalDao;
 
+    /**
+     * APP ID 리스트 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
     public RestResult<Object> selectAppIdList(Map<String, Object> params) throws Exception {
 
         RestResult<Object> rtn = new RestResult<Object>();
@@ -37,6 +43,37 @@ public class SendMessageService {
 
         return rtn;
     }
+
+    /**
+     * 발신번호 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectCallbackList(Map<String, Object> params) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_LIST, params);
+        rtn.setData(rtnList);
+
+        return rtn;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * 푸시 메시지 발송처리

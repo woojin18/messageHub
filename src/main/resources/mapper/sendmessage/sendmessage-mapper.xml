@@ -12,6 +12,31 @@
             AND OTHER_PROJECT_USE_YN = 'Y' OR PROJECT_ID = #{projectId}
     </select>
 
+    <select id="selectCallbackList" parameterType="hashmap" resultType="camel">
+    /* sendMessage.selectCallbackList 발신번호 조회 */
+        SELECT CHATBOT_ID AS CALLBACK /* 챗봇(대화방)ID, A2P의 경우 발신번호(mdn)과 동일 */
+        FROM cm.CM_RCS_CHATBOT
+        WHERE SVC_TYPE = 'A2P'
+            AND CORP_ID = #{corpId}
+        /* TODO - 삭제 : 현재 CM의 해당 테이블에 데이터가 없어서 임의로 넣고 작업 우리쪽 관리 테이블이 아니라 DB에 넣지 않고 작업 */
+        UNION ALL
+        SELECT '15777011' AS CALLBACK FROM DUAL UNION ALL
+        SELECT '15999679' AS CALLBACK FROM DUAL
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <insert id="qryInsertSendPushMessage" parameterType="hashmap">
         /* 푸시 메시지 발송내역 등록 */
         INSERT INTO CM_WEB_MSG
