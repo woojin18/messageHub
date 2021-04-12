@@ -22,6 +22,7 @@ public class JwtUser extends AuthUser {
 		u.setUserId(user.getUserId());
 		u.setUserNm(user.getUserNm());
 		u.setAuthorities(user.getAuthorities());
+		u.setCorpId(user.getCorpId());
 		return u;
 	}
 
@@ -34,6 +35,7 @@ public class JwtUser extends AuthUser {
 		Collection<? extends GrantedAuthority> authorities = ((List<Map>) principal.get("authorities")).stream()
 				.map(o -> new SimpleGrantedAuthority((String) o.get("authority"))).collect(Collectors.toList());
 		u.setAuthorities(authorities);
+		u.setCorpId((String) principal.get("corpId"));
 		return u;
 	}
 

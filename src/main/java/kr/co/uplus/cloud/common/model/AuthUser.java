@@ -18,6 +18,7 @@ public class AuthUser implements UserDetails {
 	private UserStatus status;
 	private Role role;
 	private Collection<? extends GrantedAuthority> authorities;
+	private String corpId;
 
 	private String userNm;
 
