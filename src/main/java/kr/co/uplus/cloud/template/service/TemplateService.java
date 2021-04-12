@@ -12,7 +12,6 @@ import kr.co.uplus.cloud.common.consts.DB;
 import kr.co.uplus.cloud.common.dto.RestResult;
 import kr.co.uplus.cloud.dto.PageDto;
 import kr.co.uplus.cloud.utils.CommonUtils;
-import kr.co.uplus.cloud.utils.DateUtil;
 import kr.co.uplus.cloud.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
 
@@ -75,7 +74,8 @@ public class TemplateService {
             resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_PUSH_TMPLT, params);
         // insert
         } else {
-            String tmpltId = getTemplateId(Const.TMPLT_PREFIX);
+        	// 템플릿ID 취득
+            String tmpltId = CommonUtils.getCommonId(Const.TMPLT_PREFIX, 5);
             params.put("tmpltId", tmpltId);
             resultCnt = generalDao.insertGernal(DB.QRY_INSERT_PUSH_TMPLT, params);
         }
@@ -465,23 +465,4 @@ public class TemplateService {
 
 		return rtn;
 	}
-
-	/**
-	 * 템플릿ID 생성
-	 *
-	 * @return
-	 */
-	private String getTemplateId(String prefix) {
-		// 템플릿ID 날짜형식(8자리 - 년월일시)
-		String body = DateUtil.getCurrnetDate("yyMMddHH");
-
-		// 템플릿ID 접미사
-		String suffix = CommonUtils.randomGeneration(5);
-
-		// 템플릿ID
-		String tmpltId = prefix + body + suffix;
-
-		return tmpltId;
-	}
-
 }
