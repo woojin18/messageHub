@@ -80,5 +80,15 @@
             AND CORP_ID = #{corpId}
             AND JSON_EXTRACT(USE_CH_INFO, CONCAT('$.', #{useChInfo})) = 'Y'
     </delete>
-
+	
+	
+	<select id="selectCorpInfoByUserId" resultType="camel">
+	/* common.selectCorpInfoByUserId */
+		SELECT	cu.CORP_ID
+		,		cc.CORP_NAME
+		FROM	cm_console.CM_USER cu
+		INNER JOIN cm_console.CM_CORP cc
+			ON	cu.CORP_ID = cc.CORP_ID
+		WHERE	cu.USER_ID = #{userId}
+	</select>
 </mapper>

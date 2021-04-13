@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cash">
+	<insert id="insertWebCashInfo">
+	/* cash.insertWebCashInfo */
+		INSERT	cm_console.CM_WEB_CASH_HIST (
+				CORP_ID
+		,		CASH_ID
+		,		PAYMENT_ID
+		,		PAY_MTD
+		,		STATUS
+		,		CASH_CHARG_AMOUNT
+		,		REG_DT
+		) VALUES (
+				#{corpId}
+		,		#{cashId}
+		,		#{orderId}
+		,		#{payMtd}
+		,		#{status}
+		,		#{amount}
+		,		NOW()
+		)
+	</insert>
+	
+	<select id="selectWebCashInfo" resultType="camel">
+	/* cash.selectWebCashInfo */
+		SELECT	PAYMENT_ID			AS ORDER_ID
+		,		CASH_CHARG_AMOUNT	AS AMOUNT
+		FROM	cm_console.CM_WEB_CASH_HIST
+		WHERE	PAYMENT_ID = #{orderId}
+	</select>
+</mapper>

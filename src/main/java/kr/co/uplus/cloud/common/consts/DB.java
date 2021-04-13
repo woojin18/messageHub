@@ -2,15 +2,16 @@ package kr.co.uplus.cloud.common.consts;
 
 public class DB {
 
-    //공통
-    public final static String QRY_SELECT_IMAGE_LIST_CNT = "common.selectImageListCnt";
-    public final static String QRY_SELECT_IMAGE_LIST = "common.selectImageList";
-    public final static String QRY_DELETE_IMAGE = "common.deleteImage";
+	//공통
+	public final static String QRY_SELECT_IMAGE_LIST_CNT = "common.selectImageListCnt";
+	public final static String QRY_SELECT_IMAGE_LIST = "common.selectImageList";
+	public final static String QRY_DELETE_IMAGE = "common.deleteImage";
+	public final static String QRY_SELECT_CORP_INFO = "common.selectCorpInfoByUserId";
 	// 로그인
 	public final static String QRY_SELECT_USERNAME	= "login.qrySelectUserName";
 	public final static String QRY_INSERT_USERNAME	= "login.qryInsertAuthUser";
 	// 푸시 템플릿
-    public final static String QRY_SELECT_PUSH_TMPLT_LIST_CNT = "template.selectPushTemplateListCnt";
+	public final static String QRY_SELECT_PUSH_TMPLT_LIST_CNT = "template.selectPushTemplateListCnt";
 	public final static String QRY_SELECT_PUSH_TMPLT_LIST = "template.selectPushTemplateList";
 	public final static String QRY_INSERT_PUSH_TMPLT = "template.insertPushTemplate";
 	public final static String QRY_UPDATE_PUSH_TMPLT = "template.updatePushTemplate";
@@ -45,4 +46,8 @@ public class DB {
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";
 	// RCS 발신번호 상세
 	public final static String QRY_SELECT_RCS_CALLBACKLIST = "channel.selectRcsCallbackList";
+	//웹캐시
+	public final static String QRY_INSERT_WEB_CASH_INFO = "cash.insertWebCashInfo";
+	public final static String QRY_SELECT_WEB_CASH_INFO = "cash.selectWebCashInfo";
+	
 }
