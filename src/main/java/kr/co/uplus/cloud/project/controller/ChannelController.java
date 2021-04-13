@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.uplus.cloud.project.service.ChannelService;
 import kr.co.uplus.cloud.common.dto.RestResult;
@@ -110,11 +111,11 @@ public class ChannelController {
 	 * @throws Exception
 	 */
 	@PostMapping("/fileUploadToApi")
-	public RestResult<?> fileUploadToApi(@RequestBody Map<String, Object> params, HttpServletRequest request,
+	public RestResult<?> fileUploadToApi(
+			@RequestBody MultipartFile files,
+			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		System.out.println("-------------------------------------------111111111111111111 " + params);
-		
-		return channelService.fileUploadToApi(params);
+		return channelService.fileUploadToApi(files);
 	}
 	
 	/**

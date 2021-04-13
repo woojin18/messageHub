@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.uplus.cloud.common.consts.DB;
 import kr.co.uplus.cloud.common.dto.RestResult;
@@ -78,15 +79,10 @@ public class ChannelService {
 	}
 	
 	// 파일업로드 API
-	public RestResult<?> fileUploadToApi(Map<String, Object> params) throws Exception {
+	public RestResult<?> fileUploadToApi(MultipartFile files) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
-		params.put("apiId", "");
-		params.put("apiSercret", "");
-		
-		System.out.println("-------------------------------------------2222222222222222 " + params);
-		
-		Map<String, Object> result = this.api("/console/v1/brand/file", params, "POST", "multipart");
+		Map<String, Object> result = this.apiFileUpload("/console/v1/brand/file", files, "POST", "multipart");
 		
 		rtn.setData(result);
 		
@@ -109,65 +105,14 @@ public class ChannelService {
 		JSONParser jParser = new JSONParser();
 		JSONObject jObj = new JSONObject();
 		
-		String boundary = "";
-        String LINE_FEED = "\r\n";
-        String charset = "UTF-8";
-
-
-		
 		try {
 			URL url = new URL(apiUrl + urlText);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			
-			
-			if( "multipart".equals(contentType) ) {
-//				con.setRequestProperty("Content-Type", "multipart/form-data");
-////                con.setRequestProperty("Content-Type", "multipart/form-data;charset=utf-8;boundary=" + boundary);
-//				
-//                System.out.println("------------------------------------------@@@@@@@@@@@@ " + params);
-//                
-//				PrintWriter writer;
-//				OutputStream outputStream;
-//				File file = (File) params.get("file");
-//				
-//				outputStream = con.getOutputStream();
-//				writer = new PrintWriter(new OutputStreamWriter(outputStream, "UTF-8"), true);
-//				
-//				 /** 파일 데이터를 넣는 부분**/
-//				writer.append("--" + boundary).append(LINE_FEED);
-//                writer.append("Content-Disposition: form-data; name=\"file\"; filename=\"" + file.getName() + "\"").append(LINE_FEED);
-//                writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(file.getName())).append(LINE_FEED);
-//                writer.append("Content-Transfer-Encoding: binary").append(LINE_FEED);
-//                writer.append(LINE_FEED);
-//                writer.flush();
-//
-//
-//                FileInputStream inputStream = new FileInputStream(file);
-//                byte[] buffer = new byte[(int)file.length()];
-//                int bytesRead = -1;
-//                while ((bytesRead = inputStream.read(buffer)) != -1) {
-//                    outputStream.write(buffer, 0, bytesRead);
-//                }
-//                outputStream.flush();
-//                inputStream.close();
-//                writer.append(LINE_FEED);
-//                writer.flush();
-//
-//                writer.append("--" + boundary + "--").append(LINE_FEED);
-//                writer.close();
-//                
-//                System.out.println("-------------------------------------@ writer = " + writer);
-
-//				con.setFileNameMap(null);.setRequestProperty("file", params.get("file"));
-				
-//				con.setf
-			} else if ( "application".equals(contentType) ) {
-				// 파라미터가 아닌 헤더에 세팅해줘야함
-				con.setRequestProperty("apiId", CommonUtils.getString(params.get("apiId")));
-				con.setRequestProperty("apiSercret", CommonUtils.getString(params.get("apiSercret")));
-				con.setRequestProperty("svcId", "WEB01");
-				con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-			}
+			// 파라미터가 아닌 헤더에 세팅해줘야함
+			con.setRequestProperty("apiId", CommonUtils.getString(params.get("apiId")));
+			con.setRequestProperty("apiSercret", CommonUtils.getString(params.get("apiSercret")));
+			con.setRequestProperty("svcId", "WEB01");
+			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 			con.setRequestMethod(type.toUpperCase());	// get post
 			
 			result = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8")).readLine();
@@ -176,15 +121,137 @@ public class ChannelService {
 			
 			returnMap.put("rslt", jObj.get("rslt"));
 			returnMap.put("data", jObj.get("data"));
-			
-			System.out.println("-------------------------------------@" + con.getResponseMessage());
-			
 		} catch (Exception e) {
 			returnMap.put("rslt", "error");
 			returnMap.put("data", e.getMessage());
 		}
 		
-		System.out.println("-------------------------------------@" + returnMap);
+		return returnMap;
+	}
+	
+	/**
+	 * API 통신 
+	 * @param urlText		호출 URL 뒷부분
+	 * @param params		APIKEY 등 발신 정보 들
+	 * @param type			GET, POST 타입
+	 * @return				MAP 타입으로 리턴
+	 * @throws Exception
+	 */
+	public Map<String, Object> apiFileUpload(String urlText, MultipartFile multipartFile, String type, String contentType) throws Exception {
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		String apiUrl = "http://erp.ectech.co.kr:40931";
+		String result = "";
+		
+		JSONParser jParser = new JSONParser();
+		JSONObject jObj = new JSONObject();
+		
+		String boundary = "----";
+        String LINE_FEED = "\r\n";
+        String charset = "UTF-8";
+
+
+		
+//		try {
+			URL url = new URL(apiUrl + urlText);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			
+////			con.setRequestProperty("Content-Type", "multipart/form-data");
+//			con.setRequestProperty("Content-Type", "multipart/form-data;charset=utf-8;boundary=" + boundary);
+//			con.setDoInput(true);
+//			con.setDoOutput(true);
+//			con.setUseCaches(false);
+//			
+//			PrintWriter writer;
+//			OutputStream outputStream;
+//			File file = new File(multipartFile.getOriginalFilename());
+//			multipartFile.transferTo(file);
+//			
+//			outputStream = con.getOutputStream();
+//			writer = new PrintWriter(new OutputStreamWriter(outputStream, "UTF-8"), true);
+//			
+//			 /** 파일 데이터를 넣는 부분**/
+//			writer.append("--" + boundary).append(LINE_FEED);
+//			writer.append("Content-Disposition: form-data; name=\"file\"; filename=\"" + file.getName() + "\"").append(LINE_FEED);
+//			writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(file.getName())).append(LINE_FEED);
+//			writer.append("Content-Transfer-Encoding: binary").append(LINE_FEED);
+//			writer.append(LINE_FEED);
+//			writer.flush();
+//			
+//			
+//			FileInputStream inputStream = new FileInputStream(file);
+//			byte[] buffer = new byte[(int)file.length()];
+//			int bytesRead = -1;
+//			while ((bytesRead = inputStream.read(buffer)) != -1) {
+//			    outputStream.write(buffer, 0, bytesRead);
+//			}
+//			outputStream.flush();
+//			inputStream.close();
+//			writer.append(LINE_FEED);
+//			writer.flush();
+//			
+//			writer.append("--" + boundary + "--").append(LINE_FEED);
+//			writer.close();
+			
+			//--------------------------------------------------------------------------------------------------------------------------------------------
+//			con.setRequestProperty("Content-Type", "multipart/form-data");
+			con.setRequestProperty("Content-Type", "multipart/form-data;charset=utf-8;boundary=" + boundary);
+			con.setDoInput(true);
+			con.setDoOutput(true);
+			con.setUseCaches(false);
+			con.setRequestMethod("POST");
+			
+			PrintWriter writer;
+			OutputStream outputStream;
+			
+			System.out.println("-----------------------------------@@ multipartFile = " + multipartFile.getOriginalFilename());
+			
+			File file = this.multipartToFile(multipartFile);
+			
+			outputStream = con.getOutputStream();
+			writer = new PrintWriter(new OutputStreamWriter(outputStream, "UTF-8"), true);
+			
+			/** 파일 데이터를 넣는 부분**/
+			writer.append("Content-Disposition: form-data; name=\"file\"; filename=\"" + file.getName() + "\"");
+			writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(file.getName()));
+			writer.append("Content-Transfer-Encoding: binary");
+			writer.flush();
+			
+			System.out.println("-------------------------------------@ file = " + file);
+			
+			FileInputStream inputStream = new FileInputStream(file);
+			System.out.println("-----------------------------------@@ 여긴가? = ");
+			
+			byte[] buffer = new byte[(int)file.length()];
+			int bytesRead = -1;
+			while ((bytesRead = inputStream.read(buffer)) != -1) {
+			    outputStream.write(buffer, 0, bytesRead);
+			}
+			System.out.println("-----------------------------------@@ 여긴가????? = ");
+			
+			outputStream.flush();
+			inputStream.close();
+			writer.flush();
+			writer.close();
+			
+			System.out.println("-------------------------------------@ writer2 = " + writer);
+
+			result = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8")).readLine();
+			
+			jObj = (JSONObject) jParser.parse(result);
+			
+			System.out.println("-------------------------------------@ jObj : " + jObj);
+			
+//			returnMap.put("rslt", jObj.get("rslt"));
+//			returnMap.put("data", jObj.get("data"));
+			
+			System.out.println("-------------------------------------@ result : " + result);
+			
+//		} catch (Exception e) {
+//			returnMap.put("rslt", "error");
+//			returnMap.put("data", e.getMessage());
+//		}
+		
+		System.out.println("-------------------------------------@ returnMap : " + returnMap);
 		
 		return returnMap;
 	}
@@ -242,6 +309,12 @@ public class ChannelService {
 		price_info_json += "}";
 		
 		return null;
+	}
+	
+	public File multipartToFile(MultipartFile mfile) throws Exception {
+		File file = new File(mfile.getOriginalFilename());
+		mfile.transferTo(file);
+		return file;
 	}
 }
 

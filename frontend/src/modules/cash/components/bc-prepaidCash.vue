@@ -81,7 +81,7 @@ import Paging from "@/modules/commonUtil/components/bc-paging"
 import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt"
 
 /* $ npm install @tosspayments/sdk */
-import { loadTossPayments } from '@tosspayments/sdk';
+/* import { loadTossPayments } from '@tosspayments/sdk'; */
 const clientKey = 'test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw';
 
 export default {
