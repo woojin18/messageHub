@@ -12,7 +12,7 @@
 					<li @click="fnMoveMainTab('info')"><a class="width120">기본정보</a></li>
 					<li @click="fnMoveMainTab('member')"><a class="width120">멤버관리</a></li>
 					<li @click="fnMoveMainTab('channel')" class="active"><a class="width120">채널관리</a></li>
-					<li @click="fnMoveMainTab('callback')"><a class="width120">발신번호관리</a></li>
+					<li @click="fnMoveMainTab('callbackManage')"><a class="width120">발신번호관리</a></li>
 					<li @click="fnMoveMainTab('spam')"><a class="width120">스팸관리</a></li>
 				</ul>			
 			</div>

@@ -7,51 +7,54 @@
 
 			<!-- 본문 -->
 			<div class="row">
+				<!-- 미리보기 -->
 				<div class="col-xs-4 sub03_4_1_1_1">
-					<!-- 미리보기 -->
 					<div class="phoneWrap">
 						<img src="common/images/phone_01.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap2">
 							<div>
 								<div class="text">
 									<p class="text-main">전화번호</p>
-									<p class="text-sub">02-333-3333</p>
+									<p class="text-sub">{{this.inputVal.regBrand.tel}}</p>
 								</div>
 								<div class="text mt15">
 									<p class="text-main">웹사이트</p>
-									<p class="text-sub">http://www.uplus.co.kr</p>
+									<p class="text-sub">{{this.inputVal.regBrand.webSiteUrl}}</p>
 								</div>
 								<div class="text mt15">
 									<p class="text-main">이메일</p>
-									<p class="text-sub">test@uplus.co.kr</p>
+									<p class="text-sub">{{this.inputVal.regBrand.email}}</p>
 								</div>
 								<div class="text mt15">
 									<p class="text-main">주소</p>
-									<p class="text-sub">03909 서울특별시 마포구 매봉산로 45<br>(상암동, KBS미디어센터) 100호</p>
+									<p class="text-sub">
+										{{this.inputVal.regBrand.zipCode}} {{this.inputVal.regBrand.roadAddress}}
+										<br>{{this.inputVal.regBrand.detailAddress}}
+									</p>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-        <!-- 미리보기 -->
-        <!-- 인풋 -->
+				<!-- 미리보기 -->
+				<!-- 인풋 -->
 				<div class="col-xs-6 of_h">								
 					<div class="of_h">
 						<p class="float-left font-size18" style="width:28%">API Key</p>
-						<input id="apiKey" type="text" class="inputStyle float-left" style="width:72%">
+						<input id="apiKey" type="text" class="inputStyle float-left" style="width:72%" v-model="inputVal.apikey">
 					</div>
-					<div class="of_h">
+					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">API Secret Key</p>
 						<input id="apiSecretKey" type="text" class="inputStyle float-left" style="width:54%">
-						<a  class="btnStyle7 minWidthAuto float-right" style="width:17%">중복확인</a>
+						<a @click="fnCheckApiKey" class="btnStyle7 minWidthAuto float-right" style="width:17%">중복확인</a>
 					</div>
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">브랜드명 *</p>
-						<input id="brandName" type="text" class="inputStyle float-left" style="width:72%" v-model="this.projectId">
+						<input id="brandName" type="text" class="inputStyle float-left" style="width:72%" v-model="inputVal.regBrand.name">
 					</div>								
 					<div class="mt20 of_h">
 						<p class="float-left vertical-top font-size18" style="width:28%">브랜드 설명</p>
-						<input id="brandDesc" type="text" class="inputStyle float-left" style="width:72%; height:160px" v-model="this.save_status">
+						<input id="brandDesc" type="text" class="inputStyle float-left" style="width:72%; height:160px" v-model="inputVal.regBrand.description">
 					</div>				
 									
 					<div class="mt20 of_h">
@@ -64,20 +67,22 @@
 
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">백그라운드 이미지</p>
-						<input id="backImg" type="text" class="inputStyle float-left" style="width:54%">
-						<a  class="btnStyle7 minWidthAuto float-right" style="width:17%">파일선택</a>						
+						<!-- <input id="backImg" type="text" class="inputStyle float-left" style="width:54%" v-model="inputVal.bgImgFilePath"> -->
+						<!-- <a class="btnStyle7 minWidthAuto float-right" style="width:17%">파일선택</a> -->
+						<input type="file" class="btnStyle7 minWidthAuto float" style="width=72%" @change="fnFileUploadToApi($event.target.files[0], 'bg')"/>
+						<input type="hidden" v-model="inputVal.bgImgFilePath"/>
 					</div>
 					<p class="font-size12 color3 mt10 ml_28"><i class="far fa-info-circle"></i>최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : jpg, png (최대 1MB)</p>
 
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">프로필 이미지 *</p>
-						<input id="profileImg" type="text" class="inputStyle float-left"  style="width:54%">
+						<input id="profileImg" type="text" class="inputStyle float-left"  style="width:54%" v-model="inputVal.profileImgFilePath">
 						<a  class="btnStyle7 minWidthAuto float-right" style="width:17%">파일선택</a>
 						<p class="font-size12 color3 mt10 ml_28"><i class="far fa-info-circle"></i>최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : jpg, png (최대 1MB)</p>
 					</div>
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">전화번호 *</p>
-						<input id="phoneNum" type="text" class="inputStyle float-left" style="width: 72%">
+						<input id="phoneNum" type="text" class="inputStyle float-left" style="width: 72%" v-model="inputVal.regBrand.tel">
 					</div>
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">메뉴버튼설정 *</p>
@@ -104,29 +109,33 @@
 					</div>
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">카테고리 1 *</p>
-						<select id="cate1" class="float-left selectStyle3" style="width:72%">
-							<option value="">카테고리 1</option>
-							<option value="">카테고리 1</option>
+						<select id="cate1" class="float-left selectStyle3" style="width:72%" v-model="inputVal.regBrand.categoryId" @change="fnChangeCate2">
+							<option v-for="(option, i) in category" v-bind:value="option.categoryId" v-bind:key="i">
+								{{ option.categoryName }}
+							</option>
 						</select>
 					</div>
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">카테고리 2 *</p>
-						<select id="cate2" class="selectStyle3" style="width:72%">
-							<option value="">카테고리 2</option>
-							<option value="">카테고리 2</option>
+						<select id="cate2" class="selectStyle3" style="width:72%" v-model="cate2Selected">
+							<option v-for="(option, i) in subCategory" v-bind:value="option.subCategoryId" v-bind:key="i">
+								{{ option.subCategoryName }}
+							</option>
 						</select>
 					</div>
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">카테고리 3 *</p>
-						<input id="cate3" type="text" class="inputStyle" style="width:72%">
+						<input id="cate3" type="text" class="inputStyle" style="width:72%" v-model="inputVal.regBrand.categoryOpt">
 					</div>
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">홈페이지 주소</p>
-						<input id="homepageAddr" type="text" class="inputStyle" style="width:72%">
+						<input id="homepageAddr" type="text" class="inputStyle" style="width:72%" v-model="inputVal.regBrand.webSiteUrl">
 					</div>
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">이메일</p>
-						<input id="email1" type="text" class="inputStyle float-left mr20" style="width:31%">@<input id="email2" type="text" class="inputStyle ml20" style="width:31%; margin-left: 10px !important;">
+						<input id="email1" type="text" class="inputStyle float-left mr20" style="width:31%" v-model="inputVal.regBrand.email">
+						@
+						<input id="email2" type="text" class="inputStyle ml20" style="width:31%; margin-left: 10px !important;">
 						<select id="emailSelect" class="selectStyle3 ml_28 mt10" style="width:72%">
 							<option value="1" selected>직접입력</option>
 							<option value="naver.com">naver.com</option>
@@ -147,12 +156,12 @@
 					</div>
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">주소</p>
-						<input id="postAddr" type="text" class="inputStyle" style="width:32%">
+						<input id="postAddr" type="text" class="inputStyle" style="width:32%" v-model="inputVal.regBrand.zipCode">
 						<a  class="btnStyle7 vertical-middle ml10 minWidthAuto" style="width:17%">우편번호</a>
 					</div>
 					<div class="ml_28">
-						<input id="addr1" type="text" class="inputStyle mr10 mt10" style="width:65%">
-						<input id="addr2" type="text" class="inputStyle mt10" style="width:32%">						
+						<input id="addr1" type="text" class="inputStyle mr10 mt10" style="width:65%" v-model="inputVal.regBrand.roadAddress">
+						<input id="addr2" type="text" class="inputStyle mt10" style="width:32%" v-model="inputVal.regBrand.detailAddress">						
 					</div>
 
 					<hr class="mt60">
@@ -185,7 +194,7 @@
 					<div class="mt20 of_h">
 						<p class="float-left vertical-middle line-height1-5em font-size18" style="width:28%">통신서비스<br>가입증명원 *</p>
 						<a  class="btnStyle7 vertical-middle float-left minWidthAuto" style="width:17%">파일선택</a>
-						<input type="text" class="inputStyle float-right" style="width:54%">
+						<input type="text" class="inputStyle float-right" style="width:54%" v-model="inputVal.certiFilePath">
 						
 						<div class="font-size12 color3 mt10 ml_28 float-left" style="width:73%">
 							<div class="consolCheck float-left mb40"><input type="checkbox" id="Lmit" class="checkStyle2" value="Lmit"><label for="Lmit"></label></div>
@@ -193,10 +202,10 @@
 						</div>						
 					</div>
 					<div class="mt20 float-right">
-						<a v-if="this.save_status == 'C'" @click="fnSaveRcsDetail" class="btnStyle5 red float-left width120">저장</a>
-						<a v-if="this.save_status == 'C'" @click="fnSaveRcsDetail" class="btnStyle5 red float-left ml10 width120">승인요청</a>
-						<a v-if="this.save_status == 'U'" @click="fnSaveRcsDetail" class="btnStyle5 red float-left ml10 width120">수정요청</a>
-						<a v-if="this.save_status == 'U'" @click="fnSaveRcsDetail" class="btnStyle5 red float-left ml10 width120">삭제요청</a>
+						<a v-if="this.save_status == 'C'" @click="fnSaveRcsBrandReqForApi" class="btnStyle5 red float-left width120">저장</a>
+						<a v-if="this.save_status == 'C'" @click="fnSaveRcsBrandReqForApi" class="btnStyle5 red float-left ml10 width120">승인요청</a>
+						<a v-if="this.save_status == 'U'" @click="fnSaveRcsBrandReqForApi" class="btnStyle5 red float-left ml10 width120">수정요청</a>
+						<a v-if="this.save_status == 'U'" @click="fnSaveRcsBrandReqForApi" class="btnStyle5 red float-left ml10 width120">삭제요청</a>
 						<a @click="fnBack" class="btnStyle5 white float-left ml10 width120">목록</a>
 					</div>
 				</div>	
@@ -213,78 +222,166 @@
 </template>
 
 <script>
-/* import MenuApi from "@/modules/system/service/MenuManageApi"; */
+import api from "@/modules/channel/service/api";
+import axios from 'axios'
 
 export default {
   name: 'bcChanRcsDetail',
   data() {
-    return {
-      save_status : '', // 등록 수정 여부
-      projectId : ''
-    }
+	return {
+		vm : this,
+		save_status : '', // 등록 수정 여부
+		projectId : '',
+		inputVal : {
+			corpId : "",
+			projectId : "",
+			apikey : "",
+			apiSecretKey : "",
+			regBrand : {
+				"name": "브랜드 이름",
+				"description": "브랜드 설명",
+				"tel": "브랜드 전화번호",
+				"menus": {},
+				"categoryId": "버튼 정보",
+				"subCategoryId": "버튼 정보",
+				"categoryOpt": "검색용 키워드",
+				"zipCode": "우편번호",
+				"roadAddress": "도로명주소",
+				"detailAddress": "상세주소",
+				"email": "이메일주소",
+				"webSiteUrl": "홈페이지 주소"
+			},
+			mainMdn: "",
+			profileImgFilePath: "",
+			bgImgFilePath: "",
+			/* bgImgFile : new file(), */
+			certiFilePath: "",
+			/* "chatbots": [
+				{
+					"mdn": "string",
+					"subnum": "string",
+					"rcsReply": "string",
+					"subTitle": "string",
+					"service": "string",
+					"display": "string",
+					"webhook": "string"
+				}
+			] */
+		},
+		cate1 : '',
+		cate1Selected: 'A',
+		cate1Options: [],
+		cate2 : '',
+		cate2Selected: 'A',
+		cate2Options: [],
+		category : [
+			{
+			"categoryId": "",
+			"categoryName": "",
+			"subCategories": [
+				{
+					"subCategoryId": "",
+					"subCategoryName": ""
+				}
+			]
+		}
+		],
+		subCategory : {}
+	}
   },
   mounted() {
     this.projectId = this.$route.params.projectId;
+	//this.inputVal.projectId = 
     this.save_status = this.$route.params.save_status;
+
+	
   },
   methods: {
     // 닫기
     fnClose(){
       this.$emit('update:visible', false);
     },
+	// 목록
 	fnBack(){
 		this.$router.go(-1);
 	},
-    // 등록, 수정
-    fnSaveRcsDetail(){
-      var parMenuRow = this.parRowData;
-      var params = {
-          /* "menus_cd"      : $("#menus_cd").val(),
-          "menus_name"    : $("#menus_name").val(),
-          "img_tag"      : $("#img_tag").val(),
-          "top_menus_cd" : parMenuRow.MENUS_CD,
-          "par_menus_cd" : parMenuRow.PAR_MENUS_CD,
-          "menus_level"  : (parMenuRow.MENUS_LEVEL) + 1,
-          "dis_order"    : $("#dis_order").val(),
-          "svc_type_cd"  : $("#svc_type_cd").val(),
-          "fixed_menus_yn"   : 1,
-          "use_yn"       : $("#use_yn").val(),
-          "web_url"      : $("#web_url").val(), */
-          "sts" : this.save_status
-      };
+	// API 중복확인
+	fnCheckApiKey(){
+		var params = {
+			"apiKey"		: this.inputVal.apiKey,
+			"apiSecretKey"	: this.inputVal.apiSecretKey
+		};
 
-      /* MenuApi.saveMenuList(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          alert("저장되었습니다.");
-          // 창닫기
-          this.$emit('update:visible', false);
-          // 부모창 리스트 조회
-          this.$parent.fnSearch();
-        } else {
-          alert("저장에 실패.");
-        }
-      }); */
+		api.checkApiKey(params).then(response =>{
+			var result = response.data.data;
+			this.category = result.data;
+		});
+	},
+	// 카테고리1 변경시 카테고리2 변경
+	fnChangeCate2(){
+		var categoryArr	= this.category;
+		var cate1Id		= this.inputVal.regBrand.categoryId;
+		console.log(categoryArr.length);
+		for( var i = 0; i < categoryArr.length; i++ ){
+			if( categoryArr[i].categoryId == cate1Id ){
+				this.subCategory = categoryArr[i].subCategories;
+			}
+		}
+	},
+	async fnFileUploadToApi(file, fileType){
+		var params = {
+			"file" : file
+		}
+			
+
+		/* api.fileUploadToApi(params).then(response =>{
+			var result = response.data.data;
+			console.log(result);
+			if( fileType === 'bg' ){
+				this.inputVal.bgImgFilePath = '';
+			}
+		}); */
+		var fd = new FormData();
+		fd.append('files', file);
+
+		console.log( '------------------------------------- file ??? ');
+		console.log(fd);
+		console.log( '------------------------------------- file ??? ');
+
+		await axios.post('/projectApi/channel/fileUploadToApi',
+			fd, {
+			headers: {
+				'Content-Type': 'multipart/form-data'
+			}
+		}).then( response => {
+			console.log(response.data);
+			// 창닫기
+			this.fnClose();
+			// 부모창 리스트 조회
+			this.$parent.fnSearch();
+			// 파일 초기화
+			this.files = [];
+			alert("등록되었습니다.");
+		})
+		.catch(function () {
+			console.log('FAILURE!!');
+			alert("등록에 실패했습니다.");
+		});
+	},
+    // 등록, 수정
+    fnSaveRcsBrandReqForApi(){
+		var params = {
+			"inputVal" : this.inputVal
+		}
+
+		api.saveRcsBrandReqForApi(params).then(response =>{
+			var result = response.data.data;
+			this.cate1Options = result.data;
+		});
     },
     // 삭제
     fnDelete(){
-      var params = {
-          "menus_cd" : $("#menus_cd").val(),
-          "sts" : "D"
-      };
-
-      /* MenuApi.saveMenuList(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          alert("삭제되었습니다.");
-          // 창닫기
-          this.fnClose();
-          // 부모창 리스트 조회
-          this.$parent.fnSearch();
-        } else {
-          alert("저장에 실패.");
-        }
-      }); */
+      
     }
   }
 }

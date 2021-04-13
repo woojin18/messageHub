@@ -87,4 +87,47 @@ public class ChannelController {
 		return channelService.selectRcsCallbackList(params);
 	}
 	
+	/**
+	 * API KEY 중복 조회
+	 * @param params
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("/checkApiKey")
+	public RestResult<?> checkApiKey(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		return channelService.checkApiKey(params);
+	}
+	
+	/**
+	 * 파일 업로드 API
+	 * @param params
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("/fileUploadToApi")
+	public RestResult<?> fileUploadToApi(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		System.out.println("-------------------------------------------111111111111111111 " + params);
+		
+		return channelService.fileUploadToApi(params);
+	}
+	
+	/**
+	 * RCS 브랜드 등록요청
+	 * @param params
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("/saveRcsBrandReqForApi")
+	public RestResult<?> saveRcsBrandReqForApi(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		return channelService.saveRcsBrandReqForApi(params);
+	}
 }
