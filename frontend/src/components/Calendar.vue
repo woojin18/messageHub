@@ -1,5 +1,5 @@
 <template>
-  <input type="text" :id="calenderId" :class="classProps" :style="styleProps" :value="initDate">
+  <input type="text" :id="calendarId" :class="classProps" :style="styleProps" :value="initDate">
 </template>
 
 <script>
@@ -7,7 +7,7 @@ import jq from 'jquery'
 
 export default {
   props: {
-    calenderId: {
+    calendarId: {
       type: String,
       require: false
     },
@@ -37,7 +37,7 @@ export default {
   mounted: function() {
     var self = this;
     var jq = jQuery.noConflict();
-    jq('#'+this.calenderId).datepicker({
+    jq('#'+this.calendarId).datepicker({
       dateFormat: "yy-mm-dd"
       ,monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
       ,monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
@@ -53,6 +53,6 @@ export default {
       //,onSelect: function(d){self.$parent.updateDate(d);}
     });
   },
-  beforeDestroy: function(){jq('#'+this.calenderId).datepicker('hide').datepicker('destroy')}
+  beforeDestroy: function(){jq('#'+this.calendarId).datepicker('hide').datepicker('destroy')}
 };
 </script>

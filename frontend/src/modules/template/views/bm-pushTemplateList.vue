@@ -24,9 +24,9 @@
           <div class="of_h mt20">
             <div class="float-left" style="width:8%"><h4 class="font-normal mt15">등록일자</h4></div>
             <div class="float-left" style="width:92%">
-              <Datepicker @update-date="fnUpdateStartDate" calenderId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate"></Datepicker>
+              <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate"></Calendar>
               <span style="padding:0 11px">~</span>
-              <Datepicker @update-date="fnUpdateEndDate" calenderId="searchEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchEndDate"></Datepicker>
+              <Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchEndDate"></Calendar>
               <ul class="tab_s2 ml20">
                 <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 등록일자 검색">오늘</a></li>
                 <li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 등록일자 검색">1주일</a></li>
@@ -144,14 +144,14 @@
 import TemplateApi from "@/modules/template/service/templateApi.js";
 import PageLayer from '@/components/PageLayer.vue';
 import SelectLayer from '@/components/SelectLayer.vue';
-import Datepicker from "@/components/Calender.vue";
+import Calendar from "@/components/Calendar.vue";
 
 export default {
   name: "pushTemplateList",
   components: {
     SelectLayer,
     PageLayer,
-    Datepicker
+    Calendar
   },
   props: {
     searchData : {
@@ -234,7 +234,7 @@ export default {
           return false;
         }
       }
-      
+
       var params = Object.assign({}, this.searchData);
       params.pageNo = this.pageNo;
       params.listSize = this.listSize;
