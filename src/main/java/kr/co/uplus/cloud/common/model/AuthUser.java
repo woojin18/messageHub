@@ -19,6 +19,7 @@ public class AuthUser implements UserDetails {
 	private Role role;
 	private Collection<? extends GrantedAuthority> authorities;
 	private String corpId;
+	private String svcTypeCd;
 
 	private String userNm;
 
