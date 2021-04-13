@@ -17,9 +17,14 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import WebHeader from "../components/WebHeader";
 import treeMenu from "../components/treeMenu";
-import confirm from "@/modules/commonUtil/service/confirm"
+import confirm from "@/modules/commonUtil/service/confirm";
+import common from "@/assets/js/common";
+
+Vue.use(confirm);
+Vue.use(common);
 
 export default {
 	name: "webNaviLayout",

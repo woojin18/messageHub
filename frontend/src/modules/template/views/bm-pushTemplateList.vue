@@ -24,14 +24,14 @@
           <div class="of_h mt20">
             <div class="float-left" style="width:8%"><h4 class="font-normal mt15">등록일자</h4></div>
             <div class="float-left" style="width:92%">
-              <input type="text" class="datepicker inputStyle maxWidth200 hasDatepicker" title="시작날짜 입력란" id="searchStartDate" name="searchStartDate" v-model="searchData.searchStartDate">
+              <Datepicker @update-date="fnUpdateStartDate" calenderId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate"></Datepicker>
               <span style="padding:0 11px">~</span>
-              <input type="text" class="datepicker inputStyle maxWidth200 hasDatepicker" title="마지막날짜 입력란" id="searchEndDate" name="searchEndDate" v-model="searchData.searchEndDate">
+              <Datepicker @update-date="fnUpdateEndDate" calenderId="searchEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchEndDate"></Datepicker>
               <ul class="tab_s2 ml20">
-                <li><a href="#" title="오늘 날짜 등록일자 검색">오늘</a></li>
-                <li class="active"><a href="#" title="1주일 등록일자 검색">1주일</a></li>
-                <li><a href="#" title="15일 등록일자 검색">15일</a></li>
-                <li><a href="#" title="1개월 등록일자 검색">1개월</a></li>
+                <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 등록일자 검색">오늘</a></li>
+                <li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 등록일자 검색">1주일</a></li>
+                <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
+                <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
               </ul>
             </div>
           </div>
@@ -47,7 +47,7 @@
                 <input type="checkbox" id="searchOthPrjUseYn_IMAGE" class="checkStyle2" value="N" v-model="searchData.searchOthPrjUseYn">
                 <label for="searchOthPrjUseYn_IMAGE">전용</label>
               </div>
-              <a @click="fnSearch" class="btnStyle2 float-right" title="통합발송 검색">검색</a>
+              <a @click="fnSearch()" class="btnStyle2 float-right" title="통합발송 검색">검색</a>
             </div>
           </div>
         </div>
@@ -119,6 +119,13 @@
               <td class="text-center">{{contant.regId}}</td>
               <td class="text-center end">{{contant.regDt}}</td>
             </tr>
+            <tr v-if="contants.length == 0">
+              <td class="text-center">
+                <input type="checkbox" id="listCheck_0" class="boardCheckStyle">
+                <label for="listCheck_0"></label>
+              </td>
+              <td class="text-center" colspan="8">검색된 내용이 없습니다.</td>
+            </tr>
           </tbody>
         </table>
         <!-- //table -->
@@ -127,7 +134,7 @@
 
     <!-- pagination -->
     <div id="pageContent">
-      <PageLayer @fnClick="fnClick" :listTotalCnt="totCnt" :selected="listSize" ref="updatePaging"></PageLayer>
+      <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
     </div>
 
   </div>
@@ -137,12 +144,14 @@
 import TemplateApi from "@/modules/template/service/templateApi.js";
 import PageLayer from '@/components/PageLayer.vue';
 import SelectLayer from '@/components/SelectLayer.vue';
+import Datepicker from "@/components/Calender.vue";
 
 export default {
   name: "pushTemplateList",
   components: {
     SelectLayer,
-    PageLayer
+    PageLayer,
+    Datepicker
   },
   props: {
     searchData : {
@@ -152,15 +161,12 @@ export default {
         return {
           'searchCondi' : 'tmpltName',
           'searchText' : '',
-          'searchStartDate' : '2021-03-30',
-          'searchEndDate' : '2021-04-08',
+          'searchStartDate' : this.$gfnCommonUtils.getCurretDate(),
+          'searchEndDate' : this.$gfnCommonUtils.getCurretDate(),
           'searchOthPrjUseYn' : []
         }
       }
     }
-  },
-  mounted() {
-    this.fnSearch();
   },
   data() {
     return {
@@ -171,10 +177,27 @@ export default {
       pageNo : 1,  // 현재 페이징 위치
       totCnt : 0,  //전체 리스트 수
       offset : 0, //페이지 시작점
+      searchDateInterval: 7,
       contants: []
     }
   },
+  mounted() {
+    this.fnSetIntervalSearchDate(this.searchDateInterval);
+    this.fnSearch();
+  },
   methods: {
+    //검색일자변경
+    fnSetIntervalSearchDate(interval){
+      this.searchDateInterval = interval;
+      this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
+      this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
+    },
+    fnUpdateStartDate(sltDate) {
+      this.searchData.searchStartDate = sltDate;
+    },
+    fnUpdateEndDate(sltDate) {
+      this.searchData.searchEndDate = sltDate;
+    },
     //푸시 템플릿 엑셀 다운로드
     fnExcelDownLoad(){
       var params = this.searchData;
@@ -203,7 +226,7 @@ export default {
       });
     },
     //푸시 템플릿 리스트 검색
-    async fnSearch(){
+    async fnSelectPushList(){
       //유효성 검사
       if(this.searchData.searchStartDate && this.searchData.searchEndDate){
         if(this.searchData.searchStartDate.replace(/[^0-9]/g, '') > this.searchData.searchEndDate.replace(/[^0-9]/g, '')){
@@ -211,11 +234,10 @@ export default {
           return false;
         }
       }
-
-      var params = this.searchData;
+      
+      var params = Object.assign({}, this.searchData);
       params.pageNo = this.pageNo;
       params.listSize = this.listSize;
-
       await TemplateApi.selectPushTmpltList(params).then(response =>{
         var result = response.data;
         if(result.success) {
@@ -251,11 +273,9 @@ export default {
       this.listSize = Number(listSize);
       this.$refs.updatePaging.fnAllDecrease();
     },
-    // page 선택
-    fnClick(pageNum) {
-      this.pageNo = pageNum;
-      this.fnSearch();
-      //this.$refs.updatePaging.fnAllDecrease();
+    fnSearch(pageNum) {
+      this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
+      this.fnSelectPushList();
     }
   }
 }

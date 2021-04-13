@@ -33,10 +33,17 @@ export default {
   name: 'SelectLayer',
   props: {
       listTotalCnt: Number,         // ToTal List Count
-      selected: Number              // select Box Count (10개씩 보기 ... 등)
+      selected: Number,              // select Box Count (10개씩 보기 ... 등)
+      pageNum: {
+          type: Number,
+          require: false,
+          default: function() {
+              return 1;
+          }
+      }  // 현재 페이지
   },
    data: () => ({
-        pageNum: 1,                 // 현재 페이지
+        //pageNum: 1,                 // 현재 페이지
         pageStartNum: 1,            // 페이징 시작 cnt (1, 11, 21 ...)
         pageTotalCnt: 10,           // 한번에 보여주는 페이징 (1,2,3,4,5,6,7,8,9,10)
         pageCntList () {
@@ -98,9 +105,9 @@ export default {
     },
     // 한칸 앞으로
     fnOneDecrease() {
-        var totalCount = this.listTotalCnt;     // 총 리스트 수
+        //var totalCount = this.listTotalCnt;     // 총 리스트 수
         var curPageNum = this.pageNum;          // 현재 페이지 위치
-        var selected = this.selected;           // select Box Count
+        //var selected = this.selected;           // select Box Count
         var pageStartNum = this.pageStartNum;   // 현재 페이지 시작 Cnt
 
         // 1페이지 보다 클 경우에만 메소드 실행
