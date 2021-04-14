@@ -147,7 +147,7 @@ public class CommonService {
                 && CommonUtils.isNotEmptyObject(params.get("pageNo"))
                 && params.containsKey("listSize")
                 && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
-            PageDto pageDto = rtn.getPageInfo();
+            PageDto pageDto = rtn.getPageDto();
             pageDto.setPageInfo(params);
             //카운트 쿼리 실행
             int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_IMAGE_LIST_CNT, params);

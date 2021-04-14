@@ -1,14 +1,17 @@
 package kr.co.uplus.cloud.common.dto;
 
-import kr.co.uplus.cloud.dto.PageDto;
+import java.util.Map;
+
 import kr.co.uplus.cloud.common.consts.ResultCode;
+import kr.co.uplus.cloud.dto.PageDto;
 
 public class RestResult<T> implements IResult<ResultCode, T> {
     protected boolean success = true;
     protected ResultCode code;
     protected String message;
     protected T data;
-    protected PageDto pageInfo = new PageDto();
+    protected Map<String, Object> pageInfo;
+    protected PageDto pageDto = new PageDto();
 
     public RestResult() {
     }
@@ -43,10 +46,16 @@ public class RestResult<T> implements IResult<ResultCode, T> {
         this.data = data;
         return this;
     }
-    public PageDto getPageInfo() {
+    public Map<String, Object> getPageInfo() {
         return pageInfo;
     }
-    public void setPageInfo(PageDto pageInfo) {
+    public void setPageInfo(Map<String, Object> pageInfo) {
         this.pageInfo = pageInfo;
+    }
+    public PageDto getPageDto() {
+        return pageDto;
+    }
+    public void setPageDto(PageDto pageDto) {
+        this.pageDto = pageDto;
     }
 }
