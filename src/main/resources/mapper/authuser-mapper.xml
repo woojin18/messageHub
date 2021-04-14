@@ -76,7 +76,7 @@
 		AND		TOP_MENUS_CD = #{top_menus_cd}
 		AND		MENUS_CD IN (
 			SELECT B.MENUS_CD 
-			FROM cm_bo.CM_USER_ROLE  A
+			FROM cm_bo.CM_USER  A
 			INNER JOIN cm_bo.CM_ROLE_MENU_ACTIVITY B
 				ON A.ROLE_CD  = B.ROLE_CD 
 			WHERE	A.USER_ID = #{user_id}
