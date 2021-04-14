@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="signUp">
+
+	<select id="selectDomainChkCount" resultType="int">
+		/* signUp.selectDomainChkCount */
+		SELECT	COUNT(*)
+		FROM	CM_CORP
+		WHERE	DOMAIN_NAME = #{domainName}
+	</select>
+	
+	<insert id="insertCmUser">
+		/* signUp.insertCmUser */
+		INSERT INTO CM_USER (
+				USER_ID
+		,		LOGIN_ID
+		,		MAIL_CERTIFY_NUMBER
+		,		MAIL_CERTIFY_SENDER_DT
+		,		APPROVAL_STATUS
+		,		USER_PRIVILEGETYPE
+		,		REG_ID
+		,		REG_DT
+		) VALUES (
+				#{userId}
+		,		#{email}
+		,		#{ranDomNum}
+		,		SYSDATE()
+		,		'ING'
+		,		#{cmRole}
+		,		#{regId}
+		,		SYSDATE()
+		)
+	</insert>
+	
+	<select id="selectCmUseTerms" resultType = "camel">
+		/* signUp.selectCmUseTerms */
+		SELECT	SVC_TERMS_ID
+		,		TERMS_CONTENT
+		FROM	cm_bo.CM_USE_TERMS
+		WHERE	TERMS_CD = #{srcTermsCd}
+		AND		USE_YN = 'Y'
+	</select>
+	
+	<select id="selectCmUseTermsPriVersion" resultType = "camel">
+		/* signUp.selectCmUseTermsPriVersion */
+		SELECT	SVC_TERMS_ID
+		,		TERMS_CONTENT
+		,		REVISE_DAY
+		FROM	cm_bo.CM_USE_TERMS
+		WHERE	TERMS_CD = #{srcTermsCd}
+		AND		USE_YN = 'N'
+		ORDER BY REVISE_DAY DESC
+	</select>
+</mapper>
