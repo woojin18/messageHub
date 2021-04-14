@@ -5,24 +5,27 @@
     </div>
     <div class="contentBody mb20">
       <ul class="tab_s3">
-        <li class="active"><a class="width120" title="선불정산관리 페이지로 이동">선불정산관리</a></li>
-        <li><a class="width120" title="후불정산관리 페이지로 이동">후불정산관리</a></li>
+        <li :class="{active:(selTab == 1)}" @click="selTab=1"><a class="width120" title="선불정산관리 페이지로 이동">선불정산관리</a></li>
+        <li :class="{active:(selTab == 2)}" @click="selTab=2"><a class="width120" title="후불정산관리 페이지로 이동">후불정산관리</a></li>
       </ul>			
     </div>
-    <prepaidCash></prepaidCash>
-    
+    <prepaidCash :selTab="selTab"></prepaidCash>
+    <deferredCash :selTab="selTab"></deferredCash>
   </article>
 </template>
 
 <script>
 import prepaidCash from '../components/bc-prepaidCash.vue';
+import deferredCash from '../components/bc-deferredCash.vue';
 
 export default {
   components: {
-    prepaidCash
+    prepaidCash,
+    deferredCash
   },
   data() {
     return {
+      selTab: 1
     }
   }
 }

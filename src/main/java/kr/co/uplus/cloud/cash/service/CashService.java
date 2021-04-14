@@ -77,4 +77,24 @@ public class CashService {
 		
 		return rtn;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public RestResult<Object> selectCashHist(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
+		
+		if (pageInfo != null && !pageInfo.isEmpty()) {
+			int rowNum = generalDao.selectGernalCount(DB.QRY_SELECT_CASH_HIST_COUNT, params);
+			pageInfo.put("rowNum", rowNum);
+			
+			rtn.setPageInfo(pageInfo);
+		}
+		
+		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_CASH_HIST, params);
+		
+		rtn.setData(list);
+		
+		return rtn;
+	}
 }

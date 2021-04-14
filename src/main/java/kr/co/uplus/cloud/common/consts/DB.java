@@ -49,6 +49,8 @@ public class DB {
 	//웹캐시
 	public final static String QRY_INSERT_WEB_CASH_INFO = "cash.insertWebCashInfo";
 	public final static String QRY_SELECT_WEB_CASH_INFO = "cash.selectWebCashInfo";
+	public final static String QRY_SELECT_CASH_HIST_COUNT = "cash.selectCashHist_count";
+	public final static String QRY_SELECT_CASH_HIST = "cash.selectCashHist";	
 	// 회원 가입
 	public final static String QRY_SELECT_DOMAIN_CHK_COUNT = "signUp.selectDomainChkCount";
 	public final static String QRY_INSERT_CM_CORP = "signUp.insertCmCorp";

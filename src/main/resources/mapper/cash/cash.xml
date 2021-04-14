@@ -30,4 +30,52 @@
 		FROM	cm_console.CM_WEB_CASH_HIST
 		WHERE	PAYMENT_ID = #{orderId}
 	</select>
+	
+	<select	id ="selectCashHist_count" resultType="int">
+	/* cash.selectCashHist_count */
+		SELECT	COUNT(*)
+		FROM	(
+				SELECT	CASH_CHARG_AMOUNT	AS AMOUNT
+				,		'충전캐시'				AS CASH_TYPE
+				,		PAY_MTD
+				,		REG_DT
+				,		'-'					AS EVENT_DT
+				FROM	cm_console.CM_WEB_CASH_HIST
+				UNION ALL
+				SELECT	cch.AMOUNT
+				,		'이벤트캐시'
+				,		'이벤트캐시'
+				,		cc.REG_DT
+				,		cc.START_DT + '~' + cc.EXP_DT
+				FROM	cm.CM_CASH cc
+				INNER JOIN (
+					SELECT	MAX(AMOUNT)	AS AMOUNT
+					FROM	cm.CM_CASH_HIST
+					GROUP BY CORP_ID, CASH_ID
+				) cch
+		) AA
+	</select>
+	
+	<select	id ="selectCashHist" resultType="camel">
+	/* cash.selectCashHist */
+		SELECT	CASH_CHARG_AMOUNT	AS AMOUNT
+		,		'충전캐시'				AS CASH_TYPE
+		,		PAY_MTD
+		,		REG_DT
+		,		'-'					AS EVENT_DT
+		FROM	cm_console.CM_WEB_CASH_HIST
+		UNION ALL
+		SELECT	cch.AMOUNT
+		,		'이벤트캐시'
+		,		'이벤트캐시'
+		,		cc.REG_DT
+		,		cc.START_DT + '~' + cc.EXP_DT
+		FROM	cm.CM_CASH cc
+		INNER JOIN (
+			SELECT	MAX(AMOUNT)	AS AMOUNT
+			FROM	cm.CM_CASH_HIST
+			GROUP BY CORP_ID, CASH_ID
+		) cch
+		ORDER BY REG_DT
+	</select>
 </mapper>

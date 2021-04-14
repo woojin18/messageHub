@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-show="selTab == 1">
     <h4 class="lc-1 mb20">선불 충전관리</h4>
     <div class="menuBox">
       <div class="row">
@@ -48,24 +48,22 @@
           <thead>
             <tr>
             <th class="text-center lc-1">NO.</th>
-            <th class="text-center lc-1">발생내역</th>
             <th class="text-center lc-1">충전캐시</th>
-            <th class="text-center lc-1">남은캐시</th>
+            <th class="text-center lc-1">충전유형</th>
             <th class="text-center lc-1">결제유형</th>
             <th class="text-center lc-1">발생일자</th>
-            <th class="text-center lc-1 end">유효기관</th>
+            <th class="text-center lc-1 end">유효기간</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="text-center">15</td>
-              <td class="text-left">캐시 충전</td>
-              <td class="text-center">500,000</td>
-              <td class="text-center">500,000</td>
-              <td class="text-center">선불</td>
-              <td class="text-center">2021-02-01</td>
-              <td class="text-center end">-</td>
-            </tr>	
+            <tr v-for="(data, index) in data" :key="index">
+              <td class="text-center">{{index+1}}</td>
+              <td class="text-center">{{data.amount}}</td>
+              <td class="text-center">{{data.cashType}}</td>
+              <td class="text-center">{{data.payMtd}}</td>
+              <td class="text-center">{{data.regDt}}</td>
+              <td class="text-center end">{{data.eventDt}}</td>
+            </tr>
           </tbody>
         </table>
         <!-- //table -->
@@ -78,6 +76,9 @@
 </template>
 
 <script>
+import cashApi from "@/modules/cash/service/api"
+import tokenSvc from '@/common/token-service';
+
 import layerPopup from "@/modules/cash/components/bp-prePaidCash"
 
 import Paging from "@/modules/commonUtil/components/bc-paging"
@@ -87,8 +88,12 @@ export default {
   name: 'prepaidCash',
   data() {
     return {
+      data: [],
       pageInfo: {}
     }
+  },
+  props: {
+    selTab: Number
   },
   components: {
     layerPopup,
@@ -102,10 +107,26 @@ export default {
       "selPage"   : 1,          //선택한 페이지
       "rowNum"    : 1           //총개수
     };
+
+    this.fnSearch();
   },
   methods: {
     fnTossPay: function() {
       $("#cashPop").modal("show");
+    },
+
+    fnSearch: function() {
+      var params = {
+        "pageInfo" : this.pageInfo
+      };
+
+      cashApi.selectCashHist(params).then(response => {
+        var result = response.data;
+        if(result.success) {
+          this.data = result.data; 
+          this.pageInfo = result.pageInfo;
+        }
+      });
     }
   }
 }
