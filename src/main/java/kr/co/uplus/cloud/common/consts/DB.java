@@ -39,6 +39,9 @@ public class DB {
 	// 푸시메시지 발송
     public final static String QRY_SELECT_APP_ID_LIST = "sendMessage.selectAppIdList";
     public final static String QRY_SELECT_CALLBACK_LIST = "sendMessage.selectCallbackList";
+    public final static String QRY_SELECT_ADDR_GRP_LIST = "sendMessage.selectAddrGrpList";
+    public final static String QRY_SELECT_ADDR_CTGY_LIST = "sendMessage.selectAddrCtgyList";
+    public final static String QRY_SELECT_CM_CU_LIST = "sendMessage.selectCmCuList";
 	public final static String QRY_INSERT_SEND_PUSH_MSG = "sendMessage.qryInsertSendPushMessage";
 	// RCS 채널 브랜드 정보
 	public final static String QRY_SELECT_RCS_BRANDLIST = "channel.selectRcsBrandList";
@@ -50,7 +53,7 @@ public class DB {
 	public final static String QRY_INSERT_WEB_CASH_INFO = "cash.insertWebCashInfo";
 	public final static String QRY_SELECT_WEB_CASH_INFO = "cash.selectWebCashInfo";
 	public final static String QRY_SELECT_CASH_HIST_COUNT = "cash.selectCashHist_count";
-	public final static String QRY_SELECT_CASH_HIST = "cash.selectCashHist";	
+	public final static String QRY_SELECT_CASH_HIST = "cash.selectCashHist";
 	// 회원 가입
 	public final static String QRY_SELECT_DOMAIN_CHK_COUNT = "signUp.selectDomainChkCount";
 	public final static String QRY_INSERT_CM_CORP = "signUp.insertCmCorp";

@@ -9,9 +9,17 @@ const selectAppIdList = (params) => {
 const selectCallbackList = (params) => {
     return httpClient.post('/api/public/sendMessage/selectCallbackList', params, { headers: {"show-layer": "Yes"} });
 };
+const selectAddressList = (params) => {
+    return httpClient.post('/api/public/sendMessage/selectAddressList', params, { headers: {"show-layer": "Yes"} });
+};
+const selectCmCuList = (params) => {
+    return httpClient.post('/api/public/sendMessage/selectCmCuList', params, { headers: {"show-layer": "Yes"} });
+};
 
 export default {
     apiTest,
     selectAppIdList,
     selectCallbackList,
+    selectAddressList,
+    selectCmCuList,
 };

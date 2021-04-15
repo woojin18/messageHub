@@ -4,7 +4,7 @@ export default {
       /**************************문자열 관련 Utils**************************/
       //빈 문자열 확인
       isEmpty(str){
-        if(typeof str == "undefined" || str == null || str == "") return true;
+        if( str == "" || str == null || str == undefined || ( str != null && typeof str == "object" && !Object.keys(str).length)) return true;
         else return false ;
       },
       //str이 빈값이 아니면 str 리턴 빈값이면 defaultStr 리턴

@@ -102,6 +102,42 @@ public class SendMessageController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
+
+    /**
+     * 주소록 리스트 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectAddressList")
+    public RestResult<?> selectAddressList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = sendMsgService.selectAddressList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
+
+    @PostMapping("/selectCmCuList")
+    public RestResult<?> selectCmCuList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = sendMsgService.selectCmCuList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
         }
         return rtn;
     }

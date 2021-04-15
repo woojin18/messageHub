@@ -1,5 +1,6 @@
 package kr.co.uplus.cloud.sendMessage.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +60,47 @@ public class SendMessageService {
 
         return rtn;
     }
+
+    /**
+     * 주소록 리스트 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectAddressList(Map<String, Object> params) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+        Map<String, Object> rtnObj = new HashMap<String, Object>();
+
+        //주소록 그룹 목록 조회
+        List<Object> addrGrpList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_GRP_LIST, params);
+        List<Object> addrCtgyList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_CTGY_LIST, params);
+
+        rtnObj.put("addrGrpList", addrGrpList);
+        rtnObj.put("addrCtgyList", addrCtgyList);
+        rtn.setData(rtnObj);
+
+        return rtn;
+    }
+
+    /**
+     * 주소록 카테고리 구성원 목록 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectCmCuList(Map<String, Object> params) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CM_CU_LIST, params);
+        rtn.setData(rtnList);
+
+        return rtn;
+    }
+
+
+
 
 
 

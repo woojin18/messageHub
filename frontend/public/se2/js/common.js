@@ -84,4 +84,19 @@
 			}, 300);
 		});		
 	});
+
+	//addList
+	$(document).ready(function(){	
+		setInterval(function(){
+			$('.addList_plus > a').click(function() {
+				$(this).children('a > .addIcon').attr("class","fal fa-minus-square addIcon");
+				$(this).parent('li').attr("class","addList_minus");
+			});
+			$('.addList_minus > a').click(function() {
+				$(this).children('a > .addIcon').attr("class","fal fa-plus-square addIcon");
+				$(this).parent('li').attr("class","addList_plus");
+			});
+		}, 100);
+	});
+	
 })(jQuery);

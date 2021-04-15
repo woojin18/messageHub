@@ -245,6 +245,7 @@
     <PushContentsPopup :pushContsOpen.sync="pushContsOpen" :sendData="sendData"></PushContentsPopup>
     <ReplacedSenderPopup :rplcSendOpen.sync="rplcSendOpen" ref="rplcSendPopup"></ReplacedSenderPopup>
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="contsVarNms" :requiredCuPhone="requiredCuPhone" :requiredCuid="requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
+    <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="contsVarNms" :requiredCuPhone="requiredCuPhone" :requiredCuid="requiredCuid"></AddressInputPopup>
   </div>
   <!-- //본문 -->
 </template>
@@ -254,8 +255,9 @@ import MessageApi from "@/modules/message/service/messageApi.js";
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
 import PushContentsPopup from "@/modules/message/components/bp-pushContents.vue";
 import ReplacedSenderPopup from "@/modules/message/components/bp-replacedSender.vue";
-import DirectInputPopup from "@/modules/message/components/bp-directInput.vue";
 import PushTemplatePopup from "@/modules/message/components/bp-pushTemplate.vue";
+import DirectInputPopup from "@/modules/message/components/bp-directInput.vue";
+import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue";
 
 export default {
   name: "sendPushMain",
@@ -264,7 +266,8 @@ export default {
     PushContentsPopup,
     ReplacedSenderPopup,
     DirectInputPopup,
-    PushTemplatePopup
+    PushTemplatePopup,
+    AddressInputPopup
   },
   data() {
     return {
@@ -273,6 +276,7 @@ export default {
       rplcSendOpen : false,
       directInputOpen : false,
       pushTemplateOpen : false,
+      addressInputOpen : false,
       requiredCuid : true,  //app 로그인 ID 필수여부
       requiredCuPhone : false,  //수신자 폰번호 필수여부
       sltAppId : '',
@@ -395,7 +399,8 @@ export default {
         //수신자 직접입력 팝업 호출
         this.directInputOpen = !this.directInputOpen;
       } else if(this.sendData.cuInputType == 'ADDR'){  //주소록
-
+        //주소록 검색 팝업 호출
+        this.addressInputOpen = !this.addressInputOpen;
       } else if(this.sendData.cuInputType == 'EXCEL'){  //엑셀
 
       }
