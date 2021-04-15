@@ -20,8 +20,12 @@ const selectUseTerms = (params) => {
     return httpClient.post('/api/public/signUp/selectUseTerms', params, { headers: {"show-layer": "Yes"} });
 };
 
-const selectUseTermsPreVersion = () => {
+const selectUseTermsPreVersion = (params) => {
     return httpClient.post('/api/public/signUp/selectUseTermsPreVersion', params, { headers: {"show-layer": "Yes"} });
+};
+
+const apiTest = () => {
+    return httpClient.post('/api/public/signUp/apiTest', { headers: {"show-layer": "Yes"} });
 }
 
 export default {
@@ -30,5 +34,6 @@ export default {
     insertSignUp,
     insertEmailUser,
     selectUseTerms,
-    selectUseTermsPreVersion
+    selectUseTermsPreVersion,
+    apiTest
 };

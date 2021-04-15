@@ -32,6 +32,7 @@
 		</div>
 
 		<button type="submit" class="btn btn-login mt45" @click.prevent="emailSend">인증메일 발송</button>
+		<button type="submit" class="btn btn-login mt45" @click.prevent="apiTest">API TEST</button>
 	</section>
 
 	</div>
@@ -171,6 +172,12 @@ export default {
 	  priPopViewClose() {
 		  this.priFlag = false;
 		  $("#provisionView2").modal('hide');
+	  },
+
+	  apiTest() {
+		  signUpApi.apiTest().then(function(res) {
+
+		  });
 	  }
   }
 }

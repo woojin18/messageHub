@@ -18,6 +18,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import kr.co.uplus.cloud.common.consts.DB;
 import kr.co.uplus.cloud.common.dto.RestResult;
 import kr.co.uplus.cloud.signUp.service.SignUpService;
+import kr.co.uplus.cloud.utils.ApiInterface;
 import kr.co.uplus.cloud.utils.CommonUtils;
 import kr.co.uplus.cloud.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
@@ -30,6 +31,8 @@ public class SignUpController {
 	@Autowired GeneralDao generalDao;
 	
 	@Autowired SignUpService signUpSvc;
+	
+	@Autowired ApiInterface apiInterface;
 
 	// 회원
 	@RequestMapping("test")
@@ -86,6 +89,29 @@ public class SignUpController {
 	@PostMapping("/selectUseTerms")
 	public RestResult<?> selectUseTerms(@RequestBody Map<String, Object> params) throws Exception {
 		return signUpSvc.selectUseTerms(params);
+	}
+	
+	// api 통신 테스트
+	@PostMapping("/apiTest")
+	public void apiTest () throws Exception {
+		
+		// get 예제 브랜드 카테고리 조회
+		Map<String, Object> getHeaderMap = new HashMap<String, Object>();
+		getHeaderMap.put("apiId", "111");
+		getHeaderMap.put("apiSercret", "111");
+		getHeaderMap.put("svcId", "WEB01");
+		Map<String, Object> getResult = apiInterface.get("/console/v1/brand/categories", getHeaderMap);
+		
+		// post 예제 카카오 알림톡 발송 API
+		Map<String, Object> postHeaderMap = new HashMap<String, Object>();
+		String svcId = "WEB01";
+		postHeaderMap.put("apiKey", "111");
+		postHeaderMap.put("svcId", "WEB01");
+		
+		Map<String, Object> postParamMap = new HashMap<String, Object>();
+		postParamMap.put("callback" , "15441234");
+		
+		Map<String, Object> postResult = apiInterface.post("/console/v1/alimtalk/" + svcId, postParamMap, postHeaderMap);
 	}
 	
 }
