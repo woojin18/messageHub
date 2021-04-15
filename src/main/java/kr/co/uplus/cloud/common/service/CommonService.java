@@ -219,5 +219,69 @@ public class CommonService {
         return rtn;
     }
 
+    // 파일업로드
+    public RestResult<Object> uploadFile(MultipartFile files, String loginId) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
 
+        if(files == null) {
+            rtn.setSuccess(false);
+            rtn.setMessage("업로드할 파일이 존재하지 않습니다.");
+        }
+
+        String pattern = "[\"!@#$%^&'*]";
+        String fileName = files.getOriginalFilename().replaceAll(pattern, "");  //원본 파일명
+        String fileExten = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+        //이미지 업로드 용량 유효성 체크
+        if(files.getSize() > imgUploadLimitSize) {
+            rtn.setSuccess(false);
+            rtn.setMessage("허용되는 업로드 용량 크기를 초과하였습니다.");
+            return rtn;
+        }
+
+        Path prjRelPath = Paths.get("");
+        String currentYmd = DateUtil.getCurrnetDate("yyyyMMdd");
+        String prjAbsPath = "";
+        String uploadDirPath = this.imgUploadPath;
+
+        //TODO : 이미지가 서버가 따로 존재. 로컬만 테스트를 위해 경로를 현프로젝트 밑으로..
+        //TODO : 추후 이미지서버를 알면 업로드 로직을 변경하자
+        if(Arrays.stream(env.getActiveProfiles()).anyMatch(
+                env -> env.equalsIgnoreCase("local"))){
+            prjAbsPath = prjRelPath.toAbsolutePath().toString();
+            uploadDirPath = prjAbsPath + this.imgUploadPath;
+        }
+
+        File uploadDir = new File(uploadDirPath);
+
+        //folder 없으면 생성
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();
+        }
+
+        File uplaodFile = File.createTempFile(currentYmd+"_", "."+fileExten, uploadDir);  //업로드된 파일정보
+        FileCopyUtils.copy(files.getInputStream(), new FileOutputStream(uplaodFile));
+
+        String attachFileName = uplaodFile.getName();
+        String attachFilePath = uplaodFile.getAbsolutePath();
+
+        //TODO : 이미지가 서버가 따로 존재. 로컬만 테스트를 위해 경로를 현프로젝트 밑으로..
+        //TODO : 추후 이미지서버를 알면 업로드 로직을 변경하자
+        if(Arrays.stream(env.getActiveProfiles()).anyMatch(
+                env -> env.equalsIgnoreCase("local"))){
+        	attachFilePath = "/assets/images/uploadImage/" + uplaodFile.getName();
+        }
+        
+        //DB 등록
+        Map<String, Object> seqParams = new HashMap<>();
+        seqParams.put("attachFileName", attachFileName);
+        seqParams.put("attachFilePath", attachFilePath);
+        seqParams.put("loginId", loginId);
+        generalDao.insertGernal("common.insertAttachFile", seqParams);
+
+        rtn.setSuccess(true);
+        rtn.setData(seqParams);
+
+        return rtn;
+    }
 }

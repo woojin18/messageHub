@@ -196,4 +196,34 @@
 		DELETE FROM cm.CM_APIKEY
 		WHERE	PROJECT_ID = #{project_id}
 	</delete>
+	
+	<select id="checkPreRegYn" resultType="string">
+		/* project.checkPreRegYn */
+		SELECT	CASE WHEN COUNT(CORP_ID) > 0 THEN 'Y' ELSE 'N' END AS PRE_REG_YN
+		FROM	cm_console.CM_SPECIAL_BUSI CSB 
+		WHERE	CORP_ID  = #{corpId}
+	</select>
+	
+	<insert id="insertSpecualBusi">
+		/* project.insertSpecualBusi */
+		INSERT	CM_SPECIAL_BUSI
+		(
+			CORP_ID
+		,	REQ_TYPE
+		,	APPROVAL_STATUS
+		,	ATTACH_FILE_LIST
+		,	REG_ID
+		,	REG_DT
+		)
+		VALUES
+		(
+			#{corpId}
+		,	#{reqType}
+		,	'REQ'
+		,	#{attachFileList}
+		,	#{loginId}
+		,	now()
+		)
+	</insert>
+	
 </mapper>

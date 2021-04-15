@@ -1,11 +1,19 @@
 package kr.co.uplus.cloud.common.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.uplus.cloud.common.dto.RestResult;
 import kr.co.uplus.cloud.common.service.CommonService;
+import kr.co.uplus.cloud.utils.CommonUtils;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -81,6 +90,28 @@ public class CommonController {
             log.error("{} Error : {}", this.getClass(), e);
         }
 
+        return rtn;
+    }
+    
+    // 파일 업로드
+    // 사용체널, 이미지 확장자 등의 문제가 있어서 파일 업로드 따로 땀
+    @PostMapping("/uploadFile")
+    public RestResult<?> uploadFile(
+            @RequestParam MultipartFile uploadFile,
+            @RequestParam String loginId,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        try {
+            rtn = commonService.uploadFile(uploadFile, loginId);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("파일등록에 실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
+        }
+        
         return rtn;
     }
 

@@ -10,8 +10,18 @@
 				<!-- 미리보기 -->
 				<div class="col-xs-4 sub03_4_1_1_1">
 					<div class="phoneWrap">
-						<img src="common/images/phone_01.svg" alt="프리 템플릿">
+						<img src="/se2/images/phone_01.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap2">
+							<div class="phoneIcon">
+								<i v-if="inputVal.menus.chat != ''" class="fas fa-comment color7"></i>
+								<i v-if="inputVal.menus.call != ''" class="fas fa-phone color7"></i>
+								<i v-if="inputVal.menus.web != ''" class="fas fa-globe color7"></i>
+								<i v-if="inputVal.menus.store != ''" class="fas fa-shopping-bag color7"></i>
+								<i v-if="inputVal.menus.order != ''" class="fas fa-clipboard-list-check color7"></i>
+								<i v-if="inputVal.menus.buy != ''" class="fas fa-usd-circle color7"></i>
+								<i v-if="inputVal.menus.ticket != ''" class="fas fa-ticket color7"></i>
+								<i v-if="inputVal.menus.moreInfo != ''" class="fas fa-info-circle color7"></i>
+							</div>
 							<div>
 								<div class="text">
 									<p class="text-main">전화번호</p>
@@ -87,26 +97,48 @@
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">메뉴버튼설정 *</p>
 						<div class="float-left" style="width:72%">
-							<div class="consolCheck" style="width:19%"><input type="checkbox" id="Chat" class="checkStyle2" value="Chat"><label for="Chat">Chat</label></div>
-							<div class="consolCheck" style="width:19%"><input type="checkbox" id="Call" class="checkStyle2" value="Call"><label for="Call">Call</label></div>
-							<div class="consolCheck" style="width:19%"><input type="checkbox" id="Web" class="checkStyle2" value="Web"><label for="Web">Web</label></div>
-							<div class="consolCheck" style="width:19%"><input type="checkbox" id="Store" class="checkStyle2" value="Store"><label for="Store">Store</label></div>
-							<div class="consolCheck" style="width:19%"><input type="checkbox" id="Order" class="checkStyle2" value="Order"><label for="Order">Order</label></div>
+							<div class="consolCheck" style="width:19%"><input @click="fnClickMenu" type="checkbox" id="Chat" class="checkStyle2" v-model="inputVal.menus.chat"><label for="Chat">Chat</label></div>
+							<div class="consolCheck" style="width:19%"><input @click="fnClickMenu" type="checkbox" id="Call" class="checkStyle2" v-model="inputVal.menus.call"><label for="Call">Call</label></div>
+							<div class="consolCheck" style="width:19%"><input @click="fnClickMenu" type="checkbox" id="Web" class="checkStyle2" v-model="inputVal.menus.web"><label for="Web">Web</label></div>
+							<div class="consolCheck" style="width:19%"><input @click="fnClickMenu" type="checkbox" id="Store" class="checkStyle2" v-model="inputVal.menus.store"><label for="Store">Store</label></div>
+							<div class="consolCheck" style="width:19%"><input @click="fnClickMenu" type="checkbox" id="Order" class="checkStyle2" v-model="inputVal.menus.order"><label for="Order">Order</label></div>
 						</div>
 						<div class="ml_28 float-left mt10" style="width:72%">
-							<div class="consolCheck" style="width:19%"><input type="checkbox" id="Buy" class="checkStyle2" value="Buy"><label for="Buy">Buy</label></div>
-							<div class="consolCheck" style="width:19%"><input type="checkbox" id="Ticket" class="checkStyle2" value="Ticket"><label for="Ticket">Ticket</label></div>
-							<div class="consolCheck" style="width:25%"><input type="checkbox" id="More-Info" class="checkStyle2" value="More-Info"><label for="More-Info">More Info</label></div>
+							<div class="consolCheck" style="width:19%"><input @click="fnClickMenu" type="checkbox" id="Buy" class="checkStyle2" v-model="inputVal.menus.buy"><label for="Buy">Buy</label></div>
+							<div class="consolCheck" style="width:19%"><input @click="fnClickMenu" type="checkbox" id="Ticket" class="checkStyle2" v-model="inputVal.menus.ticket"><label for="Ticket">Ticket</label></div>
+							<div class="consolCheck" style="width:25%"><input @click="fnClickMenu" type="checkbox" id="More-Info" class="checkStyle2" v-model="inputVal.menus.moreInfo"><label for="More-Info">More Info</label></div>
 						</div>
 					</div>
-					<div class="mt20 ml_28 of_h">
+
+					<div v-if="inputVal.menus.call != ''" class="mt20 ml_28 of_h">
+						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Call *</p>
+						<input type="text" class="inputStyle" style="width:85%">
+					</div>
+					<div v-if="inputVal.menus.web != ''" class="mt20 ml_28 of_h">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Web *</p>
 						<input type="text" class="inputStyle" style="width:85%">
 					</div>
-					<div class="mt20 ml_28 of_h">
+					<div v-if="inputVal.menus.store != ''" class="mt20 ml_28 of_h">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Store *</p>
 						<input type="text" class="inputStyle" style="width:85%">
 					</div>
+					<div v-if="inputVal.menus.order != ''" class="mt20 ml_28 of_h">
+						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Order *</p>
+						<input type="text" class="inputStyle" style="width:85%">
+					</div>
+					<div v-if="inputVal.menus.buy != ''" class="mt20 ml_28 of_h">
+						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Buy *</p>
+						<input type="text" class="inputStyle" style="width:85%">
+					</div>
+					<div v-if="inputVal.menus.ticket != ''" class="mt20 ml_28 of_h">
+						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Ticket *</p>
+						<input type="text" class="inputStyle" style="width:85%">
+					</div>
+					<div v-if="inputVal.menus.moreInfo != ''" class="mt20 ml_28 of_h">
+						<p class="inline-block font-size16 float-left mt10" style="width:15%">-More Info *</p>
+						<input type="text" class="inputStyle" style="width:85%">
+					</div>
+
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">카테고리 1 *</p>
 						<select id="cate1" class="float-left selectStyle3" style="width:72%" v-model="inputVal.regBrand.categoryId" @change="fnChangeCate2">
@@ -117,7 +149,7 @@
 					</div>
 					<div class="mt20 of_h">
 						<p class="float-left font-size18" style="width:28%">카테고리 2 *</p>
-						<select id="cate2" class="selectStyle3" style="width:72%" v-model="cate2Selected">
+						<select id="cate2" class="selectStyle3" style="width:72%" v-model="inputVal.regBrand.subCategoryId">
 							<option v-for="(option, i) in subCategory" v-bind:value="option.subCategoryId" v-bind:key="i">
 								{{ option.subCategoryName }}
 							</option>
@@ -267,24 +299,28 @@ export default {
 					"webhook": "string"
 				}
 			] */
+			"menus" : {
+				"chat"		: "asdfdsafdsa/dsafdsaf",
+				"call"		: "",
+				"web"		: "",
+				"store"		: "",
+				"order"		: "",
+				"buy"		: "",
+				"ticket"	: "",
+				"moreInfo"	: ""
+			}
 		},
-		cate1 : '',
-		cate1Selected: 'A',
-		cate1Options: [],
-		cate2 : '',
-		cate2Selected: 'A',
-		cate2Options: [],
 		category : [
 			{
-			"categoryId": "",
-			"categoryName": "",
-			"subCategories": [
-				{
-					"subCategoryId": "",
-					"subCategoryName": ""
-				}
-			]
-		}
+				"categoryId": "",
+				"categoryName": "",
+				"subCategories": [
+					{
+						"subCategoryId": "",
+						"subCategoryName": ""
+					}
+				]
+			}
 		],
 		subCategory : {}
 	}
@@ -321,13 +357,29 @@ export default {
 	fnChangeCate2(){
 		var categoryArr	= this.category;
 		var cate1Id		= this.inputVal.regBrand.categoryId;
-		console.log(categoryArr.length);
+		
 		for( var i = 0; i < categoryArr.length; i++ ){
 			if( categoryArr[i].categoryId == cate1Id ){
 				this.subCategory = categoryArr[i].subCategories;
 			}
 		}
 	},
+	fnClickMenu(){
+		console.log(this.inputVal.menus.call);
+		/* var menuCnt = 0;
+		if( this.inputVal.menus.call != '' ){ menuCnt++;}
+		if( this.inputVal.menus.web != '' ){ menuCnt++;}
+		if( this.inputVal.menus.store != '' ){ menuCnt++;}
+		if( this.inputVal.menus.order != '' ){ menuCnt++;}
+		if( this.inputVal.menus.buy != '' ){ menuCnt++;}
+		if( this.inputVal.menus.ticket != '' ){ menuCnt++;}
+		if( this.inputVal.menus.moreInfo != '' ){ menuCnt++;}
+		
+		if( menuCnt > 3 ){
+			alert("3개이상 메뉴 안됨");
+		} */
+	},
+	// 파일업로드 API
 	async fnFileUploadToApi(file, fileType){
 		var params = {
 			"file" : file
@@ -343,10 +395,6 @@ export default {
 		}); */
 		var fd = new FormData();
 		fd.append('files', file);
-
-		console.log( '------------------------------------- file ??? ');
-		console.log(fd);
-		console.log( '------------------------------------- file ??? ');
 
 		await axios.post('/projectApi/channel/fileUploadToApi',
 			fd, {

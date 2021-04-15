@@ -60,4 +60,29 @@ public class ProjectController {
 		}
 		return rtn;
 	}
+	
+
+	// 발신번호관리 > 사전등록예외대상 사업자 구분 확인
+	@PostMapping("/checkPreRegYn")
+	public RestResult<?> checkPreRegYn(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		return projectService.checkPreRegYn(params);
+	}
+	
+	// 사전등록예외대상 저장
+	@PostMapping("/savePreRegEx")
+	public RestResult<?> savePreRegEx(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		try {
+			projectService.savePreRegEx(params);
+			rtn.setSuccess(true);
+			rtn.setData(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
+	}
 }

@@ -130,7 +130,7 @@ public class ChannelService {
 	}
 	
 	/**
-	 * API 통신 
+	 * 파일 업로드API 통신 
 	 * @param urlText		호출 URL 뒷부분
 	 * @param params		APIKEY 등 발신 정보 들
 	 * @param type			GET, POST 타입
@@ -203,7 +203,8 @@ public class ChannelService {
 			PrintWriter writer;
 			OutputStream outputStream;
 			
-			System.out.println("-----------------------------------@@ multipartFile = " + multipartFile.getOriginalFilename());
+			System.out.println("--------------------------------------!!!!!!!!!!! multipartFile :" + multipartFile);
+			System.out.println("-----------------------------------@@ multipartFile = " + multipartFile.getResource());
 			
 			File file = this.multipartToFile(multipartFile);
 			
@@ -216,22 +217,23 @@ public class ChannelService {
 			writer.append("Content-Transfer-Encoding: binary");
 			writer.flush();
 			
-			System.out.println("-------------------------------------@ file = " + file);
+			System.out.println("-------------------------------------@ filename = " + file.getName());
+			System.out.println("-------------------------------------@ URLConnection.guessContentTypeFromName(file.getName()) = " + URLConnection.guessContentTypeFromName(file.getName()));
 			
-			FileInputStream inputStream = new FileInputStream(file);
-			System.out.println("-----------------------------------@@ 여긴가? = ");
-			
-			byte[] buffer = new byte[(int)file.length()];
-			int bytesRead = -1;
-			while ((bytesRead = inputStream.read(buffer)) != -1) {
-			    outputStream.write(buffer, 0, bytesRead);
-			}
-			System.out.println("-----------------------------------@@ 여긴가????? = ");
-			
-			outputStream.flush();
-			inputStream.close();
-			writer.flush();
-			writer.close();
+//			FileInputStream inputStream = new FileInputStream(file);
+//			System.out.println("-----------------------------------@@ 여긴가? = ");
+//			
+//			byte[] buffer = new byte[(int)file.length()];
+//			int bytesRead = -1;
+//			while ((bytesRead = inputStream.read(buffer)) != -1) {
+//			    outputStream.write(buffer, 0, bytesRead);
+//			}
+//			System.out.println("-----------------------------------@@ 여긴가????? = ");
+//			
+//			outputStream.flush();
+//			inputStream.close();
+//			writer.flush();
+//			writer.close();
 			
 			System.out.println("-------------------------------------@ writer2 = " + writer);
 

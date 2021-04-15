@@ -107,11 +107,6 @@ public class ProjectService {
 				generalDao.updateGernal("project.updateProjectBillId", params);
 			}
 			
-			
-			int i = 1;
-			if( i ==1 ) {
-				throw new Exception("testtttttt");
-			}
 		} else if ("U".equals(sts)) {
 			generalDao.updateGernal("project.updateProject", params);
 		} else if ("D".equals(sts)) {
@@ -131,4 +126,47 @@ public class ProjectService {
 
 	}
 
+	public RestResult<?> checkPreRegYn(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+
+		String checkYn = CommonUtils.getString(generalDao.selectGernalObject("project.checkPreRegYn", params));
+		
+		if( "Y".equals(checkYn) ) {
+			rtn.setSuccess(true);
+		} else {
+			rtn.setSuccess(false);
+		}
+
+		
+		return rtn;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void savePreRegEx(Map<String, Object> params) throws Exception{
+		// 이미 등록되어있는지 확인
+		String checkYn = CommonUtils.getString(generalDao.selectGernalObject("project.checkPreRegYn", params));
+		
+		if( "Y".equals(checkYn) ) {
+			throw new Exception("이미 사전등록 예외 대상 사업자로 등록 중 입니다.");
+		} else {
+			// 첨부파일 JSON 값 처리
+			String jsonInfoStr = "";
+
+			jsonInfoStr += "{";
+			jsonInfoStr += "	\"fileName1\"		: \"" + CommonUtils.getString(params.get("fileName1")) + "\",";
+			jsonInfoStr += "	\"filePath1\"		: \"" + CommonUtils.getString(params.get("filePath1")) + "\",";
+			jsonInfoStr += "	\"fileName2\"		: \"" + CommonUtils.getString(params.get("fileName2")) + "\",";
+			jsonInfoStr += "	\"filePath2\"		: \"" + CommonUtils.getString(params.get("filePath2")) + "\",";
+			jsonInfoStr += "	\"fileName3\"		: \"" + CommonUtils.getString(params.get("fileName3")) + "\",";
+			jsonInfoStr += "	\"filePath3\"		: \"" + CommonUtils.getString(params.get("filePath3")) + "\",";
+			jsonInfoStr += "	\"fileName4\"		: \"" + CommonUtils.getString(params.get("fileName4")) + "\",";
+			jsonInfoStr += "	\"filePath4\"		: \"" + CommonUtils.getString(params.get("filePath4")) + "\"";
+			jsonInfoStr += "}";
+
+			params.put("attachFileList", jsonInfoStr);
+
+			// 특수사업자관리 insert
+			generalDao.insertGernal("project.insertSpecualBusi", params);
+		}
+	}
 }

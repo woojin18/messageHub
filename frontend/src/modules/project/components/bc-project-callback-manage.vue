@@ -1,12 +1,12 @@
 <template>
   <div>
-    <modal 
+    <!-- <modal 
       :modal_title.sync="modal_title" 
       :visible.sync="visible"
       :save_status.sync="save_status"
       :row_data="row_data"
     >
-    </modal>
+    </modal> -->
     
 		<article>
 			<div class="contentHeader mb20">
@@ -19,8 +19,8 @@
 					<li @click="fnMoveMainTab('dashBoard')"><a class="width120">대시보드</a></li>
 					<li @click="fnMoveMainTab('info')"><a class="width120">기본정보</a></li>
 					<li @click="fnMoveMainTab('member')"><a class="width120">멤버관리</a></li>
-					<li @click="fnMoveMainTab('channel')" class="active"><a class="width120">채널관리</a></li>
-					<li @click="fnMoveMainTab('callbackManage')"><a class="width120">발신번호관리</a></li>
+					<li @click="fnMoveMainTab('chan-rcs')"><a class="width120">채널관리</a></li>
+					<li @click="fnMoveMainTab('callbackManage')" class="active"><a class="width120">발신번호관리</a></li>
 					<li @click="fnMoveMainTab('spam')"><a class="width120">스팸관리</a></li>
 				</ul>			
 			</div>
@@ -65,8 +65,7 @@
 				<div class="col-xs-12">		
 					<div class="of_h">
 						<div class="float-right">
-							<a href="#self" class="btnStyle3 gray font13 width180">발신번호 사전 등록</a>
-							<a href="#self" class="btnStyle3 gray font13 width180 ml20">발신번호 등록 안내</a>
+							<a @click="fnMoveMainTab('callbackPreReg')" class="btnStyle3 gray font13 width180">발신번호 사전 등록</a>
 						</div>
 					</div>
 				</div>			
