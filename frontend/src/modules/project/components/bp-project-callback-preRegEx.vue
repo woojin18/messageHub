@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade modalStyle" id="Register" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal fade modalStyle" id="preRegExPop" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     fnCloseLayer: function() {
-      $("#cashPop").modal("hide");
+      $("#preRegExPop").modal("hide");
     },
     // 요청
     fnSave: function() {

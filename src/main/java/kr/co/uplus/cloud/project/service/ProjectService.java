@@ -1,9 +1,7 @@
 package kr.co.uplus.cloud.project.service;
 
 import java.util.List;
-
 import java.util.Map;
-import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,60 +52,61 @@ public class ProjectService {
 		String sts = CommonUtils.getString(params.get("sts"));
 		// 사용자 세션
 		Map<String, Object> userMap = (Map<String, Object>) params.get("userDto");
-		params.put("user_id", userMap.get("userId"));
+		params.put("userId", userMap.get("userId"));
 
 		if ("C".equals(sts)) {
 			// 프로젝트 ID ( 시분초 + pjt )
-			params.put("project_id", CommonUtils.generationSringToHex("pjt"));
+			params.put("projectId", CommonUtils.generationSringToHex("pjt"));
 			// 고객사가 개발이 안되서 임시로 고객사 코드 입력
-			params.put("corp_id", "CORP_ID");
+			params.put("corpId", userMap.get("corpId"));
 
 			// 사용체널 JSON 값 처리
-			String price_info_json = "";
+			String jsonInfo = "";
 
-			price_info_json += "{";
-			price_info_json += "	\"RCS\"		: \"" + CommonUtils.getString(params.get("radio_rcs")) + "\",";
-			price_info_json += "	\"SMS/MMS\"	: \"" + CommonUtils.getString(params.get("radio_mms")) + "\",";
-			price_info_json += "	\"PUSH\"	: \"" + CommonUtils.getString(params.get("radio_push")) + "\",";
-			price_info_json += "	\"KAKAO\"	: \"" + CommonUtils.getString(params.get("radio_kko")) + "\",";
-			price_info_json += "	\"MO\"		: \"" + CommonUtils.getString(params.get("radio_mo")) + "\"";
-			price_info_json += "}";
+			jsonInfo += "{";
+			jsonInfo += "	\"RCS\"		: \"" + CommonUtils.getString(params.get("radioRcs")) + "\",";
+			jsonInfo += "	\"SMS/MMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
+			jsonInfo += "	\"PUSH\"	: \"" + CommonUtils.getString(params.get("radioPush")) + "\",";
+			jsonInfo += "	\"KAKAO\"	: \"" + CommonUtils.getString(params.get("radioKko")) + "\",";
+			jsonInfo += "	\"MO\"		: \"" + CommonUtils.getString(params.get("radioMo")) + "\"";
+			jsonInfo += "}";
 
-			params.put("price_info", price_info_json);
+			params.put("jsonInfo", jsonInfo);
 
 			// 프로젝트 insert
 			generalDao.insertGernal("project.insertProject", params);
 
 			// -------------------------------------------------------------------------------------------------------------------------------------
 			// 프로젝트 멤버 추가 처리, OWNER 권한자는 무조건 추가 처리되야함
-			// CM_PROJECT_USER
-			// USER_PRIVILEGETYPE 컬럼이 뭔지 확인 필요함...
-
-			// 사용자 세션의 권한을 체크해서 OWNER 가 아닐경우 OWNER 유저 입력 처리 ==> 현재 권한쪽 작업이 안되어있어서 주석 처리
-//				if( !"OWNER".equals(params.get("ROLE_CD")) ) {
-//					Map<String, Object> ownerUserMap = (Map<String, Object>) generalDao.selectGernalObject("project.selectProjectOwnerUser", params);
-//					ownerUserMap.put("project_id", project_max_id);
-//					
-//					generalDao.insertGernal("project.insertProjectUser", ownerUserMap);
-//				}
-			// 사용자 기본 멤버로 추가
-			generalDao.insertGernal("project.insertProjectUser", params);
-
-			// -------------------------------------------------------------------------------------------------------------------------------------
-
-			// API관리키 관리 insert
-			params.put("api_key", CommonUtils.generationSringToHex("api"));
-			
-			// not null 조건들의 디폴트 값 필요함 ==> 다 널처리
-			generalDao.insertGernal("project.insertProjectApiKey", params);
-
-			// -------------------------------------------------------------------------------------------------------------------------------------
-			// 후불의 경우 청구ID 관리 ?
-			if ("N".equals(CommonUtils.getString(params.get("pay_type")))) {
-				generalDao.updateGernal("project.updateProjectBillId", params);
+			// 사용자 세션의 권한을 체크해서 OWNER 일경우 OWNER 유저 입력 처리 안하도록 처리 
+			if( !"OWNER".equals(params.get("ROLE_CD")) ) {
+				// 사용자 기본 멤버로 추가
+				generalDao.insertGernal("project.insertProjectUser", params);
 			}
+			// -------------------------------------------------------------------------------------------------------------------------------------
+
+			// API관리키 관리 insert ==> 기본 입력 안되기로 처리
+			
+			// -------------------------------------------------------------------------------------------------------------------------------------
+			// 후불의 경우 청구ID 관리 ? ==> API 미개발
+//			if ("N".equals(CommonUtils.getString(params.get("pay_type")))) {
+//				generalDao.updateGernal("project.updateProjectBillId", params);
+//			}
 			
 		} else if ("U".equals(sts)) {
+			// 사용체널 JSON 값 처리
+			String jsonInfo = "";
+
+			jsonInfo += "{";
+			jsonInfo += "	\"RCS\"		: \"" + CommonUtils.getString(params.get("radioRcs")) + "\",";
+			jsonInfo += "	\"SMS/MMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
+			jsonInfo += "	\"PUSH\"	: \"" + CommonUtils.getString(params.get("radioPush")) + "\",";
+			jsonInfo += "	\"KAKAO\"	: \"" + CommonUtils.getString(params.get("radioKko")) + "\",";
+			jsonInfo += "	\"MO\"		: \"" + CommonUtils.getString(params.get("radioMo")) + "\"";
+			jsonInfo += "}";
+
+			params.put("jsonInfo", jsonInfo);
+			
 			generalDao.updateGernal("project.updateProject", params);
 		} else if ("D".equals(sts)) {
 			// 테이블 이력 조회 CM_MSG, CM_WEB_MSG

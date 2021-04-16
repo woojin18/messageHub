@@ -2,11 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project">
 
-	<select id="selectProjectList" resultType="HashMap">
+	<select id="selectProjectList" resultType="camel">
 		/* project.selectProjectList */
 		SELECT	A.PROJECT_ID
 		,		A.CORP_ID
 		,		A.PROJECT_NAME
+		,		A.PROJECT_DESC
 		,		A.PAY_TYPE
 		,		CASE 
 					WHEN A.PAY_TYPE = 'Y' THEN '선불'
@@ -26,7 +27,7 @@
 		,		A.USE_YN
 		,		A.USE_CH_GRP_INFO
 		,		A.NOPAY_YN
-		,		( SELECT COUNT(USER_ID) FROM cm_console.CM_PROJECT_USER WHERE PROJECT_ID = A.PROJECT_ID ) AS PROJECT_MEMBER_CNT
+		,		( SELECT COUNT(USER_ID) + 1 FROM cm_console.CM_PROJECT_USER WHERE PROJECT_ID = A.PROJECT_ID ) AS PROJECT_MEMBER_CNT
 		,		REPLACE(JSON_EXTRACT(PRICE_INFO, '$.RCS[0]'), "\"", "") AS RCS_YN
 		,		REPLACE(JSON_EXTRACT(PRICE_INFO, '$.PUSH[0]'), "\"", "") AS PUSH_YN
 		,		REPLACE(JSON_EXTRACT(PRICE_INFO, '$.KAKAO[0]'), "\"", "") AS KAKAO_YN
@@ -37,23 +38,27 @@
 					,	CASE WHEN JSON_EXTRACT(PRICE_INFO, '$.KAKAO[0]') = 'Y' THEN 'KAKAO' ELSE '' END
 				) AS USE_CH
 		FROM	cm_console.CM_PROJECT A
+		INNER JOIN cm_console.CM_PROJECT_USER B
+			ON A.PROJECT_ID = B.PROJECT_ID
 		WHERE	1=1
 		AND		A.DEL_YN != 'Y'
-		<if test="src_project_name != '' and src_project_name != null ">
-		AND A.PROJECT_NAME LIKE CONCAT('%', #{src_project_name}, '%')
+		<if test="roleCd != 'OWNER'.toString()">
+		AND		B.USER_ID = #{loginId}
 		</if>
-		<if test="src_use_yn != '' and src_use_yn != null ">
-		AND A.USE_YN = #{src_use_yn}
+		<if test="srcProjectName != '' and srcProjectName != null ">
+		AND A.PROJECT_NAME LIKE CONCAT('%', #{srcProjectName}, '%')
 		</if>
-		ORDER BY PROJECT_ID DESC
-		LIMIT ${rowsFront}, #{rowsEnd}
+		<if test="srcUseYn != '' and srcUseYn != null ">
+		AND A.USE_YN = #{srcUseYn}
+		</if>
+		ORDER BY A.PROJECT_ID DESC
 	</select>
 	
 	<select id="checkProjectNameDuplicate" resultType="int">
 		/* project.checkProjectNameDuplicate */
 		SELECT	COUNT(PROJECT_ID) AS CNT
 		FROM	cm_console.CM_PROJECT
-		WHERE	PROJECT_NAME = #{check_project_name}
+		WHERE	PROJECT_NAME = #{checkProjectName}
 	</select>
 	
 	<select id="selectProjectMaxId" resultType="int">
@@ -81,17 +86,17 @@
 		)
 		VALUES
 		(
-			#{project_id}
-		,	#{corp_id}
-		,	#{project_name}
-		,	#{project_desc}
-		,	#{pay_type}
-		,	'B12345'
+			#{projectId}
+		,	#{corpId}
+		,	#{projectName}
+		,	#{projectDesc}
+		,	#{payType}
 		,	''
-		,	#{price_info}
+		,	''
+		,	#{jsonInfo}
 		,	''
 		,	NOW()
-		,	#{use_yn}
+		,	#{useYn}
 		,	'N'
 		)
 	</insert>
@@ -99,15 +104,18 @@
 	<update id="updateProject">
 		/* project.updateProject */
 		UPDATE	cm_console.CM_PROJECT
-		SET		USE_YN = #{use_yn}
-		WHERE	PROJECT_ID = #{project_id}
+		SET		PROJECT_NAME	= #{projectName}
+		,		PROJECT_DESC	= #{projectDesc}
+		,		PRICE_INFO		= #{jsonInfo}
+		,		USE_YN			= #{useYn}
+		WHERE	PROJECT_ID		= #{projectId}
 	</update>
 	
 	<update id="updateProjectBillId">
 		/* project.updateProjectBillId */
 		UPDATE	cm_console.CM_PROJECT
-		SET		BILL_ID = #{bill_id}
-		WHERE	PROJECT_ID = #{project_id}
+		SET		BILL_ID = #{billId}
+		WHERE	PROJECT_ID = #{projectId}
 	</update>
 	
 	<select id="selectProjectOwnerUser" resultType="hashMap">
@@ -118,7 +126,7 @@
 			ON CC.CORP_ID  = CU.CORP_ID 
 		INNER JOIN cm_bo.CM_USER_ROLE CUR 
 			ON CU.USER_ID  = CUR.USER_ID 
-		WHERE	CC.CORP_ID = #{corp_id}
+		WHERE	CC.CORP_ID = #{corpId}
 		AND		CUR.ROLE_CD = 'OWNER'
 	</select>
 	
@@ -134,10 +142,10 @@
 		)
 		VALUES
 		(
-			#{project_id}
-		,	#{corp_id}
-		,	#{user_id}
-		,	#{user_id}
+			#{projectId}
+		,	#{corpId}
+		,	#{userId}
+		,	#{userId}
 		,	NOW()
 		)
 	</insert>
@@ -148,33 +156,17 @@
 		FROM	cm.CM_APIKEY
 	</select>
 	
-	<insert id="insertProjectApiKey">
-		/* project.insertProjectApiKey */
-		INSERT	cm.CM_APIKEY
-		(
-			API_KEY
-		,	CORP_ID
-		,	PROJECT_ID
-		)
-		VALUES
-		(
-			#{api_key}
-		,	#{corp_id}
-		,	#{project_id}
-		)
-	</insert>
-	
 	<select id="selectProjectUseCnt" resultType="int">
 		/* project.selectProjectUseCnt */
 		SELECT
 		(
 			SELECT	COUNT(MSG_KEY) AS CNT
 			FROM	cm.CM_MSG
-			WHERE	PROJECT_ID = #{project_id}
+			WHERE	PROJECT_ID = #{projectId}
 		) + (
 			SELECT	COUNT(WEB_REQ_ID) AS CNT
 			FROM	cm_console.CM_WEB_MSG
-			WHERE	PROJECT_ID = #{project_id}
+			WHERE	PROJECT_ID = #{projectId}
 		) AS CNT
 	</select>
 	
@@ -182,19 +174,19 @@
 		/* project.deleteProject */
 		UPDATE	cm_console.CM_PROJECT
 		SET		DEL_YN = 'Y'
-		WHERE	PROJECT_ID = #{project_id}
+		WHERE	PROJECT_ID = #{projectId}
 	</delete>
 	
 	<delete id="deleteProjectUser">
 		/* project.deleteProjectUser */
 		DELETE FROM cm_console.CM_PROJECT_USER
-		WHERE	PROJECT_ID = #{project_id}
+		WHERE	PROJECT_ID = #{projectId}
 	</delete>
 	
 	<delete id="deleteProjectApiKey">
 		/* project.deleteProjectApiKey */
 		DELETE FROM cm.CM_APIKEY
-		WHERE	PROJECT_ID = #{project_id}
+		WHERE	PROJECT_ID = #{projectId}
 	</delete>
 	
 	<select id="checkPreRegYn" resultType="string">

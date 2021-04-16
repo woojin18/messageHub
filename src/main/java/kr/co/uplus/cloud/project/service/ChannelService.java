@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.uplus.cloud.common.consts.DB;
 import kr.co.uplus.cloud.common.dto.RestResult;
+import kr.co.uplus.cloud.utils.ApiInterface;
 import kr.co.uplus.cloud.utils.CommonUtils;
 import kr.co.uplus.cloud.utils.GeneralDao;
 
@@ -30,6 +31,9 @@ public class ChannelService {
 
 	@Autowired
 	private GeneralDao generalDao;
+	
+	@Autowired
+	private ApiInterface apiInterface; 
 
 	// RCS 브랜드 조회
 	public RestResult<?> selectRcsBrandList(Map<String, Object> params) throws Exception {
@@ -65,13 +69,21 @@ public class ChannelService {
 	}
 	
 	// API KEY 중복 체크 후 카테고리 가져오기
+	@SuppressWarnings("unchecked")
 	public RestResult<?> checkApiKey(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
 		params.put("apiId", "1111");
 		params.put("apiSercret", "1111");
 		
-		Map<String, Object> result = this.api("/console/v1/brand/categories", params, "GET", "application");
+//		Map<String, Object> result = this.api("/console/v1/brand/categories", params, "GET", "application");
+		
+		Map<String, Object> getHeaderMap = new HashMap<String, Object>();
+		getHeaderMap.put("apiId", "111");
+		getHeaderMap.put("apiSercret", "111");
+		getHeaderMap.put("svcId", "WEB01");
+		
+		Map<String, Object> result = apiInterface.get("/console/v1/brand/categories", getHeaderMap);
 		
 		rtn.setData(result);
 		

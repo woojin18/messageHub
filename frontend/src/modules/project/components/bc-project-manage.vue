@@ -1,8 +1,6 @@
 <template>
   <div>
-    <modal 
-      :modal_title.sync="modal_title" 
-      :visible.sync="visible"
+    <modal
       :save_status.sync="save_status"
       :row_data="row_data"
     >
@@ -61,29 +59,27 @@
                   {{ index + 1 }}
                 </td>
                 <td>
-                  <!-- <a href="javascript:void(0);" @click="fnUpdateListPop(index)">{{ data.COL1 }}</a> -->
-                  {{ data.PROJECT_NAME }}
+                  {{ data.projectName }}
                 </td>
                 <td>
-                  {{ data.PROJECT_ID }}
+                  {{ data.projectId }}
                 </td>
                 <td>
-                  {{ data.USE_CH }}
+                  {{ data.useCh }}
                 </td>
                 <td>
-                  {{ data.REG_DT }}
+                  {{ data.regDt }}
                 </td>
                 <td>
-                  {{ data.PAY_TYPE_NAME }}
+                  {{ data.payType }}
                 </td>
                 <td>
-                  {{ data.PROJECT_MEMBER_CNT }}
+                  {{ data.projectMemberCnt }}
                 </td>
                 <td>
-                  {{ data.REG_DT }}
+                  {{ data.regDt }}
                 </td>
                 <td>
-                  <!-- {{ index + 1 }} -->
                   <button @click="fnProjectDetail(data)"><a>상세</a></button>
                   <button @click="fnProjectUpdate(data)"><a>수정</a></button>
                   <button @click="fnProjectDelete(data)"><a>삭제</a></button>
@@ -124,23 +120,22 @@
                   {{ index + 1 }}
                 </td>
                 <td>
-                  <!-- <a href="javascript:void(0);" @click="fnUpdateListPop(index)">{{ data.COL1 }}</a> -->
-                  {{ data.PROJECT_NAME }}
+                  {{ data.projectName }}
                 </td>
                 <td>
-                  {{ data.USE_CH_LIST }}
+                  {{ data.useChList }}
                 </td>
                 <td>
-                  {{ data.REG_DT }}
+                  {{ data.regDt }}
                 </td>
                 <td>
-                  {{ data.PAY_TYPE }}
+                  {{ data.payType }}
                 </td>
                 <td>
-                  {{ data.PROJECT_MEMBER_CNT }}
+                  {{ data.projectMemberCnt }}
                 </td>
                 <td>
-                  {{ data.REG_DT }}
+                  {{ data.regDt }}
                 </td>
                 <td>
                   <!-- {{ index + 1 }} -->
@@ -171,8 +166,6 @@ export default {
   },
   data() {
     return {
-      visible : false,  // 레이어 팝업 visible
-      modal_title : '', // 레이어 팝업 타이틀
       save_status : '', // 등록 수정 여부
       row_data : {},
       // 검색 조건
@@ -188,20 +181,17 @@ export default {
     }
   },
   mounted() {
-    var vm = this;
-
     this.fnSearch();
   },
   methods: {
     // 검색
     fnSearch() {
-      
       var vm = this;
       var params = {
-        "src_project_name"  : $("#src_project_name").val(),
-        "src_use_yn"        : $("#src_use_yn").val(),
-        "rows"              : vm.selected,
-        "paging"            : vm.pagingCnt
+        "srcProjectName"  : $("#srcProjectName").val(),
+        "srcUseYn"        : $("#srcUseYn").val(),
+        "loginId"         : tokenSvc.getToken().principal.userId,
+        "roleCd"         : tokenSvc.getToken().principal.roleCd
       }
        
       projectApi.selectProjectList(params).then(response =>{
@@ -210,23 +200,25 @@ export default {
     },
     // 등록창
     fnProjectReg : function(){
-        this.visible = !this.visible;
         this.save_status = 'C';
         this.row_data = {};
+        $("#projectPop").modal("show");
       },
     // 상세창
     fnProjectDetail(data) {
-      this.$router.push( {name:"chan-rcs",params:{"projectId" : data.PROJECT_ID, "projectName" : data.PROJECT_NAME}} );
+      this.$router.push( {name:"chan-rcs",params:{"projectId" : data.projectId, "projectName" : data.projectName}} );
     },
     // 수정창
     fnProjectUpdate(data) {
-      this.visible = !this.visible;
+      $("#projectPop").modal("show");
       this.save_status = 'U';
       this.row_data = data;
+      console.log(data);
     },
+    // 삭제
     fnProjectDelete(data){
       var params = {
-        "project_id"  : data.PROJECT_ID,
+        "projectId"   : data.projectId,
         "sts"         : "D",
         "userDto"     : tokenSvc.getToken().principal    
       };
@@ -243,9 +235,6 @@ export default {
         }
       }); 
     }
-
-
-
   }
 }
 </script>
