@@ -40,6 +40,7 @@
 <script>
 import axios from 'axios'
 import tokenSvc from '@/common/token-service';
+import confirm from "@/modules/commonUtil/service/confirm.js"
 
 export default {
   name: "imageUploadPopup",
@@ -48,6 +49,13 @@ export default {
       type: Boolean,
       require: true,
       default: false
+    },
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: function() {
+        return '이미지 업로드';
+      }
     }
   },
   data() {
@@ -81,15 +89,22 @@ export default {
       //유효성체크
       //사용채널 선택 확인
       if(this.chkboxUseCh.length == 0){
-        alert("사용채널을 선택해주세요.");
+        confirm.fnAlert(this.componentsTitle, '사용채널을 선택해주세요.');
         return;
       }
       //이미지파일 선택 확인
       if(uploadFile.value == 0){
-        alert("파일을 등록해주세요.");
+        confirm.fnAlert(this.componentsTitle, '파일을 등록해주세요.');
         return;
       }
       //확장자 검사
+      const permitExten = 'jpg,jpeg,png,gif'.split(',');
+      const extnIdx = uploadFile.value.lastIndexOf('.');
+      const extn = uploadFile.value.substring(extnIdx+1);
+      if((permitExten.indexOf(extn) < 0)){
+        confirm.fnAlert(this.componentsTitle, '허용되지 않는 확장자입니다.');
+        return;
+      }
 
       var fd = new FormData();
       fd.append('uploadFile', uploadFile.files[0]);
@@ -104,20 +119,20 @@ export default {
         }
       ).then( response => {
         if(response.data != null && response.data.success){
-          alert("등록되었습니다.");
+          confirm.fnAlert(this.componentsTitle, '등록되었습니다.');
           this.$parent.fnSearch();
           this.fnClose();
         } else {
           if(typeof(response.data.message) !== 'undefined' || response.data.message !== null) {
-            alert(response.data.message);
+            confirm.fnAlert(this.componentsTitle, 'response.data.message');
           } else {
-            alert("등록에 실패했습니다.");
+            confirm.fnAlert(this.componentsTitle, '등록에 실패했습니다.');
           }
         }
         
       })
       .catch(function () {
-        alert("등록에 실패했습니다.");
+        confirm.fnAlert(this.componentsTitle, '등록에 실패했습니다.');
       });
     },
     //파일찾기 클릭시
@@ -132,16 +147,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-$module: 'modalStyle';
-.#{$module} {
-  // This is modal bg
-  background-color: rgba(0,0,0,.7);
-  top: 0; right: 0; bottom: 0; left: 0;
-  position: fixed;
-  overflow: auto;
-  margin: 0;
-  z-index: 9999;
-}
-</style>

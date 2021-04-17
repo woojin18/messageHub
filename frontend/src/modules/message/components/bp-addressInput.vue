@@ -116,7 +116,7 @@ export default {
       require: true,
       default: false,
     },
-    templateTitle: {
+    componentsTitle: {
       type: String,
       require: false,
       default: function() {
@@ -163,7 +163,7 @@ export default {
     fnSelectCu(){
       //유효성 검사
       if(this.listChkBox == null || this.listChkBox.length == 0){
-        confirm.fnAlert(this.templateTitle, '수신자를 선택해주세요.');
+        confirm.fnAlert(this.componentsTitle, '수신자를 선택해주세요.');
         return;
       }
       
@@ -194,12 +194,12 @@ export default {
         recvInfoLst.push(recvInfo);
       });
       if(!isValid){
-        confirm.fnAlert(this.templateTitle, '변수값을 모두 입력해주세요.');
+        confirm.fnAlert(this.componentsTitle, '변수값을 모두 입력해주세요.');
         return;
       }
 
       this.$parent.fnCallbackRecvInfoLst(recvInfoLst, 'Y');
-      confirm.fnAlert(this.templateTitle, '수신자를 추가하였습니다.');
+      confirm.fnAlert(this.componentsTitle, '수신자를 추가하였습니다.');
       this.fnResetChkbox()
     },
     fnCmCuListGetRowById(id){
@@ -237,7 +237,7 @@ export default {
             });
           });
         } else {
-          confirm.fnAlert(this.templateTitle, result.message);
+          confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
     },
@@ -263,7 +263,7 @@ export default {
         if(result.success) {
           this.fnSetAddrListToTree(result.data);
         } else {
-          confirm.fnAlert(this.templateTitle, result.message);
+          confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
     },

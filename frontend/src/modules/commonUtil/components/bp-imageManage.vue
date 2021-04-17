@@ -9,7 +9,7 @@
             <p class="font-size14 color000 inline-block mt15" style="font-weight:700">업로드 한 이미지</p>
             <div class="float-right">
               <a @click="fnOpenImageUploadPopUp" class="btnStyle3 black font-size14 width120" title="이미지 추가">이미지 추가</a>
-              <a @click="fnDeletePushTemplate" class="btnStyle3 gray font-size14 width120" title="삭제">삭제</a>
+              <a @click="fnDeleteImage" class="btnStyle3 gray font-size14 width120" title="삭제">삭제</a>
             </div>
           </div>
 
@@ -94,6 +94,8 @@ import PageLayer from '@/components/PageLayer.vue';
 import CommonUtilApi from "@/modules/commonUtil/service/commonUtilApi.js";
 import ImageUploadPopUp from "@/modules/commonUtil/components/bp-imageUpload.vue";
 import ImagePreview from "@/modules/commonUtil/components/bp-imagePreview.vue";
+import confirm from "@/modules/commonUtil/service/confirm.js"
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
   name: "imageManagePopup",
@@ -108,7 +110,14 @@ export default {
       type: Boolean,
       require: true,
       default: false,
-    }
+    },
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: function() {
+        return '통합 이미지 관리';
+      }
+    },
   },
   data() {
     return {
@@ -206,15 +215,18 @@ export default {
       this.fnSearch();
     },
     //이미지 삭제
-    async fnDeletePushTemplate(){
+    fnDeleteImage(){
       //유효성 검사
       if(this.listChkBox == null || this.listChkBox.length == 0){
-        alert('삭제할 항목을 선택해주세요.');
+        confirm.fnAlert(this.componentsTitle, '삭제할 항목을 선택해주세요.');
         return;
       }
 
-      if(confirm('선택한 이미지를 삭제하시겠습니까?') == false) return;
-
+      eventBus.$on('callbackEventBus', this.fnProcDeleteImage);
+      confirm.fnConfirm(this.componentsTitle, "선택한 이미지를 삭제하시겠습니까?", "확인");
+    },
+    //이미지 삭제 처리
+    async fnProcDeleteImage(){
       var params = {
         'imageFileSeqs':this.listChkBox,
         'corpId':'TEST_CORP_ID',  //TODO : 로그인 완료되면 corp_id 가져오자
@@ -223,14 +235,14 @@ export default {
       await CommonUtilApi.deleteImage(params).then(response =>{
         var result = response.data;
         if(result.success) {
-          alert('삭제되었습니다.');
+          confirm.fnAlert(this.componentsTitle, '삭제되었습니다.');
           this.listChkBox = [];
           this.fnSearch();
         } else {
-          alert(result.message);
+          confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
-    },
+    }
   }
 }
 </script>

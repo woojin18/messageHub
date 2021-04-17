@@ -3,7 +3,8 @@
 </template>
 
 <script>
-import jq from 'jquery'
+//import jq from 'jquery'
+const jq = jQuery.noConflict();
 
 export default {
   props: {
@@ -35,8 +36,7 @@ export default {
   },
   template: '<input/>',
   mounted: function() {
-    var self = this;
-    var jq = jQuery.noConflict();
+    const vm = this;
     jq('#'+this.calendarId).datepicker({
       dateFormat: "yy-mm-dd"
       ,monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
@@ -49,8 +49,7 @@ export default {
       ,showMonthAfterYear: true // 다음년도 월 보이기
       ,showOtherMonths: true // 다른 월 달력에 보이기
       ,selectOtherMonths: true // 다른 월 달력에 보이는거 클릭 가능하게 하기
-      ,onSelect: function(d){self.$emit('update-date',d)}
-      //,onSelect: function(d){self.$parent.updateDate(d);}
+      ,onSelect: function(d){vm.$emit('update-date',d)}
     });
   },
   beforeDestroy: function(){jq('#'+this.calendarId).datepicker('hide').datepicker('destroy')}
