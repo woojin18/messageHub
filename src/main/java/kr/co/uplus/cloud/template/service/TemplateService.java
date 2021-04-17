@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import kr.co.uplus.cloud.common.consts.Const;
 import kr.co.uplus.cloud.common.consts.DB;
 import kr.co.uplus.cloud.common.dto.RestResult;
-import kr.co.uplus.cloud.dto.PageDto;
 import kr.co.uplus.cloud.utils.CommonUtils;
 import kr.co.uplus.cloud.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
@@ -46,11 +45,12 @@ public class TemplateService {
                 && CommonUtils.isNotEmptyObject(params.get("pageNo"))
                 && params.containsKey("listSize")
                 && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
-            PageDto pageDto = rtn.getPageDto();
-            pageDto.setPageInfo(params);
-            //카운트 쿼리 실행
-            int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_PUSH_TMPLT_LIST_CNT, params);
-            pageDto.setTotCnt(listCnt);
+            rtn.setPageProps(params);
+            if(rtn.getPageInfo() != null) {
+                //카운트 쿼리 실행
+                int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_PUSH_TMPLT_LIST_CNT, params);
+                rtn.getPageInfo().put("totCnt", listCnt);
+            }
         }
 
         List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_PUSH_TMPLT_LIST, params);

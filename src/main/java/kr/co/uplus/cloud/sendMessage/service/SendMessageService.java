@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.uplus.cloud.common.consts.DB;
 import kr.co.uplus.cloud.common.dto.RestResult;
+import kr.co.uplus.cloud.utils.CommonUtils;
 import kr.co.uplus.cloud.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
 
@@ -90,9 +91,18 @@ public class SendMessageService {
      * @throws Exception
      */
     public RestResult<Object> selectCmCuList(Map<String, Object> params) throws Exception {
-
         RestResult<Object> rtn = new RestResult<Object>();
-
+        if(params.containsKey("pageNo")
+                && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+                && params.containsKey("listSize")
+                && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+            rtn.setPageProps(params);
+            if(rtn.getPageInfo() != null) {
+                //카운트 쿼리 실행
+                int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_CM_CU_LIST_CNT, params);
+                rtn.getPageInfo().put("totCnt", listCnt);
+            }
+        }
         List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CM_CU_LIST, params);
         rtn.setData(rtnList);
 

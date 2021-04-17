@@ -145,7 +145,7 @@ export default {
         var result = response.data;
         if(result.success) {
           this.contants = result.data;
-          this.totCnt = result.pageDto.totCnt;
+          this.totCnt = result.pageInfo.totCnt;
         }
 
         this.contants.forEach(function(obj){

@@ -242,8 +242,8 @@ export default {
         var result = response.data;
         if(result.success) {
           this.contants = result.data;
-          this.totCnt = result.pageDto.totCnt;
-          this.offset = result.pageDto.offset;
+          this.totCnt = result.pageInfo.totCnt;
+          this.offset = result.pageInfo.offset;
         } else {
           alert(result.message);
         }

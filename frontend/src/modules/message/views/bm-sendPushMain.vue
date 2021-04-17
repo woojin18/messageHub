@@ -1,5 +1,5 @@
 <template>
-  <div class="row row-no-margin">
+  <div>
     <div class="contentHeader">
       <h2>푸시 발송</h2>
     </div>
@@ -157,17 +157,17 @@
               </div>
               <div style="width:82%">
                 <div>
-                  <input type="radio" class="cBox" id="cuInputType_DICT" name="cuInputType" value="DICT" v-model="sendData.cuInputType" @change="fnChgCuInputType">
+                  <input type="radio" class="cBox" id="cuInputType_DICT" name="cuInputType" value="DICT" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
                   <label for="cuInputType_DICT" class="payment mr30 radio mt0">수신자 직접입력</label>
-                  <input type="radio" class="cBox" id="cuInputType_ADDR" name="cuInputType" value="ADDR" v-model="sendData.cuInputType" @change="fnChgCuInputType">
+                  <input type="radio" class="cBox" id="cuInputType_ADDR" name="cuInputType" value="ADDR" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
                   <label for="cuInputType_ADDR" class="payment mr30 radio mt0">주소록 검색</label>
                 </div>
                 <div class="mt5">
-                  <input ref="cuInputType_ALL" type="radio" class="cBox" id="cuInputType_ALL" name="cuInputType" value="ALL" v-model="sendData.cuInputType" @change="fnChgCuInputType">
+                  <input ref="cuInputType_ALL" type="radio" class="cBox" id="cuInputType_ALL" name="cuInputType" value="ALL" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
                   <label for="cuInputType_ALL" class="payment mr30 radio mt0">앱사용자 전체발송</label>
-                  <input type="radio" class="cBox" id="cuInputType_EXCEL" name="cuInputType" value="EXCEL" v-model="sendData.cuInputType" @change="fnChgCuInputType">
+                  <input type="radio" class="cBox" id="cuInputType_EXCEL" name="cuInputType" value="EXCEL" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
                   <label for="cuInputType_EXCEL" class="payment mr30 radio mt0">엑셀 업로드</label>
-                  <a href="#self" class="btnStyle3_1 gray font-size13 minwidthAuto ml20" title="샘플">샘플 <i class="far fa-arrow-to-bottom"></i></a>
+                  <a @click="fnExcelTmplteDownLoad" class="btnStyle3_1 gray font-size13 minwidthAuto ml20" title="샘플">샘플 <i class="far fa-arrow-to-bottom"></i></a>
                 </div>
               </div>
             </div>
@@ -183,7 +183,7 @@
                 <input type="text" class="inputStyle float-right" style="width:68%" :placeholder="sltAppId != '' ? '' : 'APP ID를 입력하세요'" v-model="sendData.appId" :disabled="sendData.appId != ''">
                 <p class="font-size16 mt10">수신자 : {{recvCnt}}명</p>
                 <div class="float-right" style="width:100%">
-                  <textarea class="textareaStyle height120 mt20" v-model="sendData.cuInfo" disabled></textarea>
+                  <textarea class="textareaStyle height120 mt20" v-model="sendData.cuInfo" disabled :placeholder="recvAreapPlaceholder"></textarea>
                 </div>
               </div>
             </div>
@@ -208,7 +208,7 @@
                 <label for="senderType_RSRV" class="payment mr30 radio mt0">예약</label>
               </div>
               <div v-if="sendData.senderType == 'RSRV'" class="float-left" style="width:25%">
-                <input type="text" class="datepicker inputStyle maxWidth160" title="시작날짜 입력란" v-model="sendData.rsrvDate">
+                <Calendar @update-date="fnUpdateRsrvDate" calendarId="rsrvDate" classProps="datepicker inputStyle maxWidth160" :initDate="sendData.rsrvDate"></Calendar>
               </div>
               <div v-if="sendData.senderType == 'RSRV'" class="float-right" style="width:32%">
 
@@ -258,6 +258,7 @@ import ReplacedSenderPopup from "@/modules/message/components/bp-replacedSender.
 import PushTemplatePopup from "@/modules/message/components/bp-pushTemplate.vue";
 import DirectInputPopup from "@/modules/message/components/bp-directInput.vue";
 import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue";
+import Calendar from "@/components/Calendar.vue";
 
 export default {
   name: "sendPushMain",
@@ -267,7 +268,8 @@ export default {
     ReplacedSenderPopup,
     DirectInputPopup,
     PushTemplatePopup,
-    AddressInputPopup
+    AddressInputPopup,
+    Calendar
   },
   data() {
     return {
@@ -285,6 +287,7 @@ export default {
       aplnIdList: {},
       recvCnt : 0,  //수신자명수
       previewMessageType : 'PUSH',  //메세지미리보기 타입(PUSH, RPLC)
+      recvAreapPlaceholder: '변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정:예) {{name}}님 {{yyyymmdd}} 출금 예정입니다.',
       sendData : {
         //pushSenderSet':'ALL', //발송정책(ALL, FCM, APNS)
         msgKind:'A',  //A, I
@@ -295,7 +298,7 @@ export default {
         appId:'',
         cuInfo:'',
         senderType:'IMMY',  //발송타입 : IMMY, RSRV
-        rsrvDate:'',
+        rsrvDate:this.$gfnCommonUtils.getCurretDate(),
         rsrvHH:'',
         rsrvMM:'',
         campaignId:'',
@@ -325,6 +328,9 @@ export default {
           alert(result.message);
         }
       });
+    },
+    fnUpdateRsrvDate(sltDate){
+      this.sendData.rsrvDate = sltDate;
     },
     //템플릿 정보 Set
     fnSetTemplateInfo(templateInfo){
@@ -376,8 +382,16 @@ export default {
       this.$refs.pushTmplPopup.fnSearch();
       this.pushTemplateOpen = !this.pushTemplateOpen;
     },
+    fnClickCuInputType(e){
+      if(this.sendData.cuInputType == e.target.value){
+        this.fnChgCuInputType('N');
+      }
+    },
     //수신자 입력 타입 변경시
-    fnChgCuInputType(){
+    fnChgCuInputType(chgYn){
+      if(this.$gfnCommonUtils.defaultIfEmpty(chgYn, 'Y') == 'Y'){
+        this.fnCallbackRecvInfoLst(null);  //수신자 입력 타입 변경시 수신자 정보 초기화
+      }
       if(this.sendData.cuInputType == 'ALL'){  //전체발송
         return;
       }
@@ -387,14 +401,7 @@ export default {
         this.$refs.cuInputType_ALL.click();
         return false;
       }
-
-      const conts = this.sendData.pushContent + (typeof this.sendData.fbInfo.msg === 'undefined' ? '' : this.sendData.fbInfo.msg);
-      let varNms = [];
-      conts.replace(/\{\{(\w+)\}\}/g, function($0, $1) {
-        varNms.push($1);
-      });
-
-      this.contsVarNms = this.fnSetArrayRemoveDupliVal(varNms);
+      this.fnSetContsVarNms();
       if(this.sendData.cuInputType == 'DICT'){  //직접입력
         //수신자 직접입력 팝업 호출
         this.directInputOpen = !this.directInputOpen;
@@ -404,6 +411,14 @@ export default {
       } else if(this.sendData.cuInputType == 'EXCEL'){  //엑셀
 
       }
+    },
+    fnSetContsVarNms(){
+      const conts = this.sendData.pushContent + (typeof this.sendData.fbInfo.msg === 'undefined' ? '' : this.sendData.fbInfo.msg);
+      let varNms = [];
+      conts.replace(/\{\{(\w+)\}\}/g, function($0, $1) {
+        varNms.push($1);
+      });
+      this.contsVarNms = this.fnSetArrayRemoveDupliVal(varNms);
     },
     //내용입력 callback
     fnSetPushInfo(pushTitle, pushContent, rcvblcNumber, adtnInfo){
@@ -420,16 +435,41 @@ export default {
       this.sendData.imgUrl = imgInfo.imageFullPath;
     },
     //수신자 정보 callback
-    fnCallbackRecvInfoLst(recvInfoLst) {
+    fnCallbackRecvInfoLst(recvInfoLst, addYn) {
       if(recvInfoLst != null){
-        this.recvCnt = recvInfoLst.length;
-        this.sendData.recvInfoLst = recvInfoLst;
+        if(this.$gfnCommonUtils.defaultIfEmpty(addYn, 'N') == 'Y'){
+          this.sendData.recvInfoLst = this.sendData.recvInfoLst.concat(recvInfoLst);
+        } else {
+          this.sendData.recvInfoLst = recvInfoLst;
+        }
+        //수신자 중복제거
+        this.fnDelDuplRecvInfo();
+
+        this.recvCnt = this.sendData.recvInfoLst.length;
         this.sendData.cuInfo = JSON.stringify(this.sendData.recvInfoLst);
       } else {
         this.recvCnt = 0;
         this.sendData.recvInfoLst = [];
         this.sendData.cuInfo = '';
       }
+    },
+    //수신자 중복 제거
+    fnDelDuplRecvInfo(){
+      const vm = this;
+      let key, key2;
+      this.sendData.recvInfoLst = this.sendData.recvInfoLst.filter(function(item, i){
+        return (
+          vm.sendData.recvInfoLst.findIndex((item2) => {
+            key = '';
+            if ('phone' in item) key += item.phone;
+            if ('cuid' in item) key += item.cuid;
+            key2 = '';
+            if ('phone' in item2) key2 += item2.phone;
+            if ('cuid' in item2) key2 += item2.cuid;
+            return key === key2
+          }) === i
+        );
+      });
     },
     //대체발송 정보 callback
     fnCallbackFbInfo(fbInfo) {
@@ -461,7 +501,17 @@ export default {
       if(typeof obj === 'undefined') return true;
       if(Object.keys(obj).length === 0) return true;
       return false;
-    }
+    },
+    //푸시 템플릿 엑셀 다운로드
+    async fnExcelTmplteDownLoad(){
+      this.fnSetContsVarNms();
+      var params = {
+        contsVarNms : this.contsVarNms,
+        requiredCuid: this.requiredCuid,
+        requiredCuPhone: this.requiredCuPhone
+      };
+      await MessageApi.excelDownSendPushRecvTmplt(params);
+    },
   }
 }
 </script>

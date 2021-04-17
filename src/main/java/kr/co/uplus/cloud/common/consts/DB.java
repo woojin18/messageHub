@@ -42,6 +42,7 @@ public class DB {
     public final static String QRY_SELECT_ADDR_GRP_LIST = "sendMessage.selectAddrGrpList";
     public final static String QRY_SELECT_ADDR_CTGY_LIST = "sendMessage.selectAddrCtgyList";
     public final static String QRY_SELECT_CM_CU_LIST = "sendMessage.selectCmCuList";
+    public final static String QRY_SELECT_CM_CU_LIST_CNT = "sendMessage.selectCmCuListCnt";
 	public final static String QRY_INSERT_SEND_PUSH_MSG = "sendMessage.qryInsertSendPushMessage";
 	// RCS 채널 브랜드 정보
 	public final static String QRY_SELECT_RCS_BRANDLIST = "channel.selectRcsBrandList";

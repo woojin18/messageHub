@@ -8,7 +8,7 @@
         <li @click="fnOneIncrease()">한칸 뒤로</li>
         <li @click="fnAllIncrease()">맨 뒤로</li>
         </ul> -->
-        <div class="row mt40">
+        <div :class="pageDivClass">
             <div class="col-xs-12">
                 <div class="pagination1 text-center">
                     <a @click="fnAllDecrease()"><i class="far fa-chevron-double-left"></i></a>
@@ -34,12 +34,19 @@ export default {
   props: {
       listTotalCnt: Number,         // ToTal List Count
       selected: Number,              // select Box Count (10개씩 보기 ... 등)
+      pageDivClass: {
+        type: String,
+        require: false,
+        default: function() {
+            return 'row mt40';
+        }
+      },  //페이지 DIV class
       pageNum: {
-          type: Number,
-          require: false,
-          default: function() {
-              return 1;
-          }
+        type: Number,
+        require: false,
+        default: function() {
+            return 1;
+        }
       }  // 현재 페이지
   },
    data: () => ({

@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.uplus.cloud.common.consts.DB;
 import kr.co.uplus.cloud.common.dto.RestResult;
-import kr.co.uplus.cloud.dto.PageDto;
 import kr.co.uplus.cloud.utils.CommonUtils;
 import kr.co.uplus.cloud.utils.DateUtil;
 import kr.co.uplus.cloud.utils.GeneralDao;
@@ -147,11 +146,12 @@ public class CommonService {
                 && CommonUtils.isNotEmptyObject(params.get("pageNo"))
                 && params.containsKey("listSize")
                 && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
-            PageDto pageDto = rtn.getPageDto();
-            pageDto.setPageInfo(params);
-            //카운트 쿼리 실행
-            int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_IMAGE_LIST_CNT, params);
-            pageDto.setTotCnt(listCnt);
+            rtn.setPageProps(params);
+            if(rtn.getPageInfo() != null) {
+                //카운트 쿼리 실행
+                int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_IMAGE_LIST_CNT, params);
+                rtn.getPageInfo().put("totCnt", listCnt);
+            }
         }
 
         List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_IMAGE_LIST, params);

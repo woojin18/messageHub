@@ -173,7 +173,6 @@ export default {
         return;
       }
       
-      //데이터 부모에게 던지자
       this.$parent.fnCallbackRecvInfoLst(recvInfoLst);
       this.fnClose();
     },

@@ -50,46 +50,62 @@
             , CAC.ADDRESS_CATEGORY_NAME  AS ADDRESS_NAME
             , CAC.PAR_ADDRESS_CATEGORY_ID
         FROM CM_ADDR_CATE_GRP CACG
+        <if test="searchText != '' and searchText != null ">
+        INNER JOIN (
+            SELECT @ids := GROUP_CONCAT(DISTINCT XCACM.ADDRESS_CATEGORY_ID)
+            FROM CM_ADDR_CATE_MEM XCACM
+            INNER JOIN CM_CU_INFO XCCI
+                ON XCACM.CU_INFO_ID = XCCI.CU_INFO_ID
+                AND XCCI.USE_YN = 'Y'
+            WHERE 1=1
+                <if test="searchTextType == 'cuid' ">
+                    AND XCCI.CUID LIKE CONCAT('%', #{searchText}, '%')
+                </if>
+                <if test="searchTextType == 'cuName' ">
+                    AND XCCI.CU_NAME LIKE CONCAT('%', #{searchText}, '%')
+                </if>
+                <if test="searchTextType == 'hpNumber' ">
+                    AND XCCI.HP_NUMBER LIKE CONCAT('%', #{searchText}, '%')
+                </if>
+        ) VARS
+        </if>
         INNER JOIN CM_ADDR_CATE CAC
             ON CACG.ADDRESS_CATEGORY_GRP_ID = CAC.ADDRESS_CATEGORY_GRP_ID
             AND CAC.DEL_YN = 'N'
-        <if test="searchText != '' and searchText != null ">
-            AND CAC.ADDRESS_CATEGORY_ID  IN (
-                SELECT T._ID
-                FROM (
-                    SELECT
-                        @r AS _ID
-                        , (SELECT @r := PAR_ADDRESS_CATEGORY_ID FROM CM_ADDR_CATE WHERE ADDRESS_CATEGORY_ID = _ID) AS _PARENT_ID
-                    FROM (
-                        SELECT
-                            @id := (
-                                SELECT XCACM.ADDRESS_CATEGORY_ID
-                                FROM CM_ADDR_CATE_MEM XCACM
-                                INNER JOIN CM_CU_INFO XCCI
-                                    ON XCACM.CU_INFO_ID = XCCI.CU_INFO_ID
-                                    AND XCCI.USE_YN = 'Y'
-                                WHERE 1=1
-                                <if test="searchTextType == 'cuid' ">
-                                    AND XCCI.CUID LIKE CONCAT('%', #{searchText}, '%')
-                                </if>
-                                <if test="searchTextType == 'cuName' ">
-                                    AND XCCI.CU_NAME LIKE CONCAT('%', #{searchText}, '%')
-                                </if>
-                                <if test="searchTextType == 'hpNumber' ">
-                                    AND XCCI.HP_NUMBER LIKE CONCAT('%', #{searchText}, '%')
-                                </if>
-                            ),
-                            @r := @id
-                    ) AS VARS
-                    INNER JOIN (SELECT * FROM CM_ADDR_CATE WHERE ADDRESS_CATEGORY_ID <![CDATA[<=]]> @id) AS CAC
-                    WHERE @r <![CDATA[<>]]> 0
-                ) T
-            )
+        <if test="searchText != '' and searchText != null and searchTextType != '' and searchTextType != null ">
+            AND FIND_IN_SET(CAC.ADDRESS_CATEGORY_ID, fnc_addr_hierarchi_id(@ids))
         </if>
         WHERE CACG.USE_YN = 'Y'
             AND CACG.CORP_ID = #{corpId}
             AND CACG.OTHER_PROJECT_USE_YN = 'Y' OR CACG.PROJECT_ID = #{projectId}
         ORDER BY CAC.DIS_ORDER
+    </select>
+
+    <sql id ="whereSelectCmCuList">
+        AND CACM.ADDRESS_CATEGORY_ID = #{addressCategoryId}
+        <if test="searchText != '' and searchText != null ">
+            <if test="searchTextType == 'cuid' ">
+                AND CCI.CUID LIKE CONCAT('%', #{searchText}, '%')
+            </if>
+            <if test="searchTextType == 'cuName' ">
+                AND CCI.CU_NAME LIKE CONCAT('%', #{searchText}, '%')
+            </if>
+            <if test="searchTextType == 'hpNumber' ">
+                AND CCI.HP_NUMBER LIKE CONCAT('%', #{searchText}, '%')
+            </if>
+        </if>
+    </sql>
+
+    <select id="selectCmCuListCnt" parameterType="hashmap" resultType="int">
+    /* sendMessage.selectCmCuListCnt 주소록 카테고리 구성원 목록 카운트 조회 */
+        SELECT
+            COUNT(*) AS CNT
+        FROM CM_ADDR_CATE_MEM CACM
+        INNER JOIN CM_CU_INFO CCI
+            ON CACM.CU_INFO_ID = CCI.CU_INFO_ID
+            AND CCI.USE_YN = 'Y'
+        WHERE 1=1
+        <include refid="whereSelectCmCuList"/>
     </select>
 
     <select id="selectCmCuList" parameterType="hashmap" resultType="camel">
@@ -104,7 +120,12 @@
         INNER JOIN CM_CU_INFO CCI
             ON CACM.CU_INFO_ID = CCI.CU_INFO_ID
             AND CCI.USE_YN = 'Y'
-        WHERE CACM.ADDRESS_CATEGORY_ID = #{addressCategoryId}
+        WHERE 1=1
+        <include refid="whereSelectCmCuList"/>
+        ORDER BY CU_INFO_ID
+        <if test='pagingYn == "Y" '>
+        LIMIT ${offset}, #{listSize}
+        </if>
     </select>
 
 

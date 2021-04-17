@@ -44,7 +44,12 @@
                 </colgroup>
                 <thead>
                 <tr>
-                  <th class="text-center lc-1"><div class="consolCheck ml10"><input type="checkbox" id="check6" class="checkStyle2" value="check6"><label for="check6"></label></div></th>
+                  <th class="text-center lc-1">
+                    <div class="consolCheck ml10">
+                      <input type="checkbox" id="listCheck_all" class="checkStyle2" @change="fnListChkAll" v-model="listAllChecked">
+                      <label for="listCheck_all"></label>
+                    </div>
+                  </th>
                   <th class="text-center lc-1">수신자명</th>
                   <th v-if="requiredCuid" class="text-center lc-1">APP 로그인ID</th>
                   <th v-if="requiredCuPhone" class="text-center lc-1">휴대폰번호</th>
@@ -52,8 +57,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="cmCuInfo in cmCuList" :key="cmCuInfo.cuInfoId">
-                    <td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check7" class="checkStyle2" value="check17"><label for="check7"></label></div></td>
+                  <tr v-for="(cmCuInfo, idx) in cmCuList" :key="cmCuInfo.cuInfoId">
+                    <td class="text-center">
+                      <div class="consolCheck ml10">
+                        <input type="checkbox" :id="'listCheck_'+idx" class="checkStyle2" :value="cmCuInfo.cuInfoId" v-model="listChkBox">
+                        <label :for="'listCheck_'+idx"></label>
+                      </div>
+                    </td>
                     <td class="text-center">{{cmCuInfo.cuName}}</td>
                     <td v-if="requiredCuid" class="text-left">{{cmCuInfo.cuid}}</td>
                     <td v-if="requiredCuPhone" class="text-left">{{cmCuInfo.hpNumber}}</td>
@@ -72,21 +82,7 @@
               <!-- //table -->
 
               <!-- pagination -->
-              <div class="row mt10">
-                <div class="col-xs-12">
-                  <div class="pagination1 text-center">
-                    <a href="#" title="10페이지 이전 페이지로 이동"><i class="far fa-chevron-double-left"></i></a>
-                    <a href="#" title="이전 페이지로 이동"><i class="far fa-chevron-left"></i></a>
-                    <a href="#" title="1페이지로 이동" class="number active">1</a>
-                    <a href="#" title="2페이지로 이동" class="number">2</a>
-                    <a href="#" title="3페이지로 이동" class="number">3</a>
-                    <a href="#" title="4페이지로 이동" class="number">4</a>
-                    <a href="#" title="5페이지로 이동" class="number">5</a>
-                    <a href="#" title="다음 페이지로 이동"><i class="far fa-chevron-right"></i></a>
-                    <a href="#" title="10페이지 다음 페이지로 이동"><i class="far fa-chevron-double-right"></i></a>
-                  </div>
-                </div>
-              </div>
+              <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" pageDivClass="row mt10" ref="pageLayer"></PageLayer>
               <!-- //pagination -->
             </div>
           </div>
@@ -106,11 +102,13 @@
 import MessageApi from "@/modules/message/service/messageApi.js";
 import AddrTreeMenu from "@/modules/message/components/bc-addressTree.vue";
 import confirm from "@/modules/commonUtil/service/confirm.js"
+import PageLayer from "@/components/PageLayer.vue";
 
 export default {
   name: "addressInputPopup",
   components : {
-    AddrTreeMenu
+    AddrTreeMenu,
+    PageLayer
   },
   props: {
     addressInputOpen: {
@@ -142,10 +140,16 @@ export default {
   },
   data() {
     return {
+      listAllChecked: false,
+      listChkBox: [],
       searchTextType: 'cuid',
       searchText: '',
+      searchCategoryId: 0,
       addrTreeList: [],
-      cmCuList: []
+      cmCuList: [],
+      listSize : 5,  // 리스트 출력 개수
+      pageNo : 1,  // 현재 페이징 위치
+      totCnt : 0,  //전체 리스트 수
     }
   },
   watch: {
@@ -156,25 +160,79 @@ export default {
     }
   },
   methods: {
-    //작업중
     fnSelectCu(){
-      console.log(this.cmCuList);
-    },
-    //주소 카테고리 구성원 조회
-    fnAddrCatgMem(addressCategoryId){
-      if(this.$gfnCommonUtils.isEmpty(addressCategoryId)){
-        this.cmCuList = [];
+      //유효성 검사
+      if(this.listChkBox == null || this.listChkBox.length == 0){
+        confirm.fnAlert(this.templateTitle, '수신자를 선택해주세요.');
         return;
       }
+      
+      const vm = this;
+      let recvInfoLst = [];
+      let recvInfo = {};
+      let sltCuInfo = {};
+      let isValid = true;
+
+      this.listChkBox.forEach(function(v){
+        sltCuInfo = vm.fnCmCuListGetRowById(v);
+        recvInfo = {phone:'',cuid:'',mergeData:{}};
+
+        if(vm.requiredCuid) recvInfo.cuid = sltCuInfo.cuid;
+        else delete recvInfo.cuid;
+        if(vm.requiredCuPhone) recvInfo.phone = sltCuInfo.hpNumber;
+        else delete recvInfo.phone;
+        
+        vm.contsVarNms.forEach(function(key){
+          if(vm.$gfnCommonUtils.isEmpty(sltCuInfo[key])){
+            isValid = false;
+            return false;
+          } else {
+            recvInfo.mergeData[key] = sltCuInfo[key];
+          }
+        });
+        if(!isValid) return false;
+        recvInfoLst.push(recvInfo);
+      });
+      if(!isValid){
+        confirm.fnAlert(this.templateTitle, '변수값을 모두 입력해주세요.');
+        return;
+      }
+
+      this.$parent.fnCallbackRecvInfoLst(recvInfoLst, 'Y');
+      confirm.fnAlert(this.templateTitle, '수신자를 추가하였습니다.');
+      this.fnResetChkbox()
+    },
+    fnCmCuListGetRowById(id){
+      let rtnObj = null;
+      this.cmCuList.forEach(function(cmCuInfo){
+        if(cmCuInfo.cuInfoId == id){
+          rtnObj = Object.assign({}, cmCuInfo);
+          return false;
+        }
+      });
+      return rtnObj;
+    },
+    //주소 카테고리 구성원 조회
+    fnSearchAddrCatgMem(){
       let params = {
-        addressCategoryId:addressCategoryId
+        addressCategoryId: this.searchCategoryId,
+        searchTextType: this.searchTextType,
+        searchText: this.searchText,
+        pageNo: this.pageNo,
+        listSize: this.listSize
       };
       MessageApi.selectCmCuList(params).then(response =>{
         const result = response.data;
+        this.fnResetChkbox();
+
         if(result.success) {
+          console.log(result);
           this.cmCuList = Object.assign([], result.data);
+          this.totCnt = result.pageInfo.totCnt;
+
+          const vm = this;
           this.cmCuList.forEach(function(cmCuInfo){
-            this.contsVarNms.forEach(function(varNm){
+            vm.contsVarNms.forEach(function(varNm){
               cmCuInfo[varNm] = '';
             });
           });
@@ -182,6 +240,15 @@ export default {
           confirm.fnAlert(this.templateTitle, result.message);
         }
       });
+    },
+    //주소 카테고리 클릭
+    fnAddrCatgMem(addressCategoryId){
+      if(this.$gfnCommonUtils.isEmpty(addressCategoryId)){
+        this.cmCuList = [];
+        return;
+      }
+      this.searchCategoryId = addressCategoryId;
+      this.fnSearch();
     },
     //주소목록 조회
     async fnGetAddrList(){
@@ -217,18 +284,18 @@ export default {
         } 
       });
 
-      this.addrTreeList = Object.assign([], addrTreeList);
-      this.addrTreeList.forEach(function(addrTreeInfo, idx){
-        if(addrTreeInfo.subItems.length == 0){
-          vm.addrTreeList.splice(idx, 1);
+      this.addrTreeList = [];
+      addrTreeList.forEach(function(addrTreeInfo){
+        if(addrTreeInfo.subItems.length != 0){
+          vm.addrTreeList.push(addrTreeInfo);
         }
       });
+      //this.addrTreeList = Object.assign([], addrTreeList);
     },
     fnSetSubItems(addrCtgyList, target, targetGrpYn){
       const vm = this;
       const tId = target.addressCategoryId;
       const tGrpId = target.addressCategoryGrpId;
-      const loopList = Object.assign({}, addrCtgyList)
       let ctgyInfo;
       
       if (!('subItems' in target)) target.subItems = [];
@@ -249,9 +316,35 @@ export default {
         }
       }
     },
+    //리스트 전체 체크박스
+    fnListChkAll(){
+      var vm = this;
+      if(this.listAllChecked){
+        this.cmCuList.forEach(function(cmCuInfo){
+          vm.listChkBox.push(cmCuInfo.cuInfoId);
+        });
+      } else {
+        this.listChkBox = [];
+      }
+    },
+    fnSearch(pageNo) {
+      this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNo, '1'))*1;
+      this.fnSearchAddrCatgMem();
+    },
+    fnResetChkbox(){
+      this.listAllChecked = false;
+      this.listChkBox = [];
+    },
     fnClose(){
+      this.searchTextType = 'cuid';
+      this.searchText = '';
+      this.searchCategoryId = '';
       this.addrTreeList = [];
       this.cmCuList = [];
+      this.listSize = 5;
+      this.pageNo = 1;
+      this.totCnt = 0;
+      this.fnResetChkbox();
       this.$emit('update:addressInputOpen', false)
     }
   }
