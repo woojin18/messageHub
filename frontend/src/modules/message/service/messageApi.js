@@ -35,7 +35,10 @@ const excelDownSendPushRecvTmplt = (params) => {
       console.error(e)
     }
   });
-}
+};
+const sendPushMessage = (params) => {
+  return httpClient.post('/api/public/sendMessage/sendPushMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data"} });
+};
 
 export default {
     apiTest,
@@ -43,7 +46,8 @@ export default {
     selectCallbackList,
     selectAddressList,
     selectCmCuList,
-    excelDownSendPushRecvTmplt
+    excelDownSendPushRecvTmplt,
+    sendPushMessage
 };
 
 function getFileName (contentDisposition) {

@@ -32,6 +32,8 @@ file.props:
     upload-path: /frontend/src/assets/images/uploadImage/
     limit-size: 5000000  #5M
     permit-exten: jpg, jpeg, png, gif
+  excel:
+    permit-exten: xls,xlsx
 
 datasource: 
   rcs:

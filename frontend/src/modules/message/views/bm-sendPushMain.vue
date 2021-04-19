@@ -168,6 +168,7 @@
                   <input type="radio" class="cBox" id="cuInputType_EXCEL" name="cuInputType" value="EXCEL" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
                   <label for="cuInputType_EXCEL" class="payment mr30 radio mt0">엑셀 업로드</label>
                   <a @click="fnExcelTmplteDownLoad" class="btnStyle3_1 gray font-size13 minwidthAuto ml20" title="샘플">샘플 <i class="far fa-arrow-to-bottom"></i></a>
+                  <input ref="excelFile" type="file" style="display:none;">
                 </div>
               </div>
             </div>
@@ -234,7 +235,7 @@
         </div>
         <div class="mt30 float-right">
           <a href="#self" class="btnStyle5 white float-left width120" title="테스트 발송" data-toggle="modal" data-target="#test">테스트 발송</a>
-          <a href="#self" class="btnStyle5 red float-left ml10 width120" title="발송">발송</a>
+          <a @click="fnSendPushMessage" class="btnStyle5 red float-left ml10 width120" title="발송">발송</a>
           <a @click="fnApiTest" class="btnStyle5 red float-left ml10 width120" title="TEST">TEST</a>
         </div>
       </div>
@@ -244,8 +245,8 @@
     <ImageManagePopUp :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
     <PushContentsPopup :pushContsOpen.sync="pushContsOpen" :sendData="sendData"></PushContentsPopup>
     <ReplacedSenderPopup :rplcSendOpen.sync="rplcSendOpen" ref="rplcSendPopup"></ReplacedSenderPopup>
-    <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="contsVarNms" :requiredCuPhone="requiredCuPhone" :requiredCuid="requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
-    <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="contsVarNms" :requiredCuPhone="requiredCuPhone" :requiredCuid="requiredCuid"></AddressInputPopup>
+    <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
+    <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
   </div>
   <!-- //본문 -->
 </template>
@@ -279,17 +280,16 @@ export default {
       directInputOpen : false,
       pushTemplateOpen : false,
       addressInputOpen : false,
-      requiredCuid : true,  //app 로그인 ID 필수여부
-      requiredCuPhone : false,  //수신자 폰번호 필수여부
       sltAppId : '',
       useCh : 'PUSH',
-      contsVarNms: [], //메세지 내용 변수명
       aplnIdList: {},
       recvCnt : 0,  //수신자명수
       previewMessageType : 'PUSH',  //메세지미리보기 타입(PUSH, RPLC)
       recvAreapPlaceholder: '변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정:예) {{name}}님 {{yyyymmdd}} 출금 예정입니다.',
       sendData : {
         //pushSenderSet':'ALL', //발송정책(ALL, FCM, APNS)
+        requiredCuid : true,  //app 로그인 ID 필수여부
+        requiredCuPhone : false,  //수신자 폰번호 필수여부
         msgKind:'A',  //A, I
         msgType:'BASE',  //BASE, IMAGE
         rplcSendType:'NONE',  //NONE, SMS, LMS, MMS
@@ -308,6 +308,7 @@ export default {
         adtnInfo:'',  //부가정보
         recvInfoLst: [],  //수신자정보
         fbInfo: {},  //대체발송정보
+        contsVarNms: [], //메세지 내용 변수명
       }
     }
   },
@@ -327,6 +328,38 @@ export default {
         } else {
           alert(result.message);
         }
+      });
+    },
+    //푸시 메시지 발송 처리
+    async fnSendPushMessage(){
+      //유효성 체크필요
+
+      //--> 유효성 체크 안에 엑셀업로드일 경우 확장자 검사 로직 필요.
+
+      //발송처리
+      let fd = new FormData();
+      fd.append('paramString', JSON.stringify(this.sendData));
+      //fd.append('sendData', this.sendData);
+      if(this.sendData.cuInputType == 'EXCEL'){
+        //const excelFile = this.$refs.excelFile;
+        fd.append('excelFile', this.$refs.excelFile.files[0]);
+      }
+      console.log('===================dvdv====');
+      console.log(fd);
+      console.log('=======dvdv================');
+
+      await MessageApi.sendPushMessage(fd).then(response =>{
+        //const result = response.data;
+        console.log('=======================');
+        console.log(response);
+        console.log('=======================');
+        /*
+        if(result.success) {
+          alert('성공하였습니다');
+        } else {
+          alert(result.message);
+        }
+        */
       });
     },
     fnUpdateRsrvDate(sltDate){
@@ -409,7 +442,8 @@ export default {
         //주소록 검색 팝업 호출
         this.addressInputOpen = !this.addressInputOpen;
       } else if(this.sendData.cuInputType == 'EXCEL'){  //엑셀
-
+        //엑셀파일찾기 호출
+        this.$refs.excelFile.click();
       }
     },
     fnSetContsVarNms(){
@@ -418,7 +452,7 @@ export default {
       conts.replace(/\{\{(\w+)\}\}/g, function($0, $1) {
         varNms.push($1);
       });
-      this.contsVarNms = this.fnSetArrayRemoveDupliVal(varNms);
+      this.sendData.contsVarNms = this.fnSetArrayRemoveDupliVal(varNms);
     },
     //내용입력 callback
     fnSetPushInfo(pushTitle, pushContent, rcvblcNumber, adtnInfo){
@@ -479,9 +513,9 @@ export default {
     //대체발송 타입 변경시
     fnChgRplcSendType(){
       if(this.sendData.rplcSendType == 'NONE'){
-        this.requiredCuPhone = false;
+        this.sendData.requiredCuPhone = false;
       } else {
-        this.requiredCuPhone = true;
+        this.sendData.requiredCuPhone = true;
       }
       this.sendData.fbInfo = {};  //대체발송 정보 초기화
       this.fnCallbackRecvInfoLst(null);  //수신자 정보 초기화
@@ -506,9 +540,9 @@ export default {
     async fnExcelTmplteDownLoad(){
       this.fnSetContsVarNms();
       var params = {
-        contsVarNms : this.contsVarNms,
-        requiredCuid: this.requiredCuid,
-        requiredCuPhone: this.requiredCuPhone
+        contsVarNms : this.sendData.contsVarNms,
+        requiredCuid: this.sendData.requiredCuid,
+        requiredCuPhone: this.sendData.requiredCuPhone
       };
       await MessageApi.excelDownSendPushRecvTmplt(params);
     },

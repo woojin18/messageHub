@@ -17,10 +17,16 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kr.co.uplus.cloud.common.dto.RestResult;
+import kr.co.uplus.cloud.common.service.CommonService;
 import kr.co.uplus.cloud.sendMessage.dto.PushRequestDto;
 import kr.co.uplus.cloud.sendMessage.service.SendMessageService;
 import kr.co.uplus.cloud.utils.DateUtil;
@@ -43,6 +49,9 @@ public class SendMessageController {
 
     @Autowired
     private SendMessageService sendMsgService;
+
+    @Autowired
+    private CommonService commonService;
 
     @PostMapping("/apiTest")
     public RestResult<?> apiTest(HttpServletRequest request, HttpServletResponse response,
@@ -197,17 +206,6 @@ public class SendMessageController {
         return model;
     }
 
-
-
-
-
-
-
-
-
-
-
-
     /**
      * 푸시 메시지 발송처리
      *
@@ -215,19 +213,77 @@ public class SendMessageController {
      * @param response
      * @param params
      * @return
+     * @throws Exception
      */
-    @PostMapping("/push")
-    public RestResult<?> sendPushMessage(HttpServletRequest request, HttpServletResponse response,
-        	@RequestBody Map<String, Object> params) {
+    @SuppressWarnings("unchecked")
+    @PostMapping(path="/sendPushMessage")
+    public RestResult<?> sendPushMessage(HttpServletRequest request, HttpServletResponse response
+            , @RequestParam String paramString
+            , @RequestPart(value="excelFile", required=false) MultipartFile excelFile) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
-        try {
-            rtn = sendMsgService.sendPushMessage(params);
-        } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
+
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params = mapper.readValue(paramString, Map.class);
+
+        //TODO : log, 삭제예정
+        for(Object key : params.keySet()) {
+            log.info("key:{}, value: {} ", key, params.get(key));
         }
+
+        List<Map<String, Object>> excelList = null;
+        if(params.containsKey("cuInputType")
+                && StringUtils.equals("EXCEL", (String)params.get("cuInputType"))) {
+            //read excelFile
+            List<String> colKeys = new ArrayList<String>();
+            if(params.containsKey("requiredCuid") && (Boolean) params.get("requiredCuid")) {
+                colKeys.add("APP 로그인 ID");
+            }
+            if(params.containsKey("requiredCuPhone") && (Boolean) params.get("requiredCuPhone")) {
+                colKeys.add("휴대폰 번호");
+            }
+            if(params.containsKey("contsVarNms")) {
+                List<String> contsVarNms = (ArrayList<String>)params.get("contsVarNms");
+                for(String varNm : contsVarNms) {
+                    colKeys.add(varNm);
+                }
+            }
+            excelList = commonService.getExcelDataList(excelFile, 2, colKeys);
+
+            //TODO : log, 삭제예정
+            for(Map<String, Object> m : excelList) {
+                for(Object key : m.keySet()) {
+                    log.info("key:{}, value: {} ", key, params.get(key));
+                }
+            }
+        }
+
+
 
         return rtn;
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
