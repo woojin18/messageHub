@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public static final String LOGIN_FORM_URL = "/login";
 	public static final String LOGIN_API_URL = "/api/auth/login";
 	public static final String LOGIN_FAIL_URL = "/login?error=true";
-	public static final String LOGIN_SUCC_URL = "/home";
+	public static final String LOGIN_SUCC_URL = "/ac/home";
 	public static final String LOGOUT_URL = "/api/auth/logout";
 	public static final String MENUBAR_URL = "/api/auth/getMenuForRole";
 	private static final String API_URL = "/api/**";

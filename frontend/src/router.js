@@ -56,7 +56,8 @@ const router = new Router({
 					path: '/view/error/500',
 					component: () => import('./views/ErrorPage500.vue'),
 					meta: { public: true }
-				}
+				},
+				...homeRoutes
 			]
 		},
 		{

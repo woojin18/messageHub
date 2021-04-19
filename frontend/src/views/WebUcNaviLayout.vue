@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<web-uc-header></web-uc-header>
+		<web-header></web-header>
 		<tree-menu></tree-menu>
 		<article>
 			<section id="content">

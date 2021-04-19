@@ -4,7 +4,7 @@
 			<h1><img src="../../public/se2/images/logo.png" alt="LGU+ 통합메시징클라우드 로고"></h1>
 			<p class="adminName">사용자 콘솔</p>
 			<ul class="adminUtil">
-				<li><a href="#self" class="btnGuideBlack">사용자콘솔</a></li>
+				<li @click="clickAdminConsole"><a href="#" class="btnGuideBlack">관리자콘솔</a></li>
 				<li><a href="#self" class="btnGuideBlack">이용 가이드</a></li>
 				<li class="ml20"><a href="#self" class="bellIcon active"><i class="fas fa-bell"></i></a></li>
 				<li>
@@ -30,7 +30,7 @@ import tokenSvc from '@/common/token-service';
 import { mapGetters } from 'vuex';
 
 export default {
-	name: "webHeader",
+	name: "webUcHeader",
 	data() {
 		return {
 			menuList: null,
@@ -109,6 +109,12 @@ export default {
 						});
 					}
 				});
+			}
+		},
+		clickAdminConsole() {
+			let result = confirm("관리자 콘솔로 이동하시겠습니까?");
+			if (result) {
+				this.$nextTick(() => this.$router.replace('/ac/home'));
 			}
 		},
 		navOpen: function() {
