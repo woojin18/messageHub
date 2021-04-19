@@ -105,6 +105,8 @@ file.props:
     upload-path: /frontend/src/img/uploadImg/  #TODO - dev path
     limit-size: 5000000  #5M
     permit-exten: jpg, jpeg, png, gif
+  excel:
+    permit-exten: xls,xlsx
 
 datasource: 
   rcs:
@@ -171,6 +173,8 @@ file.props:
     upload-path: /frontend/src/img/uploadImg/ #TODO - stg path
     limit-size: 5000000  #5M
     permit-exten: jpg, jpeg, png, gif
+  excel:
+    permit-exten: xls,xlsx
 
 datasource: 
   rcs:
@@ -237,6 +241,8 @@ file.props:
     upload-path: /frontend/src/img/uploadImg/  #TODO - prd path
     limit-size: 5000000  #5M
     permit-exten: jpg, jpeg, png, gif
+  excel:
+    permit-exten: xls,xlsx
 
 datasource: 
   rcs:
