@@ -78,9 +78,7 @@ const router = new Router({
 				...listRoutes,
 				...channelRoutes,
 				...projectRoutes,
-				...cashRoutes,
-				...messageRoutes,
-				...templateRoutes
+				...cashRoutes
 			]
 
 		},
@@ -99,6 +97,8 @@ const router = new Router({
 					component: () => import('./views/ErrorPage500.vue'),
 					meta: { public: true }
 				},
+				...messageRoutes,
+				...templateRoutes,
 				...rcsTemplateRoutes
 			]
 		},
