@@ -4,6 +4,7 @@ import searchcondition from './store'
 import tokenSvc from '@/common/token-service';
 
 import WebNaviLayout from './views/WebNaviLayout.vue';
+import WebUcNaviLayout from './views/WebUcNaviLayout.vue';
 import LoginLayout from './views/LoginLayout.vue';
 
 import homeRoutes from './modules/home/router';
@@ -15,6 +16,7 @@ import messageRoutes from './modules/message/router';
 import templateRoutes from './modules/template/router';
 import signUpRoutes from './modules/signUp/router';
 import cashRoutes from './modules/cash/router';
+import rcsTemplateRoutes from './modules/rcsTemplate/router';
 
 Vue.use(Router)
 
@@ -54,6 +56,23 @@ const router = new Router({
 					path: '/view/error/500',
 					component: () => import('./views/ErrorPage500.vue'),
 					meta: { public: true }
+				}
+			]
+		},
+		{
+			path: '/AC',
+			component: WebNaviLayout,
+			// beforeEnter: requireAuth(),
+			children: [
+				{
+					path: '/view/error/404',
+					component: () => import('./views/ErrorPage404.vue'),
+					meta: { public: true }
+				},
+				{
+					path: '/view/error/500',
+					component: () => import('./views/ErrorPage500.vue'),
+					meta: { public: true }
 				},
 				...homeRoutes,
 				...listRoutes,
@@ -62,6 +81,25 @@ const router = new Router({
 				...cashRoutes,
 				...messageRoutes,
 				...templateRoutes
+			]
+
+		},
+		{
+			path: '/UC',
+			component: WebUcNaviLayout,
+			// beforeEnter: requireAuth(),
+			children: [
+				{
+					path: '/view/error/404',
+					component: () => import('./views/ErrorPage404.vue'),
+					meta: { public: true }
+				},
+				{
+					path: '/view/error/500',
+					component: () => import('./views/ErrorPage500.vue'),
+					meta: { public: true }
+				},
+				...rcsTemplateRoutes
 			]
 		},
 		{path: '*', redirect: '/view/error/404'}
@@ -73,7 +111,7 @@ router.beforeEach((to, from, next) => {
 	const loggedIn = !!tokenSvc.getToken();
 
 	if (!isPublic && !loggedIn) {
-		//return next('/login');
+		return next('/login');
 	}
 
 	to.matched.some(record => {
