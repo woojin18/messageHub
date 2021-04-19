@@ -3,20 +3,20 @@
     <div class="modal-dialog" style="width:785px">
       <div class="modal-content">
         <div class="modal-body">
-          <h5 class="lc-1">통합 이미지 관리</h5>
+          <h2>통합 이미지 관리</h2>
           <hr>
           <div class="of_h">
-            <p class="font-size14 color000 inline-block mt15" style="font-weight:700">업로드 한 이미지</p>
+            <h4 class="color000 inline-block">업로드 한 이미지</h4>
             <div class="float-right">
-              <a @click="fnOpenImageUploadPopUp" class="btnStyle3 black font-size14 width120" title="이미지 추가">이미지 추가</a>
-              <a @click="fnDeleteImage" class="btnStyle3 gray font-size14 width120" title="삭제">삭제</a>
+              <a @click="fnOpenImageUploadPopUp" class="btnStyle1 backBlack mr10" title="이미지 추가">이미지 추가</a>
+              <a @click="fnDeleteImage" class="btnStyle1 backLightGray" title="삭제">삭제</a>
             </div>
           </div>
 
-          <div class="row mt10">
+          <div class="row consolMarginTop">
             <div class="col-xs-12">
               <!-- table -->
-              <table class="table_skin1_1 mt20" style="width:100%">
+              <table class="table_skin1" style="width:100%">
                 <caption>수신자 추가의 사용자명, 아이디, 이용권한을 제공하는 표</caption>
                 <colgroup>
                 <col style="width:3%">
@@ -48,13 +48,20 @@
                       <label :for="'listCheck_'+idx"></label>
                     </td>
                     <td class="text-center">{{contant.imageFileSeq}}</td>
-                    <td>{{contant.originFileName}}</td>
-                    <td>{{contant.useChInfo}}</td>
-                    <td>{{contant.regDt}}</td>
+                    <td class="text-left">{{contant.originFileName}}</td>
+                    <td class="text-left">{{contant.useChInfo}}</td>
+                    <td class="text-center">{{contant.regDt}}</td>
                     <td class="text-center"><a @click="fnOpenImagePreviewPopUp(contant.imageFilePath)" title="미리보기"><i class="far fa-search"></i></a></td>
                     <td class="text-center end">
                       <a @click="fnSelectImage(idx)" class="btnStyle6 vertical-middle" style="min-width:auto; width:100%" title="선택">선택</a>
                     </td>
+                  </tr>
+                  <tr v-if="contants.length == 0">
+                    <td class="text-center">
+                      <input type="checkbox" :id="'listCheck_1'" class="boardCheckStyle">
+                      <label :for="'listCheck_1'"></label>
+                    </td>
+                    <td class="text-center" colspan="6">업로드 한 이미지가 없습니다.</td>
                   </tr>
                 </tbody>
               </table>
@@ -64,7 +71,7 @@
 
           <!-- pagination -->
           <div id="pageContent">
-            <PageLayer @fnClick="fnClick" :listTotalCnt="totCnt" :selected="listSize" ref="updatePaging"></PageLayer>
+            <PageLayer @fnClick="fnClick" :listTotalCnt="totCnt" :selected="listSize" pageDivClass="row mt10" ref="updatePaging"></PageLayer>
           </div>
           <!-- //pagination -->
 
@@ -142,8 +149,8 @@ export default {
     },
     // 조회
     async fnSearch(){
-      var vm = this;
-      var params = {
+      const vm = this;
+      const params = {
         'corpId':'TEST_CORP_ID',  //TODO : 로그인 완료되면 corp_id 가져오자
         'useChInfo':this.useCh,
         'pageNo':this.pageNo,
@@ -151,7 +158,7 @@ export default {
       };
 
       await CommonUtilApi.selectImageList(params).then(response =>{
-        var result = response.data;
+        const result = response.data;
         if(result.success) {
           this.contants = result.data;
           this.totCnt = result.pageInfo.totCnt;
@@ -167,9 +174,9 @@ export default {
     },
     //사용채널 json -> string, code -> codeName
     fnSetUseChInfo(jsonStr){
-      var useChStr = '';
-      var useChObj = JSON.parse(jsonStr);
-      var mappingCdNm = {
+      let useChStr = '';
+      const useChObj = JSON.parse(jsonStr);
+      const mappingCdNm = {
         'PUSH':'푸시',
         'RCS':'RCS',
         'FRIENDTALK':'친구톡',
@@ -187,6 +194,7 @@ export default {
     },
     //파일업로드팝업 초기화
     fnClose(){
+      this.$refs.updatePaging.fnAllDecrease();
       this.$emit('update:imgMngOpen', false)
     },
     //이미지 추가 버튼 클릭시
@@ -200,7 +208,7 @@ export default {
     },
     //리스트 전체 체크박스
     fnListChkAll(){
-      var vm = this;
+      const vm = this;
       if(this.listAllChecked){
         this.contants.forEach(function(contant){
           vm.listChkBox.push(contant.imageFileSeq);
@@ -227,13 +235,13 @@ export default {
     },
     //이미지 삭제 처리
     async fnProcDeleteImage(){
-      var params = {
+      const params = {
         'imageFileSeqs':this.listChkBox,
         'corpId':'TEST_CORP_ID',  //TODO : 로그인 완료되면 corp_id 가져오자
         'useChInfo':this.useCh,
       };
       await CommonUtilApi.deleteImage(params).then(response =>{
-        var result = response.data;
+        const result = response.data;
         if(result.success) {
           confirm.fnAlert(this.componentsTitle, '삭제되었습니다.');
           this.listChkBox = [];
@@ -246,3 +254,15 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+$module: 'modalStyle';
+.#{$module} {
+  // This is modal bg
+  background-color: rgba(0,0,0,.7);
+  top: 0; right: 0; bottom: 0; left: 0;
+  position: fixed;
+  overflow: auto;
+  margin: 0;
+  z-index: 9999;
+}
+</style>

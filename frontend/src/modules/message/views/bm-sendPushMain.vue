@@ -121,7 +121,7 @@
               </div>
               <div class="of_h" style="width:82%">
                 <a @click="fnOpenImageManagePopUp" class="btnStyle3_1 gray font-size13 minwidthAuto" style="width:21%" title="이미지선택">이미지선택</a>
-                <input type="text" class="inputStyle float-right" style="width:77%" v-model="sendData.imgUrl">
+                <input type="text" class="inputStyle float-right" style="width:77%" v-model="sendData.imgUrl" disabled>
               </div>
             </div>
             <div class="of_h mt30">
@@ -339,14 +339,9 @@ export default {
       //발송처리
       let fd = new FormData();
       fd.append('paramString', JSON.stringify(this.sendData));
-      //fd.append('sendData', this.sendData);
       if(this.sendData.cuInputType == 'EXCEL'){
-        //const excelFile = this.$refs.excelFile;
         fd.append('excelFile', this.$refs.excelFile.files[0]);
       }
-      console.log('===================dvdv====');
-      console.log(fd);
-      console.log('=======dvdv================');
 
       await MessageApi.sendPushMessage(fd).then(response =>{
         //const result = response.data;

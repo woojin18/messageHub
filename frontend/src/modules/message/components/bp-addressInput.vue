@@ -82,7 +82,7 @@
               <!-- //table -->
 
               <!-- pagination -->
-              <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" pageDivClass="row mt10" ref="pageLayer"></PageLayer>
+              <PageLayer @fnClick="fnPageClick" :listTotalCnt="totCnt" :selected="listSize" pageDivClass="row mt10" ref="pageLayer"></PageLayer>
               <!-- //pagination -->
             </div>
           </div>
@@ -327,8 +327,12 @@ export default {
         this.listChkBox = [];
       }
     },
-    fnSearch(pageNo) {
-      this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNo, '1'))*1;
+    fnSearch() {
+      this.$refs.pageLayer.fnAllDecrease();
+      this.fnSearchAddrCatgMem();
+    },
+    fnPageClick(pageNo) {
+      this.pageNo = pageNo;
       this.fnSearchAddrCatgMem();
     },
     fnResetChkbox(){
@@ -350,3 +354,15 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+$module: 'modalStyle';
+.#{$module} {
+  // This is modal bg
+  background-color: rgba(0,0,0,.7);
+  top: 0; right: 0; bottom: 0; left: 0;
+  position: fixed;
+  overflow: auto;
+  margin: 0;
+  z-index: 9999;
+}
+</style>
