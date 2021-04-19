@@ -2,7 +2,7 @@ import SendPushMain from '../views/bm-sendPushMain.vue'
 
 export default [
     {
-        path: '/message/sendPush',
+        path: '/uc/message/sendPush',
         name: 'sendPush',
         component: SendPushMain
     }

@@ -13,49 +13,49 @@ import mo from '../views/bm-chan-mo'
 
 export default [
     {
-        path: '/project/channel/rcs',
+        path: '/ac/project/channel/rcs',
         name: 'chan-rcs',
         props: true,
         component: rsc
     },
     {
-        path: '/project/channel/rcsMessage',
+        path: '/ac/project/channel/rcsMessage',
         name: 'chan-rcs-message',
         props: true,
         component: rcsMessage
     },
     {
-        path: '/project/channel/rcsDetail',
+        path: '/ac/project/channel/rcsDetail',
         name: 'chan-rcs-detail',
         props: true,
         component: rcsDetail
     },
     {
-        path: '/project/channel/smsmms',
+        path: '/ac/project/channel/smsmms',
         name: 'chan-smsmms',
         props: true,
         component: smsmms
     },
     {
-        path: '/project/channel/push',
+        path: '/ac/project/channel/push',
         name: 'chan-push',
         props: true,
         component: push
     },
     {
-        path: '/project/channel/pushDetail',
+        path: '/ac/project/channel/pushDetail',
         name: 'chan-push-detail',
         props: true,
         component: pushDetail
     },
     {
-        path: '/project/channel/kakao',
+        path: '/ac/project/channel/kakao',
         name: 'chan-kakao',
         props: true,
         component: kakao
     },
     {
-        path: '/project/channel/mo',
+        path: '/ac/project/channel/mo',
         name: 'chan-mo',
         props: true,
         component: mo

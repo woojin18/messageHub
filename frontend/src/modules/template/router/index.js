@@ -4,13 +4,13 @@ import PushTemplateList from '../views/bm-pushTemplateList.vue'
 
 export default [
     {
-        path: '/template/pushTemplateManage',
+        path: '/uc/template/pushTemplateManage',
         name: 'pushTemplateManage',
         component: PushTemplateManage,
         props: true
     },
     {
-        path: '/template/pushTemplateList',
+        path: '/uc/template/pushTemplateList',
         name: 'pushTemplateList',
         component: PushTemplateList
     }

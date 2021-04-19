@@ -19,7 +19,7 @@
 <script>
 import Vue from 'vue';
 import WebUcHeader from "../components/WebUcHeader";
-import treeMenu from "../components/treeMenu";
+import treeUcMenu from "../components/treeUcMenu";
 import confirm from "@/modules/commonUtil/service/confirm";
 import common from "@/assets/js/common";
 
@@ -30,7 +30,7 @@ export default {
 	name: "webUcNaviLayout",
 	components: {
 		WebUcHeader,
-		treeMenu
+		treeUcMenu
 	},
 };
 </script>

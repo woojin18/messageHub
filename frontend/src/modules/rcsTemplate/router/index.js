@@ -2,7 +2,7 @@ import rcsTemplate from '../views/rcsTemplate'
 
 export default [
     {
-        path: '/UC/rcsTemplate',
+        path: '/uc/rcsTemplate',
         name: 'rcsTemplate',
         component: rcsTemplate
     }
