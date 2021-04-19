@@ -13,20 +13,23 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.TextCodec;
 import kr.co.uplus.cloud.common.model.AuthUser;
 import kr.co.uplus.cloud.common.model.PublicToken;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Service
 public class JwtService {
 
 	@Autowired
 	private JwtProperties jwtProps;
 
-	public void generatePrivateToken(HttpServletResponse response, Authentication auth) {
+	public String generatePrivateToken(HttpServletResponse response, Authentication auth) {
 		Claims claims = coreClaims(auth, jwtProps.getPrivateTokenExpiration());
 
 		// 필요하면 다른 정보 추가
@@ -34,9 +37,11 @@ public class JwtService {
 		data.setInfo("추가 claim 정보");
 		claims.put("data", data);
 
-		String token = generateToken(claims);
+		String token = generateToken(auth, claims);
 		// 쿠키에 토큰 추가 - 보안 강화
 		setTokenToCookie(response, token);
+
+		return token;
 	}
 
 	private Claims coreClaims(Authentication auth, int expire) {
@@ -51,6 +56,29 @@ public class JwtService {
 		claims.put("principal", jwtUser);
 
 		return claims;
+	}
+
+	private String generateToken(Authentication auth, Claims claims) {
+		log.trace("time: {}", jwtProps.getPrivateTokenExpiration());
+		AuthUser user = (AuthUser) auth.getPrincipal();
+		JwtUser jwtUser = JwtUser.createJwtUser(user);
+		int expire = jwtProps.getPrivateTokenExpiration();
+
+		DateTime now = DateTime.now();
+		Date expiration = now.plusSeconds(expire).toDate();
+		final JwtBuilder builder = Jwts.builder();
+
+		// Header 설정
+		builder.setHeaderParam("typ", "JWT"); // 토큰 타입(고정값)
+		// Payload 설정 - claim 정보 포함
+		builder.setSubject(auth.getName()).setIssuedAt(now.toDate()).setExpiration(expiration).claim("User", user).claim("principal", jwtUser);
+		// 암호화
+		builder.signWith(SignatureAlgorithm.HS512, TextCodec.BASE64.decode(jwtProps.getKeyString()));
+
+		final String jwt = builder.compact();
+		log.debug("토큰 발행: {}", jwt);
+
+		return jwt;
 	}
 
 	private String generateToken(Claims claims) {

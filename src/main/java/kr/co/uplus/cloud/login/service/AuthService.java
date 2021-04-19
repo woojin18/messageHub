@@ -105,7 +105,8 @@ public class AuthService implements UserDetailsService {
 		}
 
 		ResultCode rcode = loginSuccessHandler.process(request, response, authentication);
-		jwtSvc.generatePrivateToken(response, authentication);
+		String token = jwtSvc.generatePrivateToken(response, authentication);
+		response.setHeader("jwt-auth-token", token);
 
 		String nextUrl = getReturnUrl(request, response);
 		log.debug("login success - nextUrl = [{}]", nextUrl);
@@ -178,16 +179,16 @@ public class AuthService implements UserDetailsService {
 		params.put("user_id", params.get("user_id"));
 		params.put("role_cd", params.get("role_cd"));
 		params.put("menus_level", "0");
-		List<Object> rtnList = generalDao.selectGernalList("sample.getMenuForRole", params);
+		List<Object> rtnList = generalDao.selectGernalList("login.getMenuForRole", params);
 
 		for (Object rtnMap : rtnList) {
 			params.put("menus_level", "1");
 			params.put("top_menus_cd", ((Map<String, Object>) rtnMap).get("MENUS_CD"));
-			List<Object> childList = generalDao.selectGernalList("sample.getMenuForRole", params);
+			List<Object> childList = generalDao.selectGernalList("login.getMenuForRole", params);
 			for (Object childMap : childList) {
 				params.put("menus_level", "2");
 				params.put("top_menus_cd", ((Map<String, Object>) childMap).get("MENUS_CD"));
-				List<Object> child2List = generalDao.selectGernalList("sample.getMenuForRole", params);
+				List<Object> child2List = generalDao.selectGernalList("login.getMenuForRole", params);
 				((Map<String, Object>) childMap).put("children", child2List);
 			}
 			((Map<String, Object>) rtnMap).put("children", childList);

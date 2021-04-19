@@ -6,8 +6,8 @@ import login from './modules/login/store'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules: {
-    searchcondition,
-    login,
-  }
+	modules: {
+		searchcondition,
+		login,
+	}
 })

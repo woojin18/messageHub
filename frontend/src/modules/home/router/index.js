@@ -1,14 +1,30 @@
 import HomeMain from '../views/HomeMain'
+import UcHomeMain from '../views/UcHomeMain'
 
 export default [
 	{
 		path: '/',
-		name: 'home',
+		name: 'acHome',
 		component: HomeMain
 	},
 	{
-		path: '/home',
-		name: 'home',
+		path: '/ac',
+		name: 'acHome',
 		component: HomeMain
+	},
+	{
+		path: '/uc',
+		name: 'ucHome',
+		component: UcHomeMain
+	},
+	{
+		path: '/ac/home',
+		name: 'acHome',
+		component: HomeMain
+	},
+	{
+		path: '/uc/home',
+		name: 'ucHome',
+		component: UcHomeMain
 	}
 ]

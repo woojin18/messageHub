@@ -22,6 +22,8 @@ public class JwtUser extends AuthUser {
 		u.setUserId(user.getUserId());
 		u.setUserNm(user.getUserNm());
 		u.setAuthorities(user.getAuthorities());
+		u.setStatus(user.getStatus());
+		u.setRole(user.getRole());
 		u.setCorpId(user.getCorpId());
 		u.setSvcTypeCd(user.getSvcTypeCd());
 		return u;

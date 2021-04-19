@@ -27,7 +27,7 @@ Vue.use(confirm);
 Vue.use(common);
 
 export default {
-	name: "webNaviLayout",
+	name: "webUcNaviLayout",
 	components: {
 		WebUcHeader,
 		treeMenu

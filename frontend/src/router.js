@@ -60,7 +60,7 @@ const router = new Router({
 			]
 		},
 		{
-			path: '/AC',
+			path: '/ac',
 			component: WebNaviLayout,
 			// beforeEnter: requireAuth(),
 			children: [
@@ -83,7 +83,7 @@ const router = new Router({
 
 		},
 		{
-			path: '/UC',
+			path: '/uc',
 			component: WebUcNaviLayout,
 			// beforeEnter: requireAuth(),
 			children: [
@@ -97,6 +97,7 @@ const router = new Router({
 					component: () => import('./views/ErrorPage500.vue'),
 					meta: { public: true }
 				},
+				...homeRoutes,
 				...messageRoutes,
 				...templateRoutes,
 				...rcsTemplateRoutes
