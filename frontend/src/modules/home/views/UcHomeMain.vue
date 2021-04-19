@@ -169,6 +169,12 @@ export default {
 	mounted() {
 	},
 	methods: {
+		logout: function () {
+			alert("test");
+			axios.get('/api/auth/logout').then(res => {
+				alert('asdfasdfasdf');
+			});
+		}
 	}
 };
 </script>
