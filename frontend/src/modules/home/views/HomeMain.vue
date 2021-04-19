@@ -2,7 +2,7 @@
 	<div class="home">
 		<br>
 		<HomeMain msg="HomeMain" />
-		<button><a href="/project/manage"> testtttttttttttt </a></button>
+		<button><a href="/ac/project/manage"> testtttttttttttt </a></button>
 		<br>
 	</div>
 </template>
