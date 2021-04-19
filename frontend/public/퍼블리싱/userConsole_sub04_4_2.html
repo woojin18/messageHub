@@ -1,0 +1,292 @@
+<? 
+	include("./sub/userConsole_header.html");
+	include("./sub/userConsole_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader">
+				<h2>알림톡 템플릿 등록/상세</h2>
+				<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="알림톡 템플릿 등록/상세 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+			</div>
+
+			<!-- 본문 -->
+			<div class="row">
+				<div class="phone3 inline-block" style="width:30%">
+					<!-- phoneWrap -->
+					<div class="phoneWrap">
+						<img src="common/images/phoneMockup3.svg" alt="알림톡 템플릿">
+						<div class="phoneTextWrap3">
+							<div>
+								<p class="text-main"><i class="fal fa-envelope-open-text"></i> 알림톡 도착</p>
+								<div class="text-sub-wrap">
+									<p class="text-sub_1">부제목</p>
+									<p class="text-sub">템플릿 강조 제목</p>
+								</div>
+								<p class="text-sub_2">템플릿 테스트입니다.<br>템플릿 테스트 템플릿 테스트 템플릿 테스트 템플릿 테스트</p>
+							</div>
+						</div>
+					</div>
+					<!-- //phoneWrap -->
+				</div>	
+				<div class="of_h inline-block vertical-top consoleCon" style="width:60%">
+					<div class="of_h">
+						<div class="float-left" style="width:22%"><h4>플러스친구 ID</h4></div>
+						<div class="float-left" style="width:78%">
+							<select name="userConsole_sub040402_1" class="float-left selectStyle2" style="width:100%">
+								<option value="">@LG유플러스</option>
+							</select>
+						</div>
+					</div>
+					<div class="of_h">
+						<div class="float-left" style="width:22%"><h4>템플릿강조부제목 *</h4></div>
+						<div class="float-left" style="width:78%">
+							<div class="float-left" style="width:75%"><input type="text" class="inputStyle" placeholder="템플릿명 영역"></div>
+							<div class="float-right" style="width:22%"><a href="#self" class="btnStyle1 backLightGray" style="width:100%">중복체크</a></div>					
+						</div>
+					</div>
+					<div class="of_h">
+						<div class="float-left" style="width:22%"><h4>템플릿강조유형</h4></div>
+						<div class="float-left" style="width:78%">
+							<input type="radio" name="HighType" value="Y" id="HighType1" checked=""> <label for="HighType1" class="mr30">선택 안 함</label>
+							<input type="radio" name="HighType" value="N" id="HighType2"> <label for="HighType2">강조 표기형</label>				
+						</div>
+					</div>
+					<div class="of_h">
+						<div class="float-left" style="width:22%"><h4>템플릿강조제목 *</h4></div>
+						<div class="float-left" style="width:78%">
+							<input type="text" class="inputStyle" placeholder="템플릿 강조 제목">			
+						</div>
+					</div>
+					<div class="of_h">
+						<div class="float-left" style="width:22%"><h4>템플릿강조부제목 *</h4></div>
+						<div class="float-left" style="width:78%">
+							<input type="text" class="inputStyle" placeholder="부제목">			
+						</div>
+					</div>
+					<div class="of_h">
+						<div class="float-left" style="width:22%"><h4>내용 *</h4></div>
+						<div class="float-left" style="width:78%">
+							<textarea class="textareaStyle height190" placeholder="템플릿 테스트입니다."></textarea>		
+						</div>
+					</div>
+					<div class="of_h">
+						<div class="float-left" style="width:22%"><h4>카테고리 *</h4></div>
+						<div class="float-left" style="width:78%">
+							<div class="float-left" style="width:49.5%">
+								<select name="userConsole_sub040402_2" class="float-left selectStyle2" style="width:100%">
+									<option value="">대분류</option>
+								</select>
+							</div>
+							<div class="float-right" style="width:49.5%">
+								<select name="userConsole_sub040402_3" class="float-left selectStyle2" style="width:100%">
+									<option value="">중분류</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="of_h">
+						<div class="float-left" style="width:22%"><h4 class="inline-block mr20">버튼</h4><a href="#self" class="btnStyle1 backBlack">추가 +</a></div>
+						<div class="float-left" style="width:78%">
+							<table class="table_skin1">
+								<colgroup>
+									<col style="width:20%">
+									<col style="width:20%">
+									<col>
+									<col style="width:18%">
+								</colgroup>
+								<thead>
+									<tr>
+									<th class="text-center">타입</th>
+									<th class="text-center">버튼이름</th>
+									<th class="text-center">버튼링크</th>
+									<th class="text-center end"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>						
+										<td class="text-left">
+											<select name="userConsole_sub040402_4" class="float-left selectStyle2" style="width:100%">
+												<option value="">배송조회</option>
+											</select>
+										</td>
+										<td class="text-center"><input type="text" class="inputStyle float-left"></td>
+										<td class="text-left of_h">
+											<p class="float-left" style="width:20%">Description</p>												
+										</td>
+										<td class="text-center end"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
+									</tr>
+									<tr>	
+										<td class="text-left" rowspan="2">
+											<select name="userConsole_sub040402_5" class="float-left selectStyle2" style="width:100%">
+												<option value="">웹 링크</option>
+											</select>
+										</td>
+										<td class="text-center" rowspan="2"><input type="text" class="inputStyle float-left"></td>
+										<td class="text-left">
+											<p class="font-normal float-left" style="width:20%">Mobile</p>
+											<input type="text" class="inputStyle float-left" style="width:80%">
+										</td>											
+										<td class="text-center end" rowspan="2"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
+									</tr>
+									<tr>
+										<td class="text-left">
+											<p class="font-normal float-left" style="width:20%">PC</p>
+											<input type="text" class="inputStyle float-left" style="width:80%">
+										</td>
+									</tr>
+									<tr>	
+										<td class="text-left" rowspan="2">
+											<select name="userConsole_sub040402_6" class="float-left selectStyle2" style="width:100%">
+												<option value="">앱 링크</option>
+											</select>
+										</td>
+										<td class="text-center" rowspan="2"><input type="text" class="inputStyle float-left"></td>
+										<td class="text-left">
+											<p class="font-normal float-left" style="width:20%">Android</p>
+											<input type="text" class="inputStyle float-left" style="width:80%">
+										</td>											
+										<td class="text-center end" rowspan="2"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
+									</tr>
+									<tr>
+										<td class="text-left">
+											<p class="font-normal float-left" style="width:20%">IOS</p>
+											<input type="text" class="inputStyle float-left" style="width:80%">
+										</td>
+									</tr>
+									<tr>						
+										<td class="text-left">
+											<select name="userConsole_sub040402_7" class="float-left selectStyle2" style="width:100%">
+												<option value="">봇 키워드</option>
+											</select>
+										</td>
+										<td class="text-center"><input type="text" class="inputStyle float-left"></td>
+										<td class="text-left of_h"></td>
+										<td class="text-center end"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
+									</tr>
+									<tr>						
+										<td class="text-left">
+											<select name="userConsole_sub040402_8" class="float-left selectStyle2" style="width:100%">
+												<option value="">메시지 전달</option>
+											</select>
+										</td>
+										<td class="text-center"><input type="text" class="inputStyle float-left"></td>
+										<td class="text-left of_h"></td>
+										<td class="text-center end"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
+									</tr>
+									<tr>						
+										<td class="text-left">
+											<select name="userConsole_sub040402_9" class="float-left selectStyle2" style="width:100%">
+												<option value="">상담톡전환</option>
+											</select>
+										</td>
+										<td class="text-center"><input type="text" class="inputStyle float-left"></td>
+										<td class="text-left of_h"></td>
+										<td class="text-center end"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
+									</tr>
+									<tr>						
+										<td class="text-left">
+											<select name="userConsole_sub040402_10" class="float-left selectStyle2" style="width:100%">
+												<option value="">봇 전환</option>
+											</select>
+										</td>
+										<td class="text-center"><input type="text" class="inputStyle float-left"></td>
+										<td class="text-left of_h"></td>
+										<td class="text-center end"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
+									</tr>
+									<tr>						
+										<td class="text-left">
+											<select name="userConsole_sub040402_11" class="float-left selectStyle2" style="width:100%">
+												<option value="">채널추가</option>
+											</select>
+										</td>
+										<td class="text-center"><input type="text" class="inputStyle float-left"></td>
+										<td class="text-left of_h"></td>
+										<td class="text-center end"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
+									</tr>
+								</tbody>
+							</table>
+							<div>
+								<input type="radio" name="autoTest" value="Y" id="autoTest1" checked=""> <label for="autoTest1" class="mr30">자동테스트 여부</label>
+								<input type="radio" name="autoTest" value="N" id="autoTest2"> <label for="autoTest2">자동이관 여부</label>		
+							</div>
+						</div>
+					</div>
+					<div class="of_h consolMarginTop">
+						<div class="float-left" style="width:22%"><h4>테스트 수신번호 *</h4></div>
+						<div class="float-left" style="width:78%">
+							<div><input type="text" class="inputStyle" placeholder="- 없이 입력해 주세요." style="width:60%"> <a href="#" title="이전버튼"><i class="far fa-plus channelBtn ml10"></i></a></div>
+							<div class="consolMarginTop"><input type="text" class="inputStyle" placeholder="- 없이 입력해 주세요." style="width:60%"> <a href="#" title="이전버튼"><i class="far fa-minus channelBtn ml10"></i></a></div>
+							<div class="consolMarginTop"><input type="text" class="inputStyle" placeholder="- 없이 입력해 주세요." style="width:60%"> <a href="#" title="이전버튼"><i class="far fa-minus channelBtn ml10"></i></a></div>
+						</div>
+					</div>
+					<div class="of_h consolMarginTop">
+						<div class="float-left" style="width:22%"><h4>변수 정보</h4></div>
+						<div class="float-left" style="width:78%">
+							<div>
+								<input type="text" class="inputStyle" placeholder="변수 Key값" style="width:29.8%">
+								<input type="text" class="inputStyle" placeholder="value" style="width:29.8%">
+								<a href="#" title="이전버튼"><i class="far fa-plus channelBtn ml10"></i></a>
+							</div>
+							<div class="consolMarginTop">
+								<input type="text" class="inputStyle" placeholder="변수 Key값" style="width:29.8%">
+								<input type="text" class="inputStyle" placeholder="value" style="width:29.8%">
+								<a href="#" title="이전버튼"><i class="far fa-plus channelBtn ml10"></i></a>
+							</div>
+						</div>
+					</div>
+					<div class="mt20 float-right">
+						<a href="#self" class="btnStyle2 backWhite float-left">승인요청</a>
+						<a href="#self" class="btnStyle2 backWhite float-left ml10">임시저장</a>						
+						<a href="#self" class="btnStyle2 backRed float-left ml10" data-toggle="modal" data-target="#Regist" title="등록">등록</a>
+						<a href="#self" class="btnStyle2 float-left ml10">취소</a>
+						<a href="#self" class="btnStyle2 backWhite float-left ml10" data-toggle="modal" data-target="#Modify" title="수정">수정</a>
+					</div>
+				</div>														
+			</div>			
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+
+	<!-- Modify Modal -->
+	<div class="modal fade modalStyle" id="Modify" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="float-left">
+						<h4 class="mt0">알림톡 템플릿 수정</h4>
+						<p>알림톡 템플릿을 수정하시겠습니까?</p>
+					</div>
+					<div class="float-right">
+						<a href="#self" class="btnStyle1 backRed" title="확인">확인</a>
+						<a href="#self" class="btnStyle1 backGray ml5" data-dismiss="modal" title="취소">취소</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Regist Modal -->
+	<div class="modal fade modalStyle" id="Regist" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="float-left">
+						<h4 class="mt0">알림톡 템플릿 등록</h4>
+						<p>알림톡 템플릿을 등록하시겠습니까?</p>
+					</div>
+					<div class="float-right">
+						<a href="#self" class="btnStyle1 backRed" title="확인">확인</a>
+						<a href="#self" class="btnStyle1 backGray ml5" data-dismiss="modal" title="취소">취소</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<? 
+	include("./sub/userConsole_footer.html");
+?> 

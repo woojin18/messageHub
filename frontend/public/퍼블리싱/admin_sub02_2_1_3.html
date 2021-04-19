@@ -13,14 +13,14 @@
 			<!-- 본문 -->
 			<div class="contentBody">
 				<ul class="tab_s3">
-					<li><a href="#self" class="width120" title="시스템알람 페이지로 이동">시스템알람</a></li>
-					<li><a href="#self" class="width120" title="이용금액알람 페이지로 이동">이용금액알람</a></li>
-					<li class="active"><a href="#self" class="width120" title="API Key 별 페이지로 이동">API Key 별</a></li>
+					<li><a href="#self" title="시스템알람 페이지로 이동">시스템알람</a></li>
+					<li><a href="#self" title="이용금액알람 페이지로 이동">이용금액알람</a></li>
+					<li class="active"><a href="#self" title="API Key 별 페이지로 이동">API Key 별</a></li>
 				</ul>
 			</div>
 			
-			<h4 class="mt40">API Key</h4>			
-			<div class="row mt30">
+			<h4>API Key</h4>			
+			<div class="row">
 				<div class="col-xs-12">	
 					<table  class="table_skin1 tbl-striped" style="width:100%">
 						<caption>API Key의 API Key명, API Key, 대표여부, 알람 사용 여부, 생성일, 멤버, 관리를 제공하는 표</caption>
@@ -52,7 +52,7 @@
 							<td class="text-center">예</td>
 							<td class="text-center">2021.01.20</td>
 							<td class="text-center">2</td>
-							<td class="text-center end"><a href="#self" class="btnStyle8 mr5" data-toggle="modal" data-target="#Details" title="상세정보창이 열림">상세정보</a></td>
+							<td class="text-center end"><a href="#self" class="btnStyle1 borderLightGray small mr5" data-toggle="modal" data-target="#Details" title="상세정보창이 열림">상세정보</a></td>
 							</tr>
 							<tr>
 							<td class="text-left">PUSH_01 (광고성)</td>
@@ -61,18 +61,18 @@
 							<td class="text-center">아니오</td>
 							<td class="text-center">2021.01.16</td>
 							<td class="text-center">1</td>
-							<td class="text-center end"><a href="#self" class="btnStyle8 mr5" data-toggle="modal" data-target="#Details" title="상세정보 창이 열림">상세정보</a></td>
+							<td class="text-center end"><a href="#self" class="btnStyle1 borderLightGray small mr5" data-toggle="modal" data-target="#Details" title="상세정보 창이 열림">상세정보</a></td>
 							</tr>
 						</tbody>
 					</table>					
 				</div>			
 			</div>
-			<h4 class="mt40">알람수신자</h4>
+			<h4>알람수신자</h4>
 			<div class="float-right">
-				<a href="#self" class="btnStyle3 gray font13 minWidth120 ml10" data-toggle="modal" data-target="#Additional" title="수신자 창이 열림">수신자 추가</a>
+				<a href="#self" class="btnStyle1 borderGray" data-toggle="modal" data-target="#Additional" title="수신자 창이 열림">수신자 추가</a>
 			</div>
 			<div class="row mt30">
-				<div class="col-xs-12">							
+				<div class="col-xs-12 consolMarginTop">							
 					<table class="table_skin1 tbl-striped" style="width:100%">
 						<caption>알람수신자의 No, 사용자명, 핸드폰, 아이디, 관리를 제공하는 표</caption>
 						<colgroup>
@@ -97,14 +97,14 @@
 							<td class="text-center">홍길동</td>
 							<td class="text-center">010-xxxx-1234</td>
 							<td class="text-center">test@abc.net</td>
-							<td class="text-center end"><a href="#self" class="btnStyle8 mr5" data-toggle="modal" data-target="#delWrap" title="삭제">삭제</a></td>
+							<td class="text-center end"><a href="#self" class="btnStyle1 borderLightGray small mr5" data-toggle="modal" data-target="#delWrap" title="삭제">삭제</a></td>
 							</tr>
 							<tr>
 							<td class="text-center">1</td>
 							<td class="text-center">김장수</td>
 							<td class="text-center">010-xxxx-1235</td>
 							<td class="text-center">uplus@test.net</td>
-							<td class="text-center end"><a href="#self" class="btnStyle8 mr5" data-toggle="modal" data-target="#delWrap" title="삭제">삭제</a></td>
+							<td class="text-center end"><a href="#self" class="btnStyle1 borderLightGray small mr5" data-toggle="modal" data-target="#delWrap" title="삭제">삭제</a></td>
 							</tr>
 						</tbody>
 					</table>
@@ -123,12 +123,12 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">					
-					<h5 class="lc-1">수신자 삭제</h5>
+					<h2>수신자 삭제</h2>
 					<hr>
-					<p class="lc-1 Modaltext2 text-center mt40">수신자를 삭제하겠습니까?</p>					
+					<p class="text-center mt20">수신자를 삭제하겠습니까?</p>					
 					<div class="text-center mt40">
-						<a href="#self" class="btnStyle3 black font14" data-toggle="modal" title="삭제">삭제</a>
-						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="취소">취소</a>						
+						<a href="#self" class="btnStyle1 backBlack" data-toggle="modal" title="삭제">삭제</a>
+						<a href="#self" class="btnStyle1 backWhite" data-dismiss="modal" title="취소">취소</a>						
 					</div>
 				</div>
 			</div>
@@ -141,17 +141,17 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div>
-						<h5 class="lc-1">수신자 추가</h5>
+						<h2>수신자 추가</h2>
 						<hr>
-						<div class="mt20 of_h">
+						<div class="of_h">
 							<div class="float-left" style="width:20%">
-								<select name="admin02020103_1" class="selectStyle3 height40 font-size13 vertical-bottom" title="사용자명 선택란">
+								<select name="admin02020103_1" class="selectStyle2" title="사용자명 선택란">
 									<option value="">사용자명</option>
 								</select>
 							</div>
 							<div class="of_h float-right" style="width:78%">
-								<div class="float-left" style="width:75%"><input type="text" class="inputStyle height40" title="사용자명 입력란"></div>
-								<div class="float-right" style="width:23%"><a href="#self" class="btnStyle3 gray font-size12 minWidthAuto height40" style="width:100%" title="검색">검색</a></div>
+								<div class="float-left" style="width:75%"><input type="text" class="inputStyle" title="사용자명 입력란"></div>
+								<div class="float-right" style="width:23%"><a href="#self" class="btnStyle1 borderGray" style="width:100%" title="검색">검색</a></div>
 							</div>
 						</div>
 						<table class="table_skin1 tbl-striped mt20" style="width:100%">
@@ -187,8 +187,8 @@
 						</table>
 					</div>
 					<div class="text-center mt40">
-						<a href="#self" class="btnStyle3 black font14" data-toggle="modal" title="추가">추가</a>
-						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="취소">취소</a>
+						<a href="#self" class="btnStyle1 backBlack" data-toggle="modal" title="추가">추가</a>
+						<a href="#self" class="btnStyle1 backWhite" data-dismiss="modal" title="취소">취소</a>
 					</div>
 				</div>
 			</div>
@@ -201,79 +201,79 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div>
-						<h5 class="lc-1">API Key 상세</h5>
+						<h2>API Key 상세</h2>
 						<hr>
 						<div class="of_h">
-							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt15">API KEY</h4></div>
+							<div class="float-left" style="width:24%"><h5>API KEY</h5></div>
 							<div class="float-left" style="width:76%">
 								<input type="text" class="inputStyle" title="API KEY 입력란">
 							</div>
 						</div>
-						<div class="of_h mt10">
-							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt15">API KEY 명</h4></div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:24%"><h5>API KEY 명</h5></div>
 							<div class="float-left" style="width:76%">
 								<input type="text" class="inputStyle" title="API KEY 명 입력란">
 							</div>
 						</div>
-						<div class="of_h mt10">
-							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt15">고객사 접속 IP</h4></div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:24%"><h5>고객사 접속 IP</h5></div>
 							<div class="float-left" style="width:76%">
 								<div class="float-left" style="width:70%"><input type="text" class="inputStyle" title="고객사 접속 IP 입력란"></div>
-								<div class="float-left ml10" style="width:20%"><a href="#self" class="btnStyle7 vertical-middle minWidth46" title="고객사 접속IP 입력란 추가"><i class="far fa-plus"></i></a></div>
+								<div class="float-left ml10" style="width:10%"><a href="#self" class="btnStyle1 borderGray" style="padding:0 10px" title="고객사 접속IP 입력란 추가"><i class="far fa-plus"></i></a></div>
 							</div>
 							<div class="float-right mt10" style="width:76%">
 								<div class="float-left" style="width:70%"><input type="text" class="inputStyle" title="고객사 접속 IP 입력란"></div>
 								<div class="float-left ml10" style="width:27%">
-									<a href="#self" class="btnStyle7 vertical-middle minWidth46" title="고객사 접속IP 입력란 추가"><i class="far fa-plus"></i></a>
-									<a href="#self" class="btnStyle7 vertical-middle minWidth46 float-right" title="고객사 접속IP 입력란 삭제"><i class="far fa-minus"></i></a>
+									<a href="#self" class="btnStyle1 borderGray mr10" style="padding:0 10px" title="고객사 접속IP 입력란 추가"><i class="far fa-plus"></i></a>
+									<a href="#self"class="btnStyle1 borderGray" style="padding:0 10px" title="고객사 접속IP 입력란 삭제"><i class="far fa-minus"></i></a>
 								</div>
 							</div>
 						</div>
-						<div class="of_h mt30">
-							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt0">발송 레포트<br>수신여부</h4></div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:24%"><h5>발송 레포트<br>수신여부</h5></div>
 							<div class="float-left" style="width:76%">
-								<input type="radio" name="agree1" value="Y" class="cBox" id="agree1-1" checked=""> <label for="agree1-1" class="font-normal mr30">예</label>
-								<input type="radio" name="agree1" value="N" class="cBox" id="agree1-2"> <label for="agree1-2" class="font-normal">아니요</label>
+								<input type="radio" name="agree1" value="Y" id="agree1-1" checked=""> <label for="agree1-1" class="font-normal mr30">예</label>
+								<input type="radio" name="agree1" value="N" id="agree1-2"> <label for="agree1-2" class="font-normal">아니요</label>
 							</div>
 						</div>
-						<div class="of_h mt30">
-							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt10">웹용 발송시간<br>제한 사용여부</h4></div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:24%"><h5>웹용 발송시간<br>제한 사용여부</h5></div>
 							<div class="float-left" style="width:76%">
-								<input type="radio" name="agree2" value="Y" class="cBox" id="agree2-1" checked=""> <label for="agree2-1" class="font-normal mr30">예</label>
-								<input type="radio" name="agree2" value="N" class="cBox" id="agree2-2"> <label for="agree2-2" class="font-normal">아니요</label>
+								<input type="radio" name="agree2" value="Y" id="agree2-1" checked=""> <label for="agree2-1" class="font-normal mr30">예</label>
+								<input type="radio" name="agree2" value="N" id="agree2-2"> <label for="agree2-2" class="font-normal">아니요</label>
 							</div>
-							<div class="float-right mt10" style="width:76%">
+							<div class="float-right" style="width:76%">
 								<input type="time" name="stime1" class="inputStyle vertical-middle" style="width:39%" value="" title="웹용 발송시간 시작시간"><span style="padding:0 11px" class="vertical-middle">~</span><input type="time" name="etime1" class="inputStyle vertical-middle" style="width:39%" value="" title="웹용 발송시간 종료시간">
 							</div>
 						</div>
-						<div class="of_h mt30">
-							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt3">알람 사용 여부</h4></div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:24%"><h5>알람 사용 여부</h5></div>
 							<div class="float-left" style="width:76%">
-								<input type="radio" name="agree3" value="Y" class="cBox" id="agree3-1" checked=""> <label for="agree3-1" class="font-normal mr30">사용</label>
-								<input type="radio" name="agree3" value="N" class="cBox" id="agree3-2"> <label for="agree3-2" class="font-normal">미사용</label>
+								<input type="radio" name="agree3" value="Y" id="agree3-1" checked=""> <label for="agree3-1" class="font-normal mr30">사용</label>
+								<input type="radio" name="agree3" value="N" id="agree3-2"> <label for="agree3-2" class="font-normal">미사용</label>
 							</div>
 						</div>
-						<div class="of_h mt30">
-							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt15">일 발송건수 제한</h4></div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:24%"><h5>일 발송건수 제한</h5></div>
 							<div class="float-left" style="width:76%">
-								<input type="radio" name="limited1" value="Y" class="cBox vertical-middle" id="limited1-1" checked=""> <label for="limited1-1" class="payment font-normal mr30">무제한</label>
-								<input type="radio" name="limited1" value="N" class="cBox vertical-middle" id="limited1-2"> <label for="limited1-2" class="payment font-normal">제한</label>
+								<input type="radio" name="limited1" value="Y" id="limited1-1" checked=""> <label for="limited1-1" class="payment font-normal mr30">무제한</label>
+								<input type="radio" name="limited1" value="N" id="limited1-2"> <label for="limited1-2" class="payment font-normal">제한</label>
 								<span class="payment mr10 ml40">일</span><input type="text" class="inputStyle vertical-middle" style="width:13%" title="일 발송건수 입력란"><span class="vertical-middle payment ml10">건</span>
 							</div>
 						</div>
-						<div class="of_h mt30">
-							<div class="float-left" style="width:24%"><h4 class="font-normal font-size14 mt15">월 발송건수 제한</h4></div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:24%"><h5>월 발송건수 제한</h5></div>
 							<div class="float-left" style="width:76%">
-								<input type="radio" name="limited2" value="Y" class="cBox vertical-middle" id="limited2-1" checked=""> <label for="limited2-1" class="payment font-normal mr30">무제한</label>
-								<input type="radio" name="limited2" value="N" class="cBox vertical-middle" id="limited2-2"> <label for="limited2-2" class="payment font-normal">제한</label>
+								<input type="radio" name="limited2" value="Y" id="limited2-1" checked=""> <label for="limited2-1" class="payment font-normal mr30">무제한</label>
+								<input type="radio" name="limited2" value="N" id="limited2-2"> <label for="limited2-2" class="payment font-normal">제한</label>
 								<span class="payment mr10 ml40">월</span><input type="text" class="inputStyle vertical-middle" style="width:13%" title="월 발송건수 입력란"><span class="vertical-middle payment ml10">건</span>
 							</div>
 						</div>
-					</div>
-					<div class="text-center mb40">
-						<a href="#self" class="btnStyle3 black font14" data-toggle="modal" data-target="#Register" title="생성">생성</a>
-						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="취소">취소</a>						
-					</div>
+						<div class="text-center mt20">
+							<a href="#self" class="btnStyle1 backBlack" data-toggle="modal" data-target="#Register" title="생성">생성</a>
+							<a href="#self" class="btnStyle1 backWhite" data-dismiss="modal" title="취소">취소</a>						
+						</div>
+					</div>					
 				</div>
 			</div>
 		</div>

@@ -1,0 +1,186 @@
+<? 
+	include("./sub/userConsole_header.html");
+	include("./sub/userConsole_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader">
+				<h2>MO 수신현황</h2>
+				<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="MO 수신현황 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+			</div>
+
+			<!-- 본문 -->
+			<div class="row mt30">
+				<div class="col-xs-12">
+					<div class="menuBox">
+						<div>
+							<h4 class="inline-block" style="width:8%">수신일자</h4>
+							<input type="text" class="datepicker inputStyle" title="시작날짜 입력란" style="width:15%"><span style="padding:0 11px">~</span><input type="text" class="datepicker inputStyle" title="마지막날짜 입력란" style="width:15%">
+							<ul class="tab_s2 ml20">
+								<li><a href="#" title="오늘 날짜 수신일자 검색">오늘</a></li>
+								<li class="active"><a href="#" title="1주일 수신일자 검색">1주일</a></li>
+								<li><a href="#" title="15일 수신일자 검색">15일</a></li>
+								<li><a href="#" title="1개월 수신일자 검색">1개월</a></li>
+							</ul>								
+						</div>
+						<div>
+							<h4 class="inline-block" style="width:8%">결과</h4>
+							<div class="inline-block" style="width:30%">
+								<div class="consolCheck" style="width:45%"><input type="checkbox" id="010-3208-5678" class="checkStyle2" value="number1"><label for="010-3208-5678">010-3208-5678</label></div>
+								<div class="consolCheck" style="width:45%"><input type="checkbox" id="010-3208-5679" class="checkStyle2" value="010-3208-5679"><label for="010-3208-5679">010-3208-5679</label></div>
+							</div>
+							<h4 class="inline-block" style="width:8%">발신번호</h4>
+							<input type="text" class="inputStyle ml10" style="width:19%" title="발신번호 입력란">
+						</div>	
+						<div>
+							<h4 class="inline-block" style="width:8%">상태</h4>
+							<select name="userConsole_sub0304_1" class="selectStyle2" style="width:15%" title="상태 선택란">
+								<option value="">선택하세요</option>
+							</select>
+							<a href="#self" class="btnStyle1 float-right mt10" title="검색">검색</a>
+						</div>																	
+					</div>
+				</div>				
+			</div>
+			
+			<div class="of_h mt20">
+				<div class="float-right">
+					<a href="#self" class="btnStyle1 borderGray" title="엑셀 다운로드">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12">
+					<!-- 15개씩 보기 -->
+					<div class="of_h mb20">
+						<div class="float-left">전체 : <span class="color1"><strong>20</strong></span>건
+							<select name="userConsole_sub0304_2" class="selectStyle2 width120 ml20">
+								<option value="">15개씩 보기</option>
+								<option value="">30개씩 보기</option>
+							</select>
+						</div>
+					</div>
+					<!-- //15개씩 보기 -->
+
+					<!-- table -->
+					<table class="table_skin1 bt-000 tbl-striped">
+						<colgroup>
+							<col style="width:5%">
+							<col>
+							<col style="width:15%">
+							<col style="width:15%">
+							<col style="width:8%">
+							<col style="width:8%">
+							<col style="width:8%">
+							<col style="width:11%">
+							<col style="width:18%">
+						</colgroup>
+						<thead>
+							<tr>								
+								<th class="text-center lc-1">No.</th>
+								<th class="text-center lc-1">MO 타입</th>
+								<th class="text-center lc-1">MO 수신번호</th>
+								<th class="text-center lc-1">MO 발신번호</th>
+								<th class="text-center lc-1">상품코드</th>
+								<th class="text-center lc-1">MO 제목</th>
+								<th class="text-center lc-1">이통사</th>
+								<th class="text-center lc-1">상태</th>
+								<th class="text-center lc-1 end">등록일자</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-center">5</td>
+								<td class="text-center">SMS MO</td>
+								<td class="text-center">010-1111-2222</td>
+								<td class="text-center">010-1111-2222</td>
+								<td class="text-center">상품코드1</td>
+								<td class="text-center">푸시</td>
+								<td class="text-center">LG U+</td>
+								<td class="text-center">수신완료</td>
+								<td class="text-center end">2021.02.08 00:00:00</td>
+							</tr>
+							<tr>
+								<td class="text-center">4</td>
+								<td class="text-center">SMS MO</td>
+								<td class="text-center">010-1111-2222</td>
+								<td class="text-center">010-1111-2222</td>
+								<td class="text-center">상품코드2</td>
+								<td class="text-center">친구톡</td>
+								<td class="text-center">LG U+</td>
+								<td class="text-center">수신완료</td>
+								<td class="text-center end">2021.02.08 00:00:00</td>
+							</tr>
+							<tr>
+								<td class="text-center">3</td>
+								<td class="text-center">SMS MO</td>
+								<td class="text-center">010-1111-2222</td>
+								<td class="text-center">010-1111-2222</td>
+								<td class="text-center">상품코드1</td>
+								<td class="text-center">푸시</td>
+								<td class="text-center">LG U+</td>
+								<td class="text-center">수신완료</td>
+								<td class="text-center end">2021.02.08 00:00:00</td>
+							</tr>
+							<tr>
+								<td class="text-center">2</td>
+								<td class="text-center">SMS MO</td>
+								<td class="text-center">010-1111-2222</td>
+								<td class="text-center">010-1111-2222</td>
+								<td class="text-center">상품코드2</td>
+								<td class="text-center">친구톡</td>
+								<td class="text-center">LG U+</td>
+								<td class="text-center">수신완료</td>
+								<td class="text-center end">2021.02.08 00:00:00</td>
+							</tr>
+							<tr>
+								<td class="text-center">1</td>
+								<td class="text-center">SMS MO</td>
+								<td class="text-center">010-1111-2222</td>
+								<td class="text-center">010-1111-2222</td>
+								<td class="text-center">상품코드1</td>
+								<td class="text-center">푸시</td>
+								<td class="text-center">LG U+</td>
+								<td class="text-center">수신완료</td>
+								<td class="text-center end">2021.02.08 00:00:00</td>
+							</tr>
+						</tbody>
+					</table>
+					<!-- //table -->
+				</div>			
+			</div>
+
+			<!-- pagination -->
+			<div class="row mt40">
+				<div class="col-xs-12">
+					<div class="pagination1 text-center">
+						<a href="#" title="10페이지 이전 페이지로 이동"><i class="far fa-chevron-double-left"></i></a>
+						<a href="#" title="이전 페이지로 이동"><i class="far fa-chevron-left"></i></a>
+						<a href="#" title="1페이지로 이동" class="number active">1</a>
+						<a href="#" title="2페이지로 이동" class="number">2</a>
+						<a href="#" title="3페이지로 이동" class="number">3</a>
+						<a href="#" title="4페이지로 이동" class="number">4</a>
+						<a href="#" title="5페이지로 이동" class="number">5</a>
+						<a href="#" title="다음 페이지로 이동"><i class="far fa-chevron-right"></i></a>
+						<a href="#" title="10페이지 다음 페이지로 이동"><i class="far fa-chevron-double-right"></i></a>
+					</div>
+				</div>
+			</div>
+			<!-- //pagination -->
+
+
+			
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+
+	
+
+<? 
+	include("./sub/userConsole_footer.html");
+?> 

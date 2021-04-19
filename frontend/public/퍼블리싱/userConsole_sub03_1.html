@@ -1,0 +1,253 @@
+<? 
+	include("./sub/userConsole_header.html");
+	include("./sub/userConsole_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader">
+				<h2>메시지 상세조회</h2>
+				<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="메시지 상세조회 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+			</div>
+
+			<!-- 본문 -->
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="menuBox">
+						<div class="of_h">
+							<div class="float-left" style="width:8%"><h4>발송일자</h4></div>
+							<div class="float-left" style="width:92%">
+								<input type="text" style="width:15%" class="datepicker inputStyle" title="시작날짜 입력란"><span style="padding:0 11px">~</span><input type="text" class="datepicker inputStyle" style="width:15%" title="마지막날짜 입력란">
+								<ul class="tab_s2 ml20">
+									<li><a href="#" title="오늘 날짜 등록일자 검색">오늘</a></li>
+									<li class="active"><a href="#" title="1주일 등록일자 검색">1주일</a></li>
+									<li><a href="#" title="15일 등록일자 검색">15일</a></li>
+									<li><a href="#" title="1개월 등록일자 검색">1개월</a></li>
+								</ul>	
+								<h4 class="inline-block vertical-middle ml40 mr20">발송구분 :</h4>
+								<div class="inline-block" style="width:27%">
+									<input type="radio" name="send" value="cloud" id="cloud" checked=""> <label for="cloud" class="mr30">클라우드 발송</label>
+									<input type="radio" name="send" value="API" id="API"> <label for="API" class="mr30">API 발송</label>
+								</div>
+							</div>
+						</div>
+
+						<div class="of_h">
+							<div class="float-left" style="width:8%"><h4>수신자정보</h4></div>
+							<div class="float-left mt10" style="width:92%">
+								<select name="userConsole_sub040401_1" class="selectStyle2" style="width:15%" title="수신자정보 선택란">
+									<option value="">템플릿명</option>
+									<option value="">템플릿명</option>
+								</select>
+								<input type="text" class="inputStyle vertical-top ml10" style="width:37.5%" title="수신자정보 입력란">
+							</div>
+						</div>
+
+						<div class="of_h">
+							<div class="float-left" style="width:8%"><h4>결과</h4></div>
+							<div class="float-left mt10" style="width:92%">
+								<div class="consolCheck">
+									<input type="checkbox" id="otherUse_all" class="checkStyle2" value="전체" checked><label for="otherUse_all" class="mr30 consolMarginTop">전체</label>
+									<input type="checkbox" id="otherUse1" class="checkStyle2" value="성공"><label for="otherUse1" class="mr30 consolMarginTop">성공</label>
+									<input type="checkbox" id="otherUse2" class="checkStyle2" value="실패"><label for="otherUse2" class="consolMarginTop">실패</label>
+								</div>
+								<a href="#self" class="btnStyle1 float-right" title="통합발송 검색">검색</a>	
+							</div>
+						</div>
+					</div>
+				</div>				
+			</div>
+			
+			<div class="of_h mt20">
+				<div class="float-right">
+					<a href="#self" class="btnStyle2 borderGray" title="엑셀 다운로드">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12">
+					<!-- 15개씩 보기 -->
+					<div class="of_h mb20">
+						<div class="float-left">전체 : <span class="color1"><strong>20</strong></span>건
+							<select name="userConsole_sub0301_2" class="selectStyle2 width120 ml20">
+								<option value="">15개씩 보기</option>
+								<option value="">30개씩 보기</option>
+							</select>
+						</div>
+					</div>
+					<!-- //15개씩 보기 -->
+
+					<!-- table -->
+					<table class="table_skin1 bt-000 tbl-striped">
+						<colgroup>
+							<col style="width:5%">
+							<col>
+							<col style="width:17%">
+							<col style="width:12%">
+							<col style="width:8%">
+							<col style="width:8%">
+							<col style="width:8%">
+							<col style="width:14%">
+							<col style="width:14%">
+						</colgroup>
+						<thead>
+							<tr>								
+								<th class="text-center lc-1">No.</th>
+								<th class="text-center lc-1">메시지</th>
+								<th class="text-center lc-1">발송일시</th>
+								<th class="text-center lc-1">발송타입</th>
+								<th class="text-center lc-1">태그</th>
+								<th class="text-center lc-1">아이디</th>
+								<th class="text-center lc-1">이름</th>
+								<th class="text-center lc-1">휴대전화</th>
+								<th class="text-center lc-1 end">결과</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-center">5</td>
+								<td class="text-center"><a href="#self" title="메세지상세" data-toggle="modal" data-target="#Message">이미지링크(예)</a></td>
+								<td class="text-center">2021.02.08 00:00:00</td>
+								<td class="text-center">개별발송(푸시)</td>
+								<td class="text-center">태그1</td>
+								<td class="text-center">siga77</td>
+								<td class="text-center">이성민</td>
+								<td class="text-center">010-2222-3333</td>
+								<td class="text-center end">성공</td>
+							</tr>
+							<tr>
+								<td class="text-center">4</td>
+								<td class="text-center"><a href="#self" title="메세지상세" data-toggle="modal" data-target="#Message">템플릿 메시지1</a></td>
+								<td class="text-center">2021.02.08 00:00:00</td>
+								<td class="text-center">통합발송</td>
+								<td class="text-center">태그1</td>
+								<td class="text-center">James</td>
+								<td class="text-center">강융준</td>
+								<td class="text-center">010-2222-3333</td>
+								<td class="text-center end">성공</td>
+							</tr>
+							<tr>
+								<td class="text-center">3</td>
+								<td class="text-center"><a href="#self" title="메세지상세" data-toggle="modal" data-target="#Message">템플릿 메시지2</a></td>
+								<td class="text-center">2021.02.08 00:00:00</td>
+								<td class="text-center">개별발송(푸시)</td>
+								<td class="text-center">태그1</td>
+								<td class="text-center">siga77</td>
+								<td class="text-center">정아름</td>
+								<td class="text-center">010-2222-3333</td>
+								<td class="text-center end">성공</td>
+							</tr>
+							<tr>
+								<td class="text-center">2</td>
+								<td class="text-center"><a href="#self" title="메세지상세" data-toggle="modal" data-target="#Message">템플릿 메시지3</a></td>
+								<td class="text-center">2021.02.08 00:00:00</td>
+								<td class="text-center">스마트발송</td>
+								<td class="text-center">태그1</td>
+								<td class="text-center">James</td>
+								<td class="text-center">홍웅기</td>
+								<td class="text-center">010-2222-3333</td>
+								<td class="text-center end">성공</td>
+							</tr>
+							<tr>
+								<td class="text-center">1</td>
+								<td class="text-center"><a href="#self" title="메세지상세" data-toggle="modal" data-target="#Message">템플릿 메시지4</a></td>
+								<td class="text-center">2021.02.08 00:00:00</td>
+								<td class="text-center">개별발송(푸시)</td>
+								<td class="text-center">태그1</td>
+								<td class="text-center">siga77</td>
+								<td class="text-center">장수남</td>
+								<td class="text-center">010-2222-3333</td>
+								<td class="text-center end">성공</td>
+							</tr>
+						</tbody>
+					</table>
+					<!-- //table -->
+				</div>			
+			</div>
+
+			<!-- pagination -->
+			<div class="row mt40">
+				<div class="col-xs-12">
+					<div class="pagination1 text-center">
+						<a href="#" title="10페이지 이전 페이지로 이동"><i class="far fa-chevron-double-left"></i></a>
+						<a href="#" title="이전 페이지로 이동"><i class="far fa-chevron-left"></i></a>
+						<a href="#" title="1페이지로 이동" class="number active">1</a>
+						<a href="#" title="2페이지로 이동" class="number">2</a>
+						<a href="#" title="3페이지로 이동" class="number">3</a>
+						<a href="#" title="4페이지로 이동" class="number">4</a>
+						<a href="#" title="5페이지로 이동" class="number">5</a>
+						<a href="#" title="다음 페이지로 이동"><i class="far fa-chevron-right"></i></a>
+						<a href="#" title="10페이지 다음 페이지로 이동"><i class="far fa-chevron-double-right"></i></a>
+					</div>
+				</div>
+			</div>
+			<!-- //pagination -->
+
+
+			
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+
+	<!-- Message Modal -->
+	<div class="modal fade modalStyle" id="Message" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" style="width:740px">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div>
+						<h2>메시지 상세</h2>
+						<hr>
+					
+						<div class="row row-no-margin">
+							<div class="col-xs-6">
+								<div class="phoneWrap">
+									<img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
+									<div class="phoneTextWrap">
+										<div class="phoneText1">
+											<p class="color3">내용이 들어갑니다</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xs-6 of_h">
+								<div class="of_h">
+									<h5 style="width:34%" class="float-left ml20 color000">발송타입</h5>
+									<h5 style="width:47%" class="float-right ml20 color4 word-break-all">푸시</h5>
+								</div>
+								<div class="of_h">
+									<h5 style="width:34%" class="float-left ml20 color000">태그</h5>
+									<h5 style="width:47%" class="float-right ml20 color4 word-break-all">태그1</h5>
+								</div>
+								<div class="of_h">
+									<h5 style="width:34%" class="float-left ml20 color000">수신전화번호</h5>
+									<h5 style="width:47%" class="float-right ml20 color4 word-break-all">010-1111-2222</h5>
+								</div>
+								<div class="of_h">
+									<h5 style="width:34%" class="float-left ml20 color000">결과</h5>
+									<h5 style="width:47%" class="float-right ml20 color4 word-break-all">성공</h5>
+								</div>
+								<div class="of_h">
+									<h5 style="width:34%" class="float-left ml20 color000">발송일시</h5>
+									<h5 style="width:47%" class="float-right ml20 color4 word-break-all">2021.02.01 00:00:00</h5>
+								</div>						
+							</div>
+						</div>	
+						<div class="text-center mt20">
+							<a href="#self" class="btnStyle1 backBlack" data-toggle="modal" title="닫기">닫기</a>	
+						</div>
+					</div>											
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+<? 
+	include("./sub/userConsole_footer.html");
+?> 

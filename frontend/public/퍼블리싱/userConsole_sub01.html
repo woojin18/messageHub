@@ -2,76 +2,87 @@
 	include("./sub/userConsole_header.html");
 	include("./sub/userConsole_lnb.html");
 ?> 
+	<!--
+	<a href="#self" class="btnStyle1" title="취소">취소</a>
+	<a href="#self" class="btnStyle1 backPink" title="취소">취소</a>
+	<a href="#self" class="btnStyle1 backRed" title="취소">취소</a>
+	<a href="#self" class="btnStyle1 backBlack" title="취소">취소</a>
+	<a href="#self" class="btnStyle1 backWhite" title="취소">취소</a>
+	<a href="#self" class="btnStyle1 backGray" title="취소">취소</a>
+	<a href="#self" class="btnStyle1 backLightGray" title="취소">취소</a>
+	<a href="#self" class="btnStyle1 borderGray" title="취소">취소</a>
+	<a href="#self" class="btnStyle1 borderLightGray" title="취소">취소</a>
+	-->
 
 	<!-- content -->
 	<div id="content">
 		<article>
 			<div class="contentHeader">
 				<h2>비트큐브 대시보드</h2>
-				<a href="#self" class="btnStyle1 absolute top0 right0" onClick="window.location.reload()" title="비트큐브 대시보드 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+				<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="비트큐브 대시보드 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
 			</div>
 
 			<!-- 본문 -->
 			<div class="row">
 				<div class="col-xs-12">
-					<h4 class="lc-1 mt0 mb15">채널별 성공/실패율 현황</h4>
+					<h4>채널별 성공/실패율 현황</h4>
 					<ul class="tab_s4 of-h" style="width:100%">
 						<li style="width:16.6%">
 							<a href="#self" class="inline-block text-center" title="채널별 성공/실패율 현황 PUSH">
-								<p class="tab_maintext mb20">PUSH</p>
-								<div><span class="inline-block btnStyle6 mb20" style="border-radius:19px">전체</span></div>
+								<h5>PUSH</h5>
+								<div><span class="inline-block btnStyle1 backLightGray mb10" style="border-radius:19px">전체</span></div>
 								<p class="inline-block color1 pr10 border-right"><span class="number">85%<br></span><span class="text">성공</span></p>
-								<p class="inline-block pl10"><span class="number">15%<br></span><span class="text">실패</span></p>					
+								<p class="inline-block pl10"><span class="number">15%<br></span><span>실패</span></p>					
 							</a>
 						</li>
 						<li style="width:16.6%">
 							<a href="#self" class="inline-block text-center" title="채널별 성공/실패율 현황 RCS">
-								<p class="tab_maintext mb20">RCS</p>
-								<div><span class="inline-block btnStyle6 mb20" style="border-radius:19px">전체</span></div>
+								<h5>RCS</h5>
+								<div><span class="inline-block btnStyle1 backLightGray mb10" style="border-radius:19px">전체</span></div>
 								<p class="inline-block color1 pr10 border-right"><span class="number">0<br></span><span class="text">성공</span></p>
-								<p class="inline-block pl10"><span class="number">0<br></span><span class="text">실패</span></p>					
+								<p class="inline-block pl10"><span class="number">0<br></span><span>실패</span></p>					
 							</a>
 						</li>
 						<li style="width:16.6%">
 							<a href="#self" class="inline-block text-center" title="채널별 성공/실패율 현황 친구톡">
-								<p class="tab_maintext mb20">친구톡</p>
-								<div><span class="inline-block btnStyle6 mb20" style="border-radius:19px">전체</span></div>
+								<h5>친구톡</h5>
+								<div><span class="inline-block btnStyle1 backLightGray mb10" style="border-radius:19px">전체</span></div>
 								<p class="inline-block color1 pr10 border-right"><span class="number">-<br></span><span class="text">성공</span></p>
-								<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
+								<p class="inline-block pl10"><span class="number">-<br></span><span>실패</span></p>					
 							</a>
 						</li>
 						<li style="width:16.6%">
 							<a href="#self" class="inline-block text-center" title="채널별 성공/실패율 현황 알림톡">
-								<p class="tab_maintext mb20">알림톡</p>
-								<div><span class="inline-block btnStyle6 mb20" style="border-radius:19px">전체</span></div>
+								<h5>알림톡</h5>
+								<div><span class="inline-block btnStyle1 backLightGray mb10" style="border-radius:19px">전체</span></div>
 								<p class="inline-block color1 pr10 border-right"><span class="number">-<br></span><span class="text">성공</span></p>
-								<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
+								<p class="inline-block pl10"><span class="number">-<br></span><span>실패</span></p>					
 							</a>
 						</li>
 						<li style="width:16.6%">
 							<a href="#self" class="inline-block text-center" title="채널별 성공/실패율 현황 SMS">
-								<p class="tab_maintext mb20">SMS</p>
-								<div><span class="inline-block btnStyle6 mb20" style="border-radius:19px">전체</span></div>
+								<h5>SMS</h5>
+								<div><span class="inline-block btnStyle1 backLightGray mb10" style="border-radius:19px">전체</span></div>
 								<p class="inline-block color1 pr10 border-right"><span class="number">-<br></span><span class="text">성공</span></p>
-								<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
+								<p class="inline-block pl10"><span class="number">-<br></span><span>실패</span></p>					
 							</a>
 						</li>
 						<li style="width:16.6%">
 							<a href="#self" class="inline-block text-center" title="채널별 성공/실패율 현황 MMS">
-								<p class="tab_maintext mb20">MMS</p>
-								<div><span class="inline-block btnStyle6 mb20" style="border-radius:19px">전체</span></div>
+								<h5>MMS</h5>
+								<div><span class="inline-block btnStyle1 backLightGray mb10" style="border-radius:19px">전체</span></div>
 								<p class="inline-block color1 pr10 border-right"><span class="number">-<br></span><span class="text">성공</span></p>
-								<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
+								<p class="inline-block pl10"><span class="number">-<br></span><span>실패</span></p>					
 							</a>
 						</li>
 					</ul>
 				</div>
 			</div>
 
-			<div class="row mt20">
+			<div class="row mt10">
 				<div class="col-xs-12">
 					<input type="text" class="datepicker inputStyle maxWidth160"><span style="padding:0 11px">~</span><input type="text" class="datepicker inputStyle maxWidth160">
-					<ul class="tab_s2 ml20">
+					<ul class="tab_s ml20">
 						<li><a href="#" title="오늘 날짜 검색">오늘</a></li>
 						<li><a href="#" title="1주일 날짜 검색">1주일</a></li>
 						<li><a href="#" title="15일 날짜 검색">15일</a></li>
@@ -82,15 +93,15 @@
 
 			<div class="row">
 				<div class="col-xs-12">
-					<h4 class="lc-1 mb20 mt40">발송통계</h4>
-					<img src="common/images/chart_sub03_1.svg" alt="차트01" class="img_chart01 img-responsive mt20">
+					<h4>발송통계</h4>
+					<img src="common/images/chart_sub03_1.svg" alt="차트01" class="img_chart01 img-responsive mt10">
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="Dashboard01 pd0">
-						<h4 class="lc-1 mt40 mb20">공지사항</h4>
+						<h4>공지사항</h4>
 						<table id="#admin_notice1" class="table_skin1" style="width:100%">
 							<colgroup>
 								<col style="width:10%">
@@ -164,9 +175,24 @@
 					<div>
 						<h5 class="lc-1">공지사항 상세</h5>
 						<hr>
+						<div class="mt30">
+							<p class="font-normal inline-block" style="width:10%">제목 :</p>
+							<p class="font-normal inline-block color4" style="width:89%">공지사항 테스트</p>
+						</div>
+						<div class="mt20">
+							<p class="font-normal inline-block" style="width:10%">등록일 :</p>
+							<p class="font-normal inline-block color4" style="width:35%">2021.02.03</p>
+							<p class="font-normal inline-block" style="width:10%">등록자 :</p>
+							<p class="font-normal inline-block color4" style="width:27%">Administrator</p>
+							<a href="#self" class="btnStyle19 minWidthAuto font-size14" style="width:15%">안내</a>
+						</div>
+						<div class="mt20 border-line2 line-height2em" style="padding:20px; height:200px">
+							<p class="color4 cont-size13">1. 통합메시징클라우드에서 각 분야 AI 최고 리더들을 만나 보세요.<br>2. 온라인투자연계금융업법 심사 준비, 통합메시징클라우드와 함께..<br>3. 지금 가입하면 3개월 무료 (~21년 2월 31일 신청 마감)<br>4. 중소기업과 창작자를 위해 150만원 상당의 통합메시징클라우드..</p>
+						</div>
+
 					</div>
 					<div class="text-center mt40">
-						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>						
+						<a href="#self" class="btnStyle13 white font14" data-dismiss="modal" title="닫기">닫기</a>						
 					</div>
 				</div>
 			</div>

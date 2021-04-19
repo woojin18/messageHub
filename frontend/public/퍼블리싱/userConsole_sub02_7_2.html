@@ -1,0 +1,167 @@
+<? 
+	include("./sub/userConsole_header.html");
+	include("./sub/userConsole_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader">
+				<h2>스마트발송</h2>
+				<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="스마트발송 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+			</div>
+
+			<!-- 본문 -->
+			<div class="row">
+				<div class="phone3 inline-block" style="width:30%">
+					<!-- phoneWrap -->
+					<div class="phoneWrap">
+						<img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
+						<div class="phoneTextWrap">
+							<div class="phoneText1">
+								<p>내용이 들어갑니다</p>
+							</div>
+						</div>
+					</div>
+					<!-- //phoneWrap -->
+					<div class="phone_04_btn6">
+						<div>
+							<a href="#self" class="btnStyle1 backBlack" title="Push">Push</a>
+							<a href="#self" class="btnStyle1 backWhite" title="RCS">RCS</a>							
+						</div>
+						<div class="mt5">
+							<a href="#self" class="btnStyle1 backWhite" title="친구톡">카카오톡</a>						
+							<a href="#self" class="btnStyle1 backWhite" title="SMS">SMS/MMS</a>						
+						</div>
+					</div>
+				</div>
+				<div class="of_h inline-block vertical-top consoleCon" style="width:60%">
+					<div class="of_h user-phone">
+						<div class="float-left" style="width:24%">
+							<h4>01  템플릿</h4>
+						</div>
+						<div class="float-left" style="width:76%">
+							<div class="of_h">
+								<div style="width:24%" class="float-left">
+									
+								</div>
+								<div class="float-right" style="width:76%">
+									<input type="radio" name="send" value="ALL" id="ALL" checked=""> <label for="ALL" class="mr30">ALL</label>
+									<input type="radio" name="send" value="FCM" id="FCM"> <label for="FCM" class="mr30">FCM</label>
+									<input type="radio" name="send" value="APNS" id="APNS"> <label for="APNS">APNS</label>
+								</div>
+								<div class="float-right" style="width:76%">
+									<input type="text" class="inputStyle">
+								</div>
+							</div>													
+						</div>						
+					</div>
+					
+					<hr>
+
+					<div class="of_h user-phone">
+						<div class="float-left" style="width:24%">
+							<h4>02  수신자 선택</h4>
+						</div>
+						<div class="float-left" style="width:76%">
+							<div class="of_h">
+								<div style="width:24%" class="height40 float-left">
+									
+								</div>
+								<div style="width:100%">
+									<div>
+										<input type="radio" name="Recipient" value="Directly" id="Directly" checked=""> <label for="Directly" class="mr10">수신자 직접입력</label>
+										<input type="radio" name="Recipient" value="search" id="search"> <label for="search" class="mr10">주소록 검색</label>
+										<input type="radio" name="Recipient" value="excel" id="excel"> <label for="excel" class="mr10">엑셀 업로드</label>
+										<a href="#self" class="btnStyle1 backLightGray" title="샘플">샘플 <i class="far fa-arrow-to-bottom"></i></a>
+									</div>
+								</div>
+							</div>
+							<div class="of_h">
+								<div style="width:24%" class="float-left">
+									<h5>APP_ID</h5>
+								</div>
+								<div class="float-left" style="width:16%">
+									<select name="userConsole020702_1" class="selectStyle2">
+										<option value="">선택하세요</option>
+									</select>
+								</div>
+								<div class="float-right" style="width:55%">
+									<input type="text" class="inputStyle" placeholder="APP ID를 입력하세요">
+								</div>
+							</div>
+							<div class="of_h">
+								<div class="of_h float-right" style="width:76%">									
+									
+									<div class="float-right consolMarginTop" style="width:100%">
+										<textarea class="textareaStyle height120" placeholder="Ex) [{“userId”, “phoneNumber”}] => 1명 발송 [{“aaa”, “0101231234”}]"></textarea>
+									</div>
+									<p class="float-right">발송 대상자 : 0명</p>
+								</div>
+							</div>													
+						</div>
+						
+					</div>
+					<hr>
+
+					<div class="of_h user-phone">
+						<div style="width:24%" class="float-left">
+							<h4>03  발송옵션 선택</h4>
+						</div>
+						<div style="width:76%" class="float-left">
+							<div class="of_h">
+								<div class="float-left" style="width:25%">
+									<h5>발송시간 *</h5>
+								</div>
+								<div class="float-left" style="width:21%">
+									<input type="radio" name="time" value="right" id="right" checked=""> <label for="right" class="mr10">즉시</label>
+									<input type="radio" name="time" value="Reservation" id="Reservation"> <label for="Reservation">예약</label>								
+								</div>
+								<div class="float-left" style="width:17%">
+									<input type="text" class="datepicker inputStyle" title="시작날짜 입력란" id="dp1618471804567">
+								</div>
+								<div class="float-right" style="width:36%">
+									<input type="time" name="stime1" class="inputStyle" style="width:47%" value=""> : <input type="time" name="etime1" class="inputStyle" style="width:47%" value="">
+								</div>
+							</div>
+							<div class="of_h consolMarginTop">
+								<div style="width:25%" class="float-left">
+									<h5>태그</h5>
+								</div>
+								<div class="of_h" style="width:75%">
+									<input type="text" class="inputStyle" style="width:100%" placeholder="캠페인 ID를 입력해주세요.">
+								</div>
+							</div>													
+						</div>	
+					</div>
+
+					<hr class="mt50">
+
+					<div class="of_h user-phone mt50">
+						<div class="float-left" style="width:24%">
+							<h4>04  테스트 발송</h4>
+						</div>
+						<div class="float-left" style="width:76%">
+							<p>모든 채널에 메시지를 보냅니다.</p>
+							<a href="#self" class="btnStyle1 backLightGray consolMarginTop" title="테스트 발송">테스트 발송</a>											
+						</div>
+						
+					</div>
+					<div class="mt20 float-right">
+						<a href="#self" class="btnStyle2 backRed float-left" title="발송">발송</a>
+						<a href="#self" class="btnStyle2 float-left ml10" title="목록">목록</a>
+					</div>
+				</div>			
+			</div>
+
+			
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+
+<? 
+	include("./sub/userConsole_footer.html");
+?> 

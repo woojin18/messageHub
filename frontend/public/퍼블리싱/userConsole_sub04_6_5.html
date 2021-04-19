@@ -8,95 +8,95 @@
 		<article>
 			<div class="contentHeader">
 				<h2>통합발송 템플릿</h2>
-				<a href="#self" class="btnStyle1 absolute top0 right0" onClick="window.location.reload()" title="이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+				<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="이용안내">이용안내 <i class="fal fa-book-open"></i></a>
 			</div>
 
 			<!-- 본문 -->
-			<div class="row mt80 mb50">
+			<div class="row">
 				<div class="col-xs-6" style="padding-right:100px">
-					<h4 class="font-size20">01 발송정보</h4>
-					<div class="font-size16 of_h mt40">
-						<div class="float-left" style="width:26%"><h5 class="font-size16 font-normal mt3">메시지 구분*</h5></div>
-						<div class="float-left" style="width:74%">
-							<input type="radio" name="mSort" value="Y" class="cBox" id="mSort1" checked=""> <label for="mSort1" class="font-normal mr30">정보성</label>
-							<input type="radio" name="mSort" value="N" class="cBox" id="mSort2"> <label for="mSort2" class="font-normal">광고용</label>
-							<span class="font-size14 color4">광고 메시지는 20시~8시 발송이 제한됩니다.</span>
+					<h4>01 발송정보</h4>
+					<div class="of_h">
+						<div class="float-left" style="width:30%"><h5>메시지 구분*</h5></div>
+						<div class="float-left" style="width:70%">
+							<input type="radio" name="mSort" value="Y" id="mSort1" checked=""> <label for="mSort1" class="mr30">정보성</label>
+							<input type="radio" name="mSort" value="N" id="mSort2"> <label for="mSort2">광고용</label>
+							<span class="txtCaption color4">광고 메시지는 20시~8시 발송이 제한됩니다.</span>
 						</div>
 					</div>
-					<div class="font-size16 of_h mt20">
-						<div class="float-left" style="width:26%"><h5 class="font-size16 font-normal mt3">메시지 타입*</h5></div>
-						<div class="float-left" style="width:74%">
-							<input type="radio" name="mType" value="Y" class="cBox" id="mType_text" checked=""> <label for="mType_text" class="font-normal mr30">텍스트</label>
-							<input type="radio" name="mType" value="N" class="cBox" id="mType_image"> <label for="mType_image" class="font-normal">이미지</label>
+					<div class="of_h">
+						<div class="float-left" style="width:30%"><h5>메시지 타입*</h5></div>
+						<div class="float-left" style="width:70%">
+							<input type="radio" name="mType" value="Y" id="mType_text" checked=""> <label for="mType_text" class="mr30">텍스트</label>
+							<input type="radio" name="mType" value="N" id="mType_image"> <label for="mType_image">이미지</label>
 						</div>
 					</div>
-					<div class="font-size16 of_h mt20">
-						<div class="float-left" style="width:26%"><h5 class="font-size16 font-normal mt3">타 프로젝트 사용여부*</h5></div>
-						<div class="float-left" style="width:74%">
-							<input type="radio" name="otherUse" value="Y" class="cBox" id="otherUse1" checked=""> <label for="otherUse1" class="font-normal mr30">공용</label>
-							<input type="radio" name="otherUse" value="N" class="cBox" id="otherUse2"> <label for="otherUse2" class="font-normal">전용</label>
+					<div class="of_h">
+						<div class="float-left" style="width:30%"><h5>타 프로젝트 사용여부*</h5></div>
+						<div class="float-left" style="width:70%">
+							<input type="radio" name="otherUse" value="Y" id="otherUse1" checked=""> <label for="otherUse1" class="mr40">공용</label>
+							<input type="radio" name="otherUse" value="N" id="otherUse2"> <label for="otherUse2">전용</label>
 						</div>
 					</div>
-					<div class="font-size16 of_h mt20">
-						<div class="float-left" style="width:26%"><h5 class="font-size16 font-normal mt10">템플릿 명</h5></div>
-						<div class="float-left" style="width:74%">
+					<div class="of_h">
+						<div class="float-left" style="width:30%"><h5>템플릿 명</h5></div>
+						<div class="float-left" style="width:70%">
 							<div class="float-left" style="width:68%"><input type="text" class="inputStyle"></div>
-							<div class="float-right" style="width:30%"><a href="#self" class="btnStyle7 vertical-middle" style="min-width:auto; width:100%" title="중복체크">중복체크</a></div>		
+							<div class="float-right" style="width:30%"><a href="#self" class="btnStyle1 backLightGray" title="중복체크">중복체크</a></div>		
 						</div>
 					</div>
 				</div>
 
 				<div class="col-xs-4" style="border-left:1px solid #D5D5D5; padding-left:100px">
-					<h4 class="font-size20">02 채널 선택</h4>
-					<div class="font-size14 of_h mt0">
+					<h4>02 채널 선택</h4>
+					<div class="of_h">
 						<div class="float-right text-center" style="width:50%">발송순서</div>
 					</div>
-					<div class="font-size16 of_h mt10">
-						<div class="float-left" style="width:30%"><h5 class="font-size16 font-normal mt12">Push</h5></div>
-						<div class="float-left" style="width:20%"><input type="checkbox" id="Push" class="checkStyle2" value="Push"><label for="Push" class="mt10"></label></div>
-						<div class="float-left" style="width:50%"><a href="#self" class="btnStyle6 white vertical-middle" style="min-width:auto; width:100%" title="Push">Push</a></div>
+					<div class="of_h consolMarginTop">
+						<div class="float-left" style="width:30%"><h5>Push</h5></div>
+						<div class="float-left consolMarginTop" style="width:20%"><input type="checkbox" id="Push" class="checkStyle2" value="Push"><label for="Push"></label></div>
+						<div class="float-left" style="width:50%"><a href="#self" class="btnStyle1 borderLightGray " style="min-width:auto; width:100%" title="Push">Push</a></div>
 					</div>
-					<div class="font-size16 of_h mt10">
-						<div class="float-left" style="width:30%"><h5 class="font-size16 font-normal mt12">RCS</h5></div>
-						<div class="float-left" style="width:20%"><input type="checkbox" id="RCS" class="checkStyle2" value="RCS"><label for="RCS" class="mt10"></label></div>
-						<div class="float-left" style="width:50%"><a href="#self" class="btnStyle6 white vertical-middle" style="min-width:auto; width:100%" title="RCS">RCS</a></div>
+					<div class="of_h consolMarginTop">
+						<div class="float-left" style="width:30%"><h5>RCS</h5></div>
+						<div class="float-left consolMarginTop" style="width:20%"><input type="checkbox" id="RCS" class="checkStyle2" value="RCS"><label for="RCS"></label></div>
+						<div class="float-left" style="width:50%"><a href="#self" class="btnStyle1 borderLightGray" style="min-width:auto; width:100%" title="RCS">RCS</a></div>
 					</div>
-					<div class="font-size16 of_h mt10">
-						<div class="float-left" style="width:30%"><h5 class="font-size16 font-normal mt12">카카오톡</h5></div>
-						<div class="float-left" style="width:20%"><input type="checkbox" id="kakao" class="checkStyle2" value="kakao"><label for="kakao" class="mt10"></label></div>
-						<div class="float-left" style="width:50%"><a href="#self" class="btnStyle6 white vertical-middle" style="min-width:auto; width:100%" title="카카오톡">카카오톡</a></div>
+					<div class="of_h consolMarginTop">
+						<div class="float-left" style="width:30%"><h5>카카오톡</h5></div>
+						<div class="float-left consolMarginTop" style="width:20%"><input type="checkbox" id="kakao" class="checkStyle2" value="kakao"><label for="kakao"></label></div>
+						<div class="float-left" style="width:50%"><a href="#self" class="btnStyle1 borderLightGray" style="min-width:auto; width:100%" title="카카오톡">카카오톡</a></div>
 					</div>
-					<div class="font-size16 of_h mt10">
-						<div class="float-left" style="width:30%"><h5 class="font-size16 font-normal mt12">SMS/MMS</h5></div>
-						<div class="float-left" style="width:20%"><input type="checkbox" id="smsMms" class="checkStyle2" value="smsMms"><label for="smsMms" class="mt10"></label></div>
-						<div class="float-left" style="width:50%"><a href="#self" class="btnStyle6 white vertical-middle" style="min-width:auto; width:100%" title="SMS/MMS">SMS/MMS</a></div>
+					<div class="of_h  consolMarginTop">
+						<div class="float-left" style="width:30%"><h5>SMS/MMS</h5></div>
+						<div class="float-left consolMarginTop" style="width:20%"><input type="checkbox" id="smsMms" class="checkStyle2" value="smsMms"><label for="smsMms"></label></div>
+						<div class="float-left" style="width:50%"><a href="#self" class="btnStyle1 borderLightGray" style="min-width:auto; width:100%" title="SMS/MMS">SMS/MMS</a></div>
 					</div>
-					<div class="of_h mt10">
+					<div class="of_h consolMarginTop">
 						<div class="float-right text-center" style="width:50%"><a href="#" title="이전버튼"><i class="far fa-chevron-up channelBtn"></i></a> <a href="#" title="이전버튼"><i class="far fa-chevron-down channelBtn"></i></a></div>
 					</div>
-					<div class="font-size12 of_h mt20">
-						<div class="float-left" style="width:33%; padding:0 10px"><a href="#self" class="btnStyle3 gray" style="min-width:auto; width:100%" title="저장">저장</a></div>
-						<div class="float-left" style="width:33%; padding:0 10px"><a href="#self" class="btnStyle3 black" style="min-width:auto; width:100%" title="수정">수정</a></div>
-						<div class="float-left" style="width:33%; padding:0 10px"><a href="#self" class="btnStyle3 white" style="min-width:auto; width:100%" title="취소">취소</a></div>
+					<div class="of_h consolMarginTop">
+						<div class="float-left" style="width:33%; padding:0 10px"><a href="#self" class="btnStyle1 borderGray" style="min-width:auto; width:100%" title="저장">저장</a></div>
+						<div class="float-left" style="width:33%; padding:0 10px"><a href="#self" class="btnStyle1 backBlack" style="min-width:auto; width:100%" title="수정">수정</a></div>
+						<div class="float-left" style="width:33%; padding:0 10px"><a href="#self" class="btnStyle1 backWhite" style="min-width:auto; width:100%" title="취소">취소</a></div>
 					</div>
 				</div>
 			</div>
 
 			<hr>
 
-			<h4 class="font-size20 mt60">03 채널 설정</h4>
-			<div class="contentBody mt50">
+			<h4>03 채널 설정</h4>
+			<div class="contentBody">
 				<ul class="tab_s3">
-					<li><a href="#self" class="width160" title="Push 페이지로 이동">Push</a></li>
-					<li><a href="#self" class="width160" title="RCS 페이지로 이동">RCS</a></li>
-					<li><a href="#self" class="width160" title="카카오톡(알림톡) 페이지로 이동">카카오톡(알림톡)</a></li>
-					<li><a href="#self" class="width160" title="카카오톡(친구톡) 페이지로 이동">카카오톡(친구톡)</a></li>
-					<li class="active"><a href="#self" class="width160" title="SMS/MMS 페이지로 이동">SMS/MMS</a></li>
+					<li><a href="#self" title="Push 페이지로 이동">Push</a></li>
+					<li><a href="#self" title="RCS 페이지로 이동">RCS</a></li>
+					<li><a href="#self" title="카카오톡(알림톡) 페이지로 이동">카카오톡(알림톡)</a></li>
+					<li><a href="#self" title="카카오톡(친구톡) 페이지로 이동">카카오톡(친구톡)</a></li>
+					<li class="active"><a href="#self" title="SMS/MMS 페이지로 이동">SMS/MMS</a></li>
 				</ul>
 			</div>
 
-			<div class="of_h mt50">
-				<div class="float-left" style="width:26%">
+			<div class="of_h mt20">
+				<div class="float-left" style="width:28%">
 					<!-- phoneWrap -->
 					<div class="phoneWrap">
 						<img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
@@ -108,34 +108,38 @@
 					</div>
 					<!-- //phoneWrap -->
 				</div>
-				<div class="float-left" style="width:74%">
+				<div class="float-left consoleCon" style="width:72%">
 					<div class="of_h">
-						<div class="float-left" style="width:13%"><h4 class="font-normal font-size16 mt3">발송 유형 *</h4></div>
+						<div class="float-left" style="width:13%"><h4>발송 유형 *</h4></div>
 						<div class="float-left" style="width:57%">
-							<input type="radio" name="send1" value="Y" id="send1-1" checked=""> <label for="send1-1" class="font-normal mr30">SMS</label>
-							<input type="radio" name="send1" value="N" id="send1-2"> <label for="send1-2" class="font-normal">MMS</label>
+							<input type="radio" name="send1" value="Y" id="send1-1" checked=""> <label for="send1-1" class="mr30">SMS</label>
+							<input type="radio" name="send1" value="N" id="send1-2"> <label for="send1-2">MMS</label>
 						</div>
 					</div>
 
-					<div class="of_h mt20">
-						<div class="float-left" style="width:13%"><h4 class="font-normal font-size16 mt12">제목</h4></div>
+					<div class="of_h">
+						<div class="float-left" style="width:13%"><h4>제목</h4></div>
 						<div class="float-left" style="width:57%">
 							<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다.">
 						</div>
 					</div>					
 
-					<div class="of_h mt20">
-						<div class="float-left" style="width:13%"><h4 class="font-normal font-size16 mt0">내용*</h4></div>
+					<div class="of_h">
+						<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 						<div class="float-left" style="width:57%">
 							<textarea class="textareaStyle height190" placeholder="변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.&#13;예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다."></textarea>
 						</div>
 					</div>					
 
-					<div class="of_h mt20">
-						<div class="float-left" style="width:13%"><h4 class="font-normal font-size16 mt12">이미지</h4></div>
+					<div class="of_h consolMarginTop">
+						<div class="float-left" style="width:13%"><h4>이미지</h4></div>
 						<div class="float-left" style="width:57%">
-							<div class="float-left" style="width:22%"><a href="#self" class="btnStyle7 vertical-middle" style="min-width:auto; width:100%" data-toggle="modal" data-target="#image" title="이미지선택">이미지선택</a></div>
-							<div class="float-right" style="width:75%"><input type="text" class="inputStyle" placeholder="영어, 숫자 3자 이상 30자 이내"></div>		
+							<div class="float-left" style="width:22%"><a href="#self" class="btnStyle1 backLightGray width100_" data-toggle="modal" data-target="#image" title="이미지선택">이미지선택</a></div>
+							<ul class="float-right attachList" style="width:75%; padding:5px 15px">
+								<li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
+								<li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
+								<li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
+							</ul>
 						</div>
 					</div>
 
@@ -167,7 +171,7 @@
 					<div class="row mt10">
 						<div class="col-xs-12">
 							<!-- table -->
-							<table class="table_skin1 mt20" style="width:100%">
+							<table class="table_skin1_1 mt20" style="width:100%">
 								<caption>수신자 추가의 사용자명, 아이디, 이용권한을 제공하는 표</caption>
 							  <colgroup>
 								<col style="width:3%">
@@ -180,7 +184,7 @@
 							  </colgroup>
 							  <thead>
 								<tr>
-								  <th class="text-center lc-1"><div class="consolCheck ml10"><input type="checkbox" id="check1" class="checkStyle2" value="check1"><label for="check1"></label></div></th>
+								  <th class="text-center lc-1"><input type="checkbox" id="listCheck_all" class="boardCheckStyle" value="listCheck_all"><label for="listCheck_all"></label></th>
 								  <th class="text-center lc-1">File ID</th>
 								  <th class="text-center lc-1">파일명</th>
 								  <th class="text-center lc-1">사용채널</th>
@@ -191,37 +195,37 @@
 							  </thead>
 								<tbody>
 								   <tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check2" class="checkStyle2" value="check2"><label for="check2"></label></div></td>
+									<td class="text-center"><input type="checkbox" id="listCheck4" class="boardCheckStyle" value="check4"><label for="listCheck4"></label></td>
 									<td class="text-center">124</td>
 									<td class="text-left">CMwS1.jpg</td>									
 									<td class="text-left">푸시, RCS</td>
 									<td class="text-center">2021-01-01 09:30</td>
 									<td class="text-center"><a href="#self" title="미리보기"><i class="far fa-search"></i></a></td>
-									<td class="text-center end"><a href="#self" class="btnStyle6 vertical-middle" style="min-width:auto; width:100%" title="선택">선택</a></td>
+									<td class="text-center end"><a href="#self" class="btnStyle6 vertical-middle" title="선택">선택</a></td>
 								  </tr>
 								   <tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check3" class="checkStyle2" value="check3"><label for="check3"></label></div></td>
+									<td class="text-center"><input type="checkbox" id="listCheck3" class="boardCheckStyle" value="check3"><label for="listCheck3"></label></td>
 									<td class="text-center">125</td>
 									<td class="text-left">이벤트1.jpg</td>									
 									<td class="text-left">푸시, 친구톡</td>
 									<td class="text-center">2021-01-01 09:30</td>
 									<td class="text-center"><a href="#self" title="미리보기"><i class="far fa-search"></i></a></td>
-									<td class="text-center end"><a href="#self" class="btnStyle6 vertical-middle" style="min-width:auto; width:100%" title="선택">선택</a></td>
+									<td class="text-center end"><a href="#self" class="btnStyle6 vertical-middle" title="선택">선택</a></td>
 								  </tr>
 								   <tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check4" class="checkStyle2" value="check4"><label for="check4"></label></div></td>
+									<td class="text-center"><input type="checkbox" id="listCheck2" class="boardCheckStyle" value="check2"><label for="listCheck2"></label></td>
 									<td class="text-center">126</td>
 									<td class="text-left">이벤트2.jpg</td>									
 									<td class="text-left">푸시, RCS, MMS</td>
 									<td class="text-center">2021-01-01 09:30</td>
 									<td class="text-center"><a href="#self" title="미리보기"><i class="far fa-search"></i></a></td>
-									<td class="text-center end"><a href="#self" class="btnStyle6 vertical-middle" style="min-width:auto; width:100%" title="선택">선택</a></td>
+									<td class="text-center end"><a href="#self" class="btnStyle6 vertical-middle" title="선택">선택</a></td>
 								  </tr>
 								  <tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check5" class="checkStyle2" value="check5"><label for="check5"></label></div></td>
+									<td class="text-center"><input type="checkbox" id="listCheck1" class="boardCheckStyle" value="check1"><label for="listCheck1"></label></td>
 									<td class="text-center" colspan="4">업로드 한 이미지가 없습니다.</td>
 									<td></td>
-									<td class="text-center end"><a href="#self" class="btnStyle6 vertical-middle" style="min-width:auto; width:100%" title="선택">선택</a></td>
+									<td class="text-center end"><a href="#self" class="btnStyle6 vertical-middle" title="선택">선택</a></td>
 								  </tr>
 								</tbody>
 							</table>
@@ -281,11 +285,10 @@
 						<input type="checkbox" id="imgtalk" class="checkStyle2" value="talk"><label for="imgtalk" class="font-size16" style="width:13%">친구톡</label>						
 						<input type="checkbox" id="imgMMS1" class="checkStyle2" value="MMS"><label for="imgMMS1" class="font-size16" style="width:13%">MMS</label>
 					</div>
-
-					<div class="border-line mt20" style="width:100%; padding:130px 0">
+					<div class="border-line mt20" style="width:100%; padding:130px 0; background:#B2C7DA">
+						<div class="text-center"><i class="fal fa-image" style="font-size:50px; color:#fff"></i></div>
 						<p class="font-size13 color5 text-center">이미지 영역</p>
-					</div>												
-
+					</div>
 					<div class="text-center mt60">
 						<a href="#self" class="btnStyle3 black font14" title="업로드">업로드</a>
 						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>						
