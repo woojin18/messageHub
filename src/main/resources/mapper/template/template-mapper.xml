@@ -47,7 +47,6 @@
             , TMPLT_TITLE
             , TMPLT_CONTENT
             , RCVBLC_NUMBER
-            , ADTN_INFO
             , IMG_URL
             , REG_DT
             , REG_ID
@@ -84,7 +83,6 @@
             , TMPLT_TITLE
             , TMPLT_CONTENT
             , RCVBLC_NUMBER
-            , ADTN_INFO
             , IMG_URL
             , REG_DT
             , REG_ID
@@ -99,7 +97,6 @@
             , #{tmpltTitle}
             , #{tmpltContent}
             , #{rcvblcNumber}
-            , #{adtnInfo}
             , #{imgUrl}
             , NOW()
             , #{loginId}
@@ -119,7 +116,6 @@
             , TMPLT_TITLE = #{tmpltTitle}
             , TMPLT_CONTENT = #{tmpltContent}
             , RCVBLC_NUMBER = #{rcvblcNumber}
-            , ADTN_INFO = #{adtnInfo}
             , IMG_URL = #{imgUrl}
             , UPD_DT = NOW()
             , UPD_ID = #{loginId}

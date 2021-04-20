@@ -27,11 +27,13 @@
             <div v-if="rowData.msgType == 'IMAGE' && !fnIsEmpty(rowData.imgUrl)" class="phoneText2 mt10 text-center"
               :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.imgUrl+');'">
             </div>
-            <p v-if="rowData.msgKind != 'A' || (fnIsEmpty(rowData.tmpltContent) && fnIsEmpty(rowData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
+            <p v-if="fnIsEmpty(rowData.tmpltContent) && (rowData.msgKind != 'A' || fnIsEmpty(rowData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
             <p v-else class="font-size14 color4 mt10">
               {{rowData.tmpltContent}}
               <br v-if="!fnIsEmpty(rowData.tmpltContent)"/>
-              {{rowData.rcvblcNumber}}
+              <span v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcvblcNumber)">
+                {{rowData.rcvblcNumber}}
+              </span>
             </p>
           </div>
         </div>
@@ -98,14 +100,6 @@
               <input type="text" id="rcvblcNumber" name="rcvblcNumber" class="inputStyle float-right mt10" title="내용 입력란" v-model="rowData.rcvblcNumber" placeholder="설정 > 푸시 알림 설정 변경" maxlength="45">
               <p class="color5 font-size13">푸시 수신거부 방법을 입력해주세요. 푸시 메시지에 (수신거부:거부 방법)이 포함됩니다.</p>
             </div>
-          </div>
-        </div>
-        <div class="of_h user-phone mt20">
-          <div class="float-left" style="width:28%">
-            <p class="main-text font-size18">부가정보(EXT)</p>
-          </div>
-          <div class="float-left" style="width:72%">
-            <input type="text" class="inputStyle float-right" title="부가정보(EXT) 입력란" id="adtnInfo" name="adtnInfo" v-model="rowData.adtnInfo" maxlength="45">
           </div>
         </div>
         <div v-if="rowData.msgType == 'IMAGE'" class="of_h user-phone mt20">
@@ -252,10 +246,6 @@ export default {
         alert('푸시 수신거부 방법을 입력해주세요.');
         return false;
       }
-      if(!this.rowData.adtnInfo){
-        alert('부가정보를 입력해주세요.');
-        return false;
-      }
       if(this.rowData.msgType == 'IMAGE' && !this.rowData.imgUrl){
         alert('이미지를 선택해주세요.');
         return false;
@@ -280,7 +270,6 @@ export default {
         params.rcvblcNumber = '';
       }
       params.loginId = loginId;
-
 
       //저장처리
       await TemplateApi.savePushTmplt(params).then(response => {

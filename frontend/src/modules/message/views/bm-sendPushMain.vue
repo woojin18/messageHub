@@ -305,7 +305,6 @@ export default {
         pushTitle:'',  //푸시제목(tmpltTitle)
         pushContent:'',  //푸시내용(tmpltContent)
         rcvblcNumber:'',  //수신거부
-        adtnInfo:'',  //부가정보
         recvInfoLst: [],  //수신자정보
         fbInfo: {},  //대체발송정보
         contsVarNms: [], //메세지 내용 변수명
@@ -368,7 +367,6 @@ export default {
       this.sendData.pushTitle = templateInfo.tmpltTitle;  //푸시제목
       this.sendData.pushContent = templateInfo.tmpltContent;  //푸시내용
       this.sendData.rcvblcNumber = templateInfo.rcvblcNumber;  //수신거부
-      this.sendData.adtnInfo = templateInfo.adtnInfo;  //부가정보
     },
     fnChangAppId(){
       this.sendData.appId = this.sltAppId;
@@ -450,14 +448,13 @@ export default {
       this.sendData.contsVarNms = this.fnSetArrayRemoveDupliVal(varNms);
     },
     //내용입력 callback
-    fnSetPushInfo(pushTitle, pushContent, rcvblcNumber, adtnInfo){
+    fnSetPushInfo(pushTitle, pushContent, rcvblcNumber){
       if(this.sendData.pushContent != pushContent){
         this.fnCallbackRecvInfoLst(null);  //수신자 정보 초기화
       }
       this.sendData.pushTitle = pushTitle;
       this.sendData.pushContent = pushContent;
       this.sendData.rcvblcNumber = rcvblcNumber;
-      this.sendData.adtnInfo = adtnInfo;
     },
     //이미지선택 callback
     fnSetImageInfo(imgInfo) {

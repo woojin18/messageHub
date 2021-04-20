@@ -22,12 +22,6 @@
               <p class="font-size12 color5 lc-1 mt5" style="margin-left:21%">푸시 수신거부 방법을 입력해주세요. 푸시 메시지에 (수신거부:거부 방법)이 포함됩니다.</p>
             </div>
           </div>
-          <div class="of_h mt15">
-            <div class="float-left" style="width:20%"><h4 class="font-normal font-size14 mt15">부가정보(EXT)</h4></div>
-            <div class="float-right" style="width:79%">
-              <input type="text" class="inputStyle" title="부가정보(EXT) 입력란" v-model="adtnInfo" maxlength="45">
-            </div>
-          </div>
           <div class="text-center mt60">
             <a @click="fnCallbackInputData" class="btnStyle3 black font14" title="입력">입력</a>
             <a @click="fnClose" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>
@@ -59,7 +53,6 @@ export default {
       pushTitle: '',
       pushContent : '',
       rcvblcNumber: '',
-      adtnInfo: ''
     }
   },
   watch: {
@@ -74,7 +67,7 @@ export default {
         alert('내용을 입력해주세요.');
         return false;
       }
-      this.$parent.fnSetPushInfo(this.pushTitle, this.pushContent, this.rcvblcNumber, this.adtnInfo);
+      this.$parent.fnSetPushInfo(this.pushTitle, this.pushContent, this.rcvblcNumber);
       this.fnClose();
     },
     //초기 정보 Set
@@ -82,7 +75,6 @@ export default {
       this.pushTitle = this.sendData.pushTitle;
       this.pushContent = this.sendData.pushContent;
       this.rcvblcNumber = this.sendData.rcvblcNumber;
-      this.adtnInfo = this.sendData.adtnInfo;
     },
     //팝업 닫기
     fnClose(){
