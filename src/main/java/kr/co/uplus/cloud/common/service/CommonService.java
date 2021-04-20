@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,13 @@ import java.util.stream.Stream;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -44,6 +52,50 @@ public class CommonService {
 
     @Value("${file.props.img.permit-exten}")
     String imgUploadPermitExten;
+
+    @Value("${file.props.excel.permit-exten}")
+    String excelUploadPermitExten;
+
+    //엑셀파일에서 엑셀데이터 가져오기
+    public List<Map<String, Object>> getExcelDataList(MultipartFile excelFile, int offset, List<String> colKeys) throws Exception {
+        List<Map<String, Object>> excelList = new ArrayList<>();
+        Map<String, Object> excelInfo = new HashMap<String, Object>();
+
+        String fileName = excelFile.getOriginalFilename();
+        String fileExten = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+        //엑셀 업로드 확장자 유효성 체크
+        if(Stream.of(excelUploadPermitExten.split(","))
+                .map(String::trim)
+                .noneMatch(s->s.toLowerCase().contains(fileExten.toLowerCase()))) {
+            log.error("{} 허용된지 않은 엑셀 업로드 확장자======>", this.getClass());
+            log.error("원본 파일명 : {}", fileName);
+            log.error("파일 확장자 : {}", fileExten);
+            throw new Exception("허용된지 않은 엑셀 업로드 확장자");
+        }
+
+        Workbook workbook = null;
+        if (fileExten.equals("xlsx")) {
+            workbook = new XSSFWorkbook(excelFile.getInputStream());
+        } else if (fileExten.equals("xls")) {
+            workbook = new HSSFWorkbook(excelFile.getInputStream());
+        }
+
+        Sheet worksheet = workbook.getSheetAt(0);
+        Row row = null;
+        for (int i = offset; i < worksheet.getPhysicalNumberOfRows(); i++) {
+            row = worksheet.getRow(i);
+            excelInfo = new HashMap<String, Object>();
+
+            for(int j=0; j<colKeys.size(); j++) {
+                excelInfo.put(colKeys.get(j), getExcelCellValue(row.getCell(j)));
+            }
+            excelList.add(excelInfo);
+        }
+
+        return excelList;
+    }
+
 
     // 파일업로드
     public RestResult<Object> uploadImgFile(MultipartFile files, String useCh, String loginId) throws Exception {
@@ -271,7 +323,7 @@ public class CommonService {
                 env -> env.equalsIgnoreCase("local"))){
         	attachFilePath = "/assets/images/uploadImage/" + uplaodFile.getName();
         }
-        
+
         //DB 등록
         Map<String, Object> seqParams = new HashMap<>();
         seqParams.put("attachFileName", attachFileName);
@@ -284,4 +336,29 @@ public class CommonService {
 
         return rtn;
     }
+
+    /**
+     * get excel cell value
+     * @param cell
+     * @return
+     */
+    private Object getExcelCellValue(Cell cell) {
+        if(cell == null) {
+            return "";
+        } else if(cell.getCellTypeEnum() == CellType.STRING) {
+            return cell.getStringCellValue();
+        } else if(cell.getCellTypeEnum() == CellType.FORMULA) {
+            return cell.getCellFormula();
+        } else if(cell.getCellTypeEnum() == CellType.NUMERIC) {
+            return cell.getNumericCellValue();
+        } else if(cell.getCellTypeEnum() == CellType.BOOLEAN) {
+            return cell.getBooleanCellValue();
+        } else if(cell.getCellTypeEnum() == CellType.BLANK) {
+            return "";
+        } else {
+            return "";
+        }
+
+    }
+
 }

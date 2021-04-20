@@ -28,7 +28,7 @@
 
 			<!-- lnb -->
 			<ul>
-				<li class="on"><a href="/home"><i class="fal fa-tachometer-alt-fastest navIcon"></i><span>대시보드</span></a></li>
+				<li class="on"><a href="/uc/home"><i class="fal fa-tachometer-alt-fastest navIcon"></i><span>대시보드</span></a></li>
 				<li v-for="(item, i) in treeData" :key="i" @click="fnOpenDepth2(i)">
 					<!--
 					<a v-if="item.WEB_URL != ''" v-bind:href="item.WEB_URL">

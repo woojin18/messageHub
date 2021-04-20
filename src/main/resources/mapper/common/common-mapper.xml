@@ -58,8 +58,8 @@
             , ORIGIN_FILE_NAME
             , IMAGE_FILE_NAME
             , IMAGE_FILE_PATH
-            , REG_DT
-            , UPD_DT
+            , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i') AS REG_DT
+            , DATE_FORMAT(UPD_DT, '%Y-%m-%d %H:%i') AS UPD_DT
             , REG_ID
             , UPD_ID
         FROM CM_IMAGE_FILE
@@ -80,8 +80,8 @@
             AND CORP_ID = #{corpId}
             AND JSON_EXTRACT(USE_CH_INFO, CONCAT('$.', #{useChInfo})) = 'Y'
     </delete>
-	
-	
+
+
 	<select id="selectCorpInfoByUserId" resultType="camel">
 	/* common.selectCorpInfoByUserId */
 		SELECT	cu.CORP_ID
@@ -91,7 +91,7 @@
 			ON	cu.CORP_ID = cc.CORP_ID
 		WHERE	cu.USER_ID = #{userId}
 	</select>
-	
+
 	<insert id="insertAttachFile" >
     /* common.insertAttachFile */
         INSERT cm_bo.CM_ATTACH_FILE

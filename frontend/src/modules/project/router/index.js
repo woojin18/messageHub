@@ -7,22 +7,22 @@ import callbackPreRegEx from '../views/bm-project-callback-preRegEx'
 
 export default [
     {
-        path: '/project/manage',
+        path: '/ac/project/manage',
         name: 'projectManage',
         component: projectManage
     },
     {
-        path: '/project/callbackManage',
+        path: '/ac/project/callbackManage',
         name: 'callbackManage',
         component: callbackManage
     },
     {
-        path: '/project/callbackPreReg',
+        path: '/ac/project/callbackPreReg',
         name: 'callbackPreReg',
         component: callbackPreReg
     },
     {
-        path: '/project/callbackPreRegEx',
+        path: '/ac/project/callbackPreRegEx',
         name: 'callbackPreRegEx',
         component: callbackPreRegEx
     }

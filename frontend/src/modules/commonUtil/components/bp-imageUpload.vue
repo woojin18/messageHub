@@ -3,32 +3,32 @@
     <div class="modal-dialog" style="width:785px">
       <div class="modal-content">
         <div class="modal-body">
-          <h5 class="lc-1">이미지 업로드</h5>
+          <h2>이미지 업로드</h2>
           <hr>
           <div class="of_h">
-            <p class="font-size14 color000 inline-block mt15" style="font-weight:700">이미지 사용채널</p>
+            <h4>이미지 사용채널</h4>
           </div>
-          <div class="consolCheck vertical-top mt20" style="width:100%">
+          <div class="consolCheck" style="width:100%">
             <input type="checkbox" id="imgPush" class="checkStyle2" value="PUSH" v-model="chkboxUseCh">
-            <label for="imgPush" class="font-size16" style="width:13%">푸시</label>
+            <label for="imgPush" class="mr10">푸시</label>
             <input type="checkbox" id="imgRCS" class="checkStyle2" value="RCS" v-model="chkboxUseCh">
-            <label for="imgRCS" class="font-size16" style="width:13%">RCS</label>
+            <label for="imgRCS" class="mr10">RCS</label>
             <input type="checkbox" id="imgtalk" class="checkStyle2" value="FRIENDTALK" v-model="chkboxUseCh">
-            <label for="imgtalk" class="font-size16" style="width:13%">친구톡</label>
+            <label for="imgtalk" class="mr10">친구톡</label>
             <input type="checkbox" id="imgMMS1" class="checkStyle2" value="MMS" v-model="chkboxUseCh">
-            <label for="imgMMS1" class="font-size16" style="width:13%">MMS</label>
+            <label for="imgMMS1" class="mr10">MMS</label>
           </div>
 
-          <div class="border-line mt20" style="width:100%;">
-            <p v-if="!imageUrl" class="font-size13 color5 text-center" style="margin:130px 0;">이미지 영역</p>
+          <div class="border-line mt10" style="width:100%;">
+            <p v-if="!imageUrl" class="color5 text-center" style="margin:130px 0;">이미지 영역</p>
             <img v-if="imageUrl" :src="imageUrl" style="top:0;left:0;width:700px;height:260px;object-fit: contain;"/>
           </div>
 
-          <div class="text-center mt60">
+          <div class="text-center mt20">
             <input ref="imageInput" type="file" @change="fnImagePreview" style="display:none;">
-            <a @click="fnFindImgFile" class="btnStyle3 black font14 mr5" title="파일찾기">파일찾기</a>
-            <a @click="fnUploadFile" class="btnStyle3 black font14 mr5" title="업로드">업로드</a>
-            <a @click="fnClose" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>
+            <a @click="fnFindImgFile" class="btnStyle1 backBlack mr5" title="파일찾기">파일찾기</a>
+            <a @click="fnUploadFile" class="btnStyle1 backBlack mr5" title="업로드">업로드</a>
+            <a @click="fnClose" class="btnStyle1 backWhite" title="닫기">닫기</a>
           </div>
 
         </div>
@@ -147,3 +147,15 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+$module: 'modalStyle';
+.#{$module} {
+  // This is modal bg
+  background-color: rgba(0,0,0,.7);
+  top: 0; right: 0; bottom: 0; left: 0;
+  position: fixed;
+  overflow: auto;
+  margin: 0;
+  z-index: 9999;
+}
+</style>

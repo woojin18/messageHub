@@ -1,5 +1,5 @@
 <template>
-    
+
     <span>
         <!-- <ul>
         <li @click="fnAllDecrease()">맨 앞으로</li>
@@ -41,16 +41,9 @@ export default {
             return 'row mt40';
         }
       },  //페이지 DIV class
-      pageNum: {
-        type: Number,
-        require: false,
-        default: function() {
-            return 1;
-        }
-      }  // 현재 페이지
   },
    data: () => ({
-        //pageNum: 1,                 // 현재 페이지
+        pageNum: 1,                 // 현재 페이지
         pageStartNum: 1,            // 페이징 시작 cnt (1, 11, 21 ...)
         pageTotalCnt: 10,           // 한번에 보여주는 페이징 (1,2,3,4,5,6,7,8,9,10)
         pageCntList () {
@@ -105,7 +98,7 @@ export default {
         var pageBlockCnt = Math.ceil(listPageTotalCnt/pageTotalCnt);
         pageBlockCnt--;
         pageBlockCnt=(pageBlockCnt*pageTotalCnt)+1;
-        
+
         this.pageStartNum = pageBlockCnt;
         this.pageNum = listPageTotalCnt;
         this.$emit('fnClick', this.pageNum);
