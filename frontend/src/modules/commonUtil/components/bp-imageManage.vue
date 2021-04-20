@@ -48,10 +48,10 @@
                       <label :for="'listCheck_'+idx"></label>
                     </td>
                     <td class="text-center">{{contant.imageFileSeq}}</td>
-                    <td class="text-left">{{contant.originFileName}}</td>
+                    <td class="text-left">{{contant.chImgNm}}</td>
                     <td class="text-left">{{contant.useChInfo}}</td>
                     <td class="text-center">{{contant.regDt}}</td>
-                    <td class="text-center"><a @click="fnOpenImagePreviewPopUp(contant.imageFilePath)" title="미리보기"><i class="far fa-search"></i></a></td>
+                    <td class="text-center"><a @click="fnOpenImagePreviewPopUp(contant.chImgUrl)" title="미리보기"><i class="far fa-search"></i></a></td>
                     <td class="text-center end">
                       <a @click="fnSelectImage(idx)" class="btnStyle6 vertical-middle" style="min-width:auto; width:100%" title="선택">선택</a>
                     </td>
@@ -165,9 +165,6 @@ export default {
         }
 
         this.contants.forEach(function(obj){
-          //TODO : 이미지 서버로 업로드 위치 변경되서 수정
-          //obj['imageFullPath'] = require("@/assets/images/uploadImage/"+obj.imageFileName);
-          obj['imageFullPath'] = obj.imageFilePath;
           obj['useChInfo'] = vm.fnSetUseChInfo(obj.useChInfo);
         });
       });
@@ -175,21 +172,22 @@ export default {
     //사용채널 json -> string, code -> codeName
     fnSetUseChInfo(jsonStr){
       let useChStr = '';
-      const useChObj = JSON.parse(jsonStr);
+      const useChArray = JSON.parse(jsonStr);
       const mappingCdNm = {
         'PUSH':'푸시',
         'RCS':'RCS',
         'FRIENDTALK':'친구톡',
         'MMS':'MMS'
       };
-
+      
       try {
-        Object.keys(useChObj).forEach(function(key){
-          if(useChObj[key]) useChStr += (useChStr == '' ? '' : ', ') + mappingCdNm[key];
+        useChArray.forEach(function(key){
+          if(mappingCdNm[key]) useChStr += (useChStr == '' ? '' : ', ') + mappingCdNm[key];
         });
       } catch (error) {
         useChStr = '';
       }
+      
       return useChStr;
     },
     //파일업로드팝업 초기화

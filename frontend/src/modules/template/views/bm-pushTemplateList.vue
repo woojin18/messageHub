@@ -11,22 +11,20 @@
       <div class="col-xs-12">
         <div class="menuBox">
           <div class="of_h">
-            <div class="float-left" style="width:8%"><h4 class="font-normal mt15">검색조건</h4></div>
-            <div class="float-left" style="width:92%">
-              <select v-model="searchData.searchCondi" class="selectStyle3 height45" style="width:15%" title="검색조건 선택란">
-                <option value="tmpltName">템플릿명</option>
-                <option value="tmpltId">템플릿ID</option>
-              </select>
-              <input type="text" class="inputStyle vertical-top ml10" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="검색조건 입력란">
-            </div>
+            <h4 class="inline-block" style="width:8%">검색조건</h4>
+            <select v-model="searchData.searchCondi" class="selectStyle2 vertical-middle" style="width:15%" title="검색조건 선택란">
+              <option value="tmpltName">템플릿명</option>
+              <option value="tmpltId">템플릿ID</option>
+            </select>
+            <input type="text" class="inputStyle ml10" v-model="searchData.searchText" style="width:31%" title="검색조건 입력란">
           </div>
 
-          <div class="of_h mt20">
-            <div class="float-left" style="width:8%"><h4 class="font-normal mt15">등록일자</h4></div>
-            <div class="float-left" style="width:92%">
-              <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate"></Calendar>
+          <div class="of_h">
+            <div class="inline-block" style="width:8%"><h4>등록일자</h4></div>
+            <div class="inline-block" style="width:90%">
+              <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle" styleProps="width:15%" :initDate="searchData.searchStartDate"></Calendar>
               <span style="padding:0 11px">~</span>
-              <Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchEndDate"></Calendar>
+              <Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle" styleProps="width:15%" :initDate="searchData.searchEndDate"></Calendar>
               <ul class="tab_s2 ml20">
                 <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 등록일자 검색">오늘</a></li>
                 <li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 등록일자 검색">1주일</a></li>
@@ -36,10 +34,10 @@
             </div>
           </div>
 
-          <div class="of_h mt20">
-            <div class="float-left" style="width:13%"><h4 class="font-normal mt3">타 프로젝트<br/>사용여부</h4></div>
-            <div class="float-left" style="width:87%">
-              <div class="consolCheck vertical-top">
+          <div class="of_h">
+            <div class="inline-block" style="width:15%"><h4>타 프로젝트<br/>사용여부</h4></div>
+            <div class="inline-block" style="width:80%">
+              <div class="consolCheck">
                 <input type="checkbox" id="otherUse_all" class="checkStyle2" @change="fnSearchOthPrjUseYnChkAll" v-model="othPrjUseYnAllSelected">
                 <label for="otherUse_all" class="mr30">전체</label>
                 <input type="checkbox" id="searchOthPrjUseYn_BASE" class="checkStyle2" value="Y" v-model="searchData.searchOthPrjUseYn">
@@ -47,7 +45,7 @@
                 <input type="checkbox" id="searchOthPrjUseYn_IMAGE" class="checkStyle2" value="N" v-model="searchData.searchOthPrjUseYn">
                 <label for="searchOthPrjUseYn_IMAGE">전용</label>
               </div>
-              <a @click="fnSearch()" class="btnStyle2 float-right" title="통합발송 검색">검색</a>
+              <a @click="fnSearch()" class="btnStyle1 float-right mt10" title="통합발송 검색">검색</a>
             </div>
           </div>
         </div>
@@ -56,9 +54,9 @@
 
     <div class="of_h mt20">
       <div class="float-right">
-        <router-link :to="{ name: 'pushTemplateManage' }" tag="a" class="btnStyle3 black font13 minWidth120 mr10" title="엑셀 다운로드">템플릿 등록</router-link>
-        <a @click="fnDeletePushTemplate" class="btnStyle3 gray font13 minWidth120 mr10" title="엑셀 다운로드">삭제</a>
-        <a @click="fnExcelDownLoad" class="btnStyle3 gray font13 minWidth120" title="엑셀 다운로드">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
+        <router-link :to="{ name: 'pushTemplateManage' }" tag="a" class="btnStyle2 backBlack mr10" title="엑셀 다운로드">템플릿 등록</router-link>
+        <a @click="fnDeletePushTemplate" class="btnStyle2 borderGray mr10" title="엑셀 다운로드">삭제</a>
+        <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
       </div>
     </div>
 
@@ -68,7 +66,7 @@
         <!-- 15개씩 보기 -->
         <div class="of_h mb20">
           <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
-            <SelectLayer @fnSelected="fnSelected"></SelectLayer>
+            <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
           </div>
         </div>
         <!-- //15개씩 보기 -->

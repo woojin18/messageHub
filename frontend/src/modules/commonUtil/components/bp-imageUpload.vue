@@ -108,7 +108,7 @@ export default {
 
       var fd = new FormData();
       fd.append('uploadFile', uploadFile.files[0]);
-      fd.append('useCh', this.fnGetUsechJson());
+      fd.append('useCh', this.chkboxUseCh);
       fd.append('loginId', tokenSvc.getToken().principal.userId);
 
       await axios.post('/api/public/common/uploadImage',
@@ -124,7 +124,7 @@ export default {
           this.fnClose();
         } else {
           if(typeof(response.data.message) !== 'undefined' || response.data.message !== null) {
-            confirm.fnAlert(this.componentsTitle, 'response.data.message');
+            confirm.fnAlert(this.componentsTitle, response.data.message);
           } else {
             confirm.fnAlert(this.componentsTitle, '등록에 실패했습니다.');
           }

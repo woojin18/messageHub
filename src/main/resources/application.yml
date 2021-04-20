@@ -1,6 +1,15 @@
 server:
   port: 7070
 
+#파일 업로드 방식 변경으로 서버별 설정이 무의미
+file.props:
+  img:
+    upload-path: /frontend/src/assets/images/temp/
+    limit-size: 5000000  #5M
+    permit-exten: jpg, jpeg, png, gif
+  excel:
+    permit-exten: xls,xlsx
+
 ---
 spring:
   profiles: local
@@ -26,14 +35,6 @@ app.props:
 
 logging:
   config: classpath:log4j2-spring.local.xml
-  
-file.props:
-  img:
-    upload-path: /frontend/src/assets/images/uploadImage/
-    limit-size: 5000000  #5M
-    permit-exten: jpg, jpeg, png, gif
-  excel:
-    permit-exten: xls,xlsx
 
 cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw
@@ -103,14 +104,6 @@ app.props:
 
 logging:
   config: classpath:log4j2-spring.local.xml
-  
-file.props:
-  img:
-    upload-path: /frontend/src/img/uploadImg/  #TODO - dev path
-    limit-size: 5000000  #5M
-    permit-exten: jpg, jpeg, png, gif
-  excel:
-    permit-exten: xls,xlsx
 
 cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw
@@ -175,14 +168,6 @@ app.props:
 
 logging:
   config: classpath:log4j2-spring.local.xml
-  
-file.props:
-  img:
-    upload-path: /frontend/src/img/uploadImg/ #TODO - stg path
-    limit-size: 5000000  #5M
-    permit-exten: jpg, jpeg, png, gif
-  excel:
-    permit-exten: xls,xlsx
 
 cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw
@@ -247,14 +232,6 @@ app.props:
 
 logging:
   config: classpath:log4j2-spring.local.xml
-  
-file.props:
-  img:
-    upload-path: /frontend/src/img/uploadImg/  #TODO - prd path
-    limit-size: 5000000  #5M
-    permit-exten: jpg, jpeg, png, gif
-  excel:
-    permit-exten: xls,xlsx
 
 cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw

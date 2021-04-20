@@ -1,7 +1,9 @@
 package kr.co.uplus.cloud.common.consts;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Const {
 	public static final String KEY_MDC_LOG = "logKey";
@@ -22,4 +24,16 @@ public class Const {
 
 	// 템플릿 ID 첨두
 	public static final String TMPLT_PREFIX = "TPL";
+
+    //이미지 리사이징 사이즈
+    @SuppressWarnings("serial")
+    public static final Map<String, Integer> CH_IMAGE_RESIZE = new HashMap<String, Integer>() {
+        {
+            put("PUSH_W", 300); put("PUSH_H", 300);
+            put("RCS_W", 400); put("RCS_H", 400);
+            put("FRIENDTALK_W", 500); put("FRIENDTALK_H", 500);
+            put("MMS_W", 600); put("MMS_H", 600);
+        }
+    };
+
 }

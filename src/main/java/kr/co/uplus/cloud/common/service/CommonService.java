@@ -9,10 +9,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -20,6 +20,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -27,11 +29,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.uplus.cloud.common.consts.Const;
 import kr.co.uplus.cloud.common.consts.DB;
 import kr.co.uplus.cloud.common.dto.RestResult;
 import kr.co.uplus.cloud.utils.CommonUtils;
 import kr.co.uplus.cloud.utils.DateUtil;
 import kr.co.uplus.cloud.utils.GeneralDao;
+import kr.co.uplus.cloud.utils.ImageUtil;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -56,7 +60,14 @@ public class CommonService {
     @Value("${file.props.excel.permit-exten}")
     String excelUploadPermitExten;
 
-    //엑셀파일에서 엑셀데이터 가져오기
+    /**
+     * 엑셀파일에서 엑셀데이터 가져오기
+     * @param excelFile
+     * @param offset
+     * @param colKeys
+     * @return
+     * @throws Exception
+     */
     public List<Map<String, Object>> getExcelDataList(MultipartFile excelFile, int offset, List<String> colKeys) throws Exception {
         List<Map<String, Object>> excelList = new ArrayList<>();
         Map<String, Object> excelInfo = new HashMap<String, Object>();
@@ -96,13 +107,20 @@ public class CommonService {
         return excelList;
     }
 
-
-    // 파일업로드
-    public RestResult<Object> uploadImgFile(MultipartFile files, String useCh, String loginId) throws Exception {
+    /**
+     * 파일업로드
+     * @param files
+     * @param useCh
+     * @param loginId
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public RestResult<Object> uploadImgFile(MultipartFile files, String[] useCh, String loginId) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
 
         //빈값 확인
-        if(StringUtils.isBlank(useCh)) {
+        if(useCh == null || useCh.length == 0) {
             rtn.setSuccess(false);
             rtn.setMessage("사용채널 정보가 존재하지 않습니다.");
         }
@@ -135,14 +153,11 @@ public class CommonService {
         String currentYmd = DateUtil.getCurrnetDate("yyyyMMdd");
         String prjAbsPath = "";
         String uploadDirPath = this.imgUploadPath;
+        String convertUUID = UUID.randomUUID().toString().replace("-", ""); // 해쉬명 생성
 
-        //TODO : 이미지가 서버가 따로 존재. 로컬만 테스트를 위해 경로를 현프로젝트 밑으로..
-        //TODO : 추후 이미지서버를 알면 업로드 로직을 변경하자
-        if(Arrays.stream(env.getActiveProfiles()).anyMatch(
-                env -> env.equalsIgnoreCase("local"))){
-            prjAbsPath = prjRelPath.toAbsolutePath().toString();
-            uploadDirPath = prjAbsPath + this.imgUploadPath;
-        }
+        //이미지 업로드 임시 폴더
+        prjAbsPath = prjRelPath.toAbsolutePath().toString();
+        uploadDirPath = prjAbsPath + this.imgUploadPath + convertUUID + File.separator;
 
         File uploadDir = new File(uploadDirPath);
 
@@ -151,41 +166,59 @@ public class CommonService {
             uploadDir.mkdir();
         }
 
-        File uplaodFile = File.createTempFile(currentYmd+"_", "."+fileExten, uploadDir);  //업로드된 파일정보
-        FileCopyUtils.copy(files.getInputStream(), new FileOutputStream(uplaodFile));
+        try {
+            File uplaodFile = File.createTempFile(currentYmd+"_", "."+fileExten, uploadDir);  //업로드된 파일정보
+            FileCopyUtils.copy(files.getInputStream(), new FileOutputStream(uplaodFile));
 
-        //String uplaodFilePath = uplaodFile.getParentFile().toString();
-        String uplaodFileFullPath = uplaodFile.getAbsolutePath();
-        String uplaodFileName = uplaodFile.getName();
+            //채널별 분기작업
+            String oriFileFullPath = uplaodFile.getAbsolutePath();
+            String oriFileName = uplaodFile.getName().replaceFirst("[.][^.]+$", "");
 
-        //TODO : 이미지가 서버가 따로 존재. 로컬만 테스트를 위해 경로를 현프로젝트 밑으로..
-        //TODO : 추후 이미지서버를 알면 업로드 로직을 변경하자
-        if(Arrays.stream(env.getActiveProfiles()).anyMatch(
-                env -> env.equalsIgnoreCase("local"))){
-            uplaodFileFullPath = "/assets/images/uploadImage/" + uplaodFile.getName();
+            List<Map<String, Object>> imgSendList = new ArrayList<Map<String,Object>>();
+            Map<String, Object> imgSendInfo = new HashMap<String, Object>();
+            for(String ch : useCh) {
+                imgSendInfo = new HashMap<String, Object>();
+                imgSendInfo.put("CH", ch);
+                imgSendInfo.put("URL", ImageUtil.imageResize(
+                        oriFileFullPath
+                        , uploadDirPath
+                        , oriFileName+"_"+ch+"."+fileExten
+                        , fileExten
+                        , Const.CH_IMAGE_RESIZE.get(ch+"_W")
+                        , Const.CH_IMAGE_RESIZE.get(ch+"_H")));
+                imgSendList.add(imgSendInfo);
+            }
+
+            //TODO : API 파일 전송
+            //TODO : API 파일 전송 후 useChInfo URL, 파일번호로 수정
+
+            JSONArray jsonArray = new JSONArray();
+            JSONObject jsonObject = null;
+
+            for(Map<String, Object> info : imgSendList) {
+                jsonObject = new JSONObject();
+                for(String key : info.keySet()) {
+                    jsonObject.put(key, info.get(key));
+                }
+                jsonArray.add(jsonObject);
+            }
+
+            //DB 등록
+            Map<String, Object> params = new HashMap<>();
+            params.put("corpId", "TEST_CORP_ID");    //TODO : 고객 ID(로그인세션에서 가져오자)
+            params.put("useChInfo", jsonArray.toJSONString());
+            params.put("originFileName", fileName);    //TODO : 삭제 원본파일은 저장하지 않는다. DB 변경되면 삭제
+            params.put("imageFileName", uplaodFile.getName());    //TODO : 삭제 원본파일은 저장하지 않는다. DB 변경되면 삭제
+            params.put("imageFilePath", oriFileFullPath);    //TODO : 삭제 원본파일은 저장하지 않는다. DB 변경되면 삭제
+            params.put("loginId", loginId);
+            generalDao.insertGernal(DB.QRY_INSERT_IMAGE_FILE, params);
+
+        } catch (Exception e) {
+            log.error("{} Error : {}", this.getClass(), e);
+            throw new Exception(e);
+        } finally {
+            deleteFolder(uploadDirPath);
         }
-
-
-        log.info("======================================");
-        log.info("File Origianl name : {}", files.getOriginalFilename());
-        //log.info("File Upload Path : {}", destinationFile.getAbsolutePath());
-        //log.info("File Upload name : {}", fileName);
-        log.info("File Upload Path : {}", uplaodFileFullPath);
-        log.info("File Upload name : {}", uplaodFileName);
-        log.info("======================================");
-
-        //DB 등록
-        Map<String, Object> seqParams = new HashMap<>();
-        seqParams.put("corpId", "TEST_CORP_ID");    //TODO : 고객 ID(로그인세션에서 가져오자)
-        seqParams.put("useChInfo", useCh);
-        seqParams.put("originFileName", fileName);
-        seqParams.put("imageFileName", uplaodFileName);
-        seqParams.put("imageFilePath", uplaodFileFullPath);
-        seqParams.put("loginId", loginId);
-        generalDao.insertGernal("common.insertImageFile", seqParams);
-
-        rtn.setSuccess(true);
-        rtn.setData(seqParams);
 
         return rtn;
     }
@@ -358,7 +391,26 @@ public class CommonService {
         } else {
             return "";
         }
+    }
 
+    public static void deleteFolder(String path) {
+        File folder = new File(path);
+        try {
+            if(folder.exists()){
+                File[] folder_list = folder.listFiles(); //파일리스트 얻어오기
+                for (int i = 0; i < folder_list.length; i++) {
+                    if(folder_list[i].isFile()) {
+                        folder_list[i].delete();
+                    }else {
+                        deleteFolder(folder_list[i].getPath());
+                    }
+                    folder_list[i].delete();
+                }
+                folder.delete(); //폴더 삭제
+            }
+        } catch (Exception e) {
+            log.error("deleteFolder Error : {}", e);
+        }
     }
 
 }

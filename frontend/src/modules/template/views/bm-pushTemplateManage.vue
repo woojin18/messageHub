@@ -220,7 +220,7 @@ export default {
       this.imgUploadOpen = !this.imgUploadOpen;
     },
     fnSetImageInfo(imgInfo) {
-      this.rowData.imgUrl = imgInfo.imageFilePath;
+      this.rowData.imgUrl = imgInfo.chImgUrl;
     },
     //유효성 체크
     fnIsValid(){

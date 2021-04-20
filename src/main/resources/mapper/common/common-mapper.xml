@@ -33,7 +33,7 @@
 
     <sql id ="whereSelectImageList">
         AND CORP_ID = #{corpId}
-        AND JSON_EXTRACT(USE_CH_INFO, CONCAT('$.', #{useChInfo})) = 'Y'
+        AND JSON_CONTAINS(USE_CH_INFO, JSON_OBJECT('CH', #{useChInfo}))
         <if test="imageFileSeqs != null and imageFileSeqs.size != 0 ">
             AND IMAGE_FILE_SEQ IN
             <foreach collection="imageFileSeqs" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
@@ -54,10 +54,12 @@
         SELECT
             IMAGE_FILE_SEQ
             , CORP_ID
-            , USE_CH_INFO
-            , ORIGIN_FILE_NAME
-            , IMAGE_FILE_NAME
-            , IMAGE_FILE_PATH
+            , @PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(USE_CH_INFO, "one", #{useChInfo}, NULL, '$[*].CH')) AS PATH_TO_NAME
+            , @PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
+            , @CH_OBJECT := JSON_EXTRACT(USE_CH_INFO, @PATH_TO_PARENT) AS CH_OBJECT
+            , @CH_IMG_URL := JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.URL')) AS CH_IMG_URL
+            , SUBSTRING_INDEX(REPLACE(@CH_IMG_URL, '\\', '/'), '/', -1) AS CH_IMG_NM
+            , JSON_EXTRACT(USE_CH_INFO, '$[*].CH') as USE_CH_INFO
             , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i') AS REG_DT
             , DATE_FORMAT(UPD_DT, '%Y-%m-%d %H:%i') AS UPD_DT
             , REG_ID
@@ -92,7 +94,7 @@
 		WHERE	cu.USER_ID = #{userId}
 	</select>
 
-	<insert id="insertAttachFile" >
+    <insert id="insertAttachFile" >
     /* common.insertAttachFile */
         INSERT cm_bo.CM_ATTACH_FILE
         (
