@@ -1,5 +1,5 @@
 <template>
-  <div v-show="selTab == 2">
+  <div>
     <!-- 본문 -->
     <h4 class="lc-1 mb20 mt40 font-size16">청구ID 조회(후불)</h4>
     <div class="of_h">
@@ -188,9 +188,6 @@ export default {
   name: 'deferredCash',
   data() {
     return {}
-  },
-  props: {
-    selTab: Number
   },
   components: {
   },

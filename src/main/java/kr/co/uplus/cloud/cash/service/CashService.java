@@ -104,8 +104,8 @@ public class CashService {
 		Map<String, Object> card		= (Map<String, Object>) postResult.get("card");
 		
 		Map<String, Object> updateMap = new HashMap<>();
-		updateMap.put("orderId"			, orderId);
-		updateMap.put("approvalNumber"	, paymentKey);										//승인번호
+		updateMap.put("orderId"			, CommonUtils.getString(card.get("orderId")));
+		updateMap.put("approvalNumber"	, CommonUtils.getString(card.get("paymentKey")));	//승인번호
 		updateMap.put("cardCompany"		, CommonUtils.getString(card.get("company")));		//카드사
 		updateMap.put("receiptUrl"		, CommonUtils.getString(card.get("receiptUrl")));	//영수증 링크
 		updateMap.put("status"			, "1");												//상태

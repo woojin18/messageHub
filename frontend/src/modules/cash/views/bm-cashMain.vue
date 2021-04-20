@@ -9,8 +9,8 @@
         <li :class="{active:(selTab == 2)}" @click="selTab=2"><a class="width120" title="후불정산관리 페이지로 이동">후불정산관리</a></li>
       </ul>			
     </div>
-    <prepaidCash :selTab="selTab"></prepaidCash>
-    <deferredCash :selTab="selTab"></deferredCash>
+    <prepaidCash  v-show="selTab == 1"></prepaidCash>
+    <deferredCash  v-show="selTab == 2"></deferredCash>
   </article>
 </template>
 

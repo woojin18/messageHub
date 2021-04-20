@@ -1,5 +1,5 @@
 <template>
-  <div v-show="selTab == 1">
+  <div>
     <h4 class="lc-1 mb20">선불 충전관리</h4>
     <div class="menuBox">
       <div class="row">
@@ -91,9 +91,6 @@ export default {
       data: [],
       pageInfo: {}
     }
-  },
-  props: {
-    selTab: Number
   },
   components: {
     layerPopup,
