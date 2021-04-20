@@ -1,14 +1,18 @@
 package kr.co.uplus.cloud.cash.service;
 
+import java.util.Base64;
+import java.util.Base64.Encoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.uplus.cloud.utils.ApiInterface;
 import kr.co.uplus.cloud.utils.CommonUtils;
 import kr.co.uplus.cloud.utils.GeneralDao;
 import kr.co.uplus.cloud.common.consts.DB;
@@ -21,6 +25,15 @@ public class CashService {
 	
 	@Autowired
 	private GeneralDao generalDao;
+	
+	@Autowired
+	ApiInterface apiInterface;
+	
+	@Value("${cash.pg.clientKey}")
+	String pgClientKey;
+	
+	@Value("${cash.pg.secretKey}")
+	String pgSecretKey;
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
@@ -48,6 +61,8 @@ public class CashService {
 		//웹캐시 결제정보에 데이터 입력
 		generalDao.insertGernal(DB.QRY_INSERT_WEB_CASH_INFO, map);
 		
+		map.put("clientKey", this.pgClientKey);
+		
 		rtn.setData(map);
 		
 		return rtn;
@@ -67,13 +82,38 @@ public class CashService {
 		
 		if(amount != dbAmount) {
 			rtn.setSuccess(false);
-			rtn.setMessage("");
+			rtn.setMessage("결제에 실패하였습니다.");
 			
 			return rtn;
 		}
 		
+		Map<String, Object> headerMap = new HashMap<String, Object>();
 		
+		String text = this.pgSecretKey + ":";
+		byte[] targetBytes = text.getBytes();
+		Encoder encoder = Base64.getEncoder();
+		byte[] encodedBytes = encoder.encode(targetBytes);
 		
+		headerMap.put("Authorization", "Basic " + new String(encodedBytes));
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("orderId", orderId);
+		dataMap.put("amount", amount);
+		
+		Map<String, Object> postResult	= apiInterface.etcPost("https://api.tosspayments.com/v1/payments/" + paymentKey, dataMap, headerMap);
+		Map<String, Object> card		= (Map<String, Object>) postResult.get("card");
+		
+		Map<String, Object> updateMap = new HashMap<>();
+		updateMap.put("orderId"			, orderId);
+		updateMap.put("approvalNumber"	, paymentKey);										//승인번호
+		updateMap.put("cardCompany"		, CommonUtils.getString(card.get("company")));		//카드사
+		updateMap.put("receiptUrl"		, CommonUtils.getString(card.get("receiptUrl")));	//영수증 링크
+		updateMap.put("status"			, "1");												//상태
+		
+		generalDao.updateGernal(DB.QRY_UPDATE_WEB_CASH_INFO, updateMap);
+		
+		rtn.setSuccess(false);
+		rtn.setMessage("결제에 성공하였습니다.");
 		
 		return rtn;
 	}

@@ -1,5 +1,7 @@
 package kr.co.uplus.cloud.cash.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import kr.co.uplus.cloud.cash.service.CashService;
 import kr.co.uplus.cloud.common.dto.RestResult;
@@ -41,7 +44,7 @@ public class CashController {
 	}
 	
 	@GetMapping("/cardSuccess")
-	public RestResult<?> cardSuccess(
+	public RedirectView cardSuccess(
 			HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value="paymentKey", required = true) String paymentKey,
@@ -49,6 +52,7 @@ public class CashController {
 			@RequestParam(value="amount"	, required = true) int amount
 			) {
 		RestResult<Object> rtn = new RestResult<Object>();
+		String message = "";
 		try {
 			Map<String, Object> params = new HashMap<>();
 			params.put("paymentKey", paymentKey);
@@ -56,12 +60,31 @@ public class CashController {
 			params.put("amount", amount);
 			
 			rtn = cashService.cardSuccess(params);
+			
+			if(!rtn.isSuccess()) {
+				message = URLEncoder.encode(rtn.getMessage(), "UTF-8");
+			}
 		} catch(Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
+			rtn.setMessage("0");
 		}
 		
-		return rtn;
+		if(!message.equals("")) {
+			return new RedirectView("http://localhost:3000/ac/cash" + "?pgMessage=" + message);
+		}
+		
+		return new RedirectView("http://localhost:3000/ac/cash");
+	}
+	
+	@GetMapping("/cardFail")
+	public RedirectView cardFail(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value="code"		, required = true) String code,
+			@RequestParam(value="message"	, required = true) String message
+			) {
+		
+		return new RedirectView("http://localhost:3000/ac/cash" + "?pgMessage=" + message);
 	}
 	
 	@PostMapping("/selectCashHist")

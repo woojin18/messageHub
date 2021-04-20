@@ -33,16 +33,28 @@ import cashApi from "@/modules/cash/service/api"
 import tokenSvc from '@/common/token-service';
 
 import confirm from "@/modules/commonUtil/service/confirm"
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 /* $ npm install @tosspayments/sdk */
 import { loadTossPayments } from '@tosspayments/sdk';
-const clientKey = 'test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw';
 
 export default {
   name: 'prePaidCashLayer',
   data() {
     return {
       amount : 0
+    }
+  },
+  mounted() {
+    var pgMessage = this.$route.query.pgMessage;
+
+    if(pgMessage) {
+      if(pgMessage == "0") {
+        pgMessage = "결제에 실패하였습니다."
+      }
+
+      eventBus.$on('callbackEventBus', this.Refresh);
+      confirm.fnConfirm("", pgMessage, "확인");
     }
   },
   watch: {
@@ -65,7 +77,7 @@ export default {
   },
   methods: {
     fnCloseLayer: function() {
-      $("#cashPop").modal("hide");
+      jQuery("#cashPop").modal("hide");
     },
 
     fnConfirm: function() {
@@ -86,9 +98,9 @@ export default {
         cashApi.insertWebCashInfo(params).then(response => {
           var result = response.data;
           if(result.success) {
-            loadTossPayments(clientKey).then(tossPayments => {
-              var data = result.data;
+            var data = result.data;
 
+            loadTossPayments(data.clientKey).then(tossPayments => {
               tossPayments.requestPayment('카드', {
                 amount: amount,                                                       //amount (필수) · number    실제 결제되는 금액입니다.
                 orderId: data.orderId,                                                //orderId (필수) · string   가맹점에서 사용하는 해당 주문에 대한 ID입니다. 각 주문마다 유니크해야 합니다.
@@ -116,6 +128,12 @@ export default {
 
         
       }
+    },
+
+    Refresh: function() {
+      this.$router.push({
+        path: "/ac/cash"
+      });
     }
   }
 }

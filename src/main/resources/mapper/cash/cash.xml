@@ -3,7 +3,7 @@
 
 <mapper namespace="cash">
 	<insert id="insertWebCashInfo">
-	/* cash.insertWebCashInfo */
+		/* cash.insertWebCashInfo */
 		INSERT	cm_console.CM_WEB_CASH_HIST (
 				CORP_ID
 		,		CASH_ID
@@ -24,15 +24,26 @@
 	</insert>
 	
 	<select id="selectWebCashInfo" resultType="camel">
-	/* cash.selectWebCashInfo */
-		SELECT	PAYMENT_ID			AS ORDER_ID
-		,		CASH_CHARG_AMOUNT	AS AMOUNT
+		/* cash.selectWebCashInfo */
+		SELECT	PAYMENT_ID							AS ORDER_ID
+		,		CAST(CASH_CHARG_AMOUNT AS unsigned)	AS AMOUNT
 		FROM	cm_console.CM_WEB_CASH_HIST
 		WHERE	PAYMENT_ID = #{orderId}
 	</select>
 	
+	<update id="updateWebCashInfo">
+		/* cash.updateWebCashInfo */
+		UPDATE	cm_console.CM_WEB_CASH_HIST
+		SET		APPROVAL_NUMBER = #{approvalNumber}
+		,		CARD_COMPANY = #{cardCompany}
+		,		RECEIPT_URL = #{receiptUrl}
+		,		STATUS = #{status}
+		,		UPD_DT = NOW()
+		WHERE	PAYMENT_ID = #{orderId}
+	</update>
+	
 	<select	id ="selectCashHist_count" resultType="int">
-	/* cash.selectCashHist_count */
+		/* cash.selectCashHist_count */
 		SELECT	COUNT(*)
 		FROM	(
 				SELECT	CASH_CHARG_AMOUNT	AS AMOUNT
@@ -41,6 +52,7 @@
 				,		REG_DT
 				,		'-'					AS EVENT_DT
 				FROM	cm_console.CM_WEB_CASH_HIST
+				WHERE	STATUS = '1'
 				UNION ALL
 				SELECT	cch.AMOUNT
 				,		'이벤트캐시'
@@ -57,13 +69,14 @@
 	</select>
 	
 	<select	id ="selectCashHist" resultType="camel">
-	/* cash.selectCashHist */
+		/* cash.selectCashHist */
 		SELECT	CASH_CHARG_AMOUNT	AS AMOUNT
 		,		'충전캐시'				AS CASH_TYPE
 		,		PAY_MTD
 		,		REG_DT
 		,		'-'					AS EVENT_DT
 		FROM	cm_console.CM_WEB_CASH_HIST
+		WHERE	STATUS = '1'
 		UNION ALL
 		SELECT	cch.AMOUNT
 		,		'이벤트캐시'

@@ -112,7 +112,7 @@ export default {
   },
   methods: {
     fnTossPay: function() {
-      $("#cashPop").modal("show");
+      jQuery("#cashPop").modal("show");
     },
 
     fnSearch: function() {
