@@ -112,9 +112,6 @@ public class CashService {
 		
 		generalDao.updateGernal(DB.QRY_UPDATE_WEB_CASH_INFO, updateMap);
 		
-		rtn.setSuccess(false);
-		rtn.setMessage("결제에 성공하였습니다.");
-		
 		return rtn;
 	}
 	

@@ -27,13 +27,13 @@ import {eventBus} from "./eventBus";
 const fnAlert = (cTitle, cMessage) => {
   var confirmData = {"cTitle" : cTitle, "cMessage" : cMessage, "cButtonView" : false, "cButton" : ""}
   eventBus.$emit('confirmEventBus', confirmData);
-  $("#confirm").modal("show");
+  jQuery("#confirm").modal("show");
 }
 
 const fnConfirm = (cTitle, cMessage, cButton) => {
   var confirmData = {"cTitle" : cTitle, "cMessage" : cMessage, "cButtonView" : true, "cButton" : cButton}
   eventBus.$emit('confirmEventBus', confirmData);
-  $("#confirm").modal("show");
+  jQuery("#confirm").modal("show");
 }
 
 Vue.component('confirm', {
@@ -80,7 +80,7 @@ Vue.component('confirm', {
     },
     fnConfirmHide: function() {
       eventBus.$off('callbackEventBus');
-      $("#confirm").modal("hide");
+      jQuery("#confirm").modal("hide");
     }
   }
 });
