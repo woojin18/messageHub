@@ -67,11 +67,6 @@
 								<!-- 소메뉴 -->
 							</li>
 						</ul>
-						<ul>
-							<li v-for="(item2, j) in item.children" :key="j">
-								<a v-bind:href="item2.WEB_URL">{{item2.MENUS_NAME}}</a>
-							</li>
-						</ul>
 					</div>
 				</li>
 			</ul>
