@@ -102,11 +102,11 @@ export default {
 			});
 		},
 		fnOpenDepth2(index) {
-			var depth2Sts = $("#depth2_" + index).css("display");
+			var depth2Sts = jQuery("#depth2_" + index).css("display");
 			if (depth2Sts === 'block') {
-				$("#depth2_" + index).css("display", "none");
+				jQuery("#depth2_" + index).css("display", "none");
 			} else {
-				$("#depth2_" + index).css("display", "block");
+				jQuery("#depth2_" + index).css("display", "block");
 			}
 		}
 	}

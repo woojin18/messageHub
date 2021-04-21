@@ -12,34 +12,6 @@
     </modalCallback>
     
 		<article>
-			<div class="contentHeader mb20">
-				<h2>{{this.projectName}}</h2>
-			</div>
-
-			<!-- 본문 -->
-			<div class="contentBody mb40">
-				<ul class="tab_s3">
-					<li @click="fnMoveMainTab('dashBoard')"><a class="width120">대시보드</a></li>
-					<li @click="fnMoveMainTab('info')"><a class="width120">기본정보</a></li>
-					<li @click="fnMoveMainTab('member')"><a class="width120">멤버관리</a></li>
-					<li @click="fnMoveMainTab('channel')" class="active"><a class="width120">채널관리</a></li>
-					<li @click="fnMoveMainTab('callbackManage')"><a class="width120">발신번호관리</a></li>
-					<li @click="fnMoveMainTab('spam')"><a class="width120">스팸관리</a></li>
-				</ul>			
-			</div>
-			<ul class="tabStyle tab6 bgColor_tapGray mt30">
-				<li @click="fnMoveSubTab('chan-rcs')" class="active"><a>RCS</a></li>
-				<li @click="fnMoveSubTab('chan-smsmms')"><a>SMS/MMS</a></li>
-				<li @click="fnMoveSubTab('chan-push')"><a>PUSH</a></li>
-				<li @click="fnMoveSubTab('chan-kakao')"><a>카카오톡</a></li>
-				<li @click="fnMoveSubTab('chan-mo')"><a>MO</a></li>
-			</ul>
-			
-			<ul class="mt30 tab_s5">
-				<li @click="fnMoveRcsTab('brand')" class="active"><a>브랜드 관리정보</a></li>
-				<li @click="fnMoveRcsTab('message')"><a>메시지 포맷정보</a></li>
-			</ul>
-
       <!-- 검색창 -->
 			<div class="Dashboard01 border-line">
 				<div class="row">
@@ -199,34 +171,18 @@ export default {
     }
   },
   mounted() {
-    var vm = this;
-    this.projectId = this.$route.params.projectId;
-    this.projectName = this.$route.params.projectName;
+    this.projectId = this.$parent.projectId;
+    this.projectName = this.$parent.projectName;
     this.fnSearch();
   },
   methods: {
-    fnMoveMainTab(moveTabName){
-      this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
-    },
-    fnMoveSubTab(moveTabName){
-      this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
-    },
-    fnMoveRcsTab(moveTabName){
-      var pageName = 'chan-rcs';
-      if( moveTabName === 'brand' ){
-        pageName = 'chan-rcs';
-      } else if( moveTabName === 'message' ){
-        pageName = 'chan-rcs-message';
-      }
-      this.$router.push( {name : pageName, params : {"projectId" : this.projectId, "projectName" : this.projectName }} );
-    },
     // 검색
     fnSearch() {
       var vm = this;
       var params = {
         "projectId"     : this.projectId,
-        "srcBrandType"  : $("#srcBrandType").val(),
-        "srcBrandText"  : $("#srcBrandText").val(),
+        "srcBrandType"  : jQuery("#srcBrandType").val(),
+        "srcBrandText"  : jQuery("#srcBrandText").val(),
         "rows"          : this.selected,
         "paging"        : this.pagingCnt
       }

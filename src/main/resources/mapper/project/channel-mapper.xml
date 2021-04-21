@@ -3,11 +3,12 @@
 <mapper namespace="channel">
 
 	<select id="selectRcsBrandList" resultType="camel">
+	/* channel.selectRcsBrandList */
 		SELECT	A.BRAND_ID
 		,		MAX(A.CORP_ID) AS CORP_ID
 		,		MAX(A.BRAND_NAME) AS BRAND_NAME
 		,		MAX(A.BRAND_DESC) AS BRAND_DESC
-		,		'N' AS OTHER_PROJECT_USE_YN
+		,		'????' AS OTHER_PROJECT_USE_YN
 		
 		,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
 					FROM	cm_console.CM_RCS_TMP_MSGBASE
@@ -19,48 +20,31 @@
 				) AS CALLBACK_CNT
 		FROM	cm.CM_RCS_BRAND_REQ A
 		WHERE	A.PROJECT_ID = #{projectId}
+		AND		A.BRAND_ID NOT IN (
+			SELECT	A.BRAND_ID
+			FROM	cm.CM_RCS_BRAND A
+			WHERE	A.PROJECT_ID = #{projectId}
+			GROUP BY A.BRAND_ID
+		) 
 		GROUP BY A.BRAND_ID
-<!-- 		UNION ALL -->
-<!-- 		SELECT	A.BRAND_ID -->
-<!-- 		,		A.CORP_ID -->
-<!-- 		,		A.BRAND_NAME -->
-<!-- 		,		A.BRAND_DESC -->
-<!-- 		,		A.BRAND_KEY -->
-<!-- 		,		A.CATEGORY_ID  -->
-<!-- 		,		A.SUB_CATEGORY_ID -->
-<!-- 		,		A.BRAND_INFO -->
-<!-- 		,		A.REG_DT -->
-<!-- 		,		'' -->
-<!-- 		,		A.APPROVAL_DT -->
-<!-- 		FROM	CM_RCS_BRAND A -->
-<!-- 		WHERE	A.BRAND_ID NOT IN ( -->
-<!-- 			SELECT	AA.BRAND_ID -->
-<!-- 			FROM	cm.CM_RCS_BRAND_REQ AA -->
-<!-- 			WHERE	AA.PROJECT_ID = #{projectId} -->
-<!-- 			<if test="srcBrandText != '' and srcBrandText != null" > -->
-<!-- 				<choose> -->
-<!-- 					<when test="srcBrandType == 'brandId'.toString() "> -->
-<!-- 					AND	AA.BRAND_ID = #{srcBrandText} -->
-<!-- 					</when> -->
-<!-- 					<when test="srcBrandType == 'brandName'.toString() "> -->
-<!-- 					AND	AA.BRAND_NAME = #{srcBrandText} -->
-<!-- 					</when> -->
-<!-- 				</choose> -->
-<!-- 			</if> -->
-<!-- 			GROUP BY AA.BRAND_ID -->
-<!-- 		) -->
-<!-- 		AND	A.PROJECT_ID = #{projectId} -->
-<!-- 		<if test="srcBrandText != '' and srcBrandText != null" > -->
-<!-- 			<choose> -->
-<!-- 				<when test="srcBrandType == 'brandId'.toString() "> -->
-<!-- 				AND	A.BRAND_ID = #{srcBrandText} -->
-<!-- 				</when> -->
-<!-- 				<when test="srcBrandType == 'brandName'.toString() "> -->
-<!-- 				AND	A.BRAND_NAME = #{srcBrandText} -->
-<!-- 				</when> -->
-<!-- 			</choose> -->
-<!-- 		</if> -->
-<!-- 		ORDER BY REG_DT DESC -->
+		
+		UNION  ALL
+		
+		SELECT 	A.BRAND_ID
+		,		A.CORP_ID
+		,		A.BRAND_NAME
+		,		'' as BRAND_DESC
+		,		'??????????????' AS OTHER_PROJECT_USE_YN
+		,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
+					FROM	cm_console.CM_RCS_TMP_MSGBASE
+					WHERE	BRAND_ID  = A.BRAND_ID 
+				) AS TMPL_CNT
+		,		( 	SELECT	COUNT(CHATBOT_ID) 
+					FROM	cm.CM_RCS_CHATBOT
+					WHERE	BRAND_ID  = A.BRAND_ID 
+				) AS CALLBACK_CNT
+		FROM	cm.CM_RCS_BRAND A
+		WHERE	A.PROJECT_ID = #{projectId}
 	</select>
 	
 	

@@ -3,12 +3,15 @@ package kr.co.uplus.cloud.project.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.uplus.cloud.common.dto.RestResult;
+import kr.co.uplus.cloud.common.service.CommonService;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 
@@ -17,13 +20,40 @@ public class ProjectService {
 
 	@Autowired
 	private GeneralDao generalDao;
+	
+	@Autowired
+	private CommonService commonService;
 
 	// 프로젝트 리스트 조회
+	@SuppressWarnings("unchecked")
 	public RestResult<?> selectProjectList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 
 		List<Object> rtnList = generalDao.selectGernalList("project.selectProjectList", params);
-
+		
+		for (int i = 0; i < rtnList.size(); i++) {
+			Map<String, Object> rtnMap = (Map<String, Object>) rtnList.get(i);
+			
+			String rcsYn	= CommonUtils.getString(rtnMap.get("rcsYn"));
+			String smsmmsYn	= CommonUtils.getString(rtnMap.get("smsmmsYn"));
+			String pushYn	= CommonUtils.getString(rtnMap.get("pushYn"));
+			String kakaoYn	= CommonUtils.getString(rtnMap.get("kakaoYn"));
+			String moYn		= CommonUtils.getString(rtnMap.get("moYn"));
+			
+			String useChStr = "";
+			
+			if( "Y".equals(rcsYn) )		useChStr += "RCS,";
+			if( "Y".equals(smsmmsYn) )	useChStr += "SMS/MMS,";
+			if( "Y".equals(pushYn) )	useChStr += "PUSH,";
+			if( "Y".equals(kakaoYn) )	useChStr += "KAKAO,";
+			if( "Y".equals(moYn) )		useChStr += "MO,";
+			
+			useChStr = useChStr.substring(0, useChStr.length()-1);
+			
+			rtnMap.put("useCh", useChStr);
+		}
+		
+		
 		rtn.setData(rtnList);
 
 		return rtn;
@@ -65,7 +95,7 @@ public class ProjectService {
 
 			jsonInfo += "{";
 			jsonInfo += "	\"RCS\"		: \"" + CommonUtils.getString(params.get("radioRcs")) + "\",";
-			jsonInfo += "	\"SMS/MMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
+			jsonInfo += "	\"SMSMMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
 			jsonInfo += "	\"PUSH\"	: \"" + CommonUtils.getString(params.get("radioPush")) + "\",";
 			jsonInfo += "	\"KAKAO\"	: \"" + CommonUtils.getString(params.get("radioKko")) + "\",";
 			jsonInfo += "	\"MO\"		: \"" + CommonUtils.getString(params.get("radioMo")) + "\"";
@@ -99,7 +129,7 @@ public class ProjectService {
 
 			jsonInfo += "{";
 			jsonInfo += "	\"RCS\"		: \"" + CommonUtils.getString(params.get("radioRcs")) + "\",";
-			jsonInfo += "	\"SMS/MMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
+			jsonInfo += "	\"SMSMMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
 			jsonInfo += "	\"PUSH\"	: \"" + CommonUtils.getString(params.get("radioPush")) + "\",";
 			jsonInfo += "	\"KAKAO\"	: \"" + CommonUtils.getString(params.get("radioKko")) + "\",";
 			jsonInfo += "	\"MO\"		: \"" + CommonUtils.getString(params.get("radioMo")) + "\"";
@@ -140,26 +170,35 @@ public class ProjectService {
 		return rtn;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-	public void savePreRegEx(Map<String, Object> params) throws Exception{
+	public void savePreRegExWithUploadFiles(List<MultipartFile> uploadFiles, Map<String, Object> params) throws Exception{
 		// 이미 등록되어있는지 확인
 		String checkYn = CommonUtils.getString(generalDao.selectGernalObject("project.checkPreRegYn", params));
 		
 		if( "Y".equals(checkYn) ) {
 			throw new Exception("이미 사전등록 예외 대상 사업자로 등록 중 입니다.");
 		} else {
-			// 첨부파일 JSON 값 처리
-			String jsonInfoStr = "";
 
-			jsonInfoStr += "{";
-			jsonInfoStr += "	\"fileName1\"		: \"" + CommonUtils.getString(params.get("fileName1")) + "\",";
-			jsonInfoStr += "	\"filePath1\"		: \"" + CommonUtils.getString(params.get("filePath1")) + "\",";
-			jsonInfoStr += "	\"fileName2\"		: \"" + CommonUtils.getString(params.get("fileName2")) + "\",";
-			jsonInfoStr += "	\"filePath2\"		: \"" + CommonUtils.getString(params.get("filePath2")) + "\",";
-			jsonInfoStr += "	\"fileName3\"		: \"" + CommonUtils.getString(params.get("fileName3")) + "\",";
-			jsonInfoStr += "	\"filePath3\"		: \"" + CommonUtils.getString(params.get("filePath3")) + "\",";
-			jsonInfoStr += "	\"fileName4\"		: \"" + CommonUtils.getString(params.get("fileName4")) + "\",";
-			jsonInfoStr += "	\"filePath4\"		: \"" + CommonUtils.getString(params.get("filePath4")) + "\"";
+			// 첨부파일 JSON 값 처리
+			String jsonInfoStr = "{";
+
+			// 파일 업로드
+			for (int i = 0; i < uploadFiles.size(); i++) {
+				MultipartFile uploadFile = uploadFiles.get(i);
+				
+				RestResult<Object> rtn = commonService.uploadFile(uploadFile, CommonUtils.getString(params.get("loginId")));
+				
+				Map<String, Object> rtnMap = (Map<String, Object>) rtn.getData();
+				
+				jsonInfoStr += "	\"fileName" + (i+1) + "\"		: \"" + CommonUtils.getString(rtnMap.get("attachFileName")) + "\",";
+				if( i == (uploadFiles.size() - 1) ) {
+					jsonInfoStr += "	\"filePath" + (i+1) + "\"		: \"" + CommonUtils.getString(rtnMap.get("attachFilePath")) + "\"";
+				} else {
+					jsonInfoStr += "	\"filePath" + (i+1) + "\"		: \"" + CommonUtils.getString(rtnMap.get("attachFilePath")) + "\",";
+				}
+			}
+			
 			jsonInfoStr += "}";
 
 			params.put("attachFileList", jsonInfoStr);
@@ -168,4 +207,5 @@ public class ProjectService {
 			generalDao.insertGernal("project.insertSpecualBusi", params);
 		}
 	}
+
 }

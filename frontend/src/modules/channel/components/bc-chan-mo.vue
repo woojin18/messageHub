@@ -1,43 +1,14 @@
 <template>
-  <div>
-    <modal
-      :visible.sync="visible"
-      :row_data="row_data"
-    >
-    </modal>
-    
-		<article>
-			<div class="contentHeader mb20">
-				<h2>{{this.projectName}}</h2>
-			</div>
-
-			<!-- 본문 -->
-			<div class="contentBody mb40">
-				<ul class="tab_s3">
-					<li @click="fnMoveMainTab('dashBoard')"><a class="width120">대시보드</a></li>
-					<li @click="fnMoveMainTab('info')"><a class="width120">기본정보</a></li>
-					<li @click="fnMoveMainTab('member')"><a class="width120">멤버관리</a></li>
-					<li @click="fnMoveMainTab('channel')" class="active"><a class="width120">채널관리</a></li>
-					<li @click="fnMoveMainTab('callbackManage')"><a class="width120">발신번호관리</a></li>
-					<li @click="fnMoveMainTab('spam')"><a class="width120">스팸관리</a></li>
-				</ul>			
-			</div>
-			<ul class="tabStyle tab6 bgColor_tapGray mt30">
-				<li @click="fnMoveSubTab('chan-rcs')"><a>RCS</a></li>
-				<li @click="fnMoveSubTab('chan-smsmms')"><a>SMS/MMS</a></li>
-				<li @click="fnMoveSubTab('chan-push')"><a>PUSH</a></li>
-				<li @click="fnMoveSubTab('chan-kakao')"><a>카카오톡</a></li>
-				<li @click="fnMoveSubTab('chan-mo')" class="active"><a>MO</a></li>
-			</ul>
-			
-			
+	<div>
+		<layerPopup />
+		<article>			
 			<h4 class="mt40">MO 수신번호 현황</h4>
 			
 			<div class="row mt20">
 				<div class="col-xs-12">		
 					<div class="of_h">
 						<div class="float-right">
-							<a class="btnStyle3 gray font13 width180" data-toggle="modal" data-target="#Register">MO 수신번호 등록</a>
+							<a class="btnStyle3 gray font13 width180" data-toggle="modal" data-target="#Register" @click="fnReg">MO 수신번호 등록</a>
 						</div>
 					</div>
 				</div>			
@@ -109,11 +80,11 @@
 
 <script>
 import Api from '../service/api'
-import modal from "./bp-chan-rcs-tmplt-cnt.vue";
+import layerPopup from "./bp-chan-rcs-mo.vue";
 
 export default {
   components: {
-    modal
+    layerPopup
   },
   data() {
     return {
@@ -135,6 +106,10 @@ export default {
     },
     fnMoveSubTab(moveTabName){
       this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
+    },
+	// 등록팝업창
+    fnReg() {
+      jQuery("#layerPopup").modal("show");
     },
     // 검색
     fnSearch() {

@@ -104,17 +104,17 @@ export default {
     // 등록, 수정
     fnSaveRcsDetail(){
       var params = {
-          /* "menus_cd"      : $("#menus_cd").val(),
-          "menus_name"    : $("#menus_name").val(),
-          "img_tag"      : $("#img_tag").val(),
+          /* "menus_cd"      : jQuery("#menus_cd").val(),
+          "menus_name"    : jQuery("#menus_name").val(),
+          "img_tag"      : jQuery("#img_tag").val(),
           "top_menus_cd" : parMenuRow.MENUS_CD,
           "par_menus_cd" : parMenuRow.PAR_MENUS_CD,
           "menus_level"  : (parMenuRow.MENUS_LEVEL) + 1,
-          "dis_order"    : $("#dis_order").val(),
-          "svc_type_cd"  : $("#svc_type_cd").val(),
+          "dis_order"    : jQuery("#dis_order").val(),
+          "svc_type_cd"  : jQuery("#svc_type_cd").val(),
           "fixed_menus_yn"   : 1,
-          "use_yn"       : $("#use_yn").val(),
-          "web_url"      : $("#web_url").val(), */
+          "use_yn"       : jQuery("#use_yn").val(),
+          "web_url"      : jQuery("#web_url").val(), */
           "sts" : this.save_status
       };
 
@@ -134,7 +134,7 @@ export default {
     // 삭제
     fnDelete(){
       var params = {
-          "menus_cd" : $("#menus_cd").val(),
+          "menus_cd" : jQuery("#menus_cd").val(),
           "sts" : "D"
       };
 
