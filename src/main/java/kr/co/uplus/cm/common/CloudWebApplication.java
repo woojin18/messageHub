@@ -27,7 +27,7 @@ import lombok.extern.log4j.Log4j2;
 @EnableScheduling
 @Log4j2
 @ComponentScans(value = { 
-		@ComponentScan("kr.co.uplus.cloud"),
+		@ComponentScan("kr.co.uplus.cm"),
 		@ComponentScan("kr.co.uplus.config.mybatis"),
 		@ComponentScan("kr.co.uplus.config.mongo"),
 	})

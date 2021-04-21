@@ -3,7 +3,7 @@
 
 <mapper namespace="login">
 
-	<select id="qrySelectUserName" parameterType="string" resultType="kr.co.uplus.cloud.common.model.AuthUser">
+	<select id="qrySelectUserName" parameterType="string" resultType="kr.co.uplus.cm.common.model.AuthUser">
 	/* login.qrySelectUserName */
 		SELECT	USER.USER_ID
 		,		USER.LOGIN_ID
@@ -36,7 +36,7 @@
 		WHERE	USER.LOGIN_ID = #{userId}
 	</select>
 	
-	<select id="qryInsertAuthUser" parameterType="kr.co.uplus.cloud.common.model.AuthUser" resultType="Integer">
+	<select id="qryInsertAuthUser" parameterType="kr.co.uplus.cm.common.model.AuthUser" resultType="Integer">
 		INSERT INTO CLOUD_TEST_USER
 		(
 			USER_ID, USER_PWD, STATUS, ROLE
