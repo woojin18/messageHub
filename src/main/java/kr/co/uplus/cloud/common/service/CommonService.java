@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -26,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -116,6 +117,7 @@ public class CommonService {
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
     public RestResult<Object> uploadImgFile(MultipartFile files, String[] useCh, String loginId) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
 
@@ -251,53 +253,16 @@ public class CommonService {
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unchecked")
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
     public RestResult<Object> deleteImageFile(Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
-        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_IMAGE_LIST, params);
-        String uploadDirPath = this.imgUploadPath;
 
-        //TODO : 이미지가 서버가 따로 존재. 로컬만 테스트를 위해 경로를 현프로젝트 밑으로..
-        //TODO : 추후 이미지서버를 알면 업로드 로직을 변경하자
-        if(Arrays.stream(env.getActiveProfiles()).anyMatch(
-                env -> env.equalsIgnoreCase("local"))){
-            Path prjRelPath = Paths.get("");
-            String prjAbsPath = prjRelPath.toAbsolutePath().toString();
-            uploadDirPath = prjAbsPath + this.imgUploadPath;
-        }
-
-        if(CollectionUtils.isEmpty(rtnList)) {
-            rtn.setSuccess(false);
-            rtn.setMessage("삭제할 데이터가 존재하지 않습니다.");
-            return rtn;
-        }
-
-        File file = null;
-        Map<String, Object> imgMap = null;
-
-        //파일삭제(파일삭제여부와 관계없이 로우삭제->파일삭제 후 DB 삭제시 이슈)
-        for(Object imgObj :rtnList) {
-            try {
-                imgMap = (Map<String, Object>) imgObj;
-                if(imgMap.containsKey("imageFileName")
-                        && CommonUtils.isNotEmptyObject(imgMap.get("imageFileName"))) {
-                    file = new File(uploadDirPath+imgMap.get("imageFileName"));
-                    if( file.exists() ){
-                        file.delete();
-                    }
-                }
-            } catch (Exception e) {
-                log.error("File Delete Error : {}", e);
-            }
-        }
-
-        //데이터삭제
         int resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_IMAGE, params);
+
         if (resultCnt <= 0) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
         } else {
-            rtn.setSuccess(true);
             rtn.setData(params);
         }
 

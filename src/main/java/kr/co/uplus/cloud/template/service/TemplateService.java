@@ -6,6 +6,8 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.uplus.cloud.common.consts.Const;
 import kr.co.uplus.cloud.common.consts.DB;
@@ -65,6 +67,7 @@ public class TemplateService {
      * @return
      * @throws Exception
      */
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
     public RestResult<Object> savePushTemplate(Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
         int resultCnt = 0;
@@ -97,6 +100,7 @@ public class TemplateService {
      * @return
      * @throws Exception
      */
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
     public RestResult<Object> deletePushTemplate(Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
 

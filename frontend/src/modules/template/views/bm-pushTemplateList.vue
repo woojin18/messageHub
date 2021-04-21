@@ -143,6 +143,8 @@ import TemplateApi from "@/modules/template/service/templateApi.js";
 import PageLayer from '@/components/PageLayer.vue';
 import SelectLayer from '@/components/SelectLayer.vue';
 import Calendar from "@/components/Calendar.vue";
+import confirm from "@/modules/commonUtil/service/confirm.js";
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
   name: "pushTemplateList",
@@ -164,7 +166,14 @@ export default {
           'searchOthPrjUseYn' : []
         }
       }
-    }
+    },
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: function() {
+        return '푸시 템플릿 리스트';
+      }
+    },
   },
   data() {
     return {
@@ -202,24 +211,27 @@ export default {
       TemplateApi.excelDownloadPushTmplt(params);
     },
     //푸시 템플릿 삭제
-    async fnDeletePushTemplate(){
+    fnDeletePushTemplate(){
       //유효성 검사
       if(this.listChkBox == null || this.listChkBox.length == 0){
-        alert('삭제할 항목을 선택해주세요.');
+        confirm.fnAlert(this.componentsTitle, '삭제할 항목을 선택해주세요.');
         return;
       }
 
-      if(confirm('선택한 템플릿을 삭제하시겠습니까?') == false) return;
-
+      eventBus.$on('callbackEventBus', this.fnProcDeletePushTemplate);
+      confirm.fnConfirm(this.componentsTitle, "선택한 템플릿을 삭제하시겠습니까?", "확인");
+    },
+    //푸시 템플릿 삭제 처리
+    async fnProcDeletePushTemplate(){
       var params = {tmpltIds : this.listChkBox};
       await TemplateApi.deletePushTmplt(params).then(response =>{
         var result = response.data;
         if(result.success) {
-          alert('삭제되었습니다.');
+          confirm.fnAlert(this.componentsTitle, '삭제되었습니다.');
           this.listChkBox = [];
           this.fnSearch();
         } else {
-          alert(result.message);
+          confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
     },
@@ -228,7 +240,7 @@ export default {
       //유효성 검사
       if(this.searchData.searchStartDate && this.searchData.searchEndDate){
         if(this.searchData.searchStartDate.replace(/[^0-9]/g, '') > this.searchData.searchEndDate.replace(/[^0-9]/g, '')){
-          alert('시작일은 종료일보다 클 수 없습니다.');
+          confirm.fnAlert(this.componentsTitle, '시작일은 종료일보다 클 수 없습니다.');
           return false;
         }
       }
@@ -243,7 +255,7 @@ export default {
           this.totCnt = result.pageInfo.totCnt;
           this.offset = result.pageInfo.offset;
         } else {
-          alert(result.message);
+          confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
     },

@@ -18,10 +18,6 @@
         FROM cm.CM_RCS_CHATBOT
         WHERE SVC_TYPE = 'A2P'
             AND CORP_ID = #{corpId}
-        /* TODO - 삭제 : 현재 CM의 해당 테이블에 데이터가 없어서 임의로 넣고 작업 우리쪽 관리 테이블이 아니라 DB에 넣지 않고 작업 */
-        UNION ALL
-        SELECT '15777011' AS CALLBACK FROM DUAL UNION ALL
-        SELECT '15999679' AS CALLBACK FROM DUAL
     </select>
 
     <select id="selectAddrGrpList" parameterType="hashmap" resultType="camel">

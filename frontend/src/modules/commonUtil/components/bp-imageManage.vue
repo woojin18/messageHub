@@ -101,7 +101,7 @@ import PageLayer from '@/components/PageLayer.vue';
 import CommonUtilApi from "@/modules/commonUtil/service/commonUtilApi.js";
 import ImageUploadPopUp from "@/modules/commonUtil/components/bp-imageUpload.vue";
 import ImagePreview from "@/modules/commonUtil/components/bp-imagePreview.vue";
-import confirm from "@/modules/commonUtil/service/confirm.js"
+import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {

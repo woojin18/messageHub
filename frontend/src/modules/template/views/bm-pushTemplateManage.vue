@@ -2,7 +2,7 @@
   <!-- content -->
   <div class="row row-no-margin">
     <div class="contentHeader">
-      <h2>푸시 템플릿 등록/상세</h2>
+      <h2>푸시 템플릿 관리</h2>
       <!-- <a href="#self" class="btnStyle1 absolute top0 right0" onClick="window.location.reload()" title="푸시 템플릿 등록/상세 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
     </div>
 
@@ -131,6 +131,8 @@ import TemplateApi from "@/modules/template/service/templateApi.js";
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
 import ImageUploadPopUp from "@/modules/commonUtil/components/bp-imageUpload.vue";
 import TokenSvc from '@/common/token-service';
+import confirm from "@/modules/commonUtil/service/confirm.js";
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
   name: 'pushTemplateManage',
@@ -145,7 +147,14 @@ export default {
       default: function() {
         return {'imgUrl':''}
       }
-    }
+    },
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: function() {
+        return '푸시 템플릿 관리';
+      }
+    },
   },
   data() {
     return {
@@ -190,8 +199,7 @@ export default {
             vm.rowData = obj;
           });
         } else {
-          alert(result.message);
-          //TODO : 이전 페이지로
+          confirm.fnAlert(this.componentsTitle, result.message);
           this.rowData = {};
           this.isInsert = true;
         }
@@ -219,47 +227,50 @@ export default {
     //유효성 체크
     fnIsValid(){
       if(!this.rowData.tmpltName){
-        alert('템플릿명을 입력해주세요.');
+        confirm.fnAlert(this.componentsTitle, '템플릿명을 입력해주세요.');
         return false;
       }
       if(!this.rowData.msgType){
-        alert('메시지타입을 선택해주세요.');
+        confirm.fnAlert(this.componentsTitle, '메시지타입을 선택해주세요.');
         return false;
       }
       if(!this.rowData.msgKind){
-        alert('메시지구분을 선택해주세요.');
+        confirm.fnAlert(this.componentsTitle, '메시지구분을 선택해주세요.');
         return false;
       }
       if(!this.rowData.otherProjectUseYn){
-        alert('타 프로젝트 사용여부를 선택해주세요.');
+        confirm.fnAlert(this.componentsTitle, '타 프로젝트 사용여부를 선택해주세요.');
         return false;
       }
       if(!this.rowData.tmpltTitle){
-        alert('제목을 입력해주세요.');
+        confirm.fnAlert(this.componentsTitle, '제목을 입력해주세요.');
         return false;
       }
       if(!this.rowData.tmpltContent){
-        alert('내용을 입력해주세요.');
+        confirm.fnAlert(this.componentsTitle, '내용을 입력해주세요.');
         return false;
       }
       if(this.rowData.msgKind == 'A' && !this.rowData.rcvblcNumber){
-        alert('푸시 수신거부 방법을 입력해주세요.');
+        confirm.fnAlert(this.componentsTitle, '푸시 수신거부 방법을 입력해주세요.');
         return false;
       }
       if(this.rowData.msgType == 'IMAGE' && !this.rowData.imgUrl){
-        alert('이미지를 선택해주세요.');
+        confirm.fnAlert(this.componentsTitle, '이미지를 선택해주세요.');
         return false;
       }
       return true;
     },
     //저장
-    async fnSavePushTemplate(){
+    fnSavePushTemplate(){
       //유효성 검사
       if(this.fnIsValid() == false) return;
 
       var saveType = (this.isInsert ? '등록' : '수정');
-      if(confirm('푸시 템플릿을 '+saveType+'하시겠습니까?') == false) return;
+      eventBus.$on('callbackEventBus', this.fnProcSavePushTemplate);
+      confirm.fnConfirm(this.componentsTitle, "푸시 템플릿을 "+saveType+"하시겠습니까?", "확인");
 
+    },
+    async fnProcSavePushTemplate(){
       //DATA Set
       var params = this.rowData;
       var loginId = TokenSvc.getToken().principal.userId;
@@ -275,7 +286,7 @@ export default {
       await TemplateApi.savePushTmplt(params).then(response => {
         var result = response.data;
         if(result.success) {
-          alert("성공하였습니다.");
+          confirm.fnAlert(this.componentsTitle, '저장되었습니다.');
           //재조회
           if(this.isInsert){
             this.$router.push('pushTemplateList')
@@ -285,6 +296,7 @@ export default {
         }
       });
     }
+
   }
 }
 </script>
