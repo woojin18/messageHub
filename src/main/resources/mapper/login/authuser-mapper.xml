@@ -54,6 +54,7 @@
 					WHEN MENUS_LEVEL = 0 THEN '운영사'
 					WHEN MENUS_LEVEL = 1 THEN '대메뉴'
 					WHEN MENUS_LEVEL = 2 THEN '중메뉴'
+					WHEN MENUS_LEVEL = 3 THEN '소메뉴'
 				END AS GUBUN
 		,		MENUS_NAME
 		,		IMG_TAG

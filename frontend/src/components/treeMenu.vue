@@ -30,7 +30,7 @@
 			<!-- lnb -->
 			<ul>
 				<li class="on"><a href="/ac/home"><i class="fal fa-tachometer-alt-fastest navIcon"></i><span>대시보드</span></a></li>
-				<li v-for="(item, i) in treeData" :key="i" @click="fnOpenDepth2(i)">
+				<li v-for="(item, i) in treeData" :key="i">
 					<!--
 					<a v-if="item.WEB_URL != ''" v-bind:href="item.WEB_URL">
 						<i v-html="item.IMG_TAG"></i><span>{{item.MENUS_NAME}}</span><i class="far fa-chevron-down navArrow"></i>
@@ -46,10 +46,27 @@
 						</ul>
 					</div>
 					-->
-					<a>
+					<a @click="fnOpenDepth2(i)">
 						<i v-html="item.IMG_TAG"></i><span>{{item.MENUS_NAME}}</span><i class="far fa-chevron-down navArrow"></i>
 					</a>
 					<div class="depth2Lnb" :id="'depth2_' + i">
+						<ul>
+							<li v-for="(item2, j) in item.children" :key="j" >
+								<a  v-if="item2.WEB_URL != ''" v-bind:href="item2.WEB_URL">{{item2.MENUS_NAME}}</a>		<!-- url 주소 있으면 페이지 이동 -->
+								<a  v-if="item2.WEB_URL == ''" @click="fnOpenDepth3(i,j)">
+									<i v-html="item2.IMG_TAG"></i><span>{{item2.MENUS_NAME}}</span><i class="far fa-chevron-down navArrow" style="font-size: 10px;position: absolute;right: 20px"></i>
+								</a>
+								<!-- 소메뉴 -->
+								<div class="depth2Lnb" :id="'depth2_' + j">
+									<ul>
+										<li v-for="(item3, m) in item2.children" :key="m">
+											<a v-bind:href="item3.WEB_URL">{{item3.MENUS_NAME}}</a>
+										</li>
+									</ul>
+								</div>
+								<!-- 소메뉴 -->
+							</li>
+						</ul>
 						<ul>
 							<li v-for="(item2, j) in item.children" :key="j">
 								<a v-bind:href="item2.WEB_URL">{{item2.MENUS_NAME}}</a>
@@ -77,7 +94,12 @@ export default {
 			treeData :  [
 				{name: '',
 					children: [
-						{name: '', urlPath: ''}
+						{name: '',
+						 urlPath: '',
+						 children: [
+								{name: '', urlPath: ''}
+							]
+						},
 					]
 				}
 			]
@@ -107,6 +129,15 @@ export default {
 				$("#depth2_" + index).css("display", "none");
 			} else {
 				$("#depth2_" + index).css("display", "block");
+			}
+		},
+		fnOpenDepth3(index1, index2){
+			$("#depth2_" + index1).css("display", "block");
+			var depth3Sts = $("#depth3_" + index2).css("display");
+			if (depth3Sts === 'block') {
+				$("#depth3_" + index2).css("display", "none");
+			} else {
+				$("#depth3_" + index2).css("display", "block");
 			}
 		}
 	}
