@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.uplus.cloud.common.dto.RestResult;
-import kr.co.uplus.cloud.utils.CommonUtils;
-import kr.co.uplus.cloud.utils.GeneralDao;
+import kr.co.uplus.cm.utils.CommonUtils;
+import kr.co.uplus.cm.utils.GeneralDao;
 
 @Service
 public class ProjectService {

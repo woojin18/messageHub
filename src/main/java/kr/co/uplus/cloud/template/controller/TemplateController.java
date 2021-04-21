@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.uplus.cloud.common.dto.RestResult;
 import kr.co.uplus.cloud.template.service.TemplateService;
-import kr.co.uplus.cloud.utils.DateUtil;
+import kr.co.uplus.cm.utils.DateUtil;
 import lombok.extern.log4j.Log4j2;
 
 /**

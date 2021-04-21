@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.uplus.cloud.project.service.ChannelService;
 import kr.co.uplus.cloud.common.dto.RestResult;
-import kr.co.uplus.cloud.utils.CommonUtils;
+import kr.co.uplus.cm.utils.CommonUtils;
 
 @RestController
 @RequestMapping("/projectApi/channel")

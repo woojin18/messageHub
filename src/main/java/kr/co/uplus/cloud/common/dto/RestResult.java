@@ -6,8 +6,8 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import kr.co.uplus.cloud.common.consts.ResultCode;
-import kr.co.uplus.cloud.dto.PageDto;
-import kr.co.uplus.cloud.utils.CommonUtils;
+import kr.co.uplus.cm.dto.PageDto;
+import kr.co.uplus.cm.utils.CommonUtils;
 
 public class RestResult<T> implements IResult<ResultCode, T> {
     protected boolean success = true;

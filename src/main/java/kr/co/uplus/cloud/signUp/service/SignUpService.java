@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.uplus.cloud.common.consts.DB;
 import kr.co.uplus.cloud.common.dto.RestResult;
-import kr.co.uplus.cloud.utils.CommonUtils;
-import kr.co.uplus.cloud.utils.GeneralDao;
+import kr.co.uplus.cm.utils.CommonUtils;
+import kr.co.uplus.cm.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.uplus.cloud.common.dto.RestResult;
-import kr.co.uplus.cloud.utils.CommonUtils;
+import kr.co.uplus.cm.utils.CommonUtils;
 
 @RestController
 @RequestMapping("/listCtl")

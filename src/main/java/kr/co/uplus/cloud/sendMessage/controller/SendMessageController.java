@@ -29,7 +29,7 @@ import kr.co.uplus.cloud.common.dto.RestResult;
 import kr.co.uplus.cloud.common.service.CommonService;
 import kr.co.uplus.cloud.sendMessage.dto.PushRequestDto;
 import kr.co.uplus.cloud.sendMessage.service.SendMessageService;
-import kr.co.uplus.cloud.utils.DateUtil;
+import kr.co.uplus.cm.utils.DateUtil;
 import lombok.extern.log4j.Log4j2;
 
 /**

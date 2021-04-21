@@ -37,7 +37,7 @@ import kr.co.uplus.cloud.common.jwt.JwtService;
 import kr.co.uplus.cloud.common.model.AuthUser;
 import kr.co.uplus.cloud.common.model.PublicToken;
 import kr.co.uplus.cloud.common.utils.SpringUtils;
-import kr.co.uplus.cloud.utils.GeneralDao;
+import kr.co.uplus.cm.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
