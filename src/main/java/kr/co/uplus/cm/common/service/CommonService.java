@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -26,12 +26,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.DateUtil;
 import kr.co.uplus.cm.utils.GeneralDao;
@@ -47,6 +52,9 @@ public class CommonService {
 
     @Autowired
     Environment env;
+
+    @Autowired
+    ApiInterface apiInterface;
 
     @Value("${file.props.img.upload-path}")
     String imgUploadPath;
@@ -116,6 +124,7 @@ public class CommonService {
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
     public RestResult<Object> uploadImgFile(MultipartFile files, String[] useCh, String loginId) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
 
@@ -174,32 +183,86 @@ public class CommonService {
             String oriFileFullPath = uplaodFile.getAbsolutePath();
             String oriFileName = uplaodFile.getName().replaceFirst("[.][^.]+$", "");
 
-            List<Map<String, Object>> imgSendList = new ArrayList<Map<String,Object>>();
-            Map<String, Object> imgSendInfo = new HashMap<String, Object>();
-            for(String ch : useCh) {
-                imgSendInfo = new HashMap<String, Object>();
-                imgSendInfo.put("CH", ch);
-                imgSendInfo.put("URL", ImageUtil.imageResize(
-                        oriFileFullPath
-                        , uploadDirPath
-                        , oriFileName+"_"+ch+"."+fileExten
-                        , fileExten
-                        , Const.CH_IMAGE_RESIZE.get(ch+"_W")
-                        , Const.CH_IMAGE_RESIZE.get(ch+"_H")));
-                imgSendList.add(imgSendInfo);
-            }
-
-            //TODO : API 파일 전송
-            //TODO : API 파일 전송 후 useChInfo URL, 파일번호로 수정
-
             JSONArray jsonArray = new JSONArray();
             JSONObject jsonObject = null;
 
-            for(Map<String, Object> info : imgSendList) {
-                jsonObject = new JSONObject();
-                for(String key : info.keySet()) {
-                    jsonObject.put(key, info.get(key));
+            //API 정보
+            Map<String, String> headerMap = null;
+            JSONObject reqFileObject = null;
+            Map<String, Object> resultMap = null;
+            Map<String, Object> dataMap = null;
+            ObjectMapper mapper = null;
+
+            String apiKey = this.getApiKey("TEST_CORP", "TEST_PROJECT");  //TODO : 수정
+            String svcId = this.getSvcId();
+            String resizePath = "";
+            String apiUrl = "";
+            String imgUrl = "";
+            String fileId = "";
+
+            for(String ch : useCh) {
+                //TODO: 삭제 (API : 포탈연동 오류)
+                if(StringUtils.equals("FRIENDTALK", ch)) {
+                    continue;
                 }
+
+                /** 파일 resize */
+                resizePath = ImageUtil.imageResize(
+                    oriFileFullPath
+                    , uploadDirPath
+                    , oriFileName+"_"+ch+"."+fileExten
+                    , fileExten
+                    , Const.CH_IMAGE_RESIZE.get(ch+"_W")
+                    , Const.CH_IMAGE_RESIZE.get(ch+"_H"));
+
+                /** API Send */
+                //set Header Info
+                headerMap = new HashMap<String, String>();
+                headerMap.put("apiKey", apiKey);
+                headerMap.put("svcId", svcId);
+                headerMap.put("ch", ch);
+
+                //set reqFile Info
+                reqFileObject = new JSONObject();
+                reqFileObject.put("fileId", CommonUtils.getCommonId(Const.IMG_PREFIX, 5));
+                reqFileObject.put("wideYn", "N");
+
+                //send
+                apiUrl = Const.FILE_UPLOAD_API_URL+ch;
+                resultMap = apiInterface.sendImg(
+                    apiUrl
+                    , headerMap
+                    , new File(resizePath)
+                    , reqFileObject.toJSONString());
+
+                //send result
+                imgUrl = "";
+                if(!CommonUtils.isEmptyValue(resultMap, "rslt")
+                        && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
+                    if(!CommonUtils.isEmptyValue(resultMap, "data")) {
+                        mapper = new ObjectMapper();
+                        dataMap = mapper.convertValue(resultMap.get("data"), Map.class);
+                        if(!CommonUtils.isEmptyValue(dataMap, "imgUrl")
+                                && !CommonUtils.isEmptyValue(dataMap, "fileId")) {
+                            imgUrl = (String) dataMap.get("imgUrl");
+                            fileId = (String) dataMap.get("fileId");
+                        }
+                    }
+                }
+
+                if(StringUtils.isBlank(imgUrl) || StringUtils.isBlank(fileId)) {
+                    if(!CommonUtils.isEmptyValue(resultMap, "rsltDesc")){
+                        throw new Exception((String) resultMap.get("rsltDesc"));
+                    } else {
+                        throw new Exception("API 파일 전송 실패");
+                    }
+                }
+
+                //useChInfo set
+                jsonObject = new JSONObject();
+                jsonObject.put("CH", ch);
+                jsonObject.put("URL", imgUrl);
+                jsonObject.put("FILE_ID", fileId);
                 jsonArray.add(jsonObject);
             }
 
@@ -251,53 +314,16 @@ public class CommonService {
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unchecked")
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
     public RestResult<Object> deleteImageFile(Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
-        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_IMAGE_LIST, params);
-        String uploadDirPath = this.imgUploadPath;
 
-        //TODO : 이미지가 서버가 따로 존재. 로컬만 테스트를 위해 경로를 현프로젝트 밑으로..
-        //TODO : 추후 이미지서버를 알면 업로드 로직을 변경하자
-        if(Arrays.stream(env.getActiveProfiles()).anyMatch(
-                env -> env.equalsIgnoreCase("local"))){
-            Path prjRelPath = Paths.get("");
-            String prjAbsPath = prjRelPath.toAbsolutePath().toString();
-            uploadDirPath = prjAbsPath + this.imgUploadPath;
-        }
-
-        if(CollectionUtils.isEmpty(rtnList)) {
-            rtn.setSuccess(false);
-            rtn.setMessage("삭제할 데이터가 존재하지 않습니다.");
-            return rtn;
-        }
-
-        File file = null;
-        Map<String, Object> imgMap = null;
-
-        //파일삭제(파일삭제여부와 관계없이 로우삭제->파일삭제 후 DB 삭제시 이슈)
-        for(Object imgObj :rtnList) {
-            try {
-                imgMap = (Map<String, Object>) imgObj;
-                if(imgMap.containsKey("imageFileName")
-                        && CommonUtils.isNotEmptyObject(imgMap.get("imageFileName"))) {
-                    file = new File(uploadDirPath+imgMap.get("imageFileName"));
-                    if( file.exists() ){
-                        file.delete();
-                    }
-                }
-            } catch (Exception e) {
-                log.error("File Delete Error : {}", e);
-            }
-        }
-
-        //데이터삭제
         int resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_IMAGE, params);
+
         if (resultCnt <= 0) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
         } else {
-            rtn.setSuccess(true);
             rtn.setData(params);
         }
 
@@ -371,6 +397,30 @@ public class CommonService {
     }
 
     /**
+     * FIXME : CM_APIKEY 테이블 에서 가져옴
+     * - 1. APIKEY 관리 작업안됨
+     * - 2. status 정의 없음
+     * - 3. 중복시 유일키 가져오는 방식 정의 없음.
+     * API Key 가져오기
+     * @return
+     */
+    public String getApiKey(String corpId, String projectId) {
+        String apiKey = "1";
+        return apiKey;
+    }
+
+    /**
+     * FIXME : 뭔지 모른다 알아보는중
+     * TODO : 삭제 예정 -> 추후 사용 한곳 알기위해 사용
+     * SVC ID 가져오기
+     * @return
+     */
+    public String getSvcId() {
+        String apiKey = "WEB01";
+        return apiKey;
+    }
+
+    /**
      * get excel cell value
      * @param cell
      * @return
@@ -393,7 +443,7 @@ public class CommonService {
         }
     }
 
-    public static void deleteFolder(String path) {
+    private void deleteFolder(String path) {
         File folder = new File(path);
         try {
             if(folder.exists()){

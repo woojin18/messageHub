@@ -25,6 +25,9 @@ public class Const {
 	// 템플릿 ID 첨두
 	public static final String TMPLT_PREFIX = "TPL";
 
+    // 이미지업로드 ID 첨두
+    public static final String IMG_PREFIX = "IMG";
+
     //이미지 리사이징 사이즈
     @SuppressWarnings("serial")
     public static final Map<String, Integer> CH_IMAGE_RESIZE = new HashMap<String, Integer>() {
@@ -35,5 +38,9 @@ public class Const {
             put("MMS_W", 600); put("MMS_H", 600);
         }
     };
+
+    //API
+    public static final String API_SUCCESS = "10000";  //API 성공 코드(코드정보를 받으면 enum에 등록)
+    public static final String FILE_UPLOAD_API_URL = "/console/v1/file/";  //파일 업로드 API
 
 }

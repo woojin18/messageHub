@@ -458,7 +458,7 @@ export default {
     },
     //이미지선택 callback
     fnSetImageInfo(imgInfo) {
-      this.sendData.imgUrl = imgInfo.imageFullPath;
+      this.sendData.imgUrl = imgInfo.chImgUrl;
     },
     //수신자 정보 callback
     fnCallbackRecvInfoLst(recvInfoLst, addYn) {

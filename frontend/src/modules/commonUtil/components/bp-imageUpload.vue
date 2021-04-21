@@ -63,6 +63,7 @@ export default {
         files: [],
         chkboxUseCh: [],
         imageUrl: '',
+        inProgress: false
     }
   },
   methods: {
@@ -84,6 +85,11 @@ export default {
 
     //파일업로드
     async fnUploadFile() {
+      if(this.inProgress){
+        confirm.fnAlert(this.componentsTitle, '파일업로드 처리중입니다.');
+        return;
+      }
+
       var uploadFile = this.$refs.imageInput;
 
       //유효성체크
@@ -111,6 +117,7 @@ export default {
       fd.append('useCh', this.chkboxUseCh);
       fd.append('loginId', tokenSvc.getToken().principal.userId);
 
+      this.inProgress = true;
       await axios.post('/api/public/common/uploadImage',
         fd, {
           headers: {
@@ -118,6 +125,7 @@ export default {
           }
         }
       ).then( response => {
+        this.inProgress = false;
         if(response.data != null && response.data.success){
           confirm.fnAlert(this.componentsTitle, '등록되었습니다.');
           this.$parent.fnSearch();
@@ -129,9 +137,9 @@ export default {
             confirm.fnAlert(this.componentsTitle, '등록에 실패했습니다.');
           }
         }
-        
       })
       .catch(function () {
+        this.inProgress = false;
         confirm.fnAlert(this.componentsTitle, '등록에 실패했습니다.');
       });
     },

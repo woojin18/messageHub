@@ -58,7 +58,8 @@
             , @PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
             , @CH_OBJECT := JSON_EXTRACT(USE_CH_INFO, @PATH_TO_PARENT) AS CH_OBJECT
             , @CH_IMG_URL := JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.URL')) AS CH_IMG_URL
-            , SUBSTRING_INDEX(REPLACE(@CH_IMG_URL, '\\', '/'), '/', -1) AS CH_IMG_NM
+            , JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.FILE_ID')) AS CH_FILE_ID
+            , SUBSTRING_INDEX(@CH_IMG_URL, '/', -1) AS CH_IMG_NM
             , JSON_EXTRACT(USE_CH_INFO, '$[*].CH') as USE_CH_INFO
             , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i') AS REG_DT
             , DATE_FORMAT(UPD_DT, '%Y-%m-%d %H:%i') AS UPD_DT
@@ -67,7 +68,7 @@
         FROM CM_IMAGE_FILE
         WHERE 1=1
         <include refid="whereSelectImageList"/>
-        ORDER BY REG_DT DESC
+        ORDER BY IMAGE_FILE_SEQ DESC
         <if test='pagingYn == "Y" '>
         LIMIT ${offset}, #{listSize}
         </if>
@@ -80,7 +81,7 @@
         WHERE IMAGE_FILE_SEQ IN
         <foreach collection="imageFileSeqs" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
             AND CORP_ID = #{corpId}
-            AND JSON_EXTRACT(USE_CH_INFO, CONCAT('$.', #{useChInfo})) = 'Y'
+            AND JSON_CONTAINS(USE_CH_INFO, JSON_OBJECT('CH', #{useChInfo}))
     </delete>
 
 

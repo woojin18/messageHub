@@ -101,7 +101,7 @@ import PageLayer from '@/components/PageLayer.vue';
 import CommonUtilApi from "@/modules/commonUtil/service/commonUtilApi.js";
 import ImageUploadPopUp from "@/modules/commonUtil/components/bp-imageUpload.vue";
 import ImagePreview from "@/modules/commonUtil/components/bp-imagePreview.vue";
-import confirm from "@/modules/commonUtil/service/confirm.js"
+import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
@@ -179,7 +179,7 @@ export default {
         'FRIENDTALK':'친구톡',
         'MMS':'MMS'
       };
-      
+
       try {
         useChArray.forEach(function(key){
           if(mappingCdNm[key]) useChStr += (useChStr == '' ? '' : ', ') + mappingCdNm[key];
@@ -187,7 +187,7 @@ export default {
       } catch (error) {
         useChStr = '';
       }
-      
+
       return useChStr;
     },
     //파일업로드팝업 초기화
