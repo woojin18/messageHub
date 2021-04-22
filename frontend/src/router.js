@@ -7,7 +7,8 @@ import WebUcNaviLayout from './views/WebUcNaviLayout.vue';
 import WebNaviLayout from './views/WebNaviLayout.vue';
 import LoginLayout from './views/LoginLayout.vue';
 
-import homeRoutes from './modules/home/router';
+import acHomeRoutes from './modules/acHome/router';
+import ucHomeRoutes from './modules/ucHome/router';
 import loginRoutes from './modules/login/router';
 import listRoutes from './modules/list/router';
 import channelRoutes from './modules/channel/router';
@@ -61,7 +62,7 @@ const router = new Router({
 					component: () => import('./views/ErrorPage500.vue'),
 					meta: { public: true }
 				},
-				...homeRoutes,
+				...acHomeRoutes,
 				...listRoutes,
 				...channelRoutes,
 				...projectRoutes,
@@ -83,7 +84,7 @@ const router = new Router({
 					component: () => import('./views/ErrorPage500.vue'),
 					meta: { public: true }
 				},
-				...homeRoutes,
+				...ucHomeRoutes,
 				...messageRoutes,
 				...templateRoutes,
 				...rcsTemplateRoutes

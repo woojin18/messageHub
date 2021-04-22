@@ -1,4 +1,5 @@
 <template>
+	<div>
 		<!-- sidebar -->
 		<nav id="sidebar">
 			<!-- 메뉴바 접기 -->
@@ -56,7 +57,7 @@
 									<i v-html="item2.IMG_TAG"></i><span>{{item2.MENUS_NAME}}</span><i class="far fa-chevron-down navArrow" style="font-size: 10px;position: absolute;right: 20px"></i>
 								</a>
 								<!-- 소메뉴 -->
-								<div class="depth2Lnb" :id="'depth2_' + j">
+								<div class="depth3Lnb" :id="'depth3_' + j">
 									<ul>
 										<li v-for="(item3, m) in item2.children" :key="m">
 											<a v-bind:href="item3.WEB_URL">{{item3.MENUS_NAME}}</a>

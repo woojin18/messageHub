@@ -153,7 +153,7 @@
 <script>
 // @ is an alias to /src
 import tokenSvc from '@/common/token-service';
-import HomeMain from '../components/UcHomeMain.vue';
+import HomeMain from '../components/HomeMain.vue';
 
 export default {
 	components: {
