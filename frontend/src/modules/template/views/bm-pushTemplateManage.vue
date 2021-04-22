@@ -260,6 +260,10 @@ export default {
         confirm.fnAlert(this.componentsTitle, '이미지를 선택해주세요.');
         return false;
       }
+      if(this.rowData.msgType == 'IMAGE' && !this.rowData.fileId){
+        confirm.fnAlert(this.componentsTitle, '이미지 정보가 잘못되었습니다. 다시 이미지를 선택해주세요.');
+        return false;
+      }
       return true;
     },
     //저장

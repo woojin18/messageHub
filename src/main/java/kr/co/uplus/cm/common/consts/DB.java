@@ -8,6 +8,7 @@ public class DB {
 	public final static String QRY_SELECT_IMAGE_LIST = "common.selectImageList";
 	public final static String QRY_DELETE_IMAGE = "common.deleteImage";
 	public final static String QRY_SELECT_CORP_INFO = "common.selectCorpInfoByUserId";
+	public final static String QTY_SELECT_FILE_ID_USE_CNT = "common.selectFileIdUseCnt";
 	// 로그인
 	public final static String QRY_SELECT_USERNAME	= "login.qrySelectUserName";
 	public final static String QRY_INSERT_USERNAME	= "login.qryInsertAuthUser";

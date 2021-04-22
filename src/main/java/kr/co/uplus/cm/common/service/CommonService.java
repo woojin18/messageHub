@@ -318,6 +318,20 @@ public class CommonService {
     public RestResult<Object> deleteImageFile(Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
 
+        //삭제전 사용 템플릿 있는지 확인
+        int useCnt = generalDao.selectGernalCount(DB.QTY_SELECT_FILE_ID_USE_CNT, params);
+        if(useCnt > 0) {
+            rtn.setSuccess(false);
+            rtn.setMessage("이미지 파일을 사용하고 있는 템플릿이 존재하여 삭제할 수 없습니다.");
+            rtn.setData(params);
+            return rtn;
+        }
+
+        /** 삭제처리 */
+        //TODO : API 삭제요청
+
+
+        //DB 삭제처리
         int resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_IMAGE, params);
 
         if (resultCnt <= 0) {
@@ -397,10 +411,11 @@ public class CommonService {
     }
 
     /**
-     * FIXME : CM_APIKEY 테이블 에서 가져옴
+     * TODO : CM_APIKEY 테이블 에서 가져옴
      * - 1. APIKEY 관리 작업안됨
      * - 2. status 정의 없음
      * - 3. 중복시 유일키 가져오는 방식 정의 없음.
+     * - 4. WEB_YN 후 ROWNUM 1
      * API Key 가져오기
      * @return
      */
@@ -411,7 +426,7 @@ public class CommonService {
 
     /**
      * FIXME : 뭔지 모른다 알아보는중
-     * TODO : 삭제 예정 -> 추후 사용 한곳 알기위해 사용
+     * TODO : G/W 삭제 예정 -> 추후 사용 한곳 알기위해 사용
      * SVC ID 가져오기
      * @return
      */
@@ -443,7 +458,7 @@ public class CommonService {
         }
     }
 
-    private void deleteFolder(String path) {
+    private static void deleteFolder(String path) {
         File folder = new File(path);
         try {
             if(folder.exists()){

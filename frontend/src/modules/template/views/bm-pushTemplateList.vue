@@ -112,8 +112,8 @@
               </td>
               <td class="text-center">{{contant.tmpltName}}</td>
               <td class="text-center">{{contant.otherProjectUseYn}}</td>
-              <td class="text-center">{{contant.msgType}}</td>
-              <td class="text-center">{{contant.msgKind}}</td>
+              <td class="text-center">{{contant.msgTypeName}}</td>
+              <td class="text-center">{{contant.msgKindName}}</td>
               <td class="text-center">{{contant.regId}}</td>
               <td class="text-center end">{{contant.regDt}}</td>
             </tr>

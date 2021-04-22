@@ -146,7 +146,7 @@ public class TemplateController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sheetTitle", "푸시 템플릿 리스트");
 		map.put("colLabels", new String[] { "템플릿 ID", "템플릿명", "타 프로젝트 사용여부", "메시지타입", "메시지구분", "등록자", "등록일자" });
-        map.put("colIds", new String[] {"tmpltId", "tmpltName", "otherProjectUseYn", "msgType", "msgKind", "regId", "regDt"});
+        map.put("colIds", new String[] {"tmpltId", "tmpltName", "otherProjectUseYn", "msgTypeName", "msgKindName", "regId", "regDt"});
 		map.put("numColIds", new String[] {});
 		map.put("figureColIds", new String[] {});
 		map.put("colDataList", tmpltSvc.selectPushTemplateList(params).getData());

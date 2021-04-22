@@ -39,20 +39,23 @@
     /* template.selectPushTemplate 푸시 템플릿 리스트 조회 */
         SELECT
             @ROWNUM := @ROWNUM + 1 AS ROWNUM
-            , TMPLT_ID
-            , TMPLT_NAME
-            , MSG_TYPE
-            , MSG_KIND
-            , OTHER_PROJECT_USE_YN
-            , TMPLT_TITLE
-            , TMPLT_CONTENT
-            , RCVBLC_NUMBER
-            , IMG_URL
-            , REG_DT
-            , REG_ID
-            , UPD_DT
-            , UPD_ID
-        FROM CM_PUSH_TMPLT, (SELECT @ROWNUM:=0) TMP
+            , CIF.TMPLT_ID
+            , CIF.TMPLT_NAME
+            , CIF.MSG_TYPE
+            , cm_console.fnc_get_cd_name('MSG_TYPE', CIF.MSG_TYPE, 1) AS MSG_TYPE_NAME
+            , CIF.MSG_KIND
+            , cm_console.fnc_get_cd_name('MSG_KIND', CIF.MSG_KIND, 1) AS MSG_KIND_NAME
+            , CIF.OTHER_PROJECT_USE_YN
+            , CIF.TMPLT_TITLE
+            , CIF.TMPLT_CONTENT
+            , CIF.RCVBLC_NUMBER
+            , CIF.IMG_URL
+            , CIF.FILE_ID
+            , DATE_FORMAT(CIF.REG_DT, '%Y-%m-%d %H:%i:%S') AS REG_DT
+            , CIF.REG_ID
+            , CIF.UPD_DT
+            , CIF.UPD_ID
+        FROM CM_PUSH_TMPLT CIF, (SELECT @ROWNUM:=0) TMP
         WHERE 1=1
         <include refid="whereSelectPushTemplateList"/>
         ORDER BY REG_DT DESC
@@ -83,7 +86,10 @@
             , TMPLT_TITLE
             , TMPLT_CONTENT
             , RCVBLC_NUMBER
+        <if test="imgUrl != '' and imgUrl != null and fileId != '' and fileId != null ">
             , IMG_URL
+            , FILE_ID
+        </if>
             , REG_DT
             , REG_ID
             , UPD_DT
@@ -97,7 +103,10 @@
             , #{tmpltTitle}
             , #{tmpltContent}
             , #{rcvblcNumber}
+        <if test="imgUrl != '' and imgUrl != null and fileId != '' and fileId != null ">
             , #{imgUrl}
+            , #{fileId}
+        </if>
             , NOW()
             , #{loginId}
             , NOW()
@@ -116,7 +125,10 @@
             , TMPLT_TITLE = #{tmpltTitle}
             , TMPLT_CONTENT = #{tmpltContent}
             , RCVBLC_NUMBER = #{rcvblcNumber}
+        <if test="imgUrl != '' and imgUrl != null and fileId != '' and fileId != null ">
             , IMG_URL = #{imgUrl}
+            , FILE_ID = #{fileId}
+        </if>
             , UPD_DT = NOW()
             , UPD_ID = #{loginId}
         WHERE TMPLT_ID = #{tmpltId}

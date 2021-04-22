@@ -84,6 +84,70 @@
             AND JSON_CONTAINS(USE_CH_INFO, JSON_OBJECT('CH', #{useChInfo}))
     </delete>
 
+    <select id="selectFileIdUseCnt" parameterType="hashmap" resultType="int">
+    /* common.selectFileIdUseCnt 이미지 파일 사용수 조회 */
+        SELECT (
+            (
+                SELECT COUNT(FILE_ID) AS PUSH_CNT
+                FROM CM_PUSH_TMPLT
+                WHERE FILE_ID IN (
+                    SELECT PUSH.FILE_ID
+                    FROM (
+                        SELECT
+                            @PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(USE_CH_INFO, "one", 'PUSH', NULL, '$[*].CH')) AS PATH_TO_NAME
+                            , @PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
+                            , @CH_OBJECT := JSON_EXTRACT(USE_CH_INFO, @PATH_TO_PARENT) AS CH_OBJECT
+                            , JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.FILE_ID')) AS FILE_ID
+                        FROM CM_IMAGE_FILE CIF
+                        WHERE 1=1
+                            AND CORP_ID = 'TEST_CORP_ID'
+                            AND CIF.IMAGE_FILE_SEQ IN <foreach collection="imageFileSeqs" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
+                    ) PUSH
+                )
+            )
+            +
+            (
+                SELECT COUNT(FILE_ID) AS FRIENDTALK_CNT
+                FROM CM_FRIENDTALK_TMPLT
+                WHERE FILE_ID IN (
+                    SELECT FRIENDTALK.FILE_ID
+                    FROM (
+                        SELECT
+                            @PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(USE_CH_INFO, "one", 'FRIENDTALK', NULL, '$[*].CH')) AS PATH_TO_NAME
+                            , @PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
+                            , @CH_OBJECT := JSON_EXTRACT(USE_CH_INFO, @PATH_TO_PARENT) AS CH_OBJECT
+                            , JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.FILE_ID')) AS FILE_ID
+                        FROM CM_IMAGE_FILE CIF
+                        WHERE 1=1
+                            AND CORP_ID = 'TEST_CORP_ID'
+                            AND CIF.IMAGE_FILE_SEQ IN <foreach collection="imageFileSeqs" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
+                    ) FRIENDTALK
+                )
+            )
+            +
+            (
+                SELECT COUNT(FILE_ID) AS MMS_CNT
+                FROM CM_SMS_TMPLT
+                WHERE FILE_ID IN (
+                    SELECT MMS.FILE_ID
+                    FROM (
+                        SELECT
+                            @PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(USE_CH_INFO, "one", 'MMS', NULL, '$[*].CH')) AS PATH_TO_NAME
+                            , @PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
+                            , @CH_OBJECT := JSON_EXTRACT(USE_CH_INFO, @PATH_TO_PARENT) AS CH_OBJECT
+                            , JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.FILE_ID')) AS FILE_ID
+                        FROM CM_IMAGE_FILE CIF
+                        WHERE 1=1
+                            AND CORP_ID = 'TEST_CORP_ID'
+                            AND CIF.IMAGE_FILE_SEQ IN <foreach collection="imageFileSeqs" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
+                    ) MMS
+                )
+            )
+        ) AS USE_CNT
+    </select>
+
+
+
 
 	<select id="selectCorpInfoByUserId" resultType="camel">
 	/* common.selectCorpInfoByUserId */
