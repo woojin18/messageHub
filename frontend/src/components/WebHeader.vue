@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import loginApi from "@/modules/login/service/api"
+import loginApi from '@/modules/login/service/api';
 import tokenSvc from '@/common/token-service';
 import { mapGetters } from 'vuex';
 

@@ -20,12 +20,11 @@
 				</li>
 			</ul>
 		</header>
-		<div :class="{ active : navActive }" class="header_dimm"></div>
 	</section>
 </template>
 
 <script>
-import loginApi from "@/modules/login/service/api"
+import loginApi from '@/modules/login/service/api';
 import tokenSvc from '@/common/token-service';
 import { mapGetters } from 'vuex';
 
@@ -49,6 +48,7 @@ export default {
 		} else {
 			this.$store.commit("login/isLogin", false);
 			this.isLogin = false;
+			this.svcTypeCd = '';
 		}
 	},
 	computed: {
@@ -103,7 +103,7 @@ export default {
 			if (result) {
 				loginApi.logout().then(response => {
 					if (response.data.success) {
-						this.navClose();
+						//this.navClose();
 						this.$router.push({
 							path: "/login"
 						});

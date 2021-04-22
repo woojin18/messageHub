@@ -1,5 +1,5 @@
 <template>
-	<div class="home">
+	<div>
 		<br>
 		<HomeMain msg="HomeMain" />
 		<button><a href="/ac/project/manage"> testtttttttttttt </a></button>
@@ -11,13 +11,13 @@
 // @ is an alias to /src
 import tokenSvc from '@/common/token-service';
 import HomeMain from '../components/HomeMain.vue';
-import homeApi from "@/modules/home/service/api"
-import loginApi from "@/modules/login/service/api"
+import homeApi from '@/modules/home/service/api';
+import loginApi from '@/modules/login/service/api';
 import axios from 'axios';
 
 export default {
 	components: {
-		HomeMain
+		HomeMain,
 	},
 	created: function() {
 		console.log('created HomeMain');

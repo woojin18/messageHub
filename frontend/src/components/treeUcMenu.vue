@@ -76,11 +76,11 @@
 </template>
 
 <script>
-import api from "@/modules/login/service/api";
+import api from '@/modules/login/service/api';
 import tokenSvc from '@/common/token-service';
 
 export default {
-	name: 'TreeMenu',
+	name: 'treeUcMenu',
 	props: {
 	},
 	data() {

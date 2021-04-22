@@ -153,28 +153,17 @@
 <script>
 // @ is an alias to /src
 import tokenSvc from '@/common/token-service';
-import HomeMain from '../components/HomeMain.vue';
+import HomeMain from '../components/UcHomeMain.vue';
 
 export default {
 	components: {
-		HomeMain
-	},
-	data() {
-		return {}
+		HomeMain,
 	},
 	created: function() {
 		console.log('created HomeMain');
 		console.log('token:', tokenSvc.getToken());
 	},
-	mounted() {
-	},
 	methods: {
-		logout: function () {
-			alert("test");
-			axios.get('/api/auth/logout').then(res => {
-				alert('asdfasdfasdf');
-			});
-		}
-	}
+	},
 };
 </script>

@@ -1,40 +1,38 @@
 <template>
-
-  <article class="content">
-
-  <section class="userSection width540 mt150">
-		<!-- userLogin-form -->
-		<div class="userLogin-form">
-			<h2 class="text-center">U+ 통합메시징 클라우드 로그인</h2>
-			<input type="email" class="form-control" id="inputEmail" placeholder="이메일 주소를 입력하세요"
-             name="userId" v-model="userId" :maxlength="15" v-focus @keyup.enter="ajaxlogin">
-			<input type="password" class="form-control mt20" id="inputPassword" placeholder="비밀번호를 입력하세요"
-             name="loginPwd" v-model="loginPwd" :maxlength="20" @keyup.enter="ajaxlogin"> 
-             <!-- 에러메세지 출력 -->
-      <div class="message_area" v-if="errors.length">
-        <p class="text_error">{{ errors[0] }}</p>
-      </div>
-			<div class="row mt20">
-				<div class="checkbox col-md-6">
-					<div class="checks">
-						<input type="checkbox" id="chkID" class="checkStyle4" value="아이디 저장" ref="chkSaveId">
-            <label for="chkID">아이디 저장</label>	
+	<article class="content">
+		<section class="userSection width540 mt150">
+			<!-- userLogin-form -->
+			<div class="userLogin-form">
+				<h2 class="text-center">U+ 통합메시징 클라우드 로그인</h2>
+				<input type="email" class="form-control" id="inputEmail" placeholder="이메일 주소를 입력하세요"
+	             name="userId" v-model="userId" :maxlength="15" v-focus @keyup.enter="ajaxlogin">
+				<input type="password" class="form-control mt20" id="inputPassword" placeholder="비밀번호를 입력하세요"
+	             name="loginPwd" v-model="loginPwd" :maxlength="20" @keyup.enter="ajaxlogin"> 
+	             <!-- 에러메세지 출력 -->
+				<div class="message_area" v-if="errors.length">
+					<p class="text_error">{{ errors[0] }}</p>
+				</div>
+				<div class="row mt20">
+					<div class="checkbox col-md-6">
+						<div class="checks">
+							<input type="checkbox" id="chkID" class="checkStyle4" value="아이디 저장" ref="chkSaveId">
+							<label for="chkID">아이디 저장</label>	
+						</div>
 					</div>
-				</div>
-				<div class="forgot col-md-6">
-					 <a href="user_find_id.html">아이디 찾기</a><span>·</span><a href="user_find_pw.html"><i class="fas fa-lock-alt mr5"></i> 비밀번호 분실</a>
-				</div>
-			</div>	
-			<button type="submit" class="btn btn-login mt45" data-toggle="modal" data-target="#smsAcc" @click.prevent="ajaxlogin">로그인</button>
-		<!--	<a href="user_join.html" class="btn btn-join mt15">회원가입</a> -->
-		</div>
-		<!-- //userLogin-form -->
-	</section>
-  </article>
+					<div class="forgot col-md-6">
+						<a href="user_find_id.html">아이디 찾기</a><span>·</span><a href="user_find_pw.html"><i class="fas fa-lock-alt mr5"></i> 비밀번호 분실</a>
+					</div>
+				</div>	
+				<button type="submit" class="btn btn-login mt45" data-toggle="modal" data-target="#smsAcc" @click.prevent="ajaxlogin">로그인</button>
+			<!--	<a href="user_join.html" class="btn btn-join mt15">회원가입</a> -->
+			</div>
+			<!-- //userLogin-form -->
+		</section>
+	</article>
 </template>
 
 <script>
-  import loginApi from "@/modules/login/service/api"
+  import loginApi from '@/modules/login/service/api';
   import * as utils from '@/common/utils';
 
   export default {
@@ -42,14 +40,14 @@
       return {
         errors: [],
         userId: '',
-        loginPwd: ''
+        loginPwd: '',
+        status: ''
       };
     },
     created() {
       // 로그인 페이지 진입시
       this.$store.commit("login/isLogin", false);
       this.$store.commit("login/isErrorPage", false);
-
     },
     mounted() {
       this.$refs.chkSaveId.checked = true;

@@ -18,10 +18,10 @@
 
 <script>
 import Vue from 'vue';
-import WebUcHeader from "../components/WebUcHeader";
-import treeUcMenu from "../components/treeUcMenu";
-import confirm from "@/modules/commonUtil/service/confirm";
-import common from "@/assets/js/common";
+import WebHeader from '../components/WebUcHeader';
+import treeMenu from '../components/treeUcMenu';
+import confirm from '@/modules/commonUtil/service/confirm';
+import common from '@/assets/js/common';
 
 Vue.use(confirm);
 Vue.use(common);
@@ -29,8 +29,8 @@ Vue.use(common);
 export default {
 	name: "WebUcNaviLayout",
 	components: {
-		WebUcHeader,
-		treeUcMenu
+		WebHeader,
+		treeMenu
 	},
 };
 </script>
