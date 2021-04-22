@@ -1,15 +1,19 @@
 package kr.co.uplus.cm.project.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.project.service.ProjectService;
@@ -61,18 +65,33 @@ public class ProjectController {
 	}
 	
 	// 사전등록예외대상 저장
-	@PostMapping("/savePreRegEx")
-	public RestResult<?> savePreRegEx(@RequestBody Map<String, Object> params, HttpServletRequest request,
-			HttpServletResponse response) {
-		RestResult<Object> rtn = new RestResult<Object>(true);
+	@PostMapping("/savePreRegExWithUploadFiles")
+	public RestResult<?> savePreRegExWithUploadFiles(
+			@RequestParam List<MultipartFile> uploadFiles,
+			@RequestParam String loginId,
+			@RequestParam String corpId,
+			@RequestParam String reqType,
+			HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		rtn.setSuccess(true);
+		
+		Map<String, Object> params = new HashedMap<String, Object>();
+		
+		params.put("loginId", loginId);
+		params.put("corpId", corpId);
+		params.put("reqType", reqType);
+		
 		try {
-			projectService.savePreRegEx(params);
+			projectService.savePreRegExWithUploadFiles(uploadFiles, params);
 			rtn.setSuccess(true);
 			rtn.setData(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage(e.getMessage());
 		}
+		
 		return rtn;
 	}
 }

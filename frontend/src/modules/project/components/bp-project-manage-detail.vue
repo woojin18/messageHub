@@ -33,6 +33,27 @@
 								<input type="radio" name="useYn" value="Y" class="cBox" id="yes" checked=""> <label for="yes" class="payment mr30 font-size12">예</label>
 								<input type="radio" name="useYn" value="N" class="cBox" id="no"> <label for="no" class="payment font-size12">아니요</label>							
 							</div>
+
+              <div class="mt15 of_h">
+								<h4 class="font-normal inline-block float-left" style="width:20%">재발송 제목</h4>
+								<div style="width:78%" class="of_h">
+									<input id="resendTitle" type="text" class="inputStyle float-left" >
+								</div>
+							</div>
+              <div class="mt30 of_h">
+								<h4 class="font-normal inline-block mt5" style="width:20%">개별빌링 여부</h4>
+								<input type="radio" name="subbillYn" value="Y" class="cBox" id="subbillYnY" @click="fnCheckSubblillYn()" checked=""> <label for="subbillYnY" class="payment mr30 font-size12">예</label>
+								<input type="radio" name="subbillYn" value="N" class="cBox" id="subbillYnN" @click="fnCheckSubblillYn()"> <label for="subbillYnN" class="payment font-size12">아니요</label>							
+							</div>
+              <div class="mt30 of_h">
+								<h4 class="font-normal inline-block mt5" style="width:20%">개별빌링 시작일</h4>
+								<Calendar calendarId="subbillStartDay" classProps="datepicker inputStyle maxWidth200"></Calendar>
+							</div>
+              
+              <!-- classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchEndDate" -->
+
+
+
 							<div class="mt30 of_h">
 								<h4 class="font-normal inline-block mt15" style="width:20%">사용채널선택</h4>
 								<table  id="admin_sub03_1_project1" class="table_skin1 tbl-striped-odd mt0 float-right" style="width:80%">
@@ -97,9 +118,15 @@
 <script>
 import projectApi from '../service/projectApi'
 import tokenSvc from '@/common/token-service';
+import Calendar from "@/components/Calendar.vue";
+
+import confirm from "@/modules/commonUtil/service/confirm"
 
 export default {
   name: 'MenuManagePopup',
+  components: {
+    Calendar
+  },
   props: {
     save_status : {
       type: String,
@@ -113,32 +140,36 @@ export default {
   watch: {
     row_data: function(newVal, oldVal) {
       if(this.save_status === 'C'){
-        $("#projectName").val('');
-        $("#projectDesc").val('');
-        $('input:radio[name=payType]:input[value="Y"]').prop("checked", true);
-        $('input:radio[name=useYn]:input[value="Y"]').prop("checked", true);
+        jQuery("#projectName").val('');
+        jQuery("#projectDesc").val('');
+        jQuery('input:radio[name=payType]:input[value="Y"]').prop("checked", true);
+        jQuery('input:radio[name=useYn]:input[value="Y"]').prop("checked", true);
 
-        $('input:radio[name=radioRcs]:input[value="Y"]').prop("checked", true);
-        $('input:radio[name=radioMms]:input[value="Y"]').prop("checked", true);
-        $('input:radio[name=radioPush]:input[value="Y"]').prop("checked", true);
-        $('input:radio[name=radioKakao]:input[value="Y"]').prop("checked", true);
-        $('input:radio[name=radioMo]:input[value="Y"]').prop("checked", true);
+        jQuery("#resendTitle").val('');
+        jQuery('input:radio[name=subbillYn]:input[value="Y"]').prop("checked", true);
+        jQuery("#subbillStartDay").val('');
+
+        jQuery('input:radio[name=radioRcs]:input[value="Y"]').prop("checked", true);
+        jQuery('input:radio[name=radioMms]:input[value="Y"]').prop("checked", true);
+        jQuery('input:radio[name=radioPush]:input[value="Y"]').prop("checked", true);
+        jQuery('input:radio[name=radioKakao]:input[value="Y"]').prop("checked", true);
+        jQuery('input:radio[name=radioMo]:input[value="Y"]').prop("checked", true);
         
       } else if(this.save_status === 'R' || this.save_status === 'U'){
+        jQuery("#projectName").val(this.row_data.projectName);
+        jQuery("#projectDesc").val(this.row_data.projectDesc);
+        jQuery('input:radio[name=payType]:input[value="' + this.row_data.payType + '"]').prop("checked", true);
+        jQuery('input:radio[name=useYn]:input[value="' + this.row_data.useYn + '"]').prop("checked", true);
 
-console.log(this.save_status);
-console.log(this.row_data);
+        jQuery("#resendTitle").val(this.row_data.resendTitle);
+        jQuery('input:radio[name=subbillYn]:input[value="' + this.row_data.subbillYn + '"]').prop("checked", true);
+        jQuery("#subbillStartDay").val(this.row_data.subbillStartDay);
 
-        $("#projectName").val(this.row_data.projectName);
-        $("#projectDesc").val(this.row_data.projectDesc);
-        $('input:radio[name=payType]:input[value="' + this.row_data.payType + '"]').prop("checked", true);
-        $('input:radio[name=useYn]:input[value="' + this.row_data.useYn + '"]').prop("checked", true);
-
-        $('input:radio[name=radioRcs]:input[value="' + this.row_data.radioYn + '"]').prop("checked", true);
-        $('input:radio[name=radioMms]:input[value="' + this.row_data.smsmmsYn + '"]').prop("checked", true);
-        $('input:radio[name=radioPush]:input[value="' + this.row_data.pushYn + '"]').prop("checked", true);
-        $('input:radio[name=radioKakao]:input[value="' + this.row_data.kakaoYn + '"]').prop("checked", true);
-        $('input:radio[name=radioMo]:input[value="' + this.row_data.moYn + '"]').prop("checked", true);
+        jQuery('input:radio[name=radioRcs]:input[value="' + this.row_data.radioYn + '"]').prop("checked", true);
+        jQuery('input:radio[name=radioMms]:input[value="' + this.row_data.smsmmsYn + '"]').prop("checked", true);
+        jQuery('input:radio[name=radioPush]:input[value="' + this.row_data.pushYn + '"]').prop("checked", true);
+        jQuery('input:radio[name=radioKakao]:input[value="' + this.row_data.kakaoYn + '"]').prop("checked", true);
+        jQuery('input:radio[name=radioMo]:input[value="' + this.row_data.moYn + '"]').prop("checked", true);
       }
     }
   },
@@ -148,45 +179,34 @@ console.log(this.row_data);
   methods: {
     // 닫기
     fnClose(){
-      $("#projectPop").modal("hide");
+      jQuery("#projectPop").modal("hide");
     },
-    // 프로젝트명 중복체크
-    fnCheckProjectName(){
-      var checkProjectName = $("#projectName").val();
-
-      if( checkProjectName === '' ){
-        alert("프로젝트명을 입력해주세요.");
-        return;
+    // 개별빌링 체크
+    fnCheckSubblillYn(){
+      var value = jQuery("input[name='subbillYn']:checked").val();
+      if( value === 'N' ){
+        jQuery("#subbillStartDay").val("")
+        jQuery("#subbillStartDay").prop("disabled", true);
+      } else {
+        jQuery("#subbillStartDay").prop("disabled", false);
       }
-
-      var params = {
-        "checkProjectName" : checkProjectName
-      }
-
-      projectApi.checkProjectNameDuplicate(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          alert("사용가능한 프로젝트명입니다.");
-          $("#checkYn").val("Y");
-        } else {
-          alert("중복된 프로젝트명입니다.");
-          $("#checkYn").val("N");
-        }
-      });
     },
     // 등록, 수정
     fnSave(){
       var params = {
           "projectId"      : this.row_data.projectId,
-          "projectName"    : $("#projectName").val(),
-          "projectDesc"    : $("#projectDesc").val(),
-          "payType"        : $("input[name='payType']:checked").val(),
-          "useYn"          : $("input[name='useYn']:checked").val(),
-          "radioRcs"       : $("input[name='radioRcs']:checked").val(),
-          "radioMms"       : $("input[name='radioMms']:checked").val(),
-          "radioPush"      : $("input[name='radioPush']:checked").val(),
-          "radioKko"       : $("input[name='radioKko']:checked").val(),
-          "radioMo"        : $("input[name='radioMo']:checked").val(),
+          "projectName"    : jQuery("#projectName").val(),
+          "projectDesc"    : jQuery("#projectDesc").val(),
+          "payType"        : jQuery("input[name='payType']:checked").val(),
+          "useYn"          : jQuery("input[name='useYn']:checked").val(),
+          "resendTitle"    : jQuery("#resendTitle").val(),
+          "subbillYn"      : jQuery("input[name='subbillYn']:checked").val(),
+          "subbillStartDay": jQuery("#subbillStartDay").val(),
+          "radioRcs"       : jQuery("input[name='radioRcs']:checked").val(),
+          "radioMms"       : jQuery("input[name='radioMms']:checked").val(),
+          "radioPush"      : jQuery("input[name='radioPush']:checked").val(),
+          "radioKko"       : jQuery("input[name='radioKko']:checked").val(),
+          "radioMo"        : jQuery("input[name='radioMo']:checked").val(),
           "sts"             : this.save_status,
           "userDto"         : tokenSvc.getToken().principal    
       };
@@ -195,14 +215,14 @@ console.log(this.row_data);
         var result = response.data;
 
         if(result.success) {
-          alert("저장되었습니다.");
+          confirm.fnAlert("", "저장되었습니다.");
           // 닫기 버튼
           this.$refs.closeBtn.click();
           // 부모창 리스트 조회
           this.$parent.fnSearch();
           // 창닫기
         } else {
-          alert(result.message);
+          confirm.fnAlert("", result.message);
         }
       });
     }

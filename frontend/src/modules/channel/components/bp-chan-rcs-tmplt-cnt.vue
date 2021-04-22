@@ -102,9 +102,9 @@ export default {
   watch: {
     visibleTmplt: function(newVal, oldVal) {
       if(newVal) {
-        $("#confirmTmplt").modal("show");
+        jQuery("#confirmTmplt").modal("show");
       } else {
-        $("#confirmTmplt").modal("hide");
+        jQuery("#confirmTmplt").modal("hide");
       }
     },
     row_data: function(newVal, oldVal) {

@@ -15,33 +15,25 @@
                 <option value="special">특수부가통신사업자</option>
 							</select>
 						</div>
-						<div class="mt15">
+            <div class="mt15">
 							<h4 class="font-normal inline-block width90">첨부파일1</h4>
-							<input type="text" class="inputStyle width291" v-model="fileName1" @click="fnFileDownload(1)" readonly>
-              <input ref="fileInput1" type="file" @change="fnFileUpload(1)" style="display:none;">
-							<a @click="fnFileUploadClick(1)" class="btnStyle7">파일선택</a>
+              <input id="file1" ref="fileRef1" type="file" class="btnStyle7 minWidthAuto float" style="display : inline; width : 79%;">
 						</div>
-						<div class="mt15">
+            <div class="mt15">
 							<h4 class="font-normal inline-block width90">첨부파일2</h4>
-							<input type="text" class="inputStyle width291" v-model="fileName2" @click="fnFileDownload(2)" readonly>
-              <input ref="fileInput2" type="file" @change="fnFileUpload(2)" style="display:none;">
-							<a @click="fnFileUploadClick(2)" class="btnStyle7">파일선택</a>
+              <input id="file2" ref="fileRef2" type="file" class="btnStyle7 minWidthAuto float" style="display : inline; width : 79%;">
 						</div>
-						<div class="mt15">
+            <div class="mt15">
 							<h4 class="font-normal inline-block width90">첨부파일3</h4>
-							<input type="text" class="inputStyle width291" v-model="fileName3" @click="fnFileDownload(3)" readonly>
-              <input ref="fileInput3" type="file" @change="fnFileUpload(3)" style="display:none;">
-							<a @click="fnFileUploadClick(3)" class="btnStyle7">파일선택</a>
+              <input id="file3" ref="fileRef3" type="file" class="btnStyle7 minWidthAuto float" style="display : inline; width : 79%;">
 						</div>
-						<div class="mt15">
+            <div class="mt15">
 							<h4 class="font-normal inline-block width90">첨부파일4</h4>
-							<input type="text" class="inputStyle width291" v-model="fileName4" @click="fnFileDownload(4)" readonly>
-              <input ref="fileInput4" type="file" @change="fnFileUpload(4)" style="display:none;">
-							<a @click="fnFileUploadClick(4)" class="btnStyle7">파일선택</a>
+              <input id="file4" ref="fileRef4" type="file" class="btnStyle7 minWidthAuto float" style="display : inline; width : 79%;">
 						</div>
 					</div>
 					<div class="text-center mt40">
-						<a @click="fnSave" class="btnStyle3 black font14" data-toggle="modal">신청</a>
+            <a @click="fnSaveWithFile" class="btnStyle3 black font14" data-toggle="modal">신청</a>
 						<a @click="fnCloseLayer" ref="closeBtn" class="btnStyle3 white font14" data-dismiss="modal">닫기</a>						
 					</div>
 				</div>
@@ -53,10 +45,9 @@
 <script>
 import axios from 'axios'
 import tokenSvc from '@/common/token-service';
-import projectApi from '../service/projectApi'
 
 export default {
-  name: 'prePaidCashLayer',
+  name: 'preRegExPop',
   data() {
     return {
       fileName1 : "",
@@ -76,35 +67,37 @@ export default {
     }
   },
   methods: {
+    // 닫기
     fnCloseLayer: function() {
       $("#preRegExPop").modal("hide");
     },
-    // 요청
-    fnSave: function() {
-
-      if( this.fileName1 === '' || this.fileName1 === undefined ){
-        alert("파일을 등록해주세요");
+    // 파일 업로드와 같이 저장
+    async fnSaveWithFile(){
+      if(this.$refs.fileRef1.files[0].value == 0){
+        alert("파일을 등록해주세요.");
         return;
       }
 
-      var params = {
-        "reqType"   : this.reqType,
-        "fileName1" : this.fileName1,
-        "filePath1" : this.filePath1,
-        "fileName2" : this.fileName2,
-        "filePath2" : this.filePath2,
-        "fileName3" : this.fileName3,
-        "filePath3" : this.filePath3,
-        "fileName4" : this.fileName4,
-        "filePath4" : this.filePath4,
-        "loginId"   : tokenSvc.getToken().principal.userId,
-        "corpId"    : tokenSvc.getToken().principal.corpId
-      }
+      var fd = new FormData();
 
-      projectApi.savePreRegEx(params).then(response =>{
+      // 첨부파일 정리
+      fd.append('uploadFiles', this.$refs.fileRef1.files[0]);
+      fd.append('uploadFiles', this.$refs.fileRef2.files[0]);
+      fd.append('uploadFiles', this.$refs.fileRef3.files[0]);
+      fd.append('uploadFiles', this.$refs.fileRef4.files[0]);
+      
+      fd.append('loginId', tokenSvc.getToken().principal.userId);
+      fd.append('corpId', tokenSvc.getToken().principal.corpId);
+      fd.append('reqType', this.reqType);
+
+      await axios.post('/projectApi/manage/savePreRegExWithUploadFiles',
+        fd, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      ).then( response => {
         var result = response.data;
-        console.log(response);
-
         if(result.success) {
           alert("저장에 성공했습니다.");
           // 닫기 버튼
@@ -114,115 +107,11 @@ export default {
         } else {
           alert("저장에 실패했습니다.");
         }
-      });
-    },
-    // 파일선택 클릭시
-    fnFileUploadClick(number){
-      if( number === 1 ){
-        this.$refs.fileInput1.click();
-      } else if( number === 2 ){
-        this.$refs.fileInput2.click();
-      } else if( number === 3 ){
-        this.$refs.fileInput3.click();
-      } else if( number === 4 ){
-        this.$refs.fileInput4.click();
-      }
-    },
-    // 파일 업로드
-    async fnFileUpload(number){
-      var fileInput;
-
-      if( number === 1 ){
-        fileInput = this.$refs.fileInput1;
-      } else if( number === 2 ){
-        fileInput = this.$refs.fileInput2;
-      } else if( number === 3 ){
-        fileInput = this.$refs.fileInput3;
-      } else if( number === 4 ){
-        fileInput = this.$refs.fileInput4;
-      }
-      
-      console.log(fileInput.files[0]);
-
-      if(fileInput.value == 0){
-        alert("파일을 등록해주세요.");
-        return;
-      }
-
-      var fd = new FormData();
-      fd.append('uploadFile', fileInput.files[0]);
-      fd.append('loginId', tokenSvc.getToken().principal.userId);
-
-      await axios.post('/api/public/common/uploadFile',
-        fd, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      ).then( response => {
-        console.log(response);
-        if(response.data != null && response.data.success){
-          alert("등록되었습니다.");
-          if( number === 1 ){
-            this.fileName1 = response.data.data.attachFileName;
-            this.filePath1 = response.data.data.attachFilePath;
-          } else if( number === 2 ){
-            this.fileName2 = response.data.data.attachFileName;
-            this.filePath2 = response.data.data.attachFilePath;
-          } else if( number === 3 ){
-            this.fileName3 = response.data.data.attachFileName;
-            this.filePath3 = response.data.data.attachFilePath;
-          } else if( number === 4 ){
-            this.fileName4 = response.data.data.attachFileName;
-            this.filePath4 = response.data.data.attachFilePath;
-          }
-        } else {
-          if(typeof(response.data.message) !== 'undefined' || response.data.message !== null) {
-            alert(response.data.message);
-          } else {
-            alert("등록에 실패했습니다.");
-          }
-        }
       })
       .catch(function (e) {
         console.log(e);
         alert("등록에 실패했습니다.");
       });
-    },
-    // 다운로드... 직므 안됨
-    fnFileDownload(number){
-
-      var filePath, fileName;
-
-      if( number === 1 ){
-        filePath = this.filePath1;
-        fileName = this.fileName1;
-      } else if( number === 2 ){
-        filePath = this.filePath2;
-        fileName = this.fileName2;
-      } else if( number === 3 ){
-        filePath = this.filePath3;
-        fileName = this.fileName3;
-      } else if( number === 4 ){
-        filePath = this.filePath4;
-        fileName = this.fileName4;
-      }
-
-      var params = {
-          filePath    : filePath,
-          fileName    : fileName
-      };
-      /* projectApi.downloadFile(params).then(response =>{
-          var result = response;
-          console.log(response);
-
-          const url = window.URL.createObjectURL(new Blob([response.data]));
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", fileName); //or any other extension
-          document.body.appendChild(link);
-          link.click();
-      }); */
     }
   }
 }

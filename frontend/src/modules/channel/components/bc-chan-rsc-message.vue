@@ -110,7 +110,6 @@ export default {
     }
   },
   mounted() {
-    var vm = this;
     this.projectId = this.$route.params.projectId;
     this.fnSearch();
   },

@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.project.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,11 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.co.uplus.cm.project.service.ChannelService;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.project.service.ChannelService;
 import kr.co.uplus.cm.utils.CommonUtils;
 
 @RestController
@@ -26,10 +28,10 @@ public class ChannelController {
 	@PostMapping("/selectRcsBrandList")
 	public RestResult<?> selectRcsBrandList(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-
+		
 		// commonutils에 집어 넣을것
-		int paging = Integer.parseInt(CommonUtils.getString(params.get("paging")));
-		int rows = Integer.parseInt(CommonUtils.getString(params.get("rows")));
+		int paging = Integer.parseInt(CommonUtils.nvl(CommonUtils.getString(params.get("paging")), "1"));
+		int rows = Integer.parseInt(CommonUtils.nvl(CommonUtils.getString(params.get("rows")), "100"));
 
 		int rowsFront = (paging - 1) * rows;
 
@@ -103,22 +105,6 @@ public class ChannelController {
 	}
 	
 	/**
-	 * 파일 업로드 API
-	 * @param params
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	@PostMapping("/fileUploadToApi")
-	public RestResult<?> fileUploadToApi(
-			@RequestBody MultipartFile files,
-			HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		return channelService.fileUploadToApi(files);
-	}
-	
-	/**
 	 * RCS 브랜드 등록요청
 	 * @param params
 	 * @param request
@@ -127,8 +113,66 @@ public class ChannelController {
 	 * @throws Exception
 	 */
 	@PostMapping("/saveRcsBrandReqForApi")
-	public RestResult<?> saveRcsBrandReqForApi(@RequestBody Map<String, Object> params, HttpServletRequest request,
+	public RestResult<?> saveRcsBrandReqForApi(
+			@RequestParam String sts,
+			@RequestParam String loginId,
+			@RequestParam String corpId,
+			@RequestParam String projectId,
+			@RequestParam String apiKey,
+			@RequestParam String apiSecretKey,
+			@RequestParam String name,
+			@RequestParam String description,
+			@RequestParam String tel,
+			@RequestParam String categoryId,
+			@RequestParam String subCategoryId,
+			@RequestParam String categoryOpt,
+			@RequestParam String zipCode,
+			@RequestParam String roadAddress,
+			@RequestParam String detailAddress,
+			@RequestParam String email,
+			@RequestParam String email2,
+			@RequestParam String mainMdn,
+			@RequestParam MultipartFile profileImgFile,
+			@RequestParam MultipartFile bgImgFile,
+			@RequestParam MultipartFile certiFile,
+			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		return channelService.saveRcsBrandReqForApi(params);
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		RestResult<Object> rtn = new RestResult<Object>();
+		rtn.setSuccess(true);
+		
+		// 파라미터 정리
+		params.put("sts",				sts);
+		params.put("loginId",			loginId);
+		params.put("corpId",			corpId);
+		params.put("projectId",			projectId);
+		params.put("apiKey",			apiKey);
+		params.put("apiSecretKey",		apiSecretKey);
+		params.put("name",				name);
+		params.put("description",		description);
+		params.put("tel",				tel);
+		params.put("categoryId",		categoryId);
+		params.put("subCategoryId",		subCategoryId);
+		params.put("categoryOpt",		categoryOpt);
+		params.put("zipCode",			zipCode);
+		params.put("roadAddress",		roadAddress);
+		params.put("detailAddress",		detailAddress);
+		params.put("email",				email);
+		params.put("email2",			email2);
+		params.put("mainMdn",			mainMdn);
+		params.put("profileImgFile",	profileImgFile);
+		params.put("bgImgFile",			bgImgFile);
+		params.put("certiFile",			certiFile);
+		
+		try {
+			channelService.saveRcsBrandReqForApi(params);
+			rtn.setSuccess(true);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		
+		return rtn;
 	}
 }

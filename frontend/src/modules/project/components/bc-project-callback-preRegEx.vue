@@ -1,25 +1,7 @@
 <template>
   <div>
-    <layerPopup 
-      :reqType = "reqType"
-    />
+    <layerPopup  :reqType = "reqType" />
     <article v-if="!preRegYn">
-		<div class="contentHeader mb20">
-			<h2>비트큐브 프로젝트</h2>
-		</div>
-
-		<!-- 본문 -->
-		<div class="contentBody mb40">
-			<ul class="tab_s3">
-				<li @click="fnMoveMainTab('dashBoard')"><a class="width120">대시보드</a></li>
-				<li @click="fnMoveMainTab('info')"><a class="width120">기본정보</a></li>
-				<li @click="fnMoveMainTab('member')"><a class="width120">멤버관리</a></li>
-				<li @click="fnMoveMainTab('chan-rcs')"><a class="width120">채널관리</a></li>
-				<li @click="fnMoveMainTab('callbackManage')" class="active"><a class="width120">발신번호관리</a></li>
-				<li @click="fnMoveMainTab('spam')"><a class="width120">스팸관리</a></li>
-			</ul>			
-		</div>
-		
 		<h4 class="mt40">발신번호 사전 등록</h4>
 		<p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i> 발신번호 미등록 시 메시지가 정상적으로 전송되지 않을 수 있습니다.<br><i class="far fa-info-circle"></i> 발신번호는 문자발송장비 사용자의 최대 3배까지만 등록할 수 있습니다.</p>
 
@@ -90,32 +72,14 @@
 			
 		<div class="row bgColor_f1 row-no-margin mt10">
 			<div class="text-center mt40">
-			<a @click="fnMoveMainTab('callbackManage')" class="btnStyle3 white font14" data-dismiss="modal">목록</a>						
+				<a @click="fnMovePjtTab" class="btnStyle3 white font14" data-dismiss="modal">목록</a>						
 			</div>
 		</div>
 		<p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i>U+ Biz SMS 고객센터 : 이메일 smshelp@lguplus.co.kr, 팩스 02) 6919-1000<br><i class="far fa-info-circle"></i>사전 등록 예외 사업자는 서버 전송 시에만 적용됩니다. 웹 전송 시에는 등록된 발신번호가 없으면 전송이 실패되오니 유의하시기 바랍니다.</p>
 		<!-- //본문 -->
-
-		<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
 	</article>
     <!-- 이미 사전등록 예외로 등록되어있는 경우 -->
     <article v-if="preRegYn">
-		<div class="contentHeader mb20">
-			<h2>비트큐브 프로젝트</h2>
-		</div>
-
-		<!-- 본문 -->
-		<div class="contentBody mb40">
-			<ul class="tab_s3">
-				<li @click="fnMoveMainTab('dashBoard')"><a class="width120">대시보드</a></li>
-				<li @click="fnMoveMainTab('info')"><a class="width120">기본정보</a></li>
-				<li @click="fnMoveMainTab('member')"><a class="width120">멤버관리</a></li>
-				<li @click="fnMoveMainTab('chan-rcs')"><a class="width120">채널관리</a></li>
-				<li @click="fnMoveMainTab('callbackManage')" class="active"><a class="width120">발신번호관리</a></li>
-				<li @click="fnMoveMainTab('spam')"><a class="width120">스팸관리</a></li>
-			</ul>			
-		</div>
-			
 		<h4 class="mt40">발신번호 사전 등록</h4>
 		<p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i> 발신번호 미등록 시 메시지가 정상적으로 전송되지 않을 수 있습니다.<br><i class="far fa-info-circle"></i> 발신번호는 문자발송장비 사용자의 최대 3배까지만 등록할 수 있습니다.</p>
 
@@ -128,7 +92,7 @@
 
 		<div class="row bgColor_f1 row-no-margin mt10">
 			<div class="text-center mt40">
-			<a @click="fnMoveMainTab('callbackManage')" class="btnStyle3 white font14" data-dismiss="modal">목록</a>						
+				<a @click="fnMovePjtTab" class="btnStyle3 white font14" data-dismiss="modal">목록</a>						
 			</div>
 		</div>
 		<p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i>U+ Biz SMS 고객센터 : 이메일 smshelp@lguplus.co.kr, 팩스 02) 6919-1000<br><i class="far fa-info-circle"></i>사전 등록 예외 사업자는 서버 전송 시에만 적용됩니다. 웹 전송 시에는 등록된 발신번호가 없으면 전송이 실패되오니 유의하시기 바랍니다.</p>
@@ -168,10 +132,13 @@ export default {
     fnMoveMainTab(moveTabName){
       this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
     },
+	fnMovePjtTab(){
+		this.$router.push( {name:'projectMain', params:{"projectId" : this.projectId, "projectName" : this.projectName, "selMainTab" : 5  }} );
+	},
     // 등록팝업창
     fnReg(reqType) {
       this.reqType = reqType;
-      $("#preRegExPop").modal("show");
+      jQuery("#preRegExPop").modal("show");
     },
     // 발신번호 예외사업지 등록 요청된 업체인지 확인
     fnCheckPreRegYn(){

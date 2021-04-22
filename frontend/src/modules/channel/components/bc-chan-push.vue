@@ -7,29 +7,6 @@
     </modal>
     
 		<article>
-			<div class="contentHeader mb20">
-				<h2>{{this.projectName}}</h2>
-			</div>
-
-			<!-- 본문 -->
-			<div class="contentBody mb40">
-				<ul class="tab_s3">
-					<li @click="fnMoveMainTab('dashBoard')"><a class="width120">대시보드</a></li>
-					<li @click="fnMoveMainTab('info')"><a class="width120">기본정보</a></li>
-					<li @click="fnMoveMainTab('member')"><a class="width120">멤버관리</a></li>
-					<li @click="fnMoveMainTab('channel')" class="active"><a class="width120">채널관리</a></li>
-					<li @click="fnMoveMainTab('callbackManage')"><a class="width120">발신번호관리</a></li>
-					<li @click="fnMoveMainTab('spam')"><a class="width120">스팸관리</a></li>
-				</ul>			
-			</div>
-			<ul class="tabStyle tab6 bgColor_tapGray mt30">
-				<li @click="fnMoveSubTab('chan-rcs')"><a>RCS</a></li>
-				<li @click="fnMoveSubTab('chan-smsmms')"><a>SMS/MMS</a></li>
-				<li @click="fnMoveSubTab('chan-push')" class="active"><a>PUSH</a></li>
-				<li @click="fnMoveSubTab('chan-kakao')"><a>카카오톡</a></li>
-				<li @click="fnMoveSubTab('chan-mo')"><a>MO</a></li>
-			</ul>
-			
 			<h4 class="mt40">Push APP ID 관리</h4>
 			<p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i> APP ID는 5개까지 발급받을 수 있으며, 서비스 이용 시 인증에 사용됩니다.</p>
 			

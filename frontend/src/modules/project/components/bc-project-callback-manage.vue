@@ -1,22 +1,6 @@
 <template>
   <div>
 	<article>
-		<div class="contentHeader mb20">
-			<h2>비트큐브 프로젝트</h2>
-		</div>
-
-		<!-- 본문 -->
-		<div class="contentBody mb40">
-			<ul class="tab_s3">
-				<li @click="fnMoveMainTab('dashBoard')"><a class="width120">대시보드</a></li>
-				<li @click="fnMoveMainTab('info')"><a class="width120">기본정보</a></li>
-				<li @click="fnMoveMainTab('member')"><a class="width120">멤버관리</a></li>
-				<li @click="fnMoveMainTab('chan-rcs')"><a class="width120">채널관리</a></li>
-				<li @click="fnMoveMainTab('callbackManage')" class="active"><a class="width120">발신번호관리</a></li>
-				<li @click="fnMoveMainTab('spam')"><a class="width120">스팸관리</a></li>
-			</ul>			
-		</div>
-		
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="menuBox">						
@@ -224,8 +208,8 @@ export default {
       
       var vm = this;
       var params = {
-        "src_project_name"  : $("#src_project_name").val(),
-        "src_use_yn"        : $("#src_use_yn").val(),
+        "src_project_name"  : jQuery("#src_project_name").val(),
+        "src_use_yn"        : jQuery("#src_use_yn").val(),
         "rows"              : vm.selected,
         "paging"            : vm.pagingCnt
       }

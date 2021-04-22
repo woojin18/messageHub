@@ -92,9 +92,12 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route.params.selMainTab);
-    if( this.$route.params.selMainTab != null && this.$route.params.selMainTab != undefined ){
+    if( this.$route.params.selMainTab != null || this.$route.params.selMainTab != undefined ){
       this.selMainTab = this.$route.params.selMainTab;
+    }
+    // 내부에서 새로그침시 프로젝트 화면으로 이동하게 처리
+    if( this.projectId === undefined || this.projectId === null ){
+      this.$router.push( {name:'projectManage', params:{}} );
     }
   },
   methods: {

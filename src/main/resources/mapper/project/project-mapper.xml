@@ -26,17 +26,16 @@
 		,		A.ALARM_AMOUNT
 		,		A.USE_YN
 		,		A.USE_CH_GRP_INFO
+		,		A.RESEND_TITLE
 		,		A.NOPAY_YN
+		,		A.SUBBILL_YN
+		,		date_format(A.SUBBILL_START_DAY, '%Y-%m-%d') as SUBBILL_START_DAY
 		,		( SELECT COUNT(USER_ID) + 1 FROM cm_console.CM_PROJECT_USER WHERE PROJECT_ID = A.PROJECT_ID ) AS PROJECT_MEMBER_CNT
-		,		REPLACE(JSON_EXTRACT(PRICE_INFO, '$.RCS[0]'), "\"", "") AS RCS_YN
-		,		REPLACE(JSON_EXTRACT(PRICE_INFO, '$.PUSH[0]'), "\"", "") AS PUSH_YN
-		,		REPLACE(JSON_EXTRACT(PRICE_INFO, '$.KAKAO[0]'), "\"", "") AS KAKAO_YN
-		,		REPLACE(JSON_EXTRACT(PRICE_INFO, '$.MO[0]'), "\"", "") AS MO_YN
-		,		CONCAT(	CASE WHEN JSON_EXTRACT(PRICE_INFO, '$.MO[0]') = 'Y' THEN 'MO,' ELSE '' END
-					,	CASE WHEN JSON_EXTRACT(PRICE_INFO, '$.RCS[0]') = 'Y' THEN 'RCS,' ELSE '' END
-					,	CASE WHEN JSON_EXTRACT(PRICE_INFO, '$.PUSH[0]') = 'Y' THEN 'PUSH,' ELSE '' END
-					,	CASE WHEN JSON_EXTRACT(PRICE_INFO, '$.KAKAO[0]') = 'Y' THEN 'KAKAO' ELSE '' END
-				) AS USE_CH
+		,		REPLACE(JSON_EXTRACT(A.USE_CH_GRP_INFO, '$.RCS[0]'), "\"", "") AS RCS_YN
+		,		REPLACE(JSON_EXTRACT(A.USE_CH_GRP_INFO, '$.SMSMMS[0]'), "\"", "") AS SMSMMS_YN
+		,		REPLACE(JSON_EXTRACT(A.USE_CH_GRP_INFO, '$.PUSH[0]'), "\"", "") AS PUSH_YN
+		,		REPLACE(JSON_EXTRACT(A.USE_CH_GRP_INFO, '$.KAKAO[0]'), "\"", "") AS KAKAO_YN
+		,		REPLACE(JSON_EXTRACT(A.USE_CH_GRP_INFO, '$.MO[0]'), "\"", "") AS MO_YN
 		FROM	cm_console.CM_PROJECT A
 		INNER JOIN cm_console.CM_PROJECT_USER B
 			ON A.PROJECT_ID = B.PROJECT_ID
@@ -78,8 +77,11 @@
 		,	PAY_TYPE
 		,	BILL_ID
 		,	SMART_CH_CODE
-		,	PRICE_INFO
+		,	USE_CH_GRP_INFO
+		,	RESEND_TITLE
 		,	SUBBILL_YN
+		,	SUBBILL_START_DAY
+		,	NOPAY_YN
 		,	REG_DT
 		,	USE_YN
 		,	DEL_YN
@@ -91,10 +93,13 @@
 		,	#{projectName}
 		,	#{projectDesc}
 		,	#{payType}
-		,	''
+		,	'BILL_ID'
 		,	''
 		,	#{jsonInfo}
-		,	''
+		,	#{resendTitle}
+		,	#{subbillYn}
+		,	REPLACE(#{subbillStartDay}, '-', '')
+		,	'N'
 		,	NOW()
 		,	#{useYn}
 		,	'N'
@@ -104,11 +109,14 @@
 	<update id="updateProject">
 		/* project.updateProject */
 		UPDATE	cm_console.CM_PROJECT
-		SET		PROJECT_NAME	= #{projectName}
-		,		PROJECT_DESC	= #{projectDesc}
-		,		PRICE_INFO		= #{jsonInfo}
-		,		USE_YN			= #{useYn}
-		WHERE	PROJECT_ID		= #{projectId}
+		SET		PROJECT_NAME		= #{projectName}
+		,		PROJECT_DESC		= #{projectDesc}
+		,		USE_CH_GRP_INFO		= #{jsonInfo}
+		,		RESEND_TITLE		= #{resendTitle}
+		,		SUBBILL_YN			= #{subbillYn}
+		,		SUBBILL_START_DAY	= REPLACE(#{subbillStartDay}, '-', '')
+		,		USE_YN				= #{useYn}
+		WHERE	PROJECT_ID			= #{projectId}
 	</update>
 	
 	<update id="updateProjectBillId">

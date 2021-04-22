@@ -98,9 +98,9 @@ export default {
   watch: {
     visibleCallback: function(newVal, oldVal) {
       if(newVal) {
-        $("#confirmCallback").modal("show");
+        jQuery("#confirmCallback").modal("show");
       } else {
-        $("#confirmCallback").modal("hide");
+        jQuery("#confirmCallback").modal("hide");
       }
     },
     row_data: function(newVal, oldVal) {
