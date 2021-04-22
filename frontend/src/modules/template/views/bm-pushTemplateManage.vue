@@ -39,80 +39,81 @@
         </div>
         <!-- //phoneWrap -->
       </div>
-      <div class="of_h inline-block vertical-top" style="width:60%">
+      <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
         <div class="of_h user-phone">
           <div class="float-left" style="width:28%">
-            <p class="main-text font-size18">템플릿명 *</p>
+            <h4>템플릿명 *</h4>
           </div>
           <div class="float-left" style="width:72%">
             <input type="text" class="inputStyle float-right" title="템플릿명 입력란" v-model="rowData.tmpltName" maxlength="50">
           </div>
         </div>
-        <div class="of_h user-phone mt20">
+        <div class="of_h user-phone">
           <div class="float-left" style="width:28%">
-            <p class="main-text font-size18">메시지타입 *</p>
+            <h4>메시지타입 *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <input type="radio" class="cBox" id="msgType_BASE" value="BASE" v-model="rowData.msgType">
-            <label for="msgType_BASE" class="payment mr30 radio mt0">기본</label>
-            <input type="radio" class="cBox" id="msgType_IMAGE" value="IMAGE" v-model="rowData.msgType">
-            <label for="msgType_IMAGE" class="payment radio mt0">이미지</label>
+            <input type="radio" id="msgType_BASE" value="BASE" v-model="rowData.msgType">
+            <label for="msgType_BASE" class="mr30">기본</label>
+            <input type="radio" id="msgType_IMAGE" value="IMAGE" v-model="rowData.msgType">
+            <label for="msgType_IMAGE">이미지</label>
           </div>
         </div>
-        <div class="of_h user-phone mt20">
+        <div class="of_h user-phone">
           <div class="float-left" style="width:28%">
-            <p class="main-text font-size18">메시지구분 *</p>
+            <h4>메시지구분 *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <input type="radio" class="cBox" id="msgKind_A" value="A" v-model="rowData.msgKind">
-            <label for="msgKind_A" class="payment mr30 radio mt0">광고성</label>
-            <input type="radio" class="cBox" id="msgKind_I" value="I" v-model="rowData.msgKind">
-            <label for="msgKind_I" class="payment radio mt0">정보성</label>
+            <input type="radio" id="msgKind_A" value="A" v-model="rowData.msgKind">
+            <label for="msgKind_A" class="mr30">광고성</label>
+            <input type="radio" id="msgKind_I" value="I" v-model="rowData.msgKind">
+            <label for="msgKind_I">정보성</label>
           </div>
         </div>
-        <div class="of_h user-phone mt20">
+        <div class="of_h user-phone">
           <div class="float-left" style="width:28%">
-            <p class="main-text font-size18">타 프로젝트 사용여부  *</p>
+            <h4>타 프로젝트 사용여부  *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <input type="radio" class="cBox" id="otherProjectUseYn_Y" value="Y" v-model="rowData.otherProjectUseYn">
-            <label for="otherProjectUseYn_Y" class="payment mr30 radio mt0">공용</label>
-            <input type="radio" class="cBox" id="otherProjectUseYn_N" value="N" v-model="rowData.otherProjectUseYn">
-            <label for="otherProjectUseYn_N" class="payment radio mt0">전용</label>
+            <input type="radio" id="otherProjectUseYn_Y" value="Y" v-model="rowData.otherProjectUseYn">
+            <label for="otherProjectUseYn_Y" class="mr30">공용</label>
+            <input type="radio" id="otherProjectUseYn_N" value="N" v-model="rowData.otherProjectUseYn">
+            <label for="otherProjectUseYn_N">전용</label>
           </div>
         </div>
-        <div class="of_h user-phone mt20">
+        <div class="of_h user-phone">
           <div class="float-left" style="width:28%">
-            <p class="main-text font-size18">제목</p>
+            <h4>제목</h4>
           </div>
           <div class="float-left" style="width:72%">
             <input type="text" class="inputStyle float-right" title="제목 입력란" id="tmpltTitle" name="tmpltTitle" v-model="rowData.tmpltTitle" maxlength="45">
           </div>
         </div>
-        <div class="of_h user-phone mt20">
+        <div class="of_h user-phone">
           <div class="float-left" style="width:28%">
-            <p class="main-text font-size18">내용 *</p>
+            <h4>내용 *</h4>
           </div>
           <div class="float-left" style="width:72%">
             <textarea class="textareaStyle height120" placeholder="" v-model="rowData.tmpltContent" maxlength="512"></textarea>
             <div v-if="rowData.msgKind == 'A'">
-              <p class="color5 font-size13">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
+              <p class="color5">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
               <input type="text" id="rcvblcNumber" name="rcvblcNumber" class="inputStyle float-right mt10" title="내용 입력란" v-model="rowData.rcvblcNumber" placeholder="설정 > 푸시 알림 설정 변경" maxlength="45">
-              <p class="color5 font-size13">푸시 수신거부 방법을 입력해주세요. 푸시 메시지에 (수신거부:거부 방법)이 포함됩니다.</p>
+              <p class="color5">푸시 수신거부 방법을 입력해주세요. 푸시 메시지에 (수신거부:거부 방법)이 포함됩니다.</p>
             </div>
           </div>
         </div>
-        <div v-if="rowData.msgType == 'IMAGE'" class="of_h user-phone mt20">
+        <div v-if="rowData.msgType == 'IMAGE'" class="of_h user-phone">
           <div class="float-left" style="width:28%">
-            <p class="main-text font-size18">이미지</p>
+            <h4>이미지</h4>
           </div>
           <div class="float-left" style="width:72%">
             <div class="of_h">
-              <a @click="fnOpenImageManagePopUp" class="btnStyle3_1 gray font-size13 minwidthAuto" style="width:25%" title="이미지선택">이미지선택</a>
-
-              <ul class="float-right attachList" style="width:73%; padding:11px 15px; height:45px;">
-                  <li><a @click="fnDelImg">{{fnSubString(rowData.imgUrl, 0, 35)}}  <i v-if="!fnIsEmpty(rowData.imgUrl)" class="fal fa-times"></i></a></li>
-                </ul>
+              <div class="float-left" style="width:25%">
+                <a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" style="width:25%" title="이미지선택">이미지선택</a>
+              </div>
+              <ul class="float-right attachList" style="width:74%; padding:5px 15px; height:30px;">
+                <li><a @click="fnDelImg">{{fnSubString(rowData.imgUrl, 0, 35)}}  <i v-if="!fnIsEmpty(rowData.imgUrl)" class="fal fa-times"></i></a></li>
+              </ul>
             </div>
           </div>
         </div>

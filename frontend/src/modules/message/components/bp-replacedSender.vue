@@ -58,6 +58,7 @@
 
 <script>
 import MessageApi from "@/modules/message/service/messageApi.js";
+import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
   name: "pushContentsPopup",
@@ -66,7 +67,14 @@ export default {
       type: Boolean,
       require: true,
       default: false,
-    }
+    },
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: function() {
+        return '대체발송';
+      }
+    },
   },
   data() {
     return {
@@ -93,11 +101,11 @@ export default {
     //입력정보 callback
     fnCallbackInputData(){
       if(!this.fbInfo.callback){
-        alert('대체발송 발신번호를 선택해주세요.');
+        confirm.fnAlert(this.componentsTitle, '대체발송 발신번호를 선택해주세요.');
         return;
       }
       if(!this.fbInfo.msg){
-        alert('내용을 입력해주세요.');
+        confirm.fnAlert(this.componentsTitle, '내용을 입력해주세요.');
         return;
       }
 
@@ -106,7 +114,8 @@ export default {
       const totByte = this.getByte(totalMsg);
 
       if(msgLimitByte < totByte){
-        alert((this.fbInfo.ch == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+msgLimitByte+'를 넘지 않아야됩니다.\n(현재 : '+totByte+'byte)');
+        const alertMsg = (this.fbInfo.ch == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+msgLimitByte+'를 넘지 않아야됩니다.\n(현재 : '+totByte+'byte)';
+        confirm.fnAlert(this.componentsTitle, alertMsg);
         return;
       }
       this.$parent.fnCallbackFbInfo(this.fbInfo);
@@ -121,9 +130,8 @@ export default {
         var result = response.data;
         if(result.success) {
           this.callbackList = result.data;
-          console.log(result);
         } else {
-          alert(result.message);
+          confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
     },

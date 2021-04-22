@@ -260,6 +260,7 @@ import PushTemplatePopup from "@/modules/message/components/bp-pushTemplate.vue"
 import DirectInputPopup from "@/modules/message/components/bp-directInput.vue";
 import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue";
 import Calendar from "@/components/Calendar.vue";
+import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
   name: "sendPushMain",
@@ -271,6 +272,15 @@ export default {
     PushTemplatePopup,
     AddressInputPopup,
     Calendar
+  },
+  props: {
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: function() {
+        return '푸시 발송';
+      }
+    },
   },
   data() {
     return {
@@ -323,9 +333,9 @@ export default {
       await MessageApi.apiTest(param).then(response =>{
         var result = response.data;
         if(result.success) {
-          alert('성공하였습니다');
+          confirm.fnAlert(this.componentsTitle, '성공하였습니다');
         } else {
-          alert(result.message);
+          confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
     },
@@ -349,9 +359,9 @@ export default {
         console.log('=======================');
         /*
         if(result.success) {
-          alert('성공하였습니다');
+          confirm.fnAlert(this.componentsTitle, '성공하였습니다.');
         } else {
-          alert(result.message);
+          confirm.fnAlert(this.componentsTitle, result.message);
         }
         */
       });
@@ -381,7 +391,7 @@ export default {
         if(result.success) {
           this.aplnIdList = result.data;
         } else {
-          alert(result.message);
+          confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
     },
@@ -422,7 +432,7 @@ export default {
         return;
       }
       if(!this.sendData.pushContent){
-        alert('메시지 내용을 먼저 입력해주세요.');
+        confirm.fnAlert(this.componentsTitle, '메시지 내용을 먼저 입력해주세요.');
         this.sendData.cuInputType = 'ALL'
         this.$refs.cuInputType_ALL.click();
         return false;

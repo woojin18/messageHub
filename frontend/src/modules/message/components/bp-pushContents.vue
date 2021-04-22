@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import confirm from "@/modules/commonUtil/service/confirm.js";
+
 export default {
   name: "pushContentsPopup",
   props: {
@@ -46,6 +48,13 @@ export default {
     sendData : {
       type: Object,
       require: true,
+    },
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: function() {
+        return '푸시 발송 내용';
+      }
     },
   },
   data() {
@@ -64,7 +73,7 @@ export default {
     //입력정보 callback
     fnCallbackInputData(){
       if(!this.pushContent){
-        alert('내용을 입력해주세요.');
+        confirm.fnAlert(this.componentsTitle, '내용을 입력해주세요.');
         return false;
       }
       this.$parent.fnSetPushInfo(this.pushTitle, this.pushContent, this.rcvblcNumber);

@@ -95,6 +95,7 @@
 
 <script>
 import TemplateApi from "@/modules/template/service/templateApi.js";
+import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
   name: "directInputPopup",
@@ -115,7 +116,14 @@ export default {
           'listSize': 999999999
         }
       }
-    }
+    },
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: function() {
+        return '푸시 템플릿 검색';
+      }
+    },
   },
   data() {
     return {
@@ -128,7 +136,8 @@ export default {
     //템플릿선택
     fnSelectTemplate(){
       if(Object.keys(this.templateData).length == 0){
-        alert('템플릿을 선택해주세요.');
+        confirm.fnAlert(this.componentsTitle, '템플릿을 선택해주세요.');
+        return;
       }
       this.$parent.fnSetTemplateInfo(this.templateData);
       this.fnClose();
@@ -160,7 +169,7 @@ export default {
           this.templateList = result.data;
           this.totCnt = result.pageInfo.totCnt;
         } else {
-          alert(result.message);
+          confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
     },

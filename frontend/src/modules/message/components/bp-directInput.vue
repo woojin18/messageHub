@@ -48,9 +48,9 @@
   </div>
 </template>
 
-
-
 <script>
+import confirm from "@/modules/commonUtil/service/confirm.js";
+
 export default {
   name: "directInputPopup",
   props: {
@@ -79,7 +79,14 @@ export default {
       default: function() {
         return [];
       }
-    }
+    },
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: function() {
+        return '수신자 직접입력';
+      }
+    },
   },
   data() {
     return {
@@ -161,15 +168,15 @@ export default {
       
       if(hasEmptyKey){
         const alertStr = (this.requiredCuid ? 'APP 로그인' : '') + (this.requiredCuid && this.requiredCuPhone ? ', ' : '') + (this.requiredCuPhone ? '휴대폰번호' : '');
-        alert(alertStr+'는(은) 필수입니다.');
+        confirm.fnAlert(this.componentsTitle, alertStr+'는(은) 필수입니다.');
         return;
       }
       if(hasEmptyProp){
-        alert('APP 로그인 ID나 휴대폰번호를 입력한 행은 빈값이 존재하면 안됩니다.');
+        confirm.fnAlert(this.componentsTitle, 'APP 로그인 ID나 휴대폰번호를 입력한 행은 빈값이 존재하면 안됩니다.');
         return;
       }
       if(recvInfoLst.length == 0){
-        alert('수신자 정보를 입력해주세요.');
+        confirm.fnAlert(this.componentsTitle, '수신자 정보를 입력해주세요.');
         return;
       }
       
