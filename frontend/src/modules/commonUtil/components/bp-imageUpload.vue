@@ -15,6 +15,12 @@
             <label for="imgRCS" class="mr10">RCS</label>
             <input type="checkbox" id="imgtalk" class="checkStyle2" value="FRIENDTALK" v-model="chkboxUseCh">
             <label for="imgtalk" class="mr10">친구톡</label>
+
+            <select v-if="chkboxUseCh.includes('FRIENDTALK')" v-model="wideYn" class="selectStyle1 vertical-middle mr10" style="width:15%">
+              <option value="N">Normal</option>
+              <option value="Y">Wide</option>
+            </select>
+
             <input type="checkbox" id="imgMMS1" class="checkStyle2" value="MMS" v-model="chkboxUseCh">
             <label for="imgMMS1" class="mr10">MMS</label>
           </div>
@@ -63,6 +69,7 @@ export default {
         files: [],
         chkboxUseCh: [],
         imageUrl: '',
+        wideYn: 'N',
         inProgress: false
     }
   },
@@ -90,7 +97,7 @@ export default {
         return;
       }
 
-      var uploadFile = this.$refs.imageInput;
+      const uploadFile = this.$refs.imageInput;
 
       //유효성체크
       //사용채널 선택 확인
@@ -112,11 +119,12 @@ export default {
         return;
       }
 
-      var fd = new FormData();
+      let fd = new FormData();
       fd.append('uploadFile', uploadFile.files[0]);
       fd.append('useCh', this.chkboxUseCh);
+      fd.append('wideYn', this.wideYn);
       fd.append('loginId', tokenSvc.getToken().principal.userId);
-
+      
       this.inProgress = true;
       await axios.post('/api/public/common/uploadImage',
         fd, {

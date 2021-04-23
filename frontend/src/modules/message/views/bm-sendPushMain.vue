@@ -7,57 +7,60 @@
     <!-- 본문 -->
     <div class="row row-no-margin">
       <div class="phone3 inline-block" style="width:30%">
-        <!-- phoneWrap -->
-        <!-- PUSH -->
-        <div v-if="previewMessageType == 'PUSH'" class="phoneWrap">
-          <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-          <div class="phoneTextWrap">
-            <div class="phoneText1">
-              <p v-if="fnIsEmpty(sendData.pushTitle)">제목</p>
-              <p v-else>{{sendData.pushTitle}}</p>
+        <div class="phoneFixed">
+          <!-- phoneWrap -->
+          <!-- PUSH -->
+          <div v-if="previewMessageType == 'PUSH'" class="phoneWrap">
+            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
+            <div class="phoneTextWrap">
+              <div class="phoneText1">
+                <p v-if="fnIsEmpty(sendData.pushTitle)">제목</p>
+                <p v-else>{{sendData.pushTitle}}</p>
+              </div>
+              <div v-if="sendData.msgType == 'IMAGE' && fnIsEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
+                <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+                <p class="font-size14 color3 mt15">이미지 영역</p>
+              </div>
+              <div v-if="sendData.msgType == 'IMAGE' && !fnIsEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center"
+                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
+              </div>
+              <p v-if="sendData.msgKind != 'A' || (fnIsEmpty(sendData.pushContent) && fnIsEmpty(sendData.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
+              <p v-else class="font-size14 color4 mt10">
+                {{sendData.pushContent}}
+                <br v-if="!fnIsEmpty(sendData.pushContent)"/>
+                {{sendData.rcvblcNumber}}
+              </p>
             </div>
-            <div v-if="sendData.msgType == 'IMAGE' && fnIsEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
-              <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
-              <p class="font-size14 color3 mt15">이미지 영역</p>
-            </div>
-            <div v-if="sendData.msgType == 'IMAGE' && !fnIsEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center"
-              :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
-            </div>
-            <p v-if="sendData.msgKind != 'A' || (fnIsEmpty(sendData.pushContent) && fnIsEmpty(sendData.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
-            <p v-else class="font-size14 color4 mt10">
-              {{sendData.pushContent}}
-              <br v-if="!fnIsEmpty(sendData.pushContent)"/>
-              {{sendData.rcvblcNumber}}
-            </p>
           </div>
-        </div>
-        <!--// PUSH -->
-        <!-- XMS -->
-        <div v-if="previewMessageType == 'RPLC'" class="phoneWrap">
-          <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-          <div class="phoneTextWrap">
-            <div class="phoneText1">
-              <p v-if="fnIsEmpty(sendData.fbInfo.callback)">발신번호</p>
-              <p v-else>{{sendData.fbInfo.callback}}</p>
+          <!--// PUSH -->
+          <!-- XMS -->
+          <div v-if="previewMessageType == 'RPLC'" class="phoneWrap">
+            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
+            <div class="phoneTextWrap">
+              <div class="phoneText1">
+                <p v-if="fnIsEmpty(sendData.fbInfo.callback)">발신번호</p>
+                <p v-else>{{sendData.fbInfo.callback}}</p>
+              </div>
+              <div v-if="sendData.rplcSendType != 'SMS'" class="phoneText2" style="margin-top: 5px;">
+                <p v-if="fnIsEmpty(sendData.fbInfo.title)">제목</p>
+                <p v-else>{{sendData.fbInfo.title}}</p>
+              </div>
+              <p v-if="(fnIsEmpty(sendData.fbInfo.msg) && fnIsEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
+              <p v-else class="font-size14 color4 mt10">
+                {{sendData.fbInfo.msg}}
+                <br v-if="!fnIsEmpty(sendData.fbInfo.rcvblcNumber)"/>
+                {{sendData.fbInfo.rcvblcNumber}}
+              </p>
             </div>
-            <div v-if="sendData.rplcSendType != 'SMS'" class="phoneText2" style="margin-top: 5px;">
-              <p v-if="fnIsEmpty(sendData.fbInfo.title)">제목</p>
-              <p v-else>{{sendData.fbInfo.title}}</p>
-            </div>
-            <p v-if="(fnIsEmpty(sendData.fbInfo.msg) && fnIsEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
-            <p v-else class="font-size14 color4 mt10">
-              {{sendData.fbInfo.msg}}
-              <br v-if="!fnIsEmpty(sendData.fbInfo.rcvblcNumber)"/>
-              {{sendData.fbInfo.rcvblcNumber}}
-            </p>
           </div>
+          <!--// XMS -->
+          <div class="phone_04_btn">
+            <a @click="fnChgPreviewMessageType('PUSH')" class="btnStyle1 backBlack" title="Push">Push</a>
+            <a v-if="sendData.rplcSendType != 'NONE'" @click="fnChgPreviewMessageType('RPLC')" class="btnStyle1 backWhite" title="Push">{{sendData.rplcSendType}}</a>
+          </div>
+          <!-- //phoneWrap -->
         </div>
-        <!--// XMS -->
-        <!-- //phoneWrap -->
-        <div class="phone_04_btn">
-          <a @click="fnChgPreviewMessageType('PUSH')" class="btnStyle1 backBlack" title="Push">Push</a>
-          <a v-if="sendData.rplcSendType != 'NONE'" @click="fnChgPreviewMessageType('RPLC')" class="btnStyle1 backWhite" title="Push">{{sendData.rplcSendType}}</a>
-        </div>
+
       </div>
       <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
         <div class="row user-phone of_h row-no-margin">
@@ -69,7 +72,7 @@
             <!-- 2021-04-07 : G/W에서 해당 정보 받지 않아서 주석처리
             <div class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
-                <p class="sub-text">발송정책 *</p>
+                <h5>발송정책 *</h5>
               </div>
               <div style="width:82%">
                 <input type="radio" name="send" value="ALL" id="pushSenderSet_ALL" v-model="sendData.pushSenderSet">
@@ -80,8 +83,11 @@
                 <label for="pushSenderSet_APNS">APNS</label>
               </div>
             </div>
-            -->
+
             <div class="of_h">
+            -->
+
+            <div class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
                 <h5 >메시지구분 *</h5>
               </div>
@@ -440,7 +446,7 @@ export default {
         this.sendData.cuInputType = 'ALL'
         this.$refs.cuInputType_ALL.click();
         return;
-      } 
+      }
 
       if(this.sendData.cuInputType == 'DICT'){  //직접입력
         //수신자 직접입력 팝업 호출

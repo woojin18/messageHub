@@ -82,9 +82,9 @@
               </div>
             </div>
           </div>
-          <div class="text-center mb40">
-            <a @click="fnSelectTemplate" class="btnStyle3 black font14" data-toggle="modal" title="템플릿 선택">템플릿 선택</a>
-            <a @click="fnClose" class="btnStyle3 white font14" data-dismiss="modal" title="취소">취소</a>
+          <div class="text-center mt20">
+            <a @click="fnSelectTemplate" class="btnStyle1 backBlack" data-toggle="modal" title="템플릿 선택">템플릿 선택</a>
+            <a @click="fnClose" class="btnStyle1 backWhite" data-dismiss="modal" title="취소">취소</a>
           </div>
         </div>
       </div>

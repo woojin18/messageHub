@@ -34,9 +34,9 @@
             </div>
           </div>
           
-          <div class="text-center mt60">
-            <a @click="fnCallbackInputData" class="btnStyle3 black font14" title="선택">선택</a>
-            <a @click="fnClose" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>
+          <div class="text-center mt20">
+            <a @click="fnCallbackInputData" class="btnStyle1 backBlack" title="선택">선택</a>
+            <a @click="fnClose" class="btnStyle1 backWhite" data-dismiss="modal" title="닫기">닫기</a>
           </div>
 
         </div>

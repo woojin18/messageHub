@@ -13,6 +13,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -23,7 +24,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
+import kr.co.uplus.cm.common.config.FileProperties;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -56,17 +57,8 @@ public class CommonService {
     @Autowired
     ApiInterface apiInterface;
 
-    @Value("${file.props.img.upload-path}")
-    String imgUploadPath;
-
-    @Value("${file.props.img.limit-size}")
-    long imgUploadLimitSize;
-
-    @Value("${file.props.img.permit-exten}")
-    String imgUploadPermitExten;
-
-    @Value("${file.props.excel.permit-exten}")
-    String excelUploadPermitExten;
+    @Autowired
+    FileProperties fileProps;
 
     /**
      * 엑셀파일에서 엑셀데이터 가져오기
@@ -84,10 +76,10 @@ public class CommonService {
         String fileExten = fileName.substring(fileName.lastIndexOf(".") + 1);
 
         //엑셀 업로드 확장자 유효성 체크
-        if(Stream.of(excelUploadPermitExten.split(","))
+        if(Stream.of(fileProps.getExcel().getPermitExten().split(","))
                 .map(String::trim)
                 .noneMatch(s->s.toLowerCase().contains(fileExten.toLowerCase()))) {
-            log.error("{} 허용된지 않은 엑셀 업로드 확장자======>", this.getClass());
+            log.error("{} 허용되지 않은 엑셀 업로드 확장자======>", this.getClass());
             log.error("원본 파일명 : {}", fileName);
             log.error("파일 확장자 : {}", fileExten);
             throw new Exception("허용된지 않은 엑셀 업로드 확장자");
@@ -125,7 +117,7 @@ public class CommonService {
      */
     @SuppressWarnings("unchecked")
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-    public RestResult<Object> uploadImgFile(MultipartFile files, String[] useCh, String loginId) throws Exception {
+    public RestResult<Object> uploadImgFile(MultipartFile files, String[] useCh, String wideYn, String loginId) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
 
         //빈값 확인
@@ -143,7 +135,7 @@ public class CommonService {
         String fileExten = fileName.substring(fileName.lastIndexOf(".") + 1);
 
         //이미지 업로드 확장자 유효성 체크
-        if(Stream.of(imgUploadPermitExten.split(","))
+        if(Stream.of(fileProps.getImg().getPermitExten().split(","))
                 .map(String::trim)
                 .noneMatch(s->s.toLowerCase().contains(fileExten.toLowerCase()))) {
             rtn.setSuccess(false);
@@ -151,22 +143,15 @@ public class CommonService {
             return rtn;
         }
 
-        //이미지 업로드 용량 유효성 체크
-        if(files.getSize() > imgUploadLimitSize) {
-            rtn.setSuccess(false);
-            rtn.setMessage("허용되는 업로드 용량 크기를 초과하였습니다.");
-            return rtn;
-        }
-
         Path prjRelPath = Paths.get("");
         String currentYmd = DateUtil.getCurrnetDate("yyyyMMdd");
         String prjAbsPath = "";
-        String uploadDirPath = this.imgUploadPath;
+        String uploadDirPath = fileProps.getImg().getUploadPath();
         String convertUUID = UUID.randomUUID().toString().replace("-", ""); // 해쉬명 생성
 
         //이미지 업로드 임시 폴더
         prjAbsPath = prjRelPath.toAbsolutePath().toString();
-        uploadDirPath = prjAbsPath + this.imgUploadPath + convertUUID + File.separator;
+        uploadDirPath = prjAbsPath + fileProps.getImg().getUploadPath() + convertUUID + File.separator;
 
         File uploadDir = new File(uploadDirPath);
 
@@ -192,28 +177,56 @@ public class CommonService {
             Map<String, Object> resultMap = null;
             Map<String, Object> dataMap = null;
             ObjectMapper mapper = null;
+            Map<String, Integer> resizeInfo = null;
+            File chFile = null;
 
             String apiKey = this.getApiKey("TEST_CORP", "TEST_PROJECT");  //TODO : 수정
             String svcId = this.getSvcId();
             String resizePath = "";
             String apiUrl = "";
             String imgUrl = "";
-            String fileId = "";
+            String fileId = CommonUtils.getCommonId(Const.FILE_UPLOAD_PREFIX, 5);  //모든 채널 한개의 fileId 사용
+            String responseFileId = "";
+            String chNm = "";
+            long chLimitSize = NumberUtils.LONG_ZERO;
 
             for(String ch : useCh) {
-                //TODO: 삭제 (API : 포탈연동 오류)
-                if(StringUtils.equals("FRIENDTALK", ch)) {
-                    continue;
+                chNm = ch;
+                if(StringUtils.equals("FRIENDTALK", ch) && StringUtils.equals(Const.COMM_YES, wideYn)) {
+                    chNm+="_WIDE";
+                } else {
+                    wideYn = Const.COMM_NO;
                 }
 
                 /** 파일 resize */
+                resizeInfo = fileProps.getImg().getChResize(chNm);
+                if(resizeInfo == null
+                        || !resizeInfo.containsKey(Const.IMG_RESIZE_WIDTH)
+                        || !resizeInfo.containsKey(Const.IMG_RESIZE_HEIGHT)) {
+                    throw new Exception("유효하지 않은 이미지 리사이즈 정보 : 채널("+chNm+")");
+                }
                 resizePath = ImageUtil.imageResize(
                     oriFileFullPath
                     , uploadDirPath
                     , oriFileName+"_"+ch+"."+fileExten
                     , fileExten
-                    , Const.CH_IMAGE_RESIZE.get(ch+"_W")
-                    , Const.CH_IMAGE_RESIZE.get(ch+"_H"));
+                    , resizeInfo.get(Const.IMG_RESIZE_WIDTH)
+                    , resizeInfo.get(Const.IMG_RESIZE_HEIGHT));
+
+                /** 채널별 이미지 사이즈 검사 */
+                chFile = new File(resizePath);
+                chLimitSize = fileProps.getImg().getChLimitSize(chNm);
+                if(!chFile.exists()) {
+                    throw new Exception("유효하지 않은 리사이즈 이미지");
+                }
+                if(chFile.length() > chLimitSize) {
+                    throw new Exception("유효하지 않은 이미지 사이즈 : 채널("+chNm+"), 이미지 사이즈("+chFile.length()+"Byte), 제한사이즈("+chLimitSize+"Byte)");
+                }
+
+                //TODO: 삭제 (API : 포탈연동 오류)
+                if(StringUtils.equals("FRIENDTALK", ch)) {
+                    continue;
+                }
 
                 /** API Send */
                 //set Header Info
@@ -224,15 +237,15 @@ public class CommonService {
 
                 //set reqFile Info
                 reqFileObject = new JSONObject();
-                reqFileObject.put("fileId", CommonUtils.getCommonId(Const.IMG_PREFIX, 5));
+                reqFileObject.put("fileId", fileId);
                 reqFileObject.put("wideYn", "N");
 
                 //send
-                apiUrl = Const.FILE_UPLOAD_API_URL+ch;
+                apiUrl = Const.FILE_UPLOAD_API_URL+ch.toLowerCase();
                 resultMap = apiInterface.sendImg(
                     apiUrl
                     , headerMap
-                    , new File(resizePath)
+                    , chFile
                     , reqFileObject.toJSONString());
 
                 //send result
@@ -245,12 +258,12 @@ public class CommonService {
                         if(!CommonUtils.isEmptyValue(dataMap, "imgUrl")
                                 && !CommonUtils.isEmptyValue(dataMap, "fileId")) {
                             imgUrl = (String) dataMap.get("imgUrl");
-                            fileId = (String) dataMap.get("fileId");
+                            responseFileId = (String) dataMap.get("fileId");
                         }
                     }
                 }
 
-                if(StringUtils.isBlank(imgUrl) || StringUtils.isBlank(fileId)) {
+                if(StringUtils.isBlank(imgUrl) || StringUtils.isBlank(fileId) || !StringUtils.equals(responseFileId, fileId)) {
                     if(!CommonUtils.isEmptyValue(resultMap, "rsltDesc")){
                         throw new Exception((String) resultMap.get("rsltDesc"));
                     } else {
@@ -262,17 +275,15 @@ public class CommonService {
                 jsonObject = new JSONObject();
                 jsonObject.put("CH", ch);
                 jsonObject.put("URL", imgUrl);
-                jsonObject.put("FILE_ID", fileId);
                 jsonArray.add(jsonObject);
             }
 
             //DB 등록
             Map<String, Object> params = new HashMap<>();
+            params.put("fileId", fileId);
             params.put("corpId", "TEST_CORP_ID");    //TODO : 고객 ID(로그인세션에서 가져오자)
             params.put("useChInfo", jsonArray.toJSONString());
-            params.put("originFileName", fileName);    //TODO : 삭제 원본파일은 저장하지 않는다. DB 변경되면 삭제
-            params.put("imageFileName", uplaodFile.getName());    //TODO : 삭제 원본파일은 저장하지 않는다. DB 변경되면 삭제
-            params.put("imageFilePath", oriFileFullPath);    //TODO : 삭제 원본파일은 저장하지 않는다. DB 변경되면 삭제
+            params.put("originFileName", fileName);
             params.put("loginId", loginId);
             generalDao.insertGernal(DB.QRY_INSERT_IMAGE_FILE, params);
 
@@ -358,7 +369,7 @@ public class CommonService {
         String fileExten = fileName.substring(fileName.lastIndexOf(".") + 1);
 
         //이미지 업로드 용량 유효성 체크
-        if(files.getSize() > imgUploadLimitSize) {
+        if(files.getSize() > fileProps.getImg().getLimitSize().getDefaultSize()) {
             rtn.setSuccess(false);
             rtn.setMessage("허용되는 업로드 용량 크기를 초과하였습니다.");
             return rtn;
@@ -367,14 +378,14 @@ public class CommonService {
         Path prjRelPath = Paths.get("");
         String currentYmd = DateUtil.getCurrnetDate("yyyyMMdd");
         String prjAbsPath = "";
-        String uploadDirPath = this.imgUploadPath;
+        String uploadDirPath = fileProps.getImg().getUploadPath();
 
         //TODO : 이미지가 서버가 따로 존재. 로컬만 테스트를 위해 경로를 현프로젝트 밑으로..
         //TODO : 추후 이미지서버를 알면 업로드 로직을 변경하자
         if(Arrays.stream(env.getActiveProfiles()).anyMatch(
                 env -> env.equalsIgnoreCase("local"))){
             prjAbsPath = prjRelPath.toAbsolutePath().toString();
-            uploadDirPath = prjAbsPath + this.imgUploadPath;
+            uploadDirPath = prjAbsPath + fileProps.getImg().getUploadPath();
         }
 
         File uploadDir = new File(uploadDirPath);

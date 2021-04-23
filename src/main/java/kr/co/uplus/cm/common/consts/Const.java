@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Const {
+    public static final String COMM_YES = "Y";
+    public static final String COMM_NO = "N";
+
 	public static final String KEY_MDC_LOG = "logKey";
 	public static final String KEY_LOG_OBJ = "logObj";
 	public static final String KEY_LOAD_USER = "loadUser"; // UserDetailsService에서 로딩하는 사용자정보
@@ -26,18 +29,12 @@ public class Const {
 	public static final String TMPLT_PREFIX = "TPL";
 
     // 이미지업로드 ID 첨두
-    public static final String IMG_PREFIX = "IMG";
+    public static final String FILE_UPLOAD_PREFIX = "FLE";
 
     //이미지 리사이징 사이즈
-    @SuppressWarnings("serial")
-    public static final Map<String, Integer> CH_IMAGE_RESIZE = new HashMap<String, Integer>() {
-        {
-            put("PUSH_W", 300); put("PUSH_H", 300);
-            put("RCS_W", 400); put("RCS_H", 400);
-            put("FRIENDTALK_W", 500); put("FRIENDTALK_H", 500);
-            put("MMS_W", 600); put("MMS_H", 600);
-        }
-    };
+    public static final String IMG_RESIZE_WIDTH = "width";
+    public static final String IMG_RESIZE_HEIGHT = "height";
+
 
     //API
     public static final String API_SUCCESS = "10000";  //API 성공 코드(코드정보를 받으면 enum에 등록)

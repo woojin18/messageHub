@@ -175,6 +175,7 @@ public class SendMessageController {
     @PostMapping(path = "/excelDownSendPushRecvTmplt")
     public ModelAndView excelDownSendPushRecvTmplt(HttpServletRequest request, HttpServletResponse response,
             @RequestBody Map<String, Object> params) throws Exception {
+
         List<String> colLabels = new ArrayList<String>();
         if(params.containsKey("requiredCuid") && (Boolean) params.get("requiredCuid")) {
             colLabels.add("APP 로그인 ID");
@@ -222,43 +223,47 @@ public class SendMessageController {
             , @RequestPart(value="excelFile", required=false) MultipartFile excelFile) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
 
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> params = new HashMap<String, Object>();
-        params = mapper.readValue(paramString, Map.class);
-
-        //TODO : log, 삭제예정
-        for(Object key : params.keySet()) {
-            log.info("key:{}, value: {} ", key, params.get(key));
-        }
-
-        List<Map<String, Object>> excelList = null;
-        if(params.containsKey("cuInputType")
-                && StringUtils.equals("EXCEL", (String)params.get("cuInputType"))) {
-            //read excelFile
-            List<String> colKeys = new ArrayList<String>();
-            if(params.containsKey("requiredCuid") && (Boolean) params.get("requiredCuid")) {
-                colKeys.add("APP 로그인 ID");
-            }
-            if(params.containsKey("requiredCuPhone") && (Boolean) params.get("requiredCuPhone")) {
-                colKeys.add("휴대폰 번호");
-            }
-            if(params.containsKey("contsVarNms")) {
-                List<String> contsVarNms = (ArrayList<String>)params.get("contsVarNms");
-                for(String varNm : contsVarNms) {
-                    colKeys.add(varNm);
-                }
-            }
-            excelList = commonService.getExcelDataList(excelFile, 2, colKeys);
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> params = new HashMap<String, Object>();
+            params = mapper.readValue(paramString, Map.class);
 
             //TODO : log, 삭제예정
-            for(Map<String, Object> m : excelList) {
-                for(Object key : m.keySet()) {
-                    log.info("key:{}, value: {} ", key, params.get(key));
+            for(Object key : params.keySet()) {
+                log.info("key:{}, value: {} ", key, params.get(key));
+            }
+
+            List<Map<String, Object>> excelList = null;
+            if(params.containsKey("cuInputType")
+                    && StringUtils.equals("EXCEL", (String)params.get("cuInputType"))) {
+                //read excelFile
+                List<String> colKeys = new ArrayList<String>();
+                if(params.containsKey("requiredCuid") && (Boolean) params.get("requiredCuid")) {
+                    colKeys.add("APP 로그인 ID");
+                }
+                if(params.containsKey("requiredCuPhone") && (Boolean) params.get("requiredCuPhone")) {
+                    colKeys.add("휴대폰 번호");
+                }
+                if(params.containsKey("contsVarNms")) {
+                    List<String> contsVarNms = (ArrayList<String>)params.get("contsVarNms");
+                    for(String varNm : contsVarNms) {
+                        colKeys.add(varNm);
+                    }
+                }
+                excelList = commonService.getExcelDataList(excelFile, 2, colKeys);
+
+                //TODO : log, 삭제예정
+                for(Map<String, Object> m : excelList) {
+                    for(Object key : m.keySet()) {
+                        log.info("key:{}, value: {} ", key, params.get(key));
+                    }
                 }
             }
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
         }
-
-
 
         return rtn;
     }

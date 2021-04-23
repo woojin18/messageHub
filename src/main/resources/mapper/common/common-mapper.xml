@@ -5,13 +5,13 @@
 
     <insert id="insertImageFile" >
     /* common.insertImageFile - 고객사별 이미지 관리 등록 */
-        INSERT CM_IMAGE_FILE
+        INSERT
+            INTO CM_IMAGE_FILE
         (
-            CORP_ID
+            FILE_ID
+            , CORP_ID
             , USE_CH_INFO
             , ORIGIN_FILE_NAME
-            , IMAGE_FILE_NAME
-            , IMAGE_FILE_PATH
             , REG_DT
             , UPD_DT
             , REG_ID
@@ -19,11 +19,10 @@
         )
         VALUES
         (
-            #{corpId}
+            #{fileId}
+            , #{corpId}
             , #{useChInfo}
             , #{originFileName}
-            , #{imageFileName}
-            , #{imageFilePath}
             , NOW()
             , NOW()
             , #{loginId}
@@ -34,9 +33,9 @@
     <sql id ="whereSelectImageList">
         AND CORP_ID = #{corpId}
         AND JSON_CONTAINS(USE_CH_INFO, JSON_OBJECT('CH', #{useChInfo}))
-        <if test="imageFileSeqs != null and imageFileSeqs.size != 0 ">
-            AND IMAGE_FILE_SEQ IN
-            <foreach collection="imageFileSeqs" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
+        <if test="fileIds != null and fileIds.size != 0 ">
+            AND FILE_ID IN
+            <foreach collection="fileIds" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
         </if>
     </sql>
 
@@ -52,13 +51,12 @@
     <select id="selectImageList" parameterType="hashmap" resultType="camel">
     /* common.selectImageList - 고객사별 이미지 리스트 조회 */
         SELECT
-            IMAGE_FILE_SEQ
+            FILE_ID
             , CORP_ID
             , @PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(USE_CH_INFO, "one", #{useChInfo}, NULL, '$[*].CH')) AS PATH_TO_NAME
             , @PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
             , @CH_OBJECT := JSON_EXTRACT(USE_CH_INFO, @PATH_TO_PARENT) AS CH_OBJECT
             , @CH_IMG_URL := JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.URL')) AS CH_IMG_URL
-            , JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.FILE_ID')) AS CH_FILE_ID
             , SUBSTRING_INDEX(@CH_IMG_URL, '/', -1) AS CH_IMG_NM
             , JSON_EXTRACT(USE_CH_INFO, '$[*].CH') as USE_CH_INFO
             , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i') AS REG_DT
@@ -68,7 +66,7 @@
         FROM CM_IMAGE_FILE
         WHERE 1=1
         <include refid="whereSelectImageList"/>
-        ORDER BY IMAGE_FILE_SEQ DESC
+        ORDER BY REG_DT DESC
         <if test='pagingYn == "Y" '>
         LIMIT ${offset}, #{listSize}
         </if>
@@ -78,8 +76,8 @@
     /* template.deletePushTemplate - 이미지 삭제 */
         DELETE
         FROM CM_IMAGE_FILE
-        WHERE IMAGE_FILE_SEQ IN
-        <foreach collection="imageFileSeqs" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
+        WHERE FILE_ID IN
+        <foreach collection="fileIds" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
             AND CORP_ID = #{corpId}
             AND JSON_CONTAINS(USE_CH_INFO, JSON_OBJECT('CH', #{useChInfo}))
     </delete>
@@ -90,58 +88,19 @@
             (
                 SELECT COUNT(FILE_ID) AS PUSH_CNT
                 FROM CM_PUSH_TMPLT
-                WHERE FILE_ID IN (
-                    SELECT PUSH.FILE_ID
-                    FROM (
-                        SELECT
-                            @PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(USE_CH_INFO, "one", 'PUSH', NULL, '$[*].CH')) AS PATH_TO_NAME
-                            , @PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
-                            , @CH_OBJECT := JSON_EXTRACT(USE_CH_INFO, @PATH_TO_PARENT) AS CH_OBJECT
-                            , JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.FILE_ID')) AS FILE_ID
-                        FROM CM_IMAGE_FILE CIF
-                        WHERE 1=1
-                            AND CORP_ID = 'TEST_CORP_ID'
-                            AND CIF.IMAGE_FILE_SEQ IN <foreach collection="imageFileSeqs" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
-                    ) PUSH
-                )
+                WHERE FILE_ID IN <foreach collection="fileIds" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
             )
             +
             (
                 SELECT COUNT(FILE_ID) AS FRIENDTALK_CNT
                 FROM CM_FRIENDTALK_TMPLT
-                WHERE FILE_ID IN (
-                    SELECT FRIENDTALK.FILE_ID
-                    FROM (
-                        SELECT
-                            @PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(USE_CH_INFO, "one", 'FRIENDTALK', NULL, '$[*].CH')) AS PATH_TO_NAME
-                            , @PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
-                            , @CH_OBJECT := JSON_EXTRACT(USE_CH_INFO, @PATH_TO_PARENT) AS CH_OBJECT
-                            , JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.FILE_ID')) AS FILE_ID
-                        FROM CM_IMAGE_FILE CIF
-                        WHERE 1=1
-                            AND CORP_ID = 'TEST_CORP_ID'
-                            AND CIF.IMAGE_FILE_SEQ IN <foreach collection="imageFileSeqs" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
-                    ) FRIENDTALK
-                )
+                WHERE FILE_ID IN <foreach collection="fileIds" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
             )
             +
             (
                 SELECT COUNT(FILE_ID) AS MMS_CNT
                 FROM CM_SMS_TMPLT
-                WHERE FILE_ID IN (
-                    SELECT MMS.FILE_ID
-                    FROM (
-                        SELECT
-                            @PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(USE_CH_INFO, "one", 'MMS', NULL, '$[*].CH')) AS PATH_TO_NAME
-                            , @PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
-                            , @CH_OBJECT := JSON_EXTRACT(USE_CH_INFO, @PATH_TO_PARENT) AS CH_OBJECT
-                            , JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.FILE_ID')) AS FILE_ID
-                        FROM CM_IMAGE_FILE CIF
-                        WHERE 1=1
-                            AND CORP_ID = 'TEST_CORP_ID'
-                            AND CIF.IMAGE_FILE_SEQ IN <foreach collection="imageFileSeqs" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
-                    ) MMS
-                )
+                WHERE FILE_ID IN <foreach collection="fileIds" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
             )
         ) AS USE_CNT
     </select>

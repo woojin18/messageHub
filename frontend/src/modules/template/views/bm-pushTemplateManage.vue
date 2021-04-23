@@ -12,32 +12,34 @@
     <!-- 본문 -->
     <div class="row">
       <div class="phone3 inline-block" style="width:30%">
-        <!-- phoneWrap -->
-        <div class="phoneWrap">
-          <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-          <div class="phoneTextWrap">
-            <div class="phoneText2">
-              <p v-if="fnIsEmpty(rowData.tmpltTitle)">템플릿 제목</p>
-              <p v-else>{{rowData.tmpltTitle}}</p>
+        <div class="phoneFixed">
+          <!-- phoneWrap -->
+          <div class="phoneWrap">
+            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
+            <div class="phoneTextWrap">
+              <div class="phoneText2">
+                <p v-if="fnIsEmpty(rowData.tmpltTitle)">템플릿 제목</p>
+                <p v-else>{{rowData.tmpltTitle}}</p>
+              </div>
+              <div v-if="rowData.msgType == 'IMAGE' && fnIsEmpty(rowData.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
+                <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+                <p class="font-size14 color3 mt15">이미지 영역</p>
+              </div>
+              <div v-if="rowData.msgType == 'IMAGE' && !fnIsEmpty(rowData.imgUrl)" class="phoneText2 mt10 text-center"
+                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.imgUrl+');'">
+              </div>
+              <p v-if="fnIsEmpty(rowData.tmpltContent) && (rowData.msgKind != 'A' || fnIsEmpty(rowData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
+              <p v-else class="font-size14 color4 mt10">
+                {{rowData.tmpltContent}}
+                <br v-if="!fnIsEmpty(rowData.tmpltContent)"/>
+                <span v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcvblcNumber)">
+                  {{rowData.rcvblcNumber}}
+                </span>
+              </p>
             </div>
-            <div v-if="rowData.msgType == 'IMAGE' && fnIsEmpty(rowData.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
-              <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
-              <p class="font-size14 color3 mt15">이미지 영역</p>
-            </div>
-            <div v-if="rowData.msgType == 'IMAGE' && !fnIsEmpty(rowData.imgUrl)" class="phoneText2 mt10 text-center"
-              :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.imgUrl+');'">
-            </div>
-            <p v-if="fnIsEmpty(rowData.tmpltContent) && (rowData.msgKind != 'A' || fnIsEmpty(rowData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
-            <p v-else class="font-size14 color4 mt10">
-              {{rowData.tmpltContent}}
-              <br v-if="!fnIsEmpty(rowData.tmpltContent)"/>
-              <span v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcvblcNumber)">
-                {{rowData.rcvblcNumber}}
-              </span>
-            </p>
           </div>
+          <!-- //phoneWrap -->
         </div>
-        <!-- //phoneWrap -->
       </div>
       <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
         <div class="of_h user-phone">
@@ -109,7 +111,7 @@
           <div class="float-left" style="width:72%">
             <div class="of_h">
               <div class="float-left" style="width:25%">
-                <a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" style="width:25%" title="이미지선택">이미지선택</a>
+                <a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
               </div>
               <ul class="float-right attachList" style="width:74%; padding:5px 15px; height:30px;">
                 <li><a @click="fnDelImg">{{fnSubString(rowData.imgUrl, 0, 35)}}  <i v-if="!fnIsEmpty(rowData.imgUrl)" class="fal fa-times"></i></a></li>
@@ -118,8 +120,8 @@
           </div>
         </div>
         <div class="mt30 float-right">
-          <a @click="fnSavePushTemplate" class="btnStyle5 white float-left width120" title="저장">{{isInsert ? '등록' : '수정'}}</a>
-          <router-link :to="{ name: 'pushTemplateList' }" tag="a" class="btnStyle5 red float-left ml10 width120">취소</router-link>
+          <a @click="fnSavePushTemplate" class="btnStyle2" title="저장">{{isInsert ? '등록' : '수정'}}</a>
+          <router-link :to="{ name: 'pushTemplateList' }" tag="a" class="btnStyle2 backRed ml10">취소</router-link>
         </div>
       </div>
     </div>
@@ -225,7 +227,7 @@ export default {
     },
     fnSetImageInfo(imgInfo) {
       this.rowData.imgUrl = imgInfo.chImgUrl;
-      this.rowData.fileId = imgInfo.chFileId;
+      this.rowData.fileId = imgInfo.fileId;
     },
     //유효성 체크
     fnIsValid(){

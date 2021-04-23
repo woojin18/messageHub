@@ -98,5 +98,18 @@
 			});
 		}, 100);
 	});
+
+	//phoneFixed
+	$(document).ready(function() {
+		$(window).scroll(function(){
+			var y = $(this).scrollTop();
+			if(y >= 100){
+			   $('.phoneFixed').css('position','fixed').css('top','40px');
+			}
+			else {
+				$('.phoneFixed').css('position','relative').css('top','0px');
+			}
+		});
+	});
 	
 })(jQuery);

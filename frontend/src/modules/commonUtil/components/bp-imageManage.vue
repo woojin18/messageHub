@@ -5,9 +5,9 @@
         <div class="modal-body">
           <h2>통합 이미지 관리</h2>
           <hr>
-          <div class="of_h">
+          <div class="of_h h4Minus">
             <h4 class="color000 inline-block">업로드 한 이미지</h4>
-            <div class="float-right">
+            <div class="float-right h4Button">
               <a @click="fnOpenImageUploadPopUp" class="btnStyle1 backBlack mr10" title="이미지 추가">이미지 추가</a>
               <a @click="fnDeleteImage" class="btnStyle1 backLightGray" title="삭제">삭제</a>
             </div>
@@ -44,10 +44,10 @@
                 <tbody>
                   <tr v-for="(contant, idx) in contants" :key="idx">
                     <td class="text-center">
-                      <input type="checkbox" :id="'listCheck_'+idx" class="boardCheckStyle" :value="contant.imageFileSeq" v-model="listChkBox">
+                      <input type="checkbox" :id="'listCheck_'+idx" class="boardCheckStyle" :value="contant.fileId" v-model="listChkBox">
                       <label :for="'listCheck_'+idx"></label>
                     </td>
-                    <td class="text-center">{{contant.imageFileSeq}}</td>
+                    <td class="text-center">{{contant.fileId}}</td>
                     <td class="text-left">{{contant.chImgNm}}</td>
                     <td class="text-left">{{contant.useChInfo}}</td>
                     <td class="text-center">{{contant.regDt}}</td>
@@ -75,17 +75,17 @@
           </div>
           <!-- //pagination -->
 
-          <div class="border-line2 bgColor_f7 mt30" style="padding:20px">
-            <ul class="font-size13 color5 line-height2em">
+          <div class="border-line2 bgColor_f7 mt10 pd10">
+            <ul class="color5">
               <li>•  이미지는 .jpg, .jpeg, .png, .gif 형식만 지원합니다.</li>
-              <li>•  이미지 크기는 일반 이미지 5MB 이하여야합니다. </li>
+              <li>•  이미지 크기는 PUSH(1MB), RCS(1MB), 친구톡(Normal-500KB, Wide-2MB), MMS(300KB) 이하여야합니다. </li>
               <li>•  이미지는 가로 길이는 최소 500px, 세로 길이는 최소 250px 이상이어야합니다.</li>
               <li>•  이미지의 가로:세로 비율은 2:1 이상, 3:4 이하여야 합니다.</li>
             </ul>
           </div>
 
-          <div class="text-center mt60">
-            <a @click="fnClose" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>
+          <div class="text-center mt20">
+            <a @click="fnClose" class="btnStyle1 backWhite" data-dismiss="modal" title="닫기">닫기</a>
           </div>
 
         </div>
@@ -209,7 +209,7 @@ export default {
       const vm = this;
       if(this.listAllChecked){
         this.contants.forEach(function(contant){
-          vm.listChkBox.push(contant.imageFileSeq);
+          vm.listChkBox.push(contant.fileId);
         });
       } else {
         this.listChkBox = [];
@@ -234,7 +234,7 @@ export default {
     //이미지 삭제 처리
     async fnProcDeleteImage(){
       const params = {
-        'imageFileSeqs':this.listChkBox,
+        'fileIds':this.listChkBox,
         'corpId':'TEST_CORP_ID',  //TODO : 로그인 완료되면 corp_id 가져오자
         'useChInfo':this.useCh,
       };

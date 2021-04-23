@@ -30,6 +30,7 @@ public class CommonController {
     public RestResult<?> uploadImage(
             @RequestParam MultipartFile uploadFile,
             @RequestParam String[] useCh,
+            @RequestParam String wideYn,
             @RequestParam String loginId,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
@@ -37,7 +38,7 @@ public class CommonController {
         RestResult<Object> rtn = new RestResult<Object>();
 
         try {
-            rtn = commonService.uploadImgFile(uploadFile, useCh, loginId);
+            rtn = commonService.uploadImgFile(uploadFile, useCh, wideYn, loginId);
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("파일등록에 실패하였습니다.");
