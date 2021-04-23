@@ -5,49 +5,48 @@
         <div class="modal-body">
           
           <div class="of_h">
-            <div class="float-left" style="width:32%"><h4 class="font-normal font-size14 mt15">대체발송 발신번호</h4></div>
-            <select v-model="fbInfo.callback" name="userConsole02_2" class="selectStyle3 height45 font-size14 float-right" style="width:66%">
+            <div class="float-left" style="width:32%"><h5>대체발송 발신번호</h5></div>
+            <select v-model="fbInfo.callback" name="userConsole02_2" class="selectStyle2 float-right" style="width:66%">
               <option v-for="info in callbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
             </select>
           </div>
 
-          <div class="of_h mt15">
-            <div class="float-left" style="width:32%"><h4 class="font-normal font-size14 mt15">광고성메시지 수신거부번호</h4></div>
+          <div class="of_h consolMarginTop">
+            <div class="float-left" style="width:32%"><h5>광고성메시지 수신거부번호</h5></div>
             <div class="float-right" style="width:66%">
               <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="fbInfo.rcvblcNumber" maxlength="20">
             </div>
           </div>
 
-          <div v-if="fbInfo.ch != 'SMS'" class="of_h mt15">
-            <div class="float-left" style="width:32%"><h4 class="font-normal font-size14 mt15">제목</h4></div>
+          <div v-if="fbInfo.ch != 'SMS'" class="of_h consolMarginTop">
+            <div class="float-left" style="width:32%"><h5>제목</h5></div>
             <div class="float-right" style="width:66%">
               <input type="text" class="inputStyle" title="제목 입력란" v-model="fbInfo.title">
             </div>
           </div>
 
-          <div class="of_h mt15">
-            <div class="float-left" style="width:32%"><h4 class="font-normal font-size14 mt15">내용</h4></div>
+          <div class="of_h consolMarginTop">
+            <div class="float-left" style="width:32%"><h5>내용</h5></div>
             <div class="float-right" style="width:66%">
-              <!-- <input type="text" class="inputStyle height120" title="내용 입력란" v-model="fbInfo.msg"> -->
-              <textarea class="textareaStyle height120" placeholder="" v-model="fbInfo.msg"></textarea>
+              <textarea class="textareaStyle height120" :placeholder="recvAreapPlaceholder" v-model="fbInfo.msg"></textarea>
             </div>
           </div>
           
           <!-- 2021-04-07 : G/W에서 이미지 발송 이슈로 주석처리
-          <div v-if="fbInfo.ch == 'MMS'" class="of_h mt15">
-            <div class="float-left" style="width:32%"><h4 class="font-normal font-size14 mt15">이미지</h4></div>
+          <div v-if="fbInfo.ch == 'MMS'" class="of_h consolMarginTop">
+            <div class="float-left" style="width:32%"><h5>이미지</h5></div>
             <div class="of_h float-right" style="width:66%">
-              <a href="#self" class="btnStyle3_1 gray font-size13 minwidthAuto" style="width:28%" title="메시지 내용 이미지선택">이미지선택</a>
-              <ul class="float-right attachList" style="width:68%; padding:11px 15px">
+              <a href="#self" class="btnStyle1 backLightGray" title="메시지 내용 이미지선택">이미지선택</a>
+              <ul class="float-right attachList" style="width:68%; padding:5px 15px">
                 <li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
               </ul>
             </div>
           </div>
           -->
 
-          <div class="text-center mt60">
-            <a @click="fnCallbackInputData" class="btnStyle3 black font14" title="입력">입력</a>
-            <a @click="fnClose" class="btnStyle3 white font14" data-dismiss="modal" title="닫기">닫기</a>
+          <div class="text-center mt20">
+            <a @click="fnCallbackInputData" class="btnStyle1 backBlack" title="입력">입력</a>
+            <a @click="fnClose" class="btnStyle1 backWhite" data-dismiss="modal" title="닫기">닫기</a>
           </div>
 
         </div>
@@ -85,7 +84,8 @@ export default {
         title:'',
         msg:'',
         rcvblcNumber:''
-      }
+      },
+      recvAreapPlaceholder: '변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정:예) {{name}}님 {{yyyymmdd}} 출금 예정입니다.',
     }
   },
   watch: {

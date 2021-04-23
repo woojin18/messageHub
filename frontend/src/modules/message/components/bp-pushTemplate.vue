@@ -4,22 +4,21 @@
       <div class="modal-content">
         <div class="modal-body">
           <div>
-            <h5 class="lc-1">템플릿 선택</h5>
+            <h2>템플릿 선택</h2>
             <hr>
-            <div class="row row-no-margin mt20">
+            <div class="row row-no-margin">
               <div class="col-xs-4 border-line2" style="height:569px; padding:30px">
-                <p class="font-size14; color000">템플릿 검색</p>
-                <div class="mt20">
-                  <input type="text" class="inputStyle height40" style="width:70%" v-model="searchData.searchText">
-                  <a @click="fnSearch" class="btnStyle3 gray font-size13 minwidthAuto height40 float-right" style="width:20%" title="메시지 내용 조회">조회</a>
+                <h4 class="mt0">템플릿 검색</h4>
+                <div>
+                  <input type="text" class="inputStyle" style="width:75%" v-model="searchData.searchText">
+                  <a @click="fnSearch" class="btnStyle1 backLightGray float-right" title="메시지 내용 조회">조회</a>
                 </div>
-                <div class="mt40">
-                  <p class="font-size14 color000 inline-block">템플릿 검색</p>
-                  <p class="color000 inline-block  float-right font-size12">총 {{totCnt}}건</p>
+                <div>
+                  <h4>템플릿 검색 <span class="">총 {{totCnt}}건</span></h4>
                 </div>
-                <div class="mt20 border-line2" style="height:354px; overflow-y:scroll;">
-                  <ul class="fons-size14 color4">
-                    <li @click="fnGetTemplateInfo(idx, templateInfo.tmpltId)" v-for="(templateInfo, idx) in templateList" :key="templateInfo.tmpltId" class="bb-ddd" style="padding:13px">
+                <div class="border-line2" style="max-height:420px; overflow-y:scroll">
+                  <ul class="color4">
+                    <li @click="fnGetTemplateInfo(idx, templateInfo.tmpltId)" v-for="(templateInfo, idx) in templateList" :key="templateInfo.tmpltId" class="bb-ddd pd5">
                       {{templateInfo.tmpltName}}({{templateInfo.tmpltTitle}})
                     </li>
                   </ul>
@@ -27,32 +26,32 @@
               </div>
               <div class="col-xs-4 of_h">
                 <div class="of_h">
-                  <div style="width:41%" class="float-left line-height3em ml30 font-size14 color000">메시지구분</div>
-                  <div style="width:40%" class="float-right ml30 inline-block font-size14 color4 line-height1-5em mt10">{{templateData.msgKind}}</div>
+                  <h5 style="width:41%" class="float-left ml30 color000">메시지구분</h5>
+                  <h5 style="width:40%" class="float-right color4 word-break-all">{{templateData.msgKindName}}</h5>
                 </div>
                 <div class="of_h">
-                  <div style="width:41%" class="float-left line-height3em ml30 font-size14 color000">메시지타입</div>
-                  <div style="width:40%" class="float-right ml30 inline-block font-size14 color4 line-height1-5em mt10">{{templateData.msgType}}</div>
+                  <h5 style="width:41%" class="float-left ml30 color000">메시지타입</h5>
+                  <h5 style="width:40%" class="float-right color4 word-break-all">{{templateData.msgTypeName}}</h5>
                 </div>
                 <div class="of_h">
-                  <div style="width:41%" class="float-left line-height3em ml30 font-size14 color000">타 프로젝트 사용여부</div>
-                  <div style="width:40%" class="float-right ml30 inline-block font-size14 color4 line-height1-5em mt10">{{templateData.otherProjectUseYn}}</div>
+                  <h5 style="width:41%" class="float-left ml30 color000">타 프로젝트 사용여부</h5>
+                  <h5 style="width:40%" class="float-right color4 word-break-all">{{templateData.otherProjectUseYn}}</h5>
                 </div>
                 <div class="of_h">
-                  <div style="width:41%" class="float-left line-height3em ml30 font-size14 color000">템플릿명</div>
-                  <div style="width:40%" class="float-right ml30 inline-block font-size14 color4 line-height1-5em mt10">{{templateData.tmpltName}}</div>
+                  <h5 style="width:41%" class="float-left ml30 color000">템플릿명</h5>
+                  <h5 style="width:40%" class="float-right color4 word-break-all">{{templateData.tmpltName}}</h5>
                 </div>
                 <div class="of_h">
-                  <div style="width:41%" class="float-left line-height3em ml30 font-size14 color000">제목</div>
-                  <div style="width:40%" class="float-right ml30 inline-block font-size14 color4 line-height1-5em mt10">{{templateData.tmpltTitle}}</div>
+                  <h5 style="width:41%" class="float-left ml30 color000">제목</h5>
+                  <h5 style="width:40%" class="float-right color4 word-break-all">{{templateData.tmpltTitle}}</h5>
                 </div>
                 <div class="of_h">
-                  <div style="width:41%" class="float-left line-height3em ml30 font-size14 color000">내용</div>
-                  <div style="width:40%" class="float-right ml30 inline-block font-size14 color4 line-height1-5em mt10">{{templateData.tmpltContent}}</div>
+                  <h5 style="width:41%" class="float-left ml30 color000">내용</h5>
+                  <h5 style="width:40%" class="float-right color4 word-break-all">{{templateData.tmpltContent}}</h5>
                 </div>
                 <div class="of_h">
-                  <div style="width:41%" class="float-left line-height3em ml30 font-size14 color000">이미지</div>
-                  <div v-if="templateData.msgType == 'IMAGE'" style="width:40%" class="float-right ml30 inline-block font-size14 color4 line-height1-5em mt10">{{templateData.imgUrl}}</div>
+                  <h5 style="width:41%" class="float-left ml30 color000">이미지</h5>
+                  <h5 style="width:40%" class="float-right color4 word-break-all">{{templateData.imgUrl}}</h5>
                 </div>
               </div>
               <div class="col-xs-4">
@@ -60,7 +59,7 @@
                 <div class="phoneWrap">
                   <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
                   <div class="phoneTextWrap">
-                    <div class="phoneText2">
+                    <div class="phoneText1">
                       <p v-if="fnIsEmpty(templateData.tmpltTitle)">제목</p>
                       <p v-else>{{templateData.tmpltTitle}}</p>
                     </div>

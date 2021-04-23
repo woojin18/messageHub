@@ -12,13 +12,13 @@
               <option value="hpNumber">휴대폰 번호</option>
             </select>
             <input type="text" class="inputStyle" style="width:60%" v-model="searchText">
-            <a @click='fnGetAddrList' class="btnStyle backLightGray float-right" style="width:10%" title="검색">검색</a>
+            <a @click='fnGetAddrList' class="btnStyle1 backLightGray float-right" style="width:10%" title="검색">검색</a>
           </div>
           <h5 class="color5">조직 조회 후 체크된 사용자를 선택하면  수신자에 추가됩니다.</h5>
           
           <div class="row row-no-margin of_h">
-            <div class="border-line2 float-left" style="height:195px; width:34%">
-              <div  style="padding:5px">
+            <div class="border-line2 float-left" style="height:260px; overflow-y:scroll; width:34%">
+              <div style="padding:25px">
               <!-- <div style="padding:25px"> -->
                 <!-- addList -->
                 <!-- <ul class="addList"> -->
@@ -32,54 +32,55 @@
               </div>
             </div>
             <div class="float-right" style="padding-right:0; width:63%">
-              <!-- table -->
-              <table class="table_skin1">
-                <caption>수신자 추가의 사용자명, 아이디, 이용권한을 제공하는 표</caption>
-                <colgroup>
-                <col style="width:5%">
-                <col style="width:18%">
-                <col style="width:25%">
-                <col>
-                <col style="width:16%">
-                </colgroup>
-                <thead>
-                <tr>
-                  <th class="text-center lc-1">
-                    <div class="consolCheck ml10">
-                      <input type="checkbox" id="listCheck_all" class="checkStyle2" @change="fnListChkAll" v-model="listAllChecked">
-                      <label for="listCheck_all"></label>
-                    </div>
-                  </th>
-                  <th class="text-center lc-1">수신자명</th>
-                  <th v-if="requiredCuid" class="text-center lc-1">APP 로그인ID</th>
-                  <th v-if="requiredCuPhone" class="text-center lc-1">휴대폰번호</th>
-                  <th v-for="(varNm, idx) in contsVarNms" :key="varNm" :class="idx!=Object.keys(contsVarNms).length-1 ? 'text-center lc-1' : 'text-center lc-1 end'">{{varNm}}</th>
-                </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(cmCuInfo, idx) in cmCuList" :key="cmCuInfo.cuInfoId">
-                    <td class="text-center">
+              <div class="tableScrollxy">
+                <!-- table -->
+                <table class="table_skin1">
+                  <caption>수신자 추가의 사용자명, 아이디, 이용권한을 제공하는 표</caption>
+                  <colgroup>
+                  <col style="width:5%">
+                  <col v-if="requiredCuid" style="width:18%">
+                  <col v-if="requiredCuPhone" style="width:25%">
+                  <col v-for="varNm in contsVarNms" :key="varNm" style="width:100px">
+                  </colgroup>
+                  <thead>
+                  <tr>
+                    <th class="text-center lc-1">
                       <div class="consolCheck ml10">
-                        <input type="checkbox" :id="'listCheck_'+idx" class="checkStyle2" :value="cmCuInfo.cuInfoId" v-model="listChkBox">
-                        <label :for="'listCheck_'+idx"></label>
+                        <input type="checkbox" id="listCheck_all" class="checkStyle2" @change="fnListChkAll" v-model="listAllChecked">
+                        <label for="listCheck_all"></label>
                       </div>
-                    </td>
-                    <td class="text-center">{{cmCuInfo.cuName}}</td>
-                    <td v-if="requiredCuid" class="text-left">{{cmCuInfo.cuid}}</td>
-                    <td v-if="requiredCuPhone" class="text-left">{{cmCuInfo.hpNumber}}</td>
-                    <td v-for="(varNm, idx) in contsVarNms" :key="varNm" :class="idx!=Object.keys(contsVarNms).length-1 ? 'text-center' : 'text-center end'">
-                      <input type="text" class="inputStyle" v-model="cmCuInfo[varNm]">
-                    </td>
+                    </th>
+                    <th class="text-center lc-1">수신자명</th>
+                    <th v-if="requiredCuid" class="text-center lc-1">APP 로그인ID</th>
+                    <th v-if="requiredCuPhone" class="text-center lc-1">휴대폰번호</th>
+                    <th v-for="(varNm, idx) in contsVarNms" :key="varNm" :class="idx!=Object.keys(contsVarNms).length-1 ? 'text-center lc-1' : 'text-center lc-1 end'">{{varNm}}</th>
                   </tr>
-
-                  <tr v-if="Object.keys(cmCuList).length == 0">
-                    <td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check7" class="checkStyle2" value="check17"><label for="check7"></label></div></td>
-                    <td class="text-center" :colspan="1+Object.keys(contsVarNms).length+(requiredCuid?1:0)+(requiredCuPhone?1:0)">검색된 내용이 없습니다.</td>
-                  </tr>
-                  
-                </tbody>
-              </table>
-              <!-- //table -->
+                  </thead>
+                  <tbody>
+                    <tr v-for="(cmCuInfo, idx) in cmCuList" :key="cmCuInfo.cuInfoId">
+                      <td class="text-center">
+                        <div class="consolCheck ml10">
+                          <input type="checkbox" :id="'listCheck_'+idx" class="checkStyle2" :value="cmCuInfo.cuInfoId" v-model="listChkBox">
+                          <label :for="'listCheck_'+idx"></label>
+                        </div>
+                      </td>
+                      <td class="text-center">{{cmCuInfo.cuName}}</td>
+                      <td v-if="requiredCuid" class="text-left">{{cmCuInfo.cuid}}</td>
+                      <td v-if="requiredCuPhone" class="text-left">{{cmCuInfo.hpNumber}}</td>
+                      <td v-for="(varNm, idx) in contsVarNms" :key="varNm" :class="idx!=Object.keys(contsVarNms).length-1 ? 'text-center' : 'text-center end'">
+                        <input type="text" class="inputStyle" v-model="cmCuInfo[varNm]">
+                      </td>
+                    </tr>
+  
+                    <tr v-if="Object.keys(cmCuList).length == 0">
+                      <td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check7" class="checkStyle2" value="check17"><label for="check7"></label></div></td>
+                      <td class="text-center" :colspan="1+Object.keys(contsVarNms).length+(requiredCuid?1:0)+(requiredCuPhone?1:0)">검색된 내용이 없습니다.</td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+                <!-- //table -->
+              </div>
 
               <!-- pagination -->
               <PageLayer @fnClick="fnPageClick" :listTotalCnt="totCnt" :selected="listSize" pageDivClass="row mt10" ref="pageLayer"></PageLayer>
@@ -87,9 +88,9 @@
             </div>
           </div>
 
-          <div class="text-center mt10">
-            <a @click="fnSelectCu" class="btnStyle backBlack" title="선택">선택</a>
-            <a @click="fnClose" class="btnStyle backWhite" data-dismiss="modal" title="닫기">닫기</a>
+          <div class="text-center mt20">
+            <a @click="fnSelectCu" class="btnStyle1 backBlack" title="선택">선택</a>
+            <a @click="fnClose" class="btnStyle1 backWhite" data-dismiss="modal" title="닫기">닫기</a>
           </div>
 
         </div>

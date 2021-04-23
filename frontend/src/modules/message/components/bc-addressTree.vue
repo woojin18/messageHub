@@ -1,6 +1,6 @@
 <template>
 
-  <ul class="addList">
+  <ul class="addList2">
 
     <li class="addList_plus">
       <a @click="fnAddrCatgMem(id)">
@@ -11,15 +11,15 @@
     </li>
 
     <addr-tree-menu
-      v-for = "each in subItems" 
+      v-for = "each in subItems"
       :key = "each"
       :item = "each.addressName"
       :id = "each.addressCategoryId"
-      :subItems = "each.subItems" 
+      :subItems = "each.subItems"
     ></addr-tree-menu>
 
   </ul>
-  
+
 </template>
 
 <script>
