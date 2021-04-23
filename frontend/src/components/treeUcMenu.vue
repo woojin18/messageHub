@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div id="treeUcMenu">
 		<!-- sidebar -->
 		<nav id="sidebar">
 			<!-- 메뉴바 접기 -->
@@ -29,27 +29,14 @@
 
 			<!-- lnb -->
 			<ul>
+				<!-- 대메뉴 -->
 				<li class="on"><a href="/uc/home"><i class="fal fa-tachometer-alt-fastest navIcon"></i><span>대시보드</span></a></li>
 				<li v-for="(item, i) in treeData" :key="i">
-					<!--
-					<a v-if="item.WEB_URL != ''" v-bind:href="item.WEB_URL">
-						<i v-html="item.IMG_TAG"></i><span>{{item.MENUS_NAME}}</span><i class="far fa-chevron-down navArrow"></i>
-					</a>
-					<a v-if="item.WEB_URL == ''">
-						<i v-html="item.IMG_TAG"></i><span>{{item.MENUS_NAME}}</span><i class="far fa-chevron-down navArrow"></i>
-					</a>
-					<div class="depth2Lnb" :id="'depth2_' + i">
-						<ul>
-							<li v-for="(item2, j) in item.children" :key="j">
-								<a v-bind:href="item2.WEB_URL">{{item2.MENUS_NAME}}</a>
-							</li>
-						</ul>
-					</div>
-					-->
 					<a @click="fnOpenDepth2(i)">
 						<i v-html="item.IMG_TAG"></i><span>{{item.MENUS_NAME}}</span><i class="far fa-chevron-down navArrow"></i>
 					</a>
-					<div class="depth2Lnb" :id="'depth2_' + i">
+					<!-- 중메뉴 -->
+					<div class="depth2Lnb" :id="'depth2_' + i" :style="showOption">
 						<ul>
 							<li v-for="(item2, j) in item.children" :key="j" >
 								<a  v-if="item2.WEB_URL != ''" v-bind:href="item2.WEB_URL">{{item2.MENUS_NAME}}</a>		<!-- url 주소 있으면 페이지 이동 -->
@@ -68,6 +55,7 @@
 							</li>
 						</ul>
 					</div>
+					<!-- 중메뉴 -->
 				</li>
 			</ul>
 			<!-- //lnb -->
@@ -97,7 +85,10 @@ export default {
 						},
 					]
 				}
-			]
+			],
+			showOption: {
+				display: 'none'
+			}
 		}
 	},
 	mounted(){
@@ -105,6 +96,7 @@ export default {
 	},
 	methods: {
 		fnMenuList() {
+			console.log(tokenSvc.getToken().principal.userId);
 			var params = {
 				"user_id"    : tokenSvc.getToken().principal.userId,
 				"role_cd"    : tokenSvc.getToken().principal.role,
@@ -119,22 +111,25 @@ export default {
 			});
 		},
 		fnOpenDepth2(index) {
-			var depth2Sts = $("#depth2_" + index).css("display");
+			var depth2Sts = jQuery("#depth2_" + index).css("display");
 			if (depth2Sts === 'block') {
-				$("#depth2_" + index).css("display", "none");
+				jQuery("#depth2_" + index).css("display", "none");
 			} else {
-				$("#depth2_" + index).css("display", "block");
+				jQuery("#depth2_" + index).css("display", "block");
 			}
 		},
-		fnOpenDepth3(index1, index2){
-			$("#depth2_" + index1).css("display", "block");
-			var depth3Sts = $("#depth3_" + index2).css("display");
+		fnOpenDepth3(index1, index2) {
+			jQuery("#depth2_" + index1).css("display", "block");
+			var depth3Sts = jQuery("#depth3_" + index2).css("display");
 			if (depth3Sts === 'block') {
-				$("#depth3_" + index2).css("display", "none");
+				jQuery("#depth3_" + index2).css("display", "none");
 			} else {
-				$("#depth3_" + index2).css("display", "block");
+				jQuery("#depth3_" + index2).css("display", "block");
 			}
 		}
 	}
 }
 </script>
+
+<style lang="scss">
+</style>
