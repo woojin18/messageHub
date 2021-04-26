@@ -11,17 +11,17 @@
 			</div>
 
 			<!-- 본문 -->
-			<div class="contentBody mb40">
+			<div class="contentBody">
 				<ul class="tab_s3">
-					<li><a href="#self" class="width120">대시보드</a></li>
-					<li><a href="#self" class="width120">기본정보</a></li>
-					<li><a href="#self" class="width120">멤버관리</a></li>
-					<li class="active"><a href="#self" class="width120">채널관리</a></li>
-					<li><a href="#self" class="width120">발신번호관리</a></li>
-					<li><a href="#self" class="width120">스팸관리</a></li>
+					<li><a href="#self">대시보드</a></li>
+					<li><a href="#self">기본정보</a></li>
+					<li><a href="#self">멤버관리</a></li>
+					<li class="active"><a href="#self">채널관리</a></li>
+					<li><a href="#self">발신번호관리</a></li>
+					<li><a href="#self">스팸관리</a></li>
 				</ul>			
 			</div>
-			<ul class="tabStyle tab6 bgColor_tapGray mt30">
+			<ul class="tabStyle tab6 bgColor_tapGray">
 				<li><a href="#">RCS</a></li>
 				<li><a href="#">SMS/MMS</a></li>
 				<li class="active"><a href="#">PUSH</a></li>
@@ -29,21 +29,14 @@
 				<li><a href="#">MO</a></li>
 			</ul>
 			
-			<h4 class="mt40">Push APP ID 관리</h4>
-			<p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i> APP ID는 5개까지 발급받을 수 있으며, 서비스 이용 시 인증에 사용됩니다.</p>
-			
-			<div class="row">
-				<div class="col-xs-12">		
-					<div class="of_h">
-						<div class="float-right">
-							<a href="#self" class="btnStyle3 gray font13 minWidth120 ml10">발신번호 등록 안내</a>
-						</div>
-					</div>
-				</div>			
-			</div>			
+			<h4 class="inline-block">Push APP ID 관리</h4>
+			<div class="float-right h4Button">
+				<a href="#self" class="btnStyle2 borderGray">발신번호 등록 안내</a>
+			</div>
+			<p class="color3"><i class="far fa-info-circle"></i> APP ID는 5개까지 발급받을 수 있으며, 서비스 이용 시 인증에 사용됩니다.</p>
 
 			<div class="row">
-				<div class="col-xs-12">
+				<div class="col-xs-12 consolMarginTop">
 					<!-- table -->
 					<table  class="table_skin1 bt-000 tbl-striped">
 						<colgroup>
@@ -71,7 +64,7 @@
 							<td class="text-center">예</td>
 							<td class="text-center">아니오</td>
 							<td class="text-center">2021-01-02</td>
-							<td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
+							<td class="end"><a href="#self" class="btnStyle1 borderLightGray small mr5">수정</a><a href="#self" class="btnStyle1 borderLightGray small mr5">삭제</a></td>
 							</tr>
 							<tr>
 							<td class="text-center">PUSH_APP_02</td>
@@ -79,7 +72,7 @@
 							<td class="text-center">예</td>
 							<td class="text-center">아니오</td>
 							<td class="text-center">2021-01-02</td>
-							<td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
+							<td class="end"><a href="#self" class="btnStyle1 borderLightGray small mr5">수정</a><a href="#self" class="btnStyle1 borderLightGray small mr5">삭제</a></td>
 							</tr>
 							<tr>
 							<td class="text-center">PUSH_APP_03</td>
@@ -87,7 +80,7 @@
 							<td class="text-center">예</td>
 							<td class="text-center">아니오</td>
 							<td class="text-center">2021-01-02</td>
-							<td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
+							<td class="end"><a href="#self" class="btnStyle1 borderLightGray small mr5">수정</a><a href="#self" class="btnStyle1 borderLightGray small mr5">삭제</a></td>
 							</tr>
 							<tr>
 							<td class="text-center">PUSH_APP_04</td>
@@ -95,21 +88,23 @@
 							<td class="text-center">예</td>
 							<td class="text-center">아니오</td>
 							<td class="text-center">2021-01-02</td>
-							<td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
+							<td class="end"><a href="#self" class="btnStyle1 borderLightGray small mr5">수정</a><a href="#self" class="btnStyle1 borderLightGray small mr5">삭제</a></td>
 							</tr>
 						</tbody>
 					</table>
 					<!-- //table -->
 				</div>			
 			</div>
+
+			<hr>
 			
-			<h4 class="mt40">Application 등록</h4>
-			<div class="row mt30">
+			<h4>Application 등록</h4>
+			<div class="row">
 				<div class="col-xs-12">
 					<div class="menuBox">						
 						<div class="of_h">
-							<h4 class="font-normal inline-block vertical-middle" style="width:15%">APP ID명*</h4>
-							<select name="admin030403_1" class="selectStyle3 float-right" style="width:85%">
+							<h5 class="inline-block" style="width:15%">APP ID명*</h5>
+							<select name="admin030403_1" class="selectStyle2 float-right" style="width:85%">
 								<option value="">자동채번</option>
 								<option value="">자동채번</option>
 							</select>
@@ -118,59 +113,69 @@
 				</div>
 			</div>
 			
-			<h4 class="mt40"><input type="checkbox" id="FCM" class="checkStyle2" value="FCM"><label for="FCM" class="font-size18 font-600">안드로이드(FCM)</label></h4>
-			<p class="font-size12 color3 mt20 inline-block"><i class="far fa-info-circle"></i>  Android 푸시 메시지 발송에 필요한 API Key입니다. 등록시 유효성을 검증합니다.</p>
-			<div class="row mt10">
-				<div class="col-xs-12">
+			<h4><input type="checkbox" id="FCM" class="checkStyle2" value="FCM"><label for="FCM" class="font-600">안드로이드(FCM)</label></h4>
+			<p class="color3"><i class="far fa-info-circle"></i>  Android 푸시 메시지 발송에 필요한 API Key입니다. 등록시 유효성을 검증합니다.</p>
+			<div class="row">
+				<div class="col-xs-12 consolMarginTop">
 					<div class="menuBox">						
-						<div>
-							<h4 class="font-normal inline-block" style="width:15%">Package name</h4>
-							<input type="text" class="inputStyle" style="width:72%">
+						<div class="of_h">
+							<h5 class="inline-block" style="width:15%">Package name</h5>
+							<div style="width:85%" class="float-right">
+								<input type="text" class="inputStyle">
+							</div>
 						</div>
-						<div class="mt10">
-							<h4 class="font-normal inline-block" style="width:15%">FCM Server Key</h4>
-							<input type="text" class="inputStyle" style="width:72%">
+						<div class="of_h consolMarginTop">
+							<h5 class="inline-block" style="width:15%">FCM Server Key</h5>
+							<input type="text" class="inputStyle float-right" style="width:85%">
 						</div>
-						<div class="mt10">
-							<h4 class="font-normal inline-block" style="width:15%">Sender ID</h4>
-							<input type="text" class="inputStyle" style="width:72%">
-							<a href="#self" class="btnStyle2 float-right">인증서 삭제</a>
+						<div class="of_h consolMarginTop">
+							<h5 class="inline-block" style="width:15%">Sender ID</h5>
+							<div style="width:85%" class="float-right of_h">
+								<input type="text" class="inputStyle" style="width:88%">
+								<a href="#self" class="btnStyle1 float-right">인증서 삭제</a>
+							</div>
 						</div>				
 					</div>
 				</div>
 			</div>
 			
-			<h4 class="mt40"><input type="checkbox" id="APNS" class="checkStyle2" value="APNS"><label for="APNS" class="font-size18 font-600">IOS(APNS)</label></h4>
-			<div class="row mt10">
-				<div class="col-xs-12">
+			<h4><input type="checkbox" id="APNS" class="checkStyle2" value="APNS"><label for="APNS" class="font-600">IOS(APNS)</label></h4>
+			<div class="row">
+				<div class="col-xs-12 consolMarginTop">
 					<div class="menuBox">						
 						<div class="of_h">
-							<h4 class="font-normal inline-block" style="width:15%">P8인증서</h4>
-							<input type="text" class="inputStyle" style="width:62%">
-							<a href="#self" class="btnStyle3 gray font13 width90 float-right" style="margin-right:13%; padding:12px 10px">파일선택</a>
+							<h5 class="inline-block" style="width:15%">P8인증서</h5>
+							<div class="float-right" style="width:85%">
+								<input type="text" class="inputStyle" style="width:88%">
+								<a href="#self" class="btnStyle1 borderGray float-right" style="width:10%">파일선택</a>
+							</div>
 						</div>
-						<div class="mt10">
-							<h4 class="font-normal inline-block" style="width:15%">Bundle ID</h4>
-							<input type="text" class="inputStyle" style="width:72%">
-							<div class="consolCheck display-block mt5" style="margin-left:15.5%"><input type="checkbox" id="ID" class="checkStyle2" value="ID"><label for="ID">APNS App ID 별도</label></div>
+						<div class="of_h consolMarginTop">
+							<h5 class="inline-block" style="width:15%">Bundle ID</h5>
+							<div style="width:85%" class="float-right">
+								<input type="text" class="inputStyle">
+								<div class="consolCheck consolMarginTop"><input type="checkbox" id="ID" class="checkStyle2" value="ID"><label for="ID">APNS App ID 별도</label></div>
+							</div>
 						</div>
-						<div class="mt15">
-							<h4 class="font-normal inline-block" style="width:15%">Team ID</h4>
-							<input type="text" class="inputStyle" style="width:72%">
+						<div class="consolMarginTop of_h">
+							<h5 class="inline-block" style="width:15%">Team ID</h5>
+							<input type="text" class="inputStyle float-right" style="width:85%">
 						</div>
-						<div class="mt10">
-							<h4 class="font-normal inline-block" style="width:15%">Key ID</h4>
-							<input type="text" class="inputStyle" style="width:72%">
-							<a href="#self" class="btnStyle2 float-right">인증서 삭제</a>
+						<div class="consolMarginTop of_h">
+							<h5 class="inline-block" style="width:15%">Key ID</h5>
+							<div class="float-right" style="width:85%">
+								<input type="text" class="inputStyle" style="width:88%">
+								<a href="#self" class="btnStyle1 float-right">인증서 삭제</a>
+							</div>
 						</div>	
 					</div>
 				</div>
 			</div>
 			
-			<p class="font-size12 color3 mt10 inline-block"><i class="far fa-info-circle"></i> 푸시 메시지를 이용할 OS 및 유형에 따라 각 인증서의 항목을 모두 입력해 주세요.</p>
+			<p class="color3 consolMarginTop"><i class="far fa-info-circle"></i> 푸시 메시지를 이용할 OS 및 유형에 따라 각 인증서의 항목을 모두 입력해 주세요.</p>
 			
-			<div class="mt50 text-center">
-				<a href="#self" class="btnStyle5 red width120">저장</a>
+			<div class="mt20 text-center">
+				<a href="#self" class="btnStyle2 backRed">저장</a>
 			</div>
 			<!-- //본문 -->
 

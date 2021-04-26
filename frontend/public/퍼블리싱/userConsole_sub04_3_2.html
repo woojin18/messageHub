@@ -14,11 +14,13 @@
 			<!-- 본문 -->
 			<div class="of_h mt30">
 				<div class="phone3 inline-block" style="width:30%">
-					<!-- phoneWrap -->
-					<div class="phoneWrap">
-						<img src="common/images/phoneMockup2.svg" alt="프리 템플릿">
+					<div class="phoneFixed">
+						<!-- phoneWrap -->
+						<div class="phoneWrap">
+							<img src="common/images/phoneMockup2.svg" alt="프리 템플릿">
+						</div>
+						<!-- //phoneWrap -->
 					</div>
-					<!-- //phoneWrap -->
 				</div>
 				<div class="of_h inline-block vertical-top consoleCon" style="width:60%">
 					<div class="of_h user-phone">
@@ -56,19 +58,21 @@
 						</div>
 					</div>
 
-					<div class="of_h user-phone">
+					<div class="of_h user-phone consolMarginTop">
 						<div class="float-left" style="width:27%">
 							<h4>이미지</h4>
 						</div>
 						<div class="float-left" style="width:73%">
 							<div class="of_h">
-								<a href="#self" class="btnStyle1 backLightGray" style="width:25%" data-toggle="modal" data-target="#image2" title="이미지선택">이미지선택</a>
-								<input type="text" class="inputStyle float-right" style="width:74%" title="test_img.jpg">
+								<div class="float-left" style="width:25%"><a href="#self" class="btnStyle1 backLightGray width100_" data-toggle="modal" data-target="#image" title="이미지선택">이미지선택</a></div>
+								<ul class="float-right attachList" style="width:74%; padding:5px 15px">
+									<li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
+								</ul>
 							</div>
 						</div>
 					</div>
 					
-					<div class="of_h user-phone">
+					<div class="of_h user-phone consolMarginTop">
 						<div class="float-left" style="width:27%">
 							<h4 class="inline-block mr20">버튼</h4>
 							<a href="#self" class="btnStyle1 backBlack">추가 +</a>
@@ -80,7 +84,7 @@
 									  <col style="width:20%">
 									  <col style="width:20%">
 									  <col>
-									  <col style="width:15%">
+									  <col style="width:80px">
 								  </colgroup>
 								  <thead>
 									<tr>
@@ -100,7 +104,7 @@
 										</td>
 										<td class="text-center" rowspan="2"><input type="text" class="inputStyle float-left"></td>
 										<td class="text-left of_h">
-											<p class="font-normal float-left" style="width:20%">Mobile</p>
+											<h6 class="font-normal float-left" style="width:20%">Mobile</h6>
 											<input type="text" class="inputStyle float-right" style="width:68%">
 										</td>											
 										<td class="text-center end" rowspan="2">
@@ -109,7 +113,7 @@
 									  </tr>
 									  <tr>
 										<td class="text-left of_h">
-											<p class="font-normal float-left" style="width:20%">PC</p>
+											<h6 class="font-normal float-left" style="width:20%">PC</h6>
 											<input type="text" class="inputStyle float-right" style="width:68%">
 										</td>
 									  </tr>
@@ -122,7 +126,7 @@
 										</td>
 										<td class="text-center" rowspan="2"><input type="text" class="inputStyle float-left"></td>
 										<td class="text-left of_h">
-											<p class="font-normal float-left" style="width:20%">Mobile</p>
+											<h6 class="font-normal float-left" style="width:20%">Mobile</h6>
 											<input type="text" class="inputStyle float-right" style="width:68%">
 										</td>											
 										<td class="text-center end" rowspan="2">
@@ -131,7 +135,7 @@
 									  </tr>
 									  <tr>
 										<td class="text-left of_h">
-											<p class="font-normal float-left" style="width:20%">PC</p>
+											<h6 class="font-normal float-left" style="width:20%">PC</h6>
 											<input type="text" class="inputStyle float-right" style="width:68%">
 										</td>
 									  </tr>

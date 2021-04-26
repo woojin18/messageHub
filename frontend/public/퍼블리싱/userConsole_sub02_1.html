@@ -14,19 +14,21 @@
 			<!-- 본문 -->
 			<div class="row row-no-margin">
 				<div class="phone3 inline-block" style="width:30%">
-					<!-- phoneWrap -->
-					<div class="phoneWrap">
-						<img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
-						<div class="phoneTextWrap">
-							<div class="phoneText1">
-								<p>내용이 들어갑니다</p>
+					<div class="phoneFixed">
+						<!-- phoneWrap -->
+						<div class="phoneWrap">
+							<img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
+							<div class="phoneTextWrap">
+								<div class="phoneText1">
+									<p>내용이 들어갑니다</p>
+								</div>
 							</div>
 						</div>
-					</div>
-					<!-- //phoneWrap -->
-					<div class="phone_04_btn">
-						<a href="#self" class="btnStyle1 backBlack" title="Push">Push</a>
-						<a href="#self" class="btnStyle1 backWhite" title="Push">SMS</a>						
+						<!-- //phoneWrap -->
+						<div class="phone_04_btn">
+							<a href="#self" class="btnStyle1 backBlack" title="Push">Push</a>
+							<a href="#self" class="btnStyle1 backWhite" title="Push">SMS</a>						
+						</div>
 					</div>
 				</div>
 				<div class="of_h inline-block vertical-top consoleCon" style="width:60%">
@@ -81,8 +83,10 @@
 									<h5>이미지</h5>
 								</div>
 								<div class="of_h" style="width:82%">
-									<a href="#self" class="btnStyle1 backLightGray" style="width:24%" data-toggle="modal" data-target="#image" title="이미지선택">이미지선택</a>
-									<input type="text" class="inputStyle float-right" style="width:75%">
+									<div class="float-left" style="width:24%"><a href="#self" class="btnStyle1 backLightGray width100_" data-toggle="modal" data-target="#image" title="이미지선택">이미지선택</a></div>
+									<ul class="float-right attachList" style="width:75%; padding:5px 15px">
+										<li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
+									</ul>
 								</div>
 							</div>
 							<div class="of_h">
@@ -390,9 +394,9 @@
 				<div class="modal-body">
 					<h2>통합 이미지 관리</h2>
 					<hr>
-					<div class="of_h">
+					<div class="of_h h4Minus">
 						<h4 class="color000 inline-block">업로드 한 이미지</h4>
-						<div class="float-right">
+						<div class="float-right h4Button">
 							<a href="#self" class="btnStyle1 backBlack mr10" data-toggle="modal" data-target="#image-add" title="이미지 추가">이미지 추가</a>
 							<a href="#self" class="btnStyle1 backLightGray" title="삭제">삭제</a>						
 						</div>
@@ -657,8 +661,8 @@
 						<div class="border-line2 float-left" style="height:260px; overflow-y:scroll; width:34%">
 							<div style="padding:25px">							
 								
-								<!-- addList -->
-								<ul class="addList" >
+								<!-- addList2 -->
+								<ul class="addList2" >
 									<li class="addList_minus"><a href="#self"><i class="fal fa-minus-square addIcon"></i><i class="fad fa-folder-open color3"></i> 회사명</a>
 										<ul>
 											<li class="addList_plus"><a href="#self"><i class="fal fa-plus-square addIcon"></i><i class="fad fa-folder color3"></i> 부서명2</a></li>
@@ -683,11 +687,6 @@
 								<table class="table_skin1">
 									<caption>수신자 추가의 사용자명, 아이디, 이용권한을 제공하는 표</caption>
 									<colgroup>
-										<col style="width:5%">							
-										<col style="width:18%">
-										<col style="width:25%">
-										<col>
-										<col style="width:16%">
 									</colgroup>
 									<thead>
 										<tr>
@@ -695,44 +694,65 @@
 										<th class="text-center lc-1">수신자명</th>
 										<th class="text-center lc-1">APP 로그인ID</th>
 										<th class="text-center lc-1">휴대폰번호</th>
-										<th class="text-center lc-1 end">변수1</th>
+										<th class="text-center lc-1">변수1</th>
+										<th class="text-center lc-1">변수2</th>
+										<th class="text-center lc-1">변수3</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
-										<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check7" class="checkStyle2" value="check17"><label for="check7"></label></div></td>
-										<td class="text-center">TPM0</td>
-										<td class="text-left">312</td>									
-										<td class="text-left">010-3456-7890</td>
-										<td class="text-center end"><input type="text" class="inputStyle"></td>
+											<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check7" class="checkStyle2" value="check17"><label for="check7"></label></div></td>
+											<td class="text-center">TPM0</td>
+											<td class="text-left">312</td>									
+											<td class="text-left">010-3456-7890</td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
 										</tr>
 										<tr>
-										<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check8" class="checkStyle2" value="check8"><label for="check8"></label></div></td>
-										<td class="text-center">TPM0</td>
-										<td class="text-left">312</td>									
-										<td class="text-left">010-3456-7890</td>
-										<td class="text-center end"><input type="text" class="inputStyle"></td>
+											<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check8" class="checkStyle2" value="check8"><label for="check8"></label></div></td>
+											<td class="text-center">TPM0</td>
+											<td class="text-left">312</td>									
+											<td class="text-left">010-3456-7890</td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
 										</tr>
 										<tr>
-										<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check9" class="checkStyle2" value="check9"><label for="check9"></label></div></td>
-										<td class="text-center">TPM0</td>
-										<td class="text-left">312</td>									
-										<td class="text-left">010-3456-7890</td>
-										<td class="text-center end"><input type="text" class="inputStyle"></td>
+											<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check9" class="checkStyle2" value="check9"><label for="check9"></label></div></td>
+											<td class="text-center">TPM0</td>
+											<td class="text-left">312</td>									
+											<td class="text-left">010-3456-7890</td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
 										</tr>
 										<tr>
-										<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check10" class="checkStyle2" value="check10"><label for="check10"></label></div></td>
-										<td class="text-center">TPM0</td>
-										<td class="text-left">312</td>									
-										<td class="text-left">010-3456-7890</td>
-										<td class="text-center end"><input type="text" class="inputStyle"></td>
+											<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check10" class="checkStyle2" value="check10"><label for="check10"></label></div></td>
+											<td class="text-center">TPM0</td>
+											<td class="text-left">312</td>									
+											<td class="text-left">010-3456-7890</td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
 										</tr>
 										<tr>
-										<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check11" class="checkStyle2" value="check11"><label for="check11"></label></div></td>
-										<td class="text-center">TPM0</td>
-										<td class="text-left">312</td>									
-										<td class="text-left">010-3456-7890</td>
-										<td class="text-center end"><input type="text" class="inputStyle"></td>
+											<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check11" class="checkStyle2" value="check11"><label for="check11"></label></div></td>
+											<td class="text-center">TPM0</td>
+											<td class="text-left">312</td>									
+											<td class="text-left">010-3456-7890</td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
+										</tr>
+										<tr>
+											<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check11" class="checkStyle2" value="check11"><label for="check11"></label></div></td>
+											<td class="text-center">TPM0</td>
+											<td class="text-left">312</td>									
+											<td class="text-left">010-3456-7890</td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
+											<td class="text-center"><input type="text" class="inputStyle" style="width:60px"></td>
 										</tr>
 									</tbody>
 								</table>

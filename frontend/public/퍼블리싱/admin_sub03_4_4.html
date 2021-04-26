@@ -11,17 +11,17 @@
 			</div>
 
 			<!-- 본문 -->
-			<div class="contentBody mb40">
+			<div class="contentBody">
 				<ul class="tab_s3">
-					<li><a href="#self" class="width120">대시보드</a></li>
-					<li><a href="#self" class="width120">기본정보</a></li>
-					<li><a href="#self" class="width120">멤버관리</a></li>
-					<li class="active"><a href="#self" class="width120">채널관리</a></li>
-					<li><a href="#self" class="width120">발신번호관리</a></li>
-					<li><a href="#self" class="width120">스팸관리</a></li>
+					<li><a href="#self">대시보드</a></li>
+					<li><a href="#self">기본정보</a></li>
+					<li><a href="#self">멤버관리</a></li>
+					<li class="active"><a href="#self">채널관리</a></li>
+					<li><a href="#self">발신번호관리</a></li>
+					<li><a href="#self">스팸관리</a></li>
 				</ul>			
 			</div>
-			<ul class="tabStyle tab6 bgColor_tapGray mt30">
+			<ul class="tabStyle tab6 bgColor_tapGray">
 				<li><a href="#">RCS</a></li>
 				<li><a href="#">SMS/MMS</a></li>
 				<li><a href="#">PUSH</a></li>
@@ -29,56 +29,63 @@
 				<li><a href="#">MO</a></li>
 			</ul>
 			
-			<h4 class="mt40">카카오톡 채널(플러스친구) 추가</h4>
-			<p class="font-size12 color3 mt30 inline-block line-height1-5em"><i class="far fa-info-circle"></i> 카카오톡 비즈메시지를 발송하려면 카카오톡 채널을 먼저 등록해야 합니다.<br>
+			<h4>카카오톡 채널(플러스친구) 추가</h4>
+			<p class="color3"><i class="far fa-info-circle"></i> 카카오톡 비즈메시지를 발송하려면 카카오톡 채널을 먼저 등록해야 합니다.<br>
 				<i class="far fa-info-circle"></i> 카카오톡 채널은 카카오톡 비즈니스 ID로, 카카오톡 홈페이지(https://center-pf.kakao.com)에서 무료로 만들 수 있습니다.<br>
 				<i class="far fa-info-circle"></i> 담당자는 등록한 카카오톡 채널과 서류를 확인하고 본인 여부 등의 심사를 진행합니다.<br>
 				<i class="far fa-info-circle"></i> 카카오톡 채널 등록 후, 관리자 연락처로 받은 인증 토큰 6자리를 입력해야 사용할 수 있습니다.<br>
 				<i class="far fa-info-circle"></i> 카카오톡 채널 상태에 대한 자세한 설명은 플러스친구 개요 문서를 참고하시기 바랍니다.
 			</p>
 
-			<div class="menuBox mt30">						
+			<div class="menuBox mt10">						
 				<div class="of_h">
-					<h4 class="font-normal inline-block vertical-middle" style="width:12%">플러스친구 ID</h4>
+					<h4 class="inline-block" style="width:10%">플러스친구 ID</h4>
 					<input type="text" class="inputStyle" style="width:15%">
-					<h4 class="font-normal inline-block vertical-middle ml40" style="width:14%">플러스친구 상태</h4>
-					<select name="admin030404_1" class="selectStyle3" style="width:15%">
+					<h4 class="inline-block vertical-middle ml100" style="width:11%">플러스친구 상태</h4>
+					<select name="admin030404_1" class="selectStyle2" style="width:15%">
 						<option value="">전체</option>
 						<option value="">전체</option>
 					</select>
-					<a href="#self" class="btnStyle2 float-right">검색</a>
+					<a href="#self" class="btnStyle1 float-right">검색</a>
 				</div>						
 			</div>
 
-
-			<div class="row mt20">
+				<!--
+				<div class="row consolMarginTop">
 					<div class="col-xs-12">		
 						<div class="of_h">
 							<div class="float-right">
-								<a href="#self" class="btnStyle3 gray font13 width180" data-toggle="modal" data-target="#Register">카카오톡 채널 추가</a>
-								<a href="#self" class="btnStyle3 gray font13 width180 ml10">카카오톡 채널 생성</a>
+								<a href="#self" class="btnStyle2 borderGray" data-toggle="modal" data-target="#Register">카카오톡 채널 추가</a>
+								<a href="#self" class="btnStyle2 borderGray ml10">카카오톡 채널 생성</a>
 							</div>
 						</div>
 					</div>			
 				</div>
-
-				
-
+				-->
+				<div class="consolMarginTop">
+					<div class="of_h inline">
+						<div class="float-right">
+							<a href="#self" class="btnStyle2 borderGray" data-toggle="modal" data-target="#Register">카카오톡 채널 추가</a>
+							<a href="#self" class="btnStyle2 borderGray ml10">카카오톡 채널 생성</a>
+						</div>
+					</div>
+					
+					<!-- 15개씩 보기 -->
+					<div class="of_h inline">
+						<div class="float-left">전체 : <span class="color1"><strong>20</strong></span>건
+							<select name="admin030404_2" class="selectStyle2 width120 ml20">
+								<option value="">15개씩 보기</option>
+								<option value="">30개씩 보기</option>
+							</select>
+						</div>
+					</div>
+					<!-- //15개씩 보기 -->
+				</div>
 				<div class="row">
 					<div class="col-xs-12">
-						<!-- 15개씩 보기 -->
-						<div class="of_h mb20">
-							<div class="float-left">전체 : <span class="color1"><strong>20</strong></span>건
-								<select name="admin030404_2" class="selectStyle2 width120 ml20">
-									<option value="">15개씩 보기</option>
-									<option value="">30개씩 보기</option>
-								</select>
-							</div>
-						</div>
-						<!-- //15개씩 보기 -->
 
 						<!-- table -->
-						<table  class="table_skin1 bt-000 tbl-striped">
+						<table  class="table_skin1 bt-000 tbl-striped consolMarginTop">
 							<colgroup>
 								<col style="width:10%">
 								<col>
@@ -110,7 +117,7 @@
 								<td class="text-center">결과 없음</td>
 								<td class="text-center">공용</td>
 								<td class="text-center">2020-05-13 23:39:39</td>
-								<td class="end"><a href="#self" class="btnStyle8 mr5">관리자 인증</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
+								<td class="end"><a href="#self" class="btnStyle1 borderLightGray small mr5">관리자 인증</a><a href="#self" class="btnStyle1 borderLightGray small mr5">삭제</a></td>
 								</tr>	
 								<tr>
 								<td class="text-center">@플러스</td>
@@ -120,7 +127,7 @@
 								<td class="text-center">정상</td>
 								<td class="text-center">개별</td>
 								<td class="text-center">2020-05-13 23:39:39</td>
-								<td class="end"><a href="#self" class="btnStyle8 mr5">관리자 인증</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
+								<td class="end"><a href="#self" class="btnStyle1 borderLightGray small mr5">관리자 인증</a><a href="#self" class="btnStyle1 borderLightGray small mr5">삭제</a></td>
 								</tr>	
 							</tbody>
 						</table>
@@ -161,45 +168,45 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div>
-						<h5 class="lc-1">카카오톡 채널 추가</h5>
+						<h2>카카오톡 채널 추가</h2>
 						<hr>
-						<div class="mt20">
+						<div class="consoleCon">
 							<div class="of_h">
-								<h4 class="font-normal inline-block float-left" style="width:20%">플러스 친구 ID *</h4>
+								<h5 class="inline-block float-left" style="width:20%">플러스 친구 ID *</h5>
 								<input type="text" class="inputStyle float-right" style="width:76%">
 							</div>
-							<div class="mt10 of_h">
-								<h4 class="font-normal inline-block float-left" style="width:20%">관리자 연락처</h4>
+							<div class="of_h consolMarginTop">
+								<h5 class="inline-block float-left" style="width:20%">관리자 연락처</h5>
 								<input type="text" class="inputStyle float-right" style="width:76%">
 							</div>
-							<div class="mt15 of_h">
-								<h4 class="font-normal inline-block float-left" style="width:20%">사업자 카테고리</h4>
+							<div class="of_h consolMarginTop">
+								<h5 class="inline-block float-left" style="width:20%">사업자 카테고리</h5>
 								<div class="float-right" style="width:76%">
-									<select name="admin030404_3" class="selectStyle3" style="width:70%">
+									<select name="admin030404_3" class="selectStyle2" style="width:70%">
 										<option value="">대분류</option>
 									</select>
-									<select name="admin030404_4" class="selectStyle3 mt10" style="width:70%">
+									<select name="admin030404_4" class="selectStyle2 consolMarginTop" style="width:70%">
 										<option value="">중분류</option>
 									</select>
-									<select name="admin030404_5" class="selectStyle3 mt10" style="width:70%">
+									<select name="admin030404_5" class="selectStyle2 consolMarginTop" style="width:70%">
 										<option value="">소분류</option>
 									</select>
 								</div>
 							</div>
-							<div class="mt10">
-								<h4 class="font-normal inline-block width120">공용/개별</h4>
-								<div class="inline-block">
-									<input type="radio" name="use" value="Y" class="cBox" id="yes" checked=""> <label for="yes" class="payment mr30 font-size12">공용</label>
-									<input type="radio" name="use" value="N" class="cBox" id="no"> <label for="no" class="payment font-size12">개별</label>		
+							<div class="of_h consolMarginTop">
+								<h5 class="inline-block" style="width:20%">공용/개별</h5>
+								<div class="inline-block float-right" style="width:76%">
+									<input type="radio" name="use" value="Y" id="yes" checked=""> <label for="yes" class="mr30">공용</label>
+									<input type="radio" name="use" value="N" id="no"> <label for="no">개별</label>		
 								</div>
 							</div>
 							
 						</div>
 					
 					</div>
-					<div class="text-center mt40">
-						<a href="#self" class="btnStyle3 black font14" data-toggle="modal">토큰요청</a>
-						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal">취소</a>						
+					<div class="text-center mt20">
+						<a href="#self" class="btnStyle1 backBlack" data-toggle="modal">토큰요청</a>
+						<a href="#self" class="btnStyle1 backWhite" data-dismiss="modal">취소</a>						
 					</div>
 				</div>
 			</div>

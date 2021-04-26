@@ -11,47 +11,47 @@
 			</div>
 
 			<!-- 본문 -->
-			<div class="contentBody mb40">
+			<div class="contentBody">
 				<ul class="tab_s3">
-					<li><a href="#self" class="width120">대시보드</a></li>
-					<li><a href="#self" class="width120">기본정보</a></li>
-					<li><a href="#self" class="width120">멤버관리</a></li>
-					<li><a href="#self" class="width120">채널관리</a></li>
-					<li><a href="#self" class="width120">발신번호관리</a></li>
-					<li class="active"><a href="#self" class="width120">스팸관리</a></li>
+					<li><a href="#self">대시보드</a></li>
+					<li><a href="#self">기본정보</a></li>
+					<li><a href="#self">멤버관리</a></li>
+					<li><a href="#self">채널관리</a></li>
+					<li><a href="#self">발신번호관리</a></li>
+					<li class="active"><a href="#self">스팸관리</a></li>
 				</ul>			
 			</div>
 			
-			<div class="row">
+			<div class="row mt15">
 				<div class="col-xs-12">
 					<div class="menuBox">						
 						<div class="of_h">
-							<div class="mt15">
-								<h4 class="font-normal inline-block" style="width:8%">차단타입</h4>
-								<select name="admin0306_1" class="selectStyle3" style="width:16%">
+							<div>
+								<h4 class="inline-block" style="width:6%">차단타입</h4>
+								<select name="admin0306_1" class="selectStyle2" style="width:16%">
 									<option value="">전체</option>
 									<option value="">대기</option>
 								</select>
-								<h4 class="font-normal inline-block ml40" style="width:8%">스팸타입</h4>
-								<select name="admin0306_2" class="selectStyle3" style="width:16%">
+								<h4 class="inline-block ml60" style="width:6%">스팸타입</h4>
+								<select name="admin0306_2" class="selectStyle2" style="width:16%">
 									<option value="">전체</option>
 									<option value="">대기</option>
 								</select>
-								<h4 class="font-normal inline-block ml40" style="width:8%">공용/개별</h4>
-								<select name="admin0306_3" class="selectStyle3" style="width:16%">
+								<h4 class="inline-block ml60" style="width:7%">공용/개별</h4>
+								<select name="admin0306_3" class="selectStyle2" style="width:16%">
 									<option value="">전체</option>
 									<option value="">대기</option>
 								</select>								
 							</div>
-							<div class="mt15">
-								<h4 class="font-normal inline-block" style="width:8%">사용여부</h4>
-								<select name="admin0306_4" class="selectStyle3" style="width:16%">
+							<div class="consolMarginTop">
+								<h4 class="inline-block" style="width:6%">사용여부</h4>
+								<select name="admin0306_4" class="selectStyle2" style="width:16%">
 									<option value="">전체</option>
 									<option value="">대기</option>
 								</select>
-								<h4 class="font-normal inline-block ml40" style="width:8%">컨텐츠</h4>
-								<input type="text" class="inputStyle" style="width:43.3%">
-								<a href="#self" class="btnStyle2 float-right">검색</a>
+								<h4 class="inline-block ml60" style="width:6%">컨텐츠</h4>
+								<input type="text" class="inputStyle" style="width:45.3%">
+								<a href="#self" class="btnStyle1 float-right">검색</a>
 							</div>
 						</div>						
 					</div>
@@ -59,20 +59,16 @@
 			</div>
 
 			
-			<div class="row mt20">
+			<div class="row consolMarginTop">
 				<div class="col-xs-12">		
-					<div class="of_h">
+					<div class="of_h inline">
 						<div class="float-right">
-							<a href="#self" class="btnStyle3 gray font13 width180" data-toggle="modal" data-target="#Register">콘텐츠 추가</a>
+							<a href="#self" class="btnStyle2 borderGray" data-toggle="modal" data-target="#Register">콘텐츠 추가</a>
 						</div>
 					</div>
-				</div>			
-			</div>
-			
-			<div class="row">
-				<div class="col-xs-12">
+				
 					<!-- 15개씩 보기 -->
-					<div class="of_h mb20">
+					<div class="of_h inline">
 						<div class="float-left">전체 : <span class="color1"><strong>20</strong></span>건
 							<select name="admin0306_5" class="selectStyle2 width120 ml20">
 								<option value="">15개씩 보기</option>
@@ -81,87 +77,90 @@
 						</div>
 					</div>
 					<!-- //15개씩 보기 -->
-					
-					<!-- table -->
-					<table class="table_skin1 bt-000 tbl-striped">
-						<colgroup>
-							<col style="width:5%">
-							<col>
-							<col style="width:10%">
-							<col style="width:10%">
-							<col style="width:9%">
-							<col style="width:8%">
-							<col style="width:13%">
-							<col style="width:13%">
-							<col style="width:10%">
-							<col style="width:14%">
-						</colgroup>
-						<thead>
-							<tr>
-							<th class="text-center lc-1">No.</th>
-							<th class="text-center lc-1">차단타입</th>
-							<th class="text-center lc-1">스팸사유</th>
-							<th class="text-center lc-1">공용/개별</th>
-							<th class="text-center lc-1">콘텐츠</th>
-							<th class="text-center lc-1">메모</th>
-							<th class="text-center lc-1">사용여부</th>
-							<th class="text-center lc-1">등록자</th>
-							<th class="text-center lc-1">등록일시</th>
-							<th class="text-center lc-1 end">관리</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-							<td class="text-center">4</td>
-							<td class="text-center">문자</td>
-							<td class="text-center">일반</td>
-							<td class="text-center">공용</td>
-							<td class="text-center">나쁜x</td>
-							<td class="text-center">간단한 내용</td>
-							<td class="text-center">예</td>
-							<td class="text-center">홍길동</td>
-							<td class="text-center">2021-01-02</td>
-							<td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
-							</tr>	
-							<tr>
-							<td class="text-center">3</td>
-							<td class="text-center">발신번호</td>
-							<td class="text-center">대출</td>
-							<td class="text-center">개별</td>
-							<td class="text-center">01033334444</td>
-							<td class="text-center"></td>
-							<td class="text-center">아니오</td>
-							<td class="text-center">홍길동</td>
-							<td class="text-center">2021-01-02</td>
-							<td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
-							</tr>
-							<tr>
-							<td class="text-center">2</td>
-							<td class="text-center">수신번호</td>
-							<td class="text-center">의약품</td>
-							<td class="text-center">공용</td>
-							<td class="text-center">0233334444</td>
-							<td class="text-center"></td>
-							<td class="text-center">예</td>
-							<td class="text-center">홍길동</td>
-							<td class="text-center">2021-01-02</td>
-							<td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
-							</tr>
-							<tr>
-							<td class="text-center">1</td>
-							<td class="text-center">문자</td>
-							<td class="text-center">도착</td>
-							<td class="text-center">개별</td>
-							<td class="text-center">[광고]</td>
-							<td class="text-center"></td>
-							<td class="text-center">아니오</td>
-							<td class="text-center">홍길동</td>
-							<td class="text-center">2021-01-02</td>
-							<td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
-							</tr>
-						</tbody>
-					</table>
-					<!-- //table -->
+					<div class="row">
+						<div class="col-xs-12 consolMarginTop">
+							<!-- table -->
+							<table class="table_skin1 bt-000 tbl-striped">
+								<colgroup>
+									<col style="width:5%">
+									<col>
+									<col style="width:10%">
+									<col style="width:10%">
+									<col style="width:9%">
+									<col style="width:8%">
+									<col style="width:13%">
+									<col style="width:13%">
+									<col style="width:10%">
+									<col style="width:14%">
+								</colgroup>
+								<thead>
+									<tr>
+									<th class="text-center lc-1">No.</th>
+									<th class="text-center lc-1">차단타입</th>
+									<th class="text-center lc-1">스팸사유</th>
+									<th class="text-center lc-1">공용/개별</th>
+									<th class="text-center lc-1">콘텐츠</th>
+									<th class="text-center lc-1">메모</th>
+									<th class="text-center lc-1">사용여부</th>
+									<th class="text-center lc-1">등록자</th>
+									<th class="text-center lc-1">등록일시</th>
+									<th class="text-center lc-1 end">관리</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+									<td class="text-center">4</td>
+									<td class="text-center">문자</td>
+									<td class="text-center">일반</td>
+									<td class="text-center">공용</td>
+									<td class="text-center">나쁜x</td>
+									<td class="text-center">간단한 내용</td>
+									<td class="text-center">예</td>
+									<td class="text-center">홍길동</td>
+									<td class="text-center">2021-01-02</td>
+									<td class="end"><a href="#self" class="btnStyle1 borderLightGray small mr5">수정</a><a href="#self" class="btnStyle1 borderLightGray small mr5">삭제</a></td>
+									</tr>	
+									<tr>
+									<td class="text-center">3</td>
+									<td class="text-center">발신번호</td>
+									<td class="text-center">대출</td>
+									<td class="text-center">개별</td>
+									<td class="text-center">01033334444</td>
+									<td class="text-center"></td>
+									<td class="text-center">아니오</td>
+									<td class="text-center">홍길동</td>
+									<td class="text-center">2021-01-02</td>
+									<td class="end"><a href="#self" class="btnStyle1 borderLightGray small mr5">수정</a><a href="#self" class="btnStyle1 borderLightGray small mr5">삭제</a></td>
+									</tr>
+									<tr>
+									<td class="text-center">2</td>
+									<td class="text-center">수신번호</td>
+									<td class="text-center">의약품</td>
+									<td class="text-center">공용</td>
+									<td class="text-center">0233334444</td>
+									<td class="text-center"></td>
+									<td class="text-center">예</td>
+									<td class="text-center">홍길동</td>
+									<td class="text-center">2021-01-02</td>
+									<td class="end"><a href="#self" class="btnStyle1 borderLightGray small mr5">수정</a><a href="#self" class="btnStyle1 borderLightGray small mr5">삭제</a></td>
+									</tr>
+									<tr>
+									<td class="text-center">1</td>
+									<td class="text-center">문자</td>
+									<td class="text-center">도착</td>
+									<td class="text-center">개별</td>
+									<td class="text-center">[광고]</td>
+									<td class="text-center"></td>
+									<td class="text-center">아니오</td>
+									<td class="text-center">홍길동</td>
+									<td class="text-center">2021-01-02</td>
+									<td class="end"><a href="#self" class="btnStyle1 borderLightGray small mr5">수정</a><a href="#self" class="btnStyle1 borderLightGray small mr5">삭제</a></td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- //table -->
+						</div>			
+					</div>
 				</div>			
 			</div>
 
@@ -198,45 +197,63 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div class="of_h">
-						<h5 class="lc-1">콘텐츠 상세</h5>
+						<h2>콘텐츠 상세</h2>
 						<hr>
-						<div class="mt20">
-							<h4 class="font-normal inline-block width90">차단타입 *</h4>
-							<select name="admin0306_6" class="selectStyle3 width291">
+						<div class="of_h">
+							<div class="inline-block" style="width:18%">
+								<h5>차단타입 *</h5>
+							</div>
+							<select name="admin0306_6" class="selectStyle2 float-right" style="width:80%">
 								<option value="">전체</option>
 							</select>
 						</div>
-						<div class="mt15">
-							<h4 class="font-normal inline-block width90">스팸사유 *</h4>
-							<select name="admin0306_7" class="selectStyle3 width291">
+						<div class="of_h consolMarginTop">
+							<div class="inline-block" style="width:18%">
+								<h5>스팸사유 *</h5>
+							</div>
+							<select name="admin0306_7" class="selectStyle2 float-right" style="width:80%">
 								<option value="">전체</option>
 							</select>
 						</div>
-						<div class="mt15">
-							<h4 class="font-normal inline-block width90">스팸사유 *</h4>
-							<input type="radio" name="spam" value="Y" class="cBox" id="spam0306_1" checked=""> <label for="spam0306_1" class="payment mr30 font-size12">공용</label>
-							<input type="radio" name="spam" value="N" class="cBox" id="spam0306_2"> <label for="spam0306_2" class="payment font-size12">전용</label>	
-						</div>								
-						</div>
-						<div class="mt15">
-							<h4 class="font-normal inline-block width90">콘텐츠</h4>
-							<input type="text" class="inputStyle width291">
-							<a href="#self" class="btnStyle7">파일선택</a>
-						</div>
-						<div class="mt15">
-							<h4 class="font-normal inline-block width90">메모</h4>
-							<input type="text" class="inputStyle width414 height120">
-						</div>				
-						<div class="mt15">
-							<h4 class="font-normal inline-block width90">사용여부 *</h4>
-							<input type="radio" name="use2" value="Y" class="cBox" id="use0306_1" checked=""> <label for="use0306_1" class="payment mr30 font-size12">공용</label>
-							<input type="radio" name="use2" value="N" class="cBox" id="use0306_2"> <label for="use0306_2" class="payment font-size12">개별</label>	
+						<div class="of_h consolMarginTop">
+							<div class="inline-block" style="width:18%">
+								<h5>스팸사유 *</h5>
+							</div>
+							<div class="inline-block float-right" style="width:80%">
+								<input type="radio" name="spam" value="Y" id="spam0306_1" checked=""> <label for="spam0306_1" class="mr30">공용</label>
+								<input type="radio" name="spam" value="N" id="spam0306_2"> <label for="spam0306_2">전용</label>	
+							</div>
 						</div>	
-						<p class="font-size12 color3 mt20"><i class="far fa-info-circle"></i>추가된 컨텐츠는 각각 AND 조건으로 스팸 처리됩니다.<br><i class="far fa-info-circle"></i>^ | : , 공백 엔터는 등록할 수 없습니다.</p>
-					
-					<div class="text-center mt40">
-						<a href="#self" class="btnStyle3 black font14" data-toggle="modal">신청</a>
-						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal">닫기</a>						
+						<div class="of_h consolMarginTop">
+							<div class="inline-block" style="width:18%">
+								<h5>콘텐츠</h5>
+							</div>
+							<div class="inline-block float-right" style="width:80%">
+								<input type="text" class="inputStyle" style="width:70%">
+								<a href="#self" class="btnStyle1 backLightGray" style="width:29%">파일선택</a>
+							</div>
+						</div>
+						<div class="of_h consolMarginTop">
+							<div class="inline-block" style="width:18%">
+								<h5>메모</h5>
+							</div>
+							<textarea class="textareaStyle height120 float-right" style="width:80%" placeholder=""></textarea>
+						</div>		
+						<div class="of_h consolMarginTop">
+							<div class="inline-block" style="width:18%">
+								<h5>사용여부 *</h5>
+							</div>
+							<div class="inline-block float-right" style="width:80%">
+								<input type="radio" name="use2" value="Y" id="use0306_1" checked=""> <label for="use0306_1" class="mr30">공용</label>
+								<input type="radio" name="use2" value="N" id="use0306_2"> <label for="use0306_2">개별</label>	
+							</div>
+						</div>	
+						<p class="color3 consolMarginTop"><i class="far fa-info-circle"></i>추가된 컨텐츠는 각각 AND 조건으로 스팸 처리됩니다.<br><i class="far fa-info-circle"></i>^ | : , 공백 엔터는 등록할 수 없습니다.</p>
+						
+					</div>
+					<div class="text-center mt20">
+						<a href="#self" class="btnStyle1 backBlack" data-toggle="modal">신청</a>
+						<a href="#self" class="btnStyle1 backWhite" data-dismiss="modal">닫기</a>						
 					</div>
 				</div>
 			</div>

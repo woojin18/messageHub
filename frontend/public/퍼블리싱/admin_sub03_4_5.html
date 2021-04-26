@@ -11,39 +11,32 @@
 			</div>
 
 			<!-- 본문 -->
-			<div class="contentBody mb40">
+			<div class="contentBody">
 				<ul class="tab_s3">
-					<li><a href="#self" class="width120">대시보드</a></li>
-					<li><a href="#self" class="width120">기본정보</a></li>
-					<li><a href="#self" class="width120">멤버관리</a></li>
-					<li class="active"><a href="#self" class="width120">채널관리</a></li>
-					<li><a href="#self" class="width120">발신번호관리</a></li>
-					<li><a href="#self" class="width120">스팸관리</a></li>
+					<li><a href="#self">대시보드</a></li>
+					<li><a href="#self">기본정보</a></li>
+					<li><a href="#self">멤버관리</a></li>
+					<li class="active"><a href="#self">채널관리</a></li>
+					<li><a href="#self">발신번호관리</a></li>
+					<li><a href="#self">스팸관리</a></li>
 				</ul>			
 			</div>
-			<ul class="tabStyle tab6 bgColor_tapGray mt30">
+			<ul class="tabStyle tab6 bgColor_tapGray">
 				<li><a href="#">RCS</a></li>
 				<li><a href="#">SMS/MMS</a></li>
 				<li><a href="#">PUSH</a></li>
 				<li><a href="#">카카오톡</a></li>
 				<li class="active"><a href="#">MO</a></li>
 			</ul>
-			
-			<h4 class="mt40">MO 수신번호 현황</h4>
-			
-			<div class="row mt20">
-				<div class="col-xs-12">		
-					<div class="of_h">
-						<div class="float-right">
-							<a href="#self" class="btnStyle3 gray font13 width180" data-toggle="modal" data-target="#Register">MO 수신번호 등록</a>
-						</div>
-					</div>
-				</div>			
+			<div class="of_h">
+				<h4 class="inline-block">MO 수신번호 현황</h4>
+				<div class="float-right h4Button">
+					<a href="#self" class="btnStyle2 borderGray" data-toggle="modal" data-target="#Register">MO 수신번호 등록</a>
+				</div>
 			</div>
 			
 			<div class="row">
-				<div class="col-xs-12">
-					
+				<div class="col-xs-12">					
 					<!-- table -->
 					<table class="table_skin1 bt-000 tbl-striped">
 						<colgroup>
@@ -120,38 +113,38 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div>
-						<h5 class="lc-1">MO 수신번호 상세</h5>
+						<h2>MO 수신번호 상세</h2>
 						<hr>
-						<div class="mt20">
-							<div>
-								<h4 class="font-normal inline-block width120">MO ID</h4>
-								<input type="text" class="inputStyle" style="width:76%">
+						<div>
+							<div class="of_h">
+								<h5 class="inline-block" style="width:20%">MO ID</h5>
+								<input type="text" class="inputStyle float-right" style="width:80%">
 							</div>
-							<div class="mt10">
-								<h4 class="font-normal inline-block width120">MO 수신번호</h4>
-								<input type="text" class="inputStyle" style="width:76%">
+							<div class="of_h consolMarginTop">
+								<h5 class="inline-block" style="width:20%">MO 수신번호</h5>
+								<input type="text" class="inputStyle float-right" style="width:80%">
 							</div>
-							<div class="mt20">
-								<h4 class="font-normal inline-block width120">MO 유형</h4>
+							<div class="of_h consolMarginTop">
+								<h5 class="inline-block vertical-middle" style="width:20%">MO 유형</h5>
 								<div class="inline-block">
-									<input type="radio" name="MO" value="Y" class="cBox" id="SMS" checked=""> <label for="SMS" class="payment mr30 font-size12">SMS MO</label>
-									<input type="radio" name="MO" value="N" class="cBox" id="MMS"> <label for="MMS" class="payment font-size12">MMS MO</label>		
+									<input type="radio" name="MO" value="Y" id="SMS" checked=""> <label for="SMS" class="mr30">SMS MO</label>
+									<input type="radio" name="MO" value="N" id="MMS"> <label for="MMS">MMS MO</label>		
 								</div>
 							</div>
-							<div class="mt20">
-								<h4 class="font-normal inline-block width120">타 프로젝트<br>사용여부</h4>
+							<div class="of_h consolMarginTop">
+								<h5 class="inline-block vertical-middle" style="width:20%">타 프로젝트<br>사용여부</h5>
 								<div class="inline-block">
-									<input type="radio" name="use" value="Y" class="cBox" id="yes" checked=""> <label for="yes" class="payment mr30">공용</label>
-									<input type="radio" name="use" value="N" class="cBox" id="no"> <label for="no" class="payment">전용</label>		
+									<input type="radio" name="use" value="Y" id="yes" checked=""> <label for="yes" class="mr30">공용</label>
+									<input type="radio" name="use" value="N" id="no"> <label for="no">전용</label>		
 								</div>
 							</div>
-							<p class="mt30 lc-1 Modaltext font-size12" style="margin:0"><i class="far fa-info-circle"></i> MO 기본료 부과: 면제<br><i class="far fa-info-circle"></i> 건당 수신료: SMS 7원/LMS 20원/MMS 50원</p>
+							<p class="consolMarginTop"><i class="far fa-info-circle"></i> MO 기본료 부과: 면제<br><i class="far fa-info-circle"></i> 건당 수신료: SMS 7원/LMS 20원/MMS 50원</p>
 						</div>
 					
 					</div>
-					<div class="text-center mt40">
-						<a href="#self" class="btnStyle3 black font14" data-toggle="modal">토큰요청</a>
-						<a href="#self" class="btnStyle3 white font14" data-dismiss="modal">취소</a>						
+					<div class="text-center mt20">
+						<a href="#self" class="btnStyle1 backBlack" data-toggle="modal">토큰요청</a>
+						<a href="#self" class="btnStyle1 backWhite" data-dismiss="modal">취소</a>						
 					</div>
 				</div>
 			</div>

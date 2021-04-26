@@ -14,21 +14,23 @@
 			<!-- 본문 -->
 			<div class="row">
 				<div class="phone3 inline-block" style="width:30%">
-					<!-- phoneWrap -->
-					<div class="phoneWrap">
-						<img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
-						<div class="phoneTextWrap">
-							<div class="phoneText2">
-								<p>템플릿 제목</p>
+					<div class="phoneFixed">
+						<!-- phoneWrap -->
+						<div class="phoneWrap">
+							<img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
+							<div class="phoneTextWrap">
+								<div class="phoneText2">
+									<p>템플릿 제목</p>
+								</div>
+								<div class="phoneText2 mt10 text-center" style="padding:65px">
+									<i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+									<p class="font-size14 color3 mt15">이미지 영역</p>
+								</div>
+								<p class="font-size14 color4 mt10">템플릿 내용</p>
 							</div>
-							<div class="phoneText2 mt10 text-center" style="padding:65px">
-								<i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
-								<p class="font-size14 color3 mt15">이미지 영역</p>
-							</div>
-							<p class="font-size14 color4 mt10">템플릿 내용</p>
 						</div>
+						<!-- //phoneWrap -->
 					</div>
-					<!-- //phoneWrap -->
 				</div>
 				<div class="of_h inline-block vertical-top consoleCon" style="width:60%">
 					<div class="of_h user-phone">
@@ -99,14 +101,16 @@
 						</div>
 						<div class="float-left" style="width:72%">
 							<div class="of_h">
-								<a href="#self" class="btnStyle1 borderGray" style="width:25%" data-toggle="modal" data-target="#image2" title="이미지선택">이미지선택</a>
-								<input type="text" style="width:74%" class="inputStyle float-right" title="test_img.jpg ">
+								<div class="float-left" style="width:25%"><a href="#self" class="btnStyle1 backLightGray width100_" title="이미지 선택">이미지선택</a></div>
+								<ul class="float-right attachList" style="width:74%; padding:5px 15px">
+									<li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
+								</ul>	
 							</div>
 						</div>
 					</div>
 					<div class="mt30 float-right">
-						<a href="#self" class="btnStyle5 white float-left width120" title="테스트 발송" data-toggle="modal" data-target="#test">테스트 발송</a>
-						<a href="#self" class="btnStyle5 red float-left ml10 width120" title="발송">발송</a>
+						<a href="#self" class="btnStyle2" title="테스트 발송" data-toggle="modal" data-target="#test">테스트 발송</a>
+						<a href="#self" class="btnStyle2 backRed ml10" title="발송">발송</a>
 					</div>
 				</div>
 			</div>

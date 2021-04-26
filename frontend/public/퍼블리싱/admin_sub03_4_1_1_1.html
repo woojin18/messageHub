@@ -13,186 +13,206 @@
 			<!-- 본문 -->
 			<div class="row">
 				<div class="col-xs-4 sub03_4_1_1_1">
-					<!-- phoneWrap -->
-					<div class="phoneWrap">
-						<img src="common/images/phone_01_1.svg" alt="프리 템플릿">
-						<div class="phoneTextWrap2">
-							<div class="phoneIcon">
-								<i class="fas fa-comment color7"></i>
-								<i class="fas fa-phone-alt color7"></i>
-								<i class="fas fa-globe color7"></i>
-								<i class="fas fa-shopping-bag color7"></i>
-								<i class="fas fa-clipboard-list-check color7"></i>
-								<i class="fas fa-usd-circle color7"></i>
-								<i class="fas fa-ticket color7"></i>
-								<i class="fas fa-info-circle color7"></i>
-							</div>
-							<div class="mt30">
-								<div class="text">
-									<p class="text-main">전화번호</p>
-									<p class="text-sub">02-333-3333</p>
-								</div>
-								<div class="text mt15">
-									<p class="text-main">웹사이트</p>
-									<p class="text-sub">http://www.uplus.co.kr</p>
-								</div>
-								<div class="text mt15">
-									<p class="text-main">이메일</p>
-									<p class="text-sub">test@uplus.co.kr</p>
-								</div>
-								<div class="text mt15">
-									<p class="text-main">주소</p>
-									<p class="text-sub">03909 서울특별시 마포구 매봉산로 45 (상암동,<br>KBS미디어센터) 100호</p>
+					<div class="phoneFixed">
+						<!-- phoneWrap -->
+						<div class="phoneWrap">
+							<img src="common/images/rcsPhone.svg" alt="">
+							<div class="rcsWrap">
+								<div class="rcsImage"><img src="common/images/rcsImageSample.jpg" alt="이미지 샘플" height="200px"></div>
+								<div class="rcsProfileImage"><img src="common/images/rcsProfileImageSample.jpg" alt="이미지 샘플" width="58px" height="58px"></div>
+								<div class="rcsCon">
+									<div class="phoneIcon">
+										<i class="fas fa-comment color7"></i>
+										<i class="fas fa-phone-alt color7"></i>
+										<i class="fas fa-globe color7"></i>
+										<i class="fas fa-shopping-bag color7"></i>
+										<!--
+										<i class="fas fa-clipboard-list-check color7"></i>
+										<i class="fas fa-usd-circle color7"></i>
+										<i class="fas fa-ticket color7"></i>
+										<i class="fas fa-info-circle color7"></i>
+										-->
+									</div>							
+									<div class="mt30">
+										<div class="text">
+											<p class="text-main">전화번호</p>
+											<p class="text-sub">02-333-3333</p>
+										</div>
+										<div class="text mt15">
+											<p class="text-main">웹사이트</p>
+											<p class="text-sub">http://www.uplus.co.kr</p>
+										</div>
+										<div class="text mt15">
+											<p class="text-main">이메일</p>
+											<p class="text-sub">test@uplus.co.kr</p>
+										</div>
+										<div class="text mt15">
+											<p class="text-main">주소</p>
+											<p class="text-sub">03909 서울특별시 마포구 매봉산로 45 (상암동,<br>KBS미디어센터) 100호</p>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
+						<!-- //phoneWrap -->
 					</div>
-					<!-- //phoneWrap -->
 				</div>
 
-				<div class="col-xs-6 of_h">								
+				<div class="col-xs-6 of_h consoleCon">								
 					<div class="of_h">
-						<h4 style="width:28%" class="mt0 inline-block">API Key</h4>
+						<h4 style="width:28%" class="inline-block">API Key</h4>
 						<input type="text" class="inputStyle float-right" style="width:72%" title="API Key 입력란">
 					</div>
 					<div class="of_h">
 						<h4 style="width:28%" class="inline-block">브랜드명 *</h4>
-						<input type="text" class="inputStyle float-right consolMarginTop" style="width:72%">
+						<input type="text" class="inputStyle float-right" style="width:72%">
 					</div>								
 					<div class="of_h">
 						<h4 style="width:28%" class="inline-block">브랜드 설명</h4>
-						<textarea class="textareaStyle height120 inputStyle float-right consolMarginTop" style="width:72%" placeholder=""></textarea>
+						<textarea class="textareaStyle height120 inputStyle float-right" style="width:72%" placeholder=""></textarea>
 					</div>				
 									
-					<div class="of_h">
-						<h4 style="width:28%" class="inline-block">타 프로젝트<br>사용여부</h4>
-						<div class="inline-block float-right consolMarginTop" style="width:72%">
+					<div class="of_h consolMarginTop">
+						<h4 style="width:28%" class="inline-block topH4">타 프로젝트<br>사용여부</h4>
+						<div class="inline-block float-right" style="width:72%">
 							<input type="radio" name="use" value="Y" class="cBox" id="yes" checked=""> <label for="yes" class="payment mt10 mr30">공용</label>
 							<input type="radio" name="use" value="N" class="cBox" id="no"> <label for="no" class="payment mt10">전용</label>		
 						</div>
 					</div>
 					<div class="of_h">
 						<h4 style="width:28%" class="inline-block">백그라운드 이미지</h4>
-						<input type="text" class="inputStyle vertical-top consolMarginTop" style="width:54%">
-						<a href="#self" class="btnStyle1 backLightGray float-right consolMarginTop" style="width:17%">파일선택</a>						
+						<input type="text" class="inputStyle vertical-top" style="width:54%">
+						<a href="#self" class="btnStyle1 backLightGray float-right" style="width:17%">파일선택</a>						
 					</div>
-					<p class="font-size12 color3 mt10 ml_28"><i class="far fa-info-circle"></i>최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : jpg, png (최대 1MB)</p>
+					<p class="color3 ml_28"><i class="far fa-info-circle"></i>최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : jpg, png (최대 1MB)</p>
 
-
-					<div class="of_h">
-						<h4 style="width:28%">프로필 이미지 *</h4>
-						<input type="text" class="inputStyle float-right"  style="width:54%">
-						<a href="#self" class="btnStyle7 minWidthAuto float-right" style="width:17%">파일선택</a>
-						<p class="font-size12 color3 mt10 ml_28"><i class="far fa-info-circle"></i>최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : jpg, png (최대 1MB)</p>
+					<div class="of_h consolMarginTop">
+						<h4 style="width:28%" class="inline-block">프로필 이미지 *</h4>
+						<input type="text" class="inputStyle vertical-top" style="width:54%">
+						<a href="#self" class="btnStyle1 backLightGray float-right" style="width:17%">파일선택</a>
+						<p class="color3 ml_28"><i class="far fa-info-circle"></i>최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : jpg, png (최대 1MB)</p>
 					</div>
-					<div class="of_h">
-						<h4 style="width:28%">전화번호 *</h4>
+					<div class="of_h consolMarginTop">
+						<h4 style="width:28%" class="inline-block">전화번호 *</h4>
 						<input type="text" class="inputStyle float-right" style="width: 72%">
 					</div>
 					<div class="of_h">
-						<h4 style="width:28%">메뉴버튼설정 *</h4>
+						<h4 style="width:28%" class="inline-block">메뉴버튼설정 *</h4>
 						<div class="float-right" style="width:72%">
 							<div class="consolCheck" style="width:19%"><input type="checkbox" id="Chat" class="checkStyle2" value="Chat"><label for="Chat">Chat</label></div>
 							<div class="consolCheck" style="width:19%"><input type="checkbox" id="Call" class="checkStyle2" value="Call"><label for="Call">Call</label></div>
 							<div class="consolCheck" style="width:19%"><input type="checkbox" id="Web" class="checkStyle2" value="Web"><label for="Web">Web</label></div>
 							<div class="consolCheck" style="width:19%"><input type="checkbox" id="Store" class="checkStyle2" value="Store"><label for="Store">Store</label></div>
 							<div class="consolCheck" style="width:19%"><input type="checkbox" id="Order" class="checkStyle2" value="Order"><label for="Order">Order</label></div>
-						</div>
-						<div class="ml_28 float-right mt10" style="width:72%">
 							<div class="consolCheck" style="width:19%"><input type="checkbox" id="Buy" class="checkStyle2" value="Buy"><label for="Buy">Buy</label></div>
 							<div class="consolCheck" style="width:19%"><input type="checkbox" id="Ticket" class="checkStyle2" value="Ticket"><label for="Ticket">Ticket</label></div>
 							<div class="consolCheck" style="width:25%"><input type="checkbox" id="More-Info" class="checkStyle2" value="More-Info"><label for="More-Info">More Info</label></div>
+						</div>						
+					</div>
+					<div class="ml_28 of_h consolMarginTop">
+						<h6 class="inline-block" style="width:15%">Web *</h6>
+						<input type="text" class="inputStyle float-right" style="width:85%">
+					</div>
+					<div class="ml_28 of_h consolMarginTop">
+						<h6 class="inline-block" style="width:15%">Store *</h6>
+						<input type="text" class="inputStyle float-right" style="width:85%">
+					</div>
+					<div class="of_h consolMarginTop">
+						<h4 style="width:28%" class="inline-block">카테고리 1 *</h4>
+						<select name="admin0304010101_1" class="float-right selectStyle2" style="width:72%">
+							<option value="">카테고리 1</option>
+							<option value="">카테고리 1</option>
+						</select>
+					</div>
+					<div class="of_h">
+						<h4 style="width:28%" class="inline-block">카테고리 2 *</h4>
+						<select name="admin0304010101_2" class="float-right selectStyle2" style="width:72%">
+							<option value="">카테고리 2</option>
+							<option value="">카테고리 2</option>
+						</select>
+					</div>
+					<div class="of_h">
+						<h4 style="width:28%" class="inline-block">카테고리 3 *</h4>
+						<input type="text" class="inputStyle float-right" style="width:72%">
+					</div>
+					<div class="of_h">
+						<h4 style="width:28%" class="inline-block">홈페이지 주소</h4>
+						<input type="text" class="inputStyle float-right" style="width:72%">
+					</div>
+					<div class="of_h">
+						<h4 style="width:28%" class="inline-block">이메일</h4>
+						<div style="width:72%" class="float-right">
+							<input type="text" class="inputStyle mr20" style="width:30%">@<input type="text" class="inputStyle ml20" style="width:30%">
+							<select name="admin0304010101_3" class="selectStyle2 consolMarginTop" style="width:100%">
+								<option value="">이메일</option>
+								<option value="">이메일</option>
+							</select>
 						</div>
 					</div>
-					<div class="ml_28 of_h">
-						<p class="inline-block font-size16 float-right mt10" style="width:15%">Web *</p>
-						<input type="text" class="inputStyle" style="width:85%">
-					</div>
-					<div class="ml_28 of_h">
-						<p class="inline-block font-size16 float-right mt10" style="width:15%">Store *</p>
-						<input type="text" class="inputStyle" style="width:85%">
-					</div>
-					<div class="of_h">
-						<h4 style="width:28%">카테고리 1 *</h4>
-						<select name="admin0304010101_1" class="float-right selectStyle3" style="width:72%">
-							<option value="">카테고리 1</option>
-							<option value="">카테고리 1</option>
-						</select>
-					</div>
-					<div class="of_h">
-						<h4 style="width:28%">카테고리 2 *</h4>
-						<select name="admin0304010101_2" class="selectStyle3" style="width:72%">
-							<option value="">카테고리 2</option>
-							<option value="">카테고리 2</option>
-						</select>
-					</div>
-					<div class="of_h">
-						<h4 style="width:28%">카테고리 3 *</h4>
-						<input type="text" class="inputStyle" style="width:72%">
-					</div>
-					<div class="of_h">
-						<h4 style="width:28%">홈페이지 주소</h4>
-						<input type="text" class="inputStyle" style="width:72%">
-					</div>
-					<div class="of_h">
-						<h4 style="width:28%">이메일</h4>
-						<input type="text" class="inputStyle float-right mr20" style="width:31%">@<input type="text" class="inputStyle ml20" style="width:31%">
-						<select name="admin0304010101_3" class="selectStyle3 ml_28 mt10" style="width:72%">
-							<option value="">이메일</option>
-							<option value="">이메일</option>
-						</select>
-					</div>
-					<div class="of_h">
-						<h4 style="width:28%">주소</h4>
-						<input type="text" class="inputStyle" style="width:32%">
-						<a href="#self" class="btnStyle7 vertical-middle ml10 minWidthAuto" style="width:17%">우편번호</a>
+					<div class="of_h consolMarginTop">
+						<h4 style="width:28%" class="inline-block">주소</h4>
+						<div style="width:72%" class="float-right">
+							<input type="text" class="inputStyle vertical-top" style="width:50%">
+							<a href="#self" class="btnStyle1 backLightGray" style="width:24%">우편번호</a>
+						</div>
 					</div>
 					<div class="ml_28">
-						<input type="text" class="inputStyle mr10 mt10" style="width:65%">
-						<input type="text" class="inputStyle mt10" style="width:32%">						
+						<input type="text" class="inputStyle mr10" style="width:65%">
+						<input type="text" class="inputStyle" style="width:32%">						
 					</div>
 					
 					<hr>
 					<h2>발신번호 등록</h2>
-					<p class="color3"><i class="far fa-info-circle"></i>웹템플릿에서 등록한 브랜드와 승인 완료된 브랜드의 발신번호만 보여집니다.</p>
+					<p class="txtCaption color3"><i class="far fa-info-circle"></i>웹템플릿에서 등록한 브랜드와 승인 완료된 브랜드의 발신번호만 보여집니다.</p>
 
-					<div class="of_h">
-						<h4 style="width:28%">대표발신번호 *</h4>
+					<div class="of_h consolMarginTop">
+						<h4 style="width:28%" class="inline-block">대표발신번호 *</h4>
 						<div class="consolCheck" style="width:25%"><input type="checkbox" id="same" class="checkStyle2" value="same"><label for="same">전화번호와 동일</label></div>
 						<input type="text" class="inputStyle" style="width:26%">
-						<p class="font-size12 color3 inline-block ml10" style="width:17%">*휴대폰 등록 불가</p>
+						<p class="color3 inline-block ml10" style="width:17%">*휴대폰 등록 불가</p>
 					</div>
 					<div class="of_h">
-						<h4 style="width:28%">발신번호명 *</h4>
+						<h4 style="width:28%" class="inline-block">발신번호명 *</h4>
 						<input type="text" class="inputStyle float-right" style="width:72%">
 					</div>
 					<div class="of_h">
-						<h4 style="width:28%">대표번호<br>문자수신 서비스 *</h4>
-						<div class="consolCheck vertical-top"  style="width:72%"><input type="checkbox" id="use" class="checkStyle2" value="use"><label for="use">사용중</label>
-						<p class="font-size12 color3 mt5">대표번호 문자수신(MO)서비스를 현재 사용하고 계실 경우 반드시 해당정보를 체크해 주셔야 합니다.</p>
-						</div>						
+						<h4 style="width:28%" class="inline-block float-left topH4">대표번호<br>문자수신 서비스 *</h4>
+						<div style="width:72%" class="float-left">
+							<div class="consolCheck" ><input type="checkbox" id="use" class="checkStyle2" value="use"><label for="use">사용중</label>
+							<p class="color3 mt5">대표번호 문자수신(MO)서비스를 현재 사용하고 계실 경우 반드시 해당정보를 체크해 주셔야 합니다.</p>
+							</div>						
+						</div>
 					</div>
 					<div class="of_h">
-						<h4 style="width:28%">추가발신번호</h4>
-						<input type="text" class="inputStyle" style="width:61%"><a href="#self" class="btnStyle7 vertical-middle ml10 minWidth46"><i class="far fa-plus"></i></a>
-						<p class="font-size12 color3 mt5 ml_28">추가발신번호가 있는 경우 + 버튼을 클릭하세요. 최대 10개까지 개별등록 가능합니다.</p>
-						<input type="text" class="inputStyle ml_28" style="width: 61%"><a href="#self" class="btnStyle7 ml10 minWidth46 mt10"><i class="far fa-minus"></i></a>
-						<input type="text" class="inputStyle ml_28" style="width: 61%"><a href="#self" class="btnStyle7 ml10 minWidth46 mt10"><i class="far fa-minus"></i></a>
+						<h4 style="width:28%" class="inline-block">추가발신번호</h4>
+						<div class="float-right" style="width:72%">
+							<input type="text" class="inputStyle" style="width:80%"><a href="#self" class="btnStyle1 backLightGray ml10" style="padding:0 10px"><i class="far fa-plus"></i></a>
+							<p class="color3">추가발신번호가 있는 경우 + 버튼을 클릭하세요. 최대 10개까지 개별등록 가능합니다.</p>
+							<div class="consolMarginTop">
+								<input type="text" class="inputStyle" style="width:80%"><a href="#self" class="btnStyle1 backLightGray ml10" style="padding:0 10px"><i class="far fa-minus"></i></a>
+							</div>
+							<div class="consolMarginTop">
+								<input type="text" class="inputStyle" style="width:80%"><a href="#self" class="btnStyle1 backLightGray ml10" style="padding:0 10px"><i class="far fa-minus"></i></a>
+							</div>
+						</div>
 					</div>
-					<div class="of_h">
-						<h4 style="width:28%">통신서비스<br>가입증명원 *</h4>
-						<a href="#self" class="btnStyle7 vertical-middle float-right minWidthAuto" style="width:17%">파일선택</a>
-						<input type="text" class="inputStyle float-right" style="width:54%">
-						
-						<div class="font-size12 color3 mt10 ml_28 float-right" style="width:73%">
-							<div class="consolCheck float-right mb40"><input type="checkbox" id="Lmit" class="checkStyle2" value="Lmit"><label for="Lmit"></label></div>
-							<p>메시지 발송 시 기본템플릿(구.Free템플릿)은 정보성에 한하여 이용 가능합니다.<br>규정위반 시 서비스 이용이 제한될 수 있습니다.</p>
-						</div>						
+					<div class="of_h consolMarginTop">
+						<h4 style="width:28%" class="inline-block vertical-top">통신서비스<br>가입증명원 *</h4>
+						<div style="width:72%" class="float-right inline-block">
+							<a href="#self" class="btnStyle1 backLightGray vertical-top" style="width:24%">파일선택</a>
+							<ul class="float-right attachList" style="width:75%; padding:5px 15px">
+								<li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
+							</ul>
+							<div class="color3 consolMarginTop">
+								<div class="inline-block vertical-top"><input type="checkbox" id="Lmit" class="checkStyle2" value="Lmit"><label for="Lmit"></label></div>
+								<p class="inline-block">메시지 발송 시 기본템플릿(구.Free템플릿)은 정보성에 한하여 이용 가능합니다.<br>규정위반 시 서비스 이용이 제한될 수 있습니다.</p>
+							</div>			
+						</div>
 					</div>
-					<div class="float-right">
-						<a href="#self" class="btnStyle5 red float-left width120">저장</a>
-						<a href="#self" class="btnStyle5 red float-left ml10 width120">승인요청</a>
-						<a href="#self" class="btnStyle5 white float-left ml10 width120">목록</a>
+					<div class="float-right mt20">
+						<a href="#self" class="btnStyle2 backRed">저장</a>
+						<a href="#self" class="btnStyle2 backRed ml10">승인요청</a>
+						<a href="#self" class="btnStyle2 ml10">목록</a>
 					</div>
 				</div>	
 				<p></p>
