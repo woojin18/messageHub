@@ -111,7 +111,7 @@ export default {
 			var params = {
 				"user_id"    : tokenSvc.getToken().principal.userId,
 				"role_cd"    : tokenSvc.getToken().principal.role,
-				"svc_type_cd" : tokenSvc.getToken().principal.svcTypeCd
+				"svc_type_cd" : 'AC'
 			};
 
 			api.getMenuForRole(params).then(response =>{
