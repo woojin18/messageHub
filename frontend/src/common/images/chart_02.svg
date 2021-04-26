@@ -1,0 +1,41 @@
+<svg id="Content_Widgets_Graph_overview_Copy" data-name="Content/Widgets/Graph overview Copy" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="682.491" height="164.648" viewBox="0 0 682.491 164.648">
+  <defs>
+    <clipPath id="clip-path">
+      <circle id="Mask" cx="50.403" cy="50.403" r="50.403" fill="#d8d8d8"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <circle id="Mask-2" data-name="Mask" cx="40.322" cy="40.322" r="40.322" fill="#d8d8d8"/>
+    </clipPath>
+  </defs>
+  <g id="Fills_White_RoundFlat" data-name="Fills / White / RoundFlat">
+    <rect id="Fills_White_RoundFlat_background" data-name="Fills / White / RoundFlat background" width="604.831" height="164.648" fill="rgba(0,0,0,0)"/>
+    <rect id="Rectangle_Copy" data-name="Rectangle Copy" width="604.831" height="164.648" rx="4" fill="#fff"/>
+  </g>
+  <text id="_5.10_" data-name="+5.10%" transform="translate(645.491 119)" fill="#6dd230" font-size="23" font-family="Rubik-Regular, Rubik"><tspan x="-36.984" y="0">+5.10%</tspan></text>
+  <g id="Details" transform="translate(174.729 40.322)">
+    <text id="NewTasks" transform="translate(0 79.123)" fill="#98a9bc" font-size="23" font-family="MalgunGothic, Malgun Gothic"><tspan x="0" y="0">전체</tspan><tspan y="0" font-family="Rubik-Regular, Rubik"> </tspan><tspan y="0">예산</tspan><tspan y="0" font-family="Rubik-Regular, Rubik">(</tspan><tspan y="0">원</tspan><tspan y="0" font-family="Rubik-Regular, Rubik">)</tspan></text>
+    <text id="Arrow" transform="translate(497.65 27.36)" fill="#6dd230" font-size="26" font-family="SegoeUI, Segoe UI"><tspan x="-8.392" y="0"></tspan></text>
+    <text id="_345" data-name="345" transform="translate(0 40)" fill="#252631" font-size="43" font-family="Rubik-Regular, Rubik"><tspan x="0" y="0">124,800</tspan></text>
+  </g>
+  <g id="Cirlce" transform="translate(40.322 31.922)">
+    <g id="outline" opacity="0.15">
+      <circle id="Mask-3" data-name="Mask" cx="50.403" cy="50.403" r="50.403" fill="#d8d8d8"/>
+      <g id="outline-2" data-name="outline" clip-path="url(#clip-path)">
+        <g id="Fills_Blue" data-name="Fills / Blue" transform="translate(-5.04 -10.081)">
+          <rect id="Fills_Blue_background" data-name="Fills / Blue background" width="105.845" height="117.606" fill="rgba(0,0,0,0)"/>
+          <rect id="Rectangle_Copy-2" data-name="Rectangle Copy" width="105.845" height="117.606" fill="#ffab2b"/>
+        </g>
+      </g>
+    </g>
+    <g id="fill" transform="translate(10.081 10.081)">
+      <circle id="Mask-4" data-name="Mask" cx="40.322" cy="40.322" r="40.322" fill="#d8d8d8"/>
+      <g id="fill-2" data-name="fill" clip-path="url(#clip-path-2)">
+        <g id="Fills_Blue-2" data-name="Fills / Blue" transform="translate(-4.032 -8.064)">
+          <rect id="Fills_Blue_background-2" data-name="Fills / Blue background" width="84.676" height="94.085" fill="rgba(0,0,0,0)"/>
+          <rect id="Rectangle_Copy-3" data-name="Rectangle Copy" width="84.676" height="94.085" fill="#ffab2b"/>
+        </g>
+      </g>
+    </g>
+    <text id="ico_circle" data-name="ico circle" transform="translate(49.922 62.561)" fill="#fafbff" font-size="36" font-family="SegoeUI, Segoe UI"><tspan x="-11.619" y="0"></tspan></text>
+  </g>
+</svg>
