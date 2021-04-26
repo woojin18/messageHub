@@ -21,13 +21,6 @@ import rcsTemplateRoutes from './modules/rcsTemplate/router';
 
 Vue.use(Router)
 
-const requireAuth = () => (to, from, next) => {
-	if (tokenSvc.getToken().principal.svcTypeCd == 'AC') {
-		return next();
-	}
-	next('/uc');
-};
-
 const router = new Router({
 	mode: 'history',
 	base: process.env.BASE_URL,
@@ -57,7 +50,7 @@ const router = new Router({
 		{
 			path: '/ac',
 			component: WebNaviLayout,
-			beforeEnter: requireAuth(),
+			//beforeEnter: requireAuth(),
 			children: [
 				{
 					path: '/view/error/404',
