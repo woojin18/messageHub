@@ -22,6 +22,12 @@ import rcsTemplateRoutes from './modules/rcsTemplate/router';
 Vue.use(Router)
 
 const requireAuth = () => (to, from, next) => {
+	if (tokenSvc.getToken().principal.svcTypeCd == 'BO') {
+		alert("Back Ofiice 계정으로는 Console 로그인이 불가합니다.");
+		return next('/login');
+	}
+	next();
+
 	if (tokenSvc.getToken().principal.svcTypeCd == 'UC') {
 		return next('/uc');
 	}
