@@ -60,6 +60,10 @@ public class DB {
 	public final static String QRY_UPDATE_WEB_CASH_INFO = "cash.updateWebCashInfo";
 	public final static String QRY_SELECT_CASH_HIST_COUNT = "cash.selectCashHist_count";
 	public final static String QRY_SELECT_CASH_HIST = "cash.selectCashHist";
+	public final static String QRY_SELECT_UCUBE_INFO = "cash.selectUcubeInfo";
+	public final static String QRY_SELECT_PROJECT_INFO = "cash.selectProjectInfo";
+	public final static String QRY_SELECT_PROJECT_SUB_BILL_CODE = "cash.selectProjectSubBillCode";
+	public final static String QRY_INSERT_UCUBE_INFO = "cash.insertUcubeInfo";
 	// 회원 가입
 	public final static String QRY_SELECT_DOMAIN_CHK_COUNT = "signUp.selectDomainChkCount";
 	public final static String QRY_INSERT_CM_CORP = "signUp.insertCmCorp";

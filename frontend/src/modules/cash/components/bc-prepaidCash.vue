@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h4 class="lc-1 mb20">선불 충전관리</h4>
+    <h4 class="topH4">선불 충전관리</h4>
     <div class="menuBox">
       <div class="row">
         <div class="col-xs-6 text-center">
           <!-- table -->
-          <table class="table_skin4" style="width:50%">
+          <table class="table_skin1 ml40" style="width:60%">
             <tbody>
               <tr>
               <td class="text-left color4">남은 충전캐시</td>
@@ -23,13 +23,13 @@
           </table>
           <!-- //table -->
         </div>	
-        <div class="col-xs-6 text-center" style="padding: 2% 0">	
-          <a @click="fnTossPay" class="btnStyle4 white font13 width180 mt10">캐시 충전</a>
+        <div class="col-xs-6 text-center" style="padding: 2.5% 0">	
+          <a @click="fnTossPay" class="btnStyle1">캐시 충전</a>
         </div>
       </div>
     </div>
 
-    <h4 class="lc-1 mb20 mt40">충전 이력조회</h4>
+    <h4>충전 이력조회</h4>
     <div class="row">
       <div class="col-xs-12">
         <PagingCnt :pageInfo.sync="pageInfo" />

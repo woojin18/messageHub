@@ -39,7 +39,7 @@ import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import { loadTossPayments } from '@tosspayments/sdk';
 
 export default {
-  name: 'prePaidCashLayer',
+  name: 'prePaidCashPop',
   data() {
     return {
       amount : 0

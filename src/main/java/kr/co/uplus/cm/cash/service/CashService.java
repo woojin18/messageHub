@@ -6,11 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -130,6 +133,52 @@ public class CashService {
 		
 		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_CASH_HIST, params);
 		
+		rtn.setData(list);
+		
+		return rtn;
+	}
+	
+	public RestResult<Object> selectUcubeInfo(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_UCUBE_INFO, params);
+		rtn.setData(list);
+		
+		return rtn;
+	}
+	
+	public RestResult<Object> selectProjectInfo(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_PROJECT_INFO, params);
+		rtn.setData(list);
+		
+		return rtn;
+	}
+	
+	public RestResult<Object> selectProjectSubBillCode(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_PROJECT_SUB_BILL_CODE, params);
+		rtn.setData(list);
+		
+		return rtn;
+	}
+	
+	public RestResult<Object> insertUbubeInfo(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("a", 7);
+		map.put("b", 77);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(map);
+		
+		params.put("billId", "7777");
+		params.put("ucubeInfo", json);
+		
+		List<Object> list = generalDao.selectGernalList(DB.QRY_INSERT_UCUBE_INFO, params);
 		rtn.setData(list);
 		
 		return rtn;

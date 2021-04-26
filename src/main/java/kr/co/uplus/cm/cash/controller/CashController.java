@@ -1,6 +1,5 @@
 package kr.co.uplus.cm.cash.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -95,6 +94,70 @@ public class CashController {
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
 			rtn = cashService.selectCashHist(params);
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		
+		return rtn;
+	}
+	
+	@PostMapping("/selectUcubeInfo")
+	public RestResult<?> selectUcubeInfo(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = cashService.selectUcubeInfo(params);
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		
+		return rtn;
+	}
+	
+	@PostMapping("/selectProjectInfo")
+	public RestResult<?> selectProjectInfo(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = cashService.selectProjectInfo(params);
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		
+		return rtn;
+	}
+	
+	@PostMapping("/selectProjectSubBillCode")
+	public RestResult<?> selectProjectSubBillCode(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = cashService.selectProjectSubBillCode(params);
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		
+		return rtn;
+	}
+	
+	@PostMapping("/insertUbubeInfo")
+	public RestResult<?> insertUbubeInfo(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = cashService.insertUbubeInfo(params);
 		} catch(Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");

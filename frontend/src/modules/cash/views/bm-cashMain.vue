@@ -5,12 +5,12 @@
     </div>
     <div class="contentBody mb20">
       <ul class="tab_s3">
-        <li :class="{active:(selTab == 1)}" @click="selTab=1"><a class="width120" title="선불정산관리 페이지로 이동">선불정산관리</a></li>
-        <li :class="{active:(selTab == 2)}" @click="selTab=2"><a class="width120" title="후불정산관리 페이지로 이동">후불정산관리</a></li>
+        <li :class="{active:(selTab == 1)}" @click="selTab=1"><a title="선불정산관리 페이지로 이동">선불정산관리</a></li>
+        <li :class="{active:(selTab == 2)}" @click="selTab=2"><a title="후불정산관리 페이지로 이동">후불정산관리</a></li>
       </ul>			
     </div>
-    <prepaidCash  v-show="selTab == 1"></prepaidCash>
-    <deferredCash  v-show="selTab == 2"></deferredCash>
+    <prepaidCash v-show="selTab == 1"></prepaidCash>
+    <deferredCash v-show="selTab == 2"></deferredCash>
   </article>
 </template>
 
@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      selTab: 1
+      selTab: 2
     }
   }
 }
