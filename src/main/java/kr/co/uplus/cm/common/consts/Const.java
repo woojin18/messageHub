@@ -1,9 +1,7 @@
 package kr.co.uplus.cm.common.consts;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Const {
     public static final String COMM_YES = "Y";
@@ -35,9 +33,11 @@ public class Const {
     public static final String IMG_RESIZE_WIDTH = "width";
     public static final String IMG_RESIZE_HEIGHT = "height";
 
-
     //API
     public static final String API_SUCCESS = "10000";  //API 성공 코드(코드정보를 받으면 enum에 등록)
     public static final String FILE_UPLOAD_API_URL = "/console/v1/file/";  //파일 업로드 API
+    public static final String SEND_PUSH_API_URL = "/console/v1/push";  //푸시발송 API
+
+
 
 }

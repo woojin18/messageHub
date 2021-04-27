@@ -188,14 +188,18 @@ public class CommonService {
             String fileId = CommonUtils.getCommonId(Const.FILE_UPLOAD_PREFIX, 5);  //모든 채널 한개의 fileId 사용
             String responseFileId = "";
             String chNm = "";
+            String wideImgYn = Const.COMM_NO;
+            String apiWideYn =  Const.COMM_NO;
             long chLimitSize = NumberUtils.LONG_ZERO;
 
             for(String ch : useCh) {
                 chNm = ch;
                 if(StringUtils.equals("FRIENDTALK", ch) && StringUtils.equals(Const.COMM_YES, wideYn)) {
                     chNm+="_WIDE";
+                    apiWideYn = Const.COMM_YES;
+                    wideImgYn = Const.COMM_YES;
                 } else {
-                    wideYn = Const.COMM_NO;
+                    apiWideYn = Const.COMM_NO;
                 }
 
                 /** 파일 resize */
@@ -238,7 +242,7 @@ public class CommonService {
                 //set reqFile Info
                 reqFileObject = new JSONObject();
                 reqFileObject.put("fileId", fileId);
-                reqFileObject.put("wideYn", "N");
+                reqFileObject.put("wideYn", apiWideYn);
 
                 //send
                 apiUrl = Const.FILE_UPLOAD_API_URL+ch.toLowerCase();
@@ -283,6 +287,7 @@ public class CommonService {
             params.put("fileId", fileId);
             params.put("corpId", "TEST_CORP_ID");    //TODO : 고객 ID(로그인세션에서 가져오자)
             params.put("useChInfo", jsonArray.toJSONString());
+            params.put("wideImgYn", wideImgYn);
             params.put("originFileName", fileName);
             params.put("loginId", loginId);
             generalDao.insertGernal(DB.QRY_INSERT_IMAGE_FILE, params);

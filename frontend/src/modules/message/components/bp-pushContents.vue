@@ -22,6 +22,12 @@
               <p class="txtCaption color5 lc-1 mt7" style="margin-left:21%">푸시 수신거부 방법을 입력해주세요. 푸시 메시지에 (수신거부:거부 방법)이 포함됩니다.</p>
             </div>
           </div>
+          <div class="of_h mt7">
+            <div class="float-left" style="width:20%"><h5>부가정보(EXT)</h5></div>
+            <div class="float-right" style="width:79%">
+              <input type="text" class="inputStyle" title="부가정보(EXT) 입력란" v-model="adtnInfo" maxlength="45">
+            </div>
+          </div>
           <div class="text-center mt20">
             <a @click="fnCallbackInputData" class="btnStyle1 backBlack" title="입력">입력</a>
             <a @click="fnClose" class="btnStyle1 backWhite" title="닫기">닫기</a>
@@ -62,6 +68,7 @@ export default {
       pushTitle: '',
       pushContent : '',
       rcvblcNumber: '',
+      adtnInfo: '',
       recvAreapPlaceholder: '변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정:예) {{name}}님 {{yyyymmdd}} 출금 예정입니다.',
     }
   },
@@ -77,7 +84,7 @@ export default {
         confirm.fnAlert(this.componentsTitle, '내용을 입력해주세요.');
         return false;
       }
-      this.$parent.fnSetPushInfo(this.pushTitle, this.pushContent, this.rcvblcNumber);
+      this.$parent.fnSetPushInfo(this.pushTitle, this.pushContent, this.rcvblcNumber, this.adtnInfo);
       this.fnClose();
     },
     //초기 정보 Set
@@ -85,6 +92,7 @@ export default {
       this.pushTitle = this.sendData.pushTitle;
       this.pushContent = this.sendData.pushContent;
       this.rcvblcNumber = this.sendData.rcvblcNumber;
+      this.adtnInfo = this.sendData.adtnInfo;
     },
     //팝업 닫기
     fnClose(){

@@ -14,7 +14,7 @@ public class PushFbInfo implements Serializable {
 
     //채널
     //필수
-    //example: MMS
+    //example: SMS
     @NotNull(message="대체발송시 채널정보는 필수입니다.")
     @NotBlank(message="대체발송시 채널정보는 필수입니다.")
     private String ch;
@@ -22,8 +22,6 @@ public class PushFbInfo implements Serializable {
     //제목
     //필수
     //example: 1
-    @NotNull(message="대체발송시 대체발송메시지 제목은 필수입니다.")
-    @NotBlank(message="대체발송시 대체발송메시지 제목은 필수입니다.")
     private String title;
 
     //메세지내용
@@ -33,6 +31,7 @@ public class PushFbInfo implements Serializable {
     @NotBlank(message="대체발송시 대체발송메시지 내용은 필수입니다.")
     private String msg;
 
-
+    //파일 아이디
+    private String fileId;
 
 }

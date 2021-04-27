@@ -11,6 +11,7 @@
             FILE_ID
             , CORP_ID
             , USE_CH_INFO
+            , WIDE_IMG_YN
             , ORIGIN_FILE_NAME
             , REG_DT
             , UPD_DT
@@ -22,6 +23,7 @@
             #{fileId}
             , #{corpId}
             , #{useChInfo}
+            , #{wideImgYn}
             , #{originFileName}
             , NOW()
             , NOW()
@@ -59,6 +61,7 @@
             , @CH_IMG_URL := JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.URL')) AS CH_IMG_URL
             , SUBSTRING_INDEX(@CH_IMG_URL, '/', -1) AS CH_IMG_NM
             , JSON_EXTRACT(USE_CH_INFO, '$[*].CH') as USE_CH_INFO
+            , WIDE_IMG_YN
             , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i') AS REG_DT
             , DATE_FORMAT(UPD_DT, '%Y-%m-%d %H:%i') AS UPD_DT
             , REG_ID

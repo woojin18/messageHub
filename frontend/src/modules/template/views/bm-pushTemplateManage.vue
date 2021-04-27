@@ -104,6 +104,14 @@
             </div>
           </div>
         </div>
+        <div class="of_h user-phone">
+            <div class="float-left" style="width:28%">
+              <h4>부가정보(EXT)</h4>
+            </div>
+            <div class="float-left" style="width:72%">
+              <input type="text" class="inputStyle float-right" title="부가정보(EXT) 입력란" v-model="rowData.adtnInfo" maxlength="45">
+            </div>
+          </div>
         <div v-if="rowData.msgType == 'IMAGE'" class="of_h user-phone">
           <div class="float-left" style="width:28%">
             <h4>이미지</h4>

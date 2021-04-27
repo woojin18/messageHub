@@ -55,6 +55,7 @@
             , CIF.REG_ID
             , CIF.UPD_DT
             , CIF.UPD_ID
+            , CIF.ADTN_INFO
         FROM CM_PUSH_TMPLT CIF, (SELECT @ROWNUM:=0) TMP
         WHERE 1=1
         <include refid="whereSelectPushTemplateList"/>
@@ -94,6 +95,7 @@
             , REG_ID
             , UPD_DT
             , UPD_ID
+            , ADTN_INFO
         ) VALUES (
             #{tmpltId}
             , #{tmpltName}
@@ -111,6 +113,7 @@
             , #{loginId}
             , NOW()
             , #{loginId}
+            , #{adtnInfo}
         )
     </insert>
 
@@ -131,6 +134,7 @@
         </if>
             , UPD_DT = NOW()
             , UPD_ID = #{loginId}
+            , ADTN_INFO = #{adtnInfo}
         WHERE TMPLT_ID = #{tmpltId}
     </update>
 

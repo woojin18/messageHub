@@ -26,7 +26,7 @@
               </div>
               <p v-if="sendData.msgKind != 'A' || (fnIsEmpty(sendData.pushContent) && fnIsEmpty(sendData.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
               <p v-else class="font-size14 color4 mt10">
-                {{sendData.pushContent}}
+                <pre>{{sendData.pushContent}}</pre>
                 <br v-if="!fnIsEmpty(sendData.pushContent)"/>
                 {{sendData.rcvblcNumber}}
               </p>
@@ -47,10 +47,13 @@
               </div>
               <p v-if="(fnIsEmpty(sendData.fbInfo.msg) && fnIsEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
               <p v-else class="font-size14 color4 mt10">
-                {{sendData.fbInfo.msg}}
+                <pre>{{sendData.fbInfo.msg}}</pre>
                 <br v-if="!fnIsEmpty(sendData.fbInfo.rcvblcNumber)"/>
                 {{sendData.fbInfo.rcvblcNumber}}
               </p>
+              <div v-if="!fnIsEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center"
+                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.fbInfo.imgUrl+');'">
+              </div>
             </div>
           </div>
           <!--// XMS -->
@@ -69,7 +72,7 @@
           </div>
           <div style="width:76%" class="float-left">
             <a @click="fnOpenPushTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기">템플릿 불러오기</a>
-            <!-- 2021-04-07 : G/W에서 해당 정보 받지 않아서 주석처리
+
             <div class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
                 <h5>발송정책 *</h5>
@@ -85,9 +88,6 @@
             </div>
 
             <div class="of_h">
-            -->
-
-            <div class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
                 <h5 >메시지구분 *</h5>
               </div>
@@ -141,10 +141,8 @@
                 <label for="rplcSendType_SMS" class="mr30">SMS</label>
                 <input type="radio" id="rplcSendType_LMS" value="LMS" v-model="sendData.rplcSendType" @change="fnChgRplcSendType">
                 <label for="rplcSendType_LMS" class="mr30">LMS</label>
-                <!-- 2021-04-07 : G/W에서 이미지 발송 이슈로 주석처리
                 <input type="radio" id="rplcSendType_MMS" value="MMS" v-model="sendData.rplcSendType" @change="fnChgRplcSendType">
                 <label for="rplcSendType_MMS">MMS</label>
-                -->
               </div>
             </div>
           </div>
@@ -301,13 +299,14 @@ export default {
       recvCnt : 0,  //수신자명수
       previewMessageType : 'PUSH',  //메세지미리보기 타입(PUSH, RPLC)
       sendData : {
-        //pushSenderSet':'ALL', //발송정책(ALL, FCM, APNS)
+        pushSenderSet:'ALL', //발송정책(ALL, FCM, APNS)
         requiredCuid : true,  //app 로그인 ID 필수여부
         requiredCuPhone : false,  //수신자 폰번호 필수여부
         msgKind:'A',  //A, I
         msgType:'BASE',  //BASE, IMAGE
         rplcSendType:'NONE',  //NONE, SMS, LMS, MMS
         cuInputType:'ALL',  //DICT, ADDR, ALL, EXCEL
+        fileId : '',
         imgUrl : '',
         appId:'',
         cuInfo:'',
@@ -319,6 +318,7 @@ export default {
         pushTitle:'',  //푸시제목(tmpltTitle)
         pushContent:'',  //푸시내용(tmpltContent)
         rcvblcNumber:'',  //수신거부
+        adtnInfo:'',  //부가정보
         recvInfoLst: [],  //수신자정보
         fbInfo: {},  //대체발송정보
         contsVarNms: [], //메세지 내용 변수명
@@ -375,12 +375,15 @@ export default {
     },
     //템플릿 정보 Set
     fnSetTemplateInfo(templateInfo){
+      console.log(templateInfo);
       this.sendData.msgKind = templateInfo.msgKind;  //메세지구분
       this.sendData.msgType = templateInfo.msgType;  //메세지타입
+      this.sendData.fileId = templateInfo.fileId;  //파일ID
       this.sendData.imgUrl = templateInfo.imgUrl;  //이미지URL
       this.sendData.pushTitle = templateInfo.tmpltTitle;  //푸시제목
       this.sendData.pushContent = templateInfo.tmpltContent;  //푸시내용
       this.sendData.rcvblcNumber = templateInfo.rcvblcNumber;  //수신거부
+      this.sendData.adtnInfo = templateInfo.adtnInfo;  //부가정보
     },
     fnChangAppId(){
       this.sendData.appId = this.sltAppId;
@@ -480,19 +483,19 @@ export default {
       }
     },
     //내용입력 callback
-    fnSetPushInfo(pushTitle, pushContent, rcvblcNumber){
+    fnSetPushInfo(pushTitle, pushContent, rcvblcNumber, adtnInfo){
       if(this.sendData.pushContent != pushContent){
         this.fnCallbackRecvInfoLst(null);  //수신자 정보 초기화
       }
       this.sendData.pushTitle = pushTitle;
       this.sendData.pushContent = pushContent;
       this.sendData.rcvblcNumber = rcvblcNumber;
+      this.sendData.adtnInfo = adtnInfo;
     },
     //이미지선택 callback
     fnSetImageInfo(imgInfo) {
-      console.log(imgInfo);
       this.sendData.imgUrl = imgInfo.chImgUrl;
-      alert(this.sendData.imgUrl);
+      this.sendData.fileId = imgInfo.fileId;
     },
     //수신자 정보 callback
     fnCallbackRecvInfoLst(recvInfoLst, addYn) {

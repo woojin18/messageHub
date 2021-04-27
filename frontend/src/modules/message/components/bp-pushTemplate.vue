@@ -177,7 +177,6 @@ export default {
       //데이터 초기화
       this.templateList = [];
       this.templateData = {};
-      //입력 데이터 넘기기 필요
       this.$emit('update:pushTemplateOpen', false)
     }
   }

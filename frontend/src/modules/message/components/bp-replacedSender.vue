@@ -31,18 +31,16 @@
               <textarea class="textareaStyle height120" :placeholder="recvAreapPlaceholder" v-model="fbInfo.msg"></textarea>
             </div>
           </div>
-          
-          <!-- 2021-04-07 : G/W에서 이미지 발송 이슈로 주석처리
+
           <div v-if="fbInfo.ch == 'MMS'" class="of_h consolMarginTop">
             <div class="float-left" style="width:32%"><h5>이미지</h5></div>
             <div class="of_h float-right" style="width:66%">
-              <a href="#self" class="btnStyle1 backLightGray" title="메시지 내용 이미지선택">이미지선택</a>
-              <ul class="float-right attachList" style="width:68%; padding:5px 15px">
-                <li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
+              <a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray" title="메시지 내용 이미지선택">이미지선택</a>
+              <ul class="float-right attachList" style="width:68%; padding:5px 15px; height:30px;">
+                <li><a @click="fnDelImg">{{shortImgUrl}} <i v-if="!fnIsEmpty(fbInfo.imgUrl)" class="fal fa-times"></i></a></li>
               </ul>
             </div>
           </div>
-          -->
 
           <div class="text-center mt20">
             <a @click="fnCallbackInputData" class="btnStyle1 backBlack" title="입력">입력</a>
@@ -52,15 +50,22 @@
         </div>
       </div>
     </div>
+
+    <ImageManagePopUp :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
+
   </div>
 </template>
 
 <script>
 import MessageApi from "@/modules/message/service/messageApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
+import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
 
 export default {
   name: "pushContentsPopup",
+  components : {
+    ImageManagePopUp
+  },
   props: {
     rplcSendOpen: {
       type: Boolean,
@@ -77,14 +82,19 @@ export default {
   },
   data() {
     return {
+      imgMngOpen : false,
+      useCh : 'PUSH',
       callbackList: [],
       fbInfo: {
         callback:'',
         ch:'',
         title:'',
         msg:'',
-        rcvblcNumber:''
+        rcvblcNumber:'',
+        fileId:'',
+        imgUrl:'',
       },
+      shortImgUrl:'',
       recvAreapPlaceholder: '변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정:예) {{name}}님 {{yyyymmdd}} 출금 예정입니다.',
     }
   },
@@ -94,6 +104,11 @@ export default {
     }
   },
   methods: {
+    fnDelImg(){
+      this.shortImgUrl = '';
+      this.fbInfo.imgUrl = '';
+      this.fbInfo.fileId = '';
+    },
     //대체발송 정보 Set
     fnSetfbInfo(fbInfo){
       this.fbInfo = Object.assign({}, fbInfo);
@@ -154,6 +169,33 @@ export default {
         b+=c>>7?2:1;
       }
       return str.substring(0,i);
+    },
+    fnOpenImageManagePopUp(){
+      this.$refs.imgMngPopup.fnSearch();
+      this.imgMngOpen = !this.imgMngOpen;
+    },
+    //이미지선택 callback
+    fnSetImageInfo(imgInfo) {
+      this.fbInfo.imgUrl = imgInfo.chImgUrl;
+      this.fbInfo.fileId = imgInfo.fileId;
+      this.shortImgUrl = this.fnSubString(imgInfo.chImgUrl, 0, 30);
+    },
+    fnSubString(str, sIdx, length){
+      var shortStr = ''
+      if(!this.fnIsEmpty(str)){
+        shortStr = str.toString();
+        if(shortStr.length > length){
+          shortStr = shortStr.substring(sIdx, length) + '...  ';
+        } else {
+          shortStr = shortStr + '  ';
+        }
+      }
+      return shortStr;
+    },
+    //빈값확인
+    fnIsEmpty(str){
+      if(str) return false;
+      else return true
     }
   }
 }
