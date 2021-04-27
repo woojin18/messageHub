@@ -27,14 +27,14 @@
               <hr>						
               <div class="of_h">
                 <h5 class="inline-block" style="width:18%">청구ID</h5>
-                <select class="selectStyle2 float-right" style="width:80%">
+                <select v-model="billId" class="selectStyle2 float-right" style="width:80%">
                   <option value="">청구ID를 선택해 주세요</option>
-                  <option v-for="(data, index) in ucubeData" :key="index" :selected="data.a == selClaimId" :value="data.billId">{{data.a}}</option>
+                  <option v-for="(data, index) in ucubeData" :key="index" :value="data.billId">{{data.a}}</option>
                 </select>
               </div>
             </div>
             <div class="text-center mt20">
-              <a class="btnStyle1 backBlack mr5">등록</a>
+              <a @click="fnUpdateProjectBillId" class="btnStyle1 backBlack mr5">등록</a>
               <a @click="fnCloseModClaimIdPop" class="btnStyle1 backWhite">취소</a>						
             </div>
           </div>
@@ -52,14 +52,26 @@ export default {
   name: 'claimIdPop',
   data() {
     return {
+      billId: ""
     }
   },
   props: {
     ucubeData: {
       type: Array
     },
-    selClaimId: {
+    selBillId: {
       type: String
+    },
+    selProjectId: {
+      type: String
+    }
+  },
+  watch: {
+    selProjectId() {
+      this.billId = this.selBillId;
+    },
+    selBillId(val) {
+      this.billId = val;
     }
   },
   mounted() {
@@ -73,7 +85,25 @@ export default {
       cashApi.insertUbubeInfo(params).then(response => {
         var result = response.data;
         if(result.success) {
-          
+          this.$parent.fnSelectUcubeInfo();
+          this.fnCloseCreateClaimIdPop();
+        }
+      });
+    },
+
+    fnUpdateProjectBillId: function() {
+      var params = {
+        "corpId" : tokenSvc.getToken().principal.corpId,
+        "projectId": this.selProjectId,
+        "billId": this.billId
+      };
+
+      console.log(params);
+      cashApi.updateProjectBillId(params).then(response => {
+        var result = response.data;
+        if(result.success) {
+          this.$parent.fnSelectProjectInfo();
+          this.fnCloseModClaimIdPop();
         }
       });
     },

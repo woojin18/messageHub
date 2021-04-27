@@ -24,6 +24,10 @@ const insertUbubeInfo = (params) => {
     return httpClient.post('/projectApi/cash/insertUbubeInfo', params, { headers: {"show-layer": "Yes"} });
 };
 
+const updateProjectBillId = (params) => {
+    return httpClient.post('/projectApi/cash/updateProjectBillId', params, { headers: {"show-layer": "Yes"} });
+};
+
 const saveProjectSubBillCode = (params) => {
     return httpClient.post('/projectApi/cash/saveProjectSubBillCode', params, { headers: {"show-layer": "Yes"} });
 };
@@ -35,5 +39,6 @@ export default {
     selectProjectInfo,
     selectProjectSubBillCode,
     insertUbubeInfo,
+    updateProjectBillId,
     saveProjectSubBillCode
 };

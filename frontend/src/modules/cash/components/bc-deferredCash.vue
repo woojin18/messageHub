@@ -38,7 +38,7 @@
       <div class="col-xs-12">
         <!-- 15개씩 보기 -->
         <div class="of_h mb20">
-          <div class="float-left">전체 : <span class="color1"><strong>20</strong></span>건
+          <div class="float-left">전체 : <span class="color1"><strong>{{projectCnt}}</strong></span>건
           </div>
         </div>
         <!-- //15개씩 보기 -->
@@ -71,7 +71,7 @@
               <td class="text-center" v-if="data.useYn=='Y'">예</td>
               <td class="text-center" v-else>아니오</td>
               <td class="text-center">{{data.b}}</td>
-              <td @click="fnModClaimId(data.a)" class="text-center end">{{data.a}}</td>
+              <td @click="fnModClaimId(data.projectId, data.billId)" class="text-center end">{{data.a}}</td>
             </tr>
           </tbody>
         </table>
@@ -92,7 +92,7 @@
 
         <!-- 15개씩 보기 -->
         <div class="of_h inline">
-          <div class="float-left">전체 : <span class="color1"><strong>20</strong></span>건
+          <div class="float-left">전체 : <span class="color1"><strong>{{deptCnt}}</strong></span>건
           </div>
         </div>
         <!-- //15개씩 보기 -->
@@ -140,7 +140,7 @@
       </div>			
     </div>
     <deptPop :deptInfo="selDeptInfo"></deptPop>
-    <claimIdPop :ucubeData="ucubeData" :selClaimId="selClaimId"></claimIdPop>
+    <claimIdPop :ucubeData="ucubeData" :selProjectId="selProjectId" :selBillId="selBillId"></claimIdPop>
   </div>
 </template>
 
@@ -156,10 +156,13 @@ export default {
   data() {
     return {
       ucubeData: [],
+      projectCnt: 0,
       projectData: [],
+      deptCnt: 0,
       deptData: [],
       selDeptInfo: {},
-      selClaimId: ""
+      selProjectId: "",
+      selBillId: ""
     }
   },
   components: {
@@ -193,7 +196,8 @@ export default {
       cashApi.selectProjectInfo(params).then(response => {
         var result = response.data;
         if(result.success) {
-          this.projectData = result.data;
+          this.projectCnt = result.data.count;
+          this.projectData = result.data.list;
         }
       });
     },
@@ -206,7 +210,8 @@ export default {
       cashApi.selectProjectSubBillCode(params).then(response => {
         var result = response.data;
         if(result.success) {
-          this.deptData = result.data;
+          this.deptData = result.data.list;
+          this.deptCnt = result.data.count;
         }
       });
     },
@@ -215,9 +220,9 @@ export default {
       jQuery("#createClaimIdPop").modal("show");
     },
 
-    fnModClaimId: function(claimId) {
-      console.log(claimId);
-      this.selClaimId = claimId;
+    fnModClaimId: function(projectId, billId) {
+      this.selProjectId = projectId;
+      this.selBillId = billId;
       jQuery("#modClaimIdPop").modal("show");
     },
 

@@ -115,6 +115,8 @@ public class CashService {
 		
 		generalDao.updateGernal(DB.QRY_UPDATE_WEB_CASH_INFO, updateMap);
 		
+		//결제정보 api 필요
+		
 		return rtn;
 	}
 	
@@ -142,6 +144,7 @@ public class CashService {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
 		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_UCUBE_INFO, params);
+		
 		rtn.setData(list);
 		
 		return rtn;
@@ -150,8 +153,14 @@ public class CashService {
 	public RestResult<Object> selectProjectInfo(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
+		int count = generalDao.selectGernalCount(DB.QRY_SELECT_PROJECT_INFO_COUNT, params);
 		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_PROJECT_INFO, params);
-		rtn.setData(list);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("count", count);
+		map.put("list", list);
+		
+		rtn.setData(map);
 		
 		return rtn;
 	}
@@ -159,14 +168,22 @@ public class CashService {
 	public RestResult<Object> selectProjectSubBillCode(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
+		int count = generalDao.selectGernalCount(DB.QRY_SELECT_PROJECT_SUB_BILL_CODE_COUNT, params);
 		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_PROJECT_SUB_BILL_CODE, params);
-		rtn.setData(list);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("count", count);
+		map.put("list", list);
+		
+		rtn.setData(map);
 		
 		return rtn;
 	}
 	
 	public RestResult<Object> insertUbubeInfo(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
+		
+		//api로 유큐브 정보 불러와서 입력해야 함
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("a", 7);
@@ -180,6 +197,14 @@ public class CashService {
 		
 		List<Object> list = generalDao.selectGernalList(DB.QRY_INSERT_UCUBE_INFO, params);
 		rtn.setData(list);
+		
+		return rtn;
+	}
+	
+	public RestResult<Object> updateProjectBillId(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		generalDao.updateGernal(DB.QRY_UPDATE_PROJECT_BILL_ID, params);
 		
 		return rtn;
 	}
