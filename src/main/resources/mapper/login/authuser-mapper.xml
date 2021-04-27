@@ -73,7 +73,7 @@
 		AND		MENUS_LEVEL = #{menus_level}
 		AND		USE_YN = 'Y'
 		<if test="menus_level != 0">
-		AND		TOP_MENUS_CD = #{top_menus_cd}
+		AND		PAR_MENUS_CD = #{par_menus_cd}
 		AND		MENUS_CD IN (
 			SELECT B.MENUS_CD 
 			FROM cm_console.CM_USER  A

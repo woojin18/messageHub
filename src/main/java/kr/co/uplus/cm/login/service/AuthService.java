@@ -183,18 +183,18 @@ public class AuthService implements UserDetailsService {
 
 		for (Object rtnMap : rtnList) {
 			params.put("menus_level", "1");
-			params.put("top_menus_cd", ((Map<String, Object>) rtnMap).get("MENUS_CD"));
+			params.put("par_menus_cd", ((Map<String, Object>) rtnMap).get("MENUS_CD"));
 			List<Object> childList = generalDao.selectGernalList("login.getMenuForRole", params);
 			// 중메뉴 조회
 			for (Object childMap : childList) {
 				params.put("menus_level", "2");
-				params.put("top_menus_cd", ((Map<String, Object>) childMap).get("MENUS_CD"));
+				params.put("par_menus_cd", ((Map<String, Object>) childMap).get("MENUS_CD"));
 				List<Object> child2List = generalDao.selectGernalList("login.getMenuForRole", params);
 				((Map<String, Object>) childMap).put("children", child2List);
 				//소메뉴 조회
 				for (Object childMap2 : child2List) {
 					params.put("menus_level", "3");
-					params.put("top_menus_cd", ((Map<String, Object>) childMap2).get("MENUS_CD"));
+					params.put("par_menus_cd", ((Map<String, Object>) childMap2).get("MENUS_CD"));
 					List<Object> child3List = generalDao.selectGernalList("login.getMenuForRole", params);
 					((Map<String, Object>) childMap2).put("children", child3List);
 				}
