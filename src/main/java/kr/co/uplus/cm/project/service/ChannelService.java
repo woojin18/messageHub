@@ -5,10 +5,13 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
@@ -37,11 +43,129 @@ public class ChannelService {
 	private CommonService commonService;
 
 	// RCS 브랜드 조회
+	@SuppressWarnings("unchecked")
 	public RestResult<?> selectRcsBrandList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 
 		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_BRANDLIST, params);
 
+		for (int i = 0; i < rtnList.size(); i++) {
+			// 파라미터 정리
+			Map<String, Object> inputVal = new HashMap<>();
+			
+			Map<String, Object> rtnMap = (Map<String, Object>) rtnList.get(i);
+			
+			JSONParser jParser = new JSONParser();
+			JSONObject brandInfo = (JSONObject) jParser.parse(CommonUtils.getString(rtnMap.get("brandInfo")));
+			
+			inputVal.put("corpId",		rtnMap.get("corpId"));
+			inputVal.put("projectId",	rtnMap.get("projectId"));
+//			inputVal.put("apiKey",		rtnMap.get("projectId"));
+//			inputVal.put("apiSecretKey",	rtnMap.get("projectId"));
+			inputVal.put("name",		brandInfo.get("name"));
+			inputVal.put("description",	brandInfo.get("description"));
+			inputVal.put("tel",			brandInfo.get("tel"));
+			
+			// 체널관리
+			List<Map<String, Object>> menusList = (List<Map<String, Object>>) brandInfo.get("menus");
+			if(menusList != null) {
+				// 초기화
+				inputVal.put("call",			false);
+				inputVal.put("callWeblink",		"");
+				inputVal.put("web",				false);
+				inputVal.put("webWeblink",		"");
+				inputVal.put("store",			false);
+				inputVal.put("storeWeblink",	"");
+				inputVal.put("order",			false);
+				inputVal.put("orderWeblink",	"");
+				inputVal.put("buy",				false);
+				inputVal.put("buyWeblink",		"");
+				inputVal.put("ticket",			false);
+				inputVal.put("ticketWeblink",	"");
+				inputVal.put("moreInfo",		false);
+				inputVal.put("moreInfoWeblink",	"");
+				
+				for(int j = 0; j < menusList.size(); j++){
+					Map<String, Object> menus = menusList.get(j);
+					
+					if( "call".equals(menus.get("buttonType")) ) {
+						inputVal.put("call",			menus.get("buttonType"));
+						inputVal.put("callWeblink",		menus.get("weblink"));
+					}
+					if( "web".equals(menus.get("buttonType")) ) {
+						inputVal.put("web",			menus.get("buttonType"));
+						inputVal.put("webWeblink",		menus.get("weblink"));
+					}
+					if( "store".equals(menus.get("buttonType")) ) {
+						inputVal.put("store",			menus.get("buttonType"));
+						inputVal.put("storeWeblink",		menus.get("weblink"));
+					}
+					if( "order".equals(menus.get("buttonType")) ) {
+						inputVal.put("store",			menus.get("buttonType"));
+						inputVal.put("storeWeblink",		menus.get("weblink"));
+					}
+					if( "buy".equals(menus.get("buttonType")) ) {
+						inputVal.put("buy",			menus.get("buttonType"));
+						inputVal.put("buyWeblink",		menus.get("weblink"));
+					}
+					if( "ticket".equals(menus.get("buttonType")) ) {
+						inputVal.put("ticket",			menus.get("buttonType"));
+						inputVal.put("ticketWeblink",		menus.get("weblink"));
+					}
+					if( "moreInfo".equals(menus.get("buttonType")) ) {
+						inputVal.put("moreInfo",			menus.get("buttonType"));
+						inputVal.put("moreInfoWeblink",		menus.get("weblink"));
+					}
+				}
+			}
+			
+			
+			
+			inputVal.put("categoryId",		brandInfo.get("categoryId"));
+			inputVal.put("subCategoryId",	brandInfo.get("subCategoryId"));
+			inputVal.put("categoryOpt",		brandInfo.get("categoryOpt"));
+			inputVal.put("zipCode",			brandInfo.get("zipCode"));
+			inputVal.put("roadAddress",		brandInfo.get("roadAddress"));
+			inputVal.put("detailAddress",	brandInfo.get("detailAddress"));
+			
+			inputVal.put("preProfileImg",	brandInfo.get("profileImgFilePath"));
+			inputVal.put("preBgImg",		brandInfo.get("bgImgFilePath"));
+			inputVal.put("profileImgFilePath",	brandInfo.get("profileImgFilePath"));
+			inputVal.put("bgImgFilePath",	brandInfo.get("bgImgFilePath"));
+			inputVal.put("certiFilePath",	brandInfo.get("certiFilePath"));
+			
+			if( brandInfo.get("email") != null ) {
+				if( brandInfo.get("email").toString().indexOf("@") > 0 ) {
+					inputVal.put("email",			brandInfo.get("email").toString().split("@")[0]);
+					inputVal.put("email2",			brandInfo.get("email").toString().split("@")[1]);
+				} else {
+					inputVal.put("email",			"");
+				}
+			}
+			
+			
+			inputVal.put("webSiteUrl",		brandInfo.get("webSiteUrl"));
+			inputVal.put("mainMdn",			brandInfo.get("mainMdn"));
+			inputVal.put("rcsReply",		brandInfo.get("projectId"));
+			
+			// 쳇봇(발신번호 관리)
+			List<Map<String, Object>> chatbotsList = (List<Map<String, Object>>) brandInfo.get("chatbots");
+			if(chatbotsList != null) {
+				for (int j = 0; j < chatbotsList.size(); j++) {
+					Map<String, Object> chatbotMap = chatbotsList.get(j);
+					
+				}
+			}
+//			inputVal.put("email",	rtnMap.get("projectId"));
+//			inputVal.put("email",	rtnMap.get("projectId"));
+//			inputVal.put("email",	rtnMap.get("projectId"));
+//			inputVal.put("email",	rtnMap.get("projectId"));
+//			inputVal.put("email",	rtnMap.get("projectId"));
+			
+			rtnMap.put("inputVal", inputVal);
+			rtnMap.put("status", brandInfo.get("status"));
+		}
+		
 		rtn.setData(rtnList);
 
 		return rtn;
@@ -74,15 +198,9 @@ public class ChannelService {
 	public RestResult<?> checkApiKey(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
-		params.put("apiId", "1111");
-		params.put("apiSercret", "1111");
-		
-//		Map<String, Object> result = this.api("/console/v1/brand/categories", params, "GET", "application");
-		
 		Map<String, Object> getHeaderMap = new HashMap<String, Object>();
-		getHeaderMap.put("apiId", "111");
-		getHeaderMap.put("apiSercret", "111");
-		getHeaderMap.put("svcId", "WEB01");
+		getHeaderMap.put("apiId", CommonUtils.getString(params.get("apiKey")));
+		getHeaderMap.put("apiSercret", CommonUtils.getString(params.get("apiSecretKey")));
 		
 		Map<String, Object> result = apiInterface.get("/console/v1/brand/categories", getHeaderMap);
 		
@@ -132,10 +250,9 @@ public class ChannelService {
 	}
 	
 	// RCS 브랜드 등록 요청
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void saveRcsBrandReqForApi(Map<String, Object> params) throws Exception {
-		RestResult<Object> rtn = new RestResult<Object>();
 		// 임시 파일 패스 사용 
 		String tempYn = "Y";
 		
@@ -164,81 +281,98 @@ public class ChannelService {
 			certiFileRtnMap = (Map<String, Object>) certiFileRtn.getData();
 		}
 		
-		// JSON 값 처리
-		String jsonInfo = "";
-
-		jsonInfo += "{";
-		jsonInfo += "	\"corpId\"		: \""+params.get("corpId")+"\",											";
-		jsonInfo += "	\"projectId\"	: \""+params.get("projectId")+"\",										";
-		jsonInfo += "	\"regBrand\"	: {																		";
-		jsonInfo += "		\"name\"			: \""+params.get("name")+"\",									";
-		jsonInfo += "		\"description\"		: \""+params.get("description")+"\",							";
-		jsonInfo += "		\"tel\"				: \""+params.get("tel")+"\",									";
-//		// 메뉴버튼설정
-//		jsonInfo += "		\"menus\"			: {,															";
-//		if(!"".equals(CommonUtils.getString(params.get("call")))) {
-//			jsonInfo += "			\"call\"			: \""+params.get("call")+"\",							";
-//		}
-//		if(!"".equals(CommonUtils.getString(params.get("web")))) {
-//			jsonInfo += "			\"web\"				: \""+params.get("web")+"\",							";
-//		}
-//		if(!"".equals(CommonUtils.getString(params.get("store")))) {
-//			jsonInfo += "			\"store\"			: \""+params.get("store")+"\",							";
-//		}
-//		if(!"".equals(CommonUtils.getString(params.get("order")))) {
-//			jsonInfo += "			\"order\"			: \""+params.get("order")+"\",							";
-//		}
-//		if(!"".equals(CommonUtils.getString(params.get("buy")))) {
-//			jsonInfo += "			\"buy\"				: \""+params.get("buy")+"\",							";
-//		}
-//		if(!"".equals(CommonUtils.getString(params.get("ticket")))) {
-//			jsonInfo += "			\"ticket\"			: \""+params.get("ticket")+"\",							";
-//		}
-//		if(!"".equals(CommonUtils.getString(params.get("moreInfo")))) {
-//			jsonInfo += "			\"moreInfo\"		: \""+params.get("moreInfo")+"\",						";
-//		}
-//		// 마지막 쉼표 제거
-//		jsonInfo = jsonInfo.substring(0, jsonInfo.length()-1);
-//		jsonInfo += "		},																					";
-//		// 메뉴버튼설정
-		jsonInfo += "		\"categoryId\"		: \""+params.get("categoryId")+"\",								";
-		jsonInfo += "		\"subCategoryId\"	: \""+params.get("subCategoryId")+"\",							";
-		jsonInfo += "		\"categoryOpt\"		: \""+params.get("categoryOpt")+"\",							";
-		jsonInfo += "		\"zipCode\"			: \""+params.get("zipCode")+"\",								";
-		jsonInfo += "		\"roadAddress\"		: \""+params.get("roadAddress")+"\",							";
-		jsonInfo += "		\"detailAddress\"	: \""+params.get("detailAddress")+"\",							";
-		jsonInfo += "		\"email\"			: \""+params.get("email")+ "@" + params.get("email2") + "\",	";
-		jsonInfo += "		\"webSiteUrl\"		: \""+params.get("webSiteUrl")+"\"								";
-		jsonInfo += "	},																						";
-		jsonInfo += "	\"mainMdn\"		: \""+params.get("mainMdn")+"\",										";
+		// 데이터 처리
+		List<Object> list = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("corpId",		params.get("corpId"));
+		map.put("projectId",	params.get("projectId"));
+		
+		Map<String, Object> regBrandMap = new HashMap<>();
+		regBrandMap.put("name",			params.get("name"));
+		regBrandMap.put("description",	params.get("description"));
+		regBrandMap.put("tel",			 params.get("tel"));
+		
+		// 메뉴 리스트
+		List menusList = new ArrayList<>();
+		if(!"".equals(CommonUtils.getString(params.get("call"))) && Boolean.parseBoolean(CommonUtils.getString(params.get("call"))) != false) {
+			Map<String, Object> menusMap = new HashMap<>();
+			menusMap.put("buttonType",	"call");
+			menusMap.put("weblink",		params.get("callWeblink"));
+			menusList.add(menusMap);
+		}
+		if(!"".equals(CommonUtils.getString(params.get("web"))) && Boolean.parseBoolean(CommonUtils.getString(params.get("web"))) != false) {
+			Map<String, Object> menusMap = new HashMap<>();
+			menusMap.put("buttonType",	"web");
+			menusMap.put("weblink",		params.get("webWeblink"));
+			menusList.add(menusMap);
+		}
+		if(!"".equals(CommonUtils.getString(params.get("store"))) && Boolean.parseBoolean(CommonUtils.getString(params.get("store"))) != false) {
+			Map<String, Object> menusMap = new HashMap<>();
+			menusMap.put("buttonType",	"store");
+			menusMap.put("weblink",		params.get("storeWeblink"));
+			menusList.add(menusMap);
+		}
+		if(!"".equals(CommonUtils.getString(params.get("order"))) && Boolean.parseBoolean(CommonUtils.getString(params.get("order"))) != false) {
+			Map<String, Object> menusMap = new HashMap<>();
+			menusMap.put("buttonType",	"order");
+			menusMap.put("weblink",		params.get("orderWeblink"));
+			menusList.add(menusMap);
+		}
+		if(!"".equals(CommonUtils.getString(params.get("buy"))) && Boolean.parseBoolean(CommonUtils.getString(params.get("buy"))) != false) {
+			Map<String, Object> menusMap = new HashMap<>();
+			menusMap.put("buttonType",	"buy");
+			menusMap.put("weblink",		params.get("buyWeblink"));
+			menusList.add(menusMap);
+		}
+		if(!"".equals(CommonUtils.getString(params.get("ticket"))) && Boolean.parseBoolean(CommonUtils.getString(params.get("ticket"))) != false) {
+			Map<String, Object> menusMap = new HashMap<>();
+			menusMap.put("buttonType",	"ticket");
+			menusMap.put("weblink",		params.get("ticketWeblink"));
+			menusList.add(menusMap);
+		}
+		if(!"".equals(CommonUtils.getString(params.get("moreInfo"))) && Boolean.parseBoolean(CommonUtils.getString(params.get("moreInfo"))) != false) {
+			Map<String, Object> menusMap = new HashMap<>();
+			menusMap.put("buttonType",	"moreInfo");
+			menusMap.put("weblink",		params.get("moreInfoWeblink"));
+			menusList.add(menusMap);
+		}
+		regBrandMap.put("menus",		menusList);
+		// 메뉴 끝
+		regBrandMap.put("categoryId",		params.get("categoryId"));
+		regBrandMap.put("subCategoryId",	params.get("subCategoryId"));
+		regBrandMap.put("categoryOpt",		params.get("categoryOpt"));
+		regBrandMap.put("zipCode",			params.get("zipCode"));
+		regBrandMap.put("roadAddress",		params.get("roadAddress"));
+		regBrandMap.put("detailAddress",	params.get("detailAddress"));
+		regBrandMap.put("email",			params.get("email")+ "@" + params.get("email2"));
+		regBrandMap.put("webSiteUrl",		params.get("webSiteUrl"));
+		
+		map.put("regBrand",		regBrandMap);
+		
+		map.put("mainMdn",		params.get("mainMdn"));
 		
 		if( "N".equals(tempYn) ) {
-			jsonInfo += "	\"profileImgFilePath\"	: \""+profileImgFileRtnMap.get("attachFilePath")+"\",		";
-			jsonInfo += "	\"bgImgFilePath\"		: \""+bgImgFileRtnMap.get("bgImgFilePath")+"\",				";
-			jsonInfo += "	\"certiFilePath\"		: \""+certiFileRtnMap.get("certiFilePath")+"\",				";
+			map.put("profileImgFilePath",	params.get("profileImgFilePath"));
+			map.put("bgImgFilePath",		params.get("profileImgFilePath"));
+			map.put("certiFilePath",		params.get("profileImgFilePath"));
 		} else {
-			jsonInfo += "	\"profileImgFilePath\"	: \"/efs/file/console/2021/04/21/13/sign3.jpg\",			";
-			jsonInfo += "	\"bgImgFilePath\"		: \"/efs/file/console/2021/04/21/13/sign3.jpg\",			";
-			jsonInfo += "	\"certiFilePath\"		: \"/efs/file/console/2021/04/21/13/sign3.jpg\",			";
+			// 임시
+			map.put("profileImgFilePath", "/efs/file/console/2021/04/26/12/test1234.png");
+			map.put("bgImgFilePath", "/efs/file/console/2021/04/26/12/test1234.png");
+			map.put("certiFilePath", "/efs/file/console/2021/04/26/12/test1234.png");
 		}
-		jsonInfo += "	\"chatbots\": [																			";
-		jsonInfo += "		{																					";
-		jsonInfo += "			\"mdn\"			: \""+params.get("name")+"\",									";
-		jsonInfo += "			\"subnum\"		: \""+params.get("name")+"\",									";
-		jsonInfo += "			\"rcsReply\"	: \""+params.get("name")+"\",									";
-		jsonInfo += "			\"subTitle\"	: \""+params.get("name")+"\",									";
-		jsonInfo += "			\"service\"		: \""+params.get("name")+"\",									";
-		jsonInfo += "			\"display\"		: \""+params.get("name")+"\",									";
-		jsonInfo += "			\"webhook\"		: \""+params.get("name")+"\"									";
-		jsonInfo += "		}																					";
-		jsonInfo += "	]																						";
 		
-		// 마지막 쉼표 제거
-		//jsonInfo = jsonInfo.substring(0, jsonInfo.length()-1);
 		
-		jsonInfo += "}";
+		String chatbotStr = CommonUtils.getString(params.get("chatbots"));
+		if( !"".equals(chatbotStr) ) {
+			chatbotStr = "[" + chatbotStr + "]";
+			JSONParser parser = new JSONParser();
+			JSONArray chatbotJson = (JSONArray) parser.parse(chatbotStr);
+			map.put("chatbots",		chatbotJson);
+		}
 		
-		params.put("jsonInfo", jsonInfo);
+		list.add(map);
 		
 		// 임시저장
 		String sts = CommonUtils.getString(params.get("sts"));
@@ -246,21 +380,70 @@ public class ChannelService {
 			String tempBrandId = "T"+CommonUtils.generationSringToHex("");
 			params.put("brandId", tempBrandId);
 			params.put("brandReqKey", tempBrandId);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writeValueAsString(map);
+			
+			params.put("brandInfo", json);
 			generalDao.selectGernalList(DB.QRY_INSERT_RCS_BRANDREQ, params);
 			
 		} else if( "save".equals(sts) ) {
 			// 등록요청
-			Map<String, Object> getHeaderMap = new HashMap<String, Object>();
-			getHeaderMap.put("apiId",		params.get("apiKey"));
-			getHeaderMap.put("apiSercret",	params.get("apiSecretKey"));
-			getHeaderMap.put("svcId",		"WEB01");
+			Map<String, Object> headerMap = new HashMap<String, Object>();
+			headerMap.put("apiId",		params.get("apiKey"));
+			headerMap.put("apiSercret",	params.get("apiSecretKey"));
 			
-			// body에 row 형식으로 json 데이터 API통신처리
-			Map<String, Object> result = apiInterface.get("/console/v1/brand/categories", getHeaderMap , getHeaderMap);
+			Map<String, Object> bodyMap = new HashMap<String, Object>();
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writeValueAsString(map);
+			bodyMap.put("list", json);
 			
-			rtn.setData(result);
+			System.out.println("-----------------------------------------------headerMap " + headerMap);
+			System.out.println("-----------------------------------------------json " + json);
+			
+			
+			Map<String, Object> result =  apiInterface.listPost("/console/v1/brand", list, headerMap);
+			
+			System.out.println("------------------------------------------------- result " + result);
+			
+			// 성공인지 실패인지 체크
+			if( !"10000".equals(result.get("rslt")) ) {
+				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				throw new Exception(errMsg);
+			}
+		} if( "mod".equals(sts) ) {
+			// 수정요청
+			String brandId = CommonUtils.getString(params.get("brandId"));
+			Map<String, Object> headerMap = new HashMap<String, Object>();
+			headerMap.put("apiId",		params.get("apiKey"));
+			headerMap.put("apiSercret",	params.get("apiSecretKey"));
+			headerMap.put("brandId",	brandId);
+			
+			Map<String, Object> bodyMap = new HashMap<String, Object>();
+			bodyMap.put("list", list);
+			
+			Map<String, Object> result =  apiInterface.listPut("/console/v1/brand/" + brandId, list, headerMap);
+			
+			// 성공인지 실패인지 체크
+			if( !"10000".equals(result.get("rslt")) ) {
+				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				throw new Exception(errMsg);
+			}
 		} else if ( "delete".equals(sts) ) {
 			// 삭제요청
+			String brandId = CommonUtils.getString(params.get("brandId"));
+			Map<String, Object> headerMap = new HashMap<String, Object>();
+			headerMap.put("apiId",		params.get("apiKey"));
+			headerMap.put("apiSercret",	params.get("apiSecretKey"));
+			headerMap.put("brandId",	brandId);
+			
+			Map<String, Object> result =  apiInterface.listDelete("/console/v1/brand/" + brandId, list, headerMap);
+			
+			// 성공인지 실패인지 체크
+			if( !"10000".equals(result.get("rslt")) ) {
+				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				throw new Exception(errMsg);
+			}
 		}
 	}
 	

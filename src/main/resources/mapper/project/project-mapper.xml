@@ -16,14 +16,10 @@
 				END AS PAY_TYPE_NAME
 		,		A.BILL_ID
 		,		A.SMART_CH_CODE
-		,		A.PRICE_INFO
 		,		A.SUBBILL_YN
 		,		A.SUBBILL_START_DAY
 		,		date_format(A.REG_DT, '%Y-%m-%d') AS REG_DT
 		,		A.UPD_DT
-		,		A.ALARM_USE_YN
-		,		A.ALARM_REQ_DT
-		,		A.ALARM_AMOUNT
 		,		A.USE_YN
 		,		A.USE_CH_GRP_INFO
 		,		A.RESEND_TITLE

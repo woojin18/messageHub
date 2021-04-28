@@ -5,9 +5,11 @@
 	<select id="selectRcsBrandList" resultType="camel">
 	/* channel.selectRcsBrandList */
 		SELECT	A.BRAND_ID
+		,		MAX(A.PROJECT_ID) AS PROJECT_ID
 		,		MAX(A.CORP_ID) AS CORP_ID
 		,		MAX(A.BRAND_NAME) AS BRAND_NAME
 		,		MAX(A.BRAND_DESC) AS BRAND_DESC
+		,		MAX(A.BRAND_INFO) AS BRAND_INFO
 		,		'REQREQ' AS OTHER_PROJECT_USE_YN
 		
 		,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
@@ -20,6 +22,7 @@
 				) AS CALLBACK_CNT
 		FROM	cm.CM_RCS_BRAND_REQ A
 		WHERE	A.PROJECT_ID = #{projectId}
+		AND		A.BRAND_INFO != ''
 		AND		A.BRAND_ID NOT IN (
 			SELECT	A.BRAND_ID
 			FROM	cm.CM_RCS_BRAND A
@@ -31,9 +34,11 @@
 		UNION  ALL
 		
 		SELECT 	A.BRAND_ID
+		,		A.PROJECT_ID
 		,		A.CORP_ID
 		,		A.BRAND_NAME
-		,		'' as BRAND_DESC
+		,		'' as BRAND_DESC -- 브랜드 정보 컬럼 자체가 없음...
+		,		A.BRAND_INFO 
 		,		'BRANDBRAND' AS OTHER_PROJECT_USE_YN
 		,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
 					FROM	cm_console.CM_RCS_TMP_MSGBASE
@@ -45,6 +50,7 @@
 				) AS CALLBACK_CNT
 		FROM	cm.CM_RCS_BRAND A
 		WHERE	A.PROJECT_ID = #{projectId}
+		AND		A.BRAND_INFO != ''
 	</select>
 	
 	
@@ -115,7 +121,7 @@
 		,	#{description}
 		,	#{categoryId}
 		,	#{subCategoryId}
-		,	#{jsonInfo}
+		,	#{brandInfo}
 		,	NOW()
 		,	'BRAND_KEY'
 		,	'TEMP'

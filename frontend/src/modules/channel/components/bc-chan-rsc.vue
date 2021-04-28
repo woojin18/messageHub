@@ -71,10 +71,9 @@
                 <tr v-for="(data, index) in items" :key="index">
                   <td>
                     {{ index + 1 }}
-                    <!-- <a href="javascript:void(0);" @click="fnUpdateListPop(index)">{{ data.COL1 }}</a> -->
                   </td>
                   <td>
-                    {{ data.brandName }}
+                    <a class="color:blue; text-decoration: underline; cursor:pointer;" @click="fnRcsBrandDetail(data)">{{ data.brandName }}</a>
                   </td>
                   <td>
                     {{ data.brandId }}
@@ -209,18 +208,66 @@ export default {
     },
     // 등록창
     fnRcsBrandReg : function(){
-      this.$router.push( {name:"chan-rcs-detail",params:{"projectId" : this.projectId, "save_status" : 'C' }} );
+      
+      var inputVal = {
+        corpId 		  	: "",
+        projectId   	: "",
+        apiKey 		  	: "lng04154",
+        apiSecretKey 	: "SK.I9SrjuVvmDI8CdS",
+        name			    : "",
+        description		: "",
+        tel				    : "",
+        // 메뉴버튼설정
+        chat			    : "",
+        call			    : false,
+        callWeblink		: "",
+        web				    : false,
+        webWeblink		: "",
+        store			    : false,
+        storeWeblink	: "",
+        order			    : false,
+        orderWeblink	: "",
+        buy				    : false,
+        buyWeblink		: "",
+        ticket			  : false,
+        ticketWeblink	: "",
+        moreInfo		  : false,
+        moreInfoWeblink	: "",
+
+        categoryId		: "",
+        subCategoryId	: "",
+        categoryOpt		: "",
+        zipCode			  : "",
+        roadAddress		: "",
+        detailAddress	: "",
+        email			    : "",
+        email2			  : "",
+        webSiteUrl		: "",
+        mainMdn			  : "",	// 대표발신번호
+        // 파일
+        profileImgFilePath  : "",
+        preProfileImg       : "/se2/images/rcsProfileImageSample.jpg",
+        bgImgFilePath       : "",
+        preBgImg            : "/se2/images/rcsImageSample.jpg",
+        certiFilePath       : "",
+
+        // 발신번호 관련
+        rcsReply : "",
+        chatbotCnt : 1,
+        chatbots: [
+          {
+            "mdn"		: "",		// 발신번호
+            "rcsReply"	: "1",		// 대표번호문자 수신서비스 0 = x / 1 = o
+            "subTitle"	: "",		// 발신번호명
+            "service"	: "a2p",	// a2p 고정값
+            "display"	: "10"		// '10' 고정값
+          }
+        ]
+      }
+      this.$router.push( {name:"chan-rcs-detail",params:{"projectId" : this.projectId, "brandId" : "", "save_status" : 'C', "inputVal" : inputVal }} );
     },
-    // 리스트 등록 팝업
-    fnInsertListPop() {
-      /* this.layerView = true;
-      this.layerTitle = "리스트 등록"; */
-    },
-    // 리스트 수정 팝업
-    fnUpdateListPop(row) {
-      /* this.updateLayerView = true;
-      this.updateLayerTitle = "리스트 수정";
-      this.updateLayerSeq = this.items[row].SEQ;  */
+    fnRcsBrandDetail(data){
+      this.$router.push( {name:"chan-rcs-detail",params:{"projectId" : this.projectId, "brandId" : data.brandId, "save_status" : 'U', "inputVal" : data.inputVal }} );
     },
     // 등록 템플릿 상세 
     fnRcsTmpltDetail(data){

@@ -1,11 +1,15 @@
 package kr.co.uplus.cm.project.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -132,9 +136,27 @@ public class ChannelController {
 			@RequestParam String email,
 			@RequestParam String email2,
 			@RequestParam String mainMdn,
-			@RequestParam MultipartFile profileImgFile,
-			@RequestParam MultipartFile bgImgFile,
-			@RequestParam MultipartFile certiFile,
+			
+			@RequestParam String call,
+			@RequestParam String callWeblink,
+			@RequestParam String web,
+			@RequestParam String webWeblink,
+			@RequestParam String store,
+			@RequestParam String storeWeblink,
+			@RequestParam String order,
+			@RequestParam String orderWeblink,
+			@RequestParam String buy,
+			@RequestParam String buyWeblink,
+			@RequestParam String ticket,
+			@RequestParam String ticketWeblink,
+			@RequestParam String moreInfo,
+			@RequestParam String moreInfoWeblink,
+			
+//			@RequestParam MultipartFile profileImgFile,
+//			@RequestParam MultipartFile bgImgFile,
+//			@RequestParam MultipartFile certiFile,
+			
+			@RequestParam String chatbots,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
@@ -161,9 +183,28 @@ public class ChannelController {
 		params.put("email",				email);
 		params.put("email2",			email2);
 		params.put("mainMdn",			mainMdn);
-		params.put("profileImgFile",	profileImgFile);
-		params.put("bgImgFile",			bgImgFile);
-		params.put("certiFile",			certiFile);
+		
+		params.put("call",			call);
+		params.put("callWeblink",			callWeblink);
+		params.put("web",			web);
+		params.put("webWeblink",			webWeblink);
+		params.put("store",			store);
+		params.put("storeWeblink",			storeWeblink);
+		params.put("order",			order);
+		params.put("orderWeblink",			orderWeblink);
+		params.put("buy",			buy);
+		params.put("buyWeblink",			buyWeblink);
+		params.put("ticket",			ticket);
+		params.put("ticketWeblink",			ticketWeblink);
+		params.put("moreInfo",			moreInfo);
+		params.put("moreInfoWeblink",			moreInfoWeblink);
+		
+		
+//		params.put("profileImgFile",	profileImgFile);
+//		params.put("bgImgFile",			bgImgFile);
+//		params.put("certiFile",			certiFile);
+		
+		params.put("chatbots",			chatbots);
 		
 		try {
 			channelService.saveRcsBrandReqForApi(params);
