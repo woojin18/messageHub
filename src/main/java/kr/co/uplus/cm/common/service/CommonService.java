@@ -343,10 +343,6 @@ public class CommonService {
             return rtn;
         }
 
-        /** 삭제처리 */
-        //TODO : API 삭제요청
-
-
         //DB 삭제처리
         int resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_IMAGE, params);
 

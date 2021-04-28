@@ -8,19 +8,18 @@ import java.util.Map;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import lombok.Data;
 
 @Data
-public class PushRequestDto implements Serializable {
+public class PushRequestData implements Serializable {
 
     private static final long serialVersionUID = 442095694418981188L;
 
     //발신번호(대체발송 발신번호)
     // pattern: ^[0-9-]{1,20}$
     // example: 15441234
-    @Pattern(regexp="^[0-9-]{1,20}$", message="발신번호 형식에 맞지 않습니다.(예:15441234)")
+    @Pattern(regexp="^(\s*|[0-9-]{1,20})$", message="발신번호 형식에 맞지 않습니다.(예:15441234)")
     private String callback;
 
     //캠페인 ID(태그)
@@ -41,7 +40,6 @@ public class PushRequestDto implements Serializable {
     //앱 아이디
     //필수
     //example: appId01
-    @NotNull(message="앱 아이디는 필수입니다.")
     @NotBlank(message="앱 아이디는 필수입니다.")
     private String appId;
 
@@ -61,9 +59,12 @@ public class PushRequestDto implements Serializable {
     private String serviceCode;
 
     //(수신자 정보 리스트)
+    // API 서버측에 넘겨서 성공/실패를 받고 서버측에서 수신자 정보로 비동기화 처리를 하는 방식이 아니라
+    // 넘겨줄때 동기화로 일부 넘겨서 성공/실패를 받고 나머지를 비동기화 처리를 해댤라는 요청으로
+    // 수신자 정보 리스트는 유효성체크하지 않는다.
     //필수
-    @NotNull(message="수신자 정보 리스트는 필수입니다.")
-    @Size(min=0, max=10, message="수신자 정보는 최대 10개까지 가능합니다.")
+    //@NotNull(message="수신자 정보 리스트는 필수입니다.")
+    //@Size(min=0, max=10, message="수신자 정보는 최대 10개까지 가능합니다.")
     private List<PushRecvInfo> recvInfoLst;
 
     //(대체발송리스트 정보)

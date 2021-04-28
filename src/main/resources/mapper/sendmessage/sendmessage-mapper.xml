@@ -124,72 +124,116 @@
         </if>
     </select>
 
+    <select id="selectAllAddrCuList" parameterType="hashmap" resultType="kr.co.uplus.cm.sendMessage.dto.PushRecvInfo">
+    /* sendMessage.selectAllAddrCuList 주소록 전체 구성원 목록 조회 */
+        SELECT
+            CCI.CUID
+            , CCI.HP_NUMBER AS PHONE
+            , @ROWNUM := @ROWNUM + 1 AS CLI_KEY
+        FROM CM_ADDR_CATE_GRP CACG
+        INNER JOIN CM_ADDR_CATE CAC
+            ON CACG.ADDRESS_CATEGORY_GRP_ID = CAC.ADDRESS_CATEGORY_GRP_ID
+            AND CAC.DEL_YN = 'N'
+        INNER JOIN CM_ADDR_CATE_MEM CACM
+            ON CACM.ADDRESS_CATEGORY_ID = CAC.ADDRESS_CATEGORY_ID
+        INNER JOIN CM_CU_INFO CCI
+            ON CACM.CU_INFO_ID = CCI.CU_INFO_ID
+            AND CCI.USE_YN = 'Y'
+        INNER JOIN (SELECT @ROWNUM:=0) TMP
+        WHERE CACG.USE_YN = 'Y'
+            AND CACG.CORP_ID = #{corpId}
+            AND CACG.OTHER_PROJECT_USE_YN = 'Y' OR CACG.PROJECT_ID = #{projectId}
+    </select>
 
+    <select id="selectPayType" parameterType="hashmap" resultType="string">
+    /* sendMessage.selectPayType 결제방식 조회 */
+        SELECT CP.PAY_TYPE
+        FROM CM_CORP CC
+        INNER JOIN CM_PROJECT CP
+            ON CC.CORP_ID = CP.CORP_ID
+            AND CP.USE_YN = 'Y'
+            AND CP.DEL_YN = 'N'
+            AND CP.PROJECT_ID = #{projectId}
+        WHERE CC.STATUS = 'USE'
+            AND CC.CORP_ID = #{corpId}
+    </select>
 
+    <select id="selectMsgFeePerOne" parameterType="hashmap" resultType="bigdecimal">
+    /* sendMessage.selectMsgFeePerOne 메시지 발송 가격 */
+        SELECT MAX(IFNULL(CCPU.FEE, CPU.FEE)) AS MAX_FEE
+        FROM cm_bo.CM_PRODUCT_UNIT CPU
+        LEFT OUTER JOIN CM_CORP_PRODUCT_UNIT CCPU
+            ON CPU.PRODUCT_CODE = CCPU.PRODUCT_CODE
+            AND CCPU.USE_YN = 'Y'
+        WHERE CPU.USE_YN = 'Y'
+            AND (
+                1=2
+            <if test="push != null and push != '' ">
+                OR (CPU.CH_GRP = 'PUSH' AND CPU.CH = 'PUSH')  /*PUSH*/
+            </if>
+            <if test="sms != null and sms != '' ">
+                OR (CPU.CH_GRP = 'XMS' AND CPU.CH = 'SMS')  /*SMS*/
+            </if>
+            <if test="lms != null and lms != '' ">
+                OR (CPU.CH_GRP = 'XMS' AND CPU.CH = 'LMS')  /*LMS*/
+            </if>
+            <if test="mms != null and mms != '' ">
+                OR (CPU.CH_GRP = 'XMS' AND CPU.CH = 'MMS')  /*MMS*/
+            </if>
+            <if test="alimtalk != null and alimtalk != '' ">
+                OR (CPU.CH_GRP = 'KAKAO' AND CPU.CH = 'ALIMTALK')  /*ALIMTALK*/
+            </if>
+            <if test="frendtalkText != null and frendtalkText != '' ">
+                OR (CPU.CH_GRP = 'KAKAO' AND CPU.CH = 'PUSH' AND CPU.SPEC = 'TEXT')  /*FRENDTALK-TEXT*/
+            </if>
+            <if test="frendtalkImage != null and frendtalkImage != '' ">
+                OR (CPU.CH_GRP = 'KAKAO' AND CPU.CH = 'PUSH' AND CPU.SPEC = 'IMAGE')  /*FRENDTALK-IMAGE*/
+            </if>
+            <if test="frendtalkWide != null and frendtalkWide != '' ">
+                OR (CPU.CH_GRP = 'KAKAO' AND CPU.CH = 'PUSH' AND CPU.SPEC = 'WIDE')  /*FRENDTALK-WIDE*/
+            </if>
+            )
+    </select>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <insert id="qryInsertSendPushMessage" parameterType="hashmap">
-        /* 푸시 메시지 발송내역 등록 */
+    <insert id="insertCmWebMsg" parameterType="hashmap">
+    /* sendMessage.insertCmWebMsg - 웹 발송 내역 등록 */
         INSERT INTO CM_WEB_MSG
         (
-            WEB_REQ_ID,
-            CORP_ID,
-            PROJECT_ID,
-            API_KEY,
-            CH_GRP,
-            CH,
-            MSG_INFO,
-            CU_INFO,
-            SENDER_CNT,
-            CALLBACK,
-            CAMPAIGN_ID,
-            SENDER_TYPE,
-            STATUS,
-            GW_RESULT_CODE,
-            GW_RESULT_DESC,
-            RESV_SENDER_YN,
-            REG_DT,
-            REQ_DT,
+            WEB_REQ_ID
+            , CORP_ID
+            , PROJECT_ID
+            , API_KEY
+            , CH_STRING
+            , MSG_INFO
+            , SENDER_CNT
+            , CALLBACK
+            , CAMPAIGN_ID
+            , SENDER_TYPE
+            , STATUS
+            , RESV_SENDER_YN
+            , REG_DT
+        <if test="reqDt != null and reqDt != '' ">
+            ,REQ_DT
+        </if>
         )
         VALUES
         (
-            #{webReqId},
-            #{corpId},
-            #{projectId},
-            #{apiKey},
-            #{chGrp},
-            #{ch},
-            #{msgInfo},
-            #{cuInfo},
-            #{senderCnt},
-            #{callback},
-            #{campaignId},
-            #{senderType},
-            #{status},
-            #{gwResultCode},
-            #{gwResultDesc},
-            #{resvSenderYn},
-            SYSDATE,
-            SYSDATE
+            #{webReqId}
+            , #{corpId}
+            , #{projectId}
+            , #{apiKey}
+            , #{chString}
+            , #{msgInfo}
+            , #{senderCnt}
+            , #{callback}
+            , #{campaignId}
+            , #{senderType}
+            , #{status}
+            , #{resvSenderYn}
+            , NOW()
+        <if test="reqDt != null and reqDt != '' ">
+            , DATE_FORMAT(#{reqDt}, '%Y-%m-%d %H:%i')
+        </if>
            )
     </insert>
 

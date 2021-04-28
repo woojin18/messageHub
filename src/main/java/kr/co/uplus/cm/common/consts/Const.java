@@ -29,15 +29,60 @@ public class Const {
     // 이미지업로드 ID 첨두
     public static final String FILE_UPLOAD_PREFIX = "FLE";
 
+
+    // 메시지발송 ID 접두(WEB_REQ_ID)
+    public static class WebReqIdPrefix {
+        public static final String PUSH_PREFIX = "PSH";
+    }
+
+    //메시지구분
+    public static class MsgKind {
+        public static final String AD = "A";  //광고성
+        public static final String INFO = "I";  //정보성
+    }
+
+    //메시지타입
+    public static class MsgType {
+        public static final String IMAGE = "IMAGE";  //이미지
+        public static final String BASE = "BASE";  //기본
+    }
+
+    //대체발송타입
+    public static class RplcSendType {
+        public static final String NONE = "NONE";  //미사용
+        public static final String SMS = "SMS";  //SMS
+        public static final String LMS = "LMS";  //LMS
+        public static final String MMS = "MMS";  //MMS
+    }
+
+    //대체발송타입
+    public static class MsgCh {
+        public static final String PUSH = "PUSH";  //PUSH
+    }
+
+    //발송타입
+    public static class SenderType {
+        public static final String SMART = "S";
+        public static final String MERGER = "M";
+        public static final String CHANNEL = "C";
+    }
+
+    //발송진행상태
+    public static class MsgSendStatus {
+        public static final String SEND_WAIT = "SEND_WAIT";
+        public static final String RES_WAIT = "RES_WAIT";
+        public static final String REPORT_WAIT = "REPORT_WAIT";
+        public static final String COMPLETED = "COMPLETED";
+    }
+
     //이미지 리사이징 사이즈
     public static final String IMG_RESIZE_WIDTH = "width";
     public static final String IMG_RESIZE_HEIGHT = "height";
 
     //API
     public static final String API_SUCCESS = "10000";  //API 성공 코드(코드정보를 받으면 enum에 등록)
+    public static final int PUSH_RECV_LIMIT_SIZE = 10;
     public static final String FILE_UPLOAD_API_URL = "/console/v1/file/";  //파일 업로드 API
     public static final String SEND_PUSH_API_URL = "/console/v1/push";  //푸시발송 API
-
-
 
 }

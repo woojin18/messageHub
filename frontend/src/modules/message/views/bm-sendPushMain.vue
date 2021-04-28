@@ -78,12 +78,12 @@
                 <h5>발송정책 *</h5>
               </div>
               <div style="width:82%">
-                <input type="radio" name="send" value="ALL" id="pushSenderSet_ALL" v-model="sendData.pushSenderSet">
-                <label for="pushSenderSet_ALL" class="mr30">ALL</label>
-                <input type="radio" name="send" value="FCM" id="pushSenderSet_FCM" v-model="sendData.pushSenderSet">
-                <label for="pushSenderSet_FCM" class="mr30">FCM</label>
-                <input type="radio" name="send" value="APNS" id="pushSenderSet_APNS" v-model="sendData.pushSenderSet">
-                <label for="pushSenderSet_APNS">APNS</label>
+                <input type="radio" name="send" value="ALL" id="serviceCode_ALL" v-model="sendData.serviceCode">
+                <label for="serviceCode_ALL" class="mr30">ALL</label>
+                <input type="radio" name="send" value="FCM" id="serviceCode_FCM" v-model="sendData.serviceCode">
+                <label for="serviceCode_FCM" class="mr30">FCM</label>
+                <input type="radio" name="send" value="APNS" id="serviceCode_APNS" v-model="sendData.serviceCode">
+                <label for="serviceCode_APNS">APNS</label>
               </div>
             </div>
 
@@ -207,20 +207,20 @@
                 <h5>발송시간 *</h5>
               </div>
               <div class="float-left" style="width:26%">
-                <input type="radio" id="senderType_IMMY" value="IMMY" v-model="sendData.senderType">
-                <label for="senderType_IMMY" class="mr30">즉시</label>
-                <input type="radio" id="senderType_RSRV" value="RSRV" v-model="sendData.senderType">
-                <label for="senderType_RSRV">예약</label>
+                <input type="radio" id="rsrvSendYn_N" value="N" v-model="sendData.rsrvSendYn">
+                <label for="rsrvSendYn_N" class="mr30">즉시</label>
+                <input type="radio" id="rsrvSendYn_Y" value="Y" v-model="sendData.rsrvSendYn">
+                <label for="rsrvSendYn_Y">예약</label>
               </div>
-              <div v-if="sendData.senderType == 'RSRV'" class="float-left" style="width:20%">
+              <div v-if="sendData.rsrvSendYn == 'Y'" class="float-left" style="width:20%">
                 <Calendar @update-date="fnUpdateRsrvDate" calendarId="rsrvDate" classProps="datepicker inputStyle" :initDate="sendData.rsrvDate"></Calendar>
               </div>
-              <div v-if="sendData.senderType == 'RSRV'" class="float-right" style="width:34%">
-                <select class="selectStyle2" style="width:47%" v-model="rsrvHH">
+              <div v-if="sendData.rsrvSendYn == 'Y'" class="float-right" style="width:34%">
+                <select class="selectStyle2" style="width:47%" v-model="sendData.rsrvHH">
                   <option value="00">00</option>
                   <option v-for="hh in 23" :key="hh" :value="hh > 9 ? hh : '0'+hh">{{hh > 9 ? hh : '0'+hh}}</option>
                 </select>
-                : <select class="selectStyle2" style="width:47%" v-model="rsrvMM">
+                : <select class="selectStyle2" style="width:47%" v-model="sendData.rsrvMM">
                   <option value="00">00</option>
                   <option v-for="mm in 5" :key="mm" :value="mm+'0'">{{mm+'0'}}</option>
                 </select>
@@ -299,7 +299,7 @@ export default {
       recvCnt : 0,  //수신자명수
       previewMessageType : 'PUSH',  //메세지미리보기 타입(PUSH, RPLC)
       sendData : {
-        pushSenderSet:'ALL', //발송정책(ALL, FCM, APNS)
+        serviceCode:'ALL', //발송정책(ALL, FCM, APNS)
         requiredCuid : true,  //app 로그인 ID 필수여부
         requiredCuPhone : false,  //수신자 폰번호 필수여부
         msgKind:'A',  //A, I
@@ -310,10 +310,10 @@ export default {
         imgUrl : '',
         appId:'',
         cuInfo:'',
-        senderType:'IMMY',  //발송타입 : IMMY, RSRV
+        rsrvSendYn:'N',  //예약발송여부
         rsrvDate:this.$gfnCommonUtils.getCurretDate(),
-        rsrvHH:'',
-        rsrvMM:'',
+        rsrvHH:'00',
+        rsrvMM:'00',
         campaignId:'',
         pushTitle:'',  //푸시제목(tmpltTitle)
         pushContent:'',  //푸시내용(tmpltContent)
@@ -357,17 +357,23 @@ export default {
       }
 
       await MessageApi.sendPushMessage(fd).then(response =>{
-        //const result = response.data;
+        const result = response.data;
         console.log('=======================');
         console.log(response);
         console.log('=======================');
-        /*
+
         if(result.success) {
-          confirm.fnAlert(this.componentsTitle, '성공하였습니다.');
+          if(this.fnIsEmpty(result.data.feeMsg)){
+            confirm.fnAlert(this.componentsTitle, result.data.feeMsg);
+          }
+          if(this.fnIsEmpty(result.message)){
+            confirm.fnAlert(this.componentsTitle, '발송 요청처리 되었습니다.');
+          } else {
+            confirm.fnAlert(this.componentsTitle, result.message);
+          }
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
-        */
       });
     },
     fnUpdateRsrvDate(sltDate){
@@ -418,7 +424,7 @@ export default {
     },
     fnOpenReplacedSenderPopup(){
       this.sendData.fbInfo.ch = this.sendData.rplcSendType;
-      this.$refs.rplcSendPopup.fnSetfbInfo(this.sendData.fbInfo);
+      this.$refs.rplcSendPopup.fnSetfbInfo(this.sendData);
       this.rplcSendOpen = !this.rplcSendOpen;
     },
     fnOpenPushTemplatePopup(){

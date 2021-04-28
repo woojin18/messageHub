@@ -4,10 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 import lombok.Data;
 
 @Data
@@ -19,21 +15,19 @@ public class PushRecvInfo implements Serializable {
     //필수
     //pattern: ^[0-9-_]{1,20}$
     //example: 1
-    @NotNull(message="클라이언트키는 필수입니다.")
-    @NotBlank(message="클라이언트키는 필수입니다.")
-    @Pattern(regexp="^[0-9-]{1,20}$", message="클라이언트키 형식에 맞지 않습니다.")
+    //@NotBlank(message="클라이언트키는 필수입니다.")
+    //@Pattern(regexp="^[0-9-]{1,20}$", message="클라이언트키 형식에 맞지 않습니다.")
     private String cliKey;
 
     //수신번호
     //pattern: ^[0-9-]{1,20}$
     //example: 01012341234
-    @Pattern(regexp="^[0-9-]{1,20}$", message="수신번호 형식에 맞지 않습니다.(예:01012341234)")
+    //@Pattern(regexp="^[0-9-]{1,20}$", message="수신번호 형식에 맞지 않습니다.(예:01012341234)")
     private String phone;
 
     //cuid(APP 로그인ID)
     //필수
-    @NotNull(message="APP 로그인ID는 필수입니다.")
-    @NotBlank(message="APP 로그인ID는 필수입니다.")
+    //@NotBlank(message="APP 로그인ID는 필수입니다.")
     private String cuid;
 
     //변수 매핑

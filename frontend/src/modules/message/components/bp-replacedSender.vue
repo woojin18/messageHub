@@ -11,7 +11,7 @@
             </select>
           </div>
 
-          <div class="of_h consolMarginTop">
+          <div v-if="msgKind == 'A'" class="of_h consolMarginTop">
             <div class="float-left" style="width:32%"><h5>광고성메시지 수신거부번호</h5></div>
             <div class="float-right" style="width:66%">
               <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="fbInfo.rcvblcNumber" maxlength="20">
@@ -85,6 +85,7 @@ export default {
       imgMngOpen : false,
       useCh : 'PUSH',
       callbackList: [],
+      msgKind : 'A',
       fbInfo: {
         callback:'',
         ch:'',
@@ -110,8 +111,9 @@ export default {
       this.fbInfo.fileId = '';
     },
     //대체발송 정보 Set
-    fnSetfbInfo(fbInfo){
-      this.fbInfo = Object.assign({}, fbInfo);
+    fnSetfbInfo(sendData){
+      this.msgKind = sendData.msgKind;
+      this.fbInfo = Object.assign({}, sendData.fbInfo);
     },
     //입력정보 callback
     fnCallbackInputData(){

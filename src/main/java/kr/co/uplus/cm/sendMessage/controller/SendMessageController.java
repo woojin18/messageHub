@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.sendMessage.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,12 +8,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,15 +22,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
-import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.sendMessage.dto.PushRecvInfo;
-import kr.co.uplus.cm.sendMessage.dto.PushRequestDto;
+import kr.co.uplus.cm.sendMessage.dto.PushRequestData;
 import kr.co.uplus.cm.sendMessage.service.SendMessageService;
 import kr.co.uplus.cm.utils.ApiInterface;
+import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.DateUtil;
 import lombok.extern.log4j.Log4j2;
 
@@ -54,75 +52,7 @@ public class SendMessageController {
     private SendMessageService sendMsgService;
 
     @Autowired
-    private CommonService commonService;
-
-    @Autowired
     ApiInterface apiInterface;
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @PostMapping("/apiTest")
-    public RestResult<?> apiTest(HttpServletRequest request, HttpServletResponse response,
-            @Valid @RequestBody PushRequestDto pushRequestDto, BindingResult bindingResult) {
-        RestResult<Object> rtn = new RestResult<Object>();
-        rtn.setSuccess(true);
-
-        /*
-        if(bindingResult.hasErrors()) {
-            List<ObjectError> list = bindingResult.getAllErrors();
-            String errorMsg = "";
-            for(ObjectError error : list) {
-                errorMsg += (StringUtils.isBlank(errorMsg) ? "" : "\\n") + error.getDefaultMessage();
-                System.out.println(error);
-            }
-            rtn.setSuccess(false);
-            rtn.setMessage(errorMsg);
-        }
-        */
-
-        try {
-
-            sendMsgService.setPushRequestDate(pushRequestDto);
-
-            String test = "\"{\\\"callback\\\":\\\"15441234\\\",\\\"campaignId\\\":\\\"campaignId02\\\",\\\"msg\\\":{\\\"title\\\":\\\"title01\\\",\\\"body\\\":\\\"body01\\\"},\\\"appId\\\":\\\"appId01\\\",\\\"ext\\\":{\\\"additionalProp1\\\":\\\"string\\\",\\\"additionalProp2\\\":\\\"string\\\",\\\"additionalProp3\\\":\\\"string\\\"},\\\"fileId\\\":\\\"111\\\",\\\"webReqId\\\":\\\"string6338\\\",\\\"serviceCode\\\":\\\"string\\\",\\\"recvInfoLst\\\":[{\\\"cliKey\\\":\\\"20\\\",\\\"phone\\\":\\\"01012341235\\\",\\\"cuid\\\":\\\"string\\\",\\\"mergeData\\\":{\\\"additionalProp1\\\":\\\"string\\\",\\\"additionalProp2\\\":\\\"string\\\",\\\"additionalProp3\\\":\\\"string\\\"}},{\\\"cliKey\\\":\\\"21\\\",\\\"phone\\\":\\\"01012341236\\\",\\\"cuid\\\":\\\"string\\\",\\\"mergeData\\\":{\\\"additionalProp1\\\":\\\"string\\\",\\\"additionalProp2\\\":\\\"string\\\",\\\"additionalProp3\\\":\\\"string\\\"}}],\\\"fbInfoLst\\\":[{\\\"ch\\\":\\\"SMS\\\",\\\"title\\\":\\\"\\uc81c\\ubaa9\\\",\\\"msg\\\":\\\"SMS \\uba54\\uc2dc\\uc9c0 \\ub0b4\\uc6a9\\\",\\\"fileId\\\":\\\"string\\\"}]}\"";
-
-            Gson gson = new Gson();
-            String json = gson.toJson(pushRequestDto);
-            log.info("json : {}", json);
-
-            ObjectMapper mapper = new ObjectMapper();
-            Map bodyMap = mapper.convertValue(pushRequestDto, Map.class);
-            log.info("bodyMap : {}", bodyMap);
-
-
-            Map<String, String> headerMap = new HashMap<String, String>();
-            headerMap.put("apiKey", "1");
-
-            /*
-            HttpResponse<String> res = Unirest.request("POST", "http://erp.ectech.co.kr:40931/console/v1/push")
-                    .header("Content-Type", "application/json")
-                    .headers(headerMap)
-                    .body(json)
-                    //.body(test)
-                    //.body(postParamMap)
-                    .asString();
-            */
-
-            /*
-            Map<String, Object> sendMsg = apiInterface.sendMsg(Const.SEND_PUSH_API_URL, headerMap, json);
-            log.info("sendMsg : {}", sendMsg);
-            */
-
-            Map<String, Object> postResult = apiInterface.post(Const.SEND_PUSH_API_URL, bodyMap, headerMap);
-            log.info("postResult : {}", postResult);
-
-
-
-        } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
-        }
-        return rtn;
-    }
 
     /**
      * APP ID 리스트 조회
@@ -266,17 +196,37 @@ public class SendMessageController {
     public RestResult<?> sendPushMessage(HttpServletRequest request, HttpServletResponse response
             , @RequestParam String paramString
             , @RequestPart(value="excelFile", required=false) MultipartFile excelFile) throws Exception {
+
+        List<PushRecvInfo> recvInfoLst = null;
+        Map<String, Object> params = null;
         RestResult<Object> rtn = new RestResult<Object>();
+        Map<String, Object> rtnMap = new HashMap<>();
+        PushRequestData requestData = null;
+
+        int fromIndex = 0;
+        int toIndex = 1;
 
         try {
             log.info("{}.sendPushMessage Start ====> paramString : {}", this.getClass(), paramString);
 
             ObjectMapper mapper = new ObjectMapper();
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> sParam = new HashMap<>();
             params = mapper.readValue(paramString, Map.class);
 
-            //푸시 수신자 리스트
-            List<PushRecvInfo> recvInfoLst = sendMsgService.getRecvInfoLst(params, excelFile);
+            //TODO 세션에서 가져오던 클라이언트단에서 넘기던 하자
+            params.put("ch", Const.MsgCh.PUSH);
+            params.put("corpId", "TEST_CORP_ID");    //TODO : 고객 ID(로그인세션에서 가져오자)
+            params.put("projectId", "TEST_PROJECT");    //TODO : 프로젝트 ID(로그인세션에서 가져오자)
+
+            /** 유효성 체크 */
+            requestData = sendMsgService.setPushSendData(rtn, params);
+            if(rtn.isSuccess() == false) {
+                return rtn;
+            }
+            log.info("{}.sendPushMessage pushRequestData: {}", this.getClass(), requestData.toString());
+
+            /** 푸시 수신자 리스트*/
+            recvInfoLst = sendMsgService.getRecvInfoLst(params, excelFile);
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
                 rtn.setSuccess(false);
                 rtn.setMessage("잘못된 푸시 수신자 정보입니다.");
@@ -286,57 +236,82 @@ public class SendMessageController {
                 log.info("recvInfoLst : {}", info);
             }
 
+            /** 잔액확인 */
+            String payType = sendMsgService.selectPayType(params);
 
+            //후불일경우
+            if(StringUtils.equals(payType, Const.COMM_NO)) {
+                //남은 금액 조회
+                BigDecimal rmAmount = sendMsgService.getRmAmount();
+                //개당 가격 조회
+                sParam = new HashMap<>();
+                sParam.put("push", Const.COMM_YES);
+                if(params.containsKey("rplcSendType")
+                        && !CommonUtils.isEmptyValue(params, "rplcSendType")
+                        && !StringUtils.equals((CharSequence) params.get("rplcSendType"), "NONE")) {
+                    String key = ((String) params.get("rplcSendType")).toLowerCase();
+                    sParam.put(key, Const.COMM_YES);
+                }
+                BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
+                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
+                feePerAll = new BigDecimal("1000000000000");
 
+                if(rmAmount.compareTo(feePerAll) < 0) {
+                    rtnMap.put("feeMsg", "잔액 부족으로 메시지가 발송되지 않을 수도 있습니다.");
+                }
+            }
 
+            /** 예약건인지 확인(10분) */
+            //웹 발송 내역은 발송건을 모두 G/W로 보내고 등록해달라는 요청
+            //예약건과 즉시건의 웹 발송 내역 등록 분리
+            String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
+            if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+                sendMsgService.insertPushCmWebMsg(rtn, params, requestData, recvInfoLst);
+                if(rtn.isSuccess() == false) {
+                    return rtn;
+                }
+            }
 
-            //간단한 유효성 체크
+            /** 1건 발송(결과값 확인용)(동기화) */
+            log.info("{}.sendPushMessage sync API send Start ====>");
+            Map<String, Object> responseBody = sendMsgService.sendPushMsg(rtn, params, requestData, recvInfoLst.subList(fromIndex, toIndex));
+            log.info("{}.sendPushMessage sync API send Response Body : {}", this.getClass(), responseBody);
 
-
-            //잔액확인
-
-
-            //10건 발송(통신 오류나 타임아웃인 경우 실패처리)(sync)
-
-
-            sendMsgService.syncSend();
-
-
-
+            if(CommonUtils.isEmptyValue(responseBody, "rslt")
+                    || !StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(responseBody.get("rslt")))) {
+                rtn.setSuccess(false);
+                rtn.setMessage("푸시 발송 요청에 실패하였습니다.");
+                return rtn;
+            }
+            fromIndex = toIndex;
 
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
             log.error("{} Error : {}", this.getClass(), e);
+            return rtn;
         }
 
-        //10건 이후 발송(async)
-        //sendMsgService.asyncSend();
+        /** 1건 이후 발송(비동기화) */
+        if(recvInfoLst.size() > fromIndex) {
+            try {
+                log.info("{}.sendPushMessage aSync API send Start ====>");
+                sendMsgService.sendPushMsgAsync(rtn, fromIndex, params, requestData, recvInfoLst);
+            } catch (Exception e) {
+                log.info("{}.sendPushMessage aSync API send Error : {}", this.getClass(), e);
+            }
+            rtn.setMessage("푸시 발송 요청처리 되었습니다.");
+
+        } else {
+            sendMsgService.insertPushCmWebMsg(rtn, params, requestData, recvInfoLst);
+            rtn.setMessage("푸시 발송 처리 되었습니다.");
+        }
+
+        rtn.setSuccess(true);
+        rtn.setData(rtnMap);
 
         return rtn;
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
