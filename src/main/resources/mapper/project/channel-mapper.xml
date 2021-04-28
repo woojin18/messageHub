@@ -20,6 +20,9 @@
 					FROM	cm.CM_RCS_CHATBOT
 					WHERE	BRAND_ID  = A.BRAND_ID 
 				) AS CALLBACK_CNT
+		,		CASE WHEN SUBSTRING(A.BRAND_ID, 1, 1) = 'T' THEN '임시저장' ELSE MAX(A.APPROVAL_STATUS) END	AS APPROVAL_STATUS
+		,		''			AS REQ_DT
+		,		''			AS APPROVAL_DT
 		FROM	cm.CM_RCS_BRAND_REQ A
 		WHERE	A.PROJECT_ID = #{projectId}
 		AND		A.BRAND_INFO != ''
@@ -31,7 +34,7 @@
 		) 
 		GROUP BY A.BRAND_ID
 		
-		UNION  ALL
+		UNION
 		
 		SELECT 	A.BRAND_ID
 		,		A.PROJECT_ID
@@ -48,6 +51,9 @@
 					FROM	cm.CM_RCS_CHATBOT
 					WHERE	BRAND_ID  = A.BRAND_ID 
 				) AS CALLBACK_CNT
+		,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인완료' ELSE '' END	AS APPROVAL_STATUS
+		,		A.REG_DT			AS REQ_DT
+		,		A.APPROVAL_DT
 		FROM	cm.CM_RCS_BRAND A
 		WHERE	A.PROJECT_ID = #{projectId}
 		AND		A.BRAND_INFO != ''
@@ -125,6 +131,38 @@
 		,	NOW()
 		,	'BRAND_KEY'
 		,	'TEMP'
+		)
+	</insert>
+	
+	<insert id="insertRcsChatbotReqTemp">
+		/* channel.insertRcsChatbotReqTemp */
+		INSERT	cm.CM_RCS_CHATBOT_REQ
+		(
+			YM
+		,	CHATBOT_ID
+		,	CHATBOT_REQ_KEY
+		,	CORP_ID
+		,	BRAND_ID
+		,	INCOMING_TYPE
+		,	PROC_TYPE
+		,	SVC_TYPE
+		,	CHATBOT_INFO
+		,	USE_YN
+		,	REG_DT
+		)
+		VALUES
+		(
+			LAST_DAY(NOW() - interval 1 month) + interval 1 DAY 
+		,	#{chatbotId}
+		,	'TEMP'
+		,	#{corpId}
+		,	#{brandId}
+		,	'C'
+		,	'C'
+		,	'a2p'
+		,	#{chatbotInfo}
+		,	'Y'
+		,	now()
 		)
 	</insert>
 </mapper>

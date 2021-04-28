@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 
+import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
@@ -365,10 +366,12 @@ public class ChannelService {
 		
 		
 		String chatbotStr = CommonUtils.getString(params.get("chatbots"));
+		JSONParser parser = new JSONParser();
+		JSONArray chatbotJson = new JSONArray();
 		if( !"".equals(chatbotStr) ) {
 			chatbotStr = "[" + chatbotStr + "]";
-			JSONParser parser = new JSONParser();
-			JSONArray chatbotJson = (JSONArray) parser.parse(chatbotStr);
+			parser = new JSONParser();
+			chatbotJson = (JSONArray) parser.parse(chatbotStr);
 			map.put("chatbots",		chatbotJson);
 		}
 		
@@ -377,7 +380,7 @@ public class ChannelService {
 		// 임시저장
 		String sts = CommonUtils.getString(params.get("sts"));
 		if( "temp".equals(sts) ) {
-			String tempBrandId = "T"+CommonUtils.generationSringToHex("");
+			String tempBrandId = CommonUtils.getCommonId("T", 4);
 			params.put("brandId", tempBrandId);
 			params.put("brandReqKey", tempBrandId);
 			
@@ -385,7 +388,36 @@ public class ChannelService {
 			String json = mapper.writeValueAsString(map);
 			
 			params.put("brandInfo", json);
+			// 브랜드 저장
 			generalDao.selectGernalList(DB.QRY_INSERT_RCS_BRANDREQ, params);
+			
+			// 챗봇 저장
+			for( int j = 0; j < chatbotJson.size(); j++ ) {
+				JSONObject chatbotObj = (JSONObject) chatbotJson.get(j);
+				String tempChatId = CommonUtils.getCommonId("Cb", 4);
+				chatbotObj.put("brandId", tempBrandId);
+				chatbotObj.put("chatbotId", tempChatId);
+				chatbotObj.put("corpId", params.get("corpId"));
+				
+				Map<String, Object> chatbotInfo = new HashMap<>();
+				chatbotInfo.put("subNum", chatbotObj.get("mdn"));
+				chatbotInfo.put("brandId", tempBrandId);
+				chatbotInfo.put("display", "01");
+				chatbotInfo.put("groupId", null);
+				chatbotInfo.put("service", "a2p");
+				chatbotInfo.put("subTitle", chatbotObj.get("subTitle"));
+				chatbotInfo.put("updateId", "uplus");
+				chatbotInfo.put("chatbotId", tempChatId);
+				if( CommonUtils.getString(params.get("mainMdn")).equals(chatbotObj.get("mdn")) ) {
+					chatbotInfo.put("isMainNum", true);
+				} else {
+					chatbotInfo.put("isMainNum", false);
+				}
+				String chatbotInfoStr = mapper.writeValueAsString(chatbotInfo);
+				chatbotObj.put("chatbotInfo", chatbotInfoStr);
+				
+				generalDao.selectGernalList(DB.QRY_INSERT_RCS_CHATBOTREQ, chatbotObj);
+			}
 			
 		} else if( "save".equals(sts) ) {
 			// 등록요청
@@ -393,18 +425,12 @@ public class ChannelService {
 			headerMap.put("apiId",		params.get("apiKey"));
 			headerMap.put("apiSercret",	params.get("apiSecretKey"));
 			
-			Map<String, Object> bodyMap = new HashMap<String, Object>();
 			ObjectMapper mapper = new ObjectMapper();
 			String json = mapper.writeValueAsString(map);
+			Map<String, Object> bodyMap = new HashMap<String, Object>();
 			bodyMap.put("list", json);
 			
-			System.out.println("-----------------------------------------------headerMap " + headerMap);
-			System.out.println("-----------------------------------------------json " + json);
-			
-			
 			Map<String, Object> result =  apiInterface.listPost("/console/v1/brand", list, headerMap);
-			
-			System.out.println("------------------------------------------------- result " + result);
 			
 			// 성공인지 실패인지 체크
 			if( !"10000".equals(result.get("rslt")) ) {

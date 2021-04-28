@@ -64,7 +64,7 @@
 						<h4 style="width:28%" class="inline-block">API Secret Key *</h4>
 						<div class="inline-block float-right" style="width:72%">
 							<input id="apiSecretKey" type="text" class="inputStyle float-left" style="width:70%" v-model="inputVal.apiSecretKey">
-							<a @click="fnCheckApiKey" class="btnStyle1 borderLightGray backWhite minWidthAuto float-right" style="width:27%">중복확인</a>
+							<a @click="fnCheckApiKey" class="btnStyle1 borderLightGray backWhite minWidthAuto float-right" style="width:27%">확인</a>
 						</div>
 					</div>
 					<div class="of_h">
@@ -246,12 +246,12 @@
 					</div>
 					<div class="of_h">
 						<h4 class="inline-block" style="width:22%">발신 번호명 *</h4>
-						<input type="text" class="inputStyle float-right" style="width:72%" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.mainTitle" :disabled="this.duplCheckYn == 'N'">
 					</div>
 					<div class="of_h">
 						<h4 class="inline-block" style="width:22%">대표번호<br>문자수신 서비스 *</h4>
 						<div class="consolCheck vertical-top float-right" style="width:72%">
-							<input type="checkbox" class="checkStyle2" value="use" v-model="inputVal.rcsReply"><label for="use">사용중</label>
+							<input id="use" type="checkbox" class="checkStyle2" v-model="inputVal.rcsReply" :disabled="this.duplCheckYn == 'N'"><label for="use">사용중</label>
 							<p class="font-size12 color3 mt5">대표번호 문자수신(MO)서비스를 현재 사용하고 계실 경우 반드시 해당정보를 체크해 주셔야 합니다.</p>
 						</div>						
 					</div>
@@ -368,6 +368,7 @@ export default {
 			email2			: "",
 			webSiteUrl		: "홈페이지 주소",
 			mainMdn			: "",	// 대표발신번호
+			mainTitle		: "대표발신명",
 			// 파일
 			profileImgFilePath: "",
 			preProfileImg : "/se2/images/rcsProfileImageSample.jpg",
@@ -378,15 +379,7 @@ export default {
 			// 발신번호 관련
 			rcsReply : "",
 			chatbotCnt : 1,
-			chatbots: [
-				{
-					"mdn"		: "",		// 발신번호
-					"rcsReply"	: "1",		// 대표번호문자 수신서비스 0 = x / 1 = o
-					"subTitle"	: "",		// 발신번호명
-					"service"	: "a2p",	// a2p 고정값
-					"display"	: "10"		// '10' 고정값
-				}
-			]
+			chatbots: []
 		},
 		category : [
 			{
@@ -562,11 +555,22 @@ console.log(  this.inputVal.order );
 		fd.append('moreInfoWeblink'		, this.inputVal.moreInfoWeblink);
 
 		// 첨부파일 정리
-		fd.append('profileImgFile', this.$refs.bgImgFile.files[0]);
+		fd.append('profileImgFile'	, this.$refs.bgImgFile.files[0]);
 		fd.append('bgImgFile'		, this.$refs.profileImgFile.files[0]);
 		fd.append('certiFile'		, this.$refs.certiImgFile.files[0]);
 
 		// 챗봇(발신번호) 정리
+		var mainRcsReplyYn = this.inputVal.rcsReplyYn;
+		
+		if( mainRcsReplyYn ){ this.inputVal.rcsReply = 1 } else { this.inputVal.rcsReply = 0 }
+
+		this.inputVal.chatbots.push({
+			"mdn"		: this.inputVal.mainMdn,		// 발신번호
+            "rcsReply"	: this.inputVal.rcsReply,		// 대표번호문자 수신서비스 0 = x / 1 = o
+            "subTitle"	: this.inputVal.mainTitle,		// 발신번호명
+            "service"	: "a2p",	// a2p 고정값
+            "display"	: "10"		// '10' 고정값
+		});
 		var list = [];
 		for( var i = 0; i < this.inputVal.chatbotCnt; i++ ){
 			var obj = JSON.stringify(this.inputVal.chatbots[i]);

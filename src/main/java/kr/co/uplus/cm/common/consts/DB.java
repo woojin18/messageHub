@@ -52,6 +52,8 @@ public class DB {
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";
 	// RCS 채널 브랜드 저장
 	public final static String QRY_INSERT_RCS_BRANDREQ = "channel.insertRcsReqTemp";
+	// RCS 채널 브랜드 챗봇 저장
+	public final static String QRY_INSERT_RCS_CHATBOTREQ = "channel.insertRcsChatbotReqTemp";
 	// RCS 발신번호 상세
 	public final static String QRY_SELECT_RCS_CALLBACKLIST = "channel.selectRcsCallbackList";
 	//웹캐시

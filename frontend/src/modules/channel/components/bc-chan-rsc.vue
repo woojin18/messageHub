@@ -88,13 +88,13 @@
                     <a class="color:blue; text-decoration: underline; cursor:pointer;" @click="fnRcsCallbackDetail(data)">{{ data.callbackCnt }}</a>
                   </td>
                   <td>
-                    {{ data.appr_yn }}
+                    {{ data.approvalStatus }}
                   </td>
                   <td>
-                    {{ data.req_dt }}
+                    {{ data.reqDt }}
                   </td>
                   <td>
-                    {{ data.appr_dt }}
+                    {{ data.approvalDt }}
                   </td>
                 </tr>
               </tbody>
@@ -244,6 +244,7 @@ export default {
         email2			  : "",
         webSiteUrl		: "",
         mainMdn			  : "",	// 대표발신번호
+        mainTitle		  : "",
         // 파일
         profileImgFilePath  : "",
         preProfileImg       : "/se2/images/rcsProfileImageSample.jpg",
@@ -254,15 +255,7 @@ export default {
         // 발신번호 관련
         rcsReply : "",
         chatbotCnt : 1,
-        chatbots: [
-          {
-            "mdn"		: "",		// 발신번호
-            "rcsReply"	: "1",		// 대표번호문자 수신서비스 0 = x / 1 = o
-            "subTitle"	: "",		// 발신번호명
-            "service"	: "a2p",	// a2p 고정값
-            "display"	: "10"		// '10' 고정값
-          }
-        ]
+        chatbots: []
       }
       this.$router.push( {name:"chan-rcs-detail",params:{"projectId" : this.projectId, "brandId" : "", "save_status" : 'C', "inputVal" : inputVal }} );
     },
