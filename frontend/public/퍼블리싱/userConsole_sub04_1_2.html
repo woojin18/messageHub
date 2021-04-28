@@ -101,10 +101,10 @@
 						</div>
 						<div class="float-left" style="width:72%">
 							<div class="of_h">
-								<div class="float-left" style="width:25%"><a href="#self" class="btnStyle1 backLightGray width100_" title="이미지 선택">이미지선택</a></div>
-								<ul class="float-right attachList" style="width:74%; padding:5px 15px">
+								<div class="float-left" style="width:24%"><a href="#self" class="btnStyle1 backLightGray width100_" data-toggle="modal" data-target="#image2" title="이미지선택">이미지선택</a></div>
+								<ul class="float-right attachList" style="width:75%; padding:5px 15px">
 									<li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
-								</ul>	
+								</ul>
 							</div>
 						</div>
 					</div>
@@ -123,6 +123,7 @@
 	</div>
 	<!-- //content -->
 
+		
 	<!-- image2 Modal -->
 	<div class="modal fade modalStyle" id="image2" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog" style="width:785px">
@@ -252,7 +253,11 @@
 					<div class="consolCheck" style="width:100%">
 						<input type="checkbox" id="imgPush" class="checkStyle2" value="Push"><label for="imgPush" class="mr10">Push</label>
 						<input type="checkbox" id="imgRCS" class="checkStyle2" value="RCS"><label for="imgRCS" class="mr10">RCS</label>
-						<input type="checkbox" id="imgtalk" class="checkStyle2" value="talk"><label for="imgtalk" class="mr10">친구톡</label>						
+						<input type="checkbox" id="imgtalk" class="checkStyle2" value="talk"><label for="imgtalk" class="mr10">친구톡</label>	
+							<div class="inline-block">						
+								<span>(</span> <input type="radio" name="content" value="General" id="General" checked=""><label for="General" class="mr10 mt2">일반</label>
+								<input type="radio" name="content" value="Wide" id="Wide"><label for="Wide" class="mt2">와이드</label><span>)</span>
+							</div>
 						<input type="checkbox" id="imgMMS1" class="checkStyle2" value="MMS"><label for="imgMMS1" class="mr10">MMS</label>
 					</div>
 					<div class="border-line mt10" style="width:100%; padding:130px 0">
