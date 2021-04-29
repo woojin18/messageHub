@@ -1,16 +1,24 @@
 package kr.co.uplus.cm.project.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
+import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 
@@ -22,6 +30,9 @@ public class ProjectService {
 	
 	@Autowired
 	private CommonService commonService;
+
+	@Autowired
+	private ApiInterface apiInterface; 
 
 	// 프로젝트 리스트 조회
 	@SuppressWarnings("unchecked")
@@ -204,6 +215,71 @@ public class ProjectService {
 
 			// 특수사업자관리 insert
 			generalDao.insertGernal("project.insertSpecualBusi", params);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void saveRcsChatbotReqForApi(Map<String, Object> params) throws Exception {
+		String tempYn = "Y";
+		
+		Map<String, Object> certiFileRtnMap = new HashMap<String, Object>();
+		
+		if( "N".equals(tempYn) ) {
+			// 가입증명 파일 업로드 처리
+			MultipartFile certiFile = (MultipartFile) params.get("certiFile");
+			
+			RestResult<Object> certiFileRtn = commonService.uploadFile(certiFile, CommonUtils.getString(params.get("loginId")));
+			
+			certiFileRtnMap = (Map<String, Object>) certiFileRtn.getData();
+		}
+		
+		// 데이터 처리
+		List<Object> list = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+		String brandId = CommonUtils.getString(params.get("brandId"));
+		
+		map.put("corpId",		params.get("corpId"));
+		map.put("projectId",	params.get("projectId"));
+		
+		map.put("mainMdn",		params.get("mainMdn"));
+		
+		if( "N".equals(tempYn) ) {
+			map.put("certiFilePath",		params.get("profileImgFilePath"));
+		} else {
+			// 임시
+			map.put("certiFilePath", "/efs/file/console/2021/04/26/12/test1234.png");
+		}
+		
+		
+		String chatbotStr = CommonUtils.getString(params.get("chatbots"));
+		JSONParser parser = new JSONParser();
+		JSONArray chatbotJson = new JSONArray();
+		if( !"".equals(chatbotStr) ) {
+			chatbotStr = "[" + chatbotStr + "]";
+			parser = new JSONParser();
+			chatbotJson = (JSONArray) parser.parse(chatbotStr);
+			map.put("chatbots",		chatbotJson);
+		}
+		
+		list.add(map);
+		
+		// 등록요청
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		headerMap.put("apiId",		params.get("apiKey"));
+		headerMap.put("apiSercret",	params.get("apiSecretKey"));
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(map);
+		Map<String, Object> bodyMap = new HashMap<String, Object>();
+		
+		bodyMap.put("list", json);
+		
+		// API 통신 처리
+		Map<String, Object> result =  apiInterface.listPost("/console/v1/brand", list, headerMap);
+		// 성공인지 실패인지 체크
+		if( !"10000".equals(result.get("rslt")) ) {
+			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+			throw new Exception(errMsg);
 		}
 	}
 }

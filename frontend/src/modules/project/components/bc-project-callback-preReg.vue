@@ -1,5 +1,6 @@
 <template>
   <div>
+    <layerPopup  :projectId = "projectId" />
     <article>
       <h4 class="mt40">발신번호 사전 등록</h4>
       <p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i> 발신번호 미등록 시 메시지가 정상적으로 전송되지 않을 수 있습니다.<br><i class="far fa-info-circle"></i> 발신번호는 문자발송장비 사용자의 최대 3배까지만 등록할 수 있습니다.</p>
@@ -53,7 +54,7 @@
 
       <div class="row bgColor_f1 row-no-margin mt10">
         <div class="text-center mt40">
-          <a @click="fnMoveMainTab('callbackManage')" class="btnStyle3 white font14" data-dismiss="modal">목록</a>						
+          <a @click="fnMovePjtTab('callbackManage')" class="btnStyle3 white font14" data-dismiss="modal">목록</a>						
         </div>
       </div>
       <!-- //본문 -->
@@ -65,8 +66,11 @@
 
 
 <script>
+import layerPopup from "./bp-project-callback-preReg.vue";
+
 export default {
   components: {
+    layerPopup
   },
   data() {
     return {
@@ -89,7 +93,7 @@ export default {
       this.$router.push( {name:'projectMain', params:{"projectId" : this.projectId, "projectName" : this.projectName, "selMainTab" : 5  }} );
     },
     fnCallbackReg(){
-      this.$router.push( {name:"callbackReg", params:{"projectId" : this.projectId, "projectName" : this.projectName}} );
+      jQuery("#regPop").modal("show");
     }
   }
 }

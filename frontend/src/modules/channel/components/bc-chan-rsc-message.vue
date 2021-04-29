@@ -1,34 +1,5 @@
 <template>
   <div>
-		<article>
-			<div class="contentHeader mb20">
-				<h2>{{this.projectName}}</h2>
-			</div>
-
-			<!-- 본문 -->
-			<div class="contentBody mb40">
-				<ul class="tab_s3">
-					<li @click="fnMoveMainTab('dashBoard')"><a class="width120">대시보드</a></li>
-					<li @click="fnMoveMainTab('info')"><a class="width120">기본정보</a></li>
-					<li @click="fnMoveMainTab('member')"><a class="width120">멤버관리</a></li>
-					<li @click="fnMoveMainTab('channel')" class="active"><a class="width120">채널관리</a></li>
-					<li @click="fnMoveMainTab('callback')"><a class="width120">발신번호관리</a></li>
-					<li @click="fnMoveMainTab('spam')"><a class="width120">스팸관리</a></li>
-				</ul>			
-			</div>
-			<ul class="tabStyle tab6 bgColor_tapGray mt30">
-				<li @click="fnMoveSubTab('chan-rcs')" class="active"><a>RCS</a></li>
-				<li @click="fnMoveSubTab('chan-smsmms')"><a>SMS/MMS</a></li>
-				<li @click="fnMoveSubTab('chan-push')"><a>PUSH</a></li>
-				<li @click="fnMoveSubTab('chan-kakao')"><a>카카오톡</a></li>
-				<li @click="fnMoveSubTab('chan-mo')"><a>MO</a></li>
-			</ul>
-			
-			<ul class="mt30 tab_s5">
-				<li @click="fnMoveRcsTab('brand')"><a>브랜드 관리정보</a></li>
-				<li class="active" @click="fnMoveRcsTab('message')"><a>메시지 포맷정보</a></li>
-			</ul>
-
       <div class="Dashboard01 border-line">
 				<p>전체: <span class="color1"><strong>20</strong></span>건</p>
 				<div class="mt20">	

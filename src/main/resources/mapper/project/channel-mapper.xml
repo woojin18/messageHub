@@ -147,14 +147,14 @@
 	
 	<delete id="deleteRcsReqTemp">
 		/* channel.deleteRcsReqTemp */
-		DEELTE FROM cm.CM_RCS_BRAND_REQ
+		DELETE FROM cm.CM_RCS_BRAND_REQ
 		WHERE	BRAND_ID = #{brandId}
 		AND		BRAND_REQ_KEY = 'TEMP'
 	</delete>
 	
 	<delete id="deleteRcsChatbotReqTemp">
 		/* channel.deleteRcsChatbotReqTemp */
-		DEELTE FROM cm.CM_RCS_CHATBOT_REQ
+		DELETE FROM cm.CM_RCS_CHATBOT_REQ
 		WHERE	BRAND_ID = #{brandId}
 		AND		CHATBOT_REQ_KEY = 'TEMP'
 	</delete>

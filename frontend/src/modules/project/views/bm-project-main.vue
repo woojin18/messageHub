@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     
 		<article>
 			<div class="contentHeader mb20">
@@ -7,14 +7,14 @@
 			</div>
 
 			<!-- 본문 -->
-			<div class="contentBody mb40">
+			<div class="contentBody">
 				<ul class="tab_s3">
-					<li :class="{active:(selMainTab == 1)}" @click="selMainTab=1"><a class="width120">대시보드</a></li>
-					<li :class="{active:(selMainTab == 2)}" @click="selMainTab=2"><a class="width120">기본정보</a></li>
-					<li :class="{active:(selMainTab == 3)}" @click="selMainTab=3"><a class="width120">멤버관리</a></li>
-					<li :class="{active:(selMainTab == 4)}" @click="selMainTab=4"><a class="width120">채널관리</a></li>
-					<li :class="{active:(selMainTab == 5)}" @click="selMainTab=5"><a class="width120">발신번호관리</a></li>
-					<li :class="{active:(selMainTab == 6)}" @click="selMainTab=5"><a class="width120">스팸관리</a></li>
+					<li :class="{active:(selMainTab == 1)}" @click="selMainTab=1"><a>대시보드</a></li>
+					<li :class="{active:(selMainTab == 2)}" @click="selMainTab=2"><a>기본정보</a></li>
+					<li :class="{active:(selMainTab == 3)}" @click="selMainTab=3"><a>멤버관리</a></li>
+					<li :class="{active:(selMainTab == 4)}" @click="selMainTab=4"><a>채널관리</a></li>
+					<li :class="{active:(selMainTab == 5)}" @click="selMainTab=5"><a>발신번호관리</a></li>
+					<li :class="{active:(selMainTab == 6)}" @click="selMainTab=5"><a>스팸관리</a></li>
 				</ul>			
 			</div>
 			<ul v-if="selMainTab==4" class="tabStyle tab6 bgColor_tapGray mt30">
@@ -25,19 +25,22 @@
 				<li :class="{active:(selMidTab == 5)}" @click="selMidTab=5"><a>MO</a></li>
 			</ul>
 			
-			<ul v-if="selMainTab==4&&selMidTab==1" class="mt30 tab_s5">
+			<ul v-if="selMainTab==4&&selMidTab==1" class="tab_s6 mt10">
         <!-- 체널관리 - RCS 탭 -->
-				<li @click="fnMoveRcsTab('brand')" class="active"><a>브랜드 관리정보</a></li>
-				<li @click="fnMoveRcsTab('message')"><a>메시지 포맷정보</a></li>
+				<!-- <li @click="fnMoveRcsTab('brand')" class="active"><a>브랜드 관리정보</a></li>
+				<li @click="fnMoveRcsTab('message')"><a>메시지 포맷정보</a></li> -->
+        <li :class="{active:(selMainTab==4&&selMidTab==1&&selSubTab==1)}" @click="selSubTab=1"><a>브랜드 관리정보</a></li>
+				<li :class="{active:(selMainTab==4&&selMidTab==1&&selSubTab==2)}" @click="selSubTab=2"><a>메시지 포맷정보</a></li>
         <!-- 체널관리 - RCS 탭 -->
 			</ul>
 
       <!-- 체널관리 탭 -->
-      <rcs    v-if="selMainTab==4&&selMidTab==1&&selSubTab==1"></rcs>
-      <smsmms v-if="selMainTab==4&&selMidTab==2"></smsmms>
-      <push   v-if="selMainTab==4&&selMidTab==3"></push>
-      <kakao  v-if="selMainTab==4&&selMidTab==4"></kakao>
-      <mo     v-if="selMainTab==4&&selMidTab==5"></mo>
+      <rcs        v-if="selMainTab==4&&selMidTab==1&&selSubTab==1"></rcs>
+      <rcsMassage v-if="selMainTab==4&&selMidTab==1&&selSubTab==2"></rcsMassage>
+      <smsmms     v-if="selMainTab==4&&selMidTab==2"></smsmms>
+      <push       v-if="selMainTab==4&&selMidTab==3"></push>
+      <kakao      v-if="selMainTab==4&&selMidTab==4"></kakao>
+      <mo         v-if="selMainTab==4&&selMidTab==5"></mo>
       <!-- 체널관리 탭 -->
 
       
@@ -65,6 +68,7 @@
 <script>
 // 체널관리
 import rcs    from "@/modules/channel/components/bc-chan-rsc.vue"; 
+import rcsMassage   from "@/modules/channel/components/bc-chan-rsc-message.vue"; 
 import smsmms from "@/modules/channel/components/bc-chan-smsmms.vue";
 import push   from "@/modules/channel/components/bc-chan-push.vue";
 import kakao  from "@/modules/channel/components/bc-chan-kakao.vue";
@@ -75,6 +79,7 @@ import callbackManage     from "@/modules/project/components/bc-project-callback
 export default {
   components: {
       rcs
+    , rcsMassage
     , smsmms
     , push
     , kakao

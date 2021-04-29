@@ -149,7 +149,7 @@ public class ChannelService {
 			// 쳇봇(발신번호 관리)
 			List<Map<String, Object>> chatbotsList = (List<Map<String, Object>>) brandInfo.get("chatbots");
 			// 임시저장된 경우
-			if(chatbotsList.size() > 0) {
+			if(chatbotsList != null) {
 				for (int j = 0; j < chatbotsList.size(); j++) {
 					Map<String, Object> chatbotMap = chatbotsList.get(j);
 					// 메인발신 체크
@@ -470,18 +470,18 @@ public class ChannelService {
 			
 			bodyMap.put("list", json);
 			
-			Map<String, Object> result =  apiInterface.listPost("/console/v1/brand", list, headerMap);
+			if( !"".equals(brandId) && "T".equals(brandId.substring(0, 1)) ) {
+				// 임시저장된것을 승인 처리하는 경우 임시저장된 브랜드와 쳇봇 삭제처리
+				generalDao.insertGernal(DB.QRY_DELETE_RCS_TEMP_CHATBOTREQ, params);
+				generalDao.insertGernal(DB.QRY_DELETE_RCS_TEMP_BRANDREQ, params);
+			}
 			
+			// API 통신 처리
+			Map<String, Object> result =  apiInterface.listPost("/console/v1/brand", list, headerMap);
 			// 성공인지 실패인지 체크
 			if( !"10000".equals(result.get("rslt")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
-			} else {
-				if( !"".equals(brandId) && "T".equals(brandId.substring(0, 1)) ) {
-					// 임시저장된것을 승인 처리하는 경우 임시저장된 브랜드와 쳇봇 삭제처리
-					generalDao.insertGernal(DB.QRY_DELETE_RCS_TEMP_CHATBOTREQ, params);
-					generalDao.insertGernal(DB.QRY_DELETE_RCS_TEMP_BRANDREQ, params);
-				}
 			}
 		} if( "mod".equals(sts) ) {
 			// 수정요청

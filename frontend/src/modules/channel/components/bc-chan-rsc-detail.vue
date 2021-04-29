@@ -72,7 +72,7 @@
 						<input id="brandName" type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.name" :disabled="this.duplCheckYn == 'N'">
 					</div>								
 					<div class="of_h">
-						<h4 style="width:28%" class="inline-block">브랜드 설명</h4>
+						<h4 style="width:28%" class="inline-block">브랜드 설명 *</h4>
 						<input id="brandDesc" type="text" class="inputStyle float-right" style="width:72%; height:160px" v-model="inputVal.description" :disabled="this.duplCheckYn == 'N'" >
 					</div>				
 									
@@ -528,6 +528,7 @@ console.log(  this.inputVal.order );
             "display"	: "10"		// '10' 고정값
 		});
 	},
+    // 발신번호삭제
 	fnDeleteChatbotTr(){
 		this.inputVal.chatbotCnt--;
 		this.inputVal.chatbots.splice(-1);

@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.project.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -91,6 +92,56 @@ public class ProjectController {
 			rtn.setSuccess(false);
 			rtn.setMessage(e.getMessage());
 		}
+		
+		return rtn;
+	}
+	
+
+	/**
+	 * RCS 브랜드 등록요청
+	 * @param params
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("/saveRcsChatbotReqForApi")
+	public RestResult<?> saveRcsChatbotReqForApi(
+			@RequestParam String loginId,
+			@RequestParam String corpId,
+			@RequestParam String projectId,
+			@RequestParam String brandId,
+			@RequestParam String mainMdn,
+			@RequestParam String mainTitle,
+			
+			@RequestParam(required = false) MultipartFile certiFile,
+			
+			@RequestParam(required = false) String chatbots,
+			HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		RestResult<Object> rtn = new RestResult<Object>();
+		rtn.setSuccess(true);
+		
+		// 파라미터 정리
+		params.put("loginId",			loginId);
+		params.put("corpId",			corpId);
+		params.put("projectId",			projectId);
+		params.put("brandId",			brandId);
+		params.put("mainMdn",			mainMdn);
+		params.put("certiFile",			certiFile);
+		params.put("chatbots",			chatbots);
+		
+		System.out.println("----------------------------------------params : " + params);
+		
+//		try {
+			projectService.saveRcsChatbotReqForApi(params);
+			rtn.setSuccess(true);
+//		} catch (Exception e) {
+//			rtn.setSuccess(false);
+//			rtn.setMessage(e.getMessage());
+//		}
 		
 		return rtn;
 	}

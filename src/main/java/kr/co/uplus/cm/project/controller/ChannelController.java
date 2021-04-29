@@ -208,15 +208,13 @@ public class ChannelController {
 		
 		params.put("chatbots",			chatbots);
 		
-		System.out.println("----------------------------------------params : " + params);
-		
-//		try {
+		try {
 			channelService.saveRcsBrandReqForApi(params);
 			rtn.setSuccess(true);
-//		} catch (Exception e) {
-//			rtn.setSuccess(false);
-//			rtn.setMessage(e.getMessage());
-//		}
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
 		
 		return rtn;
 	}
