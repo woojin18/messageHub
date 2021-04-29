@@ -19,16 +19,20 @@ import signUpRoutes from './modules/signUp/router';
 import cashRoutes from './modules/cash/router';
 import rcsTemplateRoutes from './modules/rcsTemplate/router';
 
+//import confirm from "@/modules/commonUtil/service/confirm.js";
+
 Vue.use(Router)
 
 const requireAuth = () => (to, from, next) => {
 	if (tokenSvc.getToken().principal.svcTypeCd == 'BO') {
 		alert("Back Ofiice 계정으로는 Console 로그인이 불가합니다.");
+		//confirm.fnAlert("", "Back Ofiice 계정으로는 Console 로그인이 불가합니다.");
 		return next('/login');
 	}
 	next();
 
 	if (tokenSvc.getToken().principal.svcTypeCd == 'UC') {
+		alert("User 권한 사용자는 Admin Console 사용이 불가합니다.");
 		return next('/uc');
 	}
 	next();

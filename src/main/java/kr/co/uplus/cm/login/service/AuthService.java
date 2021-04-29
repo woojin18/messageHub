@@ -161,11 +161,18 @@ public class AuthService implements UserDetailsService {
 	 */
 	private String getReturnUrl(HttpServletRequest request, HttpServletResponse response) {
 		RequestCache requestCache = new HttpSessionRequestCache();
+		String resultUrl = "";
 
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
 		if (savedRequest == null) {
 			AuthUser user = (AuthUser) request.getAttribute(Const.KEY_LOAD_USER);
-			return SecurityConfig.LOGIN_SUCC_URL;
+
+			if (SecurityConfig.AC_SVC_TP_CD.equals(user.getSvcTypeCd())) {
+				resultUrl = SecurityConfig.LOGIN_SUCC_AC_URL;
+			} else if (SecurityConfig.UC_SVC_TP_CD.equals(user.getSvcTypeCd())) {
+				resultUrl = SecurityConfig.LOGIN_SUCC_UC_URL;
+			}
+			return resultUrl;
 		}
 		return savedRequest.getRedirectUrl();
 	}
