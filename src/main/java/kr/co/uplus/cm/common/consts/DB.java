@@ -81,4 +81,13 @@ public class DB {
 	public final static String QRY_UPDATE_CM_USER = "signUp.updateCmUser";
 	public final static String QRY_SELECT_CM_USE_TERMS = "signUp.selectCmUseTerms";
 	public final static String QRY_SELECT_CM_USE_TERMS_PRI_VERSION = "signUp.selectCmUseTermsPriVersion";
+	// 사용자 등록
+	public final static String QRY_SELECT_USER_LIST = "user.selectUserList";
+	public final static String QRY_SELECT_USER_LIST_CNT = "user.selectUserListCnt";
+	public final static String QRY_UPDATE_STOP_USER = "user.stopUser";
+	public final static String QRY_UPDATE_RELEASE_USER = "user.releaseUser";
+	public final static String QRY_DELETE_USER = "user.deleteUser";
+	public final static String QRY_UPDATE_USER = "user.updateUser";
+	public final static String QRY_INSERT_USER = "user.insertUser";
+	public final static String QRY_SELECT_USER_DUPC_CNT = "user.selectUserDupcCnt";
 }

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	<select id="selectUserDupcCnt" resultType="int">
+		/* user.selectUserDupcCnt */
+		SELECT	COUNT(USER_ID) AS CNT
+		FROM	CM_USER
+		WHERE	DEL_YN = 'N'
+		AND		LOGIN_ID = #{loginId}
+	</select>
+	<select id="selectUserListCnt" resultType="int">
+		/* user.selectUserListCnt */
+		SELECT	COUNT(USER_ID) AS CNT
+		FROM (
+			SELECT	A.USER_NAME
+				,	GROUP_CONCAT(B.PROJECT_NAME SEPARATOR '||') AS PROJECT_NAME
+				,	A.USER_ID
+				,	A.LOGIN_ID
+				,	A.ROLE_CD
+				,	A.ROLE_NAME
+				,	A.APPROVAL_STATUS
+				,	A.APPROVAL_STATUS_NAME
+				,	A.HP_NUMBER
+			FROM (	SELECT	A.USER_NAME
+						,	A.USER_ID
+						,	A.ROLE_CD
+						,	(	SELECT	ROLE_NAME
+								FROM	cm_bo.CM_ROLE
+								WHERE	ROLE_CD = A.ROLE_CD
+								AND		SVC_TYPE_CD IN ('AC','UC')
+							) AS ROLE_NAME
+						,	APPROVAL_STATUS,
+							(	SELECT	CODE_NAME_1
+								FROM	cm_bo.CM_CODE
+								WHERE	CODE_TYPE_CD = 'APPROVAL_STATUS'
+								AND		CODE_VAL_1 = A.APPROVAL_STATUS
+							) AS APPROVAL_STATUS_NAME
+						,	LOGIN_ID
+						,	A.HP_NUMBER
+					FROM	CM_USER A
+					WHERE	A.DEL_YN	= 'N'
+					AND		A.CORP_ID	= #{corpId}
+				) A
+				LEFT OUTER JOIN
+				(	SELECT	C.PROJECT_NAME,
+							A.USER_ID
+					FROM	CM_USER A
+					INNER JOIN CM_PROJECT_USER B
+					ON A.USER_ID		= B.USER_ID
+					INNER JOIN CM_PROJECT C
+					ON B.PROJECT_ID		= C.PROJECT_ID
+					WHERE	A.DEL_YN	= 'N'
+					AND		A.CORP_ID	= #{corpId}
+				) B
+				ON A.USER_ID = B.USER_ID
+				WHERE 1=1
+				<if test="loginId != '' and loginId != null ">
+				AND		A.LOGIN_ID = #{loginId}
+				</if>
+				<if test="userId != '' and userId != null ">
+				AND		A.USER_ID = #{userId}
+				</if>
+				<if test="userName != '' and userName != null ">
+				AND		A.USER_NAME = #{userName}
+				</if>
+				<if test="approvalStatus != '' and approvalStatus != null ">
+				AND		A.APPROVAL_STATUS = #{approvalStatus}
+				</if>
+				GROUP BY A.USER_NAME, A.USER_ID, A.ROLE_NAME, A.APPROVAL_STATUS
+				ORDER BY A.USER_ID DESC
+			) A
+	</select>
+	
+	<select id="selectUserList" resultType="camel">
+		/* user.selectUserList */
+		SELECT	A.USER_NAME
+			,	GROUP_CONCAT(B.PROJECT_NAME SEPARATOR '||') AS PROJECT_NAME
+			,	A.USER_ID
+			,	A.LOGIN_ID
+			,	A.ROLE_CD
+			,	A.ROLE_NAME
+			,	A.APPROVAL_STATUS
+			,	A.APPROVAL_STATUS_NAME
+			,	A.HP_NUMBER
+		FROM (	SELECT	A.USER_NAME
+					,	A.USER_ID
+					,	A.ROLE_CD
+					,	(	SELECT	ROLE_NAME
+							FROM	cm_bo.CM_ROLE
+							WHERE	ROLE_CD = A.ROLE_CD
+							AND		SVC_TYPE_CD IN ('AC','UC')
+						) AS ROLE_NAME
+					,	APPROVAL_STATUS
+					,	(	SELECT	CODE_NAME_1
+							FROM	cm_bo.CM_CODE
+							WHERE	CODE_TYPE_CD = 'APPROVAL_STATUS'
+							AND		CODE_VAL_1 = A.APPROVAL_STATUS
+						) AS APPROVAL_STATUS_NAME
+					,	LOGIN_ID
+					,	A.HP_NUMBER
+				FROM	CM_USER A
+				WHERE	A.DEL_YN	= 'N'
+				AND		A.CORP_ID	= #{corpId}
+			) A
+			LEFT OUTER JOIN
+			(	SELECT	C.PROJECT_NAME
+					,	A.USER_ID
+				FROM	CM_USER A
+				INNER JOIN CM_PROJECT_USER B
+				ON A.USER_ID		= B.USER_ID
+				INNER JOIN CM_PROJECT C
+				ON B.PROJECT_ID		= C.PROJECT_ID
+				WHERE	A.DEL_YN	= 'N'
+				AND		A.CORP_ID	= #{corpId}
+			) B
+			ON A.USER_ID = B.USER_ID
+			WHERE 1=1
+			<if test="loginId != '' and loginId != null ">
+			AND		A.LOGIN_ID = #{loginId}
+			</if>
+			<if test="userId != '' and userId != null ">
+			AND		A.USER_ID = #{userId}
+			</if>
+			<if test="userName != '' and userName != null ">
+			AND		A.USER_NAME = #{userName}
+			</if>
+			<if test="approvalStatus != '' and approvalStatus != null ">
+			AND		A.APPROVAL_STATUS = #{approvalStatus}
+			</if>
+			GROUP BY A.USER_NAME, A.USER_ID, A.ROLE_NAME, A.APPROVAL_STATUS
+			ORDER BY A.USER_ID DESC
+			<if test='pagingYn == "Y" '>
+			LIMIT ${offset}, #{listSize}
+			</if>
+	</select>
+	
+	<update id="stopUser" parameterType="hashmap">
+		/* user.stopUser 사용자 이용정지*/
+		UPDATE CM_USER
+		SET
+			APPROVAL_STATUS = 'N'
+		WHERE USER_ID = #{userId}
+	</update>
+
+	<update id="releaseUser" parameterType="hashmap">
+		/* user.releaseUser 사용자 이용정지 해제*/
+		UPDATE CM_USER
+		SET
+			APPROVAL_STATUS = 'Y'
+		WHERE USER_ID = #{userId}
+	</update>
+
+	<update id="deleteUser" parameterType="hashmap">
+		/* user.deleteUser - 사용자 삭제 */
+		UPDATE CM_USER
+		SET 
+			DEL_YN = 'Y'
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<update id="updateUser" parameterType="hashmap">
+		/* user.updateUser 사용자 수정*/
+		UPDATE CM_USER
+		SET
+			<if test="userName != '' and userName != null ">
+			USER_NAME	= #{userName},
+			</if>
+			<if test="hpNumber != '' and hpNumber != null ">
+			HP_NUMBER	= #{hpNumber},
+			</if>
+			<if test="roleCd != '' and roleCd != null ">
+			ROLE_CD		= #{roleCd},
+			</if>
+			UPD_DT = NOW()
+		WHERE USER_ID	= #{userId}
+	</update>
+	
+	<insert id="insertUser">
+		/* user.insertUser */
+		INSERT	CM_USER (
+				USER_ID
+		,		LOGIN_ID
+		,		USER_NAME
+		,		HP_NUMBER
+		,		ROLE_CD
+		,		CORP_ID
+		,		APPROVAL_STATUS
+		,		DEL_YN
+		,		REG_ID
+		,		REG_DT
+		,		UPD_DT
+		) VALUES (
+				#{userId}
+		,		#{loginId}
+		,		#{userName}
+		,		#{hpNumber}
+		,		#{roleCd}
+		,		#{corpId}
+		,		'ING'
+		,		'N'
+		,		'admin'
+		,		#{regId}
+		,		NOW()
+		)
+	</insert>
+</mapper>

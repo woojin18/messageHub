@@ -22,6 +22,10 @@ module.exports = {
       '^/projectApi': {
         target: 'http://localhost:7070',
         changeOrigin: true
+      },
+      '^/userApi': {
+        target: 'http://localhost:7070',
+        changeOrigin: true
       }
     }
   },

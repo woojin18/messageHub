@@ -41,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public static final String LIST_API_URL = "/listCtl/**";
 	public static final String PROJECT_API_URL = "/projectApi/**";
 	public static final String[] REST_API_URLS = { API_URL };
+	public static final String USER_API_URL = "/userApi/**";
 
 	public static final String LOGIN_ID_PARAM = "userId";
 	@SuppressWarnings("unused")
@@ -81,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // CORS preflight 요청은
 																								// 인증처리를 하지 않도록 설정
 				.antMatchers("/", PUBLIC_API_URL, LOGIN_FORM_URL, LOGIN_API_URL, LOGOUT_URL, LIST_API_URL,
-						PROJECT_API_URL, MENUBAR_URL)
+						PROJECT_API_URL, MENUBAR_URL, USER_API_URL)
 				.permitAll().antMatchers(API_URL).authenticated().anyRequest().authenticated();
 	}
 

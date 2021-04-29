@@ -18,6 +18,7 @@ import templateRoutes from './modules/template/router';
 import signUpRoutes from './modules/signUp/router';
 import cashRoutes from './modules/cash/router';
 import rcsTemplateRoutes from './modules/rcsTemplate/router';
+import userRoutes from './modules/user/router';
 
 //import confirm from "@/modules/commonUtil/service/confirm.js";
 
@@ -83,7 +84,8 @@ const router = new Router({
 				...listRoutes,
 				...channelRoutes,
 				...projectRoutes,
-				...cashRoutes
+				...cashRoutes,
+				...userRoutes
 			],
 		},
 		{
