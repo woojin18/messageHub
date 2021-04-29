@@ -53,10 +53,12 @@ public class DB {
 	public final static String QRY_SELECT_RCS_BRANDLIST = "channel.selectRcsBrandList";
 	// RCS 등록 템플릿 조회
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";
-	// RCS 채널 브랜드 저장
+	// RCS 채널 브랜드
 	public final static String QRY_INSERT_RCS_BRANDREQ = "channel.insertRcsReqTemp";
-	// RCS 채널 브랜드 챗봇 저장
+	public final static String QRY_UPDATE_RCS_BRANDREQ = "channel.updateRcsReqTemp";
+	public final static String QRY_DELETE_RCS_TEMP_BRANDREQ  = "channel.deleteRcsReqTemp";
 	public final static String QRY_INSERT_RCS_CHATBOTREQ = "channel.insertRcsChatbotReqTemp";
+	public final static String QRY_DELETE_RCS_TEMP_CHATBOTREQ = "channel.deleteRcsChatbotReqTemp";
 	// RCS 발신번호 상세
 	public final static String QRY_SELECT_RCS_CALLBACKLIST = "channel.selectRcsCallbackList";
 	//웹캐시

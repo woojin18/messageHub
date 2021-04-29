@@ -122,6 +122,7 @@ public class ChannelController {
 			@RequestParam String loginId,
 			@RequestParam String corpId,
 			@RequestParam String projectId,
+			@RequestParam String brandId,
 			@RequestParam String apiKey,
 			@RequestParam String apiSecretKey,
 			@RequestParam String name,
@@ -152,11 +153,11 @@ public class ChannelController {
 			@RequestParam String moreInfo,
 			@RequestParam String moreInfoWeblink,
 			
-//			@RequestParam MultipartFile profileImgFile,
-//			@RequestParam MultipartFile bgImgFile,
-//			@RequestParam MultipartFile certiFile,
+			@RequestParam(required = false) MultipartFile profileImgFile,
+			@RequestParam(required = false) MultipartFile bgImgFile,
+			@RequestParam(required = false) MultipartFile certiFile,
 			
-			@RequestParam String chatbots,
+			@RequestParam(required = false) String chatbots,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
@@ -169,6 +170,7 @@ public class ChannelController {
 		params.put("loginId",			loginId);
 		params.put("corpId",			corpId);
 		params.put("projectId",			projectId);
+		params.put("brandId",			brandId);
 		params.put("apiKey",			apiKey);
 		params.put("apiSecretKey",		apiSecretKey);
 		params.put("name",				name);
@@ -184,35 +186,37 @@ public class ChannelController {
 		params.put("email2",			email2);
 		params.put("mainMdn",			mainMdn);
 		
-		params.put("call",			call);
-		params.put("callWeblink",			callWeblink);
-		params.put("web",			web);
-		params.put("webWeblink",			webWeblink);
-		params.put("store",			store);
-		params.put("storeWeblink",			storeWeblink);
-		params.put("order",			order);
-		params.put("orderWeblink",			orderWeblink);
-		params.put("buy",			buy);
-		params.put("buyWeblink",			buyWeblink);
+		params.put("call",				call);
+		params.put("callWeblink",		callWeblink);
+		params.put("web",				web);
+		params.put("webWeblink",		webWeblink);
+		params.put("store",				store);
+		params.put("storeWeblink",		storeWeblink);
+		params.put("order",				order);
+		params.put("orderWeblink",		orderWeblink);
+		params.put("buy",				buy);
+		params.put("buyWeblink",		buyWeblink);
 		params.put("ticket",			ticket);
-		params.put("ticketWeblink",			ticketWeblink);
+		params.put("ticketWeblink",		ticketWeblink);
 		params.put("moreInfo",			moreInfo);
-		params.put("moreInfoWeblink",			moreInfoWeblink);
+		params.put("moreInfoWeblink",	moreInfoWeblink);
 		
 		
-//		params.put("profileImgFile",	profileImgFile);
-//		params.put("bgImgFile",			bgImgFile);
-//		params.put("certiFile",			certiFile);
+		params.put("profileImgFile",	profileImgFile);
+		params.put("bgImgFile",			bgImgFile);
+		params.put("certiFile",			certiFile);
 		
 		params.put("chatbots",			chatbots);
 		
-		try {
+		System.out.println("----------------------------------------params : " + params);
+		
+//		try {
 			channelService.saveRcsBrandReqForApi(params);
 			rtn.setSuccess(true);
-		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage(e.getMessage());
-		}
+//		} catch (Exception e) {
+//			rtn.setSuccess(false);
+//			rtn.setMessage(e.getMessage());
+//		}
 		
 		return rtn;
 	}

@@ -134,6 +134,31 @@
 		)
 	</insert>
 	
+	<update id="updateRcsReqTemp">
+		/* channel.updateRcsReqTemp */
+		UPDATE	cm.CM_RCS_BRAND_REQ 
+		SET		BRAND_NAME			= #{name}
+		,		BRAND_DESC			= #{description}
+		,		CATEGORY_ID			= #{categoryId}
+		,		SUB_CATEGORY_ID		= #{subCategoryId}
+		,		BRAND_INFO			= #{brandInfo}
+		WHERE	BRAND_ID			= #{brandId}
+	</update>
+	
+	<delete id="deleteRcsReqTemp">
+		/* channel.deleteRcsReqTemp */
+		DEELTE FROM cm.CM_RCS_BRAND_REQ
+		WHERE	BRAND_ID = #{brandId}
+		AND		BRAND_REQ_KEY = 'TEMP'
+	</delete>
+	
+	<delete id="deleteRcsChatbotReqTemp">
+		/* channel.deleteRcsChatbotReqTemp */
+		DEELTE FROM cm.CM_RCS_CHATBOT_REQ
+		WHERE	BRAND_ID = #{brandId}
+		AND		CHATBOT_REQ_KEY = 'TEMP'
+	</delete>
+	
 	<insert id="insertRcsChatbotReqTemp">
 		/* channel.insertRcsChatbotReqTemp */
 		INSERT	cm.CM_RCS_CHATBOT_REQ

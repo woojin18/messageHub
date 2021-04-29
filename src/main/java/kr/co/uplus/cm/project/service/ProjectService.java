@@ -84,8 +84,9 @@ public class ProjectService {
 		params.put("userId", userMap.get("userId"));
 
 		if ("C".equals(sts)) {
-			// 프로젝트 ID ( 시분초 + pjt )
-			params.put("projectId", CommonUtils.generationSringToHex("pjt"));
+			// 프로젝트 ID
+			params.put("projectId", CommonUtils.getCommonId("PJT", 4));
+			
 			// 고객사가 개발이 안되서 임시로 고객사 코드 입력
 			params.put("corpId", userMap.get("corpId"));
 
