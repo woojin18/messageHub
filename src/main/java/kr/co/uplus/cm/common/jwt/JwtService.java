@@ -38,8 +38,11 @@ public class JwtService {
 		claims.put("data", data);
 
 		String token = generateToken(auth, claims);
+		// 사용자 대표프로젝트 취득
+		AuthUser user = (AuthUser) auth.getPrincipal();
+		String repProjectId = user.getRepProjectId();
 		// 쿠키에 토큰 추가 - 보안 강화
-		setTokenToCookie(response, token);
+		setTokenToCookie(response, token, repProjectId);
 
 		return token;
 	}
@@ -87,7 +90,7 @@ public class JwtService {
 		return token;
 	}
 
-	private void setTokenToCookie(HttpServletResponse response, String token) {
+	private void setTokenToCookie(HttpServletResponse response, String token, String repProjectId) {
 		int idx = token.lastIndexOf(".");
 		String payload = token.substring(0, idx);
 		String signature = token.substring(idx + 1);
@@ -98,10 +101,15 @@ public class JwtService {
 		response.addCookie(part1);
 
 		// signature 부분만 httpOnly 쿠키에 저장 - JS로 읽기 불가능
-		Cookie part2 = new Cookie(jwtProps.getPart2(), signature);
-		part2.setHttpOnly(true);
-		part2.setPath("/");
-		response.addCookie(part2);
+		Cookie csrfToken = new Cookie(jwtProps.getPart2(), signature);
+		csrfToken.setHttpOnly(true);
+		csrfToken.setPath("/");
+		response.addCookie(csrfToken);
+
+		// 로그인 시 프로젝트 정보 쿠키에 세팅
+		Cookie project = new Cookie("project", repProjectId);
+		project.setPath("/");
+		response.addCookie(project);
 	}
 
 	public void destroyPrivateToken(HttpServletRequest request, HttpServletResponse response) {
@@ -122,7 +130,12 @@ public class JwtService {
 		claims.setIssuedAt(now.toDate()).setExpiration(expiration);
 
 		String token = generateToken(claims);
-		setTokenToCookie(response, token);
+		// 사용자 대표프로젝트 취득
+		Map<String, Object> principalMap = (Map<String, Object>) claims.get("principal");
+		JwtUser user = JwtUser.createAuthUser(principalMap);
+		String repProjectId = user.getRepProjectId();
+
+		setTokenToCookie(response, token, repProjectId);
 	}
 
 	@SuppressWarnings("unused")

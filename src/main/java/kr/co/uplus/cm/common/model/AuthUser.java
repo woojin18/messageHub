@@ -20,6 +20,7 @@ public class AuthUser implements UserDetails {
 	private Collection<? extends GrantedAuthority> authorities;
 	private String corpId;
 	private String svcTypeCd;
+	private String repProjectId;
 
 	private String userNm;
 

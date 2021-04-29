@@ -158,11 +158,14 @@ import HomeMain from '../components/HomeMain.vue';
 
 export default {
 	components: {
-		HomeMain,
+		HomeMain
 	},
 	created: function() {
 		console.log('created HomeMain');
 		console.log('token:', tokenSvc.getToken());
+		console.log(this.$cookies.keys());
+		console.log(this.$cookies.get('project'));
+		
 	},
 	methods: {
 	},
