@@ -152,6 +152,7 @@
 		,		DATE_FORMAT(cpsc.UPD_DT, '%Y-%m-%d')	AS UPD_DT
 		,		cpsc.USE_YN
 		,		JSON_EXTRACT(cu.UCUBE_INFO, '$.a')		AS A
+		,		cpsc.BILL_ID
 		FROM	cm_console.CM_PROJECT_SUBBILL_CODE cpsc
 		INNER JOIN cm_console.CM_UCUBE cu
 			ON	cpsc.CORP_ID = cu.CORP_ID
@@ -182,6 +183,38 @@
 		UPDATE	cm_console.CM_PROJECT
 		SET		BILL_ID = #{billId}
 		WHERE	PROJECT_ID = #{projectId}
+		AND		CORP_ID = #{corpId}
+	</update>
+	
+	<insert id="insertProjectSubBillCode">
+		/* cash.insertProjectSubBillCode */
+		INSERT	cm_console.CM_PROJECT_SUBBILL_CODE (
+				DEPT_CODE
+		,		BILL_ID
+		,		CORP_ID
+		,		USE_YN
+		,		DEPT_NAME
+		,		REG_DT
+		,		UPD_DT
+		) VALUES (
+				#{deptCode}
+		,		#{billId}
+		,		#{corpId}
+		,		#{useYn}
+		,		#{deptName}
+		,		NOW()
+		,		NOW()
+		)
+	</insert>
+	
+	<update id="updateProjectSubBillCode">
+		/* cash.insertProjectSubBillCode */
+		UPDATE	cm_console.CM_PROJECT_SUBBILL_CODE
+		SET		BILL_ID = #{billId}
+		,		DEPT_NAME = #{deptName}
+		,		USE_YN = #{useYn}
+		,		UPD_DT = NOW()
+		WHERE	DEPT_CODE = #{deptCode}
 		AND		CORP_ID = #{corpId}
 	</update>
 </mapper>

@@ -5,11 +5,12 @@
         <div class="modal-content">
           <div class="modal-body">
             <div class="of_h">
-              <h2>부서 등록</h2>
+              <h2 v-if="state == 'add'">부서 등록</h2>
+              <h2 v-else>부서 수정</h2>
               <hr>
               <div class="of_h consolMarginTop">
-                <h5 class="inline-block" style="width:18%">부서ID *</h5>
-                <input v-model="deptCode" type="text" class="inputStyle float-right" style="width:80%">
+                <h5 class="inline-block" style="width:18%">부서코드</h5>
+                <input v-model="deptCode" :disabled="state == 'edit'" type="text" class="inputStyle float-right" style="width:80%">
               </div>
               <div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:18%">부서명</h5>
@@ -18,16 +19,17 @@
               <div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:18%">사용여부</h5>
                 <div class="float-right" style="width:80%">
-                  <input type="radio" name="use" value="Y" id="yes" checked="">
+                  <input v-model="useYn" type="radio" name="use" value="Y" id="yes">
                   <label for="yes" class="mr30">사용</label>
-                  <input type="radio" name="use" value="N" id="no">
+                  <input v-model="useYn" type="radio" name="use" value="N" id="no">
                   <label for="no">미사용</label>
                 </div>
               </div>
               <div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:18%">청구ID</h5>
-                <select class="selectStyle2 float-right" style="width:80%">
+                <select v-model="billId" class="selectStyle2 float-right" style="width:80%">
                   <option value="">청구ID를 선택해 주세요</option>
+                  <option v-for="(data, index) in ucubeData" :key="index" :value="data.billId">{{data.a}}</option>
                 </select>
               </div>
             </div>
@@ -61,6 +63,8 @@
 
 <script>
 import cashApi from "@/modules/cash/service/api"
+import confirm from "@/modules/commonUtil/service/confirm"
+import tokenSvc from '@/common/token-service'
 
 export default {
   name: 'deptPop',
@@ -68,26 +72,66 @@ export default {
     return {
       deptCode: "",
       deptName: "",
-      useYn: ""
+      useYn: "",
+      billId: ""
     }
   },
   props: {
     deptInfo: {
       type: Object
+    },
+    ucubeData: {
+      type: Array
+    },
+    popReset: {
+      type: Number
+    },
+    state: {
+      type: String
     }
   },
   watch: {
-    deptInfo(val) {
-      this.deptCode = val.deptCode;
-      this.deptName = val.deptName;
-      this.useYn = val.useYn;
+    popReset() {
+      this.fnReset();
     }
   },
   mounted() {
   },
   methods: {
+    fnReset: function() {
+      this.deptCode = this.deptInfo.deptCode;
+      this.deptName = this.deptInfo.deptName;
+      this.useYn = this.deptInfo.useYn;
+      this.billId = this.deptInfo.billId;
+    },
+
     fnSaveDept: function() {
-      alert(this.deptCode);
+      if(!this.deptCode) {
+        confirm.fnAlert("", "부서코드를 입력해주세요.");
+      } else if(!this.deptName) {
+        confirm.fnAlert("", "부서명를 입력해주세요.");
+      } else if(!this.billId) {
+        confirm.fnAlert("", "청구ID를 선택해주세요.");
+      }
+
+      var params = {
+        "corpId" : tokenSvc.getToken().principal.corpId,
+        "deptCode" : this.deptCode,
+        "deptName": this.deptName,
+        "useYn" : this.useYn,
+        "billId" : this.billId,
+        "state" : this.state
+      };
+
+      cashApi.saveProjectSubBillCode(params).then(response => {
+        var result = response.data;
+        if(result.success) {
+          this.$parent.fnSelectDeptInfo();
+          this.fnCloseDept();
+        } else {
+          confirm.fnAlert("", result.message);
+        }
+      });
     },
 
     fnCloseDept: function() {

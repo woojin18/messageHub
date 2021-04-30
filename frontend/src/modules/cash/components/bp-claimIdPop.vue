@@ -47,6 +47,7 @@
 <script>
 import cashApi from "@/modules/cash/service/api"
 import tokenSvc from '@/common/token-service'
+import confirm from "@/modules/commonUtil/service/confirm"
 
 export default {
   name: 'claimIdPop',
@@ -59,24 +60,25 @@ export default {
     ucubeData: {
       type: Array
     },
-    selBillId: {
-      type: String
+    selProjectInfo: {
+      type: Object
     },
-    selProjectId: {
-      type: String
+    popReset: {
+      type: Number
     }
   },
   watch: {
-    selProjectId() {
-      this.billId = this.selBillId;
-    },
-    selBillId(val) {
-      this.billId = val;
+    popReset() {
+      this.fnReset();
     }
   },
   mounted() {
   },
   methods: {
+    fnReset: function() {
+      this.billId = this.selProjectInfo.billId;
+    },
+
     fnCreateClaimId: function() {
       var params = {
         "corpId" : tokenSvc.getToken().principal.corpId
@@ -87,6 +89,8 @@ export default {
         if(result.success) {
           this.$parent.fnSelectUcubeInfo();
           this.fnCloseCreateClaimIdPop();
+        } else {
+          confirm.fnAlert("", result.message);
         }
       });
     },
@@ -94,7 +98,7 @@ export default {
     fnUpdateProjectBillId: function() {
       var params = {
         "corpId" : tokenSvc.getToken().principal.corpId,
-        "projectId": this.selProjectId,
+        "projectId": this.selProjectInfo.selProjectId,
         "billId": this.billId
       };
 
@@ -104,6 +108,8 @@ export default {
         if(result.success) {
           this.$parent.fnSelectProjectInfo();
           this.fnCloseModClaimIdPop();
+        } else {
+          confirm.fnAlert("", result.message);
         }
       });
     },

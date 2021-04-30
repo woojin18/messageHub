@@ -71,7 +71,7 @@
               <td class="text-center" v-if="data.useYn=='Y'">예</td>
               <td class="text-center" v-else>아니오</td>
               <td class="text-center">{{data.b}}</td>
-              <td @click="fnModClaimId(data.projectId, data.billId)" class="text-center end">{{data.a}}</td>
+              <td @click="fnModClaimId(data)" class="text-center end">{{data.a}}</td>
             </tr>
           </tbody>
         </table>
@@ -139,8 +139,8 @@
         </div>
       </div>			
     </div>
-    <deptPop :deptInfo="selDeptInfo"></deptPop>
-    <claimIdPop :ucubeData="ucubeData" :selProjectId="selProjectId" :selBillId="selBillId"></claimIdPop>
+    <deptPop :popReset="popReset" :state="popState" :deptInfo="selDeptInfo" :ucubeData="ucubeData"></deptPop>
+    <claimIdPop :popReset="popReset" :ucubeData="ucubeData" :selProjectInfo="selProjectInfo"></claimIdPop>
   </div>
 </template>
 
@@ -161,8 +161,9 @@ export default {
       deptCnt: 0,
       deptData: [],
       selDeptInfo: {},
-      selProjectId: "",
-      selBillId: ""
+      selProjectInfo: {},
+      popReset: 0,
+      popState: ""
     }
   },
   components: {
@@ -220,19 +221,23 @@ export default {
       jQuery("#createClaimIdPop").modal("show");
     },
 
-    fnModClaimId: function(projectId, billId) {
-      this.selProjectId = projectId;
-      this.selBillId = billId;
+    fnModClaimId: function(projectInfo) {
+      this.selProjectInfo = projectInfo;
+      this.popReset = this.popReset +1;
       jQuery("#modClaimIdPop").modal("show");
     },
 
     fnCreateDept: function() {
-      this.selDeptInfo = {};
+      this.selDeptInfo = {"deptCode":"", "deptName":"", "useYn":"Y", "billId":""};
+      this.popReset = this.popReset +1;
+      this.popState = "add";
       jQuery("#deptInfoPop").modal("show");
     },
 
     fnModDept: function(deptInfo) {
       this.selDeptInfo = deptInfo;
+      this.popReset = this.popReset +1;
+      this.popState = "edit";
       jQuery("#deptInfoPop").modal("show");
     },
 

@@ -75,6 +75,8 @@ public class DB {
 	public final static String QRY_SELECT_PROJECT_SUB_BILL_CODE = "cash.selectProjectSubBillCode";
 	public final static String QRY_INSERT_UCUBE_INFO = "cash.insertUcubeInfo";
 	public final static String QRY_UPDATE_PROJECT_BILL_ID = "cash.updateProjectBillId";
+	public final static String QRY_INSERT_PROJECT_SUB_BILL_CODE = "cash.insertProjectSubBillCode";
+	public final static String QRY_UPDATE_PROJECT_SUB_BILL_CODE = "cash.updateProjectSubBillCode";
 	// 회원 가입
 	public final static String QRY_SELECT_DOMAIN_CHK_COUNT = "signUp.selectDomainChkCount";
 	public final static String QRY_INSERT_CM_CORP = "signUp.insertCmCorp";

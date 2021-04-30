@@ -186,13 +186,13 @@ public class CashService {
 		//api로 유큐브 정보 불러와서 입력해야 함
 		
 		Map<String, Object> map = new HashMap<>();
-		map.put("a", 7);
-		map.put("b", 77);
+		map.put("a", 8);
+		map.put("b", 88);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(map);
 		
-		params.put("billId", "7777");
+		params.put("billId", "8888");
 		params.put("ucubeInfo", json);
 		
 		List<Object> list = generalDao.selectGernalList(DB.QRY_INSERT_UCUBE_INFO, params);
@@ -205,6 +205,22 @@ public class CashService {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
 		generalDao.updateGernal(DB.QRY_UPDATE_PROJECT_BILL_ID, params);
+		
+		return rtn;
+	}
+	
+	public RestResult<Object> saveProjectSubBillCode(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		String state = CommonUtils.getString(params.get("state"));
+		
+		if(state.equals("add")) {
+			generalDao.insertGernal(DB.QRY_INSERT_PROJECT_SUB_BILL_CODE, params);
+		} else if(state.equals("edit")) {
+			generalDao.updateGernal(DB.QRY_UPDATE_PROJECT_SUB_BILL_CODE, params);
+		} else {
+			throw new Exception();
+		}
 		
 		return rtn;
 	}

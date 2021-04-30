@@ -181,4 +181,20 @@ public class CashController {
 		
 		return rtn;
 	}
+	
+	@PostMapping("/saveProjectSubBillCode")
+	public RestResult<?> saveProjectSubBillCode(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = cashService.saveProjectSubBillCode(params);
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		
+		return rtn;
+	}
 }
