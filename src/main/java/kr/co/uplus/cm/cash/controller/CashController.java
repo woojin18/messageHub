@@ -197,4 +197,20 @@ public class CashController {
 		
 		return rtn;
 	}
+	
+	@PostMapping("/deleteProjectSubBillCode")
+	public RestResult<?> deleteProjectSubBillCode(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = cashService.deleteProjectSubBillCode(params);
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		
+		return rtn;
+	}
 }

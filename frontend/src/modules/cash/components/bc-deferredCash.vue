@@ -243,6 +243,7 @@ export default {
 
     fnDelDept: function(deptInfo) {
       this.selDeptInfo = deptInfo;
+      this.popReset = this.popReset +1;
       jQuery("#delDeptPop").modal("show");
     }
   }

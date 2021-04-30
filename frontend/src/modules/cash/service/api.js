@@ -32,6 +32,10 @@ const saveProjectSubBillCode = (params) => {
     return httpClient.post('/projectApi/cash/saveProjectSubBillCode', params, { headers: {"show-layer": "Yes"} });
 };
 
+const deleteProjectSubBillCode = (params) => {
+    return httpClient.post('/projectApi/cash/deleteProjectSubBillCode', params, { headers: {"show-layer": "Yes"} });
+};
+
 export default {
     insertWebCashInfo,
     selectCashHist,
@@ -40,5 +44,6 @@ export default {
     selectProjectSubBillCode,
     insertUbubeInfo,
     updateProjectBillId,
-    saveProjectSubBillCode
+    saveProjectSubBillCode,
+    deleteProjectSubBillCode
 };

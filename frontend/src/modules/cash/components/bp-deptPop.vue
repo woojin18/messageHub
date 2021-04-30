@@ -51,7 +51,7 @@
             <hr>
             <p class="text-center">해당 부서를 삭제하시겠습니까?</p>					
             <div class="text-center mt20">
-              <a @click="fnDelDept" class="btnStyle1 backBlack mr5">생성</a>
+              <a @click="fnDelDept" class="btnStyle1 backBlack mr5">삭제</a>
               <a @click="fnCloseDelDeptPop" class="btnStyle1 backWhite">취소</a>						
             </div>
           </div>
@@ -139,7 +139,25 @@ export default {
     },
 
     fnDelDept: function() {
+      if(this.useYn != "N") {
+        confirm.fnAlert("", "사용여부가 아니오인 부서만 삭제할 수 있습니다.");
+        this.fnCloseDelDeptPop();
+      } else {
+        var params = {
+          "corpId" : tokenSvc.getToken().principal.corpId,
+          "deptCode" : this.deptCode
+        };
 
+        cashApi.deleteProjectSubBillCode(params).then(response => {
+          var result = response.data;
+          if(result.success) {
+            this.$parent.fnSelectDeptInfo();
+            this.fnCloseDelDeptPop();
+          } else {
+            confirm.fnAlert("", result.message);
+          }
+        });
+      }
     },
 
     fnCloseDelDeptPop: function() {

@@ -224,4 +224,13 @@ public class CashService {
 		
 		return rtn;
 	}
+	
+	public RestResult<Object> deleteProjectSubBillCode(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		generalDao.deleteGernal(DB.QRY_DELETE_PROJECT_SUB_BILL_CODE, params);
+		
+		return rtn;
+	}
+	
 }

@@ -208,7 +208,7 @@
 	</insert>
 	
 	<update id="updateProjectSubBillCode">
-		/* cash.insertProjectSubBillCode */
+		/* cash.updateProjectSubBillCode */
 		UPDATE	cm_console.CM_PROJECT_SUBBILL_CODE
 		SET		BILL_ID = #{billId}
 		,		DEPT_NAME = #{deptName}
@@ -217,4 +217,12 @@
 		WHERE	DEPT_CODE = #{deptCode}
 		AND		CORP_ID = #{corpId}
 	</update>
+	
+	<delete id="deleteProjectSubBillCode">
+		/* cash.deleteProjectSubBillCode */
+		DELETE FROM	cm_console.CM_PROJECT_SUBBILL_CODE
+		WHERE	DEPT_CODE = #{deptCode}
+		AND		CORP_ID = #{corpId}
+		AND		USE_YN = 'N'
+	</delete>
 </mapper>
