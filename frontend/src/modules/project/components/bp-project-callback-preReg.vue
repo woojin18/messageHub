@@ -199,7 +199,7 @@ export default {
       fd.append('chatbots'		, listString) ;
 
         
-      await axios.post('/projectApi/manage/saveRcsBrandReqForApi',
+      await axios.post('/projectApi/manage/saveRcsChatbotReqForApi',
         fd, {headers: {'Content-Type': 'multipart/form-data'}
       }).then( response => {
         var result = response.data;
