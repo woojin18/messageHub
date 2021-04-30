@@ -154,7 +154,7 @@
 <script>
 // @ is an alias to /src
 import tokenSvc from '@/common/token-service';
-import HomeMain from '../components/HomeMain.vue';
+import HomeMain from '../components/bc-homeMain.vue';
 
 export default {
 	components: {
@@ -163,9 +163,10 @@ export default {
 	created: function() {
 		console.log('created HomeMain');
 		console.log('token:', tokenSvc.getToken());
+		console.log('token:', tokenSvc.getToken().principal.svcTypeCd);
 		console.log(this.$cookies.keys());
-		console.log(this.$cookies.get('project'));
-		
+		console.log(this.$cookies.get('JwtPart1'));
+		console.log(this.$cookies.get('JwtPart2'));
 	},
 	methods: {
 	},

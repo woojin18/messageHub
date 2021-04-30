@@ -111,7 +111,7 @@
 <script>
 // @ is an alias to /src
 import tokenSvc from '@/common/token-service';
-import HomeMain from '../components/HomeMain.vue';
+import HomeMain from '../components/bc-homeMain.vue';
 import homeApi from '@/modules/acHome/service/api';
 import loginApi from '@/modules/login/service/api';
 import axios from 'axios';

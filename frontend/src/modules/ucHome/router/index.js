@@ -1,4 +1,4 @@
-import HomeMain from '../views/HomeMain'
+import HomeMain from '../views/bm-homeMain'
 
 export default [
 	{
