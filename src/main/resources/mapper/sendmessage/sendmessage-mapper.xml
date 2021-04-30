@@ -160,7 +160,7 @@
 
     <select id="selectMsgFeePerOne" parameterType="hashmap" resultType="bigdecimal">
     /* sendMessage.selectMsgFeePerOne 메시지 발송 가격 */
-        SELECT MAX(IFNULL(CCPU.FEE, CPU.FEE)) AS MAX_FEE
+        SELECT MAX(IFNULL(CCPU.PREE_FEE, CPU.PREE_FEE)) AS MAX_FEE
         FROM cm_bo.CM_PRODUCT_UNIT CPU
         LEFT OUTER JOIN CM_CORP_PRODUCT_UNIT CCPU
             ON CPU.PRODUCT_CODE = CCPU.PRODUCT_CODE

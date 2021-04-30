@@ -84,5 +84,5 @@ public class Const {
     public static final int PUSH_RECV_LIMIT_SIZE = 10;
     public static final String FILE_UPLOAD_API_URL = "/console/v1/file/";  //파일 업로드 API
     public static final String SEND_PUSH_API_URL = "/console/v1/push";  //푸시발송 API
-
+    
 }

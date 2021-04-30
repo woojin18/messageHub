@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import lombok.extern.log4j.Log4j2;
@@ -26,19 +28,21 @@ public class CommonController {
     private CommonService commonService;
 
     // 이미지 업로드
+    @SuppressWarnings("unchecked")
     @PostMapping("/uploadImage")
     public RestResult<?> uploadImage(
-            @RequestParam MultipartFile uploadFile,
-            @RequestParam String[] useCh,
-            @RequestParam String wideYn,
-            @RequestParam String loginId,
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response,
+            @RequestParam MultipartFile uploadFile,
+            @RequestParam(value = "paramString") String paramString) throws Exception {
 
         RestResult<Object> rtn = new RestResult<Object>();
 
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> params = mapper.readValue(paramString, Map.class);
+
         try {
-            rtn = commonService.uploadImgFile(uploadFile, useCh, wideYn, loginId);
+            rtn = commonService.uploadImgFile(uploadFile, params);
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("파일등록에 실패하였습니다.");

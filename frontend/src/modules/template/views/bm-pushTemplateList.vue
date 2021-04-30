@@ -46,7 +46,7 @@
                 <label for="searchOthPrjUseYn_IMAGE">전용</label>
               </div>
             </div>
-            <a @click="fnSearch()" class="btnStyle1 float-right" title="통합발송 검색">검색</a>
+            <a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" title="통합발송 검색">검색</a>
           </div>
         </div>
       </div>
@@ -195,7 +195,7 @@ export default {
   },
   mounted() {
     this.fnSetIntervalSearchDate(this.searchDateInterval);
-    this.fnSearch();
+    this.fnPageNoResetSearch();
   },
   methods: {
     //검색일자변경
@@ -234,7 +234,7 @@ export default {
         if(result.success) {
           confirm.fnAlert(this.componentsTitle, '삭제되었습니다.');
           this.listChkBox = [];
-          this.fnSearch();
+          this.fnPageNoResetSearch();
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
@@ -288,8 +288,11 @@ export default {
       this.listSize = Number(listSize);
       this.$refs.updatePaging.fnAllDecrease();
     },
-    fnSearch(pageNum) {
-      this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
+    fnPageNoResetSearch(){
+      this.$refs.updatePaging.fnAllDecrease();
+    },
+    fnSearch(pageNo) {
+      this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNo, '1'))*1;
       this.fnSelectPushList();
     }
   }

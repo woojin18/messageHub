@@ -104,6 +104,7 @@ import MessageApi from "@/modules/message/service/messageApi.js";
 import AddrTreeMenu from "@/modules/message/components/bc-addressTree.vue";
 import confirm from "@/modules/commonUtil/service/confirm.js"
 import PageLayer from "@/components/PageLayer.vue";
+import tokenSvc from '@/common/token-service';
 
 export default {
   name: "addressInputPopup",
@@ -256,8 +257,8 @@ export default {
       let params = {
         searchTextType: this.searchTextType,
         searchText: this.searchText,
-        corpId:'TEST_CORP',
-        projectId:'TEST_PROJECT'
+        corpId:tokenSvc.getToken().principal.corpId,
+        projectId:this.$cookies.get('project')
       };
       await MessageApi.selectAddressList(params).then(response =>{
         const result = response.data;

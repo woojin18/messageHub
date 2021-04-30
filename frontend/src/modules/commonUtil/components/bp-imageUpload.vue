@@ -79,6 +79,8 @@ export default {
       this.files = [];
       this.chkboxUseCh = [];
       this.imageUrl = '';
+      this.wideYn = 'N';
+      this.inProgress = false;
       this.$emit('update:imgUploadOpen', false)
     },
     //체크값 json형식으로 변환
@@ -119,11 +121,17 @@ export default {
         return;
       }
 
+      const uploadInfo = {
+        useCh: this.chkboxUseCh,
+        wideYn: this.wideYn,
+        corpId: tokenSvc.getToken().principal.corpId,
+        projectId: this.$cookies.get('project'),
+        loginId: tokenSvc.getToken().principal.userId,
+      };
+
       let fd = new FormData();
       fd.append('uploadFile', uploadFile.files[0]);
-      fd.append('useCh', this.chkboxUseCh);
-      fd.append('wideYn', this.wideYn);
-      fd.append('loginId', tokenSvc.getToken().principal.userId);
+      fd.append('paramString', JSON.stringify(uploadInfo));
       
       this.inProgress = true;
       await axios.post('/api/public/common/uploadImage',

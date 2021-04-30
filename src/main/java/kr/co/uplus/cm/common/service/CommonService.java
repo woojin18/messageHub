@@ -117,17 +117,34 @@ public class CommonService {
      */
     @SuppressWarnings("unchecked")
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-    public RestResult<Object> uploadImgFile(MultipartFile files, String[] useCh, String wideYn, String loginId) throws Exception {
+    public RestResult<Object> uploadImgFile(MultipartFile files, Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
 
+        String corpId = CommonUtils.getStrValue(params, "corpId");
+        String projectId = CommonUtils.getStrValue(params, "projectId");
+        ArrayList<String> useCh = (ArrayList<String>) params.get("useCh");
+        String wideYn = StringUtils.defaultString(CommonUtils.getStrValue(params, "wideYn"), Const.COMM_NO);
+        String loginId = CommonUtils.getStrValue(params, "loginId");
+
         //빈값 확인
-        if(useCh == null || useCh.length == 0) {
+        if(StringUtils.isBlank(corpId)) {
+            throw new Exception("유효하지 않은 corpId");
+        }
+        if(StringUtils.isBlank(projectId)) {
+            throw new Exception("유효하지 않은 projectId");
+        }
+        if(StringUtils.isBlank(loginId)) {
+            throw new Exception("유효하지 않은 loginId");
+        }
+        if(useCh == null || useCh.size() == 0) {
             rtn.setSuccess(false);
             rtn.setMessage("사용채널 정보가 존재하지 않습니다.");
+            return rtn;
         }
         if(files == null) {
             rtn.setSuccess(false);
             rtn.setMessage("업로드할 파일이 존재하지 않습니다.");
+            return rtn;
         }
 
         String pattern = "[\"!@#$%^&'*]";
@@ -180,8 +197,7 @@ public class CommonService {
             Map<String, Integer> resizeInfo = null;
             File chFile = null;
 
-            String apiKey = this.getApiKey("TEST_CORP", "TEST_PROJECT");  //TODO : 수정
-            String svcId = this.getSvcId();
+            String apiKey = this.getApiKey(corpId, projectId);
             String resizePath = "";
             String apiUrl = "";
             String imgUrl = "";
@@ -236,7 +252,6 @@ public class CommonService {
                 //set Header Info
                 headerMap = new HashMap<String, String>();
                 headerMap.put("apiKey", apiKey);
-                headerMap.put("svcId", svcId);
                 headerMap.put("ch", ch);
 
                 //set reqFile Info
@@ -283,14 +298,14 @@ public class CommonService {
             }
 
             //DB 등록
-            Map<String, Object> params = new HashMap<>();
-            params.put("fileId", fileId);
-            params.put("corpId", "TEST_CORP_ID");    //TODO : 고객 ID(로그인세션에서 가져오자)
-            params.put("useChInfo", jsonArray.toJSONString());
-            params.put("wideImgYn", wideImgYn);
-            params.put("originFileName", fileName);
-            params.put("loginId", loginId);
-            generalDao.insertGernal(DB.QRY_INSERT_IMAGE_FILE, params);
+            Map<String, Object> sParams = new HashMap<>();
+            sParams.put("fileId", fileId);
+            sParams.put("corpId", corpId);
+            sParams.put("useChInfo", jsonArray.toJSONString());
+            sParams.put("wideImgYn", wideImgYn);
+            sParams.put("originFileName", fileName);
+            sParams.put("loginId", loginId);
+            generalDao.insertGernal(DB.QRY_INSERT_IMAGE_FILE, sParams);
 
         } catch (Exception e) {
             log.error("{} Error : {}", this.getClass(), e);
@@ -335,7 +350,7 @@ public class CommonService {
         RestResult<Object> rtn = new RestResult<Object>();
 
         //삭제전 사용 템플릿 있는지 확인
-        int useCnt = generalDao.selectGernalCount(DB.QTY_SELECT_FILE_ID_USE_CNT, params);
+        int useCnt = generalDao.selectGernalCount(DB.QRY_SELECT_FILE_ID_USE_CNT, params);
         if(useCnt > 0) {
             rtn.setSuccess(false);
             rtn.setMessage("이미지 파일을 사용하고 있는 템플릿이 존재하여 삭제할 수 없습니다.");
@@ -430,20 +445,19 @@ public class CommonService {
      * - 4. WEB_YN 후 ROWNUM 1
      * API Key 가져오기
      * @return
+     * @throws Exception
      */
-    public String getApiKey(String corpId, String projectId) {
-        String apiKey = "1";
-        return apiKey;
-    }
+    public String getApiKey(String corpId, String projectId) throws Exception {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corpId", corpId);
+        params.put("projectId", projectId);
+        String apiKey = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_API_KEY, params));
 
-    /**
-     * FIXME : 뭔지 모른다 알아보는중
-     * TODO : G/W 삭제 예정 -> 추후 사용 한곳 알기위해 사용
-     * SVC ID 가져오기
-     * @return
-     */
-    public String getSvcId() {
-        String apiKey = "WEB01";
+        if(StringUtils.isBlank(apiKey)) {
+            log.error("{}.getApiKey no result search for api key. corpID : {}, projectId : {}", this.getClass(), corpId, projectId);
+            throw new Exception("API 키에 대한 검색 결과 없음.");
+        }
+
         return apiKey;
     }
 

@@ -103,6 +103,7 @@ import ImageUploadPopUp from "@/modules/commonUtil/components/bp-imageUpload.vue
 import ImagePreview from "@/modules/commonUtil/components/bp-imagePreview.vue";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import tokenSvc from '@/common/token-service';
 
 export default {
   name: "imageManagePopup",
@@ -151,7 +152,7 @@ export default {
     async fnSearch(){
       const vm = this;
       const params = {
-        'corpId':'TEST_CORP_ID',  //TODO : 로그인 완료되면 corp_id 가져오자
+        'corpId':tokenSvc.getToken().principal.corpId,
         'useChInfo':this.useCh,
         'pageNo':this.pageNo,
         'listSize':this.listSize
@@ -235,7 +236,7 @@ export default {
     async fnProcDeleteImage(){
       const params = {
         'fileIds':this.listChkBox,
-        'corpId':'TEST_CORP_ID',  //TODO : 로그인 완료되면 corp_id 가져오자
+        'corpId':tokenSvc.getToken().principal.corpId,
         'useChInfo':this.useCh,
       };
       await CommonUtilApi.deleteImage(params).then(response =>{

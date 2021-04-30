@@ -224,12 +224,12 @@ public class SendMessageService {
      * @throws Exception
      */
     public String selectPayType(Map<String, Object> params) throws Exception {
-        //return (String) generalDao.selectGernalObject(DB.QRY_SELECT_PAY_TYPE, params);
-        return "N";  //TODO : 삭제(테스트용)
+        return (String) generalDao.selectGernalObject(DB.QRY_SELECT_PAY_TYPE, params);
     }
 
     /**
-     * G/W 에서 API 만들면 API 호출로 교체
+     * 잔여금액 조회
+     * TODO : G/W 에서 API 만들면 API 호출로 교체
      * @return
      */
     public BigDecimal getRmAmount() {

@@ -60,6 +60,7 @@
 import MessageApi from "@/modules/message/service/messageApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
+import tokenSvc from '@/common/token-service';
 
 export default {
   name: "pushContentsPopup",
@@ -141,7 +142,7 @@ export default {
     //발신번호 리스트 조회
     async fnSelectCallbackList(){
       var params = {
-        'corpId':'TEST_CORP'
+        'corpId':tokenSvc.getToken().principal.corpId,
       };
       await MessageApi.selectCallbackList(params).then(response =>{
         var result = response.data;

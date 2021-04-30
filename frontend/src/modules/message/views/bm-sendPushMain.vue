@@ -178,14 +178,14 @@
             </div>
             <div class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
-                <h5>APP_ID</h5>
+                <h5>APP_ID *</h5>
               </div>
               <div class="of_h" style="width:82%">
                 <select class="selectStyle2" style="width:30%" v-model="sltAppId" @change="fnChangAppId">
-                  <option value="">APP_ID</option>
+                  <option value="">직접입력</option>
                   <option v-for="aplnId in aplnIdList" :key="aplnId.aplnId" :value="aplnId.aplnId">{{aplnId.aplnId}}</option>
                 </select>
-                <input type="text" class="inputStyle float-right" style="width:68%" :placeholder="sltAppId != '' ? '' : 'APP ID를 입력하세요'" v-model="sendData.appId" :disabled="sendData.appId != ''">
+                <input type="text" class="inputStyle float-right" style="width:68%" :placeholder="sltAppId != '' ? '' : 'APP ID를 입력하세요'" v-model="sendData.appId" :disabled="sltAppId != ''">
                 <h6><strong>수신자 : {{recvCnt}}명</strong></h6>
                 <div class="float-right" style="width:100%">
                   <textarea class="textareaStyle height120" v-model="sendData.cuInfo" disabled></textarea>
@@ -239,13 +239,12 @@
         <div class="mt30 float-right">
           <a href="#self" class="btnStyle2 float-left" title="테스트 발송" data-toggle="modal" data-target="#test">테스트 발송</a>
           <a @click="fnSendPushMessage" class="btnStyle2 backRed float-left ml10" title="발송">발송</a>
-          <a @click="fnApiTest" class="btnStyle2 backRed float-left ml10" title="TEST">TEST</a>
         </div>
       </div>
     </div>
 
     <PushTemplatePopup :pushTemplateOpen.sync="pushTemplateOpen" ref="pushTmplPopup"></PushTemplatePopup>
-    <ImageManagePopUp :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
+    <ImageManagePopUp :imgMngOpen.sync="imgMngOpen" :useCh="sendData.ch" ref="imgMngPopup"></ImageManagePopUp>
     <PushContentsPopup :pushContsOpen.sync="pushContsOpen" :sendData="sendData"></PushContentsPopup>
     <ReplacedSenderPopup :rplcSendOpen.sync="rplcSendOpen" ref="rplcSendPopup"></ReplacedSenderPopup>
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
@@ -264,6 +263,8 @@ import DirectInputPopup from "@/modules/message/components/bp-directInput.vue";
 import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue";
 import Calendar from "@/components/Calendar.vue";
 import confirm from "@/modules/commonUtil/service/confirm.js";
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import tokenSvc from '@/common/token-service';
 
 export default {
   name: "sendPushMain",
@@ -294,11 +295,12 @@ export default {
       pushTemplateOpen : false,
       addressInputOpen : false,
       sltAppId : '',
-      useCh : 'PUSH',
       aplnIdList: {},
       recvCnt : 0,  //수신자명수
       previewMessageType : 'PUSH',  //메세지미리보기 타입(PUSH, RPLC)
+      inProgress: false,
       sendData : {
+        ch: 'PUSH',
         serviceCode:'ALL', //발송정책(ALL, FCM, APNS)
         requiredCuid : true,  //app 로그인 ID 필수여부
         requiredCuPhone : false,  //수신자 폰번호 필수여부
@@ -329,52 +331,97 @@ export default {
     this.fnGetAppId();
   },
   methods: {
-    //TODO 삭제
-    async fnApiTest(){
-      var param  = {
-        callback: '012345678901234567890',
-      };
-      await MessageApi.apiTest(param).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          confirm.fnAlert(this.componentsTitle, '성공하였습니다');
-        } else {
-          confirm.fnAlert(this.componentsTitle, result.message);
+    fnValidSendMsgData(){
+      if(!this.sendData.pushContent){
+        confirm.fnAlert(this.componentsTitle, '푸시메시지 내용을 입력해주세요.');
+        return false;
+      }
+      if(!this.sendData.appId){
+        confirm.fnAlert(this.componentsTitle, 'APP ID를 입력해주세요.');
+        return false;
+      }
+      if(this.sendData.cuInputType == 'DICT' || this.sendData.cuInputType == 'ADDR'){
+         if(!this.sendData.recvInfoLst == null || this.sendData.recvInfoLst.length == 0){
+           confirm.fnAlert(this.componentsTitle, 'APP ID를 입력해주세요.');
+           return false;
+         }
+      }
+      if(this.sendData.cuInputType == 'EXCEL'){
+        const uploadFile = this.$refs.excelFile;
+        if(uploadFile.value == 0){
+          confirm.fnAlert(this.componentsTitle, '엑셀파일을 등록해주세요.');
+          return false;
         }
-      });
+        const permitExten = 'xls,xlsx'.split(',');
+        const extnIdx = uploadFile.value.lastIndexOf('.');
+        const extn = uploadFile.value.substring(extnIdx+1);
+        if((permitExten.indexOf(extn) < 0)){
+          confirm.fnAlert(this.componentsTitle, '허용되지 않는 확장자입니다.');
+          return false;
+        }
+      }
+      if(this.sendData.rplcSendType != 'NONE'){
+        if(!this.sendData.fbInfo.callback){
+          confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 발신번호를 입력해주세요.');
+           return false;
+        }
+        if(!this.sendData.fbInfo.msg){
+          confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 내용을 입력해주세요.');
+           return false;
+        }
+      }
+
+      return true;
     },
     //푸시 메시지 발송 처리
     async fnSendPushMessage(){
-      //유효성 체크필요
+      if(this.inProgress){
+        confirm.fnAlert(this.componentsTitle, '푸시 메시지 발송 처리중입니다.');
+        return;
+      }
 
-      //--> 유효성 체크 안에 엑셀업로드일 경우 확장자 검사 로직 필요.
+      //유효성 체크
+      if(this.fnValidSendMsgData() == false) return;
 
       //발송처리
+      let params = Object.assign({}, this.sendData);
+      params.loginId = tokenSvc.getToken().principal.userId;
+      params.corpId = tokenSvc.getToken().principal.corpId;
+      params.projectId = this.$cookies.get('project');
+      
       let fd = new FormData();
-      fd.append('paramString', JSON.stringify(this.sendData));
+      fd.append('paramString', JSON.stringify(params));
       if(this.sendData.cuInputType == 'EXCEL'){
         fd.append('excelFile', this.$refs.excelFile.files[0]);
       }
 
+      this.inProgress = true;
       await MessageApi.sendPushMessage(fd).then(response =>{
+        this.inProgress = false;
         const result = response.data;
-        console.log('=======================');
-        console.log(response);
-        console.log('=======================');
-
+        
         if(result.success) {
-          if(this.fnIsEmpty(result.data.feeMsg)){
-            confirm.fnAlert(this.componentsTitle, result.data.feeMsg);
-          }
-          if(this.fnIsEmpty(result.message)){
-            confirm.fnAlert(this.componentsTitle, '발송 요청처리 되었습니다.');
+          if(!this.fnIsEmpty(result.data.feeMsg)){
+            eventBus.$on('callbackEventBus', this.fnAlertFeeMsgCallBack);
+            confirm.fnAlert(this.componentsTitle, result.data.feeMsg, 'ALERT', result);
           } else {
-            confirm.fnAlert(this.componentsTitle, result.message);
+            this.fnAlertFeeMsgCallBack(result);
           }
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
+      })
+      .catch(function () {
+        this.inProgress = false;
+        confirm.fnAlert(this.componentsTitle, '실패하였습니다');
       });
+    },
+    fnAlertFeeMsgCallBack(result){
+      if(this.fnIsEmpty(result.message)){
+        confirm.fnAlert(this.componentsTitle, '발송 요청 처리 되었습니다.');
+      } else {
+        confirm.fnAlert(this.componentsTitle, result.message);
+      }
     },
     fnUpdateRsrvDate(sltDate){
       this.sendData.rsrvDate = sltDate;
@@ -396,8 +443,8 @@ export default {
     },
     fnGetAppId(){
       var params = {
-        'corpId':'TEST_CORP',
-        'projectId':'TEST_PROJECT'
+        'corpId':tokenSvc.getToken().principal.corpId,
+        'projectId':this.$cookies.get('project')
       };
       MessageApi.selectAppIdList(params).then(response => {
         var result = response.data;

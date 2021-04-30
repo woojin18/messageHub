@@ -108,8 +108,16 @@
         ) AS USE_CNT
     </select>
 
-
-
+    <select id="selectApiKey" parameterType="hashmap" resultType="string">
+    /* common.selectApiKey API KEY 조회 */
+        SELECT API_KEY
+        FROM cm.CM_APIKEY
+        WHERE CORP_ID = #{corpId}
+            AND PROJECT_ID = #{projectId}
+            AND STATUS = 'USE'
+            AND WEB_SENDER_YN = 'Y'
+        LIMIT 1
+    </select>
 
 	<select id="selectCorpInfoByUserId" resultType="camel">
 	/* common.selectCorpInfoByUserId */

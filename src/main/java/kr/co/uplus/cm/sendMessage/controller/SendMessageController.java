@@ -194,8 +194,8 @@ public class SendMessageController {
     @SuppressWarnings("unchecked")
     @PostMapping(path="/sendPushMessage")
     public RestResult<?> sendPushMessage(HttpServletRequest request, HttpServletResponse response
-            , @RequestParam String paramString
-            , @RequestPart(value="excelFile", required=false) MultipartFile excelFile) throws Exception {
+            , @RequestParam(value = "paramString") String paramString
+            , @RequestParam(value="excelFile", required=false) MultipartFile excelFile) throws Exception {
 
         List<PushRecvInfo> recvInfoLst = null;
         Map<String, Object> params = null;
@@ -213,11 +213,6 @@ public class SendMessageController {
             Map<String, Object> sParam = new HashMap<>();
             params = mapper.readValue(paramString, Map.class);
 
-            //TODO 세션에서 가져오던 클라이언트단에서 넘기던 하자
-            params.put("ch", Const.MsgCh.PUSH);
-            params.put("corpId", "TEST_CORP_ID");    //TODO : 고객 ID(로그인세션에서 가져오자)
-            params.put("projectId", "TEST_PROJECT");    //TODO : 프로젝트 ID(로그인세션에서 가져오자)
-
             /** 유효성 체크 */
             requestData = sendMsgService.setPushSendData(rtn, params);
             if(rtn.isSuccess() == false) {
@@ -232,15 +227,12 @@ public class SendMessageController {
                 rtn.setMessage("잘못된 푸시 수신자 정보입니다.");
                 return rtn;
             }
-            for(PushRecvInfo info : recvInfoLst) {
-                log.info("recvInfoLst : {}", info);
-            }
-
+            
             /** 잔액확인 */
             String payType = sendMsgService.selectPayType(params);
 
-            //후불일경우
-            if(StringUtils.equals(payType, Const.COMM_NO)) {
+            //선불일경우
+            if(StringUtils.equals(payType, Const.COMM_YES)) {
                 //남은 금액 조회
                 BigDecimal rmAmount = sendMsgService.getRmAmount();
                 //개당 가격 조회
@@ -254,7 +246,6 @@ public class SendMessageController {
                 }
                 BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
                 BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
-                feePerAll = new BigDecimal("1000000000000");
 
                 if(rmAmount.compareTo(feePerAll) < 0) {
                     rtnMap.put("feeMsg", "잔액 부족으로 메시지가 발송되지 않을 수도 있습니다.");
@@ -262,7 +253,7 @@ public class SendMessageController {
             }
 
             /** 예약건인지 확인(10분) */
-            //웹 발송 내역은 발송건을 모두 G/W로 보내고 등록해달라는 요청
+            //즉시건일때 웹 발송 내역(CM_WEB_MSG)은 발송건을 모두 G/W로 보내고 등록해달라는 요청
             //예약건과 즉시건의 웹 발송 내역 등록 분리
             String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
             if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
