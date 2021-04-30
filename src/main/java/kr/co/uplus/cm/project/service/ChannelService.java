@@ -467,6 +467,7 @@ public class ChannelService {
 			Map<String, Object> bodyMap = new HashMap<String, Object>();
 			
 			System.out.println("------------------------------------------ json : " + json);
+			System.out.println("------------------------------------------ list : " + list);
 			
 			bodyMap.put("list", json);
 			

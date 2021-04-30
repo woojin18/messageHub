@@ -1,35 +1,35 @@
 <template>
-  <div>
+<div>
 	<article>
-		<div class="row">
+		<div class="row mt15">
 			<div class="col-xs-12">
 				<div class="menuBox">						
 					<div class="of_h">
 						<div>
-							<h4 class="font-normal inline-block" style="width:8%">브랜드명</h4>
-							<input type="text" class="inputStyle" style="width:16%">
-							<h4 class="font-normal inline-block ml40" style="width:8%">브랜드명</h4>
-							<input type="text" class="inputStyle" style="width:16%">
-							<h4 class="font-normal inline-block ml40" style="width:8%">브랜드명</h4>
-							<input type="text" class="inputStyle" style="width:16%">
+							<h4 class="inline-block" style="width:6%">브랜드명</h4>
+							<input type="text" class="inputStyle" style="width:16%" v-model="srcBrandName">
+							<h4 class="inline-block ml60" style="width:6%">발신번호명</h4>
+							<input type="text" class="inputStyle" style="width:16%" v-model="srcSubTitle">
+							<h4 class="inline-block ml60" style="width:6%">발신번호</h4>
+							<input type="text" class="inputStyle" style="width:16%" v-model="srcSubNum">
 						</div>	
-						<div class="mt15">
-							<h4 class="font-normal inline-block vertical-middle" style="width:8%">SMSMO<br>사용여부</h4>
-							<select name="admin0305_1" class="selectStyle3 vertical-middle" style="width:16%">
+						<div class="consolMarginTop">
+							<h4 class="inline-block vertical-middle" style="width:6%">SMSMO<br>사용여부</h4>
+							<select name="admin0305_1" class="selectStyle2 vertical-middle" style="width:16%" v-model="srcRcsReply">
 								<option value="">전체</option>
 								<option value="">대기</option>
 							</select>
-							<h4 class="font-normal inline-block ml40" style="width:8%">사용여부</h4>
-							<select name="admin0305_2" class="selectStyle3" style="width:16%">
+							<h4 class="inline-block ml60" style="width:6%">사용여부</h4>
+							<select name="admin0305_2" class="selectStyle2" style="width:16%" v-model="srcIsuse">
 								<option value="">전체</option>
 								<option value="">대기</option>
 							</select>
-							<h4 class="font-normal inline-block ml40" style="width:8%">승인상태</h4>
-							<select name="admin0305_3" class="selectStyle3" style="width:16%">
+							<h4 class="inline-block ml60" style="width:6%">승인상태</h4>
+							<select name="admin0305_3" class="selectStyle2" style="width:16%" v-model="srcApprovalResult">
 								<option value="">전체</option>
 								<option value="">대기</option>
 							</select>
-							<a href="#self" class="btnStyle2 float-right">검색</a>
+							<a @click="fnSearch" class="btnStyle1 float-right">검색</a>
 						</div>
 					</div>						
 				</div>
@@ -160,7 +160,7 @@
 
 		<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
 	</article>
-  </div>
+</div>
 </template>
 
 
@@ -169,93 +169,65 @@ import projectApi from '../service/projectApi'
 import tokenSvc from '@/common/token-service';
 
 export default {
-  components: {
-  },
-  data() {
-    return {
-      // 프로젝트 정보
-      projectId : '',
-      projectName : '',
-      
-      visible : false,  // 레이어 팝업 
-      modal_title : '', // 레이어 팝업 타이틀
-      save_status : '', // 등록 수정 여부
-      row_data : {},
-      // 검색 조건
-      col1 : "",
-      col2 : "",
-      // select 박스 value (출력 갯수 이벤트)
-      selected : 10,
-      // 현재 페이징 위치
-      pagingCnt : 1,
-      // 리스트 
-      items : [],
-      count : 0
-    }
-  },
-  mounted() {
-    var vm = this;
+	components: {
 
-    this.projectId = this.$route.params.projectId;
-    this.projectName = this.$route.params.projectName;
-  },
-  methods: {
-    fnMoveMainTab(moveTabName){
-      this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
-    },
-    // 검색
-    fnSearch() {
-      
-      var vm = this;
-      var params = {
-        "src_project_name"  : jQuery("#src_project_name").val(),
-        "src_use_yn"        : jQuery("#src_use_yn").val(),
-        "rows"              : vm.selected,
-        "paging"            : vm.pagingCnt
-      }
-       
-      projectApi.selectProjectList(params).then(response =>{
-        vm.items = response.data.data;
-      });
-    },
-    // 등록창
-    fnProjectReg : function(){
-        this.visible = !this.visible;
-        this.save_status = 'C';
-        this.row_data = {};
-      },
-    // 상세창
-    fnProjectDetail(data) {
-      this.$router.push( {name:"chan-rcs",params:{"projectId" : data.PROJECT_ID, "projectName" : data.PROJECT_NAME}} );
-    },
-    // 수정창
-    fnProjectUpdate(data) {
-      this.visible = !this.visible;
-      this.save_status = 'U';
-      this.row_data = data;
-    },
-    fnProjectDelete(data){
-      var params = {
-        "project_id"  : data.PROJECT_ID,
-        "sts"         : "D",
-        "userDto"     : tokenSvc.getToken().principal    
-      };
+	},
+	data() {
+		return {
+		// 프로젝트 정보
+		projectId : '',
+		projectName : '',
 
-      projectApi.saveProject(params).then(response =>{
-        var result = response.data;
+		// 검색 조건
+		srcBrandName	: "",
+		srcSubTitle	: "",
+			srcSubNum		: "",
+			srcRcsReply	: "",
+			srcIsuse		: "",
+			srcApprovalResult	: "",
 
-        if(result.success) {
-          alert("삭제되었습니다.");
-          // 리스트 조회
-          this.fnSearch();
-        } else {
-          alert("저장에 실패했습니다.");
-        }
-      }); 
-    }
+		// select 박스 value (출력 갯수 이벤트)
+		selected : 10,
+		// 현재 페이징 위치
+		pagingCnt : 1,
+		// 리스트 
+		items : [],
+		count : 0
+		}
+	},
+	mounted() {
+		var vm = this;
 
-
-
-  }
+		this.projectId = this.$route.params.projectId;
+		this.projectName = this.$route.params.projectName;
+	},
+	methods: {
+		fnMoveMainTab(moveTabName){
+			this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
+		},
+		// 검색
+		fnSearch() {
+			var vm = this;
+			var params = {
+			
+				"rows": vm.selected,
+				"paging": vm.pagingCnt
+			}
+			
+			projectApi.selectProjectList(params).then(response =>{
+			vm.items = response.data.data;
+			});
+		},
+		// 등록창
+		fnProjectReg : function(){
+			this.visible = !this.visible;
+			this.save_status = 'C';
+			this.row_data = {};
+		},
+		// 상세창
+		fnProjectDetail(data) {
+			this.$router.push( {name:"chan-rcs",params:{"projectId" : data.PROJECT_ID, "projectName" : data.PROJECT_NAME}} );
+		},
+	}
 }
 </script>

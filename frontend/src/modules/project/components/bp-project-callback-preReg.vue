@@ -22,18 +22,18 @@
 								<div class="of_h consolMarginTop">
 									<h4 class="inline-block" style="width:22%">대표발신번호 *</h4>
 									<div class="float-right" style="width:76%">
-										<input type="text" class="inputStyle" style="width:55%">
+										<input type="text" class="inputStyle" style="width:55%" v-model="mainMdn">
 										<p class="color3 inline-block ml10">휴대폰번호 등록 불가</p>
 									</div>
 								</div>
 								<div class="of_h">
 									<h4 class="inline-block" style="width:22%">발신 번호명 *</h4>
-									<input type="text" class="inputStyle float-right" style="width:76%">
+									<input type="text" class="inputStyle float-right" style="width:76%" v-model="mainTitle">
 								</div>
 								<div class="of_h">
 									<h4 class="inline-block" style="width:22%">대표번호<br>문자수신 서비스 *</h4>
 									<div class="consolCheck vertical-top float-right" style="width:76%">
-										<input type="checkbox" id="use" class="checkStyle2" value="use"><label for="use">사용중</label>
+										<input type="checkbox" id="use" class="checkStyle2" v-model="rcsReplyYn"><label for="use">사용중</label>
 										<p class="txtCaption color3">대표번호 문자수신(MO)서비스를 현재 사용하고 계실 경우 반드시 해당정보를 체크해 주셔야 합니다.</p>
 									</div>						
 								</div>

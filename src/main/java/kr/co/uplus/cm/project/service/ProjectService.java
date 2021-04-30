@@ -236,18 +236,18 @@ public class ProjectService {
 		// 데이터 처리
 		List<Object> list = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
-		String brandId = CommonUtils.getString(params.get("brandId"));
+		//String brandId = CommonUtils.getString(params.get("brandId"));
+		
+		// 임시
+		String brandId = "BR.s37xUZ49h7";
 		
 		map.put("corpId",		params.get("corpId"));
-		map.put("projectId",	params.get("projectId"));
-		
-		map.put("mainMdn",		params.get("mainMdn"));
 		
 		if( "N".equals(tempYn) ) {
-			map.put("certiFilePath",		params.get("profileImgFilePath"));
+			map.put("subNumCertificate",		params.get("profileImgFilePath"));
 		} else {
 			// 임시
-			map.put("certiFilePath", "/efs/file/console/2021/04/26/12/test1234.png");
+			map.put("subNumCertificate", "/efs/file/console/2021/04/26/12/test1234.png");
 		}
 		
 		
@@ -265,17 +265,13 @@ public class ProjectService {
 		
 		// 등록요청
 		Map<String, Object> headerMap = new HashMap<String, Object>();
-		headerMap.put("apiId",		params.get("apiKey"));
-		headerMap.put("apiSercret",	params.get("apiSecretKey"));
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(map);
-		Map<String, Object> bodyMap = new HashMap<String, Object>();
-		
-		bodyMap.put("list", json);
+		headerMap.put("brandId",	brandId);
 		
 		// API 통신 처리
-		Map<String, Object> result =  apiInterface.listPost("/console/v1/brand", list, headerMap);
+		Map<String, Object> result =  apiInterface.post("/console/v1/brand/" + brandId + "/chatbot", map, headerMap);
+		
+		System.out.println("---------------------------------------- result : " + result);
+		
 		// 성공인지 실패인지 체크
 		if( !"10000".equals(result.get("rslt")) ) {
 			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
