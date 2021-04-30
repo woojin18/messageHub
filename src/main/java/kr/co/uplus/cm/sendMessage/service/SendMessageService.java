@@ -428,8 +428,7 @@ public class SendMessageService {
     }
 
     /**
-     * 푸시 메시지 발송 처리
-     * @param rtn
+     * 푸시 테스트 발송 처리
      * @param data
      * @param pushRequestData
      * @param sendList
@@ -437,8 +436,52 @@ public class SendMessageService {
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public Map<String, Object> sendPushMsg(RestResult<Object> rtn
-            , Map<String, Object> data
+    public RestResult<Object> testSendPushMsg(
+            Map<String, Object> data
+            , PushRequestData pushRequestData
+            , List<PushRecvInfo> sendList) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        pushRequestData.setWebReqId(StringUtils.EMPTY);  //테스트발송은 웹 요청 아이디를 넣지 않는다.
+        Map<String, Object> resultMap = sendPushMsg(data, pushRequestData, sendList);
+
+        if(!CommonUtils.isEmptyValue(resultMap, "rslt")
+                && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
+
+            try {
+                int successCnt = 0;
+                List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
+                for(Map<String, Object> dataInfo : dataList) {
+                    if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
+                            && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                        successCnt++;
+                    }
+                }
+                rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
+            } catch (Exception e) {
+                log.error("{}.testSendPushMsg success message Error ==> {}", this.getClass(), e);
+            }
+
+        } else {
+            log.warn("{}.testSendPushMsg Fail ==> response : {}", this.getClass(), resultMap);
+            rtn.setFail("푸시 테스트 발송이 실패하였습니다.");
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 푸시 메시지 발송 처리
+     * @param data
+     * @param pushRequestData
+     * @param sendList
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> sendPushMsg(
+            Map<String, Object> data
             , PushRequestData pushRequestData
             , List<PushRecvInfo> sendList) throws Exception {
 
@@ -457,6 +500,15 @@ public class SendMessageService {
         return apiInterface.sendMsg(Const.SEND_PUSH_API_URL, headerMap, jsonString);
     }
 
+    /**
+     * 푸시 메시지 발송 비동기 처리
+     * @param rtn
+     * @param fromIndex
+     * @param data
+     * @param pushRequestData
+     * @param recvInfoLst
+     * @throws Exception
+     */
     @Async
     public void sendPushMsgAsync(RestResult<Object> rtn
             , int fromIndex

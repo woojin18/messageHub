@@ -16,14 +16,14 @@
             <div class="overflow-x-auto white-space-nowrap">
 
               <div class="inline-block mr20 WidthAuto" v-for="header in headerList" :key="header">
-                <div class="text-center background-color6 colorfff consolLineheight">* {{header}}</div>
+                <div class="text-center background-color6 colorfff consolLineheight">* {{header=='cuid' ? 'APP 로그인ID' : (header=='phone' ? '휴대폰번호' : header)}}</div>
 
                 <div class="consolMarginTop" v-for="rowIdx in loopCnt" :key="rowIdx">
                   <div v-if="recvInfoLst.length >= rowIdx">
                     <input v-if="header == 'cuid' || header == 'phone'" type="text" class="inputStyle" 
-                    :ref="header+'_'+rowIdx" v-model="recvInfoLst[rowIdx-1][header]">
+                      :ref="header+'_'+rowIdx" v-model="recvInfoLst[rowIdx-1][header]">
                     <input v-else type="text" class="inputStyle" 
-                    :ref="header+'_'+rowIdx" v-model="recvInfoLst[rowIdx-1].mergeData[header]">
+                      :ref="header+'_'+rowIdx" v-model="recvInfoLst[rowIdx-1].mergeData[header]">
                   </div>
                   <div v-else>
                     <input type="text" class="inputStyle" :ref="header+'_'+rowIdx">

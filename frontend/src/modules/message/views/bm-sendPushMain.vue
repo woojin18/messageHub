@@ -237,8 +237,8 @@
           </div>
         </div>
         <div class="mt30 float-right">
-          <a href="#self" class="btnStyle2 float-left" title="테스트 발송" data-toggle="modal" data-target="#test">테스트 발송</a>
-          <a @click="fnSendPushMessage" class="btnStyle2 backRed float-left ml10" title="발송">발송</a>
+          <a @click="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송" data-toggle="modal" data-target="#test">테스트 발송</a>
+          <a @click="fnSendPushMessage('N')" class="btnStyle2 backRed float-left ml10" title="발송">발송</a>
         </div>
       </div>
     </div>
@@ -249,6 +249,7 @@
     <ReplacedSenderPopup :rplcSendOpen.sync="rplcSendOpen" ref="rplcSendPopup"></ReplacedSenderPopup>
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
     <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
+    <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :testRecvInfoLst="sendData.testRecvInfoLst"></TestSendInputPopup>
   </div>
   <!-- //본문 -->
 </template>
@@ -261,6 +262,7 @@ import ReplacedSenderPopup from "@/modules/message/components/bp-replacedSender.
 import PushTemplatePopup from "@/modules/message/components/bp-pushTemplate.vue";
 import DirectInputPopup from "@/modules/message/components/bp-directInput.vue";
 import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue";
+import TestSendInputPopup from "@/modules/message/components/bc-testSendInput.vue";
 import Calendar from "@/components/Calendar.vue";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
@@ -275,6 +277,7 @@ export default {
     DirectInputPopup,
     PushTemplatePopup,
     AddressInputPopup,
+    TestSendInputPopup,
     Calendar
   },
   props: {
@@ -294,6 +297,7 @@ export default {
       directInputOpen : false,
       pushTemplateOpen : false,
       addressInputOpen : false,
+      testSendInputOpen : false,
       sltAppId : '',
       aplnIdList: {},
       recvCnt : 0,  //수신자명수
@@ -324,6 +328,7 @@ export default {
         recvInfoLst: [],  //수신자정보
         fbInfo: {},  //대체발송정보
         contsVarNms: [], //메세지 내용 변수명
+        testRecvInfoLst: [],  //테스트 수신자정보
       }
     }
   },
@@ -331,7 +336,8 @@ export default {
     this.fnGetAppId();
   },
   methods: {
-    fnValidSendMsgData(){
+    //발송 정보 유효성 체크
+    fnValidSendMsgData(testSendYn){
       if(!this.sendData.pushContent){
         confirm.fnAlert(this.componentsTitle, '푸시메시지 내용을 입력해주세요.');
         return false;
@@ -340,54 +346,70 @@ export default {
         confirm.fnAlert(this.componentsTitle, 'APP ID를 입력해주세요.');
         return false;
       }
-      if(this.sendData.cuInputType == 'DICT' || this.sendData.cuInputType == 'ADDR'){
-         if(!this.sendData.recvInfoLst == null || this.sendData.recvInfoLst.length == 0){
-           confirm.fnAlert(this.componentsTitle, 'APP ID를 입력해주세요.');
-           return false;
-         }
-      }
-      if(this.sendData.cuInputType == 'EXCEL'){
-        const uploadFile = this.$refs.excelFile;
-        if(uploadFile.value == 0){
-          confirm.fnAlert(this.componentsTitle, '엑셀파일을 등록해주세요.');
+      if(testSendYn == 'Y'){
+        if(!this.sendData.testRecvInfoLst == null || this.sendData.testRecvInfoLst.length == 0){
+          confirm.fnAlert(this.componentsTitle, '테스트 수신자 정보를 입력해주세요.');
           return false;
         }
-        const permitExten = 'xls,xlsx'.split(',');
-        const extnIdx = uploadFile.value.lastIndexOf('.');
-        const extn = uploadFile.value.substring(extnIdx+1);
-        if((permitExten.indexOf(extn) < 0)){
-          confirm.fnAlert(this.componentsTitle, '허용되지 않는 확장자입니다.');
-          return false;
+      } else {
+        if(this.sendData.cuInputType == 'DICT' || this.sendData.cuInputType == 'ADDR'){
+          if(!this.sendData.recvInfoLst == null || this.sendData.recvInfoLst.length == 0){
+            confirm.fnAlert(this.componentsTitle, '수신자 정보를 입력해주세요.');
+            return false;
+          }
         }
-      }
-      if(this.sendData.rplcSendType != 'NONE'){
-        if(!this.sendData.fbInfo.callback){
-          confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 발신번호를 입력해주세요.');
-           return false;
+        if(this.sendData.cuInputType == 'EXCEL'){
+          const uploadFile = this.$refs.excelFile;
+          if(uploadFile.value == 0){
+            confirm.fnAlert(this.componentsTitle, '엑셀파일을 등록해주세요.');
+            return false;
+          }
+          const permitExten = 'xls,xlsx'.split(',');
+          const extnIdx = uploadFile.value.lastIndexOf('.');
+          const extn = uploadFile.value.substring(extnIdx+1);
+          if((permitExten.indexOf(extn) < 0)){
+            confirm.fnAlert(this.componentsTitle, '허용되지 않는 확장자입니다.');
+            return false;
+          }
         }
-        if(!this.sendData.fbInfo.msg){
-          confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 내용을 입력해주세요.');
-           return false;
+        if(this.sendData.rplcSendType != 'NONE'){
+          if(!this.sendData.fbInfo.callback){
+            confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 발신번호를 입력해주세요.');
+            return false;
+          }
+          if(!this.sendData.fbInfo.msg){
+            confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 내용을 입력해주세요.');
+            return false;
+          }
         }
       }
 
       return true;
     },
     //푸시 메시지 발송 처리
-    async fnSendPushMessage(){
+    async fnSendPushMessage(testSendYn){
       if(this.inProgress){
         confirm.fnAlert(this.componentsTitle, '푸시 메시지 발송 처리중입니다.');
         return;
       }
 
       //유효성 체크
-      if(this.fnValidSendMsgData() == false) return;
+      if(this.fnValidSendMsgData(testSendYn) == false) return;
 
       //발송처리
       let params = Object.assign({}, this.sendData);
       params.loginId = tokenSvc.getToken().principal.userId;
       params.corpId = tokenSvc.getToken().principal.corpId;
       params.projectId = this.$cookies.get('project');
+      params.testSendYn = testSendYn;
+
+      if(testSendYn == 'Y'){
+        params.recvInfoLst = Object.assign([], this.sendData.testRecvInfoLst);
+        params.rplcSendType = 'NONE'
+        params.requiredCuPhone = false;
+        params.cuInputType = 'DICT';
+        params.rsrvSendYn = 'N';
+      }
       
       let fd = new FormData();
       fd.append('paramString', JSON.stringify(params));
@@ -396,24 +418,33 @@ export default {
       }
 
       this.inProgress = true;
+      const vm = this;
       await MessageApi.sendPushMessage(fd).then(response =>{
         this.inProgress = false;
         const result = response.data;
         
         if(result.success) {
-          if(!this.fnIsEmpty(result.data.feeMsg)){
-            eventBus.$on('callbackEventBus', this.fnAlertFeeMsgCallBack);
-            confirm.fnAlert(this.componentsTitle, result.data.feeMsg, 'ALERT', result);
+          console.log(result);
+          if(testSendYn == 'Y'){
+            if(!this.fnIsEmpty(result.message)){
+              confirm.fnAlert(this.componentsTitle, result.message);
+            } else {
+              confirm.fnAlert(this.componentsTitle, '발송하였습니다.');
+            }
           } else {
-            this.fnAlertFeeMsgCallBack(result);
+            if(!this.fnIsEmpty(result.data.feeMsg)){
+              eventBus.$on('callbackEventBus', this.fnAlertFeeMsgCallBack);
+              confirm.fnAlert(this.componentsTitle, result.data.feeMsg, 'ALERT', result);
+            } else {
+              this.fnAlertFeeMsgCallBack(result);
+            }
           }
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
       })
       .catch(function () {
-        this.inProgress = false;
-        confirm.fnAlert(this.componentsTitle, '실패하였습니다');
+        vm.inProgress = false;
       });
     },
     fnAlertFeeMsgCallBack(result){
@@ -461,6 +492,10 @@ export default {
       return array.filter(function(item) {
         return seen.hasOwnProperty(item) ? false : (seen[item] = true);
       });
+    },
+    fnOpenTestSendInputPopup(){
+      this.fnSetContsVarNms();
+      this.testSendInputOpen = !this.testSendInputOpen;
     },
     fnOpenImageManagePopUp(){
       this.$refs.imgMngPopup.fnSearch();
@@ -549,6 +584,15 @@ export default {
     fnSetImageInfo(imgInfo) {
       this.sendData.imgUrl = imgInfo.chImgUrl;
       this.sendData.fileId = imgInfo.fileId;
+    },
+    //테스트 발송 callback
+    fnCallbackTestRecvInfoLst(testRecvInfoLst){
+      if(testRecvInfoLst != null){
+        this.sendData.testRecvInfoLst = testRecvInfoLst;
+        this.fnSendPushMessage('Y');
+      } else {
+        this.sendData.testRecvInfoLst = [];
+      }
     },
     //수신자 정보 callback
     fnCallbackRecvInfoLst(recvInfoLst, addYn) {

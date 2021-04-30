@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import kr.co.uplus.cm.common.consts.ResultCode;
-import kr.co.uplus.cm.dto.PageDto;
 import kr.co.uplus.cm.utils.CommonUtils;
 
 public class RestResult<T> implements IResult<ResultCode, T> {
@@ -15,7 +14,6 @@ public class RestResult<T> implements IResult<ResultCode, T> {
     protected String message;
     protected T data;
     protected Map<String, Object> pageInfo;
-    protected PageDto pageDto = new PageDto();  //TODO : 곧 삭제예정(pageInfo 사용하세요.)
 
     public RestResult() {
     }
@@ -94,11 +92,10 @@ public class RestResult<T> implements IResult<ResultCode, T> {
         return pageInfo;
     }
 
+    public RestResult<T> setFail(String failMsg) {
+        this.success = false;
+        this.message = failMsg;
+        return this;
+    }
 
-    public PageDto getPageDto() {
-        return pageDto;
-    }
-    public void setPageDto(PageDto pageDto) {
-        this.pageDto = pageDto;
-    }
 }

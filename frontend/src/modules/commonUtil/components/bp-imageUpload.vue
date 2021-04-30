@@ -134,6 +134,7 @@ export default {
       fd.append('paramString', JSON.stringify(uploadInfo));
       
       this.inProgress = true;
+      const vm = this;
       await axios.post('/api/public/common/uploadImage',
         fd, {
           headers: {
@@ -155,8 +156,7 @@ export default {
         }
       })
       .catch(function () {
-        this.inProgress = false;
-        confirm.fnAlert(this.componentsTitle, '등록에 실패했습니다.');
+        vm.inProgress = false;
       });
     },
     //파일찾기 클릭시

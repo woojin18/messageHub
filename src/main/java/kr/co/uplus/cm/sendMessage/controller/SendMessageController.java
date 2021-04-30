@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -212,6 +211,7 @@ public class SendMessageController {
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> sParam = new HashMap<>();
             params = mapper.readValue(paramString, Map.class);
+            String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
 
             /** 유효성 체크 */
             requestData = sendMsgService.setPushSendData(rtn, params);
@@ -227,7 +227,7 @@ public class SendMessageController {
                 rtn.setMessage("잘못된 푸시 수신자 정보입니다.");
                 return rtn;
             }
-            
+
             /** 잔액확인 */
             String payType = sendMsgService.selectPayType(params);
 
@@ -248,7 +248,13 @@ public class SendMessageController {
                 BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
 
                 if(rmAmount.compareTo(feePerAll) < 0) {
-                    rtnMap.put("feeMsg", "잔액 부족으로 메시지가 발송되지 않을 수도 있습니다.");
+                    if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
+                        rtn.setSuccess(false);
+                        rtn.setMessage("잔액 부족으로 메시지를 발송할 수 없습니다.");
+                        return rtn;
+                    } else {
+                        rtnMap.put("feeMsg", "잔액 부족으로 메시지가 발송되지 않을 수도 있습니다.");
+                    }
                 }
             }
 
@@ -263,7 +269,15 @@ public class SendMessageController {
                 }
             }
 
+            /** 테스트발송(동기화) */
+            if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
+                rtn = sendMsgService.testSendPushMsg(params, requestData, recvInfoLst);
+                return rtn;
+            }
+
             /** 1건 발송(결과값 확인용)(동기화) */
+            /* http 통신 오류 확인을 위해 보냈던 1건 처리(전송에 실패하였습니다.) 일단 보류
+             * 현재 로직도 일단 http 통신 오류 뿐만 아니라 기타 오류건도 잡기 때문에 추후 수정 필요(79998: 기타오류, 29000:CPS 초과, 재시도 필요)
             log.info("{}.sendPushMessage sync API send Start ====>");
             Map<String, Object> responseBody = sendMsgService.sendPushMsg(rtn, params, requestData, recvInfoLst.subList(fromIndex, toIndex));
             log.info("{}.sendPushMessage sync API send Response Body : {}", this.getClass(), responseBody);
@@ -275,6 +289,7 @@ public class SendMessageController {
                 return rtn;
             }
             fromIndex = toIndex;
+            */
 
         } catch (Exception e) {
             rtn.setSuccess(false);
