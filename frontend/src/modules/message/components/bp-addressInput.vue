@@ -37,9 +37,9 @@
                 <table class="table_skin1">
                   <caption>수신자 추가의 사용자명, 아이디, 이용권한을 제공하는 표</caption>
                   <colgroup>
-                  <col style="width:5%">
-                  <col v-if="requiredCuid" style="width:18%">
-                  <col v-if="requiredCuPhone" style="width:25%">
+                  <col style="width:60px">
+                  <col v-if="requiredCuid" style="width:100px">
+                  <col v-if="requiredCuPhone" style="width:120px">
                   <col v-for="varNm in contsVarNms" :key="varNm" style="width:100px">
                   </colgroup>
                   <thead>
@@ -53,7 +53,7 @@
                     <th class="text-center lc-1">수신자명</th>
                     <th v-if="requiredCuid" class="text-center lc-1">APP 로그인ID</th>
                     <th v-if="requiredCuPhone" class="text-center lc-1">휴대폰번호</th>
-                    <th v-for="(varNm, idx) in contsVarNms" :key="varNm" :class="idx!=Object.keys(contsVarNms).length-1 ? 'text-center lc-1' : 'text-center lc-1 end'">{{varNm}}</th>
+                    <th v-for="(varNm, idx) in contsVarNms" :key="varNm" class="text-center lc-1">{{varNm}}</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -67,7 +67,7 @@
                       <td class="text-center">{{cmCuInfo.cuName}}</td>
                       <td v-if="requiredCuid" class="text-left">{{cmCuInfo.cuid}}</td>
                       <td v-if="requiredCuPhone" class="text-left">{{cmCuInfo.hpNumber}}</td>
-                      <td v-for="(varNm, idx) in contsVarNms" :key="varNm" :class="idx!=Object.keys(contsVarNms).length-1 ? 'text-center' : 'text-center end'">
+                      <td v-for="(varNm, idx) in contsVarNms" :key="varNm" class="text-center">
                         <input type="text" class="inputStyle" v-model="cmCuInfo[varNm]">
                       </td>
                     </tr>
