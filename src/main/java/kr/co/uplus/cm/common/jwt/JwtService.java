@@ -41,7 +41,7 @@ public class JwtService {
 		// 사용자 정보 취득
 		AuthUser user = (AuthUser) auth.getPrincipal();
 		// 쿠키에 토큰 추가 - 보안 강화
-		setTokenToCookie(response, token, user.getRepProjectId(), user.getUserId());
+		setTokenToCookie(response, token, user.getRepProjectId());
 	}
 
 	private Claims coreClaims(Authentication auth, int expire) {
@@ -71,7 +71,8 @@ public class JwtService {
 		// Header 설정
 		builder.setHeaderParam("typ", "JWT"); // 토큰 타입(고정값)
 		// Payload 설정 - claim 정보 포함
-		builder.setSubject(auth.getName()).setIssuedAt(now.toDate()).setExpiration(expiration).claim("User", user).claim("principal", jwtUser);
+		builder.setSubject(auth.getName()).setIssuedAt(now.toDate()).setExpiration(expiration).claim("User", user)
+				.claim("principal", jwtUser);
 		// 암호화
 		builder.signWith(SignatureAlgorithm.HS512, TextCodec.BASE64.decode(jwtProps.getKeyString()));
 
@@ -87,7 +88,7 @@ public class JwtService {
 		return token;
 	}
 
-	private void setTokenToCookie(HttpServletResponse response, String token, String repProjectId, String userId) {
+	private void setTokenToCookie(HttpServletResponse response, String token, String repProjectId) {
 		int idx = token.lastIndexOf(".");
 		String payload = token.substring(0, idx);
 		String signature = token.substring(idx + 1);
@@ -131,7 +132,7 @@ public class JwtService {
 		Map<String, Object> principalMap = (Map<String, Object>) claims.get("principal");
 		JwtUser user = JwtUser.createAuthUser(principalMap);
 
-		setTokenToCookie(response, token, user.getRepProjectId(), user.getUserId());
+		setTokenToCookie(response, token, user.getRepProjectId());
 	}
 
 	@SuppressWarnings("unused")
