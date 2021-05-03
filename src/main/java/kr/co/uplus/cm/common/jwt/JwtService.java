@@ -29,7 +29,7 @@ public class JwtService {
 	@Autowired
 	private JwtProperties jwtProps;
 
-	public String generatePrivateToken(HttpServletResponse response, Authentication auth) {
+	public void generatePrivateToken(HttpServletResponse response, Authentication auth) {
 		Claims claims = coreClaims(auth, jwtProps.getPrivateTokenExpiration());
 
 		// 필요하면 다른 정보 추가
@@ -38,13 +38,10 @@ public class JwtService {
 		claims.put("data", data);
 
 		String token = generateToken(auth, claims);
-		// 사용자 대표프로젝트 취득
+		// 사용자 정보 취득
 		AuthUser user = (AuthUser) auth.getPrincipal();
-		String repProjectId = user.getRepProjectId();
 		// 쿠키에 토큰 추가 - 보안 강화
-		setTokenToCookie(response, token, repProjectId);
-
-		return token;
+		setTokenToCookie(response, token, user.getRepProjectId(), user.getUserId());
 	}
 
 	private Claims coreClaims(Authentication auth, int expire) {
@@ -90,12 +87,12 @@ public class JwtService {
 		return token;
 	}
 
-	private void setTokenToCookie(HttpServletResponse response, String token, String repProjectId) {
+	private void setTokenToCookie(HttpServletResponse response, String token, String repProjectId, String userId) {
 		int idx = token.lastIndexOf(".");
 		String payload = token.substring(0, idx);
 		String signature = token.substring(idx + 1);
 
-		// header.paload 부분만 일반 쿠키에 저장 - JS로 읽기 가능
+		// header.payload 부분만 일반 쿠키에 저장 - JS로 읽기 가능
 		Cookie part1 = new Cookie(jwtProps.getPart1(), payload);
 		part1.setPath("/");
 		response.addCookie(part1);
@@ -133,9 +130,8 @@ public class JwtService {
 		// 사용자 대표프로젝트 취득
 		Map<String, Object> principalMap = (Map<String, Object>) claims.get("principal");
 		JwtUser user = JwtUser.createAuthUser(principalMap);
-		String repProjectId = user.getRepProjectId();
 
-		setTokenToCookie(response, token, repProjectId);
+		setTokenToCookie(response, token, user.getRepProjectId(), user.getUserId());
 	}
 
 	@SuppressWarnings("unused")

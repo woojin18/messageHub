@@ -163,10 +163,7 @@ export default {
 	created: function() {
 		console.log('created HomeMain');
 		console.log('token:', tokenSvc.getToken());
-		console.log('token:', tokenSvc.getToken().principal.svcTypeCd);
-		console.log(this.$cookies.keys());
 		console.log(this.$cookies.get('JwtPart1'));
-		console.log(this.$cookies.get('JwtPart2'));
 	},
 	methods: {
 	},

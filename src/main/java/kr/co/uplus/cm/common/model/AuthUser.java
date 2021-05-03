@@ -15,14 +15,15 @@ public class AuthUser implements UserDetails {
 
 	private String userId;
 	private String userPwd;
+	private String loginId;
 	private UserStatus status;
 	private Role role;
 	private Collection<? extends GrantedAuthority> authorities;
+
+	private String userName;
 	private String corpId;
 	private String svcTypeCd;
 	private String repProjectId;
-
-	private String userNm;
 
 	public String getPassword() {
 		return userPwd;
@@ -50,6 +51,6 @@ public class AuthUser implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return userNm;
+		return userName;
 	}
 }

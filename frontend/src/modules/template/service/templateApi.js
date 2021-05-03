@@ -1,7 +1,8 @@
+import tokenSvc from '@/common/token-service';
 import httpClient from '@/common/http-client';
 
 const savePushTmplt = (params) => {
-    return httpClient.post('/api/public/template/savePushTmplt', params, { headers: {"show-layer": "Yes"} });
+    return httpClient.post('/api/public/template/savePushTmplt', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
 };
 
 const selectPushTmpltInfo = (params) => {

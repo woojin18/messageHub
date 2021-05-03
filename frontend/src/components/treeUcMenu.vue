@@ -96,7 +96,6 @@ export default {
 	},
 	methods: {
 		fnMenuList() {
-			console.log(tokenSvc.getToken().principal.userId);
 			var params = {
 				"user_id"    : tokenSvc.getToken().principal.userId,
 				"role_cd"    : tokenSvc.getToken().principal.role,

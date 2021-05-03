@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.common.service.CommonService;
+import kr.co.uplus.cm.login.service.AuthService;
 import kr.co.uplus.cm.template.service.TemplateService;
 import kr.co.uplus.cm.utils.DateUtil;
 import lombok.extern.log4j.Log4j2;
@@ -37,6 +39,9 @@ public class TemplateController {
 
 	@Autowired
 	private TemplateService tmpltSvc;
+
+	@Autowired
+	private CommonService commonSvc;
 
 	/**
 	 * 푸시 템플릿 리스트 조회
@@ -96,7 +101,7 @@ public class TemplateController {
 	public RestResult<?> savePushTmplt(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
-
+		params = commonSvc.setRegId(request, params);
 		try {
 			rtn = tmpltSvc.savePushTemplate(params);
 		} catch (Exception e) {

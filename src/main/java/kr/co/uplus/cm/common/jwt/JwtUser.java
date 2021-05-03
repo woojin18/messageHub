@@ -20,7 +20,8 @@ public class JwtUser extends AuthUser {
 	public static JwtUser createJwtUser(AuthUser user) {
 		JwtUser u = new JwtUser();
 		u.setUserId(user.getUserId());
-		u.setUserNm(user.getUserNm());
+		u.setLoginId(user.getLoginId());
+		u.setUserName(user.getUsername());
 		u.setAuthorities(user.getAuthorities());
 		u.setStatus(user.getStatus());
 		u.setRole(user.getRole());
@@ -33,7 +34,8 @@ public class JwtUser extends AuthUser {
 	public static JwtUser createAuthUser(Map<String, Object> principal) {
 		JwtUser u = new JwtUser();
 		u.setUserId((String) principal.get("userId"));
-		u.setUserNm((String) principal.get("userNm"));
+		u.setLoginId((String) principal.get("loginId"));
+		u.setUserName((String) principal.get("userNm"));
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		Collection<? extends GrantedAuthority> authorities = ((List<Map>) principal.get("authorities")).stream()

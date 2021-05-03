@@ -105,8 +105,7 @@ public class AuthService implements UserDetailsService {
 		}
 
 		ResultCode rcode = loginSuccessHandler.process(request, response, authentication);
-		String token = jwtSvc.generatePrivateToken(response, authentication);
-		response.setHeader("jwt-auth-token", token);
+		jwtSvc.generatePrivateToken(response, authentication);
 
 		String nextUrl = getReturnUrl(request, response);
 		log.debug("login success - nextUrl = [{}]", nextUrl);
