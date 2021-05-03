@@ -26,7 +26,17 @@
 			,		''			AS REQ_DT
 			,		''			AS APPROVAL_DT
 			,		MAX(A.REG_DT) AS REG_DT 
+			,		MAX(B.MAIN_MDN) AS MAIN_MDN
+			,		MAX(B.MAIN_TITLE) AS MAIN_TITLE
 			FROM	cm.CM_RCS_BRAND_REQ A
+			left outer join (
+				SELECT	crcr.BRAND_ID 
+				,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.mdn[0]'), "\"", "") as MAIN_MDN
+				,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") as MAIN_TITLE
+				FROM cm.CM_RCS_CHATBOT_REQ crcr 
+				where JSON_EXTRACT(crcr.CHATBOT_INFO , '$.isMainNum[0]') = true
+			) B
+				ON A.BRAND_ID = B.BRAND_ID
 			WHERE	A.PROJECT_ID = #{projectId}
 			AND		A.BRAND_INFO != ''
 			AND		A.BRAND_ID NOT IN (
@@ -58,6 +68,8 @@
 			,		A.REG_DT			AS REQ_DT
 			,		A.APPROVAL_DT
 			,		A.REG_DT
+			,		'' AS MAIN_MDN
+			,		'' AS MAIN_TITLE
 			FROM	cm.CM_RCS_BRAND A
 			WHERE	A.PROJECT_ID = #{projectId}
 			AND		A.BRAND_INFO != ''
