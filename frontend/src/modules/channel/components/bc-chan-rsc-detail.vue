@@ -304,14 +304,16 @@
 						<!-- 인풋 -->
 						<p></p>
 						<div class="of_h consolMarginTop">
-							<h4 style="width:28%" class="inline-block">대표발신번호 *</h4>
+							<h4 style="width:28%" class="inline-block">대표발신번호</h4>
 							<div class="consolCheck" style="width:25%">
 								{{this.inputVal.mainMdn}}
 							</div>
 						</div>
 						<div class="of_h">
-							<h4 class="inline-block" style="width:22%">발신 번호명 *</h4>
-							{{this.inputVal.mainTitle}}
+							<h4 class="inline-block" style="width:28%">발신 번호명</h4>
+							<div class="consolCheck" style="width:25%">
+								{{this.inputVal.mainTitle}}
+							</div>
 						</div>
 						<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:72%; visibility : hidden;" ref="certiImgFile" />
 					</div>

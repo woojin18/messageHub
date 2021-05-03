@@ -66,23 +66,23 @@ public class ChannelService {
 			
 			// 체널관리
 			List<Map<String, Object>> menusList = (List<Map<String, Object>>) brandInfo.get("menus");
+			// 초기화
+			inputVal.put("call",			false);
+			inputVal.put("callWeblink",		"");
+			inputVal.put("web",				false);
+			inputVal.put("webWeblink",		"");
+			inputVal.put("store",			false);
+			inputVal.put("storeWeblink",	"");
+			inputVal.put("order",			false);
+			inputVal.put("orderWeblink",	"");
+			inputVal.put("buy",				false);
+			inputVal.put("buyWeblink",		"");
+			inputVal.put("ticket",			false);
+			inputVal.put("ticketWeblink",	"");
+			inputVal.put("moreInfo",		false);
+			inputVal.put("moreInfoWeblink",	"");
+			
 			if(menusList != null) {
-				// 초기화
-				inputVal.put("call",			false);
-				inputVal.put("callWeblink",		"");
-				inputVal.put("web",				false);
-				inputVal.put("webWeblink",		"");
-				inputVal.put("store",			false);
-				inputVal.put("storeWeblink",	"");
-				inputVal.put("order",			false);
-				inputVal.put("orderWeblink",	"");
-				inputVal.put("buy",				false);
-				inputVal.put("buyWeblink",		"");
-				inputVal.put("ticket",			false);
-				inputVal.put("ticketWeblink",	"");
-				inputVal.put("moreInfo",		false);
-				inputVal.put("moreInfoWeblink",	"");
-				
 				for(int j = 0; j < menusList.size(); j++){
 					Map<String, Object> menus = menusList.get(j);
 					
@@ -116,8 +116,6 @@ public class ChannelService {
 					}
 				}
 			}
-			
-			
 			
 			inputVal.put("categoryId",		brandInfo.get("categoryId"));
 			inputVal.put("subCategoryId",	brandInfo.get("subCategoryId"));
@@ -479,6 +477,11 @@ public class ChannelService {
 			
 			// API 통신 처리
 			Map<String, Object> result =  apiInterface.listPost("/console/v1/brand", list, headerMap);
+			
+
+			System.out.println("-----------------------------------------------------------@@ result!!!! : " + result);
+			
+			
 			// 성공인지 실패인지 체크
 			if( !"10000".equals(result.get("rslt")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
@@ -497,6 +500,8 @@ public class ChannelService {
 			bodyMap.put("list", json);
 			
 			Map<String, Object> result =  apiInterface.listPut("/console/v1/brand/" + brandId, list, headerMap);
+			
+			System.out.println("-----------------------------------------------------------@@ result : " + result);
 			
 			// 성공인지 실패인지 체크
 			if( !"10000".equals(result.get("rslt")) ) {
