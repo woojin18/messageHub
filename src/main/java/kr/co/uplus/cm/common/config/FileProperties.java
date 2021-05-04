@@ -1,9 +1,12 @@
 package kr.co.uplus.cm.common.config;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -33,77 +36,37 @@ public class FileProperties implements Serializable {
     public static class ImgFileProperties {
         private String uploadPath;
         private String permitExten;
-        private ImgLimitSize limitSize = new ImgLimitSize();
-        private ImgResize resize = new ImgResize();
+        private long limitSize;
+        private List<Object> imgPropList = new ArrayList<Object>();
 
-        @Data
-        @Component
-        @ConfigurationProperties(prefix="file-props.img.limit-size")
-        public static class ImgLimitSize {
-            private long defaultSize;
-            private long mms;
-            private long push;
-            private long friendtalkNormal;
-            private long friendtalkWide;
-            private long rcs;
-        }
-
-        @Data
-        @Component
-        @ConfigurationProperties(prefix="file-props.img.resize")
-        public static class ImgResize {
-            private int pushWidth;
-            private int pushHeight;
-            private int rcsWidth;
-            private int rcsHeight;
-            private int friendtalkNomalWidth;
-            private int friendtalkNomalHeight;
-            private int friendtalkWideWidth;
-            private int friendtalkWideHeight;
-            private int mmsWidth;
-            private int mmsHeight;
-        }
-
+        @SuppressWarnings("unchecked")
         public long getChLimitSize(String ch) {
-            if("MMS".equalsIgnoreCase(ch)) {
-                return this.limitSize.mms;
-            } else if("PUSH".equalsIgnoreCase(ch)) {
-                return this.limitSize.push;
-            } else if("FRIENDTALK".equalsIgnoreCase(ch)) {
-                return this.limitSize.friendtalkNormal;
-            } else if("FRIENDTALK_WIDE".equalsIgnoreCase(ch)) {
-                return this.limitSize.friendtalkWide;
-            } else if("RCS".equalsIgnoreCase(ch)) {
-                return this.limitSize.rcs;
-            } else {
-                return this.limitSize.defaultSize;
+            Long limitSize = NumberUtils.LONG_ZERO;
+            HashMap<String, Object> map = new HashMap<>();
+            for(Object obj : this.imgPropList) {
+                map = (HashMap<String, Object>) obj;
+                if(ch.equalsIgnoreCase((String) map.get("ch"))) {
+                    limitSize = Long.parseLong((String) map.get("limitSize"));
+                    break;
+                }
             }
+            return limitSize;
         }
 
+        @SuppressWarnings("unchecked")
         public Map<String, Integer> getChResize(String ch) {
-
             Map<String, Integer> resizeMap = new HashMap<String, Integer>();
-
-            if("MMS".equalsIgnoreCase(ch)) {
-                resizeMap.put(Const.IMG_RESIZE_WIDTH, this.resize.mmsWidth);
-                resizeMap.put(Const.IMG_RESIZE_HEIGHT, this.resize.mmsHeight);
-            } else if("PUSH".equalsIgnoreCase(ch)) {
-                resizeMap.put(Const.IMG_RESIZE_WIDTH, this.resize.pushWidth);
-                resizeMap.put(Const.IMG_RESIZE_HEIGHT, this.resize.pushHeight);
-            } else if("FRIENDTALK".equalsIgnoreCase(ch)) {
-                resizeMap.put(Const.IMG_RESIZE_WIDTH, this.resize.friendtalkNomalWidth);
-                resizeMap.put(Const.IMG_RESIZE_HEIGHT, this.resize.friendtalkNomalHeight);
-            } else if("FRIENDTALK_WIDE".equalsIgnoreCase(ch)) {
-                resizeMap.put(Const.IMG_RESIZE_WIDTH, this.resize.friendtalkWideWidth);
-                resizeMap.put(Const.IMG_RESIZE_HEIGHT, this.resize.friendtalkWideHeight);
-            } else if("RCS".equalsIgnoreCase(ch)) {
-                resizeMap.put(Const.IMG_RESIZE_WIDTH, this.resize.rcsWidth);
-                resizeMap.put(Const.IMG_RESIZE_HEIGHT, this.resize.rcsHeight);
+            HashMap<String, Object> map = new HashMap<>();
+            for(Object obj : this.imgPropList) {
+                map = (HashMap<String, Object>) obj;
+                if(ch.equalsIgnoreCase((String) map.get("ch"))) {
+                    resizeMap.put(Const.IMG_RESIZE_WIDTH, Integer.parseInt((String) map.get("resizeWidth")));
+                    resizeMap.put(Const.IMG_RESIZE_HEIGHT, Integer.parseInt((String) map.get("resizeHeight")));
+                    break;
+                }
             }
-
             return resizeMap;
         }
-
     }
 
 }

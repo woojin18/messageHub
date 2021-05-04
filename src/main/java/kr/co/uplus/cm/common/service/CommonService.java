@@ -187,6 +187,9 @@ public class CommonService {
             File uplaodFile = File.createTempFile(currentYmd + "_", "." + fileExten, uploadDir); // 업로드된 파일정보
             FileCopyUtils.copy(files.getInputStream(), new FileOutputStream(uplaodFile));
 
+            //get File Prop
+            fileProps.getImg().setImgPropList(selectImgUploadProp());
+
             // 채널별 분기작업
             String oriFileFullPath = uplaodFile.getAbsolutePath();
             String oriFileName = uplaodFile.getName().replaceFirst("[.][^.]+$", "");
@@ -316,7 +319,12 @@ public class CommonService {
         return rtn;
     }
 
-    // 고객사별 이미지 조회
+    /**
+     * 고객사별 이미지 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
     public RestResult<Object> selectImageList(Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
 
@@ -383,7 +391,7 @@ public class CommonService {
         String fileExten = fileName.substring(fileName.lastIndexOf(".") + 1);
 
         // 이미지 업로드 용량 유효성 체크
-        if (files.getSize() > fileProps.getImg().getLimitSize().getDefaultSize()) {
+        if (files.getSize() > fileProps.getImg().getLimitSize()) {
             rtn.setSuccess(false);
             rtn.setMessage("허용되는 업로드 용량 크기를 초과하였습니다.");
             return rtn;
@@ -445,8 +453,8 @@ public class CommonService {
         String apiKey = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_API_KEY, params));
 
         if (StringUtils.isBlank(apiKey)) {
-            log.error("{}.getApiKey no result search for api key. corpID : {}, projectId : {}", this.getClass(), corpId,
-                    projectId);
+            log.error("{}.getApiKey no result search for api key. corpID : {}, projectId : {}"
+                    , this.getClass(), corpId, projectId);
             throw new Exception("API 키에 대한 검색 결과 없음.");
         }
 
@@ -473,6 +481,20 @@ public class CommonService {
         AuthUser user = (AuthUser) authSvc.loadUserByUsername(request.getHeader("loginId"));
         params.put("updId", user.getLoginId());
         return params;
+    }
+
+    /**
+     * 이미지 업로드 프로퍼티 조회
+     * @throws Exception
+     */
+    public List<Object> selectImgUploadProp() throws Exception {
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_IMG_UPLOAD_PROP, null);
+
+        if(rtnList == null || rtnList.size() == 0) {
+            log.error("{}.selectImgUploadProp no result search for image upload Properties. corpID : {}", this.getClass());
+            throw new Exception("이미지 업로드 프로퍼티 검색 결과 없음.");
+        }
+        return rtnList;
     }
 
     /**

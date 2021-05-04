@@ -155,4 +155,19 @@
             , #{loginId}
         )
     </insert>
+
+    <select id="selectImgUploadProp" parameterType="hashmap" resultType="camel">
+    /* common.selectImgUploadProp - 이미지업로드 프로퍼티 조회 */
+        SELECT
+            CODE_VAL_1 AS CH
+            , CODE_VAL_2 AS LIMIT_SIZE
+            , CODE_VAL_3 AS RESIZE_WIDTH
+            , CODE_VAL_4 AS RESIZE_HEIGHT
+        FROM cm_bo.CM_CODE_TYPE CCT
+        INNER JOIN cm_bo.CM_CODE CC
+            ON CCT.CODE_TYPE_CD = CC.CODE_TYPE_CD
+            AND CC.USE_YN = 'Y'
+        WHERE CCT.CODE_TYPE_CD = 'IMG_UPLOAD_PROP'
+    </select>
+
 </mapper>

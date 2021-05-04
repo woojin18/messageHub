@@ -4,24 +4,7 @@ server:
 file-props:
   img:
     upload-path: /frontend/src/assets/images/temp/
-    permit-exten: jpg,jpeg,png,gif    limit-size:
-      default-size: 5000000  #5MB
-      mms: 300000  #300KB
-      push: 1000000  #1MB
-      friendtalk-normal: 500000  #500KB
-      friendtalk-wide: 2000000  #2MB
-      rcs: 1000000  #1MB
-    resize:
-      push-width: 500
-      push-height: 250
-      rcs-width: 600
-      rcs-height: 300
-      friendtalk-nomal-width: 704
-      friendtalk-nomal-height: 352
-      friendtalk-wide-width: 800
-      friendtalk-wide-height: 600
-      mms-width: 500
-      mms-height: 250
+    permit-exten: jpg,jpeg,png,gif    limit-size: 5000000  #5MB
   excel:
     permit-exten: xls,xlsx
 
