@@ -73,7 +73,6 @@
         <foreach collection="tmpltIds" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
     </delete>
 
-
     <insert id="insertPushTemplate" parameterType="hashmap">
     /* template.insertPushTemplate - 푸시 템플릿 등록 */
         INSERT
@@ -137,6 +136,140 @@
             , ADTN_INFO = #{adtnInfo}
         WHERE TMPLT_ID = #{tmpltId}
     </update>
+
+    <insert id="insertSmsTemplate" parameterType="hashmap">
+    /* template.insertPushTemplate - SMS 템플릿 등록 */
+        INSERT
+            INTO CM_SMS_TMPLT
+        (
+            TMPLT_ID
+            , TMPLT_NAME
+            , TMPLT_DESC
+            , SENDER_TYPE
+            , PROJECT_ID
+            , MSG_KIND
+            , TMPLT_TITLE
+            , TMPLT_CONTENT
+            , RCVBLC_NUMBER
+            , IMG_INFO_LIST
+            , REG_DT
+            , REG_ID
+            , UPD_DT
+            , UPD_ID
+        ) VALUES (
+            #{tmpltId}
+            , #{tmpltName}
+            , #{tmpltDesc}
+            , #{senderType}
+            , #{projectId}
+            , #{msgKind}
+            , #{tmpltTitle}
+            , #{tmpltContent}
+            , #{rcvblcNumber}
+            , #{imgInfoListStr}
+            , NOW()
+            , #{userId}
+            , NOW()
+            , #{userId}
+        )
+    </insert>
+
+    <sql id ="whereSelectSmsTemplateList">
+        <if test="searchText != '' and searchText != null ">
+            <if test="searchCondi == 'tmpltId' ">
+            AND TMPLT_ID LIKE CONCAT('%', #{searchText}, '%')
+            </if>
+            <if test="searchCondi == 'tmpltName' ">
+            AND TMPLT_NAME LIKE CONCAT('%', #{searchText}, '%')
+            </if>
+        </if>
+        <if test="searchStartDate != '' and searchStartDate != null ">
+            <if test="searchEndDate != '' and searchEndDate != null ">
+            AND REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
+            </if>
+        </if>
+        <if test="searchOthPrjUseYn != null and searchOthPrjUseYn.size != 0 ">
+            AND PROJECT_ID IN
+            <foreach collection="searchOthPrjUseYn" item="item" index="index"  open="(" close=")" separator=",">
+                <if test='item == "Y" '>'ALL'</if>
+                <if test='item == "N" '>#{projectId}</if>
+            </foreach>
+        </if>
+        <if test="tmpltId != '' and tmpltId != null ">
+            AND TMPLT_ID = #{tmpltId}
+        </if>
+    </sql>
+
+    <select id="selectSmsTmpltListCnt" parameterType="hashmap" resultType="int">
+    /* template.selectSmsTmpltListCnt SMS 템플릿 리스트 카운트 조회 */
+        SELECT
+            COUNT(*) AS CNT
+        FROM CM_SMS_TMPLT
+        WHERE 1=1
+        <include refid="whereSelectSmsTemplateList"/>
+    </select>
+
+    <select id="selectSmsTmpltList" parameterType="string" resultType="camel">
+    /* template.selectSmsTmpltList SMS 템플릿 리스트 조회 */
+        SELECT
+            @ROWNUM := @ROWNUM + 1 AS ROWNUM
+            , CST.TMPLT_ID
+            , CST.TMPLT_NAME
+            , CST.TMPLT_DESC
+            , CST.SENDER_TYPE
+            , CST.PROJECT_ID
+            , IF(CST.PROJECT_ID = 'ALL', '공용', '전용') AS PROJECT_ID_NM
+            , CST.MSG_KIND
+            , CST.TMPLT_TITLE
+            , CST.TMPLT_CONTENT
+            , CST.RCVBLC_NUMBER
+            , CST.IMG_INFO_LIST
+            , DATE_FORMAT(CST.REG_DT, '%Y-%m-%d %H:%i:%S') AS REG_DT
+            , CST.REG_ID
+            , cm_console.fnc_get_user_name(CST.REG_ID)  AS REG_NM
+            , CST.UPD_DT
+            , CST.UPD_ID
+        FROM CM_SMS_TMPLT CST, (SELECT @ROWNUM:=0) TMP
+        WHERE 1=1
+        <include refid="whereSelectSmsTemplateList"/>
+        ORDER BY REG_DT DESC
+        <if test='pagingYn == "Y" '>
+        LIMIT ${offset}, #{listSize}
+        </if>
+    </select>
+
+    <update id="updateSmsTmplt" parameterType="hashmap">
+    /* template.updateSmsTmplt - SMS 템플릿 수정 */
+        UPDATE CM_SMS_TMPLT
+        SET
+            TMPLT_NAME = #{tmpltName}
+            , TMPLT_DESC = #{tmpltDesc}
+            , SENDER_TYPE = #{senderType}
+            , PROJECT_ID = #{projectId}
+            , MSG_KIND = #{msgKind}
+            , TMPLT_TITLE = #{tmpltTitle}
+            , TMPLT_CONTENT = #{tmpltContent}
+            , RCVBLC_NUMBER = #{rcvblcNumber}
+            , IMG_INFO_LIST = #{imgInfoListStr}
+            , UPD_DT = NOW()
+            , UPD_ID = #{loginId}
+        WHERE TMPLT_ID = #{tmpltId}
+    </update>
+
+    <delete id="deleteSmsTmplt" parameterType="hashmap">
+    /* template.deleteSmsTmplt - SMS 템플릿 삭제 */
+        DELETE
+        FROM CM_SMS_TMPLT
+        WHERE TMPLT_ID IN
+        <foreach collection="tmpltIds" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
+    </delete>
+
+
+
+
+
+
+
 
 	<select id="selectRcsTemplate" parameterType="string" resultType="camel">
 		/* template.selectRcsTemplate RCS 템플릿 리스트 조회 */
@@ -216,49 +349,6 @@
 			TMPLT_NAME = #{tmpltName},
 			MSG_KIND = #{msgKind},
 			TMPLT_CONTENT = #{tmpltContent}
-		WHERE TMPLT_ID = #{tmpltId}
-	</update>
-
-	<select id="selectSmsTemplate" parameterType="string" resultType="camel">
-		/* template.selectSmsTemplate SMS/MMS 템플릿 리스트 조회 */
-		SELECT
-			TMPLT_ID,
-			TMPLT_NAME,
-			TMPLT_DESC,
-			SENDER_TYPE,
-			PROJECT_ID,
-			MSG_KIND,
-			TMPLT_TITLE,
-			TMPLT_CONTENT,
-			RCVBLC_NUMBER,
-			IMG_URL,
-			REG_DT,
-			REG_ID,
-			UPD_DT,
-			UPD_ID
-		FROM
-			CM_SMS_TMPLT
-	</select>
-
-	<insert id="insertSmsTemplate" parameterType="hashmap">
-		/* template.insertSmsTemplate SMS/MMS 템플릿 등록 */
-		INSERT INTO CM_SMS_TMPLT
-		(
-			TMPLT_ID, TMPLT_NAME, TMPLT_DESC, SENDER_TYPE
-		)
-		VALUES
-		(
-    		#{tmpltId}, #{tmpltName}, #{tmpltDesc}, #{senderType}
-   		)
-	</insert>
-
-	<update id="updateSmsTemplate" parameterType="hashmap">
-		/* template.updateSmsTemplate SMS/MMS 템플릿 수정 */
-		UPDATE CM_SMS_TMPLT
-		SET
-			TMPLT_NAME = #{tmpltName},
-			TMPLT_DESC = #{tmpltDesc},
-			SENDER_TYPE = #{senderType}
 		WHERE TMPLT_ID = #{tmpltId}
 	</update>
 

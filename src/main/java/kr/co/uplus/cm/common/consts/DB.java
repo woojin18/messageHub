@@ -28,9 +28,11 @@ public class DB {
 	public final static String QRY_INSERT_FRIENDTALK_TMPLT = "template.insertFriendTalkTemplate";
 	public final static String QRY_UPDATE_FRIENDTALK_TMPLT = "template.updateFriendTalkTemplate";
 	// SMS/MMS 템플릿
-	public final static String QRY_SELECT_SMS_TMPLT = "template.selectSmsTemplate";
+	public final static String QRY_SELECT_SMS_TMPLT_LIST_CNT = "template.selectSmsTmpltListCnt";
+	public final static String QRY_SELECT_SMS_TMPLT_LIST = "template.selectSmsTmpltList";
 	public final static String QRY_INSERT_SMS_TMPLT = "template.insertSmsTemplate";
-	public final static String QRY_UPDATE_SMS_TMPLT = "template.updateSmsTemplate";
+	public final static String QRY_UPDATE_SMS_TMPLT = "template.updateSmsTmplt";
+	public final static String QRY_DELETE_SMS_TMPLT = "template.deleteSmsTmplt";
 	// 통합발송 템플릿
 	public final static String QRY_SELECT_MULTISEND_TMPLT = "template.selectMultiSendTemplate";
 	public final static String QRY_INSERT_MULTISEND_TMPLT = "template.insertMultiSendTemplate";

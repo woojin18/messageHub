@@ -47,7 +47,7 @@
             <h4>템플릿명 *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <input type="text" class="inputStyle float-right" title="템플릿명 입력란" v-model="rowData.tmpltName" maxlength="50">
+            <input type="text" class="inputStyle float-right" title="템플릿명 입력란" v-model="rowData.tmpltName" maxlength="100">
           </div>
         </div>
         <div class="of_h user-phone">
@@ -96,7 +96,7 @@
             <h4>내용 *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <textarea class="textareaStyle height120" placeholder="" v-model="rowData.tmpltContent" maxlength="512"></textarea>
+            <textarea class="textareaStyle height120" placeholder="" v-model="rowData.tmpltContent" maxlength="2000"></textarea>
             <div v-if="rowData.msgKind == 'A'">
               <p class="color5">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
               <input type="text" id="rcvblcNumber" name="rcvblcNumber" class="inputStyle float-right mt10" title="내용 입력란" v-model="rowData.rcvblcNumber" placeholder="설정 > 푸시 알림 설정 변경" maxlength="45">
@@ -285,7 +285,6 @@ export default {
       var saveType = (this.isInsert ? '등록' : '수정');
       eventBus.$on('callbackEventBus', this.fnProcSavePushTemplate);
       confirm.fnConfirm(this.componentsTitle, "푸시 템플릿을 "+saveType+"하시겠습니까?", "확인");
-
     },
     async fnProcSavePushTemplate(){
       //DATA Set
@@ -310,7 +309,7 @@ export default {
             this.$router.push('pushTemplateList')
           }
         } else {
-          alert(result.message);
+          confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
     }

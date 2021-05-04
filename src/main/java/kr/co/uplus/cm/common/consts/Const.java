@@ -6,6 +6,7 @@ import java.util.List;
 public class Const {
     public static final String COMM_YES = "Y";
     public static final String COMM_NO = "N";
+    public static final String OTHER_PROJECT_USE_ID = "ALL";
 
 	public static final String KEY_MDC_LOG = "logKey";
 	public static final String KEY_LOG_OBJ = "logObj";
@@ -79,10 +80,17 @@ public class Const {
     public static final String IMG_RESIZE_WIDTH = "width";
     public static final String IMG_RESIZE_HEIGHT = "height";
 
+    //TODO : 토큰에서 userId, corpId, projectId 가져오기 전까지 쓰자
+    public static class UserInfo {
+        public static final String USER_ID = "MBR2104141094944";
+        public static final String CORP_ID = "COM2104142281316";
+        public static final String PROJECT_ID = "313431323336706A74";
+    }
+
     //API
     public static final String API_SUCCESS = "10000";  //API 성공 코드(코드정보를 받으면 enum에 등록)
     public static final int PUSH_RECV_LIMIT_SIZE = 10;
     public static final String FILE_UPLOAD_API_URL = "/console/v1/file/";  //파일 업로드 API
     public static final String SEND_PUSH_API_URL = "/console/v1/push";  //푸시발송 API
-    
+
 }

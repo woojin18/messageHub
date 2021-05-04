@@ -116,6 +116,117 @@ public class TemplateService {
         return rtn;
     }
 
+    /**
+     * 푸시 템플릿 저장 처리
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+    public RestResult<Object> saveSmsTemplate(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        int resultCnt = 0;
+        String otherProjectUseYn = CommonUtils.getStrValue(params, "otherProjectUseYn");
+
+        if(!StringUtils.equalsIgnoreCase(otherProjectUseYn, Const.COMM_NO)) {
+            params.put("projectId", Const.OTHER_PROJECT_USE_ID);
+        }
+
+        // update
+        if (params.containsKey("tmpltId") && StringUtils.isNotBlank(CommonUtils.getString(params.get("tmpltId")))) {
+            resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_SMS_TMPLT, params);
+        // insert
+        } else {
+            // 템플릿ID 취득
+            String tmpltId = CommonUtils.getCommonId(Const.TMPLT_PREFIX, 5);
+            params.put("tmpltId", tmpltId);
+            resultCnt = generalDao.insertGernal(DB.QRY_INSERT_SMS_TMPLT, params);
+        }
+
+        if (resultCnt <= 0) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+        } else {
+            rtn.setSuccess(true);
+            rtn.setData(params);
+        }
+
+        return rtn;
+    }
+
+    /**
+     * SMS/MMS 템플릿 리스트 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectSmsTemplateList(Map<String, Object> params) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        if(params.containsKey("pageNo")
+                && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+                && params.containsKey("listSize")
+                && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+            rtn.setPageProps(params);
+            if(rtn.getPageInfo() != null) {
+                //카운트 쿼리 실행
+                int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_SMS_TMPLT_LIST_CNT, params);
+                rtn.getPageInfo().put("totCnt", listCnt);
+            }
+        }
+
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_SMS_TMPLT_LIST, params);
+        rtn.setData(rtnList);
+
+        return rtn;
+    }
+
+    /**
+     * SMS 템플릿 삭제처리
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+    public RestResult<Object> deleteSmsTmplt(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        int resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_SMS_TMPLT, params);
+        if (resultCnt <= 0) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+        } else {
+            rtn.setSuccess(true);
+            rtn.setData(params);
+        }
+
+        return rtn;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+/** 미사용 삭제필요 */
+
+
+
+
+
+
+
+
+
+
+
 	/**
 	 * RCS 템플릿 리스트 조회
 	 *
@@ -270,69 +381,6 @@ public class TemplateService {
 		RestResult<Object> rtn = new RestResult<Object>();
 
 		int resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_FRIENDTALK_TMPLT, params);
-
-		if (resultCnt <= 0) {
-			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
-		} else {
-			rtn.setSuccess(true);
-		}
-
-		return rtn;
-	}
-
-	/**
-	 * SMS/MMS 템플릿 리스트 조회
-	 *
-	 * @param params
-	 * @return
-	 * @throws Exception
-	 */
-	public RestResult<Object> selectSmsTemplateList(Map<String, Object> params) throws Exception {
-
-		RestResult<Object> rtn = new RestResult<Object>();
-
-		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_SMS_TMPLT, params);
-		rtn.setData(rtnList);
-
-		return rtn;
-	}
-
-	/**
-	 * SMS/MMS 템플릿 등록처리
-	 *
-	 * @param params
-	 * @return
-	 * @throws Exception
-	 */
-	public RestResult<Object> addSmsTemplate(Map<String, Object> params) throws Exception {
-
-		RestResult<Object> rtn = new RestResult<Object>();
-
-		int resultCnt = generalDao.insertGernal(DB.QRY_INSERT_SMS_TMPLT, params);
-
-		if (resultCnt <= 0) {
-			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
-		} else {
-			rtn.setSuccess(true);
-		}
-
-		return rtn;
-	}
-
-	/**
-	 * SMS/MMS 템플릿 수정처리
-	 *
-	 * @param params
-	 * @return
-	 * @throws Exception
-	 */
-	public RestResult<Object> updateSmsTemplate(Map<String, Object> params) throws Exception {
-
-		RestResult<Object> rtn = new RestResult<Object>();
-
-		int resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_SMS_TMPLT, params);
 
 		if (resultCnt <= 0) {
 			rtn.setSuccess(false);

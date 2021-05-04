@@ -53,7 +53,7 @@
                     <th class="text-center lc-1">수신자명</th>
                     <th v-if="requiredCuid" class="text-center lc-1">APP 로그인ID</th>
                     <th v-if="requiredCuPhone" class="text-center lc-1">휴대폰번호</th>
-                    <th v-for="(varNm, idx) in contsVarNms" :key="varNm" class="text-center lc-1">{{varNm}}</th>
+                    <th v-for="varNm in contsVarNms" :key="varNm" class="text-center lc-1">{{varNm}}</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -67,7 +67,7 @@
                       <td class="text-center">{{cmCuInfo.cuName}}</td>
                       <td v-if="requiredCuid" class="text-left">{{cmCuInfo.cuid}}</td>
                       <td v-if="requiredCuPhone" class="text-left">{{cmCuInfo.hpNumber}}</td>
-                      <td v-for="(varNm, idx) in contsVarNms" :key="varNm" class="text-center">
+                      <td v-for="varNm in contsVarNms" :key="varNm" class="text-center">
                         <input type="text" class="inputStyle" v-model="cmCuInfo[varNm]">
                       </td>
                     </tr>
