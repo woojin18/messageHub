@@ -9,20 +9,20 @@
 			<!-- 본문 -->
 			<div class="contentBody">
 				<ul class="tab_s3">
-					<li :class="{active:(selMainTab == 1)}" @click="selMainTab=1"><a>대시보드</a></li>
-					<li :class="{active:(selMainTab == 2)}" @click="selMainTab=2"><a>기본정보</a></li>
-					<li :class="{active:(selMainTab == 3)}" @click="selMainTab=3"><a>멤버관리</a></li>
-					<li :class="{active:(selMainTab == 4)}" @click="selMainTab=4"><a>채널관리</a></li>
-					<li :class="{active:(selMainTab == 5)}" @click="selMainTab=5"><a>발신번호관리</a></li>
-					<li :class="{active:(selMainTab == 6)}" @click="selMainTab=5"><a>스팸관리</a></li>
+					<li :class="{active:(selMainTab == 1)}" @click="selMainTab=1; selMidTab=1; selSubTab==1"><a>대시보드</a></li>
+					<li :class="{active:(selMainTab == 2)}" @click="selMainTab=2; selMidTab=1; selSubTab==1"><a>기본정보</a></li>
+					<li :class="{active:(selMainTab == 3)}" @click="selMainTab=3; selMidTab=1; selSubTab==1"><a>멤버관리</a></li>
+					<li :class="{active:(selMainTab == 4)}" @click="selMainTab=4; selMidTab=1; selSubTab==1"><a>채널관리</a></li>
+					<li :class="{active:(selMainTab == 5)}" @click="selMainTab=5; selMidTab=1; selSubTab==1"><a>발신번호관리</a></li>
+					<li :class="{active:(selMainTab == 6)}" @click="selMainTab=6; selMidTab=1; selSubTab==1"><a>스팸관리</a></li>
 				</ul>			
 			</div>
 			<ul v-if="selMainTab==4" class="tabStyle tab6 bgColor_tapGray">
-				<li :class="{active:(selMidTab == 1)}" @click="selMidTab=1"><a>RCS</a></li>
-				<li :class="{active:(selMidTab == 2)}" @click="selMidTab=2"><a>SMS/MMS</a></li>
-				<li :class="{active:(selMidTab == 3)}" @click="selMidTab=3"><a>PUSH</a></li>
-				<li :class="{active:(selMidTab == 4)}" @click="selMidTab=4"><a>카카오톡</a></li>
-				<li :class="{active:(selMidTab == 5)}" @click="selMidTab=5"><a>MO</a></li>
+				<li :class="{active:(selMidTab == 1)}" @click="selMidTab=1; selSubTab=1"><a>RCS</a></li>
+				<li :class="{active:(selMidTab == 2)}" @click="selMidTab=2; selSubTab=1"><a>SMS/MMS</a></li>
+				<li :class="{active:(selMidTab == 3)}" @click="selMidTab=3; selSubTab=1"><a>PUSH</a></li>
+				<li :class="{active:(selMidTab == 4)}" @click="selMidTab=4; selSubTab=1"><a>카카오톡</a></li>
+				<li :class="{active:(selMidTab == 5)}" @click="selMidTab=5; selSubTab=1"><a>MO</a></li>
 			</ul>
 			
 			<ul v-if="selMainTab==4&&selMidTab==1" class="tab_s6 mt10">

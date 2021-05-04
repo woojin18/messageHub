@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<layerPopup  :data = "data" />
+		<layerPopup :row_data="row_data" :projectId="projectId" />
 		<article>
 			<div class="row mt15">
 				<div class="col-xs-12">
@@ -85,14 +85,14 @@
 								<td class="text-center">{{ index + 1 }}</td>
 								<td class="text-center">{{row.brandName}}</td>
 								<td class="text-center">{{row.subTitle}}</td>
-								<td class="text-center">{{row.mdn}}</td>
-								<td class="text-center">{{row.useYnName}}</td>
-								<td class="text-center">{{row.approvalName}}</td>
+								<td class="text-center">{{row.chatbotId}}</td>
+								<td class="text-center">{{row.rcsReply}}</td>
+								<td class="text-center">{{row.approvalStatus}}</td>
 								<td class="text-center">{{row.regDt}}</td>
 								<td class="text-center">{{row.approvalDt}}</td>
 								<td class="end">
 									<a @click="fnCallbackDetail(row)" class="btnStyle8 mr5">수정</a>
-									<a @click="fnCallbackDelete(row)" class="btnStyle8 mr5">삭제</a>
+									<a @click="fnCallbackDeleteConfirm(row)" class="btnStyle8 mr5">삭제</a>
 								</td>
 							</tr>
 						</tbody>
@@ -123,6 +123,8 @@ import tokenSvc from '@/common/token-service';
 import Paging from "@/modules/commonUtil/components/bc-paging"
 import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt"
 
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import confirm from "@/modules/commonUtil/service/confirm"
 
 export default {
 	components: {
@@ -146,7 +148,8 @@ export default {
 
 			// 리스트 
 			data : {},
-			pageInfo: {}
+			pageInfo: {},
+			row_data : {}
 		}
 	},
 	mounted() {
@@ -181,12 +184,30 @@ export default {
 				}
 			});
 		},
-		fnCallbackDetail(data){
-			this.data = data;
+		fnCallbackDetail(row_data){
+			this.row_data = row_data;
+			console.log(row_data);
+			console.log("fnCallbackDetail");
 			jQuery("#detailPop").modal("show");
 		},
-		fnCallbackDelete(data){
-			this.data = data;
+		fnCallbackDeleteConfirm(row_data){
+			this.row_data = row_data;
+			eventBus.$on('callbackEventBus', this.fnCallbackDelete);
+			confirm.fnConfirm("", "삭제처리된 발신번호는 복구할 수 없습니다. 계속 진행하시겠습니까?", "확인");
+		},
+		fnCallbackDelete(){
+			var params = {
+				"brandId"		: this.row_data.brandId,
+				"chatbotId"		: this.row_data.chatbotId,
+				"corpId"		: this.row_data.corpId,
+			};
+
+			console.log(params);
+
+			projectApi.deleteCallbackForApi(params).then(response =>{
+				var result = response.data.data;
+				console.log(result);
+			});
 		}
 	}
 }

@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.common.model.AuthUser;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -270,8 +271,6 @@ public class ProjectService {
 		// API 통신 처리
 		Map<String, Object> result =  apiInterface.post("/console/v1/brand/" + brandId + "/chatbot", map, headerMap);
 		
-		System.out.println("---------------------------------------- result : " + result);
-		
 		// 성공인지 실패인지 체크
 		if( !"10000".equals(result.get("rslt")) ) {
 			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
@@ -298,5 +297,73 @@ public class ProjectService {
 		rtn.setData(list);
 
 		return rtn;
+	}
+	
+	// 발신번호관리 수정 요청
+	@SuppressWarnings("unchecked")
+	public void updateCallbackForApi(Map<String, Object> params) throws Exception {
+		// 상세정보 가져오기
+		Map<String, Object> callbackDetail = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_CALLBACK_MANAGE_DETAIL, params);
+		
+		String brandId		= CommonUtils.getString(callbackDetail.get("brandId"));
+		String chatbotId	= CommonUtils.getString(params.get("chatbotId"));
+		
+		// request body 조정
+		System.out.println("-------------------------------------@@ " + callbackDetail);
+		
+		Map<String, Object> apiMap = new HashMap<>();
+		
+		apiMap.put("corpId", CommonUtils.getString(callbackDetail.get("corpId")));
+		apiMap.put("subNumCertificate", "");
+		
+		Map<String, Object> chahbotMap = new HashMap<>();
+		chahbotMap.put("mdn", callbackDetail.get("mdn"));
+		chahbotMap.put("rcsReply", callbackDetail.get("rcsReply"));
+		chahbotMap.put("subTitle", callbackDetail.get("subTitle"));
+		chahbotMap.put("service", "a2p");
+		chahbotMap.put("display", "01");
+		
+		apiMap.put("chatbot", chahbotMap);
+		
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		headerMap.put("brandId",	brandId);
+		headerMap.put("chatbotId",	chatbotId);
+		
+		// API 통신 처리
+		Map<String, Object> result =  apiInterface.put("/console/v1/brand/" + brandId + "/chatbot/" + chatbotId, null, apiMap, headerMap);
+		
+		System.out.println("------------------------------------------------- resultresultresult : " + result);
+		
+		// 성공인지 실패인지 체크
+		if( !"10000".equals(result.get("rslt")) ) {
+			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+			throw new Exception(errMsg);
+		}
+	}
+	
+	// 발신번호관리 삭제 요청
+	@SuppressWarnings("unchecked")
+	public void deleteCallbackForApi(Map<String, Object> params) throws Exception {
+
+		String brandId		= CommonUtils.getString(params.get("brandId"));
+		String chatbotId	= CommonUtils.getString(params.get("chatbotId"));
+
+		Map<String, Object> apiMap = new HashMap<>();
+		apiMap.put("corpId", CommonUtils.getString(params.get("corpId")));
+		
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		headerMap.put("brandId",	brandId);
+		headerMap.put("chatbotId",	chatbotId);
+		
+		// API 통신 처리
+		Map<String, Object> result =  apiInterface.delete("/console/v1/brand/" + brandId + "/chatbot/" + chatbotId, null, apiMap, headerMap);
+		
+		System.out.println("------------------------------------------------- resultresultresult : " + result);
+		
+		// 성공인지 실패인지 체크
+		if( !"10000".equals(result.get("rslt")) ) {
+			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+			throw new Exception(errMsg);
+		}
 	}
 }

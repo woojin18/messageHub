@@ -28,6 +28,13 @@ const selectCallbackManageList = (params) => {
     return httpClient.post('/projectApi/manage/selectCallbackManageList', params, { headers: {"show-layer": "No"}});
 };
 
+const updateCallbackForApi = (params) => {
+    return httpClient.post('/projectApi/manage/updateCallbackForApi', params, { headers: {"show-layer": "No"}});
+};
+
+const deleteCallbackForApi = (params) => {
+    return httpClient.post('/projectApi/manage/deleteCallbackForApi', params, { headers: {"show-layer": "No"}});
+};
 
 
 export default {
@@ -37,5 +44,7 @@ export default {
     checkPreRegYn,
     downloadFile,
     savePreRegEx,
-    selectCallbackManageList
+    selectCallbackManageList,
+    updateCallbackForApi,
+    deleteCallbackForApi
 };

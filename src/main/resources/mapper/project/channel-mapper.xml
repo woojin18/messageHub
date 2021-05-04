@@ -60,7 +60,17 @@
 			FROM	cm.CM_RCS_BRAND A
 			WHERE	(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
 			GROUP BY A.BRAND_ID
-		) 
+		)
+		<if test=" srcBrandText != null and srcBrandText != '' ">
+			<choose>
+				<when test="srcBrandType == 'brandId'.toString()">
+					AND		A.BRAND_ID = #{srcBrandText}
+				</when>
+				<when test="srcBrandType == 'brandName'.toString()">
+					AND		A.BRAND_NAME = #{srcBrandText}
+				</when>
+			</choose>
+		</if>
 		GROUP BY A.BRAND_ID
 		
 		UNION
@@ -92,6 +102,16 @@
 		FROM	cm.CM_RCS_BRAND A
 		WHERE	(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
 		AND		A.BRAND_INFO != ''
+		<if test=" srcBrandText != null and srcBrandText != '' ">
+			<choose>
+				<when test="srcBrandType == 'brandId'.toString()">
+					AND		A.BRAND_ID = #{srcBrandText}
+				</when>
+				<when test="srcBrandType == 'brandName'.toString()">
+					AND		A.BRAND_NAME = #{srcBrandText}
+				</when>
+			</choose>
+		</if>
 	</sql>
 	
 	<select id="selectRcsRegTmpltList" resultType="camel">

@@ -16,21 +16,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.uplus.cm.common.controller.BaseController;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.project.service.ProjectService;
 
 @RestController
 @RequestMapping("/projectApi/manage")
-public class ProjectController {
+public class ProjectController extends BaseController {
 
 	@Autowired
 	ProjectService projectService;
 
+    @Autowired
+    private CommonService commonSvc;
+    
 	// 프로젝트 리스트 조회
 	@PostMapping("/selectProjectList")
 	public RestResult<?> selectProjectList(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-
+		
 		return projectService.selectProjectList(params);
 	}
 
@@ -47,6 +52,7 @@ public class ProjectController {
 	public RestResult<?> saveProject(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) {
 		RestResult<Object> rtn = new RestResult<Object>(true);
+		
 		try {
 			projectService.saveProject(params);
 		} catch (Exception e) {
@@ -154,4 +160,50 @@ public class ProjectController {
 		return projectService.selectCallbackManageList(params);
 	}
 	
+	
+	// 발신번호관리 수정 요청
+	@PostMapping("/updateCallbackForApi")
+	public RestResult<?> updateCallbackForApi(
+			@RequestBody Map<String, Object> params,
+			HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		rtn.setSuccess(true);
+		
+		System.out.println("-------------------------------------@@ params : " + params);
+		
+		try {
+			projectService.updateCallbackForApi(params);
+			rtn.setSuccess(true);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		
+		return rtn;
+	}
+	
+	// 발신번호관리 수정 요청
+	@PostMapping("/deleteCallbackForApi")
+	public RestResult<?> deleteCallbackForApi(
+			@RequestBody Map<String, Object> params,
+			HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		rtn.setSuccess(true);
+		
+		System.out.println("-------------------------------------@@ deleteCallbackForApi params : " + params);
+		
+		try {
+			projectService.deleteCallbackForApi(params);
+			rtn.setSuccess(true);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		
+		return rtn;
+	}
 }

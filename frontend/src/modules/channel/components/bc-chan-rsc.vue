@@ -131,7 +131,7 @@ export default {
     return {
       save_status : '', // 등록 수정 여부
       // 검색 조건
-      srcBrandType : "",
+      srcBrandType : "brandId",
       srcBrandText : "",
       // 리스트 
 			data : {},

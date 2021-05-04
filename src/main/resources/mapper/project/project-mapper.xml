@@ -223,7 +223,9 @@
 	</insert>
 	
 	<sql id="callbackManage">
-		SELECT	A.BRAND_NAME 
+		SELECT	A.BRAND_NAME
+		,		A.BRAND_ID
+		,		B.CORP_ID 
 		,		REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS SUB_TITLE
 		,		B.CHATBOT_ID 
 		,		CASE 
@@ -242,7 +244,9 @@
 		
 		UNION
 		
-		select A.BRAND_NAME 
+		SELECT	A.BRAND_NAME
+		,		A.BRAND_ID
+		,		B.CORP_ID
 		,		REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS SUB_TITLE
 		,		B.CHATBOT_ID 
 		,		CASE 
@@ -283,6 +287,16 @@
 		) CB
 		WHERE 1=1
 		ORDER BY CB.REG_DT DESC
+	</select>
+	
+	<select id="selectCallbackManageDetail" resultType="camel">
+		/* project.selectCallbackManageDetail */
+		SELECT *
+		FROM (
+			<include refid="callbackManage"/>
+		) CB
+		WHERE	1=1
+		AND		CB.CHATBOT_ID = #{chatbotId}
 	</select>
 	
 </mapper>
