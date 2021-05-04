@@ -51,14 +51,7 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<!-- 15개씩 보기 -->
-					<div class="of_h mb20">
-						<div class="float-left">전체 : <span class="color1"><strong>20</strong></span>건
-							<select name="admin0305_4" class="selectStyle2 width120 ml20">
-								<option value="">15개씩 보기</option>
-								<option value="">30개씩 보기</option>
-							</select>
-						</div>
-					</div>
+					<PagingCnt :pageInfo.sync="pageInfo" />
 					<!-- //15개씩 보기 -->
 					
 					<!-- table -->
@@ -88,18 +81,18 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(data, index) in items" :key="index">
+							<tr v-for="(row, index) in data" :key="index">
 								<td class="text-center">{{ index + 1 }}</td>
-								<td class="text-center">{{data.brandName}}</td>
-								<td class="text-center">{{data.subTitle}}</td>
-								<td class="text-center">{{data.mdn}}</td>
-								<td class="text-center">{{data.useYnName}}</td>
-								<td class="text-center">{{data.approvalName}}</td>
-								<td class="text-center">{{data.regDt}}</td>
-								<td class="text-center">{{data.approvalDt}}</td>
+								<td class="text-center">{{row.brandName}}</td>
+								<td class="text-center">{{row.subTitle}}</td>
+								<td class="text-center">{{row.mdn}}</td>
+								<td class="text-center">{{row.useYnName}}</td>
+								<td class="text-center">{{row.approvalName}}</td>
+								<td class="text-center">{{row.regDt}}</td>
+								<td class="text-center">{{row.approvalDt}}</td>
 								<td class="end">
-									<a @click="fnCallbackDetail(data)" class="btnStyle8 mr5">수정</a>
-									<a @click="fnCallbackDelete(data)" class="btnStyle8 mr5">삭제</a>
+									<a @click="fnCallbackDetail(row)" class="btnStyle8 mr5">수정</a>
+									<a @click="fnCallbackDelete(row)" class="btnStyle8 mr5">삭제</a>
 								</td>
 							</tr>
 						</tbody>
@@ -109,21 +102,7 @@
 			</div>
 
 			<!-- pagination -->
-			<div class="row mt40">
-				<div class="col-xs-12">
-					<div class="pagination1 text-center">
-						<a href="#" title="10페이지 이전 페이지로 이동"><i class="far fa-chevron-double-left"></i></a>
-						<a href="#" title="이전 페이지로 이동"><i class="far fa-chevron-left"></i></a>
-						<a href="#" title="1페이지로 이동" class="number active">1</a>
-						<a href="#" title="2페이지로 이동" class="number">2</a>
-						<a href="#" title="3페이지로 이동" class="number">3</a>
-						<a href="#" title="4페이지로 이동" class="number">4</a>
-						<a href="#" title="5페이지로 이동" class="number">5</a>
-						<a href="#" title="다음 페이지로 이동"><i class="far fa-chevron-right"></i></a>
-						<a href="#" title="10페이지 다음 페이지로 이동"><i class="far fa-chevron-double-right"></i></a>
-					</div>
-				</div>
-			</div>
+			<Paging :pageInfo.sync="pageInfo" />
 			<!-- //pagination -->
 
 
@@ -140,9 +119,16 @@ import layerPopup from "./bp-project-callback-detail.vue";
 import projectApi from '../service/projectApi'
 import tokenSvc from '@/common/token-service';
 
+
+import Paging from "@/modules/commonUtil/components/bc-paging"
+import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt"
+
+
 export default {
 	components: {
-		layerPopup
+		layerPopup,
+		Paging,
+		PagingCnt
 	},
 	data() {
 		return {
@@ -159,16 +145,22 @@ export default {
 			srcApprovalResult	: "",
 
 			// 리스트 
-			selected : 10,
-			pagingCnt : 1,
-			items : [{},{},{}],
-			count : 0,
-			data : {}
+			data : {},
+			pageInfo: {}
 		}
 	},
 	mounted() {
 		this.projectId = this.$route.params.projectId;
 		this.projectName = this.$route.params.projectName;
+
+		this.pageInfo = {
+			"pageCnt"   : [10, 30, 50],  //표시할 개수 리스트
+			"selPageCnt": 10,          //선택한 표시 개수
+			"selPage"   : 1,          //선택한 페이지
+			"rowNum"    : 1           //총개수
+		};
+
+		this.fnSearch();
 	},
 	methods: {
 		fnMoveMainTab(moveTabName){
@@ -176,15 +168,17 @@ export default {
 		},
 		// 검색
 		fnSearch() {
-			var vm = this;
 			var params = {
-			
-				"rows": vm.selected,
-				"paging": vm.pagingCnt
+				"projectId"	: this.projectId,
+				"pageInfo"	: this.pageInfo
 			}
 			
-			projectApi.selectProjectList(params).then(response =>{
-				vm.items = response.data.data;
+			projectApi.selectCallbackManageList(params).then(response =>{
+				var result = response.data;
+				if(result.success) {
+					this.data = result.data; 
+					this.pageInfo = result.pageInfo;
+				}
 			});
 		},
 		fnCallbackDetail(data){

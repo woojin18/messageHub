@@ -45,8 +45,18 @@ public class ChannelService {
 	public RestResult<?> selectRcsBrandList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 
+		
+		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
+		
+		if (pageInfo != null && !pageInfo.isEmpty()) {
+			int rowNum = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_BRANDLIST_CNT, params);
+			pageInfo.put("rowNum", rowNum);
+			
+			rtn.setPageInfo(pageInfo);
+		}
+		
 		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_BRANDLIST, params);
-
+				
 		for (int i = 0; i < rtnList.size(); i++) {
 			// 파라미터 정리
 			Map<String, Object> inputVal = new HashMap<>();
@@ -141,7 +151,6 @@ public class ChannelService {
 			
 			
 			inputVal.put("webSiteUrl",		brandInfo.get("webSiteUrl"));
-			inputVal.put("mainMdn",			brandInfo.get("mainMdn"));
 			inputVal.put("rcsReply",		brandInfo.get("projectId"));
 			
 			// 쳇봇(발신번호 관리)
@@ -160,13 +169,9 @@ public class ChannelService {
 				inputVal.put("chatbots",		brandInfo.get("chatbots"));
 			} else {
 				// 실제 쳇봇 테이블에 입력된 경우
-				
+				inputVal.put("mainMdn",			rtnMap.get("mainMdn"));
+				inputVal.put("mainTitle",		rtnMap.get("mainTitle"));
 			}
-//			inputVal.put("email",	rtnMap.get("projectId"));
-//			inputVal.put("email",	rtnMap.get("projectId"));
-//			inputVal.put("email",	rtnMap.get("projectId"));
-//			inputVal.put("email",	rtnMap.get("projectId"));
-//			inputVal.put("email",	rtnMap.get("projectId"));
 			
 			rtnMap.put("inputVal", inputVal);
 			rtnMap.put("status", brandInfo.get("status"));

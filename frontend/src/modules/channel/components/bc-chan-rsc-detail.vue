@@ -425,6 +425,10 @@ export default {
 		this.tmpBrandYn = "N";
 	}
 
+	console.log('this.inputVal.mainMdn');
+	console.log(this.inputVal.mainMdn);
+	console.log('this.inputVal.mainTitle');
+	console.log(this.inputVal.mainTitle);
   },
   methods: {
 	// 목록
@@ -626,8 +630,6 @@ console.log(  this.inputVal.order );
 			});
 		}
 		var list = [];
-
-console.log(this.inputVal.chatbots);
 
 		for( var i = 0; i < this.inputVal.chatbots.length; i++ ){
 			var obj = JSON.stringify(this.inputVal.chatbots[i]);

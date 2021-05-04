@@ -145,4 +145,13 @@ public class ProjectController {
 		
 		return rtn;
 	}
+	
+	// 발신번호관리 조회
+	@PostMapping("/selectCallbackManageList")
+	public RestResult<?> selectCallbackList(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		return projectService.selectCallbackManageList(params);
+	}
+	
 }

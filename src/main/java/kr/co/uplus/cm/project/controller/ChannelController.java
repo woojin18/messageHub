@@ -33,15 +33,6 @@ public class ChannelController {
 	public RestResult<?> selectRcsBrandList(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
-		// commonutils에 집어 넣을것
-		int paging = Integer.parseInt(CommonUtils.nvl(CommonUtils.getString(params.get("paging")), "1"));
-		int rows = Integer.parseInt(CommonUtils.nvl(CommonUtils.getString(params.get("rows")), "100"));
-
-		int rowsFront = (paging - 1) * rows;
-
-		params.put("rowsFront", rowsFront);
-		params.put("rowsEnd", rows);
-
 		return channelService.selectRcsBrandList(params);
 	}
 	

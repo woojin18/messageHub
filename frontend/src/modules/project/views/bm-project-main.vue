@@ -17,7 +17,7 @@
 					<li :class="{active:(selMainTab == 6)}" @click="selMainTab=5"><a>스팸관리</a></li>
 				</ul>			
 			</div>
-			<ul v-if="selMainTab==4" class="tabStyle tab6 bgColor_tapGray mt30">
+			<ul v-if="selMainTab==4" class="tabStyle tab6 bgColor_tapGray">
 				<li :class="{active:(selMidTab == 1)}" @click="selMidTab=1"><a>RCS</a></li>
 				<li :class="{active:(selMidTab == 2)}" @click="selMidTab=2"><a>SMS/MMS</a></li>
 				<li :class="{active:(selMidTab == 3)}" @click="selMidTab=3"><a>PUSH</a></li>
@@ -27,11 +27,16 @@
 			
 			<ul v-if="selMainTab==4&&selMidTab==1" class="tab_s6 mt10">
         <!-- 체널관리 - RCS 탭 -->
-				<!-- <li @click="fnMoveRcsTab('brand')" class="active"><a>브랜드 관리정보</a></li>
-				<li @click="fnMoveRcsTab('message')"><a>메시지 포맷정보</a></li> -->
         <li :class="{active:(selMainTab==4&&selMidTab==1&&selSubTab==1)}" @click="selSubTab=1"><a>브랜드 관리정보</a></li>
 				<li :class="{active:(selMainTab==4&&selMidTab==1&&selSubTab==2)}" @click="selSubTab=2"><a>메시지 포맷정보</a></li>
         <!-- 체널관리 - RCS 탭 -->
+			</ul>
+
+      <ul v-if="selMainTab==4&&selMidTab==4" class="tab_s6 mt10">
+        <!-- 체널관리 - 카카오톡 탭 -->
+        <li :class="{active:(selMainTab==4&&selMidTab==4&&selSubTab==1)}" @click="selSubTab=1"><a>발신 프로필 일반</a></li>
+				<li :class="{active:(selMainTab==4&&selMidTab==4&&selSubTab==2)}" @click="selSubTab=2"><a>발신 프로필 그룹</a></li>
+        <!-- 체널관리 - 카카오톡 탭 -->
 			</ul>
 
       <!-- 체널관리 탭 -->

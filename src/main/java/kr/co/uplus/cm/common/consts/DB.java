@@ -53,6 +53,7 @@ public class DB {
     public final static String QRY_SELECT_MSG_FEE_PER_ONE = "sendMessage.selectMsgFeePerOne";
     public final static String QRY_INSERT_CM_WEB_MSG = "sendMessage.insertCmWebMsg";
 	// RCS 채널 브랜드 정보
+    public final static String QRY_SELECT_RCS_BRANDLIST_CNT = "channel.selectRcsBrandListCnt";
 	public final static String QRY_SELECT_RCS_BRANDLIST = "channel.selectRcsBrandList";
 	// RCS 등록 템플릿 조회
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";
@@ -96,4 +97,7 @@ public class DB {
 	public final static String QRY_UPDATE_USER = "user.updateUser";
 	public final static String QRY_INSERT_USER = "user.insertUser";
 	public final static String QRY_SELECT_USER_DUPC_CNT = "user.selectUserDupcCnt";
+	// 프로젝트 발신번호 관리
+	public final static String QRY_SELECT_CALLBACK_MANAGE_LIST_CNT = "project.selectCallbackManageListCnt";
+	public final static String QRY_SELECT_CALLBACK_MANAGE_LIST = "project.selectCallbackManageList";
 }

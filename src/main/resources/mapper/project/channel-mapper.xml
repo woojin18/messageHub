@@ -1,82 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="channel">
-
+	<select id="selectRcsBrandListCnt" resultType="int">
+		/* channel.selectRcsBrandListCnt */
+		SELECT	COUNT(1) AS CNT
+		FROM	(
+			<include refid="rcsBrandList"/>
+		) AA
+		ORDER BY AA.REG_DT DESC
+	</select>
 	<select id="selectRcsBrandList" resultType="camel">
-	/* channel.selectRcsBrandList */
+		/* channel.selectRcsBrandList */
 		SELECT	*
 		FROM	(
-			SELECT	A.BRAND_ID
-			,		MAX(A.PROJECT_ID) AS PROJECT_ID
-			,		MAX(A.CORP_ID) AS CORP_ID
-			,		MAX(A.BRAND_NAME) AS BRAND_NAME
-			,		MAX(A.BRAND_DESC) AS BRAND_DESC
-			,		MAX(A.BRAND_INFO) AS BRAND_INFO
-			,		'REQREQ' AS OTHER_PROJECT_USE_YN
-			
-			,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
-						FROM	cm_console.CM_RCS_TMP_MSGBASE
-						WHERE	BRAND_ID  = A.BRAND_ID 
-					) AS TMPL_CNT
-			,		( 	SELECT	COUNT(CHATBOT_ID) 
-						FROM	cm.CM_RCS_CHATBOT
-						WHERE	BRAND_ID  = A.BRAND_ID 
-					) AS CALLBACK_CNT
-			,		CASE WHEN SUBSTRING(A.BRAND_ID, 1, 1) = 'T' THEN '임시저장' ELSE MAX(A.APPROVAL_STATUS) END	AS APPROVAL_STATUS
-			,		''			AS REQ_DT
-			,		''			AS APPROVAL_DT
-			,		MAX(A.REG_DT) AS REG_DT 
-			,		MAX(B.MAIN_MDN) AS MAIN_MDN
-			,		MAX(B.MAIN_TITLE) AS MAIN_TITLE
-			FROM	cm.CM_RCS_BRAND_REQ A
-			left outer join (
-				SELECT	crcr.BRAND_ID 
-				,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.mdn[0]'), "\"", "") as MAIN_MDN
-				,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") as MAIN_TITLE
-				FROM cm.CM_RCS_CHATBOT_REQ crcr 
-				where JSON_EXTRACT(crcr.CHATBOT_INFO , '$.isMainNum[0]') = true
-			) B
-				ON A.BRAND_ID = B.BRAND_ID
-			WHERE	A.PROJECT_ID = #{projectId}
-			AND		A.BRAND_INFO != ''
-			AND		A.BRAND_ID NOT IN (
-				SELECT	A.BRAND_ID
-				FROM	cm.CM_RCS_BRAND A
-				WHERE	A.PROJECT_ID = #{projectId}
-				GROUP BY A.BRAND_ID
-			) 
-			GROUP BY A.BRAND_ID
-			
-			UNION
-			
-			SELECT 	A.BRAND_ID
-			,		A.PROJECT_ID
-			,		A.CORP_ID
-			,		A.BRAND_NAME
-			,		'' as BRAND_DESC -- 브랜드 정보 컬럼 자체가 없음...
-			,		A.BRAND_INFO 
-			,		'BRANDBRAND' AS OTHER_PROJECT_USE_YN
-			,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
-						FROM	cm_console.CM_RCS_TMP_MSGBASE
-						WHERE	BRAND_ID  = A.BRAND_ID 
-					) AS TMPL_CNT
-			,		( 	SELECT	COUNT(CHATBOT_ID) 
-						FROM	cm.CM_RCS_CHATBOT
-						WHERE	BRAND_ID  = A.BRAND_ID 
-					) AS CALLBACK_CNT
-			,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인완료' ELSE '' END	AS APPROVAL_STATUS
-			,		A.REG_DT			AS REQ_DT
-			,		A.APPROVAL_DT
-			,		A.REG_DT
-			,		'' AS MAIN_MDN
-			,		'' AS MAIN_TITLE
-			FROM	cm.CM_RCS_BRAND A
-			WHERE	A.PROJECT_ID = #{projectId}
-			AND		A.BRAND_INFO != ''
+			<include refid="rcsBrandList"/>
 		) AA
 		ORDER BY AA.REG_DT DESC
 	</select>
 	
+	<sql id="rcsBrandList">
+		SELECT	A.BRAND_ID
+		,		MAX(A.PROJECT_ID) AS PROJECT_ID
+		,		MAX(A.CORP_ID) AS CORP_ID
+		,		MAX(A.BRAND_NAME) AS BRAND_NAME
+		,		MAX(A.BRAND_DESC) AS BRAND_DESC
+		,		MAX(A.BRAND_INFO) AS BRAND_INFO
+		,		CASE
+					WHEN MAX(A.PROJECT_ID) = 'ALL' THEN 'Y'
+					ELSE 'N'
+				END AS OTHER_PROJECT_USE_YN
+		
+		,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
+					FROM	cm_console.CM_RCS_TMP_MSGBASE
+					WHERE	BRAND_ID  = A.BRAND_ID 
+				) AS TMPL_CNT
+		,		( 	SELECT	COUNT(CHATBOT_ID) 
+					FROM	cm.CM_RCS_CHATBOT
+					WHERE	BRAND_ID  = A.BRAND_ID 
+				) AS CALLBACK_CNT
+		,		CASE WHEN SUBSTRING(A.BRAND_ID, 1, 1) = 'T' THEN '임시저장' ELSE MAX(A.APPROVAL_STATUS) END	AS APPROVAL_STATUS
+		,		''			AS REQ_DT
+		,		''			AS APPROVAL_DT
+		,		MAX(A.REG_DT) AS REG_DT 
+		,		MAX(B.MAIN_MDN) AS MAIN_MDN
+		,		MAX(B.MAIN_TITLE) AS MAIN_TITLE
+		FROM	cm.CM_RCS_BRAND_REQ A
+		left outer join (
+			SELECT	crcr.BRAND_ID 
+			,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.mdn[0]'), "\"", "") as MAIN_MDN
+			,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") as MAIN_TITLE
+			FROM cm.CM_RCS_CHATBOT_REQ crcr 
+			where JSON_EXTRACT(crcr.CHATBOT_INFO , '$.isMainNum[0]') = true
+		) B
+			ON A.BRAND_ID = B.BRAND_ID
+		WHERE	(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+		AND		A.BRAND_INFO != ''
+		AND		A.BRAND_ID NOT IN (
+			SELECT	A.BRAND_ID
+			FROM	cm.CM_RCS_BRAND A
+			WHERE	(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+			GROUP BY A.BRAND_ID
+		) 
+		GROUP BY A.BRAND_ID
+		
+		UNION
+		
+		SELECT 	A.BRAND_ID
+		,		A.PROJECT_ID
+		,		A.CORP_ID
+		,		A.BRAND_NAME
+		,		'' as BRAND_DESC -- 브랜드 정보 컬럼 자체가 없음...
+		,		A.BRAND_INFO 
+		,		CASE
+					WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
+					ELSE 'N'
+				END AS OTHER_PROJECT_USE_YN
+		,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
+					FROM	cm_console.CM_RCS_TMP_MSGBASE
+					WHERE	BRAND_ID  = A.BRAND_ID 
+				) AS TMPL_CNT
+		,		( 	SELECT	COUNT(CHATBOT_ID) 
+					FROM	cm.CM_RCS_CHATBOT
+					WHERE	BRAND_ID  = A.BRAND_ID 
+				) AS CALLBACK_CNT
+		,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인완료' ELSE '' END	AS APPROVAL_STATUS
+		,		A.REG_DT			AS REQ_DT
+		,		A.APPROVAL_DT
+		,		A.REG_DT
+		,		'' AS MAIN_MDN
+		,		'' AS MAIN_TITLE
+		FROM	cm.CM_RCS_BRAND A
+		WHERE	(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+		AND		A.BRAND_INFO != ''
+	</sql>
 	
 	<select id="selectRcsRegTmpltList" resultType="camel">
 		/* channel.selectRcsRegTmpltList */

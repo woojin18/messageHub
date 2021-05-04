@@ -24,11 +24,18 @@ const savePreRegEx = (params) => {
     return httpClient.post('/projectApi/manage/savePreRegEx', params, { headers: {"show-layer": "No"}});
 };
 
+const selectCallbackManageList = (params) => {
+    return httpClient.post('/projectApi/manage/selectCallbackManageList', params, { headers: {"show-layer": "No"}});
+};
+
+
+
 export default {
     selectProjectList,
     checkProjectNameDuplicate,
     saveProject,
     checkPreRegYn,
     downloadFile,
-    savePreRegEx
+    savePreRegEx,
+    selectCallbackManageList
 };
