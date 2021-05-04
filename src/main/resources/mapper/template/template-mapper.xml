@@ -17,13 +17,18 @@
             AND REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
             </if>
         </if>
-        <if test="searchOthPrjUseYn != null and searchOthPrjUseYn.size != 0 ">
-            AND PROJECT_ID IN
-            <foreach collection="searchOthPrjUseYn" item="item" index="index"  open="(" close=")" separator=",">
-                <if test='item == "Y" '>'ALL'</if>
-                <if test='item == "N" '>#{projectId}</if>
-            </foreach>
-        </if>
+        <choose>
+            <when test="searchOthPrjUseYn != null and searchOthPrjUseYn.size != 0 ">
+                AND PROJECT_ID IN
+                <foreach collection="searchOthPrjUseYn" item="item" index="index"  open="(" close=")" separator=",">
+                    <if test='item == "Y" '>'ALL'</if>
+                    <if test='item == "N" '>#{projectId}</if>
+                </foreach>
+            </when>
+            <otherwise>
+                AND PROJECT_ID IN ('ALL', #{projectId})
+            </otherwise>
+        </choose>
         <if test="tmpltId != '' and tmpltId != null ">
             AND TMPLT_ID = #{tmpltId}
         </if>
@@ -193,13 +198,18 @@
             AND REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
             </if>
         </if>
-        <if test="searchOthPrjUseYn != null and searchOthPrjUseYn.size != 0 ">
-            AND PROJECT_ID IN
-            <foreach collection="searchOthPrjUseYn" item="item" index="index"  open="(" close=")" separator=",">
-                <if test='item == "Y" '>'ALL'</if>
-                <if test='item == "N" '>#{projectId}</if>
-            </foreach>
-        </if>
+         <choose>
+            <when test="searchOthPrjUseYn != null and searchOthPrjUseYn.size != 0 ">
+                AND PROJECT_ID IN
+                <foreach collection="searchOthPrjUseYn" item="item" index="index"  open="(" close=")" separator=",">
+                    <if test='item == "Y" '>'ALL'</if>
+                    <if test='item == "N" '>#{projectId}</if>
+                </foreach>
+            </when>
+            <otherwise>
+                AND PROJECT_ID IN ('ALL', #{projectId})
+            </otherwise>
+        </choose>
         <if test="tmpltId != '' and tmpltId != null ">
             AND TMPLT_ID = #{tmpltId}
         </if>

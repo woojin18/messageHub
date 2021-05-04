@@ -76,6 +76,7 @@ public class TemplateController extends BaseController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
+            super.setContainIgnoreUserInfo(params);
             rtn = tmpltSvc.selectPushTemplateList(params);
         } catch (Exception e) {
             rtn.setSuccess(false);
@@ -223,6 +224,7 @@ public class TemplateController extends BaseController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
+            super.setContainIgnoreUserInfo(params);
             rtn = tmpltSvc.selectSmsTemplateList(params);
         } catch (Exception e) {
             rtn.setSuccess(false);
