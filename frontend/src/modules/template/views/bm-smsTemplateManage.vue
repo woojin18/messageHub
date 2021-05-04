@@ -169,7 +169,7 @@ export default {
     fnSelectSmsTmpltInfo(){
       const vm = this;
       const params = {tmpltId: this.tmpltId};
-      templateApi.selectPushTmpltInfo(params).then(response => {
+      templateApi.selectSmsTmpltInfo(params).then(response => {
         const result = response.data;
         if(result.success) {
           result.data.forEach(function(obj){

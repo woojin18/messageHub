@@ -3,7 +3,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
-          
+
           <div class="of_h">
             <div class="float-left" style="width:32%"><h5>대체발송 발신번호</h5></div>
             <select v-model="fbInfo.callback" name="userConsole02_2" class="selectStyle2 float-right" style="width:66%">
@@ -60,7 +60,6 @@
 import MessageApi from "@/modules/message/service/messageApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
-import tokenSvc from '@/common/token-service';
 
 export default {
   name: "pushContentsPopup",
@@ -141,9 +140,7 @@ export default {
     },
     //발신번호 리스트 조회
     async fnSelectCallbackList(){
-      var params = {
-        'corpId':tokenSvc.getToken().principal.corpId,
-      };
+      var params = {};
       await MessageApi.selectCallbackList(params).then(response =>{
         var result = response.data;
         if(result.success) {
@@ -161,7 +158,7 @@ export default {
     //get 문자열 byte
     getByte(str) {
       return str
-        .split('') 
+        .split('')
         .map(s => s.charCodeAt(0))
         .reduce((prev, c) => (prev + ((c === 10) ? 2 : ((c >> 7) ? 2 : 1))), 0);
     },

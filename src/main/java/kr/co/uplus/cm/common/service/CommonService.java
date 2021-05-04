@@ -117,10 +117,8 @@ public class CommonService {
 
     /**
      * 파일업로드
-     *
      * @param files
-     * @param useCh
-     * @param loginId
+     * @param params
      * @return
      * @throws Exception
      */
@@ -133,7 +131,7 @@ public class CommonService {
         String projectId = CommonUtils.getStrValue(params, "projectId");
         ArrayList<String> useCh = (ArrayList<String>) params.get("useCh");
         String wideYn = StringUtils.defaultString(CommonUtils.getStrValue(params, "wideYn"), Const.COMM_NO);
-        String loginId = CommonUtils.getStrValue(params, "loginId");
+        String loginId = CommonUtils.getStrValue(params, "userId");
 
         // 빈값 확인
         if (StringUtils.isBlank(corpId)) {
@@ -436,9 +434,7 @@ public class CommonService {
     }
 
     /**
-     * TODO : CM_APIKEY 테이블 에서 가져옴 - 1. APIKEY 관리 작업안됨 - 2. status 정의 없음 - 3. 중복시
-     * 유일키 가져오는 방식 정의 없음. - 4. WEB_YN 후 ROWNUM 1 API Key 가져오기
-     *
+     * get API Key
      * @return
      * @throws Exception
      */

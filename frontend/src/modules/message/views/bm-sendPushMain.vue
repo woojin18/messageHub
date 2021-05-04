@@ -266,7 +266,6 @@ import TestSendInputPopup from "@/modules/message/components/bc-testSendInput.vu
 import Calendar from "@/components/Calendar.vue";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
-import tokenSvc from '@/common/token-service';
 
 export default {
   name: "sendPushMain",
@@ -398,9 +397,6 @@ export default {
 
       //발송처리
       let params = Object.assign({}, this.sendData);
-      params.loginId = tokenSvc.getToken().principal.userId;
-      params.corpId = tokenSvc.getToken().principal.corpId;
-      params.projectId = this.$cookies.get('project');
       params.testSendYn = testSendYn;
 
       if(testSendYn == 'Y'){
@@ -410,7 +406,7 @@ export default {
         params.cuInputType = 'DICT';
         params.rsrvSendYn = 'N';
       }
-      
+
       let fd = new FormData();
       fd.append('paramString', JSON.stringify(params));
       if(this.sendData.cuInputType == 'EXCEL'){
@@ -422,7 +418,7 @@ export default {
       await MessageApi.sendPushMessage(fd).then(response =>{
         this.inProgress = false;
         const result = response.data;
-        
+
         if(result.success) {
           console.log(result);
           if(testSendYn == 'Y'){
@@ -473,10 +469,7 @@ export default {
       this.sendData.appId = this.sltAppId;
     },
     fnGetAppId(){
-      var params = {
-        'corpId':tokenSvc.getToken().principal.corpId,
-        'projectId':this.$cookies.get('project')
-      };
+      var params = {};
       MessageApi.selectAppIdList(params).then(response => {
         var result = response.data;
         if(result.success) {

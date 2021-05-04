@@ -138,10 +138,9 @@
 </template>
 
 <script>
-import TemplateApi from "@/modules/template/service/templateApi.js";
+import templateApi from "@/modules/template/service/templateApi.js";
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
 import ImageUploadPopUp from "@/modules/commonUtil/components/bp-imageUpload.vue";
-import TokenSvc from '@/common/token-service';
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
@@ -204,7 +203,7 @@ export default {
     fnSelectPushTmpltInfo(){
       var vm = this;
       var params = this.rowData;
-      TemplateApi.selectPushTmpltInfo(params).then(response => {
+      templateApi.selectPushTmpltInfo(params).then(response => {
         var result = response.data;
         if(result.success) {
           result.data.forEach(function(obj){
@@ -289,7 +288,6 @@ export default {
     async fnProcSavePushTemplate(){
       //DATA Set
       var params = this.rowData;
-      var loginId = TokenSvc.getToken().principal.userId;
       if(this.rowData.msgType != 'IMAGE') {
         params.imgUrl = '';
         params.fileId = '';
@@ -297,10 +295,9 @@ export default {
       if(this.rowData.msgKind != 'A') {
         params.rcvblcNumber = '';
       }
-      params.loginId = loginId;
 
       //저장처리
-      await TemplateApi.savePushTmplt(params).then(response => {
+      await templateApi.savePushTmplt(params).then(response => {
         var result = response.data;
         if(result.success) {
           confirm.fnAlert(this.componentsTitle, '저장되었습니다.');

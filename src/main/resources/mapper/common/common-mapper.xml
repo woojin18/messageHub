@@ -101,9 +101,14 @@
             )
             +
             (
-                SELECT COUNT(FILE_ID) AS MMS_CNT
+                SELECT COUNT(*) AS MMS_CNT
                 FROM CM_SMS_TMPLT
-                WHERE FILE_ID IN <foreach collection="fileIds" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
+                WHERE 1=1
+                    AND (
+                    <foreach collection="fileIds" item="item" index="index" separator="OR ">
+                        JSON_CONTAINS(IMG_INFO_LIST, JSON_OBJECT('fileId', #{item}))
+                    </foreach>
+                    )
             )
         ) AS USE_CNT
     </select>

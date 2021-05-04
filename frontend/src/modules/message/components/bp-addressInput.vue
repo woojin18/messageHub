@@ -15,16 +15,16 @@
             <a @click='fnGetAddrList' class="btnStyle1 backLightGray float-right" style="width:10%" title="검색">검색</a>
           </div>
           <h5 class="color5">조직 조회 후 체크된 사용자를 선택하면  수신자에 추가됩니다.</h5>
-          
+
           <div class="row row-no-margin of_h">
             <div class="border-line2 float-left" style="height:260px; overflow-y:scroll; width:34%">
               <div style="padding:25px">
               <!-- <div style="padding:25px"> -->
                 <!-- addList -->
                 <!-- <ul class="addList"> -->
-                <addr-tree-menu v-for="addrTreeData in addrTreeList" :key="addrTreeData.loopKey" 
-                  :item="addrTreeData.addressName" 
-                  :id="addrTreeData.addressCategoryId" 
+                <addr-tree-menu v-for="addrTreeData in addrTreeList" :key="addrTreeData.loopKey"
+                  :item="addrTreeData.addressName"
+                  :id="addrTreeData.addressCategoryId"
                   :subItems="addrTreeData.subItems"
                 ></addr-tree-menu>
                 <!-- </ul> -->
@@ -71,12 +71,12 @@
                         <input type="text" class="inputStyle" v-model="cmCuInfo[varNm]">
                       </td>
                     </tr>
-  
+
                     <tr v-if="Object.keys(cmCuList).length == 0">
                       <td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check7" class="checkStyle2" value="check17"><label for="check7"></label></div></td>
                       <td class="text-center" :colspan="1+Object.keys(contsVarNms).length+(requiredCuid?1:0)+(requiredCuPhone?1:0)">검색된 내용이 없습니다.</td>
                     </tr>
-                    
+
                   </tbody>
                 </table>
                 <!-- //table -->
@@ -104,7 +104,6 @@ import MessageApi from "@/modules/message/service/messageApi.js";
 import AddrTreeMenu from "@/modules/message/components/bc-addressTree.vue";
 import confirm from "@/modules/commonUtil/service/confirm.js"
 import PageLayer from "@/components/PageLayer.vue";
-import tokenSvc from '@/common/token-service';
 
 export default {
   name: "addressInputPopup",
@@ -158,7 +157,7 @@ export default {
     addressInputOpen(val){
       if(val){
         this.fnGetAddrList();
-      } 
+      }
     }
   },
   methods: {
@@ -168,7 +167,7 @@ export default {
         confirm.fnAlert(this.componentsTitle, '수신자를 선택해주세요.');
         return;
       }
-      
+
       const vm = this;
       let recvInfoLst = [];
       let recvInfo = {};
@@ -183,7 +182,7 @@ export default {
         else delete recvInfo.cuid;
         if(vm.requiredCuPhone) recvInfo.phone = sltCuInfo.hpNumber;
         else delete recvInfo.phone;
-        
+
         vm.contsVarNms.forEach(function(key){
           if(vm.$gfnCommonUtils.isEmpty(sltCuInfo[key])){
             isValid = false;
@@ -256,9 +255,7 @@ export default {
     async fnGetAddrList(){
       let params = {
         searchTextType: this.searchTextType,
-        searchText: this.searchText,
-        corpId:tokenSvc.getToken().principal.corpId,
-        projectId:this.$cookies.get('project')
+        searchText: this.searchText
       };
       await MessageApi.selectAddressList(params).then(response =>{
         const result = response.data;
@@ -283,7 +280,7 @@ export default {
         addrTreeList.push(Object.assign({}, addrTreeObj));
         if(addrTreeList.length != 0){
           vm.fnSetSubItems(addrCtgyList, addrTreeList[addrTreeList.length-1], 'Y');
-        } 
+        }
       });
 
       this.addrTreeList = [];
@@ -299,12 +296,12 @@ export default {
       const tId = target.addressCategoryId;
       const tGrpId = target.addressCategoryGrpId;
       let ctgyInfo;
-      
+
       if (!('subItems' in target)) target.subItems = [];
 
       for(let ctgyIdx=0; ctgyIdx<addrCtgyList.length; ctgyIdx++){
         ctgyInfo = addrCtgyList[ctgyIdx];
-        if(targetGrpYn == 'Y' 
+        if(targetGrpYn == 'Y'
           && (ctgyInfo.parAddressCategoryId == 0 || ctgyInfo.parAddressCategoryId == ctgyInfo.addressCategoryGrpId)){
           if(tGrpId == ctgyInfo.addressCategoryGrpId){
             target.subItems.push(ctgyInfo);

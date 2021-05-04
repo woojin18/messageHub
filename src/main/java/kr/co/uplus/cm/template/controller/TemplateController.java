@@ -103,6 +103,7 @@ public class TemplateController extends BaseController {
         RestResult<Object> rtn = new RestResult<Object>();
         params = commonSvc.setRegId(request, params);
         try {
+            super.setContainIgnoreUserInfo(params);
             rtn = tmpltSvc.savePushTemplate(params);
         } catch (Exception e) {
             rtn.setSuccess(false);

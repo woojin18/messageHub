@@ -44,8 +44,7 @@
 </template>
 
 <script>
-import axios from 'axios'
-import tokenSvc from '@/common/token-service';
+import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js"
 
 export default {
@@ -123,39 +122,30 @@ export default {
 
       const uploadInfo = {
         useCh: this.chkboxUseCh,
-        wideYn: this.wideYn,
-        corpId: tokenSvc.getToken().principal.corpId,
-        projectId: this.$cookies.get('project'),
-        loginId: tokenSvc.getToken().principal.userId,
+        wideYn: this.wideYn
       };
 
       let fd = new FormData();
       fd.append('uploadFile', uploadFile.files[0]);
       fd.append('paramString', JSON.stringify(uploadInfo));
-      
+
       this.inProgress = true;
       const vm = this;
-      await axios.post('/api/public/common/uploadImage',
-        fd, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      ).then( response => {
+      await commonUtilApi.uploadImage(fd).then(response =>{
         this.inProgress = false;
-        if(response.data != null && response.data.success){
+        const result = response.data;
+        if(result.success) {
           confirm.fnAlert(this.componentsTitle, '등록되었습니다.');
           this.$parent.fnSearch();
           this.fnClose();
         } else {
-          if(typeof(response.data.message) !== 'undefined' || response.data.message !== null) {
-            confirm.fnAlert(this.componentsTitle, response.data.message);
+          if(result.message !== null || typeof(result.message) !== 'undefined') {
+            confirm.fnAlert(this.componentsTitle, result.message);
           } else {
             confirm.fnAlert(this.componentsTitle, '등록에 실패했습니다.');
           }
         }
-      })
-      .catch(function () {
+      }).catch(function () {
         vm.inProgress = false;
       });
     },

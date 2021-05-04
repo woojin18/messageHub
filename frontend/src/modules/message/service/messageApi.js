@@ -1,9 +1,6 @@
 import httpClient from '@/common/http-client';
 import tokenSvc from '@/common/token-service';
 
-const apiTest = (params) => {
-    return httpClient.post('/api/public/sendMessage/apiTest', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
-};
 const selectAppIdList = (params) => {
     return httpClient.post('/api/public/sendMessage/selectAppIdList', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
 };
@@ -42,7 +39,6 @@ const sendPushMessage = (params) => {
 };
 
 export default {
-    apiTest,
     selectAppIdList,
     selectCallbackList,
     selectAddressList,

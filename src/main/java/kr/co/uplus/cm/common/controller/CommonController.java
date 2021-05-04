@@ -22,7 +22,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RestController
 @RequestMapping("/api/public/common")
-public class CommonController {
+public class CommonController extends BaseController {
 
     @Autowired
     private CommonService commonService;
@@ -42,6 +42,7 @@ public class CommonController {
         Map<String, Object> params = mapper.readValue(paramString, Map.class);
 
         try {
+            super.setContainIgnoreUserInfo(params);
             rtn = commonService.uploadImgFile(uploadFile, params);
         } catch (Exception e) {
             rtn.setSuccess(false);
@@ -60,6 +61,7 @@ public class CommonController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
+            super.setContainIgnoreUserInfo(params);
             rtn = commonService.selectImageList(params);
         } catch(Exception e) {
             rtn.setSuccess(false);
@@ -78,6 +80,7 @@ public class CommonController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
+            super.setContainIgnoreUserInfo(params);
             rtn = commonService.deleteImageFile(params);
         } catch(Exception e) {
             rtn.setSuccess(false);

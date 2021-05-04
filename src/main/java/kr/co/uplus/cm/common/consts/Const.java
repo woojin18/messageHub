@@ -80,13 +80,6 @@ public class Const {
     public static final String IMG_RESIZE_WIDTH = "width";
     public static final String IMG_RESIZE_HEIGHT = "height";
 
-    //TODO : 토큰에서 userId, corpId, projectId 가져오기 전까지 쓰자
-    public static class UserInfo {
-        public static final String USER_ID = "MBR2104141094944";
-        public static final String CORP_ID = "COM2104142281316";
-        public static final String PROJECT_ID = "313431323336706A74";
-    }
-
     //API
     public static final String API_SUCCESS = "10000";  //API 성공 코드(코드정보를 받으면 enum에 등록)
     public static final int PUSH_RECV_LIMIT_SIZE = 10;

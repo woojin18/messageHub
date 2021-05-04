@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.uplus.cm.common.consts.Const;
+import kr.co.uplus.cm.common.controller.BaseController;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.sendMessage.dto.PushRecvInfo;
 import kr.co.uplus.cm.sendMessage.dto.PushRequestData;
@@ -45,7 +46,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RestController
 @RequestMapping("/api/public/sendMessage")
-public class SendMessageController {
+public class SendMessageController extends BaseController {
 
     @Autowired
     private SendMessageService sendMsgService;
@@ -65,6 +66,7 @@ public class SendMessageController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
+            super.setContainIgnoreUserInfo(params);
             rtn = sendMsgService.selectAppIdList(params);
         } catch (Exception e) {
             rtn.setSuccess(false);
@@ -86,6 +88,7 @@ public class SendMessageController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
+            super.setContainIgnoreUserInfo(params);
             rtn = sendMsgService.selectCallbackList(params);
         } catch (Exception e) {
             rtn.setSuccess(false);
@@ -107,6 +110,7 @@ public class SendMessageController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
+            super.setContainIgnoreUserInfo(params);
             rtn = sendMsgService.selectAddressList(params);
         } catch (Exception e) {
             rtn.setSuccess(false);
@@ -211,6 +215,8 @@ public class SendMessageController {
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> sParam = new HashMap<>();
             params = mapper.readValue(paramString, Map.class);
+
+            super.setContainIgnoreUserInfo(params);
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
 
             /** 유효성 체크 */

@@ -109,9 +109,9 @@
             , #{fileId}
         </if>
             , NOW()
-            , #{loginId}
+            , #{userId}
             , NOW()
-            , #{loginId}
+            , #{userId}
             , #{adtnInfo}
         )
     </insert>
@@ -132,7 +132,7 @@
             , FILE_ID = #{fileId}
         </if>
             , UPD_DT = NOW()
-            , UPD_ID = #{loginId}
+            , UPD_ID = #{userId}
             , ADTN_INFO = #{adtnInfo}
         WHERE TMPLT_ID = #{tmpltId}
     </update>
@@ -252,7 +252,7 @@
             , RCVBLC_NUMBER = #{rcvblcNumber}
             , IMG_INFO_LIST = #{imgInfoListStr}
             , UPD_DT = NOW()
-            , UPD_ID = #{loginId}
+            , UPD_ID = #{userId}
         WHERE TMPLT_ID = #{tmpltId}
     </update>
 
