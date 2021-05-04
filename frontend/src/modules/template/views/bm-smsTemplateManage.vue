@@ -14,8 +14,19 @@
           <div class="phoneWrap">
             <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
             <div class="phoneTextWrap">
+              <div v-if="tmpltData.senderType == 'MMS'" class="phoneText2 mb10">
+                <p v-if="$gfnCommonUtils.isEmpty(tmpltData.tmpltTitle)">템플릿 제목</p>
+                <p v-else>{{tmpltData.tmpltTitle}}</p>
+              </div>
               <div class="phoneText1">
-                <p>템플릿 내용</p>
+                <p v-if="$gfnCommonUtils.isEmpty(tmpltData.tmpltContent) && (tmpltData.msgKind != 'A' || $gfnCommonUtils.isEmpty(tmpltData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
+                <p v-else class="font-size14 color4 mt10">
+                  <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
+                  <br v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltContent)"/>
+                  <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.rcvblcNumber)">
+                    {{tmpltData.rcvblcNumber}}
+                  </span>
+                </p>
               </div>
             </div>
           </div>
@@ -149,10 +160,10 @@ export default {
       imgLimitSize : 2,
       useCh : 'MMS',
       isInsert : true,
-      tmpltData : {imgInfoList:[]},
+      tmpltData : {imgInfoList:[]}
     }
   },
-    mounted() {
+  mounted() {
     this.fnSetTemplateInfo();
   },
   methods: {

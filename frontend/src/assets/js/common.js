@@ -21,6 +21,9 @@ export default {
         str = str.length >= padLen ? str.substring(0, padLen) : str;
         return str;
       },
+      newLineToBr(str){
+        return str.replace(/(?:\r\n|\r|\n)/g, '<br>');
+      },
       /**************************문자열 관련 Utils**************************/
       /**************************날짜관련 관련 Utils**************************/
       //현재일자 return

@@ -109,13 +109,13 @@
                   </td>
                   <td class="text-center">{{totCnt-offset-contant.rownum+1}}</td>
                   <td class="text-center">
-                    <router-link :to="{ name: 'pushTemplateManage', params: { rowData: {'tmpltId' : contant.tmpltId} }}">{{contant.tmpltId}}</router-link>
+                    <router-link :to="{ name: 'pushTemplateManage', params: { 'tmpltId' : contant.tmpltId }}">{{contant.tmpltId}}</router-link>
                   </td>
                   <td class="text-center">{{contant.tmpltName}}</td>
-                  <td class="text-center">{{contant.otherProjectUseYn}}</td>
+                  <td class="text-center">{{contant.projectIdNm}}</td>
                   <td class="text-center">{{contant.msgTypeName}}</td>
                   <td class="text-center">{{contant.msgKindName}}</td>
-                  <td class="text-center">{{contant.regId}}</td>
+                  <td class="text-center">{{contant.regNm}}</td>
                   <td class="text-center end">{{contant.regDt}}</td>
                 </tr>
                 <tr v-if="contants.length == 0">

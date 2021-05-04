@@ -26,7 +26,7 @@
               </div>
               <p v-if="sendData.msgKind != 'A' || (fnIsEmpty(sendData.pushContent) && fnIsEmpty(sendData.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
               <p v-else class="font-size14 color4 mt10">
-                <pre>{{sendData.pushContent}}</pre>
+                <span v-html="$gfnCommonUtils.newLineToBr(sendData.pushContent)"></span>
                 <br v-if="!fnIsEmpty(sendData.pushContent)"/>
                 {{sendData.rcvblcNumber}}
               </p>

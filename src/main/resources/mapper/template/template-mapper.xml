@@ -18,8 +18,11 @@
             </if>
         </if>
         <if test="searchOthPrjUseYn != null and searchOthPrjUseYn.size != 0 ">
-            AND OTHER_PROJECT_USE_YN IN
-            <foreach collection="searchOthPrjUseYn" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
+            AND PROJECT_ID IN
+            <foreach collection="searchOthPrjUseYn" item="item" index="index"  open="(" close=")" separator=",">
+                <if test='item == "Y" '>'ALL'</if>
+                <if test='item == "N" '>#{projectId}</if>
+            </foreach>
         </if>
         <if test="tmpltId != '' and tmpltId != null ">
             AND TMPLT_ID = #{tmpltId}
@@ -45,7 +48,8 @@
             , cm_console.fnc_get_cd_name('MSG_TYPE', CIF.MSG_TYPE, 1) AS MSG_TYPE_NAME
             , CIF.MSG_KIND
             , cm_console.fnc_get_cd_name('MSG_KIND', CIF.MSG_KIND, 1) AS MSG_KIND_NAME
-            , CIF.OTHER_PROJECT_USE_YN
+            , CIF.PROJECT_ID
+            , IF(CIF.PROJECT_ID = 'ALL', '공용', '전용') AS PROJECT_ID_NM
             , CIF.TMPLT_TITLE
             , CIF.TMPLT_CONTENT
             , CIF.RCVBLC_NUMBER
@@ -53,6 +57,7 @@
             , CIF.FILE_ID
             , DATE_FORMAT(CIF.REG_DT, '%Y-%m-%d %H:%i:%S') AS REG_DT
             , CIF.REG_ID
+            , cm_console.fnc_get_user_name(CIF.REG_ID)  AS REG_NM
             , CIF.UPD_DT
             , CIF.UPD_ID
             , CIF.ADTN_INFO
@@ -82,7 +87,6 @@
             , TMPLT_NAME
             , MSG_TYPE
             , MSG_KIND
-            , OTHER_PROJECT_USE_YN
             , TMPLT_TITLE
             , TMPLT_CONTENT
             , RCVBLC_NUMBER
@@ -95,12 +99,12 @@
             , UPD_DT
             , UPD_ID
             , ADTN_INFO
+            , PROJECT_ID
         ) VALUES (
             #{tmpltId}
             , #{tmpltName}
             , #{msgType}
             , #{msgKind}
-            , #{otherProjectUseYn}
             , #{tmpltTitle}
             , #{tmpltContent}
             , #{rcvblcNumber}
@@ -113,6 +117,7 @@
             , NOW()
             , #{userId}
             , #{adtnInfo}
+            , #{projectId}
         )
     </insert>
 
@@ -123,7 +128,7 @@
             TMPLT_NAME = #{tmpltName}
             , MSG_TYPE = #{msgType}
             , MSG_KIND = #{msgKind}
-            , OTHER_PROJECT_USE_YN = #{otherProjectUseYn}
+            , PROJECT_ID = #{projectId}
             , TMPLT_TITLE = #{tmpltTitle}
             , TMPLT_CONTENT = #{tmpltContent}
             , RCVBLC_NUMBER = #{rcvblcNumber}

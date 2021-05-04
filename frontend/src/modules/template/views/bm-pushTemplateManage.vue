@@ -18,22 +18,22 @@
             <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
             <div class="phoneTextWrap">
               <div class="phoneText2">
-                <p v-if="fnIsEmpty(rowData.tmpltTitle)">템플릿 제목</p>
-                <p v-else>{{rowData.tmpltTitle}}</p>
+                <p v-if="fnIsEmpty(tmpltData.tmpltTitle)">템플릿 제목</p>
+                <p v-else>{{tmpltData.tmpltTitle}}</p>
               </div>
-              <div v-if="rowData.msgType == 'IMAGE' && fnIsEmpty(rowData.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
+              <div v-if="tmpltData.msgType == 'IMAGE' && fnIsEmpty(tmpltData.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
                 <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
                 <p class="font-size14 color3 mt15">이미지 영역</p>
               </div>
-              <div v-if="rowData.msgType == 'IMAGE' && !fnIsEmpty(rowData.imgUrl)" class="phoneText2 mt10 text-center"
-                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.imgUrl+');'">
+              <div v-if="tmpltData.msgType == 'IMAGE' && !fnIsEmpty(tmpltData.imgUrl)" class="phoneText2 mt10 text-center"
+                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.imgUrl+');'">
               </div>
-              <p v-if="fnIsEmpty(rowData.tmpltContent) && (rowData.msgKind != 'A' || fnIsEmpty(rowData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
+              <p v-if="fnIsEmpty(tmpltData.tmpltContent) && (tmpltData.msgKind != 'A' || fnIsEmpty(tmpltData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
               <p v-else class="font-size14 color4 mt10">
-                {{rowData.tmpltContent}}
-                <br v-if="!fnIsEmpty(rowData.tmpltContent)"/>
-                <span v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcvblcNumber)">
-                  {{rowData.rcvblcNumber}}
+                <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
+                <br v-if="!fnIsEmpty(tmpltData.tmpltContent)"/>
+                <span v-if="tmpltData.msgKind == 'A' && !fnIsEmpty(tmpltData.rcvblcNumber)">
+                  {{tmpltData.rcvblcNumber}}
                 </span>
               </p>
             </div>
@@ -47,7 +47,7 @@
             <h4>템플릿명 *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <input type="text" class="inputStyle float-right" title="템플릿명 입력란" v-model="rowData.tmpltName" maxlength="100">
+            <input type="text" class="inputStyle float-right" title="템플릿명 입력란" v-model="tmpltData.tmpltName" maxlength="100">
           </div>
         </div>
         <div class="of_h user-phone">
@@ -55,9 +55,9 @@
             <h4>메시지타입 *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <input type="radio" id="msgType_BASE" value="BASE" v-model="rowData.msgType">
+            <input type="radio" id="msgType_BASE" value="BASE" v-model="tmpltData.msgType">
             <label for="msgType_BASE" class="mr30">기본</label>
-            <input type="radio" id="msgType_IMAGE" value="IMAGE" v-model="rowData.msgType">
+            <input type="radio" id="msgType_IMAGE" value="IMAGE" v-model="tmpltData.msgType">
             <label for="msgType_IMAGE">이미지</label>
           </div>
         </div>
@@ -66,9 +66,9 @@
             <h4>메시지구분 *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <input type="radio" id="msgKind_A" value="A" v-model="rowData.msgKind">
+            <input type="radio" id="msgKind_A" value="A" v-model="tmpltData.msgKind">
             <label for="msgKind_A" class="mr30">광고성</label>
-            <input type="radio" id="msgKind_I" value="I" v-model="rowData.msgKind">
+            <input type="radio" id="msgKind_I" value="I" v-model="tmpltData.msgKind">
             <label for="msgKind_I">정보성</label>
           </div>
         </div>
@@ -77,9 +77,9 @@
             <h4>타 프로젝트 사용여부  *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <input type="radio" id="otherProjectUseYn_Y" value="Y" v-model="rowData.otherProjectUseYn">
+            <input type="radio" id="otherProjectUseYn_Y" value="Y" v-model="tmpltData.otherProjectUseYn">
             <label for="otherProjectUseYn_Y" class="mr30">공용</label>
-            <input type="radio" id="otherProjectUseYn_N" value="N" v-model="rowData.otherProjectUseYn">
+            <input type="radio" id="otherProjectUseYn_N" value="N" v-model="tmpltData.otherProjectUseYn">
             <label for="otherProjectUseYn_N">전용</label>
           </div>
         </div>
@@ -88,7 +88,7 @@
             <h4>제목</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <input type="text" class="inputStyle float-right" title="제목 입력란" id="tmpltTitle" name="tmpltTitle" v-model="rowData.tmpltTitle" maxlength="45">
+            <input type="text" class="inputStyle float-right" title="제목 입력란" id="tmpltTitle" name="tmpltTitle" v-model="tmpltData.tmpltTitle" maxlength="45">
           </div>
         </div>
         <div class="of_h user-phone">
@@ -96,10 +96,10 @@
             <h4>내용 *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <textarea class="textareaStyle height120" placeholder="" v-model="rowData.tmpltContent" maxlength="2000"></textarea>
-            <div v-if="rowData.msgKind == 'A'">
+            <textarea class="textareaStyle height120" placeholder="" v-model="tmpltData.tmpltContent" maxlength="2000"></textarea>
+            <div v-if="tmpltData.msgKind == 'A'">
               <p class="color5">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
-              <input type="text" id="rcvblcNumber" name="rcvblcNumber" class="inputStyle float-right mt10" title="내용 입력란" v-model="rowData.rcvblcNumber" placeholder="설정 > 푸시 알림 설정 변경" maxlength="45">
+              <input type="text" id="rcvblcNumber" name="rcvblcNumber" class="inputStyle float-right mt10" title="내용 입력란" v-model="tmpltData.rcvblcNumber" placeholder="설정 > 푸시 알림 설정 변경" maxlength="45">
               <p class="color5">푸시 수신거부 방법을 입력해주세요. 푸시 메시지에 (수신거부:거부 방법)이 포함됩니다.</p>
             </div>
           </div>
@@ -109,10 +109,10 @@
               <h4>부가정보(EXT)</h4>
             </div>
             <div class="float-left" style="width:72%">
-              <input type="text" class="inputStyle float-right" title="부가정보(EXT) 입력란" v-model="rowData.adtnInfo" maxlength="45">
+              <input type="text" class="inputStyle float-right" title="부가정보(EXT) 입력란" v-model="tmpltData.adtnInfo" maxlength="45">
             </div>
           </div>
-        <div v-if="rowData.msgType == 'IMAGE'" class="of_h user-phone">
+        <div v-if="tmpltData.msgType == 'IMAGE'" class="of_h user-phone">
           <div class="float-left" style="width:28%">
             <h4>이미지</h4>
           </div>
@@ -122,7 +122,7 @@
                 <a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
               </div>
               <ul class="float-right attachList" style="width:74%; padding:5px 15px; height:30px;">
-                <li><a @click="fnDelImg">{{fnSubString(rowData.imgUrl, 0, 35)}}  <i v-if="!fnIsEmpty(rowData.imgUrl)" class="fal fa-times"></i></a></li>
+                <li><a @click="fnDelImg">{{fnSubString(tmpltData.imgUrl, 0, 35)}}  <i v-if="!fnIsEmpty(tmpltData.imgUrl)" class="fal fa-times"></i></a></li>
               </ul>
             </div>
           </div>
@@ -151,11 +151,11 @@ export default {
     ImageUploadPopUp
   },
   props: {
-    rowData : {
-      type: Object,
+    tmpltId: {
+      type: String,
       require: false,
       default: function() {
-        return {'imgUrl':''}
+        return '';
       }
     },
     componentsTitle: {
@@ -171,7 +171,8 @@ export default {
       imgMngOpen : false,
       imgUploadOpen : false,
       useCh : 'PUSH',
-      isInsert : true
+      isInsert : true,
+      tmpltData : {imgUrl:''}
     }
   },
   mounted() {
@@ -179,8 +180,8 @@ export default {
   },
   methods: {
     fnDelImg(){
-      this.rowData.imgUrl = '';
-      this.rowData.fileId = '';
+      this.tmpltData.imgUrl = '';
+      this.tmpltData.fileId = '';
     },
     fnSubString(str, sIdx, length){
       var shortStr = ''
@@ -202,23 +203,24 @@ export default {
     //푸시 템플릿 정보 조회
     fnSelectPushTmpltInfo(){
       var vm = this;
-      var params = this.rowData;
+      var params = {tmpltId: this.tmpltId};
       templateApi.selectPushTmpltInfo(params).then(response => {
         var result = response.data;
         if(result.success) {
           result.data.forEach(function(obj){
-            vm.rowData = obj;
+            vm.tmpltData = obj;
+            vm.tmpltData.otherProjectUseYn = (obj.projectId == 'ALL' ? 'Y' : 'N');
           });
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
-          this.rowData = {};
+          this.tmpltData = {};
           this.isInsert = true;
         }
       });
     },
     //template 정보 조회
     fnSetTemplateInfo(){
-      if(typeof(this.rowData.tmpltId) !== 'undefined' && this.rowData.tmpltId !== null){
+      if(!this.$gfnCommonUtils.isEmpty(this.tmpltId)){
         this.isInsert = false;
         this.fnSelectPushTmpltInfo();
       } else {
@@ -233,44 +235,44 @@ export default {
       this.imgUploadOpen = !this.imgUploadOpen;
     },
     fnSetImageInfo(imgInfo) {
-      this.rowData.imgUrl = imgInfo.chImgUrl;
-      this.rowData.fileId = imgInfo.fileId;
+      this.tmpltData.imgUrl = imgInfo.chImgUrl;
+      this.tmpltData.fileId = imgInfo.fileId;
     },
     //유효성 체크
     fnIsValid(){
-      if(!this.rowData.tmpltName){
+      if(!this.tmpltData.tmpltName){
         confirm.fnAlert(this.componentsTitle, '템플릿명을 입력해주세요.');
         return false;
       }
-      if(!this.rowData.msgType){
+      if(!this.tmpltData.msgType){
         confirm.fnAlert(this.componentsTitle, '메시지타입을 선택해주세요.');
         return false;
       }
-      if(!this.rowData.msgKind){
+      if(!this.tmpltData.msgKind){
         confirm.fnAlert(this.componentsTitle, '메시지구분을 선택해주세요.');
         return false;
       }
-      if(!this.rowData.otherProjectUseYn){
+      if(!this.tmpltData.otherProjectUseYn){
         confirm.fnAlert(this.componentsTitle, '타 프로젝트 사용여부를 선택해주세요.');
         return false;
       }
-      if(!this.rowData.tmpltTitle){
+      if(!this.tmpltData.tmpltTitle){
         confirm.fnAlert(this.componentsTitle, '제목을 입력해주세요.');
         return false;
       }
-      if(!this.rowData.tmpltContent){
+      if(!this.tmpltData.tmpltContent){
         confirm.fnAlert(this.componentsTitle, '내용을 입력해주세요.');
         return false;
       }
-      if(this.rowData.msgKind == 'A' && !this.rowData.rcvblcNumber){
+      if(this.tmpltData.msgKind == 'A' && !this.tmpltData.rcvblcNumber){
         confirm.fnAlert(this.componentsTitle, '푸시 수신거부 방법을 입력해주세요.');
         return false;
       }
-      if(this.rowData.msgType == 'IMAGE' && !this.rowData.imgUrl){
+      if(this.tmpltData.msgType == 'IMAGE' && !this.tmpltData.imgUrl){
         confirm.fnAlert(this.componentsTitle, '이미지를 선택해주세요.');
         return false;
       }
-      if(this.rowData.msgType == 'IMAGE' && !this.rowData.fileId){
+      if(this.tmpltData.msgType == 'IMAGE' && !this.tmpltData.fileId){
         confirm.fnAlert(this.componentsTitle, '이미지 정보가 잘못되었습니다. 다시 이미지를 선택해주세요.');
         return false;
       }
@@ -287,12 +289,12 @@ export default {
     },
     async fnProcSavePushTemplate(){
       //DATA Set
-      var params = this.rowData;
-      if(this.rowData.msgType != 'IMAGE') {
+      var params = this.tmpltData;
+      if(this.tmpltData.msgType != 'IMAGE') {
         params.imgUrl = '';
         params.fileId = '';
       }
-      if(this.rowData.msgKind != 'A') {
+      if(this.tmpltData.msgKind != 'A') {
         params.rcvblcNumber = '';
       }
 

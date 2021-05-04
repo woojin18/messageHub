@@ -72,6 +72,12 @@ public class TemplateService {
         RestResult<Object> rtn = new RestResult<Object>();
         int resultCnt = 0;
 
+        String otherProjectUseYn = CommonUtils.getStrValue(params, "otherProjectUseYn");
+
+        if(!StringUtils.equalsIgnoreCase(otherProjectUseYn, Const.COMM_NO)) {
+            params.put("projectId", Const.OTHER_PROJECT_USE_ID);
+        }
+
         // update
         if (params.containsKey("tmpltId") && StringUtils.isNotBlank(CommonUtils.getString(params.get("tmpltId")))) {
             resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_PUSH_TMPLT, params);
