@@ -19,6 +19,8 @@ import signUpRoutes from './modules/signUp/router';
 import cashRoutes from './modules/cash/router';
 import rcsTemplateRoutes from './modules/rcsTemplate/router';
 import userRoutes from './modules/user/router';
+import messageStatusRoutes from './modules/messageStatus/router';
+import integratedTemplateRoutes from './modules/integratedTemplate/router';
 
 //import confirm from "@/modules/commonUtil/service/confirm.js";
 
@@ -106,7 +108,9 @@ const router = new Router({
 				...ucHomeRoutes,
 				...messageRoutes,
 				...templateRoutes,
-				...rcsTemplateRoutes
+				...rcsTemplateRoutes,
+				...messageStatusRoutes,
+				...integratedTemplateRoutes
 			]
 		},
 		{path: '*', redirect: '/view/error/404'}

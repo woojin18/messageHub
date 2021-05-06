@@ -26,6 +26,14 @@ module.exports = {
       '^/userApi': {
         target: 'http://localhost:7070',
         changeOrigin: true
+      },
+      '^/messageStatusApi': {
+        target: 'http://localhost:7070',
+        changeOrigin: true
+      },
+      '^/integratedTemplateApi': {
+        target: 'http://localhost:7070',
+        changeOrigin: true
       }
     }
   },

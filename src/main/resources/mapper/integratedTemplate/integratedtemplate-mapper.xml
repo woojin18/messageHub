@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="integratedTemplate">
+
+    <sql id ="whereSelectIntegratedTemplateList">
+        <!-- AND A.CORP_ID = #{corpId} --><!-- 테스트중 주석처리-->
+		AND A.PROJECT_ID = #{projectId}
+        <if test="searchText != '' and searchText != null ">
+            AND C.CORP_ID = CONCAT('%', #{searchText}, '%')
+        </if>
+        <if test="searchStartDate != '' and searchStartDate != null ">
+            <if test="searchEndDate != '' and searchEndDate != null ">
+            AND A.REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
+            </if>
+        </if>
+    </sql>
+
+    <select id="selectIntegratedTemplateListCnt" parameterType="hashmap" resultType="int">
+    /* 통합발송 템플릿 카운트 조회 */
+        SELECT
+            COUNT(DISTINCT A.WEB_REQ_ID) AS CNT
+        FROM cm_console.CM_WEB_MSG A LEFT OUTER JOIN cm.CM_MSG B ON A.WEB_REQ_ID = B.WEB_REQ_ID
+		                             LEFT OUTER JOIN cm_console.CM_CORP C ON A.CORP_ID = C.CORP_ID
+        WHERE 1=1
+        <include refid="whereSelectIntegratedTemplateList"/>
+    </select>
+
+    <select id="selectIntegratedTemplateList" parameterType="hashmap" resultType="camel">
+    /* 통합발송 템플릿 리스트 조회 */
+		SELECT  @rownum:=@rownum+1 AS ROW_NUM
+		      , A.WEB_REQ_ID
+		      , A.CH_STRING
+			  , A.SENDER_TYPE
+			  , CASE WHEN A.SENDER_TYPE = 'C' THEN '개별방송'
+		       WHEN A.SENDER_TYPE = 'M' THEN '통합발송'
+		       WHEN A.SENDER_TYPE = 'S' THEN '스마트발송'
+		       END AS SENDER_TYPE_NM /*발송타입명*/
+			  , A.SENDER_CNT
+			  , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%s') AS REG_DT /*발송일시*/
+			  , C.CORP_NAME
+			  , SUM(CASE WHEN IFNULL(B.GW_RESULT_CODE,'0') = '10000' THEN 0 ELSE 1 END) AS SEND_FAIL_CNT 
+		FROM cm_console.CM_WEB_MSG A LEFT OUTER JOIN cm.CM_MSG B ON A.WEB_REQ_ID = B.WEB_REQ_ID
+		                             LEFT OUTER JOIN cm_console.CM_CORP C ON A.CORP_ID = C.CORP_ID
+		   , (SELECT @rownum:=0) TMP
+		WHERE 1=1
+		<include refid="whereSelectIntegratedTemplateList"/>
+        GROUP BY A.WEB_REQ_ID, A.CH_STRING, A.SENDER_TYPE, A.SENDER_TYPE, A.SENDER_CNT, A.REG_DT, C.CORP_NAME
+		ORDER BY A.REG_DT DESC
+        <if test='pagingYn == "Y" '>
+        LIMIT ${offset}, #{listSize}
+        </if>
+    </select>
+    
+    <insert id="insertIntegratedTemplate" parameterType="hashmap">
+    /* template.insertIntegratedTemplate - 통합 템플릿 등록 */
+        INSERT
+            INTO cm.CM_SMART_TMPLT
+        (
+            PROJECT_ID
+            , TMPLT_CODE
+            , MSG_KIND
+            , MSG_TYPE
+            , OTHER_PROJECT_USE_YN
+			, TMPLT_TITLE
+			, TMPLT_INFO
+			, TMPLT_TYPE
+			, TMPLT_STATUS
+            , REG_DT
+            , REG_ID
+            , UPD_DT
+            , UPD_ID
+        ) VALUES (
+            #{projectId}
+            , #{tmpltCode}
+            , #{msgKind}
+            , #{msgType}
+            , #{otherProjectUseYn}
+            , #{tmpltTitle}
+            , #{tmpltInfo}
+            , #{tmpltType}
+			, #{tmpltStatus}
+            , NOW()
+            , #{loginId}
+            , NOW()
+            , #{loginId}
+        )
+        ON DUPLICATE KEY UPDATE MSG_KIND = #{msgKind}
+					            , MSG_TYPE = #{msgType}
+					            , OTHER_PROJECT_USE_YN = #{otherProjectUseYn}
+					            , TMPLT_TITLE = #{tmpltTitle}
+					            , TMPLT_INFO = #{tmpltInfo}
+					            , TMPLT_TYPE = #{tmpltType}
+					            , TMPLT_STATUS = #{tmpltStatus}
+					            , UPD_DT = NOW()
+					            , UPD_ID = #{loginId}
+    </insert>
+
+    <update id="updateIntegratedTemplate" parameterType="hashmap">
+    /* template.updateIntegratedTemplate - 통합 템플릿 수정 */
+        UPDATE cm.CM_SMART_TMPLT
+        SET
+            MSG_KIND = #{msgKind}
+            , MSG_TYPE = #{msgType}
+            , OTHER_PROJECT_USE_YN = #{otherProjectUseYn}
+            , TMPLT_TITLE = #{tmpltTitle}
+            , TMPLT_INFO = #{tmpltInfo}
+            , TMPLT_TYPE = #{tmpltType}
+            , TMPLT_STATUS = #{tmpltStatus}
+            , UPD_DT = NOW()
+            , UPD_ID = #{loginId}
+        WHERE PROJECT_ID = #{projectId}
+          AND TMPLT_CODE = #{tmpltCode}
+    </update>
+    
+
+
+
+
+</mapper>
