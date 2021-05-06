@@ -76,13 +76,16 @@ public class Const {
         public static final String COMPLETED = "COMPLETED";
     }
 
-    //발송진행상태
-    public static class ImgUploadProp {
-        public static final String PUSH = "PUSH";
-        public static final String FRIENDTALK = "FRIENDTALK";
-        public static final String MMS = "MMS";
-        public static final String FRIENDTALK_WIDE = "FRIENDTALK_WIDE";
-        public static final String RCS = "RCS";
+    //파일 업로드 설정
+    public static class FileUploadSet {
+        public static final String SEND_IMAGE = "SEND_IMAGE";
+        public static final String EXCEL = "EXCEL";
+    }
+
+    //파일 업로드 설정 키
+    public static class FileUploadSetKey {
+        public static final String PERMIT_EXTEN = "permitExten";
+        public static final String RLT_TMP_PATH = "rltTmpPath";
     }
 
     //이미지 리사이징 사이즈

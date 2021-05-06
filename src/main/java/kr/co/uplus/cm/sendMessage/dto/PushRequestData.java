@@ -19,7 +19,7 @@ public class PushRequestData implements Serializable {
     //발신번호(대체발송 발신번호)
     // pattern: ^[0-9-]{1,20}$
     // example: 15441234
-    @Pattern(regexp="^(s*|[0-9-]{1,20})$", message="발신번호 형식에 맞지 않습니다.(예:15441234)")
+    @Pattern(regexp="^([0-9-]{0,20})$", message="발신번호 형식에 맞지 않습니다.(예:15441234)")
     private String callback;
 
     //캠페인 ID(태그)

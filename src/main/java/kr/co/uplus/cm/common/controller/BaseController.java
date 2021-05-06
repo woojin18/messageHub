@@ -2,6 +2,7 @@ package kr.co.uplus.cm.common.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +25,9 @@ public class BaseController {
      */
     protected AuthUser getUserInfo(){
         HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-        return (AuthUser) authSvc.loadUserByUsername(request.getHeader("loginId"));
+        AuthUser authUser = (AuthUser) authSvc.loadUserByUsername(request.getHeader("loginId"));
+        authUser.setCurrentProjectId(getProjectId(request));
+        return authUser;
     }
 
     /**
@@ -48,7 +51,7 @@ public class BaseController {
         if(user != null) {
             String userId = StringUtils.defaultIfBlank(user.getUserId(), "");
             String corpId = StringUtils.defaultIfBlank(user.getCorpId(), "");
-            String projectId = StringUtils.defaultIfBlank(user.getRepProjectId(), "");
+            String projectId = StringUtils.defaultIfBlank(user.getCurrentProjectId(), user.getRepProjectId());
 
             if(isContainIgnore) {
                 params.put("userId", userId);
@@ -71,6 +74,28 @@ public class BaseController {
      */
     protected Map<String, Object> setContainIgnoreUserInfo(Map<String, Object> params){
         return setUserInfo(params, true);
+    }
+
+    /**
+     * 현재 선택한 프로젝트 ID get
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    protected String getProjectId(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String key = "project";
+        String projectId = "";
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(key)) {
+                    projectId = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        return projectId;
     }
 
 }

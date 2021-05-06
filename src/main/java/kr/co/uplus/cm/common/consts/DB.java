@@ -10,7 +10,9 @@ public class DB {
 	public final static String QRY_SELECT_CORP_INFO = "common.selectCorpInfoByUserId";
     public final static String QRY_SELECT_FILE_ID_USE_CNT = "common.selectFileIdUseCnt";
     public final static String QRY_SELECT_API_KEY = "common.selectApiKey";
-    public final static String QRY_SELECT_IMG_UPLOAD_PROP = "common.selectImgUploadProp";
+    public final static String QRY_SELECT_IMG_UPLOAD_CH_SET = "common.selectImgUploadChSet";
+    public final static String QRY_SELECT_FILE_UPLOAD_SET = "common.selectFileUploadSet";
+
 	// 로그인
 	public final static String QRY_SELECT_USERNAME	= "login.qrySelectUserName";
 	public final static String QRY_INSERT_USERNAME	= "login.qryInsertAuthUser";

@@ -93,7 +93,7 @@
             <input type="text" class="inputStyle" v-model="tmpltData.rcvblcNumber" maxlength="10">
           </div>
         </div>
-        
+
         <div v-if="tmpltData.senderType == 'MMS'" class="of_h user-phone">
           <div class="float-left" style="width:31%">
             <h4>이미지</h4>
@@ -103,15 +103,18 @@
               <div class="float-left" style="width:22%">
                 <a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
               </div>
-              <ul class="float-right attachList" style="width:74%; padding:5px 15px; height:30px;">
-                <li v-if="tmpltData.imgInfoList.length > 0">
-                  <a v-for="(imgInfo, idx) in tmpltData.imgInfoList" :key="idx" :class="idx==0?'':'ml10'" @click="fnDelImg(idx)">{{fnSubString(imgInfo.imgUrl, 0, 20)}}  <i class="fal fa-times"></i></a>
+              <ul v-for="imgIdx in imgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
+                <li v-if="tmpltData.imgInfoList.length > imgIdx-1">
+                  <a @click="fnDelImg(idx)">{{fnSubString(tmpltData.imgInfoList[imgIdx-1].imgUrl, 0, 35)}} <i class="fal fa-times"></i></a>
+                </li>
+                <li v-else>
+                  <a></a>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-
+        
         <div class="mt20 float-right">
           <a v-if="isInsert" @click="fnSaveSmsTemplate" class="btnStyle2 backRed ml10" title="등록">등록</a>
           <a v-else @click="fnSaveSmsTemplate" class="btnStyle2 backWhite ml10" title="수정">수정</a>
@@ -229,6 +232,22 @@ export default {
         confirm.fnAlert(this.componentsTitle, '광고성메시지 수신거부번호를 입력해주세요.');
         return false;
       }
+
+      const msgLimitByte = (this.tmpltData.senderType == 'SMS' ? 80 : 2000);
+      let totalMsg = this.tmpltData.tmpltContent;
+      if(this.tmpltData.senderType != 'SMS'){
+        totalMsg += this.tmpltData.tmpltTitle;
+      }
+      if(this.tmpltData.msgKind == 'A'){
+        totalMsg += '\n' + this.tmpltData.rcvblcNumber;
+      }
+      const totByte = this.getByte(totalMsg);
+      if(msgLimitByte < totByte){
+        const alertMsg = (this.tmpltData.senderType == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+msgLimitByte+'를 넘지 않아야됩니다.\n(현재 : '+totByte+'byte)';
+        confirm.fnAlert(this.componentsTitle, alertMsg);
+        return false;
+      }
+
       return true;
     },
     //저장
@@ -310,7 +329,14 @@ export default {
         confirm.fnAlert(this.componentsTitle, '이미지는 최대 2개까지 등록 가능합니다.');
         return false;
       }
-    }
+    },
+    //get 문자열 byte
+    getByte(str) {
+      return str
+        .split('')
+        .map(s => s.charCodeAt(0))
+        .reduce((prev, c) => (prev + ((c === 10) ? 2 : ((c >> 7) ? 2 : 1))), 0);
+    },
   }
 }
 </script>
