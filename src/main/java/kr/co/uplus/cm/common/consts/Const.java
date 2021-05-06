@@ -76,8 +76,14 @@ public class Const {
         public static final String COMPLETED = "COMPLETED";
     }
 
-    //발송진행상태
+    //파일 업로드 설정
     public static class FileUploadSet {
+        public static final String SEND_IMAGE = "SEND_IMAGE";
+        public static final String EXCEL = "EXCEL";
+    }
+
+    //파일 업로드 설정 키
+    public static class FileUploadSetKey {
         public static final String PERMIT_EXTEN = "permitExten";
         public static final String RLT_TMP_PATH = "rltTmpPath";
     }

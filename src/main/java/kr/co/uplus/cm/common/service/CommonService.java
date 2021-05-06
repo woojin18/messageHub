@@ -89,8 +89,8 @@ public class CommonService {
         String fileExten = fileName.substring(fileName.lastIndexOf(".") + 1);
 
         //get Excel Set Value
-        Map<String, Object> excelUploadSet = (Map<String, Object>) selectExcelUploadSet();
-        String excelPermitExten = CommonUtils.getStrValue(excelUploadSet, Const.FileUploadSet.PERMIT_EXTEN);
+        Map<String, Object> excelUploadSet = (Map<String, Object>) selectFileUploadSet(Const.FileUploadSet.EXCEL);
+        String excelPermitExten = CommonUtils.getStrValue(excelUploadSet, Const.FileUploadSetKey.PERMIT_EXTEN);
 
         // 엑셀 업로드 확장자 유효성 체크
         if (Stream.of(excelPermitExten.split(",")).map(String::trim)
@@ -163,9 +163,9 @@ public class CommonService {
         }
 
         //get Image Set Value
-        Map<String, Object> imgUploadSet = (Map<String, Object>) selectImageUploadSet();
-        String imgPermitExten = CommonUtils.getStrValue(imgUploadSet, Const.FileUploadSet.PERMIT_EXTEN);
-        String imgRltTmpPath = CommonUtils.getStrValue(imgUploadSet, Const.FileUploadSet.RLT_TMP_PATH);
+        Map<String, Object> imgUploadSet = (Map<String, Object>) selectFileUploadSet(Const.FileUploadSet.SEND_IMAGE);
+        String imgPermitExten = CommonUtils.getStrValue(imgUploadSet, Const.FileUploadSetKey.PERMIT_EXTEN);
+        String imgRltTmpPath = CommonUtils.getStrValue(imgUploadSet, Const.FileUploadSetKey.RLT_TMP_PATH);
 
         //get File Prop
         List<Object> imgSetInfoList = selectImgUploadChSet();
@@ -511,30 +511,23 @@ public class CommonService {
     }
 
     /**
-     * 이미지업로드 설정 조회
+     * 파일업로드 설정 조회
      * @throws Exception
      */
-    public Object selectImageUploadSet() throws Exception {
-        Object rtnObj = generalDao.selectGernalObject(DB.QRY_SELECT_IMAGE_UPLOAD_SET, null);
+    public Object selectFileUploadSet(String fileUploadSet) throws Exception {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("codeVal1", fileUploadSet);
+        params.put("codeName2", Const.FileUploadSetKey.PERMIT_EXTEN);
+        if(StringUtils.equals(fileUploadSet, Const.FileUploadSet.SEND_IMAGE)) {
+            params.put("codeName3", Const.FileUploadSetKey.RLT_TMP_PATH);
+        }
 
+        Object rtnObj = generalDao.selectGernalObject(DB.QRY_SELECT_FILE_UPLOAD_SET, params);
         if(rtnObj == null || CommonUtils.isEmptyObject(rtnObj)) {
             log.error("{}.selectImageUploadSet no result search for image upload Set Value. corpID : {}", this.getClass());
             throw new Exception("이미지업로드 설정 검색 결과 없음.");
         }
-        return rtnObj;
-    }
 
-    /**
-     * 엑셀업로드 설정 조회
-     * @throws Exception
-     */
-    public Object selectExcelUploadSet() throws Exception {
-        Object rtnObj = generalDao.selectGernalObject(DB.QRY_SELECT_EXCEL_UPLOAD_SET, null);
-
-        if(rtnObj == null || CommonUtils.isEmptyObject(rtnObj)) {
-            log.error("{}.selectExcelUploadSet no result search for image upload Set Value. corpID : {}", this.getClass());
-            throw new Exception("엑셀업로드 설정 조회 검색 결과 없음.");
-        }
         return rtnObj;
     }
 
