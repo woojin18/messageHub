@@ -179,7 +179,7 @@
         INNER JOIN cm_bo.CM_CODE CC
             ON CCT.CODE_TYPE_CD = CC.CODE_TYPE_CD
             AND CC.USE_YN = 'Y'
-            AND CC.CODE_VAL_1 = 'IMAGE'
+            AND CC.CODE_VAL_1 = 'SEND_IMAGE'
         WHERE CCT.CODE_TYPE_CD = 'FILE_UPLOAD_SET'
         LIMIT 1
     </select>
