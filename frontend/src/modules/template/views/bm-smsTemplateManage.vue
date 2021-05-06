@@ -123,7 +123,7 @@
       </div>
     </div>
 
-    <ImageManagePopUp :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
+    <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
 
   </div>
 
@@ -305,6 +305,17 @@ export default {
       this.$refs.imgMngPopup.fnSearch();
       this.imgMngOpen = !this.imgMngOpen;
     },
+    fnCallbackImgInfo(imgInfo){
+      console.log(imgInfo);
+      if(this.fnImgLimitSize() == false) return;
+      let temp = {
+        imgUrl: imgInfo.chImgUrl,
+        fileId: imgInfo.fileId
+      };
+      this.tmpltData.imgInfoList.push(temp);
+      this.fnDelDuplImgInfo();
+    },
+    /*
     fnSetImageInfo(imgInfo) {
       if(this.fnImgLimitSize() == false) return;
       let temp = {
@@ -314,6 +325,7 @@ export default {
       this.tmpltData.imgInfoList.push(temp);
       this.fnDelDuplImgInfo();
     },
+    */
     fnDelDuplImgInfo(){
       const vm = this;
       this.tmpltData.imgInfoList = this.tmpltData.imgInfoList.filter(function(item, i){

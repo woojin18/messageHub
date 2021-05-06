@@ -145,7 +145,8 @@ export default {
     // 이미지 선택
     fnSelectImage(idx){
       this.fnClose();
-      this.$parent.fnSetImageInfo(this.contants[idx]);
+      //this.$parent.fnSetImageInfo(this.contants[idx]);
+      this.$emit('img-callback',this.contants[idx]);
     },
     // 조회
     async fnSearch(){
