@@ -315,17 +315,6 @@ export default {
       this.tmpltData.imgInfoList.push(temp);
       this.fnDelDuplImgInfo();
     },
-    /*
-    fnSetImageInfo(imgInfo) {
-      if(this.fnImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      this.tmpltData.imgInfoList.push(temp);
-      this.fnDelDuplImgInfo();
-    },
-    */
     fnDelDuplImgInfo(){
       const vm = this;
       this.tmpltData.imgInfoList = this.tmpltData.imgInfoList.filter(function(item, i){

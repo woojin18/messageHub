@@ -6,7 +6,7 @@
       <!-- <a href="#self" class="btnStyle1 absolute top0 right0" onClick="window.location.reload()" title="푸시 템플릿 등록/상세 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
     </div>
 
-    <ImageManagePopUp :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMng"></ImageManagePopUp>
+    <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMng"></ImageManagePopUp>
     <ImageUploadPopUp :imgUploadOpen.sync="imgUploadOpen"></ImageUploadPopUp>
 
     <!-- 본문 -->
@@ -234,7 +234,7 @@ export default {
     fnOpenImageUploadPopUp : function(){
       this.imgUploadOpen = !this.imgUploadOpen;
     },
-    fnSetImageInfo(imgInfo) {
+    fnCallbackImgInfo(imgInfo) {
       this.tmpltData.imgUrl = imgInfo.chImgUrl;
       this.tmpltData.fileId = imgInfo.fileId;
     },

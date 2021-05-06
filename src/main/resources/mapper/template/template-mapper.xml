@@ -235,6 +235,7 @@
             , CST.PROJECT_ID
             , IF(CST.PROJECT_ID = 'ALL', '공용', '전용') AS PROJECT_ID_NM
             , CST.MSG_KIND
+            , cm_console.fnc_get_cd_name('MSG_KIND', CST.MSG_KIND, 1) AS MSG_KIND_NAME
             , CST.TMPLT_TITLE
             , CST.TMPLT_CONTENT
             , CST.RCVBLC_NUMBER

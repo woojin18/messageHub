@@ -47,7 +47,7 @@
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30 color000">내용</h5>
-                  <h5 style="width:40%" class="float-right color4 word-break-all">{{templateData.tmpltContent}}</h5>
+                  <h5 style="width:40%" class="float-right color4 word-break-all" v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></h5>
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30 color000">이미지</h5>
@@ -97,7 +97,7 @@ import TemplateApi from "@/modules/template/service/templateApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
-  name: "directInputPopup",
+  name: "pushTemplatePopup",
   props: {
     pushTemplateOpen: {
       type: Boolean,

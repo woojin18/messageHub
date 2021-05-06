@@ -2,7 +2,7 @@
   <div>
     <div class="contentHeader">
       <h2>SMS 발송</h2>
-      <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="SMS 발송 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+      <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="SMS 발송 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
     </div>
     <!-- 본문 -->
     <div class="row">
@@ -18,10 +18,6 @@
             </div>
           </div>
           <!-- //phoneWrap -->
-          <div class="phone_04_btn">
-            <a href="#self" class="btnStyle1 backBlack" title="Push">Push</a>
-            <a href="#self" class="btnStyle1 backWhite" title="Push">SMS</a>
-          </div>
         </div>
       </div>
       <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
@@ -30,14 +26,16 @@
             <h4>01  발송정보</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a href="#self" class="btnStyle1 backLightGray" data-toggle="modal" data-target="#Tamplet" title="템플릿 불러오기">템플릿 불러오기</a>
+            <a @click="fnOpenSmsTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기">템플릿 불러오기</a>
             <div class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
                 <h5>발송유형</h5>
               </div>
               <div>
-                <input type="radio" name="send" value="SMS" id="SMS" checked=""> <label for="SMS" class="mr30">SMS</label>
-                <input type="radio" name="send" value="MMS" id="MMS"> <label for="MMS">MMS</label>
+                <input type="radio" name="senderType" value="SMS" id="senderType_SMS" v-model="sendData.senderType">
+                <label for="senderType_SMS" class="mr30">SMS</label>
+                <input type="radio" name="senderType" value="MMS" id="senderType_MMS" v-model="sendData.senderType">
+                <label for="senderType_MMS">MMS</label>
               </div>
             </div>
             <div class="of_h">
@@ -45,8 +43,11 @@
                 <h5>메시지구분 *</h5>
               </div>
               <div>
-                <input type="radio" name="Sortation" value="ad" id="ad" checked=""> <label for="ad" class="mr30">광고성</label>
-                <input type="radio" name="Sortation" value="info" id="info"> <label for="info">정보성</label>
+                <input type="radio" name="msgKind" value="A" id="msgKind_A" v-model="sendData.msgKind">
+                <label for="msgKind_A" class="mr30">광고성</label>
+                <input type="radio" name="msgKind" value="I" id="msgKind_I" v-model="sendData.msgKind">
+                <label for="msgKind_I">정보성</label>
+
               </div>
             </div>
           </div>
@@ -58,16 +59,23 @@
             <h4>02  메시지 내용</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a href="#self" class="btnStyle1 backLightGray" data-toggle="modal" data-target="#contents" title="메시지 내용입력">내용입력</a>
+            <a @click="fnOpenSmsContentsPopup" class="btnStyle1 backLightGray" title="메시지 내용입력">내용입력</a>
             <div class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
                 <h5>이미지</h5>
               </div>
               <div class="of_h" style="width:82%">
                 <div class="float-left" style="width:24%"><a href="#self" class="btnStyle1 backLightGray width100_" data-toggle="modal" data-target="#image" title="이미지선택">이미지선택</a></div>
-                <ul class="float-right attachList" style="width:74%; padding:5px 15px">
-                  <li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
+
+                <ul v-for="imgIdx in imgLimitSize" :key="imgIdx" class="float-right attachList" style="width:74%; padding:5px 15px height:30px;">
+                  <li v-if="sendData.imgInfoList.length > imgIdx-1">
+                    <a @click="fnDelImg(idx)">{{fnSubString(sendData.imgInfoList[imgIdx-1].imgUrl, 0, 35)}} <i class="fal fa-times"></i></a>
+                  </li>
+                  <li v-else>
+                    <a></a>
+                  </li>
                 </ul>
+                
               </div>
             </div>
           </div>
@@ -140,11 +148,67 @@
         </div>
       </div>
     </div>
+
+    <SmsTemplatePopup :smsTemplateOpen.sync="smsTemplateOpen" ref="smsTmplPopup"></SmsTemplatePopup>
+    <SmsContentsPopup :smsContsOpen.sync="smsContsOpen" :sendData="sendData"></SmsContentsPopup>
+
   </div>
 </template>
 
 <script>
+import SmsTemplatePopup from "@/modules/message/components/bp-smsTemplate.vue";
+import SmsContentsPopup from "@/modules/message/components/bp-smsContents.vue";
+
 export default {
   name: "sendSmsMain",
+  components : {
+    SmsTemplatePopup,
+    SmsContentsPopup
+  },
+  props: {
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: function() {
+        return 'SMS 발송';
+      }
+    },
+  },
+  data() {
+    return {
+      smsTemplateOpen : false,
+      smsContsOpen : false,
+      imgLimitSize : 2,
+      sendData : {
+        senderType: 'SMS',
+        msgKind: 'A',
+        imgInfoList: []
+      }
+    }
+  },
+  methods: {
+    fnDelImg(idx){
+      this.tmpltData.imgInfoList.splice(idx, 1);
+    },
+    fnSubString(str, sIdx, length){
+      let shortStr = ''
+      if(!this.$gfnCommonUtils.isEmpty(str)){
+        shortStr = str.toString();
+        if(shortStr.length > length){
+          shortStr = shortStr.substring(sIdx, length) + '...  ';
+        } else {
+          shortStr = shortStr + '  ';
+        }
+      }
+      return shortStr;
+    },
+    fnOpenSmsTemplatePopup(){
+      this.$refs.smsTmplPopup.fnSearch();
+      this.smsTemplateOpen = !this.smsTemplateOpen;
+    },
+    fnOpenSmsContentsPopup(){
+      this.smsContsOpen = !this.smsContsOpen;
+    }
+  }
 }
 </script>

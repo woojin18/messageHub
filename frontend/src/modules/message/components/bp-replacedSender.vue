@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <ImageManagePopUp :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
+    <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
 
   </div>
 </template>
@@ -62,7 +62,7 @@ import confirm from "@/modules/commonUtil/service/confirm.js";
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
 
 export default {
-  name: "pushContentsPopup",
+  name: "replacedSenderPopup",
   components : {
     ImageManagePopUp
   },
@@ -83,7 +83,7 @@ export default {
   data() {
     return {
       imgMngOpen : false,
-      useCh : 'PUSH',
+      useCh : 'MMS',
       callbackList: [],
       msgKind : 'A',
       fbInfo: {
@@ -175,7 +175,7 @@ export default {
       this.imgMngOpen = !this.imgMngOpen;
     },
     //이미지선택 callback
-    fnSetImageInfo(imgInfo) {
+    fnCallbackImgInfo(imgInfo) {
       this.fbInfo.imgUrl = imgInfo.chImgUrl;
       this.fbInfo.fileId = imgInfo.fileId;
       this.shortImgUrl = this.fnSubString(imgInfo.chImgUrl, 0, 30);
