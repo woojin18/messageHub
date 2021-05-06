@@ -156,8 +156,8 @@
         )
     </insert>
 
-    <select id="selectImgUploadProp" parameterType="hashmap" resultType="camel">
-    /* common.selectImgUploadProp - 이미지업로드 프로퍼티 조회 */
+    <select id="selectImgUploadChSet" parameterType="hashmap" resultType="camel">
+    /* common.selectImgUploadChSet - 이미지업로드 채널 설정 조회 */
         SELECT
             CODE_VAL_1 AS CH
             , CODE_VAL_2 AS LIMIT_SIZE
@@ -167,7 +167,34 @@
         INNER JOIN cm_bo.CM_CODE CC
             ON CCT.CODE_TYPE_CD = CC.CODE_TYPE_CD
             AND CC.USE_YN = 'Y'
-        WHERE CCT.CODE_TYPE_CD = 'IMG_UPLOAD_PROP'
+        WHERE CCT.CODE_TYPE_CD = 'IMG_UPLOAD_CH_SET'
+    </select>
+
+    <select id="selectImageUploadSet" parameterType="hashmap" resultType="camel">
+    /* common.selectImageUploadSet - 이미지업로드 설정 조회 */
+        SELECT
+            CODE_NAME_2 AS PERMIT_EXTEN
+            , CODE_NAME_3 AS RLT_TMP_PATH
+        FROM cm_bo.CM_CODE_TYPE CCT
+        INNER JOIN cm_bo.CM_CODE CC
+            ON CCT.CODE_TYPE_CD = CC.CODE_TYPE_CD
+            AND CC.USE_YN = 'Y'
+            AND CC.CODE_VAL_1 = 'IMAGE'
+        WHERE CCT.CODE_TYPE_CD = 'FILE_UPLOAD_SET'
+        LIMIT 1
+    </select>
+
+    <select id="selectExcelUploadSet" parameterType="hashmap" resultType="camel">
+    /* common.selectImgUploadChSet - 엑셀업로드 설정 조회 */
+        SELECT
+            CODE_NAME_2 AS PERMIT_EXTEN
+        FROM cm_bo.CM_CODE_TYPE CCT
+        INNER JOIN cm_bo.CM_CODE CC
+            ON CCT.CODE_TYPE_CD = CC.CODE_TYPE_CD
+            AND CC.USE_YN = 'Y'
+            AND CC.CODE_VAL_1 = 'EXCEL'
+        WHERE CCT.CODE_TYPE_CD = 'FILE_UPLOAD_SET'
+        LIMIT 1
     </select>
 
 </mapper>

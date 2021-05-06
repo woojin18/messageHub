@@ -77,12 +77,9 @@ public class Const {
     }
 
     //발송진행상태
-    public static class ImgUploadProp {
-        public static final String PUSH = "PUSH";
-        public static final String FRIENDTALK = "FRIENDTALK";
-        public static final String MMS = "MMS";
-        public static final String FRIENDTALK_WIDE = "FRIENDTALK_WIDE";
-        public static final String RCS = "RCS";
+    public static class FileUploadSet {
+        public static final String PERMIT_EXTEN = "permitExten";
+        public static final String RLT_TMP_PATH = "rltTmpPath";
     }
 
     //이미지 리사이징 사이즈
