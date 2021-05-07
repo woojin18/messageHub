@@ -41,6 +41,17 @@ const requireAuth = () => (to, from, next) => {
 	next();
 };
 
+const requireAuthLogin = () => (to, from, next) => {
+	if (tokenSvc.getToken() !== null) {
+		if (tokenSvc.getToken().principal.svcTypeCd == 'UC') {
+			return next('/uc');
+		} else if (tokenSvc.getToken().principal.svcTypeCd == 'AC') {
+			return next('/ac');
+		}
+	}
+	next();
+};
+
 const router = new Router({
 	mode: 'history',
 	base: process.env.BASE_URL,
@@ -52,6 +63,7 @@ const router = new Router({
 		{
 			path: '/login',
 			component: LoginLayout,
+			beforeEnter: requireAuthLogin(),
 			children: [
 				{
 					path: '/view/error/404',
