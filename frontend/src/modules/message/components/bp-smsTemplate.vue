@@ -67,7 +67,7 @@
                       <p v-if="$gfnCommonUtils.isEmpty(templateData.tmpltTitle)">템플릿 제목</p>
                       <p v-else>{{templateData.tmpltTitle}}</p>
                     </div>
-                    <div class="phoneText1">
+                    <div class="phoneText1 scroll-y">
                       <p v-if="$gfnCommonUtils.isEmpty(templateData.tmpltContent) && (templateData.msgKind != 'A' || $gfnCommonUtils.isEmpty(templateData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
                       <p v-else class="font-size14 color4 mt10">
                         <span v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></span>
@@ -83,7 +83,7 @@
               </div>
             </div>  
             <div class="text-center mt20">
-              <a href="#self" class="btnStyle2 backBlack" data-toggle="modal" title="템플릿 선택">템플릿 선택</a>
+              <a @click="fnSelectTemplate" class="btnStyle2 backBlack" data-toggle="modal" title="템플릿 선택">템플릿 선택</a>
               <a @click="fnClose" class="btnStyle2 backWhite" data-dismiss="modal" title="취소">취소</a>
             </div>
           </div>
@@ -135,6 +135,15 @@ export default {
     }
   },
   methods: {
+    //템플릿선택
+    fnSelectTemplate(){
+      if(Object.keys(this.templateData).length == 0){
+        confirm.fnAlert(this.componentsTitle, '템플릿을 선택해주세요.');
+        return;
+      }
+      this.$parent.fnSetTemplateInfo(this.templateData);
+      this.fnClose();
+    },
     //템플릿 리스트 선택
     fnGetTemplateInfo(idx, tmpltId){
       if(this.templateList[idx].tmpltId == tmpltId){

@@ -278,7 +278,7 @@ public class CommonService {
                 reqFileObject.put("wideYn", apiWideYn);
 
                 // send
-                apiUrl = Const.FILE_UPLOAD_API_URL + ch.toLowerCase();
+                apiUrl = Const.FILE_UPLOAD_API_URI + ch.toLowerCase();
                 resultMap = apiInterface.sendImg(apiUrl, headerMap, chFile, reqFileObject.toJSONString());
 
                 // send result

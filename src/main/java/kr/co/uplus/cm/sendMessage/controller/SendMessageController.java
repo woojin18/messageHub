@@ -25,8 +25,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.controller.BaseController;
 import kr.co.uplus.cm.common.dto.RestResult;
-import kr.co.uplus.cm.sendMessage.dto.PushRecvInfo;
 import kr.co.uplus.cm.sendMessage.dto.PushRequestData;
+import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
+import kr.co.uplus.cm.sendMessage.dto.SmsRequestData;
 import kr.co.uplus.cm.sendMessage.service.SendMessageService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -200,7 +201,7 @@ public class SendMessageController extends BaseController {
             , @RequestParam(value = "paramString") String paramString
             , @RequestParam(value="excelFile", required=false) MultipartFile excelFile) throws Exception {
 
-        List<PushRecvInfo> recvInfoLst = null;
+        List<RecvInfo> recvInfoLst = null;
         Map<String, Object> params = null;
         RestResult<Object> rtn = new RestResult<Object>();
         Map<String, Object> rtnMap = new HashMap<>();
@@ -222,6 +223,7 @@ public class SendMessageController extends BaseController {
             /** 유효성 체크 */
             requestData = sendMsgService.setPushSendData(rtn, params);
             if(rtn.isSuccess() == false) {
+                log.info("{}.sendPushMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
                 return rtn;
             }
             log.info("{}.sendPushMessage pushRequestData: {}", this.getClass(), requestData.toString());
@@ -319,6 +321,159 @@ public class SendMessageController extends BaseController {
             rtn.setMessage("푸시 발송 처리 되었습니다.");
         }
 
+        rtn.setSuccess(true);
+        rtn.setData(rtnMap);
+
+        return rtn;
+    }
+
+    /**
+     * 푸시 발송 수신자 엑셀업로드 템플릿 다운로드
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    @PostMapping(path = "/excelDownSendSmsRecvTmplt")
+    public ModelAndView excelDownSendSmsRecvTmplt(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) throws Exception {
+
+        List<String> colLabels = new ArrayList<String>();
+        colLabels.add("휴대폰 번호");
+        if(params.containsKey("contsVarNms")) {
+            List<String> contsVarNms = (ArrayList<String>)params.get("contsVarNms");
+            for(String varNm : contsVarNms) {
+                colLabels.add(varNm);
+            }
+        }
+
+        List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("sheetTitle", "Template");
+        map.put("colLabels", colLabels.toArray(new String[0]));
+        map.put("colIds", new String[] {});
+        map.put("numColIds", new String[] {});
+        map.put("figureColIds", new String[] {});
+        map.put("colDataList", new ArrayList<T>());
+        sheetList.add(map);
+
+        ModelAndView model = new ModelAndView("commonXlsxView");
+        model.addObject("excelFileName", "smsTemplate_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("sheetList", sheetList);
+
+        return model;
+    }
+
+    /**
+     * 푸시 메시지 발송처리
+     *
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    @PostMapping(path="/sendSmsMessage")
+    public RestResult<?> sendSmsMessage(HttpServletRequest request, HttpServletResponse response
+            , @RequestParam(value = "paramString") String paramString
+            , @RequestParam(value="excelFile", required=false) MultipartFile excelFile) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+        Map<String, Object> params = null;
+        SmsRequestData requestData = null;
+        List<RecvInfo> recvInfoLst = null;
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        int fromIndex = 0;
+        //int toIndex = 1;
+
+        try {
+            log.info("{}.sendSmsMessage Start ====> paramString : {}", this.getClass(), paramString);
+
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> sParam = new HashMap<>();
+            params = mapper.readValue(paramString, Map.class);
+
+            super.setContainIgnoreUserInfo(params);
+            params.put("callback", "15441234");  //TODO : 발신번호 가져오는 방식 정해지면 삭제
+            String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
+
+            /** 유효성 체크 */
+            requestData = sendMsgService.setSmsSendData(rtn, params);
+            if(rtn.isSuccess() == false) {
+                log.info("{}.sendSmsMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
+                return rtn;
+            }
+            log.info("{}.sendSmsMessage requestData: {}", this.getClass(), requestData.toString());
+
+            /** SMS 수신자 리스트*/
+            recvInfoLst = sendMsgService.getRecvInfoLst(params, excelFile);
+            if(recvInfoLst == null || recvInfoLst.size() == 0) {
+                rtn.setSuccess(false);
+                rtn.setMessage("잘못된 SMS 수신자 정보입니다.");
+                return rtn;
+            }
+
+            /** 잔액확인 */
+            String payType = sendMsgService.selectPayType(params);
+
+            //선불일경우
+            if(StringUtils.equals(payType, Const.COMM_YES)) {
+                //남은 금액 조회
+                BigDecimal rmAmount = sendMsgService.getRmAmount();
+                //개당 가격 조회
+                sParam = new HashMap<>();
+                sParam.put("sms", Const.COMM_YES);
+                BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
+                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
+
+                if(rmAmount.compareTo(feePerAll) < 0) {
+                    if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
+                        rtn.setSuccess(false);
+                        rtn.setMessage("잔액 부족으로 메시지를 발송할 수 없습니다.");
+                        return rtn;
+                    } else {
+                        rtnMap.put("feeMsg", "잔액 부족으로 메시지가 발송되지 않을 수도 있습니다.");
+                    }
+                }
+            }
+
+            /** 예약건인지 확인(10분) */
+            //즉시건일때 웹 발송 내역(CM_WEB_MSG)은 발송건을 모두 G/W로 보내고 등록해달라는 요청
+            //예약건과 즉시건의 웹 발송 내역 등록 분리
+            String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
+            if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+                sendMsgService.insertSmsCmWebMsg(rtn, sParam, requestData, recvInfoLst);
+                if(rtn.isSuccess() == false) {
+                    return rtn;
+                }
+            }
+
+            /** 테스트발송(동기화) */
+            if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
+                //TODO : 작업중
+                //rtn = sendMsgService.testSendPushMsg(params, requestData, recvInfoLst);
+                return rtn;
+            }
+
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
+            return rtn;
+        }
+
+        try {
+            log.info("{}.sendPushMessage aSync API send Start ====>");
+            sendMsgService.sendSmsMsgAsync(rtn, fromIndex, params, requestData, recvInfoLst);
+        } catch (Exception e) {
+            log.info("{}.sendPushMessage aSync API send Error : {}", this.getClass(), e);
+        }
+
+        rtn.setMessage("SMS 발송 요청처리 되었습니다.");
         rtn.setSuccess(true);
         rtn.setData(rtnMap);
 

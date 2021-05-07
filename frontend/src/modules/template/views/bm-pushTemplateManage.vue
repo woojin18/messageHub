@@ -28,14 +28,16 @@
               <div v-if="tmpltData.msgType == 'IMAGE' && !fnIsEmpty(tmpltData.imgUrl)" class="phoneText2 mt10 text-center"
                 :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.imgUrl+');'">
               </div>
-              <p v-if="fnIsEmpty(tmpltData.tmpltContent) && (tmpltData.msgKind != 'A' || fnIsEmpty(tmpltData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
-              <p v-else class="font-size14 color4 mt10">
-                <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
-                <br v-if="!fnIsEmpty(tmpltData.tmpltContent)"/>
-                <span v-if="tmpltData.msgKind == 'A' && !fnIsEmpty(tmpltData.rcvblcNumber)">
-                  {{tmpltData.rcvblcNumber}}
-                </span>
-              </p>
+              <div class="scroll-y">
+                <p v-if="fnIsEmpty(tmpltData.tmpltContent) && (tmpltData.msgKind != 'A' || fnIsEmpty(tmpltData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
+                <p v-else class="font-size14 color4 mt10">
+                  <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
+                  <br v-if="!fnIsEmpty(tmpltData.tmpltContent)"/>
+                  <span v-if="tmpltData.msgKind == 'A' && !fnIsEmpty(tmpltData.rcvblcNumber)">
+                    {{tmpltData.rcvblcNumber}}
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
           <!-- //phoneWrap -->

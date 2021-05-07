@@ -1,25 +1,24 @@
 package kr.co.uplus.cm.sendMessage.dto;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import lombok.Data;
 
 @Data
-public class PushRequestData implements Serializable {
+public class SmsRequestData implements Serializable {
 
-    private static final long serialVersionUID = 442095694418981188L;
+    private static final long serialVersionUID = 3946448516794444460L;
 
     //발신번호(대체발송 발신번호)
+    //필수
     // pattern: ^[0-9-]{1,20}$
     // example: 15441234
-    @Pattern(regexp="^([0-9-]{0,20})$", message="발신번호 형식에 맞지 않습니다.(예:15441234)")
+    @NotBlank(message="발신번호는 필수입니다.")
+    @Pattern(regexp="^([0-9-]{1,20})$", message="발신번호 형식에 맞지 않습니다.(예:15441234)")
     private String callback;
 
     //캠페인 ID(태그)
@@ -33,29 +32,12 @@ public class PushRequestData implements Serializable {
 
     //메시지
     //필수
-    //example: Push 테스트 메시지
-    @NotNull(message="메시지 정보는 필수입니다.")
-    private PushMsg msg;
-
-    //앱 아이디
-    //필수
-    //example: appId01
-    @NotBlank(message="앱 아이디는 필수입니다.")
-    private String appId;
-
-    //부가정보
-    //가변데이터
-    //ex) {"imageUrl":"http://...", "data1" : "테스트 1", "data2" : "테스트 2", ...}
-    private Map<String, String> ext = new HashMap<String, String>();
-
-    //파일 아이디
-    private String fileId;
+    //example: SMS 테스트 메시지..
+    @NotBlank(message="메시지 정보는 필수입니다.")
+    private String msg;
 
     //웹 요청 아이디(CM_WEB_MSG.WEB_REQ_ID 로 하며 테스트발송시 Null로 한다.)
     private String webReqId;
-
-    //발송정책
-    private String serviceCode;
 
     //(수신자 정보 리스트)
     // API 서버측에 넘겨서 수신성공/수신실패를 받고 데이터 처리하는 방식이 아니라
@@ -66,7 +48,11 @@ public class PushRequestData implements Serializable {
     private List<RecvInfo> recvInfoLst;
 
     //(대체발송리스트 정보)
-    private List<FbInfo> fbInfoLst;
+    //미사용
+    //private List<FbInfo> fbInfoLst;
+
 
 }
+
+
 

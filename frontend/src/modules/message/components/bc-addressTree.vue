@@ -12,7 +12,7 @@
 
     <addr-tree-menu
       v-for = "each in subItems"
-      :key = "each"
+      :key = "each.addressCategoryId"
       :item = "each.addressName"
       :id = "each.addressCategoryId"
       :subItems = "each.subItems"

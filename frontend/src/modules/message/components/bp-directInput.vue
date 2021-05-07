@@ -104,6 +104,11 @@ export default {
         if(this.requiredCuPhone) headerList.push('phone');
         headerList = headerList.concat(this.contsVarNms);
         this.headerList = headerList.filter((item, pos) => headerList.indexOf(item) === pos);
+
+        console.log('====================');
+        console.log(this.requiredCuid);
+        console.log(headerList);
+        console.log('====================');
       }
     }
   },

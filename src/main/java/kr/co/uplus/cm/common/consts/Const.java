@@ -30,10 +30,18 @@ public class Const {
     // 이미지업로드 ID 첨두
     public static final String FILE_UPLOAD_PREFIX = "FLE";
 
+    // 채널
+    public static class Ch {
+        public static final String PUSH = "PUSH";
+        public static final String SMS = "SMS";
+        public static final String MMS = "MMS";
+    }
 
     // 메시지발송 ID 접두(WEB_REQ_ID)
     public static class WebReqIdPrefix {
         public static final String PUSH_PREFIX = "PSH";
+        public static final String SMS_PREFIX = "SMS";
+        public static final String MMS_PREFIX = "MMS";
     }
 
     //메시지구분
@@ -94,8 +102,10 @@ public class Const {
 
     //API
     public static final String API_SUCCESS = "10000";  //API 성공 코드(코드정보를 받으면 enum에 등록)
-    public static final int PUSH_RECV_LIMIT_SIZE = 10;
-    public static final String FILE_UPLOAD_API_URL = "/console/v1/file/";  //파일 업로드 API
-    public static final String SEND_PUSH_API_URL = "/console/v1/push";  //푸시발송 API
+    public static final int DEFAULT_RECV_LIMIT_SIZE = 10;
+    public static final String FILE_UPLOAD_API_URI = "/console/v1/file/";  //파일 업로드 API
+    public static final String SEND_PUSH_API_URI = "/console/v1/push";  //푸시발송 API
+    public static final String SEND_SMS_API_URI = "/console/v1/sms";  //SMS발송 API
+    public static final String SEND_MMS_API_URI = "/console/v1/mms";  //MMS발송 API
 
 }

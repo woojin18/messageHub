@@ -18,7 +18,7 @@
                 <p v-if="$gfnCommonUtils.isEmpty(tmpltData.tmpltTitle)">템플릿 제목</p>
                 <p v-else>{{tmpltData.tmpltTitle}}</p>
               </div>
-              <div class="phoneText1">
+              <div class="phoneText1 scroll-y">
                 <p v-if="$gfnCommonUtils.isEmpty(tmpltData.tmpltContent) && (tmpltData.msgKind != 'A' || $gfnCommonUtils.isEmpty(tmpltData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
                 <p v-else class="font-size14 color4 mt10">
                   <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
@@ -262,16 +262,18 @@ export default {
     async fnProcSaveSmsTemplate(){
       //DATA Set
       let params = Object.assign({}, this.tmpltData);
-      if(this.tmpltData.senderType != 'MMS' || this.tmpltData.imgInfoList.length == 0) {
-        params.imgInfoList = [];
+      if(this.tmpltData.senderType != 'MMS') {
         params.tmpltTitle = '';
-      } else {
-        params.imgInfoListStr = JSON.stringify(this.tmpltData.imgInfoList);
       }
       if(this.tmpltData.msgKind != 'A') {
         params.rcvblcNumber = '';
       }
-
+      if(this.tmpltData.imgInfoList.length == 0){
+        params.imgInfoList = [];
+      }else {
+        params.imgInfoListStr = JSON.stringify(this.tmpltData.imgInfoList);
+      }
+      
       //저장처리
       await templateApi.saveSmsTmplt(params).then(response => {
         const result = response.data;
@@ -306,7 +308,6 @@ export default {
       this.imgMngOpen = !this.imgMngOpen;
     },
     fnCallbackImgInfo(imgInfo){
-      console.log(imgInfo);
       if(this.fnImgLimitSize() == false) return;
       let temp = {
         imgUrl: imgInfo.chImgUrl,

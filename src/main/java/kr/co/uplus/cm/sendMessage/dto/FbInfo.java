@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class PushFbInfo implements Serializable {
+public class FbInfo implements Serializable {
 
     private static final long serialVersionUID = -700546682899809983L;
 
