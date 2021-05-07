@@ -68,6 +68,12 @@ public class DB {
 	public final static String QRY_DELETE_RCS_TEMP_CHATBOTREQ = "channel.deleteRcsChatbotReqTemp";
 	// RCS 발신번호 상세
 	public final static String QRY_SELECT_RCS_CALLBACKLIST = "channel.selectRcsCallbackList";
+	// 채널관리
+	public final static String QRY_SELECT_PUSH_MANAGE_LIST = "channel.selectPushManageList";
+	public final static String QRY_INSERT_PUSH_MANAGE = "channel.insertPushManage";
+	public final static String QRY_UPDATE_PUSH_MANAGE = "channel.updatePushManage";
+	public final static String QRY_DELETE_PUSH_MANAGE = "channel.deletePushManage";
+	
 	//웹캐시
 	public final static String QRY_INSERT_WEB_CASH_INFO = "cash.insertWebCashInfo";
 	public final static String QRY_SELECT_WEB_CASH_INFO = "cash.selectWebCashInfo";

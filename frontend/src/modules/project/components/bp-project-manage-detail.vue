@@ -19,7 +19,7 @@
 							<div class="mt30 of_h">
 								<h4 class="font-normal inline-block float-left" style="width:20%">프로젝트 설명</h4>
 								<div style="width:78%" class="of_h">
-									<input id="projectDesc" type="text" class="inputStyle input2" style="width:100%" title="프로젝트 설명 입력란">
+									<input id="projectDesc" type="text" class="inputStyle float-left" style="width:100%" title="프로젝트 설명 입력란">
 								</div>
 							</div>
 							<div class="mt30 of_h">

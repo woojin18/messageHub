@@ -244,4 +244,108 @@
 		,	now()
 		)
 	</insert>
+	
+	
+	<select id="selectPushManageList" resultType="camel">
+		/* channel.selectPushManageList */
+		SELECT	A.APP_ID
+		,		A.APP_NM
+		,		A.CORP_ID
+		,		A.PROJECT_ID
+		,		A.SERVICE_STATUS
+		,		CASE
+					WHEN A.FCM_SERVER_KEY != '' THEN 'Y'
+					ELSE 'N'
+				END AS FCM_YN
+		,		A.FCM_PACKAGE_NAME
+		,		A.FCM_SERVER_KEY
+		,		A.SENDER_ID
+		,		CASE
+					WHEN A.APNS_FILE_NAME != '' THEN 'Y'
+					ELSE 'N'
+				END AS APNS_YN
+		,		A.APNS_CETIFICATION
+		,		A.APNS_FILE_NAME
+		,		A.IOS_APP_ID
+		,		A.TEAM_KEY
+		,		A.KEY_ID
+		,		A.TYPE
+		,		A.REG_ID
+		,		date_format(A.REG_DT, '%Y-%m-%d') AS REG_DT
+		,		A.MOD_ID
+		,		A.MOD_DT
+		FROM	cm_push.T_PUSH_CONFIG A 
+		WHERE	1 = 1
+		AND		A.PROJECT_ID = #{projectId}
+		AND		A.CORP_ID	= #{corpId}
+	</select>
+	
+	<insert id="insertPushManage">
+		/* channel.insertPushManage */
+		INSERT cm_push.T_PUSH_CONFIG
+		(
+			APP_ID
+		,	APP_NM
+		,	CORP_ID
+		,	PROJECT_ID
+		,	SERVICE_STATUS
+		,	FCM_PACKAGE_NAME
+		,	FCM_SERVER_KEY
+		,	SENDER_ID
+		,	APNS_CETIFICATION
+		,	APNS_FILE_NAME
+		,	IOS_APP_ID
+		,	TEAM_KEY
+		,	KEY_ID
+		,	REG_ID
+		,	REG_DT
+		)
+		VALUES
+		(
+			#{appId}
+		,	#{appNm}
+		,	#{corpId}
+		,	#{projectId}
+<!-- 		,	#{serviceStatus} -->
+		,	'ON'
+		,	#{fcmPackageName}
+		,	#{fcmServerKey}
+		,	#{senderId}
+		,	#{apnsCetificationByteArray}
+		,	#{apnsFileName}
+		,	#{iosAppId}
+		,	#{teamKey}
+		,	#{keyId}
+		,	#{userId}
+		,	NOW()
+		)
+	</insert>
+	
+	<update id="updatePushManage">
+	/* channel.updatePushManage */
+		UPDATE	cm_push.T_PUSH_CONFIG
+		SET		APP_NM				= #{appNm}
+		,		FCM_PACKAGE_NAME	= #{fcmPackageName}
+		,		FCM_SERVER_KEY		= #{fcmServerKey}
+		,		SENDER_ID			= #{senderId}
+		<if test=" apnsCetificationByteArray != null and apnsCetificationByteArray != '' ">
+		,		APNS_CETIFICATION	= #{apnsCetificationByteArray}
+		,		APNS_FILE_NAME		= #{apnsFileName}
+		</if>
+		,		IOS_APP_ID			= #{iosAppId}
+		,		TEAM_KEY			= #{teamKey}
+		,		MOD_ID				= #{userId}
+		,		MOD_DT				= NOW()
+		WHERE	APP_ID				= #{appId}
+		AND		PROJECT_ID			= #{projectId}
+		AND		CORP_ID				= #{corpId}
+	</update>
+	
+	<delete id="deletePushManage">
+	/* channel.deletePushManage */
+		DELETE	FROM cm_push.T_PUSH_CONFIG
+		WHERE	APP_ID		= #{appId}
+		AND		PROJECT_ID	= #{projectId}
+		AND		CORP_ID		= #{corpId}
+	</delete>
 </mapper>

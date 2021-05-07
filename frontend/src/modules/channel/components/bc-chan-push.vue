@@ -1,141 +1,129 @@
 <template>
   <div>
-    <modal
-      :visible.sync="visible"
-      :row_data="row_data"
-    >
-    </modal>
-    
 		<article>
-			<h4 class="mt40">Push APP ID 관리</h4>
-			<p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i> APP ID는 5개까지 발급받을 수 있으며, 서비스 이용 시 인증에 사용됩니다.</p>
-			
-			<div class="Dashboard01 border-line">
-				<div class="row mt20">
-					<div class="col-xs-12">		
-						<div class="of_h">
-							<div class="float-right">
-								<a @click="fnReg" class="btnStyle3 gray font13 minWidth120">발신번호 등록 안내</a>
-							</div>
-						</div>
-					</div>			
-				</div>
+			<h4 class="inline-block">Push APP ID 관리</h4>
+			<div class="float-right h4Button">
+				<a @click="fnReg" class="btnStyle2 borderGray">발신번호 등록 안내</a>
+			</div>
+			<p class="color3"><i class="far fa-info-circle"></i> APP ID는 5개까지 발급받을 수 있으며, 서비스 이용 시 인증에 사용됩니다.</p>
 
-				
-
-        <!-- 그리드 -->
-				<div class="row mt20">
-					<div class="col-xs-12">
-            <table  class="table_skin1 bt-000 tbl-striped">
-              <colgroup>
-                <col style="width:15%">
-                <col>
-                <col style="width:15%">
-                <col style="width:15%">
-                <col style="width:10%">
-                <col style="width:15%">
-              </colgroup>
-              <thead>
-                <tr>
-                <th class="text-center lc-1">APP ID 명</th>
+			<div class="row">
+				<div class="col-xs-12 consolMarginTop">
+					<!-- table -->
+					<table  class="table_skin1 bt-000 tbl-striped">
+						<colgroup>
+              <col style="width:15%">
+							<col>
+							<col style="width:15%">
+							<col style="width:15%">
+							<col style="width:10%">
+							<col style="width:15%">
+						</colgroup>
+						<thead>
+							<tr>
+                <th class="text-center lc-1">APP 명</th>
                 <th class="text-center lc-1">APP ID</th>
                 <th class="text-center lc-1">FCM 인증서 등록여부</th>
                 <th class="text-center lc-1">APNS 인증서 등록여부</th>
                 <th class="text-center lc-1">생성일</th>
                 <th class="text-center lc-1 end">관리</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                <td class="text-center">PUSH_APP_01</td>
-                <td class="text-center">B3a1ef685ac84de692471252b6eda121</td>
-                <td class="text-center">예</td>
-                <td class="text-center">아니오</td>
-                <td class="text-center">2021-01-02</td>
-                <td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
-                </tr>
-                <tr>
-                <td class="text-center">PUSH_APP_02</td>
-                <td class="text-center">B3a1ef685ac84de692471252b6eda122</td>
-                <td class="text-center">예</td>
-                <td class="text-center">아니오</td>
-                <td class="text-center">2021-01-02</td>
-                <td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
-                </tr>
-                <tr>
-                <td class="text-center">PUSH_APP_03</td>
-                <td class="text-center">B3a1ef685ac84de692471252b6eda123</td>
-                <td class="text-center">예</td>
-                <td class="text-center">아니오</td>
-                <td class="text-center">2021-01-02</td>
-                <td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
-                </tr>
-                <tr>
-                <td class="text-center">PUSH_APP_04</td>
-                <td class="text-center">B3a1ef685ac84de692471252b6eda124</td>
-                <td class="text-center">예</td>
-                <td class="text-center">아니오</td>
-                <td class="text-center">2021-01-02</td>
-                <td class="end"><a href="#self" class="btnStyle8 mr5">수정</a><a href="#self" class="btnStyle8 mr5">삭제</a></td>
-                </tr>
-              </tbody>
-            </table>
-					</div>			
-				</div>
-
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="(row, index) in data" :key="index">
+                <td class="text-center">{{row.appNm}}</td>
+                <td class="text-center">{{row.appId}}</td>
+                <td class="text-center">{{row.fcmYn}}</td>
+                <td class="text-center">{{row.apnsYn}}</td>
+                <td class="text-center">{{row.regDt}}</td>
+                <td class="end">
+                  <a @click="fnMod(row)" class="btnStyle1 borderLightGray small mr5">수정</a>
+                  <a @click="fnDeleteConfirm(row)" class="btnStyle1 borderLightGray small mr5">삭제</a>
+                </td>
+							</tr>
+						</tbody>
+					</table>
+					<!-- //table -->
+				</div>			
 			</div>
-			<!-- //본문 -->
-
-			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
 		</article>
 	</div>
 </template>
 
 
 <script>
-import Api from '../service/api'
-import modal from "./bp-chan-rcs-tmplt-cnt.vue";
+import api from '../service/api'
+
+import tokenSvc from '@/common/token-service';
+
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import confirm from "@/modules/commonUtil/service/confirm"
 
 export default {
   components: {
-    modal
+    api
   },
   data() {
     return {
       // 프로젝트 정보
-      projectId : '',
+      projectId   : '',
       projectName : '',
-      visible : false,  // 레이어 팝업 
+      rowData     : {},
+      data        : {}
     }
   },
   mounted() {
-    this.projectId = this.$route.params.projectId;
-    this.projectName = this.$route.params.projectName;
-    //this.fnSearch();
+    this.projectId    = this.$parent.projectId;
+    this.projectName  = this.$parent.projectName;
+    this.fnSearch();
   },
   methods: {
-    fnMoveMainTab(moveTabName){
-      this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
-    },
-    fnMoveSubTab(moveTabName){
-      this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
-    },
     // 검색
     fnSearch() {
-      var vm = this;
       var params = {
-        "projectId"     : this.projectId
+        "projectId" : this.projectId,
+        "loginId"   : tokenSvc.getToken().principal.loginId,
       }
        
-      Api.selectRcsBrandList(params).then(response =>{
-        vm.items = response.data.data;
+      api.selectPushManageList(params).then(response =>{
+        this.data = response.data.data;
       });
     },
     // 등록 템플릿 상세 
     fnReg(){
       this.$router.push( {name:"chan-push-detail",params:{"projectId" : this.projectId, "save_status" : 'C' }} );
+    },
+    // 수정하기위한 상세창
+    fnMod(rowData){
+      this.$router.push( {name:"chan-push-detail",params:{"projectId" : this.projectId, "save_status" : 'U', "rowData" : rowData }} );
+    },
+    // 삭제 확인
+    fnDeleteConfirm(rowData){
+      this.rowData = rowData;
+      eventBus.$on('callbackEventBus', this.fnDelete);
+      confirm.fnConfirm("", "삭제처리된 PUSH는 복구할 수 없습니다. 계속 진행하시겠습니까?", "확인");
+    },
+    // 삭제
+    fnDelete(){
+      var params = {
+        "projectId" : this.projectId,
+        "loginId"   : tokenSvc.getToken().principal.loginId,
+        "appId"     : this.rowData.appId
+      }
+       
+      api.deletePushManage(params).then(response =>{
+        var result = response.data;
+
+        if(result.success) {
+          confirm.fnAlert("", "삭제되었습니다.");
+          // 리스트 조회
+          this.fnSearch();
+          // 창닫기
+        } else {
+          confirm.fnAlert("", result.message);
+        }
+      });
     }
-    
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div id="content">
+	<!-- <div id="content"> -->
 		<article>
 			<div class="contentHeader mb20">
 				<h2>브랜드 등록</h2>				
@@ -9,43 +9,45 @@
 			<div class="row">
 				<!-- 미리보기 -->
 				<div class="col-xs-4 sub03_4_1_1_1">
-					<div class="phoneWrap">
-						<!-- <img src="/se2/images/phone_01.svg" alt="프리 템플릿"> -->
+					<div class="phoneFixed">
 						<div class="phoneWrap">
-							<img src="/se2/images/rcsPhone.svg" alt="">
-							<div class="rcsWrap">
-								<div class="rcsImage"><img v-bind:src="inputVal.preBgImg" style="height : 200; width : 100%;"></div>
-								<div class="rcsProfileImage"><img v-bind:src="inputVal.preProfileImg" width="58px" height="58px"></div>
-								<div class="rcsCon">
-									<div class="phoneIcon">
-										<i class="fas fa-comment color7"></i>
-										<i v-if="inputVal.call != ''" class="fas fa-phone color7"></i>
-										<i v-if="inputVal.web != ''" class="fas fa-globe color7"></i>
-										<i v-if="inputVal.store != ''" class="fas fa-shopping-bag color7"></i>
-										<i v-if="inputVal.order != ''" class="fas fa-clipboard-list-check color7"></i>
-										<i v-if="inputVal.buy != ''" class="fas fa-usd-circle color7"></i>
-										<i v-if="inputVal.ticket != ''" class="fas fa-ticket color7"></i>
-										<i v-if="inputVal.moreInfo != ''" class="fas fa-info-circle color7"></i>
-									</div>							
-									<div>
-										<div class="text">
-											<p class="text-main">전화번호</p>
-											<p class="text-sub">{{this.inputVal.tel}}</p>
-										</div>
-										<div class="text mt15">
-											<p class="text-main">웹사이트</p>
-											<p class="text-sub">{{this.inputVal.webSiteUrl}}</p>
-										</div>
-										<div class="text mt15">
-											<p class="text-main">이메일</p>
-											<p class="text-sub">{{this.inputVal.email}}@{{this.inputVal.email2}}</p>
-										</div>
-										<div class="text mt15">
-											<p class="text-main">주소</p>
-											<p class="text-sub">
-												{{this.inputVal.zipCode}} {{this.inputVal.roadAddress}}
-												<br>{{this.inputVal.detailAddress}}
-											</p>
+							<!-- <img src="/se2/images/phone_01.svg" alt="프리 템플릿"> -->
+							<div class="phoneWrap">
+								<img src="/se2/images/rcsPhone.svg" alt="">
+								<div class="rcsWrap">
+									<div class="rcsImage"><img v-bind:src="inputVal.preBgImg" style="height : 200; width : 100%;"></div>
+									<div class="rcsProfileImage"><img v-bind:src="inputVal.preProfileImg" width="58px" height="58px"></div>
+									<div class="rcsCon">
+										<div class="phoneIcon">
+											<i class="fas fa-comment color7"></i>
+											<i v-if="inputVal.call != ''" class="fas fa-phone color7"></i>
+											<i v-if="inputVal.web != ''" class="fas fa-globe color7"></i>
+											<i v-if="inputVal.store != ''" class="fas fa-shopping-bag color7"></i>
+											<i v-if="inputVal.order != ''" class="fas fa-clipboard-list-check color7"></i>
+											<i v-if="inputVal.buy != ''" class="fas fa-usd-circle color7"></i>
+											<i v-if="inputVal.ticket != ''" class="fas fa-ticket color7"></i>
+											<i v-if="inputVal.moreInfo != ''" class="fas fa-info-circle color7"></i>
+										</div>							
+										<div>
+											<div class="text">
+												<p class="text-main">전화번호</p>
+												<p class="text-sub">{{this.inputVal.tel}}</p>
+											</div>
+											<div class="text mt15">
+												<p class="text-main">웹사이트</p>
+												<p class="text-sub">{{this.inputVal.webSiteUrl}}</p>
+											</div>
+											<div class="text mt15">
+												<p class="text-main">이메일</p>
+												<p class="text-sub">{{this.inputVal.email}}@{{this.inputVal.email2}}</p>
+											</div>
+											<div class="text mt15">
+												<p class="text-main">주소</p>
+												<p class="text-sub">
+													{{this.inputVal.zipCode}} {{this.inputVal.roadAddress}}
+													<br>{{this.inputVal.detailAddress}}
+												</p>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -73,7 +75,7 @@
 					</div>								
 					<div class="of_h">
 						<h4 style="width:28%" class="inline-block">브랜드 설명 *</h4>
-						<input id="brandDesc" type="text" class="inputStyle float-right" style="width:72%; height:160px" v-model="inputVal.description" :disabled="this.duplCheckYn == 'N'" >
+						<input id="brandDesc" type="text" class="inputStyle float-right" style="width:72%;" v-model="inputVal.description" :disabled="this.duplCheckYn == 'N'" >
 					</div>				
 									
 					<div class="of_h consolMarginTop">
@@ -332,7 +334,7 @@
 			</div>
 			<!-- //본문 -->
 		</article>
-	</div>
+	<!-- </div> -->
 </template>
 
 <script>

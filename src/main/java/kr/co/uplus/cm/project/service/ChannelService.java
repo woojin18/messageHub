@@ -2,6 +2,9 @@ package kr.co.uplus.cm.project.service;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -535,6 +538,91 @@ public class ChannelService {
 		mfile.transferTo(file);
 		return file;
 	}
+	
+	// PUSH 조회
+	public RestResult<?> selectPushManageList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_PUSH_MANAGE_LIST, params);
+		
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+	
+	// PUSH 저장
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void savePushManage(Map<String, Object> params) throws Exception {
+		// 
+		String sts = CommonUtils.getString(params.get("sts"));
+		
+		// P8 인증서 정리
+		if( params.get("apnsCetification") != null ) {
+			MultipartFile apnsCetification = (MultipartFile) params.get("apnsCetification");
+			
+			params.put("apnsFileName", apnsCetification.getOriginalFilename());
+			
+			File apnsCertifile = this.convert(apnsCetification);
+			if(apnsCertifile.exists()){
+				FileInputStream inputStream = null;
+				try {
+					byte[] byteArray = new byte[(int) apnsCertifile.length()];
+					inputStream = new FileInputStream(apnsCertifile);
+					inputStream.read(byteArray);  // 인증서를 byte[]에 담는다.
+					params.put("apnsCetificationByteArray", byteArray);
+				} catch (Exception e){
+					e.printStackTrace();
+				}finally {
+					try {
+						if (inputStream != null) {
+							inputStream.close();
+						}
+					} catch (Exception e) {
+						inputStream = null;
+					} finally {
+						inputStream = null;
+					}
+				}
+			}
+		} else {
+			params.put("apnsCetificationByteArray", null);
+		}
+		
+		
+		System.out.println("--------------------------------------------- p;ara " + params);
+		
+		if( "C".equals(sts) ) {
+			if( params.get("apnsCetificationByteArray") == null  ) {
+				throw new Exception("저장시에는 P8인증서가 필수입니다.");
+			}
+			
+			// push id 생성
+			String appId = CommonUtils.getCommonId("APP" + CommonUtils.getString(params.get("corpId")), 10);
+			params.put("appId", appId);
+			generalDao.insertGernal(DB.QRY_INSERT_PUSH_MANAGE, params);
+		} else if( "U".equals(sts) ) {
+			generalDao.updateGernal(DB.QRY_UPDATE_PUSH_MANAGE, params);
+		}
+	}
+	
+	// 파일변환용
+	public File convert(MultipartFile mfile) throws IOException {
+		File file = new File(mfile.getOriginalFilename());
+		file.createNewFile();
+		FileOutputStream fos = new FileOutputStream(file);
+		fos.write(mfile.getBytes());
+		fos.close();
+		return file;
+	}
+
+	// push 삭제
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void deletePushManage(Map<String, Object> params) throws Exception {
+		// 삭제 벨리데이션 추가 필요
+		String valildationYn = "Y";
+		
+		if( "Y".equals(valildationYn) ) {
+			generalDao.deleteGernal(DB.QRY_DELETE_PUSH_MANAGE, params);
+		}
+	}
 }
-
-
