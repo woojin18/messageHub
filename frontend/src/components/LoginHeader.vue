@@ -13,7 +13,7 @@
 					</ul>
 				</nav>
 				<ul class="list_login">
-					<li class="active"><a href="user_login.html">로그인</a></li>
+					<li class="active"><a href="#" @click.prevent="clickLoginPage">로그인</a></li>
 					<li><a href="#" @click.prevent="signUp">회원가입</a></li>
 				</ul>
 			</div>
@@ -22,11 +22,14 @@
 	<!-- //head_type_user -->
 </template>
 <script>
-  export default {
-    methods: {
-      signUp: function() {
-        this.$router.push({name : "signUp"});
-      }
-    }
-  };
+export default {
+	methods: {
+		signUp: function() {
+			this.$router.push({name : "signUp"});
+		},
+		clickLoginPage() {
+			this.$nextTick(() => this.$router.replace('/login'));
+		}
+	}
+};
 </script>
