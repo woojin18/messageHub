@@ -5,21 +5,19 @@
         <div class="modal-body">
           <h2>테스트 발송</h2>
           <hr>
-          <div :class="header=='cuid'? 'of_h' : 'of_h mt10'" v-for="header in headerList" :key="header">
+          <div :class="header=='cuid' || header=='phone'? 'of_h' : 'of_h mt10'" v-for="header in headerList" :key="header">
             <div class="inline-block float-left text-center background-color6 colorfff consolLineheight" style="width:19%">
-                * {{header=='cuid' ? 'APP 로그인ID' : header}}
+                * {{header=='cuid' ? 'APP 로그인ID' : (header=='phone' ? '휴대폰번호' : header)}}
             </div>
             <div v-for="rowIdx in loopCnt" :key="rowIdx">
               <div v-if="testRecvInfoLst.length >= rowIdx">
-                <input v-if="header == 'cuid'" :ref="header+'_'+rowIdx" v-model="testRecvInfoLst[rowIdx-1][header]"
+                <input v-if="header == 'cuid' || header == 'phone'" :ref="header+'_'+rowIdx" v-model="testRecvInfoLst[rowIdx-1][header]"
                   type="text" class="inputStyle float-left ml20" style="width:24%" :title="header+' 입력란'+rowIdx">
                 <input v-else :ref="header+'_'+rowIdx" v-model="testRecvInfoLst[rowIdx-1].mergeData[header]"
                   type="text" class="inputStyle float-left ml20" style="width:24%" :title="header+' 입력란'+rowIdx">
               </div>
               <div v-else>
-                <input v-if="header == 'cuid'" :ref="header+'_'+rowIdx"
-                  type="text" class="inputStyle float-left ml20" style="width:24%" :title="header+' 입력란'+rowIdx">
-                <input v-else :ref="header+'_'+rowIdx"
+                <input :ref="header+'_'+rowIdx"
                   type="text" class="inputStyle float-left ml20" style="width:24%" :title="header+' 입력란'+rowIdx">
               </div>
             </div>
@@ -47,6 +45,16 @@ export default {
       require: true,
       default: false,
     },
+    requiredCuPhone: {
+      type: Boolean,
+      require: true,
+      default: true,
+    },
+    requiredCuid: {
+      type: Boolean,
+      require: true,
+      default: true,
+    },
     contsVarNms : {
       type: Array,
       require: true
@@ -69,7 +77,8 @@ export default {
     contsVarNms: {
       handler: function(){
         let headerList = [];
-        headerList.push('cuid');
+        if(this.requiredCuid) headerList.push('cuid');
+        if(this.requiredCuPhone) headerList.push('phone');
         headerList = headerList.concat(this.contsVarNms);
         this.headerList = headerList.filter((item, pos) => headerList.indexOf(item) === pos);
       }
@@ -99,19 +108,40 @@ export default {
       const vm = this;
       let recvInfoLst = [];
       let recvInfo = {};
+      let hasEmptyKey = false;
       let hasEmptyProp = false;
-      
+      const alertKeyStr = (this.requiredCuid ? 'APP 로그인' : '') + (this.requiredCuid && this.requiredCuPhone ? ', ' : '') + (this.requiredCuPhone ? '휴대폰번호' : '');
+
       for(let idx=1; idx<=this.loopCnt; idx++){
         recvInfo = {cuid:'',mergeData:{}};
         hasEmptyProp = false;
 
         //데이터 담기
-        if(vm.fnIsEmpty(vm.$refs['cuid_'+idx][0].value)){
+        if(!(vm.requiredCuid && !vm.fnIsEmpty(vm.$refs['cuid_'+idx][0].value))
+          && !(vm.requiredCuPhone && !vm.fnIsEmpty(vm.$refs['phone_'+idx][0].value))){
           continue;
-        } else {
-          recvInfo.cuid = vm.$refs['cuid_'+idx][0].value;
         }
-        
+        if(vm.requiredCuid){
+          if(vm.fnIsEmpty(vm.$refs['cuid_'+idx][0].value)){
+            hasEmptyKey = true;
+            break;
+          } else {
+            recvInfo.cuid = vm.$refs['cuid_'+idx][0].value;
+          }
+        } else {
+          delete recvInfo.cuid;
+        }
+        if(vm.requiredCuPhone){
+          if(vm.fnIsEmpty(vm.$refs['phone_'+idx][0].value)){
+            hasEmptyKey = true;
+            break;
+          } else {
+            recvInfo.phone = vm.$refs['phone_'+idx][0].value;
+          }
+        } else {
+          delete recvInfo.phone;
+        }
+
         vm.contsVarNms.forEach(function(varNm){
           if(vm.fnIsEmpty(vm.$refs[varNm+'_'+idx][0].value)){
             hasEmptyProp = true;
@@ -124,16 +154,19 @@ export default {
         recvInfoLst.push(recvInfo);
       }
 
+      if(hasEmptyKey){
+        confirm.fnAlert(this.componentsTitle, alertKeyStr+'는(은) 필수입니다.');
+        return;
+      }
       if(hasEmptyProp){
-        confirm.fnAlert(this.componentsTitle, 'APP 로그인 ID를 입력한 행은 빈값이 존재하면 안됩니다.');
+        confirm.fnAlert(this.componentsTitle, alertKeyStr+'를(을) 입력한 행은 빈값이 존재하면 안됩니다.');
         return;
       }
       if(recvInfoLst.length == 0){
         confirm.fnAlert(this.componentsTitle, '수신자 정보를 입력해주세요.');
         return;
       }
-      
-      //console.log(recvInfoLst);
+
       this.$parent.fnCallbackTestRecvInfoLst(recvInfoLst);
       this.fnClose();
     },

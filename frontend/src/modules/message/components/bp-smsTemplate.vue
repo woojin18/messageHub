@@ -67,6 +67,11 @@
                       <p v-if="$gfnCommonUtils.isEmpty(templateData.tmpltTitle)">템플릿 제목</p>
                       <p v-else>{{templateData.tmpltTitle}}</p>
                     </div>
+                    <div v-if="templateData.senderType == 'MMS'">
+                      <div v-for="(imgInfo, idx) in templateData.imgInfoList" :key="idx" class="phoneText2 mt10 text-center"
+                        :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+imgInfo.imgUrl+');'">
+                      </div>
+                    </div>
                     <div class="phoneText1 scroll-y">
                       <p v-if="$gfnCommonUtils.isEmpty(templateData.tmpltContent) && (templateData.msgKind != 'A' || $gfnCommonUtils.isEmpty(templateData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
                       <p v-else class="font-size14 color4 mt10">
@@ -81,7 +86,7 @@
                 </div>
                 <!-- //phoneWrap -->
               </div>
-            </div>  
+            </div>
             <div class="text-center mt20">
               <a @click="fnSelectTemplate" class="btnStyle2 backBlack" data-toggle="modal" title="템플릿 선택">템플릿 선택</a>
               <a @click="fnClose" class="btnStyle2 backWhite" data-dismiss="modal" title="취소">취소</a>
@@ -162,7 +167,6 @@ export default {
     //템플릿 리스트 검색
     async fnSearch(){
       await templateApi.selectSmsTmpltList(this.searchData).then(response =>{
-          console.log(response);
         var result = response.data;
         if(result.success) {
           this.templateList = result.data;

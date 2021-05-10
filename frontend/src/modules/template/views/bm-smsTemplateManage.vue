@@ -18,6 +18,11 @@
                 <p v-if="$gfnCommonUtils.isEmpty(tmpltData.tmpltTitle)">템플릿 제목</p>
                 <p v-else>{{tmpltData.tmpltTitle}}</p>
               </div>
+              <div v-if="tmpltData.senderType == 'MMS'">
+                <div v-for="(imgInfo, idx) in tmpltData.imgInfoList" :key="idx" class="phoneText2 mt10 text-center"
+                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+imgInfo.imgUrl+');'">
+                </div>
+              </div>
               <div class="phoneText1 scroll-y">
                 <p v-if="$gfnCommonUtils.isEmpty(tmpltData.tmpltContent) && (tmpltData.msgKind != 'A' || $gfnCommonUtils.isEmpty(tmpltData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
                 <p v-else class="font-size14 color4 mt10">

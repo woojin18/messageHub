@@ -227,7 +227,6 @@ export default {
         this.fnResetChkbox();
 
         if(result.success) {
-          console.log(result);
           this.cmCuList = Object.assign([], result.data);
           this.totCnt = result.pageInfo.totCnt;
 

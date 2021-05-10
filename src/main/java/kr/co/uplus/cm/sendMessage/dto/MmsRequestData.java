@@ -1,6 +1,7 @@
 package kr.co.uplus.cm.sendMessage.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
@@ -43,7 +44,7 @@ public class MmsRequestData implements Serializable {
     private String msg;
 
     //File IDs
-    private List<String> fileIdLst;
+    private List<String> fileIdLst = new ArrayList<String>();
 
     //웹 요청 아이디(CM_WEB_MSG.WEB_REQ_ID 로 하며 테스트발송시 Null로 한다.)
     private String webReqId;
