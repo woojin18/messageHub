@@ -11,13 +11,12 @@
 				<div class="col-xs-4 sub03_4_1_1_1">
 					<div class="phoneFixed">
 						<div class="phoneWrap">
-							<!-- <img src="/se2/images/phone_01.svg" alt="프리 템플릿"> -->
 							<div class="phoneWrap">
 								<img src="/se2/images/rcsPhone.svg" alt="">
 								<div class="rcsWrap">
 									<div class="rcsImage"><img v-bind:src="inputVal.preBgImg" style="height : 200; width : 100%;"></div>
 									<div class="rcsProfileImage"><img v-bind:src="inputVal.preProfileImg" width="58px" height="58px"></div>
-									<div class="rcsCon">
+									<div class="rcsCon" style="height: 275px;">
 										<div class="phoneIcon">
 											<i class="fas fa-comment color7"></i>
 											<i v-if="inputVal.call != ''" class="fas fa-phone color7"></i>

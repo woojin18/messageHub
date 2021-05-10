@@ -12,13 +12,14 @@
 								<h4 class="inline-block ml60" style="width:6%">발신번호명</h4>
 								<input type="text" class="inputStyle" style="width:16%" v-model="srcSubTitle">
 								<h4 class="inline-block ml60" style="width:6%">발신번호</h4>
-								<input type="text" class="inputStyle" style="width:16%" v-model="srcSubNum">
+								<input type="text" class="inputStyle" style="width:16%" v-model="srcChatbotId">
 							</div>	
 							<div class="consolMarginTop">
 								<h4 class="inline-block vertical-middle" style="width:6%">SMSMO<br>사용여부</h4>
 								<select name="admin0305_1" class="selectStyle2 vertical-middle" style="width:16%" v-model="srcRcsReply">
 									<option value="">전체</option>
-									<option value="">대기</option>
+									<option value="0">Y</option>
+									<option value="1">N</option>
 								</select>
 								<h4 class="inline-block ml60" style="width:6%">사용여부</h4>
 								<select name="admin0305_2" class="selectStyle2" style="width:16%" v-model="srcIsuse">
@@ -26,9 +27,9 @@
 									<option value="">대기</option>
 								</select>
 								<h4 class="inline-block ml60" style="width:6%">승인상태</h4>
-								<select name="admin0305_3" class="selectStyle2" style="width:16%" v-model="srcApprovalResult">
+								<select name="admin0305_3" class="selectStyle2" style="width:16%" v-model="srcApprovalStatus">
 									<option value="">전체</option>
-									<option value="">대기</option>
+									<option value="승인대기">승인대기</option>
 								</select>
 								<a @click="fnSearch" class="btnStyle1 float-right">검색</a>
 							</div>
@@ -141,10 +142,10 @@ export default {
 			// 검색 조건
 			srcBrandName	: "",
 			srcSubTitle	: "",
-			srcSubNum		: "",
+			srcChatbotId		: "",
 			srcRcsReply	: "",
 			srcIsuse		: "",
-			srcApprovalResult	: "",
+			srcApprovalStatus	: "",
 
 			// 리스트 
 			data : {},
@@ -172,8 +173,14 @@ export default {
 		// 검색
 		fnSearch() {
 			var params = {
-				"projectId"	: this.projectId,
-				"pageInfo"	: this.pageInfo
+				"projectId"		: this.projectId,
+				"pageInfo"		: this.pageInfo,
+				"srcBrandName"	: this.srcBrandName,
+				"srcSubTitle"	: this.srcSubTitle,
+				"srcChatbotId"	: this.srcChatbotId,
+				"srcRcsReply"	: this.srcRcsReply,
+				"srcIsuse"		: this.srcIsuse,
+				"srcApprovalStatus"	: this.srcApprovalStatus,
 			}
 			
 			projectApi.selectCallbackManageList(params).then(response =>{

@@ -223,52 +223,73 @@
 	</insert>
 	
 	<sql id="callbackManage">
-		SELECT	A.BRAND_NAME
-		,		A.BRAND_ID
-		,		B.CORP_ID 
-		,		REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS SUB_TITLE
-		,		B.CHATBOT_ID 
-		,		CASE 
-					WHEN REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "") = '0' THEN 'N' 
-					ELSE 'Y'
-				END AS RCS_REPLY
-		,		B.APPROVAL_STATUS 
-		,		date_format(B.REG_DT, '%Y-%m-%d') AS REG_DT
-		,		B.APPROVAL_DT 
-		FROM cm.CM_RCS_BRAND A 
-		INNER JOIN cm.CM_RCS_CHATBOT B 
-			ON A.BRAND_ID = B.BRAND_ID 
+		SELECT *
+		FROM (
+			SELECT	A.BRAND_NAME
+			,		A.BRAND_ID
+			,		B.CORP_ID 
+			,		REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS SUB_TITLE
+			,		B.CHATBOT_ID 
+			,		CASE 
+						WHEN REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "") = '0' THEN 'N' 
+						ELSE 'Y'
+					END AS RCS_REPLY
+			,		B.APPROVAL_STATUS 
+			,		date_format(B.REG_DT, '%Y-%m-%d') AS REG_DT
+			,		B.APPROVAL_DT 
+			FROM cm.CM_RCS_BRAND A 
+			INNER JOIN cm.CM_RCS_CHATBOT B 
+				ON A.BRAND_ID = B.BRAND_ID 
+			WHERE	1 = 1
+			AND		( A.PROJECT_ID  = #{projectId} OR A.PROJECT_ID  = 'ALL')
+			
+			UNION
+			
+			SELECT	A.BRAND_NAME
+			,		A.BRAND_ID
+			,		B.CORP_ID
+			,		REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS SUB_TITLE
+			,		B.CHATBOT_ID 
+			,		CASE 
+						WHEN REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "") = '0' THEN 'N' 
+						ELSE 'Y'
+					END AS RCS_REPLY
+			,		B.APPROVAL_STATUS 
+			,		date_format(B.REG_DT, '%Y-%m-%d') AS REG_DT
+			,		B.APPROVAL_DT 
+			FROM cm.CM_RCS_BRAND_REQ A 
+			INNER JOIN cm.CM_RCS_CHATBOT_REQ B 
+				on A.BRAND_ID = B.BRAND_ID 
+			WHERE 1 = 1 
+			AND ( A.PROJECT_ID  = #{projectId} or A.PROJECT_ID  = 'ALL')
+			AND B.CHATBOT_ID NOT IN (
+				SELECT BB.CHATBOT_ID 
+				FROM cm.CM_RCS_BRAND AA 
+				INNER JOIN cm.CM_RCS_CHATBOT BB 
+					on AA.BRAND_ID = BB.BRAND_ID 
+				WHERE	1=1
+				AND		( AA.PROJECT_ID  = #{projectId} or AA.PROJECT_ID  = 'ALL')
+			)
+		) SUB_CB
 		WHERE 1 = 1
-		AND ( A.PROJECT_ID  = #{projectId} OR A.PROJECT_ID  = 'ALL')
-		
-		
-		UNION
-		
-		SELECT	A.BRAND_NAME
-		,		A.BRAND_ID
-		,		B.CORP_ID
-		,		REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS SUB_TITLE
-		,		B.CHATBOT_ID 
-		,		CASE 
-					WHEN REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "") = '0' THEN 'N' 
-					ELSE 'Y'
-				END AS RCS_REPLY
-		,		B.APPROVAL_STATUS 
-		,		date_format(B.REG_DT, '%Y-%m-%d') AS REG_DT
-		,		B.APPROVAL_DT 
-		FROM cm.CM_RCS_BRAND_REQ A 
-		INNER JOIN cm.CM_RCS_CHATBOT_REQ B 
-			on A.BRAND_ID = B.BRAND_ID 
-		WHERE 1 = 1 
-		AND ( A.PROJECT_ID  = #{projectId} or A.PROJECT_ID  = 'ALL')
-		AND B.CHATBOT_ID NOT IN (
-			SELECT BB.CHATBOT_ID 
-			FROM cm.CM_RCS_BRAND AA 
-			INNER JOIN cm.CM_RCS_CHATBOT BB 
-				on AA.BRAND_ID = BB.BRAND_ID 
-			WHERE	1=1
-			AND		( AA.PROJECT_ID  = #{projectId} or AA.PROJECT_ID  = 'ALL')
-		)
+		<if test="srcBrandName != null and srcBrandName != ''">
+		AND		SUB_CB.BRAND_NAME LIKE CONCAT('%',#{srcBrandName},'%')
+		</if>
+		<if test="srcSubTitle != null and srcSubTitle != ''">
+		AND		SUB_CB.SUB_TITLE LIKE CONCAT('%',#{srcSubTitle},'%')
+		</if>
+		<if test="srcChatbotId != null and srcChatbotId != ''">
+		AND		SUB_CB.CHATBOT_ID LIKE CONCAT('%',#{srcChatbotId},'%')
+		</if>
+		<if test="srcRcsReply != null and srcRcsReply != ''">
+		AND		SUB_CB.RCS_REPLY = #{srcRcsReply}
+		</if>
+		<if test="srcBrandName != null and srcBrandName != ''">
+		AND		SUB_CB.BRAND_NAME = #{srcBrandName}
+		</if>
+		<if test="srcApprovalStatus != null and srcApprovalStatus != ''">
+		AND		SUB_CB.APPROVAL_STATUS = #{srcApprovalStatus}
+		</if> 
 	</sql>
 	
 	<select id="selectCallbackManageListCnt" resultType="int">
@@ -277,6 +298,7 @@
 		FROM (
 			<include refid="callbackManage"/>
 		) CB
+		
 	</select>
 	
 	<select id="selectCallbackManageList" resultType="camel">

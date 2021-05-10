@@ -41,17 +41,22 @@
 			<h4 class="mt40">IOS(APNS)</h4>
 			<div class="row mt10">
 				<div class="col-xs-12">
-					<div class="menuBox">						
+					<div class="menuBox">
+						<!-- <div class="of_h">
+							<h4 class="font-normal inline-block" style="width:15%">P8인증서</h4>
+							<div class="consolCheck display-block mt5" style="width:72%">
+								{{this.apnsFileName}}
+								<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:65%; height: 40px;" @change="fnFileNameChange" ref="apnsCetificationFile"/>
+							</div>
+						</div> -->
 						<div class="of_h">
 							<h4 class="font-normal inline-block" style="width:15%">P8인증서</h4>
-							<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:72%" ref="apnsCetificationFile"/>
+							<input type="text" class="inputStyle vertical-top" style="width:72%" v-model="apnsFileName" disabled>
+							<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:8%; height: 40px;" @change="fnFileNameChange" ref="apnsCetificationFile"/>
 						</div>
 						<div class="mt10">
 							<h4 class="font-normal inline-block" style="width:15%">Bundle ID</h4>
 							<input type="text" class="inputStyle" style="width:72%" v-model="iosAppId">
-							<div class="consolCheck display-block mt5" style="margin-left:15.5%">
-								<input type="checkbox" id="ID" class="checkStyle2" value="ID"><label for="ID">APNS App ID 별도</label>
-							</div>
 						</div>
 						<div class="mt15">
 							<h4 class="font-normal inline-block" style="width:15%">Team ID</h4>
@@ -95,6 +100,7 @@ export default {
 			fcmServerKey		: '',
 			senderId			: '',
 			apnsCetification	: '',
+			apnsFileName		: '',
 			iosAppId			: '',
 			teamKey				: '',
 			keyId				: ''
@@ -105,27 +111,29 @@ export default {
 		this.save_status	= this.$route.params.save_status;
 
 		if( this.save_status === 'U' ){
-			this.corpId				= this.$route.params.rowData.corpId
-			this.appId				= this.$route.params.rowData.appId
-			this.appNm				= this.$route.params.rowData.appNm
-			this.fcmPackageName		= this.$route.params.rowData.fcmPackageName
-			this.fcmServerKey		= this.$route.params.rowData.fcmServerKey
-			this.senderId			= this.$route.params.rowData.senderId
-			this.apnsCetification	= this.$route.params.rowData.apnsCetification
-			this.iosAppId			= this.$route.params.rowData.iosAppId
-			this.teamKey			= this.$route.params.rowData.teamKey
-			this.keyId				= this.$route.params.rowData.keyId
+			this.corpId				= this.$route.params.rowData.corpId;
+			this.appId				= this.$route.params.rowData.appId;
+			this.appNm				= this.$route.params.rowData.appNm;
+			this.fcmPackageName		= this.$route.params.rowData.fcmPackageName;
+			this.fcmServerKey		= this.$route.params.rowData.fcmServerKey;
+			this.senderId			= this.$route.params.rowData.senderId;
+			this.apnsCetification	= this.$route.params.rowData.apnsCetification;
+			this.apnsFileName		= this.$route.params.rowData.apnsFileName;			
+			this.iosAppId			= this.$route.params.rowData.iosAppId;
+			this.teamKey			= this.$route.params.rowData.teamKey;
+			this.keyId				= this.$route.params.rowData.keyId;
 		} else {
-			this.corpId				= ''
-			this.appId				= ''
-			this.appNm				= ''
-			this.fcmPackageName		= ''
-			this.fcmServerKey		= ''
-			this.senderId			= ''
-			this.apnsCetification	= ''
-			this.iosAppId			= ''
-			this.teamKey			= ''
-			this.keyId				= ''
+			this.corpId				= '';
+			this.appId				= '';
+			this.appNm				= '';
+			this.fcmPackageName		= '';
+			this.fcmServerKey		= '';
+			this.senderId			= '';
+			this.apnsCetification	= '';
+			this.apnsFileName		= '';
+			this.iosAppId			= '';
+			this.teamKey			= '';
+			this.keyId				= '';
 		}
 	},
 	methods: {
@@ -133,16 +141,29 @@ export default {
 		fnBack(){
 			this.$router.push( {name:"projectMain",params:{"projectId" : this.projectId, "selMainTab" : 4, "selMidTab" : 3 }} );
 		},
+		fnFileNameChange(){
+			this.apnsFileName = this.$refs.apnsCetificationFile.files[0].name;
+		},
 		fnValidate(){
-			if( this.fcmPackageName != '' || this.fcmServerKey != '' || this.senderId != '' ){
+			if( this.appNm == '' ){
+				confirm.fnAlert("", "APP명은 필수입니다.");
+				return false;
+			} else if( this.fcmPackageName != '' || this.fcmServerKey != '' || this.senderId != '' ){
 				if( this.fcmPackageName == '' || this.fcmServerKey == '' || this.senderId == '' ){
-					confirm.fnAlert("", "저장에 성공했습니다.");
-					return;
-				}
+					confirm.fnAlert("", "안드로이드(FCM)를 입력하시려는 경우, 안드로이드(FCM)의 모든 항목은 필수입니다.");
+					return false;
+				} 
+			} else if ( this.apnsFileName != '' || this.iosAppId != '' || this.teamKey != '' || this.keyId != '' ){
+				if( this.apnsFileName == '' || this.iosAppId == '' || this.teamKey == '' || this.keyId == '' ){
+					confirm.fnAlert("", "IOS(APNS)를 입력하시려는 경우, IOS(APNS)의 모든 항목은 필수입니다.");
+					return false;
+				} 
 			}
+			return true;
 		},
 		// 등록, 수정
 		async fnSave(){
+			console.log(this.fnValidate());
 			// 벨리데이션 처리
 			if( !this.fnValidate() ){
 				return;
