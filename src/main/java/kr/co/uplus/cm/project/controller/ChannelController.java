@@ -1,15 +1,11 @@
 package kr.co.uplus.cm.project.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,25 +14,39 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.uplus.cm.common.controller.BaseController;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.common.model.AuthUser;
+import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.project.service.ChannelService;
 import kr.co.uplus.cm.utils.CommonUtils;
 
 @RestController
 @RequestMapping("/projectApi/channel")
-public class ChannelController {
+public class ChannelController extends BaseController {
 
 	@Autowired
 	ChannelService channelService;
 
+	@Autowired
+	CommonService commonService;
+
+	/**
+	 * RCS 브랜드 리스트 조회
+	 * 
+	 * @param params
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping("/selectRcsBrandList")
 	public RestResult<?> selectRcsBrandList(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
+
 		return channelService.selectRcsBrandList(params);
 	}
-	
-	
+
 	/**
 	 * 등록 템플릿 상세 조회
 	 * @param params
@@ -63,6 +73,7 @@ public class ChannelController {
 
 	/**
 	 * 등록 발신번호 상세 조회
+	 * 
 	 * @param params
 	 * @param request
 	 * @param response
@@ -84,9 +95,10 @@ public class ChannelController {
 
 		return channelService.selectRcsCallbackList(params);
 	}
-	
+
 	/**
 	 * API KEY 중복 조회
+	 * 
 	 * @param params
 	 * @param request
 	 * @param response
@@ -98,9 +110,10 @@ public class ChannelController {
 			HttpServletResponse response) throws Exception {
 		return channelService.checkApiKey(params);
 	}
-	
+
 	/**
 	 * RCS 브랜드 등록요청
+	 * 
 	 * @param params
 	 * @param request
 	 * @param response
@@ -209,4 +222,111 @@ public class ChannelController {
 		
 		return rtn;
 	}
+	
+	/**
+	 * PUSH 리스트 조회
+	 * @param params
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("/selectPushManageList")
+	public RestResult<?> selectPushManageList(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		AuthUser authUser = getUserInfo(CommonUtils.getString(params.get("loginId")));
+		params.put("corpId",			authUser.getCorpId());
+		
+		return channelService.selectPushManageList(params);
+	}
+	
+	@PostMapping("/savePushManage")
+	public RestResult<?> savePushManage(
+			@RequestParam String sts,
+			@RequestParam String loginId,
+			@RequestParam String projectId,
+			@RequestParam String appId,
+			@RequestParam String appNm,
+			@RequestParam String fcmPackageName,
+			@RequestParam String fcmServerKey,
+			@RequestParam String senderId,
+			@RequestParam(required = false) MultipartFile apnsCetification,
+			@RequestParam String iosAppId,
+			@RequestParam String teamKey,
+			@RequestParam String keyId,
+			HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		RestResult<Object> rtn = new RestResult<Object>();
+		rtn.setSuccess(true);
+		// 세션정보
+		AuthUser authUser = getUserInfo(loginId);
+		params.put("corpId",			authUser.getCorpId());
+		params.put("userId",			authUser.getUserId());
+		
+		// 파라미터 정리
+		params.put("sts",				sts);
+		params.put("projectId",			projectId);
+		params.put("appId",				appId);
+		params.put("appNm",				appNm);
+		params.put("fcmPackageName",	fcmPackageName);
+		params.put("fcmServerKey",		fcmServerKey);
+		params.put("senderId",			senderId);
+		params.put("apnsCetification",	apnsCetification);
+		params.put("iosAppId",			iosAppId);
+		params.put("teamKey",			teamKey);
+		params.put("keyId",				keyId);
+		
+		try {
+			channelService.savePushManage(params);
+			rtn.setSuccess(true);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		
+		return rtn;
+	}
+	
+	@PostMapping("/deletePushManage")
+	public RestResult<?> savePushManage(
+			@RequestBody Map<String, Object> params,
+			HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+		rtn.setSuccess(true);
+		// 세션정보
+		AuthUser authUser = getUserInfo(CommonUtils.getString(params.get("loginId")));
+		params.put("corpId",			authUser.getCorpId());
+		params.put("userId",			authUser.getUserId());
+		
+		try {
+			channelService.deletePushManage(params);
+			rtn.setSuccess(true);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		
+		return rtn;
+	}
+	
+	/**
+	 * RCS 브랜드 메시지 포멧정보 리스트 조회
+	 * @param params
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("/selectRcsBrandMsgBaseList")
+	public RestResult<?> selectRcsBrandMsgBaseList(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		return channelService.selectRcsBrandMsgBaseList(params);
+	}
+	
 }

@@ -1,12 +1,11 @@
 server:
   port: 7070
   
+#미사용 추후 삭제예정
 file-props:
   img:
-    upload-path: /frontend/src/assets/images/temp/
-    permit-exten: jpg,jpeg,png,gif    limit-size: 5000000  #5MB
-  excel:
-    permit-exten: xls,xlsx
+    upload-path: /frontend/src/assets/images/temp/    limit-size: 5000000  #5MB
+#미사용 추후 삭제예정
 
 ---
 spring:
@@ -45,7 +44,7 @@ api.props:
 datasource: 
   rcs:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    jdbc-url: jdbc:log4jdbc:mariadb://dev.ectech.co.kr:40906/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    jdbc-url: jdbc:log4jdbc:mariadb://sandbox.ums-dev.uplus.co.kr:43306/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: cm_console
     password: test1234
     pool-name: hikari-cp
@@ -68,7 +67,7 @@ datasource:
   continue-on-error: true
     
 mongodb:
-  uri: mongodb://cloud:test1234@dev.ectech.co.kr:40917/cloud?authSource=cloud&authMechanism=SCRAM-SHA-256
+  uri: mongodb://cloud:test1234@sandbox.ums-dev.uplus.co.kr:47017/cloud?authSource=cloud&authMechanism=SCRAM-SHA-256
   database: cloud
   connectionsPerHost: 30
   connectionsPerHostMin: 10

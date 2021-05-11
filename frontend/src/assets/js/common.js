@@ -22,6 +22,7 @@ export default {
         return str;
       },
       newLineToBr(str){
+        if(this.isEmpty(str)) return str;
         return str.replace(/(?:\r\n|\r|\n)/g, '<br>');
       },
       /**************************문자열 관련 Utils**************************/

@@ -24,11 +24,27 @@ const saveRcsBrandReqForApi = (params) => {
     return httpClient.post('/projectApi/channel/saveRcsBrandReqForApi', params, { headers: {"show-layer": "Yes"} });
 };
 
+const selectPushManageList = (params) => {
+    return httpClient.post('/projectApi/channel/selectPushManageList', params, { headers: {"show-layer": "Yes"} });
+};
+
+const deletePushManage = (params) => {
+    return httpClient.post('/projectApi/channel/deletePushManage', params, { headers: {"show-layer": "Yes"} });
+};
+
+const selectRcsBrandMsgBaseList = (params) => {
+    return httpClient.post('/projectApi/channel/selectRcsBrandMsgBaseList', params, { headers: {"show-layer": "Yes"} });
+};
+
+
 export default {
     selectRcsBrandList,
     selectRcsRegTmpltList,
     selectRcsCallbackList,
     checkApiKey,
     saveRcsBrandReqForApi,
-    fileUploadToApi
+    fileUploadToApi,
+    selectPushManageList,
+    deletePushManage,
+    selectRcsBrandMsgBaseList
 };

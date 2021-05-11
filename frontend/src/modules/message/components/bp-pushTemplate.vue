@@ -47,7 +47,7 @@
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30 color000">내용</h5>
-                  <h5 style="width:40%" class="float-right color4 word-break-all">{{templateData.tmpltContent}}</h5>
+                  <h5 style="width:40%" class="float-right color4 word-break-all" v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></h5>
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30 color000">이미지</h5>
@@ -70,12 +70,14 @@
                     <div v-if="templateData.msgType == 'IMAGE' && !fnIsEmpty(templateData.imgUrl)" class="phoneText2 mt10 text-center"
                       :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+templateData.imgUrl+');'">
                     </div>
-                    <p v-if="templateData.msgKind != 'A' || (fnIsEmpty(templateData.tmpltContent) && fnIsEmpty(templateData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
-                    <p v-else class="font-size14 color4 mt10">
-                      {{templateData.tmpltContent}}
-                      <br v-if="!fnIsEmpty(templateData.tmpltContent)"/>
-                      {{templateData.rcvblcNumber}}
-                    </p>
+                    <div class="scroll-y">
+                      <p v-if="templateData.msgKind != 'A' || (fnIsEmpty(templateData.tmpltContent) && fnIsEmpty(templateData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
+                      <p v-else class="font-size14 color4 mt10">
+                        <span v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></span>
+                        <br v-if="!fnIsEmpty(templateData.tmpltContent)"/>
+                        {{templateData.rcvblcNumber}}
+                      </p>
+                    </div>
                   </div>
                 </div>
                 <!-- //phoneWrap -->
@@ -97,7 +99,7 @@ import TemplateApi from "@/modules/template/service/templateApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
-  name: "directInputPopup",
+  name: "pushTemplatePopup",
   props: {
     pushTemplateOpen: {
       type: Boolean,

@@ -12,7 +12,7 @@
           <div class="of_h mt7">
             <div class="float-left" style="width:20%"><h5>내용 *</h5></div>
             <div class="float-right" style="width:79%">
-              <textarea class="textareaStyle height120" :placeholder="recvAreapPlaceholder" v-model="pushContent" maxlength="512"></textarea>
+              <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="pushContent" maxlength="512"></textarea>
             </div>
             <div v-if="sendData.msgKind == 'A'">
               <p class="txtCaption color5 lc-1 mt7" style="margin-left:21%">광고성 메시지 발송 시, 자동으로 광고가 표기 됩니다.</p>
@@ -69,7 +69,7 @@ export default {
       pushContent : '',
       rcvblcNumber: '',
       adtnInfo: '',
-      recvAreapPlaceholder: '변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정:예) {{name}}님 {{yyyymmdd}} 출금 예정입니다.',
+      contentAreaPlaceholder: '변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정:예) {{name}}님 {{yyyymmdd}} 출금 예정입니다.',
     }
   },
   watch: {
@@ -80,6 +80,10 @@ export default {
   methods: {
     //입력정보 callback
     fnCallbackInputData(){
+      if(this.sendData.msgKind == 'A' && !this.rcvblcNumber){
+        confirm.fnAlert(this.componentsTitle, '푸시 수신거부 방법을 입력해주세요.');
+        return false;
+      }
       if(!this.pushContent){
         confirm.fnAlert(this.componentsTitle, '내용을 입력해주세요.');
         return false;
@@ -96,7 +100,6 @@ export default {
     },
     //팝업 닫기
     fnClose(){
-      //입력 데이터 넘기기 필요
       this.$emit('update:pushContsOpen', false)
     }
   }

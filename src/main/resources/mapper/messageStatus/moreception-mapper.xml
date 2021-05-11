@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moReception">
+
+    <sql id ="whereSelectMoReceptionList">
+        <!-- AND A.CORP_ID = #{corpId} --><!-- 테스트중 주석처리-->
+		AND A.PROJECT_ID = #{projectId}
+        <if test="searchText != null and searchText != '' ">
+            AND C.CORP_ID = CONCAT('%', #{searchText}, '%')
+        </if>
+        <if test="searchStartDate != null and searchStartDate != '' ">
+            <if test="searchEndDate != null and searchEndDate != '' ">
+            AND B.MO_RECV_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
+            </if>
+        </if>
+        
+        <if test="searchReceptionNumber != null and searchReceptionNumber.size > 0 ">
+        	AND A.MO_NUMBER IN
+            <foreach collection="searchReceptionNumber" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
+        </if>
+        
+        <if test="searchSendNumber != null and searchSendNumber != '' ">
+        	AND B.MO_CALLBACK = #{searchSendNumber}
+        </if>
+        
+        <if test="searchCondi != null and searchCondi != '' ">
+        	AND B.STATUS = #{searchCondi}
+        </if>
+        
+    </sql>
+
+    <select id="selectMoReceptionListCnt" parameterType="hashmap" resultType="int">
+    /* MO 수신 리스트 카운트 조회 */
+        SELECT
+            COUNT(*) AS CNT
+		FROM cm.CM_MO_CALLBACK A LEFT OUTER JOIN cm.CM_MO_MSG B 
+		                         ON A.MO_NUMBER = B.MO_NUMBER
+		                         AND A.PROJECT_ID = B.PROJECT_ID
+		                         AND A.MO_TYPE = B.MO_TYPE
+        WHERE 1=1
+        <include refid="whereSelectMoReceptionList"/>
+    </select>
+
+    <select id="selectMoReceptionList" parameterType="hashmap" resultType="camel">
+    /* MO 수신 리스트 조회 */
+		SELECT  @rownum:=@rownum+1 AS ROW_NUM
+		      , B.MO_TYPE
+		      , A.MO_NUMBER
+		      , B.MO_CALLBACK
+		      , B.PRODUCT_CODE
+		      , B.MO_TITLE
+		      , B.TELCO
+		      , B.STATUS
+		      , C.CODE_VAL_1 AS CODE_VAL
+		      , DATE_FORMAT(B.MO_RECV_DT, '%Y.%m.%d %H:%i:%s') AS MO_RECV_DT /*발송일시*/
+		FROM cm.CM_MO_CALLBACK A LEFT OUTER JOIN cm.CM_MO_MSG B 
+		                         ON A.MO_NUMBER = B.MO_NUMBER
+		                         AND A.PROJECT_ID = B.PROJECT_ID
+		                         AND A.MO_TYPE = B.MO_TYPE
+		                         LEFT OUTER JOIN cm_bo.CM_CODE C
+		                         ON B.STATUS = C.CODE_NAME_1
+		                         AND C.CODE_TYPE_CD = 'MO_RECV_STATUS'
+		   , (SELECT @rownum:=0) TMP
+		WHERE 1=1
+		<include refid="whereSelectMoReceptionList"/>
+        ORDER BY B.PRODUCT_CODE, B.MO_CALLBACK
+        <if test='pagingYn == "Y" '>
+        LIMIT ${offset}, #{listSize}
+        </if>
+    </select>
+    
+    <select id="selectConditionList" parameterType="hashmap" resultType="camel">
+    /* MO 상태코드 리스트 조회 */
+		SELECT  @rownum:=@rownum+1 AS ROW_NUM
+		      , CODE_NAME_1 AS CODE_NAME
+		      , CODE_VAL_1 AS CODE_VAL 
+		FROM cm_bo.CM_CODE
+		   , (SELECT @rownum:=0) TMP
+		WHERE CODE_TYPE_CD = 'MO_RECV_STATUS'
+		ORDER BY DIS_ORDER
+    </select>    
+
+  
+     <select id="selectReceptionNumberList" parameterType="hashmap" resultType="camel">
+    /* 수신번호 리스트 조회 */
+		SELECT  @rownum:=@rownum+1 AS ROW_NUM
+		      , A.MO_NUMBER 
+		FROM cm.CM_MO_CALLBACK A
+		   , (SELECT @rownum:=0) TMP
+		WHERE 1=1
+  		AND A.PROJECT_ID = #{projectId}
+    </select> 
+    
+</mapper>

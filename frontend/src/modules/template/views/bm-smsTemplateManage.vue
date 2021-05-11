@@ -18,7 +18,12 @@
                 <p v-if="$gfnCommonUtils.isEmpty(tmpltData.tmpltTitle)">템플릿 제목</p>
                 <p v-else>{{tmpltData.tmpltTitle}}</p>
               </div>
-              <div class="phoneText1">
+              <div v-if="tmpltData.senderType == 'MMS'">
+                <div v-for="(imgInfo, idx) in tmpltData.imgInfoList" :key="idx" class="phoneText2 mt10 text-center"
+                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+imgInfo.imgUrl+');'">
+                </div>
+              </div>
+              <div class="phoneText1 scroll-y">
                 <p v-if="$gfnCommonUtils.isEmpty(tmpltData.tmpltContent) && (tmpltData.msgKind != 'A' || $gfnCommonUtils.isEmpty(tmpltData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
                 <p v-else class="font-size14 color4 mt10">
                   <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
@@ -93,7 +98,7 @@
             <input type="text" class="inputStyle" v-model="tmpltData.rcvblcNumber" maxlength="10">
           </div>
         </div>
-        
+
         <div v-if="tmpltData.senderType == 'MMS'" class="of_h user-phone">
           <div class="float-left" style="width:31%">
             <h4>이미지</h4>
@@ -103,15 +108,18 @@
               <div class="float-left" style="width:22%">
                 <a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
               </div>
-              <ul class="float-right attachList" style="width:74%; padding:5px 15px; height:30px;">
-                <li v-if="tmpltData.imgInfoList.length > 0">
-                  <a v-for="(imgInfo, idx) in tmpltData.imgInfoList" :key="idx" :class="idx==0?'':'ml10'" @click="fnDelImg(idx)">{{fnSubString(imgInfo.imgUrl, 0, 20)}}  <i class="fal fa-times"></i></a>
+              <ul v-for="imgIdx in imgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
+                <li v-if="tmpltData.imgInfoList.length > imgIdx-1">
+                  <a @click="fnDelImg(idx)">{{fnSubString(tmpltData.imgInfoList[imgIdx-1].imgUrl, 0, 35)}} <i class="fal fa-times"></i></a>
+                </li>
+                <li v-else>
+                  <a></a>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-
+        
         <div class="mt20 float-right">
           <a v-if="isInsert" @click="fnSaveSmsTemplate" class="btnStyle2 backRed ml10" title="등록">등록</a>
           <a v-else @click="fnSaveSmsTemplate" class="btnStyle2 backWhite ml10" title="수정">수정</a>
@@ -120,7 +128,7 @@
       </div>
     </div>
 
-    <ImageManagePopUp :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
+    <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
 
   </div>
 
@@ -229,6 +237,22 @@ export default {
         confirm.fnAlert(this.componentsTitle, '광고성메시지 수신거부번호를 입력해주세요.');
         return false;
       }
+
+      const msgLimitByte = (this.tmpltData.senderType == 'SMS' ? 80 : 2000);
+      let totalMsg = this.tmpltData.tmpltContent;
+      if(this.tmpltData.senderType != 'SMS'){
+        totalMsg += this.tmpltData.tmpltTitle;
+      }
+      if(this.tmpltData.msgKind == 'A'){
+        totalMsg += '\n' + this.tmpltData.rcvblcNumber;
+      }
+      const totByte = this.getByte(totalMsg);
+      if(msgLimitByte < totByte){
+        const alertMsg = (this.tmpltData.senderType == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+msgLimitByte+'를 넘지 않아야됩니다.\n(현재 : '+totByte+'byte)';
+        confirm.fnAlert(this.componentsTitle, alertMsg);
+        return false;
+      }
+
       return true;
     },
     //저장
@@ -243,16 +267,18 @@ export default {
     async fnProcSaveSmsTemplate(){
       //DATA Set
       let params = Object.assign({}, this.tmpltData);
-      if(this.tmpltData.senderType != 'MMS' || this.tmpltData.imgInfoList.length == 0) {
-        params.imgInfoList = [];
+      if(this.tmpltData.senderType != 'MMS') {
         params.tmpltTitle = '';
-      } else {
-        params.imgInfoListStr = JSON.stringify(this.tmpltData.imgInfoList);
       }
       if(this.tmpltData.msgKind != 'A') {
         params.rcvblcNumber = '';
       }
-
+      if(this.tmpltData.imgInfoList.length == 0){
+        params.imgInfoList = [];
+      }else {
+        params.imgInfoListStr = JSON.stringify(this.tmpltData.imgInfoList);
+      }
+      
       //저장처리
       await templateApi.saveSmsTmplt(params).then(response => {
         const result = response.data;
@@ -286,7 +312,7 @@ export default {
       this.$refs.imgMngPopup.fnSearch();
       this.imgMngOpen = !this.imgMngOpen;
     },
-    fnSetImageInfo(imgInfo) {
+    fnCallbackImgInfo(imgInfo){
       if(this.fnImgLimitSize() == false) return;
       let temp = {
         imgUrl: imgInfo.chImgUrl,
@@ -310,7 +336,14 @@ export default {
         confirm.fnAlert(this.componentsTitle, '이미지는 최대 2개까지 등록 가능합니다.');
         return false;
       }
-    }
+    },
+    //get 문자열 byte
+    getByte(str) {
+      return str
+        .split('')
+        .map(s => s.charCodeAt(0))
+        .reduce((prev, c) => (prev + ((c === 10) ? 2 : ((c >> 7) ? 2 : 1))), 0);
+    },
   }
 }
 </script>

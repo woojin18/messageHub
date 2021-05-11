@@ -124,7 +124,7 @@
         </if>
     </select>
 
-    <select id="selectAllAddrCuList" parameterType="hashmap" resultType="kr.co.uplus.cm.sendMessage.dto.PushRecvInfo">
+    <select id="selectAllAddrCuList" parameterType="hashmap" resultType="kr.co.uplus.cm.sendMessage.dto.RecvInfo">
     /* sendMessage.selectAllAddrCuList 주소록 전체 구성원 목록 조회 */
         SELECT
             CCI.CUID

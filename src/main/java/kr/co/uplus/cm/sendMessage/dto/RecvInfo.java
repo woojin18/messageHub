@@ -7,7 +7,7 @@ import java.util.Map;
 import lombok.Data;
 
 @Data
-public class PushRecvInfo implements Serializable {
+public class RecvInfo implements Serializable {
 
     private static final long serialVersionUID = -1289372282301427871L;
 

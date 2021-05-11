@@ -28,7 +28,7 @@
           <div class="of_h consolMarginTop">
             <div class="float-left" style="width:32%"><h5>내용</h5></div>
             <div class="float-right" style="width:66%">
-              <textarea class="textareaStyle height120" :placeholder="recvAreapPlaceholder" v-model="fbInfo.msg"></textarea>
+              <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="fbInfo.msg"></textarea>
             </div>
           </div>
 
@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <ImageManagePopUp :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
+    <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
 
   </div>
 </template>
@@ -62,7 +62,7 @@ import confirm from "@/modules/commonUtil/service/confirm.js";
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
 
 export default {
-  name: "pushContentsPopup",
+  name: "replacedSenderPopup",
   components : {
     ImageManagePopUp
   },
@@ -83,7 +83,7 @@ export default {
   data() {
     return {
       imgMngOpen : false,
-      useCh : 'PUSH',
+      useCh : 'MMS',
       callbackList: [],
       msgKind : 'A',
       fbInfo: {
@@ -96,7 +96,7 @@ export default {
         imgUrl:'',
       },
       shortImgUrl:'',
-      recvAreapPlaceholder: '변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정:예) {{name}}님 {{yyyymmdd}} 출금 예정입니다.',
+      contentAreaPlaceholder: '변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정:예) {{name}}님 {{yyyymmdd}} 출금 예정입니다.',
     }
   },
   watch: {
@@ -120,6 +120,14 @@ export default {
       if(!this.fbInfo.callback){
         confirm.fnAlert(this.componentsTitle, '대체발송 발신번호를 선택해주세요.');
         return;
+      }
+      if(this.msgKind == 'A' && !this.fbInfo.rcvblcNumber){
+        confirm.fnAlert(this.componentsTitle, '광고성메시지 수신거부번호를 입력해주세요.');
+        return false;
+      }
+      if(this.fbInfo.ch != 'SMS' && !this.fbInfo.title){
+        confirm.fnAlert(this.componentsTitle, '제목을 입력해주세요.');
+        return false;
       }
       if(!this.fbInfo.msg){
         confirm.fnAlert(this.componentsTitle, '내용을 입력해주세요.');
@@ -175,7 +183,7 @@ export default {
       this.imgMngOpen = !this.imgMngOpen;
     },
     //이미지선택 callback
-    fnSetImageInfo(imgInfo) {
+    fnCallbackImgInfo(imgInfo) {
       this.fbInfo.imgUrl = imgInfo.chImgUrl;
       this.fbInfo.fileId = imgInfo.fileId;
       this.shortImgUrl = this.fnSubString(imgInfo.chImgUrl, 0, 30);

@@ -1,4 +1,4 @@
-package kr.co.uplus.cm.common;
+package kr.co.uplus.cm;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;

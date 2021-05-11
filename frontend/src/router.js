@@ -19,6 +19,8 @@ import signUpRoutes from './modules/signUp/router';
 import cashRoutes from './modules/cash/router';
 import rcsTemplateRoutes from './modules/rcsTemplate/router';
 import userRoutes from './modules/user/router';
+import messageStatusRoutes from './modules/messageStatus/router';
+import integratedTemplateRoutes from './modules/integratedTemplate/router';
 
 //import confirm from "@/modules/commonUtil/service/confirm.js";
 
@@ -39,6 +41,17 @@ const requireAuth = () => (to, from, next) => {
 	next();
 };
 
+const requireAuthLogin = () => (to, from, next) => {
+	if (tokenSvc.getToken() !== null) {
+		if (tokenSvc.getToken().principal.svcTypeCd == 'UC') {
+			return next('/uc');
+		} else if (tokenSvc.getToken().principal.svcTypeCd == 'AC') {
+			return next('/ac');
+		}
+	}
+	next();
+};
+
 const router = new Router({
 	mode: 'history',
 	base: process.env.BASE_URL,
@@ -50,6 +63,7 @@ const router = new Router({
 		{
 			path: '/login',
 			component: LoginLayout,
+			beforeEnter: requireAuthLogin(),
 			children: [
 				{
 					path: '/view/error/404',
@@ -106,7 +120,9 @@ const router = new Router({
 				...ucHomeRoutes,
 				...messageRoutes,
 				...templateRoutes,
-				...rcsTemplateRoutes
+				...rcsTemplateRoutes,
+				...messageStatusRoutes,
+				...integratedTemplateRoutes
 			]
 		},
 		{path: '*', redirect: '/view/error/404'}

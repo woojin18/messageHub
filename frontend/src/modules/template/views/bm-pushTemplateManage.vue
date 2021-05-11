@@ -6,7 +6,7 @@
       <!-- <a href="#self" class="btnStyle1 absolute top0 right0" onClick="window.location.reload()" title="푸시 템플릿 등록/상세 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
     </div>
 
-    <ImageManagePopUp :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMng"></ImageManagePopUp>
+    <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMng"></ImageManagePopUp>
     <ImageUploadPopUp :imgUploadOpen.sync="imgUploadOpen"></ImageUploadPopUp>
 
     <!-- 본문 -->
@@ -28,14 +28,16 @@
               <div v-if="tmpltData.msgType == 'IMAGE' && !fnIsEmpty(tmpltData.imgUrl)" class="phoneText2 mt10 text-center"
                 :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.imgUrl+');'">
               </div>
-              <p v-if="fnIsEmpty(tmpltData.tmpltContent) && (tmpltData.msgKind != 'A' || fnIsEmpty(tmpltData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
-              <p v-else class="font-size14 color4 mt10">
-                <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
-                <br v-if="!fnIsEmpty(tmpltData.tmpltContent)"/>
-                <span v-if="tmpltData.msgKind == 'A' && !fnIsEmpty(tmpltData.rcvblcNumber)">
-                  {{tmpltData.rcvblcNumber}}
-                </span>
-              </p>
+              <div class="scroll-y">
+                <p v-if="fnIsEmpty(tmpltData.tmpltContent) && (tmpltData.msgKind != 'A' || fnIsEmpty(tmpltData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
+                <p v-else class="font-size14 color4 mt10">
+                  <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
+                  <br v-if="!fnIsEmpty(tmpltData.tmpltContent)"/>
+                  <span v-if="tmpltData.msgKind == 'A' && !fnIsEmpty(tmpltData.rcvblcNumber)">
+                    {{tmpltData.rcvblcNumber}}
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
           <!-- //phoneWrap -->
@@ -234,7 +236,7 @@ export default {
     fnOpenImageUploadPopUp : function(){
       this.imgUploadOpen = !this.imgUploadOpen;
     },
-    fnSetImageInfo(imgInfo) {
+    fnCallbackImgInfo(imgInfo) {
       this.tmpltData.imgUrl = imgInfo.chImgUrl;
       this.tmpltData.fileId = imgInfo.fileId;
     },

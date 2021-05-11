@@ -157,6 +157,8 @@ public class ProjectController extends BaseController {
 	public RestResult<?> selectCallbackList(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
+		System.out.println("-------------------------------------@@ selectCallbackManageList params : " + params);
+		
 		return projectService.selectCallbackManageList(params);
 	}
 	

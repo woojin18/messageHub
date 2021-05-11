@@ -24,12 +24,14 @@
               <div v-if="sendData.msgType == 'IMAGE' && !fnIsEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center"
                 :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
               </div>
-              <p v-if="sendData.msgKind != 'A' || (fnIsEmpty(sendData.pushContent) && fnIsEmpty(sendData.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
-              <p v-else class="font-size14 color4 mt10">
-                <span v-html="$gfnCommonUtils.newLineToBr(sendData.pushContent)"></span>
-                <br v-if="!fnIsEmpty(sendData.pushContent)"/>
-                {{sendData.rcvblcNumber}}
-              </p>
+              <div class="scroll-y">
+                <p v-if="sendData.msgKind != 'A' || (fnIsEmpty(sendData.pushContent) && fnIsEmpty(sendData.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
+                <p v-else class="font-size14 color4 mt10">
+                  <span v-html="$gfnCommonUtils.newLineToBr(sendData.pushContent)"></span>
+                  <br v-if="!fnIsEmpty(sendData.pushContent)"/>
+                  {{sendData.rcvblcNumber}}
+                </p>
+              </div>
             </div>
           </div>
           <!--// PUSH -->
@@ -45,12 +47,14 @@
                 <p v-if="fnIsEmpty(sendData.fbInfo.title)">제목</p>
                 <p v-else>{{sendData.fbInfo.title}}</p>
               </div>
-              <p v-if="(fnIsEmpty(sendData.fbInfo.msg) && fnIsEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
-              <p v-else class="font-size14 color4 mt10">
-                <pre>{{sendData.fbInfo.msg}}</pre>
-                <br v-if="!fnIsEmpty(sendData.fbInfo.rcvblcNumber)"/>
-                {{sendData.fbInfo.rcvblcNumber}}
-              </p>
+              <div class="scroll-y">
+                <p v-if="(fnIsEmpty(sendData.fbInfo.msg) && fnIsEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
+                <p v-else class="font-size14 color4 mt10">
+                  <span v-html="$gfnCommonUtils.newLineToBr(sendData.fbInfo.msg)"></span>
+                  <br v-if="!fnIsEmpty(sendData.fbInfo.rcvblcNumber)"/>
+                  {{sendData.fbInfo.rcvblcNumber}}
+                </p>
+              </div>
               <div v-if="!fnIsEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center"
                 :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.fbInfo.imgUrl+');'">
               </div>
@@ -244,12 +248,12 @@
     </div>
 
     <PushTemplatePopup :pushTemplateOpen.sync="pushTemplateOpen" ref="pushTmplPopup"></PushTemplatePopup>
-    <ImageManagePopUp :imgMngOpen.sync="imgMngOpen" :useCh="sendData.ch" ref="imgMngPopup"></ImageManagePopUp>
+    <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="sendData.ch" ref="imgMngPopup"></ImageManagePopUp>
     <PushContentsPopup :pushContsOpen.sync="pushContsOpen" :sendData="sendData"></PushContentsPopup>
     <ReplacedSenderPopup :rplcSendOpen.sync="rplcSendOpen" ref="rplcSendPopup"></ReplacedSenderPopup>
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
     <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
-    <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :testRecvInfoLst="sendData.testRecvInfoLst"></TestSendInputPopup>
+    <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :testRecvInfoLst="sendData.testRecvInfoLst" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></TestSendInputPopup>
   </div>
   <!-- //본문 -->
 </template>
@@ -320,8 +324,8 @@ export default {
         rsrvHH:'00',
         rsrvMM:'00',
         campaignId:'',
-        pushTitle:'',  //푸시제목(tmpltTitle)
-        pushContent:'',  //푸시내용(tmpltContent)
+        pushTitle:'',  //푸시제목
+        pushContent:'',  //푸시내용
         rcvblcNumber:'',  //수신거부
         adtnInfo:'',  //부가정보
         recvInfoLst: [],  //수신자정보
@@ -420,7 +424,6 @@ export default {
         const result = response.data;
 
         if(result.success) {
-          console.log(result);
           if(testSendYn == 'Y'){
             if(!this.fnIsEmpty(result.message)){
               confirm.fnAlert(this.componentsTitle, result.message);
@@ -455,7 +458,6 @@ export default {
     },
     //템플릿 정보 Set
     fnSetTemplateInfo(templateInfo){
-      console.log(templateInfo);
       this.sendData.msgKind = templateInfo.msgKind;  //메세지구분
       this.sendData.msgType = templateInfo.msgType;  //메세지타입
       this.sendData.fileId = templateInfo.fileId;  //파일ID
@@ -574,7 +576,7 @@ export default {
       this.sendData.adtnInfo = adtnInfo;
     },
     //이미지선택 callback
-    fnSetImageInfo(imgInfo) {
+    fnCallbackImgInfo(imgInfo) {
       this.sendData.imgUrl = imgInfo.chImgUrl;
       this.sendData.fileId = imgInfo.fileId;
     },

@@ -130,6 +130,7 @@ export default {
       let recvInfo = {};
       let hasEmptyKey = false;
       let hasEmptyProp = false;
+      const alertKeyStr = (this.requiredCuid ? 'APP 로그인' : '') + (this.requiredCuid && this.requiredCuPhone ? ', ' : '') + (this.requiredCuPhone ? '휴대폰번호' : '');
       
       for(let idx=1; idx<=this.loopCnt; idx++){
         recvInfo = {phone:'',cuid:'',mergeData:{}};
@@ -174,12 +175,11 @@ export default {
       }
       
       if(hasEmptyKey){
-        const alertStr = (this.requiredCuid ? 'APP 로그인' : '') + (this.requiredCuid && this.requiredCuPhone ? ', ' : '') + (this.requiredCuPhone ? '휴대폰번호' : '');
-        confirm.fnAlert(this.componentsTitle, alertStr+'는(은) 필수입니다.');
+        confirm.fnAlert(this.componentsTitle, alertKeyStr+'는(은) 필수입니다.');
         return;
       }
       if(hasEmptyProp){
-        confirm.fnAlert(this.componentsTitle, 'APP 로그인 ID나 휴대폰번호를 입력한 행은 빈값이 존재하면 안됩니다.');
+        confirm.fnAlert(this.componentsTitle, alertKeyStr+'를(을) 입력한 행은 빈값이 존재하면 안됩니다.');
         return;
       }
       if(recvInfoLst.length == 0){

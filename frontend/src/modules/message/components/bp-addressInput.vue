@@ -22,7 +22,7 @@
               <!-- <div style="padding:25px"> -->
                 <!-- addList -->
                 <!-- <ul class="addList"> -->
-                <addr-tree-menu v-for="addrTreeData in addrTreeList" :key="addrTreeData.loopKey"
+                <addr-tree-menu v-for="(addrTreeData, idx) in addrTreeList" :key="idx"
                   :item="addrTreeData.addressName"
                   :id="addrTreeData.addressCategoryId"
                   :subItems="addrTreeData.subItems"
@@ -227,7 +227,6 @@ export default {
         this.fnResetChkbox();
 
         if(result.success) {
-          console.log(result);
           this.cmCuList = Object.assign([], result.data);
           this.totCnt = result.pageInfo.totCnt;
 

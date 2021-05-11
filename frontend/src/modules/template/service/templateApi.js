@@ -1,24 +1,23 @@
-import tokenSvc from '@/common/token-service';
 import httpClient from '@/common/http-client';
 
 const savePushTmplt = (params) => {
-    return httpClient.post('/api/public/template/savePushTmplt', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
+    return httpClient.post('/api/public/template/savePushTmplt', params, { headers: {"show-layer": "Yes"} });
 };
 
 const selectPushTmpltInfo = (params) => {
-    return httpClient.post('/api/public/template/selectPushTmpltInfo', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
+    return httpClient.post('/api/public/template/selectPushTmpltInfo', params, { headers: {"show-layer": "Yes"} });
 };
 
 const selectPushTmpltList = (params) => {
-    return httpClient.post('/api/public/template/selectPushTmpltList', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
+    return httpClient.post('/api/public/template/selectPushTmpltList', params, { headers: {"show-layer": "Yes"} });
 };
 
 const deletePushTmplt = (params) => {
-    return httpClient.post('/api/public/template/deletePushTmplt', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
+    return httpClient.post('/api/public/template/deletePushTmplt', params, { headers: {"show-layer": "Yes"} });
 };
 
 const excelDownloadPushTmplt = (params) => {
-  return httpClient.post('/api/public/template/excelDownloadPushTmplt', params, { headers: {"show-layer": "No", "loginId": tokenSvc.getToken().principal.loginId}, responseType: 'arraybuffer' }).then(function(response) {
+  return httpClient.post('/api/public/template/excelDownloadPushTmplt', params, { headers: {"show-layer": "No"}, responseType: 'arraybuffer' }).then(function(response) {
     try {
       let blob = new Blob([response.data], { type: response.headers['content-type'] })
       let fileName = getFileName(response.headers['content-disposition'])
@@ -40,23 +39,23 @@ const excelDownloadPushTmplt = (params) => {
 }
 
 const saveSmsTmplt = (params) => {
-  return httpClient.post('/api/public/template/saveSmsTmplt', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
+  return httpClient.post('/api/public/template/saveSmsTmplt', params, { headers: {"show-layer": "Yes"} });
 };
 
 const selectSmsTmpltList = (params) => {
-  return httpClient.post('/api/public/template/selectSmsTmpltList', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
+  return httpClient.post('/api/public/template/selectSmsTmpltList', params, { headers: {"show-layer": "Yes"} });
 };
 
 const selectSmsTmpltInfo = (params) => {
-  return httpClient.post('/api/public/template/selectSmsTmpltInfo', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
+  return httpClient.post('/api/public/template/selectSmsTmpltInfo', params, { headers: {"show-layer": "Yes"} });
 };
 
 const deleteSmsTmplt = (params) => {
-  return httpClient.post('/api/public/template/deleteSmsTmplt', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
+  return httpClient.post('/api/public/template/deleteSmsTmplt', params, { headers: {"show-layer": "Yes"} });
 };
 
 const excelDownloadSmsTmplt = (params) => {
-  return httpClient.post('/api/public/template/excelDownloadSmsTmplt', params, { headers: {"show-layer": "No", "loginId": tokenSvc.getToken().principal.loginId}, responseType: 'arraybuffer' }).then(function(response) {
+  return httpClient.post('/api/public/template/excelDownloadSmsTmplt', params, { headers: {"show-layer": "No"}, responseType: 'arraybuffer' }).then(function(response) {
     try {
       let blob = new Blob([response.data], { type: response.headers['content-type'] })
       let fileName = getFileName(response.headers['content-disposition'])

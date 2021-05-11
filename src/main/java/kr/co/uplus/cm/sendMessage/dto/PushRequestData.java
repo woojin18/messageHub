@@ -19,7 +19,7 @@ public class PushRequestData implements Serializable {
     //발신번호(대체발송 발신번호)
     // pattern: ^[0-9-]{1,20}$
     // example: 15441234
-    @Pattern(regexp="^(\s*|[0-9-]{1,20})$", message="발신번호 형식에 맞지 않습니다.(예:15441234)")
+    @Pattern(regexp="^([0-9-]{0,20})$", message="발신번호 형식에 맞지 않습니다.(예:15441234)")
     private String callback;
 
     //캠페인 ID(태그)
@@ -51,24 +51,22 @@ public class PushRequestData implements Serializable {
     //파일 아이디
     private String fileId;
 
-    //웹 요청 아이디(웹에서 요청 시 사용)
-    //(웹에서 요청 시 사용)
+    //웹 요청 아이디(CM_WEB_MSG.WEB_REQ_ID 로 하며 테스트발송시 Null로 한다.)
     private String webReqId;
 
     //발송정책
     private String serviceCode;
 
     //(수신자 정보 리스트)
-    // API 서버측에 넘겨서 성공/실패를 받고 서버측에서 수신자 정보로 비동기화 처리를 하는 방식이 아니라
-    // 넘겨줄때 동기화로 일부 넘겨서 성공/실패를 받고 나머지를 비동기화 처리를 해댤라는 요청으로
-    // 수신자 정보 리스트는 유효성체크하지 않는다.
+    // API 서버측에 넘겨서 수신성공/수신실패를 받고 데이터 처리하는 방식이 아니라
+    // 넘겨줄때 데이터를 쪼개서 넘겨달라는 요청으로 수신자 정보 리스트는 전체 유효성체크하지 않는다.
     //필수
     //@NotNull(message="수신자 정보 리스트는 필수입니다.")
     //@Size(min=0, max=10, message="수신자 정보는 최대 10개까지 가능합니다.")
-    private List<PushRecvInfo> recvInfoLst;
+    private List<RecvInfo> recvInfoLst;
 
     //(대체발송리스트 정보)
-    private List<PushFbInfo> fbInfoLst;
+    private List<FbInfo> fbInfoLst;
 
 }
 
