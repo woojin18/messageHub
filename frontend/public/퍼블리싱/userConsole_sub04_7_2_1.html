@@ -1,0 +1,109 @@
+<? 
+	include("./sub/userConsole_header.html");
+	include("./sub/userConsole_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader">
+				<h2>스마트발송 템플릿 등록</h2>
+				<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+			</div>
+
+			<!-- 본문 -->
+			<div class="contentBody">
+				<ul class="tab_s3">
+					<li class="active"><a href="#self" title="Push 페이지로 이동">Push</a></li>
+					<li><a href="#self" title="RCS 페이지로 이동">RCS</a></li>
+					<li><a href="#self" title="카카오톡 페이지로 이동">카카오톡</a></li>
+					<li><a href="#self" title="SMS/MMS 페이지로 이동">SMS/MMS</a></li>
+				</ul>
+			</div>
+
+			<div class="of_h mt20">
+				<div class="float-left" style="width:30%">
+					<!-- phoneWrap -->
+					<div class="phoneWrap">
+						<img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
+						<div class="phoneTextWrap">
+							<div class="phoneText1 scroll-y">
+								<p>내용이 들어갑니다.</p>
+							</div>
+						</div>
+					</div>
+					<!-- //phoneWrap -->
+				</div>
+				<div class="float-left consoleCon" style="width:60%">
+					<div class="of_h">
+						<div class="float-left" style="width:18%"><h4>발송 정책 *</h4></div>
+						<div class="float-right" style="width:80%">
+							<input type="radio" name="send1" value="ALL" id="ALL" checked=""> <label for="ALL" class="mr30">ALL</label>
+							<input type="radio" name="send1" value="FCM" id="FCM"> <label for="FCM" class="mr30">FCM</label>
+							<input type="radio" name="send1" value="APNS" id="APNS"> <label for="APNS">APNS</label>
+						</div>
+					</div>
+
+					<div class="of_h">
+						<div class="float-left" style="width:18%"><h4>제목</h4></div>
+						<div class="float-right" style="width:80%">
+							<input type="text" class="inputStyle" placeholder="최대 50자 입력 가능니다.">
+						</div>
+					</div>					
+
+					<div class="of_h">
+						<div class="float-left" style="width:18%"><h4>내용*</h4></div>
+						<div class="float-right" style="width:80%">
+							<textarea class="textareaStyle height190" placeholder="변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.&#13;예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다."></textarea>
+							<p class="color6">광고성 메시지 발송 시, 자동으로 광고가 표기 됩니다.</p>
+						</div>					
+					</div>	
+					<div class="of_h consolMarginTop">
+						<div class="float-left" style="width:18%"><h4>수신거부방법 *</h4></div>
+						<div class="float-right" style="width:80%">
+							<input type="text" class="inputStyle" placeholder="설정 > 푸시 알림 설정 변경">
+							<p class="color6">푸시 수신거부방법을 입력해 주세요.</p>
+						</div>
+					</div>	
+
+					<div class="of_h consolMarginTop">
+						<div class="float-left" style="width:18%"><h4>이미지</h4></div>
+						<div class="float-right" style="width:80%">
+							<div class="float-left" style="width:23%"><a href="#self" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a></div>
+							<ul class="float-right attachList" style="width:75%; padding:5px 15px">
+								<li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
+							</ul>
+						</div>
+					</div>
+					
+					<div class="of_h consolMarginTop">
+						<div class="float-left" style="width:18%"><h4>APP_ID</h4></div>
+						<div class="float-right" style="width:80%">
+							<select name="userConsole_sub040201_2" class="selectStyle2" style="width:30%" title="APP_ID 선택란">
+								<option value="">선택하세요</option>
+							</select>
+							<input type="text" class="inputStyle vertical-top float-right" style="width:68%" title="APP_ID 입력란" placeholder="APP ID를 입력하세요.">
+						</div>
+					</div>
+
+					<div class="mt20 float-right">
+						<a href="#self" class="btnStyle2 backRed float-left mr10" title="등록">등록</a>
+						<a href="#self" class="btnStyle2 float-left" title="취소">취소</a>
+					</div>
+				</div>
+			</div>			
+
+			
+			<!-- //본문 -->
+
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+
+	
+
+<? 
+	include("./sub/userConsole_footer.html");
+?> 

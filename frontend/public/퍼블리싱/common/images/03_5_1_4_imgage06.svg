@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300" viewBox="0 0 300 300">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="100" height="19" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="그룹_3954" data-name="그룹 3954" transform="translate(-1125 -854)">
+    <g id="box" transform="translate(1125 854)" fill="#fff" stroke="#d5d5d5" stroke-width="1">
+      <rect width="300" height="300" stroke="none"/>
+      <rect x="0.5" y="0.5" width="299" height="299" fill="none"/>
+    </g>
+    <g id="그룹_3943" data-name="그룹 3943">
+      <g id="사각형_941" data-name="사각형 941" transform="translate(1205 914)" fill="#fff" stroke="#d4d4d4" stroke-width="1">
+        <rect width="140" height="180" rx="4" stroke="none"/>
+        <rect x="0.5" y="0.5" width="139" height="179" rx="3.5" fill="none"/>
+      </g>
+      <rect id="사각형_504" data-name="사각형 504" width="100" height="14" transform="translate(1225 1047)" fill="#ddd"/>
+      <g id="반복_그리드_1" data-name="반복 그리드 1" transform="translate(1225 1067)" clip-path="url(#clip-path)">
+        <g transform="translate(-361 -523)">
+          <rect id="사각형_505" data-name="사각형 505" width="100" height="6" transform="translate(361 523)" fill="#eee"/>
+        </g>
+        <g transform="translate(-361 -513)">
+          <rect id="사각형_505-2" data-name="사각형 505" width="100" height="6" transform="translate(361 523)" fill="#eee"/>
+        </g>
+      </g>
+      <g id="사각형_942" data-name="사각형 942" transform="translate(1205 914)" fill="#f1f1f1" stroke="#d4d4d4" stroke-width="1">
+        <path d="M4,0H136a4,4,0,0,1,4,4V120a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V4A4,4,0,0,1,4,0Z" stroke="none"/>
+        <path d="M4,.5H136A3.5,3.5,0,0,1,139.5,4V119a.5.5,0,0,1-.5.5H1a.5.5,0,0,1-.5-.5V4A3.5,3.5,0,0,1,4,.5Z" fill="none"/>
+      </g>
+      <text id="image-polaroid" transform="translate(1275 984)" fill="#d5d5d5" font-size="25" font-family="FontAwesome5Pro-Solid, 'Font Awesome \35  Pro'"><tspan x="-10.938" y="0">image-polaroid</tspan></text>
+    </g>
+  </g>
+</svg>

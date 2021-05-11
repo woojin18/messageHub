@@ -1,0 +1,83 @@
+<? 
+	include("./sub/user_header.html");
+?> 
+
+	<!-- mainVisualWrap -->
+	<article id="mainVisualWrap">
+		<section>
+			<ul class="mainBxslider">
+				<li>
+					<div class="mainVisualTitle">
+						<div>
+							<h2 class="wow animated fadeInLeft" data-wow-duration="1s">유플러스</h2>
+						</div>
+					</div>
+					<img src="common/images/mainVisual1.jpg" alt="">
+				</li>
+				<li>
+					<div class="mainVisualTitle">
+						<div>
+							<h2 class="wow animated fadeInUp" data-wow-duration="1s">유플러스</h2>
+						</div>
+					</div>
+					<img src="common/images/mainVisual1.jpg" alt="">
+				</li>
+			</ul>					
+		</section>
+	</article>
+	<!-- //mainVisualWrap -->
+<ul id="bx-pager">
+						<li>
+							<a href="#" data-slide-index="0">
+								<div class="wrap" style="padding:36px 0">1111</div>
+							</a>
+						</li>
+						<li>
+							<a href="#" data-slide-index="1">
+								<div class="wrap" style="padding:36px 0">2222</div>
+							</a>
+						</li>
+					</ul>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+
+	<div class="wow animated fadeInUp">111</div>
+
+<? 
+	include("./sub/user_footer.html");
+?>
+
+<script>
+	$(document).ready(function() {
+		//메인배너
+		var slider = $('.mainBxslider').bxSlider({
+			mode: 'fade',
+			pagerCustom: '#bx-pager',
+			adaptiveHeight: true,
+			controls: true,
+			touchEnabled : (navigator.maxTouchPoints > 0),
+			auto: 600
+		});
+	});
+</script>

@@ -1,0 +1,136 @@
+<? 
+	include("./sub/backOffice_header.html");
+	include("./sub/backOffice_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader">
+				<h2>서비스관리</h2>
+				<a href="#self" class="btnStyle1 absolute top0 right0" onClick="window.location.reload()">새로고침 <i class="fal fa-redo"></i></a>
+			</div>
+
+		
+			<!-- 본문 -->
+			<a href="#self" class="btnStyle3 black font13 minWidth120" data-toggle="modal" data-target="#relay_company" title="중계사 채널관리">중계사 채널관리</a>
+			<!-- //본문 -->
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+	
+	<!-- relay_company Modal -->
+	<div class="modal fade modalStyle" id="relay_company" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div>
+						<h5 class="lc-1">중계사 채널관리 상세</h5>
+						<hr>
+						<div class="mt20 of_h">
+							<h4 class="font-normal inline-block" style="width:23%">서비스 ID</h4>
+							<input type="text" class="inputStyle" style="width:76%" placeholder="자동생성됩니다">
+						</div>
+						<div class="mt10 of_h">
+							<h4 class="font-normal inline-block" style="width:23%">서비스 명 *</h4>
+							<input type="text" class="inputStyle" style="width:76%" placeholder="서비스명을 입력해 주십시오">
+						</div>
+						<div class="mt10 of_h">
+							<h4 class="font-normal inline-block" style="width:23%">중계사 *</h4>
+							<select class="selectStyle2" style="width:76%" title="중계사 선택란">
+								<option value="">중계사 선택란1</option>
+								<option value="">중계사 선택란2</option>
+							</select>
+						</div>
+						<div class="mt10 of_h">
+							<h4 class="font-normal inline-block" style="width:23%">중계사 채널타입 *</h4>
+							<select class="selectStyle2" style="width:76%" title="중계사 채널타입 선택란">
+								<option value="">중계사 채널타입 선택란1</option>
+								<option value="">중계사 채널타입 선택란2</option>
+							</select>
+						</div>
+						<div class="mt10 of_h">
+							<h4 class="font-normal inline-block" style="width:23%">채널 *</h4>
+							<div style="width:76%" class="inline-block">
+								<select class="selectStyle2" title="채널 선택란" style="width:100%">
+									<option value="">채널 선택란1</option>
+									<option value="">채널 선택란2</option>
+								</select>
+								<div class="mt5">
+									<p class="color3 font-size12 inline-block" style="width:27%">ALIMTALK <a href="#self"><i class="fal fa-minus-square color3 ml10"></i></a></p>
+									<p class="color3 font-size12 inline-block" style="width:27%">FRIENDTALK <a href="#self"><i class="fal fa-minus-square color3 ml10"></i></a></p>
+								</div>
+							</div>
+						</div>
+						<div class="mt10 of_h">
+							<h4 class="font-normal inline-block" style="width:23%">라인타입 *</h4>
+							<select class="selectStyle2" style="width:76%" title="라인타입 선택란">
+								<option value="">라인타입 선택란1</option>
+								<option value="">라인타입 선택란2</option>
+							</select>
+						</div>
+						<div class="mt10 of_h">
+							<h4 class="font-normal inline-block" style="width:23%">초당발송건수 *</h4>
+							<div style="width:76%" class="inline-block">
+								<span class="mr10">초</span><input type="text" class="inputStyle vertical-middle" style="width:30%"><span class="ml10">건</span>
+							</div>
+						</div>
+						
+						<div class="mt10 of_h">
+							<h4 class="font-normal inline-block" style="width:23%">접속정보 *</h4> 
+							<textarea class="textareaStyle height120" style="width:76%" placeholder="변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오. 예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다."></textarea>
+						</div>
+
+						<div class="mt10 of_h">
+							<h4 class="font-normal inline-block" style="width:23%">MO여부 *</h4>
+							<div style="width:76%" class="inline-block">
+								<input type="radio" name="mo" value="Y1" id="Y1" checked=""> <label for="Y1" class="payment mr30 font-size14">예</label>
+								<input type="radio" name="mo" value="N1" id="N1"> <label for="N1" class="payment font-size14">아니오</label>	
+							</div>
+						</div>						
+						<div class="mt10 of_h">
+							<h4 class="font-normal inline-block" style="width:23%">사용여부</h4>
+							<div style="width:76%" class="inline-block">
+								<input type="radio" name="use" value="Y2" id="Y2" checked=""> <label for="Y2" class="payment mr30 font-size14">예</label>
+								<input type="radio" name="use" value="N2" id="N2"> <label for="N2" class="payment font-size14">아니오</label>	
+							</div>
+						</div>						
+						<div class="mt10 of_h">
+							<h4 class="font-normal inline-block" style="width:23%">메모</h4>
+							<input type="text" class="inputStyle" style="width:76%">
+						</div>
+					</div>
+					<div class="text-center mt60">
+						<a href="#self" class="btnStyle3 black" data-toggle="modal" data-target="#Register" title="등록">등록</a>
+						<a href="#self" class="btnStyle3 white" data-dismiss="modal" title="취소">취소</a>						
+					</div>
+					
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Register Modal -->
+	<div class="modal fade modalStyle" id="Register" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="float-left">
+						<p class="mt5 lc-1">등록이 완료되었습니다.</p>
+					</div>
+					<div class="float-right">
+						<a href="#self" class="btnStyle4 red" title="확인">확인</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+<? 
+	include("./sub/backOffice_footer.html");
+?> 

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="645" height="175" viewBox="0 0 645 175">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" y1="1" x2="0.5" y2="-3.231" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#fd7fa6"/>
+    </linearGradient>
+  </defs>
+  <g id="Content_Widgets_Graph_overview" data-name="Content/Widgets/Graph overview" transform="translate(0 -0.5)">
+    <g id="Fills_White_RoundFlat" data-name="Fills / White / RoundFlat">
+      <rect id="Fills_White_RoundFlat_background" data-name="Fills / White / RoundFlat background" width="645" height="175" transform="translate(0 0.5)" fill="rgba(0,0,0,0)"/>
+      <rect id="Rectangle_Copy" data-name="Rectangle Copy" width="645" height="175" rx="4" transform="translate(0 0.5)" fill="#fff"/>
+    </g>
+    <text id="NewTasks" transform="translate(35 125.5)" fill="#98a9bc" font-size="12" font-family="Rubik-Regular, Rubik"><tspan x="0" y="0">New tasks</tspan></text>
+    <text id="_345" data-name="345" transform="translate(35 64.5)" fill="#252631" font-size="24" font-family="Rubik-Regular, Rubik"><tspan x="0" y="0">345</tspan></text>
+    <g id="Graph" transform="translate(154.11 38.344)">
+      <path id="GraphCopy" d="M0,66.533S30.952,93.462,52.55,88.239s37.536-36.89,58.647-36.89,39.8,7.789,66.125-9.506S208,.778,239.691.778,312.125,51.821,354.645,12.8,486.428,44.933,486.428,44.933v58.76H0Z" transform="translate(0 -0.678)" fill="url(#linear-gradient)"/>
+      <path id="Graph-2" data-name="Graph" d="M.475,68.278s28.546,24.382,50.5,22.964S87.462,52.88,108.573,52.88s42.217,9.376,68.546-9.721S208,.778,239.691.778s72.957,54.8,115.476,11.707S486.578,46.36,486.578,46.36" transform="translate(0 -0.778)" fill="none" stroke="#d54978" stroke-miterlimit="10" stroke-width="1.3"/>
+    </g>
+  </g>
+</svg>

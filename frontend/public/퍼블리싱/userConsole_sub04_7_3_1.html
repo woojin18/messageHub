@@ -1,0 +1,186 @@
+<? 
+	include("./sub/userConsole_header.html");
+	include("./sub/userConsole_lnb.html");
+?> 
+
+	<!-- content -->
+	<div id="content">
+		<article>
+			<div class="contentHeader">
+				<h2>스마트발송 템플릿 등록</h2>
+				<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+			</div>
+
+			<!-- 본문 -->
+			<div class="contentBody">
+				<ul class="tab_s3">
+					<li><a href="#self" title="Push 페이지로 이동">Push</a></li>
+					<li><a href="#self" title="RCS 페이지로 이동">RCS</a></li>
+					<li class="active"><a href="#self" title="카카오톡 페이지로 이동">카카오톡</a></li>
+					<li><a href="#self" title="SMS/MMS 페이지로 이동">SMS/MMS</a></li>
+				</ul>
+			</div>
+
+			<div class="of_h mt20">
+				<div class="float-left" style="width:30%">
+					<!-- phoneWrap -->
+					<div class="phoneWrap">
+						<img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
+						<div class="phoneTextWrap">
+							<div class="phoneText1 scroll-y">
+								<p>내용이 들어갑니다.</p>
+							</div>
+						</div>
+					</div>
+					<!-- //phoneWrap -->
+				</div>
+				
+				<div class="float-left consoleCon" style="width:60%">
+					<div class="of_h">
+						<a href="#self" class="btnStyle2 backBlack float-right" data-toggle="modal" data-target="#Tamplet" title="알림톡 템플릿 선택">알림톡 템플릿 선택</a>
+					</div>
+					<div class="of_h consolMarginTop">
+						<div class="float-left" style="width:18%"><h4>플러스친구ID *</h4></div>
+						<div class="float-right" style="width:80%">
+							<select name="userConsole_sub020204_2" class="selectStyle2" style="width:100%">
+								<option value="">선택하세요</option>
+							</select>
+						</div>
+					</div>					
+					<div class="of_h">
+						<div class="float-left" style="width:18%"><h4>템플릿 명 *</h4></div>
+						<div class="float-right" style="width:80%">
+							<input type="text" class="inputStyle" placeholder="">
+						</div>
+					</div>	
+					<div class="of_h">
+						<div class="float-left" style="width:18%"><h4>템플릿강조제목</h4></div>
+						<div class="float-right" style="width:80%">
+							<input type="text" class="inputStyle" placeholder="">
+						</div>
+					</div>	
+					<div class="of_h">
+						<div class="float-left" style="width:18%"><h4>템플릿강조부제목</h4></div>
+						<div class="float-right" style="width:80%">
+							<input type="text" class="inputStyle" placeholder="">
+						</div>
+					</div>	
+					<div class="of_h">
+						<div class="float-left" style="width:18%"><h4>내용*</h4></div>
+						<div class="float-right" style="width:80%">
+							<textarea class="textareaStyle height190" placeholder="변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.&#13;예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다."></textarea>
+						</div>					
+					</div>	
+					
+					<div class="mt20 float-right">
+						<a href="#self" class="btnStyle2 backRed float-left mr10" title="등록">등록</a>
+						<a href="#self" class="btnStyle2 float-left" title="취소">취소</a>
+					</div>
+				</div>
+			</div>			
+
+			
+			<!-- //본문 -->
+
+
+			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		</article>
+	</div>
+	<!-- //content -->
+	
+	<!-- Tamplet Modal -->
+	<div class="modal fade modalStyle" id="Tamplet" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" style="width:1120px">
+			<div class="modal-content">
+				<div class="modal-body consoleCon">
+					<div>
+						<h2>템플릿 선택</h2>
+						<hr>
+						<div class="of_h">
+							<div style="width:11%" class="float-left">
+								<h4>플러스친구ID *</h4>
+							</div>
+							<div style="width:42%">
+								<select name="userConsole_sub0203_3" class="selectStyle2" style="width:53%">
+									<option value="">선택하세요</option>
+								</select>
+							</div>
+						</div>
+						<div class="row row-no-margin">
+							<div class="col-xs-4 border-line2 pd20" style="height:569px">
+								<h4 class="color000">템플릿 검색</h4>
+								<div>
+									<input type="text" class="inputStyle" style="width:70%">
+									<a href="#self" class="btnStyle1 backLightGray float-right" style="width:28%" title="메시지 내용 조회">조회</a>
+								</div>
+								<div>
+									<h4 class="inline-block">템플릿 검색</h4>
+									<h4 class="color000 inline-block float-right">총 15건</h4>
+								</div>
+								<div class="border-line2" style="height:354px; overflow-y:scroll;">
+									<ul class="color4">
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>
+										<li class="bb-ddd pd5">푸시 템플릿1(템플릿 제목)</li>j
+									</ul>									
+								</div>
+							</div>
+							
+							<div class="col-xs-4 of_h">
+								<div class="of_h">
+									<h5 style="width:41%" class="float-left ml30 color000">플러스친구ID</h5>
+									<h5 style="width:40%" class="float-right ml30 color4 word-break-all">비트큐브</h5>
+								</div>
+								<div class="of_h">
+									<h5 style="width:41%" class="float-left ml30 color000">메시지구분</h5>
+									<h5 style="width:40%" class="float-right ml30 color4 word-break-all">광고성</h5>
+								</div>
+								<div class="of_h">
+									<h5 style="width:41%" class="float-left ml30 color000">템플릿명</h5>
+									<h5 style="width:40%" class="float-right ml30 color4 word-break-all">친구톡 템플릿1</h5>
+								</div>
+								<div class="of_h">
+									<h5 style="width:41%" class="float-left ml30 color000">내용</h5>
+									<h5 style="width:40%" class="float-right ml30 color4 word-break-all">템플릿 내용</h5>
+								</div>
+								<div class="of_h">
+									<h5 style="width:41%" class="float-left ml30 color000">이미지</h5>
+									<h5 style="width:40%" class="float-right ml30 color4 word-break-all">test.jpg</h5>
+								</div>				
+							</div>
+							<div class="col-xs-4">
+								<img src="common/images/phoneMockup2.svg" alt="샘플이미지">
+							</div>
+						</div>						
+					</div>						
+					<div class="text-center mt20">
+						<a href="#self" class="btnStyle2 backBlack" data-toggle="modal" title="템플릿 선택">템플릿 선택</a>
+						<a href="#self" class="btnStyle2 backWhite" data-dismiss="modal" title="취소">취소</a>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+
+<? 
+	include("./sub/userConsole_footer.html");
+?> 

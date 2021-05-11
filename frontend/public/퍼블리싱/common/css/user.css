@@ -1,0 +1,85 @@
+@charset "utf-8";
+
+.bx-wrapper img {max-width:inherit}
+
+/* head_type_user */
+header.head_type_user {border-bottom:1px solid #E6E6E6}
+.wrap_head {width:100%; min-width:1400px; padding:0 50px; height:80px; margin:0 auto; text-align:center}
+.wrap_head .tit_logo {float:left}
+.wrap_head .tit_logo .userLogo {display:block; margin-top:15px}
+#userGnb {display:inline-block; vertical-align:top}
+#userGnb .list_gnb {margin-top:20px}
+#userGnb .list_gnb > li {float:left; margin:0 15px}
+#userGnb .list_gnb > li > a {display:block; position:relative; padding:0 25px 0 25px; font-size:18px; line-height:40px; color:#1e1e1e}
+#userGnb .list_gnb > li.console > a, #userGnb .list_gnb > li.console > a:hover, #userGnb .list_gnb > li.console > a:focus {background:#000; color:#fff; border-radius:20px}
+#userGnb .list_gnb > li.console > a:hover {background:#CB1871}
+.list_login {float:right; margin-top:25px}
+.list_login li {float:left; margin-left:50px}
+.list_login li > a {font-size:16px; color:#727272}
+.list_login li.active > a, .list_login li > a:hover, .list_login li > a:focus {color:#000; font-weight:500}
+
+/* userSection */
+.userSection {margin:0 auto}
+.userSection.width540 {width:540px}
+
+/* userLogin-form */
+.userLogin-form {width:460px; margin:0 auto}
+.userLogin-form > h2 {font-size:28px; margin-bottom:70px}
+.userLogin-form h3 {font-size:20px; color:#707070; font-weight:400}
+.userLogin-form .form-control {border:1px solid #E8ECEF; border-radius:5px; font-size:15px; height:60px; line-height:60px; box-shadow:none}
+.userLogin-form .checkbox {margin:0}
+.userLogin-form .checkbox label {font-size:15px}
+.userLogin-form .forgot {margin:-3px 0 0 0}
+.userLogin-form .forgot a {font-size:15px}
+.userLogin-form .forgot a i {color:#D5D5D5; vertical-align:baseline}
+.userLogin-form .forgot span {vertical-align:sub; padding:0 10px}
+.modalStyle .modal-body h4 {margin-top:13px}
+.loginThum {background:#B2B2B2; border-radius:28px; width:58px; height:58px; font-size:26px; color:#fff; line-height:58px}
+
+/* join */
+.provisionMore {color:#222}
+.provisionMore i {color:#B2B2B2}
+.provisionMore:hover, .provisionMore:hover i {color:#000}
+.provisionWrap {max-height:620px; overflow-y:scroll}
+.provisionWrap h5 {font-size:14px !important; font-weight:600 !important; color:#000 !important}
+.provisionWrap h6 {font-size:12px !important; font-weight:500 !important; color:#000 !important}
+.provisionWrap p {font-size:12px !important; font-weight:300 !important; color:#000 !important}
+.provisionWrap .numList {font-size:12px !important; font-weight:300 !important; color:#727272 !important; margin-left:13px}
+.provisionWrap .numList > li {list-style:decimal}
+.provisionWrap .discList {font-size:12px !important; font-weight:300 !important; color:#727272 !important; margin-left:33px}
+.provisionWrap .discList > li {list-style:disc}
+.provisionWrap .numList > li > .discList {margin-left:20px}
+.joinBox {border:1px solid #D5D5D5; border-radius:4px; padding:20px}
+
+/* foot_type_user */
+.foot_type_user {border-top:1px solid #E6E6E6; padding:30px 50px; margin-top:150px}
+.foot_logo {float:left; margin-right:125px}
+.foot_info_wrap {float:left; margin-top:2px}
+.foot_info {overflow:hidden}
+.foot_info > li {float:left; margin-right:30px}
+.foot_info > li > a {font-size:14px; color:#000}
+.foot_info > li > a:hover, .foot_info > li > a:focus {color:#E93978}
+.foot_copy {color:#858585; margin-top:25px; font-size:13px}
+.foot_copy > p {margin-bottom:5px}
+.foot_copy > p span {color:#D0D0D0; padding:0 15px}
+
+/* mainVisualWrap */
+#mainVisualWrap {overflow:hidden; height:512px}
+#mainVisualWrap section {}
+.mainBxslider > li > .mainVisualTitle {position:absolute; top:160px; left:0px; width:100%}
+.mainBxslider > li > .mainVisualTitle > div {max-width:1180px; margin:0 auto; position:relative}
+/*
+.mainBxslider > li {height:512px}
+.mainBxslider > li:nth-child(1) {background:url('../images/mainVisual1.jpg') no-repeat}
+*/
+
+
+/* subVisualWrap01 */
+#subVisualWrap01 section {background:url(../images/subVisual01.png); height:370px; padding-top:110px}
+#subVisualWrap01 section div > h4 {margin:0; color:#fff; font-size:28px; font-weight:500}
+#subVisualWrap01 section div > p {margin-top:22px; color:#fff; font-size:18px}
+#subVisualWrap01 section div > div {margin-top:44px}
+#subVisualWrap01 section div > div > a {color:#A142D3; font-size:17px; background-color:#fff; border-radius:5px; padding:15px 40px; font-weight:500}
+
+/* con01 */
+.con01 section {max-width:1088px; margin:0 auto}
