@@ -6,7 +6,7 @@
 
           <div class="of_h">
             <div class="float-left" style="width:32%"><h5>대체발송 발신번호</h5></div>
-            <select v-model="fbInfo.callback" name="userConsole02_2" class="selectStyle2 float-right" style="width:66%">
+            <select v-model="fbInfo.callback" class="selectStyle2 float-right" style="width:66%">
               <option v-for="info in callbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
             </select>
           </div>
