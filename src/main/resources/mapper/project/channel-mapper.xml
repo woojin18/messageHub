@@ -357,5 +357,66 @@
 		,		MESSAGEBASE_INFO
 		FROM	cm.CM_RCS_MSGBASE CRM 
 		WHERE	CRM.BRAND_ID ='common'
+		ORDER BY REG_DT DESC
 	</select>
+	
+	<select id="selectMoCallbackListCnt" resultType="int">
+	/* channel.selectMoCallbackListCnt */
+		SELECT	COUNT(1) AS CNT
+		FROM	cm.CM_MO_CALLBACK A
+		WHERE	(PROJECT_ID = #{projectId} OR PROJECT_ID = 'ALL' )
+		AND		A.CORP_ID = #{corpId}
+	</select>
+	
+	<select id="selectMoCallbackList" resultType="camel">
+	/* channel.selectMoCallbackList */
+		SELECT	A.MO_NUMBER
+		,		A.API_KEY
+		,		A.MO_TYPE
+		,		A.PROJECT_ID
+		,		CASE
+					WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
+					ELSE 'N'
+				END AS PROJECT_ID_YN
+		,		A.USE_YN
+		,		date_format(A.REG_DT, '%Y-%m-%d') AS REG_DT
+		,		date_format(A.UPD_DT, '%Y-%m-%d') AS UPD_DT
+		,		A.WEBHOOK_URL
+		FROM	cm.CM_MO_CALLBACK A
+		WHERE	(PROJECT_ID = #{projectId} OR PROJECT_ID = 'ALL' )
+		AND		A.CORP_ID = #{corpId}
+	</select>
+	
+	<insert id="insertMoCallback">
+		/* channel.insertMoCallback */
+		INSERT	cm.CM_MO_CALLBACK
+		(
+			MO_NUMBER
+		,	API_KEY
+		,	CORP_ID
+		,	MO_TYPE
+		,	PROJECT_ID
+		,	USE_YN
+		,	REG_DT
+		)
+		VALUES
+		(
+			#{moNumber}
+		,	#{apiKey}
+		,	#{corpId}
+		,	#{moType}
+		,	#{projectId}
+		,	'Y'
+		,	NOW()
+		)
+	</insert>
+	
+	<update id="updateMoCallback">
+	/* channel.updateMoCallback */
+		UPDATE	cm.CM_MO_CALLBACK
+		SET		MO_TYPE		= #{moType}
+		,		PROJECT_ID	= #{projectId}
+		WHERE	MO_NUMBER	= #{moNumber}
+		AND		API_KEY		= #{apiKey}
+	</update>
 </mapper>

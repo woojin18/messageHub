@@ -329,4 +329,39 @@ public class ChannelController extends BaseController {
 		return channelService.selectRcsBrandMsgBaseList(params);
 	}
 	
+	/**
+	 * MO 수신번호 현황 리스트 조회
+	 * @param params
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("/selectMoCallbackList")
+	public RestResult<?> selectMoCallbackList(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		return channelService.selectMoCallbackList(params);
+	}
+	
+	/**
+	 * MO 수신번호 저장
+	 * @param params
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@PostMapping("/saveMoCallback")
+	public RestResult<?> saveMoCallback(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			channelService.saveMoCallback(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
+	}
 }

@@ -588,9 +588,6 @@ public class ChannelService {
 			params.put("apnsCetificationByteArray", null);
 		}
 		
-		
-		System.out.println("--------------------------------------------- p;ara " + params);
-		
 		if( "C".equals(sts) ) {
 			if( params.get("apnsCetificationByteArray") == null  ) {
 				throw new Exception("저장시에는 P8인증서가 필수입니다.");
@@ -658,5 +655,41 @@ public class ChannelService {
 		rtn.setData(rtnList);
 
 		return rtn;
+	}
+	
+	// MO 수신번호 조회
+	@SuppressWarnings("unchecked")
+	public RestResult<?> selectMoCallbackList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
+		
+		if (pageInfo != null && !pageInfo.isEmpty()) {
+			int rowNum = generalDao.selectGernalCount(DB.QRY_SELECT_MO_CALLBACK_LIST_CNT, params);
+			pageInfo.put("rowNum", rowNum);
+			
+			rtn.setPageInfo(pageInfo);
+		}
+		
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_MO_CALLBACK_LIST, params);
+		
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+	
+	// MO 수신번호 저정
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void saveMoCallback(Map<String, Object> params) throws Exception {
+		String sts = CommonUtils.getString(params.get("sts"));
+		
+		if( "C".equals(sts) ) {
+			// 임시 -- 추후에 프로젝트에 등록된 APIKEY에 웹발송여부 Y인거 TOP1 인거 골라와야함
+			String apiKey = CommonUtils.getCommonId("API", 6);
+			params.put("apiKey", apiKey);
+			generalDao.insertGernal(DB.QRY_INSERT_MO_CALLBACK, params);
+		} else if( "U".equals(sts) ) {
+			generalDao.updateGernal(DB.QRY_UPDATE_MO_CALLBACK, params);
+		}
 	}
 }
