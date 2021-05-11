@@ -625,4 +625,38 @@ public class ChannelService {
 			generalDao.deleteGernal(DB.QRY_DELETE_PUSH_MANAGE, params);
 		}
 	}
+	
+	// RCS 브랜드 조회
+	@SuppressWarnings("unchecked")
+	public RestResult<?> selectRcsBrandMsgBaseList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_BRAND_MSGBASE_LIST, params);
+				
+		for (int i = 0; i < rtnList.size(); i++) {
+			// 파라미터 정리
+			Map<String, Object> rtnMap = (Map<String, Object>) rtnList.get(i);
+			
+			JSONParser jParser = new JSONParser();
+			JSONObject brandInfo = (JSONObject) jParser.parse(CommonUtils.getString(rtnMap.get("messagebaseInfo")));
+			
+			Map<String, Object> guideInfo = (Map<String, Object>) brandInfo.get("guideInfo");
+			rtnMap.put("imageWidth",			guideInfo.get("imageWidth"));			// 이미지(px)
+			rtnMap.put("imageHeight",			guideInfo.get("imageHeight"));			// 이미지(px)
+			
+			Map<String, Object> detailInfo = (Map<String, Object>) guideInfo.get("detailInfo");
+			rtnMap.put("productCardType",		detailInfo.get("productCardType"));		// 상품코드
+			
+			Map<String, Object> policyInfo = (Map<String, Object>) brandInfo.get("policyInfo");
+			rtnMap.put("cardCount",				policyInfo.get("cardCount"));			// 카드장수
+			rtnMap.put("maxTitleSize",			policyInfo.get("maxTitleSize"));		// 제목글자수
+			rtnMap.put("maxDescriptionSize",	policyInfo.get("maxDescriptionSize"));	// 본문글자수
+			rtnMap.put("maxButtonCount",		policyInfo.get("maxButtonCount"));		// 버튼개수
+			rtnMap.put("maxMediaSize",			policyInfo.get("maxMediaSize"));		// 이미지 용량
+		}
+		
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
 }

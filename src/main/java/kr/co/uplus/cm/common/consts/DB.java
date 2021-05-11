@@ -58,6 +58,7 @@ public class DB {
 	// RCS 채널 브랜드 정보
     public final static String QRY_SELECT_RCS_BRANDLIST_CNT = "channel.selectRcsBrandListCnt";
 	public final static String QRY_SELECT_RCS_BRANDLIST = "channel.selectRcsBrandList";
+	public final static String QRY_SELECT_RCS_BRAND_MSGBASE_LIST = "channel.selectRcsBrandMsgBaseList";
 	// RCS 등록 템플릿 조회
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";
 	// RCS 채널 브랜드

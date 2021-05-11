@@ -348,4 +348,14 @@
 		AND		PROJECT_ID	= #{projectId}
 		AND		CORP_ID		= #{corpId}
 	</delete>
+	
+	<select id="selectRcsBrandMsgBaseList" resultType="camel">
+	/* channel.selectRcsBrandMsgBaseList */
+		SELECT	MESSAGEBASEFORM_ID
+		,		TMPLT_NAME
+		,		PRODUCT_CODE
+		,		MESSAGEBASE_INFO
+		FROM	cm.CM_RCS_MSGBASE CRM 
+		WHERE	CRM.BRAND_ID ='common'
+	</select>
 </mapper>

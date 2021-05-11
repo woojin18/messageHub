@@ -1,54 +1,55 @@
 <template>
-  <div>
-      <div class="Dashboard01 border-line">
-				<p>전체: <span class="color1"><strong>20</strong></span>건</p>
-				<div class="mt20">	
-					<!-- 본문 -->	
-					<div class="row row-no-margin of_h">
-						<!-- 메세지 포멧 -->
-						<div v-for="(item, i) in msgFormData" :key="i" class="col-xs-6 bgColor_f1" style="width:48%; padding:30px; margin:12px;">
-							<div class="row">
-								<div class="col-xs-6">
-									<img :src="item.img" class="img-responsive inline-block">
-								</div>	
-								<div class="col-xs-6">
-									<ul class="inline-block vertical-top ml20">
-										<li class="mt8">포맷 ID</li>
-										<li class="mt8">상품명</li>
-										<li class="mt8">상품코드</li>
-										<li class="mt8">메시지타입</li>
-										<li class="mt8">카드장수</li>
-										<li class="mt8">제목글자수</li>
-										<li class="mt8">본문글자수</li>
-										<li class="mt8">버튼개수</li>
-										<li class="mt8">이미지(px)</li>
-										<li class="mt8">이미지용량</li>
-									</ul>
-									<ul class="inline-block vertical-top ml20">
-										<li class="mt8">{{item.formatId}}</li>
-										<li class="mt8">{{item.productName}}</li>
-										<li class="mt8">SMS</li>
-										<li class="mt8">Standalone</li>
-										<li class="mt8">1</li>
-										<li class="mt8">0</li>
-										<li class="mt8">100</li>
-										<li class="mt8">1</li>
-									</ul>
-								</div>
-							</div>						
-						</div>
-						<!-- 메세지 포멧 -->
+	<div>
+		<div class="Dashboard01 border-line">
+			<div class="mt20">	
+			<!-- 본문 -->	
+				<div class="row row-no-margin of_h">
+					<!-- 메세지 포멧 -->
+					<div v-for="(item, i) in msgFormData" :key="i" class="col-xs-6 bgColor_f1" style="width:47%; padding:20px; margin:12px;">
+						<div class="row">
+							<div class="col-xs-6">
+								<img v-if="item.productCardType == 'sms'" src="../../../../public/se2/images/RCSTemplate3.svg" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.productCardType == 'LMS'" src="../../../../public/se2/images/RCSTemplate4.svg" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.productCardType == 'Carousel Small'" src="../../../../public/se2/images/pushTemplate10.svg" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.productCardType == 'Carousel Medium'" src="../../../../public/se2/images/pushTemplate11.svg" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.productCardType == 'Standalone Horizontal Left'" src="../../../../public/se2/images/pushTemplate8.svg" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.productCardType == 'Standalone Horizontal Right'" src="../../../../public/se2/images/pushTemplate9.svg" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.productCardType == 'Standalone Media Top Medium'" src="../../../../public/se2/images/pushTemplate6.svg" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.productCardType == 'Standalone Media Top Tall'" src="../../../../public/se2/images/pushTemplate7.svg" class="img-responsive inline-block" style="width: 98%;">
+							</div>	
+							<div class="col-xs-6">
+								<ul class="inline-block vertical-top ml20">
+									<li class="mt8" style="height: 25px;">포맷 ID</li>
+									<li class="mt8" style="height: 25px;">상품명</li>
+									<li class="mt8" style="height: 25px;">상품코드</li>
+									<li class="mt8" style="height: 25px;">메시지타입</li>
+									<li class="mt8" style="height: 25px;">카드장수</li>
+									<li class="mt8" style="height: 25px;">제목글자수</li>
+									<li class="mt8" style="height: 25px;">본문글자수</li>
+									<li class="mt8" style="height: 25px;">버튼개수</li>
+									<li class="mt8" style="height: 25px;">이미지(px)</li>
+									<li class="mt8" style="height: 25px;">이미지용량</li>
+								</ul>
+								<ul class="inline-block vertical-top ml20" style="width : 55%; ">
+									<li class="mt8" style="height: 25px;">{{item.messagebaseformId}}</li>
+									<li class="mt8" style="height: 25px;">{{item.tmpltName}}</li>
+									<li class="mt8" style="height: 25px;">{{item.productCode}}</li>
+									<li class="mt8" style="height: 25px;">{{item.productCardType}}</li>
+									<li class="mt8" style="height: 25px;">{{item.cardCount}}</li>
+									<li class="mt8" style="height: 25px;">{{item.maxTitleSize}}</li>
+									<li class="mt8" style="height: 25px;">{{item.maxDescriptionSize}}</li>
+									<li class="mt8" style="height: 25px;">{{item.maxButtonCount}}</li>
+									<li class="mt8" style="height: 25px;">{{item.imageWidth}}*{{item.imageHeight}}</li>
+									<li class="mt8" style="height: 25px;">{{item.maxMediaSize}}</li>
+								</ul>
+							</div>
+						</div>						
 					</div>
-					<!-- 본문 -->	
+					<!-- 메세지 포멧 -->
 				</div>
-
-				<!-- <div class="text-center mt50"><a href="#self" class="btnStyle2 width180">더보기</a></div> -->
-
-
 			</div>
-
-			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
-		</article>
+			<!-- 본문 -->	
+		</div>
 	</div>
 </template>
 
@@ -85,31 +86,15 @@ export default {
     this.fnSearch();
   },
   methods: {
-    fnMoveMainTab(moveTabName){
-      this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
-    },
-    fnMoveSubTab(moveTabName){
-      this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
-    },
-    fnMoveRcsTab(moveTabName){
-      var pageName = 'chan-rcs';
-      if( moveTabName === 'brand' ){
-        pageName = 'chan-rcs';
-      } else if( moveTabName === 'message' ){
-        pageName = 'chan-rcs-message';
-      }
-      this.$router.push( {name : pageName, params : {"projectId" : this.projectId, "projectName" : this.projectName }} );
-    },
     // 검색
     fnSearch() {
-      var vm = this;
       var params = {
-        "projectId"     : this.projectId,
+        "brandId"     : 'common'
       }
        
-      /* Api.selectRcsBrandList(params).then(response =>{
-        vm.items = response.data.data;
-      }); */
+      Api.selectRcsBrandMsgBaseList(params).then(response =>{
+        this.msgFormData = response.data.data;
+      });
     }
   }
 }

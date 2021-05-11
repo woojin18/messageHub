@@ -32,6 +32,10 @@ const deletePushManage = (params) => {
     return httpClient.post('/projectApi/channel/deletePushManage', params, { headers: {"show-layer": "Yes"} });
 };
 
+const selectRcsBrandMsgBaseList = (params) => {
+    return httpClient.post('/projectApi/channel/selectRcsBrandMsgBaseList', params, { headers: {"show-layer": "Yes"} });
+};
+
 
 export default {
     selectRcsBrandList,
@@ -41,5 +45,6 @@ export default {
     saveRcsBrandReqForApi,
     fileUploadToApi,
     selectPushManageList,
-    deletePushManage
+    deletePushManage,
+    selectRcsBrandMsgBaseList
 };
