@@ -15,9 +15,15 @@
     <select id="selectCallbackList" parameterType="hashmap" resultType="camel">
     /* sendMessage.selectCallbackList 발신번호 조회 */
         SELECT CHATBOT_ID AS CALLBACK /* 챗봇(대화방)ID, A2P의 경우 발신번호(mdn)과 동일 */
-        FROM cm.CM_RCS_CHATBOT
-        WHERE SVC_TYPE = 'A2P'
-            AND CORP_ID = #{corpId}
+        FROM TODO_RCS_BRAND CRB
+        INNER JOIN cm.CM_RCS_CHATBOT CRC
+            ON CRB.BRAND_ID = CRC.BRAND_ID
+            AND LOWER(CRC.SVC_TYPE) = 'a2p'
+            AND CRC.USE_YN = 'Y'
+            AND CRC.APPROVAL_STATUS = #{approvalStatus}
+        WHERE CRB.APPROVAL_DT IS NOT NULL
+            AND CRB.CORP_ID = #{corpId}
+            AND CRB.PROJECT_ID = #{projectId}
     </select>
 
     <select id="selectAddrGrpList" parameterType="hashmap" resultType="camel">

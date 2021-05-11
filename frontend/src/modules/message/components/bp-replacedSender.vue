@@ -134,9 +134,17 @@ export default {
         return;
       }
 
-      const msgLimitByte = (this.fbInfo.ch == 'SMS' ? 80 : 2000);
+      let msgLimitByte;
       const totalMsg = this.fbInfo.title + this.fbInfo.msg + '\n' + this.fbInfo.rcvblcNumber;
       const totByte = this.getByte(totalMsg);
+
+      if(this.fbInfo.ch == 'SMS'){
+        msgLimitByte = 80;
+      } else if(this.fbInfo.ch == 'LMS'){
+        msgLimitByte = 1000;
+      } else if(this.fbInfo.ch == 'MMS'){
+        msgLimitByte = 2000;
+      }
 
       if(msgLimitByte < totByte){
         const alertMsg = (this.fbInfo.ch == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+msgLimitByte+'를 넘지 않아야됩니다.\n(현재 : '+totByte+'byte)';

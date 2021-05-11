@@ -243,7 +243,7 @@ public class SendMessageController extends BaseController {
             //선불일경우
             if(StringUtils.equals(payType, Const.COMM_YES)) {
                 //남은 금액 조회
-                BigDecimal rmAmount = sendMsgService.getRmAmount();
+                BigDecimal rmAmount = sendMsgService.getRmAmount(params);
                 //개당 가격 조회
                 sParam = new HashMap<>();
                 sParam.put("push", Const.COMM_YES);
@@ -420,7 +420,7 @@ public class SendMessageController extends BaseController {
             //선불일경우
             if(StringUtils.equals(payType, Const.COMM_YES)) {
                 //남은 금액 조회
-                BigDecimal rmAmount = sendMsgService.getRmAmount();
+                BigDecimal rmAmount = sendMsgService.getRmAmount(params);
                 //개당 가격 조회
                 sParam = new HashMap<>();
                 sParam.put("sms", Const.COMM_YES);
@@ -528,7 +528,7 @@ public class SendMessageController extends BaseController {
             //선불일경우
             if(StringUtils.equals(payType, Const.COMM_YES)) {
                 //남은 금액 조회
-                BigDecimal rmAmount = sendMsgService.getRmAmount();
+                BigDecimal rmAmount = sendMsgService.getRmAmount(params);
                 //개당 가격 조회
                 sParam = new HashMap<>();
                 sParam.put("mms", Const.COMM_YES);

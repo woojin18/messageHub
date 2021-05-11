@@ -31,6 +31,7 @@ import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
+import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.sendMessage.dto.FbInfo;
 import kr.co.uplus.cm.sendMessage.dto.MmsRequestData;
 import kr.co.uplus.cm.sendMessage.dto.PushMsg;
@@ -65,6 +66,9 @@ public class SendMessageService {
     @Autowired
     ApiInterface apiInterface;
 
+    @Autowired
+    ApiConfig apiConfig;
+
     /**
      * APP ID 리스트 조회
      * @param params
@@ -91,6 +95,7 @@ public class SendMessageService {
 
         RestResult<Object> rtn = new RestResult<Object>();
 
+        params.put("approvalStatus", Const.ApprovalStatus.APPROVE);
         List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_LIST, params);
         rtn.setData(rtnList);
 
@@ -231,11 +236,44 @@ public class SendMessageService {
 
     /**
      * 잔여금액 조회
-     * TODO : G/W 에서 API 만들면 API 호출로 교체
      * @return
+     * @throws Exception
      */
-    public BigDecimal getRmAmount() {
-        return new BigDecimal("100000");
+    @SuppressWarnings({ "unchecked", "unused", "rawtypes" })
+    public BigDecimal getRmAmount(Map<String, Object> params) throws Exception {
+        BigDecimal rmAmount = new BigDecimal(0);
+        ObjectMapper mapper = null;
+
+        String cashBalance = "";
+        String corpId = CommonUtils.getStrValue(params, "corpId");
+        String projectId = CommonUtils.getStrValue(params, "projectId");
+        String apiKey = commonService.getApiKey(corpId, projectId);
+        String apiUri = apiConfig.GET_CASH_INFO_API_URI + "corp_test1";  //TODO : corpId 로 변경;
+
+        Map<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("apiKey", apiKey);
+
+        log.info("{}.getRmAmount API START=======>", this.getClass());
+        log.info("{}.getRmAmount API URL : {}, Header : {}", this.getClass(), apiConfig.CASH_SERVER_DOMAIN + apiUri, headerMap);
+        Map resultMap = apiInterface.get(apiConfig.CASH_SERVER_DOMAIN, apiUri, headerMap);
+        log.info("{}.getRmAmount API Result : {}", this.getClass(), resultMap);
+        log.info("{}.getRmAmount API END=======>", this.getClass());
+
+        if (!CommonUtils.isEmptyValue(resultMap, "rslt")
+                && StringUtils.equals(apiConfig.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
+            Map<String, Object> dataMap = (Map<String, Object>) resultMap.get("data");
+            List<Map<String, Object>> cashInfoList = (List<Map<String, Object>>) dataMap.get("cashInfo");
+
+            for(Map<String, Object> cashInfo : cashInfoList) {
+                cashBalance = CommonUtils.getStrValue(cashInfo, "cashBalance");
+                rmAmount = rmAmount.add(new BigDecimal(cashBalance));
+            }
+        } else {
+            log.error("{}.getRmAmount API Fail => API response Body: {}", this.getClass(), resultMap);
+            throw new Exception("캐시 정보 조회 실패");
+        }
+
+        return rmAmount;
     }
 
     /**
@@ -452,14 +490,14 @@ public class SendMessageService {
         Map<String, Object> resultMap = sendPushMsg(data, pushRequestData, sendList);
 
         if(!CommonUtils.isEmptyValue(resultMap, "rslt")
-                && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
+                && StringUtils.equals(apiConfig.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
 
             try {
                 int successCnt = 0;
                 List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
                 for(Map<String, Object> dataInfo : dataList) {
                     if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
-                            && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                            && StringUtils.equals(apiConfig.API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
                         successCnt++;
                     }
                 }
@@ -502,7 +540,7 @@ public class SendMessageService {
         Gson gson = new Gson();
         String jsonString = gson.toJson(pushRequestData);
 
-        return apiInterface.sendMsg(Const.SEND_PUSH_API_URI, headerMap, jsonString);
+        return apiInterface.sendMsg(apiConfig.SEND_PUSH_API_URI, headerMap, jsonString);
     }
 
     /**
@@ -530,7 +568,7 @@ public class SendMessageService {
         Map<String, String> headerMap = new HashMap<String, String>();
         headerMap.put("apiKey", apiKey);
 
-        int cutSize = Const.DEFAULT_RECV_LIMIT_SIZE;
+        int cutSize = apiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
 
@@ -540,7 +578,7 @@ public class SendMessageService {
 
             pushRequestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
             jsonString = gson.toJson(pushRequestData);
-            apiInterface.sendMsg(Const.SEND_PUSH_API_URI, headerMap, jsonString);
+            apiInterface.sendMsg(apiConfig.SEND_PUSH_API_URI, headerMap, jsonString);
             fromIndex = toIndex;
         }
 
@@ -690,7 +728,7 @@ public class SendMessageService {
         Map<String, String> headerMap = new HashMap<String, String>();
         headerMap.put("apiKey", apiKey);
 
-        int cutSize = Const.DEFAULT_RECV_LIMIT_SIZE;
+        int cutSize = apiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
 
@@ -700,7 +738,7 @@ public class SendMessageService {
 
             requestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
             jsonString = gson.toJson(requestData);
-            apiInterface.sendMsg(Const.SEND_SMS_API_URI, headerMap, jsonString);
+            apiInterface.sendMsg(apiConfig.SEND_SMS_API_URI, headerMap, jsonString);
             fromIndex = toIndex;
         }
 
@@ -865,7 +903,7 @@ public class SendMessageService {
         Map<String, String> headerMap = new HashMap<String, String>();
         headerMap.put("apiKey", apiKey);
 
-        int cutSize = Const.DEFAULT_RECV_LIMIT_SIZE;
+        int cutSize = apiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
 
@@ -875,7 +913,7 @@ public class SendMessageService {
 
             requestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
             jsonString = gson.toJson(requestData);
-            apiInterface.sendMsg(Const.SEND_MMS_API_URI, headerMap, jsonString);
+            apiInterface.sendMsg(apiConfig.SEND_MMS_API_URI, headerMap, jsonString);
             fromIndex = toIndex;
         }
 
@@ -909,7 +947,7 @@ public class SendMessageService {
         Gson gson = new Gson();
         String jsonString = gson.toJson(requestData);
 
-        return apiInterface.sendMsg(Const.SEND_MMS_API_URI, headerMap, jsonString);
+        return apiInterface.sendMsg(apiConfig.SEND_MMS_API_URI, headerMap, jsonString);
     }
 
     /**
@@ -932,14 +970,14 @@ public class SendMessageService {
         Map<String, Object> resultMap = sendMmsMsg(data, requestData, sendList);
 
         if(!CommonUtils.isEmptyValue(resultMap, "rslt")
-                && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
+                && StringUtils.equals(apiConfig.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
 
             try {
                 int successCnt = 0;
                 List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
                 for(Map<String, Object> dataInfo : dataList) {
                     if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
-                            && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                            && StringUtils.equals(apiConfig.API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
                         successCnt++;
                     }
                 }
@@ -982,7 +1020,7 @@ public class SendMessageService {
         Gson gson = new Gson();
         String jsonString = gson.toJson(requestData);
 
-        return apiInterface.sendMsg(Const.SEND_SMS_API_URI, headerMap, jsonString);
+        return apiInterface.sendMsg(apiConfig.SEND_SMS_API_URI, headerMap, jsonString);
     }
 
     /**
@@ -1005,14 +1043,14 @@ public class SendMessageService {
         Map<String, Object> resultMap = sendSmsMsg(data, requestData, sendList);
 
         if(!CommonUtils.isEmptyValue(resultMap, "rslt")
-                && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
+                && StringUtils.equals(apiConfig.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
 
             try {
                 int successCnt = 0;
                 List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
                 for(Map<String, Object> dataInfo : dataList) {
                     if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
-                            && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                            && StringUtils.equals(apiConfig.API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
                         successCnt++;
                     }
                 }

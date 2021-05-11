@@ -40,6 +40,7 @@ import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.model.AuthUser;
+import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.login.service.AuthService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -63,6 +64,9 @@ public class CommonService {
 
     @Autowired
     AuthService authSvc;
+
+    @Autowired
+    ApiConfig apiConfig;
 
     @Value("${file-props.img.upload-path}")
     String imgUploadPath;
@@ -278,13 +282,13 @@ public class CommonService {
                 reqFileObject.put("wideYn", apiWideYn);
 
                 // send
-                apiUrl = Const.FILE_UPLOAD_API_URI + ch.toLowerCase();
+                apiUrl = apiConfig.FILE_UPLOAD_API_URI + ch.toLowerCase();
                 resultMap = apiInterface.sendImg(apiUrl, headerMap, chFile, reqFileObject.toJSONString());
 
                 // send result
                 imgUrl = "";
                 if (!CommonUtils.isEmptyValue(resultMap, "rslt")
-                        && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
+                        && StringUtils.equals(apiConfig.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
                     if (!CommonUtils.isEmptyValue(resultMap, "data")) {
                         mapper = new ObjectMapper();
                         dataMap = mapper.convertValue(resultMap.get("data"), Map.class);
