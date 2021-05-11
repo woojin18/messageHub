@@ -65,9 +65,6 @@ public class CommonService {
     @Autowired
     AuthService authSvc;
 
-    @Autowired
-    ApiConfig apiConfig;
-
     @Value("${file-props.img.upload-path}")
     String imgUploadPath;
 
@@ -282,13 +279,13 @@ public class CommonService {
                 reqFileObject.put("wideYn", apiWideYn);
 
                 // send
-                apiUrl = apiConfig.FILE_UPLOAD_API_URI + ch.toLowerCase();
+                apiUrl = ApiConfig.FILE_UPLOAD_API_URI + ch.toLowerCase();
                 resultMap = apiInterface.sendImg(apiUrl, headerMap, chFile, reqFileObject.toJSONString());
 
                 // send result
                 imgUrl = "";
                 if (!CommonUtils.isEmptyValue(resultMap, "rslt")
-                        && StringUtils.equals(apiConfig.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
+                        && StringUtils.equals(ApiConfig.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
                     if (!CommonUtils.isEmptyValue(resultMap, "data")) {
                         mapper = new ObjectMapper();
                         dataMap = mapper.convertValue(resultMap.get("data"), Map.class);
