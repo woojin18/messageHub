@@ -252,6 +252,10 @@
 		,		A.APP_NM
 		,		A.CORP_ID
 		,		A.PROJECT_ID
+		,		CASE 
+					WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
+					ELSE 'N'
+				END AS OTHER_PROJECT_YN
 		,		A.SERVICE_STATUS
 		,		CASE
 					WHEN A.FCM_SERVER_KEY != '' THEN 'Y'
@@ -276,7 +280,16 @@
 		,		A.MOD_DT
 		FROM	cm_push.T_PUSH_CONFIG A 
 		WHERE	1 = 1
-		AND		A.PROJECT_ID = #{projectId}
+		AND		( A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+		AND		A.CORP_ID	= #{corpId}
+	</select>
+	
+	<select id="selectPushManageListCnt" resultType="int">
+		/* channel.selectPushManageList */
+		SELECT	COUNT(1) AS CNT
+		FROM	cm_push.T_PUSH_CONFIG A 
+		WHERE	1 = 1
+		AND		( A.PROJECT_ID = #{saveProjectId} OR A.PROJECT_ID = 'ALL' )
 		AND		A.CORP_ID	= #{corpId}
 	</select>
 	
@@ -345,7 +358,6 @@
 	/* channel.deletePushManage */
 		DELETE	FROM cm_push.T_PUSH_CONFIG
 		WHERE	APP_ID		= #{appId}
-		AND		PROJECT_ID	= #{projectId}
 		AND		CORP_ID		= #{corpId}
 	</delete>
 	

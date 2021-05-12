@@ -589,8 +589,16 @@ public class ChannelService {
 		}
 		
 		if( "C".equals(sts) ) {
-			if( params.get("apnsCetificationByteArray") == null  ) {
-				throw new Exception("저장시에는 P8인증서가 필수입니다.");
+			int cnt= generalDao.selectGernalCount(DB.QRY_SELECT_PUSH_MANAGE_LIST_CNT, params);
+			
+			if( cnt >= 5 ) {
+				throw new Exception("한 프로젝트엔 최대 5개의 PUSH만 등록 가능합니다.");
+			}
+			
+			if( !"".equals(CommonUtils.getString(params.get("iosAppId"))) ) {
+				if( params.get("apnsCetificationByteArray") == null  ) {
+					throw new Exception("저장시에는 P8인증서가 필수입니다.");
+				}
 			}
 			
 			// push id 생성
@@ -684,7 +692,6 @@ public class ChannelService {
 		String sts = CommonUtils.getString(params.get("sts"));
 		
 		if( "C".equals(sts) ) {
-			// 임시 -- 추후에 프로젝트에 등록된 APIKEY에 웹발송여부 Y인거 TOP1 인거 골라와야함
 			String apiKey = CommonUtils.getCommonId("API", 6);
 			params.put("apiKey", apiKey);
 			generalDao.insertGernal(DB.QRY_INSERT_MO_CALLBACK, params);

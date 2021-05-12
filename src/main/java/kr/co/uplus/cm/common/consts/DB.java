@@ -71,6 +71,8 @@ public class DB {
 	public final static String QRY_SELECT_RCS_CALLBACKLIST = "channel.selectRcsCallbackList";
 	// 채널관리
 	public final static String QRY_SELECT_PUSH_MANAGE_LIST = "channel.selectPushManageList";
+	public final static String QRY_SELECT_PUSH_MANAGE_LIST_CNT = "channel.selectPushManageListCnt";
+	
 	public final static String QRY_INSERT_PUSH_MANAGE = "channel.insertPushManage";
 	public final static String QRY_UPDATE_PUSH_MANAGE = "channel.updatePushManage";
 	public final static String QRY_DELETE_PUSH_MANAGE = "channel.deletePushManage";

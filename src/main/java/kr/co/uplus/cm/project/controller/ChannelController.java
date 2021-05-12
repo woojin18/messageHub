@@ -246,6 +246,7 @@ public class ChannelController extends BaseController {
 			@RequestParam String sts,
 			@RequestParam String loginId,
 			@RequestParam String projectId,
+			@RequestParam String saveProjectId,
 			@RequestParam String appId,
 			@RequestParam String appNm,
 			@RequestParam String fcmPackageName,
@@ -269,6 +270,8 @@ public class ChannelController extends BaseController {
 		// 파라미터 정리
 		params.put("sts",				sts);
 		params.put("projectId",			projectId);
+		params.put("saveProjectId",		saveProjectId);
+		
 		params.put("appId",				appId);
 		params.put("appNm",				appNm);
 		params.put("fcmPackageName",	fcmPackageName);
