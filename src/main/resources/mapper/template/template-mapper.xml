@@ -4,6 +4,7 @@
 <mapper namespace="template">
 
     <sql id ="whereSelectPushTemplateList">
+        AND CORP_ID = #{corpId}
         <if test="searchText != '' and searchText != null ">
             <if test="searchCondi == 'tmpltId' ">
             AND TMPLT_ID LIKE CONCAT('%', #{searchText}, '%')
@@ -79,8 +80,8 @@
     /* template.deletePushTemplate - 푸시 템플릿 삭제 */
         DELETE
         FROM CM_PUSH_TMPLT
-        WHERE TMPLT_ID IN
-        <foreach collection="tmpltIds" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
+        WHERE CORP_ID = #{corpId}
+            AND TMPLT_ID IN <foreach collection="tmpltIds" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
     </delete>
 
     <insert id="insertPushTemplate" parameterType="hashmap">
@@ -105,6 +106,7 @@
             , UPD_ID
             , ADTN_INFO
             , PROJECT_ID
+            , CORP_ID
         ) VALUES (
             #{tmpltId}
             , #{tmpltName}
@@ -123,6 +125,7 @@
             , #{userId}
             , #{adtnInfo}
             , #{projectId}
+            , #{corpId}
         )
     </insert>
 
@@ -166,6 +169,7 @@
             , REG_ID
             , UPD_DT
             , UPD_ID
+            , CORP_ID
         ) VALUES (
             #{tmpltId}
             , #{tmpltName}
@@ -181,10 +185,12 @@
             , #{userId}
             , NOW()
             , #{userId}
+            , #{corpId}
         )
     </insert>
 
     <sql id ="whereSelectSmsTemplateList">
+        AND CORP_ID = #{corpId}
         <if test="searchText != '' and searchText != null ">
             <if test="searchCondi == 'tmpltId' ">
             AND TMPLT_ID LIKE CONCAT('%', #{searchText}, '%')
@@ -276,8 +282,8 @@
     /* template.deleteSmsTmplt - SMS 템플릿 삭제 */
         DELETE
         FROM CM_SMS_TMPLT
-        WHERE TMPLT_ID IN
-        <foreach collection="tmpltIds" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
+        WHERE CORP_ID = #{corpId}
+            AND TMPLT_ID IN <foreach collection="tmpltIds" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
     </delete>
 
 </mapper>
