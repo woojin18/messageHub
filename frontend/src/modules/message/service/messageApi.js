@@ -1,20 +1,19 @@
 import httpClient from '@/common/http-client';
-import tokenSvc from '@/common/token-service';
 
 const selectAppIdList = (params) => {
-    return httpClient.post('/api/public/sendMessage/selectAppIdList', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
+    return httpClient.post('/api/public/sendMessage/selectAppIdList', params, { headers: {"show-layer": "Yes"} });
 };
 const selectCallbackList = (params) => {
-    return httpClient.post('/api/public/sendMessage/selectCallbackList', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
+    return httpClient.post('/api/public/sendMessage/selectCallbackList', params, { headers: {"show-layer": "Yes"} });
 };
 const selectAddressList = (params) => {
-    return httpClient.post('/api/public/sendMessage/selectAddressList', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
+    return httpClient.post('/api/public/sendMessage/selectAddressList', params, { headers: {"show-layer": "Yes"} });
 };
 const selectCmCuList = (params) => {
-    return httpClient.post('/api/public/sendMessage/selectCmCuList', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
+    return httpClient.post('/api/public/sendMessage/selectCmCuList', params, { headers: {"show-layer": "Yes"} });
 };
 const excelDownSendPushRecvTmplt = (params) => {
-  return httpClient.post('/api/public/sendMessage/excelDownSendPushRecvTmplt', params, { headers: {"show-layer": "No", "loginId": tokenSvc.getToken().principal.loginId}, responseType: 'arraybuffer' }).then(function(response) {
+  return httpClient.post('/api/public/sendMessage/excelDownSendPushRecvTmplt', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' }).then(function(response) {
     try {
       let blob = new Blob([response.data], { type: response.headers['content-type'] })
       let fileName = getFileName(response.headers['content-disposition'])
@@ -35,11 +34,11 @@ const excelDownSendPushRecvTmplt = (params) => {
   });
 };
 const sendPushMessage = (params) => {
-  return httpClient.post('/api/public/sendMessage/sendPushMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data", "loginId": tokenSvc.getToken().principal.loginId} });
+  return httpClient.post('/api/public/sendMessage/sendPushMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data"} });
 };
 
 const excelDownSendSmsRecvTmplt = (params) => {
-  return httpClient.post('/api/public/sendMessage/excelDownSendSmsRecvTmplt', params, { headers: {"show-layer": "No", "loginId": tokenSvc.getToken().principal.loginId}, responseType: 'arraybuffer' }).then(function(response) {
+  return httpClient.post('/api/public/sendMessage/excelDownSendSmsRecvTmplt', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' }).then(function(response) {
     try {
       let blob = new Blob([response.data], { type: response.headers['content-type'] })
       let fileName = getFileName(response.headers['content-disposition'])
@@ -60,10 +59,10 @@ const excelDownSendSmsRecvTmplt = (params) => {
   });
 };
 const sendSmsMessage = (params) => {
-  return httpClient.post('/api/public/sendMessage/sendSmsMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data", "loginId": tokenSvc.getToken().principal.loginId} });
+  return httpClient.post('/api/public/sendMessage/sendSmsMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data"} });
 };
 const sendMmsMessage = (params) => {
-  return httpClient.post('/api/public/sendMessage/sendMmsMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data", "loginId": tokenSvc.getToken().principal.loginId} });
+  return httpClient.post('/api/public/sendMessage/sendMmsMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data"} });
 };
 
 

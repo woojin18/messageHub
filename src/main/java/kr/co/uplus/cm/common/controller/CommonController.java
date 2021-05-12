@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import kr.co.uplus.cm.common.dto.MultipartFileDTO;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import lombok.extern.log4j.Log4j2;
@@ -22,28 +22,22 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RestController
 @RequestMapping("/api/public/common")
-public class CommonController extends BaseController {
+public class CommonController {
 
     @Autowired
     private CommonService commonService;
 
     // 이미지 업로드
-    @SuppressWarnings("unchecked")
     @PostMapping("/uploadImage")
     public RestResult<?> uploadImage(
             HttpServletRequest request,
             HttpServletResponse response,
-            @RequestParam MultipartFile uploadFile,
-            @RequestParam(value = "paramString") String paramString) throws Exception {
-
+            @ModelAttribute MultipartFileDTO multipartFileDTO) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
 
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> params = mapper.readValue(paramString, Map.class);
-
         try {
-            super.setContainIgnoreUserInfo(params);
-            rtn = commonService.uploadImgFile(uploadFile, params);
+            rtn = commonService.uploadImgFile(multipartFileDTO.getFile()
+                    , commonService.setUserInfo(multipartFileDTO.getParams()));
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("파일등록에 실패하였습니다.");
@@ -61,7 +55,6 @@ public class CommonController extends BaseController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
-            super.setContainIgnoreUserInfo(params);
             rtn = commonService.selectImageList(params);
         } catch(Exception e) {
             rtn.setSuccess(false);
@@ -80,7 +73,6 @@ public class CommonController extends BaseController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
-            super.setContainIgnoreUserInfo(params);
             rtn = commonService.deleteImageFile(params);
         } catch(Exception e) {
             rtn.setSuccess(false);

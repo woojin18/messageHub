@@ -17,7 +17,7 @@ const deletePushTmplt = (params) => {
 };
 
 const excelDownloadPushTmplt = (params) => {
-  return httpClient.post('/api/public/template/excelDownloadPushTmplt', params, { headers: {"show-layer": "No"}, responseType: 'arraybuffer' }).then(function(response) {
+  return httpClient.post('/api/public/template/excelDownloadPushTmplt', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' }).then(function(response) {
     try {
       let blob = new Blob([response.data], { type: response.headers['content-type'] })
       let fileName = getFileName(response.headers['content-disposition'])
@@ -55,7 +55,7 @@ const deleteSmsTmplt = (params) => {
 };
 
 const excelDownloadSmsTmplt = (params) => {
-  return httpClient.post('/api/public/template/excelDownloadSmsTmplt', params, { headers: {"show-layer": "No"}, responseType: 'arraybuffer' }).then(function(response) {
+  return httpClient.post('/api/public/template/excelDownloadSmsTmplt', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' }).then(function(response) {
     try {
       let blob = new Blob([response.data], { type: response.headers['content-type'] })
       let fileName = getFileName(response.headers['content-disposition'])

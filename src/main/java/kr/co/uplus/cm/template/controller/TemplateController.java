@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import kr.co.uplus.cm.common.controller.BaseController;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.template.service.TemplateService;
 import kr.co.uplus.cm.utils.DateUtil;
@@ -34,7 +33,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RestController
 @RequestMapping("/api/public/template")
-public class TemplateController extends BaseController {
+public class TemplateController {
 
     @Autowired
     private TemplateService tmpltSvc;
@@ -51,7 +50,6 @@ public class TemplateController extends BaseController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
-            super.setContainIgnoreUserInfo(params);
             rtn = tmpltSvc.selectPushTemplateList(params);
         } catch (Exception e) {
             rtn.setSuccess(false);
@@ -74,7 +72,6 @@ public class TemplateController extends BaseController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
-            super.setContainIgnoreUserInfo(params);
             rtn = tmpltSvc.selectPushTemplateList(params);
         } catch (Exception e) {
             rtn.setSuccess(false);
@@ -97,7 +94,6 @@ public class TemplateController extends BaseController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
-            super.setContainIgnoreUserInfo(params);
             rtn = tmpltSvc.savePushTemplate(params);
         } catch (Exception e) {
             rtn.setSuccess(false);
@@ -140,8 +136,6 @@ public class TemplateController extends BaseController {
     @PostMapping(path = "/excelDownloadPushTmplt")
     public ModelAndView excelDownloadPushTmplt(HttpServletRequest request, HttpServletResponse response,
             @RequestBody Map<String, Object> params) throws Exception {
-        super.setContainIgnoreUserInfo(params);
-
         List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("sheetTitle", "푸시 템플릿 리스트");
@@ -169,12 +163,9 @@ public class TemplateController extends BaseController {
      */
     @PostMapping("/saveSmsTmplt")
     public RestResult<?> saveSmsTmplt(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody Map<String, Object> params)
-    {
+            @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
-
         try {
-            super.setContainIgnoreUserInfo(params);
             rtn = tmpltSvc.saveSmsTemplate(params);
         } catch (Exception e) {
             rtn.setSuccess(false);
@@ -196,7 +187,6 @@ public class TemplateController extends BaseController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
-            super.setContainIgnoreUserInfo(params);
             rtn = tmpltSvc.selectSmsTemplateList(params);
         } catch (Exception e) {
             rtn.setSuccess(false);
@@ -219,7 +209,6 @@ public class TemplateController extends BaseController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
-            super.setContainIgnoreUserInfo(params);
             rtn = tmpltSvc.selectSmsTemplateList(params);
         } catch (Exception e) {
             rtn.setSuccess(false);
@@ -263,7 +252,6 @@ public class TemplateController extends BaseController {
     @PostMapping(path = "/excelDownloadSmsTmplt")
     public ModelAndView excelDownloadSmsTmplt(HttpServletRequest request, HttpServletResponse response,
             @RequestBody Map<String, Object> params) throws Exception {
-        super.setContainIgnoreUserInfo(params);
         List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("sheetTitle", "푸시 템플릿 리스트");
@@ -280,8 +268,5 @@ public class TemplateController extends BaseController {
 
         return model;
     }
-
-
-
 
 }
