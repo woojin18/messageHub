@@ -162,8 +162,6 @@ export default {
 	},
 	created: function() {
 		console.log('created HomeMain');
-		console.log('token:', tokenSvc.getToken());
-		console.log(this.$cookies.get('JwtPart1'));
 	},
 	methods: {
 	},

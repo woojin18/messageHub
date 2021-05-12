@@ -1,12 +1,13 @@
 import axios from 'axios';
-import * as utils from './utils';
+import * as utils from '@/common/utils';
 import tokenSvc from '@/common/token-service';
-import { consts } from './config';
+import { consts } from '@/common/config';
 
 const config = {
 	// baseURL: apiBaseUrl,
 	headers: {
-		'X-Requested-With': 'XMLHttpRequest'
+		'X-Requested-With': 'XMLHttpRequest',
+		'show-layer': 'Yes'
 	},
 	timeout: 120000 // timeout은 120초로 설정
 };

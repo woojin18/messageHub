@@ -12,14 +12,10 @@
 			<!-- consoleMenu -->
 			<dl>
 				<dt>
-					<a href="#slef" title="비트큐브 하위메뉴 보기"><i class="fal fa-folder navIcon"></i><span>비트큐브<i class="fas fa-cog cog"></i> <i class="far fa-chevron-right navArrow"></i></span></a>
+					<a href="#self" title="비트큐브 하위메뉴 보기"><i class="fal fa-folder navIcon"></i><span>비트큐브<i class="fas fa-cog cog"></i> <i class="far fa-chevron-right navArrow"></i></span></a>
 					<div class="consoleMenu">
 						<ul class="box-shadow">
-							<li><a href="#self" title="엘지 유플러스 페이지로 이동">엘지 유플러스</a></li>
-							<li><a href="#self" title="통합 메시징 클라우드 페이지로 이동">통합 메시징 클라우드</a></li>
-							<li><a href="#self" title="이커머스테크 페이지로 이동">이커머스테크</a></li>
-							<li class="active"><a href="#self" title="비트큐브 페이지로 이동">비트큐브</a></li>
-							<li><a href="#self" title="아이디알인터랙티브 페이지로 이동">아이디알인터랙티브</a></li>
+							<li v-for="(item, i) in prdData" :key="i" :class="{active : repPrdState(item.projectId)}"><a href="#self">{{item.projectName}}</a></li>
 						</ul>
 					</div>
 				</dt>
@@ -66,6 +62,8 @@
 
 <script>
 import api from '@/modules/login/service/api';
+import * as utils from '@/common/utils';
+import { consts } from '@/common/config';
 import tokenSvc from '@/common/token-service';
 
 export default {
@@ -86,6 +84,8 @@ export default {
 					]
 				}
 			],
+			prdData : [],
+			projectId : utils.getCookie(consts.projectId),
 			showOption: {
 				display: 'none'
 			}
@@ -93,6 +93,7 @@ export default {
 	},
 	mounted(){
 		this.fnMenuList();
+		this.fnProjectList();
 	},
 	methods: {
 		fnMenuList() {
@@ -125,6 +126,21 @@ export default {
 			} else {
 				jQuery("#depth3_" + index2).css("display", "block");
 			}
+		},
+		fnProjectList() {
+			var params = {
+			};
+
+			api.getProjectForUser(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.prdData = result.data;
+				}
+			});
+		},
+		repPrdState(prdId) {
+			if (prdId == this.projectId) return true;
+			else false;
 		}
 	}
 }

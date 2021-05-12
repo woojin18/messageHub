@@ -5,15 +5,20 @@ const login = (params) => {
 };
 
 const logout = () => {
-    return httpClient.get('/api/auth/logout', {headers: {"show-layer": "Yes"}});
+    return httpClient.get('/api/auth/logout', { headers: {"show-layer": "Yes"} });
 };
 
 const getMenuForRole = (params) => {
     return httpClient.post('/api/auth/getMenuForRole', params, { headers: {"show-layer": "Yes"} });
 };
 
+const getProjectForUser = (params) => {
+	return httpClient.post('/api/auth/getProjectForUser', params, { headers: {"show-layer": "Yes"} });
+};
+
 export default {
     login,
     logout,
-    getMenuForRole
+    getMenuForRole,
+	getProjectForUser
 };
