@@ -208,5 +208,70 @@ public class TemplateService {
         return rtn;
     }
 
+    /**
+     * 친구톡 템플릿 저장
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+    public RestResult<Object> saveFrndTalkTmplt(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        int resultCnt = 0;
+        String otherProjectUseYn = CommonUtils.getStrValue(params, "otherProjectUseYn");
+
+        if(!StringUtils.equalsIgnoreCase(otherProjectUseYn, Const.COMM_NO)) {
+            params.put("projectId", Const.OTHER_PROJECT_USE_ID);
+        }
+
+        // update
+        if (params.containsKey("tmpltId") && StringUtils.isNotBlank(CommonUtils.getString(params.get("tmpltId")))) {
+            resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_FRND_TALK_TMPLT, params);
+        // insert
+        } else {
+            // 템플릿ID 취득
+            String tmpltId = CommonUtils.getCommonId(Const.TMPLT_PREFIX, 5);
+            params.put("tmpltId", tmpltId);
+            resultCnt = generalDao.insertGernal(DB.QRY_INSERT_FRND_TALK_TEMPLATE, params);
+        }
+
+        if (resultCnt <= 0) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+        } else {
+            rtn.setSuccess(true);
+            rtn.setData(params);
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 친구톡 템플릿 리스트 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectFrndTalkList(Map<String, Object> params) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        if(params.containsKey("pageNo")
+                && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+                && params.containsKey("listSize")
+                && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+            rtn.setPageProps(params);
+            if(rtn.getPageInfo() != null) {
+                //카운트 쿼리 실행
+                int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_FRND_TALK_TMPLT_LIST_CNT, params);
+                rtn.getPageInfo().put("totCnt", listCnt);
+            }
+        }
+
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_FRND_TALK_TMPLT_LIST, params);
+        rtn.setData(rtnList);
+
+        return rtn;
+    }
 
 }

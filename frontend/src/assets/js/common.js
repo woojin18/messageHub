@@ -49,7 +49,13 @@ export default {
         sDate.setDate(sDate.getDate()+interval);
         return this.formatDate(sDate, 'yyyy-mm-dd');
       },
-      /**************************날짜관련 관련 Utils**************************/  
+      /**************************날짜관련 관련 Utils**************************/
+      /**************************정규식 관련 Utils**************************/
+      isUrl(str){
+        let regex = /(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/gi
+        return regex.test(str);
+      },
+      /**************************정규식 관련 Utils**************************/
     }
   }
 }

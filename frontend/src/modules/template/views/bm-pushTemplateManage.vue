@@ -304,15 +304,17 @@ export default {
       await templateApi.savePushTmplt(params).then(response => {
         var result = response.data;
         if(result.success) {
-          confirm.fnAlert(this.componentsTitle, '저장되었습니다.');
-          //재조회
-          if(this.isInsert){
-            this.$router.push('pushTemplateList')
-          }
+          eventBus.$on('callbackEventBus', this.fnSaveAlertCallback);
+          confirm.fnAlert(this.componentsTitle, '저장되었습니다.', 'CALLBACK');
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
+    },
+    fnSaveAlertCallback(){
+      if(this.isInsert){
+        this.$router.push('pushTemplateList')
+      }
     }
 
   }

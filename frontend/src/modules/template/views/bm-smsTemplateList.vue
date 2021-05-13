@@ -143,10 +143,11 @@
 </template>
 
 <script>
-import templateApi from "@/modules/template/service/templateApi.js";
 import PageLayer from '@/components/PageLayer.vue';
 import SelectLayer from '@/components/SelectLayer.vue';
 import Calendar from "@/components/Calendar.vue";
+
+import templateApi from "@/modules/template/service/templateApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
@@ -175,7 +176,7 @@ export default {
       type: String,
       require: false,
       default: function() {
-        return 'SMS/MMS 템플릿 관리';
+        return 'SMS/MMS 템플릿';
       }
     },
   },
@@ -197,12 +198,12 @@ export default {
     this.fnPageNoResetSearch();
   },
   methods: {
-    //푸시 템플릿 엑셀 다운로드
+    //템플릿 엑셀 다운로드
     fnExcelDownLoad(){
       const params = this.searchData;
       templateApi.excelDownloadSmsTmplt(params);
     },
-    //푸시 템플릿 삭제
+    //템플릿 삭제
     fnDeleteSmsTemplate(){
       //유효성 검사
       if(this.listChkBox == null || this.listChkBox.length == 0){
@@ -213,7 +214,7 @@ export default {
       eventBus.$on('callbackEventBus', this.fnProcDeleteSmsTemplate);
       confirm.fnConfirm(this.componentsTitle, "선택한 템플릿을 삭제하시겠습니까?", "확인");
     },
-    //푸시 템플릿 삭제 처리
+    //템플릿 삭제 처리
     async fnProcDeleteSmsTemplate(){
       const params = {tmpltIds : this.listChkBox};
       await templateApi.deleteSmsTmplt(params).then(response =>{
@@ -247,7 +248,7 @@ export default {
         this.searchData.searchOthPrjUseYn = [];
       }
     },
-    //푸시 템플릿 리스트 검색
+    //템플릿 리스트 검색
     async fnSelectSmsTmpltList(){
       //유효성 검사
       if(this.searchData.searchStartDate && this.searchData.searchEndDate){

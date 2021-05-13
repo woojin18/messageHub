@@ -27,9 +27,10 @@ public class DB {
 	// 알림톡 템플릿
 	public final static String QRY_SELECT_KAKAOTALK_TMPLT = "template.selectKakaoTalkTemplate";
 	// 친구톡 템플릿
-	public final static String QRY_SELECT_FRIENDTALK_TMPLT = "template.selectFriendTalkTemplate";
-	public final static String QRY_INSERT_FRIENDTALK_TMPLT = "template.insertFriendTalkTemplate";
-	public final static String QRY_UPDATE_FRIENDTALK_TMPLT = "template.updateFriendTalkTemplate";
+	public final static String QRY_INSERT_FRND_TALK_TEMPLATE = "template.insertFrndTalkTemplate";
+	public final static String QRY_SELECT_FRND_TALK_TMPLT_LIST_CNT = "template.selectFrndTalkTmpltListCnt";
+	public final static String QRY_SELECT_FRND_TALK_TMPLT_LIST = "template.selectFrndTalkTmpltList";
+	public final static String QRY_UPDATE_FRND_TALK_TMPLT = "template.updateFrndTalkTmplt";
 	// SMS/MMS 템플릿
 	public final static String QRY_SELECT_SMS_TMPLT_LIST_CNT = "template.selectSmsTmpltListCnt";
 	public final static String QRY_SELECT_SMS_TMPLT_LIST = "template.selectSmsTmpltList";
@@ -72,11 +73,11 @@ public class DB {
 	// 채널관리
 	public final static String QRY_SELECT_PUSH_MANAGE_LIST = "channel.selectPushManageList";
 	public final static String QRY_SELECT_PUSH_MANAGE_LIST_CNT = "channel.selectPushManageListCnt";
-	
+
 	public final static String QRY_INSERT_PUSH_MANAGE = "channel.insertPushManage";
 	public final static String QRY_UPDATE_PUSH_MANAGE = "channel.updatePushManage";
 	public final static String QRY_DELETE_PUSH_MANAGE = "channel.deletePushManage";
-	
+
 	public final static String QRY_SELECT_MO_CALLBACK_LIST_CNT = "channel.selectMoCallbackListCnt";
 	public final static String QRY_SELECT_MO_CALLBACK_LIST = "channel.selectMoCallbackList";
 	public final static String QRY_INSERT_MO_CALLBACK = "channel.insertMoCallback";

@@ -254,7 +254,7 @@ public class TemplateController {
             @RequestBody Map<String, Object> params) throws Exception {
         List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("sheetTitle", "푸시 템플릿 리스트");
+        map.put("sheetTitle", "SMS 템플릿 리스트");
         map.put("colLabels", new String[] { "템플릿 ID", "템플릿명", "타 프로젝트 사용여부", "발송유형", "등록자", "등록일자" });
         map.put("colIds", new String[] {"tmpltId", "tmpltName", "projectIdNm", "senderType", "regNm", "regDt"});
         map.put("numColIds", new String[] {});
@@ -269,4 +269,109 @@ public class TemplateController {
         return model;
     }
 
+    /**
+     * 친구톡 템플릿 저장
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/saveFrndTalkTmplt")
+    public RestResult<?> saveFrndTalkTmplt(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = tmpltSvc.saveFrndTalkTmplt(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
+
+    /**
+     * 친구톡 템플릿 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectFrndTalkList")
+    public RestResult<?> selectFrndTalkList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = tmpltSvc.selectFrndTalkList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 친구톡 템플릿 정보 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectFrndTalkInfo")
+    public RestResult<?> selectFrndTalkInfo(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = tmpltSvc.selectFrndTalkList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 친구톡 템플릿 엑셀 다운로드
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(path = "/excelDownloadFrndTalkTmplt")
+    public ModelAndView excelDownloadFrndTalkTmplt(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) throws Exception {
+        List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("sheetTitle", "친구톡 템플릿 리스트");
+        map.put("colLabels", new String[] { "템플릿 ID", "템플릿명", "메시지구분", "등록자", "등록일자" });
+        map.put("colIds", new String[] {"tmpltId", "tmpltName", "msgKindName", "regNm", "regDt"});
+        map.put("numColIds", new String[] {});
+        map.put("figureColIds", new String[] {});
+        map.put("colDataList", tmpltSvc.selectFrndTalkList(params).getData());
+        sheetList.add(map);
+
+        ModelAndView model = new ModelAndView("commonXlsxView");
+        model.addObject("excelFileName", "frndTalkTemplate_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("sheetList", sheetList);
+
+        return model;
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -286,4 +286,116 @@
             AND TMPLT_ID IN <foreach collection="tmpltIds" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
     </delete>
 
+    <insert id="insertFrndTalkTemplate" parameterType="hashmap">
+    /* template.insertFrndTalkTemplate - 친구톡 템플릿 등록 */
+        INSERT
+            INTO CM_FRIENDTALK_TMPLT
+        (
+            TMPLT_ID
+            , TMPLT_NAME
+            , CORP_ID
+            , MSG_KIND
+            , TMPLT_CONTENT
+            , FILE_ID
+            , IMG_URL
+            , IMG_LINK
+            , TMPLT_BUTTONS
+            , REG_DT
+            , REG_ID
+            , UPD_DT
+            , UPD_ID
+            , PROJECT_ID
+        ) VALUES (
+            #{tmpltId}
+            , #{tmpltName}
+            , #{corpId}
+            , #{msgKind}
+            , #{tmpltContent}
+            , #{fileId}
+            , #{imgUrl}
+            , #{imgLink}
+            , #{tmpltButtonsStr}
+            , NOW()
+            , #{userId}
+            , NOW()
+            , #{userId}
+            , #{projectId}
+        )
+    </insert>
+
+    <update id="updateFrndTalkTmplt" parameterType="hashmap">
+    /* template.updateFrndTalkTmplt - 친구톡 템플릿 수정 */
+        UPDATE CM_FRIENDTALK_TMPLT
+        SET
+            TMPLT_NAME = #{tmpltName}
+            , MSG_KIND = #{msgKind}
+            , TMPLT_CONTENT = #{tmpltContent}
+            , FILE_ID = #{fileId}
+            , IMG_URL = #{imgUrl}
+            , IMG_LINK = #{imgLink}
+            , TMPLT_BUTTONS = #{tmpltButtonsStr}
+            , UPD_DT = NOW()
+            , UPD_ID = #{userId}
+            , PROJECT_ID = #{projectId}
+        WHERE TMPLT_ID = #{tmpltId}
+    </update>
+
+    <sql id ="whereSelectFrndTalkTemplateList">
+        AND CORP_ID = #{corpId}
+        <if test="searchText != '' and searchText != null ">
+            <if test="searchCondi == 'tmpltId' ">
+            AND TMPLT_ID LIKE CONCAT('%', #{searchText}, '%')
+            </if>
+            <if test="searchCondi == 'tmpltName' ">
+            AND TMPLT_NAME LIKE CONCAT('%', #{searchText}, '%')
+            </if>
+        </if>
+        <if test="searchStartDate != '' and searchStartDate != null ">
+            <if test="searchEndDate != '' and searchEndDate != null ">
+            AND REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
+            </if>
+        </if>
+        <if test="tmpltId != '' and tmpltId != null ">
+            AND TMPLT_ID = #{tmpltId}
+        </if>
+    </sql>
+
+    <select id="selectFrndTalkTmpltListCnt" parameterType="hashmap" resultType="int">
+    /* template.selectFrndTalkTmpltListCnt 친구톡 템플릿 리스트 카운트 조회 */
+        SELECT
+            COUNT(*) AS CNT
+        FROM CM_FRIENDTALK_TMPLT
+        WHERE 1=1
+        <include refid="whereSelectFrndTalkTemplateList"/>
+    </select>
+
+    <select id="selectFrndTalkTmpltList" parameterType="string" resultType="camel">
+    /* template.selectSmsTmpltList 친구톡 템플릿 리스트 조회 */
+        SELECT
+            @ROWNUM := @ROWNUM + 1 AS ROWNUM
+            , CFT.TMPLT_ID
+            , CFT.TMPLT_NAME
+            , CFT.CORP_ID
+            , CFT.MSG_KIND
+            , cm_console.fnc_get_cd_name('MSG_KIND', CFT.MSG_KIND, 1) AS MSG_KIND_NAME
+            , CFT.TMPLT_CONTENT
+            , CFT.FILE_ID
+            , CFT.IMG_URL
+            , CFT.IMG_LINK
+            , CFT.TMPLT_BUTTONS
+            , DATE_FORMAT(CFT.REG_DT, '%Y-%m-%d %H:%i:%S') AS REG_DT
+            , CFT.REG_ID
+            , cm_console.fnc_get_user_name(CFT.REG_ID)  AS REG_NM
+            , CFT.UPD_DT
+            , CFT.UPD_ID
+            , CFT.PROJECT_ID
+        FROM CM_FRIENDTALK_TMPLT CFT, (SELECT @ROWNUM:=0) TMP
+        WHERE 1=1
+        <include refid="whereSelectFrndTalkTemplateList"/>
+        ORDER BY REG_DT DESC
+        <if test='pagingYn == "Y" '>
+        LIMIT ${offset}, #{listSize}
+        </if>
+    </select>
+
 </mapper>
