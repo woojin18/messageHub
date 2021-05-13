@@ -16,10 +16,12 @@ const httpClient = axios.create(config);
 
 const setLoginInterceptor = config => {
 	if (tokenSvc.getToken()) {
-		config.headers.loginId = tokenSvc.getToken().principal.loginId;
-		config.data.corpId = tokenSvc.getToken().principal.corpId;
-		config.data.userId = tokenSvc.getToken().principal.userId;
-		config.data.projectId = utils.getCookie(consts.projectId);
+		if (config.url !== '/api/auth/logout') {
+			config.headers.loginId = tokenSvc.getToken().principal.loginId;
+			config.data.corpId = tokenSvc.getToken().principal.corpId;
+			config.data.userId = tokenSvc.getToken().principal.userId;
+			config.data.projectId = utils.getCookie(consts.projectId);
+		}
 	}
 	return config;
 };

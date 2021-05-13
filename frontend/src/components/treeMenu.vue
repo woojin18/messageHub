@@ -74,6 +74,8 @@
 
 <script>
 import api from '@/modules/login/service/api';
+import * as utils from '@/common/utils';
+import { consts } from '@/common/config';
 import tokenSvc from '@/common/token-service';
 
 export default {
