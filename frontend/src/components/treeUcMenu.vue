@@ -3,7 +3,7 @@
 		<!-- sidebar -->
 		<nav id="sidebar">
 			<!-- 메뉴바 접기 -->
-			<a href="#self" class="sideMenu" title="사이드메뉴 축소/확대">
+			<a href="#" class="sideMenu" title="사이드메뉴 축소/확대">
 				<img src="../../public/se2/images/SideMenuOff.png" class="SideMenuOff" alt="사이드메뉴 축소">
 				<img src="../../public/se2/images/SideMenuOn.png" class="SideMenuOn" alt="사이드메뉴 확대">
 			</a>
@@ -12,10 +12,10 @@
 			<!-- consoleMenu -->
 			<dl>
 				<dt>
-					<a href="#self" title="비트큐브 하위메뉴 보기"><i class="fal fa-folder navIcon"></i><span>비트큐브<i class="fas fa-cog cog"></i> <i class="far fa-chevron-right navArrow"></i></span></a>
+					<a href="#" title="비트큐브"><i class="fal fa-folder navIcon"></i><span>비트큐브<i class="fas fa-cog cog"></i> <i class="far fa-chevron-right navArrow"></i></span></a>
 					<div class="consoleMenu">
 						<ul class="box-shadow">
-							<li v-for="(item, i) in prdData" :key="i" :class="{active : repPrdState(item.projectId)}"><a href="#self">{{item.projectName}}</a></li>
+							<li v-for="(item, i) in prdData" :key="i" :class="{active : repPrdState(item.projectId)}"><a href="#">{{item.projectName}}</a></li>
 						</ul>
 					</div>
 				</dt>
