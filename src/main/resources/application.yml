@@ -1,11 +1,5 @@
 server:
   port: 7070
-  
-#미사용 추후 삭제예정
-file-props:
-  img:
-    upload-path: /frontend/src/assets/images/temp/    limit-size: 5000000  #5MB
-#미사용 추후 삭제예정
 
 ---
 spring:

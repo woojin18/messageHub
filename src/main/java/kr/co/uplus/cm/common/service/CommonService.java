@@ -27,7 +27,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -67,10 +66,10 @@ public class CommonService {
     @Autowired
     AuthService authSvc;
 
-    @Value("${file-props.img.upload-path}")
+    @Deprecated
     String imgUploadPath;
 
-    @Value("${file-props.img.limit-size}")
+    @Deprecated
     long imgUploadLimitSize;
 
     /**
