@@ -650,6 +650,7 @@ public class SendMessageService {
         String apiKey = commonService.getApiKey(corpId, projectId);
         String jsonString = "";
         boolean isDone = false;
+        boolean isServerError = false;
 
         Gson gson = new Gson();
         Map<String, String> headerMap = new HashMap<String, String>();
@@ -662,6 +663,7 @@ public class SendMessageService {
 
         while (toIndex < listSize) {
             isDone = false;
+            isServerError = false;
             toIndex = fromIndex + cutSize;
             try {
                 if(toIndex > listSize) toIndex = listSize;
@@ -671,6 +673,7 @@ public class SendMessageService {
                 isDone = isRequestApiAgain(responseBody, reSendCdList);
             } catch (Exception e) {
                 log.error("{}.sendPushMsgAsync API Request Error ==> {}", this.getClass(), e);
+                isServerError = true;
             }
 
             if(isDone) {
@@ -683,7 +686,7 @@ public class SendMessageService {
             } else {
                 retryCnt++;
                 toIndex = fromIndex;
-                TimeUnit.MICROSECONDS.sleep(200000);  //0.2 Sec delay
+                if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
             }
         }
 
