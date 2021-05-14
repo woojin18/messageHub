@@ -107,4 +107,12 @@ public class Const {
         public static final String REJECT = "반려";
     }
 
+    //메시지 발송 오류 설정
+    public static class SendMsgErrorSet {
+        public static final String ERROR_PREFIX = "ERR";
+        public static final String GW_RESULT_CODE = "ERROR";
+        public static final String GW_RESULT_DESC = "3회재시도 에러";
+    }
+
+
 }

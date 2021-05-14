@@ -286,7 +286,7 @@ public class CommonService {
                 // send result
                 imgUrl = "";
                 if (!CommonUtils.isEmptyValue(resultMap, "rslt")
-                        && StringUtils.equals(ApiConfig.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
                     if (!CommonUtils.isEmptyValue(resultMap, "data")) {
                         mapper = new ObjectMapper();
                         dataMap = mapper.convertValue(resultMap.get("data"), Map.class);

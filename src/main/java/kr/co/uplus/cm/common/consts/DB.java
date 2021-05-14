@@ -56,6 +56,8 @@ public class DB {
     public final static String QRY_SELECT_PAY_TYPE = "sendMessage.selectPayType";
     public final static String QRY_SELECT_MSG_FEE_PER_ONE = "sendMessage.selectMsgFeePerOne";
     public final static String QRY_INSERT_CM_WEB_MSG = "sendMessage.insertCmWebMsg";
+    public final static String QRY_SELECT_RE_SEND_CD_LIST = "sendMessage.selectReSendCdList";
+    public final static String QRY_INSERT_CM_MSG = "sendMessage.insertCmMsg";
 	// RCS 채널 브랜드 정보
     public final static String QRY_SELECT_RCS_BRANDLIST_CNT = "channel.selectRcsBrandListCnt";
 	public final static String QRY_SELECT_RCS_BRANDLIST = "channel.selectRcsBrandList";

@@ -282,8 +282,9 @@ public class SendMessageController {
 
         /** 비동기화 발송 */
         try {
+            List<Object> reSendCdList = sendMsgService.selectGernalList(null);
             log.info("{}.sendPushMessage aSync API send Start ====>");
-            sendMsgService.sendPushMsgAsync(rtn, 0, params, requestData, recvInfoLst);
+            sendMsgService.sendPushMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.info("{}.sendPushMessage aSync API send Error : {}", this.getClass(), e);
         }

@@ -243,4 +243,66 @@
            )
     </insert>
 
+    <select id="selectReSendCdList" parameterType="hashmap" resultType="string">
+    /* sendMessage.selectReSendCdList 재발송 코드 리스트 조회 */
+        SELECT CC.CODE_VAL_1
+        FROM cm_bo.CM_CODE_TYPE CCT
+        INNER JOIN cm_bo.CM_CODE CC
+            ON CCT.CODE_TYPE_CD = CC.CODE_TYPE_CD
+            AND CC.USE_YN = 'Y'
+        WHERE CCT.USE_YN = 'Y'
+            AND CC.CODE_TYPE_CD = 'RE_SEND_CD'
+    </select>
+
+    <insert id="insertCmMsg" parameterType="hashmap">
+    /* template.insertCmMsg - 채널별 메시지 내역 등록 */
+        INSERT
+            INTO cm.CM_MSG
+        (
+            YMD
+            , MSG_KEY
+            , CORP_ID
+            , PROJECT_ID
+            , API_KEY
+            , PAY_TYPE
+            , CLI_KEY
+            , SENDER_TYPE
+            , REQ_CH
+            , PRODUCT_CODE
+            , STATUS
+            , REG_DT
+            , FINAL_CH
+            , PHONE
+            , PUSH_APP_ID
+            , PUSH_CUID
+            , CALLBACK
+            , WEB_REQ_ID
+            , GW_RESULT_CODE
+            , GW_RESULT_DESC
+            , FB_REQ_CNT
+        ) VALUES (
+            DATE_FORMAT(NOW(), '%Y-%m-%d')
+            , #{msgKey}
+            , #{corpId}
+            , #{projectId}
+            , #{apiKey}
+            , 'POST'
+            , #{cliKey}
+            , #{senderType}
+            , #{reqCh}
+            , #{productCode}
+            , '9999'
+            , CONCAT(DATE_FORMAT(NOW(3), '%Y-%m-%dT%H:%i:%s'), LEFT(DATE_FORMAT(NOW(3), '.%f'), 4), '+09')
+            , #{finalCh}
+            , #{phone}
+            , #{pushAppId}
+            , #{pushCuid}
+            , #{callback}
+            , #{webReqId}
+            , #{gwResultCode}
+            , #{gwResultDesc}
+            , '0'
+        )
+    </insert>
+
 </mapper>
