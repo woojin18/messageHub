@@ -424,8 +424,9 @@ public class SendMessageController {
         }
 
         try {
+            List<Object> reSendCdList = sendMsgService.selectGernalList(null);
             log.info("{}.sendSmsMessage aSync API send Start ====>");
-            sendMsgService.sendSmsMsgAsync(rtn, 0, params, requestData, recvInfoLst);
+            sendMsgService.sendSmsMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.info("{}.sendSmsMessage aSync API send Error : {}", this.getClass(), e);
         }
@@ -526,8 +527,9 @@ public class SendMessageController {
         }
 
         try {
+            List<Object> reSendCdList = sendMsgService.selectGernalList(null);
             log.info("{}.sendMmsMessage aSync API send Start ====>");
-            sendMsgService.sendMmsMsgAsync(rtn, 0, params, requestData, recvInfoLst);
+            sendMsgService.sendMmsMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.info("{}.sendMmsMessage aSync API send Error : {}", this.getClass(), e);
         }
