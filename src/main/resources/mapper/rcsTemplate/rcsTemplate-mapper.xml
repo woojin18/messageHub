@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="rcsTemplate">
+	<select id="selectRcsTemplate" resultType="hashMap">
+		/* rcsTemplate.selectRcsTemplate */
+		SELECT	@ROWNUM := @ROWNUM + 1 AS ROWNUM
+		,		AA.*
+		,		BB.BRAND_NAME 
+		FROM 	(
+				SELECT	A.*
+				FROM 	(
+						SELECT	MSGBASE.*
+						,		case @vData when MESSAGEBASE_ID then @vRank := @vRank + 1 else @vRank := 1 end AS RANKING
+						,		(@vData:=MESSAGEBASE_ID) AS vData
+						FROM	(
+								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID 
+								,		A.BRAND_ID			AS BRAND_ID 
+								,		A.CORP_ID			AS CORP_ID
+								,		A.TMPLT_NAME		AS TMPLT_NAME 
+								,		A.PRODUCT_CODE		AS PRODUCT_CODE 
+								,		A.REG_ID			AS REG_ID 
+								,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
+								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS 
+								,		A.APPROVAL_DT		AS APPROVAL_DT 
+								FROM	cm.CM_RCS_MSGBASE A
+								UNION ALL
+								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID 
+								,		A.BRAND_ID			AS BRAND_ID 
+								,		A.CORP_ID			AS CORP_ID 
+								,		A.TMPLT_NAME		AS TMPLT_NAME 
+								,		A.PRODUCT_CODE		AS PRODUCT_CODE 
+								,		A.REG_ID			AS REG_ID
+								,		A.REG_DT			AS REG_DT
+								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS 
+								,		A.APPROVAL_DT		AS APPROVAL_DT 
+								FROM	cm.CM_RCS_MSGBASE_REQ A
+						) MSGBASE, (SELECT @vRank:=0, @vData:='') as r
+						ORDER BY MSGBASE.MESSAGEBASE_ID, MSGBASE.REG_DT
+				) A
+				WHERE	RANKING = 1
+		) AA
+		INNER JOIN cm.CM_RCS_BRAND BB
+			ON	AA.BRAND_ID = BB.BRAND_ID
+		WHERE	(@ROWNUM:=0)=0
+		<include refid="selectRcsTemplateSql"/>
+		ORDER BY AA.REG_DT DESC
+		<if test='pagingYn == "Y" '>
+		LIMIT ${offset}, #{listSize}
+		</if>
+	</select>
+	
+	<select id="selectRcsTemplateCnt" resultType="int">
+		/* rcsTemplate.selectRcsTemplateCnt */
+		SELECT	COUNT(*)
+		FROM 	(
+				SELECT	A.*
+				FROM 	(
+						SELECT	MSGBASE.*
+						,		case @vData when MESSAGEBASE_ID then @vRank := @vRank + 1 else @vRank := 1 end AS RANKING
+						,		(@vData:=MESSAGEBASE_ID) AS vData
+						FROM	(
+								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID 
+								,		A.BRAND_ID			AS BRAND_ID 
+								,		A.CORP_ID			AS CORP_ID
+								,		A.TMPLT_NAME		AS TMPLT_NAME 
+								,		A.PRODUCT_CODE		AS PRODUCT_CODE 
+								,		A.REG_ID			AS REG_ID 
+								,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
+								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS 
+								,		A.APPROVAL_DT		AS APPROVAL_DT 
+								FROM	cm.CM_RCS_MSGBASE A
+								UNION ALL
+								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID 
+								,		A.BRAND_ID			AS BRAND_ID 
+								,		A.CORP_ID			AS CORP_ID 
+								,		A.TMPLT_NAME		AS TMPLT_NAME 
+								,		A.PRODUCT_CODE		AS PRODUCT_CODE 
+								,		A.REG_ID			AS REG_ID
+								,		A.REG_DT			AS REG_DT
+								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS 
+								,		A.APPROVAL_DT		AS APPROVAL_DT 
+								FROM	cm.CM_RCS_MSGBASE_REQ A
+						) MSGBASE, (SELECT @vRank:=0, @vData:='') as r
+						ORDER BY MSGBASE.MESSAGEBASE_ID, MSGBASE.REG_DT
+				) A
+				WHERE	RANKING = 1
+		) AA
+		INNER JOIN cm.CM_RCS_BRAND BB
+			ON	AA.BRAND_ID = BB.BRAND_ID
+		WHERE	1=1
+		<include refid="selectRcsTemplateSql"/>
+	</select>
+	
+	<sql id="selectRcsTemplateSql">
+		<if test="corpId != '' and corpId != null">
+			AND		AA.CORP_ID = #{corpId}
+		</if>
+		<if test="status != '' and status != null">
+			AND		AA.APPROVAL_STATUS = #{status}
+		</if>
+		<if test="temNm != '' and temNm != null">
+			AND		AA.TMPLT_NAME = #{temNm}
+		</if>
+		<if test="temId != '' and temId != null">
+			AND		AA.MESSAGEBASE_ID = #{temId}
+		</if>
+		<if test="brandNm != '' and brandNm != null">
+			AND		AA.BRAND_NAME = #{brandNm}
+		</if>
+	</sql>
+	
+	<select id="selectCorpBrandCnt" resultType="int">
+		/* rcsTemplate.selectCorpBrandCnt */
+		SELECT	COUNT(*)
+		FROM	cm.CM_RCS_BRAND
+		WHERE	CORP_ID = #{corpId}
+	</select>
+
+</mapper>

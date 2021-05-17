@@ -51,6 +51,15 @@ const excelDownloadFrndTalkTmplt = (params) => {
   .then((response) => fnExcelDownCallback(response));
 };
 
+/* RCS */
+const corpBrandCnt = (params) => {
+  return httpClient.post('/api/public/rcsTemplate/corpBrandCnt', params, { headers: {"show-layer": "Yes"} });
+};
+
+const selectRcsTemplateList = (params) => {
+  return httpClient.post('/api/public/rcsTemplate/selectRcsTemplateList', params, {headers: {"show-layer":"yes"}});
+};
+
 export default {
     savePushTmplt,
     selectPushTmpltInfo,
@@ -65,7 +74,9 @@ export default {
     saveFrndTalkTmplt,
     selectFrndTalkList,
     selectFrndTalkInfo,
-    excelDownloadFrndTalkTmplt
+    excelDownloadFrndTalkTmplt,
+    corpBrandCnt,
+    selectRcsTemplateList
 };
 
 function fnExcelDownCallback(response){

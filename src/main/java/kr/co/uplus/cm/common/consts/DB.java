@@ -124,5 +124,6 @@ public class DB {
 	// RCS 템플릿 관리
 	public final static String QRY_SELECT_RCS_TEMPLATE_LIST = "rcsTemplate.selectRcsTemplate";
 	public final static String QRY_SELECT_RCS_TEMPLATE_LIST_CNT = "rcsTemplate.selectRcsTemplateCnt";
+	public final static String QRY_SELECT_CORP_BRAND_CNT = "rcsTemplate.selectCorpBrandCnt";
 
 }

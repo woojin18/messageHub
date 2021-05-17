@@ -1,0 +1,305 @@
+<template>
+    <div>
+		<article>
+			<div class="contentHeader">
+				<h2>RCS 템플릿</h2>
+				<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="RCS 템플릿 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+			</div>
+
+			<!-- 본문 -->
+			<div class="border-line2 pd10">
+				<p class="color4">RCS 템플릿은 서술형과 스타일형으로만 작성이 가능합니다.<br>RCS 템플릿은 승인과정을 통해서 등록이 됩니다. (저장 상태에서는 수정/삭제가 가능하고 승인요청 후에는 수정/삭제가 불가능 합니다.)<br>상태가 승인인 템플릿은 RCS 메시지 발송을 할 수 있습니다.</p>
+			</div>
+
+			<div class="row consolMarginTop">
+				<div class="col-xs-12">
+					<div class="menuBox">
+						<div>
+							<h4 style="width:10%" class="inline-block">템플릿 명</h4>
+							<input type="text" class="inputStyle" style="width:24%" title="템플릿 명 입력란"><p class="color3 inline-block ml10" style="width:10%">0/30자</p>
+							<h4 class="inline-block" style="width:10%">템플릿코드</h4>
+							<input type="text" class="inputStyle" style="width:24%" title="템플릿 명 입력란">
+						</div>
+						<div>
+							<h4 class="inline-block" style="width:10%">브랜드명</h4>
+							<select name="userConsole_sub040202_1" class="selectStyle2" style="width:24%" title="브랜드명 선택란">
+								<option value="">선택하세요</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<h4>RCS 상품</h4>
+			<ul class="tab_s6" role="tablist">
+				<li role="presentation" class="active"><a href="#productCate1" aria-controls="productCate1" role="tab" data-toggle="tab">서술형 <i class="fas fa-question-circle toolTip"><span class="toolTipText text-left" style="width:380px">문자메시지처럼 문장 형태의 텍스트를 입력할 수 있습니다.<br>에뮬레이터에 노출되는 이미지는 변경이 되지 않습니다.<br>최대 90자까지(공백포함) 입력이 가능합니다.</span></i></a></li>
+				<li role="presentation"><a href="#productCate2" aria-controls="productCate2" role="tab" data-toggle="tab">스타일형 <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:470px">1행에 1개 또는 2개의 Cell을 선택적으로 사용할 수 있습니다.<br>최대 10행까지 입력이 가능합니다.<br>라인 체크박스 클릭 시 해당 행 하단에 라인을 삽입할 수 있습니다.<br>Cell 설정된 값은 좌측 에뮬레이터 영역에서 실시간으로 확인이 가능합니다.</span></i></a></li>
+			</ul>
+
+			<div class="tab-content">
+				<!--  tab1 -->
+				<div role="tabpanel" class="tab-pane active" id="productCate1">
+					<div class="templateBox">
+						<!-- templateList -->
+						<div class="of_h mt30">
+							<div class="phone3 inline-block" style="width:32%">
+								<!-- phoneWrap -->
+								<div class="phoneWrap">
+									<img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
+									<div class="phoneTextWrap">
+										<div class="phoneText1">
+											<p><i class="fal fa-cart-arrow-down mr10"></i> 주문</p>
+											<!--<p class="mt15 lc-1">{{name}}입니다.{{date}} 할인/특가<br>상품을 안내해 드립니다.<br>본 알림은 {{name}} 회원전용 서비스<br>입니다.</p>-->
+											<p class="text-center font-size13 mt20" style="color:#69C8FF">사이트 연결</p>
+										</div>
+									</div>
+								</div>
+								<!-- //phoneWrap -->
+							</div>
+							<div class="of_h inline-block vertical-top consoleCon" style="width:60%">
+								<div class="of_h user-phone">
+									<div class="float-left" style="width:22%">
+										<h4>유형 *</h4>
+									</div>
+									<div class="float-left" style="width:78%">
+										<div class="of_h">
+											<select name="userConsole_sub040202_2" class="selectStyle2">
+												<option value="">선택하세요</option>
+											</select>
+										</div>
+									</div>									
+								</div>
+								<div class="of_h user-phone">
+									<div class="float-left" style="width:22%">
+										<h4>내용 *</h4>
+									</div>
+									<div class="float-left" style="width:78%">
+										<div class="of_h">
+											<textarea class="textareaStyle height120" placeholder="변수로 설정하고자 하는 내용을 { }표시로 작성해 주십시오.&#13;예) 이름과 출금일을 변수 설정: 예) {고객}님 {YYMMDD} 출금 예정입니다."></textarea>
+										</div>
+										<p class="float-right">0/90자</p>
+									</div>									
+								</div>
+								<div class="of_h user-phone">
+									<div class="float-left" style="width:22%">
+										<h4 class="mr10 inline-block">버튼</h4>
+										<a href="#self" class="btnStyle1 backBlack">추가 +</a>
+									</div>
+									<div class="float-left" style="width:78%">
+										<div class="of_h">
+											<table id="backOffie_sub13_2" class="table_skin1" style="width:100%">
+											  <colgroup>
+												  <col style="width:20%">
+												  <col style="width:20%">
+												  <col>
+												  <col style="width:15%">
+											  </colgroup>
+											  <thead>
+												<tr>
+												  <th class="text-center">타입</th>
+												  <th class="text-center">버튼이름</th>
+												  <th class="text-center">버튼링크</th>
+												  <th class="text-center end"></th>
+												</tr>
+											  </thead>
+												<tbody class="of_h">
+												  
+												 <tr>	
+													<td class="text-left" rowspan="2" style="border-bottom:1px solid #222">
+														<select name="userConsole_sub040202_3" style="width: 100%" class="float-left selectStyle2">
+															<option value="">타입</option>
+														</select>
+													</td>
+													<td class="text-center" rowspan="2" style="border-bottom:1px solid #222"><input type="text" class="inputStyle float-left"></td>
+													<td class="text-left of_h">
+														<p class="font-normal float-left" style="width:20%">Mobile</p>
+														<input type="text" class="inputStyle float-right" style="width:68%">
+													</td>											
+													<td class="text-center end" rowspan="2" style="border-bottom:1px solid #222">
+														<a href="#" title="이전버튼"><i class="far fa-plus channelBtn"></i> <i class="far fa-minus channelBtn"></i></a>
+													</td>
+												  </tr>
+												  <tr>
+													<td class="text-left of_h">
+														<p class="font-normal float-left" style="width:20%">PC</p>
+														<input type="text" class="inputStyle float-right" style="width:68%">
+													</td>
+												  </tr>								  
+												</tbody>
+											</table>
+										</div>
+									</div>									
+								</div>
+								<div class="consolCheck consolMarginTop"><input type="checkbox" id="agree2" class="checkStyle2" value="agree2"><label for="agree2" class="color4">정보성 메시지만 보낼 수 있으며, 광고 등 정책에 위배되는 메시지 발송 시  템플릿 사용이 중지될 수 있음을 동의합니다.</label></div>
+								<div class="of_h">
+									<div class="mt20 text-right" style="width:100%">
+										<a href="#self" class="btnStyle2 backWhite" title="복사">복사</a>
+										<a href="#self" class="btnStyle2 backWhite ml10" title="저장">저장</a>
+										<a href="#self" class="btnStyle2 backWhite ml10" title="삭제">삭제</a>
+										<a href="#self" class="btnStyle2 backRed  ml10" title="승인요청">승인요청</a>
+										<a href="#self" class="btnStyle2 ml10" title="목록">목록</a>
+									</div>
+								</div>
+							</div>							
+						</div>	
+						<!-- //templateList -->
+					</div>
+				</div>
+
+				<!--  tab2 -->
+				<div role="tabpanel" class="tab-pane" id="productCate2">
+					<div class="templateBox">
+						<!-- templateList -->
+						<div class="of_h mt30">
+							<div class="phone3 inline-block" style="width:32%">
+								<!-- phoneWrap -->
+								<div class="phoneWrap">
+									<img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
+									<div class="phoneTextWrap">
+										<div class="phoneText1 of_h">
+											<p><i class="fal fa-file-certificate"></i> 인증</p>
+											<p class="mt15 lc-1">인증번호 안내</p>
+											<p class="mt15 lc-1 inline-block">인증번호</p>
+											<p class="mt15 lc-1 inline-block float-right">{{desc_var1}}</p>
+											<p class="text-center font-size13 mt50" style="color:#69C8FF">홈페이지 연결하기</p>
+											<p class="text-center font-size13 mt5" style="color:#69C8FF">인증번호 복사하기</p>
+										</div>
+									</div>
+								</div>
+								<!-- //phoneWrap -->
+							</div>
+							<div class="of_h inline-block vertical-top consoleCon" style="width:60%">
+								<div class="of_h user-phone">
+									<div class="float-left" style="width:22%">
+										<h4>유형 *</h4>
+									</div>
+									<div class="float-left" style="width:78%">
+										<div class="of_h">
+											<select name="userConsole_sub040202_4" class="selectStyle2">
+												<option value="">선택하세요</option>
+											</select>
+										</div>
+									</div>									
+								</div>
+								<div class="of_h user-phone of_h">
+									<div class="float-left" style="width:22%">
+										<h4>내용 *</h4>
+									</div>
+									<div class="float-left" style="width:78%">
+										<div class="of_h">
+											<textarea class="textareaStyle height120" placeholder="변수로 설정하고자 하는 내용을 { }표시로 작성해 주십시오.&#13;예) 이름과 출금일을 변수 설정: 예) {고객}님 {YYMMDD} 출금 예정입니다."></textarea>
+											<p class="float-right">기변부 포함 90자 이내로 작성해 주세요.</p>
+										</div>										
+										<div>
+											<img src="/common/images/square01.svg" alt="사각형1">
+											<img src="/common/images/square02.svg" alt="사각형2" class="ml10">
+											<input type="text" class="inputStyle ml10" style="width:35%">
+											<div class="consolCheck ml10"><input type="checkbox" id="line1" class="checkStyle2" value="line1"><label for="line1" class="color4">라인</label></div>
+										</div>
+										<div class="consolMarginTop">
+											<img src="/common/images/square02.svg" alt="사각형2">
+											<img src="/common/images/square03.svg" alt="사각형3" class="ml10">
+											<input type="text" class="inputStyle ml10" style="width:16%">
+											<input type="text" class="inputStyle ml10" style="width:16%">
+											<div class="consolCheck ml10"><input type="checkbox" id="line2" class="checkStyle2" value="line2"><label for="line2" class="color4">라인</label></div>
+										</div>	
+										<div class="consolMarginTop float-right" style="width:63%;">
+											<a href="#self" class="btnStyle1 backBlack">Cell 추가 &nbsp;&nbsp;&nbsp; +</a>
+										</div>
+									</div>										
+								</div>
+								<div class="of_h user-phone consolMarginTop">
+									<div class="float-left" style="width:22%">
+										<h4>버튼</h4>
+									</div>
+									<div class="float-left" style="width:78%">
+										<div class="of_h">
+											<table id="backOffie_sub13_2" class="table_skin1" style="width:100%">
+											  <colgroup>
+												  <col style="width:20%">
+												  <col style="width:20%">
+												  <col>
+												  <col style="width:15%">
+											  </colgroup>
+											  <thead>
+												<tr>
+												  <th class="text-center">타입</th>
+												  <th class="text-center">버튼이름</th>
+												  <th class="text-center">버튼링크</th>
+												  <th class="text-center end">구분</th>
+												</tr>
+											  </thead>
+												<tbody class="of_h">
+												  
+												 <tr>	
+													<td class="text-left" style="border-bottom:1px solid #222">
+														<select name="userConsole_sub040202_5" class="float-left selectStyle2">
+															<option value="">URL링크</option>
+														</select>
+													</td>
+													<td class="text-center" style="border-bottom:1px solid #222"><input type="text" class="inputStyle float-left"></td>
+													<td class="text-left of_h">
+														<input type="text" class="inputStyle float-left  float-right">
+													</td>											
+													<td class="text-center end" style="border-bottom:1px solid #222">
+														<a href="#" title="이전버튼"><i class="far fa-plus channelBtn"></i> <i class="far fa-minus channelBtn"></i></a>
+													</td>
+												  </tr>				  
+												</tbody>
+											</table>
+										</div>
+									</div>									
+								</div>
+								<div class="consolCheck consolMarginTop"><input type="checkbox" id="agree2" class="checkStyle2" value="agree2"><label for="agree2" class="color4">정보성 메시지만 보낼 수 있으며, 광고 등 정책에 위배되는 메시지 발송 시  템플릿 사용이 중지될 수 있음을 동의합니다.</label></div>
+								<div class="of_h">
+									<div class="mt20 text-right" style="width:100%">
+										<a href="#self" class="btnStyle2 backWhite" title="복사">복사</a>
+										<a href="#self" class="btnStyle2 backWhite ml10" title="삭제">삭제</a>
+										<a href="#self" class="btnStyle2 backRed  ml10" title="승인요청">승인요청</a>
+										<a href="#self" class="btnStyle2 ml10" title="목록" v-if="status=='dsf'">목록</a>
+									</div>
+								</div>
+							</div>
+							
+						</div>	
+						<!-- //templateList -->
+					</div>
+				</div>
+			</div>
+		</article>
+    </div>
+</template>
+
+<script>
+import confirm from "@/modules/commonUtil/service/confirm";
+import templateApi from "@/modules/template/service/templateApi.js";
+
+export default {
+  name: "rcsTemplateMod",
+  components: {
+  },
+  props: {
+      status: {
+          type: String,
+          default: ""
+      }
+  },
+  data() {
+    return {
+      
+    }
+  },
+  mounted() {
+      
+      var status = this.status;
+      if(status=="INS") {
+
+      }
+
+    
+  },
+
+  methods: {
+    }
+}
+</script>

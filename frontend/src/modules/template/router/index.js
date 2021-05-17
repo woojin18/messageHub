@@ -4,6 +4,9 @@ import SmsTemplateManage from '../views/bm-smsTemplateManage.vue'
 import SmsTemplateList from '../views/bm-smsTemplateList.vue'
 import FrndTalkTemplateManage from '../views/bm-frndTalkTemplateManage.vue'
 import FrndTalkTemplateList from '../views/bm-frndTalkTemplateList.vue'
+import RcsTemplateList from '../views/bm-rcsTemplateList.vue'
+import RcsTemplateMod from '../views/bm-rcsTemplateMod.vue'
+
 
 export default [
     {
@@ -40,6 +43,17 @@ export default [
         path: '/uc/template/frndTalkTemplateList',
         name: 'frndTalkTemplateList',
         component: FrndTalkTemplateList,
+        props: true
+    },
+    {
+        path: '/uc/template/rcsTemplateList',
+        name: 'rcsTemplateList',
+        component: RcsTemplateList
+    },
+    {
+        path: '/uc/template/rcsTemplateMod',
+        name: 'rcsTemplateMod',
+        component: RcsTemplateMod,
         props: true
     }
 ]
