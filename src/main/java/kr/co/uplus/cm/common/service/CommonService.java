@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +27,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -40,6 +40,8 @@ import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.model.AuthUser;
+import kr.co.uplus.cm.common.utils.SpringUtils;
+import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.login.service.AuthService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -64,10 +66,10 @@ public class CommonService {
     @Autowired
     AuthService authSvc;
 
-    @Value("${file-props.img.upload-path}")
+    @Deprecated
     String imgUploadPath;
 
-    @Value("${file-props.img.limit-size}")
+    @Deprecated
     long imgUploadLimitSize;
 
     /**
@@ -278,13 +280,13 @@ public class CommonService {
                 reqFileObject.put("wideYn", apiWideYn);
 
                 // send
-                apiUrl = Const.FILE_UPLOAD_API_URI + ch.toLowerCase();
+                apiUrl = ApiConfig.FILE_UPLOAD_API_URI + ch.toLowerCase();
                 resultMap = apiInterface.sendImg(apiUrl, headerMap, chFile, reqFileObject.toJSONString());
 
                 // send result
                 imgUrl = "";
                 if (!CommonUtils.isEmptyValue(resultMap, "rslt")
-                        && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
                     if (!CommonUtils.isEmptyValue(resultMap, "data")) {
                         mapper = new ObjectMapper();
                         dataMap = mapper.convertValue(resultMap.get("data"), Map.class);
@@ -532,12 +534,46 @@ public class CommonService {
     }
 
     /**
+     * 사용자 정보 Set
+     * @param params
+     * @return
+     */
+    public Map<String, Object> setUserInfo(Map<String, Object> params) {
+        HttpServletRequest request = SpringUtils.getCurrentRequest();
+        String loginId = request.getHeader("loginId");
+        if(StringUtils.isNotBlank(loginId)) {
+            AuthUser authUser = (AuthUser) authSvc.loadUserByUsername(request.getHeader("loginId"));
+            String userId = StringUtils.defaultIfBlank(authUser.getUserId(), "");
+            String corpId = StringUtils.defaultIfBlank(authUser.getCorpId(), "");
+
+            Cookie[] cookies = request.getCookies();
+            String key = "project";
+            String projectId = "";
+
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals(key)) {
+                        projectId = cookie.getValue();
+                        break;
+                    }
+                }
+            }
+
+            params.put("userId", userId);
+            params.put("corpId", corpId);
+            params.put("projectId", projectId);
+        }
+
+        return params;
+    }
+
+    /**
      * get 이미지 업로드 채널별 용량제한 정보
      * @param imgSetInfoList
      * @param ch
      * @return
      */
-    @SuppressWarnings({ "unchecked", "unused" })
+    @SuppressWarnings("unchecked")
     private long getChLimitSize(List<Object> imgSetInfoList, String ch) {
         Long limitSize = NumberUtils.LONG_ZERO;
         HashMap<String, Object> map = new HashMap<>();
@@ -557,7 +593,7 @@ public class CommonService {
      * @param ch
      * @return
      */
-    @SuppressWarnings({ "unchecked", "unused" })
+    @SuppressWarnings("unchecked")
     private Map<String, Integer> getChResize(List<Object> imgSetInfoList, String ch) {
         Map<String, Integer> resizeMap = new HashMap<String, Integer>();
         HashMap<String, Object> map = new HashMap<>();
@@ -615,4 +651,5 @@ public class CommonService {
             log.error("deleteFolder Error : {}", e);
         }
     }
+
 }

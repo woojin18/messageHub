@@ -36,6 +36,14 @@ const selectRcsBrandMsgBaseList = (params) => {
     return httpClient.post('/projectApi/channel/selectRcsBrandMsgBaseList', params, { headers: {"show-layer": "Yes"} });
 };
 
+const selectMoCallbackList = (params) => {
+    return httpClient.post('/projectApi/channel/selectMoCallbackList', params, { headers: {"show-layer": "Yes"} });
+};
+
+const saveMoCallback = (params) => {
+    return httpClient.post('/projectApi/channel/saveMoCallback', params, { headers: {"show-layer": "Yes"} });
+};
+
 
 export default {
     selectRcsBrandList,
@@ -46,5 +54,7 @@ export default {
     fileUploadToApi,
     selectPushManageList,
     deletePushManage,
-    selectRcsBrandMsgBaseList
+    selectRcsBrandMsgBaseList,
+    selectMoCallbackList,
+    saveMoCallback
 };

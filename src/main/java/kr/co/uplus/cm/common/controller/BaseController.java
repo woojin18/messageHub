@@ -13,6 +13,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import kr.co.uplus.cm.common.model.AuthUser;
 import kr.co.uplus.cm.login.service.AuthService;
 
+@Deprecated
 public class BaseController {
 
 	@Autowired
@@ -20,7 +21,7 @@ public class BaseController {
 
 	/**
 	 * 사용자 정보 Get
-	 * 
+	 *
 	 * @param request
 	 * @return
 	 */
@@ -34,7 +35,7 @@ public class BaseController {
 
 	/**
 	 * 사용자 정보 Get
-	 * 
+	 *
 	 * @param request
 	 * @return
 	 */
@@ -44,7 +45,7 @@ public class BaseController {
 
 	/**
 	 * 사용자 정보 Set
-	 * 
+	 *
 	 * @param params
 	 * @param isContainIgnore
 	 * @return
@@ -73,7 +74,7 @@ public class BaseController {
 
 	/**
 	 * 사용자 정보 Set
-	 * 
+	 *
 	 * @param params
 	 * @return
 	 */
@@ -83,7 +84,7 @@ public class BaseController {
 
 	/**
 	 * 현재 선택한 프로젝트 ID get
-	 * 
+	 *
 	 * @param request
 	 * @return
 	 * @throws Exception

@@ -414,7 +414,7 @@ export default {
       let fd = new FormData();
       fd.append('paramString', JSON.stringify(params));
       if(this.sendData.cuInputType == 'EXCEL'){
-        fd.append('excelFile', this.$refs.excelFile.files[0]);
+        fd.append('file', this.$refs.excelFile.files[0]);
       }
 
       this.inProgress = true;

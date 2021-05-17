@@ -72,12 +72,7 @@
 						<div class="float-left" style="width:50%"><a href="#self" class="btnStyle1 borderLightGray" style="min-width:auto; width:100%" title="SMS/MMS">SMS/MMS</a></div>
 					</div>
 					<div class="of_h consolMarginTop">
-						<div class="float-right text-center" style="width:50%"><a href="#" title="이전버튼"><i class="far fa-chevron-up channelBtn"></i></a> <a href="#" title="이전버튼"><i class="far fa-chevron-down channelBtn"></i></a></div>
-					</div>
-					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:33%; padding:0 10px"><a href="#self" class="btnStyle1 borderGray" style="min-width:auto; width:100%" title="저장">저장</a></div>
-						<div class="float-left" style="width:33%; padding:0 10px"><a href="#self" class="btnStyle1 backBlack" style="min-width:auto; width:100%" title="수정">수정</a></div>
-						<div class="float-left" style="width:33%; padding:0 10px"><a href="#self" class="btnStyle1 backWhite" style="min-width:auto; width:100%" title="취소">취소</a></div>
+						<div class="float-right text-center" style="width:50%"><a href="#self" class="far fa-chevron-up channelBtn"></a> <a href="#self" class="far fa-chevron-down channelBtn"></a></div>
 					</div>
 				</div>
 			</div>
@@ -89,9 +84,30 @@
 				<ul class="tab_s3">
 					<li><a href="#self" title="Push 페이지로 이동">Push</a></li>
 					<li><a href="#self" title="RCS 페이지로 이동">RCS</a></li>
-					<li><a href="#self" title="카카오톡(알림톡) 페이지로 이동">카카오톡(알림톡)</a></li>
-					<li class="active"><a href="#self" title="카카오톡(친구톡) 페이지로 이동">카카오톡(친구톡)</a></li>
+					<li class="active"><a href="#self" title="카카오톡 페이지로 이동">카카오톡</a></li>
 					<li><a href="#self" title="SMS/MMS 페이지로 이동">SMS/MMS</a></li>
+				</ul>
+			</div>
+			
+			<h4>카카오톡 상품</h4>
+			<div class="templateBox" style="width:80%">
+				<ul class="of_h">
+					<li class="float-left" style="width:11%">
+						<div class="talk_Gray"><h5>친구톡</h5></div>
+						<div style="width:78px">
+							<div class="consolMarginTop text-center">
+								<input type="radio" name="kakao" value="friend" id="friend" class="radioStyle" checked=""><label for="friend"></label>
+							</div>
+						</div>
+					</li>
+					<li class="float-left" style="width:11%">
+						<div class="talk_Yellow"><h5>알림톡</h5></div>
+						<div style="width:78px">
+							<div class="consolMarginTop text-center">
+								<input type="radio" name="kakao" value="Notification" id="Notification" class="radioStyle"><label for="Notification"></label>
+							</div>
+						</div>
+					</li>
 				</ul>
 			</div>
 
@@ -101,7 +117,7 @@
 					<div class="phoneWrap">
 						<img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
-							<div class="phoneText1">
+							<div class="phoneText1 scroll-y">
 								<p>내용이 들어갑니다.</p>
 							</div>
 						</div>
@@ -111,7 +127,7 @@
 				<div class="float-left consoleCon" style="width:72%">
 					<div class="of_h">
 						<div class="float-left" style="width:13%"><h4>플러스친구ID *</h4></div>
-						<div class="float-left" style="width:57%">
+						<div class="float-left" style="width:59%">
 							<select name="userConsole040603_1" class="selectStyle2" style="width:100%">
 								<option value="">3</option>
 								<option value="">2</option>
@@ -122,7 +138,7 @@
 
 					<div class="of_h">
 						<div class="float-left" style="width:13%"><h4>이미지</h4></div>
-						<div class="float-left" style="width:57%">
+						<div class="float-left" style="width:59%">
 							<div class="float-left" style="width:22%"><a href="#self" class="btnStyle1 backLightGray width100_" title="이미지 선택">이미지선택</a></div>
 							<ul class="float-right attachList" style="width:75%; padding:5px 15px">
 								<li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
@@ -132,14 +148,14 @@
 
 					<div class="of_h">
 						<div class="float-left" style="width:13%"><h4>내용*</h4></div>
-						<div class="float-left" style="width:57%">
+						<div class="float-left" style="width:59%">
 							<textarea class="textareaStyle height190" placeholder="변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.&#13;예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다."></textarea>
 						</div>
 					</div>					
 
 					<div class="of_h consolMarginTop">
 						<div class="float-left" style="width:13%"><h4>버튼</h4></div>
-						<div class="float-left" style="width:57%">
+						<div class="float-left" style="width:59%">
 							<table class="table_skin1 mt0" style="width:100%">
 								<colgroup>
 									<col style="width:22%">
@@ -172,7 +188,14 @@
 					</div>
 
 				</div>
-			</div>			
+			</div>		
+			<hr>
+			<div class="float-right">						
+				<a href="#self" class="btnStyle2 backRed ml10" data-toggle="modal" data-target="#Regist" title="등록">등록</a>
+				<a href="#self" class="btnStyle2 ml10">취소</a>
+				<a href="#self" class="btnStyle2 backWhite ml10" data-toggle="modal" data-target="#Modify" title="수정">수정</a>
+			</div>
+
 			<!-- //본문 -->
 
 

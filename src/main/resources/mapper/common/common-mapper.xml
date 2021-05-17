@@ -55,6 +55,7 @@
         SELECT
             FILE_ID
             , CORP_ID
+            , ORIGIN_FILE_NAME
             , @PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(USE_CH_INFO, "one", #{useChInfo}, NULL, '$[*].CH')) AS PATH_TO_NAME
             , @PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
             , @CH_OBJECT := JSON_EXTRACT(USE_CH_INFO, @PATH_TO_PARENT) AS CH_OBJECT

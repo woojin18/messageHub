@@ -72,7 +72,7 @@ public class ChannelService {
 			inputVal.put("corpId",		rtnMap.get("corpId"));
 			inputVal.put("projectId",	rtnMap.get("projectId"));
 //			inputVal.put("apiKey",		rtnMap.get("projectId"));
-//			inputVal.put("apiSecretKey",	rtnMap.get("projectId"));
+//			inputVal.put("apiSecret",	rtnMap.get("projectId"));
 			inputVal.put("name",		brandInfo.get("name"));
 			inputVal.put("description",	brandInfo.get("description"));
 			inputVal.put("tel",			brandInfo.get("tel"));
@@ -214,7 +214,7 @@ public class ChannelService {
 		
 		Map<String, Object> getHeaderMap = new HashMap<String, Object>();
 		getHeaderMap.put("apiId", CommonUtils.getString(params.get("apiKey")));
-		getHeaderMap.put("apiSercret", CommonUtils.getString(params.get("apiSecretKey")));
+		getHeaderMap.put("apiSecret", CommonUtils.getString(params.get("apiSecret")));
 		
 		Map<String, Object> result = apiInterface.get("/console/v1/brand/categories", getHeaderMap);
 		
@@ -244,7 +244,7 @@ public class ChannelService {
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			// 파라미터가 아닌 헤더에 세팅해줘야함
 			con.setRequestProperty("apiId", CommonUtils.getString(params.get("apiId")));
-			con.setRequestProperty("apiSercret", CommonUtils.getString(params.get("apiSercret")));
+			con.setRequestProperty("apiSecret", CommonUtils.getString(params.get("apiSecret")));
 			con.setRequestProperty("svcId", "WEB01");
 			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 			con.setRequestMethod(type.toUpperCase());	// get post
@@ -466,7 +466,7 @@ public class ChannelService {
 			// 등록요청
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			headerMap.put("apiId",		params.get("apiKey"));
-			headerMap.put("apiSercret",	params.get("apiSecretKey"));
+			headerMap.put("apiSecret",	params.get("apiSecret"));
 			
 			ObjectMapper mapper = new ObjectMapper();
 			String json = mapper.writeValueAsString(map);
@@ -499,7 +499,7 @@ public class ChannelService {
 			// 수정요청
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			headerMap.put("apiId",		params.get("apiKey"));
-			headerMap.put("apiSercret",	params.get("apiSecretKey"));
+			headerMap.put("apiSecret",	params.get("apiSecret"));
 			headerMap.put("brandId",	brandId);
 			
 			ObjectMapper mapper = new ObjectMapper();
@@ -520,7 +520,7 @@ public class ChannelService {
 			// 삭제요청
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			headerMap.put("apiId",		params.get("apiKey"));
-			headerMap.put("apiSercret",	params.get("apiSecretKey"));
+			headerMap.put("apiSecret",	params.get("apiSecret"));
 			headerMap.put("brandId",	brandId);
 			
 			Map<String, Object> result =  apiInterface.listDelete("/console/v1/brand/" + brandId, list, headerMap);
@@ -588,12 +588,17 @@ public class ChannelService {
 			params.put("apnsCetificationByteArray", null);
 		}
 		
-		
-		System.out.println("--------------------------------------------- p;ara " + params);
-		
 		if( "C".equals(sts) ) {
-			if( params.get("apnsCetificationByteArray") == null  ) {
-				throw new Exception("저장시에는 P8인증서가 필수입니다.");
+			int cnt= generalDao.selectGernalCount(DB.QRY_SELECT_PUSH_MANAGE_LIST_CNT, params);
+			
+			if( cnt >= 5 ) {
+				throw new Exception("한 프로젝트엔 최대 5개의 PUSH만 등록 가능합니다.");
+			}
+			
+			if( !"".equals(CommonUtils.getString(params.get("iosAppId"))) ) {
+				if( params.get("apnsCetificationByteArray") == null  ) {
+					throw new Exception("저장시에는 P8인증서가 필수입니다.");
+				}
 			}
 			
 			// push id 생성
@@ -658,5 +663,40 @@ public class ChannelService {
 		rtn.setData(rtnList);
 
 		return rtn;
+	}
+	
+	// MO 수신번호 조회
+	@SuppressWarnings("unchecked")
+	public RestResult<?> selectMoCallbackList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
+		
+		if (pageInfo != null && !pageInfo.isEmpty()) {
+			int rowNum = generalDao.selectGernalCount(DB.QRY_SELECT_MO_CALLBACK_LIST_CNT, params);
+			pageInfo.put("rowNum", rowNum);
+			
+			rtn.setPageInfo(pageInfo);
+		}
+		
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_MO_CALLBACK_LIST, params);
+		
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+	
+	// MO 수신번호 저정
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void saveMoCallback(Map<String, Object> params) throws Exception {
+		String sts = CommonUtils.getString(params.get("sts"));
+		
+		if( "C".equals(sts) ) {
+			String apiKey = CommonUtils.getCommonId("API", 6);
+			params.put("apiKey", apiKey);
+			generalDao.insertGernal(DB.QRY_INSERT_MO_CALLBACK, params);
+		} else if( "U".equals(sts) ) {
+			generalDao.updateGernal(DB.QRY_UPDATE_MO_CALLBACK, params);
+		}
 	}
 }

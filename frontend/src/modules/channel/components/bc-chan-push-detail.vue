@@ -12,6 +12,15 @@
 						<div class="of_h mt10">
 							<h4 class="font-normal inline-block vertical-middle" style="width:15%">APP ID*</h4>
 							<input type="text" class="inputStyle" style="width:72%" v-model="appId" readonly>
+						</div>	
+						<div class="of_h mt10">
+							<h4 class="font-normal inline-block vertical-middle" style="width:15%">타 프로젝트 사용여부*</h4>
+							<div class="inline-block float-right" style="width:72%">
+								<input type="radio" name="otherProjectYn" value="Y" class="cBox" id="yes" v-model="otherProjectYn">
+								<label for="yes" class="payment mt10 mr30">공용</label>
+								<input type="radio" name="otherProjectYn" value="N" class="cBox" id="no" v-model="otherProjectYn">
+								<label for="no" class="payment mt10">전용</label>		
+							</div>
 						</div>				
 					</div>
 				</div>
@@ -96,6 +105,7 @@ export default {
 			corpId				: '',
 			appId				: '',
 			appNm				: '',
+			otherProjectYn		: '',
 			fcmPackageName		: '',
 			fcmServerKey		: '',
 			senderId			: '',
@@ -114,6 +124,7 @@ export default {
 			this.corpId				= this.$route.params.rowData.corpId;
 			this.appId				= this.$route.params.rowData.appId;
 			this.appNm				= this.$route.params.rowData.appNm;
+			this.otherProjectYn		= this.$route.params.rowData.otherProjectYn;
 			this.fcmPackageName		= this.$route.params.rowData.fcmPackageName;
 			this.fcmServerKey		= this.$route.params.rowData.fcmServerKey;
 			this.senderId			= this.$route.params.rowData.senderId;
@@ -126,6 +137,7 @@ export default {
 			this.corpId				= '';
 			this.appId				= '';
 			this.appNm				= '';
+			this.otherProjectYn		= 'Y';
 			this.fcmPackageName		= '';
 			this.fcmServerKey		= '';
 			this.senderId			= '';
@@ -163,7 +175,8 @@ export default {
 		},
 		// 등록, 수정
 		async fnSave(){
-			console.log(this.fnValidate());
+			console.log(this.otherProjectYn);
+
 			// 벨리데이션 처리
 			if( !this.fnValidate() ){
 				return;
@@ -172,7 +185,12 @@ export default {
 			var fd = new FormData();
 			fd.append('loginId'			, tokenSvc.getToken().principal.loginId);
 			fd.append('sts'				, this.save_status);
-			fd.append('projectId'		, this.projectId);
+			if( this.otherProjectYn === 'Y' ){
+				fd.append('projectId'		, 'ALL');
+			} else {
+				fd.append('projectId'		, this.projectId);
+			}
+			fd.append('saveProjectId'	, this.projectId);
 			fd.append('appId'			, this.appId);
 			fd.append('appNm'			, this.appNm);
 			fd.append('fcmPackageName'	, this.fcmPackageName);

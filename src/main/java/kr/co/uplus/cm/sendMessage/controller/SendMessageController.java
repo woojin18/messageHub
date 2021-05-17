@@ -12,19 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import kr.co.uplus.cm.common.consts.Const;
-import kr.co.uplus.cm.common.controller.BaseController;
+import kr.co.uplus.cm.common.dto.MultipartFileDTO;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.sendMessage.dto.MmsRequestData;
 import kr.co.uplus.cm.sendMessage.dto.PushRequestData;
 import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
@@ -48,7 +46,10 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RestController
 @RequestMapping("/api/public/sendMessage")
-public class SendMessageController extends BaseController {
+public class SendMessageController {
+
+    @Autowired
+    private CommonService commonService;
 
     @Autowired
     private SendMessageService sendMsgService;
@@ -68,7 +69,6 @@ public class SendMessageController extends BaseController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
-            super.setContainIgnoreUserInfo(params);
             rtn = sendMsgService.selectAppIdList(params);
         } catch (Exception e) {
             rtn.setSuccess(false);
@@ -90,7 +90,6 @@ public class SendMessageController extends BaseController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
-            super.setContainIgnoreUserInfo(params);
             rtn = sendMsgService.selectCallbackList(params);
         } catch (Exception e) {
             rtn.setSuccess(false);
@@ -112,7 +111,6 @@ public class SendMessageController extends BaseController {
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
         try {
-            super.setContainIgnoreUserInfo(params);
             rtn = sendMsgService.selectAddressList(params);
         } catch (Exception e) {
             rtn.setSuccess(false);
@@ -196,30 +194,21 @@ public class SendMessageController extends BaseController {
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unchecked")
     @PostMapping(path="/sendPushMessage")
     public RestResult<?> sendPushMessage(HttpServletRequest request, HttpServletResponse response
-            , @RequestParam(value = "paramString") String paramString
-            , @RequestParam(value="excelFile", required=false) MultipartFile excelFile) throws Exception {
+            , @ModelAttribute MultipartFileDTO multipartFileDTO) throws Exception {
 
         List<RecvInfo> recvInfoLst = null;
-        Map<String, Object> params = null;
+        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> sParam = new HashMap<String, Object>();
         RestResult<Object> rtn = new RestResult<Object>();
         Map<String, Object> rtnMap = new HashMap<>();
         PushRequestData requestData = null;
 
-        int fromIndex = 0;
-        int toIndex = 1;
-
         try {
-            log.info("{}.sendPushMessage Start ====> paramString : {}", this.getClass(), paramString);
-
-            ObjectMapper mapper = new ObjectMapper();
-            Map<String, Object> sParam = new HashMap<>();
-            params = mapper.readValue(paramString, Map.class);
-
-            super.setContainIgnoreUserInfo(params);
+            params = commonService.setUserInfo(multipartFileDTO.getParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
+            log.info("{}.sendPushMessage Start ====> params : {}", this.getClass(), params);
 
             /** 유효성 체크 */
             requestData = sendMsgService.setPushSendData(rtn, params);
@@ -230,7 +219,7 @@ public class SendMessageController extends BaseController {
             log.info("{}.sendPushMessage pushRequestData: {}", this.getClass(), requestData.toString());
 
             /** 푸시 수신자 리스트*/
-            recvInfoLst = sendMsgService.getRecvInfoLst(params, excelFile);
+            recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
                 rtn.setSuccess(false);
                 rtn.setMessage("잘못된 푸시 수신자 정보입니다.");
@@ -243,7 +232,7 @@ public class SendMessageController extends BaseController {
             //선불일경우
             if(StringUtils.equals(payType, Const.COMM_YES)) {
                 //남은 금액 조회
-                BigDecimal rmAmount = sendMsgService.getRmAmount();
+                BigDecimal rmAmount = sendMsgService.getRmAmount(params);
                 //개당 가격 조회
                 sParam = new HashMap<>();
                 sParam.put("push", Const.COMM_YES);
@@ -284,22 +273,6 @@ public class SendMessageController extends BaseController {
                 return rtn;
             }
 
-            /** 1건 발송(결과값 확인용)(동기화) */
-            /* http 통신 오류 확인을 위해 보냈던 1건 처리(전송에 실패하였습니다.) 일단 보류
-             * 현재 로직도 일단 http 통신 오류 뿐만 아니라 기타 오류건도 잡기 때문에 추후 수정 필요(79998: 기타오류, 29000:CPS 초과, 재시도 필요)
-            log.info("{}.sendPushMessage sync API send Start ====>");
-            Map<String, Object> responseBody = sendMsgService.sendPushMsg(rtn, params, requestData, recvInfoLst.subList(fromIndex, toIndex));
-            log.info("{}.sendPushMessage sync API send Response Body : {}", this.getClass(), responseBody);
-
-            if(CommonUtils.isEmptyValue(responseBody, "rslt")
-                    || !StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(responseBody.get("rslt")))) {
-                rtn.setSuccess(false);
-                rtn.setMessage("푸시 발송 요청에 실패하였습니다.");
-                return rtn;
-            }
-            fromIndex = toIndex;
-            */
-
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
@@ -307,20 +280,15 @@ public class SendMessageController extends BaseController {
             return rtn;
         }
 
-        /** 1건 이후 발송(비동기화) */
-        if(recvInfoLst.size() > fromIndex) {
-            try {
-                log.info("{}.sendPushMessage aSync API send Start ====>");
-                sendMsgService.sendPushMsgAsync(rtn, fromIndex, params, requestData, recvInfoLst);
-            } catch (Exception e) {
-                log.info("{}.sendPushMessage aSync API send Error : {}", this.getClass(), e);
-            }
-            rtn.setMessage("푸시 발송 요청처리 되었습니다.");
-
-        } else {
-            sendMsgService.insertPushCmWebMsg(rtn, params, requestData, recvInfoLst);
-            rtn.setMessage("푸시 발송 처리 되었습니다.");
+        /** 비동기화 발송 */
+        try {
+            List<Object> reSendCdList = sendMsgService.selectGernalList(null);
+            log.info("{}.sendPushMessage aSync API send Start ====>");
+            sendMsgService.sendPushMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
+        } catch (Exception e) {
+            log.info("{}.sendPushMessage aSync API send Error : {}", this.getClass(), e);
         }
+        rtn.setMessage("푸시 발송 요청처리 되었습니다.");
 
         rtn.setSuccess(true);
         rtn.setData(rtnMap);
@@ -369,34 +337,27 @@ public class SendMessageController extends BaseController {
 
     /**
      * SMS 메시지 발송처리
-     *
      * @param request
      * @param response
      * @param params
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unchecked")
     @PostMapping(path="/sendSmsMessage")
     public RestResult<?> sendSmsMessage(HttpServletRequest request, HttpServletResponse response
-            , @RequestParam(value = "paramString") String paramString
-            , @RequestParam(value="excelFile", required=false) MultipartFile excelFile) throws Exception {
+            , @ModelAttribute MultipartFileDTO multipartFileDTO) throws Exception {
 
         RestResult<Object> rtn = new RestResult<Object>();
-        Map<String, Object> params = null;
+        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> sParam = new HashMap<String, Object>();
         SmsRequestData requestData = null;
         List<RecvInfo> recvInfoLst = null;
         Map<String, Object> rtnMap = new HashMap<>();
 
         try {
-            log.info("{}.sendSmsMessage Start ====> paramString : {}", this.getClass(), paramString);
-
-            ObjectMapper mapper = new ObjectMapper();
-            Map<String, Object> sParam = new HashMap<>();
-            params = mapper.readValue(paramString, Map.class);
-
-            super.setContainIgnoreUserInfo(params);
+            params = commonService.setUserInfo(multipartFileDTO.getParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
+            log.info("{}.sendSmsMessage Start ====> paramString : {}", this.getClass(), params);
 
             /** 유효성 체크 */
             requestData = sendMsgService.setSmsSendData(rtn, params);
@@ -407,7 +368,7 @@ public class SendMessageController extends BaseController {
             log.info("{}.sendSmsMessage requestData: {}", this.getClass(), requestData.toString());
 
             /** SMS 수신자 리스트*/
-            recvInfoLst = sendMsgService.getRecvInfoLst(params, excelFile);
+            recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
                 rtn.setSuccess(false);
                 rtn.setMessage("잘못된 SMS 수신자 정보입니다.");
@@ -420,7 +381,7 @@ public class SendMessageController extends BaseController {
             //선불일경우
             if(StringUtils.equals(payType, Const.COMM_YES)) {
                 //남은 금액 조회
-                BigDecimal rmAmount = sendMsgService.getRmAmount();
+                BigDecimal rmAmount = sendMsgService.getRmAmount(params);
                 //개당 가격 조회
                 sParam = new HashMap<>();
                 sParam.put("sms", Const.COMM_YES);
@@ -463,8 +424,9 @@ public class SendMessageController extends BaseController {
         }
 
         try {
+            List<Object> reSendCdList = sendMsgService.selectGernalList(null);
             log.info("{}.sendSmsMessage aSync API send Start ====>");
-            sendMsgService.sendSmsMsgAsync(rtn, 0, params, requestData, recvInfoLst);
+            sendMsgService.sendSmsMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.info("{}.sendSmsMessage aSync API send Error : {}", this.getClass(), e);
         }
@@ -485,27 +447,21 @@ public class SendMessageController extends BaseController {
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unchecked")
     @PostMapping(path="/sendMmsMessage")
     public RestResult<?> sendMmsMessage(HttpServletRequest request, HttpServletResponse response
-            , @RequestParam(value = "paramString") String paramString
-            , @RequestParam(value="excelFile", required=false) MultipartFile excelFile) throws Exception {
+            , @ModelAttribute MultipartFileDTO multipartFileDTO) throws Exception {
 
         RestResult<Object> rtn = new RestResult<Object>();
-        Map<String, Object> params = null;
+        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> sParam = new HashMap<String, Object>();
         MmsRequestData requestData = null;
         List<RecvInfo> recvInfoLst = null;
         Map<String, Object> rtnMap = new HashMap<>();
 
         try {
-            log.info("{}.sendMmsMessage Start ====> paramString : {}", this.getClass(), paramString);
-
-            ObjectMapper mapper = new ObjectMapper();
-            Map<String, Object> sParam = new HashMap<>();
-            params = mapper.readValue(paramString, Map.class);
-
-            super.setContainIgnoreUserInfo(params);
+            params = commonService.setUserInfo(multipartFileDTO.getParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
+            log.info("{}.sendMmsMessage Start ====> paramString : {}", this.getClass(), params);
 
             /** 유효성 체크 */
             requestData = sendMsgService.setMmsSendData(rtn, params);
@@ -515,7 +471,7 @@ public class SendMessageController extends BaseController {
             }
 
             /** MMS 수신자 리스트*/
-            recvInfoLst = sendMsgService.getRecvInfoLst(params, excelFile);
+            recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
                 rtn.setSuccess(false);
                 rtn.setMessage("잘못된 MMS 수신자 정보입니다.");
@@ -528,7 +484,7 @@ public class SendMessageController extends BaseController {
             //선불일경우
             if(StringUtils.equals(payType, Const.COMM_YES)) {
                 //남은 금액 조회
-                BigDecimal rmAmount = sendMsgService.getRmAmount();
+                BigDecimal rmAmount = sendMsgService.getRmAmount(params);
                 //개당 가격 조회
                 sParam = new HashMap<>();
                 sParam.put("mms", Const.COMM_YES);
@@ -571,8 +527,9 @@ public class SendMessageController extends BaseController {
         }
 
         try {
+            List<Object> reSendCdList = sendMsgService.selectGernalList(null);
             log.info("{}.sendMmsMessage aSync API send Start ====>");
-            sendMsgService.sendMmsMsgAsync(rtn, 0, params, requestData, recvInfoLst);
+            sendMsgService.sendMmsMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.info("{}.sendMmsMessage aSync API send Error : {}", this.getClass(), e);
         }

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="737" height="260" viewBox="0 0 737 260">
+  <g id="그룹_3018" data-name="그룹 3018" transform="translate(-360 -343)">
+    <g id="사각형_262" data-name="사각형 262" transform="translate(360 343)" fill="#f8fafb" stroke="#d5d5d5" stroke-width="1">
+      <rect width="737" height="260" rx="4" stroke="none"/>
+      <rect x="0.5" y="0.5" width="736" height="259" rx="3.5" fill="none"/>
+    </g>
+    <g id="그룹_2313" data-name="그룹 2313" transform="translate(654.039 448)">
+      <text id="이용중인_서비스가_없습니다." data-name="이용중인 서비스가 없습니다." transform="translate(75 45.75)" fill="#b2b2b2" font-size="13" font-family="SourceHanSansKR-Regular, Source Han Sans KR" letter-spacing="-0.02em"><tspan x="-74.659" y="0">이용중인 서비스가 없습니다.</tspan></text>
+      <text id="chart-line" transform="translate(63.961 20)" fill="#b2b2b2" font-size="23" font-family="FontAwesome5Pro-Regular, 'Font Awesome \35  Pro'"><tspan x="0" y="0">chart-line</tspan></text>
+    </g>
+  </g>
+</svg>

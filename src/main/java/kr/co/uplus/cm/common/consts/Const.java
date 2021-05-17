@@ -100,12 +100,19 @@ public class Const {
     public static final String IMG_RESIZE_WIDTH = "width";
     public static final String IMG_RESIZE_HEIGHT = "height";
 
-    //API
-    public static final String API_SUCCESS = "10000";  //API 성공 코드(코드정보를 받으면 enum에 등록)
-    public static final int DEFAULT_RECV_LIMIT_SIZE = 10;
-    public static final String FILE_UPLOAD_API_URI = "/console/v1/file/";  //파일 업로드 API
-    public static final String SEND_PUSH_API_URI = "/console/v1/push";  //푸시발송 API
-    public static final String SEND_SMS_API_URI = "/console/v1/sms";  //SMS발송 API
-    public static final String SEND_MMS_API_URI = "/console/v1/mms";  //MMS발송 API
+    //파일 업로드 설정 키
+    public static class ApprovalStatus {
+        public static final String APPROVE = "승인";
+        public static final String WAIT = "승인대기";
+        public static final String REJECT = "반려";
+    }
+
+    //메시지 발송 오류 설정
+    public static class SendMsgErrorSet {
+        public static final String ERROR_PREFIX = "ERR";
+        public static final String GW_RESULT_CODE = "ERROR";
+        public static final String GW_RESULT_DESC = "3회재시도 에러";
+    }
+
 
 }

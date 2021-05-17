@@ -122,7 +122,6 @@ export default {
 	},
 	created: function() {
 		console.log('created HomeMain');
-		console.log('token:', tokenSvc.getToken());
 	},
 	methods: {
 		logout: function () {

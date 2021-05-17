@@ -58,7 +58,7 @@ Vue.component('confirm', {
     +        '<div class="float-right">'
     +          '<a class="btnStyle4 red" v-if="cButtonView" @click="fnCallback">{{cButton}}</a>'
     +          '<a class="btnStyle4 gray ml5" v-if="cAfterType==\'CALLBACK\'" @click="fnAfterCallback">닫기</a>'
-    +          '<a class="btnStyle4 gray ml5" v-if="cAfterType==\'ALERT\'" @click="fnAfterAlert">닫기</a>'
+    +          '<a class="btnStyle4 gray ml5" v-else-if="cAfterType==\'ALERT\'" @click="fnAfterAlert">닫기</a>'
     +          '<a class="btnStyle4 gray ml5" v-else @click="fnConfirmHide">닫기</a>'
     +        '</div>'
     +      '</div>'

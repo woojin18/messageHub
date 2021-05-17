@@ -110,6 +110,7 @@ h6 {font-size:12px; margin:7px 0; font-weight:normal}
 .table_skin1 td {color:#707070; padding:7px; border-right:1px solid #D5D5D5;  border-bottom:1px solid #D5D5D5}
 .table_skin1 a {color:#707070}
 .table_skin1 tr:hover td{background-color:#f7f7f7}
+.table_skin1 tr.selected:hover td{background-color:#b0bed9}
 .table_skin1 .end {border-right:0}
 .table_skin1 tr:last-child td {border-bottom:none}
 /*.tableScrollxy {min-height:.01%; overflow:scroll; margin-bottom:15px; -ms-overflow-style:-ms-autohiding-scrollbar}*/

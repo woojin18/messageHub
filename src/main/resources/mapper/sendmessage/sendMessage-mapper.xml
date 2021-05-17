@@ -15,9 +15,15 @@
     <select id="selectCallbackList" parameterType="hashmap" resultType="camel">
     /* sendMessage.selectCallbackList 발신번호 조회 */
         SELECT CHATBOT_ID AS CALLBACK /* 챗봇(대화방)ID, A2P의 경우 발신번호(mdn)과 동일 */
-        FROM cm.CM_RCS_CHATBOT
-        WHERE SVC_TYPE = 'A2P'
-            AND CORP_ID = #{corpId}
+        FROM TODO_RCS_BRAND CRB
+        INNER JOIN cm.CM_RCS_CHATBOT CRC
+            ON CRB.BRAND_ID = CRC.BRAND_ID
+            AND LOWER(CRC.SVC_TYPE) = 'a2p'
+            AND CRC.USE_YN = 'Y'
+            AND CRC.APPROVAL_STATUS = #{approvalStatus}
+        WHERE CRB.APPROVAL_DT IS NOT NULL
+            AND CRB.CORP_ID = #{corpId}
+            AND CRB.PROJECT_ID = #{projectId}
     </select>
 
     <select id="selectAddrGrpList" parameterType="hashmap" resultType="camel">
@@ -235,6 +241,68 @@
             , DATE_FORMAT(#{reqDt}, '%Y-%m-%d %H:%i')
         </if>
            )
+    </insert>
+
+    <select id="selectReSendCdList" parameterType="hashmap" resultType="string">
+    /* sendMessage.selectReSendCdList 재발송 코드 리스트 조회 */
+        SELECT CC.CODE_VAL_1
+        FROM cm_bo.CM_CODE_TYPE CCT
+        INNER JOIN cm_bo.CM_CODE CC
+            ON CCT.CODE_TYPE_CD = CC.CODE_TYPE_CD
+            AND CC.USE_YN = 'Y'
+        WHERE CCT.USE_YN = 'Y'
+            AND CC.CODE_TYPE_CD = 'RE_SEND_CD'
+    </select>
+
+    <insert id="insertCmMsg" parameterType="hashmap">
+    /* template.insertCmMsg - 채널별 메시지 내역 등록 */
+        INSERT
+            INTO cm.CM_MSG
+        (
+            YMD
+            , MSG_KEY
+            , CORP_ID
+            , PROJECT_ID
+            , API_KEY
+            , PAY_TYPE
+            , CLI_KEY
+            , SENDER_TYPE
+            , REQ_CH
+            , PRODUCT_CODE
+            , STATUS
+            , REG_DT
+            , FINAL_CH
+            , PHONE
+            , PUSH_APP_ID
+            , PUSH_CUID
+            , CALLBACK
+            , WEB_REQ_ID
+            , GW_RESULT_CODE
+            , GW_RESULT_DESC
+            , FB_REQ_CNT
+        ) VALUES (
+            DATE_FORMAT(NOW(), '%Y-%m-%d')
+            , #{msgKey}
+            , #{corpId}
+            , #{projectId}
+            , #{apiKey}
+            , 'POST'
+            , #{cliKey}
+            , #{senderType}
+            , #{reqCh}
+            , #{productCode}
+            , '9999'
+            , CONCAT(DATE_FORMAT(NOW(3), '%Y-%m-%dT%H:%i:%s'), LEFT(DATE_FORMAT(NOW(3), '.%f'), 4), '+09')
+            , #{finalCh}
+            , #{phone}
+            , #{pushAppId}
+            , #{pushCuid}
+            , #{callback}
+            , #{webReqId}
+            , #{gwResultCode}
+            , #{gwResultDesc}
+            , '0'
+        )
     </insert>
 
 </mapper>

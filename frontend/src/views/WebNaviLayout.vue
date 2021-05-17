@@ -2,13 +2,13 @@
 	<div>
 		<web-header></web-header>
 		<tree-menu></tree-menu>
-		<article>
-			<section id="content">
+		<section id="content">
+			<article>
 				<router-view :key="$route.fullPath"></router-view>
 				<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
 				<confirm></confirm>
-			</section>
-		</article>
+			</article>
+		</section>
 		<!-- 로딩레이어-->
 		<div class="loading_layer">
 			<div class="loader"></div>

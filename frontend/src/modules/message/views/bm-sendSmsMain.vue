@@ -230,7 +230,7 @@ export default {
       recvCnt : 0,  //수신자명수
       inProgress: false,
       sendData : {
-        callback: '15441234',  //TODO : 발신번호 가져오는 곳. 요청후 피드백 대기중
+        callback: '',  //발신번호
         requiredCuid : false,  //app 로그인 ID 필수여부
         requiredCuPhone : true,  //수신자 폰번호 필수여부
         senderType: 'SMS',  //SMS, MMS
@@ -255,6 +255,10 @@ export default {
   methods: {
     //발송 정보 유효성 체크
     fnValidSendMsgData(testSendYn){
+      if(!this.sendData.callback){
+        confirm.fnAlert(this.componentsTitle, '발신번호를 선택해주세요.');
+        return false;
+      }
       if(this.sendData.senderType == 'MMS' && !this.sendData.smsTitle){
         confirm.fnAlert(this.componentsTitle, '제목을 입력해주세요.');
         return false;
@@ -316,7 +320,7 @@ export default {
       let fd = new FormData();
       fd.append('paramString', JSON.stringify(params));
       if(this.sendData.cuInputType == 'EXCEL'){
-        fd.append('excelFile', this.$refs.excelFile.files[0]);
+        fd.append('file', this.$refs.excelFile.files[0]);
       }
 
       this.inProgress = true;
@@ -477,6 +481,7 @@ export default {
       if(this.sendData.smsContent != data.smsContent){
         this.fnCallbackRecvInfoLst(null);  //수신자 정보 초기화
       }
+      this.sendData.callback = data.callback;
       this.sendData.smsTitle = data.smsTitle;
       this.sendData.smsContent = data.smsContent;
       this.sendData.rcvblcNumber = data.rcvblcNumber;

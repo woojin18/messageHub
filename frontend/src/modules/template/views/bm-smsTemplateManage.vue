@@ -184,7 +184,7 @@ export default {
         this.isInsert = true;
       }
     },
-    //푸시 템플릿 정보 조회
+    //템플릿 정보 조회
     fnSelectSmsTmpltInfo(){
       const vm = this;
       const params = {tmpltId: this.tmpltId};
@@ -283,14 +283,17 @@ export default {
       await templateApi.saveSmsTmplt(params).then(response => {
         const result = response.data;
         if(result.success) {
-          confirm.fnAlert(this.componentsTitle, '저장되었습니다.');
-          if(this.isInsert){
-            this.$router.push('smsTemplateList')
-          }
+          eventBus.$on('callbackEventBus', this.fnSaveAlertCallback);
+          confirm.fnAlert(this.componentsTitle, '저장되었습니다.', 'CALLBACK');
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
+    },
+    fnSaveAlertCallback(){
+      if(this.isInsert){
+        this.$router.push('frndTalkTemplateList')
+      }
     },
     fnDelImg(idx){
       this.tmpltData.imgInfoList.splice(idx, 1);

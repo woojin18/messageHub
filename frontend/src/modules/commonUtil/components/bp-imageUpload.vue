@@ -126,7 +126,7 @@ export default {
       };
 
       let fd = new FormData();
-      fd.append('uploadFile', uploadFile.files[0]);
+      fd.append('file', uploadFile.files[0]);
       fd.append('paramString', JSON.stringify(uploadInfo));
 
       this.inProgress = true;

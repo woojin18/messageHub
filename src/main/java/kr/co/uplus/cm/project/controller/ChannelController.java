@@ -128,7 +128,7 @@ public class ChannelController extends BaseController {
 			@RequestParam String projectId,
 			@RequestParam String brandId,
 			@RequestParam String apiKey,
-			@RequestParam String apiSecretKey,
+			@RequestParam String apiSecret,
 			@RequestParam String name,
 			@RequestParam String description,
 			@RequestParam String tel,
@@ -176,7 +176,7 @@ public class ChannelController extends BaseController {
 		params.put("projectId",			projectId);
 		params.put("brandId",			brandId);
 		params.put("apiKey",			apiKey);
-		params.put("apiSecretKey",		apiSecretKey);
+		params.put("apiSecret",			apiSecret);
 		params.put("name",				name);
 		params.put("description",		description);
 		params.put("tel",				tel);
@@ -246,6 +246,7 @@ public class ChannelController extends BaseController {
 			@RequestParam String sts,
 			@RequestParam String loginId,
 			@RequestParam String projectId,
+			@RequestParam String saveProjectId,
 			@RequestParam String appId,
 			@RequestParam String appNm,
 			@RequestParam String fcmPackageName,
@@ -269,6 +270,8 @@ public class ChannelController extends BaseController {
 		// 파라미터 정리
 		params.put("sts",				sts);
 		params.put("projectId",			projectId);
+		params.put("saveProjectId",		saveProjectId);
+		
 		params.put("appId",				appId);
 		params.put("appNm",				appNm);
 		params.put("fcmPackageName",	fcmPackageName);
@@ -329,4 +332,39 @@ public class ChannelController extends BaseController {
 		return channelService.selectRcsBrandMsgBaseList(params);
 	}
 	
+	/**
+	 * MO 수신번호 현황 리스트 조회
+	 * @param params
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("/selectMoCallbackList")
+	public RestResult<?> selectMoCallbackList(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		return channelService.selectMoCallbackList(params);
+	}
+	
+	/**
+	 * MO 수신번호 저장
+	 * @param params
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@PostMapping("/saveMoCallback")
+	public RestResult<?> saveMoCallback(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			channelService.saveMoCallback(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
+	}
 }

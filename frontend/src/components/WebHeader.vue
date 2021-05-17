@@ -4,7 +4,7 @@
 			<h1><img src="../../public/se2/images/logo.png" alt="LGU+ 통합메시징클라우드 로고"></h1>
 			<p class="adminName">관리자 콘솔</p>
 			<ul class="adminUtil">
-				<li @click="clickUserConsole"><a href="#" class="btnGuideBlack">사용자콘솔</a></li>
+				<li><a href="/uc/home" class="btnGuideBlack">사용자콘솔</a></li>
 				<li><a href="#self" class="btnGuideBlack">이용 가이드</a></li>
 				<li class="ml20"><a href="#self" class="bellIcon active"><i class="fas fa-bell"></i></a></li>
 				<li>
@@ -109,12 +109,6 @@ export default {
 						});
 					}
 				});
-			}
-		},
-		clickUserConsole() {
-			let result = confirm("사용자 콘솔로 이동하시겠습니까?");
-			if (result) {
-				this.$nextTick(() => this.$router.replace('/uc/home'));
 			}
 		},
 		navOpen: function() {

@@ -64,7 +64,7 @@
 					<div class="of_h">
 						<h4 style="width:28%" class="inline-block">API Secret Key *</h4>
 						<div class="inline-block float-right" style="width:72%">
-							<input id="apiSecretKey" type="text" class="inputStyle float-left" style="width:70%" v-model="inputVal.apiSecretKey">
+							<input id="apiSecret" type="text" class="inputStyle float-left" style="width:70%" v-model="inputVal.apiSecret">
 							<a @click="fnCheckApiKey" class="btnStyle1 borderLightGray backWhite minWidthAuto float-right" style="width:27%">확인</a>
 						</div>
 					</div>
@@ -355,7 +355,7 @@ export default {
 			corpId 			: "",
 			projectId 		: "",
 			apiKey 			: "lng04154",
-			apiSecretKey 	: "SK.I9SrjuVvmDI8CdS",
+			apiSecret 	: "SK.I9SrjuVvmDI8CdS",
 			name			: "브랜드 이름",
 			description		: "브랜드 설명",
 			tel				: "브랜드 전화번호",
@@ -442,7 +442,7 @@ export default {
 		console.log(this.inputVal.apiKey);
 		var params = {
 			"apiKey"		: this.inputVal.apiKey,
-			"apiSecretKey"	: this.inputVal.apiSecretKey
+			"apiSecret"	: this.inputVal.apiSecret
 		};
 		api.checkApiKey(params).then(response =>{
 			var result = response.data.data;
@@ -542,7 +542,7 @@ console.log(  this.inputVal.order );
 	},
 	fnValidate(){
 		if( this.inputVal.apiKey === ''			|| this.inputVal.apiKey === undefined ) {		confirm.fnAlert("", "API KEY를 입력해주세요.");  return false;}
-		if( this.inputVal.apiSecretKey === ''	|| this.inputVal.apiSecretKey === undefined ) {	confirm.fnAlert("", "API SECRET KEY를 입력해주세요.");   return false;}
+		if( this.inputVal.apiSecret === ''	|| this.inputVal.apiSecret === undefined ) {	confirm.fnAlert("", "API SECRET KEY를 입력해주세요.");   return false;}
 		if( this.inputVal.name === ''			|| this.inputVal.name === undefined ) {			confirm.fnAlert("", "브랜드명을 입력해주세요."); return false;}
 		if( this.inputVal.tel === ''			|| this.inputVal.tel === undefined ) {			confirm.fnAlert("", "전화번호를 입력해주세요."); return false;}
 
@@ -579,7 +579,7 @@ console.log(  this.inputVal.order );
 		fd.append('projectId'		, this.projectId);
 		fd.append('brandId'			, this.brandId);
 		fd.append('apiKey'			, this.inputVal.apiKey);
-		fd.append('apiSecretKey'	, this.inputVal.apiSecretKey);
+		fd.append('apiSecret'	, this.inputVal.apiSecret);
 		fd.append('name'			, this.inputVal.name);
 		fd.append('description'		, this.inputVal.description);
 		fd.append('tel'				, this.inputVal.tel);

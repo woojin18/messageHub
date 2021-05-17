@@ -1,11 +1,5 @@
 server:
   port: 7070
-  
-#미사용 추후 삭제예정
-file-props:
-  img:
-    upload-path: /frontend/src/assets/images/temp/    limit-size: 5000000  #5MB
-#미사용 추후 삭제예정
 
 ---
 spring:
@@ -36,10 +30,6 @@ logging:
 cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw
   secretKey: test_sk_YyZqmkKeP8gGA7R464j8bQRxB9lG
-  
-api.props:
-  gateWay:
-    url: http://erp.ectech.co.kr:40931
 
 datasource: 
   rcs:

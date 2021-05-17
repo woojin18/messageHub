@@ -2,7 +2,8 @@ import PushTemplateManage from '../views/bm-pushTemplateManage.vue'
 import PushTemplateList from '../views/bm-pushTemplateList.vue'
 import SmsTemplateManage from '../views/bm-smsTemplateManage.vue'
 import SmsTemplateList from '../views/bm-smsTemplateList.vue'
-
+import FrndTalkTemplateManage from '../views/bm-frndTalkTemplateManage.vue'
+import FrndTalkTemplateList from '../views/bm-frndTalkTemplateList.vue'
 
 export default [
     {
@@ -14,7 +15,8 @@ export default [
     {
         path: '/uc/template/pushTemplateList',
         name: 'pushTemplateList',
-        component: PushTemplateList
+        component: PushTemplateList,
+        props: true
     },
     {
         path: '/uc/template/smsTemplateManage',
@@ -25,6 +27,19 @@ export default [
     {
         path: '/uc/template/smsTemplateList',
         name: 'smsTemplateList',
-        component: SmsTemplateList
+        component: SmsTemplateList,
+        props: true
+    },
+    {
+        path: '/uc/template/frndTalkTemplateManage',
+        name: 'frndTalkTemplateManage',
+        component: FrndTalkTemplateManage,
+        props: true
+    },
+    {
+        path: '/uc/template/frndTalkTemplateList',
+        name: 'frndTalkTemplateList',
+        component: FrndTalkTemplateList,
+        props: true
     }
 ]

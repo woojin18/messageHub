@@ -197,7 +197,7 @@ public class AuthService implements UserDetailsService {
 				params.put("par_menus_cd", ((Map<String, Object>) childMap).get("MENUS_CD"));
 				List<Object> child2List = generalDao.selectGernalList("login.getMenuForRole", params);
 				((Map<String, Object>) childMap).put("children", child2List);
-				//소메뉴 조회
+				// 소메뉴 조회
 				for (Object childMap2 : child2List) {
 					params.put("menus_level", "3");
 					params.put("par_menus_cd", ((Map<String, Object>) childMap2).get("MENUS_CD"));
@@ -208,6 +208,16 @@ public class AuthService implements UserDetailsService {
 			((Map<String, Object>) rtnMap).put("children", childList);
 		}
 
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+
+	// 참여되어 있는 프로젝트 정보 조회
+	public RestResult<?> getProjectForUser(Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		List<Object> rtnList = generalDao.selectGernalList("login.getProjectForUser", params);
 		rtn.setData(rtnList);
 
 		return rtn;

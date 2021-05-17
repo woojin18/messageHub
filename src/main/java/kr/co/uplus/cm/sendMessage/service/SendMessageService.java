@@ -8,12 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -31,6 +33,7 @@ import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
+import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.sendMessage.dto.FbInfo;
 import kr.co.uplus.cm.sendMessage.dto.MmsRequestData;
 import kr.co.uplus.cm.sendMessage.dto.PushMsg;
@@ -91,6 +94,7 @@ public class SendMessageService {
 
         RestResult<Object> rtn = new RestResult<Object>();
 
+        params.put("approvalStatus", Const.ApprovalStatus.APPROVE);
         List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_LIST, params);
         rtn.setData(rtnList);
 
@@ -231,11 +235,44 @@ public class SendMessageService {
 
     /**
      * 잔여금액 조회
-     * TODO : G/W 에서 API 만들면 API 호출로 교체
      * @return
+     * @throws Exception
      */
-    public BigDecimal getRmAmount() {
-        return new BigDecimal("100000");
+    @SuppressWarnings({ "unchecked", "unused", "rawtypes" })
+    public BigDecimal getRmAmount(Map<String, Object> params) throws Exception {
+        BigDecimal rmAmount = new BigDecimal(0);
+        ObjectMapper mapper = null;
+
+        String cashBalance = "";
+        String corpId = CommonUtils.getStrValue(params, "corpId");
+        String projectId = CommonUtils.getStrValue(params, "projectId");
+        String apiKey = commonService.getApiKey(corpId, projectId);
+        String apiUri = ApiConfig.GET_CASH_INFO_API_URI + "corp_test1";  //TODO : corpId 로 변경;
+
+        Map<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("apiKey", apiKey);
+
+        log.info("{}.getRmAmount API START=======>", this.getClass());
+        log.info("{}.getRmAmount API URL : {}, Header : {}", this.getClass(), ApiConfig.CASH_SERVER_DOMAIN + apiUri, headerMap);
+        Map resultMap = apiInterface.get(ApiConfig.CASH_SERVER_DOMAIN, apiUri, headerMap);
+        log.info("{}.getRmAmount API Result : {}", this.getClass(), resultMap);
+        log.info("{}.getRmAmount API END=======>", this.getClass());
+
+        if (!CommonUtils.isEmptyValue(resultMap, "rslt")
+                && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
+            Map<String, Object> dataMap = (Map<String, Object>) resultMap.get("data");
+            List<Map<String, Object>> cashInfoList = (List<Map<String, Object>>) dataMap.get("cashInfo");
+
+            for(Map<String, Object> cashInfo : cashInfoList) {
+                cashBalance = CommonUtils.getStrValue(cashInfo, "cashBalance");
+                rmAmount = rmAmount.add(new BigDecimal(cashBalance));
+            }
+        } else {
+            log.error("{}.getRmAmount API Fail => API response Body: {}", this.getClass(), resultMap);
+            throw new Exception("캐시 정보 조회 실패");
+        }
+
+        return rmAmount;
     }
 
     /**
@@ -451,23 +488,16 @@ public class SendMessageService {
         pushRequestData.setWebReqId(StringUtils.EMPTY);  //테스트발송은 웹 요청 아이디를 넣지 않는다.
         Map<String, Object> resultMap = sendPushMsg(data, pushRequestData, sendList);
 
-        if(!CommonUtils.isEmptyValue(resultMap, "rslt")
-                && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
-
-            try {
-                int successCnt = 0;
-                List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
-                for(Map<String, Object> dataInfo : dataList) {
-                    if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
-                            && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
-                        successCnt++;
-                    }
+        if(isSendSuccess(resultMap)) {
+            int successCnt = 0;
+            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
+            for(Map<String, Object> dataInfo : dataList) {
+                if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                    successCnt++;
                 }
-                rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
-            } catch (Exception e) {
-                log.error("{}.testSendPushMsg success message Error ==> {}", this.getClass(), e);
             }
-
+            rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
         } else {
             log.warn("{}.testSendPushMsg Fail ==> response : {}", this.getClass(), resultMap);
             rtn.setFail("푸시 테스트 발송이 실패하였습니다.");
@@ -502,7 +532,96 @@ public class SendMessageService {
         Gson gson = new Gson();
         String jsonString = gson.toJson(pushRequestData);
 
-        return apiInterface.sendMsg(Const.SEND_PUSH_API_URI, headerMap, jsonString);
+        return apiInterface.sendMsg(ApiConfig.SEND_PUSH_API_URI, headerMap, jsonString);
+    }
+
+    /**
+     * API 재요청 여부
+     * 재요청 코드에 등록되지 않은 모든 상황은 재요청 하지 않는다.
+     * @param responseBody
+     * @param reSendCdList
+     * @return
+     */
+    private boolean isApiRequestAgain(Map<String, Object> responseBody, List<Object> reSendCdList) {
+        boolean isDone = true;
+        if(responseBody != null) {
+            if(!CommonUtils.isEmptyValue(responseBody, "rslt")){
+                String resultCode = CommonUtils.getString(responseBody.get("rslt"));
+                for(Object reSendCd : reSendCdList) {
+                    if(StringUtils.equals(resultCode, CommonUtils.getString(reSendCd))) {
+                        isDone = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return isDone;
+    }
+
+    /**
+     * 발송 성공여부
+     * @param responseBody
+     * @return
+     */
+    private boolean isSendSuccess(Map<String, Object> responseBody) {
+        boolean isSuccess = false;
+        if(responseBody != null) {
+            if(!CommonUtils.isEmptyValue(responseBody, "rslt")
+                    && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(responseBody.get("rslt")))) {
+                isSuccess = true;
+            }
+        }
+        return isSuccess;
+    }
+
+    /**
+     * 채널별 메시지 내역 등록
+     * @throws Exception
+     */
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+    public void insertCmMsg(Map<String, Object> data, List<RecvInfo> recvInfoLst) throws Exception {
+        Map<String, Object> params = null;
+        String corpId = CommonUtils.getStrValue(data, "corpId");
+        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String apiKey = CommonUtils.getStrValue(data, "apiKey");
+        String reqCh = CommonUtils.getStrValue(data, "reqCh");
+        String productCode = CommonUtils.getStrValue(data, "productCode");
+        String finalCh = CommonUtils.getStrValue(data, "finalCh");
+        String pushAppId = CommonUtils.getStrValue(data, "pushAppId");
+        String callback = CommonUtils.getStrValue(data, "callback");
+        String webReqId = CommonUtils.getStrValue(data, "webReqId");
+        String senderType = Const.SenderType.CHANNEL;
+
+        for(RecvInfo recvInfo : recvInfoLst) {
+            params = new HashMap<String, Object>();
+            params.put("msgKey", CommonUtils.getCommonId(Const.SendMsgErrorSet.ERROR_PREFIX, 5));
+            params.put("corpId", corpId);
+            params.put("projectId", projectId);
+            params.put("apiKey", apiKey);
+            params.put("cliKey", recvInfo.getCliKey());
+            params.put("senderType", senderType);
+            params.put("reqCh", reqCh);
+            params.put("productCode", productCode);
+            params.put("finalCh", finalCh);
+            params.put("phone", recvInfo.getPhone());
+            params.put("pushAppId", pushAppId);
+            params.put("pushCuid", recvInfo.getCuid());
+            params.put("callback", callback);
+            params.put("webReqId", webReqId);
+            params.put("gwResultCode", Const.SendMsgErrorSet.GW_RESULT_CODE);
+            params.put("gwResultDesc", Const.SendMsgErrorSet.GW_RESULT_DESC);
+            generalDao.insertGernal(DB.QRY_INSERT_CM_MSG, params);
+        }
+    }
+
+    /**
+     * 재전송 코드 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public List<Object> selectGernalList(Map<String, Object> params) throws Exception {
+        return generalDao.selectGernalList(DB.QRY_SELECT_RE_SEND_CD_LIST, params);
     }
 
     /**
@@ -514,34 +633,77 @@ public class SendMessageService {
      * @param recvInfoLst
      * @throws Exception
      */
+    @SuppressWarnings("unchecked")
     @Async
     public void sendPushMsgAsync(RestResult<Object> rtn
             , int fromIndex
             , Map<String, Object> data
             , PushRequestData pushRequestData
-            , List<RecvInfo> recvInfoLst) throws Exception {
+            , List<RecvInfo> recvInfoLst
+            , List<Object> reSendCdList) throws Exception {
+
+        List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
+        Map<String, Object> responseBody = null;
 
         String corpId = CommonUtils.getStrValue(data, "corpId");
         String projectId = CommonUtils.getStrValue(data, "projectId");
         String apiKey = commonService.getApiKey(corpId, projectId);
         String jsonString = "";
+        boolean isDone = false;
+        boolean isServerError = false;
 
         Gson gson = new Gson();
         Map<String, String> headerMap = new HashMap<String, String>();
         headerMap.put("apiKey", apiKey);
 
-        int cutSize = Const.DEFAULT_RECV_LIMIT_SIZE;
+        int retryCnt = NumberUtils.INTEGER_ZERO;
+        int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
 
         while (toIndex < listSize) {
+            isDone = false;
+            isServerError = false;
             toIndex = fromIndex + cutSize;
-            if(toIndex > listSize) toIndex = listSize;
+            try {
+                if(toIndex > listSize) toIndex = listSize;
+                pushRequestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
+                jsonString = gson.toJson(pushRequestData);
+                responseBody = apiInterface.sendMsg(ApiConfig.SEND_PUSH_API_URI, headerMap, jsonString);
+                isDone = isApiRequestAgain(responseBody, reSendCdList);
+            } catch (Exception e) {
+                log.error("{}.sendPushMsgAsync API Request Error ==> {}", this.getClass(), e);
+                isServerError = true;
+            }
 
-            pushRequestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
-            jsonString = gson.toJson(pushRequestData);
-            apiInterface.sendMsg(Const.SEND_PUSH_API_URI, headerMap, jsonString);
-            fromIndex = toIndex;
+            if(isDone) {
+                retryCnt = NumberUtils.INTEGER_ZERO;
+                fromIndex = toIndex;
+            } else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
+                errorRecvInfoLst.addAll(recvInfoLst.subList(fromIndex, toIndex));
+                retryCnt = NumberUtils.INTEGER_ZERO;
+                fromIndex = toIndex;
+            } else {
+                retryCnt++;
+                toIndex = fromIndex;
+                if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
+            }
+        }
+
+        if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
+            try {
+                //CM_MSG Insert
+                data.put("apiKey", apiKey);
+                data.put("reqCh", Const.Ch.PUSH);
+                data.put("productCode", Const.Ch.PUSH.toLowerCase());
+                data.put("finalCh", Const.Ch.PUSH);
+                data.put("pushAppId", pushRequestData.getAppId());
+                data.put("callback", pushRequestData.getCallback());
+                data.put("webReqId", pushRequestData.getWebReqId());
+                insertCmMsg(data, errorRecvInfoLst);
+            } catch (Exception e) {
+                log.error("{}.sendPushMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
+            }
         }
 
         //웹 발송 내역 등록
@@ -674,34 +836,75 @@ public class SendMessageService {
      * @param recvInfoLst
      * @throws Exception
      */
+    @SuppressWarnings("unchecked")
     @Async
     public void sendSmsMsgAsync(RestResult<Object> rtn
             , int fromIndex
             , Map<String, Object> data
             , SmsRequestData requestData
-            , List<RecvInfo> recvInfoLst) throws Exception {
+            , List<RecvInfo> recvInfoLst
+            , List<Object> reSendCdList) throws Exception {
+        List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
+        Map<String, Object> responseBody = null;
 
         String corpId = CommonUtils.getStrValue(data, "corpId");
         String projectId = CommonUtils.getStrValue(data, "projectId");
         String apiKey = commonService.getApiKey(corpId, projectId);
         String jsonString = "";
+        boolean isDone = false;
+        boolean isServerError = false;
 
         Gson gson = new Gson();
         Map<String, String> headerMap = new HashMap<String, String>();
         headerMap.put("apiKey", apiKey);
 
-        int cutSize = Const.DEFAULT_RECV_LIMIT_SIZE;
+        int retryCnt = NumberUtils.INTEGER_ZERO;
+        int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
 
         while (toIndex < listSize) {
+            isDone = false;
+            isServerError = false;
             toIndex = fromIndex + cutSize;
-            if(toIndex > listSize) toIndex = listSize;
+            try {
+                if(toIndex > listSize) toIndex = listSize;
+                requestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
+                jsonString = gson.toJson(requestData);
+                responseBody = apiInterface.sendMsg(ApiConfig.SEND_SMS_API_URI, headerMap, jsonString);
+                isDone = isApiRequestAgain(responseBody, reSendCdList);
+            } catch (Exception e) {
+                log.error("{}.sendSmsMsgAsync API Request Error ==> {}", this.getClass(), e);
+                isServerError = true;
+            }
 
-            requestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
-            jsonString = gson.toJson(requestData);
-            apiInterface.sendMsg(Const.SEND_SMS_API_URI, headerMap, jsonString);
-            fromIndex = toIndex;
+            if(isDone) {
+                retryCnt = NumberUtils.INTEGER_ZERO;
+                fromIndex = toIndex;
+            } else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
+                errorRecvInfoLst.addAll(recvInfoLst.subList(fromIndex, toIndex));
+                retryCnt = NumberUtils.INTEGER_ZERO;
+                fromIndex = toIndex;
+            } else {
+                retryCnt++;
+                toIndex = fromIndex;
+                if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
+            }
+        }
+
+        if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
+            try {
+                //CM_MSG Insert
+                data.put("apiKey", apiKey);
+                data.put("reqCh", Const.Ch.SMS);
+                data.put("productCode", Const.Ch.SMS.toLowerCase());
+                data.put("finalCh", Const.Ch.SMS);
+                data.put("callback", requestData.getCallback());
+                data.put("webReqId", requestData.getWebReqId());
+                insertCmMsg(data, errorRecvInfoLst);
+            } catch (Exception e) {
+                log.error("{}.sendSmsMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
+            }
         }
 
         //웹 발송 내역 등록
@@ -849,34 +1052,75 @@ public class SendMessageService {
      * @param recvInfoLst
      * @throws Exception
      */
+    @SuppressWarnings("unchecked")
     @Async
     public void sendMmsMsgAsync(RestResult<Object> rtn
             , int fromIndex
             , Map<String, Object> data
             , MmsRequestData requestData
-            , List<RecvInfo> recvInfoLst) throws Exception {
+            , List<RecvInfo> recvInfoLst
+            , List<Object> reSendCdList) throws Exception {
+        List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
+        Map<String, Object> responseBody = null;
 
         String corpId = CommonUtils.getStrValue(data, "corpId");
         String projectId = CommonUtils.getStrValue(data, "projectId");
         String apiKey = commonService.getApiKey(corpId, projectId);
         String jsonString = "";
+        boolean isDone = false;
+        boolean isServerError = false;
 
         Gson gson = new Gson();
         Map<String, String> headerMap = new HashMap<String, String>();
         headerMap.put("apiKey", apiKey);
 
-        int cutSize = Const.DEFAULT_RECV_LIMIT_SIZE;
+        int retryCnt = NumberUtils.INTEGER_ZERO;
+        int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
 
         while (toIndex < listSize) {
+            isDone = false;
+            isServerError = false;
             toIndex = fromIndex + cutSize;
-            if(toIndex > listSize) toIndex = listSize;
+            try {
+                if(toIndex > listSize) toIndex = listSize;
+                requestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
+                jsonString = gson.toJson(requestData);
+                responseBody = apiInterface.sendMsg(ApiConfig.SEND_MMS_API_URI, headerMap, jsonString);
+                isDone = isApiRequestAgain(responseBody, reSendCdList);
+            } catch (Exception e) {
+                log.error("{}.sendMmsMsgAsync API Request Error ==> {}", this.getClass(), e);
+                isServerError = true;
+            }
 
-            requestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
-            jsonString = gson.toJson(requestData);
-            apiInterface.sendMsg(Const.SEND_MMS_API_URI, headerMap, jsonString);
-            fromIndex = toIndex;
+            if(isDone) {
+                retryCnt = NumberUtils.INTEGER_ZERO;
+                fromIndex = toIndex;
+            } else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
+                errorRecvInfoLst.addAll(recvInfoLst.subList(fromIndex, toIndex));
+                retryCnt = NumberUtils.INTEGER_ZERO;
+                fromIndex = toIndex;
+            } else {
+                retryCnt++;
+                toIndex = fromIndex;
+                if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
+            }
+        }
+
+        if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
+            try {
+                //CM_MSG Insert
+                data.put("apiKey", apiKey);
+                data.put("reqCh", Const.Ch.MMS);
+                data.put("productCode", Const.Ch.MMS.toLowerCase());
+                data.put("finalCh", Const.Ch.MMS);
+                data.put("callback", requestData.getCallback());
+                data.put("webReqId", requestData.getWebReqId());
+                insertCmMsg(data, errorRecvInfoLst);
+            } catch (Exception e) {
+                log.error("{}.sendMmsMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
+            }
         }
 
         //웹 발송 내역 등록
@@ -909,7 +1153,7 @@ public class SendMessageService {
         Gson gson = new Gson();
         String jsonString = gson.toJson(requestData);
 
-        return apiInterface.sendMsg(Const.SEND_MMS_API_URI, headerMap, jsonString);
+        return apiInterface.sendMsg(ApiConfig.SEND_MMS_API_URI, headerMap, jsonString);
     }
 
     /**
@@ -931,23 +1175,16 @@ public class SendMessageService {
         requestData.setWebReqId(StringUtils.EMPTY);  //테스트발송은 웹 요청 아이디를 넣지 않는다.
         Map<String, Object> resultMap = sendMmsMsg(data, requestData, sendList);
 
-        if(!CommonUtils.isEmptyValue(resultMap, "rslt")
-                && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
-
-            try {
-                int successCnt = 0;
-                List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
-                for(Map<String, Object> dataInfo : dataList) {
-                    if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
-                            && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
-                        successCnt++;
-                    }
+        if(isSendSuccess(resultMap)) {
+            int successCnt = 0;
+            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
+            for(Map<String, Object> dataInfo : dataList) {
+                if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                    successCnt++;
                 }
-                rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
-            } catch (Exception e) {
-                log.error("{}.testSendMmsMsg success message Error ==> {}", this.getClass(), e);
             }
-
+            rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
         } else {
             log.warn("{}.testSendMmsMsg Fail ==> response : {}", this.getClass(), resultMap);
             rtn.setFail("MMS 테스트 발송이 실패하였습니다.");
@@ -982,7 +1219,7 @@ public class SendMessageService {
         Gson gson = new Gson();
         String jsonString = gson.toJson(requestData);
 
-        return apiInterface.sendMsg(Const.SEND_SMS_API_URI, headerMap, jsonString);
+        return apiInterface.sendMsg(ApiConfig.SEND_SMS_API_URI, headerMap, jsonString);
     }
 
     /**
@@ -1004,23 +1241,16 @@ public class SendMessageService {
         requestData.setWebReqId(StringUtils.EMPTY);  //테스트발송은 웹 요청 아이디를 넣지 않는다.
         Map<String, Object> resultMap = sendSmsMsg(data, requestData, sendList);
 
-        if(!CommonUtils.isEmptyValue(resultMap, "rslt")
-                && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
-
-            try {
-                int successCnt = 0;
-                List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
-                for(Map<String, Object> dataInfo : dataList) {
-                    if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
-                            && StringUtils.equals(Const.API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
-                        successCnt++;
-                    }
+        if(isSendSuccess(resultMap)) {
+            int successCnt = 0;
+            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
+            for(Map<String, Object> dataInfo : dataList) {
+                if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                    successCnt++;
                 }
-                rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
-            } catch (Exception e) {
-                log.error("{}.testSendMmsMsg success message Error ==> {}", this.getClass(), e);
             }
-
+            rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
         } else {
             log.warn("{}.testSendMmsMsg Fail ==> response : {}", this.getClass(), resultMap);
             rtn.setFail("SMS 테스트 발송이 실패하였습니다.");

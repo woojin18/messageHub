@@ -101,4 +101,18 @@
 		ORDER BY DIS_ORDER
 	</select>
 
+	<select id="getProjectForUser" parameterType="string" resultType="camel">
+		/* login.getProjectForUser */
+		SELECT
+			CP.PROJECT_ID,
+			CP.CORP_ID,
+			CP.PROJECT_NAME
+		FROM CM_PROJECT_USER CPU
+			JOIN CM_PROJECT CP ON CPU.PROJECT_ID = CP.PROJECT_ID
+		WHERE CPU.USER_ID = #{userId}
+		AND USE_YN = 'Y'
+		AND DEL_YN = 'N'
+		ORDER BY CPU.REG_DT DESC
+	</select>
+
 </mapper>

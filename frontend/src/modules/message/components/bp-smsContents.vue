@@ -3,6 +3,15 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
+
+          <div class="of_h consolMarginTop">
+            <div class="float-left" style="width:34%"><h5>발신번호 *</h5></div>
+            <div class="float-right" style="width:66%">
+              <select v-model="callback" class="selectStyle2 float-right" style="width:100%">
+                <option v-for="info in callbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+              </select>
+            </div>
+          </div>
           
           <div v-if="sendData.senderType == 'MMS'" class="of_h consolMarginTop">
             <div class="float-left" style="width:34%"><h5>제목 *</h5></div>
@@ -35,6 +44,7 @@
 </template>
 
 <script>
+import messageApi from "@/modules/message/service/messageApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
@@ -59,20 +69,29 @@ export default {
   },
   data() {
     return {
+      callback: '',
       smsTitle: '',
       smsContent : '',
       rcvblcNumber: '',
       contentAreaPlaceholder: '변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정:예) {{name}}님 {{yyyymmdd}} 출금 예정입니다.',
+      callbackList: [],
     }
   },
   watch: {
     smsContsOpen(val){
-      if(val) this.fnSetPushInfo();
+      if(val){
+        this.fnSetPushInfo();
+        this.fnSelectCallbackList();
+      }
     }
   },
   methods: {
     //입력정보 callback
     fnCallbackInputData(){
+      if(!this.callback){
+        confirm.fnAlert(this.componentsTitle, '발신번호를 선택해주세요.');
+        return;
+      }
       if(this.sendData.senderType == 'MMS' && !this.smsTitle){
         confirm.fnAlert(this.componentsTitle, '제목을 입력해주세요.');
         return false;
@@ -90,6 +109,7 @@ export default {
     },
     //초기 정보 Set
     fnSetPushInfo(){
+      this.callback = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.callback, '');
       this.smsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsTitle, '');
       this.smsContent = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsContent, '');
       this.rcvblcNumber = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.rcvblcNumber, '');
@@ -97,7 +117,19 @@ export default {
     //팝업 닫기
     fnClose(){
       this.$emit('update:smsContsOpen', false)
-    }
+    },
+    //발신번호 리스트 조회
+    async fnSelectCallbackList(){
+      var params = {};
+      await messageApi.selectCallbackList(params).then(response =>{
+        var result = response.data;
+        if(result.success) {
+          this.callbackList = result.data;
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
   }
 }
 </script>

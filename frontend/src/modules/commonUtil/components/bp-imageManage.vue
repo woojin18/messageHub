@@ -21,7 +21,7 @@
                 <colgroup>
                 <col style="width:3%">
                 <col style="width:10%">
-                <col style="width:10%">
+                <col style="width:16%">
                 <col style="width:18%">
                 <col style="width:20%">
                 <col>
@@ -48,7 +48,7 @@
                       <label :for="'listCheck_'+idx"></label>
                     </td>
                     <td class="text-center">{{contant.fileId}}</td>
-                    <td class="text-left">{{contant.chImgNm}}</td>
+                    <td class="text-left word-break-all">{{contant.originFileName}}</td>
                     <td class="text-left">{{contant.useChInfo}}</td>
                     <td class="text-center">{{contant.regDt}}</td>
                     <td class="text-center"><a @click="fnOpenImagePreviewPopUp(contant.chImgUrl)" title="미리보기"><i class="far fa-search"></i></a></td>

@@ -17,12 +17,28 @@
 	</div>
 	<!-- //foot_type_user -->
 
-	
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>	
+	</div>
+	<!-- //contentWrap -->	
+	<script src="./common/js/plugin.js"></script>
+	<script src="./common/js/jquery-3.5.1.min.js"></script>	
+	<script src="./common/bxslider-4-4.2.12/jquery.bxslider.js"></script>	
 	<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>	
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="./common/js/jquery-ui.js"></script>
 	<script src="./common/js/common.js"></script>
 	<script src="./common/js/tables.js"></script>
+	<script>
+		$(document).ready(function() {
+			//wow애니메이션
+			wow = new WOW(
+				{
+				animateClass: 'animated',
+				offset:       100,
+				callback:     function(box) {
+				}
+			});
+			wow.init();
+		});
+	</script>
 </body>
 </html>
