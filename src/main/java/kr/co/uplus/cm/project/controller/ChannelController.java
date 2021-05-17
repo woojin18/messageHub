@@ -128,7 +128,7 @@ public class ChannelController extends BaseController {
 			@RequestParam String projectId,
 			@RequestParam String brandId,
 			@RequestParam String apiKey,
-			@RequestParam String apiSecretKey,
+			@RequestParam String apiSecret,
 			@RequestParam String name,
 			@RequestParam String description,
 			@RequestParam String tel,
@@ -176,7 +176,7 @@ public class ChannelController extends BaseController {
 		params.put("projectId",			projectId);
 		params.put("brandId",			brandId);
 		params.put("apiKey",			apiKey);
-		params.put("apiSecretKey",		apiSecretKey);
+		params.put("apiSecret",			apiSecret);
 		params.put("name",				name);
 		params.put("description",		description);
 		params.put("tel",				tel);

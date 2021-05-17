@@ -72,7 +72,7 @@ public class ChannelService {
 			inputVal.put("corpId",		rtnMap.get("corpId"));
 			inputVal.put("projectId",	rtnMap.get("projectId"));
 //			inputVal.put("apiKey",		rtnMap.get("projectId"));
-//			inputVal.put("apiSecretKey",	rtnMap.get("projectId"));
+//			inputVal.put("apiSecret",	rtnMap.get("projectId"));
 			inputVal.put("name",		brandInfo.get("name"));
 			inputVal.put("description",	brandInfo.get("description"));
 			inputVal.put("tel",			brandInfo.get("tel"));
@@ -214,7 +214,7 @@ public class ChannelService {
 		
 		Map<String, Object> getHeaderMap = new HashMap<String, Object>();
 		getHeaderMap.put("apiId", CommonUtils.getString(params.get("apiKey")));
-		getHeaderMap.put("apiSercret", CommonUtils.getString(params.get("apiSecretKey")));
+		getHeaderMap.put("apiSecret", CommonUtils.getString(params.get("apiSecret")));
 		
 		Map<String, Object> result = apiInterface.get("/console/v1/brand/categories", getHeaderMap);
 		
@@ -244,7 +244,7 @@ public class ChannelService {
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			// 파라미터가 아닌 헤더에 세팅해줘야함
 			con.setRequestProperty("apiId", CommonUtils.getString(params.get("apiId")));
-			con.setRequestProperty("apiSercret", CommonUtils.getString(params.get("apiSercret")));
+			con.setRequestProperty("apiSecret", CommonUtils.getString(params.get("apiSecret")));
 			con.setRequestProperty("svcId", "WEB01");
 			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 			con.setRequestMethod(type.toUpperCase());	// get post
@@ -466,7 +466,7 @@ public class ChannelService {
 			// 등록요청
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			headerMap.put("apiId",		params.get("apiKey"));
-			headerMap.put("apiSercret",	params.get("apiSecretKey"));
+			headerMap.put("apiSecret",	params.get("apiSecret"));
 			
 			ObjectMapper mapper = new ObjectMapper();
 			String json = mapper.writeValueAsString(map);
@@ -499,7 +499,7 @@ public class ChannelService {
 			// 수정요청
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			headerMap.put("apiId",		params.get("apiKey"));
-			headerMap.put("apiSercret",	params.get("apiSecretKey"));
+			headerMap.put("apiSecret",	params.get("apiSecret"));
 			headerMap.put("brandId",	brandId);
 			
 			ObjectMapper mapper = new ObjectMapper();
@@ -520,7 +520,7 @@ public class ChannelService {
 			// 삭제요청
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			headerMap.put("apiId",		params.get("apiKey"));
-			headerMap.put("apiSercret",	params.get("apiSecretKey"));
+			headerMap.put("apiSecret",	params.get("apiSecret"));
 			headerMap.put("brandId",	brandId);
 			
 			Map<String, Object> result =  apiInterface.listDelete("/console/v1/brand/" + brandId, list, headerMap);
