@@ -17,7 +17,6 @@ import messageRoutes from './modules/message/router';
 import templateRoutes from './modules/template/router';
 import signUpRoutes from './modules/signUp/router';
 import cashRoutes from './modules/cash/router';
-import rcsTemplateRoutes from './modules/rcsTemplate/router';
 import userRoutes from './modules/user/router';
 import messageStatusRoutes from './modules/messageStatus/router';
 import integratedTemplateRoutes from './modules/integratedTemplate/router';
@@ -120,7 +119,6 @@ const router = new Router({
 				...ucHomeRoutes,
 				...messageRoutes,
 				...templateRoutes,
-				...rcsTemplateRoutes,
 				...messageStatusRoutes,
 				...integratedTemplateRoutes
 			]
