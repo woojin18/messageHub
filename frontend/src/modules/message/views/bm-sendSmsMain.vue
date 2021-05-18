@@ -345,7 +345,7 @@ export default {
             confirm.fnAlert(this.componentsTitle, '발송하였습니다.');
           }
         } else {
-          if(!this.$gfnCommonUtils.isEmpty(result.data.feeMsg)){
+          if(result.data != null && !this.$gfnCommonUtils.isEmpty(result.data.feeMsg)){
             eventBus.$on('callbackEventBus', this.fnAlertFeeMsgCallBack);
             confirm.fnAlert(this.componentsTitle, result.data.feeMsg, 'ALERT', result);
           } else {

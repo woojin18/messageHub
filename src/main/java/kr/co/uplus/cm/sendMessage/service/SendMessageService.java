@@ -1366,7 +1366,7 @@ public class SendMessageService {
     }
 
     /**
-     * MMS 웹 발송 내역 등록
+     * 친구톡 웹 발송 내역 등록
      * @param rtn
      * @param data
      * @param requestData
@@ -1381,7 +1381,7 @@ public class SendMessageService {
         String ch = Const.Ch.FRIENDTALK;
         String corpId = CommonUtils.getStrValue(data, "corpId");
         String projectId = CommonUtils.getStrValue(data, "projectId");
-        String rsrvSendYn = (CommonUtils.getStrValue(data, "rsrvSendYn"));
+        String rsrvSendYn = CommonUtils.getStrValue(data, "rsrvSendYn");
         String rsrvDateStr = "";
         String status = Const.MsgSendStatus.COMPLETED;
 
@@ -1430,6 +1430,92 @@ public class SendMessageService {
         }
 
         return rtn;
+    }
+
+    /**
+     * 친구톡 발송 처리
+     * @param rtn
+     * @param fromIndex
+     * @param data
+     * @param pushRequestData
+     * @param recvInfoLst
+     * @param reSendCdList
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    @Async
+    public void sendFrndTalkMsgAsync(RestResult<Object> rtn
+            , int fromIndex
+            , Map<String, Object> data
+            , FrndTalkRequestData requestData
+            , List<RecvInfo> recvInfoLst
+            , List<Object> reSendCdList) throws Exception {
+
+        List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
+        Map<String, Object> responseBody = null;
+
+        String corpId = CommonUtils.getStrValue(data, "corpId");
+        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String apiKey = commonService.getApiKey(corpId, projectId);
+        String jsonString = "";
+        boolean isDone = false;
+        boolean isServerError = false;
+
+        Gson gson = new Gson();
+        Map<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("apiKey", apiKey);
+
+        int retryCnt = NumberUtils.INTEGER_ZERO;
+        int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
+        int listSize = recvInfoLst.size();
+        int toIndex = fromIndex;
+
+        while (toIndex < listSize) {
+            isDone = false;
+            isServerError = false;
+            toIndex = fromIndex + cutSize;
+            try {
+                if(toIndex > listSize) toIndex = listSize;
+                requestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
+                jsonString = gson.toJson(requestData);
+                responseBody = apiInterface.sendMsg(ApiConfig.SEND_FRND_TALK_API_URI, headerMap, jsonString);
+                isDone = isApiRequestAgain(responseBody, reSendCdList);
+            } catch (Exception e) {
+                log.error("{}.sendFrndTalkMsgAsync API Request Error ==> {}", this.getClass(), e);
+                isServerError = true;
+            }
+
+            if(isDone) {
+                retryCnt = NumberUtils.INTEGER_ZERO;
+                fromIndex = toIndex;
+            } else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
+                errorRecvInfoLst.addAll(recvInfoLst.subList(fromIndex, toIndex));
+                retryCnt = NumberUtils.INTEGER_ZERO;
+                fromIndex = toIndex;
+            } else {
+                retryCnt++;
+                toIndex = fromIndex;
+                if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
+            }
+        }
+
+        if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
+            try {
+                //CM_MSG Insert
+                data.put("apiKey", apiKey);
+                data.put("reqCh", Const.Ch.FRIENDTALK);
+                data.put("productCode", Const.Ch.FRIENDTALK.toLowerCase());
+                data.put("finalCh", Const.Ch.FRIENDTALK);
+                data.put("callback", requestData.getCallback());
+                data.put("webReqId", requestData.getWebReqId());
+                insertCmMsg(data, errorRecvInfoLst);
+            } catch (Exception e) {
+                log.error("{}.sendFrndTalkMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
+            }
+        }
+
+        //웹 발송 내역 등록
+        insertFrndTalkCmWebMsg(rtn, data, requestData, recvInfoLst);
     }
 
 }

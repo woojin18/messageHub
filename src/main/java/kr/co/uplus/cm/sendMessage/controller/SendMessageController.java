@@ -265,16 +265,12 @@ public class SendMessageController {
             //예약건과 즉시건의 웹 발송 내역 등록 분리
             String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
             if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
-                sendMsgService.insertPushCmWebMsg(rtn, params, requestData, recvInfoLst);
-                if(rtn.isSuccess() == false) {
-                    return rtn;
-                }
+                return sendMsgService.insertPushCmWebMsg(rtn, params, requestData, recvInfoLst);
             }
 
             /** 테스트발송(동기화) */
             if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
-                rtn = sendMsgService.testSendPushMsg(params, requestData, recvInfoLst);
-                return rtn;
+                return sendMsgService.testSendPushMsg(params, requestData, recvInfoLst);
             }
 
         } catch (Exception e) {
@@ -412,16 +408,12 @@ public class SendMessageController {
             //예약건과 즉시건의 웹 발송 내역 등록 분리
             String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
             if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
-                sendMsgService.insertSmsCmWebMsg(rtn, sParam, requestData, recvInfoLst);
-                if(rtn.isSuccess() == false) {
-                    return rtn;
-                }
+                return sendMsgService.insertSmsCmWebMsg(rtn, params, requestData, recvInfoLst);
             }
 
             /** 테스트발송(동기화) */
             if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
-                rtn = sendMsgService.testSendSmsMsg(params, requestData, recvInfoLst);
-                return rtn;
+                return sendMsgService.testSendSmsMsg(params, requestData, recvInfoLst);
             }
 
         } catch (Exception e) {
@@ -519,16 +511,12 @@ public class SendMessageController {
             //예약건과 즉시건의 웹 발송 내역 등록 분리
             String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
             if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
-                sendMsgService.insertMmsCmWebMsg(rtn, sParam, requestData, recvInfoLst);
-                if(rtn.isSuccess() == false) {
-                    return rtn;
-                }
+                return sendMsgService.insertMmsCmWebMsg(rtn, params, requestData, recvInfoLst);
             }
 
             /** 테스트발송(동기화) */
             if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
-                rtn = sendMsgService.testSendMmsMsg(params, requestData, recvInfoLst);
-                return rtn;
+                return sendMsgService.testSendMmsMsg(params, requestData, recvInfoLst);
             }
 
         } catch (Exception e) {
@@ -618,12 +606,12 @@ public class SendMessageController {
         try {
             params = commonService.setUserInfo(multipartFileDTO.getParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
-            log.info("{}.sendMmsMessage Start ====> paramString : {}", this.getClass(), params);
+            log.info("{}.sendFrndTalkMessage Start ====> paramString : {}", this.getClass(), params);
 
             /** 유효성 체크 */
             requestData = sendMsgService.setFrndTalkSendData(rtn, params);
             if(rtn.isSuccess() == false) {
-                log.info("{}.sendMmsMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
+                log.info("{}.sendFrndTalkMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
                 return rtn;
             }
 
@@ -636,7 +624,6 @@ public class SendMessageController {
             }
 
             /** 잔액확인 */
-            //TODO :  여기서 부터 다시 하자 product code로 작업하자
             String payType = sendMsgService.selectPayType(params);
 
             //선불일경우
@@ -680,10 +667,12 @@ public class SendMessageController {
             //예약건과 즉시건의 웹 발송 내역 등록 분리
             String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
             if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
-                sendMsgService.insertFrndTalkCmWebMsg(rtn, sParam, requestData, recvInfoLst);
-                if(rtn.isSuccess() == false) {
-                    return rtn;
-                }
+                return sendMsgService.insertFrndTalkCmWebMsg(rtn, params, requestData, recvInfoLst);
+            }
+
+            /** 테스트발송(동기화) */
+            if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
+                //return sendMsgService.testSendPushMsg(params, requestData, recvInfoLst);
             }
 
         } catch (Exception e) {
@@ -692,6 +681,19 @@ public class SendMessageController {
             log.error("{}.sendFrndTalkMessage Error : {}", this.getClass(), e);
             return rtn;
         }
+
+        /** 비동기화 발송 */
+        try {
+            List<Object> reSendCdList = sendMsgService.selectGernalList(null);
+            log.info("{}.sendFrndTalkMessage aSync API send Start ====>");
+            sendMsgService.sendFrndTalkMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
+        } catch (Exception e) {
+            log.info("{}.sendFrndTalkMessage aSync API send Error : {}", this.getClass(), e);
+        }
+        rtn.setMessage("친구톡 발송 요청처리 되었습니다.");
+
+        rtn.setSuccess(true);
+        rtn.setData(rtnMap);
 
         return rtn;
     }

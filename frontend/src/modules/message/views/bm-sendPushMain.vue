@@ -422,7 +422,7 @@ export default {
       await MessageApi.sendPushMessage(fd).then(response =>{
         this.inProgress = false;
         const result = response.data;
-
+        
         if(result.success) {
           if(testSendYn == 'Y'){
             if(!this.fnIsEmpty(result.message)){
@@ -431,7 +431,7 @@ export default {
               confirm.fnAlert(this.componentsTitle, '발송하였습니다.');
             }
           } else {
-            if(!this.fnIsEmpty(result.data.feeMsg)){
+            if(result.data != null && !this.fnIsEmpty(result.data.feeMsg)){
               eventBus.$on('callbackEventBus', this.fnAlertFeeMsgCallBack);
               confirm.fnAlert(this.componentsTitle, result.data.feeMsg, 'ALERT', result);
             } else {

@@ -434,13 +434,13 @@ export default {
         
         if(result.success) {
           if(testSendYn == 'Y'){
-            if(!this.fnIsEmpty(result.message)){
+            if(!this.$gfnCommonUtils.isEmpty(result.message)){
               confirm.fnAlert(this.componentsTitle, result.message);
             } else {
               confirm.fnAlert(this.componentsTitle, '발송하였습니다.');
             }
           } else {
-            if(!this.fnIsEmpty(result.data.feeMsg)){
+            if(result.data != null && !this.$gfnCommonUtils.isEmpty(result.data.feeMsg)){
               eventBus.$on('callbackEventBus', this.fnAlertFeeMsgCallBack);
               confirm.fnAlert(this.componentsTitle, result.data.feeMsg, 'ALERT', result);
             } else {
