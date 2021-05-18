@@ -204,7 +204,7 @@
             AND REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
             </if>
         </if>
-         <choose>
+        <choose>
             <when test="searchOthPrjUseYn != null and searchOthPrjUseYn.size != 0 ">
                 AND PROJECT_ID IN
                 <foreach collection="searchOthPrjUseYn" item="item" index="index"  open="(" close=")" separator=",">
@@ -355,6 +355,18 @@
             AND REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
             </if>
         </if>
+        <choose>
+            <when test="searchOthPrjUseYn != null and searchOthPrjUseYn.size != 0 ">
+                AND PROJECT_ID IN
+                <foreach collection="searchOthPrjUseYn" item="item" index="index"  open="(" close=")" separator=",">
+                    <if test='item == "Y" '>'ALL'</if>
+                    <if test='item == "N" '>#{projectId}</if>
+                </foreach>
+            </when>
+            <otherwise>
+                AND PROJECT_ID IN ('ALL', #{projectId})
+            </otherwise>
+        </choose>
         <if test="tmpltId != '' and tmpltId != null ">
             AND TMPLT_ID = #{tmpltId}
         </if>
@@ -370,7 +382,7 @@
     </select>
 
     <select id="selectFrndTalkTmpltList" parameterType="string" resultType="camel">
-    /* template.selectSmsTmpltList 친구톡 템플릿 리스트 조회 */
+    /* template.selectFrndTalkTmpltList 친구톡 템플릿 리스트 조회 */
         SELECT
             @ROWNUM := @ROWNUM + 1 AS ROWNUM
             , CFT.TMPLT_ID

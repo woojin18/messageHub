@@ -31,4 +31,7 @@ public class FbInfo implements Serializable {
     //파일 아이디
     private String fileId;
 
+    //상품 코드
+    private String productCode;
+
 }

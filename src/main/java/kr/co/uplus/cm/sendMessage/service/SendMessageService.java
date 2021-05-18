@@ -34,7 +34,9 @@ import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
+import kr.co.uplus.cm.sendMessage.dto.ButtonsInfo;
 import kr.co.uplus.cm.sendMessage.dto.FbInfo;
+import kr.co.uplus.cm.sendMessage.dto.FrndTalkRequestData;
 import kr.co.uplus.cm.sendMessage.dto.MmsRequestData;
 import kr.co.uplus.cm.sendMessage.dto.PushMsg;
 import kr.co.uplus.cm.sendMessage.dto.PushRequestData;
@@ -277,6 +279,13 @@ public class SendMessageService {
 
     /**
      * 발송 가격 조회
+     * ***************************************************************
+     * [HISTORY]
+     * 기존 CH_GRP(KAKAO), CH(FRENDTALK), SPEC(FRENDTALK_WIDE)
+     * 형식으로 조회 하던 방식에서 SPEC 컬럼이 사라지면서 CH_GRP/CH/SPEC 컬럼은 중요하지 않다.
+     * PRODUCT_CODE 로 고정 조회해야된다.
+     * 왜 이런방식으로 변경되었는지는 몰르지만 발송가격조회 수정시 참고
+     * ***************************************************************
      * @param sendCnt
      * @return
      * @throws Exception
@@ -1254,6 +1263,170 @@ public class SendMessageService {
         } else {
             log.warn("{}.testSendMmsMsg Fail ==> response : {}", this.getClass(), resultMap);
             rtn.setFail("SMS 테스트 발송이 실패하였습니다.");
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 친구톡 발송 데이터 유효성 체크
+     * @param rtn
+     * @param params
+     * @return
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public FrndTalkRequestData setFrndTalkSendData(RestResult<Object> rtn, Map<String, Object> params) {
+        FrndTalkRequestData requestData = new FrndTalkRequestData();
+
+        //webReqId
+        String webReqId = CommonUtils.getCommonId(Const.WebReqIdPrefix.FRND_TALK_PREFIX, 5);
+        requestData.setWebReqId(webReqId);
+
+        //callback(TODO : 알아보자)
+        requestData.setCallback(CommonUtils.getStrValue(params, "callback"));
+
+        //캠페인 ID
+        requestData.setCampaignId(CommonUtils.getStrValue(params, "campaignId"));
+
+        //광고 표기 여부
+        String adFlag = Const.COMM_NO;
+        String msgKind = CommonUtils.getStrValue(params, "msgKind");
+        if(StringUtils.equals(msgKind, Const.MsgKind.AD)) {
+            adFlag = Const.COMM_YES;
+        }
+        requestData.setAdFlag(adFlag);
+
+        //메시지
+        requestData.setMsg(CommonUtils.getStrValue(params, "frndTalkContent"));
+
+        //카카오톡 발신 프로필키(TODO : 알아보자)
+        requestData.setSenderKey("TODO-알수없다.");
+
+        //이미지파일관련
+        requestData.setFileId(CommonUtils.getStrValue(params, "fileId"));
+        requestData.setWideImageYn(CommonUtils.getStrValue(params, "wideImgYn"));
+        requestData.getImage().setImageUrl(CommonUtils.getStrValue(params, "imgUrl"));
+        requestData.getImage().setImageLink(CommonUtils.getStrValue(params, "imgLink"));
+
+        //버튼정보
+        if(!CommonUtils.isEmptyValue(params, "buttonList")) {
+            List<ButtonsInfo> buttonList = (List<ButtonsInfo>) params.get("buttonList");
+            if(CollectionUtils.isNotEmpty(buttonList)) {
+                requestData.setButtons(buttonList);
+            }
+        }
+
+        //대체발송
+        String rplcSendType = (CommonUtils.getStrValue(params, "rplcSendType"));
+        if(!StringUtils.equals(rplcSendType, Const.RplcSendType.NONE)) {
+            List<FbInfo> fbInfoLst = new ArrayList<FbInfo>();
+            Map<String, Object> fbInfo = (Map<String, Object>) params.get("fbInfo");
+            String fbMsg = CommonUtils.getStrValue(fbInfo, "msg");
+            String fbRcvblcNumber = CommonUtils.getStrValue(fbInfo, "rcvblcNumber");
+            String fbMsgBody = fbMsg;
+
+            if(StringUtils.equals(msgKind, Const.MsgKind.AD)
+                    && StringUtils.isNotBlank(fbRcvblcNumber)) {
+                fbMsgBody += "\n" +  fbRcvblcNumber;
+            }
+
+            FbInfo pushFbInfo = new FbInfo();
+            pushFbInfo.setCh(rplcSendType);
+            pushFbInfo.setMsg(fbMsgBody);
+
+            if(StringUtils.equals(rplcSendType, Const.RplcSendType.LMS)) {
+                pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
+            } else if(StringUtils.equals(rplcSendType, Const.RplcSendType.MMS)) {
+                pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
+                pushFbInfo.setFileId(CommonUtils.getStrValue(fbInfo, "fileId"));
+            }
+
+            fbInfoLst.add(pushFbInfo);
+            requestData.setFbInfoLst(fbInfoLst);
+            requestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
+        }
+
+        //유효성 체크
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<FrndTalkRequestData>> violations = validator.validate(requestData);
+        String errorMsg = "";
+
+        for (ConstraintViolation violation : violations) {
+            errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + violation.getMessage();
+            //log.info("path : [{}], message : [{}]", violation.getPropertyPath(), violation.getMessage());
+        }
+
+        if(StringUtils.isNotBlank(errorMsg)) {
+            rtn.setSuccess(false);
+            rtn.setMessage(errorMsg);
+        }
+
+        return requestData;
+    }
+
+    /**
+     * MMS 웹 발송 내역 등록
+     * @param rtn
+     * @param data
+     * @param requestData
+     * @param recvInfoLst
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> insertFrndTalkCmWebMsg(RestResult<Object> rtn
+            , Map<String, Object> data
+            , FrndTalkRequestData requestData
+            , List<RecvInfo> recvInfoLst) throws Exception {
+        String ch = Const.Ch.FRIENDTALK;
+        String corpId = CommonUtils.getStrValue(data, "corpId");
+        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String rsrvSendYn = (CommonUtils.getStrValue(data, "rsrvSendYn"));
+        String rsrvDateStr = "";
+        String status = Const.MsgSendStatus.COMPLETED;
+
+        if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+            String rsrvYmd = CommonUtils.getStrValue(data, "rsrvDate");
+            String rsrvHH = CommonUtils.getStrValue(data, "rsrvHH");
+            String rsrvMM = CommonUtils.getStrValue(data, "rsrvMM");
+            rsrvDateStr = rsrvYmd+" "+rsrvHH+":"+rsrvMM;
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date rsrvDate = dateFormat.parse(rsrvDateStr);
+            Date currentDate = new Date();
+
+            currentDate = DateUtils.addMinutes(currentDate, 10);
+            if(currentDate.compareTo(rsrvDate) > 0) {
+                rtn.setSuccess(false);
+                rtn.setMessage("잘못된 예약시간입니다. 현재시간 10분 이후로 설정해주세요.");
+                return rtn;
+            }
+            status = Const.MsgSendStatus.SEND_WAIT;
+        }
+
+        requestData.setRecvInfoLst(recvInfoLst);
+        Gson gson = new Gson();
+        String json = gson.toJson(requestData);
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("webReqId", requestData.getWebReqId());
+        params.put("corpId", corpId);
+        params.put("projectId", projectId);
+        params.put("apiKey", commonService.getApiKey(corpId, projectId));
+        params.put("chString", ch);
+        params.put("msgInfo", json);
+        params.put("senderCnt", recvInfoLst.size());
+        params.put("callback", requestData.getCallback());
+        params.put("campaignId", requestData.getCampaignId());
+        params.put("senderType", Const.SenderType.CHANNEL);
+        params.put("status", status);
+        params.put("resvSenderYn", rsrvSendYn);
+        params.put("reqDt", rsrvDateStr);
+
+        int resultCnt = insertCmWebMsg(params);
+
+        if (resultCnt <= 0) {
+            log.info("{}.insertMmsCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
         }
 
         return rtn;

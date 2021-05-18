@@ -63,7 +63,6 @@
                 <label for="msgKind_A" class="mr30">광고성</label>
                 <input type="radio" name="msgKind" value="I" id="msgKind_I" v-model="sendData.msgKind">
                 <label for="msgKind_I">정보성</label>
-
               </div>
             </div>
           </div>
@@ -170,7 +169,7 @@
           </div>
         </div>
         <div class="mt20 float-right">
-          <a @click="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송" data-toggle="modal" data-target="#test">테스트 발송</a>
+          <a @click="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송">테스트 발송</a>
           <a @click="fnSendSmsMessage('N')" class="btnStyle2 backRed float-left ml10" title="발송">발송</a>
         </div>
       </div>
@@ -333,7 +332,6 @@ export default {
         await messageApi.sendMmsMessage(fd).then(response => this.fnSendCallBack(response, testSendYn))
         .catch(function () { vm.inProgress = false; });
       }
-      
     },
     fnSendCallBack(response, testSendYn){
       this.inProgress = false;

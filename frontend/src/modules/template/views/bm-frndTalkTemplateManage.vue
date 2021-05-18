@@ -17,11 +17,12 @@
               <div class="mt5">
                 <div class="text-sub-wrap scroll-y">
                   <!-- <p class="text-sub scroll-y"> -->
-                    {{tmpltData.tmpltName}}
+                    <!-- {{tmpltData.tmpltName}} -->
                     <div v-if="!$gfnCommonUtils.isEmpty(tmpltData.imgUrl)" class="phoneText2 mt10 text-center"
                       :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.imgUrl+');'">
                     </div>
-                    <br v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltName) && $gfnCommonUtils.isEmpty(tmpltData.imgUrl)"/>
+                    <!-- <br v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltName) && $gfnCommonUtils.isEmpty(tmpltData.imgUrl)"/> -->
+                    <br v-if="$gfnCommonUtils.isEmpty(tmpltData.imgUrl)"/>
                     <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
                     <div v-for="(buttonInfo, idx) in tmpltData.buttonList" :key="idx">
                       <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray width100_">{{buttonInfo.name}}</a>

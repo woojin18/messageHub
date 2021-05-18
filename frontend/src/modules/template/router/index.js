@@ -6,7 +6,8 @@ import FrndTalkTemplateManage from '../views/bm-frndTalkTemplateManage.vue'
 import FrndTalkTemplateList from '../views/bm-frndTalkTemplateList.vue'
 import RcsTemplateList from '../views/bm-rcsTemplateList.vue'
 import RcsTemplateMod from '../views/bm-rcsTemplateMod.vue'
-
+import AlimTalkTemplateManage from '../views/bm-alimTalkTemplateManage.vue'
+import AlimTalkTemplateList from '../views/bm-alimTalkTemplateList.vue'
 
 export default [
     {
@@ -54,6 +55,18 @@ export default [
         path: '/uc/template/rcsTemplateMod',
         name: 'rcsTemplateMod',
         component: RcsTemplateMod,
+        props: true
+    },
+    {
+        path: '/uc/template/alimTalkTemplateList',
+        name: 'alimTalkTemplateList',
+        component: AlimTalkTemplateList,
+        props: true
+    },
+    {
+        path: '/uc/template/alimTalkTemplateManage',
+        name: 'alimTalkTemplateManage',
+        component: AlimTalkTemplateManage,
         props: true
     }
 ]

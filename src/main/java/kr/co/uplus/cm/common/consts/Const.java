@@ -35,6 +35,7 @@ public class Const {
         public static final String PUSH = "PUSH";
         public static final String SMS = "SMS";
         public static final String MMS = "MMS";
+        public static final String FRIENDTALK = "FRIENDTALK";
     }
 
     // 메시지발송 ID 접두(WEB_REQ_ID)
@@ -42,6 +43,7 @@ public class Const {
         public static final String PUSH_PREFIX = "PSH";
         public static final String SMS_PREFIX = "SMS";
         public static final String MMS_PREFIX = "MMS";
+        public static final String FRND_TALK_PREFIX = "FRD";
     }
 
     //메시지구분
@@ -112,6 +114,37 @@ public class Const {
         public static final String ERROR_PREFIX = "ERR";
         public static final String GW_RESULT_CODE = "ERROR";
         public static final String GW_RESULT_DESC = "3회재시도 에러";
+    }
+
+    /**
+     * 메세지 상품 타입
+     */
+    public enum MsgProductCode {
+        PUSH("PUSH"),
+        SMS("SMS"),
+        LMS( "LMS"),
+        MMS("MMS"),
+        FRENDTALK_TEXT("FRIENDTALK_01"),
+        FRENDTALK_IMAGE("FRIENDTALK_02"),
+        FRENDTALK_WIDE("FRIENDTALK_03"),
+        ALIM_TALK("ALIMTALK");
+
+        private String code;
+
+        MsgProductCode(String code) {
+            this.code = code;
+        }
+
+        public static String getType(String name) {
+            String rtnType = "";
+            for (MsgProductCode e : MsgProductCode.values()) {
+                if(e.name().equals(name)) {
+                    rtnType = e.code;
+                    break;
+                }
+            }
+            return rtnType;
+        }
     }
 
 
