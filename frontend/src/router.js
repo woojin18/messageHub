@@ -101,7 +101,7 @@ const router = new Router({
 				...projectRoutes,
 				...cashRoutes,
 				...userRoutes,
-				...addressRoutes
+				...addressRoutes,
 				...acMyPageRoutes
 			],
 		},
