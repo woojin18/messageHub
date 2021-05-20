@@ -34,6 +34,10 @@ module.exports = {
       '^/integratedTemplateApi': {
         target: 'http://localhost:7070',
         changeOrigin: true
+      },
+      '^/addressApi': {
+        target: 'http://localhost:7070',
+        changeOrigin: true
       }
     }
   },

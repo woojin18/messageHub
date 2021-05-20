@@ -20,6 +20,7 @@ import cashRoutes from './modules/cash/router';
 import userRoutes from './modules/user/router';
 import messageStatusRoutes from './modules/messageStatus/router';
 import integratedTemplateRoutes from './modules/integratedTemplate/router';
+import addressRoutes from './modules/address/router';
 
 //import confirm from "@/modules/commonUtil/service/confirm.js";
 
@@ -98,7 +99,8 @@ const router = new Router({
 				...channelRoutes,
 				...projectRoutes,
 				...cashRoutes,
-				...userRoutes
+				...userRoutes,
+				...addressRoutes
 			],
 		},
 		{

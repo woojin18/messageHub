@@ -26,10 +26,6 @@ public class UserService {
 	public RestResult<Object> selectUserList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
-		// 고객ID
-//		Map<String, Object> map = (Map<String, Object>)generalDao.selectGernalObject(DB.QRY_SELECT_USER_CORP_ID, params);
-//		params.put("corpId", map.get("corpId"));
-		
 		if(params.containsKey("pageNo")
 				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
 				&& params.containsKey("listSize")

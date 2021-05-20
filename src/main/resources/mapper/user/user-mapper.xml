@@ -198,8 +198,8 @@
 		,		#{corpId}
 		,		'ING'
 		,		'N'
-		,		'admin'
-		,		#{regId}
+		,		#{loginId}
+		,		NOW()
 		,		NOW()
 		)
 	</insert>

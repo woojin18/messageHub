@@ -125,5 +125,12 @@ public class DB {
 	public final static String QRY_SELECT_RCS_TEMPLATE_LIST = "rcsTemplate.selectRcsTemplate";
 	public final static String QRY_SELECT_RCS_TEMPLATE_LIST_CNT = "rcsTemplate.selectRcsTemplateCnt";
 	public final static String QRY_SELECT_CORP_BRAND_CNT = "rcsTemplate.selectCorpBrandCnt";
-
+	// 주소록 관리
+	public final static String QRY_SELECT_ADDRESS_CATE_GRP_LIST = "address.selectAddressCateGrpList";
+	public final static String QRY_SELECT_ADDRESS_GRP = "address.selectAddressGrp";
+	public final static String QRY_SELECT_ADDRESS_CATE_LIST = "address.selectAddressCateList";
+	public final static String QRY_SELECT_ADDRESS_MEM_LIST = "address.selectAddressMemList";
+	public final static String QRY_INSERT_ADDR_CATE_GRP = "address.insertAddressCateGrp";
+	public final static String QRY_UPDATE_ADDR_CATE_GRP = "address.updateAddressCateGrp";
+	public final static String QRY_SELECT_PROJECT_LIST = "address.selectProjectList";
 }
