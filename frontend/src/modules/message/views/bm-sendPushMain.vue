@@ -341,6 +341,9 @@ export default {
   methods: {
     //발송 정보 유효성 체크
     fnValidSendMsgData(testSendYn){
+      if(this.fnSetContsVarNms() == false){
+        return false;
+      }
       if(!this.sendData.pushContent){
         confirm.fnAlert(this.componentsTitle, '푸시메시지 내용을 입력해주세요.');
         return false;
@@ -375,6 +378,17 @@ export default {
             return false;
           }
         }
+        //앱사용자 전체발송시 메시지 변수 사용금지 & 대체발송 금지
+        if(this.sendData.cuInputType == 'ALL'){
+          if(this.sendData.contsVarNms.length > 0){
+            confirm.fnAlert(this.componentsTitle, '앱사용자 전체발송시 메시지 내용에 변수를 사용하실 수 없습니다.');
+            return false;
+          }
+          if(this.sendData.rplcSendType != 'NONE'){
+            confirm.fnAlert(this.componentsTitle, '앱사용자 전체발송시 대체발송을 사용하실 수 없습니다.');
+            return false;
+          }
+        }
         if(this.sendData.rplcSendType != 'NONE'){
           if(!this.sendData.fbInfo.callback){
             confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 발신번호를 입력해주세요.');
@@ -395,8 +409,7 @@ export default {
         confirm.fnAlert(this.componentsTitle, '푸시 메시지 발송 처리중입니다.');
         return;
       }
-
-      //유효성 체크
+      
       if(this.fnValidSendMsgData(testSendYn) == false) return;
 
       //발송처리
@@ -405,9 +418,12 @@ export default {
 
       if(testSendYn == 'Y'){
         params.recvInfoLst = Object.assign([], this.sendData.testRecvInfoLst);
+        params.cuInputType = 'DICT';
+        //테스트 발송은 대체발송 하지 않는다.
         params.rplcSendType = 'NONE'
         params.requiredCuPhone = false;
-        params.cuInputType = 'DICT';
+        params.fbInfo = {};
+        //테스트 발송은 즉시발송만 가능
         params.rsrvSendYn = 'N';
       }
 

@@ -15,7 +15,7 @@
     <select id="selectCallbackList" parameterType="hashmap" resultType="camel">
     /* sendMessage.selectCallbackList 발신번호 조회 */
         SELECT CHATBOT_ID AS CALLBACK /* 챗봇(대화방)ID, A2P의 경우 발신번호(mdn)과 동일 */
-        FROM TODO_RCS_BRAND CRB
+        FROM cm.CM_RCS_BRAND CRB
         INNER JOIN cm.CM_RCS_CHATBOT CRC
             ON CRB.BRAND_ID = CRC.BRAND_ID
             AND LOWER(CRC.SVC_TYPE) = 'a2p'
@@ -23,7 +23,7 @@
             AND CRC.APPROVAL_STATUS = #{approvalStatus}
         WHERE CRB.APPROVAL_DT IS NOT NULL
             AND CRB.CORP_ID = #{corpId}
-            AND CRB.PROJECT_ID = #{projectId}
+            AND CRB.PROJECT_ID IN ('ALL', #{projectId})
     </select>
 
     <select id="selectAddrGrpList" parameterType="hashmap" resultType="camel">
@@ -146,6 +146,19 @@
         WHERE CACG.USE_YN = 'Y'
             AND CACG.CORP_ID = #{corpId}
             AND CACG.PROJECT_ID IN ('ALL', #{projectId})
+    </select>
+
+    <select id="selectAllAppUser" parameterType="hashmap" resultType="kr.co.uplus.cm.sendMessage.dto.RecvInfo">
+    /* sendMessage.selectAllAppUser 앱사용자 전체 조회 */
+        SELECT
+            TPUI.CUID
+        <if test="requiredCuPhone">
+            , TPUI.PHONENO AS PHONE
+        </if>
+            , @ROWNUM := @ROWNUM + 1 AS CLI_KEY
+        FROM cm_push.T_PUSH_USER_INFO TPUI
+        INNER JOIN (SELECT @ROWNUM:=0) TMP
+        WHERE TPUI.APPID = #{appId}
     </select>
 
     <select id="selectPayType" parameterType="hashmap" resultType="string">

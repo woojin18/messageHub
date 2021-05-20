@@ -8,7 +8,7 @@
             <hr>
             <div class="of_h">
               <div style="width:11%" class="float-left">
-                <h4>플러스친구ID *</h4>
+                <h4>발신프로필 *</h4>
               </div>
               <div style="width:42%">
                 <select name="userConsole_sub0203_3" class="selectStyle2" style="width:53%">

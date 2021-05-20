@@ -96,7 +96,7 @@
             , TMPLT_TITLE
             , TMPLT_CONTENT
             , RCVBLC_NUMBER
-        <if test="imgUrl != '' and imgUrl != null and fileId != '' and fileId != null ">
+        <if test="fileId != '' and fileId != null ">
             , IMG_URL
             , FILE_ID
         </if>
@@ -115,7 +115,7 @@
             , #{tmpltTitle}
             , #{tmpltContent}
             , #{rcvblcNumber}
-        <if test="imgUrl != '' and imgUrl != null and fileId != '' and fileId != null ">
+        <if test="fileId != '' and fileId != null ">
             , #{imgUrl}
             , #{fileId}
         </if>
@@ -140,10 +140,16 @@
             , TMPLT_TITLE = #{tmpltTitle}
             , TMPLT_CONTENT = #{tmpltContent}
             , RCVBLC_NUMBER = #{rcvblcNumber}
-        <if test="imgUrl != '' and imgUrl != null and fileId != '' and fileId != null ">
-            , IMG_URL = #{imgUrl}
-            , FILE_ID = #{fileId}
-        </if>
+        <choose>
+            <when test="fileId != '' and fileId != null ">
+                , IMG_URL = #{imgUrl}
+                , FILE_ID = #{fileId}
+            </when>
+            <otherwise>
+                , IMG_URL = ''
+                , FILE_ID = ''
+            </otherwise>
+        </choose>
             , UPD_DT = NOW()
             , UPD_ID = #{userId}
             , ADTN_INFO = #{adtnInfo}
@@ -296,9 +302,12 @@
             , CORP_ID
             , MSG_KIND
             , TMPLT_CONTENT
+          <if test="fileId != '' and fileId != null ">
             , FILE_ID
             , IMG_URL
             , IMG_LINK
+            , WIDE_IMG_YN
+          </if>
             , TMPLT_BUTTONS
             , REG_DT
             , REG_ID
@@ -311,9 +320,12 @@
             , #{corpId}
             , #{msgKind}
             , #{tmpltContent}
+        <if test="fileId != '' and fileId != null ">
             , #{fileId}
             , #{imgUrl}
             , #{imgLink}
+            , #{wideImgYn}
+        </if>
             , #{tmpltButtonsStr}
             , NOW()
             , #{userId}
@@ -330,9 +342,20 @@
             TMPLT_NAME = #{tmpltName}
             , MSG_KIND = #{msgKind}
             , TMPLT_CONTENT = #{tmpltContent}
-            , FILE_ID = #{fileId}
-            , IMG_URL = #{imgUrl}
-            , IMG_LINK = #{imgLink}
+        <choose>
+            <when test="fileId != '' and fileId != null ">
+                , FILE_ID = #{fileId}
+                , IMG_URL = #{imgUrl}
+                , IMG_LINK = #{imgLink}
+                , WIDE_IMG_YN = #{wideImgYn}
+            </when>
+            <otherwise>
+                , FILE_ID = ''
+                , IMG_URL = ''
+                , IMG_LINK = ''
+                , WIDE_IMG_YN = ''
+            </otherwise>
+        </choose>
             , TMPLT_BUTTONS = #{tmpltButtonsStr}
             , UPD_DT = NOW()
             , UPD_ID = #{userId}
@@ -394,6 +417,7 @@
             , CFT.FILE_ID
             , CFT.IMG_URL
             , CFT.IMG_LINK
+            , CFT.WIDE_IMG_YN
             , CFT.TMPLT_BUTTONS
             , DATE_FORMAT(CFT.REG_DT, '%Y-%m-%d %H:%i:%S') AS REG_DT
             , CFT.REG_ID

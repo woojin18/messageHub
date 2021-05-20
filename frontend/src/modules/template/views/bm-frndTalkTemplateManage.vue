@@ -403,6 +403,7 @@ export default {
     fnCallbackImgInfo(imgInfo) {
       this.tmpltData.imgUrl = imgInfo.chImgUrl;
       this.tmpltData.fileId = imgInfo.fileId;
+      this.tmpltData.wideImgYn = imgInfo.wideImgYn;
     },
   }
 }

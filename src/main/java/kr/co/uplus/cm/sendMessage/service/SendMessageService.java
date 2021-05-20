@@ -217,7 +217,7 @@ public class SendMessageService {
 
             //전체발송
             } else if(StringUtils.equals("ALL", (String)params.get("cuInputType"))) {
-                List<Object> sltObjList = generalDao.selectGernalList(DB.QRY_SELECT_ALL_ADDR_CU_LIST, params);
+                List<Object> sltObjList = generalDao.selectGernalList(DB.QRY_SELECT_ALL_APP_USER, params);
                 recvInfoLst = (List<RecvInfo>)(Object)sltObjList;
             }
         }
@@ -1299,8 +1299,8 @@ public class SendMessageService {
         //메시지
         requestData.setMsg(CommonUtils.getStrValue(params, "frndTalkContent"));
 
-        //카카오톡 발신 프로필키(TODO : 알아보자)
-        requestData.setSenderKey("TODO-알수없다.");
+        //카카오톡 발신 프로필키
+        requestData.setSenderKey(CommonUtils.getStrValue(params, "senderKey"));
 
         //이미지파일관련
         requestData.setFileId(CommonUtils.getStrValue(params, "fileId"));
@@ -1516,6 +1516,72 @@ public class SendMessageService {
 
         //웹 발송 내역 등록
         insertFrndTalkCmWebMsg(rtn, data, requestData, recvInfoLst);
+    }
+
+    /**
+     * 친구톡 테스트 발송 처리
+     * @param data
+     * @param pushRequestData
+     * @param sendList
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public RestResult<Object> testSendFrndTalkMsg(
+            Map<String, Object> data
+            , FrndTalkRequestData requestData
+            , List<RecvInfo> sendList) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        requestData.setWebReqId(StringUtils.EMPTY);  //테스트발송은 웹 요청 아이디를 넣지 않는다.
+        Map<String, Object> resultMap = sendFrndTalkMsg(data, requestData, sendList);
+
+        if(isSendSuccess(resultMap)) {
+            int successCnt = 0;
+            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
+            for(Map<String, Object> dataInfo : dataList) {
+                if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                    successCnt++;
+                }
+            }
+            rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
+        } else {
+            log.warn("{}.testSendPushMsg Fail ==> response : {}", this.getClass(), resultMap);
+            rtn.setFail("푸시 테스트 발송이 실패하였습니다.");
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 친구톡 메시지 발송 처리
+     * @param data
+     * @param pushRequestData
+     * @param sendList
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> sendFrndTalkMsg(
+            Map<String, Object> data
+            , FrndTalkRequestData requestData
+            , List<RecvInfo> sendList) throws Exception {
+
+        String corpId = CommonUtils.getStrValue(data, "corpId");
+        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String apiKey = commonService.getApiKey(corpId, projectId);
+
+        requestData.setRecvInfoLst(sendList);
+
+        Map<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("apiKey", apiKey);
+
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(requestData);
+
+        return apiInterface.sendMsg(ApiConfig.SEND_FRND_TALK_API_URI, headerMap, jsonString);
     }
 
 }

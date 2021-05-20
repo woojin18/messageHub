@@ -75,11 +75,12 @@
             <a @click="fnOpenFrndTalkTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기">템플릿 불러오기</a>
             <div class="of_h consolMarginTop">
               <div style="width:20%" class="float-left">
-                <h5>플러스친구ID *</h5>
+                <h5>발신프로필 *</h5>
               </div>
               <div style="width:80%">
-                <select name="userConsole_sub0203_1" class="selectStyle2" style="width:42%">
-                  <option value="">TODO-알수없음</option>
+                <select name="userConsole_sub0203_1" class="selectStyle2" style="width:42%" v-model="sendData.senderKey">
+                  <option value="">선택해주세요.</option>
+                  <option value="알수없고,요청했고,피드백없다">알수없고,요청했고,피드백없다.</option>
                 </select>
               </div>
             </div>
@@ -301,7 +302,7 @@
           </div>
         </div>
         <div class="mt30 float-right">
-          <a href="#self" class="btnStyle2 float-left" title="테스트 발송" data-toggle="modal" data-target="#test">테스트 발송</a>
+          <a @click="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송" data-toggle="modal" data-target="#test">테스트 발송</a>
           <a @click="fnSendFrndTalkMessage('N')" class="btnStyle2 backRed float-left ml10" title="발송">발송</a>
         </div>
       </div>
@@ -313,6 +314,7 @@
     <ReplacedSenderPopup :rplcSendOpen.sync="rplcSendOpen" ref="rplcSendPopup"></ReplacedSenderPopup>
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
     <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
+    <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :testRecvInfoLst="sendData.testRecvInfoLst" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></TestSendInputPopup>
   </div>
 </template>
 
@@ -324,6 +326,7 @@ import ReplacedSenderPopup from "@/modules/message/components/bp-replacedSender.
 import DirectInputPopup from "@/modules/message/components/bp-directInput.vue";
 import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue";
 import Calendar from "@/components/Calendar.vue";
+import TestSendInputPopup from "@/modules/message/components/bc-testSendInput.vue";
 
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
@@ -338,7 +341,8 @@ export default {
     ReplacedSenderPopup,
     DirectInputPopup,
     AddressInputPopup,
-    Calendar
+    Calendar,
+    TestSendInputPopup
   },
   props: {
     componentsTitle: {
@@ -357,6 +361,7 @@ export default {
       rplcSendOpen: false,
       directInputOpen: false,
       addressInputOpen: false,
+      testSendInputOpen: false,
       buttonLimitSize: 5,
       recvCnt : 0,  //수신자명수
       inProgress: false,
@@ -371,6 +376,7 @@ export default {
         ch: 'FRIENDTALK',
         requiredCuid : false,
         requiredCuPhone : true,
+        senderKey: '',
         msgKind: 'A',
         frndTalkContent: '',
         imgUrl: '',
@@ -397,6 +403,64 @@ export default {
     this.fnAddButton();
   },
   methods: {
+    //발송 정보 유효성 체크
+    fnValidSendMsgData(testSendYn){
+      if(this.fnSetContsVarNms() == false){
+        return false;
+      }
+      //TODO : 발신프로필 유효성 체크 필요
+      if(!this.sendData.senderKey){
+        confirm.fnAlert(this.componentsTitle, '발신프로필을 선택해주세요.');
+        return false;
+      }
+      if(!this.sendData.msgKind){
+        confirm.fnAlert(this.componentsTitle, '메시지구분을 선택해주세요.');
+        return false;
+      }
+      if(!this.sendData.frndTalkContent){
+        confirm.fnAlert(this.componentsTitle, '메시지 내용을 입력해주세요.');
+        return false;
+      }
+      if(testSendYn == 'Y'){
+        if(!this.sendData.testRecvInfoLst == null || this.sendData.testRecvInfoLst.length == 0){
+          confirm.fnAlert(this.componentsTitle, '테스트 수신자 정보를 입력해주세요.');
+          return false;
+        }
+      } else {
+        if(this.sendData.cuInputType == 'DICT' || this.sendData.cuInputType == 'ADDR'){
+          if(!this.sendData.recvInfoLst == null || this.sendData.recvInfoLst.length == 0){
+            confirm.fnAlert(this.componentsTitle, '수신자 정보를 입력해주세요.');
+            return false;
+          }
+        }
+        if(this.sendData.cuInputType == 'EXCEL'){
+          const uploadFile = this.$refs.excelFile;
+          if(uploadFile.value == 0){
+            confirm.fnAlert(this.componentsTitle, '엑셀파일을 등록해주세요.');
+            return false;
+          }
+          const permitExten = 'xls,xlsx'.split(',');
+          const extnIdx = uploadFile.value.lastIndexOf('.');
+          const extn = uploadFile.value.substring(extnIdx+1);
+          if((permitExten.indexOf(extn) < 0)){
+            confirm.fnAlert(this.componentsTitle, '허용되지 않는 확장자입니다.');
+            return false;
+          }
+        }
+        if(this.sendData.rplcSendType != 'NONE'){
+          if(!this.sendData.fbInfo.callback){
+            confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 발신번호를 입력해주세요.');
+            return false;
+          }
+          if(!this.sendData.fbInfo.msg){
+            confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 내용을 입력해주세요.');
+            return false;
+          }
+        }
+      }
+      
+      return true;
+    },
     //메시지 발송 처리
     async fnSendFrndTalkMessage(testSendYn){
       if(this.inProgress){
@@ -405,18 +469,20 @@ export default {
       }
 
       //유효성 체크
-      //if(this.fnValidSendMsgData(testSendYn) == false) return;
+      if(this.fnValidSendMsgData(testSendYn) == false) return;
 
       //발송처리
       let params = Object.assign({}, this.sendData);
       params.testSendYn = testSendYn;
 
       if(testSendYn == 'Y'){
-        /*
         params.recvInfoLst = Object.assign([], this.sendData.testRecvInfoLst);
         params.cuInputType = 'DICT';
+        //테스트 발송은 대체발송 하지 않는다.
+        params.rplcSendType = 'NONE'
+        params.fbInfo = {};
+        //테스트 발송은 즉시발송만 가능
         params.rsrvSendYn = 'N';
-        */
       }
 
       let fd = new FormData();
@@ -454,7 +520,13 @@ export default {
       .catch(function () {
         vm.inProgress = false;
       });
-      
+    },
+    fnAlertFeeMsgCallBack(result){
+      if(this.$gfnCommonUtils.isEmpty(result.message)){
+        confirm.fnAlert(this.componentsTitle, '발송 요청 처리 되었습니다.');
+      } else {
+        confirm.fnAlert(this.componentsTitle, result.message);
+      }
     },
     //메세지 미리보기 변경
     fnChgPreviewMessageType(type){
@@ -591,7 +663,6 @@ export default {
     },
     //이미지선택 callback
     fnCallbackImgInfo(imgInfo) {
-      console.log(imgInfo);
       this.sendData.imgUrl = imgInfo.chImgUrl;
       this.sendData.fileId = imgInfo.fileId;
       this.sendData.wideImgYn = imgInfo.wideImgYn;
@@ -608,11 +679,25 @@ export default {
       this.sendData.fileId = this.$gfnCommonUtils.defaultIfEmpty(templateInfo.fileId, '');
       this.sendData.imgUrl = this.$gfnCommonUtils.defaultIfEmpty(templateInfo.imgUrl, '');
       this.sendData.imgLink = this.$gfnCommonUtils.defaultIfEmpty(templateInfo.imgLink, '');
+      this.sendData.wideImgYn = this.$gfnCommonUtils.defaultIfEmpty(templateInfo.wideImgYn, '');
       this.sendData.buttonList = JSON.parse(this.$gfnCommonUtils.defaultIfEmpty(templateInfo.tmpltButtons, ''));
     },
     fnOpenFrndTalkTemplatePopup(){
       this.$refs.frndTalkTmplPopup.fnSearch();
       this.frndTalkTemplateOpen = !this.frndTalkTemplateOpen;
+    },
+    fnOpenTestSendInputPopup(){
+      this.fnSetContsVarNms();
+      this.testSendInputOpen = !this.testSendInputOpen;
+    },
+    //테스트 발송 callback
+    fnCallbackTestRecvInfoLst(testRecvInfoLst){
+      if(testRecvInfoLst != null){
+        this.sendData.testRecvInfoLst = testRecvInfoLst;
+        this.fnSendFrndTalkMessage('Y');
+      } else {
+        this.sendData.testRecvInfoLst = [];
+      }
     },
     fnOpenFrndTalkContentsPopup(){
       this.frndTalkContsOpen = !this.frndTalkContsOpen;

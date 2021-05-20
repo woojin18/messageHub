@@ -254,6 +254,9 @@ export default {
   methods: {
     //발송 정보 유효성 체크
     fnValidSendMsgData(testSendYn){
+      if(this.fnSetContsVarNms() == false){
+        return false;
+      }
       if(!this.sendData.callback){
         confirm.fnAlert(this.componentsTitle, '발신번호를 선택해주세요.');
         return false;
@@ -313,6 +316,7 @@ export default {
       if(testSendYn == 'Y'){
         params.recvInfoLst = Object.assign([], this.sendData.testRecvInfoLst);
         params.cuInputType = 'DICT';
+        //테스트 발송은 즉시발송만 가능
         params.rsrvSendYn = 'N';
       }
 

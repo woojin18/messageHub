@@ -672,7 +672,7 @@ public class SendMessageController {
 
             /** 테스트발송(동기화) */
             if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
-                //return sendMsgService.testSendPushMsg(params, requestData, recvInfoLst);
+                return sendMsgService.testSendFrndTalkMsg(params, requestData, recvInfoLst);
             }
 
         } catch (Exception e) {
