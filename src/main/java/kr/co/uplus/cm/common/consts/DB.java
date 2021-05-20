@@ -12,6 +12,7 @@ public class DB {
     public final static String QRY_SELECT_API_KEY = "common.selectApiKey";
     public final static String QRY_SELECT_IMG_UPLOAD_CH_SET = "common.selectImgUploadChSet";
     public final static String QRY_SELECT_FILE_UPLOAD_SET = "common.selectFileUploadSet";
+    public final static String QRY_SELECT_CODE = "common.selectCodeList";
 
 	// 로그인
 	public final static String QRY_SELECT_USERNAME	= "login.qrySelectUserName";
@@ -133,4 +134,12 @@ public class DB {
 	public final static String QRY_INSERT_ADDR_CATE_GRP = "address.insertAddressCateGrp";
 	public final static String QRY_UPDATE_ADDR_CATE_GRP = "address.updateAddressCateGrp";
 	public final static String QRY_SELECT_PROJECT_LIST = "address.selectProjectList";
+
+	// 마이페이지
+	// 회원정보
+	public final static String QRY_SELECT_MEMBER_INFO		= "myPage.selectMemberInfo";
+	public final static String QRY_UPDATE_MEMBER_INFO		= "myPage.updateMemberInfo";
+	// 나의 문의 내역서
+	public final static String QRY_SELECT_QNA_LIST_COUNT	= "myPage.selectQnaList_count";
+	public final static String QRY_SELECT_QNA_LIST			= "myPage.selectQnaList";
 }

@@ -190,4 +190,30 @@
         LIMIT 1
     </select>
 
+	<select id="selectCodeList" resultType="camel">
+		/* code.selectCodeList */
+		SELECT	CODE_ID
+		,		CODE_TYPE_CD
+		,		CODE_VAL_1
+		,		CODE_VAL_2
+		,		CODE_VAL_3
+		,		CODE_NAME_1
+		,		CODE_NAME_2
+		,		CODE_NAME_3
+		,		DIS_ORDER
+		,		CASE
+					WHEN USE_YN = 'Y' THEN '사용'
+					ELSE '미사용'
+				END				AS USE_YN_STR
+		,		USE_YN
+		FROM	cm_bo.CM_CODE
+		WHERE	CODE_TYPE_CD = #{codeTypeCd}
+		<if test="codeId != null and codeId != ''">
+		AND		CODE_ID = #{codeId}
+		</if>
+		<if test="useYn != null and useYn != ''">
+		AND		USE_YN = #{useYn}
+		</if>
+		ORDER BY DIS_ORDER
+	</select>
 </mapper>

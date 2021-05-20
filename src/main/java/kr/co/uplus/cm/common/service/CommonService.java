@@ -651,5 +651,13 @@ public class CommonService {
             log.error("deleteFolder Error : {}", e);
         }
     }
+    
+    public RestResult<Object> selectCodeList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
 
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CODE, params);
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
 }

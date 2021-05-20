@@ -21,6 +21,7 @@ import userRoutes from './modules/user/router';
 import messageStatusRoutes from './modules/messageStatus/router';
 import integratedTemplateRoutes from './modules/integratedTemplate/router';
 import addressRoutes from './modules/address/router';
+import acMyPageRoutes from './modules/myPage/router';
 
 //import confirm from "@/modules/commonUtil/service/confirm.js";
 
@@ -101,6 +102,7 @@ const router = new Router({
 				...cashRoutes,
 				...userRoutes,
 				...addressRoutes
+				...acMyPageRoutes
 			],
 		},
 		{

@@ -12,13 +12,16 @@
 					<ul class="dropdown-menu userDrop" role="menu">
 						<li><a href="#" data-toggle="modal" data-target="#Client">고객사 정보</a></li>
 						<li><a href="#">캐시관리</a></li>
-						<li><a href="#" data-toggle="modal" data-target="#Member-information">회원정보</a></li>
-						<li><a href="#">나의 문의내역</a></li>
+						<li @click="fnMyPage"><a data-toggle="modal" data-target="#Member-information">회원정보</a></li>
+						<li><a href="/ac/qna">나의 문의내역</a></li>
 						<li><a href="#">공지사항</a></li>
 						<li @click="clickLogout"><a href="#">로그아웃</a></li>
 					</ul>
 				</li>
 			</ul>
+			<!-- 회원정보 팝업-->
+			<myPagePopup :memberInfo="memberInfo" :popReset="popReset"></myPagePopup>
+			<!-- 회원정보 팝업 끝 -->
 		</header>
 	</section>
 </template>
@@ -27,6 +30,8 @@
 import loginApi from '@/modules/login/service/api';
 import tokenSvc from '@/common/token-service';
 import { mapGetters } from 'vuex';
+import myPagePopup from '@/modules/myPage/components/bp-myPagePopup.vue';
+import myPageApi from '@/modules/myPage/service/myPageApi';
 
 export default {
 	name: "webHeader",
@@ -36,7 +41,9 @@ export default {
 			isLogin: false,
 			isErrPage: false,
 			navActive: false,
-			svcTypeCd: ''
+			svcTypeCd: '',
+			memberInfo : {},
+			popReset : 0
 		}
 	},
 	created() {
@@ -50,6 +57,9 @@ export default {
 			this.isLogin = false;
 			this.svcTypeCd = '';
 		}
+	},
+	components : {
+		myPagePopup
 	},
 	computed: {
 		...mapGetters({
@@ -123,6 +133,16 @@ export default {
 			var myHeaderWrap = document.querySelector('.header_wrap');
 			myHeaderWrap.setAttribute('style', '');
 		},
+		fnMyPage(){
+			var params = {};
+			myPageApi.selectMemberInfo(params).then(response => {
+				var result = response.data.data;
+				this.memberInfo = result;
+				this.popReset = this.popReset + 1;
+			});
+
+			jQuery("#myPagePopup").modal("show");
+		}
 	}
 };
 </script>

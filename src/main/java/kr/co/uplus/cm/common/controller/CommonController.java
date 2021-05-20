@@ -105,4 +105,26 @@ public class CommonController {
         return rtn;
     }
 
+    /**
+     * 코드값 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/selectCodeList")
+	public RestResult<?> selectCodeList(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = commonService.selectCodeList(params);
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		
+		return rtn;
+	}
+
 }

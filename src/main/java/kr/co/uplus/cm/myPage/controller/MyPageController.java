@@ -1,0 +1,94 @@
+package kr.co.uplus.cm.myPage.controller;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.myPage.service.MyPageService;
+
+@RestController
+@RequestMapping("/api/public/myPage")
+public class MyPageController {
+	
+	@Autowired
+	private MyPageService myPageSvc;
+	
+	/**
+	 * 회원 정보
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectMemberInfo")
+	public RestResult<?> selectMemberInfo(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = myPageSvc.selectMemberInfo(params);
+			
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		
+		return rtn;
+	}
+	
+	/**
+	 *  회원정보 저장
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/saveMemberInfo")
+	public RestResult<?> saveMemberInfo(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = myPageSvc.saveMemberInfo(params);
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		
+		return rtn;
+	}
+
+	/**
+	 * 문의 내역 조회
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectQnaList")
+	public RestResult<?> selectQnaList(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = myPageSvc.selectQnaList(params);
+			
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		
+		return rtn;
+	}
+}

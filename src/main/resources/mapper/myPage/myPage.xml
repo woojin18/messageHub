@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="myPage">
+	<select id="selectMemberInfo" parameterType="string" resultType="camel">
+	/* myPage.selectMemberInfo */
+		SELECT	USER_ID
+		,		LOGIN_ID
+		,		USER_NAME
+		,		DATE_FORMAT(PWD_UPD_DT, '%Y-%m-%d')	AS PWD_UPD_DT
+		,		HP_NUMBER
+		FROM	cm_console.CM_USER
+		AND		USER_ID = #{userId}
+	</select>
+	
+	<update id="updateMemberInfo">
+	/* myPage.updateMemberInfo */
+		UPDATE	cm_console.CM_USER
+		SET		HP_NUMBER = #{hpNumber}
+		<if test="loginPwd != null and loginPwd != ''">
+		,		LOGIN_PWD = #{loginPwd}
+		,		PWD_UPD_DT = NOW()
+		</if>
+		WHERE	USER_ID = #{userId}
+	</update>
+	
+	<select id="selectQnaList_count" resultType="int">
+	/* myPage.selectQnaList_count */
+		SELECT	COUNT(1)
+		FROM	cm_bo.CM_QUEST_BOARD
+		WHERE	1 = 1
+<!-- 		AND		REG_ID = #{userId} -->
+		<if test="srcTitle != null and srcTitle != ''">
+		AND		TITLE = #{srcTitle}
+		</if>
+		<if test="srcQuestType != null and srcQuestType != ''">
+		AND		QUEST_TYPE = #{srcQuestType}
+		</if>
+		<if test="srcQuestStatus != null and srcQuestStatus != ''">
+		AND		QUEST_STATUS = #{srcQuestStatus}
+		</if>
+	</select>
+	
+	<select id="selectQnaList" parameterType="string" resultType="camel">
+	/* myPage.selectQnaList */
+		SELECT	QUEST_BOARD_ID
+		,		(SELECT CODE_NAME_1 FROM cm_bo.CM_CODE WHERE CODE_TYPE_CD = 'QNA_TYPE' AND CODE_VAL_1 = QUEST_TYPE) QUEST_TYPE_STR
+		,		QUEST_TYPE
+		,		TITLE
+		,		EMAIL
+		,		HP_NUMBER
+		,		(SELECT CODE_NAME_1 FROM cm_bo.CM_CODE WHERE CODE_TYPE_CD = 'QNA_STATUS' AND CODE_VAL_1 = QUEST_STATUS) QUEST_STATUS_STR
+		,		QUEST_STATUS
+		FROM	cm_bo.CM_QUEST_BOARD
+		WHERE	1 = 1
+<!-- 		AND		REG_ID = #{userId} -->
+		<if test="srcTitle != null and srcTitle != ''">
+		AND		TITLE = #{srcTitle}
+		</if>
+		<if test="srcQuestType != null and srcQuestType != ''">
+		AND		QUEST_TYPE = #{srcQuestType}
+		</if>
+		<if test="srcQuestStatus != null and srcQuestStatus != ''">
+		AND		QUEST_STATUS = #{srcQuestStatus}
+		</if>
+	</select>
+</mapper>
