@@ -1286,8 +1286,9 @@ public class SendMessageService {
         //대채발송이 아닐 경우 callback 이 없는게 맞으나 G/W 에서 필수로 보내달라고 해서
         //1. 챗봇 발신번호 조회 해서 setting 한다.
         //2. 1의 방법에서 발신번호가 없거나 오류시 기본 callback 번호로 setting한다.
-        String callback = CommonUtils.getStrValue(params, "callback");
-        if(StringUtils.isBlank(callback)) {
+        String callback = "";
+        String rplcSendType = CommonUtils.getStrValue(params, "rplcSendType");
+        if(StringUtils.equals(rplcSendType, Const.RplcSendType.NONE)) {
             try {
                 params.put("approvalStatus", Const.ApprovalStatus.APPROVE);
                 List<Object> callbackList = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_LIST, params);
@@ -1336,7 +1337,6 @@ public class SendMessageService {
         }
 
         //대체발송
-        String rplcSendType = (CommonUtils.getStrValue(params, "rplcSendType"));
         if(!StringUtils.equals(rplcSendType, Const.RplcSendType.NONE)) {
             List<FbInfo> fbInfoLst = new ArrayList<FbInfo>();
             Map<String, Object> fbInfo = (Map<String, Object>) params.get("fbInfo");
