@@ -2,17 +2,19 @@ package kr.co.uplus.cm.common.controller;
 
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import kr.co.uplus.cm.common.model.AuthUser;
 import kr.co.uplus.cm.login.service.AuthService;
 
+/**
+ * 2021-05-14 삭제 공지
+ * 2021-05-20 삭제 공지후에도 사용 하는 곳 있음.
+ * => 리턴값을 null로 변경
+ *
+ */
 @Deprecated
 public class BaseController {
 
@@ -25,12 +27,9 @@ public class BaseController {
 	 * @param request
 	 * @return
 	 */
+	@Deprecated
 	protected AuthUser getUserInfo() {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-				.getRequest();
-		AuthUser authUser = (AuthUser) authSvc.loadUserByUsername(request.getHeader("loginId"));
-		authUser.setCurrentProjectId(getProjectId(request));
-		return authUser;
+		return null;
 	}
 
 	/**
@@ -39,8 +38,9 @@ public class BaseController {
 	 * @param request
 	 * @return
 	 */
+	@Deprecated
 	protected AuthUser getUserInfo(String loginId) {
-		return (AuthUser) authSvc.loadUserByUsername(loginId);
+	    return null;
 	}
 
 	/**
@@ -50,26 +50,9 @@ public class BaseController {
 	 * @param isContainIgnore
 	 * @return
 	 */
+	@Deprecated
 	protected Map<String, Object> setUserInfo(Map<String, Object> params, boolean isContainIgnore) {
-		AuthUser user = getUserInfo();
-
-		if (user != null) {
-			String userId = StringUtils.defaultIfBlank(user.getUserId(), "");
-			String corpId = StringUtils.defaultIfBlank(user.getCorpId(), "");
-			String projectId = StringUtils.defaultIfBlank(user.getCurrentProjectId(), user.getRepProjectId());
-
-			if (isContainIgnore) {
-				params.put("userId", userId);
-				params.put("corpId", corpId);
-				params.put("projectId", projectId);
-			} else {
-				if (!params.containsKey("userId")) params.put("userId", userId);
-				if (!params.containsKey("corpId")) params.put("corpId", corpId);
-				if (!params.containsKey("projectId")) params.put("projectId", projectId);
-			}
-		}
-
-		return params;
+	    return null;
 	}
 
 	/**
@@ -78,8 +61,9 @@ public class BaseController {
 	 * @param params
 	 * @return
 	 */
+	@Deprecated
 	protected Map<String, Object> setContainIgnoreUserInfo(Map<String, Object> params) {
-		return setUserInfo(params, true);
+	    return null;
 	}
 
 	/**
@@ -89,20 +73,9 @@ public class BaseController {
 	 * @return
 	 * @throws Exception
 	 */
+	@Deprecated
 	protected String getProjectId(HttpServletRequest request) {
-		Cookie[] cookies = request.getCookies();
-		String key = "project";
-		String projectId = "";
-
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals(key)) {
-					projectId = cookie.getValue();
-					break;
-				}
-			}
-		}
-		return projectId;
+	    return null;
 	}
 
 }
