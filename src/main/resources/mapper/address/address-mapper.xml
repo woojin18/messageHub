@@ -95,7 +95,7 @@
 		,		#{projectId}
 		,		#{addressCategoryGrpName}
 		,		#{addressCategoryGrpDesc}
-		,		'Y'
+		,		#{useYn}
 		,		#{loginId}
 		,		NOW()
 		)
@@ -108,6 +108,7 @@
 			PROJECT_ID = #{projectId}
 		,	ADDRESS_CATEGORY_GRP_NAME = #{addressCategoryGrpName}
 		,	ADDRESS_CATEGORY_GRP_DESC = #{addressCategoryGrpDesc}
+		,	USE_YN = #{useYn}
 		WHERE
 			ADDRESS_CATEGORY_GRP_ID = #{addressCategoryGrpId}
 	</update>

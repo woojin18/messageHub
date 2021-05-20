@@ -86,7 +86,7 @@ export default {
 		},
 	},
 	watch: {
-		row_data: function(newVal, oldVal) {
+		row_data: function() {
 			jQuery("#addressCategoryGrpName").val(this.row_data.addressCategoryGrpName);
 			jQuery("#addressCategoryGrpDesc").val(this.row_data.addressCategoryGrpDesc);
 			if(this.row_data.projectId == 'ALL') {
@@ -133,27 +133,27 @@ export default {
 		},
 		//주소록 수정
 		fnMdfyAddr() {
-			let projectId;
+			let afProjectId;
 			let otherProjectUseYn = jQuery("input[name='otherProjectUseYn']:checked").val();
 			if(otherProjectUseYn == 'Y') {
-				projectId = 'ALL';
+				afProjectId = 'ALL';
 			} else {
-				projectId = jQuery("#selectProjectId option:selected").val();
+				afProjectId = jQuery("#selectProjectId option:selected").val();
 			}
-
 			// 필수값 입력 확인
 			if(!this.fnInputCheckReq()) return false;
 			var params = {
 				"addressCategoryGrpName"	: jQuery("#addressCategoryGrpName").val(),
 				"addressCategoryGrpDesc"	: jQuery("#addressCategoryGrpDesc").val(),
-				"projectId"					: projectId,
+				"afProjectId"				: afProjectId,
 				"addressCategoryGrpId"		: this.row_data.addressCategoryGrpId,
+				"useYn"						: jQuery("input[name='useYn']:checked").val()
 			}
 			addressApi.modifyAddr(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
 					confirm.fnAlert("", "주소록 수정을 성공했습니다.");
-					//this.$parent.fnSearchAddressCateGrpList();
+					this.$parent.fnSearchAddressCateGrpList();
 				} else {
 					confirm.fnAlert("", result.message);
 				}
@@ -165,14 +165,14 @@ export default {
 		fnInputCheckReq() {
 			let addressCategoryGrpName = jQuery("#addressCategoryGrpName").val();
 			let projectId = jQuery("#selectProjectId option:selected").val();
-			console.log(">> fnInputCheckReqv - projectId : " + projectId);
+			let otherProjectUseYn = jQuery("input[name='otherProjectUseYn']:checked").val();
 
 			if(addressCategoryGrpName == "" || addressCategoryGrpName == null) {
 				confirm.fnAlert("", "주소록명을 입력하세요.");
 				return false;
 			}
 
-			if(projectId == "" || this.projectId == null) {
+			if(otherProjectUseYn == 'N' && (projectId == "" || this.projectId == null)) {
 				confirm.fnAlert("", "프로젝트를 선택하세요.");
 				return false;
 			}

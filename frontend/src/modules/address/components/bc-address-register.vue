@@ -23,9 +23,9 @@
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block">타 프로젝트<br>사용여부 *</h5>
 							<div class="float-right consolMarginTop" style="width:80%">
-								<input type="radio" id="Y" name="useYn" value="Y" v-model="otherProjectUseYN">
+								<input type="radio" id="Y" name="otherProjectUseYn" value="Y" v-model="otherProjectUseYN">
 								<label @click="fnProjectListStatus(true)" for="Y">사용</label>
-								<input type="radio" id="N" name="useYn" value="N" v-model="otherProjectUseYN">
+								<input type="radio" id="N" name="otherProjectUseYn" value="N" v-model="otherProjectUseYN">
 								<label @click="fnProjectListStatus(false)" for="N">미사용</label>
 							</div>
 						</div>
@@ -33,7 +33,7 @@
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block">프로젝트</h5>
 								<div class="float-right" style="width:80%">
-									<select ref="addCateGrp"  class="selectStyle2" style="width:50%" v-model="projectId">
+									<select ref="addCateGrp"  class="selectStyle2" style="width:50%" v-model="newProjectId">
 									<option value="" selected>전체</option>
 									<option v-for="(data, index) in projectItems" :key="index" :value="data.projectId">
 										{{ data.projectName }}
@@ -42,6 +42,15 @@
 								</div>
 							</div>
 						</span>
+						<div class="of_h consolMarginTop">
+							<h5 class="inline-block">사용여부</h5>
+							<div class="float-right consolMarginTop" style="width:80%">
+								<input type="radio" id="useY" name="useYn" value="Y" v-model="useYn">
+								<label for="useY">사용</label>
+								<input type="radio" id="useN" name="useYn" value="N" v-model="useYn">
+								<label for="useN">미사용</label>
+							</div>
+						</div>
 						<p class="consolMarginTop"><i class="far fa-info-circle"></i> 타프로젝트 사용여부를 전용을 선택하신 경우 프로젝트를 선택하셔야 합니다.</p>
 					</div>
 					<div class="text-center mt20">
@@ -84,7 +93,8 @@ export default {
 			addressCategoryGrpDesc : '',
 			showProjectFlag : true,
 			otherProjectUseYN: 'Y',
-			projectId: '',
+			newProjectId: '',
+			useYn: 'Y',
 		}
 	},
 	mounted() {
@@ -115,15 +125,18 @@ export default {
 		fnRegisterAddr() {
 			console.log("fnRegisterAddr Start");
 			
+			if(this.otherProjectUseYN == 'Y') this.newProjectId = 'ALL';
+
 			// 필수값 입력 확인
 			if(!this.fnInputCheckReq()) return false;
-			console.log('this.projectId : ' + this.projectId);
+			console.log('this.newProjectId : ' + this.newProjectId);
 			var params = {
 				"addressCategoryGrpName"	: this.addressCategoryGrpName,
 				"addressCategoryGrpDesc"	: this.addressCategoryGrpDesc,
-				"projectId"					: this.projectId,
+				"newProjectId"				: this.newProjectId,
 				"addrRegMdfyStatus"			: this.addrRegMdfyStatus,
-				"loginId"					: tokenSvc.getToken().principal.loginId
+				"loginId"					: tokenSvc.getToken().principal.loginId,
+				"useYn"						: this.useYn,
 			}
 
 			addressApi.registerAddr(params).then(response =>{
@@ -146,7 +159,7 @@ export default {
 				return false;
 			}
 
-			if(this.otherProjectUseYN == "N" && (this.projectId == "" || this.projectId == null) ) {
+			if(this.otherProjectUseYN == "N" && (this.newProjectId == "" || this.newProjectId == null) ) {
 				confirm.fnAlert("", "프로젝트를 선택하세요.");
 				return false;
 			}
@@ -156,8 +169,8 @@ export default {
 		// 프로젝트 목록
 		fnProjectListStatus(flag) {
 			console.log('fnProjectListStatus Start');
-			if(flag) this.projectId = "ALL";
-			console.log('this.projectId : ' + this.projectId);
+			if(flag) this.newProjectId = "ALL";
+			console.log('this.newProjectId : ' + this.newProjectId);
 			this.showProjectFlag = flag;
 			console.log('fnProjectListStatus End');
 		},
@@ -165,7 +178,7 @@ export default {
 		fnInit() {
 			this.addressCategoryGrpName = '';
 			this.addressCategoryGrpDesc = '';
-			this.projectId = '';
+			this.newProjectId = '';
 		}
 	}
 }

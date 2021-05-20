@@ -104,11 +104,11 @@ public class AddressController extends BaseController {
 	public RestResult<?> registerAddr(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
-		String projectId = (String)params.get("projectId");
+		String newProjectId = (String)params.get("newProjectId");
 		
 		try {
-			super.setContainIgnoreUserInfo(params);
-			params.put("projectId", projectId); // 입력받은 값으로 재설정
+//			super.setContainIgnoreUserInfo(params);
+			params.put("projectId", newProjectId); // 입력받은 값으로 재설정
 			rtn = addressSvc.registerAddr(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
@@ -130,11 +130,11 @@ public class AddressController extends BaseController {
 	public RestResult<?> modifyAddr(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
-		String projectId = (String)params.get("projectId");
+		String afProjectId = (String)params.get("afProjectId");
 		
 		try {
-			super.setContainIgnoreUserInfo(params);
-			params.put("projectId", projectId); // 입력받은 값으로 재설정
+//			super.setContainIgnoreUserInfo(params);
+			params.put("projectId", afProjectId); // 입력받은 값으로 재설정
 			rtn = addressSvc.modifyAddr(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
@@ -158,7 +158,7 @@ public class AddressController extends BaseController {
 
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
-			super.setContainIgnoreUserInfo(params);
+//			super.setContainIgnoreUserInfo(params);
 			rtn = addressSvc.selectProjectList(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
