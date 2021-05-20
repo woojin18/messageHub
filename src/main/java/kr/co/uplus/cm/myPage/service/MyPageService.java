@@ -68,4 +68,28 @@ public class MyPageService {
 
 		return rtn;
 	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<Object> saveQnaInfo(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		String questBoardId = CommonUtils.getString(params.get("questBoardId"));
+			if(questBoardId.equals("")) {
+				questBoardId = CommonUtils.getCommonId("QBD", 5);
+				params.put("questBoardId", questBoardId);
+				generalDao.insertGernal(DB.QRY_INSERT_QUEST_BOARD, params);
+			} else {
+				generalDao.updateGernal(DB.QRY_UPDATE_QUEST_BOARD, params);
+			}
+		return rtn;
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<Object> deleteQnaInfo(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		generalDao.deleteGernal(DB.QRY_DELETE_QUEST_BOARD, params);
+		
+		return rtn;
+	}
 }

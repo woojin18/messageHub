@@ -91,4 +91,50 @@ public class MyPageController {
 		
 		return rtn;
 	}
+	
+	/**
+	 * 문의내역 등록 및 수정
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/saveQnaInfo")
+	public RestResult<?> saveQnaInfo(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = myPageSvc.saveQnaInfo(params);
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		
+		return rtn;
+	}
+	
+	/**
+	 * 문의 내역 삭제
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/deleteQnaInfo")
+	public RestResult<?> deleteQnaInfo(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = myPageSvc.deleteQnaInfo(params);
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		
+		return rtn;
+	}
 }

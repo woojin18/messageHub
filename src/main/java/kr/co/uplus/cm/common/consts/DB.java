@@ -145,4 +145,7 @@ public class DB {
     // 나의 문의 내역서
     public final static String QRY_SELECT_QNA_LIST_COUNT    = "myPage.selectQnaList_count";
     public final static String QRY_SELECT_QNA_LIST          = "myPage.selectQnaList";
+	public final static String QRY_INSERT_QUEST_BOARD		= "myPage.insertQnaInfo";
+	public final static String QRY_UPDATE_QUEST_BOARD		= "myPage.updateQnaInfo";
+	public final static String QRY_DELETE_QUEST_BOARD		= "myPage.deleteQnaInfo";
 }

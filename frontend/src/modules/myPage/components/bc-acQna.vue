@@ -27,7 +27,7 @@
 				<div class="col-xs-12 consolMarginTop">
 					<div class="of_h inline">
 						<div class="float-right">
-							<a href="#self" class="btnStyle2 borderGray" data-toggle="modal" data-target="#Inquiry">1:1 문의하기</a>
+							<a @click="fnAddQna" class="btnStyle2 borderGray" data-toggle="modal" data-target="#Inquiry">1:1 문의하기</a>
 						</div>
 					</div>
 					<div class="row">
@@ -60,14 +60,16 @@
 								<tbody>
 									<tr v-for="(row, index) in data" :key="index">
 									<td class="text-center">{{ index + 1 }}</td>
-									<td class="text-left">{{ row.title}}</td>
+									<td class="text-left clickClass">
+										<span class="clickClass"  @click="fnDetailQna(row)">{{ row.title}}</span>
+									</td>
 									<td class="text-center">{{ row.questTypeStr }}</td>
 									<td class="text-center">{{ row.email }}</td>
 									<td class="text-center">{{ row.hpNumber }}</td>
 									<td class="text-center">{{ row.questStatusStr }}</td>
 									<td class="end">
-										<a href="#self" class="btnStyle1 borderLightGray small mr5">수정</a>
-										<a href="#self" class="btnStyle1 borderLightGray small mr5">삭제</a>
+										<a @click="fnEditQna(row)" class="btnStyle1 borderLightGray small mr5">수정</a>
+										<a @click="fnDeleteQna(row)" class="btnStyle1 borderLightGray small mr5">삭제</a>
 									</td>
 									</tr>
 								</tbody>
@@ -80,6 +82,7 @@
 					</div>
 				</div>			
 			</div>
+			<acQnaPop :status="status" :selectRow="selectRow" :popReset="popReset"></acQnaPop>
     </div>
 </template>
 <script>
@@ -87,12 +90,17 @@ import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi";
 import myPageApi from '@/modules/myPage/service/myPageApi';
 import Paging from "@/modules/commonUtil/components/bc-paging"
 import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt"
+import acQnaPop from "@/modules/myPage/components/bp-acQna"
+
+import confirm from "@/modules/commonUtil/service/confirm"
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
-	name: 'acQnd',
+	name: 'acQna',
 	components : {
 		PagingCnt,
-		Paging
+		Paging,
+		acQnaPop
 	},
 	data(){
 		return {
@@ -101,6 +109,9 @@ export default {
 			srcQnaStatus : '',
 			data : {},
 			pageInfo: {},
+			status : '',
+			selectRow : {},
+			popReset : 0
 		}
 	},
 	mounted() {
@@ -144,6 +155,7 @@ export default {
 				}
 			});
 		},
+		// 조회
 		fnSearch(){
 			var params = {
 				srcQuestType : this.srcQnaType,
@@ -159,7 +171,67 @@ export default {
 					this.pageInfo = result.pageInfo;
 				}
 			});
+		},
+		// 문의 내역 등록
+		fnAddQna(){
+			this.status = "add";
+			this.selectRow = new Object;
+			this.popReset = this.popReset+1;
+			jQuery("#acQnaPopup").modal("show");
+		},
+		// 문의 내역 수정
+		fnEditQna(row){
+			if(row.questStatus == "03"){
+				confirm.fnAlert("","답변완료인 경우 수정이 불가능합니다.");
+				return;
+			} else {
+				this.status = "edit";
+				this.selectRow = row;
+				console.log(row);
+				this.popReset = this.popReset+1;
+				jQuery("#acQnaPopup").modal("show");
+			}
+		},
+		// 문의 내역 상세
+		fnDetailQna(row){
+			this.status = "detail";
+			this.selectRow = row;
+			this.popReset = this.popReset+1;
+			jQuery("#acQnaPopup").modal("show");
+		},
+		// 문의 내역 삭제
+		fnDeleteQna(row){
+			if(row.questStatus == "03"){
+				confirm.fnAlert("","답변완료인 경우 삭제는 불가능합니다.");
+				return;
+			} else {
+				this.selectRow = row;
+				eventBus.$on('callbackEventBus', this.fnDeleteCallBack);
+				confirm.fnConfirm("", " 해당 문의내역을 삭제하시겠습니까?", "확인");
+			}
+		},
+		// 문의 내역 삭제 callback
+		fnDeleteCallBack(){
+			var params = {
+				questBoardId : this.selectRow.questBoardId
+			};
+			myPageApi.deleteQnaInfo(params).then(response => {
+				var result = response.data;
+				if(result.success){
+					confirm.fnAlert("","삭제되었습니다.");
+					this.fnSearch();
+				} else {
+					confirm.fnAlert("",result.message);
+				}
+			});
+
 		}
 	}
 }
 </script>
+<style lang="scss">
+table tbody .clickClass {
+  cursor: pointer;
+  text-decoration: underline;
+}
+</style>

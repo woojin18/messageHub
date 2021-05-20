@@ -11,8 +11,18 @@ const saveMemberInfo = (params) => {
 const selectQnaList = (params) => {
     return httpClient.post('/api/public/myPage/selectQnaList', params, { headers: {"show-layer": "Yes"} });
 };
+
+const saveQnaInfo = (params) => {
+    return httpClient.post('/api/public/myPage/saveQnaInfo', params, { headers: {"show-layer": "Yes"} });
+};
+
+const deleteQnaInfo = (params) => {
+    return httpClient.post('/api/public/myPage/deleteQnaInfo', params, { headers: {"show-layer": "Yes"} });
+};
 export default {
     selectMemberInfo,
     saveMemberInfo,
-    selectQnaList
+    selectQnaList,
+    saveQnaInfo,
+    deleteQnaInfo
 };

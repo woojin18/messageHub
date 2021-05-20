@@ -10,7 +10,7 @@
 		,		DATE_FORMAT(PWD_UPD_DT, '%Y-%m-%d')	AS PWD_UPD_DT
 		,		HP_NUMBER
 		FROM	cm_console.CM_USER
-		AND		USER_ID = #{userId}
+		WHERE	USER_ID = #{userId}
 	</select>
 	
 	<update id="updateMemberInfo">
@@ -29,9 +29,9 @@
 		SELECT	COUNT(1)
 		FROM	cm_bo.CM_QUEST_BOARD
 		WHERE	1 = 1
-<!-- 		AND		REG_ID = #{userId} -->
+		AND		REG_ID = #{userId}
 		<if test="srcTitle != null and srcTitle != ''">
-		AND		TITLE = #{srcTitle}
+		AND		TITLE LIKE '%${srcTitle}%'
 		</if>
 		<if test="srcQuestType != null and srcQuestType != ''">
 		AND		QUEST_TYPE = #{srcQuestType}
@@ -51,11 +51,13 @@
 		,		HP_NUMBER
 		,		(SELECT CODE_NAME_1 FROM cm_bo.CM_CODE WHERE CODE_TYPE_CD = 'QNA_STATUS' AND CODE_VAL_1 = QUEST_STATUS) QUEST_STATUS_STR
 		,		QUEST_STATUS
+		,		CONTENT
+		,		REPLY
 		FROM	cm_bo.CM_QUEST_BOARD
 		WHERE	1 = 1
-<!-- 		AND		REG_ID = #{userId} -->
+		AND		REG_ID = #{userId}
 		<if test="srcTitle != null and srcTitle != ''">
-		AND		TITLE = #{srcTitle}
+		AND		TITLE LIKE '%${srcTitle}%'
 		</if>
 		<if test="srcQuestType != null and srcQuestType != ''">
 		AND		QUEST_TYPE = #{srcQuestType}
@@ -63,5 +65,50 @@
 		<if test="srcQuestStatus != null and srcQuestStatus != ''">
 		AND		QUEST_STATUS = #{srcQuestStatus}
 		</if>
+		ORDER BY REG_DT DESC
 	</select>
+	
+	<insert id="insertQnaInfo">
+	/* myPage.insertQnaInfo */
+		INSERT INTO cm_bo.CM_QUEST_BOARD (
+			QUEST_BOARD_ID
+		,	QUEST_TYPE
+		,	TITLE
+		,	CONTENT
+		,	QUEST_STATUS
+		,	HP_NUMBER
+		,	EMAIL
+		,	REG_ID
+		,	REG_DT
+		) VALUES (
+			#{questBoardId}
+		,	#{questType}
+		,	#{title}
+		,	#{content}
+		,	'01'
+		,	#{hpNumber}
+		,	#{email}
+		,	#{userId}
+		,	NOW()
+		)
+	</insert>
+	
+	<update id="updateQnaInfo">
+	/* myPage.updateQnaInfo */
+		UPDATE	cm_bo.CM_QUEST_BOARD
+		SET		QUEST_TYPE	= #{questType}
+		,		EMAIL		= #{email}
+		,		HP_NUMBER	= #{hpNumber}
+		,		TITLE		= #{title}
+		,		CONTENT		= #{content}
+		,		UPD_ID		= #{userId}
+		,		UPD_DT		= NOW()
+		WHERE	QUEST_BOARD_ID = #{questBoardId}
+	</update>
+	
+	<delete id="deleteQnaInfo">
+	/* myPage.deleteQnaInfo */
+		DELETE FROM cm_bo.CM_QUEST_BOARD
+		WHERE QUEST_BOARD_ID = #{questBoardId}
+	</delete>
 </mapper>
