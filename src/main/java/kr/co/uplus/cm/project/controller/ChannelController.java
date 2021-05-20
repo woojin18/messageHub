@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.co.uplus.cm.common.controller.BaseController;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.model.AuthUser;
 import kr.co.uplus.cm.common.service.CommonService;
@@ -23,7 +22,7 @@ import kr.co.uplus.cm.utils.CommonUtils;
 
 @RestController
 @RequestMapping("/projectApi/channel")
-public class ChannelController extends BaseController {
+public class ChannelController {
 
 	@Autowired
 	ChannelService channelService;
@@ -235,8 +234,8 @@ public class ChannelController extends BaseController {
 	public RestResult<?> selectPushManageList(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
-		AuthUser authUser = getUserInfo(CommonUtils.getString(params.get("loginId")));
-		params.put("corpId",			authUser.getCorpId());
+//		AuthUser authUser = getUserInfo(CommonUtils.getString(params.get("loginId")));
+//		params.put("corpId",			authUser.getCorpId());
 		
 		return channelService.selectPushManageList(params);
 	}
@@ -263,9 +262,9 @@ public class ChannelController extends BaseController {
 		RestResult<Object> rtn = new RestResult<Object>();
 		rtn.setSuccess(true);
 		// 세션정보
-		AuthUser authUser = getUserInfo(loginId);
-		params.put("corpId",			authUser.getCorpId());
-		params.put("userId",			authUser.getUserId());
+//		AuthUser authUser = getUserInfo(loginId);
+//		params.put("corpId",			authUser.getCorpId());
+//		params.put("userId",			authUser.getUserId());
 		
 		// 파라미터 정리
 		params.put("sts",				sts);
@@ -302,9 +301,9 @@ public class ChannelController extends BaseController {
 		RestResult<Object> rtn = new RestResult<Object>();
 		rtn.setSuccess(true);
 		// 세션정보
-		AuthUser authUser = getUserInfo(CommonUtils.getString(params.get("loginId")));
-		params.put("corpId",			authUser.getCorpId());
-		params.put("userId",			authUser.getUserId());
+//		AuthUser authUser = getUserInfo(CommonUtils.getString(params.get("loginId")));
+//		params.put("corpId",			authUser.getCorpId());
+//		params.put("userId",			authUser.getUserId());
 		
 		try {
 			channelService.deletePushManage(params);
