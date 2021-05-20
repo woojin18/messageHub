@@ -12,16 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.uplus.cm.address.service.AddressService;
-import kr.co.uplus.cm.common.controller.BaseController;
 import kr.co.uplus.cm.common.dto.RestResult;
-import kr.co.uplus.cm.utils.CommonUtils;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
 @RequestMapping("/addressApi/manage")
 
-public class AddressController extends BaseController {
+public class AddressController {
 
 	@Autowired
 	private AddressService addressSvc;
@@ -39,7 +37,6 @@ public class AddressController extends BaseController {
 
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
-			//super.setContainIgnoreUserInfo(params);
 			rtn = addressSvc.selectAddressCateGrpList(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
@@ -83,7 +80,6 @@ public class AddressController extends BaseController {
 
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
-			//super.setContainIgnoreUserInfo(params);
 			rtn = addressSvc.selectMemberList(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
@@ -107,7 +103,6 @@ public class AddressController extends BaseController {
 		String newProjectId = (String)params.get("newProjectId");
 		
 		try {
-//			super.setContainIgnoreUserInfo(params);
 			params.put("projectId", newProjectId); // 입력받은 값으로 재설정
 			rtn = addressSvc.registerAddr(params);
 		} catch (Exception e) {
@@ -133,7 +128,6 @@ public class AddressController extends BaseController {
 		String afProjectId = (String)params.get("afProjectId");
 		
 		try {
-//			super.setContainIgnoreUserInfo(params);
 			params.put("projectId", afProjectId); // 입력받은 값으로 재설정
 			rtn = addressSvc.modifyAddr(params);
 		} catch (Exception e) {
@@ -158,7 +152,6 @@ public class AddressController extends BaseController {
 
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
-//			super.setContainIgnoreUserInfo(params);
 			rtn = addressSvc.selectProjectList(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);

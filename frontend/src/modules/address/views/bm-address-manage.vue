@@ -1,9 +1,4 @@
 <template>
-	<div>
-		<AddrModifyLayer
-			:row_data="data">
-		</AddrModifyLayer>
-	>
 	<!-- content -->
 	<div id="content">
 		<article>
@@ -176,7 +171,8 @@
 							<div class="of_h">
 								<div class="float-right">
 									<a href="#self" class="btnStyle1 borderGray" data-toggle="modal" data-target="#Recipient">수신자 등록</a>
-									<a href="#self" class="btnStyle1 borderGray ml10" data-toggle="modal" data-target="#member">구성원 추가</a>
+									<a @click="fnRegisterMemberPop()" class="btnStyle1 borderGray ml10">구성원 추가</a>
+									<!--a href="#self" class="btnStyle1 borderGray ml10" data-toggle="modal" data-target="#member">구성원 추가</a-->
 									<a href="#self" class="btnStyle1 backWhite ml10">구성원 삭제</a>
 								</div>
 							</div>
@@ -192,20 +188,15 @@
 		<!-- address register /-->
 		<AddrRegisterLayer :title="addrRegisterLayerTitle" :layerView.sync="addrRegisterLayerView"></AddrRegisterLayer>
 		<!--  modify Modal -->
-		<!--AddrModifyLayer :title="addrModifyLayerTitle" :layerView.sync="addrModifyLayerView" :curProjectId="curProjectId" :curAddCateGrpName="curAddCateGrpName" :curAddCateGrpDesc="curAddCateGrpDesc" :curAddCateGrpId="curAddCateGrpId" :curOtherProjectUseYn="curOtherProjectUseYn"></AddrModifyLayer-->
-		<!--AddrModifyLayer :title="addrModifyLayerTitle" :layerView.sync="addrModifyLayerView" :data="data"></AddrModifyLayer-->
-		<!--AddrModifyLayer :title="addrModifyLayerTitle" :layerView.sync="addrModifyLayerView" :row_data="data"></AddrModifyLayer-->
+		<AddrModifyLayer :row_data="data"></AddrModifyLayer>
 		<!-- Receiver register Modal -->
 		<!--
 		<RcvrRegLayer :title="rcvrRegLayerTitle" :layerView.sync="rcvrRegLayerView"></RcvrRegLayer>
 		-->
 		<!-- Member register Modal -->
-		<!--
-		<MemberRegLayer :title="memberRegLayerTitle" :layerView.sync="memberRegLayerView"></MemberRegLayer>
-		-->
+		<memberRegisterLayer></memberRegisterLayer>
 	</div>	
 	<!-- //content -->
-	</div>
 </template>
 
 <script>
@@ -216,7 +207,7 @@ import AddrTreeMenu from "@/modules/address/components/bc-addressTree.vue";
 import AddrRegisterLayer from '../components/bc-address-register.vue';
 import AddrModifyLayer from '../components/bc-address-modify.vue';
 //import RcvrRegLayer from '../components/bc-receiver-register.vue';
-//import MemberRegLayer from '../components/bc-member-register.vue';
+import memberRegisterLayer from '../components/bc-member-register.vue';
 
 export default {
 	name: "addressManageList",
@@ -225,7 +216,7 @@ export default {
 		AddrRegisterLayer,
 		AddrModifyLayer,
 		//RcvrRegLayer,
-		//MemberRegLayer
+		memberRegisterLayer,
 	},
 	props: {
 		searchCateGrpData : {
@@ -250,11 +241,6 @@ export default {
 		return {
 			data: {},
 			items: [],
-			//curAddCateGrpName: '',
-			//curAddCateGrpDesc: '',
-			//curAddCateGrpId: -1,
-			//curProjectId: '',
-			//curOtherProjectUseYn: '',
 			addrTreeList: [],
 			memberList: [],
 			searchCategoryId: '',
@@ -262,11 +248,8 @@ export default {
 			listChkBox: [],
 			addrRegisterLayerView: false,
 			addrRegisterLayerTitle: '',
-			//addrModifyLayerView: false,
-			//addrModifyLayerTitle: '',
 			//rcvrRegLayerView: false,
 			//rcvrRegLayerTitle: '수신자 등록',
-			//memberRegLayerView: false,
 			//memberRegLayerTitle: '구성원 추가'
 		}
 	},
@@ -411,12 +394,11 @@ export default {
 			this.rcvrRegLayerView = true;
 			console.log(">>> ended fnRegisterRevrPop");
 		},
+*/
 		// 구성원 등록
 		fnRegisterMemberPop() {
-			console.log(">>> start fnRegisterMemberPop.");
-			this.memberRegLayerView = true;
-			console.log(">>> ended fnRegisterMemberPop");
-		}*/
+			jQuery("#memberRegisterLayer").modal("show");
+		}
 	}
 }
 </script>

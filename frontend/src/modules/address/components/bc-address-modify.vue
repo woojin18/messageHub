@@ -45,10 +45,10 @@
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block">사용여부</h5>
 							<div class="float-right consolMarginTop" style="width:80%">
-								<input type="radio" id="useY" name="useYn" value="Y">
-								<label for="useY">사용</label>
-								<input type="radio" id="useN" name="useYn" value="N">
-								<label for="useN">미사용</label>
+								<input type="radio" id="modUseY" name="modUseYn" value="Y">
+								<label for="modUseY">사용</label>
+								<input type="radio" id="modUseN" name="modUseYn" value="N">
+								<label for="modUseN">미사용</label>
 							</div>
 						</div>
 						<p class="consolMarginTop"><i class="far fa-info-circle"></i> 타프로젝트 사용여부를 전용을 선택하신 경우 프로젝트를 선택하셔야 합니다.</p>
@@ -98,9 +98,9 @@ export default {
 				this.isShowProjectList = true;
 			}
 			if(this.row_data.useYn == 'Y') {
-				jQuery('input:radio[name=useYn]:input[value="Y"]').prop("checked", true);
+				jQuery('input:radio[name=modUseYn]:input[value="Y"]').prop("checked", true);
 			} else {
-				jQuery('input:radio[name=useYn]:input[value="N"]').prop("checked", true);
+				jQuery('input:radio[name=modUseYn]:input[value="N"]').prop("checked", true);
 			}
 			
 		}
@@ -147,7 +147,7 @@ export default {
 				"addressCategoryGrpDesc"	: jQuery("#addressCategoryGrpDesc").val(),
 				"afProjectId"				: afProjectId,
 				"addressCategoryGrpId"		: this.row_data.addressCategoryGrpId,
-				"useYn"						: jQuery("input[name='useYn']:checked").val()
+				"useYn"						: jQuery("input[name='modUseYn']:checked").val()
 			}
 			addressApi.modifyAddr(params).then(response =>{
 				var result = response.data;

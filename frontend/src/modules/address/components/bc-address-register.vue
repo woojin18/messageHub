@@ -45,10 +45,10 @@
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block">사용여부</h5>
 							<div class="float-right consolMarginTop" style="width:80%">
-								<input type="radio" id="useY" name="useYn" value="Y" v-model="useYn">
-								<label for="useY">사용</label>
-								<input type="radio" id="useN" name="useYn" value="N" v-model="useYn">
-								<label for="useN">미사용</label>
+								<input type="radio" id="regUseY" name="regUseYn" value="Y" v-model="regUseYn">
+								<label for="regUseY">사용</label>
+								<input type="radio" id="regYseN" name="regUseYn" value="N" v-model="regUseYn">
+								<label for="regYseN">미사용</label>
 							</div>
 						</div>
 						<p class="consolMarginTop"><i class="far fa-info-circle"></i> 타프로젝트 사용여부를 전용을 선택하신 경우 프로젝트를 선택하셔야 합니다.</p>
@@ -94,7 +94,7 @@ export default {
 			showProjectFlag : true,
 			otherProjectUseYN: 'Y',
 			newProjectId: '',
-			useYn: 'Y',
+			regUseYn: 'Y',
 		}
 	},
 	mounted() {
@@ -136,7 +136,7 @@ export default {
 				"newProjectId"				: this.newProjectId,
 				"addrRegMdfyStatus"			: this.addrRegMdfyStatus,
 				"loginId"					: tokenSvc.getToken().principal.loginId,
-				"useYn"						: this.useYn,
+				"regUseYn"					: this.regUseYn,
 			}
 
 			addressApi.registerAddr(params).then(response =>{
