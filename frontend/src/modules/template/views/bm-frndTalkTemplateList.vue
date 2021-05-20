@@ -46,7 +46,7 @@
           <div class="of_h inline">
             <div class="float-right">
               <router-link :to="{ name: 'frndTalkTemplateManage' }" tag="a" class="btnStyle2 backBlack mr10" title="템플릿 등록">템플릿 등록</router-link>
-              <a href="#self" class="btnStyle2 borderGray mr10" title="엑셀 다운로드">삭제</a>
+              <a @click="fnDeleteFrndTalkTemplate" class="btnStyle2 borderGray mr10" title="엑셀 다운로드">삭제</a>
               <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
             </div>
           </div>
@@ -121,6 +121,8 @@ import PageLayer from '@/components/PageLayer.vue';
 import SelectLayer from '@/components/SelectLayer.vue';
 
 import templateApi from "@/modules/template/service/templateApi.js";
+import confirm from "@/modules/commonUtil/service/confirm.js";
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
   name: "frndTalkTemplateList",
@@ -169,6 +171,31 @@ export default {
     this.fnPageNoResetSearch();
   },
   methods: {
+    //템플릿 삭제
+    fnDeleteFrndTalkTemplate(){
+      //유효성 검사
+      if(this.listChkBox == null || this.listChkBox.length == 0){
+        confirm.fnAlert(this.componentsTitle, '삭제할 항목을 선택해주세요.');
+        return;
+      }
+
+      eventBus.$on('callbackEventBus', this.fnProcDeleteFrndTalkTemplate);
+      confirm.fnConfirm(this.componentsTitle, "선택한 템플릿을 삭제하시겠습니까?", "확인");
+    },
+    //푸시 템플릿 삭제 처리
+    async fnProcDeleteFrndTalkTemplate(){
+      var params = {tmpltIds : this.listChkBox};
+      await templateApi.deleteFrndTalkTmplt(params).then(response =>{
+        var result = response.data;
+        if(result.success) {
+          confirm.fnAlert(this.componentsTitle, '삭제되었습니다.');
+          this.listChkBox = [];
+          this.fnPageNoResetSearch();
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
     //템플릿 엑셀 다운로드
     fnExcelDownLoad(){
       const params = this.searchData;

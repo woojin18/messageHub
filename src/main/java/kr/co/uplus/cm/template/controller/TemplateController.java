@@ -54,7 +54,7 @@ public class TemplateController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.selectPushTemplateList Error : {}", this.getClass(), e);
         }
 
         return rtn;
@@ -76,7 +76,7 @@ public class TemplateController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.selectPushTmpltInfo Error : {}", this.getClass(), e);
         }
 
         return rtn;
@@ -98,7 +98,7 @@ public class TemplateController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.savePushTmplt Error : {}", this.getClass(), e);
         }
         return rtn;
     }
@@ -119,7 +119,7 @@ public class TemplateController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.deletePushTmplt Error : {}", this.getClass(), e);
         }
 
         return rtn;
@@ -170,7 +170,7 @@ public class TemplateController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.saveSmsTmplt Error : {}", this.getClass(), e);
         }
         return rtn;
     }
@@ -191,7 +191,7 @@ public class TemplateController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.selectSmsTmpltList Error : {}", this.getClass(), e);
         }
 
         return rtn;
@@ -213,7 +213,7 @@ public class TemplateController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.selectSmsTmpltInfo Error : {}", this.getClass(), e);
         }
 
         return rtn;
@@ -235,7 +235,7 @@ public class TemplateController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.deleteSmsTmplt Error : {}", this.getClass(), e);
         }
 
         return rtn;
@@ -285,7 +285,7 @@ public class TemplateController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.saveFrndTalkTmplt Error : {}", this.getClass(), e);
         }
         return rtn;
     }
@@ -306,7 +306,7 @@ public class TemplateController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.selectFrndTalkList Error : {}", this.getClass(), e);
         }
 
         return rtn;
@@ -328,7 +328,7 @@ public class TemplateController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.selectFrndTalkInfo Error : {}", this.getClass(), e);
         }
 
         return rtn;
@@ -362,16 +362,27 @@ public class TemplateController {
         return model;
     }
 
+    /**
+     * 친구톡 템플릿 삭제처리
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/deleteFrndTalkTmplt")
+    public RestResult<?> deleteFrndTalkTmplt(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = tmpltSvc.deleteFrndTalkTmplt(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{}.deleteFrndTalkTmplt Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
 
 }
-
-
-
-
-
-
-
-
-
-
-

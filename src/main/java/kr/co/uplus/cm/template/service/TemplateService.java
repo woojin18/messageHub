@@ -274,4 +274,26 @@ public class TemplateService {
         return rtn;
     }
 
+    /**
+     * 친구톡 템플릿 삭제 처리
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+    public RestResult<Object> deleteFrndTalkTmplt(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        int resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_FRND_TALK_TMPLT, params);
+        if (resultCnt <= 0) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+        } else {
+            rtn.setSuccess(true);
+            rtn.setData(params);
+        }
+
+        return rtn;
+    }
+
 }

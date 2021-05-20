@@ -32,6 +32,7 @@ public class DB {
     public final static String QRY_SELECT_FRND_TALK_TMPLT_LIST_CNT = "template.selectFrndTalkTmpltListCnt";
     public final static String QRY_SELECT_FRND_TALK_TMPLT_LIST = "template.selectFrndTalkTmpltList";
     public final static String QRY_UPDATE_FRND_TALK_TMPLT = "template.updateFrndTalkTmplt";
+    public final static String QRY_DELETE_FRND_TALK_TMPLT = "template.deleteFrndTalkTmplt";
     // SMS/MMS 템플릿
     public final static String QRY_SELECT_SMS_TMPLT_LIST_CNT = "template.selectSmsTmpltListCnt";
     public final static String QRY_SELECT_SMS_TMPLT_LIST = "template.selectSmsTmpltList";

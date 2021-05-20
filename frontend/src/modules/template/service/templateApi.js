@@ -50,6 +50,9 @@ const excelDownloadFrndTalkTmplt = (params) => {
   return httpClient.post('/api/public/template/excelDownloadFrndTalkTmplt', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' })
   .then((response) => fnExcelDownCallback(response));
 };
+const deleteFrndTalkTmplt = (params) => {
+  return httpClient.post('/api/public/template/deleteFrndTalkTmplt', params, { headers: {"show-layer": "Yes"} });
+};
 
 /* RCS */
 const corpBrandCnt = (params) => {
@@ -75,6 +78,7 @@ export default {
     selectFrndTalkList,
     selectFrndTalkInfo,
     excelDownloadFrndTalkTmplt,
+    deleteFrndTalkTmplt,
     corpBrandCnt,
     selectRcsTemplateList
 };

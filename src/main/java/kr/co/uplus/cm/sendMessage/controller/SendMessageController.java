@@ -74,7 +74,7 @@ public class SendMessageController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.selectAppIdList Error : {}", this.getClass(), e);
         }
         return rtn;
     }
@@ -95,7 +95,7 @@ public class SendMessageController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.selectCallbackList Error : {}", this.getClass(), e);
         }
         return rtn;
     }
@@ -116,7 +116,7 @@ public class SendMessageController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.selectAddressList Error : {}", this.getClass(), e);
         }
         return rtn;
     }
@@ -137,7 +137,7 @@ public class SendMessageController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.selectCmCuList Error : {}", this.getClass(), e);
         }
         return rtn;
     }
@@ -276,14 +276,14 @@ public class SendMessageController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.sendPushMessage Error : {}", this.getClass(), e);
             return rtn;
         }
 
         /** 비동기화 발송 */
         try {
             List<Object> reSendCdList = sendMsgService.selectGernalList(null);
-            log.info("{}.sendPushMessage aSync API send Start ====>");
+            log.info("{}.sendPushMessage aSync API send Start ====>", this.getClass());
             sendMsgService.sendPushMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.info("{}.sendPushMessage aSync API send Error : {}", this.getClass(), e);
@@ -419,13 +419,13 @@ public class SendMessageController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.sendSmsMessage Error : {}", this.getClass(), e);
             return rtn;
         }
 
         try {
             List<Object> reSendCdList = sendMsgService.selectGernalList(null);
-            log.info("{}.sendSmsMessage aSync API send Start ====>");
+            log.info("{}.sendSmsMessage aSync API send Start ====>", this.getClass());
             sendMsgService.sendSmsMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.info("{}.sendSmsMessage aSync API send Error : {}", this.getClass(), e);
@@ -528,7 +528,7 @@ public class SendMessageController {
 
         try {
             List<Object> reSendCdList = sendMsgService.selectGernalList(null);
-            log.info("{}.sendMmsMessage aSync API send Start ====>");
+            log.info("{}.sendMmsMessage aSync API send Start ====>", this.getClass());
             sendMsgService.sendMmsMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.info("{}.sendMmsMessage aSync API send Error : {}", this.getClass(), e);
@@ -713,7 +713,7 @@ public class SendMessageController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.selectKkoSenderKeyList Error : {}", this.getClass(), e);
         }
         return rtn;
     }

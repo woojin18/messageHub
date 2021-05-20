@@ -41,7 +41,7 @@ public class CommonController {
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("파일등록에 실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.uploadImage Error : {}", this.getClass(), e);
         }
 
         return rtn;
@@ -59,7 +59,7 @@ public class CommonController {
         } catch(Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.selectImageFile Error : {}", this.getClass(), e);
         }
 
         return rtn;
@@ -77,7 +77,7 @@ public class CommonController {
         } catch(Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+            log.error("{}.deleteImageFile Error : {}", this.getClass(), e);
         }
 
         return rtn;
@@ -123,7 +123,7 @@ public class CommonController {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
 		}
-		
+
 		return rtn;
 	}
 

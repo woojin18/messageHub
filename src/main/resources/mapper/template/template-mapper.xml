@@ -434,4 +434,12 @@
         </if>
     </select>
 
+    <delete id="deleteFrndTalkTmplt" parameterType="hashmap">
+    /* template.deleteFrndTalkTmplt - 친구톡 템플릿 삭제 */
+        DELETE
+        FROM CM_FRIENDTALK_TMPLT
+        WHERE CORP_ID = #{corpId}
+            AND TMPLT_ID IN <foreach collection="tmpltIds" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
+    </delete>
+
 </mapper>
