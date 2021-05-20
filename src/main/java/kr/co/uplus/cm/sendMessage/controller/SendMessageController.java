@@ -698,5 +698,25 @@ public class SendMessageController {
         return rtn;
     }
 
+    /**
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectKkoSenderKeyList")
+    public RestResult<?> selectKkoSenderKeyList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = sendMsgService.selectKkoSenderKeyList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
+
 }
 

@@ -217,7 +217,7 @@ public class SendMessageService {
 
             //전체발송
             } else if(StringUtils.equals("ALL", (String)params.get("cuInputType"))) {
-                List<Object> sltObjList = generalDao.selectGernalList(DB.QRY_SELECT_ALL_APP_USER, params);
+                List<Object> sltObjList = generalDao.selectGernalList(DB.QRY_SELECT_ALL_APP_USER_LIST, params);
                 recvInfoLst = (List<RecvInfo>)(Object)sltObjList;
             }
         }
@@ -1282,8 +1282,27 @@ public class SendMessageService {
         String webReqId = CommonUtils.getCommonId(Const.WebReqIdPrefix.FRND_TALK_PREFIX, 5);
         requestData.setWebReqId(webReqId);
 
-        //callback(TODO : 알아보자)
-        requestData.setCallback(CommonUtils.getStrValue(params, "callback"));
+        //callback
+        //대채발송이 아닐 경우 callback 이 없는게 맞으나 G/W 에서 필수로 보내달라고 해서
+        //1. 챗봇 발신번호 조회 해서 setting 한다.
+        //2. 1의 방법에서 발신번호가 없거나 오류시 기본 callback 번호로 setting한다.
+        String callback = CommonUtils.getStrValue(params, "callback");
+        if(StringUtils.isBlank(callback)) {
+            try {
+                params.put("approvalStatus", Const.ApprovalStatus.APPROVE);
+                List<Object> callbackList = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_LIST, params);
+                if(!CollectionUtils.isEmpty(callbackList)) {
+                    Map<String, Object> callbackInfo = (Map<String, Object>) callbackList.get(0);
+                    callback = CommonUtils.getStrValue(callbackInfo, "callback");
+                }
+            } catch (Exception e) {
+                log.error("{}.setFrndTalkSendData selectGernalList ERROR : {}", this.getClass(), e);
+            }
+            if(StringUtils.isBlank(callback)) {
+                callback = ApiConfig.DEFAULT_CALLBACK;
+            }
+        }
+        requestData.setCallback(callback);
 
         //캠페인 ID
         requestData.setCampaignId(CommonUtils.getStrValue(params, "campaignId"));
@@ -1582,6 +1601,23 @@ public class SendMessageService {
         String jsonString = gson.toJson(requestData);
 
         return apiInterface.sendMsg(ApiConfig.SEND_FRND_TALK_API_URI, headerMap, jsonString);
+    }
+
+    /**
+     * 카카오 발신 프로필키 목록 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectKkoSenderKeyList(Map<String, Object> params) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        params.put("kkoSvc", Const.KkoSvcUseCode.getType(CommonUtils.getStrValue(params, "ch")));
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_KKO_SENDER_KEY_LIST, params);
+        rtn.setData(rtnList);
+
+        return rtn;
     }
 
 }

@@ -46,7 +46,7 @@ public class DB {
     public final static String QRY_SELECT_SMART_TMPLT = "template.selectSmartTemplate";
     public final static String QRY_INSERT_SMART_TMPLT = "template.insertSmartTemplate";
     public final static String QRY_UPDATE_SMART_TMPLT = "template.updateSmartTemplate";
-    // 푸시메시지 발송
+    // 메시지 발송
     public final static String QRY_SELECT_APP_ID_LIST = "sendMessage.selectAppIdList";
     public final static String QRY_SELECT_CALLBACK_LIST = "sendMessage.selectCallbackList";
     public final static String QRY_SELECT_ADDR_GRP_LIST = "sendMessage.selectAddrGrpList";
@@ -59,7 +59,8 @@ public class DB {
     public final static String QRY_INSERT_CM_WEB_MSG = "sendMessage.insertCmWebMsg";
     public final static String QRY_SELECT_RE_SEND_CD_LIST = "sendMessage.selectReSendCdList";
     public final static String QRY_INSERT_CM_MSG = "sendMessage.insertCmMsg";
-    public final static String QRY_SELECT_ALL_APP_USER = "sendMessage.selectAllAppUser";
+    public final static String QRY_SELECT_ALL_APP_USER_LIST = "sendMessage.selectAllAppUserList";
+    public final static String QRY_SELECT_KKO_SENDER_KEY_LIST = "sendMessage.selectKkoSenderKeyList";
     // RCS 채널 브랜드 정보
     public final static String QRY_SELECT_RCS_BRANDLIST_CNT = "channel.selectRcsBrandListCnt";
     public final static String QRY_SELECT_RCS_BRANDLIST = "channel.selectRcsBrandList";

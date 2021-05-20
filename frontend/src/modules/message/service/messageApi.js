@@ -38,6 +38,9 @@ const excelDownSendFrndTalkRecvTmplt = (params) => {
 const sendFrndTalkMessage = (params) => {
   return httpClient.post('/api/public/sendMessage/sendFrndTalkMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data"} });
 };
+const selectKkoSenderKeyList = (params) => {
+  return httpClient.post('/api/public/sendMessage/selectKkoSenderKeyList', params, { headers: {"show-layer": "Yes"} });
+};
 
 
 export default {
@@ -51,7 +54,8 @@ export default {
     sendSmsMessage,
     sendMmsMessage,
     excelDownSendFrndTalkRecvTmplt,
-    sendFrndTalkMessage
+    sendFrndTalkMessage,
+    selectKkoSenderKeyList
 };
 
 function fnExcelDownCallback(response){

@@ -148,8 +148,8 @@
             AND CACG.PROJECT_ID IN ('ALL', #{projectId})
     </select>
 
-    <select id="selectAllAppUser" parameterType="hashmap" resultType="kr.co.uplus.cm.sendMessage.dto.RecvInfo">
-    /* sendMessage.selectAllAppUser 앱사용자 전체 조회 */
+    <select id="selectAllAppUserList" parameterType="hashmap" resultType="kr.co.uplus.cm.sendMessage.dto.RecvInfo">
+    /* sendMessage.selectAllAppUserList 앱사용자 전체 조회 */
         SELECT
             TPUI.CUID
         <if test="requiredCuPhone">
@@ -296,5 +296,20 @@
             , '0'
         )
     </insert>
+
+    <select id="selectKkoSenderKeyList" parameterType="hashmap" resultType="camel">
+    /* sendMessage.selectKkoSenderKeyList 카카오 발신 프로필키 목록 조회 */
+        SELECT
+            CKC.SENDER_KEY
+        FROM cm.CM_KKO_CH CKC
+        INNER JOIN cm.CM_KKO_SENDER_GRP CKSG
+            ON CKSG.SENDER_KEY = CKC.SENDER_KEY
+            AND CKSG.USE_YN = 'Y'
+        WHERE CKC.USE_YN = 'Y'
+            AND CKC.CORP_ID = #{corpId}
+            AND CKC.PROJECT_ID IN ('ALL', #{projectId})
+            AND JSON_CONTAINS(KKO_SVC_USE_INFO, JSON_OBJECT(#{kkoSvc}, 'Y'))
+    </select>
+
 
 </mapper>

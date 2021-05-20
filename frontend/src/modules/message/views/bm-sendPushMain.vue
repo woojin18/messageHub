@@ -378,14 +378,10 @@ export default {
             return false;
           }
         }
-        //앱사용자 전체발송시 메시지 변수 사용금지 & 대체발송 금지
+        //앱사용자 전체발송시 메시지 변수 사용금지
         if(this.sendData.cuInputType == 'ALL'){
           if(this.sendData.contsVarNms.length > 0){
             confirm.fnAlert(this.componentsTitle, '앱사용자 전체발송시 메시지 내용에 변수를 사용하실 수 없습니다.');
-            return false;
-          }
-          if(this.sendData.rplcSendType != 'NONE'){
-            confirm.fnAlert(this.componentsTitle, '앱사용자 전체발송시 대체발송을 사용하실 수 없습니다.');
             return false;
           }
         }

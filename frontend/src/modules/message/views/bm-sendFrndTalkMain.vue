@@ -79,8 +79,8 @@
               </div>
               <div style="width:80%">
                 <select name="userConsole_sub0203_1" class="selectStyle2" style="width:42%" v-model="sendData.senderKey">
-                  <option value="">선택해주세요.</option>
-                  <option value="알수없고,요청했고,피드백없다">알수없고,요청했고,피드백없다.</option>
+                  <option value="" selected>선택해주세요.</option>
+                  <option v-for="senderKeyInfo in senderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.senderKey}}</option>
                 </select>
               </div>
             </div>
@@ -372,6 +372,7 @@ export default {
         {type:'BK', name:'봇 키워드'},
         {type:'MD', name:'메시지전달'}
       ],
+      senderKeyList: [],
       sendData : {
         ch: 'FRIENDTALK',
         requiredCuid : false,
@@ -400,9 +401,21 @@ export default {
     }
   },
   mounted() {
+    this.fnGetSenderKeyList();
     this.fnAddButton();
   },
   methods: {
+    fnGetSenderKeyList(){
+      var params = {ch: this.sendData.ch};
+      messageApi.selectKkoSenderKeyList(params).then(response => {
+        var result = response.data;
+        if(result.success) {
+          this.senderKeyList = result.data;
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
     //발송 정보 유효성 체크
     fnValidSendMsgData(testSendYn){
       if(this.fnSetContsVarNms() == false){

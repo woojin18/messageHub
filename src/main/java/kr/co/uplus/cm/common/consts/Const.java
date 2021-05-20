@@ -36,6 +36,7 @@ public class Const {
         public static final String SMS = "SMS";
         public static final String MMS = "MMS";
         public static final String FRIENDTALK = "FRIENDTALK";
+        public static final String ALIMTALK = "ALIMTALK";
     }
 
     // 메시지발송 ID 접두(WEB_REQ_ID)
@@ -84,6 +85,7 @@ public class Const {
         public static final String RES_WAIT = "RES_WAIT";
         public static final String REPORT_WAIT = "REPORT_WAIT";
         public static final String COMPLETED = "COMPLETED";
+        public static final String FAIL = "FAIL";
     }
 
     //파일 업로드 설정
@@ -116,9 +118,30 @@ public class Const {
         public static final String GW_RESULT_DESC = "3회재시도 에러";
     }
 
-    /**
-     * 메세지 상품 타입
-     */
+    // 카카오 서비스 코드
+    public enum KkoSvcUseCode {
+        ALIMTALK("ALIMTALK_USE_YN"),
+        FRIENDTALK("FRIENDTALK_USE_YN");
+
+        private String code;
+
+        KkoSvcUseCode(String code) {
+            this.code = code;
+        }
+
+        public static String getType(String name) {
+            String rtnType = "";
+            for (KkoSvcUseCode e : KkoSvcUseCode.values()) {
+                if(e.name().equals(name)) {
+                    rtnType = e.code;
+                    break;
+                }
+            }
+            return rtnType;
+        }
+    }
+
+    // 메세지 상품 타입
     public enum MsgProductCode {
         PUSH("PUSH"),
         SMS("SMS"),

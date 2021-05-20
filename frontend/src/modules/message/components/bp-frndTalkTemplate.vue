@@ -6,16 +6,6 @@
           <div>
             <h2>템플릿 선택</h2>
             <hr>
-            <div class="of_h">
-              <div style="width:11%" class="float-left">
-                <h4>발신프로필 *</h4>
-              </div>
-              <div style="width:42%">
-                <select name="userConsole_sub0203_3" class="selectStyle2" style="width:53%">
-                  <option value="">TODO-알수없음</option>
-                </select>
-              </div>
-            </div>
             <div class="row row-no-margin">
               <div class="col-xs-4 border-line2 pd20" style="height:569px">
                 <h4 class="color000">템플릿 검색</h4>
