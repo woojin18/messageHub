@@ -16,14 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.co.uplus.cm.common.controller.BaseController;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.project.service.ProjectService;
 
 @RestController
 @RequestMapping("/projectApi/manage")
-public class ProjectController extends BaseController {
+public class ProjectController {
 
 	@Autowired
 	ProjectService projectService;
