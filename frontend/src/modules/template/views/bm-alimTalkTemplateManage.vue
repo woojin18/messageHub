@@ -28,18 +28,22 @@
         </div>  
         <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
           <div class="of_h">
-            <div class="float-left" style="width:22%"><h4>플러스친구 ID</h4></div>
+            <div class="float-left" style="width:22%"><h4>발신 프로필/그룹 *</h4></div>
             <div class="float-left" style="width:78%">
-              <select name="userConsole_sub040402_1" class="float-left selectStyle2" style="width:100%">
-                <option value="">@LG유플러스</option>
+              <select class="float-left selectStyle2" style="width:20%" v-model="senderKeyType" @change="fnSelectSenderKeyList">
+                <option value="NOMAL">일반</option>
+                <option value="GROUP">그룹</option>
+              </select>
+              <select class="float-left selectStyle2" style="width:80%" v-model="tmpltData.senderKey">
+                <option value="">선택해주세요.</option>
+                <option v-for="senderKeyInfo in senderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.senderKey}}</option>
               </select>
             </div>
           </div>
           <div class="of_h">
-            <div class="float-left" style="width:22%"><h4>템플릿강조부제목 *</h4></div>
+            <div class="float-left" style="width:22%"><h4>템플릿명 *</h4></div>
             <div class="float-left" style="width:78%">
-              <div class="float-left" style="width:77%"><input type="text" class="inputStyle" placeholder="템플릿명 영역"></div>
-              <div class="float-right" style="width:22%"><a href="#self" class="btnStyle1 backLightGray" style="width:100%">중복체크</a></div>          
+              <input type="text" class="inputStyle" placeholder="20자 이내 입력" v-model="tmpltData.tmpltName" maxlength="20">
             </div>
           </div>
           <div class="of_h">
@@ -203,43 +207,77 @@
                   </tr>
                 </tbody>
               </table>
-              <div>
-                <input type="radio" name="autoTest" value="Y" id="autoTest1" checked=""> <label for="autoTest1" class="mr30">자동테스트 여부</label>
-                <input type="radio" name="autoTest" value="N" id="autoTest2"> <label for="autoTest2">자동이관 여부</label>    
-              </div>
+              
             </div>
           </div>
-          <div class="of_h consolMarginTop">
-            <div class="float-left" style="width:22%"><h4>테스트 수신번호 *</h4></div>
-            <div class="float-left" style="width:78%">
-              <div><input type="text" class="inputStyle" placeholder="- 없이 입력해 주세요." style="width:60%"> <a href="#" title="이전버튼"><i class="far fa-plus channelBtn ml10"></i></a></div>
-              <div class="consolMarginTop"><input type="text" class="inputStyle" placeholder="- 없이 입력해 주세요." style="width:60%"> <a href="#" title="이전버튼"><i class="far fa-minus channelBtn ml10"></i></a></div>
-              <div class="consolMarginTop"><input type="text" class="inputStyle" placeholder="- 없이 입력해 주세요." style="width:60%"> <a href="#" title="이전버튼"><i class="far fa-minus channelBtn ml10"></i></a></div>
-            </div>
-          </div>
-          <div class="of_h consolMarginTop">
-            <div class="float-left" style="width:22%"><h4>변수 정보</h4></div>
-            <div class="float-left" style="width:78%">
-              <div>
-                <input type="text" class="inputStyle" placeholder="변수 Key값" style="width:29.8%">
-                <input type="text" class="inputStyle" placeholder="value" style="width:29.8%">
-                <a href="#" title="이전버튼"><i class="far fa-plus channelBtn ml10"></i></a>
-              </div>
-              <div class="consolMarginTop">
-                <input type="text" class="inputStyle" placeholder="변수 Key값" style="width:29.8%">
-                <input type="text" class="inputStyle" placeholder="value" style="width:29.8%">
-                <a href="#" title="이전버튼"><i class="far fa-plus channelBtn ml10"></i></a>
-              </div>
-            </div>
-          </div>
+          
           <div class="mt20 float-right">
             <a href="#self" class="btnStyle2 backWhite float-left">승인요청</a>
-            <a href="#self" class="btnStyle2 backWhite float-left ml10">임시저장</a>            
-            <a href="#self" class="btnStyle2 backRed float-left ml10" data-toggle="modal" data-target="#Regist" title="등록">등록</a>
+            <a href="#self" class="btnStyle2 backWhite float-left ml10">임시저장</a>
+            <a @click="fnTest" class="btnStyle2 backRed float-left ml10" data-toggle="modal" data-target="#Regist" title="등록">등록</a>
             <a href="#self" class="btnStyle2 float-left ml10">취소</a>
             <a href="#self" class="btnStyle2 backWhite float-left ml10" data-toggle="modal" data-target="#Modify" title="수정">수정</a>
           </div>
-        </div>                            
-      </div>  
+
+        </div>
+      </div>
   </div>
 </template>
+
+<script>
+import templateApi from "@/modules/template/service/templateApi.js";
+import confirm from "@/modules/commonUtil/service/confirm.js";
+
+export default {
+  name: 'alimTalkTemplateManage',
+  props: {
+    tmpltId: {
+      type: String,
+      require: false,
+      default: function() {
+        return '';
+      }
+    },
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: function() {
+        return '알림톡 템플릿 관리';
+      }
+    },
+  },
+  data() {
+    return {
+      senderKeyType : 'NOMAL',  //NOMAL, GROUP
+      senderKeyList : [],
+      groupKeyList : [],
+      useCh : 'ALIMTALK',
+      tmpltData : {
+        senderKey : '',
+        tmpltName : '',
+      }
+    }
+  },
+  mounted() {
+    this.fnSelectSenderKeyList();
+  },
+  methods: {
+    fnTest(){
+      alert(this.tmpltData.senderKey);
+    },
+    //카카오톡 발신 프로필키 리스트 조회
+    fnSelectSenderKeyList(){
+      const params = {kkoSvc: this.useCh, senderKeyType: this.senderKeyType};
+      templateApi.selectSenderKeyList(params).then(response => {
+        const result = response.data;
+        if(result.success) {
+          this.tmpltData.senderKey = '';
+          this.senderKeyList = Object.assign({}, result.data);
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
+  }
+}
+</script>

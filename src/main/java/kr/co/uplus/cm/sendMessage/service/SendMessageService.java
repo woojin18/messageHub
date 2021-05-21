@@ -1632,21 +1632,4 @@ public class SendMessageService {
         return apiInterface.sendMsg(ApiConfig.SEND_FRND_TALK_API_URI, headerMap, jsonString);
     }
 
-    /**
-     * 카카오 발신 프로필키 목록 조회
-     * @param params
-     * @return
-     * @throws Exception
-     */
-    public RestResult<Object> selectKkoSenderKeyList(Map<String, Object> params) throws Exception {
-
-        RestResult<Object> rtn = new RestResult<Object>();
-
-        params.put("kkoSvc", Const.KkoSvcUseCode.getType(CommonUtils.getStrValue(params, "ch")));
-        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_KKO_SENDER_KEY_LIST, params);
-        rtn.setData(rtnList);
-
-        return rtn;
-    }
-
 }

@@ -310,7 +310,8 @@
 
     <select id="selectKkoSenderGrpKeyList" parameterType="hashmap" resultType="camel">
     /* sendMessage.selectKkoSenderGrpKeyList - 카카오 발신 프로필키 그룹 목록 조회 */
-        SELECT GRP_KEY
+        SELECT
+            CKSG.GRP_KEY AS SENDER_KEY
         FROM cm.CM_KKO_SENDER_GRP CKSG
         WHERE CKSG.USE_YN = 'Y'
             AND CKSG.CORP_ID = #{corpId}

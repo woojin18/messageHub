@@ -331,6 +331,7 @@ import TestSendInputPopup from "@/modules/message/components/bc-testSendInput.vu
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import messageApi from "@/modules/message/service/messageApi.js";
+import templateApi from "@/modules/template/service/templateApi.js";
 
 export default {
   name: 'sendFrndTalkMain',
@@ -372,6 +373,7 @@ export default {
         {type:'BK', name:'봇 키워드'},
         {type:'MD', name:'메시지전달'}
       ],
+      senderKeyType: 'NOMAL',
       senderKeyList: [],
       sendData : {
         ch: 'FRIENDTALK',
@@ -406,8 +408,8 @@ export default {
   },
   methods: {
     fnGetSenderKeyList(){
-      var params = {ch: this.sendData.ch};
-      messageApi.selectKkoSenderKeyList(params).then(response => {
+      const params = {kkoSvc: this.sendData.ch, senderKeyType: this.senderKeyType};
+      templateApi.selectSenderKeyList(params).then(response => {
         var result = response.data;
         if(result.success) {
           this.senderKeyList = result.data;
@@ -421,7 +423,6 @@ export default {
       if(this.fnSetContsVarNms() == false){
         return false;
       }
-      //TODO : 발신프로필 유효성 체크 필요
       if(!this.sendData.senderKey){
         confirm.fnAlert(this.componentsTitle, '발신프로필을 선택해주세요.');
         return false;
