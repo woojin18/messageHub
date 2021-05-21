@@ -100,10 +100,6 @@ cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw
   secretKey: test_sk_YyZqmkKeP8gGA7R464j8bQRxB9lG
 
-api.props:
-  gateWay:
-    url: http://erp.ectech.co.kr:40931
-    
 datasource: 
   rcs:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -168,10 +164,6 @@ cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw
   secretKey: test_sk_YyZqmkKeP8gGA7R464j8bQRxB9lG
 
-api.props:
-  gateWay:
-    url: http://erp.ectech.co.kr:40931
-    
 datasource: 
   rcs:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -236,10 +228,6 @@ cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw
   secretKey: test_sk_YyZqmkKeP8gGA7R464j8bQRxB9lG
 
-api.props:
-  gateWay:
-    url: http://erp.ectech.co.kr:40931
-    
 datasource: 
   rcs:
     driver-class-name: org.mariadb.jdbc.Driver
