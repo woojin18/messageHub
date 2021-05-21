@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="116" viewBox="0 0 80 116">
+  <g id="그룹_3703" data-name="그룹 3703" transform="translate(-0.312)">
+    <g id="그룹_3203" data-name="그룹 3203">
+      <g id="사각형_771" data-name="사각형 771" transform="translate(0.312)" fill="#fff" stroke="#d5d5d5" stroke-width="1">
+        <rect width="80" height="116" stroke="none"/>
+        <rect x="0.5" y="0.5" width="79" height="115" fill="none"/>
+      </g>
+      <rect id="사각형_776" data-name="사각형 776" width="63" height="7" transform="translate(9.312 63)" fill="#ddd"/>
+      <rect id="사각형_777" data-name="사각형 777" width="63" height="51" transform="translate(9.312 8)" fill="#f1f1f1"/>
+      <rect id="사각형_775" data-name="사각형 775" width="63" height="3" transform="translate(9.312 74)" fill="#e9e9e9"/>
+      <rect id="사각형_773" data-name="사각형 773" width="63" height="3" transform="translate(9.312 81)" fill="#e9e9e9"/>
+      <rect id="사각형_774" data-name="사각형 774" width="63" height="3" transform="translate(9.312 88)" fill="#e9e9e9"/>
+      <rect id="사각형_772" data-name="사각형 772" width="63" height="3" transform="translate(9.312 95)" fill="#e9e9e9"/>
+      <text id="image-polaroid" transform="translate(29.313 44)" fill="#d5d5d5" font-size="26" font-family="FontAwesome5Pro-Solid, 'Font Awesome \35  Pro'"><tspan x="0" y="0">image-polaroid</tspan></text>
+    </g>
+  </g>
+</svg>
