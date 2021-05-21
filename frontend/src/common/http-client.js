@@ -18,8 +18,12 @@ const setLoginInterceptor = config => {
 	if (tokenSvc.getToken()) {
 		if (config.url !== '/api/auth/logout') {
 			config.headers.loginId = tokenSvc.getToken().principal.loginId;
-			config.data.corpId = tokenSvc.getToken().principal.corpId;
-			config.data.userId = tokenSvc.getToken().principal.userId;
+			if (config.data.corpId == null) {
+				config.data.corpId = tokenSvc.getToken().principal.corpId;
+			}
+			if (config.data.userId == null) {
+				config.data.userId = tokenSvc.getToken().principal.userId;
+			}
 			if (config.data.projectId == null) {
 				config.data.projectId = utils.getCookie(consts.projectId);
 			}
