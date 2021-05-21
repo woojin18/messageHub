@@ -104,8 +104,8 @@ datasource:
   rcs:
     driver-class-name: org.mariadb.jdbc.Driver
     jdbc-url: jdbc:mysql://dev-advmsg-db.cluster-crvzo9rgathe.ap-northeast-2.rds.amazonaws.com/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
-    username: rcs
-    password: rcsrcs
+    username: cm_console
+    password: test1234
     pool-name: hikari-cp
     maximum-pool-size: 10
     minimum-idle: 5
