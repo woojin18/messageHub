@@ -26,7 +26,6 @@ public class DB {
     // RCS 템플릿
     public final static String QRY_SELECT_RCS_TMPLT = "template.selectRcsTemplate";
     // 알림톡 템플릿
-    public final static String QRY_SELECT_KKO_SENDER_GRP_KEY_LIST = "template.selectKkoSenderGrpKeyList";
     // 친구톡 템플릿
     public final static String QRY_INSERT_FRND_TALK_TEMPLATE = "template.insertFrndTalkTemplate";
     public final static String QRY_SELECT_FRND_TALK_TMPLT_LIST_CNT = "template.selectFrndTalkTmpltListCnt";
@@ -62,6 +61,7 @@ public class DB {
     public final static String QRY_INSERT_CM_MSG = "sendMessage.insertCmMsg";
     public final static String QRY_SELECT_ALL_APP_USER_LIST = "sendMessage.selectAllAppUserList";
     public final static String QRY_SELECT_KKO_SENDER_KEY_LIST = "sendMessage.selectKkoSenderKeyList";
+    public final static String QRY_SELECT_KKO_SENDER_GRP_KEY_LIST = "sendMessage.selectKkoSenderGrpKeyList";
     // RCS 채널 브랜드 정보
     public final static String QRY_SELECT_RCS_BRANDLIST_CNT = "channel.selectRcsBrandListCnt";
     public final static String QRY_SELECT_RCS_BRANDLIST = "channel.selectRcsBrandList";

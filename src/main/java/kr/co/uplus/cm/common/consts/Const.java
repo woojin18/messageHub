@@ -119,6 +119,12 @@ public class Const {
         public static final String GW_RESULT_DESC = "3회재시도 에러";
     }
 
+    //카카오 발신프로필키 타입
+    public static class KkoSenderKeyType {
+        public static final String NOMAL = "NOMAL";
+        public static final String GROUP = "GROUP";
+    }
+
     // 카카오 서비스 코드
     public enum KkoSvcUseCode {
         ALIMTALK("ALIMTALK_USE_YN"),

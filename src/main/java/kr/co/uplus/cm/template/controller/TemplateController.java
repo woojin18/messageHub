@@ -384,5 +384,27 @@ public class TemplateController {
         return rtn;
     }
 
+    /**
+     * 카카오 발신 프로필키 목록 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectSenderKeyList")
+    public RestResult<?> selectSenderKeyList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = tmpltSvc.selectSenderKeyList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{}.selectSenderKeyList Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
 
 }

@@ -54,6 +54,14 @@ const deleteFrndTalkTmplt = (params) => {
   return httpClient.post('/api/public/template/deleteFrndTalkTmplt', params, { headers: {"show-layer": "Yes"} });
 };
 
+/* 알림톡 */
+const selectSenderKeyList = (params) => {
+  return httpClient.post('/api/public/template/selectSenderKeyList', params, { headers: {"show-layer": "Yes"} });
+};
+const selectSenderKeyGrpList = (params) => {
+  return httpClient.post('/api/public/template/selectSenderKeyGrpList', params, { headers: {"show-layer": "Yes"} });
+};
+
 /* RCS */
 const corpBrandCnt = (params) => {
   return httpClient.post('/api/public/rcsTemplate/corpBrandCnt', params, { headers: {"show-layer": "Yes"} });
@@ -79,6 +87,8 @@ export default {
     selectFrndTalkInfo,
     excelDownloadFrndTalkTmplt,
     deleteFrndTalkTmplt,
+    selectSenderKeyList,
+    selectSenderKeyGrpList,
     corpBrandCnt,
     selectRcsTemplateList
 };

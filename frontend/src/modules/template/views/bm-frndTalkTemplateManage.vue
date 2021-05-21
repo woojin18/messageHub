@@ -184,7 +184,7 @@ import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
-  name: 'frdTalkTemplateManage',
+  name: 'frndTalkTemplateManage',
   components : {
     ImageManagePopUp
   },
