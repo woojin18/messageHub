@@ -550,6 +550,9 @@ export default {
         this.fnChgCuInputType('N');
       }
     },
+    fnUpdateRsrvDate(sltDate){
+      this.sendData.rsrvDate = sltDate;
+    },
     //수신자 입력 타입 변경시
     fnChgCuInputType(chgYn){
       if(this.$gfnCommonUtils.defaultIfEmpty(chgYn, 'Y') == 'Y'){

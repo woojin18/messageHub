@@ -44,6 +44,7 @@ import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
 import kr.co.uplus.cm.sendMessage.dto.SmsRequestData;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
+import kr.co.uplus.cm.utils.DateUtil;
 import kr.co.uplus.cm.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
 
@@ -437,6 +438,9 @@ public class SendMessageService {
                 rtn.setMessage("잘못된 예약시간입니다. 현재시간 10분 이후로 설정해주세요.");
                 return rtn;
             }
+            if(DateUtil.diffDays(rsrvDate) > Const.SEND_RSRV_LIMIT_DAY) {
+                rtn.setFail("잘못된 예약일자입니다. 현재일로 부터 "+Const.SEND_RSRV_LIMIT_DAY+"일 이내로 설정해주세요");
+            }
             status = Const.MsgSendStatus.SEND_WAIT;
         }
 
@@ -810,6 +814,9 @@ public class SendMessageService {
                 rtn.setMessage("잘못된 예약시간입니다. 현재시간 10분 이후로 설정해주세요.");
                 return rtn;
             }
+            if(DateUtil.diffDays(rsrvDate) > Const.SEND_RSRV_LIMIT_DAY) {
+                rtn.setFail("잘못된 예약일자입니다. 현재일로 부터 "+Const.SEND_RSRV_LIMIT_DAY+"일 이내로 설정해주세요");
+            }
             status = Const.MsgSendStatus.SEND_WAIT;
         }
 
@@ -1029,6 +1036,9 @@ public class SendMessageService {
                 rtn.setSuccess(false);
                 rtn.setMessage("잘못된 예약시간입니다. 현재시간 10분 이후로 설정해주세요.");
                 return rtn;
+            }
+            if(DateUtil.diffDays(rsrvDate) > Const.SEND_RSRV_LIMIT_DAY) {
+                rtn.setFail("잘못된 예약일자입니다. 현재일로 부터 "+Const.SEND_RSRV_LIMIT_DAY+"일 이내로 설정해주세요");
             }
             status = Const.MsgSendStatus.SEND_WAIT;
         }
@@ -1432,6 +1442,9 @@ public class SendMessageService {
                 rtn.setSuccess(false);
                 rtn.setMessage("잘못된 예약시간입니다. 현재시간 10분 이후로 설정해주세요.");
                 return rtn;
+            }
+            if(DateUtil.diffDays(rsrvDate) > Const.SEND_RSRV_LIMIT_DAY) {
+                rtn.setFail("잘못된 예약일자입니다. 현재일로 부터 "+Const.SEND_RSRV_LIMIT_DAY+"일 이내로 설정해주세요");
             }
             status = Const.MsgSendStatus.SEND_WAIT;
         }

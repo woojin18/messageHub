@@ -296,4 +296,17 @@ public class TemplateService {
         return rtn;
     }
 
+    /**
+     * 카카오 발신 프로필키 목록 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectKkoSenderGrpKeyList(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_KKO_SENDER_GRP_KEY_LIST, params);
+        rtn.setData(rtnList);
+        return rtn;
+    }
+
 }

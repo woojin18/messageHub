@@ -26,7 +26,7 @@ public class DB {
     // RCS 템플릿
     public final static String QRY_SELECT_RCS_TMPLT = "template.selectRcsTemplate";
     // 알림톡 템플릿
-    public final static String QRY_SELECT_KAKAOTALK_TMPLT = "template.selectKakaoTalkTemplate";
+    public final static String QRY_SELECT_KKO_SENDER_GRP_KEY_LIST = "template.selectKkoSenderGrpKeyList";
     // 친구톡 템플릿
     public final static String QRY_INSERT_FRND_TALK_TEMPLATE = "template.insertFrndTalkTemplate";
     public final static String QRY_SELECT_FRND_TALK_TMPLT_LIST_CNT = "template.selectFrndTalkTmpltListCnt";

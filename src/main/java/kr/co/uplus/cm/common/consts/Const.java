@@ -23,6 +23,7 @@ public class Const {
 	public static final int AUTHNUM_EXPIRE_MINS = 3; // 인증번호 만료기간 (분)
 	public static final int MAX_AUTHNUM_FAIL = 5; // 5회 인증번호 검증 실패하면 발행 잠김
 	public static final int AUTHNUM_LOCK_EXPIRE_MINS = 30; // 인증번호발행 잠김 만료기간 (분)
+	public static final Long SEND_RSRV_LIMIT_DAY = 30L; // 발송예약제한일
 
 	// 템플릿 ID 첨두
 	public static final String TMPLT_PREFIX = "TPL";
