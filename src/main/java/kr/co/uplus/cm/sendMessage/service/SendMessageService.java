@@ -416,9 +416,10 @@ public class SendMessageService {
         String ch = CommonUtils.getStrValue(data, "ch");
         String corpId = CommonUtils.getStrValue(data, "corpId");
         String projectId = CommonUtils.getStrValue(data, "projectId");
-        String rsrvSendYn = (CommonUtils.getStrValue(data, "rsrvSendYn"));
+        String rsrvSendYn = CommonUtils.getStrValue(data, "rsrvSendYn");
         String rsrvDateStr = "";
-        String status = Const.MsgSendStatus.COMPLETED;
+        String allFailYn = CommonUtils.getStrValue(data, "allFailYn");
+        String status = (StringUtils.equals(allFailYn, Const.COMM_YES) ? Const.MsgSendStatus.FAIL : Const.MsgSendStatus.COMPLETED);
 
         if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
             String rsrvYmd = CommonUtils.getStrValue(data, "rsrvDate");
@@ -660,6 +661,7 @@ public class SendMessageService {
         String jsonString = "";
         boolean isDone = false;
         boolean isServerError = false;
+        boolean isAllFail = true;
 
         Gson gson = new Gson();
         Map<String, String> headerMap = new HashMap<String, String>();
@@ -680,6 +682,7 @@ public class SendMessageService {
                 jsonString = gson.toJson(pushRequestData);
                 responseBody = apiInterface.sendMsg(ApiConfig.SEND_PUSH_API_URI, headerMap, jsonString);
                 isDone = isApiRequestAgain(responseBody, reSendCdList);
+                isAllFail = !isSendSuccess(responseBody);
             } catch (Exception e) {
                 log.error("{}.sendPushMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
@@ -716,6 +719,7 @@ public class SendMessageService {
         }
 
         //웹 발송 내역 등록
+        if(isAllFail) data.put("allFailYn", Const.COMM_YES);
         insertPushCmWebMsg(rtn, data, pushRequestData, recvInfoLst);
     }
 
@@ -785,9 +789,10 @@ public class SendMessageService {
         String ch = CommonUtils.getStrValue(data, "senderType");
         String corpId = CommonUtils.getStrValue(data, "corpId");
         String projectId = CommonUtils.getStrValue(data, "projectId");
-        String rsrvSendYn = (CommonUtils.getStrValue(data, "rsrvSendYn"));
+        String rsrvSendYn = CommonUtils.getStrValue(data, "rsrvSendYn");
         String rsrvDateStr = "";
-        String status = Const.MsgSendStatus.COMPLETED;
+        String allFailYn = CommonUtils.getStrValue(data, "allFailYn");
+        String status = (StringUtils.equals(allFailYn, Const.COMM_YES) ? Const.MsgSendStatus.FAIL : Const.MsgSendStatus.COMPLETED);
 
         if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
             String rsrvYmd = CommonUtils.getStrValue(data, "rsrvDate");
@@ -862,6 +867,7 @@ public class SendMessageService {
         String jsonString = "";
         boolean isDone = false;
         boolean isServerError = false;
+        boolean isAllFail = true;
 
         Gson gson = new Gson();
         Map<String, String> headerMap = new HashMap<String, String>();
@@ -882,6 +888,7 @@ public class SendMessageService {
                 jsonString = gson.toJson(requestData);
                 responseBody = apiInterface.sendMsg(ApiConfig.SEND_SMS_API_URI, headerMap, jsonString);
                 isDone = isApiRequestAgain(responseBody, reSendCdList);
+                isAllFail = !isSendSuccess(responseBody);
             } catch (Exception e) {
                 log.error("{}.sendSmsMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
@@ -917,6 +924,7 @@ public class SendMessageService {
         }
 
         //웹 발송 내역 등록
+        if(isAllFail) data.put("allFailYn", Const.COMM_YES);
         insertSmsCmWebMsg(rtn, data, requestData, recvInfoLst);
     }
 
@@ -1001,9 +1009,10 @@ public class SendMessageService {
         String ch = CommonUtils.getStrValue(data, "senderType");
         String corpId = CommonUtils.getStrValue(data, "corpId");
         String projectId = CommonUtils.getStrValue(data, "projectId");
-        String rsrvSendYn = (CommonUtils.getStrValue(data, "rsrvSendYn"));
+        String rsrvSendYn = CommonUtils.getStrValue(data, "rsrvSendYn");
         String rsrvDateStr = "";
-        String status = Const.MsgSendStatus.COMPLETED;
+        String allFailYn = CommonUtils.getStrValue(data, "allFailYn");
+        String status = (StringUtils.equals(allFailYn, Const.COMM_YES) ? Const.MsgSendStatus.FAIL : Const.MsgSendStatus.COMPLETED);
 
         if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
             String rsrvYmd = CommonUtils.getStrValue(data, "rsrvDate");
@@ -1078,6 +1087,7 @@ public class SendMessageService {
         String jsonString = "";
         boolean isDone = false;
         boolean isServerError = false;
+        boolean isAllFail = true;
 
         Gson gson = new Gson();
         Map<String, String> headerMap = new HashMap<String, String>();
@@ -1098,6 +1108,7 @@ public class SendMessageService {
                 jsonString = gson.toJson(requestData);
                 responseBody = apiInterface.sendMsg(ApiConfig.SEND_MMS_API_URI, headerMap, jsonString);
                 isDone = isApiRequestAgain(responseBody, reSendCdList);
+                isAllFail = !isSendSuccess(responseBody);
             } catch (Exception e) {
                 log.error("{}.sendMmsMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
@@ -1133,6 +1144,7 @@ public class SendMessageService {
         }
 
         //웹 발송 내역 등록
+        if(isAllFail) data.put("allFailYn", Const.COMM_YES);
         insertMmsCmWebMsg(rtn, data, requestData, recvInfoLst);
     }
 
@@ -1402,7 +1414,8 @@ public class SendMessageService {
         String projectId = CommonUtils.getStrValue(data, "projectId");
         String rsrvSendYn = CommonUtils.getStrValue(data, "rsrvSendYn");
         String rsrvDateStr = "";
-        String status = Const.MsgSendStatus.COMPLETED;
+        String allFailYn = CommonUtils.getStrValue(data, "allFailYn");
+        String status = (StringUtils.equals(allFailYn, Const.COMM_YES) ? Const.MsgSendStatus.FAIL : Const.MsgSendStatus.COMPLETED);
 
         if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
             String rsrvYmd = CommonUtils.getStrValue(data, "rsrvDate");
@@ -1479,6 +1492,7 @@ public class SendMessageService {
         String jsonString = "";
         boolean isDone = false;
         boolean isServerError = false;
+        boolean isAllFail = true;
 
         Gson gson = new Gson();
         Map<String, String> headerMap = new HashMap<String, String>();
@@ -1499,6 +1513,7 @@ public class SendMessageService {
                 jsonString = gson.toJson(requestData);
                 responseBody = apiInterface.sendMsg(ApiConfig.SEND_FRND_TALK_API_URI, headerMap, jsonString);
                 isDone = isApiRequestAgain(responseBody, reSendCdList);
+                isAllFail = !isSendSuccess(responseBody);
             } catch (Exception e) {
                 log.error("{}.sendFrndTalkMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
@@ -1534,6 +1549,7 @@ public class SendMessageService {
         }
 
         //웹 발송 내역 등록
+        if(isAllFail) data.put("allFailYn", Const.COMM_YES);
         insertFrndTalkCmWebMsg(rtn, data, requestData, recvInfoLst);
     }
 
