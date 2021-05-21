@@ -227,6 +227,12 @@ public class SendMessageController {
                 return rtn;
             }
 
+            /** 예약건인지 확인 */
+            String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
+            if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+                return sendMsgService.insertPushCmWebMsg(rtn, params, requestData, recvInfoLst);
+            }
+
             /** 잔액확인 */
             String payType = sendMsgService.selectPayType(params);
 
@@ -258,14 +264,6 @@ public class SendMessageController {
                         rtnMap.put("feeMsg", "잔액 부족으로 메시지가 발송되지 않을 수도 있습니다.");
                     }
                 }
-            }
-
-            /** 예약건인지 확인(10분) */
-            //즉시건일때 웹 발송 내역(CM_WEB_MSG)은 발송건을 모두 G/W로 보내고 등록해달라는 요청
-            //예약건과 즉시건의 웹 발송 내역 등록 분리
-            String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
-            if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
-                return sendMsgService.insertPushCmWebMsg(rtn, params, requestData, recvInfoLst);
             }
 
             /** 테스트발송(동기화) */
@@ -375,6 +373,12 @@ public class SendMessageController {
                 return rtn;
             }
 
+            /** 예약건인지 확인 */
+            String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
+            if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+                return sendMsgService.insertSmsCmWebMsg(rtn, params, requestData, recvInfoLst);
+            }
+
             /** 잔액확인 */
             String payType = sendMsgService.selectPayType(params);
 
@@ -401,14 +405,6 @@ public class SendMessageController {
                         rtnMap.put("feeMsg", "잔액 부족으로 메시지가 발송되지 않을 수도 있습니다.");
                     }
                 }
-            }
-
-            /** 예약건인지 확인(10분) */
-            //즉시건일때 웹 발송 내역(CM_WEB_MSG)은 발송건을 모두 G/W로 보내고 등록해달라는 요청
-            //예약건과 즉시건의 웹 발송 내역 등록 분리
-            String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
-            if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
-                return sendMsgService.insertSmsCmWebMsg(rtn, params, requestData, recvInfoLst);
             }
 
             /** 테스트발송(동기화) */
@@ -478,6 +474,12 @@ public class SendMessageController {
                 return rtn;
             }
 
+            /** 예약건인지 확인 */
+            String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
+            if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+                return sendMsgService.insertMmsCmWebMsg(rtn, params, requestData, recvInfoLst);
+            }
+
             /** 잔액확인 */
             String payType = sendMsgService.selectPayType(params);
 
@@ -504,14 +506,6 @@ public class SendMessageController {
                         rtnMap.put("feeMsg", "잔액 부족으로 메시지가 발송되지 않을 수도 있습니다.");
                     }
                 }
-            }
-
-            /** 예약건인지 확인(10분) */
-            //즉시건일때 웹 발송 내역(CM_WEB_MSG)은 발송건을 모두 G/W로 보내고 등록해달라는 요청
-            //예약건과 즉시건의 웹 발송 내역 등록 분리
-            String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
-            if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
-                return sendMsgService.insertMmsCmWebMsg(rtn, params, requestData, recvInfoLst);
             }
 
             /** 테스트발송(동기화) */
@@ -623,6 +617,12 @@ public class SendMessageController {
                 return rtn;
             }
 
+            /** 예약건인지 확인 */
+            String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
+            if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+                return sendMsgService.insertFrndTalkCmWebMsg(rtn, params, requestData, recvInfoLst);
+            }
+
             /** 잔액확인 */
             String payType = sendMsgService.selectPayType(params);
 
@@ -660,14 +660,6 @@ public class SendMessageController {
                         rtnMap.put("feeMsg", "잔액 부족으로 메시지가 발송되지 않을 수도 있습니다.");
                     }
                 }
-            }
-
-            /** 예약건인지 확인(10분) */
-            //즉시건일때 웹 발송 내역(CM_WEB_MSG)은 발송건을 모두 G/W로 보내고 등록해달라는 요청
-            //예약건과 즉시건의 웹 발송 내역 등록 분리
-            String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
-            if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
-                return sendMsgService.insertFrndTalkCmWebMsg(rtn, params, requestData, recvInfoLst);
             }
 
             /** 테스트발송(동기화) */
