@@ -20,7 +20,9 @@ const setLoginInterceptor = config => {
 			config.headers.loginId = tokenSvc.getToken().principal.loginId;
 			config.data.corpId = tokenSvc.getToken().principal.corpId;
 			config.data.userId = tokenSvc.getToken().principal.userId;
-			config.data.projectId = utils.getCookie(consts.projectId);
+			if (config.data.projectId == null) {
+				config.data.projectId = utils.getCookie(consts.projectId);
+			}
 		}
 	}
 	return config;
