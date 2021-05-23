@@ -1,6 +1,7 @@
 module.exports = {
 	/** build config */
-	outputDir: '../src/main/resources/static', // html, ico 파일 저장
+	// outputDir: '../src/main/resources/static', // html, ico 파일 저장
+	outputDir: './docker/dist', // html, ico 파일 저장
 	publicPath: '/',
 	assetsDir: 'assets', // css, img, js 저장. outputDir에 대한 상대 경로
 	productionSourceMap: undefined,

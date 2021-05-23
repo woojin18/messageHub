@@ -1,25 +1,13 @@
-buildscript {
-	ext {
-		springBootVersion = '2.1.4.RELEASE'
-	}
-	repositories {
-		maven { url "https://repo1.maven.org/maven2" }
-		maven { url "https://repo.spring.io/milestone" }
-		maven { url 'https://repo.spring.io/libs-snapshot' }
-		
-		mavenLocal()
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+plugins {
+	id 'java'
+	id 'eclipse'
+	id 'idea'
+	id 'org.springframework.boot' version '2.1.4.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'war'
+    id 'com.palantir.docker' version '0.22.1'
+	id "com.github.node-gradle.node" version "2.2.3" 
 }
-
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
 
 compileJava.dependsOn(processResources)
 
@@ -83,28 +71,75 @@ dependencies {
 	compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
 }
 
-ext['springCloudVersion'] = 'Greenwich.SR3'
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+
+node {
+	version = '12.7.0'
+	npmVersion = '6.10.0'
+//    npmInstallCommand = 'install' 
+//    distBaseUrl = 'https://nodejs.org/dist' 
+    download = true
+    workDir = file("${project.buildDir}/nodejs")
+	npmWorkDir = file("./frontend")
+	nodeModulesDir = file("./frontend")
 }
 
 configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
 	all {
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-		exclude module: "logback-classic"
+		exclude group: 'ch.qos.logback', module: "logback-classic"
 	}
 }
 
-bootJar {
-    enabled = true
-	baseName = 'cloud-svc-front'
-	version = '1.0'
+task deleteVueArtifact(type: Delete) {
+	group "cloud"
+    delete "frontend/docker/dist"
 }
 
-jar {
-    enabled = false
+task vueSetUp(type: NpmTask) {
+	group "cloud"
+	description = "Install Node.js packages"
+	args = ['install']
+	inputs.files file('package.json')
+	outputs.files file('node_modules')
 }
 
+task buildVue(type: NpmTask, dependsOn: ['deleteVueArtifact', 'vueSetUp']) {
+	group "cloud"
+	description = "build vue.js"
+	args = ['run', 'build']
+}
+
+//////////// docker, docker-compose //////////////
+
+ext {
+    BUILD_VERSION = new Date().format("yyyyMMdd_HHmmss") // 빌드한 시간을 Image Tag 로 표시하기 위하여 사용한다.
+}
+
+docker {
+    name "${project.name}:test"
+    // tags "${BUILD_VERSION}","latest"
+    files bootJar.outputs.files
+    dockerfile file('frontend/Dockerfile') 
+    files file('frontend/docker') // 도커 만들때 쓸 파일
+    buildArgs(['PROFILES': 'dev'])
+}
+
+task build_All() {
+	group "cloud"
+    description 'jar, vue and docker image build'
+    
+    dependsOn 'bootJar'
+    dependsOn 'buildVue'
+    dependsOn 'docker'
+	tasks.findByName('buildVue').mustRunAfter 'bootJar'
+	tasks.findByName('docker').mustRunAfter 'buildVue'
+    
+	doLast {
+		def stdout = new ByteArrayOutputStream()
+        println "success"
+	}
+}
 
