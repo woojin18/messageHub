@@ -30,6 +30,9 @@ public class Const {
 
     // 이미지업로드 ID 첨두
     public static final String FILE_UPLOAD_PREFIX = "FLE";
+	
+	//Controller 파라메터 점검(배열값에 입력불가능한 필드 기록)
+	public final static String[] DISALLOWED_FIELDS = new String[]{"details.role","is_admin"};
 
     // 채널
     public static class Ch {

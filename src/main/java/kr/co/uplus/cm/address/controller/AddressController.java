@@ -6,12 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.uplus.cm.address.service.AddressService;
+import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 import lombok.extern.log4j.Log4j2;
 
@@ -23,6 +26,11 @@ public class AddressController {
 
 	@Autowired
 	private AddressService addressSvc;
+	
+    @InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
+	}
 	
 	/**
 	 * 주소카테고리그룹 리스트 조회
@@ -100,10 +108,8 @@ public class AddressController {
 	public RestResult<?> registerAddr(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
-		String newProjectId = (String)params.get("newProjectId");
-		
+ 
 		try {
-			params.put("projectId", newProjectId); // 입력받은 값으로 재설정
 			rtn = addressSvc.registerAddr(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
@@ -125,10 +131,8 @@ public class AddressController {
 	public RestResult<?> modifyAddr(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
-		String afProjectId = (String)params.get("afProjectId");
 		
 		try {
-			params.put("projectId", afProjectId); // 입력받은 값으로 재설정
 			rtn = addressSvc.modifyAddr(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
@@ -160,4 +164,118 @@ public class AddressController {
 		}
 		return rtn;
 	}
+	
+	/**
+	 * 수신자 목록 조회
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectCmCuList")
+	public RestResult<?> selectCmCuList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = addressSvc.selectCmCuList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
+	
+	/**
+	 * 구성원 등록
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/registerMember")
+	public RestResult<?> registerMember(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		try {
+			rtn = addressSvc.registerMember(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+	
+	/**
+	 * 구성원 삭제
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/deleteMember")
+	public RestResult<?> deleteMember(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = addressSvc.deleteMember(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+
+	/**
+	 * 수신자 목록 조회
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectReceiverList")
+	public RestResult<?> selectReceiverList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = addressSvc.selectReceiverList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
+	
+	/**
+	 * 수신자 등록/수정
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/saveReceiver")
+	public RestResult<?> saveReceiver(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		try {
+			rtn = addressSvc.saveReceiver(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+	
+	
 }

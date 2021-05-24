@@ -176,6 +176,7 @@ export default {
 
       this.listChkBox.forEach(function(v){
         sltCuInfo = vm.fnCmCuListGetRowById(v);
+        console.log(">>>>> sdfjlskdfjlskdjflksjdf");
         recvInfo = {phone:'',cuid:'',mergeData:{}};
 
         if(vm.requiredCuid) recvInfo.cuid = sltCuInfo.cuid;

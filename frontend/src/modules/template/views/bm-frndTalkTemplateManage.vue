@@ -383,6 +383,8 @@ export default {
     fnDelImg(){
       this.tmpltData.imgUrl = '';
       this.tmpltData.fileId = '';
+      this.tmpltData.wideImgYn = 'N';
+      this.tmpltData.imgLink = '';
     },
     fnSubString(str, sIdx, length){
       let shortStr = ''

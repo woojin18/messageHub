@@ -8,6 +8,7 @@
 					<div class="of_h">
 						<h2>주소록 등록</h2>
 						<hr>
+						<h5 class="inline-block">주소록 설명</h5>
 						<div class="of_h">
 							<h5 class="inline-block" style="width:18%">주소록명 *</h5>
 							<div class="float-right" style="width:80%">
@@ -15,8 +16,7 @@
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
-							<h5 class="inline-block">주소록 설명</h5>
-							<div class="float-right" style="width:80%">
+								<div class="float-right" style="width:80%">
 								<input type="text" v-model="addressCategoryGrpDesc" class="inputStyle" />
 							</div>
 						</div>
@@ -129,7 +129,7 @@ export default {
 
 			// 필수값 입력 확인
 			if(!this.fnInputCheckReq()) return false;
-			console.log('this.newProjectId : ' + this.newProjectId);
+
 			var params = {
 				"addressCategoryGrpName"	: this.addressCategoryGrpName,
 				"addressCategoryGrpDesc"	: this.addressCategoryGrpDesc,
@@ -150,7 +150,6 @@ export default {
 			});
 			this.fnCloseLayer();
 			this.fnInit();
-			console.log("fnRegisterAddr Ended");
 		},
 		// 필수값 입력 체크
 		fnInputCheckReq() {

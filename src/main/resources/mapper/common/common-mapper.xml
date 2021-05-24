@@ -129,9 +129,20 @@
 	/* common.selectCorpInfoByUserId */
 		SELECT	cu.CORP_ID
 		,		cc.CORP_NAME
+		,		cc.REGNO
+		,		cc.CEO_NAME
+		,		cc.BUSITYPE
+		,		cc.BUSICLASS
+		,		cc.WOPLACE_ADDRESS
+		,		cc.WOPLACE_ADDRESS_DETAIL
+		,		cc.WIRE_TEL
+		,		cc.FILE_ID
+		,		cc.DOMAIN_NAME
 		FROM	cm_console.CM_USER cu
 		INNER JOIN cm_console.CM_CORP cc
 			ON	cu.CORP_ID = cc.CORP_ID
+		LEFT OUTER JOIN cm_console.CM_FILE_MGR cfm
+			ON	cc.FILE_ID = cfm.FILE_ID
 		WHERE	cu.USER_ID = #{userId}
 	</select>
 
@@ -208,9 +219,6 @@
 		,		USE_YN
 		FROM	cm_bo.CM_CODE
 		WHERE	CODE_TYPE_CD = #{codeTypeCd}
-		<if test="codeId != null and codeId != ''">
-		AND		CODE_ID = #{codeId}
-		</if>
 		<if test="useYn != null and useYn != ''">
 		AND		USE_YN = #{useYn}
 		</if>

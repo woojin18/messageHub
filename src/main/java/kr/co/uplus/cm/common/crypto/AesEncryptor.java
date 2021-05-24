@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.common.crypto;
 
+import kr.co.uplus.cm.config.ApiConfig;
 import yoyozo.security.AES;
 
 /**
@@ -15,11 +16,11 @@ import yoyozo.security.AES;
 public final class AesEncryptor {
 
 	private AES aes;
-	private final String aesKey = "azh0G1LOgSZwFvP35Wd+mGM6J7/zwwcQnvXCmsQ/PoE=";
+//	private final String aesKey = "azh0G1LOgSZwFvP35Wd+mGM6J7/zwwcQnvXCmsQ/PoE=";
 
 	public AesEncryptor() {
 		aes = new AES();
-		aes.setKey(aesKey);
+		aes.setKey(ApiConfig.AES_KEY);
 	}
 
 	public String encrypt(String data) {

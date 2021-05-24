@@ -94,11 +94,11 @@ public class SendMessageService {
      * @throws Exception
      */
     public RestResult<Object> selectCallbackList(Map<String, Object> params) throws Exception {
-
         RestResult<Object> rtn = new RestResult<Object>();
+        Map<String, Object> sParams = new HashMap<String, Object>(params);
 
-        params.put("approvalStatus", Const.ApprovalStatus.APPROVE);
-        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_LIST, params);
+        sParams.put("approvalStatus", Const.ApprovalStatus.APPROVE);
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_LIST, sParams);
         rtn.setData(rtnList);
 
         return rtn;
@@ -280,13 +280,6 @@ public class SendMessageService {
 
     /**
      * 발송 가격 조회
-     * ***************************************************************
-     * [HISTORY]
-     * 기존 CH_GRP(KAKAO), CH(FRENDTALK), SPEC(FRENDTALK_WIDE)
-     * 형식으로 조회 하던 방식에서 SPEC 컬럼이 사라지면서 CH_GRP/CH/SPEC 컬럼은 중요하지 않다.
-     * PRODUCT_CODE 로 고정 조회해야된다.
-     * 왜 이런방식으로 변경되었는지는 몰르지만 발송가격조회 수정시 참고
-     * ***************************************************************
      * @param sendCnt
      * @return
      * @throws Exception
@@ -658,9 +651,10 @@ public class SendMessageService {
 
         List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
         Map<String, Object> responseBody = null;
+        Map<String, Object> sParams = new HashMap<String, Object>(data);
 
-        String corpId = CommonUtils.getStrValue(data, "corpId");
-        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String corpId = CommonUtils.getStrValue(sParams, "corpId");
+        String projectId = CommonUtils.getStrValue(sParams, "projectId");
         String apiKey = commonService.getApiKey(corpId, projectId);
         String jsonString = "";
         boolean isDone = false;
@@ -709,22 +703,22 @@ public class SendMessageService {
         if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
             try {
                 //CM_MSG Insert
-                data.put("apiKey", apiKey);
-                data.put("reqCh", Const.Ch.PUSH);
-                data.put("productCode", Const.Ch.PUSH.toLowerCase());
-                data.put("finalCh", Const.Ch.PUSH);
-                data.put("pushAppId", pushRequestData.getAppId());
-                data.put("callback", pushRequestData.getCallback());
-                data.put("webReqId", pushRequestData.getWebReqId());
-                insertCmMsg(data, errorRecvInfoLst);
+                sParams.put("apiKey", apiKey);
+                sParams.put("reqCh", Const.Ch.PUSH);
+                sParams.put("productCode", Const.Ch.PUSH.toLowerCase());
+                sParams.put("finalCh", Const.Ch.PUSH);
+                sParams.put("pushAppId", pushRequestData.getAppId());
+                sParams.put("callback", pushRequestData.getCallback());
+                sParams.put("webReqId", pushRequestData.getWebReqId());
+                insertCmMsg(sParams, errorRecvInfoLst);
             } catch (Exception e) {
                 log.error("{}.sendPushMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
             }
         }
 
         //웹 발송 내역 등록
-        if(isAllFail) data.put("allFailYn", Const.COMM_YES);
-        insertPushCmWebMsg(rtn, data, pushRequestData, recvInfoLst);
+        if(isAllFail) sParams.put("allFailYn", Const.COMM_YES);
+        insertPushCmWebMsg(rtn, sParams, pushRequestData, recvInfoLst);
     }
 
     /**
@@ -867,9 +861,10 @@ public class SendMessageService {
             , List<Object> reSendCdList) throws Exception {
         List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
         Map<String, Object> responseBody = null;
+        Map<String, Object> sParams = new HashMap<String, Object>(data);
 
-        String corpId = CommonUtils.getStrValue(data, "corpId");
-        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String corpId = CommonUtils.getStrValue(sParams, "corpId");
+        String projectId = CommonUtils.getStrValue(sParams, "projectId");
         String apiKey = commonService.getApiKey(corpId, projectId);
         String jsonString = "";
         boolean isDone = false;
@@ -918,21 +913,21 @@ public class SendMessageService {
         if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
             try {
                 //CM_MSG Insert
-                data.put("apiKey", apiKey);
-                data.put("reqCh", Const.Ch.SMS);
-                data.put("productCode", Const.Ch.SMS.toLowerCase());
-                data.put("finalCh", Const.Ch.SMS);
-                data.put("callback", requestData.getCallback());
-                data.put("webReqId", requestData.getWebReqId());
-                insertCmMsg(data, errorRecvInfoLst);
+                sParams.put("apiKey", apiKey);
+                sParams.put("reqCh", Const.Ch.SMS);
+                sParams.put("productCode", Const.Ch.SMS.toLowerCase());
+                sParams.put("finalCh", Const.Ch.SMS);
+                sParams.put("callback", requestData.getCallback());
+                sParams.put("webReqId", requestData.getWebReqId());
+                insertCmMsg(sParams, errorRecvInfoLst);
             } catch (Exception e) {
                 log.error("{}.sendSmsMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
             }
         }
 
         //웹 발송 내역 등록
-        if(isAllFail) data.put("allFailYn", Const.COMM_YES);
-        insertSmsCmWebMsg(rtn, data, requestData, recvInfoLst);
+        if(isAllFail) sParams.put("allFailYn", Const.COMM_YES);
+        insertSmsCmWebMsg(rtn, sParams, requestData, recvInfoLst);
     }
 
     /**
@@ -1090,9 +1085,10 @@ public class SendMessageService {
             , List<Object> reSendCdList) throws Exception {
         List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
         Map<String, Object> responseBody = null;
+        Map<String, Object> sParams = new HashMap<String, Object>(data);
 
-        String corpId = CommonUtils.getStrValue(data, "corpId");
-        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String corpId = CommonUtils.getStrValue(sParams, "corpId");
+        String projectId = CommonUtils.getStrValue(sParams, "projectId");
         String apiKey = commonService.getApiKey(corpId, projectId);
         String jsonString = "";
         boolean isDone = false;
@@ -1141,21 +1137,21 @@ public class SendMessageService {
         if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
             try {
                 //CM_MSG Insert
-                data.put("apiKey", apiKey);
-                data.put("reqCh", Const.Ch.MMS);
-                data.put("productCode", Const.Ch.MMS.toLowerCase());
-                data.put("finalCh", Const.Ch.MMS);
-                data.put("callback", requestData.getCallback());
-                data.put("webReqId", requestData.getWebReqId());
-                insertCmMsg(data, errorRecvInfoLst);
+                sParams.put("apiKey", apiKey);
+                sParams.put("reqCh", Const.Ch.MMS);
+                sParams.put("productCode", Const.Ch.MMS.toLowerCase());
+                sParams.put("finalCh", Const.Ch.MMS);
+                sParams.put("callback", requestData.getCallback());
+                sParams.put("webReqId", requestData.getWebReqId());
+                insertCmMsg(sParams, errorRecvInfoLst);
             } catch (Exception e) {
                 log.error("{}.sendMmsMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
             }
         }
 
         //웹 발송 내역 등록
-        if(isAllFail) data.put("allFailYn", Const.COMM_YES);
-        insertMmsCmWebMsg(rtn, data, requestData, recvInfoLst);
+        if(isAllFail) sParams.put("allFailYn", Const.COMM_YES);
+        insertMmsCmWebMsg(rtn, sParams, requestData, recvInfoLst);
     }
 
     /**
@@ -1312,8 +1308,9 @@ public class SendMessageService {
         String rplcSendType = CommonUtils.getStrValue(params, "rplcSendType");
         if(StringUtils.equals(rplcSendType, Const.RplcSendType.NONE)) {
             try {
-                params.put("approvalStatus", Const.ApprovalStatus.APPROVE);
-                List<Object> callbackList = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_LIST, params);
+                Map<String, Object> sParams = new HashMap<String, Object>(params);
+                sParams.put("approvalStatus", Const.ApprovalStatus.APPROVE);
+                List<Object> callbackList = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_LIST, sParams);
                 if(!CollectionUtils.isEmpty(callbackList)) {
                     Map<String, Object> callbackInfo = (Map<String, Object>) callbackList.get(0);
                     callback = CommonUtils.getStrValue(callbackInfo, "callback");
@@ -1498,9 +1495,10 @@ public class SendMessageService {
 
         List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
         Map<String, Object> responseBody = null;
+        Map<String, Object> sParams = new HashMap<String, Object>(data);
 
-        String corpId = CommonUtils.getStrValue(data, "corpId");
-        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String corpId = CommonUtils.getStrValue(sParams, "corpId");
+        String projectId = CommonUtils.getStrValue(sParams, "projectId");
         String apiKey = commonService.getApiKey(corpId, projectId);
         String jsonString = "";
         boolean isDone = false;
@@ -1549,21 +1547,21 @@ public class SendMessageService {
         if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
             try {
                 //CM_MSG Insert
-                data.put("apiKey", apiKey);
-                data.put("reqCh", Const.Ch.FRIENDTALK);
-                data.put("productCode", Const.Ch.FRIENDTALK.toLowerCase());
-                data.put("finalCh", Const.Ch.FRIENDTALK);
-                data.put("callback", requestData.getCallback());
-                data.put("webReqId", requestData.getWebReqId());
-                insertCmMsg(data, errorRecvInfoLst);
+                sParams.put("apiKey", apiKey);
+                sParams.put("reqCh", Const.Ch.FRIENDTALK);
+                sParams.put("productCode", Const.Ch.FRIENDTALK.toLowerCase());
+                sParams.put("finalCh", Const.Ch.FRIENDTALK);
+                sParams.put("callback", requestData.getCallback());
+                sParams.put("webReqId", requestData.getWebReqId());
+                insertCmMsg(sParams, errorRecvInfoLst);
             } catch (Exception e) {
                 log.error("{}.sendFrndTalkMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
             }
         }
 
         //웹 발송 내역 등록
-        if(isAllFail) data.put("allFailYn", Const.COMM_YES);
-        insertFrndTalkCmWebMsg(rtn, data, requestData, recvInfoLst);
+        if(isAllFail) sParams.put("allFailYn", Const.COMM_YES);
+        insertFrndTalkCmWebMsg(rtn, sParams, requestData, recvInfoLst);
     }
 
     /**

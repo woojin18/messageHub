@@ -165,15 +165,18 @@
 								</tbody>
 							</table>
 						</div>
+						<!-- pagination Start -->
+						<div id="pageContent">
+							<PageLayer @fnClick="fnPageClick" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
+						</div>
+						<!-- pagination End-->
 						<div class="bb-d5 height120">
 						</div>
 						<div class="pd20">
 							<div class="of_h">
 								<div class="float-right">
-									<a href="#self" class="btnStyle1 borderGray" data-toggle="modal" data-target="#Recipient">수신자 등록</a>
-									<a @click="fnRegisterMemberPop()" class="btnStyle1 borderGray ml10">구성원 추가</a>
-									<!--a href="#self" class="btnStyle1 borderGray ml10" data-toggle="modal" data-target="#member">구성원 추가</a-->
-									<a href="#self" class="btnStyle1 backWhite ml10">구성원 삭제</a>
+									<a @click="fnRegisterMemberPop" class="btnStyle1 borderGray ml10">구성원 추가</a>
+									<a @click="fnDeletemember" class="btnStyle1 backWhite ml10">구성원 삭제</a>
 								</div>
 							</div>
 						</div>
@@ -194,8 +197,8 @@
 		<RcvrRegLayer :title="rcvrRegLayerTitle" :layerView.sync="rcvrRegLayerView"></RcvrRegLayer>
 		-->
 		<!-- Member register Modal -->
-		<memberRegisterLayer></memberRegisterLayer>
-	</div>	
+		<MemberRegisterLayer :searchCategoryId="searchCategoryId" :memberRegisterOpen="memberRegisterOpen"></MemberRegisterLayer>
+	</div>
 	<!-- //content -->
 </template>
 
@@ -206,8 +209,8 @@ import confirm from "@/modules/commonUtil/service/confirm";
 import AddrTreeMenu from "@/modules/address/components/bc-addressTree.vue";
 import AddrRegisterLayer from '../components/bc-address-register.vue';
 import AddrModifyLayer from '../components/bc-address-modify.vue';
-//import RcvrRegLayer from '../components/bc-receiver-register.vue';
-import memberRegisterLayer from '../components/bc-member-register.vue';
+import MemberRegisterLayer from '../components/bc-member-register.vue';
+import PageLayer from '@/components/PageLayer.vue';
 
 export default {
 	name: "addressManageList",
@@ -215,8 +218,8 @@ export default {
 		AddrTreeMenu,
 		AddrRegisterLayer,
 		AddrModifyLayer,
-		//RcvrRegLayer,
-		memberRegisterLayer,
+		MemberRegisterLayer,
+		PageLayer,
 	},
 	props: {
 		searchCateGrpData : {
@@ -243,14 +246,16 @@ export default {
 			items: [],
 			addrTreeList: [],
 			memberList: [],
-			searchCategoryId: '',
+			searchCategoryId: -1,
 			listAllChecked: false,
 			listChkBox: [],
 			addrRegisterLayerView: false,
 			addrRegisterLayerTitle: '',
-			//rcvrRegLayerView: false,
-			//rcvrRegLayerTitle: '수신자 등록',
-			//memberRegLayerTitle: '구성원 추가'
+			memberRegisterOpen: false,
+			listSize : 5,	// select 박스 value (출력 갯수 이벤트)
+			pageNo : 1,		// 현재 페이징 위치
+			totCnt : 0,		// 전체 리스트 수
+			offset : 0,		// 페이지 시작점
 		}
 	},
 	mounted() {
@@ -297,22 +302,35 @@ export default {
 				return;
 			}
 			this.searchCategoryId = addressCategoryId;
+			this.fnSearchMember();
+		},
+		fnSearchMember(pageNum) {
+			this.$refs.updatePaging.fnAllDecrease();
+			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
 			this.fnSearchMemberList();
 		},
 		//주소록 구성원 조회
 		async fnSearchMemberList() {
 			let params = {
-				addressCategoryId: this.searchCategoryId
+				addressCategoryId: this.searchCategoryId,
+				pageNo: this.pageNo,
+				listSize: this.listSize,
 			};
 			await addressApi.selectMemberList(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					this.memberList = result.data;
-					//console.log("this.memberList : " + this.memberList);
+					//this.memberList = result.data;
+					this.memberList = Object.assign([], result.data);
+					this.totCnt = result.pageInfo.totCnt;
+					this.offset = result.pageInfo.offset;
 				} else {
 					confirm.fnAlert("", result.message);
 				}
 			});
+		},
+		fnPageClick(pageNo) {
+			this.pageNo = pageNo;
+			this.fnSearchMemberList();
 		},
 		//주소목록 조회
 		async fnGetAddrList() {
@@ -338,7 +356,6 @@ export default {
 			//주소록 그룹 put
 			vm.fnSetSubItems(addrCateList, addrGrp, 'Y');
 			vm.addrTreeList.push(addrGrp);
-			//console.log("fnSetAddrListToTree End");
 		},
 		// target을 tree형태로 변경
 		fnSetSubItems(addrCateList, target, targetGrpYn) {
@@ -366,39 +383,49 @@ export default {
 		},
 		// 주소록 등록
 		fnRegAddrPop() {
-			//console.log(">>> start fnRegAddrPop.");
 			this.addrRegisterLayerView = true;
 			this.addrRegisterLayerTitle = '주소록 등록';
-			//console.log(">>> ended fnRegAddrPop");
 		},
 		// 주소록 수정
 		fnModAddrPop() {
-			console.log(">>> start fnModAddrPop.");
-			
 			if(this.$refs.addCateGrp.selectedIndex == 0) {
 				confirm.fnAlert("", "주소록을 선택해 주세요");
 				return false;
 			}
-			
 			jQuery("#AddrModifyLayer").modal("show");
-
-			//this.addrModifyLayerView = true;
-			// console.log(">>> this.addrModifyLayerView : " + this.addrModifyLayerView);
-			//this.addrModifyLayerTitle = '주소록 수정';
-			console.log(">>> ended fnModAddrPop");
 		},
-		/*
-		// 수신자 등록
-		fnRegisterRevrPop() {
-			console.log(">>> start fnRegisterRevrPop.");
-			this.rcvrRegLayerView = true;
-			console.log(">>> ended fnRegisterRevrPop");
-		},
-*/
-		// 구성원 등록
+		// 구성원 추가
 		fnRegisterMemberPop() {
-			jQuery("#memberRegisterLayer").modal("show");
-		}
+			this.memberRegisterOpen = !this.memberRegisterOpen;
+			jQuery("#MemberRegisterLayer").modal("show");
+		},
+		// 구성원 삭제
+		fnDeletemember() {
+			if(this.listChkBox == null || this.listChkBox.length == 0) {
+				confirm.fnAlert('구성원 검색', '구성원을 선택해주세요.');
+				return false;
+			}
+
+			let params = {
+				"addressCategoryId": this.searchCategoryId,
+				"memberList": this.listChkBox,
+			};
+
+			addressApi.deleteMember(params).then(response =>{
+				var result = response.data;
+				if(result.success) {
+					confirm.fnAlert("구성원 삭제", "구성원 삭제를 성공했습니다.");
+					this.fnSearchMemberList();
+					this.fnResetChkbox();
+				} else {
+					confirm.fnAlert("", result.message);
+				}
+			});
+		},
+		fnResetChkbox() {
+			this.listAllChecked = false;
+			this.listChkBox = [];
+		},
 	}
 }
 </script>

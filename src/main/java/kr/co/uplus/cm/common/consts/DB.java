@@ -120,6 +120,8 @@ public class DB {
     public final static String QRY_UPDATE_USER = "user.updateUser";
     public final static String QRY_INSERT_USER = "user.insertUser";
     public final static String QRY_SELECT_USER_DUPC_CNT = "user.selectUserDupcCnt";
+    public final static String QRY_CHK_PASSWORD = "user.checkPassword";
+    
     // 프로젝트 발신번호 관리
     public final static String QRY_SELECT_CALLBACK_MANAGE_LIST_CNT = "project.selectCallbackManageListCnt";
     public final static String QRY_SELECT_CALLBACK_MANAGE_LIST = "project.selectCallbackManageList";
@@ -133,19 +135,32 @@ public class DB {
     public final static String QRY_SELECT_ADDRESS_CATE_GRP_LIST = "address.selectAddressCateGrpList";
     public final static String QRY_SELECT_ADDRESS_GRP = "address.selectAddressGrp";
     public final static String QRY_SELECT_ADDRESS_CATE_LIST = "address.selectAddressCateList";
+    public final static String QRY_SELECT_ADDRESS_MEM_LIST_CNT = "address.selectAddressMemListCnt";
     public final static String QRY_SELECT_ADDRESS_MEM_LIST = "address.selectAddressMemList";
     public final static String QRY_INSERT_ADDR_CATE_GRP = "address.insertAddressCateGrp";
     public final static String QRY_UPDATE_ADDR_CATE_GRP = "address.updateAddressCateGrp";
     public final static String QRY_SELECT_PROJECT_LIST = "address.selectProjectList";
+    public final static String QRY_SELECT_ADDR_CM_CU_LIST_CNT = "address.selectAddrCmCuListCnt";
+    public final static String QRY_SELECT_ADDR_CM_CU_LIST = "address.selectAddrCmCuList";
+    public final static String QRY_INSERT_ADDR_MEMBER_LIST = "address.insertAddrMemberList";
+    public final static String QRY_DELETE_ADDR_MEMBER = "address.deleteAddrMember";
+    public final static String QRY_SELECT_ADDR_RCVR_LIST_CNT = "address.selectAddrRcvrListCnt";
+    public final static String QRY_SELECT_ADDR_RCVR_LIST = "address.selectAddrRcvrList";
+    public final static String QRY_INSERT_ADDR_RCVR = "address.insertAddRcvr";
+    public final static String QRY_UPDATE_ADDR_RCVR = "address.updateAddrRcvr";
 
     // 마이페이지
     // 회원정보
     public final static String QRY_SELECT_MEMBER_INFO       = "myPage.selectMemberInfo";
     public final static String QRY_UPDATE_MEMBER_INFO       = "myPage.updateMemberInfo";
+    public final static String QRY_SELECT_SMS_CERTIFY_NUMBER = "myPage.selectSmsCertifyNumber";
     // 나의 문의 내역서
     public final static String QRY_SELECT_QNA_LIST_COUNT    = "myPage.selectQnaList_count";
     public final static String QRY_SELECT_QNA_LIST          = "myPage.selectQnaList";
 	public final static String QRY_INSERT_QUEST_BOARD		= "myPage.insertQnaInfo";
 	public final static String QRY_UPDATE_QUEST_BOARD		= "myPage.updateQnaInfo";
 	public final static String QRY_DELETE_QUEST_BOARD		= "myPage.deleteQnaInfo";
+
+	// 고객사 정보
+	public final static String QRY_UPDATE_CORP_INFO			= "myPage.updateCorpInfo";
 }

@@ -182,8 +182,8 @@ export default {
       var inputVal = {
         corpId 		  	: "",
         projectId   	: "",
-        apiKey 		  	: "lng04154",             // 테스트용 임시 키
-        apiSecretKey 	: "SK.I9SrjuVvmDI8CdS",   // 테스트용 임시 키
+        apiKey 		  	: "kangyj94",             // 테스트용 임시 키
+        apiSecret 	: "SK.E7nddvJlfZp8JXU",   // 테스트용 임시 키
         name			    : "",
         description		: "",
         tel				    : "",
