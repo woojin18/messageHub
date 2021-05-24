@@ -160,4 +160,71 @@ public class AddressController {
 		}
 		return rtn;
 	}
+	
+	/**
+	 * 수신자 목록 조회
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectCmCuList")
+	public RestResult<?> selectCmCuList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = addressSvc.selectCmCuList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
+	
+	/**
+	 * 구성원 등록
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/registerMember")
+	public RestResult<?> registerMember(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		try {
+			rtn = addressSvc.registerMember(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+	
+	/**
+	 * 구성원 삭제
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/deleteMember")
+	public RestResult<?> deleteMember(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = addressSvc.deleteMember(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
 }

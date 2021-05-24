@@ -133,10 +133,15 @@ public class DB {
     public final static String QRY_SELECT_ADDRESS_CATE_GRP_LIST = "address.selectAddressCateGrpList";
     public final static String QRY_SELECT_ADDRESS_GRP = "address.selectAddressGrp";
     public final static String QRY_SELECT_ADDRESS_CATE_LIST = "address.selectAddressCateList";
+    public final static String QRY_SELECT_ADDRESS_MEM_LIST_CNT = "address.selectAddressMemListCnt";
     public final static String QRY_SELECT_ADDRESS_MEM_LIST = "address.selectAddressMemList";
     public final static String QRY_INSERT_ADDR_CATE_GRP = "address.insertAddressCateGrp";
     public final static String QRY_UPDATE_ADDR_CATE_GRP = "address.updateAddressCateGrp";
     public final static String QRY_SELECT_PROJECT_LIST = "address.selectProjectList";
+    public final static String QRY_SELECT_ADDR_CM_CU_LIST_CNT = "address.selectAddrCmCuListCnt";
+    public final static String QRY_SELECT_ADDR_CM_CU_LIST = "address.selectAddrCmCuList";
+    public final static String QRY_INSERT_ADDR_MEMBER_LIST = "address.insertAddrMemberList";
+    public final static String QRY_DELETE_ADDR_MEMBER = "address.deleteAddrMember";
 
     // 마이페이지
     // 회원정보

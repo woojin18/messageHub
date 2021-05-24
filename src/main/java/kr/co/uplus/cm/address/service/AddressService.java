@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.address.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 
 @Service
@@ -61,6 +63,18 @@ public class AddressService {
 	 */
 	public RestResult<Object> selectMemberList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
+		
+		if(params.containsKey("pageNo")
+				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize")
+				&& CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if(rtn.getPageInfo() != null) {
+				//카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_ADDRESS_MEM_LIST_CNT, params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
+		}
 		
 		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ADDRESS_MEM_LIST, params);
 		rtn.setData(rtnList);
@@ -123,5 +137,88 @@ public class AddressService {
 		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_PROJECT_LIST, params);
 		rtn.setData(rtnList);
 		return rtn;
+	}
+	
+	/**
+	 * 수신자 리스트 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> selectCmCuList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		if(params.containsKey("pageNo")
+				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize")
+				&& CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if(rtn.getPageInfo() != null) {
+				//카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_ADDR_CM_CU_LIST_CNT, params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
+		}
+		
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_CM_CU_LIST, params);
+		rtn.setData(rtnList);
+		return rtn;
+	}
+	
+	/**
+	 * 구성원 등록
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> registerMember(Map<String, Object> params) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+		int resultCnt = 0;
+		
+		ArrayList<Integer> memberList = (ArrayList<Integer>)params.get("memberList");
+		
+		for (Integer member : memberList) {
+			params.put("cuInfoId", member);
+			resultCnt = generalDao.insertGernal(DB.QRY_INSERT_ADDR_MEMBER_LIST, params);
+		}
+		
+		if (resultCnt <= 0) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		} else {
+			rtn.setSuccess(true);
+			rtn.setData(params);
+		}
+			return rtn;
+	}
+	
+	/**
+	 * 구성원 삭제
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> deleteMember(Map<String, Object> params) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		int resultCnt = 0;
+		
+		ArrayList<Integer> memberList = (ArrayList<Integer>)params.get("memberList");
+		
+		for (Integer member : memberList) {
+			params.put("cuInfoId", member);
+			resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_ADDR_MEMBER, params);
+		}
+		
+		if (resultCnt <= 0) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		} else {
+			rtn.setSuccess(true);
+			rtn.setData(params);
+		}
+			return rtn;
 	}
 }

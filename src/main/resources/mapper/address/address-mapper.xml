@@ -48,6 +48,20 @@
 			AND	CACG.ADDRESS_CATEGORY_GRP_ID = #{addressCategoryGrpId}
 		ORDER BY CAC.DIS_ORDER
 	</select>
+
+	<select id="selectAddressMemListCnt" parameterType="hashmap" resultType="int">
+		/* address.selectAddressMemListCnt 주소록 구성원 카운트 조회 */
+		SELECT
+			COUNT(*) AS CNT
+		FROM ( 
+				SELECT CU_INFO_ID
+				FROM CM_ADDR_CATE_MEM
+				WHERE ADDRESS_CATEGORY_ID = #{addressCategoryId}
+		) A
+		INNER JOIN CM_CU_INFO B
+		ON		A.CU_INFO_ID = B.CU_INFO_ID
+		WHERE	B.USE_YN = 'Y'
+	</select>
 	
 	<select id="selectAddressMemList" parameterType="hashmap" resultType="camel">
 		/* address.selectAddressMemList 주소록 구성원 조회 */
@@ -65,6 +79,9 @@
 		ON		A.CU_INFO_ID = B.CU_INFO_ID
 		WHERE	B.USE_YN = 'Y'
 		ORDER BY B.CU_NAME ASC
+		<if test='pagingYn == "Y" '>
+			LIMIT ${offset}, #{listSize}
+		</if>
 	</select>
 	
 	<select id="selectProjectList" parameterType="hashmap" resultType="camel">
@@ -112,4 +129,81 @@
 		WHERE
 			ADDRESS_CATEGORY_GRP_ID = #{addressCategoryGrpId}
 	</update>
+	
+	<select id="selectAddrCmCuListCnt" parameterType="hashmap" resultType="int">
+		/* address.selectAddrCmCuListCnt 주소록 카테고리 수신자 카운트 조회 */
+		SELECT
+			COUNT(*) AS CNT
+		FROM CM_CU_INFO
+		WHERE	USE_YN = 'Y'
+		AND		CORP_ID = #{corpId}
+		AND		CU_INFO_ID NOT IN (	SELECT	CU_INFO_ID
+									FROM	CM_ADDR_CATE_MEM
+									WHERE	ADDRESS_CATEGORY_ID = #{addressCategoryId}
+								)
+		<if test="searchText != '' and searchText != null ">
+			<if test="searchTextType == 'cuid' ">
+		AND CUID LIKE CONCAT('%', #{searchText}, '%')
+			</if>
+			<if test="searchTextType == 'cuName' ">
+		AND CU_NAME LIKE CONCAT('%', #{searchText}, '%')
+			</if>
+			<if test="searchTextType == 'hpNumber' ">
+		AND HP_NUMBER LIKE CONCAT('%', #{searchText}, '%')
+			</if>
+		</if>
+	</select>
+
+	<select id="selectAddrCmCuList" parameterType="hashmap" resultType="camel">
+		/* address.selectAddrCmCuList 주소록 카테고리 수신자 리스트 조회 */
+		SELECT
+				CU_INFO_ID
+			,	CU_NAME
+			,	CUID
+			,	HP_NUMBER
+		FROM CM_CU_INFO
+		WHERE	USE_YN = 'Y'
+		AND		CORP_ID = #{corpId}
+		AND		CU_INFO_ID NOT IN (	SELECT	CU_INFO_ID
+									FROM	CM_ADDR_CATE_MEM
+									WHERE	ADDRESS_CATEGORY_ID = #{addressCategoryId}
+								)
+		<if test="searchText != '' and searchText != null ">
+			<if test="searchTextType == 'cuid' ">
+				AND CUID LIKE CONCAT('%', #{searchText}, '%')
+			</if>
+			<if test="searchTextType == 'cuName' ">
+				AND CU_NAME LIKE CONCAT('%', #{searchText}, '%')
+			</if>
+			<if test="searchTextType == 'hpNumber' ">
+				AND HP_NUMBER LIKE CONCAT('%', #{searchText}, '%')
+			</if>
+		</if>
+		ORDER BY CU_INFO_ID
+		<if test='pagingYn == "Y" '>
+			LIMIT ${offset}, #{listSize}
+		</if>
+	</select>
+	
+	<insert id="insertAddrMemberList">
+		/* address.insertAddrMemberList 구성원 등록 */
+		INSERT INTO	CM_ADDR_CATE_MEM (
+				ADDRESS_CATEGORY_ID
+		,		CU_INFO_ID
+		,		REG_ID
+		,		REG_DT
+		)	VALUES (
+				#{addressCategoryId}
+		,		#{cuInfoId}
+		,		#{loginId}
+		,		NOW()
+		)
+	</insert>
+	
+	<delete id="deleteAddrMember">
+		/* address.deleteAddrMember */
+		DELETE	FROM CM_ADDR_CATE_MEM
+		WHERE	ADDRESS_CATEGORY_ID = #{addressCategoryId}
+		AND		CU_INFO_ID = #{cuInfoId}
+	</delete>
 </mapper>
