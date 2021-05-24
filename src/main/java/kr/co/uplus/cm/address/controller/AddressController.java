@@ -100,10 +100,8 @@ public class AddressController {
 	public RestResult<?> registerAddr(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
-		String newProjectId = (String)params.get("newProjectId");
-		
+
 		try {
-			params.put("projectId", newProjectId); // 입력받은 값으로 재설정
 			rtn = addressSvc.registerAddr(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
@@ -125,10 +123,8 @@ public class AddressController {
 	public RestResult<?> modifyAddr(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
-		String afProjectId = (String)params.get("afProjectId");
 		
 		try {
-			params.put("projectId", afProjectId); // 입력받은 값으로 재설정
 			rtn = addressSvc.modifyAddr(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
