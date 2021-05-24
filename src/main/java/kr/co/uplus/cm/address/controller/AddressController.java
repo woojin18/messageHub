@@ -6,12 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.uplus.cm.address.service.AddressService;
+import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 import lombok.extern.log4j.Log4j2;
 
@@ -23,6 +26,11 @@ public class AddressController {
 
 	@Autowired
 	private AddressService addressSvc;
+	
+    @InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
+	}
 	
 	/**
 	 * 주소카테고리그룹 리스트 조회

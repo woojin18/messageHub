@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.utils.CommonUtils;
 
@@ -25,6 +28,11 @@ public class ListController {
 
 	@Autowired
 	private ListService listSvc;
+	
+    @InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
+	}
 
 	@SuppressWarnings("unchecked")
 	@PostMapping("/test")

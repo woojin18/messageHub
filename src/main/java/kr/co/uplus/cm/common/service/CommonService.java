@@ -172,9 +172,14 @@ public class CommonService {
         //get File Prop
         List<Object> imgSetInfoList = selectImgUploadChSet();
 
-        String pattern = "[\"!@#$%^&'*]";
-        String fileName = files.getOriginalFilename().replaceAll(pattern, ""); // 원본 파일명
-        String fileExten = fileName.substring(fileName.lastIndexOf(".") + 1);
+//        String pattern = "[\"!@#$%^&'*]";
+//        String fileName = files.getOriginalFilename().replaceAll(pattern, ""); // 원본 파일명
+//        String fileExten = fileName.substring(fileName.lastIndexOf(".") + 1);
+        
+        String pattern = "[\"!@#$%^&'.*]";
+        String preFileName = getFileNameExt(files.getOriginalFilename(),0).replaceAll(pattern, "");
+		String fileExten = getFileNameExt(files.getOriginalFilename(),1);
+		String fileName = preFileName+"."+fileExten;
 
         // 이미지 업로드 확장자 유효성 체크
         if (Stream.of(imgPermitExten.split(",")).map(String::trim)
@@ -401,9 +406,14 @@ public class CommonService {
             rtn.setMessage("업로드할 파일이 존재하지 않습니다.");
         }
 
-        String pattern = "[\"!@#$%^&'*]";
-        String fileName = files.getOriginalFilename().replaceAll(pattern, ""); // 원본 파일명
-        String fileExten = fileName.substring(fileName.lastIndexOf(".") + 1);
+//        String pattern = "[\"!@#$%^&'*]";
+//        String fileName = files.getOriginalFilename().replaceAll(pattern, ""); // 원본 파일명
+//        String fileExten = fileName.substring(fileName.lastIndexOf(".") + 1);
+        
+        String pattern = "[\"!@#$%^&'.*]";
+        String preFileName = getFileNameExt(files.getOriginalFilename(),0).replaceAll(pattern, "");
+		String fileExten = getFileNameExt(files.getOriginalFilename(),1);
+		String fileName = preFileName+"."+fileExten;
 
         // 이미지 업로드 용량 유효성 체크
         if (files.getSize() > this.imgUploadLimitSize) {
@@ -659,5 +669,21 @@ public class CommonService {
 		rtn.setData(rtnList);
 
 		return rtn;
+	}
+    
+	/**
+	 * 파일명과 확장자를 구분해서가져오기
+	 * @param fullFileName
+	 * @param flag (0:파일명, 1:확장자)
+	 * @return
+	 */
+	public static String getFileNameExt(String fullFileName,int flag) {
+		if(flag<=0) flag = 0;
+		else flag = 1;
+		int pos = fullFileName.lastIndexOf( "." );
+		String ext = fullFileName.substring( pos + 1 );
+		String fileName = fullFileName.substring(0, pos);
+		String[] fileNameExt = {fileName,ext};
+		return fileNameExt[flag];
 	}
 }

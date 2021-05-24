@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import kr.co.uplus.cm.cash.service.CashService;
+import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 
 @RestController
@@ -25,6 +28,11 @@ import kr.co.uplus.cm.common.dto.RestResult;
 public class CashController {
 	@Autowired
 	private CashService cashService ;
+	
+    @InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
+	}
 	
 	@PostMapping("/insertWebCashInfo")
 	public RestResult<?> insertWebCashInfo(

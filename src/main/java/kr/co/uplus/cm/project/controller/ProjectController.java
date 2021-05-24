@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.project.service.ProjectService;
@@ -29,6 +32,11 @@ public class ProjectController {
 
     @Autowired
     private CommonService commonSvc;
+	
+    @InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
+	}
     
 	// 프로젝트 리스트 조회
 	@PostMapping("/selectProjectList")

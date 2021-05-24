@@ -373,9 +373,9 @@ public class ChannelService {
 			map.put("certiFilePath",		params.get("profileImgFilePath"));
 		} else {
 			// 임시
-			map.put("profileImgFilePath", "/efs/file/console/2021/04/26/12/test1234.png");
-			map.put("bgImgFilePath", "/efs/file/console/2021/04/26/12/test1234.png");
-			map.put("certiFilePath", "/efs/file/console/2021/04/26/12/test1234.png");
+			map.put("profileImgFilePath", "/efs/file/console/2021/05/17/16/20210514_135426.png");
+			map.put("bgImgFilePath", "/efs/file/console/2021/05/17/16/20210514_135426.png");
+			map.put("certiFilePath", "/efs/file/console/2021/05/17/16/20210514_135426.png");
 		}
 		
 		

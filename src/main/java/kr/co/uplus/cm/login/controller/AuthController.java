@@ -6,12 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.login.service.AuthService;
 
@@ -31,12 +34,17 @@ public class AuthController {
 
 	@Autowired
 	private AuthService authSvc;
+	
+    @InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
+	}
 
 	@PostMapping("/auth/login")
 	public RestResult<?> login(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) {
 
-		System.out.println("Start CheckLogin!!!");
+//		System.out.println("Start CheckLogin!!!");
 
 		return authSvc.chkLogin(params, request, response);
 	}
@@ -44,7 +52,7 @@ public class AuthController {
 	@GetMapping("/auth/logout")
 	public RestResult<?> logoutTest(HttpServletRequest request, HttpServletResponse response) {
 
-		System.out.println("Logout!!!");
+//		System.out.println("Logout!!!");
 
 		return authSvc.logout(request, response);
 	}
