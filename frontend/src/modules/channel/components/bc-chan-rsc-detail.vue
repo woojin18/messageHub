@@ -141,33 +141,33 @@
 						</div>
 					</div>
 
-					<!-- <div v-if="inputVal.call != ''" class="ml_28 of_h consolMarginTop">
+					<div v-if="inputVal.call != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Call *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.callWeblink" placeholder="예) http://uplus@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
-					</div> -->
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.callWeblink" :disabled="this.duplCheckYn == 'N'">
+					</div>
 					<div v-if="inputVal.web != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Web *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.webWeblink" placeholder="예) http://uplus@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.webWeblink" :disabled="this.duplCheckYn == 'N'">
 					</div>
 					<div v-if="inputVal.store != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Store *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.storeWeblink" placeholder="예) http://uplus@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.storeWeblink" :disabled="this.duplCheckYn == 'N'">
 					</div>
 					<div v-if="inputVal.order != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Order *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.orderWeblink" placeholder="예) http://uplus@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.orderWeblink" :disabled="this.duplCheckYn == 'N'">
 					</div>
 					<div v-if="inputVal.buy != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Buy *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.buyWeblink" placeholder="예) http://uplus@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.buyWeblink" :disabled="this.duplCheckYn == 'N'">
 					</div>
 					<div v-if="inputVal.ticket != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Ticket *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.ticketWeblink" placeholder="예) http://uplus@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.ticketWeblink" :disabled="this.duplCheckYn == 'N'">
 					</div>
 					<div v-if="inputVal.moreInfo != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-More Info *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.moreInfoWeblink" placeholder="예) http://uplus@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.moreInfoWeblink" :disabled="this.duplCheckYn == 'N'">
 					</div>
 
 					<div class="of_h consolMarginTop">
