@@ -30,8 +30,7 @@
 				<div class="col-xs-12">		
 					<div class="of_h inline">
 						<div class="float-right">
-							<a href="#self" class="btnStyle2 borderGray mr5" data-toggle="modal" data-target="#Register" >수신자 추가</a>
-							<a href="#self" class="btnStyle2 borderGray">엑셀 다운로드</a>
+							<a @click="fnRegisterReceiverPop" class="btnStyle2 borderGray" >수신자 추가</a>
 						</div>
 					</div>
 				
@@ -65,16 +64,16 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr v-for="(data, index) in items" :key="data.cuInfoId">
-										<td class="text-center"> {{ index + 1 }} </td>
+									<tr v-for="(data) in items" :key="data.cuInfoId">
+										<td class="text-center"> {{ data.rownum + offset}} </td>
 										<td class="text-left"> {{ data.cuName }} </td>
 										<td class="text-left"> {{ data.cuid }} </td>
 										<td class="text-center"> {{ data.hpNumber }} </td>
 										<td v-if="data.useYn == 'Y'" class="text-center"> 사용 </td>
 										<td v-else class="text-center"> 미사용 </td>
 										<td class="end">
-											<a @click="fnModifyReceiverPop(index)" class="btnStyle1 borderLightGray small mr5">수정</a>
-											<a @click="fnDeleteReceiver(index)" class="btnStyle1 borderLightGray small mr5">삭제</a>
+											<a @click="fnModifyReceiverPop(data)" class="btnStyle1 borderLightGray small mr5">수정</a>
+											<a @click="fnDeleteReceiver(data)" class="btnStyle1 borderLightGray small mr5">삭제</a>
 										</td>
 									</tr>	
 									<tr v-if="items.length == 0">
@@ -96,7 +95,7 @@
 		</article>
 
 		<!--  Modal -->
-		<RcvrRegMdfyLayer :rowData="items"></RcvrRegMdfyLayer>
+		<RcvrRegMdfyLayer :rowData="rowData" :status.sync="status"></RcvrRegMdfyLayer>
 	</div>
 </template>
 
@@ -138,8 +137,8 @@ export default {
 			totCnt : 0,		//전체 리스트 수
 			offset : 0,		 //페이지 시작점
 			items: [],
-
-
+			status: '',
+			rowData: {},
 		}
 	},
 	mounted() {
@@ -160,8 +159,6 @@ export default {
 			var params = Object.assign({}, this.searchData);
 			params.pageNo = this.pageNo;
 			params.listSize = this.listSize;
-			//params.searchTextType =  this.searchTextType;
-			//params.searchText = this.searchText;
 
 			await addressApi.selectReceiverList(params).then(response =>{
 				var result = response.data;
@@ -169,6 +166,8 @@ export default {
 					this.items = result.data;
 					this.totCnt = result.pageInfo.totCnt;
 					this.offset = result.pageInfo.offset;
+console.log('totCnt : ' + this.totCnt);
+console.log('offset : ' + this.offset);
 				} else {
 					confirm.fnAlert("", result.message);
 				}
@@ -177,17 +176,18 @@ export default {
 		// 삭제
 		fnDeleteReceiver(rowData) {
 			return rowData;
-			// this.deleteLayerView = true;
-			// this.deleteLayerTitle = "UserDelete";
-			// this.deleteLayerUserId = this.items[index].userId;
 		},
 		// 수신자 수정
-		fnModifyReceiverPop(rowData) {
+		fnModifyReceiverPop(data) {
+			this.status = 'U';
+			this.rowData = data
 			jQuery("#RcvrRegMdfyLayer").modal("show");
-			return rowData;
+			
 		},
 		// 수신자 등록
 		fnRegisterReceiverPop() {
+			this.status = 'R';
+			this.rowData = {};
 			jQuery("#RcvrRegMdfyLayer").modal("show");
 		},
 		fnPageClick(pageNo) {

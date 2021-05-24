@@ -1,42 +1,155 @@
 <template>
 	<!-- Recipient Modal -->
-	<div class="modal fade modalStyle" id="Recipient" tabindex="-1" role="dialog" aria-hidden="true">
-	<!--div class="modal-dialog"-->
-		<div class="modal-content">
-			<div class="modal-body">
-				<div class="of_h">
-					<h2>수신자 등록</h2>
-					<hr>
+	<div class="modal fade modalStyle" id="RcvrRegMdfyLayer" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
 					<div class="of_h">
-						<h5 class="inline-block" style="width:18%">수신자명 *</h5>
-						<input type="text" class="inputStyle float-right" style="width:80%">
+						<span v-if="status == 'R'">
+							<h2>수신자 등록</h2>
+						</span>
+						<span v-else>
+							<h2>수신자 수정</h2>
+						</span>
+						<hr>
+						<div class="of_h">
+							<h5 class="inline-block" style="width:18%">수신자명 *</h5>
+							<input type="text" id="cuName" class="inputStyle float-right" style="width:80%">
+						</div>
+						<div class="of_h consolMarginTop">
+							<h5 class="inline-block" style="width:18%">수신자 아이디</h5>
+							<input type="text" id="cuid" class="inputStyle float-right" style="width:80%">
+						</div>
+						<div class="of_h consolMarginTop">
+							<h5 class="inline-block" style="width:18%">휴대폰 번호 *</h5>
+							<input type="text" id="hpNumber" class="inputStyle float-right" style="width:80%">
+						</div>
+						<div class="of_h consolMarginTop">
+							<h5 class="inline-block" style="width:18%">사용여부</h5>
+							<input type="radio" name="useYn" value="Y" id="yes" checked=""> <label for="yes" class="mr30">사용</label>
+							<input type="radio" name="useYn" value="N" id="no"> <label for="no">미사용</label>
+						</div>
 					</div>
-					<div class="of_h consolMarginTop">
-						<h5 class="inline-block" style="width:18%">수신자 아이디</h5>
-						<input type="text" class="inputStyle float-right" style="width:80%">
+					<div class="text-center mt20">
+						<a @click="fnSave" class="btnStyle1 backBlack mr5">
+							<span v-if="status == 'R'">등록</span>
+							<span v-else>수정</span>
+						</a>
+						<a @click="fnClose" ref="closeBtn" class="btnStyle1 backWhite">취소</a>
 					</div>
-					<div class="of_h consolMarginTop">
-						<h5 class="inline-block" style="width:18%">휴대폰 번호 *</h5>
-						<input type="text" class="inputStyle float-right" style="width:80%">
-					</div>
-					<div class="of_h consolMarginTop">
-						<h5 class="inline-block" style="width:18%">사용여부</h5>
-						<input type="radio" name="use" value="Y" id="yes" checked=""> <label for="yes" class="mr30">사용</label>
-						<input type="radio" name="use" value="N" id="no"> <label for="no">미사용</label>
-					</div>
-				</div>
-				<div class="text-center mt20">
-					<a href="#self" class="btnStyle1 backBlack"  data-toggle="modal">등록</a>
-					<a href="#self" class="btnStyle1 backWhite" data-dismiss="modal">취소</a>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!--/div-->
 </template>
 
 <script>
-//import userApi from '../service/addressApi.js'
-//import tokenSvc from '@/common/token-service';
-//import confirm from "@/modules/commonUtil/service/confirm";
+import addressApi from '../service/addressApi.js'
+import tokenSvc from '@/common/token-service';
+import confirm from "@/modules/commonUtil/service/confirm";
+
+export default {
+	name: 'ReceiverLayer',
+	components: {
+	},
+	props: {
+		componentsTitle: {
+			type: String,
+			require: false,
+			default: function() {
+				return '수신자 등록';
+			},
+		},
+		rowData: {
+			type: Object,
+			require: false,
+		},
+		status: {
+			type: String,
+			require: true,
+		}
+	},
+	data() {
+		return {
+			
+		}
+	},
+	watch: {
+		rowData: function() {
+			if(this.status == 'R') {
+				jQuery("#cuName").val('');
+				jQuery("#cuid").val('');
+				jQuery("#hpNumber").val('');
+				jQuery('input:radio[name=useYn]:input[value="Y"]').prop("checked", true);
+			} else if(this.status == 'U') {
+				jQuery("#cuName").val(this.rowData.cuName);
+				jQuery("#cuid").val(this.rowData.cuid);
+				jQuery("#hpNumber").val(this.rowData.hpNumber);
+				jQuery('input:radio[name=useYn]:input[value="' + this.rowData.useYn + '"]').prop("checked", true);
+			}
+		}
+	},
+	mounted() {
+		// var vm = this;
+	},
+	methods: {
+		// 닫기
+		fnClose(){
+			this.fnInit();
+			jQuery("#RcvrRegMdfyLayer").modal("hide");
+		},
+		// 수신자 등록, 수정
+		fnSave() {
+			// 필수값 입력 체크
+			this.fnInputCheckReq();
+
+			let params = {
+				"cuName"	: jQuery("#cuName").val(),
+				"cuid"		: jQuery("#cuid").val(),
+				"hpNumber"	: jQuery("#hpNumber").val(),
+				"useYn"		: jQuery("input[name='useYn']:checked").val(),
+				"status"	: this.status,
+				"loginId"	: tokenSvc.getToken().principal.loginId,
+				"cuInfoId"	: this.rowData.cuInfoId,
+			};
+			
+			addressApi.saveReceiver(params).then(response =>{
+				var result = response.data;
+				if(result.success) {
+					confirm.fnAlert("", "저장되었습니다.");
+					// 닫기 버튼
+					this.$refs.closeBtn.click();
+					// 부모창 리스트 조회
+					this.$parent.fnSearch();
+				} else {
+					confirm.fnAlert("", result.message);
+				}
+			});
+
+			this.fnInit();
+		},
+		// 입력값 초기화
+		fnInit() {
+			jQuery("#cuName").val('');
+			jQuery("#cuid").val('');
+			jQuery("#hpNumber").val('');
+		},
+		// 필수값 입력 체크
+		fnInputCheckReq() {
+			let cuName = jQuery("#cuName").val();
+			let hpNumber = jQuery("#hpNumber").val();
+
+			if(cuName == "" || cuName == null) {
+				confirm.fnAlert("", "수신자명을 입력하세요");
+				return false;
+			}
+
+			if(hpNumber == "" || hpNumber == null) {
+				confirm.fnAlert("", "휴대폰번호를 입력하세요");
+				return false;
+			}
+			return true;
+		},
+	},
+}
 </script>

@@ -73,7 +73,8 @@
 	
 	<select id="selectUserList" resultType="camel">
 		/* user.selectUserList */
-		SELECT	A.USER_NAME
+		SELECT	@ROWNUM := @ROWNUM + 1 AS ROWNUM
+			,	A.USER_NAME
 			,	GROUP_CONCAT(B.PROJECT_NAME SEPARATOR '||') AS PROJECT_NAME
 			,	A.USER_ID
 			,	A.LOGIN_ID
@@ -102,6 +103,7 @@
 				WHERE	A.DEL_YN	= 'N'
 				AND		A.CORP_ID	= #{corpId}
 			) A
+			INNER JOIN (SELECT @rownum:=0) T2
 			LEFT OUTER JOIN
 			(	SELECT	C.PROJECT_NAME
 					,	A.USER_ID
@@ -128,7 +130,6 @@
 			AND		A.APPROVAL_STATUS = #{approvalStatus}
 			</if>
 			GROUP BY A.USER_NAME, A.USER_ID, A.ROLE_NAME, A.APPROVAL_STATUS
-			ORDER BY A.USER_ID DESC
 			<if test='pagingYn == "Y" '>
 			LIMIT ${offset}, #{listSize}
 			</if>

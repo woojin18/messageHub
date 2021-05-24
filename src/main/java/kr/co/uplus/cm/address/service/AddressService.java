@@ -175,12 +175,14 @@ public class AddressService {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
 		int resultCnt = 0;
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.putAll(params);
 		
-		ArrayList<Integer> memberList = (ArrayList<Integer>)params.get("memberList");
+		ArrayList<Integer> memberList = (ArrayList<Integer>)map.get("memberList");
 		
 		for (Integer member : memberList) {
-			params.put("cuInfoId", member);
-			resultCnt = generalDao.insertGernal(DB.QRY_INSERT_ADDR_MEMBER_LIST, params);
+			map.put("cuInfoId", member);
+			resultCnt = generalDao.insertGernal(DB.QRY_INSERT_ADDR_MEMBER_LIST, map);
 		}
 		
 		if (resultCnt <= 0) {
@@ -246,5 +248,33 @@ public class AddressService {
 		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_RCVR_LIST, params);
 		rtn.setData(rtnList);
 		return rtn;
+	}
+	
+	/**
+	 * 수신자 등록/수정
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> saveReceiver(Map<String, Object> params) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+		int resultCnt = 0;
+		
+		String status = (String)params.get("status");
+		if(status.equals("R")) { // 등록
+			resultCnt = generalDao.insertGernal(DB.QRY_INSERT_ADDR_RCVR, params);
+		} else { // 수정
+			resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_ADDR_RCVR, params);
+		}
+		
+		if (resultCnt <= 0) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		} else {
+			rtn.setSuccess(true);
+			rtn.setData(params);
+		}
+			return rtn;
 	}
 }

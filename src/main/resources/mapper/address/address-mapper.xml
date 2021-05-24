@@ -232,12 +232,13 @@
 	<select id="selectAddrRcvrList" parameterType="hashmap" resultType="camel">
 		/* address.selectAddrRcvrList 수신자 조회 */
 		SELECT
-				CU_INFO_ID
+				@ROWNUM := @ROWNUM + 1 AS ROWNUM
+			,	CU_INFO_ID
 			,	CU_NAME
 			,	CUID
 			,	HP_NUMBER
 			,	USE_YN
-		FROM CM_CU_INFO
+		FROM CM_CU_INFO, (SELECT @ROWNUM:=0) TMP
 		WHERE	CORP_ID = #{corpId}
 		<if test="searchText != '' and searchText != null ">
 			<if test="searchTextType == 'cuid' ">
@@ -253,9 +254,56 @@
 		<if test="useYn != '' and useYn != null ">
 		AND USE_YN = #{useYn}
 		</if>
-		ORDER BY CU_INFO_ID
+		ORDER BY CU_INFO_ID ASC
 		<if test='pagingYn == "Y" '>
 			LIMIT ${offset}, #{listSize}
 		</if>
 	</select>
+	
+	<insert id="insertAddRcvr">
+		/* address.insertAddRcvr 수신자 등록 */
+		INSERT INTO CM_CU_INFO (
+				CU_INFO_ID
+		,		CU_NAME
+		,		CUID
+		,		HP_NUMBER
+		,		USE_YN
+		,		REG_ID
+		,		REG_DT
+		,		UPD_ID
+		,		UPD_DT
+		,		CORP_ID
+		)	VALUES (
+				(SELECT IFNULL(MAX(CU_INFO_ID) + 1, 1) FROM CM_CU_INFO B)
+		,		#{cuName}
+		,		#{cuid}
+		,		#{hpNumber}
+		,		#{useYn}
+		,		#{loginId}
+		,		NOW()
+		,		#{loginId}
+		,		NOW()
+		,		#{corpId}
+		)
+	</insert>
+	
+	<update id="updateAddrRcvr" parameterType="hashmap">
+		/* address.updateAddrRcvr 수신자 수정*/
+		UPDATE CM_CU_INFO
+		SET
+			<if test="cuName != '' and cuName != null ">
+			CU_NAME	= #{cuName},
+			</if>
+			<if test="cuid != '' and cuid != null ">
+			CUID	= #{cuid},
+			</if>
+			<if test="hpNumber != '' and hpNumber != null ">
+			HP_NUMBER	= #{hpNumber},
+			</if>
+			<if test="useYn != '' and useYn != null ">
+			USE_YN	= #{useYn},
+			</if>
+			UPD_DT = NOW()
+		WHERE CU_INFO_ID	= #{cuInfoId}
+	</update>
 </mapper>

@@ -71,7 +71,7 @@
 								</thead>
 								<tbody>
 									<tr v-for="(data, index) in items" :key="index">
-										<td class="text-center vertical-middle">{{ index + 1 }}</td>
+										<td class="text-center vertical-middle">{{ data.rownum + offset }}</td>
 										<td class="text-center vertical-middle">{{ data.userName }}</td>
 										<td class="text-center vertical-middle">
 											<div v-html="data.projectName" />

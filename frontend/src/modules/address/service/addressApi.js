@@ -41,6 +41,9 @@ const selectReceiverList = (params) => {
 	return httpClient.post('/addressApi/manage/selectReceiverList', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
 };
 
+const saveReceiver = (params) => {
+	return httpClient.post('/addressApi/manage/saveReceiver', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
+};
 
 export default {
 	selectAddressCateGrpList,
@@ -53,4 +56,5 @@ export default {
 	registerMember,
 	deleteMember,
 	selectReceiverList,
+	saveReceiver,
 };

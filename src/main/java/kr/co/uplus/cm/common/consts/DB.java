@@ -146,6 +146,8 @@ public class DB {
     public final static String QRY_DELETE_ADDR_MEMBER = "address.deleteAddrMember";
     public final static String QRY_SELECT_ADDR_RCVR_LIST_CNT = "address.selectAddrRcvrListCnt";
     public final static String QRY_SELECT_ADDR_RCVR_LIST = "address.selectAddrRcvrList";
+    public final static String QRY_INSERT_ADDR_RCVR = "address.insertAddRcvr";
+    public final static String QRY_UPDATE_ADDR_RCVR = "address.updateAddrRcvr";
 
     // 마이페이지
     // 회원정보
