@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="350" height="629" viewBox="0 0 350 629">
+  <defs>
+    <filter id="사각형_856" x="0" y="0" width="350" height="629" filterUnits="userSpaceOnUse">
+      <feOffset dx="10" dy="10" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feFlood flood-opacity="0.09"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="그룹_3276" data-name="그룹 3276" transform="translate(-1153 -361)">
+    <g transform="matrix(1, 0, 0, 1, 1153, 361)" filter="url(#사각형_856)">
+      <g id="사각형_856-2" data-name="사각형 856" transform="translate(20 20)" fill="#fff" stroke="#ddd" stroke-width="1">
+        <rect width="290" height="569" rx="28" stroke="none"/>
+        <rect x="0.5" y="0.5" width="289" height="568" rx="27.5" fill="none"/>
+      </g>
+    </g>
+    <path id="패스_3417" data-name="패스 3417" d="M18.7,0H252.447c10.328,0,18.7,9.869,18.7,22.044V529.05c0,12.174-8.372,22.044-18.7,22.044H18.7C8.372,551.094,0,541.225,0,529.05V22.044C0,9.869,8.372,0,18.7,0Z" transform="translate(1182.427 389.906)" fill="#c6d6e3"/>
+    <circle id="타원_98" data-name="타원 98" cx="5" cy="5" r="5" transform="translate(1313 397)" fill="#505050"/>
+    <g id="그룹_3275" data-name="그룹 3275" transform="translate(853 -32)">
+      <g id="그룹_2742" data-name="그룹 2742" transform="translate(1.209 -1.791)">
+        <circle id="타원_93" data-name="타원 93" cx="12.5" cy="12.5" r="12.5" transform="translate(337.791 486.791)" fill="#219be2"/>
+        <g id="그룹_2741" data-name="그룹 2741" transform="translate(343.934 493.781)">
+          <rect id="사각형_685" data-name="사각형 685" width="13" height="6" transform="translate(-0.143 0.01)" fill="#fff"/>
+          <rect id="사각형_686" data-name="사각형 686" width="5" height="10" transform="translate(3.857 2.01)" fill="#fff"/>
+        </g>
+      </g>
+      <text id="_광고_" data-name="[광고]" transform="translate(370 500)" font-size="11" font-family="SourceHanSansKR-Regular, Source Han Sans KR"><tspan x="0" y="0">[광고]</tspan></text>
+      <rect id="사각형_687" data-name="사각형 687" width="193" height="97" rx="11" transform="translate(370 510)" fill="#fff"/>
+      <line id="선_386" data-name="선 386" x2="156" transform="translate(385.5 527.5)" fill="none" stroke="#e9e9e9" stroke-width="5"/>
+      <line id="선_388" data-name="선 388" x2="133" transform="translate(385.5 552.5)" fill="none" stroke="#e9e9e9" stroke-width="5"/>
+      <line id="선_389" data-name="선 389" x2="112" transform="translate(385.5 565)" fill="none" stroke="#e9e9e9" stroke-width="5"/>
+      <line id="선_387" data-name="선 387" x2="87" transform="translate(385.5 540)" fill="none" stroke="#e9e9e9" stroke-width="5"/>
+      <path id="사각형_688" data-name="사각형 688" d="M0,0H193a0,0,0,0,1,0,0V18a11,11,0,0,1-11,11H11A11,11,0,0,1,0,18V0A0,0,0,0,1,0,0Z" transform="translate(370 578)" fill="#f7f7f7"/>
+      <text id="수신거부:_홈_친구차단" data-name="수신거부: 홈 &gt; 친구차단" transform="translate(382 597)" fill="#727272" font-size="11" font-family="SourceHanSansKR-Regular, Source Han Sans KR"><tspan x="0" y="0">수신거부: 홈 &gt; 친구차단</tspan></text>
+    </g>
+  </g>
+</svg>

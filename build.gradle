@@ -94,13 +94,10 @@ configurations {
 }
 
 task deleteVueArtifact(type: Delete) {
-	group "cloud"
     delete "frontend/docker/dist"
 }
 
 task vueSetUp(type: NpmTask) {
-	group "cloud"
-	description = "Install Node.js packages"
 	args = ['install']
 	inputs.files file('package.json')
 	outputs.files file('node_modules')
@@ -119,27 +116,70 @@ ext {
 }
 
 docker {
-    name "${project.name}:test"
-    // tags "${BUILD_VERSION}","latest"
+    name "ectech.co.kr:35001/cloud/${project.name}:latest"
     files bootJar.outputs.files
     dockerfile file('frontend/Dockerfile') 
     files file('frontend/docker') // 도커 만들때 쓸 파일
     buildArgs(['PROFILES': 'dev'])
 }
 
+task makeTag() {
+    doLast {
+		def stdout = new ByteArrayOutputStream()
+        println "------------ docker makeTag  Start -----------"
+        exec {
+			workingDir projectDir
+			commandLine "powershell", "-command", "docker tag ectech.co.kr:35001/cloud/${project.name}:latest ectech.co.kr:35001/cloud/${project.name}:${BUILD_VERSION}"
+            standardOutput = stdout
+        }
+        println "Output: $stdout"
+        println "------------ docker makeTag  End -------------"
+    }
+}
+
+task push() {
+	group "cloud"
+    description 'docker push '
+    
+    dependsOn 'makeTag'
+
+    doLast {
+		def stdout = new ByteArrayOutputStream()
+        println "------------ docker push  Start -----------"
+        exec {
+			workingDir projectDir
+			commandLine "powershell", "-command", "docker push ectech.co.kr:35001/cloud/${project.name} --all-tags"
+            standardOutput = stdout
+        }
+        println "Output: $stdout"
+        println "------------ docker push  End -------------"
+    }
+}
+
+task buildDocker() {
+	group "cloud"
+    description 'docker build '
+    
+    dependsOn 'docker'
+
+    doLast {
+		def stdout = new ByteArrayOutputStream()
+        println "------------ docker build success -------------"
+    }
+}
+
 task build_All() {
 	group "cloud"
     description 'jar, vue and docker image build'
     
-    dependsOn 'bootJar'
     dependsOn 'buildVue'
-    dependsOn 'docker'
-	tasks.findByName('buildVue').mustRunAfter 'bootJar'
-	tasks.findByName('docker').mustRunAfter 'buildVue'
+    dependsOn 'buildDocker'
+    dependsOn 'push'
+	tasks.findByName('buildDocker').mustRunAfter 'buildVue'
+	tasks.findByName('push').mustRunAfter 'buildDocker'
     
 	doLast {
 		def stdout = new ByteArrayOutputStream()
         println "success"
 	}
 }
-
