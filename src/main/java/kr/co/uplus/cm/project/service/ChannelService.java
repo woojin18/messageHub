@@ -165,6 +165,7 @@ public class ChannelService {
 					// 메인발신 체크
 					if(CommonUtils.getString(brandInfo.get("mainMdn")).equals(chatbotMap.get("mdn"))) {
 						inputVal.put("mainTitle",			chatbotMap.get("subTitle"));
+						inputVal.put("mainMdn",				chatbotMap.get("mdn"));
 					}
 					
 				}
@@ -373,9 +374,9 @@ public class ChannelService {
 			map.put("certiFilePath",		params.get("profileImgFilePath"));
 		} else {
 			// 임시
-			map.put("profileImgFilePath", "/efs/file/console/2021/05/17/16/20210514_135426.png");
-			map.put("bgImgFilePath", "/efs/file/console/2021/05/17/16/20210514_135426.png");
-			map.put("certiFilePath", "/efs/file/console/2021/05/17/16/20210514_135426.png");
+			map.put("profileImgFilePath", "/efs/file/console/2021/05/24/14/brand_test.png");
+			map.put("bgImgFilePath", "/efs/file/console/2021/05/24/14/brand_test.png");
+			map.put("certiFilePath", "/efs/file/console/2021/05/24/14/brand_test.png");
 		}
 		
 		
@@ -389,7 +390,12 @@ public class ChannelService {
 			map.put("chatbots",		chatbotJson);
 		}
 		
-		list.add(map);
+		// map to json
+		kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(map);
+		
+		System.out.println("----------------------------------------json2222 : " + json2222);
+		
+		list.add(json2222);
 		
 		// 임시저장
 		String sts = CommonUtils.getString(params.get("sts"));
@@ -413,9 +419,9 @@ public class ChannelService {
 			brandInfo.put("email",			params.get("email")+ "@" + params.get("email2"));
 			brandInfo.put("webSiteUrl",		params.get("webSiteUrl"));
 			brandInfo.put("mainMdn",		params.get("mainMdn"));
-			brandInfo.put("profileImgFilePath", "/efs/file/console/2021/04/26/12/test1234.png");
-			brandInfo.put("bgImgFilePath", "/efs/file/console/2021/04/26/12/test1234.png");
-			brandInfo.put("certiFilePath", "/efs/file/console/2021/04/26/12/test1234.png");
+			brandInfo.put("profileImgFilePath", "/efs/file/console/2021/05/24/14/brand_test.png");
+			brandInfo.put("bgImgFilePath", "/efs/file/console/2021/05/24/14/brand_test.png");
+			brandInfo.put("certiFilePath", "/efs/file/console/2021/05/24/14/brand_test.png");
 			brandInfo.put("chatbots",		chatbotJson);	// 임시저장 시, 쳇봇들을 관리하기 위해 저장
 			String brandInfoStr = mapper.writeValueAsString(brandInfo);
 			params.put("brandInfo", brandInfoStr);
@@ -472,9 +478,6 @@ public class ChannelService {
 			String json = mapper.writeValueAsString(map);
 			Map<String, Object> bodyMap = new HashMap<String, Object>();
 			
-			System.out.println("------------------------------------------ json : " + json);
-			System.out.println("------------------------------------------ list : " + list);
-			
 			bodyMap.put("list", json);
 			
 			if( !"".equals(brandId) && "T".equals(brandId.substring(0, 1)) ) {
@@ -485,11 +488,9 @@ public class ChannelService {
 			
 			// API 통신 처리
 			Map<String, Object> result =  apiInterface.listPost("/console/v1/brand", list, headerMap);
-			
-
-			System.out.println("-----------------------------------------------------------@@ result!!!! : " + result);
-			
-			
+			System.out.println("-------------------------------------------@@@ result : " + result);
+			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
+			System.out.println("-------------------------------------------@@@ list : " + list);
 			// 성공인지 실패인지 체크
 			if( !"10000".equals(result.get("rslt")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
@@ -508,8 +509,6 @@ public class ChannelService {
 			bodyMap.put("list", json);
 			
 			Map<String, Object> result =  apiInterface.listPut("/console/v1/brand/" + brandId, list, headerMap);
-			
-			System.out.println("-----------------------------------------------------------@@ result : " + result);
 			
 			// 성공인지 실패인지 체크
 			if( !"10000".equals(result.get("rslt")) ) {
