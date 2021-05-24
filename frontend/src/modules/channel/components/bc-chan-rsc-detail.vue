@@ -354,8 +354,8 @@ export default {
 		inputVal : {
 			corpId 			: "",
 			projectId 		: "",
-			apiKey 			: "lng04154",
-			apiSecret 	: "SK.I9SrjuVvmDI8CdS",
+			apiKey 			: "kangyj94",
+			apiSecret 	: "SK.E7nddvJlfZp8JXU",
 			name			: "브랜드 이름",
 			description		: "브랜드 설명",
 			tel				: "브랜드 전화번호",
@@ -426,10 +426,6 @@ export default {
 		this.tmpBrandYn = "N";
 	}
 
-	console.log('this.inputVal.mainMdn');
-	console.log(this.inputVal.mainMdn);
-	console.log('this.inputVal.mainTitle');
-	console.log(this.inputVal.mainTitle);
   },
   methods: {
 	// 목록
@@ -495,8 +491,6 @@ export default {
 		if( this.inputVal.ticket	){ menuCnt++;}
 		if( this.inputVal.moreInfo	){ menuCnt++;}
 		
-console.log(  this.inputVal.order );
-
 		if( menuCnt > 3 ){
 			/* if( checkName === 'call'	){ this.inputVal.call		= false;}
 			if( checkName === 'web'		){ this.inputVal.web		= false;}
@@ -576,7 +570,11 @@ console.log(  this.inputVal.order );
 		fd.append('sts'				, sts);
 		fd.append('loginId'			, tokenSvc.getToken().principal.userId);
 		fd.append('corpId'			, tokenSvc.getToken().principal.corpId);
-		fd.append('projectId'		, this.projectId);
+		if( this.otherProjectYn === 'Y' ){
+			fd.append('projectId'		, 'ALL');
+		} else {
+			fd.append('projectId'		, this.projectId);
+		}
 		fd.append('brandId'			, this.brandId);
 		fd.append('apiKey'			, this.inputVal.apiKey);
 		fd.append('apiSecret'	, this.inputVal.apiSecret);
