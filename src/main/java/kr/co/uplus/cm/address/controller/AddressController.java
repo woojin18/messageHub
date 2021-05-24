@@ -100,7 +100,7 @@ public class AddressController {
 	public RestResult<?> registerAddr(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
-
+ 
 		try {
 			rtn = addressSvc.registerAddr(params);
 		} catch (Exception e) {

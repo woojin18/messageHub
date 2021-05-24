@@ -122,7 +122,7 @@
 		/* address.updateAddressCateGrp 주소록 수정*/
 		UPDATE CM_ADDR_CATE_GRP
 		SET
-			PROJECT_ID = #{afProjectId}
+			PROJECT_ID = #{afProjectId} 
 		,	ADDRESS_CATEGORY_GRP_NAME = #{addressCategoryGrpName}
 		,	ADDRESS_CATEGORY_GRP_DESC = #{addressCategoryGrpDesc}
 		,	USE_YN = #{useYn}
