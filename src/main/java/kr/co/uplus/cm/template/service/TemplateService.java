@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.template.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,24 +68,25 @@ public class TemplateService {
      */
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
     public RestResult<Object> savePushTemplate(Map<String, Object> params) throws Exception {
+        Map<String, Object> sParams = new HashMap<String, Object>(params);
         RestResult<Object> rtn = new RestResult<Object>();
         int resultCnt = 0;
 
-        String otherProjectUseYn = CommonUtils.getStrValue(params, "otherProjectUseYn");
+        String otherProjectUseYn = CommonUtils.getStrValue(sParams, "otherProjectUseYn");
 
         if(!StringUtils.equalsIgnoreCase(otherProjectUseYn, Const.COMM_NO)) {
-            params.put("projectId", Const.OTHER_PROJECT_USE_ID);
+            sParams.put("projectId", Const.OTHER_PROJECT_USE_ID);
         }
 
         // update
-        if (params.containsKey("tmpltId") && StringUtils.isNotBlank(CommonUtils.getString(params.get("tmpltId")))) {
-            resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_PUSH_TMPLT, params);
+        if (sParams.containsKey("tmpltId") && StringUtils.isNotBlank(CommonUtils.getString(sParams.get("tmpltId")))) {
+            resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_PUSH_TMPLT, sParams);
         // insert
         } else {
         	// 템플릿ID 취득
             String tmpltId = CommonUtils.getCommonId(Const.TMPLT_PREFIX, 5);
-            params.put("tmpltId", tmpltId);
-            resultCnt = generalDao.insertGernal(DB.QRY_INSERT_PUSH_TMPLT, params);
+            sParams.put("tmpltId", tmpltId);
+            resultCnt = generalDao.insertGernal(DB.QRY_INSERT_PUSH_TMPLT, sParams);
         }
 
         if (resultCnt <= 0) {
@@ -92,7 +94,7 @@ public class TemplateService {
             rtn.setMessage("실패하였습니다.");
         } else {
             rtn.setSuccess(true);
-            rtn.setData(params);
+            rtn.setData(sParams);
         }
 
         return rtn;
@@ -121,30 +123,31 @@ public class TemplateService {
     }
 
     /**
-     * 푸시 템플릿 저장 처리
+     * SMS 템플릿 저장 처리
      * @param params
      * @return
      * @throws Exception
      */
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
     public RestResult<Object> saveSmsTemplate(Map<String, Object> params) throws Exception {
+        Map<String, Object> sParams = new HashMap<String, Object>(params);
         RestResult<Object> rtn = new RestResult<Object>();
         int resultCnt = 0;
-        String otherProjectUseYn = CommonUtils.getStrValue(params, "otherProjectUseYn");
+        String otherProjectUseYn = CommonUtils.getStrValue(sParams, "otherProjectUseYn");
 
         if(!StringUtils.equalsIgnoreCase(otherProjectUseYn, Const.COMM_NO)) {
-            params.put("projectId", Const.OTHER_PROJECT_USE_ID);
+            sParams.put("projectId", Const.OTHER_PROJECT_USE_ID);
         }
 
         // update
-        if (params.containsKey("tmpltId") && StringUtils.isNotBlank(CommonUtils.getString(params.get("tmpltId")))) {
-            resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_SMS_TMPLT, params);
+        if (sParams.containsKey("tmpltId") && StringUtils.isNotBlank(CommonUtils.getString(sParams.get("tmpltId")))) {
+            resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_SMS_TMPLT, sParams);
         // insert
         } else {
             // 템플릿ID 취득
             String tmpltId = CommonUtils.getCommonId(Const.TMPLT_PREFIX, 5);
-            params.put("tmpltId", tmpltId);
-            resultCnt = generalDao.insertGernal(DB.QRY_INSERT_SMS_TMPLT, params);
+            sParams.put("tmpltId", tmpltId);
+            resultCnt = generalDao.insertGernal(DB.QRY_INSERT_SMS_TMPLT, sParams);
         }
 
         if (resultCnt <= 0) {
@@ -152,7 +155,7 @@ public class TemplateService {
             rtn.setMessage("실패하였습니다.");
         } else {
             rtn.setSuccess(true);
-            rtn.setData(params);
+            rtn.setData(sParams);
         }
 
         return rtn;
@@ -165,7 +168,6 @@ public class TemplateService {
      * @throws Exception
      */
     public RestResult<Object> selectSmsTemplateList(Map<String, Object> params) throws Exception {
-
         RestResult<Object> rtn = new RestResult<Object>();
 
         if(params.containsKey("pageNo")
@@ -216,23 +218,24 @@ public class TemplateService {
      */
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
     public RestResult<Object> saveFrndTalkTmplt(Map<String, Object> params) throws Exception {
+        Map<String, Object> sParams = new HashMap<String, Object>(params);
         RestResult<Object> rtn = new RestResult<Object>();
         int resultCnt = 0;
-        String otherProjectUseYn = CommonUtils.getStrValue(params, "otherProjectUseYn");
+        String otherProjectUseYn = CommonUtils.getStrValue(sParams, "otherProjectUseYn");
 
         if(!StringUtils.equalsIgnoreCase(otherProjectUseYn, Const.COMM_NO)) {
-            params.put("projectId", Const.OTHER_PROJECT_USE_ID);
+            sParams.put("projectId", Const.OTHER_PROJECT_USE_ID);
         }
 
         // update
-        if (params.containsKey("tmpltId") && StringUtils.isNotBlank(CommonUtils.getString(params.get("tmpltId")))) {
-            resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_FRND_TALK_TMPLT, params);
+        if (sParams.containsKey("tmpltId") && StringUtils.isNotBlank(CommonUtils.getString(sParams.get("tmpltId")))) {
+            resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_FRND_TALK_TMPLT, sParams);
         // insert
         } else {
             // 템플릿ID 취득
             String tmpltId = CommonUtils.getCommonId(Const.TMPLT_PREFIX, 5);
-            params.put("tmpltId", tmpltId);
-            resultCnt = generalDao.insertGernal(DB.QRY_INSERT_FRND_TALK_TEMPLATE, params);
+            sParams.put("tmpltId", tmpltId);
+            resultCnt = generalDao.insertGernal(DB.QRY_INSERT_FRND_TALK_TEMPLATE, sParams);
         }
 
         if (resultCnt <= 0) {
@@ -240,7 +243,7 @@ public class TemplateService {
             rtn.setMessage("실패하였습니다.");
         } else {
             rtn.setSuccess(true);
-            rtn.setData(params);
+            rtn.setData(sParams);
         }
 
         return rtn;
@@ -253,7 +256,6 @@ public class TemplateService {
      * @throws Exception
      */
     public RestResult<Object> selectFrndTalkList(Map<String, Object> params) throws Exception {
-
         RestResult<Object> rtn = new RestResult<Object>();
 
         if(params.containsKey("pageNo")

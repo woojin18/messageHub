@@ -29,11 +29,11 @@ public class CommonController {
 
     @Autowired
     private CommonService commonService;
-	
+
     @InitBinder
-	public void initBinder(WebDataBinder binder) {
-		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
-	}
+    public void initBinder(WebDataBinder binder) {
+        binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
+    }
 
     // 이미지 업로드
     @PostMapping("/uploadImage")

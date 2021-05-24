@@ -292,7 +292,7 @@ export default {
     },
     fnSaveAlertCallback(){
       if(this.isInsert){
-        this.$router.push('frndTalkTemplateList')
+        this.$router.push('smsTemplateList')
       }
     },
     fnDelImg(idx){

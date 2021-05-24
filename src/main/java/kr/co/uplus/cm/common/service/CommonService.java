@@ -172,14 +172,10 @@ public class CommonService {
         //get File Prop
         List<Object> imgSetInfoList = selectImgUploadChSet();
 
-//        String pattern = "[\"!@#$%^&'*]";
-//        String fileName = files.getOriginalFilename().replaceAll(pattern, ""); // 원본 파일명
-//        String fileExten = fileName.substring(fileName.lastIndexOf(".") + 1);
-        
         String pattern = "[\"!@#$%^&'.*]";
         String preFileName = getFileNameExt(files.getOriginalFilename(),0).replaceAll(pattern, "");
-		String fileExten = getFileNameExt(files.getOriginalFilename(),1);
-		String fileName = preFileName+"."+fileExten;
+        String fileExten = getFileNameExt(files.getOriginalFilename(),1);
+        String fileName = preFileName+"."+fileExten;
 
         // 이미지 업로드 확장자 유효성 체크
         if (Stream.of(imgPermitExten.split(",")).map(String::trim)
@@ -409,7 +405,7 @@ public class CommonService {
 //        String pattern = "[\"!@#$%^&'*]";
 //        String fileName = files.getOriginalFilename().replaceAll(pattern, ""); // 원본 파일명
 //        String fileExten = fileName.substring(fileName.lastIndexOf(".") + 1);
-        
+
         String pattern = "[\"!@#$%^&'.*]";
         String preFileName = getFileNameExt(files.getOriginalFilename(),0).replaceAll(pattern, "");
 		String fileExten = getFileNameExt(files.getOriginalFilename(),1);
@@ -549,8 +545,10 @@ public class CommonService {
      * @return
      */
     public Map<String, Object> setUserInfo(Map<String, Object> params) {
+        HashMap<String, Object> sParams = new HashMap<String, Object>(params);
         HttpServletRequest request = SpringUtils.getCurrentRequest();
         String loginId = request.getHeader("loginId");
+
         if(StringUtils.isNotBlank(loginId)) {
             AuthUser authUser = (AuthUser) authSvc.loadUserByUsername(request.getHeader("loginId"));
             String userId = StringUtils.defaultIfBlank(authUser.getUserId(), "");
@@ -569,12 +567,12 @@ public class CommonService {
                 }
             }
 
-            params.put("userId", userId);
-            params.put("corpId", corpId);
-            params.put("projectId", projectId);
+            sParams.put("userId", userId);
+            sParams.put("corpId", corpId);
+            sParams.put("projectId", projectId);
         }
 
-        return params;
+        return sParams;
     }
 
     /**
@@ -661,7 +659,7 @@ public class CommonService {
             log.error("deleteFolder Error : {}", e);
         }
     }
-    
+
     public RestResult<Object> selectCodeList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 
@@ -670,7 +668,7 @@ public class CommonService {
 
 		return rtn;
 	}
-    
+
 	/**
 	 * 파일명과 확장자를 구분해서가져오기
 	 * @param fullFileName

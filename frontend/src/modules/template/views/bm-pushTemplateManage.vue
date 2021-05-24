@@ -57,9 +57,9 @@
             <h4>메시지타입 *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <input type="radio" id="msgType_BASE" value="BASE" v-model="tmpltData.msgType">
+            <input type="radio" id="msgType_BASE" name="msgType" value="BASE" v-model="tmpltData.msgType">
             <label for="msgType_BASE" class="mr30">기본</label>
-            <input type="radio" id="msgType_IMAGE" value="IMAGE" v-model="tmpltData.msgType">
+            <input type="radio" id="msgType_IMAGE" name="msgType" value="IMAGE" v-model="tmpltData.msgType">
             <label for="msgType_IMAGE">이미지</label>
           </div>
         </div>
@@ -68,9 +68,9 @@
             <h4>메시지구분 *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <input type="radio" id="msgKind_A" value="A" v-model="tmpltData.msgKind">
+            <input type="radio" id="msgKind_A" name="msgKind" value="A" v-model="tmpltData.msgKind">
             <label for="msgKind_A" class="mr30">광고성</label>
-            <input type="radio" id="msgKind_I" value="I" v-model="tmpltData.msgKind">
+            <input type="radio" id="msgKind_I" name="msgKind" value="I" v-model="tmpltData.msgKind">
             <label for="msgKind_I">정보성</label>
           </div>
         </div>
@@ -79,9 +79,9 @@
             <h4>타 프로젝트 사용여부  *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <input type="radio" id="otherProjectUseYn_Y" value="Y" v-model="tmpltData.otherProjectUseYn">
+            <input type="radio" id="otherProjectUseYn_Y" name="otherProjectUseYn" value="Y" v-model="tmpltData.otherProjectUseYn">
             <label for="otherProjectUseYn_Y" class="mr30">공용</label>
-            <input type="radio" id="otherProjectUseYn_N" value="N" v-model="tmpltData.otherProjectUseYn">
+            <input type="radio" id="otherProjectUseYn_N" name="otherProjectUseYn" value="N" v-model="tmpltData.otherProjectUseYn">
             <label for="otherProjectUseYn_N">전용</label>
           </div>
         </div>
