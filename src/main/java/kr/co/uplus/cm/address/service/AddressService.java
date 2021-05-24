@@ -221,4 +221,30 @@ public class AddressService {
 		}
 			return rtn;
 	}
+	
+	/**
+	 * 수신자 목록 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> selectReceiverList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		if(params.containsKey("pageNo")
+				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize")
+				&& CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if(rtn.getPageInfo() != null) {
+				//카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_ADDR_RCVR_LIST_CNT, params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
+		}
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_RCVR_LIST, params);
+		rtn.setData(rtnList);
+		return rtn;
+	}
 }

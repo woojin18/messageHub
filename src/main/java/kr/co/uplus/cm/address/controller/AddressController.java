@@ -231,4 +231,26 @@ public class AddressController {
 
 		return rtn;
 	}
+
+	/**
+	 * 수신자 목록 조회
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectReceiverList")
+	public RestResult<?> selectReceiverList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = addressSvc.selectReceiverList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
 }

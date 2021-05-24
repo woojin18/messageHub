@@ -206,4 +206,56 @@
 		WHERE	ADDRESS_CATEGORY_ID = #{addressCategoryId}
 		AND		CU_INFO_ID = #{cuInfoId}
 	</delete>
+	
+	<select id="selectAddrRcvrListCnt" parameterType="hashmap" resultType="int">
+		/* address.selectAddrRcvrListCnt 수신자 카운트 조회 */
+		SELECT
+			COUNT(*) AS CNT
+		FROM CM_CU_INFO
+		WHERE	CORP_ID = #{corpId}
+		<if test="searchText != '' and searchText != null ">
+			<if test="searchTextType == 'cuid' ">
+		AND CUID LIKE CONCAT('%', #{searchText}, '%')
+			</if>
+			<if test="searchTextType == 'cuName' ">
+		AND CU_NAME LIKE CONCAT('%', #{searchText}, '%')
+			</if>
+			<if test="searchTextType == 'hpNumber' ">
+		AND HP_NUMBER LIKE CONCAT('%', #{searchText}, '%')
+			</if>
+		</if>
+		<if test="useYn != '' and useYn != null ">
+		AND USE_YN = #{useYn}
+		</if>
+	</select>
+
+	<select id="selectAddrRcvrList" parameterType="hashmap" resultType="camel">
+		/* address.selectAddrRcvrList 수신자 조회 */
+		SELECT
+				CU_INFO_ID
+			,	CU_NAME
+			,	CUID
+			,	HP_NUMBER
+			,	USE_YN
+		FROM CM_CU_INFO
+		WHERE	CORP_ID = #{corpId}
+		<if test="searchText != '' and searchText != null ">
+			<if test="searchTextType == 'cuid' ">
+		AND CUID LIKE CONCAT('%', #{searchText}, '%')
+			</if>
+			<if test="searchTextType == 'cuName' ">
+		AND CU_NAME LIKE CONCAT('%', #{searchText}, '%')
+			</if>
+			<if test="searchTextType == 'hpNumber' ">
+		AND HP_NUMBER LIKE CONCAT('%', #{searchText}, '%')
+			</if>
+		</if>
+		<if test="useYn != '' and useYn != null ">
+		AND USE_YN = #{useYn}
+		</if>
+		ORDER BY CU_INFO_ID
+		<if test='pagingYn == "Y" '>
+			LIMIT ${offset}, #{listSize}
+		</if>
+	</select>
 </mapper>

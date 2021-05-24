@@ -204,18 +204,18 @@ export default {
 		}
 	},
 	mounted() {
-		//console.log('token:', tokenSvc.getToken());
 		this.fnSearch();
 		
 	},
 	methods: {
 		fnSearch(pageNum) {
 			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
+			console.log(">>> this.pageNo : " + this.pageNo);
 			this.fnSelectUserList();
 		},
 		// select 박스 선택시 리스트 재출력
-		fnSelected(selected) {
-			this.selected = selected;
+		fnSelected(listSize) {
+			this.listSize = Number(listSize);
 			this.$refs.updatePaging.fnAllDecrease();
 		},
 		//사용자 리스트 검색
@@ -223,6 +223,7 @@ export default {
 			var params = Object.assign({}, this.searchData);
 			params.pageNo = this.pageNo;
 			params.listSize = this.listSize;
+			console.log(">>>> this.pageNo : " + this.pageNo);
 			await userApi.selectUserList(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
@@ -244,31 +245,24 @@ export default {
 		},
 		//이용정지
 		fnStopUserPop(index) {
-			console.log(">>> start fnStopUserPop. index : " + index);
 			this.stopLayerView = true;
 			this.stopLayerTitle = "UserStop";
 			this.stopLayerUserId = this.items[index].userId;
-			console.log(">>> ended fnStopUserPop");
 		},
 		//이용정지 해제
 		fnReleaseUserPop(index) {
-			console.log(">>> start fnReleaseUserPop. index : " + index);
 			this.releaseLayerView = true;
 			this.releaseLayerTitle = "UserRelease";
 			this.releaseLayerUserId = this.items[index].userId;
-			console.log(">>> ended fnReleaseUserPop");
 		},
 		// 삭제
 		fnDeleteUserPop(index) {
-			console.log(">>> start fnDeleteUserPop. index : " + index);
 			this.deleteLayerView = true;
 			this.deleteLayerTitle = "UserDelete";
 			this.deleteLayerUserId = this.items[index].userId;
-			console.log(">>> ended fnDeleteUserPop");
 		},
-		 // 사용자정보 수정
+		// 사용자정보 수정
 		fnModifyUserPop(index) {
-			console.log(">>> start fnModifyUserPop. index : " + index);
 			this.modifyLayerView = true;
 			this.modifyLayerTitle = "UserModify";
 			this.modifyLayerUserId = this.items[index].userId;
@@ -276,14 +270,11 @@ export default {
 			this.modifyLayerHpNumber = this.items[index].hpNumber;
 			this.modifyLayerRoleCd = this.items[index].roleCd;
 			this.modifyLayerLoginId = this.items[index].loginId
-			console.log(">>> ended fnModifyUserPop");
 		},
 		// 사용자 등록
 		fnRegisterUserPop() {
-			console.log(">>> start fnRegisterUserPop.");
 			this.registerLayerView = true;
 			this.registerLayerTitle = "UserRegister";
-			console.log(">>> ended fnRegisterUserPop");
 		}
 	}
 }

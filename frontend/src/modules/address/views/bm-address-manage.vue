@@ -323,7 +323,6 @@ export default {
 					this.memberList = Object.assign([], result.data);
 					this.totCnt = result.pageInfo.totCnt;
 					this.offset = result.pageInfo.offset;
-					//console.log("this.memberList : " + this.memberList);
 				} else {
 					confirm.fnAlert("", result.message);
 				}
@@ -357,7 +356,6 @@ export default {
 			//주소록 그룹 put
 			vm.fnSetSubItems(addrCateList, addrGrp, 'Y');
 			vm.addrTreeList.push(addrGrp);
-			//console.log("fnSetAddrListToTree End");
 		},
 		// target을 tree형태로 변경
 		fnSetSubItems(addrCateList, target, targetGrpYn) {
@@ -395,13 +393,10 @@ export default {
 				return false;
 			}
 			jQuery("#AddrModifyLayer").modal("show");
-			console.log(">>> ended fnModAddrPop");
 		},
 		// 구성원 추가
 		fnRegisterMemberPop() {
-			console.log("fnRegisterMemberPop start");
 			this.memberRegisterOpen = !this.memberRegisterOpen;
-			console.log(">>>this.memberRegisterOpen : " + this.memberRegisterOpen);
 			jQuery("#MemberRegisterLayer").modal("show");
 		},
 		// 구성원 삭제

@@ -37,6 +37,10 @@ const deleteMember = (params) => {
 	return httpClient.post('/addressApi/manage/deleteMember', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
 };
 
+const selectReceiverList = (params) => {
+	return httpClient.post('/addressApi/manage/selectReceiverList', params, { headers: {"show-layer": "Yes", "loginId": tokenSvc.getToken().principal.loginId} });
+};
+
 
 export default {
 	selectAddressCateGrpList,
@@ -48,4 +52,5 @@ export default {
 	selectCmCuList,
 	registerMember,
 	deleteMember,
+	selectReceiverList,
 };
