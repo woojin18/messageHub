@@ -16,13 +16,23 @@
 	<update id="updateMemberInfo">
 	/* myPage.updateMemberInfo */
 		UPDATE	cm_console.CM_USER
-		SET		HP_NUMBER = #{hpNumber}
+		SET		UPD_DT = NOW()
 		<if test="loginPwd != null and loginPwd != ''">
 		,		LOGIN_PWD = #{loginPwd}
 		,		PWD_UPD_DT = NOW()
 		</if>
+		<if test="hpNumber != null and hpNumber != ''">
+		,		HP_NUMBER = #{hpNumber}
+		</if>
 		WHERE	USER_ID = #{userId}
 	</update>
+	
+	<select id="selectSmsCertifyNumber" resultType="string">
+	/* myPage.selectSmsCertifyNumber */
+		SELECT	SMS_CERTIFY_NUMBER
+		FROM	cm_console.CM_USER
+		WHERE	USER_ID = #{userId}
+	</select>
 	
 	<select id="selectQnaList_count" resultType="int">
 	/* myPage.selectQnaList_count */
@@ -111,4 +121,18 @@
 		DELETE FROM cm_bo.CM_QUEST_BOARD
 		WHERE QUEST_BOARD_ID = #{questBoardId}
 	</delete>
+	
+	<update id="updateCorpInfo">
+	/* myPage.updateCorpInfo */
+		UPDATE	cm_console.CM_CORP
+		SET		CORP_NAME = #{corpName}
+		,		CEO_NAME = #{ceoName}
+		,		BUSITYPE = #{busitype}
+		,		BUSICLASS = #{busiclass}
+		,		WOPLACE_ADDRESS = #{woplaceAddress}
+		,		WOPLACE_ADDRESS_DETAIL = #{woplaceAddressDetail}
+		,		WIRE_TEL = #{wireTel}
+		,		FILE_ID = #{fileId}
+		WHERE	CORP_ID = #{corpId}
+	</update>
 </mapper>

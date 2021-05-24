@@ -120,6 +120,8 @@ public class DB {
     public final static String QRY_UPDATE_USER = "user.updateUser";
     public final static String QRY_INSERT_USER = "user.insertUser";
     public final static String QRY_SELECT_USER_DUPC_CNT = "user.selectUserDupcCnt";
+    public final static String QRY_CHK_PASSWORD = "user.checkPassword";
+    
     // 프로젝트 발신번호 관리
     public final static String QRY_SELECT_CALLBACK_MANAGE_LIST_CNT = "project.selectCallbackManageListCnt";
     public final static String QRY_SELECT_CALLBACK_MANAGE_LIST = "project.selectCallbackManageList";
@@ -149,10 +151,14 @@ public class DB {
     // 회원정보
     public final static String QRY_SELECT_MEMBER_INFO       = "myPage.selectMemberInfo";
     public final static String QRY_UPDATE_MEMBER_INFO       = "myPage.updateMemberInfo";
+    public final static String QRY_SELECT_SMS_CERTIFY_NUMBER = "myPage.selectSmsCertifyNumber";
     // 나의 문의 내역서
     public final static String QRY_SELECT_QNA_LIST_COUNT    = "myPage.selectQnaList_count";
     public final static String QRY_SELECT_QNA_LIST          = "myPage.selectQnaList";
 	public final static String QRY_INSERT_QUEST_BOARD		= "myPage.insertQnaInfo";
 	public final static String QRY_UPDATE_QUEST_BOARD		= "myPage.updateQnaInfo";
 	public final static String QRY_DELETE_QUEST_BOARD		= "myPage.deleteQnaInfo";
+
+	// 고객사 정보
+	public final static String QRY_UPDATE_CORP_INFO			= "myPage.updateCorpInfo";
 }

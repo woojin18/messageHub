@@ -1,13 +1,13 @@
 <template>
     <div>
-        <acQna />
+        <qna />
     </div>
 </template>
 <script>
-import acQna from '../components/bc-acQna.vue'
+import qna from '../components/bc-qna.vue'
 export default {
     components : {
-        acQna
+        qna
     },
     data(){
         return {

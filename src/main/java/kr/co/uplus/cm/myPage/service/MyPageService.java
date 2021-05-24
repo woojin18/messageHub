@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.myPage.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,12 +36,32 @@ public class MyPageService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public RestResult<Object> saveMemberInfo(Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
-		
-		String loginPwd = CommonUtils.getString(params.get("loginPwd"));
+
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.putAll(params);
 		
 		try {
-			params.put("loginPwd", sha256.encode(loginPwd));
-			generalDao.updateGernal(DB.QRY_UPDATE_MEMBER_INFO, params);
+			// 인증번호 check
+			if(!"".equals(params.get("certifyNumber")) && params.get("certifyNumber") != null) {
+				String certifyNumb = CommonUtils.getString(params.get("certifyNumber"));
+				String chkCertifyNumb = (String) generalDao.selectGernalObject(DB.QRY_SELECT_SMS_CERTIFY_NUMBER, paramMap);
+				
+				if(!chkCertifyNumb.equals(certifyNumb)) {
+					rtn.setSuccess(false);
+					rtn.setMessage("인증번호를 정확히 입력해주세요.");
+					
+					return rtn;
+				}
+			}
+			
+			// 비밀번호 암호화
+			if(!"".equals(params.get("loginPwd")) && params.get("loginPwd") != null) {
+				String loginPwd = CommonUtils.getString(params.get("loginPwd"));
+				paramMap.put("loginPwd", sha256.encode(loginPwd));
+			}
+			
+			// 회원정보 update
+			generalDao.updateGernal(DB.QRY_UPDATE_MEMBER_INFO, paramMap);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("저장에 실패하였습니다.");
@@ -48,8 +69,7 @@ public class MyPageService {
 		
 		return rtn;
 	}
-
-
+	
 	@SuppressWarnings("unchecked")
 	public RestResult<Object> selectQnaList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -83,12 +103,54 @@ public class MyPageService {
 			}
 		return rtn;
 	}
-
+	
+	public RestResult<Object> checkPassword(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.putAll(params);
+		
+		String password = CommonUtils.getString(paramMap.get("password"));
+		paramMap.put("password", sha256.encode(password));
+		
+		int cnt = generalDao.selectGernalCount(DB.QRY_CHK_PASSWORD, paramMap);
+		
+		if(cnt == 0) {
+			rtn.setSuccess(false);
+			rtn.setMessage("비밀번호가 일치하지않습니다.");
+		}
+		
+		return rtn;
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public RestResult<Object> deleteQnaInfo(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
 		generalDao.deleteGernal(DB.QRY_DELETE_QUEST_BOARD, params);
+		
+		return rtn;
+	}
+
+	public RestResult<Object> selectCorpInfo(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		Object rtnObj = generalDao.selectGernalObject(DB.QRY_SELECT_CORP_INFO, params);
+		rtn.setData(rtnObj);
+
+		return rtn;
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<Object> saveCorpInfo(Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		try {
+			// 정보 update
+			generalDao.updateGernal(DB.QRY_UPDATE_CORP_INFO, params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("고객사 정보 저장에 실패하였습니다.");
+		}
 		
 		return rtn;
 	}

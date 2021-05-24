@@ -22,6 +22,7 @@ import messageStatusRoutes from './modules/messageStatus/router';
 import integratedTemplateRoutes from './modules/integratedTemplate/router';
 import addressRoutes from './modules/address/router';
 import acMyPageRoutes from './modules/myPage/router';
+import ucMyPageRoutes from './modules/ucMyPage/router';
 
 //import confirm from "@/modules/commonUtil/service/confirm.js";
 
@@ -124,7 +125,8 @@ const router = new Router({
 				...messageRoutes,
 				...templateRoutes,
 				...messageStatusRoutes,
-				...integratedTemplateRoutes
+				...integratedTemplateRoutes,
+				...ucMyPageRoutes
 			]
 		},
 		{path: '*', redirect: '/view/error/404'}
