@@ -203,4 +203,11 @@
 		,		NOW()
 		)
 	</insert>
+	<select id="checkPassword" resultType="int">
+	/* user.checkPassword */
+		SELECT	COUNT(1)
+		FROM	cm_console.CM_USER
+		WHERE	LOGIN_PWD = #{password}
+		AND		USER_ID = #{userId}
+	</select>
 </mapper>
