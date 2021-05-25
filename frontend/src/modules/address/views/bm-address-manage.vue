@@ -414,7 +414,7 @@ export default {
 			addressApi.deleteMember(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					confirm.fnAlert("구성원 삭제", "구성원 삭제를 성공했습니다.");
+					confirm.fnAlert("구성원 삭제", "삭제 했습니다.");
 					this.fnSearchMemberList();
 					this.fnResetChkbox();
 				} else {

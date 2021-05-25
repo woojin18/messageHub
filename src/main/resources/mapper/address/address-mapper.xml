@@ -306,4 +306,18 @@
 			UPD_DT = NOW()
 		WHERE CU_INFO_ID	= #{cuInfoId}
 	</update>
+	
+	<select id="selectAddrRcvrCnt" parameterType="hashmap" resultType="int">
+		/* address.selectAddrRcvrCnt 카테고리 구성원관리 테이블에서 수신자 조회 */
+		SELECT
+			COUNT(*) AS CNT
+		FROM CM_ADDR_CATE_MEM
+		WHERE	CU_INFO_ID = #{cuInfoId}
+	</select>
+	
+	<delete id="deleteAddrRcvr">
+		/* address.deleteAddrRcvr 수신자 삭제*/
+		DELETE	FROM CM_CU_INFO
+		WHERE	CU_INFO_ID = #{cuInfoId}
+	</delete>
 </mapper>

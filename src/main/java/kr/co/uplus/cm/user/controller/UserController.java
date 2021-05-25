@@ -155,10 +155,6 @@ public class UserController {
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
-			// UserId 생성
-			String userId = CommonUtils.getCommonId("MBR", 5);
-			params.put("userId", userId);
-
 			rtn = userSvc.registerUser(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);

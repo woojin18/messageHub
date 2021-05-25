@@ -30,7 +30,10 @@
 				<div class="col-xs-12">		
 					<div class="of_h inline">
 						<div class="float-right">
-							<a @click="fnRegisterReceiverPop" class="btnStyle2 borderGray" >수신자 추가</a>
+							<a @click="fnRegisterReceiverPop" class="btnStyle2 borderGray mr5" >수신자 추가</a>
+							<a @click="fnExcelDownLoad" class="btnStyle2 borderGray mr5" >엑셀 다운로드</a>
+							<a @click="fnExcelUpload" class="btnStyle2 borderGray mr5" >엑셀 업로드</a>
+							<input ref="excelFile" type="file" style="display:none;" @change="fnChgInputFile()">
 						</div>
 					</div>
 				
@@ -106,6 +109,7 @@ import confirm from "@/modules/commonUtil/service/confirm";
 import PageLayer from '@/components/PageLayer.vue';
 import SelectLayer from '@/components/SelectLayer.vue';
 import RcvrRegMdfyLayer from '../components/bc-receiver-register.vue';
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
 	name: "receiverManageList",
@@ -139,6 +143,7 @@ export default {
 			items: [],
 			status: '',
 			rowData: {},
+			cuInfoId: -1,
 		}
 	},
 	mounted() {
@@ -166,16 +171,32 @@ export default {
 					this.items = result.data;
 					this.totCnt = result.pageInfo.totCnt;
 					this.offset = result.pageInfo.offset;
-console.log('totCnt : ' + this.totCnt);
-console.log('offset : ' + this.offset);
 				} else {
 					confirm.fnAlert("", result.message);
 				}
 			});
 		},
 		// 삭제
-		fnDeleteReceiver(rowData) {
-			return rowData;
+		fnDeleteReceiver(data) {
+			this.cuInfoId = data.cuInfoId;
+			eventBus.$on('callbackEventBus', this.fnProcDeleteReceiver);
+			confirm.fnConfirm('', "선택 항목을 삭제하시겠습니까?", "확인");
+		},
+		fnProcDeleteReceiver() {
+			let params = {
+				cuInfoId: this.cuInfoId
+			};
+
+			addressApi.deleteReceiver(params).then(response =>{
+				const result = response.data;
+				if(result.success) {
+					confirm.fnAlert('', '삭제했습니다.');
+					this.cuInfoId = -1;
+					this.fnSearchReceiverList();
+				} else {
+					confirm.fnAlert('', result.message);
+				}
+			});
 		},
 		// 수신자 수정
 		fnModifyReceiverPop(data) {
@@ -193,6 +214,47 @@ console.log('offset : ' + this.offset);
 		fnPageClick(pageNo) {
 			this.pageNo = pageNo;
 			this.fnSearchReceiverList();
+		},
+		//엑셀 다운로드
+		fnExcelDownLoad() {
+			var params = this.searchData;
+			addressApi.excelDownloadReceiverTemplate(params);
+		},
+		//엑셀 업로드
+		fnExcelUpload() {
+			this.$refs.excelFile.click();
+		},
+		//엑셀 유효성 체크
+		fnValidExcel() {
+			const uploadFile = this.$refs.excelFile;
+			if(uploadFile.value == 0) {
+				confirm.fnAlert(this.componentsTitle, '엑셀파일을 등록해주세요.');
+				return false;
+			}
+			const permitExten = 'xls,xlsx'.split(',');
+			const extnIdx = uploadFile.value.lastIndexOf('.');
+			const extn = uploadFile.value.substring(extnIdx+1);
+			if((permitExten.indexOf(extn) < 0)) {
+				confirm.fnAlert(this.componentsTitle, '허용되지 않는 확장자입니다.');
+				return false;
+			}
+		},
+		async fnChgInputFile() {
+			this.fnValidExcel();
+			const uploadFile = this.$refs.excelFile;
+			console.log('uploadFile.value : ' + uploadFile.value);
+
+			let fd = new FormData();
+			fd.append('file', this.$refs.excelFile.files[0]);
+			//const vmSelectLayer = this;
+			await addressApi.excelUploadReceiver(fd).then(response =>{
+				const result = response.data;
+				if(result.success) {
+					confirm.fnAlert(this.componentsTitle, '발송하였습니다.');
+				} else {
+					confirm.fnAlert('', result.message);
+				}
+			});
 		},
 	}
 }

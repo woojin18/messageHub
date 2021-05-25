@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.user.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -136,8 +137,14 @@ public class UserService {
 	public RestResult<Object> registerUser(Map<String, Object> params) throws Exception {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		
-		int resultCnt = generalDao.insertGernal(DB.QRY_INSERT_USER, params);
+		// UserId 생성
+		String userId = CommonUtils.getCommonId("MBR", 5);
+		map.putAll(params);
+		map.put("userId", userId);
+					
+		int resultCnt = generalDao.insertGernal(DB.QRY_INSERT_USER, map);
 		if (resultCnt <= 0) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");

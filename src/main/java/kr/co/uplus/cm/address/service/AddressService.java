@@ -7,9 +7,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.common.service.CommonService;
+import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 
@@ -18,6 +21,9 @@ public class AddressService {
 	@Autowired
 	private GeneralDao generalDao;
 
+	@Autowired
+	private CommonService commonService;
+	
 	/**
 	 * 주소카테고리그룹 리스트 조회
 	 * @param params
@@ -204,14 +210,16 @@ public class AddressService {
 	public RestResult<Object> deleteMember(Map<String, Object> params) throws Exception {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.putAll(params);
 		
 		int resultCnt = 0;
 		
 		ArrayList<Integer> memberList = (ArrayList<Integer>)params.get("memberList");
 		
 		for (Integer member : memberList) {
-			params.put("cuInfoId", member);
-			resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_ADDR_MEMBER, params);
+			map.put("cuInfoId", member);
+			resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_ADDR_MEMBER, map);
 		}
 		
 		if (resultCnt <= 0) {
@@ -268,6 +276,57 @@ public class AddressService {
 			resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_ADDR_RCVR, params);
 		}
 		
+		if (resultCnt <= 0) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		} else {
+			rtn.setSuccess(true);
+			rtn.setData(params);
+		}
+			return rtn;
+	}
+	
+	/**
+	 * 수신자 엑셀 업로드
+	 * @param params
+	 * @param excelFile
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public List<RecvInfo> getRecvInfoLst(Map<String, Object> params, MultipartFile excelFile) throws Exception {
+		//read excelFile
+		List<Map<String, Object>> excelList = null;
+		List<String> colKeys = new ArrayList<String>();
+		List<String> contsVarNms = null;
+		colKeys.add("cuName");
+		colKeys.add("cuid");
+		colKeys.add("hpNumber");
+		
+		excelList = commonService.getExcelDataList(excelFile, 2, colKeys);
+		
+		return null;
+	}
+	
+	/**
+	 * 수신자 삭제
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> deleteReceiver(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		int resultCnt = 0;
+		resultCnt = generalDao.selectGernalCount(DB.QRY_SELECT_ADDR_RCVR_CNT, params);
+
+		if (resultCnt > 0) {
+			rtn.setSuccess(false);
+			rtn.setMessage("구성원에서 먼저 삭제하세요");
+			return rtn;
+		}
+
+		resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_ADDR_RCVR, params);
+
 		if (resultCnt <= 0) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
