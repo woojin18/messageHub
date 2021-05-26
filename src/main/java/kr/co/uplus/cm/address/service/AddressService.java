@@ -33,7 +33,7 @@ public class AddressService {
 	public RestResult<Object> selectAddressCateGrpList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
-		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ADDRESS_CATE_GRP_LIST, params);
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_CATE_GRP_LIST, params);
 		rtn.setData(rtnList);
 		return rtn;
 	}
@@ -51,9 +51,9 @@ public class AddressService {
 		Map<String, Object> rtnObj = new HashMap<String, Object>();
 		
 		//주소록 그룹 목록 조회
-		//List<Object> addrGrpList = generalDao.selectGernalList(DB.QRY_SELECT_ADDRESS_GRP_LIST, params);
-		Object addrGrp = generalDao.selectGernalObject(DB.QRY_SELECT_ADDRESS_GRP, params);
-		List<Object> addrCtgyList = generalDao.selectGernalList(DB.QRY_SELECT_ADDRESS_CATE_LIST, params);
+		//List<Object> addrGrpList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_GRP_LIST, params);
+		Object addrGrp = generalDao.selectGernalObject(DB.QRY_SELECT_ADDR_GRP, params);
+		List<Object> addrCtgyList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_CATE_LIST, params);
 		
 		rtnObj.put("addrGrp", addrGrp);
 		rtnObj.put("addrCtgyList", addrCtgyList);
@@ -77,12 +77,12 @@ public class AddressService {
 			rtn.setPageProps(params);
 			if(rtn.getPageInfo() != null) {
 				//카운트 쿼리 실행
-				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_ADDRESS_MEM_LIST_CNT, params);
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_ADDR_MEM_LIST_CNT, params);
 				rtn.getPageInfo().put("totCnt", listCnt);
 			}
 		}
 		
-		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ADDRESS_MEM_LIST, params);
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_MEM_LIST, params);
 		rtn.setData(rtnList);
 		return rtn;
 	}
@@ -140,7 +140,7 @@ public class AddressService {
 	public RestResult<Object> selectProjectList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
-		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_PROJECT_LIST, params);
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_PROJECT_LIST, params);
 		rtn.setData(rtnList);
 		return rtn;
 	}

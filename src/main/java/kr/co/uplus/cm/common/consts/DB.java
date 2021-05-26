@@ -132,14 +132,14 @@ public class DB {
     public final static String QRY_SELECT_RCS_TEMPLATE_LIST_CNT = "rcsTemplate.selectRcsTemplateCnt";
     public final static String QRY_SELECT_CORP_BRAND_CNT = "rcsTemplate.selectCorpBrandCnt";
     // 주소록 관리
-    public final static String QRY_SELECT_ADDRESS_CATE_GRP_LIST = "address.selectAddressCateGrpList";
-    public final static String QRY_SELECT_ADDRESS_GRP = "address.selectAddressGrp";
-    public final static String QRY_SELECT_ADDRESS_CATE_LIST = "address.selectAddressCateList";
-    public final static String QRY_SELECT_ADDRESS_MEM_LIST_CNT = "address.selectAddressMemListCnt";
-    public final static String QRY_SELECT_ADDRESS_MEM_LIST = "address.selectAddressMemList";
-    public final static String QRY_INSERT_ADDR_CATE_GRP = "address.insertAddressCateGrp";
-    public final static String QRY_UPDATE_ADDR_CATE_GRP = "address.updateAddressCateGrp";
-    public final static String QRY_SELECT_PROJECT_LIST = "address.selectProjectList";
+    public final static String QRY_SELECT_ADDR_CATE_GRP_LIST = "address.selectAddrCateGrpList";
+    public final static String QRY_SELECT_ADDR_GRP = "address.selectAddrGrp";
+    public final static String QRY_SELECT_ADDR_CATE_LIST = "address.selectAddrCateList";
+    public final static String QRY_SELECT_ADDR_MEM_LIST_CNT = "address.selectAddrMemListCnt";
+    public final static String QRY_SELECT_ADDR_MEM_LIST = "address.selectAddrMemList";
+    public final static String QRY_INSERT_ADDR_CATE_GRP = "address.insertAddrCateGrp";
+    public final static String QRY_UPDATE_ADDR_CATE_GRP = "address.updateAddrCateGrp";
+    public final static String QRY_SELECT_ADDR_PROJECT_LIST = "address.selectAddrProjectList";
     public final static String QRY_SELECT_ADDR_CM_CU_LIST_CNT = "address.selectAddrCmCuListCnt";
     public final static String QRY_SELECT_ADDR_CM_CU_LIST = "address.selectAddrCmCuList";
     public final static String QRY_INSERT_ADDR_MEMBER_LIST = "address.insertAddrMemberList";
@@ -165,4 +165,8 @@ public class DB {
 
 	// 고객사 정보
 	public final static String QRY_UPDATE_CORP_INFO			= "myPage.updateCorpInfo";
+	
+	// 프로젝트 기본정보
+	public final static String QRY_SELECT_PROJECT_BASE_INFO = "baseInfo.selectProjectBaseInfo";
+	public final static String QRY_UPDATE_PROJECT_BASE_INFO = "baseInfo.updateProjectBaseInfo";
 }

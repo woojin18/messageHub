@@ -37,6 +37,10 @@ module.exports = {
 			'^/addressApi': {
 				target: process.env.VUE_APP_TARGET_URL || 'http://localhost:7070',
 				changeOrigin: true
+			},
+			'^/baseInfoApi': {
+				target: process.env.VUE_APP_TARGET_URL || 'http://localhost:7070',
+				changeOrigin: true
 			}
 		}
 	},
