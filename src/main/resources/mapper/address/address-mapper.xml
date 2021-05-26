@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="address">
-	<select id="selectAddressCateGrpList" resultType="camel">
-		/* address.selectAddressCateGrpList */
+	<select id="selectAddrCateGrpList" resultType="camel">
+		/* address.selectAddrCateGrpList */
 		SELECT	ADDRESS_CATEGORY_GRP_ID
 			,	CORP_ID
 			,	PROJECT_ID					/* 전용: project id 입력, 사용: ALL */
@@ -16,8 +16,8 @@
 		AND	CORP_ID = #{corpId}
 	</select>
 
-	<select id="selectAddressGrp" parameterType="hashmap" resultType="camel">
-		/* address.selectAddressGrp */
+	<select id="selectAddrGrp" parameterType="hashmap" resultType="camel">
+		/* address.selectAddrGrp */
 		SELECT
 			CACG.ADDRESS_CATEGORY_GRP_ID
 			, NULL AS ADDRESS_CATEGORY_ID
@@ -30,8 +30,8 @@
 			AND	CACG.ADDRESS_CATEGORY_GRP_ID = #{addressCategoryGrpId}
 	</select>
 
-	<select id="selectAddressCateList" parameterType="hashmap" resultType="camel">
-		/* address.selectAddressCateList 주소록 카테고리 목록 조회 */
+	<select id="selectAddrCateList" parameterType="hashmap" resultType="camel">
+		/* address.selectAddrCateList 주소록 카테고리 목록 조회 */
 		SELECT
 			CAC.ADDRESS_CATEGORY_ID
 			, CAC.ADDRESS_CATEGORY_GRP_ID
@@ -49,8 +49,8 @@
 		ORDER BY CAC.DIS_ORDER
 	</select>
 
-	<select id="selectAddressMemListCnt" parameterType="hashmap" resultType="int">
-		/* address.selectAddressMemListCnt 주소록 구성원 카운트 조회 */
+	<select id="selectAddrMemListCnt" parameterType="hashmap" resultType="int">
+		/* address.selectAddrMemListCnt 주소록 구성원 카운트 조회 */
 		SELECT
 			COUNT(*) AS CNT
 		FROM ( 
@@ -63,8 +63,8 @@
 		WHERE	B.USE_YN = 'Y'
 	</select>
 	
-	<select id="selectAddressMemList" parameterType="hashmap" resultType="camel">
-		/* address.selectAddressMemList 주소록 구성원 조회 */
+	<select id="selectAddrMemList" parameterType="hashmap" resultType="camel">
+		/* address.selectAddrMemList 주소록 구성원 조회 */
 		SELECT
 			B.CU_INFO_ID
 		,	B.CU_NAME
@@ -84,8 +84,8 @@
 		</if>
 	</select>
 	
-	<select id="selectProjectList" parameterType="hashmap" resultType="camel">
-		/* address.selectProjectList 프로젝트 조회 */
+	<select id="selectAddrProjectList" parameterType="hashmap" resultType="camel">
+		/* address.selectAddrProjectList 프로젝트 조회 */
 		SELECT 
 			B.PROJECT_ID
 		,	B.PROJECT_NAME
@@ -95,8 +95,8 @@
 		WHERE A.USER_ID = #{userId}
 	</select>
 	
-	<insert id="insertAddressCateGrp">
-		/* address.insertAddressCateGrp 주소록 등록 */
+	<insert id="insertAddrCateGrp">
+		/* address.insertAddrCateGrp 주소록 등록 */
 		INSERT INTO	CM_ADDR_CATE_GRP (
 				ADDRESS_CATEGORY_GRP_ID
 		,		CORP_ID
@@ -118,8 +118,8 @@
 		)
 	</insert>
 	
-	<update id="updateAddressCateGrp" parameterType="hashmap">
-		/* address.updateAddressCateGrp 주소록 수정*/
+	<update id="updateAddrCateGrp" parameterType="hashmap">
+		/* address.updateAddrCateGrp 주소록 수정*/
 		UPDATE CM_ADDR_CATE_GRP
 		SET
 			PROJECT_ID = #{afProjectId} 

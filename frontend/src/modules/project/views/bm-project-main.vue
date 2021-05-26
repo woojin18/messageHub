@@ -14,7 +14,6 @@
 					<li :class="{active:(selMainTab == 3)}" @click="selMainTab=3; selMidTab=1; selSubTab==1"><a>멤버관리</a></li>
 					<li :class="{active:(selMainTab == 4)}" @click="selMainTab=4; selMidTab=1; selSubTab==1"><a>채널관리</a></li>
 					<li :class="{active:(selMainTab == 5)}" @click="selMainTab=5; selMidTab=1; selSubTab==1"><a>발신번호관리</a></li>
-					<li :class="{active:(selMainTab == 6)}" @click="selMainTab=6; selMidTab=1; selSubTab==1"><a>스팸관리</a></li>
 				</ul>			
 			</div>
 			<ul v-if="selMainTab==4" class="tabStyle tab6 bgColor_tapGray">
@@ -62,7 +61,8 @@
       <callbackManage v-if="selMainTab==5"></callbackManage>
       <!-- 발신번호관리 탭 -->
       
-      
+      <!-- 기본정보 탭 -->
+      <baseInfoManage v-if="selMainTab==2"></baseInfoManage>
 
 				
 		</article>
@@ -80,6 +80,8 @@ import kakao  from "@/modules/channel/components/bc-chan-kakao.vue";
 import mo     from "@/modules/channel/components/bc-chan-mo.vue";
 // 발신번호관리
 import callbackManage     from "@/modules/project/components/bc-project-callback-manage.vue";
+// 기본정보
+import baseInfoManage     from "@/modules/project/components/bc-project-baseInfo-manage.vue";
 
 export default {
   components: {
@@ -91,6 +93,7 @@ export default {
     , mo
 
     , callbackManage
+    , baseInfoManage
   },
   data() {
     return {

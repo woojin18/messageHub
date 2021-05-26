@@ -210,7 +210,6 @@ export default {
 	methods: {
 		fnSearch(pageNum) {
 			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
-			console.log(">>> this.pageNo : " + this.pageNo);
 			this.fnSelectUserList();
 		},
 		// select 박스 선택시 리스트 재출력
@@ -223,7 +222,6 @@ export default {
 			var params = Object.assign({}, this.searchData);
 			params.pageNo = this.pageNo;
 			params.listSize = this.listSize;
-			console.log(">>>> this.pageNo : " + this.pageNo);
 			await userApi.selectUserList(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
