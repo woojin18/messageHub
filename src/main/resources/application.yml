@@ -73,7 +73,6 @@ spring:
   application:
     name: cloud-svc-sample
   mvc:
-    static-path-pattern: /static/**
     contentnegotiation:
       favor-parameter: true
       favor-path-extension: true
@@ -141,8 +140,6 @@ spring:
   profiles: stg
   application:
     name: cloud-svc-sample
-  mvc:
-    static-path-pattern: /static/**
   servlet:
     multipart:
       max-file-size: 15MB 
@@ -205,8 +202,6 @@ spring:
   profiles: prd
   application:
     name: cloud-svc-sample
-  mvc:
-    static-path-pattern: /static/**
   servlet:
     multipart:
       max-file-size: 15MB 
