@@ -60,7 +60,9 @@ public class ProjectService {
 			if( "Y".equals(kakaoYn) )	useChStr += "KAKAO,";
 			if( "Y".equals(moYn) )		useChStr += "MO,";
 			
-			useChStr = useChStr.substring(0, useChStr.length()-1);
+			if( useChStr.length() > 0 ) {
+				useChStr = useChStr.substring(0, useChStr.length()-1);
+			}
 			
 			rtnMap.put("useCh", useChStr);
 		}

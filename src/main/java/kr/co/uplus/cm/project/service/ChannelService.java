@@ -487,7 +487,7 @@ public class ChannelService {
 			}
 			
 			// API 통신 처리
-			Map<String, Object> result =  apiInterface.listPost("/console/v1/brand", list, headerMap);
+			Map<String, Object> result =  apiInterface.listPost("/console/v1/brand/", list, headerMap);
 			System.out.println("-------------------------------------------@@@ result : " + result);
 			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
 			System.out.println("-------------------------------------------@@@ list : " + list);
