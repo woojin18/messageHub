@@ -1,13 +1,15 @@
 server:
   port: 7070
 
+# spring:
+#  mvc:
+#    static-path-pattern: /static/**
+
 ---
 spring:
   profiles: local
   application:
     name: cloud-svc-sample
-  mvc:
-    static-path-pattern: /static/**
   servlet:
     multipart:
       max-file-size: 15MB 

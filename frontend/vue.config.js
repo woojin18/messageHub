@@ -1,10 +1,8 @@
 module.exports = {
 	/** build config */
-	// outputDir: '../src/main/resources/static', // html, ico 파일 저장
-	outputDir: './docker/dist', // html, ico 파일 저장
-	publicPath: '/',
+	outputDir: '../src/main/resources/static', // html, ico 파일 저장
+	//outputDir: './docker/dist', // html, ico 파일 저장
 	assetsDir: 'assets', // css, img, js 저장. outputDir에 대한 상대 경로
-	productionSourceMap: undefined,
 	/** 
 	 * /api/** 요청은 backend 서버로 전달한다.
 	 * 이 설정이 없으면 axios에서 baseURL 설정하고 backend에서는 cors 설정 해야한다.
