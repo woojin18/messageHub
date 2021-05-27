@@ -41,7 +41,11 @@ module.exports = {
 			'^/baseInfoApi': {
 				target: process.env.VUE_APP_TARGET_URL || 'http://localhost:7070',
 				changeOrigin: true
-			}
+			},
+			'^/integratedSendApi': {
+				target: process.env.VUE_APP_TARGET_URL || 'http://localhost:7070',
+				changeOrigin: true
+			},
 		}
 	},
 	runtimeCompiler: true,
