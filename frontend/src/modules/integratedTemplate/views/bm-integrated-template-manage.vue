@@ -604,8 +604,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsSMSButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsSMSButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsSMSButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsSMSButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRowSMS" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowSMS(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -708,8 +708,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsLMSButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsLMSButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsLMSButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsLMSButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRowLMS" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowLMS(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -833,8 +833,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsShortButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                    <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsShortButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsShortButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                    <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsShortButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRowShort" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowShort(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -958,8 +958,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsTallButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsTallButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsTallButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsTallButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRowTall" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowTall(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -1107,8 +1107,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs90ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs90ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs90ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs90ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRow90" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow90(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -1192,8 +1192,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs91ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs91ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs91ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs91ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRow91" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow91(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -1277,8 +1277,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs92ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs92ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs92ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs92ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRow92" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow92(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -1362,8 +1362,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs93ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs93ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs93ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs93ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRow93" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow93(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -1447,8 +1447,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs94ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs94ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs94ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs94ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRow94" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow94(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -1532,8 +1532,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs95ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs95ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs95ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs95ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRow95" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow95(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -1702,8 +1702,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs100ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs100ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs100ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs100ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRow100" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow100(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -1787,8 +1787,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs101ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs101ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs101ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs101ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRow101" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow101(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -1872,8 +1872,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs102ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs102ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs102ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs102ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRow102" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow102(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -1957,8 +1957,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs103ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs103ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs103ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs103ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRow103" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow103(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -2042,8 +2042,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs104ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs104ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs104ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs104ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
                           <td class="text-center end"><a @click="addRow104" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow104(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -2127,8 +2127,8 @@
                             <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
                             <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs105ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs105ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs105ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs105ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
 
                             <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
                           </td>
@@ -2282,8 +2282,8 @@
 		                            <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
 		                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
 		                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-		                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnFriendTalkButtonSD" calendarId="friendTalkStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :dateParams="{idx:index}"></Calendar>
-				                    <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnFriendTalkButtonED" calendarId="friendTalkEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :dateParams="{idx:index}"></Calendar>
+		                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnFriendTalkButtonSD" calendarId="friendTalkStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+				                    <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnFriendTalkButtonED" calendarId="friendTalkEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
 		                            <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
 		                          </td>
 		                          <td class="text-center end"><a @click="addRowFriendTalk" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowFriendTalk(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -3875,14 +3875,14 @@ export default {
         //var endDateId = 'friendTalkEndDateId'+this.rowData.friendTalkButtons.length;
         
         //this.rowData.friendTalkButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        this.rowData.friendTalkButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':''});
+        this.rowData.friendTalkButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'buttonLink1':''});
       }
     },
     removeRowFriendTalk: function(row){
       //if(this.rowData.friendTalkButtons.length <= this.friendTalkButtonsSize){
       if(this.rowData.friendTalkButtons.length <= 1){
         this.rowData.friendTalkButtons.splice(row,1);
-        this.rowData.friendTalkButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+        this.rowData.friendTalkButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'buttonLink1':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
       }else{
         this.rowData.friendTalkButtons.splice(row,1);
       }
