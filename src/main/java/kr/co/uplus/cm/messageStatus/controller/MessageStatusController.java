@@ -84,7 +84,7 @@ public class MessageStatusController {
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "messageStatus_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "messageStatus_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;
@@ -185,7 +185,7 @@ public class MessageStatusController {
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "webSend_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "webSend_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;
@@ -216,7 +216,7 @@ public class MessageStatusController {
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "webSendFail_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "webSendFail_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;
@@ -285,7 +285,7 @@ public class MessageStatusController {
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "bookingSend_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "bookingSend_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;
@@ -373,7 +373,7 @@ public class MessageStatusController {
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "moReceptionStatus_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "moReceptionStatus_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;

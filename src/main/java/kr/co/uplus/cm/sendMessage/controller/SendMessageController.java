@@ -59,7 +59,7 @@ public class SendMessageController {
 
     @Autowired
     ApiInterface apiInterface;
-	
+
     @InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
@@ -187,7 +187,7 @@ public class SendMessageController {
         sheetList.add(map);
 
         ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "pushTemplate_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "pushTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
         model.addObject("sheetList", sheetList);
 
         return model;
@@ -287,7 +287,7 @@ public class SendMessageController {
 
         /** 비동기화 발송 */
         try {
-            List<Object> reSendCdList = sendMsgService.selectGernalList(null);
+            List<Object> reSendCdList = sendMsgService.reSendCdList(null);
             log.info("{}.sendPushMessage aSync API send Start ====>", this.getClass());
             sendMsgService.sendPushMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
@@ -334,7 +334,7 @@ public class SendMessageController {
         sheetList.add(map);
 
         ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "smsTemplate_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "smsTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
         model.addObject("sheetList", sheetList);
 
         return model;
@@ -427,7 +427,7 @@ public class SendMessageController {
         }
 
         try {
-            List<Object> reSendCdList = sendMsgService.selectGernalList(null);
+            List<Object> reSendCdList = sendMsgService.reSendCdList(null);
             log.info("{}.sendSmsMessage aSync API send Start ====>", this.getClass());
             sendMsgService.sendSmsMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
@@ -528,7 +528,7 @@ public class SendMessageController {
         }
 
         try {
-            List<Object> reSendCdList = sendMsgService.selectGernalList(null);
+            List<Object> reSendCdList = sendMsgService.reSendCdList(null);
             log.info("{}.sendMmsMessage aSync API send Start ====>", this.getClass());
             sendMsgService.sendMmsMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
@@ -580,7 +580,7 @@ public class SendMessageController {
         sheetList.add(map);
 
         ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "frndTalkTemplate_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "frndTalkTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
         model.addObject("sheetList", sheetList);
 
         return model;
@@ -683,7 +683,7 @@ public class SendMessageController {
 
         /** 비동기화 발송 */
         try {
-            List<Object> reSendCdList = sendMsgService.selectGernalList(null);
+            List<Object> reSendCdList = sendMsgService.reSendCdList(null);
             log.info("{}.sendFrndTalkMessage aSync API send Start ====>");
             sendMsgService.sendFrndTalkMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {

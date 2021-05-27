@@ -97,11 +97,11 @@ public class DateUtils {
 
 	/**
 	 * 날짜 형식을 받아서 오늘 날짜를 해당 형식으로 반환
-	 * 
+	 *
 	 * @param format
 	 * @return
 	 */
-	public static String getCurrnetDate(String format) {
+	public static String getCurrentDate(String format) {
 		Date date = Calendar.getInstance().getTime();
 		DateFormat dateFormat = new SimpleDateFormat(format);
 		return dateFormat.format(date);

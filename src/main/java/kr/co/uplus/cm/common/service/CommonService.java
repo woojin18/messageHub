@@ -186,7 +186,7 @@ public class CommonService {
         }
 
         Path prjRelPath = Paths.get("");
-        String currentYmd = DateUtil.getCurrnetDate("yyyyMMdd");
+        String currentYmd = DateUtil.getCurrentDate("yyyyMMdd");
         String prjAbsPath = "";
         String uploadDirPath = "";
         String convertUUID = UUID.randomUUID().toString().replace("-", ""); // 해쉬명 생성
@@ -419,7 +419,7 @@ public class CommonService {
         }
 
         Path prjRelPath = Paths.get("");
-        String currentYmd = DateUtil.getCurrnetDate("yyyyMMdd");
+        String currentYmd = DateUtil.getCurrentDate("yyyyMMdd");
         String prjAbsPath = "";
         String uploadDirPath = this.imgUploadPath;
 

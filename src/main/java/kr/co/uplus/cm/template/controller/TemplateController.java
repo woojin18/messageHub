@@ -40,7 +40,7 @@ public class TemplateController {
 
     @Autowired
     private TemplateService tmpltSvc;
-	
+
     @InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
@@ -155,7 +155,7 @@ public class TemplateController {
         sheetList.add(map);
 
         ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "pushTemplate_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "pushTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
         model.addObject("sheetList", sheetList);
 
         return model;
@@ -271,7 +271,7 @@ public class TemplateController {
         sheetList.add(map);
 
         ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "smsTemplate_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "smsTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
         model.addObject("sheetList", sheetList);
 
         return model;
@@ -364,7 +364,7 @@ public class TemplateController {
         sheetList.add(map);
 
         ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "frndTalkTemplate_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "frndTalkTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
         model.addObject("sheetList", sheetList);
 
         return model;

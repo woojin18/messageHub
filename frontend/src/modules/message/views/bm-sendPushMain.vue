@@ -235,7 +235,7 @@
                 <h5>태그</h5>
               </div>
               <div class="of_h" style="width:82%">
-                <input type="text" class="inputStyle" style="width:100%" placeholder="캠페인 ID를 입력해주세요." v-model="sendData.campaignId">
+                <input type="text" class="inputStyle" style="width:100%" placeholder="캠페인 ID를 입력해주세요." v-model="sendData.campaignId" maxlength="20">
               </div>
             </div>
           </div>
