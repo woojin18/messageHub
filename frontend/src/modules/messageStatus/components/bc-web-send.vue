@@ -27,7 +27,7 @@
           <div class="inline-block" style="width:16%">
             <input type="text" class="inputStyle vertical-top ml10" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="수신자정보">
           </div>
-          <a @click="fnSearch" class="btnStyle2 float-right" title="검색">검색</a>
+          <a @click="fnSearch()" class="btnStyle2 float-right" title="검색">검색</a>
         </div>
       </div>
     </div>
@@ -224,8 +224,10 @@ export default {
         var result = response.data;
         if(result.success) {
           this.datas = result.data;
-          this.totCnt = result.pageDto.totCnt;
-          this.offset = result.pageDto.offset;
+          //this.totCnt = result.pageDto.totCnt;
+          //this.offset = result.pageDto.offset;
+          this.totCnt = result.pageInfo.totCnt;
+          this.offset = result.pageInfo.offset;
         } else {
           alert(result.message);
         }

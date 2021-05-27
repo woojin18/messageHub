@@ -36,15 +36,15 @@ public class AddressController {
 
 	@Autowired
 	private AddressService addressSvc;
-	
+
 	@Autowired
 	private CommonService commonService;
-	
+
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
 	}
-	
+
 	/**
 	 * 주소카테고리그룹 리스트 조회
 	 * @param request
@@ -66,7 +66,7 @@ public class AddressController {
 		}
 		return rtn;
 	}
-	
+
 	/**
 	 * 주소리스트 조회
 	 * @param request
@@ -88,7 +88,7 @@ public class AddressController {
 		}
 		return rtn;
 	}
-	
+
 	/**
 	 * 주소록 구성원 조회
 	 * @param request
@@ -109,7 +109,7 @@ public class AddressController {
 		}
 		return rtn;
 	}
-	
+
 	/**
 	 * 주소록 등록
 	 * @param request
@@ -121,7 +121,7 @@ public class AddressController {
 	public RestResult<?> registerAddr(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
- 
+
 		try {
 			rtn = addressSvc.registerAddr(params);
 		} catch (Exception e) {
@@ -132,7 +132,7 @@ public class AddressController {
 
 		return rtn;
 	}
-	
+
 	/**
 	 * 주소록 수정
 	 * @param request
@@ -144,7 +144,7 @@ public class AddressController {
 	public RestResult<?> modifyAddr(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
-		
+
 		try {
 			rtn = addressSvc.modifyAddr(params);
 		} catch (Exception e) {
@@ -155,7 +155,7 @@ public class AddressController {
 
 		return rtn;
 	}
-	
+
 	/**
 	 * 프로젝트 리스트 조회
 	 * @param request
@@ -177,7 +177,7 @@ public class AddressController {
 		}
 		return rtn;
 	}
-	
+
 	/**
 	 * 수신자 목록 조회
 	 * @param request
@@ -199,7 +199,7 @@ public class AddressController {
 		}
 		return rtn;
 	}
-	
+
 	/**
 	 * 구성원 등록
 	 * @param request
@@ -222,7 +222,7 @@ public class AddressController {
 
 		return rtn;
 	}
-	
+
 	/**
 	 * 구성원 삭제
 	 * @param request
@@ -266,7 +266,7 @@ public class AddressController {
 		}
 		return rtn;
 	}
-	
+
 	/**
 	 * 수신자 등록/수정
 	 * @param request
@@ -289,7 +289,7 @@ public class AddressController {
 
 		return rtn;
 	}
-	
+
 	/**
 	 * 수신자 엑셀 템플릿 다운로드
 	 * @param request
@@ -312,12 +312,12 @@ public class AddressController {
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-		model.addObject("excelFileName", "rcvrTemplate_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+		model.addObject("excelFileName", "rcvrTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;
 	}
-	
+
 	/**
 	 * 수신자 엑셀 업로드
 	 * @param request
@@ -329,12 +329,12 @@ public class AddressController {
 	@PostMapping(path="/excelUploadReceiver")
 		public RestResult<?> excelUploadReceiver(HttpServletRequest request, HttpServletResponse response
 				, @ModelAttribute MultipartFileDTO multipartFileDTO) throws Exception {
-		
+
 		List<RecvInfo> recvInfoLst = null;
 		Map<String, Object> params = new HashMap<String, Object>();
 		recvInfoLst = addressSvc.getRecvInfoLst(params, multipartFileDTO.getFile());
 		RestResult<Object> rtn = new RestResult<Object>();
-		
+
 		try {
 			params = commonService.setUserInfo(multipartFileDTO.getParams());
 			log.info("{}.excelUploadReceiver Start ====> params : {}", this.getClass(), params);
@@ -346,7 +346,7 @@ public class AddressController {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 수신자 삭제
 	 * @param request

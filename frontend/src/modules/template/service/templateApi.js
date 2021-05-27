@@ -58,9 +58,6 @@ const deleteFrndTalkTmplt = (params) => {
 const selectSenderKeyList = (params) => {
   return httpClient.post('/api/public/template/selectSenderKeyList', params, { headers: {"show-layer": "Yes"} });
 };
-const selectSenderKeyGrpList = (params) => {
-  return httpClient.post('/api/public/template/selectSenderKeyGrpList', params, { headers: {"show-layer": "Yes"} });
-};
 
 /* RCS */
 const corpBrandCnt = (params) => {
@@ -88,7 +85,6 @@ export default {
     excelDownloadFrndTalkTmplt,
     deleteFrndTalkTmplt,
     selectSenderKeyList,
-    selectSenderKeyGrpList,
     corpBrandCnt,
     selectRcsTemplateList
 };

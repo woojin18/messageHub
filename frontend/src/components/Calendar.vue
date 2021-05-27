@@ -32,6 +32,13 @@ export default {
       default: function() {
         return '';
       }
+    },
+    params: {
+      type: Object,
+      require: false,
+      default: function() {
+        return {};
+      }
     }
   },
   template: '<input/>',
@@ -49,7 +56,7 @@ export default {
       ,showMonthAfterYear: true // 다음년도 월 보이기
       ,showOtherMonths: true // 다른 월 달력에 보이기
       ,selectOtherMonths: true // 다른 월 달력에 보이는거 클릭 가능하게 하기
-      ,onSelect: function(d){vm.$emit('update-date',d)}
+      ,onSelect: function(d){vm.$emit('update-date',d, vm.params)}
     });
   },
   beforeDestroy: function(){jq('#'+this.calendarId).datepicker('hide').datepicker('destroy')}

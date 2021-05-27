@@ -247,7 +247,7 @@
     </select>
 
     <insert id="insertCmMsg" parameterType="hashmap">
-    /* template.insertCmMsg - 채널별 메시지 내역 등록 */
+    /* sendMessage.insertCmMsg - 채널별 메시지 내역 등록 */
         INSERT
             INTO cm.CM_MSG
         (
@@ -284,7 +284,7 @@
             , #{reqCh}
             , #{productCode}
             , '9999'
-            , CONCAT(DATE_FORMAT(NOW(3), '%Y-%m-%dT%H:%i:%s'), LEFT(DATE_FORMAT(NOW(3), '.%f'), 4), '+09')
+            , SUBSTR(#{zonedDateTime}, 1, 26)
             , #{finalCh}
             , #{phone}
             , #{pushAppId}

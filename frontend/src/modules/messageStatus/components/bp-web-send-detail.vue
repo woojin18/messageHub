@@ -145,8 +145,11 @@ export default {
              messageStatusApi.selectWebSendFailList(params).then(response=> {
 				var result = response.data;
 				
-				var totCnt = result.pageDto.totCnt;
-          		var offset = result.pageDto.offset;
+				//var totCnt = result.pageDto.totCnt;
+          		//var offset = result.pageDto.offset;
+
+		        var totCnt = result.pageInfo.totCnt;
+		        var offset = result.pageInfo.offset;
 				
 				var resultOne = response.data.data[0];
 

@@ -8,14 +8,14 @@
 					<div v-for="(item, i) in msgFormData" :key="i" class="col-xs-6 bgColor_f1" style="width:47%; padding:20px; margin:12px;">
 						<div class="row">
 							<div class="col-xs-6">
-								<img v-if="item.productCardType == 'sms'" src="../../../../public/se2/images/03_5_1_4_imgage01.png" class="img-responsive inline-block" style="width: 98%;">
-								<img v-if="item.productCardType == 'LMS'" src="../../../../public/se2/images/03_5_1_4_imgage02.png" class="img-responsive inline-block" style="width: 98%;">
-								<img v-if="item.productCardType == 'Carousel Small'" src="../../../../public/se2/images/03_5_1_4_imgage07.png" class="img-responsive inline-block" style="width: 98%;">
-								<img v-if="item.productCardType == 'Carousel Medium'" src="../../../../public/se2/images/03_5_1_4_imgage08.png" class="img-responsive inline-block" style="width: 98%;">
-								<img v-if="item.productCardType == 'Standalone Horizontal Left'" src="../../../../public/se2/images/03_5_1_4_imgage06.png" class="img-responsive inline-block" style="width: 98%;">
-								<img v-if="item.productCardType == 'Standalone Horizontal Right'" src="../../../../public/se2/images/03_5_1_4_imgage05.png" class="img-responsive inline-block" style="width: 98%;">
-								<img v-if="item.productCardType == 'Standalone Media Top Medium'" src="../../../../public/se2/images/03_5_1_4_imgage03.png" class="img-responsive inline-block" style="width: 98%;">
-								<img v-if="item.productCardType == 'Standalone Media Top Tall'" src="../../../../public/se2/images/03_5_1_4_imgage04.png" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.tmpltName == 'SMS'" src="../../../../public/se2/images/03_5_1_4_imgage01.png" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.tmpltName == 'LMS'" src="../../../../public/se2/images/03_5_1_4_imgage02.png" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.cardType == 'carousel small'" src="../../../../public/se2/images/03_5_1_4_imgage07.png" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.cardType == 'carousel medium'" src="../../../../public/se2/images/03_5_1_4_imgage08.png" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.tmpltName == '가로형(Left)'" src="../../../../public/se2/images/03_5_1_4_imgage06.png" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.tmpltName == '가로형(Right)'" src="../../../../public/se2/images/03_5_1_4_imgage05.png" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.tmpltName == '세로형(Medium)'" src="../../../../public/se2/images/03_5_1_4_imgage03.png" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.tmpltName == '세로형(Tall)'" src="../../../../public/se2/images/03_5_1_4_imgage04.png" class="img-responsive inline-block" style="width: 98%;">
 							</div>	
 							<div class="col-xs-6">
 								<!-- <table style="width: 80%; margin-left: 20px"> -->
@@ -38,7 +38,7 @@
 									</tr>
 									<tr height="30">
 										<td>메시지타입</td>
-										<td>{{item.productCardType}}</td>
+										<td>{{item.cardType}}</td>
 									</tr>
 									<tr height="30">
 										<td>카드장수</td>
@@ -65,30 +65,6 @@
 										<td>{{item.maxMediaSize}}</td>
 									</tr>
 								</table>
-								<!-- <ul class="inline-block vertical-top ml20">
-									<li class="mt8">포맷 ID</li>
-									<li class="mt8">상품명</li>
-									<li class="mt8">상품코드</li>
-									<li class="mt8">메시지타입</li>
-									<li class="mt8">카드장수</li>
-									<li class="mt8">제목글자수</li>
-									<li class="mt8">본문글자수</li>
-									<li class="mt8">버튼개수</li>
-									<li class="mt8">이미지(px)</li>
-									<li class="mt8">이미지용량</li>
-								</ul>
-								<ul class="inline-block vertical-top ml20" style="width : 55%; ">
-									<li class="mt8">{{item.messagebaseformId}}</li>
-									<li class="mt8">{{item.tmpltName}}</li>
-									<li class="mt8">{{item.productCode}}</li>
-									<li class="mt8">{{item.productCardType}}</li>
-									<li class="mt8">{{item.cardCount}}</li>
-									<li class="mt8">{{item.maxTitleSize}}</li>
-									<li class="mt8">{{item.maxDescriptionSize}}</li>
-									<li class="mt8">{{item.maxButtonCount}}</li>
-									<li class="mt8">{{item.imageWidth}}*{{item.imageHeight}}</li>
-									<li class="mt8">{{item.maxMediaSize}}</li>
-								</ul> -->
 							</div>
 						</div>						
 					</div>

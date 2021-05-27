@@ -49,26 +49,28 @@
           <div class="of_h">
             <div class="float-left" style="width:22%"><h4>템플릿강조유형</h4></div>
             <div class="float-left" style="width:78%">
-              <input type="radio" name="HighType" value="Y" id="HighType1" checked=""> <label for="HighType1" class="mr30">선택 안 함</label>
-              <input type="radio" name="HighType" value="N" id="HighType2"> <label for="HighType2">강조 표기형</label>        
+              <input type="radio" id="emphasizeYn_N" name="emphasizeYn" value="Y" v-model="tmpltData.emphasizeYn">
+              <label for="emphasizeYn_N" class="mr30">선택 안 함</label>
+              <input type="radio" id="emphasizeYn_Y" name="emphasizeYn" value="N" v-model="tmpltData.emphasizeYn">
+              <label for="emphasizeYn_Y">강조 표기형</label>
             </div>
           </div>
           <div class="of_h">
             <div class="float-left" style="width:22%"><h4>템플릿강조제목 *</h4></div>
             <div class="float-left" style="width:78%">
-              <input type="text" class="inputStyle" placeholder="템플릿 강조 제목">      
+              <input type="text" class="inputStyle" placeholder="최대 2줄 23자(24자부터 말줄임 처리, 권장하지 않음)" v-model="tmpltData.tmpltEmpsTitle" maxlength="50">
             </div>
           </div>
           <div class="of_h">
             <div class="float-left" style="width:22%"><h4>템플릿강조부제목 *</h4></div>
             <div class="float-left" style="width:78%">
-              <input type="text" class="inputStyle" placeholder="부제목">      
+              <input type="text" class="inputStyle" placeholder="최대 2줄 18자 (19자부터 말줄임 처리, 권장하지 않음)" v-model="tmpltData.tmpltEmpsSubTitle" maxlength="50">
             </div>
           </div>
           <div class="of_h">
             <div class="float-left" style="width:22%"><h4>내용 *</h4></div>
             <div class="float-left" style="width:78%">
-              <textarea class="textareaStyle height190" placeholder="템플릿 테스트입니다."></textarea>    
+              <textarea class="textareaStyle height190" v-model="tmpltData.tmpltContent" placeholder="템플릿 내용/부가 정보/광고성 메시지 합 최대 1,000자" maxlength="1000"></textarea>
             </div>
           </div>
           <div class="of_h consolMarginTop">
@@ -255,6 +257,10 @@ export default {
       tmpltData : {
         senderKey : '',
         tmpltName : '',
+        emphasizeYn: 'N',
+        tmpltEmpsTitle: '',
+        tmpltEmpsSubTitle: '',
+        tmpltContent: '',
       }
     }
   },

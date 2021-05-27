@@ -2,6 +2,7 @@ package kr.co.uplus.cm.sendMessage.service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -609,6 +610,7 @@ public class SendMessageService {
             params.put("senderType", senderType);
             params.put("reqCh", reqCh);
             params.put("productCode", productCode);
+            params.put("zonedDateTime", ZonedDateTime.now().toString());
             params.put("finalCh", finalCh);
             params.put("phone", recvInfo.getPhone());
             params.put("pushAppId", pushAppId);
@@ -627,7 +629,7 @@ public class SendMessageService {
      * @return
      * @throws Exception
      */
-    public List<Object> selectGernalList(Map<String, Object> params) throws Exception {
+    public List<Object> reSendCdList(Map<String, Object> params) throws Exception {
         return generalDao.selectGernalList(DB.QRY_SELECT_RE_SEND_CD_LIST, params);
     }
 

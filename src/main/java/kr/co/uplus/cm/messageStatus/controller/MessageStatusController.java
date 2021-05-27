@@ -12,8 +12,6 @@ import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.co.uplus.cm.common.consts.Const;
 //import bin.main.kr.co.uplus.cm.common.type.MongoConf;
 //import bin.main.kr.co.uplus.cm.gw.model.mongo.CmMsgInfoDto;
 import kr.co.uplus.cm.common.dto.RestResult;
@@ -44,11 +41,6 @@ public class MessageStatusController {
 
 	@Autowired
 	private MongoCmd mongoCmd;
-	
-    @InitBinder
-	public void initBinder(WebDataBinder binder) {
-		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
-	}
 
 	// 메시지 현황 리스트 조회
 	@PostMapping("/selectMessageStatusList")
@@ -92,7 +84,7 @@ public class MessageStatusController {
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "messageStatus_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "messageStatus_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;
@@ -193,7 +185,7 @@ public class MessageStatusController {
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "webSend_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "webSend_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;
@@ -224,7 +216,7 @@ public class MessageStatusController {
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "webSendFail_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "webSendFail_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;
@@ -293,7 +285,7 @@ public class MessageStatusController {
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "bookingSend_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "bookingSend_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;
@@ -381,7 +373,7 @@ public class MessageStatusController {
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "moReceptionStatus_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "moReceptionStatus_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;

@@ -40,7 +40,7 @@ public class IntegratedTemplateController {
 
 	@Autowired
 	private IntegratedTemplateService integratedTemplateService;
-	
+
     @InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
@@ -161,7 +161,7 @@ public class IntegratedTemplateController {
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "pushTemplate_"+DateUtil.getCurrnetDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "pushTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;

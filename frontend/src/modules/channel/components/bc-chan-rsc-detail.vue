@@ -80,8 +80,8 @@
 					<div class="of_h consolMarginTop">
 						<h4 style="width:28%" class="inline-block topH4">타 프로젝트<br>사용여부</h4>
 						<div class="inline-block float-right" style="width:72%">
-							<input type="radio" name="otherProjectYn" value="Y" class="cBox" id="yes" checked="" :disabled="this.duplCheckYn == 'N'"> <label for="yes" class="payment mt10 mr30">공용</label>
-							<input type="radio" name="otherProjectYn" value="N" class="cBox" id="no" :disabled="this.duplCheckYn == 'N'"> <label for="no" class="payment mt10">전용</label>		
+							<input type="radio" v-model="otherProjectYn" value="Y" class="cBox" id="yes" checked="" :disabled="this.duplCheckYn == 'N'"> <label for="yes" class="payment mt10 mr30">공용</label>
+							<input type="radio" v-model="otherProjectYn" value="N" class="cBox" id="no" :disabled="this.duplCheckYn == 'N'"> <label for="no" class="payment mt10">전용</label>		
 						</div>
 					</div>
 
@@ -141,33 +141,33 @@
 						</div>
 					</div>
 
-					<div v-if="inputVal.call != ''" class="ml_28 of_h consolMarginTop">
+					<!-- <div v-if="inputVal.call != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Call *</p>
 						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.callWeblink" :disabled="this.duplCheckYn == 'N'">
-					</div>
+					</div> -->
 					<div v-if="inputVal.web != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Web *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.webWeblink" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.webWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
 					</div>
 					<div v-if="inputVal.store != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Store *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.storeWeblink" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.storeWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
 					</div>
 					<div v-if="inputVal.order != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Order *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.orderWeblink" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.orderWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
 					</div>
 					<div v-if="inputVal.buy != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Buy *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.buyWeblink" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.buyWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
 					</div>
 					<div v-if="inputVal.ticket != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Ticket *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.ticketWeblink" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.ticketWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
 					</div>
 					<div v-if="inputVal.moreInfo != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-More Info *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.moreInfoWeblink" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.moreInfoWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
 					</div>
 
 					<div class="of_h consolMarginTop">
@@ -351,6 +351,7 @@ export default {
 		brandId : "",
 		tmpBrandYn : "N",
 		duplCheckYn : "N",
+		otherProjectYn : "Y",
 		inputVal : {
 			corpId 			: "",
 			projectId 		: "",
@@ -426,6 +427,13 @@ export default {
 		this.tmpBrandYn = "N";
 	}
 
+console.log(this.projectId);
+
+	if( this.projectId != 'ALL' ){
+		this.otherProjectYn = 'N';
+	} else {
+		this.otherProjectYn = 'Y';
+	}
   },
   methods: {
 	// 목록
@@ -433,17 +441,22 @@ export default {
 		//this.$router.go(-1);
 		this.$router.push( {name:"projectMain",params:{"projectId" : this.projectId, "selMainTab" : 4, "selMidTab" : 1 }} );
 	},
-	// API 중복확인
+	// API 중복확인 및 상세정보 가져오기
 	fnCheckApiKey(){
-		console.log(this.inputVal.apiKey);
 		var params = {
-			"apiKey"		: this.inputVal.apiKey,
-			"apiSecret"	: this.inputVal.apiSecret
+			"apiKey"	: this.inputVal.apiKey,
+			"apiSecret"	: this.inputVal.apiSecret,
+			"brandId"   : this.brandId
 		};
 		api.checkApiKey(params).then(response =>{
 			var result = response.data.data;
-			this.category = result.data;
-			if( result.data != null && result.data != undefined ){
+			this.category = result.cateData.data;
+			console.log(result.inputVal);
+			if( this.tmpBrandYn === 'N' && this.save_status != 'C' ){
+				console.log(result.inputVal.data);
+				this.inputVal = result.inputVal;
+			}
+			if( result.cateData.data != null && result.cateData.data != undefined ){
 				this.duplCheckYn = 'Y';
 				confirm.fnAlert("", "정상적으로 확인되었습니다.");
 				if(this.save_status === 'U'){
@@ -507,7 +520,6 @@ export default {
 			if( checkName === 'ticket'	){ this.inputVal.ticket		= '';}
 			if( checkName === 'moreInfo'){ this.inputVal.moreInfo 	= '';}
 		//	alert("3개이상 메뉴 안됨");
-			console.log(  this.inputVal.order );
 		}
 	},
 	// 대표발신번호 동일 체크여부
