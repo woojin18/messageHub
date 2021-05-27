@@ -321,19 +321,19 @@ public class IntegratedTemplateService {
 		        	        List<Map<String, Object>> rcs90ImgInfoList = null;
 		        	        if(params.containsKey("rcs90ImgInfoList")) {
 		        	        	rcs90ImgInfoList = (List<Map<String, Object>>) params.get("rcs90ImgInfoList");
-		        	            Map<String, Object> imgInfo = rcs90ImgInfoList.get(0);//rcs에서 short, tall에는 이미지가 1개만 들어온다
+		        	            Map<String, Object> imgInfo = rcs90ImgInfoList.get(0);//rcs에서 short, tall, cShort, cTall에는 이미지가 1개만 들어온다
 		        	            if(imgInfo.containsKey("fileId")) {
 		        	            	//sb.append("	\""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
-		                			sb.append("	\"mediaUrl\" : \"{"+params.get("imgUrl")+"}\", "); //
-		                			sb.append("	\"media\" : \""+params.get("fileId")+"\", "); //
+		                			sb.append("	\"mediaUrl\" : \"{"+imgInfo.get("imgUrl")+"}\", "); //
+		                			sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\", "); //
 
 		                			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs90Buttons");
 		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	            }
 		        	        }
 		        			sb.append("	} ");
+		        			if(k < (int)params.get("rcs9CardCount")-1) sb.append(", ");
         				}
-        				if(k < (int)params.get("rcs9CardCount")-1) sb.append(", ");
         				
         				if(k == 1) {
 		        			sb.append(" { "); 
@@ -346,16 +346,16 @@ public class IntegratedTemplateService {
 		        	            Map<String, Object> imgInfo = rcs91ImgInfoList.get(0);//rcs에서 short, tall에는 이미지가 1개만 들어온다
 		        	            if(imgInfo.containsKey("fileId")) {
 		        	            	//sb.append("	\""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
-		                			sb.append("	\"mediaUrl\" : \"{"+params.get("imgUrl")+"}\", "); //
-		                			sb.append("	\"media\" : \""+params.get("fileId")+"\", "); //
+		                			sb.append("	\"mediaUrl\" : \"{"+imgInfo.get("imgUrl")+"}\", "); //
+		                			sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\", "); //
 		                			
 		                			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs91Buttons");
 		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	            }
 		        	        }
 		        			sb.append("	} ");
+		        			if(k < (int)params.get("rcs9CardCount")-1) sb.append(", ");
         				}
-        				if(k < (int)params.get("rcs9CardCount")-1) sb.append(", ");
         				
         				if(k == 2) {
 		        			sb.append(" { "); 
@@ -368,16 +368,16 @@ public class IntegratedTemplateService {
 		        	            Map<String, Object> imgInfo = rcs92ImgInfoList.get(0);//rcs에서 short, tall에는 이미지가 1개만 들어온다
 		        	            if(imgInfo.containsKey("fileId")) {
 		        	            	//sb.append("	\""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
-		                			sb.append("	\"mediaUrl\" : \"{"+params.get("imgUrl")+"}\", "); //
-		                			sb.append("	\"media\" : \""+params.get("fileId")+"\", "); //
+		                			sb.append("	\"mediaUrl\" : \"{"+imgInfo.get("imgUrl")+"}\", "); //
+		                			sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\", "); //
 
 		                			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs92Buttons");
 		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	            }
 		        	        }
 		        			sb.append("	} ");
+		        			if(k < (int)params.get("rcs9CardCount")-1) sb.append(", ");
         				}
-        				if(k < (int)params.get("rcs9CardCount")-1) sb.append(", ");
         				
         				if(k == 3) {
 		        			sb.append(" { "); 
@@ -390,16 +390,16 @@ public class IntegratedTemplateService {
 		        	            Map<String, Object> imgInfo = rcs93ImgInfoList.get(0);//rcs에서 short, tall에는 이미지가 1개만 들어온다
 		        	            if(imgInfo.containsKey("fileId")) {
 		        	            	//sb.append("	\""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
-		                			sb.append("	\"mediaUrl\" : \"{"+params.get("imgUrl")+"}\", "); //
-		                			sb.append("	\"media\" : \""+params.get("fileId")+"\", "); //
+		                			sb.append("	\"mediaUrl\" : \"{"+imgInfo.get("imgUrl")+"}\", "); //
+		                			sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\", "); //
 
 		                			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs93Buttons");
 		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	            }
 		        	        }
 		        			sb.append("	} ");
+		        			if(k < (int)params.get("rcs9CardCount")-1) sb.append(", ");
         				}
-        				if(k < (int)params.get("rcs9CardCount")-1) sb.append(", ");
         				
         				if(k == 4) {
 		        			sb.append(" { "); 
@@ -412,16 +412,16 @@ public class IntegratedTemplateService {
 		        	            Map<String, Object> imgInfo = rcs94ImgInfoList.get(0);//rcs에서 short, tall에는 이미지가 1개만 들어온다
 		        	            if(imgInfo.containsKey("fileId")) {
 		        	            	//sb.append("	\""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
-		                			sb.append("	\"mediaUrl\" : \"{"+params.get("imgUrl")+"}\", "); //
-		                			sb.append("	\"media\" : \""+params.get("fileId")+"\", "); //
+		                			sb.append("	\"mediaUrl\" : \"{"+imgInfo.get("imgUrl")+"}\", "); //
+		                			sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\", "); //
 
 		                			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs94Buttons");
 		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	            }
 		        	        }
 		        			sb.append("	} ");
+		        			if(k < (int)params.get("rcs9CardCount")-1) sb.append(", ");
         				}
-        				if(k < (int)params.get("rcs9CardCount")-1) sb.append(", ");
         				
         				if(k == 5) {
 		        			sb.append(" { "); 
@@ -434,14 +434,15 @@ public class IntegratedTemplateService {
 		        	            Map<String, Object> imgInfo = rcs95ImgInfoList.get(0);//rcs에서 short, tall에는 이미지가 1개만 들어온다
 		        	            if(imgInfo.containsKey("fileId")) {
 		        	            	//sb.append("	\""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
-		                			sb.append("	\"mediaUrl\" : \"{"+params.get("imgUrl")+"}\", "); //
-		                			sb.append("	\"media\" : \""+params.get("fileId")+"\", "); //
+		                			sb.append("	\"mediaUrl\" : \"{"+imgInfo.get("imgUrl")+"}\", "); //
+		                			sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\", "); //
 
 		                			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs95Buttons");
 		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	            }
 		        	        }
 		        			sb.append("	} ");
+		        			if(k < (int)params.get("rcs9CardCount")-1) sb.append(", ");
         				}
         				
         				
@@ -468,8 +469,8 @@ public class IntegratedTemplateService {
 		        	            Map<String, Object> imgInfo = rcs100ImgInfoList.get(0);//rcs에서 short, tall에는 이미지가 1개만 들어온다
 		        	            if(imgInfo.containsKey("fileId")) {
 		        	            	//sb.append("	\""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
-		                			sb.append("	\"mediaUrl\" : \"{"+params.get("imgUrl")+"}\", "); //
-		                			sb.append("	\"media\" : \""+params.get("fileId")+"\", "); //
+		                			sb.append("	\"mediaUrl\" : \"{"+ imgInfo.get("imgUrl")+"}\", "); //
+		                			sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\", "); //
 
 		                			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs100Buttons");
 		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
@@ -490,8 +491,8 @@ public class IntegratedTemplateService {
 		        	            Map<String, Object> imgInfo = rcs101ImgInfoList.get(0);//rcs에서 short, tall에는 이미지가 1개만 들어온다
 		        	            if(imgInfo.containsKey("fileId")) {
 		        	            	//sb.append("	\""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
-		                			sb.append("	\"mediaUrl\" : \"{"+params.get("imgUrl")+"}\", "); //
-		                			sb.append("	\"media\" : \""+params.get("fileId")+"\", "); //
+		                			sb.append("	\"mediaUrl\" : \"{"+imgInfo.get("imgUrl")+"}\", "); //
+		                			sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\", "); //
 		                			
 		                			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs101Buttons");
 		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
@@ -512,8 +513,8 @@ public class IntegratedTemplateService {
 		        	            Map<String, Object> imgInfo = rcs102ImgInfoList.get(0);//rcs에서 short, tall에는 이미지가 1개만 들어온다
 		        	            if(imgInfo.containsKey("fileId")) {
 		        	            	//sb.append("	\""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
-		                			sb.append("	\"mediaUrl\" : \"{"+params.get("imgUrl")+"}\", "); //
-		                			sb.append("	\"media\" : \""+params.get("fileId")+"\", "); //
+		                			sb.append("	\"mediaUrl\" : \"{"+imgInfo.get("imgUrl")+"}\", "); //
+		                			sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\", "); //
 
 		                			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs102Buttons");
 		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
@@ -534,8 +535,8 @@ public class IntegratedTemplateService {
 		        	            Map<String, Object> imgInfo = rcs103ImgInfoList.get(0);//rcs에서 short, tall에는 이미지가 1개만 들어온다
 		        	            if(imgInfo.containsKey("fileId")) {
 		        	            	//sb.append("	\""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
-		                			sb.append("	\"mediaUrl\" : \"{"+params.get("imgUrl")+"}\", "); //
-		                			sb.append("	\"media\" : \""+params.get("fileId")+"\", "); //
+		                			sb.append("	\"mediaUrl\" : \"{"+imgInfo.get("imgUrl")+"}\", "); //
+		                			sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\", "); //
 
 		                			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs103Buttons");
 		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
@@ -556,8 +557,8 @@ public class IntegratedTemplateService {
 		        	            Map<String, Object> imgInfo = rcs104ImgInfoList.get(0);//rcs에서 short, tall에는 이미지가 1개만 들어온다
 		        	            if(imgInfo.containsKey("fileId")) {
 		        	            	//sb.append("	\""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
-		                			sb.append("	\"mediaUrl\" : \"{"+params.get("imgUrl")+"}\", "); //
-		                			sb.append("	\"media\" : \""+params.get("fileId")+"\", "); //
+		                			sb.append("	\"mediaUrl\" : \"{"+imgInfo.get("imgUrl")+"}\", "); //
+		                			sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\", "); //
 
 		                			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs104Buttons");
 		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
@@ -578,8 +579,8 @@ public class IntegratedTemplateService {
 		        	            Map<String, Object> imgInfo = rcs105ImgInfoList.get(0);//rcs에서 short, tall에는 이미지가 1개만 들어온다
 		        	            if(imgInfo.containsKey("fileId")) {
 		        	            	//sb.append("	\""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
-		                			sb.append("	\"mediaUrl\" : \"{"+params.get("imgUrl")+"}\", "); //
-		                			sb.append("	\"media\" : \""+params.get("fileId")+"\", "); //
+		                			sb.append("	\"mediaUrl\" : \"{"+imgInfo.get("imgUrl")+"}\", "); //
+		                			sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\", "); //
 
 		                			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs105Buttons");
 		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));

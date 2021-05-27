@@ -26,6 +26,24 @@
     
     <Image95ManagePopUp @img-callback="fnRcs95CallbackImgInfo" :imgMngOpen.sync="rcs95ImgMngOpen" :useCh="rcs95UseCh" ref="rcs95ImgMng"></Image95ManagePopUp>
     <Image95UploadPopUp :imgUploadOpen.sync="rcs95ImgUploadOpen"></Image95UploadPopUp>
+    
+    <Image100ManagePopUp @img-callback="fnRcs100CallbackImgInfo" :imgMngOpen.sync="rcs100ImgMngOpen" :useCh="rcs100UseCh" ref="rcs100ImgMng"></Image100ManagePopUp>
+    <Image100UploadPopUp :imgUploadOpen.sync="rcs100ImgUploadOpen"></Image100UploadPopUp>
+    
+    <Image101ManagePopUp @img-callback="fnRcs101CallbackImgInfo" :imgMngOpen.sync="rcs101ImgMngOpen" :useCh="rcs101UseCh" ref="rcs101ImgMng"></Image101ManagePopUp>
+    <Image101UploadPopUp :imgUploadOpen.sync="rcs101ImgUploadOpen"></Image101UploadPopUp>
+    
+    <Image102ManagePopUp @img-callback="fnRcs102CallbackImgInfo" :imgMngOpen.sync="rcs102ImgMngOpen" :useCh="rcs102UseCh" ref="rcs102ImgMng"></Image102ManagePopUp>
+    <Image102UploadPopUp :imgUploadOpen.sync="rcs102ImgUploadOpen"></Image102UploadPopUp>
+    
+    <Image103ManagePopUp @img-callback="fnRcs103CallbackImgInfo" :imgMngOpen.sync="rcs103ImgMngOpen" :useCh="rcs103UseCh" ref="rcs103ImgMng"></Image103ManagePopUp>
+    <Image103UploadPopUp :imgUploadOpen.sync="rcs103ImgUploadOpen"></Image103UploadPopUp>
+    
+    <Image104ManagePopUp @img-callback="fnRcs104CallbackImgInfo" :imgMngOpen.sync="rcs104ImgMngOpen" :useCh="rcs104UseCh" ref="rcs104ImgMng"></Image104ManagePopUp>
+    <Image104UploadPopUp :imgUploadOpen.sync="rcs104ImgUploadOpen"></Image104UploadPopUp>
+    
+    <Image105ManagePopUp @img-callback="fnRcs105CallbackImgInfo" :imgMngOpen.sync="rcs105ImgMngOpen" :useCh="rcs105UseCh" ref="rcs105ImgMng"></Image105ManagePopUp>
+    <Image105UploadPopUp :imgUploadOpen.sync="rcs105ImgUploadOpen"></Image105UploadPopUp>
 
     <ImageShortManagePopUp @img-callback="fnRcsShortCallbackImgInfo" :imgMngOpen.sync="rcsShortImgMngOpen" :useCh="rcsShortUseCh" ref="rcsShortImgMng"></ImageShortManagePopUp>
     <ImageShortUploadPopUp :imgUploadOpen.sync="rcsShortImgUploadOpen"></ImageShortUploadPopUp>
@@ -295,14 +313,14 @@
           <li>
             <img src="../../../common/images/pushTemplate10.svg" alt="캐러셀(short)"><h6>캐러셀<br>(short)</h6>
             <div class="consolMarginTop">
-              <input type="radio" name="rcsTemplate1" value="8" id="rcsTemplate1-10" class="radioStyle" v-on:click="rcsTemplateTable=9" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-10"></label>
+              <input type="radio" name="rcsTemplate1" value="9" id="rcsTemplate1-10" class="radioStyle" v-on:click="rcsTemplateTable=9" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-10"></label>
               <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
             </div>
           </li>
           <li>
             <img src="../../../common/images/pushTemplate11.svg" alt="캐러셀(Tall)"><h6>캐러셀<br>(Tall)</h6>
             <div class="consolMarginTop">
-              <input type="radio" name="rcsTemplate1" value="9" id="rcsTemplate1-11" class="radioStyle" v-on:click="rcsTemplateTable=10" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-11"></label>
+              <input type="radio" name="rcsTemplate1" value="10" id="rcsTemplate1-11" class="radioStyle" v-on:click="rcsTemplateTable=10" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-11"></label>
               <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
             </div>
           </li>
@@ -2282,8 +2300,8 @@
 		                            <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
 		                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
 		                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-		                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnFriendTalkButtonSD" calendarId="friendTalkStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
-				                    <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnFriendTalkButtonED" calendarId="friendTalkEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
+		                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnFriendTalkButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
+				                    <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnFriendTalkButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
 		                            <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" v-model="row.buttonLink">
 		                          </td>
 		                          <td class="text-center end"><a @click="addRowFriendTalk" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowFriendTalk(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
@@ -2614,14 +2632,14 @@ export default {
               , 'rcsShortImgInfoList':[] //RCS 세로형 short 이미지정보
               , 'rcsTallImgInfoList':[] //RCS 세로형 tall 이미지정보
 
-              , 'rcs90ImgInfoList':[] //RCS 캐러셀 카드1 이미지정보  //여러개 이미지가 들어갈수 있음 ..그래서 []
+              , 'rcs90ImgInfoList':[] //RCS 캐러셀 카드1 이미지정보
               , 'rcs91ImgInfoList':[] //RCS 캐러셀 카드2 이미지정보
               , 'rcs92ImgInfoList':[] //RCS 캐러셀 카드3 이미지정보
               , 'rcs93ImgInfoList':[] //RCS 캐러셀 카드4 이미지정보
               , 'rcs94ImgInfoList':[] //RCS 캐러셀 카드5 이미지정보
               , 'rcs95ImgInfoList':[] //RCS 캐러셀 카드6 이미지정보
 
-              , 'rcs100ImgInfoList':[] //RCS 캐러셀 카드1 이미지정보  //여러개 이미지가 들어갈수 있음 ..그래서 []
+              , 'rcs100ImgInfoList':[] //RCS 캐러셀 카드1 이미지정보
               , 'rcs101ImgInfoList':[] //RCS 캐러셀 카드2 이미지정보
               , 'rcs102ImgInfoList':[] //RCS 캐러셀 카드3 이미지정보
               , 'rcs103ImgInfoList':[] //RCS 캐러셀 카드4 이미지정보
@@ -2696,27 +2714,27 @@ export default {
       rcs90ImgMngOpen : false, /* RCS 캐러셀 Short 카드1 이미지 */
       rcs90ImgUploadOpen : false,
       rcs90UseCh : 'RCS',
-      rcs90ImgLimitSize : 3,
+      rcs90ImgLimitSize : 1,
       rcs91ImgMngOpen : false,
       rcs91ImgUploadOpen : false,
       rcs91UseCh : 'RCS',
-      rcs91ImgLimitSize : 3,
+      rcs91ImgLimitSize : 1,
       rcs92ImgMngOpen : false,
       rcs92ImgUploadOpen : false,
       rcs92UseCh : 'RCS',
-      rcs92ImgLimitSize : 3,
+      rcs92ImgLimitSize : 1,
       rcs93ImgMngOpen : false,
       rcs93ImgUploadOpen : false,
       rcs93UseCh : 'RCS',
-      rcs93ImgLimitSize : 3,
+      rcs93ImgLimitSize : 1,
       rcs94ImgMngOpen : false,
       rcs94ImgUploadOpen : false,
       rcs94UseCh : 'RCS',
-      rcs94ImgLimitSize : 3,
+      rcs94ImgLimitSize : 1,
       rcs95ImgMngOpen : false,
       rcs95ImgUploadOpen : false,
       rcs95UseCh : 'RCS',
-      rcs95ImgLimitSize : 3,
+      rcs95ImgLimitSize : 1,
       rcs9CardCount: 3, // rcs탭 캐러셀 Short 카드탭 갯수  //카드탭은 갯수만큼 service단에서 배열로 저장되어야 한다.
 
       button90Flag: false, //버튼 추가 여부
@@ -2729,27 +2747,27 @@ export default {
       rcs100ImgMngOpen : false, /* RCS 캐러셀 Tall 카드1 이미지 */
       rcs100ImgUploadOpen : false,
       rcs100UseCh : 'RCS',
-      rcs100ImgLimitSize : 3,
+      rcs100ImgLimitSize : 1,
       rcs101ImgMngOpen : false,
       rcs101ImgUploadOpen : false,
       rcs101UseCh : 'RCS',
-      rcs101ImgLimitSize : 3,
+      rcs101ImgLimitSize : 1,
       rcs102ImgMngOpen : false,
       rcs102ImgUploadOpen : false,
       rcs102UseCh : 'RCS',
-      rcs102ImgLimitSize : 3,
+      rcs102ImgLimitSize : 1,
       rcs103ImgMngOpen : false,
       rcs103ImgUploadOpen : false,
       rcs103UseCh : 'RCS',
-      rcs103ImgLimitSize : 3,
+      rcs103ImgLimitSize : 1,
       rcs104ImgMngOpen : false,
       rcs104ImgUploadOpen : false,
       rcs104UseCh : 'RCS',
-      rcs104ImgLimitSize : 3,
+      rcs104ImgLimitSize : 1,
       rcs105ImgMngOpen : false,
       rcs105ImgUploadOpen : false,
       rcs105UseCh : 'RCS',
-      rcs105ImgLimitSize : 3,
+      rcs105ImgLimitSize : 1,
       rcs10CardCount: 3, // rcs탭 캐러셀 Tall 카드탭 갯수  //카드탭은 갯수만큼 service단에서 배열로 저장되어야 한다.
 
       button100Flag: false, //버튼 추가 여부
@@ -2784,6 +2802,24 @@ export default {
       buttonShortFlag: false,
       buttonTallFlag: false,
       buttonFriendTalkFlag: false,
+      
+      smsButtonsMaxLen: 0, 		//start, endDate의 ID값을 유일하게 잡기위해 설정
+	  lmsButtonsMaxLen: 0, 		//start, endDate의 ID값을 유일하게 잡기위해 설정
+	  rcs90ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
+	  rcs91ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
+	  rcs92ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
+	  rcs93ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
+	  rcs94ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
+	  rcs95ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
+	  rcs100ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
+	  rcs101ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
+	  rcs102ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
+	  rcs103ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
+	  rcs104ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
+	  rcs105ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
+	  rcsShortButtonsMaxLen: 0, //start, endDate의 ID값을 유일하게 잡기위해 설정
+	  rcsTallButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
+      friendTalkButtonsMaxLen: 0, //start, endDate의 ID값을 유일하게 잡기위해 설정
 
       useYn : 'Y'
 
@@ -3151,6 +3187,7 @@ export default {
         var result = response.data;
         if(result.success) {
           confirm.fnAlert(this.detailTitle, '저장 되었습니다.');
+          this.$router.push('integratedTemplate')
         } else {
           confirm.fnAlert(this.detailTitle, result.message);
         }
@@ -3417,115 +3454,462 @@ export default {
 			}
 			console.log(">>>>>>>>>>>>>>>>this.rcsTemplateTable : "+this.rcsTemplateTable);
 			
-            this.rowData.rcsSMSContent 			= rtnData.rcsBodyDescription;
-            this.rowData.rcsSMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
-            this.rowData.rcsSMSCallback 		= rtnData.rcsCallback; //발신번호
+           
             
-            if(rtnData.rcsButton0ButtonType){
-            	this.buttonSMSFlag = true;
-            	this.rowData.rcsSMSButtons.push({'buttonType':rtnData.rcsButton0ButtonType
-            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-            	                                   , 'buttonLink':rtnData.rcsButton0Title
-            	                                   , 'startDate':rtnData.rcsButton0StartTime
-            	                                   , 'endDate':rtnData.rcsButton0EndTime
-            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
+            if(rtnData.rcsPrdType == 'sms'){
+	 			this.rowData.rcsSMSContent 			= rtnData.rcsBodyDescription;
+	            this.rowData.rcsSMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
+	            this.rowData.rcsSMSCallback 		= rtnData.rcsCallback; //발신번호
+                        
+	            if(rtnData.rcsButton0ButtonType){
+	            	this.buttonSMSFlag = true;
+	            	this.rowData.rcsSMSButtons.push({'buttonType':rtnData.rcsButton0ButtonType
+	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcsButton0Title
+	            	                                   , 'startDate':rtnData.rcsButton0StartTime
+	            	                                   , 'endDate':rtnData.rcsButton0EndTime
+	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
+	            }
             }
             
-            
-            this.rowData.rcsLMSTitle			= rtnData.rcsBodyTitle;
-            this.rowData.rcsLMSContent 			= rtnData.rcsBodyDescription;
-            this.rowData.rcsLMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
-            this.rowData.rcsLMSCallback 		= rtnData.rcsCallback; //발신번호
-            
-            if(rtnData.rcsButton0ButtonType){
-            	this.buttonLMSFlag = true;
-            	this.rowData.rcsLMSButtons.push({'buttonType':rtnData.rcsButton0ButtonType
-            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-            	                                   , 'buttonLink':rtnData.rcsButton0Title
-            	                                   , 'startDate':rtnData.rcsButton0StartTime
-            	                                   , 'endDate':rtnData.rcsButton0EndTime
-            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
-            }
-            
-            if(rtnData.rcsButton1ButtonType){
-            	this.buttonLMSFlag = true;
-            	this.rowData.rcsLMSButtons.push({'buttonType':rtnData.rcsButton1ButtonType
-            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
-            	                                   , 'buttonLink':rtnData.rcsButton1Title
-            	                                   , 'startDate':rtnData.rcsButton1StartTime
-            	                                   , 'endDate':rtnData.rcsButton1EndTime
-            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
-            }
-            
-            if(rtnData.rcsButton2ButtonType){
-            	this.buttonLMSFlag = true;
-            	this.rowData.rcsLMSButtons.push({'buttonType':rtnData.rcsButton2ButtonType
-            	                                   , 'buttonName':rtnData.rcsButton2DisplayText
-            	                                   , 'buttonLink':rtnData.rcsButton2Title
-            	                                   , 'startDate':rtnData.rcsButton2StartTime
-            	                                   , 'endDate':rtnData.rcsButton2EndTime
-            	                                   , 'buttonLink1':rtnData.rcsButton2Description});
-            }
-            
-            
-            this.rowData.rcsShortTitle				= rtnData.rcsBodyTitle;
-            this.rowData.rcsShortContent 			= rtnData.rcsBodyDescription;
-            this.rowData.rcsShortHowToDenyReceipt 	= rtnData.rcsFooter;   //무료수신거부번호
-            this.rowData.rcsShortCallback 			= rtnData.rcsCallback; //발신번호
-            
-            this.rowData.rcsShortImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
-            
-            if(rtnData.rcsButton0ButtonType){
-            	this.buttonShortFlag = true;
-            	this.rowData.rcsShortButtons.push({'buttonType':rtnData.rcsButton0ButtonType
-            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-            	                                   , 'buttonLink':rtnData.rcsButton0Title
-            	                                   , 'startDate':rtnData.rcsButton0StartTime
-            	                                   , 'endDate':rtnData.rcsButton0EndTime
-            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
-            }
 
+            
+            if(rtnData.rcsPrdType == 'lms'){
+	            this.rowData.rcsLMSTitle			= rtnData.rcsBodyTitle;
+	            this.rowData.rcsLMSContent 			= rtnData.rcsBodyDescription;
+	            this.rowData.rcsLMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
+	            this.rowData.rcsLMSCallback 		= rtnData.rcsCallback; //발신번호
+                        
+	            if(rtnData.rcsButton0ButtonType){
+	            	this.buttonLMSFlag = true;
+	            	this.rowData.rcsLMSButtons.push({'buttonType':rtnData.rcsButton0ButtonType
+	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcsButton0Title
+	            	                                   , 'startDate':rtnData.rcsButton0StartTime
+	            	                                   , 'endDate':rtnData.rcsButton0EndTime
+	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
+	            }
+            
+	            if(rtnData.rcsButton1ButtonType){
+	            	this.buttonLMSFlag = true;
+	            	this.rowData.rcsLMSButtons.push({'buttonType':rtnData.rcsButton1ButtonType
+	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcsButton1Title
+	            	                                   , 'startDate':rtnData.rcsButton1StartTime
+	            	                                   , 'endDate':rtnData.rcsButton1EndTime
+	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
+	            }
 
-            this.rowData.rcsTallTitle				= rtnData.rcsBodyTitle;
-            this.rowData.rcsTallContent 			= rtnData.rcsBodyDescription;
-            this.rowData.rcsTallHowToDenyReceipt 	= rtnData.rcsFooter;   //무료수신거부번호
-            this.rowData.rcsTallCallback 			= rtnData.rcsCallback; //발신번호
-            
-            this.rowData.rcsTallImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
-            
-            if(rtnData.rcsButton0ButtonType){
-            	this.buttonTallFlag = true;
-            	this.rowData.rcsTallButtons.push({'buttonType':rtnData.rcsButton0ButtonType
-            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-            	                                   , 'buttonLink':rtnData.rcsButton0Title
-            	                                   , 'startDate':rtnData.rcsButton0StartTime
-            	                                   , 'endDate':rtnData.rcsButton0EndTime
-            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
-            }            
-            if(rtnData.rcsButton1ButtonType){
-            	this.buttonTallFlag = true;
-            	this.rowData.rcsTallButtons.push({'buttonType':rtnData.rcsButton1ButtonType
-            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
-            	                                   , 'buttonLink':rtnData.rcsButton1Title
-            	                                   , 'startDate':rtnData.rcsButton1StartTime
-            	                                   , 'endDate':rtnData.rcsButton1EndTime
-            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
+	            if(rtnData.rcsButton2ButtonType){
+	            	this.buttonLMSFlag = true;
+	            	this.rowData.rcsLMSButtons.push({'buttonType':rtnData.rcsButton2ButtonType
+	            	                                   , 'buttonName':rtnData.rcsButton2DisplayText
+	            	                                   , 'buttonLink':rtnData.rcsButton2Title
+	            	                                   , 'startDate':rtnData.rcsButton2StartTime
+	            	                                   , 'endDate':rtnData.rcsButton2EndTime
+	            	                                   , 'buttonLink1':rtnData.rcsButton2Description});
+	            }
             }
             
-            if(rtnData.rcsButton2ButtonType){
-            	this.buttonTallFlag = true;
-            	this.rowData.rcsTallButtons.push({'buttonType':rtnData.rcsButton2ButtonType
-            	                                   , 'buttonName':rtnData.rcsButton2DisplayText
-            	                                   , 'buttonLink':rtnData.rcsButton2Title
-            	                                   , 'startDate':rtnData.rcsButton2StartTime
-            	                                   , 'endDate':rtnData.rcsButton2EndTime
-            	                                   , 'buttonLink1':rtnData.rcsButton2Description});
-            }
+
+            
+            if(rtnData.rcsPrdType == 'short'){
+	            this.rowData.rcsShortTitle				= rtnData.rcsBodyTitle;
+	            this.rowData.rcsShortContent 			= rtnData.rcsBodyDescription;
+	            this.rowData.rcsShortHowToDenyReceipt 	= rtnData.rcsFooter;   //무료수신거부번호
+	            this.rowData.rcsShortCallback 			= rtnData.rcsCallback; //발신번호
+	            
+	            this.rowData.rcsShortImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});    
+	                    
+	            if(rtnData.rcsButton0ButtonType){
+	            	this.buttonShortFlag = true;
+	            	this.rowData.rcsShortButtons.push({'buttonType':rtnData.rcsButton0ButtonType
+	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcsButton0Title
+	            	                                   , 'startDate':rtnData.rcsButton0StartTime
+	            	                                   , 'endDate':rtnData.rcsButton0EndTime
+	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
+	            }
+	            if(rtnData.rcsButton1ButtonType){
+	            	this.buttonTallFlag = true;
+	            	this.rowData.rcsShortButtons.push({'buttonType':rtnData.rcsButton1ButtonType
+	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcsButton1Title
+	            	                                   , 'startDate':rtnData.rcsButton1StartTime
+	            	                                   , 'endDate':rtnData.rcsButton1EndTime
+	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
+	            }
+			}
 
 
             
+            if(rtnData.rcsPrdType == 'tall'){
+            	this.rowData.rcsTallTitle				= rtnData.rcsBodyTitle;
+	            this.rowData.rcsTallContent 			= rtnData.rcsBodyDescription;
+	            this.rowData.rcsTallHowToDenyReceipt 	= rtnData.rcsFooter;   //무료수신거부번호
+	            this.rowData.rcsTallCallback 			= rtnData.rcsCallback; //발신번호
+	            
+	            this.rowData.rcsTallImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
+            
+	            if(rtnData.rcsButton0ButtonType){
+	            	this.buttonTallFlag = true;
+	            	this.rowData.rcsTallButtons.push({'buttonType':rtnData.rcsButton0ButtonType
+	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcsButton0Title
+	            	                                   , 'startDate':rtnData.rcsButton0StartTime
+	            	                                   , 'endDate':rtnData.rcsButton0EndTime
+	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
+	            }            
+	            if(rtnData.rcsButton1ButtonType){
+	            	this.buttonTallFlag = true;
+	            	this.rowData.rcsTallButtons.push({'buttonType':rtnData.rcsButton1ButtonType
+	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcsButton1Title
+	            	                                   , 'startDate':rtnData.rcsButton1StartTime
+	            	                                   , 'endDate':rtnData.rcsButton1EndTime
+	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
+	            }
+
+			}
+
+            if(rtnData.rcsPrdType == 'cShort'){
+            console.log(">>>>>>>>>>>>>>>>>>>>> cShort");
+            console.log(">>>>>>>>>>>>>>>>>>>>> cShort");
+            console.log(">>>>>>>>>>>>>>>>>>>>> cShort");
+	            this.rowData.rcs9CardCount				= rtnData.rcs9CardCount;
+	            this.rowData.rcs9HowToDenyReceipt 		= rtnData.rcsFooter;   //무료수신거부번호
+	            this.rowData.rcs9Callback 				= rtnData.rcsCallback; //발신번호
+	            
+	            this.rowData.rcs90Title					= rtnData.rcsBodyTitle;
+	            this.rowData.rcs90Content				= rtnData.rcsBodyDescription;
+	            this.rowData.rcs91Title					= rtnData.rcs1BodyTitle;
+	            this.rowData.rcs91Content				= rtnData.rcs1BodyDescription;
+	            this.rowData.rcs92Title					= rtnData.rcs2BodyTitle;
+	            this.rowData.rcs92Content				= rtnData.rcs2BodyDescription;
+	            this.rowData.rcs93Title					= rtnData.rcs3BodyTitle;
+	            this.rowData.rcs93Content				= rtnData.rcs3BodyDescription;
+	            this.rowData.rcs94Title					= rtnData.rcs4BodyTitle;
+	            this.rowData.rcs94Content				= rtnData.rcs4BodyDescription;
+	            this.rowData.rcs95Title					= rtnData.rcs5BodyTitle;
+	            this.rowData.rcs95Content				= rtnData.rcs5BodyDescription;
+	            
+	            this.rowData.rcs90ImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
+	            this.rowData.rcs91ImgInfoList.push({'fileId':rtnData.rcs1BodyMedia, 'imgUrl':rtnData.rcs1BodyMediaUrl});
+            	this.rowData.rcs92ImgInfoList.push({'fileId':rtnData.rcs2BodyMedia, 'imgUrl':rtnData.rcs2BodyMediaUrl});
+	            this.rowData.rcs93ImgInfoList.push({'fileId':rtnData.rcs3BodyMedia, 'imgUrl':rtnData.rcs3BodyMediaUrl});
+	            this.rowData.rcs94ImgInfoList.push({'fileId':rtnData.rcs4BodyMedia, 'imgUrl':rtnData.rcs4BodyMediaUrl});
+	            this.rowData.rcs95ImgInfoList.push({'fileId':rtnData.rcs5BodyMedia, 'imgUrl':rtnData.rcs5BodyMediaUrl});
+            
+            	console.log(">>>>>>>>>>>>>>>>>>>>> rcsButton0ButtonType",rtnData.rcsButton0ButtonType);
+	            if(rtnData.rcsButton0ButtonType){
+	            	this.button90Flag = true;
+	            	this.rowData.rcs90Buttons.push({'buttonType':rtnData.rcsButton0ButtonType
+	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcsButton0Title
+	            	                                   , 'startDate':rtnData.rcsButton0StartTime
+	            	                                   , 'endDate':rtnData.rcsButton0EndTime
+	            	                                   , 'startDateId':rtnData.rcsButton0StartTimeId
+	            	                                   , 'endDateId':rtnData.rcsButton0EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
+	            }      
+	            
+	            if(rtnData.rcsButton1ButtonType){
+	            	this.button90Flag = true;
+	            	this.rowData.rcs90Buttons.push({'buttonType':rtnData.rcsButton1ButtonType
+	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcsButton1Title
+	            	                                   , 'startDate':rtnData.rcsButton1StartTime
+	            	                                   , 'endDate':rtnData.rcsButton1EndTime
+	            	                                   , 'startDateId':rtnData.rcsButton1StartTimeId
+	            	                                   , 'endDateId':rtnData.rcsButton1EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
+	            }
+	            console.log(">>>>>>>>>>>>>>>>>>>>> rcsButton1ButtonType",rtnData.rcsButton1ButtonType); 
+	            if(rtnData.rcs1Button0ButtonType){
+	            	this.button91Flag = true;
+	            	this.rowData.rcs91Buttons.push({'buttonType':rtnData.rcs1Button0ButtonType
+	            	                                   , 'buttonName':rtnData.rcs1Button0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs1Button0Title
+	            	                                   , 'startDate':rtnData.rcs1Button0StartTime
+	            	                                   , 'endDate':rtnData.rcs1Button0EndTime
+	            	                                   , 'startDateId':rtnData.rcs1Button0StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs1Button0EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs1Button0Description});
+	            }            
+	            if(rtnData.rcs1Button1ButtonType){
+	            	this.button91Flag = true;
+	            	this.rowData.rcs91Buttons.push({'buttonType':rtnData.rcs1Button1ButtonType
+	            	                                   , 'buttonName':rtnData.rcs1Button1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs1Button1Title
+	            	                                   , 'startDate':rtnData.rcs1Button1StartTime
+	            	                                   , 'endDate':rtnData.rcs1Button1EndTime
+	            	                                   , 'startDateId':rtnData.rcs1Button1StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs1Button1EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs1Button1Description});
+	            }
+	            console.log(">>>>>>>>>>>>>>>>>>>>> rcs2Button0ButtonType",rtnData.rcs2Button0ButtonType); 
+	            if(rtnData.rcs2Button0ButtonType){
+	            	this.button92Flag = true;
+	            	this.rowData.rcs92Buttons.push({'buttonType':rtnData.rcs2Button0ButtonType
+	            	                                   , 'buttonName':rtnData.rcs2Button0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs2Button0Title
+	            	                                   , 'startDate':rtnData.rcs2Button0StartTime
+	            	                                   , 'endDate':rtnData.rcs2Button0EndTime
+	            	                                   , 'startDateId':rtnData.rcs2Button0StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs2Button0EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs2Button0Description});
+	            }            
+	            if(rtnData.rcs2Button1ButtonType){
+	            	this.button92Flag = true;
+	            	this.rowData.rcs92Buttons.push({'buttonType':rtnData.rcs2Button1ButtonType
+	            	                                   , 'buttonName':rtnData.rcs2Button1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs2Button1Title
+	            	                                   , 'startDate':rtnData.rcs2Button1StartTime
+	            	                                   , 'endDate':rtnData.rcs2Button1EndTime
+	            	                                   , 'startDateId':rtnData.rcs2Button1StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs2Button1EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs2Button1Description});
+	            }
+	            
+	            if(rtnData.rcs3Button0ButtonType){
+	            	this.button93Flag = true;
+	            	this.rowData.rcs93Buttons.push({'buttonType':rtnData.rcs3Button0ButtonType
+	            	                                   , 'buttonName':rtnData.rcs3Button0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs3Button0Title
+	            	                                   , 'startDate':rtnData.rcs3Button0StartTime
+	            	                                   , 'endDate':rtnData.rcs3Button0EndTime
+	            	                                   , 'startDateId':rtnData.rcs3Button0StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs3Button0EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs3Button0Description});
+	            }            
+	            if(rtnData.rcs3Button1ButtonType){
+	            	this.button93Flag = true;
+	            	this.rowData.rcs93Buttons.push({'buttonType':rtnData.rcs3Button1ButtonType
+	            	                                   , 'buttonName':rtnData.rcs3Button1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs3Button1Title
+	            	                                   , 'startDate':rtnData.rcs3Button1StartTime
+	            	                                   , 'endDate':rtnData.rcs3Button1EndTime
+	            	                                   , 'startDateId':rtnData.rcs3Button1StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs3Button1EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs3Button1Description});
+	            }
+	            
+	            if(rtnData.rcs4Button0ButtonType){
+	            	this.button94Flag = true;
+	            	this.rowData.rcs94Buttons.push({'buttonType':rtnData.rcs4Button0ButtonType
+	            	                                   , 'buttonName':rtnData.rcs4Button0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs4Button0Title
+	            	                                   , 'startDate':rtnData.rcs4Button0StartTime
+	            	                                   , 'endDate':rtnData.rcs4Button0EndTime
+	            	                                   , 'startDateId':rtnData.rcs4Button0StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs4Button0EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs4Button0Description});
+	            }            
+	            if(rtnData.rcs4Button1ButtonType){
+	            	this.button94Flag = true;
+	            	this.rowData.rcs94Buttons.push({'buttonType':rtnData.rcs4Button1ButtonType
+	            	                                   , 'buttonName':rtnData.rcs4Button1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs4Button1Title
+	            	                                   , 'startDate':rtnData.rcs4Button1StartTime
+	            	                                   , 'endDate':rtnData.rcs4Button1EndTime
+	            	                                   , 'startDateId':rtnData.rcs4Button1StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs4Button1EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs4Button1Description});
+	            }
+	            
+	            if(rtnData.rcs5Button0ButtonType){
+	            	this.button95Flag = true;
+	            	this.rowData.rcs95Buttons.push({'buttonType':rtnData.rcs5Button0ButtonType
+	            	                                   , 'buttonName':rtnData.rcs5Button0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs5Button0Title
+	            	                                   , 'startDate':rtnData.rcs5Button0StartTime
+	            	                                   , 'endDate':rtnData.rcs5Button0EndTime
+	            	                                   , 'startDateId':rtnData.rcs5Button0StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs5Button0EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs5Button0Description});
+	            }            
+	            if(rtnData.rcs5Button1ButtonType){
+	            	this.button95Flag = true;
+	            	this.rowData.rcs95Buttons.push({'buttonType':rtnData.rcs5Button1ButtonType
+	            	                                   , 'buttonName':rtnData.rcs5Button1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs5Button1Title
+	            	                                   , 'startDate':rtnData.rcs5Button1StartTime
+	            	                                   , 'endDate':rtnData.rcs5Button1EndTime
+	            	                                   , 'startDateId':rtnData.rcs5Button1StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs5Button1EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs5Button1Description});
+	            }
+
+			}
             
 
+           if(rtnData.rcsPrdType == 'cTall'){
+	            this.rowData.rcs10CardCount				= rtnData.rcs10CardCount;
+	            this.rowData.rcs10HowToDenyReceipt 		= rtnData.rcsFooter;   //무료수신거부번호
+	            this.rowData.rcs10Callback 				= rtnData.rcsCallback; //발신번호
+	            
+	            this.rowData.rcs100Title				= rtnData.rcsBodyTitle;
+	            this.rowData.rcs100Content				= rtnData.rcsBodyDescription;
+	            this.rowData.rcs101Title				= rtnData.rcs1BodyTitle;
+	            this.rowData.rcs101Content				= rtnData.rcs1BodyDescription;
+	            this.rowData.rcs102Title				= rtnData.rcs2BodyTitle;
+	            this.rowData.rcs102Content				= rtnData.rcs2BodyDescription;
+	            this.rowData.rcs103Title				= rtnData.rcs3BodyTitle;
+	            this.rowData.rcs103Content				= rtnData.rcs3BodyDescription;
+	            this.rowData.rcs104Title				= rtnData.rcs4BodyTitle;
+	            this.rowData.rcs104Content				= rtnData.rcs4BodyDescription;
+	            this.rowData.rcs105Title				= rtnData.rcs5BodyTitle;
+	            this.rowData.rcs105Content				= rtnData.rcs5BodyDescription;
+	            
+	            this.rowData.rcs100ImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
+	            this.rowData.rcs101ImgInfoList.push({'fileId':rtnData.rcs1BodyMedia, 'imgUrl':rtnData.rcs1BodyMediaUrl});
+	            this.rowData.rcs102ImgInfoList.push({'fileId':rtnData.rcs2BodyMedia, 'imgUrl':rtnData.rcs2BodyMediaUrl});
+	            this.rowData.rcs103ImgInfoList.push({'fileId':rtnData.rcs3BodyMedia, 'imgUrl':rtnData.rcs3BodyMediaUrl});
+	            this.rowData.rcs104ImgInfoList.push({'fileId':rtnData.rcs4BodyMedia, 'imgUrl':rtnData.rcs4BodyMediaUrl});
+	            this.rowData.rcs105ImgInfoList.push({'fileId':rtnData.rcs5BodyMedia, 'imgUrl':rtnData.rcs5BodyMediaUrl});
+            
+            
+	            if(rtnData.rcsButton0ButtonType){
+	            	this.button100Flag = true;
+	            	this.rowData.rcs100Buttons.push({'buttonType':rtnData.rcsButton0ButtonType
+	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcsButton0Title
+	            	                                   , 'startDate':rtnData.rcsButton0StartTime
+	            	                                   , 'endDate':rtnData.rcsButton0EndTime
+	            	                                   , 'startDateId':rtnData.rcsButton0StartTimeId
+	            	                                   , 'endDateId':rtnData.rcsButton0EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
+	            }            
+	            if(rtnData.rcsButton1ButtonType){
+	            	this.button100Flag = true;
+	            	this.rowData.rcs100Buttons.push({'buttonType':rtnData.rcsButton1ButtonType
+	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcsButton1Title
+	            	                                   , 'startDate':rtnData.rcsButton1StartTime
+	            	                                   , 'endDate':rtnData.rcsButton1EndTime
+	            	                                   , 'startDateId':rtnData.rcsButton1StartTimeId
+	            	                                   , 'endDateId':rtnData.rcsButton1EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
+	            }
+	            
+	            if(rtnData.rcs1Button0ButtonType){
+	            	this.button101Flag = true;
+	            	this.rowData.rcs101Buttons.push({'buttonType':rtnData.rcs1Button0ButtonType
+	            	                                   , 'buttonName':rtnData.rcs1Button0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs1Button0Title
+	            	                                   , 'startDate':rtnData.rcs1Button0StartTime
+	            	                                   , 'endDate':rtnData.rcs1Button0EndTime
+	            	                                   , 'startDateId':rtnData.rcs1Button0StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs1Button0EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs1Button0Description});
+	            }            
+	            if(rtnData.rcs1Button1ButtonType){
+	            	this.button101Flag = true;
+	            	this.rowData.rcs101Buttons.push({'buttonType':rtnData.rcs1Button1ButtonType
+	            	                                   , 'buttonName':rtnData.rcs1Button1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs1Button1Title
+	            	                                   , 'startDate':rtnData.rcs1Button1StartTime
+	            	                                   , 'endDate':rtnData.rcs1Button1EndTime
+	            	                                   , 'startDateId':rtnData.rcs1Button1StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs1Button1EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs1Button1Description});
+	            }
+	            
+	            if(rtnData.rcs2Button0ButtonType){
+	            	this.button102Flag = true;
+	            	this.rowData.rcs102Buttons.push({'buttonType':rtnData.rcs2Button0ButtonType
+	            	                                   , 'buttonName':rtnData.rcs2Button0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs2Button0Title
+	            	                                   , 'startDate':rtnData.rcs2Button0StartTime
+	            	                                   , 'endDate':rtnData.rcs2Button0EndTime
+	            	                                   , 'startDateId':rtnData.rcs2Button0StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs2Button0EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs2Button0Description});
+	            }            
+	            if(rtnData.rcs1Button2ButtonType){
+	            	this.button102Flag = true;
+	            	this.rowData.rcs102Buttons.push({'buttonType':rtnData.rcs2Button1ButtonType
+	            	                                   , 'buttonName':rtnData.rcs2Button1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs2Button1Title
+	            	                                   , 'startDate':rtnData.rcs2Button1StartTime
+	            	                                   , 'endDate':rtnData.rcs2Button1EndTime
+	            	                                   , 'startDateId':rtnData.rcs2Button1StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs2Button1EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs2Button1Description});
+	            }
+	            
+	            if(rtnData.rcs3Button0ButtonType){
+	            	this.button103Flag = true;
+	            	this.rowData.rcs103Buttons.push({'buttonType':rtnData.rcs3Button0ButtonType
+	            	                                   , 'buttonName':rtnData.rcs3Button0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs3Button0Title
+	            	                                   , 'startDate':rtnData.rcs3Button0StartTime
+	            	                                   , 'endDate':rtnData.rcs3Button0EndTime
+	            	                                   , 'startDateId':rtnData.rcs3Button0StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs3Button0EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs3Button0Description});
+	            }            
+	            if(rtnData.rcs1Button3ButtonType){
+	            	this.button103Flag = true;
+	            	this.rowData.rcs103Buttons.push({'buttonType':rtnData.rcs3Button1ButtonType
+	            	                                   , 'buttonName':rtnData.rcs3Button1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs3Button1Title
+	            	                                   , 'startDate':rtnData.rcs3Button1StartTime
+	            	                                   , 'endDate':rtnData.rcs3Button1EndTime
+	            	                                   , 'startDateId':rtnData.rcs3Button1StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs3Button1EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs3Button1Description});
+	            }
+	            
+	            if(rtnData.rcs4Button0ButtonType){
+	            	this.button104Flag = true;
+	            	this.rowData.rcs104Buttons.push({'buttonType':rtnData.rcs4Button0ButtonType
+	            	                                   , 'buttonName':rtnData.rcs4Button0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs4Button0Title
+	            	                                   , 'startDate':rtnData.rcs4Button0StartTime
+	            	                                   , 'endDate':rtnData.rcs4Button0EndTime
+	            	                                   , 'startDateId':rtnData.rcs4Button0StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs4Button0EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs4Button0Description});
+	            }            
+	            if(rtnData.rcs1Button4ButtonType){
+	            	this.button104Flag = true;
+	            	this.rowData.rcs104Buttons.push({'buttonType':rtnData.rcs4Button1ButtonType
+	            	                                   , 'buttonName':rtnData.rcs4Button1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs4Button1Title
+	            	                                   , 'startDate':rtnData.rcs4Button1StartTime
+	            	                                   , 'endDate':rtnData.rcs4Button1EndTime
+	            	                                   , 'startDateId':rtnData.rcs4Button1StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs4Button1EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs4Button1Description});
+	            }
+	            
+	            if(rtnData.rcs5Button0ButtonType){
+	            	this.button105Flag = true;
+	            	this.rowData.rcs105Buttons.push({'buttonType':rtnData.rcs5Button0ButtonType
+	            	                                   , 'buttonName':rtnData.rcs5Button0DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs5Button0Title
+	            	                                   , 'startDate':rtnData.rcs5Button0StartTime
+	            	                                   , 'endDate':rtnData.rcs5Button0EndTime
+	            	                                   , 'startDateId':rtnData.rcs5Button0StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs5Button0EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs5Button0Description});
+	            }            
+	            if(rtnData.rcs1Button5ButtonType){
+	            	this.button105Flag = true;
+	            	this.rowData.rcs105Buttons.push({'buttonType':rtnData.rcs5Button1ButtonType
+	            	                                   , 'buttonName':rtnData.rcs5Button1DisplayText
+	            	                                   , 'buttonLink':rtnData.rcs5Button1Title
+	            	                                   , 'startDate':rtnData.rcs5Button1StartTime
+	            	                                   , 'endDate':rtnData.rcs5Button1EndTime
+	            	                                   , 'startDateId':rtnData.rcs5Button1StartTimeId
+	            	                                   , 'endDateId':rtnData.rcs5Button1EndTimeId
+	            	                                   , 'buttonLink1':rtnData.rcs5Button1Description});
+	            }
+
+			}
+			
+			
 
 //FRIENDTALK DATA SET            
             this.rowData.friendTalkSendProfile 		= rtnData.friendTalkSenderKey;
@@ -3534,56 +3918,57 @@ export default {
             this.rowData.friendTalkImgInfo.fileId 	= rtnData.friendTalkFileId;
             this.rowData.friendTalkImgInfo.imgUrl 	= rtnData.friendTalkImgUrl;
             
-            if(rtnData.friendTalkButton0ButtonType){
-            	this.buttonFriendTalkFlag = true;
-            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton0ButtonType
-            	                                   , 'buttonName':rtnData.friendTalkButton0DisplayText
-            	                                   , 'buttonLink':rtnData.friendTalkButton0Title
-            	                                   , 'startDate':rtnData.friendTalkButton0StartTime
-            	                                   , 'endDate':rtnData.friendTalkButton0EndTime
-            	                                   , 'buttonLink1':rtnData.friendTalkButton0Description});
-            }
-            
-            if(rtnData.friendTalkButton1ButtonType){
-            	this.buttonFriendTalkFlag = true;
-            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton1ButtonType
-            	                                   , 'buttonName':rtnData.friendTalkButton1DisplayText
-            	                                   , 'buttonLink':rtnData.friendTalkButton1Title
-            	                                   , 'startDate':rtnData.friendTalkButton1StartTime
-            	                                   , 'endDate':rtnData.friendTalkButton1EndTime
-            	                                   , 'buttonLink1':rtnData.friendTalkButton1Description});
-            }
-            
-            if(rtnData.friendTalkButton2ButtonType){
-            	this.buttonFriendTalkFlag = true;
-            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton2ButtonType
-            	                                   , 'buttonName':rtnData.friendTalkButton2DisplayText
-            	                                   , 'buttonLink':rtnData.friendTalkButton2Title
-            	                                   , 'startDate':rtnData.friendTalkButton2StartTime
-            	                                   , 'endDate':rtnData.friendTalkButton2EndTime
-            	                                   , 'buttonLink1':rtnData.friendTalkButton2Description});
-            }
-            
-            if(rtnData.friendTalkButton3ButtonType){
-            	this.buttonFriendTalkFlag = true;
-            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton3ButtonType
-            	                                   , 'buttonName':rtnData.friendTalkButton3DisplayText
-            	                                   , 'buttonLink':rtnData.friendTalkButton3Title
-            	                                   , 'startDate':rtnData.friendTalkButton3StartTime
-            	                                   , 'endDate':rtnData.friendTalkButton3EndTime
-            	                                   , 'buttonLink1':rtnData.friendTalkButton3Description});
-            }
-            
-            if(rtnData.friendTalkButton4ButtonType){
-            	this.buttonFriendTalkFlag = true;
-            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton4ButtonType
-            	                                   , 'buttonName':rtnData.friendTalkButton4DisplayText
-            	                                   , 'buttonLink':rtnData.friendTalkButton4Title
-            	                                   , 'startDate':rtnData.friendTalkButton4StartTime
-            	                                   , 'endDate':rtnData.friendTalkButton4EndTime
-            	                                   , 'buttonLink1':rtnData.friendTalkButton4Description});
-            }
-
+            if(rtnData.friendTalkPrdType == 'friendTalk'){
+	            if(rtnData.friendTalkButton0ButtonType){
+	            	this.buttonFriendTalkFlag = true;
+	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton0ButtonType
+	            	                                   , 'buttonName':rtnData.friendTalkButton0DisplayText
+	            	                                   , 'buttonLink':rtnData.friendTalkButton0Title
+	            	                                   , 'startDate':rtnData.friendTalkButton0StartTime
+	            	                                   , 'endDate':rtnData.friendTalkButton0EndTime
+	            	                                   , 'buttonLink1':rtnData.friendTalkButton0Description});
+	            }
+	            
+	            if(rtnData.friendTalkButton1ButtonType){
+	            	this.buttonFriendTalkFlag = true;
+	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton1ButtonType
+	            	                                   , 'buttonName':rtnData.friendTalkButton1DisplayText
+	            	                                   , 'buttonLink':rtnData.friendTalkButton1Title
+	            	                                   , 'startDate':rtnData.friendTalkButton1StartTime
+	            	                                   , 'endDate':rtnData.friendTalkButton1EndTime
+	            	                                   , 'buttonLink1':rtnData.friendTalkButton1Description});
+	            }
+	            
+	            if(rtnData.friendTalkButton2ButtonType){
+	            	this.buttonFriendTalkFlag = true;
+	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton2ButtonType
+	            	                                   , 'buttonName':rtnData.friendTalkButton2DisplayText
+	            	                                   , 'buttonLink':rtnData.friendTalkButton2Title
+	            	                                   , 'startDate':rtnData.friendTalkButton2StartTime
+	            	                                   , 'endDate':rtnData.friendTalkButton2EndTime
+	            	                                   , 'buttonLink1':rtnData.friendTalkButton2Description});
+	            }
+	            
+	            if(rtnData.friendTalkButton3ButtonType){
+	            	this.buttonFriendTalkFlag = true;
+	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton3ButtonType
+	            	                                   , 'buttonName':rtnData.friendTalkButton3DisplayText
+	            	                                   , 'buttonLink':rtnData.friendTalkButton3Title
+	            	                                   , 'startDate':rtnData.friendTalkButton3StartTime
+	            	                                   , 'endDate':rtnData.friendTalkButton3EndTime
+	            	                                   , 'buttonLink1':rtnData.friendTalkButton3Description});
+	            }
+	            
+	            if(rtnData.friendTalkButton4ButtonType){
+	            	this.buttonFriendTalkFlag = true;
+	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton4ButtonType
+	            	                                   , 'buttonName':rtnData.friendTalkButton4DisplayText
+	            	                                   , 'buttonLink':rtnData.friendTalkButton4Title
+	            	                                   , 'startDate':rtnData.friendTalkButton4StartTime
+	            	                                   , 'endDate':rtnData.friendTalkButton4EndTime
+	            	                                   , 'buttonLink1':rtnData.friendTalkButton4Description});
+	            }
+			}
 
 //NOTICETALK DATA SET
 
@@ -3646,12 +4031,12 @@ export default {
         alert("button은 1개까지 추가가능합니다.");
       }else{
       	this.buttonSMSFlag = true;
-        var startDateId = 'rcsSMSStartDateId'+this.rowData.rcsSMSButtons.length;
-        var endDateId = 'rcsSMSEndDateId'+this.rowData.rcsSMSButtons.length;
+        this.smsButtonsMaxLen = this.smsButtonsMaxLen + 1;
+        var startDateId = 'rcsSMSStartDateId'	+ this.smsButtonsMaxLen;
+        var endDateId 	= 'rcsSMSEndDateId'		+ this.smsButtonsMaxLen;
         
-        this.rowData.rcsSMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
+        this.rowData.rcsSMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
         
-        //this.rowData.rcsSMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
       }
       
     },
@@ -3670,12 +4055,12 @@ export default {
         alert("button은 3개까지 추가가능합니다.");
       }else{
       	this.buttonLMSFlag = true;
-        var startDateId = 'rcsLMSStartDateId'+this.rowData.rcsLMSButtons.length;
-        var endDateId = 'rcsLMSEndDateId'+this.rowData.rcsLMSButtons.length;
+        this.lmsButtonsMaxLen = this.lmsButtonsMaxLen + 1;
+        var startDateId = 'rcsLMSStartDateId'+this.lmsButtonsMaxLen;
+        var endDateId = 'rcsLMSEndDateId'+this.lmsButtonsMaxLen;
         
-        this.rowData.rcsLMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
+        this.rowData.rcsLMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
         
-        //this.rowData.rcsLMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
       }
       
     },
@@ -3694,12 +4079,11 @@ export default {
         alert("button은 2개까지 추가가능합니다.");
       }else{
         this.button90Flag = true;
-        var startDateId = 'rcs90StartDateId'+this.rowData.rcs90Buttons.length;
-        var endDateId = 'rcs90EndDateId'+this.rowData.rcs90Buttons.length;
+        this.rcs90ButtonsMaxLen = this.rcs90ButtonsMaxLen + 1;
+        var startDateId = 'rcs90StartDateId'	+ this.rcs90ButtonsMaxLen;
+        var endDateId 	= 'rcs90EndDateId'		+ this.rcs90ButtonsMaxLen;
         
-        this.rowData.rcs90Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        
-        //this.rowData.rcs90Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
+        this.rowData.rcs90Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
       }
     },
     removeRow90: function(row){
@@ -3715,12 +4099,11 @@ export default {
         alert("button은 2개까지 추가가능합니다.");
       }else{
         this.button91Flag = true;
-        var startDateId = 'rcs91StartDateId'+this.rowData.rcs91Buttons.length;
-        var endDateId = 'rcs91EndDateId'+this.rowData.rcs91Buttons.length;
+        this.rcs91ButtonsMaxLen = this.rcs91ButtonsMaxLen + 1;
+        var startDateId = 'rcs91StartDateId'	+ this.rcs91ButtonsMaxLen;
+        var endDateId 	= 'rcs91EndDateId'		+ this.rcs91ButtonsMaxLen;
         
-        this.rowData.rcs91Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        
-        //this.rowData.rcs91Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
+        this.rowData.rcs91Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
       }
     },
     removeRow91: function(row){
@@ -3736,12 +4119,11 @@ export default {
         alert("button은 2개까지 추가가능합니다.");
       }else{
         this.button92Flag = true;
-        var startDateId = 'rcs92StartDateId'+this.rowData.rcs92Buttons.length;
-        var endDateId = 'rcs92EndDateId'+this.rowData.rcs92Buttons.length;
+        this.rcs92ButtonsMaxLen = this.rcs92ButtonsMaxLen + 1;
+        var startDateId = 'rcs92StartDateId'	+ this.rcs92ButtonsMaxLen;
+        var endDateId 	= 'rcs92EndDateId'		+ this.rcs92ButtonsMaxLen;
         
-        this.rowData.rcs92Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        
-        //this.rowData.rcs92Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
+        this.rowData.rcs92Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
       }
     },
     removeRow92: function(row){
@@ -3757,12 +4139,11 @@ export default {
         alert("button은 2개까지 추가가능합니다.");
       }else{
         this.button93Flag = true;
-        var startDateId = 'rcs93StartDateId'+this.rowData.rcs93Buttons.length;
-        var endDateId = 'rcs93EndDateId'+this.rowData.rcs93Buttons.length;
+         this.rcs93ButtonsMaxLen = this.rcs93ButtonsMaxLen + 1;
+        var startDateId = 'rcs93StartDateId'	+ this.rcs93ButtonsMaxLen;
+        var endDateId 	= 'rcs93EndDateId'		+ this.rcs93ButtonsMaxLen;
         
-        this.rowData.rcs93Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        
-        //this.rowData.rcs93Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
+        this.rowData.rcs93Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
       }
     },
     removeRow93: function(row){
@@ -3778,12 +4159,11 @@ export default {
         alert("button은 2개까지 추가가능합니다.");
       }else{
         this.button94Flag = true;
-        var startDateId = 'rcs94StartDateId'+this.rowData.rcs94Buttons.length;
-        var endDateId = 'rcs94EndDateId'+this.rowData.rcs94Buttons.length;
+         this.rcs94ButtonsMaxLen = this.rcs94ButtonsMaxLen + 1;
+        var startDateId = 'rcs94StartDateId'	+ this.rcs94ButtonsMaxLen;
+        var endDateId 	= 'rcs94EndDateId'		+ this.rcs94ButtonsMaxLen;
         
-        this.rowData.rcs94Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        
-        //this.rowData.rcs94Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
+        this.rowData.rcs94Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
       }
     },
     removeRow94: function(row){
@@ -3798,14 +4178,12 @@ export default {
       if(this.rowData.rcs95Buttons.length >= 2){
         alert("button은 2개까지 추가가능합니다.");
       }else{
-        console.log("button95 addRow ================================");
         this.button95Flag = true;
-        var startDateId = 'rcs95StartDateId'+this.rowData.rcs95Buttons.length;
-        var endDateId = 'rcs95EndDateId'+this.rowData.rcs95Buttons.length;
+        this.rcs95ButtonsMaxLen = this.rcs95ButtonsMaxLen + 1;
+        var startDateId = 'rcs95StartDateId'	+ this.rcs95ButtonsMaxLen;
+        var endDateId 	= 'rcs95EndDateId'		+ this.rcs95ButtonsMaxLen;
         
-        this.rowData.rcs95Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        
-        //this.rowData.rcs95Buttons.push({'buttonType':'U', 'buttonName':'', 'buttonLink':''});
+        this.rowData.rcs95Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
       }
     },
     removeRow95: function(row){
@@ -3823,12 +4201,11 @@ export default {
         alert("button은 1개까지 추가가능합니다.");
       }else{
         this.buttonShortFlag = true;
-        var startDateId = 'rcsShortStartDateId'+this.rowData.rcsShortButtons.length;
-        var endDateId = 'rcsShortEndDateId'+this.rowData.rcsShortButtons.length;
+        this.rcsShortButtonsMaxLen = this.rcsShortButtonsMaxLen + 1;
+        var startDateId = 'rcsShortStartDateId'	+ this.rcsShortButtonsMaxLen;
+        var endDateId 	= 'rcsShortEndDateId'	+ this.rcsShortButtonsMaxLen;
         
-        this.rowData.rcsShortButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        
-        //this.rowData.rcsShortButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
+        this.rowData.rcsShortButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
       }
     },
     removeRowShort: function(row){
@@ -3845,13 +4222,11 @@ export default {
         alert("button은 1개까지 추가가능합니다.");
       }else{
         this.buttonTallFlag = true;
+        this.rcsTallButtonsMaxLen = this.rcsTallButtonsMaxLen + 1;
+        var startDateId = 'rcsTallStartDateId'	+ this.rcsTallButtonsMaxLen;
+        var endDateId 	= 'rcsTallEndDateId'	+ this.rcsTallButtonsMaxLen;
         
-        var startDateId = 'rcsTallStartDateId'+this.rowData.rcsTallButtons.length;
-        var endDateId = 'rcsTallEndDateId'+this.rowData.rcsTallButtons.length;
-        
-        this.rowData.rcsTallButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        
-        //this.rowData.rcsTallButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
+        this.rowData.rcsTallButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
       }
     },
     removeRowTall: function(row){
@@ -3870,19 +4245,21 @@ export default {
         alert("button은 5개까지 추가가능합니다.");
       }else{
         this.buttonFriendTalkFlag = true;
+        console.log("this.friendTalkButtonsMaxLen : ",this.friendTalkButtonsMaxLen);
+        this.friendTalkButtonsMaxLen = this.friendTalkButtonsMaxLen + 1;
+        console.log("maxLen : ",this.friendTalkButtonsMaxLen);
+        var startDateId = 'friendTalkStartDateId'+this.friendTalkButtonsMaxLen;
+        var endDateId = 'friendTalkEndDateId'+this.friendTalkButtonsMaxLen;
         
-        //var startDateId = 'friendTalkStartDateId'+this.rowData.friendTalkButtons.length;
-        //var endDateId = 'friendTalkEndDateId'+this.rowData.friendTalkButtons.length;
-        
-        //this.rowData.friendTalkButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        this.rowData.friendTalkButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'buttonLink1':''});
+        this.rowData.friendTalkButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+        //this.rowData.friendTalkButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'buttonLink1':''});
       }
     },
     removeRowFriendTalk: function(row){
       //if(this.rowData.friendTalkButtons.length <= this.friendTalkButtonsSize){
       if(this.rowData.friendTalkButtons.length <= 1){
         this.rowData.friendTalkButtons.splice(row,1);
-        this.rowData.friendTalkButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'buttonLink1':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+        this.rowData.friendTalkButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':'', 'endDateId':'', 'buttonLink1':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
       }else{
         this.rowData.friendTalkButtons.splice(row,1);
       }
@@ -3895,15 +4272,15 @@ export default {
       this.rcs90ImgMngOpen = !this.rcs90ImgMngOpen;
     },
     fnRcs90CallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
+      console.log('1111 : '+JSON.stringify(imgInfo));
       if(this.fnRcs90ImgLimitSize() == false) return;
       let temp = {
         imgUrl: imgInfo.chImgUrl,
         fileId: imgInfo.fileId
       };
-      //console.log('2222 : '+JSON.stringify(temp));
+      console.log('2222 : '+JSON.stringify(temp));
       this.rowData.rcs90ImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcs90ImgInfoList));
+      console.log('3333 : '+JSON.stringify(this.rowData.rcs90ImgInfoList));
       this.fnRcs90DelDuplImgInfo();
     },
 
@@ -4149,12 +4526,11 @@ export default {
         alert("button은 2개까지 추가가능합니다.");
       }else{
         this.button100Flag = true;
-        var startDateId = 'rcs100StartDateId'+this.rowData.rcs100Buttons.length;
-        var endDateId = 'rcs100EndDateId'+this.rowData.rcs100Buttons.length;
+        this.rcs100ButtonsMaxLen = this.rcs100ButtonsMaxLen + 1;
+        var startDateId = 'rcs100StartDateId'	+ this.rcs100ButtonsMaxLen;
+        var endDateId 	= 'rcs100EndDateId'	+ this.rcs100ButtonsMaxLen;
         
-        this.rowData.rcs100Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        
-        //this.rowData.rcs100Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
+        this.rowData.rcs100Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
       }
     },
     removeRow100: function(row){
@@ -4170,12 +4546,11 @@ export default {
         alert("button은 2개까지 추가가능합니다.");
       }else{
         this.button101Flag = true;
-        var startDateId = 'rcs101StartDateId'+this.rowData.rcs101Buttons.length;
-        var endDateId = 'rcs101EndDateId'+this.rowData.rcs101Buttons.length;
+        this.rcs101ButtonsMaxLen = this.rcs101ButtonsMaxLen + 1;
+        var startDateId = 'rcs101StartDateId'	+ this.rcs101ButtonsMaxLen;
+        var endDateId 	= 'rcs101EndDateId'	+ this.rcs101ButtonsMaxLen;
         
-        this.rowData.rcs101Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        
-        //this.rowData.rcs101Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
+        this.rowData.rcs101Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
       }
     },
     removeRow101: function(row){
@@ -4191,12 +4566,11 @@ export default {
         alert("button은 2개까지 추가가능합니다.");
       }else{
         this.button102Flag = true;
-        var startDateId = 'rcs102StartDateId'+this.rowData.rcs102Buttons.length;
-        var endDateId = 'rcs102EndDateId'+this.rowData.rcs102Buttons.length;
+        this.rcs102ButtonsMaxLen = this.rcs102ButtonsMaxLen + 1;
+        var startDateId = 'rcs102StartDateId'	+ this.rcs102ButtonsMaxLen;
+        var endDateId 	= 'rcs102EndDateId'	+ this.rcs102ButtonsMaxLen;
         
-        this.rowData.rcs102Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        
-        //this.rowData.rcs102Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
+        this.rowData.rcs102Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
       }
     },
     removeRow102: function(row){
@@ -4212,12 +4586,11 @@ export default {
         alert("button은 2개까지 추가가능합니다.");
       }else{
         this.button103Flag = true;
-        var startDateId = 'rcs103StartDateId'+this.rowData.rcs103Buttons.length;
-        var endDateId = 'rcs103EndDateId'+this.rowData.rcs103Buttons.length;
+        this.rcs103ButtonsMaxLen = this.rcs103ButtonsMaxLen + 1;
+        var startDateId = 'rcs103StartDateId'	+ this.rcs103ButtonsMaxLen;
+        var endDateId 	= 'rcs103EndDateId'	+ this.rcs103ButtonsMaxLen;
         
-        this.rowData.rcs103Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        
-        //this.rowData.rcs103Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
+        this.rowData.rcs103Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
       }
     },
     removeRow103: function(row){
@@ -4233,12 +4606,11 @@ export default {
         alert("button은 2개까지 추가가능합니다.");
       }else{
         this.button104Flag = true;
-        var startDateId = 'rcs104StartDateId'+this.rowData.rcs104Buttons.length;
-        var endDateId = 'rcs104EndDateId'+this.rowData.rcs104Buttons.length;
+        this.rcs104ButtonsMaxLen = this.rcs104ButtonsMaxLen + 1;
+        var startDateId = 'rcs104StartDateId'	+ this.rcs104ButtonsMaxLen;
+        var endDateId 	= 'rcs104EndDateId'	+ this.rcs104ButtonsMaxLen;
         
-        this.rowData.rcs104Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        
-        //this.rowData.rcs104Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
+        this.rowData.rcs104Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
       }
     },
     removeRow104: function(row){
@@ -4254,12 +4626,11 @@ export default {
         alert("button은 2개까지 추가가능합니다.");
       }else{
         this.button105Flag = true;
-        var startDateId = 'rcs105StartDateId'+this.rowData.rcs105Buttons.length;
-        var endDateId = 'rcs105EndDateId'+this.rowData.rcs105Buttons.length;
+        this.rcs105ButtonsMaxLen = this.rcs105ButtonsMaxLen + 1;
+        var startDateId = 'rcs105StartDateId'	+ this.rcs105ButtonsMaxLen;
+        var endDateId 	= 'rcs105EndDateId'	+ this.rcs105ButtonsMaxLen;
         
-        this.rowData.rcs105Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDateId':startDateId, 'endDateId':endDateId});
-        
-        //this.rowData.rcs105Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});
+        this.rowData.rcs105Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
       }
     },
     removeRow105: function(row){
@@ -4278,15 +4649,15 @@ export default {
       this.rcs100ImgMngOpen = !this.rcs100ImgMngOpen;
     },
     fnRcs100CallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
+      console.log('1111 : '+JSON.stringify(imgInfo));
       if(this.fnRcs100ImgLimitSize() == false) return;
       let temp = {
         imgUrl: imgInfo.chImgUrl,
         fileId: imgInfo.fileId
       };
-      //console.log('2222 : '+JSON.stringify(temp));
+      console.log('2222 : '+JSON.stringify(temp));
       this.rowData.rcs100ImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcs100ImgInfoList));
+      console.log('3333 : '+JSON.stringify(this.rowData.rcs100ImgInfoList));
       this.fnRcs100DelDuplImgInfo();
     },
 
@@ -4719,10 +5090,89 @@ export default {
       this.rowData.friendTalkButtons[params.idx].endDate = sltDate;
       console.log(">>>>>>>>>>>>endDate : ",this.rowData.friendTalkButtons[params.idx].endDate, params.idx);
     },
-    fnFriendTalkButtonDel(idx){
-      this.rowData.friendTalkButtons.splice(idx, 1);
-    },
 
+	fnRcs90ButtonSD(sltDate, params){
+      this.rowData.rcs90Buttons[params.idx].startDate = sltDate;
+    },
+    fnRcs90ButtonED(sltDate, params){
+      this.rowData.rcs90Buttons[params.idx].endDate = sltDate;
+    },
+    
+	fnRcs91ButtonSD(sltDate, params){
+      this.rowData.rcs91Buttons[params.idx].startDate = sltDate;
+    },
+    fnRcs91ButtonED(sltDate, params){
+      this.rowData.rcs91Buttons[params.idx].endDate = sltDate;
+    },
+    
+    fnRcs92ButtonSD(sltDate, params){
+      this.rowData.rcs92Buttons[params.idx].startDate = sltDate;
+    },
+    fnRcs92ButtonED(sltDate, params){
+      this.rowData.rcs92Buttons[params.idx].endDate = sltDate;
+    },
+    
+	fnRcs93ButtonSD(sltDate, params){
+      this.rowData.rcs93Buttons[params.idx].startDate = sltDate;
+    },
+    fnRcs93ButtonED(sltDate, params){
+      this.rowData.rcs93Buttons[params.idx].endDate = sltDate;
+    },
+    
+	fnRcs94ButtonSD(sltDate, params){
+      this.rowData.rcs94Buttons[params.idx].startDate = sltDate;
+    },
+    fnRcs94ButtonED(sltDate, params){
+      this.rowData.rcs94Buttons[params.idx].endDate = sltDate;
+    },  
+    fnRcs95ButtonSD(sltDate, params){
+      this.rowData.rcs95Buttons[params.idx].startDate = sltDate;
+    },
+    fnRcs95ButtonED(sltDate, params){
+      this.rowData.rcs95Buttons[params.idx].endDate = sltDate;
+    }, 
+
+
+	fnRcs100ButtonSD(sltDate, params){
+      this.rowData.rcs100Buttons[params.idx].startDate = sltDate;
+    },
+    fnRcs100ButtonED(sltDate, params){
+      this.rowData.rcs100Buttons[params.idx].endDate = sltDate;
+    },
+    
+	fnRcs101ButtonSD(sltDate, params){
+      this.rowData.rcs101Buttons[params.idx].startDate = sltDate;
+    },
+    fnRcs101ButtonED(sltDate, params){
+      this.rowData.rcs101Buttons[params.idx].endDate = sltDate;
+    },
+    
+    fnRcs102ButtonSD(sltDate, params){
+      this.rowData.rcs102Buttons[params.idx].startDate = sltDate;
+    },
+    fnRcs102ButtonED(sltDate, params){
+      this.rowData.rcs102Buttons[params.idx].endDate = sltDate;
+    },
+    
+	fnRcs103ButtonSD(sltDate, params){
+      this.rowData.rcs103Buttons[params.idx].startDate = sltDate;
+    },
+    fnRcs103ButtonED(sltDate, params){
+      this.rowData.rcs103Buttons[params.idx].endDate = sltDate;
+    },
+    
+	fnRcs104ButtonSD(sltDate, params){
+      this.rowData.rcs104Buttons[params.idx].startDate = sltDate;
+    },
+    fnRcs104ButtonED(sltDate, params){
+      this.rowData.rcs104Buttons[params.idx].endDate = sltDate;
+    },  
+    fnRcs105ButtonSD(sltDate, params){
+      this.rowData.rcs105Buttons[params.idx].startDate = sltDate;
+    },
+    fnRcs105ButtonED(sltDate, params){
+      this.rowData.rcs105Buttons[params.idx].endDate = sltDate;
+    }, 
     //get 문자열 byte
     getByte(str) {
       return str
