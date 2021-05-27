@@ -37,11 +37,12 @@ datasource:
   rcs:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     jdbc-url: jdbc:log4jdbc:mariadb://sandbox.ums-dev.uplus.co.kr:43306/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    #jdbc-url: jdbc:log4jdbc:mariadb://mysql.ums-dev.uplus.co.kr:43306/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: cm_console
     password: test1234
     pool-name: hikari-cp
-    maximum-pool-size: 10
-    minimum-idle: 5
+    maximum-pool-size: 3
+    minimum-idle: 3
     connectionTimeout: 10000
     idleTimeout: 600000
     validationTimeout: 5000
@@ -60,6 +61,7 @@ datasource:
     
 mongodb:
   uri: mongodb://cloud:test1234@sandbox.ums-dev.uplus.co.kr:47017/cloud?authSource=cloud&authMechanism=SCRAM-SHA-256
+  #uri: mongodb://cm:test1234@mongo.ums-dev.uplus.co.kr:47017/cm?authSource=cm&authMechanism=SCRAM-SHA-256/cm?authSource=cloud&authMechanism=SCRAM-SHA-256
   database: cloud
   connectionsPerHost: 30
   connectionsPerHostMin: 10
@@ -108,8 +110,8 @@ datasource:
     username: cm_console
     password: test1234
     pool-name: hikari-cp
-    maximum-pool-size: 10
-    minimum-idle: 5
+    maximum-pool-size: 3
+    minimum-idle: 3
     connectionTimeout: 10000
     idleTimeout: 600000
     validationTimeout: 5000
@@ -170,8 +172,8 @@ datasource:
     username: rcs
     password: rcsrcs
     pool-name: hikari-cp
-    maximum-pool-size: 10
-    minimum-idle: 5
+    maximum-pool-size: 3
+    minimum-idle: 3
     connectionTimeout: 10000
     idleTimeout: 600000
     validationTimeout: 5000
@@ -232,8 +234,8 @@ datasource:
     username: rcs
     password: rcsrcs
     pool-name: hikari-cp
-    maximum-pool-size: 10
-    minimum-idle: 5
+    maximum-pool-size: 3
+    minimum-idle: 3
     connectionTimeout: 10000
     idleTimeout: 600000
     validationTimeout: 5000
