@@ -42,7 +42,7 @@ const authInterceptor = config => {
 };
 
 const loggerInterceptor = config => {
-	console.log('request url:', config.url, 'params:', config.data);
+	//console.log('request url:', config.url, 'params:', config.data);
 	return config;
 };
 
@@ -84,7 +84,7 @@ httpClient.interceptors.request.use(setLoginInterceptor);
 httpClient.interceptors.response.use(
 	response => {
 		loadingLayer(false, response.config);
-		console.log('response status:', response.status, 'data:', response.data);
+		//console.log('response status:', response.status, 'data:', response.data);
 		return response;
 	},
 	error => {
