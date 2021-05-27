@@ -4,8 +4,8 @@
 <mapper namespace="messageStatus">
 
     <sql id ="whereSelectMessageStatusList">
-        <!-- AND A.CORP_ID = #{corpId} --><!-- 테스트중 주석처리-->
-		<!-- AND A.PROJECT_ID = #{projectId} --><!-- 테스트중 주석처리-->
+        AND A.CORP_ID = #{corpId}
+		AND A.PROJECT_ID = #{projectId}
         <if test="searchText != '' and searchText != null ">
             <if test="searchCondi == 'receiverId' ">
             AND C.CU_INFO_ID = CONCAT('%', #{searchText}, '%')

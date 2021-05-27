@@ -41,7 +41,7 @@
           <select v-model="searchData.searchCondi"  class="selectStyle2" style="width:15%" title="상태 선택란">
             <option v-for="data in condiDatas" :key="data.codeName" :value="data.codeName">{{data.codeVal}}</option>
           </select>
-          <a @click="fnSearch" class="btnStyle1 float-right" title="검색">검색</a>
+          <a @click="fnSearch()" class="btnStyle1 float-right" title="검색">검색</a>
         </div>
 
       </div>
@@ -164,7 +164,7 @@ export default {
       condiDatas: [],
       receptionDatas: [],
       receptionNumber: '',
-      testProjectId: '313431323336706A74' //test용 projectId 관리방법이 정해지면 변경필요 (세션이 좋을듯)
+      //testProjectId: '313431323336706A74' //test용 projectId 관리방법이 정해지면 변경필요 (세션이 좋을듯)
     }
     
         
@@ -192,7 +192,7 @@ export default {
     //엑셀 다운로드
     fnExcelDownLoad(){
       var params = this.searchData;
-      params.projectId = this.testProjectId;
+      //params.projectId = this.testProjectId;
       messageStatusApi.excelDownloadMoReceptionStatus(params);
     },
 
@@ -213,14 +213,16 @@ export default {
 
       params.loginId = tokenSvc.getToken().principal.userId;
       params.roleCd = tokenSvc.getToken().principal.roleCd;
-      params.projectId = this.testProjectId;
+      //params.projectId = this.testProjectId;
 
       await messageStatusApi.selectMoReceptionStatusList(params).then(response =>{
         var result = response.data;
         if(result.success) {
           this.datas = result.data;
-          this.totCnt = result.pageDto.totCnt;
-          this.offset = result.pageDto.offset;
+          //this.totCnt = result.pageDto.totCnt;
+          //this.offset = result.pageDto.offset;
+          this.totCnt = result.pageInfo.totCnt;
+          this.offset = result.pageInfo.offset;
         } else {
           alert(result.message);
         }
@@ -262,9 +264,9 @@ export default {
  
 
     async selectReceptionNumber(){
-       var params = {
-        "projectId" : this.testProjectId 
-      };
+      // var params = {
+      //  "projectId" : this.testProjectId 
+      //};
       await messageStatusApi.selectReceptionNumberList(params).then(response =>{
         var result = response.data;
         if(result.success) {

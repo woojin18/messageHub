@@ -4,7 +4,7 @@
 <mapper namespace="moReception">
 
     <sql id ="whereSelectMoReceptionList">
-        <!-- AND A.CORP_ID = #{corpId} --><!-- 테스트중 주석처리-->
+        AND A.CORP_ID = #{corpId}
 		AND A.PROJECT_ID = #{projectId}
         <if test="searchText != null and searchText != '' ">
             AND C.CORP_ID = CONCAT('%', #{searchText}, '%')

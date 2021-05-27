@@ -4,12 +4,20 @@ const selectIntegratedTemplateList = (params) => {
     return httpClient.post('/integratedTemplateApi/selectIntegratedTemplateList', params, { headers: {"show-layer": "Yes"} });
 };
 
+const integratedTemplateInfo = (params) => {
+    return httpClient.post('/integratedTemplateApi/selectIntegratedTemplateInfo', params, { headers: {"show-layer": "Yes"} });
+};
+
 const insertIntegratedTemplate = (params) => {
     return httpClient.post('/integratedTemplateApi/insertIntegratedTemplate', params, { headers: {"show-layer": "Yes"} });
 };
 
 const updateIntegratedTemplate = (params) => {
     return httpClient.post('/integratedTemplateApi/updateIntegratedTemplate', params, { headers: {"show-layer": "Yes"} });
+};
+
+const deleteIntegratedTemplate = (params) => {
+    return httpClient.post('/integratedTemplateApi/deleteIntegratedTemplate', params, { headers: {"show-layer": "Yes"} });
 };
 
 const excelDownloadIntegratedTemplate = (params) => {
@@ -38,9 +46,11 @@ const excelDownloadIntegratedTemplate = (params) => {
 
 export default {
     selectIntegratedTemplateList,
+    integratedTemplateInfo,
     excelDownloadIntegratedTemplate,
     insertIntegratedTemplate,
-    updateIntegratedTemplate
+    updateIntegratedTemplate,
+    deleteIntegratedTemplate
 };
 
 

@@ -59,7 +59,7 @@
               <input type="checkbox" id="searchResultYn_FAIL" class="checkStyle2" value="N" v-model="searchData.searchResultYn">
               <label for="searchResultYn_FAIL">실패</label>
             </div>
-            <a @click="fnSearch" class="btnStyle2 float-right" title="검색">검색</a>
+            <a @click="fnSearch()" class="btnStyle2 float-right" title="검색">검색</a>
           </div>
         </div>
       </div>
@@ -240,8 +240,10 @@ export default {
         var result = response.data;
         if(result.success) {
           this.datas = result.data;
-          this.totCnt = result.pageDto.totCnt;
-          this.offset = result.pageDto.offset;
+          //this.totCnt = result.pageDto.totCnt;
+          //this.offset = result.pageDto.offset;
+          this.totCnt = result.pageInfo.totCnt;
+          this.offset = result.pageInfo.offset;
         } else {
           alert(result.message);
         }
