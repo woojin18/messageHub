@@ -114,10 +114,13 @@ public class JwtService {
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				cookie.setValue("");
-				cookie.setPath("/");
-				cookie.setMaxAge(0);
-				response.addCookie(cookie);
+				if (jwtProps.getPart1().equals(cookie.getName()) || jwtProps.getPart2().equals(cookie.getName())
+						|| "project".equals(cookie.getName())) {
+					cookie.setValue("");
+					cookie.setPath("/");
+					cookie.setMaxAge(0);
+					response.addCookie(cookie);
+				}
 			}
 		}
 	}
