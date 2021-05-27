@@ -19,89 +19,78 @@
 	</select>
 	
 	<sql id="rcsBrandList">
-		SELECT	A.BRAND_ID
-		,		MAX(A.PROJECT_ID) AS PROJECT_ID
-		,		MAX(A.CORP_ID) AS CORP_ID
-		,		MAX(A.BRAND_NAME) AS BRAND_NAME
-		,		MAX(A.BRAND_DESC) AS BRAND_DESC
-		,		MAX(A.BRAND_INFO) AS BRAND_INFO
-		,		CASE
-					WHEN MAX(A.PROJECT_ID) = 'ALL' THEN 'Y'
-					ELSE 'N'
-				END AS OTHER_PROJECT_USE_YN
-		
-		,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
-					FROM	cm_console.CM_RCS_TMP_MSGBASE
-					WHERE	BRAND_ID  = A.BRAND_ID 
-				) AS TMPL_CNT
-		,		( 	SELECT	COUNT(CHATBOT_ID) 
-					FROM	cm.CM_RCS_CHATBOT
-					WHERE	BRAND_ID  = A.BRAND_ID 
-				) AS CALLBACK_CNT
-		,		CASE WHEN SUBSTRING(A.BRAND_ID, 1, 1) = 'T' THEN '임시저장' ELSE MAX(A.APPROVAL_STATUS) END	AS APPROVAL_STATUS
-		,		''			AS REQ_DT
-		,		''			AS APPROVAL_DT
-		,		MAX(A.REG_DT) AS REG_DT 
-		,		MAX(B.MAIN_MDN) AS MAIN_MDN
-		,		MAX(B.MAIN_TITLE) AS MAIN_TITLE
-		FROM	cm.CM_RCS_BRAND_REQ A
-		left outer join (
-			SELECT	crcr.BRAND_ID 
-			,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.mdn[0]'), "\"", "") as MAIN_MDN
-			,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") as MAIN_TITLE
-			FROM cm.CM_RCS_CHATBOT_REQ crcr 
-			where JSON_EXTRACT(crcr.CHATBOT_INFO , '$.isMainNum[0]') = true
-		) B
-			ON A.BRAND_ID = B.BRAND_ID
-		WHERE	(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
-		AND		A.BRAND_INFO != ''
-		AND		A.BRAND_ID NOT IN (
-			SELECT	A.BRAND_ID
-			FROM	cm.CM_RCS_BRAND A
-			WHERE	(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
-			GROUP BY A.BRAND_ID
-		)
-		<if test=" srcBrandText != null and srcBrandText != '' ">
-			<choose>
-				<when test="srcBrandType == 'brandId'.toString()">
-					AND		A.BRAND_ID = #{srcBrandText}
-				</when>
-				<when test="srcBrandType == 'brandName'.toString()">
-					AND		A.BRAND_NAME = #{srcBrandText}
-				</when>
-			</choose>
-		</if>
-		GROUP BY A.BRAND_ID
-		
-		UNION
-		
-		SELECT 	A.BRAND_ID
-		,		A.PROJECT_ID
-		,		A.CORP_ID
-		,		A.BRAND_NAME
-		,		'' as BRAND_DESC -- 브랜드 정보 컬럼 자체가 없음...
-		,		A.BRAND_INFO 
-		,		CASE
-					WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
-					ELSE 'N'
-				END AS OTHER_PROJECT_USE_YN
-		,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
-					FROM	cm_console.CM_RCS_TMP_MSGBASE
-					WHERE	BRAND_ID  = A.BRAND_ID 
-				) AS TMPL_CNT
-		,		( 	SELECT	COUNT(CHATBOT_ID) 
-					FROM	cm.CM_RCS_CHATBOT
-					WHERE	BRAND_ID  = A.BRAND_ID 
-				) AS CALLBACK_CNT
-		,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인완료' ELSE '' END	AS APPROVAL_STATUS
-		,		A.REG_DT			AS REQ_DT
-		,		A.APPROVAL_DT
-		,		A.REG_DT
-		,		'' AS MAIN_MDN
-		,		'' AS MAIN_TITLE
-		FROM	cm.CM_RCS_BRAND A
-		WHERE	(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
-		AND		A.BRAND_INFO != ''
+		SELECT	A.*
+		FROM 	(
+				SELECT	BRAND.*
+				,		case @vData when BRAND_ID then @vRank := @vRank + 1 else @vRank := 1 end AS RANKING
+				,		(@vData:=BRAND_ID) AS vData
+				FROM	(
+						select	'BRAND' AS TB_NAME
+						,		A.BRAND_ID 
+						,		A.PROJECT_ID  
+						,		A.CORP_ID 
+						,		A.BRAND_NAME
+						,		'' as BRAND_DESC
+						,		A.BRAND_INFO
+						,		CASE
+									WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
+									ELSE 'N'
+								END AS OTHER_PROJECT_USE_YN
+						,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
+									FROM	cm_console.CM_RCS_TMP_MSGBASE
+									WHERE	BRAND_ID  = A.BRAND_ID 
+								) AS TMPL_CNT
+						,		( 	SELECT	COUNT(CHATBOT_ID) 
+									FROM	cm.CM_RCS_CHATBOT
+									WHERE	BRAND_ID  = A.BRAND_ID 
+								) AS CALLBACK_CNT	
+						,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인완료' ELSE '' END	AS APPROVAL_STATUS		
+						,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
+						,		'' AS MAIN_MDN
+						,		'' AS MAIN_TITLE
+						from 	cm.CM_RCS_BRAND A
+						WHERE 	A.CORP_ID = #{corpId}
+						and		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+						UNION ALL
+						select	'BRAND_REQ' AS TB_NAME
+						,		A.BRAND_ID
+						,		A.PROJECT_ID  
+						,		A.CORP_ID 
+						,		A.BRAND_NAME
+						,		A.BRAND_DESC
+						,		A.BRAND_INFO
+						,		CASE
+									WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
+									ELSE 'N'
+								END AS OTHER_PROJECT_USE_YN
+						,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
+									FROM	cm_console.CM_RCS_TMP_MSGBASE
+									WHERE	BRAND_ID  = A.BRAND_ID 
+								) AS TMPL_CNT
+						,		( 	SELECT	COUNT(CHATBOT_ID) 
+									FROM	cm.CM_RCS_CHATBOT
+									WHERE	BRAND_ID  = A.BRAND_ID 
+								) AS CALLBACK_CNT	
+						,		''	AS APPROVAL_STATUS		
+								
+						,		A.REG_DT
+						,		B.MAIN_MDN
+						,		B.MAIN_TITLE
+						from 	cm.CM_RCS_BRAND_REQ A
+						left outer join (
+							SELECT	crcr.BRAND_ID 
+							,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.mdn[0]'), "\"", "") as MAIN_MDN
+							,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") as MAIN_TITLE
+							FROM cm.CM_RCS_CHATBOT_REQ crcr 
+							where JSON_EXTRACT(crcr.CHATBOT_INFO , '$.isMainNum[0]') = true
+						) B
+							ON A.BRAND_ID = B.BRAND_ID
+						WHERE 	A.CORP_ID = #{corpId}
+						and		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+				) BRAND, (SELECT @vRank:=0, @vData:='') as r
+				ORDER BY BRAND.BRAND_ID, BRAND.REG_DT
+		) A
+		WHERE	RANKING = 1
 		<if test=" srcBrandText != null and srcBrandText != '' ">
 			<choose>
 				<when test="srcBrandType == 'brandId'.toString()">
@@ -113,6 +102,11 @@
 			</choose>
 		</if>
 	</sql>
+	
+	<select id="selectRcsBrandChatbotList" resultType="camel">
+		/* channel.selectRcsBrandChatbotList */
+		
+	</select>
 	
 	<select id="selectRcsRegTmpltList" resultType="camel">
 		/* channel.selectRcsRegTmpltList */
@@ -365,6 +359,7 @@
 	/* channel.selectRcsBrandMsgBaseList */
 		SELECT	MESSAGEBASEFORM_ID
 		,		TMPLT_NAME
+		,		CARD_TYPE
 		,		PRODUCT_CODE
 		,		MESSAGEBASE_INFO
 		FROM	cm.CM_RCS_MSGBASE CRM 

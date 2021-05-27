@@ -217,7 +217,125 @@ public class ChannelService {
 		getHeaderMap.put("apiId", CommonUtils.getString(params.get("apiKey")));
 		getHeaderMap.put("apiSecret", CommonUtils.getString(params.get("apiSecret")));
 		
-		Map<String, Object> result = apiInterface.get("/console/v1/brand/categories", getHeaderMap);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("cateData", apiInterface.get("/console/v1/brand/categories", getHeaderMap));
+		
+		String brandId = CommonUtils.getString(params.get("brandId"));
+		
+		if( !"".equals(brandId) ) {
+			Map<String, Object> getHeaderMap2 = new HashMap<String, Object>();
+			getHeaderMap2.put("apiId", CommonUtils.getString(params.get("apiKey")));
+			getHeaderMap2.put("apiSecret", CommonUtils.getString(params.get("apiSecret")));
+			getHeaderMap2.put("brandId", brandId);
+			
+			// 파라미터 정리
+			Map<String, Object> inputVal = new HashMap<>();
+			List<Map<String, Object>> resultLists = (List<Map<String, Object>>) apiInterface.get("/console/v1/brand/" + brandId, getHeaderMap).get("data");
+			
+			Map<String, Object> rtnMap = resultLists.get(0);
+			
+			inputVal.put("corpId",		rtnMap.get("corpId"));
+			inputVal.put("projectId",	rtnMap.get("projectId"));
+			inputVal.put("name",		rtnMap.get("name"));
+			inputVal.put("description",	rtnMap.get("description"));
+			inputVal.put("tel",			rtnMap.get("tel"));
+			
+			// 체널관리
+			List<Map<String, Object>> menusList = (List<Map<String, Object>>) rtnMap.get("menus");
+			// 초기화
+			inputVal.put("call",			false);
+			inputVal.put("callWeblink",		"");
+			inputVal.put("web",				false);
+			inputVal.put("webWeblink",		"");
+			inputVal.put("store",			false);
+			inputVal.put("storeWeblink",	"");
+			inputVal.put("order",			false);
+			inputVal.put("orderWeblink",	"");
+			inputVal.put("buy",				false);
+			inputVal.put("buyWeblink",		"");
+			inputVal.put("ticket",			false);
+			inputVal.put("ticketWeblink",	"");
+			inputVal.put("moreInfo",		false);
+			inputVal.put("moreInfoWeblink",	"");
+			
+			if(menusList != null) {
+				for(int j = 0; j < menusList.size(); j++){
+					Map<String, Object> menus = menusList.get(j);
+					
+					if( "call".equals(menus.get("buttonType")) ) {
+						inputVal.put("call",			menus.get("buttonType"));
+						inputVal.put("callWeblink",		menus.get("weblink"));
+					}
+					if( "web".equals(menus.get("buttonType")) ) {
+						inputVal.put("web",			menus.get("buttonType"));
+						inputVal.put("webWeblink",		menus.get("weblink"));
+					}
+					if( "store".equals(menus.get("buttonType")) ) {
+						inputVal.put("store",			menus.get("buttonType"));
+						inputVal.put("storeWeblink",		menus.get("weblink"));
+					}
+					if( "order".equals(menus.get("buttonType")) ) {
+						inputVal.put("store",			menus.get("buttonType"));
+						inputVal.put("storeWeblink",		menus.get("weblink"));
+					}
+					if( "buy".equals(menus.get("buttonType")) ) {
+						inputVal.put("buy",			menus.get("buttonType"));
+						inputVal.put("buyWeblink",		menus.get("weblink"));
+					}
+					if( "ticket".equals(menus.get("buttonType")) ) {
+						inputVal.put("ticket",			menus.get("buttonType"));
+						inputVal.put("ticketWeblink",		menus.get("weblink"));
+					}
+					if( "moreInfo".equals(menus.get("buttonType")) ) {
+						inputVal.put("moreInfo",			menus.get("buttonType"));
+						inputVal.put("moreInfoWeblink",		menus.get("weblink"));
+					}
+				}
+			}
+			
+			inputVal.put("categoryId",		rtnMap.get("categoryId"));
+			inputVal.put("subCategoryId",	rtnMap.get("subCategoryId"));
+			inputVal.put("categoryOpt",		rtnMap.get("categoryOpt"));
+			inputVal.put("zipCode",			rtnMap.get("zipCode"));
+			inputVal.put("roadAddress",		rtnMap.get("roadAddress"));
+			inputVal.put("detailAddress",	rtnMap.get("detailAddress"));
+			
+			List<Map<String, Object>> fileList = (List<Map<String, Object>>) rtnMap.get("mediaUrl");
+			if(menusList != null) {
+				for(int j = 0; j < fileList.size(); j++){
+					Map<String, Object> file = fileList.get(j);
+					String typeName = CommonUtils.getString(file.get("typeName"));
+					if( "background".equals(typeName) ) {
+						inputVal.put("preBgImg",		file.get("url"));
+						inputVal.put("bgImgFilePath",	file.get("url"));
+					}
+					if( "profile".equals(typeName) ) {
+						inputVal.put("preProfileImg",		file.get("url"));
+						inputVal.put("profileImgFilePath",	file.get("url"));
+					}
+				}
+			}
+			
+			if( rtnMap.get("email") != null ) {
+				if( rtnMap.get("email").toString().indexOf("@") > 0 ) {
+					inputVal.put("email",			rtnMap.get("email").toString().split("@")[0]);
+					inputVal.put("email2",			rtnMap.get("email").toString().split("@")[1]);
+				} else {
+					inputVal.put("email",			"");
+				}
+			}
+			
+			
+			inputVal.put("webSiteUrl",		rtnMap.get("webSiteUrl"));
+			inputVal.put("rcsReply",		rtnMap.get("projectId"));
+			
+//			inputVal.put("mainMdn",			rtnMap.get("mainMdn"));
+//			inputVal.put("mainTitle",		rtnMap.get("mainTitle"));
+			// 쳇봇데이터 가져오는 부분 필요....
+			
+			
+			result.put("inputVal", inputVal);
+		}
 		
 		rtn.setData(result);
 		
@@ -374,9 +492,9 @@ public class ChannelService {
 			map.put("certiFilePath",		params.get("profileImgFilePath"));
 		} else {
 			// 임시
-			map.put("profileImgFilePath", "/efs/file/console/2021/05/24/14/brand_test.png");
-			map.put("bgImgFilePath", "/efs/file/console/2021/05/24/14/brand_test.png");
-			map.put("certiFilePath", "/efs/file/console/2021/05/24/14/brand_test.png");
+			map.put("profileImgFilePath", "/efs/file/console/2021/05/27/15/test1234.png");
+			map.put("bgImgFilePath", "/efs/file/console/2021/05/27/15/test1234.png");
+			map.put("certiFilePath", "/efs/file/console/2021/05/27/15/test1234.png");
 		}
 		
 		
@@ -392,10 +510,10 @@ public class ChannelService {
 		
 		// map to json
 		kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(map);
-		
 		System.out.println("----------------------------------------json2222 : " + json2222);
 		
-		list.add(json2222);
+//		list.add(json2222);
+		list.add(map);
 		
 		// 임시저장
 		String sts = CommonUtils.getString(params.get("sts"));
@@ -419,9 +537,9 @@ public class ChannelService {
 			brandInfo.put("email",			params.get("email")+ "@" + params.get("email2"));
 			brandInfo.put("webSiteUrl",		params.get("webSiteUrl"));
 			brandInfo.put("mainMdn",		params.get("mainMdn"));
-			brandInfo.put("profileImgFilePath", "/efs/file/console/2021/05/24/14/brand_test.png");
-			brandInfo.put("bgImgFilePath", "/efs/file/console/2021/05/24/14/brand_test.png");
-			brandInfo.put("certiFilePath", "/efs/file/console/2021/05/24/14/brand_test.png");
+			brandInfo.put("profileImgFilePath", "/efs/file/console/2021/05/27/15/test1234.png");
+			brandInfo.put("bgImgFilePath", "/efs/file/console/2021/05/27/15/test1234.png");
+			brandInfo.put("certiFilePath", "/efs/file/console/2021/05/27/15/test1234.png");
 			brandInfo.put("chatbots",		chatbotJson);	// 임시저장 시, 쳇봇들을 관리하기 위해 저장
 			String brandInfoStr = mapper.writeValueAsString(brandInfo);
 			params.put("brandInfo", brandInfoStr);
@@ -488,6 +606,8 @@ public class ChannelService {
 			
 			// API 통신 처리
 			Map<String, Object> result =  apiInterface.listPost("/console/v1/brand/", list, headerMap);
+//			Map<String, Object> result =  apiInterface.request("POST","http://erp.ectech.co.kr:40931/console/v1/brand/", null, list, headerMap);
+//			(String method, String uri, Map params, Object body, Map headerMap)
 			System.out.println("-------------------------------------------@@@ result : " + result);
 			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
 			System.out.println("-------------------------------------------@@@ list : " + list);
@@ -648,8 +768,8 @@ public class ChannelService {
 			rtnMap.put("imageWidth",			guideInfo.get("imageWidth"));			// 이미지(px)
 			rtnMap.put("imageHeight",			guideInfo.get("imageHeight"));			// 이미지(px)
 			
-			Map<String, Object> detailInfo = (Map<String, Object>) guideInfo.get("detailInfo");
-			rtnMap.put("productCardType",		detailInfo.get("productCardType"));		// 상품코드
+//			Map<String, Object> detailInfo = (Map<String, Object>) guideInfo.get("detailInfo");
+//			rtnMap.put("productCardType",		detailInfo.get("productCardType"));		// 상품코드
 			
 			Map<String, Object> policyInfo = (Map<String, Object>) brandInfo.get("policyInfo");
 			rtnMap.put("cardCount",				policyInfo.get("cardCount"));			// 카드장수
