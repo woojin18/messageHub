@@ -41,7 +41,11 @@ public class JwtService {
 		// 사용자 정보 취득
 		AuthUser user = (AuthUser) auth.getPrincipal();
 		// 쿠키에 토큰 추가 - 보안 강화
-		setTokenToCookie(response, token, user.getRepProjectId());
+		setTokenToCookie(response, token);
+		// 로그인 시 대표프로젝트 정보 쿠키에 세팅
+		Cookie project = new Cookie("project", user.getRepProjectId());
+		project.setPath("/");
+		response.addCookie(project);
 	}
 
 	private Claims coreClaims(Authentication auth, int expire) {
@@ -88,7 +92,7 @@ public class JwtService {
 		return token;
 	}
 
-	private void setTokenToCookie(HttpServletResponse response, String token, String repProjectId) {
+	private void setTokenToCookie(HttpServletResponse response, String token) {
 		int idx = token.lastIndexOf(".");
 		String payload = token.substring(0, idx);
 		String signature = token.substring(idx + 1);
@@ -103,11 +107,6 @@ public class JwtService {
 		csrfToken.setHttpOnly(true);
 		csrfToken.setPath("/");
 		response.addCookie(csrfToken);
-
-		// 로그인 시 프로젝트 정보 쿠키에 세팅
-		Cookie project = new Cookie("project", repProjectId);
-		project.setPath("/");
-		response.addCookie(project);
 	}
 
 	public void destroyPrivateToken(HttpServletRequest request, HttpServletResponse response) {
@@ -131,11 +130,7 @@ public class JwtService {
 		claims.setIssuedAt(now.toDate()).setExpiration(expiration);
 
 		String token = generateToken(claims);
-		// 사용자 대표프로젝트 취득
-		Map<String, Object> principalMap = (Map<String, Object>) claims.get("principal");
-		JwtUser user = JwtUser.createAuthUser(principalMap);
-
-		setTokenToCookie(response, token, user.getRepProjectId());
+		setTokenToCookie(response, token);
 	}
 
 	@SuppressWarnings("unused")

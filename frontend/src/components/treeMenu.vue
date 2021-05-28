@@ -12,10 +12,10 @@
 			<!-- consoleMenu -->
 			<dl>
 				<dt>
-					<a href="#" title="비트큐브 하위메뉴 보기"><i class="fal fa-folder navIcon"></i><span>비트큐브<i class="fas fa-cog cog"></i> <i class="far fa-chevron-right navArrow"></i></span></a>
+					<a href="#"><i class="fal fa-folder navIcon"></i><span>비트큐브<i class="fas fa-cog cog"></i> <i class="far fa-chevron-right navArrow"></i></span></a>
 					<div class="consoleMenu">
 						<ul class="box-shadow">
-							<li v-for="(item, i) in prdData" :key="i" :class="{active : repPrdState(item.projectId)}"><a href="#">{{item.projectName}}</a></li>
+							<li v-for="(item, i) in prdData" :key="i" :class="{active : repPrdState(item.projectId)}"><a @click="chgProject(item.projectId)">{{item.projectName}}</a></li>
 						</ul>
 					</div>
 				</dt>
@@ -77,6 +77,7 @@ import api from '@/modules/login/service/api';
 import * as utils from '@/common/utils';
 import { consts } from '@/common/config';
 import tokenSvc from '@/common/token-service';
+import VueCookies from 'vue-cookies'
 
 export default {
 	name: 'treeMenu',
@@ -153,6 +154,10 @@ export default {
 		repPrdState(prdId) {
 			if (prdId == this.projectId) return true;
 			else false;
+		},
+		chgProject(prdId) {
+			VueCookies.set('project', prdId);
+			this.$router.go();
 		}
 	}
 }
