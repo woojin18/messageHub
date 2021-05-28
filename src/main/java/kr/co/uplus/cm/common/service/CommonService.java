@@ -100,7 +100,7 @@ public class CommonService {
             log.error("{} 허용되지 않은 엑셀 업로드 확장자======>", this.getClass());
             log.error("원본 파일명 : {}", fileName);
             log.error("파일 확장자 : {}", fileExten);
-            throw new Exception("허용된지 않은 엑셀 업로드 확장자");
+            throw new Exception("허용되지 않은 엑셀 업로드 확장자");
         }
 
         Workbook workbook = null;
