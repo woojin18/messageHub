@@ -80,5 +80,51 @@ public class BaseInfoController {
 
 		return rtn;
 	}
+	
+	/**
+	 * APIKEY 목록조회
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectApiKeyList")
+	public RestResult<?> selectApiKeyList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+
+
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = baseInfoSvc.selectApiKeyList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
+	
+	/**
+	 * APIKEY 저장/수정
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/saveApiKey")
+	public RestResult<?> saveApiKey(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+ 
+		try {
+			rtn = baseInfoSvc.saveApiKey(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
 }
 

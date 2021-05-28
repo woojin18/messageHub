@@ -22,7 +22,7 @@
 		,		A.RESEND_TITLE
 		,		A.NOPAY_YN
 		,		A.SUBBILL_YN
-		,		date_format(A.SUBBILL_START_DAY, '%Y-%m-%d') as SUBBILL_START_DAY
+		,		DATE_FORMAT(A.SUBBILL_START_DAY, '%Y-%m-%d') as SUBBILL_START_DAY
 		,		( SELECT COUNT(USER_ID) + 1 FROM cm_console.CM_PROJECT_USER WHERE PROJECT_ID = A.PROJECT_ID ) AS PROJECT_MEMBER_CNT
 		,		REPLACE(JSON_EXTRACT(A.USE_CH_GRP_INFO, '$.RCS[0]'), "\"", "") AS RCS_YN
 		,		REPLACE(JSON_EXTRACT(A.USE_CH_GRP_INFO, '$.SMSMMS[0]'), "\"", "") AS SMSMMS_YN
@@ -30,7 +30,8 @@
 		,		REPLACE(JSON_EXTRACT(A.USE_CH_GRP_INFO, '$.KAKAO[0]'), "\"", "") AS KAKAO_YN
 		,		REPLACE(JSON_EXTRACT(A.USE_CH_GRP_INFO, '$.MO[0]'), "\"", "") AS MO_YN
 		FROM	cm_console.CM_PROJECT A
-		WHERE	A.PROJECT_ID = #{projectId}
+		WHERE	A.PROJECT_ID	= #{projectId}
+		AND		A.CORP_ID		= #{corpId}
 	</select>
 
 	<update id="updateProjectBaseInfo">
@@ -41,5 +42,104 @@
 		,		USE_YN				= #{useYn}
 		,		USE_CH_GRP_INFO		= #{jsonInfo}
 		WHERE	PROJECT_ID			= #{projectId}
+	</update>
+	
+	<select id="selectApiKeyList" resultType="camel">
+		/* baseInfo.selectApiKeyList */
+		SELECT	API_KEY
+		,		CORP_ID
+		,		PROJECT_ID
+		,		API_PWD
+		,		IP_CHK_YN
+		,		CPS
+		,		DAY_SENDER_CHK_YN
+		,		MON_SENDER_CHK_YN
+		,		ALARM_USE_YN
+		,		STATUS
+		,		RPT_YN
+		,		LINE_TYPE
+		,		DUP_CHK_YN
+		,		WEB_SENDER_YN
+		,		IF(WEB_SENDER_YN = 'Y', '예', '아니오') AS WEB_SENDER_YN_NAME
+		,		DATE_FORMAT(REG_DT, '%Y-%m-%d') AS REG_DT
+		,		DAY_SENDER_LIMIT_AMOUNT
+		,		MON_SENDER_LIMIT_AMOUNT
+		,		IP_LIST
+		,		DATE_FORMAT(UPD_DT, '%Y-%m-%d') AS UPD_DT
+		FROM cm.CM_APIKEY
+		WHERE CORP_ID = #{corpId}
+		AND PROJECT_ID = #{projectId}
+	</select>
+
+	<insert id="insertApiKey">
+		/* baseInfo.insertApiKey APIKEY 등록 */
+		INSERT INTO	cm.CM_APIKEY (
+				API_KEY
+		,		CORP_ID
+		,		PROJECT_ID
+		,		API_PWD
+		,		IP_CHK_YN
+		,		CPS
+		,		DAY_SENDER_CHK_YN
+		,		MON_SENDER_CHK_YN
+		,		STATUS
+		,		RPT_YN
+		,		LINE_TYPE
+		,		DUP_CHK_YN
+		,		WEB_SENDER_YN
+		,		REG_DT
+				<if test="daySenderLimitAmount != null and daySenderLimitAmount != ''">
+		,		DAY_SENDER_LIMIT_AMOUNT
+				</if>
+				<if test="monSenderLimitAmount != null and monSenderLimitAmount != ''">
+		,		MON_SENDER_LIMIT_AMOUNT
+				</if>
+		,		IP_LIST
+		,		UPD_DT
+		)	VALUES (
+				#{apiKey}
+		,		#{corpId}
+		,		#{newProjectId}
+		,		#{apiPwd}
+		,		#{ipChkYn}
+		,		#{cps}
+		,		#{daySenderChkYn}
+		,		#{monSenderChkYn}
+		,		#{status}
+		,		#{rptYn}
+		,		#{lineType}
+		,		#{dupChkYn}
+		,		#{webSenderYn}
+		,		NOW()
+				<if test="daySenderLimitAmount != null and daySenderLimitAmount != ''">
+		,		#{daySenderLimitAmount}
+				</if>
+				<if test="monSenderLimitAmount != null and monSenderLimitAmount != ''">
+		,		#{monSenderLimitAmount}
+				</if>
+		,		#{jsonInfo}
+		,		NOW()
+		)
+	</insert>
+	
+	<update id="updateApiKey" parameterType="hashmap">
+		/* baseInfo.updateApiKey APIKEY 수정*/
+		UPDATE cm.CM_APIKEY
+		SET
+			API_PWD					= #{apiPwd} 
+		,	WEB_SENDER_YN			= #{webSenderYn}
+		,	IP_CHK_YN				= #{ipChkYn}
+		,	IP_LIST					= #{jsonInfo}
+		,	CPS						= #{cps}
+		,	STATUS					= #{status}
+		,	LINE_TYPE				= #{lineType}
+		,	RPT_YN					= #{rptYn}
+		,	DUP_CHK_YN				= #{dupChkYn}
+		,	DAY_SENDER_CHK_YN		= #{daySenderChkYn}
+		,	DAY_SENDER_LIMIT_AMOUNT	= #{daySenderLimitAmount}
+		,	MON_SENDER_CHK_YN		= #{monSenderChkYn}
+		,	MON_SENDER_LIMIT_AMOUNT	= #{monSenderLimitAmount}
+		WHERE
+			API_KEY					= #{apiKey}
 	</update>
 </mapper>

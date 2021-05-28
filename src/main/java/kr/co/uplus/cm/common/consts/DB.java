@@ -170,4 +170,7 @@ public class DB {
 	// 프로젝트 기본정보
 	public final static String QRY_SELECT_PROJECT_BASE_INFO = "baseInfo.selectProjectBaseInfo";
 	public final static String QRY_UPDATE_PROJECT_BASE_INFO = "baseInfo.updateProjectBaseInfo";
+	public final static String QRY_SELECT_APIKEY_LIST = "baseInfo.selectApiKeyList";
+	public final static String QRY_INSERT_APIKEY = "baseInfo.insertApiKey";
+	public final static String QRY_UPDATE_APIKEY = "baseInfo.updateApiKey";
 }

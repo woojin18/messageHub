@@ -26,7 +26,7 @@
 						<div class="of_h">
 							<h5 class="inline-block float-left" style="width:10%">결재조건 *</h5>
 							<div style="width:88%" class="float-right">
-								<p class="color4 consolMarginTop">{{ data.payTypeName }}</p>
+								<p class="color4 consolMarginTop">{{ baseInfoData.payTypeName }}</p>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
@@ -45,7 +45,7 @@
 					<div class="Dashboard01 pd0 of_h">
 						<h4 class="inline-block">API Key 관리</h4>
 						<div class="float-right h4Button">
-							<a href="#self" class="btnStyle2 borderGray" data-toggle="modal" data-target="#key">KEY 생성<i class="far fa-plus-circle ml10"></i></a>
+							<a @click="fnRegisterApiKeyPop" class="btnStyle2 borderGray">KEY 생성<i class="far fa-plus-circle ml10"></i></a>
 						</div>
 						<p class="color4">* 프로젝트 API Key는 5개까지 발급받을 수 있으며, 서비스 이용 시 인증에 사용됩니다.</p>
 
@@ -53,33 +53,24 @@
 							<colgroup>
 								<col>
 								<col style="width:20%">
-								<col style="width:10%">
+								<col style="width:20%">
 								<col style="width:20%">
 								<col style="width:15%">
 							</colgroup>
 							<thead>
 								<tr>
-								<th class="text-center">API Key 명</th>
-								<th class="text-center">API Key</th>
-								<th class="text-center">대표여부</th>
-								<th class="text-center">생성일</th>
-								<th class="text-center end">관리</th>
+									<th class="text-center">API Key</th>
+									<th class="text-center">웹 사용</th>
+									<th class="text-center">생성일</th>
+									<th class="text-center end">관리</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td class="text-left">PUSH_01 (광고성)</td>
-									<td class="text-center">12312313123</td>
-									<td class="text-center">예</td>
-									<td class="text-center">2021.01.20</td>
-									<td class="text-center end"><a href="#self" class="btnStyle1 borderLightGray small mr5">수정</a></td>
-								</tr>
-								<tr>
-									<td class="text-left">PUSH_01 (광고성)</td>
-									<td class="text-center">12312313123</td>
-									<td class="text-center">예</td>
-									<td class="text-center">2021.01.20</td>
-									<td class="text-center end"><a href="#self" class="btnStyle1 borderLightGray small mr5">수정</a></td>
+								<tr v-for="(data) in apiKeyList" :key="data.apiKey">
+									<td class="text-center">{{ data.apiKey }}</td>
+									<td class="text-center">{{ data.webSenderYnName }}</td>
+									<td class="text-center">{{ data.regDt }}</td>
+									<td class="text-center end"><a @click="fnUpdateApiKeyPop(data)" class="btnStyle1 borderLightGray small mr5">수정</a></td>
 								</tr>
 							</tbody>
 						</table>
@@ -140,14 +131,16 @@
 			</div>
 
 			<div class="text-center mt20">
-				<a @click="fnSave" class="btnStyle2 backRed mr5">저장</a>
-				<a @click="fnClose" class="btnStyle2">취소</a>
+				<a @click="fnSave" class="btnStyle2 backRed">저장</a>
 			</div>
 
 			<!-- //본문 -->
 
 			<footer>CopyrightⓒLG Plus Corp. All Rights Reserved.</footer>
 		</article>
+
+		<!--  Modal -->
+		<apiKeyPop :saveStatus="saveStatus" :apiKeyData.sync="apiKeyData"></apiKeyPop>
 	</div>
 	<!-- //content -->
 </template>
@@ -156,88 +149,56 @@
 import baseInfoApi from '../service/baseInfoApi'
 import confirm from "@/modules/commonUtil/service/confirm";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import apiKeyPop from '../components/bc-baseinfo-apiKey.vue';
+import tokenSvc from '@/common/token-service';
 
 export default {
 	name: "baseInfoManage",
 	components: {
-		// AddrTreeMenu,
-		// AddrRegisterLayer,
-		// AddrModifyLayer,
-		// MemberRegisterLayer,
-		// PageLayer,
+		apiKeyPop,
 	},
 	props: {
-		searchProjectData : {
-			type: Object,
-			require: false,
-			default: function() {
-				return {
-					'projectId'			: '',
-					'corpId'			: '',
-					'projectName'		: '',
-					'projectDesc'		: '',
-					'payType'			: '',
-					'PayTypeName'		: '',
-					'billId'			: '',
-					'smartChCode'		: '',
-					'regDt'				: '',
-					'updDt'				: '',
-					'useYn'				: '',
-					'useChGrpInfo'		: '',
-					'resendTitle'		: '',
-					'nopayYn'			: '',
-					'subbillYn'			: '',
-					'subbillStartDay'	: '',
-					'projectMemberCnt'	: '',
-					'rcsYn'				: '',
-					'smsmmsYn'			: '',
-					'pushYn'			: '',
-					'kakaoYn'			: '',
-					'moYn'				: '',
-				}
-			}
-		},
 	},
 	data() {
 		return {
-			data: {},
-			// memberRegisterOpen: false,
+			baseInfoData: {},
+			apiKeyList: [],
+			saveStatus: '',
+			apiKeyData: {},
 		}
 	},
 	mounted() {
-		this.searchProjectData.projectId = this.$parent.projectId;
-		// this.searchProjectData.projectName = this.$parent.projectName;
 		this.fnSearchProject();
 	},
 	watch: {
-		data: function() {
-			jQuery("#projectName").val(this.data.projectName);
-			jQuery("#projectDesc").val(this.data.projectDesc);
-			jQuery('input:radio[name=useYn]:input[value="' + this.data.useYn + '"]').prop("checked", true);
-			jQuery('input:radio[name=radioRcs]:input[value="' + this.data.radioYn + '"]').prop("checked", true);
-			jQuery('input:radio[name=radioMms]:input[value="' + this.data.smsmmsYn + '"]').prop("checked", true);
-			jQuery('input:radio[name=radioPush]:input[value="' + this.data.pushYn + '"]').prop("checked", true);
-			jQuery('input:radio[name=radioKakao]:input[value="' + this.data.kakaoYn + '"]').prop("checked", true);
-			jQuery('input:radio[name=radioMo]:input[value="' + this.data.moYn + '"]').prop("checked", true);
+		baseInfoData: function() {
+			jQuery('#projectName').val(this.baseInfoData.projectName);
+			jQuery('#projectDesc').val(this.baseInfoData.projectDesc);
+			jQuery('input:radio[name=useYn]:input[value="' + this.baseInfoData.useYn + '"]').prop("checked", true);
+			jQuery('input:radio[name=radioRcs]:input[value="' + this.baseInfoData.radioYn + '"]').prop("checked", true);
+			jQuery('input:radio[name=radioMms]:input[value="' + this.baseInfoData.smsmmsYn + '"]').prop("checked", true);
+			jQuery('input:radio[name=radioPush]:input[value="' + this.baseInfoData.pushYn + '"]').prop("checked", true);
+			jQuery('input:radio[name=radioKakao]:input[value="' + this.baseInfoData.kakaoYn + '"]').prop("checked", true);
+			jQuery('input:radio[name=radioMo]:input[value="' + this.baseInfoData.moYn + '"]').prop("checked", true);
 		}
 	},
 	methods: {
 		// 프로젝트 조회
 		async fnSearchProject() {
-			var params = Object.assign({}, this.searchProjectData);
+			let params = {
+				projectId: this.$parent.projectId,
+				corpId: tokenSvc.getToken().principal.corpId,
+			};
+
 			await baseInfoApi.selectProjectBaseInfo(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					this.data = result.data;
+					this.baseInfoData = result.data.baseInfo;
+					this.apiKeyList = result.data.apiKeyList;
 				} else {
 					confirm.fnAlert("", result.message);
 				}
 			});
-		},
-		// 닫기
-		fnClose() {
-			//jQuery("#projectPop").modal("hide");
-			this.$router.push( {name:'projectManage', params:{}} );
 		},
 		// 저장
 		fnSave() {
@@ -246,13 +207,12 @@ export default {
 				confirm.fnAlert("", "프로젝트명을 입력하세요.");
 				return false;
 			}
-
 			eventBus.$on('callbackEventBus', this.fnSaveCallBack);
 			confirm.fnConfirm("기본정보 저장", "저장하시겠습니까?", "확인");
 		},
 		fnSaveCallBack() {
 			var params = {
-				"projectId"		: this.data.projectId,
+				"projectId"		: this.baseInfoData.projectId,
 				"projectName"	: jQuery("#projectName").val(),
 				"projectDesc"	: jQuery("#projectDesc").val(),
 				"useYn"			: jQuery("input[name='useYn']:checked").val(),
@@ -268,14 +228,25 @@ export default {
 
 				if(result.success) {
 					confirm.fnAlert("", "저장되었습니다.");
-					// 부모창 리스트 조회
 					this.fnSearchProject();
-					// 창닫기
 				} else {
 					confirm.fnAlert("", result.message);
 				}
 			});
 		},
+		// API키 등록
+		fnRegisterApiKeyPop() {
+			this.apiKeyData = {};
+			this.apiKeyData.projectId = this.$parent.projectId;
+			this.saveStatus = 'R';
+			jQuery("#apiKeyPop").modal("show");
+		},
+		// API키 수정
+		fnUpdateApiKeyPop(data) {
+			this.apiKeyData = data;
+			this.saveStatus = 'U';
+			jQuery("#apiKeyPop").modal("show");
+		}
 	}
 }
 </script>
