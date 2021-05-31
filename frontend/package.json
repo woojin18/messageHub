@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-	"serve": "vue-cli-service serve --port 3000",
+    "serve": "vue-cli-service serve --port 3000",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
@@ -12,7 +12,7 @@
     "@toast-ui/vue-grid": "2.1.0",
     "@tosspayments/sdk": "^1.1.4",
     "axios": "^0.19.0",
-    "core-js": "^2.6.5",
+    "core-js": "^2.6.12",
     "file-saver": "^2.0.2",
     "jquery": "^3.6.0",
     "js-base64": "^2.5.1",
