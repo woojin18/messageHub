@@ -200,7 +200,6 @@ public class CommonService {
         // 이미지 업로드 임시 폴더
         prjAbsPath = prjRelPath.toAbsolutePath().toString();
         uploadDirPath = (StringUtils.equals(prjAbsPath, File.separator) ? "" : prjAbsPath) + imgRltTmpPath + convertUUID + File.separator;
-        uploadDirPath = imgRltTmpPath + convertUUID + File.separator;
 
         File uploadDir = new File(uploadDirPath);
 
@@ -219,6 +218,9 @@ public class CommonService {
 
             log.info("{}.uploadImgFile - create directory : {}", this.getClass(), uploadDir.getAbsolutePath());
             uploadDir.mkdir();
+
+            if(uploadDir.canRead()) log.info("{}.uploadImgFile - can read : {}", this.getClass(), uploadDir.getAbsolutePath());
+            else log.info("{}.uploadImgFile - can't read : {}", this.getClass(), uploadDir.getAbsolutePath());
         }
 
         try {
