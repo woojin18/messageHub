@@ -98,7 +98,7 @@ public class IntegratedTemplateService {
         RestResult<Object> rtn = new RestResult<Object>();
         int resultCnt = 0;
         //java.util.ArrayList cannot be cast to [Ljava.lang.String;
-        System.out.println(">>>>service 001 : "+params.get("checkedChannel"));
+        //System.out.println(">>>>service 001 : "+params.get("checkedChannel"));
         ArrayList<String> arrChannelList = (ArrayList<String>) params.get("checkedChannel");
         String[] checkChannelArr = new String[arrChannelList.size()];
         int size = 0;
@@ -106,7 +106,7 @@ public class IntegratedTemplateService {
         	checkChannelArr[size++] = channel;
         }
         
-        System.out.println(">>>>service 002 checkChannelArr.length ["+checkChannelArr.length+"]");
+        //System.out.println(">>>>service 002 checkChannelArr.length ["+checkChannelArr.length+"]");
 //        JSONArray checkChannel = new JSONArray();
 //        
 //        for(int i=0; i<checkChannelArr.length;i++) {
@@ -134,14 +134,14 @@ public class IntegratedTemplateService {
         //sbChannel.append("\",");
         
         for(int i=0; i<checkChannelArr.length;i++) {
-        	System.out.println(">>>>service 002-1 no : "+ i);
+        	//System.out.println(">>>>service 002-1 no : "+ i);
         	sb.append("{");
         	sb.append(sbChannel.toString());//채널순서를 기억하기 위해 추가
         	if(checkChannelArr[i].equalsIgnoreCase("Push")) {  
 //PUSH ====================================================================  
-        		System.out.println(">>>>service 003  PUSH 001 : "+params.get("pushImgInfo").getClass().getName());
+        		//System.out.println(">>>>service 003  PUSH 001 : "+params.get("pushImgInfo").getClass().getName());
         		LinkedHashMap<String, String> pushImgInfoMap = (LinkedHashMap<String, String>) params.get("pushImgInfo");
-        		//System.out.println(">>>>service 004  PUSH 002 : "+pushImgInfoMap.get("imgUrl"));
+        		////System.out.println(">>>>service 004  PUSH 002 : "+pushImgInfoMap.get("imgUrl"));
         		sb.append("\"chTypeList\" : \""	+chTypeList+"\",");
         		sb.append("\"chType\" : \"Push\",");//발송채널
         		sb.append("\"sendType\" : \""	+params.get("pushSend")+"\","); // 발송타입(ALL, FCM, APNS)
@@ -154,7 +154,7 @@ public class IntegratedTemplateService {
         		}
         		sb.append("\"appId\" : \""		+params.get("pushAppId")+"\""); // APP ID
         	}else if(checkChannelArr[i].equalsIgnoreCase("RCS")) {
-        		System.out.println(">>>>service 003  RCS 001");
+        		//System.out.println(">>>>service 003  RCS 001");
 //RCS ====================================================================
         		sb.append("\"chTypeList\" : \""	+chTypeList+"\",");
         		sb.append("\"chType\" : \"rcs\",");//발송채널
@@ -257,7 +257,7 @@ public class IntegratedTemplateService {
         			sb.append("	\"title\" : \""+params.get("rcsShortTitle")+"\", "); //
         			sb.append("	\"description\" : \""+params.get("rcsShortContent")+"\", "); // 메시지
         			
-        			System.out.println(">>>>service 003  RCS 001 SHORT 002  rcsShortImgInfoList : "+params.get("rcsShortImgInfoList"));
+        			//System.out.println(">>>>service 003  RCS 001 SHORT 002  rcsShortImgInfoList : "+params.get("rcsShortImgInfoList"));
         			//image List
         	        List<Map<String, Object>> rcsShortImgInfoList = null;
         	        if(params.containsKey("rcsShortImgInfoList")) {
@@ -591,13 +591,13 @@ public class IntegratedTemplateService {
         			}
         			sb.append("	] ");
         		}        			
-        		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        		System.out.println(sb.toString());
-        		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        		//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        		//System.out.println(sb.toString());
+        		//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
     		    
         	}else if(checkChannelArr[i].equalsIgnoreCase("Kakao")) {
-        		System.out.println(">>>>service 003  kakao 001 : "+params.get("kakaoTemplateTable"));
+        		//System.out.println(">>>>service 003  kakao 001 : "+params.get("kakaoTemplateTable"));
 //KAKAO ====================================================================  
         		String buttonType = null;
     			String buttonName = null;
@@ -608,7 +608,7 @@ public class IntegratedTemplateService {
         		List<Map<String, Object>> buttonInfoList = null;
         		
         		if((int)params.get("kakaoTemplateTable") == 0){
-        			System.out.println(">>>>service 003  RCS 002 friendtalk");
+        			//System.out.println(">>>>service 003  RCS 002 friendtalk");
         			if(params.containsKey("friendTalkButtons")) {
         	            buttonInfoList = (List<Map<String, Object>>) params.get("friendTalkButtons");
         			}
@@ -617,10 +617,11 @@ public class IntegratedTemplateService {
         			sb.append("\"chType\" : \"friendtalk\",");
         			
         			sb.append("\"friendtalk\" : { ");
-        			sb.append("\"senderKey\" : \""+params.get("friendTalkSendProfile")+"\",");
+        			sb.append("\"senderKeyType\" : \""+params.get("friendTalkSenderKeyType")+"\",");
+        			sb.append("\"senderKey\" : \""+params.get("friendTalkSenderKey")+"\",");
         			sb.append("\"wideImageYn\" : \"N\",");
         			sb.append("\"msg\" : \""+params.get("friendTalkContent")+"\",");
-        			System.out.println(">>>>service 003  RCS 003 friendtalk : "+sb.toString());
+        			//System.out.println(">>>>service 003  RCS 003 friendtalk : "+sb.toString());
         	        Map<String, Object> imgInfo = null;
         	        if(params.containsKey("friendTalkImgInfo")) {
         	        	imgInfo = (Map<String, Object>) params.get("friendTalkImgInfo");
@@ -636,7 +637,7 @@ public class IntegratedTemplateService {
     	                }
         	            sb.append("	}, "); // 이미지
         	        }
-        	        System.out.println(">>>>service 003  RCS 004 friendtalk : "+sb.toString());
+        	        //System.out.println(">>>>service 003  RCS 004 friendtalk : "+sb.toString());
         			sb.append("\"buttons\": [{ ");
         			sb.append("\"suggestions\": [ ");
         			
@@ -651,12 +652,12 @@ public class IntegratedTemplateService {
     	                    startDate = CommonUtils.getStrValue(buttonInfo, "startDate");
     	                    endDate = CommonUtils.getStrValue(buttonInfo, "endDate");
     	                    
-    	                    System.out.println(">>>>service 003  button 003 : buttonType : "+buttonType);
-    	        			System.out.println(">>>>service 003  button 004 : buttonName : "+buttonName);
-    	        			System.out.println(">>>>service 003  button 005 : buttonLink : "+buttonLink);
-    	        			System.out.println(">>>>service 003  button 006 : buttonLink1 : "+buttonLink1);
-    	        			System.out.println(">>>>service 003  button 007 : startDate : "+startDate);
-    	        			System.out.println(">>>>service 003  button 008 : endDate : "+endDate);
+    	                    //System.out.println(">>>>service 003  button 003 : buttonType : "+buttonType);
+    	        			//System.out.println(">>>>service 003  button 004 : buttonName : "+buttonName);
+    	        			//System.out.println(">>>>service 003  button 005 : buttonLink : "+buttonLink);
+    	        			//System.out.println(">>>>service 003  button 006 : buttonLink1 : "+buttonLink1);
+    	        			//System.out.println(">>>>service 003  button 007 : startDate : "+startDate);
+    	        			//System.out.println(">>>>service 003  button 008 : endDate : "+endDate);
         			
     		    			if(buttonType.equalsIgnoreCase("U")) {
     			    			sb.append("	{ ");
@@ -751,12 +752,12 @@ public class IntegratedTemplateService {
     		    		    //fTalkIdx = fTalkIdx + 1;
     		    		         			
     		        }//end for(Map<String, Object> buttonInfo : buttonInfoList) {
-        			System.out.println(">>>>service 005  RCS 002 friendtalk : "+sb.toString());
+        			//System.out.println(">>>>service 005  RCS 002 friendtalk : "+sb.toString());
         		    sb.append("	]         ");	
         		    sb.append("	}]         ");	
         		    sb.append("} ");
         		}else if((int)params.get("kakaoTemplateTable") == 1){
-        			System.out.println(">>>>service 003  RCS 002 noticetalk");
+        			//System.out.println(">>>>service 003  RCS 002 noticetalk");
         			sb.append("\"chTypeList\" : \""	+chTypeList+"\",");
         			sb.append("\"chType\" : \"alimtalk\",");
         			
@@ -771,9 +772,9 @@ public class IntegratedTemplateService {
     		    
         	}else if(checkChannelArr[i].equalsIgnoreCase("SmsMms")) {
 //SMSMMS ====================================================================    
-        		System.out.println("=============================================");
-        		System.out.println("smsSendType : "+params.get("smsSendType"));
-        		System.out.println("=============================================");
+        		//System.out.println("=============================================");
+        		//System.out.println("smsSendType : "+params.get("smsSendType"));
+        		//System.out.println("=============================================");
         		if(params.get("smsSendType").equals("S")){//sms
         			sb.append("\"chTypeList\" : \""	+chTypeList+"\",");
         			sb.append("\"chType\" : \"sms\",");//발송채널
@@ -822,9 +823,9 @@ public class IntegratedTemplateService {
         	}
         }
         sb.append("]");
-        System.out.println("=============================================");
-        System.out.println(">>>>service 005 json : "+sb.toString());
-        System.out.println("=============================================");
+        //System.out.println("=============================================");
+        //System.out.println(">>>>service 005 json : "+sb.toString());
+        //System.out.println("=============================================");
         params.put("tmpltInfo", sb.toString());
         
         //if (params.containsKey("tmpltCode") && StringUtils.isNotBlank(CommonUtils.getString(params.get("tmpltCode")))) {
@@ -899,12 +900,12 @@ public class IntegratedTemplateService {
                 startDate = CommonUtils.getStrValue(buttonInfo, "startDate");
                 endDate = CommonUtils.getStrValue(buttonInfo, "endDate");
                 
-                System.out.println(">>>>service 003  button 003 : buttonType : "+buttonType);
-    			System.out.println(">>>>service 003  button 004 : buttonName : "+buttonName);
-    			System.out.println(">>>>service 003  button 005 : buttonLink : "+buttonLink);
-    			System.out.println(">>>>service 003  button 006 : buttonLink1 : "+buttonLink1);
-    			System.out.println(">>>>service 003  button 007 : startDate : "+startDate);
-    			System.out.println(">>>>service 003  button 008 : endDate : "+endDate);
+                //System.out.println(">>>>service 003  button 003 : buttonType : "+buttonType);
+    			//System.out.println(">>>>service 003  button 004 : buttonName : "+buttonName);
+    			//System.out.println(">>>>service 003  button 005 : buttonLink : "+buttonLink);
+    			//System.out.println(">>>>service 003  button 006 : buttonLink1 : "+buttonLink1);
+    			//System.out.println(">>>>service 003  button 007 : startDate : "+startDate);
+    			//System.out.println(">>>>service 003  button 008 : endDate : "+endDate);
 		
     			if(buttonType.equalsIgnoreCase("U")) {
 	    			sb.append("	{ ");

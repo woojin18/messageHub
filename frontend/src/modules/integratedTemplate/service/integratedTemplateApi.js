@@ -20,6 +20,7 @@ const deleteIntegratedTemplate = (params) => {
     return httpClient.post('/integratedTemplateApi/deleteIntegratedTemplate', params, { headers: {"show-layer": "Yes"} });
 };
 
+
 const excelDownloadIntegratedTemplate = (params) => {
     return httpClient.post('/integratedTemplateApi/excelDownloadIntegratedTemplate', params, { headers: {"show-layer": "No"}, responseType: 'arraybuffer' }).then(function(response) {
         try {

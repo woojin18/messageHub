@@ -156,39 +156,32 @@
     <div class="of_h mt20" v-show="channelTab === 0" >
       <div class="float-left" style="width:28%">
         <!-- phoneWrap -->
-<!--         <div class="phoneWrap">
-          <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
-          <div class="phoneTextWrap">
-            <div class="phoneText1">
-              <p>{{rowData.pushContent}}</p>
-            </div>
-          </div>
-        </div> -->
-        <!-- //phoneWrap -->
-        <!-- phoneWrap -->
         <div class="phoneWrap">
-          <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-          <div class="phoneTextWrap">
-            <div class="phoneText2">
-              <p v-if="fnIsEmpty(rowData.pushTitle)">템플릿 제목</p>
-              <p v-else>{{rowData.pushTitle}}</p>
-            </div>
-            <!--<div v-if="rowData.msgType == 'IMAGE' && fnIsEmpty(rowData.pushImgInfo.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
-              <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
-              <p class="font-size14 color3 mt15">이미지 영역</p>
-            </div>
-            <div v-if="rowData.msgType == 'IMAGE' && !fnIsEmpty(rowData.pushImgInfo.imgUrl)" class="phoneText2 mt10 text-center"
-              :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.pushImgInfo.imgUrl+');'">
-            </div>-->
-            <p v-if="fnIsEmpty(rowData.pushContent) && (rowData.msgKind != 'A')" class="font-size14 color4 mt10">템플릿 내용</p>
-            <p v-else class="font-size14 color4 mt10">
-                <span v-html="$gfnCommonUtils.newLineToBr(rowData.pushContent)"></span>
-                <br v-if="!fnIsEmpty(rowData.pushContent)"/>
-                <!-- <span v-if="tmpltData.msgKind == 'A' && !fnIsEmpty(tmpltData.rcvblcNumber)">
-                  {{tmpltData.rcvblcNumber}}
-                </span> -->
-              </p>
-          </div>
+          	<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
+            <div class="phoneTextWrap">
+              <div class="phoneText1">
+                <p v-if="fnIsEmpty(rowData.pushTitle)">템플릿 제목</p>
+                <p v-else>{{rowData.pushTitle}}</p>
+              </div>
+              <div v-if="rowData.msgType == 'IMAGE' && fnIsEmpty(rowData.pushImgInfo.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
+                <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+                <p class="font-size14 color3 mt15">이미지 영역</p>
+              </div>
+              <div v-if="rowData.msgType == 'IMAGE' && !fnIsEmpty(rowData.pushImgInfo.imgUrl)" class="phoneText2 mt10 text-center"
+                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.pushImgInfo.imgUrl+');'">
+              </div>
+              <div class="scroll-y">
+                <!--<p v-if="rowData.msgKind != 'A' || (fnIsEmpty(rowData.pushContent) && fnIsEmpty(rowData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>-->
+                <p v-if="fnIsEmpty(rowData.pushContent) && (rowData.msgKind != 'A')" class="font-size14 color4 mt10">내용</p>
+                <p v-else class="font-size14 color4 mt10">
+                  <span v-html="$gfnCommonUtils.newLineToBr(rowData.pushContent)"></span>
+                  <br v-if="!fnIsEmpty(rowData.pushContent)"/>
+                  <!--<span v-if="tmpltData.msgKind == 'A' && !fnIsEmpty(tmpltData.rcvblcNumber)">-->
+                  	{{rowData.rcvblcNumber}}
+                  <!--</span>-->
+                </p>
+              </div>
+            </div>          
         </div>
         <!-- //phoneWrap -->        
       </div>
@@ -380,12 +373,14 @@
             <div class="phoneWrap">
               <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
               <div class="phoneTextWrap">
-                <div class="phoneText1">
-                  <p><i class="fal fa-cart-arrow-down mr10"></i> {{rowData.rcs1Title}}</p>
-                  <div class="scroll-y">
-                    <p class="mt15 lc-1">{{rowData.rcs1Content}}</p>
-                  </div>
-                  <p class="text-center mt20" style="color:#69C8FF">사이트 연결</p>
+                <div class="phoneText1 relative scroll-y4">
+                  	<p><img src="common/images/phone_Icon10.png" alt="주문 아이콘"></p>
+					<div class="scroll-y5">
+                    	<p class="mt15 lc-1">{{rowData.rcs1Content}}</p>
+                  	</div>
+                  	<div class="absolute" style="bottom:25px; left:85px">
+                  		<p class="text-center mt20" style="color:#69C8FF">사이트 연결</p>
+					</div>
                 </div>
               </div>
             </div>
@@ -468,10 +463,10 @@
               <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
               <div class="phoneTextWrap">
                 <div class="phoneText1 of_h">
-                  <p><i class="fal fa-file-certificate"></i> 인증</p>
-                  <div class="scroll-y">
-                    <p class="mt15 lc-1">인증번호 안내</p>
-                  </div>
+                  	<p><img src="common/images/phone_Icon08.png" alt="인증 아이콘"></p>
+					<div class="scroll-y">
+						<p class="mt15 lc-1">인증번호 안내</p>
+					</div>
                   <p class="mt10 lc-1 inline-block">인증번호</p>
                   <p class="mt10 lc-1 inline-block float-right">{{}}</p>
                   <p class="text-center mt30" style="color:#69C8FF">홈페이지 연결하기</p>
@@ -559,7 +554,7 @@
             <div class="phoneWrap">
               <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
               <div class="phoneTextWrap">
-                <div class="phoneText1 scroll-y">
+                <div class="phoneText1 scroll-y2">
                   <p>{{rowData.rcsSMSContent}}</p>
                 </div>
               </div>
@@ -657,7 +652,7 @@
             <div class="phoneWrap">
               <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
               <div class="phoneTextWrap">
-                <div class="phoneText1 scroll-y">
+                <div class="phoneText1 scroll-y4">
                   <p>{{rowData.rcsLMSContent}}</p>
                 </div>
               </div>
@@ -761,9 +756,13 @@
             <div class="phoneWrap">
               <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
               <div class="phoneTextWrap">
-                <div class="phoneText1 scroll-y">
-                  <p>{{rowData.rcsShortContent}}</p>
-                </div>
+					<img src="@/assets/images/common/cardThumImg2_2.png" alt="프리 템플릿">
+					<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
+						<h5>타이틀영역</h5>
+						<div class="scroll-y3">
+							<p class="color6">{{rowData.rcsShortContent}}</p>
+						</div>								
+					</div>              
               </div>
             </div>
             <!-- //phoneWrap -->
@@ -886,9 +885,13 @@
             <div class="phoneWrap">
               <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
               <div class="phoneTextWrap">
-                <div class="phoneText1 scroll-y">
-                  <p>{{rowData.rcsTallContent}}</p>
-                </div>
+					<img src="@/assets/images/common/cardThumImg2_1.png" alt="프리 템플릿">
+					<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20">
+						<h5>타이틀영역</h5>
+						<div class="scroll-y6">
+							<p class="color6">{{rowData.rcsTallContent}}</p>
+						</div>								
+					</div>              
               </div>
             </div>
             <!-- //phoneWrap -->
@@ -1004,15 +1007,75 @@
 
         <h4>내용작성</h4>
         <div class="of_h mt20">
-          <div class="float-left" style="width:28%">
+          <div class="float-left" style="height:660px">
             <!-- phoneWrap -->
             <div class="phoneWrap">
-              <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
-              <div class="phoneTextWrap">
-                <div class="phoneText1 scroll-y">
-                  <p>{{rowData.rcs90Content}}</p>
-                </div>
-              </div>
+              	<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
+				<div class="phoneCardWrap">
+					<p class="color000">[WEB발신] (광고)</p>
+					<ul class="cardBxslider mt10">
+						<li class="slide cardBox" v-show="cShortTab === 0">
+							<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+							<div class="relative">
+								<div class="scroll-y" style="min-height:150px">
+									<p class="color000 font-size13">{{rowData.rcs90Title}}</p>
+									<p class="color3 mt5">{{rowData.rcs90Content}}</p>
+								</div>
+								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+							</div>
+						</li>
+						<li class="slide cardBox" v-show="cShortTab === 1">
+							<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+							<div class="relative">
+								<div class="scroll-y" style="min-height:150px">
+									<p class="color000 font-size13">{{rowData.rcs91Title}}</p>
+									<p class="color3 mt5">{{rowData.rcs91Content}}</p>
+								</div>
+								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+							</div>
+						</li>
+						<li class="slide cardBox" v-show="cShortTab === 2">
+							<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+							<div class="relative">
+								<div class="scroll-y" style="min-height:150px">
+									<p class="color000 font-size13">{{rowData.rcs92Title}}</p>
+									<p class="color3 mt5">{{rowData.rcs92Content}}</p>
+								</div>
+								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+							</div>
+						</li>
+						<li class="slide cardBox" v-show="cShortTab === 3">
+							<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+							<div class="relative">
+								<div class="scroll-y" style="min-height:150px">
+									<p class="color000 font-size13">{{rowData.rcs93Title}}</p>
+									<p class="color3 mt5">{{rowData.rcs93Content}}</p>
+								</div>
+								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+							</div>
+						</li>
+						<li class="slide cardBox" v-show="cShortTab === 4">
+							<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+							<div class="relative">
+								<div class="scroll-y" style="min-height:150px">
+									<p class="color000 font-size13">{{rowData.rcs94Title}}</p>
+									<p class="color3 mt5">{{rowData.rcs94Content}}</p>
+								</div>
+								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+							</div>
+						</li>
+						<li class="slide cardBox" v-show="cShortTab === 5">
+							<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+							<div class="relative">
+								<div class="scroll-y" style="min-height:150px">
+									<p class="color000 font-size13">{{rowData.rcs95Title}}</p>
+									<p class="color3 mt5">{{rowData.rcs95Content}}</p>
+								</div>
+								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+							</div>
+						</li>						
+					</ul>
+				</div>              
             </div>
             <!-- //phoneWrap -->
           </div>
@@ -1032,12 +1095,12 @@
             <div class="of_h">
               <div class="float-right" style="width:87%">
                 <ul class="tab_s6" role="tablist">
-                  <li role="presentation" class="active"><a href="#card91" aria-controls="card91" role="tab" data-toggle="tab">카드 1</a></li>
-                  <li role="presentation"><a href="#card92" aria-controls="card92" role="tab" data-toggle="tab">카드 2</a></li>
-                  <li role="presentation"><a href="#card93" aria-controls="card93" role="tab" data-toggle="tab">카드 3</a></li>
-                  <li role="presentation" v-if="rcs9CardCount == '4' || rcs9CardCount == '5' || rcs9CardCount == '6' "><a href="#card94" aria-controls="card94" role="tab" data-toggle="tab">카드 4</a></li>
-                  <li role="presentation" v-if="rcs9CardCount == '5' || rcs9CardCount == '6' "><a href="#card95" aria-controls="card95" role="tab" data-toggle="tab">카드 5</a></li>
-                  <li role="presentation" v-if="rcs9CardCount == '6'"><a href="#card96" aria-controls="card96" role="tab" data-toggle="tab">카드 6</a></li>
+                  <li role="presentation" class="active"><a href="#card91" aria-controls="card91" role="tab" data-toggle="tab" v-on:click="cShortTab=0">카드 1</a></li>
+                  <li role="presentation"><a href="#card92" aria-controls="card92" role="tab" data-toggle="tab" v-on:click="cShortTab=1">카드 2</a></li>
+                  <li role="presentation"><a href="#card93" aria-controls="card93" role="tab" data-toggle="tab" v-on:click="cShortTab=2">카드 3</a></li>
+                  <li role="presentation" v-if="rcs9CardCount == '4' || rcs9CardCount == '5' || rcs9CardCount == '6' "><a href="#card94" aria-controls="card94" role="tab" data-toggle="tab" v-on:click="cShortTab=3">카드 4</a></li>
+                  <li role="presentation" v-if="rcs9CardCount == '5' || rcs9CardCount == '6' "><a href="#card95" aria-controls="card95" role="tab" data-toggle="tab" v-on:click="cShortTab=4">카드 5</a></li>
+                  <li role="presentation" v-if="rcs9CardCount == '6'"><a href="#card96" aria-controls="card96" role="tab" data-toggle="tab" v-on:click="cShortTab=5">카드 6</a></li>
                 </ul>
               </div>
             </div>
@@ -1602,12 +1665,72 @@
           <div class="float-left" style="width:28%">
             <!-- phoneWrap -->
             <div class="phoneWrap">
-              <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
-              <div class="phoneTextWrap">
-                <div class="phoneText1 scroll-y">
-                  <p>내용이 들어갑니다.</p>
-                </div>
-              </div>
+              	<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
+				<div class="phoneCardWrap">
+					<p class="color000">[WEB발신] (광고)</p>
+					<ul class="cardBxslider mt10">
+						<li class="slide cardBox" v-show="cTallTab === 0">
+							<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+							<div class="relative">
+								<div class="scroll-y6" style="min-height:140px">
+									<p class="color000 font-size13">{{rowData.rcs100Title}}</p>
+									<p class="color3 mt5">{{rowData.rcs100Content}}</p>
+								</div>
+								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+							</div>
+						</li>
+						<li class="slide cardBox" v-show="cTallTab === 1">
+							<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+							<div class="relative">
+								<div class="scroll-y6" style="min-height:140px">
+									<p class="color000 font-size13">{{rowData.rcs101Title}}</p>
+									<p class="color3 mt5">{{rowData.rcs101Content}}</p>
+								</div>
+								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+							</div>
+						</li>
+						<li class="slide cardBox" v-show="cTallTab === 2">
+							<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+							<div class="relative">
+								<div class="scroll-y6" style="min-height:140px">
+									<p class="color000 font-size13">{{rowData.rcs102Title}}</p>
+									<p class="color3 mt5">{{rowData.rcs102Content}}</p>
+								</div>
+								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+							</div>
+						</li>
+						<li class="slide cardBox" v-show="cTallTab === 3">
+							<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+							<div class="relative">
+								<div class="scroll-y6" style="min-height:140px">
+									<p class="color000 font-size13">{{rowData.rcs103Title}}</p>
+									<p class="color3 mt5">{{rowData.rcs103Content}}</p>
+								</div>
+								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+							</div>
+						</li>
+						<li class="slide cardBox" v-show="cTallTab === 4">
+							<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+							<div class="relative">
+								<div class="scroll-y6" style="min-height:140px">
+									<p class="color000 font-size13">{{rowData.rcs104Title}}</p>
+									<p class="color3 mt5">{{rowData.rcs104Content}}</p>
+								</div>
+								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+							</div>
+						</li>
+						<li class="slide cardBox" v-show="cTallTab === 5">
+							<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+							<div class="relative">
+								<div class="scroll-y6" style="min-height:140px">
+									<p class="color000 font-size13">{{rowData.rcs105Title}}</p>
+									<p class="color3 mt5">{{rowData.rcs105Content}}</p>
+								</div>
+								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+							</div>
+						</li>						
+					</ul>
+				</div>              
             </div>
             <!-- //phoneWrap -->
           </div>
@@ -1627,12 +1750,12 @@
             <div class="of_h">
               <div class="float-right" style="width:87%">
                 <ul class="tab_s6" role="tablist">
-                  <li role="presentation" class="active"><a href="#card101" aria-controls="card101" role="tab" data-toggle="tab">카드 1</a></li>
-                  <li role="presentation"><a href="#card102" aria-controls="card102" role="tab" data-toggle="tab">카드 2</a></li>
-                  <li role="presentation"><a href="#card103" aria-controls="card103" role="tab" data-toggle="tab">카드 3</a></li>
-                  <li role="presentation" v-if="rcs10CardCount == '4' || rcs10CardCount == '5' || rcs10CardCount == '6' "><a href="#card104" aria-controls="card104" role="tab" data-toggle="tab">카드 4</a></li>
-                  <li role="presentation" v-if="rcs10CardCount == '5' || rcs10CardCount == '6' "><a href="#card105" aria-controls="card105" role="tab" data-toggle="tab">카드 5</a></li>
-                  <li role="presentation" v-if="rcs10CardCount == '6'"><a href="#card106" aria-controls="card106" role="tab" data-toggle="tab">카드 6</a></li>
+                  <li role="presentation" class="active"><a href="#card101" aria-controls="card101" role="tab" data-toggle="tab" v-on:click="cTallTab=0">카드 1</a></li>
+                  <li role="presentation"><a href="#card102" aria-controls="card102" role="tab" data-toggle="tab" v-on:click="cTallTab=1">카드 2</a></li>
+                  <li role="presentation"><a href="#card103" aria-controls="card103" role="tab" data-toggle="tab" v-on:click="cTallTab=2">카드 3</a></li>
+                  <li role="presentation" v-if="rcs10CardCount == '4' || rcs10CardCount == '5' || rcs10CardCount == '6' "><a href="#card104" aria-controls="card104" role="tab" data-toggle="tab" v-on:click="cTallTab=3">카드 4</a></li>
+                  <li role="presentation" v-if="rcs10CardCount == '5' || rcs10CardCount == '6' "><a href="#card105" aria-controls="card105" role="tab" data-toggle="tab" v-on:click="cTallTab=4">카드 5</a></li>
+                  <li role="presentation" v-if="rcs10CardCount == '6'"><a href="#card106" aria-controls="card106" role="tab" data-toggle="tab" v-on:click="cTallTab=5">카드 6</a></li>
                 </ul>
               </div>
             </div>
@@ -1673,8 +1796,6 @@
                     </div>
                     <ul v-for="imgIdx in rcs100ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
                       <li v-if="rowData.rcs100ImgInfoList.length > imgIdx -1">
-                        
-                        <!-- <a @click="fnRcs100DelImg(imgIdx-1)" v-if="rowData.rcs100ImgInfoList.length > 0">{{fnSubString(rowData.rcs100ImgInfoList[imgIdx].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a> -->
                         <a @click="fnRcs100DelImg(imgIdx-1)">{{fnSubString(rowData.rcs100ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
                       </li>
                       <li v-else>
@@ -1758,8 +1879,6 @@
                     </div>
                     <ul v-for="imgIdx in rcs101ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
                       <li v-if="rowData.rcs101ImgInfoList.length > imgIdx -1">
-                        
-                        <!-- <a @click="fnRcs101DelImg(imgIdx-1)" v-if="rowData.rcs101ImgInfoList.length > 0">{{fnSubString(rowData.rcs101ImgInfoList[imgIdx].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a> -->
                         <a @click="fnRcs101DelImg(imgIdx-1)">{{fnSubString(rowData.rcs101ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
                       </li>
                       <li v-else>
@@ -2227,17 +2346,17 @@
 				</div>
 				<div class="float-left consoleCon" style="width:72%">
 					<div class="of_h">
-						<div class="float-left" style="width:13%"><h4>발신프로필 *</h4></div>
-						<div class="float-left" style="width:59%">
-							<select name="userConsole040603_1" class="selectStyle2" style="width:100%" v-model="rowData.friendTalkSendProfile">
-								<option value="11">3</option>
-								<option value="22">2</option>
-								<option value="33">1</option>
-							</select>
-							<select class="selectStyle2 width100_" style="width:30%" v-model="rowData.friendTalkSendProfile">
-				                <option v-for="kakaoChKey in kakaoChKeyList" :key="kakaoChKey.senderKey" :value="kakaoChKey.senderKey">{{kakaoChKey.senderKey}}</option>
-				              </select>
-						</div>
+						<div class="float-left" style="width:13%"><h4>발신 그룹/프로필 *</h4></div>
+			            <div class="float-left" style="width:59%">
+			              <select class="float-left selectStyle2" style="width:20%" v-model="rowData.friendTalkSenderKeyType" @change="fnSelectFriendTalkSenderKeyList">
+			                <option value="NOMAL">일반</option>
+			                <option value="GROUP">그룹</option>
+			              </select>
+			              <select class="float-left selectStyle2" style="width:80%" v-model="rowData.friendTalkSenderKey">
+			                <option value="">선택해주세요.</option>
+			                <option v-for="senderKeyInfo in friendTalkSenderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.senderKey}}</option>
+			              </select>
+			            </div>					
 					</div>
 
 					<div class="of_h">
@@ -2323,7 +2442,7 @@
 						<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y2">
-								<p>내용이 들어갑니다.</p>
+								<p>{{rowData.noticeTalkContent}}</p>
 							</div>
 						</div>
 					</div>
@@ -2516,6 +2635,7 @@
 
 <script>
 import integratedTemplateApi from "@/modules/integratedTemplate/service/integratedTemplateApi.js";
+import templateApi from "@/modules/template/service/templateApi.js";
 import messageApi from "@/modules/message/service/messageApi.js";
 
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
@@ -2672,6 +2792,7 @@ export default {
 			  , 'friendTalkButtonsSize': 5 //kakao friend talk 버튼 최대 갯수
               , 'friendTalkImgInfo':{} //kakao friend talk 이미지정보
               
+              
               , 'smsImgInfoList':[] //sms/mms이미지정보
               
               , 'smsSendType': 'S'  //sms/mms 발송유형
@@ -2687,6 +2808,8 @@ export default {
       rcsTemplateTableChecked: 0, //채널설정 RCS탭 내 템플릿 구분 //v-model이용 radio 선택표시용으로 사용 //rcsTemplateTable로 사용하려 했으나 작동하지 않음
       kakaoTemplateTable: 0, //채널설정 kakao내 템플릿 구분
       smsTemplateTable: 0, //채널설정 SMS/MMS내 구분
+      cShortTab:0, //캐러셀 cshort 탭변경에 따른 미리보기 변경용
+      cTallTab:0, //캐러셀 ctall 탭변경에 따른 미리보기 변경용
       checkedPush: false,   //채널선택에서 push 선택여부
       checkedRCS: false,    //채널선택에서 rcs 선택여부
       checkedKakao: false,  //채널선택에서 kakaotalk 선택여부
@@ -2796,6 +2919,9 @@ export default {
       friendTalkUseCh : 'friendtalk',
       friendTalkImgLimitSize : 1, 
       
+      friendTalkSenderKeyType: 'NOMAL',  //NOMAL, GROUP //friendTalk 발신프로필 그룹
+      friendTalkSenderKeyList: [],
+      
       smsImgMngOpen : false, /* MMS 이미지 */
       smsImgUploadOpen : false,
       smsUseCh : 'MMS',
@@ -2856,9 +2982,8 @@ export default {
   },
 
   mounted() {
-    
     this.fnPushGetAppId();// v-show 사용으로 항상 살아있어서 mounted에 놓음
-    this.fnKakaoGetChKey();//
+    this.fnSelectFriendTalkSenderKeyList();
     this.fnRcs0SelectCallbackList();
     this.fnSMSSelectCallbackList();
     this.fnSetIntegratedTemplateInfo();
@@ -2991,18 +3116,19 @@ export default {
       });
     },
     
-
-    fnKakaoGetChKey(){
-      var params = {};
-      messageApi.selectKkoSenderKeyList(params).then(response => {
-        var result = response.data;
+    fnSelectFriendTalkSenderKeyList(){
+      const params = {kkoSvc: 'FRIENDTALK', senderKeyType: this.friendTalkSenderKeyType};
+      templateApi.selectSenderKeyList(params).then(response => {
+        const result = response.data;
         if(result.success) {
-          this.kakaoChKeyList = result.data;
+          this.rowData.friendTalkSenderKey = '';
+          this.friendTalkSenderKeyList = Object.assign({}, result.data);
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
     },
+
         
     //rcs 프로템플릿 발신번호 리스트 조회
     fnRcs0SelectCallbackList(){
@@ -3298,7 +3424,7 @@ export default {
 
         if(this.rowData.checkedChannel.includes('kakao')){
 			if(this.kakaoTemplateTable === 0){ //friendTalk
-				  if(!this.rowData.friendTalkSendProfile){
+				  if(!this.rowData.friendTalkSenderKey){
 		            confirm.fnAlert(this.detailTitle, '친구톡 발신프로필을 선택해주세요.');
 		            return false;
 		          }
@@ -3776,6 +3902,9 @@ export default {
 	            this.rowData.rcs105Title				= rtnData.rcs5BodyTitle;
 	            this.rowData.rcs105Content				= rtnData.rcs5BodyDescription;
 	            
+	            console.log("imgUrl1 ["+rtnData.rcsBodyMediaUrl+"]");
+	            console.log("imgUrl2 ["+rtnData.rcs1BodyMediaUrl+"]");
+	            console.log("imgUrl3 ["+rtnData.rcs2BodyMediaUrl+"]");
 	            this.rowData.rcs100ImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
 	            this.rowData.rcs101ImgInfoList.push({'fileId':rtnData.rcs1BodyMedia, 'imgUrl':rtnData.rcs1BodyMediaUrl});
 	            this.rowData.rcs102ImgInfoList.push({'fileId':rtnData.rcs2BodyMedia, 'imgUrl':rtnData.rcs2BodyMediaUrl});
@@ -3927,7 +4056,8 @@ export default {
 			
 
 //FRIENDTALK DATA SET            
-            this.rowData.friendTalkSendProfile 		= rtnData.friendTalkSenderKey;
+            this.rowData.friendTalkSenderKeyType	= rtnData.friendTalkSenderKeyType;
+            this.rowData.friendTalkSenderKey 		= rtnData.friendTalkSenderKey;
             this.rowData.friendTalkImageLink 		= rtnData.friendTalkImageLink;
             this.rowData.friendTalkContent 			= rtnData.friendTalkContent;
             this.rowData.friendTalkImgInfo.fileId 	= rtnData.friendTalkFileId;

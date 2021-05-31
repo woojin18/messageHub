@@ -76,29 +76,30 @@ SELECT T.PROJECT_ID, T.TMPLT_CODE, T.MSG_KIND, T.MSG_KIND_NAME, T.MSG_TYPE
 			   	
 	 , T.rcsPrdType, T.rcsCallback, T.rcsMessageBaseId, T.rcsFooter
 	 , T.rcsBodyMedia, T.rcsBodyTitle, T.rcsBodyDescription
+	 , T.rcs1BodyMedia, T.rcs1BodyTitle, T.rcs1BodyDescription
+
 	 , CASE WHEN rcsBodyMediaUrl = '{}' then ''
-	        ELSE T.rcsBodyMediaUrl
+	        ELSE replace(replace(T.rcsBodyMediaUrl,'{',''),'}','')
 	        END AS rcsBodyMediaUrl
-	 
 	 , T.rcs1BodyMedia, T.rcs1BodyTitle, T.rcs1BodyDescription
 	 , CASE WHEN rcs1BodyMediaUrl = '{}' then ''
-	        ELSE T.rcs1BodyMediaUrl
+	        ELSE replace(replace(T.rcs1BodyMediaUrl,'{',''),'}','')
 	        END AS rcs1BodyMediaUrl
 	 , T.rcs2BodyMedia, T.rcs2BodyTitle, T.rcs2BodyDescription		  
     , CASE WHEN rcs2BodyMediaUrl = '{}' then ''
-	        ELSE T.rcs2BodyMediaUrl
+	        ELSE replace(replace(T.rcs2BodyMediaUrl,'{',''),'}','')
 	        END AS rcs2BodyMediaUrl
 	 , T.rcs3BodyMedia, T.rcs3BodyTitle, T.rcs3BodyDescription		  
     , CASE WHEN rcs3BodyMediaUrl = '{}' then ''
-	        ELSE T.rcs3BodyMediaUrl
+	        ELSE replace(replace(T.rcs3BodyMediaUrl,'{',''),'}','')
 	        END AS rcs3BodyMediaUrl
 	 , T.rcs4BodyMedia, T.rcs4BodyTitle, T.rcs4BodyDescription		  
     , CASE WHEN rcs4BodyMediaUrl = '{}' then ''
-	        ELSE T.rcs4BodyMediaUrl
+	        ELSE replace(replace(T.rcs4BodyMediaUrl,'{',''),'}','')
 	        END AS rcs4BodyMediaUrl	
 	 , T.rcs5BodyMedia, T.rcs5BodyTitle, T.rcs5BodyDescription		  
     , CASE WHEN rcs5BodyMediaUrl = '{}' then ''
-	        ELSE T.rcs5BodyMediaUrl
+	        ELSE replace(replace(T.rcs5BodyMediaUrl,'{',''),'}','')
 	        END AS rcs5BodyMediaUrl
 			  		  			  			  		   	
 	 , T.rcsButton0Data, T.rcsButton0ButtonType, T.rcsButton0DisplayText, T.rcsButton0Title, T.rcsButton0StartTime, T.rcsButton0EndTime, T.rcsButton0Description
@@ -222,7 +223,7 @@ SELECT T.PROJECT_ID, T.TMPLT_CODE, T.MSG_KIND, T.MSG_KIND_NAME, T.MSG_TYPE
 	 , CASE WHEN T.rcs5Button5EndTime   != '' THEN 'rcs5EndDateId5'   ELSE '' END AS rcs5Button5EndTimeId	 	 	 	 
 	 	 
 	  
-	 , T.friendTalkSenderKey, T.friendTalkWideImageYn, T.friendTalkContent, T.friendTalkFileId, T.friendTalkImgUrl, T.friendTalkImageLink
+	 , T.friendTalkSenderKeyType, T.friendTalkSenderKey, T.friendTalkWideImageYn, T.friendTalkContent, T.friendTalkFileId, T.friendTalkImgUrl, T.friendTalkImageLink, T.friendTalkPrdType
 	 , T.friendTalkButton0ButtonType, T.friendTalkButton0DisplayText, T.friendTalkButton0Title, T.friendTalkButton0StartTime, T.friendTalkButton0EndTime, T.friendTalkButton0Description
 	 , CASE WHEN T.friendTalkButton0StartTime != '' THEN 'friendTalkStartDateId0' ELSE '' END AS friendTalkButton0StartTimeId
 	 , CASE WHEN T.friendTalkButton0EndTime   != '' THEN 'friendTalkEndDateId0'   ELSE '' END AS friendTalkButton0EndTimeId
@@ -3062,20 +3063,27 @@ FROM (
 			   	
 			   	
 
-				, CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'friendtalk' then 'friendtalk'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'friendtalk' then 'friendtalk'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'friendtalk' then 'friendtalk'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'friendtalk' then 'friendtalk'
+				, CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'friendtalk' then 'friendTalk'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'friendtalk' then 'friendTalk'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'friendtalk' then 'friendTalk'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'friendtalk' then 'friendTalk'
 			        	 ELSE ''
 			   	END AS friendTalkPrdType
 			   	
+			  , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'friendtalk' then A.TMPLT_INFO ->> '$[0].friendtalk.senderKeyType'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'friendtalk' then A.TMPLT_INFO ->> '$[1].friendtalk.senderKeyType'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'friendtalk' then A.TMPLT_INFO ->> '$[2].friendtalk.senderKeyType'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'friendtalk' then A.TMPLT_INFO ->> '$[3].friendtalk.senderKeyType'
+			        	 ELSE ''
+			   	END AS friendTalkSenderKeyType		   	
+
 			  , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'friendtalk' then A.TMPLT_INFO ->> '$[0].friendtalk.senderKey'
 			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'friendtalk' then A.TMPLT_INFO ->> '$[1].friendtalk.senderKey'
 			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'friendtalk' then A.TMPLT_INFO ->> '$[2].friendtalk.senderKey'
 			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'friendtalk' then A.TMPLT_INFO ->> '$[3].friendtalk.senderKey'
 			        	 ELSE ''
-			   	END AS friendTalkSenderKey		   	
-
+			   	END AS friendTalkSenderKey
+			   	
 			  , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'friendtalk' then A.TMPLT_INFO ->> '$[0].friendtalk.wideImageYn'
 			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'friendtalk' then A.TMPLT_INFO ->> '$[1].friendtalk.wideImageYn'
 			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'friendtalk' then A.TMPLT_INFO ->> '$[2].friendtalk.wideImageYn'

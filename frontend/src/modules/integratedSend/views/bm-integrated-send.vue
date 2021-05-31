@@ -45,7 +45,7 @@
       <div class="of_h inline">
         <div class="float-right">
           <router-link :to="{ name: 'integratedTemplate' }" tag="a" class="btnStyle2 borderGray" >통합발송 템플릿 관리<i class="fal fa-arrow-to-bottom"></i></router-link>
-          <router-link :to="{ name: 'integratedSendManage' }" tag="a" class="btnStyle2 borderGray" >통합 메시지 발송<i class="fal fa-arrow-to-bottom"></i></router-link>
+          <!--<router-link :to="{ name: 'integratedSendManage' }" tag="a" class="btnStyle2 borderGray" >통합 메시지 발송<i class="fal fa-arrow-to-bottom"></i></router-link>-->
         </div>
       </div>
 
