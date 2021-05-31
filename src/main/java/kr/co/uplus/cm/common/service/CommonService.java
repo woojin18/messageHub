@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -191,20 +192,27 @@ public class CommonService {
         String uploadDirPath = "";
         String convertUUID = UUID.randomUUID().toString().replace("-", ""); // 해쉬명 생성
 
+        String rootPath = System.getProperty("user.dir");
+        HttpServletRequest request = SpringUtils.getCurrentRequest();
+        HttpSession session = request.getSession();
+        String root_path = session.getServletContext().getRealPath("/");
+
         // 이미지 업로드 임시 폴더
         prjAbsPath = prjRelPath.toAbsolutePath().toString();
         uploadDirPath = (StringUtils.equals(prjAbsPath, File.separator) ? "" : prjAbsPath) + imgRltTmpPath + convertUUID + File.separator;
-        uploadDirPath = imgRltTmpPath + convertUUID + File.separator;
+        uploadDirPath = root_path + imgRltTmpPath + convertUUID + File.separator;
 
         File uploadDir = new File(uploadDirPath);
 
-        String rootPath = System.getProperty("user.dir");
-
-        log.info("{}.uploadImgFile - rootPath: {}, prjRelPath : {}, imgRltTmpPath : {}, convertUUID : {}, uploadDirPath : {}"
-                , this.getClass(), rootPath, prjAbsPath, imgRltTmpPath, convertUUID, uploadDirPath);
+        log.info("{}.uploadImgFile - root_path: {}, rootPath: {}, prjRelPath : {}, imgRltTmpPath : {}, convertUUID : {}, uploadDirPath : {}"
+                , this.getClass(), root_path, rootPath, prjAbsPath, imgRltTmpPath, convertUUID, uploadDirPath);
 
         // folder 없으면 생성
         if (!uploadDir.exists()) {
+            File temp = new File("/temp");
+            if (!temp.exists()) {
+                log.info("{}.uploadImgFile - create temp directory : {}", this.getClass(), temp.getAbsolutePath());
+            }
             log.info("{}.uploadImgFile - create directory : {}", this.getClass(), uploadDir.getAbsolutePath());
             uploadDir.mkdir();
         }
