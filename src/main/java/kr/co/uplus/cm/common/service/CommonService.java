@@ -3,6 +3,7 @@ package kr.co.uplus.cm.common.service;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -168,7 +169,7 @@ public class CommonService {
         //get Image Set Value
         Map<String, Object> imgUploadSet = (Map<String, Object>) selectFileUploadSet(Const.FileUploadSet.SEND_IMAGE);
         String imgPermitExten = CommonUtils.getStrValue(imgUploadSet, Const.FileUploadSetKey.PERMIT_EXTEN);
-        String imgRltTmpPath = CommonUtils.getStrValue(imgUploadSet, Const.FileUploadSetKey.RLT_TMP_PATH);
+        //String imgRltTmpPath = CommonUtils.getStrValue(imgUploadSet, Const.FileUploadSetKey.RLT_TMP_PATH);
 
         //get File Prop
         List<Object> imgSetInfoList = selectImgUploadChSet();
@@ -187,8 +188,8 @@ public class CommonService {
         }
 
         try {
+            InputStream inputStream = null;
             BufferedImage image = ImageIO.read(files.getInputStream());
-            File resizeFile = null;
             JSONArray jsonArray = new JSONArray();
             JSONObject jsonObject = null;
 
@@ -209,8 +210,6 @@ public class CommonService {
             String chNm = "";
             String wideImgYn = Const.COMM_NO;
             String apiWideYn = Const.COMM_NO;
-            long chLimitSize = NumberUtils.LONG_ZERO;
-            long resizeImageSize = NumberUtils.LONG_ZERO;
 
             for (String ch : useCh) {
                 chNm = ch;
@@ -228,22 +227,10 @@ public class CommonService {
                         || !resizeInfo.containsKey(Const.IMG_RESIZE_HEIGHT)) {
                     throw new Exception("유효하지 않은 이미지 리사이즈 정보 : 채널(" + chNm + ")");
                 }
-
-                resizeFile = File.createTempFile("temp_", "."+fileExten);
-                ImageUtil.imageResize(image, resizeFile, fileExten, resizeInfo.get(Const.IMG_RESIZE_WIDTH),
+                inputStream = ImageUtil.imageResize(image, fileExten, resizeInfo.get(Const.IMG_RESIZE_WIDTH),
                         resizeInfo.get(Const.IMG_RESIZE_HEIGHT));
-                log.info("{}.uploadImgFile - resizeFile : {}, exists() : {}", this.getClass(), resizeFile, resizeFile.exists());
 
-//                File outputFile = new File("C:/temp/sendBefore."+fileExten);
-//                ImageUtil.copyInputStreamToFile(resizeImage, outputFile);
-
-                /*
-                resizePath = ImageUtil.imageResize(oriFileFullPath, uploadDirPath,
-                        oriFileName + "_" + ch + "." + fileExten, fileExten, resizeInfo.get(Const.IMG_RESIZE_WIDTH),
-                        resizeInfo.get(Const.IMG_RESIZE_HEIGHT));
-                */
-
-                /** 채널별 이미지 사이즈 검사 */
+                /** 채널별 이미지 사이즈 검사
                 chLimitSize = getChLimitSize(imgSetInfoList, chNm);
                 if (!resizeFile.exists()) {
                     throw new Exception("유효하지 않은 리사이즈 이미지");
@@ -252,6 +239,7 @@ public class CommonService {
                     throw new Exception("유효하지 않은 이미지 사이즈 : 채널(" + chNm + "), 이미지 사이즈(" + resizeImageSize
                             + "Byte), 제한사이즈(" + chLimitSize + "Byte)");
                 }
+                 */
 
                 // TODO: 삭제 (API : 포탈연동 오류)
                 if (StringUtils.equals("FRIENDTALK", ch)) {
@@ -271,10 +259,7 @@ public class CommonService {
 
                 // send
                 apiUrl = ApiConfig.FILE_UPLOAD_API_URI + ch.toLowerCase();
-                resultMap = apiInterface.sendImg(apiUrl, headerMap, resizeFile, reqFileObject.toJSONString());
-
-                //임시파일 삭제
-                resizeFile.deleteOnExit();
+                resultMap = apiInterface.sendStreamImg(apiUrl, headerMap, inputStream, originFileName, reqFileObject.toJSONString());
 
                 // send result
                 imgUrl = "";
