@@ -223,55 +223,59 @@
 	</insert>
 	
 	<sql id="callbackManage">
-		SELECT *
+		SELECT	SUB_CB.*
+		,		CRB.BRAND_NAME
 		FROM (
-			SELECT	A.BRAND_NAME
-			,		A.BRAND_ID
-			,		B.CORP_ID 
-			,		REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS SUB_TITLE
-			,		B.CHATBOT_ID 
-			,		CASE 
-						WHEN REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "") = '0' THEN 'N' 
-						ELSE 'Y'
-					END AS RCS_REPLY
-			,		B.APPROVAL_STATUS 
-			,		date_format(B.REG_DT, '%Y-%m-%d') AS REG_DT
-			,		B.APPROVAL_DT 
-			FROM cm.CM_RCS_BRAND A 
-			INNER JOIN cm.CM_RCS_CHATBOT B 
-				ON A.BRAND_ID = B.BRAND_ID 
-			WHERE	1 = 1
-			AND		( A.PROJECT_ID  = #{projectId} OR A.PROJECT_ID  = 'ALL')
-			
-			UNION
-			
-			SELECT	A.BRAND_NAME
-			,		A.BRAND_ID
-			,		B.CORP_ID
-			,		REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS SUB_TITLE
-			,		B.CHATBOT_ID 
-			,		CASE 
-						WHEN REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "") = '0' THEN 'N' 
-						ELSE 'Y'
-					END AS RCS_REPLY
-			,		B.APPROVAL_STATUS 
-			,		date_format(B.REG_DT, '%Y-%m-%d') AS REG_DT
-			,		B.APPROVAL_DT 
-			FROM cm.CM_RCS_BRAND_REQ A 
-			INNER JOIN cm.CM_RCS_CHATBOT_REQ B 
-				on A.BRAND_ID = B.BRAND_ID 
-			WHERE 1 = 1 
-			AND ( A.PROJECT_ID  = #{projectId} or A.PROJECT_ID  = 'ALL')
-			AND B.CHATBOT_ID NOT IN (
-				SELECT BB.CHATBOT_ID 
-				FROM cm.CM_RCS_BRAND AA 
-				INNER JOIN cm.CM_RCS_CHATBOT BB 
-					on AA.BRAND_ID = BB.BRAND_ID 
-				WHERE	1=1
-				AND		( AA.PROJECT_ID  = #{projectId} or AA.PROJECT_ID  = 'ALL')
-			)
+			SELECT	A.*
+			FROM 	(
+					SELECT	CHATBOT.*
+					,		case @vData when CHATBOT_ID then @vRank := @vRank + 1 else @vRank := 1 end AS RANKING
+					,		(@vData:=CHATBOT_ID) AS vData
+					FROM	(
+						select	crcr.CHATBOT_ID
+						,		crcr.BRAND_ID
+						,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS SUB_TITLE
+						,		CASE
+									WHEN REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "") = 1 THEN '예'
+									ELSE '아니오'
+								END AS RCS_REPLY_TEXT
+						,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "")  AS RCS_REPLY
+						,		crcr.APPROVAL_STATUS
+						,		date_format(crcr.REG_DT, '%Y-%m-%d') AS REG_DT
+						,		'' AS APPROVAL_DT
+						from cm.CM_RCS_CHATBOT_REQ crcr 
+						where crcr.CORP_ID  = #{corpId}
+						and crcr.CHATBOT_ID not in (
+							select	crc.CHATBOT_ID
+							from cm.CM_RCS_CHATBOT crc 
+							where BRAND_ID  = #{brandId}
+							and REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.isMainNum[0]'), "\"", "") = 'true'
+						)
+						
+						UNION 
+						
+						select	crc.CHATBOT_ID
+						,		crc.BRAND_ID
+						,		REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS SUB_TITLE
+						,		CASE
+									WHEN REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "") = 1 THEN '예'
+									ELSE '아니오'
+								END AS RCS_REPLY_TEXT
+						,		REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "")  AS RCS_REPLY
+						,		crc.APPROVAL_STATUS
+						,		date_format(crc.REG_DT, '%Y-%m-%d') AS REG_DT
+						,		date_format(crc.APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
+						from cm.CM_RCS_CHATBOT crc 
+						where crc.CORP_ID  = #{corpId}
+					) CHATBOT, (SELECT @vRank:=0, @vData:='') as r
+					ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.REG_DT
+			) A
+			WHERE	RANKING = 1
 		) SUB_CB
+		INNER JOIN cm.CM_RCS_BRAND CRB
+			ON SUB_CB.BRAND_ID = CRB.BRAND_ID
 		WHERE 1 = 1
+		AND		(CRB.PROJECT_ID = #{projectId} OR CRB.PROJECT_ID = 'ALL')
 		<if test="srcBrandName != null and srcBrandName != ''">
 		AND		SUB_CB.BRAND_NAME LIKE CONCAT('%',#{srcBrandName},'%')
 		</if>
@@ -321,4 +325,12 @@
 		AND		CB.CHATBOT_ID = #{chatbotId}
 	</select>
 	
+	<select id="selectApprovalBrandList" resultType="camel">
+		/* project.selectApprovalBrandList */
+		SELECT	BRAND_ID
+		,		BRANC_NAME
+		FROM	cm.CM_RCS_BRAND crb
+		WHERE	CORP_ID = {corpId}
+		AND		APPROVAL_STATUS = '승인'
+	</select>
 </mapper>

@@ -279,7 +279,7 @@
 										<tr v-for="(item, i) in inputVal.chatbots" :key="i">	
 											<td class="end"><input v-model="inputVal.chatbots[i].mdn" :id="'mdn' + i"  type="text" class="inputStyle" style="width:100%"></td>
 											<td class="end"><input v-model="inputVal.chatbots[i].subTitle" :id="'subTitle' + i" type="text" class="inputStyle" style="width:100%"></td>
-											<td class="end"><div class="text-center"><input type="checkbox" id="MO01" class="checkStyle2" value="MO01"><label for="MO01"></label></div></td>
+											<td class="end"><div class="text-center"><input type="checkbox" id="MO01" class="checkStyle2" value="1" v-model="inputVal.chatbots[i].rcsReply"><label for="1"></label></div></td>
 											<td class="end"><a @click="fnDeleteChatbotTr" class="btnStyle1 borderGray ml10" style="padding: 0 10px"><i class="far fa-minus"></i></a></td>
 										</tr>
 										<tr>
@@ -536,6 +536,7 @@ console.log(this.projectId);
 		this.inputVal.chatbots.push({
 			"mdn"		: "",		// 발신번호
             "rcsReply"	: "1",		// 대표번호문자 수신서비스 0 = x / 1 = o
+			"rcsReplyYn" : "1",		// 대표번호문자 수신서비스 0 = x / 1 = o
             "subTitle"	: "",		// 발신번호명
             "service"	: "a2p",	// a2p 고정값
             "display"	: "10"		// '10' 고정값
@@ -644,6 +645,7 @@ console.log(this.projectId);
 
 		for( var i = 0; i < this.inputVal.chatbots.length; i++ ){
 			var obj = JSON.stringify(this.inputVal.chatbots[i]);
+			if( obj.rcsReplyYn ){ obj.rcsReply = '1' } else { obj.rcsReply = '0' }
 			list.push(obj);
 		}
 		var listString = list.join(", ");

@@ -46,6 +46,8 @@
 								) AS CALLBACK_CNT	
 						,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인완료' ELSE '' END	AS APPROVAL_STATUS		
 						,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
+						,		date_format(A.REG_DT, '%Y-%m-%d') AS REQ_DT
+						,		date_format(A.APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
 						,		'' AS MAIN_MDN
 						,		'' AS MAIN_TITLE
 						from 	cm.CM_RCS_BRAND A
@@ -71,9 +73,10 @@
 									FROM	cm.CM_RCS_CHATBOT
 									WHERE	BRAND_ID  = A.BRAND_ID 
 								) AS CALLBACK_CNT	
-						,		''	AS APPROVAL_STATUS		
-								
+						,		A.APPROVAL_STATUS
 						,		A.REG_DT
+						,		'' AS REQ_DT
+						,		'' AS APPROVAL_DT
 						,		B.MAIN_MDN
 						,		B.MAIN_TITLE
 						from 	cm.CM_RCS_BRAND_REQ A
@@ -105,7 +108,39 @@
 	
 	<select id="selectRcsBrandChatbotList" resultType="camel">
 		/* channel.selectRcsBrandChatbotList */
-		
+		SELECT	A.*
+		FROM 	(
+				SELECT	CHATBOT.*
+				,		case @vData when CHATBOT_ID then @vRank := @vRank + 1 else @vRank := 1 end AS RANKING
+				,		(@vData:=CHATBOT_ID) AS vData
+				FROM	(
+					select	crcr.CHATBOT_ID
+					,		crcr.CHATBOT_ID AS MAIN_MDN
+					,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS MAIN_TITLE
+					,		crcr.REG_DT
+					from cm.CM_RCS_CHATBOT_REQ crcr 
+					where BRAND_ID  = #{brandId}
+					and REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.isMainNum[0]'), "\"", "") = 'true'
+					and crcr.CHATBOT_ID not in (
+						select	crc.CHATBOT_ID
+						from cm.CM_RCS_CHATBOT crc 
+						where BRAND_ID  = #{brandId}
+						and REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.isMainNum[0]'), "\"", "") = 'true'
+					)
+					
+					UNION 
+					
+					select	crc.CHATBOT_ID
+					,		crc.CHATBOT_ID AS MAIN_MDN
+					,		REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS MAIN_TITLE
+					,		crc.REG_DT
+					from cm.CM_RCS_CHATBOT crc 
+					where BRAND_ID  = #{brandId}
+					and REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.isMainNum[0]'), "\"", "") = 'true'
+				) CHATBOT, (SELECT @vRank:=0, @vData:='') as r
+				ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.REG_DT
+		) A
+		WHERE	RANKING = 1
 	</select>
 	
 	<select id="selectRcsRegTmpltList" resultType="camel">

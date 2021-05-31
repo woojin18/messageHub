@@ -127,6 +127,7 @@ public class DB {
     public final static String QRY_SELECT_CALLBACK_MANAGE_LIST_CNT = "project.selectCallbackManageListCnt";
     public final static String QRY_SELECT_CALLBACK_MANAGE_LIST = "project.selectCallbackManageList";
     public final static String QRY_SELECT_CALLBACK_MANAGE_DETAIL = "project.selectCallbackManageDetail";
+    public final static String QRY_SELECT_CALLBACK_APPROVAL_BRAND_LIST = "project.selectApprovalBrandList";
 
     // RCS 템플릿 관리
     public final static String QRY_SELECT_RCS_TEMPLATE_LIST = "rcsTemplate.selectRcsTemplate";

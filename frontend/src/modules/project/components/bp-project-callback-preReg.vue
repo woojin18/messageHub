@@ -4,7 +4,7 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div class="of_h">
-						<h2>발신번호 사전 등록</h2>{{this.projectId}}
+						<h2>발신번호 등록</h2>
 						<hr>
 						<div class="row">
 							<div class="col-xs-12 consoleCon">				
@@ -18,24 +18,6 @@
                   </select>
 									<p class="txtCaption color3">발신번호 등록은 브랜드가 먼저 등록되어야 하며, 승인완료 된 브랜드만 보여집니다.</p>
 									</div>
-								</div>
-								<div class="of_h consolMarginTop">
-									<h4 class="inline-block" style="width:22%">대표발신번호 *</h4>
-									<div class="float-right" style="width:76%">
-										<input type="text" class="inputStyle" style="width:55%" v-model="mainMdn">
-										<p class="color3 inline-block ml10">휴대폰번호 등록 불가</p>
-									</div>
-								</div>
-								<div class="of_h">
-									<h4 class="inline-block" style="width:22%">발신 번호명 *</h4>
-									<input type="text" class="inputStyle float-right" style="width:76%" v-model="mainTitle">
-								</div>
-								<div class="of_h">
-									<h4 class="inline-block" style="width:22%">대표번호<br>문자수신 서비스 *</h4>
-									<div class="consolCheck vertical-top float-right" style="width:76%">
-										<input type="checkbox" id="use" class="checkStyle2" v-model="rcsReplyYn"><label for="use">사용중</label>
-										<p class="txtCaption color3">대표번호 문자수신(MO)서비스를 현재 사용하고 계실 경우 반드시 해당정보를 체크해 주셔야 합니다.</p>
-									</div>						
 								</div>
                 <div class="of_h consolMarginTop">
                   <h4 class="inline-block" style="width:22%">추가발신번호</h4>
@@ -77,10 +59,10 @@
 									<h4 class="inline-block vertical-middle" style="width:22%">통신서비스<br>가입증명원 *</h4>
 									<div class="float-right" style="width:76%">
 										<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:100%" ref="certiImgFile"/>
-										<div class="color3 consolMarginTop">
+										<!-- <div class="color3 consolMarginTop">
 											<div class="consolCheck float-left"><input type="checkbox" id="Lmit" class="checkStyle2" value="Lmit"><label for="Lmit"></label></div>
 											<p class="txtCaption color000">메시지 발송 시 기본템플릿(구.Free템플릿)은 정보성에 한하여 이용 가능합니다. 규정위반 시 서비스 이용이 제한될 수 있습니다.</p>
-										</div>
+										</div> -->
 									</div>
 								</div>
 							</div>
@@ -100,6 +82,8 @@
 import axios from 'axios'
 import tokenSvc from '@/common/token-service';
 import projectApi from '../service/projectApi'
+
+import confirm from "@/modules/commonUtil/service/confirm"
 
 export default {
   name: 'preRegExPop',
@@ -122,7 +106,7 @@ export default {
     }
   },
   mounted() {
-    //this.fnBrandList();
+    this.fnBrandList();
   },
   props: {
     projectId : {
@@ -138,7 +122,7 @@ export default {
     fnBrandList(){
       var params = { "projectId" : this.projectId }
 
-      projectApi.selectBrandList(params).then(response =>{
+      projectApi.selectApprovalBrandList(params).then(response =>{
         this.brandList = response.data.data;
       });
     },
@@ -177,18 +161,6 @@ export default {
       fd.append('certiFile'		, this.$refs.certiImgFile.files[0]);
 
       // 챗봇(발신번호) 정리
-      var mainRcsReplyYn = this.rcsReplyYn;
-      
-      if( mainRcsReplyYn ){ this.rcsReply = 1 } else { this.rcsReply = 0 }
-      // 메인 발신번호 세팅
-      this.chatbots.push({
-        "mdn"	    	: this.mainMdn,		// 발신번호
-        "rcsReply"	: this.rcsReply,		// 대표번호문자 수신서비스 0 = x / 1 = o
-        "subTitle"	: this.mainTitle,		// 발신번호명
-        "service"	  : "a2p",	// a2p 고정값
-        "display"	  : "10"		// '10' 고정값
-      });
-
       var list = [];
 
       for( var i = 0; i < this.chatbots.length; i++ ){
