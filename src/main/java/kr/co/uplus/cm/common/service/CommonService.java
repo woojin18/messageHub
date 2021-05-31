@@ -197,6 +197,11 @@ public class CommonService {
 
         File uploadDir = new File(uploadDirPath);
 
+        String rootPath = System.getProperty("user.dir");
+
+        log.info("{}.uploadImgFile - rootPath: {}, prjRelPath : {}, imgRltTmpPath : {}, convertUUID : {}, uploadDirPath : {}"
+                , this.getClass(), rootPath, prjAbsPath, imgRltTmpPath, convertUUID, uploadDirPath);
+
         // folder 없으면 생성
         if (!uploadDir.exists()) {
             uploadDir.mkdir();
@@ -209,6 +214,8 @@ public class CommonService {
             // 채널별 분기작업
             String oriFileFullPath = uplaodFile.getAbsolutePath();
             String oriFileName = uplaodFile.getName().replaceFirst("[.][^.]+$", "");
+
+            log.info("{}.uploadImgFile - oriFileFullPath : {}, oriFileName : {}", this.getClass(), oriFileFullPath, oriFileName);
 
             JSONArray jsonArray = new JSONArray();
             JSONObject jsonObject = null;
