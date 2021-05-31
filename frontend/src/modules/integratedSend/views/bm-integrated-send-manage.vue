@@ -76,7 +76,7 @@
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 relative scroll-y4">
-								<p><!--<img src="@/assets/images/common/phone_Icon10.png" alt="주문 아이콘">--></p>
+								<p><img src="@/assets/images/common/phone_Icon10.png" alt="주문 아이콘"></p>
 								<div class="scroll-y5">
 									<p class="mt15 lc-1">{{rowData.rcs1Content}}</p>
 								</div>
@@ -93,7 +93,7 @@
 						<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 of_h">
-								<p><!--<img src="@/assets/images/common/phone_Icon08.png" alt="인증 아이콘">--></p>
+								<p><img src="@/assets/images/common/phone_Icon08.png" alt="인증 아이콘"></p>
 								<div class="scroll-y">
 									<p class="mt15 lc-1">인증번호 안내</p>
 								</div>

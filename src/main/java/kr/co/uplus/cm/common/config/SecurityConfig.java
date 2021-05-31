@@ -75,14 +75,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.addFilterBefore(new VueStaticFilter(), UsernamePasswordAuthenticationFilter.class) // Vue에서 호출시 화면관련 URL은 /
-																								// forward
+		http.addFilterBefore(new VueStaticFilter(), UsernamePasswordAuthenticationFilter.class) // Vue에서 호출시 화면관련 URL은 forward
 				.addFilterBefore(new JwtExceptionFilter(), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new JwtAuthHeaderFilter(jwtProps), UsernamePasswordAuthenticationFilter.class);
 
 		http
 			.cors().and()
+			// csrf 사용하지 않음
 			.csrf().disable()
 			// Spring Security가 HttpSession 객체를 생성하지 않도록 설정
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
