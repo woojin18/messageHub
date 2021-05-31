@@ -15,22 +15,22 @@
 		            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 		            <div class="phoneTextWrap">
 		              <div class="phoneText1">
-		                <p v-if="fnIsEmpty(sendData.pushTitle)">제목</p>
-		                <p v-else>{{sendData.pushTitle}}</p>
+		                <p v-if="fnIsEmpty(rowData.pushTitle)">제목</p>
+		                <p v-else>{{rowData.pushTitle}}</p>
 		              </div>
-		              <div v-if="sendData.msgType == 'IMAGE' && fnIsEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
+		              <div v-if="rowData.msgType == 'IMAGE' && fnIsEmpty(rowData.pushImgInfo.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
 		                <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
 		                <p class="font-size14 color3 mt15">이미지 영역</p>
 		              </div>
-		              <div v-if="sendData.msgType == 'IMAGE' && !fnIsEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center"
-		                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
+		              <div v-if="rowData.msgType == 'IMAGE' && !fnIsEmpty(rowData.pushImgInfo.imgUrl)" class="phoneText2 mt10 text-center"
+		                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.pushImgInfo.imgUrl+');'">
 		              </div>
 		              <div class="scroll-y">
-		                <p v-if="sendData.msgKind != 'A' || (fnIsEmpty(sendData.pushContent) && fnIsEmpty(sendData.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
+		                <p v-if="rowData.msgKind != 'A' || (fnIsEmpty(rowData.pushContent) && fnIsEmpty(rowData.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
 		                <p v-else class="font-size14 color4 mt10">
-		                  <span v-html="$gfnCommonUtils.newLineToBr(sendData.pushContent)"></span>
-		                  <br v-if="!fnIsEmpty(sendData.pushContent)"/>
-		                  {{sendData.rcvblcNumber}}
+		                  <span v-html="$gfnCommonUtils.newLineToBr(rowData.pushContent)"></span>
+		                  <br v-if="!fnIsEmpty(rowData.pushContent)"/>
+		                  {{rowData.rcvblcNumber}}
 		                </p>
 		              </div>
 		            </div>
@@ -42,7 +42,7 @@
 		            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 					<div class="phoneTextWrap">
 						<div class="phoneText1 scroll-y2">
-							<p>내용이 들어갑니다.</p>
+							<p>{{rowData.smsContent}}</p>
 						</div>
 					</div>
 		          </div>
@@ -53,7 +53,7 @@
 		            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 					<div class="phoneTextWrap">
 						<div class="phoneText1 scroll-y4">
-							<p>내용이 들어갑니다.</p>
+							<p>{{rowData.smsContent}}</p>
 						</div>
 					</div>
 		          </div>
@@ -61,27 +61,27 @@
 		        
 		        <!-- RCS -->
 		        	<!-- free -->
-			          <div v-if="channelType == 'rcs'" v-show="previewMessageType == 'free'" class="phoneWrap">
+			          <div v-if="channelType == 'RCS'" v-show="previewMessageType == 'free'" class="phoneWrap">
 			          	<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y2">
-								<p>내용이 들어갑니다.</p>
+								<p>{{rowData.rcs0Content}}</p>
 							</div>
 						</div>
 			          </div>
 			    	<!-- //free -->
 			    	
 		        	<!-- description -->
-			          <div v-if="channelType == 'rcs'" v-show="previewMessageType == 'description'" class="phoneWrap">
+			          <div v-if="channelType == 'RCS'" v-show="previewMessageType == 'description'" class="phoneWrap">
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 relative scroll-y4">
-								<p><img src="common/images/phone_Icon10.png" alt="주문 아이콘"></p>
+								<p><!--<img src="@/assets/images/common/phone_Icon10.png" alt="주문 아이콘">--></p>
 								<div class="scroll-y5">
-									<p class="mt15 lc-1">{{name}}입니다.{{date}} 할인/특가<br>상품을 안내해 드립니다.<br>본 알림은 {{name}} 회원전용 서비스<br>입니다.</p>
+									<p class="mt15 lc-1">{{rowData.rcs1Content}}</p>
 								</div>
 								<div class="absolute" style="bottom:25px; left:85px">
-									<p class="text-center mt20" style="color:#69C8FF">사이트 연결</p>
+									<p class="text-center mt20" style="color:#69C8FF">{{rowData.rcs1Content}}</p>
 								</div>
 							</div>
 						</div>
@@ -89,16 +89,16 @@
 			    	<!-- //description -->			    	
 			    			        
 		        	<!-- style -->
-			          <div v-if="channelType == 'rcs'" v-show="previewMessageType == 'style'" class="phoneWrap">
+			          <div v-if="channelType == 'RCS'" v-show="previewMessageType == 'style'" class="phoneWrap">
 						<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 of_h">
-								<p><img src="common/images/phone_Icon08.png" alt="인증 아이콘"></p>
+								<p><!--<img src="@/assets/images/common/phone_Icon08.png" alt="인증 아이콘">--></p>
 								<div class="scroll-y">
 									<p class="mt15 lc-1">인증번호 안내</p>
 								</div>
 								<p class="mt10 lc-1 inline-block">인증번호</p>
-								<p class="mt10 lc-1 inline-block float-right">{{desc_var1}}</p>
+								<p class="mt10 lc-1 inline-block float-right"></p>
 								<p class="text-center mt30" style="color:#69C8FF">홈페이지 연결하기</p>
 								<p class="text-center mt10" style="color:#69C8FF">인증번호 복사하기</p>
 							</div>
@@ -107,50 +107,50 @@
 			    	<!-- //style -->
 
 			        <!-- SMS -->
-			          <div v-if="channelType == 'rcs'" v-show="previewMessageType == 'sms'" class="phoneWrap">
+			          <div v-if="channelType == 'RCS'" v-show="previewMessageType == 'sms'" class="phoneWrap">
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y2">
-								<p>내용이 들어갑니다.</p>
+								<p>{{rowData.rcsSMSContent}}</p>
 							</div>
 						</div>
 			          </div>
 			        <!--// SMS -->
 		        			    				    			        
 			        <!-- LMS -->
-			          <div v-if="channelType == 'rcs'" v-show="previewMessageType == 'lms'" class="phoneWrap">
+			          <div v-if="channelType == 'RCS'" v-show="previewMessageType == 'lms'" class="phoneWrap">
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y4">
-								<p>내용이 들어갑니다.</p>
+								<p>{{rowData.rcsLMSContent}}</p>
 							</div>
 						</div>
 			          </div>
 			        <!--// LMS -->
 			        		        			    				    			        
 		        	<!-- short -->
-			          <div v-if="channelType == 'rcs'" v-show="previewMessageType == 'short'" class="phoneWrap">
-			            <img src="common/images/phoneMockup1.svg" alt="프리 템플릿">
+			          <div v-if="channelType == 'RCS'" v-show="previewMessageType == 'short'" class="phoneWrap">
+			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
-							<img src="common/images/cardThumImg2_2.png" alt="프리 템플릿">
+							<img src="@/assets/images/common/cardThumImg2_2.png" alt="프리 템플릿">
 							<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
-								<h5>타이틀영역</h5>
+								<h5>{{rowData.rcsShortTitle}}</h5>
 								<div class="scroll-y3">
-									<p class="color6">내용입력</p>
+									<p class="color6">{{rowData.rcsShortContent}}</p>
 								</div>								
 							</div>
 						</div>
 			          </div>
 			    	<!-- //short -->	
 			    	<!-- tall -->
-			          <div vv-if="channelType == 'rcs'" v-show="previewMessageType == 'tall'" class="phoneWrap">
+			          <div vv-if="channelType == 'RCS'" v-show="previewMessageType == 'tall'" class="phoneWrap">
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<img src="@/assets/images/common/cardThumImg2_1.png" alt="프리 템플릿">
 							<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20">
-								<h5>타이틀영역</h5>
+								<h5>{{rowData.rcsTallTitle}}</h5>
 								<div class="scroll-y6">
-									<p class="color6">내용입력</p>
+									<p class="color6">{{rowData.rcsTallContent}}</p>
 								</div>								
 							</div>
 						</div>
@@ -158,81 +158,141 @@
 			    	<!-- //tall -->
 
 		        	<!-- cshort -->
-					<div vv-if="channelType == 'rcs'" v-show="previewMessageType == 'cShort'" class="phoneWrap" style="height:660px">
+					<div vv-if="channelType == 'RCS'" v-show="previewMessageType == 'cShort'" class="phoneWrap" style="height:660px">
 						<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneCardWrap">
 							<p class="color000">[WEB발신] (광고)</p>
 							<ul class="cardBxslider mt10">
-								<li class="slide cardBox">
-									<img src="common/images/cardThumImg.png" alt="카드 썸네일">
+								<li class="slide cardBox"><!--v-show="previewMessageType == 'cTall'"-->
+									<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
-											<p class="color000 font-size13">타이틀 영역1</p>
-											<p class="color3 mt5">내용입력</p>
+											<p class="color000 font-size13">{{rowData.rcs90Title}}</p>
+											<p class="color3 mt5">{{rowData.rcs90Content}}</p>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:</p>
+										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 									</div>
 								</li>
 								<li class="slide cardBox">
-									<img src="common/images/cardThumImg.png" alt="카드 썸네일">
+									<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
-											<p class="color000 font-size13">타이틀 영역2</p>
-											<p class="color3 mt5">내용입력</p>
+											<p class="color000 font-size13">{{rowData.rcs91Title}}</p>
+											<p class="color3 mt5">{{rowData.rcs91Content}}</p>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:</p>
+										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+									</div>
+								</li>
+								<li class="slide cardBox" v-show>
+									<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+									<div class="relative">
+										<div class="scroll-y" style="min-height:150px">
+											<p class="color000 font-size13">{{rowData.rcs92Title}}</p>
+											<p class="color3 mt5">{{rowData.rcs92Content}}</p>
+										</div>
+										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 									</div>
 								</li>
 								<li class="slide cardBox">
-									<img src="common/images/cardThumImg.png" alt="카드 썸네일">
+									<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
-											<p class="color000 font-size13">타이틀 영역3</p>
-											<p class="color3 mt5">내용입력</p>
+											<p class="color000 font-size13">{{rowData.rcs93Title}}</p>
+											<p class="color3 mt5">{{rowData.rcs93Content}}</p>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:</p>
+										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 									</div>
 								</li>
+								<li class="slide cardBox">
+									<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+									<div class="relative">
+										<div class="scroll-y" style="min-height:150px">
+											<p class="color000 font-size13">{{rowData.rcs94Title}}</p>
+											<p class="color3 mt5">{{rowData.rcs94Content}}</p>
+										</div>
+										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+									</div>
+								</li>
+								<li class="slide cardBox">
+									<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+									<div class="relative">
+										<div class="scroll-y" style="min-height:150px">
+											<p class="color000 font-size13">{{rowData.rcs95Title}}</p>
+											<p class="color3 mt5">{{rowData.rcs95Content}}</p>
+										</div>
+										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+									</div>
+								</li>								
 							</ul>
 						</div>
 					</div>
 			    	<!-- //cshort -->	
 			    	<!-- ctall -->
-			          <div v-if="channelType == 'rcs'" v-show="previewMessageType == 'cTall'" class="phoneWrap" style="height:660px">
+			          <div v-if="channelType == 'RCS'" v-show="previewMessageType == 'cTall'" class="phoneWrap" style="height:660px">
 						<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneCardWrap">
 							<p class="color000">[WEB발신] (광고)</p>
 							<ul class="cardBxslider mt10">
 								<li class="slide cardBox">
-									<img src="common/images/cardThumImg2_1.png" alt="카드 썸네일">
+									<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
-											<p class="color000 font-size13">타이틀 영역1</p>
-											<p class="color3 mt5">내용입력</p>
+											<p class="color000 font-size13">{{rowData.rcs100Title}}</p>
+											<p class="color3 mt5">{{rowData.rcs100Content}}</p>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:</p>
+										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
 								<li class="slide cardBox">
-									<img src="common/images/cardThumImg2_1.png" alt="카드 썸네일">
+									<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
-											<p class="color000 font-size13">타이틀 영역2</p>
-											<p class="color3 mt5">내용입력</p>
+											<p class="color000 font-size13">{{rowData.rcs101Title}}</p>
+											<p class="color3 mt5">{{rowData.rcs101Content}}</p>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:</p>
+										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
 								<li class="slide cardBox">
-									<img src="common/images/cardThumImg2_1.png" alt="카드 썸네일">
+									<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
-											<p class="color000 font-size13">타이틀 영역3</p>
-											<p class="color3 mt5">내용입력</p>
+											<p class="color000 font-size13">{{rowData.rcs102Title}}</p>
+											<p class="color3 mt5">{{rowData.rcs102Content}}</p>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:</p>
+										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
+								<li class="slide cardBox">
+									<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+									<div class="relative">
+										<div class="scroll-y6" style="min-height:140px">
+											<p class="color000 font-size13">{{rowData.rcs103Title}}</p>
+											<p class="color3 mt5">{{rowData.rcs103Content}}</p>
+										</div>
+										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+									</div>
+								</li>
+								<li class="slide cardBox">
+									<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+									<div class="relative">
+										<div class="scroll-y6" style="min-height:140px">
+											<p class="color000 font-size13">{{rowData.rcs104Title}}</p>
+											<p class="color3 mt5">{{rowData.rcs104Content}}</p>
+										</div>
+										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+									</div>
+								</li>
+								<li class="slide cardBox">
+									<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+									<div class="relative">
+										<div class="scroll-y6" style="min-height:140px">
+											<p class="color000 font-size13">{{rowData.rcs105Title}}</p>
+											<p class="color3 mt5">{{rowData.rcs105Content}}</p>
+										</div>
+										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+									</div>
+								</li>								
 							</ul>
 						</div>
 					</div>
@@ -243,7 +303,7 @@
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y2">
-								<p>내용이 들어갑니다.</p>
+								<p>{{rowData.friendTalkContent}}</p>
 							</div>
 						</div>
 			          </div>
@@ -254,7 +314,7 @@
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y2">
-								<p>내용이 들어갑니다.</p>
+								<p>{{rowData.noticeTalkContent}}</p>
 							</div>
 						</div>
 			          </div>
@@ -264,7 +324,12 @@
 				<!-- //phoneWrap -->
 				<div class="phone_04_btn6">
 					<div class="of_h consolMarginTop" v-for="(channel, index) in rowData.checkedChannel" :key="channel">
-		              <div class="float-left" style="width:100%"><a class="btnStyle1 backWhite" :id="channel" style="min-width:auto; width:100%"  @click="enablePreview(channel)">{{channel}}</a></div>
+		              <div class="float-left" style="width:25%" v-if="index === 0 "><a class="btnStyle1 backBlack" :id="channel" style="min-width:auto; width:100%"  @click="enablePreview(channel)">{{channel}}</a></div>
+		              <div class="float-left" style="width:25%" v-if="index !== 0 "><a class="btnStyle1 backWhite" :id="channel" style="min-width:auto; width:100%"  @click="enablePreview(channel)">{{channel}}</a></div>
+		              <!--
+		              <div class="float-left" style="width:25%" v-if="index === 0 "><a class="btnStyle1 backWhite" :id="channel" style="min-width:auto; width:100%"  @click="enablePreview(channel)">{{channel}}</a></div>
+		              <div class="float-left" style="width:25%" v-if="index !== 0 "><a class="btnStyle1 backWhite" :id="channel" style="min-width:auto; width:100%"  @click="enablePreview(channel)">{{channel}}</a></div>
+		              -->
 		            </div>
 				</div>
 			</div>
@@ -277,12 +342,14 @@
 				<div class="float-left" style="width:76%">
 					<div class="of_h">
 						<div style="width:22%" class="float-left">
-							<h5>텍스트  형,  정보 형</h5>
+							<div v-if="this.rowData.msgType == 'BASE' && this.rowData.msgKind == 'I'"><h5>텍스트 형, 정보 형</h5></div>
+							<div v-if="this.rowData.msgType == 'IMAGE' && this.rowData.msgKind == 'I'"><h5>정보 형</h5></div>
+							<div v-if="this.rowData.msgType == 'BASE' && this.rowData.msgKind == 'A'"><h5>텍스트 형</h5></div>
 						</div>
 						<div style="width:78%" v-if="channelType == 'Push'">
-							<input type="radio" name="send" value="ALL" id="ALL" checked=""> <label for="ALL" class="mr30">ALL</label>
-							<input type="radio" name="send" value="FCM" id="FCM"> <label for="FCM" class="mr30">FCM</label>
-							<input type="radio" name="send" value="APNS" id="APNS"> <label for="APNS">APNS</label>
+							<input type="radio" name="send" value="ALL" id="ALL" 	v-model="rowData.pushSend" checked=""  > <label for="ALL" class="mr30">ALL</label>
+							<input type="radio" name="send" value="FCM" id="FCM"  	v-model="rowData.pushSend"> <label for="FCM" class="mr30">FCM</label>
+							<input type="radio" name="send" value="APNS" id="APNS"  v-model="rowData.pushSend"> <label for="APNS">APNS</label>
 						</div>
 						<div class="float-right" style="width:78%">
 							<input type="text" class="inputStyle">
@@ -303,13 +370,17 @@
 							<h5>수신자 *</h5>
 						</div>
 						<div style="width:100%">
-							<div>
-								<input type="radio" name="Recipient" value="Directly" id="Directly" checked="" @change="fnChgCuInputType()" @click="fnClickCuInputType"> <label for="Directly" class="mr30">수신자 직접입력</label>
-								<input type="radio" name="Recipient" value="search" id="search" @change="fnChgCuInputType()" @click="fnClickCuInputType"> <label for="search" class="mr30">주소록 검색</label>
-								<input type="radio" name="Recipient" value="excel" id="excel" @change="fnChgCuInputType()" @click="fnClickCuInputType"> <label for="excel" class="mr10">엑셀 업로드</label>
-								<a @click="fnExcelTmplteDownLoad" class="btnStyle1 backLightGray" title="샘플">샘플 <i class="far fa-arrow-to-bottom"></i></a>
-								<input ref="excelFile" type="file" style="display:none;">
-							</div>
+				                <div>
+				                  <input type="radio" id="cuInputType_DICT" name="cuInputType" value="DICT" v-model="rowData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
+				                  <label for="cuInputType_DICT" class="mr20">수신자 직접입력</label>
+				                  <input type="radio" id="cuInputType_ADDR" name="cuInputType" value="ADDR" v-model="rowData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
+				                  <label for="cuInputType_ADDR" class="mr20">주소록 검색</label>
+
+				                  <input type="radio" id="cuInputType_EXCEL" name="cuInputType" value="EXCEL" v-model="rowData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
+				                  <label for="cuInputType_EXCEL">엑셀 업로드</label>
+				                  <a @click="fnExcelTmplteDownLoad" class="btnStyle1 backLightGray ml20" title="샘플">샘플 <i class="far fa-arrow-to-bottom"></i></a>
+				                  <input ref="excelFile" type="file" style="display:none;">
+				                </div>
 						</div>
 					</div>
 					<div class="of_h consolMarginTop" v-if="channelType == 'Push'">
@@ -317,7 +388,7 @@
 							<h5>APP_ID</h5>
 						</div>
 						<div class="of_h" style="width:78%">
-							<input type="text" class="inputStyle" style="width:100%">
+							<input type="text" class="inputStyle" style="width:100%" v-model="rowData.pushAppId">
 						</div>
 					</div>
 					<div class="of_h consolMarginTop">
@@ -383,6 +454,10 @@
 		</div>			
 	</div>
 
+    <DirectInputPopup 		:directInputOpen.sync="directInputOpen" 	:contsVarNms="rowData.contsVarNms" :requiredCuPhone="rowData.requiredCuPhone" :requiredCuid="rowData.requiredCuid" :recvInfoLst="rowData.recvInfoLst"></DirectInputPopup>
+    <AddressInputPopup 		:addressInputOpen.sync="addressInputOpen" 	:contsVarNms="rowData.contsVarNms" :requiredCuPhone="rowData.requiredCuPhone" :requiredCuid="rowData.requiredCuid"></AddressInputPopup>
+    <TestSendInputPopup 	:testSendInputOpen.sync="testSendInputOpen" :contsVarNms="rowData.contsVarNms" :testRecvInfoLst="rowData.testRecvInfoLst" :requiredCuPhone="rowData.requiredCuPhone" :requiredCuid="rowData.requiredCuid"></TestSendInputPopup>
+
 	
 	<!-- //본문 -->
   </div>
@@ -396,12 +471,19 @@ import confirm from "@/modules/commonUtil/service/confirm";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 //import Calendar from "@/components/Calendar.vue";
 
+import DirectInputPopup from "@/modules/message/components/bp-directInput.vue";
+import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue";
+import TestSendInputPopup from "@/modules/message/components/bc-testSendInput.vue";
+
 
 export default {
   name: 'integratedSendManage',
 
   components : {
     //Calendar
+    DirectInputPopup,
+    AddressInputPopup,
+    TestSendInputPopup
   },
   props: {
     tmpltCodeP: {
@@ -488,6 +570,16 @@ export default {
               , 'smsImgInfoList':[] //sms/mms이미지정보
               
               , 'smsSendType': 'S'  //sms/mms 발송유형
+              , 'smsTitle':''
+              , 'smsContent':''
+              
+              , 'recvInfoLst': []  //수신자정보
+              , 'contsVarNms': [] //메세지 내용 변수명
+	  		  , 'testRecvInfoLst': []  //테스트 수신자정보
+	  		  , 'requiredCuid' : true  //app 로그인 ID 필수여부
+	          , 'requiredCuPhone' : false  //수신자 폰번호 필수여부
+	          , 'cuInputType':'ALL'  //DICT, ADDR, ALL, EXCEL
+	          
               } 
       }
     }
@@ -497,7 +589,10 @@ export default {
     return {
       channelType:'',  		//push/rcs/kakao/smsmms,  preview를 enable/diable시킨다
 	  previewMessageType:'', 	//채널안의 tab(rcs의 경우 free, short, tall...)들에 대한 preview를 show한다.
-	  
+	  directInputOpen : false,
+	  pushTemplateOpen : false,
+	  addressInputOpen : false,
+	  testSendInputOpen : false,
 	  
 	  
       channelTab: 9,  //채널설정 Push/RCS/카카오톡/SMSMMS 탭 show/hide
@@ -748,6 +843,11 @@ export default {
           
           	let rtnData = result.data[0];
             this.rowData.checkedChannel = rtnData.chTypeList.split(',');
+            
+            console.log("checkedChannel[0] : "+this.rowData.checkedChannel[0]);
+            this.channelType = this.rowData.checkedChannel[0];
+            this.previewMessageType = rtnData.rcsPrdType;
+            
             this.rowData.tmpltCode 		= rtnData.tmpltCode;
             this.rowData.msgType 		= rtnData.msgType;
             this.rowData.msgKind 		= rtnData.msgKind;
@@ -796,22 +896,14 @@ export default {
 			}
 			console.log(">>>>>>>>>>>>>>>>this.rcsTemplateTable : "+this.rcsTemplateTable);
 			
-           
+           if(rtnData.rcsPrdType == 'free'){
+	 			this.rowData.rcs0Content 			= rtnData.rcsBodyDescription;
+            }
             
             if(rtnData.rcsPrdType == 'sms'){
 	 			this.rowData.rcsSMSContent 			= rtnData.rcsBodyDescription;
 	            this.rowData.rcsSMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
 	            this.rowData.rcsSMSCallback 		= rtnData.rcsCallback; //발신번호
-                        
-	            if(rtnData.rcsButton0ButtonType){
-	            	this.buttonSMSFlag = true;
-	            	this.rowData.rcsSMSButtons.push({'buttonType':rtnData.rcsButton0ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton0Title
-	            	                                   , 'startDate':rtnData.rcsButton0StartTime
-	            	                                   , 'endDate':rtnData.rcsButton0EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
-	            }
             }
             
 
@@ -821,66 +913,23 @@ export default {
 	            this.rowData.rcsLMSContent 			= rtnData.rcsBodyDescription;
 	            this.rowData.rcsLMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
 	            this.rowData.rcsLMSCallback 		= rtnData.rcsCallback; //발신번호
-                        
-	            if(rtnData.rcsButton0ButtonType){
-	            	this.buttonLMSFlag = true;
-	            	this.rowData.rcsLMSButtons.push({'buttonType':rtnData.rcsButton0ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton0Title
-	            	                                   , 'startDate':rtnData.rcsButton0StartTime
-	            	                                   , 'endDate':rtnData.rcsButton0EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
-	            }
-            
-	            if(rtnData.rcsButton1ButtonType){
-	            	this.buttonLMSFlag = true;
-	            	this.rowData.rcsLMSButtons.push({'buttonType':rtnData.rcsButton1ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton1Title
-	            	                                   , 'startDate':rtnData.rcsButton1StartTime
-	            	                                   , 'endDate':rtnData.rcsButton1EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
-	            }
-
-	            if(rtnData.rcsButton2ButtonType){
-	            	this.buttonLMSFlag = true;
-	            	this.rowData.rcsLMSButtons.push({'buttonType':rtnData.rcsButton2ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton2DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton2Title
-	            	                                   , 'startDate':rtnData.rcsButton2StartTime
-	            	                                   , 'endDate':rtnData.rcsButton2EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton2Description});
-	            }
             }
             
 
             
             if(rtnData.rcsPrdType == 'short'){
+            
 	            this.rowData.rcsShortTitle				= rtnData.rcsBodyTitle;
 	            this.rowData.rcsShortContent 			= rtnData.rcsBodyDescription;
 	            this.rowData.rcsShortHowToDenyReceipt 	= rtnData.rcsFooter;   //무료수신거부번호
 	            this.rowData.rcsShortCallback 			= rtnData.rcsCallback; //발신번호
 	            
-	            this.rowData.rcsShortImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});    
-	                    
-	            if(rtnData.rcsButton0ButtonType){
-	            	this.buttonShortFlag = true;
-	            	this.rowData.rcsShortButtons.push({'buttonType':rtnData.rcsButton0ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton0Title
-	            	                                   , 'startDate':rtnData.rcsButton0StartTime
-	            	                                   , 'endDate':rtnData.rcsButton0EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
-	            }
-	            if(rtnData.rcsButton1ButtonType){
-	            	this.buttonTallFlag = true;
-	            	this.rowData.rcsShortButtons.push({'buttonType':rtnData.rcsButton1ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton1Title
-	            	                                   , 'startDate':rtnData.rcsButton1StartTime
-	            	                                   , 'endDate':rtnData.rcsButton1EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
-	            }
+	            this.rowData.rcsShortImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});   
+	            
+	            console.log("rcs short rcsShortTitle"+this.rowData.rcsShortTitle);
+	            console.log("rcs short rcsShortContent"+this.rowData.rcsShortContent);
+	            console.log("rcs short rcsShortHowToDenyReceipt"+this.rowData.rcsShortHowToDenyReceipt);
+	            console.log("rcs short rcsShortCallback"+this.rowData.rcsShortCallback); 
 			}
 
 
@@ -892,32 +941,14 @@ export default {
 	            this.rowData.rcsTallCallback 			= rtnData.rcsCallback; //발신번호
 	            
 	            this.rowData.rcsTallImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
-            
-	            if(rtnData.rcsButton0ButtonType){
-	            	this.buttonTallFlag = true;
-	            	this.rowData.rcsTallButtons.push({'buttonType':rtnData.rcsButton0ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton0Title
-	            	                                   , 'startDate':rtnData.rcsButton0StartTime
-	            	                                   , 'endDate':rtnData.rcsButton0EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
-	            }            
-	            if(rtnData.rcsButton1ButtonType){
-	            	this.buttonTallFlag = true;
-	            	this.rowData.rcsTallButtons.push({'buttonType':rtnData.rcsButton1ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton1Title
-	            	                                   , 'startDate':rtnData.rcsButton1StartTime
-	            	                                   , 'endDate':rtnData.rcsButton1EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
-	            }
-
+	            
+	            console.log("rcs short rcsTallTitle"+this.rowData.rcsTallTitle);
+	            console.log("rcs short rcsTallContent"+this.rowData.rcsTallContent);
+	            console.log("rcs short rcsTallHowToDenyReceipt"+this.rowData.rcsTallHowToDenyReceipt);
+	            console.log("rcs short rcsTallCallback"+this.rowData.rcsTallCallback); 
 			}
 
             if(rtnData.rcsPrdType == 'cShort'){
-            console.log(">>>>>>>>>>>>>>>>>>>>> cShort");
-            console.log(">>>>>>>>>>>>>>>>>>>>> cShort");
-            console.log(">>>>>>>>>>>>>>>>>>>>> cShort");
 	            this.rowData.rcs9CardCount				= rtnData.rcs9CardCount;
 	            this.rowData.rcs9HowToDenyReceipt 		= rtnData.rcsFooter;   //무료수신거부번호
 	            this.rowData.rcs9Callback 				= rtnData.rcsCallback; //발신번호
@@ -941,147 +972,6 @@ export default {
 	            this.rowData.rcs93ImgInfoList.push({'fileId':rtnData.rcs3BodyMedia, 'imgUrl':rtnData.rcs3BodyMediaUrl});
 	            this.rowData.rcs94ImgInfoList.push({'fileId':rtnData.rcs4BodyMedia, 'imgUrl':rtnData.rcs4BodyMediaUrl});
 	            this.rowData.rcs95ImgInfoList.push({'fileId':rtnData.rcs5BodyMedia, 'imgUrl':rtnData.rcs5BodyMediaUrl});
-            
-            	console.log(">>>>>>>>>>>>>>>>>>>>> rcsButton0ButtonType",rtnData.rcsButton0ButtonType);
-	            if(rtnData.rcsButton0ButtonType){
-	            	this.button90Flag = true;
-	            	this.rowData.rcs90Buttons.push({'buttonType':rtnData.rcsButton0ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton0Title
-	            	                                   , 'startDate':rtnData.rcsButton0StartTime
-	            	                                   , 'endDate':rtnData.rcsButton0EndTime
-	            	                                   , 'startDateId':rtnData.rcsButton0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcsButton0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
-	            }      
-	            
-	            if(rtnData.rcsButton1ButtonType){
-	            	this.button90Flag = true;
-	            	this.rowData.rcs90Buttons.push({'buttonType':rtnData.rcsButton1ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton1Title
-	            	                                   , 'startDate':rtnData.rcsButton1StartTime
-	            	                                   , 'endDate':rtnData.rcsButton1EndTime
-	            	                                   , 'startDateId':rtnData.rcsButton1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcsButton1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
-	            }
-	            console.log(">>>>>>>>>>>>>>>>>>>>> rcsButton1ButtonType",rtnData.rcsButton1ButtonType); 
-	            if(rtnData.rcs1Button0ButtonType){
-	            	this.button91Flag = true;
-	            	this.rowData.rcs91Buttons.push({'buttonType':rtnData.rcs1Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs1Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs1Button0Title
-	            	                                   , 'startDate':rtnData.rcs1Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs1Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs1Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs1Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs1Button0Description});
-	            }            
-	            if(rtnData.rcs1Button1ButtonType){
-	            	this.button91Flag = true;
-	            	this.rowData.rcs91Buttons.push({'buttonType':rtnData.rcs1Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs1Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs1Button1Title
-	            	                                   , 'startDate':rtnData.rcs1Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs1Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs1Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs1Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs1Button1Description});
-	            }
-	            console.log(">>>>>>>>>>>>>>>>>>>>> rcs2Button0ButtonType",rtnData.rcs2Button0ButtonType); 
-	            if(rtnData.rcs2Button0ButtonType){
-	            	this.button92Flag = true;
-	            	this.rowData.rcs92Buttons.push({'buttonType':rtnData.rcs2Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs2Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs2Button0Title
-	            	                                   , 'startDate':rtnData.rcs2Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs2Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs2Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs2Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs2Button0Description});
-	            }            
-	            if(rtnData.rcs2Button1ButtonType){
-	            	this.button92Flag = true;
-	            	this.rowData.rcs92Buttons.push({'buttonType':rtnData.rcs2Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs2Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs2Button1Title
-	            	                                   , 'startDate':rtnData.rcs2Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs2Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs2Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs2Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs2Button1Description});
-	            }
-	            
-	            if(rtnData.rcs3Button0ButtonType){
-	            	this.button93Flag = true;
-	            	this.rowData.rcs93Buttons.push({'buttonType':rtnData.rcs3Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs3Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs3Button0Title
-	            	                                   , 'startDate':rtnData.rcs3Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs3Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs3Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs3Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs3Button0Description});
-	            }            
-	            if(rtnData.rcs3Button1ButtonType){
-	            	this.button93Flag = true;
-	            	this.rowData.rcs93Buttons.push({'buttonType':rtnData.rcs3Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs3Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs3Button1Title
-	            	                                   , 'startDate':rtnData.rcs3Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs3Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs3Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs3Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs3Button1Description});
-	            }
-	            
-	            if(rtnData.rcs4Button0ButtonType){
-	            	this.button94Flag = true;
-	            	this.rowData.rcs94Buttons.push({'buttonType':rtnData.rcs4Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs4Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs4Button0Title
-	            	                                   , 'startDate':rtnData.rcs4Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs4Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs4Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs4Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs4Button0Description});
-	            }            
-	            if(rtnData.rcs4Button1ButtonType){
-	            	this.button94Flag = true;
-	            	this.rowData.rcs94Buttons.push({'buttonType':rtnData.rcs4Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs4Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs4Button1Title
-	            	                                   , 'startDate':rtnData.rcs4Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs4Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs4Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs4Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs4Button1Description});
-	            }
-	            
-	            if(rtnData.rcs5Button0ButtonType){
-	            	this.button95Flag = true;
-	            	this.rowData.rcs95Buttons.push({'buttonType':rtnData.rcs5Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs5Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs5Button0Title
-	            	                                   , 'startDate':rtnData.rcs5Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs5Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs5Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs5Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs5Button0Description});
-	            }            
-	            if(rtnData.rcs5Button1ButtonType){
-	            	this.button95Flag = true;
-	            	this.rowData.rcs95Buttons.push({'buttonType':rtnData.rcs5Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs5Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs5Button1Title
-	            	                                   , 'startDate':rtnData.rcs5Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs5Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs5Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs5Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs5Button1Description});
-	            }
-
 			}
             
 
@@ -1103,155 +993,12 @@ export default {
 	            this.rowData.rcs105Title				= rtnData.rcs5BodyTitle;
 	            this.rowData.rcs105Content				= rtnData.rcs5BodyDescription;
 	            
-	            console.log("imgUrl1 ["+rtnData.rcsBodyMediaUrl+"]");
-	            console.log("imgUrl2 ["+rtnData.rcs1BodyMediaUrl+"]");
-	            console.log("imgUrl3 ["+rtnData.rcs2BodyMediaUrl+"]");
 	            this.rowData.rcs100ImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
 	            this.rowData.rcs101ImgInfoList.push({'fileId':rtnData.rcs1BodyMedia, 'imgUrl':rtnData.rcs1BodyMediaUrl});
 	            this.rowData.rcs102ImgInfoList.push({'fileId':rtnData.rcs2BodyMedia, 'imgUrl':rtnData.rcs2BodyMediaUrl});
 	            this.rowData.rcs103ImgInfoList.push({'fileId':rtnData.rcs3BodyMedia, 'imgUrl':rtnData.rcs3BodyMediaUrl});
 	            this.rowData.rcs104ImgInfoList.push({'fileId':rtnData.rcs4BodyMedia, 'imgUrl':rtnData.rcs4BodyMediaUrl});
 	            this.rowData.rcs105ImgInfoList.push({'fileId':rtnData.rcs5BodyMedia, 'imgUrl':rtnData.rcs5BodyMediaUrl});
-            
-            
-	            if(rtnData.rcsButton0ButtonType){
-	            	this.button100Flag = true;
-	            	this.rowData.rcs100Buttons.push({'buttonType':rtnData.rcsButton0ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton0Title
-	            	                                   , 'startDate':rtnData.rcsButton0StartTime
-	            	                                   , 'endDate':rtnData.rcsButton0EndTime
-	            	                                   , 'startDateId':rtnData.rcsButton0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcsButton0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
-	            }            
-	            if(rtnData.rcsButton1ButtonType){
-	            	this.button100Flag = true;
-	            	this.rowData.rcs100Buttons.push({'buttonType':rtnData.rcsButton1ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton1Title
-	            	                                   , 'startDate':rtnData.rcsButton1StartTime
-	            	                                   , 'endDate':rtnData.rcsButton1EndTime
-	            	                                   , 'startDateId':rtnData.rcsButton1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcsButton1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
-	            }
-	            
-	            if(rtnData.rcs1Button0ButtonType){
-	            	this.button101Flag = true;
-	            	this.rowData.rcs101Buttons.push({'buttonType':rtnData.rcs1Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs1Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs1Button0Title
-	            	                                   , 'startDate':rtnData.rcs1Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs1Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs1Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs1Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs1Button0Description});
-	            }            
-	            if(rtnData.rcs1Button1ButtonType){
-	            	this.button101Flag = true;
-	            	this.rowData.rcs101Buttons.push({'buttonType':rtnData.rcs1Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs1Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs1Button1Title
-	            	                                   , 'startDate':rtnData.rcs1Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs1Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs1Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs1Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs1Button1Description});
-	            }
-	            
-	            if(rtnData.rcs2Button0ButtonType){
-	            	this.button102Flag = true;
-	            	this.rowData.rcs102Buttons.push({'buttonType':rtnData.rcs2Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs2Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs2Button0Title
-	            	                                   , 'startDate':rtnData.rcs2Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs2Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs2Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs2Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs2Button0Description});
-	            }            
-	            if(rtnData.rcs1Button2ButtonType){
-	            	this.button102Flag = true;
-	            	this.rowData.rcs102Buttons.push({'buttonType':rtnData.rcs2Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs2Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs2Button1Title
-	            	                                   , 'startDate':rtnData.rcs2Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs2Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs2Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs2Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs2Button1Description});
-	            }
-	            
-	            if(rtnData.rcs3Button0ButtonType){
-	            	this.button103Flag = true;
-	            	this.rowData.rcs103Buttons.push({'buttonType':rtnData.rcs3Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs3Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs3Button0Title
-	            	                                   , 'startDate':rtnData.rcs3Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs3Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs3Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs3Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs3Button0Description});
-	            }            
-	            if(rtnData.rcs1Button3ButtonType){
-	            	this.button103Flag = true;
-	            	this.rowData.rcs103Buttons.push({'buttonType':rtnData.rcs3Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs3Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs3Button1Title
-	            	                                   , 'startDate':rtnData.rcs3Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs3Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs3Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs3Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs3Button1Description});
-	            }
-	            
-	            if(rtnData.rcs4Button0ButtonType){
-	            	this.button104Flag = true;
-	            	this.rowData.rcs104Buttons.push({'buttonType':rtnData.rcs4Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs4Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs4Button0Title
-	            	                                   , 'startDate':rtnData.rcs4Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs4Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs4Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs4Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs4Button0Description});
-	            }            
-	            if(rtnData.rcs1Button4ButtonType){
-	            	this.button104Flag = true;
-	            	this.rowData.rcs104Buttons.push({'buttonType':rtnData.rcs4Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs4Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs4Button1Title
-	            	                                   , 'startDate':rtnData.rcs4Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs4Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs4Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs4Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs4Button1Description});
-	            }
-	            
-	            if(rtnData.rcs5Button0ButtonType){
-	            	this.button105Flag = true;
-	            	this.rowData.rcs105Buttons.push({'buttonType':rtnData.rcs5Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs5Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs5Button0Title
-	            	                                   , 'startDate':rtnData.rcs5Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs5Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs5Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs5Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs5Button0Description});
-	            }            
-	            if(rtnData.rcs1Button5ButtonType){
-	            	this.button105Flag = true;
-	            	this.rowData.rcs105Buttons.push({'buttonType':rtnData.rcs5Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs5Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs5Button1Title
-	            	                                   , 'startDate':rtnData.rcs5Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs5Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs5Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs5Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs5Button1Description});
-	            }
-
 			}
 			
 			
@@ -1264,72 +1011,28 @@ export default {
             this.rowData.friendTalkImgInfo.fileId 	= rtnData.friendTalkFileId;
             this.rowData.friendTalkImgInfo.imgUrl 	= rtnData.friendTalkImgUrl;
             
-            if(rtnData.friendTalkPrdType == 'friendTalk'){
-	            if(rtnData.friendTalkButton0ButtonType){
-	            	this.buttonFriendTalkFlag = true;
-	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton0ButtonType
-	            	                                   , 'buttonName':rtnData.friendTalkButton0DisplayText
-	            	                                   , 'buttonLink':rtnData.friendTalkButton0Title
-	            	                                   , 'startDate':rtnData.friendTalkButton0StartTime
-	            	                                   , 'endDate':rtnData.friendTalkButton0EndTime
-	            	                                   , 'buttonLink1':rtnData.friendTalkButton0Description});
-	            }
-	            
-	            if(rtnData.friendTalkButton1ButtonType){
-	            	this.buttonFriendTalkFlag = true;
-	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton1ButtonType
-	            	                                   , 'buttonName':rtnData.friendTalkButton1DisplayText
-	            	                                   , 'buttonLink':rtnData.friendTalkButton1Title
-	            	                                   , 'startDate':rtnData.friendTalkButton1StartTime
-	            	                                   , 'endDate':rtnData.friendTalkButton1EndTime
-	            	                                   , 'buttonLink1':rtnData.friendTalkButton1Description});
-	            }
-	            
-	            if(rtnData.friendTalkButton2ButtonType){
-	            	this.buttonFriendTalkFlag = true;
-	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton2ButtonType
-	            	                                   , 'buttonName':rtnData.friendTalkButton2DisplayText
-	            	                                   , 'buttonLink':rtnData.friendTalkButton2Title
-	            	                                   , 'startDate':rtnData.friendTalkButton2StartTime
-	            	                                   , 'endDate':rtnData.friendTalkButton2EndTime
-	            	                                   , 'buttonLink1':rtnData.friendTalkButton2Description});
-	            }
-	            
-	            if(rtnData.friendTalkButton3ButtonType){
-	            	this.buttonFriendTalkFlag = true;
-	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton3ButtonType
-	            	                                   , 'buttonName':rtnData.friendTalkButton3DisplayText
-	            	                                   , 'buttonLink':rtnData.friendTalkButton3Title
-	            	                                   , 'startDate':rtnData.friendTalkButton3StartTime
-	            	                                   , 'endDate':rtnData.friendTalkButton3EndTime
-	            	                                   , 'buttonLink1':rtnData.friendTalkButton3Description});
-	            }
-	            
-	            if(rtnData.friendTalkButton4ButtonType){
-	            	this.buttonFriendTalkFlag = true;
-	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton4ButtonType
-	            	                                   , 'buttonName':rtnData.friendTalkButton4DisplayText
-	            	                                   , 'buttonLink':rtnData.friendTalkButton4Title
-	            	                                   , 'startDate':rtnData.friendTalkButton4StartTime
-	            	                                   , 'endDate':rtnData.friendTalkButton4EndTime
-	            	                                   , 'buttonLink1':rtnData.friendTalkButton4Description});
-	            }
-			}
+ 
 
 //NOTICETALK DATA SET
 
 //SMS/MMS DATA SET
 
-
+		
 			if(rtnData.smsSendType == 'S'){
+				this.previewMessageType = "sms";
 				this.smsTemplateTable = 0;
 			}else if(rtnData.smsSendType == 'M'){
+				this.previewMessageType = "mms";
 				this.smsTemplateTable = 1;
 			}
 
-            this.rowData.smsSendType = rtnData.smsSendType;
-            this.rowData.smsTitle = rtnData.smsTitle;
-            this.rowData.smsContent = rtnData.smsContent;
+            this.rowData.smsSendType 	= rtnData.smsSendType;
+            this.rowData.smsTitle 		= rtnData.smsTitle;
+            this.rowData.smsContent 	= rtnData.smsContent;
+
+console.log("smsMms previewMessageType : "+this.previewMessageType);
+console.log("smsMms smsTitle : "+this.rowData.smsTitle);
+console.log("smsMms smsContent : "+this.rowData.smsContent);
             
             if(rtnData.smsFileId0){
             	this.rowData.smsImgInfoList.push({'fileId':rtnData.smsFileId0
@@ -1343,12 +1046,7 @@ export default {
             
             this.rowData.smsCallback = rtnData.smsCallback;
             
-            
-            //rtnData.buttonList = [];
-            //this.rowData = Object.assign({}, rtnData);
-            //this.rowData.buttonList = JSON.parse(rtnData.tmpltButtons);
-            //this.rowData.otherProjectUseYn = (rtnData.projectId == 'ALL' ? 'Y' : 'N');
-          }
+           }
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
           //this.rowData = {imgUrl:'', buttonList:[]};
@@ -1438,7 +1136,7 @@ export default {
 
 
     fnClickCuInputType(e){
-      if(this.sendData.cuInputType == e.target.value){
+      if(this.rowData.cuInputType == e.target.value){
         this.fnChgCuInputType('N');
       }
     },
@@ -1449,36 +1147,109 @@ export default {
       if(this.$gfnCommonUtils.defaultIfEmpty(chgYn, 'Y') == 'Y'){
         this.fnCallbackRecvInfoLst(null);  //수신자 입력 타입 변경시 수신자 정보 초기화
       }
-      if(this.sendData.cuInputType == 'ALL'){  //전체발송
+      if(this.rowData.cuInputType == 'ALL'){  //전체발송
         return;
       }
-      if(!this.sendData.pushContent){
+      if(!this.rowData.pushContent){
         confirm.fnAlert(this.componentsTitle, '메시지 내용을 먼저 입력해주세요.');
-        this.sendData.cuInputType = 'ALL'
+        this.rowData.cuInputType = 'ALL'
         this.$refs.cuInputType_ALL.click();
         return;
       }
 
       if(this.fnSetContsVarNms() == false){
-        this.sendData.cuInputType = 'ALL'
+        this.rowData.cuInputType = 'ALL'
         this.$refs.cuInputType_ALL.click();
         return;
       }
 
-      if(this.sendData.cuInputType == 'DICT'){  //직접입력
+      if(this.rowData.cuInputType == 'DICT'){  //직접입력
         //수신자 직접입력 팝업 호출
         this.directInputOpen = !this.directInputOpen;
-      } else if(this.sendData.cuInputType == 'ADDR'){  //주소록
+      } else if(this.rowData.cuInputType == 'ADDR'){  //주소록
         //주소록 검색 팝업 호출
         this.addressInputOpen = !this.addressInputOpen;
-      } else if(this.sendData.cuInputType == 'EXCEL'){  //엑셀
+      } else if(this.rowData.cuInputType == 'EXCEL'){  //엑셀
         //엑셀파일찾기 호출
         this.$refs.excelFile.click();
       }
     },
 
-    
-    
+    //푸시 템플릿 엑셀 다운로드
+    async fnExcelTmplteDownLoad(){
+      if(this.fnSetContsVarNms() == false) return;
+      var params = {
+        contsVarNms : this.rowData.contsVarNms,
+        requiredCuid: this.rowData.requiredCuid,
+        requiredCuPhone: this.rowData.requiredCuPhone
+      };
+      //await MessageApi.excelDownSendPushRecvTmplt(params);
+    },    
+
+    //수신자 정보 callback
+    fnCallbackRecvInfoLst(recvInfoLst, addYn) {
+      if(recvInfoLst != null){
+        if(this.$gfnCommonUtils.defaultIfEmpty(addYn, 'N') == 'Y'){
+          this.rowData.recvInfoLst = this.rowData.recvInfoLst.concat(recvInfoLst);
+        } else {
+          this.rowData.recvInfoLst = recvInfoLst;
+        }
+        //수신자 중복제거
+        this.fnDelDuplRecvInfo();
+
+        this.recvCnt = this.rowData.recvInfoLst.length;
+        this.rowData.cuInfo = JSON.stringify(this.rowData.recvInfoLst);
+      } else {
+        this.recvCnt = 0;
+        this.rowData.recvInfoLst = [];
+        this.rowData.cuInfo = '';
+      }
+    },
+    //수신자 중복 제거
+    fnDelDuplRecvInfo(){
+      const vm = this;
+      let key, key2;
+      this.rowData.recvInfoLst = this.rowData.recvInfoLst.filter(function(item, i){
+        return (
+          vm.rowData.recvInfoLst.findIndex((item2) => {
+            key = '';
+            if ('phone' in item) key += item.phone;
+            if ('cuid' in item) key += item.cuid;
+            key2 = '';
+            if ('phone' in item2) key2 += item2.phone;
+            if ('cuid' in item2) key2 += item2.cuid;
+            return key === key2
+          }) === i
+        );
+      });
+    },
+        
+    fnOpenTestSendInputPopup(){
+      this.fnSetContsVarNms();
+      this.testSendInputOpen = !this.testSendInputOpen;
+    },
+   
+   fnSetContsVarNms(){
+      const rsvNmSet = new Set(['cuid', 'phone']);
+      const conts = this.rowData.pushContent + (typeof this.rowData.fbInfo.msg === 'undefined' ? '' : this.rowData.fbInfo.msg);
+      let varNms = [];
+      let containRsvNm = false;
+      conts.replace(/\{\{(\w+)\}\}/g, function($0, $1) {
+        if(rsvNmSet.has($1)){
+          containRsvNm = true;
+          return false;
+        }
+        varNms.push($1);
+      });
+      if(containRsvNm){
+        confirm.fnAlert(this.componentsTitle, '발송 내용 변수 cuid, phone 은 예약어로 사용하실 수 없습니다.');
+        return false;
+      } else {
+        this.rowData.contsVarNms = this.fnSetArrayRemoveDupliVal(varNms);
+        return true;
+      }
+    },   
+            
   }
 }
 </script>
