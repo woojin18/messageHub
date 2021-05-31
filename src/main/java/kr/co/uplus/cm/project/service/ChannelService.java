@@ -329,10 +329,11 @@ public class ChannelService {
 			inputVal.put("webSiteUrl",		rtnMap.get("webSiteUrl"));
 			inputVal.put("rcsReply",		rtnMap.get("projectId"));
 			
-//			inputVal.put("mainMdn",			rtnMap.get("mainMdn"));
-//			inputVal.put("mainTitle",		rtnMap.get("mainTitle"));
-			// 쳇봇데이터 가져오는 부분 필요....
-			
+			// 쳇봇데이터
+			List<Object> chatbotList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_BRAND_CHATBOT, params);
+			Map<String, Object> chatbotMap = (Map<String, Object>) chatbotList.get(0);
+			inputVal.put("mainMdn",			chatbotMap.get("mainMdn"));
+			inputVal.put("mainTitle",		chatbotMap.get("mainTitle"));
 			
 			result.put("inputVal", inputVal);
 		}
@@ -342,45 +343,6 @@ public class ChannelService {
 		return rtn;
 	}
 	
-	/**
-	 * API 통신 
-	 * @param urlText		호출 URL 뒷부분
-	 * @param params		APIKEY 등 발신 정보 들
-	 * @param type			GET, POST 타입
-	 * @return				MAP 타입으로 리턴
-	 * @throws Exception
-	 */
-	public Map<String, Object> api(String urlText, Map<String, Object> params, String type, String contentType) throws Exception {
-		Map<String, Object> returnMap = new HashMap<String, Object>();
-		String apiUrl = "http://erp.ectech.co.kr:40931";
-		String result = "";
-		
-		JSONParser jParser = new JSONParser();
-		JSONObject jObj = new JSONObject();
-		
-		try {
-			URL url = new URL(apiUrl + urlText);
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			// 파라미터가 아닌 헤더에 세팅해줘야함
-			con.setRequestProperty("apiId", CommonUtils.getString(params.get("apiId")));
-			con.setRequestProperty("apiSecret", CommonUtils.getString(params.get("apiSecret")));
-			con.setRequestProperty("svcId", "WEB01");
-			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-			con.setRequestMethod(type.toUpperCase());	// get post
-			
-			result = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8")).readLine();
-			
-			jObj = (JSONObject) jParser.parse(result);
-			
-			returnMap.put("rslt", jObj.get("rslt"));
-			returnMap.put("data", jObj.get("data"));
-		} catch (Exception e) {
-			returnMap.put("rslt", "error");
-			returnMap.put("data", e.getMessage());
-		}
-		
-		return returnMap;
-	}
 	
 	// RCS 브랜드 등록 요청
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -492,9 +454,9 @@ public class ChannelService {
 			map.put("certiFilePath",		params.get("profileImgFilePath"));
 		} else {
 			// 임시
-			map.put("profileImgFilePath", "/efs/file/console/2021/05/27/15/test1234.png");
-			map.put("bgImgFilePath", "/efs/file/console/2021/05/27/15/test1234.png");
-			map.put("certiFilePath", "/efs/file/console/2021/05/27/15/test1234.png");
+			map.put("profileImgFilePath", "/efs/file/console/2021/05/28/10/test1234.png");
+			map.put("bgImgFilePath", "/efs/file/console/2021/05/28/10/test1234.png");
+			map.put("certiFilePath", "/efs/file/console/2021/05/28/10/test1234.png");
 		}
 		
 		
@@ -537,9 +499,9 @@ public class ChannelService {
 			brandInfo.put("email",			params.get("email")+ "@" + params.get("email2"));
 			brandInfo.put("webSiteUrl",		params.get("webSiteUrl"));
 			brandInfo.put("mainMdn",		params.get("mainMdn"));
-			brandInfo.put("profileImgFilePath", "/efs/file/console/2021/05/27/15/test1234.png");
-			brandInfo.put("bgImgFilePath", "/efs/file/console/2021/05/27/15/test1234.png");
-			brandInfo.put("certiFilePath", "/efs/file/console/2021/05/27/15/test1234.png");
+			brandInfo.put("profileImgFilePath", "/efs/file/console/2021/05/28/10/test1234.png");
+			brandInfo.put("bgImgFilePath", "/efs/file/console/2021/05/28/10/test1234.png");
+			brandInfo.put("certiFilePath", "/efs/file/console/2021/05/28/10/test1234.png");
 			brandInfo.put("chatbots",		chatbotJson);	// 임시저장 시, 쳇봇들을 관리하기 위해 저장
 			String brandInfoStr = mapper.writeValueAsString(brandInfo);
 			params.put("brandInfo", brandInfoStr);

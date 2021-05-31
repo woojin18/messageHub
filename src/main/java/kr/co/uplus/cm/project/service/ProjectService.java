@@ -239,18 +239,16 @@ public class ProjectService {
 		// 데이터 처리
 		List<Object> list = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
-		//String brandId = CommonUtils.getString(params.get("brandId"));
 		
-		// 임시
-		String brandId = "BR.s37xUZ49h7";
+		String brandId = CommonUtils.getString(params.get("brandId"));
 		
 		map.put("corpId",		params.get("corpId"));
 		
 		if( "N".equals(tempYn) ) {
-			map.put("subNumCertificate",		params.get("profileImgFilePath"));
+			map.put("subNumCertificate",		params.get("certiFile"));
 		} else {
 			// 임시
-			map.put("subNumCertificate", "/efs/file/console/2021/04/26/12/test1234.png");
+			map.put("subNumCertificate", "/efs/file/console/2021/05/28/10/test1234.png");
 		}
 		
 		
@@ -264,18 +262,21 @@ public class ProjectService {
 			map.put("chatbots",		chatbotJson);
 		}
 		
-		list.add(map);
+		kong.unirest.json.JSONObject jsonParam =  new kong.unirest.json.JSONObject(map);
 		
 		// 등록요청
 		Map<String, Object> headerMap = new HashMap<String, Object>();
 		headerMap.put("brandId",	brandId);
 		
 		// API 통신 처리
-		Map<String, Object> result =  apiInterface.post("/console/v1/brand/" + brandId + "/chatbot", map, headerMap);
+//		Map<String, Object> result =  apiInterface.post("/console/v1/brand/" + brandId + "/chatbot", jsonParam, headerMap);
+		Map<String, Object> result =  apiInterface.request("POST", "https://api.ums-dev.uplus.co.kr/console/v1/brand/" + brandId + "/chatbot", null, jsonParam, headerMap);
+		
+		System.out.println("-----------------------------------------@@@ result : " + result);
 		
 		// 성공인지 실패인지 체크
 		if( !"10000".equals(result.get("rslt")) ) {
-			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+			String errMsg = CommonUtils.getString(result.get("rsltDesc"));
 			throw new Exception(errMsg);
 		}
 	}
@@ -301,9 +302,22 @@ public class ProjectService {
 		return rtn;
 	}
 	
+	// 추가발신번호등록요청 브랜드 불러오기
+	@SuppressWarnings("unchecked")
+	public RestResult<?> selectApprovalBrandList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_MANAGE_LIST, params);
+				
+		rtn.setData(list);
+
+		return rtn;
+	}
+	
 	// 발신번호관리 수정 요청
 	@SuppressWarnings("unchecked")
-	public void updateCallbackForApi(Map<String, Object> params) throws Exception {
+	public RestResult<?> updateCallbackForApi(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
 		// 상세정보 가져오기
 		Map<String, Object> callbackDetail = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_CALLBACK_MANAGE_DETAIL, params);
 		
@@ -341,12 +355,16 @@ public class ProjectService {
 			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 			throw new Exception(errMsg);
 		}
+		
+		rtn.setData(result);
+		
+		return rtn;
 	}
 	
 	// 발신번호관리 삭제 요청
 	@SuppressWarnings("unchecked")
-	public void deleteCallbackForApi(Map<String, Object> params) throws Exception {
-
+	public RestResult<?> deleteCallbackForApi(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
 		String brandId		= CommonUtils.getString(params.get("brandId"));
 		String chatbotId	= CommonUtils.getString(params.get("chatbotId"));
 
@@ -364,8 +382,12 @@ public class ProjectService {
 		
 		// 성공인지 실패인지 체크
 		if( !"10000".equals(result.get("rslt")) ) {
-			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+			String errMsg = CommonUtils.getString(result.get("rsltDesc"));
 			throw new Exception(errMsg);
 		}
+		
+		rtn.setData(result);
+		
+		return rtn;
 	}
 }

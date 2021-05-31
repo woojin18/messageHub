@@ -148,13 +148,13 @@ public class ProjectController {
 		
 		System.out.println("----------------------------------------params : " + params);
 		
-//		try {
+		try {
 			projectService.saveRcsChatbotReqForApi(params);
 			rtn.setSuccess(true);
-//		} catch (Exception e) {
-//			rtn.setSuccess(false);
-//			rtn.setMessage(e.getMessage());
-//		}
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
 		
 		return rtn;
 	}
@@ -168,6 +168,17 @@ public class ProjectController {
 		
 		return projectService.selectCallbackManageList(params);
 	}
+	
+	// 추가발신번호등록요청 브랜드 불러오기
+	@PostMapping("/selectApprovalBrandList")
+	public RestResult<?> selectApprovalBrandList(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		System.out.println("-------------------------------------@@ selectApprovalBrandList params : " + params);
+		
+		return projectService.selectApprovalBrandList(params);
+	}
+	
 	
 	
 	// 발신번호관리 수정 요청
@@ -193,7 +204,7 @@ public class ProjectController {
 		return rtn;
 	}
 	
-	// 발신번호관리 수정 요청
+	// 발신번호관리 삭제 요청
 	@PostMapping("/deleteCallbackForApi")
 	public RestResult<?> deleteCallbackForApi(
 			@RequestBody Map<String, Object> params,
@@ -202,8 +213,6 @@ public class ProjectController {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
 		rtn.setSuccess(true);
-		
-		System.out.println("-------------------------------------@@ deleteCallbackForApi params : " + params);
 		
 		try {
 			projectService.deleteCallbackForApi(params);

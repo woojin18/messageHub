@@ -36,6 +36,10 @@ const deleteCallbackForApi = (params) => {
     return httpClient.post('/projectApi/manage/deleteCallbackForApi', params, { headers: {"show-layer": "No"}});
 };
 
+const selectApprovalBrandList = (params) => {
+    return httpClient.post('/projectApi/manage/selectApprovalBrandList', params, { headers: {"show-layer": "No"}});
+};
+
 
 export default {
     selectProjectList,
@@ -46,5 +50,6 @@ export default {
     savePreRegEx,
     selectCallbackManageList,
     updateCallbackForApi,
-    deleteCallbackForApi
+    deleteCallbackForApi,
+    selectApprovalBrandList
 };

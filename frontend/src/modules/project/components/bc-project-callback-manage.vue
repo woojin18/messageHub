@@ -87,7 +87,7 @@
 								<td class="text-center">{{row.brandName}}</td>
 								<td class="text-center">{{row.subTitle}}</td>
 								<td class="text-center">{{row.chatbotId}}</td>
-								<td class="text-center">{{row.rcsReply}}</td>
+								<td class="text-center">{{row.rcsReplyText}}</td>
 								<td class="text-center">{{row.approvalStatus}}</td>
 								<td class="text-center">{{row.regDt}}</td>
 								<td class="text-center">{{row.approvalDt}}</td>
@@ -209,11 +209,13 @@ export default {
 				"corpId"		: this.row_data.corpId,
 			};
 
-			console.log(params);
-
 			projectApi.deleteCallbackForApi(params).then(response =>{
-				var result = response.data.data;
-				console.log(result);
+				var result = response.data;
+				if( result.success ){
+					confirm.fnAlert("", "삭제처리되었습니다.");
+				} else {
+					confirm.fnAlert("", response.data.message);
+				}
 			});
 		}
 	}
