@@ -11,7 +11,7 @@
 					<div class="menuBox">
 						<div class="of_h">
 							<h4 class="inline-block" style="width:6%" v-focus @keyup.enter="fnSearch">사용자명</h4>
-							<input id="userName" name="userName" v-model="searchData.userName" type="text" class="inputStyle" style="width:14%" title="사용자명 입력란">
+							<input v-model="searchData.userName" type="text" class="inputStyle" style="width:14%" title="사용자명 입력란">
 							<h4 class="inline-block ml30" style="width:5%" v-focus @keyup.enter="fnSearch">아이디</h4>
 							<input type="text" v-model="searchData.loginId" class="inputStyle" style="width:14%" title="아이디 입력란">
 							<h4 class="inline-block ml30" style="width:3%">상태</h4>

@@ -64,6 +64,8 @@
       <!-- 기본정보 탭 -->
       <baseInfoManage v-if="selMainTab==2"></baseInfoManage>
 
+      <!-- 멤버관리 탭 -->
+      <memberManage v-if="selMainTab==3"></memberManage>
 				
 		</article>
 	</div>
@@ -82,6 +84,8 @@ import mo     from "@/modules/channel/components/bc-chan-mo.vue";
 import callbackManage     from "@/modules/project/components/bc-project-callback-manage.vue";
 // 기본정보
 import baseInfoManage     from "@/modules/project/components/bc-project-baseInfo-manage.vue";
+// 멤버관리
+import memberManage     from "@/modules/project/components/bc-project-member-manage.vue";
 
 export default {
   components: {
@@ -94,6 +98,7 @@ export default {
 
     , callbackManage
     , baseInfoManage
+	, memberManage
   },
   data() {
     return {

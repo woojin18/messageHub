@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public static final String ADDRESS_API_URL = "/addressApi/**";
 	public static final String BASE_INFO_API_URL = "/baseInfoApi/**";
 	public static final String INTEGRATEDSEND_API_URL = "/integratedSendApi/**";
+	public static final String MEMBER_API_URL = "/memberApi/**";
 	
 	public static final String LOGIN_ID_PARAM = "userId";
 	@SuppressWarnings("unused")
@@ -96,7 +97,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // CORS preflight 요청은 인증처리를 하지 않도록 설정
 				.antMatchers("/", PUBLIC_API_URL, LOGIN_FORM_URL, LOGIN_API_URL, LOGOUT_URL, LIST_API_URL,
-						PROJECT_API_URL, MENUBAR_URL, USER_API_URL, MESSAGESTATUS_API_URL, INTEGRATEDTEMPLATE_API_URL, ADDRESS_API_URL, BASE_INFO_API_URL, INTEGRATEDSEND_API_URL).permitAll()
+						PROJECT_API_URL, MENUBAR_URL, USER_API_URL, MESSAGESTATUS_API_URL, INTEGRATEDTEMPLATE_API_URL,
+						ADDRESS_API_URL, BASE_INFO_API_URL, INTEGRATEDSEND_API_URL, MEMBER_API_URL).permitAll()
 				.antMatchers(API_URL).authenticated()
 				.anyRequest().authenticated();
 	}

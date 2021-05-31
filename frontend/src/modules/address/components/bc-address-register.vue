@@ -99,7 +99,6 @@ export default {
 	},
 	mounted() {
 		this.fnSearchProjectList();
-		console.log(".>>>> showProjectFlag : " + this.showProjectFlag);
 	},
 	methods: {
 		async fnSearchProjectList() {
@@ -111,7 +110,6 @@ export default {
 				var result = response.data;
 				if(result.success) {
 					this.projectItems = result.data;
-					console.log("debug position");
 				} else {
 					confirm.fnAlert("", result.message);
 				}
@@ -123,8 +121,6 @@ export default {
 		},
 		//주소록 등록 / 수정
 		fnRegisterAddr() {
-			console.log("fnRegisterAddr Start");
-			
 			if(this.otherProjectUseYN == 'Y') this.newProjectId = 'ALL';
 
 			// 필수값 입력 확인
@@ -167,11 +163,8 @@ export default {
 		},
 		// 프로젝트 목록
 		fnProjectListStatus(flag) {
-			console.log('fnProjectListStatus Start');
 			if(flag) this.newProjectId = "ALL";
-			console.log('this.newProjectId : ' + this.newProjectId);
 			this.showProjectFlag = flag;
-			console.log('fnProjectListStatus End');
 		},
 		// 입력값 초기화
 		fnInit() {

@@ -32,12 +32,12 @@
 								<table  class="table_skin1 bt-000 tbl-striped">
 									<thead>
 										<tr>
-										<th class="text-center lc-1">
-											<div class="consolCheck ml10">
-												<input type="checkbox" id="listMemCheck_all" class="checkStyle2" @change="fnListMemChkAll" v-model="listMemAllChecked">
-												<label for="listMemCheck_all"></label>
-											</div>
-										</th>
+											<th class="text-center lc-1">
+												<div class="consolCheck ml10">
+													<input type="checkbox" id="listMemCheck_all" class="checkStyle2" @change="fnListMemChkAll" v-model="listMemAllChecked">
+													<label for="listMemCheck_all"></label>
+												</div>
+											</th>
 											<th class="text-center lc-1">수신자명</th>
 											<th class="text-center lc-1">아이디</th>
 											<th class="text-center lc-1 end">휴대폰 번호</th>
@@ -175,7 +175,7 @@ export default {
 		fnRegisterMember() {
 			//유효성 검사
 			if(this.listMemChkBox == null || this.listMemChkBox.length == 0) {
-				confirm.fnAlert(this.componentsTitle, '수신자를 선택해주세요.');
+				confirm.fnAlert(this.componentsTitle, "수신자를 선택해주세요.");
 				return false;
 			}
 

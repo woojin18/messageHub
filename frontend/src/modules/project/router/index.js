@@ -9,6 +9,8 @@ import callbackPreReg from '../views/bm-project-callback-preReg'
 import callbackPreRegEx from '../views/bm-project-callback-preRegEx'
 
 import baseInfoManage from '../views/bm-project-baseInfo-manage'
+import memberManage from '../views/bm-project-member-manage'
+
 export default [
     {
         path: '/ac/project/manage',
@@ -43,5 +45,10 @@ export default [
         path: '/ac/project/baseInfoManage',
         name: 'baseInfoManage',
         component: baseInfoManage
+    },
+    {
+        path: '/ac/project/memberManage',
+        name: 'memberManage',
+        component: memberManage
     },
 ]

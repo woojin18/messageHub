@@ -4,10 +4,11 @@
 	<select id="selectUserDupcCnt" resultType="int">
 		/* user.selectUserDupcCnt */
 		SELECT	COUNT(USER_ID) AS CNT
-		FROM	CM_USER
+		FROM	cm_console.CM_USER
 		WHERE	DEL_YN = 'N'
 		AND		LOGIN_ID = #{loginId}
 	</select>
+
 	<select id="selectUserListCnt" resultType="int">
 		/* user.selectUserListCnt */
 		SELECT	COUNT(USER_ID) AS CNT
@@ -37,17 +38,17 @@
 							) AS APPROVAL_STATUS_NAME
 						,	LOGIN_ID
 						,	A.HP_NUMBER
-					FROM	CM_USER A
+					FROM	cm_console.CM_USER A
 					WHERE	A.DEL_YN	= 'N'
 					AND		A.CORP_ID	= #{corpId}
 				) A
 				LEFT OUTER JOIN
 				(	SELECT	C.PROJECT_NAME,
 							A.USER_ID
-					FROM	CM_USER A
-					INNER JOIN CM_PROJECT_USER B
+					FROM	cm_console.CM_USER A
+					INNER JOIN cm_console.CM_PROJECT_USER B
 					ON A.USER_ID		= B.USER_ID
-					INNER JOIN CM_PROJECT C
+					INNER JOIN cm_console.CM_PROJECT C
 					ON B.PROJECT_ID		= C.PROJECT_ID
 					WHERE	A.DEL_YN	= 'N'
 					AND		A.CORP_ID	= #{corpId}
@@ -99,7 +100,7 @@
 						) AS APPROVAL_STATUS_NAME
 					,	LOGIN_ID
 					,	A.HP_NUMBER
-				FROM	CM_USER A
+				FROM	cm_console.CM_USER A
 				WHERE	A.DEL_YN	= 'N'
 				AND		A.CORP_ID	= #{corpId}
 			) A
@@ -108,9 +109,9 @@
 			(	SELECT	C.PROJECT_NAME
 					,	A.USER_ID
 				FROM	CM_USER A
-				INNER JOIN CM_PROJECT_USER B
+				INNER JOIN cm_console.CM_PROJECT_USER B
 				ON A.USER_ID		= B.USER_ID
-				INNER JOIN CM_PROJECT C
+				INNER JOIN cm_console.CM_PROJECT C
 				ON B.PROJECT_ID		= C.PROJECT_ID
 				WHERE	A.DEL_YN	= 'N'
 				AND		A.CORP_ID	= #{corpId}
@@ -118,13 +119,13 @@
 			ON A.USER_ID = B.USER_ID
 			WHERE 1=1
 			<if test="loginId != '' and loginId != null ">
-			AND		A.LOGIN_ID = #{loginId}
+			AND		A.LOGIN_ID LIKE CONCAT('%', #{loginId}, '%')
 			</if>
 			<if test="userId != '' and userId != null ">
-			AND		A.USER_ID = #{userId}
+			AND		A.USER_ID LIKE CONCAT('%', #{userId}, '%')
 			</if>
 			<if test="userName != '' and userName != null ">
-			AND		A.USER_NAME = #{userName}
+			AND		A.USER_NAME LIKE CONCAT('%', #{userName}, '%')
 			</if>
 			<if test="approvalStatus != '' and approvalStatus != null ">
 			AND		A.APPROVAL_STATUS = #{approvalStatus}
@@ -137,7 +138,7 @@
 	
 	<update id="stopUser" parameterType="hashmap">
 		/* user.stopUser 사용자 이용정지*/
-		UPDATE CM_USER
+		UPDATE cm_console.CM_USER
 		SET
 			APPROVAL_STATUS = 'N'
 		WHERE USER_ID = #{userId}
@@ -145,7 +146,7 @@
 
 	<update id="releaseUser" parameterType="hashmap">
 		/* user.releaseUser 사용자 이용정지 해제*/
-		UPDATE CM_USER
+		UPDATE cm_console.CM_USER
 		SET
 			APPROVAL_STATUS = 'Y'
 		WHERE USER_ID = #{userId}
@@ -153,7 +154,7 @@
 
 	<update id="deleteUser" parameterType="hashmap">
 		/* user.deleteUser - 사용자 삭제 */
-		UPDATE CM_USER
+		UPDATE cm_console.CM_USER
 		SET 
 			DEL_YN = 'Y'
 		WHERE USER_ID = #{userId}
@@ -161,7 +162,7 @@
 	
 	<update id="updateUser" parameterType="hashmap">
 		/* user.updateUser 사용자 수정*/
-		UPDATE CM_USER
+		UPDATE cm_console.CM_USER
 		SET
 			<if test="userName != '' and userName != null ">
 			USER_NAME	= #{userName},
@@ -178,30 +179,30 @@
 	
 	<insert id="insertUser">
 		/* user.insertUser */
-		INSERT	CM_USER (
-				USER_ID
-		,		LOGIN_ID
-		,		USER_NAME
-		,		HP_NUMBER
-		,		ROLE_CD
-		,		CORP_ID
-		,		APPROVAL_STATUS
-		,		DEL_YN
-		,		REG_ID
-		,		REG_DT
-		,		UPD_DT
-		) VALUES (
-				#{userId}
-		,		#{loginId}
-		,		#{userName}
-		,		#{hpNumber}
-		,		#{roleCd}
-		,		#{corpId}
-		,		'ING'
-		,		'N'
-		,		#{loginId}
-		,		NOW()
-		,		NOW()
+		INSERT INTO cm_console.CM_USER (
+					USER_ID
+				,	LOGIN_ID
+				,	USER_NAME
+				,	HP_NUMBER
+				,	ROLE_CD
+				,	CORP_ID
+				,	APPROVAL_STATUS
+				,	DEL_YN
+				,	REG_ID
+				,	REG_DT
+				,	UPD_DT
+		)	VALUES (
+						#{userId}
+				,		#{loginId}
+				,		#{userName}
+				,		#{hpNumber}
+				,		#{roleCd}
+				,		#{corpId}
+				,		'ING'
+				,		'N'
+				,		#{loginId}
+				,		NOW()
+				,		NOW()
 		)
 	</insert>
 	<select id="checkPassword" resultType="int">

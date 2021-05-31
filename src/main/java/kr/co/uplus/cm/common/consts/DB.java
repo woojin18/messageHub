@@ -173,4 +173,13 @@ public class DB {
 	public final static String QRY_SELECT_APIKEY_LIST = "baseInfo.selectApiKeyList";
 	public final static String QRY_INSERT_APIKEY = "baseInfo.insertApiKey";
 	public final static String QRY_UPDATE_APIKEY = "baseInfo.updateApiKey";
+	
+	//프로젝트 멤버
+	public final static String QRY_SELECT_PROJECT_MEMBER_LIST_CNT = "member.selectProjectMemberListCnt";
+	public final static String QRY_SELECT_PROJECT_MEMBER_LIST = "member.selectProjectMemberList";
+	public final static String QRY_INSERT_PROJECT_MEMBER = "member.insertProjectMember";
+	public final static String QRY_DELETE_PROJECT_MEMBER = "member.deleteProjectMember";
+	public final static String QRY_SELECT_PROJECT_USER_LIST_CNT = "member.selectProjectUserListCnt";
+	public final static String QRY_SELECT_PROJECT_USER_LIST = "member.selectProjectUserList";
+	
 }

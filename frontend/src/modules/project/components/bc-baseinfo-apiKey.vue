@@ -171,7 +171,6 @@ export default {
 	watch: {
 		apiKeyData: function() {
 			if(this.saveStatus === 'R') {
-				console.log('apiKeyData register');
 				this.apiKeyData.apiKey = '';
 				jQuery('#apiKey').val('');
 				jQuery('#apiPwd').val('');
@@ -374,7 +373,7 @@ export default {
 			this.ipList.splice(index, 1);
 			--this.loopCnt;
 		},
-		fnLineTypeInit(){
+		fnLineTypeInit() {
 			var params = {
 				codeTypeCd	: "LINE_TYPE",
 				useYN		: "Y"
