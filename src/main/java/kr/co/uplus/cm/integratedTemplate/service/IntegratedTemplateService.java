@@ -170,7 +170,7 @@ public class IntegratedTemplateService {
         			sb.append("	\"title\" : \"\", "); //
         			sb.append("	\"description\" : \""+params.get("rcs0Content")+"\", "); // 메시지
         			sb.append("	\"mediaUrl\" : \"{}\", "); //
-        			sb.append("	\"media\" : \"\" "); //
+        			sb.append("	\"media\" : \"\", "); //
         			sb.append("	\"suggestions\" : \"\" "); //
         			sb.append("	}] ");
         			

@@ -256,10 +256,10 @@
           <li v-if="rowData.msgKind == 'I'"><!-- 정보성인경우만 사용가능 -->
             <img src="../../../common/images/pushTemplate1.svg" alt="프리 템플릿"><h6>프리 템플릿</h6>
             <div class="consolMarginTop">
-              <input type="radio" name="rcsTemplate1" value="0" id="rcsTemplate1-1" class="radioStyle" checked="" v-on:click="rcsTemplateTable=0" v-model="rcsTemplateTable"><label for="rcsTemplate1-1"></label>
+              <input type="radio" name="rcsTemplate1" value="0" id="rcsTemplate1-1" class="radioStyle" checked="" v-on:click="rcsTemplateTable=0" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-1"></label>
               <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
             </div>
-            <span>선택: {{ rcsTemplateTable }}</span>
+            <!--<span>선택: {{ rcsTemplateTable }}</span>-->
           </li>
           <li v-if="rowData.msgKind == 'I'"><!-- 정보성인경우만 사용가능 -->
             <img src="../../../common/images/pushTemplate2.svg" alt="템플릿 승인(서술)"><h6>템플릿 승인<br>(서술)</h6>
@@ -374,7 +374,7 @@
               <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
               <div class="phoneTextWrap">
                 <div class="phoneText1 relative scroll-y4">
-                  	<p><img src="common/images/phone_Icon10.png" alt="주문 아이콘"></p>
+                  	<p><img src="../../../common/images/phone_Icon10.png" alt="주문 아이콘"></p>
 					<div class="scroll-y5">
                     	<p class="mt15 lc-1">{{rowData.rcs1Content}}</p>
                   	</div>

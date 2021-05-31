@@ -1476,17 +1476,7 @@ export default {
         this.$refs.excelFile.click();
       }
     },
-    
-    //푸시 템플릿 엑셀 다운로드
-    async fnExcelTmplteDownLoad(){
-      if(this.fnSetContsVarNms() == false) return;
-      var params = {
-        contsVarNms : this.sendData.contsVarNms,
-        requiredCuid: this.sendData.requiredCuid,
-        requiredCuPhone: this.sendData.requiredCuPhone
-      };
-      await MessageApi.excelDownSendPushRecvTmplt(params);
-    },
+
     
     
   }
