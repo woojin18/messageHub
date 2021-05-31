@@ -193,7 +193,7 @@ public class CommonService {
 
         // 이미지 업로드 임시 폴더
         prjAbsPath = prjRelPath.toAbsolutePath().toString();
-        uploadDirPath = prjAbsPath + imgRltTmpPath + convertUUID + File.separator;
+        uploadDirPath = (StringUtils.equals(prjAbsPath, File.separator) ? "" : prjAbsPath) + imgRltTmpPath + convertUUID + File.separator;
 
         File uploadDir = new File(uploadDirPath);
 
