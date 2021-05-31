@@ -210,12 +210,8 @@ public class CommonService {
         }
 
         try {
-            /*
             File uplaodFile = File.createTempFile(currentYmd + "_", "." + fileExten, uploadDir); // 업로드된 파일정보
             FileCopyUtils.copy(files.getInputStream(), new FileOutputStream(uplaodFile));
-            */
-            File uplaodFile = new File(files.getOriginalFilename());
-            files.transferTo(uplaodFile);
 
             // 채널별 분기작업
             String oriFileFullPath = uplaodFile.getAbsolutePath();
