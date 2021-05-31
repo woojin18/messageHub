@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -192,32 +191,14 @@ public class CommonService {
         String uploadDirPath = "";
         String convertUUID = UUID.randomUUID().toString().replace("-", ""); // 해쉬명 생성
 
-        String rootPath = System.getProperty("user.dir");
-        HttpServletRequest request = SpringUtils.getCurrentRequest();
-        HttpSession session = request.getSession();
-        String root_path = session.getServletContext().getRealPath("/");
-
         // 이미지 업로드 임시 폴더
         prjAbsPath = prjRelPath.toAbsolutePath().toString();
-        uploadDirPath = (StringUtils.equals(prjAbsPath, File.separator) ? "" : prjAbsPath) + imgRltTmpPath + convertUUID + File.separator;
-        uploadDirPath = imgRltTmpPath + convertUUID + File.separator;
+        uploadDirPath = prjAbsPath + imgRltTmpPath + convertUUID + File.separator;
 
         File uploadDir = new File(uploadDirPath);
 
-        log.info("{}.uploadImgFile - root_path: {}, rootPath: {}, prjRelPath : {}, imgRltTmpPath : {}, convertUUID : {}, uploadDirPath : {}"
-                , this.getClass(), root_path, rootPath, prjAbsPath, imgRltTmpPath, convertUUID, uploadDirPath);
-
         // folder 없으면 생성
         if (!uploadDir.exists()) {
-            File temp = new File("/temp");
-            if (!temp.exists()) {
-                log.info("{}.uploadImgFile - create temp directory : {}", this.getClass(), temp.getAbsolutePath());
-            }
-            File temp2 = new File(root_path+"/src/main/resources/application.yml");
-            if (temp2.exists())  log.info("{}.uploadImgFile - temp2 directory exists : {}", this.getClass(), temp2.getAbsolutePath());
-            else log.info("{}.uploadImgFile - temp2 directory Not exists : {}", this.getClass(), temp2.getAbsolutePath());
-
-            log.info("{}.uploadImgFile - create directory : {}", this.getClass(), uploadDir.getAbsolutePath());
             uploadDir.mkdir();
         }
 
@@ -228,8 +209,6 @@ public class CommonService {
             // 채널별 분기작업
             String oriFileFullPath = uplaodFile.getAbsolutePath();
             String oriFileName = uplaodFile.getName().replaceFirst("[.][^.]+$", "");
-
-            log.info("{}.uploadImgFile - oriFileFullPath : {}, oriFileName : {}", this.getClass(), oriFileFullPath, oriFileName);
 
             JSONArray jsonArray = new JSONArray();
             JSONObject jsonObject = null;
@@ -429,8 +408,8 @@ public class CommonService {
 
         String pattern = "[\"!@#$%^&'.*]";
         String preFileName = getFileNameExt(files.getOriginalFilename(),0).replaceAll(pattern, "");
-		String fileExten = getFileNameExt(files.getOriginalFilename(),1);
-		String fileName = preFileName+"."+fileExten;
+        String fileExten = getFileNameExt(files.getOriginalFilename(),1);
+        String fileName = preFileName+"."+fileExten;
 
         // 이미지 업로드 용량 유효성 체크
         if (files.getSize() > this.imgUploadLimitSize) {
@@ -682,27 +661,27 @@ public class CommonService {
     }
 
     public RestResult<Object> selectCodeList(Map<String, Object> params) throws Exception {
-		RestResult<Object> rtn = new RestResult<Object>();
+        RestResult<Object> rtn = new RestResult<Object>();
 
-		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CODE, params);
-		rtn.setData(rtnList);
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CODE, params);
+        rtn.setData(rtnList);
 
-		return rtn;
-	}
+        return rtn;
+    }
 
-	/**
-	 * 파일명과 확장자를 구분해서가져오기
-	 * @param fullFileName
-	 * @param flag (0:파일명, 1:확장자)
-	 * @return
-	 */
-	public static String getFileNameExt(String fullFileName,int flag) {
-		if(flag<=0) flag = 0;
-		else flag = 1;
-		int pos = fullFileName.lastIndexOf( "." );
-		String ext = fullFileName.substring( pos + 1 );
-		String fileName = fullFileName.substring(0, pos);
-		String[] fileNameExt = {fileName,ext};
-		return fileNameExt[flag];
-	}
+    /**
+     * 파일명과 확장자를 구분해서가져오기
+     * @param fullFileName
+     * @param flag (0:파일명, 1:확장자)
+     * @return
+     */
+    public static String getFileNameExt(String fullFileName,int flag) {
+        if(flag<=0) flag = 0;
+        else flag = 1;
+        int pos = fullFileName.lastIndexOf( "." );
+        String ext = fullFileName.substring( pos + 1 );
+        String fileName = fullFileName.substring(0, pos);
+        String[] fileNameExt = {fileName,ext};
+        return fileNameExt[flag];
+    }
 }
