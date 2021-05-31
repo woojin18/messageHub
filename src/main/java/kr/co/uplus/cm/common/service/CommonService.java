@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.common.service;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Path;
@@ -9,9 +10,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Stream;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
@@ -175,7 +176,7 @@ public class CommonService {
         String pattern = "[\"!@#$%^&'.*]";
         String preFileName = getFileNameExt(files.getOriginalFilename(),0).replaceAll(pattern, "");
         String fileExten = getFileNameExt(files.getOriginalFilename(),1);
-        String fileName = preFileName+"."+fileExten;
+        String originFileName = preFileName+"."+fileExten;
 
         // 이미지 업로드 확장자 유효성 체크
         if (Stream.of(imgPermitExten.split(",")).map(String::trim)
@@ -185,31 +186,9 @@ public class CommonService {
             return rtn;
         }
 
-        Path prjRelPath = Paths.get("");
-        String currentYmd = DateUtil.getCurrentDate("yyyyMMdd");
-        String prjAbsPath = "";
-        String uploadDirPath = "";
-        String convertUUID = UUID.randomUUID().toString().replace("-", ""); // 해쉬명 생성
-
-        // 이미지 업로드 임시 폴더
-        prjAbsPath = prjRelPath.toAbsolutePath().toString();
-        uploadDirPath = prjAbsPath + imgRltTmpPath + convertUUID + File.separator;
-
-        File uploadDir = new File(uploadDirPath);
-
-        // folder 없으면 생성
-        if (!uploadDir.exists()) {
-            uploadDir.mkdir();
-        }
-
         try {
-            File uplaodFile = File.createTempFile(currentYmd + "_", "." + fileExten, uploadDir); // 업로드된 파일정보
-            FileCopyUtils.copy(files.getInputStream(), new FileOutputStream(uplaodFile));
-
-            // 채널별 분기작업
-            String oriFileFullPath = uplaodFile.getAbsolutePath();
-            String oriFileName = uplaodFile.getName().replaceFirst("[.][^.]+$", "");
-
+            BufferedImage image = ImageIO.read(files.getInputStream());
+            File resizeFile = null;
             JSONArray jsonArray = new JSONArray();
             JSONObject jsonObject = null;
 
@@ -220,10 +199,9 @@ public class CommonService {
             Map<String, Object> dataMap = null;
             ObjectMapper mapper = null;
             Map<String, Integer> resizeInfo = null;
-            File chFile = null;
 
             String apiKey = this.getApiKey(corpId, projectId);
-            String resizePath = "";
+            //String resizePath = "";
             String apiUrl = "";
             String imgUrl = "";
             String fileId = CommonUtils.getCommonId(Const.FILE_UPLOAD_PREFIX, 5); // 모든 채널 한개의 fileId 사용
@@ -232,6 +210,7 @@ public class CommonService {
             String wideImgYn = Const.COMM_NO;
             String apiWideYn = Const.COMM_NO;
             long chLimitSize = NumberUtils.LONG_ZERO;
+            long resizeImageSize = NumberUtils.LONG_ZERO;
 
             for (String ch : useCh) {
                 chNm = ch;
@@ -249,20 +228,31 @@ public class CommonService {
                         || !resizeInfo.containsKey(Const.IMG_RESIZE_HEIGHT)) {
                     throw new Exception("유효하지 않은 이미지 리사이즈 정보 : 채널(" + chNm + ")");
                 }
+
+                resizeFile = ImageUtil.imageResize(image, fileExten, resizeInfo.get(Const.IMG_RESIZE_WIDTH),
+                        resizeInfo.get(Const.IMG_RESIZE_HEIGHT));
+                log.info("{}.uploadImgFile - resizeFile : {}", this.getClass(), resizeFile);
+
+//                File outputFile = new File("C:/temp/sendBefore."+fileExten);
+//                ImageUtil.copyInputStreamToFile(resizeImage, outputFile);
+
+                /*
                 resizePath = ImageUtil.imageResize(oriFileFullPath, uploadDirPath,
                         oriFileName + "_" + ch + "." + fileExten, fileExten, resizeInfo.get(Const.IMG_RESIZE_WIDTH),
                         resizeInfo.get(Const.IMG_RESIZE_HEIGHT));
+                */
 
-                /** 채널별 이미지 사이즈 검사 */
-                chFile = new File(resizePath);
+                /** 채널별 이미지 사이즈 검사
                 chLimitSize = getChLimitSize(imgSetInfoList, chNm);
-                if (!chFile.exists()) {
+                resizeImageSize = IOUtils.toByteArray(resizeImage).length;
+                if (resizeImage == null) {
                     throw new Exception("유효하지 않은 리사이즈 이미지");
                 }
-                if (chFile.length() > chLimitSize) {
-                    throw new Exception("유효하지 않은 이미지 사이즈 : 채널(" + chNm + "), 이미지 사이즈(" + chFile.length()
+                if (resizeImageSize > chLimitSize) {
+                    throw new Exception("유효하지 않은 이미지 사이즈 : 채널(" + chNm + "), 이미지 사이즈(" + resizeImageSize
                             + "Byte), 제한사이즈(" + chLimitSize + "Byte)");
                 }
+                 */
 
                 // TODO: 삭제 (API : 포탈연동 오류)
                 if (StringUtils.equals("FRIENDTALK", ch)) {
@@ -282,7 +272,7 @@ public class CommonService {
 
                 // send
                 apiUrl = ApiConfig.FILE_UPLOAD_API_URI + ch.toLowerCase();
-                resultMap = apiInterface.sendImg(apiUrl, headerMap, chFile, reqFileObject.toJSONString());
+                resultMap = apiInterface.sendImg(apiUrl, headerMap, resizeFile, reqFileObject.toJSONString());
 
                 // send result
                 imgUrl = "";
@@ -313,6 +303,9 @@ public class CommonService {
                 jsonObject.put("CH", ch);
                 jsonObject.put("URL", imgUrl);
                 jsonArray.add(jsonObject);
+
+                //임시파일 삭제
+                resizeFile.deleteOnExit();
             }
 
             // DB 등록
@@ -321,15 +314,13 @@ public class CommonService {
             sParams.put("corpId", corpId);
             sParams.put("useChInfo", jsonArray.toJSONString());
             sParams.put("wideImgYn", wideImgYn);
-            sParams.put("originFileName", fileName);
+            sParams.put("originFileName", originFileName);
             sParams.put("loginId", loginId);
             generalDao.insertGernal(DB.QRY_INSERT_IMAGE_FILE, sParams);
 
         } catch (Exception e) {
             log.error("{} Error : {}", this.getClass(), e);
             throw new Exception(e);
-        } finally {
-            deleteFolder(uploadDirPath);
         }
 
         return rtn;
