@@ -200,7 +200,7 @@ public class CommonService {
         // 이미지 업로드 임시 폴더
         prjAbsPath = prjRelPath.toAbsolutePath().toString();
         uploadDirPath = (StringUtils.equals(prjAbsPath, File.separator) ? "" : prjAbsPath) + imgRltTmpPath + convertUUID + File.separator;
-        uploadDirPath = root_path + imgRltTmpPath + convertUUID + File.separator;
+        uploadDirPath = imgRltTmpPath + convertUUID + File.separator;
 
         File uploadDir = new File(uploadDirPath);
 
@@ -213,6 +213,10 @@ public class CommonService {
             if (!temp.exists()) {
                 log.info("{}.uploadImgFile - create temp directory : {}", this.getClass(), temp.getAbsolutePath());
             }
+            File temp2 = new File(root_path+"/src/main/resources/application.yml");
+            if (temp2.exists())  log.info("{}.uploadImgFile - temp2 directory exists : {}", this.getClass(), temp2.getAbsolutePath());
+            else log.info("{}.uploadImgFile - temp2 directory Not exists : {}", this.getClass(), temp2.getAbsolutePath());
+
             log.info("{}.uploadImgFile - create directory : {}", this.getClass(), uploadDir.getAbsolutePath());
             uploadDir.mkdir();
         }
