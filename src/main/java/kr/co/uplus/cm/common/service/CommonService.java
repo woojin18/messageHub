@@ -169,7 +169,6 @@ public class CommonService {
         //get Image Set Value
         Map<String, Object> imgUploadSet = (Map<String, Object>) selectFileUploadSet(Const.FileUploadSet.SEND_IMAGE);
         String imgPermitExten = CommonUtils.getStrValue(imgUploadSet, Const.FileUploadSetKey.PERMIT_EXTEN);
-        //String imgRltTmpPath = CommonUtils.getStrValue(imgUploadSet, Const.FileUploadSetKey.RLT_TMP_PATH);
 
         //get File Prop
         List<Object> imgSetInfoList = selectImgUploadChSet();
@@ -188,7 +187,7 @@ public class CommonService {
         }
 
         try {
-            InputStream inputStream = null;
+            InputStream resizeImgStream = null;
             BufferedImage image = ImageIO.read(files.getInputStream());
             JSONArray jsonArray = new JSONArray();
             JSONObject jsonObject = null;
@@ -202,7 +201,6 @@ public class CommonService {
             Map<String, Integer> resizeInfo = null;
 
             String apiKey = this.getApiKey(corpId, projectId);
-            //String resizePath = "";
             String apiUrl = "";
             String imgUrl = "";
             String fileId = CommonUtils.getCommonId(Const.FILE_UPLOAD_PREFIX, 5); // 모든 채널 한개의 fileId 사용
@@ -227,19 +225,11 @@ public class CommonService {
                         || !resizeInfo.containsKey(Const.IMG_RESIZE_HEIGHT)) {
                     throw new Exception("유효하지 않은 이미지 리사이즈 정보 : 채널(" + chNm + ")");
                 }
-                inputStream = ImageUtil.imageResize(image, fileExten, resizeInfo.get(Const.IMG_RESIZE_WIDTH),
+                resizeImgStream = ImageUtil.imageResize(image, fileExten, resizeInfo.get(Const.IMG_RESIZE_WIDTH),
                         resizeInfo.get(Const.IMG_RESIZE_HEIGHT));
-
-                /** 채널별 이미지 사이즈 검사
-                chLimitSize = getChLimitSize(imgSetInfoList, chNm);
-                if (!resizeFile.exists()) {
+                if (resizeImgStream == null) {
                     throw new Exception("유효하지 않은 리사이즈 이미지");
                 }
-                if (resizeFile.length() > chLimitSize) {
-                    throw new Exception("유효하지 않은 이미지 사이즈 : 채널(" + chNm + "), 이미지 사이즈(" + resizeImageSize
-                            + "Byte), 제한사이즈(" + chLimitSize + "Byte)");
-                }
-                 */
 
                 // TODO: 삭제 (API : 포탈연동 오류)
                 if (StringUtils.equals("FRIENDTALK", ch)) {
@@ -259,7 +249,7 @@ public class CommonService {
 
                 // send
                 apiUrl = ApiConfig.FILE_UPLOAD_API_URI + ch.toLowerCase();
-                resultMap = apiInterface.sendStreamImg(apiUrl, headerMap, inputStream, originFileName, reqFileObject.toJSONString());
+                resultMap = apiInterface.sendStreamImg(apiUrl, headerMap, resizeImgStream, originFileName, reqFileObject.toJSONString());
 
                 // send result
                 imgUrl = "";
@@ -501,9 +491,6 @@ public class CommonService {
         HashMap<String, Object> params = new HashMap<>();
         params.put("codeVal1", fileUploadSet);
         params.put("codeName2", Const.FileUploadSetKey.PERMIT_EXTEN);
-        if(StringUtils.equals(fileUploadSet, Const.FileUploadSet.SEND_IMAGE)) {
-            params.put("codeName3", Const.FileUploadSetKey.RLT_TMP_PATH);
-        }
 
         Object rtnObj = generalDao.selectGernalObject(DB.QRY_SELECT_FILE_UPLOAD_SET, params);
         if(rtnObj == null || CommonUtils.isEmptyObject(rtnObj)) {
@@ -612,26 +599,6 @@ public class CommonService {
             return "";
         } else {
             return "";
-        }
-    }
-
-    private static void deleteFolder(String path) {
-        File folder = new File(path);
-        try {
-            if (folder.exists()) {
-                File[] folder_list = folder.listFiles(); // 파일리스트 얻어오기
-                for (int i = 0; i < folder_list.length; i++) {
-                    if (folder_list[i].isFile()) {
-                        folder_list[i].delete();
-                    } else {
-                        deleteFolder(folder_list[i].getPath());
-                    }
-                    folder_list[i].delete();
-                }
-                folder.delete(); // 폴더 삭제
-            }
-        } catch (Exception e) {
-            log.error("deleteFolder Error : {}", e);
         }
     }
 
