@@ -112,7 +112,7 @@ export default {
         return;
       }
       //확장자 검사
-      const permitExten = 'jpg,jpeg,png,gif'.split(',');
+      const permitExten = 'jpg,jpeg,png'.split(',');
       const extnIdx = uploadFile.value.lastIndexOf('.');
       const extn = uploadFile.value.substring(extnIdx+1);
       if((permitExten.indexOf(extn) < 0)){

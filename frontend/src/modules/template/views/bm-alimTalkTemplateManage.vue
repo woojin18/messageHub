@@ -15,11 +15,17 @@
               <div class="phoneTextWrap3">
                 <div>
                   <p class="text-main"><i class="fal fa-envelope-open-text"></i> 알림톡 도착</p>
-                  <div class="text-sub-wrap">
-                    <p class="text-sub_1">부제목</p>
-                    <p class="text-sub scroll-y3">템플릿 강조 제목</p>
+                  <div v-if="tmpltData.emphasizeYn == 'Y'" class="text-sub-wrap" style="padding:10px;">
+                    <p v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltEmpsSubTitle)" class="text-sub_1">{{tmpltData.tmpltEmpsSubTitle}}</p>
+                    <p v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltEmpsTitle)" class="text-sub scroll-y3">{{tmpltData.tmpltEmpsTitle}}</p>
                   </div>
-                  <p class="text-sub_2">템플릿 테스트입니다.<br>템플릿 테스트 템플릿 테스트 템플릿 테스트 템플릿 테스트</p>
+                  <div class="text-sub-wrap" style="padding:10px;">
+                    <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
+                  </div>
+                  <!-- <p class="text-sub_2">템플릿 테스트입니다.<br>템플릿 테스트 템플릿 테스트 템플릿 테스트 템플릿 테스트</p> -->
+                  <div v-for="(buttonInfo, idx) in tmpltData.buttonList" :key="idx">
+                    <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray width100_">{{buttonInfo.name}}</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -30,7 +36,7 @@
           <div class="of_h">
             <div class="float-left" style="width:22%"><h4>발신 프로필/그룹 *</h4></div>
             <div class="float-left" style="width:78%">
-              <select class="float-left selectStyle2" style="width:20%" v-model="senderKeyType" @change="fnSelectSenderKeyList">
+              <select class="float-left selectStyle2" style="width:20%" v-model="tmpltData.senderKeyType" @change="fnSelectSenderKeyList">
                 <option value="NOMAL">일반</option>
                 <option value="GROUP">그룹</option>
               </select>
@@ -49,19 +55,19 @@
           <div class="of_h">
             <div class="float-left" style="width:22%"><h4>템플릿강조유형</h4></div>
             <div class="float-left" style="width:78%">
-              <input type="radio" id="emphasizeYn_N" name="emphasizeYn" value="Y" v-model="tmpltData.emphasizeYn">
+              <input type="radio" id="emphasizeYn_N" name="emphasizeYn" value="N" v-model="tmpltData.emphasizeYn">
               <label for="emphasizeYn_N" class="mr30">선택 안 함</label>
-              <input type="radio" id="emphasizeYn_Y" name="emphasizeYn" value="N" v-model="tmpltData.emphasizeYn">
+              <input type="radio" id="emphasizeYn_Y" name="emphasizeYn" value="Y" v-model="tmpltData.emphasizeYn">
               <label for="emphasizeYn_Y">강조 표기형</label>
             </div>
           </div>
-          <div class="of_h">
+          <div v-if="tmpltData.emphasizeYn == 'Y'" class="of_h">
             <div class="float-left" style="width:22%"><h4>템플릿강조제목 *</h4></div>
             <div class="float-left" style="width:78%">
               <input type="text" class="inputStyle" placeholder="최대 2줄 23자(24자부터 말줄임 처리, 권장하지 않음)" v-model="tmpltData.tmpltEmpsTitle" maxlength="50">
             </div>
           </div>
-          <div class="of_h">
+          <div v-if="tmpltData.emphasizeYn == 'Y'" class="of_h">
             <div class="float-left" style="width:22%"><h4>템플릿강조부제목 *</h4></div>
             <div class="float-left" style="width:78%">
               <input type="text" class="inputStyle" placeholder="최대 2줄 18자 (19자부터 말줄임 처리, 권장하지 않음)" v-model="tmpltData.tmpltEmpsSubTitle" maxlength="50">
@@ -70,9 +76,11 @@
           <div class="of_h">
             <div class="float-left" style="width:22%"><h4>내용 *</h4></div>
             <div class="float-left" style="width:78%">
-              <textarea class="textareaStyle height190" v-model="tmpltData.tmpltContent" placeholder="템플릿 내용/부가 정보/광고성 메시지 합 최대 1,000자" maxlength="1000"></textarea>
+              <!-- 템플릿 내용/부가 정보/광고성 메시지 합 최대 1,000자 -->
+              <textarea class="textareaStyle height190" v-model="tmpltData.tmpltContent" placeholder="템플릿 내용 최대 1,000자" maxlength="1000"></textarea>
             </div>
           </div>
+          <!-- TODO 카테고리 작업해야됨 -->
           <div class="of_h consolMarginTop">
             <div class="float-left" style="width:22%"><h4>카테고리 *</h4></div>
             <div class="float-left" style="width:78%">
@@ -88,8 +96,11 @@
               </div>
             </div>
           </div>
+          <!--// TODO 카테고리 작업해야됨 -->
           <div class="of_h">
-            <div class="float-left" style="width:22%"><h4 class="inline-block mr20">버튼</h4><a href="#self" class="btnStyle1 backBlack">추가 +</a></div>
+            <div class="float-left" style="width:22%">
+              <h4 class="inline-block mr20">버튼</h4><a @click="fnAddButton" class="btnStyle1 backBlack">추가 +</a>
+            </div>
             <div class="float-left" style="width:78%">
               <table class="table_skin1">
                 <colgroup>
@@ -107,106 +118,40 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>            
-                    <td class="text-left">
-                      <select name="userConsole_sub040402_4" class="float-left selectStyle2" style="width:100%">
-                        <option value="">배송조회</option>
-                      </select>
-                    </td>
-                    <td class="text-center"><input type="text" class="inputStyle float-left"></td>
-                    <td class="text-left of_h">
-                      <h6 class="float-left" style="width:20%">Description</h6>
-                    </td>
-                    <td class="text-center end"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
-                  </tr>
-                  <tr>  
-                    <td class="text-left" rowspan="2">
-                      <select name="userConsole_sub040402_5" class="float-left selectStyle2" style="width:100%">
-                        <option value="">웹 링크</option>
-                      </select>
-                    </td>
-                    <td class="text-center" rowspan="2"><input type="text" class="inputStyle float-left"></td>
-                    <td class="text-left">
-                      <h6 class="float-left" style="width:20%">Mobile</h6>
-                      <input type="text" class="inputStyle float-left" style="width:80%">
-                    </td>                      
-                    <td class="text-center end" rowspan="2"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
-                  </tr>
-                  <tr>
-                    <td class="text-left">
-                      <h6 class="float-left" style="width:20%">PC</h6>
-                      <input type="text" class="inputStyle float-left" style="width:80%">
-                    </td>
-                  </tr>
-                  <tr>  
-                    <td class="text-left" rowspan="2">
-                      <select name="userConsole_sub040402_6" class="float-left selectStyle2" style="width:100%">
-                        <option value="">앱 링크</option>
-                      </select>
-                    </td>
-                    <td class="text-center" rowspan="2"><input type="text" class="inputStyle float-left"></td>
-                    <td class="text-left">
-                      <h6 class="float-left" style="width:20%">Android</h6>
-                      <input type="text" class="inputStyle float-left" style="width:80%">
-                    </td>                      
-                    <td class="text-center end" rowspan="2"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
-                  </tr>
-                  <tr>
-                    <td class="text-left">
-                      <h6 class="float-left" style="width:20%">IOS</h6>
-                      <input type="text" class="inputStyle float-left" style="width:80%">
-                    </td>
-                  </tr>
-                  <tr>            
-                    <td class="text-left">
-                      <select name="userConsole_sub040402_7" class="float-left selectStyle2" style="width:100%">
-                        <option value="">봇 키워드</option>
-                      </select>
-                    </td>
-                    <td class="text-center"><input type="text" class="inputStyle float-left"></td>
-                    <td class="text-left of_h"></td>
-                    <td class="text-center end"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
-                  </tr>
-                  <tr>            
-                    <td class="text-left">
-                      <select name="userConsole_sub040402_8" class="float-left selectStyle2" style="width:100%">
-                        <option value="">메시지 전달</option>
-                      </select>
-                    </td>
-                    <td class="text-center"><input type="text" class="inputStyle float-left"></td>
-                    <td class="text-left of_h"></td>
-                    <td class="text-center end"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
-                  </tr>
-                  <tr>            
-                    <td class="text-left">
-                      <select name="userConsole_sub040402_9" class="float-left selectStyle2" style="width:100%">
-                        <option value="">상담톡전환</option>
-                      </select>
-                    </td>
-                    <td class="text-center"><input type="text" class="inputStyle float-left"></td>
-                    <td class="text-left of_h"></td>
-                    <td class="text-center end"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
-                  </tr>
-                  <tr>            
-                    <td class="text-left">
-                      <select name="userConsole_sub040402_10" class="float-left selectStyle2" style="width:100%">
-                        <option value="">봇 전환</option>
-                      </select>
-                    </td>
-                    <td class="text-center"><input type="text" class="inputStyle float-left"></td>
-                    <td class="text-left of_h"></td>
-                    <td class="text-center end"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
-                  </tr>
-                  <tr>            
-                    <td class="text-left">
-                      <select name="userConsole_sub040402_11" class="float-left selectStyle2" style="width:100%">
-                        <option value="">채널추가</option>
-                      </select>
-                    </td>
-                    <td class="text-center"><input type="text" class="inputStyle float-left"></td>
-                    <td class="text-left of_h"></td>
-                    <td class="text-center end"><a href="#self" class="btnStyle1 backLightGray">삭제</a></td>
-                  </tr>
+                  <template v-for="(buttonInfo, idx) in tmpltData.buttonList">
+                    <tr :key="idx">
+                      <td class="text-left" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
+                        <select class="float-left selectStyle2" style="width:100%" v-model="buttonInfo.type" @change="fnChgBtnType(idx)">
+                          <option v-for="bottonType in bottonTypeList" :key="bottonType.type" :value="bottonType.type">{{bottonType.name}}</option>
+                        </select>
+                      </td>
+                      <td class="text-center" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
+                        <input v-if="buttonInfo.type == 'AC'" type="text" class="inputStyle float-left" v-model="buttonInfo.name" disabled maxlength="20">
+                        <input v-else type="text" class="inputStyle float-left" v-model="buttonInfo.name" maxlength="20">
+                      </td>
+                      <td :class="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? 'text-left' : 'text-left of_h'">
+                        <h6 v-if="buttonInfo.type == 'DS'" class="float-left" v-html="bottonDSDescription"></h6>
+                        <h6 v-if="buttonInfo.type == 'WL'" class="float-left" style="width:20%">Mobile*</h6>
+                        <h6 v-if="buttonInfo.type == 'AL'" class="float-left" style="width:20%">Android*</h6>
+                        <input v-if="buttonInfo.type == 'WL' || buttonInfo.type == 'AL'" type="text" class="inputStyle float-left" style="width:80%">
+                      </td>
+                      <td class="text-center end" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
+                        <a @click="fnDelButton(idx)" class="btnStyle1 backLightGray">삭제</a>
+                      </td>
+                    </tr>
+                    <tr v-if="buttonInfo.type == 'WL' || buttonInfo.type == 'AL'" :key="idx+'_sub'">
+                      <td class="text-left">
+                        <div v-if="buttonInfo.type == 'WL'">
+                          <h6 class="float-left" style="width:20%">PC</h6>
+                          <input type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo['url_pc']" maxlength="200">
+                        </div>
+                        <div v-if="buttonInfo.type == 'AL'">
+                          <h6 class="float-left" style="width:20%">IOS*</h6>
+                          <input type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo['scheme_ios']" maxlength="200">
+                        </div>
+                      </td>
+                    </tr>
+                  </template>
                 </tbody>
               </table>
               
@@ -214,11 +159,9 @@
           </div>
           
           <div class="mt20 float-right">
-            <a href="#self" class="btnStyle2 backWhite float-left">승인요청</a>
-            <a href="#self" class="btnStyle2 backWhite float-left ml10">임시저장</a>
-            <a @click="fnTest" class="btnStyle2 backRed float-left ml10" data-toggle="modal" data-target="#Regist" title="등록">등록</a>
+            <a href="#self" class="btnStyle2 backRed float-left ml10" title="승인요청">승인요청</a>
+            <a href="#self" class="btnStyle2 backWhite float-left ml10" title="수정요청">수정요청</a>
             <a href="#self" class="btnStyle2 float-left ml10">취소</a>
-            <a href="#self" class="btnStyle2 backWhite float-left ml10" data-toggle="modal" data-target="#Modify" title="수정">수정</a>
           </div>
 
         </div>
@@ -250,17 +193,31 @@ export default {
   },
   data() {
     return {
-      senderKeyType : 'NOMAL',  //NOMAL, GROUP
       senderKeyList : [],
       groupKeyList : [],
       useCh : 'ALIMTALK',
+      buttonLimitSize : 5,
+      bottonACName : '채널 추가',
+      bottonDSDescription : '카카오 메세지에 택배사 명과 송장번호를 기재한 후, 배송 조회 버튼을 추가하시면 메세지에서 택배사 명과 송장번호를 추출하여 배송 조회 카카오 검색페이지 링크가 자동으로 생성됩니다. 카카오에서 지원하는 택배사명과 운송장번호가 알림톡 메시지 내에 포함된 경우에만 배송조회 버튼이 표시됩니다. 배송 조회가 가능한 택배사는 <span style="color:#e11d21"><strong>카카오와 해당 택배사와의 계약 관계에 의해 변동될 수 있음을 유의해주시기 바랍니다.</strong></span>',
+      bottonTypeList : [
+        {type:'DS', name:'배송 조회'},
+        {type:'WL', name:'웹 링크'},
+        {type:'AL', name:'앱 링크'},
+        {type:'BK', name:'봇 키워드'},
+        {type:'MD', name:'메시지 전달'},
+        {type:'BC', name:'상담톡 전환'},
+        {type:'BT', name:'봇 전환'},
+        {type:'AC', name:'채널 추가'},  //광고 추가/복합형만
+      ],
       tmpltData : {
+        senderKeyType : 'NOMAL',  //NOMAL, GROUP
         senderKey : '',
         tmpltName : '',
-        emphasizeYn: 'N',
+        emphasizeYn: 'N',  //강조여부
         tmpltEmpsTitle: '',
         tmpltEmpsSubTitle: '',
         tmpltContent: '',
+        buttonList:[],
       }
     }
   },
@@ -268,12 +225,37 @@ export default {
     this.fnSelectSenderKeyList();
   },
   methods: {
-    fnTest(){
-      alert(this.tmpltData.senderKey);
+    fnAddButton(){
+      if(this.tmpltData.buttonList.length < this.buttonLimitSize){
+        const baseButtonInfo = {
+          name : '',
+          type : 'DS',
+        };
+        this.tmpltData.buttonList.push(baseButtonInfo);
+      } else {
+        confirm.fnAlert(this.componentsTitle, '버튼은 최대 '+this.buttonLimitSize+'개 까지 입력 가능합니다.');
+      }
+    },
+    fnDelButton(idx){
+      if(idx <= this.tmpltData.buttonList.length){
+        this.tmpltData.buttonList.splice(idx, 1);
+      }
+    },
+    fnChgBtnType(idx){
+      const vm = this;
+      Object.keys(this.tmpltData.buttonList[idx]).forEach(function(key){
+        if(key != 'type'){
+          if(key == 'name' && vm.tmpltData.buttonList[idx]['type'] == 'AC'){
+            vm.tmpltData.buttonList[idx]['name'] = vm.bottonACName;
+          } else {
+            delete vm.tmpltData.buttonList[idx][key];
+          }
+        }
+      });
     },
     //카카오톡 발신 프로필키 리스트 조회
     fnSelectSenderKeyList(){
-      const params = {kkoSvc: this.useCh, senderKeyType: this.senderKeyType};
+      const params = {kkoSvc: this.useCh, senderKeyType: this.tmpltData.senderKeyType};
       templateApi.selectSenderKeyList(params).then(response => {
         const result = response.data;
         if(result.success) {
