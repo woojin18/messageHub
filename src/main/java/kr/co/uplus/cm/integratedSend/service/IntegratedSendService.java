@@ -1,25 +1,50 @@
 package kr.co.uplus.cm.integratedSend.service;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.common.service.CommonService;
+import kr.co.uplus.cm.config.ApiConfig;
+import kr.co.uplus.cm.sendMessage.dto.FbInfo;
+import kr.co.uplus.cm.sendMessage.dto.PushMsg;
+import kr.co.uplus.cm.sendMessage.dto.PushRequestData;
+import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
+import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
+import kr.co.uplus.cm.utils.DateUtil;
 import kr.co.uplus.cm.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
 
@@ -39,6 +64,12 @@ public class IntegratedSendService {
 
 	@Autowired
 	private GeneralDao generalDao;
+	
+    @Autowired
+    private CommonService commonService;
+
+    @Autowired
+    ApiInterface apiInterface;	
 
 	/**
      * 통합 템플릿 리스트 조회
@@ -88,160 +119,580 @@ public class IntegratedSendService {
     
     
 
+    /**
+     * 통합 발송 데이터 유효성 체크
+     * @param rtn
+     * @param params
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public PushRequestData setIntegratedSendData(RestResult<Object> rtn, Map<String, Object> params) {
+        PushRequestData pushRequestData = new PushRequestData();
+
+        String webReqId = CommonUtils.getCommonId(Const.WebReqIdPrefix.PUSH_PREFIX, 5);
+
+        //webReqId
+        pushRequestData.setWebReqId(webReqId);
+
+        //appId
+        pushRequestData.setAppId(CommonUtils.getStrValue(params, "appId"));
+
+        //캠페인 ID
+        pushRequestData.setCampaignId(CommonUtils.getStrValue(params, "campaignId"));
+
+        //발송정책
+        pushRequestData.setServiceCode(CommonUtils.getStrValue(params, "serviceCode"));
+
+        //푸시 메시지
+        String pushContent = (CommonUtils.getStrValue(params, "pushContent"));
+        String rcvblcNumber = (CommonUtils.getStrValue(params, "rcvblcNumber"));
+        String msgKind = (CommonUtils.getStrValue(params, "msgKind"));
+        String pushBody = pushContent;
+
+        if(StringUtils.equals(msgKind, Const.MsgKind.AD)
+                && StringUtils.isNotBlank(rcvblcNumber)) {
+            pushBody += "\n" +  rcvblcNumber;
+        }
+
+        PushMsg pushMsg = new PushMsg();
+        pushMsg.setTitle(CommonUtils.getStrValue(params, "pushTitle"));
+        pushMsg.setBody(pushBody);
+        pushRequestData.setMsg(pushMsg);
+
+        //이미지, 부가정보
+        String msgType = (CommonUtils.getStrValue(params, "msgType"));
+        String fileId = (CommonUtils.getStrValue(params, "fileId"));
+        String imgUrl = (CommonUtils.getStrValue(params, "imgUrl"));
+        String adtnInfo = (CommonUtils.getStrValue(params, "adtnInfo"));
+
+        if(StringUtils.equals(msgType, Const.MsgType.IMAGE)) {
+            pushRequestData.setFileId(fileId);
+            pushRequestData.getExt().put("imageUrl", imgUrl);
+        }
+        if(StringUtils.isNotBlank(adtnInfo)) {
+            pushRequestData.getExt().put("data1", adtnInfo);
+        }
+
+        //대체발송
+        String rplcSendType = (CommonUtils.getStrValue(params, "rplcSendType"));
+        if(!StringUtils.equals(rplcSendType, Const.RplcSendType.NONE)) {
+            List<FbInfo> fbInfoLst = new ArrayList<FbInfo>();
+            Map<String, Object> fbInfo = (Map<String, Object>) params.get("fbInfo");
+            String fbMsg = CommonUtils.getStrValue(fbInfo, "msg");
+            String fbRcvblcNumber = CommonUtils.getStrValue(fbInfo, "rcvblcNumber");
+            String fbMsgBody = fbMsg;
+
+            if(StringUtils.equals(msgKind, Const.MsgKind.AD)
+                    && StringUtils.isNotBlank(fbRcvblcNumber)) {
+                fbMsgBody += "\n" +  fbRcvblcNumber;
+            }
+
+            FbInfo pushFbInfo = new FbInfo();
+            pushFbInfo.setCh(rplcSendType);
+            pushFbInfo.setMsg(fbMsgBody);
+
+            if(StringUtils.equals(rplcSendType, Const.RplcSendType.LMS)) {
+                pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
+            } else if(StringUtils.equals(rplcSendType, Const.RplcSendType.MMS)) {
+                pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
+                pushFbInfo.setFileId(CommonUtils.getStrValue(fbInfo, "fileId"));
+            }
+
+            fbInfoLst.add(pushFbInfo);
+            pushRequestData.setFbInfoLst(fbInfoLst);
+            pushRequestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
+        }
+
+        //유효성 체크
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<PushRequestData>> violations = validator.validate(pushRequestData);
+        String errorMsg = "";
+
+        for (ConstraintViolation violation : violations) {
+            errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + violation.getMessage();
+            //log.info("path : [{}], message : [{}]", violation.getPropertyPath(), violation.getMessage());
+        }
+
+        if(StringUtils.isNotBlank(errorMsg)) {
+            rtn.setSuccess(false);
+            rtn.setMessage(errorMsg);
+        }
+
+        return pushRequestData;
+    }
+    
+    
+    /**
+     * Get 수신자 리스트
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public List<RecvInfo> getRecvInfoLst(Map<String, Object> params, MultipartFile excelFile) throws Exception{
+        List<RecvInfo> recvInfoLst = new ArrayList<RecvInfo>();
+        long cliKey = NumberUtils.LONG_ONE;
+
+        if(params.containsKey("cuInputType")) {
+
+            //직접입력 && 주소록
+            if(StringUtils.equals("DICT", (String)params.get("cuInputType"))
+                    || StringUtils.equals("ADDR", (String)params.get("cuInputType"))) {
+                List<Map<String, Object>> objList = (List<Map<String, Object>>) params.get("recvInfoLst");
+                RecvInfo recvInfo = null;
+
+                ObjectMapper mapper = new ObjectMapper();
+                for(Map<String, Object> recvObj : objList) {
+                    recvInfo = mapper.convertValue(recvObj, RecvInfo.class);
+                    recvInfo.setCliKey(String.valueOf(cliKey++));
+                    recvInfoLst.add(recvInfo);
+                }
+
+            //엑셀
+            } else if(StringUtils.equals("EXCEL", (String)params.get("cuInputType"))) {
+
+                //read excelFile
+                List<Map<String, Object>> excelList = null;
+                List<String> colKeys = new ArrayList<String>();
+                List<String> contsVarNms = null;
+
+                if(params.containsKey("requiredCuid") && (Boolean) params.get("requiredCuid")) {
+                    colKeys.add("cuid");
+                }
+                if(params.containsKey("requiredCuPhone") && (Boolean) params.get("requiredCuPhone")) {
+                    colKeys.add("phone");
+                }
+                if(params.containsKey("contsVarNms")) {
+                    contsVarNms = (ArrayList<String>)params.get("contsVarNms");
+                    for(String varNm : contsVarNms) {
+                        colKeys.add(varNm);
+                    }
+                }
+                excelList = commonService.getExcelDataList(excelFile, 2, colKeys);
+
+                RecvInfo recvInfo = null;
+                Map<String, String> mergeData = null;
+                for(Map<String, Object> excelInfo : excelList) {
+                    recvInfo = new RecvInfo();
+                    recvInfo.setCliKey(String.valueOf(cliKey++));
+                    if(excelInfo.containsKey("cuid")) recvInfo.setCuid((String) excelInfo.get("cuid"));
+                    if(excelInfo.containsKey("phone")) recvInfo.setPhone((String) excelInfo.get("phone"));
+
+                    mergeData = new HashMap<String, String>();
+                    for(String key : excelInfo.keySet()) {
+                        if(!StringUtils.equals(key, "cuid") && !StringUtils.equals(key, "phone")) {
+                            mergeData.put(key, (String) excelInfo.get(key));
+                        }
+                    }
+                    recvInfo.setMergeData(mergeData);
+                    recvInfoLst.add(recvInfo);
+                }
+
+            //전체발송
+            } else if(StringUtils.equals("ALL", (String)params.get("cuInputType"))) {
+                List<Object> sltObjList = generalDao.selectGernalList(DB.QRY_SELECT_ALL_APP_USER_LIST, params);
+                recvInfoLst = (List<RecvInfo>)(Object)sltObjList;
+            }
+        }
+
+        return recvInfoLst;
+    }
+
+    
+    /**
+     * 웹 발송 내역 등록
+     * @param data
+     * @param pushRequestData
+     * @param recvInfoLst
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> insertIntegratedCmWebMsg(RestResult<Object> rtn
+            , Map<String, Object> data
+            , PushRequestData pushRequestData
+            , List<RecvInfo> recvInfoLst) throws Exception {
+        String ch = CommonUtils.getStrValue(data, "ch");
+        String corpId = CommonUtils.getStrValue(data, "corpId");
+        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String rsrvSendYn = CommonUtils.getStrValue(data, "rsrvSendYn");
+        String rsrvDateStr = "";
+        String allFailYn = CommonUtils.getStrValue(data, "allFailYn");
+        String status = (StringUtils.equals(allFailYn, Const.COMM_YES) ? Const.MsgSendStatus.FAIL : Const.MsgSendStatus.COMPLETED);
+
+        if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+            String rsrvYmd = CommonUtils.getStrValue(data, "rsrvDate");
+            String rsrvHH = CommonUtils.getStrValue(data, "rsrvHH");
+            String rsrvMM = CommonUtils.getStrValue(data, "rsrvMM");
+            rsrvDateStr = rsrvYmd+" "+rsrvHH+":"+rsrvMM;
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date rsrvDate = dateFormat.parse(rsrvDateStr);
+            Date currentDate = new Date();
+
+            currentDate = DateUtils.addMinutes(currentDate, 10);
+            if(currentDate.compareTo(rsrvDate) > 0) {
+                rtn.setSuccess(false);
+                rtn.setMessage("잘못된 예약시간입니다. 현재시간 10분 이후로 설정해주세요.");
+                return rtn;
+            }
+            if(DateUtil.diffDays(rsrvDate) > Const.SEND_RSRV_LIMIT_DAY) {
+                rtn.setFail("잘못된 예약일자입니다. 현재일로 부터 "+Const.SEND_RSRV_LIMIT_DAY+"일 이내로 설정해주세요");
+            }
+            status = Const.MsgSendStatus.SEND_WAIT;
+        }
+
+        pushRequestData.setRecvInfoLst(recvInfoLst);
+        Gson gson = new Gson();
+        String json = gson.toJson(pushRequestData);
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("webReqId", pushRequestData.getWebReqId());
+        params.put("corpId", corpId);
+        params.put("projectId", projectId);
+        params.put("apiKey", commonService.getApiKey(corpId, projectId));
+        params.put("chString", ch);
+        params.put("msgInfo", json);
+        params.put("senderCnt", recvInfoLst.size());
+        params.put("callback", pushRequestData.getCallback());
+        params.put("campaignId", pushRequestData.getCampaignId());
+        params.put("senderType", Const.SenderType.CHANNEL);
+        params.put("status", status);
+        params.put("resvSenderYn", rsrvSendYn);
+        params.put("reqDt", rsrvDateStr);
+
+        int resultCnt = insertCmWebMsg(params);
+
+        if (resultCnt <= 0) {
+            log.info("{}.insertPushCmWebMsg Fail =>  webReqId : {}", this.getClass(), pushRequestData.getWebReqId());
+        }
+
+        return rtn;
+    }
 
     /**
-     * 통합 템플릿 삭제 처리
+     * 웹 발송 내역 등록
      * @param params
      * @return
      * @throws Exception
      */
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-    public RestResult<Object> deleteIntegratedSend(Map<String, Object> params) throws Exception {
+    public int insertCmWebMsg(Map<String, Object> params) throws Exception {
+        return generalDao.insertGernal(DB.QRY_INSERT_CM_WEB_MSG, params);
+    }
+
+    /**
+     * 통합 테스트 발송 처리
+     * @param data
+     * @param pushRequestData
+     * @param sendList
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public RestResult<Object> testSendIntegratedMsg(
+            Map<String, Object> data
+            , PushRequestData pushRequestData
+            , List<RecvInfo> sendList) throws Exception {
+
         RestResult<Object> rtn = new RestResult<Object>();
 
-        int resultCnt = generalDao.deleteGernal("integratedSend.deleteIntegratedSend", params);
-        if (resultCnt <= 0) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
+        pushRequestData.setWebReqId(StringUtils.EMPTY);  //테스트발송은 웹 요청 아이디를 넣지 않는다.
+        Map<String, Object> resultMap = sendIntegratedMsg(data, pushRequestData, sendList);
+
+        if(isSendSuccess(resultMap)) {
+            int successCnt = 0;
+            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
+            for(Map<String, Object> dataInfo : dataList) {
+                if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                    successCnt++;
+                }
+            }
+            rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
         } else {
-            rtn.setSuccess(true);
-            rtn.setData(params);
+            log.warn("{}.testSendPushMsg Fail ==> response : {}", this.getClass(), resultMap);
+            rtn.setFail("푸시 테스트 발송이 실패하였습니다.");
         }
 
         return rtn;
     }
-    
-    
-    private String buttonAddStr(Map<String, Object> params, String checkChannel, List<Map<String, Object>> buttonInfoList) {
-    	
-    	StringBuffer sb = new StringBuffer();
-    	
-    		
-		String buttonType = null;
-		String buttonName = null;
-		String buttonLink = null;
-		String buttonLink1 = null;
-		String startDate = null;
-		String endDate = null;
-		
-		//sb.append("\"buttons\": [{ ");
-		sb.append("\"suggestions\": [ ");
-		
-		int rcsIdx = 1;
-		for(Map<String, Object> buttonInfo : buttonInfoList) {
-			
-				buttonType = CommonUtils.getStrValue(buttonInfo, "buttonType");
-                buttonName = CommonUtils.getStrValue(buttonInfo, "buttonName");
-                buttonLink = CommonUtils.getStrValue(buttonInfo, "buttonLink");
-                
-                buttonLink1 = CommonUtils.getStrValue(buttonInfo, "buttonLink1");
-                startDate = CommonUtils.getStrValue(buttonInfo, "startDate");
-                endDate = CommonUtils.getStrValue(buttonInfo, "endDate");
-                
-                System.out.println(">>>>service 003  button 003 : buttonType : "+buttonType);
-    			System.out.println(">>>>service 003  button 004 : buttonName : "+buttonName);
-    			System.out.println(">>>>service 003  button 005 : buttonLink : "+buttonLink);
-    			System.out.println(">>>>service 003  button 006 : buttonLink1 : "+buttonLink1);
-    			System.out.println(">>>>service 003  button 007 : startDate : "+startDate);
-    			System.out.println(">>>>service 003  button 008 : endDate : "+endDate);
-		
-    			if(buttonType.equalsIgnoreCase("U")) {
-	    			sb.append("	{ ");
-	    			sb.append("	\"action\": { ");
-	    		    sb.append("	\"urlAction\": { "); // URL링크 버튼인 경우
-	    		    sb.append("	\"openUrl\": { ");
-	    		    sb.append("	\"url\": \""+buttonLink+"\" "); // 내용
-	    		    sb.append("	} ");
-	    		    sb.append("	}, ");
-	    		    sb.append("	\"buttonType\": \""+buttonType+"\", "); // 버튼타입
-	    		    sb.append("	\"displayText\": \""+buttonName+"\","); // 버튼이름
-	    		    sb.append("	\"postback\": { ");
-	    		    //sb.append("	\"data\": \""+params.get("")+"\" "); //set_by_chatbot_open_url
-	    		    sb.append("	\"data\": \"set_by_chatbot_open_url\" ");
-	    		    sb.append("	} ");
-	    		    sb.append("	} ");
-	    		    sb.append("	} ");
-    			}
-    			if(buttonType.equalsIgnoreCase("C")) {
-	    			sb.append("	{ ");
-	    			sb.append("	\"action\": { ");
-	    			sb.append("	\"clipboardAction\": { "); // 복사하기 버튼인 경우
-	    			sb.append("	\"copyToClipboard\": { ");
-	    			sb.append("	\"text\": \""+buttonLink+"\" "); // 내용
-	    			sb.append("	} ");
-	    			sb.append("	}, ");
-	    			sb.append("	\"buttonType\": \""+buttonType+"\", "); // 버튼타입
-	    			sb.append("	\"displayText\": \""+buttonName+"\", "); // 버튼이름
-	    			sb.append("	\"postback\": { ");
-	    		    //sb.append("	\"data\": \""+params.get("")+"\" ");  //set_by_chatbot_copy_to_clipboard
-	    		    sb.append("	\"data\": \"set_by_chatbot_copy_to_clipboard\" ");
-	    		    sb.append("	} ");
-	    		    sb.append("	} ");
-	    		    sb.append("	} ");
-    			}
-    		    if(buttonType.equalsIgnoreCase("T")) {
-	    		    sb.append("	{ ");
-	    		    sb.append("	\"action\": { ");
-	    		    sb.append("	\"dialerAction\": { "); // 전화걸기 버튼인 경우
-	    		    sb.append("	\"dialPhoneNumber\": { ");
-	    		    sb.append("	\"phoneNumber\": \""+buttonLink+"\" "); // 휴대폰번호
-	    		    sb.append("	} ");
-	    		    sb.append("	}, ");
-	    		    sb.append("	\"buttonType\": \""+buttonType+"\", "); // 버튼타입
-	    		    sb.append("	\"displayText\": \""+buttonName+"\", "); // 버튼이름
-	    		    sb.append("	\"postback\": { ");
-	    		    //sb.append("	\"data\": \""+params.get("")+"\" ");  //set_by_chatbot_dial_phone_number
-	    		    sb.append("	\"data\": \"set_by_chatbot_dial_phone_number\" ");
-	    		    sb.append("	} ");
-	    		    sb.append("	} ");
-	    		    sb.append("	} ");
-    		    }
-    		    if(buttonType.equalsIgnoreCase("S")) {
-	    		    sb.append("	{ ");
-	    		    sb.append("	\"action\": { ");
-	    		    sb.append("	\"calendarAction\": { "); // 일정추가 버튼인 경우
-	    		    sb.append("	\"createCalendarEvent\": { ");
-	    		    sb.append("	\"startTime\": \""+startDate+"\", "); // 시작일 2017-03-14T00:00:00Z
-	    		    sb.append("	\"endTime\": \""+endDate+"\", ");   // 종료일
-	    		    sb.append("	\"title\": \""+buttonLink+"\", ");                // 제목
-	    		    sb.append("	\"description\": \""+buttonLink1+"\" ");  // 내용
-	    		    sb.append("	} ");
-	    		    sb.append("	}, ");
-	    		    sb.append("	\"buttonType\": \""+buttonType+"\", "); // 버튼타입
-	    		    sb.append("	\"displayText\": \""+buttonName+"\", "); // 버튼이름
-	    		    sb.append("	\"postback\": { ");
-	    		    //sb.append("	\"data\": \""+params.get("")+"\" ");//set_by_chatbot_create_calendar_event
-	    		    sb.append("	\"data\": \"set_by_chatbot_create_calendar_event\" ");
-	    		    sb.append("	} ");
-	    		    sb.append("	} ");
-	    		    sb.append("	} ");
-    		    }
-    		    if(buttonType.equalsIgnoreCase("M")) {
-	    		    sb.append("	{ ");
-	    		    sb.append("	\"action\": { ");
-	    		    sb.append("	\"mapAction\": { "); // 지도맵 버튼인 경우
-	    		    sb.append("	\"requestLocationPush\": {} ");
-	    		    sb.append("	}, ");
-	    		    sb.append("	\"buttonType\": \""+buttonType+"\", "); // 버튼타입
-	    		    sb.append("	\"displayText\": \""+buttonName+"\", "); // 버튼이름
-	    		    sb.append("	\"postback\": { ");
-	    		    //sb.append("	\"data\": \""+buttonLink+"\" ");//set_by_chatbot_request_location_push
-	    		    sb.append("	\"data\": \"set_by_chatbot_request_location_push\" ");
-	    		    sb.append("	} ");
-	    		    sb.append("	} ");
-	    		    sb.append("	} ");
-    		    }
-    		    
-    		    if(rcsIdx++ < buttonInfoList.size()) {
-    		    	sb.append(", ");
-    		    }
-		}//end for(Map<String, Object> buttonInfo : buttonInfoList) {
-		
-	    sb.append("	] ");
-	    //sb.append("	}]         ");	
-    	
-    	return sb.toString();
+
+    /**
+     * 통합 메시지 발송 처리
+     * @param data
+     * @param pushRequestData
+     * @param sendList
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> sendIntegratedMsg(
+            Map<String, Object> data
+            , PushRequestData pushRequestData
+            , List<RecvInfo> sendList) throws Exception {
+
+        String corpId = CommonUtils.getStrValue(data, "corpId");
+        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String apiKey = commonService.getApiKey(corpId, projectId);
+
+        pushRequestData.setRecvInfoLst(sendList);
+
+        Map<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("apiKey", apiKey);
+
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(pushRequestData);
+
+        return apiInterface.sendMsg(ApiConfig.SEND_PUSH_API_URI, headerMap, jsonString);
     }
 
+    /**
+     * API 재요청 여부
+     * 재요청 코드에 등록되지 않은 모든 상황은 재요청 하지 않는다.
+     * @param responseBody
+     * @param reSendCdList
+     * @return
+     */
+    private boolean isApiRequestAgain(Map<String, Object> responseBody, List<Object> reSendCdList) {
+        boolean isDone = true;
+        if(responseBody != null) {
+            if(!CommonUtils.isEmptyValue(responseBody, "rslt")){
+                String resultCode = CommonUtils.getString(responseBody.get("rslt"));
+                for(Object reSendCd : reSendCdList) {
+                    if(StringUtils.equals(resultCode, CommonUtils.getString(reSendCd))) {
+                        isDone = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return isDone;
+    }
 
+    /**
+     * 발송 성공여부
+     * @param responseBody
+     * @return
+     */
+    private boolean isSendSuccess(Map<String, Object> responseBody) {
+        boolean isSuccess = false;
+        if(responseBody != null) {
+            if(!CommonUtils.isEmptyValue(responseBody, "rslt")
+                    && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(responseBody.get("rslt")))) {
+                isSuccess = true;
+            }
+        }
+        return isSuccess;
+    }    
+
+    
+    /**
+     * 채널별 메시지 내역 등록
+     * @throws Exception
+     */
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+    public void insertCmMsg(Map<String, Object> data, List<RecvInfo> recvInfoLst) throws Exception {
+        Map<String, Object> params = null;
+        String corpId = CommonUtils.getStrValue(data, "corpId");
+        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String apiKey = CommonUtils.getStrValue(data, "apiKey");
+        String reqCh = CommonUtils.getStrValue(data, "reqCh");
+        String productCode = CommonUtils.getStrValue(data, "productCode");
+        String finalCh = CommonUtils.getStrValue(data, "finalCh");
+        String pushAppId = CommonUtils.getStrValue(data, "pushAppId");
+        String callback = CommonUtils.getStrValue(data, "callback");
+        String webReqId = CommonUtils.getStrValue(data, "webReqId");
+        String senderType = Const.SenderType.CHANNEL;
+
+        for(RecvInfo recvInfo : recvInfoLst) {
+            params = new HashMap<String, Object>();
+            params.put("msgKey", CommonUtils.getCommonId(Const.SendMsgErrorSet.ERROR_PREFIX, 5));
+            params.put("corpId", corpId);
+            params.put("projectId", projectId);
+            params.put("apiKey", apiKey);
+            params.put("cliKey", recvInfo.getCliKey());
+            params.put("senderType", senderType);
+            params.put("reqCh", reqCh);
+            params.put("productCode", productCode);
+            params.put("zonedDateTime", ZonedDateTime.now().toString());
+            params.put("finalCh", finalCh);
+            params.put("phone", recvInfo.getPhone());
+            params.put("pushAppId", pushAppId);
+            params.put("pushCuid", recvInfo.getCuid());
+            params.put("callback", callback);
+            params.put("webReqId", webReqId);
+            params.put("gwResultCode", Const.SendMsgErrorSet.GW_RESULT_CODE);
+            params.put("gwResultDesc", Const.SendMsgErrorSet.GW_RESULT_DESC);
+            generalDao.insertGernal(DB.QRY_INSERT_CM_MSG, params);
+        }
+    }
+
+    /**
+     * 재전송 코드 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public List<Object> reSendCdList(Map<String, Object> params) throws Exception {
+        return generalDao.selectGernalList(DB.QRY_SELECT_RE_SEND_CD_LIST, params);
+    }
+
+    /**
+     * 푸시 메시지 발송 비동기 처리
+     * @param rtn
+     * @param fromIndex
+     * @param data
+     * @param pushRequestData
+     * @param recvInfoLst
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    @Async
+    public void sendIntegratedMsgAsync(RestResult<Object> rtn
+            , int fromIndex
+            , Map<String, Object> data
+            , PushRequestData pushRequestData
+            , List<RecvInfo> recvInfoLst
+            , List<Object> reSendCdList) throws Exception {
+
+        List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
+        Map<String, Object> responseBody = null;
+        Map<String, Object> sParams = new HashMap<String, Object>(data);
+
+        String corpId = CommonUtils.getStrValue(sParams, "corpId");
+        String projectId = CommonUtils.getStrValue(sParams, "projectId");
+        String apiKey = commonService.getApiKey(corpId, projectId);
+        String jsonString = "";
+        boolean isDone = false;
+        boolean isServerError = false;
+        boolean isAllFail = true;
+
+        Gson gson = new Gson();
+        Map<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("apiKey", apiKey);
+
+        int retryCnt = NumberUtils.INTEGER_ZERO;
+        int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
+        int listSize = recvInfoLst.size();
+        int toIndex = fromIndex;
+
+        while (toIndex < listSize) {
+            isDone = false;
+            isServerError = false;
+            toIndex = fromIndex + cutSize;
+            try {
+                if(toIndex > listSize) toIndex = listSize;
+                pushRequestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
+                jsonString = gson.toJson(pushRequestData);
+                responseBody = apiInterface.sendMsg(ApiConfig.SEND_PUSH_API_URI, headerMap, jsonString);
+                isDone = isApiRequestAgain(responseBody, reSendCdList);
+                isAllFail = !isSendSuccess(responseBody);
+            } catch (Exception e) {
+                log.error("{}.sendIntegratedMsgAsync API Request Error ==> {}", this.getClass(), e);
+                isServerError = true;
+            }
+
+            if(isDone) {
+                retryCnt = NumberUtils.INTEGER_ZERO;
+                fromIndex = toIndex;
+            } else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
+                errorRecvInfoLst.addAll(recvInfoLst.subList(fromIndex, toIndex));
+                retryCnt = NumberUtils.INTEGER_ZERO;
+                fromIndex = toIndex;
+            } else {
+                retryCnt++;
+                toIndex = fromIndex;
+                if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
+            }
+        }
+
+        if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
+            try {
+                //CM_MSG Insert
+                sParams.put("apiKey", apiKey);
+                sParams.put("reqCh", Const.Ch.PUSH);
+                sParams.put("productCode", Const.Ch.PUSH.toLowerCase());
+                sParams.put("finalCh", Const.Ch.PUSH);
+                sParams.put("pushAppId", pushRequestData.getAppId());
+                sParams.put("callback", pushRequestData.getCallback());
+                sParams.put("webReqId", pushRequestData.getWebReqId());
+                insertCmMsg(sParams, errorRecvInfoLst);
+            } catch (Exception e) {
+                log.error("{}.sendIntegratedMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
+            }
+        }
+
+        //웹 발송 내역 등록
+        if(isAllFail) sParams.put("allFailYn", Const.COMM_YES);
+        insertIntegratedCmWebMsg(rtn, sParams, pushRequestData, recvInfoLst);
+    }
+
+    
+    
+    /**
+     * 결제방식 조회
+     * @param Param
+     * @return
+     * @throws Exception
+     */
+    public String selectPayType(Map<String, Object> params) throws Exception {
+        return (String) generalDao.selectGernalObject(DB.QRY_SELECT_PAY_TYPE, params);
+    }
+
+    /**
+     * 잔여금액 조회
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings({ "unchecked", "unused", "rawtypes" })
+    public BigDecimal getRmAmount(Map<String, Object> params) throws Exception {
+        BigDecimal rmAmount = new BigDecimal(0);
+        ObjectMapper mapper = null;
+
+        String cashBalance = "";
+        String corpId = CommonUtils.getStrValue(params, "corpId");
+        String projectId = CommonUtils.getStrValue(params, "projectId");
+        String apiKey = commonService.getApiKey(corpId, projectId);
+        String apiUri = ApiConfig.GET_CASH_INFO_API_URI + "corp_test1";  //TODO : corpId 로 변경;
+
+        Map<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("apiKey", apiKey);
+
+        log.info("{}.getRmAmount API START=======>", this.getClass());
+        log.info("{}.getRmAmount API URL : {}, Header : {}", this.getClass(), ApiConfig.CASH_SERVER_DOMAIN + apiUri, headerMap);
+        Map resultMap = apiInterface.get(ApiConfig.CASH_SERVER_DOMAIN, apiUri, headerMap);
+        log.info("{}.getRmAmount API Result : {}", this.getClass(), resultMap);
+        log.info("{}.getRmAmount API END=======>", this.getClass());
+
+        if (!CommonUtils.isEmptyValue(resultMap, "rslt")
+                && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
+            Map<String, Object> dataMap = (Map<String, Object>) resultMap.get("data");
+            List<Map<String, Object>> cashInfoList = (List<Map<String, Object>>) dataMap.get("cashInfo");
+
+            for(Map<String, Object> cashInfo : cashInfoList) {
+                cashBalance = CommonUtils.getStrValue(cashInfo, "cashBalance");
+                rmAmount = rmAmount.add(new BigDecimal(cashBalance));
+            }
+        } else {
+            log.error("{}.getRmAmount API Fail => API response Body: {}", this.getClass(), resultMap);
+            throw new Exception("캐시 정보 조회 실패");
+        }
+
+        return rmAmount;
+    }
+
+    /**
+     * 발송 가격 조회
+     * @param sendCnt
+     * @return
+     * @throws Exception
+     */
+    public BigDecimal selectMsgFeePerOne(Map<String, Object> params) throws Exception {
+        Object selectObject = generalDao.selectGernalObject(DB.QRY_SELECT_MSG_FEE_PER_ONE, params);
+        if(selectObject == null) {
+            throw new Exception("발송 가격 조회값 없음");
+        }
+        return (BigDecimal) selectObject;
+    }
+
+    
 }

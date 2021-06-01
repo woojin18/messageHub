@@ -5,6 +5,7 @@
 
     <sql id ="whereSelectIntegratedTemplateList">
         <!-- AND A.CORP_ID = #{corpId} -->
+        AND A.TMPLT_STATUS = 'SAVE'
         AND A.TMPLT_TYPE = 'M'
 		AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
         <if test="searchText != '' and searchText != null ">

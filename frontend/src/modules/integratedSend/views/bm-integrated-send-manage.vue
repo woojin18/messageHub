@@ -352,7 +352,7 @@
 							<input type="radio" name="send" value="APNS" id="APNS"  v-model="rowData.pushSend"> <label for="APNS">APNS</label>
 						</div>
 						<div class="float-right" style="width:78%">
-							<input type="text" class="inputStyle">
+							<input type="text" class="inputStyle" v-model="rowData.tmpltTitle">
 						</div>
 					</div>													
 				</div>						
@@ -394,9 +394,9 @@
 					<div class="of_h consolMarginTop">
 						<div class="of_h float-right" style="width:78%">
 							<div class="float-right" style="width:100%">
-								<textarea class="textareaStyle height120" placeholder="Ex) [{“userId”, “phoneNumber”}] => 1명 발송 [{“aaa”, “0101231234”}]"></textarea>
+								<textarea class="textareaStyle height120" v-model="rowData.cuInfo" disabled placeholder="Ex) [{“userId”, “phoneNumber”}] => 1명 발송 [{“aaa”, “0101231234”}]"></textarea>
 							</div>
-							<p class="float-right">발송 대상자 : 0명</p>
+							<p class="float-right">발송 대상자 : {{recvCnt}}명</p>
 						</div>
 					</div>													
 				</div>
@@ -410,19 +410,28 @@
 				</div>
 				<div style="width:78%" class="float-left">
 					<div class="of_h">
-						<div class="float-left" style="width:22%">
+						  <div class="float-left" style="width:22%">
 							<h5>발송시간 *</h5>
-						</div>								
-						<div class="float-left" style="width:23%">
-							<input type="radio" name="time" value="right" id="right" checked=""> <label for="right" class="mr20">즉시</label>
-							<input type="radio" name="time" value="Reservation" id="Reservation"> <label for="Reservation">예약</label>								
-						</div>
-						<div class="float-left" style="width:18%">
-							<input type="text" class="datepicker inputStyle" title="시작날짜 입력란">
-						</div>
-						<div class="float-right" style="width:36%">
-							<input type="time" name="stime1" class="inputStyle" style="width:47%" value=""> : <input type="time" name="etime1" class="inputStyle" style="width:47%" value="">
-						</div>
+						  </div>								
+						  <div class="float-left" style="width:26%">
+			                <input type="radio" id="rsrvSendYn_N" value="N" v-model="rowData.rsrvSendYn">
+			                <label for="rsrvSendYn_N" class="mr30">즉시</label>
+			                <input type="radio" id="rsrvSendYn_Y" value="Y" v-model="rowData.rsrvSendYn">
+			                <label for="rsrvSendYn_Y">예약</label>
+			              </div>
+			              <div v-if="rowData.rsrvSendYn == 'Y'" class="float-left" style="width:20%">
+			                <Calendar @update-date="fnUpdateRsrvDate" calendarId="rsrvDate" classProps="datepicker inputStyle" :initDate="rowData.rsrvDate"></Calendar>
+			              </div>
+			              <div v-if="rowData.rsrvSendYn == 'Y'" class="float-right" style="width:30%">
+			                <select class="selectStyle2" style="width:47%" v-model="rowData.rsrvHH">
+			                  <option value="00">00</option>
+			                  <option v-for="hh in 23" :key="hh" :value="hh > 9 ? hh : '0'+hh">{{hh > 9 ? hh : '0'+hh}}</option>
+			                </select>
+			                : <select class="selectStyle2" style="width:47%" v-model="rowData.rsrvMM">
+			                  <option value="00">00</option>
+			                  <option v-for="mm in 5" :key="mm" :value="mm+'0'">{{mm+'0'}}</option>
+			                </select>
+			              </div>
 					</div>
 					<div class="of_h consolMarginTop">
 						<div style="width:22%" class="float-left">
@@ -443,13 +452,15 @@
 				</div>
 				<div class="float-left" style="width:78%">
 					<p>모든 채널에 메시지를 보냅니다.</p>
-					<a href="#self" class="btnStyle1 backLightGray consolMarginTop" title="테스트 발송">테스트 발송</a>											
+					<a @click="fnOpenTestSendInputPopup" class="btnStyle1 backLightGray consolMarginTop" title="테스트 발송">테스트 발송</a>	
+					<!--<a @click="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송" data-toggle="modal" data-target="#test">테스트 발송</a>-->										
 				</div>
 				
 			</div>
-			<div class="mt20 float-right">
-				<a href="#self" class="btnStyle2 backRed float-left mr10" title="발송">발송</a>
-				<a href="#self" class="btnStyle2 float-left" title="목록">목록</a>
+			<div class="mt20 float-right"><!--<a @click="fnSendPushMessage('N')" class="btnStyle2 backRed float-left ml10" title="발송">발송</a>-->
+				<a @click="fnSendIntegratedMessage('N')" class="btnStyle2 backRed float-left mr10" title="발송">발송</a>
+				<!--<a href="#self" class="btnStyle2 float-left" title="목록">목록</a>-->
+				<router-link :to="{ name: 'integratedSend' }" tag="a" class="btnStyle2 float-left">목록</router-link>
 			</div>
 		</div>			
 	</div>
@@ -469,7 +480,7 @@ import integratedTemplateApi from "@/modules/integratedTemplate/service/integrat
 //import TokenSvc from '@/common/token-service';
 import confirm from "@/modules/commonUtil/service/confirm";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
-//import Calendar from "@/components/Calendar.vue";
+import Calendar from "@/components/Calendar.vue";
 
 import DirectInputPopup from "@/modules/message/components/bp-directInput.vue";
 import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue";
@@ -480,7 +491,7 @@ export default {
   name: 'integratedSendManage',
 
   components : {
-    //Calendar
+    Calendar,
     DirectInputPopup,
     AddressInputPopup,
     TestSendInputPopup
@@ -497,7 +508,7 @@ export default {
       type: String,
       require: false,
       default: function() {
-        return '통합 템플릿 관리';
+        return '통합 발송';
       }
     },
         
@@ -579,6 +590,12 @@ export default {
 	  		  , 'requiredCuid' : true  //app 로그인 ID 필수여부
 	          , 'requiredCuPhone' : false  //수신자 폰번호 필수여부
 	          , 'cuInputType':'ALL'  //DICT, ADDR, ALL, EXCEL
+	          
+	          , 'cuInfo':''
+	          , 'rsrvSendYn':'N'  //예약발송여부
+	          , 'rsrvDate':this.$gfnCommonUtils.getCurretDate()
+	          , 'rsrvHH':'00'
+	          , 'rsrvMM':'00'
 	          
               } 
       }
@@ -1066,6 +1083,279 @@ console.log("smsMms smsContent : "+this.rowData.smsContent);
     },
 
 
+
+
+
+    fnClickCuInputType(e){
+      if(this.rowData.cuInputType == e.target.value){
+        this.fnChgCuInputType('N');
+      }
+    },
+    
+        
+    //수신자 입력 타입 변경시
+    fnChgCuInputType(chgYn){
+      if(this.$gfnCommonUtils.defaultIfEmpty(chgYn, 'Y') == 'Y'){
+        this.fnCallbackRecvInfoLst(null);  //수신자 입력 타입 변경시 수신자 정보 초기화
+      }
+      if(this.rowData.cuInputType == 'ALL'){  //전체발송
+        return;
+      }
+//      if(!this.rowData.pushContent){
+//        confirm.fnAlert(this.componentsTitle, '메시지 내용을 먼저 입력해주세요.');
+//        this.rowData.cuInputType = 'ALL'
+//        this.$refs.cuInputType_ALL.click();
+//        return;
+//      }
+
+      if(this.fnSetContsVarNms() == false){
+        this.rowData.cuInputType = 'ALL'
+        this.$refs.cuInputType_ALL.click();
+        return;
+      }
+
+      if(this.rowData.cuInputType == 'DICT'){  //직접입력
+        //수신자 직접입력 팝업 호출
+        this.directInputOpen = !this.directInputOpen;
+      } else if(this.rowData.cuInputType == 'ADDR'){  //주소록
+        //주소록 검색 팝업 호출
+        this.addressInputOpen = !this.addressInputOpen;
+      } else if(this.rowData.cuInputType == 'EXCEL'){  //엑셀
+        //엑셀파일찾기 호출
+        this.$refs.excelFile.click();
+      }
+    },
+
+    //푸시 템플릿 엑셀 다운로드
+    async fnExcelTmplteDownLoad(){
+      if(this.fnSetContsVarNms() == false) return;
+      var params = {
+        contsVarNms : this.rowData.contsVarNms,
+        requiredCuid: this.rowData.requiredCuid,
+        requiredCuPhone: this.rowData.requiredCuPhone
+      };
+      await integratedSendApi.excelDownSendIntegratedRecvTmplt(params);
+    },
+
+    //수신자 정보 callback
+    fnCallbackRecvInfoLst(recvInfoLst, addYn) {
+      if(recvInfoLst != null){
+        if(this.$gfnCommonUtils.defaultIfEmpty(addYn, 'N') == 'Y'){
+          this.rowData.recvInfoLst = this.rowData.recvInfoLst.concat(recvInfoLst);
+        } else {
+          this.rowData.recvInfoLst = recvInfoLst;
+        }
+        //수신자 중복제거
+        this.fnDelDuplRecvInfo();
+
+        this.recvCnt = this.rowData.recvInfoLst.length;
+        console.log("rowData.recvInfoLst.length : "+this.rowData.recvInfoLst.length);
+        this.rowData.cuInfo = JSON.stringify(this.rowData.recvInfoLst);
+      } else {
+        this.recvCnt = 0;
+        this.rowData.recvInfoLst = [];
+        this.rowData.cuInfo = '';
+      }
+    },
+    //수신자 중복 제거
+    fnDelDuplRecvInfo(){
+      const vm = this;
+      let key, key2;
+      this.rowData.recvInfoLst = this.rowData.recvInfoLst.filter(function(item, i){
+        return (
+          vm.rowData.recvInfoLst.findIndex((item2) => {
+            key = '';
+            if ('phone' in item) key += item.phone;
+            if ('cuid' in item) key += item.cuid;
+            key2 = '';
+            if ('phone' in item2) key2 += item2.phone;
+            if ('cuid' in item2) key2 += item2.cuid;
+            return key === key2
+          }) === i
+        );
+      });
+    },
+        
+    fnOpenTestSendInputPopup(){
+      this.fnSetContsVarNms();
+      this.testSendInputOpen = !this.testSendInputOpen;
+    },
+   
+   fnSetContsVarNms(){
+      const rsvNmSet = new Set(['cuid', 'phone']);
+      const conts = (typeof this.rowData.pushContent 		=== 'undefined' ? '' : this.rowData.pushContent)
+                  + (typeof this.rowData.rcs0Content 		=== 'undefined' ? '' : this.rowData.rcs0Content)
+                  + (typeof this.rowData.rcs1Content 		=== 'undefined' ? '' : this.rowData.rcs1Content)
+                  + (typeof this.rowData.rcs2Content3 		=== 'undefined' ? '' : this.rowData.rcs2Content3)
+                  + (typeof this.rowData.rcsSMSContent 		=== 'undefined' ? '' : this.rowData.rcsSMSContent)
+                  + (typeof this.rowData.rcsLMSContent 		=== 'undefined' ? '' : this.rowData.rcsLMSContent)
+                  + (typeof this.rowData.rcsShortContent 	=== 'undefined' ? '' : this.rowData.rcsShortContent)
+                  + (typeof this.rowData.rcsTallContent 	=== 'undefined' ? '' : this.rowData.rcsTallContent)
+                  + (typeof this.rowData.rcs90Content 		=== 'undefined' ? '' : this.rowData.rcs90Content)
+                  + (typeof this.rowData.rcs91Content 		=== 'undefined' ? '' : this.rowData.rcs91Content)
+                  + (typeof this.rowData.rcs92Content 		=== 'undefined' ? '' : this.rowData.rcs92Content)
+                  + (typeof this.rowData.rcs93Content 		=== 'undefined' ? '' : this.rowData.rcs93Content)
+                  + (typeof this.rowData.rcs94Content 		=== 'undefined' ? '' : this.rowData.rcs94Content)
+                  + (typeof this.rowData.rcs95Content 		=== 'undefined' ? '' : this.rowData.rcs95Content)
+                  + (typeof this.rowData.rcs100Content 		=== 'undefined' ? '' : this.rowData.rcs100Content)
+                  + (typeof this.rowData.rcs101Content 		=== 'undefined' ? '' : this.rowData.rcs101Content)
+                  + (typeof this.rowData.rcs102Content 		=== 'undefined' ? '' : this.rowData.rcs102Content)
+                  + (typeof this.rowData.rcs103Content 		=== 'undefined' ? '' : this.rowData.rcs103Content)
+                  + (typeof this.rowData.rcs104Content 		=== 'undefined' ? '' : this.rowData.rcs104Content)
+                  + (typeof this.rowData.rcs105Content 		=== 'undefined' ? '' : this.rowData.rcs105Content)
+                  + (typeof this.rowData.friendTalkContent 	=== 'undefined' ? '' : this.rowData.friendTalkContent)
+                  + (typeof this.rowData.noticeTalkContent 	=== 'undefined' ? '' : this.rowData.noticeTalkContent)
+                  + (typeof this.rowData.smsContent 		=== 'undefined' ? '' : this.rowData.smsContent);
+      let varNms = [];
+      let containRsvNm = false;
+      conts.replace(/\{\{(\w+)\}\}/g, function($0, $1) {
+        if(rsvNmSet.has($1)){
+          containRsvNm = true;
+          return false;
+        }
+        varNms.push($1);
+      });
+      if(containRsvNm){
+        confirm.fnAlert(this.componentsTitle, '발송 내용 변수 cuid, phone 은 예약어로 사용하실 수 없습니다.');
+        return false;
+      } else {
+        this.rowData.contsVarNms = this.fnSetArrayRemoveDupliVal(varNms);
+        return true;
+      }
+    },   
+    //array에 중복 항목을 제거한다.
+    fnSetArrayRemoveDupliVal(array){
+      let seen = {};
+      return array.filter(function(item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+      });
+    },  
+    
+    fnUpdateRsrvDate(sltDate){
+      this.rowData.rsrvDate = sltDate;
+    },  
+
+    //발송 정보 유효성 체크
+    fnValidSendMsgData(testSendYn){
+      if(this.fnSetContsVarNms() == false){
+        return false;
+      }
+      //if(!this.rowData.pushContent){
+      //  confirm.fnAlert(this.componentsTitle, '푸시메시지 내용을 입력해주세요.');
+      //  return false;
+      //}
+      //if(!this.rowData.appId){
+      //  confirm.fnAlert(this.componentsTitle, 'APP ID를 입력해주세요.');
+      //  return false;
+      //}
+      if(testSendYn == 'Y'){
+        if(!this.rowData.testRecvInfoLst == null || this.rowData.testRecvInfoLst.length == 0){
+          confirm.fnAlert(this.componentsTitle, '테스트 수신자 정보를 입력해주세요.');
+          return false;
+        }
+      } else {
+        if(this.rowData.cuInputType == 'DICT' || this.rowData.cuInputType == 'ADDR'){
+          if(!this.rowData.recvInfoLst == null || this.rowData.recvInfoLst.length == 0){
+            confirm.fnAlert(this.componentsTitle, '수신자 정보를 입력해주세요.');
+            return false;
+          }
+        }
+        if(this.rowData.cuInputType == 'EXCEL'){
+          const uploadFile = this.$refs.excelFile;
+          if(uploadFile.value == 0){
+            confirm.fnAlert(this.componentsTitle, '엑셀파일을 등록해주세요.');
+            return false;
+          }
+          const permitExten = 'xls,xlsx'.split(',');
+          const extnIdx = uploadFile.value.lastIndexOf('.');
+          const extn = uploadFile.value.substring(extnIdx+1);
+          if((permitExten.indexOf(extn) < 0)){
+            confirm.fnAlert(this.componentsTitle, '허용되지 않는 확장자입니다.');
+            return false;
+          }
+        }
+        //앱사용자 전체발송시 메시지 변수 사용금지
+        //if(this.rowData.cuInputType == 'ALL'){
+        //  if(this.rowData.contsVarNms.length > 0){
+        //    confirm.fnAlert(this.componentsTitle, '앱사용자 전체발송시 메시지 내용에 변수를 사용하실 수 없습니다.');
+        //    return false;
+        //  }
+        //}
+        //if(this.rowData.rplcSendType != 'NONE'){
+        //  if(!this.rowData.fbInfo.callback){
+        //    confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 발신번호를 입력해주세요.');
+        //    return false;
+        //  }
+        //  if(!this.rowData.fbInfo.msg){
+        //    confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 내용을 입력해주세요.');
+        //    return false;
+        //  }
+        //}
+      }
+
+      return true;
+    },
+        
+    //통합 메시지 발송 처리
+    async fnSendIntegratedMessage(testSendYn){
+      if(this.inProgress){
+        confirm.fnAlert(this.componentsTitle, '통합 메시지 발송 처리중입니다.');
+        return;
+      }
+      
+      if(this.fnValidSendMsgData(testSendYn) == false) return;
+
+      //발송처리
+      let params = Object.assign({}, this.rowData);
+      params.testSendYn = testSendYn;
+
+      if(testSendYn == 'Y'){
+        params.recvInfoLst = Object.assign([], this.rowData.testRecvInfoLst);
+        params.cuInputType = 'DICT';
+        //테스트 발송은 대체발송 하지 않는다.
+        params.rplcSendType = 'NONE'
+        params.requiredCuPhone = false;
+        params.fbInfo = {};
+        //테스트 발송은 즉시발송만 가능
+        params.rsrvSendYn = 'N';
+      }
+
+      let fd = new FormData();
+      fd.append('paramString', JSON.stringify(params));
+      if(this.rowData.cuInputType == 'EXCEL'){
+        fd.append('file', this.$refs.excelFile.files[0]);
+      }
+
+      this.inProgress = true;
+      const vm = this;
+      await IntegratedSendApi.sendIntegratedMessage(fd).then(response =>{
+        this.inProgress = false;
+        const result = response.data;
+        
+        if(result.success) {
+          if(testSendYn == 'Y'){
+            if(!this.fnIsEmpty(result.message)){
+              confirm.fnAlert(this.componentsTitle, result.message);
+            } else {
+              confirm.fnAlert(this.componentsTitle, '발송하였습니다.');
+            }
+          } else {
+            if(result.data != null && !this.fnIsEmpty(result.data.feeMsg)){
+              eventBus.$on('callbackEventBus', this.fnAlertFeeMsgCallBack);
+              confirm.fnAlert(this.componentsTitle, result.data.feeMsg, 'ALERT', result);
+            } else {
+              this.fnAlertFeeMsgCallBack(result);
+            }
+          }
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      })
+      .catch(function () {
+        vm.inProgress = false;
+      });
+    },
+    
     //get 문자열 byte
     getByte(str) {
       return str
@@ -1132,124 +1422,7 @@ console.log("smsMms smsContent : "+this.rowData.smsContent);
 	    }
 	    var text = ""+nBytes+" / "+len+"Byte";
         if(tid) jQuery(tid).html(text);
-    },
-
-
-    fnClickCuInputType(e){
-      if(this.rowData.cuInputType == e.target.value){
-        this.fnChgCuInputType('N');
-      }
-    },
-    
-        
-    //수신자 입력 타입 변경시
-    fnChgCuInputType(chgYn){
-      if(this.$gfnCommonUtils.defaultIfEmpty(chgYn, 'Y') == 'Y'){
-        this.fnCallbackRecvInfoLst(null);  //수신자 입력 타입 변경시 수신자 정보 초기화
-      }
-      if(this.rowData.cuInputType == 'ALL'){  //전체발송
-        return;
-      }
-      if(!this.rowData.pushContent){
-        confirm.fnAlert(this.componentsTitle, '메시지 내용을 먼저 입력해주세요.');
-        this.rowData.cuInputType = 'ALL'
-        this.$refs.cuInputType_ALL.click();
-        return;
-      }
-
-      if(this.fnSetContsVarNms() == false){
-        this.rowData.cuInputType = 'ALL'
-        this.$refs.cuInputType_ALL.click();
-        return;
-      }
-
-      if(this.rowData.cuInputType == 'DICT'){  //직접입력
-        //수신자 직접입력 팝업 호출
-        this.directInputOpen = !this.directInputOpen;
-      } else if(this.rowData.cuInputType == 'ADDR'){  //주소록
-        //주소록 검색 팝업 호출
-        this.addressInputOpen = !this.addressInputOpen;
-      } else if(this.rowData.cuInputType == 'EXCEL'){  //엑셀
-        //엑셀파일찾기 호출
-        this.$refs.excelFile.click();
-      }
-    },
-
-    //푸시 템플릿 엑셀 다운로드
-    async fnExcelTmplteDownLoad(){
-      if(this.fnSetContsVarNms() == false) return;
-      var params = {
-        contsVarNms : this.rowData.contsVarNms,
-        requiredCuid: this.rowData.requiredCuid,
-        requiredCuPhone: this.rowData.requiredCuPhone
-      };
-      //await MessageApi.excelDownSendPushRecvTmplt(params);
     },    
-
-    //수신자 정보 callback
-    fnCallbackRecvInfoLst(recvInfoLst, addYn) {
-      if(recvInfoLst != null){
-        if(this.$gfnCommonUtils.defaultIfEmpty(addYn, 'N') == 'Y'){
-          this.rowData.recvInfoLst = this.rowData.recvInfoLst.concat(recvInfoLst);
-        } else {
-          this.rowData.recvInfoLst = recvInfoLst;
-        }
-        //수신자 중복제거
-        this.fnDelDuplRecvInfo();
-
-        this.recvCnt = this.rowData.recvInfoLst.length;
-        this.rowData.cuInfo = JSON.stringify(this.rowData.recvInfoLst);
-      } else {
-        this.recvCnt = 0;
-        this.rowData.recvInfoLst = [];
-        this.rowData.cuInfo = '';
-      }
-    },
-    //수신자 중복 제거
-    fnDelDuplRecvInfo(){
-      const vm = this;
-      let key, key2;
-      this.rowData.recvInfoLst = this.rowData.recvInfoLst.filter(function(item, i){
-        return (
-          vm.rowData.recvInfoLst.findIndex((item2) => {
-            key = '';
-            if ('phone' in item) key += item.phone;
-            if ('cuid' in item) key += item.cuid;
-            key2 = '';
-            if ('phone' in item2) key2 += item2.phone;
-            if ('cuid' in item2) key2 += item2.cuid;
-            return key === key2
-          }) === i
-        );
-      });
-    },
-        
-    fnOpenTestSendInputPopup(){
-      this.fnSetContsVarNms();
-      this.testSendInputOpen = !this.testSendInputOpen;
-    },
-   
-   fnSetContsVarNms(){
-      const rsvNmSet = new Set(['cuid', 'phone']);
-      const conts = this.rowData.pushContent + (typeof this.rowData.fbInfo.msg === 'undefined' ? '' : this.rowData.fbInfo.msg);
-      let varNms = [];
-      let containRsvNm = false;
-      conts.replace(/\{\{(\w+)\}\}/g, function($0, $1) {
-        if(rsvNmSet.has($1)){
-          containRsvNm = true;
-          return false;
-        }
-        varNms.push($1);
-      });
-      if(containRsvNm){
-        confirm.fnAlert(this.componentsTitle, '발송 내용 변수 cuid, phone 은 예약어로 사용하실 수 없습니다.');
-        return false;
-      } else {
-        this.rowData.contsVarNms = this.fnSetArrayRemoveDupliVal(varNms);
-        return true;
-      }
-    },   
-            
   }
 }
 </script>
