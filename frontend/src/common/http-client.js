@@ -48,25 +48,23 @@ const loggerInterceptor = config => {
 
 let loadOverlap = [];
 const loadingLayer = (type, config) => {
-	/*
-	get: httpClient.get(url, { params: { ... }, headers: {"show-layer": "Yes"} }) // in 2nd property
-	post: httpClient.post(url, params, { headers: {"show-layer": "Yes"} })  // 3rd property
-	*/
-	if (config.headers['Show-Layer'] == 'Yes') {
-		if (type) {
-			loadOverlap.push('add');
-		} else {
-			loadOverlap.pop();
-		}
+  let loadingOverlay = document.querySelector('.loading');
+  document.querySelector('html > body').style.removeProperty('overflow'); // 스크롤 allow
+  loadingOverlay.classList.add('hidden');
 
-		if (loadOverlap.length > 0) {
-			document.querySelector('html > body').style.overflow = 'hidden'; // 스크롤 block
-			document.getElementsByClassName('loading_layer')[0].style.display = 'block';
-		} else {
-			document.querySelector('html > body').style.removeProperty('overflow'); // 스크롤 allow
-			document.getElementsByClassName('loading_layer')[0].style.display = 'none';
-		}
-	}
+  if(loadingOverlay != null){
+    if (config.headers['show-layer'] == 'Yes') {
+      if (type) {
+        loadOverlap.push('add');
+      } else {
+        loadOverlap.pop();
+      }
+      if (loadOverlap.length > 0) {
+        document.querySelector('html > body').style.overflow = 'hidden'; // 스크롤 block
+        loadingOverlay.classList.remove('hidden');
+      }
+    }
+  }
 };
 
 const loadingLayerInterceptor = config => {

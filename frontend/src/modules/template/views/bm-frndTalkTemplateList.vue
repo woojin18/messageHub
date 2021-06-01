@@ -100,6 +100,13 @@
                     <td class="text-center">{{contant.regNm}}</td>
                     <td class="text-center end">{{contant.regDt}}</td>
                   </tr>
+                  <tr v-if="contants.length == 0">
+                  <td class="text-center">
+                    <input type="checkbox" id="listCheck_0" class="boardCheckStyle">
+                    <label for="listCheck_0"></label>
+                  </td>
+                  <td class="text-center" colspan="6">검색된 내용이 없습니다.</td>
+                </tr>
                 </tbody>
               </table>
               <!-- //table -->
