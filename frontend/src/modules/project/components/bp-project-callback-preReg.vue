@@ -59,10 +59,6 @@
 									<h4 class="inline-block vertical-middle" style="width:22%">통신서비스<br>가입증명원 *</h4>
 									<div class="float-right" style="width:76%">
 										<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:100%" ref="certiImgFile"/>
-										<!-- <div class="color3 consolMarginTop">
-											<div class="consolCheck float-left"><input type="checkbox" id="Lmit" class="checkStyle2" value="Lmit"><label for="Lmit"></label></div>
-											<p class="txtCaption color000">메시지 발송 시 기본템플릿(구.Free템플릿)은 정보성에 한하여 이용 가능합니다. 규정위반 시 서비스 이용이 제한될 수 있습니다.</p>
-										</div> -->
 									</div>
 								</div>
 							</div>
@@ -143,17 +139,18 @@ export default {
       this.chatbots.splice(-1);
     },
     // 승인요청
-    async fnApproval(sts){
+    async fnApproval(){
       // 벨리데이션 처리
      /*  if( !this.fnValidate() ){
         return;
       } */
 
       var fd = new FormData();
-      fd.append('loginId'			, tokenSvc.getToken().principal.userId);
-      fd.append('corpId'			, tokenSvc.getToken().principal.corpId);
+      fd.append('sts'			    , "C");
+      fd.append('saveCorpId'	, tokenSvc.getToken().principal.corpId);
       fd.append('projectId'		, this.projectId);
       fd.append('brandId'			, this.brandId);
+      fd.append('chatbotId'		, '');
       fd.append('mainMdn'			, this.mainMdn);
       fd.append('mainTitle'		, this.mainTitle);
 
@@ -178,12 +175,12 @@ export default {
         if(result.success) {
           confirm.fnAlert("", "저장에 성공했습니다.");
           // 목록 버튼
-          this.$refs.backBtn.click();
+          jQuery("#regPop").modal("hide");
         } else {
           confirm.fnAlert("", result.message);
         }
       }).catch(function () {
-        confirm.fnAlert("", "저장에 실패했습니다.???");
+        confirm.fnAlert("", "저장에 실패했습니다.");
       });
     }
   }

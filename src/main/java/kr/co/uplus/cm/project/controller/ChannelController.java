@@ -147,6 +147,7 @@ public class ChannelController {
 			@RequestParam String detailAddress,
 			@RequestParam String email,
 			@RequestParam String email2,
+			@RequestParam String webSiteUrl,
 			@RequestParam String mainMdn,
 			
 			@RequestParam String call,
@@ -159,10 +160,10 @@ public class ChannelController {
 			@RequestParam String orderWeblink,
 			@RequestParam String buy,
 			@RequestParam String buyWeblink,
-			@RequestParam String ticket,
-			@RequestParam String ticketWeblink,
-			@RequestParam String moreInfo,
-			@RequestParam String moreInfoWeblink,
+			@RequestParam String tickets,
+			@RequestParam String ticketsWeblink,
+			@RequestParam String moreinfo,
+			@RequestParam String moreinfoWeblink,
 			
 			@RequestParam(required = false) MultipartFile profileImgFile,
 			@RequestParam(required = false) MultipartFile bgImgFile,
@@ -195,6 +196,7 @@ public class ChannelController {
 		params.put("detailAddress",		detailAddress);
 		params.put("email",				email);
 		params.put("email2",			email2);
+		params.put("webSiteUrl",		webSiteUrl);
 		params.put("mainMdn",			mainMdn);
 		
 		params.put("call",				call);
@@ -207,10 +209,10 @@ public class ChannelController {
 		params.put("orderWeblink",		orderWeblink);
 		params.put("buy",				buy);
 		params.put("buyWeblink",		buyWeblink);
-		params.put("ticket",			ticket);
-		params.put("ticketWeblink",		ticketWeblink);
-		params.put("moreInfo",			moreInfo);
-		params.put("moreInfoWeblink",	moreInfoWeblink);
+		params.put("tickets",			tickets);
+		params.put("ticketsWeblink",	ticketsWeblink);
+		params.put("moreinfo",			moreinfo);
+		params.put("moreinfoWeblink",	moreinfoWeblink);
 		
 		
 		params.put("profileImgFile",	profileImgFile);

@@ -225,6 +225,7 @@
 	<sql id="callbackManage">
 		SELECT	SUB_CB.*
 		,		CRB.BRAND_NAME
+		,		CRB.CORP_ID 
 		FROM (
 			SELECT	A.*
 			FROM 	(
@@ -248,7 +249,7 @@
 						and crcr.CHATBOT_ID not in (
 							select	crc.CHATBOT_ID
 							from cm.CM_RCS_CHATBOT crc 
-							where BRAND_ID  = #{brandId}
+							where crc.CORP_ID  = #{corpId}
 							and REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.isMainNum[0]'), "\"", "") = 'true'
 						)
 						

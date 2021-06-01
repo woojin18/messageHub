@@ -90,10 +90,10 @@ public class ChannelService {
 			inputVal.put("orderWeblink",	"");
 			inputVal.put("buy",				false);
 			inputVal.put("buyWeblink",		"");
-			inputVal.put("ticket",			false);
-			inputVal.put("ticketWeblink",	"");
-			inputVal.put("moreInfo",		false);
-			inputVal.put("moreInfoWeblink",	"");
+			inputVal.put("tickets",			false);
+			inputVal.put("ticketsWeblink",	"");
+			inputVal.put("moreinfo",		false);
+			inputVal.put("moreinfoWeblink",	"");
 			
 			if(menusList != null) {
 				for(int j = 0; j < menusList.size(); j++){
@@ -119,13 +119,13 @@ public class ChannelService {
 						inputVal.put("buy",			menus.get("buttonType"));
 						inputVal.put("buyWeblink",		menus.get("weblink"));
 					}
-					if( "ticket".equals(menus.get("buttonType")) ) {
-						inputVal.put("ticket",			menus.get("buttonType"));
-						inputVal.put("ticketWeblink",		menus.get("weblink"));
+					if( "tickets".equals(menus.get("buttonType")) ) {
+						inputVal.put("tickets",			menus.get("buttonType"));
+						inputVal.put("ticketsWeblink",		menus.get("weblink"));
 					}
-					if( "moreInfo".equals(menus.get("buttonType")) ) {
-						inputVal.put("moreInfo",			menus.get("buttonType"));
-						inputVal.put("moreInfoWeblink",		menus.get("weblink"));
+					if( "moreinfo".equals(menus.get("buttonType")) ) {
+						inputVal.put("moreinfo",			menus.get("buttonType"));
+						inputVal.put("moreinfoWeblink",		menus.get("weblink"));
 					}
 				}
 			}
@@ -234,6 +234,8 @@ public class ChannelService {
 			
 			Map<String, Object> rtnMap = resultLists.get(0);
 			
+			inputVal.put("apiKey",		CommonUtils.getString(params.get("apiKey")));
+			inputVal.put("apiSecret",	CommonUtils.getString(params.get("apiSecret")));
 			inputVal.put("corpId",		rtnMap.get("corpId"));
 			inputVal.put("projectId",	rtnMap.get("projectId"));
 			inputVal.put("name",		rtnMap.get("name"));
@@ -253,10 +255,10 @@ public class ChannelService {
 			inputVal.put("orderWeblink",	"");
 			inputVal.put("buy",				false);
 			inputVal.put("buyWeblink",		"");
-			inputVal.put("ticket",			false);
-			inputVal.put("ticketWeblink",	"");
-			inputVal.put("moreInfo",		false);
-			inputVal.put("moreInfoWeblink",	"");
+			inputVal.put("tickets",			false);
+			inputVal.put("ticketsWeblink",	"");
+			inputVal.put("moreinfo",		false);
+			inputVal.put("moreinfoWeblink",	"");
 			
 			if(menusList != null) {
 				for(int j = 0; j < menusList.size(); j++){
@@ -282,13 +284,13 @@ public class ChannelService {
 						inputVal.put("buy",			menus.get("buttonType"));
 						inputVal.put("buyWeblink",		menus.get("weblink"));
 					}
-					if( "ticket".equals(menus.get("buttonType")) ) {
-						inputVal.put("ticket",			menus.get("buttonType"));
-						inputVal.put("ticketWeblink",		menus.get("weblink"));
+					if( "tickets".equals(menus.get("buttonType")) ) {
+						inputVal.put("tickets",			menus.get("buttonType"));
+						inputVal.put("ticketsWeblink",		menus.get("weblink"));
 					}
-					if( "moreInfo".equals(menus.get("buttonType")) ) {
-						inputVal.put("moreInfo",			menus.get("buttonType"));
-						inputVal.put("moreInfoWeblink",		menus.get("weblink"));
+					if( "moreinfo".equals(menus.get("buttonType")) ) {
+						inputVal.put("moreinfo",			menus.get("buttonType"));
+						inputVal.put("moreinfoWeblink",		menus.get("weblink"));
 					}
 				}
 			}
@@ -421,16 +423,16 @@ public class ChannelService {
 			menusMap.put("weblink",		params.get("buyWeblink"));
 			menusList.add(menusMap);
 		}
-		if(!"".equals(CommonUtils.getString(params.get("ticket"))) && Boolean.parseBoolean(CommonUtils.getString(params.get("ticket"))) != false) {
+		if(!"".equals(CommonUtils.getString(params.get("tickets"))) && Boolean.parseBoolean(CommonUtils.getString(params.get("tickets"))) != false) {
 			Map<String, Object> menusMap = new HashMap<>();
-			menusMap.put("buttonType",	"ticket");
-			menusMap.put("weblink",		params.get("ticketWeblink"));
+			menusMap.put("buttonType",	"tickets");
+			menusMap.put("weblink",		params.get("ticketsWeblink"));
 			menusList.add(menusMap);
 		}
-		if(!"".equals(CommonUtils.getString(params.get("moreInfo"))) && Boolean.parseBoolean(CommonUtils.getString(params.get("moreInfo"))) != false) {
+		if(!"".equals(CommonUtils.getString(params.get("moreinfo"))) && Boolean.parseBoolean(CommonUtils.getString(params.get("moreinfo"))) != false) {
 			Map<String, Object> menusMap = new HashMap<>();
-			menusMap.put("buttonType",	"moreInfo");
-			menusMap.put("weblink",		params.get("moreInfoWeblink"));
+			menusMap.put("buttonType",	"moreinfo");
+			menusMap.put("weblink",		params.get("moreinfoWeblink"));
 			menusList.add(menusMap);
 		}
 		regBrandMap.put("menus",		menusList);
@@ -568,17 +570,20 @@ public class ChannelService {
 			
 			// API 통신 처리
 			Map<String, Object> result =  apiInterface.listPost("/console/v1/brand/", list, headerMap);
-//			Map<String, Object> result =  apiInterface.request("POST","http://erp.ectech.co.kr:40931/console/v1/brand/", null, list, headerMap);
-//			(String method, String uri, Map params, Object body, Map headerMap)
+			
 			System.out.println("-------------------------------------------@@@ result : " + result);
 			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
 			System.out.println("-------------------------------------------@@@ list : " + list);
 			// 성공인지 실패인지 체크
-			if( !"10000".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("rslt")) ) {
+			} else if ( "500100".equals(result.get("rslt")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
+			} else {
+				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				throw new Exception(errMsg);
 			}
-		} if( "mod".equals(sts) ) {
+		} if( "update".equals(sts) ) {
 			// 수정요청
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			headerMap.put("apiId",		params.get("apiKey"));
@@ -590,11 +595,15 @@ public class ChannelService {
 			Map<String, Object> bodyMap = new HashMap<String, Object>();
 			bodyMap.put("list", json);
 			
-			Map<String, Object> result =  apiInterface.listPut("/console/v1/brand/" + brandId, list, headerMap);
+			Map<String, Object> result =  apiInterface.put("/console/v1/brand/" + brandId, null, map, headerMap);
 			
 			// 성공인지 실패인지 체크
-			if( !"10000".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("rslt")) ) {
+			} else if ( "500100".equals(result.get("rslt")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				throw new Exception(errMsg);
+			} else {
+				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
 				throw new Exception(errMsg);
 			}
 		} else if ( "delete".equals(sts) ) {
@@ -607,8 +616,12 @@ public class ChannelService {
 			Map<String, Object> result =  apiInterface.listDelete("/console/v1/brand/" + brandId, list, headerMap);
 			
 			// 성공인지 실패인지 체크
-			if( !"10000".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("rslt")) ) {
+			} else if ( "500100".equals(result.get("rslt")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				throw new Exception(errMsg);
+			} else {
+				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
 				throw new Exception(errMsg);
 			}
 		}

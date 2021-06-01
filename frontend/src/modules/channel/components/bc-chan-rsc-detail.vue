@@ -24,8 +24,8 @@
 											<i v-if="inputVal.store != ''" class="fas fa-shopping-bag color7"></i>
 											<i v-if="inputVal.order != ''" class="fas fa-clipboard-list-check color7"></i>
 											<i v-if="inputVal.buy != ''" class="fas fa-usd-circle color7"></i>
-											<i v-if="inputVal.ticket != ''" class="fas fa-ticket color7"></i>
-											<i v-if="inputVal.moreInfo != ''" class="fas fa-info-circle color7"></i>
+											<i v-if="inputVal.tickets != ''" class="fas fa-ticket color7"></i>
+											<i v-if="inputVal.moreinfo != ''" class="fas fa-info-circle color7"></i>
 										</div>							
 										<div>
 											<div class="text">
@@ -131,11 +131,11 @@
 								<label for="Buy">Buy</label>
 							</div>
 							<div class="consolCheck" style="width:19%">
-								<input @change="fnClickMenu('ticket', $event.target.checked)" type="checkbox" id="Ticket" class="checkStyle2" v-model="inputVal.ticket" :disabled="this.duplCheckYn == 'N'">
+								<input @change="fnClickMenu('tickets', $event.target.checked)" type="checkbox" id="Ticket" class="checkStyle2" v-model="inputVal.tickets" :disabled="this.duplCheckYn == 'N'">
 								<label for="Ticket">Ticket</label>
 							</div>
 							<div class="consolCheck" style="width:25%">
-								<input @change="fnClickMenu('moreInfo', $event.target.checked)" type="checkbox" id="More-Info" class="checkStyle2" v-model="inputVal.moreInfo" :disabled="this.duplCheckYn == 'N'">
+								<input @change="fnClickMenu('moreinfo', $event.target.checked)" type="checkbox" id="More-Info" class="checkStyle2" v-model="inputVal.moreinfo" :disabled="this.duplCheckYn == 'N'">
 								<label for="More-Info">More Info</label>
 							</div>
 						</div>
@@ -161,13 +161,13 @@
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Buy *</p>
 						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.buyWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
 					</div>
-					<div v-if="inputVal.ticket != ''" class="ml_28 of_h consolMarginTop">
+					<div v-if="inputVal.tickets != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Ticket *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.ticketWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.ticketsWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
 					</div>
-					<div v-if="inputVal.moreInfo != ''" class="ml_28 of_h consolMarginTop">
+					<div v-if="inputVal.moreinfo != ''" class="ml_28 of_h consolMarginTop">
 						<p class="inline-block font-size16 float-left mt10" style="width:15%">-More Info *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.moreInfoWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
+						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.moreinfoWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
 					</div>
 
 					<div class="of_h consolMarginTop">
@@ -356,7 +356,7 @@ export default {
 			corpId 			: "",
 			projectId 		: "",
 			apiKey 			: "kangyj94",
-			apiSecret 	: "SK.E7nddvJlfZp8JXU",
+			apiSecret 		: "SK.E7nddvJlfZp8JXU",
 			name			: "브랜드 이름",
 			description		: "브랜드 설명",
 			tel				: "브랜드 전화번호",
@@ -372,10 +372,10 @@ export default {
 			orderWeblink	: "",
 			buy				: false,
 			buyWeblink		: "",
-			ticket			: false,
-			ticketWeblink	: "",
-			moreInfo		: false,
-			moreInfoWeblink	: "",
+			tickets			: false,
+			ticketsWeblink	: "",
+			moreinfo		: false,
+			moreinfoWeblink	: "",
 
 			categoryId		: "버튼 정보",
 			subCategoryId	: "버튼 정보",
@@ -427,8 +427,6 @@ export default {
 		this.tmpBrandYn = "N";
 	}
 
-console.log(this.projectId);
-
 	if( this.projectId != 'ALL' ){
 		this.otherProjectYn = 'N';
 	} else {
@@ -451,9 +449,7 @@ console.log(this.projectId);
 		api.checkApiKey(params).then(response =>{
 			var result = response.data.data;
 			this.category = result.cateData.data;
-			console.log(result.inputVal);
 			if( this.tmpBrandYn === 'N' && this.save_status != 'C' ){
-				console.log(result.inputVal.data);
 				this.inputVal = result.inputVal;
 			}
 			if( result.cateData.data != null && result.cateData.data != undefined ){
@@ -481,7 +477,6 @@ console.log(this.projectId);
 	},
 	// 이메일 선택 시 제어
 	fnSelectEmail(){
-		console.log(this.email2);
 		this.email2 = jQuery("#emailSelect").val();
 	},
 	// 이미지 미리보기
@@ -501,8 +496,8 @@ console.log(this.projectId);
 		if( this.inputVal.store		){ menuCnt++;}
 		if( this.inputVal.order		){ menuCnt++;}
 		if( this.inputVal.buy		){ menuCnt++;}
-		if( this.inputVal.ticket	){ menuCnt++;}
-		if( this.inputVal.moreInfo	){ menuCnt++;}
+		if( this.inputVal.tickets	){ menuCnt++;}
+		if( this.inputVal.moreinfo	){ menuCnt++;}
 		
 		if( menuCnt > 3 ){
 			/* if( checkName === 'call'	){ this.inputVal.call		= false;}
@@ -510,15 +505,15 @@ console.log(this.projectId);
 			if( checkName === 'store'	){ this.inputVal.store		= false;}
 			if( checkName === 'order'	){ this.inputVal.order		= false;}
 			if( checkName === 'buy'		){ this.inputVal.buy		= false;}
-			if( checkName === 'ticket'	){ this.inputVal.ticket		= false;}
-			if( checkName === 'moreInfo'){ this.inputVal.moreInfo 	= false;} */
+			if( checkName === 'tickets'	){ this.inputVal.tickets		= false;}
+			if( checkName === 'moreinfo'){ this.inputVal.moreinfo 	= false;} */
 			if( checkName === 'call'	){ this.inputVal.call		= '';}
 			if( checkName === 'web'		){ this.inputVal.web		= '';}
 			if( checkName === 'store'	){ this.inputVal.store		= '';}
 			if( checkName === 'order'	){ this.inputVal.order		= '';}
 			if( checkName === 'buy'		){ this.inputVal.buy		= '';}
-			if( checkName === 'ticket'	){ this.inputVal.ticket		= '';}
-			if( checkName === 'moreInfo'){ this.inputVal.moreInfo 	= '';}
+			if( checkName === 'tickets'	){ this.inputVal.tickets		= '';}
+			if( checkName === 'moreinfo'){ this.inputVal.moreinfo 	= '';}
 		//	alert("3개이상 메뉴 안됨");
 		}
 	},
@@ -565,9 +560,9 @@ console.log(this.projectId);
 		if( this.inputVal.mainMdn === ''		|| this.inputVal.mainMdn === undefined ) {		confirm.fnAlert("", "대표발신번호를 입력해주세요."); return false;}
 		if( this.inputVal.mainTitle === ''		|| this.inputVal.mainTitle === undefined ) {	confirm.fnAlert("", "발신번호명을 입력해주세요."); return false;}
 
-		if( this.$refs.bgImgFile.files[0] === ''		|| this.$refs.bgImgFile.files[0] === undefined ) {	confirm.fnAlert("", "백그라운드 이미지를 등록해주세요."); return false;}
-		if( this.$refs.profileImgFile.files[0] === ''	|| this.$refs.profileImgFile.files[0] === undefined ) {	confirm.fnAlert("", "프로필 이미지를 등록해주세요."); return false;}
 		if( this.save_status == 'C' ){
+			if( this.$refs.bgImgFile.files[0] === ''		|| this.$refs.bgImgFile.files[0] === undefined ) {	confirm.fnAlert("", "백그라운드 이미지를 등록해주세요."); return false;}
+			if( this.$refs.profileImgFile.files[0] === ''	|| this.$refs.profileImgFile.files[0] === undefined ) {	confirm.fnAlert("", "프로필 이미지를 등록해주세요."); return false;}
 			if( this.$refs.certiImgFile.files[0] === ''	|| this.$refs.certiImgFile.files[0] === undefined ) {	confirm.fnAlert("", "통신서비스 가입증명원을 등록해주세요."); return false;}
 		}
 		return true;
@@ -590,7 +585,7 @@ console.log(this.projectId);
 		}
 		fd.append('brandId'			, this.brandId);
 		fd.append('apiKey'			, this.inputVal.apiKey);
-		fd.append('apiSecret'	, this.inputVal.apiSecret);
+		fd.append('apiSecret'		, this.inputVal.apiSecret);
 		fd.append('name'			, this.inputVal.name);
 		fd.append('description'		, this.inputVal.description);
 		fd.append('tel'				, this.inputVal.tel);
@@ -602,6 +597,7 @@ console.log(this.projectId);
 		fd.append('detailAddress'	, this.inputVal.detailAddress);
 		fd.append('email'			, this.inputVal.email);
 		fd.append('email2'			, this.inputVal.email2);
+		fd.append('webSiteUrl'		, this.inputVal.webSiteUrl);
 		fd.append('mainMdn'			, this.inputVal.mainMdn);
 		fd.append('mainTitle'		, this.inputVal.mainTitle);
 
@@ -615,10 +611,10 @@ console.log(this.projectId);
 		fd.append('orderWeblink'	, this.inputVal.orderWeblink);
 		fd.append('buy'				, this.inputVal.buy);
 		fd.append('buyWeblink'		, this.inputVal.buyWeblink);
-		fd.append('ticket'			, this.inputVal.ticket);
-		fd.append('ticketWeblink'	, this.inputVal.ticketWeblink);
-		fd.append('moreInfo'		, this.inputVal.moreInfo);
-		fd.append('moreInfoWeblink'	, this.inputVal.moreInfoWeblink);
+		fd.append('tickets'			, this.inputVal.tickets);
+		fd.append('ticketsWeblink'	, this.inputVal.ticketsWeblink);
+		fd.append('moreinfo'		, this.inputVal.moreinfo);
+		fd.append('moreinfoWeblink'	, this.inputVal.moreinfoWeblink);
 
 		// 첨부파일 정리
 		fd.append('bgImgFile'		, this.$refs.bgImgFile.files[0]);
@@ -640,36 +636,34 @@ console.log(this.projectId);
 				"service"	: "a2p",	// a2p 고정값
 				"display"	: "10"		// '10' 고정값
 			});
-		}
-		var list = [];
+			var list = [];
 
-		for( var i = 0; i < this.inputVal.chatbots.length; i++ ){
-			var obj = JSON.stringify(this.inputVal.chatbots[i]);
-			if( obj.rcsReplyYn ){ obj.rcsReply = '1' } else { obj.rcsReply = '0' }
-			list.push(obj);
+			for( var i = 0; i < this.inputVal.chatbots.length; i++ ){
+				var obj = JSON.stringify(this.inputVal.chatbots[i]);
+				//if( obj.rcsReplyYn ){ obj.rcsReply = '1' } else { obj.rcsReply = '0' }
+				list.push(obj);
+			}
+			var listString = list.join(", ");
+			fd.append('chatbots'		, listString) ;
 		}
-		var listString = list.join(", ");
-		fd.append('chatbots'		, listString) ;
 
       
 		await axios.post('/projectApi/channel/saveRcsBrandReqForApi',
 		fd, {
 			headers: {
-			'Content-Type': 'multipart/form-data'
+				'Content-Type': 'multipart/form-data'
 			}
-		}
-		).then( response => {
-		var result = response.data;
-		if(result.success) {
-			confirm.fnAlert("", "저장에 성공했습니다.");
-			// 목록 버튼
-			this.$refs.backBtn.click();
-		} else {
-			confirm.fnAlert("", result.message);
-		}
-		})
-		.catch(function () {
-		confirm.fnAlert("", "저장에 실패했습니다.???");
+		}).then( response => {
+			var result = response.data;
+			if(result.success) {
+				confirm.fnAlert("", "저장에 성공했습니다.");
+				// 목록 버튼
+				this.$refs.backBtn.click();
+			} else {
+				confirm.fnAlert("", result.message);
+			}
+		}).catch(function () {
+			confirm.fnAlert("", "저장에 실패했습니다.???");
 		});
 	},
     // 삭제 요청

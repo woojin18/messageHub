@@ -111,7 +111,7 @@ public class ProjectController {
 	
 
 	/**
-	 * RCS 브랜드 등록요청
+	 * RCS 브랜드 등록 수정 요청
 	 * @param params
 	 * @param request
 	 * @param response
@@ -120,10 +120,11 @@ public class ProjectController {
 	 */
 	@PostMapping("/saveRcsChatbotReqForApi")
 	public RestResult<?> saveRcsChatbotReqForApi(
-			@RequestParam String loginId,
-			@RequestParam String corpId,
+			@RequestParam String sts,
+			@RequestParam String saveCorpId,
 			@RequestParam String projectId,
 			@RequestParam String brandId,
+			@RequestParam String chatbotId,
 			@RequestParam String mainMdn,
 			@RequestParam String mainTitle,
 			
@@ -138,15 +139,16 @@ public class ProjectController {
 		rtn.setSuccess(true);
 		
 		// 파라미터 정리
-		params.put("loginId",			loginId);
-		params.put("corpId",			corpId);
+		params.put("sts",				sts);
+		params.put("corpId",			saveCorpId);
 		params.put("projectId",			projectId);
 		params.put("brandId",			brandId);
+		params.put("chatbotId",			chatbotId);
 		params.put("mainMdn",			mainMdn);
 		params.put("certiFile",			certiFile);
 		params.put("chatbots",			chatbots);
 		
-		System.out.println("----------------------------------------params : " + params);
+		System.out.println("-------------------------------------@@ saveRcsChatbotReqForApi params : " + params);
 		
 		try {
 			projectService.saveRcsChatbotReqForApi(params);
@@ -179,40 +181,16 @@ public class ProjectController {
 		return projectService.selectApprovalBrandList(params);
 	}
 	
-	
-	
-	// 발신번호관리 수정 요청
-	@PostMapping("/updateCallbackForApi")
-	public RestResult<?> updateCallbackForApi(
-			@RequestBody Map<String, Object> params,
-			HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		RestResult<Object> rtn = new RestResult<Object>();
-		
-		rtn.setSuccess(true);
-		
-		System.out.println("-------------------------------------@@ params : " + params);
-		
-		try {
-			projectService.updateCallbackForApi(params);
-			rtn.setSuccess(true);
-		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage(e.getMessage());
-		}
-		
-		return rtn;
-	}
-	
 	// 발신번호관리 삭제 요청
 	@PostMapping("/deleteCallbackForApi")
-	public RestResult<?> deleteCallbackForApi(
-			@RequestBody Map<String, Object> params,
+	public RestResult<?> deleteCallbackForApi(@RequestBody Map<String, Object> params,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		RestResult<Object> rtn = new RestResult<Object>();
 		
+		RestResult<Object> rtn = new RestResult<Object>();
 		rtn.setSuccess(true);
+		
+		System.out.println("-------------------------------------@@ deleteCallbackForApi params : " + params);
 		
 		try {
 			projectService.deleteCallbackForApi(params);

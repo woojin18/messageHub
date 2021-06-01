@@ -24,12 +24,15 @@
 								<h4 class="inline-block ml60" style="width:6%">사용여부</h4>
 								<select name="admin0305_2" class="selectStyle2" style="width:16%" v-model="srcIsuse">
 									<option value="">전체</option>
-									<option value="">대기</option>
+									<option value="Y" selected="selected">사용</option>
+									<option value="N">미사용</option>
 								</select>
 								<h4 class="inline-block ml60" style="width:6%">승인상태</h4>
 								<select name="admin0305_3" class="selectStyle2" style="width:16%" v-model="srcApprovalStatus">
 									<option value="">전체</option>
 									<option value="승인대기">승인대기</option>
+									<option value="승인" selected="selected">승인</option>
+									<option value="반려">반려</option>
 								</select>
 								<a @click="fnSearch" class="btnStyle1 float-right">검색</a>
 							</div>
@@ -117,15 +120,14 @@
 
 <script>
 import layerPopup from "./bp-project-callback-detail.vue";
-import projectApi from '../service/projectApi'
-import tokenSvc from '@/common/token-service';
+import projectApi from '../service/projectApi';
 
 
-import Paging from "@/modules/commonUtil/components/bc-paging"
-import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt"
+import Paging from "@/modules/commonUtil/components/bc-paging";
+import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt";
 
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
-import confirm from "@/modules/commonUtil/service/confirm"
+import confirm from "@/modules/commonUtil/service/confirm";
 
 export default {
 	components: {
@@ -193,8 +195,6 @@ export default {
 		},
 		fnCallbackDetail(row_data){
 			this.row_data = row_data;
-			console.log(row_data);
-			console.log("fnCallbackDetail");
 			jQuery("#detailPop").modal("show");
 		},
 		fnCallbackDeleteConfirm(row_data){
@@ -206,7 +206,7 @@ export default {
 			var params = {
 				"brandId"		: this.row_data.brandId,
 				"chatbotId"		: this.row_data.chatbotId,
-				"corpId"		: this.row_data.corpId,
+				"saveCorpId"	: this.row_data.corpId,
 			};
 
 			projectApi.deleteCallbackForApi(params).then(response =>{

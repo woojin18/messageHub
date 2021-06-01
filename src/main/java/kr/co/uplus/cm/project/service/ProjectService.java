@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -223,8 +224,9 @@ public class ProjectService {
 
 	@SuppressWarnings("unchecked")
 	public void saveRcsChatbotReqForApi(Map<String, Object> params) throws Exception {
+		String brandId = CommonUtils.getString(params.get("brandId"));
+		String sts = CommonUtils.getString(params.get("sts"));
 		String tempYn = "Y";
-		
 		Map<String, Object> certiFileRtnMap = new HashMap<String, Object>();
 		
 		if( "N".equals(tempYn) ) {
@@ -237,10 +239,7 @@ public class ProjectService {
 		}
 		
 		// 데이터 처리
-		List<Object> list = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
-		
-		String brandId = CommonUtils.getString(params.get("brandId"));
 		
 		map.put("corpId",		params.get("corpId"));
 		
@@ -252,32 +251,74 @@ public class ProjectService {
 		}
 		
 		
-		String chatbotStr = CommonUtils.getString(params.get("chatbots"));
-		JSONParser parser = new JSONParser();
-		JSONArray chatbotJson = new JSONArray();
-		if( !"".equals(chatbotStr) ) {
-			chatbotStr = "[" + chatbotStr + "]";
-			parser = new JSONParser();
-			chatbotJson = (JSONArray) parser.parse(chatbotStr);
-			map.put("chatbots",		chatbotJson);
-		}
-		
-		kong.unirest.json.JSONObject jsonParam =  new kong.unirest.json.JSONObject(map);
-		
-		// 등록요청
-		Map<String, Object> headerMap = new HashMap<String, Object>();
-		headerMap.put("brandId",	brandId);
-		
-		// API 통신 처리
-//		Map<String, Object> result =  apiInterface.post("/console/v1/brand/" + brandId + "/chatbot", jsonParam, headerMap);
-		Map<String, Object> result =  apiInterface.request("POST", "https://api.ums-dev.uplus.co.kr/console/v1/brand/" + brandId + "/chatbot", null, jsonParam, headerMap);
-		
-		System.out.println("-----------------------------------------@@@ result : " + result);
-		
-		// 성공인지 실패인지 체크
-		if( !"10000".equals(result.get("rslt")) ) {
-			String errMsg = CommonUtils.getString(result.get("rsltDesc"));
-			throw new Exception(errMsg);
+		if( "C".equals(sts) ) {
+			// 챗봇 처리
+			String chatbotStr = CommonUtils.getString(params.get("chatbots"));
+			JSONParser parser = new JSONParser();
+			JSONArray chatbotJson = new JSONArray();
+			if( !"".equals(chatbotStr) ) {
+				chatbotStr = "[" + chatbotStr + "]";
+				parser = new JSONParser();
+				chatbotJson = (JSONArray) parser.parse(chatbotStr);
+				map.put("chatbots",		chatbotJson);
+			}
+			
+			// json object 편하게 보기 위한 용도
+			kong.unirest.json.JSONObject jsonParam =  new kong.unirest.json.JSONObject(map);
+			System.out.println("----------------------------------------@@@ jsonParam : " + jsonParam);
+			
+			// 등록요청
+			Map<String, Object> headerMap = new HashMap<String, Object>();
+			headerMap.put("brandId",	brandId);
+			headerMap.put("Content-Type",	"application/json");
+			
+			// API 통신 처리
+			Map<String, Object> result =  apiInterface.post("/console/v1/brand/" + brandId + "/chatbot", map, headerMap);
+			
+			System.out.println("-----------------------------------------@@@ result : " + result);
+			
+			// 성공인지 실패인지 체크
+			if( "10000".equals(result.get("rslt")) ) {
+			} else if ( "500100".equals(result.get("rslt")) ) {
+				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				throw new Exception(errMsg);
+			} else {
+				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				throw new Exception(errMsg);
+			}
+		} else if ( "U".equals(sts) ) {
+			// 챗봇 처리
+			String chatbotStr = CommonUtils.getString(params.get("chatbots"));
+			
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse( chatbotStr );
+			JSONObject jsonObj = (JSONObject) obj;
+			map.put("chatbot",		jsonObj);
+			
+			// json object 편하게 보기 위한 용도
+			kong.unirest.json.JSONObject jsonParam =  new kong.unirest.json.JSONObject(map);
+			System.out.println("----------------------------------------@@@ jsonParam : " + jsonParam);
+			
+			// 수정요청
+			Map<String, Object> headerMap = new HashMap<String, Object>();
+			headerMap.put("brandId",	brandId);
+			headerMap.put("chatbotId",	params.get("chatbotId"));
+			headerMap.put("Content-Type",	"application/json");
+			
+			// API 통신 처리
+			Map<String, Object> result =  apiInterface.put("/console/v1/brand/" + brandId + "/chatbot/" + params.get("chatbotId"), null, map, headerMap);
+			
+			System.out.println("-----------------------------------------@@@ result : " + result);
+			
+			// 성공인지 실패인지 체크
+			if( "10000".equals(result.get("rslt")) ) {
+			} else if ( "500100".equals(result.get("rslt")) ) {
+				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				throw new Exception(errMsg);
+			} else {
+				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				throw new Exception(errMsg);
+			}
 		}
 	}
 	
@@ -314,56 +355,9 @@ public class ProjectService {
 		return rtn;
 	}
 	
-	// 발신번호관리 수정 요청
-	@SuppressWarnings("unchecked")
-	public RestResult<?> updateCallbackForApi(Map<String, Object> params) throws Exception {
-		RestResult<Object> rtn = new RestResult<Object>();
-		// 상세정보 가져오기
-		Map<String, Object> callbackDetail = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_CALLBACK_MANAGE_DETAIL, params);
-		
-		String brandId		= CommonUtils.getString(callbackDetail.get("brandId"));
-		String chatbotId	= CommonUtils.getString(params.get("chatbotId"));
-		
-		// request body 조정
-		System.out.println("-------------------------------------@@ " + callbackDetail);
-		
-		Map<String, Object> apiMap = new HashMap<>();
-		
-		apiMap.put("corpId", CommonUtils.getString(callbackDetail.get("corpId")));
-		apiMap.put("subNumCertificate", "");
-		
-		Map<String, Object> chahbotMap = new HashMap<>();
-		chahbotMap.put("mdn", callbackDetail.get("mdn"));
-		chahbotMap.put("rcsReply", callbackDetail.get("rcsReply"));
-		chahbotMap.put("subTitle", callbackDetail.get("subTitle"));
-		chahbotMap.put("service", "a2p");
-		chahbotMap.put("display", "01");
-		
-		apiMap.put("chatbot", chahbotMap);
-		
-		Map<String, Object> headerMap = new HashMap<String, Object>();
-		headerMap.put("brandId",	brandId);
-		headerMap.put("chatbotId",	chatbotId);
-		
-		// API 통신 처리
-		Map<String, Object> result =  apiInterface.put("/console/v1/brand/" + brandId + "/chatbot/" + chatbotId, null, apiMap, headerMap);
-		
-		System.out.println("------------------------------------------------- resultresultresult : " + result);
-		
-		// 성공인지 실패인지 체크
-		if( !"10000".equals(result.get("rslt")) ) {
-			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
-			throw new Exception(errMsg);
-		}
-		
-		rtn.setData(result);
-		
-		return rtn;
-	}
-	
 	// 발신번호관리 삭제 요청
 	@SuppressWarnings("unchecked")
-	public RestResult<?> deleteCallbackForApi(Map<String, Object> params) throws Exception {
+	public void deleteCallbackForApi(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		String brandId		= CommonUtils.getString(params.get("brandId"));
 		String chatbotId	= CommonUtils.getString(params.get("chatbotId"));
@@ -378,16 +372,16 @@ public class ProjectService {
 		// API 통신 처리
 		Map<String, Object> result =  apiInterface.delete("/console/v1/brand/" + brandId + "/chatbot/" + chatbotId, null, apiMap, headerMap);
 		
-		System.out.println("------------------------------------------------- resultresultresult : " + result);
+		System.out.println("------------------------------------------------- deleteCallbackForApi result : " + result);
 		
 		// 성공인지 실패인지 체크
-		if( !"10000".equals(result.get("rslt")) ) {
+		if( "10000".equals(result.get("rslt")) ) {
+		} else if ( "500100".equals(result.get("rslt")) ) {
+			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+			throw new Exception(errMsg);
+		} else {
 			String errMsg = CommonUtils.getString(result.get("rsltDesc"));
 			throw new Exception(errMsg);
 		}
-		
-		rtn.setData(result);
-		
-		return rtn;
 	}
 }
