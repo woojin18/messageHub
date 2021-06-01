@@ -140,7 +140,7 @@
 		</article>
 
 		<!--  Modal -->
-		<apiKeyPop :saveStatus="saveStatus" :apiKeyData.sync="apiKeyData"></apiKeyPop>
+		<apiKeyPop :saveStatus="saveStatus" :apiKeyData="apiKeyData" :apiKeyOpen="apiKeyOpen"></apiKeyPop>
 	</div>
 	<!-- //content -->
 </template>
@@ -165,6 +165,7 @@ export default {
 			apiKeyList: [],
 			saveStatus: '',
 			apiKeyData: {},
+			apiKeyOpen: false,
 		}
 	},
 	mounted() {
@@ -236,6 +237,7 @@ export default {
 		},
 		// API키 등록
 		fnRegisterApiKeyPop() {
+			this.apiKeyOpen = !this.apiKeyOpen;
 			this.apiKeyData = {};
 			this.apiKeyData.projectId = this.$parent.projectId;
 			this.saveStatus = 'R';
@@ -243,9 +245,14 @@ export default {
 		},
 		// API키 수정
 		fnUpdateApiKeyPop(data) {
+			console.log(">>> fnUpdateApiKeyPop start");
+			jQuery("#apiKeyPop").modal("show");
+			this.apiKeyOpen = !this.apiKeyOpen;
 			this.apiKeyData = data;
 			this.saveStatus = 'U';
-			jQuery("#apiKeyPop").modal("show");
+			console.log(">>> apiKeyOpen : " + this.apiKeyOpen);
+			console.log(">>> apiKeyData : " + this.apiKeyData);
+			console.log(">>> saveStatus : " + this.saveStatus);
 		}
 	}
 }

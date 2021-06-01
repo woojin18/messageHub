@@ -8,10 +8,15 @@
 		,		A.PROJECT_NAME
 		,		A.PROJECT_DESC
 		,		A.PAY_TYPE
-		,		CASE 
-					WHEN A.PAY_TYPE = 'Y' THEN '선불'
-					WHEN A.PAY_TYPE = 'N' THEN '후불'
-					ELSE ''
+		,		A.NOPAY_YN
+		,		CASE
+					WHEN A.NOPAY_YN = 'Y' THEN '무과금'
+					ELSE
+						CASE
+							WHEN A.PAY_TYPE = 'Y' THEN '선불'
+							WHEN A.PAY_TYPE = 'N' THEN '후불'
+							ELSE ''
+						END
 				END AS PAY_TYPE_NAME
 		,		A.BILL_ID
 		,		A.SMART_CH_CODE
@@ -136,10 +141,22 @@
 		,	RPT_YN					= #{rptYn}
 		,	DUP_CHK_YN				= #{dupChkYn}
 		,	DAY_SENDER_CHK_YN		= #{daySenderChkYn}
+		<if test="daySenderLimitAmount != null and daySenderLimitAmount != ''">
 		,	DAY_SENDER_LIMIT_AMOUNT	= #{daySenderLimitAmount}
+		</if>
 		,	MON_SENDER_CHK_YN		= #{monSenderChkYn}
+		<if test="monSenderLimitAmount != null and monSenderLimitAmount != ''">
 		,	MON_SENDER_LIMIT_AMOUNT	= #{monSenderLimitAmount}
+		</if>
 		WHERE
 			API_KEY					= #{apiKey}
 	</update>
+	
+	<select id="selectApiKeyPassword" resultType="int">
+	/* baseInfo.selectApiKeyPassword APIKEY 암호 검증*/
+		SELECT	COUNT(1)
+		FROM	cm.CM_APIKEY
+		WHERE	API_PWD = #{apiPwd}
+		AND		API_KEY = #{apiKey}
+	</select>
 </mapper>

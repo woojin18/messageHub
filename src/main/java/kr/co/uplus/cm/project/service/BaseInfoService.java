@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.uplus.cm.common.consts.DB;
-import kr.co.uplus.cm.common.crypto.Sha256PasswordEncoder;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
+import yoyozo.security.SHA;
 
 @Service
 public class BaseInfoService {
@@ -24,8 +24,8 @@ public class BaseInfoService {
 	@Autowired
 	private CommonService commonService;
 	
-	@Autowired
-	private Sha256PasswordEncoder sha256;
+//	@Autowired
+//	private Sha256PasswordEncoder sha256;
 	/**
 	 * 프로젝트 기본정보 조회
 	 * @param params
@@ -111,13 +111,25 @@ public class BaseInfoService {
 		ArrayList<String> ipList = null;
 		String apiKey = "";
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.putAll(params);
-		
+		SHA sha512 = new SHA(512);
+
 		String saveStatus = CommonUtils.getString(params.get("saveStatus"));
 		String ipChkYn= CommonUtils.getString(params.get("ipChkYn"));
 		
-		// PassWord (임시) : SHA512로 바꿀것
-		map.put("apiPwd", sha256.encode(CommonUtils.getString(params.get("apiPwd"))));
+		map.putAll(params);
+		map.put("apiPwd", sha512.encryptToBase64(CommonUtils.getString(params.get("apiPwd"))));
+		
+		// Update API Password 확인
+		if(saveStatus.equals("U")) {
+			int cnt = generalDao.selectGernalCount(DB.QRY_SELECT_APIKEY_PASSWORD, map);
+
+			if(cnt == 0) {
+				rtn.setSuccess(false);
+				rtn.setMessage("비밀번호가 일치하지 않습니다.");
+
+				return rtn;
+			}
+		} 
 		
 		// IPLIST JSON 값 처리
 		if(ipChkYn.equals("Y")) {
@@ -137,7 +149,7 @@ public class BaseInfoService {
 			jsonInfo += "]";
 			map.put("jsonInfo", jsonInfo);
 		}
-		
+
 		if(saveStatus.equals("R")) {
 			apiKey = CommonUtils.getCommonId("API", 5); // APIKEY 생성
 			map.put("apiKey", apiKey);

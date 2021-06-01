@@ -174,7 +174,8 @@ public class DB {
 	public final static String QRY_SELECT_APIKEY_LIST = "baseInfo.selectApiKeyList";
 	public final static String QRY_INSERT_APIKEY = "baseInfo.insertApiKey";
 	public final static String QRY_UPDATE_APIKEY = "baseInfo.updateApiKey";
-	
+	public final static String QRY_SELECT_APIKEY_PASSWORD = "baseInfo.selectApiKeyPassword";
+
 	//프로젝트 멤버
 	public final static String QRY_SELECT_PROJECT_MEMBER_LIST_CNT = "member.selectProjectMemberListCnt";
 	public final static String QRY_SELECT_PROJECT_MEMBER_LIST = "member.selectProjectMemberList";

@@ -7,7 +7,7 @@
 					<div>
 						<h2>API Key 상세</h2>
 						<hr>
-						<div class="of_h">
+						<div v-if="saveStatus === 'U'" class="of_h">
 							<div class="float-left" style="width:24%"><h5>API KEY</h5></div>
 							<div class="float-left" style="width:76%">
 								<input type="text" id="apiKey" class="inputStyle" :disabled="true">
@@ -17,6 +17,12 @@
 							<div class="float-left" style="width:24%"><h5>API 암호</h5></div>
 							<div class="float-left" style="width:76%">
 								<input type="password" id="apiPwd" class="inputStyle">
+							</div>
+						</div>
+						<div v-if="saveStatus === 'R'" class="of_h consolMarginTop">
+							<div class="float-left" style="width:24%"><h5>API 암호 확인</h5></div>
+							<div class="float-left" style="width:76%">
+								<input type="password" id="apiPwdConfirm" class="inputStyle">
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
@@ -112,9 +118,6 @@
 								<div class="float-left" style="width:24%"><h5>일 제한금액</h5></div>
 								<div class="float-left" style="width:20%">
 									<input type="text" id="daySenderLimitAmount" class="inputStyle" @input="fnCorrectNumberInput">
-									<!--
-									<input type="text" id="daySenderLimitAmount" class="inputStyle" v-model="daySenderLimitAmount">
-									-->
 								</div>
 								<div class="float-left ml5" style="width:20%">원</div>
 							</div>
@@ -131,9 +134,6 @@
 								<div class="float-left" style="width:24%"><h5>월 제한금액</h5></div>
 								<div class="float-left" style="width:20%">
 									<input type="text" id="monSenderLimitAmount" class="inputStyle" @input="fnCorrectNumberInput">
-									<!--
-									<input type="text" id="monSenderLimitAmount" class="inputStyle" v-model="monSenderLimitAmount">
-									-->
 								</div>
 								<div class="float-left ml5" style="width:20%">원</div>
 							</div>
@@ -167,13 +167,19 @@ export default {
 			status: Object,
 			require: false,
 		},
+		apiKeyOpen: {
+			status: Boolean,
+			require: true,
+		},
 	},
 	watch: {
-		apiKeyData: function() {
+		apiKeyOpen: function(val) {
+			console.log(">>> apiKeyOpen Watch start : " + val);
 			if(this.saveStatus === 'R') {
 				this.apiKeyData.apiKey = '';
 				jQuery('#apiKey').val('');
 				jQuery('#apiPwd').val('');
+				jQuery('#apiPwdConfirm').val('');
 				jQuery('input:radio[name=webSenderYn]:input[value="Y"]').prop("checked", true);
 				jQuery('input:radio[name=ipChkYn]:input[value="Y"]').prop("checked", true);
 				jQuery('#ipListSpan').show();
@@ -187,16 +193,17 @@ export default {
 				jQuery('input:radio[name=rptYn]:input[value="Y"]').prop("checked", true);
 				jQuery('input:radio[name=dupChkYn]:input[value="Y"]').prop("checked", true);
 				jQuery('input:radio[name=daySenderChkYn]:input[value="N"]').prop("checked", true);
-				jQuery('#daySenderLimitAmount').val('');
+				jQuery('#daySenderLimitAmount').val(null);
 				jQuery('#daySenderLimitAmountSpan').hide();
 				jQuery('input:radio[name=monSenderChkYn]:input[value="N"]').prop("checked", true);
-				jQuery('#monSenderLimitAmount').val('');
+				jQuery('#monSenderLimitAmount').val(null);
 				jQuery('#monSenderLimitAmountSpan').hide();
 			}
 			if(this.saveStatus === 'U') {
-				console.log('apiKeyData update');
+				console.log(">>> apiKeyOpen Watch Update Start");
+				console.log(">>> apiKey : " + this.apiKeyData.apiKey);
 				jQuery('#apiKey').val(this.apiKeyData.apiKey);
-				jQuery('#apiPwd').val(this.apiKeyData.apiPwd);
+				jQuery('#apiPwd').val('');
 				jQuery('input:radio[name=webSenderYn]:input[value="' + this.apiKeyData.webSenderYn + '"]').prop("checked", true);
 				jQuery('input:radio[name=ipChkYn]:input[value="' + this.apiKeyData.ipChkYn + '"]').prop("checked", true);
 
@@ -265,29 +272,40 @@ export default {
 	},
 	data() {
 		return {
-			// daySenderLimitAmount: 0,
-			// monSenderLimitAmount: 0,
 			ipList: [],
 			loopCnt: 0,
 		}
 	},
 	mounted() {
+		console.log('>>>>>> apiKye modal mounted called');
 		this.fnLineTypeInit();
 	},
 	methods: {
 		// 필수값 입력 체크
 		fnInputCheckReq() {
-			let apiPwd = jQuery('#apiPwd').val();
-			let ipChkYn = jQuery('input:radio[name=ipChkYn]:checked').val();
-			let cps = jQuery("#cps").val();
-			let lineType = jQuery('#selectLineType').val();
-			let daySenderChkYn = jQuery('input:radio[name=daySenderChkYn]:checked').val();
-			let monSenderChkYn = jQuery('input:radio[name=daySenderChkYn]:checked').val();
-			let daySenderLimitAmount = jQuery('#daySenderLimitAmount').val();
-			let monSenderLimitAmount = jQuery('#monSenderLimitAmount').val();
+			let saveStatus				= this.saveStatus;
+			let apiPwd					= jQuery('#apiPwd').val();
+			let apiPwdConfirm			= jQuery('#apiPwdConfirm').val();
+			let ipChkYn					= jQuery('input:radio[name=ipChkYn]:checked').val();
+			let cps						= jQuery("#cps").val();
+			let lineType				= jQuery('#selectLineType').val();
+			let daySenderChkYn			= jQuery('input:radio[name=daySenderChkYn]:checked').val();
+			let monSenderChkYn			= jQuery('input:radio[name=daySenderChkYn]:checked').val();
+			let daySenderLimitAmount	= jQuery('#daySenderLimitAmount').val();
+			let monSenderLimitAmount	= jQuery('#monSenderLimitAmount').val();
 
 			if(this.$gfnCommonUtils.isEmpty(apiPwd)) {
 				confirm.fnAlert("", "API 암호를 입력하세요");
+				return false;
+			}
+
+			if(saveStatus =='R' && this.$gfnCommonUtils.isEmpty(apiPwdConfirm)) {
+				confirm.fnAlert("", "API 암호 확인을 입력하세요");
+				return false;
+			}
+
+			if(saveStatus =='R' && apiPwd != apiPwdConfirm) {
+				confirm.fnAlert("", "입력하신 API 암호가 일치하지 않습니다.");
 				return false;
 			}
 
@@ -332,9 +350,10 @@ export default {
 			confirm.fnConfirm("", "저장하시겠습니까?", "확인");
 		},
 		fnApiKeySaveCallBack() {
-			var params = {
+			let params = {
 				"newProjectId"			: this.apiKeyData.projectId,
 				"apiKey"				: this.apiKeyData.apiKey,
+				"apiPwdConfirm"			: jQuery("#apiPwdConfirm").val(),
 				"corpId"				: tokenSvc.getToken().principal.corpId,
 				"apiPwd"				: jQuery("#apiPwd").val(),
 				"ipChkYn"				: jQuery("input[name='ipChkYn']:checked").val(),
