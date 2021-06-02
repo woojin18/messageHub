@@ -75,8 +75,7 @@ public class JwtService {
 		// Header 설정
 		builder.setHeaderParam("typ", "JWT"); // 토큰 타입(고정값)
 		// Payload 설정 - claim 정보 포함
-		builder.setSubject(auth.getName()).setIssuedAt(now.toDate()).setExpiration(expiration).claim("User", user)
-				.claim("principal", jwtUser);
+		builder.setSubject(auth.getName()).setIssuedAt(now.toDate()).setExpiration(expiration).claim("principal", jwtUser);
 		// 암호화
 		builder.signWith(SignatureAlgorithm.HS512, TextCodec.BASE64.decode(jwtProps.getKeyString()));
 
