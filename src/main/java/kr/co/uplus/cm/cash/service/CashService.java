@@ -20,6 +20,7 @@ import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.config.ApiConfig;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -31,12 +32,6 @@ public class CashService {
 	
 	@Autowired
 	ApiInterface apiInterface;
-	
-	@Value("${cash.pg.clientKey}")
-	String pgClientKey;
-	
-	@Value("${cash.pg.secretKey}")
-	String pgSecretKey;
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
@@ -64,7 +59,7 @@ public class CashService {
 		//웹캐시 결제정보에 데이터 입력
 		generalDao.insertGernal(DB.QRY_INSERT_WEB_CASH_INFO, map);
 		
-		map.put("clientKey", this.pgClientKey);
+		map.put("clientKey", ApiConfig.CASH_CLIENT_KEY);
 		
 		rtn.setData(map);
 		
@@ -92,7 +87,7 @@ public class CashService {
 		
 		Map<String, Object> headerMap = new HashMap<String, Object>();
 		
-		String text = this.pgSecretKey + ":";
+		String text = ApiConfig.CASH_SECRET_KEY + ":";
 		byte[] targetBytes = text.getBytes();
 		Encoder encoder = Base64.getEncoder();
 		byte[] encodedBytes = encoder.encode(targetBytes);
