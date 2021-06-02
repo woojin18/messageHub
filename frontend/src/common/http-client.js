@@ -49,19 +49,21 @@ const loggerInterceptor = config => {
 let loadOverlap = [];
 const loadingLayer = (type, config) => {
   let loadingOverlay = document.querySelector('.loading');
-  document.querySelector('html > body').style.removeProperty('overflow'); // 스크롤 allow
-  loadingOverlay.classList.add('hidden');
-
   if(loadingOverlay != null){
-    if (config.headers['show-layer'] == 'Yes') {
-      if (type) {
-        loadOverlap.push('add');
-      } else {
-        loadOverlap.pop();
-      }
-      if (loadOverlap.length > 0) {
-        document.querySelector('html > body').style.overflow = 'hidden'; // 스크롤 block
-        loadingOverlay.classList.remove('hidden');
+    document.querySelector('html > body').style.removeProperty('overflow'); // 스크롤 allow
+    loadingOverlay.classList.add('hidden');
+
+    if(loadingOverlay != null){
+      if (config.headers['show-layer'] == 'Yes') {
+        if (type) {
+          loadOverlap.push('add');
+        } else {
+          loadOverlap.pop();
+        }
+        if (loadOverlap.length > 0) {
+          document.querySelector('html > body').style.overflow = 'hidden'; // 스크롤 block
+          loadingOverlay.classList.remove('hidden');
+        }
       }
     }
   }
