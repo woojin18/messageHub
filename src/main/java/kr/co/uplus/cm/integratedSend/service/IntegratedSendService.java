@@ -40,7 +40,7 @@ import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.sendMessage.dto.FbInfo;
 import kr.co.uplus.cm.sendMessage.dto.PushMsg;
-import kr.co.uplus.cm.sendMessage.dto.PushRequestData;
+import kr.co.uplus.cm.sendMessage.dto.SmartRequestData;
 import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -125,53 +125,26 @@ public class IntegratedSendService {
      * @param params
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public PushRequestData setIntegratedSendData(RestResult<Object> rtn, Map<String, Object> params) {
-        PushRequestData pushRequestData = new PushRequestData();
+    public SmartRequestData setIntegratedSendData(RestResult<Object> rtn, Map<String, Object> params) {
+        SmartRequestData smartRequestData = new SmartRequestData();
 
-        String webReqId = CommonUtils.getCommonId(Const.WebReqIdPrefix.PUSH_PREFIX, 5);
-
-        //webReqId
-        pushRequestData.setWebReqId(webReqId);
-
-        //appId
-        pushRequestData.setAppId(CommonUtils.getStrValue(params, "appId"));
+        //템플릿 코드
+        smartRequestData.setTmpltCode(CommonUtils.getStrValue(params, "tmpltCode"));
 
         //캠페인 ID
-        pushRequestData.setCampaignId(CommonUtils.getStrValue(params, "campaignId"));
+        smartRequestData.setCampaignId(CommonUtils.getStrValue(params, "campaignId"));
 
-        //발송정책
-        pushRequestData.setServiceCode(CommonUtils.getStrValue(params, "serviceCode"));
+        //부서코드
+        //smartRequestData.setDeptCode(CommonUtils.getStrValue(params, "campaignId"));
+        
+        String webReqId = CommonUtils.getCommonId(Const.WebReqIdPrefix.INTEGRATED_PREFIX, 5);
 
-        //푸시 메시지
-        String pushContent = (CommonUtils.getStrValue(params, "pushContent"));
-        String rcvblcNumber = (CommonUtils.getStrValue(params, "rcvblcNumber"));
-        String msgKind = (CommonUtils.getStrValue(params, "msgKind"));
-        String pushBody = pushContent;
+        //webReqId
+        smartRequestData.setWebReqId(webReqId);
 
-        if(StringUtils.equals(msgKind, Const.MsgKind.AD)
-                && StringUtils.isNotBlank(rcvblcNumber)) {
-            pushBody += "\n" +  rcvblcNumber;
-        }
 
-        PushMsg pushMsg = new PushMsg();
-        pushMsg.setTitle(CommonUtils.getStrValue(params, "pushTitle"));
-        pushMsg.setBody(pushBody);
-        pushRequestData.setMsg(pushMsg);
 
-        //이미지, 부가정보
-        String msgType = (CommonUtils.getStrValue(params, "msgType"));
-        String fileId = (CommonUtils.getStrValue(params, "fileId"));
-        String imgUrl = (CommonUtils.getStrValue(params, "imgUrl"));
-        String adtnInfo = (CommonUtils.getStrValue(params, "adtnInfo"));
-
-        if(StringUtils.equals(msgType, Const.MsgType.IMAGE)) {
-            pushRequestData.setFileId(fileId);
-            pushRequestData.getExt().put("imageUrl", imgUrl);
-        }
-        if(StringUtils.isNotBlank(adtnInfo)) {
-            pushRequestData.getExt().put("data1", adtnInfo);
-        }
-
+/*
         //대체발송
         String rplcSendType = (CommonUtils.getStrValue(params, "rplcSendType"));
         if(!StringUtils.equals(rplcSendType, Const.RplcSendType.NONE)) {
@@ -197,15 +170,15 @@ public class IntegratedSendService {
                 pushFbInfo.setFileId(CommonUtils.getStrValue(fbInfo, "fileId"));
             }
 
-            fbInfoLst.add(pushFbInfo);
-            pushRequestData.setFbInfoLst(fbInfoLst);
-            pushRequestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
+            //fbInfoLst.add(pushFbInfo);
+            //smartRequestData.setFbInfoLst(fbInfoLst);
+            smartRequestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
         }
-
+*/
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<PushRequestData>> violations = validator.validate(pushRequestData);
+        Set<ConstraintViolation<SmartRequestData>> violations = validator.validate(smartRequestData);
         String errorMsg = "";
 
         for (ConstraintViolation violation : violations) {
@@ -218,7 +191,7 @@ public class IntegratedSendService {
             rtn.setMessage(errorMsg);
         }
 
-        return pushRequestData;
+        return smartRequestData;
     }
     
     
@@ -301,23 +274,27 @@ public class IntegratedSendService {
     /**
      * 웹 발송 내역 등록
      * @param data
-     * @param pushRequestData
+     * @param smartRequestData
      * @param recvInfoLst
      * @return
      * @throws Exception
      */
     public RestResult<Object> insertIntegratedCmWebMsg(RestResult<Object> rtn
             , Map<String, Object> data
-            , PushRequestData pushRequestData
+            , SmartRequestData smartRequestData
             , List<RecvInfo> recvInfoLst) throws Exception {
-        String ch = CommonUtils.getStrValue(data, "ch");
+System.out.println("integratedSendService insertIntegratedCmWebMsg 010");    	
+        String ch = CommonUtils.getStrValue(data, "chTypeList");
         String corpId = CommonUtils.getStrValue(data, "corpId");
         String projectId = CommonUtils.getStrValue(data, "projectId");
         String rsrvSendYn = CommonUtils.getStrValue(data, "rsrvSendYn");
         String rsrvDateStr = "";
         String allFailYn = CommonUtils.getStrValue(data, "allFailYn");
         String status = (StringUtils.equals(allFailYn, Const.COMM_YES) ? Const.MsgSendStatus.FAIL : Const.MsgSendStatus.COMPLETED);
-
+System.out.println("====ch : "+ch);
+System.out.println("====corpId : "+corpId);
+System.out.println("====projectId : "+projectId);
+System.out.println("====rsrvSendYn : "+rsrvSendYn);
         if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
             String rsrvYmd = CommonUtils.getStrValue(data, "rsrvDate");
             String rsrvHH = CommonUtils.getStrValue(data, "rsrvHH");
@@ -340,20 +317,20 @@ public class IntegratedSendService {
             status = Const.MsgSendStatus.SEND_WAIT;
         }
 
-        pushRequestData.setRecvInfoLst(recvInfoLst);
+        smartRequestData.setRecvInfoLst(recvInfoLst);
         Gson gson = new Gson();
-        String json = gson.toJson(pushRequestData);
+        String json = gson.toJson(smartRequestData);
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("webReqId", pushRequestData.getWebReqId());
+        params.put("webReqId", smartRequestData.getWebReqId());
         params.put("corpId", corpId);
         params.put("projectId", projectId);
         params.put("apiKey", commonService.getApiKey(corpId, projectId));
         params.put("chString", ch);
         params.put("msgInfo", json);
         params.put("senderCnt", recvInfoLst.size());
-        params.put("callback", pushRequestData.getCallback());
-        params.put("campaignId", pushRequestData.getCampaignId());
+        params.put("callback", smartRequestData.getCallback());
+        params.put("campaignId", smartRequestData.getCampaignId());
         params.put("senderType", Const.SenderType.CHANNEL);
         params.put("status", status);
         params.put("resvSenderYn", rsrvSendYn);
@@ -362,7 +339,7 @@ public class IntegratedSendService {
         int resultCnt = insertCmWebMsg(params);
 
         if (resultCnt <= 0) {
-            log.info("{}.insertPushCmWebMsg Fail =>  webReqId : {}", this.getClass(), pushRequestData.getWebReqId());
+            log.info("{}.insertPushCmWebMsg Fail =>  webReqId : {}", this.getClass(), smartRequestData.getWebReqId());
         }
 
         return rtn;
@@ -382,7 +359,7 @@ public class IntegratedSendService {
     /**
      * 통합 테스트 발송 처리
      * @param data
-     * @param pushRequestData
+     * @param smartRequestData
      * @param sendList
      * @return
      * @throws Exception
@@ -390,13 +367,13 @@ public class IntegratedSendService {
     @SuppressWarnings("unchecked")
     public RestResult<Object> testSendIntegratedMsg(
             Map<String, Object> data
-            , PushRequestData pushRequestData
+            , SmartRequestData smartRequestData
             , List<RecvInfo> sendList) throws Exception {
 
         RestResult<Object> rtn = new RestResult<Object>();
 
-        pushRequestData.setWebReqId(StringUtils.EMPTY);  //테스트발송은 웹 요청 아이디를 넣지 않는다.
-        Map<String, Object> resultMap = sendIntegratedMsg(data, pushRequestData, sendList);
+        smartRequestData.setWebReqId(StringUtils.EMPTY);  //테스트발송은 웹 요청 아이디를 넣지 않는다.
+        Map<String, Object> resultMap = sendIntegratedMsg(data, smartRequestData, sendList);
 
         if(isSendSuccess(resultMap)) {
             int successCnt = 0;
@@ -419,7 +396,7 @@ public class IntegratedSendService {
     /**
      * 통합 메시지 발송 처리
      * @param data
-     * @param pushRequestData
+     * @param smartRequestData
      * @param sendList
      * @return
      * @throws Exception
@@ -427,20 +404,20 @@ public class IntegratedSendService {
     @SuppressWarnings("unchecked")
     public Map<String, Object> sendIntegratedMsg(
             Map<String, Object> data
-            , PushRequestData pushRequestData
+            , SmartRequestData smartRequestData
             , List<RecvInfo> sendList) throws Exception {
 
         String corpId = CommonUtils.getStrValue(data, "corpId");
         String projectId = CommonUtils.getStrValue(data, "projectId");
         String apiKey = commonService.getApiKey(corpId, projectId);
 
-        pushRequestData.setRecvInfoLst(sendList);
+        smartRequestData.setRecvInfoLst(sendList);
 
         Map<String, String> headerMap = new HashMap<String, String>();
         headerMap.put("apiKey", apiKey);
 
         Gson gson = new Gson();
-        String jsonString = gson.toJson(pushRequestData);
+        String jsonString = gson.toJson(smartRequestData);
 
         return apiInterface.sendMsg(ApiConfig.SEND_PUSH_API_URI, headerMap, jsonString);
     }
@@ -537,11 +514,11 @@ public class IntegratedSendService {
     }
 
     /**
-     * 푸시 메시지 발송 비동기 처리
+     * 통합 발송 비동기 처리
      * @param rtn
      * @param fromIndex
      * @param data
-     * @param pushRequestData
+     * @param smartRequestData
      * @param recvInfoLst
      * @throws Exception
      */
@@ -550,10 +527,11 @@ public class IntegratedSendService {
     public void sendIntegratedMsgAsync(RestResult<Object> rtn
             , int fromIndex
             , Map<String, Object> data
-            , PushRequestData pushRequestData
+            , SmartRequestData smartRequestData
             , List<RecvInfo> recvInfoLst
             , List<Object> reSendCdList) throws Exception {
 
+System.out.println("integratedSendService sendIntegratedMsgAsync 010");
         List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
         Map<String, Object> responseBody = null;
         Map<String, Object> sParams = new HashMap<String, Object>(data);
@@ -581,8 +559,8 @@ public class IntegratedSendService {
             toIndex = fromIndex + cutSize;
             try {
                 if(toIndex > listSize) toIndex = listSize;
-                pushRequestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
-                jsonString = gson.toJson(pushRequestData);
+                smartRequestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
+                jsonString = gson.toJson(smartRequestData);
                 responseBody = apiInterface.sendMsg(ApiConfig.SEND_PUSH_API_URI, headerMap, jsonString);
                 isDone = isApiRequestAgain(responseBody, reSendCdList);
                 isAllFail = !isSendSuccess(responseBody);
@@ -612,9 +590,9 @@ public class IntegratedSendService {
                 sParams.put("reqCh", Const.Ch.PUSH);
                 sParams.put("productCode", Const.Ch.PUSH.toLowerCase());
                 sParams.put("finalCh", Const.Ch.PUSH);
-                sParams.put("pushAppId", pushRequestData.getAppId());
-                sParams.put("callback", pushRequestData.getCallback());
-                sParams.put("webReqId", pushRequestData.getWebReqId());
+                //sParams.put("pushAppId", smartRequestData.getAppId());
+                sParams.put("callback", smartRequestData.getCallback());
+                sParams.put("webReqId", smartRequestData.getWebReqId());
                 insertCmMsg(sParams, errorRecvInfoLst);
             } catch (Exception e) {
                 log.error("{}.sendIntegratedMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
@@ -623,7 +601,7 @@ public class IntegratedSendService {
 
         //웹 발송 내역 등록
         if(isAllFail) sParams.put("allFailYn", Const.COMM_YES);
-        insertIntegratedCmWebMsg(rtn, sParams, pushRequestData, recvInfoLst);
+        insertIntegratedCmWebMsg(rtn, sParams, smartRequestData, recvInfoLst);
     }
 
     

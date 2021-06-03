@@ -28,6 +28,7 @@ import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.integratedSend.service.IntegratedSendService;
 import kr.co.uplus.cm.sendMessage.dto.PushRequestData;
 import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
+import kr.co.uplus.cm.sendMessage.dto.SmartRequestData;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.DateUtil;
 import lombok.extern.log4j.Log4j2;
@@ -105,7 +106,7 @@ public class IntegratedSendController {
 	}
 
     /**
-     * 푸시 메시지 발송처리
+     * 통합 발송처리
      *
      * @param request
      * @param response
@@ -122,13 +123,13 @@ public class IntegratedSendController {
         Map<String, Object> sParam = new HashMap<String, Object>();
         RestResult<Object> rtn = new RestResult<Object>();
         Map<String, Object> rtnMap = new HashMap<>();
-        PushRequestData requestData = null;
+        SmartRequestData requestData = null;
 
         try {
             params = commonService.setUserInfo(multipartFileDTO.getParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
             log.info("{}.sendIntegratedMessage Start ====> params : {}", this.getClass(), params);
-
+System.out.println("integratedSendController 010");
             /** 유효성 체크 */
             requestData = integratedSendService.setIntegratedSendData(rtn, params);
             if(rtn.isSuccess() == false) {
@@ -136,31 +137,54 @@ public class IntegratedSendController {
                 return rtn;
             }
             log.info("{}.sendIntegratedMessage pushRequestData: {}", this.getClass(), requestData.toString());
-
-            /** 푸시 수신자 리스트*/
+System.out.println("integratedSendController 020");
+            /** 통합발송 수신자 리스트*/
             recvInfoLst = integratedSendService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
                 rtn.setSuccess(false);
-                rtn.setMessage("잘못된 푸시 수신자 정보입니다.");
+                rtn.setMessage("잘못된 통합발송 수신자 정보입니다.");
                 return rtn;
             }
-
+System.out.println("integratedSendController 030");
             /** 예약건인지 확인 */
             String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
             if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
                 return integratedSendService.insertIntegratedCmWebMsg(rtn, params, requestData, recvInfoLst);
             }
-
+System.out.println("integratedSendController 040");
             /** 잔액확인 */
             String payType = integratedSendService.selectPayType(params);
-
+System.out.println("integratedSendController 041  payType: "+payType);
             //선불일경우
             if(StringUtils.equals(payType, Const.COMM_YES)) {
                 //남은 금액 조회
                 BigDecimal rmAmount = integratedSendService.getRmAmount(params);
+System.out.println("integratedSendController 042  rmAmount: "+rmAmount);                
                 //개당 가격 조회
                 List<String> productCodes = new ArrayList<String>();
-                productCodes.add(Const.MsgProductCode.getType(Const.Ch.PUSH));
+                
+                String[] chTypeArr = (CommonUtils.getStrValue(params, "chTypeList")).split(",");
+                for(String s : chTypeArr) {
+System.out.println("chTypeArr : "+s);
+					if(s.equalsIgnoreCase("push")) productCodes.add(Const.MsgProductCode.getType(Const.Ch.PUSH));
+					if(s.equalsIgnoreCase("rcs")) productCodes.add(Const.MsgProductCode.getType(Const.Ch.RCS));
+					if(s.equalsIgnoreCase("smsMms")) {
+						if((CommonUtils.getStrValue(params, "smsSendType")).equalsIgnoreCase("S")) {
+							productCodes.add(Const.MsgProductCode.getType(Const.Ch.SMS));
+						}else if((CommonUtils.getStrValue(params, "smsSendType")).equalsIgnoreCase("M")) {
+							productCodes.add(Const.MsgProductCode.getType(Const.Ch.MMS));
+						}
+					}
+					if(s.equalsIgnoreCase("kakao")) {
+						if((CommonUtils.getStrValue(params, "kakaoPrdType")).equalsIgnoreCase("friendTalk")) {
+							productCodes.add(Const.MsgProductCode.getType(Const.Ch.FRIENDTALK));
+						}else if((CommonUtils.getStrValue(params, "kakaoPrdType")).equalsIgnoreCase("alimTalk")) {
+							productCodes.add(Const.MsgProductCode.getType(Const.Ch.ALIMTALK));
+						}
+						
+					}
+                }
+                
                 if(params.containsKey("rplcSendType")
                         && !CommonUtils.isEmptyValue(params, "rplcSendType")
                         && !StringUtils.equals((CharSequence) params.get("rplcSendType"), "NONE")) {
@@ -172,7 +196,8 @@ public class IntegratedSendController {
                 sParam.put("productCodes", productCodes);
                 BigDecimal feePerOne = integratedSendService.selectMsgFeePerOne(sParam);
                 BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
-
+System.out.println("integratedSendController 043  feePerOne: "+feePerOne);   
+System.out.println("integratedSendController 044  feePerAll: "+feePerAll);   
                 if(rmAmount.compareTo(feePerAll) < 0) {
                     if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                         rtn.setSuccess(false);
@@ -183,7 +208,7 @@ public class IntegratedSendController {
                     }
                 }
             }
-
+System.out.println("integratedSendController 050  testSendYn : "+testSendYn);
             /** 테스트발송(동기화) */
             if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                 return integratedSendService.testSendIntegratedMsg(params, requestData, recvInfoLst);
@@ -195,16 +220,17 @@ public class IntegratedSendController {
             log.error("{}.sendIntegratedMessage Error : {}", this.getClass(), e);
             return rtn;
         }
-
+System.out.println("integratedSendController 060");
         /** 비동기화 발송 */
         try {
             List<Object> reSendCdList = integratedSendService.reSendCdList(null);
             log.info("{}.sendIntegratedMessage aSync API send Start ====>", this.getClass());
+System.out.println("integratedSendController 061");            
             integratedSendService.sendIntegratedMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.info("{}.sendIntegratedMessage aSync API send Error : {}", this.getClass(), e);
         }
-        rtn.setMessage("푸시 발송 요청처리 되었습니다.");
+        rtn.setMessage("통합 발송 요청처리 되었습니다.");
 
         rtn.setSuccess(true);
         rtn.setData(rtnMap);

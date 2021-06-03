@@ -4,26 +4,11 @@ const selectIntegratedSendList = (params) => {
     return httpClient.post('/integratedSendApi/selectIntegratedSendList', params, { headers: {"show-layer": "Yes"} });
 };
 
-const integratedSendInfo = (params) => {
-    return httpClient.post('/integratedSendApi/selectIntegratedSendInfo', params, { headers: {"show-layer": "Yes"} });
-};
-
-const insertIntegratedSend = (params) => {
-    return httpClient.post('/integratedSendApi/insertIntegratedSend', params, { headers: {"show-layer": "Yes"} });
-};
-
-const updateIntegratedSend = (params) => {
-    return httpClient.post('/integratedSendApi/updateIntegratedSend', params, { headers: {"show-layer": "Yes"} });
-};
-
-const deleteIntegratedSend = (params) => {
-    return httpClient.post('/integratedSendApi/deleteIntegratedSend', params, { headers: {"show-layer": "Yes"} });
+const sendIntegratedMessage = (params) => {
+  return httpClient.post('/integratedSendApi/sendIntegratedMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data"} });
 };
 
 export default {
     selectIntegratedSendList,
-    integratedSendInfo,
-    insertIntegratedSend,
-    updateIntegratedSend,
-    deleteIntegratedSend
+    sendIntegratedMessage
 };

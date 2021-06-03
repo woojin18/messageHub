@@ -187,7 +187,7 @@ export default {
 
     // 검색
     async fnSelectIntegratedSendList() {
-console.log(11111111111);
+
       //유효성 검사
       if(this.searchData.searchStartDate && this.searchData.searchEndDate){
         if(this.searchData.searchStartDate.replace(/[^0-9]/g, '') > this.searchData.searchEndDate.replace(/[^0-9]/g, '')){
@@ -202,14 +202,14 @@ console.log(11111111111);
 
       params.loginId = tokenSvc.getToken().principal.userId;
       params.roleCd = tokenSvc.getToken().principal.roleCd
-console.log(2222222222);
+
       await integratedSendApi.selectIntegratedSendList(params).then(response =>{
         var result = response.data;
         if(result.success) {
           this.datas = result.data;
           this.totCnt = result.pageInfo.totCnt;
           this.offset = result.pageInfo.offset;
-          console.log(333333333333);
+          
         } else {
           alert(result.message);
         }

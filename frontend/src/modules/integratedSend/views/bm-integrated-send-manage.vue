@@ -11,34 +11,31 @@
 			<div class="phoneFixed">
 				<!-- phoneWrap -->
 				<!-- PUSH -->
-		          <div v-if="channelType == 'Push'" class="phoneWrap">
+		          <div v-if="channelType == 'PUSH'" class="phoneWrap">
 		            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 		            <div class="phoneTextWrap">
 		              <div class="phoneText1">
-		                <p v-if="fnIsEmpty(rowData.pushTitle)">제목</p>
+		                <p v-if="this.$gfnCommonUtils.isEmpty(rowData.pushTitle)">제목</p>
 		                <p v-else>{{rowData.pushTitle}}</p>
 		              </div>
-		              <div v-if="rowData.msgType == 'IMAGE' && fnIsEmpty(rowData.pushImgInfo.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
+		              <div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.pushImgInfo.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
 		                <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
 		                <p class="font-size14 color3 mt15">이미지 영역</p>
 		              </div>
-		              <div v-if="rowData.msgType == 'IMAGE' && !fnIsEmpty(rowData.pushImgInfo.imgUrl)" class="phoneText2 mt10 text-center"
+		              <div v-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.pushImgInfo.imgUrl)" class="phoneText2 mt10 text-center"
 		                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.pushImgInfo.imgUrl+');'">
 		              </div>
 		              <div class="scroll-y">
-		                <p v-if="rowData.msgKind != 'A' || (fnIsEmpty(rowData.pushContent) && fnIsEmpty(rowData.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
+		                <p v-if="this.$gfnCommonUtils.isEmpty(rowData.pushContent)" class="font-size14 color4 mt10">내용</p>
 		                <p v-else class="font-size14 color4 mt10">
-		                  <span v-html="$gfnCommonUtils.newLineToBr(rowData.pushContent)"></span>
-		                  <br v-if="!fnIsEmpty(rowData.pushContent)"/>
-		                  {{rowData.rcvblcNumber}}
-		                </p>
+		                  {{rowData.pushContent}}</p>
 		              </div>
 		            </div>
 		          </div>
 		        <!--// PUSH -->
 
 		        <!-- SMS -->
-		          <div v-if="channelType == 'smsMms'" v-show="previewMessageType == 'sms'" class="phoneWrap">
+		          <div v-if="channelType == 'SMSMMS' && previewMessageType == 'SMS'" class="phoneWrap">
 		            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 					<div class="phoneTextWrap">
 						<div class="phoneText1 scroll-y2">
@@ -49,7 +46,7 @@
 		        <!--// SMS -->
 
 		        <!-- MMS -->
-		          <div v-if="channelType == 'smsMms'" v-show="previewMessageType == 'mms'" class="phoneWrap">
+		          <div v-if="channelType == 'SMSMMS' && previewMessageType == 'MMS'" class="phoneWrap">
 		            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 					<div class="phoneTextWrap">
 						<div class="phoneText1 scroll-y4">
@@ -61,7 +58,7 @@
 		        
 		        <!-- RCS -->
 		        	<!-- free -->
-			          <div v-if="channelType == 'RCS'" v-show="previewMessageType == 'free'" class="phoneWrap">
+			          <div v-if="channelType == 'RCS'  && previewRcsMessageType == 'FREE'" class="phoneWrap">
 			          	<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y2">
@@ -72,7 +69,7 @@
 			    	<!-- //free -->
 			    	
 		        	<!-- description -->
-			          <div v-if="channelType == 'RCS'" v-show="previewMessageType == 'description'" class="phoneWrap">
+			          <div v-if="channelType == 'RCS'  && previewRcsMessageType == 'DESCRIPTION'" class="phoneWrap">
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 relative scroll-y4">
@@ -89,7 +86,7 @@
 			    	<!-- //description -->			    	
 			    			        
 		        	<!-- style -->
-			          <div v-if="channelType == 'RCS'" v-show="previewMessageType == 'style'" class="phoneWrap">
+			          <div v-if="channelType == 'RCS'  && previewRcsMessageType == 'STYLE'" class="phoneWrap">
 						<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 of_h">
@@ -107,7 +104,7 @@
 			    	<!-- //style -->
 
 			        <!-- SMS -->
-			          <div v-if="channelType == 'RCS'" v-show="previewMessageType == 'sms'" class="phoneWrap">
+			          <div v-if="channelType == 'RCS'  && previewRcsMessageType == 'SMS'" class="phoneWrap">
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y2">
@@ -118,7 +115,7 @@
 			        <!--// SMS -->
 		        			    				    			        
 			        <!-- LMS -->
-			          <div v-if="channelType == 'RCS'" v-show="previewMessageType == 'lms'" class="phoneWrap">
+			          <div v-if="channelType == 'RCS'  && previewRcsMessageType == 'LSM'" class="phoneWrap">
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y4">
@@ -129,10 +126,18 @@
 			        <!--// LMS -->
 			        		        			    				    			        
 		        	<!-- short -->
-			          <div v-if="channelType == 'RCS'" v-show="previewMessageType == 'short'" class="phoneWrap">
+			          <div v-if="channelType == 'RCS'  && previewRcsMessageType == 'SHORT'" class="phoneWrap">
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
-							<img src="@/assets/images/common/cardThumImg2_2.png" alt="프리 템플릿">
+							<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcsShortImgInfoList[0])" class="phoneText2 mt10 text-center">
+				                <img src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
+				            </div>
+				            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcsShortImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+				                <img src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
+				            </div>
+				            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcsShortImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsShortImgInfoList[0].imgUrl+');'">
+				            </div>
 							<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
 								<h5>{{rowData.rcsShortTitle}}</h5>
 								<div class="scroll-y3">
@@ -143,10 +148,18 @@
 			          </div>
 			    	<!-- //short -->	
 			    	<!-- tall -->
-			          <div vv-if="channelType == 'RCS'" v-show="previewMessageType == 'tall'" class="phoneWrap">
+			          <div v-if="channelType == 'RCS'  && previewRcsMessageType == 'TALL'" class="phoneWrap">
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
-							<img src="@/assets/images/common/cardThumImg2_1.png" alt="프리 템플릿">
+							<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcsTallImgInfoList[0])" class="phoneText2 mt10 text-center">
+				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+				            </div>
+				            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcsTallImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+				            </div>
+				            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcsTallImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsTallImgInfoList[0].imgUrl+');'">
+				            </div>
 							<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20">
 								<h5>{{rowData.rcsTallTitle}}</h5>
 								<div class="scroll-y6">
@@ -158,13 +171,21 @@
 			    	<!-- //tall -->
 
 		        	<!-- cshort -->
-					<div vv-if="channelType == 'RCS'" v-show="previewMessageType == 'cShort'" class="phoneWrap" style="height:660px">
+					<div v-if="channelType == 'RCS'  && previewRcsMessageType == 'CSHORT'" class="phoneWrap" style="height:660px">
 						<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneCardWrap">
 							<p class="color000">[WEB발신] (광고)</p>
 							<ul class="cardBxslider mt10">
-								<li class="slide cardBox"><!--v-show="previewMessageType == 'cTall'"-->
-									<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+								<li class="slide cardBox" v-show="rcs9TabFlag === 'STAB1'">
+									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs90ImgInfoList[0])" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs90ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs90ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs90ImgInfoList[0].imgUrl+');'">
+						            </div>
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
 											<p class="color000 font-size13">{{rowData.rcs90Title}}</p>
@@ -173,8 +194,16 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox">
-									<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+								<li class="slide cardBox" v-show="rcs9TabFlag === 'STAB2'">
+									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs91ImgInfoList[0])" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs91ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs91ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs91ImgInfoList[0].imgUrl+');'">
+						            </div>
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
 											<p class="color000 font-size13">{{rowData.rcs91Title}}</p>
@@ -183,8 +212,16 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox" v-show>
-									<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+								<li class="slide cardBox" v-show="rcs9TabFlag === 'STAB3'">
+									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs92ImgInfoList[0])" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs92ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs92ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs92ImgInfoList[0].imgUrl+');'">
+						            </div>
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
 											<p class="color000 font-size13">{{rowData.rcs92Title}}</p>
@@ -193,8 +230,16 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox">
-									<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+								<li class="slide cardBox" v-show="rcs9TabFlag === 'STAB4'">
+									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs93ImgInfoList[0])" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs93ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs93ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs93ImgInfoList[0].imgUrl+');'">
+						            </div>
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
 											<p class="color000 font-size13">{{rowData.rcs93Title}}</p>
@@ -203,8 +248,16 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox">
-									<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+								<li class="slide cardBox" v-show="rcs9TabFlag === 'STAB5'">
+									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs94ImgInfoList[0])" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs94ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs94ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs94ImgInfoList[0].imgUrl+');'">
+						            </div>
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
 											<p class="color000 font-size13">{{rowData.rcs94Title}}</p>
@@ -213,8 +266,16 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox">
-									<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+								<li class="slide cardBox" v-show="rcs9TabFlag === 'STAB6'">
+									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs95ImgInfoList[0])" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs95ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs95ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs95ImgInfoList[0].imgUrl+');'">
+						            </div>
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
 											<p class="color000 font-size13">{{rowData.rcs95Title}}</p>
@@ -222,19 +283,35 @@
 										</div>
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 									</div>
-								</li>								
+								</li>	
 							</ul>
+									<div class="phone_04_btn6">
+										<div class="of_h consolMarginTop">
+											<div class="float-left" style="width:25%" v-for="(tab, index) in rcs9Tab" :key="tab">
+												<a v-if="index === 0" class="btnStyle1 backBlack" :id="tab" style="min-width:auto; width:95%"  @click="enablePreview9(tab)">{{tab}}</a>
+												<a v-if="index !== 0" class="btnStyle1 backWhite" :id="tab" style="min-width:auto; width:95%"  @click="enablePreview9(tab)">{{tab}}</a>
+											</div>
+							            </div>
+									</div>
 						</div>
 					</div>
 			    	<!-- //cshort -->	
 			    	<!-- ctall -->
-			          <div v-if="channelType == 'RCS'" v-show="previewMessageType == 'cTall'" class="phoneWrap" style="height:660px">
+			          <div v-if="channelType == 'RCS'  && previewRcsMessageType == 'CTALL'" class="phoneWrap" style="height:660px">
 						<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneCardWrap">
 							<p class="color000">[WEB발신] (광고)</p>
 							<ul class="cardBxslider mt10">
-								<li class="slide cardBox">
-									<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB1'">
+									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs100ImgInfoList[0])" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs100ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs100ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs100ImgInfoList[0].imgUrl+');'">
+						            </div>
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
 											<p class="color000 font-size13">{{rowData.rcs100Title}}</p>
@@ -243,8 +320,16 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox">
-									<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB2'">
+									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs101ImgInfoList[0])" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs101ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs101ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs101ImgInfoList[0].imgUrl+');'">
+						            </div>
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
 											<p class="color000 font-size13">{{rowData.rcs101Title}}</p>
@@ -253,8 +338,16 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox">
-									<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB3'">
+									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs102ImgInfoList[0])" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs102ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs102ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs102ImgInfoList[0].imgUrl+');'">
+						            </div>
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
 											<p class="color000 font-size13">{{rowData.rcs102Title}}</p>
@@ -263,8 +356,16 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox">
-									<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB4'">
+									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs103ImgInfoList[0])" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs103ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs103ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs103ImgInfoList[0].imgUrl+');'">
+						            </div>
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
 											<p class="color000 font-size13">{{rowData.rcs103Title}}</p>
@@ -273,8 +374,16 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox">
-									<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB5'">
+									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs104ImgInfoList[0])" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs104ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs104ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs104ImgInfoList[0].imgUrl+');'">
+						            </div>
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
 											<p class="color000 font-size13">{{rowData.rcs104Title}}</p>
@@ -283,8 +392,16 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox">
-									<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB6'">
+									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs105ImgInfoList[0])" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs105ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+						            </div>
+						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs105ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs105ImgInfoList[0].imgUrl+');'">
+						            </div>
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
 											<p class="color000 font-size13">{{rowData.rcs105Title}}</p>
@@ -292,14 +409,22 @@
 										</div>
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
-								</li>								
+								</li>
 							</ul>
 						</div>
+									<div class="phone_04_btn6">
+										<div class="of_h consolMarginTop">
+											<div class="float-left" style="width:16%" v-for="(tab, index) in rcs10Tab" :key="tab">
+												<a v-if="index === 0" class="btnStyle1 backBlack" :id="tab" style="min-width:auto; width:95%"  @click="enablePreview10(tab)">{{tab}}</a>
+												<a v-if="index !== 0" class="btnStyle1 backWhite" :id="tab" style="min-width:auto; width:95%"  @click="enablePreview10(tab)">{{tab}}</a>
+											</div>
+							            </div>
+									</div>
 					</div>
 			    	<!-- //ctall -->
 			    				    	
 		        	<!-- friendTalk -->
-			          <div v-if="channelType == 'kakao'" v-show="previewMessageType == 'friendtalk'" class="phoneWrap">
+			          <div v-if="channelType == 'KAKAO' && rowData.kakaoPrdType == 'FRIENDTALK'" class="phoneWrap">
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y2">
@@ -309,27 +434,26 @@
 			          </div>
 			    	<!-- //friendTalk -->
 			    	
-		        	<!-- noticeTalk -->
-			          <div v-if="channelType == 'kakao'" v-show="previewMessageType == 'alimtalk'" class="phoneWrap">
+		        	<!-- alimTalk -->
+			          <div v-if="channelType == 'KAKAO' && rowData.kakaoPrdType == 'ALIMTALK'" class="phoneWrap">
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y2">
-								<p>{{rowData.noticeTalkContent}}</p>
+								<p>{{rowData.alimTalkContent}}</p>
 							</div>
 						</div>
 			          </div>
-			    	<!-- noticeTalk -->			    	
+			    	<!-- alimTalk -->			    	
 		        <!--// RCS -->
 		                  		        
 				<!-- //phoneWrap -->
 				<div class="phone_04_btn6">
-					<div class="of_h consolMarginTop" v-for="(channel, index) in rowData.checkedChannel" :key="channel">
-		              <div class="float-left" style="width:25%" v-if="index === 0 "><a class="btnStyle1 backBlack" :id="channel" style="min-width:auto; width:100%"  @click="enablePreview(channel)">{{channel}}</a></div>
-		              <div class="float-left" style="width:25%" v-if="index !== 0 "><a class="btnStyle1 backWhite" :id="channel" style="min-width:auto; width:100%"  @click="enablePreview(channel)">{{channel}}</a></div>
-		              <!--
-		              <div class="float-left" style="width:25%" v-if="index === 0 "><a class="btnStyle1 backWhite" :id="channel" style="min-width:auto; width:100%"  @click="enablePreview(channel)">{{channel}}</a></div>
-		              <div class="float-left" style="width:25%" v-if="index !== 0 "><a class="btnStyle1 backWhite" :id="channel" style="min-width:auto; width:100%"  @click="enablePreview(channel)">{{channel}}</a></div>
-		              -->
+					<!--<div class="of_h consolMarginTop" v-for="(channel, index) in rowData.checkedChannel" :key="channel">-->
+					<div class="of_h consolMarginTop">
+						<div class="float-left" style="width:25%" v-for="(channel, index) in rowData.checkedChannel" :key="channel">
+							<a v-if="index === 0" class="btnStyle1 backBlack" :id="channel" style="min-width:auto; width:95%"  @click="enablePreview(channel)">{{channel}}</a>
+							<a v-if="index !== 0" class="btnStyle1 backWhite" :id="channel" style="min-width:auto; width:95%"  @click="enablePreview(channel)">{{channel}}</a>
+						</div>
 		            </div>
 				</div>
 			</div>
@@ -346,7 +470,7 @@
 							<div v-if="this.rowData.msgType == 'IMAGE' && this.rowData.msgKind == 'I'"><h5>정보 형</h5></div>
 							<div v-if="this.rowData.msgType == 'BASE' && this.rowData.msgKind == 'A'"><h5>텍스트 형</h5></div>
 						</div>
-						<div style="width:78%" v-if="channelType == 'Push'">
+						<div style="width:78%" v-if="channelType == 'PUSH'">
 							<input type="radio" name="send" value="ALL" id="ALL" 	v-model="rowData.pushSend" checked=""  > <label for="ALL" class="mr30">ALL</label>
 							<input type="radio" name="send" value="FCM" id="FCM"  	v-model="rowData.pushSend"> <label for="FCM" class="mr30">FCM</label>
 							<input type="radio" name="send" value="APNS" id="APNS"  v-model="rowData.pushSend"> <label for="APNS">APNS</label>
@@ -383,7 +507,7 @@
 				                </div>
 						</div>
 					</div>
-					<div class="of_h consolMarginTop" v-if="channelType == 'Push'">
+					<div class="of_h consolMarginTop" v-if="channelType == 'PUSH'">
 						<div style="width:22%" class="float-left">
 							<h5>APP_ID</h5>
 						</div>
@@ -438,7 +562,7 @@
 							<h5>태그</h5>
 						</div>
 						<div class="of_h" style="width:78%">
-							<input type="text" class="inputStyle" style="width:100%" placeholder="캠페인 ID를 입력해주세요.">
+							<input type="text" class="inputStyle" style="width:100%"  v-model="rowData.campaignId" placeholder="캠페인 ID를 입력해주세요.">
 						</div>
 					</div>													
 				</div>	
@@ -477,7 +601,7 @@
 <script>
 import integratedSendApi from "@/modules/integratedSend/service/integratedSendApi.js";
 import integratedTemplateApi from "@/modules/integratedTemplate/service/integratedTemplateApi.js";
-//import TokenSvc from '@/common/token-service';
+import tokenSvc from '@/common/token-service';
 import confirm from "@/modules/commonUtil/service/confirm";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import Calendar from "@/components/Calendar.vue";
@@ -517,7 +641,8 @@ export default {
       require: false,
       default: function() {
         return {
-                'checkedChannel':[]
+                'checkedChannel':[] //통합템플릿에서 선택된 comma로 구분된 채널 리스트를 배열로 넣은값
+              , 'chTypeList':''  //통합템플릿에서 선택된 comma로 구분된 세부 채널 리스트
               , 'tmpltCode':''
               , 'msgType':'BASE' //BASE: 텍스트, IMAGE:이미지
               , 'msgKind':'I' //정보성 I, 광고용: A
@@ -526,8 +651,7 @@ export default {
               , 'tmpltTitle':'' //템플릿 명
               , 'pushHowToDenyReceipt':''
               , 'pushAppId': ''
-              
-
+ 
               , 'rcsSMSsHowToDenyReceipt':''
               , 'rcsLMSHowToDenyReceipt':''
               , 'rcsShortHowToDenyReceipt':''
@@ -536,7 +660,7 @@ export default {
               , 'rcs10HowToDenyReceipt':''
 
               , 'pushImgInfo':{} //Push이미지정보  //하나의 이미지만 들어감..그래서 {}
-
+              
               , 'rcsShortImgInfoList':[] //RCS 세로형 short 이미지정보
               , 'rcsTallImgInfoList':[] //RCS 세로형 tall 이미지정보
 
@@ -553,33 +677,10 @@ export default {
               , 'rcs103ImgInfoList':[] //RCS 캐러셀 카드4 이미지정보
               , 'rcs104ImgInfoList':[] //RCS 캐러셀 카드5 이미지정보
               , 'rcs105ImgInfoList':[] //RCS 캐러셀 카드6 이미지정보
-
-              , 'rcs90Buttons':[] //button 은 초기에 숨겨져있고, 입력부분없이 제목만 출력
-              , 'rcs91Buttons':[]
-              , 'rcs92Buttons':[]
-              , 'rcs93Buttons':[]
-              , 'rcs94Buttons':[]
-              , 'rcs95Buttons':[]
-
-              , 'rcs100Buttons':[] //button 은 초기에 숨겨져있고, 입력부분없이 제목만 출력
-              , 'rcs101Buttons':[]
-              , 'rcs102Buttons':[]
-              , 'rcs103Buttons':[]
-              , 'rcs104Buttons':[]
-              , 'rcs105Buttons':[]
-
-              , 'rcsSMSButtons':[]
-              , 'rcsLMSButtons':[]
-              , 'rcsShortButtons':[] //button 은 초기에 숨겨져있고, 입력부분없이 제목만 출력
-              , 'rcsTallButtons':[]
-
-			  , 'friendTalkButtons':[] //kakao friend talk 버튼정보
-			  , 'friendTalkButtonsSize': 5 //kakao friend talk 버튼 최대 갯수
+              
               , 'friendTalkImgInfo':{} //kakao friend talk 이미지정보
-              
-              
               , 'smsImgInfoList':[] //sms/mms이미지정보
-              
+               
               , 'smsSendType': 'S'  //sms/mms 발송유형
               , 'smsTitle':''
               , 'smsContent':''
@@ -606,6 +707,8 @@ export default {
     return {
       channelType:'',  		//push/rcs/kakao/smsmms,  preview를 enable/diable시킨다
 	  previewMessageType:'', 	//채널안의 tab(rcs의 경우 free, short, tall...)들에 대한 preview를 show한다.
+	  previewKakaoMessageType:'', 	//채널안의 tab(rcs의 경우 free, short, tall...)들에 대한 preview를 show한다.
+	  previewRcsMessageType:'', 	//채널안의 tab(rcs의 경우 free, short, tall...)들에 대한 preview를 show한다.
 	  directInputOpen : false,
 	  pushTemplateOpen : false,
 	  addressInputOpen : false,
@@ -673,13 +776,6 @@ export default {
       rcs95ImgLimitSize : 1,
       rcs9CardCount: 3, // rcs탭 캐러셀 Short 카드탭 갯수  //카드탭은 갯수만큼 service단에서 배열로 저장되어야 한다.
 
-      button90Flag: false, //버튼 추가 여부
-      button91Flag: false,
-      button92Flag: false,
-      button93Flag: false,
-      button94Flag: false,
-      button95Flag: false,
-
       rcs100ImgMngOpen : false, /* RCS 캐러셀 Tall 카드1 이미지 */
       rcs100ImgUploadOpen : false,
       rcs100UseCh : 'RCS',
@@ -706,13 +802,13 @@ export default {
       rcs105ImgLimitSize : 1,
       rcs10CardCount: 3, // rcs탭 캐러셀 Tall 카드탭 갯수  //카드탭은 갯수만큼 service단에서 배열로 저장되어야 한다.
 
-      button100Flag: false, //버튼 추가 여부
-      button101Flag: false,
-      button102Flag: false,
-      button103Flag: false,
-      button104Flag: false,
-      button105Flag: false,
-
+	  rcs9TabList: 3, //preview에서 rcs tab을 보여주기 위해
+	  rcs10TabList: 3,
+	  rcs9Tab:[], //통합템플릿에서 선택된 comma로 구분된 TAB 리스트를 배열로 넣은값
+      rcs10Tab:[], //통합템플릿에서 선택된 comma로 구분된 TAB 리스트를 배열로 넣은값
+      rcs9TabFlag: 'STAB1',
+      rcs10TabFlag: 'TTAB1',
+	  
       rcsShortImgMngOpen : false, /* RCS 세로형 short 이미지 */
       rcsShortImgUploadOpen : false,
       rcsShortUseCh : 'RCS',
@@ -735,31 +831,9 @@ export default {
       smsImgUploadOpen : false,
       smsUseCh : 'MMS',
       smsImgLimitSize : 2, /* 2개까지 가능 */
-      
-      buttonSMSFlag: false,
-      buttonLMSFlag: false,
-      buttonShortFlag: false,
-      buttonTallFlag: false,
-      buttonFriendTalkFlag: false,
-      
-      smsButtonsMaxLen: 0, 		//start, endDate의 ID값을 유일하게 잡기위해 설정
-	  lmsButtonsMaxLen: 0, 		//start, endDate의 ID값을 유일하게 잡기위해 설정
-	  rcs90ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-	  rcs91ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-	  rcs92ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-	  rcs93ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-	  rcs94ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-	  rcs95ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-	  rcs100ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-	  rcs101ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-	  rcs102ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-	  rcs103ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-	  rcs104ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-	  rcs105ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-	  rcsShortButtonsMaxLen: 0, //start, endDate의 ID값을 유일하게 잡기위해 설정
-	  rcsTallButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-      friendTalkButtonsMaxLen: 0, //start, endDate의 ID값을 유일하게 잡기위해 설정
-
+ 
+ 
+      recvCnt: 0,
       useYn : 'Y'
 
     }
@@ -790,7 +864,7 @@ export default {
       params.rcsTemplateTable = this.rcsTemplateTable;//rcs일경우 사용한 템플릿 번호를 가져간다.
       params.rcs9CardCount = this.rcs9CardCount;//캐러셀 short 카드 수
       params.rcs10CardCount = this.rcs10CardCount;//캐러셀 tall 카드 수
-      params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, noticeTalk 구분값을 가져간다
+      params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
       params.useYn = this.useYn; //사용여부
 
       await integratedTemplateApi.insertIntegratedTemplate(params).then(response =>{
@@ -859,11 +933,12 @@ export default {
           if(result.data != null && result.data.length > 0){
           
           	let rtnData = result.data[0];
+          	this.rowData.chTypeList = rtnData.chTypeList;
             this.rowData.checkedChannel = rtnData.chTypeList.split(',');
             
             console.log("checkedChannel[0] : "+this.rowData.checkedChannel[0]);
             this.channelType = this.rowData.checkedChannel[0];
-            this.previewMessageType = rtnData.rcsPrdType;
+            this.previewRcsMessageType = rtnData.rcsPrdType;
             
             this.rowData.tmpltCode 		= rtnData.tmpltCode;
             this.rowData.msgType 		= rtnData.msgType;
@@ -872,52 +947,55 @@ export default {
             this.rowData.otherProjectUseYn = rtnData.otherProjectUseYn;
             
 //PUSH DATA SET            
-            this.rowData.pushHowToDenyReceipt = rtnData.pushHowToDenyReceipt;
-            this.rowData.pushContent = rtnData.pushMsg;
-            this.rowData.pushAppId = rtnData.pushAppId;
-            this.rowData.pushTitle = rtnData.pushTitle;
-            this.rowData.pushImgInfo.fileId = rtnData.pushFileId;
-            this.rowData.pushImgInfo.imgUrl = rtnData.pushChImgUrl;
-            this.rowData.pushSend = rtnData.pushSendType;
-            this.rowData.pushHowToDenyReceipt = rtnData.pushRcvblcInput;//수신거부방법
+            this.rowData.pushHowToDenyReceipt 	= rtnData.pushHowToDenyReceipt;
+            this.rowData.pushContent 			= rtnData.pushMsg;
+            this.rowData.pushAppId 				= rtnData.pushAppId;
+            this.rowData.pushTitle 				= rtnData.pushTitle;
+            this.rowData.pushImgInfo.fileId 	= rtnData.pushFileId;
+            this.rowData.pushImgInfo.imgUrl 	= rtnData.pushChImgUrl;
+            this.rowData.pushSend 				= rtnData.pushSendType;
+            this.rowData.pushHowToDenyReceipt 	= rtnData.pushRcvblcInput;//수신거부방법
+            
+            console.log(">>>>>>>>>>>>>>>>this.rowData.pushAppId : "+this.rowData.pushAppId);
+            console.log(">>>>>>>>>>>>>>>>this.rowData.pushContent : "+this.rowData.pushContent);
             
 //RCS DATA SET            
-            console.log(">>>>>>>>>>>>>>>>rtnData.rcsPrdType : "+rtnData.rcsPrdType);
-            if(rtnData.rcsPrdType == 'free'){
+            
+            if(rtnData.rcsPrdType == 'FREE'){
 				this.rcsTemplateTable = 0;
 				this.rcsTemplateTableChecked = 0;
-			}else if(rtnData.rcsPrdType == 'description'){
+			}else if(rtnData.rcsPrdType == 'DESCRIPTION'){
 				this.rcsTemplateTable = 1;
 				this.rcsTemplateTableChecked = 1;
-			}else if(rtnData.rcsPrdType == 'style'){
+			}else if(rtnData.rcsPrdType == 'STYLE'){
 				this.rcsTemplateTable = 2;
 				this.rcsTemplateTableChecked = 2;
-			}else if(rtnData.rcsPrdType == 'sms'){
+			}else if(rtnData.rcsPrdType == 'SMS'){
 				this.rcsTemplateTable = 3;
 				this.rcsTemplateTableChecked = 3;
-			}else if(rtnData.rcsPrdType == 'lms'){
+			}else if(rtnData.rcsPrdType == 'LMS'){
 				this.rcsTemplateTable = 4;
 				this.rcsTemplateTableChecked = 4;
-			}else if(rtnData.rcsPrdType == 'short'){
+			}else if(rtnData.rcsPrdType == 'SHORT'){
 				this.rcsTemplateTable = 5;
 				this.rcsTemplateTableChecked = 5;
-			}else if(rtnData.rcsPrdType == 'tall'){
+			}else if(rtnData.rcsPrdType == 'TALL'){
 				this.rcsTemplateTable = 6;
 				this.rcsTemplateTableChecked = 6;
-			}else if(rtnData.rcsPrdType == 'cShort'){
+			}else if(rtnData.rcsPrdType == 'CSHORT'){
 				this.rcsTemplateTable = 9;
 				this.rcsTemplateTableChecked = 9;
-			}else if(rtnData.rcsPrdType == 'cTall'){
+			}else if(rtnData.rcsPrdType == 'CTALL'){
 				this.rcsTemplateTable = 10;
 				this.rcsTemplateTableChecked = 10;
 			}
 			console.log(">>>>>>>>>>>>>>>>this.rcsTemplateTable : "+this.rcsTemplateTable);
 			
-           if(rtnData.rcsPrdType == 'free'){
+           if(rtnData.rcsPrdType == 'FREE'){
 	 			this.rowData.rcs0Content 			= rtnData.rcsBodyDescription;
             }
             
-            if(rtnData.rcsPrdType == 'sms'){
+            if(rtnData.rcsPrdType == 'SMS'){
 	 			this.rowData.rcsSMSContent 			= rtnData.rcsBodyDescription;
 	            this.rowData.rcsSMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
 	            this.rowData.rcsSMSCallback 		= rtnData.rcsCallback; //발신번호
@@ -925,7 +1003,7 @@ export default {
             
 
             
-            if(rtnData.rcsPrdType == 'lms'){
+            if(rtnData.rcsPrdType == 'LMS'){
 	            this.rowData.rcsLMSTitle			= rtnData.rcsBodyTitle;
 	            this.rowData.rcsLMSContent 			= rtnData.rcsBodyDescription;
 	            this.rowData.rcsLMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
@@ -934,7 +1012,7 @@ export default {
             
 
             
-            if(rtnData.rcsPrdType == 'short'){
+            if(rtnData.rcsPrdType == 'SHORT'){
             
 	            this.rowData.rcsShortTitle				= rtnData.rcsBodyTitle;
 	            this.rowData.rcsShortContent 			= rtnData.rcsBodyDescription;
@@ -951,7 +1029,7 @@ export default {
 
 
             
-            if(rtnData.rcsPrdType == 'tall'){
+            if(rtnData.rcsPrdType == 'TALL'){
             	this.rowData.rcsTallTitle				= rtnData.rcsBodyTitle;
 	            this.rowData.rcsTallContent 			= rtnData.rcsBodyDescription;
 	            this.rowData.rcsTallHowToDenyReceipt 	= rtnData.rcsFooter;   //무료수신거부번호
@@ -965,8 +1043,16 @@ export default {
 	            console.log("rcs short rcsTallCallback"+this.rowData.rcsTallCallback); 
 			}
 
-            if(rtnData.rcsPrdType == 'cShort'){
-	            this.rowData.rcs9CardCount				= rtnData.rcs9CardCount;
+            if(rtnData.rcsPrdType == 'CSHORT'){
+	            this.rcs9CardCount				= rtnData.rcsCardCount;
+	            
+	            if(this.rcs9CardCount == 3) this.rcs9TabList = 'STAB1,STAB2,STAB3';
+	            if(this.rcs9CardCount == 4) this.rcs9TabList = 'STAB1,STAB2,STAB3,STAB4';
+	            if(this.rcs9CardCount == 5) this.rcs9TabList = 'STAB1,STAB2,STAB3,STAB4,STAB5';
+	            if(this.rcs9CardCount == 6) this.rcs9TabList = 'STAB1,STAB2,STAB3,STAB4,STAB5,STAB6';
+                this.rcs9Tab = this.rcs9TabList.split(',');
+            
+            
 	            this.rowData.rcs9HowToDenyReceipt 		= rtnData.rcsFooter;   //무료수신거부번호
 	            this.rowData.rcs9Callback 				= rtnData.rcsCallback; //발신번호
 	            
@@ -983,7 +1069,7 @@ export default {
 	            this.rowData.rcs95Title					= rtnData.rcs5BodyTitle;
 	            this.rowData.rcs95Content				= rtnData.rcs5BodyDescription;
 	            
-	            this.rowData.rcs90ImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
+	            this.rowData.rcs90ImgInfoList.push({'fileId':rtnData.rcsBodyMedia,  'imgUrl':rtnData.rcsBodyMediaUrl});
 	            this.rowData.rcs91ImgInfoList.push({'fileId':rtnData.rcs1BodyMedia, 'imgUrl':rtnData.rcs1BodyMediaUrl});
             	this.rowData.rcs92ImgInfoList.push({'fileId':rtnData.rcs2BodyMedia, 'imgUrl':rtnData.rcs2BodyMediaUrl});
 	            this.rowData.rcs93ImgInfoList.push({'fileId':rtnData.rcs3BodyMedia, 'imgUrl':rtnData.rcs3BodyMediaUrl});
@@ -992,8 +1078,15 @@ export default {
 			}
             
 
-           if(rtnData.rcsPrdType == 'cTall'){
-	            this.rowData.rcs10CardCount				= rtnData.rcs10CardCount;
+           if(rtnData.rcsPrdType == 'CTALL'){
+	            this.rcs10CardCount				= rtnData.rcsCardCount;
+	            
+	            if(this.rcs10CardCount == 3) this.rcs10TabList = 'TTAB1,TTAB2,TTAB3';
+	            if(this.rcs10CardCount == 4) this.rcs10TabList = 'TTAB1,TTAB2,TTAB3,TTAB4';
+	            if(this.rcs10CardCount == 5) this.rcs10TabList = 'TTAB1,TTAB2,TTAB3,TTAB4,TTAB5';
+	            if(this.rcs10CardCount == 6) this.rcs10TabList = 'TTAB1,TTAB2,TTAB3,TTAB4,TTAB5,TTAB6';
+                this.rcs10Tab = this.rcs10TabList.split(',');
+                
 	            this.rowData.rcs10HowToDenyReceipt 		= rtnData.rcsFooter;   //무료수신거부번호
 	            this.rowData.rcs10Callback 				= rtnData.rcsCallback; //발신번호
 	            
@@ -1020,7 +1113,8 @@ export default {
 			
 			
 
-//FRIENDTALK DATA SET            
+//FRIENDTALK DATA SET    
+			      
             this.rowData.friendTalkSenderKeyType	= rtnData.friendTalkSenderKeyType;
             this.rowData.friendTalkSenderKey 		= rtnData.friendTalkSenderKey;
             this.rowData.friendTalkImageLink 		= rtnData.friendTalkImageLink;
@@ -1028,18 +1122,22 @@ export default {
             this.rowData.friendTalkImgInfo.fileId 	= rtnData.friendTalkFileId;
             this.rowData.friendTalkImgInfo.imgUrl 	= rtnData.friendTalkImgUrl;
             
- 
+ 			if(rtnData.friendTalkPrdType == 'FRIENDTALK'){
+ 				this.rowData.kakaoPrdType 				= rtnData.friendTalkPrdType; 
+ 			}
 
 //NOTICETALK DATA SET
-
+			if(rtnData.alimTalkPrdType == 'ALIMTALK'){
+ 				this.rowData.kakaoPrdType 				= rtnData.alimTalkPrdType;  
+ 			}
 //SMS/MMS DATA SET
 
 		
 			if(rtnData.smsSendType == 'S'){
-				this.previewMessageType = "sms";
+				this.previewMessageType = "SMS";
 				this.smsTemplateTable = 0;
 			}else if(rtnData.smsSendType == 'M'){
-				this.previewMessageType = "mms";
+				this.previewMessageType = "MMS";
 				this.smsTemplateTable = 1;
 			}
 
@@ -1047,10 +1145,6 @@ export default {
             this.rowData.smsTitle 		= rtnData.smsTitle;
             this.rowData.smsContent 	= rtnData.smsContent;
 
-console.log("smsMms previewMessageType : "+this.previewMessageType);
-console.log("smsMms smsTitle : "+this.rowData.smsTitle);
-console.log("smsMms smsContent : "+this.rowData.smsContent);
-            
             if(rtnData.smsFileId0){
             	this.rowData.smsImgInfoList.push({'fileId':rtnData.smsFileId0
             	                                , 'imgUrl':rtnData.mmsChImgUrl0});
@@ -1074,18 +1168,41 @@ console.log("smsMms smsContent : "+this.rowData.smsContent);
     enablePreview(channel){
       this.channelType = channel;
       
-      jQuery('#Push').attr('class','btnStyle1 backWhite');
+      jQuery('#PUSH').attr('class','btnStyle1 backWhite');
       jQuery('#RCS').attr('class','btnStyle1 backWhite');
-      jQuery('#kakao').attr('class','btnStyle1 backWhite');
-      jQuery('#smsMms').attr('class','btnStyle1 backWhite');
+      jQuery('#KAKAO').attr('class','btnStyle1 backWhite');
+      jQuery('#SMSMMS').attr('class','btnStyle1 backWhite');
       
       jQuery('#'+channel).attr('class','btnStyle1 backBlack')
     },
 
 
+    enablePreview9(tab){
+      this.rcs9TabFlag = tab;
+      
+      jQuery('#STAB1').attr('class','btnStyle1 backWhite');
+      jQuery('#STAB2').attr('class','btnStyle1 backWhite');
+      jQuery('#STAB3').attr('class','btnStyle1 backWhite');
+      jQuery('#STAB4').attr('class','btnStyle1 backWhite');
+      jQuery('#STAB5').attr('class','btnStyle1 backWhite');
+      jQuery('#STAB6').attr('class','btnStyle1 backWhite');
+      
+      jQuery('#'+tab).attr('class','btnStyle1 backBlack')
+    },
 
-
-
+    enablePreview10(tab){
+      this.rcs10TabFlag = tab;
+      
+      jQuery('#TTAB1').attr('class','btnStyle1 backWhite');
+      jQuery('#TTAB2').attr('class','btnStyle1 backWhite');
+      jQuery('#TTAB3').attr('class','btnStyle1 backWhite');
+      jQuery('#TTAB4').attr('class','btnStyle1 backWhite');
+      jQuery('#TTAB5').attr('class','btnStyle1 backWhite');
+      jQuery('#TTAB6').attr('class','btnStyle1 backWhite');
+      
+      jQuery('#'+tab).attr('class','btnStyle1 backBlack')
+    },
+    
     fnClickCuInputType(e){
       if(this.rowData.cuInputType == e.target.value){
         this.fnChgCuInputType('N');
@@ -1204,7 +1321,7 @@ console.log("smsMms smsContent : "+this.rowData.smsContent);
                   + (typeof this.rowData.rcs104Content 		=== 'undefined' ? '' : this.rowData.rcs104Content)
                   + (typeof this.rowData.rcs105Content 		=== 'undefined' ? '' : this.rowData.rcs105Content)
                   + (typeof this.rowData.friendTalkContent 	=== 'undefined' ? '' : this.rowData.friendTalkContent)
-                  + (typeof this.rowData.noticeTalkContent 	=== 'undefined' ? '' : this.rowData.noticeTalkContent)
+                  + (typeof this.rowData.alimTalkContent 	=== 'undefined' ? '' : this.rowData.alimTalkContent)
                   + (typeof this.rowData.smsContent 		=== 'undefined' ? '' : this.rowData.smsContent);
       let varNms = [];
       let containRsvNm = false;
@@ -1295,7 +1412,19 @@ console.log("smsMms smsContent : "+this.rowData.smsContent);
 
       return true;
     },
-        
+
+
+    //테스트 발송 callback
+    fnCallbackTestRecvInfoLst(testRecvInfoLst){
+      if(testRecvInfoLst != null){
+        this.rowData.testRecvInfoLst = testRecvInfoLst;
+        this.fnSendIntegratedMessage('Y');
+      } else {
+        this.rowData.testRecvInfoLst = [];
+      }
+    },
+    
+            
     //통합 메시지 발송 처리
     async fnSendIntegratedMessage(testSendYn){
       if(this.inProgress){
@@ -1328,19 +1457,19 @@ console.log("smsMms smsContent : "+this.rowData.smsContent);
 
       this.inProgress = true;
       const vm = this;
-      await IntegratedSendApi.sendIntegratedMessage(fd).then(response =>{
+      await integratedSendApi.sendIntegratedMessage(fd).then(response =>{
         this.inProgress = false;
         const result = response.data;
         
         if(result.success) {
           if(testSendYn == 'Y'){
-            if(!this.fnIsEmpty(result.message)){
+            if(!this.this.$gfnCommonUtils.isEmpty(result.message)){
               confirm.fnAlert(this.componentsTitle, result.message);
             } else {
               confirm.fnAlert(this.componentsTitle, '발송하였습니다.');
             }
           } else {
-            if(result.data != null && !this.fnIsEmpty(result.data.feeMsg)){
+            if(result.data != null && !this.this.$gfnCommonUtils.isEmpty(result.data.feeMsg)){
               eventBus.$on('callbackEventBus', this.fnAlertFeeMsgCallBack);
               confirm.fnAlert(this.componentsTitle, result.data.feeMsg, 'ALERT', result);
             } else {
@@ -1377,11 +1506,6 @@ console.log("smsMms smsContent : "+this.rowData.smsContent);
       return shortStr;
     },
 
-    //빈값확인
-    fnIsEmpty(str){
-      if(str) return false;
-      else return true
-    },
 
     fnTextLength(title, sid, tid, len){
       var val = jQuery(sid).val();
