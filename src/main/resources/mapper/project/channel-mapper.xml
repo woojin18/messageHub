@@ -175,7 +175,7 @@
 		,		REG_DT
 		,		UPD_DT
 		,		APPROVAL_DT
-		FROM	CM_RCS_CHATBOT
+		FROM	cm.CM_RCS_CHATBOT
 		WHERE	BRAND_ID = #{brandId}
 	</select>
 	

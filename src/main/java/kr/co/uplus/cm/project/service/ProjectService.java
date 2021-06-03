@@ -348,7 +348,7 @@ public class ProjectService {
 	public RestResult<?> selectApprovalBrandList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 
-		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_MANAGE_LIST, params);
+		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_MANAGE_APPROVAL_BRAND_LIST, params);
 				
 		rtn.setData(list);
 

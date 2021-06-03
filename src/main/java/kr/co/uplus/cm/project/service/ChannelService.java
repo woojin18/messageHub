@@ -198,12 +198,21 @@ public class ChannelService {
 	}
 
 	// RCS 브랜드 발신번호 상세 조회
+	@SuppressWarnings("unchecked")
 	public RestResult<?> selectRcsCallbackList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-
-		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_CALLBACKLIST, params);
-
-		rtn.setData(rtnList);
+		
+		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
+		if (pageInfo != null && !pageInfo.isEmpty()) {
+			int rowNum = generalDao.selectGernalCount(DB.QRY_SELECT_CALLBACK_MANAGE_LIST_CNT, params);
+			pageInfo.put("rowNum", rowNum);
+			
+			rtn.setPageInfo(pageInfo);
+		}
+		
+		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_MANAGE_LIST, params);
+				
+		rtn.setData(list);
 
 		return rtn;
 	}

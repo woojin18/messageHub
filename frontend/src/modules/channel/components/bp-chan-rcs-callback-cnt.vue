@@ -1,5 +1,5 @@
 <template>
-	<div id="confirmCallback" class="modal fade modalStyle" tabindex="-1" role="dialog" aria-hidden="true" @click="fnClose">
+	<div id="confirmCallback" class="modal fade modalStyle" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog" style="width:1200px">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -14,17 +14,19 @@
 								브랜드ID : {{this.row_data.brandId}}
 							</div>
 						</div>
+            
+            <!-- 페이징 카운트 -->
+						<PagingCnt :pageInfo.sync="pageInfo" />
+            <!-- 페이징 카운트 -->
             <table cellspacing="0" id="list" class="table_skin1 tbl-striped" style="width:100%">
               <thead>
                 <th>No.</th>
                 <th>발신번호명</th>
-                <th>템플릿명</th>
                 <th>발신번호</th>
                 <th>SMSMO<br>사용여부</th>
-                <th>전시상태</th>
+                <th>등록일</th>
                 <th>승인상태</th>
-                <th>승인요청일</th>
-                <th>승인완료일</th>
+                <th>승인일</th>
               </thead>
               <tbody>
                 <tr v-for="(data, index) in callbackItems" :key="index">
@@ -32,33 +34,30 @@
                     {{ index + 1 }}
                   </td>
                   <td>
-                    {{ data.PROJECT_NAME }}
+                    {{ data.subTitle }}
                   </td>
                   <td>
-                    {{ data.PROJECT_ID }}
+                    {{ data.chatbotId }}
                   </td>
                   <td>
-                    {{ data.USE_CH_LIST }}
+                    {{ data.rcsReplyText }}
                   </td>
                   <td>
-                    {{ data.REG_DT }}
+                    {{ data.regDt }}
                   </td>
                   <td>
-                    {{ data.PAY_TYPE }}
+                    {{ data.approvalStatus }}
                   </td>
                   <td>
-                    {{ data.PROJECT_MEMBER_CNT }}
-                  </td>
-                  <td>
-                    {{ data.REG_DT }}
-                  </td>
-                  <td>
-                    {{ data.REG_DT }}
+                    {{ data.approvalDt }}
                   </td>
                 </tr>
               </tbody>
             </table>
 					</div>
+          <!-- 페이징 -->
+          <Paging :pageInfo.sync="pageInfo" />
+          <!-- 페이징 -->
 					<div class="text-center mt40">
 						<a @click="fnClose" class="btnStyle3 black font14" data-toggle="modal">닫기</a>
 					</div>
@@ -71,17 +70,20 @@
 <script>
 import rcsApi from '../service/api'
 
+import Paging from "@/modules/commonUtil/components/bc-paging"
+import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt"
+
 export default {
-  name: 'bpChanRcsTmpltCnt',
+  components: {
+      Paging
+    , PagingCnt
+  },
   data() {
     return {
-      // select 박스 value (출력 갯수 이벤트)
-      selected : 10,
-      // 현재 페이징 위치
-      pagingCnt : 1,
+      
       // 리스트 
       callbackItems : [],
-      count : 0
+      pageInfo: {}
     }
   },
   props: {
@@ -104,11 +106,17 @@ export default {
       }
     },
     row_data: function(newVal, oldVal) {
-      this.fnSearchRegCallback();
+      this.fnSearch();
     }
   },
   mounted() {
-    var vm = this;
+    this.pageInfo = {
+			"pageCnt"   : [10, 30, 50],  //표시할 개수 리스트
+			"selPageCnt": 10,          //선택한 표시 개수
+			"selPage"   : 1,          //선택한 페이지
+			"rowNum"    : 1           //총개수
+		};
+
   },
   methods: {
     // 닫기
@@ -116,15 +124,18 @@ export default {
       this.$emit('update:visibleCallback', false);
     },
     // 조회
-    fnSearchRegCallback(){
+    fnSearch(){
       var params = {
-          "brand_id"    : this.row_data.brandId,
-          "rows"        : 15,
-          "paging"      : 1
+          "brandId"    : this.row_data.brandId,
+          "pageInfo"    	: this.pageInfo
       };
 
-      rcsApi.selectRcsRegTmpltList(params).then(response =>{
-        this.callbackItems = response.data.data;
+      rcsApi.selectRcsCallbackList(params).then(response =>{
+        var result = response.data;
+				if(result.success) {
+          this.callbackItems = result.data; 
+          this.pageInfo = result.pageInfo;
+				}
       });
     }
   }
