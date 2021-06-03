@@ -333,9 +333,14 @@ public class ChannelService {
 			
 			// 쳇봇데이터
 			List<Object> chatbotList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_BRAND_CHATBOT, params);
-			Map<String, Object> chatbotMap = (Map<String, Object>) chatbotList.get(0);
-			inputVal.put("mainMdn",			chatbotMap.get("mainMdn"));
-			inputVal.put("mainTitle",		chatbotMap.get("mainTitle"));
+			if(chatbotList.size() > 0) {
+				Map<String, Object> chatbotMap = (Map<String, Object>) chatbotList.get(0);
+				inputVal.put("mainMdn",			chatbotMap.get("mainMdn"));
+				inputVal.put("mainTitle",		chatbotMap.get("mainTitle"));
+			} else {
+				inputVal.put("mainMdn",			"");
+				inputVal.put("mainTitle",		"");
+			}
 			
 			result.put("inputVal", inputVal);
 		}
@@ -624,6 +629,35 @@ public class ChannelService {
 				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
 				throw new Exception(errMsg);
 			}
+		}
+	}
+	
+	// 발신번호관리 삭제 요청
+	@SuppressWarnings("unchecked")
+	public void deleteRcsBrandForApi(Map<String, Object> params) throws Exception {
+
+		Map<String, Object> apiBodyMap = new HashMap<>();
+		apiBodyMap.put("corpId", CommonUtils.getString(params.get("corpId")));
+		apiBodyMap.put("projectId", CommonUtils.getString(params.get("projectId")));
+		
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		headerMap.put("apiId",		CommonUtils.getString(params.get("apiKey")));
+		headerMap.put("apiSecret",	CommonUtils.getString(params.get("apiSecret")));
+		headerMap.put("brandId",	CommonUtils.getString(params.get("brandId")));
+		
+		// API 통신 처리
+		Map<String, Object> result =  apiInterface.delete("/console/v1/brand/" + CommonUtils.getString(params.get("brandId")), null, apiBodyMap, headerMap);
+		
+		System.out.println("------------------------------------------------- deleteRcsBrandForApi result : " + result);
+		
+		// 성공인지 실패인지 체크
+		if( "10000".equals(result.get("rslt")) ) {
+		} else if ( "500100".equals(result.get("rslt")) ) {
+			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+			throw new Exception(errMsg);
+		} else {
+			String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+			throw new Exception(errMsg);
 		}
 	}
 	
