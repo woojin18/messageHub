@@ -203,7 +203,7 @@ export default {
 		},
 		// 저장
 		fnSave() {
-			let projectName = jQuery("#projectName").val();
+			let projectName = jQuery('#projectName').val();
 			if(projectName == "" || projectName == null) {
 				confirm.fnAlert("", "프로젝트명을 입력하세요.");
 				return false;
@@ -214,14 +214,14 @@ export default {
 		fnSaveCallBack() {
 			var params = {
 				"projectId"		: this.baseInfoData.projectId,
-				"projectName"	: jQuery("#projectName").val(),
-				"projectDesc"	: jQuery("#projectDesc").val(),
-				"useYn"			: jQuery("input[name='useYn']:checked").val(),
-				"radioRcs"		: jQuery("input[name='radioRcs']:checked").val(),
-				"radioMms"		: jQuery("input[name='radioMms']:checked").val(),
-				"radioPush"		: jQuery("input[name='radioPush']:checked").val(),
-				"radioKko"		: jQuery("input[name='radioKakao']:checked").val(),
-				"radioMo"		: jQuery("input[name='radioMo']:checked").val(),
+				"projectName"	: jQuery('#projectName').val(),
+				"projectDesc"	: jQuery('#projectDesc').val(),
+				"useYn"			: jQuery('input[name="useYn"]:checked').val(),
+				"radioRcs"		: jQuery('input[name="radioRcs"]:checked').val(),
+				"radioMms"		: jQuery('input[name="radioMms"]:checked').val(),
+				"radioPush"		: jQuery('input[name="radioPush"]:checked').val(),
+				"radioKko"		: jQuery('input[name="radioKakao"]:checked').val(),
+				"radioMo"		: jQuery('input[name="radioMo"]:checked').val(),
 			};
 
 			baseInfoApi.saveProjectBaseInfo(params).then(response =>{
@@ -241,18 +241,14 @@ export default {
 			this.apiKeyData = {};
 			this.apiKeyData.projectId = this.$parent.projectId;
 			this.saveStatus = 'R';
-			jQuery("#apiKeyPop").modal("show");
+			jQuery('#apiKeyPop').modal('show');
 		},
 		// API키 수정
 		fnUpdateApiKeyPop(data) {
-			console.log(">>> fnUpdateApiKeyPop start");
-			jQuery("#apiKeyPop").modal("show");
+			jQuery('#apiKeyPop').modal('show');
 			this.apiKeyOpen = !this.apiKeyOpen;
 			this.apiKeyData = data;
 			this.saveStatus = 'U';
-			console.log(">>> apiKeyOpen : " + this.apiKeyOpen);
-			console.log(">>> apiKeyData : " + this.apiKeyData);
-			console.log(">>> saveStatus : " + this.saveStatus);
 		}
 	}
 }
