@@ -7,7 +7,7 @@
 					<div>
 						<h2>API Key 상세</h2>
 						<hr>
-						<div v-if="saveStatus === 'U'" class="of_h">
+						<div id="apiKeyDiv" class="of_h">
 							<div class="float-left" style="width:24%"><h5>API KEY</h5></div>
 							<div class="float-left" style="width:76%">
 								<input type="text" id="apiKey" class="inputStyle" :disabled="true">
@@ -19,7 +19,7 @@
 								<input type="password" id="apiPwd" class="inputStyle">
 							</div>
 						</div>
-						<div v-if="saveStatus === 'R'" class="of_h consolMarginTop">
+						<div id="apiPwdConfirmDiv" class="of_h consolMarginTop">
 							<div class="float-left" style="width:24%"><h5>API 암호 확인</h5></div>
 							<div class="float-left" style="width:76%">
 								<input type="password" id="apiPwdConfirm" class="inputStyle">
@@ -173,39 +173,40 @@ export default {
 		},
 	},
 	watch: {
-		apiKeyOpen: function(val) {
-			console.log(">>> apiKeyOpen Watch start : " + val);
+		apiKeyOpen: function() {
 			if(this.saveStatus === 'R') {
 				this.apiKeyData.apiKey = '';
+				jQuery('#apiKeyDiv').hide();
+				jQuery('#apiPwdConfirmDiv').show();
 				jQuery('#apiKey').val('');
 				jQuery('#apiPwd').val('');
 				jQuery('#apiPwdConfirm').val('');
-				jQuery('input:radio[name=webSenderYn]:input[value="Y"]').prop("checked", true);
-				jQuery('input:radio[name=ipChkYn]:input[value="Y"]').prop("checked", true);
+				jQuery('input:radio[name=webSenderYn]:input[value="Y"]').prop('checked', true);
+				jQuery('input:radio[name=ipChkYn]:input[value="Y"]').prop('checked', true);
 				jQuery('#ipListSpan').show();
 				// 고객사 접속 IP 입력칸 기본 생성
 				this.ipList = [];
 				this.ipList.push('');
 				this.loopCnt = 1;
-				jQuery("#cps").val(0);
-				jQuery('#selectStatus').val('USE').attr("selected", "selected");
-				jQuery('#selectLineType').val('').attr("selected", "selected");
-				jQuery('input:radio[name=rptYn]:input[value="Y"]').prop("checked", true);
-				jQuery('input:radio[name=dupChkYn]:input[value="Y"]').prop("checked", true);
-				jQuery('input:radio[name=daySenderChkYn]:input[value="N"]').prop("checked", true);
+				jQuery('#cps').val(0);
+				jQuery('#selectStatus').val('USE').attr('selected', 'selected');
+				jQuery('#selectLineType').val('').attr('selected', 'selected');
+				jQuery('input:radio[name=rptYn]:input[value="Y"]').prop('checked', true);
+				jQuery('input:radio[name=dupChkYn]:input[value="Y"]').prop('checked', true);
+				jQuery('input:radio[name=daySenderChkYn]:input[value="N"]').prop('checked', true);
 				jQuery('#daySenderLimitAmount').val(null);
 				jQuery('#daySenderLimitAmountSpan').hide();
-				jQuery('input:radio[name=monSenderChkYn]:input[value="N"]').prop("checked", true);
+				jQuery('input:radio[name=monSenderChkYn]:input[value="N"]').prop('checked', true);
 				jQuery('#monSenderLimitAmount').val(null);
 				jQuery('#monSenderLimitAmountSpan').hide();
 			}
 			if(this.saveStatus === 'U') {
-				console.log(">>> apiKeyOpen Watch Update Start");
-				console.log(">>> apiKey : " + this.apiKeyData.apiKey);
+				jQuery('#apiKeyDiv').show();
+				jQuery('#apiPwdConfirmDiv').hide();
 				jQuery('#apiKey').val(this.apiKeyData.apiKey);
 				jQuery('#apiPwd').val('');
-				jQuery('input:radio[name=webSenderYn]:input[value="' + this.apiKeyData.webSenderYn + '"]').prop("checked", true);
-				jQuery('input:radio[name=ipChkYn]:input[value="' + this.apiKeyData.ipChkYn + '"]').prop("checked", true);
+				jQuery('input:radio[name=webSenderYn]:input[value="' + this.apiKeyData.webSenderYn + '"]').prop('checked', true);
+				jQuery('input:radio[name=ipChkYn]:input[value="' + this.apiKeyData.ipChkYn + '"]').prop('checked', true);
 
 				if(this.apiKeyData.ipChkYn == 'Y')
 					jQuery('#ipListSpan').show();
@@ -218,27 +219,27 @@ export default {
 					this.loopCnt = this.ipList.length;
 				}
 
-				jQuery("#cps").val(this.apiKeyData.cps);
+				jQuery('#cps').val(this.apiKeyData.cps);
 				jQuery('#selectStatus').val(this.apiKeyData.status).attr("selected", "selected");
 				jQuery('#selectLineType').val(this.apiKeyData.lineType).attr("selected", "selected");
-				jQuery('input:radio[name=rptYn]:input[value="' + this.apiKeyData.rptYn + '"]').prop("checked", true);
-				jQuery('input:radio[name=dupChkYn]:input[value="' + this.apiKeyData.dupChkYn + '"]').prop("checked", true);
-				jQuery('input:radio[name=daySenderChkYn]:input[value="' + this.apiKeyData.daySenderChkYn + '"]').prop("checked", true);
+				jQuery('input:radio[name=rptYn]:input[value="' + this.apiKeyData.rptYn + '"]').prop('checked', true);
+				jQuery('input:radio[name=dupChkYn]:input[value="' + this.apiKeyData.dupChkYn + '"]').prop('checked', true);
+				jQuery('input:radio[name=daySenderChkYn]:input[value="' + this.apiKeyData.daySenderChkYn + '"]').prop('checked', true);
 
 				if(this.apiKeyData.daySenderChkYn == 'Y')
 					jQuery('#daySenderLimitAmountSpan').show();
 				else
 					jQuery('#daySenderLimitAmountSpan').hide();
 
-				jQuery("#daySenderLimitAmount").val(this.apiKeyData.daySenderLimitAmount);
-				jQuery('input:radio[name=monSenderChkYn]:input[value="' + this.apiKeyData.monSenderChkYn + '"]').prop("checked", true);
+				jQuery('#daySenderLimitAmount').val(this.apiKeyData.daySenderLimitAmount);
+				jQuery('input:radio[name=monSenderChkYn]:input[value="' + this.apiKeyData.monSenderChkYn + '"]').prop('checked', true);
 
 				if(this.apiKeyData.monSenderChkYn == 'Y')
 					jQuery('#monSenderLimitAmountSpan').show();
 				else
 					jQuery('#monSenderLimitAmountSpan').hide();
 
-				jQuery("#monSenderLimitAmount").val(this.apiKeyData.monSenderLimitAmount);
+				jQuery('#monSenderLimitAmount').val(this.apiKeyData.monSenderLimitAmount);
 			}
 		},
 		// daySenderLimitAmount: function(val) {
@@ -277,7 +278,6 @@ export default {
 		}
 	},
 	mounted() {
-		console.log('>>>>>> apiKye modal mounted called');
 		this.fnLineTypeInit();
 	},
 	methods: {
@@ -287,7 +287,7 @@ export default {
 			let apiPwd					= jQuery('#apiPwd').val();
 			let apiPwdConfirm			= jQuery('#apiPwdConfirm').val();
 			let ipChkYn					= jQuery('input:radio[name=ipChkYn]:checked').val();
-			let cps						= jQuery("#cps").val();
+			let cps						= jQuery('#cps').val();
 			let lineType				= jQuery('#selectLineType').val();
 			let daySenderChkYn			= jQuery('input:radio[name=daySenderChkYn]:checked').val();
 			let monSenderChkYn			= jQuery('input:radio[name=daySenderChkYn]:checked').val();
@@ -353,20 +353,20 @@ export default {
 			let params = {
 				"newProjectId"			: this.apiKeyData.projectId,
 				"apiKey"				: this.apiKeyData.apiKey,
-				"apiPwdConfirm"			: jQuery("#apiPwdConfirm").val(),
+				"apiPwdConfirm"			: jQuery('#apiPwdConfirm').val(),
 				"corpId"				: tokenSvc.getToken().principal.corpId,
-				"apiPwd"				: jQuery("#apiPwd").val(),
-				"ipChkYn"				: jQuery("input[name='ipChkYn']:checked").val(),
-				"cps"					: jQuery("#cps").val(),
-				"daySenderChkYn"		: jQuery("input[name='daySenderChkYn']:checked").val(),
-				"monSenderChkYn"		: jQuery("input[name='monSenderChkYn']:checked").val(),
-				"status"				: jQuery("#selectStatus option:selected").val(),
-				"rptYn"					: jQuery("input[name='rptYn']:checked").val(),
-				"lineType"				: jQuery("#selectLineType option:selected").val(),
-				"dupChkYn"				: jQuery("input[name='rptYn']:checked").val(),
-				"webSenderYn"			: jQuery("input[name='webSenderYn']:checked").val(),
-				"daySenderLimitAmount"	: jQuery("#daySenderLimitAmount").val(),
-				"monSenderLimitAmount"	: jQuery("#monSenderLimitAmount").val(),
+				"apiPwd"				: jQuery('#apiPwd').val(),
+				"ipChkYn"				: jQuery('input[name="ipChkYn"]:checked').val(),
+				"cps"					: jQuery('#cps').val(),
+				"daySenderChkYn"		: jQuery('input[name="daySenderChkYn"]:checked').val(),
+				"monSenderChkYn"		: jQuery('input[name="monSenderChkYn"]:checked').val(),
+				"status"				: jQuery('#selectStatus option:selected').val(),
+				"rptYn"					: jQuery('input[name="rptYn"]:checked').val(),
+				"lineType"				: jQuery('#selectLineType option:selected').val(),
+				"dupChkYn"				: jQuery('input[name="rptYn"]:checked').val(),
+				"webSenderYn"			: jQuery('input[name="webSenderYn"]:checked').val(),
+				"daySenderLimitAmount"	: jQuery('#daySenderLimitAmount').val(),
+				"monSenderLimitAmount"	: jQuery('#monSenderLimitAmount').val(),
 				"ipList"				: this.ipList,
 				"saveStatus"			: this.saveStatus,
 				
@@ -378,7 +378,7 @@ export default {
 				if(result.success) {
 					confirm.fnAlert("", "저장되었습니다.");
 					this.$parent.fnSearchProject();
-					jQuery("#apiKeyPop").modal("hide");
+					jQuery('#apiKeyPop').modal('hide');
 				} else {
 					confirm.fnAlert("", result.message);
 				}
@@ -400,7 +400,7 @@ export default {
 			commonUtilApi.selectCodeList(params).then(response =>{
 				var result = response.data.data;
 				for(var i = 0; i < result.length; i++){
-					jQuery("#selectLineType").append('<option value="'+result[i].codeVal1+'">'+result[i].codeName1+'</option>');
+					jQuery('#selectLineType').append('<option value="'+result[i].codeVal1+'">'+result[i].codeName1+'</option>');
 				}
 			});
 		},
@@ -435,7 +435,7 @@ export default {
 		},
 		// 닫기
 		fnClose() {
-			jQuery("#apiKeyPop").modal("hide");
+			jQuery('#apiKeyPop').modal('hide');
 		},
 	}
 }

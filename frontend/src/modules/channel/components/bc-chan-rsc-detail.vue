@@ -326,7 +326,7 @@
 						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'Y' " @click="fnSave('approval')" class="btnStyle5 red float-left ml10 width120">승인요청</a>
 
 						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N'" @click="fnSave('update')" class="btnStyle5 red float-left ml10 width120">수정요청</a>
-						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N'" @click="fnSave('delete')" class="btnStyle5 red float-left ml10 width120">삭제요청</a>
+						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N'" @click="fnDeleteConfirm()" class="btnStyle5 red float-left ml10 width120">삭제요청</a>
 						<a @click="fnBack" ref="backBtn" class="btnStyle5 white float-left ml10 width120">목록</a>
 					</div>
 				</div>		
@@ -341,6 +341,7 @@ import api from "@/modules/channel/service/api";
 import axios from 'axios'
 import tokenSvc from '@/common/token-service';
 import confirm from "@/modules/commonUtil/service/confirm"
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
   name: 'bcChanRcsDetail',
@@ -420,13 +421,13 @@ export default {
     this.projectId		= this.$route.params.projectId;
 	this.brandId		= this.$route.params.brandId;
 	this.inputVal		= this.$route.params.inputVal;
-
+	// 임시저장인지 확인
 	if( this.brandId.substring(0,1) === 'T' ){
 		this.tmpBrandYn = "Y";
 	} else {
 		this.tmpBrandYn = "N";
 	}
-
+	// 프로젝트 공유 여부
 	if( this.projectId != 'ALL' ){
 		this.otherProjectYn = 'N';
 	} else {
@@ -454,10 +455,10 @@ export default {
 			}
 			if( result.cateData.data != null && result.cateData.data != undefined ){
 				this.duplCheckYn = 'Y';
-				confirm.fnAlert("", "정상적으로 확인되었습니다.");
 				if(this.save_status === 'U'){
 					this.fnChangeCate2();
 				}
+				confirm.fnAlert("", "정상적으로 확인되었습니다.");
 			} else {
 				this.duplCheckYn = 'N';
 				confirm.fnAlert("", "확인에 실패했습니다.");
@@ -491,30 +492,27 @@ export default {
 	fnClickMenu(checkName, checkYn){
 		var menuCnt = 0;
 
-		if( this.inputVal.call		){ menuCnt++;}
-		if( this.inputVal.web		){ menuCnt++;}
-		if( this.inputVal.store		){ menuCnt++;}
-		if( this.inputVal.order		){ menuCnt++;}
-		if( this.inputVal.buy		){ menuCnt++;}
-		if( this.inputVal.tickets	){ menuCnt++;}
-		if( this.inputVal.moreinfo	){ menuCnt++;}
+		if( this.inputVal.call		){ menuCnt++; this.fnClickMenu2(menuCnt, checkName);}
+		if( this.inputVal.web		){ menuCnt++; this.fnClickMenu2(menuCnt, checkName);}
+		if( this.inputVal.store		){ menuCnt++; this.fnClickMenu2(menuCnt, checkName);}
+		if( this.inputVal.order		){ menuCnt++; this.fnClickMenu2(menuCnt, checkName);}
+		if( this.inputVal.buy		){ menuCnt++; this.fnClickMenu2(menuCnt, checkName);}
+		if( this.inputVal.tickets	){ menuCnt++; this.fnClickMenu2(menuCnt, checkName);}
+		if( this.inputVal.moreinfo	){ menuCnt++; this.fnClickMenu2(menuCnt, checkName);}
 		
+		
+	},
+	fnClickMenu2(menuCnt, checkName){
 		if( menuCnt > 3 ){
-			/* if( checkName === 'call'	){ this.inputVal.call		= false;}
-			if( checkName === 'web'		){ this.inputVal.web		= false;}
-			if( checkName === 'store'	){ this.inputVal.store		= false;}
-			if( checkName === 'order'	){ this.inputVal.order		= false;}
-			if( checkName === 'buy'		){ this.inputVal.buy		= false;}
-			if( checkName === 'tickets'	){ this.inputVal.tickets		= false;}
-			if( checkName === 'moreinfo'){ this.inputVal.moreinfo 	= false;} */
 			if( checkName === 'call'	){ this.inputVal.call		= '';}
 			if( checkName === 'web'		){ this.inputVal.web		= '';}
 			if( checkName === 'store'	){ this.inputVal.store		= '';}
 			if( checkName === 'order'	){ this.inputVal.order		= '';}
 			if( checkName === 'buy'		){ this.inputVal.buy		= '';}
-			if( checkName === 'tickets'	){ this.inputVal.tickets		= '';}
+			if( checkName === 'tickets'	){ this.inputVal.tickets	= '';}
 			if( checkName === 'moreinfo'){ this.inputVal.moreinfo 	= '';}
-		//	alert("3개이상 메뉴 안됨");
+
+			confirm.fnAlert("", "3개이상 메뉴 선택은 되지 않습니다.");
 		}
 	},
 	// 대표발신번호 동일 체크여부
@@ -544,7 +542,7 @@ export default {
 	},
 	fnValidate(){
 		if( this.inputVal.apiKey === ''			|| this.inputVal.apiKey === undefined ) {		confirm.fnAlert("", "API KEY를 입력해주세요.");  return false;}
-		if( this.inputVal.apiSecret === ''	|| this.inputVal.apiSecret === undefined ) {	confirm.fnAlert("", "API SECRET KEY를 입력해주세요.");   return false;}
+		if( this.inputVal.apiSecret === ''		|| this.inputVal.apiSecret === undefined ) {	confirm.fnAlert("", "API SECRET KEY를 입력해주세요.");   return false;}
 		if( this.inputVal.name === ''			|| this.inputVal.name === undefined ) {			confirm.fnAlert("", "브랜드명을 입력해주세요."); return false;}
 		if( this.inputVal.tel === ''			|| this.inputVal.tel === undefined ) {			confirm.fnAlert("", "전화번호를 입력해주세요."); return false;}
 
@@ -563,12 +561,17 @@ export default {
 		if( this.save_status == 'C' ){
 			if( this.$refs.bgImgFile.files[0] === ''		|| this.$refs.bgImgFile.files[0] === undefined ) {	confirm.fnAlert("", "백그라운드 이미지를 등록해주세요."); return false;}
 			if( this.$refs.profileImgFile.files[0] === ''	|| this.$refs.profileImgFile.files[0] === undefined ) {	confirm.fnAlert("", "프로필 이미지를 등록해주세요."); return false;}
-			if( this.$refs.certiImgFile.files[0] === ''	|| this.$refs.certiImgFile.files[0] === undefined ) {	confirm.fnAlert("", "통신서비스 가입증명원을 등록해주세요."); return false;}
+			if( this.$refs.certiImgFile.files[0] === ''		|| this.$refs.certiImgFile.files[0] === undefined ) {	confirm.fnAlert("", "통신서비스 가입증명원을 등록해주세요."); return false;}
 		}
 		return true;
 	},
     // 등록, 수정
 	async fnSave(sts){
+		// 확인 했는지 확인
+		if( this.duplCheckYn == 'N' ){
+			confirm.fnAlert("", "확인 후, 진행해주세요");
+			return;
+		}
 		// 벨리데이션 처리
 		if( !this.fnValidate() ){
 			return;
@@ -617,9 +620,9 @@ export default {
 		fd.append('moreinfoWeblink'	, this.inputVal.moreinfoWeblink);
 
 		// 첨부파일 정리
-		fd.append('bgImgFile'		, this.$refs.bgImgFile.files[0]);
-		fd.append('profileImgFile'	, this.$refs.profileImgFile.files[0]);
 		if( this.save_status == 'C' ){
+			fd.append('bgImgFile'		, this.$refs.bgImgFile.files[0]);
+			fd.append('profileImgFile'	, this.$refs.profileImgFile.files[0]);
 			fd.append('certiFile'		, this.$refs.certiImgFile.files[0]);
 		}
 
@@ -663,13 +666,37 @@ export default {
 				confirm.fnAlert("", result.message);
 			}
 		}).catch(function () {
-			confirm.fnAlert("", "저장에 실패했습니다.???");
+			confirm.fnAlert("", "저장에 실패했습니다.");
 		});
 	},
     // 삭제 요청
-    fnDelete(){
-      
-    }
+	fnDeleteConfirm(){
+		if( this.duplCheckYn == 'N' ){
+			confirm.fnAlert("", "확인 후, 진행해주세요");
+			return;
+		} else {
+			eventBus.$on('callbackEventBus', this.fnDelete);
+			confirm.fnConfirm("", "삭제처리된 브랜드는 복구할 수 없습니다. 계속 진행하시겠습니까?", "확인");
+		}
+	},
+	fnDelete(){
+		var params = {
+			"apiKey"		: this.inputVal.apiKey,
+			"apiSecret"		: this.inputVal.apiSecret,
+			"brandId"		: this.brandId,
+			"corpId"		: tokenSvc.getToken().principal.corpId,
+			"projectId"		: this.projectId,
+		};
+
+		api.deleteCallbackForApi(params).then(response =>{
+			var result = response.data;
+			if( result.success ){
+				confirm.fnAlert("", "삭제처리되었습니다.");
+			} else {
+				confirm.fnAlert("", response.data.message);
+			}
+		});
+	}
   }
 }
 </script>

@@ -232,6 +232,29 @@ public class ChannelController {
 		return rtn;
 	}
 	
+	// RCS 브랜드 삭제 요청
+	@PostMapping("/deleteRcsBrandForApi")
+	public RestResult<?> deleteRcsBrandForApi(
+			@RequestBody Map<String, Object> params,
+			HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+		rtn.setSuccess(true);
+		
+		System.out.println("-------------------------------------@@ deleteRcsBrandForApi params : " + params);
+		
+		try {
+			channelService.deleteRcsBrandForApi(params);
+			rtn.setSuccess(true);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		
+		return rtn;
+	}
+	
 	/**
 	 * PUSH 리스트 조회
 	 * @param params
