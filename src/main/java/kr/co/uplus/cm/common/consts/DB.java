@@ -134,10 +134,6 @@ public class DB {
     public final static String QRY_SELECT_RCS_TEMPLATE_LIST = "rcsTemplate.selectRcsTemplate";
     public final static String QRY_SELECT_RCS_TEMPLATE_LIST_CNT = "rcsTemplate.selectRcsTemplateCnt";
     public final static String QRY_SELECT_CORP_BRAND_CNT = "rcsTemplate.selectCorpBrandCnt";
-    public final static String QRY_SELECT_BRAND_LIST = "rcsTemplate.selectBrandList";
-    public final static String QRY_SELECT_RCS_MSGBASEFORM_LIST = "rcsTemplate.selectRcsMsgbaseformList";
-    public final static String QRY_SELECT_RCS_TEMPLATE_UPDATE_FORM = "rcsTemplate.selectRcsTemplateUpdateForm";
-    
     // 주소록 관리
     public final static String QRY_SELECT_ADDR_CATE_GRP_LIST = "address.selectAddrCateGrpList";
     public final static String QRY_SELECT_ADDR_GRP = "address.selectAddrGrp";

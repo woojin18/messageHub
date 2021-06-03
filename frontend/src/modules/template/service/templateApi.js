@@ -68,14 +68,6 @@ const selectRcsTemplateList = (params) => {
   return httpClient.post('/api/public/rcsTemplate/selectRcsTemplateList', params, {headers: {"show-layer":"yes"}});
 };
 
-const rcsTemplateInit = (params) => {
-  return httpClient.post('/api/public/rcsTemplate/rcsTemplateInit', params, {headers: {"show-layer":"yes"}});
-};
-
-const rcsTemplateUpdateInit = (params) => {
-  return httpClient.post('/api/public/rcsTemplate/rcsTemplateUpdateInit', params, {headers: {"show-layer":"yes"}});
-};
-
 export default {
     savePushTmplt,
     selectPushTmpltInfo,
@@ -94,9 +86,7 @@ export default {
     deleteFrndTalkTmplt,
     selectSenderKeyList,
     corpBrandCnt,
-    selectRcsTemplateList,
-    rcsTemplateInit,
-    rcsTemplateUpdateInit
+    selectRcsTemplateList
 };
 
 function fnExcelDownCallback(response){
