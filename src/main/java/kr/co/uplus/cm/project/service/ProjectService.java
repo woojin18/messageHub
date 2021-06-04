@@ -69,6 +69,11 @@ public class ProjectService {
 				useChStr = useChStr.substring(0, useChStr.length()-1);
 			}
 			
+			rtnMap.put("rcsYn", rcsYn);
+			rtnMap.put("smsmmsYn", smsmmsYn);
+			rtnMap.put("pushYn", pushYn);
+			rtnMap.put("kakaoYn", kakaoYn);
+			rtnMap.put("moYn", moYn);
 			rtnMap.put("useCh", useChStr);
 		}
 		
