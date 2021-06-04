@@ -54,10 +54,6 @@ module.exports = {
 				target: process.env.VUE_APP_TARGET_URL || 'http://localhost:7070',
 				changeOrigin: true
 			},
-			'^/smartSendApi': {
-				target: process.env.VUE_APP_TARGET_URL || 'http://localhost:7070',
-				changeOrigin: true
-			},
 		}
 	},
 	runtimeCompiler: true,
