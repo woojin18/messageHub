@@ -46,12 +46,16 @@ public class ProjectService {
 
 		for (int i = 0; i < rtnList.size(); i++) {
 			Map<String, Object> rtnMap = (Map<String, Object>) rtnList.get(i);
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse( CommonUtils.getString(rtnMap.get("useChGrpInfo")) );
+
+			JSONObject jsonObj = (JSONObject) obj;
 			
-			String rcsYn	= CommonUtils.getString(rtnMap.get("rcsYn"));
-			String smsmmsYn	= CommonUtils.getString(rtnMap.get("smsmmsYn"));
-			String pushYn	= CommonUtils.getString(rtnMap.get("pushYn"));
-			String kakaoYn	= CommonUtils.getString(rtnMap.get("kakaoYn"));
-			String moYn		= CommonUtils.getString(rtnMap.get("moYn"));
+			String rcsYn	= CommonUtils.getString(jsonObj.get("RCS"));
+			String smsmmsYn	= CommonUtils.getString(jsonObj.get("SMS/MMS"));
+			String pushYn	= CommonUtils.getString(jsonObj.get("PUSH"));
+			String kakaoYn	= CommonUtils.getString(jsonObj.get("KKO"));
+			String moYn		= CommonUtils.getString(jsonObj.get("MO"));
 			
 			String useChStr = "";
 			
@@ -110,9 +114,9 @@ public class ProjectService {
 
 			jsonInfo += "{";
 			jsonInfo += "	\"RCS\"		: \"" + CommonUtils.getString(params.get("radioRcs")) + "\",";
-			jsonInfo += "	\"SMSMMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
+			jsonInfo += "	\"SMS/MMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
 			jsonInfo += "	\"PUSH\"	: \"" + CommonUtils.getString(params.get("radioPush")) + "\",";
-			jsonInfo += "	\"KAKAO\"	: \"" + CommonUtils.getString(params.get("radioKko")) + "\",";
+			jsonInfo += "	\"KKO\"		: \"" + CommonUtils.getString(params.get("radioKko")) + "\",";
 			jsonInfo += "	\"MO\"		: \"" + CommonUtils.getString(params.get("radioMo")) + "\"";
 			jsonInfo += "}";
 
@@ -144,9 +148,9 @@ public class ProjectService {
 
 			jsonInfo += "{";
 			jsonInfo += "	\"RCS\"		: \"" + CommonUtils.getString(params.get("radioRcs")) + "\",";
-			jsonInfo += "	\"SMSMMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
+			jsonInfo += "	\"SMS/MMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
 			jsonInfo += "	\"PUSH\"	: \"" + CommonUtils.getString(params.get("radioPush")) + "\",";
-			jsonInfo += "	\"KAKAO\"	: \"" + CommonUtils.getString(params.get("radioKko")) + "\",";
+			jsonInfo += "	\"KKO\"		: \"" + CommonUtils.getString(params.get("radioKko")) + "\",";
 			jsonInfo += "	\"MO\"		: \"" + CommonUtils.getString(params.get("radioMo")) + "\"";
 			jsonInfo += "}";
 
