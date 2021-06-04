@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,11 +34,29 @@ public class BaseInfoService {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	public RestResult<Object> selectProjectBaseInfo(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		Map<String, Object> rtnObj = new HashMap<String, Object>();
 		
-		Object baseInfo = generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_BASE_INFO, params);
+		Map<String, Object> baseInfo = (Map<String, Object>)generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_BASE_INFO, params);
+		
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse( CommonUtils.getString(baseInfo.get("useChGrpInfo")) );
+		JSONObject jsonObj = (JSONObject) obj;
+		
+		String rcsYn	= CommonUtils.getString(jsonObj.get("RCS"));
+		String smsmmsYn	= CommonUtils.getString(jsonObj.get("SMS/MMS"));
+		String pushYn	= CommonUtils.getString(jsonObj.get("PUSH"));
+		String kakaoYn	= CommonUtils.getString(jsonObj.get("KKO"));
+		String moYn		= CommonUtils.getString(jsonObj.get("MO"));
+		
+		baseInfo.put("rcsYn", rcsYn);
+		baseInfo.put("smsmmsYn", smsmmsYn);
+		baseInfo.put("pushYn", pushYn);
+		baseInfo.put("kakaoYn", kakaoYn);
+		baseInfo.put("moYn", moYn);
+		
 		List<Object> apiKeyList = generalDao.selectGernalList(DB.QRY_SELECT_APIKEY_LIST, params);
 		
 		rtnObj.put("baseInfo", baseInfo);
@@ -63,9 +83,9 @@ public class BaseInfoService {
 		String jsonInfo = "";
 		jsonInfo += "{";
 		jsonInfo += "	\"RCS\"		: \"" + CommonUtils.getString(params.get("radioRcs")) + "\",";
-		jsonInfo += "	\"SMSMMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
+		jsonInfo += "	\"SMS/MMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
 		jsonInfo += "	\"PUSH\"	: \"" + CommonUtils.getString(params.get("radioPush")) + "\",";
-		jsonInfo += "	\"KAKAO\"	: \"" + CommonUtils.getString(params.get("radioKko")) + "\",";
+		jsonInfo += "	\"KKO\"		: \"" + CommonUtils.getString(params.get("radioKko")) + "\",";
 		jsonInfo += "	\"MO\"		: \"" + CommonUtils.getString(params.get("radioMo")) + "\"";
 		jsonInfo += "}";
 		

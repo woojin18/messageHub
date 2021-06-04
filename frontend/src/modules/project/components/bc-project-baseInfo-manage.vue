@@ -175,7 +175,7 @@ export default {
 			jQuery('#projectName').val(this.baseInfoData.projectName);
 			jQuery('#projectDesc').val(this.baseInfoData.projectDesc);
 			jQuery('input:radio[name=useYn]:input[value="' + this.baseInfoData.useYn + '"]').prop("checked", true);
-			jQuery('input:radio[name=radioRcs]:input[value="' + this.baseInfoData.radioYn + '"]').prop("checked", true);
+			jQuery('input:radio[name=radioRcs]:input[value="' + this.baseInfoData.rcsYn + '"]').prop("checked", true);
 			jQuery('input:radio[name=radioMms]:input[value="' + this.baseInfoData.smsmmsYn + '"]').prop("checked", true);
 			jQuery('input:radio[name=radioPush]:input[value="' + this.baseInfoData.pushYn + '"]').prop("checked", true);
 			jQuery('input:radio[name=radioKakao]:input[value="' + this.baseInfoData.kakaoYn + '"]').prop("checked", true);
