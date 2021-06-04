@@ -51,11 +51,10 @@
 
 						<table class="table_skin1 mt10" style="width:100%">
 							<colgroup>
+								<col style="width:30%">
+								<col style="width:20%">
+								<col style="width:30%">
 								<col>
-								<col style="width:20%">
-								<col style="width:20%">
-								<col style="width:20%">
-								<col style="width:15%">
 							</colgroup>
 							<thead>
 								<tr>
