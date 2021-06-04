@@ -137,7 +137,7 @@ public class IntegratedSendService {
         //부서코드
         //smartRequestData.setDeptCode(CommonUtils.getStrValue(params, "campaignId"));
         
-        String webReqId = CommonUtils.getCommonId(Const.WebReqIdPrefix.INTEGRATED_PREFIX, 5);
+        String webReqId = CommonUtils.getCommonId(Const.WebReqIdPrefix.ITG_PREFIX, 5);
 
         //webReqId
         smartRequestData.setWebReqId(webReqId);
@@ -329,7 +329,7 @@ System.out.println("====rsrvSendYn : "+rsrvSendYn);
         params.put("chString", ch);
         params.put("msgInfo", json);
         params.put("senderCnt", recvInfoLst.size());
-        params.put("callback", smartRequestData.getCallback());
+        //params.put("callback", smartRequestData.getCallback());
         params.put("campaignId", smartRequestData.getCampaignId());
         params.put("senderType", Const.SenderType.CHANNEL);
         params.put("status", status);
@@ -561,7 +561,7 @@ System.out.println("integratedSendService sendIntegratedMsgAsync 010");
                 if(toIndex > listSize) toIndex = listSize;
                 smartRequestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
                 jsonString = gson.toJson(smartRequestData);
-                responseBody = apiInterface.sendMsg(ApiConfig.SEND_PUSH_API_URI, headerMap, jsonString);
+                responseBody = apiInterface.sendMsg(ApiConfig.GET_SMART_API_URI, headerMap, jsonString);
                 isDone = isApiRequestAgain(responseBody, reSendCdList);
                 isAllFail = !isSendSuccess(responseBody);
             } catch (Exception e) {
@@ -587,11 +587,11 @@ System.out.println("integratedSendService sendIntegratedMsgAsync 010");
             try {
                 //CM_MSG Insert
                 sParams.put("apiKey", apiKey);
-                sParams.put("reqCh", Const.Ch.PUSH);
-                sParams.put("productCode", Const.Ch.PUSH.toLowerCase());
-                sParams.put("finalCh", Const.Ch.PUSH);
+                sParams.put("reqCh", Const.Ch.SMARTMSG);
+                sParams.put("productCode", Const.Ch.SMARTMSG.toLowerCase());
+                sParams.put("finalCh", Const.Ch.SMARTMSG);
                 //sParams.put("pushAppId", smartRequestData.getAppId());
-                sParams.put("callback", smartRequestData.getCallback());
+                //sParams.put("callback", smartRequestData.getCallback());
                 sParams.put("webReqId", smartRequestData.getWebReqId());
                 insertCmMsg(sParams, errorRecvInfoLst);
             } catch (Exception e) {

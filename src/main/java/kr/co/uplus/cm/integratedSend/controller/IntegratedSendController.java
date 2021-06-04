@@ -166,22 +166,21 @@ System.out.println("integratedSendController 042  rmAmount: "+rmAmount);
                 String[] chTypeArr = (CommonUtils.getStrValue(params, "chTypeList")).split(",");
                 for(String s : chTypeArr) {
 System.out.println("chTypeArr : "+s);
-					if(s.equalsIgnoreCase("push")) productCodes.add(Const.MsgProductCode.getType(Const.Ch.PUSH));
-					if(s.equalsIgnoreCase("rcs")) productCodes.add(Const.MsgProductCode.getType(Const.Ch.RCS));
-					if(s.equalsIgnoreCase("smsMms")) {
+					if(s.equalsIgnoreCase("PUSH")) productCodes.add(Const.MsgProductCode.getType(Const.Ch.PUSH));
+					if(s.equalsIgnoreCase("RCS")) productCodes.add(Const.MsgProductCode.getType(Const.Ch.RCS));
+					if(s.equalsIgnoreCase("SMSMMS")) {
 						if((CommonUtils.getStrValue(params, "smsSendType")).equalsIgnoreCase("S")) {
 							productCodes.add(Const.MsgProductCode.getType(Const.Ch.SMS));
 						}else if((CommonUtils.getStrValue(params, "smsSendType")).equalsIgnoreCase("M")) {
 							productCodes.add(Const.MsgProductCode.getType(Const.Ch.MMS));
 						}
 					}
-					if(s.equalsIgnoreCase("kakao")) {
-						if((CommonUtils.getStrValue(params, "kakaoPrdType")).equalsIgnoreCase("friendTalk")) {
+					if(s.equalsIgnoreCase("KAKAO")) {
+						if((CommonUtils.getStrValue(params, "kakaoPrdType")).equalsIgnoreCase("FRIENDTALK")) {
 							productCodes.add(Const.MsgProductCode.getType(Const.Ch.FRIENDTALK));
-						}else if((CommonUtils.getStrValue(params, "kakaoPrdType")).equalsIgnoreCase("alimTalk")) {
+						}else if((CommonUtils.getStrValue(params, "kakaoPrdType")).equalsIgnoreCase("ALIMTALK")) {
 							productCodes.add(Const.MsgProductCode.getType(Const.Ch.ALIMTALK));
 						}
-						
 					}
                 }
                 
