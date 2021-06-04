@@ -42,105 +42,25 @@
 	<div>
 		<h4>스마트발송 상품</h4>
 		<ul class="of_h">
-			<li class="border-line2 of_h float-left pd20" style="width:252px">
+			<!--<li class="border-line2 of_h float-left pd20" style="width:252px" v-for="(data, idx) in products" :key="data.row_num">-->
+			<li class="border-line2 of_h float-left pd20" style="width:350px" v-for="(data, idx) in products" :key="data.row_num">
 				<ul class="color6 float-left mr10" style="font-weight:700">
-					<li><h5>상품명</h5></li>
-					<li><h5>채널구성</h5></li>
-					<li><h5>채널타입</h5></li>
+					<li><h5>상품명 : </h5></li>
+					<li><h5>채널구성 : </h5></li>
+					<li><h5>채널타입 : </h5></li>
 				</ul>
 				<ul class="color6">
-					<li><h5>스마트 정보형</h5></li>
-					<li><h5>푸시,알림톡</h5></li>
-					<li><h5>정보성</h5></li>
+					<li><h5>{{data.productName}}</h5></li>
+					<li><h5>{{data.chTypeList}}</h5></li>
+					<li><h5>{{data.msgKindName}}</h5></li>
 				</ul>
 				<div class="mt10">
-					<input type="radio" name="smart" value="smart1" id="smart1" class="radioStyle" checked=""><label for="smart1"></label>
-					<i class="fas fa-question-circle toolTip"></i>
-				</div>
-			</li>
-			<li class="border-line2 of_h float-left pd20" style="width:251px">
-				<ul class="color6 float-left mr10" style="font-weight:700">
-					<li><h5>상품명</h5></li>
-					<li><h5>채널구성</h5></li>
-					<li><h5>채널타입</h5></li>
-				</ul>
-				<ul class="color6 font-size15 line-height2em">
-					<li><h5>스마트 광고형</h5></li>
-					<li><h5>푸시,친구톡</h5></li>
-					<li><h5>광고성</h5></li>
-				</ul>
-				<div class="mt10">
-					<input type="radio" name="smart" value="smart2" id="smart2" class="radioStyle"><label for="smart2"></label>
-					<i class="fas fa-question-circle toolTip"></i>
-				</div>
-			</li>
-			<li class="border-line2 of_h float-left pd20" style="width:251px">
-				<ul class="color6 float-left mr10" style="font-weight:700">
-					<li><h5>상품명</h5></li>
-					<li><h5>채널구성</h5></li>
-					<li><h5>채널타입</h5></li>
-				</ul>
-				<ul class="color6 font-size15 line-height2em">
-					<li><h5>스마트 1번</h5></li>
-					<li><h5>친구톡,MMS</h5></li>
-					<li><h5>광고성</h5></li>
-				</ul>
-				<div class="mt10">
-					<input type="radio" name="smart" value="smart3" id="smart3" class="radioStyle"><label for="smart3"></label>
-					<i class="fas fa-question-circle toolTip"></i>
-				</div>
-			</li>
-			<li class="border-line2 of_h float-left pd20" style="width:251px">
-				<ul class="color6 float-left mr10" style="font-weight:700">
-					<li><h5>상품명</h5></li>
-					<li><h5>채널구성</h5></li>
-					<li><h5>채널타입</h5></li>
-				</ul>
-				<ul class="color6 font-size15 line-height2em">
-					<li><h5>스마트 2번</h5></li>
-					<li><h5>RCS,MMS</h5></li>
-					<li><h5>광고성</h5></li>
-				</ul>
-				<div class="mt10">
-					<input type="radio" name="smart" value="smart4" id="smart4" class="radioStyle"><label for="smart4"></label>
-					<i class="fas fa-question-circle toolTip"></i>
-				</div>
-			</li>
-			<li class="border-line2 of_h float-left pd20" style="width:251px">
-				<ul class="color6 float-left mr10" style="font-weight:700">
-					<li><h5>상품명</h5></li>
-					<li><h5>채널구성</h5></li>
-					<li><h5>채널타입</h5></li>
-				</ul>
-				<ul class="color6 font-size15 line-height2em">
-					<li><h5>스마트 3번</h5></li>
-					<li><h5>푸시, 알림톡, RCS</h5></li>
-					<li><h5>정보성</h5></li>
-				</ul>
-				<div class="mt10">
-					<input type="radio" name="smart" value="smart5" id="smart5" class="radioStyle"><label for="smart5"></label>
-					<i class="fas fa-question-circle toolTip"></i>
-				</div>
-			</li>
-			<li class="border-line2 of_h float-left pd20" style="width:251px">
-				<ul class="color6 float-left mr10" style="font-weight:700">
-					<li><h5>상품명</h5></li>
-					<li><h5>채널구성</h5></li>
-					<li><h5>채널타입</h5></li>
-				</ul>
-				<ul class="color6 font-size15 line-height2em">
-					<li><h5>스마트 4번</h5></li>
-					<li><h5>알림톡, RCS, MMS</h5></li>
-					<li><h5>광고성</h5></li>
-				</ul>
-				<div class="mt10">
-					<input type="radio" name="smart" value="smart6" id="smart6" class="radioStyle"><label for="smart6"></label>
+					<input type="radio" name="smart" :value="data.productCode" :id="data.productCode" class="radioStyle" @change="fnSelect($event)"><label :for="data.productCode"></label>
 					<i class="fas fa-question-circle toolTip"></i>
 				</div>
 			</li>
 		</ul>
 	</div>
-			
 			
 
   <!-- 리스트 -->
@@ -168,17 +88,14 @@
           <!-- table -->
           <table class="table_skin1 bt-000 tbl-striped">
             <colgroup>
-              <col style="width:5%">
-              <col style="width:5%">
-              <col>
-              <col style="width:10%">
-              <col style="width:12%">
-              <col style="width:7%">
-              <col style="width:7%">
-              <col style="width:12%">
-              <col style="width:7%">
-              <col style="width:7%">
-              <col style="width:12%">
+	            <col style="width:5%">
+				<col>
+				<col style="width:12%">
+				<col style="width:15%">
+				<col style="width:20%">
+				<col style="width:16%">
+				<col style="width:11%">
+				<col style="width:15%">
             </colgroup>
             <thead>
               <tr>
@@ -186,11 +103,8 @@
                 <th class="text-center lc-1">No.</th>
                 <th class="text-center lc-1">템플릿 ID</th>
                 <th class="text-center lc-1">템플릿명</th>
-                <th class="text-center lc-1">템플릿 채널</th>
-                <th class="text-center lc-1">메시지 구분</th>
-                <th class="text-center lc-1">메시지 타입</th>
+                <th class="text-center lc-1">상품 유형</th>
                 <th class="text-center lc-1">타 프로젝트 사용여부</th>
-                <th class="text-center lc-1">상태</th>
                 <th class="text-center lc-1">등록자</th>
                 <th class="text-center lc-1 end">등록일자</th>
               </tr>
@@ -204,14 +118,12 @@
                  <td class="text-center">{{data.tmpltTitle}}</td>
                 <td class="text-center">{{data.tmpltChannel}}</td>
                 <td class="text-center">{{data.msgKind}}</td>
-                <td class="text-center">{{data.msgType}}</td>
                 <td class="text-center">{{data.otherProjectUseYn}}</td>
-                <td class="text-center">{{data.useYn}}</td>
                 <td class="text-center">{{data.regId}}</td>
                 <td class="text-center end">{{data.regDt}}</td>
               </tr>
               <tr v-if="datas.length == 0">
-                  <td class="text-center" colspan="11">검색된 내용이 없습니다.</td>
+                  <td class="text-center" colspan="8">검색된 내용이 없습니다.</td>
               </tr>
             </tbody>
           </table>
@@ -273,7 +185,8 @@ export default {
       totCnt : 0,  //전체 리스트 수
       offset : 0, //페이지 시작점
       searchDateInterval: 7,
-      datas: []
+      datas: [],
+      products: []
     }
     
         
@@ -281,6 +194,7 @@ export default {
   mounted() {
     this.fnSetIntervalSearchDate(this.searchDateInterval);
     this.fnSearch();
+    this.fnSmartProductList();
   },
   methods: {
     //검색일자변경
@@ -304,14 +218,14 @@ export default {
         return;
       }
 
-      eventBus.$on('callbackEventBus', this.fnProcDeleteIntegratedTemplate);
+      eventBus.$on('callbackEventBus', this.fnProcDeleteSmartTemplate);
       confirm.fnConfirm(this.componentsTitle, "선택한 템플릿을 삭제하시겠습니까?", "확인");
     },
 
     //통합 템플릿 삭제 처리
-    async fnProcDeleteIntegratedTemplate(){
+    async fnProcDeleteSmartTemplate(){
       var params = {'tmpltCodes' : this.listChkBox};
-      await smartTemplateApi.deleteIntegratedTemplate(params).then(response =>{
+      await smartTemplateApi.deleteSmartTemplate(params).then(response =>{
         var result = response.data;
         if(result.success) {
           confirm.fnAlert(this.componentsTitle, '삭제되었습니다.');
@@ -327,11 +241,34 @@ export default {
     //엑셀 다운로드
     fnExcelDownLoad(){
       var params = this.searchData;
-      smartTemplateApi.excelDownloadIntegratedTemplate(params);
+      smartTemplateApi.excelDownloadSmartTemplate(params);
     },
 
+
     // 검색
-    async fnSelectIntegratedTemplateList() {
+    async fnSmartProductList() {
+      var params = Object.assign({}, this.searchData);
+      //params.loginId = tokenSvc.getToken().principal.userId;
+      //params.roleCd = tokenSvc.getToken().principal.roleCd;
+
+     await smartTemplateApi.selectSmartProductList(params).then(response =>{
+        var result = response.data;
+        if(result.success) {
+          this.products = result.data;
+        } else {
+          alert(result.message);
+        }
+      });
+    },
+    
+    fnSelect(event){
+        var productCode = event.target.value;
+        console.log(">>>>>>>>>>>>>>productCode : "+productCode);
+    	this.fnSelectSmartTemplateList(productCode);
+    },
+    
+    // 검색
+    async fnSelectSmartTemplateList(productCode) {
 
       //유효성 검사
       if(this.searchData.searchStartDate && this.searchData.searchEndDate){
@@ -342,13 +279,15 @@ export default {
       }
           
       var params = Object.assign({}, this.searchData);
+      
+      if(productCode != '') params.productCode = productCode;
       params.pageNo = this.pageNo;
       params.listSize = this.listSize;
 
       params.loginId = tokenSvc.getToken().principal.userId;
       params.roleCd = tokenSvc.getToken().principal.roleCd
 
-      await smartTemplateApi.selectIntegratedTemplateList(params).then(response =>{
+      await smartTemplateApi.selectSmartTemplateList(params).then(response =>{
         var result = response.data;
         if(result.success) {
           this.datas = result.data;
@@ -379,7 +318,7 @@ export default {
     },
     fnSearch(pageNum) {
       this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
-      this.fnSelectIntegratedTemplateList();
+      this.fnSelectSmartTemplateList();
     }
   }
 }

@@ -1,4 +1,4 @@
-package kr.co.uplus.cm.integratedTemplate.service;
+package kr.co.uplus.cm.smartTemplate.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,34 +35,67 @@ import lombok.extern.log4j.Log4j2;
  */
 @Log4j2
 @Service
-public class IntegratedTemplateService {
+public class SmartTemplateService {
 
 	@Autowired
 	private GeneralDao generalDao;
 
 	/**
-     * 통합 템플릿 리스트 조회
+     * 스마트 상품 리스트 조회
      * @param params
      * @return
      * @throws Exception
      */
-    public RestResult<Object> selectIntegratedTemplateList(Map<String, Object> params) throws Exception {
+    public RestResult<Object> selectSmartProductList(Map<String, Object> params) throws Exception {
 
         RestResult<Object> rtn = new RestResult<Object>();
 
-        if(params.containsKey("pageNo")
-                && CommonUtils.isNotEmptyObject(params.get("pageNo"))
-                && params.containsKey("listSize")
-                && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
-            rtn.setPageProps(params);
+        List<Object> rtnList = generalDao.selectGernalList("smartTemplate.selectSmartProductList", params);
+        rtn.setData(rtnList);
+
+        return rtn;
+    }
+    
+	/**
+     * 스마트 템플릿 리스트 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectSmartTemplateList(Map<String, Object> params) throws Exception {
+
+    	Map<String, Object> sParams = new HashMap<String, Object>(params);
+        RestResult<Object> rtn = new RestResult<Object>();
+        
+        List<Object> productList = generalDao.selectGernalList("smartTemplate.selectSmartProductList", sParams);
+        HashMap<String,String> product = (HashMap<String,String>) productList.get(0);
+        String msgKind = product.get("msgKind");
+        String chType0 = product.get("chType0");
+        String chType1 = product.get("chType1");
+        String chType2 = product.get("chType2");
+        String chType3 = product.get("chType3");
+        StringBuffer chType = new StringBuffer();
+        if(chType0 != "") chType.append("\""+product.get("chType0")+"\"");
+        if(chType1 != "") chType.append(", \""+product.get("chType1")+"\"");
+        if(chType2 != "") chType.append(", \""+product.get("chType2")+"\"");
+        if(chType3 != "") chType.append(", \""+product.get("chType3")+"\"");
+        
+        sParams.put("msgKind", product.get("msgKind"));
+        sParams.put("chTypeList", chType.toString());
+
+        if(sParams.containsKey("pageNo")
+                && CommonUtils.isNotEmptyObject(sParams.get("pageNo"))
+                && sParams.containsKey("listSize")
+                && CommonUtils.isNotEmptyObject(sParams.get("listSize"))) {
+            rtn.setPageProps(sParams);
             if(rtn.getPageInfo() != null) {
                 //카운트 쿼리 실행
-                int listCnt = generalDao.selectGernalCount("integratedTemplate.selectIntegratedTemplateListCnt", params);
+                int listCnt = generalDao.selectGernalCount("smartTemplate.selectSmartTemplateListCnt", sParams);
                 rtn.getPageInfo().put("totCnt", listCnt);
             }
         }
 
-        List<Object> rtnList = generalDao.selectGernalList("integratedTemplate.selectIntegratedTemplateList", params);
+        List<Object> rtnList = generalDao.selectGernalList("smartTemplate.selectSmartTemplateList", sParams);
         rtn.setData(rtnList);
 
         return rtn;
@@ -70,16 +103,16 @@ public class IntegratedTemplateService {
 
     
 	/**
-     * 통합 템플릿 정보 조회
+     * 스마트 템플릿 정보 조회
      * @param params
      * @return
      * @throws Exception
      */
-    public RestResult<Object> selectIntegratedTemplateInfo(Map<String, Object> params) throws Exception {
+    public RestResult<Object> selectSmartTemplateInfo(Map<String, Object> params) throws Exception {
 
         RestResult<Object> rtn = new RestResult<Object>();
 
-        List<Object> rtnList = generalDao.selectGernalList("integratedTemplate.selectIntegratedTemplateDetail", params);
+        List<Object> rtnList = generalDao.selectGernalList("smartTemplate.selectSmartTemplateDetail", params);
         
         rtn.setData(rtnList);
 
@@ -88,13 +121,13 @@ public class IntegratedTemplateService {
     
     
     /**
-     * 통합 템플릿 저장 처리
+     * 스마트 템플릿 저장 처리
      * @param params
      * @return
      * @throws Exception
      */
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-    public RestResult<Object> insertIntegratedTemplate(Map<String, Object> params) throws Exception {
+    public RestResult<Object> insertSmartTemplate(Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
         int resultCnt = 0;
         //java.util.ArrayList cannot be cast to [Ljava.lang.String;
@@ -835,45 +868,42 @@ public class IntegratedTemplateService {
         //System.out.println("=============================================");
         //System.out.println(">>>>service 005 json : "+sb.toString());
         //System.out.println("=============================================");
+        params.put("tmpltInfo", sb.toString());
         
-        
-        Map<String, Object> sParams = new HashMap<String, Object>(params);
-        sParams.put("tmpltInfo", sb.toString());
-        
-        //if (sParams.containsKey("tmpltCode") && StringUtils.isNotBlank(CommonUtils.getString(sParams.get("tmpltCode")))) {
-        if (sParams.containsKey("tmpltCode") && StringUtils.isBlank(CommonUtils.getString(sParams.get("tmpltCode")))) {
+        //if (params.containsKey("tmpltCode") && StringUtils.isNotBlank(CommonUtils.getString(params.get("tmpltCode")))) {
+        if (params.containsKey("tmpltCode") && StringUtils.isBlank(CommonUtils.getString(params.get("tmpltCode")))) {
         	// 템플릿ID 취득
             String tmpltCode = CommonUtils.getCommonId(Const.TMPLT_PREFIX, 5);
-            sParams.put("tmpltCode", tmpltCode);
+            params.put("tmpltCode", tmpltCode);
         }
         
-        if (sParams.get("otherProjectUseYn").equals("Y")) {//타프로젝트와 같이 사용하면 projecdtId를 ALL로 잡는다.
-        	sParams.put("projectId", "ALL");
+        if (params.get("otherProjectUseYn").equals("Y")) {//타프로젝트와 같이 사용하면 projecdtId를 ALL로 잡는다.
+        	params.put("projectId", "ALL");
         }
-        resultCnt = generalDao.insertGernal("integratedTemplate.insertIntegratedTemplate", sParams);
+        resultCnt = generalDao.insertGernal("smartTemplate.insertSmartTemplate", params);
 
         if (resultCnt <= 0) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
         } else {
             rtn.setSuccess(true);
-            rtn.setData(sParams);
+            rtn.setData(params);
         }
 
         return rtn;
     }
 
     /**
-     * 통합 템플릿 삭제 처리
+     * 스마트 템플릿 삭제 처리
      * @param params
      * @return
      * @throws Exception
      */
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-    public RestResult<Object> deleteIntegratedTemplate(Map<String, Object> params) throws Exception {
+    public RestResult<Object> deleteSmartTemplate(Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
 
-        int resultCnt = generalDao.deleteGernal("integratedTemplate.deleteIntegratedTemplate", params);
+        int resultCnt = generalDao.deleteGernal("smartTemplate.deleteSmartTemplate", params);
         if (resultCnt <= 0) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
