@@ -69,6 +69,7 @@ public class DB {
     public final static String QRY_SELECT_RCS_BRANDLIST = "channel.selectRcsBrandList";
     public final static String QRY_SELECT_RCS_BRAND_MSGBASE_LIST = "channel.selectRcsBrandMsgBaseList";
     public final static String QRY_SELECT_RCS_BRAND_CHATBOT = "channel.selectRcsBrandChatbotList";
+    public final static String QRY_SELECT_RCS_BRAND_LIST_CALLBACK_LIST = "channel.selectRcsBrandListCallbackList";
     // RCS 등록 템플릿 조회
     public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";
     // RCS 채널 브랜드

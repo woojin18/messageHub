@@ -34,7 +34,7 @@
                     {{ index + 1 }}
                   </td>
                   <td>
-                    {{ data.subTitle }}
+                    {{ data.mainTitle }}
                   </td>
                   <td>
                     {{ data.chatbotId }}
@@ -127,6 +127,7 @@ export default {
     fnSearch(){
       var params = {
           "brandId"    : this.row_data.brandId,
+          "projectId"  : this.row_data.projectId,
           "pageInfo"    	: this.pageInfo
       };
 

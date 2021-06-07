@@ -353,7 +353,6 @@ public class ProjectService {
 	}
 	
 	// 추가발신번호등록요청 브랜드 불러오기
-	@SuppressWarnings("unchecked")
 	public RestResult<?> selectApprovalBrandList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 
@@ -367,7 +366,6 @@ public class ProjectService {
 	// 발신번호관리 삭제 요청
 	@SuppressWarnings("unchecked")
 	public void deleteCallbackForApi(Map<String, Object> params) throws Exception {
-		RestResult<Object> rtn = new RestResult<Object>();
 		String brandId		= CommonUtils.getString(params.get("brandId"));
 		String chatbotId	= CommonUtils.getString(params.get("chatbotId"));
 

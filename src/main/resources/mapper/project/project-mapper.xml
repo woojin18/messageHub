@@ -264,7 +264,7 @@
 						from cm.CM_RCS_CHATBOT crc 
 						where crc.CORP_ID  = #{corpId}
 					) CHATBOT, (SELECT @vRank:=0, @vData:='') as r
-					ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.REG_DT
+					ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.REG_DT DESC
 			) A
 			WHERE	RANKING = 1
 		) SUB_CB
