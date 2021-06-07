@@ -3,13 +3,20 @@
 		<article>
 			<div class="contentHeader mb20">
 				<h2>이용내역</h2>
+				<!--
 				<month-picker @change="showDate" lang="ko" ></month-picker>
+				-->
 			</div>
 			<div class="menuBox">
 				<div class="row">
 					<div class="col-xs-6 text-center">
+						<!--
 						<h4 class="mt20">{{date.year}}년 {{date.fullMonth}} 이용금액 <i class="fal fa-calendar-alt"></i></h4>
 						<p class="color4">{{date.year}}년 {{date.fullMonth}} 01일 ~ {{date.year}}년 {{date.fullMonth}} {{lastDate}}일</p>
+						<h4 class="color000 mt10"><span class="color1">{{totalSumAmount | comma}} </span>원</h4>
+						-->
+						<h4 class="mt20">2021년 06월 이용금액 <i class="fal fa-calendar-alt"></i></h4>
+						<p class="color4">2021년 06월 01일 ~ 2021년년 06월 31일</p>
 						<h4 class="color000 mt10"><span class="color1">{{totalSumAmount | comma}} </span>원</h4>
 					</div>
 					<div class="col-xs-6 text-center">
@@ -102,14 +109,14 @@ import confirm from "@/modules/commonUtil/service/confirm";
 //import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import tokenSvc from '@/common/token-service';
 //import { MonthPickerInput } from 'vue-month-picker'
-import { MonthPicker } from 'vue-month-picker'
+//import { MonthPicker } from 'vue-month-picker'
 import PageLayer from '@/components/PageLayer.vue';
 
 export default {
 	name: "useHistoryInfo",
 	components: {
 		// MonthPickerInput,
-		MonthPicker,
+		//MonthPicker,
 		PageLayer,
 	},
 	props: {
@@ -130,13 +137,13 @@ export default {
 			offset : 0,		 //페이지 시작점
 			searchMon: '',
 			useHistoryList: [],
-			date: {
-				from: null,
-				to: null,
-				month: null,
-				year: null,
-				fullMonth: null,
-			},
+			// date: {
+			// 	from: null,
+			// 	to: null,
+			// 	month: null,
+			// 	year: null,
+			// 	fullMonth: null,
+			// },
 			sumAmount : '',
 			totalSumAmount: '',
 			prepaidAmount: '',
@@ -148,9 +155,9 @@ export default {
 		}
 	},
 	mounted() {
-		this.fnSearch();
+		//this.fnSearch();
 		//var lastDate = new Date(2021, 7, 0).getDate();
-		console.log(">>> month :" + this.date.month);
+		//console.log(">>> month :" + this.date.month);
 		console.log(">>> this.$gfnCommonUtils.getCurretDate() :" + this.$gfnCommonUtils.getCurretDate());
 		
 	},
@@ -164,21 +171,21 @@ export default {
 			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
 			this.fnSearchUseHistory();
 		},
-		showDate(date) {
-			this.date = date;
-			this.date.fullMonth = this.date.month;
-			let length = this.date.month.length;
-			if(length == 2) this.date.fullMonth = '0' + this.date.fullMonth;
-			//월 말일 계산
-			let endIndex = this.date.fullMonth.lastIndexOf('월');
-			let monthNum = parseInt(this.date.fullMonth.substring(0, endIndex));
-			this.lastDate = new Date(this.date.year, monthNum, 0).getDate();
+		// showDate(date) {
+		// 	this.date = date;
+		// 	this.date.fullMonth = this.date.month;
+		// 	let length = this.date.month.length;
+		// 	if(length == 2) this.date.fullMonth = '0' + this.date.fullMonth;
+		// 	//월 말일 계산
+		// 	let endIndex = this.date.fullMonth.lastIndexOf('월');
+		// 	let monthNum = parseInt(this.date.fullMonth.substring(0, endIndex));
+		// 	this.lastDate = new Date(this.date.year, monthNum, 0).getDate();
 
-			this.searchMonth = this.date.year + this.date.fullMonth;
-			endIndex = this.searchMonth.lastIndexOf('월');
-			this.searchMonth = this.searchMonth.substring(0, endIndex);
-			this.fnSearch();
-		},
+		// 	this.searchMonth = this.date.year + this.date.fullMonth;
+		// 	endIndex = this.searchMonth.lastIndexOf('월');
+		// 	this.searchMonth = this.searchMonth.substring(0, endIndex);
+		// 	this.fnSearch();
+		// },
 		// 이용내역 조회
 		async fnSearchUseHistory() {
 			let params = {
