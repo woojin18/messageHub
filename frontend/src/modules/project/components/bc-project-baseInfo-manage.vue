@@ -132,10 +132,7 @@
 			<div class="text-center mt20">
 				<a @click="fnSave" class="btnStyle2 backRed">저장</a>
 			</div>
-
 			<!-- //본문 -->
-
-			<footer>CopyrightⓒLG Plus Corp. All Rights Reserved.</footer>
 		</article>
 
 		<!--  Modal -->

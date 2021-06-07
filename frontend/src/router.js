@@ -25,6 +25,7 @@ import acMyPageRoutes from './modules/myPage/router';
 import ucMyPageRoutes from './modules/ucMyPage/router';
 import integratedSendRoutes from './modules/integratedSend/router';
 import smartTemplateRoutes from './modules/smartTemplate/router';
+import useRoutes from './modules/use/router';
 
 //import confirm from "@/modules/commonUtil/service/confirm.js";
 
@@ -105,7 +106,8 @@ const router = new Router({
 				...cashRoutes,
 				...userRoutes,
 				...addressRoutes,
-				...acMyPageRoutes
+				...acMyPageRoutes,
+				...useRoutes
 			],
 		},
 		{

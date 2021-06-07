@@ -189,4 +189,11 @@ public class DB {
 	public final static String QRY_SELECT_PROJECT_USER_LIST_CNT = "member.selectProjectUserListCnt";
 	public final static String QRY_SELECT_PROJECT_USER_LIST = "member.selectProjectUserList";
 	
+	// 이용내역
+	public final static String QRY_SELECT_USE_HISTORY_LIST_CNT = "use.selectUseHistoryListCnt";
+	public final static String QRY_SELECT_USE_HISTORY_LIST = "use.selectUseHistoryList";
+	
+	// 서비스요금
+	public final static String QRY_SELECT_ISEXISTS_CORP_PRODUCTUNIT	= "use.selectIsExistsCorpProductUnit";
+	public final static String QRY_SELECT_CORP_PRODUCTUNIT	= "use.selectCorpProductUnit";
 }
