@@ -2,6 +2,7 @@ package kr.co.uplus.cm.project.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -46,12 +47,16 @@ public class ProjectService {
 
 		for (int i = 0; i < rtnList.size(); i++) {
 			Map<String, Object> rtnMap = (Map<String, Object>) rtnList.get(i);
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse( CommonUtils.getString(rtnMap.get("useChGrpInfo")) );
+
+			JSONObject jsonObj = (JSONObject) obj;
 			
-			String rcsYn	= CommonUtils.getString(rtnMap.get("rcsYn"));
-			String smsmmsYn	= CommonUtils.getString(rtnMap.get("smsmmsYn"));
-			String pushYn	= CommonUtils.getString(rtnMap.get("pushYn"));
-			String kakaoYn	= CommonUtils.getString(rtnMap.get("kakaoYn"));
-			String moYn		= CommonUtils.getString(rtnMap.get("moYn"));
+			String rcsYn	= CommonUtils.getString(jsonObj.get("RCS"));
+			String smsmmsYn	= CommonUtils.getString(jsonObj.get("SMS/MMS"));
+			String pushYn	= CommonUtils.getString(jsonObj.get("PUSH"));
+			String kakaoYn	= CommonUtils.getString(jsonObj.get("KKO"));
+			String moYn		= CommonUtils.getString(jsonObj.get("MO"));
 			
 			String useChStr = "";
 			
@@ -65,6 +70,11 @@ public class ProjectService {
 				useChStr = useChStr.substring(0, useChStr.length()-1);
 			}
 			
+			rtnMap.put("rcsYn", rcsYn);
+			rtnMap.put("smsmmsYn", smsmmsYn);
+			rtnMap.put("pushYn", pushYn);
+			rtnMap.put("kakaoYn", kakaoYn);
+			rtnMap.put("moYn", moYn);
 			rtnMap.put("useCh", useChStr);
 		}
 		
@@ -110,9 +120,9 @@ public class ProjectService {
 
 			jsonInfo += "{";
 			jsonInfo += "	\"RCS\"		: \"" + CommonUtils.getString(params.get("radioRcs")) + "\",";
-			jsonInfo += "	\"SMSMMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
+			jsonInfo += "	\"SMS/MMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
 			jsonInfo += "	\"PUSH\"	: \"" + CommonUtils.getString(params.get("radioPush")) + "\",";
-			jsonInfo += "	\"KAKAO\"	: \"" + CommonUtils.getString(params.get("radioKko")) + "\",";
+			jsonInfo += "	\"KKO\"		: \"" + CommonUtils.getString(params.get("radioKko")) + "\",";
 			jsonInfo += "	\"MO\"		: \"" + CommonUtils.getString(params.get("radioMo")) + "\"";
 			jsonInfo += "}";
 
@@ -144,9 +154,9 @@ public class ProjectService {
 
 			jsonInfo += "{";
 			jsonInfo += "	\"RCS\"		: \"" + CommonUtils.getString(params.get("radioRcs")) + "\",";
-			jsonInfo += "	\"SMSMMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
+			jsonInfo += "	\"SMS/MMS\"	: \"" + CommonUtils.getString(params.get("radioMms")) + "\",";
 			jsonInfo += "	\"PUSH\"	: \"" + CommonUtils.getString(params.get("radioPush")) + "\",";
-			jsonInfo += "	\"KAKAO\"	: \"" + CommonUtils.getString(params.get("radioKko")) + "\",";
+			jsonInfo += "	\"KKO\"		: \"" + CommonUtils.getString(params.get("radioKko")) + "\",";
 			jsonInfo += "	\"MO\"		: \"" + CommonUtils.getString(params.get("radioMo")) + "\"";
 			jsonInfo += "}";
 
@@ -344,7 +354,6 @@ public class ProjectService {
 	}
 	
 	// 추가발신번호등록요청 브랜드 불러오기
-	@SuppressWarnings("unchecked")
 	public RestResult<?> selectApprovalBrandList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 
@@ -358,7 +367,6 @@ public class ProjectService {
 	// 발신번호관리 삭제 요청
 	@SuppressWarnings("unchecked")
 	public void deleteCallbackForApi(Map<String, Object> params) throws Exception {
-		RestResult<Object> rtn = new RestResult<Object>();
 		String brandId		= CommonUtils.getString(params.get("brandId"));
 		String chatbotId	= CommonUtils.getString(params.get("chatbotId"));
 
@@ -383,5 +391,155 @@ public class ProjectService {
 			String errMsg = CommonUtils.getString(result.get("rsltDesc"));
 			throw new Exception(errMsg);
 		}
+	}
+	
+	//분배율 조회(분배서비스ID 없을 때)
+	@SuppressWarnings("unchecked")
+	public RestResult<?> selectBasicRatio(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_BASICDIS_RATIO, params);
+		List<Object> rtnList2 = new ArrayList<Object>();
+		HashMap<String,String> typehm = new HashMap<String,String>();
+		HashMap<String,String> relayhm = new HashMap<String,String>();
+		typehm.put("isExist", "F");
+		
+		for(int i=0; i<rtnList.size(); i++) {
+			try {
+				HashMap<String,String> hmrtn = (HashMap<String, String>) rtnList.get(i);
+				
+				String relayKey = hmrtn.get("CH_RELAY_TYPE");
+				String relay = hmrtn.get("RELAY");
+				boolean isexist = relayhm.containsKey(relayKey+"relay");
+				if(!isexist) {
+					if(typehm.containsKey("CH_RELAY_TYPE")) {
+						String crt_tmp = typehm.get("CH_RELAY_TYPE");
+						crt_tmp += ","+relayKey;
+						typehm.replace("CH_RELAY_TYPE", crt_tmp);
+					}else {
+						typehm.put("CH_RELAY_TYPE", relayKey);
+					}
+					relayhm.put(relayKey+"relay", relay);
+				}else {
+					String tmp = relayhm.get(relayKey+"relay");
+					tmp += ","+relay;
+					relayhm.replace(relayKey+"relay", tmp);
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		rtnList2.add(typehm);
+		rtnList2.add(relayhm);
+		
+		rtn.setData(rtnList2);
+		
+		return rtn;
+	}
+	
+	//분배율 조회(분배서비스ID 있을 때)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public RestResult<?> selectRatio(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_DIS_RATIO, params);
+		
+		List<Object> rtnList2 = new ArrayList<Object>();
+		HashMap<String,String> typehm = new HashMap<String,String>();
+		HashMap<String,String> relayhm = new HashMap<String,String>();
+		
+		typehm.put("isExist", "T");
+		
+		HashMap<String,String> hmrtn = (HashMap<String, String>) rtnList.get(0);	//only one
+		String rtnStr = hmrtn.get("CH_DIST_INFO");
+		
+		relayhm.put("USE_YN", hmrtn.get("USE_YN"));
+		relayhm.put("SMART_CH_NAME", hmrtn.get("SMART_CH_NAME"));
+		
+		kong.unirest.json.JSONObject jo = new kong.unirest.json.JSONObject(rtnStr);
+		Iterator it = jo.keys();
+		ArrayList ar = new ArrayList();
+	    while(it.hasNext())
+	    {
+	    	String jokey = it.next().toString();
+	        ar.add(jokey); // 키 값 저장
+	    }
+	    typehm.put("CH_RELAY_TYPE", "");
+		for(int i=0; i<ar.size(); i++){
+			String crtStr = typehm.get("CH_RELAY_TYPE");
+			String relayKey = (String) ar.get(i);
+			crtStr += relayKey;
+			
+			kong.unirest.json.JSONArray ja = (kong.unirest.json.JSONArray) jo.get((String) ar.get(i));
+			for(int j=0; j<ja.length(); j++) {
+				kong.unirest.json.JSONObject jajo = (kong.unirest.json.JSONObject) ja.get(j);
+				String relayCh = jajo.getString("relayCh");
+				String distRatio = jajo.getString("distRatio");
+				
+				if(relayhm.containsKey(relayKey+"relay")) {
+					String re_tmp = relayhm.get(relayKey+"relay");
+					String dis_tmp = relayhm.get(relayKey+"ratio");
+					re_tmp += ","+relayCh;
+					dis_tmp += ","+distRatio;
+					relayhm.replace(relayKey+"relay", re_tmp);
+					relayhm.replace(relayKey+"ratio", dis_tmp);
+				}else {
+					relayhm.put(relayKey+"relay", relayCh);
+					relayhm.put(relayKey+"ratio", distRatio);
+				}
+			}
+
+			if((i+1)<ar.size()) {
+				crtStr += ",";
+			}
+			typehm.replace("CH_RELAY_TYPE", crtStr);
+		}
+
+		rtnList2.add(typehm);
+		rtnList2.add(relayhm);
+		
+		
+		rtn.setData(rtnList2);
+
+		return rtn;
+	}
+	
+	//중계 채널 등록/수정
+	public RestResult<?> saveDisRatio(Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.putAll(params);
+		
+		rtn.setSuccess(true);
+		// 등록 수정 구분
+		String iou = CommonUtils.getString(params.get("iou"));
+
+		try {
+			int existCode = generalDao.selectGernalCount(DB.QRY_SELECT_DUPLICATE_DISNAME , params);			// 채널 중복 확인
+			if ("U".equals(iou)) {	//update -> 기존 데이터 존재해야함 -> 존재하면 update
+				if(existCode > 0) {
+					//update
+					generalDao.updateGernal(DB.QRY_UPDATE_DISTRIBUTIONDATA, params);
+					
+				} else {
+					rtn.setSuccess(false);
+					rtn.setMessage("등록되지 않은 중계채널입니다.");
+				}
+			} else if ("I".equals(iou)) {//insert -> 기존 데이터가 존재하지 않아야함 -> 존재하지 않으면 insert
+				if(existCode > 0) {
+					rtn.setSuccess(false);
+					rtn.setMessage("이미 등록 된 중계채널입니다.");
+				}else {
+					map.put("SMART_CH_CODE", CommonUtils.getCommonId("SCC", 5));
+					generalDao.insertGernal(DB.QRY_INSERT_DISTRIBUTIONDATA, map);
+					generalDao.updateGernal(DB.QRY_UPDATE_PROJECT_DISTRIBUTION, map);
+				}
+			}
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("저장에 실패하였습니다.");
+		}
+
+		return rtn;
 	}
 }

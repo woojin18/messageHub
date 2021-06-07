@@ -51,11 +51,10 @@
 
 						<table class="table_skin1 mt10" style="width:100%">
 							<colgroup>
+								<col style="width:30%">
+								<col style="width:20%">
+								<col style="width:30%">
 								<col>
-								<col style="width:20%">
-								<col style="width:20%">
-								<col style="width:20%">
-								<col style="width:15%">
 							</colgroup>
 							<thead>
 								<tr>
@@ -133,10 +132,7 @@
 			<div class="text-center mt20">
 				<a @click="fnSave" class="btnStyle2 backRed">저장</a>
 			</div>
-
 			<!-- //본문 -->
-
-			<footer>CopyrightⓒLG Plus Corp. All Rights Reserved.</footer>
 		</article>
 
 		<!--  Modal -->
@@ -176,7 +172,7 @@ export default {
 			jQuery('#projectName').val(this.baseInfoData.projectName);
 			jQuery('#projectDesc').val(this.baseInfoData.projectDesc);
 			jQuery('input:radio[name=useYn]:input[value="' + this.baseInfoData.useYn + '"]').prop("checked", true);
-			jQuery('input:radio[name=radioRcs]:input[value="' + this.baseInfoData.radioYn + '"]').prop("checked", true);
+			jQuery('input:radio[name=radioRcs]:input[value="' + this.baseInfoData.rcsYn + '"]').prop("checked", true);
 			jQuery('input:radio[name=radioMms]:input[value="' + this.baseInfoData.smsmmsYn + '"]').prop("checked", true);
 			jQuery('input:radio[name=radioPush]:input[value="' + this.baseInfoData.pushYn + '"]').prop("checked", true);
 			jQuery('input:radio[name=radioKakao]:input[value="' + this.baseInfoData.kakaoYn + '"]').prop("checked", true);

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="use">
+	<select id="selectUseHistoryListCnt" resultType="int">
+		/* use.selectUseHistoryListCnt */
+		SELECT	COUNT(*) CNT
+		FROM	cm_console.CM_PROJECT A
+		INNER JOIN (SELECT	A.CORP_ID
+						,	A.PROJECT_ID
+						,	ROUND(SUM(IFNULL(A.AMOUNT, 0))) SUM_CH_GRP_AMOUNT
+						,	COUNT(B.CH_GRP) CNT
+						FROM	cm.CM_MSG A
+						INNER JOIN cm_console.CM_CH_INFO B
+						ON		A.FINAL_CH = B.CH_NAME
+						WHERE	DATE_FORMAT(A.YMD, '%Y%m') = #{searchMonth}
+						AND		A.CORP_ID =  #{corpId}
+						<if test='role == "ADMIN" '>
+						AND		A.PROJECT_ID IN (	SELECT	A.PROJECT_ID
+													FROM	cm_console.CM_PROJECT_USER A
+													INNER JOIN cm_console.CM_USER B
+													WHERE A.USER_ID = B.USER_ID
+													AND B.DEL_YN = 'N'
+													AND B.USER_ID = #{userId} )
+						</if>
+						AND		A.GW_RESULT_CODE = '10000'
+						AND		A.CLI_RESULT_CODE = '10000'	
+						GROUP BY A.CORP_ID, A.PROJECT_ID) B
+		USING(PROJECT_ID, CORP_ID)
+		WHERE	A.USE_YN = 'Y'
+		AND		A.DEL_YN = 'N'
+		AND		A.CORP_ID = #{corpId}
+	</select>
+	<select id="selectUseHistoryList" resultType="camel">
+		/* use.selectUseHistoryList */
+		SELECT	@ROWNUM := @ROWNUM + 1 AS ROWNUM
+			,	A.CORP_ID
+			,	A.PROJECT_ID
+			,	A.PROJECT_NAME
+			,	A.NOPAY_YN
+			,	CASE
+					WHEN A.NOPAY_YN = 'Y' THEN '무과금'
+					ELSE
+						CASE
+							WHEN A.PAY_TYPE = 'Y' THEN '선불'
+							WHEN A.PAY_TYPE = 'N' THEN '후불'
+							ELSE ''
+						END
+				END AS PAY_TYPE_NAME
+			,	CASE
+					WHEN A.NOPAY_YN = 'Y' THEN 'F'
+					ELSE A.PAY_TYPE
+				END AS PAY_TYPE
+			,	DATE_FORMAT(A.REG_DT, '%Y-%m-%d') AS REG_DT
+			,	A.USE_CH_GRP_INFO
+			,	B.CNT
+			,	B.SUM_CH_GRP_AMOUNT
+		FROM	cm_console.CM_PROJECT A
+		INNER JOIN (SELECT @rownum:=0) T2
+		INNER JOIN (SELECT	A.CORP_ID
+						,	A.PROJECT_ID
+						,	ROUND(SUM(IFNULL(A.AMOUNT, 0))) SUM_CH_GRP_AMOUNT
+						,	COUNT(B.CH_GRP) CNT
+						FROM	cm.CM_MSG A
+						INNER JOIN cm_console.CM_CH_INFO B
+						ON		A.FINAL_CH = B.CH_NAME
+						WHERE	DATE_FORMAT(A.YMD, '%Y%m') = #{searchMonth}
+						AND		A.CORP_ID =  #{corpId}
+						<if test='role == "ADMIN" '>
+						AND		A.PROJECT_ID IN (	SELECT	A.PROJECT_ID
+													FROM	cm_console.CM_PROJECT_USER A
+													INNER JOIN cm_console.CM_USER B
+													WHERE A.USER_ID = B.USER_ID
+													AND B.DEL_YN = 'N'
+													AND B.USER_ID = #{userId} )
+						</if>
+						AND		A.GW_RESULT_CODE = '10000'
+						AND		A.CLI_RESULT_CODE = '10000'	
+						GROUP BY A.CORP_ID, A.PROJECT_ID) B
+		USING(PROJECT_ID, CORP_ID)
+		WHERE	A.USE_YN = 'Y'
+		AND		A.DEL_YN = 'N'
+		AND		A.CORP_ID = #{corpId}
+		<if test='pagingYn == "Y" '>
+		LIMIT ${offset}, #{listSize}
+		</if>
+	</select>
+	
+	<select id="selectIsExistsCorpProductUnit" parameterType="string" resultType="int">
+	/* serviceManage.selectIsExistsCorpProductUnit */
+		SELECT EXISTS (
+			SELECT	1 
+			FROM	cm_console.CM_CORP_PRODUCT_UNIT
+			WHERE CORP_ID = #{corpId}
+		)	AS ISEXISTS
+	</select>
+	
+	<select id="selectCorpProductUnit" parameterType="string" resultType="camel">
+	/* serviceManage.selectCorpProductUnit */
+		SELECT	A.SMART_CH_PRODUCT_YN
+		,		(SELECT CH_NAME FROM cm_console.CM_CH_INFO WHERE A.CH = CH) AS CH_NAME
+		,		A.CH
+		,		A.PRODUCT_CODE
+		,		A.PRODUCT_NAME
+		<choose>
+		<when test="isExists == '1'.toString()">
+		,		B.PREE_FEE
+		,		B.TOBE_FEE_INFO
+		</when>
+		<otherwise>
+		,		A.PREE_FEE
+		,		A.TOBE_FEE_INFO
+		</otherwise>
+		</choose>
+		FROM cm_bo.CM_PRODUCT_UNIT A
+		<if test="isExists == '1'.toString()">
+		INNER JOIN cm_console.CM_CORP_PRODUCT_UNIT B
+			ON A.PRODUCT_CODE = B.PRODUCT_CODE
+		</if>
+		WHERE	1=1
+		<if test="isExists == '1'.toString()">
+		AND		B.CORP_ID = #{corpId}
+		</if>
+		ORDER BY PRODUCT_CODE
+	</select>
+</mapper>

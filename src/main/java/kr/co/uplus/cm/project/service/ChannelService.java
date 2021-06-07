@@ -203,14 +203,15 @@ public class ChannelService {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
 		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
+		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_RCS_BRAND_LIST_CALLBACK_LIST, params);
+		
 		if (pageInfo != null && !pageInfo.isEmpty()) {
-			int rowNum = generalDao.selectGernalCount(DB.QRY_SELECT_CALLBACK_MANAGE_LIST_CNT, params);
+			int rowNum = list.size();
 			pageInfo.put("rowNum", rowNum);
 			
 			rtn.setPageInfo(pageInfo);
 		}
 		
-		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_MANAGE_LIST, params);
 				
 		rtn.setData(list);
 

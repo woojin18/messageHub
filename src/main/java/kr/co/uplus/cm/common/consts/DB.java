@@ -26,6 +26,8 @@ public class DB {
     // RCS 템플릿
     public final static String QRY_SELECT_RCS_TMPLT = "template.selectRcsTemplate";
     // 알림톡 템플릿
+    public final static String QRY_SELECT_KKO_TMPLT_CAT_GRP_LIST = "template.selectKkoTmpltCatGrpList";
+    public final static String QRY_SELECT_KKO_TMPLT_CAT_LIST = "template.selectKkoTmpltCatList";
     // 친구톡 템플릿
     public final static String QRY_INSERT_FRND_TALK_TEMPLATE = "template.insertFrndTalkTemplate";
     public final static String QRY_SELECT_FRND_TALK_TMPLT_LIST_CNT = "template.selectFrndTalkTmpltListCnt";
@@ -67,6 +69,7 @@ public class DB {
     public final static String QRY_SELECT_RCS_BRANDLIST = "channel.selectRcsBrandList";
     public final static String QRY_SELECT_RCS_BRAND_MSGBASE_LIST = "channel.selectRcsBrandMsgBaseList";
     public final static String QRY_SELECT_RCS_BRAND_CHATBOT = "channel.selectRcsBrandChatbotList";
+    public final static String QRY_SELECT_RCS_BRAND_LIST_CALLBACK_LIST = "channel.selectRcsBrandListCallbackList";
     // RCS 등록 템플릿 조회
     public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";
     // RCS 채널 브랜드
@@ -189,4 +192,19 @@ public class DB {
 	public final static String QRY_SELECT_PROJECT_USER_LIST_CNT = "member.selectProjectUserListCnt";
 	public final static String QRY_SELECT_PROJECT_USER_LIST = "member.selectProjectUserList";
 	
+	// 이용내역
+	public final static String QRY_SELECT_USE_HISTORY_LIST_CNT = "use.selectUseHistoryListCnt";
+	public final static String QRY_SELECT_USE_HISTORY_LIST = "use.selectUseHistoryList";
+	
+	// 서비스요금
+	public final static String QRY_SELECT_ISEXISTS_CORP_PRODUCTUNIT	= "use.selectIsExistsCorpProductUnit";
+	public final static String QRY_SELECT_CORP_PRODUCTUNIT	= "use.selectCorpProductUnit";
+	
+	// 분배서비스
+	public final static String QRY_SELECT_BASICDIS_RATIO = "project.selectBasicDisRatio";
+	public final static String QRY_SELECT_DIS_RATIO = "project.seletDisRatio";
+	public final static String QRY_SELECT_DUPLICATE_DISNAME = "project.selectDuplicateDistribution";
+	public final static String QRY_UPDATE_DISTRIBUTIONDATA = "project.updateDistributionData";
+	public final static String QRY_UPDATE_PROJECT_DISTRIBUTION = "project.updateProjectDistribution";
+	public final static String QRY_INSERT_DISTRIBUTIONDATA = "project.insertDistributionData";
 }

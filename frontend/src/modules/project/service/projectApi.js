@@ -40,6 +40,17 @@ const selectApprovalBrandList = (params) => {
     return httpClient.post('/projectApi/manage/selectApprovalBrandList', params, { headers: {"show-layer": "No"}});
 };
 
+const saveDisRatio= (params) => {
+    return httpClient.post('/projectApi/manage/saveDisRatio', params, { headers: {"show-layer": "Yes"} });
+};
+
+const selectBasicDisRatio= (params) => {
+    return httpClient.post('/projectApi/manage/selectBasicDisRatio', params, { headers: {"show-layer": "Yes"} });
+};
+
+const selectDisRatio= (params) => {
+    return httpClient.post('/projectApi/manage/selectDisRatio', params, { headers: {"show-layer": "Yes"} });
+};
 
 export default {
     selectProjectList,
@@ -51,5 +62,8 @@ export default {
     selectCallbackManageList,
     updateCallbackForApi,
     deleteCallbackForApi,
-    selectApprovalBrandList
+    selectApprovalBrandList,
+    saveDisRatio,
+    selectBasicDisRatio,
+    selectDisRatio,
 };

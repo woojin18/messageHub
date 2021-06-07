@@ -322,4 +322,30 @@ public class TemplateService {
         return rtn;
     }
 
+    /**
+     * 카카오 템플릿 카테고리 그룹 목록 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectKkoTmpltCatGrpList(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_KKO_TMPLT_CAT_GRP_LIST, params);
+        rtn.setData(rtnList);
+        return rtn;
+    }
+
+    /**
+     * 카카오 템플릿 카테고리 목록 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectKkoTmpltCatList(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_KKO_TMPLT_CAT_LIST, params);
+        rtn.setData(rtnList);
+        return rtn;
+    }
+
 }

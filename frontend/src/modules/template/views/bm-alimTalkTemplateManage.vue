@@ -85,13 +85,17 @@
             <div class="float-left" style="width:22%"><h4>카테고리 *</h4></div>
             <div class="float-left" style="width:78%">
               <div class="float-left" style="width:49.5%">
-                <select name="userConsole_sub040402_2" class="float-left selectStyle2" style="width:100%">
+                <select name="userConsole_sub040402_2" class="float-left selectStyle2" style="width:100%" v-model="categoryGrpName" @change="fnSelectKkoTmpltCatList">
                   <option value="">대분류</option>
+                  <option v-for="(kkoTmpltCatGrpInfo, idx) in kkoTmpltCatGrpList" :key="idx" 
+                    :value="kkoTmpltCatGrpInfo.categoryGrpName">{{kkoTmpltCatGrpInfo.categoryGrpName}}</option>
                 </select>
               </div>
               <div class="float-right" style="width:49.5%">
-                <select name="userConsole_sub040402_3" class="float-left selectStyle2" style="width:100%">
+                <select name="userConsole_sub040402_3" class="float-left selectStyle2" style="width:100%" v-model="tmpltData.categoryCode">
                   <option value="">중분류</option>
+                  <option v-for="(kkoTmpltCatInfo, idx) in kkoTmpltCatList" :key="idx" 
+                    :value="kkoTmpltCatInfo.categoryCode">{{kkoTmpltCatInfo.categoryName}}</option>
                 </select>
               </div>
             </div>
@@ -195,6 +199,9 @@ export default {
     return {
       senderKeyList : [],
       groupKeyList : [],
+      kkoTmpltCatGrpList : [],
+      kkoTmpltCatList : [],
+      categoryGrpName : '',
       useCh : 'ALIMTALK',
       buttonLimitSize : 5,
       bottonACName : '채널 추가',
@@ -217,12 +224,14 @@ export default {
         tmpltEmpsTitle: '',
         tmpltEmpsSubTitle: '',
         tmpltContent: '',
+        categoryCode : '',
         buttonList:[],
       }
     }
   },
   mounted() {
     this.fnSelectSenderKeyList();
+    this.fnSelectKkoTmpltCatGrpList();
   },
   methods: {
     fnAddButton(){
@@ -261,6 +270,31 @@ export default {
         if(result.success) {
           this.tmpltData.senderKey = '';
           this.senderKeyList = Object.assign({}, result.data);
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
+    //카카오 템플릿 카테고리 그룹 목록 조회
+    fnSelectKkoTmpltCatGrpList(){
+      const params = {};
+      templateApi.selectKkoTmpltCatGrpList(params).then(response => {
+        const result = response.data;
+        if(result.success) {
+          this.kkoTmpltCatGrpList = Object.assign([], result.data);
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
+    //카카오 템플릿 카테고리 그룹 목록 조회
+    fnSelectKkoTmpltCatList(){
+      this.tmpltData.categoryCode = '';
+      const params = {categoryGrpName: this.categoryGrpName};
+      templateApi.selectKkoTmpltCatList(params).then(response => {
+        const result = response.data;
+        if(result.success) {
+          this.kkoTmpltCatList = Object.assign([], result.data);
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }

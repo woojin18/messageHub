@@ -6,7 +6,16 @@
     >
     </modal>
     
-		<article>
+    <!--  분배서비스 관리 -->
+    <disRatioPop
+      :rowData="row_data"
+      :corpid="row_data.corpId"
+      :projectid="row_data.projectId"
+      :insert_or_update.sync="save_status"
+    >
+    </disRatioPop>
+
+    <article>
       <div class="contentHeader">
         <h2> > 프로젝트 목록</h2>
       </div>
@@ -86,7 +95,7 @@
                   <button @click="fnProjectDeleteConfirm(data)"><a>삭제</a></button>
                 </td>
                 <td>
-                  <button ><a>분배율관리</a></button>
+                  <button @click="fnDisRatioManage(data)"><a>분배율관리</a></button>
                 </td>
               </tr>
             </tbody>
@@ -107,10 +116,12 @@ import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import confirm from "@/modules/commonUtil/service/confirm"
 
 import modal from "./bp-project-manage-detail.vue";
+import disRatioPop from './bp-distributionServiceManage.vue';
 
 export default {
   components: {
-    modal
+    modal,
+    disRatioPop
   },
   data() {
     return {
@@ -185,6 +196,84 @@ export default {
           confirm.fnAlert("", msg);
         }
       }); 
+    },
+    // 분배율관리
+    fnDisRatioManage(data) {
+        var vm = this;
+        this.row_data = data;
+
+		var params = {
+          SMART_CH_CODE : data.smartChCode,
+          CORP_ID : data.corpId,
+        }
+
+        if(this.$gfnCommonUtils.isEmpty(data.smartChCode)) {
+            projectApi.selectBasicDisRatio(params).then(response =>{
+            this.row_data.USE_YN="Y";
+            vm.makeTable(response.data);
+          });
+        } else {
+			projectApi.selectDisRatio(params).then(response =>{
+				jQuery("#DS_NAME").val(response.data.data[1].SMART_CH_NAME);
+				jQuery('input:radio[name=useYN]:input[value="' + response.data.data[1].USE_YN + '"]').prop('checked', true);
+            	vm.makeTable(response.data);
+          	});
+        }
+
+		jQuery("#disRatioPop").modal("show");
+    },
+    makeTable : function(responsedata){
+		jQuery('#RSTab > tbody').remove(); //기존 테이블 삭제
+		var params = responsedata.data[0].CH_RELAY_TYPE;
+		params = params.split(',');
+		var params2 = responsedata.data[1];
+		var isExist = responsedata.data[0].isExist;
+		if(isExist == "T"){
+			this.save_status = 'U';
+		}else{
+			this.save_status = 'I';
+		}
+		
+		for(var i=0; i<params.length; i++){
+			var make_tbody = "";
+			make_tbody += '<tbody id="'+params[i]+'">';
+			make_tbody += '</tbody>';
+			jQuery('#RSTab:last').append(make_tbody);
+			var make_tr = "";
+			make_tr += '<tr>';
+			make_tr += '<td class="text-center">채널명</td>';
+			make_tr += '<td colspan="2" class="text-center"><input type="text" value="'+params[i]+'" name="chname" class="inputStyle input3 float-left" style="width:100%; background:#D5D5D5" readonly></td>';
+			make_tr += '</tr>';
+			jQuery('#'+params[i]+':last').append(make_tr);
+
+			var keyname = params[i]+"relay";
+			var keyArr = params2[keyname];
+			keyArr = keyArr.split(',');
+			var rationame = params[i]+"ratio";
+			var ratioArr ="";
+			if(isExist == "T"){
+			ratioArr = params2[rationame];
+			ratioArr = ratioArr.split(',');
+			}
+			for(var k=0; k<keyArr.length; k++){
+			var make_tr2 = "";
+			make_tr2 += '<tr>';
+			make_tr2 += '<td class="text-center">'
+			if(k==0){
+				make_tr2 += '분배율(%)';
+			}
+			make_tr2 += '</td>';
+			make_tr2 += '<td class="text-center"><input type="text" name="relay" value="'+keyArr[k]+'" class="inputStyle input3 float-left" style="width:100%"></td>';
+			if(isExist == "T"){
+				make_tr2 += '<td class="text-center"><input type="text" name="ratio" value="'+ratioArr[k]+'" class="inputStyle input3 float-left" style="width:100%"></td>';
+			}else{
+				make_tr2 += '<td class="text-center"><input type="text" name="ratio" value="" class="inputStyle input3 float-left" style="width:100%"></td>';
+			}
+			make_tr2 += '</tr>';
+			jQuery('#'+params[i]+':last').append(make_tr2);
+			make_tr2 = "";
+			}
+		}
     }
   }
 }
