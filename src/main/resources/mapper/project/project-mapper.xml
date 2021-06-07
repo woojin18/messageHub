@@ -343,4 +343,87 @@
 		WHERE	CORP_ID = {corpId}
 		AND		APPROVAL_STATUS = '승인'
 	</select>
+	
+		<select id="selectBasicDisRatio" parameterType="string" resultType="hashmap">
+		/* project.selectBasicDisRatio ǋ¾�進 ƗLº롁¶ȸ(ºй輭º񽹉D°¡ ¾�§) */
+		SELECT C.CH_RELAY_TYPE, C.RELAY 
+		FROM (
+				SELECT	A.CH_RELAY_TYPE
+				, 		A.RELAY
+				FROM cm.CM_RELAY_CH AS A
+				INNER JOIN(
+					SELECT	CH_RELAY_TYPE
+					FROM	cm.CM_RELAY_CH 
+					GROUP BY CH_RELAY_TYPE
+				) AS B
+		WHERE A.CH_RELAY_TYPE = B.CH_RELAY_TYPE
+		) AS C
+		GROUP BY C.CH_RELAY_TYPE, C.RELAY
+	</select>
+	
+	<select id="seletDisRatio" parameterType="string" resultType="hashmap">
+		/* project.seletDisRatio ǋ¾�進 ƗLº롁¶ȸ(ºй輭º񽹉D°¡ V; ¶§) */
+		SELECT	CH_DIST_INFO
+			,	USE_YN
+			,	SMART_CH_NAME
+		FROM	cm.CM_SMART_CH
+		WHERE	1=1
+		<if test="CORP_ID != '' and CORP_ID != null">
+		AND		CORP_ID = #{CORP_ID}
+		</if>
+		<if test="SMART_CH_CODE != '' and SMART_CH_CODE != null">
+		AND		SMART_CH_CODE = #{SMART_CH_CODE}
+		</if>
+	</select>
+	
+	<select id="selectDuplicateDistribution" resultType="int">
+		/* project.selectDuplicateDistribution ä³̠º¹ ȮN */
+		SELECT	COUNT(1)
+		FROM	cm.CM_SMART_CH
+		WHERE	1 = 1
+		AND		CORP_ID = #{CORP_ID}
+		AND		SMART_CH_CODE = #{SMART_CH_CODE}
+	</select>
+	
+	<update id="updateDistributionData">
+		/* project.updateDistributionData ºй輭º񽸠¾�͆® */
+		UPDATE	cm.CM_SMART_CH
+		SET		SMART_CH_NAME 	= #{SMART_CH_NAME}
+		,		CH_DIST_INFO	= #{CH_DIST_INFO}
+		,		USE_YN			= #{USE_YN}
+		,		UPD_DT			= NOW()
+		WHERE	1=1
+		AND		SMART_CH_CODE = #{SMART_CH_CODE}
+		AND		CORP_ID = #{CORP_ID}
+	</update>
+
+	<update id="updateProjectDistribution">
+		/* project.updateProjectDistribution ä³τڵ㠾�͆® */
+		UPDATE	cm_console.CM_PROJECT
+		SET		SMART_CH_CODE = #{SMART_CH_CODE}
+		WHERE	1=1
+		AND		PROJECT_ID = #{PROJECT_ID}
+	</update>
+	
+	<insert id="insertDistributionData" parameterType="hashmap">
+		/* project."insertDistributionData" ºй郤³̠µ */
+		INSERT cm.CM_SMART_CH
+		(
+			SMART_CH_CODE
+		,	CORP_ID
+		,	SMART_CH_NAME
+		,	CH_DIST_INFO
+		,	USE_YN
+		,	REG_DT
+		)
+		VALUES 
+		(
+			#{SMART_CH_CODE}
+		,	#{CORP_ID}
+		,	#{SMART_CH_NAME}
+		,	#{CH_DIST_INFO}
+		,	#{USE_YN}
+		,	NOW()
+		)
+	</insert>
 </mapper>

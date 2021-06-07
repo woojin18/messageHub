@@ -199,4 +199,12 @@ public class DB {
 	// 서비스요금
 	public final static String QRY_SELECT_ISEXISTS_CORP_PRODUCTUNIT	= "use.selectIsExistsCorpProductUnit";
 	public final static String QRY_SELECT_CORP_PRODUCTUNIT	= "use.selectCorpProductUnit";
+	
+	// 분배서비스
+	public final static String QRY_SELECT_BASICDIS_RATIO = "project.selectBasicDisRatio";
+	public final static String QRY_SELECT_DIS_RATIO = "project.seletDisRatio";
+	public final static String QRY_SELECT_DUPLICATE_DISNAME = "project.selectDuplicateDistribution";
+	public final static String QRY_UPDATE_DISTRIBUTIONDATA = "project.updateDistributionData";
+	public final static String QRY_UPDATE_PROJECT_DISTRIBUTION = "project.updateProjectDistribution";
+	public final static String QRY_INSERT_DISTRIBUTIONDATA = "project.insertDistributionData";
 }

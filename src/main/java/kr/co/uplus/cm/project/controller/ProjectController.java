@@ -202,4 +202,31 @@ public class ProjectController {
 		
 		return rtn;
 	}
+	
+	//분배서비스관리 - 팝업분배율 테이블 조회(분배서비스ID가 없을 때)
+	@PostMapping("/selectBasicDisRatio")
+	public RestResult<?> selectBasicRatio(
+				@RequestBody Map<String, Object> params,
+				HttpServletRequest request,
+				HttpServletResponse response) throws Exception {
+		return projectService.selectBasicRatio(params);
+    }
+	
+	//분배서비스관리 -팝업분배율 테이블 조회(분배서비스ID가 있을 때)
+	@PostMapping("/selectDisRatio")
+	public RestResult<?> selectDisRatio(
+				@RequestBody Map<String, Object> params,
+				HttpServletRequest request,
+				HttpServletResponse response) throws Exception {
+		return projectService.selectRatio(params);
+    }
+	
+	//분배서비스 등록/수정
+	@PostMapping("/saveDisRatio")
+	public RestResult<?> saveDisRatio(
+				@RequestBody Map<String, Object> params,
+				HttpServletRequest request,
+				HttpServletResponse response) {
+		return projectService.saveDisRatio(params);
+    }
 }
