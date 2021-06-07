@@ -442,4 +442,26 @@
             AND TMPLT_ID IN <foreach collection="tmpltIds" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
     </delete>
 
+    <select id="selectKkoTmpltCatGrpList" parameterType="hashmap" resultType="camel">
+    /* template.selectKkoTmpltCatGrpList 카카오 템플릿 카테고리 그룹 목록 조회 */
+        SELECT DISTINCT CATEGORY_GRP_NAME
+        FROM cm.CM_KKO_TMPLT_CAT CKTC
+        WHERE CKTC.USE_YN = 'Y'
+    </select>
+
+    <select id="selectKkoTmpltCatList" parameterType="hashmap" resultType="camel">
+    /* template.selectKkoTmpltCatList 카카오 템플릿 카테고리 목록 조회 */
+        SELECT
+            CATEGORY_CODE
+            , CATEGORY_NAME
+            , USE_YN
+            , REG_DT
+            , CATEGORY_GRP_NAME
+            , INCLUSION
+            , EXCLUSION
+        FROM cm.CM_KKO_TMPLT_CAT CKTC
+        WHERE CKTC.USE_YN = 'Y'
+            AND CATEGORY_GRP_NAME = #{categoryGrpName}
+    </select>
+
 </mapper>

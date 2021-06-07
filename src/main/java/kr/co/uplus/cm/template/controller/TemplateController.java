@@ -414,5 +414,49 @@ public class TemplateController {
         return rtn;
     }
 
+    /**
+     * 카카오 템플릿 카테고리 그룹 목록 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectKkoTmpltCatGrpList")
+    public RestResult<?> selectKkoTmpltCatGrpList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = tmpltSvc.selectKkoTmpltCatGrpList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{}.selectKkoTmpltCatGrpList Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 카카오 템플릿 카테고리 목록 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectKkoTmpltCatList")
+    public RestResult<?> selectKkoTmpltCatList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = tmpltSvc.selectKkoTmpltCatList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{}.selectKkoTmpltCatList Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
 
 }
