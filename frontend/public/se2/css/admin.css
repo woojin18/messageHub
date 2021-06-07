@@ -901,6 +901,7 @@ footer {font-size:12px; color:#B2B2B2; font-weight:400; position:absolute; botto
 .rcsWrap .rcsProfileImage img {border-radius:49px; box-shadow:0 3px 6px rgba(0,0,0,0.16)}
 .rcsWrap .rcsCon {padding:20px}
 .phoneTextWrap {position:absolute; top:70px; left:45px; width:240px}
+.phoneTextWrap hr {margin:10px 0;}
 .phoneIcon {/*justify-content:space-between; */display:block; /*flex-wrap:wrap*/ text-align:center}
 .phoneIcon i {padding:0 18px}
 .phoneText1 {background:#fff; border-radius:10px; padding:20px 15px 30px 15px; color:#848484}

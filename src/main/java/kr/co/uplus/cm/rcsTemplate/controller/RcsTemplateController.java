@@ -70,5 +70,53 @@ public class RcsTemplateController {
 
 		return rtn;
 	}
+	
+	@PostMapping("/rcsTemplateInit")
+	public RestResult<?> rcsTemplateInit(@RequestBody Map<String, Object> params, HttpServletRequest request) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			rtn = rcsTemplateSvc.rcsTemplateInit(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+	
+	@PostMapping("/rcsTemplateUpdateInit")
+	public RestResult<?> rcsTemplateUpdateInit(@RequestBody Map<String, Object> params, HttpServletRequest request) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			rtn = rcsTemplateSvc.rcsTemplateUpdateInit(params); 
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+	
+	@PostMapping("/rcsTemplateDeleteApi")
+	public RestResult<?> rcsTemplateDeleteApi(@RequestBody Map<String, Object> params, HttpServletRequest request) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			rcsTemplateSvc.rcsTemplateDeleteApi(params); 
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
 
 }

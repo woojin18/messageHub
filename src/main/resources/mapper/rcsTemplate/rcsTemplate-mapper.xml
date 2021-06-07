@@ -94,7 +94,7 @@
 	
 	<sql id="selectRcsTemplateSql">
 		<if test="corpId != '' and corpId != null">
-			AND		AA.CORP_ID = #{corpId}
+			<!--AND		AA.CORP_ID = #{corpId}-->
 		</if>
 		<if test="status != '' and status != null">
 			AND		AA.APPROVAL_STATUS = #{status}
@@ -116,5 +116,62 @@
 		FROM	cm.CM_RCS_BRAND
 		WHERE	CORP_ID = #{corpId}
 	</select>
-
+	
+	<select id="selectBrandList" resultType="hashMap">
+		/* rcsTemplate.selectBrandList */
+		SELECT	BRAND_ID
+		,		BRAND_NAME
+		FROM	cm.CM_RCS_BRAND
+		WHERE	(PROJECT_ID = #{projectId} OR PROJECT_ID = 'ALL')
+		AND		CORP_ID = #{corpId}
+		AND		USE_YN = 'Y'
+		AND		APPROVAL_STATUS = '승인'
+	</select>
+	
+	<select id="selectRcsMsgbaseformList" resultType="hashMap">
+		/* recTemplate.selectRcsMsgbaseformList */
+		SELECT	MESSAGEBASEFORM_ID
+		,		FORM_NAME
+		FROM	cm.CM_RCS_MSGBASEFORM 
+		WHERE	CARD_TYPE = #{cardType}
+	</select>
+	
+	<select id="selectRcsTemplateUpdateForm" resultType="hashMap">
+	SELECT	A.*
+	FROM 	(
+			SELECT	MSGBASE.*
+			,		case @vData when MESSAGEBASE_ID then @vRank := @vRank + 1 else @vRank := 1 end AS RANKING
+			,		(@vData:=MESSAGEBASE_ID) AS vData
+			FROM	(
+					SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID 
+					,		A.MESSAGEBASEFORM_ID AS MESSAGEBASEFORM_ID 
+					,		A.BRAND_ID			AS BRAND_ID 
+					,		A.CORP_ID			AS CORP_ID
+					,		A.TMPLT_NAME		AS TMPLT_NAME 
+					,		A.PRODUCT_CODE		AS PRODUCT_CODE 
+					,		A.REG_ID			AS REG_ID 
+					,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
+					,		A.APPROVAL_STATUS	AS APPROVAL_STATUS 
+					,		A.APPROVAL_DT		AS APPROVAL_DT 
+					,		A.MESSAGEBASE_INFO	AS MESSAGEBASE_INFO 
+					FROM	cm.CM_RCS_MSGBASE A
+					UNION ALL
+					SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID 
+					,		A.MESSAGEBASEFORM_ID  AS MESSAGEBASEFORM_ID 
+					,		A.BRAND_ID			AS BRAND_ID 
+					,		A.CORP_ID			AS CORP_ID 
+					,		A.TMPLT_NAME		AS TMPLT_NAME 
+					,		A.PRODUCT_CODE		AS PRODUCT_CODE 
+					,		A.REG_ID			AS REG_ID
+					,		A.REG_DT			AS REG_DT
+					,		A.APPROVAL_STATUS	AS APPROVAL_STATUS 
+					,		A.APPROVAL_DT		AS APPROVAL_DT 
+					,		A.MESSAGEBASE_INFO	AS MESSAGEBASE_INFO 
+					FROM	cm.CM_RCS_MSGBASE_REQ A
+			) MSGBASE, (SELECT @vRank:=0, @vData:='') as r
+			ORDER BY MSGBASE.MESSAGEBASE_ID, MSGBASE.REG_DT
+	) A
+	WHERE	RANKING = 1
+	AND		A.MESSAGEBASE_ID = #{msgId}
+	</select>
 </mapper>

@@ -58,6 +58,12 @@ const deleteFrndTalkTmplt = (params) => {
 const selectSenderKeyList = (params) => {
   return httpClient.post('/api/public/template/selectSenderKeyList', params, { headers: {"show-layer": "Yes"} });
 };
+const selectKkoTmpltCatGrpList = (params) => {
+  return httpClient.post('/api/public/template/selectKkoTmpltCatGrpList', params, { headers: {"show-layer": "Yes"} });
+};
+const selectKkoTmpltCatList = (params) => {
+  return httpClient.post('/api/public/template/selectKkoTmpltCatList', params, { headers: {"show-layer": "Yes"} });
+};
 
 /* RCS */
 const corpBrandCnt = (params) => {
@@ -66,6 +72,14 @@ const corpBrandCnt = (params) => {
 
 const selectRcsTemplateList = (params) => {
   return httpClient.post('/api/public/rcsTemplate/selectRcsTemplateList', params, {headers: {"show-layer":"yes"}});
+};
+
+const rcsTemplateInit = (params) => {
+  return httpClient.post('/api/public/rcsTemplate/rcsTemplateInit', params, {headers: {"show-layer":"yes"}});
+};
+
+const rcsTemplateUpdateInit = (params) => {
+  return httpClient.post('/api/public/rcsTemplate/rcsTemplateUpdateInit', params, {headers: {"show-layer":"yes"}});
 };
 
 export default {
@@ -85,8 +99,12 @@ export default {
     excelDownloadFrndTalkTmplt,
     deleteFrndTalkTmplt,
     selectSenderKeyList,
+    selectKkoTmpltCatGrpList,
+    selectKkoTmpltCatList,
     corpBrandCnt,
-    selectRcsTemplateList
+    selectRcsTemplateList,
+    rcsTemplateInit,
+    rcsTemplateUpdateInit
 };
 
 function fnExcelDownCallback(response){
