@@ -58,7 +58,7 @@
     <ImageSmsUploadPopUp :imgUploadOpen.sync="smsImgUploadOpen"></ImageSmsUploadPopUp>
 
     <!-- 본문 -->
-    <div class="row">
+    <div class="row" v-show='true'>
       <div class="col-xs-6" style="padding-right:100px">
         <h4 class="topH4">01 발송정보</h4>
         <div class="of_h">
@@ -69,13 +69,7 @@
             <span class="txtCaption color4">광고 메시지는 20시~8시 발송이 제한됩니다.</span>
           </div>
         </div>
-        <div class="of_h">
-          <div class="float-left" style="width:34%"><h5>메시지 타입*</h5></div>
-          <div class="float-left" style="width:66%">
-            <input type="radio" name="mType" value="BASE" id="mType_text" checked="" v-model="rowData.msgType"> <label for="mType_text" class="mr20">텍스트</label>
-            <input type="radio" name="mType" value="IMAGE" id="mType_image" v-model="rowData.msgType"> <label for="mType_image">이미지</label>
-          </div>
-        </div>
+
         <div class="of_h">
           <div class="float-left" style="width:34%"><h5>타 프로젝트 사용여부*</h5></div>
           <div class="float-left" style="width:66%">
@@ -100,19 +94,19 @@
             </div>
             <div class="of_h consolMarginTop">
               <div class="float-left" style="width:60%"><h5>PUSH</h5></div>
-              <div class="float-left consolMarginTop" style="width:40%"><input type="checkbox" id="PUSH" class="checkStyle2" value="PUSH" v-model="rowData.checkedChannel" @click="toggleOnOffPush"><label for="PUSH"></label></div>
+              <div class="float-left consolMarginTop" style="width:40%"><input type="checkbox" id="PUSH" class="checkStyle2" value="PUSH" v-model="rowData.checkedChannel" ><label for="PUSH"></label></div>
             </div>
             <div class="of_h consolMarginTop">
               <div class="float-left" style="width:60%"><h5>RCS</h5></div>
-              <div class="float-left consolMarginTop" style="width:40%"><input type="checkbox" id="RCS" class="checkStyle2" value="RCS" v-model="rowData.checkedChannel" @click="toggleOnOffRCS"><label for="RCS"></label></div>
+              <div class="float-left consolMarginTop" style="width:40%"><input type="checkbox" id="RCS" class="checkStyle2" value="RCS" v-model="rowData.checkedChannel" ><label for="RCS"></label></div>
             </div>
             <div class="of_h consolMarginTop">
               <div class="float-left" style="width:60%"><h5>카카오톡</h5></div>
-              <div class="float-left consolMarginTop" style="width:40%"><input type="checkbox" id="KAKAO" class="checkStyle2" value="KAKAO" v-model="rowData.checkedChannel" @click="toggleOnOffKakao"><label for="KAKAO"></label></div>
+              <div class="float-left consolMarginTop" style="width:40%"><input type="checkbox" id="KAKAO" class="checkStyle2" value="KAKAO" v-model="rowData.checkedChannel" ><label for="KAKAO"></label></div>
             </div>
                                     <div class="of_h consolMarginTop">
               <div class="float-left" style="width:60%"><h5>SMS/MMS</h5></div>
-              <div class="float-left consolMarginTop" style="width:40%"><input type="checkbox" id="SMSMMS" class="checkStyle2" value="SMSMMS" v-model="rowData.checkedChannel" @click="toggleOnOffSmsMms"><label for="SMSMMS"></label></div>
+              <div class="float-left consolMarginTop" style="width:40%"><input type="checkbox" id="SMSMMS" class="checkStyle2" value="SMSMMS" v-model="rowData.checkedChannel" ><label for="SMSMMS"></label></div>
             </div>
           </div>
           <div class="float-right text-center" style="width:50%">
@@ -125,20 +119,8 @@
             </div>
           </div>
         </div>
-        <div class="of_h consolMarginTop">
-          <div class="float-right text-center" style="width:50%"><a @click="moveup()" title="위버튼"><i class="far fa-chevron-up channelBtn"></i></a> <a @click="movedown()" title="아래버튼"><i class="far fa-chevron-down channelBtn"></i></a></div>
-        </div>
-<!--         <div class="of_h consolMarginTop">
-          <div class="float-left" style="width:33%; padding:0 10px"><a @click="save()" class="btnStyle1 borderGray" style="min-width:auto; width:100%" title="저장">저장</a></div>
-          <div class="float-left" style="width:33%; padding:0 10px"><a @click="complete()" class="btnStyle1 backBlack" style="min-width:auto; width:100%" title="등록">등록</a></div>
-          <div class="float-left" style="width:33%; padding:0 10px"><a href="#self" class="btnStyle1 backWhite" style="min-width:auto; width:100%" title="취소">취소</a></div>
-        </div> -->
       </div>
-
-
     </div>
-
-    <hr>
 
     <h4>03 채널 설정</h4>
     <div class="contentBody">
@@ -214,11 +196,8 @@
             </div>
           </div>
         </div>
-        <div v-if="rowData.msgType == 'IMAGE'">
+        <div>
           <div class="of_h consolMarginTop">
-
-
-
             <div class="float-left" style="width:13%"><h4>이미지</h4></div>
             <div class="float-left" style="width:57%">
               <div class="float-left" style="width:25%">
@@ -2641,6 +2620,28 @@
 							<div class="phoneText1 scroll-y4">
 								<p>{{rowData.smsContent}}</p>
 							</div>
+							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.smsImgInfoList[0])" class="phoneText2 mt10 text-center">
+				                <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+			                  <p class="font-size14 color3 mt15">이미지 영역</p>
+				            </div>
+			                <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.smsImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
+			                  <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+			                  <p class="font-size14 color3 mt15">이미지 영역</p>
+			                </div>
+			                <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.smsImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+			                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.smsImgInfoList[0].imgUrl+');'">
+			                </div>
+			                <div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.smsImgInfoList[1])" class="phoneText2 mt10 text-center">
+				                <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+			                  <p class="font-size14 color3 mt15">이미지 영역</p>
+				            </div>
+			                <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.smsImgInfoList[1].imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
+			                  <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+			                  <p class="font-size14 color3 mt15">이미지 영역</p>
+			                </div>
+			                <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.smsImgInfoList[1].imgUrl)" class="phoneText2 mt10 text-center"
+			                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.smsImgInfoList[1].imgUrl+');'">
+			                </div>	
 						</div>
 					</div>
 					
@@ -2813,18 +2814,25 @@ export default {
     Calendar
   },
   props: {
-    tmpltCodeP: {
+    productCodeP: {
       type: String,
       require: false,
       default: function() {
         return '';
       }
     },
+    tmpltCodeP: {
+      type: String,
+      require: false,
+      default: function() {
+        return '';
+      }
+    },    
     componentsTitle: {
       type: String,
       require: false,
       default: function() {
-        return '통합 템플릿 관리';
+        return '스마트 템플릿 관리';
       }
     },
         
@@ -2835,10 +2843,10 @@ export default {
         return {
                 'checkedChannel':[]
               , 'tmpltCode':''
-              , 'msgType':'BASE' //BASE: 텍스트, IMAGE:이미지
+              , 'msgType':'IMAGE' //BASE: 텍스트, IMAGE:이미지  //스마트발송은 카카오톡을 제외하고 이미지가 있고 없고에 따라 금액차이가 없어서 기본을 image로 놓음
               , 'msgKind':'I' //정보성 I, 광고용: A
               , 'otherProjectUseYn':'Y' //Y:공용, N:전용
-              , 'tmpltType':'M'  //tmpltType:통합발송 M, 스마트발송:S
+              , 'tmpltType':'S'  //tmpltType:통합발송 M, 스마트발송:S
               , 'tmpltTitle':'' //템플릿 명
               , 'pushHowToDenyReceipt':''
               , 'pushAppId': ''
@@ -2932,7 +2940,7 @@ export default {
 
       smsCallbackList: [], //smslms 발신번호 리스트
 
-      detailTitle:'통합발송 템플릿',
+      detailTitle:'스마트발송 템플릿',
       
       pushImgMngOpen : false, /* Push 이미지 */
       pushImgUploadOpen : false,
@@ -3087,123 +3095,54 @@ export default {
     this.fnSelectFriendTalkSenderKeyList();
     this.fnRcs0SelectCallbackList();
     this.fnSMSSelectCallbackList();
+    this.fnSetSmartBaseInfo();
     this.fnSetIntegratedTemplateInfo();
   },
 
   methods: {
 
-    //채널선택에서 체크박스를 클릭하면 채널설정탭을 설정한다.
-    toggleOnOffPush:function(){
-      if(this.checkedPush == true){
-        this.checkedPush = false;
-        
-        for(let i = 0; i < this.rowData.checkedChannel.length; i++) {
-		  if(this.rowData.checkedChannel[i] === 'PUSH')  {
-		    this.rowData.checkedChannel.splice(i, 1);
-		    i--;
-		  }
-		}
-
-        console.log("this.rowData.checkedChannel : "+this.rowData.checkedChannel);
-        console.log("this.rowData.checkedChannel.length : "+this.rowData.checkedChannel.length);
-        if(this.rowData.checkedChannel.length === 0){
-        	this.channelTab = 9;
-        }else{
-        	if(this.rowData.checkedChannel[0] === 'RCS')  {
-        		this.channelTab = 1;
-        	}else if(this.rowData.checkedChannel[0] === 'KAKAO')  {
-        		this.channelTab = 2;
-        	}else if(this.rowData.checkedChannel[0] === 'SMSMMS')  {
-        		this.channelTab = 3;
-        	}
-        }
-      }else{
-        this.checkedPush = true;
-        this.channelTab = 0;
+    fnSetSmartBaseInfo(){
+      if(!this.isEmpty(this.productCodeP)){
+        this.fnSelectSmartBaseInfo();
       }
     },
-    toggleOnOffRCS:function(){
-      if(this.checkedRCS == true){
-        this.checkedRCS = false;
-        
-        for(let i = 0; i < this.rowData.checkedChannel.length; i++) {
-		  if(this.rowData.checkedChannel[i] === 'RCS')  {
-		    this.rowData.checkedChannel.splice(i, 1);
-		    i--;
-		  }
-		}
+
+    //템플릿 정보 조회
+    fnSelectSmartBaseInfo(){
+      const params = {productCode: this.productCodeP};
+      smartTemplateApi.selectSmartProductInfo(params).then(response => {
+        const result = response.data;
+        if(result.success) {
+        	if(result.data != null && result.data.length > 0){
 		
-        if(this.rowData.checkedChannel.length === 0){
-        	this.channelTab = 9;
-        }else{
-        	if(this.rowData.checkedChannel[0] === 'PUSH')  {
-        		this.channelTab = 0;
-        	}else if(this.rowData.checkedChannel[0] === 'KAKAO')  {
-        		this.channelTab = 2;
-        	}else if(this.rowData.checkedChannel[0] === 'SMSMMS')  {
-        		this.channelTab = 3;
-        	}
+            	let rtnData = result.data[0];
+            	console.log("===============rtnData.chTypeList"+rtnData.chTypeList);
+	            this.rowData.checkedChannel = rtnData.chGrpList.split(',');
+	            for(var i=0; i < this.rowData.checkedChannel.length; i++){
+	            	if(this.rowData.checkedChannel[i] == 'PUSH'){
+	            		this.channelTab = 0;
+	            		this.checkedPush = true;
+	            	}else if(this.rowData.checkedChannel[i] == 'RCS'){
+	            		this.channelTab = 1;
+	            		this.checkedRCS = true;
+	            	}else if(this.rowData.checkedChannel[i] == 'KAKAO'){
+	            		this.channelTab = 2;
+	            		this.checkedKakao = true;
+	            	}else if(this.rowData.checkedChannel[i] == 'SMSMMS'){
+	            		this.channelTab = 3;
+	            		this.checkedSmsMms = true;
+	            	}
+	            }
+	            this.rowData.msgKind 		= rtnData.msgKind;
+	            this.rowData.tmpltTitle 	= rtnData.tmpltTitle;
+	            this.rowData.otherProjectUseYn = (rtnData.projectId == 'ALL' ? 'Y' : 'N')
+           }
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
         }
-      }else{
-        this.checkedRCS = true;
-        this.channelTab = 1;
-      }
+      });
     },
-    toggleOnOffKakao:function(){
-      if(this.checkedKakao == true){
-        this.checkedKakao = false;
-
-        for(let i = 0; i < this.rowData.checkedChannel.length; i++) {
-		  if(this.rowData.checkedChannel[i] === 'KAKAO')  {
-		    this.rowData.checkedChannel.splice(i, 1);
-		    i--;
-		  }
-		}
-		        
-        if(this.rowData.checkedChannel.length === 0){
-        	this.channelTab = 9;
-        }else{
-        	if(this.rowData.checkedChannel[0] === 'PUSH')  {
-        		this.channelTab = 0;
-        	}else if(this.rowData.checkedChannel[0] === 'RCS')  {
-        		this.channelTab = 1;
-        	}else if(this.rowData.checkedChannel[0] === 'SMSMMS')  {
-        		this.channelTab = 3;
-        	}
-        }
-      }else{
-        this.checkedKakao = true;
-        this.channelTab = 2;
-      }
-    },
-    toggleOnOffSmsMms:function(){
-      if(this.checkedSmsMms == true){
-        this.checkedSmsMms = false;
-        
-        for(let i = 0; i < this.rowData.checkedChannel.length; i++) {
-		  if(this.rowData.checkedChannel[i] === 'SMSMMS')  {
-		    this.rowData.checkedChannel.splice(i, 1);
-		    i--;
-		  }
-		}
-		        
-        if(this.rowData.checkedChannel.length === 0){
-        	this.channelTab = 9;
-        }else{
-        	if(this.rowData.checkedChannel[0] === 'PUSH')  {
-        		this.channelTab = 0;
-        	}else if(this.rowData.checkedChannel[0] === 'RCS')  {
-        		this.channelTab = 1;
-        	}else if(this.rowData.checkedChannel[0] === 'KAKAO')  {
-        		this.channelTab = 2;
-        	}
-        }
-      }else{
-        this.checkedSmsMms = true;
-        this.channelTab = 3;
-      }
-    },
-
+    
 
     fnPushGetAppId(){
       var params = {};
@@ -3352,80 +3291,28 @@ export default {
       });
     },     
 
-    // showRcsTemplateTable(num){
-    //   if(num == 0){
 
-    //   }else if(num == 1){
-
-    //   }else if(num == 2){
-
-    //   }else if(num == 3){
-
-    //   }else if(num == 4){
-
-    //   }else if(num == 5){
-
-    //   }else if(num == 6){
-
-    //   }else if(num == 7){
-
-    //   }else if(num == 8){
-
-    //   }else if(num == 9){
-
-    //   }else if(num == 10){
-
-    //   }
-    // },
     putData:function(idx){//채널 발송순서 변경시 클릭한 채널 인덱스를 가져온다
       console.log("idxData : ", idx);
       this.idxData = idx;
     },
     
-    moveup:function () {//발송순서를 위로
-      console.log("start index : ",this.idxData);
-      //Insert the item in the previous item
-      if (this.idxData > 0) {
-        this.rowData.checkedChannel.splice (this.idxData-1,0, (this.rowData.checkedChannel [this.idxData]));
-        
-        //Delete the next item
-        this.rowData.checkedChannel.splice (this.idxData + 1,1);
-      
-        this.idxData = this.idxData -1;
-      }
-      console.log(this.rowData.checkedChannel);
-    },  
-    
-    movedown:function () { //발송순서를 아래로
-      console.log("start index : ",this.idxData);
-      if (this.idxData < this.rowData.checkedChannel.length-1) {
-        //Insert the item in the next item
-        this.rowData.checkedChannel.splice (this.idxData + 2,0, (this.rowData.checkedChannel [this.idxData]));
-        
-        this.rowData.checkedChannel.splice (this.idxData, 1);
-        //item.isshow=false;
-     
-        this.idxData = this.idxData +1;
-      }
-    },
-
     async fnSaveIntegratedTemplate(){
       var params = this.rowData;
 
-      console.log("fnSaveIntegratedTemplate params : ",params);
+      console.log("fnSaveSmartTemplate params : ",params);
 
       //유효성 검사
       //if(this.fnIsValid() == false) return;
 
       params.tmpltStatus = 'SAVE';
-      //params.projectId = this.testProjectId;
       params.rcsTemplateTable = this.rcsTemplateTable;//rcs일경우 사용한 템플릿 번호를 가져간다.
       params.rcs9CardCount = this.rcs9CardCount;//캐러셀 SHORT 카드 수
       params.rcs10CardCount = this.rcs10CardCount;//캐러셀 TALL 카드 수
       params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
       params.useYn = this.useYn; //사용여부
 
-      await smartTemplateApi.insertIntegratedTemplate(params).then(response =>{
+      await smartTemplateApi.insertSmartTemplate(params).then(response =>{
         var result = response.data;
         if(result.success) {
           confirm.fnAlert(this.detailTitle, '저장 되었습니다.');
@@ -3467,10 +3354,7 @@ export default {
         confirm.fnAlert(this.detailTitle, '템플릿명을 입력해주세요.');
         return false;
       }
-      if(!this.rowData.msgType){
-        confirm.fnAlert(this.detailTitle, '메시지타입을 선택해주세요.');
-        return false;
-      }
+
       if(!this.rowData.msgKind){
         confirm.fnAlert(this.detailTitle, '메시지구분을 선택해주세요.');
         return false;
@@ -3504,16 +3388,6 @@ export default {
 	
 	          if(this.rowData.msgKind == 'A' && !this.rowData.pushHowToDenyReceipt){
 	            confirm.fnAlert(this.detailTitle, 'Push 수신거부 방법을 입력해주세요.');
-	            return false;
-	          }
-	
-	          if(this.rowData.msgType == 'IMAGE' && !this.rowData.pushImgInfo.imgUrl){
-	            confirm.fnAlert(this.detailTitle, 'Push 이미지를 선택해주세요.');
-	            return false;
-	          }
-	
-	          if(this.rowData.msgType == 'IMAGE' && !this.rowData.pushImgInfo.fileId){
-	            confirm.fnAlert(this.detailTitle, 'Push 이미지 정보가 잘못되었습니다. 다시 이미지를 선택해주세요.');
 	            return false;
 	          }
 	
@@ -3912,7 +3786,6 @@ export default {
             	}
             }
             this.rowData.tmpltCode 		= rtnData.tmpltCode;
-            this.rowData.msgType 		= rtnData.msgType;
             this.rowData.msgKind 		= rtnData.msgKind;
             this.rowData.tmpltTitle 	= rtnData.tmpltTitle;
             this.rowData.otherProjectUseYn = rtnData.otherProjectUseYn;

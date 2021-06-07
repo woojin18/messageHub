@@ -69,6 +69,31 @@ public class SmartTemplateController {
 		return rtn;
 	}
 	
+	
+	/**
+	 * 스마트 상품 리스트 조회
+	 *
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectSmartProductInfo")
+	public RestResult<?> selectSmartProductInfo(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = smartTemplateService.selectSmartProductInfo(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+            log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+	
+	
 	/**
 	 * 스마트 템플릿 리스트 조회
 	 *

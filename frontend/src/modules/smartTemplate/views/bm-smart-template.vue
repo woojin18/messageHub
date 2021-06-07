@@ -55,7 +55,7 @@
 					<li><h5>{{data.msgKindName}}</h5></li>
 				</ul>
 				<div class="mt10">
-					<input type="radio" name="smart" :value="data.productCode" :id="data.productCode" class="radioStyle" @change="fnSelect($event)"><label :for="data.productCode"></label>
+					<input type="radio" name="smart" :value="data.productCode" :id="data.productCode" class="radioStyle" @change="fnSelectSmart($event)"><label :for="data.productCode"></label>
 					<i class="fas fa-question-circle toolTip"></i>
 				</div>
 			</li>
@@ -68,8 +68,7 @@
     <div class="col-xs-12 consolMarginTop">
       <div class="of_h inline">
         <div class="float-right">
-          <!-- <a @click="fRegist" class="btnStyle2 borderGray" title="템플릿 등록">템플릿 등록 <i class="fal fa-arrow-to-bottom"></i></a> -->
-          <router-link :to="{ name: 'smartTemplateManage' }" tag="a" class="btnStyle2 borderGray" >템플릿 등록<i class="fal fa-arrow-to-bottom"></i></router-link>
+          <router-link :to="{ name: 'smartTemplateManage', params:{'productCodeP': productCode} }" tag="a" class="btnStyle2 borderGray" v-show="checkSmartProduct">템플릿 등록<i class="fal fa-arrow-to-bottom" ></i></router-link>
           <a @click="fnDelete" class="btnStyle2 borderGray" title="삭제">삭제 <i class="fal fa-arrow-to-bottom"></i></a>
           <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
         </div>
@@ -115,9 +114,8 @@
                 <label :for="'listCheck_'+idx"></label></td>
                 <td>{{ idx + 1 }}</td>
                 <td class="text-center"><router-link :to="{ name: 'smartTemplateManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link> </td>
-                 <td class="text-center">{{data.tmpltTitle}}</td>
-                <td class="text-center">{{data.tmpltChannel}}</td>
-                <td class="text-center">{{data.msgKind}}</td>
+                <td class="text-center">{{data.tmpltTitle}}</td>
+                <td class="text-center"></td>
                 <td class="text-center">{{data.otherProjectUseYn}}</td>
                 <td class="text-center">{{data.regId}}</td>
                 <td class="text-center end">{{data.regDt}}</td>
@@ -186,7 +184,9 @@ export default {
       offset : 0, //페이지 시작점
       searchDateInterval: 7,
       datas: [],
-      products: []
+      checkSmartProduct: false, //스마트 템플릿 등록버튼 Show여부
+      products: [],
+      productCode: '',
     }
     
         
@@ -261,10 +261,11 @@ export default {
       });
     },
     
-    fnSelect(event){
-        var productCode = event.target.value;
-        console.log(">>>>>>>>>>>>>>productCode : "+productCode);
-    	this.fnSelectSmartTemplateList(productCode);
+    fnSelectSmart(event){
+        var productCodeTemp = event.target.value;
+        this.productCode = productCodeTemp;
+        this.checkSmartProduct = true;//스마트 템플릿 등록버튼 Show
+    	this.fnSelectSmartTemplateList(productCodeTemp);
     },
     
     // 검색
@@ -286,7 +287,6 @@ export default {
 
       params.loginId = tokenSvc.getToken().principal.userId;
       params.roleCd = tokenSvc.getToken().principal.roleCd
-
       await smartTemplateApi.selectSmartTemplateList(params).then(response =>{
         var result = response.data;
         if(result.success) {

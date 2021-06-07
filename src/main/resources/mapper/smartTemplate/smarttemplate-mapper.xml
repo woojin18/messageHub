@@ -8,62 +8,123 @@
         AND A.TMPLT_STATUS = 'SAVE'
         AND A.TMPLT_TYPE = 'S'
 		AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
-        <if test="searchText != '' and searchText != null ">
+        <if test="searchText != null and searchText != '' ">
             AND A.TMPLT_TITLE = CONCAT('%', #{searchText}, '%')
         </if>
-        <if test="searchStartDate != '' and searchStartDate != null ">
-            <if test="searchEndDate != '' and searchEndDate != null ">
+        <if test="searchStartDate != null and searchStartDate != '' ">
+            <if test="searchEndDate != null and searchEndDate != '' ">
             AND A.REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
             </if>
         </if>
-        <if test="productCode != '' and productCode != null ">
-        	AND JSON_CONTAINS(JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType'), '[#{productCode}]');
+        <if test="chTypeList != null and chTypeList != ''">
+        	AND JSON_CONTAINS(JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType'), #{chTypeList})
         </if>
     </sql>
 
     <select id="selectSmartProductList" parameterType="hashmap" resultType="camel">
     /* 스마트발송 상품 리스트 조회 */
-SELECT T.ROW_NUM, T.PRODUCT_CODE, T.PRODUCT_NAME, T.CH_GRP
-     , T.CH_TYPE0, T.CH_TYPE1, T.CH_TYPE2, T.CH_TYPE2
-     , CONCAT(T.CH_TYPE0,IF(IFNULL(T.CH_TYPE1,'') = '','' ,','), IFNULL(T.CH_TYPE1,'')
-                        ,IF(IFNULL(T.CH_TYPE2,'') = '','' ,','), IFNULL(T.CH_TYPE2,'')
-                        ,IF(IFNULL(T.CH_TYPE3,'') = '','' ,','), IFNULL(T.CH_TYPE3,'')
-             ) AS CH_TYPE_LIST
-     , T.SPEC0, T.SPEC1, T.SPEC2, T.SPEC3
-     , T.ORDER0, T.ORDER1, T.ORDER2, T.ORDER3
-FROM(    
-		SELECT  @rownum:=@rownum+1 AS ROW_NUM
-		      , A.PRODUCT_CODE, A.PRODUCT_NAME, A.CH_GRP
-		 	  , A.SMART_CH_PRODUCT ->> '$.msg_kind' AS MSG_KIND
-		 	  , CASE WHEN A.SMART_CH_PRODUCT ->> '$.msg_kind' = 'I' THEN '정보'
-		 	         WHEN A.SMART_CH_PRODUCT ->> '$.msg_kind' = 'A' THEN '광고' 
-		 	         ELSE ''
-		 	         END AS MSG_KIND_NAME
-		      , A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' AS CH_TYPE0
-			  , A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' AS CH_TYPE1
-			  , A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' AS CH_TYPE2
-			  , A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' AS CH_TYPE3
-			  
-		      , A.SMART_CH_PRODUCT ->> '$.msg_ch[0].spec' AS SPEC0
-			  , A.SMART_CH_PRODUCT ->> '$.msg_ch[1].spec' AS SPEC1
-			  , A.SMART_CH_PRODUCT ->> '$.msg_ch[2].spec' AS SPEC2
-			  , A.SMART_CH_PRODUCT ->> '$.msg_ch[3].spec' AS SPEC3
-			  
-		      , A.SMART_CH_PRODUCT ->> '$.msg_ch[0].order' AS ORDER0
-			  , A.SMART_CH_PRODUCT ->> '$.msg_ch[1].order' AS ORDER1
-			  , A.SMART_CH_PRODUCT ->> '$.msg_ch[2].order' AS ORDER2
-			  , A.SMART_CH_PRODUCT ->> '$.msg_ch[3].order' AS ORDER3
-		FROM cm_bo.CM_PRODUCT_UNIT A
-		   , (SELECT @rownum:=0) TMP
-		WHERE A.SMART_CH_PRODUCT_YN = 'Y'
-          AND A.USE_YN = 'Y'
-          <if test="productCode != '' and productCode != null ">
-          	AND A.PRODUCT_CODE  = #{productCode}
-          </if>
-		ORDER BY A.REG_DT DESC
-) T
+		SELECT T.ROW_NUM, T.PRODUCT_CODE, T.PRODUCT_NAME, T.CH_GRP, T.MSG_KIND, T.MSG_KIND_NAME
+		     , T.CH_TYPE0, T.CH_TYPE1, T.CH_TYPE2, T.CH_TYPE3
+		     , CONCAT(T.CH_TYPE0,IF(IFNULL(T.CH_TYPE1,'') = '','' ,','), IFNULL(T.CH_TYPE1,'')
+		                        ,IF(IFNULL(T.CH_TYPE2,'') = '','' ,','), IFNULL(T.CH_TYPE2,'')
+		                        ,IF(IFNULL(T.CH_TYPE3,'') = '','' ,','), IFNULL(T.CH_TYPE3,'')
+		             ) AS CH_TYPE_LIST
+		     , T.SPEC0, T.SPEC1, T.SPEC2, T.SPEC3
+		     , T.ORDER0, T.ORDER1, T.ORDER2, T.ORDER3
+		FROM(    
+				SELECT  @rownum:=@rownum+1 AS ROW_NUM
+				      , A.PRODUCT_CODE, A.PRODUCT_NAME, A.CH_GRP
+				 	  , A.SMART_CH_PRODUCT ->> '$.msg_kind' AS MSG_KIND
+				 	  , CASE WHEN A.SMART_CH_PRODUCT ->> '$.msg_kind' = 'I' THEN '정보'
+				 	         WHEN A.SMART_CH_PRODUCT ->> '$.msg_kind' = 'A' THEN '광고' 
+				 	         ELSE ''
+				 	         END AS MSG_KIND_NAME
+				      , A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' AS CH_TYPE0
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' AS CH_TYPE1
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' AS CH_TYPE2
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' AS CH_TYPE3
+					  
+				      , A.SMART_CH_PRODUCT ->> '$.msg_ch[0].spec' AS SPEC0
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[1].spec' AS SPEC1
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[2].spec' AS SPEC2
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[3].spec' AS SPEC3
+					  
+				      , A.SMART_CH_PRODUCT ->> '$.msg_ch[0].order' AS ORDER0
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[1].order' AS ORDER1
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[2].order' AS ORDER2
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[3].order' AS ORDER3
+				FROM cm_bo.CM_PRODUCT_UNIT A
+				   , (SELECT @rownum:=0) TMP
+				WHERE A.SMART_CH_PRODUCT_YN = 'Y'
+		          AND A.USE_YN = 'Y'
+		          <if test="productCode != null and productCode != '' ">
+		          	AND A.PRODUCT_CODE  = #{productCode}
+		          </if>
+				ORDER BY A.REG_DT DESC
+		) T
+    </select>
+
+
+    <select id="selectSmartProductInfo" parameterType="hashmap" resultType="camel">
+    /* 스마트발송 상품 상세 조회 */
+		SELECT T.ROW_NUM, T.PRODUCT_CODE, T.PRODUCT_NAME, T.CH_GRP, T.MSG_KIND
+		     , T.CH_TYPE0, T.CH_TYPE1, T.CH_TYPE2, T.CH_TYPE3
+		     , CONCAT(T.CH_TYPE0,IF(IFNULL(T.CH_TYPE1,'') = '','' ,','), IFNULL(T.CH_TYPE1,'')
+		                        ,IF(IFNULL(T.CH_TYPE2,'') = '','' ,','), IFNULL(T.CH_TYPE2,'')
+		                        ,IF(IFNULL(T.CH_TYPE3,'') = '','' ,','), IFNULL(T.CH_TYPE3,'')
+		             ) AS CH_TYPE_LIST
+		     , CONCAT(T.CH_GRP0,IF(IFNULL(T.CH_GRP1,'') = '','' ,','), IFNULL(T.CH_GRP1,'')
+		                        ,IF(IFNULL(T.CH_GRP2,'') = '','' ,','), IFNULL(T.CH_GRP2,'')
+		                        ,IF(IFNULL(T.CH_GRP3,'') = '','' ,','), IFNULL(T.CH_GRP3,'')
+		             ) AS CH_GRP_LIST		             
+		     , T.SPEC0, T.SPEC1, T.SPEC2, T.SPEC3
+		     , T.ORDER0, T.ORDER1, T.ORDER2, T.ORDER3
+		FROM(    
+				SELECT  @rownum:=@rownum+1 AS ROW_NUM
+				      , A.PRODUCT_CODE, A.PRODUCT_NAME, A.CH_GRP
+				 	  , A.SMART_CH_PRODUCT ->> '$.msg_kind' AS MSG_KIND
+
+				      , A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' AS CH_TYPE0
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' AS CH_TYPE1
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' AS CH_TYPE2
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' AS CH_TYPE3
+					  
+					  , CASE WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' = 'MMS' 		 OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' = 'SMS' THEN 'SMSMMS'
+		                  WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' = 'FRIENDTAKL' OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' = 'ALIMTALK' THEN 'KAKAO'
+		                  ELSE A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType'
+		                  END AS CH_GRP0
+					  , CASE WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' = 'MMS'			 OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' = 'SMS' THEN 'SMSMMS'
+		                  WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' = 'FRIENDTAKL' OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' = 'ALIMTALK' THEN 'KAKAO'
+		                  ELSE A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType'
+		                  END AS CH_GRP1
+					  , CASE WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' = 'MMS' 		 OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' = 'SMS' THEN 'SMSMMS'
+		                  WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' = 'FRIENDTAKL' OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' = 'ALIMTALK' THEN 'KAKAO'
+		                  ELSE A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType'
+		                  END AS CH_GRP2
+					  , CASE WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' = 'MMS' 		 OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' = 'SMS' THEN 'SMSMMS'
+		                  WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' = 'FRIENDTAKL' OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' = 'ALIMTALK' THEN 'KAKAO'
+		                  ELSE A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType'
+		                  END AS CH_GRP3						  
+					  
+				      , A.SMART_CH_PRODUCT ->> '$.msg_ch[0].spec' AS SPEC0
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[1].spec' AS SPEC1
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[2].spec' AS SPEC2
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[3].spec' AS SPEC3
+					  
+				      , A.SMART_CH_PRODUCT ->> '$.msg_ch[0].order' AS ORDER0
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[1].order' AS ORDER1
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[2].order' AS ORDER2
+					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[3].order' AS ORDER3
+				FROM cm_bo.CM_PRODUCT_UNIT A
+				   , (SELECT @rownum:=0) TMP
+				WHERE A.SMART_CH_PRODUCT_YN = 'Y'
+		          AND A.USE_YN = 'Y'
+		          AND A.PRODUCT_CODE  = #{productCode}
+				ORDER BY A.REG_DT DESC
+		) T
     </select>
     
+        
     
     <select id="selectSmartTemplateListCnt" parameterType="hashmap" resultType="int">
     /* 스마트발송 템플릿 카운트 조회 */
@@ -3540,7 +3601,7 @@ FROM (
 			   	
 		FROM cm.CM_SMART_TMPLT A
 		WHERE 1=1
-		AND A.TMPLT_TYPE = 'M'
+		AND A.TMPLT_TYPE = 'S'
         AND A.TMPLT_CODE = #{tmpltCode}
 ) T LEFT OUTER JOIN cm_console.CM_IMAGE_FILE B ON T.pushFileId = B.FILE_ID    
 	LEFT OUTER JOIN cm_console.CM_IMAGE_FILE sms0 ON T.smsFileId0 = sms0.FILE_ID
@@ -3618,7 +3679,7 @@ FROM (
         DELETE
         FROM cm.CM_SMART_TMPLT
         WHERE 1=1
-		AND TMPLT_TYPE = 'M'
+		AND TMPLT_TYPE = 'S'
         AND TMPLT_CODE IN <foreach collection="tmpltCodes" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
     </delete>
 

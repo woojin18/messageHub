@@ -2641,6 +2641,28 @@
 							<div class="phoneText1 scroll-y4">
 								<p>{{rowData.smsContent}}</p>
 							</div>
+							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.smsImgInfoList[0])" class="phoneText2 mt10 text-center">
+				                <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+			                  <p class="font-size14 color3 mt15">이미지 영역</p>
+				            </div>
+			                <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.smsImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
+			                  <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+			                  <p class="font-size14 color3 mt15">이미지 영역</p>
+			                </div>
+			                <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.smsImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+			                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.smsImgInfoList[0].imgUrl+');'">
+			                </div>
+			                <div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.smsImgInfoList[1])" class="phoneText2 mt10 text-center">
+				                <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+			                  <p class="font-size14 color3 mt15">이미지 영역</p>
+				            </div>
+			                <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.smsImgInfoList[1].imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
+			                  <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+			                  <p class="font-size14 color3 mt15">이미지 영역</p>
+			                </div>
+			                <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.smsImgInfoList[1].imgUrl)" class="phoneText2 mt10 text-center"
+			                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.smsImgInfoList[1].imgUrl+');'">
+			                </div>							
 						</div>
 					</div>
 					
@@ -2691,8 +2713,6 @@
 				 
 				                <ul v-for="imgIdx in smsImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
 				                  <li v-if="rowData.smsImgInfoList.length > imgIdx -1">
-				                    
-				                    <!-- <a @click="fnSmsDelImg(imgIdx-1)" v-if="rowData.smsImgInfoList.length > 0">{{fnSubString(rowData.smsImgInfoList[imgIdx].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a> -->
 				                    <a @click="fnSmsDelImg(imgIdx-1)">{{fnSubString(rowData.smsImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
 				                  </li>
 				                  <li v-else>
@@ -5584,6 +5604,7 @@ export default {
     },
 
     fnSmsDelImg(idx){
+    console.log("fnSmsDelImg=============================");
        this.rowData.smsImgInfoList.splice(idx, 1);
      },
      

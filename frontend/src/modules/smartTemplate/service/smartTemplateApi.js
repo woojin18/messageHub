@@ -4,6 +4,11 @@ const selectSmartProductList = (params) => {
     return httpClient.post('/smartTemplateApi/selectSmartProductList', params, { headers: {"show-layer": "Yes"} });
 };
 
+const selectSmartProductInfo = (params) => {
+    return httpClient.post('/smartTemplateApi/selectSmartProductInfo', params, { headers: {"show-layer": "Yes"} });
+};
+
+
 const selectSmartTemplateList = (params) => {
     return httpClient.post('/smartTemplateApi/selectSmartTemplateList', params, { headers: {"show-layer": "Yes"} });
 };
@@ -51,6 +56,7 @@ const excelDownloadSmartTemplate = (params) => {
 
 export default {
     selectSmartProductList,
+    selectSmartProductInfo,
     selectSmartTemplateList,
     smartTemplateInfo,
     excelDownloadSmartTemplate,

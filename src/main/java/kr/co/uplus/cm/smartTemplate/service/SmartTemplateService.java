@@ -57,6 +57,23 @@ public class SmartTemplateService {
     }
     
 	/**
+     * 스마트 상품 리스트 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectSmartProductInfo(Map<String, Object> params) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        List<Object> rtnList = generalDao.selectGernalList("smartTemplate.selectSmartProductInfo", params);
+        
+        rtn.setData(rtnList);
+
+        return rtn;
+    }
+    
+	/**
      * 스마트 템플릿 리스트 조회
      * @param params
      * @return
@@ -74,15 +91,32 @@ public class SmartTemplateService {
         String chType1 = product.get("chType1");
         String chType2 = product.get("chType2");
         String chType3 = product.get("chType3");
-        StringBuffer chType = new StringBuffer();
-        if(chType0 != "") chType.append("\""+product.get("chType0")+"\"");
-        if(chType1 != "") chType.append(", \""+product.get("chType1")+"\"");
-        if(chType2 != "") chType.append(", \""+product.get("chType2")+"\"");
-        if(chType3 != "") chType.append(", \""+product.get("chType3")+"\"");
+        StringBuffer sb = new StringBuffer();
+        //List<String> chTypeList = new ArrayList<String>();
+        sb.append("[");
+        if(chType0 != null && chType0 != "") sb.append("\""+chType0+"\"");
+        if(chType1 != null && chType1 != "") sb.append(",\""+chType1+"\"");
+        if(chType2 != null && chType2 != "") sb.append(",\""+chType2+"\"");
+        if(chType3 != null && chType3 != "") sb.append(",\""+chType3+"\"");
+        sb.append("]");
+        //if(chType0 != null && chType0 != "") chTypeList.add(chType0);
+        //if(chType1 != null && chType1 != "") chTypeList.add(chType1);
+        //if(chType2 != null && chType2 != "") chTypeList.add(chType2);
+        //if(chType3 != null && chType3 != "") chTypeList.add(chType3);
         
         sParams.put("msgKind", product.get("msgKind"));
-        sParams.put("chTypeList", chType.toString());
-
+        sParams.put("chTypeList", sb.toString());
+        //sParams.put("chTypeList", chTypeList);
+        //sParams.put("chType0", chType0);
+        //sParams.put("chType1", chType1);
+        //sParams.put("chType2", chType2);
+        //sParams.put("chType3", chType3);
+        
+System.out.println("sParams.get('msgKind') : "+sParams.get("msgKind"));
+System.out.println("sParams.get('chTypeList') : "+sParams.get("chTypeList"));
+System.out.println("sParams.get('searchStartDate') : "+sParams.get("searchStartDate"));
+System.out.println("sParams.get('searchEndDate') : "+sParams.get("searchEndDate"));
+System.out.println("sParams.get('projectId') : "+sParams.get("projectId"));
         if(sParams.containsKey("pageNo")
                 && CommonUtils.isNotEmptyObject(sParams.get("pageNo"))
                 && sParams.containsKey("listSize")
@@ -130,8 +164,6 @@ public class SmartTemplateService {
     public RestResult<Object> insertSmartTemplate(Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
         int resultCnt = 0;
-        //java.util.ArrayList cannot be cast to [Ljava.lang.String;
-        //System.out.println(">>>>service 001 : "+params.get("checkedChannel"));
         ArrayList<String> arrChannelList = (ArrayList<String>) params.get("checkedChannel");
         String[] checkChannelArr = new String[arrChannelList.size()];
         int size = 0;
@@ -140,20 +172,6 @@ public class SmartTemplateService {
         }
         
         System.out.println(">>>>service 002 checkChannelArr.length ["+checkChannelArr.length+"]");
-//        JSONArray checkChannel = new JSONArray();
-//        
-//        for(int i=0; i<checkChannelArr.length;i++) {
-//        	JSONObject checkChannelJson = new JSONObject();
-//        	checkChannelJson.put("chType", checkChannelArr[i]);
-//        	checkChannel.add(checkChannelJson);
-//        }
-       
-        
-        
-        
-        
-        //ObjectMapper mapper = new ObjectMapper();
-       // Map<String,String> pushImgInfo = mapper.readValue(pushImgInfoStr, Map.class);
         
         StringBuffer sb = new StringBuffer();
         sb.append("[");
