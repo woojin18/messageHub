@@ -47,7 +47,6 @@ export default {
 		},
 		//이용정지 해제
 		fnReleaseUser() {
-			console.log("userId : " + this.releaseUserId);
 			var params = {
 				"userId":this.releaseUserId
 			}

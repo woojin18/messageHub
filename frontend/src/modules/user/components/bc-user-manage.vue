@@ -11,9 +11,9 @@
 					<div class="menuBox">
 						<div class="of_h">
 							<h4 class="inline-block" style="width:6%">사용자명</h4>
-							<input v-model="searchData.userName" type="text" class="inputStyle" style="width:14%" title="사용자명 입력란" v-focus @keyup.enter="fnSearch">
+							<input v-model="searchData.userName" type="text" class="inputStyle" style="width:14%" title="사용자명 입력란" v-focus @keyup.enter="fnSearch()">
 							<h4 class="inline-block ml30" style="width:5%">아이디</h4>
-							<input type="text" v-model="searchData.loginId" class="inputStyle" style="width:14%" title="아이디 입력란" @keyup.enter="fnSearch">
+							<input type="text" v-model="searchData.loginId" class="inputStyle" style="width:14%" title="아이디 입력란" @keyup.enter="fnSearch()">
 							<h4 class="inline-block ml30" style="width:3%">상태</h4>
 							<select id="selectApprovalStatus" @fnSelected="fnSelected" v-model="searchData.approvalStatus" class="selectStyle2" style="width:14%" title="상태 선택란">
 								<option value="">전체</option>
@@ -77,7 +77,7 @@
 										<td class="text-center lc-1 vertical-middle">{{ data.roleName }}</td>
 										<td class="text-center lc-1 vertical-middle">{{ data.approvalStatusName }}</td>
 										<td class="text-center end vertical-middle">
-											<a href="#self" class="btnStyle1 borderLightGray small mr5" title="비밀번호설정 메일보내기">비밀번호설정 메일보내기</a>
+											<a @click="fnToPassword" class="btnStyle1 borderLightGray small mr5" title="비밀번호설정 메일보내기">비밀번호설정 메일보내기</a>
 											<span v-if="data.approvalStatus == 'Y' ">
 												<a @click="fnStopUserPop(index)" class="btnStyle1 borderLightGray small mr5" title="이용정지">이용정지</a>
 											</span>
@@ -123,7 +123,7 @@
 		<ModifyLayer :title="modifyLayerTitle" :layerView.sync="modifyLayerView" :modifyUserId="modifyLayerUserId" :modifyUserName="modifyLayerUserName" :modifyHpNumber="modifyLayerHpNumber" :modifyRoleCd="modifyLayerRoleCd" :modifyLoginId="modifyLayerLoginId"></ModifyLayer>
 
 		<!-- register Modal -->
-		<RegisterLayer :title="registerLayerTitle" :layerView.sync="registerLayerView"></RegisterLayer>
+		<RegisterLayer :title="registerLayerTitle" :layerView.sync="registerLayerView" :registerLayerOpen="registerLayerOpen"></RegisterLayer>
 	</div>
 	<!-- content End-->
 </template>
@@ -141,6 +141,8 @@ import ModifyLayer from '../components/bp-user-manage-modify.vue';
 import tokenSvc from '@/common/token-service';
 import confirm from "@/modules/commonUtil/service/confirm";
 import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi.js";
+import loginApi from '@/modules/login/service/api';
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
 	name: "userManageList",
@@ -165,6 +167,13 @@ export default {
 					'corpId'			: tokenSvc.getToken().principal.corpId,
 					'loginId'			: ''
 				}
+			}
+		},
+		componentsTitle: {
+			type: String,
+			require: false,
+			default: function() {
+				return '사용자 목록';
 			}
 		}
 	},
@@ -198,7 +207,8 @@ export default {
 
 			registerLayerView: false,
 			registerLayerTitle: "사용자 등록",
-			registerLayerUserId: ""
+			registerLayerUserId: "",
+			registerLayerOpen: false,
 		}
 	},
 	mounted() {
@@ -248,11 +258,11 @@ export default {
 					this.totCnt = result.pageInfo.totCnt;
 					this.offset = result.pageInfo.offset;
 				} else {
-					confirm.fnAlert("", result.message);
+					confirm.fnAlert(this.componentsTitle, result.message);
 				}
 			});
 		},
-		//이용정지
+		//이용정지 활성화
 		fnStopUserPop(index) {
 			this.stopLayerView = true;
 			this.stopLayerTitle = "UserStop";
@@ -273,7 +283,6 @@ export default {
 		// 사용자정보 수정
 		fnModifyUserPop(index) {
 			this.modifyLayerView = true;
-			this.modifyLayerTitle = "UserModify";
 			this.modifyLayerUserId = this.items[index].userId;
 			this.modifyLayerUserName = this.items[index].userName;
 			this.modifyLayerHpNumber = this.items[index].hpNumber;
@@ -282,8 +291,23 @@ export default {
 		},
 		// 사용자 등록
 		fnRegisterUserPop() {
+			this.registerLayerOpen = !this.registerLayerOpen;
 			this.registerLayerView = true;
 			this.registerLayerTitle = "UserRegister";
+		},
+		// 비밀번호설정 화면이동
+		fnToPassword() {
+			eventBus.$on('callbackEventBus', this.fnToPasswordCallBack);
+			confirm.fnConfirm(this.componentsTitle, "비밀번호 설정을 위해서 로그아웃 하시겠습니까?", "확인");
+		},
+		fnToPasswordCallBack() {
+			loginApi.logout().then(response => {
+				if (response.data.success) {
+					this.$router.push({
+						path: "/login/findUserPwd"
+					});
+				}
+			});
 		}
 	}
 }
