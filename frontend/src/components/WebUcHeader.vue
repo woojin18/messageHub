@@ -4,14 +4,14 @@
 			<h1><img src="../../public/se2/images/logo.png" alt="LGU+ 통합메시징클라우드 로고"></h1>
 			<p class="adminName">사용자 콘솔</p>
 			<ul class="adminUtil">
-				<li><a href="/ac/home" class="btnGuideBlack">관리자콘솔</a></li>
+				<li><router-link to="/ac/home" class="btnGuideBlack">관리자콘솔</router-link></li>
 				<li><a href="#self" class="btnGuideBlack">이용 가이드</a></li>
 				<li class="ml20"><a href="#self" class="bellIcon active"><i class="fas fa-bell"></i></a></li>
 				<li>
 					<a href="#self" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i> designhon@gmail.com</a>	
 					<ul class="dropdown-menu userDrop" role="menu">
 						<li @click="fnMyPage"><a data-toggle="modal" data-target="#Member-information">회원정보</a></li>
-						<li><a href="/uc/qna">나의 문의내역</a></li>
+						<li><router-link to="/uc/qna">나의 문의내역</router-link></li>
 						<li @click="clickLogout"><a href="#">로그아웃</a></li>
 					</ul>
 				</li>
