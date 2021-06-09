@@ -127,13 +127,13 @@
 															<div class="consolMarginTop of_h">
 																<span class="float-left mt5" style="width:20%">시작일</span>
 																<div class="float-right" style="width:80%">
-																	<Calendar :calendarId="desStartDate[n-1]" classProps="datepicker inputStyle" :initDate="desInitStartDate[n-1]"></Calendar>
+																	<Calendar @update-date="fnDesUpdateStartDate" :params="n-1" :calendarId="desStartDate[n-1]" classProps="datepicker inputStyle" :initDate="desInitStartDate[n-1]"></Calendar>
 																</div>
 															</div>
 															<div class="consolMarginTop of_h">
 																<span class="float-left mt5" style="width:20%">종료일</span>
 																<div class="float-right" style="width:80%">
-																	<Calendar :calendarId="desEndDate[n-1]" classProps="datepicker inputStyle" :initDate="desInitEndDate[n-1]"></Calendar>
+																	<Calendar @update-date="fnDesUpdateEndDate" :params="n-1" :calendarId="desEndDate[n-1]" classProps="datepicker inputStyle" :initDate="desInitEndDate[n-1]"></Calendar>
 																</div>
 															</div>
 														</td>
@@ -149,8 +149,9 @@
 								<div class="of_h">
 									<div class="mt20 text-right" style="width:100%">
 										<a href="#self" @click.prevent="rcsTemplateDelete" class="btnStyle2 backWhite ml10" title="삭제">삭제</a>
-										<a href="#self" class="btnStyle2 backRed  ml10" title="승인요청">승인요청</a>
-										<a href="#self" class="btnStyle2 ml10" title="목록">목록</a>
+										<a href="#self" @click.prevent="recTemplateIns('UPT','des')" class="btnStyle2 backRed  ml10" title="수정요청">수정요청</a>
+										<a href="#self" @click.prevent="recTemplateIns('INS','des')" class="btnStyle2 backRed  ml10" title="승인요청">승인요청</a>
+										<a href="#self" @click.prevent="returnRcsTemplateList" class="btnStyle2 ml10" title="목록">목록</a>
 									</div>
 								</div>
 							</div>							
@@ -230,7 +231,7 @@
 												</div>
 												<input v-model="styleInput[n-1]" type="text" class="inputStyle ml10" style="width:24%">
 												<input v-model="styleInputSec[n-1]" type="text" class="inputStyle ml10" style="width:24%">
-												<div v-if="n!=10" class="consolCheck ml10"><input v-model="styleChk[n-1]" type="checkbox" :id="n-1" class="checkStyle2" value="line2"><label :for="n-1" class="color4">라인</label></div>
+												<div class="consolCheck ml10"><input v-model="styleChk[n-1]" type="checkbox" :id="n-1" class="checkStyle2" value="line2"><label :for="n-1" class="color4">라인</label></div>
 											</div>
 										</div>	
 										<div class="consolMarginTop float-right" style="width:54%; margin-bottom:15px;">
@@ -301,8 +302,9 @@
 								<div class="of_h">
 									<div class="mt20 text-right" style="width:100%">
 										<a href="#self" @click.prevent="rcsTemplateDelete" class="btnStyle2 backWhite ml10" title="삭제">삭제</a>
-										<a href="#self" class="btnStyle2 backRed  ml10" title="승인요청">승인요청</a>
-										<a href="#self" class="btnStyle2 ml10" title="목록">목록</a>
+										<a href="#self" @click.prevent="recTemplateIns('UPT','cell')" class="btnStyle2 backRed  ml10" title="수정요청">수정요청</a>
+										<a href="#self" @click.prevent="recTemplateIns('INS','cell')" class="btnStyle2 backRed  ml10" title="승인요청">승인요청</a>
+										<a href="#self" @click.prevent="returnRcsTemplateList" class="btnStyle2 ml10" title="목록">목록</a>
 									</div>
 								</div>
 							</div>
@@ -424,6 +426,8 @@ export default {
 			var result = response.data;
 			var resultData = result.data;
 
+			console.log(resultData);
+
 			// 상태값에 따라서 버튼 표시 처리해야됨.
 			var approvalStatus = resultData.approvalStatus;
 
@@ -505,7 +509,7 @@ export default {
 			this.$set(vm.contents, n, "");
 			this.$set(vm.btnInputHolder, n, "전화번호 입력");
 		} else if(vm.selectBtn[n]=="mapAction") {
-			this.$set(contents, n, "");
+			this.$set(contents, n, "현재위치 공유");
 			this.$set(btnInputHolder, n, "현재위치 공유");
 		}
 	  },
@@ -567,12 +571,31 @@ export default {
 
 		if(styleContentCnt<10) {
 			this.$set(vm.styleArr, styleContentCnt, 1);
-			if(styleContentCnt < 10) {
-				this.$set(vm.styleChk, styleContentCnt, false);
-			}
+			this.$set(vm.styleInput, styleContentCnt, "");
+			this.$set(vm.styleInputSec, styleContentCnt, "");
+			this.$set(vm.styleChk, styleContentCnt, false);
 			vm.styleContentCnt++;
 		}		
 	  },
+
+	  //fnDesUpdateStartDate
+	  fnDesUpdateStartDate(date, n) {
+		var vm = this;
+		this.$set(vm.desInitStartDate, n, date);
+	  },
+	  fnDesUpdateEndDate(n, m) {
+		var vm = this;
+		this.$set(vm.desInitEndDate, n, date);
+	  },
+	  fnStyleUpdateStartDate(n, m) {
+		var vm = this;
+		this.$set(vm.styleInitStartDate, n, date);
+	  },
+	  fnStyleUpdateEndDate(n, m) {
+		var vm = this;
+		this.$set(vm.styleInitEndDate, n, date);
+	  },
+
 	  // 템플릿 삭제
 	  rcsTemplateDelete() {
 		eventBus.$on('callbackEventBus', this.fnRcsTemplateDeleteApi);
@@ -598,6 +621,77 @@ export default {
 				this.$router.push({name : "rcsTemplateList"});
 			}
 		});
+	  },
+
+	  // 목록
+	  returnRcsTemplateList() {
+		  this.$router.push({name : "rcsTemplateList"});
+	  },
+
+	  // 승인, 수정요청
+	  recTemplateIns(flag, paramCardType) {
+		var vm = this;
+		var messagebaseformId = paramCardType == "des" ? vm.desFormNm : vm.styleFormNm;
+		var custTmpltId = vm.templateCode;
+		var tmpltName = vm.templateNm;
+		var brandId = vm.brandNm;
+	  	var agencyId = "uplus";
+
+		// 서술형 내용
+		var desContents = vm.desContents;
+		// 스타일형 내용
+		var styleContentCnt = vm.styleContentCnt;
+		var styleArr = vm.styleArr;
+		var styleInput = vm.styleInput;
+		var styleInputSec = vm.styleInputSec;
+		var styleChk = vm.styleChk;
+
+		// 버튼 세팅
+		var btnCnt = vm.btnCnt;
+		var selectBtn = vm.selectBtn;
+		var btnNm = vm.btnNm;
+		var contents = vm.contents;
+		var calendarTitle = vm.calendarTitle;
+		var calendarDes = vm.calendarDes;
+		var desInitStartDate = vm.desInitStartDate;
+		var desInitEndDate = vm.desInitEndDate;
+		var styleInitStartDate = vm.styleInitStartDate;
+		var styleInitEndDate = vm.styleInitEndDate;
+
+		var params = {
+			// 구분
+			"paramCardType" : paramCardType,
+			"flag" : flag,
+			// 공통 처리
+			"messagebaseformId" : messagebaseformId,
+			"custTmpltId" : custTmpltId,
+			"tmpltName" : tmpltName,
+			"brandId" : brandId,
+			"agencyId" : agencyId,
+			// 서술형 내용
+			"desContents" : desContents,
+			// 스타일형 내용
+			"styleContentCnt": styleContentCnt,
+			"styleArr": styleArr,
+			"styleInput": styleInput,
+			"styleInputSec": styleInputSec,
+			"styleChk": styleChk,
+			// 버튼 세팅
+			"btnCnt" : btnCnt,
+			"selectBtn" : selectBtn,
+			"btnNm" : btnNm,
+			"contents" : contents,
+			"calendarTitle" : calendarTitle,
+			"calendarDes" : calendarDes,
+			"desInitStartDate" : desInitStartDate,
+			"desInitEndDate" : desInitEndDate,
+			"styleInitStartDate" : styleInitStartDate,
+			"styleInitEndDate" : styleInitEndDate
+		}
+	  
+	    templateApi.rcsTemplateApi(params).then(response => {
+
+		});	  
 	  }
   }
 }
