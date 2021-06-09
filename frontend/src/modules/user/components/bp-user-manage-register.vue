@@ -27,7 +27,6 @@
 							<h5 class="inline-block" style="width:20%">이용권한</h5>
 							<select v-model="roleCd" class="selectStyle2 float-right" style="width:80%" title="이용권한 선택란">
 								<option value="USER">USER</option>
-								<option value="OWNER">OWNER</option>
 								<option value="ADMIN">ADMIN</option>
 							</select>
 						</div>
@@ -90,7 +89,7 @@ export default {
 			loginId		: '',
 			userName	: '',
 			hpNumber	: '',
-			roleCd		: 'USER'
+			roleCd		: 'USER',
 		}
 	},
 	methods: {
@@ -151,7 +150,7 @@ export default {
 			userApi.registerUser(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					confirm.fnAlert(this.componentsTitle, "사용자 등록에 성공했습니다.");
+					alert("사용자 등록에 성공했습니다.");
 					this.$parent.fnSelectUserList();
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
