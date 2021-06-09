@@ -754,7 +754,7 @@ public class SendMessageService {
         }
         requestData.setMsg(msg);
 
-      //유효성 체크
+        //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<SmsRequestData>> violations = validator.validate(requestData);
@@ -1597,7 +1597,7 @@ public class SendMessageService {
             rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
         } else {
             log.warn("{}.testSendPushMsg Fail ==> response : {}", this.getClass(), resultMap);
-            rtn.setFail("푸시 테스트 발송이 실패하였습니다.");
+            rtn.setFail("친구톡 테스트 발송이 실패하였습니다.");
         }
 
         return rtn;

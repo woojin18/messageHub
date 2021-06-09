@@ -49,6 +49,8 @@
 		LEFT OUTER JOIN cm_console.CM_SPECIAL_BUSI CSB
 			ON CSB.CORP_ID = PJT.CORP_ID AND CSB.APPROVAL_STATUS = 'APP'
 		WHERE	USER.LOGIN_ID = #{userId}
+		AND (ROLE.SVC_TYPE_CD = 'AC' OR ROLE.SVC_TYPE_CD = 'UC'
+		OR (ROLE.SVC_TYPE_CD = 'BO' AND ROLE.ROLE_CD = 'GUEST'))
 	</select>
 	
 	<select id="qryInsertAuthUser" parameterType="kr.co.uplus.cm.common.model.AuthUser" resultType="Integer">
@@ -60,49 +62,6 @@
 		(
     		#{userId}, #{userPwd}, #{status}, #{role}
    		)
-	</select>
-
-	<select id="getMenuForRole" parameterType="string" resultType="hashmap">
-		/* login.getMenuForRole */
-		SELECT
-			MENUS_CD,
-			CASE
-				WHEN MENUS_LEVEL = 0 THEN '운영사'
-				WHEN MENUS_LEVEL = 1 THEN '대메뉴'
-				WHEN MENUS_LEVEL = 2 THEN '중메뉴'
-				WHEN MENUS_LEVEL = 3 THEN '소메뉴'
-			END AS GUBUN,
-			MENUS_NAME,
-			IMG_TAG,
-			TOP_MENUS_CD,
-			PAR_MENUS_CD,
-			MENUS_LEVEL,
-			DIS_ORDER,
-			SVC_TYPE_CD,
-			FIXED_MENUS_YN,
-			USE_YN,
-			WEB_URL,
-			REG_ID,
-			REG_DT
-		FROM	cm_bo.CM_MENU
-		WHERE	1 = 1
-		AND		MENUS_LEVEL = #{menus_level}
-		AND		USE_YN = 'Y'
-		<if test="menus_level != 0">
-		AND		PAR_MENUS_CD = #{par_menus_cd}
-		AND		MENUS_CD IN (
-			SELECT B.MENUS_CD 
-			FROM cm_console.CM_USER  A
-			INNER JOIN cm_bo.CM_ROLE_MENU_ACTIVITY B
-				ON A.ROLE_CD  = B.ROLE_CD 
-			WHERE	A.USER_ID = #{user_id}
-			AND		B.ROLE_CD = #{role_cd}
-		)
-		</if>
-		<if test="svc_type_cd != '' and svc_type_cd != null" >
-		AND		SVC_TYPE_CD = #{svc_type_cd}
-		</if>
-		ORDER BY DIS_ORDER
 	</select>
 
 	<select id="getProjectForUser" parameterType="string" resultType="camel">
@@ -118,5 +77,44 @@
 		AND DEL_YN = 'N'
 		ORDER BY CPU.REG_DT DESC
 	</select>
+    
+    <select id="getMenuForRole" resultType="kr.co.uplus.cm.common.dto.Menu">
+    /* login.getMenuForRole */
+    SELECT  e.ROLE_CD
+      ,   a.MENUS_CD
+      ,   CASE
+            WHEN MENUS_LEVEL = 0 THEN '운영사'
+            WHEN MENUS_LEVEL = 1 THEN '대메뉴'
+            WHEN MENUS_LEVEL = 2 THEN '중메뉴'
+            WHEN MENUS_LEVEL = 3 THEN '소메뉴'
+          END AS GUBUN
+      ,   MENUS_NAME
+      ,   IMG_TAG
+      ,   TOP_MENUS_CD
+      ,   PAR_MENUS_CD
+      ,   MENUS_LEVEL
+      ,   DIS_ORDER
+      ,   WEB_URL
+      ,   a.SVC_TYPE_CD
+      ,   FIXED_MENUS_YN
+      ,   c.ACTIVITY_CD
+      FROM  cm_bo.CM_MENU               a
+         ,  cm_bo.CM_MENU_ACTIVITY      b
+         ,  cm_bo.CM_ACTIVITY           c
+         ,  cm_bo.CM_ROLE_MENU_ACTIVITY d
+         ,  cm_bo.CM_ROLE               e
+      WHERE 1 = 1
+      AND   a.SVC_TYPE_CD = #{svc_type_cd}
+      AND   a.USE_YN      = 'Y'
+      AND   a.MENUS_CD    = b.MENUS_CD
+      AND   b.ACTIVITY_CD = c.ACTIVITY_CD 
+      AND   c.USE_YN      = 'Y'
+      AND   b.MENUS_CD    = d.MENUS_CD
+      AND   b.ACTIVITY_CD = d.ACTIVITY_CD 
+      AND   d.ROLE_CD     = e.ROLE_CD 
+      AND   a.SVC_TYPE_CD = e.SVC_TYPE_CD
+      AND   e.USE_YN      = 'Y'
+    ORDER BY e.ROLE_CD, a.MENUS_LEVEL, a.DIS_ORDER
+    </select>
 
 </mapper>
