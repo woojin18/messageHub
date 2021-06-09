@@ -1,9 +1,11 @@
 package kr.co.uplus.cm.login.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,6 +32,7 @@ import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.ResultCode;
 import kr.co.uplus.cm.common.crypto.Sha256PasswordEncoder;
 import kr.co.uplus.cm.common.dao.AuthUserDao;
+import kr.co.uplus.cm.common.dto.Menu;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.handler.LoginFailureHandler;
 import kr.co.uplus.cm.common.handler.LoginSuccessHandler;
@@ -181,34 +184,12 @@ public class AuthService implements UserDetailsService {
 	public RestResult<?> getMenuForRole(Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-
-		params.put("user_id", params.get("user_id"));
-		params.put("role_cd", params.get("role_cd"));
-		params.put("menus_level", "0");
-		List<Object> rtnList = generalDao.selectGernalList("login.getMenuForRole", params);
-
-		for (Object rtnMap : rtnList) {
-			params.put("menus_level", "1");
-			params.put("par_menus_cd", ((Map<String, Object>) rtnMap).get("MENUS_CD"));
-			List<Object> childList = generalDao.selectGernalList("login.getMenuForRole", params);
-			// 중메뉴 조회
-			for (Object childMap : childList) {
-				params.put("menus_level", "2");
-				params.put("par_menus_cd", ((Map<String, Object>) childMap).get("MENUS_CD"));
-				List<Object> child2List = generalDao.selectGernalList("login.getMenuForRole", params);
-				((Map<String, Object>) childMap).put("children", child2List);
-				// 소메뉴 조회
-				for (Object childMap2 : child2List) {
-					params.put("menus_level", "3");
-					params.put("par_menus_cd", ((Map<String, Object>) childMap2).get("MENUS_CD"));
-					List<Object> child3List = generalDao.selectGernalList("login.getMenuForRole", params);
-					((Map<String, Object>) childMap2).put("children", child3List);
-				}
-			}
-			((Map<String, Object>) rtnMap).put("children", childList);
+		
+		if ("AC".equals(params.get("svc_type_cd"))) {
+			rtn.setData(tACMenuByRole.get(params.get("role_cd")));
+		} else {
+			rtn.setData(tUCMenuByRole.get(params.get("role_cd")));
 		}
-
-		rtn.setData(rtnList);
 
 		return rtn;
 	}
@@ -221,5 +202,53 @@ public class AuthService implements UserDetailsService {
 		rtn.setData(rtnList);
 
 		return rtn;
+	}
+	
+	private Map<String, Menu> tACMenuByRole = new HashMap<String, Menu>();
+	private Map<String, Menu> tUCMenuByRole = new HashMap<String, Menu>();
+
+	@PostConstruct
+	public void init() {
+		tACMenuByRole = getMenu("AC");
+		tUCMenuByRole = getMenu("UC");
+	}
+	private Map<String, Menu> getMenu(String svcTypeCd) {
+		Map<String, Menu> menuByRole = new HashMap<String, Menu>();
+		Map<String, Menu> menus = new HashMap<String, Menu>();
+		Map params = new HashMap();
+		params.put("svc_type_cd", svcTypeCd);
+		List<Menu> list = dao.getMenuForRole(params);
+		
+		for (Menu data : list) {
+			Menu rootMenu = menuByRole.get(data.getRoleCd());
+			if (rootMenu == null) {
+				rootMenu = new Menu();
+				menuByRole.put(data.getRoleCd(), rootMenu);
+				menus = new HashMap<String, Menu>();
+			}
+			
+			Menu menu = menus.get(data.getMenusCd());
+			if (menu == null) {
+				menu = data;
+				menus.put(data.getMenusCd(), menu);
+				
+				Menu parMenu = menus.get(menu.getParMenusCd());
+				if (parMenu == null && "1".equals(menu.getMenusLevel())) {
+					parMenu = rootMenu;
+				} else if (parMenu == null) {
+					continue;
+				}
+				parMenu.addChild(menu);
+			}
+			if ("READ".equals(data.getActivityCd())) {
+				menu.setRead(true);
+			}
+			if ("SAVE".equals(data.getActivityCd())) {
+				menu.setSave(true);
+			}
+			
+		}
+		
+		return menuByRole;
 	}
 }
