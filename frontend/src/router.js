@@ -32,7 +32,7 @@ import useRoutes from './modules/use/router';
 Vue.use(Router)
 
 const requireAuth = () => (to, from, next) => {
-	if (tokenSvc.getToken().principal.svcTypeCd == 'BO') {
+	if (tokenSvc.getToken().principal.svcTypeCd == 'BO' && tokenSvc.getToken().principal.role !== 'GUEST') {
 		alert("Back Ofiice 계정으로는 Console 로그인이 불가합니다.");
 		//confirm.fnAlert("", "Back Ofiice 계정으로는 Console 로그인이 불가합니다.");
 		return next('/login');
