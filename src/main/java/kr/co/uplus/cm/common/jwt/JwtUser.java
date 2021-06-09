@@ -28,6 +28,7 @@ public class JwtUser extends AuthUser {
 		u.setCorpId(user.getCorpId());
 		u.setSvcTypeCd(user.getSvcTypeCd());
 		u.setRepProjectId(user.getRepProjectId());
+		u.setBizType(user.getBizType());
 		return u;
 	}
 

@@ -20,11 +20,12 @@ public class AuthUser implements UserDetails {
 	private Role role;
 	private Collection<? extends GrantedAuthority> authorities;
 
-	private String userName;
-	private String corpId;
-	private String svcTypeCd;
-	private String repProjectId;
+	private String userName;			// 유저명
+	private String corpId;				// 고객사ID
+	private String svcTypeCd;			// 서비스타입코드(유저가 보유한 서비스타입코드에 따라서 접속 가능한 서비스 결정(BO전용, AC_UC겸용, UC전용)
+	private String repProjectId;		// 대표프로젝트ID
 	private String currentProjectId;
+	private String bizType;				// 특수사업자 유형
 
 	public String getPassword() {
 		return userPwd;
