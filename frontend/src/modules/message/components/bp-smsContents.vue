@@ -8,6 +8,7 @@
             <div class="float-left" style="width:34%"><h5>발신번호 *</h5></div>
             <div class="float-right" style="width:66%">
               <select v-model="callback" class="selectStyle2 float-right" style="width:100%">
+                <option value="">선택</option>
                 <option v-for="info in callbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
               </select>
             </div>
@@ -55,6 +56,11 @@ export default {
       require: true,
       default: false,
     },
+    isSpecialBusi: {
+      type: Boolean,
+      require: false,
+      default: false,
+    },
     sendData : {
       type: Object,
       require: true,
@@ -88,7 +94,7 @@ export default {
   methods: {
     //입력정보 callback
     fnCallbackInputData(){
-      if(!this.callback){
+      if(!this.callback && !this.isSpecialBusi){
         confirm.fnAlert(this.componentsTitle, '발신번호를 선택해주세요.');
         return;
       }

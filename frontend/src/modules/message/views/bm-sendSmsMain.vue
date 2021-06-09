@@ -74,7 +74,7 @@
             <h4>02  메시지 내용</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a @click="fnOpenSmsContentsPopup" class="btnStyle1 backLightGray" title="메시지 내용입력">내용입력</a>
+            <a @click="fnOpenSmsContentsPopup" :class="$gfnCommonUtils.isEmpty(sendData.smsContent) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="메시지 내용입력">내용입력</a>
             <div v-if="sendData.senderType == 'MMS'" class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
                 <h5>이미지</h5>
@@ -176,7 +176,7 @@
     </div>
 
     <SmsTemplatePopup :smsTemplateOpen.sync="smsTemplateOpen" ref="smsTmplPopup"></SmsTemplatePopup>
-    <SmsContentsPopup :smsContsOpen.sync="smsContsOpen" :sendData="sendData"></SmsContentsPopup>
+    <SmsContentsPopup :smsContsOpen.sync="smsContsOpen" :sendData="sendData" :isSpecialBusi="isSpecialBusi"></SmsContentsPopup>
     <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="sendData.senderType" ref="imgMngPopup"></ImageManagePopUp>
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
     <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
@@ -193,6 +193,7 @@ import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue"
 import Calendar from "@/components/Calendar.vue";
 import TestSendInputPopup from "@/modules/message/components/bc-testSendInput.vue";
 
+import tokenSvc from '@/common/token-service';
 import messageApi from "@/modules/message/service/messageApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
@@ -227,6 +228,7 @@ export default {
       testSendInputOpen : false,
       imgLimitSize : 2,
       recvCnt : 0,  //수신자명수
+      isSpecialBusi : !this.$gfnCommonUtils.isEmpty(tokenSvc.getToken().principal.bizType),
       inProgress: false,
       sendData : {
         callback: '',  //발신번호
@@ -257,7 +259,7 @@ export default {
       if(this.fnSetContsVarNms() == false){
         return false;
       }
-      if(!this.sendData.callback){
+      if(!this.sendData.callback && !this.isSpecialBusi){
         confirm.fnAlert(this.componentsTitle, '발신번호를 선택해주세요.');
         return false;
       }

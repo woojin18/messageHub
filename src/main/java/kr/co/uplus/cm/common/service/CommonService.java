@@ -543,7 +543,7 @@ public class CommonService {
      * @param ch
      * @return
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "unused" })
     private long getChLimitSize(List<Object> imgSetInfoList, String ch) {
         Long limitSize = NumberUtils.LONG_ZERO;
         HashMap<String, Object> map = new HashMap<>();
