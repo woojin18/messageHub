@@ -35,7 +35,7 @@
 					<div class="depth2Lnb" :id="'depth2_' + i" :style="showOption">
 						<ul>
 							<li v-for="(item2, j) in item.children" :key="j" >
-								<router-link  v-if="item2.webUrl != ''" v-bind:to="{path:item2.webUrl}">{{item2.MENUS_NAME}}</router-link>		<!-- url 주소 있으면 페이지 이동 -->
+								<router-link  v-if="item2.webUrl != ''" v-bind:to="{path:item2.webUrl}">{{item2.menusName}}</router-link>		<!-- url 주소 있으면 페이지 이동 -->
 								<a  v-if="item2.webUrl == ''" @click="fnOpenDepth3(i,j)">
 									<i v-html="item2.imgTag"></i><span>&nbsp;{{item2.menusName}}</span><i class="far fa-chevron-down navArrow" style="font-size: 10px;position: absolute;right: 20px"></i>
 								</a>
@@ -152,7 +152,7 @@ export default {
 			api.getMenuForRole(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
-					this.treeData = result.data[0].children;
+					this.treeData = result.data.children;
 				}
 			});
 		},
