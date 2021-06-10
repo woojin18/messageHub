@@ -120,7 +120,7 @@
 		<DeleteLayer :title="deleteLayerTitle" :layerView.sync="deleteLayerView" :deleteUserId="deleteLayerUserId"></DeleteLayer>
 
 		<!-- modify Modal -->
-		<ModifyLayer :title="modifyLayerTitle" :layerView.sync="modifyLayerView" :modifyUserId="modifyLayerUserId" :modifyUserName="modifyLayerUserName" :modifyHpNumber="modifyLayerHpNumber" :modifyRoleCd="modifyLayerRoleCd" :modifyLoginId="modifyLayerLoginId"></ModifyLayer>
+		<ModifyLayer :title="modifyLayerTitle" :layerView.sync="modifyLayerView" :modifyUserId="modifyLayerUserId" :modifyUserName="modifyLayerUserName" :modifyHpNumber="modifyLayerHpNumber" :modifyRoleCd="modifyLayerRoleCd" :modifyLoginId="modifyLayerLoginId" :curRoleCd="curRoleCd"></ModifyLayer>
 
 		<!-- register Modal -->
 		<RegisterLayer :title="registerLayerTitle" :layerView.sync="registerLayerView" :registerLayerOpen="registerLayerOpen"></RegisterLayer>
@@ -209,6 +209,8 @@ export default {
 			registerLayerTitle: "사용자 등록",
 			registerLayerUserId: "",
 			registerLayerOpen: false,
+
+			curRoleCd: tokenSvc.getToken().principal.role,
 		}
 	},
 	mounted() {
@@ -264,6 +266,12 @@ export default {
 		},
 		//이용정지 활성화
 		fnStopUserPop(index) {
+			let modifyLayerRoleCd = this.items[index].roleCd;
+			if(modifyLayerRoleCd == 'OWNER' && this.curRoleCd == 'ADMIN') {
+				confirm.fnAlert(this.componentsTitle, '관리자는 OWNER를 이용정지 할 수 없습니다.');
+				return false;
+			}
+
 			this.stopLayerView = true;
 			this.stopLayerTitle = "UserStop";
 			this.stopLayerUserId = this.items[index].userId;
@@ -276,18 +284,29 @@ export default {
 		},
 		// 삭제
 		fnDeleteUserPop(index) {
+			let modifyLayerRoleCd = this.items[index].roleCd;
+			if(modifyLayerRoleCd == 'OWNER' && this.curRoleCd == 'ADMIN') {
+				confirm.fnAlert(this.componentsTitle, '관리자는 OWNER를 삭제 할 수 없습니다.');
+				return false;
+			}
+
 			this.deleteLayerView = true;
 			this.deleteLayerTitle = "UserDelete";
 			this.deleteLayerUserId = this.items[index].userId;
 		},
 		// 사용자정보 수정
 		fnModifyUserPop(index) {
-			this.modifyLayerView = true;
+			this.modifyLayerRoleCd = this.items[index].roleCd;
 			this.modifyLayerUserId = this.items[index].userId;
 			this.modifyLayerUserName = this.items[index].userName;
 			this.modifyLayerHpNumber = this.items[index].hpNumber;
-			this.modifyLayerRoleCd = this.items[index].roleCd;
 			this.modifyLayerLoginId = this.items[index].loginId
+
+			if(this.modifyLayerRoleCd == 'OWNER' && this.curRoleCd == 'ADMIN') {
+				confirm.fnAlert(this.componentsTitle, '관리자는 OWNER를 수정할 수 없습니다.');
+				return false;
+			}
+			this.modifyLayerView = true;
 		},
 		// 사용자 등록
 		fnRegisterUserPop() {

@@ -22,11 +22,24 @@
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block">이용권한</h5>
-							<select ref="roleCd" :value="modifyRoleCd" class="selectStyle2 float-right inline-block" title="이용권한 선택란" style="width:80%">
-								<option value="USER">USER</option>
-								<option value="OWNER">OWNER</option>
-								<option value="ADMIN">ADMIN</option>
-							</select>
+							<span v-if="curRoleCd == 'OWNER' && modifyRoleCd != 'OWNER'">
+								<select ref="roleCd" :value="modifyRoleCd" class="selectStyle2 float-right inline-block" title="이용권한 선택란" style="width:80%">
+									<option value="USER">USER</option>
+									<option value="ADMIN">ADMIN</option>
+									<option value="OWNER">OWNER</option>
+								</select>
+							</span>
+							<span v-else-if="curRoleCd == 'OWNER' && modifyRoleCd == 'OWNER'"> <!-- OWNER가 OWNER를 변경시 이용권한은 변경 막음-->
+								<select ref="roleCd" :value="modifyRoleCd" class="selectStyle2 float-right inline-block" title="이용권한 선택란" style="width:80%">
+									<option value="OWNER">OWNER</option>
+								</select>
+							</span>
+							<span v-else>
+								<select ref="roleCd" :value="modifyRoleCd" class="selectStyle2 float-right inline-block" title="이용권한 선택란" style="width:80%">
+									<option value="USER">USER</option>
+									<option value="ADMIN">ADMIN</option>
+								</select>
+							</span>
 						</div>
 						<p class="color3 consolMarginTop">로그인 시 SMS 인증을 하기 위해서는 휴대폰번호를 반드시 등록하셔야 합니다.</p>
 					</div>
@@ -45,6 +58,7 @@
 import userApi from '../service/userApi'
 import confirm from "@/modules/commonUtil/service/confirm";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import tokenSvc from '@/common/token-service';
 
 export default {
 	name: 'ModifyLayer',
@@ -84,13 +98,17 @@ export default {
 			default: function() {
 				return '사용자 수정';
 			}
+		},
+		curRoleCd: {
+			type: String,
+			require: true,
 		}
 	},
 	data() {
 		return {
 			userName	: '',
 			hpNumber	: '',
-			roleCd		: ''
+			roleCd		: '',
 		}
 	},
 	methods: {
@@ -113,17 +131,31 @@ export default {
 			confirm.fnConfirm(this.modifyLayerTitle, "저장하시겠습니까?", "확인");
 		},
 		fnModifyUserCallBack() {
+			
+			// OWNER가 OWNER를 수정(SERVICE단 ADMIN 권한변경 처리를 막기위해)
+			let isOwnerSelf = ''
+			if(this.curRoleCd == 'OWNER' && this.modifyRoleCd == 'OWNER') 
+				isOwnerSelf ='T'
+			else 
+				isOwnerSelf = 'F'
+
 			var params = {
 				"userId"	:this.modifyUserId,
 				"userName"	:this.userName,
 				"hpNumber"	:this.hpNumber,
 				"roleCd"	:this.roleCd,
+				"curUserId"	:tokenSvc.getToken().principal.userId,
+				"isOwnerSelf" :isOwnerSelf,
 			}
 
 			userApi.modifyUser(params).then(response => {
 				var result = response.data;
 				if(result.success) {
-					confirm.fnAlert(this.modifyLayerTitle, "사용자정보 수정에 성공했습니다.");
+					// OWNER으로 변경 시 로그인 사용자의 권한이 ADMIN으로 변경되므로 OWNER로 변경하지 못하도록 막음.
+					if(this.roleCd == 'OWNER' && this.modifyRoleCd != 'OWNER') {
+						this.$parent.curRoleCd = 'ADMIN';
+					}
+					alert("사용자정보 수정에 성공했습니다.");
 					this.$parent.fnSelectUserList();
 				} else {
 					confirm.fnAlert(this.modifyLayerTitle, result.message);

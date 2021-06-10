@@ -125,6 +125,7 @@ public class DB {
     public final static String QRY_INSERT_USER = "user.insertUser";
     public final static String QRY_SELECT_USER_DUPC_CNT = "user.selectUserDupcCnt";
     public final static String QRY_CHK_PASSWORD = "user.checkPassword";
+    public final static String QRY_UPDATE_USER_ROLE_ADMIN = "user.updateUserRoleAdmin";
     
     // 프로젝트 발신번호 관리
     public final static String QRY_SELECT_CALLBACK_MANAGE_LIST_CNT = "project.selectCallbackManageListCnt";
@@ -140,6 +141,7 @@ public class DB {
     public final static String QRY_SELECT_BRAND_LIST = "rcsTemplate.selectBrandList";
     public final static String QRY_SELECT_RCS_MSGBASEFORM_LIST = "rcsTemplate.selectRcsMsgbaseformList";
     public final static String QRY_SELECT_RCS_TEMPLATE_UPDATE_FORM = "rcsTemplate.selectRcsTemplateUpdateForm";
+    public final static String QRY_SELECT_RCS_BASE_FORM = "rcsTemplate.selectRcsBaseForm";
     
     // 주소록 관리
     public final static String QRY_SELECT_ADDR_CATE_GRP_LIST = "address.selectAddrCateGrpList";

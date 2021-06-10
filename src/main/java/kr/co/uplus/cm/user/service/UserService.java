@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
 
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
@@ -116,8 +118,24 @@ public class UserService {
 	public RestResult<Object> modifyUser(Map<String, Object> params) throws Exception {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.putAll(params);
 		
-		int resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_USER, params);
+		String roleCd = (String)map.get("roleCd");
+		int resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_USER, map);
+		String isOwnerSelf = (String)map.get("isOwnerSelf");
+		
+		if (resultCnt <= 0) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			return rtn;
+		}
+		
+		// OWNER 권한 변경. 기존 OWNER를 ADMIN으로 변경
+		if(!StringUtils.isEmpty(roleCd) && roleCd.equalsIgnoreCase("OWNER") && isOwnerSelf.equalsIgnoreCase("F")) {
+			resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_USER_ROLE_ADMIN, map);
+		}
+
 		if (resultCnt <= 0) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");

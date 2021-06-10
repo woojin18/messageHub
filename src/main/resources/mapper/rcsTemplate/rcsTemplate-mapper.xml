@@ -174,4 +174,11 @@
 	WHERE	RANKING = 1
 	AND		A.MESSAGEBASE_ID = #{msgId}
 	</select>
+	
+	<select id="selectRcsBaseForm" resultType="String">
+		/* recTemplate.selectRcsBaseForm */
+		SELECT	FORMATTED_STRING
+		FROM	cm.CM_RCS_MSGBASEFORM
+		WHERE	MESSAGEBASEFORM_ID = #{msgFormId}
+	</select>
 </mapper>

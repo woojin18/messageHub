@@ -86,6 +86,10 @@ const rcsTemplateDeleteApi = (params) => {
   return httpClient.post('/api/public/rcsTemplate/rcsTemplateDeleteApi', params, {headers: {"show-layer":"yes"}});
 };
 
+const rcsTemplateApi = (params) => {
+  return httpClient.post('/api/public/rcsTemplate/rcsTemplateApi', params, {headers: {"show-layer":"yes"}});
+};
+
 export default {
     savePushTmplt,
     selectPushTmpltInfo,
@@ -109,7 +113,8 @@ export default {
     selectRcsTemplateList,
     rcsTemplateInit,
     rcsTemplateUpdateInit,
-    rcsTemplateDeleteApi
+    rcsTemplateDeleteApi,
+    rcsTemplateApi
 };
 
 function fnExcelDownCallback(response){

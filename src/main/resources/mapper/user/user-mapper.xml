@@ -172,8 +172,17 @@
 			<if test="roleCd != '' and roleCd != null ">
 			ROLE_CD		= #{roleCd},
 			</if>
-			UPD_DT = NOW()
+			UPD_DT		= NOW()
 		WHERE USER_ID	= #{userId}
+	</update>
+	
+	<update id="updateUserRoleAdmin" parameterType="hashmap">
+		/* user.updateUserRoleAdmin OWNER로 변경 시 기존 OWNER를 사용자 권한으로 수정*/
+		UPDATE cm_console.CM_USER
+		SET
+			ROLE_CD		= 'ADMIN',
+			UPD_DT		= NOW()
+		WHERE USER_ID	= #{curUserId}
 	</update>
 	
 	<insert id="insertUser">

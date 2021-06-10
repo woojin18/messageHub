@@ -118,5 +118,21 @@ public class RcsTemplateController {
 
 		return rtn;
 	}
+	
+	@PostMapping("/rcsTemplateApi")
+	public RestResult<?> rcsTemplateApi(@RequestBody Map<String, Object> params, HttpServletRequest request) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			rcsTemplateSvc.rcsTemplateApi(params); 
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
 
 }
