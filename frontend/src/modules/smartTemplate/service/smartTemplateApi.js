@@ -29,6 +29,9 @@ const deleteSmartTemplate = (params) => {
     return httpClient.post('/smartTemplateApi/deleteSmartTemplate', params, { headers: {"show-layer": "Yes"} });
 };
 
+const selectBrandList = (params) => {
+    return httpClient.post('/smartTemplateApi/selectBrandList', params, { headers: {"show-layer": "Yes"} });
+};
 
 const excelDownloadSmartTemplate = (params) => {
     return httpClient.post('/smartTemplateApi/excelDownloadSmartTemplate', params, { headers: {"show-layer": "No"}, responseType: 'arraybuffer' }).then(function(response) {
@@ -62,7 +65,8 @@ export default {
     excelDownloadSmartTemplate,
     insertSmartTemplate,
     updateSmartTemplate,
-    deleteSmartTemplate
+    deleteSmartTemplate,
+    selectBrandList
 };
 
 

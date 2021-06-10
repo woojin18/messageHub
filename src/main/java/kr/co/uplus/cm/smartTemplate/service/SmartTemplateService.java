@@ -83,40 +83,77 @@ public class SmartTemplateService {
 
     	Map<String, Object> sParams = new HashMap<String, Object>(params);
         RestResult<Object> rtn = new RestResult<Object>();
-        
+System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+System.out.println("sParams.get('productCode') : "+sParams.get("productCode"));
+System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         List<Object> productList = generalDao.selectGernalList("smartTemplate.selectSmartProductList", sParams);
-        HashMap<String,String> product = (HashMap<String,String>) productList.get(0);
-        String msgKind = product.get("msgKind");
-        String chType0 = product.get("chType0");
-        String chType1 = product.get("chType1");
-        String chType2 = product.get("chType2");
-        String chType3 = product.get("chType3");
-        StringBuffer sb = new StringBuffer();
-        //List<String> chTypeList = new ArrayList<String>();
-        sb.append("[");
-        if(chType0 != null && chType0 != "") sb.append("\""+chType0+"\"");
-        if(chType1 != null && chType1 != "") sb.append(",\""+chType1+"\"");
-        if(chType2 != null && chType2 != "") sb.append(",\""+chType2+"\"");
-        if(chType3 != null && chType3 != "") sb.append(",\""+chType3+"\"");
-        sb.append("]");
-        //if(chType0 != null && chType0 != "") chTypeList.add(chType0);
-        //if(chType1 != null && chType1 != "") chTypeList.add(chType1);
-        //if(chType2 != null && chType2 != "") chTypeList.add(chType2);
-        //if(chType3 != null && chType3 != "") chTypeList.add(chType3);
-        
-        sParams.put("msgKind", product.get("msgKind"));
-        sParams.put("chTypeList", sb.toString());
-        //sParams.put("chTypeList", chTypeList);
-        //sParams.put("chType0", chType0);
-        //sParams.put("chType1", chType1);
-        //sParams.put("chType2", chType2);
-        //sParams.put("chType3", chType3);
-        
-System.out.println("sParams.get('msgKind') : "+sParams.get("msgKind"));
-System.out.println("sParams.get('chTypeList') : "+sParams.get("chTypeList"));
-System.out.println("sParams.get('searchStartDate') : "+sParams.get("searchStartDate"));
-System.out.println("sParams.get('searchEndDate') : "+sParams.get("searchEndDate"));
-System.out.println("sParams.get('projectId') : "+sParams.get("projectId"));
+        if(productList.size() > 0) {
+	        HashMap<String,String> product = (HashMap<String,String>) productList.get(0);
+	        //RCS, PUSH, SMS, MMS, FRIENDTALK, ALIMTALK
+	        String notIncludedRCS = "[\"RCS\"]";
+	        String notIncludedPUSH = "[\"PUSH\"]";
+	        String notIncludedSMS = "[\"SMS\"]";
+	        String notIncludedMMS = "[\"MMS\"]";
+	        String notIncludedFRIENDTALK = "[\"FRIENDTALK\"]";
+	        String notIncludedALIMTALK = "[\"ALIMTALK\"]";
+	        
+	        String msgKind = product.get("msgKind");
+	        String chType0 = product.get("chType0");
+	        String chType1 = product.get("chType1");
+	        String chType2 = product.get("chType2");
+	        String chType3 = product.get("chType3");
+	        
+	        StringBuffer sb = new StringBuffer();
+	        //List<String> chTypeList = new ArrayList<String>();
+	        sb.append("[");
+	        if(chType0 != null && chType0 != "") {
+	        	sb.append("\""+chType0+"\"");
+	        }else {
+	        	chType0 = "";
+	        }
+	        if(chType1 != null && chType1 != "") {
+	        	sb.append(",\""+chType1+"\"");
+	        }else {
+	        	chType1 = "";
+	        }
+	        if(chType2 != null && chType2 != "") {
+	        	sb.append(",\""+chType2+"\"");
+	        }else {
+	        	chType2 = "";
+	        }
+	        if(chType3 != null && chType3 != "") {
+	        	sb.append(",\""+chType3+"\"");
+	        }else {
+	        	chType3 = "";
+	        }
+	        sb.append("]");
+	        
+	        if(chType0.equalsIgnoreCase("RCS") || chType1.equalsIgnoreCase("RCS") || chType2.equalsIgnoreCase("RCS") || chType3.equalsIgnoreCase("RCS")) notIncludedRCS = "";
+	        if(chType0.equalsIgnoreCase("PUSH") || chType1.equalsIgnoreCase("PUSH") || chType2.equalsIgnoreCase("PUSH") || chType3.equalsIgnoreCase("PUSH")) notIncludedPUSH = "";
+	        if(chType0.equalsIgnoreCase("SMS") || chType1.equalsIgnoreCase("SMS") || chType2.equalsIgnoreCase("SMS") || chType3.equalsIgnoreCase("SMS")) notIncludedSMS = "";
+	        if(chType0.equalsIgnoreCase("MMS") || chType1.equalsIgnoreCase("MMS") || chType2.equalsIgnoreCase("MMS") || chType3.equalsIgnoreCase("MMS")) notIncludedMMS = "";
+	        if(chType0.equalsIgnoreCase("FRIENDTALK") || chType1.equalsIgnoreCase("FRIENDTALK") || chType2.equalsIgnoreCase("FRIENDTALK") || chType3.equalsIgnoreCase("FRIENDTALK")) notIncludedFRIENDTALK = "";
+	        if(chType0.equalsIgnoreCase("ALIMTALK") || chType1.equalsIgnoreCase("ALIMTALK") || chType2.equalsIgnoreCase("ALIMTALK") || chType3.equalsIgnoreCase("ALIMTALK")) notIncludedALIMTALK = "";
+
+	        
+	        sParams.put("msgKind", product.get("msgKind"));
+	        sParams.put("chTypeList", sb.toString());
+System.out.println(">>>>>>>> notIncludedRCS : "+notIncludedRCS);	
+System.out.println(">>>>>>>> notIncludedPUSH : "+notIncludedPUSH);
+System.out.println(">>>>>>>> notIncludedSMS : "+notIncludedSMS);
+System.out.println(">>>>>>>> notIncludedMMS : "+notIncludedMMS);
+System.out.println(">>>>>>>> notIncludedFRIENDTALK : "+notIncludedFRIENDTALK);
+System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
+	        if(notIncludedRCS != "") sParams.put("notIncludedRCS", notIncludedRCS);
+	        if(notIncludedPUSH != "") sParams.put("notIncludedPUSH", notIncludedPUSH);
+	        if(notIncludedSMS != "") sParams.put("notIncludedSMS", notIncludedSMS);
+	        if(notIncludedMMS != "") sParams.put("notIncludedMMS", notIncludedMMS);
+	        if(notIncludedFRIENDTALK != "") sParams.put("notIncludedFRIENDTALK", notIncludedFRIENDTALK);
+	        if(notIncludedALIMTALK != "") sParams.put("notIncludedALIMTALK", notIncludedALIMTALK);
+        }else {
+	        sParams.put("msgKind", "");
+	        sParams.put("chTypeList", "");
+        }
         if(sParams.containsKey("pageNo")
                 && CommonUtils.isNotEmptyObject(sParams.get("pageNo"))
                 && sParams.containsKey("listSize")
@@ -186,7 +223,7 @@ System.out.println("sParams.get('projectId') : "+sParams.get("projectId"));
         //sbChannel.append("\",");
         
         for(int i=0; i<checkChannelArr.length;i++) {
-        	//System.out.println(">>>>service 002-1 no : "+ i);
+        	System.out.println(">>>>service 002-1 no : "+ checkChannelArr[i]);
         	sb.append("{");
         	sb.append(sbChannel.toString());//채널순서를 기억하기 위해 추가
         	if(checkChannelArr[i].equalsIgnoreCase("PUSH")) {  
@@ -213,8 +250,10 @@ System.out.println("sParams.get('projectId') : "+sParams.get("projectId"));
 
         		if((int)params.get("rcsTemplateTable") == 0) {//
 //RCS FREE TYPE ====================================================================
+        			//String brand = (String) params.get("brandNm");
+        			String freeMessageBaseId = selectMessageBaseId(params);
         			sb.append("\"rcsPrdType\" : \"FREE\",");	// RCS상품타입(프리 템플릿) rcsTemplateTable => 0
-        			sb.append("\"messagebaseId\": \"msgbaseId0\","); // cm.CM_RCS_MSGBASE,           c cm_console.CM_RCS_TMP_MSGBASE의 MESSAGEBASEFORM_ID값을 설정
+        			sb.append("\"messagebaseId\": \""+freeMessageBaseId+"\","); // cm.CM_RCS_MSGBASE,           c cm_console.CM_RCS_TMP_MSGBASE의 MESSAGEBASEFORM_ID값을 설정
         			sb.append("\"callback\": \""+params.get("callback")+"\",");
         			sb.append("\"footer\": \"\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
         			
@@ -508,13 +547,26 @@ System.out.println("sParams.get('projectId') : "+sParams.get("projectId"));
         		}else if((int)params.get("rcsTemplateTable") == 10){
 //RCS CTALL TYPE ====================================================================
         			sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템플릿) 	rcsTemplateTable => 10
-        		    sb.append("\"messagebaseId\": \"msgbaseId0\","); // cm.CM_RCS_MSGBASE,            cm_console.CM_RCS_TMP_MSGBASE의 MESSAGEBASEFORM_ID값을 설정
-        			sb.append("\"callback\": \""+params.get("callback")+"\",");
-        			sb.append("\"footer\": \""+params.get("rcs10HowToDenyReceipt")+"\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
         			
         			System.out.println("rcs10CardCount type : "+params.get("rcs10CardCount").getClass().getName());
         			//int rcs10CardCount = Integer.parseInt((String)params.get("rcs10CardCount"));
         			int rcs10CardCount = (int)params.get("rcs10CardCount");
+        			
+        			String msgbaseId = "";
+        			if(rcs10CardCount == 3) {
+        				msgbaseId = "CMwMhM0300";	//슬라이드형(Medium,3장)
+        			}else if(rcs10CardCount == 4) {
+        				msgbaseId = "CMwMhM0400";	//슬라이드형(Medium,4장)
+        			}else if(rcs10CardCount == 5) {
+        				msgbaseId = "CMwMhM0500";	//슬라이드형(Medium,5장)
+        			}else if(rcs10CardCount == 6) {
+        				msgbaseId = "CMwMhM0600";	//슬라이드형(Medium,6장)
+        			}
+        			
+        		    sb.append("\"messagebaseId\": \""+msgbaseId+"\","); // cm.CM_RCS_MSGBASE,            cm_console.CM_RCS_TMP_MSGBASE의 MESSAGEBASEFORM_ID값을 설정
+        		    
+        		    sb.append("\"callback\": \""+params.get("callback")+"\",");
+        			sb.append("\"footer\": \""+params.get("rcs10HowToDenyReceipt")+"\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
         			
         			sb.append("\"body\": [ ");  
         			for(int j=0; j<rcs10CardCount; j++) {
@@ -656,7 +708,7 @@ System.out.println("sParams.get('projectId') : "+sParams.get("projectId"));
         		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
     		    
-        	}else if(checkChannelArr[i].equalsIgnoreCase("KAKAO")) {
+        	}else if(checkChannelArr[i].equalsIgnoreCase("FRIENDTALK")) {
         		System.out.println(">>>>service 003  kakao 001 : "+params.get("kakaoTemplateTable"));
 //KAKAO ====================================================================  
         		String buttonType = null;
@@ -667,7 +719,7 @@ System.out.println("sParams.get('projectId') : "+sParams.get("projectId"));
     			String endDate = null;
         		List<Map<String, Object>> buttonInfoList = null;
         		
-        		if((int)params.get("kakaoTemplateTable") == 0){
+
         			//System.out.println(">>>>service 003  RCS 002 FRIENDTALK");
         			if(params.containsKey("friendTalkButtons")) {
         	            buttonInfoList = (List<Map<String, Object>>) params.get("friendTalkButtons");
@@ -816,7 +868,20 @@ System.out.println("sParams.get('projectId') : "+sParams.get("projectId"));
         		    sb.append("	]         ");	
         		    sb.append("	}]         ");	
         		    sb.append("} ");
-        		}else if((int)params.get("kakaoTemplateTable") == 1){
+
+        		
+
+        	}else if(checkChannelArr[i].equalsIgnoreCase("ALIMTALK")) {
+        		System.out.println(">>>>service 003  kakao 001 : "+params.get("kakaoTemplateTable"));
+//KAKAO ====================================================================  
+        		String buttonType = null;
+    			String buttonName = null;
+    			String buttonLink = null;
+    			String buttonLink1 = null;
+    			String startDate = null;
+    			String endDate = null;
+        		List<Map<String, Object>> buttonInfoList = null;
+
         			//System.out.println(">>>>service 003  RCS 002 ALIMTALK");
         			sb.append("\"chTypeList\" : \""	+chTypeList+"\",");
         			sb.append("\"chType\" : \"ALIMTALK\",");
@@ -825,10 +890,7 @@ System.out.println("sParams.get('projectId') : "+sParams.get("projectId"));
         			sb.append("\"senderKey\" : \""+params.get("alimTalkSendKey")+"\",");
         			sb.append("\"tmpltCode\" : \""+params.get("alimTalkTmpltCode")+"\",");
         			sb.append("} ");
-        		}
-        		
-
-    		    
+  		    
     		    
         	}else if(checkChannelArr[i].equalsIgnoreCase("SMSMMS")) {
 //SMSMMS ====================================================================    
@@ -1065,5 +1127,28 @@ System.out.println("sParams.get('projectId') : "+sParams.get("projectId"));
     	return sb.toString();
     }
 
+    /**
+     * 브랜드 리스트 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectBrandList(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
 
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_BRAND_LIST, params);
+        rtn.setData(rtnList);
+
+        return rtn;
+    }
+    
+     /**
+     * Message base id 조회
+     * @param Param
+     * @return
+     * @throws Exception
+     */
+    public String selectMessageBaseId(Map<String, Object> params) throws Exception {
+    	 return (String) generalDao.selectGernalObject("smartTemplate.selectMessageBaseId", params);
+    }
 }

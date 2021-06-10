@@ -339,8 +339,16 @@
           </div>
           <div class="float-left consoleCon" style="width:72%">
             
+				<div class="of_h">
+					<h4 class="inline-block" style="width:10%">브랜드명</h4>
+					<select v-model="rowData.brandNm" name="userConsole_sub040202_1" class="selectStyle2" style="width:24%" title="브랜드명 선택란">
+						<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">
+							{{option.BRAND_NAME}}
+						</option>
+					</select>
+				</div>
             
-	          <div class="of_h">
+	          <div class="of_h consolMarginTop">
 					<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 		            <div class="float-left" style="width:57%">
 		              <textarea class="textareaStyle height190" v-model="rowData.rcs0Content"></textarea>
@@ -2862,7 +2870,7 @@ export default {
               , 'tmpltTitle':'' //템플릿 명
               , 'pushHowToDenyReceipt':''
               , 'pushAppId': ''
-              
+              , 'brandNm': '' //브랜드
 
               , 'rcsSMSsHowToDenyReceipt':''
               , 'rcsLMSHowToDenyReceipt':''
@@ -3072,7 +3080,8 @@ export default {
 	  rcsTallButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
       friendTalkButtonsMaxLen: 0, //start, endDate의 ID값을 유일하게 잡기위해 설정
 
-      useYn : 'Y'
+      useYn : 'Y',
+      brandNmList: [],		// 브랜드 명 selectBox
 
     }
   },
@@ -3082,6 +3091,7 @@ export default {
     rcsTemplateTable(val){
       if(val === 0){//rcsTemplateTable === 0 프리템플릿
         this.fnRcs0SelectCallbackList();
+        this.fnSelectBrandList();
       }else if(val === 1){//rcsTemplateTable === 1
         this.fnRcs1SelectCallbackList();
       }else if(val === 2){//rcsTemplateTable === 2
@@ -3107,6 +3117,7 @@ export default {
     this.fnSelectFriendTalkSenderKeyList();
     this.fnRcs0SelectCallbackList();
     this.fnSMSSelectCallbackList();
+    
     this.fnSetIntegratedTemplateInfo();
   },
 
@@ -3372,6 +3383,18 @@ export default {
       });
     },     
 
+    fnSelectBrandList(){
+      var params = {};
+      smartTemplateApi.selectBrandList(params).then(response =>{
+        var result = response.data;
+        if(result.success) {
+          this.brandNmList = result.data;
+        } else {
+          confirm.fnAlert("브랜드 리스트 조회", result.message);
+        }
+      });
+    }, 
+    
     // showRcsTemplateTable(num){
     //   if(num == 0){
 
@@ -3573,7 +3596,7 @@ export default {
 		        //}		        
 			}
 			
-			if(this.rcsTemplateTable === 2){  //STYLE
+			if(this.rcsTemplateTable === 2){  //CELL
 				if(!this.rowData.rcs2MessageFormId){ 
 					confirm.fnAlert(this.detailTitle, 'RCS 승인 스타일 템플릿을 팝업을 통해 선택해 주세요.');
 		            return false;
@@ -3955,7 +3978,7 @@ export default {
 			}else if(rtnData.rcsPrdType == 'DESCRIPTION'){
 				this.rcsTemplateTable = 1;
 				this.rcsTemplateTableChecked = 1;
-			}else if(rtnData.rcsPrdType == 'STYLE'){
+			}else if(rtnData.rcsPrdType == 'CELL'){
 				this.rcsTemplateTable = 2;
 				this.rcsTemplateTableChecked = 2;
 			}else if(rtnData.rcsPrdType == 'SMS'){
