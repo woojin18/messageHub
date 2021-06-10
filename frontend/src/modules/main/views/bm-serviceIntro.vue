@@ -128,7 +128,7 @@ export default {
   },
   methods: {
     fnSetSlider(){
-      var slider = $('.serviceBxslider').bxSlider({
+      var slider = jQuery('.serviceBxslider').bxSlider({
         pager: true,
         pagerCustom: '#bx-pager',
         touchEnabled : (navigator.maxTouchPoints > 0),

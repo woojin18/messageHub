@@ -115,28 +115,40 @@
 </template>
 
 <script>
+import animate from "@/assets/js/plugin.js";
+
 export default {
   name: 'main',
   mounted() {
     this.fnSetSlider();
   },
   methods: {
+    fnSetAnimate(){
+      wow = new WOW(
+        {
+        animateClass: 'animated',
+        offset: 100,
+        callback: function(box) {
+        }
+      });
+      wow.init();
+    },
     fnSetSlider(){
       //메인배너
-      var slider = $('.mainBxslider').bxSlider({
+      var slider = jQuery('.mainBxslider').bxSlider({
         mode: 'fade',
         pager: true,
         touchEnabled : (navigator.maxTouchPoints > 0),
         pause: 6000
       });
       //quickRight
-      $(window).scroll(function(){
-        var y = $(this).scrollTop();
+      jQuery(window).scroll(function(){
+        var y = jQuery(this).scrollTop();
         if(y >= 950){
-          $('.quickRight').addClass('fix');
+          jQuery('.quickRight').addClass('fix');
         }
         else {
-          $('.quickRight').removeClass('fix');
+          jQuery('.quickRight').removeClass('fix');
         }
       });
     }
