@@ -161,6 +161,7 @@ export default {
 			if (depth2Sts === 'block') {
 				jQuery("#depth2_" + index).css("display", "none");
 			} else {
+				jQuery(".depth2Lnb").css("display", "none");
 				jQuery("#depth2_" + index).css("display", "block");
 			}
 		},
