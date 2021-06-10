@@ -12,7 +12,7 @@
     <script type="text/javascript" src="/se2/js/jquery/core/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="/se2/js/jquery/ui/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/se2/js/jquery/ui/jquery.ui.monthpicker.js"></script>
-    <script type="text/javascript" src="/se2/js/jquery/ui/jquery.bxslider.js"></script>
+    <script type="text/javascript" src="/se2/bxslider-4-4.2.12/jquery.bxslider.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap">
@@ -22,13 +22,15 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
     <link href="/se2/css/admin.css" rel="stylesheet">
+    <link href="/se2/css/loading.css" rel="stylesheet">
+    <link href="/se2/bxslider-4-4.2.12/jquery.bxslider.css" rel="stylesheet">
     <link href="/se2/css/user.css" rel="stylesheet">
     <link href="/se2/css/animated.css" rel="stylesheet">
-    <link href="/se2/css/loading.css" rel="stylesheet">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script src="/se2/js/common.js"></script>
     <script src="/se2/js/user.js"></script>
-    <script src="/se2/js/plugin.js"></script>
+    <!-- <script src="/se2/js/plugin.js"></script> -->
+    <!--
     <script>
       $(document).ready(function() {
         //wow애니메이션
@@ -42,6 +44,7 @@
         wow.init();
       });
     </script>
+    -->
     <!-- <script src="/se2/js/tables.js"></script> -->
 
   </head>
@@ -53,24 +56,3 @@
     <!-- built files will be auto injected -->
   </body>
 </html>
-<script>
-  $(document).ready(function() {
-    //메인배너
-    var slider = $('.mainBxslider').bxSlider({
-      mode: 'fade',
-      pager: true,
-      touchEnabled : (navigator.maxTouchPoints > 0),
-      pause: 6000
-    });
-    //quickRight
-    $(window).scroll(function(){
-      var y = $(this).scrollTop();
-      if(y >= 950){
-         $('.quickRight').addClass('fix');
-      }
-      else {
-        $('.quickRight').removeClass('fix');
-      }
-    });
-  });
-</script>

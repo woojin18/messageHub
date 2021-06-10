@@ -8,7 +8,7 @@
             <div class="mainVisualTitle">
               <div class="wow animated fadeInUp" data-wow-duration="1s">
                 <h2>성공하는 기업들이 일하는<br>스마트한 방식<br>U+ 통합메시징 Cloud</h2>
-                <a href="user_sub01.html" class="mvBtn">서비스 소개</a>
+                <router-link :to="{ name: 'intro' }" tag="a" class="mvBtn" title="서비스 소개">서비스 소개</router-link>
               </div>
             </div>
             <img src="@/assets/images/main/mainVisual1.jpg" alt="">
@@ -116,6 +116,30 @@
 
 <script>
 export default {
-  name: 'main'
+  name: 'main',
+  mounted() {
+    this.fnSetSlider();
+  },
+  methods: {
+    fnSetSlider(){
+      //메인배너
+      var slider = $('.mainBxslider').bxSlider({
+        mode: 'fade',
+        pager: true,
+        touchEnabled : (navigator.maxTouchPoints > 0),
+        pause: 6000
+      });
+      //quickRight
+      $(window).scroll(function(){
+        var y = $(this).scrollTop();
+        if(y >= 950){
+          $('.quickRight').addClass('fix');
+        }
+        else {
+          $('.quickRight').removeClass('fix');
+        }
+      });
+    }
+  }
 }
 </script>
