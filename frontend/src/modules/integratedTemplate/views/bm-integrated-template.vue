@@ -100,7 +100,7 @@
                                     <!--<router-link :to="{ name: 'pushTemplateManage'      , params: { 'tmpltId' : contant.tmpltId }}">{{contant.tmpltId}}</router-link>-->
                 <td class="text-center">{{data.tmpltTitle}}</td>
                 <td class="text-center">{{data.tmpltChannel}}</td>
-                <td class="text-center">{{data.msgKind}}</td>
+                <td class="text-center">{{data.msgKindName}}</td>
                 <td class="text-center">{{data.msgType}}</td>
                 <td class="text-center">{{data.otherProjectUseYn}}</td>
                 <td class="text-center">{{data.useYn}}</td>

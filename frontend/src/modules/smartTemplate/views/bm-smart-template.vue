@@ -43,7 +43,7 @@
 		<h4>스마트발송 상품</h4>
 		<ul class="of_h">
 			<!--<li class="border-line2 of_h float-left pd20" style="width:252px" v-for="(data, idx) in products" :key="data.row_num">-->
-			<li class="border-line2 of_h float-left pd20" style="width:350px" v-for="(data, idx) in products" :key="data.row_num">
+			<li class="border-line2 of_h float-left pd20" style="width:430px" v-for="(data, idx) in products" :key="data.row_num">
 				<ul class="color6 float-left mr10" style="font-weight:700">
 					<li><h5>상품명 : </h5></li>
 					<li><h5>채널구성 : </h5></li>
@@ -115,7 +115,7 @@
                 <td>{{ idx + 1 }}</td>
                 <td class="text-center"><router-link :to="{ name: 'smartTemplateManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link> </td>
                 <td class="text-center">{{data.tmpltTitle}}</td>
-                <td class="text-center"></td>
+                <td class="text-center">{{data.productName}}</td>
                 <td class="text-center">{{data.otherProjectUseYn}}</td>
                 <td class="text-center">{{data.regId}}</td>
                 <td class="text-center end">{{data.regDt}}</td>
@@ -193,8 +193,8 @@ export default {
   },
   mounted() {
     this.fnSetIntervalSearchDate(this.searchDateInterval);
-    this.fnSearch();
     this.fnSmartProductList();
+    this.fnSearch();
   },
   methods: {
     //검색일자변경
@@ -256,7 +256,7 @@ export default {
         if(result.success) {
           this.products = result.data;
         } else {
-          alert(result.message);
+          alert("스마트발송 상품 리스트 조회 : "+result.message);
         }
       });
     },
@@ -265,6 +265,7 @@ export default {
         var productCodeTemp = event.target.value;
         this.productCode = productCodeTemp;
         this.checkSmartProduct = true;//스마트 템플릿 등록버튼 Show
+        console.log("11>>>>>>>>>>>>>>>fnSelectSmart productCodeTemp : "+productCodeTemp);
     	this.fnSelectSmartTemplateList(productCodeTemp);
     },
     
@@ -281,7 +282,11 @@ export default {
           
       var params = Object.assign({}, this.searchData);
       
-      if(productCode != '') params.productCode = productCode;
+      if(!this.isEmpty(productCode)){
+      	params.productCode = productCode;
+      }else{
+      	params.productCode = "XXXXXXXX";
+      }
       params.pageNo = this.pageNo;
       params.listSize = this.listSize;
 
@@ -294,7 +299,7 @@ export default {
           this.totCnt = result.pageInfo.totCnt;
           this.offset = result.pageInfo.offset;
         } else {
-          alert(result.message);
+          alert("스마트발송 템플릿 리스트 조회 : "+result.message);
         }
       });
     },
@@ -319,6 +324,13 @@ export default {
     fnSearch(pageNum) {
       this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
       this.fnSelectSmartTemplateList();
+    },
+    
+    isEmpty(str){
+        if(typeof str == "undefined" || str == null || str == "")
+            return true;
+        else
+            return false ;
     }
   }
 }

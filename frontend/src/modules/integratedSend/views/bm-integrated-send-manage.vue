@@ -86,7 +86,7 @@
 			    	<!-- //description -->			    	
 			    			        
 		        	<!-- style -->
-			          <div v-if="channelType == 'RCS'  && previewRcsMessageType == 'STYLE'" class="phoneWrap">
+			          <div v-if="channelType == 'RCS'  && previewRcsMessageType == 'CELL'" class="phoneWrap">
 						<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 of_h">
@@ -967,7 +967,7 @@ export default {
 			}else if(rtnData.rcsPrdType == 'DESCRIPTION'){
 				this.rcsTemplateTable = 1;
 				this.rcsTemplateTableChecked = 1;
-			}else if(rtnData.rcsPrdType == 'STYLE'){
+			}else if(rtnData.rcsPrdType == 'CELL'){
 				this.rcsTemplateTable = 2;
 				this.rcsTemplateTableChecked = 2;
 			}else if(rtnData.rcsPrdType == 'SMS'){

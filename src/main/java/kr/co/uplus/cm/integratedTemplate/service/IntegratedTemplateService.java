@@ -162,8 +162,10 @@ public class IntegratedTemplateService {
 
         		if((int)params.get("rcsTemplateTable") == 0) {//
 //RCS FREE TYPE ====================================================================
+        			//String brand = (String) params.get("brandNm");
+        			String freeMessageBaseId = selectMessageBaseId(params);
         			sb.append("\"rcsPrdType\" : \"FREE\",");	// RCS상품타입(프리 템플릿) rcsTemplateTable => 0
-        			sb.append("\"messagebaseId\": \"msgbaseId0\","); // cm.CM_RCS_MSGBASE,           c cm_console.CM_RCS_TMP_MSGBASE의 MESSAGEBASEFORM_ID값을 설정
+        			sb.append("\"messagebaseId\": \""+freeMessageBaseId+"\","); // cm.CM_RCS_MSGBASE,           c cm_console.CM_RCS_TMP_MSGBASE의 MESSAGEBASEFORM_ID값을 설정        			
         			sb.append("\"callback\": \""+params.get("callback")+"\",");
         			sb.append("\"footer\": \"\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
         			
@@ -194,8 +196,8 @@ public class IntegratedTemplateService {
         			sb.append("	}] ");
         			
         		}else if((int)params.get("rcsTemplateTable") == 2){
-//RCS STYLE TYPE ====================================================================   
-        			sb.append("\"rcsPrdType\" : \"STYLE\",");	// RCS상품타입(스타일 승인템플릿) rcsTemplateTable => 2
+//RCS CELL(STYLE) TYPE ====================================================================   
+        			sb.append("\"rcsPrdType\" : \"CELL\",");	// RCS상품타입(스타일 승인템플릿) rcsTemplateTable => 2
         			sb.append("\"messagebaseId\": \""+params.get("rcs2MessageFormId")+"\","); // cm.CM_RCS_MSGBASEFORM,  cm_console.CM_RCS_TMP_MSGBASE의 MESSAGEBASEFORM_ID값을 설정
         			sb.append("\"callback\": \""+params.get("callback")+"\",");
         			sb.append("\"footer\": \"\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
@@ -308,13 +310,26 @@ public class IntegratedTemplateService {
         		}else if((int)params.get("rcsTemplateTable") == 9){
 //RCS CSHORT TYPE ====================================================================        			
         			sb.append("\"rcsPrdType\" : \"CSHORT\",");	// RCS상품타입(캐러셀[SHORT]템플릿) 	rcsTemplateTable => 9
-        			sb.append("\"messagebaseId\": \"msgbaseId0\","); // cm.CM_RCS_MSGBASE,            cm_console.CM_RCS_TMP_MSGBASE의 MESSAGEBASEFORM_ID값을 설정
-        			sb.append("\"callback\": \""+params.get("callback")+"\",");
-        			sb.append("\"footer\": \""+params.get("rcs9HowToDenyReceipt")+"\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
         			
         			System.out.println("rcs9CardCount type : "+params.get("rcs9CardCount").getClass().getName());
         			//int rcs9CardCount = Integer.parseInt((String)params.get("rcs9CardCount"));
         			int rcs9CardCount = (int)params.get("rcs9CardCount");
+        			String msgbaseId = "";
+        			if(rcs9CardCount == 3) {
+        				msgbaseId = "CMwShS0300";	//슬라이드형(Small,3장)
+        			}else if(rcs9CardCount == 4) {
+        				msgbaseId = "CMwShS0400";	//슬라이드형(Small,4장)
+        			}else if(rcs9CardCount == 5) {
+        				msgbaseId = "CMwShS0500";	//슬라이드형(Small,5장)
+        			}else if(rcs9CardCount == 6) {
+        				msgbaseId = "CMwShS0600";	//슬라이드형(Small,6장)
+        			}
+        			
+        			sb.append("\"messagebaseId\": \""+msgbaseId+"\","); // cm.CM_RCS_MSGBASE,            cm_console.CM_RCS_TMP_MSGBASE의 MESSAGEBASEFORM_ID값을 설정
+        			sb.append("\"callback\": \""+params.get("callback")+"\",");
+        			sb.append("\"footer\": \""+params.get("rcs9HowToDenyReceipt")+"\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
+        			
+        			
         			
         			sb.append("\"body\": [ ");  
         			for(int k=0;k<rcs9CardCount;k++) {
@@ -457,13 +472,25 @@ public class IntegratedTemplateService {
         		}else if((int)params.get("rcsTemplateTable") == 10){
 //RCS CTALL TYPE ====================================================================
         			sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템플릿) 	rcsTemplateTable => 10
-        		    sb.append("\"messagebaseId\": \"msgbaseId0\","); // cm.CM_RCS_MSGBASE,            cm_console.CM_RCS_TMP_MSGBASE의 MESSAGEBASEFORM_ID값을 설정
-        			sb.append("\"callback\": \""+params.get("callback")+"\",");
-        			sb.append("\"footer\": \""+params.get("rcs10HowToDenyReceipt")+"\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
         			
         			System.out.println("rcs10CardCount type : "+params.get("rcs10CardCount").getClass().getName());
         			//int rcs10CardCount = Integer.parseInt((String)params.get("rcs10CardCount"));
         			int rcs10CardCount = (int)params.get("rcs10CardCount");
+        			
+        			String msgbaseId = "";
+        			if(rcs10CardCount == 3) {
+        				msgbaseId = "CMwMhM0300";	//슬라이드형(Medium,3장)
+        			}else if(rcs10CardCount == 4) {
+        				msgbaseId = "CMwMhM0400";	//슬라이드형(Medium,4장)
+        			}else if(rcs10CardCount == 5) {
+        				msgbaseId = "CMwMhM0500";	//슬라이드형(Medium,5장)
+        			}else if(rcs10CardCount == 6) {
+        				msgbaseId = "CMwMhM0600";	//슬라이드형(Medium,6장)
+        			}
+        			
+        		    sb.append("\"messagebaseId\": \""+msgbaseId+"\","); // cm.CM_RCS_MSGBASE,            cm_console.CM_RCS_TMP_MSGBASE의 MESSAGEBASEFORM_ID값을 설정
+        			sb.append("\"callback\": \""+params.get("callback")+"\",");
+        			sb.append("\"footer\": \""+params.get("rcs10HowToDenyReceipt")+"\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
         			
         			sb.append("\"body\": [ ");  
         			for(int j=0; j<rcs10CardCount; j++) {
@@ -1017,5 +1044,14 @@ public class IntegratedTemplateService {
     	return sb.toString();
     }
 
+    /**
+    * Message base id 조회
+    * @param Param
+    * @return
+    * @throws Exception
+    */
+   public String selectMessageBaseId(Map<String, Object> params) throws Exception {
+   	 return (String) generalDao.selectGernalObject("smartTemplate.selectMessageBaseId", params);
+   }
 
 }

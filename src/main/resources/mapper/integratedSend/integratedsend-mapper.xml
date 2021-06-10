@@ -36,22 +36,19 @@
 		        END AS otherProjectUseYn
 		      , A.TMPLT_CODE
 		      , A.MSG_KIND
-		      , CASE WHEN A.MSG_KIND = 'I' THEN '정보성'
-		             WHEN A.MSG_KIND = 'A' THEN '광고성'
-		        END AS MSG_KIND_NAME
+		      , C.CODE_NAME_1 AS MSG_KIND_NAME
 		      , A.MSG_TYPE
-		       , CASE WHEN A.MSG_TYPE = 'IMAGE' THEN '텍스트'
-		             WHEN A.MSG_TYPE = 'BASE' THEN '이미지'
-		        END AS MSG_TYPE_NAME
+		      , D.CODE_NAME_1 AS MSG_TYPE_NAME
 		      , A.TMPLT_TITLE
 		      , A.TMPLT_INFO
 		      , A.TMPLT_TYPE
 		      , A.USE_YN
 		      , A.TMPLT_INFO ->> '$[0].chTypeList' AS TMPLT_CHANNEL
 		      , JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType') CHECKED_CHANNEL
-		      , REG_ID
-		      , REG_DT
-		FROM cm.CM_SMART_TMPLT A
+		      , A.REG_ID
+		      , A.REG_DT
+		FROM cm.CM_SMART_TMPLT A LEFT OUTER JOIN cm_bo.CM_CODE C ON A.MSG_KIND = C.CODE_VAL_1 AND C.CODE_TYPE_CD = 'MSG_KIND'
+		                         LEFT OUTER JOIN cm_bo.CM_CODE D ON A.MSG_TYPE = D.CODE_VAL_1 AND D.CODE_TYPE_CD = 'MSG_TYPE'
 		   , (SELECT @rownum:=0) TMP
 		WHERE 1=1
 		<include refid="whereSelectIntegratedSendList"/>
@@ -74,8 +71,7 @@
             , TMPLT_CODE
             , MSG_KIND
             , MSG_TYPE
-            , OTHER_PROJECT_USE_YN
-			, TMPLT_TITLE
+            , TMPLT_TITLE
 			, TMPLT_INFO
 			, TMPLT_TYPE
 			, TMPLT_STATUS
@@ -84,12 +80,12 @@
             , REG_ID
             , UPD_DT
             , UPD_ID
+            , CORP_ID
         ) VALUES (
             #{projectId}
             , #{tmpltCode}
             , #{msgKind}
             , #{msgType}
-            , #{otherProjectUseYn}
             , #{tmpltTitle}
             , #{tmpltInfo}
             , #{tmpltType}
@@ -102,7 +98,6 @@
         )
         ON DUPLICATE KEY UPDATE MSG_KIND = #{msgKind}
 					            , MSG_TYPE = #{msgType}
-					            , OTHER_PROJECT_USE_YN = #{otherProjectUseYn}
 					            , TMPLT_TITLE = #{tmpltTitle}
 					            , TMPLT_INFO = #{tmpltInfo}
 					            , TMPLT_TYPE = #{tmpltType}
@@ -110,6 +105,8 @@
 					            , USE_YN = #{useYn}
 					            , UPD_DT = NOW()
 					            , UPD_ID = #{userId}
+					            , CORP_ID = #{corpId}
+					            , #{corpId}
     </insert>
 
     <update id="updateIntegratedSend" parameterType="hashmap">
@@ -118,13 +115,13 @@
         SET
             MSG_KIND = #{msgKind}
             , MSG_TYPE = #{msgType}
-            , OTHER_PROJECT_USE_YN = #{otherProjectUseYn}
             , TMPLT_TITLE = #{tmpltTitle}
             , TMPLT_INFO = #{tmpltInfo}
             , TMPLT_TYPE = #{tmpltType}
             , TMPLT_STATUS = #{tmpltStatus}
             , UPD_DT = NOW()
             , UPD_ID = #{userId}
+            , CORP_ID = #{corpId}
         WHERE PROJECT_ID = #{projectId}
           AND TMPLT_CODE = #{tmpltCode}
     </update>
