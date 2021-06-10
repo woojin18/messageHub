@@ -145,13 +145,13 @@ export default {
 		fnMenuList() {
 			var params = {
 				"user_id"    : tokenSvc.getToken().principal.userId,
-				"role_cd"    : tokenSvc.getToken().principal.role,
+				"role_cd"    : tokenSvc.getToken().principal.role == 'ADMIN' && tokenSvc.getToken().principal.svcTypeCd == 'AC' ? 'USER' : tokenSvc.getToken().principal.role,
 				"svc_type_cd" : 'UC'
 			};
 
 			api.getMenuForRole(params).then(response =>{
 				var result = response.data;
-				if (result.success) {
+				if (result.success && result.data != null) {
 					this.treeData = result.data.children;
 				}
 			});
