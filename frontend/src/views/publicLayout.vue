@@ -14,6 +14,8 @@
 import PublicHeader from "../components/PublicHeader";
 import PublicFooter from "../components/PublicFooter";
 
+require('../../public/se2/css/user.css');
+
 export default {
   name: "publicLayout",
   components: {
