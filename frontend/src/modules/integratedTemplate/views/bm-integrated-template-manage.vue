@@ -3117,7 +3117,7 @@ export default {
     this.fnSelectFriendTalkSenderKeyList();
     this.fnRcs0SelectCallbackList();
     this.fnSMSSelectCallbackList();
-    
+    this.fnSelectBrandList();
     this.fnSetIntegratedTemplateInfo();
   },
 
@@ -3385,7 +3385,7 @@ export default {
 
     fnSelectBrandList(){
       var params = {};
-      smartTemplateApi.selectBrandList(params).then(response =>{
+      integratedTemplateApi.selectBrandList(params).then(response =>{
         var result = response.data;
         if(result.success) {
           this.brandNmList = result.data;

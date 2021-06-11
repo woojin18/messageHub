@@ -28,6 +28,7 @@ import ucMyPageRoutes from './modules/ucMyPage/router';
 import integratedSendRoutes from './modules/integratedSend/router';
 import smartTemplateRoutes from './modules/smartTemplate/router';
 import useRoutes from './modules/use/router';
+import smartSendRoutes from './modules/smartSend/router';
 
 //import confirm from "@/modules/commonUtil/service/confirm.js";
 
@@ -151,7 +152,8 @@ const router = new Router({
         ...integratedTemplateRoutes,
         ...ucMyPageRoutes,
         ...integratedSendRoutes,
-        ...smartTemplateRoutes
+        ...smartTemplateRoutes,
+        ...smartSendRoutes
       ]
     },
     {path: '*', redirect: '/view/error/404'}

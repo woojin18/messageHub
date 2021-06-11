@@ -1044,6 +1044,23 @@ public class IntegratedTemplateService {
     	return sb.toString();
     }
 
+    
+    /**
+     * 브랜드 리스트 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectBrandList(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_BRAND_LIST, params);
+        rtn.setData(rtnList);
+
+        return rtn;
+    }
+
+    
     /**
     * Message base id 조회
     * @param Param

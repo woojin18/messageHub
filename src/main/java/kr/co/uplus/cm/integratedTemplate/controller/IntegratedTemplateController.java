@@ -167,6 +167,25 @@ public class IntegratedTemplateController {
 		return model;
 	}
 
-
+	   /**
+     * 브랜드 리스트 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectBrandList")
+    public RestResult<?> selectBrandList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = integratedTemplateService.selectBrandList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{}.selectCallbackList Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
 
 }
