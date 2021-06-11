@@ -28,15 +28,19 @@
     <!-- //mainVisualWrap -->
 
     <!-- quickRight -->
-      <div class="quickRightWrap">
+    <div class="quickRightWrap">
       <ul class="quickRight">
-        <li><a href="#self" class="quick_inquiry" title="1:1 문의하기" data-toggle="modal" data-target="#Inquiry"><img src="@/assets/images/main/quickIcon_Inquiry.png" alt=""></a></li>
+        <li>
+          <a href="#" @click.prevent="fnOpenInquiryModal" class="quick_inquiry" title="1:1 문의하기" data-toggle="modal" data-target="inquiryLayer">
+            <img src="@/assets/images/main/quickIcon_Inquiry.png" alt="1:1 문의하기">
+          </a>
+        </li>
         <li><a href="#" class="quick_top"><img src="@/assets/images/main/quickIcon_top.png" alt=""></a></li>
       </ul>
-    </div>  <!-- //quickRight -->
+    </div>
+    <!-- //quickRight -->
 
     <div id="contentWrap">
-
       <!-- noticeWrap -->
       <article id="noticeWrap">
         <section>
@@ -110,17 +114,25 @@
       </article>
       <!-- //quiryWrap -->
     </div>
-
+    <InquiryPopup></InquiryPopup>
   </div>
 </template>
 
 <script>
+import InquiryPopup from "@/modules/main/components/bp-inquiry.vue";
+
 export default {
   name: 'consoleMain',
+  components : {
+    InquiryPopup
+  },
   mounted() {
     this.fnSetSlider();
   },
   methods: {
+    fnOpenInquiryModal(){
+      jQuery("#Inquiry").modal("show");
+    },
     fnSetSlider(){
       //메인배너
       jQuery('.mainBxslider').bxSlider({

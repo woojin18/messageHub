@@ -26,13 +26,7 @@ export default {
     style.rel = "stylesheet";
     style.href = '/se2/css/user.css';
     document.getElementById('publicLayout').appendChild(style);
-  },
-  /*
-  destroyed(){
-    let usercss = document.getElementById('usercss');
-    if(usercss) usercss.remove();
   }
-  */
 };
 </script>
 

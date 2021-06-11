@@ -6,16 +6,19 @@ export default [
     {
         path: '/signUp',
         name: 'signUp',
-        component: signUp
+        component: signUp,
+        meta: { public: true }
     },
     {
         path: '/mailSend',
         name: 'mailSend',
-        component: mailSend 
+        component: mailSend,
+        meta: { public: true }
     },
     {
         path: '/signUpMain',
         name: 'signUpMain',
-        component: signUpMain
+        component: signUpMain,
+        meta: { public: true }
     },
 ]
