@@ -36,14 +36,3 @@ export default {
   }
 }
 </script>
-
-
-<style>
-/* TODO - CSS 파일에 넣자 */
-.addList_plus ~ ul {
-	display: none;
-}
-.addList_minus ~ ul {
-
-}
-</style>
