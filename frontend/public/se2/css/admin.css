@@ -186,7 +186,7 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 
 
 /* common */
-.row-no-margin {margin-left:0px; margin-right:0px}
+.row-no-margin {margin-left:0px; margin-right:0px} 
 .lc-1 {letter-spacing:-1px}
 .fr, .float-right {float:right}
 .fl, .float-left {float:left}
@@ -460,8 +460,8 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .btnStyle9 {background:#F1F1F1; color:#222; border:1px solid #ddd; font-size:11px; border-radius:2px; padding:7px 20px; font-weight:500; display:inline-block; transition:0.3s; min-width:120px; text-align:center}
 .btnStyle9:hover {background:#222; color:#fff !important; border-color:#222}
 
-.btnStyle10 {background:#50504D; color:#fff; padding:5px 10px; border-radius:3px}
-.btnStyle10:hover {background:#40403d; color:#fff}
+.btnStyle10 {background:#50504D; color:#fff; padding:5px 10px; border-radius:3px} 
+.btnStyle10:hover {background:#40403d; color:#fff} 
 
 .btn.btn-login {background:#FD004E; border-color:#FD004E; color:#fff; font-size:17px; width:100%; height:60px; line-height:60px; padding:0; transition:0.3s; text-shadow:none}
 .btn.btn-login:hover, .btn.btn-login:focus {background:#000; border-color:#000}
@@ -474,8 +474,8 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .moreBtn {}
 .moreBtn:hover img {animation-name:moreBtn; animation-duration:1s; animation-fill-mode:both}
 @keyframes moreBtn {
-    from {transform:rotate(90deg)}
-    to {transform:rotate(180deg)}
+	from {transform:rotate(90deg)}
+	to {transform:rotate(180deg)}
 }
 
 
@@ -511,7 +511,7 @@ input[class="boardCheckStyle"] + label:before {content:''; position:absolute; le
 input[class="boardCheckStyle"]:checked + label:before {border-color:#FD004E; background:url('../images/consolCheck.svg') #FD004E no-repeat}
 .checkbox span {color:#707070; font-size:12px; vertical-align:top; margin-left:8px}
 
-/* 라디오 버튼
+/* 라디오 버튼 
 input[type='radio'] {appearance:none; width:14px; height:14px; border-radius:100%; margin-right:5px; background:#fff; border:1px solid #B2B2B2; cursor:pointer}
 input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:14px; height:14px; border-radius:100%; margin-right:5px; background:#fff; border:5px solid #FD004E; outline:none; outline-offset:0}
 */
@@ -566,7 +566,7 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 .tab_s5 li:nth-child(2) a {border-left:none}
 .tab_s5 > li.active > a, .tab_s5 > li > a:hover {background-color:#fff}
 .tab_s5 > li.active > a {border-bottom-color:#fff}
-
+ 
 
 .tab_s7 {display:inline-block; vertical-align:middle; margin-bottom:-1px}
 .tab_s7 > li {display:inline-block; float:left; margin-left:-1px}
@@ -589,13 +589,13 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 /* pagination */
 .pagination1 .number {border: 1px solid #D5D5D5; background-color: #fff; color: #A3A3A5; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px}
 .pagination1 .number.active, .pagination1 .number:hover {border: 1px solid #FD004E; color: #FD004E}
-.pagination1 .fa-chevron-left {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom; margin-right: 17px}
+.pagination1 .fa-chevron-left {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom; margin-right: 17px}	
 .pagination1 .fa-chevron-left:hover {border: 1px solid #9a9a9a; color:#9a9a9a}
-.pagination1 .fa-chevron-right {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom; ; margin-left: 17px}
+.pagination1 .fa-chevron-right {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom; ; margin-left: 17px}	
 .pagination1 .fa-chevron-right:hover {border: 1px solid #9a9a9a; color:#9a9a9a}
-.pagination1 .fa-chevron-double-left {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom}
+.pagination1 .fa-chevron-double-left {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom}	
 .pagination1 .fa-chevron-double-left:hover {border: 1px solid #9a9a9a; color:#9a9a9a}
-.pagination1 .fa-chevron-double-right {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom}
+.pagination1 .fa-chevron-double-right {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom}	
 .pagination1 .fa-chevron-double-right:hover {border: 1px solid #9a9a9a; color:#9a9a9a}
 
 .pagination2 .number {border: 1px solid #E8ECEF; background-color:#fff; color: #727272; font-size: 10px; padding: 3px 8px; border-radius: 5px}
@@ -691,6 +691,14 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 #sidebar > ul > li .depth2Lnb > ul > li.active > a, #sidebar > ul > li .depth2Lnb > ul >  li > a:hover {color:#FD004E; font-weight:500}
 #sidebar > ul > li.active .depth2Lnb {display:block}
 
+.depth2Lnb > ul > li .depth3Lnb {display:none}
+.depth2Lnb > ul > li .depth3Lnb > ul {background:#F7F7F7}
+.depth2Lnb > ul > li .depth3Lnb > ul > li:before {content:""; width:5px; height:1px; display:inline-block; background:#707070; vertical-align:middle; margin:0 5px 0 2px}
+.depth2Lnb > ul > li .depth3Lnb > ul > li > a {display:inline-block; vertical-align:middle; font-size:14px; color:#707070; padding:2px 0; transition:0.3s}
+.depth2Lnb > ul > li .depth3Lnb > ul > li.active > a, .depth2Lnb > ul > li .depth3Lnb > ul > li > a:hover {color:#FD004E; font-weight:400}
+.depth2Lnb > ul > li .depth3Lnb > ul > li:hover:before {background:#FD004E}
+.depth2Lnb > ul > li.active .depth3Lnb {display:block}
+
 #sidebar > ul > li .depth2Lnb.thum {background:url('../images/consoleMenuArr.png') 0 15px no-repeat; display:none; position:absolute; top:10px; right:-212px; width:220px; z-index:999; padding-left:8px}
 #sidebar > ul > li .depth2Lnb.thum > ul {border:1px solid #999; background:#fff; padding:0}
 #sidebar > ul > li .depth2Lnb.thum > ul > li {}
@@ -704,7 +712,7 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 #content > article {max-width:1510px; min-width:1100px}
 /*#content {float:left; width:100%; min-width:1100px; max-width:1510px; min-height:1500px; padding:40px 70px 200px 70px; border-left:1px solid #E6E6E6; position:relative}*/
 .contentHeader {padding:15px 0; border-bottom:1px solid #B2B2B2; margin-bottom:40px; position:relative}
-.contentHeader h2 {}
+.contentHeader h2 {color:#000 !important}
 .contentBody {border-bottom:1px solid #D5D5D5; position:relative; height:37px}
 
 
@@ -956,10 +964,10 @@ footer {font-size:12px; color:#B2B2B2; font-weight:400; position:absolute; botto
 
 
 @media screen and (max-width:1850px) {
-    .Menu02 {width:60%}
-    .Menu03 {width:40%}
+	.Menu02 {width:60%}
+	.Menu03 {width:40%}
 }
 @media screen and (max-width:1620px) {
-    .Menu02 {width:50%}
-    .Menu03 {width:50%}
+	.Menu02 {width:50%}
+	.Menu03 {width:50%}
 }
