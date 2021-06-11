@@ -145,7 +145,7 @@ public class DB {
     
     // 주소록 관리
     public final static String QRY_SELECT_ADDR_CATE_GRP_LIST = "address.selectAddrCateGrpList";
-    public final static String QRY_SELECT_ADDR_GRP = "address.selectAddrGrp";
+    public final static String QRY_SELECT_ADDR_CATE_GRP = "address.selectAddrCateGrp";
     public final static String QRY_SELECT_ADDR_CATE_LIST = "address.selectAddrCateList";
     public final static String QRY_SELECT_ADDR_MEM_LIST_CNT = "address.selectAddrMemListCnt";
     public final static String QRY_SELECT_ADDR_MEM_LIST = "address.selectAddrMemList";

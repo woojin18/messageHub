@@ -51,12 +51,11 @@ public class AddressService {
 		Map<String, Object> rtnObj = new HashMap<String, Object>();
 		
 		//주소록 그룹 목록 조회
-		//List<Object> addrGrpList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_GRP_LIST, params);
-		Object addrGrp = generalDao.selectGernalObject(DB.QRY_SELECT_ADDR_GRP, params);
-		List<Object> addrCtgyList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_CATE_LIST, params);
+		Object addrCateGrp = generalDao.selectGernalObject(DB.QRY_SELECT_ADDR_CATE_GRP, params);
+		List<Object> addrCateList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_CATE_LIST, params);
 		
-		rtnObj.put("addrGrp", addrGrp);
-		rtnObj.put("addrCtgyList", addrCtgyList);
+		rtnObj.put("addrCateGrp", addrCateGrp);
+		rtnObj.put("addrCateList", addrCateList);
 		rtn.setData(rtnObj);
 		return rtn;
 	}

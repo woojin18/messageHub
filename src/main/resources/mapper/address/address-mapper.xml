@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="address">
 	<select id="selectAddrCateGrpList" resultType="camel">
-		/* address.selectAddrCateGrpList */
+		/* address.selectAddrCateGrpList 주소카테고리그룹 조회*/
 		SELECT	ADDRESS_CATEGORY_GRP_ID
 			,	CORP_ID
 			,	PROJECT_ID					/* 전용: project id 입력, 사용: ALL */
@@ -11,20 +11,20 @@
 			,	USE_YN
 			,	REG_ID
 			,	REG_DT
-		FROM CM_ADDR_CATE_GRP
+		FROM cm_console.CM_ADDR_CATE_GRP
 		WHERE 1=1
 		AND	CORP_ID = #{corpId}
 	</select>
 
-	<select id="selectAddrGrp" parameterType="hashmap" resultType="camel">
-		/* address.selectAddrGrp */
+	<select id="selectAddrCateGrp" parameterType="hashmap" resultType="camel">
+		/* address.selectAddrCateGrp 주소록 카테고리 그룹 조회*/
 		SELECT
 			CACG.ADDRESS_CATEGORY_GRP_ID
 			, NULL AS ADDRESS_CATEGORY_ID
 			, NULL AS DIS_ORDER
 			, CACG.ADDRESS_CATEGORY_GRP_NAME AS ADDRESS_NAME
 			, NULL AS PAR_ADDRESS_CATEGORY_ID
-		FROM CM_ADDR_CATE_GRP CACG
+		FROM cm_console.CM_ADDR_CATE_GRP CACG
 		WHERE 1=1
 			AND CACG.CORP_ID = #{corpId}
 			AND	CACG.ADDRESS_CATEGORY_GRP_ID = #{addressCategoryGrpId}
@@ -39,7 +39,7 @@
 			, CAC.DIS_ORDER
 			, CAC.ADDRESS_CATEGORY_NAME  AS ADDRESS_NAME
 			, CAC.PAR_ADDRESS_CATEGORY_ID
-		FROM CM_ADDR_CATE_GRP CACG
+		FROM cm_console.CM_ADDR_CATE_GRP CACG
 		INNER JOIN CM_ADDR_CATE CAC
 			ON CACG.ADDRESS_CATEGORY_GRP_ID = CAC.ADDRESS_CATEGORY_GRP_ID
 			AND CAC.DEL_YN = 'N'
@@ -55,10 +55,10 @@
 			COUNT(*) AS CNT
 		FROM ( 
 				SELECT CU_INFO_ID
-				FROM CM_ADDR_CATE_MEM
+				FROM cm_console.CM_ADDR_CATE_MEM
 				WHERE ADDRESS_CATEGORY_ID = #{addressCategoryId}
 		) A
-		INNER JOIN CM_CU_INFO B
+		INNER JOIN cm_console.CM_CU_INFO B
 		ON		A.CU_INFO_ID = B.CU_INFO_ID
 		WHERE	B.USE_YN = 'Y'
 	</select>
@@ -72,10 +72,10 @@
 		,	B.HP_NUMBER
 		FROM ( 
 				SELECT CU_INFO_ID
-				FROM CM_ADDR_CATE_MEM
+				FROM cm_console.CM_ADDR_CATE_MEM
 				WHERE ADDRESS_CATEGORY_ID = #{addressCategoryId}
 		) A
-		INNER JOIN CM_CU_INFO B
+		INNER JOIN cm_console.CM_CU_INFO B
 		ON		A.CU_INFO_ID = B.CU_INFO_ID
 		WHERE	B.USE_YN = 'Y'
 		ORDER BY B.CU_NAME ASC
@@ -85,19 +85,19 @@
 	</select>
 	
 	<select id="selectAddrProjectList" parameterType="hashmap" resultType="camel">
-		/* address.selectAddrProjectList 프로젝트 조회 */
+		/* address.selectAddrProjectList 프로젝트 목록 조회 */
 		SELECT 
 			B.PROJECT_ID
 		,	B.PROJECT_NAME
-		FROM CM_PROJECT_USER A
-		INNER JOIN CM_PROJECT B
+		FROM cm_console.CM_PROJECT_USER A
+		INNER JOIN cm_console.CM_PROJECT B
 		ON A.PROJECT_ID = B.PROJECT_ID
 		WHERE A.USER_ID = #{userId}
 	</select>
 	
 	<insert id="insertAddrCateGrp">
 		/* address.insertAddrCateGrp 주소록 등록 */
-		INSERT INTO	CM_ADDR_CATE_GRP (
+		INSERT INTO	cm_console.CM_ADDR_CATE_GRP (
 				ADDRESS_CATEGORY_GRP_ID
 		,		CORP_ID
 		,		PROJECT_ID
@@ -107,20 +107,20 @@
 		,		REG_ID
 		,		REG_DT
 		)	VALUES (
-				(SELECT IFNULL(MAX(ADDRESS_CATEGORY_GRP_ID) + 1, 1) FROM CM_ADDR_CATE_GRP B)
+				(SELECT IFNULL(MAX(ADDRESS_CATEGORY_GRP_ID) + 1, 1) FROM cm_console.CM_ADDR_CATE_GRP B)
 		,		#{corpId}
 		,		#{newProjectId}
 		,		#{addressCategoryGrpName}
 		,		#{addressCategoryGrpDesc}
-		,		#{useYn}
-		,		#{loginId}
+		,		#{regUseYn}
+		,		#{regId}
 		,		NOW()
 		)
 	</insert>
 	
 	<update id="updateAddrCateGrp" parameterType="hashmap">
 		/* address.updateAddrCateGrp 주소록 수정*/
-		UPDATE CM_ADDR_CATE_GRP
+		UPDATE cm_console.CM_ADDR_CATE_GRP
 		SET
 			PROJECT_ID = #{afProjectId} 
 		,	ADDRESS_CATEGORY_GRP_NAME = #{addressCategoryGrpName}
@@ -134,11 +134,11 @@
 		/* address.selectAddrCmCuListCnt 주소록 카테고리 수신자 카운트 조회 */
 		SELECT
 			COUNT(*) AS CNT
-		FROM CM_CU_INFO
+		FROM cm_console.CM_CU_INFO
 		WHERE	USE_YN = 'Y'
 		AND		CORP_ID = #{corpId}
 		AND		CU_INFO_ID NOT IN (	SELECT	CU_INFO_ID
-									FROM	CM_ADDR_CATE_MEM
+									FROM	cm_console.CM_ADDR_CATE_MEM
 									WHERE	ADDRESS_CATEGORY_ID = #{addressCategoryId}
 								)
 		<if test="searchText != '' and searchText != null ">
@@ -161,11 +161,11 @@
 			,	CU_NAME
 			,	CUID
 			,	HP_NUMBER
-		FROM CM_CU_INFO
+		FROM cm_console.CM_CU_INFO
 		WHERE	USE_YN = 'Y'
 		AND		CORP_ID = #{corpId}
 		AND		CU_INFO_ID NOT IN (	SELECT	CU_INFO_ID
-									FROM	CM_ADDR_CATE_MEM
+									FROM	cm_console.CM_ADDR_CATE_MEM
 									WHERE	ADDRESS_CATEGORY_ID = #{addressCategoryId}
 								)
 		<if test="searchText != '' and searchText != null ">
@@ -187,7 +187,7 @@
 	
 	<insert id="insertAddrMemberList">
 		/* address.insertAddrMemberList 구성원 등록 */
-		INSERT INTO	CM_ADDR_CATE_MEM (
+		INSERT INTO	cm_console.CM_ADDR_CATE_MEM (
 				ADDRESS_CATEGORY_ID
 		,		CU_INFO_ID
 		,		REG_ID
@@ -202,7 +202,7 @@
 	
 	<delete id="deleteAddrMember">
 		/* address.deleteAddrMember */
-		DELETE	FROM CM_ADDR_CATE_MEM
+		DELETE	FROM cm_console.CM_ADDR_CATE_MEM
 		WHERE	ADDRESS_CATEGORY_ID = #{addressCategoryId}
 		AND		CU_INFO_ID = #{cuInfoId}
 	</delete>
@@ -211,7 +211,7 @@
 		/* address.selectAddrRcvrListCnt 수신자 카운트 조회 */
 		SELECT
 			COUNT(*) AS CNT
-		FROM CM_CU_INFO
+		FROM cm_console.CM_CU_INFO
 		WHERE	CORP_ID = #{corpId}
 		<if test="searchText != '' and searchText != null ">
 			<if test="searchTextType == 'cuid' ">
@@ -238,7 +238,7 @@
 			,	CUID
 			,	HP_NUMBER
 			,	USE_YN
-		FROM CM_CU_INFO, (SELECT @ROWNUM:=0) TMP
+		FROM cm_console.CM_CU_INFO, (SELECT @ROWNUM:=0) TMP
 		WHERE	CORP_ID = #{corpId}
 		<if test="searchText != '' and searchText != null ">
 			<if test="searchTextType == 'cuid' ">
@@ -262,7 +262,7 @@
 	
 	<insert id="insertAddRcvr">
 		/* address.insertAddRcvr 수신자 등록 */
-		INSERT INTO CM_CU_INFO (
+		INSERT INTO cm_console.CM_CU_INFO (
 				CU_INFO_ID
 		,		CU_NAME
 		,		CUID
@@ -274,7 +274,7 @@
 		,		UPD_DT
 		,		CORP_ID
 		)	VALUES (
-				(SELECT IFNULL(MAX(CU_INFO_ID) + 1, 1) FROM CM_CU_INFO B)
+				(SELECT IFNULL(MAX(CU_INFO_ID) + 1, 1) FROM cm_console.CM_CU_INFO B)
 		,		#{cuName}
 		,		#{cuid}
 		,		#{hpNumber}
@@ -289,7 +289,7 @@
 	
 	<update id="updateAddrRcvr" parameterType="hashmap">
 		/* address.updateAddrRcvr 수신자 수정*/
-		UPDATE CM_CU_INFO
+		UPDATE cm_console.CM_CU_INFO
 		SET
 			<if test="cuName != '' and cuName != null ">
 			CU_NAME	= #{cuName},
@@ -311,13 +311,13 @@
 		/* address.selectAddrRcvrCnt 카테고리 구성원관리 테이블에서 수신자 조회 */
 		SELECT
 			COUNT(*) AS CNT
-		FROM CM_ADDR_CATE_MEM
+		FROM cm_console.CM_ADDR_CATE_MEM
 		WHERE	CU_INFO_ID = #{cuInfoId}
 	</select>
 	
 	<delete id="deleteAddrRcvr">
 		/* address.deleteAddrRcvr 수신자 삭제*/
-		DELETE	FROM CM_CU_INFO
+		DELETE	FROM cm_console.CM_CU_INFO
 		WHERE	CU_INFO_ID = #{cuInfoId}
 	</delete>
 </mapper>
