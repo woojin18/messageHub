@@ -41,7 +41,7 @@
 									FROM	cm_console.CM_RCS_TMP_MSGBASE
 									WHERE	BRAND_ID  = A.BRAND_ID 
 								) AS TMPL_CNT
-						,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인완료' ELSE '' END	AS APPROVAL_STATUS		
+						,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인' ELSE '' END	AS APPROVAL_STATUS		
 						,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
 						,		date_format(A.REG_DT, '%Y-%m-%d') AS REQ_DT
 						,		date_format(A.APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
@@ -520,7 +520,7 @@
 									FROM	cm_console.CM_RCS_TMP_MSGBASE
 									WHERE	BRAND_ID  = A.BRAND_ID 
 								) AS TMPL_CNT
-						,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인완료' ELSE '' END	AS APPROVAL_STATUS		
+						,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인' ELSE '' END	AS APPROVAL_STATUS		
 						,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
 						,		date_format(A.REG_DT, '%Y-%m-%d') AS REQ_DT
 						,		date_format(A.APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
