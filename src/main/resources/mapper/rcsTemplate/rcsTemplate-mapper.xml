@@ -94,7 +94,7 @@
 	
 	<sql id="selectRcsTemplateSql">
 		<if test="corpId != '' and corpId != null">
-			<!--AND		AA.CORP_ID = #{corpId}-->
+			AND		AA.CORP_ID = #{corpId}
 		</if>
 		<if test="status != '' and status != null">
 			AND		AA.APPROVAL_STATUS = #{status}
@@ -125,7 +125,7 @@
 		WHERE	(PROJECT_ID = #{projectId} OR PROJECT_ID = 'ALL')
 		AND		CORP_ID = #{corpId}
 		AND		USE_YN = 'Y'
-		AND		APPROVAL_STATUS = '승인'
+		AND		APPROVAL_STATUS IN ('승인', '반려(수정)')
 	</select>
 	
 	<select id="selectRcsMsgbaseformList" resultType="hashMap">

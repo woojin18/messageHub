@@ -329,7 +329,6 @@ public class RcsTemplateService {
 		
 		// 성공인지 실패인지 체크
 		if(!"10000".equals(result.get("rslt")) ) {
-			System.out.println("asdfasdf" + result.get("rsltDesc"));
 			throw new Exception("API 통신 에러");
 		}
 		
@@ -528,7 +527,6 @@ public class RcsTemplateService {
 		
 		// 성공인지 실패인지 체크
 		if(!"10000".equals(result.get("rslt")) ) {
-			System.out.println("asdfasdf" + result.get("rsltDesc"));
 			throw new Exception("API 통신 에러");
 		}
 	}
@@ -537,7 +535,6 @@ public class RcsTemplateService {
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		List<Object> childrenArr = new ArrayList<Object>();
 		Map<String, Object> childrenArrMap = new HashMap<String, Object>();
-		
 		
 		childrenArrMap.put("text", CommonUtils.getString(params.get("desContents")));
 		childrenArrMap.put("width", "content");

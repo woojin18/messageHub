@@ -148,9 +148,10 @@
 								<div class="consolCheck consolMarginTop"><input type="checkbox" id="agree2" class="checkStyle2" value="agree2"><label for="agree2" class="color4">정보성 메시지만 보낼 수 있으며, 광고 등 정책에 위배되는 메시지 발송 시  템플릿 사용이 중지될 수 있음을 동의합니다.</label></div>
 								<div class="of_h">
 									<div class="mt20 text-right" style="width:100%">
-										<a href="#self" @click.prevent="rcsTemplateDelete" class="btnStyle2 backWhite ml10" title="삭제">삭제</a>
-										<a href="#self" @click.prevent="recTemplateIns('UPT','des')" class="btnStyle2 backRed  ml10" title="수정요청">수정요청</a>
-										<a href="#self" @click.prevent="recTemplateIns('INS','des')" class="btnStyle2 backRed  ml10" title="승인요청">승인요청</a>
+										<a href="#self" v-if="deleteBtn" @click.prevent="rcsTemplateDelete" class="btnStyle2 backWhite ml10" title="삭제">삭제</a>
+										<a href="#self" v-if="cancelBtn" @click.prevent="rcsTemplateCancel" class="btnStyle2 backWhite ml10" title="삭제">취소</a>
+										<a href="#self" v-if="updateBtn" @click.prevent="recTemplateIns('UPT','des')" class="btnStyle2 backRed  ml10" title="수정요청">수정요청</a>
+										<a href="#self" v-if="insertBtn" @click.prevent="recTemplateIns('INS','des')" class="btnStyle2 backRed  ml10" title="승인요청">승인요청</a>
 										<a href="#self" @click.prevent="returnRcsTemplateList" class="btnStyle2 ml10" title="목록">목록</a>
 									</div>
 								</div>
@@ -301,9 +302,10 @@
 								<div class="consolCheck consolMarginTop"><input type="checkbox" id="agree2" class="checkStyle2" value="agree2"><label for="agree2" class="color4">정보성 메시지만 보낼 수 있으며, 광고 등 정책에 위배되는 메시지 발송 시  템플릿 사용이 중지될 수 있음을 동의합니다.</label></div>
 								<div class="of_h">
 									<div class="mt20 text-right" style="width:100%">
-										<a href="#self" @click.prevent="rcsTemplateDelete" class="btnStyle2 backWhite ml10" title="삭제">삭제</a>
-										<a href="#self" @click.prevent="recTemplateIns('UPT','cell')" class="btnStyle2 backRed  ml10" title="수정요청">수정요청</a>
-										<a href="#self" @click.prevent="recTemplateIns('INS','cell')" class="btnStyle2 backRed  ml10" title="승인요청">승인요청</a>
+										<a href="#self" v-if="deleteBtn" @click.prevent="rcsTemplateDelete" class="btnStyle2 backWhite ml10" title="삭제">삭제</a>
+										<a href="#self" v-if="cancelBtn" @click.prevent="rcsTemplateCancel" class="btnStyle2 backWhite ml10" title="삭제">삭제</a>
+										<a href="#self" v-if="updateBtn" @click.prevent="recTemplateIns('UPT','cell')" class="btnStyle2 backRed  ml10" title="수정요청">수정요청</a>
+										<a href="#self" v-if="insertBtn" @click.prevent="recTemplateIns('INS','cell')" class="btnStyle2 backRed  ml10" title="승인요청">승인요청</a>
 										<a href="#self" @click.prevent="returnRcsTemplateList" class="btnStyle2 ml10" title="목록">목록</a>
 									</div>
 								</div>
@@ -341,6 +343,10 @@ export default {
   },
   data() {
     return {
+		deleteBtn: false,
+		cancelBtn: false,
+		insertBtn: false,
+		updateBtn: false,
 		templateNm: "",			// 템플릿 명
 		templateCode: "",		// 템플릿 코드
 		brandNm: "",			// 브랜드 명
@@ -395,6 +401,10 @@ export default {
 	  init() {
 		var params = {};
 		var vm = this;
+		// 승인요청 버튼 활성화
+		if(vm.status == "INS") {
+			vm.insertBtn = true;
+		}
 		templateApi.rcsTemplateInit(params).then(response => {
 			var result = response.data;
 			var resultData = result.data;
@@ -414,7 +424,6 @@ export default {
 				this.updateInit();
 			}
 		});
-
 	  },
 
 	  updateInit() {
@@ -425,11 +434,16 @@ export default {
 		templateApi.rcsTemplateUpdateInit(params).then(response => {
 			var result = response.data;
 			var resultData = result.data;
-
-			console.log(resultData);
-
-			// 상태값에 따라서 버튼 표시 처리해야됨.
+			// 상태값에 따라서 버튼 표시 처리해야됨. (승인, 반려일 경우 수정요청 버튼 활성화, 모든 상태에서 삭제 버튼 활성화)
+			// 수정버튼은 반려(수정) 상태에선 노출 X, 해당 상태에선 취소 버튼노출
 			var approvalStatus = resultData.approvalStatus;
+			if("승인" == approvalStatus || "반려" == approvalStatus) {
+				vm.updateBtn = true;
+			}
+			if("반려(수정)" == approvalStatus) {
+				vm.cancelBtn = true;
+			}
+			vm.deleteBtn = true;
 
 			vm.templateNm = resultData.templateNm;
 			if(vm.status=="UPT") vm.templateCode = resultData.templateCode;
@@ -484,16 +498,16 @@ export default {
 			vm.btnInputHolder.push("URL입력(http:// 또는 https:// 필수입력)");
 			vm.btnNm.push("");
 			vm.contents.push("");
-			vm.calenderTitle.push("");
-			vm.calenderDes.push("");
+			vm.calendarTitle.push("");
+			vm.calendarDes.push("");
 		} else if(btnCnt==1) {
 			vm.btnCnt = 2;
 			vm.selectBtn.push("urlAction");
 			vm.btnInputHolder.push("URL입력(http:// 또는 https:// 필수입력)");
 			vm.btnNm.push("");
 			vm.contents.push("");
-			vm.calenderTitle.push("");
-			vm.calenderDes.push("");
+			vm.calendarTitle.push("");
+			vm.calendarDes.push("");
 		}
 	  },
 	  // 버튼 타입 change 이벤트 처리
@@ -547,8 +561,8 @@ export default {
 			vm.btnInputHolder.pop();
 			vm.btnNm.pop();
 			vm.contents.pop();
-			vm.calenderTitle.pop();
-			vm.calenderDes.pop();
+			vm.calendarTitle.pop();
+			vm.calendarDes.pop();
 		}
 	  },
 
@@ -596,6 +610,16 @@ export default {
 		this.$set(vm.styleInitEndDate, n, date);
 	  },
 
+	  // 템플릿 취소
+	  rcsTemplateCancel() {
+		eventBus.$on('callbackEventBus', this.fnRcsTemplateCancelApi);
+      	confirm.fnConfirm("RCS 템플릿 취소", "RCS 템플릿을 취소 하시겠습니까?", "확인");
+	  },
+
+	  fnRcsTemplateCancelApi() {
+
+	  },
+
 	  // 템플릿 삭제
 	  rcsTemplateDelete() {
 		eventBus.$on('callbackEventBus', this.fnRcsTemplateDeleteApi);
@@ -628,11 +652,25 @@ export default {
 		  this.$router.push({name : "rcsTemplateList"});
 	  },
 
-	  // 승인, 수정요청
+	  // 템플릿 승인, 수정요청
 	  recTemplateIns(flag, paramCardType) {
+		eventBus.$on('callbackEventBus', this.fnRcsTemplateApi(flag, paramCardType));
+		if("INS" == flag) {
+			confirm.fnConfirm("RCS 템플릿 승인", "RCS 템플릿을 승인 요청 하시겠습니까?", "승인");
+		} else {
+			confirm.fnConfirm("RCS 템플릿 수정", "RCS 템플릿을 수정 요청 하시겠습니까?", "수정");
+		}
+	  },
+
+	  // 승인, 수정요청
+	  fnRcsTemplateApi(flag, paramCardType) {
 		var vm = this;
 		var messagebaseformId = paramCardType == "des" ? vm.desFormNm : vm.styleFormNm;
 		var custTmpltId = vm.templateCode;
+		if(flag = "UPT") {
+			var custTmpltIdArr = custTmpltId.split("-");
+			custTmpltId = custTmpltIdArr[1];
+		}
 		var tmpltName = vm.templateNm;
 		var brandId = vm.brandNm;
 	  	var agencyId = "uplus";
@@ -690,7 +728,18 @@ export default {
 		}
 	  
 	    templateApi.rcsTemplateApi(params).then(response => {
-
+			var result = response.data;
+			var success = result.success;
+			var message = result.message;
+			var flag = vm.flag;
+			var flagNm = flag== "INS" ? "등록" : "수정";
+			if(success) {
+				confirm.fnAlert(flagNm + "삭청이 완료되었습니다.","");
+				this.$router.push({name : "rcsTemplateList"});
+			} else {
+				confirm.fnAlert(message,"");
+				this.$router.push({name : "rcsTemplateList"});
+			}
 		});	  
 	  }
   }
