@@ -25,7 +25,10 @@
           </ul>
         </nav>
         <ul class="list_login">
-          <li class="active"><a @click.prevent="clickLoginPage">로그인</a></li>
+          <li class="active">
+            <!-- <a @click.prevent="clickLoginPage">로그인</a> -->
+            <router-link :to="{name: 'login'}" tag="a" title="로그인 페이지로 이동">로그인</router-link>
+          </li>
           <li><a @click.prevent="signUp">회원가입</a></li>
         </ul>
       </div>
