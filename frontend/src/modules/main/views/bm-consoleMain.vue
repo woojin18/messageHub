@@ -115,27 +115,15 @@
 </template>
 
 <script>
-import animate from "@/assets/js/plugin.js";
-
 export default {
-  name: 'main',
+  name: 'consoleMain',
   mounted() {
     this.fnSetSlider();
   },
   methods: {
-    fnSetAnimate(){
-      wow = new WOW(
-        {
-        animateClass: 'animated',
-        offset: 100,
-        callback: function(box) {
-        }
-      });
-      wow.init();
-    },
     fnSetSlider(){
       //메인배너
-      var slider = jQuery('.mainBxslider').bxSlider({
+      jQuery('.mainBxslider').bxSlider({
         mode: 'fade',
         pager: true,
         touchEnabled : (navigator.maxTouchPoints > 0),
@@ -143,7 +131,7 @@ export default {
       });
       //quickRight
       jQuery(window).scroll(function(){
-        var y = jQuery(this).scrollTop();
+        let y = jQuery(this).scrollTop();
         if(y >= 950){
           jQuery('.quickRight').addClass('fix');
         }
