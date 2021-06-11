@@ -569,10 +569,10 @@ export default {
 
       if(this.sendData.cuInputType == 'DICT'){  //직접입력
         //수신자 직접입력 팝업 호출
-        this.directInputOpen = !this.directInputOpen;
+        this.directInputOpen = true;
       } else if(this.sendData.cuInputType == 'ADDR'){  //주소록
         //주소록 검색 팝업 호출
-        this.addressInputOpen = !this.addressInputOpen;
+        this.addressInputOpen = true;
       } else if(this.sendData.cuInputType == 'EXCEL'){  //엑셀
         //엑셀파일찾기 호출
         this.$refs.excelFile.click();
