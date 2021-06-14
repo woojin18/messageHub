@@ -26,20 +26,7 @@
       </section>
     </article>
     <!-- //mainVisualWrap -->
-
-    <!-- quickRight -->
-    <div class="quickRightWrap">
-      <ul class="quickRight">
-        <li>
-          <a href="#" @click.prevent="fnOpenInquiryModal" class="quick_inquiry" title="1:1 문의하기" data-toggle="modal" data-target="inquiryLayer">
-            <img src="@/assets/images/main/quickIcon_Inquiry.png" alt="1:1 문의하기">
-          </a>
-        </li>
-        <li><a href="#" class="quick_top"><img src="@/assets/images/main/quickIcon_top.png" alt=""></a></li>
-      </ul>
-    </div>
-    <!-- //quickRight -->
-
+    
     <div id="contentWrap">
       <!-- noticeWrap -->
       <article id="noticeWrap">
@@ -114,25 +101,22 @@
       </article>
       <!-- //quiryWrap -->
     </div>
-    <InquiryPopup></InquiryPopup>
+    <QuickRight></QuickRight>
   </div>
 </template>
 
 <script>
-import InquiryPopup from "@/modules/main/components/bp-inquiry.vue";
+import QuickRight from "@/modules/main/components/bc-quickRight.vue";
 
 export default {
   name: 'consoleMain',
   components : {
-    InquiryPopup
+    QuickRight
   },
   mounted() {
     this.fnSetSlider();
   },
   methods: {
-    fnOpenInquiryModal(){
-      jQuery("#Inquiry").modal("show");
-    },
     fnSetSlider(){
       //메인배너
       jQuery('.mainBxslider').bxSlider({
@@ -140,16 +124,6 @@ export default {
         pager: true,
         touchEnabled : (navigator.maxTouchPoints > 0),
         pause: 6000
-      });
-      //quickRight
-      jQuery(window).scroll(function(){
-        let y = jQuery(this).scrollTop();
-        if(y >= 950){
-          jQuery('.quickRight').addClass('fix');
-        }
-        else {
-          jQuery('.quickRight').removeClass('fix');
-        }
       });
     }
   }

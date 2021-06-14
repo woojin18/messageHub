@@ -66,10 +66,10 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/main'
+      redirect: '/public/main'
     },
     {
-      path: '/main',
+      path: '/public',
       component: PublicLayout,
       children: [
         {

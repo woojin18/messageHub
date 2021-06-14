@@ -1,18 +1,5 @@
 <template>
   <div>
-    <!-- quickRight -->
-    <div class="quickRightWrap">
-      <ul class="quickRight">
-        <li>
-          <a href="#self" class="quick_inquiry" title="1:1 문의하기" data-toggle="modal" data-target="#Inquiry">
-            <img src="@/assets/images/common/quickIcon_Inquiry.png" alt="">
-          </a>
-        </li>
-        <li><a href="#" class="quick_top"><img src="@/assets/images/common/quickIcon_top.png" alt=""></a></li>
-      </ul>
-    </div>
-    <!-- //quickRight -->
-
     <div id="contentWrap">
       <div class="serviceCon01 wow animated fadeInUp">
         <section>
@@ -117,18 +104,24 @@
         </section>
       </div>
     </div>
+    <QuickRight></QuickRight>
   </div>
 </template>
 
 <script>
+import QuickRight from "@/modules/main/components/bc-quickRight.vue";
+
 export default {
   name: 'serviceIntro',
+  components : {
+    QuickRight
+  },
   mounted() {
     this.fnSetSlider();
   },
   methods: {
     fnSetSlider(){
-      var slider = jQuery('.serviceBxslider').bxSlider({
+      jQuery('.serviceBxslider').bxSlider({
         pager: true,
         pagerCustom: '#bx-pager',
         touchEnabled : (navigator.maxTouchPoints > 0),

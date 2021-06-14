@@ -20,12 +20,14 @@ export default {
 
   },
   mounted() {
+    /* 
     let style = document.createElement('link');
     style.id = "usercss"
     style.type = "text/css";
     style.rel = "stylesheet";
     style.href = '/se2/css/user.css';
     document.getElementById('publicLayout').appendChild(style);
+    */
   }
 };
 </script>

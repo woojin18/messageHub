@@ -4,19 +4,19 @@ import sendPay from '../views/bm-sendPay.vue'
 
 export default [
   {
-    path: '/main',
+    path: '/public/main',
     name: 'main',
-    component: consoleMain,
+    component: consoleMain, 
     meta: { public: true }
   },
   {
-    path: '/intro',
+    path: '/public/intro',
     name: 'intro',
     component: serviceIntro,
     meta: { public: true }
   },
   {
-    path: '/sendPay',
+    path: '/public/sendPay',
     name: 'sendPay',
     component: sendPay,
     meta: { public: true }
