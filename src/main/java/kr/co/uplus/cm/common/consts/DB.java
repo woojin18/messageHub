@@ -14,6 +14,9 @@ public class DB {
     public final static String QRY_SELECT_FILE_UPLOAD_SET = "common.selectFileUploadSet";
     public final static String QRY_SELECT_CODE = "common.selectCodeList";
 
+    //고객센터
+    public final static String QRY_SELECT_FAQ_TYPE_LIST = "customer.selectFaqTypeList";
+
     // 로그인
     public final static String QRY_SELECT_USERNAME  = "login.qrySelectUserName";
     public final static String QRY_INSERT_USERNAME  = "login.qryInsertAuthUser";
@@ -126,7 +129,7 @@ public class DB {
     public final static String QRY_SELECT_USER_DUPC_CNT = "user.selectUserDupcCnt";
     public final static String QRY_CHK_PASSWORD = "user.checkPassword";
     public final static String QRY_UPDATE_USER_ROLE_ADMIN = "user.updateUserRoleAdmin";
-    
+
     // 프로젝트 발신번호 관리
     public final static String QRY_SELECT_CALLBACK_MANAGE_LIST_CNT = "project.selectCallbackManageListCnt";
     public final static String QRY_SELECT_CALLBACK_MANAGE_LIST = "project.selectCallbackManageList";
@@ -142,7 +145,7 @@ public class DB {
     public final static String QRY_SELECT_RCS_MSGBASEFORM_LIST = "rcsTemplate.selectRcsMsgbaseformList";
     public final static String QRY_SELECT_RCS_TEMPLATE_UPDATE_FORM = "rcsTemplate.selectRcsTemplateUpdateForm";
     public final static String QRY_SELECT_RCS_BASE_FORM = "rcsTemplate.selectRcsBaseForm";
-    
+
     // 주소록 관리
     public final static String QRY_SELECT_ADDR_CATE_GRP_LIST = "address.selectAddrCateGrpList";
     public final static String QRY_SELECT_ADDR_CATE_GRP = "address.selectAddrCateGrp";
@@ -177,7 +180,7 @@ public class DB {
 
 	// 고객사 정보
 	public final static String QRY_UPDATE_CORP_INFO			= "myPage.updateCorpInfo";
-	
+
 	// 프로젝트 기본정보
 	public final static String QRY_SELECT_PROJECT_BASE_INFO = "baseInfo.selectProjectBaseInfo";
 	public final static String QRY_UPDATE_PROJECT_BASE_INFO = "baseInfo.updateProjectBaseInfo";
@@ -193,15 +196,15 @@ public class DB {
 	public final static String QRY_DELETE_PROJECT_MEMBER = "member.deleteProjectMember";
 	public final static String QRY_SELECT_PROJECT_USER_LIST_CNT = "member.selectProjectUserListCnt";
 	public final static String QRY_SELECT_PROJECT_USER_LIST = "member.selectProjectUserList";
-	
+
 	// 이용내역
 	public final static String QRY_SELECT_USE_HISTORY_LIST_CNT = "use.selectUseHistoryListCnt";
 	public final static String QRY_SELECT_USE_HISTORY_LIST = "use.selectUseHistoryList";
-	
+
 	// 서비스요금
 	public final static String QRY_SELECT_ISEXISTS_CORP_PRODUCTUNIT	= "use.selectIsExistsCorpProductUnit";
 	public final static String QRY_SELECT_CORP_PRODUCTUNIT	= "use.selectCorpProductUnit";
-	
+
 	// 분배서비스
 	public final static String QRY_SELECT_BASICDIS_RATIO = "project.selectBasicDisRatio";
 	public final static String QRY_SELECT_DIS_RATIO = "project.seletDisRatio";

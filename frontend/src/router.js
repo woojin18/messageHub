@@ -29,6 +29,7 @@ import integratedSendRoutes from './modules/integratedSend/router';
 import smartTemplateRoutes from './modules/smartTemplate/router';
 import useRoutes from './modules/use/router';
 import smartSendRoutes from './modules/smartSend/router';
+import customerRoutes from './modules/customer/router';
 
 //import confirm from "@/modules/commonUtil/service/confirm.js";
 
@@ -82,7 +83,8 @@ const router = new Router({
           component: () => import('./views/ErrorPage500.vue'),
           meta: { public: true }
         },
-        ...mainRoutes
+        ...mainRoutes,
+        ...customerRoutes
       ]
     },
     {

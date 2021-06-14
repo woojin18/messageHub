@@ -179,7 +179,8 @@
         INNER JOIN cm_bo.CM_CODE CC
             ON CCT.CODE_TYPE_CD = CC.CODE_TYPE_CD
             AND CC.USE_YN = 'Y'
-        WHERE CCT.CODE_TYPE_CD = 'IMG_UPLOAD_CH_SET'
+        WHERE CCT.USE_YN = 'Y'
+            AND CCT.CODE_TYPE_CD = 'IMG_UPLOAD_CH_SET'
     </select>
 
     <select id="selectFileUploadSet" parameterType="hashmap" resultType="camel">
@@ -197,7 +198,8 @@
             ON CCT.CODE_TYPE_CD = CC.CODE_TYPE_CD
             AND CC.USE_YN = 'Y'
             AND CC.CODE_VAL_1 = #{codeVal1}
-        WHERE CCT.CODE_TYPE_CD = 'FILE_UPLOAD_SET'
+        WHERE CCT.USE_YN = 'Y'
+            AND CCT.CODE_TYPE_CD = 'FILE_UPLOAD_SET'
         LIMIT 1
     </select>
 
