@@ -3453,6 +3453,7 @@ export default {
     },
 
     async fnSaveIntegratedTemplate(){
+    console.log("333");
       var params = this.rowData;
 
       console.log("fnSaveIntegratedTemplate params : ",params);
@@ -3467,13 +3468,15 @@ export default {
       params.rcs10CardCount = this.rcs10CardCount;//캐러셀 TALL 카드 수
       params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
       params.useYn = this.useYn; //사용여부
-
+console.log("444");
       await integratedTemplateApi.insertIntegratedTemplate(params).then(response =>{
         var result = response.data;
         if(result.success) {
+        console.log("555");
           confirm.fnAlert(this.detailTitle, '저장 되었습니다.');
           this.$router.push('integratedTemplate')
         } else {
+        console.log("666");
           confirm.fnAlert(this.detailTitle, result.message);
         }
       });
@@ -3894,10 +3897,11 @@ export default {
 
     //임시저장 => 채널 설정관련 유효성 체크를  무시한다.
     save:function(){
+    console.log("111");
       this.registYn = false;
       //유효성 검사
       if(this.fnIsValid() == false) return;
-      
+      console.log("222");
       eventBus.$on('callbackEventBus', this.fnSaveIntegratedTemplate);
       confirm.fnConfirm(this.detailTitle, "템플릿을 저장 하시겠습니까?", "확인");
     },
