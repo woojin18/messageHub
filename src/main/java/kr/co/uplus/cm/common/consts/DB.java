@@ -16,6 +16,8 @@ public class DB {
 
     //고객센터
     public final static String QRY_SELECT_FAQ_TYPE_LIST = "customer.selectFaqTypeList";
+    public final static String QRY_SELECT_FAQ_LIST_CNT = "customer.selectFaqListCnt";
+    public final static String QRY_SELECT_FAQ_LIST = "customer.selectFaqList";
 
     // 로그인
     public final static String QRY_SELECT_USERNAME  = "login.qrySelectUserName";
