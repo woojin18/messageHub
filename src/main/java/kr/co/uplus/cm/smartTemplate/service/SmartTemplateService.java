@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -235,7 +236,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         		sb.append("\"chType\" : \"PUSH\",");//발송채널
         		sb.append("\"sendType\" : \""	+params.get("pushSend")+"\","); // 발송타입(ALL, FCM, APNS)
         		sb.append("\"title\" : \""		+params.get("pushTitle")+"\","); // 제목
-        		sb.append("\"msg\" : \""		+params.get("pushContent")+"\","); // 메시지
+        		//String pushContent = ((String) params.get("pushContent")).replaceAll("\n", "CHR(13)CHR(10)");
+        		sb.append("\"msg\" : \""		+JSONObject.escape((String)params.get("pushContent"))+"\","); // 메시지
         		sb.append("\"rcvblcInput\" : \""+params.get("pushHowToDenyReceipt")+"\","); // 수신거부방법
         		if(pushImgInfoMap.containsKey("fileId")) {
 	        		sb.append("\"fileId\" : \""		+pushImgInfoMap.get("fileId")+"\","); // 이미지 파일ID
@@ -259,7 +261,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         			
         			sb.append("\"body\": [{ ");   
         			sb.append("	\"title\" : \"\", "); //
-        			sb.append("	\"description\" : \""+params.get("rcs0Content")+"\", "); // 메시지
+        			//String rcs0Content = ((String) params.get("rcs0Content")).replaceAll("\n", "CHR(13)CHR(10)");
+        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs0Content"))+"\", "); // 메시지
         			sb.append("	\"mediaUrl\" : \"{}\", "); //
         			sb.append("	\"media\" : \"\", "); //
         			sb.append("	\"suggestions\" : \"\" "); //
@@ -274,7 +277,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         			
         			sb.append("\"body\": [{ ");   
         			sb.append("	\"title\" : \""+params.get("rcs1Title")+"\", "); //
-        			sb.append("	\"description\" : \""+params.get("rcs1Content")+"\", "); // 메시지
+        			//String rcs1Content = ((String) params.get("rcs1Content")).replaceAll("\n", "CHR(13)CHR(10)");
+        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs1Content"))+"\", "); // 메시지
         			sb.append("	\"mediaUrl\" : \"{}\", "); //
         			sb.append("	\"media\" : \"\" "); //
 
@@ -292,7 +296,10 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         			
         			sb.append("\"body\": [{ ");   
         			sb.append("	\"title\" : \""+params.get("rcs2Title")+"\", "); //
-        			sb.append("	\"description\" : \""+params.get("rcs2Content1")+","+params.get("rcs2Content2")+","+params.get("rcs2Content3")+"\", "); // 메시지
+        			//arrChannelList. rcs2Content1 = ((String) params.get("rcs2Content1")).replaceAll("\n", "CHR(13)CHR(10)");
+        			//String rcs2Content2 = ((String) params.get("rcs2Content2")).replaceAll("\n", "CHR(13)CHR(10)");
+        			//String rcs2Content3 = ((String) params.get("rcs2Content3")).replaceAll("\n", "CHR(13)CHR(10)");
+        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs2Content1"))+","+JSONObject.escape((String)params.get("rcs2Content2"))+","+JSONObject.escape((String)params.get("rcs2Content3"))+"\", "); // 메시지
         			sb.append("	\"mediaUrl\" : \"{}\", "); //
         			sb.append("	\"media\" : \"\" "); //
 
@@ -310,7 +317,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         			
         			sb.append("\"body\": [{ ");   
         			sb.append("	\"title\" : \""+params.get("")+"\", "); //
-        			sb.append("	\"description\" : \""+params.get("rcsSMSContent")+"\", "); // 메시지
+        			//String rcsSMSContent = ((String) params.get("rcsSMSContent")).replaceAll("\n", "CHR(13)CHR(10)");
+        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcsSMSContent"))+"\", "); // 메시지
         			sb.append("	\"mediaUrl\" : \"{}\", "); //
         			sb.append("	\"media\" : \"\", "); //
 
@@ -328,7 +336,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         			
         			sb.append("\"body\": [{ ");   
         			sb.append("	\"title\" : \""+params.get("rcsLMSTitle")+"\", "); //
-        			sb.append("	\"description\" : \""+params.get("rcsLMSContent")+"\", "); // 메시지
+        			//String rcsLMSContent = ((String) params.get("rcsLMSContent")).replaceAll("\n", "CHR(13)CHR(10)");
+        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcsLMSContent"))+"\", "); // 메시지
         			sb.append("	\"mediaUrl\" : \"{}\", "); //
         			sb.append("	\"media\" : \"\", "); //
 
@@ -346,7 +355,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         			
         			sb.append("\"body\": [{ ");   
         			sb.append("	\"title\" : \""+params.get("rcsShortTitle")+"\", "); //
-        			sb.append("	\"description\" : \""+params.get("rcsShortContent")+"\", "); // 메시지
+        			//String rcsShortContent = ((String) params.get("rcsShortContent")).replaceAll("\n", "CHR(13)CHR(10)");
+        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcsShortContent"))+"\", "); // 메시지
         			
         			//System.out.println(">>>>service 003  RCS 001 SHORT 002  rcsShortImgInfoList : "+params.get("rcsShortImgInfoList"));
         			//image List
@@ -377,7 +387,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         			
         			sb.append("\"body\": [{ ");   
         			sb.append("	\"title\" : \""+params.get("rcsTallTitle")+"\", "); //
-        			sb.append("	\"description\" : \""+params.get("rcsTallContent")+"\", "); // 메시지
+        			//String rcsTallContent = ((String) params.get("rcsTallContent")).replaceAll("\n", "CHR(13)CHR(10)");
+        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcsTallContent"))+"\", "); // 메시지
         			//image List
         	        List<Map<String, Object>> rcsTallImgInfoList = null;
         	        if(params.containsKey("rcsTallImgInfoList")) {
@@ -411,7 +422,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         				if(k == 0) {
 		        			sb.append(" { "); 
 		        			sb.append("	\"title\" : \""+params.get("rcs90Title")+"\", "); //
-		        			sb.append("	\"description\" : \""+params.get("rcs90Content")+"\", "); // 메시지
+		        			//String rcs90Content = ((String) params.get("rcs90Content")).replaceAll("\n", "CHR(13)CHR(10)");
+		        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs90Content"))+"\", "); // 메시지
 		        			//image List
 		        	        List<Map<String, Object>> rcs90ImgInfoList = null;
 		        	        if(params.containsKey("rcs90ImgInfoList")) {
@@ -433,7 +445,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         				if(k == 1) {
 		        			sb.append(" { "); 
 		        			sb.append("	\"title\" : \""+params.get("rcs91Title")+"\", "); //
-		        			sb.append("	\"description\" : \""+params.get("rcs91Content")+"\", "); // 메시지
+		        			//String rcs91Content = ((String) params.get("rcs91Content")).replaceAll("\n", "CHR(13)CHR(10)");
+		        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs91Content"))+"\", "); // 메시지
 		        			//image List
 		        	        List<Map<String, Object>> rcs91ImgInfoList = null;
 		        	        if(params.containsKey("rcs91ImgInfoList")) {
@@ -455,7 +468,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         				if(k == 2) {
 		        			sb.append(" { "); 
 		        			sb.append("	\"title\" : \""+params.get("rcs92Title")+"\", "); //
-		        			sb.append("	\"description\" : \""+params.get("rcs92Content")+"\", "); // 메시지
+		        			//String rcs92Content = ((String) params.get("rcs92Content")).replaceAll("\n", "CHR(13)CHR(10)");
+		        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs92Content"))+"\", "); // 메시지
 		        			//image List
 		        	        List<Map<String, Object>> rcs92ImgInfoList = null;
 		        	        if(params.containsKey("rcs92ImgInfoList")) {
@@ -477,7 +491,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         				if(k == 3) {
 		        			sb.append(" { "); 
 		        			sb.append("	\"title\" : \""+params.get("rcs93Title")+"\", "); //
-		        			sb.append("	\"description\" : \""+params.get("rcs93Content")+"\", "); // 메시지
+		        			//String rcs93Content = ((String) params.get("rcs93Content")).replaceAll("\n", "CHR(13)CHR(10)");
+		        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs93Content"))+"\", "); // 메시지
 		        			//image List
 		        	        List<Map<String, Object>> rcs93ImgInfoList = null;
 		        	        if(params.containsKey("rcs93ImgInfoList")) {
@@ -499,7 +514,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         				if(k == 4) {
 		        			sb.append(" { "); 
 		        			sb.append("	\"title\" : \""+params.get("rcs94Title")+"\", "); //
-		        			sb.append("	\"description\" : \""+params.get("rcs94Content")+"\", "); // 메시지
+		        			//String rcs94Content = ((String) params.get("rcs94Content")).replaceAll("\n", "CHR(13)CHR(10)");
+		        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs94Content"))+"\", "); // 메시지
 		        			//image List
 		        	        List<Map<String, Object>> rcs94ImgInfoList = null;
 		        	        if(params.containsKey("rcs94ImgInfoList")) {
@@ -521,7 +537,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         				if(k == 5) {
 		        			sb.append(" { "); 
 		        			sb.append("	\"title\" : \""+params.get("rcs95Title")+"\", "); //
-		        			sb.append("	\"description\" : \""+params.get("rcs95Content")+"\", "); // 메시지
+		        			//String rcs95Content = ((String) params.get("rcs95Content")).replaceAll("\n", "CHR(13)CHR(10)");
+		        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs95Content"))+"\", "); // 메시지
 		        			//image List
 		        	        List<Map<String, Object>> rcs95ImgInfoList = null;
 		        	        if(params.containsKey("rcs95ImgInfoList")) {
@@ -573,7 +590,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         				if(j == 0) {
         					sb.append(" { ");  
 		        			sb.append("	\"title\" : \""+params.get("rcs100Title")+"\", "); //
-		        			sb.append("	\"description\" : \""+params.get("rcs100Content")+"\", "); // 메시지
+		        			//String rcs100Content = ((String) params.get("rcs100Content")).replaceAll("\n", "CHR(13)CHR(10)");
+		        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs100Content"))+"\", "); // 메시지
 		        			//image List
 		        	        List<Map<String, Object>> rcs100ImgInfoList = null;
 		        	        if(params.containsKey("rcs100ImgInfoList")) {
@@ -595,7 +613,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         				if(j == 1) {
         					sb.append(" { ");  
 		        			sb.append("	\"title\" : \""+params.get("rcs101Title")+"\", "); //
-		        			sb.append("	\"description\" : \""+params.get("rcs101Content")+"\", "); // 메시지
+		        			//String rcs101Content = ((String) params.get("rcs101Content")).replaceAll("\n", "CHR(13)CHR(10)");
+		        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs101Content"))+"\", "); // 메시지
 		        			//image List
 		        	        List<Map<String, Object>> rcs101ImgInfoList = null;
 		        	        if(params.containsKey("rcs101ImgInfoList")) {
@@ -617,7 +636,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         				if(j == 2) {
         					sb.append(" { ");  
 		        			sb.append("	\"title\" : \""+params.get("rcs102Title")+"\", "); //
-		        			sb.append("	\"description\" : \""+params.get("rcs102Content")+"\", "); // 메시지
+		        			//String rcs102Content = ((String) params.get("rcs102Content")).replaceAll("\n", "CHR(13)CHR(10)");
+		        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs102Content"))+"\", "); // 메시지
 		        			//image List
 		        	        List<Map<String, Object>> rcs102ImgInfoList = null;
 		        	        if(params.containsKey("rcs102ImgInfoList")) {
@@ -639,7 +659,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         				if(j == 3) {
         					sb.append(" { ");  
 		        			sb.append("	\"title\" : \""+params.get("rcs103Title")+"\", "); //
-		        			sb.append("	\"description\" : \""+params.get("rcs103Content")+"\", "); // 메시지
+		        			//String rcs103Content = ((String) params.get("rcs103Content")).replaceAll("\n", "CHR(13)CHR(10)");
+		        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs103Content"))+"\", "); // 메시지
 		        			//image List
 		        	        List<Map<String, Object>> rcs103ImgInfoList = null;
 		        	        if(params.containsKey("rcs103ImgInfoList")) {
@@ -661,7 +682,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         				if(j == 4) {
         					sb.append(" { ");  
 		        			sb.append("	\"title\" : \""+params.get("rcs104Title")+"\", "); //
-		        			sb.append("	\"description\" : \""+params.get("rcs104Content")+"\", "); // 메시지
+		        			//String rcs104Content = ((String) params.get("rcs104Content")).replaceAll("\n", "CHR(13)CHR(10)");
+		        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs104Content"))+"\", "); // 메시지
 		        			//image List
 		        	        List<Map<String, Object>> rcs104ImgInfoList = null;
 		        	        if(params.containsKey("rcs104ImgInfoList")) {
@@ -683,7 +705,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         				if(j == 5) {
         					sb.append(" { ");  
 		        			sb.append("	\"title\" : \""+params.get("rcs105Title")+"\", "); //
-		        			sb.append("	\"description\" : \""+params.get("rcs105Content")+"\", "); // 메시지
+		        			//String rcs105Content = ((String) params.get("rcs105Content")).replaceAll("\n", "CHR(13)CHR(10)");
+		        			sb.append("	\"description\" : \""+JSONObject.escape((String)params.get("rcs105Content"))+"\", "); // 메시지
 		        			//image List
 		        	        List<Map<String, Object>> rcs105ImgInfoList = null;
 		        	        if(params.containsKey("rcs105ImgInfoList")) {
@@ -732,7 +755,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         			sb.append("\"senderKeyType\" : \""+params.get("friendTalkSenderKeyType")+"\",");
         			sb.append("\"senderKey\" : \""+params.get("friendTalkSenderKey")+"\",");
         			sb.append("\"wideImageYn\" : \"N\",");
-        			sb.append("\"msg\" : \""+params.get("friendTalkContent")+"\",");
+        			//String friendTalkContent = ((String) params.get("friendTalkContent")).replaceAll("\n", "CHR(13)CHR(10)");
+        			sb.append("\"msg\" : \""+JSONObject.escape((String)params.get("friendTalkContent"))+"\",");
         			//System.out.println(">>>>service 003  RCS 003 friendtalk : "+sb.toString());
         	        Map<String, Object> imgInfo = null;
         	        if(params.containsKey("friendTalkImgInfo")) {
@@ -903,7 +927,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         			
         			sb.append("\"smsInfo\" : {");
         			sb.append("\"callback\" : \""+params.get("callback")+"\",");
-        			sb.append("\"msg\" : \""+params.get("smsContent")+"\" ");
+        			//String smsContent = ((String) params.get("smsContent")).replaceAll("\n", "CHR(13)CHR(10)");
+        			sb.append("\"msg\" : \""+JSONObject.escape((String)params.get("smsContent"))+"\" ");
         			sb.append("}");
         			
         		}else if(params.get("smsSendType").equals("M")){//MMS
@@ -913,7 +938,8 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         			sb.append("\"mmsInfo\" : {");
         			sb.append("\"callback\" : \""+params.get("callback")+"\",");
         			sb.append("\"title\" : \""+params.get("smsTitle")+"\",");
-        			sb.append("\"msg\" : \""+params.get("smsContent")+"\",");
+        			//String smsContent = ((String) params.get("smsContent")).replaceAll("\n", "CHR(13)CHR(10)");
+        			sb.append("\"msg\" : \""+JSONObject.escape((String)params.get("smsContent"))+"\",");
         			
         			List<Map<String, Object>> imgInfoList = null;
         	        if(params.containsKey("smsImgInfoList")) {
@@ -931,7 +957,7 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         	                    	sb.append("	\""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
         	                    }
         	                }
-        	            }
+        	            } 
         	            sb.append("	] "); // 이미지
         	        }
         	        
@@ -948,26 +974,35 @@ System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
         //System.out.println("=============================================");
         //System.out.println(">>>>service 005 json : "+sb.toString());
         //System.out.println("=============================================");
-        params.put("tmpltInfo", sb.toString());
         
+        Map<String, Object> sParams = new HashMap<String, Object>(params);
+        
+        //JSONParser parser = new JSONParser();
+        //Object obj = parser.parse( sb.toString() );
+        //JSONObject jsonObj = (JSONObject) obj;
+        
+        sParams.put("tmpltInfo", sb.toString());
+        //sParams.put("tmpltInfo", jsonObj);
+        
+         
         //if (params.containsKey("tmpltCode") && StringUtils.isNotBlank(CommonUtils.getString(params.get("tmpltCode")))) {
-        if (params.containsKey("tmpltCode") && StringUtils.isBlank(CommonUtils.getString(params.get("tmpltCode")))) {
+        if (sParams.containsKey("tmpltCode") && StringUtils.isBlank(CommonUtils.getString(sParams.get("tmpltCode")))) {
         	// 템플릿ID 취득
             String tmpltCode = CommonUtils.getCommonId(Const.TMPLT_PREFIX, 5);
-            params.put("tmpltCode", tmpltCode);
+            sParams.put("tmpltCode", tmpltCode);
         }
         
-        if (params.get("otherProjectUseYn").equals("Y")) {//타프로젝트와 같이 사용하면 projecdtId를 ALL로 잡는다.
-        	params.put("projectId", "ALL");
+        if (sParams.get("otherProjectUseYn").equals("Y")) {//타프로젝트와 같이 사용하면 projecdtId를 ALL로 잡는다.
+        	sParams.put("projectId", "ALL");
         }
-        resultCnt = generalDao.insertGernal("smartTemplate.insertSmartTemplate", params);
+        resultCnt = generalDao.insertGernal("smartTemplate.insertSmartTemplate", sParams);
 
         if (resultCnt <= 0) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
         } else {
             rtn.setSuccess(true);
-            rtn.setData(params);
+            rtn.setData(sParams);
         }
 
         return rtn;
