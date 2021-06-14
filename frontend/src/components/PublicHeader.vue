@@ -12,9 +12,11 @@
             <li>
               <router-link :to="{name: 'sendPay'}" tag="a" title="요금제 페이지로 이동">요금제</router-link>
             </li>
-            <li><a href="#self" title="고객센터 페이지로 이동">고객센터</a>
+            <li><a title="고객센터 페이지로 이동">고객센터</a>
               <ul class="dep2">
-                <li><a href="#self" title="FAQ로 이동">FAQ</a></li>
+                <li>
+                  <router-link :to="{ name: 'faq' }" tag="a" title="FAQ로 이동">FAQ</router-link>
+                </li>
                 <li><a href="#self">공지사항</a></li>
                 <li><a href="#self">자료실</a></li>
                 <li><a href="#self" data-toggle="modal" data-target="#Inquiry">서비스 문의</a></li>
