@@ -10,15 +10,7 @@
       </section>
     </article>
     <!-- //subVisualWrap02 -->
-
-    <!-- quickRight -->
-      <div class="quickRightWrap">
-      <ul class="quickRight">
-        <li><a href="#self" class="quick_inquiry" title="1:1 문의하기" data-toggle="modal" data-target="#Inquiry"><img src="@/assets/images/main/quickIcon_Inquiry.png" alt=""></a></li>
-        <li><a href="#" class="quick_top"><img src="@/assets/images/main/quickIcon_top.png" alt=""></a></li>
-      </ul>
-    </div>  <!-- //quickRight -->
-
+    
     <div id="contentWrap">
       <div class="sub02_conWrap">
         <div class="subVisualWrap02 wow animated fadeInUp">
@@ -176,11 +168,17 @@
 
       </div>
     </div>
+    <QuickRight></QuickRight>
   </div>
 </template>
 
 <script>
+import QuickRight from "@/modules/main/components/bc-quickRight.vue";
+
 export default {
   name: 'sendPay',
+  components : {
+    QuickRight
+  },
 }
 </script>

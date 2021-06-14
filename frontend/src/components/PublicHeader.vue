@@ -3,7 +3,7 @@
   <header class="head_type_user">
     <div class="wrap_head">
       <div class="box_gnb">
-        <h1 class="tit_logo"><router-link to="/main" class="userLogo"><img src="../../public/se2/images/userLogo.svg" alt="LGU+ 통합메시징클라우드 로고"></router-link></h1>
+        <h1 class="tit_logo"><router-link to="/public/main" class="userLogo"><img src="../../public/se2/images/userLogo.svg" alt="LGU+ 통합메시징클라우드 로고"></router-link></h1>
         <nav id="userGnb">
           <ul class="list_gnb" role="menu">
             <li>
