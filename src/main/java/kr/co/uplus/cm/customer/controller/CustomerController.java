@@ -30,6 +30,13 @@ public class CustomerController {
         binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
     }
 
+    /**
+     * FAQ 구분 리스트 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
     @PostMapping("/api/public/customer/selectFaqTypeList")
     public RestResult<?> selectFaqTypeList(HttpServletRequest request, HttpServletResponse response,
             @RequestBody Map<String, Object> params) {
@@ -40,6 +47,27 @@ public class CustomerController {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
             log.error("{}.selectFaqTypeList Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
+
+    /**
+     * FAQ 리스트 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/api/public/customer/selectFaqList")
+    public RestResult<?> selectFaqList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = customerService.selectFaqList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{}.selectFaqList Error : {}", this.getClass(), e);
         }
 
         return rtn;
