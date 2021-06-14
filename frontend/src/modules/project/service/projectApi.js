@@ -17,7 +17,7 @@ const checkPreRegYn = (params) => {
 };
 
 const downloadFile = (params) => {
-    return httpClient.post('/api/public/common/uploadFile', params, { headers: {"show-layer": "No"}, responseType: 'arraybuffer' });
+    return httpClient.post('/commonApi/uploadFile', params, { headers: {"show-layer": "No"}, responseType: 'arraybuffer' });
 };
 
 const savePreRegEx = (params) => {

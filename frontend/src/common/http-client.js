@@ -16,7 +16,7 @@ const httpClient = axios.create(config);
 
 const setLoginInterceptor = config => {
 	if (tokenSvc.getToken()) {
-		if (config.url !== '/api/auth/logout') {
+		if (config.url !== '/api/auth/logout' && !config.url.includes('/api/public/')) {
 			config.headers.loginId = tokenSvc.getToken().principal.loginId;
 			if (config.data.corpId == null) {
 				config.data.corpId = tokenSvc.getToken().principal.corpId;
@@ -88,6 +88,7 @@ httpClient.interceptors.response.use(
 		return response;
 	},
 	error => {
+    console.log(error);
 		if (error.response != undefined && error.response != null) loadingLayer(false, error.response.config);
 		else loadingLayer(false, error.config);
 

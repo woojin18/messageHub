@@ -24,7 +24,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
-@RequestMapping("/api/public/common")
+@RequestMapping("/commonApi")
 public class CommonController {
 
     @Autowired

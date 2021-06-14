@@ -28,6 +28,10 @@ export default {
     style.href = '/se2/css/user.css';
     document.getElementById('publicLayout').appendChild(style);
     */
+
+    let recaptchaScript = document.createElement('script')
+    recaptchaScript.setAttribute('src', '/se2/js/user.js')
+    document.getElementById('publicLayout').appendChild(recaptchaScript);
   }
 };
 </script>

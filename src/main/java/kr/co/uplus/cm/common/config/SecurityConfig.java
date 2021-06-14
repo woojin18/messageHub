@@ -51,7 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public static final String SMARTTEMPLATE_API_URL = "/smartTemplateApi/**";
 	public static final String USE_API_URL = "/useApi/**";
 	public static final String SMARTSEND_API_URL = "/smartSendApi/**";
-	
+	public static final String COMMON_API_URL = "/commonApi/**";
+	public static final String USER_CONSOLE_URL = "/uc/**";
+
 	public static final String LOGIN_ID_PARAM = "userId";
 	@SuppressWarnings("unused")
 	private static final String LOGIN_PWD_PARAM = "userPwd";
@@ -99,9 +101,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 				.authorizeRequests()
 				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // CORS preflight 요청은 인증처리를 하지 않도록 설정
+				.antMatchers(PUBLIC_API_URL).permitAll()
 				.antMatchers("/", PUBLIC_API_URL, LOGIN_FORM_URL, LOGIN_API_URL, LOGOUT_URL, LIST_API_URL,
 						PROJECT_API_URL, MENUBAR_URL, USER_API_URL, MESSAGESTATUS_API_URL, INTEGRATEDTEMPLATE_API_URL,
-						ADDRESS_API_URL, BASE_INFO_API_URL, INTEGRATEDSEND_API_URL, MEMBER_API_URL, SMARTTEMPLATE_API_URL, USE_API_URL, SMARTSEND_API_URL).permitAll()
+						ADDRESS_API_URL, BASE_INFO_API_URL, INTEGRATEDSEND_API_URL, MEMBER_API_URL, SMARTTEMPLATE_API_URL,
+						USE_API_URL, SMARTSEND_API_URL, COMMON_API_URL, USER_CONSOLE_URL).permitAll()
 				.antMatchers(API_URL).authenticated()
 				.anyRequest().authenticated();
 	}

@@ -1,45 +1,45 @@
 import httpClient from '@/common/http-client';
 
 const selectAppIdList = (params) => {
-  return httpClient.post('/api/public/sendMessage/selectAppIdList', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/sendMessage/selectAppIdList', params, { headers: {"show-layer": "Yes"} });
 };
 const selectCallbackList = (params) => {
-  return httpClient.post('/api/public/sendMessage/selectCallbackList', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/sendMessage/selectCallbackList', params, { headers: {"show-layer": "Yes"} });
 };
 const selectAddressList = (params) => {
-  return httpClient.post('/api/public/sendMessage/selectAddressList', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/sendMessage/selectAddressList', params, { headers: {"show-layer": "Yes"} });
 };
 const selectCmCuList = (params) => {
-  return httpClient.post('/api/public/sendMessage/selectCmCuList', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/sendMessage/selectCmCuList', params, { headers: {"show-layer": "Yes"} });
 };
 const excelDownSendPushRecvTmplt = (params) => {
-  return httpClient.post('/api/public/sendMessage/excelDownSendPushRecvTmplt', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' })
+  return httpClient.post('/uc/sendMessage/excelDownSendPushRecvTmplt', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' })
   .then((response) => fnExcelDownCallback(response));
 };
 const sendPushMessage = (params) => {
-  return httpClient.post('/api/public/sendMessage/sendPushMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data"} });
+  return httpClient.post('/uc/sendMessage/sendPushMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data"} });
 };
 
 const excelDownSendSmsRecvTmplt = (params) => {
-  return httpClient.post('/api/public/sendMessage/excelDownSendSmsRecvTmplt', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' })
+  return httpClient.post('/uc/sendMessage/excelDownSendSmsRecvTmplt', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' })
   .then((response) => fnExcelDownCallback(response));
 };
 const sendSmsMessage = (params) => {
-  return httpClient.post('/api/public/sendMessage/sendSmsMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data"} });
+  return httpClient.post('/uc/sendMessage/sendSmsMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data"} });
 };
 const sendMmsMessage = (params) => {
-  return httpClient.post('/api/public/sendMessage/sendMmsMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data"} });
+  return httpClient.post('/uc/sendMessage/sendMmsMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data"} });
 };
 
 const excelDownSendFrndTalkRecvTmplt = (params) => {
-  return httpClient.post('/api/public/sendMessage/excelDownSendFrndTalkRecvTmplt', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' })
+  return httpClient.post('/uc/sendMessage/excelDownSendFrndTalkRecvTmplt', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' })
   .then((response) => fnExcelDownCallback(response));
 };
 const sendFrndTalkMessage = (params) => {
-  return httpClient.post('/api/public/sendMessage/sendFrndTalkMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data"} });
+  return httpClient.post('/uc/sendMessage/sendFrndTalkMessage', params, { headers: {"show-layer": "Yes", "Content-Type": "multipart/form-data"} });
 };
 const selectKkoSenderKeyList = (params) => {
-  return httpClient.post('/api/public/sendMessage/selectKkoSenderKeyList', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/sendMessage/selectKkoSenderKeyList', params, { headers: {"show-layer": "Yes"} });
 };
 
 

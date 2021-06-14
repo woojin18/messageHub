@@ -35,7 +35,7 @@ import lombok.extern.log4j.Log4j2;
  */
 @Log4j2
 @RestController
-@RequestMapping("/api/public/template")
+@RequestMapping("/uc/template")
 public class TemplateController {
 
     @Autowired

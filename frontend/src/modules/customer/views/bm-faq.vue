@@ -23,10 +23,9 @@
             </div>
             <ul class="tab5">
               <li class="active"><a href="#self">전체</a></li>
-              <li><a href="#self">회원</a></li>
-              <li><a href="#self">결제</a></li>
-              <li><a href="#self">서비스</a></li>
-              <li><a href="#self">기타</a></li>
+              <li v-for="(faqTypeInfo, idx) in faqTypeList" :key="idx">
+                <a href="#self">{{faqTypeInfo.faqTypeCdName}}</a>
+              </li>
             </ul>
             <ul class="faqList">
               <li>
@@ -100,13 +99,12 @@ export default {
   },
   methods: {
     fnSelectSmsTmpltList(){
-      alert(1);
-      customereApi.selectFaqTypeList(null).then(response =>{
-        alert(2);
+      const params = {};
+      customereApi.selectFaqTypeList(params).then(response =>{
         const result = response.data;
-        console.log(result);
         if(result.success) {
-          console.log(result);
+          this.faqTypeList = Object.assign({}, result.data);
+          console.log(this.faqTypeList);
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
