@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	//외부 영역 클릭시 닫기
-	$(document).click(function (e){
-		var container = $(".depth2Lnb.thum");
+	jQuery(document).click(function (e){
+		var container = jQuery(".depth2Lnb.thum");
 		if( container.has(e.target).length === 0)
 		container.fadeOut('fast');
 		jQuery('#sidebar.thum > ul > li.active > a').css('background','#fff');
@@ -31,8 +31,8 @@ $(document).ready(function(){
 	});
 	
 	//외부 영역 클릭시 닫기
-	$(document).click(function (e){
-		var container = $(".consoleMenu");
+	jQuery(document).click(function (e){
+		var container = jQuery(".consoleMenu");
 		if( container.has(e.target).length === 0)
 		container.fadeOut('fast');
 	});
@@ -44,16 +44,16 @@ $(document).ready(function(){
 	});
 
 	//datepicker
-	$( function() {
+	jQuery( function() {
 		jQuery( ".datepicker" ).datepicker();
 	} );
 	//datepicker_gray
-	$( function() {
+	jQuery( function() {
 		jQuery( ".datepicker_gray" ).datepicker();
 	} );
 
 	//draggable
-	$( function() {
+	jQuery( function() {
 		jQuery(".draggable").draggable();
 	} );
 });
@@ -115,13 +115,13 @@ $(document).ready(function(){
 
 //핸드폰 스크롤
 $(document).ready(function() {
-    $(window).scroll(function(){
-        var y = $(this).scrollTop();
+    jQuery(window).scroll(function(){
+        var y = jQuery(this).scrollTop();
         if(y >= 100){
-           $('.phoneFixed').css('position','fixed').css('top','40px');
+           jQuery('.phoneFixed').css('position','fixed').css('top','40px');
         }
         else {
-            $('.phoneFixed').css('position','relative').css('top','0px');
+            jQuery('.phoneFixed').css('position','relative').css('top','0px');
         }
     });
 });
