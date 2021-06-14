@@ -158,7 +158,7 @@ export default {
 					alert("사용자정보 수정에 성공했습니다.");
 					this.$parent.fnSelectUserList();
 				} else {
-					confirm.fnAlert(this.modifyLayerTitle, result.message);
+					alert(result.message);
 				}
 			});
 			this.fnCloseLayer();

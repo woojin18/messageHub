@@ -110,11 +110,17 @@
 						</div>
 						<div class="bb-d5">
 							<!--table class="table_skin4"  style="width:100%"-->
+							<!-- 페이지당 리스트 개수 -->
+							<div class="of_h inline">
+								<div class="float-left mt10">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+								</div>
+							</div>
 							<table class="table_skin1 tbl-striped" style="width:100%">
 								<colgroup>
 									<col style="width:10%">
-									<col style="width:20%">
 									<col style="width:30%">
+									<col style="width:20%">
+									<col style="width:20%">
 									<col>
 								</colgroup>
 								<thead>
@@ -125,14 +131,15 @@
 												<label for="listCheck_all"></label>
 											</div>
 										</th>
+										<th class="text-center lc-1">주소 카테고리명</th>
 										<th class="text-center lc-1">사용자명</th>
 										<th class="text-center lc-1">사용자 아이디</th>
-										<th class="text-center lc-1 end">휴대폰번호</th>
+										<th class="text-center lc-1end">휴대폰번호</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr v-for="(data, index) in memberList" :key="data.cuInfoId">
-										<td class="text-cneter">
+									<tr v-for="(data, index) in memberList" :key="index">
+										<td class="text-center">
 											<!--
 											<div class="consolCheck ml10">
 												<input type="checkbox" id="check1" class="checkStyle2" value="check1" />
@@ -140,17 +147,18 @@
 											</div>
 											-->
 											<div class="consolCheck ml10">
-												<input type="checkbox" :id="'listCheck_'+index" class="checkStyle2" :value="data.cuInfoId" v-model="listChkBox">
+												<input type="checkbox" :id="'listCheck_'+index" class="checkStyle2" :value="data.cuInfoId+','+data.addressCategoryId" v-model="listChkBox">
 												<label :for="'listCheck_'+index"></label>
 											</div>
 										</td>
 										<td class="text-left color4"> {{ data.cuName }} </td>
 										<td class="text-left color4"> {{ data.cuid }} </td>
-										<td class="text-cneter color4 end"> {{ data.hpNumber }} </td>
+										<td class="text-center color4"> {{ data.hpNumber | phoneNumber }} </td>
+										<td class="text-left color4 end"> {{ data.addressCategoryName }} </td>
 									</tr>
 									<tr v-if="memberList.length == 0">
 										<td class="text-center"></td>
-										<td class="text-center" colspan="4">검색된 내용이 없습니다.</td>
+										<td class="text-center" colspan="5">검색된 내용이 없습니다.</td>
 									</tr>
 								</tbody>
 							</table>
@@ -181,12 +189,8 @@
 		<AddrRegisterLayer :layerView.sync="addrRegisterLayerView" :addrRegisterOpen="addrRegisterOpen"></AddrRegisterLayer>
 		<!--  modify Modal -->
 		<AddrModifyLayer :data="selectedAddrCateGrp" :addrModifyOpen="addrModifyOpen"></AddrModifyLayer>
-		<!-- Receiver register Modal -->
-		<!--
-		<RcvrRegLayer :title="rcvrRegLayerTitle" :layerView.sync="rcvrRegLayerView"></RcvrRegLayer>
-		-->
 		<!-- Member register Modal -->
-		<MemberRegisterLayer :searchCategoryId="searchCategoryId" :memberRegisterOpen="memberRegisterOpen"></MemberRegisterLayer>
+		<MemberRegisterLayer :searchAddrCateId="searchAddrCateId" :memberRegisterOpen="memberRegisterOpen"></MemberRegisterLayer>
 	</div>
 </template>
 
@@ -199,6 +203,7 @@ import AddrRegisterLayer from '../components/bc-address-register.vue';
 import AddrModifyLayer from '../components/bc-address-modify.vue';
 import MemberRegisterLayer from '../components/bc-member-register.vue';
 import PageLayer from '@/components/PageLayer.vue';
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
 	name: "addressManageList",
@@ -228,30 +233,82 @@ export default {
 			}
 		},
 	},
+	filters:{
+		phoneNumber(val) {
+			if(!val) return val
+	
+			val = val.replace(/[^0-9]/g, '')
+			
+			let tmp = ''
+			if( val.length < 4){
+				return val;
+			} else if(val.length < 7) {
+				tmp += val.substr(0, 3);
+				tmp += '-';
+				tmp += val.substr(3);
+				return tmp;
+			} else if(val.length == 8) {
+				tmp += val.substr(0, 4);
+				tmp += '-';
+				tmp += val.substr(4);
+				return tmp;
+			} else if(val.length < 10) {
+				if(val.substr(0, 2) =='02') { //02-123-5678
+					tmp += val.substr(0, 2);
+					tmp += '-';
+					tmp += val.substr(2, 3);
+					tmp += '-';
+					tmp += val.substr(5);
+					return tmp;
+				}
+			} else if(val.length < 11) {
+				if(val.substr(0, 2) =='02') { //02-1234-5678
+					tmp += val.substr(0, 2);
+					tmp += '-';
+					tmp += val.substr(2, 4);
+					tmp += '-';
+					tmp += val.substr(6);
+					return tmp;
+				} else { //010-123-4567
+					tmp += val.substr(0, 3);
+					tmp += '-';
+					tmp += val.substr(3, 3);
+					tmp += '-';
+					tmp += val.substr(6);
+					return tmp;
+				}
+			} else { //010-1234-5678
+				tmp += val.substr(0, 3);
+				tmp += '-';
+				tmp += val.substr(3, 4);
+				tmp += '-';
+				tmp += val.substr(7);
+				return tmp;
+			}
+		}
+	},
 	data() {
 		return {
+			//주소록관리
+			title: '주소록 관리',
 			selectedAddrCateGrp: {},
-			componentsTitle: '주소록 관리',
-			addrCateGrpList: [],			//주소 카테고리 그룹 리스트
+			addrCateGrpList: [],
 			addrTreeList: [],
-			memberList: [],					//구성원 리스트
-			searchCategoryId: -1,
-			listAllChecked: false,
-			listChkBox: [],
-
 			// 주소록 등록
 			addrRegisterLayerView: false,
 			addrRegisterOpen: false,
-
 			//주소록 수정
 			addrModifyOpen: false,
 			memberRegisterOpen: false,
-
-			// 구성원 목록 페이징
+			// 구성원 목록
+			memberList: [],	//구성원 리스트
 			listSize : 5,	// select 박스 value (출력 갯수 이벤트)
 			pageNo : 1,		// 현재 페이징 위치
 			totCnt : 0,		// 전체 리스트 수
 			offset : 0,		// 페이지 시작점
+			listAllChecked: false,
+			listChkBox: [],
+			searchAddrCateId: -1,
 		}
 	},
 	mounted() {
@@ -267,7 +324,7 @@ export default {
 					this.addrCateGrpList = result.data;
 					this.fnSelected();
 				} else {
-					confirm.fnAlert(this.componentsTitle, result.message);
+					confirm.fnAlert(this.title, result.message);
 				}
 			});
 		},
@@ -292,7 +349,7 @@ export default {
 				if(result.success) {
 					this.fnSetAddrListToTree(result.data);
 				} else {
-					confirm.fnAlert(this.componentsTitle, result.message);
+					confirm.fnAlert(this.title, result.message);
 				}
 			});
 		},
@@ -335,42 +392,41 @@ export default {
 			var vm = this;
 			if(this.listAllChecked){
 				this.memberList.forEach(function(memberInfo){
-					vm.listChkBox.push(memberInfo.cuInfoId);
+					vm.listChkBox.push(memberInfo.cuInfoId + ',' + memberInfo.addressCategoryId);
 				});
 			} else {
 				this.listChkBox = [];
 			}
 		},
 		//주소 카테고리 클릭
-		fnAddrCatgMem(addressCategoryId) {
+		fnAddrCateMem(addressCategoryId) {
 			if(this.$gfnCommonUtils.isEmpty(addressCategoryId)){
 				this.memberList = [];
 				return;
 			}
-			this.searchCategoryId = addressCategoryId;
+			this.searchAddrCateId = addressCategoryId;
 			this.fnSearchMember();
 		},
+		//주소록 구성원 조회
 		fnSearchMember(pageNum) {
 			this.$refs.updatePaging.fnAllDecrease();
 			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
 			this.fnSearchMemberList();
 		},
-		//주소록 구성원 조회
 		async fnSearchMemberList() {
 			let params = {
-				addressCategoryId: this.searchCategoryId,
+				addressCategoryId: this.searchAddrCateId,
 				pageNo: this.pageNo,
 				listSize: this.listSize,
 			};
 			await addressApi.selectMemberList(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					//this.memberList = result.data;
 					this.memberList = Object.assign([], result.data);
 					this.totCnt = result.pageInfo.totCnt;
 					this.offset = result.pageInfo.offset;
 				} else {
-					confirm.fnAlert(this.componentsTitle, result.message);
+					confirm.fnAlert(this.title, result.message);
 				}
 			});
 		},
@@ -387,7 +443,7 @@ export default {
 		// 주소록 카테고리 그룹 수정
 		fnModAddrPop() {
 			if(this.$refs.selectAddrCateGrp.selectedIndex == 0) {
-				confirm.fnAlert(this.componentsTitle, "주소록을 선택해 주세요");
+				confirm.fnAlert(this.title, "주소록을 선택해 주세요");
 				return false;
 			}
 			this.addrModifyOpen = !this.addrModifyOpen;
@@ -395,29 +451,37 @@ export default {
 		},
 		// 구성원 추가
 		fnRegisterMemberPop() {
+			if(this.searchAddrCateId == -1) {
+				confirm.fnAlert('구성원 추가', '주소 카테고리명을 선택해 주세요.');
+				return false;
+			}
 			this.memberRegisterOpen = !this.memberRegisterOpen;
 			jQuery("#MemberRegisterLayer").modal("show");
 		},
 		// 구성원 삭제
 		fnDeletemember() {
 			if(this.listChkBox == null || this.listChkBox.length == 0) {
-				confirm.fnAlert('구성원 검색', '구성원을 선택해주세요.');
+				confirm.fnAlert('구성원 삭제', '구성원을 선택해주세요.');
 				return false;
 			}
 
+			eventBus.$on('callbackEventBus', this.fnDeletememberCallBack);
+			confirm.fnConfirm('구성원 삭제', "삭제하시겠습니까?", "확인");
+		},
+		fnDeletememberCallBack() {
 			let params = {
-				"addressCategoryId": this.searchCategoryId,
+				//"addressCategoryId": this.searchAddrCateId,
 				"memberList": this.listChkBox,
 			};
 
 			addressApi.deleteMember(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					confirm.fnAlert("구성원 삭제", "삭제 했습니다.");
+					alert("삭제 했습니다.");
 					this.fnSearchMemberList();
 					this.fnResetChkbox();
 				} else {
-					confirm.fnAlert(this.componentsTitle, result.message);
+					alert(result.message);
 				}
 			});
 		},

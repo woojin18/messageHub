@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.uplus.cm.common.consts.DB;
@@ -176,6 +178,8 @@ public class AddressService {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public RestResult<Object> registerMember(Map<String, Object> params) throws Exception {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -206,6 +210,8 @@ public class AddressService {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public RestResult<Object> deleteMember(Map<String, Object> params) throws Exception {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -214,10 +220,13 @@ public class AddressService {
 		
 		int resultCnt = 0;
 		
-		ArrayList<Integer> memberList = (ArrayList<Integer>)params.get("memberList");
+		ArrayList<String> memberList = (ArrayList<String>)params.get("memberList");
+		String[] memberInfo = null;
 		
-		for (Integer member : memberList) {
-			map.put("cuInfoId", member);
+		for (String member : memberList) {
+			memberInfo = member.split(","); // checkbox로 가져온 PK를 구분자(,)로 분리
+			map.put("cuInfoId", memberInfo[0]);
+			map.put("addressCategoryId", memberInfo[1]);
 			resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_ADDR_MEMBER, map);
 		}
 		

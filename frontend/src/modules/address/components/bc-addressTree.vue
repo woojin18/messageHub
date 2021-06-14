@@ -1,7 +1,7 @@
 <template>
 	<ul class="addList">
 		<li class="addList_minus">
-			<a @click="fnAddrCatgMem(id)">
+			<a @click="fnAddrCateMem(id)">
 				<i class="fal fa-minus-square addIcon"></i>
 				{{ item }}
 			</a>
@@ -65,11 +65,11 @@ export default {
 	name: "addrTreeMenu",
 	props: [ 'item', 'id', 'subItems' ],
 	methods: {
-		fnAddrCatgMem(id){
+		fnAddrCateMem(id){
 			if(!this.$gfnCommonUtils.isEmpty(id)) {
-				this.$parent.fnAddrCatgMem(null);
+				this.$parent.fnAddrCateMem(null);
 			}
-			this.$parent.fnAddrCatgMem(id);
+			this.$parent.fnAddrCateMem(id);
 		}
 	}
 }

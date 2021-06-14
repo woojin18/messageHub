@@ -85,6 +85,7 @@ import addressApi from '../service/addressApi.js'
 import confirm from "@/modules/commonUtil/service/confirm";
 import PageLayer from '@/components/PageLayer.vue';
 import tokenSvc from '@/common/token-service';
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
 	name: 'MemberLayer',
@@ -92,7 +93,7 @@ export default {
 		PageLayer,
 	},
 	props: {
-		searchCategoryId: {
+		searchAddrCateId: {
 			type: Number,
 			require: true
 		},
@@ -101,16 +102,10 @@ export default {
 			require: true,
 			default: false,
 		},
-		componentsTitle: {
-			type: String,
-			require: false,
-			default: function() {
-				return '주소록 검색';
-			},
-		},
 	},
 	data() {
 		return {
+			title: '구성원 추가',
 			cmCuList: [],
 			listSize : 10,	// select 박스 value (출력 갯수 이벤트)
 			pageNo : 1,		// 현재 페이징 위치
@@ -136,7 +131,7 @@ export default {
 		//수신자 조회
 		async fnSearchCmCuList() {
 			let params = {
-				addressCategoryId: this.searchCategoryId,
+				addressCategoryId: this.searchAddrCateId,
 				searchTextType: this.searchTextType,
 				searchText: this.searchText,
 				pageNo: this.pageNo,
@@ -175,23 +170,27 @@ export default {
 		fnRegisterMember() {
 			//유효성 검사
 			if(this.listMemChkBox == null || this.listMemChkBox.length == 0) {
-				confirm.fnAlert(this.componentsTitle, "수신자를 선택해주세요.");
+				confirm.fnAlert(this.title, "수신자를 선택해주세요.");
 				return false;
 			}
 
+			eventBus.$on('callbackEventBus', this.fnRegisterMemberCallBack);
+			confirm.fnConfirm(this.title, "추가하시겠습니까?", "확인");
+		},
+		fnRegisterMemberCallBack() {
 			let params = {
-				"loginId": tokenSvc.getToken().principal.loginId,
-				"addressCategoryId": this.searchCategoryId,
+				"regId": tokenSvc.getToken().principal.userId,
+				"addressCategoryId": this.searchAddrCateId,
 				"memberList": this.listMemChkBox,
 			};
 			
 			addressApi.registerMember(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					confirm.fnAlert("", "구성원 등록을 성공했습니다.");
+					alert("구성원 등록을 성공했습니다.");
 					this.$parent.fnSearchMemberList();					
 				} else {
-					confirm.fnAlert("", result.message);
+					alert(result.message);
 				}
 			});
 			
