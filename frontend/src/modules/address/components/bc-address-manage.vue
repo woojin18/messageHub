@@ -105,10 +105,10 @@
 												<label :for="'listCheck_'+index"></label>
 											</div>
 										</td>
+										<td class="text-left color4"> {{ data.addressCategoryName }} </td>
 										<td class="text-left color4"> {{ data.cuName }} </td>
 										<td class="text-left color4"> {{ data.cuid }} </td>
-										<td class="text-center color4"> {{ data.hpNumber | phoneNumber }} </td>
-										<td class="text-left color4 end"> {{ data.addressCategoryName }} </td>
+										<td class="text-center color4 end"> {{ data.hpNumber | phoneNumber }} </td>
 									</tr>
 									<tr v-if="memberList.length == 0">
 										<td class="text-center"></td>
@@ -374,6 +374,13 @@ export default {
 		},
 		//주소 카테고리 클릭
 		fnAddrCateMem(addrCateId, addrName) {
+			//root 클릭
+			if(this.$gfnCommonUtils.isEmpty(addrCateId) && !this.$gfnCommonUtils.isEmpty(addrName)) {
+				this.searchAddrCateId = -1;
+				this.selectAddrName = addrName;
+				return;
+			}
+
 			if(this.$gfnCommonUtils.isEmpty(addrCateId)){
 				this.memberList = [];
 				return;
@@ -385,8 +392,7 @@ export default {
 		},
 		// 주소 하위 카테고리 등록/수정
 		fnSaveMemberPop(saveStatus) {
-			// console.log('>>>> : ' + this.selectedAddrCateGrp.addressCategoryGrpId);
-			if(this.searchAddrCateId == -1 && (typeof this.selectedAddrCateGrp.addressCategoryGrpId == "undefined")) {
+			if(this.searchAddrCateId == -1 && this.$gfnCommonUtils.isEmpty(this.selectAddrName)) {
 				confirm.fnAlert('하위 카테고리 추가', '주소 카테고리명을 선택해 주세요.');
 				return false;
 			}
@@ -413,6 +419,7 @@ export default {
 				var result = response.data;
 				if(result.success) {
 					confirm.fnAlert('카테고리 삭제','삭제에 성공했습니다.');
+					this.$refs.updatePaging.fnAllDecrease();
 					this.fnGetAddrList();
 				} else {
 					confirm.fnAlert('카테고리 삭제',result.message);

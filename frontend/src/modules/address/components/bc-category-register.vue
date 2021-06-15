@@ -11,7 +11,8 @@
 							<h2>카테고리 수정</h2>
 						</div>
 						<hr>
-						<div v-if="saveStatus == 'I' && !this.$gfnCommonUtils.isEmpty(addrCateName)">
+						<!-- 상위카테고리는 등록시에만 표기 -->
+						<div v-if="saveStatus == 'I'">
 							<div class="of_h">
 								<h5 class="inline-block" style="width:18%">상위카테고리</h5>
 								<div class="float-right" style="width:80%">
@@ -19,7 +20,7 @@
 								</div>
 							</div>
 						</div>
-						<div v-else-if="saveStatus == 'I' && this.$gfnCommonUtils.isEmpty(addrCateName)">
+						<div v-else>
 							<div class="of_h">
 								<h5 class="inline-block" style="width:18%">상위카테고리</h5>
 								<div class="float-right" style="width:80%">

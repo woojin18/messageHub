@@ -46,17 +46,16 @@ export default {
 		},
 		//삭제처리
 		fnDeleteUser() {
-			console.log("userId : " + this.deleteUserId);
 			var params = {
 				"userId":this.deleteUserId
 			}
 			userApi.deleteUser(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-                    confirm.fnAlert("", "삭제처리에 성공했습니다.");
+					confirm.fnAlert("", "삭제처리에 성공했습니다.");
 					this.$parent.fnSelectUserList();
 				} else {
-                    confirm.fnAlert("", result.message);
+					confirm.fnAlert("", result.message);
 				}
 			});
 			this.fnCloseLayer();

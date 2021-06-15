@@ -14,50 +14,6 @@
 		</addr-tree-menu>
 	</ul>
 </template>
-<!--
-			<li>
-				<a href="#self">
-					<i class="fal fa-minus-square addIcon"></i>
-					관리팀
-				</a>
-				<ul>
-					<li><a href="#self">사업관리팀</a></li>
-				</ul>
-			</li>
-			<li class="addList_minus">
-				<a href="#self">
-					<i class="fal fa-minus-square addIcon"></i>
-					마케팅팀
-				</a>
-				<ul>
-					<li>
-						<a href="#self" class="active">통합메시징팀</a>
-					</li>
-					<li class="last">
-						<a href="#self">테스트팀</a>
-					</li>
-				</ul>
-			</li>
-			<li class="addList_plus">
-				<a href="#self">
-					<i class="fal fa-plus-square addIcon"></i>신규 사업팀
-				</a>
-				<ul>
-					<li>
-						<a href="#self">통합메시징팀</a>
-					</li>
-					<li>
-						<a href="#self">통합메시징팀</a>
-					</li>
-					<li>
-						<a href="#self">통합메시징팀</a>
-					</li>
-					<li class="last">
-						<a href="#self">테스트팀</a>
-					</li>
-				</ul>
-			</li>
--->
 
 <script>
 export default {
@@ -65,11 +21,12 @@ export default {
 	props: [ 'item', 'id', 'subItems'],
 	methods: {
 		fnAddrCateMem(id, addrName){
-			//console.log('id : ' +id + ', addrName :' + addrName + ', topAddressCategoryId : ' + topAddressCategoryId);
+			//alert('id : ' + id + ', addrName :' + addrName);
 			if(!this.$gfnCommonUtils.isEmpty(id)) {
-				this.$parent.fnAddrCateMem(null, null);
+				this.$parent.fnAddrCateMem(id, addrName);
+			}else if(this.$gfnCommonUtils.isEmpty(id) && !this.$gfnCommonUtils.isEmpty(addrName)) { //root 클릭
+				this.$parent.fnAddrCateMem(null, addrName);
 			}
-			this.$parent.fnAddrCateMem(id, addrName);
 		}
 	}
 }
