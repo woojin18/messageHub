@@ -368,4 +368,50 @@ public class AddressController {
 
 		return rtn;
 	}
+	
+	/**
+	 * 주소카테고리 등록/수정
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/saveAddressCategory")
+	public RestResult<?> saveAddressCategory(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		try {
+			rtn = addressSvc.saveAddressCategory(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+	
+	/**
+	 * 주소 카테고리 삭제
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/deleteAddressCategory")
+	public RestResult<?> deleteAddressCategory(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		try {
+			rtn = addressSvc.deleteAddressCategory(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
 }

@@ -344,4 +344,54 @@ public class AddressService {
 		}
 			return rtn;
 	}
+	
+	/**
+	 * 주소카테고리 등록/수정
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> saveAddressCategory(Map<String, Object> params) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+		int resultCnt = 0;
+		String saveStatus = (String)params.get("saveStatus");
+		
+		if("I".equals(saveStatus)) {
+			resultCnt = generalDao.insertGernal(DB.QRY_INSERT_ADDR_CATE, params);
+		} else {
+			resultCnt = generalDao.updateGernal(DB.QRY_UPDATE_ADDR_CATE, params);
+		}
+		
+		if (resultCnt <= 0) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		} else {
+			rtn.setSuccess(true);
+			rtn.setData(params);
+		}
+			return rtn;
+	}
+	
+	/**
+	 * 주소 카테고리 삭제
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> deleteAddressCategory(Map<String, Object> params) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+		int resultCnt = 0;
+		resultCnt = generalDao.updateGernal(DB.QRY_DELETE_ADDR_CATE, params);
+		
+		if (resultCnt <= 0) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		} else {
+			rtn.setSuccess(true);
+			rtn.setData(params);
+		}
+			return rtn;
+	}
 }

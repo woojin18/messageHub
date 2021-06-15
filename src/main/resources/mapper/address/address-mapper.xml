@@ -33,20 +33,21 @@
 	<select id="selectAddrCateList" parameterType="hashmap" resultType="camel">
 		/* address.selectAddrCateList 주소록 카테고리 목록 조회 */
 		SELECT
-			CAC.ADDRESS_CATEGORY_ID
-			, CAC.ADDRESS_CATEGORY_GRP_ID
+			B.ADDRESS_CATEGORY_ID
+			, B.ADDRESS_CATEGORY_GRP_ID
 			, NULL AS GRP_DIS_ORDER
-			, CAC.DIS_ORDER
-			, CAC.ADDRESS_CATEGORY_NAME  AS ADDRESS_NAME
-			, CAC.PAR_ADDRESS_CATEGORY_ID
-		FROM cm_console.CM_ADDR_CATE_GRP CACG
-		INNER JOIN CM_ADDR_CATE CAC
-			ON CACG.ADDRESS_CATEGORY_GRP_ID = CAC.ADDRESS_CATEGORY_GRP_ID
-			AND CAC.DEL_YN = 'N'
+			, B.DIS_ORDER
+			, B.ADDRESS_CATEGORY_NAME  AS ADDRESS_NAME
+			, B.PAR_ADDRESS_CATEGORY_ID
+			, B.TOP_ADDRESS_CATEGORY_ID
+		FROM cm_console.CM_ADDR_CATE_GRP A
+		INNER JOIN cm_console.CM_ADDR_CATE B
+			ON A.ADDRESS_CATEGORY_GRP_ID = B.ADDRESS_CATEGORY_GRP_ID
+			AND B.DEL_YN = 'N'
 		WHERE 1=1
-			AND CACG.CORP_ID = #{corpId}
-			AND	CACG.ADDRESS_CATEGORY_GRP_ID = #{addressCategoryGrpId}
-		ORDER BY CAC.DIS_ORDER
+			AND A.CORP_ID = #{corpId}
+			AND	A.ADDRESS_CATEGORY_GRP_ID = #{addressCategoryGrpId}
+		ORDER BY B.DIS_ORDER
 	</select>
 
 	<select id="selectAddrMemListCnt" parameterType="hashmap" resultType="int">
@@ -66,6 +67,7 @@
 					FROM cm_console.CM_ADDR_CATE_MEM
 					WHERE ADDRESS_CATEGORY_ID IN (	SELECT	ADDRESS_CATEGORY_ID
 													FROM	(	SELECT * FROM cm_console.CM_ADDR_CATE
+																WHERE DEL_YN='N'
 																ORDER BY PAR_ADDRESS_CATEGORY_ID, ADDRESS_CATEGORY_ID) PRODUCTS_SORTED,
 															(select @pv := #{addressCategoryId}) INITIALISATION
 													WHERE	FIND_IN_SET(PAR_ADDRESS_CATEGORY_ID, @pv) > 0
@@ -233,7 +235,7 @@
 	</insert>
 	
 	<delete id="deleteAddrMember">
-		/* address.deleteAddrMember */
+		/* address.deleteAddrMember 구성원삭제*/
 		DELETE	FROM cm_console.CM_ADDR_CATE_MEM
 		WHERE	ADDRESS_CATEGORY_ID = #{addressCategoryId}
 		AND		CU_INFO_ID = #{cuInfoId}
@@ -352,4 +354,72 @@
 		DELETE	FROM cm_console.CM_CU_INFO
 		WHERE	CU_INFO_ID = #{cuInfoId}
 	</delete>
+	
+	<insert id="insertAddrCate">
+	/* address.insertAddrCate 주소 카테고리 등록 */
+	INSERT INTO cm_console.CM_ADDR_CATE (
+			ADDRESS_CATEGORY_ID
+		,	ADDRESS_CATEGORY_GRP_ID
+		,	DIS_ORDER
+		,	ADDRESS_CATEGORY_NAME
+		,	PAR_ADDRESS_CATEGORY_ID
+		,	DEL_YN
+		,	REG_ID
+		,	REG_DT
+		,	UPD_ID
+		,	UPD_DT
+	)
+		VALUES (
+			(SELECT IFNULL(MAX(ADDRESS_CATEGORY_ID) + 1, 1) FROM cm_console.CM_ADDR_CATE B)
+		,	#{addressCategoryGrpId}
+		,	(	SELECT	IFNULL(MAX(DIS_ORDER) + 1, 1)
+				FROM	cm_console.CM_ADDR_CATE B
+				WHERE	ADDRESS_CATEGORY_GRP_ID = #{addressCategoryGrpId}
+				AND		PAR_ADDRESS_CATEGORY_ID = #{parAddressCategoryId}
+				AND		DEL_YN = 'N'
+			)
+		,	#{addressCategoryName}
+		,	#{parAddressCategoryId}
+		,	'N'
+		,	#{regId}
+		,	NOW()
+		,	#{regId}
+		,	NOW()
+	)
+	</insert>
+	
+	<select id="selectAddrSubCategory" parameterType="hashmap" resultType="int">
+		/* address.selectAddrRcvrCnt 하위 카테고리 조회 */
+		SELECT
+			COUNT(*) AS CNT
+		FROM cm_console.CM_ADDR_CATE_MEM
+		WHERE	CU_INFO_ID = #{cuInfoId}
+	</select>
+
+	<update id="updateAddrCate">
+		/* address.updateAddrCate 주소카테고리수정 */
+		UPDATE	cm_console.CM_ADDR_CATE
+		SET		ADDRESS_CATEGORY_NAME = #{addressCategoryName}
+			,	UPD_DT = NOW()
+			,	UPD_ID = #{regId}
+		WHERE	ADDRESS_CATEGORY_ID = #{addressCategoryId}
+	</update>
+
+	<update id="deleteAddrCate">
+		/* address.deleteAddrCate 주소카테고리삭제 하위카테고리까지 삭제*/
+		UPDATE	cm_console.CM_ADDR_CATE
+		SET		DEL_YN = 'Y'
+			,	UPD_DT = NOW()
+			,	UPD_ID = #{regId}
+		WHERE	ADDRESS_CATEGORY_ID = #{addressCategoryId}
+		OR	ADDRESS_CATEGORY_ID IN (
+				SELECT	ADDRESS_CATEGORY_ID
+				FROM	(	SELECT * FROM cm_console.CM_ADDR_CATE
+							WHERE DEL_YN='N'
+							ORDER BY PAR_ADDRESS_CATEGORY_ID, ADDRESS_CATEGORY_ID) PRODUCTS_SORTED,
+						(select @pv := #{addressCategoryId}) INITIALISATION
+				WHERE	FIND_IN_SET(PAR_ADDRESS_CATEGORY_ID, @pv) > 0
+				AND		@pv := CONCAT(@pv, ',', ADDRESS_CATEGORY_ID)
+			)
+	</update>
 </mapper>
