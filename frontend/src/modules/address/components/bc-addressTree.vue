@@ -18,7 +18,17 @@
 <script>
 export default {
 	name: "addrTreeMenu",
-	props: [ 'item', 'id', 'subItems'],
+	props: {
+		item: {
+			type: String,
+		},
+		id: {
+			type: String,
+		},
+		subItems: {
+			type: Object,
+		},
+	},
 	methods: {
 		fnAddrCateMem(id, addrName){
 			//alert('id : ' + id + ', addrName :' + addrName);
