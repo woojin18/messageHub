@@ -552,7 +552,8 @@ System.out.println("smartSendService sendSmartMsgAsync 010");
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
-
+System.out.println("=================== smartSendService sendSmartMsgAsync toIndex : "+toIndex);
+System.out.println("=================== smartSendService sendSmartMsgAsync listSize : "+listSize);
         while (toIndex < listSize) {
             isDone = false;
             isServerError = false;
@@ -561,9 +562,13 @@ System.out.println("smartSendService sendSmartMsgAsync 010");
                 if(toIndex > listSize) toIndex = listSize;
                 smartRequestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
                 jsonString = gson.toJson(smartRequestData);
+System.out.println("=================== smartSendService sendSmartMsgAsync jsonString : "+jsonString);
                 responseBody = apiInterface.sendMsg(ApiConfig.GET_SMART_API_URI, headerMap, jsonString);
+System.out.println("=================== smartSendService sendSmartMsgAsync ApiConfig.GET_SMART_API_URI : "+ApiConfig.GET_SMART_API_URI);                
                 isDone = isApiRequestAgain(responseBody, reSendCdList);
+System.out.println("=================== smartSendService sendSmartMsgAsync isDone : "+isDone);
                 isAllFail = !isSendSuccess(responseBody);
+System.out.println("=================== smartSendService sendSmartMsgAsync isAllFail : "+isAllFail);
             } catch (Exception e) {
                 log.error("{}.sendSmartMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;

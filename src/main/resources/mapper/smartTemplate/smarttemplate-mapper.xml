@@ -448,6 +448,406 @@ FROM(
 
     <select id="selectSmartTemplateDetail" parameterType="hashmap" resultType="camel">
     /* 스마트발송 템플릿 상세 조회 */
+SELECT M.PROJECT_ID, M.TMPLT_CODE, M.MSG_KIND, M.MSG_KIND_NAME, M.MSG_TYPE
+     , M.MSG_TYPE_NAME, M.TMPLT_TITLE, M.TMPLT_TYPE, M.otherProjectUseYn
+     , M.USE_YN, M.chTypeList, M.CHECKED_CHANNEL
+		 , M.PRODUCT_NAME     
+	 , M.pushMsg, M.pushAppId, M.pushTitle, M.pushFileId, M.pushSendType, M.pushRcvblcInput
+	  
+	 , M.PUSH_CH_IMG_URL
+			   	
+	 , M.rcsCardCount, M.rcsPrdType, M.rcsCallback, M.rcsMessageBaseId, M.rcsFooter
+	 , M.rcsBodyMedia, M.rcsBodyTitle, M.rcsBodyDescription
+
+	 , M.rcsBodyMediaUrl
+	 , M.rcs1BodyMedia, M.rcs1BodyTitle, M.rcs1BodyDescription
+	 , M.rcs1BodyMediaUrl
+	 , M.rcs2BodyMedia, M.rcs2BodyTitle, M.rcs2BodyDescription		  
+    , M.rcs2BodyMediaUrl
+	 , M.rcs3BodyMedia, M.rcs3BodyTitle, M.rcs3BodyDescription		  
+    , M.rcs3BodyMediaUrl
+	 , M.rcs4BodyMedia, M.rcs4BodyTitle, M.rcs4BodyDescription		  
+    , M.rcs4BodyMediaUrl	
+	 , M.rcs5BodyMedia, M.rcs5BodyTitle, M.rcs5BodyDescription		  
+    , M.rcs5BodyMediaUrl
+			  		  			  			  		   	
+	
+	 , M.rcsButton0ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcsButton0ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcsButton0DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcsButton0Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcsButton0StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcsButton0EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcsButton0StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcsButton0EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcsButton0Description,'')	,'\"}') AS rcs0ButtonArr0 
+	 , M.rcsButton1ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcsButton1ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcsButton1DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcsButton1Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcsButton1StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcsButton1EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcsButton1StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcsButton1EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcsButton1Description,'')	,'\"}') AS rcs0ButtonArr1 
+	 , M.rcsButton2ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcsButton2ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcsButton2DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcsButton2Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcsButton2StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcsButton2EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcsButton2StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcsButton2EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcsButton2Description,'')	,'\"}') AS rcs0ButtonArr2 		
+	 , M.rcsButton3ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcsButton3ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcsButton3DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcsButton3Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcsButton3StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcsButton3EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcsButton3StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcsButton3EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcsButton3Description,'')	,'\"}') AS rcs0ButtonArr3 
+	 , M.rcsButton4ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcsButton4ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcsButton4DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcsButton4Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcsButton4StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcsButton4EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcsButton4StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcsButton4EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcsButton4Description,'')	,'\"}') AS rcs0ButtonArr4 	 
+	 , M.rcsButton5ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcsButton5ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcsButton5DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcsButton5Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcsButton5StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcsButton5EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcsButton5StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcsButton5EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcsButton5Description,'')	,'\"}') AS rcs0ButtonArr5 	 
+	 , M.rcs1Button0ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button0ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs1Button0DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button0Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs1Button0StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs1Button0EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs1Button0StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs1Button0EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button0Description,'')	,'\"}') AS rcs1ButtonArr0 	 
+	 , M.rcs1Button1ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button1ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs1Button1DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button1Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs1Button1StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs1Button1EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs1Button1StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs1Button1EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button1Description,'')	,'\"}') AS rcs1ButtonArr1 	 
+	 , M.rcs1Button2ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button2ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs1Button2DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button2Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs1Button2StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs1Button2EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs1Button2StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs1Button2EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button2Description,'')	,'\"}') AS rcs1ButtonArr2	
+	 , M.rcs1Button3ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button3ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs1Button3DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button3Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs1Button3StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs1Button3EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs1Button3StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs1Button3EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button3Description,'')	,'\"}') AS rcs1ButtonArr3	 
+	 , M.rcs1Button4ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button4ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs1Button4DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button4Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs1Button4StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs1Button4EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs1Button4StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs1Button4EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button4Description,'')	,'\"}') AS rcs1ButtonArr4	 
+	 , M.rcs1Button5ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button5ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs1Button5DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button5Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs1Button5StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs1Button5EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs1Button5StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs1Button5EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button5Description,'')	,'\"}') AS rcs1ButtonArr5	 
+	 , M.rcs2Button0ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button0ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs2Button0DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button0Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs2Button0StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs2Button0EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs2Button0StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs2Button0EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button0Description,'')	,'\"}') AS rcs2ButtonArr0	 
+	 , M.rcs2Button1ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button1ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs2Button1DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button1Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs2Button1StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs2Button1EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs2Button1StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs2Button1EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button1Description,'')	,'\"}') AS rcs2ButtonArr1		 
+	 , M.rcs2Button2ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button2ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs2Button2DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button2Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs2Button2StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs2Button2EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs2Button2StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs2Button2EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button2Description,'')	,'\"}') AS rcs2ButtonArr2	
+	 , M.rcs2Button3ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button3ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs2Button3DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button3Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs2Button3StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs2Button3EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs2Button3StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs2Button3EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button3Description,'')	,'\"}') AS rcs2ButtonArr3		 
+	 , M.rcs2Button4ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button4ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs2Button4DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button4Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs2Button4StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs2Button4EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs2Button4StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs2Button4EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button4Description,'')	,'\"}') AS rcs2ButtonArr4		 
+	 , M.rcs2Button5ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button5ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs2Button5DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button5Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs2Button5StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs2Button5EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs2Button5StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs2Button5EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button5Description,'')	,'\"}') AS rcs2ButtonArr5		 
+	 , M.rcs3Button0ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs3Button0ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs3Button0DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs3Button0Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs3Button0StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs3Button0EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs3Button0StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs3Button0EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs3Button0Description,'')	,'\"}') AS rcs3ButtonArr0		 
+	 , M.rcs3Button1ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs3Button1ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs3Button1DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs3Button1Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs3Button1StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs3Button1EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs3Button1StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs3Button1EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs3Button1Description,'')	,'\"}') AS rcs3ButtonArr1	 
+	 , M.rcs3Button2ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs3Button2ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs3Button2DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs3Button2Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs3Button2StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs3Button2EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs3Button2StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs3Button2EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs3Button2Description,'')	,'\"}') AS rcs3ButtonArr2
+	 , M.rcs3Button3ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs3Button3ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs3Button3DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs3Button3Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs3Button3StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs3Button3EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs3Button3StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs3Button3EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs3Button3Description,'')	,'\"}') AS rcs3ButtonArr3	 
+	 , M.rcs3Button4ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs3Button4ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs3Button4DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs3Button4Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs3Button4StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs3Button4EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs3Button4StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs3Button4EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs3Button4Description,'')	,'\"}') AS rcs3ButtonArr4	 
+	 , M.rcs3Button5ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs3Button5ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs3Button5DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs3Button5Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs3Button5StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs3Button5EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs3Button5StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs3Button5EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs3Button5Description,'')	,'\"}') AS rcs3ButtonArr5	 
+	 , M.rcs4Button0ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs4Button0ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs4Button0DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs4Button0Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs4Button0StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs4Button0EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs4Button0StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs4Button0EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs4Button0Description,'')	,'\"}') AS rcs4ButtonArr0	 
+	 , M.rcs4Button1ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs4Button1ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs4Button1DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs4Button1Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs4Button1StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs4Button1EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs4Button1StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs4Button1EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs4Button1Description,'')	,'\"}') AS rcs4ButtonArr1	 
+	 , M.rcs4Button2ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs4Button2ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs4Button2DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs4Button2Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs4Button2StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs4Button2EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs4Button2StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs4Button2EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs4Button2Description,'')	,'\"}') AS rcs4ButtonArr2
+	 , M.rcs4Button3ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs4Button3ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs4Button3DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs4Button3Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs4Button3StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs4Button3EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs4Button3StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs4Button3EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs4Button3Description,'')	,'\"}') AS rcs4ButtonArr3	 
+	 , M.rcs4Button4ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs4Button4ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs4Button4DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs4Button4Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs4Button4StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs4Button4EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs4Button4StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs4Button4EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs4Button4Description,'')	,'\"}') AS rcs4ButtonArr4	 
+	 , M.rcs4Button5ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs4Button5ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs4Button5DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs4Button5Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs4Button5StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs4Button5EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs4Button5StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs4Button5EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs4Button5Description,'')	,'\"}') AS rcs4ButtonArr5	 
+	 , M.rcs5Button0ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs5Button0ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs5Button0DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs5Button0Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs5Button0StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs5Button0EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs5Button0StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs5Button0EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs5Button0Description,'')	,'\"}') AS rcs5ButtonArr0	 
+	 , M.rcs5Button1ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs5Button1ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs5Button1DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs5Button1Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs5Button1StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs5Button1EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs5Button1StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs5Button1EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs5Button1Description,'')	,'\"}') AS rcs5ButtonArr1	 
+	 , M.rcs5Button2ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs5Button2ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs5Button2DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs5Button2Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs5Button2StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs5Button2EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs5Button2StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs5Button2EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs5Button2Description,'')	,'\"}') AS rcs5ButtonArr2
+	 , M.rcs5Button3ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs5Button3ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs5Button3DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs5Button3Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs5Button3StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs5Button3EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs5Button3StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs5Button3EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs5Button3Description,'')	,'\"}') AS rcs5ButtonArr3	 
+	 , M.rcs5Button4ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs5Button4ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs5Button4DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs5Button4Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs5Button4StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs5Button4EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs5Button4StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs5Button4EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs5Button4Description,'')	,'\"}') AS rcs5ButtonArr4	 
+	 , M.rcs5Button5ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs5Button5ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.rcs5Button5DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs5Button5Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.rcs5Button5StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.rcs5Button5EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.rcs5Button5StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.rcs5Button5EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.rcs5Button5Description,'')	,'\"}') AS rcs5ButtonArr5	  
+	 , M.friendTalkSenderKeyType, M.friendTalkSenderKey, M.friendTalkWideImageYn, M.friendTalkContent, M.friendTalkFileId, M.friendTalkImgUrl, M.friendTalkImageLink, M.friendTalkPrdType
+	 
+	 , M.friendTalkButton0ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.friendTalkButton0ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.friendTalkButton0DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.friendTalkButton0Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.friendTalkButton0StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.friendTalkButton0EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.friendTalkButton0StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.friendTalkButton0EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.friendTalkButton0Description,'')	,'\"}') AS friendTalkButtonArr0 	 
+	 , M.friendTalkButton1ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.friendTalkButton1ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.friendTalkButton1DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.friendTalkButton1Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.friendTalkButton1StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.friendTalkButton1EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.friendTalkButton1StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.friendTalkButton1EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.friendTalkButton1Description,'')	,'\"}') AS friendTalkButtonArr1 	 
+	 , M.friendTalkButton2ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.friendTalkButton2ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.friendTalkButton2DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.friendTalkButton2Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.friendTalkButton2StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.friendTalkButton2EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.friendTalkButton2StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.friendTalkButton2EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.friendTalkButton2Description,'')	,'\"}') AS friendTalkButtonArr2 	 
+	 , M.friendTalkButton3ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.friendTalkButton3ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.friendTalkButton3DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.friendTalkButton3Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.friendTalkButton3StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.friendTalkButton3EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.friendTalkButton3StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.friendTalkButton3EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.friendTalkButton3Description,'')	,'\"}') AS friendTalkButtonArr3 	 
+	 , M.friendTalkButton4ButtonType
+ 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.friendTalkButton4ButtonType,'')		,'\"'
+                ,',\"buttonName\":\"'	, IFNULL(M.friendTalkButton4DisplayText,'')	,'\"'
+ 			    ,',\"buttonLink\":\"'	, IFNULL(M.friendTalkButton4Title,'')			,'\"'
+				,',\"startDate\":\"'	, IFNULL(M.friendTalkButton4StartTime,'')		,'\"'
+				,',\"endDate\":\"'		, IFNULL(M.friendTalkButton4EndTime,'')		,'\"'
+				,',\"startDateId\":\"'	, IFNULL(M.friendTalkButton4StartTimeId,'')	,'\"'
+				,',\"endDateId\":\"'	, IFNULL(M.friendTalkButton4EndTimeId,'')		,'\"'
+				,',\"buttonLink1\":\"'	, IFNULL(M.friendTalkButton4Description,'')	,'\"}') AS friendTalkButtonArr4 	  
+	 , M.smsSendType, M.smsCallback, M.smsContent, M.smsTitle, M.smsFileId0, M.smsFileId1
+     
+	 , M.MMS_CH_IMG_URL0
+	 , M.MMS_CH_IMG_URL1
+FROM(
 SELECT T.PROJECT_ID, T.TMPLT_CODE, T.MSG_KIND, T.MSG_KIND_NAME, T.MSG_TYPE
      , T.MSG_TYPE_NAME, T.TMPLT_TITLE, T.TMPLT_INFO, T.TMPLT_TYPE, T.otherProjectUseYn
      , T.USE_YN, T.chTypeList, T.CHECKED_CHANNEL
@@ -504,7 +904,7 @@ SELECT T.PROJECT_ID, T.TMPLT_CODE, T.MSG_KIND, T.MSG_KIND_NAME, T.MSG_TYPE
 	 , CASE WHEN T.rcsButton4EndTime   != '' THEN 'rcsEndDateId4'   ELSE '' END AS rcsButton4EndTimeId
 	 , T.rcsButton5Data, T.rcsButton5ButtonType, T.rcsButton5DisplayText, T.rcsButton5Title, T.rcsButton5StartTime, T.rcsButton5EndTime, T.rcsButton5Description
 	 , CASE WHEN T.rcsButton5StartTime != '' THEN 'rcsStartDateId5' ELSE '' END AS rcsButton5StartTimeId
-	 , CASE WHEN T.rcsButton5EndTime   != '' THEN 'rcsEndDateId5'   ELSE '' END AS rcsButton5xEndTimeId
+	 , CASE WHEN T.rcsButton5EndTime   != '' THEN 'rcsEndDateId5'   ELSE '' END AS rcsButton5EndTimeId
 	 
 	 , T.rcs1Button0Data, T.rcs1Button0ButtonType, T.rcs1Button0DisplayText, T.rcs1Button0Title, T.rcs1Button0StartTime, T.rcs1Button0EndTime, T.rcs1Button0Description
 	 , CASE WHEN T.rcs1Button0StartTime != '' THEN 'rcs1StartDateId0' ELSE '' END AS rcs1Button0StartTimeId
@@ -3884,6 +4284,7 @@ FROM (
 	LEFT OUTER JOIN cm_console.CM_IMAGE_FILE sms0 ON T.smsFileId0 = sms0.FILE_ID
 	LEFT OUTER JOIN cm_console.CM_IMAGE_FILE sms1 ON T.smsFileId1 = sms1.FILE_ID
 	LEFT OUTER JOIN cm_bo.CM_PRODUCT_UNIT punit ON T.PRODUCT_CODE = punit.PRODUCT_CODE
+) M
     </select>
     
         

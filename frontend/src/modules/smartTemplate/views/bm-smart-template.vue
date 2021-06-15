@@ -240,7 +240,17 @@ export default {
 
     //엑셀 다운로드
     fnExcelDownLoad(){
-      var params = this.searchData;
+      var params = Object.assign({}, this.searchData);
+      
+      if(!this.isEmpty(this.productCode)){
+      	params.productCode = this.productCode;
+      }else{
+      	params.productCode = "XXXXXXXX";
+      }
+
+      params.loginId = tokenSvc.getToken().principal.userId;
+      params.roleCd = tokenSvc.getToken().principal.roleCd
+      
       smartTemplateApi.excelDownloadSmartTemplate(params);
     },
 

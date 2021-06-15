@@ -200,16 +200,16 @@ public class SmartTemplateController {
 			@RequestBody Map<String, Object> params) throws Exception {
 		List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("sheetTitle", "푸시 템플릿 리스트");
-		map.put("colLabels", new String[] { "템플릿 ID", "템플릿명", "타 프로젝트 사용여부", "메시지타입", "메시지구분", "등록자", "등록일자" });
-        map.put("colIds", new String[] {"tmpltId", "tmpltName", "otherProjectUseYn", "msgTypeName", "msgKindName", "regId", "regDt"});
+		map.put("sheetTitle", "스마트 템플릿 리스트");
+		map.put("colLabels", new String[] { "템플릿 ID", "템플릿명", "상품유형", "타 프로젝트 사용여부", "등록자", "등록일자" });
+        map.put("colIds", new String[] {"tmpltCode", "tmpltTitle", "productName", "otherProjectUseYn", "regId", "regDt"});
 		map.put("numColIds", new String[] {});
 		map.put("figureColIds", new String[] {});
 		map.put("colDataList", smartTemplateService.selectSmartTemplateList(params).getData());
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "pushTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "smartTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;
