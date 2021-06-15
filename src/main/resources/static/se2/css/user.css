@@ -33,7 +33,7 @@ header.head_type_user {border-bottom:1px solid #E6E6E6}
 
 /* userLogin-form */
 .userLogin-form {width:460px; margin:0 auto}
-.userLogin-form > h2 {font-size:28px; margin-bottom:70px}
+.userLogin-form > h2 {font-size:28px; margin-bottom:70px; color:#000}
 .userLogin-form h3 {font-size:20px; color:#707070; font-weight:400}
 .userLogin-form .form-control {border:1px solid #E8ECEF; border-radius:5px; font-size:15px; height:60px; line-height:60px; box-shadow:none}
 .userLogin-form .checkbox {margin:0}

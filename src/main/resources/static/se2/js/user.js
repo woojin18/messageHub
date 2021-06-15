@@ -33,10 +33,16 @@
       });
   
     //faqList
+    /* 
     $('.faqList > li').click(function() {
       $('.faqList > li').removeClass('active');
       $(this).addClass('active');
     });
+     */
+    $(document).on('click', '.faqList > li', function(e) {
+      $('.faqList > li').removeClass('active');
+      $(this).addClass('active');
+  });
   });
   
 })(jQuery);
