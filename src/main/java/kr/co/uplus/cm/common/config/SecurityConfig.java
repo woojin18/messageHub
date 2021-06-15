@@ -25,6 +25,7 @@ import kr.co.uplus.cm.common.jwt.JwtAuthCookieFilter;
 import kr.co.uplus.cm.common.jwt.JwtAuthHeaderFilter;
 import kr.co.uplus.cm.common.jwt.JwtExceptionFilter;
 import kr.co.uplus.cm.common.jwt.JwtProperties;
+import kr.co.uplus.cm.login.service.AuthService;
 
 @Configuration
 @EnableWebSecurity
@@ -64,6 +65,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
+    @Autowired
+    private AuthService authService;
+
 	@Autowired
 	private JwtProperties jwtProps;
 
@@ -81,7 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.addFilterBefore(new VueStaticFilter(), UsernamePasswordAuthenticationFilter.class) // Vue에서 호출시 화면관련 URL은 forward
-				.addFilterBefore(new JwtExceptionFilter(), UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(new JwtExceptionFilter(authService), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new JwtAuthHeaderFilter(jwtProps), UsernamePasswordAuthenticationFilter.class);
 

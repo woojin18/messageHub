@@ -205,15 +205,18 @@ public class AuthService implements UserDetailsService {
 	}
 	
 	private Map<String, Menu> tACMenuByRole = new HashMap<String, Menu>();
+	private Map<String, Map<String, Menu>> tACMenusByRole = new HashMap<String, Map<String, Menu>>();
 	private Map<String, Menu> tUCMenuByRole = new HashMap<String, Menu>();
+	private Map<String, Map<String, Menu>> tUCMenusByRole = new HashMap<String, Map<String, Menu>>();
 
 	@PostConstruct
 	public void init() {
-		tACMenuByRole = getMenu("AC");
-		tUCMenuByRole = getMenu("UC");
+		initMenu("AC");
+		initMenu("UC");
 	}
-	private Map<String, Menu> getMenu(String svcTypeCd) {
+	private void initMenu(String svcTypeCd) {
 		Map<String, Menu> menuByRole = new HashMap<String, Menu>();
+		Map<String, Map<String, Menu>> menusByRole = new HashMap<String, Map<String, Menu>>();
 		Map<String, Menu> menus = new HashMap<String, Menu>();
 		Map params = new HashMap();
 		params.put("svc_type_cd", svcTypeCd);
@@ -225,6 +228,7 @@ public class AuthService implements UserDetailsService {
 				rootMenu = new Menu();
 				menuByRole.put(data.getRoleCd(), rootMenu);
 				menus = new HashMap<String, Menu>();
+				menusByRole.put(data.getRoleCd(), menus);
 			}
 			
 			Menu menu = menus.get(data.getMenusCd());
@@ -248,7 +252,21 @@ public class AuthService implements UserDetailsService {
 			}
 			
 		}
-		
-		return menuByRole;
+
+		if ("AC".equals(svcTypeCd)) {
+			tACMenuByRole = menuByRole;
+			tACMenusByRole = menusByRole;
+		} else {
+			tUCMenuByRole = menuByRole;
+			tUCMenusByRole = menusByRole;
+		}
+	}
+	
+	public Map<String, Menu> getMenusByRole(String svcTypeCd, String roleCd) {
+		if ("AC".equals(svcTypeCd)) {
+			return tACMenusByRole.get(roleCd);
+		} else {
+			return tUCMenusByRole.get(roleCd);
+		}
 	}
 }

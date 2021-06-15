@@ -10,7 +10,7 @@ export default [
     },
     {
         path: '/uc/integratedSend',
-        name: 'integratedSend',
+        name: 'UC_SND_INTG_MSG',
         component: integratedSend
     }
 ]

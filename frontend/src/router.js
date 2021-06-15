@@ -185,5 +185,34 @@ router.beforeEach((to, from, next) => {
     next();
   });
 });
+var timeout = 1500;
+router.afterEach((to, from) => {
+  jQuery('#M_menusCd').val(to.name);
+  if (to.name == 'home') {
+    timeout = 1500;
+  }
+  Vue.nextTick(() => {
+    setTimeout(function() {
+      jQuery('#M_menusCd').val(to.name);
+      var menu = jQuery('#M_'+to.name);
+      var isRead = menu.attr('r');
+      var isSave = menu.attr('w');
+      isRead = isRead == 'true';
+      isSave = isSave == 'true';
+      console.log('MENU CODE : ' + to.name + ', READ:' + isRead + ', SAVE:' + isSave);
+      if (isRead) {
+        jQuery("[role='READ']").removeAttr('role');
+      } else {
+        jQuery("[role='READ']").remove();
+      }
+      if (isSave) {
+        jQuery("[role='SAVE']").removeAttr('role');
+      } else {
+        jQuery("[role='SAVE']").remove();
+      }
+    }, timeout);
+    timeout = 0;
+  })
+});
 
 export default router;

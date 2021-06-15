@@ -9,7 +9,7 @@
 					<hr/>
 					<p class="text-center mt20">사용자의 이용정지 해제 처리 시 정상적으로 Console에 접근할 수 있습니다.</p>
 					<div class="text-center mt20">
-						<a @click="fnReleaseUser()" class="btnStyle1 backBlack mr5" title="확인">확인</a>
+						<a @click="fnReleaseUser()" class="btnStyle1 backBlack mr5" role="SAVE" title="확인">확인</a>
 						<a @click="fnCloseLayer()" class="btnStyle1 backWhite" title="취소">취소</a>
 					</div>
 				</div>

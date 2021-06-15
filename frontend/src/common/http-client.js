@@ -18,6 +18,9 @@ const setLoginInterceptor = config => {
 	if (tokenSvc.getToken()) {
 		if (config.url !== '/api/auth/logout' && !config.url.includes('/api/public/')) {
 			config.headers.loginId = tokenSvc.getToken().principal.loginId;
+			config.headers.svcType = jQuery('#M_svcTypeCd').val();
+			config.headers.role = jQuery('#M_roleCd').val();
+			config.headers.menu = jQuery('#M_menusCd').val();
 			if (config.data.corpId == null) {
 				config.data.corpId = tokenSvc.getToken().principal.corpId;
 			}
@@ -95,6 +98,11 @@ httpClient.interceptors.response.use(
 		if (error.code === 'ECONNABORTED') {
 			alert('서비스가 지연되고 있습니다. 잠시 후 확인하시고 다시 시도해주세요.');
 			return Promise.reject(error);
+		} else if (error.response.status == 403) {
+			alert('권한이 없습니다.');
+			if (error.config.headers.activity == 'READ') {
+				window.history.back();
+			}
 		} else if (error.response.status == 401 || error.response.status == 418) {
 			alert('세션이 만료되었습니다.');
 			window.top.location.href = '/login';
