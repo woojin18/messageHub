@@ -1,17 +1,17 @@
 <template>
 	<ul class="addList">
 		<li class="addList_minus">
-			<a @click="fnAddrCateMem(id)">
+			<a @click="fnAddrCateMem(id, item)">
 				<i class="fal fa-minus-square addIcon"></i>
 				{{ item }}
 			</a>
 		</li>
-		<addr-tree-menu
-			v-for = "each in subItems"
-			:key = "each.addressCategoryId"
-			:item = "each.addressName"
-			:id = "each.addressCategoryId"
-			:subItems = "each.subItems">
+		<addr-tree-menu v-for = "data in subItems" :key = "data.addressCategoryId"
+			:item = "data.addressName"
+			:id = "data.addressCategoryId"
+			:topAddressCategoryId = "data.topAddressCategoryId"
+			:subItems = "data.subItems"
+		>
 		</addr-tree-menu>
 	</ul>
 </template>
@@ -63,13 +63,14 @@
 <script>
 export default {
 	name: "addrTreeMenu",
-	props: [ 'item', 'id', 'subItems' ],
+	props: [ 'item', 'id', 'subItems', 'topAddressCategoryId'],
 	methods: {
-		fnAddrCateMem(id){
+		fnAddrCateMem(id, addrName, topAddressCategoryId){
+			console.log('id : ' +id + ', addrName :' + addrName + ', topAddressCategoryId : ' + topAddressCategoryId);
 			if(!this.$gfnCommonUtils.isEmpty(id)) {
-				this.$parent.fnAddrCateMem(null);
+				this.$parent.fnAddrCateMem(null, null, null);
 			}
-			this.$parent.fnAddrCateMem(id);
+			this.$parent.fnAddrCateMem(id, addrName, topAddressCategoryId);
 		}
 	}
 }

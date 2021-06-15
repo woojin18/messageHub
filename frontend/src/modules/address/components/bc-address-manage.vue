@@ -39,7 +39,9 @@
 								<addr-tree-menu v-for="(addrTreeData, idx) in addrTreeList" :key="idx"
 									:item="addrTreeData.addressName"
 									:id="addrTreeData.addressCategoryId"
-									:subItems="addrTreeData.subItems">
+									:topAddressCategoryId="addrTreeData.topAddressCategoryId"
+									:subItems="addrTreeData.subItems"
+								>
 								</addr-tree-menu>
 								<!--
 								<ul class="addList">
@@ -95,8 +97,9 @@
 						<div class="of_h pd20">
 							<div class="of_h text-right">
 								<div class="of_h" style="width:100%">
-									<a href="#self" class="btnStyle1 borderGray mr10">하위 카테고리 추가</a>
-									<a href="#self" class="btnStyle1 borderGray">카테고리 삭제</a>
+									<a @click="fnSaveMemberPop('I')" class="btnStyle1 borderGray mr5">하위 카테고리 추가</a>
+									<a @click="fnSaveMemberPop('U')" class="btnStyle1 borderGray mr5">수정</a>
+									<a @click="fndelAddrCate" class="btnStyle1 borderGray">삭제</a>
 								</div>
 							</div>
 						</div>
@@ -104,7 +107,7 @@
 					</div>
 				</div>
 				<div class="col-xs-8">
-					<div class="fl border-line" style="width:100%">
+					<div class="fl border-line" style="width:100%; height:500px">
 						<div class="bb-d5 pd20">
 							<h4>구성원</h4>
 						</div>
@@ -168,7 +171,7 @@
 							<PageLayer @fnClick="fnPageClick" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
 						</div>
 						<!-- pagination End-->
-						<div class="bb-d5 height120">
+						<div class="bb-d5 height45">
 						</div>
 						<div class="pd20">
 							<div class="of_h">
@@ -190,29 +193,43 @@
 		<!--  modify Modal -->
 		<AddrModifyLayer :data="selectedAddrCateGrp" :addrModifyOpen="addrModifyOpen"></AddrModifyLayer>
 		<!-- Member register Modal -->
-		<MemberRegisterLayer :searchAddrCateId="searchAddrCateId" :memberRegisterOpen="memberRegisterOpen"></MemberRegisterLayer>
+		<MemberRegisterLayer
+			:searchAddrCateId="searchAddrCateId"
+			:memberRegisterOpen="memberRegisterOpen"
+		></MemberRegisterLayer>
+		<!-- address category register Modal -->
+		<AddrCategoryLayer
+			:addrCateName="selectAddrName"
+			:addrCateGrpId="selectedAddrCateGrp.addressCategoryGrpId"
+			:parAddrCateId="searchAddrCateId"
+			:topAddrCateId="selectTopAddrCateId"
+			:addrCateOpen="addrCateOpen"
+			:saveStatus="saveStatus"
+		></AddrCategoryLayer>
 	</div>
 </template>
 
 <script>
 import addressApi from '../service/addressApi'
 import tokenSvc from '@/common/token-service';
-import confirm from "@/modules/commonUtil/service/confirm";
-import AddrTreeMenu from "@/modules/address/components/bc-addressTree.vue";
-import AddrRegisterLayer from '../components/bc-address-register.vue';
+import confirm from '@/modules/commonUtil/service/confirm';
+import AddrTreeMenu from '@/modules/address/components/bc-addressTree.vue';
 import AddrModifyLayer from '../components/bc-address-modify.vue';
+import AddrRegisterLayer from '../components/bc-address-register.vue';
+import AddrCategoryLayer from '../components/bc-category-register.vue';
 import MemberRegisterLayer from '../components/bc-member-register.vue';
 import PageLayer from '@/components/PageLayer.vue';
-import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import {eventBus} from '@/modules/commonUtil/service/eventBus';
 
 export default {
-	name: "addressManageList",
+	name: 'addressManageList',
 	components: {
 		AddrTreeMenu,
 		AddrRegisterLayer,
 		AddrModifyLayer,
 		MemberRegisterLayer,
 		PageLayer,
+		AddrCategoryLayer,
 	},
 	props: {
 		searchCateGrpData : {
@@ -299,16 +316,22 @@ export default {
 			addrRegisterOpen: false,
 			//주소록 수정
 			addrModifyOpen: false,
-			memberRegisterOpen: false,
+			// 주소 카테고리 등록/수정
+			addrCateOpen: false,
+			saveStatus: '',
 			// 구성원 목록
 			memberList: [],	//구성원 리스트
 			listSize : 5,	// select 박스 value (출력 갯수 이벤트)
 			pageNo : 1,		// 현재 페이징 위치
 			totCnt : 0,		// 전체 리스트 수
 			offset : 0,		// 페이지 시작점
+			memberRegisterOpen: false,
 			listAllChecked: false,
 			listChkBox: [],
 			searchAddrCateId: -1,
+			//Tree 목록에서 선택값
+			selectAddrName: '',
+			selectTopAddrCateId: -1,
 		}
 	},
 	mounted() {
@@ -362,26 +385,28 @@ export default {
 			//주소록 그룹 put
 			vm.fnSetSubItems(addrCateList, addrCateGrp, 'Y');
 			vm.addrTreeList.push(addrCateGrp);
+
+			console.log('vm.addrTreeList : ' + vm.addrTreeList);
 		},
 		// target을 tree형태로 변경
 		fnSetSubItems(addrCateList, target, targetGrpYn) {
 			const vm = this;
-			const addCateId = target.addressCategoryId;
-			const addCateGrpId = target.addressCategoryGrpId;
-			let addCateInfo;
+			const addrCateId = target.addressCategoryId;
+			const addrCateGrpId = target.addressCategoryGrpId;
+			let addrCateInfo;
 
 			if (!('subItems' in target)) target.subItems = [];
 
 			for(let i=0; i < addrCateList.length; i++) {
-				addCateInfo = addrCateList[i];
-				if(targetGrpYn == 'Y' && addCateInfo.parAddressCategoryId == 0) { // Address Category Group
-					if(addCateGrpId == addCateInfo.addressCategoryGrpId) {
-						target.subItems.push(addCateInfo);
+				addrCateInfo = addrCateList[i];
+				if(targetGrpYn == 'Y' && addrCateInfo.parAddressCategoryId == 0) { // Address Category Group
+					if(addrCateGrpId == addrCateInfo.addressCategoryGrpId) {
+						target.subItems.push(addrCateInfo);
 						vm.fnSetSubItems(addrCateList, target.subItems[target.subItems.length - 1], 'N');
 					}
 				} else { // Address Category
-					if(addCateId == addCateInfo.parAddressCategoryId) { // child item 판단
-						target.subItems.push(addCateInfo);
+					if(addrCateId == addrCateInfo.parAddressCategoryId) { // child item 판단
+						target.subItems.push(addrCateInfo);
 							vm.fnSetSubItems(addrCateList, target.subItems[target.subItems.length - 1], 'N');
 					}
 				}
@@ -399,13 +424,50 @@ export default {
 			}
 		},
 		//주소 카테고리 클릭
-		fnAddrCateMem(addressCategoryId) {
-			if(this.$gfnCommonUtils.isEmpty(addressCategoryId)){
+		fnAddrCateMem(addrCateId, addrName, topAddressCategoryId) {
+			if(this.$gfnCommonUtils.isEmpty(addrCateId)){
 				this.memberList = [];
 				return;
 			}
-			this.searchAddrCateId = addressCategoryId;
+			this.searchAddrCateId = addrCateId;
+			this.selectAddrName = addrName;
+			this.selectTopAddrCateId = topAddressCategoryId;
 			this.fnSearchMember();
+		},
+		// 주소 카테고리 등록/수정
+		fnSaveMemberPop(saveStatus) {
+			if(this.searchAddrCateId == -1) {
+				confirm.fnAlert('카테고리 추가', '주소 카테고리명을 선택해 주세요.');
+				return false;
+			}
+			this.saveStatus = saveStatus;
+			this.addrCateOpen = !this.addrCateOpen;
+			jQuery('#AddrCategoryLayer').modal('show');
+		},
+		// 주소 카테고리 삭제
+		fndelAddrCate() {
+			if(this.searchAddrCateId == -1) {
+				confirm.fnAlert('카테고리 추가', '주소 카테고리명을 선택해 주세요.');
+				return false;
+			}
+			eventBus.$on('callbackEventBus', this.fndelAddrCateCallBack);
+			confirm.fnConfirm('[' + this.selectAddrName + '] 카테고리 삭제', this.selectAddrName + '포함 하위 카테고리가 삭제됩니다. 삭제하시겠습니까?', '확인');
+		},
+		fndelAddrCateCallBack() {
+			let params = {
+				'regId': tokenSvc.getToken().principal.userId,
+				'addressCategoryId': this.searchAddrCateId,
+			};
+
+			addressApi.deleteAddressCategory(params).then(response =>{
+				var result = response.data;
+				if(result.success) {
+					confirm.fnAlert('카테고리 삭제','삭제에 성공했습니다.');
+					this.fnGetAddrList();
+				} else {
+					confirm.fnAlert('카테고리 삭제',result.message);
+				}
+			});
 		},
 		//주소록 구성원 조회
 		fnSearchMember(pageNum) {
@@ -443,11 +505,11 @@ export default {
 		// 주소록 카테고리 그룹 수정
 		fnModAddrPop() {
 			if(this.$refs.selectAddrCateGrp.selectedIndex == 0) {
-				confirm.fnAlert(this.title, "주소록을 선택해 주세요");
+				confirm.fnAlert(this.title, '주소록을 선택해 주세요');
 				return false;
 			}
 			this.addrModifyOpen = !this.addrModifyOpen;
-			jQuery("#AddrModifyLayer").modal("show");
+			jQuery('#AddrModifyLayer').modal('show');
 		},
 		// 구성원 추가
 		fnRegisterMemberPop() {
@@ -456,7 +518,7 @@ export default {
 				return false;
 			}
 			this.memberRegisterOpen = !this.memberRegisterOpen;
-			jQuery("#MemberRegisterLayer").modal("show");
+			jQuery('#MemberRegisterLayer').modal('show');
 		},
 		// 구성원 삭제
 		fnDeletemember() {
@@ -466,18 +528,18 @@ export default {
 			}
 
 			eventBus.$on('callbackEventBus', this.fnDeletememberCallBack);
-			confirm.fnConfirm('구성원 삭제', "삭제하시겠습니까?", "확인");
+			confirm.fnConfirm('구성원 삭제', '삭제하시겠습니까?', '확인');
 		},
 		fnDeletememberCallBack() {
 			let params = {
-				//"addressCategoryId": this.searchAddrCateId,
-				"memberList": this.listChkBox,
+				//'addressCategoryId': this.searchAddrCateId,
+				'memberList': this.listChkBox,
 			};
 
 			addressApi.deleteMember(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					alert("삭제 했습니다.");
+					alert('삭제 했습니다.');
 					this.fnSearchMemberList();
 					this.fnResetChkbox();
 				} else {
@@ -489,6 +551,7 @@ export default {
 			this.listAllChecked = false;
 			this.listChkBox = [];
 		},
+
 	}
 }
 </script>
