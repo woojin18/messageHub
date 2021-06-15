@@ -84,9 +84,9 @@ public class SmartTemplateService {
 
     	Map<String, Object> sParams = new HashMap<String, Object>(params);
         RestResult<Object> rtn = new RestResult<Object>();
-System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-System.out.println("sParams.get('productCode') : "+sParams.get("productCode"));
-System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//System.out.println("sParams.get('productCode') : "+sParams.get("productCode"));
+//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         List<Object> productList = generalDao.selectGernalList("smartTemplate.selectSmartProductList", sParams);
         if(productList.size() > 0) {
 	        HashMap<String,String> product = (HashMap<String,String>) productList.get(0);
@@ -139,12 +139,7 @@ System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	        
 	        sParams.put("msgKind", product.get("msgKind"));
 	        sParams.put("chTypeList", sb.toString());
-System.out.println(">>>>>>>> notIncludedRCS : "+notIncludedRCS);	
-System.out.println(">>>>>>>> notIncludedPUSH : "+notIncludedPUSH);
-System.out.println(">>>>>>>> notIncludedSMS : "+notIncludedSMS);
-System.out.println(">>>>>>>> notIncludedMMS : "+notIncludedMMS);
-System.out.println(">>>>>>>> notIncludedFRIENDTALK : "+notIncludedFRIENDTALK);
-System.out.println(">>>>>>>> notIncludedALIMTALK : "+notIncludedALIMTALK);
+
 	        if(notIncludedRCS != "") sParams.put("notIncludedRCS", notIncludedRCS);
 	        if(notIncludedPUSH != "") sParams.put("notIncludedPUSH", notIncludedPUSH);
 	        if(notIncludedSMS != "") sParams.put("notIncludedSMS", notIncludedSMS);

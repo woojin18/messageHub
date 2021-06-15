@@ -11,10 +11,21 @@
 							<h2>카테고리 수정</h2>
 						</div>
 						<hr>
-						<div class="of_h">
-							<h5 class="inline-block" style="width:18%">상위카테고리</h5>
-							<div class="float-right" style="width:80%">
-								{{addrCateName}}
+						<!-- 상위카테고리는 등록시에만 표기 -->
+						<div v-if="saveStatus == 'I'">
+							<div class="of_h">
+								<h5 class="inline-block" style="width:18%">상위카테고리</h5>
+								<div class="float-right" style="width:80%">
+									{{addrCateName}}
+								</div>
+							</div>
+						</div>
+						<div v-else>
+							<div class="of_h">
+								<h5 class="inline-block" style="width:18%">상위카테고리</h5>
+								<div class="float-right" style="width:80%">
+									{{addrCateGrpName}}
+								</div>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
@@ -67,6 +78,10 @@ export default {
 			type: String,
 			require: true,
 		},
+		addrCateGrpName: {
+			type: String,
+			require: false,
+		}
 	},
 	data() {
 		return {
@@ -104,9 +119,14 @@ export default {
 					'addressCategoryGrpId': this.addrCateGrpId,
 					'regId': tokenSvc.getToken().principal.userId,
 					'addressCategoryName': this.cateName,
-					'parAddressCategoryId': this.parAddrCateId,
 					'saveStatus': this.saveStatus,
 				};
+
+				if(this.parAddrCateId  == -1) { // root 하위에 카테고리 추가
+					params.parAddressCategoryId = 0;
+				} else {
+					params.parAddressCategoryId = this.parAddrCateId;
+				}
 			} else {
 				params = {
 					'regId': tokenSvc.getToken().principal.userId,

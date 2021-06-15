@@ -114,8 +114,8 @@ public class SmartSendController {
      * @return
      * @throws Exception
      */
-    @PostMapping(path="/sendSmartMessage")
-    public RestResult<?> sendSmartMessage(HttpServletRequest request, HttpServletResponse response
+    @PostMapping(path="/smartSendMessage")
+    public RestResult<?> smartSendMessage(HttpServletRequest request, HttpServletResponse response
             , @ModelAttribute MultipartFileDTO multipartFileDTO) throws Exception {
 
         List<RecvInfo> recvInfoLst = null;
@@ -128,16 +128,16 @@ public class SmartSendController {
         try {
             params = commonService.setUserInfo(multipartFileDTO.getParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
-            log.info("{}.sendSmartMessage Start ====> params : {}", this.getClass(), params);
+            log.info("{}.smartSendMessage Start ====> params : {}", this.getClass(), params);
 System.out.println("smartSendController 010");
             /** 유효성 체크 */
             requestData = smartSendService.setSmartSendData(rtn, params);
             if(rtn.isSuccess() == false) {
-                log.info("{}.sendSmartMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
+                log.info("{}.smartSendMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
                 return rtn;
             }
-            log.info("{}.sendSmartMessage pushRequestData: {}", this.getClass(), requestData.toString());
-System.out.println("smartSendController 020");
+            log.info("{}.smartSendMessage pushRequestData: {}", this.getClass(), requestData.toString());
+System.out.println("smartSendMessage 020");
             /** 스마트발송 수신자 리스트*/
             recvInfoLst = smartSendService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
@@ -151,7 +151,7 @@ System.out.println("smartSendController 030");
             if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
                 return smartSendService.insertSmartCmWebMsg(rtn, params, requestData, recvInfoLst);
             }
-System.out.println("smartSendController 040");
+System.out.println("smartSendMessage 040");
             /** 잔액확인 */
             String payType = smartSendService.selectPayType(params);
 System.out.println("smartSendController 041  payType: "+payType);
@@ -215,18 +215,18 @@ System.out.println("smartSendController 050  testSendYn : "+testSendYn);
         } catch (Exception e) {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
-            log.error("{}.sendSmartMessage Error : {}", this.getClass(), e);
+            log.error("{}.smartSendMessage Error : {}", this.getClass(), e);
             return rtn;
         }
 System.out.println("smartSendController 060");
         /** 비동기화 발송 */
         try {
             List<Object> reSendCdList = smartSendService.reSendCdList(null);
-            log.info("{}.sendSmartMessage aSync API send Start ====>", this.getClass());
+            log.info("{}.smartSendMessage aSync API send Start ====>", this.getClass());
 System.out.println("smartSendController 061");            
             smartSendService.sendSmartMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
-            log.info("{}.sendSmartMessage aSync API send Error : {}", this.getClass(), e);
+            log.info("{}.smartSendMessage aSync API send Error : {}", this.getClass(), e);
         }
         rtn.setMessage("스마트 발송 요청처리 되었습니다.");
 

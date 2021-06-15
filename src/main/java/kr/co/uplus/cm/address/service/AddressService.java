@@ -383,7 +383,13 @@ public class AddressService {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
 		int resultCnt = 0;
+		
+		// 하위카테고리 포함 구성원 삭제
+		generalDao.deleteGernal(DB.QRY_DELETE_ADDR_CATE_MEMBER, params);
+		
+		// 하위카테고리 포함 삭제
 		resultCnt = generalDao.updateGernal(DB.QRY_DELETE_ADDR_CATE, params);
+		
 		
 		if (resultCnt <= 0) {
 			rtn.setSuccess(false);

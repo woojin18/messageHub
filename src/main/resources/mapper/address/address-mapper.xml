@@ -422,4 +422,19 @@
 				AND		@pv := CONCAT(@pv, ',', ADDRESS_CATEGORY_ID)
 			)
 	</update>
+	
+	<delete id="deleteAddrCateMember">
+		/* address.deleteAddrCateMember 주소카테고리 삭제시 구성원 삭제 (하위 카테고리의 구성원까지 삭제)*/
+		DELETE	FROM cm_console.CM_ADDR_CATE_MEM
+		WHERE	ADDRESS_CATEGORY_ID = #{addressCategoryId}
+		OR	ADDRESS_CATEGORY_ID IN (
+				SELECT	ADDRESS_CATEGORY_ID
+				FROM	(	SELECT * FROM cm_console.CM_ADDR_CATE
+							WHERE DEL_YN='N'
+							ORDER BY PAR_ADDRESS_CATEGORY_ID, ADDRESS_CATEGORY_ID) PRODUCTS_SORTED,
+						(select @pv := #{addressCategoryId}) INITIALISATION
+				WHERE	FIND_IN_SET(PAR_ADDRESS_CATEGORY_ID, @pv) > 0
+				AND		@pv := CONCAT(@pv, ',', ADDRESS_CATEGORY_ID)
+			)
+	</delete>
 </mapper>

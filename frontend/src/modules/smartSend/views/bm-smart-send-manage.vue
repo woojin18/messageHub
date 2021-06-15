@@ -424,7 +424,8 @@
 			    	<!-- //ctall -->
 			    				    	
 		        	<!-- friendTalk -->
-			          <div v-if="channelType == 'KAKAO' && rowData.kakaoPrdType == 'FRIENDTALK'" class="phoneWrap">
+			          <!--<div v-if="channelType == 'KAKAO' && rowData.kakaoPrdType == 'FRIENDTALK'" class="phoneWrap">-->
+			          <div v-if="channelType == 'FRIENDTALK'" class="phoneWrap">
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y2">
@@ -435,7 +436,8 @@
 			    	<!-- //friendTalk -->
 			    	
 		        	<!-- alimTalk -->
-			          <div v-if="channelType == 'KAKAO' && rowData.kakaoPrdType == 'ALIMTALK'" class="phoneWrap">
+			          <!--<div v-if="channelType == 'KAKAO' && rowData.kakaoPrdType == 'ALIMTALK'" class="phoneWrap">-->
+			          <div v-if="channelType == 'ALIMTALK'" class="phoneWrap">
 			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y2">
@@ -444,7 +446,7 @@
 						</div>
 			          </div>
 			    	<!-- alimTalk -->			    	
-		        <!--// RCS -->
+		        <!--// friendTalk -->
 		                  		        
 				<!-- //phoneWrap -->
 				<div class="phone_04_btn6">
@@ -1460,7 +1462,7 @@ export default {
 
       this.inProgress = true;
       const vm = this;
-      await smartSendApi.sendIntegratedMessage(fd).then(response =>{
+      await smartSendApi.smartSendMessage(fd).then(response =>{
         this.inProgress = false;
         const result = response.data;
         

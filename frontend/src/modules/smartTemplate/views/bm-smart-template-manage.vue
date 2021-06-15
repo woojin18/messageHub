@@ -3170,7 +3170,7 @@ export default {
 	            	}else if(this.rowData.checkedChannel[i] == 'FRIENDTALK' || this.rowData.checkedChannel[i] == 'ALIMTALK'){
 	            		this.channelTab = 2;
 	            		this.checkedKakao = true;
-console.log("this.checkedKakao : " + tthis.checkedKakao);	
+console.log("this.checkedKakao : " + this.checkedKakao);	
 	            		if(this.rowData.checkedChannel[i] == 'FRIENDTALK' ) this.kakaoTemplateTable = 0;
 	            		if(this.rowData.checkedChannel[i] == 'ALIMTALK' ) this.kakaoTemplateTable = 1;
 	            		//if(this.rowData.chTypeList[i] == 'FRIENDTALK' ) this.kakaoTemplateTable = 0;
@@ -3927,18 +3927,13 @@ console.log("this.checkedKakao : " + tthis.checkedKakao);
                         
 	            if(rtnData.rcsButton0ButtonType){
 	            	this.buttonSMSFlag = true;
-	            	this.rowData.rcsSMSButtons.push({'buttonType':rtnData.rcsButton0ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton0Title
-	            	                                   , 'startDate':rtnData.rcsButton0StartTime
-	            	                                   , 'endDate':rtnData.rcsButton0EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
+	            	this.rowData.rcsSMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
 	            }
             }
             
 
             
-            if(rtnData.rcsPrdType == 'LSM'){
+            if(rtnData.rcsPrdType == 'LMS'){
 	            this.rowData.rcsLMSTitle			= rtnData.rcsBodyTitle;
 	            this.rowData.rcsLMSContent 			= rtnData.rcsBodyDescription;
 	            this.rowData.rcsLMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
@@ -3946,32 +3941,17 @@ console.log("this.checkedKakao : " + tthis.checkedKakao);
                         
 	            if(rtnData.rcsButton0ButtonType){
 	            	this.buttonLMSFlag = true;
-	            	this.rowData.rcsLMSButtons.push({'buttonType':rtnData.rcsButton0ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton0Title
-	            	                                   , 'startDate':rtnData.rcsButton0StartTime
-	            	                                   , 'endDate':rtnData.rcsButton0EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
+	            	this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
 	            }
             
 	            if(rtnData.rcsButton1ButtonType){
 	            	this.buttonLMSFlag = true;
-	            	this.rowData.rcsLMSButtons.push({'buttonType':rtnData.rcsButton1ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton1Title
-	            	                                   , 'startDate':rtnData.rcsButton1StartTime
-	            	                                   , 'endDate':rtnData.rcsButton1EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
+	            	this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr1));
 	            }
 
 	            if(rtnData.rcsButton2ButtonType){
 	            	this.buttonLMSFlag = true;
-	            	this.rowData.rcsLMSButtons.push({'buttonType':rtnData.rcsButton2ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton2DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton2Title
-	            	                                   , 'startDate':rtnData.rcsButton2StartTime
-	            	                                   , 'endDate':rtnData.rcsButton2EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton2Description});
+	            	this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr2));
 	            }
             }
             
@@ -3989,21 +3969,11 @@ console.log("this.checkedKakao : " + tthis.checkedKakao);
 	                    
 	            if(rtnData.rcsButton0ButtonType){
 	            	this.buttonShortFlag = true;
-	            	this.rowData.rcsShortButtons.push({'buttonType':rtnData.rcsButton0ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton0Title
-	            	                                   , 'startDate':rtnData.rcsButton0StartTime
-	            	                                   , 'endDate':rtnData.rcsButton0EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
+	            	this.rowData.rcsShortButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
 	            }
 	            if(rtnData.rcsButton1ButtonType){
 	            	this.buttonTallFlag = true;
-	            	this.rowData.rcsShortButtons.push({'buttonType':rtnData.rcsButton1ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton1Title
-	            	                                   , 'startDate':rtnData.rcsButton1StartTime
-	            	                                   , 'endDate':rtnData.rcsButton1EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
+	            	this.rowData.rcsShortButtons.push(JSON.parse(rtnData.rcs0ButtonArr1));
 	            }
 			}
            
@@ -4020,21 +3990,11 @@ console.log("this.checkedKakao : " + tthis.checkedKakao);
             
 	            if(rtnData.rcsButton0ButtonType){
 	            	this.buttonTallFlag = true;
-	            	this.rowData.rcsTallButtons.push({'buttonType':rtnData.rcsButton0ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton0Title
-	            	                                   , 'startDate':rtnData.rcsButton0StartTime
-	            	                                   , 'endDate':rtnData.rcsButton0EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
+	            	this.rowData.rcsTallButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
 	            }            
 	            if(rtnData.rcsButton1ButtonType){
 	            	this.buttonTallFlag = true;
-	            	this.rowData.rcsTallButtons.push({'buttonType':rtnData.rcsButton1ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton1Title
-	            	                                   , 'startDate':rtnData.rcsButton1StartTime
-	            	                                   , 'endDate':rtnData.rcsButton1EndTime
-	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
+	            	this.rowData.rcsTallButtons.push(JSON.parse(rtnData.rcs0ButtonArr1));
 	            }
 
 			}
@@ -4082,143 +4042,84 @@ console.log("this.checkedKakao : " + tthis.checkedKakao);
 	            }
             
             	
+	            if(rtnData.rcsBodyMediaUrl){
+	            	this.rowData.rcs90ImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
+	            }
+	            
+	            if(rtnData.rcs1BodyMediaUrl){
+	            	this.rowData.rcs91ImgInfoList.push({'fileId':rtnData.rcs1BodyMedia, 'imgUrl':rtnData.rcs1BodyMediaUrl});
+	            }
+            	
+            	if(rtnData.rcs2BodyMediaUrl){
+	            	this.rowData.rcs92ImgInfoList.push({'fileId':rtnData.rcs2BodyMedia, 'imgUrl':rtnData.rcs2BodyMediaUrl});
+	            }
+	            
+	            if(rtnData.rcs3BodyMediaUrl){
+	            	this.rowData.rcs93ImgInfoList.push({'fileId':rtnData.rcs3BodyMedia, 'imgUrl':rtnData.rcs3BodyMediaUrl});
+	            }
+	            
+	            if(rtnData.rcs4BodyMediaUrl){
+	            	this.rowData.rcs94ImgInfoList.push({'fileId':rtnData.rcs4BodyMedia, 'imgUrl':rtnData.rcs4BodyMediaUrl});
+	            }
+	            
+	            if(rtnData.rcs5BodyMediaUrl){
+	            	this.rowData.rcs95ImgInfoList.push({'fileId':rtnData.rcs5BodyMedia, 'imgUrl':rtnData.rcs5BodyMediaUrl});
+	            }
+            
+            	
 	            if(rtnData.rcsButton0ButtonType){
 	            	this.button90Flag = true;
-	            	this.rowData.rcs90Buttons.push({'buttonType':rtnData.rcsButton0ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton0Title
-	            	                                   , 'startDate':rtnData.rcsButton0StartTime
-	            	                                   , 'endDate':rtnData.rcsButton0EndTime
-	            	                                   , 'startDateId':rtnData.rcsButton0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcsButton0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
+	            	this.rowData.rcs90Buttons.push(JSON.parse(rtnData.rcs0ButtonArr0));
 	            }      
 	            
 	            if(rtnData.rcsButton1ButtonType){
 	            	this.button90Flag = true;
-	            	this.rowData.rcs90Buttons.push({'buttonType':rtnData.rcsButton1ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton1Title
-	            	                                   , 'startDate':rtnData.rcsButton1StartTime
-	            	                                   , 'endDate':rtnData.rcsButton1EndTime
-	            	                                   , 'startDateId':rtnData.rcsButton1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcsButton1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
+	            	this.rowData.rcs90Buttons.push(JSON.parse(rtnData.rcs0ButtonArr1));
 	            }
 	           
 	            if(rtnData.rcs1Button0ButtonType){
 	            	this.button91Flag = true;
-	            	this.rowData.rcs91Buttons.push({'buttonType':rtnData.rcs1Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs1Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs1Button0Title
-	            	                                   , 'startDate':rtnData.rcs1Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs1Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs1Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs1Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs1Button0Description});
+	            	this.rowData.rcs91Buttons.push(JSON.parse(rtnData.rcs1ButtonArr0));
 	            }            
 	            if(rtnData.rcs1Button1ButtonType){
 	            	this.button91Flag = true;
-	            	this.rowData.rcs91Buttons.push({'buttonType':rtnData.rcs1Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs1Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs1Button1Title
-	            	                                   , 'startDate':rtnData.rcs1Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs1Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs1Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs1Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs1Button1Description});
+	            	this.rowData.rcs91Buttons.push(JSON.parse(rtnData.rcs1ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs2Button0ButtonType){
 	            	this.button92Flag = true;
-	            	this.rowData.rcs92Buttons.push({'buttonType':rtnData.rcs2Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs2Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs2Button0Title
-	            	                                   , 'startDate':rtnData.rcs2Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs2Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs2Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs2Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs2Button0Description});
+	            	this.rowData.rcs92Buttons.push(JSON.parse(rtnData.rcs2ButtonArr0));
 	            }            
 	            if(rtnData.rcs2Button1ButtonType){
 	            	this.button92Flag = true;
-	            	this.rowData.rcs92Buttons.push({'buttonType':rtnData.rcs2Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs2Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs2Button1Title
-	            	                                   , 'startDate':rtnData.rcs2Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs2Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs2Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs2Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs2Button1Description});
+	            	this.rowData.rcs92Buttons.push(JSON.parse(rtnData.rcs2ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs3Button0ButtonType){
 	            	this.button93Flag = true;
-	            	this.rowData.rcs93Buttons.push({'buttonType':rtnData.rcs3Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs3Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs3Button0Title
-	            	                                   , 'startDate':rtnData.rcs3Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs3Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs3Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs3Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs3Button0Description});
+	            	this.rowData.rcs93Buttons.push(JSON.parse(rtnData.rcs3ButtonArr0));
 	            }            
 	            if(rtnData.rcs3Button1ButtonType){
 	            	this.button93Flag = true;
-	            	this.rowData.rcs93Buttons.push({'buttonType':rtnData.rcs3Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs3Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs3Button1Title
-	            	                                   , 'startDate':rtnData.rcs3Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs3Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs3Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs3Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs3Button1Description});
+	            	this.rowData.rcs93Buttons.push(JSON.parse(rtnData.rcs3ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs4Button0ButtonType){
 	            	this.button94Flag = true;
-	            	this.rowData.rcs94Buttons.push({'buttonType':rtnData.rcs4Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs4Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs4Button0Title
-	            	                                   , 'startDate':rtnData.rcs4Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs4Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs4Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs4Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs4Button0Description});
+	            	this.rowData.rcs94Buttons.push(JSON.parse(rtnData.rcs4ButtonArr0));
 	            }            
 	            if(rtnData.rcs4Button1ButtonType){
 	            	this.button94Flag = true;
-	            	this.rowData.rcs94Buttons.push({'buttonType':rtnData.rcs4Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs4Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs4Button1Title
-	            	                                   , 'startDate':rtnData.rcs4Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs4Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs4Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs4Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs4Button1Description});
+	            	this.rowData.rcs94Buttons.push(JSON.parse(rtnData.rcs4ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs5Button0ButtonType){
 	            	this.button95Flag = true;
-	            	this.rowData.rcs95Buttons.push({'buttonType':rtnData.rcs5Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs5Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs5Button0Title
-	            	                                   , 'startDate':rtnData.rcs5Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs5Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs5Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs5Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs5Button0Description});
+	            	this.rowData.rcs95Buttons.push(JSON.parse(rtnData.rcs5ButtonArr0));
 	            }            
 	            if(rtnData.rcs5Button1ButtonType){
 	            	this.button95Flag = true;
-	            	this.rowData.rcs95Buttons.push({'buttonType':rtnData.rcs5Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs5Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs5Button1Title
-	            	                                   , 'startDate':rtnData.rcs5Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs5Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs5Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs5Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs5Button1Description});
+	            	this.rowData.rcs95Buttons.push(JSON.parse(rtnData.rcs5ButtonArr1));
 	            }
 
 			}
@@ -4268,140 +4169,56 @@ console.log("this.checkedKakao : " + tthis.checkedKakao);
             
 	            if(rtnData.rcsButton0ButtonType){
 	            	this.button100Flag = true;
-	            	this.rowData.rcs100Buttons.push({'buttonType':rtnData.rcsButton0ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton0Title
-	            	                                   , 'startDate':rtnData.rcsButton0StartTime
-	            	                                   , 'endDate':rtnData.rcsButton0EndTime
-	            	                                   , 'startDateId':rtnData.rcsButton0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcsButton0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcsButton0Description});
+	            	this.rowData.rcs100Buttons.push(JSON.parse(rtnData.rcs0ButtonArr0));
 	            }            
 	            if(rtnData.rcsButton1ButtonType){
 	            	this.button100Flag = true;
-	            	this.rowData.rcs100Buttons.push({'buttonType':rtnData.rcsButton1ButtonType
-	            	                                   , 'buttonName':rtnData.rcsButton1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcsButton1Title
-	            	                                   , 'startDate':rtnData.rcsButton1StartTime
-	            	                                   , 'endDate':rtnData.rcsButton1EndTime
-	            	                                   , 'startDateId':rtnData.rcsButton1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcsButton1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcsButton1Description});
+	            	this.rowData.rcs100Buttons.push(JSON.parse(rtnData.rcs0ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs1Button0ButtonType){
 	            	this.button101Flag = true;
-	            	this.rowData.rcs101Buttons.push({'buttonType':rtnData.rcs1Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs1Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs1Button0Title
-	            	                                   , 'startDate':rtnData.rcs1Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs1Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs1Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs1Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs1Button0Description});
+	            	this.rowData.rcs101Buttons.push(JSON.parse(rtnData.rcs1ButtonArr0));
 	            }            
 	            if(rtnData.rcs1Button1ButtonType){
 	            	this.button101Flag = true;
-	            	this.rowData.rcs101Buttons.push({'buttonType':rtnData.rcs1Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs1Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs1Button1Title
-	            	                                   , 'startDate':rtnData.rcs1Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs1Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs1Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs1Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs1Button1Description});
+	            	this.rowData.rcs101Buttons.push(JSON.parse(rtnData.rcs1ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs2Button0ButtonType){
 	            	this.button102Flag = true;
-	            	this.rowData.rcs102Buttons.push({'buttonType':rtnData.rcs2Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs2Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs2Button0Title
-	            	                                   , 'startDate':rtnData.rcs2Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs2Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs2Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs2Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs2Button0Description});
+	            	this.rowData.rcs102Buttons.push(JSON.parse(rtnData.rcs2ButtonArr0));
 	            }            
 	            if(rtnData.rcs1Button2ButtonType){
 	            	this.button102Flag = true;
-	            	this.rowData.rcs102Buttons.push({'buttonType':rtnData.rcs2Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs2Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs2Button1Title
-	            	                                   , 'startDate':rtnData.rcs2Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs2Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs2Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs2Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs2Button1Description});
+	            	this.rowData.rcs102Buttons.push(JSON.parse(rtnData.rcs2ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs3Button0ButtonType){
 	            	this.button103Flag = true;
-	            	this.rowData.rcs103Buttons.push({'buttonType':rtnData.rcs3Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs3Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs3Button0Title
-	            	                                   , 'startDate':rtnData.rcs3Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs3Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs3Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs3Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs3Button0Description});
+	            	this.rowData.rcs103Buttons.push(JSON.parse(rtnData.rcs3ButtonArr0));
 	            }            
 	            if(rtnData.rcs1Button3ButtonType){
 	            	this.button103Flag = true;
-	            	this.rowData.rcs103Buttons.push({'buttonType':rtnData.rcs3Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs3Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs3Button1Title
-	            	                                   , 'startDate':rtnData.rcs3Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs3Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs3Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs3Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs3Button1Description});
+	            	this.rowData.rcs103Buttons.push(JSON.parse(rtnData.rcs3ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs4Button0ButtonType){
 	            	this.button104Flag = true;
-	            	this.rowData.rcs104Buttons.push({'buttonType':rtnData.rcs4Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs4Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs4Button0Title
-	            	                                   , 'startDate':rtnData.rcs4Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs4Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs4Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs4Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs4Button0Description});
+	            	this.rowData.rcs104Buttons.push(JSON.parse(rtnData.rcs4ButtonArr0));
 	            }            
 	            if(rtnData.rcs1Button4ButtonType){
 	            	this.button104Flag = true;
-	            	this.rowData.rcs104Buttons.push({'buttonType':rtnData.rcs4Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs4Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs4Button1Title
-	            	                                   , 'startDate':rtnData.rcs4Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs4Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs4Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs4Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs4Button1Description});
+	            	this.rowData.rcs104Buttons.push(JSON.parse(rtnData.rcs4ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs5Button0ButtonType){
 	            	this.button105Flag = true;
-	            	this.rowData.rcs105Buttons.push({'buttonType':rtnData.rcs5Button0ButtonType
-	            	                                   , 'buttonName':rtnData.rcs5Button0DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs5Button0Title
-	            	                                   , 'startDate':rtnData.rcs5Button0StartTime
-	            	                                   , 'endDate':rtnData.rcs5Button0EndTime
-	            	                                   , 'startDateId':rtnData.rcs5Button0StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs5Button0EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs5Button0Description});
+	            	this.rowData.rcs105Buttons.push(JSON.parse(rtnData.rcs5ButtonArr0));
 	            }            
 	            if(rtnData.rcs1Button5ButtonType){
 	            	this.button105Flag = true;
-	            	this.rowData.rcs105Buttons.push({'buttonType':rtnData.rcs5Button1ButtonType
-	            	                                   , 'buttonName':rtnData.rcs5Button1DisplayText
-	            	                                   , 'buttonLink':rtnData.rcs5Button1Title
-	            	                                   , 'startDate':rtnData.rcs5Button1StartTime
-	            	                                   , 'endDate':rtnData.rcs5Button1EndTime
-	            	                                   , 'startDateId':rtnData.rcs5Button1StartTimeId
-	            	                                   , 'endDateId':rtnData.rcs5Button1EndTimeId
-	            	                                   , 'buttonLink1':rtnData.rcs5Button1Description});
+	            	this.rowData.rcs105Buttons.push(JSON.parse(rtnData.rcs5ButtonArr1));
 	            }
 
 			}
@@ -4419,52 +4236,27 @@ console.log("this.checkedKakao : " + tthis.checkedKakao);
             if(rtnData.friendTalkPrdType == 'FRIENDTALK'){
 	            if(rtnData.friendTalkButton0ButtonType){
 	            	this.buttonFriendTalkFlag = true;
-	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton0ButtonType
-	            	                                   , 'buttonName':rtnData.friendTalkButton0DisplayText
-	            	                                   , 'buttonLink':rtnData.friendTalkButton0Title
-	            	                                   , 'startDate':rtnData.friendTalkButton0StartTime
-	            	                                   , 'endDate':rtnData.friendTalkButton0EndTime
-	            	                                   , 'buttonLink1':rtnData.friendTalkButton0Description});
+	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr0));
 	            }
 	            
 	            if(rtnData.friendTalkButton1ButtonType){
 	            	this.buttonFriendTalkFlag = true;
-	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton1ButtonType
-	            	                                   , 'buttonName':rtnData.friendTalkButton1DisplayText
-	            	                                   , 'buttonLink':rtnData.friendTalkButton1Title
-	            	                                   , 'startDate':rtnData.friendTalkButton1StartTime
-	            	                                   , 'endDate':rtnData.friendTalkButton1EndTime
-	            	                                   , 'buttonLink1':rtnData.friendTalkButton1Description});
+	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr1));
 	            }
 	            
 	            if(rtnData.friendTalkButton2ButtonType){
 	            	this.buttonFriendTalkFlag = true;
-	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton2ButtonType
-	            	                                   , 'buttonName':rtnData.friendTalkButton2DisplayText
-	            	                                   , 'buttonLink':rtnData.friendTalkButton2Title
-	            	                                   , 'startDate':rtnData.friendTalkButton2StartTime
-	            	                                   , 'endDate':rtnData.friendTalkButton2EndTime
-	            	                                   , 'buttonLink1':rtnData.friendTalkButton2Description});
+	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr2));
 	            }
 	            
 	            if(rtnData.friendTalkButton3ButtonType){
 	            	this.buttonFriendTalkFlag = true;
-	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton3ButtonType
-	            	                                   , 'buttonName':rtnData.friendTalkButton3DisplayText
-	            	                                   , 'buttonLink':rtnData.friendTalkButton3Title
-	            	                                   , 'startDate':rtnData.friendTalkButton3StartTime
-	            	                                   , 'endDate':rtnData.friendTalkButton3EndTime
-	            	                                   , 'buttonLink1':rtnData.friendTalkButton3Description});
+	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr3));
 	            }
 	            
 	            if(rtnData.friendTalkButton4ButtonType){
 	            	this.buttonFriendTalkFlag = true;
-	            	this.rowData.friendTalkButtons.push({'buttonType':rtnData.friendTalkButton4ButtonType
-	            	                                   , 'buttonName':rtnData.friendTalkButton4DisplayText
-	            	                                   , 'buttonLink':rtnData.friendTalkButton4Title
-	            	                                   , 'startDate':rtnData.friendTalkButton4StartTime
-	            	                                   , 'endDate':rtnData.friendTalkButton4EndTime
-	            	                                   , 'buttonLink1':rtnData.friendTalkButton4Description});
+	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr4));
 	            }
 			}
 
@@ -5692,7 +5484,7 @@ console.log("this.checkedKakao : " + tthis.checkedKakao);
 
     fnTextLength(title, sid, tid, len){
       var val = jQuery(sid).val();
-      console.log("val : "+val.length);
+      
       if(val.length > len){
         var msg = title + '의 최대 입력 길이는 ' + len + '입니다.';
         alert(msg);

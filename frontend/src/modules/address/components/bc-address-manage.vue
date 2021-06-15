@@ -39,58 +39,9 @@
 								<addr-tree-menu v-for="(addrTreeData, idx) in addrTreeList" :key="idx"
 									:item="addrTreeData.addressName"
 									:id="addrTreeData.addressCategoryId"
-									:topAddressCategoryId="addrTreeData.topAddressCategoryId"
 									:subItems="addrTreeData.subItems"
 								>
 								</addr-tree-menu>
-								<!--
-								<ul class="addList">
-									<li class="addList_minus">
-										<a href="#self">
-											<i class="fal fa-minus-square addIcon"></i>
-												{{ curAddCateGrpName }}
-										</a>
-										<ul>
-											<li>
-												<a href="#self">
-													<i class="fal fa-minus-square addIcon"></i>
-													관리팀
-												</a>
-												<ul>
-													<li><a href="#self">사업관리팀</a></li>
-												</ul>
-											</li>
-											<li class="addList_minus">
-												<a href="#self">
-													<i class="fal fa-minus-square addIcon"></i>
-													마케팅팀
-												</a>
-												<ul>
-													<li>
-														<a href="#self" class="active">통합메시징팀</a>
-													</li>
-													<li class="last">
-														<a href="#self">테스트팀</a>
-													</li>
-												</ul>
-											</li>
-											<li class="addList_plus">
-												<a href="#self">
-													<i class="fal fa-plus-square addIcon"></i>
-													신규 사업팀
-												</a
-												<ul>
-													<li><a href="#self">통합메시징팀</a></li>
-													<li><a href="#self">통합메시징팀</a></li>
-													<li><a href="#self">통합메시징팀</a></li>
-													<li class="last"><a href="#self">테스트팀</a></li>
-												</ul>
-											</li>
-										</ul>
-									</li>
-								</ul>
-								-->
-								<!-- //addList -->
 							</div>
 						</div>
 
@@ -154,10 +105,10 @@
 												<label :for="'listCheck_'+index"></label>
 											</div>
 										</td>
+										<td class="text-left color4"> {{ data.addressCategoryName }} </td>
 										<td class="text-left color4"> {{ data.cuName }} </td>
 										<td class="text-left color4"> {{ data.cuid }} </td>
-										<td class="text-center color4"> {{ data.hpNumber | phoneNumber }} </td>
-										<td class="text-left color4 end"> {{ data.addressCategoryName }} </td>
+										<td class="text-center color4 end"> {{ data.hpNumber | phoneNumber }} </td>
 									</tr>
 									<tr v-if="memberList.length == 0">
 										<td class="text-center"></td>
@@ -202,9 +153,9 @@
 			:addrCateName="selectAddrName"
 			:addrCateGrpId="selectedAddrCateGrp.addressCategoryGrpId"
 			:parAddrCateId="searchAddrCateId"
-			:topAddrCateId="selectTopAddrCateId"
 			:addrCateOpen="addrCateOpen"
 			:saveStatus="saveStatus"
+			:addrCateGrpName="selectedAddrCateGrp.addressCategoryGrpName"
 		></AddrCategoryLayer>
 	</div>
 </template>
@@ -253,9 +204,9 @@ export default {
 	filters:{
 		phoneNumber(val) {
 			if(!val) return val
-	
+
 			val = val.replace(/[^0-9]/g, '')
-			
+
 			let tmp = ''
 			if( val.length < 4){
 				return val;
@@ -331,7 +282,7 @@ export default {
 			searchAddrCateId: -1,
 			//Tree 목록에서 선택값
 			selectAddrName: '',
-			selectTopAddrCateId: -1,
+			// selectTopAddrCateId: -1,
 		}
 	},
 	mounted() {
@@ -385,8 +336,6 @@ export default {
 			//주소록 그룹 put
 			vm.fnSetSubItems(addrCateList, addrCateGrp, 'Y');
 			vm.addrTreeList.push(addrCateGrp);
-
-			console.log('vm.addrTreeList : ' + vm.addrTreeList);
 		},
 		// target을 tree형태로 변경
 		fnSetSubItems(addrCateList, target, targetGrpYn) {
@@ -400,7 +349,7 @@ export default {
 			for(let i=0; i < addrCateList.length; i++) {
 				addrCateInfo = addrCateList[i];
 				if(targetGrpYn == 'Y' && addrCateInfo.parAddressCategoryId == 0) { // Address Category Group
-					if(addrCateGrpId == addrCateInfo.addressCategoryGrpId) {
+					if(addrCateGrpId == addrCateInfo.addressCategoryGrpId) { // 주소그룹과 카테고리주소가 동일한 주소그룹이면
 						target.subItems.push(addrCateInfo);
 						vm.fnSetSubItems(addrCateList, target.subItems[target.subItems.length - 1], 'N');
 					}
@@ -424,20 +373,27 @@ export default {
 			}
 		},
 		//주소 카테고리 클릭
-		fnAddrCateMem(addrCateId, addrName, topAddressCategoryId) {
+		fnAddrCateMem(addrCateId, addrName) {
+			//root 클릭
+			if(this.$gfnCommonUtils.isEmpty(addrCateId) && !this.$gfnCommonUtils.isEmpty(addrName)) {
+				this.searchAddrCateId = -1;
+				this.selectAddrName = addrName;
+				return;
+			}
+
 			if(this.$gfnCommonUtils.isEmpty(addrCateId)){
 				this.memberList = [];
 				return;
 			}
 			this.searchAddrCateId = addrCateId;
 			this.selectAddrName = addrName;
-			this.selectTopAddrCateId = topAddressCategoryId;
+			// this.selectTopAddrCateId = topAddressCategoryId;
 			this.fnSearchMember();
 		},
-		// 주소 카테고리 등록/수정
+		// 주소 하위 카테고리 등록/수정
 		fnSaveMemberPop(saveStatus) {
-			if(this.searchAddrCateId == -1) {
-				confirm.fnAlert('카테고리 추가', '주소 카테고리명을 선택해 주세요.');
+			if(this.searchAddrCateId == -1 && this.$gfnCommonUtils.isEmpty(this.selectAddrName)) {
+				confirm.fnAlert('하위 카테고리 추가', '주소 카테고리명을 선택해 주세요.');
 				return false;
 			}
 			this.saveStatus = saveStatus;
@@ -451,7 +407,7 @@ export default {
 				return false;
 			}
 			eventBus.$on('callbackEventBus', this.fndelAddrCateCallBack);
-			confirm.fnConfirm('[' + this.selectAddrName + '] 카테고리 삭제', this.selectAddrName + '포함 하위 카테고리가 삭제됩니다. 삭제하시겠습니까?', '확인');
+			confirm.fnConfirm('[' + this.selectAddrName + '] 카테고리 삭제', this.selectAddrName + ' 를 포함한 하위 카테고리 및 구성원이 삭제됩니다. \n삭제하시겠습니까?', '확인');
 		},
 		fndelAddrCateCallBack() {
 			let params = {
@@ -463,6 +419,7 @@ export default {
 				var result = response.data;
 				if(result.success) {
 					confirm.fnAlert('카테고리 삭제','삭제에 성공했습니다.');
+					this.$refs.updatePaging.fnAllDecrease();
 					this.fnGetAddrList();
 				} else {
 					confirm.fnAlert('카테고리 삭제',result.message);
