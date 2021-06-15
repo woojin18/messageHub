@@ -170,6 +170,7 @@ public class DB {
     public final static String QRY_INSERT_ADDR_CATE = "address.insertAddrCate";
     public final static String QRY_UPDATE_ADDR_CATE = "address.updateAddrCate";
     public final static String QRY_DELETE_ADDR_CATE = "address.deleteAddrCate";
+    public final static String QRY_DELETE_ADDR_CATE_MEMBER = "address.deleteAddrCateMember";
 
     // 마이페이지
     // 회원정보

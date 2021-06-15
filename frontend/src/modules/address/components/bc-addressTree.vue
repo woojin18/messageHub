@@ -9,7 +9,6 @@
 		<addr-tree-menu v-for = "data in subItems" :key = "data.addressCategoryId"
 			:item = "data.addressName"
 			:id = "data.addressCategoryId"
-			:topAddressCategoryId = "data.topAddressCategoryId"
 			:subItems = "data.subItems"
 		>
 		</addr-tree-menu>
@@ -63,14 +62,14 @@
 <script>
 export default {
 	name: "addrTreeMenu",
-	props: [ 'item', 'id', 'subItems', 'topAddressCategoryId'],
+	props: [ 'item', 'id', 'subItems'],
 	methods: {
-		fnAddrCateMem(id, addrName, topAddressCategoryId){
-			console.log('id : ' +id + ', addrName :' + addrName + ', topAddressCategoryId : ' + topAddressCategoryId);
+		fnAddrCateMem(id, addrName){
+			//console.log('id : ' +id + ', addrName :' + addrName + ', topAddressCategoryId : ' + topAddressCategoryId);
 			if(!this.$gfnCommonUtils.isEmpty(id)) {
-				this.$parent.fnAddrCateMem(null, null, null);
+				this.$parent.fnAddrCateMem(null, null);
 			}
-			this.$parent.fnAddrCateMem(id, addrName, topAddressCategoryId);
+			this.$parent.fnAddrCateMem(id, addrName);
 		}
 	}
 }
