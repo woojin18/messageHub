@@ -187,19 +187,20 @@ router.beforeEach((to, from, next) => {
 });
 var timeout = 1500;
 router.afterEach((to, from) => {
-  jQuery('#M_menusCd').val(to.name);
-  if (to.name == 'home') {
-    timeout = 1500;
+  if (!to.meta.menu) {
+    timeout = 0;
+    return;
   }
+  jQuery('#M_menusCd').val(to.meta.menu);
   Vue.nextTick(() => {
     setTimeout(function() {
-      jQuery('#M_menusCd').val(to.name);
-      var menu = jQuery('#M_'+to.name);
+      jQuery('#M_menusCd').val(to.meta.menu);
+      var menu = jQuery('#M_'+to.meta.menu);
       var isRead = menu.attr('r');
       var isSave = menu.attr('w');
       isRead = isRead == 'true';
       isSave = isSave == 'true';
-      console.log('MENU CODE : ' + to.name + ', READ:' + isRead + ', SAVE:' + isSave);
+      console.log('MENU CODE : ' + to.meta.menu + ', READ:' + isRead + ', SAVE:' + isSave);
       if (isRead) {
         jQuery("[activity='READ']").removeAttr('activity');
       } else {
