@@ -196,6 +196,11 @@ router.afterEach((to, from) => {
     setTimeout(function() {
       jQuery('#M_menusCd').val(to.meta.menu);
       var menu = jQuery('#M_'+to.meta.menu);
+      if (menu.length == 0) {
+        alert('권한이 없습니다.');
+        window.history.back();
+        return;
+      }
       var isRead = menu.attr('r');
       var isSave = menu.attr('w');
       isRead = isRead == 'true';
