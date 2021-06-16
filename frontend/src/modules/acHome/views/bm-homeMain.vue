@@ -17,7 +17,6 @@
 									<col style="width:80%">
 								</colgroup>
 								<thead>
-									
 								</thead>
 								<tbody>
 									<tr>
@@ -41,7 +40,6 @@
 						</div>
 					</div>
 				</div>
-
 				<div class="col-xs-6">
 					<div class="fl" style="width:100%">
 						<h4 class="lc-1 mb20">공지사항</h4>
@@ -368,12 +366,6 @@ export default {
 		},
 		fnUpdateEndDate(sltDate) {
 			this.searchData.searchEndDate = sltDate;
-		},
-		logout: function () {
-			alert("test");
-			axios.get('/api/auth/logout').then(res => {
-				alert('asdfasdfasdf');
-			});
 		},
 		setRandomData(channel) {
 			this.successFailResultData = {
