@@ -46,7 +46,7 @@
                 <label for="searchOthPrjUseYn_N">전용</label>
               </div>
             </div>
-            <a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" title="통합발송 검색">검색</a>
+            <a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" title="통합발송 검색" activity="READ">검색</a>
           </div>
         </div>
       </div>
@@ -56,9 +56,9 @@
       <div class="col-xs-12 consolMarginTop">
         <div class="of_h inline">
           <div class="float-right">
-            <router-link :to="{ name: 'pushTemplateManage' }" tag="a" class="btnStyle2 backBlack mr10" title="템플릿 등록">템플릿 등록</router-link>
-            <a @click="fnDeletePushTemplate" class="btnStyle2 borderGray mr10" title="템플릿 삭제">삭제</a>
-            <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
+            <router-link :to="{ name: 'pushTemplateManage' }" tag="a" class="btnStyle2 backBlack mr10" title="템플릿 등록" activity="SAVE">템플릿 등록</router-link>
+            <a @click="fnDeletePushTemplate" class="btnStyle2 borderGray mr10" title="템플릿 삭제" activity="SAVE">삭제</a>
+            <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드" activity="READ">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
           </div>
         </div>
 
