@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum Role {
-	ADMIN("ADMIN"), USER("USER"), BO("BACK OFFICE"), AC("ADMIN CONSOLE"), ADM_CD("ADM_CD");
+	ADMIN("ADMIN"), USER("USER"), BO("BACK OFFICE"), AC("ADMIN CONSOLE"), ADM_CD("ADM_CD"),
+	UC_READ_ONLY("UC_READ_ONLY");
 
 	private String value;
 	private String desc;
