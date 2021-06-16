@@ -173,13 +173,13 @@
               <div class="scroll-y">
                 <!--<p v-if="rowData.msgKind != 'A' || (isEmpty(rowData.pushContent) && isEmpty(rowData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>-->
                 <p v-if="isEmpty(rowData.pushContent) && (rowData.msgKind != 'A')" class="font-size14 color4 mt10">내용</p>
-                <p v-else class="font-size14 color4 mt10">
-                  <span v-html="$gfnCommonUtils.newLineToBr(rowData.pushContent)"></span>
+                <pre v-else class="font-size14 color4 mt10">{{rowData.pushContent}}
+                  <!--<span v-html="$gfnCommonUtils.newLineToBr(rowData.pushContent)"></span>-->
                   <br v-if="!isEmpty(rowData.pushContent)"/>
                   <!--<span v-if="tmpltData.msgKind == 'A' && !isEmpty(tmpltData.rcvblcNumber)">-->
                   	{{rowData.rcvblcNumber}}
                   <!--</span>-->
-                </p>
+                </pre>
               </div>
             </div>          
         </div>
@@ -331,7 +331,7 @@
               <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
               <div class="phoneTextWrap">
                 <div class="phoneText1">
-                  <p>{{rowData.rcs0Content}}</p>
+                  <pre>{{rowData.rcs0Content}}</pre>
                 </div>
               </div>
             </div>
@@ -384,7 +384,7 @@
                 <div class="phoneText1 relative scroll-y4">
                   	<p><img src="../../../common/images/phone_Icon10.png" alt="주문 아이콘"></p>
 					<div class="scroll-y5">
-                    	<p class="mt15 lc-1">{{rowData.rcs1Content}}</p>
+                    	<pre class="mt15 lc-1">{{rowData.rcs1Content}}</pre>
                   	</div>
                   	<div class="absolute" style="bottom:25px; left:85px">
                   		<p class="text-center mt20" style="color:#69C8FF">사이트 연결</p>
@@ -563,7 +563,7 @@
               <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
               <div class="phoneTextWrap">
                 <div class="phoneText1 scroll-y2">
-                  <p>{{rowData.rcsSMSContent}}</p>
+                  <pre>{{rowData.rcsSMSContent}}</pre>
                 </div>
               </div>
             </div>
@@ -661,7 +661,7 @@
               <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
               <div class="phoneTextWrap">
                 <div class="phoneText1 scroll-y4">
-                  <p>{{rowData.rcsLMSContent}}</p>
+                  <pre>{{rowData.rcsLMSContent}}</pre>
                 </div>
               </div>
             </div>
@@ -777,7 +777,7 @@
 					<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
 						<h5>타이틀영역</h5>
 						<div class="scroll-y3">
-							<p class="color6">{{rowData.rcsShortContent}}</p>
+							<pre class="color6">{{rowData.rcsShortContent}}</pre>
 						</div>								
 					</div>              
               </div>
@@ -914,7 +914,7 @@
 					<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20">
 						<h5>타이틀영역</h5>
 						<div class="scroll-y6">
-							<p class="color6">{{rowData.rcsTallContent}}</p>
+							<pre class="color6">{{rowData.rcsTallContent}}</pre>
 						</div>								
 					</div>              
               </div>
@@ -1053,7 +1053,7 @@
 							<div class="relative">
 								<div class="scroll-y" style="min-height:150px">
 									<p class="color000 font-size13">{{rowData.rcs90Title}}</p>
-									<p class="color3 mt5">{{rowData.rcs90Content}}</p>
+									<pre class="color3 mt5">{{rowData.rcs90Content}}</pre>
 								</div>
 								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 							</div>
@@ -1071,7 +1071,7 @@
 							<div class="relative">
 								<div class="scroll-y" style="min-height:150px">
 									<p class="color000 font-size13">{{rowData.rcs91Title}}</p>
-									<p class="color3 mt5">{{rowData.rcs91Content}}</p>
+									<pre class="color3 mt5">{{rowData.rcs91Content}}</pre>
 								</div>
 								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 							</div>
@@ -1089,7 +1089,7 @@
 							<div class="relative">
 								<div class="scroll-y" style="min-height:150px">
 									<p class="color000 font-size13">{{rowData.rcs92Title}}</p>
-									<p class="color3 mt5">{{rowData.rcs92Content}}</p>
+									<pre class="color3 mt5">{{rowData.rcs92Content}}</pre>
 								</div>
 								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 							</div>
@@ -1107,7 +1107,7 @@
 							<div class="relative">
 								<div class="scroll-y" style="min-height:150px">
 									<p class="color000 font-size13">{{rowData.rcs93Title}}</p>
-									<p class="color3 mt5">{{rowData.rcs93Content}}</p>
+									<pre class="color3 mt5">{{rowData.rcs93Content}}</pre>
 								</div>
 								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 							</div>
@@ -1125,7 +1125,7 @@
 							<div class="relative">
 								<div class="scroll-y" style="min-height:150px">
 									<p class="color000 font-size13">{{rowData.rcs94Title}}</p>
-									<p class="color3 mt5">{{rowData.rcs94Content}}</p>
+									<pre class="color3 mt5">{{rowData.rcs94Content}}</pre>
 								</div>
 								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 							</div>
@@ -1143,7 +1143,7 @@
 							<div class="relative">
 								<div class="scroll-y" style="min-height:150px">
 									<p class="color000 font-size13">{{rowData.rcs95Title}}</p>
-									<p class="color3 mt5">{{rowData.rcs95Content}}</p>
+									<pre class="color3 mt5">{{rowData.rcs95Content}}</pre>
 								</div>
 								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 							</div>
@@ -1743,7 +1743,7 @@
 							<div class="relative">
 								<div class="scroll-y6" style="min-height:140px">
 									<p class="color000 font-size13">{{rowData.rcs100Title}}</p>
-									<p class="color3 mt5">{{rowData.rcs100Content}}</p>
+									<pre class="color3 mt5">{{rowData.rcs100Content}}</pre>
 								</div>
 								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 							</div>
@@ -1761,7 +1761,7 @@
 							<div class="relative">
 								<div class="scroll-y6" style="min-height:140px">
 									<p class="color000 font-size13">{{rowData.rcs101Title}}</p>
-									<p class="color3 mt5">{{rowData.rcs101Content}}</p>
+									<pre class="color3 mt5">{{rowData.rcs101Content}}</pre>
 								</div>
 								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 							</div>
@@ -1779,7 +1779,7 @@
 							<div class="relative">
 								<div class="scroll-y6" style="min-height:140px">
 									<p class="color000 font-size13">{{rowData.rcs102Title}}</p>
-									<p class="color3 mt5">{{rowData.rcs102Content}}</p>
+									<pre class="color3 mt5">{{rowData.rcs102Content}}</pre>
 								</div>
 								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 							</div>
@@ -1797,7 +1797,7 @@
 							<div class="relative">
 								<div class="scroll-y6" style="min-height:140px">
 									<p class="color000 font-size13">{{rowData.rcs103Title}}</p>
-									<p class="color3 mt5">{{rowData.rcs103Content}}</p>
+									<pre class="color3 mt5">{{rowData.rcs103Content}}</pre>
 								</div>
 								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 							</div>
@@ -1815,7 +1815,7 @@
 							<div class="relative">
 								<div class="scroll-y6" style="min-height:140px">
 									<p class="color000 font-size13">{{rowData.rcs104Title}}</p>
-									<p class="color3 mt5">{{rowData.rcs104Content}}</p>
+									<pre class="color3 mt5">{{rowData.rcs104Content}}</pre>
 								</div>
 								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 							</div>
@@ -1833,7 +1833,7 @@
 							<div class="relative">
 								<div class="scroll-y6" style="min-height:140px">
 									<p class="color000 font-size13">{{rowData.rcs105Title}}</p>
-									<p class="color3 mt5">{{rowData.rcs105Content}}</p>
+									<pre class="color3 mt5">{{rowData.rcs105Content}}</pre>
 								</div>
 								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 							</div>
@@ -2447,7 +2447,7 @@
 						<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y2">
-								<p>{{rowData.friendTalkContent}}</p>
+								<pre>{{rowData.friendTalkContent}}</pre>
 							</div>
 						</div>
 					</div>
@@ -2551,7 +2551,7 @@
 						<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y2">
-								<p>{{rowData.alimTalkContent}}</p>
+								<pre>{{rowData.alimTalkContent}}</pre>
 							</div>
 						</div>
 					</div>
@@ -2639,7 +2639,7 @@
 						<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y2">
-								<p>{{rowData.smsContent}}</p>
+								<pre>{{rowData.smsContent}}</pre>
 							</div>
 						</div>
 					</div>
@@ -2647,7 +2647,7 @@
 						<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
 						<div class="phoneTextWrap">
 							<div class="phoneText1 scroll-y4">
-								<p>{{rowData.smsContent}}</p>
+								<pre>{{rowData.smsContent}}</pre>
 							</div>
 							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.smsImgInfoList[0])" class="phoneText2 mt10 text-center">
 				                <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>

@@ -46,6 +46,7 @@
         <div class="float-right">
           <router-link :to="{ name: 'integratedTemplate' }" tag="a" class="btnStyle2 borderGray" >통합발송 템플릿 관리<i class="fal fa-arrow-to-bottom"></i></router-link>
           <!--<router-link :to="{ name: 'integratedSendManage' }" tag="a" class="btnStyle2 borderGray" >통합 메시지 발송<i class="fal fa-arrow-to-bottom"></i></router-link>-->
+          <a @click="fnProcSmartSend()" class="btnStyle2 backBlack ml10" title="통합 메시지 발송">통합 메시지 발송</a>
         </div>
       </div>
 
@@ -62,18 +63,20 @@
           <!-- table -->
           <table class="table_skin1 bt-000 tbl-striped">
             <colgroup>
-				<col style="width:5%">
+				<col style="width:3%">
+				<col style="width:3%">
 				<col>
 				<col style="width:10%">
 				<col style="width:20%">
-				<col style="width:10%">
+				<col style="width:8%">
+				<col style="width:8%">
 				<col style="width:10%">
 				<col style="width:12%">
 				<col style="width:12%">
-				<col style="width:20%">
 			</colgroup>
 			<thead>
 				<tr>
+				<th class="text-center lc-1"></th>
 				<th class="text-center lc-1">No.</th>
 				<th class="text-center lc-1">템플릿 ID</th>
 				<th class="text-center lc-1">템플릿명</th>
@@ -87,6 +90,8 @@
 			</thead>
             <tbody>
               <tr v-for="(data, idx) in datas" :key="data.row_num">
+              	<td class="text-center"><input type="radio" :id="'listCheck_'+idx" class="radioStyle" :value="data.tmpltCode" v-model="chkBox"> 
+                <label :for="'listCheck_'+idx"></label></td>
                 <td>{{ idx + 1 }}</td>
                 <td class="text-center"><router-link :to="{ name: 'integratedSendManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link> </td>
                 <td class="text-center">{{data.tmpltTitle}}</td>
@@ -98,7 +103,7 @@
                 <td class="text-center end">{{data.regDt}}</td>
               </tr>
               <tr v-if="datas.length == 0">
-                  <td class="text-center" colspan="9">검색된 내용이 없습니다.</td>
+                  <td class="text-center" colspan="10">검색된 내용이 없습니다.</td>
               </tr>
             </tbody>
           </table>
@@ -121,8 +126,8 @@ import PageLayer from '@/components/PageLayer.vue';
 import SelectLayer from '@/components/SelectLayer.vue';
 import Calendar from "@/components/Calendar.vue";
 import tokenSvc from '@/common/token-service';
-import confirm from "@/modules/commonUtil/service/confirm.js";
-import {eventBus} from "@/modules/commonUtil/service/eventBus";
+//import confirm from "@/modules/commonUtil/service/confirm.js";
+//import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
   components: {
@@ -183,7 +188,16 @@ export default {
       this.searchData.searchEndDate = sltDate;
     },
 
-
+    //통합 전송 화면으로 이동  
+    async fnProcSmartSend(){
+    	console.log("this.chkBox : "+this.chkBox);
+      if(this.chkBox == null || this.chkBox == ''){
+        confirm.fnAlert(this.componentsTitle, '전송할 항목을 선택해주세요.');
+        return;
+      }
+      
+      this.$router.push({name: 'integratedSendManage', params: {'tmpltCodeP': this.chkBox }});
+    },
 
     // 검색
     async fnSelectIntegratedSendList() {
