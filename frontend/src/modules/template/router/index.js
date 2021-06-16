@@ -13,12 +13,14 @@ export default [
     {
         path: '/uc/template/pushTemplateManage',
         name: 'pushTemplateManage',
+        meta: { menu: 'UC_PUSH_TPL' },
         component: PushTemplateManage,
         props: true
     },
     {
         path: '/uc/template/pushTemplateList',
         name: 'pushTemplateList',
+        meta: { menu: 'UC_PUSH_TPL' },
         component: PushTemplateList,
         props: true
     },
@@ -31,18 +33,21 @@ export default [
     {
         path: '/uc/template/smsTemplateList',
         name: 'smsTemplateList',
+        meta: { menu: 'UC_SMS_TPL' },
         component: SmsTemplateList,
         props: true
     },
     {
         path: '/uc/template/frndTalkTemplateManage',
         name: 'frndTalkTemplateManage',
+        meta: { menu: 'UC_FRND_TPL' },
         component: FrndTalkTemplateManage,
         props: true
     },
     {
         path: '/uc/template/frndTalkTemplateList',
         name: 'frndTalkTemplateList',
+        meta: { menu: 'UC_FRND_TPL' },
         component: FrndTalkTemplateList,
         props: true
     },
@@ -60,12 +65,14 @@ export default [
     {
         path: '/uc/template/alimTalkTemplateList',
         name: 'alimTalkTemplateList',
+        meta: { menu: 'UC_ALIM_TPL' },
         component: AlimTalkTemplateList,
         props: true
     },
     {
         path: '/uc/template/alimTalkTemplateManage',
         name: 'alimTalkTemplateManage',
+        meta: { menu: 'UC_ALIM_TPL' },
         component: AlimTalkTemplateManage,
         props: true
     }

@@ -121,7 +121,7 @@
           <div class="float-left" style="width:72%">
             <div class="of_h">
               <div class="float-left" style="width:25%">
-                <a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
+                <a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택" activity="READ">이미지선택</a>
               </div>
               <ul class="float-right attachList" style="width:74%; padding:5px 15px; height:30px;">
                 <li><a @click="fnDelImg">{{fnSubString(tmpltData.imgUrl, 0, 35)}}  <i v-if="!fnIsEmpty(tmpltData.imgUrl)" class="fal fa-times"></i></a></li>
@@ -130,7 +130,7 @@
           </div>
         </div>
         <div class="mt30 float-right">
-          <a @click="fnSavePushTemplate" class="btnStyle2" title="저장">{{isInsert ? '등록' : '수정'}}</a>
+          <a @click="fnSavePushTemplate" class="btnStyle2" title="저장" activity="SAVE">{{isInsert ? '등록' : '수정'}}</a>
           <router-link :to="{ name: 'pushTemplateList' }" tag="a" class="btnStyle2 backRed ml10">취소</router-link>
         </div>
       </div>

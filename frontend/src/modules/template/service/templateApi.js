@@ -2,67 +2,67 @@ import httpClient from '@/common/http-client';
 
 /* PUSH */
 const savePushTmplt = (params) => {
-    return httpClient.post('/uc/template/savePushTmplt', params, { headers: {"show-layer": "Yes"} });
+    return httpClient.post('/uc/template/savePushTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 const selectPushTmpltInfo = (params) => {
-    return httpClient.post('/uc/template/selectPushTmpltInfo', params, { headers: {"show-layer": "Yes"} });
+    return httpClient.post('/uc/template/selectPushTmpltInfo', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 const selectPushTmpltList = (params) => {
-    return httpClient.post('/uc/template/selectPushTmpltList', params, { headers: {"show-layer": "Yes"} });
+    return httpClient.post('/uc/template/selectPushTmpltList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 const deletePushTmplt = (params) => {
-    return httpClient.post('/uc/template/deletePushTmplt', params, { headers: {"show-layer": "Yes"} });
+    return httpClient.post('/uc/template/deletePushTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 const excelDownloadPushTmplt = (params) => {
-  return httpClient.post('/uc/template/excelDownloadPushTmplt', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' })
+  return httpClient.post('/uc/template/excelDownloadPushTmplt', params, { headers: {"show-layer": "Yes", "activity":"READ"}, responseType: 'arraybuffer' })
   .then((response) => fnExcelDownCallback(response));
 };
 
 /* SMS */
 const saveSmsTmplt = (params) => {
-  return httpClient.post('/uc/template/saveSmsTmplt', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/template/saveSmsTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 const selectSmsTmpltList = (params) => {
-  return httpClient.post('/uc/template/selectSmsTmpltList', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/template/selectSmsTmpltList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 const selectSmsTmpltInfo = (params) => {
-  return httpClient.post('/uc/template/selectSmsTmpltInfo', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/template/selectSmsTmpltInfo', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 const deleteSmsTmplt = (params) => {
-  return httpClient.post('/uc/template/deleteSmsTmplt', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/template/deleteSmsTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 const excelDownloadSmsTmplt = (params) => {
-  return httpClient.post('/uc/template/excelDownloadSmsTmplt', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' })
+  return httpClient.post('/uc/template/excelDownloadSmsTmplt', params, { headers: {"show-layer": "Yes", "activity":"READ"}, responseType: 'arraybuffer' })
   .then((response) => fnExcelDownCallback(response));
 };
 
 /* 친구톡 */
 const saveFrndTalkTmplt = (params) => {
-  return httpClient.post('/uc/template/saveFrndTalkTmplt', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/template/saveFrndTalkTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 const selectFrndTalkList = (params) => {
-  return httpClient.post('/uc/template/selectFrndTalkList', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/template/selectFrndTalkList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 const selectFrndTalkInfo = (params) => {
-  return httpClient.post('/uc/template/selectFrndTalkInfo', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/template/selectFrndTalkInfo', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 const excelDownloadFrndTalkTmplt = (params) => {
-  return httpClient.post('/uc/template/excelDownloadFrndTalkTmplt', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' })
+  return httpClient.post('/uc/template/excelDownloadFrndTalkTmplt', params, { headers: {"show-layer": "Yes", "activity":"READ"}, responseType: 'arraybuffer' })
   .then((response) => fnExcelDownCallback(response));
 };
 const deleteFrndTalkTmplt = (params) => {
-  return httpClient.post('/uc/template/deleteFrndTalkTmplt', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/template/deleteFrndTalkTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 
 /* 알림톡 */
 const selectSenderKeyList = (params) => {
-  return httpClient.post('/uc/template/selectSenderKeyList', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/template/selectSenderKeyList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 const selectKkoTmpltCatGrpList = (params) => {
-  return httpClient.post('/uc/template/selectKkoTmpltCatGrpList', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/template/selectKkoTmpltCatGrpList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 const selectKkoTmpltCatList = (params) => {
-  return httpClient.post('/uc/template/selectKkoTmpltCatList', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/template/selectKkoTmpltCatList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
 /* RCS */

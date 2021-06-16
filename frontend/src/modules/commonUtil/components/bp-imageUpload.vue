@@ -32,8 +32,8 @@
 
           <div class="text-center mt20">
             <input ref="imageInput" type="file" @change="fnImagePreview" style="display:none;">
-            <a @click="fnFindImgFile" class="btnStyle1 backBlack mr5" title="파일찾기">파일찾기</a>
-            <a @click="fnUploadFile" class="btnStyle1 backBlack mr5" title="업로드">업로드</a>
+            <a @click="fnFindImgFile" class="btnStyle1 backBlack mr5" title="파일찾기" activity="SAVE">파일찾기</a>
+            <a @click="fnUploadFile" class="btnStyle1 backBlack mr5" title="업로드" activity="SAVE">업로드</a>
             <a @click="fnClose" class="btnStyle1 backWhite" title="닫기">닫기</a>
           </div>
 
