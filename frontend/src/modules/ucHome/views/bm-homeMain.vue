@@ -21,19 +21,19 @@
 								<tbody>
 									<tr>
 										<td class="text-left">생성일</td>
-										<td class="text-left end">2021-05-29</td>
+										<td class="text-left end">{{ projectInfoData.regDt }}</td>
 									</tr>
 									<tr>
 										<td class="text-left">생성자</td>
-										<td class="text-left end">이*민(sig***@naver.com)</td>
+										<td class="text-left end">{{ projectInfoData.userInfo }}</td>
 									</tr>
 									<tr>
 										<td class="text-left">이용 서비스</td>
-										<td class="text-left end">PUSH, 카카오 톡, RCS, SMS/MMS, MO</td>
+										<td class="text-left end">{{ projectInfoData.useService }}</td>
 									</tr>
 									<tr>
 										<td class="text-left">프로젝트 ID</td>
-										<td class="text-left end">PJT210429130357</td>
+										<td class="text-left end">{{ projectInfoData.projectId }}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -93,35 +93,35 @@
 						<div class="mt10">
 							<ul class="tab_s4_2 of-h" style="width:100%">
 								<li @click="setRandomData('push')" id="setPush" style="width:20%" class="active">
-									<a href="#self" class="inline-block text-center active">
+									<a class="inline-block text-center active">
 										<h5>PUSH 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">55<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">0<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
 								<li @click="setRandomData('rcs')" id="setRcs" style="width:20%">
-									<a href="#self" class="inline-block text-center">
+									<a class="inline-block text-center">
 										<h5>RCS 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">0<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">0<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
 								<li @click="setRandomData('kakaotalk')" id="setKakaotalk" style="width:20%">
-									<a href="#self" class="inline-block text-center">
+									<a class="inline-block text-center">
 										<h5>알림톡 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">-<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
 								<li @click="setRandomData('friendtalk')" id="setFriendtalk" style="width:20%">
-									<a href="#self" class="inline-block text-center">
+									<a class="inline-block text-center">
 										<h5>친구톡 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">-<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
 								<li @click="setRandomData('sms')" id="setSms" style="width:20%">
-									<a href="#self" class="inline-block text-center">
+									<a class="inline-block text-center">
 										<h5>SMS 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">-<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
@@ -160,8 +160,12 @@
 // @ is an alias to /src
 import HomeMain from '../components/bc-homeMain.vue';
 import tokenSvc from '@/common/token-service';
+import confirm from "@/modules/commonUtil/service/confirm";
+import homeApi from '@/modules/ucHome/service/api';
 import Calendar from "@/components/Calendar.vue";
 import BarChart from '@/components/Chart.vue';
+import * as utils from '@/common/utils';
+import { consts } from '@/common/config';
 
 export default {
 	components: {
@@ -183,6 +187,7 @@ export default {
 	},
 	data () {
 		return {
+			projectInfoData: {},
 			searchDateInterval: 7,
 			successFailResultData: {
 				labels: ['20210609', '20210610', '20210611', '20210612', '20210613', '20210614', '20210615'],
@@ -294,8 +299,24 @@ export default {
 	},
 	mounted() {
 		this.fnSetIntervalSearchDate(this.searchDateInterval);
+		this.fnGetProjectInfo();
 	},
 	methods: {
+		fnGetProjectInfo() {
+			let params = {
+				projectId: utils.getCookie(consts.projectId),
+				corpId: tokenSvc.getToken().principal.corpId
+			};
+
+			homeApi.selectProjectInfo(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.projectInfoData = result.data.projectInfo;
+				} else {
+					confirm.fnAlert("", result.message);
+				}
+			});
+		},
 		//검색일자변경
 		fnSetIntervalSearchDate(interval){
 			this.searchDateInterval = interval;
