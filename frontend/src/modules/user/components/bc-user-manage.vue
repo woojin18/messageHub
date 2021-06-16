@@ -18,7 +18,7 @@
 							<select id="selectApprovalStatus" @fnSelected="fnSelected" v-model="searchData.approvalStatus" class="selectStyle2" style="width:14%" title="상태 선택란">
 								<option value="">전체</option>
 							</select>
-							<a @click="fnSearch()" class="btnStyle1 float-right" role="READ" title="검색">검색</a>
+							<a @click="fnSearch()" class="btnStyle1 float-right" activity="READ" title="검색">검색</a>
 						</div>
 					</div>
 				</div>
@@ -30,7 +30,7 @@
 				<div class="col-xs-12 consolMarginTop">
 					<div class="of_h inline">
 						<div class="float-right">
-							<a @click="fnRegisterUserPop()" class="btnStyle2 borderGray" role="SAVE" title="사용자 등록창이 열립니다">사용자 등록</a>
+							<a @click="fnRegisterUserPop()" class="btnStyle2 borderGray" activity="SAVE" title="사용자 등록창이 열립니다">사용자 등록</a>
 							<!--a href="#self" class="btnStyle3 gray font13 minWidth120 ml10" data-toggle="modal" data-target="#Modify" title="정보 수정창이 열립니다">정보 수정</a-->
 						</div>
 					</div>

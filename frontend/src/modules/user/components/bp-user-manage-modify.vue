@@ -44,7 +44,7 @@
 						<p class="color3 consolMarginTop">로그인 시 SMS 인증을 하기 위해서는 휴대폰번호를 반드시 등록하셔야 합니다.</p>
 					</div>
 					<div class="text-center mt40">
-						<a @click="fnModifyUser()" class="btnStyle3 black font14 mr5" role="SAVE" title="수정">수정</a>
+						<a @click="fnModifyUser()" class="btnStyle3 black font14 mr5" activity="SAVE" title="수정">수정</a>
 						<a @click="fnCloseLayer()" class="btnStyle3 white font14" title="취소">취소</a>
 					</div>
 				</div>

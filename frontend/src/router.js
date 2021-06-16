@@ -201,14 +201,14 @@ router.afterEach((to, from) => {
       isSave = isSave == 'true';
       console.log('MENU CODE : ' + to.name + ', READ:' + isRead + ', SAVE:' + isSave);
       if (isRead) {
-        jQuery("[role='READ']").removeAttr('role');
+        jQuery("[activity='READ']").removeAttr('activity');
       } else {
-        jQuery("[role='READ']").remove();
+        jQuery("[activity='READ']").remove();
       }
       if (isSave) {
-        jQuery("[role='SAVE']").removeAttr('role');
+        jQuery("[activity='SAVE']").removeAttr('activity');
       } else {
-        jQuery("[role='SAVE']").remove();
+        jQuery("[activity='SAVE']").remove();
       }
     }, timeout);
     timeout = 0;

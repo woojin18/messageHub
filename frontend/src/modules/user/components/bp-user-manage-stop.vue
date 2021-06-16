@@ -8,7 +8,7 @@
 						<h2>이용정지</h2>
 						<p class="text-center mt20">사용자의 이용을 정지하면 Console에 더 이상 접근할 수 없습니다.</p>
 						<div class="text-center mt20">
-							<a @click="fnStopUser()" class="btnStyle1 backBlack mr5" role="SAVE" title="확인">확인 </a>
+							<a @click="fnStopUser()" class="btnStyle1 backBlack mr5" activity="SAVE" title="확인">확인 </a>
 							<a @click="fnCloseLayer()" class="btnStyle1 backWhite" title="취소">취소</a>
 						</div>
 					</div>

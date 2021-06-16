@@ -9,7 +9,7 @@
 					<hr>
 					<p class="text-center mt20">삭제처리된 사용자는 복구할 수 없습니다.<br>서비스 이용을 위해서는 사용자 등록을 다시 진행하셔야 합니다.</p>
 					<div class="text-center mt20">
-						<a @click="fnDeleteUser()" class="btnStyle1 backBlack mr5" role="SAVE" title="확인">확인</a>
+						<a @click="fnDeleteUser()" class="btnStyle1 backBlack mr5" activity="SAVE" title="확인">확인</a>
 						<a @click="fnCloseLayer()" class="btnStyle1 backWhite" title="취소">취소</a>
 					</div>
 				</div>

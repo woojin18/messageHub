@@ -33,7 +33,7 @@
 						<p class="color3 consolMarginTop"><i class="far fa-info-circle"></i> 로그인 시 SMS 인증을 하기 위해서는 휴대폰번호를 반드시 등록하셔야 합니다.</p>
 					</div>
 					<div class="text-center mt20">
-						<a @click="fnRegisterUser()" class="btnStyle1 backBlack mr5" role="SAVE" title="등록">등록</a>
+						<a @click="fnRegisterUser()" class="btnStyle1 backBlack mr5" activity="SAVE" title="등록">등록</a>
 						<a @click="fnCloseLayer()" class="btnStyle1 backWhite" title="취소">취소</a>
 					</div>
 				</div>
