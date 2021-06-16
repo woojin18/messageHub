@@ -16,6 +16,7 @@
                     <!-- <a v-for="(pageCntList, index) in pageCntList()" @click="fnPageClick(pageCntList)" :key="index" class="number active">{{pageCntList}}</a> -->
                     <!-- <li v-for="(pageCntList, index) in pageCntList()" @click="fnPageClick(pageCntList)" :key="index"><a @click="fnPageClick(pageCntList)">{{pageCntList}}</a></li> -->
                     <a v-for="(pageCntList, index) in pageCntList()" @click="fnPageClick(pageCntList)" :key="index" :class="[pageSltClass.numberClass, pageCntList==pageNum ? pageSltClass.activeClass : '']">{{pageCntList}}</a>
+                    <a v-if="pageCntList().length == 0" class="number active">1</a>
                     <a @click="fnOneIncrease()"><i class="far fa-chevron-right"></i></a>
                     <a @click="fnAllIncrease()"><i class="far fa-chevron-double-right"></i></a>
                 </div>

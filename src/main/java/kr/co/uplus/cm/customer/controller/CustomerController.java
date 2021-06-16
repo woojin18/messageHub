@@ -73,5 +73,27 @@ public class CustomerController {
         return rtn;
     }
 
+    /**
+     * 공지사항 리스트 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/api/public/customer/selectNoticeList")
+    public RestResult<?> selectNoticeList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = customerService.selectNoticeList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{}.selectNoticeList Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
 
 }

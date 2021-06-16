@@ -494,6 +494,13 @@
 		AND		API_KEY		= #{apiKey}
 	</update>
 	
+	<delete id="deleteMoCallback">
+	/* channel.deleteMoCallback */
+		DELETE FROM cm.CM_MO_CALLBACK
+		WHERE	MO_NUMBER	= #{moNumber}
+		AND		API_KEY		= #{apiKey}
+	</delete>
+	
 	<select id="selectRcsBrandListCallbackList" resultType="camel">
 		/* channel.selectRcsBrandListCallbackList */
 		SELECT	*
@@ -622,4 +629,16 @@
 		
 		ORDER BY AA.REG_DT DESC
 	</select>
+	
+	<select id="selectApikeyForMoApi" resultType="String">
+		/* channel.selectApikeyForMoApi */
+		SELECT API_KEY
+		FROM cm.CM_APIKEY ca 
+		WHERE	ca.WEB_SENDER_YN = 'Y'
+		AND		ca.PROJECT_ID = #{projectId}
+		ORDER BY ca.REG_DT  DESC
+		LIMIT 1
+	</select>
+	
+	
 </mapper>

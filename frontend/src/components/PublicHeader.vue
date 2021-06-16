@@ -17,7 +17,9 @@
                 <li>
                   <router-link :to="{ name: 'faq' }" tag="a" title="FAQ로 이동">FAQ</router-link>
                 </li>
-                <li><a href="#self">공지사항</a></li>
+                <li>
+                  <router-link :to="{ name: 'notice' }" tag="a" title="공지사항으로 이동">공지사항</router-link>
+                </li>
                 <li><a href="#self">자료실</a></li>
                 <li><a href="#self" data-toggle="modal" data-target="#Inquiry">서비스 문의</a></li>
               </ul>
@@ -29,7 +31,7 @@
         <ul class="list_login">
           <li v-if="isLogin == false" class="active"><router-link :to="{name: 'login'}" tag="a" title="로그인 페이지로 이동">로그인</router-link></li>
           <li v-if="isLogin == true" class="active"><a href="#" @click.prevent="clickLogout">로그아웃</a></li>
-          <li><a @click.prevent="signUp">회원가입</a></li>
+          <li><a href="#" @click.prevent="signUp">회원가입</a></li>
         </ul>
       </div>
     </div>

@@ -18,6 +18,8 @@ public class DB {
     public final static String QRY_SELECT_FAQ_TYPE_LIST = "customer.selectFaqTypeList";
     public final static String QRY_SELECT_FAQ_LIST_CNT = "customer.selectFaqListCnt";
     public final static String QRY_SELECT_FAQ_LIST = "customer.selectFaqList";
+    public final static String QRY_SELECT_NOTICE_LIST_CNT = "customer.selectNoticeListCnt";
+    public final static String QRY_SELECT_NOTICE_LIST = "customer.selectNoticeList";
 
     // 로그인
     public final static String QRY_SELECT_USERNAME  = "login.qrySelectUserName";
@@ -97,6 +99,7 @@ public class DB {
     public final static String QRY_SELECT_MO_CALLBACK_LIST = "channel.selectMoCallbackList";
     public final static String QRY_INSERT_MO_CALLBACK = "channel.insertMoCallback";
     public final static String QRY_UPDATE_MO_CALLBACK = "channel.updateMoCallback";
+    public final static String QRY_DELETE_MO_CALLBACK = "channel.deleteMoCallback";
     //웹캐시
     public final static String QRY_INSERT_WEB_CASH_INFO = "cash.insertWebCashInfo";
     public final static String QRY_SELECT_WEB_CASH_INFO = "cash.selectWebCashInfo";
