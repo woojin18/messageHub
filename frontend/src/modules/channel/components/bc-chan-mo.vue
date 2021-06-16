@@ -26,7 +26,6 @@
 							<col style="width:10%">
 							<col>
 							<col style="width:10%">
-							<col style="width:20%">
 							<col style="width:10%">
 							<!-- <col style="width:10%"> -->
 						</colgroup>
@@ -36,7 +35,6 @@
 								<th class="text-center lc-1">서비스 유형</th>
 								<th class="text-center lc-1">수신번호</th>
 								<th class="text-center lc-1">사용여부</th>
-								<th class="text-center lc-1">타 프로젝트 사용여부</th>
 								<th class="text-center lc-1 end">등록일시</th>
 								<!-- <th class="text-center lc-1 end">수정일시</th> -->
 							</tr>
@@ -45,9 +43,8 @@
 							<tr v-for="(item, i) in data" :key="i">
 								<td class="text-center">{{item.apiKey}}</td>
 								<td class="text-center">{{item.moType}}</td>
-								<td class="text-center">{{item.moNumber}}</td>
+								<td class="text-center"><a @click="fnMod(item)">{{item.moNumber}}</a></td>
 								<td class="text-center">{{item.useYn}}</td>
-								<td class="text-center">{{item.projectIdYn}}</td>
 								<td class="end">{{item.regDt}}</td>
 								<!-- <td class="end">{{item.updDt}}</td> -->
 							</tr>
@@ -127,9 +124,9 @@ export default {
 			jQuery("#layerPopup").modal("show");
 		},
 		fnMod(row_data){
-			this.save_status = "U";
+			/* this.save_status = "U";
 			this.row_data = row_data;
-			jQuery("#layerPopup").modal("show");
+			jQuery("#layerPopup").modal("show"); */
 		}
 	}
 }

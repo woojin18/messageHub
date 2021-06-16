@@ -9,7 +9,7 @@
 						<div class="mt20">
 							<div>
 								<h4 class="font-normal inline-block width120">API KEY</h4>
-								<input type="text" class="inputStyle" style="width:76%" v-model="apiKey" disabled>
+								<input type="text" class="inputStyle" style="width:76%" v-model="apiKey" placeholder="자동 채번됩니다." disabled>
 							</div>
 							<div class="mt10">
 								<h4 class="font-normal inline-block width120">MO 수신번호</h4>
@@ -22,13 +22,6 @@
 									<input type="radio" id="MMS" value="MMSMO" class="cBox" v-model="moType"> <label for="MMS" class="payment font-size12">MMS MO</label>		
 								</div>
 							</div>
-							<div class="mt20">
-								<h4 class="font-normal inline-block width120">타 프로젝트<br>사용여부</h4>
-								<div class="inline-block">
-									<input type="radio" id="ALL" value="ALL" class="cBox" v-model="pjtAllNo"> <label for="ALL" class="payment mr30">공용</label>
-									<input type="radio" id="NO" value="NO" class="cBox" v-model="pjtAllNo"> <label for="NO" class="payment">전용</label>		
-								</div>
-							</div>
 							<p class="mt30 lc-1 Modaltext font-size12" style="margin:0">
                 <i class="far fa-info-circle"></i> MO 기본료 부과: 면제
                 <br>
@@ -38,7 +31,9 @@
 					
 					</div>
 					<div class="text-center mt40">
-						<a @click="fnSave" class="btnStyle3 black font14" data-toggle="modal">토큰요청</a>
+						<a v-if="this.save_status ==='C'" @click="fnSave("C")" class="btnStyle3 black font14" data-toggle="modal">토큰요청</a>
+            <a v-if="this.save_status ==='U'" @click="fnSave("U")" class="btnStyle3 black font14" data-toggle="modal">토큰수정요청</a>
+            <a v-if="this.save_status ==='U'" @click="fnSave("D")" class="btnStyle3 black font14" data-toggle="modal">토큰삭제요청</a>
 						<a @click="fnClose" ref="closeBtn" class="btnStyle3 white font14" data-dismiss="modal">취소</a>						
 					</div>
 				</div>
@@ -81,7 +76,12 @@ export default {
       this.apiKey = newVal.apiKey;
       this.moNumber = newVal.moNumber;
       this.moType = newVal.moType;
-      this.pjtAllNo = newVal.pjtAllNo;
+      /* if( newVal.pjtAllNo != 'ALL' ){
+        this.pjtAllNo = 'NO';
+      } else {
+        this.pjtAllNo = newVal.pjtAllNo;
+      } */
+      
     }
   },
   mounted() {
@@ -93,19 +93,13 @@ export default {
       jQuery("#layerPopup").modal('hide');
     },
     // 저장
-    fnSave(){
-      // 타 프로젝트 사용 여부
-      var projectStr = 'ALL';
-      if(this.pjtAllNo != 'ALL' ){
-        projectStr = this.projectId;
-      }
-
+    fnSave(sts){
       var params = {
-        "sts"         : this.save_status,
+        "sts"         : sts,
         "apiKey"      : this.apiKey,
         "moNumber"    : this.moNumber,
         "moType"      : this.moType,
-        "projectId"   : projectStr
+        "projectId"   : this.projectId
       }
 
       api.saveMoCallback(params).then(response =>{

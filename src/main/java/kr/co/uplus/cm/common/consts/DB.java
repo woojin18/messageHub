@@ -99,6 +99,7 @@ public class DB {
     public final static String QRY_SELECT_MO_CALLBACK_LIST = "channel.selectMoCallbackList";
     public final static String QRY_INSERT_MO_CALLBACK = "channel.insertMoCallback";
     public final static String QRY_UPDATE_MO_CALLBACK = "channel.updateMoCallback";
+    public final static String QRY_DELETE_MO_CALLBACK = "channel.deleteMoCallback";
     //웹캐시
     public final static String QRY_INSERT_WEB_CASH_INFO = "cash.insertWebCashInfo";
     public final static String QRY_SELECT_WEB_CASH_INFO = "cash.selectWebCashInfo";
