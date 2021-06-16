@@ -82,7 +82,7 @@
           </div>
           <div class="float-left" style="width:73%">
             <div class="of_h">
-              <div class="float-left" style="width:25%"><a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a></div>
+              <div class="float-left" style="width:25%"><a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택" activity="READ">이미지선택</a></div>
               <ul class="float-right attachList" style="width:74%; padding:5px 15px; height:30px;">
                 <li><a @click="fnDelImg">{{fnSubString(tmpltData.imgUrl, 0, 45)}}  <i v-if="!$gfnCommonUtils.isEmpty(tmpltData.imgUrl)" class="fal fa-times"></i></a></li>
               </ul>
@@ -165,8 +165,8 @@
             </div>
           </div>  
           <div class="mt20 float-right">
-            <a v-if="isInsert" @click="fnSaveFrndTalkTemplate" class="btnStyle2 backRed float-left" title="등록">등록</a>
-            <a v-else @click="fnSaveFrndTalkTemplate" class="btnStyle2 backWhite float-left ml10" title="수정">수정</a>
+            <a v-if="isInsert" @click="fnSaveFrndTalkTemplate" class="btnStyle2 backRed float-left" title="등록" activity="SAVE">등록</a>
+            <a v-else @click="fnSaveFrndTalkTemplate" class="btnStyle2 backWhite float-left ml10" title="수정" activity="SAVE">수정</a>
             <router-link :to="{ name: 'frndTalkTemplateList' }" tag="a" class="btnStyle2 ml10">취소</router-link>
           </div>
         </div>

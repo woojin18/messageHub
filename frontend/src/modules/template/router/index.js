@@ -27,6 +27,7 @@ export default [
     {
         path: '/uc/template/smsTemplateManage',
         name: 'smsTemplateManage',
+        meta: { menu: 'UC_SMS_TPL' },
         component: SmsTemplateManage,
         props: true
     },

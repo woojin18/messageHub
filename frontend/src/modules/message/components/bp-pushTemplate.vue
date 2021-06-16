@@ -11,7 +11,7 @@
                 <h4 class="mt0">템플릿 검색</h4>
                 <div>
                   <input type="text" class="inputStyle" style="width:75%" v-model="searchData.searchText">
-                  <a @click="fnSearch" class="btnStyle1 backLightGray float-right" title="메시지 내용 조회">조회</a>
+                  <a @click="fnSearch" class="btnStyle1 backLightGray float-right" title="메시지 내용 조회" activity="READ">조회</a>
                 </div>
                 <div>
                   <h4>템플릿 검색 <span class="">총 {{totCnt}}건</span></h4>
@@ -85,7 +85,7 @@
             </div>
           </div>
           <div class="text-center mt20">
-            <a @click="fnSelectTemplate" class="btnStyle1 backBlack" data-toggle="modal" title="템플릿 선택">템플릿 선택</a>
+            <a @click="fnSelectTemplate" class="btnStyle1 backBlack" data-toggle="modal" title="템플릿 선택" activity="READ">템플릿 선택</a>
             <a @click="fnClose" class="btnStyle1 backWhite" data-dismiss="modal" title="취소">취소</a>
           </div>
         </div>

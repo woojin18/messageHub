@@ -33,7 +33,7 @@
                   <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
                   <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
                 </ul>
-                <a @click="fnSelectFrndTalkTmpltList()" class="btnStyle1 float-right" title="검색">검색</a>
+                <a @click="fnSelectFrndTalkTmpltList()" class="btnStyle1 float-right" title="검색" activity="READ">검색</a>
               </div>
             </div>
           </div>
@@ -45,9 +45,9 @@
 
           <div class="of_h inline">
             <div class="float-right">
-              <router-link :to="{ name: 'frndTalkTemplateManage' }" tag="a" class="btnStyle2 backBlack mr10" title="템플릿 등록">템플릿 등록</router-link>
-              <a @click="fnDeleteFrndTalkTemplate" class="btnStyle2 borderGray mr10" title="엑셀 다운로드">삭제</a>
-              <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
+              <router-link :to="{ name: 'frndTalkTemplateManage' }" tag="a" class="btnStyle2 backBlack mr10" title="템플릿 등록" activity="SAVE">템플릿 등록</router-link>
+              <a @click="fnDeleteFrndTalkTemplate" class="btnStyle2 borderGray mr10" title="엑셀 다운로드" activity="SAVE">삭제</a>
+              <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드" activity="READ">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
             </div>
           </div>
           <!-- 15개씩 보기 -->

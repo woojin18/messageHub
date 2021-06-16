@@ -121,8 +121,8 @@
         </div>
         
         <div class="mt20 float-right">
-          <a v-if="isInsert" @click="fnSaveSmsTemplate" class="btnStyle2 backRed ml10" title="등록">등록</a>
-          <a v-else @click="fnSaveSmsTemplate" class="btnStyle2 backWhite ml10" title="수정">수정</a>
+          <a v-if="isInsert" @click="fnSaveSmsTemplate" class="btnStyle2 backRed ml10" title="등록" activity="SAVE">등록</a>
+          <a v-else @click="fnSaveSmsTemplate" class="btnStyle2 backWhite ml10" title="수정" activity="SAVE">수정</a>
           <router-link :to="{ name: 'smsTemplateList' }" tag="a" class="btnStyle2 ml10">취소</router-link>
         </div>
       </div>

@@ -75,7 +75,7 @@
             <h4>01 발송정보</h4>
           </div>
           <div style="width:76%" class="float-left">
-            <a @click="fnOpenPushTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기">템플릿 불러오기</a>
+            <a @click="fnOpenPushTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기" activity="READ">템플릿 불러오기</a>
 
             <div class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
@@ -112,8 +112,8 @@
             <h4>02  메시지 내용</h4>
           </div>
           <div style="width:76%" class="float-left">
-            <a @click="fnOpenPushContentsPopup" :class="fnIsEmpty(sendData.pushContent) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="메시지 내용입력">내용입력</a>
-            <a v-if="sendData.rplcSendType!='NONE'" @click="fnOpenReplacedSenderPopup" :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="대체발송 발신번호">대체발송 발신번호</a>
+            <a @click="fnOpenPushContentsPopup" :class="fnIsEmpty(sendData.pushContent) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="메시지 내용입력" activity="READ">내용입력</a>
+            <a v-if="sendData.rplcSendType!='NONE'" @click="fnOpenReplacedSenderPopup" :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="대체발송 발신번호" activity="READ">대체발송 발신번호</a>
             <div class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
                 <h5>메시지타입 *</h5>
@@ -130,7 +130,7 @@
                 <h5>이미지</h5>
               </div>
               <div class="of_h" style="width:82%">
-                <div class="float-left" style="width:24%"><a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" style="width:24%" title="이미지선택">이미지선택</a></div>
+                <div class="float-left" style="width:24%"><a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" style="width:24%" title="이미지선택" activity="READ">이미지선택</a></div>
                 <input type="text" class="inputStyle float-right" style="width:75%; padding:5px 15px" v-model="sendData.imgUrl" disabled>
               </div>
             </div>
@@ -165,17 +165,17 @@
               </div>
               <div style="width:82%">
                 <div>
-                  <input type="radio" id="cuInputType_DICT" name="cuInputType" value="DICT" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
+                  <input type="radio" id="cuInputType_DICT" name="cuInputType" value="DICT" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType" activity="READ">
                   <label for="cuInputType_DICT" class="mr30">수신자 직접입력</label>
-                  <input type="radio" id="cuInputType_ADDR" name="cuInputType" value="ADDR" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
+                  <input type="radio" id="cuInputType_ADDR" name="cuInputType" value="ADDR" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType" activity="READ">
                   <label for="cuInputType_ADDR">주소록 검색</label>
                 </div>
                 <div>
-                  <input ref="cuInputType_ALL" type="radio" id="cuInputType_ALL" name="cuInputType" value="ALL" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
+                  <input ref="cuInputType_ALL" type="radio" id="cuInputType_ALL" name="cuInputType" value="ALL" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType" activity="READ">
                   <label for="cuInputType_ALL" class="mr30">앱사용자 전체발송</label>
-                  <input type="radio" id="cuInputType_EXCEL" name="cuInputType" value="EXCEL" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
+                  <input type="radio" id="cuInputType_EXCEL" name="cuInputType" value="EXCEL" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType" activity="READ">
                   <label for="cuInputType_EXCEL">엑셀 업로드</label>
-                  <a @click="fnExcelTmplteDownLoad" class="btnStyle1 backLightGray ml20" title="샘플">샘플 <i class="far fa-arrow-to-bottom"></i></a>
+                  <a @click="fnExcelTmplteDownLoad" class="btnStyle1 backLightGray ml20" title="샘플" activity="READ">샘플 <i class="far fa-arrow-to-bottom"></i></a>
                   <input ref="excelFile" type="file" style="display:none;">
                 </div>
               </div>
@@ -241,8 +241,8 @@
           </div>
         </div>
         <div class="mt30 float-right">
-          <a @click="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송" data-toggle="modal" data-target="#test">테스트 발송</a>
-          <a @click="fnSendPushMessage('N')" class="btnStyle2 backRed float-left ml10" title="발송">발송</a>
+          <a @click="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송" data-toggle="modal" data-target="#test" activity="SAVE">테스트 발송</a>
+          <a @click="fnSendPushMessage('N')" class="btnStyle2 backRed float-left ml10" title="발송" activity="SAVE">발송</a>
         </div>
       </div>
     </div>

@@ -42,7 +42,7 @@
             <h4>01  발송정보</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a @click="fnOpenSmsTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기">템플릿 불러오기</a>
+            <a @click="fnOpenSmsTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기" activity="READ">템플릿 불러오기</a>
             <div class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
                 <h5>발송유형</h5>
@@ -74,13 +74,13 @@
             <h4>02  메시지 내용</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a @click="fnOpenSmsContentsPopup" :class="$gfnCommonUtils.isEmpty(sendData.smsContent) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="메시지 내용입력">내용입력</a>
+            <a @click="fnOpenSmsContentsPopup" :class="$gfnCommonUtils.isEmpty(sendData.smsContent) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="메시지 내용입력" activity="READ">내용입력</a>
             <div v-if="sendData.senderType == 'MMS'" class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
                 <h5>이미지</h5>
               </div>
               <div class="of_h" style="width:82%">
-                <div class="float-left" style="width:24%"><a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a></div>
+                <div class="float-left" style="width:24%"><a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택" activity="READ">이미지선택</a></div>
                 <ul v-for="imgIdx in imgLimitSize" :key="imgIdx" class="float-right attachList" style="width:74%; padding:5px 15px; height:30px;">
                   <li v-if="sendData.imgInfoList.length > imgIdx-1">
                     <a @click="fnDelImg(idx)">{{fnSubString(sendData.imgInfoList[imgIdx-1].imgUrl, 0, 35)}} <i class="fal fa-times"></i></a>
@@ -106,13 +106,13 @@
               </div>
               <div style="width:100%">
                 <div>
-                  <input type="radio" id="cuInputType_DICT" name="cuInputType" value="DICT" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
+                  <input type="radio" id="cuInputType_DICT" name="cuInputType" value="DICT" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType" activity="READ">
                   <label for="cuInputType_DICT" class="mr30">수신자 직접입력</label>
-                  <input type="radio" id="cuInputType_ADDR" name="cuInputType" value="ADDR" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
+                  <input type="radio" id="cuInputType_ADDR" name="cuInputType" value="ADDR" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType" activity="READ">
                   <label for="cuInputType_ADDR" class="mr30">주소록 검색</label>
-                  <input type="radio" id="cuInputType_EXCEL" name="cuInputType" value="EXCEL" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
+                  <input type="radio" id="cuInputType_EXCEL" name="cuInputType" value="EXCEL" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType" activity="READ">
                   <label for="cuInputType_EXCEL" class="mr10">엑셀 업로드</label>
-                  <a @click="fnExcelTmplteDownLoad" class="btnStyle1 backLightGray" title="샘플">샘플 <i class="far fa-arrow-to-bottom"></i></a>
+                  <a @click="fnExcelTmplteDownLoad" class="btnStyle1 backLightGray" title="샘플" activity="READ">샘플 <i class="far fa-arrow-to-bottom"></i></a>
                   <input ref="excelFile" type="file" style="display:none;">
                 </div>
               </div>
@@ -169,8 +169,8 @@
           </div>
         </div>
         <div class="mt20 float-right">
-          <a @click="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송">테스트 발송</a>
-          <a @click="fnSendSmsMessage('N')" class="btnStyle2 backRed float-left ml10" title="발송">발송</a>
+          <a @click="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송" activity="SAVE">테스트 발송</a>
+          <a @click="fnSendSmsMessage('N')" class="btnStyle2 backRed float-left ml10" title="발송" activity="SAVE">발송</a>
         </div>
       </div>
     </div>

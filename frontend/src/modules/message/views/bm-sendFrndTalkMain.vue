@@ -72,7 +72,7 @@
             <h4>01  발송정보</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a @click="fnOpenFrndTalkTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기">템플릿 불러오기</a>
+            <a @click="fnOpenFrndTalkTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기" activity="READ">템플릿 불러오기</a>
             <div class="of_h consolMarginTop">
               <div style="width:20%" class="float-left">
                 <h5>발신프로필 *</h5>
@@ -105,8 +105,8 @@
             <h4>02  메시지 내용</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a @click="fnOpenFrndTalkContentsPopup" :class="this.$gfnCommonUtils.isEmpty(sendData.frndTalkContent) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="메시지 내용입력">내용입력</a>
-            <a v-if="sendData.rplcSendType!='NONE'" @click="fnOpenReplacedSenderPopup" :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="대체발송 발신번호">대체발송 발신번호</a>
+            <a @click="fnOpenFrndTalkContentsPopup" :class="this.$gfnCommonUtils.isEmpty(sendData.frndTalkContent) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="메시지 내용입력" activity="READ">내용입력</a>
+            <a v-if="sendData.rplcSendType!='NONE'" @click="fnOpenReplacedSenderPopup" :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="대체발송 발신번호" activity="READ">대체발송 발신번호</a>
             <!-- 
             <div class="of_h consolMarginTop">
               <div style="width:20%" class="float-left">
@@ -238,13 +238,13 @@
               </div>
               <div style="width:100%">
                 <div>
-                  <input type="radio" id="cuInputType_DICT" name="cuInputType" value="DICT" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
+                  <input type="radio" id="cuInputType_DICT" name="cuInputType" value="DICT" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType" activity="READ">
                   <label for="cuInputType_DICT" class="mr30">수신자 직접입력</label>
-                  <input type="radio" id="cuInputType_ADDR" name="cuInputType" value="ADDR" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
+                  <input type="radio" id="cuInputType_ADDR" name="cuInputType" value="ADDR" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType" activity="READ">
                   <label for="cuInputType_ADDR" class="mr30">주소록 검색</label>
-                  <input type="radio" id="cuInputType_EXCEL" name="cuInputType" value="EXCEL" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType">
+                  <input type="radio" id="cuInputType_EXCEL" name="cuInputType" value="EXCEL" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType" activity="READ">
                   <label for="cuInputType_EXCEL" class="mr10">엑셀 업로드</label>
-                  <a @click="fnExcelTmplteDownLoad" class="btnStyle1 backLightGray" title="샘플">샘플 <i class="far fa-arrow-to-bottom"></i></a>
+                  <a @click="fnExcelTmplteDownLoad" class="btnStyle1 backLightGray" title="샘플" activity="READ">샘플 <i class="far fa-arrow-to-bottom"></i></a>
                   <input ref="excelFile" type="file" style="display:none;">
                 </div>
               </div>
@@ -302,8 +302,8 @@
           </div>
         </div>
         <div class="mt30 float-right">
-          <a @click="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송" data-toggle="modal" data-target="#test">테스트 발송</a>
-          <a @click="fnSendFrndTalkMessage('N')" class="btnStyle2 backRed float-left ml10" title="발송">발송</a>
+          <a @click="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송" activity="SAVE">테스트 발송</a>
+          <a @click="fnSendFrndTalkMessage('N')" class="btnStyle2 backRed float-left ml10" title="발송" activity="SAVE">발송</a>
         </div>
       </div>
     </div>
