@@ -17,7 +17,7 @@
             <div class="mainVisualTitle">
               <div class="wow animated fadeInUp" data-wow-duration="1s">
                 <h2 class="colorWhite">U+ 통합 메시징 클라우드<br>통합 메시지 발송, 대체발송 등<br>강력한 기능을<br>지금 사용해보세요.</h2>
-                <a href="user_sub01.html" class="mvBtn">서비스 가입</a>
+                <router-link :to="{ name: 'signUp' }" tag="a" class="mvBtn" title="서비스 가입">서비스 가입</router-link>
               </div>
             </div>
             <img src="@/assets/images/main/mainVisual2.jpg" alt="">
@@ -32,12 +32,21 @@
       <article id="noticeWrap">
         <section>
           <div class="noticeList">
-            <h3>공지사항<a href="user_sub03_2.html" class="more"><img src="@/assets/images/main/noticeMore.png" alt="더보기 아이콘"><span></span></a></h3>
+            <h3>공지사항
+              <router-link :to="{name: 'notice'}" tag="a" class="more">
+                <img src="@/assets/images/main/noticeMore.png" alt="더보기 아이콘"><span></span>
+              </router-link>
+            </h3>
             <ul class="listSt">
-              <li><a href="user_sub03_2_view.html" title="해당 게시글로 이동"><span class="noti_tt"><span class="newIcon">신규</span> SBS 8시 뉴스에 비친 통합메시징클라우드</span><span class="noti_day">2020-12-30</span></a></li>
-              <li><a href="user_sub03_2_view.html" title="해당 게시글로 이동"><span class="noti_tt">통합메시징클라우드에서 각 분야 AI 최고 리더들을 만나 보세요.</span><span class="noti_day">2020-12-30</span></a></li>
-              <li><a href="user_sub03_2_view.html" title="해당 게시글로 이동"><span class="noti_tt">온라인투자연계금융업법 심사 준비, 통합메시징클라우드와 함께 통합메시징클라우드와 함께</span><span class="noti_day">2020-12-30</span></a></li>
-              <li><a href="user_sub03_2_view.html" title="해당 게시글로 이동"><span class="noti_tt">지금 가입하면 3개월 무료 (~21년 2월 31일 신청 마감)</span><span class="noti_day">2020-12-30</span></a></li>
+              <li v-for="(noticeInfo, idx) in noticeInfoList" :key="idx">
+                <router-link :to="{ name: 'noticeDetail', params: { noticeId: noticeInfo.noticeId }}">
+                  <span class="noti_tt">
+                    <span v-if="!$gfnCommonUtils.isEmpty(noticeInfo.noticeTypeCdName)" class="newIcon">{{noticeInfo.noticeTypeCdName}}</span> 
+                    {{noticeInfo.title}}
+                  </span>
+                  <span class="noti_day">{{noticeInfo.regDt}}</span>
+                </router-link>
+              </li>
             </ul>
           </div>
           <div class="archivesList">
@@ -102,30 +111,60 @@
       <!-- //quiryWrap -->
     </div>
     <QuickRight></QuickRight>
+    <NoticePopup :noticePopupOpen.sync="noticePopupOpen" ref="noticePopup"></NoticePopup>
   </div>
 </template>
 
 <script>
 import QuickRight from "@/modules/main/components/bc-quickRight.vue";
+import NoticePopup from "@/modules/customer/components/bp-notice.vue";
+
+import customereApi from "@/modules/customer/service/customerApi.js";
 
 export default {
   name: 'consoleMain',
   components : {
-    QuickRight
+    QuickRight,
+    NoticePopup
+  },
+  data() {
+    return {
+      noticePopupOpen : false,
+      noticeInfoList: [],
+    }
   },
   mounted() {
     this.fnSetSlider();
+    //this.fnOpenNoticePopup();
+    this.fnSelectNoticeList();
   },
   methods: {
     fnSetSlider(){
-      //메인배너
       jQuery('.mainBxslider').bxSlider({
         mode: 'fade',
         pager: true,
         touchEnabled : (navigator.maxTouchPoints > 0),
         pause: 6000
       });
-    }
+    },
+    fnOpenNoticePopup(){
+      this.noticePopupOpen = true;
+    },
+    async fnSelectNoticeList(){
+      const params = {
+        pageNo: 1,
+        listSize: 4
+      };
+      await customereApi.selectNoticeList(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          console.log(result);
+          this.noticeInfoList = result.data;
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
   }
 }
 </script>

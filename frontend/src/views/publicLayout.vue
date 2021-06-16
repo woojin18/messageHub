@@ -3,12 +3,17 @@
     <PublicHeader></PublicHeader>
     <router-view :key="$route.fullPath"></router-view>
     <PublicFooter></PublicFooter>
+    <confirm></confirm>
   </div>
 </template>
 
 <script>
+import Vue from 'vue';
 import PublicHeader from "../components/PublicHeader";
 import PublicFooter from "../components/PublicFooter";
+import confirm from '@/modules/commonUtil/service/confirm';
+
+Vue.use(confirm);
 
 export default {
   name: "publicLayout",

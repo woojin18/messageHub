@@ -84,7 +84,8 @@ const router = new Router({
           meta: { public: true }
         },
         ...mainRoutes,
-        ...customerRoutes
+        ...customerRoutes,
+        ...signUpRoutes
       ]
     },
     {
@@ -102,8 +103,7 @@ const router = new Router({
           component: () => import('./views/ErrorPage500.vue'),
           meta: { public: true }
         },
-        ...loginRoutes,
-        ...signUpRoutes
+        ...loginRoutes
       ]
     },
     {

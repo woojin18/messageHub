@@ -8,7 +8,12 @@ const selectFaqList = (params) => {
   return httpClient.post('/api/public/customer/selectFaqList', params, { headers: {"show-layer": "Yes"} });
 };
 
+const selectNoticeList = (params) => {
+  return httpClient.post('/api/public/customer/selectNoticeList', params, { headers: {"show-layer": "Yes"} });
+};
+
 export default {
   selectFaqTypeList,
-  selectFaqList
+  selectFaqList,
+  selectNoticeList
 };
