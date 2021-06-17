@@ -3,20 +3,6 @@
 
 <mapper namespace="customer">
 
-    <select id="selectFaqTypeList" parameterType="hashmap" resultType="camel">
-    /* common.selectFaqTypeList - FAQ 구분 리스트 조회 */
-        SELECT
-            CC.CODE_VAL_1 AS FAQ_TYPE_CD
-            , CC.CODE_NAME_1 AS FAQ_TYPE_CD_NAME
-        FROM cm_bo.CM_CODE_TYPE CCT
-        INNER JOIN cm_bo.CM_CODE CC
-            ON CCT.CODE_TYPE_CD = CC.CODE_TYPE_CD
-            AND CC.USE_YN = 'Y'
-        WHERE CCT.USE_YN = 'Y'
-            AND CCT.CODE_TYPE_CD = 'FAQ_TYPE'
-        ORDER BY CC.DIS_ORDER
-    </select>
-
     <sql id ="whereSelectFaqList">
         <if test="faqType != '' and faqType != null ">
             AND CF.FAQ_TYPE = #{faqType}

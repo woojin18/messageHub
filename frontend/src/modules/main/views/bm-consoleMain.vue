@@ -120,6 +120,7 @@ import QuickRight from "@/modules/main/components/bc-quickRight.vue";
 import NoticePopup from "@/modules/customer/components/bp-notice.vue";
 
 import customereApi from "@/modules/customer/service/customerApi.js";
+import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
   name: 'consoleMain',
@@ -158,7 +159,6 @@ export default {
       await customereApi.selectNoticeList(params).then(response =>{
         const result = response.data;
         if(result.success) {
-          console.log(result);
           this.noticeInfoList = result.data;
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);

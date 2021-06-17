@@ -23,8 +23,8 @@
             </div>
             <ul class="tab5">
               <li :class="(faqTypeCd == '' ? 'active' : '')"><a href="#" @click.prevent="fnSetFaqTypeCd('')">전체</a></li>
-              <li v-for="(faqTypeInfo, idx) in faqTypeList" :key="idx" :class="(faqTypeCd == faqTypeInfo.faqTypeCd ? 'active' : '')">
-                <a href="#" @click.prevent="fnSetFaqTypeCd(faqTypeInfo.faqTypeCd)">{{faqTypeInfo.faqTypeCdName}}</a>
+              <li v-for="(faqTypeInfo, idx) in faqTypeList" :key="idx" :class="(faqTypeCd == faqTypeInfo.codeVal1 ? 'active' : '')">
+                <a href="#" @click.prevent="fnSetFaqTypeCd(faqTypeInfo.codeVal1)">{{faqTypeInfo.codeName1}}</a>
               </li>
             </ul>
             <ul class="faqList">
@@ -83,7 +83,7 @@ export default {
     }
   },
   mounted() {
-    this.fnSelectSmsTmpltList();
+    this.fnSelectFaqType();
     this.fnSetFaqTypeCd(this.faqTypeCd);
   },
   methods: {
@@ -109,9 +109,12 @@ export default {
         }
       });
     },
-    fnSelectSmsTmpltList(){
-      const params = {};
-      customereApi.selectFaqTypeList(params).then(response =>{
+    fnSelectFaqType(){
+      const params = {
+        codeTypeCd : "FAQ_TYPE",
+        useYN : "Y"
+      };
+      customereApi.selectCodeList(params).then(response =>{
         const result = response.data;
         if(result.success) {
           this.faqTypeList = Object.assign({}, result.data);

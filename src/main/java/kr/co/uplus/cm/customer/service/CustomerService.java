@@ -18,19 +18,6 @@ public class CustomerService {
     private GeneralDao generalDao;
 
     /**
-     * FAQ 구분 리스트 조회
-     * @param params
-     * @return
-     * @throws Exception
-     */
-    public RestResult<Object> selectFaqTypeList(Map<String, Object> params) throws Exception {
-        RestResult<Object> rtn = new RestResult<Object>();
-        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_FAQ_TYPE_LIST, params);
-        rtn.setData(rtnList);
-        return rtn;
-    }
-
-    /**
      * FAQ 리스트 조회
      * @param params
      * @return

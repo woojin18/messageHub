@@ -1,19 +1,25 @@
 import httpClient from '@/common/http-client';
 
-const selectFaqTypeList = (params) => {
-  return httpClient.post('/api/public/customer/selectFaqTypeList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+const selectCodeList = (params) => {
+  return httpClient.post('/api/public/customer/selectCodeList', params, { headers: {"show-layer": "Yes"} });
 };
 
 const selectFaqList = (params) => {
-  return httpClient.post('/api/public/customer/selectFaqList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+  return httpClient.post('/api/public/customer/selectFaqList', params, { headers: {"show-layer": "Yes"} });
 };
 
 const selectNoticeList = (params) => {
-  return httpClient.post('/api/public/customer/selectNoticeList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+  return httpClient.post('/api/public/customer/selectNoticeList', params, { headers: {"show-layer": "Yes"} });
 };
 
+const insertQuestBoard = (params) => {
+  return httpClient.post('/api/public/customer/insertQuestBoard', params, { headers: {"show-layer": "Yes"} });
+};
+
+
 export default {
-  selectFaqTypeList,
+  selectCodeList,
   selectFaqList,
-  selectNoticeList
+  selectNoticeList,
+  insertQuestBoard
 };

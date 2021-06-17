@@ -10,12 +10,12 @@
         <li><a href="#" class="quick_top"><img src="@/assets/images/main/quickIcon_top.png" alt=""></a></li>
       </ul>
     </div>
-    <InquiryPopup></InquiryPopup>
+    <InquiryPopup ref="inquiryPopup"></InquiryPopup>
   </div>
 </template>
 
 <script>
-import InquiryPopup from "@/modules/main/components/bp-inquiry.vue";
+import InquiryPopup from "@/modules/customer/components/bp-inquiry.vue";
 
 export default {
   name: 'quickRight',
@@ -27,7 +27,9 @@ export default {
   },
   methods: {
     fnOpenInquiryModal(){
+      this.$refs.inquiryPopup.fnRestData();
       jQuery("#Inquiry").modal("show");
+      this.$refs.inquiryPopup.fnSelectFaqType();
     },
     fnSetQuickRight(){
       jQuery(window).scroll(function(){

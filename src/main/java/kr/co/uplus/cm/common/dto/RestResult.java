@@ -92,6 +92,12 @@ public class RestResult<T> implements IResult<ResultCode, T> {
         return pageInfo;
     }
 
+    public RestResult<T> setFail() {
+        this.success = false;
+        this.message = "시스템 오류입니다. 잠시후 다시시도해주세요.";
+        return this;
+    }
+
     public RestResult<T> setFail(String failMsg) {
         this.success = false;
         this.message = failMsg;
