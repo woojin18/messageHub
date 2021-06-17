@@ -12,7 +12,7 @@
 							<h5 class="inline-block" style="width:20%">사용자 ID *</h5>
 							<div style="width:80%" class="of_h inline-block float-right">
 								<input type="text" v-model="loginId" @change="fnChangeUserId" class="inputStyle" style="width:70%" title="사용자 ID 입력란" placeholder="이메일 정보를 입력해 주세요">
-								<a @click="fnCheckDupcUser()" class="btnStyle1 backLightGray float-right" style="width:28%" title="중복체크">중복체크</a>
+								<a @click="fnCheckDupcUser()" class="btnStyle1 backLightGray float-right" style="width:28%" activity="READ" title="중복체크">중복체크</a>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">

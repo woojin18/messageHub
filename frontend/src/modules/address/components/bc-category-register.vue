@@ -36,7 +36,7 @@
 						</div>
 					</div>
 					<div class="text-center mt20">
-						<a @click="fnSaveAddrCate" class="btnStyle1 backBlack mr5">저장</a>
+						<a @click="fnSaveAddrCate" class="btnStyle1 backBlack mr5" activity="SAVE">저장</a>
 						<a @click="fnClose" class="btnStyle1 backWhite">취소</a>
 					</div>
 				</div>

@@ -31,7 +31,7 @@
 						</div>
 					</div>
 					<div class="text-center mt20">
-						<a @click="fnSave" class="btnStyle1 backBlack mr5">
+						<a @click="fnSave" class="btnStyle1 backBlack mr5" activity="SAVE">
 							<span v-if="status == 'R'">등록</span>
 							<span v-else>수정</span>
 						</a>

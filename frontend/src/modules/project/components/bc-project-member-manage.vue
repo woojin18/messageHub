@@ -21,7 +21,7 @@
 							<select id="selectApprovalStatus" class="selectStyle2" style="width:14%" title="상태 선택란">
 								<option value="">전체</option>
 							</select>
-							<a @click="fnSearch()" class="btnStyle1 float-right" title="검색">검색</a>
+							<a @click="fnSearch()" class="btnStyle1 float-right" activity="READ" title="검색">검색</a>
 						</div>
 					</div>
 				</div>

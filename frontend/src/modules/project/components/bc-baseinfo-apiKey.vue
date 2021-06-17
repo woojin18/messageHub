@@ -140,7 +140,7 @@
 						</span>
 					</div>
 					<div class="text-center mt20">
-						<a @click="fnApiKeySave" class="btnStyle1 backBlack mr5">저장</a>
+						<a @click="fnApiKeySave" class="btnStyle1 backBlack mr5" activity="SAVE">저장</a>
 						<a @click="fnClose" class="btnStyle1 backWhite">취소</a>
 					</div>
 				</div>

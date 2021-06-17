@@ -34,7 +34,7 @@
 						</div>
 					</div>
 					<div class="text-center mt60">
-						<button @click="ClickSave" class="btnStyle3 white font14">저장</button>
+						<button @click="ClickSave" class="btnStyle3 white font14" activity="SAVE">저장</button>
 						<button @click="PopClose" class="btnStyle3 white font14 ml10">닫기</button>
 					</div>
 				</div>

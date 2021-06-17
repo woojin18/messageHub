@@ -16,7 +16,7 @@
 							</select>
 							<div style="width:78%" class="of_h inline-block float-right">
 								<input type="text" class="inputStyle" style="width:70%" v-model="searchText" title="사용자 ID 입력란">
-								<a @click="fnSearchUser()" class="btnStyle1 backLightGray float-right" style="width:28%" title="중복체크">검색</a>
+								<a @click="fnSearchUser()" class="btnStyle1 backLightGray float-right" style="width:28%" activity="READ" title="중복체크">검색</a>
 							</div>
 						</div>
 						<!-- 검색창 End -->
@@ -75,7 +75,7 @@
 						<p class="color3 consolMarginTop"><i class="far fa-info-circle"></i> * 멤버를 추가하기 위해서는 사용자관리에 우선 등록이 되어 있어야 합니다.</p>
 					</div>
 					<div class="text-center mt20">
-						<a @click="fnRegisterMember" class="btnStyle1 backBlack mr5"  title="추가">추가</a>
+						<a @click="fnRegisterMember" class="btnStyle1 backBlack mr5" activity="SAVE" title="추가">추가</a>
 						<a @click="fnClose" class="btnStyle1 backWhite"  title="취소">취소</a>
 					</div>
 				</div>

@@ -8,7 +8,7 @@
 					<hr>
 					<p class="text-center mt20">삭제 처리된 사용자는 멤버 추가 기능을 이용하여 다시 등록할 수 있습니다.</p>
 					<div class="text-center mt20">
-						<a @click="fnDeleteProjectMember" class="btnStyle1 backBlack mr5" title="삭제">삭제</a>
+						<a @click="fnDeleteProjectMember" class="btnStyle1 backBlack mr5" activity="SAVE" title="삭제">삭제</a>
 						<a @click="fnClose" class="btnStyle1 backWhite" title="취소">취소</a>
 					</div>
 				</div>

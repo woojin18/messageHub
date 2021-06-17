@@ -130,7 +130,7 @@
 			</div>
 
 			<div class="text-center mt20">
-				<a @click="fnSave" class="btnStyle2 backRed">저장</a>
+				<a @click="fnSave" class="btnStyle2 backRed" activity="SAVE">저장</a>
 			</div>
 			<!-- //본문 -->
 		</article>

@@ -20,7 +20,7 @@
 								<option value="Y">사용</option>
 								<option value="N">미사용</option>
 							</select>
-							<a @click="fnSearch()" class="btnStyle1 float-right">검색</a>
+							<a @click="fnSearch()" class="btnStyle1 float-right" activity="READ">검색</a>
 						</div>
 					</div>
 				</div>
@@ -31,8 +31,8 @@
 					<div class="of_h inline">
 						<div class="float-right">
 							<a @click="fnRegisterReceiverPop" class="btnStyle2 borderGray mr5" >수신자 추가</a>
-							<a @click="fnExcelDownLoad" class="btnStyle2 borderGray mr5" >엑셀 다운로드</a>
-							<a @click="fnExcelUpload" class="btnStyle2 borderGray mr5" >엑셀 업로드</a>
+							<a @click="fnExcelDownLoad" class="btnStyle2 borderGray mr5" activity="READ">엑셀 다운로드</a>
+							<a @click="fnExcelUpload" class="btnStyle2 borderGray mr5" activity="SAVE">엑셀 업로드</a>
 							<input ref="excelFile" type="file" style="display:none;" @change="fnChgInputFile()">
 						</div>
 					</div>
@@ -76,7 +76,7 @@
 										<td v-else class="text-center"> 미사용 </td>
 										<td class="end">
 											<a @click="fnModifyReceiverPop(data)" class="btnStyle1 borderLightGray small mr5">수정</a>
-											<a @click="fnDeleteReceiver(data)" class="btnStyle1 borderLightGray small mr5">삭제</a>
+											<a @click="fnDeleteReceiver(data)" class="btnStyle1 borderLightGray small mr5" activity="SAVE">삭제</a>
 										</td>
 									</tr>	
 									<tr v-if="items.length == 0">

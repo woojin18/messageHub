@@ -30,7 +30,7 @@
 				<div class="col-xs-12 consolMarginTop">
 					<div class="of_h inline">
 						<div class="float-right">
-							<a @click="fnRegisterUserPop()" class="btnStyle2 borderGray" activity="SAVE" title="사용자 등록창이 열립니다">사용자 등록</a>
+							<a @click="fnRegisterUserPop()" class="btnStyle2 borderGray" title="사용자 등록창이 열립니다">사용자 등록</a>
 							<!--a href="#self" class="btnStyle3 gray font13 minWidth120 ml10" data-toggle="modal" data-target="#Modify" title="정보 수정창이 열립니다">정보 수정</a-->
 						</div>
 					</div>

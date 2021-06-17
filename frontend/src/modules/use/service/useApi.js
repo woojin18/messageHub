@@ -1,11 +1,11 @@
 import httpClient from '@/common/http-client';
 
 const selectUseHistory = (params) => {
-	return httpClient.post('/useApi/selectUseHistory', params, { headers: {"show-layer": "Yes"} });
+	return httpClient.post('/useApi/selectUseHistory', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
 const excelDownloadUseHistory = (params) => {
-	return httpClient.post('/useApi/excelDownloadUseHistory', params, { headers: {"show-layer": "No"}, responseType: 'arraybuffer' }).then(function(response) {
+	return httpClient.post('/useApi/excelDownloadUseHistory', params, { headers: {"show-layer": "No", "activity":"READ"}, responseType: 'arraybuffer' }).then(function(response) {
 		try {
 			let blob = new Blob([response.data], { type: response.headers['content-type'] })
 			let fileName = getFileName(response.headers['content-disposition'])
@@ -27,7 +27,7 @@ const excelDownloadUseHistory = (params) => {
 };
 
 const selectCorpProductUnitDetail = (params) => {
-	return httpClient.post('/useApi/selectCorpProductUnitDetail', params, { headers: {"show-layer": "Yes"} });
+	return httpClient.post('/useApi/selectCorpProductUnitDetail', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
 export default {

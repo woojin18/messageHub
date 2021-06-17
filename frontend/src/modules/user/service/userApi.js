@@ -25,7 +25,7 @@ const registerUser = (params) => {
 };
 
 const checkDupcUser = (params) => {
-	return httpClient.post('/userApi/manage/checkDupcUser', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+	return httpClient.post('/userApi/manage/checkDupcUser', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
 export default {

@@ -45,7 +45,7 @@
 				<div class="col-xs-12">
 					<div class="of_h inline">
 						<div class="float-right">
-							<a @click="fnExcelDownLoad" class="btnStyle2 borderGray">다운로드</a>
+							<a @click="fnExcelDownLoad" class="btnStyle2 borderGray" activity="READ"> 다운로드</a>
 						</div>
 					</div>
 					<div class="of_h inline">

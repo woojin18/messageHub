@@ -19,7 +19,7 @@
 											<option value="hpNumber">휴대폰번호</option>
 										</select>
 										<input type="text" class="inputStyle ml10" style="width:50%" v-model="searchText">
-										<a @click='fnSearch()' class="btnStyle1 float-right">검색</a>
+										<a @click='fnSearch()' class="btnStyle1 float-right" activity="READ">검색</a>
 									</div>
 								</div>
 							</div>
@@ -71,7 +71,7 @@
 						<!-- pagination End-->
 					</div>
 					<div class="text-center mt20">
-						<a @click="fnRegisterMember" class="btnStyle1 backBlack mr5">추가</a>
+						<a @click="fnRegisterMember" class="btnStyle1 backBlack mr5" activity="SAVE">추가</a>
 						<a @click="fnCloseLayer" class="btnStyle1 backWhite">취소</a>
 					</div>
 				</div>

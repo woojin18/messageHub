@@ -52,7 +52,7 @@
 						<p class="consolMarginTop"><i class="far fa-info-circle"></i> 타프로젝트 사용여부를 전용을 선택하신 경우 프로젝트를 선택하셔야 합니다.</p>
 					</div>
 					<div class="text-center mt20">
-						<a @click="fnMdfyAddr" class="btnStyle1 backBlack mr5">저장</a>
+						<a @click="fnMdfyAddr" class="btnStyle1 backBlack mr5" activity="SAVE">저장</a>
 						<a @click="fnClose" ref="closeBtn" class="btnStyle1 backWhite">취소</a>
 					</div>
 				</div>
