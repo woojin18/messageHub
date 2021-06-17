@@ -187,7 +187,6 @@ export default {
 			} else {
 				this.status = "edit";
 				this.selectRow = row;
-				console.log(row);
 				this.popReset = this.popReset+1;
 				jQuery("#acQnaPopup").modal("show");
 			}

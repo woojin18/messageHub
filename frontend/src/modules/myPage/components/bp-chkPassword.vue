@@ -60,7 +60,7 @@ export default {
             this.fnCloseLayer();
             this.$parent.fnMyCorp();
           } else {
-            confirm.fnAlert(result.message, "");
+            confirm.fnAlert("", result.message);
           }
         });
       }

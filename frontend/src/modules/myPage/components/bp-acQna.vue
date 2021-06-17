@@ -1,60 +1,62 @@
 <template>
-  <div class="modal fade modalStyle in" id="acQnaPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body">
-          <div class="of_h">
+	<div class="modal fade modalStyle in" id="acQnaPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="of_h">
 						<h2>1:1 문의</h2>
 						<hr>
 						<div class="of_h">
 							<h5 class="inline-block" style="width:18%">문의유형 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
-              <h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ qnaTypeStr }}</h5>
-              <select v-else id="qnaType" name="qnaType" class="selectStyle2 float-right" style="width:80%">
+							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ qnaTypeStr }}</h5>
+							<select v-else v-model="qnaType" class="selectStyle2 float-right" style="width:80%">
+								<option value="">선택</option>
+								<option  v-for="(row, index) in qnaTypeArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
 							</select>
 						</div>	
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">이메일 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
-              <h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ email }}</h5>
+							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ email }}</h5>
 							<div v-else class="float-right" style="width:80%">
 							  <input type="text" class="inputStyle" v-model="email">
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">전화번호 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
-              <h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ hpNumber }}</h5>
+							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ hpNumber }}</h5>
 							<div v-else class="float-right" style="width:80%">
-								<input type="text" class="inputStyle" v-model="hpNumber">
+								<input type="text" class="inputStyle" v-model="hpNumber" placeholder="-없이 입력하세요">
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">문의제목 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
-              <h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ title }}</h5>
+							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ title }}</h5>
 							<input v-else type="text" class="inputStyle float-right" style="width:80%" placeholder="제목을 입력하세요(100자)" v-model="title">
 						</div>
-            <div class="of_h consolMarginTop">
+						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">문의내용 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
-              <h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%"><pre>{{ content }}</pre></h5>
+							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%"><pre>{{ content }}</pre></h5>
 							<textarea v-else class="textareaStyle height120 float-right" style="width:80%" placeholder="문의내용을 입력하세요(500자)" v-model="content"></textarea>
 						</div>
 					</div>
-          <div v-if="this.status == 'detail'" class="mt20">
-            <div class="of_h consolMarginTop">
-              <h5 class="inline-block" style="width:18%">문의상태</h5>
-              <h5 class="font-normal inline-block float-right" style="width:80%">{{ qnaStatusStr }}</h5>
+					<div v-if="this.status == 'detail'" class="mt20">
+						<div class="of_h consolMarginTop">
+							<h5 class="inline-block" style="width:18%">문의상태</h5>
+							<h5 class="font-normal inline-block float-right" style="width:80%">{{ qnaStatusStr }}</h5>
 						</div>
-            <div class="of_h consolMarginTop">
-              <h5 class="inline-block" style="width:18%">답변 내용</h5>
-              <h5 class="font-normal inline-block float-right" style="width:80%"><pre>{{ reply }}</pre></h5>
+						<div class="of_h consolMarginTop">
+							<h5 class="inline-block" style="width:18%">답변 내용</h5>
+							<h5 class="font-normal inline-block float-right" style="width:80%"><pre>{{ reply }}</pre></h5>
 						</div>
 					</div>
-          <div class="text-center mt20">
+					<div class="text-center mt20">
 						<a @click="fnSave" v-if="this.status != 'detail'" class="btnStyle1 backBlack" data-toggle="modal" data-target="">등록</a>
 						<a @click="fnCloseLayer" class="btnStyle1 backWhite ml10" data-toggle="modal" data-target="">취소</a>
 					</div>
-        </div>
-      </div>
-    </div>
-  </div>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -75,6 +77,7 @@ export default {
       content :'',        // 내용
       qnaStatusStr : '',  // 문의 상태
       reply : '',         // 답변
+      qnaTypeArr : [],
 
       memberInfo : {},
     }
@@ -97,15 +100,6 @@ export default {
   },
   watch: {
     popReset() {
-      // 문의 유형의 option이 없는 경우 문의 유형 다시 조회
-      if(jQuery("#qnaType option").size() == 0){
-        this.fnQnaTypeInit();
-      }
-      if(this.selectRow.questType != undefined){
-        jQuery("#qnaType").val(this.selectRow.questType);
-      } else {
-        jQuery("#qnaType").val("");
-      }
       // 데이터 초기화
       this.fnDataReset();
     },
@@ -120,15 +114,11 @@ export default {
           codeTypeCd	: "QNA_TYPE",
           useYN		: "Y"
         };
+
         commonUtilApi.selectCodeList(params).then(response =>{
-          var result = response.data.data;
-          this.qnaType = result;
-          jQuery("#qnaType").append('<option value="">선택</option>');
-          for(var i = 0; i < result.length; i++){
-            jQuery("#qnaType").append('<option value="'+result[i].codeVal1+'">'+result[i].codeName1+'</option>');
-          }
-          if(this.status == "edit"){
-            jQuery("#qnaType").val(this.selectRow.questType);
+          var result = response.data;
+          if(result.success){
+            this.qnaTypeArr = result.data;
           }
         });
       },
@@ -139,13 +129,15 @@ export default {
       fnMemberInfo(){
         var params = {};
         myPageApi.selectMemberInfo(params).then(response => {
-          var result = response.data.data;
-          this.memberInfo = result;
+          var result = response.data;
+          if(result.success){
+            this.memberInfo = result.data;
+          }
         });
       },
       // 데이터 초기화
       fnDataReset(){
-        this.qnaType = this.selectRow.questType;
+        this.qnaType = this.status == "add" ? "" : this.selectRow.questType;
         this.qnaTypeStr = this.selectRow.questTypeStr;
         this.title = this.selectRow.title;
         this.hpNumber = this.status == "add" ? this.memberInfo.hpNumber : this.selectRow.hpNumber;    // 신규 문의 사항인 경우 로그인 회원의 전화번호
@@ -155,7 +147,6 @@ export default {
         this.reply = this.selectRow.reply;
       },
       fnSave(){
-        this.qnaType = jQuery("#qnaType").val();
         if(this.qnaType == undefined || this.qnaType == ''){
           confirm.fnAlert("", "문의유형은 필수선택항목입니다.");
           return;

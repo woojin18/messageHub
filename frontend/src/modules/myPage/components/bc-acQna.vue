@@ -9,15 +9,16 @@
 					<div class="menuBox">						
 						<div class="of_h">	
 							<h4 class="inline-block" style="width:7%">문의유형</h4>
-							<select id="srcQnaType" name="srcQnaType" class="selectStyle2" style="width:16%" v-model="srcQnaType">
+							<select v-model="srcQnaType" class="selectStyle2" style="width:16%">
 								<option value="">전체</option>
+								<option  v-for="(row, index) in qnaTypeInfo" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
 							</select>
 							<h4 class="inline-block ml60" style="width:7%">문의상태</h4>
 							<select id="srcQnaStatus" name="srcQnaStatus" class="selectStyle2" style="width:16%" v-model="srcQnaStatus">
 								<option value="">전체</option>
 							</select>
 							<h4 class="inline-block ml60" style="width:7%">문의제목</h4>
-							<input type="text" id="srcTitle" class="inputStyle vertical-baseline" style="width:24%" v-model="srcTitle">
+							<input type="text" id="srcTitle" class="inputStyle vertical-baseline" style="width:24%" v-model="srcTitle" @keypress.enter="fnSearch">
 							<a @click="fnSearch" class="btnStyle1 float-right">검색</a>
 						</div>						
 					</div>
@@ -111,7 +112,9 @@ export default {
 			pageInfo: {},
 			status : '',
 			selectRow : {},
-			popReset : 0
+			popReset : 0,
+			qnaTypeInfo : [],
+			qnaStatusInfo : []
 		}
 	},
 	mounted() {
@@ -134,10 +137,9 @@ export default {
 				useYN		: "Y"
 			};
 			commonUtilApi.selectCodeList(params).then(response =>{
-				var result = response.data.data;
-				this.qnaType = result;
-				for(var i = 0; i < result.length; i++){
-					jQuery("#srcQnaType").append('<option value="'+result[i].codeVal1+'">'+result[i].codeName1+'</option>');
+				var result = response.data;
+				if(result.success){
+					this.qnaTypeInfo = result.data;
 				}
 			});
 		},
@@ -148,10 +150,9 @@ export default {
 				useYN		: "Y"
 			};
 			commonUtilApi.selectCodeList(params).then(response =>{
-				var result = response.data.data;
-				this.qnaType = result;
-				for(var i = 0; i < result.length; i++){
-					jQuery("#srcQnaStatus").append('<option value="'+result[i].codeVal1+'">'+result[i].codeName1+'</option>');
+				var result = response.data;
+				if(result.success){
+					this.qnaStatusInfo = result.data;
 				}
 			});
 		},
@@ -187,7 +188,6 @@ export default {
 			} else {
 				this.status = "edit";
 				this.selectRow = row;
-				console.log(row);
 				this.popReset = this.popReset+1;
 				jQuery("#acQnaPopup").modal("show");
 			}
