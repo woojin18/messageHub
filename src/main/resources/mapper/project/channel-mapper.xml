@@ -47,6 +47,14 @@
 						,		date_format(A.APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
 						,		'' AS MAIN_MDN
 						,		'' AS MAIN_TITLE
+						<![CDATA[
+						,		CASE
+									WHEN A.APPROVAL_DT > A.REG_DT	THEN A.APPROVAL_DT
+									WHEN A.APPROVAL_DT > A.UPD_DT	THEN A.APPROVAL_DT
+									WHEN A.UPD_DT > A.REG_DT		THEN A.UPD_DT
+									ELSE A.REG_DT
+								END AS RANKING_DT 
+						]]>
 						from 	cm.CM_RCS_BRAND A
 						WHERE 	A.CORP_ID = #{corpId}
 						and		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
@@ -74,6 +82,7 @@
 						,		'' AS APPROVAL_DT
 						,		B.MAIN_MDN
 						,		B.MAIN_TITLE
+						,		A.REG_DT AS RANKING_DT
 						from 	cm.CM_RCS_BRAND_REQ A
 						left outer join (
 							SELECT	crcr.BRAND_ID 
@@ -86,7 +95,7 @@
 						WHERE 	A.CORP_ID = #{corpId}
 						and		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
 				) BRAND, (SELECT @vRank:=0, @vData:='') as r
-				ORDER BY BRAND.BRAND_ID, BRAND.REG_DT DESC
+				ORDER BY BRAND.BRAND_ID, BRAND.RANKING_DT DESC
 		) A
 		LEFT OUTER JOIN (
 			select BRAND_ID 
@@ -103,6 +112,7 @@
 							,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS MAIN_TITLE
 							,		crcr.REG_DT
 							,		crcr.BRAND_ID 
+							,		crcr.REG_DT AS RANKING_DT
 							from cm.CM_RCS_CHATBOT_REQ crcr
 							where crcr.CHATBOT_ID not in (
 								select	crc.CHATBOT_ID
@@ -116,9 +126,17 @@
 							,		REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS MAIN_TITLE
 							,		crc.REG_DT
 							,		crc.BRAND_ID 
+							<![CDATA[
+							,		CASE
+										WHEN crc.APPROVAL_DT > crc.REG_DT	THEN crc.APPROVAL_DT
+										WHEN crc.APPROVAL_DT > crc.UPD_DT	THEN crc.APPROVAL_DT
+										WHEN crc.UPD_DT > crc.REG_DT		THEN crc.UPD_DT
+										ELSE crc.REG_DT
+									END AS RANKING_DT 
+							]]>
 							from cm.CM_RCS_CHATBOT crc 
 						) CHATBOT, (SELECT @vRank:=0, @vData:='') as r
-						ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.REG_DT DESC
+						ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.RANKING_DT DESC
 				) A
 				WHERE	RANKING = 1  
 			) CHATBOT_RANK
@@ -150,6 +168,7 @@
 					,		crcr.CHATBOT_ID AS MAIN_MDN
 					,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS MAIN_TITLE
 					,		crcr.REG_DT
+					,		crcr.REG_DT AS RANKING_DT
 					from cm.CM_RCS_CHATBOT_REQ crcr 
 					where BRAND_ID  = #{brandId}
 					and REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.isMainNum[0]'), "\"", "") = 'true'
@@ -166,11 +185,19 @@
 					,		crc.CHATBOT_ID AS MAIN_MDN
 					,		REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS MAIN_TITLE
 					,		crc.REG_DT
+					<![CDATA[
+					,		CASE
+								WHEN crc.APPROVAL_DT > crc.REG_DT	THEN crc.APPROVAL_DT
+								WHEN crc.APPROVAL_DT > crc.UPD_DT	THEN crc.APPROVAL_DT
+								WHEN crc.UPD_DT > crc.REG_DT		THEN crc.UPD_DT
+								ELSE crc.REG_DT
+							END AS RANKING_DT 
+					]]>
 					from cm.CM_RCS_CHATBOT crc 
 					where BRAND_ID  = #{brandId}
 					and REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.isMainNum[0]'), "\"", "") = 'true'
 				) CHATBOT, (SELECT @vRank:=0, @vData:='') as r
-				ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.REG_DT DESC
+				ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.RANKING_DT DESC
 		) A
 		WHERE	RANKING = 1
 	</select>
@@ -533,6 +560,14 @@
 						,		date_format(A.APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
 						,		'' AS MAIN_MDN
 						,		'' AS MAIN_TITLE
+						<![CDATA[
+						,		CASE
+									WHEN A.APPROVAL_DT > A.REG_DT	THEN A.APPROVAL_DT
+									WHEN A.APPROVAL_DT > A.UPD_DT	THEN A.APPROVAL_DT
+									WHEN A.UPD_DT > A.REG_DT		THEN A.UPD_DT
+									ELSE A.REG_DT
+								END AS RANKING_DT 
+						]]>
 						from 	cm.CM_RCS_BRAND A
 						WHERE 	A.CORP_ID = #{corpId}
 						and		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
@@ -560,6 +595,7 @@
 						,		'' AS APPROVAL_DT
 						,		B.MAIN_MDN
 						,		B.MAIN_TITLE
+						,		A.REG_DT AS RANKING_DT 
 						from 	cm.CM_RCS_BRAND_REQ A
 						left outer join (
 							SELECT	crcr.BRAND_ID 
@@ -572,7 +608,7 @@
 						WHERE 	A.CORP_ID = #{corpId}
 						and		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
 				) BRAND, (SELECT @vRank:=0, @vData:='') as r
-				ORDER BY BRAND.BRAND_ID, BRAND.REG_DT DESC
+				ORDER BY BRAND.BRAND_ID, BRAND.RANKING_DT DESC
 			) A
 			LEFT OUTER JOIN (
 				select *
@@ -615,9 +651,17 @@
 								,		crc.APPROVAL_STATUS 
 								,		date_format(crc.REG_DT, '%Y-%m-%d') AS REG_DT
 								,		date_format(crc.APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
+								<![CDATA[
+								,		CASE
+											WHEN crc.APPROVAL_DT > crc.REG_DT	THEN crc.APPROVAL_DT
+											WHEN crc.APPROVAL_DT > crc.UPD_DT	THEN crc.APPROVAL_DT
+											WHEN crc.UPD_DT > crc.REG_DT		THEN crc.UPD_DT
+											ELSE crc.REG_DT
+										END AS RANKING_DT 
+								]]>
 								from cm.CM_RCS_CHATBOT crc 
 							) CHATBOT, (SELECT @vRank:=0, @vData:='') as r
-							ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.REG_DT DESC
+							ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.RANKING_DT DESC
 					) A
 					WHERE	CHANBOT_RANKING = 1  
 				) CHATBOT_RANK
