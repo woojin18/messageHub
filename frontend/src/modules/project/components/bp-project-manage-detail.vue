@@ -106,7 +106,7 @@
 					
 					</div>
 					<div class="text-center mt40">
-						<a @click="fnSave" class="btnStyle3 black font14" >등록</a>
+						<a @click="fnSave" class="btnStyle3 black font14" activity="SAVE">등록</a>
             <a @click="fnClose" ref="closeBtn" class="btnStyle3 white font14">닫기</a>						
 					</div>
 				</div>

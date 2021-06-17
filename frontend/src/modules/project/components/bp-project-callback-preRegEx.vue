@@ -33,7 +33,7 @@
 						</div>
 					</div>
 					<div class="text-center mt40">
-            <a @click="fnSaveWithFile" class="btnStyle3 black font14" data-toggle="modal">신청</a>
+            <a @click="fnSaveWithFile" class="btnStyle3 black font14" data-toggle="modal" activity="SAVE">신청</a>
 						<a @click="fnCloseLayer" ref="closeBtn" class="btnStyle3 white font14" data-dismiss="modal">닫기</a>						
 					</div>
 				</div>

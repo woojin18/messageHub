@@ -319,14 +319,14 @@
 						<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:72%; visibility : hidden;" ref="certiImgFile" />
 					</div>
 					<div class="float-right">
-						<a v-if="this.save_status == 'C'" @click="fnSave('save')" class="btnStyle5 red float-left width120">임시저장</a>
-						<a v-if="this.save_status == 'C'" @click="fnSave('approval')" class="btnStyle5 red float-left ml10 width120">승인요청</a>
+						<a v-if="this.save_status == 'C'" @click="fnSave('save')" class="btnStyle5 red float-left width120" activity="SAVE">임시저장</a>
+						<a v-if="this.save_status == 'C'" @click="fnSave('approval')" class="btnStyle5 red float-left ml10 width120" activity="SAVE">승인요청</a>
 
-						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'Y' " @click="fnSave('save')" class="btnStyle5 red float-left width120">저장</a>
-						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'Y' " @click="fnSave('approval')" class="btnStyle5 red float-left ml10 width120">승인요청</a>
+						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'Y' " @click="fnSave('save')" class="btnStyle5 red float-left width120" activity="SAVE">저장</a>
+						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'Y' " @click="fnSave('approval')" class="btnStyle5 red float-left ml10 width120" activity="SAVE">승인요청</a>
 
-						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N'" @click="fnSave('update')" class="btnStyle5 red float-left ml10 width120">수정요청</a>
-						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N'" @click="fnDeleteConfirm()" class="btnStyle5 red float-left ml10 width120">삭제요청</a>
+						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N' && this.approvalStatus != '반려'" @click="fnSave('update')" class="btnStyle5 red float-left ml10 width120" activity="SAVE">수정요청</a>
+						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N' && this.approvalStatus != '반려'" @click="fnDeleteConfirm()" class="btnStyle5 red float-left ml10 width120" activity="SAVE">삭제요청</a>
 						<a @click="fnBack" ref="backBtn" class="btnStyle5 white float-left ml10 width120">목록</a>
 					</div>
 				</div>		
@@ -348,6 +348,7 @@ export default {
   data() {
 	return {
 		save_status : '', // 등록 수정 여부
+		approvalStatus : '',
 		projectId : '',
 		brandId : "",
 		tmpBrandYn : "N",
@@ -418,9 +419,11 @@ export default {
   },
   mounted() {
 	this.save_status	= this.$route.params.save_status;
+	this.approvalStatus	= this.$route.params.approvalStatus;
     this.projectId		= this.$route.params.projectId;
 	this.brandId		= this.$route.params.brandId;
 	this.inputVal		= this.$route.params.inputVal;
+	
 	// 임시저장인지 확인
 	if( this.brandId.substring(0,1) === 'T' ){
 		this.tmpBrandYn = "Y";

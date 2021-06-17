@@ -82,7 +82,7 @@
 			<p class="font-size12 color3 mt10 inline-block"><i class="far fa-info-circle"></i> 푸시 메시지를 이용할 OS 및 유형에 따라 각 인증서의 항목을 모두 입력해 주세요.</p>
 			
 			<div class="mt50 text-center">
-				<a @click="fnSave" class="btnStyle5 red width120">저장</a>
+				<a @click="fnSave" class="btnStyle5 red width120" activity="SAVE">저장</a>
 				<a @click="fnBack" ref="backBtn" class="btnStyle5 white width120">목록</a>
 			</div>
 			<!-- //본문 -->

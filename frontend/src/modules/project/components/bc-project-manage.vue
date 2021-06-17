@@ -34,7 +34,7 @@
                   <option value="Y">Y</option>
                   <option value="N">N</option>
                 </select>
-                <a @click="fnSearch" class="btnStyle2 float-right" title="검색">검색</a>
+                <a @click="fnSearch" class="btnStyle2 float-right" activity="SAVE">검색</a>
               </div>	
             </div>
           </div>
@@ -90,9 +90,9 @@
                   {{ data.regDt }}
                 </td>
                 <td>
-                  <button @click="fnProjectDetail(data)"><a>상세</a></button>
-                  <button @click="fnProjectUpdate(data)"><a>수정</a></button>
-                  <button @click="fnProjectDeleteConfirm(data)"><a>삭제</a></button>
+                  <button @click="fnProjectDetail(data)" activity="SAVE"><a>상세</a></button>
+                  <button @click="fnProjectUpdate(data)" activity="SAVE"><a>수정</a></button>
+                  <button @click="fnProjectDeleteConfirm(data)" activity="SAVE"><a>삭제</a></button>
                 </td>
                 <td>
                   <button @click="fnDisRatioManage(data)"><a>분배율관리</a></button>

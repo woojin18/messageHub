@@ -15,6 +15,7 @@ export default [
     {
         path: '/ac/project/manage',
         name: 'projectManage',
+        meta: { menu: 'AC_PROJECT_LIST' },
         component: projectManage
     },{
         path: '/ac/project/main',

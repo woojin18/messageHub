@@ -8,7 +8,7 @@
 				<div class="col-xs-12">		
 					<div class="of_h">
 						<div class="float-right">
-							<a class="btnStyle3 gray font13 width180" data-toggle="modal" data-target="#Register" @click="fnReg">MO 수신번호 등록</a>
+							<a class="btnStyle3 gray font13 width180" data-toggle="modal" data-target="#Register" @click="fnReg" activity="SAVE">MO 수신번호 등록</a>
 						</div>
 					</div>
 				</div>			

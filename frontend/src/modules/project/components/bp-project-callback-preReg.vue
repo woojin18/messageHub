@@ -65,7 +65,7 @@
 						</div>
 					</div>						
 					<div class="text-center mt20">
-						<a @click="fnApproval" class="btnStyle1 backBlack">승인요청</a>
+						<a @click="fnApproval" class="btnStyle1 backBlack" activity="SAVE">승인요청</a>
 						<a @click="fnCloseLayer" class="btnStyle1 backWhite">닫기</a>						
 					</div>
 				</div>

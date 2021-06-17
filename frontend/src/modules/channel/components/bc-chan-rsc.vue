@@ -23,7 +23,7 @@
                   <option value="brandName">브랜드 명</option>
                 </select>
 								<input id="srcBrandText" type="text" class="inputStyle ml20 vertical-baseline" style="width:65%" v-model="srcBrandText">
-								<a @click="fnSearch" class="btnStyle2 float-right">검색</a>
+								<a @click="fnSearch" class="btnStyle2 float-right" activity="READ">검색</a>
 							</div>						
 						</div>
 					</div>
@@ -35,7 +35,7 @@
 					<div class="col-xs-12">		
 						<div class="of_h">
 							<div class="float-right">
-								<a @click="fnRcsBrandReg" class="btnStyle3 gray font13 minWidth120">브랜드 등록</a>
+								<a @click="fnRcsBrandReg" class="btnStyle3 gray font13 minWidth120" activity="SAVE">브랜드 등록</a>
 							</div>
 						</div>
 					</div>			
@@ -230,7 +230,10 @@ export default {
       this.$router.push( {name:"chan-rcs-detail",params:{"projectId" : this.projectId, "brandId" : "", "save_status" : 'C', "inputVal" : inputVal }} );
     },
     fnRcsBrandDetail(data){
-      this.$router.push( {name:"chan-rcs-detail",params:{"projectId" : this.projectId, "brandId" : data.brandId, "save_status" : 'U', "inputVal" : data.inputVal }} );
+      this.$router.push( {name:"chan-rcs-detail",params:{
+          "projectId" : this.projectId, "brandId" : data.brandId, "save_status" : 'U', "inputVal" : data.inputVal,"approvalStatus" : this.approvalStatus 
+        }
+      });
     },
     // 등록 템플릿 상세 
     fnRcsTmpltDetail(row){

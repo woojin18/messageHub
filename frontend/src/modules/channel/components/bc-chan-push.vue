@@ -40,8 +40,8 @@
                 <td class="text-center">{{row.otherProjectYn}}</td>
                 <td class="text-center">{{row.regDt}}</td>
                 <td class="end">
-                  <a @click="fnMod(row)" class="btnStyle1 borderLightGray small mr5">수정</a>
-                  <a @click="fnDeleteConfirm(row)" class="btnStyle1 borderLightGray small mr5">삭제</a>
+                  <a @click="fnMod(row)" class="btnStyle1 borderLightGray small mr5" activity="SAVE">수정</a>
+                  <a @click="fnDeleteConfirm(row)" class="btnStyle1 borderLightGray small mr5" activity="SAVE">삭제</a>
                 </td>
 							</tr>
 						</tbody>
