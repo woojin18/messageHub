@@ -11,6 +11,7 @@ export default [
     {
         path: '/uc/smartTemplate',
         name: 'smartTemplate',
+        meta: {menu: 'UC_SMRT_TPL'},
         component: smartTemplate
     }
 ]

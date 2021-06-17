@@ -31,7 +31,7 @@
                 <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
                 <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
             </ul>
-            <a @click="fnSearch()" class="btnStyle2 float-right" title="검색">검색</a>
+            <a @click="fnSearch()" class="btnStyle2 float-right" title="검색" activity="READ">검색</a>
           </div>
         </div>
       </div>
@@ -44,9 +44,8 @@
     <div class="col-xs-12 consolMarginTop">
       <div class="of_h inline">
         <div class="float-right">
-          <router-link :to="{ name: 'integratedTemplate' }" tag="a" class="btnStyle2 borderGray" >통합발송 템플릿 관리<i class="fal fa-arrow-to-bottom"></i></router-link>
-          <!--<router-link :to="{ name: 'integratedSendManage' }" tag="a" class="btnStyle2 borderGray" >통합 메시지 발송<i class="fal fa-arrow-to-bottom"></i></router-link>-->
-          <a @click="fnProcSmartSend()" class="btnStyle2 backBlack ml10" title="통합 메시지 발송">통합 메시지 발송</a>
+          <router-link :to="{ name: 'integratedTemplate' }" tag="a" class="btnStyle2 borderGray"  activity="READ">통합발송 템플릿 관리<i class="fal fa-arrow-to-bottom"></i></router-link>
+          <a @click="fnProcSmartSend()" class="btnStyle2 backBlack ml10" title="통합 메시지 발송" activity="READ">통합 메시지 발송</a>
         </div>
       </div>
 

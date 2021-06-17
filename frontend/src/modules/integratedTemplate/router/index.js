@@ -11,6 +11,7 @@ export default [
     {
         path: '/uc/integratedTemplate',
         name: 'integratedTemplate',
+        meta: {menu: 'UC_INTG_TPL'},
         component: integratedTemplate
     }
 ]

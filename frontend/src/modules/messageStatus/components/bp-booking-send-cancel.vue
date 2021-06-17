@@ -22,7 +22,7 @@
 									
 					</div>						
 					<div class="text-center mt20">
-						<a href="#self" class="btnStyle1 backBlack" @click.self="fnCancelLayer" title="등록">등록</a>
+						<a href="#self" class="btnStyle1 backBlack" @click.self="fnCancelLayer" title="등록" activity="SAVE">등록</a>
 						<a href="#self" class="btnStyle1 backWhite" data-dismiss="modal" @click.self="fnCloseLayer" title="닫기">닫기</a>						
 					</div>
 				</div>

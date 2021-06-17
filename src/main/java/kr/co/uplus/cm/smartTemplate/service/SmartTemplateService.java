@@ -204,7 +204,7 @@ public class SmartTemplateService {
         	checkChannelArr[size++] = channel;
         }
         
-        System.out.println(">>>>service 002 checkChannelArr.length ["+checkChannelArr.length+"]");
+        //System.out.println(">>>>service 002 checkChannelArr.length ["+checkChannelArr.length+"]");
         
         StringBuffer sb = new StringBuffer();
         sb.append("[");
@@ -215,16 +215,16 @@ public class SmartTemplateService {
         	chTypeList = chTypeList + (checkChannelArr[i]);
         	if(i<checkChannelArr.length-1) chTypeList = chTypeList + ",";
         }
-        System.out.println(">>>>service 002 chTypeList ["+chTypeList+"]");
+        //System.out.println(">>>>service 002 chTypeList ["+chTypeList+"]");
         //sbChannel.append("\",");
         
         for(int i=0; i<checkChannelArr.length;i++) {
-        	System.out.println(">>>>service 002-1 no : "+ checkChannelArr[i]);
+        	//System.out.println(">>>>service 002-1 no : "+ checkChannelArr[i]);
         	sb.append("{");
         	sb.append(sbChannel.toString());//채널순서를 기억하기 위해 추가
         	if(checkChannelArr[i].equalsIgnoreCase("PUSH")) {  
 //PUSH ====================================================================  
-        		System.out.println(">>>>service 003  PUSH 001 : "+params.get("pushImgInfo").getClass().getName());
+        		//System.out.println(">>>>service 003  PUSH 001 : "+params.get("pushImgInfo").getClass().getName());
         		LinkedHashMap<String, String> pushImgInfoMap = (LinkedHashMap<String, String>) params.get("pushImgInfo");
         		////System.out.println(">>>>service 004  PUSH 002 : "+pushImgInfoMap.get("imgUrl"));
         		sb.append("\"chTypeList\" : \""	+chTypeList+"\",");
@@ -240,7 +240,7 @@ public class SmartTemplateService {
         		}
         		sb.append("\"appId\" : \""		+params.get("pushAppId")+"\""); // APP ID
         	}else if(checkChannelArr[i].equalsIgnoreCase("RCS")) {
-        		System.out.println(">>>>service 003  RCS 001");
+        		//System.out.println(">>>>service 003  RCS 001");
 //RCS ====================================================================
         		sb.append("\"chTypeList\" : \""	+chTypeList+"\",");
         		sb.append("\"chType\" : \"RCS\",");//발송채널
@@ -408,7 +408,7 @@ public class SmartTemplateService {
         			sb.append("\"callback\": \""+params.get("callback")+"\",");
         			sb.append("\"footer\": \""+params.get("rcs9HowToDenyReceipt")+"\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
         			
-        			System.out.println("rcs9CardCount type : "+params.get("rcs9CardCount").getClass().getName());
+        			//System.out.println("rcs9CardCount type : "+params.get("rcs9CardCount").getClass().getName());
         			//int rcs9CardCount = Integer.parseInt((String)params.get("rcs9CardCount"));
         			int rcs9CardCount = (int)params.get("rcs9CardCount");
         			
@@ -560,7 +560,7 @@ public class SmartTemplateService {
 //RCS CTALL TYPE ====================================================================
         			sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템플릿) 	rcsTemplateTable => 10
         			
-        			System.out.println("rcs10CardCount type : "+params.get("rcs10CardCount").getClass().getName());
+        			//System.out.println("rcs10CardCount type : "+params.get("rcs10CardCount").getClass().getName());
         			//int rcs10CardCount = Integer.parseInt((String)params.get("rcs10CardCount"));
         			int rcs10CardCount = (int)params.get("rcs10CardCount");
         			
@@ -721,13 +721,13 @@ public class SmartTemplateService {
         			}
         			sb.append("	] ");
         		}        			
-        		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        		System.out.println(sb.toString());
-        		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        		//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        		//System.out.println(sb.toString());
+        		//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
     		    
         	}else if(checkChannelArr[i].equalsIgnoreCase("FRIENDTALK")) {
-        		System.out.println(">>>>service 003  kakao 001 : "+params.get("kakaoTemplateTable"));
+        		//System.out.println(">>>>service 003  kakao 001 : "+params.get("kakaoTemplateTable"));
 //KAKAO ====================================================================  
         		String buttonType = null;
     			String buttonName = null;
@@ -891,7 +891,7 @@ public class SmartTemplateService {
         		
 
         	}else if(checkChannelArr[i].equalsIgnoreCase("ALIMTALK")) {
-        		System.out.println(">>>>service 003  kakao 001 : "+params.get("kakaoTemplateTable"));
+        		//System.out.println(">>>>service 003  kakao 001 : "+params.get("kakaoTemplateTable"));
 //KAKAO ====================================================================  
         		String buttonType = null;
     			String buttonName = null;
@@ -914,7 +914,7 @@ public class SmartTemplateService {
         	}else if(checkChannelArr[i].equalsIgnoreCase("SMSMMS")) {
 //SMSMMS ====================================================================    
         		//System.out.println("=============================================");
-        		System.out.println("smsSendType : "+params.get("smsSendType"));
+        		//System.out.println("smsSendType : "+params.get("smsSendType"));
         		//System.out.println("=============================================");
         		if(params.get("smsSendType").equals("S")){//SMS
         			sb.append("\"chTypeList\" : \""	+chTypeList+"\",");

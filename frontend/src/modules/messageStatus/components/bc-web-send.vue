@@ -27,7 +27,7 @@
           <div class="inline-block" style="width:16%">
             <input type="text" class="inputStyle vertical-top ml10" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="수신자정보">
           </div>
-          <a @click="fnSearch()" class="btnStyle2 float-right" title="검색">검색</a>
+          <a @click="fnSearch()" class="btnStyle2 float-right" title="검색" activity="READ">검색</a>
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@
     <div class="col-xs-12 consolMarginTop">
       <div class="of_h inline">
         <div class="float-right">
-          <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
+          <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드" activity="READ">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
           <DetailLayer :title="detailLayerTitle" :layerView.sync="detailLayerView" :detailWebReqId="detailLayerWebReqId"></DetailLayer>
         </div>
       </div>

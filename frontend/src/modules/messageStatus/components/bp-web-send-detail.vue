@@ -27,7 +27,7 @@
 						</div>
 						<div class="of_h mt20">
 							<div class="float-right">
-								<a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
+								<a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드" activity="READ">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
 							</div>
 						</div>
 

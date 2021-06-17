@@ -11,6 +11,7 @@ export default [
     {
         path: '/uc/messageStatus',
         name: 'messageStatus',
+        meta: {menu: 'UC_MEST_RCV'},
         component: messageStatus
     },
     {
@@ -22,6 +23,7 @@ export default [
     {
         path: '/uc/webSend',
         name: 'webSend',
+        meta: {menu: 'UC_WBSN_RCV'},
         component: webSend
     },    
     {
@@ -32,6 +34,7 @@ export default [
     {
         path: '/uc/bookingSend',
         name: 'bookingSend',
+        meta: {menu: 'UC_BKSN_RCV'},
         component: bookingSend
     },    
     {
@@ -42,6 +45,7 @@ export default [
     {
         path: '/uc/moReceptionStatus',
         name: 'moReceptionStatus',
+        meta: {menu: 'UC_MORE_RCV'},
         component: moReceptionStatus
     }
 ]

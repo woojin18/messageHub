@@ -129,7 +129,7 @@ public class IntegratedSendController {
             params = commonService.setUserInfo(multipartFileDTO.getParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
             log.info("{}.sendIntegratedMessage Start ====> params : {}", this.getClass(), params);
-System.out.println("integratedSendController 010");
+//System.out.println("integratedSendController 010");
             /** 유효성 체크 */
             requestData = integratedSendService.setIntegratedSendData(rtn, params);
             if(rtn.isSuccess() == false) {
@@ -137,7 +137,7 @@ System.out.println("integratedSendController 010");
                 return rtn;
             }
             log.info("{}.sendIntegratedMessage pushRequestData: {}", this.getClass(), requestData.toString());
-System.out.println("integratedSendController 020");
+//System.out.println("integratedSendController 020");
             /** 통합발송 수신자 리스트*/
             recvInfoLst = integratedSendService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
@@ -145,27 +145,27 @@ System.out.println("integratedSendController 020");
                 rtn.setMessage("잘못된 통합발송 수신자 정보입니다.");
                 return rtn;
             }
-System.out.println("integratedSendController 030");
+//System.out.println("integratedSendController 030");
             /** 예약건인지 확인 */
             String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
             if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
                 return integratedSendService.insertIntegratedCmWebMsg(rtn, params, requestData, recvInfoLst);
             }
-System.out.println("integratedSendController 040");
+//System.out.println("integratedSendController 040");
             /** 잔액확인 */
             String payType = integratedSendService.selectPayType(params);
-System.out.println("integratedSendController 041  payType: "+payType);
+//System.out.println("integratedSendController 041  payType: "+payType);
             //선불일경우
             if(StringUtils.equals(payType, Const.COMM_YES)) {
                 //남은 금액 조회
                 BigDecimal rmAmount = integratedSendService.getRmAmount(params);
-System.out.println("integratedSendController 042  rmAmount: "+rmAmount);                
+//System.out.println("integratedSendController 042  rmAmount: "+rmAmount);                
                 //개당 가격 조회
                 List<String> productCodes = new ArrayList<String>();
                 
                 String[] chTypeArr = (CommonUtils.getStrValue(params, "chTypeList")).split(",");
                 for(String s : chTypeArr) {
-System.out.println("chTypeArr : "+s);
+//System.out.println("chTypeArr : "+s);
 					if(s.equalsIgnoreCase("PUSH")) productCodes.add(Const.MsgProductCode.getType(Const.Ch.PUSH));
 					if(s.equalsIgnoreCase("RCS")) productCodes.add(Const.MsgProductCode.getType(Const.Ch.RCS));
 					if(s.equalsIgnoreCase("SMSMMS")) {
@@ -195,8 +195,8 @@ System.out.println("chTypeArr : "+s);
                 sParam.put("productCodes", productCodes);
                 BigDecimal feePerOne = integratedSendService.selectMsgFeePerOne(sParam);
                 BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
-System.out.println("integratedSendController 043  feePerOne: "+feePerOne);   
-System.out.println("integratedSendController 044  feePerAll: "+feePerAll);   
+//System.out.println("integratedSendController 043  feePerOne: "+feePerOne);   
+//System.out.println("integratedSendController 044  feePerAll: "+feePerAll);   
                 if(rmAmount.compareTo(feePerAll) < 0) {
                     if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                         rtn.setSuccess(false);
@@ -207,7 +207,7 @@ System.out.println("integratedSendController 044  feePerAll: "+feePerAll);
                     }
                 }
             }
-System.out.println("integratedSendController 050  testSendYn : "+testSendYn);
+//System.out.println("integratedSendController 050  testSendYn : "+testSendYn);
             /** 테스트발송(동기화) */
             if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                 return integratedSendService.testSendIntegratedMsg(params, requestData, recvInfoLst);
@@ -219,12 +219,12 @@ System.out.println("integratedSendController 050  testSendYn : "+testSendYn);
             log.error("{}.sendIntegratedMessage Error : {}", this.getClass(), e);
             return rtn;
         }
-System.out.println("integratedSendController 060");
+//System.out.println("integratedSendController 060");
         /** 비동기화 발송 */
         try {
             List<Object> reSendCdList = integratedSendService.reSendCdList(null);
             log.info("{}.sendIntegratedMessage aSync API send Start ====>", this.getClass());
-System.out.println("integratedSendController 061");            
+//System.out.println("integratedSendController 061");            
             integratedSendService.sendIntegratedMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.info("{}.sendIntegratedMessage aSync API send Error : {}", this.getClass(), e);

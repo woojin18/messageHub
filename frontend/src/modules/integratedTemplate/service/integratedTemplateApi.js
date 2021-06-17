@@ -1,31 +1,31 @@
 import httpClient from '@/common/http-client';
 
 const selectIntegratedTemplateList = (params) => {
-    return httpClient.post('/integratedTemplateApi/selectIntegratedTemplateList', params, { headers: {"show-layer": "Yes"} });
+    return httpClient.post('/integratedTemplateApi/selectIntegratedTemplateList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
 const integratedTemplateInfo = (params) => {
-    return httpClient.post('/integratedTemplateApi/selectIntegratedTemplateInfo', params, { headers: {"show-layer": "Yes"} });
+    return httpClient.post('/integratedTemplateApi/selectIntegratedTemplateInfo', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
 const insertIntegratedTemplate = (params) => {
-    return httpClient.post('/integratedTemplateApi/insertIntegratedTemplate', params, { headers: {"show-layer": "Yes"} });
+    return httpClient.post('/integratedTemplateApi/insertIntegratedTemplate', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 
 const updateIntegratedTemplate = (params) => {
-    return httpClient.post('/integratedTemplateApi/updateIntegratedTemplate', params, { headers: {"show-layer": "Yes"} });
+    return httpClient.post('/integratedTemplateApi/updateIntegratedTemplate', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 
 const deleteIntegratedTemplate = (params) => {
-    return httpClient.post('/integratedTemplateApi/deleteIntegratedTemplate', params, { headers: {"show-layer": "Yes"} });
+    return httpClient.post('/integratedTemplateApi/deleteIntegratedTemplate', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 
 const selectBrandList = (params) => {
-    return httpClient.post('/integratedTemplateApi/selectBrandList', params, { headers: {"show-layer": "Yes"} });
+    return httpClient.post('/integratedTemplateApi/selectBrandList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
 const excelDownloadIntegratedTemplate = (params) => {
-    return httpClient.post('/integratedTemplateApi/excelDownloadIntegratedTemplate', params, { headers: {"show-layer": "No"}, responseType: 'arraybuffer' }).then(function(response) {
+    return httpClient.post('/integratedTemplateApi/excelDownloadIntegratedTemplate', params, { headers: {"show-layer": "No", "activity":"READ"}, responseType: 'arraybuffer' }).then(function(response) {
         try {
           let blob = new Blob([response.data], { type: response.headers['content-type'] })
           let fileName = getFileName(response.headers['content-disposition'])

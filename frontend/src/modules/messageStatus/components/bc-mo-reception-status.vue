@@ -41,7 +41,7 @@
           <select v-model="searchData.searchCondi"  class="selectStyle2" style="width:15%" title="상태 선택란">
             <option v-for="data in condiDatas" :key="data.codeName" :value="data.codeName">{{data.codeVal}}</option>
           </select>
-          <a @click="fnSearch()" class="btnStyle1 float-right" title="검색">검색</a>
+          <a @click="fnSearch()" class="btnStyle1 float-right" title="검색" activity="READ">검색</a>
         </div>
 
       </div>
@@ -54,7 +54,7 @@
     <div class="col-xs-12 consolMarginTop">
       <div class="of_h inline">
         <div class="float-right">
-          <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
+          <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드" activity="READ">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
         </div>
       </div>
 
@@ -264,7 +264,7 @@ export default {
  
 
     async selectReceptionNumber(){
-      // var params = {
+       var params = {};
       //  "projectId" : this.testProjectId 
       //};
       await messageStatusApi.selectReceptionNumberList(params).then(response =>{

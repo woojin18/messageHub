@@ -283,7 +283,7 @@ public class IntegratedSendService {
             , Map<String, Object> data
             , SmartRequestData smartRequestData
             , List<RecvInfo> recvInfoLst) throws Exception {
-System.out.println("integratedSendService insertIntegratedCmWebMsg 010");    	
+//System.out.println("integratedSendService insertIntegratedCmWebMsg 010");    	
         String ch = CommonUtils.getStrValue(data, "chTypeList");
         String corpId = CommonUtils.getStrValue(data, "corpId");
         String projectId = CommonUtils.getStrValue(data, "projectId");
@@ -291,10 +291,10 @@ System.out.println("integratedSendService insertIntegratedCmWebMsg 010");
         String rsrvDateStr = "";
         String allFailYn = CommonUtils.getStrValue(data, "allFailYn");
         String status = (StringUtils.equals(allFailYn, Const.COMM_YES) ? Const.MsgSendStatus.FAIL : Const.MsgSendStatus.COMPLETED);
-System.out.println("====ch : "+ch);
-System.out.println("====corpId : "+corpId);
-System.out.println("====projectId : "+projectId);
-System.out.println("====rsrvSendYn : "+rsrvSendYn);
+//System.out.println("====ch : "+ch);
+//System.out.println("====corpId : "+corpId);
+//System.out.println("====projectId : "+projectId);
+//System.out.println("====rsrvSendYn : "+rsrvSendYn);
         if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
             String rsrvYmd = CommonUtils.getStrValue(data, "rsrvDate");
             String rsrvHH = CommonUtils.getStrValue(data, "rsrvHH");
@@ -331,7 +331,7 @@ System.out.println("====rsrvSendYn : "+rsrvSendYn);
         params.put("senderCnt", recvInfoLst.size());
         //params.put("callback", smartRequestData.getCallback());
         params.put("campaignId", smartRequestData.getCampaignId());
-        params.put("senderType", Const.SenderType.CHANNEL);
+        params.put("senderType", Const.SenderType.MERGER);
         params.put("status", status);
         params.put("resvSenderYn", rsrvSendYn);
         params.put("reqDt", rsrvDateStr);
@@ -531,7 +531,7 @@ System.out.println("====rsrvSendYn : "+rsrvSendYn);
             , List<RecvInfo> recvInfoLst
             , List<Object> reSendCdList) throws Exception {
 
-System.out.println("integratedSendService sendIntegratedMsgAsync 010");
+//System.out.println("integratedSendService sendIntegratedMsgAsync 010");
         List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
         Map<String, Object> responseBody = null;
         Map<String, Object> sParams = new HashMap<String, Object>(data);

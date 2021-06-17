@@ -129,7 +129,7 @@ public class SmartSendController {
             params = commonService.setUserInfo(multipartFileDTO.getParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
             log.info("{}.smartSendMessage Start ====> params : {}", this.getClass(), params);
-System.out.println("smartSendController 010");
+//System.out.println("smartSendController 010");
             /** 유효성 체크 */
             requestData = smartSendService.setSmartSendData(rtn, params);
             if(rtn.isSuccess() == false) {
@@ -137,7 +137,7 @@ System.out.println("smartSendController 010");
                 return rtn;
             }
             log.info("{}.smartSendMessage pushRequestData: {}", this.getClass(), requestData.toString());
-System.out.println("smartSendMessage 020");
+//System.out.println("smartSendMessage 020");
             /** 스마트발송 수신자 리스트*/
             recvInfoLst = smartSendService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
@@ -145,27 +145,27 @@ System.out.println("smartSendMessage 020");
                 rtn.setMessage("잘못된 스마트발송 수신자 정보입니다.");
                 return rtn;
             }
-System.out.println("smartSendController 030");
+//System.out.println("smartSendController 030");
             /** 예약건인지 확인 */
             String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
             if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
                 return smartSendService.insertSmartCmWebMsg(rtn, params, requestData, recvInfoLst);
             }
-System.out.println("smartSendMessage 040");
+//System.out.println("smartSendMessage 040");
             /** 잔액확인 */
             String payType = smartSendService.selectPayType(params);
-System.out.println("smartSendController 041  payType: "+payType);
+//System.out.println("smartSendController 041  payType: "+payType);
             //선불일경우
             if(StringUtils.equals(payType, Const.COMM_YES)) {
                 //남은 금액 조회
                 BigDecimal rmAmount = smartSendService.getRmAmount(params);
-System.out.println("smartSendController 042  rmAmount: "+rmAmount);                
+//System.out.println("smartSendController 042  rmAmount: "+rmAmount);                
                 //개당 가격 조회
                 List<String> productCodes = new ArrayList<String>();
                 
                 String[] chTypeArr = (CommonUtils.getStrValue(params, "chTypeList")).split(",");
                 for(String s : chTypeArr) {
-System.out.println("chTypeArr : "+s);
+//System.out.println("chTypeArr : "+s);
 					if(s.equalsIgnoreCase("PUSH")) productCodes.add(Const.MsgProductCode.getType(Const.Ch.PUSH));
 					if(s.equalsIgnoreCase("RCS")) productCodes.add(Const.MsgProductCode.getType(Const.Ch.RCS));
 					if(s.equalsIgnoreCase("SMSMMS")) {
@@ -194,8 +194,8 @@ System.out.println("chTypeArr : "+s);
                 sParam.put("productCodes", productCodes);
                 BigDecimal feePerOne = smartSendService.selectMsgFeePerOne(sParam);
                 BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
-System.out.println("smartSendController 043  feePerOne: "+feePerOne);   
-System.out.println("smartSendController 044  feePerAll: "+feePerAll);   
+//System.out.println("smartSendController 043  feePerOne: "+feePerOne);   
+//System.out.println("smartSendController 044  feePerAll: "+feePerAll);   
                 if(rmAmount.compareTo(feePerAll) < 0) {
                     if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                         rtn.setSuccess(false);
@@ -206,7 +206,7 @@ System.out.println("smartSendController 044  feePerAll: "+feePerAll);
                     }
                 }
             }
-System.out.println("smartSendController 050  testSendYn : "+testSendYn);
+//System.out.println("smartSendController 050  testSendYn : "+testSendYn);
             /** 테스트발송(동기화) */
             if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                 return smartSendService.testSendSmartMsg(params, requestData, recvInfoLst);
@@ -218,12 +218,12 @@ System.out.println("smartSendController 050  testSendYn : "+testSendYn);
             log.error("{}.smartSendMessage Error : {}", this.getClass(), e);
             return rtn;
         }
-System.out.println("smartSendController 060");
+//System.out.println("smartSendController 060");
         /** 비동기화 발송 */
         try {
             List<Object> reSendCdList = smartSendService.reSendCdList(null);
             log.info("{}.smartSendMessage aSync API send Start ====>", this.getClass());
-System.out.println("smartSendController 061");            
+//System.out.println("smartSendController 061");            
             smartSendService.sendSmartMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.info("{}.smartSendMessage aSync API send Error : {}", this.getClass(), e);

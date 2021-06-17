@@ -128,11 +128,6 @@
         <div class="of_h consolMarginTop">
           <div class="float-right text-center" style="width:50%"><a @click="moveup()" title="위버튼"><i class="far fa-chevron-up channelBtn"></i></a> <a @click="movedown()" title="아래버튼"><i class="far fa-chevron-down channelBtn"></i></a></div>
         </div>
-<!--         <div class="of_h consolMarginTop">
-          <div class="float-left" style="width:33%; padding:0 10px"><a @click="save()" class="btnStyle1 borderGray" style="min-width:auto; width:100%" title="저장">저장</a></div>
-          <div class="float-left" style="width:33%; padding:0 10px"><a @click="complete()" class="btnStyle1 backBlack" style="min-width:auto; width:100%" title="등록">등록</a></div>
-          <div class="float-left" style="width:33%; padding:0 10px"><a href="#self" class="btnStyle1 backWhite" style="min-width:auto; width:100%" title="취소">취소</a></div>
-        </div> -->
       </div>
 
 
@@ -216,9 +211,6 @@
         </div>
         <div v-if="rowData.msgType == 'IMAGE'">
           <div class="of_h consolMarginTop">
-
-
-
             <div class="float-left" style="width:13%"><h4>이미지</h4></div>
             <div class="float-left" style="width:57%">
               <div class="float-left" style="width:25%">
@@ -775,7 +767,7 @@
 		            </div>
 					
 					<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
-						<h5>타이틀영역</h5>
+						<h5>{{rowData.rcsShortTitle}}</h5>
 						<div class="scroll-y3">
 							<pre class="color6">{{rowData.rcsShortContent}}</pre>
 						</div>								
@@ -800,7 +792,7 @@
               </div>
             </div>
 
-            <div class="of_h consolMarginTop">
+            <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
               <div class="float-left" style="width:13%"><h4>이미지</h4></div>
               <div class="float-left" style="width:57%">
                 <div class="float-left" style="width:25%">
@@ -902,17 +894,17 @@
             <div class="phoneWrap">
               <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
               <div class="phoneTextWrap">
-					<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcsShortImgInfoList[0])" class="phoneText2 mt10 text-center">
+					<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcsTallImgInfoList[0])" class="phoneText2 mt10 text-center">
 		                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 		            </div>
-		            <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcsShortImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+		            <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcsTallImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
 		                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 		            </div>
-		            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcsShortImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
-		                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsShortImgInfoList[0].imgUrl+');'">
+		            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcsTallImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+		                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsTallImgInfoList[0].imgUrl+');'">
 		            </div>
 					<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20">
-						<h5>타이틀영역</h5>
+						<h5>{{rowData.rcsTallTitle}}</h5>
 						<div class="scroll-y6">
 							<pre class="color6">{{rowData.rcsTallContent}}</pre>
 						</div>								
@@ -937,7 +929,7 @@
               </div>
             </div>
 
-            <div class="of_h consolMarginTop">
+            <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
               <div class="float-left" style="width:13%"><h4>이미지</h4></div>
               <div class="float-left" style="width:57%">
                 <div class="float-left" style="width:25%">
@@ -946,8 +938,6 @@
  
                 <ul v-for="imgIdx in rcsTallImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
                   <li v-if="rowData.rcsTallImgInfoList.length > imgIdx -1">
-                    
-                    <!-- <a @click="fnRcsTallDelImg(imgIdx-1)" v-if="rowData.rcsTallImgInfoList.length > 0">{{fnSubString(rowData.rcsTallImgInfoList[imgIdx].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a> -->
                     <a @click="fnRcsTallDelImg(imgIdx-1)">{{fnSubString(rowData.rcsTallImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
                   </li>
                   <li v-else>
@@ -1197,7 +1187,7 @@
                   </div>
                 </div>
 
-                <div class="of_h consolMarginTop">
+                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
                   <div class="float-left" style="width:13%"><h4>이미지</h4></div>
                   <div class="float-left" style="width:57%">
                     <div class="float-left" style="width:25%">
@@ -1280,7 +1270,7 @@
                   </div>
                 </div>
 
-                <div class="of_h consolMarginTop">
+                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
                   <div class="float-left" style="width:13%"><h4>이미지</h4></div>
                   <div class="float-left" style="width:57%">
                     <div class="float-left" style="width:25%">
@@ -1364,7 +1354,7 @@
                   </div>
                 </div>
 
-                <div class="of_h consolMarginTop">
+                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
                   <div class="float-left" style="width:13%"><h4>이미지</h4></div>
                   <div class="float-left" style="width:57%">
                     <div class="float-left" style="width:25%">
@@ -1449,7 +1439,7 @@
                   </div>
                 </div>
 
-                <div class="of_h consolMarginTop">
+                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
                   <div class="float-left" style="width:13%"><h4>이미지</h4></div>
                   <div class="float-left" style="width:57%">
                     <div class="float-left" style="width:25%">
@@ -1534,7 +1524,7 @@
                   </div>
                 </div>
 
-                <div class="of_h consolMarginTop">
+                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
                   <div class="float-left" style="width:13%"><h4>이미지</h4></div>
                   <div class="float-left" style="width:57%">
                     <div class="float-left" style="width:25%">
@@ -1619,7 +1609,7 @@
                   </div>
                 </div>
 
-                <div class="of_h consolMarginTop">
+                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
                   <div class="float-left" style="width:13%"><h4>이미지</h4></div>
                   <div class="float-left" style="width:57%">
                     <div class="float-left" style="width:25%">
@@ -1887,17 +1877,7 @@
                   </div>
                 </div>
 
-                <div class="of_h consolMarginTop">
-<!--                   
-                  <div class="float-left" style="width:13%"><h4>이미지</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <div class="float-left" style="width:22%"><a href="#self" class="btnStyle1 backLightGray width100_" title="이미지 선택">이미지선택</a></div>
-                    <ul class="float-right attachList" style="width:75%; padding:5px 15px">
-                      <li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
-                      <li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
-                      <li><a href="#self">test_img.jpg <i class="fal fa-times"></i></a></li>
-                    </ul>
-                  </div> -->
+                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
                   <div class="float-left" style="width:13%"><h4>이미지</h4></div>
                   <div class="float-left" style="width:57%">
                     <div class="float-left" style="width:25%">
@@ -1980,7 +1960,7 @@
                   </div>
                 </div>
 
-                <div class="of_h consolMarginTop">
+                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
                   <div class="float-left" style="width:13%"><h4>이미지</h4></div>
                   <div class="float-left" style="width:57%">
                     <div class="float-left" style="width:25%">
@@ -2063,7 +2043,7 @@
                   </div>
                 </div>
 
-                <div class="of_h consolMarginTop">
+                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
                   <div class="float-left" style="width:13%"><h4>이미지</h4></div>
                   <div class="float-left" style="width:57%">
                     <div class="float-left" style="width:25%">
@@ -2071,8 +2051,6 @@
                     </div>
                     <ul v-for="imgIdx in rcs102ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
                       <li v-if="rowData.rcs102ImgInfoList.length > imgIdx -1">
-                        
-                        <!-- <a @click="fnRcs102DelImg(imgIdx-1)" v-if="rowData.rcs102ImgInfoList.length > 0">{{fnSubString(rowData.rcs102ImgInfoList[imgIdx].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a> -->
                         <a @click="fnRcs102DelImg(imgIdx-1)">{{fnSubString(rowData.rcs102ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
                       </li>
                       <li v-else>
@@ -2148,7 +2126,7 @@
                   </div>
                 </div>
 
-                <div class="of_h consolMarginTop">
+                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
                   <div class="float-left" style="width:13%"><h4>이미지</h4></div>
                   <div class="float-left" style="width:57%">
                     <div class="float-left" style="width:25%">
@@ -2156,8 +2134,6 @@
                     </div>
                     <ul v-for="imgIdx in rcs103ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
                       <li v-if="rowData.rcs103ImgInfoList.length > imgIdx -1">
-                        
-                        <!-- <a @click="fnRcs103DelImg(imgIdx-1)" v-if="rowData.rcs103ImgInfoList.length > 0">{{fnSubString(rowData.rcs103ImgInfoList[imgIdx].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a> -->
                         <a @click="fnRcs103DelImg(imgIdx-1)">{{fnSubString(rowData.rcs103ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
                       </li>
                       <li v-else>
@@ -2233,7 +2209,7 @@
                   </div>
                 </div>
 
-                <div class="of_h consolMarginTop">
+                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
                   <div class="float-left" style="width:13%"><h4>이미지</h4></div>
                   <div class="float-left" style="width:57%">
                     <div class="float-left" style="width:25%">
@@ -2241,9 +2217,7 @@
                     </div>
                     <ul v-for="imgIdx in rcs104ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
                       <li v-if="rowData.rcs104ImgInfoList.length > imgIdx -1">
-                        
-                        <!-- <a @click="fnRcs104DelImg(imgIdx-1)" v-if="rowData.rcs104ImgInfoList.length > 0">{{fnSubString(rowData.rcs104ImgInfoList[imgIdx].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a> -->
-                        <a @click="fnRcs104DelImg(imgIdx-1)">{{fnSubString(rowData.rcs104ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
+                         <a @click="fnRcs104DelImg(imgIdx-1)">{{fnSubString(rowData.rcs104ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
                       </li>
                       <li v-else>
                         <a></a>
@@ -2318,7 +2292,7 @@
                   </div>
                 </div>
 
-                <div class="of_h consolMarginTop">
+                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
                   <div class="float-left" style="width:13%"><h4>이미지</h4></div>
                   <div class="float-left" style="width:57%">
                     <div class="float-left" style="width:25%">
@@ -2326,8 +2300,6 @@
                     </div>
                     <ul v-for="imgIdx in rcs105ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
                       <li v-if="rowData.rcs105ImgInfoList.length > imgIdx -1">
-                        
-                        <!-- <a @click="fnRcs105DelImg(imgIdx-1)" v-if="rowData.rcs105ImgInfoList.length > 0">{{fnSubString(rowData.rcs105ImgInfoList[imgIdx].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a> -->
                         <a @click="fnRcs105DelImg(imgIdx-1)">{{fnSubString(rowData.rcs105ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
                       </li>
                       <li v-else>
@@ -2468,7 +2440,7 @@
 			            </div>					
 					</div>
 
-					<div class="of_h">
+					<div class="of_h" v-if="rowData.msgType == 'IMAGE'">
 				            <div class="float-left" style="width:13%"><h4>이미지</h4></div>
 				            <div class="float-left" style="width:57%">
 				              <div class="float-left" style="width:25%">
@@ -2480,7 +2452,7 @@
 				            </div>
  					</div>
 
-					<div class="of_h consolMarginTop">
+					<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
 						<div class="float-left" style="width:13%"><h4>이미지 링크</h4></div>
 						<div class="float-left" style="width:59%">
 							<input type="text" class="inputStyle" placeholder="http://..." id="friendTalkImageLinkId" v-model="rowData.friendTalkImageLink">
@@ -2712,7 +2684,7 @@
 							</div>
 						</div>					
 	
-						<div class="of_h consolMarginTop" >
+						<div class="of_h consolMarginTop"  v-if="rowData.msgType == 'IMAGE'">
 				              <div class="float-left" style="width:13%"><h4>이미지</h4></div>
 				              <div class="float-left" style="width:57%">
 				                <div class="float-left" style="width:25%">
@@ -2732,28 +2704,23 @@
 						</div>
 					</div>
 
-          <div class="of_h consolMarginTop">
-            <div class="float-left" style="width:13%"><h5>발신번호 *</h5></div>
-            <div class="float-left" style="width:57%">
-              <select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
-                <option v-for="info in smsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
-              </select>
-            </div>
-          </div>
+		          <div class="of_h consolMarginTop">
+		            <div class="float-left" style="width:13%"><h5>발신번호 *</h5></div>
+		            <div class="float-left" style="width:57%">
+		              <select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
+		                <option v-for="info in smsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+		              </select>
+		            </div>
+		          </div>
 
-				</div>
+			</div>
     </div>
 
 
     <hr>
     <div class="float-right">						
-     <!--  
-      <a href="#self" class="btnStyle2 backRed ml10" data-toggle="modal" data-target="#Regist" title="등록">등록</a>
-      <a href="#self" class="btnStyle2 ml10">취소</a>
-      <a href="#self" class="btnStyle2 backWhite ml10" data-toggle="modal" data-target="#Modify" title="수정">수정</a>
-     -->
-      <a @click="save()" class="btnStyle2 borderGray ml10" data-toggle="modal" title="저장">저장</a>
-      <a @click="complete()" class="btnStyle2 backBlack ml10" data-toggle="modal" title="등록">등록</a>
+      <a @click="save()" class="btnStyle2 borderGray ml10" data-toggle="modal" title="저장" activity="SAVE">저장</a>
+      <a @click="complete()" class="btnStyle2 backBlack ml10" data-toggle="modal" title="등록" activity="SAVE">등록</a>
       <router-link :to="{ name: 'integratedTemplate' }" tag="a" class="btnStyle2 backRed ml10">취소</router-link>
     </div>
 
@@ -3501,6 +3468,7 @@ console.log("444");
         var result = response.data;
         if(result.success) {
           confirm.fnAlert(this.detailTitle, '등록 되었습니다.');
+          this.$router.push('integratedTemplate');
         } else {
           confirm.fnAlert(this.detailTitle, result.message);
         }
@@ -5303,15 +5271,15 @@ console.log("444");
       this.rcsTallImgMngOpen = !this.rcsTallImgMngOpen;
     },
     fnRcsTallCallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
+      console.log('1111 : '+JSON.stringify(imgInfo));
       if(this.fnRcsTallImgLimitSize() == false) return;
       let temp = {
         imgUrl: imgInfo.chImgUrl,
         fileId: imgInfo.fileId
       };
-      //console.log('2222 : '+JSON.stringify(temp));
+      console.log('2222 : '+JSON.stringify(temp));
       this.rowData.rcsTallImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcsTallImgInfoList));
+      console.log('3333 : '+JSON.stringify(this.rowData.rcsTallImgInfoList));
       this.fnRcsTallDelDuplImgInfo();
     },
 

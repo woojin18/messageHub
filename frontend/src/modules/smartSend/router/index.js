@@ -11,6 +11,7 @@ export default [
     {
         path: '/uc/smartSend',
         name: 'smartSend',
+        meta: {menu: 'UC_SND_SMRT_MSG'},
         component: smartSend
     }
 ]

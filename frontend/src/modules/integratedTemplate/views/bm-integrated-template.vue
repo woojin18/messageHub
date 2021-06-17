@@ -31,7 +31,7 @@
                 <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
                 <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
             </ul>
-            <a @click="fnSearch()" class="btnStyle2 float-right" title="검색">검색</a>
+            <a @click="fnSearch()" class="btnStyle2 float-right" title="검색" activity="READ">검색</a>
           </div>
         </div>
       </div>
@@ -44,10 +44,9 @@
     <div class="col-xs-12 consolMarginTop">
       <div class="of_h inline">
         <div class="float-right">
-          <!-- <a @click="fRegist" class="btnStyle2 borderGray" title="템플릿 등록">템플릿 등록 <i class="fal fa-arrow-to-bottom"></i></a> -->
-          <router-link :to="{ name: 'integratedTemplateManage' }" tag="a" class="btnStyle2 borderGray" >템플릿 등록<i class="fal fa-arrow-to-bottom"></i></router-link>
-          <a @click="fnDelete" class="btnStyle2 borderGray" title="삭제">삭제 <i class="fal fa-arrow-to-bottom"></i></a>
-          <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
+          <router-link :to="{ name: 'integratedTemplateManage' }" tag="a" class="btnStyle2 borderGray"  activity="SAVE">템플릿 등록<i class="fal fa-arrow-to-bottom"></i></router-link>
+          <a @click="fnDelete" class="btnStyle2 borderGray" title="삭제" activity="SAVE">삭제 <i class="fal fa-arrow-to-bottom"></i></a>
+          <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드" activity="READ">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
         </div>
       </div>
 

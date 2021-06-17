@@ -283,7 +283,7 @@ public class SmartSendService {
             , Map<String, Object> data
             , SmartRequestData smartRequestData
             , List<RecvInfo> recvInfoLst) throws Exception {
-System.out.println("smartSendService insertSmartCmWebMsg 010");    	
+//System.out.println("smartSendService insertSmartCmWebMsg 010");    	
         String ch = CommonUtils.getStrValue(data, "chTypeList");
         String corpId = CommonUtils.getStrValue(data, "corpId");
         String projectId = CommonUtils.getStrValue(data, "projectId");
@@ -291,10 +291,10 @@ System.out.println("smartSendService insertSmartCmWebMsg 010");
         String rsrvDateStr = "";
         String allFailYn = CommonUtils.getStrValue(data, "allFailYn");
         String status = (StringUtils.equals(allFailYn, Const.COMM_YES) ? Const.MsgSendStatus.FAIL : Const.MsgSendStatus.COMPLETED);
-System.out.println("====ch : "+ch);
-System.out.println("====corpId : "+corpId);
-System.out.println("====projectId : "+projectId);
-System.out.println("====rsrvSendYn : "+rsrvSendYn);
+//System.out.println("====ch : "+ch);
+//System.out.println("====corpId : "+corpId);
+//System.out.println("====projectId : "+projectId);
+//System.out.println("====rsrvSendYn : "+rsrvSendYn);
         if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
             String rsrvYmd = CommonUtils.getStrValue(data, "rsrvDate");
             String rsrvHH = CommonUtils.getStrValue(data, "rsrvHH");
@@ -331,7 +331,7 @@ System.out.println("====rsrvSendYn : "+rsrvSendYn);
         params.put("senderCnt", recvInfoLst.size());
         //params.put("callback", smartRequestData.getCallback());
         params.put("campaignId", smartRequestData.getCampaignId());
-        params.put("senderType", Const.SenderType.CHANNEL);
+        params.put("senderType", Const.SenderType.SMART);
         params.put("status", status);
         params.put("resvSenderYn", rsrvSendYn);
         params.put("reqDt", rsrvDateStr);
@@ -531,7 +531,7 @@ System.out.println("====rsrvSendYn : "+rsrvSendYn);
             , List<RecvInfo> recvInfoLst
             , List<Object> reSendCdList) throws Exception {
 
-System.out.println("smartSendService sendSmartMsgAsync 010");
+//System.out.println("smartSendService sendSmartMsgAsync 010");
         List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
         Map<String, Object> responseBody = null;
         Map<String, Object> sParams = new HashMap<String, Object>(data);
@@ -552,8 +552,8 @@ System.out.println("smartSendService sendSmartMsgAsync 010");
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
-System.out.println("=================== smartSendService sendSmartMsgAsync toIndex : "+toIndex);
-System.out.println("=================== smartSendService sendSmartMsgAsync listSize : "+listSize);
+//System.out.println("=================== smartSendService sendSmartMsgAsync toIndex : "+toIndex);
+//System.out.println("=================== smartSendService sendSmartMsgAsync listSize : "+listSize);
         while (toIndex < listSize) {
             isDone = false;
             isServerError = false;
@@ -562,13 +562,13 @@ System.out.println("=================== smartSendService sendSmartMsgAsync listS
                 if(toIndex > listSize) toIndex = listSize;
                 smartRequestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
                 jsonString = gson.toJson(smartRequestData);
-System.out.println("=================== smartSendService sendSmartMsgAsync jsonString : "+jsonString);
+//System.out.println("=================== smartSendService sendSmartMsgAsync jsonString : "+jsonString);
                 responseBody = apiInterface.sendMsg(ApiConfig.GET_SMART_API_URI, headerMap, jsonString);
-System.out.println("=================== smartSendService sendSmartMsgAsync ApiConfig.GET_SMART_API_URI : "+ApiConfig.GET_SMART_API_URI);                
+//System.out.println("=================== smartSendService sendSmartMsgAsync ApiConfig.GET_SMART_API_URI : "+ApiConfig.GET_SMART_API_URI);                
                 isDone = isApiRequestAgain(responseBody, reSendCdList);
-System.out.println("=================== smartSendService sendSmartMsgAsync isDone : "+isDone);
+//System.out.println("=================== smartSendService sendSmartMsgAsync isDone : "+isDone);
                 isAllFail = !isSendSuccess(responseBody);
-System.out.println("=================== smartSendService sendSmartMsgAsync isAllFail : "+isAllFail);
+//System.out.println("=================== smartSendService sendSmartMsgAsync isAllFail : "+isAllFail);
             } catch (Exception e) {
                 log.error("{}.sendSmartMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;

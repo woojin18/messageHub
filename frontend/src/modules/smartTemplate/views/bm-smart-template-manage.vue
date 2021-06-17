@@ -790,7 +790,7 @@
 		            </div>
 					
 					<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
-						<h5>타이틀영역</h5>
+						<h5>{{rowData.rcsShortTitle}}</h5>
 						<div class="scroll-y3">
 							<pre class="color6">{{rowData.rcsShortContent}}</pre>
 						</div>								
@@ -917,17 +917,17 @@
             <div class="phoneWrap">
               <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
               <div class="phoneTextWrap">
-					<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcsShortImgInfoList[0])" class="phoneText2 mt10 text-center">
+					<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcsTallImgInfoList[0])" class="phoneText2 mt10 text-center">
 		                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 		            </div>
-		            <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcsShortImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
+		            <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcsTallImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
 		                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 		            </div>
-		            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcsShortImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
-		                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsShortImgInfoList[0].imgUrl+');'">
+		            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcsTallImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
+		                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsTallImgInfoList[0].imgUrl+');'">
 		            </div>
 					<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20">
-						<h5>타이틀영역</h5>
+						<h5>{{rowData.rcsTallTitle}}</h5>
 						<div class="scroll-y6">
 							<pre class="color6">{{rowData.rcsTallContent}}</pre>
 						</div>								
@@ -961,8 +961,6 @@
  
                 <ul v-for="imgIdx in rcsTallImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
                   <li v-if="rowData.rcsTallImgInfoList.length > imgIdx -1">
-                    
-                    <!-- <a @click="fnRcsTallDelImg(imgIdx-1)" v-if="rowData.rcsTallImgInfoList.length > 0">{{fnSubString(rowData.rcsTallImgInfoList[imgIdx].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a> -->
                     <a @click="fnRcsTallDelImg(imgIdx-1)">{{fnSubString(rowData.rcsTallImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
                   </li>
                   <li v-else>
@@ -2752,13 +2750,8 @@
 
     <hr>
     <div class="float-right">						
-     <!--  
-      <a href="#self" class="btnStyle2 backRed ml10" data-toggle="modal" data-target="#Regist" title="등록">등록</a>
-      <a href="#self" class="btnStyle2 ml10">취소</a>
-      <a href="#self" class="btnStyle2 backWhite ml10" data-toggle="modal" data-target="#Modify" title="수정">수정</a>
-     -->
-      <a @click="save()" class="btnStyle2 borderGray ml10" data-toggle="modal" title="저장">저장</a>
-      <a @click="complete()" class="btnStyle2 backBlack ml10" data-toggle="modal" title="등록">등록</a>
+      <a @click="save()" class="btnStyle2 borderGray ml10" data-toggle="modal" title="저장" activity="SAVE">저장</a>
+      <a @click="complete()" class="btnStyle2 backBlack ml10" data-toggle="modal" title="등록" activity="SAVE">등록</a>
       <router-link :to="{ name: 'smartTemplate' }" tag="a" class="btnStyle2 backRed ml10">취소</router-link>
     </div>
 
@@ -3413,6 +3406,7 @@ console.log("this.checkedKakao : " + this.checkedKakao);
         var result = response.data;
         if(result.success) {
           confirm.fnAlert(this.detailTitle, '등록 되었습니다.');
+          this.$router.push('smartTemplate')
         } else {
           confirm.fnAlert(this.detailTitle, result.message);
         }
@@ -5234,15 +5228,15 @@ console.log("this.checkedKakao : " + this.checkedKakao);
       this.rcsTallImgMngOpen = !this.rcsTallImgMngOpen;
     },
     fnRcsTallCallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
+      console.log('1111 : '+JSON.stringify(imgInfo));
       if(this.fnRcsTallImgLimitSize() == false) return;
       let temp = {
         imgUrl: imgInfo.chImgUrl,
         fileId: imgInfo.fileId
       };
-      //console.log('2222 : '+JSON.stringify(temp));
+      console.log('2222 : '+JSON.stringify(temp));
       this.rowData.rcsTallImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcsTallImgInfoList));
+      console.log('3333 : '+JSON.stringify(this.rowData.rcsTallImgInfoList));
       this.fnRcsTallDelDuplImgInfo();
     },
 

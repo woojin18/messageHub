@@ -59,7 +59,7 @@
               <input type="checkbox" id="searchResultYn_FAIL" class="checkStyle2" value="N" v-model="searchData.searchResultYn">
               <label for="searchResultYn_FAIL">실패</label>
             </div>
-            <a @click="fnSearch()" class="btnStyle2 float-right" title="검색">검색</a>
+            <a @click="fnSearch()" class="btnStyle2 float-right" title="검색" activity="READ">검색</a>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
     <div class="col-xs-12 consolMarginTop">
       <div class="of_h inline">
         <div class="float-right">
-          <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
+          <a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드" activity="READ">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
           <DetailLayer :title="detailLayerTitle" :layerView.sync="detailLayerView" :detailMsgKey="detailLayerMsgKey"></DetailLayer>
         </div>
       </div>

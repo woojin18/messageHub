@@ -576,14 +576,12 @@
 				</div>
 				<div class="float-left" style="width:78%">
 					<p>모든 채널에 메시지를 보냅니다.</p>
-					<a @click="fnOpenTestSendInputPopup" class="btnStyle1 backLightGray consolMarginTop" title="테스트 발송">테스트 발송</a>	
-					<!--<a @click="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송" data-toggle="modal" data-target="#test">테스트 발송</a>-->										
+					<a @click="fnOpenTestSendInputPopup" class="btnStyle1 backLightGray consolMarginTop" title="테스트 발송" activity="SAVE">테스트 발송</a>	
 				</div>
 				
 			</div>
-			<div class="mt20 float-right"><!--<a @click="fnSendPushMessage('N')" class="btnStyle2 backRed float-left ml10" title="발송">발송</a>-->
-				<a @click="fnSendIntegratedMessage('N')" class="btnStyle2 backRed float-left mr10" title="발송">발송</a>
-				<!--<a href="#self" class="btnStyle2 float-left" title="목록">목록</a>-->
+			<div class="mt20 float-right">
+				<a @click="fnSendIntegratedMessage('N')" class="btnStyle2 backRed float-left mr10" title="발송" activity="SAVE">발송</a>
 				<router-link :to="{ name: 'integratedSend' }" tag="a" class="btnStyle2 float-left">목록</router-link>
 			</div>
 		</div>			
