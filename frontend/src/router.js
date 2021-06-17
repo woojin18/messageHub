@@ -30,6 +30,7 @@ import smartTemplateRoutes from './modules/smartTemplate/router';
 import useRoutes from './modules/use/router';
 import smartSendRoutes from './modules/smartSend/router';
 import customerRoutes from './modules/customer/router';
+import rcsTemplateSendRoutes from './modules/rcsTemplateSend/router';
 
 //import confirm from "@/modules/commonUtil/service/confirm.js";
 
@@ -155,7 +156,8 @@ const router = new Router({
 				...ucMyPageRoutes,
 				...integratedSendRoutes,
 				...smartTemplateRoutes,
-				...smartSendRoutes
+				...smartSendRoutes,
+				...rcsTemplateSendRoutes
 			]
 		},
 		{ path: '*', redirect: '/view/error/404' }

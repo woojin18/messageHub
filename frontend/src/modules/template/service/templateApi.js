@@ -67,27 +67,27 @@ const selectKkoTmpltCatList = (params) => {
 
 /* RCS */
 const corpBrandCnt = (params) => {
-  return httpClient.post('/uc/public/rcsTemplate/corpBrandCnt', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/rcsTemplate/corpBrandCnt', params, { headers: {"show-layer": "Yes"} });
 };
 
 const selectRcsTemplateList = (params) => {
-  return httpClient.post('/uc/public/rcsTemplate/selectRcsTemplateList', params, {headers: {"show-layer":"yes"}});
+  return httpClient.post('/uc/rcsTemplate/selectRcsTemplateList', params, {headers: {"show-layer":"yes"}});
 };
 
 const rcsTemplateInit = (params) => {
-  return httpClient.post('/uc/public/rcsTemplate/rcsTemplateInit', params, {headers: {"show-layer":"yes"}});
+  return httpClient.post('/uc/rcsTemplate/rcsTemplateInit', params, {headers: {"show-layer":"yes"}});
 };
 
 const rcsTemplateUpdateInit = (params) => {
-  return httpClient.post('/uc/public/rcsTemplate/rcsTemplateUpdateInit', params, {headers: {"show-layer":"yes"}});
+  return httpClient.post('/uc/rcsTemplate/rcsTemplateUpdateInit', params, {headers: {"show-layer":"yes"}});
 };
 
 const rcsTemplateDeleteApi = (params) => {
-  return httpClient.post('/uc/public/rcsTemplate/rcsTemplateDeleteApi', params, {headers: {"show-layer":"yes"}});
+  return httpClient.post('/uc/rcsTemplate/rcsTemplateDeleteApi', params, {headers: {"show-layer":"yes"}});
 };
 
 const rcsTemplateApi = (params) => {
-  return httpClient.post('/uc/public/rcsTemplate/rcsTemplateApi', params, {headers: {"show-layer":"yes"}});
+  return httpClient.post('/uc/rcsTemplate/rcsTemplateApi', params, {headers: {"show-layer":"yes"}});
 };
 
 export default {

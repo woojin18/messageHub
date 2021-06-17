@@ -26,7 +26,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
-@RequestMapping("/api/public/rcsTemplate")
+@RequestMapping("/uc/rcsTemplate")
 public class RcsTemplateController {
 	
 	@Autowired
