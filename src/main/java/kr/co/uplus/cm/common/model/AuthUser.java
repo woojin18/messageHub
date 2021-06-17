@@ -5,7 +5,6 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import kr.co.uplus.cm.common.consts.Role;
 import kr.co.uplus.cm.common.consts.UserStatus;
 import lombok.Data;
 
@@ -17,15 +16,15 @@ public class AuthUser implements UserDetails {
 	private String userPwd;
 	private String loginId;
 	private UserStatus status;
-	private Role role;
+	private String role;
 	private Collection<? extends GrantedAuthority> authorities;
 
-	private String userName;			// 유저명
-	private String corpId;				// 고객사ID
-	private String svcTypeCd;			// 서비스타입코드(유저가 보유한 서비스타입코드에 따라서 접속 가능한 서비스 결정(BO전용, AC_UC겸용, UC전용)
-	private String repProjectId;		// 대표프로젝트ID
+	private String userName; // 유저명
+	private String corpId; // 고객사ID
+	private String svcTypeCd; // 서비스타입코드(유저가 보유한 서비스타입코드에 따라서 접속 가능한 서비스 결정(BO전용, AC_UC겸용, UC전용)
+	private String repProjectId; // 대표프로젝트ID
 	private String currentProjectId;
-	private String bizType;				// 특수사업자 유형
+	private String bizType; // 특수사업자 유형
 
 	public String getPassword() {
 		return userPwd;

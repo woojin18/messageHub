@@ -81,7 +81,7 @@ public class AuthService implements UserDetailsService {
 		request.setAttribute(Const.KEY_LOAD_USER, user);
 
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities = AuthorityUtils.createAuthorityList(user.getRole().getValue());
+		authorities = AuthorityUtils.createAuthorityList(user.getRole());
 		user.setAuthorities(authorities);
 
 		return user;

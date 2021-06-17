@@ -3,7 +3,7 @@
 		<article>
 			<div class="contentHeader">
 				<h2>대시보드</h2>
-				<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="새로고침">새로고침 <i class="fal fa-redo"></i></a>
+				<a class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="새로고침">새로고침 <i class="fal fa-redo"></i></a>
 			</div>
 			<!-- 본문 -->
 			<div class="row">
