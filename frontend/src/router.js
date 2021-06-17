@@ -36,189 +36,189 @@ import customerRoutes from './modules/customer/router';
 Vue.use(Router)
 
 const requireAuth = () => (to, from, next) => {
-  if (tokenSvc.getToken().principal.svcTypeCd == 'BO' && tokenSvc.getToken().principal.role !== 'GUEST') {
-    alert("Back Ofiice 계정으로는 Console 로그인이 불가합니다.");
-    //confirm.fnAlert("", "Back Ofiice 계정으로는 Console 로그인이 불가합니다.");
-    return next('/login');
-  }
-  next();
+	if (tokenSvc.getToken().principal.svcTypeCd == 'BO' && tokenSvc.getToken().principal.role !== 'GUEST') {
+		alert("Back Ofiice 계정으로는 Console 로그인이 불가합니다.");
+		//confirm.fnAlert("", "Back Ofiice 계정으로는 Console 로그인이 불가합니다.");
+		return next('/login');
+	}
+	next();
 
-  if (tokenSvc.getToken().principal.svcTypeCd == 'UC') {
-    alert("User 권한 사용자는 Admin Console 사용이 불가합니다.");
-    return next('/uc');
-  }
-  next();
+	if (tokenSvc.getToken().principal.svcTypeCd == 'UC') {
+		alert("User 권한 사용자는 Admin Console 사용이 불가합니다.");
+		return next('/uc');
+	}
+	next();
 };
 
 const requireAuthLogin = () => (to, from, next) => {
-  if (tokenSvc.getToken() !== null) {
-    if (tokenSvc.getToken().principal.svcTypeCd == 'UC') {
-      return next('/uc');
-    } else if (tokenSvc.getToken().principal.svcTypeCd == 'AC') {
-      return next('/ac');
-    }
-  }
-  next();
+	if (tokenSvc.getToken() !== null) {
+		if (tokenSvc.getToken().principal.svcTypeCd == 'UC') {
+			return next('/uc');
+		} else if (tokenSvc.getToken().principal.svcTypeCd == 'AC') {
+			return next('/ac');
+		}
+	}
+	next();
 };
 
 const router = new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      redirect: '/public/main'
-    },
-    {
-      path: '/public',
-      component: PublicLayout,
-      children: [
-        {
-          path: '/view/error/404',
-          component: () => import('./views/ErrorPage404.vue'),
-          meta: { public: true }
-        },
-        {
-          path: '/view/error/500',
-          component: () => import('./views/ErrorPage500.vue'),
-          meta: { public: true }
-        },
-        ...mainRoutes,
-        ...customerRoutes,
-        ...signUpRoutes
-      ]
-    },
-    {
-      path: '/login',
-      component: PublicLayout,
-      beforeEnter: requireAuthLogin(),
-      children: [
-        {
-          path: '/view/error/404',
-          component: () => import('./views/ErrorPage404.vue'),
-          meta: { public: true }
-        },
-        {
-          path: '/view/error/500',
-          component: () => import('./views/ErrorPage500.vue'),
-          meta: { public: true }
-        },
-        ...loginRoutes
-      ]
-    },
-    {
-      path: '/ac',
-      component: WebNaviLayout,
-      beforeEnter: requireAuth(),
-      children: [
-        {
-          path: '/view/error/404',
-          component: () => import('./views/ErrorPage404.vue'),
-          meta: { public: true }
-        },
-        {
-          path: '/view/error/500',
-          component: () => import('./views/ErrorPage500.vue'),
-          meta: { public: true }
-        },
-        ...acHomeRoutes,
-        ...listRoutes,
-        ...channelRoutes,
-        ...projectRoutes,
-        ...cashRoutes,
-        ...userRoutes,
-        ...addressRoutes,
-        ...acMyPageRoutes,
-        ...useRoutes
-      ],
-    },
-    {
-      path: '/uc',
-      component: WebUcNaviLayout,
-      //beforeEnter: requireAuth(),
-      children: [
-        {
-          path: '/view/error/404',
-          component: () => import('./views/ErrorPage404.vue'),
-          meta: { public: true }
-        },
-        {
-          path: '/view/error/500',
-          component: () => import('./views/ErrorPage500.vue'),
-          meta: { public: true }
-        },
-        ...ucHomeRoutes,
-        ...messageRoutes,
-        ...templateRoutes,
-        ...messageStatusRoutes,
-        ...integratedTemplateRoutes,
-        ...ucMyPageRoutes,
-        ...integratedSendRoutes,
-        ...smartTemplateRoutes,
-        ...smartSendRoutes
-      ]
-    },
-    {path: '*', redirect: '/view/error/404'}
-  ]
+	mode: 'history',
+	base: process.env.BASE_URL,
+	routes: [
+		{
+			path: '/',
+			redirect: '/public/main'
+		},
+		{
+			path: '/public',
+			component: PublicLayout,
+			children: [
+				{
+					path: '/view/error/404',
+					component: () => import('./views/ErrorPage404.vue'),
+					meta: { public: true }
+				},
+				{
+					path: '/view/error/500',
+					component: () => import('./views/ErrorPage500.vue'),
+					meta: { public: true }
+				},
+				...mainRoutes,
+				...customerRoutes,
+				...signUpRoutes
+			]
+		},
+		{
+			path: '/login',
+			component: PublicLayout,
+			beforeEnter: requireAuthLogin(),
+			children: [
+				{
+					path: '/view/error/404',
+					component: () => import('./views/ErrorPage404.vue'),
+					meta: { public: true }
+				},
+				{
+					path: '/view/error/500',
+					component: () => import('./views/ErrorPage500.vue'),
+					meta: { public: true }
+				},
+				...loginRoutes
+			]
+		},
+		{
+			path: '/ac',
+			component: WebNaviLayout,
+			beforeEnter: requireAuth(),
+			children: [
+				{
+					path: '/view/error/404',
+					component: () => import('./views/ErrorPage404.vue'),
+					meta: { public: true }
+				},
+				{
+					path: '/view/error/500',
+					component: () => import('./views/ErrorPage500.vue'),
+					meta: { public: true }
+				},
+				...acHomeRoutes,
+				...listRoutes,
+				...channelRoutes,
+				...projectRoutes,
+				...cashRoutes,
+				...userRoutes,
+				...addressRoutes,
+				...acMyPageRoutes,
+				...useRoutes
+			],
+		},
+		{
+			path: '/uc',
+			component: WebUcNaviLayout,
+			//beforeEnter: requireAuth(),
+			children: [
+				{
+					path: '/view/error/404',
+					component: () => import('./views/ErrorPage404.vue'),
+					meta: { public: true }
+				},
+				{
+					path: '/view/error/500',
+					component: () => import('./views/ErrorPage500.vue'),
+					meta: { public: true }
+				},
+				...ucHomeRoutes,
+				...messageRoutes,
+				...templateRoutes,
+				...messageStatusRoutes,
+				...integratedTemplateRoutes,
+				...ucMyPageRoutes,
+				...integratedSendRoutes,
+				...smartTemplateRoutes,
+				...smartSendRoutes
+			]
+		},
+		{ path: '*', redirect: '/view/error/404' }
+	]
 });
 
 router.beforeEach((to, from, next) => {
-  const isPublic = to.matched.some(record => record.meta.public);
-  const loggedIn = !!tokenSvc.getToken();
+	const isPublic = to.matched.some(record => record.meta.public);
+	const loggedIn = !!tokenSvc.getToken();
 
-  if (!isPublic && !loggedIn) {
-    return next('/login');
-  }
+	if (!isPublic && !loggedIn) {
+		return next('/login');
+	}
 
-  to.matched.some(record => {
-    if (record.meta.usingSearchCondition) {
-      const shareList = record.meta.shareList;
-      if (from.name && shareList && shareList.includes(from.name)) {
-        // shareList에 포함되어 있는 라우터에서 온 경우 검색 조건을 유지한다.
-        // console.log("패밀리");
-      } else {
-        // 그 외의 경우 검색 조건 초기화
-        searchcondition.commit("searchcondition/updateSearchCondition", null);
-        // console.log("낫패밀리");
-      }
-    }
-    next();
-  });
+	to.matched.some(record => {
+		if (record.meta.usingSearchCondition) {
+			const shareList = record.meta.shareList;
+			if (from.name && shareList && shareList.includes(from.name)) {
+				// shareList에 포함되어 있는 라우터에서 온 경우 검색 조건을 유지한다.
+				// console.log("패밀리");
+			} else {
+				// 그 외의 경우 검색 조건 초기화
+				searchcondition.commit("searchcondition/updateSearchCondition", null);
+				// console.log("낫패밀리");
+			}
+		}
+		next();
+	});
 });
 var timeout = 1500;
 router.afterEach((to, from) => {
-  if (!to.meta.menu) {
-    timeout = 0;
-    return;
-  }
-  jQuery('#M_menusCd').val(to.meta.menu);
-  Vue.nextTick(() => {
-    setTimeout(function() {
-      jQuery('#M_menusCd').val(to.meta.menu);
-      var menu = jQuery('#M_'+to.meta.menu);
-      if (menu.length == 0) {
-        alert('권한이 없습니다.');
-        window.history.back();
-        return;
-      }
-      var isRead = menu.attr('r');
-      var isSave = menu.attr('w');
-      isRead = isRead == 'true';
-      isSave = isSave == 'true';
-      console.log('MENU CODE : ' + to.meta.menu + ', READ:' + isRead + ', SAVE:' + isSave);
-      if (isRead) {
-        jQuery("[activity='READ']").removeAttr('activity');
-      } else {
-        jQuery("[activity='READ']").remove();
-      }
-      if (isSave) {
-        jQuery("[activity='SAVE']").removeAttr('activity');
-      } else {
-        jQuery("[activity='SAVE']").remove();
-      }
-    }, timeout);
-    timeout = 0;
-  })
+	if (!to.meta.menu) {
+		timeout = 0;
+		return;
+	}
+	jQuery('#M_menusCd').val(to.meta.menu);
+	Vue.nextTick(() => {
+		setTimeout(function() {
+			jQuery('#M_menusCd').val(to.meta.menu);
+			var menu = jQuery('#M_' + to.meta.menu);
+			if (menu.length == 0) {
+				alert('권한이 없습니다.');
+				window.history.back();
+				return;
+			}
+			var isRead = menu.attr('r');
+			var isSave = menu.attr('w');
+			isRead = isRead == 'true';
+			isSave = isSave == 'true';
+			console.log('MENU CODE : ' + to.meta.menu + ', READ:' + isRead + ', SAVE:' + isSave);
+			if (isRead) {
+				jQuery("[activity='READ']").removeAttr('activity');
+			} else {
+				jQuery("[activity='READ']").remove();
+			}
+			if (isSave) {
+				jQuery("[activity='SAVE']").removeAttr('activity');
+			} else {
+				jQuery("[activity='SAVE']").remove();
+			}
+		}, timeout);
+		timeout = 0;
+	})
 });
 
 export default router;
