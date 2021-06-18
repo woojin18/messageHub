@@ -189,14 +189,11 @@
                 :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.pushImgInfo.imgUrl+');'">
               </div>
               <div class="scroll-y">
-                <!--<p v-if="rowData.msgKind != 'A' || (isEmpty(rowData.pushContent) && isEmpty(rowData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>-->
                 <p v-if="isEmpty(rowData.pushContent) && (rowData.msgKind != 'A')" class="font-size14 color4 mt10">내용</p>
                 <p v-else class="font-size14 color4 mt10">
                   <span v-html="$gfnCommonUtils.newLineToBr(rowData.pushContent)"></span>
                   <br v-if="!isEmpty(rowData.pushContent)"/>
-                  <!--<span v-if="tmpltData.msgKind == 'A' && !isEmpty(tmpltData.rcvblcNumber)">-->
                   	{{rowData.rcvblcNumber}}
-                  <!--</span>-->
                 </p>
               </div>
             </div>          
@@ -779,6 +776,17 @@
             <div class="phoneWrap">
               <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
               <div class="phoneTextWrap">
+		            <div v-for="imgIdx in rcsShortImgLimitSize" :key="imgIdx">  
+		            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcsShortImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+			                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsShortImgInfoList[imgIdx-1].imgUrl+');'">  
+		            		</div>
+		            		<div v-else>
+		            			<img src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
+		            		</div>
+		            </div>              
+              
+              
+<!--
 					<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcsShortImgInfoList[0])" class="phoneText2 mt10 text-center">
 		                <img src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
 		            </div>
@@ -788,6 +796,7 @@
 		            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcsShortImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 		                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsShortImgInfoList[0].imgUrl+');'">
 		            </div>
+-->
 					
 					<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
 						<h5>{{rowData.rcsShortTitle}}</h5>
@@ -917,6 +926,15 @@
             <div class="phoneWrap">
               <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
               <div class="phoneTextWrap">
+		            <div v-for="imgIdx in rcsTallImgLimitSize" :key="imgIdx">  
+		            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcsTallImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+			                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsTallImgInfoList[imgIdx-1].imgUrl+');'">  
+		            		</div>
+		            		<div v-else>
+		            			<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+		            		</div>
+		            </div>
+<!--
 					<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcsTallImgInfoList[0])" class="phoneText2 mt10 text-center">
 		                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 		            </div>
@@ -926,6 +944,7 @@
 		            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcsTallImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 		                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsTallImgInfoList[0].imgUrl+');'">
 		            </div>
+-->
 					<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20">
 						<h5>{{rowData.rcsTallTitle}}</h5>
 						<div class="scroll-y6">
@@ -1053,6 +1072,15 @@
 					<p class="color000">[WEB발신] (광고)</p>
 					<ul class="cardBxslider mt10">
 						<li class="slide cardBox" v-show="cShortTab === 0">
+				            <div v-for="imgIdx in rcs90ImgLimitSize" :key="imgIdx">  
+				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs90ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs90ImgInfoList[imgIdx-1].imgUrl+');'">  
+				            		</div>
+				            		<div v-else>
+				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+				            		</div>
+				            </div>
+<!--
 							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs90ImgInfoList[0])" class="phoneText2 mt10 text-center">
 				                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 				            </div>
@@ -1062,6 +1090,7 @@
 				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs90ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs90ImgInfoList[0].imgUrl+');'">
 				            </div>
+-->
 
 							<div class="relative">
 								<div class="scroll-y" style="min-height:150px">
@@ -1072,6 +1101,15 @@
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cShortTab === 1">
+				            <div v-for="imgIdx in rcs91ImgLimitSize" :key="imgIdx">  
+				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs91ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs91ImgInfoList[imgIdx-1].imgUrl+');'">  
+				            		</div>
+				            		<div v-else>
+				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+				            		</div>
+				            </div>
+<!--						
 							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs91ImgInfoList[0])" class="phoneText2 mt10 text-center">
 				                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 				            </div>
@@ -1081,6 +1119,7 @@
 				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs91ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs91ImgInfoList[0].imgUrl+');'">
 				            </div>
+-->	
 							<div class="relative">
 								<div class="scroll-y" style="min-height:150px">
 									<p class="color000 font-size13">{{rowData.rcs91Title}}</p>
@@ -1090,6 +1129,15 @@
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cShortTab === 2">
+				            <div v-for="imgIdx in rcs92ImgLimitSize" :key="imgIdx">  
+				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs92ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs92ImgInfoList[imgIdx-1].imgUrl+');'">  
+				            		</div>
+				            		<div v-else>
+				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+				            		</div>
+				            </div>
+<!--						
 							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs92ImgInfoList[0])" class="phoneText2 mt10 text-center">
 				                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 				            </div>
@@ -1099,6 +1147,7 @@
 				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs92ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs92ImgInfoList[0].imgUrl+');'">
 				            </div>
+-->	
 							<div class="relative">
 								<div class="scroll-y" style="min-height:150px">
 									<p class="color000 font-size13">{{rowData.rcs92Title}}</p>
@@ -1108,6 +1157,15 @@
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cShortTab === 3">
+				            <div v-for="imgIdx in rcs93ImgLimitSize" :key="imgIdx">  
+				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs93ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs93ImgInfoList[imgIdx-1].imgUrl+');'">  
+				            		</div>
+				            		<div v-else>
+				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+				            		</div>
+				            </div>
+<!--						
 							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs93ImgInfoList[0])" class="phoneText2 mt10 text-center">
 				                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 				            </div>
@@ -1117,6 +1175,7 @@
 				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs93ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs93ImgInfoList[0].imgUrl+');'">
 				            </div>
+-->
 							<div class="relative">
 								<div class="scroll-y" style="min-height:150px">
 									<p class="color000 font-size13">{{rowData.rcs93Title}}</p>
@@ -1126,6 +1185,15 @@
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cShortTab === 4">
+				            <div v-for="imgIdx in rcs94ImgLimitSize" :key="imgIdx">  
+				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs94ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs94ImgInfoList[imgIdx-1].imgUrl+');'">  
+				            		</div>
+				            		<div v-else>
+				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+				            		</div>
+				            </div>
+<!--											
 							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs94ImgInfoList[0])" class="phoneText2 mt10 text-center">
 				                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 				            </div>
@@ -1135,6 +1203,7 @@
 				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs94ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs94ImgInfoList[0].imgUrl+');'">
 				            </div>
+-->
 							<div class="relative">
 								<div class="scroll-y" style="min-height:150px">
 									<p class="color000 font-size13">{{rowData.rcs94Title}}</p>
@@ -1144,6 +1213,15 @@
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cShortTab === 5">
+				            <div v-for="imgIdx in rcs95ImgLimitSize" :key="imgIdx">  
+				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs95ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs95ImgInfoList[imgIdx-1].imgUrl+');'">  
+				            		</div>
+				            		<div v-else>
+				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+				            		</div>
+				            </div>
+<!--						
 							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs95ImgInfoList[0])" class="phoneText2 mt10 text-center">
 				                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 				            </div>
@@ -1153,6 +1231,7 @@
 				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs95ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs95ImgInfoList[0].imgUrl+');'">
 				            </div>
+-->
 							<div class="relative">
 								<div class="scroll-y" style="min-height:150px">
 									<p class="color000 font-size13">{{rowData.rcs95Title}}</p>
@@ -1205,7 +1284,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textarea Style height190" v-model="rowData.rcs90Content" id="rcs90ContentId" @keyup="fnTextLength('내용', '#rcs90ContentId', '#rcs90TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs90Content" id="rcs90ContentId" @keyup="fnTextLength('내용', '#rcs90ContentId', '#rcs90TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs90TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -1744,6 +1823,15 @@
 					<p class="color000">[WEB발신] (광고)</p>
 					<ul class="cardBxslider mt10">
 						<li class="slide cardBox" v-show="cTallTab === 0">
+				            <div v-for="imgIdx in rcs100ImgLimitSize" :key="imgIdx">  
+				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs100ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs100ImgInfoList[imgIdx-1].imgUrl+');'">  
+				            		</div>
+				            		<div v-else>
+				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+				            		</div>
+				            </div>
+<!--						
 							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs100ImgInfoList[0])" class="phoneText2 mt10 text-center">
 				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 				            </div>
@@ -1753,6 +1841,7 @@
 				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs100ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs100ImgInfoList[0].imgUrl+');'">
 				            </div>
+-->
 							<div class="relative">
 								<div class="scroll-y6" style="min-height:140px">
 									<p class="color000 font-size13">{{rowData.rcs100Title}}</p>
@@ -1762,6 +1851,15 @@
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cTallTab === 1">
+				            <div v-for="imgIdx in rcs101ImgLimitSize" :key="imgIdx">  
+				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs101ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs101ImgInfoList[imgIdx-1].imgUrl+');'">  
+				            		</div>
+				            		<div v-else>
+				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+				            		</div>
+				            </div>
+<!--						
 							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs101ImgInfoList[0])" class="phoneText2 mt10 text-center">
 				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 				            </div>
@@ -1771,6 +1869,7 @@
 				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs101ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs101ImgInfoList[0].imgUrl+');'">
 				            </div>
+-->
 							<div class="relative">
 								<div class="scroll-y6" style="min-height:140px">
 									<p class="color000 font-size13">{{rowData.rcs101Title}}</p>
@@ -1780,6 +1879,15 @@
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cTallTab === 2">
+				            <div v-for="imgIdx in rcs102ImgLimitSize" :key="imgIdx">  
+				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs102ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs102ImgInfoList[imgIdx-1].imgUrl+');'">  
+				            		</div>
+				            		<div v-else>
+				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+				            		</div>
+				            </div>
+<!--						
 							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs102ImgInfoList[0])" class="phoneText2 mt10 text-center">
 				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 				            </div>
@@ -1789,6 +1897,7 @@
 				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs102ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs102ImgInfoList[0].imgUrl+');'">
 				            </div>
+-->	
 							<div class="relative">
 								<div class="scroll-y6" style="min-height:140px">
 									<p class="color000 font-size13">{{rowData.rcs102Title}}</p>
@@ -1798,6 +1907,15 @@
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cTallTab === 3">
+				            <div v-for="imgIdx in rcs103ImgLimitSize" :key="imgIdx">  
+				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs103ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs103ImgInfoList[imgIdx-1].imgUrl+');'">  
+				            		</div>
+				            		<div v-else>
+				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+				            		</div>
+				            </div>
+<!--						
 							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs103ImgInfoList[0])" class="phoneText2 mt10 text-center">
 				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 				            </div>
@@ -1807,6 +1925,7 @@
 				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs103ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs103ImgInfoList[0].imgUrl+');'">
 				            </div>
+-->
 							<div class="relative">
 								<div class="scroll-y6" style="min-height:140px">
 									<p class="color000 font-size13">{{rowData.rcs103Title}}</p>
@@ -1816,6 +1935,15 @@
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cTallTab === 4">
+				            <div v-for="imgIdx in rcs104ImgLimitSize" :key="imgIdx">  
+				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs104ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs104ImgInfoList[imgIdx-1].imgUrl+');'">  
+				            		</div>
+				            		<div v-else>
+				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+				            		</div>
+				            </div>
+<!--						
 							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs104ImgInfoList[0])" class="phoneText2 mt10 text-center">
 				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 				            </div>
@@ -1825,6 +1953,7 @@
 				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs104ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs104ImgInfoList[0].imgUrl+');'">
 				            </div>
+-->
 							<div class="relative">
 								<div class="scroll-y6" style="min-height:140px">
 									<p class="color000 font-size13">{{rowData.rcs104Title}}</p>
@@ -1834,6 +1963,15 @@
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cTallTab === 5">
+				            <div v-for="imgIdx in rcs105ImgLimitSize" :key="imgIdx">  
+				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs105ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs105ImgInfoList[imgIdx-1].imgUrl+');'">  
+				            		</div>
+				            		<div v-else>
+				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+				            		</div>
+				            </div>
+<!--						
 							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs105ImgInfoList[0])" class="phoneText2 mt10 text-center">
 				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 				            </div>
@@ -1843,6 +1981,7 @@
 				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs105ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs105ImgInfoList[0].imgUrl+');'">
 				            </div>
+-->
 							<div class="relative">
 								<div class="scroll-y6" style="min-height:140px">
 									<p class="color000 font-size13">{{rowData.rcs105Title}}</p>
@@ -2445,6 +2584,13 @@
 							<div class="phoneText1 scroll-y2">
 								<pre>{{rowData.friendTalkContent}}</pre>
 							</div>
+							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.friendTalkImgInfo.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
+				                <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+				                <p class="font-size14 color3 mt15">이미지 영역</p>
+			              	</div>
+			              	<div v-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.friendTalkImgInfo.imgUrl)" class="phoneText2 mt10 text-center"
+			                	:style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.friendTalkImgInfo.imgUrl+');'">
+			              	</div>							
 						</div>
 					</div>
 					<!-- //phoneWrap -->
@@ -2648,6 +2794,17 @@
 							<div class="phoneText1 scroll-y4">
 								<pre>{{rowData.smsContent}}</pre>
 							</div>
+							
+							<div v-for="imgIdx in smsImgLimitSize" :key="imgIdx">  
+				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.smsImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.smsImgInfoList[imgIdx-1].imgUrl+');'">  
+				            		</div>
+				            		<div v-else>
+				            			<i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+					                  	<p class="font-size14 color3 mt15">이미지 영역</p>
+				            		</div>
+				            </div>		
+<!--							
 							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.smsImgInfoList[0])" class="phoneText2 mt10 text-center">
 				                <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
 			                  <p class="font-size14 color3 mt15">이미지 영역</p>
@@ -2670,6 +2827,7 @@
 			                <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.smsImgInfoList[1].imgUrl)" class="phoneText2 mt10 text-center"
 			                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.smsImgInfoList[1].imgUrl+');'">
 			                </div>	
+-->			                
 						</div>
 					</div>
 					
@@ -2959,7 +3117,7 @@ export default {
       rcs1CallbackList: [], //RCS 서술 발신번호 리스트
       rcs2CallbackList: [], //RCS 스타일 발신번호 리스트
       rcsSMSCallbackList: [], //RCS sms 발신번호 리스트
-      rcsLMSCallbackList: [], //RCS lsm 발신번호 리스트
+      rcsLMSCallbackList: [], //RCS lms 발신번호 리스트
       rcsShortCallbackList: [], //RCS SHORT 발신번호 리스트
       rcsTallCallbackList: [], //RCS TALL 발신번호 리스트
 
@@ -3957,7 +4115,7 @@ console.log("this.checkedKakao : " + this.checkedKakao);
 	            this.rowData.rcsShortHowToDenyReceipt 	= rtnData.rcsFooter;   //무료수신거부번호
 	            this.rowData.callback 					= rtnData.rcsCallback; //발신번호
 	            
-	            if(!rtnData.rcsBodyMediaUrl){
+	            if(rtnData.rcsBodyMediaUrl){
 	            	this.rowData.rcsShortImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
 	            }
 	                    
@@ -3977,7 +4135,7 @@ console.log("this.checkedKakao : " + this.checkedKakao);
 	            this.rowData.rcsTallHowToDenyReceipt 	= rtnData.rcsFooter;   //무료수신거부번호
 	            this.rowData.callback 					= rtnData.rcsCallback; //발신번호
 	            
-	            if(!rtnData.rcsBodyMediaUrl){
+	            if(rtnData.rcsBodyMediaUrl){
 	            	this.rowData.rcsTallImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
 	            }
 	            
