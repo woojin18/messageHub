@@ -232,5 +232,6 @@ public class DB {
 
 	// 대시보드
 	public final static String QRY_SELECT_DASH_PROJECT_INFO = "dashboard.selectProjectInfo";
+	public final static String QRY_SELECT_DASH_PROJECT_LIST = "dashboard.selectProjectList";
 	public final static String QRY_SELECT_DASH_NOTICE_LIST = "dashboard.selectNoticeList";
 }

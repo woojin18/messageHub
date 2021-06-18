@@ -784,8 +784,9 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 .Dashboard01 {background-color: #fff; padding: 35px 30px; width:100%}
 .Dashboard01 h4 {font-size:16px; color:000; font-weight:700; display:inline-block}
 .New {font-size:11px; color:#fff; background-color:#FD004E; padding:5px; font-weight:700; margin-right:10px}
-.Notification {font-size:11px; color:#fff; background-color:#FEBF7F; padding:5px; font-weight:700; margin-right:10px}
-.Notice {font-size:11px; color:#fff; background-color:#7FD0FF; padding:5px; font-weight:700; margin-right:10px}
+.Information {font-size:11px; color:#fff; background-color:#ABF200; padding:5px; font-weight:700; margin-right:10px}
+.Inspect {font-size:11px; color:#fff; background-color:#7FD0FF; padding:5px; font-weight:700; margin-right:10px}
+.Fault {font-size:11px; color:#fff; background-color:#FEBF7F; padding:5px; font-weight:700; margin-right:10px}
 
 
 

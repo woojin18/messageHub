@@ -2,7 +2,7 @@
 	<div>
 		<article>
 			<div class="contentHeader">
-				<h2>비트큐브 대시보드</h2>
+				<h2>{{ projectInfoData.projectName }} 대시보드</h2>
 				<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="비트큐브 대시보드 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
 			</div>
 			<!-- 본문 -->
@@ -56,17 +56,14 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td class="text-left"><span class="Notification">안내</span><a href="#" class="boardTitle" title="엘지유플러스 프로모션 페이지로 이동">엘지유플러스 프로모션</a></td>
-										<td class="text-center end">2021.01.20</td>
-									</tr>
-									<tr>
-										<td class="text-left"><span class="Notification">안내</span><a href="#" class="boardTitle" title="엘지유플러스 프로모션 페이지로 이동">엘지유플러스 프로모션</a></td>
-										<td class="text-center end">2021.01.20</td>
-									</tr>
-									<tr>
-										<td class="text-left"><span class="Notice">공지</span><a href="#" class="boardTitle" title="엘지유플러스 프로모션 페이지로 이동">엘지유플러스 프로모션</a></td>
-										<td class="text-center end">2021.01.20</td>
+									<tr v-for="(ntc, idx) in notices" :key="ntc.noticeId">
+										<td class="text-left">
+											<span v-if="ntc.noticeType == 'INFO'" class="Information">{{ntc.noticeTypeCdName}}</span>
+											<span v-else-if="ntc.noticeType == 'INSPEC'" class="Inspect">{{ntc.noticeTypeCdName}}</span>
+											<span v-else-if="ntc.noticeType == 'FAULT'" class="Fault">{{ntc.noticeTypeCdName}}</span>
+											<router-link :to="{ name: 'noticeDetail', params: { noticeId: ntc.noticeId }}">{{ntc.title}}</router-link>
+										</td>
+										<td class="text-center end">{{ntc.regDtYmd}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -92,37 +89,44 @@
 						</div>
 						<div class="mt10">
 							<ul class="tab_s4_2 of-h" style="width:100%">
-								<li @click="setRandomData('push')" id="setPush" style="width:20%" class="active">
+								<li @click="setRandomData('push')" id="setPush" style="width:16.7%" class="active">
 									<a class="inline-block text-center active">
 										<h5>PUSH 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">55<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">0<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
-								<li @click="setRandomData('rcs')" id="setRcs" style="width:20%">
+								<li @click="setRandomData('rcs')" id="setRcs" style="width:16.7%">
 									<a class="inline-block text-center">
 										<h5>RCS 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">0<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">0<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
-								<li @click="setRandomData('kakaotalk')" id="setKakaotalk" style="width:20%">
+								<li @click="setRandomData('kakaotalk')" id="setKakaotalk" style="width:16.6%">
 									<a class="inline-block text-center">
 										<h5>알림톡 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">-<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
-								<li @click="setRandomData('friendtalk')" id="setFriendtalk" style="width:20%">
+								<li @click="setRandomData('friendtalk')" id="setFriendtalk" style="width:16.7%">
 									<a class="inline-block text-center">
 										<h5>친구톡 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">-<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
-								<li @click="setRandomData('sms')" id="setSms" style="width:20%">
+								<li @click="setRandomData('sms')" id="setSms" style="width:16.7%">
 									<a class="inline-block text-center">
 										<h5>SMS 전체</h5>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">-<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
+									</a>
+								</li>
+								<li @click="setRandomData('mms')" id="setMms" style="width:16.6%">
+									<a class="inline-block text-center">
+										<h5>MMS 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">-<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
 									</a>
@@ -139,12 +143,13 @@
 				</div>
 			</div>
 
-			<div class="row mt20">
+			<div class="row">
 				<div class="col-xs-12">
-					<div class="fl">
+					<div class="">
 						<h4 class="lc-1">당일 실시간 이용현황</h4>
+						<div class="mt20"></div>
 						<div class="Dashboard01 border-line2 pd20">
-							<bar-chart :chart-data="rtUsedResultData"></bar-chart>
+							<bar-chart :chart-data="rtUsedResultData" :height="100"></bar-chart>
 						</div>
 					</div>
 				</div>
@@ -185,9 +190,17 @@ export default {
 			}
 		}
 	},
+	componentsTitle: {
+		type: String,
+		require: false,
+		default: function() {
+			return 'User Console DashBoard';
+		}
+	},
 	data () {
 		return {
 			projectInfoData: {},
+			notices: [],
 			searchDateInterval: 7,
 			successFailResultData: {
 				labels: ['20210609', '20210610', '20210611', '20210612', '20210613', '20210614', '20210615'],
@@ -289,6 +302,14 @@ export default {
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
 						data: [210, 200, 110, 160, 170, 330, 320, 190, 70, 130, 90, 160, 210, 300, 110]
+					},
+					{
+						label: 'MMS',
+						backgroundColor: '#1DDB16',
+						pointBackgroundColor: 'white',
+						borderWidth: 1,
+						pointBorderColor: '#249EBF',
+						data: [110, 100, 60, 60, 70, 230, 220, 90, 20, 30, 40, 60, 110, 200, 60]
 					}
 				]
 			}
@@ -300,6 +321,7 @@ export default {
 	mounted() {
 		this.fnSetIntervalSearchDate(this.searchDateInterval);
 		this.fnGetProjectInfo();
+		this.fnGetNoticeList();
 	},
 	methods: {
 		fnGetProjectInfo() {
@@ -313,7 +335,20 @@ export default {
 				if (result.success) {
 					this.projectInfoData = result.data.projectInfo;
 				} else {
-					confirm.fnAlert("", result.message);
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+		},
+		fnGetNoticeList() {
+			let params = {
+			};
+
+			homeApi.selectNoticeList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.notices = result.data;
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
 				}
 			});
 		},
@@ -400,6 +435,8 @@ export default {
 				jQuery("#setFriendtalk").addClass('active');
 			} else if (channel == 'sms') {
 				jQuery("#setSms").addClass('active');
+			} else if (channel == 'mms') {
+				jQuery("#setMms").addClass('active');
 			}
 		},
 		getRandomInt () {

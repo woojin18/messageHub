@@ -6,6 +6,7 @@
 		/* dashboard.selectProjectInfo */
 		SELECT
 			CP.PROJECT_ID,
+			CP.PROJECT_NAME,
 			CP.USE_CH_GRP_INFO,
 			CONCAT(CU.USER_NAME, '(', CU.LOGIN_ID ,')') AS USER_INFO,
 			DATE_FORMAT(CP.REG_DT, '%Y-%m-%d') AS REG_DT
@@ -14,4 +15,43 @@
 				ON CP.REG_ID = CU.USER_ID
 		WHERE	CP.PROJECT_ID	= #{projectId}
 	</select>
+
+	<select id="selectProjectList" resultType="camel">
+		/* dashboard.selectProjectList */
+		SELECT
+			CP.PROJECT_ID,
+			CP.PROJECT_NAME,
+			CP.PAY_TYPE,
+			CP.USE_CH_GRP_INFO,
+			CASE 
+				WHEN CP.PAY_TYPE = 'Y' THEN '선불'
+				ELSE '후불'
+			END PAY_TYPE_CD_NAME,
+			CP.REG_DT,
+			DATE_FORMAT(CP.REG_DT, '%Y-%m-%d') AS REG_DT_YMD
+		FROM cm_console.CM_PROJECT CP
+			INNER JOIN cm_console.CM_PROJECT_USER CPU
+				ON CP.PROJECT_ID = CPU.PROJECT_ID
+		WHERE CP.CORP_ID = 'COM2104142281316'
+		AND	CP.DEL_YN != 'Y'
+		AND	CP.USE_YN = 'Y'
+		AND CPU.USER_ID = #{userId}
+		ORDER BY CP.REG_DT DESC
+		LIMIT 3
+	</select>
+
+	<select id="selectNoticeList" resultType="camel">
+		/* dashboard.selectNoticeList */
+		SELECT
+			NOTICE_ID,
+			NOTICE_TYPE,
+			cm_console.fnc_get_cd_name('NOTICE_TYPE', NOTICE_TYPE, 1) AS NOTICE_TYPE_CD_NAME,
+			TITLE,
+			REG_DT,
+			DATE_FORMAT(REG_DT, '%Y-%m-%d') AS REG_DT_YMD
+		FROM cm_bo.CM_NOTICE
+		ORDER BY REG_DT DESC
+		LIMIT 3
+	</select>
+
 </mapper>

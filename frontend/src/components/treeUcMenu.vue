@@ -196,6 +196,8 @@ export default {
 			jQuery('.consoleMenu').hide();
 			jQuery('.box-shadow li').removeClass('active');
 			jQuery(event.target).closest('li').addClass('active');
+			this.$router.replace('/');
+			this.$nextTick(() => this.$router.replace("/uc/home"));
 		}
 	}
 }

@@ -4,8 +4,8 @@ const logout = () => {
 	return httpClient.get('/api/auth/logout', { headers: { "show-layer": "Yes" } });
 };
 
-const selectProjectInfo = (params) => {
-	return httpClient.post('/api/home/selectProjectInfo', params, { headers: { "show-layer": "Yes" } });
+const selectProjectList = (params) => {
+	return httpClient.post('/api/home/selectProjectList', params, { headers: { "show-layer": "Yes" } });
 };
 
 const selectNoticeList = (params) => {
@@ -14,6 +14,6 @@ const selectNoticeList = (params) => {
 
 export default {
 	logout,
-	selectProjectInfo,
+	selectProjectList,
 	selectNoticeList
 };

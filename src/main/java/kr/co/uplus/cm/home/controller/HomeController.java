@@ -24,7 +24,7 @@ public class HomeController {
 	private HomeService homeSvc;
 
 	/**
-	 * 프로젝트정보 조회
+	 * 대시보드 프로젝트 정보 조회
 	 * 
 	 * @param request
 	 * @param response
@@ -41,8 +41,54 @@ public class HomeController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
-			log.error("{} Error : {}", this.getClass(), e);
+			log.error("{}.selectProjectInfo Error : {}", this.getClass(), e);
 		}
+		return rtn;
+	}
+
+	/**
+	 * 대시보드 프로젝트 리스트 조회
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectProjectList")
+	public RestResult<?> selectProjectList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = homeSvc.selectProjectList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectProjectList Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드 공지사항 리스트 조회
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectNoticeList")
+	public RestResult<?> selectNoticeList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = homeSvc.selectNoticeList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectNoticeList Error : {}", this.getClass(), e);
+		}
+
 		return rtn;
 	}
 }
