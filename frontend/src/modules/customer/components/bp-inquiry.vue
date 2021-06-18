@@ -81,6 +81,10 @@
                 ></textarea>
               </div>
             </div>
+            <div class="quiryAgree">
+              <input type="checkbox" id="agree" value="서비스 이용약관 동의" v-model="agree">
+              <label for="agree">[필수] 개인정보 수집 및 이용 동의에 동의합니다.</label>
+            </div>
             
           </div>
           <div class="text-center mt20">
@@ -122,6 +126,7 @@ export default {
     return {
       inqueiryTypeList: [],
       sltDomain : '',
+      agree : false,
       inputData: {
         inputName: '',
         hpNumber : '',
@@ -170,6 +175,10 @@ export default {
         confirm.fnAlert(this.componentsTitle, '내용을 입력해주세요.');
         return false;
       }
+      if(!this.agree){
+        confirm.fnAlert(this.componentsTitle, '개인정보 수집 및 이용 동의에 동의해주세요.');
+        return false;
+      }
       
       return true;
     },
@@ -185,7 +194,7 @@ export default {
       await customereApi.insertQuestBoard(params).then(response => {
         const result = response.data;
         if(result.success) {
-          confirm.fnAlert(this.componentsTitle, '저장되었습니다.');
+          confirm.fnAlert(this.componentsTitle, '문의 되었습니다.');
           this.$refs.btnClose.click();
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);

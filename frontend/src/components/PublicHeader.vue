@@ -23,7 +23,7 @@
                 <li>
                   <router-link :to="{ name: 'library' }" tag="a" title="자료실로 이동">자료실</router-link>
                 </li>
-                <li><a href="javascript:void(0);" data-toggle="modal" data-target="#Inquiry">서비스 문의</a></li>
+                <li><a href="javascript:void(0);" @click.prevent="fnOpenInquiryModal">서비스 문의</a></li>
               </ul>
             </li>
             <li><a href="#self" title="사용자 가이드 페이지로 이동">사용자 가이드</a></li>
@@ -37,16 +37,22 @@
         </ul>
       </div>
     </div>
+    <InquiryPopup ref="inquiryPopup"></InquiryPopup>
   </header>
   <!-- //head_type_user -->
 </template>
 
 <script>
+import InquiryPopup from "@/modules/customer/components/bp-inquiry.vue";
+
 import loginApi from '@/modules/login/service/api';
 import tokenSvc from '@/common/token-service';
 
 export default {
   name: "PublicHeader",
+  components : {
+    InquiryPopup
+  },
   data() {
     return {
       isLogin: false
@@ -63,6 +69,11 @@ export default {
     }
   },
   methods: {
+    fnOpenInquiryModal(){
+      this.$refs.inquiryPopup.fnRestData();
+      jQuery("#Inquiry").modal("show");
+      this.$refs.inquiryPopup.fnSelectFaqType();
+    },
     signUp: function() {
       this.$router.push({name : "signUp"});
     },

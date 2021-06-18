@@ -39,7 +39,7 @@
             </h3>
             <ul class="listSt">
               <li v-for="(noticeInfo, idx) in noticeInfoList" :key="idx">
-                <router-link :to="{ name: 'noticeDetail', params: { noticeId: noticeInfo.noticeId }}">
+                <router-link :to="{ name: 'noticeDetail', params: { noticeId: noticeInfo.noticeId }}" title="해당 게시글로 이동">
                   <span class="noti_tt">
                     <span v-if="!$gfnCommonUtils.isEmpty(noticeInfo.noticeTypeCdName)" class="newIcon">{{noticeInfo.noticeTypeCdName}}</span> 
                     {{noticeInfo.title}}
@@ -50,12 +50,20 @@
             </ul>
           </div>
           <div class="archivesList">
-            <h3>자료실<a href="user_sub03_3.html" class="more"><img src="@/assets/images/main/noticeMore.png" alt="더보기 아이콘"></a></h3>
+            <h3>자료실
+              <router-link :to="{name: 'library'}" tag="a" class="more">
+                <img src="@/assets/images/main/noticeMore.png" alt="더보기 아이콘">
+              </router-link>
+            </h3>
             <ul class="listSt">
-              <li><a href="user_sub03_3_view.html" title="해당 게시글로 이동"><span class="noti_tt">중소기업을 위한 서비스 제안서입니다. <img src="@/assets/images/main/user_sub03_1_fileicon.png" alt="파일 아이콘" class="fileIcon"></span><span class="noti_day">2020-12-30</span></a></li>
-              <li><a href="user_sub03_3_view.html" title="해당 게시글로 이동"><span class="noti_tt">서비스 신청 양식 등록되었습니다. <img src="@/assets/images/main/user_sub03_1_fileicon.png" alt="파일 아이콘" class="fileIcon"></span><span class="noti_day">2020-12-30</span></a></li>
-              <li><a href="user_sub03_3_view.html" title="해당 게시글로 이동"><span class="noti_tt">주소록 엑셀 양식 다운로드 받으세요. <img src="@/assets/images/main/user_sub03_1_fileicon.png" alt="파일 아이콘" class="fileIcon"></span><span class="noti_day">2020-12-30</span></a></li>
-              <li><a href="user_sub03_3_view.html" title="해당 게시글로 이동"><span class="noti_tt">RCS 템플릿 10종이 등록되었습니다. <img src="@/assets/images/main/user_sub03_1_fileicon.png" alt="파일 아이콘" class="fileIcon"></span><span class="noti_day">2020-12-30</span></a></li>
+              <li v-for="(libraryInfo, idx) in libraryInfoList" :key="idx">
+                <router-link :to="{ name: 'libraryDetail', params: { libraryId: libraryInfo.libraryId }}" title="해당 게시글로 이동">
+                  <span class="noti_tt">{{libraryInfo.title}}
+                    <img v-if="libraryInfo.existsFileYn == 'Y'" src="@/assets/images/main/user_sub03_1_fileicon.png" alt="파일 아이콘" class="fileIcon">
+                  </span>
+                  <span class="noti_day">{{libraryInfo.regDt}}</span>
+                </router-link>
+              </li>
             </ul>
           </div>
         </section>
@@ -132,12 +140,14 @@ export default {
     return {
       noticePopupOpen : false,
       noticeInfoList: [],
+      libraryInfoList: [],
     }
   },
   mounted() {
     this.fnSetSlider();
     //this.fnOpenNoticePopup();
     this.fnSelectNoticeList();
+    this.fnSelectLibraryList();
   },
   methods: {
     fnSetSlider(){
@@ -160,6 +170,20 @@ export default {
         const result = response.data;
         if(result.success) {
           this.noticeInfoList = result.data;
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
+    async fnSelectLibraryList(){
+      const params = {
+        pageNo: 1,
+        listSize: 4
+      };
+      await customereApi.selectLibraryList(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          this.libraryInfoList = result.data;
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
