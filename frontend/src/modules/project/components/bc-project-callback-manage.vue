@@ -95,8 +95,8 @@
 								<td class="text-center">{{row.regDt}}</td>
 								<td class="text-center">{{row.approvalDt}}</td>
 								<td class="end">
-									<a @click="fnCallbackDetail(row)" class="btnStyle8 mr5">수정</a>
-									<a @click="fnCallbackDeleteConfirm(row)" class="btnStyle8 mr5">삭제</a>
+									<a v-if="row.approvalStatus === '승인' || row.approvalStatus === '반려(수정)'" @click="fnCallbackDetail(row)" class="btnStyle8 mr5">수정</a>
+									<a v-if="row.approvalStatus === '승인' || row.approvalStatus === '반려(수정)'" @click="fnCallbackDeleteConfirm(row)" class="btnStyle8 mr5">삭제</a>
 								</td>
 							</tr>
 						</tbody>

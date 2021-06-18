@@ -47,21 +47,21 @@
         <div class="col-xs-12">
           <div class="of_h">
             <div class="float-right">
-              <a @click="fnProjectReg" class="btnStyle3 gray font13 minWidth120">추가</a>
+              <a @click="fnProjectReg" class="btnStyle2 borderGray">추가</a>
             </div>
           </div>
-          <table cellspacing="0" id="list" class="table_skin1 tbl-striped" style="width:100%">
+          <table cellspacing="0" id="list" class="table_skin1 bt-000 tbl-striped" style="width:100%; margin-top : 10px;">
             <thead>
-              <th>No.</th>
-              <th>프로젝트</th>
-              <th>프로젝트ID</th>
-              <th>이용 서비스</th>
-              <th>생성일</th>
-              <th>결재유형</th>
-              <th>멤버</th>
-              <th>최종접속일</th>
-              <th>관리</th>
-              <th>분배율관리</th>
+              <th class="text-center lc-1">No.</th>
+              <th class="text-center lc-1">프로젝트</th>
+              <th class="text-center lc-1">프로젝트ID</th>
+              <th class="text-center lc-1">이용 서비스</th>
+              <th class="text-center lc-1">생성일</th>
+              <th class="text-center lc-1">결재유형</th>
+              <th class="text-center lc-1">멤버</th>
+              <th class="text-center lc-1">최종접속일</th>
+              <th class="text-center lc-1">관리</th>
+              <th class="text-center lc-1 end">분배율관리</th>
             </thead>
             <tbody>
               <tr v-for="(data, index) in items" :key="index">
@@ -90,9 +90,9 @@
                   {{ data.regDt }}
                 </td>
                 <td>
-                  <button @click="fnProjectDetail(data)" activity="SAVE"><a>상세</a></button>
-                  <button @click="fnProjectUpdate(data)" activity="SAVE"><a>수정</a></button>
-                  <button @click="fnProjectDeleteConfirm(data)" activity="SAVE"><a>삭제</a></button>
+                  <button class="btnStyle1 borderLightGray small mr5" @click="fnProjectDetail(data)" activity="SAVE"><a>상세</a></button>
+                  <button class="btnStyle1 borderLightGray small mr5" @click="fnProjectUpdate(data)" activity="SAVE"><a>수정</a></button>
+                  <button class="btnStyle1 borderLightGray small mr5" @click="fnProjectDeleteConfirm(data)" activity="SAVE"><a>삭제</a></button>
                 </td>
                 <td>
                   <button @click="fnDisRatioManage(data)"><a>분배율관리</a></button>

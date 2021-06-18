@@ -236,9 +236,10 @@
 									ELSE '아니오'
 								END AS RCS_REPLY_TEXT
 						,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "")  AS RCS_REPLY
-						,		crcr.APPROVAL_STATUS
+						,		IFNULL(crcr.APPROVAL_STATUS, '삭제') AS APPROVAL_STATUS
 						,		date_format(crcr.REG_DT, '%Y-%m-%d') AS REG_DT
 						,		'' AS APPROVAL_DT
+						,		crcr.REG_DT AS RANKING_DT
 						from cm.CM_RCS_CHATBOT_REQ crcr 
 						where crcr.CORP_ID  = #{corpId}
 						and crcr.CHATBOT_ID not in (
@@ -261,10 +262,18 @@
 						,		crc.APPROVAL_STATUS
 						,		date_format(crc.REG_DT, '%Y-%m-%d') AS REG_DT
 						,		date_format(crc.APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
+						<![CDATA[
+						,		CASE
+									WHEN crc.APPROVAL_DT > crc.REG_DT	THEN crc.APPROVAL_DT
+									WHEN crc.APPROVAL_DT > crc.UPD_DT	THEN crc.APPROVAL_DT
+									WHEN crc.UPD_DT > crc.REG_DT		THEN crc.UPD_DT
+									ELSE crc.REG_DT
+								END AS RANKING_DT 
+						]]>
 						from cm.CM_RCS_CHATBOT crc 
 						where crc.CORP_ID  = #{corpId}
 					) CHATBOT, (SELECT @vRank:=0, @vData:='') as r
-					ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.REG_DT DESC
+					ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.RANKING_DT DESC
 			) A
 			WHERE	RANKING = 1
 		) SUB_CB
