@@ -33,6 +33,15 @@
 		WHERE	PAYMENT_ID = #{orderId}
 	</select>
 	
+	<select id="selectCashId" resultType="String">
+		/* selectCashId */
+		SELECT	IFNULL(cc.CASH_ID) AS CASH_ID
+		FROM	cm.CM_CASH cc 
+		WHERE	cc.CORP_ID = 'corpId'
+		AND		cc.CASH_TYPE = 'C'
+		AND		cc.USE_YN = 'Y'
+	</select>
+	
 	<update id="updateWebCashInfo">
 		/* cash.updateWebCashInfo */
 		UPDATE	cm_console.CM_WEB_CASH_HIST

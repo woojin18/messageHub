@@ -107,6 +107,7 @@ public class DB {
 	public final static String QRY_INSERT_WEB_CASH_INFO = "cash.insertWebCashInfo";
 	public final static String QRY_SELECT_WEB_CASH_INFO = "cash.selectWebCashInfo";
 	public final static String QRY_UPDATE_WEB_CASH_INFO = "cash.updateWebCashInfo";
+	public final static String QRY_SELECT_WEB_CASH_ID = "cash.selectCashId";
 	public final static String QRY_SELECT_CASH_HIST_COUNT = "cash.selectCashHist_count";
 	public final static String QRY_SELECT_CASH_HIST = "cash.selectCashHist";
 	public final static String QRY_SELECT_UCUBE_INFO = "cash.selectUcubeInfo";

@@ -1,26 +1,25 @@
 package kr.co.uplus.cm.cash.service;
 
+import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.Base64.Encoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.co.uplus.cm.utils.ApiInterface;
-import kr.co.uplus.cm.utils.CommonUtils;
-import kr.co.uplus.cm.utils.GeneralDao;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.config.ApiConfig;
+import kr.co.uplus.cm.utils.ApiInterface;
+import kr.co.uplus.cm.utils.CommonUtils;
+import kr.co.uplus.cm.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -41,7 +40,8 @@ public class CashService {
 		Map<String, Object> map = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_CORP_INFO, params);
 		
 		//결제번호 등
-		String	orderId = CommonUtils.getCommonId("pg", 6);
+		String orderId	= CommonUtils.getCommonId("pg", 6);
+		String corpId	= CommonUtils.getString(map.get("corpId"));
 		map.put("order_id"		, orderId);
 		map.put("payMtd"		, "card");
 		map.put("orderName"		, map.get("corpName") + " 선불충전");
@@ -50,8 +50,65 @@ public class CashService {
 		//금액
 		map.put("amount"		, params.get("amount"));
 		
-		//cash_id api로 받아와야함
-		map.put("cashId"		, map.get("corpId"));
+		//cash_id 
+		String cashId = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_WEB_CASH_ID, params));
+		
+		if( "".equals(cashId) ) {
+			Map<String, Object> headerMap = new HashMap<String, Object>();
+			headerMap.put("type",		"C");
+			
+			Map<String, Object> apiBodyMap = new HashMap<>();
+			apiBodyMap.put("cashType",		"C");	// C 일반 캐시  E 이벤트 캐시
+			apiBodyMap.put("cashBalance",	params.get("amount"));
+			apiBodyMap.put("startDt",		"");
+			apiBodyMap.put("expDt",			"");
+			apiBodyMap.put("memo",			"캐시 충전");
+			
+			// API 통신 처리
+			Map<String, Object> result =  apiInterface.etcPost(ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/cashInfo/" + corpId, apiBodyMap, headerMap);
+			
+			System.out.println("------------------------------------------------- cashInfo C result : " + result);
+			
+			cashId = CommonUtils.getString(((Map<String, Object>)result.get("data")).get("error"));
+			
+			// 성공인지 실패인지 체크
+			if( "10000".equals(result.get("rslt")) ) {
+			} else if ( "500100".equals(result.get("rslt")) ) {
+				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				throw new Exception(errMsg);
+			} else {
+				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				throw new Exception(errMsg);
+			}
+		} else {
+			Map<String, Object> headerMap = new HashMap<String, Object>();
+			headerMap.put("corpId",		corpId);
+			headerMap.put("cashId",		cashId);
+			
+			Map<String, Object> apiBodyMap = new HashMap<>();
+			apiBodyMap.put("inOut",		"I");
+			apiBodyMap.put("amount",	params.get("amount"));
+			apiBodyMap.put("reason",	"캐시 충전");
+			
+			
+			// API 통신 처리
+			Map<String, Object> result =  apiInterface.etcPost(ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/amount/" + corpId + "/" + cashId, apiBodyMap, headerMap);
+			
+			System.out.println("------------------------------------------------- cashInfo C U result : " + result);
+			
+			// 성공인지 실패인지 체크
+			if( "10000".equals(result.get("rslt")) ) {
+			} else if ( "500100".equals(result.get("rslt")) ) {
+				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				throw new Exception(errMsg);
+			} else {
+				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				throw new Exception(errMsg);
+			}
+		}
+		
+		
+		map.put("cashId"		, cashId);
 		
 		//승인상태 0 : 승인요청
 		map.put("status"		, "0");
