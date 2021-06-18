@@ -124,7 +124,7 @@
         <include refid="whereSelectCmCuList"/>
         ORDER BY CU_INFO_ID
         <if test='pagingYn == "Y" '>
-        LIMIT ${offset}, #{listSize}
+        LIMIT #{offset}, #{listSize}
         </if>
     </select>
 

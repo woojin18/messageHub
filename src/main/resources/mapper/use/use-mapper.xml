@@ -23,7 +23,7 @@
 													AND B.USER_ID = #{userId} )
 						</if>
 						AND		A.GW_RESULT_CODE = '10000'
-						AND		A.CLI_RESULT_CODE = '10000'	
+						AND		A.CLI_RESULT_CODE = '10000'
 						GROUP BY A.CORP_ID, A.PROJECT_ID) B
 		USING(PROJECT_ID, CORP_ID)
 		WHERE	A.USE_YN = 'Y'
@@ -74,26 +74,26 @@
 													AND B.USER_ID = #{userId} )
 						</if>
 						AND		A.GW_RESULT_CODE = '10000'
-						AND		A.CLI_RESULT_CODE = '10000'	
+						AND		A.CLI_RESULT_CODE = '10000'
 						GROUP BY A.CORP_ID, A.PROJECT_ID) B
 		USING(PROJECT_ID, CORP_ID)
 		WHERE	A.USE_YN = 'Y'
 		AND		A.DEL_YN = 'N'
 		AND		A.CORP_ID = #{corpId}
 		<if test='pagingYn == "Y" '>
-		LIMIT ${offset}, #{listSize}
+		LIMIT #{offset}, #{listSize}
 		</if>
 	</select>
-	
+
 	<select id="selectIsExistsCorpProductUnit" parameterType="string" resultType="int">
 	/* serviceManage.selectIsExistsCorpProductUnit */
 		SELECT EXISTS (
-			SELECT	1 
+			SELECT	1
 			FROM	cm_console.CM_CORP_PRODUCT_UNIT
 			WHERE CORP_ID = #{corpId}
 		)	AS ISEXISTS
 	</select>
-	
+
 	<select id="selectCorpProductUnit" parameterType="string" resultType="camel">
 	/* serviceManage.selectCorpProductUnit */
 		SELECT	A.SMART_CH_PRODUCT_YN

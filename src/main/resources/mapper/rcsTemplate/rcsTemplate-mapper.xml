@@ -6,7 +6,7 @@
 		/* rcsTemplate.selectRcsTemplate */
 		SELECT	@ROWNUM := @ROWNUM + 1 AS ROWNUM
 		,		AA.*
-		,		BB.BRAND_NAME 
+		,		BB.BRAND_NAME
 		FROM 	(
 				SELECT	A.*
 				FROM 	(
@@ -14,26 +14,26 @@
 						,		case @vData when MESSAGEBASE_ID then @vRank := @vRank + 1 else @vRank := 1 end AS RANKING
 						,		(@vData:=MESSAGEBASE_ID) AS vData
 						FROM	(
-								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID 
-								,		A.BRAND_ID			AS BRAND_ID 
+								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID
+								,		A.BRAND_ID			AS BRAND_ID
 								,		A.CORP_ID			AS CORP_ID
-								,		A.TMPLT_NAME		AS TMPLT_NAME 
-								,		A.PRODUCT_CODE		AS PRODUCT_CODE 
-								,		A.REG_ID			AS REG_ID 
+								,		A.TMPLT_NAME		AS TMPLT_NAME
+								,		A.PRODUCT_CODE		AS PRODUCT_CODE
+								,		A.REG_ID			AS REG_ID
 								,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
-								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS 
-								,		A.APPROVAL_DT		AS APPROVAL_DT 
+								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS
+								,		A.APPROVAL_DT		AS APPROVAL_DT
 								FROM	cm.CM_RCS_MSGBASE A
 								UNION ALL
-								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID 
-								,		A.BRAND_ID			AS BRAND_ID 
-								,		A.CORP_ID			AS CORP_ID 
-								,		A.TMPLT_NAME		AS TMPLT_NAME 
-								,		A.PRODUCT_CODE		AS PRODUCT_CODE 
+								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID
+								,		A.BRAND_ID			AS BRAND_ID
+								,		A.CORP_ID			AS CORP_ID
+								,		A.TMPLT_NAME		AS TMPLT_NAME
+								,		A.PRODUCT_CODE		AS PRODUCT_CODE
 								,		A.REG_ID			AS REG_ID
 								,		A.REG_DT			AS REG_DT
-								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS 
-								,		A.APPROVAL_DT		AS APPROVAL_DT 
+								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS
+								,		A.APPROVAL_DT		AS APPROVAL_DT
 								FROM	cm.CM_RCS_MSGBASE_REQ A
 						) MSGBASE, (SELECT @vRank:=0, @vData:='') as r
 						ORDER BY MSGBASE.MESSAGEBASE_ID, MSGBASE.REG_DT
@@ -46,10 +46,10 @@
 		<include refid="selectRcsTemplateSql"/>
 		ORDER BY AA.REG_DT DESC
 		<if test='pagingYn == "Y" '>
-		LIMIT ${offset}, #{listSize}
+		LIMIT #{offset}, #{listSize}
 		</if>
 	</select>
-	
+
 	<select id="selectRcsTemplateCnt" resultType="int">
 		/* rcsTemplate.selectRcsTemplateCnt */
 		SELECT	COUNT(*)
@@ -60,26 +60,26 @@
 						,		case @vData when MESSAGEBASE_ID then @vRank := @vRank + 1 else @vRank := 1 end AS RANKING
 						,		(@vData:=MESSAGEBASE_ID) AS vData
 						FROM	(
-								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID 
-								,		A.BRAND_ID			AS BRAND_ID 
+								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID
+								,		A.BRAND_ID			AS BRAND_ID
 								,		A.CORP_ID			AS CORP_ID
-								,		A.TMPLT_NAME		AS TMPLT_NAME 
-								,		A.PRODUCT_CODE		AS PRODUCT_CODE 
-								,		A.REG_ID			AS REG_ID 
+								,		A.TMPLT_NAME		AS TMPLT_NAME
+								,		A.PRODUCT_CODE		AS PRODUCT_CODE
+								,		A.REG_ID			AS REG_ID
 								,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
-								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS 
-								,		A.APPROVAL_DT		AS APPROVAL_DT 
+								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS
+								,		A.APPROVAL_DT		AS APPROVAL_DT
 								FROM	cm.CM_RCS_MSGBASE A
 								UNION ALL
-								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID 
-								,		A.BRAND_ID			AS BRAND_ID 
-								,		A.CORP_ID			AS CORP_ID 
-								,		A.TMPLT_NAME		AS TMPLT_NAME 
-								,		A.PRODUCT_CODE		AS PRODUCT_CODE 
+								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID
+								,		A.BRAND_ID			AS BRAND_ID
+								,		A.CORP_ID			AS CORP_ID
+								,		A.TMPLT_NAME		AS TMPLT_NAME
+								,		A.PRODUCT_CODE		AS PRODUCT_CODE
 								,		A.REG_ID			AS REG_ID
 								,		A.REG_DT			AS REG_DT
-								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS 
-								,		A.APPROVAL_DT		AS APPROVAL_DT 
+								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS
+								,		A.APPROVAL_DT		AS APPROVAL_DT
 								FROM	cm.CM_RCS_MSGBASE_REQ A
 						) MSGBASE, (SELECT @vRank:=0, @vData:='') as r
 						ORDER BY MSGBASE.MESSAGEBASE_ID, MSGBASE.REG_DT
@@ -91,7 +91,7 @@
 		WHERE	1=1
 		<include refid="selectRcsTemplateSql"/>
 	</select>
-	
+
 	<sql id="selectRcsTemplateSql">
 		<if test="corpId != '' and corpId != null">
 			AND		AA.CORP_ID = #{corpId}
@@ -109,14 +109,14 @@
 			AND		AA.BRAND_NAME = #{brandNm}
 		</if>
 	</sql>
-	
+
 	<select id="selectCorpBrandCnt" resultType="int">
 		/* rcsTemplate.selectCorpBrandCnt */
 		SELECT	COUNT(*)
 		FROM	cm.CM_RCS_BRAND
 		WHERE	CORP_ID = #{corpId}
 	</select>
-	
+
 	<select id="selectBrandList" resultType="hashMap">
 		/* rcsTemplate.selectBrandList */
 		SELECT	BRAND_ID
@@ -127,15 +127,15 @@
 		AND		USE_YN = 'Y'
 		AND		APPROVAL_STATUS IN ('승인', '반려(수정)')
 	</select>
-	
+
 	<select id="selectRcsMsgbaseformList" resultType="hashMap">
 		/* recTemplate.selectRcsMsgbaseformList */
 		SELECT	MESSAGEBASEFORM_ID
 		,		FORM_NAME
-		FROM	cm.CM_RCS_MSGBASEFORM 
+		FROM	cm.CM_RCS_MSGBASEFORM
 		WHERE	CARD_TYPE = #{cardType}
 	</select>
-	
+
 	<select id="selectRcsTemplateUpdateForm" resultType="hashMap">
 	SELECT	A.*
 	FROM 	(
@@ -143,30 +143,30 @@
 			,		case @vData when MESSAGEBASE_ID then @vRank := @vRank + 1 else @vRank := 1 end AS RANKING
 			,		(@vData:=MESSAGEBASE_ID) AS vData
 			FROM	(
-					SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID 
-					,		A.MESSAGEBASEFORM_ID AS MESSAGEBASEFORM_ID 
-					,		A.BRAND_ID			AS BRAND_ID 
+					SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID
+					,		A.MESSAGEBASEFORM_ID AS MESSAGEBASEFORM_ID
+					,		A.BRAND_ID			AS BRAND_ID
 					,		A.CORP_ID			AS CORP_ID
-					,		A.TMPLT_NAME		AS TMPLT_NAME 
-					,		A.PRODUCT_CODE		AS PRODUCT_CODE 
-					,		A.REG_ID			AS REG_ID 
+					,		A.TMPLT_NAME		AS TMPLT_NAME
+					,		A.PRODUCT_CODE		AS PRODUCT_CODE
+					,		A.REG_ID			AS REG_ID
 					,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
-					,		A.APPROVAL_STATUS	AS APPROVAL_STATUS 
-					,		A.APPROVAL_DT		AS APPROVAL_DT 
-					,		A.MESSAGEBASE_INFO	AS MESSAGEBASE_INFO 
+					,		A.APPROVAL_STATUS	AS APPROVAL_STATUS
+					,		A.APPROVAL_DT		AS APPROVAL_DT
+					,		A.MESSAGEBASE_INFO	AS MESSAGEBASE_INFO
 					FROM	cm.CM_RCS_MSGBASE A
 					UNION ALL
-					SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID 
-					,		A.MESSAGEBASEFORM_ID  AS MESSAGEBASEFORM_ID 
-					,		A.BRAND_ID			AS BRAND_ID 
-					,		A.CORP_ID			AS CORP_ID 
-					,		A.TMPLT_NAME		AS TMPLT_NAME 
-					,		A.PRODUCT_CODE		AS PRODUCT_CODE 
+					SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID
+					,		A.MESSAGEBASEFORM_ID  AS MESSAGEBASEFORM_ID
+					,		A.BRAND_ID			AS BRAND_ID
+					,		A.CORP_ID			AS CORP_ID
+					,		A.TMPLT_NAME		AS TMPLT_NAME
+					,		A.PRODUCT_CODE		AS PRODUCT_CODE
 					,		A.REG_ID			AS REG_ID
 					,		A.REG_DT			AS REG_DT
-					,		A.APPROVAL_STATUS	AS APPROVAL_STATUS 
-					,		A.APPROVAL_DT		AS APPROVAL_DT 
-					,		A.MESSAGEBASE_INFO	AS MESSAGEBASE_INFO 
+					,		A.APPROVAL_STATUS	AS APPROVAL_STATUS
+					,		A.APPROVAL_DT		AS APPROVAL_DT
+					,		A.MESSAGEBASE_INFO	AS MESSAGEBASE_INFO
 					FROM	cm.CM_RCS_MSGBASE_REQ A
 			) MSGBASE, (SELECT @vRank:=0, @vData:='') as r
 			ORDER BY MSGBASE.MESSAGEBASE_ID, MSGBASE.REG_DT
@@ -174,7 +174,7 @@
 	WHERE	RANKING = 1
 	AND		A.MESSAGEBASE_ID = #{msgId}
 	</select>
-	
+
 	<select id="selectRcsBaseForm" resultType="String">
 		/* recTemplate.selectRcsBaseForm */
 		SELECT	FORMATTED_STRING

@@ -39,7 +39,7 @@
 			  , A.SENDER_CNT
 			  , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%s') AS REG_DT /*발송일시*/
 			  , C.CORP_NAME
-			  , SUM(CASE WHEN IFNULL(B.GW_RESULT_CODE,'0') = '10000' THEN 0 ELSE 1 END) AS SEND_FAIL_CNT 
+			  , SUM(CASE WHEN IFNULL(B.GW_RESULT_CODE,'0') = '10000' THEN 0 ELSE 1 END) AS SEND_FAIL_CNT
 		FROM cm_console.CM_WEB_MSG A LEFT OUTER JOIN cm.CM_MSG B ON A.WEB_REQ_ID = B.WEB_REQ_ID
 		                             LEFT OUTER JOIN cm_console.CM_CORP C ON A.CORP_ID = C.CORP_ID
 		   , (SELECT @rownum:=0) TMP
@@ -48,19 +48,19 @@
         GROUP BY A.WEB_REQ_ID, A.CH_STRING, A.SENDER_TYPE, A.SENDER_TYPE, A.SENDER_CNT, A.REG_DT, C.CORP_NAME
 		ORDER BY A.REG_DT DESC
         <if test='pagingYn == "Y" '>
-        LIMIT ${offset}, #{listSize}
+        LIMIT #{offset}, #{listSize}
         </if>
     </select>
-    
-    
-    
+
+
+
     <sql id ="whereSelectWebSendFailList">
         AND A.WEB_REQ_ID = #{webReqId}
 
     </sql>
-    
-    
-    
+
+
+
    <select id="selectWebSendFailListCnt" parameterType="hashmap" resultType="int">
     /* 웹 현황 발송실패 리스트 카운트 조회 */
         SELECT
@@ -92,9 +92,9 @@
 		<include refid="whereSelectWebSendFailList"/>
 		ORDER BY A.REG_DT DESC
         <if test='pagingYn == "Y" '>
-        LIMIT ${offset}, #{listSize}
+        LIMIT #{offset}, #{listSize}
         </if>
-    </select>    
+    </select>
 
 
 

@@ -72,7 +72,7 @@
         <include refid="whereSelectPushTemplateList"/>
         ORDER BY REG_DT DESC
         <if test='pagingYn == "Y" '>
-        LIMIT ${offset}, #{listSize}
+        LIMIT #{offset}, #{listSize}
         </if>
     </select>
 
@@ -262,7 +262,7 @@
         <include refid="whereSelectSmsTemplateList"/>
         ORDER BY REG_DT DESC
         <if test='pagingYn == "Y" '>
-        LIMIT ${offset}, #{listSize}
+        LIMIT #{offset}, #{listSize}
         </if>
     </select>
 
@@ -430,7 +430,7 @@
         <include refid="whereSelectFrndTalkTemplateList"/>
         ORDER BY REG_DT DESC
         <if test='pagingYn == "Y" '>
-        LIMIT ${offset}, #{listSize}
+        LIMIT #{offset}, #{listSize}
         </if>
     </select>
 

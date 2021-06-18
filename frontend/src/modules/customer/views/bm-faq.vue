@@ -1,17 +1,7 @@
 
 <template>
   <div>
-    <!-- subVisualWrap03 -->
-    <article id="subVisualWrap03">
-      <section>
-        <div class="text-center">
-          <h2>고객센터</h2>
-          <p>반갑습니다. U+ 통합 메시징 클라우드 서비스에 대한<br>최신소식 및 자료실, 궁금하신 내용 등을 찾아보실 수 있습니다.</p>
-        </div>
-      </section>
-    </article>
-    <!-- //subVisualWrap03 -->
-    
+    <CsMenuSubHeader></CsMenuSubHeader>
     <div id="contentWrap">
       <div class="sub03_conWrap">
         <div class="con01 wow animated fadeInUp">
@@ -52,6 +42,7 @@
 <script>
 import PageLayer from '@/components/PageLayer.vue';
 import QuickRight from "@/modules/main/components/bc-quickRight.vue";
+import CsMenuSubHeader from "@/modules/customer/components/bc-csMenuSubHeader.vue";
 
 import customereApi from "@/modules/customer/service/customerApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
@@ -60,7 +51,8 @@ export default {
   name: 'faq',
   components : {
     QuickRight,
-    PageLayer
+    PageLayer,
+    CsMenuSubHeader
   },
   props: {
     componentsTitle: {

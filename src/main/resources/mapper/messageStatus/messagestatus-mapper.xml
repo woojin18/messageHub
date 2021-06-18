@@ -22,7 +22,7 @@
             AND A.REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
             </if>
         </if>
-        
+
         <if test="searchResultYn != null and searchResultYn.size == 1 ">
             <!--  foreach collection="searchResultYn" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach-->
          <foreach collection="searchResultYn" item="item" index="index" separator=",">
@@ -32,7 +32,7 @@
 	         </choose>
         </foreach>
         </if>
-       
+
         <if test="searchSendFlag != '' and searchSendFlag != null ">
 	        <if test='searchSendFlag == "Y" '>
 	         AND A.WEB_REQ_ID IS NOT NULL
@@ -80,7 +80,7 @@
         <include refid="whereSelectMessageStatusList"/>
         ORDER BY REG_DT DESC
         <if test='pagingYn == "Y" '>
-        LIMIT ${offset}, #{listSize}
+        LIMIT #{offset}, #{listSize}
         </if>
     </select>
 

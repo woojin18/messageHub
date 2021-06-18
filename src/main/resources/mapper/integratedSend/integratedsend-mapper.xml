@@ -54,7 +54,7 @@
 		<include refid="whereSelectIntegratedSendList"/>
 		ORDER BY A.REG_DT DESC
         <if test='pagingYn == "Y" '>
-        LIMIT ${offset}, #{listSize}
+        LIMIT #{offset}, #{listSize}
         </if>
     </select>
 

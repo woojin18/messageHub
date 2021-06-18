@@ -31,9 +31,9 @@
         FROM cm_bo.CM_FAQ CF, (SELECT @ROWNUM:=0) TMP
         WHERE 1=1
         <include refid="whereSelectFaqList"/>
-        ORDER BY REG_DT DESC
+        ORDER BY CF.REG_DT DESC
         <if test='pagingYn == "Y" '>
-        LIMIT ${offset}, #{listSize}
+        LIMIT #{offset}, #{listSize}
         </if>
     </select>
 
@@ -73,10 +73,82 @@
         FROM cm_bo.CM_NOTICE CN, (SELECT @ROWNUM:=0) TMP
         WHERE 1=1
         <include refid="whereSelectNoticeList"/>
-        ORDER BY REG_DT DESC
+        ORDER BY CN.REG_DT DESC
         <if test='pagingYn == "Y" '>
-        LIMIT ${offset}, #{listSize}
+        LIMIT #{offset}, #{listSize}
         </if>
+    </select>
+
+    <sql id ="whereSelectLibraryList">
+        <if test="libraryId != '' and libraryId != null ">
+            AND CL.LIBRARY_ID = #{libraryId}
+        </if>
+    </sql>
+
+    <select id="selectLibraryListCnt" parameterType="hashmap" resultType="int">
+    /* template.selectLibraryListCnt - 자료실 리스트 카운트 조회 */
+        SELECT
+            COUNT(*) AS CNT
+        FROM cm_bo.CM_LIBRARY CL
+        WHERE 1=1
+        <include refid="whereSelectLibraryList"/>
+    </select>
+
+    <select id="selectLibraryList" parameterType="hashmap" resultType="camel">
+    /* template.selectLibraryList - 자료실 리스트 조회 */
+        SELECT
+            T.*
+            , @ROWNUM := @ROWNUM + 1 AS ROWNUM
+        FROM (
+            SELECT
+                CL.LIBRARY_ID
+                , CL.TITLE
+                , CL.CONTENT
+                , CL.ATTACH_FILE_LIST
+                , CL.REG_ID
+                , DATE_FORMAT(CL.REG_DT, '%Y-%m-%d') AS REG_DT
+                , CL.UPD_ID
+                , CL.UPD_DT
+                , IFNULL(CAF1.FILE_ID, '') AS FILE_ID1
+                , IFNULL(CAF2.FILE_ID, '') AS FILE_ID2
+                , IFNULL(CAF3.FILE_ID, '') AS FILE_ID3
+                , IFNULL(CAF1.ATTACH_FILE_NAME, '') AS FILE_NM1
+                , IFNULL(CAF2.ATTACH_FILE_NAME, '') AS FILE_NM2
+                , IFNULL(CAF3.ATTACH_FILE_NAME, '') AS FILE_NM3
+                , CASE
+                    WHEN CAF1.FILE_ID IS NOT NULL THEN 'Y'
+                    WHEN CAF2.FILE_ID IS NOT NULL THEN 'Y'
+                    WHEN CAF3.FILE_ID IS NOT NULL THEN 'Y'
+                    ELSE 'N'
+                END AS EXISTS_FILE_YN
+            FROM cm_bo.CM_LIBRARY CL
+            LEFT OUTER JOIN cm_bo.CM_ATTACH_FILE CAF1
+                ON JSON_EXTRACT(CL.ATTACH_FILE_LIST, '$.FILE_ID1') = CAF1.FILE_ID
+            LEFT OUTER JOIN cm_bo.CM_ATTACH_FILE CAF2
+                ON JSON_EXTRACT(CL.ATTACH_FILE_LIST, '$.FILE_ID2') = CAF2.FILE_ID
+            LEFT OUTER JOIN cm_bo.CM_ATTACH_FILE CAF3
+                ON JSON_EXTRACT(CL.ATTACH_FILE_LIST, '$.FILE_ID3') = CAF3.FILE_ID
+            WHERE 1=1
+            <include refid="whereSelectLibraryList"/>
+            ORDER BY CL.REG_DT DESC
+            <if test='pagingYn == "Y" '>
+            LIMIT #{offset}, #{listSize}
+            </if>
+        )T, (SELECT @ROWNUM:=0) TMP
+    </select>
+
+    <select id="selectAttachFileInfo" parameterType="hashmap" resultType="camel">
+    /* template.selectAttachFileInfo - 첨부파일 정보 조회 */
+        SELECT
+            CAF.FILE_ID
+            , CAF.ATTACH_FILE_NAME
+            , CAF.ATTACH_FILE_PATH
+            , CAF.REG_DT
+            , CAF.REG_ID
+            , CAF.UPD_DT
+            , CAF.UPD_ID
+        FROM cm_bo.CM_ATTACH_FILE CAF
+        WHERE FILE_ID = #{fileId}
     </select>
 
 </mapper>

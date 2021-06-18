@@ -49,7 +49,7 @@
 		<include refid="whereSelectBookingSendList"/>
 		ORDER BY REG_DT DESC
         <if test='pagingYn == "Y" '>
-        LIMIT ${offset}, #{listSize}
+        LIMIT #{offset}, #{listSize}
         </if>
     </select>
 
@@ -60,6 +60,6 @@
 		,		RESV_CNCL_REASON = #{cancelCause}
 		WHERE	WEB_REQ_ID = #{webReqId}
 	</update>
-	
+
 
 </mapper>

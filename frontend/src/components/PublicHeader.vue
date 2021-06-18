@@ -20,8 +20,10 @@
                 <li>
                   <router-link :to="{ name: 'notice' }" tag="a" title="공지사항으로 이동">공지사항</router-link>
                 </li>
-                <li><a href="#self">자료실</a></li>
-                <li><a href="#self" data-toggle="modal" data-target="#Inquiry">서비스 문의</a></li>
+                <li>
+                  <router-link :to="{ name: 'library' }" tag="a" title="자료실로 이동">자료실</router-link>
+                </li>
+                <li><a href="javascript:void(0);" data-toggle="modal" data-target="#Inquiry">서비스 문의</a></li>
               </ul>
             </li>
             <li><a href="#self" title="사용자 가이드 페이지로 이동">사용자 가이드</a></li>

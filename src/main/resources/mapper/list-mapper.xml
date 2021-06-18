@@ -13,16 +13,16 @@
 		WHERE	1=1
 		<include refid="listTestSql"/>
 		ORDER BY SEQ DESC
-		LIMIT ${rowsFront}, #{rowsEnd}
+		LIMIT #{rowsFront}, #{rowsEnd}
 	</select>
-	
+
 	<select id="listTestCnt" resultType="Integer">
 		SELECT	COUNT(*)
 		FROM	TEST_TABLE
 		WHERE	1=1
 		<include refid="listTestSql"/>
 	</select>
-	
+
 	<sql id ="listTestSql">
 		<if test="col1 != null and col1 != ''">
 		AND		COL1 = #{col1}
@@ -31,12 +31,12 @@
 		AND		SEQ = #{updateSeq}
 		</if>
 	</sql>
-	
+
 	<select id="selectListSeq" resultType="Integer">
 		SELECT	MAX(SEQ) + 1
 		FROM	TEST_TABLE
 	</select>
-	
+
 	<insert id="insertList">
 		INSERT INTO TEST_TABLE (
 				SEQ
@@ -56,7 +56,7 @@
 		,		#{col6}
 		)
 	</insert>
-	
+
 	<update id="updateList">
 		UPDATE	TEST_TABLE
 		SET		COL1 = #{col1}
