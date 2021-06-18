@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +36,10 @@ public class SignUpController {
 	@Autowired SignUpService signUpSvc;
 	
 	@Autowired ApiInterface apiInterface;
+	
+	@Value("${nice.checkplus.siteCode}") String sSiteCode;
+	
+	@Value("${nice.checkplus.sitePassword}") String sSitePassword;
 	
     @InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -120,7 +125,6 @@ public class SignUpController {
 		
 		Map<String, Object> postResult = apiInterface.post("/console/v1/alimtalk/" + svcId, postParamMap, postHeaderMap);
 	}
-	
 
 	@PostMapping("/getNiceCheck")
 	public RestResult<?> getNiceCheck(
@@ -131,8 +135,9 @@ public class SignUpController {
 		
 		NiceID.Check.CPClient niceCheck = new  NiceID.Check.CPClient();
 		
-		String sSiteCode = "BU695";			// NICE로부터 부여받은 사이트 코드
-		String sSitePassword = "WNK0zPN7u1MR";		// NICE로부터 부여받은 사이트 패스워드
+	    
+		String sSiteCode = this.sSiteCode;			// NICE로부터 부여받은 사이트 코드
+		String sSitePassword = this.sSitePassword;		// NICE로부터 부여받은 사이트 패스워드
 		
 		String sRequestNumber = "REQ0000000001";			// 요청 번호, 이는 성공/실패후에 같은 값으로 되돌려주게 되므로 
 		// 업체에서 적절하게 변경하여 쓰거나, 아래와 같이 생성한다.
@@ -244,8 +249,8 @@ public class SignUpController {
 		NiceID.Check.CPClient niceCheck = new  NiceID.Check.CPClient();
 //		String sEncodeData = requestReplace(request.getParameter("EncodeData"), "encodeData");
 		String sEncodeData =  requestReplace(CommonUtils.getString(params.get("EncodeData")), "encodeData");
-		String sSiteCode = "BU695";				// NICE로부터 부여받은 사이트 코드
-		String sSitePassword = "WNK0zPN7u1MR";			// NICE로부터 부여받은 사이트 패스워드
+		String sSiteCode = this.sSiteCode;				// NICE로부터 부여받은 사이트 코드
+		String sSitePassword = this.sSitePassword;			// NICE로부터 부여받은 사이트 패스워드
 		
 		String sCipherTime = "";			// 복호화한 시간
 		String sRequestNumber = "";			// 요청 번호
@@ -339,8 +344,8 @@ public class SignUpController {
 
 		String sEncodeData = requestReplace(CommonUtils.getString(params.get("EncodeData")), "encodeData");
 
-		String sSiteCode = "";				// NICE로부터 부여받은 사이트 코드
-		String sSitePassword = "";			// NICE로부터 부여받은 사이트 패스워드
+		String sSiteCode = this.sSiteCode;				// NICE로부터 부여받은 사이트 코드
+		String sSitePassword = this.sSitePassword;			// NICE로부터 부여받은 사이트 패스워드
 
 		String sCipherTime = "";			// 복호화한 시간
 		String sRequestNumber = "";			// 요청 번호
