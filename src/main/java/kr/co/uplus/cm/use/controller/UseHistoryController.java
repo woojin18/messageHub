@@ -114,5 +114,71 @@ public class UseHistoryController {
 		return rtn;
 	}
 
+	/**
+	 * 최근 6개월 이용건수 조회
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectSixMonthUseCount")
+	public RestResult<?> selectSixMonthUseCount(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = useHistorySvc.selectSixMonthUseCount(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
+	
+	/**
+	 * 최근 6개월 선불 결제금액 조회
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectSixMonthPrePayAmtList")
+	public RestResult<?> selectSixMonthPrePayAmtList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = useHistorySvc.selectSixMonthPrePayAmtList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
+
+	/**
+	 * 최근 6개월 후불 청구금액(이용금액포함) 조회
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectSixMonthDefPayAmt")
+	public RestResult<?> selectSixMonthDefPayAmt(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = useHistorySvc.selectSixMonthDefPayAmt(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
+	
 }
 

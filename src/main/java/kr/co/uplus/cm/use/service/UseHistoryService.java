@@ -190,4 +190,53 @@ public class UseHistoryService {
 		rtn.setData(rtnList);
 		return rtn;
 	}
+	
+	/**
+	 * 최근 6개월 이용건수 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> selectSixMonthUseCount(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> rtnObj = new HashMap<String, Object>();
+
+		// 이용건수추이
+		List<Object> sixMonthUseCnt = generalDao.selectGernalList(DB.QRY_SELECT_SIX_MONTH_USE_CNT, params);
+		// 이용서비스별추이
+		List<Object> sixMonthChanUseCnt = generalDao.selectGernalList(DB.QRY_SELECT_SIX_MONTH_CHAN_USE_CNT, params);
+
+		rtnObj.put("sixMonthUseCnt", sixMonthUseCnt);
+		rtnObj.put("sixMonthChanUseCnt", sixMonthChanUseCnt);
+		rtn.setData(rtnObj);
+		return rtn;
+	}
+	
+	/**
+	 * 최근 6개월 선불 결제금액 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> selectSixMonthPrePayAmtList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_SIX_MONTH_PRE_PAY_AMT, params);
+		rtn.setData(rtnList);
+		return rtn;
+	}
+	
+	/**
+	 * 최근 6개월 후불 청구금액(이용금액포함) 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> selectSixMonthDefPayAmt(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_SIX_MONTH_DEF_PAY_AMT, params);
+		rtn.setData(rtnList);
+		return rtn;
+	}
 }

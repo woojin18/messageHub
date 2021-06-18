@@ -4,6 +4,18 @@ const selectUseHistory = (params) => {
 	return httpClient.post('/useApi/selectUseHistory', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
+const selectSixMonthPrePayAmtList = (params) => {
+	return httpClient.post('/useApi/selectSixMonthPrePayAmtList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
+const selectSixMonthDefPayAmt = (params) => {
+	return httpClient.post('/useApi/selectSixMonthDefPayAmt', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
+const selectSixMonthUseCount = (params) => {
+	return httpClient.post('/useApi/selectSixMonthUseCount', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
 const excelDownloadUseHistory = (params) => {
 	return httpClient.post('/useApi/excelDownloadUseHistory', params, { headers: {"show-layer": "No", "activity":"READ"}, responseType: 'arraybuffer' }).then(function(response) {
 		try {
@@ -34,6 +46,9 @@ export default {
 	selectUseHistory,
 	excelDownloadUseHistory,
 	selectCorpProductUnitDetail,
+	selectSixMonthPrePayAmtList,
+	selectSixMonthDefPayAmt,
+	selectSixMonthUseCount,
 };
 
 function getFileName (contentDisposition) {

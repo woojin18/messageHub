@@ -212,6 +212,10 @@ public class DB {
 	// 이용내역
 	public final static String QRY_SELECT_USE_HISTORY_LIST_CNT = "use.selectUseHistoryListCnt";
 	public final static String QRY_SELECT_USE_HISTORY_LIST = "use.selectUseHistoryList";
+	public final static String QRY_SELECT_SIX_MONTH_USE_CNT = "use.selectSixMonthUseCnt";
+	public final static String QRY_SELECT_SIX_MONTH_CHAN_USE_CNT = "use.selectSixMonthChanUseCnt";
+	public final static String QRY_SELECT_SIX_MONTH_PRE_PAY_AMT = "use.selectSixMonthPrePayAmt";
+	public final static String QRY_SELECT_SIX_MONTH_DEF_PAY_AMT = "use.selectSixMonthDefPayAmt";
 
 	// 서비스요금
 	public final static String QRY_SELECT_ISEXISTS_CORP_PRODUCTUNIT = "use.selectIsExistsCorpProductUnit";
