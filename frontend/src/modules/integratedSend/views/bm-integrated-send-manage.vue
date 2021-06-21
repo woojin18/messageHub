@@ -469,7 +469,7 @@
 							<div v-if="this.rowData.msgType == 'IMAGE' && this.rowData.msgKind == 'I'"><h5>정보 형</h5></div>
 							<div v-if="this.rowData.msgType == 'BASE' && this.rowData.msgKind == 'A'"><h5>텍스트 형</h5></div>
 						</div>
-						<div style="width:78%" v-if="channelType == 'PUSH'">
+						<div style="width:78%" v-if="this.rowData.containPushFlag == true">
 							<input type="radio" name="send" value="ALL" id="ALL" 	v-model="rowData.pushSend" checked=""  > <label for="ALL" class="mr30">ALL</label>
 							<input type="radio" name="send" value="FCM" id="FCM"  	v-model="rowData.pushSend"> <label for="FCM" class="mr30">FCM</label>
 							<input type="radio" name="send" value="APNS" id="APNS"  v-model="rowData.pushSend"> <label for="APNS">APNS</label>
@@ -506,7 +506,7 @@
 				                </div>
 						</div>
 					</div>
-					<div class="of_h consolMarginTop" v-if="channelType == 'PUSH'">
+					<div class="of_h consolMarginTop" v-if="this.rowData.containPushFlag == true">
 						<div style="width:22%" class="float-left">
 							<h5>APP_ID</h5>
 						</div>
@@ -646,6 +646,7 @@ export default {
               , 'otherProjectUseYn':'Y' //Y:공용, N:전용
               , 'tmpltType':'M'  //tmpltType:통합발송 M, 스마트발송:S
               , 'tmpltTitle':'' //템플릿 명
+              , 'containPushFlag':false //PUSH 포함여부
               , 'pushHowToDenyReceipt':''
               , 'pushAppId': ''
  
@@ -933,6 +934,13 @@ export default {
           	this.rowData.chTypeList = rtnData.chTypeList;
             this.rowData.checkedChannel = rtnData.chTypeList.split(',');
             
+	       for(let i = 0; i < this.rowData.checkedChannel.length; i++) {
+			  if(this.rowData.checkedChannel[i] === 'PUSH')  {
+			    this.rowData.containPushFlag = true;
+			  }
+			}
+		
+            console.log("containPushFlag : "+this.rowData.containPushFlag);
             console.log("checkedChannel[0] : "+this.rowData.checkedChannel[0]);
             this.channelType = this.rowData.checkedChannel[0];
             this.previewRcsMessageType = rtnData.rcsPrdType;
