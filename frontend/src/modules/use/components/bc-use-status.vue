@@ -8,13 +8,13 @@
 				<div class="col-xs-6">
 					<h4 class="topH4">이용건수추이 (최근 6개월)</h4>
 					<div class="Dashboard01 fl border-line">
-						<bar-chart :chartData="sixMonthUsedCntData" :height="200"></bar-chart>
+						<bar-chart v-if="loaded" :chartData="sixMonthUsedCntData" :height="200"></bar-chart>
 					</div>
 				</div>
 				<div class="col-xs-6">
 					<h4 class="topH4">이용서비스별추이 (최근 6개월)</h4>
 					<div class="Dashboard01 fl border-line">
-						<DoughnutChart :chartData="doughnutChartData" :chartOptions="doughnutOptions" :height="200"></DoughnutChart>
+						<DoughnutChart v-if="loaded" :chartData="doughnutChartData" :chartOptions="doughnutOptions" :height="200"></DoughnutChart>
 					</div>
 				</div>
 			</div>
@@ -109,6 +109,8 @@ export default {
 			doughnutOptions: null,				// 이용서비스별추이 옵션 옵션 정의
 			doughnutChartDataLabels: [],		// 이용서비스별추이 라벨
 			doughnutChartDataDatas: [],			// 이용서비스별추이 Data
+
+			loaded: false,
 		}
 	},
 	filters:{
@@ -185,6 +187,7 @@ export default {
 					}
 				}
 			};
+			this.loaded = true;
 		},
 		fnSearch() {
 			this.fnSelectSixMonthUseCount();
