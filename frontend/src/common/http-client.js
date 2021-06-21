@@ -100,9 +100,6 @@ httpClient.interceptors.response.use(
 			return Promise.reject(error);
 		} else if (error.response.status == 403) {
 			alert('권한이 없습니다.');
-			if (error.config.headers.activity == 'READ') {
-				window.history.back();
-			}
 		} else if (error.response.status == 401 || error.response.status == 418) {
 			alert('세션이 만료되었습니다.');
 			window.top.location.href = '/login';

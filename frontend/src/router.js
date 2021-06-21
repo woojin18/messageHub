@@ -207,6 +207,8 @@ router.afterEach((to, from) => {
 			var isSave = menu.attr('w');
 			isRead = isRead == 'true';
 			isSave = isSave == 'true';
+      to.meta.isRead = isRead;
+      to.meta.isSave = isSave;
 			console.log('MENU CODE : ' + to.meta.menu + ', READ:' + isRead + ', SAVE:' + isSave);
 			if (isRead) {
 				jQuery("[activity='READ']").removeAttr('activity');
