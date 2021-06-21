@@ -48,10 +48,11 @@ export default {
   },
   methods: {
     fnOpenPortal() {
-      this.windowRef = window.open("", "", "width=600,height=400,left=200,top=200");
-      console.log(this.windowRef);
-      this.windowRef.addEventListener('beforeunload', this.closePortal);
-      this.windowRef.document.body.appendChild(this.$el);
+      this.windowRef = window.open("", "test1", "width=600,height=400,left=200,top=200");
+      if(this.windowRef){
+        this.windowRef.addEventListener('beforeunload', this.closePortal);
+        this.windowRef.document.body.appendChild(this.$el);
+      }
     },
     fnClosePortal() {
       if(this.windowRef) {

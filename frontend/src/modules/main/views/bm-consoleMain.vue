@@ -105,21 +105,52 @@
         <section>
           <div class="quiryList">
             <h3>U+ 통합 메시징 클라우드 문의</h3>
-            <input type="" class="form-control" id="" placeholder="이름">
-            <input type="" class="form-control mt15" id="" placeholder="휴대폰 번호 ( - 없이 입력)">
-            <input type="" class="form-control mt15" id="" placeholder="E-mail">
-            <textarea class="form-textarea height180  mt15" placeholder="궁금하신 내용을 적어주세요."></textarea>
-            <div class="quiryAgree">
-              <input type="checkbox" id="agree1" class="checkStyle2" value="서비스 이용약관 동의"><label for="agree1">[필수] 개인정보 수집 및 이용 동의에 동의합니다.</label> <a href="#self" class="provisionMore">내용보기</a>
+            <div class="of_h">
+              <h5 class="inline-block  text-left float-left font-size16" style="width:20%">문의유형</h5>
+              <div class="inline-block float-left">
+                <template v-for="(inqueiryType, idx) in inqueiryTypeList">
+                  <input :key="idx" 
+                    type="radio" 
+                    name="inqueiryType" 
+                    :value="inqueiryType.codeVal1" 
+                    :id="'inqueiryType_'+inqueiryType.codeVal1"
+                    v-model="inqueiryInputData.questType"
+                  >
+                  <label :key="idx+'_sub'" 
+                    :for="'inqueiryType_'+inqueiryType.codeVal1" 
+                    class="mr20 font-size14"
+                  >{{inqueiryType.codeName1}}</label>
+                </template>
+              </div>
             </div>
-            <a href="#self" class="btnStyle2 backRed" title="상담신청">상담신청</a>
+            <input type="text" class="form-control mt15" placeholder="이름" v-model="inqueiryInputData.inputName" maxlength="20">
+            <input type="text" class="form-control mt15" placeholder="휴대폰 번호 ( - 없이 입력)" v-model="inqueiryInputData.hpNumber" maxlength="20">
+            <input type="text" class="form-control mt15" placeholder="E-mail" v-model="inqueiryInputData.email" maxlength="40">
+            <input type="text" class="form-control mt15" placeholder="제목" v-model="inqueiryInputData.title" maxlength="100">
+            <textarea 
+              class="form-textarea height180  mt15" 
+              placeholder="궁금하신 내용을 적어주세요."
+              v-model="inqueiryInputData.content" 
+              maxlength="4000"
+            ></textarea>
+            <div class="quiryAgree">
+              <input type="checkbox" id="agree1" class="checkStyle2" value="서비스 이용약관 동의" v-model="inqueiryInputData.agree">
+              <label for="agree1">[필수] 개인정보 수집 및 이용 동의에 동의합니다.</label>
+              <!-- 2021-06-17 : 내용보기 팝업 퍼블없음. 강용준 이사님 삭제요청
+              <a href="#self" class="provisionMore">내용보기</a>
+              -->
+            </div>
+            <a href="#self" @click.prevent="fnRegisterInquiry" class="btnStyle2 backRed" title="상담신청">상담신청</a>
           </div>
         </section>
       </article>
       <!-- //quiryWrap -->
     </div>
     <QuickRight></QuickRight>
-    <NoticePopup :noticePopupOpen.sync="noticePopupOpen" ref="noticePopup"></NoticePopup>
+    <NoticePopup 
+      :noticePopupOpen.sync="noticePopupOpen" 
+      ref="noticePopup"
+    />
   </div>
 </template>
 
@@ -129,6 +160,7 @@ import NoticePopup from "@/modules/customer/components/bp-notice.vue";
 
 import customereApi from "@/modules/customer/service/customerApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
   name: 'consoleMain',
@@ -138,9 +170,27 @@ export default {
   },
   data() {
     return {
+      componentsTitle: '메인',
       noticePopupOpen : false,
+      inqueiryTypeList: [],
       noticeInfoList: [],
       libraryInfoList: [],
+      inqueiryInputData: {
+        agree: false,
+        inputName: '',
+        hpNumber : '',
+        emailId : '',
+        emailDomain : '',
+        questType : '',
+        email : '',
+        title : '',
+        content :'',
+      }
+    }
+  },
+  watch: {
+    'inqueiryInputData.hpNumber'(){
+      return this.inqueiryInputData.hpNumber = this.inqueiryInputData.hpNumber.replace(/[^0-9]/g, '');
     }
   },
   mounted() {
@@ -148,6 +198,7 @@ export default {
     //this.fnOpenNoticePopup();
     this.fnSelectNoticeList();
     this.fnSelectLibraryList();
+    this.fnSelectFaqType();
   },
   methods: {
     fnSetSlider(){
@@ -158,7 +209,87 @@ export default {
         pause: 6000
       });
     },
+
+    fnIsValid(){
+      if(!this.inqueiryInputData.inputName){
+        confirm.fnAlert(this.componentsTitle, '이름을 입력해주세요.');
+        return false;
+      }
+      if(!this.inqueiryInputData.hpNumber){
+        confirm.fnAlert(this.componentsTitle, '휴대폰 번호를 입력해주세요.');
+        return false;
+      }
+      if(this.inqueiryInputData.hpNumber.length < 10){
+        confirm.fnAlert(this.componentsTitle, '잘못된 휴대폰 번호 입니다.');
+        return false;
+      }
+      if(!this.inqueiryInputData.email){
+        confirm.fnAlert(this.componentsTitle, 'E-mail 을 입력해주세요.');
+        return false;
+      }
+      if(!this.inqueiryInputData.questType){
+        confirm.fnAlert(this.componentsTitle, '문의종류를 선택해주세요.');
+        return false;
+      }
+      if(!this.inqueiryInputData.title){
+        confirm.fnAlert(this.componentsTitle, '제목을 입력해주세요.');
+        return false;
+      }
+      if(!this.inqueiryInputData.content){
+        confirm.fnAlert(this.componentsTitle, '내용을 입력해주세요.');
+        return false;
+      }
+      if(!this.inqueiryInputData.agree){
+        confirm.fnAlert(this.componentsTitle, '개인정보 수집 및 이용 동의에 동의해주세요.');
+        return false;
+      }
+      return true;
+    },
+    fnRegisterInquiry(){
+      if(this.fnIsValid() == false) return;
+      eventBus.$on('callbackEventBus', this.fnProcRegisterInquiry);
+      confirm.fnConfirm(this.componentsTitle, "문의 하시겠습니까?", "확인");
+    },
+    async fnProcRegisterInquiry(){
+      let params = Object.assign({}, this.inqueiryInputData);
+      params.userId = this.inqueiryInputData.inputName;
+
+      await customereApi.insertQuestBoard(params).then(response => {
+        const result = response.data;
+        if(result.success) {
+          confirm.fnAlert(this.componentsTitle, '문의 되었습니다.');
+          Object.assign(this.$data.inqueiryInputData, this.$options.data().inqueiryInputData);
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
+    async fnSelectFaqType(){
+      const params = {
+        codeTypeCd : "QNA_TYPE",
+        useYN : "Y"
+      };
+      await customereApi.selectCodeList(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          this.inqueiryTypeList = Object.assign({}, result.data);
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
     fnOpenNoticePopup(){
+      const params = {
+        sltPopupYn: this.sltPopupYn
+      };
+      customereApi.selectNoticeList(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          console.log(result);
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
       this.noticePopupOpen = true;
     },
     async fnSelectNoticeList(){

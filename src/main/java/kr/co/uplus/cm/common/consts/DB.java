@@ -14,6 +14,9 @@ public class DB {
 	public final static String QRY_SELECT_FILE_UPLOAD_SET = "common.selectFileUploadSet";
 	public final static String QRY_SELECT_CODE = "common.selectCodeList";
 
+	//메인
+	public final static String QRY_SELECT_PRD_UNIT_INFO_LIST = "main.selectPrdUnitInfoList";
+
 	// 고객센터
 	public final static String QRY_SELECT_FAQ_TYPE_LIST = "customer.selectFaqTypeList";
 	public final static String QRY_SELECT_FAQ_LIST_CNT = "customer.selectFaqListCnt";
