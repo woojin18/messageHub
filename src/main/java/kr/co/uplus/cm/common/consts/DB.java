@@ -14,6 +14,9 @@ public class DB {
 	public final static String QRY_SELECT_FILE_UPLOAD_SET = "common.selectFileUploadSet";
 	public final static String QRY_SELECT_CODE = "common.selectCodeList";
 
+	//메인
+	public final static String QRY_SELECT_PRD_UNIT_INFO_LIST = "main.selectPrdUnitInfoList";
+
 	// 고객센터
 	public final static String QRY_SELECT_FAQ_TYPE_LIST = "customer.selectFaqTypeList";
 	public final static String QRY_SELECT_FAQ_LIST_CNT = "customer.selectFaqListCnt";
@@ -23,7 +26,6 @@ public class DB {
 	public final static String QRY_SELECT_LIBRARY_LIST_CNT = "customer.selectLibraryListCnt";
     public final static String QRY_SELECT_LIBRARY_LIST = "customer.selectLibraryList";
     public final static String QRY_SELECT_ATTACH_FILE_INFO = "customer.selectAttachFileInfo";
-    public final static String QRY_SELECT_CM_PRODUCT_UNIT = "customer.selectCmProductUnit";
 
 	// 로그인
 	public final static String QRY_SELECT_USERNAME = "login.qrySelectUserName";

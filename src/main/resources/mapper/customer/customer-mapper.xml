@@ -155,41 +155,4 @@
         WHERE FILE_ID = #{fileId}
     </select>
 
-    <select id="selectCmProductUnit" parameterType="hashmap" resultType="camel">
-    /* customer.selectCmProductUnit - 상품 가격정보 조회 */
-        SELECT
-            CPU.PRODUCT_CODE
-            , CPU.PRODUCT_NAME
-            , CPU.CH_GRP
-            , CPU.CH
-            , CPU.SMART_CH_PRODUCT_YN
-            , CPU.SMART_CH_PRODUCT
-            , CPU.PREE_FEE
-            , CPU.USE_YN
-            , CPU.REG_ID
-            , CPU.REG_DT
-            , CPU.UPD_ID
-            , CPU.UPD_DT
-            , CPU.TOBE_FEE_INFO
-        FROM cm_bo.CM_PRODUCT_UNIT CPU
-        WHERE CPU.USE_YN = 'Y'
-            AND CPU.CH_GRP = #{chGrp}
-        <if test="sortFields != null and sortFields.size != 0 ">
-            ORDER BY FIELD(CPU.PRODUCT_CODE, <foreach collection="sortFields" item="item" index="index" separator=",">#{item}</foreach>)
-        </if>
-    </select>
-
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-

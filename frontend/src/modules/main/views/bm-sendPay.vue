@@ -33,28 +33,22 @@
                   <th class="end">후불 수신 건별 요금<br>(VAT별도)</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td rowspan="3">Push</td>
-                  <td rowspan="3">0.5 원</td>
-                  <td>1 ~ 9,999</td>
-                  <td class="end">0.5 원</td>
-                </tr>
-                <tr>
-                  <td>10,000 ~ 499,999</td>
-                  <td class="end">0.3 원</td>
-                </tr>
-                <tr>
-                  <td>500,000 ~ </td>
-                  <td class="end">0.2 원</td>
-                </tr>
+              <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
+                <template v-for="pushPayInfo in prdUnitInfo.push">
+                  <tr v-for="(feeData, idx) in pushPayInfo.tobeFeeData" :key="pushPayInfo.productCode + idx">
+                    <td v-if="idx == 0" rowspan="3">{{pushPayInfo.productName}}</td>
+                    <td v-if="idx == 0" rowspan="3">{{pushPayInfo.preeFee | formatPrice}} 원</td>
+                    <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
+                    <td class="end">{{feeData.TOBE_FEE | formatPrice}} 원</td>
+                  </tr>
+                </template>
               </tbody>
             </table>
-          </section>  
+          </section>
         </div>
         
         <div class="subVisualWrap02 wow animated fadeInUp">
-          <section>      
+          <section>
             <p class="tableTitle"><i class="fas fa-chevron-square-right"></i> RCS</p>
             <p class="tableText">VAT 별도</p>
             <table class="user_table_skin1">
@@ -75,63 +69,15 @@
                   <th class="end">후불 수신 건별 요금<br>(VAT별도)</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td rowspan="3">RCS 템플릿</td>
-                  <td rowspan="3">7.5 원</td>
-                  <td>1 ~ 9,999</td>
-                  <td class="end">7.5 원</td>
-                </tr>
-                <tr>
-                  <td>10,000 ~ 499,999</td>
-                  <td class="end">6.5 원</td>
-                </tr>
-                <tr>
-                  <td>500,000 ~ </td>
-                  <td class="end">5.5 원</td>
-                </tr>
-                <tr>
-                  <td rowspan="3">RCS SMS</td>
-                  <td rowspan="3">9 원</td>
-                  <td>1 ~ 9,999</td>
-                  <td class="end">9 원</td>
-                </tr>
-                <tr>
-                  <td>10,000 ~ 499,999</td>
-                  <td class="end">8.5 원</td>
-                </tr>
-                <tr>
-                  <td>500,000 ~ </td>
-                  <td class="end">7.5 원</td>
-                </tr>
-                <tr>
-                  <td rowspan="3">RCS LMS</td>
-                  <td rowspan="3">26.3 원</td>
-                  <td>1 ~ 9,999</td>
-                  <td class="end">26.3 원</td>
-                </tr>
-                <tr>
-                  <td>10,000 ~ 499,999</td>
-                  <td class="end">25.3 원</td>
-                </tr>
-                <tr>
-                  <td>500,000 ~ </td>
-                  <td class="end">24.3 원</td>
-                </tr>
-                <tr>
-                  <td rowspan="3">RCS MMS</td>
-                  <td rowspan="3">70 원</td>
-                  <td>1 ~ 9,999</td>
-                  <td class="end">70 원</td>
-                </tr>
-                <tr>
-                  <td>10,000 ~ 499,999</td>
-                  <td class="end">60 원</td>
-                </tr>
-                <tr>
-                  <td>500,000 ~ </td>
-                  <td class="end">47 원</td>
-                </tr>
+              <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
+                <template v-for="rcsPayInfo in prdUnitInfo.rcs">
+                  <tr v-for="(feeData, idx) in rcsPayInfo.tobeFeeData" :key="rcsPayInfo.productCode+idx">
+                    <td v-if="idx == 0" rowspan="3">{{rcsPayInfo.productName}}</td>
+                    <td v-if="idx == 0" rowspan="3">{{rcsPayInfo.preeFee | formatPrice}} 원</td>
+                    <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
+                    <td class="end">{{feeData.TOBE_FEE | formatPrice}} 원</td>
+                  </tr>
+                </template>
               </tbody>
             </table>
 
@@ -139,7 +85,7 @@
         </div>
 
         <div class="subVisualWrap02 wow animated fadeInUp">
-          <section>      
+          <section>
             <p class="tableTitle"><i class="fas fa-chevron-square-right"></i> SMS/MMS</p>
             <p class="tableText">VAT 별도</p>
             <table class="user_table_skin1">
@@ -160,49 +106,15 @@
                   <th class="end">후불 수신 건별 요금<br>(VAT별도)</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td rowspan="3">SMS</td>
-                  <td rowspan="3">9 원</td>
-                  <td>1 ~ 9,999</td>
-                  <td class="end">9 원</td>
-                </tr>
-                <tr>
-                  <td>10,000 ~ 499,999</td>
-                  <td class="end">8.5 원</td>
-                </tr>
-                <tr>
-                  <td>500,000 ~ </td>
-                  <td class="end">7.5 원</td>
-                </tr>
-                <tr>
-                  <td rowspan="3">LMS</td>
-                  <td rowspan="3">26.3 원</td>
-                  <td>1 ~ 9,999</td>
-                  <td class="end">26.3 원</td>
-                </tr>
-                <tr>
-                  <td>10,000 ~ 499,999</td>
-                  <td class="end">25.3 원</td>
-                </tr>
-                <tr>
-                  <td>500,000 ~ </td>
-                  <td class="end">24.3 원</td>
-                </tr>
-                <tr>
-                  <td rowspan="3">MMS</td>
-                  <td rowspan="3">70 원</td>
-                  <td>1 ~ 9,999</td>
-                  <td class="end">70 원</td>
-                </tr>
-                <tr>
-                  <td>10,000 ~ 499,999</td>
-                  <td class="end">60 원</td>
-                </tr>
-                <tr>
-                  <td>500,000 ~ </td>
-                  <td class="end">47 원</td>
-                </tr>              
+              <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
+                <template v-for="smsPayInfo in prdUnitInfo.sms">
+                  <tr v-for="(feeData, idx) in smsPayInfo.tobeFeeData" :key="smsPayInfo.productCode+idx">
+                    <td v-if="idx == 0" rowspan="3">{{smsPayInfo.productName}}</td>
+                    <td v-if="idx == 0" rowspan="3">{{smsPayInfo.preeFee | formatPrice}} 원</td>
+                    <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
+                    <td class="end">{{feeData.TOBE_FEE | formatPrice}} 원</td>
+                  </tr>
+                </template>
               </tbody>
             </table>
             <p class="infoText"><i class="fas fa-info-circle"></i> SMS 서비스에서 SMS는 메시지 길이 90바이트 이하의 단문 메시지이며, LMS는 메시지 길이 2,000바이트 이하의 장문 메시지, MMS는 멀티미디어 파일(사진, 컬러티콘, 배경 음악)이 첨부된 메시지를 의미합니다.</p>
@@ -231,63 +143,15 @@
                   <th class="end">후불 수신 건별 요금<br>(VAT별도)</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td rowspan="3">알림톡</td>
-                  <td rowspan="3">4.5 원</td>
-                  <td>1 ~ 9,999</td>
-                  <td class="end">4.5 원</td>
-                </tr>
-                <tr>
-                  <td>10,000 ~ 499,999</td>
-                  <td class="end">4.2 원</td>
-                </tr>
-                <tr>
-                  <td>500,000 ~ </td>
-                  <td class="end">4 원</td>
-                </tr>
-                <tr>
-                  <td rowspan="3">친구톡 텍스트</td>
-                  <td rowspan="3">12 원</td>
-                  <td>1 ~ 9,999</td>
-                  <td class="end">12 원</td>
-                </tr>
-                <tr>
-                  <td>10,000 ~ 499,999</td>
-                  <td class="end">11 원</td>
-                </tr>
-                <tr>
-                  <td>500,000 ~ </td>
-                  <td class="end">10 원</td>
-                </tr>
-                <tr>
-                  <td rowspan="3">친구톡 이미지</td>
-                  <td rowspan="3">19 원</td>
-                  <td>1 ~ 9,999</td>
-                  <td class="end">19 원</td>
-                </tr>
-                <tr>
-                  <td>10,000 ~ 499,999</td>
-                  <td class="end">18 원</td>
-                </tr>
-                <tr>
-                  <td>500,000 ~ </td>
-                  <td class="end">17 원</td>
-                </tr>  
-                <tr>
-                  <td rowspan="3">친구톡 와이드 이미지</td>
-                  <td rowspan="3">21 원</td>
-                  <td>1 ~ 9,999</td>
-                  <td class="end">21 원</td>
-                </tr>
-                <tr>
-                  <td>10,000 ~ 499,999</td>
-                  <td class="end">20 원</td>
-                </tr>
-                <tr>
-                  <td>500,000 ~ </td>
-                  <td class="end">19 원</td>
-                </tr>  
+              <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
+                <template v-for="kkoPayInfo in prdUnitInfo.kko">
+                  <tr v-for="(feeData, idx) in kkoPayInfo.tobeFeeData" :key="kkoPayInfo.productCode+idx">
+                    <td v-if="idx == 0" rowspan="3">{{kkoPayInfo.productName}}</td>
+                    <td v-if="idx == 0" rowspan="3">{{kkoPayInfo.preeFee | formatPrice}} 원</td>
+                    <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
+                    <td class="end">{{feeData.TOBE_FEE | formatPrice}} 원</td>
+                  </tr>
+                </template>
               </tbody>
             </table>
           </section>  
@@ -302,10 +166,75 @@
 <script>
 import QuickRight from "@/modules/main/components/bc-quickRight.vue";
 
+import mainApi from "@/modules/main/service/mainApi.js";
+
 export default {
   name: 'sendPay',
   components : {
     QuickRight
   },
+  props: {
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: function() {
+        return '요금제 안내';
+      }
+    },
+  },
+  data() {
+    return {
+/* 
+      productCodes:{
+        PUSH: ['PUSH'],
+        RCS: ['RCS_TMP', 'RCS_SMS', 'RCS_LMS', 'RCS_MMS'],
+        SMS: ['SMS', 'LMS', 'MMS'],
+        KKO: ['ALIMTALK', 'FRIENDTALK_01', 'FRIENDTALK_02', 'FRIENDTALK_03'],
+      },
+       */
+      prdUnitInfo: {}
+    }
+  },
+  filters: {
+    formatPrice(val){
+      if(String(val).indexOf('.') > 0){
+        let arrVal = String(val).split('.');
+        if(arrVal.length == 2){
+          return String(arrVal[0]).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '.' + arrVal[1];
+        }
+      }
+      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+  },
+  created() {
+    this.fnSelectPrdUnitInfoList();
+  },
+  methods: {
+    async fnSelectPrdUnitInfoList(){
+      const params = {};
+      await mainApi.selectPrdUnitInfoList(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          Object.keys(result.data).forEach(function(chGrp){
+            result.data[chGrp].forEach(function(obj, idx){
+              result.data[chGrp][idx].tobeFeeData = JSON.parse(obj.tobeFeeInfo);
+            });
+          });
+          this.prdUnitInfo = Object.assign({}, result.data);
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
+    fnJsonStrToJson(str){
+      return JSON.parse(str);
+    },
+    //빈오브젝트확인
+    fnIsEmptyObj(obj){
+      if(typeof obj === 'undefined') return true;
+      if(Object.keys(obj).length === 0) return true;
+      return false;
+    }
+  }
 }
 </script>
