@@ -8,8 +8,8 @@
           <div class="of_h h4Minus">
             <h4 class="color000 inline-block">업로드 한 이미지</h4>
             <div class="float-right h4Button">
-              <a @click="fnOpenImageUploadPopUp" class="btnStyle1 backBlack mr10" title="이미지 추가" activity="SAVE">이미지 추가</a>
-              <a @click="fnDeleteImage" class="btnStyle1 backLightGray" title="삭제" activity="SAVE">삭제</a>
+              <a @click="fnOpenImageUploadPopUp" class="btnStyle1 backBlack mr10" title="이미지 추가" v-if="$route.meta.isSave">이미지 추가</a>
+              <a @click="fnDeleteImage" class="btnStyle1 backLightGray" title="삭제" v-if="$route.meta.isSave">삭제</a>
             </div>
           </div>
 
