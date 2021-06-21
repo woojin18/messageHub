@@ -32,21 +32,21 @@ export default {
 
 function fnDownCallback(response){
   try {
-    let blob = new Blob([response.data], { type: response.headers['content-type'] })
-    let fileName = fnGetFileName(response.headers['content-disposition'])
-    fileName = decodeURI(fileName)
+    let blob = new Blob([response.data], { type: response.headers['content-type'] });
+    let fileName = fnGetFileName(response.headers['content-disposition']);
+    fileName = decodeURI(fileName);
 
     if (window.navigator.msSaveOrOpenBlob) { // IE 10+
-      window.navigator.msSaveOrOpenBlob(blob, fileName)
+      window.navigator.msSaveOrOpenBlob(blob, fileName);
     } else { // not IE
-      let link = document.createElement('a')
-      link.href = window.URL.createObjectURL(blob)
-      link.target = '_self'
-      if (fileName) link.download = fileName
-      link.click()
+      let link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.target = '_self';
+      if (fileName) link.download = fileName;
+      link.click();
     }
   } catch (e) {
-    console.error(e)
+    console.error(e);
   }
 }
 

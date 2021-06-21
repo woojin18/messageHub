@@ -24,11 +24,11 @@
                   <img src="/se2/images/user_sub03_1_fileicon.png" alt="파일 아이콘" class="fileIcon">
                   {{libraryData.fileNm1}}
                 </a>
-                <a v-if="!$gfnCommonUtils.isEmpty(libraryData.fileId2)" href="#" class="mt10" @click.prevent="fnDownloadLibraryFile(libraryData.fileId3)">
+                <a v-if="!$gfnCommonUtils.isEmpty(libraryData.fileId2)" href="#" class="mt10" @click.prevent="fnDownloadLibraryFile(libraryData.fileId2)">
                   <img src="/se2/images/user_sub03_1_fileicon.png" alt="파일 아이콘" class="fileIcon">
                   {{libraryData.fileNm2}}
                 </a>
-                <a v-if="!$gfnCommonUtils.isEmpty(libraryData.fileId3)" href="#" class="mt10" @click.prevent="fnDownloadLibraryFile(libraryData.fileId2)">
+                <a v-if="!$gfnCommonUtils.isEmpty(libraryData.fileId3)" href="#" class="mt10" @click.prevent="fnDownloadLibraryFile(libraryData.fileId3)">
                   <img src="/se2/images/user_sub03_1_fileicon.png" alt="파일 아이콘" class="fileIcon">
                   {{libraryData.fileNm3}}
                 </a>

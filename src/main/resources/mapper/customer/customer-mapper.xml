@@ -10,7 +10,7 @@
     </sql>
 
     <select id="selectFaqListCnt" parameterType="hashmap" resultType="int">
-    /* template.selectFaqListCnt - FAQ 리스트 카운트 조회 */
+    /* customer.selectFaqListCnt - FAQ 리스트 카운트 조회 */
         SELECT
             COUNT(*) AS CNT
         FROM cm_bo.CM_FAQ CF
@@ -19,7 +19,7 @@
     </select>
 
     <select id="selectFaqList" parameterType="hashmap" resultType="camel">
-    /* template.selectFaqList - FAQ 리스트 조회 */
+    /* customer.selectFaqList - FAQ 리스트 조회 */
         SELECT
             @ROWNUM := @ROWNUM + 1 AS ROWNUM
             , CF.FAQ_ID
@@ -42,10 +42,14 @@
         <if test="noticeId != '' and noticeId != null ">
             AND CN.NOTICE_ID = #{noticeId}
         </if>
+        <if test="sltPopupYn == 'Y' ">
+            AND CN.POP_YN = 'Y'
+            AND NOW() BETWEEN CN.POP_START_DT AND CN.POP_END_DT
+        </if>
     </sql>
 
     <select id="selectNoticeListCnt" parameterType="hashmap" resultType="int">
-    /* template.selectNoticeListCnt - 공지사항 리스트 카운트 조회 */
+    /* customer.selectNoticeListCnt - 공지사항 리스트 카운트 조회 */
         SELECT
             COUNT(*) AS CNT
         FROM cm_bo.CM_NOTICE CN
@@ -54,7 +58,7 @@
     </select>
 
     <select id="selectNoticeList" parameterType="hashmap" resultType="camel">
-    /* template.selectNoticeList - 공지사항 리스트 조회 */
+    /* customer.selectNoticeList - 공지사항 리스트 조회 */
         SELECT
             @ROWNUM := @ROWNUM + 1 AS ROWNUM
             , CN.NOTICE_ID
@@ -86,7 +90,7 @@
     </sql>
 
     <select id="selectLibraryListCnt" parameterType="hashmap" resultType="int">
-    /* template.selectLibraryListCnt - 자료실 리스트 카운트 조회 */
+    /* customer.selectLibraryListCnt - 자료실 리스트 카운트 조회 */
         SELECT
             COUNT(*) AS CNT
         FROM cm_bo.CM_LIBRARY CL
@@ -95,7 +99,7 @@
     </select>
 
     <select id="selectLibraryList" parameterType="hashmap" resultType="camel">
-    /* template.selectLibraryList - 자료실 리스트 조회 */
+    /* customer.selectLibraryList - 자료실 리스트 조회 */
         SELECT
             T.*
             , @ROWNUM := @ROWNUM + 1 AS ROWNUM
@@ -138,7 +142,7 @@
     </select>
 
     <select id="selectAttachFileInfo" parameterType="hashmap" resultType="camel">
-    /* template.selectAttachFileInfo - 첨부파일 정보 조회 */
+    /* customer.selectAttachFileInfo - 첨부파일 정보 조회 */
         SELECT
             CAF.FILE_ID
             , CAF.ATTACH_FILE_NAME
@@ -151,4 +155,41 @@
         WHERE FILE_ID = #{fileId}
     </select>
 
+    <select id="selectCmProductUnit" parameterType="hashmap" resultType="camel">
+    /* customer.selectCmProductUnit - 상품 가격정보 조회 */
+        SELECT
+            CPU.PRODUCT_CODE
+            , CPU.PRODUCT_NAME
+            , CPU.CH_GRP
+            , CPU.CH
+            , CPU.SMART_CH_PRODUCT_YN
+            , CPU.SMART_CH_PRODUCT
+            , CPU.PREE_FEE
+            , CPU.USE_YN
+            , CPU.REG_ID
+            , CPU.REG_DT
+            , CPU.UPD_ID
+            , CPU.UPD_DT
+            , CPU.TOBE_FEE_INFO
+        FROM cm_bo.CM_PRODUCT_UNIT CPU
+        WHERE CPU.USE_YN = 'Y'
+            AND CPU.CH_GRP = #{chGrp}
+        <if test="sortFields != null and sortFields.size != 0 ">
+            ORDER BY FIELD(CPU.PRODUCT_CODE, <foreach collection="sortFields" item="item" index="index" separator=",">#{item}</foreach>)
+        </if>
+    </select>
+
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+

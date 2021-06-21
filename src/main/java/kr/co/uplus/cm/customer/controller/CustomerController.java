@@ -5,6 +5,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.co.uplus.cm.utils.FileDownUtil;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
@@ -148,10 +151,11 @@ public class CustomerController {
      * @throws Exception
      */
     @PostMapping("/api/public/customer/procDownloadLibraryFile")
-    public ResponseEntity<Resource> procDownloadLibraryFile(@RequestBody Map<String, Object> params) throws Exception {
+    public ResponseEntity<Resource> procDownloadLibraryFile(HttpServletRequest request,
+            @RequestBody Map<String, Object> params) throws Exception {
         Map<String, Object> fileInfo = customerService.selectAttachFileInfo(params);
         String filePath = CommonUtils.getStrValue(fileInfo, "attachFilePath");
-        String fileName = new String(CommonUtils.getStrValue(fileInfo, "attachFileName").getBytes("ksc5601"), "euc-kr");
+        String fileName = FileDownUtil.getFileNm(FileDownUtil.getBrowser(request), CommonUtils.getStrValue(fileInfo, "attachFileName"));
 
         if(StringUtils.indexOf(filePath, FileConfig.FileSvcType.LIBRARY.getPath()) < 0) {
             String errorMsg = "unauthorized path access";

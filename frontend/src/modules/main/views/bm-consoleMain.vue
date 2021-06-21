@@ -119,7 +119,10 @@
       <!-- //quiryWrap -->
     </div>
     <QuickRight></QuickRight>
-    <NoticePopup :noticePopupOpen.sync="noticePopupOpen" ref="noticePopup"></NoticePopup>
+    <NoticePopup 
+      :noticePopupOpen.sync="noticePopupOpen" 
+      ref="noticePopup"
+    />
   </div>
 </template>
 
@@ -138,6 +141,7 @@ export default {
   },
   data() {
     return {
+      componentsTitle: '메인',
       noticePopupOpen : false,
       noticeInfoList: [],
       libraryInfoList: [],
@@ -159,6 +163,19 @@ export default {
       });
     },
     fnOpenNoticePopup(){
+      const params = {
+        sltPopupYn: this.sltPopupYn
+      };
+      customereApi.selectNoticeList(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          console.log(result);
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+
+
       this.noticePopupOpen = true;
     },
     async fnSelectNoticeList(){
