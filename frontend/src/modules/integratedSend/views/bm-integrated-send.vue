@@ -164,7 +164,8 @@ export default {
       totCnt : 0,  //전체 리스트 수
       offset : 0, //페이지 시작점
       searchDateInterval: 7,
-      datas: []
+      datas: [],
+      chkBox: ''
     }
     
         
