@@ -136,6 +136,9 @@
             <div class="quiryAgree">
               <input type="checkbox" id="agree1" class="checkStyle2" value="서비스 이용약관 동의" v-model="inqueiryInputData.agree">
               <label for="agree1">[필수] 개인정보 수집 및 이용 동의에 동의합니다.</label>
+              <!-- 2021-06-17 : 내용보기 팝업 퍼블없음. 강용준 이사님 삭제요청
+              <a href="#self" class="provisionMore">내용보기</a>
+              -->
             </div>
             <a href="#self" @click.prevent="fnRegisterInquiry" class="btnStyle2 backRed" title="상담신청">상담신청</a>
           </div>
