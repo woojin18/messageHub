@@ -313,6 +313,7 @@ p {letter-spacing:-0.5px}
 
 .sub03_conWrap .new2 {color:#fff; background-color:#E93978; border-radius:5px; padding:3px 6px; margin-right:8px; font-size:10px}
 
+
 .sub03_conWrap .boardWrite .title {border-top: 1px solid #000; background-color:#F1F1F1; padding:22px 18px}
 .sub03_conWrap .boardWrite .title p {display:inline-block; font-size:14px; color:#000}
 .sub03_conWrap .boardWrite .title .date {float:right; font-size:14px; font-weight:300}
@@ -324,6 +325,22 @@ p {letter-spacing:-0.5px}
 .sub03_conWrap .boardWrite .content-file a {font-size:12px; color:#000; font-weight:300; display:block}
 .sub03_conWrap .btn {text-align:center}
 .sub03_conWrap .btnList {font-size:16px; color:#222; border-radius:3px; border:1px solid #222; padding:17px 50px}
+
+
+.modal-body .boardTitle {border-left:4px solid #9941FF; padding-left:20px; margin-bottom:72px}
+.modal-body .boardTitle .titleText {font-size:28px; color:#000; font-weight:700}
+.modal-body .boardTitle .subText {margin-top:15px; font-size:16px; color:#707070}
+
+.modal-body .new2 {color:#fff; background-color:#E93978; border-radius:5px; padding:3px 6px; margin-right:8px; font-size:10px}
+.modal-body .boardWrite .title {border-top: 1px solid #000; background-color:#F1F1F1; padding:22px 18px}
+.modal-body .boardWrite .title p {display:inline-block; font-size:14px; color:#000}
+.modal-body .boardWrite .title .date {float:right; font-size:14px; font-weight:300}
+.modal-body .boardWrite .content {border-bottom: 1px solid #000; padding:22px 18px; min-height:370px; font-size:13px; color:#000; font-weight:300}
+.modal-body .boardWrite .content p {font-size:14px}
+.modal-body .boardWrite .content2 {border-bottom: 1px solid #d5d5d5; padding:22px 18px; min-height:370px; font-size:13px; color:#000; font-weight:300}
+.modal-body .boardWrite .content2 p {font-size:14px}
+.modal-body .boardWrite .content-file {border-bottom: 1px solid #000; padding:30px 18px}
+.modal-body .boardWrite .content-file a {font-size:12px; color:#000; font-weight:300; display:block}
 
 /* PopupClose */
 

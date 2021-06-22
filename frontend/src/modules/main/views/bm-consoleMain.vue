@@ -39,13 +39,16 @@
             </h3>
             <ul class="listSt">
               <li v-for="(noticeInfo, idx) in noticeInfoList" :key="idx">
-                <router-link :to="{ name: 'noticeDetail', params: { noticeId: noticeInfo.noticeId }}" title="해당 게시글로 이동">
+                <!-- 2021-06-22 : 해당 게시글로 이동에서 페이어 팝업으로 변경 -->
+                <!-- <router-link :to="{ name: 'noticeDetail', params: { noticeId: noticeInfo.noticeId }}" title="해당 게시글로 이동"> -->
+                <a href="#" @click.prevent="fnOpenNoticePopupModal(noticeInfo.noticeId)" title="해당 게시글이 열립니다">
                   <span class="noti_tt">
                     <span v-if="!$gfnCommonUtils.isEmpty(noticeInfo.noticeTypeCdName)" class="newIcon">{{noticeInfo.noticeTypeCdName}}</span> 
                     {{noticeInfo.title}}
                   </span>
                   <span class="noti_day">{{noticeInfo.regDt}}</span>
-                </router-link>
+                </a>
+                <!-- </router-link> -->
               </li>
             </ul>
           </div>
@@ -146,11 +149,13 @@
       <!-- //quiryWrap -->
     </div>
     <QuickRight></QuickRight>
+    <NoticeLayer ref="noticeLayer"></NoticeLayer>
   </div>
 </template>
 
 <script>
 import QuickRight from "@/modules/main/components/bc-quickRight.vue";
+import NoticeLayer from "@/modules/customer/components/bp-noticeLayer.vue";
 
 import customereApi from "@/modules/customer/service/customerApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
@@ -159,7 +164,8 @@ import {eventBus} from "@/modules/commonUtil/service/eventBus";
 export default {
   name: 'consoleMain',
   components : {
-    QuickRight
+    QuickRight,
+    NoticeLayer
   },
   data() {
     return {
@@ -201,7 +207,10 @@ export default {
         pause: 6000
       });
     },
-
+    fnOpenNoticePopupModal(noticeId){
+      this.$refs.noticeLayer.fnSetNoticeInfo(noticeId);
+      jQuery("#noticeDetailLayer").modal("show");
+    },
     fnIsValid(){
       if(!this.inqueiryInputData.inputName){
         confirm.fnAlert(this.componentsTitle, '이름을 입력해주세요.');
