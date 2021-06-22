@@ -194,7 +194,7 @@ export default {
   },
   mounted() {
     this.fnSetSlider();
-    //this.fnOpenNoticePopup();
+    this.fnOpenNoticePopup();
     this.fnSelectNoticeList();
     this.fnSelectLibraryList();
     this.fnSelectFaqType();
@@ -277,19 +277,38 @@ export default {
         }
       });
     },
-    fnOpenNoticePopup(){
+    async fnOpenNoticePopup(){
+      let noticePopupList = [];
+      let noticeIdArr = [];
+      let exceptNoticeIds = this.$cookies.get('exceptNoticeIds');
+      if(!this.$gfnCommonUtils.isEmpty(exceptNoticeIds)){
+        noticeIdArr = exceptNoticeIds.split(',');
+      }
+
       const params = {
-        sltPopupYn: this.sltPopupYn
+        sltPopupYn: 'Y',
+        exceptNoticeIds: noticeIdArr
       };
-      customereApi.selectNoticeList(params).then(response =>{
+      await customereApi.selectNoticeList(params).then(response =>{
         const result = response.data;
         if(result.success) {
-          console.log(result);
+          noticePopupList = result.data;
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
-      this.noticePopupOpen = true;
+
+      const vm = this;
+      let routeData = '';
+      const noticePopupNm = 'noticePopup';
+      const popupOtion = 'width=600,height=400,left=200,top=200,scrollbars=yes';
+      noticePopupList.forEach(function(info){
+        routeData = vm.$router.resolve({name: noticePopupNm, query: {noticeId: info.noticeId}});
+        vm.fnOpenWindowPop(routeData.href, noticePopupNm+info.noticeId, popupOtion);
+      });
+    },
+    fnOpenWindowPop(url, name, specs){
+      window.open(url, name, specs);
     },
     async fnSelectNoticeList(){
       const params = {

@@ -3,6 +3,7 @@ import notice from '../views/bm-notice.vue'
 import noticeDetail from '../views/bm-noticeDetail.vue'
 import library from '../views/bm-library.vue'
 import libraryDetail from '../views/bm-libraryDetail.vue'
+import noticePopup from '../components/bp-notice.vue'
 
 export default [
   {
@@ -37,6 +38,13 @@ export default [
     path: '/public/libraryDetail',
     name: 'libraryDetail',
     component: libraryDetail,
+    props: true,
+    meta: { public: true }
+  },
+  {
+    path: '/public/popup/noticePopup',
+    name: 'noticePopup',
+    component: noticePopup,
     props: true,
     meta: { public: true }
   }

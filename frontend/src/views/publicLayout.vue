@@ -1,8 +1,8 @@
 <template>
   <div id="publicLayout">
-    <PublicHeader></PublicHeader>
+    <PublicHeader v-if="$route.fullPath.indexOf('/public/popup') < 0"></PublicHeader>
     <router-view :key="$route.fullPath"></router-view>
-    <PublicFooter></PublicFooter>
+    <PublicFooter v-if="$route.fullPath.indexOf('/public/popup') < 0"></PublicFooter>
     <confirm></confirm>
   </div>
 </template>

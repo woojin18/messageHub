@@ -204,7 +204,7 @@
     </select>
 
 	<select id="selectCodeList" resultType="camel">
-		/* code.selectCodeList */
+		/* common.selectCodeList */
 		SELECT	CODE_ID
 		,		CODE_TYPE_CD
 		,		CODE_VAL_1

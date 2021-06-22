@@ -42,9 +42,12 @@
         <if test="noticeId != '' and noticeId != null ">
             AND CN.NOTICE_ID = #{noticeId}
         </if>
-        <if test="sltPopupYn == 'Y' ">
+        <if test='sltPopupYn == "Y" '>
             AND CN.POP_YN = 'Y'
             AND NOW() BETWEEN CN.POP_START_DT AND CN.POP_END_DT
+        </if>
+        <if test="exceptNoticeIds != null and exceptNoticeIds.size != 0 ">
+            AND CN.NOTICE_ID NOT IN <foreach collection="exceptNoticeIds" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
         </if>
     </sql>
 
