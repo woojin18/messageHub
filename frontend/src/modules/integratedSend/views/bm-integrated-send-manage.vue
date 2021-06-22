@@ -176,6 +176,15 @@
 							<p class="color000">[WEB발신] (광고)</p>
 							<ul class="cardBxslider mt10">
 								<li class="slide cardBox" v-show="rcs9TabFlag === 'STAB1'">
+						            <div v-for="imgIdx in rcs90ImgLimitSize" :key="imgIdx">  
+						            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs90ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+							                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs90ImgInfoList[imgIdx-1].imgUrl+');'">  
+						            		</div>
+						            		<div v-else>
+						            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            		</div>
+						            </div>
+				            		<!--						
 									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs90ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 						            </div>
@@ -184,16 +193,26 @@
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs90ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs90ImgInfoList[0].imgUrl+');'">
-						            </div>
+						            </div>-->
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
 											<p class="color000 font-size13">{{rowData.rcs90Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs90Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 									</div>
 								</li>
 								<li class="slide cardBox" v-show="rcs9TabFlag === 'STAB2'">
+						            <div v-for="imgIdx in rcs91ImgLimitSize" :key="imgIdx">  
+						            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs91ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+							                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs91ImgInfoList[imgIdx-1].imgUrl+');'">  
+						            		</div>
+						            		<div v-else>
+						            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            		</div>
+						            </div>	
+						            <!--							
 									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs91ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 						            </div>
@@ -202,16 +221,26 @@
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs91ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs91ImgInfoList[0].imgUrl+');'">
-						            </div>
+						            </div>-->
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
 											<p class="color000 font-size13">{{rowData.rcs91Title}}</p>
 											<p class="color3 mt5">{{rowData.rcs91Content}}</p>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 									</div>
 								</li>
 								<li class="slide cardBox" v-show="rcs9TabFlag === 'STAB3'">
+						            <div v-for="imgIdx in rcs92ImgLimitSize" :key="imgIdx">  
+						            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs92ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+							                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs92ImgInfoList[imgIdx-1].imgUrl+');'">  
+						            		</div>
+						            		<div v-else>
+						            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            		</div>
+						            </div>		
+						            <!--						
 									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs92ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 						            </div>
@@ -220,16 +249,26 @@
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs92ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs92ImgInfoList[0].imgUrl+');'">
-						            </div>
+						            </div>-->
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
 											<p class="color000 font-size13">{{rowData.rcs92Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs92Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 									</div>
 								</li>
 								<li class="slide cardBox" v-show="rcs9TabFlag === 'STAB4'">
+						            <div v-for="imgIdx in rcs93ImgLimitSize" :key="imgIdx">  
+						            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs93ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+							                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs93ImgInfoList[imgIdx-1].imgUrl+');'">  
+						            		</div>
+						            		<div v-else>
+						            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            		</div>
+						            </div>		
+						            <!--						
 									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs93ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 						            </div>
@@ -238,16 +277,26 @@
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs93ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs93ImgInfoList[0].imgUrl+');'">
-						            </div>
+						            </div>-->
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
 											<p class="color000 font-size13">{{rowData.rcs93Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs93Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 									</div>
 								</li>
 								<li class="slide cardBox" v-show="rcs9TabFlag === 'STAB5'">
+						            <div v-for="imgIdx in rcs94ImgLimitSize" :key="imgIdx">  
+						            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs94ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+							                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs94ImgInfoList[imgIdx-1].imgUrl+');'">  
+						            		</div>
+						            		<div v-else>
+						            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            		</div>
+						            </div>		
+						            <!--								
 									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs94ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 						            </div>
@@ -256,16 +305,26 @@
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs94ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs94ImgInfoList[0].imgUrl+');'">
-						            </div>
+						            </div>-->
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
 											<p class="color000 font-size13">{{rowData.rcs94Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs94Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 									</div>
 								</li>
 								<li class="slide cardBox" v-show="rcs9TabFlag === 'STAB6'">
+						            <div v-for="imgIdx in rcs95ImgLimitSize" :key="imgIdx">  
+						            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs95ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+							                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs95ImgInfoList[imgIdx-1].imgUrl+');'">  
+						            		</div>
+						            		<div v-else>
+						            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            		</div>
+						            </div>		
+						            <!--								
 									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs95ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
 						            </div>
@@ -274,19 +333,21 @@
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs95ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs95ImgInfoList[0].imgUrl+');'">
-						            </div>
+						            </div>-->
 									<div class="relative">
 										<div class="scroll-y" style="min-height:150px">
 											<p class="color000 font-size13">{{rowData.rcs95Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs95Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+										
 									</div>
 								</li>	
 							</ul>
-									<div class="phone_04_btn6">
+									<div class="phone_04_btn280">
 										<div class="of_h consolMarginTop">
-											<div class="float-left" style="width:25%" v-for="(tab, index) in rcs9Tab" :key="tab">
+											<div class="float-left" style="width:29%" v-for="(tab, index) in rcs9Tab" :key="tab">
 												<a v-if="index === 0" class="btnStyle1 backBlack" :id="tab" style="min-width:auto; width:95%"  @click="enablePreview9(tab)">{{tab}}</a>
 												<a v-if="index !== 0" class="btnStyle1 backWhite" :id="tab" style="min-width:auto; width:95%"  @click="enablePreview9(tab)">{{tab}}</a>
 											</div>
@@ -301,7 +362,7 @@
 						<div class="phoneCardWrap">
 							<p class="color000">[WEB발신] (광고)</p>
 							<ul class="cardBxslider mt10">
-								<li class="slide cardBox" >
+								<li class="slide cardBox"  v-show="rcs9TabFlag === 'TTAB1'">
 									<!--<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs100ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 						            </div>
@@ -326,10 +387,11 @@
 											<p class="color000 font-size13">{{rowData.rcs100Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs100Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox" >
+								<li class="slide cardBox"  v-show="rcs9TabFlag === 'TTAB2'">
 									<!--<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs101ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 						            </div>
@@ -354,10 +416,11 @@
 											<p class="color000 font-size13">{{rowData.rcs101Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs101Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox" >
+								<li class="slide cardBox"  v-show="rcs9TabFlag === 'TTAB3'">
 									<!--<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs102ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 						            </div>
@@ -382,10 +445,11 @@
 											<p class="color000 font-size13">{{rowData.rcs102Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs102Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox" >
+								<li class="slide cardBox"  v-show="rcs9TabFlag === 'TTAB4'">
 									<!--<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs103ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 						            </div>
@@ -409,10 +473,11 @@
 											<p class="color000 font-size13">{{rowData.rcs103Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs103Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox" >
+								<li class="slide cardBox"  v-show="rcs9TabFlag === 'TTAB5'">
 									<!--<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs104ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 						            </div>
@@ -436,10 +501,11 @@
 											<p class="color000 font-size13">{{rowData.rcs104Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs104Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox" >
+								<li class="slide cardBox"  v-show="rcs9TabFlag === 'TTAB6'">
 									<!--<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs105ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 						            </div>
@@ -463,19 +529,21 @@
 											<p class="color000 font-size13">{{rowData.rcs105Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs105Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
 							</ul>
+							<div class="phone_04_btn280">
+								<div class="of_h consolMarginTop">
+									<div class="float-left" style="width:29%" v-for="(tab, index) in rcs10Tab" :key="tab">
+										<a v-if="index === 0" class="btnStyle1 backBlack" :id="tab" style="min-width:auto; width:95%"  @click="enablePreview10(tab)">{{tab}}</a>
+										<a v-if="index !== 0" class="btnStyle1 backWhite" :id="tab" style="min-width:auto; width:95%"  @click="enablePreview10(tab)">{{tab}}</a>
+									</div>
+					            </div>
+							</div>
 						</div>
-									<!--<div class="phone_04_btn6">
-										<div class="of_h consolMarginTop">
-											<div class="float-left" style="width:16%" v-for="(tab, index) in rcs10Tab" :key="tab">
-												<a v-if="index === 0" class="btnStyle1 backBlack" :id="tab" style="min-width:auto; width:95%"  @click="enablePreview10(tab)">{{tab}}</a>
-												<a v-if="index !== 0" class="btnStyle1 backWhite" :id="tab" style="min-width:auto; width:95%"  @click="enablePreview10(tab)">{{tab}}</a>
-											</div>
-							            </div>
-									</div>-->
+
 					</div>
 
 			    	<!-- //ctall -->
@@ -505,9 +573,8 @@
 		                  		        
 				<!-- //phoneWrap -->
 				<div class="phone_04_btn6">
-					<!--<div class="of_h consolMarginTop" v-for="(channel, index) in rowData.checkedChannel" :key="channel">-->
 					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:25%" v-for="(channel, index) in rowData.checkedChannel" :key="channel">
+						<div class="float-left" style="width:29%" v-for="(channel, index) in rowData.channelButtonArray" :key="channel">
 							<a v-if="index === 0" class="btnStyle1 backBlack" :id="channel" style="min-width:auto; width:95%"  @click="enablePreview(channel)">{{channel}}</a>
 							<a v-if="index !== 0" class="btnStyle1 backWhite" :id="channel" style="min-width:auto; width:95%"  @click="enablePreview(channel)">{{channel}}</a>
 						</div>
@@ -700,6 +767,7 @@ export default {
       default: function() {
         return {
                 'checkedChannel':[] //통합템플릿에서 선택된 comma로 구분된 채널 리스트를 배열로 넣은값
+              , 'channelButtonArray':[] //미리보기 아래 버튼구성용
               , 'chTypeList':''  //통합템플릿에서 선택된 comma로 구분된 세부 채널 리스트
               , 'tmpltCode':''
               , 'msgType':'BASE' //BASE: 텍스트, IMAGE:이미지
@@ -1014,6 +1082,14 @@ export default {
             this.rowData.checkedChannel = rtnData.chTypeList.split(',');
             
 	       for(let i = 0; i < this.rowData.checkedChannel.length; i++) {
+	       	  if(this.rowData.checkedChannel[i] === 'FRIENDTALK')  {
+	       	  	this.rowData.channelButtonArray.push("친구톡");
+	       	  }else if(this.rowData.checkedChannel[i] === 'ALIMTALK')  {
+	       	  	this.rowData.channelButtonArray.push("알림톡");
+	       	  }else{
+	       	  	this.rowData.channelButtonArray.push(this.rowData.checkedChannel[i]);
+	       	  }
+	       	  
 			  if(this.rowData.checkedChannel[i] === 'PUSH')  {
 			    this.rowData.containPushFlag = true;
 			  }
