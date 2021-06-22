@@ -4112,10 +4112,10 @@ FROM (
 			        	 ELSE ''
 			   	END AS friendTalkButton3ButtonType
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].friendtalk.buttons.suggestions[3].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].friendtalk.buttons.suggestions[3].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].friendtalk.buttons.suggestions[3].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].friendtalk.buttons.suggestions[3].action.displayText'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].friendtalk.buttons[0].suggestions[3].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].friendtalk.buttons[0].suggestions[3].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].friendtalk.buttons[0].suggestions[3].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].friendtalk.buttons[0].suggestions[3].action.displayText'
 			        	 ELSE ''
 			   	END AS friendTalkButton3DisplayText
 

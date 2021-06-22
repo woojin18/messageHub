@@ -366,15 +366,15 @@ public class SmartTemplateService {
 	        	            if(imgInfo.containsKey("fileId")) {
 	        	            	//sb.append("	\""+CommonUtils.getStrValue(imgInfo, "imgUrl")+"\" "); // 이미지
 	                			sb.append("	\"mediaUrl\" : \"{"+CommonUtils.getStrValue(imgInfo, "imgUrl")+"}\", "); //
-	                			sb.append("	\"media\" : \""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); //
-	
-	                			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcsShortButtons");
-	                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+	                			sb.append("	\"media\" : \""+CommonUtils.getStrValue(imgInfo, "fileId")+"\", "); //
 	        	            }
         	        	}else {
         	        		sb.append("	\"mediaUrl\" : \"{}\", "); //
-                			sb.append("	\"media\" : \"\" "); //
+                			sb.append("	\"media\" : \"\", "); //
         	        	}
+        	        	
+            			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcsShortButtons");
+            			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));        	        	
         	        }
         	        
         			sb.append("	}] ");
@@ -401,15 +401,15 @@ public class SmartTemplateService {
 	        	            if(imgInfo.containsKey("fileId")) {
 	        	            	//sb.append("	\""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
 	                			sb.append("	\"mediaUrl\" : \"{"+CommonUtils.getStrValue(imgInfo, "imgUrl")+"}\", "); //
-	                			sb.append("	\"media\" : \""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); //
-	                			
-	                			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcsTallButtons");
-	                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+	                			sb.append("	\"media\" : \""+CommonUtils.getStrValue(imgInfo, "fileId")+"\", "); //
 	        	            }
         	        	}else {
         	        		sb.append("	\"mediaUrl\" : \"{}\", "); //
-                			sb.append("	\"media\" : \"\" "); //
+                			sb.append("	\"media\" : \"\", "); //
         	        	}
+        	        	
+            			List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcsTallButtons");
+            			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));        	        	
         	        }
         	        
         			sb.append("	}] ");
@@ -469,7 +469,7 @@ public class SmartTemplateService {
 			                			//	sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\" "); //
 			                			//}				                			
 			                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs90Buttons");
-			                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+			                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 			        	            }
 		        	        	}else {
 		        	        		sb.append("	\"mediaUrl\" : \"{}\", "); //
@@ -481,8 +481,9 @@ public class SmartTemplateService {
 		                			//	sb.append("	\"media\" : \"\" "); //
 		                			//}	
 		                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs102Buttons");
-		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));		        	        		
+		                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));		        	        		
 		        	        	}
+		        	        	sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        }
 		        			sb.append("	} ");
 		        			if(k < rcs9CardCount-1) sb.append(", ");
@@ -512,7 +513,7 @@ public class SmartTemplateService {
 			                			//	sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\" "); //
 			                			//}	
 			                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs91Buttons");
-			                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+			                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 			        	            }
 		        	        	}else {
 		        	        		sb.append("	\"mediaUrl\" : \"{}\", "); //
@@ -524,8 +525,9 @@ public class SmartTemplateService {
 		                			//	sb.append("	\"media\" : \"\" "); //
 		                			//}	
 		                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs91Buttons");
-		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+		                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        	}
+		        	        	sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        }
 		        			sb.append("	} ");
 		        			if(k < rcs9CardCount-1) sb.append(", ");
@@ -556,7 +558,7 @@ public class SmartTemplateService {
 			                			//}	
 			                			
 			                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs92Buttons");
-			                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+			                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 			        	            }
 		        	        	}else {
 		        	        		sb.append("	\"mediaUrl\" : \"{}\", "); //
@@ -568,8 +570,9 @@ public class SmartTemplateService {
 		                			//	sb.append("	\"media\" : \"\" "); //
 		                			//}	
 		                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs92Buttons");
-		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+		                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        	}
+		        	        	sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        }
 		        			sb.append("	} ");
 		        			if(k < rcs9CardCount-1) sb.append(", ");
@@ -599,7 +602,7 @@ public class SmartTemplateService {
 			                			//	sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\" "); //
 			                			//}
 			                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs93Buttons");
-			                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+			                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 			        	            }
 		        	        	}else {
 		        	        		sb.append("	\"mediaUrl\" : \"{}\", "); //
@@ -611,8 +614,9 @@ public class SmartTemplateService {
 		                			//	sb.append("	\"media\" : \"\" "); //
 		                			//}	
 		                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs93Buttons");
-		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));			        	        		
+		                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));			        	        		
 		        	        	}
+		        	        	sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        }
 		        			sb.append("	} ");
 		        			if(k < rcs9CardCount-1) sb.append(", ");
@@ -642,7 +646,7 @@ public class SmartTemplateService {
 			                			//	sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\" "); //
 			                			//}			                			
 			                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs94Buttons");
-			                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+			                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 			        	            }
 		        	        	}else {
 		        	        		sb.append("	\"mediaUrl\" : \"{}\", "); //
@@ -654,8 +658,9 @@ public class SmartTemplateService {
 		                			//	sb.append("	\"media\" : \"\" "); //
 		                			//}	
 		                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs94Buttons");
-		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+		                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        	}
+		        	        	sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        }
 		        			sb.append("	} ");
 		        			if(k < rcs9CardCount-1) sb.append(", ");
@@ -685,7 +690,7 @@ public class SmartTemplateService {
 			                			//	sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\" "); //
 			                			//}				                			
 			                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs95Buttons");
-			                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+			                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 			        	            }
 		        	        	}else {
 		        	        		sb.append("	\"mediaUrl\" : \"{}\", "); //
@@ -697,8 +702,9 @@ public class SmartTemplateService {
 		                			//	sb.append("	\"media\" : \"\" "); //
 		                			//}	
 		                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs95Buttons");
-		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));		        	        		
+		                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));		        	        		
 		        	        	}
+		        	        	sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        }
 		        			sb.append("	} ");
 		        			//if(k < rcs9CardCount-1) sb.append(", ");
@@ -763,7 +769,7 @@ sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템�
 			                			//	sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\" "); //
 			                			//}	
 			                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs100Buttons");
-			                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+			                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 			        	            }
 		        	        	}else {
 		        	        		sb.append("	\"mediaUrl\" : \"{}\", "); //
@@ -775,8 +781,9 @@ sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템�
 		                			//	sb.append("	\"media\" : \"\" "); //
 		                			//}	
 		                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs100Buttons");
-		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));		        	        		
+		                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));		        	        		
 		        	        	}
+		        	        	sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        }
 		        			sb.append("	} ");
 		        			if(j < rcs10CardCount-1) sb.append(", ");
@@ -806,7 +813,7 @@ sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템�
 			                			//	sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\" "); //
 			                			//}			                			
 			                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs101Buttons");
-			                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+			                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 			        	            }
 		        	        	}else {
 		        	        		sb.append("	\"mediaUrl\" : \"{}\", "); //
@@ -818,8 +825,9 @@ sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템�
 		                			//	sb.append("	\"media\" : \"\" "); //
 		                			//}	
 		                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs101Buttons");
-		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));	
+		                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));	
 		        	        	}
+		        	        	sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        }
 		        			sb.append("	} ");
 		        			if(j < rcs10CardCount-1) sb.append(", ");
@@ -849,7 +857,7 @@ sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템�
 			                			//	sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\" "); //
 			                			//}			                			
 			                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs102Buttons");
-			                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+			                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 			        	            }
 		        	        	}else {
 		        	        		sb.append("	\"mediaUrl\" : \"{}\", "); //
@@ -861,8 +869,9 @@ sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템�
 		                			//	sb.append("	\"media\" : \"\" "); //
 		                			//}	
 		                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs102Buttons");
-		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));			        	        		
+		                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));			        	        		
 		        	        	}
+		        	        	sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        }
 		        			sb.append("	} ");
 		        			if(j < rcs10CardCount-1) sb.append(", ");
@@ -892,7 +901,7 @@ sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템�
 			                			//	sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\" "); //
 			                			//}				                			
 			                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs103Buttons");
-			                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+			                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 			        	            }
 		        	        	}else {
 		        	        		sb.append("	\"mediaUrl\" : \"{}\", "); //
@@ -904,8 +913,9 @@ sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템�
 		                			//	sb.append("	\"media\" : \"\" "); //
 		                			//}	
 		                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs103Buttons");
-		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));			        	        		
+		                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));			        	        		
 		        	        	}
+		        	        	sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        }
 		        			sb.append("	} ");
 		        			if(j < rcs10CardCount-1) sb.append(", ");
@@ -935,7 +945,7 @@ sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템�
 			                			//	sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\" "); //
 			                			//}				                			
 			                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs104Buttons");
-			                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+			                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 			        	            }
 		        	        	}else {
 		        	        		sb.append("	\"mediaUrl\" : \"{}\", "); //
@@ -947,8 +957,9 @@ sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템�
 		                			//	sb.append("	\"media\" : \"\" "); //
 		                			//}	
 		                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs104Buttons");
-		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));		        	        		
+		                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));		        	        		
 		        	        	}
+		        	        	sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        }
 		        			sb.append("	} ");
 		        			if(j < rcs10CardCount-1) sb.append(", ");
@@ -978,7 +989,7 @@ sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템�
 			                			//	sb.append("	\"media\" : \""+imgInfo.get("fileId")+"\" "); //
 			                			//}				                			
 			                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs105Buttons");
-			                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+			                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 			        	            }
 		        	        	}else {
 		        	        		sb.append("	\"mediaUrl\" : \"{}\", "); //
@@ -990,8 +1001,9 @@ sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템�
 		                			//	sb.append("	\"media\" : \"\" "); //
 		                			//}	
 		                			//List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get("rcs105Buttons");
-		                			sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));		        	        		
+		                			//sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));		        	        		
 		        	        	}
+		        	        	sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
 		        	        }
 		        			sb.append("	} ");
         				}
