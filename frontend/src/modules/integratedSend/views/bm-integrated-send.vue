@@ -190,7 +190,7 @@ export default {
 
     //통합 전송 화면으로 이동  
     async fnProcSmartSend(){
-    	console.log("this.chkBox : "+this.chkBox);
+    	//console.log("this.chkBox : "+this.chkBox);
       if(this.chkBox == null || this.chkBox == ''){
         confirm.fnAlert(this.componentsTitle, '전송할 항목을 선택해주세요.');
         return;

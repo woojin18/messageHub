@@ -301,8 +301,8 @@
 						<div class="phoneCardWrap">
 							<p class="color000">[WEB발신] (광고)</p>
 							<ul class="cardBxslider mt10">
-								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB1'">
-									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs100ImgInfoList[0])" class="phoneText2 mt10 text-center">
+								<li class="slide cardBox" >
+									<!--<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs100ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs100ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
@@ -310,7 +310,17 @@
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs100ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs100ImgInfoList[0].imgUrl+');'">
+						            </div>-->
+						            
+						            <div v-for="imgIdx in rcs100ImgLimitSize" :key="imgIdx">  
+						            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs100ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+							                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs100ImgInfoList[imgIdx-1].imgUrl+');'">  
+						            		</div>
+						            		<div v-else>
+						            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            		</div>
 						            </div>
+						            
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
 											<p class="color000 font-size13">{{rowData.rcs100Title}}</p>
@@ -319,8 +329,8 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB2'">
-									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs101ImgInfoList[0])" class="phoneText2 mt10 text-center">
+								<li class="slide cardBox" >
+									<!--<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs101ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs101ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
@@ -328,7 +338,17 @@
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs101ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs101ImgInfoList[0].imgUrl+');'">
-						            </div>
+						            </div>-->
+						            
+						            <div v-for="imgIdx in rcs101ImgLimitSize" :key="imgIdx">  
+						            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs101ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+							                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs101ImgInfoList[imgIdx-1].imgUrl+');'">  
+						            		</div>
+						            		<div v-else>
+						            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            		</div>
+						            </div>	
+						            
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
 											<p class="color000 font-size13">{{rowData.rcs101Title}}</p>
@@ -337,8 +357,8 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB3'">
-									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs102ImgInfoList[0])" class="phoneText2 mt10 text-center">
+								<li class="slide cardBox" >
+									<!--<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs102ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs102ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
@@ -346,7 +366,17 @@
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs102ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs102ImgInfoList[0].imgUrl+');'">
+						            </div>-->
+						            
+						            <div v-for="imgIdx in rcs102ImgLimitSize" :key="imgIdx">  
+						            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs102ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+							                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs102ImgInfoList[imgIdx-1].imgUrl+');'">  
+						            		</div>
+						            		<div v-else>
+						            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            		</div>
 						            </div>
+						            
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
 											<p class="color000 font-size13">{{rowData.rcs102Title}}</p>
@@ -355,8 +385,8 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB4'">
-									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs103ImgInfoList[0])" class="phoneText2 mt10 text-center">
+								<li class="slide cardBox" >
+									<!--<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs103ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs103ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
@@ -364,7 +394,16 @@
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs103ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs103ImgInfoList[0].imgUrl+');'">
-						            </div>
+						            </div>-->
+
+						            <div v-for="imgIdx in rcs103ImgLimitSize" :key="imgIdx">  
+						            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs103ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+							                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs103ImgInfoList[imgIdx-1].imgUrl+');'">  
+						            		</div>
+						            		<div v-else>
+						            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            		</div>
+						            </div>					            
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
 											<p class="color000 font-size13">{{rowData.rcs103Title}}</p>
@@ -373,8 +412,8 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB5'">
-									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs104ImgInfoList[0])" class="phoneText2 mt10 text-center">
+								<li class="slide cardBox" >
+									<!--<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs104ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs104ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
@@ -382,7 +421,16 @@
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs104ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs104ImgInfoList[0].imgUrl+');'">
-						            </div>
+						            </div>-->
+						            
+						            <div v-for="imgIdx in rcs104ImgLimitSize" :key="imgIdx">  
+						            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs104ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+							                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs104ImgInfoList[imgIdx-1].imgUrl+');'">  
+						            		</div>
+						            		<div v-else>
+						            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            		</div>
+						            </div>							            
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
 											<p class="color000 font-size13">{{rowData.rcs104Title}}</p>
@@ -391,8 +439,8 @@
 										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
-								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB6'">
-									<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs105ImgInfoList[0])" class="phoneText2 mt10 text-center">
+								<li class="slide cardBox" >
+									<!--<div v-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs105ImgInfoList[0])" class="phoneText2 mt10 text-center">
 						                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && this.$gfnCommonUtils.isEmpty(rowData.rcs105ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
@@ -400,7 +448,16 @@
 						            </div>
 						            <div v-else-if="rowData.msgType == 'IMAGE' && !this.$gfnCommonUtils.isEmpty(rowData.rcs105ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
 						                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs105ImgInfoList[0].imgUrl+');'">
-						            </div>
+						            </div>-->
+						            
+						            <div v-for="imgIdx in rcs105ImgLimitSize" :key="imgIdx">  
+						            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs105ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+							                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs105ImgInfoList[imgIdx-1].imgUrl+');'">  
+						            		</div>
+						            		<div v-else>
+						            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+						            		</div>
+						            </div>							            
 									<div class="relative">
 										<div class="scroll-y6" style="min-height:140px">
 											<p class="color000 font-size13">{{rowData.rcs105Title}}</p>
@@ -411,15 +468,16 @@
 								</li>
 							</ul>
 						</div>
-									<div class="phone_04_btn6">
+									<!--<div class="phone_04_btn6">
 										<div class="of_h consolMarginTop">
 											<div class="float-left" style="width:16%" v-for="(tab, index) in rcs10Tab" :key="tab">
 												<a v-if="index === 0" class="btnStyle1 backBlack" :id="tab" style="min-width:auto; width:95%"  @click="enablePreview10(tab)">{{tab}}</a>
 												<a v-if="index !== 0" class="btnStyle1 backWhite" :id="tab" style="min-width:auto; width:95%"  @click="enablePreview10(tab)">{{tab}}</a>
 											</div>
 							            </div>
-									</div>
+									</div>-->
 					</div>
+
 			    	<!-- //ctall -->
 			    				    	
 		        	<!-- friendTalk -->
@@ -593,7 +651,10 @@
 	
 	<!-- //본문 -->
   </div>
+
 </template>
+
+
 
 <script>
 import integratedSendApi from "@/modules/integratedSend/service/integratedSendApi.js";
@@ -845,14 +906,32 @@ export default {
   mounted() {
     
     this.fnSetIntegratedTemplateInfo();
+    this.init();
   },
 
   methods: {
         
+    init() {
+		var slider = jQuery('.cardBxslider').bxSlider({
+			auto: false,
+			autoControls: false,
+			slideWidth: 204,
+			minSlides: 1,
+			maxSlides: 2,
+			slideMargin: 10,
+			controls: true,
+			pager: true,
+			pagerType: 'short',
+			touchEnabled : (navigator.maxTouchPoints > 0),
+			autoHover: false,
+			pause: 6000
+		});    
+    },
+    
    async fnIntegratedSend(){
       var params = this.rowData;
 
-      console.log("fnSaveIntegratedTemplate params : ",params);
+      //console.log("fnSaveIntegratedTemplate params : ",params);
 
       //유효성 검사
       //if(this.fnIsValid() == false) return;
@@ -916,7 +995,7 @@ export default {
 
     //template 정보 조회
     fnSetIntegratedTemplateInfo(){
-    	console.log("this.tmpltCode : "+this.tmpltCodeP);
+    	//console.log("this.tmpltCode : "+this.tmpltCodeP);
       if(!this.$gfnCommonUtils.isEmpty(this.tmpltCodeP)){
         this.fnSelectIntegratedTemplateInfo();
       }
@@ -940,8 +1019,8 @@ export default {
 			  }
 			}
 		
-            console.log("containPushFlag : "+this.rowData.containPushFlag);
-            console.log("checkedChannel[0] : "+this.rowData.checkedChannel[0]);
+            //console.log("containPushFlag : "+this.rowData.containPushFlag);
+            //console.log("checkedChannel[0] : "+this.rowData.checkedChannel[0]);
             this.channelType = this.rowData.checkedChannel[0];
             this.previewRcsMessageType = rtnData.rcsPrdType;
             
@@ -961,8 +1040,8 @@ export default {
             this.rowData.pushSend 				= rtnData.pushSendType;
             this.rowData.pushHowToDenyReceipt 	= rtnData.pushRcvblcInput;//수신거부방법
             
-            console.log(">>>>>>>>>>>>>>>>this.rowData.pushAppId : "+this.rowData.pushAppId);
-            console.log(">>>>>>>>>>>>>>>>this.rowData.pushContent : "+this.rowData.pushContent);
+            //console.log(">>>>>>>>>>>>>>>>this.rowData.pushAppId : "+this.rowData.pushAppId);
+            //console.log(">>>>>>>>>>>>>>>>this.rowData.pushContent : "+this.rowData.pushContent);
             
 //RCS DATA SET            
             
@@ -994,7 +1073,7 @@ export default {
 				this.rcsTemplateTable = 10;
 				this.rcsTemplateTableChecked = 10;
 			}
-			console.log(">>>>>>>>>>>>>>>>this.rcsTemplateTable : "+this.rcsTemplateTable);
+			//console.log(">>>>>>>>>>>>>>>>this.rcsTemplateTable : "+this.rcsTemplateTable);
 			
            if(rtnData.rcsPrdType == 'FREE'){
 	 			this.rowData.rcs0Content 			= rtnData.rcsBodyDescription;
@@ -1026,10 +1105,10 @@ export default {
 	            
 	            this.rowData.rcsShortImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});   
 	            
-	            console.log("rcs short rcsShortTitle"+this.rowData.rcsShortTitle);
-	            console.log("rcs short rcsShortContent"+this.rowData.rcsShortContent);
-	            console.log("rcs short rcsShortHowToDenyReceipt"+this.rowData.rcsShortHowToDenyReceipt);
-	            console.log("rcs short rcsShortCallback"+this.rowData.rcsShortCallback); 
+	            //console.log("rcs short rcsShortTitle"+this.rowData.rcsShortTitle);
+	            //console.log("rcs short rcsShortContent"+this.rowData.rcsShortContent);
+	            //console.log("rcs short rcsShortHowToDenyReceipt"+this.rowData.rcsShortHowToDenyReceipt);
+	            //console.log("rcs short rcsShortCallback"+this.rowData.rcsShortCallback); 
 			}
 
 
@@ -1042,10 +1121,10 @@ export default {
 	            
 	            this.rowData.rcsTallImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
 	            
-	            console.log("rcs short rcsTallTitle"+this.rowData.rcsTallTitle);
-	            console.log("rcs short rcsTallContent"+this.rowData.rcsTallContent);
-	            console.log("rcs short rcsTallHowToDenyReceipt"+this.rowData.rcsTallHowToDenyReceipt);
-	            console.log("rcs short rcsTallCallback"+this.rowData.rcsTallCallback); 
+	            //console.log("rcs short rcsTallTitle"+this.rowData.rcsTallTitle);
+	            //console.log("rcs short rcsTallContent"+this.rowData.rcsTallContent);
+	            //console.log("rcs short rcsTallHowToDenyReceipt"+this.rowData.rcsTallHowToDenyReceipt);
+	            //console.log("rcs short rcsTallCallback"+this.rowData.rcsTallCallback); 
 			}
 
             if(rtnData.rcsPrdType == 'CSHORT'){
@@ -1271,7 +1350,7 @@ export default {
         this.fnDelDuplRecvInfo();
 
         this.recvCnt = this.rowData.recvInfoLst.length;
-        console.log("rowData.recvInfoLst.length : "+this.rowData.recvInfoLst.length);
+        //console.log("rowData.recvInfoLst.length : "+this.rowData.recvInfoLst.length);
         this.rowData.cuInfo = JSON.stringify(this.rowData.recvInfoLst);
       } else {
         this.recvCnt = 0;
@@ -1514,12 +1593,12 @@ export default {
 
     fnTextLength(title, sid, tid, len){
       var val = jQuery(sid).val();
-      console.log("val : "+val.length);
+      //console.log("val : "+val.length);
       if(val.length > len){
         var msg = title + '의 최대 입력 길이는 ' + len + '입니다.';
         alert(msg);
         var temp = val.substr(0,len);
-        console.log("temp : "+temp.length);
+        //console.log("temp : "+temp.length);
         jQuery(sid).val(temp);
         val = jQuery(sid).val();
       }
@@ -1555,3 +1634,5 @@ export default {
   }
 }
 </script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>

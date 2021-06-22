@@ -217,7 +217,7 @@ export default {
 
     //스마트 전송 화면으로 이동  
     async fnProcSmartSend(){
-    	console.log("this.chkBox : "+this.chkBox);
+    	//console.log("this.chkBox : "+this.chkBox);
       if(this.chkBox == null || this.chkBox == ''){
         confirm.fnAlert(this.componentsTitle, '전송할 항목을 선택해주세요.');
         return;
@@ -246,7 +246,7 @@ export default {
         var productCodeTemp = event.target.value;
         this.productCode = productCodeTemp;
         this.checkSmartProduct = true;//스마트 템플릿 등록버튼 Show
-        console.log("11>>>>>>>>>>>>>>>fnSelectSmart productCodeTemp : "+productCodeTemp);
+        //console.log("11>>>>>>>>>>>>>>>fnSelectSmart productCodeTemp : "+productCodeTemp);
     	this.fnSelectSmartTemplateList(productCodeTemp);
     },
     
@@ -273,6 +273,7 @@ export default {
 
       params.loginId = tokenSvc.getToken().principal.userId;
       params.roleCd = tokenSvc.getToken().principal.roleCd
+      params.tmpltStatus = "COMPLETE";
       await smartTemplateApi.selectSmartTemplateList(params).then(response =>{
         var result = response.data;
         if(result.success) {

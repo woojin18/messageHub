@@ -5,7 +5,7 @@
 
     <sql id ="whereSelectSmartTemplateList">
         <!-- AND A.CORP_ID = #{corpId} -->
-        AND A.TMPLT_STATUS = 'SAVE'
+        AND A.TMPLT_STATUS = #{tmpltStatus}
         AND A.TMPLT_TYPE = 'S'
 		AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
         <if test="searchText != null and searchText != '' ">
@@ -451,7 +451,7 @@ FROM(
 SELECT M.PROJECT_ID, M.TMPLT_CODE, M.MSG_KIND, M.MSG_KIND_NAME, M.MSG_TYPE
      , M.MSG_TYPE_NAME, M.TMPLT_TITLE, M.TMPLT_TYPE, M.otherProjectUseYn
      , M.USE_YN, M.chTypeList, M.CHECKED_CHANNEL
-		 , M.PRODUCT_NAME
+	 , M.PRODUCT_CODE, M.PRODUCT_NAME
 	 , M.pushMsg, M.pushAppId, M.pushTitle, M.pushFileId, M.pushSendType, M.pushRcvblcInput
 
 	 , M.PUSH_CH_IMG_URL
@@ -848,7 +848,7 @@ SELECT M.PROJECT_ID, M.TMPLT_CODE, M.MSG_KIND, M.MSG_KIND_NAME, M.MSG_TYPE
 	 , M.MMS_CH_IMG_URL0
 	 , M.MMS_CH_IMG_URL1
 FROM(
-SELECT T.PROJECT_ID, T.TMPLT_CODE, T.MSG_KIND, T.MSG_KIND_NAME, T.MSG_TYPE
+SELECT T.PROJECT_ID, T.TMPLT_CODE, T.MSG_KIND, T.MSG_KIND_NAME, T.MSG_TYPE, T.PRODUCT_CODE
      , T.MSG_TYPE_NAME, T.TMPLT_TITLE, T.TMPLT_INFO, T.TMPLT_TYPE, T.otherProjectUseYn
      , T.USE_YN, T.chTypeList, T.CHECKED_CHANNEL
 	 , punit.PRODUCT_NAME

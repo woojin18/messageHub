@@ -59,51 +59,6 @@ public class SmartSendController {
 		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
 	}
 
-	/**
-	 * 스마트 템플릿 리스트 조회
-	 *
-	 * @param request
-	 * @param response
-	 * @param params
-	 * @return
-	 */
-	@PostMapping("/selectSmartSendList")
-	public RestResult<?> selectSmartSendList(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody Map<String, Object> params) {
-		RestResult<Object> rtn = new RestResult<Object>();
-		try {
-			rtn = smartSendService.selectSmartSendList(params);
-		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
-		}
-
-		return rtn;
-	}
-
-	/**
-	 * 스마트 템플릿 단건 조회
-	 *
-	 * @param request
-	 * @param response
-	 * @param params
-	 * @return
-	 */
-	@PostMapping("/selectSmartSendInfo")
-	public RestResult<?> selectSmartSendInfo(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody Map<String, Object> params) {
-		RestResult<Object> rtn = new RestResult<Object>();
-		try {
-			rtn = smartSendService.selectSmartSendInfo(params);
-		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
-		}
-
-		return rtn;
-	}
 
     /**
      * 스마트 발송처리
@@ -159,29 +114,34 @@ public class SmartSendController {
             if(StringUtils.equals(payType, Const.COMM_YES)) {
                 //남은 금액 조회
                 BigDecimal rmAmount = smartSendService.getRmAmount(params);
-//System.out.println("smartSendController 042  rmAmount: "+rmAmount);                
+System.out.println("smartSendController 042  rmAmount: "+rmAmount);                
                 //개당 가격 조회
                 List<String> productCodes = new ArrayList<String>();
                 
-                String[] chTypeArr = (CommonUtils.getStrValue(params, "chTypeList")).split(",");
-                for(String s : chTypeArr) {
-//System.out.println("chTypeArr : "+s);
-					if(s.equalsIgnoreCase("PUSH")) productCodes.add(Const.MsgProductCode.getType(Const.Ch.PUSH));
-					if(s.equalsIgnoreCase("RCS")) productCodes.add(Const.MsgProductCode.getType(Const.Ch.RCS));
-					if(s.equalsIgnoreCase("SMSMMS")) {
-						if((CommonUtils.getStrValue(params, "smsSendType")).equalsIgnoreCase("S")) {
-							productCodes.add(Const.MsgProductCode.getType(Const.Ch.SMS));
-						}else if((CommonUtils.getStrValue(params, "smsSendType")).equalsIgnoreCase("M")) {
-							productCodes.add(Const.MsgProductCode.getType(Const.Ch.MMS));
-						}
-					}
-					if(s.equalsIgnoreCase("FRIENDTALK")) {
-						productCodes.add(Const.MsgProductCode.getType(Const.Ch.FRIENDTALK));
-					}
-					if(s.equalsIgnoreCase("ALIMTALK")) {
-						productCodes.add(Const.MsgProductCode.getType(Const.Ch.ALIMTALK));
-					}
-                }
+                //cm_bo.CM_PRODUCT_UNIT WHERE SMART_CH_PRODUCT_YN = 'Y' 에서
+                //PREE_FEE 정보를 가져온다
+System.out.println("smartSendController 042-1  productCode: "+CommonUtils.getStrValue(params, "productCode"));                
+                productCodes.add(CommonUtils.getStrValue(params, "productCode"));
+                //스마트 전송은 아래 개별 사항이 필요없음
+//                String[] chTypeArr = (CommonUtils.getStrValue(params, "chTypeList")).split(",");
+//                for(String s : chTypeArr) {
+//
+//					if(s.equalsIgnoreCase("PUSH")) productCodes.add(Const.MsgProductCode.getType(Const.Ch.PUSH));
+//					if(s.equalsIgnoreCase("RCS")) productCodes.add(Const.MsgProductCode.getType(Const.Ch.RCS));
+//					if(s.equalsIgnoreCase("SMSMMS")) {
+//						if((CommonUtils.getStrValue(params, "smsSendType")).equalsIgnoreCase("S")) {
+//							productCodes.add(Const.MsgProductCode.getType(Const.Ch.SMS));
+//						}else if((CommonUtils.getStrValue(params, "smsSendType")).equalsIgnoreCase("M")) {
+//							productCodes.add(Const.MsgProductCode.getType(Const.Ch.MMS));
+//						}
+//					}
+//					if(s.equalsIgnoreCase("FRIENDTALK")) {
+//						productCodes.add(Const.MsgProductCode.getType(Const.Ch.FRIENDTALK));
+//					}
+//					if(s.equalsIgnoreCase("ALIMTALK")) {
+//						productCodes.add(Const.MsgProductCode.getType(Const.Ch.ALIMTALK));
+//					}
+//                }
                 
                 if(params.containsKey("rplcSendType")
                         && !CommonUtils.isEmptyValue(params, "rplcSendType")
@@ -194,8 +154,8 @@ public class SmartSendController {
                 sParam.put("productCodes", productCodes);
                 BigDecimal feePerOne = smartSendService.selectMsgFeePerOne(sParam);
                 BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
-//System.out.println("smartSendController 043  feePerOne: "+feePerOne);   
-//System.out.println("smartSendController 044  feePerAll: "+feePerAll);   
+System.out.println("smartSendController 043  feePerOne: "+feePerOne);   
+System.out.println("smartSendController 044  feePerAll: "+feePerAll);   
                 if(rmAmount.compareTo(feePerAll) < 0) {
                     if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                         rtn.setSuccess(false);

@@ -64,7 +64,8 @@
 					<div class="of_h consolMarginTop">
 						<div class="inline-block" style="width:13%"><h4>상품명</h4></div>
 						<div class="inline-block" style="width:34%">
-							<input type="text" class="inputStyle vertical-top ml10" id="temp1" name="temp1" v-model="rowData.productName" style="width:95%" readOnly>								
+							<input type="text" class="inputStyle vertical-top ml10" id="temp1" name="temp1" v-model="rowData.productName" style="width:95%" readOnly>
+							<input type="hidden" class="inputStyle vertical-top ml10" id="temp11" name="temp11" v-model="rowData.productCode">							
 						</div>
 						<div class="float-right" style="width:50%">
 							<div class="inline-block" style="width:13%"><h4>메시지 구분</h4></div>
@@ -211,12 +212,13 @@
         </div>
         <div class="of_h">
           <div class="float-left" style="width:13%"><h4>제목</h4></div>
-          <div class="float-left" style="width:57%"><input type="text" class="inputStyle" name="pushTitle" v-model="rowData.pushTitle" placeholder="최대 50자 입력 가능합니다."></div>
+          <div class="float-left" style="width:57%"><input type="text" class="inputStyle" name="pushTitle" v-model="rowData.pushTitle" id="pushTitleId" placeholder="최대 50자 입력 가능합니다." @keyup="fnTextLength('제목', '#pushTitleId', '', '50')"></div>
         </div>
         <div class="of_h">
           <div class="float-left" style="width:13%"><h4>내용*</h4></div>
           <div class="float-left" style="width:57%">
-            <textarea class="textareaStyle height190" name="pushContent" v-model="rowData.pushContent" ></textarea>
+            <textarea class="textareaStyle height190" name="pushContent" v-model="rowData.pushContent" :placeholder="pushPlaceHoder" id="pushContentId" @keyup="fnTextLength('내용', '#pushContentId', '#pushTextLength', '512')"></textarea>
+            <strong class="letter" id="pushTextLength">(00 / 512)</strong>
             <p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
           </div>
         </div>
@@ -363,7 +365,7 @@
 	          <div class="of_h consolMarginTop">
 					<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 		            <div class="float-left" style="width:57%">
-		              <textarea class="textareaStyle height190" v-model="rowData.rcs0Content"></textarea>
+		              <textarea class="textareaStyle height190" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder"></textarea>
 		            </div>
 			  </div>
 			  
@@ -419,7 +421,7 @@
             <div class="of_h">
               <div class="float-left" style="width:13%"><h4>내용*</h4></div>
               <div class="float-left" style="width:57%">
-                <textarea class="textareaStyle height190"  v-model="rowData.rcs1Content" id="rcs1ContentId" readOnly></textarea>
+                <textarea class="textareaStyle height190"  v-model="rowData.rcs1Content" :placeholder="rcsPlaceHoder" id="rcs1ContentId" readOnly></textarea>
                 <strong class="letter" id="rcs1TextLength">(00 / 90)</strong>
               </div>
             </div>
@@ -586,7 +588,7 @@
             <div class="of_h">
               <div class="float-left" style="width:13%"><h4>내용*</h4></div>
               <div class="float-left" style="width:57%">
-                <textarea class="textareaStyle height190" maxlength="100" v-model="rowData.rcsSMSContent" id="rcsSMSContentId" @keyup="fnTextLength('내용', '#rcsSMSContentId', '#rcsSMSTextLength', '1300')"></textarea>
+                <textarea class="textareaStyle height190" maxlength="100" v-model="rowData.rcsSMSContent" :placeholder="rcsPlaceHoder" id="rcsSMSContentId" @keyup="fnTextLength('내용', '#rcsSMSContentId', '#rcsSMSTextLength', '1300')"></textarea>
                 <strong class="letter" id="rcsSMSTextLength">(00 / 1300)</strong>
               </div>
             </div>
@@ -690,7 +692,7 @@
             <div class="of_h">
               <div class="float-left" style="width:13%"><h4>내용*</h4></div>
               <div class="float-left" style="width:57%">
-                <textarea class="textareaStyle height190" maxlength="1300" v-model="rowData.rcsLMSContent" id="rcsLMSContentId" @keyup="fnTextLength('내용', '#rcsLMSContentId', '#rcsLMSTextLength', '1300')"></textarea>
+                <textarea class="textareaStyle height190" maxlength="1300" v-model="rowData.rcsLMSContent" :placeholder="rcsPlaceHoder" id="rcsLMSContentId" @keyup="fnTextLength('내용', '#rcsLMSContentId', '#rcsLMSTextLength', '1300')"></textarea>
                 <strong class="letter" id="rcsLMSTextLength">(00 / 1300)</strong>
               </div>
             </div>
@@ -819,7 +821,7 @@
             <div class="of_h">
               <div class="float-left" style="width:13%"><h4>내용*</h4></div>
               <div class="float-left" style="width:57%">
-                <textarea class="textareaStyle height190" v-model="rowData.rcsShortContent" id="rcsShortContentId" @keyup="fnTextLength('내용', '#rcsShortContentId', '#rcsShortTextLength', '1300')"></textarea>
+                <textarea class="textareaStyle height190" v-model="rowData.rcsShortContent" :placeholder="rcsPlaceHoder" id="rcsShortContentId" @keyup="fnTextLength('내용', '#rcsShortContentId', '#rcsShortTextLength', '1300')"></textarea>
                 <strong class="letter" id="rcsShortTextLength">(00 / 1300)</strong>
               </div>
             </div>
@@ -966,7 +968,7 @@
             <div class="of_h">
               <div class="float-left" style="width:13%"><h4>내용*</h4></div>
               <div class="float-left" style="width:57%">
-                <textarea class="textareaStyle height190" v-model="rowData.rcsTallContent" id="rcsTallContentId" @keyup="fnTextLength('내용', '#rcsTallContentId', '#rcsTallTextLength', '1300')"></textarea>
+                <textarea class="textareaStyle height190" v-model="rowData.rcsTallContent" :placeholder="rcsPlaceHoder" id="rcsTallContentId" @keyup="fnTextLength('내용', '#rcsTallContentId', '#rcsTallTextLength', '1300')"></textarea>
                 <strong class="letter" id="rcsTallTextLength">(00 / 1300)</strong>
               </div>
             </div>
@@ -1284,7 +1286,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs90Content" id="rcs90ContentId" @keyup="fnTextLength('내용', '#rcs90ContentId', '#rcs90TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs90Content" :placeholder="rcsPlaceHoder" id="rcs90ContentId" @keyup="fnTextLength('내용', '#rcs90ContentId', '#rcs90TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs90TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -1367,7 +1369,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs91Content" id="rcs91ContentId" @keyup="fnTextLength('내용', '#rcs91ContentId', '#rcs91TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs91Content" :placeholder="rcsPlaceHoder" id="rcs91ContentId" @keyup="fnTextLength('내용', '#rcs91ContentId', '#rcs91TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs91TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -1451,7 +1453,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs92Content" id="rcs92ContentId" @keyup="fnTextLength('내용', '#rcs92ContentId', '#rcs92TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs92Content" :placeholder="rcsPlaceHoder" id="rcs92ContentId" @keyup="fnTextLength('내용', '#rcs92ContentId', '#rcs92TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs92TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -1536,7 +1538,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs93Content" id="rcs93ContentId" @keyup="fnTextLength('내용', '#rcs93ContentId', '#rcs93TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs93Content" :placeholder="rcsPlaceHoder" id="rcs93ContentId" @keyup="fnTextLength('내용', '#rcs93ContentId', '#rcs93TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs93TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -1621,7 +1623,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs94Content" id="rcs94ContentId" @keyup="fnTextLength('내용', '#rcs94ContentId', '#rcs94TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs94Content" :placeholder="rcsPlaceHoder" id="rcs94ContentId" @keyup="fnTextLength('내용', '#rcs94ContentId', '#rcs94TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs94TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -1706,7 +1708,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs95Content" id="rcs95ContentId" @keyup="fnTextLength('내용', '#rcs95ContentId', '#rcs95TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs95Content" :placeholder="rcsPlaceHoder" id="rcs95ContentId" @keyup="fnTextLength('내용', '#rcs95ContentId', '#rcs95TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs95TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -2034,7 +2036,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs100Content" id="rcs100ContentId" @keyup="fnTextLength('내용', '#rcs100ContentId', '#rcs100TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs100Content" :placeholder="rcsPlaceHoder" id="rcs100ContentId" @keyup="fnTextLength('내용', '#rcs100ContentId', '#rcs100TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs100TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -2127,7 +2129,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs101Content" id="rcs101ContentId" @keyup="fnTextLength('내용', '#rcs101ContentId', '#rcs101TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs101Content" :placeholder="rcsPlaceHoder" id="rcs101ContentId" @keyup="fnTextLength('내용', '#rcs101ContentId', '#rcs101TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs101TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -2210,7 +2212,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs102Content" id="rcs102ContentId" @keyup="fnTextLength('내용', '#rcs102ContentId', '#rcs102TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs102Content" :placeholder="rcsPlaceHoder" id="rcs102ContentId" @keyup="fnTextLength('내용', '#rcs102ContentId', '#rcs102TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs102TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -2295,7 +2297,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs103Content" id="rcs103ContentId" @keyup="fnTextLength('내용', '#rcs103ContentId', '#rcs103TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs103Content" :placeholder="rcsPlaceHoder" id="rcs103ContentId" @keyup="fnTextLength('내용', '#rcs103ContentId', '#rcs103TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs103TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -2380,7 +2382,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs104Content" id="rcs104ContentId" @keyup="fnTextLength('내용', '#rcs104ContentId', '#rcs104TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs104Content" :placeholder="rcsPlaceHoder" id="rcs104ContentId" @keyup="fnTextLength('내용', '#rcs104ContentId', '#rcs104TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs104TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -2465,7 +2467,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs105Content" id="rcs105ContentId" @keyup="fnTextLength('내용', '#rcs105ContentId', '#rcs105TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs105Content" :placeholder="rcsPlaceHoder" id="rcs105ContentId" @keyup="fnTextLength('내용', '#rcs105ContentId', '#rcs105TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs105TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -2632,7 +2634,7 @@
 					<div class="of_h consolMarginTop">
 						<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 						<div class="float-left" style="width:59%">
-							<textarea class="textareaStyle height190" placeholder="" v-model="rowData.friendTalkContent"></textarea>
+							<textarea class="textareaStyle height190" :placeholder="kakaoPlaceHoder" v-model="rowData.friendTalkContent"></textarea>
 						</div>
 					</div>					
 
@@ -2726,7 +2728,7 @@
 					<div class="of_h consolMarginTop">
 						<div class="float-left" style="width:15%"><h4>내용*</h4></div>
 						<div class="float-left" style="width:57%">
-							<textarea class="textareaStyle height190" placeholder="" v-model="rowData.alimTalkContent" readOnly></textarea>
+							<textarea class="textareaStyle height190" :placeholder="kakaoPlaceHoder" v-model="rowData.alimTalkContent" readOnly></textarea>
 							
 						</div>
 					</div>
@@ -2849,7 +2851,7 @@
 						<div class="of_h" >
 							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 							<div class="float-left" style="width:57%">
-								<textarea class="textareaStyle height190" placeholder="" v-model="rowData.smsContent" id="smsContent" @keyup="fnByteLength('내용', '#smsContent', '#smsTextLength', '90')"  key="smsContent0"></textarea>
+								<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" id="smsContent" @keyup="fnByteLength('내용', '#smsContent', '#smsTextLength', '90')"  key="smsContent0"></textarea>
 								<strong class="letter" id="smsTextLength" key="smsTextLength0">00 / 90 Byte</strong>
 							</div>
 						</div>
@@ -2866,7 +2868,7 @@
 						<div class="of_h" >
 							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 							<div class="float-left" style="width:57%">
-								<textarea class="textareaStyle height190" placeholder="" v-model="rowData.smsContent" id="smsContent" @keyup="fnByteLength('내용', '#smsContent', '#smsTextLength', '2000')" key="smsContent1"></textarea>
+								<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" id="smsContent" @keyup="fnByteLength('내용', '#smsContent', '#smsTextLength', '2000')" key="smsContent1"></textarea>
 								<strong class="letter" id="smsTextLength" key="smsTextLength1">00 / 2000 Byte</strong>
 							</div>
 						</div>					
@@ -3089,6 +3091,7 @@ export default {
               , 'smsImgInfoList':[] //sms/mms이미지정보
               
               , 'smsSendType': ''  //sms/mms 발송유형
+              , 'productCode': '' //스마트 상품코드
               , 'productName': '' //스마트 상품명
               , 'msgKindName': ''
               } 
@@ -3248,6 +3251,11 @@ export default {
 
       useYn : 'Y',
       brandNmList: [],		// 브랜드 명 selectBox
+      
+      pushPlaceHoder: 	"변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오. \n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
+      rcsPlaceHoder: 	"변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오. \n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
+      kakaoPlaceHoder: 	"변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오. \n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
+      smsmmsPlaceHoder: "변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오. \n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",      
 
     }
   },
@@ -3292,7 +3300,7 @@ export default {
 
     fnSetSmartBaseInfo(){
       if(!this.isEmpty(this.productCodeP)){
-        this.fnSelectSmartBaseInfo();
+      	this.fnSelectSmartBaseInfo();
       }
     },
 
@@ -3309,8 +3317,8 @@ export default {
 	            this.rowData.checkedChannel = rtnData.chGrpList.split(',');
 	            this.rowData.chTypeList = rtnData.chTypeList.split(',');
 	            for(var i=0; i < this.rowData.checkedChannel.length; i++){
-	            console.log("this.rowData.checkedChannel["+i+"] : " + this.rowData.checkedChannel[i]);	
-	            console.log("this.rowData.chTypeList["+i+"] : " + this.rowData.chTypeList[i]);	
+	            //console.log("this.rowData.checkedChannel["+i+"] : " + this.rowData.checkedChannel[i]);	
+	            //console.log("this.rowData.chTypeList["+i+"] : " + this.rowData.chTypeList[i]);	
 	            	if(this.rowData.checkedChannel[i] == 'PUSH'){
 	            		this.channelTab = 0;
 	            		this.checkedPush = true;
@@ -3321,7 +3329,7 @@ export default {
 	            	}else if(this.rowData.checkedChannel[i] == 'FRIENDTALK' || this.rowData.checkedChannel[i] == 'ALIMTALK'){
 	            		this.channelTab = 2;
 	            		this.checkedKakao = true;
-console.log("this.checkedKakao : " + this.checkedKakao);	
+//console.log("this.checkedKakao : " + this.checkedKakao);	
 	            		if(this.rowData.checkedChannel[i] == 'FRIENDTALK' ) this.kakaoTemplateTable = 0;
 	            		if(this.rowData.checkedChannel[i] == 'ALIMTALK' ) this.kakaoTemplateTable = 1;
 	            		//if(this.rowData.chTypeList[i] == 'FRIENDTALK' ) this.kakaoTemplateTable = 0;
@@ -3340,6 +3348,7 @@ console.log("this.checkedKakao : " + this.checkedKakao);
 	            	}
 	            }
 	            this.rowData.productName    = rtnData.productName;
+	            this.rowData.productCode	= rtnData.productCode;
 	            this.rowData.msgKind 		= rtnData.msgKind;
 	            this.rowData.msgKindName 	= rtnData.msgKindName;
 	            this.rowData.tmpltTitle 	= rtnData.tmpltTitle;
@@ -3514,20 +3523,20 @@ console.log("this.checkedKakao : " + this.checkedKakao);
     
 
     putData:function(idx){//채널 발송순서 변경시 클릭한 채널 인덱스를 가져온다
-      console.log("idxData : ", idx);
+      //console.log("idxData : ", idx);
       this.idxData = idx;
     },
     
     async fnSaveIntegratedTemplate(){
       var params = this.rowData;
 
-      console.log("fnSaveSmartTemplate params : ",params);
+      //console.log("fnSaveSmartTemplate params : ",params);
 
       //유효성 검사
       //if(this.fnIsValid() == false) return;
 
       params.tmpltStatus = 'SAVE';
-      params.productCode = this.productCodeP;//상품코드
+      //params.productCode = this.productCodeP;//상품코드
       params.rcsTemplateTable = this.rcsTemplateTable;//rcs일경우 사용한 템플릿 번호를 가져간다.
       params.rcs9CardCount = this.rcs9CardCount;//캐러셀 SHORT 카드 수
       params.rcs10CardCount = this.rcs10CardCount;//캐러셀 TALL 카드 수
@@ -3547,20 +3556,20 @@ console.log("this.checkedKakao : " + this.checkedKakao);
 
     async fnCompleteIntegratedTemplate(){
       var params = this.rowData;
-      console.log("fnCompleteIntegratedTemplate params : ",params);
+      //console.log("fnCompleteIntegratedTemplate params : ",params);
 
       //유효성 검사
       //if(this.fnIsValid() == false) return;
 
       params.tmpltStatus = 'COMPLETE';//템플릿 상태값 저장:SAVE, 완료:COMPLETE
-      params.productCode = this.productCodeP;//상품코드
+      //params.productCode = this.productCodeP;//상품코드
       params.rcsTemplateTable = this.rcsTemplateTable;//rcs일경우 사용한 템플릿 번호를 가져간다.
       params.rcs9CardCount = this.rcs9CardCount;//캐러셀 SHORT 카드 수
       params.rcs10CardCount = this.rcs10CardCount;//캐러셀 TALL 카드 수
       params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
       params.useYn = this.useYn; //사용여부
 
-      await smartTemplateApi.insertIntegratedTemplate(params).then(response =>{
+      await smartTemplateApi.insertSmartTemplate(params).then(response =>{
         var result = response.data;
         if(result.success) {
           confirm.fnAlert(this.detailTitle, '등록 되었습니다.');
@@ -3973,7 +3982,7 @@ console.log("this.checkedKakao : " + this.checkedKakao);
 
     //template 정보 조회
     fnSetIntegratedTemplateInfo(){
-    	console.log("this.tmpltCode : "+this.tmpltCodeP);
+    	//console.log("this.tmpltCode : "+this.tmpltCodeP);
       if(!this.isEmpty(this.tmpltCodeP)){
         this.fnSelectIntegratedTemplateInfo();
       }
@@ -4033,7 +4042,7 @@ console.log("this.checkedKakao : " + this.checkedKakao);
             this.rowData.pushHowToDenyReceipt = rtnData.pushRcvblcInput;//수신거부방법
             
 //RCS DATA SET            
-            console.log(">>>>>>>>>>>>>>>>rtnData.rcsPrdType : "+rtnData.rcsPrdType);
+            //console.log(">>>>>>>>>>>>>>>>rtnData.rcsPrdType : "+rtnData.rcsPrdType);
             if(rtnData.rcsPrdType == 'FREE'){
 				this.rcsTemplateTable = 0;
 				this.rcsTemplateTableChecked = 0;
@@ -4062,20 +4071,20 @@ console.log("this.checkedKakao : " + this.checkedKakao);
 				this.rcsTemplateTable = 10;
 				this.rcsTemplateTableChecked = 10;
 			}
-			console.log(">>>>>>>>>>>>>>>>this.rcsTemplateTable : "+this.rcsTemplateTable);
+			//console.log(">>>>>>>>>>>>>>>>this.rcsTemplateTable : "+this.rcsTemplateTable);
 			
            if(rtnData.rcsPrdType == 'FREE'){
 	 			this.rowData.rcs0Content 		= rtnData.rcsBodyDescription;
 	            this.rowData.callback 			= rtnData.rcsCallback; //발신번호
 	            
-	            console.log("===========this.rowData.callback : "+this.rowData.callback);
+	            //console.log("===========this.rowData.callback : "+this.rowData.callback);
             }
             
             
             if(rtnData.rcsPrdType == 'SMS'){
 	 			this.rowData.rcsSMSContent 			= rtnData.rcsBodyDescription;
 	            this.rowData.rcsSMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
-	            this.rowData.callbatnData.rcs; //발신번호
+	            this.rowData.callback 				= rtnData.rcsCallback; //발신번호
                         
 	            if(rtnData.rcsButton0ButtonType){
 	            	this.buttonSMSFlag = true;
@@ -4685,9 +4694,9 @@ console.log("this.checkedKakao : " + this.checkedKakao);
         alert("button은 5개까지 추가가능합니다.");
       }else{
         this.buttonFriendTalkFlag = true;
-        console.log("this.friendTalkButtonsMaxLen : ",this.friendTalkButtonsMaxLen);
+        //console.log("this.friendTalkButtonsMaxLen : ",this.friendTalkButtonsMaxLen);
         this.friendTalkButtonsMaxLen = this.friendTalkButtonsMaxLen + 1;
-        console.log("maxLen : ",this.friendTalkButtonsMaxLen);
+        //console.log("maxLen : ",this.friendTalkButtonsMaxLen);
         var startDateId = 'friendTalkStartDateId'+this.friendTalkButtonsMaxLen;
         var endDateId = 'friendTalkEndDateId'+this.friendTalkButtonsMaxLen;
         
@@ -4743,8 +4752,8 @@ console.log("this.checkedKakao : " + this.checkedKakao);
     },
 
     fnRcs90DelImg(idx){
-      console.log("idx : ",idx);
-      console.log("this.rowData.rcs90ImgInfoList : ",this.rowData.rcs90ImgInfoList)
+      //console.log("idx : ",idx);
+      //console.log("this.rowData.rcs90ImgInfoList : ",this.rowData.rcs90ImgInfoList)
       
        this.rowData.rcs90ImgInfoList.splice(idx, 1);
      },
@@ -5088,15 +5097,15 @@ console.log("this.checkedKakao : " + this.checkedKakao);
       this.rcs100ImgMngOpen = !this.rcs100ImgMngOpen;
     },
     fnRcs100CallbackImgInfo(imgInfo){
-      console.log('1111 : '+JSON.stringify(imgInfo));
+      //console.log('1111 : '+JSON.stringify(imgInfo));
       if(this.fnRcs100ImgLimitSize() == false) return;
       let temp = {
         imgUrl: imgInfo.chImgUrl,
         fileId: imgInfo.fileId
       };
-      console.log('2222 : '+JSON.stringify(temp));
+      //console.log('2222 : '+JSON.stringify(temp));
       this.rowData.rcs100ImgInfoList.push(temp);
-      console.log('3333 : '+JSON.stringify(this.rowData.rcs100ImgInfoList));
+      //console.log('3333 : '+JSON.stringify(this.rowData.rcs100ImgInfoList));
       this.fnRcs100DelDuplImgInfo();
     },
 
@@ -5344,15 +5353,15 @@ console.log("this.checkedKakao : " + this.checkedKakao);
       this.rcsShortImgMngOpen = !this.rcsShortImgMngOpen;
     },
     fnRcsShortCallbackImgInfo(imgInfo){
-      console.log('1111 : '+JSON.stringify(imgInfo));
+      //console.log('1111 : '+JSON.stringify(imgInfo));
       if(this.fnRcsShortImgLimitSize() == false) return;
       let temp = {
         imgUrl: imgInfo.chImgUrl,
         fileId: imgInfo.fileId
       };
-      console.log('2222 : '+JSON.stringify(temp));
+      //console.log('2222 : '+JSON.stringify(temp));
       this.rowData.rcsShortImgInfoList.push(temp);
-      console.log('3333 : '+JSON.stringify(this.rowData.rcsShortImgInfoList));
+      //console.log('3333 : '+JSON.stringify(this.rowData.rcsShortImgInfoList));
       this.fnRcsShortDelDuplImgInfo();
     },
 
@@ -5386,15 +5395,15 @@ console.log("this.checkedKakao : " + this.checkedKakao);
       this.rcsTallImgMngOpen = !this.rcsTallImgMngOpen;
     },
     fnRcsTallCallbackImgInfo(imgInfo){
-      console.log('1111 : '+JSON.stringify(imgInfo));
+      //console.log('1111 : '+JSON.stringify(imgInfo));
       if(this.fnRcsTallImgLimitSize() == false) return;
       let temp = {
         imgUrl: imgInfo.chImgUrl,
         fileId: imgInfo.fileId
       };
-      console.log('2222 : '+JSON.stringify(temp));
+      //console.log('2222 : '+JSON.stringify(temp));
       this.rowData.rcsTallImgInfoList.push(temp);
-      console.log('3333 : '+JSON.stringify(this.rowData.rcsTallImgInfoList));
+      //console.log('3333 : '+JSON.stringify(this.rowData.rcsTallImgInfoList));
       this.fnRcsTallDelDuplImgInfo();
     },
 
@@ -5521,13 +5530,13 @@ console.log("this.checkedKakao : " + this.checkedKakao);
     },
 
     fnFriendTalkButtonSD(sltDate, params){
-    console.log(sltDate, params.idx)
+    //console.log(sltDate, params.idx)
       this.rowData.friendTalkButtons[params.idx].startDate = sltDate;
-      console.log(">>>>>>>>>>>>startDate : ",this.rowData.friendTalkButtons[params.idx].startDate, params.idx);
+      //console.log(">>>>>>>>>>>>startDate : ",this.rowData.friendTalkButtons[params.idx].startDate, params.idx);
     },
     fnFriendTalkButtonED(sltDate, params){
       this.rowData.friendTalkButtons[params.idx].endDate = sltDate;
-      console.log(">>>>>>>>>>>>endDate : ",this.rowData.friendTalkButtons[params.idx].endDate, params.idx);
+      //console.log(">>>>>>>>>>>>endDate : ",this.rowData.friendTalkButtons[params.idx].endDate, params.idx);
     },
 
 	fnRcs90ButtonSD(sltDate, params){
@@ -5641,7 +5650,7 @@ console.log("this.checkedKakao : " + this.checkedKakao);
         var msg = title + '의 최대 입력 길이는 ' + len + '입니다.';
         alert(msg);
         var temp = val.substr(0,len);
-        console.log("temp : "+temp.length);
+        //console.log("temp : "+temp.length);
         jQuery(sid).val(temp);
         val = jQuery(sid).val();
       }

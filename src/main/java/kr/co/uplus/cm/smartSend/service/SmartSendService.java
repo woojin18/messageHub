@@ -71,53 +71,7 @@ public class SmartSendService {
     @Autowired
     ApiInterface apiInterface;	
 
-	/**
-     * 통합 템플릿 리스트 조회
-     * @param params
-     * @return
-     * @throws Exception
-     */
-    public RestResult<Object> selectSmartSendList(Map<String, Object> params) throws Exception {
-
-        RestResult<Object> rtn = new RestResult<Object>();
-
-        if(params.containsKey("pageNo")
-                && CommonUtils.isNotEmptyObject(params.get("pageNo"))
-                && params.containsKey("listSize")
-                && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
-            rtn.setPageProps(params);
-            if(rtn.getPageInfo() != null) {
-                //카운트 쿼리 실행
-                int listCnt = generalDao.selectGernalCount("smartSend.selectSmartSendListCnt", params);
-                rtn.getPageInfo().put("totCnt", listCnt);
-            }
-        }
-
-        List<Object> rtnList = generalDao.selectGernalList("smartSend.selectSmartSendList", params);
-        rtn.setData(rtnList);
-
-        return rtn;
-    }
-
-    
-	/**
-     * 통합 템플릿 정보 조회
-     * @param params
-     * @return
-     * @throws Exception
-     */
-    public RestResult<Object> selectSmartSendInfo(Map<String, Object> params) throws Exception {
-
-        RestResult<Object> rtn = new RestResult<Object>();
-
-        List<Object> rtnList = generalDao.selectGernalList("smartSend.selectSmartSendDetail", params);
-        
-        rtn.setData(rtnList);
-
-        return rtn;
-    }
-    
-    
+   
 
     /**
      * 통합 발송 데이터 유효성 체크
@@ -135,7 +89,7 @@ public class SmartSendService {
         smartRequestData.setCampaignId(CommonUtils.getStrValue(params, "campaignId"));
 
         //부서코드
-        //smartRequestData.setDeptCode(CommonUtils.getStrValue(params, "campaignId"));
+        //smartRequestData.setDeptCode(CommonUtils.getStrValue(params, "deptCode"));
         
         String webReqId = CommonUtils.getCommonId(Const.WebReqIdPrefix.ITG_PREFIX, 5);
 
@@ -339,7 +293,7 @@ public class SmartSendService {
         int resultCnt = insertCmWebMsg(params);
 
         if (resultCnt <= 0) {
-            log.info("{}.insertPushCmWebMsg Fail =>  webReqId : {}", this.getClass(), smartRequestData.getWebReqId());
+            log.info("{}.insertSmartCmWebMsg Fail =>  webReqId : {}", this.getClass(), smartRequestData.getWebReqId());
         }
 
         return rtn;
@@ -357,7 +311,7 @@ public class SmartSendService {
     }
 
     /**
-     * 통합 테스트 발송 처리
+     * 스마트 테스트 발송 처리
      * @param data
      * @param smartRequestData
      * @param sendList
@@ -386,15 +340,15 @@ public class SmartSendService {
             }
             rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
         } else {
-            log.warn("{}.testSendPushMsg Fail ==> response : {}", this.getClass(), resultMap);
-            rtn.setFail("푸시 테스트 발송이 실패하였습니다.");
+            log.warn("{}.testSendSmartMsg Fail ==> response : {}", this.getClass(), resultMap);
+            rtn.setFail("스마트 테스트 발송이 실패하였습니다.");
         }
 
         return rtn;
     }
 
     /**
-     * 통합 메시지 발송 처리
+     * 스마트 메시지 발송 처리
      * @param data
      * @param smartRequestData
      * @param sendList
@@ -419,7 +373,7 @@ public class SmartSendService {
         Gson gson = new Gson();
         String jsonString = gson.toJson(smartRequestData);
 
-        return apiInterface.sendMsg(ApiConfig.SEND_PUSH_API_URI, headerMap, jsonString);
+        return apiInterface.sendMsg(ApiConfig.GET_SMART_API_URI, headerMap, jsonString);
     }
 
     /**
@@ -514,7 +468,7 @@ public class SmartSendService {
     }
 
     /**
-     * 통합 발송 비동기 처리
+     * 스마트 발송 비동기 처리
      * @param rtn
      * @param fromIndex
      * @param data

@@ -169,11 +169,8 @@
                 <!--<p v-if="rowData.msgKind != 'A' || (isEmpty(rowData.pushContent) && isEmpty(rowData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>-->
                 <p v-if="isEmpty(rowData.pushContent) && (rowData.msgKind != 'A')" class="font-size14 color4 mt10">내용</p>
                 <pre v-else class="font-size14 color4 mt10">{{rowData.pushContent}}
-                  <!--<span v-html="$gfnCommonUtils.newLineToBr(rowData.pushContent)"></span>-->
                   <br v-if="!isEmpty(rowData.pushContent)"/>
-                  <!--<span v-if="tmpltData.msgKind == 'A' && !isEmpty(tmpltData.rcvblcNumber)">-->
                   	{{rowData.rcvblcNumber}}
-                  <!--</span>-->
                 </pre>
               </div>
             </div>          
@@ -191,12 +188,13 @@
         </div>
         <div class="of_h">
           <div class="float-left" style="width:13%"><h4>제목</h4></div>
-          <div class="float-left" style="width:57%"><input type="text" class="inputStyle" name="pushTitle" v-model="rowData.pushTitle" placeholder="최대 50자 입력 가능합니다."></div>
+          <div class="float-left" style="width:57%"><input type="text" class="inputStyle" name="pushTitle" v-model="rowData.pushTitle" id="pushTitleId" placeholder="최대 50자 입력 가능합니다." @keyup="fnTextLength('제목', '#pushTitleId', '', '50')"></div>
         </div>
         <div class="of_h">
           <div class="float-left" style="width:13%"><h4>내용*</h4></div>
           <div class="float-left" style="width:57%">
-            <textarea class="textareaStyle height190" name="pushContent" v-model="rowData.pushContent" ></textarea>
+            <textarea class="textareaStyle height190" name="pushContent" :placeholder="pushPlaceHoder" v-model="rowData.pushContent" id="pushContentId" @keyup="fnTextLength('내용', '#pushContentId', '#pushTextLength', '512')"></textarea>
+            <strong class="letter" id="pushTextLength">(00 / 512)</strong>
             <p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
           </div>
         </div>
@@ -343,7 +341,7 @@
 	          <div class="of_h consolMarginTop">
 					<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 		            <div class="float-left" style="width:57%">
-		              <textarea class="textareaStyle height190" v-model="rowData.rcs0Content"></textarea>
+		              <textarea class="textareaStyle height190" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder"></textarea>
 		            </div>
 			  </div>
 			  
@@ -399,7 +397,7 @@
             <div class="of_h">
               <div class="float-left" style="width:13%"><h4>내용*</h4></div>
               <div class="float-left" style="width:57%">
-                <textarea class="textareaStyle height190"  v-model="rowData.rcs1Content" id="rcs1ContentId" readOnly></textarea>
+                <textarea class="textareaStyle height190"  v-model="rowData.rcs1Content" id="rcs1ContentId" :placeholder="rcsPlaceHoder" readOnly></textarea>
                 <strong class="letter" id="rcs1TextLength">(00 / 90)</strong>
               </div>
             </div>
@@ -566,7 +564,7 @@
             <div class="of_h">
               <div class="float-left" style="width:13%"><h4>내용*</h4></div>
               <div class="float-left" style="width:57%">
-                <textarea class="textareaStyle height190" maxlength="100" v-model="rowData.rcsSMSContent" id="rcsSMSContentId" @keyup="fnTextLength('내용', '#rcsSMSContentId', '#rcsSMSTextLength', '1300')"></textarea>
+                <textarea class="textareaStyle height190" maxlength="100" v-model="rowData.rcsSMSContent" :placeholder="rcsPlaceHoder" id="rcsSMSContentId" @keyup="fnTextLength('내용', '#rcsSMSContentId', '#rcsSMSTextLength', '1300')"></textarea>
                 <strong class="letter" id="rcsSMSTextLength">(00 / 1300)</strong>
               </div>
             </div>
@@ -670,7 +668,7 @@
             <div class="of_h">
               <div class="float-left" style="width:13%"><h4>내용*</h4></div>
               <div class="float-left" style="width:57%">
-                <textarea class="textareaStyle height190" maxlength="1300" v-model="rowData.rcsLMSContent" id="rcsLMSContentId" @keyup="fnTextLength('내용', '#rcsLMSContentId', '#rcsLMSTextLength', '1300')"></textarea>
+                <textarea class="textareaStyle height190" maxlength="1300" v-model="rowData.rcsLMSContent" :placeholder="rcsPlaceHoder" id="rcsLMSContentId" @keyup="fnTextLength('내용', '#rcsLMSContentId', '#rcsLMSTextLength', '1300')"></textarea>
                 <strong class="letter" id="rcsLMSTextLength">(00 / 1300)</strong>
               </div>
             </div>
@@ -799,7 +797,7 @@
             <div class="of_h">
               <div class="float-left" style="width:13%"><h4>내용*</h4></div>
               <div class="float-left" style="width:57%">
-                <textarea class="textareaStyle height190" v-model="rowData.rcsShortContent" id="rcsShortContentId" @keyup="fnTextLength('내용', '#rcsShortContentId', '#rcsShortTextLength', '1300')"></textarea>
+                <textarea class="textareaStyle height190" v-model="rowData.rcsShortContent" :placeholder="rcsPlaceHoder" id="rcsShortContentId" @keyup="fnTextLength('내용', '#rcsShortContentId', '#rcsShortTextLength', '1300')"></textarea>
                 <strong class="letter" id="rcsShortTextLength">(00 / 1300)</strong>
               </div>
             </div>
@@ -943,7 +941,7 @@
             <div class="of_h">
               <div class="float-left" style="width:13%"><h4>내용*</h4></div>
               <div class="float-left" style="width:57%">
-                <textarea class="textareaStyle height190" v-model="rowData.rcsTallContent" id="rcsTallContentId" @keyup="fnTextLength('내용', '#rcsTallContentId', '#rcsTallTextLength', '1300')"></textarea>
+                <textarea class="textareaStyle height190" v-model="rowData.rcsTallContent" :placeholder="rcsPlaceHoder" id="rcsTallContentId" @keyup="fnTextLength('내용', '#rcsTallContentId', '#rcsTallTextLength', '1300')"></textarea>
                 <strong class="letter" id="rcsTallTextLength">(00 / 1300)</strong>
               </div>
             </div>
@@ -1260,7 +1258,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs90Content" id="rcs90ContentId" @keyup="fnTextLength('내용', '#rcs90ContentId', '#rcs90TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs90Content" :placeholder="rcsPlaceHoder" id="rcs90ContentId" @keyup="fnTextLength('내용', '#rcs90ContentId', '#rcs90TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs90TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -1343,7 +1341,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs91Content" id="rcs91ContentId" @keyup="fnTextLength('내용', '#rcs91ContentId', '#rcs91TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs91Content" :placeholder="rcsPlaceHoder" id="rcs91ContentId" @keyup="fnTextLength('내용', '#rcs91ContentId', '#rcs91TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs91TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -1427,7 +1425,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs92Content" id="rcs92ContentId" @keyup="fnTextLength('내용', '#rcs92ContentId', '#rcs92TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs92Content" :placeholder="rcsPlaceHoder" id="rcs92ContentId" @keyup="fnTextLength('내용', '#rcs92ContentId', '#rcs92TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs92TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -1512,7 +1510,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs93Content" id="rcs93ContentId" @keyup="fnTextLength('내용', '#rcs93ContentId', '#rcs93TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs93Content" :placeholder="rcsPlaceHoder" id="rcs93ContentId" @keyup="fnTextLength('내용', '#rcs93ContentId', '#rcs93TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs93TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -1597,7 +1595,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs94Content" id="rcs94ContentId" @keyup="fnTextLength('내용', '#rcs94ContentId', '#rcs94TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs94Content" :placeholder="rcsPlaceHoder" id="rcs94ContentId" @keyup="fnTextLength('내용', '#rcs94ContentId', '#rcs94TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs94TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -1682,7 +1680,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs95Content" id="rcs95ContentId" @keyup="fnTextLength('내용', '#rcs95ContentId', '#rcs95TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs95Content" :placeholder="rcsPlaceHoder" id="rcs95ContentId" @keyup="fnTextLength('내용', '#rcs95ContentId', '#rcs95TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs95TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -2010,7 +2008,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs100Content" id="rcs100ContentId" @keyup="fnTextLength('내용', '#rcs100ContentId', '#rcs100TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs100Content" :placeholder="rcsPlaceHoder" id="rcs100ContentId" @keyup="fnTextLength('내용', '#rcs100ContentId', '#rcs100TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs100TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -2093,7 +2091,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs101Content" id="rcs101ContentId" @keyup="fnTextLength('내용', '#rcs101ContentId', '#rcs101TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs101Content" :placeholder="rcsPlaceHoder" id="rcs101ContentId" @keyup="fnTextLength('내용', '#rcs101ContentId', '#rcs101TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs101TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -2176,7 +2174,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs102Content" id="rcs102ContentId" @keyup="fnTextLength('내용', '#rcs102ContentId', '#rcs102TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs102Content" :placeholder="rcsPlaceHoder" id="rcs102ContentId" @keyup="fnTextLength('내용', '#rcs102ContentId', '#rcs102TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs102TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -2259,7 +2257,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs103Content" id="rcs103ContentId" @keyup="fnTextLength('내용', '#rcs103ContentId', '#rcs103TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs103Content" :placeholder="rcsPlaceHoder" id="rcs103ContentId" @keyup="fnTextLength('내용', '#rcs103ContentId', '#rcs103TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs103TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -2342,7 +2340,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs104Content" id="rcs104ContentId" @keyup="fnTextLength('내용', '#rcs104ContentId', '#rcs104TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs104Content" :placeholder="rcsPlaceHoder" id="rcs104ContentId" @keyup="fnTextLength('내용', '#rcs104ContentId', '#rcs104TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs104TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -2425,7 +2423,7 @@
                 <div class="of_h">
                   <div class="float-left" style="width:13%"><h4>내용*</h4></div>
                   <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs105Content" id="rcs105ContentId" @keyup="fnTextLength('내용', '#rcs105ContentId', '#rcs105TextLength', '1300')"></textarea>
+                    <textarea class="textareaStyle height190" v-model="rowData.rcs105Content" :placeholder="rcsPlaceHoder" id="rcs105ContentId" @keyup="fnTextLength('내용', '#rcs105ContentId', '#rcs105TextLength', '1300')"></textarea>
                 <strong class="letter" id="rcs105TextLength">(00 / 1300)</strong>
                   </div>
                 </div>
@@ -2607,7 +2605,7 @@
 					<div class="of_h consolMarginTop">
 						<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 						<div class="float-left" style="width:59%">
-							<textarea class="textareaStyle height190" placeholder="" v-model="rowData.friendTalkContent"></textarea>
+							<textarea class="textareaStyle height190" v-model="rowData.friendTalkContent" :placeholder="kakaoPlaceHoder"></textarea>
 						</div>
 					</div>					
 
@@ -2698,7 +2696,7 @@
 					<div class="of_h consolMarginTop">
 						<div class="float-left" style="width:15%"><h4>내용*</h4></div>
 						<div class="float-left" style="width:57%">
-							<textarea class="textareaStyle height190" placeholder="" v-model="rowData.alimTalkContent" readOnly></textarea>
+							<textarea class="textareaStyle height190" :placeholder="kakaoPlaceHoder" v-model="rowData.alimTalkContent" readOnly></textarea>
 							
 						</div>
 					</div>
@@ -2795,7 +2793,7 @@
 						<div class="of_h" >
 							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 							<div class="float-left" style="width:57%">
-								<textarea class="textareaStyle height190" placeholder="" v-model="rowData.smsContent" id="smsContent" @keyup="fnByteLength('내용', '#smsContent', '#smsTextLength', '90')"  key="smsContent0"></textarea>
+								<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" id="smsContent" @keyup="fnByteLength('내용', '#smsContent', '#smsTextLength', '90')"  key="smsContent0"></textarea>
 								<strong class="letter" id="smsTextLength" key="smsTextLength0">00 / 90 Byte</strong>
 							</div>
 						</div>
@@ -2812,7 +2810,7 @@
 						<div class="of_h" >
 							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 							<div class="float-left" style="width:57%">
-								<textarea class="textareaStyle height190" placeholder="" v-model="rowData.smsContent" id="smsContent" @keyup="fnByteLength('내용', '#smsContent', '#smsTextLength', '2000')" key="smsContent1"></textarea>
+								<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" id="smsContent" @keyup="fnByteLength('내용', '#smsContent', '#smsTextLength', '2000')" key="smsContent1"></textarea>
 								<strong class="letter" id="smsTextLength" key="smsTextLength1">00 / 2000 Byte</strong>
 							</div>
 						</div>					
@@ -3025,6 +3023,7 @@ export default {
               , 'smsImgInfoList':[] //sms/mms이미지정보
               
               , 'smsSendType': 'S'  //sms/mms 발송유형
+              //, 'buttonType': ''  //RCS 버튼 타입 (U: url입력, C:복사값입력, T:전화번호입력, S:날짜입력)
               } 
       }
     }
@@ -3182,6 +3181,11 @@ export default {
 
       useYn : 'Y',
       brandNmList: [],		// 브랜드 명 selectBox
+      
+      pushPlaceHoder: 	"변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
+      rcsPlaceHoder: 	"변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
+      kakaoPlaceHoder: 	"변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
+      smsmmsPlaceHoder: "변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
 
     }
   },
@@ -3235,8 +3239,8 @@ export default {
 		  }
 		}
 
-        console.log("this.rowData.checkedChannel : "+this.rowData.checkedChannel);
-        console.log("this.rowData.checkedChannel.length : "+this.rowData.checkedChannel.length);
+        //console.log("this.rowData.checkedChannel : "+this.rowData.checkedChannel);
+        //console.log("this.rowData.checkedChannel.length : "+this.rowData.checkedChannel.length);
         if(this.rowData.checkedChannel.length === 0){
         	this.channelTab = 9;
         }else{
@@ -3521,12 +3525,12 @@ export default {
     //   }
     // },
     putData:function(idx){//채널 발송순서 변경시 클릭한 채널 인덱스를 가져온다
-      console.log("idxData : ", idx);
+      //console.log("idxData : ", idx);
       this.idxData = idx;
     },
     
     moveup:function () {//발송순서를 위로
-      console.log("start index : ",this.idxData);
+      //console.log("start index : ",this.idxData);
       //Insert the item in the previous item
       if (this.idxData > 0) {
         this.rowData.checkedChannel.splice (this.idxData-1,0, (this.rowData.checkedChannel [this.idxData]));
@@ -3536,11 +3540,11 @@ export default {
       
         this.idxData = this.idxData -1;
       }
-      console.log(this.rowData.checkedChannel);
+      //console.log(this.rowData.checkedChannel);
     },  
     
     movedown:function () { //발송순서를 아래로
-      console.log("start index : ",this.idxData);
+      //console.log("start index : ",this.idxData);
       if (this.idxData < this.rowData.checkedChannel.length-1) {
         //Insert the item in the next item
         this.rowData.checkedChannel.splice (this.idxData + 2,0, (this.rowData.checkedChannel [this.idxData]));
@@ -3553,10 +3557,10 @@ export default {
     },
 
     async fnSaveIntegratedTemplate(){
-    console.log("333");
+      console.log("333");
       var params = this.rowData;
 
-      console.log("fnSaveIntegratedTemplate params : ",params);
+      //console.log("fnSaveIntegratedTemplate params : ",params);
 
       //유효성 검사
       //if(this.fnIsValid() == false) return;
@@ -3568,15 +3572,15 @@ export default {
       params.rcs10CardCount = this.rcs10CardCount;//캐러셀 TALL 카드 수
       params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
       params.useYn = this.useYn; //사용여부
-console.log("444");
+      console.log("444");
       await integratedTemplateApi.insertIntegratedTemplate(params).then(response =>{
         var result = response.data;
         if(result.success) {
-        console.log("555");
+        //console.log("555");
           confirm.fnAlert(this.detailTitle, '저장 되었습니다.');
           this.$router.push('integratedTemplate')
         } else {
-        console.log("666");
+        //console.log("666");
           confirm.fnAlert(this.detailTitle, result.message);
         }
       });
@@ -3584,7 +3588,7 @@ console.log("444");
 
     async fnCompleteIntegratedTemplate(){
       var params = this.rowData;
-      console.log("fnCompleteIntegratedTemplate params : ",params);
+      //console.log("fnCompleteIntegratedTemplate params : ",params);
 
       //유효성 검사
       //if(this.fnIsValid() == false) return;
@@ -3716,8 +3720,9 @@ console.log("444");
 		        //    return false;
 		        //}		        
 			}
-			
+			//console.log("this.rcsTemplateTable : "+this.rcsTemplateTable);
 			if(this.rcsTemplateTable === 3){  //SMS
+			
 				if(!this.rowData.rcsSMSContent){ 
 					confirm.fnAlert(this.detailTitle, 'RCS SMS 내용을 입력해주세요.');
 		            return false;
@@ -3726,7 +3731,16 @@ console.log("444");
 				if(this.rowData.msgKind == 'A' && !this.rowData.rcsSMSHowToDenyReceipt){ 
 					confirm.fnAlert(this.detailTitle, 'RCS SMS 무료수신거부 정보를 입력해주세요.');
 		            return false;
-		        }	        
+		        }	
+		        
+		        //if(this.rowData.buttonType == 'U'){ 
+		        //    var str = this.row.buttonLink.toLowerCase();
+		        //    console.log("button U >>>>>>>>>"+str);
+		        //    if(str.indexOf("http://")  == -1 && str.indexOf("https://")  == -1){
+			    //        confirm.fnAlert(this.detailTitle, 'RCS URL에 http:// 또는 https://를 입력해주세요.');
+			    //        return false;
+		        //    }
+		        //}        
 			}
 
 
@@ -3998,7 +4012,7 @@ console.log("444");
 
     //임시저장 => 채널 설정관련 유효성 체크를  무시한다.
     save:function(){
-    console.log("111");
+      console.log("111");
       this.registYn = false;
       //유효성 검사
       if(this.fnIsValid() == false) return;
@@ -4019,7 +4033,7 @@ console.log("444");
 
     //template 정보 조회
     fnSetIntegratedTemplateInfo(){
-    	console.log("this.tmpltCode : "+this.tmpltCodeP);
+    	//console.log("this.tmpltCode : "+this.tmpltCodeP);
       if(!this.isEmpty(this.tmpltCodeP)){
         this.fnSelectIntegratedTemplateInfo();
       }
@@ -4076,7 +4090,7 @@ console.log("444");
             this.rowData.pushHowToDenyReceipt = rtnData.pushRcvblcInput;//수신거부방법
             
 //RCS DATA SET            
-            console.log(">>>>>>>>>>>>>>>>rtnData.rcsPrdType : "+rtnData.rcsPrdType);
+            //console.log(">>>>>>>>>>>>>>>>rtnData.rcsPrdType : "+rtnData.rcsPrdType);
             if(rtnData.rcsPrdType == 'FREE'){
 				this.rcsTemplateTable = 0;
 				this.rcsTemplateTableChecked = 0;
@@ -4105,13 +4119,13 @@ console.log("444");
 				this.rcsTemplateTable = 10;
 				this.rcsTemplateTableChecked = 10;
 			}
-			console.log(">>>>>>>>>>>>>>>>this.rcsTemplateTable : "+this.rcsTemplateTable);
+			//console.log(">>>>>>>>>>>>>>>>this.rcsTemplateTable : "+this.rcsTemplateTable);
 			
            if(rtnData.rcsPrdType == 'FREE'){
 	 			this.rowData.rcs0Content 		= rtnData.rcsBodyDescription;
 	            this.rowData.callback 			= rtnData.rcsCallback; //발신번호
 	            
-	            console.log("===========this.rowData.callback : "+this.rowData.callback);
+	            //console.log("===========this.rowData.callback : "+this.rowData.callback);
             }
             
             
@@ -4119,9 +4133,10 @@ console.log("444");
 	 			this.rowData.rcsSMSContent 			= rtnData.rcsBodyDescription;
 	            this.rowData.rcsSMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
 	            this.rowData.callback 				= rtnData.rcsCallback; //발신번호
-                        
-	            if(rtnData.rcsButton0ButtonType){
+   
+	            if(rtnData.rcsButton0ButtonType){//RCS SMS는 버튼 1개까지 추가 가능
 	            	this.buttonSMSFlag = true;
+	            	//this.rowData.buttonType = rtnData.rcsButton0ButtonType;
 	            	this.rowData.rcsSMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
 	            }
             }
@@ -4134,18 +4149,21 @@ console.log("444");
 	            this.rowData.rcsLMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
 	            this.rowData.callback 				= rtnData.rcsCallback; //발신번호
                         
-	            if(rtnData.rcsButton0ButtonType){
+	            if(rtnData.rcsButton0ButtonType){//RCS LMS는 버튼 3개까지 추가 가능
 	            	this.buttonLMSFlag = true;
+	            	//this.rowData.buttonType = rtnData.rcsButton0ButtonType;//validation에서 buttonType 확인필요
 	            	this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
 	            }
             
 	            if(rtnData.rcsButton1ButtonType){
 	            	this.buttonLMSFlag = true;
+	            	//this.rowData.buttonType = rtnData.rcsButton1ButtonType;
 	            	this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr1));
 	            }
 
 	            if(rtnData.rcsButton2ButtonType){
 	            	this.buttonLMSFlag = true;
+	            	//this.rowData.buttonType = rtnData.rcsButton2ButtonType;
 	            	this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr2));
 	            }
             }
@@ -4162,12 +4180,14 @@ console.log("444");
 	            	this.rowData.rcsShortImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
 	            }
            
-	            if(rtnData.rcsButton0ButtonType){
+	            if(rtnData.rcsButton0ButtonType){//RCS SHORT은 버튼 2개까지 추가 가능
 	            	this.buttonShortFlag = true;
+	            	//this.rowData.buttonType = rtnData.rcsButton0ButtonType;
 	            	this.rowData.rcsShortButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
 	            }
 	            if(rtnData.rcsButton1ButtonType){
 	            	this.buttonTallFlag = true;
+	            	//this.rowData.buttonType = rtnData.rcsButton1ButtonType;
 	            	this.rowData.rcsShortButtons.push(JSON.parse(rtnData.rcs0ButtonArr1));
 	            }
 			}
@@ -4183,12 +4203,14 @@ console.log("444");
 	            }
 	            
             
-	            if(rtnData.rcsButton0ButtonType){
+	            if(rtnData.rcsButton0ButtonType){//RCS TALL은 버튼 2개까지 추가 가능
 	            	this.buttonTallFlag = true;
+	            	//this.rowData.buttonType = rtnData.rcsButton0ButtonType;
 	            	this.rowData.rcsTallButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
 	            }            
 	            if(rtnData.rcsButton1ButtonType){
 	            	this.buttonTallFlag = true;
+	            	//this.rowData.buttonType = rtnData.rcsButton1ButtonType;
 	            	this.rowData.rcsTallButtons.push(JSON.parse(rtnData.rcs0ButtonArr1));
 	            }
 
@@ -4237,58 +4259,70 @@ console.log("444");
 	            }
             
             	
-	            if(rtnData.rcsButton0ButtonType){
+	            if(rtnData.rcsButton0ButtonType){//RCS CSHORT은 카드 6개, 버튼 2개까지 추가 가능
 	            	this.button90Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcsButton0ButtonType;
 	            	this.rowData.rcs90Buttons.push(JSON.parse(rtnData.rcs0ButtonArr0));
 	            }      
 	            
 	            if(rtnData.rcsButton1ButtonType){
 	            	this.button90Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcsButton1ButtonType;
 	            	this.rowData.rcs90Buttons.push(JSON.parse(rtnData.rcs0ButtonArr1));
 	            }
 	           
 	            if(rtnData.rcs1Button0ButtonType){
 	            	this.button91Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs1Button0ButtonType;
 	            	this.rowData.rcs91Buttons.push(JSON.parse(rtnData.rcs1ButtonArr0));
 	            }            
 	            if(rtnData.rcs1Button1ButtonType){
 	            	this.button91Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs1Button1ButtonType;
 	            	this.rowData.rcs91Buttons.push(JSON.parse(rtnData.rcs1ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs2Button0ButtonType){
 	            	this.button92Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs2Button0ButtonType;
 	            	this.rowData.rcs92Buttons.push(JSON.parse(rtnData.rcs2ButtonArr0));
 	            }            
 	            if(rtnData.rcs2Button1ButtonType){
 	            	this.button92Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs2Button1ButtonType;
 	            	this.rowData.rcs92Buttons.push(JSON.parse(rtnData.rcs2ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs3Button0ButtonType){
 	            	this.button93Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs3Button0ButtonType;
 	            	this.rowData.rcs93Buttons.push(JSON.parse(rtnData.rcs3ButtonArr0));
 	            }            
 	            if(rtnData.rcs3Button1ButtonType){
 	            	this.button93Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs3Button1ButtonType;
 	            	this.rowData.rcs93Buttons.push(JSON.parse(rtnData.rcs3ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs4Button0ButtonType){
 	            	this.button94Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs4Button0ButtonType;
 	            	this.rowData.rcs94Buttons.push(JSON.parse(rtnData.rcs4ButtonArr0));
 	            }            
 	            if(rtnData.rcs4Button1ButtonType){
 	            	this.button94Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs4Button1ButtonType;
 	            	this.rowData.rcs94Buttons.push(JSON.parse(rtnData.rcs4ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs5Button0ButtonType){
 	            	this.button95Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs5Button0ButtonType;
 	            	this.rowData.rcs95Buttons.push(JSON.parse(rtnData.rcs5ButtonArr0));
 	            }            
 	            if(rtnData.rcs5Button1ButtonType){
 	            	this.button95Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs5Button1ButtonType;
 	            	this.rowData.rcs95Buttons.push(JSON.parse(rtnData.rcs5ButtonArr1));
 	            }
 
@@ -4337,57 +4371,69 @@ console.log("444");
 	            	this.rowData.rcs105ImgInfoList.push({'fileId':rtnData.rcs5BodyMedia, 'imgUrl':rtnData.rcs5BodyMediaUrl});
 	            }
             
-	            if(rtnData.rcsButton0ButtonType){
+	            if(rtnData.rcsButton0ButtonType){//RCS CTALL은 카드 6개, 버튼 2개까지 추가 가능
 	            	this.button100Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcsButton0ButtonType;
 	            	this.rowData.rcs100Buttons.push(JSON.parse(rtnData.rcs0ButtonArr0));
 	            }            
 	            if(rtnData.rcsButton1ButtonType){
 	            	this.button100Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcsButton1ButtonType;
 	            	this.rowData.rcs100Buttons.push(JSON.parse(rtnData.rcs0ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs1Button0ButtonType){
 	            	this.button101Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs1Button0ButtonType;
 	            	this.rowData.rcs101Buttons.push(JSON.parse(rtnData.rcs1ButtonArr0));
 	            }            
 	            if(rtnData.rcs1Button1ButtonType){
 	            	this.button101Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs1Button1ButtonType;
 	            	this.rowData.rcs101Buttons.push(JSON.parse(rtnData.rcs1ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs2Button0ButtonType){
 	            	this.button102Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs2Button0ButtonType;
 	            	this.rowData.rcs102Buttons.push(JSON.parse(rtnData.rcs2ButtonArr0));
 	            }            
-	            if(rtnData.rcs1Button2ButtonType){
+	            if(rtnData.rcs2Button1ButtonType){
 	            	this.button102Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs2Button1ButtonType;
 	            	this.rowData.rcs102Buttons.push(JSON.parse(rtnData.rcs2ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs3Button0ButtonType){
 	            	this.button103Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs3Button0ButtonType;
 	            	this.rowData.rcs103Buttons.push(JSON.parse(rtnData.rcs3ButtonArr0));
 	            }            
-	            if(rtnData.rcs1Button3ButtonType){
+	            if(rtnData.rcs3Button1ButtonType){
 	            	this.button103Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs3Button1ButtonType;
 	            	this.rowData.rcs103Buttons.push(JSON.parse(rtnData.rcs3ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs4Button0ButtonType){
 	            	this.button104Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs4Button0ButtonType;
 	            	this.rowData.rcs104Buttons.push(JSON.parse(rtnData.rcs4ButtonArr0));
 	            }            
-	            if(rtnData.rcs1Button4ButtonType){
+	            if(rtnData.rcs4Button1ButtonType){
 	            	this.button104Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs4Button1ButtonType;
 	            	this.rowData.rcs104Buttons.push(JSON.parse(rtnData.rcs4ButtonArr1));
 	            }
 	            
 	            if(rtnData.rcs5Button0ButtonType){
 	            	this.button105Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs5Button0ButtonType;
 	            	this.rowData.rcs105Buttons.push(JSON.parse(rtnData.rcs5ButtonArr0));
 	            }            
-	            if(rtnData.rcs1Button5ButtonType){
+	            if(rtnData.rcs5Button1ButtonType){
 	            	this.button105Flag = true;
+	            	//this.rowData.buttonType = rtnData.rcs5Button1ButtonType;
 	            	this.rowData.rcs105Buttons.push(JSON.parse(rtnData.rcs5ButtonArr1));
 	            }
 
@@ -4403,29 +4449,34 @@ console.log("444");
             this.rowData.friendTalkImgInfo.fileId 	= rtnData.friendTalkFileId;
             this.rowData.friendTalkImgInfo.imgUrl 	= rtnData.friendTalkImgUrl;
             
-            if(rtnData.friendTalkPrdType == 'FRIENDTALK'){
+            if(rtnData.friendTalkPrdType == 'FRIENDTALK'){//카카오톡 친구톡은 5개 버튼까지 추가 가능
 	            if(rtnData.friendTalkButton0ButtonType){
 	            	this.buttonFriendTalkFlag = true;
+	            	//this.rowData.buttonType = rtnData.friendTalkButton0ButtonType;
 	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr0));
 	            }
 	            
 	            if(rtnData.friendTalkButton1ButtonType){
 	            	this.buttonFriendTalkFlag = true;
+	            	//this.rowData.buttonType = rtnData.friendTalkButton1ButtonType;
 	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr1));
 	            }
 	            
 	            if(rtnData.friendTalkButton2ButtonType){
 	            	this.buttonFriendTalkFlag = true;
+	            	//this.rowData.buttonType = rtnData.friendTalkButton2ButtonType;
 	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr2));
 	            }
 	            
 	            if(rtnData.friendTalkButton3ButtonType){
 	            	this.buttonFriendTalkFlag = true;
+	            	//this.rowData.buttonType = rtnData.friendTalkButton3ButtonType;
 	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr3));
 	            }
 	            
 	            if(rtnData.friendTalkButton4ButtonType){
 	            	this.buttonFriendTalkFlag = true;
+	            	//this.rowData.buttonType = rtnData.friendTalkButton4ButtonType;
 	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr4));
 	            }
 			}
@@ -4703,9 +4754,9 @@ console.log("444");
         alert("button은 5개까지 추가가능합니다.");
       }else{
         this.buttonFriendTalkFlag = true;
-        console.log("this.friendTalkButtonsMaxLen : ",this.friendTalkButtonsMaxLen);
+        //console.log("this.friendTalkButtonsMaxLen : ",this.friendTalkButtonsMaxLen);
         this.friendTalkButtonsMaxLen = this.friendTalkButtonsMaxLen + 1;
-        console.log("maxLen : ",this.friendTalkButtonsMaxLen);
+        //console.log("maxLen : ",this.friendTalkButtonsMaxLen);
         var startDateId = 'friendTalkStartDateId'+this.friendTalkButtonsMaxLen;
         var endDateId = 'friendTalkEndDateId'+this.friendTalkButtonsMaxLen;
         
@@ -4761,8 +4812,8 @@ console.log("444");
     },
 
     fnRcs90DelImg(idx){
-      console.log("idx : ",idx);
-      console.log("this.rowData.rcs90ImgInfoList : ",this.rowData.rcs90ImgInfoList)
+      //console.log("idx : ",idx);
+      //console.log("this.rowData.rcs90ImgInfoList : ",this.rowData.rcs90ImgInfoList)
       
        this.rowData.rcs90ImgInfoList.splice(idx, 1);
      },
@@ -5106,15 +5157,15 @@ console.log("444");
       this.rcs100ImgMngOpen = !this.rcs100ImgMngOpen;
     },
     fnRcs100CallbackImgInfo(imgInfo){
-      console.log('1111 : '+JSON.stringify(imgInfo));
+      //console.log('1111 : '+JSON.stringify(imgInfo));
       if(this.fnRcs100ImgLimitSize() == false) return;
       let temp = {
         imgUrl: imgInfo.chImgUrl,
         fileId: imgInfo.fileId
       };
-      console.log('2222 : '+JSON.stringify(temp));
+      //console.log('2222 : '+JSON.stringify(temp));
       this.rowData.rcs100ImgInfoList.push(temp);
-      console.log('3333 : '+JSON.stringify(this.rowData.rcs100ImgInfoList));
+      //console.log('3333 : '+JSON.stringify(this.rowData.rcs100ImgInfoList));
       this.fnRcs100DelDuplImgInfo();
     },
 
@@ -5362,15 +5413,15 @@ console.log("444");
       this.rcsShortImgMngOpen = !this.rcsShortImgMngOpen;
     },
     fnRcsShortCallbackImgInfo(imgInfo){
-      console.log('1111 : '+JSON.stringify(imgInfo));
+      //console.log('1111 : '+JSON.stringify(imgInfo));
       if(this.fnRcsShortImgLimitSize() == false) return;
       let temp = {
         imgUrl: imgInfo.chImgUrl,
         fileId: imgInfo.fileId
       };
-      console.log('2222 : '+JSON.stringify(temp));
+      //console.log('2222 : '+JSON.stringify(temp));
       this.rowData.rcsShortImgInfoList.push(temp);
-      console.log('3333 : '+JSON.stringify(this.rowData.rcsShortImgInfoList));
+      //console.log('3333 : '+JSON.stringify(this.rowData.rcsShortImgInfoList));
       this.fnRcsShortDelDuplImgInfo();
     },
 
@@ -5404,15 +5455,15 @@ console.log("444");
       this.rcsTallImgMngOpen = !this.rcsTallImgMngOpen;
     },
     fnRcsTallCallbackImgInfo(imgInfo){
-      console.log('1111 : '+JSON.stringify(imgInfo));
+      //console.log('1111 : '+JSON.stringify(imgInfo));
       if(this.fnRcsTallImgLimitSize() == false) return;
       let temp = {
         imgUrl: imgInfo.chImgUrl,
         fileId: imgInfo.fileId
       };
-      console.log('2222 : '+JSON.stringify(temp));
+      //console.log('2222 : '+JSON.stringify(temp));
       this.rowData.rcsTallImgInfoList.push(temp);
-      console.log('3333 : '+JSON.stringify(this.rowData.rcsTallImgInfoList));
+      //console.log('3333 : '+JSON.stringify(this.rowData.rcsTallImgInfoList));
       this.fnRcsTallDelDuplImgInfo();
     },
 
@@ -5499,7 +5550,7 @@ console.log("444");
     },
 
     fnSmsDelImg(idx){
-    console.log("fnSmsDelImg=============================");
+    //console.log("fnSmsDelImg=============================");
        this.rowData.smsImgInfoList.splice(idx, 1);
      },
      
@@ -5540,13 +5591,13 @@ console.log("444");
     },
 
     fnFriendTalkButtonSD(sltDate, params){
-    console.log(sltDate, params.idx)
+    //console.log(sltDate, params.idx)
       this.rowData.friendTalkButtons[params.idx].startDate = sltDate;
-      console.log(">>>>>>>>>>>>startDate : ",this.rowData.friendTalkButtons[params.idx].startDate, params.idx);
+      //console.log(">>>>>>>>>>>>startDate : ",this.rowData.friendTalkButtons[params.idx].startDate, params.idx);
     },
     fnFriendTalkButtonED(sltDate, params){
       this.rowData.friendTalkButtons[params.idx].endDate = sltDate;
-      console.log(">>>>>>>>>>>>endDate : ",this.rowData.friendTalkButtons[params.idx].endDate, params.idx);
+      //console.log(">>>>>>>>>>>>endDate : ",this.rowData.friendTalkButtons[params.idx].endDate, params.idx);
     },
 
 	fnRcs90ButtonSD(sltDate, params){
@@ -5655,12 +5706,12 @@ console.log("444");
 
     fnTextLength(title, sid, tid, len){
       var val = jQuery(sid).val();
-      console.log("val : "+val.length);
+      //console.log("val : "+val.length);
       if(val.length > len){
         var msg = title + '의 최대 입력 길이는 ' + len + '입니다.';
         alert(msg);
         var temp = val.substr(0,len);
-        console.log("temp : "+temp.length);
+        //console.log("temp : "+temp.length);
         jQuery(sid).val(temp);
         val = jQuery(sid).val();
       }

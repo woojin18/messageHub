@@ -27,8 +27,7 @@
 		              </div>
 		              <div class="scroll-y">
 		                <pre v-if="this.$gfnCommonUtils.isEmpty(rowData.pushContent)" class="font-size14 color4 mt10">내용</pre>
-		                <pre v-else class="font-size14 color4 mt10">
-		                  {{rowData.pushContent}}</pre>
+		                <pre v-else class="font-size14 color4 mt10">{{rowData.pushContent}}</pre>
 		              </div>
 		            </div>
 		          </div>
@@ -701,6 +700,7 @@ export default {
 	          , 'rsrvDate':this.$gfnCommonUtils.getCurretDate()
 	          , 'rsrvHH':'00'
 	          , 'rsrvMM':'00'
+	          , 'productCode':''
 	          
               } 
       }
@@ -858,12 +858,12 @@ export default {
    async fnIntegratedSend(){
       var params = this.rowData;
 
-      console.log("fnSaveIntegratedTemplate params : ",params);
+      //console.log("fnSaveIntegratedTemplate params : ",params);
 
       //유효성 검사
       //if(this.fnIsValid() == false) return;
 
-      params.tmpltStatus = 'SAVE';
+      //params.tmpltStatus = 'SAVE';
       //params.projectId = this.testProjectId;
       params.rcsTemplateTable = this.rcsTemplateTable;//rcs일경우 사용한 템플릿 번호를 가져간다.
       params.rcs9CardCount = this.rcs9CardCount;//캐러셀 short 카드 수
@@ -910,19 +910,9 @@ export default {
       return true;
     },
 
-    //임시저장 => 채널 설정관련 유효성 체크를  무시한다.
-    save:function(){
-      this.registYn = false;
-      //유효성 검사
-      if(this.fnIsValid() == false) return;
-      
-      eventBus.$on('callbackEventBus', this.fnSaveIntegratedTemplate);
-      confirm.fnConfirm(this.detailTitle, "템플릿을 저장 하시겠습니까?", "확인");
-    },
-
     //template 정보 조회
     fnSetIntegratedTemplateInfo(){
-    	console.log(">>>>>this.tmpltCode : "+this.tmpltCodeP);
+    	//console.log(">>>>>this.tmpltCode : "+this.tmpltCodeP);
       if(this.tmpltCodeP != ''){
         this.fnSelectIntegratedTemplateInfo();
       }
@@ -931,7 +921,7 @@ export default {
     //템플릿 정보 조회
     fnSelectIntegratedTemplateInfo(){
     
-    console.log(">>>>>fnSelectIntegratedTemplateInfo : "+this.tmpltCodeP);
+    //console.log(">>>>>fnSelectIntegratedTemplateInfo : "+this.tmpltCodeP);
     
       const params = {tmpltCode: this.tmpltCodeP};
       smartTemplateApi.smartTemplateInfo(params).then(response => {
@@ -940,6 +930,8 @@ export default {
           if(result.data != null && result.data.length > 0){
           
           	let rtnData = result.data[0];
+          	
+          	this.rowData.productCode = rtnData.productCode;//smart product code, cm_bo.CM_PRODUCT_UNIT WHERE SMART_CH_PRODUCT_YN = 'Y'
           	this.rowData.chTypeList = rtnData.chTypeList;
             this.rowData.checkedChannel = rtnData.chTypeList.split(',');
 
@@ -949,7 +941,7 @@ export default {
 			  }
 			}
 			            
-            console.log("checkedChannel[0] : "+this.rowData.checkedChannel[0]);
+            //console.log("checkedChannel[0] : "+this.rowData.checkedChannel[0]);
             this.channelType = this.rowData.checkedChannel[0];
             this.previewRcsMessageType = rtnData.rcsPrdType;
             
@@ -969,8 +961,8 @@ export default {
             this.rowData.pushSend 				= rtnData.pushSendType;
             this.rowData.pushHowToDenyReceipt 	= rtnData.pushRcvblcInput;//수신거부방법
             
-            console.log(">>>>>>>>>>>>>>>>this.rowData.pushAppId : "+this.rowData.pushAppId);
-            console.log(">>>>>>>>>>>>>>>>this.rowData.pushContent : "+this.rowData.pushContent);
+            //console.log(">>>>>>>>>>>>>>>>this.rowData.pushAppId : "+this.rowData.pushAppId);
+            //console.log(">>>>>>>>>>>>>>>>this.rowData.pushContent : "+this.rowData.pushContent);
             
 //RCS DATA SET            
             
@@ -1002,7 +994,7 @@ export default {
 				this.rcsTemplateTable = 10;
 				this.rcsTemplateTableChecked = 10;
 			}
-			console.log(">>>>>>>>>>>>>>>>this.rcsTemplateTable : "+this.rcsTemplateTable);
+			//console.log(">>>>>>>>>>>>>>>>this.rcsTemplateTable : "+this.rcsTemplateTable);
 			
            if(rtnData.rcsPrdType == 'FREE'){
 	 			this.rowData.rcs0Content 			= rtnData.rcsBodyDescription;
@@ -1034,10 +1026,10 @@ export default {
 	            
 	            this.rowData.rcsShortImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});   
 	            
-	            console.log("rcs short rcsShortTitle"+this.rowData.rcsShortTitle);
-	            console.log("rcs short rcsShortContent"+this.rowData.rcsShortContent);
-	            console.log("rcs short rcsShortHowToDenyReceipt"+this.rowData.rcsShortHowToDenyReceipt);
-	            console.log("rcs short rcsShortCallback"+this.rowData.rcsShortCallback); 
+	            //console.log("rcs short rcsShortTitle"+this.rowData.rcsShortTitle);
+	            //console.log("rcs short rcsShortContent"+this.rowData.rcsShortContent);
+	            //console.log("rcs short rcsShortHowToDenyReceipt"+this.rowData.rcsShortHowToDenyReceipt);
+	            //console.log("rcs short rcsShortCallback"+this.rowData.rcsShortCallback); 
 			}
 
 
@@ -1050,10 +1042,10 @@ export default {
 	            
 	            this.rowData.rcsTallImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
 	            
-	            console.log("rcs short rcsTallTitle"+this.rowData.rcsTallTitle);
-	            console.log("rcs short rcsTallContent"+this.rowData.rcsTallContent);
-	            console.log("rcs short rcsTallHowToDenyReceipt"+this.rowData.rcsTallHowToDenyReceipt);
-	            console.log("rcs short rcsTallCallback"+this.rowData.rcsTallCallback); 
+	            //console.log("rcs short rcsTallTitle"+this.rowData.rcsTallTitle);
+	            //console.log("rcs short rcsTallContent"+this.rowData.rcsTallContent);
+	            //console.log("rcs short rcsTallHowToDenyReceipt"+this.rowData.rcsTallHowToDenyReceipt);
+	            //console.log("rcs short rcsTallCallback"+this.rowData.rcsTallCallback); 
 			}
 
             if(rtnData.rcsPrdType == 'CSHORT'){
@@ -1256,7 +1248,7 @@ export default {
       }
     },
 
-    //푸시 템플릿 엑셀 다운로드
+    //스마트 템플릿 엑셀 다운로드
     async fnExcelTmplteDownLoad(){
       if(this.fnSetContsVarNms() == false) return;
       var params = {
@@ -1279,7 +1271,7 @@ export default {
         this.fnDelDuplRecvInfo();
 
         this.recvCnt = this.rowData.recvInfoLst.length;
-        console.log("rowData.recvInfoLst.length : "+this.rowData.recvInfoLst.length);
+        //console.log("rowData.recvInfoLst.length : "+this.rowData.recvInfoLst.length);
         this.rowData.cuInfo = JSON.stringify(this.rowData.recvInfoLst);
       } else {
         this.recvCnt = 0;
@@ -1522,12 +1514,12 @@ export default {
 
     fnTextLength(title, sid, tid, len){
       var val = jQuery(sid).val();
-      console.log("val : "+val.length);
+      //console.log("val : "+val.length);
       if(val.length > len){
         var msg = title + '의 최대 입력 길이는 ' + len + '입니다.';
         alert(msg);
         var temp = val.substr(0,len);
-        console.log("temp : "+temp.length);
+        //console.log("temp : "+temp.length);
         jQuery(sid).val(temp);
         val = jQuery(sid).val();
       }
