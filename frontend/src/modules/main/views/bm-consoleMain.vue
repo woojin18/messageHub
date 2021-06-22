@@ -146,16 +146,11 @@
       <!-- //quiryWrap -->
     </div>
     <QuickRight></QuickRight>
-    <NoticePopup 
-      :noticePopupOpen.sync="noticePopupOpen" 
-      ref="noticePopup"
-    />
   </div>
 </template>
 
 <script>
 import QuickRight from "@/modules/main/components/bc-quickRight.vue";
-import NoticePopup from "@/modules/customer/components/bp-notice.vue";
 
 import customereApi from "@/modules/customer/service/customerApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
@@ -164,13 +159,11 @@ import {eventBus} from "@/modules/commonUtil/service/eventBus";
 export default {
   name: 'consoleMain',
   components : {
-    QuickRight,
-    NoticePopup
+    QuickRight
   },
   data() {
     return {
       componentsTitle: '메인',
-      noticePopupOpen : false,
       inqueiryTypeList: [],
       noticeInfoList: [],
       libraryInfoList: [],
