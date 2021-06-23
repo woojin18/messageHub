@@ -1,4 +1,4 @@
-package kr.co.uplus.cm.statistics.service;
+package kr.co.uplus.cm.statisticsUser.service;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +12,7 @@ import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.utils.GeneralDao;
 
 @Service
-public class StatisticsService {
+public class StatisticsUserService {
 	@Autowired
 	private GeneralDao generalDao;
 

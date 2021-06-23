@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import SendByDay from '../components/bc-statistics-sendByDay.vue';
+import SendByDay from '../components/bc-statisticsUser-sendByDay.vue';
 
 export default {
 	components: {

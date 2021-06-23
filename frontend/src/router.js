@@ -31,7 +31,7 @@ import useRoutes from './modules/use/router';
 import smartSendRoutes from './modules/smartSend/router';
 import customerRoutes from './modules/customer/router';
 import rcsTemplateSendRoutes from './modules/rcsTemplateSend/router';
-import statisticsRoutes from './modules/statistics/router';
+import statisticsUserRoutes from './modules/statisticsUser/router';
 
 //import confirm from "@/modules/commonUtil/service/confirm.js";
 
@@ -159,7 +159,7 @@ const router = new Router({
 				...smartTemplateRoutes,
 				...smartSendRoutes,
 				...rcsTemplateSendRoutes,
-				...statisticsRoutes
+				...statisticsUserRoutes
 			]
 		},
 		{ path: '*', redirect: '/view/error/404' }

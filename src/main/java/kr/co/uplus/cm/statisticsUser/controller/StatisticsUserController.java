@@ -1,4 +1,4 @@
-package kr.co.uplus.cm.statistics.controller;
+package kr.co.uplus.cm.statisticsUser.controller;
 
 import java.util.Map;
 
@@ -16,17 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
-import kr.co.uplus.cm.statistics.service.StatisticsService;
+import kr.co.uplus.cm.statisticsUser.service.StatisticsUserService;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
-@RequestMapping("/statisticsApi/list")
+@RequestMapping("/statisticsUserApi/list")
 
-public class StatisticsController {
+public class StatisticsUserController {
 
 	@Autowired
-	private StatisticsService statisticsSvc;
+	private StatisticsUserService statisticsUserSvc;
 
 	@Autowired
 	private CommonService commonService;
@@ -49,7 +49,7 @@ public class StatisticsController {
 
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
-			rtn = statisticsSvc.selectSendByList(params);
+			rtn = statisticsUserSvc.selectSendByList(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
@@ -71,7 +71,7 @@ public class StatisticsController {
 
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
-			rtn = statisticsSvc.selectSendByCntList(params);
+			rtn = statisticsUserSvc.selectSendByCntList(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");

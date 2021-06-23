@@ -239,8 +239,8 @@ public class DB {
 	public final static String QRY_SELECT_DASH_NOTICE_LIST = "dashboard.selectNoticeList";
 	
 	// 통계
-	public final static String QRY_SELECT_STATIS_SND_LIST = "statistics.selectStatisSndList";
-	public final static String QRY_SELECT_STATIS_SND_CNT_LIST = "statistics.selectStatisSndCntList";
+	public final static String QRY_SELECT_STATIS_SND_LIST = "statisticsUser.selectStatisSndList";
+	public final static String QRY_SELECT_STATIS_SND_CNT_LIST = "statisticsUser.selectStatisSndCntList";
 	
 
 }

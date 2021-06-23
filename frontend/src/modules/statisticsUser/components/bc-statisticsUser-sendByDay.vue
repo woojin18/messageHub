@@ -2,7 +2,7 @@
 	<div id="content">
 		<article>
 			<div class="contentHeader mb20">
-				<h2>채널별 월별 발송통계</h2>
+				<h2>채널별 일별 발송통계</h2>
 			</div>
 			<div class="row">
 				<div class="col-xs-12 mt10">
@@ -10,14 +10,13 @@
 						<div>
 							<h4 class="inline-block" style="width:6%">조회기간</h4>
 							<div class="inline-block" style="width:30%">
-								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchData.searchStartDate">
-								~
-								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchData.searchEndDate">
+								<Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle" styleProps="width:40%" :initDate="searchData.searchStartDate"></Calendar>
+								<span style="padding:0 11px">~</span>
+								<Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle" styleProps="width:40%" :initDate="searchData.searchEndDate"></Calendar>
 							</div>
 							<ul class="tab_s2 ml20">
-								<li :class="this.searchDateInterval==3 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(3);" title="3개월 서비스 검색">3개월</a></li>
-								<li :class="this.searchDateInterval==6 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(6);" title="6개월 서비스 검색">6개월</a></li>
-								<li :class="this.searchDateInterval==12 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(12);" title="12개월 서비스 검색">12개월</a></li>
+								<li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 서비스 검색">1주일</a></li>
+								<li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 서비스 검색">15일</a></li>
 							</ul>
 							<a @click="fnSearch" class="btnStyle1 float-right" activity="READ">조회</a>
 						</div>
@@ -137,12 +136,14 @@
 </template>
 
 <script>
+import Calendar from "@/components/Calendar.vue";
 import BarChart from '@/components/Chart.vue';
-import statisticsApi from '../service/statisticsApi'
+import statisticsUserApi from '../service/statisticsUserApi'
 import tokenSvc from '@/common/token-service';
 
 export default {
 components: {
+		Calendar,
 		BarChart,
 	},
 	props: {
@@ -151,15 +152,15 @@ components: {
 			require: false,
 			default: function() {
 				return {
-					'searchStartDate' : '',
-					'searchEndDate' : '',
+					'searchStartDate' : this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -7),
+					'searchEndDate' : this.$gfnCommonUtils.getCurretDate(),
 				}
 			}
 		}
 	},
 	data () {
 		return {
-			searchDateInterval: 3,
+			searchDateInterval: 7,
 			componentsTitle: '발송 통계',
 			statisDataList: [],
 			pushInfo: {},
@@ -205,32 +206,12 @@ components: {
 		}
 	},
 	mounted() {
-		this.fnCalendarInit();
+		//this.selectedChannel = 'PUSH';
 		this.fnSetIntervalSearchDate(this.searchDateInterval);
 		this.fnStatisList();
 		this.fnStatisCntList();
 	},
 	methods: {
-		fnCalendarInit() {
-			jQuery("#startDate").monthpicker({
-				monthNames:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				monthNamesShort:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				changeYear:false,
-				dateFormat:'yy-mm',
-				buttonImage:'../../se2/images/datepicker.png',
-				buttonImageOnly: true,
-				showOn: 'button',
-			});
-			jQuery("#endDate").monthpicker({
-				monthNames:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				monthNamesShort:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				changeYear:false,
-				dateFormat:'yy-mm',
-				buttonImage:'../../se2/images/datepicker.png',
-				buttonImageOnly: true,
-				showOn: 'button',
-			});
-		},
 		fnSearch() {
 			this.selectedChannel = 'PUSH';
 			this.loaded = false;
@@ -243,9 +224,9 @@ components: {
 			let vm = this;
 			let params = Object.assign({}, this.searchData);
 			params.corpId = tokenSvc.getToken().principal.corpId;
-			params.dateStatus = 'MONTH';
+			params.dateStatus = 'DAY';
 
-			statisticsApi.selectSendByList(params).then(response =>{
+			statisticsUserApi.selectSendByList(params).then(response =>{
 				let result = response.data;
 				if (result.success) {
 					vm.statisDataList = result.data;
@@ -260,9 +241,9 @@ components: {
 			let vm = this;
 			let params = Object.assign({}, this.searchData);
 			params.corpId = tokenSvc.getToken().principal.corpId;
-			params.dateStatus = 'MONTH';
+			params.dateStatus = 'DAY';
 
-			statisticsApi.selectSendByCntList(params).then(response =>{
+			statisticsUserApi.selectSendByCntList(params).then(response =>{
 				let result = response.data;
 				if (result.success) {
 					vm.allChanSuccFailRsltData = result.data;
@@ -272,7 +253,7 @@ components: {
 					vm.fillData();
 					// Chaart Loding Complete
 					vm.loaded = true;
-				} else { 
+				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
 			});
@@ -280,8 +261,8 @@ components: {
 		//검색일자변경
 		fnSetIntervalSearchDate(interval){
 			this.searchDateInterval = interval;
-			this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate('yyyy-mm');
-			this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -this.searchDateInterval +1);
+			this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
+			this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
 		},
 		fnUpdateStartDate(sltDate) {
 			this.searchData.searchStartDate = sltDate;
