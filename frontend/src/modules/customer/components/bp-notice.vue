@@ -1,22 +1,31 @@
 <template>
-  <div>
-    TEST ===> {{noticeId}}
-    <div class="btn_more">
-      <hr/>
-      제목 : 
-      <span v-if="!$gfnCommonUtils.isEmpty(noticeData.noticeTypeCdName)" class="new2">{{noticeData.noticeTypeCdName}}</span>
-      {{noticeData.title}}
-      <hr/>
-      내용 : 
-      <p v-html="noticeData.content"></p>
-      <hr/>
-      등록일 : 
-      <span class="date">{{noticeData.regDt}}</span>
-      <hr/>
-
-      <input type="checkbox" id="chk_stop" class="checkStyle2" @click="fnStopPopup">
-      <label for="chk_stop">오늘 그만 보기</label><br/>
-      <a href="#" @click.prevent="fnClose">닫기</a>
+  <div style="width:800px">
+    <div>
+      <div class="modal-body">
+        <div>
+          <h2>공지사항</h2>
+          <hr>
+          <div class="boardWrite">
+            <div class="title">
+              <p>
+                <span v-if="!$gfnCommonUtils.isEmpty(noticeData.noticeTypeCdName)" class="new2">{{noticeData.noticeTypeCdName}}</span>
+                {{noticeData.title}}
+              </p>
+              <span class="date">{{noticeData.regDt}}</span>
+            </div>
+            <div class="content scroll-y">
+              <p v-html="noticeData.content"></p>
+            </div>
+          </div>
+        </div>
+        <div class="quiryAgree">
+          <input type="checkbox" id="chk_stop" class="checkStyle2" @click="fnStopPopup">
+          <label for="chk_stop">오늘 그만 보기</label><br/>
+        </div>
+        <div class="text-center">
+          <a href="#" @click.prevent="fnClose" class="btnStyle1 backWhite" title="닫기">닫기</a>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -40,7 +49,14 @@ export default {
       this.fnSelectNoticeInfo();
     }
   },
+  mounted(){
+    this.fnSetCss();
+  },
   methods: {
+    fnSetCss(){
+      document.body.style.minWidth = "auto";
+      document.getElementById('publicLayout').style.width = "800px"
+    },
     fnSelectNoticeInfo(){
       if(!this.$gfnCommonUtils.isEmpty(this.noticeId)){
         const vm = this;

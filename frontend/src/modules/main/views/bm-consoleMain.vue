@@ -303,7 +303,7 @@ export default {
       const vm = this;
       let routeData = '';
       const noticePopupNm = 'noticePopup';
-      const popupOtion = 'width=600,height=400,left=200,top=200,scrollbars=yes';
+      const popupOtion = 'width=820,height=640,left=20,top=20,scrollbars=yes';
       noticePopupList.forEach(function(info){
         routeData = vm.$router.resolve({name: noticePopupNm, query: {noticeId: info.noticeId}});
         vm.fnOpenWindowPop(routeData.href, noticePopupNm+info.noticeId, popupOtion);
