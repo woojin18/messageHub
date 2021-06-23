@@ -268,7 +268,7 @@ public class SignUpController {
 		String sPlainData = "";
 
 		int iReturn = niceCheck.fnDecode(sSiteCode, sSitePassword, sEncodeData);
-
+		
 		if( iReturn == 0 ) {
 			sPlainData = niceCheck.getPlainData();
 			sCipherTime = niceCheck.getCipherDateTime();
@@ -395,6 +395,21 @@ public class SignUpController {
 		}
 		
 		return rtn;
+	}
+	
+	@PostMapping("/selectCorpCustList")
+	public RestResult<?> selectCorpCustList(
+			@RequestBody Map<String, Object> params){
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		return signUpSvc.selectCorpCustList(params);
+	}
+	@PostMapping("/selectSelCorpCustInfo")
+	public RestResult<?> selectSelCorpCustInfo(
+			@RequestBody Map<String, Object> params){
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		return signUpSvc.selectSelCorpCustInfo(params);
 	}
 }
  

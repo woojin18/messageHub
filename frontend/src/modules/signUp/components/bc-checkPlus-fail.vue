@@ -60,9 +60,13 @@ export default {
                     this.sRequestNumber = result.data.sRequestNumber;
                     this.sAuthType = result.data.sAuthType;
                     this.sErrorCode = result.data.sErrorCode;
+
+                     confirm.fnAlert("본인인증 실패", "다시 시도해주시기 바랍니다.");
+                     self.close();
                     
                 } else {
-                    confirm.fnAlert("", result.message);
+                    confirm.fnAlert("본인인증 실패", result.message);
+					self.close();
                 }
             });
         }

@@ -110,15 +110,20 @@ export default {
                     this.sName = result.data.sName;
                     this.sDupInfo = result.data.sDupInfo;
                     this.sConnInfo= result.data.sConnInfo;
-                    this.sBirthDate = reesult.data.sBirthDate;
+                    this.sBirthDate = result.data.sBirthDate;
                     this.sGender = result.data.sGender;
                     this.sNationalInfo = result.data.sNationalInfo;
                     this.sMobileNo = result.data.sMobileNo;
                     this.sMobileCo = result.data.sMobileCo;
                     this.sMessage = result.data.sMessage;
-                    
+
+                    window.opener.document.getElementById("phoneCerti").value = this.sMobileNo;
+                    window.opener.document.getElementById("gender").value = this.sGender;
+                    window.opener.document.getElementById('nice').click();
+                    self.close();
                 } else {
-                    confirm.fnAlert("", result.message);
+                    confirm.fnAlert("본인인증 실패", result.message);
+                    self.close();
                 }
             });
         }

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +22,9 @@ public class SignUpService {
 
 	@Autowired
 	private GeneralDao generalDao;
+
+	@Autowired
+	private ApiInterface apiInterface; 
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void insertSignUp(Map<String, Object> params) throws Exception {
@@ -65,5 +69,47 @@ public class SignUpService {
 
 		return rtn;
 		
+	}
+
+	public RestResult<?> selectCorpCustList(Map<String, Object> params) {
+		RestResult<Object>	rtn = new RestResult<Object>();
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		String regno	= CommonUtils.getString(params.get("regno"));		// 사업자번호
+		headerMap.put("mode",		"BS");		// BS 사업자 번호
+		headerMap.put("searchNo",	regno);
+		
+		// API 통신 처리
+		Map<String, Object> result = apiInterface.get("/console/v1/ucube/customer/"+regno+"/mode/BS", headerMap);
+		
+		if("10000".equals(result.get("rslt"))) {
+			Map<String, Object> dataMap = (Map<String, Object>) result.get("data");
+			List<Map<String, Object>> list =  (List<Map<String, Object>>) dataMap.get("resultList");
+			rtn.setData(list);
+		} else {
+			rtn.setSuccess(false);
+			rtn.setMessage(CommonUtils.getString(result.get("rsltDesc")));
+		}
+		
+		return rtn;
+	}
+
+	public RestResult<?> selectSelCorpCustInfo(Map<String, Object> params) {
+		RestResult<Object>	rtn = new RestResult<Object>();
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		String custNo	= CommonUtils.getString(params.get("custNo"));		// 고객번호
+		headerMap.put("custNo", custNo);
+		
+		// API 통신 처리
+		Map<String, Object> result = apiInterface.get("/console/v1/ucube/customer/"+custNo, headerMap);
+		
+		if("10000".equals(result.get("rslt"))) {
+			Map<String, Object> data = (Map<String, Object>) result.get("data");
+			rtn.setData(data);
+		} else {
+			rtn.setSuccess(false);
+			rtn.setMessage(CommonUtils.getString(result.get("rsltDesc")));
+		}
+		
+		return rtn;
 	}
 }

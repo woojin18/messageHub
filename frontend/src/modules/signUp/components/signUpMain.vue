@@ -39,10 +39,12 @@
 			<div class="joinBox mt10">
 				<div class="of_h">
 					<div class="float-left" style="width:22%">
-						<a href="#self" @click="fnPopup" class="btnStyle1 backLightGray vertical-middle" style="min-width:auto; width:100%">휴대폰 인증</a>
+						<a @click="fnPopup" class="btnStyle1 backLightGray vertical-middle" style="min-width:auto; width:100%">휴대폰 인증</a>
 					</div>
 					<div class="float-right" style="width:75%">
-						<input type="text" class="inputStyle" placeholder="" v-model="phoneCerti">
+						<input type="text" id="phoneCerti" class="inputStyle" placeholder="" v-model="phoneCerti" disabled>
+						<input type="hidden" id="gender" v-model="gender" disabled>
+						<button id="nice" style="display:none;" @click="fnGetNiceCheckInfo"></button>
 					</div>
 				</div>
 			</div>
@@ -52,9 +54,9 @@
 				<div class="float-left" style="width:22%"><h5>사업자번호*</h5></div>
 				<div class="float-left" style="width:78%">
 					<input type="text" class="inputStyle" placeholder="사업자번호 ( - 없이 입력 )" style="width:72%" v-model="regno">
-					<input type="hidden" v-model="selRegno">
+					<input type="text" v-model="selRegno">
 					<div class="float-right" style="width:25%">
-						<a href="#" @click.prevent="fnChkCorp" class="btnStyle1 backLightGray" style="min-width:auto; width:100%">확인</a>
+						<a @click.prevent="fnChkCorp" class="btnStyle1 backLightGray" style="min-width:auto; width:100%">확인</a>
 					</div>
 				</div>
 			</div>
@@ -63,7 +65,7 @@
 				<div class="of_h mt10">
 					<div class="float-left" style="width:22%"><h5>고객번호*</h5></div>
 					<div class="float-left" style="width:78%">
-						<input type="text" class="inputStyle" placeholder="고객번호"  v-model="corpNum" disabled>
+						<input type="text" class="inputStyle" placeholder="고객번호"  v-model="custNo" disabled>
 					</div>
 				</div>
 				<!-- <div class="of_h mt10">
@@ -75,8 +77,9 @@
 				<div class="of_h mt10">
 					<div class="float-left" style="width:22%"><h5>고객유형*</h5></div>
 					<div class="float-right" style="width:78%">
-						<select class="selectStyle2" style="width:50%" title="고객유형선택란" v-model="corpNm" :disabled="selCorpCnt > 0">
-							<option value="">개인사업자</option>
+						<select class="selectStyle2" style="width:50%" title="고객유형선택란" v-model="custKdCd" :disabled="selCorpCnt > 0">
+							<option value="">선택하세요</option>
+							<option  v-for="(row, index) in custTypeArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
 						</select>
 					</div>
 				</div>
@@ -85,7 +88,7 @@
 				<div class="of_h mt10">
 					<div class="float-left" style="width:22%"><h5>생년월일/<br>법인번호*</h5></div>
 					<div class="float-left" style="width:78%">
-						<input type="text" class="inputStyle" placeholder="개인사업자의 생년월일 또는 법인번호"  v-model="customIdNum" :disabled="selCorpCnt > 0">
+						<input type="text" class="inputStyle" placeholder="개인사업자의 생년월일 또는 법인번호"  v-model="custrnmNo" :disabled="selCorpCnt > 0">
 					</div>
 				</div>
 				<div class="of_h mt10">
@@ -99,6 +102,7 @@
 					<div class="float-right" style="width:78%">
 						<select class="selectStyle2" style="width:50%" title="업태 선택란" v-model="busiType">
 							<option value="">선택하세요</option>
+							<option  v-for="(row, index) in custUpTaeArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
 						</select>
 					</div>
 				</div>
@@ -107,13 +111,14 @@
 					<div class="float-right" style="width:78%">
 						<select class="selectStyle2" style="width:50%" title="종목 선택란" v-model="busiClass">
 							<option value="">선택하세요</option>
+							<option  v-for="(row, index) in custUpjongArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
 						</select>
 					</div>
 				</div>
 				<div class="of_h mt10">
 					<div class="float-left" style="width:22%"><h5>사업장주소*</h5></div>
 					<div class="float-left" style="width:78%">
-						<div class="float-left" style="width:72%"><input type="text" class="inputStyle" placeholder="우편번호" disabled ></div>
+						<div class="float-left" style="width:72%"><input type="text" class="inputStyle" placeholder="우편번호" v-model="custAddrZip" disabled ></div>
 						<div class="float-right" style="width:25%"><a href="#self" class="btnStyle1 backLightGray" style="min-width:auto; width:100%">주소 조회</a></div>					
 					</div>
 					<div class="float-right mt5" style="width:78%"><input type="text" class="inputStyle" placeholder="주소입력" v-model="woplaceAddress" disabled></div>
@@ -153,7 +158,7 @@
 			</div>
 			<div class="text-center mt70"><a href="#" class="btn btn-login" @click.prevent="signUp">가입완료</a></div>
 		</section>
-		<chkCorpPopup :popReset="popReset" :selCorp.sync="selCorp"></chkCorpPopup>
+		<chkCorpPopup :popReset="popReset" :dataList="dataList" :selCorp.sync="selCorp"></chkCorpPopup>
 		<!-- 본인인증 서비스 팝업을 호출하기 위해서는 다음과 같은 form이 필요합니다. -->
 		<form name="form_chk" method="post">
 			<input type="hidden" name="m" value="checkplusService">						<!-- 필수 데이타로, 누락하시면 안됩니다. -->
@@ -167,6 +172,8 @@ import confirm from "@/modules/commonUtil/service/confirm.js";
 import signUpApi from "@/modules/signUp/service/api"
 import chkCorpPopup from "@/modules/signUp/components/bp-selectCorpPopup"
 
+import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi";
+
 export default {
   components: {
     //modal
@@ -178,7 +185,7 @@ export default {
 		password : "",				// 비밀번호
 		passwordChk : "",			// 비밀번호 체크
 		smsCertifyYn : "Y",			// sms 인증여부
-		phoneCerti : "01089367495",			// 담당자 휴대폰 인증 전화번호 (모듈 추가후 전화번호 없애야됨)
+		phoneCerti : "",			// 담당자 휴대폰 인증 전화번호
 		phoneCertiChk : true,		// 담당자 휴대폰 인증 TF (모듈 추가후 defalte false로 변경해야됨)
 		regno : "",					// 사업자번호
 		corpNm : "",				// 사업자명
@@ -191,16 +198,24 @@ export default {
 		attachFileSeq : "",			// 첨부파일
 		domainName : "",			// 도메인 이름
 		domainNameChk : "N",		// 도메인 이름 TF
+		custAddrZip : "",			// 우편번호
+		custKdCd : "",				// 고객 유형
+		gender : "",				// 성별
 
 		// 고객사 정보 임시 data
 		selCorp : {},				// 선택한 고객사 정보
 		popReset : 0,				// 팝업 초기화할 num
-		corpNum : '',				// 고객번호
-		customIdNum : '',			// 고객식별번호
+		custNo : '',				// 고객번호
+		custrnmNo : '',				// 고객식별번호
 		selRegno : '',				// 사업자 등록 번호(input hidden)
 		selCorpCnt : 0,				// 사업자 번호로 조회한 고객사의 수
 
-		sEncData : '' 				// 나이스본인인증 암호화 정보 
+		sEncData : '', 				// 나이스본인인증 암호화 정보
+		dataList : [],
+		
+		custTypeArr : [],			// 고객 유형
+		custUpTaeArr : [],			// 업태
+		custUpjongArr : []				// 종목
 
 		
     }
@@ -225,9 +240,48 @@ export default {
 	  }
   },
   mounted() {
-	this.fnGetNiceCheck();
+	  this.fnGetNiceCheck();
+	  this.fnGetCustType();
+	  this.fnGetCustUptae();
+	  this.fnGetCustUpjong();
   },
   methods: {
+	fnGetCustType(){
+		var params = {
+			codeTypeCd	: "CORP_CUST_TYPE",
+			useYN		: "Y"
+		};
+		commonUtilApi.selectCodeList(params).then(response =>{
+			var result = response.data;
+			if(result.success){
+				this.custTypeArr = result.data;
+			}
+		});
+	},
+	fnGetCustUptae(){
+		var params = {
+			codeTypeCd	: "CORP_CUST_UPTAE",
+			useYN		: "Y"
+		};
+		commonUtilApi.selectCodeList(params).then(response =>{
+			var result = response.data;
+			if(result.success){
+				this.custUpTaeArr = result.data;
+			}
+		});
+	},
+	fnGetCustUpjong(){
+		var params = {
+			codeTypeCd	: "CORP_CUST_UPJONG",
+			useYN		: "Y"
+		};
+		commonUtilApi.selectCodeList(params).then(response =>{
+			var result = response.data;
+			if(result.success){
+				this.custUpjongArr = result.data;
+			}
+		});
+	},
 	 signUp () {
 		// 비밀번호 정책 validation
 
@@ -244,7 +298,6 @@ export default {
 	 // 기초 validation 처리
 	 defaultVali() {
 		if(this.password != this.passwordChk) {
-			alert("aa");
 			confirm.fnAlert("", "비밀번호가 일치하지 않습니다.");
 			this.password = "";
 			this.passwordChk = "";
@@ -360,37 +413,54 @@ export default {
 		});
 	 },
 	 fnChkCorp(){
+		 this.isNiceCheck = true;
+		 if(this.regno == ""){
+			 confirm.fnAlert("","사업자번호는 필수 입력입니다.");
+			 return false;
+		 }
 		// 사업자번호 입력 후 조회하여 고객사 선택 고객사가 있으면 고객사 관련 정보 disabled 처리
-		//  var params = {
-		// 	 regno : this.regno
-		//  }
-		// signUpApi.selectCorpPopup(params).then(function(response) {
-		// 	var result = response.data;
-		// 	if(result.success){
-			// var cnt = result.data.length;
-			var cnt = 0;
-			if(cnt > 0){
-				this.popReset += 1;
-				this.selCorpCnt = cnt;
-				jQuery("#chkCorpPopup").modal("show");
+		 var params = {
+			 regno : this.regno
+		 }
+		 
+		var vm = this;
+		signUpApi.selectCorpCustList(params).then(response => {
+			var result = response.data;
+			if(result.success){
+				var cnt = result.data.length;
+				if(cnt > 0){
+					vm.popReset += 1;
+					vm.selCorpCnt = cnt;
+					vm.dataList = result.data;
+					// this.selCorp = result.data;
+					jQuery("#chkCorpPopup").modal("show");
+				} else {
+					vm.selCorpCnt = 0;
+				}
+			} else{
+				confirm.fnAlert("", result.message);
 			}
-		// 		this.selCorp = result.data;
-		// 	}
-		// });
+		});
 	 },
 	 fnSetCorpInfo(){
 		 // 고객사 정보 임시 data
 		 this.ceoNm = this.selCorp.ceoNm;
-		 this.corpNum = this.selCorp.corpNum;
-		 this.customIdNum = this.selCorp.customIdNum;
-		 this.corpNm = this.selCorp.corpNm;
-		//  this.selRegno = this.selCorp.regNo;
+		 this.custNo = this.selCorp.custNo;
+		 this.custrnmNo = this.selCorp.custrnmNo;
+		 this.bizCompNm = this.selCorp.bizCompNm;
+		 this.selRegno = this.selCorp.bsRegNo;
+		 this.busiType = this.selCorp.bsstNm;
+		 this.custKdCd = this.selCorp.custKdCd;
+		 this.custAddrZip = this.selCorp.custAddrZip;
+		 this.woplaceAddress = this.selCorp.woplaceAddress;
+		 this.wireTel = this.selCorp.wireTel;
+
 	 },
-	 fnPopup(){
-		window.open('', 'popupChk', 'width=400, height=705, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
-		document.form_chk.action = "https://nice.checkplus.co.kr/CheckPlusSafeModel/checkplus.cb";
-		document.form_chk.target = "popupChk";
-		document.form_chk.submit();
+	 fnPopup(){ 
+			window.open('', 'popupChk', 'width=400, height=705, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+			document.form_chk.action = "https://nice.checkplus.co.kr/CheckPlusSafeModel/checkplus.cb";
+			document.form_chk.target = "popupChk";
+			document.form_chk.submit();
 	},
 	fnGetNiceCheck(){
 		let sEcnDataVal = '';
@@ -402,9 +472,13 @@ export default {
 				this.sEncData = sEcnDataVal;
 			} else {
 				confirm.fnAlert("", result.message);
-				return;
 			}
 		});
+	},
+	fnGetNiceCheckInfo(){
+		confirm.fnAlert("본인인증 성공", "본인인증에 성공하였습니다.");
+		this.phoneCerti = jQuery("#phoneCerti").val();
+		this.gender = jQuery("#gender").val();
 	}
   }
 }

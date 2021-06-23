@@ -24,10 +24,10 @@
 								</thead>
 								<tbody>
                                     <tr v-for="(row, idx) in data" :key="idx" @click="fnSelectCorpInfo(idx)" :class="index == idx ? 'selected' : ''" @dblclick="fnSelRow(row)">
-                                        <td>{{ row.corpNum }}</td>
-                                        <td>{{ row.ceoNm }}</td>
-                                        <td>{{ row.customIdNum }}</td>
-                                        <td>{{ row.corpNm }}</td>
+                                        <td>{{ row.custNo }}</td>
+                                        <td>{{ row.custNm }}</td>
+                                        <td>{{ row.custrnmNo }}</td>
+                                        <td>{{ row.bizCompNm }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -45,6 +45,8 @@
     </div>
 </template>
 <script>
+import signUpApi from "@/modules/signUp/service/api"
+
 export default {
     name : 'chkCorpPopup',
     props : {
@@ -55,23 +57,26 @@ export default {
         popReset : {
             type : Number,
             require : false
+        },
+        dataList : {
+            type : Array,
+            require : false
         }
     },
     data(){
         return {
             index : -1,
-            data : [
-                { corpNum : '1', ceoNm : '홍길동', customIdNum : '730607-11541', corpNm : '서울지방교육'},
-                { corpNum : '2', ceoNm : '김영희', customIdNum : '800608-23544', corpNm : '경기지방교육'},
-            ]
+            data : []
         }
     },
     watch : {
         popReset(){
             this.index = -1;
+            this.selCorp = {};
+            this.data = this.dataList;
         }
     },
-    mounted(){
+    mounted(){ 
 
     },
     methods : {
@@ -82,16 +87,30 @@ export default {
             this.index = index;
         },
         fnSelRow(rowData){
+            var params = {
+                custNo : rowData.custNo
+            };
+
+            signUpApi.selectSelCorpCustInfo(params).then(function(response) {
+                var result = response.data;
+                if(result.success){
+                    rowData.custKdCd = result.data.custKdCd;
+                    rowData.custAddrZip = result.data.custAddrZip;
+                    rowData.woplaceAddress = result.data.custVilgAbvAddr + result.data.custVilgBlwAddr;
+                    rowData.wireTel = result.data.homeTel == "" ? result.data.offcTel.trim() : result.data.homeTel.trim();
+                }
+            });
             this.$emit("update:selCorp", rowData);
             this.fnCloseLayer();
         },
         fnSelect(){
             var rowData = new Object();
             var td = jQuery("#selCorpTbl tr.selected").children();
-            rowData.corpNum    = td.eq(0).text();
-            rowData.ceoNm       = td.eq(1).text();
-            rowData.customIdNum = td.eq(2).text();
-            rowData.corpNm      = td.eq(3).text();
+            rowData.custNo    = td.eq(0).text();
+            rowData.custNm    = td.eq(1).text();
+            rowData.custrnmNo = td.eq(2).text();
+            rowData.bizCompNm      = td.eq(3).text();
+            // rowData.bsRegNo     = this.bsRegNo;
             
             this.$emit("update:selCorp", rowData);
             this.fnCloseLayer();

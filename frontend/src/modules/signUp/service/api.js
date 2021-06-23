@@ -40,6 +40,17 @@ const getNiceCheckFail = (params) => {
     return httpClient.post('/api/public/signUp/getNiceCheckFail', params, { headers: {"show-layer": "Yes"} });
 }
 
+const selectCorpCustList = (params) => {
+    return httpClient.post('/api/public/signUp/selectCorpCustList', params, { headers: {"show-layer": "Yes"} });
+}
+
+const selectSelCorpCustInfo = (params) => {
+    return httpClient.post('/api/public/signUp/selectSelCorpCustInfo', params, { headers: {"show-layer": "Yes"} });
+}
+
+const getNiceCheckInfo = (params) => {
+    return httpClient.post('/api/public/signUp/getNiceCheckInfo', { headers: {"show-layer": "Yes"} });
+}
 export default {
     signUpRedirect,
     domainChk,
@@ -50,5 +61,8 @@ export default {
     apiTest,
     getNiceCheck,
     getNiceCheckSuccess,
-    getNiceCheckFail
+    getNiceCheckFail,
+    selectCorpCustList,
+    selectSelCorpCustInfo,
+    getNiceCheckInfo
 };
