@@ -49,6 +49,13 @@ export default {
         sDate.setDate(sDate.getDate()+interval);
         return this.formatDate(sDate, 'yyyy-mm-dd');
       },
+      //날짜(월) 더하기
+      strDateAddMonth(dateStr, interval){
+        const dateParts = dateStr.split('-');
+        const sDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+        sDate.setMonth(sDate.getMonth()+interval);
+        return this.formatDate(sDate, 'yyyy-mm');
+      },
       /**************************날짜관련 관련 Utils**************************/
       /**************************정규식 관련 Utils**************************/
       isUrl(str){

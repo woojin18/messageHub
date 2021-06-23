@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="statistics">
+	<select id="selectStatisSndList" resultType="camel" >
+		/* statistics.selectStatisSndList 전송건수 및 비율 리스트 조회 */
+		SELECT	B.CH
+			,	B.CH_NAME
+			,	IFNULL(A.TOT_CNT, 0)	AS TOT_CNT
+			,	IFNULL(A.SUCC_CNT, 0)	AS SUCC_CNT
+			,	IFNULL(A.FAIL_CNT, 0)	AS FAIL_CNT
+			,	IFNULL(CONCAT(ROUND(A.SUCC_CNT/A.TOT_CNT * 100), '%'), '0%')	AS 'SUCC_RATIO'
+			,	IFNULL(CONCAT(ROUND(A.FAIL_CNT/A.TOT_CNT * 100), '%'), '0%')	AS 'FAIL_RATIO'
+		FROM (
+			SELECT	CH
+				,	CASE
+						WHEN	CH = 'FRIENDTALK'	THEN '친구톡'
+						WHEN	CH = 'ALIMTALK'		THEN '알림톡'
+						WHEN	CH = 'PUSH'			THEN 'Push'
+						ELSE	CH
+					END AS CH_NAME
+				,	SUM(TOT_CNT)	AS TOT_CNT
+				,	SUM(SUCC_CNT)	AS SUCC_CNT
+				,	SUM(FAIL_CNT)	AS FAIL_CNT
+			FROM cm.CM_STAT_CH_DAY
+			WHERE	1=1
+		<choose>
+			<when test="dateStatus == 'DAY'.toString()">
+			AND		DATE_FORMAT(YMD, '%Y%m%d') BETWEEN REPLACE(#{searchStartDate}, '-', '') AND REPLACE(#{searchEndDate}, '-', '')
+			</when>
+			<otherwise>
+			AND		DATE_FORMAT(YMD, '%Y%m') BETWEEN REPLACE(#{searchStartDate}, '-', '') AND REPLACE(#{searchEndDate}, '-', '')
+			</otherwise>
+		</choose>
+			AND		CORP_ID = #{corpId}
+			GROUP BY CH
+		) A
+		RIGHT OUTER JOIN (
+			SELECT	CH
+				,	CH_NAME
+			FROM (
+				SELECT	'ALIMTALK'		AS CH
+					,	'알림톡'		AS CH_NAME
+				UNION 
+				SELECT	'FRIENDTALK'	AS CH
+					,	'친구톡'		AS CH_NAME
+				UNION 
+				SELECT	'MMS'	AS CH
+					,	'MMS'	AS CH_NAME
+				UNION 
+				SELECT	'RCS'	AS CH
+					,	'RCS'	AS CH_NAME
+				UNION 
+				SELECT	'SMS'	AS CH
+					,	'SMS'	AS CH_NAME
+				UNION 
+				SELECT	'PUSH'	AS CH
+					,	'Push'	AS CH_NAME
+			) TMP
+		) B
+		ON A.CH = B.CH
+	</select>
+
+	<select id="selectStatisSndCntList" resultType="camel" >
+		/* statistics.selectStatisSndCntList 전송건수 조회 */
+		SELECT	CH
+			,	YMD
+			,	SUM(SUCC_CNT) AS SUCC_CNT
+			,	SUM(FAIL_CNT) AS FAIL_CNT
+		FROM (
+			SELECT	CH
+		<choose>
+			<when test="dateStatus == 'DAY'.toString()">
+				,	DATE_FORMAT(YMD, '%c.%d')	AS YMD
+			</when>
+			<otherwise>
+				,	DATE_FORMAT(YMD, '%y.%m')	AS YMD
+			</otherwise>
+		</choose>
+				,	IFNULL(SUM(SUCC_CNT), 0)	AS SUCC_CNT
+				,	IFNULL(SUM(FAIL_CNT), 0)	AS FAIL_CNT
+			FROM cm.CM_STAT_CH_DAY
+			WHERE	1=1
+		<choose>
+			<when test="dateStatus == 'DAY'.toString()">
+			AND		DATE_FORMAT(YMD, '%Y%m%d') BETWEEN REPLACE(#{searchStartDate}, '-', '') AND REPLACE(#{searchEndDate}, '-', '')
+			</when>
+			<otherwise>
+			AND		DATE_FORMAT(YMD, '%Y%m') BETWEEN REPLACE(#{searchStartDate}, '-', '') AND REPLACE(#{searchEndDate}, '-', '')
+			</otherwise>
+		</choose>
+			AND		CORP_ID = #{corpId}
+			GROUP BY CH, YMD
+		) A
+		GROUP BY YMD, CH
+		ORDER BY YMD, CH
+	</select>
+</mapper>
