@@ -1,4 +1,5 @@
 module.exports = {
+    transpileDependencies: ['vuetify'],
     /** build config */
     outputDir: '../src/main/resources/static', // html, ico 파일 저장
     //outputDir: './docker/dist', // html, ico 파일 저장

@@ -118,11 +118,11 @@
               </tbody>
             </table>
             <p class="infoText"><i class="fas fa-info-circle"></i> SMS 서비스에서 SMS는 메시지 길이 90바이트 이하의 단문 메시지이며, LMS는 메시지 길이 2,000바이트 이하의 장문 메시지, MMS는 멀티미디어 파일(사진, 컬러티콘, 배경 음악)이 첨부된 메시지를 의미합니다.</p>
-          </section>  
+          </section>
         </div>
 
         <div class="subVisualWrap02 wow animated fadeInUp">
-          <section>      
+          <section>
             <p class="tableTitle"><i class="fas fa-chevron-square-right"></i> KakaoTalk Bizmessage</p>
             <p class="tableText">VAT 별도</p>
             <table class="user_table_skin1">
