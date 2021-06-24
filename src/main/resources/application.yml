@@ -62,7 +62,7 @@ datasource:
 mongodb:
   #uri: mongodb://cloud:test1234@sandbox.ums-dev.uplus.co.kr:47017/cloud?authSource=cloud&authMechanism=SCRAM-SHA-256
   uri: mongodb://cm:test1234@mongo.ums-dev.uplus.co.kr:47017/cm?authSource=cm&authMechanism=SCRAM-SHA-256/cm?authSource=cloud&authMechanism=SCRAM-SHA-256
-  database: cloud
+  database: cm
   connectionsPerHost: 30
   connectionsPerHostMin: 10
   maxWaitTime: 5000
@@ -130,7 +130,7 @@ datasource:
   
 mongodb:
   uri: mongodb://cm:test1234@mongodb.default.svc.cluster.local:27017/cm?authSource=cm&authMechanism=SCRAM-SHA-256/cm?authSource=cloud&authMechanism=SCRAM-SHA-256
-  database: cloud
+  database: cm
   connectionsPerHost: 30
   connectionsPerHostMin: 10
   maxWaitTime: 5000
@@ -192,7 +192,7 @@ datasource:
   
 mongodb:
   uri: mongodb://cm:aptlwld123@mongodb.default.svc.cluster.local:27017/cm?authSource=cm&authMechanism=SCRAM-SHA-256
-  database: cloud
+  database: cm
   connectionsPerHost: 30
   connectionsPerHostMin: 10
   maxWaitTime: 5000
@@ -254,7 +254,7 @@ datasource:
     
 mongodb:
   uri: mongodb://cloud:test1234@dev.ectech.co.kr:40917/cloud?authSource=cloud&authMechanism=SCRAM-SHA-256
-  database: cloud
+  database: cm
   connectionsPerHost: 30
   connectionsPerHostMin: 10
   maxWaitTime: 5000
