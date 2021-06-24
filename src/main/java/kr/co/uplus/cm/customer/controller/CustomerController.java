@@ -174,4 +174,38 @@ public class CustomerController {
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 
+    /**
+     * 약관 개정이력 리스트 조회
+     * @param params
+     * @return
+     */
+    @PostMapping("/api/public/customer/selectCmUseTermsHistList")
+    public RestResult<?> selectCmUseTermsHistList(@RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = customerService.selectCmUseTermsHistList(params);
+        } catch (Exception e) {
+            rtn.setFail();
+            log.error("{}.selectCmUseTermsHistList Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
+
+    /**
+     * 약관 정보 조회
+     * @param params
+     * @return
+     */
+    @PostMapping("/api/public/customer/selectCmUseTermsInfo")
+    public RestResult<?> selectCmUseTermsInfo(@RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = customerService.selectCmUseTermsInfo(params);
+        } catch (Exception e) {
+            rtn.setFail();
+            log.error("{}.selectCmUseTermsInfo Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
+
 }

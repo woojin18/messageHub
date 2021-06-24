@@ -112,4 +112,30 @@ public class CustomerService {
         return (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_ATTACH_FILE_INFO, params);
     }
 
+    /**
+     * 약관 개정이력 리스트 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectCmUseTermsHistList(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        List<Object> rtnList = generalDao.selectGernalList(DB.qry_SELECT_CM_USE_TERMS_HIST_LIST, params);
+        rtn.setData(rtnList);
+        return rtn;
+    }
+
+    /**
+     * 약관 정보 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectCmUseTermsInfo(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        Object rtnInfo = generalDao.selectGernalObject(DB.qry_SELECT_CM_USE_TERMS_INFO, params);
+        rtn.setData(rtnInfo);
+        return rtn;
+    }
+
 }

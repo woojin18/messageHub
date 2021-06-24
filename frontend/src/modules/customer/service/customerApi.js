@@ -20,6 +20,13 @@ const procDownloadLibraryFile = (params) => {
   .then((response) => fnDownCallback(response));
 };
 
+const selectCmUseTermsHistList = (params) => {
+  return httpClient.post('/api/public/customer/selectCmUseTermsHistList', params, { headers: {"show-layer": "Yes"} });
+};
+const selectCmUseTermsInfo = (params) => {
+  return httpClient.post('/api/public/customer/selectCmUseTermsInfo', params, { headers: {"show-layer": "Yes"} });
+};
+
 
 export default {
   selectCodeList,
@@ -27,7 +34,9 @@ export default {
   selectNoticeList,
   insertQuestBoard,
   selectLibraryList,
-  procDownloadLibraryFile
+  procDownloadLibraryFile,
+  selectCmUseTermsHistList,
+  selectCmUseTermsInfo
 };
 
 function fnDownCallback(response){

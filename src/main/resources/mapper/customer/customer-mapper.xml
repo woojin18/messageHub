@@ -158,4 +158,32 @@
         WHERE FILE_ID = #{fileId}
     </select>
 
+    <select id="selectCmUseTermsHistList" parameterType="hashmap" resultType="camel">
+    /* customer.selectCmUseTermsHistList - 약관 개정이력 리스트 조회 */
+        SELECT
+            CUT.SVC_TERMS_ID
+            , CUT.REVISE_DAY
+            , DATE_FORMAT(CUT.REVISE_DAY, '%Y-%m-%d') AS REVISE_DT
+        FROM cm_bo.CM_USE_TERMS CUT
+        WHERE CUT.TERMS_CD = #{termsCd}
+            AND CUT.USE_YN = 'Y'
+        ORDER BY REVISE_DAY DESC
+    </select>
+
+    <select id="selectCmUseTermsInfo" parameterType="hashmap" resultType="camel">
+    /* customer.selectCmUseTermsHistList - 약관 정보 조회 */
+        SELECT
+            CUT.SVC_TERMS_ID
+            , CUT.TITLE
+            , CUT.TERMS_CD
+            , CUT.TERMS_CONTENT
+            , CUT.REVISE_DAY
+            , DATE_FORMAT(CUT.REVISE_DAY, '%Y-%m-%d') AS REVISE_DT
+            , CUT.USE_YN
+            , CUT.REG_ID
+            , CUT.REG_DT
+        FROM cm_bo.CM_USE_TERMS CUT
+        WHERE CUT.SVC_TERMS_ID = #{svcTermsId}
+    </select>
+
 </mapper>

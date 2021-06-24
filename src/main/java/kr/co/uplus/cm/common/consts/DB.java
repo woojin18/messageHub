@@ -17,15 +17,17 @@ public class DB {
 	//메인
 	public final static String QRY_SELECT_PRD_UNIT_INFO_LIST = "main.selectPrdUnitInfoList";
 
-	// 고객센터
-	public final static String QRY_SELECT_FAQ_TYPE_LIST = "customer.selectFaqTypeList";
-	public final static String QRY_SELECT_FAQ_LIST_CNT = "customer.selectFaqListCnt";
-	public final static String QRY_SELECT_FAQ_LIST = "customer.selectFaqList";
-	public final static String QRY_SELECT_NOTICE_LIST_CNT = "customer.selectNoticeListCnt";
-	public final static String QRY_SELECT_NOTICE_LIST = "customer.selectNoticeList";
-	public final static String QRY_SELECT_LIBRARY_LIST_CNT = "customer.selectLibraryListCnt";
+    //고객센터
+    public final static String QRY_SELECT_FAQ_TYPE_LIST = "customer.selectFaqTypeList";
+    public final static String QRY_SELECT_FAQ_LIST_CNT = "customer.selectFaqListCnt";
+    public final static String QRY_SELECT_FAQ_LIST = "customer.selectFaqList";
+    public final static String QRY_SELECT_NOTICE_LIST_CNT = "customer.selectNoticeListCnt";
+    public final static String QRY_SELECT_NOTICE_LIST = "customer.selectNoticeList";
+    public final static String QRY_SELECT_LIBRARY_LIST_CNT = "customer.selectLibraryListCnt";
     public final static String QRY_SELECT_LIBRARY_LIST = "customer.selectLibraryList";
     public final static String QRY_SELECT_ATTACH_FILE_INFO = "customer.selectAttachFileInfo";
+    public final static String qry_SELECT_CM_USE_TERMS_HIST_LIST = "customer.selectCmUseTermsHistList";
+    public final static String qry_SELECT_CM_USE_TERMS_INFO = "customer.selectCmUseTermsInfo";
 
 	// 로그인
 	public final static String QRY_SELECT_USERNAME = "login.qrySelectUserName";
@@ -237,10 +239,10 @@ public class DB {
 	public final static String QRY_SELECT_DASH_PROJECT_INFO = "dashboard.selectProjectInfo";
 	public final static String QRY_SELECT_DASH_PROJECT_LIST = "dashboard.selectProjectList";
 	public final static String QRY_SELECT_DASH_NOTICE_LIST = "dashboard.selectNoticeList";
-	
+
 	// 통계
 	public final static String QRY_SELECT_STATIS_SND_LIST = "statisticsUser.selectStatisSndList";
 	public final static String QRY_SELECT_STATIS_SND_CNT_LIST = "statisticsUser.selectStatisSndCntList";
-	
+
 
 }
