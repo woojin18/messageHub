@@ -354,10 +354,10 @@
 	</select>
 	
 		<select id="selectBasicDisRatio" parameterType="string" resultType="hashmap">
-		/* project.selectBasicDisRatio ǋ¾�進 ƗLº롁¶ȸ(ºй輭º񽹉D°¡ ¾�§) */
+		/* project.selectBasicDisRatio */
 		SELECT C.CH_RELAY_TYPE, C.RELAY 
 		FROM (
-				SELECT	A.CH_RELAY_TYPE
+				SELECT	A.RELAY_CH_TYPE
 				, 		A.RELAY
 				FROM cm.CM_RELAY_CH AS A
 				INNER JOIN(
@@ -371,7 +371,7 @@
 	</select>
 	
 	<select id="seletDisRatio" parameterType="string" resultType="hashmap">
-		/* project.seletDisRatio ǋ¾�進 ƗLº롁¶ȸ(ºй輭º񽹉D°¡ V; ¶§) */
+		/* project.seletDisRatio */
 		SELECT	CH_DIST_INFO
 			,	USE_YN
 			,	SMART_CH_NAME
@@ -386,7 +386,7 @@
 	</select>
 	
 	<select id="selectDuplicateDistribution" resultType="int">
-		/* project.selectDuplicateDistribution ä³̠º¹ ȮN */
+		/* project.selectDuplicateDistribution */
 		SELECT	COUNT(1)
 		FROM	cm.CM_SMART_CH
 		WHERE	1 = 1
@@ -395,7 +395,7 @@
 	</select>
 	
 	<update id="updateDistributionData">
-		/* project.updateDistributionData ºй輭º񽸠¾�͆® */
+		/* project.updateDistributionData */
 		UPDATE	cm.CM_SMART_CH
 		SET		SMART_CH_NAME 	= #{SMART_CH_NAME}
 		,		CH_DIST_INFO	= #{CH_DIST_INFO}
@@ -407,7 +407,7 @@
 	</update>
 
 	<update id="updateProjectDistribution">
-		/* project.updateProjectDistribution ä³τڵ㠾�͆® */
+		/* project.updateProjectDistribution */
 		UPDATE	cm_console.CM_PROJECT
 		SET		SMART_CH_CODE = #{SMART_CH_CODE}
 		WHERE	1=1
@@ -415,7 +415,7 @@
 	</update>
 	
 	<insert id="insertDistributionData" parameterType="hashmap">
-		/* project."insertDistributionData" ºй郤³̠µ */
+		/* project."insertDistributionData" */
 		INSERT cm.CM_SMART_CH
 		(
 			SMART_CH_CODE

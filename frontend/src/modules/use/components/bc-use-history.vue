@@ -168,6 +168,7 @@ export default {
 				buttonImage:'../../se2/images/datepicker.png',
 				buttonImageOnly: true,
 				showOn: 'button',
+				maxDate:0,
 				onSelect: function() { // 선택월의 말일계산
 					var date = jQuery(this).val();
 					vm.searchData.searchStartDate = date;

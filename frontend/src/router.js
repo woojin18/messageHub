@@ -32,6 +32,7 @@ import smartSendRoutes from './modules/smartSend/router';
 import customerRoutes from './modules/customer/router';
 import rcsTemplateSendRoutes from './modules/rcsTemplateSend/router';
 import statisticsUserRoutes from './modules/statisticsUser/router';
+import statisticsAdminRoutes from './modules/statisticsAdmin/router';
 
 //import confirm from "@/modules/commonUtil/service/confirm.js";
 
@@ -131,7 +132,8 @@ const router = new Router({
 				...userRoutes,
 				...addressRoutes,
 				...acMyPageRoutes,
-				...useRoutes
+				...useRoutes,
+				...statisticsAdminRoutes
 			],
 		},
 		{

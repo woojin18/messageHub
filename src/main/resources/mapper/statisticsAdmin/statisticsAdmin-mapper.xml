@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="statisticsAdmin">
+	<select id="selectStatisList" resultType="camel" >
+		/* statisticsAdmin.selectStatisList 일별/월별 전송건수 조회 */
+		SELECT
+		<choose>
+			<when test="searchDateType == 'DAY'.toString()">
+				DATE_FORMAT(YMD, '%Y.%m.%d')	AS SEND_DATE
+			</when>
+			<otherwise>
+				DATE_FORMAT(YMD, '%Y.%m')		AS SEND_DATE
+			</otherwise>
+		</choose>
+			,	PROJECT_ID
+			,	(	SELECT	PROJECT_NAME
+					FROM		cm_console.CM_PROJECT
+					WHERE		DEL_YN = 'N'
+					AND		CORP_ID = #{corpId}
+					AND		PROJECT_ID = A.PROJECT_ID)	AS PROJECT_NAME
+			,	API_KEY
+			,	DEPT_CODE
+			,	(	SELECT	DEPT_NAME
+					FROM		cm_console.CM_PROJECT_SUBBILL_CODE
+					WHERE		USE_YN = 'Y'
+					AND		CORP_ID = #{corpId}
+					AND		DEPT_CODE = A.DEPT_CODE) AS DEPT_NAME
+			,	SUM(TOT_CNT) AS TOT_CNT
+			,	SUM(SUCC_CNT) AS SUCC_CNT
+			,	SUM(FAIL_CNT) AS FAIL_CNT
+			,	IFNULL(CONCAT(ROUND(SUM(SUCC_CNT)/SUM(TOT_CNT) * 100), '%'), '0%')	AS SUCC_RATIO
+		FROM	cm.CM_STAT_CH_DAY A
+		WHERE	CORP_ID = #{corpId}
+		<if test="searchProjectId != '' and searchProjectId != null ">
+		AND		PROJECT_ID = #{searchProjectId}
+		</if>
+		<choose>
+			<when test="searchDateType == 'DAY'.toString()">
+		AND		DATE_FORMAT(YMD, '%Y%m%d') BETWEEN REPLACE(#{searchStartDate}, '-', '') AND REPLACE(#{searchEndDate}, '-', '')
+			</when>
+			<otherwise>
+		AND		DATE_FORMAT(YMD, '%Y%m') BETWEEN REPLACE(#{searchStartMonth}, '-', '') AND REPLACE(#{searchEndMonth}, '-', '')
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="searchChanType == 'KAKAO'.toString()">
+				<choose>
+					<when test="searchKakaoType != '' and searchKakaoType != null ">
+		AND		CH = #{searchKakaoType}
+					</when>
+					<otherwise>
+		AND		CH IN ('ALIMTALK', 'FRIENDTALK')
+					</otherwise>
+				</choose>
+			</when>
+			<when test="searchChanType == 'SMSMMS'.toString()">
+				<choose>
+					<when test="searchSmsmmsType != '' and searchSmsmmsType != null ">
+		AND		CH = #{searchSmsmmsType}
+					</when>
+					<otherwise>
+		AND		CH IN ('SMS', 'MMS')
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+		AND		CH = #{searchChanType} <!-- PUSH, RCS -->
+			</otherwise>
+		</choose>
+		GROUP BY SEND_DATE, PROJECT_ID, API_KEY, DEPT_CODE
+		ORDER BY SEND_DATE, PROJECT_NAME, API_KEY, DEPT_NAME
+	</select>
+	
+	<select id="selectStatisProjectList" parameterType="hashmap" resultType="camel">
+		/* statisticsAdmin.selectStatisProjectList 프로젝트 목록 조회 */
+		SELECT
+			B.PROJECT_ID
+		,	B.PROJECT_NAME
+		FROM cm_console.CM_PROJECT_USER A
+		INNER JOIN cm_console.CM_PROJECT B
+		ON A.PROJECT_ID = B.PROJECT_ID
+		WHERE A.USER_ID = #{userId}
+	</select>
+</mapper>

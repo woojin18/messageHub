@@ -229,6 +229,7 @@ components: {
 				buttonImage:'../../se2/images/datepicker.png',
 				buttonImageOnly: true,
 				showOn: 'button',
+				maxDate:0,
 			});
 		},
 		fnSearch() {
