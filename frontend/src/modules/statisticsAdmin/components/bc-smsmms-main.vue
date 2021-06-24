@@ -128,8 +128,6 @@ export default {
 					'searchDateType' : 'DAY',
 					'searchChanType' : 'SMSMMS',
 					'searchSmsmmsType' : '',
-					searchStartMonth : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -6+1),
-					searchEndMonth : this.$gfnCommonUtils.getCurretDate('yyyy-mm'),
 				}
 			}
 		},
@@ -147,6 +145,8 @@ export default {
 			sumTotCnt: 0,
 			sumSuccCnt: 0,
 			totalSuccRatio: 0,
+			searchStartMonth : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -6+1),
+			searchEndMonth : this.$gfnCommonUtils.getCurretDate('yyyy-mm'),
 		}
 	},
 	mounted() {
