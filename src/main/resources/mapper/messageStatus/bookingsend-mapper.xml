@@ -4,10 +4,12 @@
 <mapper namespace="bookingSend">
 
     <sql id ="whereSelectBookingSendList">
-        AND A.CORP_ID = #{corpId}
+        <!-- AND A.CORP_ID = #{corpId} -->
 		AND A.PROJECT_ID = #{projectId}
-        <if test="searchText != '' and searchText != null ">
-            AND C.CORP_ID = CONCAT('%', #{searchText}, '%')
+		AND A.RESV_SENDER_YN = 'Y'
+		AND A.DEL_YN = 'N'
+		<if test="searchText != '' and searchText != null ">
+            AND C.CORP_NAME like CONCAT('%', #{searchText}, '%')
         </if>
         <if test="searchStartDate != '' and searchStartDate != null ">
             <if test="searchEndDate != '' and searchEndDate != null ">
@@ -22,7 +24,6 @@
             COUNT(DISTINCT A.WEB_REQ_ID) AS CNT
         FROM cm_console.CM_WEB_MSG A LEFT OUTER JOIN cm_console.CM_CORP C ON A.CORP_ID = C.CORP_ID
         WHERE 1=1
-        <!-- AND RESV_SENDER_YN = 'Y' --><!-- 테스트중 주석처리-->
         <include refid="whereSelectBookingSendList"/>
     </select>
 
@@ -37,15 +38,18 @@
 		        WHEN A.SENDER_TYPE = 'S' THEN '스마트발송'
 		        END AS SENDER_TYPE_NM /*발송타입명*/
 			   , A.SENDER_CNT
-			   , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%s') AS REG_DT /*발송일시*/
+			   , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%s') AS REG_DT /*등록일시*/
 			   , DATE_FORMAT(A.REQ_DT, '%Y.%m.%d %H:%i:%s') AS REQ_DT /*예약발송일시*/
+			    , CASE WHEN A.REQ_DT <![CDATA[<=]]> NOW() THEN 'FALSE'
+			          ELSE 'TRUE'
+			          END AS CANCEL_SHOW_FLAG
 			   , C.CORP_NAME
 			   , A.MSG_INFO->>'$.send_info[1].chType' AS REPLC_SEND
-			   , CONCAT(A.MSG_INFO->>'$.send_info[0].chType', ' : ', '\n', A.MSG_INFO->>'$.send_info[0].content', '\n', A.MSG_INFO->>'$.send_info[1].chType', ' : ', '\n', A.MSG_INFO->>'$.send_info[1].content') AS CONTENT
+			   <!--  , CONCAT(A.MSG_INFO->>'$.send_info[0].chType', ' : ', '\n', A.MSG_INFO->>'$.send_info[0].content', '\n', A.MSG_INFO->>'$.send_info[1].chType', ' : ', '\n', A.MSG_INFO->>'$.send_info[1].content') AS CONTENT-->
+			   , A.MSG_INFO->>'$.msg' AS CONTENT
 		FROM cm_console.CM_WEB_MSG A LEFT OUTER JOIN cm_console.CM_CORP C ON A.CORP_ID = C.CORP_ID
 		   , (SELECT @rownum:=0) TMP
 		WHERE 1=1
-		  AND DEL_YN = 'N'
 		<include refid="whereSelectBookingSendList"/>
 		ORDER BY REG_DT DESC
         <if test='pagingYn == "Y" '>

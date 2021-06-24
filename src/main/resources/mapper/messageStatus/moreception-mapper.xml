@@ -6,9 +6,6 @@
     <sql id ="whereSelectMoReceptionList">
         AND A.CORP_ID = #{corpId}
 		AND A.PROJECT_ID = #{projectId}
-        <if test="searchText != null and searchText != '' ">
-            AND C.CORP_ID = CONCAT('%', #{searchText}, '%')
-        </if>
         <if test="searchStartDate != null and searchStartDate != '' ">
             <if test="searchEndDate != null and searchEndDate != '' ">
             AND B.MO_RECV_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
@@ -52,14 +49,14 @@
 		      , B.MO_TITLE
 		      , B.TELCO
 		      , B.STATUS
-		      , C.CODE_VAL_1 AS CODE_VAL
+		      , C.CODE_NAME_1 AS CODE_VAL
 		      , DATE_FORMAT(B.MO_RECV_DT, '%Y.%m.%d %H:%i:%s') AS MO_RECV_DT /*발송일시*/
 		FROM cm.CM_MO_CALLBACK A LEFT OUTER JOIN cm.CM_MO_MSG B
 		                         ON A.MO_NUMBER = B.MO_NUMBER
 		                         AND A.PROJECT_ID = B.PROJECT_ID
 		                         AND A.MO_TYPE = B.MO_TYPE
 		                         LEFT OUTER JOIN cm_bo.CM_CODE C
-		                         ON B.STATUS = C.CODE_NAME_1
+		                         ON B.STATUS = C.CODE_VAL_1
 		                         AND C.CODE_TYPE_CD = 'MO_RECV_STATUS'
 		   , (SELECT @rownum:=0) TMP
 		WHERE 1=1

@@ -10,7 +10,8 @@
 						<div class="of_h">
 							<div class="float-left" style="width:15%"><h5>메시지</h5></div>
 							<div class="float-right" style="width:84%">
-								<textarea class="textareaStyle height120" placeholder="" v-model="msg"></textarea>
+								<!--<textarea class="textareaStyle height120" placeholder="" v-model="msg"></textarea>-->
+								<pre>{{msg}}</pre>
 							</div>							
 						</div>
 						<div class="of_h consolMarginTop">
@@ -86,26 +87,29 @@ export default {
   },
 
 methods: {
-	  fnCancelLayer(){
+
+	fnCancelLayer(){
       eventBus.$on('callbackEventBus', this.fnProcBookingSendCancel);
       confirm.fnConfirm(this.detailTitle, "예약발송 취소처리를 하시겠습니까?", "저장");
     },
-    async fnProcBookingSendCancel(){
+    
+    fnProcBookingSendCancel(){
       
       var params = this.rowData;
       params.webReqId = this.detailWebReqId;
 
-      await messageStatusApi.cancelBookingSend(params).then(response =>{
+       messageStatusApi.cancelBookingSend(params).then(response =>{
         var result = response.data;
         if(result.success) {
-          confirm.fnAlert(this.detailTitle, '삭제되었습니다.');
+          confirm.fnAlert(this.detailTitle, '예약발송 취소처리 되었습니다.');
           //this.listChkBox = [];
-          this.fnCloseLayer();
           //this.$router.push('bookingSendList');
-          this.$parent.fnSelectBooingSendList();
+          
         } else {
           confirm.fnAlert(this.detailTitle, result.message);
         }
+        this.$parent.fnSelectBooingSendList();
+        this.fnCloseLayer();
       });
     },
     // 닫기

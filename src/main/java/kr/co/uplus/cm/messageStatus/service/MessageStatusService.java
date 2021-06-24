@@ -92,7 +92,7 @@ public class MessageStatusService {
         		if("RCS".equalsIgnoreCase(stringArray[j])) hMap.put("rcs", "O"); 
         		if("ALIMTALK".equalsIgnoreCase(stringArray[j])) hMap.put("alimTalk", "O"); 
         		if("FRIENDTALK".equalsIgnoreCase(stringArray[j])) hMap.put("friendTalk", "O"); 
-        		if("SMS".equalsIgnoreCase(stringArray[j])) hMap.put("sms", "O"); 
+        		if("SMS".equalsIgnoreCase(stringArray[j]) || "MMS".equalsIgnoreCase(stringArray[j])) hMap.put("sms", "O"); 
         	}
         	
         	rtnList.set(i, hMap);
@@ -184,7 +184,7 @@ public class MessageStatusService {
         		if("RCS".equalsIgnoreCase(stringArray[j])) hMap.put("rcs", "O"); 
         		if("ALIMTALK".equalsIgnoreCase(stringArray[j])) hMap.put("alimTalk", "O"); 
         		if("FRIENDTALK".equalsIgnoreCase(stringArray[j])) hMap.put("friendTalk", "O"); 
-        		if("SMS".equalsIgnoreCase(stringArray[j])) hMap.put("sms", "O"); 
+        		if("SMS".equalsIgnoreCase(stringArray[j]) || "MMS".equalsIgnoreCase(stringArray[j])) hMap.put("sms", "O"); 
         	}
         	
         	rtnList.set(i, hMap);

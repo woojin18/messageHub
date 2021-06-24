@@ -8,7 +8,7 @@
 		AND A.PROJECT_ID = #{projectId}
         <if test="searchText != '' and searchText != null ">
             <if test="searchCondi == 'receiverId' ">
-            AND C.CU_INFO_ID = CONCAT('%', #{searchText}, '%')
+            AND C.CU_INFO_ID LIKE CONCAT('%', #{searchText}, '%')
             </if>
             <if test="searchCondi == 'receiverName' ">
             AND C.CU_NAME LIKE CONCAT('%', #{searchText}, '%')

@@ -102,7 +102,7 @@
                     <td class="text-center">{{data.replcSend}}</td><!-- 대체발송 -->
                     <td class="text-center">{{data.regDt}}</td><!-- 등록일시 -->
                     <td class="text-center">{{data.reqDt}}</td><!-- 예약발송일자 -->
-                    <td class="text-center end"><a href="javascript:void(0);" @click="fnCancelPop(idx)"  class="btnStyle6 minWidthAuto" style="width:65%" title="예약취소" data-toggle="modal" data-target="#cancel">예약취소</a></td>
+                    <td class="text-center end"><a v-if="data.cancelShowFlag == 'TRUE'"  @click="fnCancelPop(idx)"  class="btnStyle6 minWidthAuto" style="width:65%" title="예약취소" data-toggle="modal" data-target="#cancel" activity="SAVE">예약취소</a></td>
                 </tr>
                 <tr v-if="datas.length == 0">
                     <td class="text-center" colspan="12">검색된 내용이 없습니다.</td>

@@ -97,10 +97,13 @@ public class MessageStatusController {
 			HttpServletResponse response) throws Exception {
 
 		String msgKey 		= params.get("msgKey").toString();
+		System.out.println("001>>>>>>>>>>>>>>msgKey : "+msgKey);
 		log.debug("msgKey : "+msgKey);
 
 		Query query = new Query(Criteria.where("msgKey").is(msgKey));
+		System.out.println("002>>>>>>>>>>>>>>msgKey : "+msgKey);
 		CmMsgInfoDto msgInfo = mongoCmd.findOne(query, CmMsgInfoDto.class, MongoConf.CM_MSG_INFO.key);
+		System.out.println("003>>>>>>>>>>>>>>msgKey : "+msgKey);
 		String msg = "";//메시지 내용
 		String msgTitle = "";//메시지 제목
 
