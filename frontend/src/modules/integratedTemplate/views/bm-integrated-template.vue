@@ -223,6 +223,7 @@ export default {
     //엑셀 다운로드
     fnExcelDownLoad(){
       var params = this.searchData;
+      
       integratedTemplateApi.excelDownloadIntegratedTemplate(params);
     },
 
@@ -240,7 +241,8 @@ export default {
       var params = Object.assign({}, this.searchData);
       params.pageNo = this.pageNo;
       params.listSize = this.listSize;
-
+	  params.tmpltStatus = "SAVE";
+	  
       params.loginId = tokenSvc.getToken().principal.userId;
       params.roleCd = tokenSvc.getToken().principal.roleCd
 

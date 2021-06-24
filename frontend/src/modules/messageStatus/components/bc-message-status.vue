@@ -110,7 +110,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(data, idx) in datas" :key="data.row_num">
+              <tr v-for="(data, idx) in datas" :key="data.rowNum">
                   <td>{{ idx + 1 }}</td>
                   <!-- <td class="text-center"><a href="#self" title="메세지상세" data-toggle="modal" data-target="#Message">{{data.phoneNumber}}</a></td> -->
                   <!-- <td class="text-center"><router-link :to="{ name: 'messageStatusDetail', params: { rowData: {'msgKey' : data.msgKey, 'regDt' : data.regDt, 'senderTypeNm' : data.senderTypeNm, 'campaignId' : data.campaignId, 'pushCuid' : data.pushCuid, 'gwResultNm' : data.gwResultNm} }}">{{data.phoneNumber}}</router-link></td> -->
