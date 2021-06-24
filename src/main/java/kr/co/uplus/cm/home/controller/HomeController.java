@@ -91,4 +91,96 @@ public class HomeController {
 
 		return rtn;
 	}
+
+	/**
+	 * 대시보드 채널별 성공/실패 카운트 조회
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectChTotCntInfo")
+	public RestResult<?> selectChTotCntInfo(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = homeSvc.selectChTotCntInfo(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectNoticeList Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드 일자별 채널 성공/실패 카운트 조회
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectChSuccFailCntList")
+	public RestResult<?> selectChSuccFailCntList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = homeSvc.selectChSuccFailCntList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectNoticeList Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드 일자별 실패코드 조회
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectChFailCodeList")
+	public RestResult<?> selectChFailCodeList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = homeSvc.selectChFailCodeList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectNoticeList Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드 채널별 성공/실패현황 조회
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectDayStatsList")
+	public RestResult<?> selectDayStatsList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = homeSvc.selectDayStatsList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectNoticeList Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
 }

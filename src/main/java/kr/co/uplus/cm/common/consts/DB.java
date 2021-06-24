@@ -239,6 +239,11 @@ public class DB {
 	public final static String QRY_SELECT_DASH_PROJECT_INFO = "dashboard.selectProjectInfo";
 	public final static String QRY_SELECT_DASH_PROJECT_LIST = "dashboard.selectProjectList";
 	public final static String QRY_SELECT_DASH_NOTICE_LIST = "dashboard.selectNoticeList";
+	public final static String QRY_SELECT_CH_TOTAL_COUNT_INFO = "selectChTotCnt";
+	public final static String QRY_SELECT_CH_SUCC_FAIL_COUNT_LIST = "selectChSuccFailCntList";
+	public final static String QRY_SELECT_CH_FAIL_CODE_LIST = "selectChFailCodeList";
+	public final static String QRY_SELECT_CH_FAIL_CODE_COUNT_LIST = "selectChFailCodeCntList";
+	public final static String QRY_SELECT_DAY_STATS_LIST = "dashboard.selectDayStatsList";
 
 	// 통계
 	public final static String QRY_SELECT_STATIS_SND_LIST = "statisticsUser.selectStatisSndList";

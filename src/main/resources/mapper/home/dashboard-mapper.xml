@@ -54,4 +54,330 @@
 		LIMIT 3
 	</select>
 
+	<select id="selectChTotCnt" resultType="camel">
+		/* dashboard.selectChTotCnt */
+		SELECT
+			SUM(PUSH_SUCC_CNT) AS PUSH_SUCC_CNT,
+			SUM(PUSH_FAIL_CNT) AS PUSH_FAIL_CNT,
+			SUM(RCS_SUCC_CNT) AS RCS_SUCC_CNT,
+			SUM(RCS_FAIL_CNT) AS RCS_FAIL_CNT,
+			SUM(ALIM_SUCC_CNT) AS ALIM_SUCC_CNT,
+			SUM(ALIM_FAIL_CNT) AS ALIM_FAIL_CNT,
+			SUM(FRIEND_SUCC_CNT) AS FRIEND_SUCC_CNT,
+			SUM(FRIEND_FAIL_CNT) AS FRIEND_FAIL_CNT,
+			SUM(SMS_SUCC_CNT) AS SMS_SUCC_CNT,
+			SUM(SMS_FAIL_CNT) AS SMS_FAIL_CNT,
+			SUM(MMS_SUCC_CNT) AS MMS_SUCC_CNT,
+			SUM(MMS_FAIL_CNT) AS MMS_FAIL_CNT
+		FROM (
+			SELECT
+				IFNULL(B.SUCC_CNT, 0) AS PUSH_SUCC_CNT,
+				IFNULL(B.FAIL_CNT, 0) AS PUSH_FAIL_CNT,
+				0 AS RCS_SUCC_CNT,
+				0 AS RCS_FAIL_CNT,
+				0 AS ALIM_SUCC_CNT,
+				0 AS ALIM_FAIL_CNT,
+				0 AS FRIEND_SUCC_CNT,
+				0 AS FRIEND_FAIL_CNT,
+				0 AS SMS_SUCC_CNT,
+				0 AS SMS_FAIL_CNT,
+				0 AS MMS_SUCC_CNT,
+				0 AS MMS_FAIL_CNT
+			FROM (
+				SELECT 'PUSH' AS CH
+				FROM DUAL
+			) A
+			LEFT OUTER JOIN (
+				SELECT 
+					CH,
+					SUM(SUCC_CNT) AS SUCC_CNT,
+					SUM(FAIL_CNT) AS FAIL_CNT
+				FROM 
+					cm.CM_STAT_CH_DAY
+				WHERE CORP_ID = #{corpId}
+				AND PROJECT_ID = #{projectId}
+				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				GROUP BY CH
+			) B ON A.CH = B.CH
+			UNION ALL
+			SELECT
+				0 AS PUSH_SUCC_CNT,
+				0 AS PUSH_FAIL_CNT,
+				IFNULL(B.SUCC_CNT, 0) AS RCS_SUCC_CNT,
+				IFNULL(B.FAIL_CNT, 0) AS RCS_FAIL_CNT,
+				0 AS ALIM_SUCC_CNT,
+				0 AS ALIM_FAIL_CNT,
+				0 AS FRIEND_SUCC_CNT,
+				0 AS FRIEND_FAIL_CNT,
+				0 AS SMS_SUCC_CNT,
+				0 AS SMS_FAIL_CNT,
+				0 AS MMS_SUCC_CNT,
+				0 AS MMS_FAIL_CNT
+			FROM (
+				SELECT 'RCS' AS CH
+				FROM DUAL
+			) A
+			LEFT OUTER JOIN (
+				SELECT 
+					CH,
+					SUM(SUCC_CNT) AS SUCC_CNT,
+					SUM(FAIL_CNT) AS FAIL_CNT
+				FROM 
+					cm.CM_STAT_CH_DAY
+				WHERE CORP_ID = #{corpId}
+				AND PROJECT_ID = #{projectId}
+				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				GROUP BY CH
+			) B ON A.CH = B.CH
+			UNION ALL
+			SELECT
+				0 AS PUSH_SUCC_CNT,
+				0 AS PUSH_FAIL_CNT,
+				0 AS RCS_SUCC_CNT,
+				0 AS RCS_FAIL_CNT,
+				IFNULL(B.SUCC_CNT, 0) AS ALIM_SUCC_CNT,
+				IFNULL(B.FAIL_CNT, 0) AS ALIM_FAIL_CNT,
+				0 AS FRIEND_SUCC_CNT,
+				0 AS FRIEND_FAIL_CNT,
+				0 AS SMS_SUCC_CNT,
+				0 AS SMS_FAIL_CNT,
+				0 AS MMS_SUCC_CNT,
+				0 AS MMS_FAIL_CNT
+			FROM (
+				SELECT 'ALIMTALK' AS CH
+				FROM DUAL
+			) A
+			LEFT OUTER JOIN (
+				SELECT 
+					CH,
+					SUM(SUCC_CNT) AS SUCC_CNT,
+					SUM(FAIL_CNT) AS FAIL_CNT
+				FROM 
+					cm.CM_STAT_CH_DAY
+				WHERE CORP_ID = #{corpId}
+				AND PROJECT_ID = #{projectId}
+				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				GROUP BY CH
+			) B ON A.CH = B.CH
+			UNION ALL
+			SELECT
+				0 AS PUSH_SUCC_CNT,
+				0 AS PUSH_FAIL_CNT,
+				0 AS RCS_SUCC_CNT,
+				0 AS RCS_FAIL_CNT,
+				0 AS ALIM_SUCC_CNT,
+				0 AS ALIM_FAIL_CNT,
+				IFNULL(B.SUCC_CNT, 0) AS FRIEND_SUCC_CNT,
+				IFNULL(B.FAIL_CNT, 0) AS FRIEND_FAIL_CNT,
+				0 AS SMS_SUCC_CNT,
+				0 AS SMS_FAIL_CNT,
+				0 AS MMS_SUCC_CNT,
+				0 AS MMS_FAIL_CNT
+			FROM (
+				SELECT 'FRIENDTALK' AS CH
+				FROM DUAL
+			) A
+			LEFT OUTER JOIN (
+				SELECT 
+					CH,
+					SUM(SUCC_CNT) AS SUCC_CNT,
+					SUM(FAIL_CNT) AS FAIL_CNT
+				FROM 
+					cm.CM_STAT_CH_DAY
+				WHERE CORP_ID = #{corpId}
+				AND PROJECT_ID = #{projectId}
+				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				GROUP BY CH
+			) B ON A.CH = B.CH
+			UNION ALL
+			SELECT
+				0 AS PUSH_SUCC_CNT,
+				0 AS PUSH_FAIL_CNT,
+				0 AS RCS_SUCC_CNT,
+				0 AS RCS_FAIL_CNT,
+				0 AS ALIM_SUCC_CNT,
+				0 AS ALIM_FAIL_CNT,
+				0 AS FRIEND_SUCC_CNT,
+				0 AS FRIEND_FAIL_CNT,
+				IFNULL(B.SUCC_CNT, 0) AS SMS_SUCC_CNT,
+				IFNULL(B.FAIL_CNT, 0) AS SMS_FAIL_CNT,
+				0 AS MMS_SUCC_CNT,
+				0 AS MMS_FAIL_CNT
+			FROM (
+				SELECT 'SMS' AS CH
+				FROM DUAL
+			) A
+			LEFT OUTER JOIN (
+				SELECT 
+					CH,
+					SUM(SUCC_CNT) AS SUCC_CNT,
+					SUM(FAIL_CNT) AS FAIL_CNT
+				FROM 
+					cm.CM_STAT_CH_DAY
+				WHERE CORP_ID = #{corpId}
+				AND PROJECT_ID = #{projectId}
+				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				GROUP BY CH
+			) B ON A.CH = B.CH
+			UNION ALL
+			SELECT
+				0 AS PUSH_SUCC_CNT,
+				0 AS PUSH_FAIL_CNT,
+				0 AS RCS_SUCC_CNT,
+				0 AS RCS_FAIL_CNT,
+				0 AS ALIM_SUCC_CNT,
+				0 AS ALIM_FAIL_CNT,
+				0 AS FRIEND_SUCC_CNT,
+				0 AS FRIEND_FAIL_CNT,
+				0 AS SMS_SUCC_CNT,
+				0 AS SMS_FAIL_CNT,
+				IFNULL(B.SUCC_CNT, 0) AS MMS_SUCC_CNT,
+				IFNULL(B.FAIL_CNT, 0) AS MMS_FAIL_CNT
+			FROM (
+				SELECT 'MMS' AS CH
+				FROM DUAL
+			) A
+			LEFT OUTER JOIN (
+				SELECT 
+					CH,
+					SUM(SUCC_CNT) AS SUCC_CNT,
+					SUM(FAIL_CNT) AS FAIL_CNT
+				FROM 
+					cm.CM_STAT_CH_DAY
+				WHERE CORP_ID = #{corpId}
+				AND PROJECT_ID = #{projectId}
+				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				GROUP BY CH
+			) B ON A.CH = B.CH
+		) TOT
+	</select>
+
+	<select id="selectChSuccFailCntList" resultType="camel">
+		/* dashboard.selectChSuccFailCntList */
+		SELECT
+			AD.DATE,
+			IFNULL(CSCD.SUCC_CNT, 0) AS SUCC_CNT,
+			IFNULL(CSCD.FAIL_CNT, 0) AS FAIL_CNT
+		FROM (
+			SELECT A.DATE 
+			FROM (
+			    SELECT curdate() - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY AS DATE
+			    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
+			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
+			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
+			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
+			) A
+			WHERE A.DATE BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+		) AD
+		LEFT OUTER JOIN (
+			SELECT 
+				CH,
+				YMD,
+				SUM(SUCC_CNT) AS SUCC_CNT,
+				SUM(FAIL_CNT) AS FAIL_CNT
+			FROM 
+				cm.CM_STAT_CH_DAY
+			WHERE CORP_ID = #{corpId}
+			AND PROJECT_ID = #{projectId}
+			AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+			AND CH = #{channel}
+			GROUP BY YMD
+		) CSCD ON AD.DATE = CSCD.YMD
+		ORDER BY AD.DATE
+	</select>
+
+	<select id="selectChFailCodeList" resultType="camel">
+		/* dashboard.selectChFailCodeList */
+		SELECT 
+			CH,
+			RESULT_CODE
+		FROM 
+			cm.CM_STAT_RSLT_DAY
+		WHERE CORP_ID = #{corpId}
+		AND PROJECT_ID = #{projectId}
+		AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+		AND CH = #{channel}
+		GROUP BY RESULT_CODE
+	</select>
+
+	<select id="selectChFailCodeCntList" resultType="camel">
+		/* dashboard.selectChFailCodeCntList */
+		SELECT
+			A.CNT
+		FROM (
+			SELECT
+				AD.DATE,
+				IFNULL(CSRD.CNT, 0) AS CNT
+			FROM (
+				SELECT A.DATE 
+				FROM (
+				    SELECT curdate() - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY AS DATE
+				    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
+				    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
+				    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
+				    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
+				) A
+				WHERE A.DATE BETWEEN DATE_FORMAT('2021-06-17', '%Y-%m-%d') AND DATE_FORMAT('2021-06-24', '%Y-%m-%d')
+			) AD
+			LEFT OUTER JOIN (
+				SELECT 
+					CH,
+					YMD,
+					RESULT_CODE,
+					SUM(CNT) AS CNT
+				FROM 
+					cm.CM_STAT_RSLT_DAY
+				WHERE CORP_ID = #{corpId}
+				AND PROJECT_ID = #{projectId}
+				AND RESULT_CODE = #{resultCode}
+				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				AND CH = #{channel}
+				GROUP BY CH, YMD
+			) CSRD ON AD.DATE = CSRD.YMD
+			ORDER BY AD.DATE
+		) A
+	</select>
+
+	<select id="selectDayStatsList" resultType="camel">
+		/* dashboard.selectDayStatsList */
+		SELECT YMD, CH, TOT_CNT, SUCC_CNT, FAIL_CNT
+		FROM (
+			SELECT YMD, CORP_ID, PROJECT_ID, CH, TOT_CNT, SUCC_CNT, FAIL_CNT
+			FROM cm.CM_STAT_CH_DAY
+			WHERE CORP_ID = #{corpId}
+			AND PROJECT_ID = #{projectId}
+			AND CH = 'PUSH'
+			UNION ALL 
+			SELECT YMD, CORP_ID, PROJECT_ID, CH, TOT_CNT, SUCC_CNT, FAIL_CNT
+			FROM cm.CM_STAT_CH_DAY
+			WHERE CORP_ID = #{corpId}
+			AND PROJECT_ID = #{projectId}
+			AND CH = 'RCS'
+			UNION ALL 
+			SELECT YMD, CORP_ID, PROJECT_ID, CH, TOT_CNT, SUCC_CNT, FAIL_CNT
+			FROM cm.CM_STAT_CH_DAY
+			WHERE CORP_ID = #{corpId}
+			AND PROJECT_ID = #{projectId}
+			AND CH = 'ALIMTALK'
+			UNION ALL 
+			SELECT YMD, CORP_ID, PROJECT_ID, CH, TOT_CNT, SUCC_CNT, FAIL_CNT
+			FROM cm.CM_STAT_CH_DAY
+			WHERE CORP_ID = #{corpId}
+			AND PROJECT_ID = #{projectId}
+			AND CH = 'FRIENDTALK'
+			UNION ALL 
+			SELECT YMD, CORP_ID, PROJECT_ID, CH, TOT_CNT, SUCC_CNT, FAIL_CNT
+			FROM cm.CM_STAT_CH_DAY
+			WHERE CORP_ID = #{corpId}
+			AND PROJECT_ID = #{projectId}
+			AND CH = 'SMS'
+			UNION ALL 
+			SELECT YMD, CORP_ID, PROJECT_ID, CH, TOT_CNT, SUCC_CNT, FAIL_CNT
+			FROM cm.CM_STAT_CH_DAY
+			WHERE CORP_ID = #{corpId}
+			AND PROJECT_ID = #{projectId}
+			AND CH = 'MMS'
+		) CSCD
+	</select>
+
 </mapper>

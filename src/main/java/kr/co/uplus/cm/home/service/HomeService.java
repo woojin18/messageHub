@@ -47,16 +47,21 @@ public class HomeService {
 
 		StringBuffer sb = new StringBuffer();
 
-		if( "Y".equals(pushYn) )	sb.append("PUSH,");
-		if ("Y".equals(kakaoYn)) sb.append("카카오톡,");
-		if ("Y".equals(rcsYn)) sb.append("RCS,");
-		if ("Y".equals(smsmmsYn)) sb.append("SMS/MMS,");
-		if ("Y".equals(moYn)) sb.append("MO,");
+		if ("Y".equals(pushYn))
+			sb.append("PUSH,");
+		if ("Y".equals(kakaoYn))
+			sb.append("카카오톡,");
+		if ("Y".equals(rcsYn))
+			sb.append("RCS,");
+		if ("Y".equals(smsmmsYn))
+			sb.append("SMS/MMS,");
+		if ("Y".equals(moYn))
+			sb.append("MO,");
 
 		String useChStr = sb.toString();
 
 		if (useChStr.length() > 0) {
-			useChStr = useChStr.substring(0, useChStr.length()-1);
+			useChStr = useChStr.substring(0, useChStr.length() - 1);
 		}
 
 		projectInfo.put("useService", useChStr);
@@ -73,6 +78,7 @@ public class HomeService {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	public RestResult<Object> selectProjectList(Map<String, Object> params) throws Exception {
 
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -92,16 +98,21 @@ public class HomeService {
 
 			StringBuffer sb = new StringBuffer();
 
-			if( "Y".equals(pushYn) )	sb.append("PUSH,");
-			if ("Y".equals(kakaoYn)) sb.append("카카오톡,");
-			if ("Y".equals(rcsYn)) sb.append("RCS,");
-			if ("Y".equals(smsmmsYn)) sb.append("SMS/MMS,");
-			if ("Y".equals(moYn)) sb.append("MO,");
+			if ("Y".equals(pushYn))
+				sb.append("PUSH,");
+			if ("Y".equals(kakaoYn))
+				sb.append("카카오톡,");
+			if ("Y".equals(rcsYn))
+				sb.append("RCS,");
+			if ("Y".equals(smsmmsYn))
+				sb.append("SMS/MMS,");
+			if ("Y".equals(moYn))
+				sb.append("MO,");
 
 			String useChStr = sb.toString();
 
 			if (useChStr.length() > 0) {
-				useChStr = useChStr.substring(0, useChStr.length()-1);
+				useChStr = useChStr.substring(0, useChStr.length() - 1);
 			}
 
 			rtnMap.put("useService", useChStr);
@@ -127,4 +138,88 @@ public class HomeService {
 
 		return rtn;
 	}
+
+	/**
+	 * 대시보드 채널별 성공/실패 카운트 조회
+	 * 
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public RestResult<Object> selectChTotCntInfo(Map<String, Object> params) throws Exception {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> rtnObj = new HashMap<String, Object>();
+
+		Map<String, Object> chTotCntInfo = (Map<String, Object>) generalDao
+				.selectGernalObject(DB.QRY_SELECT_CH_TOTAL_COUNT_INFO, params);
+
+		rtnObj.put("chTotCntInfo", chTotCntInfo);
+		rtn.setData(rtnObj);
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드 일자별 채널 성공/실패 카운트 조회
+	 * 
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> selectChSuccFailCntList(Map<String, Object> params) throws Exception {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CH_SUCC_FAIL_COUNT_LIST, params);
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드 일자별 실패코드 조회
+	 * 
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> selectChFailCodeList(Map<String, Object> params) throws Exception {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CH_FAIL_CODE_LIST, params);
+
+		for (int i = 0; i < rtnList.size(); i++) {
+			Map<String, Object> rtnMap = (Map<String, Object>) rtnList.get(i);
+			params.put("resultCode", rtnMap.get("resultCode"));
+
+			// 대시보드 일자별 실패코드 카운트 조회
+			List<Object> subRtnList = generalDao.selectGernalList(DB.QRY_SELECT_CH_FAIL_CODE_COUNT_LIST, params);
+
+			rtnMap.put("failCodeCnt", subRtnList);
+		}
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드 채널별 성공/실패현황 조회
+	 * 
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> selectDayStatsList(Map<String, Object> params) throws Exception {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_DAY_STATS_LIST, params);
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+
 }

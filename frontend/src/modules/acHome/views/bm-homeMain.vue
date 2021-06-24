@@ -3,7 +3,7 @@
 		<article>
 			<div class="contentHeader">
 				<h2>대시보드</h2>
-				<a class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="새로고침">새로고침 <i class="fal fa-redo"></i></a>
+				<a @click="fnPageReload()" class="btnStyle2 backPink absolute top0 right0" title="새로고침">새로고침 <i class="fal fa-redo"></i></a>
 			</div>
 			<!-- 본문 -->
 			<div class="row">
@@ -500,6 +500,10 @@ export default {
 		},
 		getRandomInt () {
 			return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+		},
+		fnPageReload() {
+			this.$router.replace('/');
+			this.$nextTick(() => this.$router.replace("/home"));
 		}
 	},
 };
