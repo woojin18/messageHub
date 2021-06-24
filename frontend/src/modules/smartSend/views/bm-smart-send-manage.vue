@@ -14,6 +14,10 @@
 		          <div v-if="channelType == 'PUSH'" class="phoneWrap">
 		            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 		            <div class="phoneTextWrap">
+						<div class="phoneText1 scroll-y2">
+							<pre>{{rowData.pushContent}}</pre>
+						</div>		            
+<!--		            
 		              <div class="phoneText1">
 		                <p v-if="this.$gfnCommonUtils.isEmpty(rowData.pushTitle)">제목</p>
 		                <p v-else>{{rowData.pushTitle}}</p>
@@ -29,6 +33,7 @@
 		                <pre v-if="this.$gfnCommonUtils.isEmpty(rowData.pushContent)" class="font-size14 color4 mt10">내용</pre>
 		                <pre v-else class="font-size14 color4 mt10">{{rowData.pushContent}}</pre>
 		              </div>
+-->		              
 		            </div>
 		          </div>
 		        <!--// PUSH -->
@@ -200,7 +205,8 @@
 									<p class="color000 font-size13">{{rowData.rcs90Title}}</p>
 									<pre class="color3 mt5">{{rowData.rcs90Content}}</pre>
 								</div>
-								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+								<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>-->
+								<p class="color4 font-size10 absolute">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cShortTab === 1">
@@ -228,7 +234,8 @@
 									<p class="color000 font-size13">{{rowData.rcs91Title}}</p>
 									<pre class="color3 mt5">{{rowData.rcs91Content}}</pre>
 								</div>
-								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+								<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>-->
+								<p class="color4 font-size10 absolute">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cShortTab === 2">
@@ -256,7 +263,8 @@
 									<p class="color000 font-size13">{{rowData.rcs92Title}}</p>
 									<pre class="color3 mt5">{{rowData.rcs92Content}}</pre>
 								</div>
-								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+								<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>-->
+								<p class="color4 font-size10 absolute">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cShortTab === 3">
@@ -284,7 +292,8 @@
 									<p class="color000 font-size13">{{rowData.rcs93Title}}</p>
 									<pre class="color3 mt5">{{rowData.rcs93Content}}</pre>
 								</div>
-								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+								<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>-->
+								<p class="color4 font-size10 absolute">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cShortTab === 4">
@@ -312,7 +321,8 @@
 									<p class="color000 font-size13">{{rowData.rcs94Title}}</p>
 									<pre class="color3 mt5">{{rowData.rcs94Content}}</pre>
 								</div>
-								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+								<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>-->
+								<p class="color4 font-size10 absolute">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 							</div>
 						</li>
 						<li class="slide cardBox" v-show="cShortTab === 5">
@@ -340,7 +350,8 @@
 									<p class="color000 font-size13">{{rowData.rcs95Title}}</p>
 									<pre class="color3 mt5">{{rowData.rcs95Content}}</pre>
 								</div>
-								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
+								<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>-->
+								<p class="color4 font-size10 absolute">무료수신거부:{{rowData.rcs9HowToDenyReceipt}}</p>
 							</div>
 						</li>
 							</ul>
@@ -376,7 +387,8 @@
 											<p class="color000 font-size13">{{rowData.rcs100Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs100Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
 								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB2'">
@@ -394,7 +406,8 @@
 											<p class="color000 font-size13">{{rowData.rcs101Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs101Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
 								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB3'">
@@ -412,7 +425,8 @@
 											<p class="color000 font-size13">{{rowData.rcs102Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs102Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
 								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB4'">
@@ -430,7 +444,8 @@
 											<p class="color000 font-size13">{{rowData.rcs103Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs103Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
 								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB5'">
@@ -448,7 +463,8 @@
 											<p class="color000 font-size13">{{rowData.rcs104Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs104Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
 								<li class="slide cardBox" v-show="rcs10TabFlag === 'TTAB6'">
@@ -466,7 +482,8 @@
 											<p class="color000 font-size13">{{rowData.rcs105Title}}</p>
 											<pre class="color3 mt5">{{rowData.rcs105Content}}</pre>
 										</div>
-										<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+										<!--<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>-->
+										<p class="color4 font-size10 absolute" >무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 									</div>
 								</li>
 							</ul>
@@ -1213,6 +1230,10 @@ export default {
     },
 
     enablePreview(channel){
+    
+      if(channel == '친구톡') channel = 'FRIENDTALK';
+      if(channel == '알림톡') channel = 'ALIMTALK';
+      
       this.channelType = channel;
       
       jQuery('#PUSH').attr('class','btnStyle1 backWhite');

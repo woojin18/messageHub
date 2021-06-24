@@ -14,6 +14,10 @@
 		          <div v-if="channelType == 'PUSH'" class="phoneWrap">
 		            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 		            <div class="phoneTextWrap">
+						<div class="phoneText1 scroll-y2">
+							<pre>{{rowData.pushContent}}</pre>
+						</div>		            
+<!--
 		              <div class="phoneText1">
 		                <p v-if="this.$gfnCommonUtils.isEmpty(rowData.pushTitle)">제목</p>
 		                <p v-else>{{rowData.pushTitle}}</p>
@@ -29,6 +33,7 @@
 		                <pre v-if="this.$gfnCommonUtils.isEmpty(rowData.pushContent)" class="font-size14 color4 mt10">내용</pre>
 		                <pre v-else class="font-size14 color4 mt10">{{rowData.pushContent}}</pre>
 		              </div>
+-->
 		            </div>
 		          </div>
 		        <!--// PUSH -->
@@ -1326,6 +1331,10 @@ export default {
     },
 
     enablePreview(channel){
+    
+      if(channel == '친구톡') channel = 'FRIENDTALK';
+      if(channel == '알림톡') channel = 'ALIMTALK';
+      
       this.channelType = channel;
       
       jQuery('#PUSH').attr('class','btnStyle1 backWhite');

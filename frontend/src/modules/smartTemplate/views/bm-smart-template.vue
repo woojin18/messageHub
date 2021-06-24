@@ -248,6 +248,10 @@ export default {
       	params.productCode = "XXXXXXXX";
       }
 
+	  params.pageNo = this.pageNo;
+      params.listSize = this.listSize;
+	  params.tmpltStatus = "SAVE";
+	  
       params.loginId = tokenSvc.getToken().principal.userId;
       params.roleCd = tokenSvc.getToken().principal.roleCd
       
