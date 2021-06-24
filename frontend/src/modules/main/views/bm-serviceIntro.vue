@@ -1,5 +1,23 @@
 <template>
   <div>
+    <!-- subVisualWrap01 -->
+    <article id="subVisualWrap01">
+      <section>
+        <div class="text-center">
+          <h2>U+ 통합 메시징 클라우드</h2>
+          <p>엘지유플러스가 만든 모든 메시지 발송 채널 통합 플랫폼</p>
+          <div>
+            <!-- 
+              2021-06-24 - BO에서 등록하는 부분도 없고, 파일을 따로 받은적도 없다. 무엇을 위한 기능일가?
+              2021-06-24 - 강용준 이사님, 윤상훈 이사님 통화 => 쓰는곳이 없지만 일단 삭제하지 말라는 요청 
+            -->
+            <a href="#self">서비스 소개 다운로드</a>
+          </div>
+        </div>
+      </section>
+    </article>
+    <!-- //subVisualWrap01 -->
+
     <div id="contentWrap">
       <div class="serviceCon01 wow animated fadeInUp">
         <section>
@@ -98,8 +116,7 @@
           <h3 class="subTitle">U+ 통합메시징 Cloud를 지금 바로 사용해보세요!</h3>
           <p class="subText">하나로 이용할 수 있는 통합 메시징 시스템 U+ 통합 메시징 클라우드 서비스로<br>다양한 발송 메시지를 저렴하게 이용해보세요.</p>
           <div class="btn">
-            <a href="#self" class="btnBcackRed">서비스가입</a>
-            <a href="#self" class="btnBcackWhite">서비스가입</a>
+            <router-link :to="{ name: 'signUp' }" tag="a" class="btnBcackRed" title="서비스가입">서비스가입</router-link>
           </div>
         </section>
       </div>
