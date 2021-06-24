@@ -35,9 +35,9 @@
 	
 	<select id="selectCashId" resultType="String">
 		/* selectCashId */
-		SELECT	IFNULL(cc.CASH_ID) AS CASH_ID
+		SELECT	IFNULL(cc.CASH_ID, '') AS CASH_ID
 		FROM	cm.CM_CASH cc 
-		WHERE	cc.CORP_ID = 'corpId'
+		WHERE	cc.CORP_ID = #{corpId}
 		AND		cc.CASH_TYPE = 'C'
 		AND		cc.USE_YN = 'Y'
 	</select>
@@ -234,4 +234,30 @@
 		AND		CORP_ID = #{corpId}
 		AND		USE_YN = 'N'
 	</delete>
+	
+	<select id="selectCashHistInfoForPaymentId" resultType="camel">
+		/* cash.selectCashHistInfoForPaymentId */
+		SELECT	CORP_ID
+		,		CASH_ID
+		FROM	cm_console.CM_WEB_CASH_HIST cwch 
+		WHERE	cwch.PAYMENT_ID = #{orderId}
+	</select>
+	
+	<select id="selectEventCashBalance" resultType="int">
+		/* cash.selectEventCashBalance */
+		SELECT	IFNULL(SUM(cc.CASH_BALANCE), 0) AS BALANCE
+		FROM	cm.CM_CASH cc 
+		WHERE	cc.CORP_ID = #{corpId}
+		AND		cc.CASH_TYPE = 'E'
+	</select>
+	
+	<select id="selectCashInfoForCorpIdCashType" resultType="camel">
+		/* cash.selectCashInfoForCorpIdCashType */
+		SELECT	CORP_ID
+		,		CASH_ID
+		FROM	cm.CM_CASH cc
+		WHERE	cc.CORP_ID = #{corpId}
+		AND		cc.CASH_TYPE = 'C'
+	</select>
+	
 </mapper>

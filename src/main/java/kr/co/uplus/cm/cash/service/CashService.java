@@ -80,31 +80,6 @@ public class CashService {
 				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
 				throw new Exception(errMsg);
 			}
-		} else {
-			Map<String, Object> headerMap = new HashMap<String, Object>();
-			headerMap.put("corpId",		corpId);
-			headerMap.put("cashId",		cashId);
-			
-			Map<String, Object> apiBodyMap = new HashMap<>();
-			apiBodyMap.put("inOut",		"I");
-			apiBodyMap.put("amount",	params.get("amount"));
-			apiBodyMap.put("reason",	"캐시 충전");
-			
-			
-			// API 통신 처리
-			Map<String, Object> result =  apiInterface.etcPost(ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/amount/" + corpId + "/" + cashId, apiBodyMap, headerMap);
-			
-			System.out.println("------------------------------------------------- cashInfo C U result : " + result);
-			
-			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("rslt")) ) {
-			} else if ( "500100".equals(result.get("rslt")) ) {
-				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
-				throw new Exception(errMsg);
-			} else {
-				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
-				throw new Exception(errMsg);
-			}
 		}
 		
 		
@@ -167,7 +142,35 @@ public class CashService {
 		
 		generalDao.updateGernal(DB.QRY_UPDATE_WEB_CASH_INFO, updateMap);
 		
-		//결제정보 api 필요
+		// 결제정보 api 필요
+		// cm_web_cash_hist 테이블에서 payment_id = orderId 로 검색해서 corpId, cashId 조회
+		Map<String, Object> cashHistInfo = (Map<String, Object>) generalDao.selectGernalObject("cash.selectCashHistInfoForPaymentId", params);
+		String corpId = CommonUtils.getString(cashHistInfo.get("corpId"));
+		String cashId = CommonUtils.getString(cashHistInfo.get("cashId"));
+		
+		Map<String, Object> headerMap2 = new HashMap<String, Object>();
+		headerMap2.put("corpId",		corpId);
+		headerMap2.put("cashId",		cashId);
+		
+		Map<String, Object> apiBodyMap2 = new HashMap<>();
+		apiBodyMap2.put("inOut",	"I");
+		apiBodyMap2.put("amount",	params.get("amount"));
+		apiBodyMap2.put("reason",	"캐시 충전");
+		
+		// API 통신 처리
+		Map<String, Object> result =  apiInterface.etcPost(ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/amount/" + corpId + "/" + cashId, apiBodyMap2, headerMap2);
+		
+		System.out.println("------------------------------------------------- cashInfo C U result : " + result);
+		
+		// 성공인지 실패인지 체크
+		if( "10000".equals(result.get("rslt")) ) {
+		} else if ( "500100".equals(result.get("rslt")) ) {
+			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+			throw new Exception(errMsg);
+		} else {
+			String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+			throw new Exception(errMsg);
+		}
 		
 		return rtn;
 	}
@@ -188,6 +191,50 @@ public class CashService {
 		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_CASH_HIST, params);
 		
 		rtn.setData(list);
+		
+		return rtn;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public RestResult<Object> selectCashBalance(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		int cashBalance = 0;
+		int eventCashBalance = 0;
+		
+		Map<String, Object> cashInfo = (Map<String, Object>) generalDao.selectGernalObject("cash.selectCashInfoForCorpIdCashType", params);
+		String corpId = CommonUtils.getString(cashInfo.get("corpId"));
+		String cashId = CommonUtils.getString(cashInfo.get("cashId"));
+		
+		
+		// API 통신 처리
+//		Map<String, Object> result =  apiInterface.get(ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/cashInfo/" + corpId + "?cashId=" + cashId, null);
+		Map<String, Object> result =  apiInterface.request("GET", ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/cashInfo/" + corpId + "?cashId=" + cashId, null, null, null);
+		
+		System.out.println("------------------------------------------------- selectCashBalance : " + result);
+		
+		// 성공인지 실패인지 체크
+		if( "10000".equals(result.get("rslt")) ) {
+			List cashInfoList = (List) ((Map<String, Object>)result.get("data")).get("cashInfo");
+			Map<String, Object> cashInfoListMap = (Map<String, Object>) cashInfoList.get(0);
+			cashBalance = Integer.parseInt( CommonUtils.getString(cashInfoListMap.get("cashBalance")).replace(".0", "") );
+			
+			System.out.println("------------------------------------------------- result.get(\"data\") : " + cashBalance);
+			
+			
+		} else {
+			cashBalance = 0;
+		}
+		
+		eventCashBalance = Integer.parseInt(CommonUtils.getString(generalDao.selectGernalObject("cash.selectEventCashBalance", params)));
+		
+		Map<String, Object> cashMap = new HashMap<>();
+		
+		cashMap.put("cashBalance", cashBalance);
+		cashMap.put("eventCashBalance", eventCashBalance);
+		cashMap.put("balance", cashBalance + eventCashBalance);
+		
+		rtn.setData(cashMap);
 		
 		return rtn;
 	}

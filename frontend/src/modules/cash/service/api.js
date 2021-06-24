@@ -8,6 +8,10 @@ const selectCashHist = (params) => {
     return httpClient.post('/projectApi/cash/selectCashHist', params, { headers: {"show-layer": "Yes"} });
 };
 
+const selectCashBalance = (params) => {
+    return httpClient.post('/projectApi/cash/selectCashBalance', params, { headers: { "show-layer": "Yes" } });
+};
+
 const selectUcubeInfo = (params) => {
     return httpClient.post('/projectApi/cash/selectUcubeInfo', params, { headers: {"show-layer": "Yes"} });
 };
@@ -39,6 +43,7 @@ const deleteProjectSubBillCode = (params) => {
 export default {
     insertWebCashInfo,
     selectCashHist,
+    selectCashBalance,
     selectUcubeInfo,
     selectProjectInfo,
     selectProjectSubBillCode,

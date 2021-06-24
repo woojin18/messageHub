@@ -109,6 +109,23 @@ public class CashController {
 		
 		return rtn;
 	}
+
+	@PostMapping("/selectCashBalance")
+	public RestResult<?> selectCashBalance(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+//		try {
+			rtn = cashService.selectCashBalance(params);
+//		} catch(Exception e) {
+//			rtn.setSuccess(false);
+//			rtn.setMessage("실패하였습니다.");
+//		}
+		
+		return rtn;
+	}
+	
 	
 	@PostMapping("/selectUcubeInfo")
 	public RestResult<?> selectUcubeInfo(

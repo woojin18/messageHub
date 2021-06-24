@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      selTab: 2
+      selTab: 1
     }
   }
 }

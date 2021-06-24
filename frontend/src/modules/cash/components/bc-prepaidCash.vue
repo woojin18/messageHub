@@ -9,15 +9,15 @@
             <tbody>
               <tr>
               <td class="text-left color4">남은 충전캐시</td>
-              <td class="text-right end">1,490,000원</td>
+              <td class="text-right end">{{this.cashBalance | formatPrice}}</td>
               </tr>	
               <tr>
               <td class="text-left color4">남은 이벤트 캐시</td>
-              <td class="text-right end">10,000원</td>
+              <td class="text-right end">{{this.eventCashBalance | formatPrice}}</td>
               </tr>	
               <tr>
               <td class="text-left color4 bgColor_sky">남은 캐시</td>
-              <td class="text-right end bgColor_sky">1,500,000원</td>
+              <td class="text-right end bgColor_sky">{{this.balance | formatPrice}}</td>
               </tr>	
             </tbody>
           </table>
@@ -25,6 +25,7 @@
         </div>	
         <div class="col-xs-6 text-center" style="padding: 2.5% 0">	
           <a @click="fnTossPay" class="btnStyle1">캐시 충전</a>
+          <a @click="fnSearchCash" class="btnStyle1">캐시 새로고침</a>
         </div>
       </div>
     </div>
@@ -58,7 +59,7 @@
           <tbody>
             <tr v-for="(data, index) in data" :key="index">
               <td class="text-center">{{index+1}}</td>
-              <td class="text-center">{{data.amount}}</td>
+              <td class="text-center">{{data.amount | formatPrice}}</td>
               <td class="text-center">{{data.cashType}}</td>
               <td class="text-center">{{data.payMtd}}</td>
               <td class="text-center">{{data.regDt}}</td>
@@ -89,13 +90,27 @@ export default {
   data() {
     return {
       data: [],
-      pageInfo: {}
+      pageInfo: {},
+      cashBalance : 0,
+      eventCashBalance : 0,
+      balance : 0,
     }
   },
   components: {
     layerPopup,
     Paging,
     PagingCnt
+  },
+  filters: {
+    formatPrice(val){
+      if(String(val).indexOf('.') > 0){
+        let arrVal = String(val).split('.');
+        if(arrVal.length == 2){
+          return String(arrVal[0]).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '.' + arrVal[1];
+        }
+      }
+      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
   },
   mounted() {
     this.pageInfo = {
@@ -106,6 +121,7 @@ export default {
     };
 
     this.fnSearch();
+    this.fnSearchCash();
   },
   methods: {
     fnTossPay: function() {
@@ -122,6 +138,20 @@ export default {
         if(result.success) {
           this.data = result.data; 
           this.pageInfo = result.pageInfo;
+        }
+      });
+    },
+    // 캐시 불러오기
+    fnSearchCash(){
+      var params = {
+        
+      };
+      cashApi.selectCashBalance(params).then(response => {
+        var result = response.data;
+        if(result.success) {
+          this.cashBalance = result.data.cashBalance;
+          this.eventCashBalance = result.data.eventCashBalance;
+          this.balance = result.data.balance;
         }
       });
     }
