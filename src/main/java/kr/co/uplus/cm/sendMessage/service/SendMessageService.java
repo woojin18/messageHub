@@ -251,7 +251,7 @@ public class SendMessageService {
         String corpId = CommonUtils.getStrValue(params, "corpId");
         String projectId = CommonUtils.getStrValue(params, "projectId");
         String apiKey = commonService.getApiKey(corpId, projectId);
-        String apiUri = ApiConfig.GET_CASH_INFO_API_URI + "corp_test1";  //TODO : corpId 로 변경;
+        String apiUri = ApiConfig.GET_CASH_INFO_API_URI + corpId;
 
         Map<String, String> headerMap = new HashMap<String, String>();
         headerMap.put("apiKey", apiKey);

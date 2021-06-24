@@ -231,11 +231,6 @@ public class CommonService {
                     throw new Exception("유효하지 않은 리사이즈 이미지");
                 }
 
-                // TODO: 삭제 (API : 포탈연동 오류)
-                if (StringUtils.equals("FRIENDTALK", ch)) {
-                    continue;
-                }
-
                 /** API Send */
                 // set Header Info
                 headerMap = new HashMap<String, String>();
