@@ -239,7 +239,7 @@ public class IntegratedSendController {
 
 
     /**
-     * 푸시 발송 수신자 엑셀업로드 템플릿 다운로드
+     * 통합 발송 수신자 엑셀업로드 템플릿 다운로드
      * @param request
      * @param response
      * @param params
