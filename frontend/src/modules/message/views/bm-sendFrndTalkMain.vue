@@ -19,7 +19,7 @@
                 <div class="text-sub-wrap scroll-y">
                   <!-- <p class="text-sub scroll-y"> -->
                     <div v-if="!$gfnCommonUtils.isEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center"
-                      :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
+                      :style="'padding:40px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
                     </div>
                     <br v-if="$gfnCommonUtils.isEmpty(sendData.imgUrl)"/>
                     <span v-html="$gfnCommonUtils.newLineToBr(sendData.frndTalkContent)"></span>
@@ -434,6 +434,16 @@ export default {
       if(!this.sendData.frndTalkContent){
         confirm.fnAlert(this.componentsTitle, '메시지 내용을 입력해주세요.');
         return false;
+      }
+      if(!this.$gfnCommonUtils.isEmpty(this.sendData.fileId)){
+        if(!this.sendData.imgUrl){
+          confirm.fnAlert(this.componentsTitle, '잘못된 이미지 정보입니다.');
+          return false;
+        }
+        if(!this.sendData.imgLink){
+          confirm.fnAlert(this.componentsTitle, '이미지 파일 선택시 이미지 링크 URL은 필수입니다.');
+          return false;
+        }
       }
       if(testSendYn == 'Y'){
         if(!this.sendData.testRecvInfoLst == null || this.sendData.testRecvInfoLst.length == 0){

@@ -159,7 +159,7 @@ public class CustomerController {
 
         if(StringUtils.indexOf(filePath, FileConfig.FileSvcType.LIBRARY.getPath()) < 0) {
             String errorMsg = "unauthorized path access";
-            log.error("{}.selectNoticeList Error : {}", this.getClass(), errorMsg);
+            log.error("{}.procDownloadLibraryFile Error : {}", this.getClass(), errorMsg);
             throw new Exception(errorMsg);
         }
 

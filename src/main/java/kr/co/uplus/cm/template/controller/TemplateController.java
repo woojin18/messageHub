@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
-import kr.co.uplus.cm.sendMessage.dto.AlimTalkRequestData;
+import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltRequestData;
 import kr.co.uplus.cm.template.service.TemplateService;
 import kr.co.uplus.cm.utils.DateUtil;
 import lombok.extern.log4j.Log4j2;
@@ -471,7 +471,7 @@ public class TemplateController {
             @RequestBody Map<String, Object> params) {
 
         RestResult<Object> rtn = new RestResult<Object>();
-        AlimTalkRequestData requestData = null;
+        AlimTalkTmpltRequestData requestData = null;
 
         try {
             log.info("{}.procApprvRequestKkoTmplt Start ====> params : {}", this.getClass(), params);

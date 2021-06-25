@@ -31,7 +31,7 @@
             </div>
             <!-- //phoneWrap -->
           </div>
-        </div>  
+        </div>
         <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
           <div class="of_h">
             <div class="float-left" style="width:22%"><h4>발신 프로필/그룹 *</h4></div>
@@ -87,14 +87,14 @@
               <div class="float-left" style="width:49.5%">
                 <select name="userConsole_sub040402_2" class="float-left selectStyle2" style="width:100%" v-model="categoryGrpName" @change="fnSelectKkoTmpltCatList">
                   <option value="">대분류</option>
-                  <option v-for="(kkoTmpltCatGrpInfo, idx) in kkoTmpltCatGrpList" :key="idx" 
+                  <option v-for="(kkoTmpltCatGrpInfo, idx) in kkoTmpltCatGrpList" :key="idx"
                     :value="kkoTmpltCatGrpInfo.categoryGrpName">{{kkoTmpltCatGrpInfo.categoryGrpName}}</option>
                 </select>
               </div>
               <div class="float-right" style="width:49.5%">
                 <select name="userConsole_sub040402_3" class="float-left selectStyle2" style="width:100%" v-model="tmpltData.categoryCode">
                   <option value="">중분류</option>
-                  <option v-for="(kkoTmpltCatInfo, idx) in kkoTmpltCatList" :key="idx" 
+                  <option v-for="(kkoTmpltCatInfo, idx) in kkoTmpltCatList" :key="idx"
                     :value="kkoTmpltCatInfo.categoryCode">{{kkoTmpltCatInfo.categoryName}}</option>
                 </select>
               </div>
@@ -124,35 +124,35 @@
                 <tbody>
                   <template v-for="(buttonInfo, idx) in tmpltData.buttonList">
                     <tr :key="idx">
-                      <td class="text-left" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
-                        <select class="float-left selectStyle2" style="width:100%" v-model="buttonInfo.type" @change="fnChgBtnType(idx)">
-                          <option v-for="bottonType in bottonTypeList" :key="bottonType.type" :value="bottonType.type">{{bottonType.name}}</option>
+                      <td class="text-left" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
+                        <select class="float-left selectStyle2" style="width:100%" v-model="buttonInfo.linkType" @change="fnChgBtnLinkType(idx)">
+                          <option v-for="bottonLinkType in bottonLinkTypeList" :key="bottonLinkType.linkType" :value="bottonLinkType.linkType">{{bottonLinkType.name}}</option>
                         </select>
                       </td>
-                      <td class="text-center" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
-                        <input v-if="buttonInfo.type == 'AC'" type="text" class="inputStyle float-left" v-model="buttonInfo.name" disabled maxlength="14">
+                      <td class="text-center" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
+                        <input v-if="buttonInfo.linkType == 'AC'" type="text" class="inputStyle float-left" v-model="buttonInfo.name" disabled maxlength="14">
                         <input v-else type="text" class="inputStyle float-left" v-model="buttonInfo.name" maxlength="14">
                       </td>
-                      <td :class="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? 'text-left' : 'text-left of_h'">
-                        <h6 v-if="buttonInfo.type == 'DS'" class="float-left" v-html="bottonDSDescription"></h6>
-                        <h6 v-if="buttonInfo.type == 'WL'" class="float-left" style="width:20%">Mobile*</h6>
-                        <h6 v-if="buttonInfo.type == 'AL'" class="float-left" style="width:20%">Android*</h6>
-                        <!-- <input v-if="buttonInfo.type == 'WL' || buttonInfo.type == 'AL'" type="text" class="inputStyle float-left" style="width:80%"> -->
-                        <input v-if="buttonInfo.type == 'WL'" type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkMo" maxlength="200">
-                        <input v-if="buttonInfo.type == 'AL'" type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkAnd" maxlength="200">
+                      <td :class="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? 'text-left' : 'text-left of_h'">
+                        <h6 v-if="buttonInfo.linkType == 'DS'" class="float-left" v-html="bottonDSDescription"></h6>
+                        <h6 v-if="buttonInfo.linkType == 'WL'" class="float-left" style="width:20%">Mobile*</h6>
+                        <h6 v-if="buttonInfo.linkType == 'AL'" class="float-left" style="width:20%">Android*</h6>
+                        <!-- <input v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" type="text" class="inputStyle float-left" style="width:80%"> -->
+                        <input v-if="buttonInfo.linkType == 'WL'" type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkMo" maxlength="200">
+                        <input v-if="buttonInfo.linkType == 'AL'" type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkAnd" maxlength="200">
 
                       </td>
-                      <td class="text-center end" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
+                      <td class="text-center end" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
                         <a @click="fnDelButton(idx)" class="btnStyle1 backLightGray">삭제</a>
                       </td>
                     </tr>
-                    <tr v-if="buttonInfo.type == 'WL' || buttonInfo.type == 'AL'" :key="idx+'_sub'">
+                    <tr v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" :key="idx+'_sub'">
                       <td class="text-left">
-                        <div v-if="buttonInfo.type == 'WL'">
+                        <div v-if="buttonInfo.linkType == 'WL'">
                           <h6 class="float-left" style="width:20%">PC</h6>
                           <input type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkPc" maxlength="200">
                         </div>
-                        <div v-if="buttonInfo.type == 'AL'">
+                        <div v-if="buttonInfo.linkType == 'AL'">
                           <h6 class="float-left" style="width:20%">IOS*</h6>
                           <input type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkIos" maxlength="200">
                         </div>
@@ -161,10 +161,10 @@
                   </template>
                 </tbody>
               </table>
-              
+
             </div>
           </div>
-          
+
           <div class="mt20 float-right">
             <a href="#" @click.prevent="fnApprvReqTmplt" class="btnStyle2 backRed float-left ml10" title="승인요청">승인요청</a>
             <a href="#self" class="btnStyle2 backWhite float-left ml10" title="수정요청">수정요청</a>
@@ -211,15 +211,15 @@ export default {
       buttonLimitSize : 5,
       bottonACName : '채널 추가',
       bottonDSDescription : '카카오 메세지에 택배사 명과 송장번호를 기재한 후, 배송 조회 버튼을 추가하시면 메세지에서 택배사 명과 송장번호를 추출하여 배송 조회 카카오 검색페이지 링크가 자동으로 생성됩니다. 카카오에서 지원하는 택배사명과 운송장번호가 알림톡 메시지 내에 포함된 경우에만 배송조회 버튼이 표시됩니다. 배송 조회가 가능한 택배사는 <span style="color:#e11d21"><strong>카카오와 해당 택배사와의 계약 관계에 의해 변동될 수 있음을 유의해주시기 바랍니다.</strong></span>',
-      bottonTypeList : [
-        {type:'DS', name:'배송 조회'},
-        {type:'WL', name:'웹 링크'},
-        {type:'AL', name:'앱 링크'},
-        {type:'BK', name:'봇 키워드'},
-        {type:'MD', name:'메시지 전달'},
-        {type:'BC', name:'상담톡 전환'},
-        {type:'BT', name:'봇 전환'},
-        //{type:'AC', name:'채널 추가'},  //광고 추가/복합형만
+      bottonLinkTypeList : [
+        {linkType:'DS', name:'배송 조회'},
+        {linkType:'WL', name:'웹 링크'},
+        {linkType:'AL', name:'앱 링크'},
+        {linkType:'BK', name:'봇 키워드'},
+        {linkType:'MD', name:'메시지 전달'},
+        {linkType:'BC', name:'상담톡 전환'},
+        {linkType:'BT', name:'봇 전환'},
+        //{linkType:'AC', name:'채널 추가'},  //광고 추가/복합형만
       ],
       tmpltData : {
         senderKeyType : 'S',  //S:일반, G:그룹
@@ -241,6 +241,80 @@ export default {
   },
   methods: {
     fnIsValid(){
+      if(!this.tmpltData.senderKeyType){
+        confirm.fnAlert(this.componentsTitle, '발신프로필타입을 선택해주세요.');
+        return false;
+      }
+      if(!this.tmpltData.senderKey){
+        confirm.fnAlert(this.componentsTitle, '발신프로필키를 선택해주세요.');
+        return false;
+      }
+      if(!this.tmpltData.tmpltName){
+        confirm.fnAlert(this.componentsTitle, '템플릿명을 입력해주세요.');
+        return false;
+      }
+      if(!this.tmpltData.templateContent){
+        confirm.fnAlert(this.componentsTitle, '템플릿내용을 입력해주세요.');
+        return false;
+      }
+      if(!this.tmpltData.categoryCode){
+        confirm.fnAlert(this.componentsTitle, '카테고리를 선택해주세요.');
+        return false;
+      }
+      if(!this.tmpltData.tmpltContent){
+        confirm.fnAlert(this.componentsTitle, '템플릿내용을 입력해주세요.');
+        return false;
+      }
+      if(!this.tmpltData.emphasizeType){
+        confirm.fnAlert(this.componentsTitle, '템플릿강조유형을 선택해주세요.');
+        return false;
+      }
+      if(this.tmpltData.emphasizeType == 'TEXT'){
+        if(!this.tmpltData.tmpltEmpsTitle){
+          confirm.fnAlert(this.componentsTitle, '템플릿강조유형이 강조 표기형일때 템플릿강조제목은 필수입니다.');
+          return false;
+        }
+        if(!this.tmpltData.tmpltEmpsTitle){
+          confirm.fnAlert(this.componentsTitle, '템플릿강조유형이 강조 표기형일때 템플릿강조부제목은 필수입니다.');
+          return false;
+        }
+      }
+      const vm = this;
+      let buttonValid = true;
+      this.tmpltData.buttonList.forEach(function(buttonInfo){
+        if(vm.$gfnCommonUtils.isEmpty(buttonInfo.linkType)){
+          confirm.fnAlert(vm.componentsTitle, '버튼 타입을 선택해주세요.');
+          buttonValid = false;
+          return false;
+        }
+        if(vm.$gfnCommonUtils.isEmpty(buttonInfo.name)){
+          confirm.fnAlert(vm.componentsTitle, '버튼 이름을 입력해주세요.');
+          buttonValid = false;
+          return false;
+        }
+        if(buttonInfo.linkType == 'WL' && vm.$gfnCommonUtils.isEmpty(buttonInfo['linkMo'])){
+          confirm.fnAlert(vm.componentsTitle, 'Mobile 버튼링크를 입력해주세요.');
+          buttonValid = false;
+          return false;
+        }
+        if(buttonInfo.linkType == 'WL' && vm.$gfnCommonUtils.isEmpty(buttonInfo['linkPc'])){
+          confirm.fnAlert(vm.componentsTitle, 'PC 버튼링크를 입력해주세요.');
+          buttonValid = false;
+          return false;
+        }
+        if(buttonInfo.linkType == 'AL' && vm.$gfnCommonUtils.isEmpty(buttonInfo['linkAnd'])){
+          confirm.fnAlert(vm.componentsTitle, 'Android 버튼링크를 입력해주세요.');
+          buttonValid = false;
+          return false;
+        }
+        if(buttonInfo.linkType == 'AL' && vm.$gfnCommonUtils.isEmpty(buttonInfo['linkIos'])){
+          confirm.fnAlert(vm.componentsTitle, 'IOS 버튼링크를 입력해주세요.');
+          buttonValid = false;
+          return false;
+        }
+      });
+      if(!buttonValid) return false;
+      
       return true;
     },
     fnApprvReqTmplt(){
@@ -253,7 +327,7 @@ export default {
       let params = Object.assign({}, this.tmpltData);
       params.tmpltButtonsStr = JSON.stringify(this.tmpltData.buttonList);
       console.log('approval request Data ===> ', params);
-      
+
       templateApi.procApprvRequestKkoTmplt(params).then(response => {
         const result = response.data;
         if(result.success) {
@@ -268,7 +342,7 @@ export default {
       if(this.tmpltData.buttonList.length < this.buttonLimitSize){
         const baseButtonInfo = {
           name : '',
-          type : 'DS',
+          linkType : 'DS',
         };
         this.tmpltData.buttonList.push(baseButtonInfo);
       } else {
@@ -280,11 +354,11 @@ export default {
         this.tmpltData.buttonList.splice(idx, 1);
       }
     },
-    fnChgBtnType(idx){
+    fnChgBtnLinkType(idx){
       const vm = this;
       Object.keys(this.tmpltData.buttonList[idx]).forEach(function(key){
-        if(key != 'type'){
-          if(key == 'name' && vm.tmpltData.buttonList[idx]['type'] == 'AC'){
+        if(key != 'linkType'){
+          if(key == 'name' && vm.tmpltData.buttonList[idx]['linkType'] == 'AC'){
             vm.tmpltData.buttonList[idx]['name'] = vm.bottonACName;
           } else {
             delete vm.tmpltData.buttonList[idx][key];

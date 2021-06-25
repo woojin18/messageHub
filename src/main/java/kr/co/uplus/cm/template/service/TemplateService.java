@@ -22,9 +22,10 @@ import com.google.gson.Gson;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkButtonsInfo;
-import kr.co.uplus.cm.sendMessage.dto.AlimTalkRequestData;
+import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltRequestData;
 import kr.co.uplus.cm.sendMessage.dto.ServiceInfo;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -50,6 +51,9 @@ public class TemplateService {
 
     @Autowired
     ApiInterface apiInterface;
+
+    @Autowired
+    private CommonService commonService;
 
     /**
      * 푸시 템플릿 리스트 조회
@@ -375,8 +379,8 @@ public class TemplateService {
      * @throws Exception
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public AlimTalkRequestData setApprvRequestKkoTmpltData(RestResult<Object> rtn, Map<String, Object> params) throws Exception {
-        AlimTalkRequestData requestData = new AlimTalkRequestData();
+    public AlimTalkTmpltRequestData setApprvRequestKkoTmpltData(RestResult<Object> rtn, Map<String, Object> params) throws Exception {
+        AlimTalkTmpltRequestData requestData = new AlimTalkTmpltRequestData();
 
         //senderKey
         requestData.setSenderKey(CommonUtils.getStrValue(params, "senderKey"));
@@ -420,7 +424,7 @@ public class TemplateService {
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<AlimTalkRequestData>> violations = validator.validate(requestData);
+        Set<ConstraintViolation<AlimTalkTmpltRequestData>> violations = validator.validate(requestData);
         String errorMsg = "";
 
         for (ConstraintViolation violation : violations) {
@@ -453,13 +457,20 @@ public class TemplateService {
      * @throws Exception
      */
     @SuppressWarnings({ "unchecked" })
-    public RestResult<Object> procApprvRequestKkoTmplt(AlimTalkRequestData requestData) throws Exception {
+    public RestResult<Object> procApprvRequestKkoTmplt(AlimTalkTmpltRequestData requestData) throws Exception {
+        log.info("{}.procApprvRequestKkoTmplt requestData: {}", this.getClass(), requestData.toString());
 
         RestResult<Object> rtn = new RestResult<Object>();
+        String corpId = requestData.getSvcInfo().getCorpId();
+        String projectId = requestData.getSvcInfo().getProjectId();
+        String apiKey = commonService.getApiKey(corpId, projectId);
+
+        Map<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("apiKey", apiKey);
 
         Gson gson = new Gson();
         String jsonString = gson.toJson(requestData);
-        Map<String, Object> responseBody = apiInterface.sendMsg(ApiConfig.CREATE_KKO_TMPLT_REQ_API_URI, null, jsonString);
+        Map<String, Object> responseBody = apiInterface.sendMsg(ApiConfig.CREATE_KKO_TMPLT_REQ_API_URI, headerMap, jsonString);
 
         String rslt = "";
         if(responseBody != null) {
@@ -467,7 +478,6 @@ public class TemplateService {
         }
 
         if(!StringUtils.equals(ApiConfig.GW_API_SUCCESS, rslt)) {
-            //String failStr = "알림톡 템플릿 승인요청에 실패하였습니다.("+rslt+"-"+rsltDesc+")";
             rtn.setFail("알림톡 템플릿 승인요청에 실패하였습니다.");
             log.warn("{}.procApprvRequestKkoTmplt Fail -request: {}, response: {}", this.getClass(), jsonString, responseBody);
         }
