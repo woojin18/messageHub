@@ -77,7 +77,7 @@ public class MessageStatusController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sheetTitle", "메시지 현황 리스트");
 		map.put("colLabels", new String[] { "메시지", "발송일시", "발송타입", "테그", "Push로그인ID", "수신자휴대폰", "결과" });
-        map.put("colIds", new String[] {"message", "regDt", "senderTypeNm", "campaignId", "PushCuid", "phone", "gwResultNm"});
+        map.put("colIds", new String[] {"message", "regDt", "senderTypeNm", "campaignId", "pushCuid", "phone", "gwResultNm"});
 		map.put("numColIds", new String[] {});
 		map.put("figureColIds", new String[] {});
 		map.put("colDataList", messageStatusService.selectMessageStatusList(params).getData());
