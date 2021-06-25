@@ -140,6 +140,7 @@
 import BarChart from '@/components/Chart.vue';
 import statisticsUserApi from '../service/statisticsUserApi'
 import tokenSvc from '@/common/token-service';
+import confirm from "@/modules/commonUtil/service/confirm";
 
 export default {
 components: {

@@ -68,6 +68,79 @@
 			,	SUM(FAIL_CNT) AS FAIL_CNT
 		FROM (
 			SELECT	CH
+				,	YMD
+				,	SUM(SUCC_CNT) AS SUCC_CNT
+				,	SUM(FAIL_CNT) AS FAIL_CNT
+			FROM (
+				SELECT	CH
+		<choose>
+			<when test="dateStatus == 'DAY'.toString()">
+				<!--,	DATE_FORMAT(YMD, '%c.%d')	AS YMD  -->
+					,	DATE_FORMAT(STR_TO_DATE(YMD, '%Y-%m-%d'), '%c.%d') AS YMD
+			</when>
+			<otherwise>
+					,	DATE_FORMAT(YMD, '%y.%m')	AS YMD
+			</otherwise>
+		</choose>
+					,	IFNULL(SUM(SUCC_CNT), 0)	AS SUCC_CNT
+					,	IFNULL(SUM(FAIL_CNT), 0)	AS FAIL_CNT
+				FROM cm.CM_STAT_CH_DAY
+				WHERE	1=1
+		<choose>
+			<when test="dateStatus == 'DAY'.toString()">
+				AND		DATE_FORMAT(YMD, '%Y%m%d') BETWEEN REPLACE(#{searchStartDate}, '-', '') AND REPLACE(#{searchEndDate}, '-', '')
+			</when>
+			<otherwise>
+				AND		DATE_FORMAT(YMD, '%Y%m') BETWEEN REPLACE(#{searchStartDate}, '-', '') AND REPLACE(#{searchEndDate}, '-', '')
+			</otherwise>
+		</choose>
+				AND		CORP_ID = #{corpId}
+				GROUP BY CH, YMD
+			) A
+			GROUP BY YMD, CH
+			<!-- ORDER BY YMD, CH -->
+		
+			UNION ALL
+			
+			SELECT	C.CH
+					,	DATE_FORMAT(STR_TO_DATE(YMD, '%Y-%m-%d'), '%c.%d') AS YMD
+					,	0 AS SUCC_CNT
+					,	0 AS FAIL_CNT
+			FROM (
+					SELECT A.DATE AS YMD
+					FROM (
+						SELECT curdate() - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY AS DATE
+						FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
+						CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
+						CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
+						CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
+					) A
+					WHERE A.DATE BETWEEN DATE_FORMAT(#{searchStartDate}, '%Y-%m-%d') AND DATE_FORMAT(#{searchEndDate}, '%Y-%m-%d')
+			) B CROSS JOIN (
+							SELECT	'PUSH' as CH
+							union all
+							SELECT	'RCS'
+							union all
+							SELECT 'ALIMTALK'
+							union all
+							SELECT 'FRIENDTALK'
+							union all
+							SELECT 'SMS'
+							union all
+							SELECT 'MMS'
+			) C
+		) D GROUP BY D.YMD, D.CH
+		ORDER BY CH, YMD
+	</select>
+	
+	<select id="selectStatisSndMonthCntList" resultType="camel" >
+		/* statisticsUser.selectStatisSndMonthCntList 전송건수 조회 */
+		SELECT	CH
+			,	YMD
+			,	SUM(SUCC_CNT) AS SUCC_CNT
+			,	SUM(FAIL_CNT) AS FAIL_CNT
+		FROM (
+			SELECT	CH
 		<choose>
 			<when test="dateStatus == 'DAY'.toString()">
 				,	DATE_FORMAT(YMD, '%c.%d')	AS YMD

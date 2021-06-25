@@ -20,7 +20,7 @@ public class StatisticsUserService {
 	private CommonService commonService;
 
 	/**
-	 * 일별 전송건수 및 비율 리스트 조회
+	 * 일별월별 전송건수 및 비율 리스트 조회
 	 * @param params
 	 * @return
 	 * @throws Exception
@@ -34,7 +34,7 @@ public class StatisticsUserService {
 	}
 	
 	/**
-	 * 일별 전송건수 리스트 조회
+	 * 일별월별 전송건수 리스트 조회
 	 * @param params
 	 * @return
 	 * @throws Exception
@@ -42,7 +42,14 @@ public class StatisticsUserService {
 	public RestResult<Object> selectSendByCntList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		List<Object> rtnList = null;
-		rtnList	= generalDao.selectGernalList(DB.QRY_SELECT_STATIS_SND_CNT_LIST, params);
+		
+		String dateStatus = (String)params.get("dateStatus");
+		
+		if("DAY".equals(dateStatus)) {
+			rtnList	= generalDao.selectGernalList(DB.QRY_SELECT_STATIS_SND_CNT_LIST, params);
+		} else {
+			rtnList	= generalDao.selectGernalList(DB.QRY_SELECT_STATIS_SND_MONTH_CNT_LIST, params);
+		}
 		rtn.setData(rtnList);
 		return rtn;
 	}

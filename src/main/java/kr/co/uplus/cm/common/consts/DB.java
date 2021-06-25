@@ -249,6 +249,7 @@ public class DB {
 	// 통계
 	public final static String QRY_SELECT_STATIS_SND_LIST = "statisticsUser.selectStatisSndList";
 	public final static String QRY_SELECT_STATIS_SND_CNT_LIST = "statisticsUser.selectStatisSndCntList";
+	public final static String QRY_SELECT_STATIS_SND_MONTH_CNT_LIST = "statisticsUser.selectStatisSndMonthCntList";
 	public final static String QRY_SELECT_STATIS_LIST = "statisticsAdmin.selectStatisList";
 	public final static String QRY_SELECT_STATIS_PROJECT_LIST = "statisticsAdmin.selectStatisProjectList";
 
