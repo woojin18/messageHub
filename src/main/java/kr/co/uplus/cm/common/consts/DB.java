@@ -13,6 +13,7 @@ public class DB {
 	public final static String QRY_SELECT_IMG_UPLOAD_CH_SET = "common.selectImgUploadChSet";
 	public final static String QRY_SELECT_FILE_UPLOAD_SET = "common.selectFileUploadSet";
 	public final static String QRY_SELECT_CODE = "common.selectCodeList";
+    public final static String QRY_SELECT_RELAY_SVC_ID = "common.selectRelaySvcId";
 
 	//메인
 	public final static String QRY_SELECT_PRD_UNIT_INFO_LIST = "main.selectPrdUnitInfoList";

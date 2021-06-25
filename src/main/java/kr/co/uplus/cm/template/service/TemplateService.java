@@ -3,18 +3,33 @@ package kr.co.uplus.cm.template.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.Gson;
+
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.config.ApiConfig;
+import kr.co.uplus.cm.sendMessage.dto.AlimTalkButtonsInfo;
+import kr.co.uplus.cm.sendMessage.dto.AlimTalkRequestData;
+import kr.co.uplus.cm.sendMessage.dto.ServiceInfo;
+import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * <pre>
@@ -26,13 +41,17 @@ import kr.co.uplus.cm.utils.GeneralDao;
  * @Date : 2021.03.25.
  * @Version : 1.0 Copyright 2020 LG Uplus Corp. All Rights Reserved.
  */
+@Log4j2
 @Service
 public class TemplateService {
 
-	@Autowired
-	private GeneralDao generalDao;
+    @Autowired
+    private GeneralDao generalDao;
 
-	/**
+    @Autowired
+    ApiInterface apiInterface;
+
+    /**
      * 푸시 템플릿 리스트 조회
      * @param params
      * @return
@@ -347,5 +366,115 @@ public class TemplateService {
         rtn.setData(rtnList);
         return rtn;
     }
+
+    /**
+     * 알림톡 템플릿 승인요청 데이터 유효성 체크
+     * @param rtn
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public AlimTalkRequestData setApprvRequestKkoTmpltData(RestResult<Object> rtn, Map<String, Object> params) throws Exception {
+        AlimTalkRequestData requestData = new AlimTalkRequestData();
+
+        //senderKey
+        requestData.setSenderKey(CommonUtils.getStrValue(params, "senderKey"));
+        //senderType
+        requestData.setSenderType(CommonUtils.getStrValue(params, "senderKeyType"));
+        //templateName
+        requestData.setTemplateName(CommonUtils.getStrValue(params, "tmpltName"));
+        //templateContent
+        requestData.setTemplateContent(CommonUtils.getStrValue(params, "tmpltContent"));
+        //categoryCode
+        requestData.setCategoryCode(CommonUtils.getStrValue(params, "categoryCode"));
+        //templateMessageType
+        //BA: 기본형 고정
+        //templateEmphasizeType
+        requestData.setTemplateEmphasizeType(CommonUtils.getStrValue(params, "emphasizeType"));
+        //templateTitle
+        requestData.setTemplateTitle(CommonUtils.getStrValue(params, "tmpltEmpsTitle"));
+        //templateSubtitle
+        requestData.setTemplateSubtitle(CommonUtils.getStrValue(params, "tmpltEmpsSubTitle"));
+
+        //버튼정보
+        if(!CommonUtils.isEmptyValue(params, "buttonList")) {
+            List<AlimTalkButtonsInfo> buttonList = (List<AlimTalkButtonsInfo>) params.get("buttonList");
+            if(CollectionUtils.isNotEmpty(buttonList)) {
+                requestData.setButtons(buttonList);
+            }
+        }
+
+        //서비스정보
+        ServiceInfo svcInfo = new ServiceInfo();
+        svcInfo.setCorpId(CommonUtils.getStrValue(params, "corpId"));
+        svcInfo.setProjectId(CommonUtils.getStrValue(params, "projectId"));
+
+        Map<String, Object> sParam = new HashMap<String, Object>();
+        sParam.put("relayChType", "KKO");
+        sParam.put("relay", "LOTTE");
+        String relaySvcId = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_RELAY_SVC_ID, sParam));
+        svcInfo.setRelay(relaySvcId);
+        requestData.setSvcInfo(svcInfo);
+
+        //유효성 체크
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<AlimTalkRequestData>> violations = validator.validate(requestData);
+        String errorMsg = "";
+
+        for (ConstraintViolation violation : violations) {
+            errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + violation.getMessage();
+            //log.info("path : [{}], message : [{}]", violation.getPropertyPath(), violation.getMessage());
+        }
+
+        //연관유효성 체크
+        if(StringUtils.equals(Const.KkoTmpltEmphasizeType.TEXT, requestData.getTemplateEmphasizeType())) {
+            if(StringUtils.isBlank(requestData.getTemplateTitle())) {
+                errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + "템플릿강조제목은 강조표기형 일때 필수입니다.";
+            }
+            if(StringUtils.isBlank(requestData.getTemplateSubtitle())) {
+                errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + "템플릿강조부제목은 강조표기형 일때 필수입니다.";
+            }
+        }
+
+        if(StringUtils.isNotBlank(errorMsg)) {
+            rtn.setSuccess(false);
+            rtn.setMessage(errorMsg);
+        }
+
+        return requestData;
+    }
+
+    /**
+     * 알림톡 템플릿 승인요청 처리
+     * @param requestData
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings({ "unchecked" })
+    public RestResult<Object> procApprvRequestKkoTmplt(AlimTalkRequestData requestData) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(requestData);
+        Map<String, Object> responseBody = apiInterface.sendMsg(ApiConfig.CREATE_KKO_TMPLT_REQ_API_URI, null, jsonString);
+
+        String rslt = "";
+        if(responseBody != null) {
+            rslt = CommonUtils.getStrValue(responseBody, "rslt");
+        }
+
+        if(!StringUtils.equals(ApiConfig.GW_API_SUCCESS, rslt)) {
+            //String failStr = "알림톡 템플릿 승인요청에 실패하였습니다.("+rslt+"-"+rsltDesc+")";
+            rtn.setFail("알림톡 템플릿 승인요청에 실패하였습니다.");
+            log.warn("{}.procApprvRequestKkoTmplt Fail -request: {}, response: {}", this.getClass(), jsonString, responseBody);
+        }
+
+        return rtn;
+    }
+
+
 
 }

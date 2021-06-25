@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.sendMessage.dto.AlimTalkRequestData;
 import kr.co.uplus.cm.template.service.TemplateService;
 import kr.co.uplus.cm.utils.DateUtil;
 import lombok.extern.log4j.Log4j2;
@@ -453,6 +454,41 @@ public class TemplateController {
             rtn.setSuccess(false);
             rtn.setMessage("실패하였습니다.");
             log.error("{}.selectKkoTmpltCatList Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 알림톡 템플릿 승인요청
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/procApprvRequestKkoTmplt")
+    public RestResult<?> procApprvRequestKkoTmplt(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+        AlimTalkRequestData requestData = null;
+
+        try {
+            log.info("{}.procApprvRequestKkoTmplt Start ====> params : {}", this.getClass(), params);
+
+            /** 유효성 체크 */
+            requestData = tmpltSvc.setApprvRequestKkoTmpltData(rtn, params);
+            if(rtn.isSuccess() == false) {
+                log.info("{}.procApprvRequestKkoTmplt validation Check fail: {}", this.getClass(), rtn.getMessage());
+                return rtn;
+            }
+
+            /** 알림톡 템플릿 승인요청 처리 */
+            return tmpltSvc.procApprvRequestKkoTmplt(requestData);
+
+        } catch (Exception e) {
+            rtn.setFail("실패하였습니다.");
+            log.error("{}.procApprvRequestKkoTmplt Error : {}", this.getClass(), e);
         }
 
         return rtn;

@@ -226,4 +226,13 @@
 		</if>
 		ORDER BY DIS_ORDER
 	</select>
+
+    <select id="selectRelaySvcId" parameterType="hashmap" resultType="string">
+    /* common.selectRelaySvcId - 중계사 서비스 ID 조회 */
+        SELECT SVC_ID
+        FROM cm.CM_RELAY_CH crc
+        WHERE RELAY_CH_TYPE = #{relayChType}
+            AND RELAY = #{relay}
+    </select>
+
 </mapper>

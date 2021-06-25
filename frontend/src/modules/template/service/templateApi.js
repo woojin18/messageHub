@@ -64,6 +64,10 @@ const selectKkoTmpltCatGrpList = (params) => {
 const selectKkoTmpltCatList = (params) => {
   return httpClient.post('/uc/template/selectKkoTmpltCatList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
+const procApprvRequestKkoTmplt = (params) => {
+  return httpClient.post('/uc/template/procApprvRequestKkoTmplt', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
 
 /* RCS */
 const corpBrandCnt = (params) => {
@@ -109,6 +113,7 @@ export default {
     selectSenderKeyList,
     selectKkoTmpltCatGrpList,
     selectKkoTmpltCatList,
+    procApprvRequestKkoTmplt,
     corpBrandCnt,
     selectRcsTemplateList,
     rcsTemplateInit,

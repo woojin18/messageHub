@@ -15,7 +15,7 @@
               <div class="phoneTextWrap3">
                 <div>
                   <p class="text-main"><i class="fal fa-envelope-open-text"></i> 알림톡 도착</p>
-                  <div v-if="tmpltData.emphasizeYn == 'Y'" class="text-sub-wrap" style="padding:10px;">
+                  <div v-if="tmpltData.emphasizeType == 'TEXT'" class="text-sub-wrap" style="padding:10px;">
                     <p v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltEmpsSubTitle)" class="text-sub_1">{{tmpltData.tmpltEmpsSubTitle}}</p>
                     <p v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltEmpsTitle)" class="text-sub scroll-y3">{{tmpltData.tmpltEmpsTitle}}</p>
                   </div>
@@ -37,8 +37,8 @@
             <div class="float-left" style="width:22%"><h4>발신 프로필/그룹 *</h4></div>
             <div class="float-left" style="width:78%">
               <select class="float-left selectStyle2" style="width:20%" v-model="tmpltData.senderKeyType" @change="fnSelectSenderKeyList">
-                <option value="NOMAL">일반</option>
-                <option value="GROUP">그룹</option>
+                <option value="S">일반</option>
+                <option value="G">그룹</option>
               </select>
               <select class="float-left selectStyle2" style="width:80%" v-model="tmpltData.senderKey">
                 <option value="">선택해주세요.</option>
@@ -55,19 +55,19 @@
           <div class="of_h">
             <div class="float-left" style="width:22%"><h4>템플릿강조유형</h4></div>
             <div class="float-left" style="width:78%">
-              <input type="radio" id="emphasizeYn_N" name="emphasizeYn" value="N" v-model="tmpltData.emphasizeYn">
-              <label for="emphasizeYn_N" class="mr30">선택 안 함</label>
-              <input type="radio" id="emphasizeYn_Y" name="emphasizeYn" value="Y" v-model="tmpltData.emphasizeYn">
-              <label for="emphasizeYn_Y">강조 표기형</label>
+              <input type="radio" id="emphasizeType_NONE" name="emphasizeType" value="NONE" v-model="tmpltData.emphasizeType">
+              <label for="emphasizeType_NONE" class="mr30">선택 안 함</label>
+              <input type="radio" id="emphasizeType_TEXT" name="emphasizeType" value="TEXT" v-model="tmpltData.emphasizeType">
+              <label for="emphasizeType_TEXT">강조 표기형</label>
             </div>
           </div>
-          <div v-if="tmpltData.emphasizeYn == 'Y'" class="of_h">
+          <div v-if="tmpltData.emphasizeType == 'TEXT'" class="of_h">
             <div class="float-left" style="width:22%"><h4>템플릿강조제목 *</h4></div>
             <div class="float-left" style="width:78%">
               <input type="text" class="inputStyle" placeholder="최대 2줄 23자(24자부터 말줄임 처리, 권장하지 않음)" v-model="tmpltData.tmpltEmpsTitle" maxlength="50">
             </div>
           </div>
-          <div v-if="tmpltData.emphasizeYn == 'Y'" class="of_h">
+          <div v-if="tmpltData.emphasizeType == 'TEXT'" class="of_h">
             <div class="float-left" style="width:22%"><h4>템플릿강조부제목 *</h4></div>
             <div class="float-left" style="width:78%">
               <input type="text" class="inputStyle" placeholder="최대 2줄 18자 (19자부터 말줄임 처리, 권장하지 않음)" v-model="tmpltData.tmpltEmpsSubTitle" maxlength="50">
@@ -130,14 +130,17 @@
                         </select>
                       </td>
                       <td class="text-center" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
-                        <input v-if="buttonInfo.type == 'AC'" type="text" class="inputStyle float-left" v-model="buttonInfo.name" disabled maxlength="20">
-                        <input v-else type="text" class="inputStyle float-left" v-model="buttonInfo.name" maxlength="20">
+                        <input v-if="buttonInfo.type == 'AC'" type="text" class="inputStyle float-left" v-model="buttonInfo.name" disabled maxlength="14">
+                        <input v-else type="text" class="inputStyle float-left" v-model="buttonInfo.name" maxlength="14">
                       </td>
                       <td :class="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? 'text-left' : 'text-left of_h'">
                         <h6 v-if="buttonInfo.type == 'DS'" class="float-left" v-html="bottonDSDescription"></h6>
                         <h6 v-if="buttonInfo.type == 'WL'" class="float-left" style="width:20%">Mobile*</h6>
                         <h6 v-if="buttonInfo.type == 'AL'" class="float-left" style="width:20%">Android*</h6>
-                        <input v-if="buttonInfo.type == 'WL' || buttonInfo.type == 'AL'" type="text" class="inputStyle float-left" style="width:80%">
+                        <!-- <input v-if="buttonInfo.type == 'WL' || buttonInfo.type == 'AL'" type="text" class="inputStyle float-left" style="width:80%"> -->
+                        <input v-if="buttonInfo.type == 'WL'" type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkMo" maxlength="200">
+                        <input v-if="buttonInfo.type == 'AL'" type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkAnd" maxlength="200">
+
                       </td>
                       <td class="text-center end" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
                         <a @click="fnDelButton(idx)" class="btnStyle1 backLightGray">삭제</a>
@@ -147,11 +150,11 @@
                       <td class="text-left">
                         <div v-if="buttonInfo.type == 'WL'">
                           <h6 class="float-left" style="width:20%">PC</h6>
-                          <input type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo['url_pc']" maxlength="200">
+                          <input type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkPc" maxlength="200">
                         </div>
                         <div v-if="buttonInfo.type == 'AL'">
                           <h6 class="float-left" style="width:20%">IOS*</h6>
-                          <input type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo['scheme_ios']" maxlength="200">
+                          <input type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkIos" maxlength="200">
                         </div>
                       </td>
                     </tr>
@@ -163,7 +166,7 @@
           </div>
           
           <div class="mt20 float-right">
-            <a href="#self" class="btnStyle2 backRed float-left ml10" title="승인요청">승인요청</a>
+            <a href="#" @click.prevent="fnApprvReqTmplt" class="btnStyle2 backRed float-left ml10" title="승인요청">승인요청</a>
             <a href="#self" class="btnStyle2 backWhite float-left ml10" title="수정요청">수정요청</a>
             <a href="#self" class="btnStyle2 float-left ml10">취소</a>
           </div>
@@ -176,6 +179,7 @@
 <script>
 import templateApi from "@/modules/template/service/templateApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
   name: 'alimTalkTemplateManage',
@@ -197,6 +201,7 @@ export default {
   },
   data() {
     return {
+      isInsert : true,
       senderKeyList : [],
       groupKeyList : [],
       kkoTmpltCatGrpList : [],
@@ -214,17 +219,18 @@ export default {
         {type:'MD', name:'메시지 전달'},
         {type:'BC', name:'상담톡 전환'},
         {type:'BT', name:'봇 전환'},
-        {type:'AC', name:'채널 추가'},  //광고 추가/복합형만
+        //{type:'AC', name:'채널 추가'},  //광고 추가/복합형만
       ],
       tmpltData : {
-        senderKeyType : 'NOMAL',  //NOMAL, GROUP
+        senderKeyType : 'S',  //S:일반, G:그룹
         senderKey : '',
         tmpltName : '',
-        emphasizeYn: 'N',  //강조여부
+        emphasizeType: 'NONE',  //강조여부(NONE: 선택안함, TEXT:강조표기형)
         tmpltEmpsTitle: '',
         tmpltEmpsSubTitle: '',
         tmpltContent: '',
         categoryCode : '',
+        tmpltMessageType : 'BA',  //BA: 기본형 고정
         buttonList:[],
       }
     }
@@ -234,6 +240,30 @@ export default {
     this.fnSelectKkoTmpltCatGrpList();
   },
   methods: {
+    fnIsValid(){
+      return true;
+    },
+    fnApprvReqTmplt(){
+      if(this.fnIsValid() == false) return;
+      eventBus.$on('callbackEventBus', this.fnProcApprvReqTmplt);
+      confirm.fnConfirm(this.componentsTitle, "알림톡 템플릿을 승인요청 하시겠습니까?", "확인");
+    },
+    async fnProcApprvReqTmplt(){
+      //DATA Set
+      let params = Object.assign({}, this.tmpltData);
+      params.tmpltButtonsStr = JSON.stringify(this.tmpltData.buttonList);
+      console.log('approval request Data ===> ', params);
+      
+      templateApi.procApprvRequestKkoTmplt(params).then(response => {
+        const result = response.data;
+        if(result.success) {
+          console.log('procApprvRequestKkoTmplt result ===> ', result);
+          alert('성공');
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
     fnAddButton(){
       if(this.tmpltData.buttonList.length < this.buttonLimitSize){
         const baseButtonInfo = {
