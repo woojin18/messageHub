@@ -329,22 +329,20 @@ public class AddressController {
 	@PostMapping(path="/excelUploadReceiver")
 		public RestResult<?> excelUploadReceiver(HttpServletRequest request, HttpServletResponse response
 				, @ModelAttribute MultipartFileDTO multipartFileDTO) throws Exception {
-
-		List<RecvInfo> recvInfoLst = null;
-		Map<String, Object> params = new HashMap<String, Object>();
-		recvInfoLst = addressSvc.getRecvInfoLst(params, multipartFileDTO.getFile());
 		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> params = new HashMap<String, Object>();
 
 		try {
 			params = commonService.setUserInfo(multipartFileDTO.getParams());
+			rtn = addressSvc.registerReceiverExcel(params, multipartFileDTO.getFile());
 			log.info("{}.excelUploadReceiver Start ====> params : {}", this.getClass(), params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
-			log.error("{}.sendPushMessage Error : {}", this.getClass(), e);
+			log.error("{}.excelUploadReceiver Error : {}", this.getClass(), e);
 			return rtn;
 		}
-		return null;
+		return rtn;
 	}
 
 	/**

@@ -250,9 +250,10 @@ export default {
 			await addressApi.excelUploadReceiver(fd).then(response =>{
 				const result = response.data;
 				if(result.success) {
-					confirm.fnAlert(this.componentsTitle, '발송하였습니다.');
+					this.fnSearchReceiverList();
+					confirm.fnAlert(this.componentsTitle, '완료하였습니다.');
 				} else {
-					confirm.fnAlert('', result.message);
+					confirm.fnAlert(this.componentsTitle, result.message);
 				}
 			});
 		},

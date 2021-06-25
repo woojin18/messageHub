@@ -302,18 +302,47 @@ public class AddressService {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public List<RecvInfo> getRecvInfoLst(Map<String, Object> params, MultipartFile excelFile) throws Exception {
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<Object> registerReceiverExcel(Map<String, Object> params, MultipartFile excelFile) throws Exception {
 		//read excelFile
+		RestResult<Object> rtn = new RestResult<Object>();
 		List<Map<String, Object>> excelList = null;
 		List<String> colKeys = new ArrayList<String>();
-		List<String> contsVarNms = null;
+		int resultCnt = 0;
+		HashMap<String, Object> map = new HashMap<String, Object>();
+//		map.putAll(params);
+		
 		colKeys.add("cuName");
 		colKeys.add("cuid");
 		colKeys.add("hpNumber");
 		
 		excelList = commonService.getExcelDataList(excelFile, 2, colKeys);
 		
-		return null;
+		for(Map<String, Object> excelInfo : excelList) {
+			for(String key : excelInfo.keySet()) {
+				if(key == null || "".equals(key)) continue; // 빈행처리
+				if("hpNumber".equals(key)) {
+					map.put(key, ((String) excelInfo.get(key)).replaceAll("-", "").trim());
+				} else {
+					map.put(key, ((String) excelInfo.get(key)).trim());
+				}
+				
+			}
+			map.put("useYn", "Y");
+			map.put("loginId", (String)params.get("userId"));
+			map.put("corpId", (String)params.get("corpId"));
+			resultCnt = generalDao.insertGernal(DB.QRY_INSERT_ADDR_RCVR, map);
+			map = new HashMap<String, Object>();
+		}
+
+		if (resultCnt <= 0) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		} else {
+			rtn.setSuccess(true);
+			rtn.setData(params);
+		}
+			return rtn;
 	}
 	
 	/**
