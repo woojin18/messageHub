@@ -24,7 +24,7 @@
 						</div>
 
 						<div class="of_h">
-							<h5 class="inline-block float-left" style="width:10%">결재조건 *</h5>
+							<h5 class="inline-block float-left" style="width:10%">결제유형</h5>
 							<div style="width:88%" class="float-right">
 								<p class="color4 consolMarginTop">{{ baseInfoData.payTypeName }}</p>
 							</div>
@@ -143,13 +143,13 @@
 
 <script>
 import baseInfoApi from '../service/baseInfoApi'
-import confirm from "@/modules/commonUtil/service/confirm";
-import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import confirm from '@/modules/commonUtil/service/confirm';
+import {eventBus} from '@/modules/commonUtil/service/eventBus';
 import apiKeyPop from '../components/bc-baseinfo-apiKey.vue';
 import tokenSvc from '@/common/token-service';
 
 export default {
-	name: "baseInfoManage",
+	name: 'baseInfoManage',
 	components: {
 		apiKeyPop,
 	},
@@ -162,6 +162,7 @@ export default {
 			saveStatus: '',
 			apiKeyData: {},
 			apiKeyOpen: false,
+			title: 'API Key 관리',
 		}
 	},
 	mounted() {
@@ -171,12 +172,12 @@ export default {
 		baseInfoData: function() {
 			jQuery('#projectName').val(this.baseInfoData.projectName);
 			jQuery('#projectDesc').val(this.baseInfoData.projectDesc);
-			jQuery('input:radio[name=useYn]:input[value="' + this.baseInfoData.useYn + '"]').prop("checked", true);
-			jQuery('input:radio[name=radioRcs]:input[value="' + this.baseInfoData.rcsYn + '"]').prop("checked", true);
-			jQuery('input:radio[name=radioMms]:input[value="' + this.baseInfoData.smsmmsYn + '"]').prop("checked", true);
-			jQuery('input:radio[name=radioPush]:input[value="' + this.baseInfoData.pushYn + '"]').prop("checked", true);
-			jQuery('input:radio[name=radioKakao]:input[value="' + this.baseInfoData.kakaoYn + '"]').prop("checked", true);
-			jQuery('input:radio[name=radioMo]:input[value="' + this.baseInfoData.moYn + '"]').prop("checked", true);
+			jQuery('input:radio[name=useYn]:input[value="' + this.baseInfoData.useYn + '"]').prop('checked', true);
+			jQuery('input:radio[name=radioRcs]:input[value="' + this.baseInfoData.rcsYn + '"]').prop('checked', true);
+			jQuery('input:radio[name=radioMms]:input[value="' + this.baseInfoData.smsmmsYn + '"]').prop('checked', true);
+			jQuery('input:radio[name=radioPush]:input[value="' + this.baseInfoData.pushYn + '"]').prop('checked', true);
+			jQuery('input:radio[name=radioKakao]:input[value="' + this.baseInfoData.kakaoYn + '"]').prop('checked', true);
+			jQuery('input:radio[name=radioMo]:input[value="' + this.baseInfoData.moYn + '"]').prop('checked', true);
 		}
 	},
 	methods: {
@@ -193,46 +194,49 @@ export default {
 					this.baseInfoData = result.data.baseInfo;
 					this.apiKeyList = result.data.apiKeyList;
 				} else {
-					confirm.fnAlert("", result.message);
+					confirm.fnAlert(this.title, result.message);
 				}
 			});
 		},
 		// 저장
 		fnSave() {
 			let projectName = jQuery('#projectName').val();
-			if(projectName == "" || projectName == null) {
-				confirm.fnAlert("", "프로젝트명을 입력하세요.");
+			if(projectName == null || projectName == '') {
+				confirm.fnAlert(this.title, '프로젝트명을 입력하세요.');
 				return false;
 			}
 			eventBus.$on('callbackEventBus', this.fnSaveCallBack);
-			confirm.fnConfirm("기본정보 저장", "저장하시겠습니까?", "확인");
+			confirm.fnConfirm(this.title, '저장하시겠습니까?', '확인');
 		},
 		fnSaveCallBack() {
 			var params = {
-				"projectId"		: this.baseInfoData.projectId,
-				"projectName"	: jQuery('#projectName').val(),
-				"projectDesc"	: jQuery('#projectDesc').val(),
-				"useYn"			: jQuery('input[name="useYn"]:checked').val(),
-				"radioRcs"		: jQuery('input[name="radioRcs"]:checked').val(),
-				"radioMms"		: jQuery('input[name="radioMms"]:checked').val(),
-				"radioPush"		: jQuery('input[name="radioPush"]:checked').val(),
-				"radioKko"		: jQuery('input[name="radioKakao"]:checked').val(),
-				"radioMo"		: jQuery('input[name="radioMo"]:checked').val(),
+				'projectId'		: this.baseInfoData.projectId,
+				'projectName'	: jQuery('#projectName').val(),
+				'projectDesc'	: jQuery('#projectDesc').val(),
+				'useYn'			: jQuery('input[name="useYn"]:checked').val(),
+				'radioRcs'		: jQuery('input[name="radioRcs"]:checked').val(),
+				'radioMms'		: jQuery('input[name="radioMms"]:checked').val(),
+				'radioPush'		: jQuery('input[name="radioPush"]:checked').val(),
+				'radioKko'		: jQuery('input[name="radioKakao"]:checked').val(),
+				'radioMo'		: jQuery('input[name="radioMo"]:checked').val(),
 			};
 
 			baseInfoApi.saveProjectBaseInfo(params).then(response =>{
 				var result = response.data;
 
 				if(result.success) {
-					confirm.fnAlert("", "저장되었습니다.");
+					confirm.fnAlert(this.title, '저장되었습니다.');
 					this.fnSearchProject();
 				} else {
-					confirm.fnAlert("", result.message);
+					confirm.fnAlert(this.title, result.message);
 				}
 			});
 		},
 		// API키 등록
 		fnRegisterApiKeyPop() {
+			if(this.apiKeyList != null && this.apiKeyList.length == 5) {
+				confirm.fnAlert(this.title, 'API Key는 5개까지 발급됩니다.');
+			}
 			this.apiKeyOpen = !this.apiKeyOpen;
 			this.apiKeyData = {};
 			this.apiKeyData.projectId = this.$parent.projectId;

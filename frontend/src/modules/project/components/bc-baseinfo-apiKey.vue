@@ -49,7 +49,7 @@
 										</div>
 										<div class="float-left" style="width:76%">
 											<div class="float-left" style="width:70%">
-												<input type="text" class="inputStyle" v-model="ipList[index-1]">
+												<input oninput="javascript: this.value = this.value.replace(/[^0-9.]/g, '');" type="text" class="inputStyle" v-model="ipList[index-1]">
 											</div>
 											<div class="float-left ml10" style="width:20%">
 												<a @click="fnAddRow" class="btnStyle1 borderGray" style="padding:0 10px" title="고객사 접속IP 입력란 추가">
@@ -151,10 +151,10 @@
 
 <script>
 import baseInfoApi from '../service/baseInfoApi'
-import confirm from "@/modules/commonUtil/service/confirm";
+import confirm from '@/modules/commonUtil/service/confirm';
 import tokenSvc from '@/common/token-service';
-import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi";
-import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import commonUtilApi from '@/modules/commonUtil/service/commonUtilApi';
+import {eventBus} from '@/modules/commonUtil/service/eventBus';
 
 export default {
 	name: 'BaseInfoApiKeyPop',
@@ -220,8 +220,8 @@ export default {
 				}
 
 				jQuery('#cps').val(this.apiKeyData.cps);
-				jQuery('#selectStatus').val(this.apiKeyData.status).attr("selected", "selected");
-				jQuery('#selectLineType').val(this.apiKeyData.lineType).attr("selected", "selected");
+				jQuery('#selectStatus').val(this.apiKeyData.status).attr('selected', 'selected');
+				jQuery('#selectLineType').val(this.apiKeyData.lineType).attr('selected', 'selected');
 				jQuery('input:radio[name=rptYn]:input[value="' + this.apiKeyData.rptYn + '"]').prop('checked', true);
 				jQuery('input:radio[name=dupChkYn]:input[value="' + this.apiKeyData.dupChkYn + '"]').prop('checked', true);
 				jQuery('input:radio[name=daySenderChkYn]:input[value="' + this.apiKeyData.daySenderChkYn + '"]').prop('checked', true);
@@ -275,6 +275,7 @@ export default {
 		return {
 			ipList: [],
 			loopCnt: 0,
+			title: 'API Key 상세',
 		}
 	},
 	mounted() {
@@ -293,53 +294,71 @@ export default {
 			let monSenderChkYn			= jQuery('input:radio[name=daySenderChkYn]:checked').val();
 			let daySenderLimitAmount	= jQuery('#daySenderLimitAmount').val();
 			let monSenderLimitAmount	= jQuery('#monSenderLimitAmount').val();
-
+			
+			let ipList					= this.ipList;
 			if(this.$gfnCommonUtils.isEmpty(apiPwd)) {
-				confirm.fnAlert("", "API 암호를 입력하세요");
+				confirm.fnAlert(this.title, 'API 암호를 입력하세요');
 				return false;
 			}
 
 			if(saveStatus =='R' && this.$gfnCommonUtils.isEmpty(apiPwdConfirm)) {
-				confirm.fnAlert("", "API 암호 확인을 입력하세요");
+				confirm.fnAlert(this.title, 'API 암호 확인을 입력하세요');
 				return false;
 			}
 
 			if(saveStatus =='R' && apiPwd != apiPwdConfirm) {
-				confirm.fnAlert("", "입력하신 API 암호가 일치하지 않습니다.");
+				confirm.fnAlert(this.title, '입력하신 API 암호가 일치하지 않습니다.');
 				return false;
 			}
-
-			if(ipChkYn == 'Y' && (this.ipList == null || this.ipList.length == 0)) {
-					confirm.fnAlert("", "IP를 입력하세요");
-					return false;
+			// validate an IP address
+			if(ipChkYn == 'Y') {
+				for(let i = 0; i < ipList.length; i++) {
+					// IP입력 한개는 필수
+					console.log('debug point');
+					if( ipList[i] == null || ipList[i] == '') {
+						confirm.fnAlert(this.title, 'IP를 입력하세요');
+						return false;
+					}
+					if(!/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipList[i])) {
+						confirm.fnAlert(this.title, '올바른 IP를 입력하세요');
+						return false;
+					}
+					// 중복입력 체크
+					for(let j = i+1; j < ipList.length; j++) {
+						if( ipList[i] != '' && ipList[j] != '' && ipList[i] == ipList[j]) {
+							confirm.fnAlert(this.title, '입력하신 IP가 중복됩니다.');
+							return false;
+						}
+					}
+				}
 			}
 
 			if(this.$gfnCommonUtils.isEmpty(cps)) {
-				confirm.fnAlert("", "초당 발송 건수를 입력하세요");
+				confirm.fnAlert(this.title, '초당 발송 건수를 입력하세요');
 				return false;
 			}
 
 			if(parseInt(cps) < 0 || parseInt(cps) > 9999) {
-				confirm.fnAlert("", "초당 발송 건수는 0~9999 사이의 값을 입력하세요");
+				confirm.fnAlert(this.title, '초당 발송 건수는 0~9999 사이의 값을 입력하세요');
 				return false;
 			}
 
 			if(this.$gfnCommonUtils.isEmpty(lineType)) {
-				confirm.fnAlert("", "라인 타입을 입력하세요");
+				confirm.fnAlert(this.title, '라인 타입을 입력하세요');
 				return false;
 			}
 
 			if(daySenderChkYn == 'Y'
 					&& (this.$gfnCommonUtils.isEmpty(daySenderLimitAmount)
 						|| parseInt(daySenderLimitAmount) < 1)) {
-				confirm.fnAlert("", "일 제한금액을 입력하세요");
+				confirm.fnAlert(this.title, '일 제한금액을 입력하세요');
 				return false;
 			}
 
 			if(monSenderChkYn == 'Y'
 					&& (this.$gfnCommonUtils.isEmpty(monSenderLimitAmount)
 						|| parseInt(monSenderLimitAmount) < 1)) {
-				confirm.fnAlert("", "월 제한금액을 입력하세요");
+				confirm.fnAlert(this.title, '월 제한금액을 입력하세요');
 				return false;
 			}
 			return true;
@@ -347,40 +366,40 @@ export default {
 		fnApiKeySave() {
 			if(!this.fnInputCheckReq()) return;
 			eventBus.$on('callbackEventBus', this.fnApiKeySaveCallBack);
-			confirm.fnConfirm("", "저장하시겠습니까?", "확인");
+			confirm.fnConfirm(this.title, '저장하시겠습니까?', '확인');
 		},
 		fnApiKeySaveCallBack() {
 			let params = {
-				"newProjectId"			: this.apiKeyData.projectId,
-				"apiKey"				: this.apiKeyData.apiKey,
-				"apiPwdConfirm"			: jQuery('#apiPwdConfirm').val(),
-				"corpId"				: tokenSvc.getToken().principal.corpId,
-				"apiPwd"				: jQuery('#apiPwd').val(),
-				"ipChkYn"				: jQuery('input[name="ipChkYn"]:checked').val(),
-				"cps"					: jQuery('#cps').val(),
-				"daySenderChkYn"		: jQuery('input[name="daySenderChkYn"]:checked').val(),
-				"monSenderChkYn"		: jQuery('input[name="monSenderChkYn"]:checked').val(),
-				"status"				: jQuery('#selectStatus option:selected').val(),
-				"rptYn"					: jQuery('input[name="rptYn"]:checked').val(),
-				"lineType"				: jQuery('#selectLineType option:selected').val(),
-				"dupChkYn"				: jQuery('input[name="rptYn"]:checked').val(),
-				"webSenderYn"			: jQuery('input[name="webSenderYn"]:checked').val(),
-				"daySenderLimitAmount"	: jQuery('#daySenderLimitAmount').val(),
-				"monSenderLimitAmount"	: jQuery('#monSenderLimitAmount').val(),
-				"ipList"				: this.ipList,
-				"saveStatus"			: this.saveStatus,
-				
+				'newProjectId'			: this.apiKeyData.projectId,
+				'apiKey'				: this.apiKeyData.apiKey,
+				'apiPwdConfirm'			: jQuery('#apiPwdConfirm').val(),
+				'corpId'				: tokenSvc.getToken().principal.corpId,
+				'apiPwd'				: jQuery('#apiPwd').val(),
+				'ipChkYn'				: jQuery('input[name="ipChkYn"]:checked').val(),
+				'cps'					: jQuery('#cps').val(),
+				'daySenderChkYn'		: jQuery('input[name="daySenderChkYn"]:checked').val(),
+				'monSenderChkYn'		: jQuery('input[name="monSenderChkYn"]:checked').val(),
+				'status'				: jQuery('#selectStatus option:selected').val(),
+				'rptYn'					: jQuery('input[name="rptYn"]:checked').val(),
+				'lineType'				: jQuery('#selectLineType option:selected').val(),
+				'dupChkYn'				: jQuery('input[name="rptYn"]:checked').val(),
+				'webSenderYn'			: jQuery('input[name="webSenderYn"]:checked').val(),
+				'daySenderLimitAmount'	: jQuery('#daySenderLimitAmount').val(),
+				'monSenderLimitAmount'	: jQuery('#monSenderLimitAmount').val(),
+				'ipList'				: this.ipList,
+				'saveStatus'			: this.saveStatus,
+
 			};
 
 			baseInfoApi.saveApiKey(params).then(response =>{
 				var result = response.data;
 
 				if(result.success) {
-					confirm.fnAlert("", "저장되었습니다.");
+					confirm.fnAlert(this.title, '저장되었습니다.');
 					this.$parent.fnSearchProject();
 					jQuery('#apiKeyPop').modal('hide');
 				} else {
-					confirm.fnAlert("", result.message);
+					confirm.fnAlert(this.title, result.message);
 				}
 			});
 		},
@@ -394,8 +413,8 @@ export default {
 		},
 		fnLineTypeInit() {
 			var params = {
-				codeTypeCd	: "LINE_TYPE",
-				useYN		: "Y"
+				codeTypeCd	: 'LINE_TYPE',
+				useYN		: 'Y'
 			};
 			commonUtilApi.selectCodeList(params).then(response =>{
 				var result = response.data.data;
@@ -431,7 +450,7 @@ export default {
 		},
 		// 숫자만 입력
 		fnCorrectNumberInput(event) {
-			event.target.value = event.target.value.replace(/[^0-9]/g, "");
+			event.target.value = event.target.value.replace(/[^0-9]/g, '');
 		},
 		// 닫기
 		fnClose() {
