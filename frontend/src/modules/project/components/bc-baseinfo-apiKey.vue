@@ -89,7 +89,7 @@
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:24%">라인 타입</h5>
 							<select id="selectLineType" class="selectStyle2" style="width:20%">
-								<option value="">전체</option>
+								<option value="">선택</option>
 							</select>
 						</div>
 						<div class="of_h consolMarginTop">
