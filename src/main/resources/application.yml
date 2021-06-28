@@ -41,12 +41,12 @@ datasource:
     username: cm_console
     password: test1234
     pool-name: hikari-cp
-    maximum-pool-size: 3
-    minimum-idle: 3
+    maximum-pool-size: 10
+    minimum-idle: 5
     connectionTimeout: 10000
     idleTimeout: 600000
     validationTimeout: 5000
-    maxLifetime: 9000
+    maxLifetime: 1800000
     cachePrepStmts: true
     prepStmtCacheSize: 250
     prepStmtCacheSqlLimit: 2048
@@ -110,12 +110,12 @@ datasource:
     username: cm_console
     password: test1234
     pool-name: hikari-cp
-    maximum-pool-size: 3
-    minimum-idle: 3
+    maximum-pool-size: 10
+    minimum-idle: 5
     connectionTimeout: 10000
     idleTimeout: 600000
     validationTimeout: 5000
-    maxLifetime: 9000
+    maxLifetime: 1800000
     cachePrepStmts: true
     prepStmtCacheSize: 250
     prepStmtCacheSqlLimit: 2048
@@ -172,12 +172,12 @@ datasource:
     username: cm_console
     password: aptlwld123
     pool-name: hikari-cp
-    maximum-pool-size: 3
-    minimum-idle: 3
+    maximum-pool-size: 10
+    minimum-idle: 5
     connectionTimeout: 10000
     idleTimeout: 600000
     validationTimeout: 5000
-    maxLifetime: 9000
+    maxLifetime: 1800000
     cachePrepStmts: true
     prepStmtCacheSize: 250
     prepStmtCacheSqlLimit: 2048
@@ -234,12 +234,12 @@ datasource:
     username: rcs
     password: rcsrcs
     pool-name: hikari-cp
-    maximum-pool-size: 3
-    minimum-idle: 3
+    maximum-pool-size: 10
+    minimum-idle: 5
     connectionTimeout: 10000
     idleTimeout: 600000
     validationTimeout: 5000
-    maxLifetime: 9000
+    maxLifetime: 1800000
     cachePrepStmts: true
     prepStmtCacheSize: 250
     prepStmtCacheSqlLimit: 2048
