@@ -15,7 +15,7 @@ public class Scheduler {
 	/**
 	 * 한시간씩 권한정보를 업데이트 한다. 
 	 */
-	@Scheduled(initialDelay = 3600000, fixedRate = 3600000)
+	@Scheduled(initialDelay = 600000, fixedRate = 600000)
 	public void initRole() {
 		authService.init();		
 	}
