@@ -36,7 +36,7 @@
             <h4>01  발송정보</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a href="#self" class="btnStyle1 backLightGray" data-toggle="modal" data-target="#Tamplet" title="템플릿 불러오기">템플릿 불러오기</a>      
+            <a href="#" @click.prevent="fnOpenAlimTalkTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기">템플릿 불러오기</a>
           </div>
           
         </div>
@@ -47,11 +47,11 @@
             <h4>02  메시지 내용</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a href="#self" class="btnStyle1 backLightGray" data-toggle="modal" data-target="#contents" title="메시지 내용입력">내용입력</a>              
+            <a href="#" @click.prevent="fnOpenAlimTalkContentsPopup" class="btnStyle1 backLightGray" title="메시지 내용입력">내용입력</a>
             <div class="of_h consolMarginTop">
               <div style="width:20%" class="float-left">
                 <h5 class="inline-block mr10">버튼</h5>
-                <a href="#self" class="btnStyle1 backBlack">추가 +</a>                  
+                <a href="#self" class="btnStyle1 backBlack">추가 +</a>
               </div>
               <div class="of_h" style="width:80%">
                 <table class="table_skin1" style="width:100%">
@@ -91,7 +91,7 @@
                       <h6 class="float-left" style="width:30%">PC</h6>
                       <input type="text" class="inputStyle float-right" style="width:65%">
                     </td>
-                    </tr>                  
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -182,5 +182,46 @@
         </div>
       </div>
     </div>
+
+    <AlimTalkTemplatePopup :alimTalkTemplateOpen.sync="alimTalkTemplateOpen" ref="alimTalkTmplPopup"></AlimTalkTemplatePopup>
+    <AlimTalkContentsPopup :alimTalkContsOpen.sync="alimTalkContsOpen"></AlimTalkContentsPopup>
+
   </div>
 </template>
+
+<script>
+import AlimTalkTemplatePopup from "@/modules/message/components/bp-alimTalkTemplate.vue";
+import AlimTalkContentsPopup from "@/modules/message/components/bp-alimTalkContents.vue";
+
+export default {
+  name: 'sendAlimTalkMain',
+  components : {
+    AlimTalkTemplatePopup,
+    AlimTalkContentsPopup
+  },
+  props: {
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: function() {
+        return '알림톡 발송';
+      }
+    },
+  },
+  data() {
+    return {
+      alimTalkTemplateOpen: false,
+      alimTalkContsOpen: false,
+    }
+  },
+  methods: {
+    fnOpenAlimTalkContentsPopup(){
+      this.alimTalkContsOpen = true;
+    },
+    fnOpenAlimTalkTemplatePopup(){
+      this.$refs.alimTalkTmplPopup.fnSelectSenderKeyList();
+      this.alimTalkTemplateOpen = true;
+    }
+  }
+}
+</script>

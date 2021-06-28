@@ -302,6 +302,9 @@
         SELECT
             CKC.SENDER_KEY
         FROM cm.CM_KKO_CH CKC
+        INNER JOIN cm.CM_KKO_CAT CAT
+            ON CKC.CATEGORY_CODE = CAT.CATEGORY_CODE
+            AND CAT.USE_YN = 'Y'
         WHERE CKC.USE_YN = 'Y'
             AND CKC.CORP_ID = #{corpId}
             AND CKC.PROJECT_ID IN ('ALL', #{projectId})

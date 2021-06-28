@@ -253,7 +253,7 @@ export default {
         confirm.fnAlert(this.componentsTitle, '템플릿명을 입력해주세요.');
         return false;
       }
-      if(!this.tmpltData.templateContent){
+      if(!this.tmpltData.tmpltContent){
         confirm.fnAlert(this.componentsTitle, '템플릿내용을 입력해주세요.');
         return false;
       }
