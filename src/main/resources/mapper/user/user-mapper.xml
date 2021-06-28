@@ -6,6 +6,7 @@
 		SELECT	COUNT(USER_ID) AS CNT
 		FROM	cm_console.CM_USER
 		WHERE	LOGIN_ID = #{loginId}
+		AND		DEL_YN = 'N'
 	</select>
 
 	<select id="selectUserListCnt" resultType="int">

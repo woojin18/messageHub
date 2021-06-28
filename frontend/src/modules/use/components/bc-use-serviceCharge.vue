@@ -1,5 +1,5 @@
 <template>
-	<div id="content">
+	<div>
 		<article>
 			<div class="contentHeader">
 				<h2>서비스 요금</h2>

@@ -1,5 +1,5 @@
 <template>
-	<div id="content">
+	<div>
 		<article>
 			<div class="contentHeader mb20">
 				<h2>이용내역</h2>

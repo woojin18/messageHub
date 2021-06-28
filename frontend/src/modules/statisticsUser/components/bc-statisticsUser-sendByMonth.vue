@@ -1,5 +1,5 @@
 <template>
-	<div id="content">
+	<div>
 		<article>
 			<div class="contentHeader mb20">
 				<h2>채널별 월별 발송통계</h2>

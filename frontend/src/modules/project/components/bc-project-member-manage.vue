@@ -1,6 +1,6 @@
 <template>
 	<!-- content -->
-	<div id="content">
+	<div>
 		<article>
 			<div class="row mt30">
 				<div class="col-xs-12">

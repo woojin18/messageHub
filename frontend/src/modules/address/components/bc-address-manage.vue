@@ -1,5 +1,5 @@
 <template>
-	<div id="content">
+	<div>
 		<article>
 			<div class="contentHeader">
 				<h2>주소록</h2>
