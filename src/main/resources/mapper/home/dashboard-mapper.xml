@@ -95,7 +95,9 @@
 				FROM 
 					cm.CM_STAT_CH_DAY
 				WHERE CORP_ID = #{corpId}
+				<if test="projectId != '' and projectId != null">
 				AND PROJECT_ID = #{projectId}
+				</if>
 				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				GROUP BY CH
 			) B ON A.CH = B.CH
@@ -125,7 +127,9 @@
 				FROM 
 					cm.CM_STAT_CH_DAY
 				WHERE CORP_ID = #{corpId}
+				<if test="projectId != '' and projectId != null">
 				AND PROJECT_ID = #{projectId}
+				</if>
 				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				GROUP BY CH
 			) B ON A.CH = B.CH
@@ -155,7 +159,9 @@
 				FROM 
 					cm.CM_STAT_CH_DAY
 				WHERE CORP_ID = #{corpId}
+				<if test="projectId != '' and projectId != null">
 				AND PROJECT_ID = #{projectId}
+				</if>
 				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				GROUP BY CH
 			) B ON A.CH = B.CH
@@ -185,7 +191,9 @@
 				FROM 
 					cm.CM_STAT_CH_DAY
 				WHERE CORP_ID = #{corpId}
+				<if test="projectId != '' and projectId != null">
 				AND PROJECT_ID = #{projectId}
+				</if>
 				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				GROUP BY CH
 			) B ON A.CH = B.CH
@@ -215,7 +223,9 @@
 				FROM 
 					cm.CM_STAT_CH_DAY
 				WHERE CORP_ID = #{corpId}
+				<if test="projectId != '' and projectId != null">
 				AND PROJECT_ID = #{projectId}
+				</if>
 				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				GROUP BY CH
 			) B ON A.CH = B.CH
@@ -245,7 +255,9 @@
 				FROM 
 					cm.CM_STAT_CH_DAY
 				WHERE CORP_ID = #{corpId}
+				<if test="projectId != '' and projectId != null">
 				AND PROJECT_ID = #{projectId}
+				</if>
 				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				GROUP BY CH
 			) B ON A.CH = B.CH
@@ -278,7 +290,9 @@
 			FROM 
 				cm.CM_STAT_CH_DAY
 			WHERE CORP_ID = #{corpId}
+			<if test="projectId != '' and projectId != null">
 			AND PROJECT_ID = #{projectId}
+			</if>
 			AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 			AND CH = #{channel}
 			GROUP BY YMD
@@ -294,7 +308,9 @@
 		FROM 
 			cm.CM_STAT_RSLT_DAY
 		WHERE CORP_ID = #{corpId}
+		<if test="projectId != '' and projectId != null">
 		AND PROJECT_ID = #{projectId}
+		</if>
 		AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 		AND CH = #{channel}
 		GROUP BY RESULT_CODE
@@ -317,7 +333,7 @@
 				    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
 				    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
 				) A
-				WHERE A.DATE BETWEEN DATE_FORMAT('2021-06-17', '%Y-%m-%d') AND DATE_FORMAT('2021-06-24', '%Y-%m-%d')
+				WHERE A.DATE BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 			) AD
 			LEFT OUTER JOIN (
 				SELECT 
@@ -328,9 +344,11 @@
 				FROM 
 					cm.CM_STAT_RSLT_DAY
 				WHERE CORP_ID = #{corpId}
+				<if test="projectId != '' and projectId != null">
 				AND PROJECT_ID = #{projectId}
+				</if>
 				AND RESULT_CODE = #{resultCode}
-				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				AND CH = #{channel}
 				GROUP BY CH, YMD
 			) CSRD ON AD.DATE = CSRD.YMD
@@ -378,6 +396,82 @@
 			AND PROJECT_ID = #{projectId}
 			AND CH = 'MMS'
 		) CSCD
+	</select>
+
+	<select id="selectRtUsedTimeLineList" resultType="camel">
+		SELECT
+			DATE_FORMAT(STR_TO_DATE(AD.DATE, '%Y%m%d%H'), '%H') AS DATE
+		FROM (
+			SELECT DATE_FORMAT(A.DATE, '%Y%m%d%H') AS DATE 
+			FROM (
+			    SELECT curdate()+1 - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY_HOUR AS DATE
+			    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
+			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
+			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
+			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
+			) A
+			WHERE A.DATE BETWEEN CONCAT(DATE_FORMAT(SYSDATE(), '%Y-%m-%d'), ' 00:00:00') and CONCAT(DATE_FORMAT(SYSDATE()+1, '%Y-%m-%d'), ' 23:00:00')
+		) AD
+		LEFT OUTER JOIN (
+			SELECT
+				CH,
+				YMDHM,
+				SUM(TOT_CNT) AS TOT_CNT
+			FROM (
+				SELECT 
+					CH,
+					DATE_FORMAT(STR_TO_DATE(YMDHM, '%Y%m%d%H%i'), '%Y%m%d%H') AS YMDHM,
+					SUM(TOT_CNT) AS TOT_CNT
+				FROM 
+					cm.CM_STAT_CH_MIN
+				WHERE CORP_ID = #{corpId}
+				AND PROJECT_ID = #{projectId}
+				AND YMDHM BETWEEN CONCAT(DATE_FORMAT(SYSDATE(), '%Y%m%d'), '0000') and CONCAT(DATE_FORMAT(SYSDATE(), '%Y%m%d%H%i'), '2359')
+				GROUP BY YMDHM
+			) A
+			GROUP BY YMDHM
+		) CSCD ON AD.DATE = CSCD.YMDHM
+		GROUP BY AD.DATE
+		ORDER BY AD.DATE
+	</select>
+
+	<select id="selectRtUsedDataList" resultType="camel">
+		SELECT
+			DATE_FORMAT(STR_TO_DATE(AD.DATE, '%Y%m%d%H'), '%H') AS DATE,
+			CSCD.CH,
+			IFNULL(CSCD.TOT_CNT, 0) AS TOT_CNT
+		FROM (
+			SELECT DATE_FORMAT(A.DATE, '%Y%m%d%H') AS DATE 
+			FROM (
+			    SELECT curdate()+1 - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY_HOUR AS DATE
+			    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
+			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
+			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
+			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
+			) A
+			WHERE A.DATE BETWEEN CONCAT(DATE_FORMAT(SYSDATE(), '%Y-%m-%d'), ' 00:00:00') and CONCAT(DATE_FORMAT(SYSDATE()+1, '%Y-%m-%d'), ' 23:00:00')
+		) AD
+		LEFT OUTER JOIN (
+			SELECT
+				CH,
+				YMDHM,
+				SUM(TOT_CNT) AS TOT_CNT
+			FROM (
+				SELECT 
+					CH,
+					DATE_FORMAT(STR_TO_DATE(YMDHM, '%Y%m%d%H%i'), '%Y%m%d%H') AS YMDHM,
+					SUM(TOT_CNT) AS TOT_CNT
+				FROM 
+					cm.CM_STAT_CH_MIN
+				WHERE CORP_ID = #{corpId}
+				AND PROJECT_ID = #{projectId}
+				AND CH = #{channel}
+				AND YMDHM BETWEEN CONCAT(DATE_FORMAT(SYSDATE(), '%Y%m%d'), '0000') and CONCAT(DATE_FORMAT(SYSDATE(), '%Y%m%d%H%i'), '2359')
+				GROUP BY YMDHM
+			) A
+			GROUP BY YMDHM
+		) CSCD ON AD.DATE = CSCD.YMDHM
+		ORDER BY AD.DATE
 	</select>
 
 </mapper>

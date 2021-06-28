@@ -162,19 +162,42 @@ public class HomeController {
 	}
 
 	/**
-	 * 대시보드 채널별 성공/실패현황 조회
+	 * 대시보드 당일 실시간 이용현황 시간대 조회
 	 * 
 	 * @param request
 	 * @param response
 	 * @param params
 	 * @return
 	 */
-	@PostMapping("/selectDayStatsList")
-	public RestResult<?> selectDayStatsList(HttpServletRequest request, HttpServletResponse response,
+	@PostMapping("/selectRtUsedTimeLineList")
+	public RestResult<?> selectRtUsedTimeLineList(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
-			rtn = homeSvc.selectDayStatsList(params);
+			rtn = homeSvc.selectRtUsedTimeLineList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectNoticeList Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드 당일 실시간 이용현황 조회
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectRtUsedDataList")
+	public RestResult<?> selectRtUsedDataList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = homeSvc.selectRtUsedDataList(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");

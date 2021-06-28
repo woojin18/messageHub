@@ -12,8 +12,18 @@ const selectNoticeList = (params) => {
 	return httpClient.post('/api/home/selectNoticeList', params, { headers: { "show-layer": "Yes" } });
 };
 
+const selectChTotCntInfo = (params) => {
+	return httpClient.post('/api/home/selectChTotCntInfo', params, { headers: { "show-layer": "Yes" } });
+};
+
+const selectChSuccFailCntList = (params) => {
+	return httpClient.post('/api/home/selectChSuccFailCntList', params, { headers: { "show-layer": "Yes" } });
+};
+
 export default {
 	logout,
 	selectProjectList,
-	selectNoticeList
+	selectNoticeList,
+	selectChTotCntInfo,
+	selectChSuccFailCntList
 };

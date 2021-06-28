@@ -90,54 +90,54 @@
 						</div>
 						<div class="mt10">
 							<ul class="tab_s4_2 of-h" style="width:100%">
-								<li @click="setRandomData('push')" id="setPush" style="width:16.7%" class="active">
+								<li @click="fnSetChartData('PUSH')" id="setPush" style="width:16.7%" class="active">
 									<a class="inline-block text-center active">
 										<h5>PUSH 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">55<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">0<br></span><span class="text">실패</span></p>					
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.pushSuccCnt }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.pushFailCnt }}<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
-								<li @click="setRandomData('rcs')" id="setRcs" style="width:16.7%">
+								<li @click="fnSetChartData('RCS')" id="setRcs" style="width:16.7%">
 									<a class="inline-block text-center">
 										<h5>RCS 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">0<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">0<br></span><span class="text">실패</span></p>					
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.rcsSuccCnt }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.rcsFailCnt }}<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
-								<li @click="setRandomData('kakaotalk')" id="setKakaotalk" style="width:16.6%">
+								<li @click="fnSetChartData('ALIMTALK')" id="setKakaotalk" style="width:16.6%">
 									<a class="inline-block text-center">
 										<h5>알림톡 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">-<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.alimSuccCnt }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.alimFailCnt }}<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
-								<li @click="setRandomData('friendtalk')" id="setFriendtalk" style="width:16.7%">
+								<li @click="fnSetChartData('FRIENDTALK')" id="setFriendtalk" style="width:16.7%">
 									<a class="inline-block text-center">
 										<h5>친구톡 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">-<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.friendSuccCnt }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.friendFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
-								<li @click="setRandomData('sms')" id="setSms" style="width:16.7%">
+								<li @click="fnSetChartData('SMS')" id="setSms" style="width:16.7%">
 									<a class="inline-block text-center">
 										<h5>SMS 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">-<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.smsSuccCnt }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.smsFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
-								<li @click="setRandomData('mms')" id="setMms" style="width:16.6%">
+								<li @click="fnSetChartData('MMS')" id="setMms" style="width:16.6%">
 									<a class="inline-block text-center">
 										<h5>MMS 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">-<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">-<br></span><span class="text">실패</span></p>					
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.mmsSuccCnt }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.mmsFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 							</ul>
 						</div>
 						<div class="Dashboard01 border-line3 pd20" style="margin-top:-1px">
-							<h4 class="lc-1 text-left mt20">Push 성공/실패 현황</h4>
+							<h4 class="lc-1 text-left mt20">{{ this.chName }} 성공/실패 현황</h4>
 							<bar-chart :chart-data="successFailResultData" :height="100"></bar-chart>
-							<h4 class="lc-1 text-left mt20">Push 실패코드 현황</h4>
+							<h4 class="lc-1 text-left mt20">{{ this.chName }} 실패코드 현황</h4>
 							<bar-chart :chart-data="failCodeResultData" :height="100"></bar-chart>
 						</div>
 					</div>
@@ -204,13 +204,127 @@ export default {
 			}
 		}
 	},
+	componentsTitle: {
+		type: String,
+		require: false,
+		default: function() {
+			return 'Admin Console DashBoard';
+		}
+	},
 	data () {
 		return {
 			projects: [],
 			notices: [],
+			chName: 'Push',
+			channelTotalCountInfo: {},
 			searchDateInterval: 7,
-			successFailResultData: {
-				labels: ['20210609', '20210610', '20210611', '20210612', '20210613', '20210614', '20210615'],
+			dateLine: [],
+			successCnt: [],
+			failCnt: [],
+			successFailResultData: {},
+			failCodeResultData: {},
+			monthUsedResultData: {},
+			sixMonthUsedResultData: {}
+		}
+	},
+	created: function() {
+		console.log('created HomeMain');
+	},
+	mounted() {
+		this.fnSetIntervalSearchDate(this.searchDateInterval);
+		this.fnGetNoticeList();
+		this.fnGetProjectList();
+		this.fnGetChTotCntInfo();
+		this.fnGetMonthUsedResultData();
+		this.fnGetSixMonthUsedResultData();
+	},
+	methods: {
+		fnGetProjectList() {
+			let params = {
+				userId: tokenSvc.getToken().principal.userId
+			};
+
+			homeApi.selectProjectList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.projects = result.data;
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+		},
+		fnGetNoticeList() {
+			let params = {
+			};
+
+			homeApi.selectNoticeList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.notices = result.data;
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+		},
+		fnGetChTotCntInfo() {
+			let params = {
+				corpId: tokenSvc.getToken().principal.corpId,
+				startDateStr: this.searchData.searchStartDate,
+				endDateStr: this.searchData.searchEndDate
+			};
+
+			homeApi.selectChTotCntInfo(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.channelTotalCountInfo = result.data.chTotCntInfo;
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+		},
+		fnGetChSuccFailCntList(channel) {
+			let params = {
+				corpId: tokenSvc.getToken().principal.corpId,
+				startDateStr: this.searchData.searchStartDate,
+				endDateStr: this.searchData.searchEndDate,
+				channel: channel
+			};
+
+			homeApi.selectChSuccFailCntList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					for (var i = 0; i < result.data.length; i++) {
+						this.dateLine.push(result.data[i].date);
+						this.successCnt.push(result.data[i].succCnt);
+						this.failCnt.push(result.data[i].failCnt);
+					}
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+		},
+		//검색일자변경
+		fnSetIntervalSearchDate(interval){
+			this.searchDateInterval = interval;
+			this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
+			this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
+			this.fnGetChTotCntInfo();
+			this.fnSetChartData(this.fnGetChInfo());
+		},
+		fnUpdateStartDate(sltDate) {
+			this.searchData.searchStartDate = sltDate;
+		},
+		fnUpdateEndDate(sltDate) {
+			this.searchData.searchEndDate = sltDate;
+		},
+		fnSetChartData(channel) {
+			this.dateLine = [];
+			this.successCnt = [];
+			this.failCnt = [];
+			this.fnGetChSuccFailCntList(channel);
+
+			this.successFailResultData = {
+				labels: this.dateLine,
 				datasets: [
 					{
 						label: '발송성공',
@@ -218,7 +332,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [40, 20, 30, 10, 50, 60, 50]
+						data: this.successCnt
 					},
 					{
 						label: '발송실패',
@@ -226,11 +340,11 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [10, 0, 10, 10, 20, 30, 20]
+						data: this.failCnt
 					}
 				]
 			},
-			failCodeResultData: {
+			this.failCodeResultData = {
 				labels: ['20210609', '20210610', '20210611', '20210612', '20210613', '20210614', '20210615'],
 				datasets: [
 					{
@@ -239,7 +353,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [40, 20, 30, 10, 50, 60, 50]
+						data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
 					},
 					{
 						label: 'Code2',
@@ -247,7 +361,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [10, 0, 10, 10, 20, 30, 20]
+						data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
 					},
 					{
 						label: 'Code3',
@@ -255,7 +369,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [110, 100, 110, 110, 120, 130, 120]
+						data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
 					},
 					{
 						label: 'Code4',
@@ -263,11 +377,34 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [60, 30, 40, 50, 120, 130, 70]
+						data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
 					}
 				]
-			},
-			monthUsedResultData: {
+			}
+
+			jQuery('.mt10 > ul > li').removeClass('active');
+			if (channel == 'PUSH') {
+				jQuery("#setPush").addClass('active');
+				this.chName = 'Push';
+			} else if (channel == 'RCS') {
+				jQuery("#setRcs").addClass('active');
+				this.chName = 'RCS';
+			} else if (channel == 'ALIMTALK') {
+				jQuery("#setKakaotalk").addClass('active');
+				this.chName = '알림톡';
+			} else if (channel == 'FRIENDTALK') {
+				jQuery("#setFriendtalk").addClass('active');
+				this.chName = '친구톡';
+			} else if (channel == 'SMS') {
+				jQuery("#setSms").addClass('active');
+				this.chName = 'SMS';
+			} else if (channel == 'MMS') {
+				jQuery("#setMms").addClass('active');
+				this.chName = 'MMS';
+			}
+		},
+		fnGetMonthUsedResultData() {
+			this.monthUsedResultData = {
 				labels: ['20210601', '20210602', '20210603', '20210604', '20210605', '20210606', '20210607', '20210608', '20210609', '20210610', '20210611', '20210612', '20210613', '20210614', '20210615'],
 				datasets: [
 					{
@@ -319,8 +456,10 @@ export default {
 						data: [110, 100, 60, 60, 70, 230, 220, 90, 20, 30, 40, 60, 110, 200, 60]
 					}
 				]
-			},
-			sixMonthUsedResultData: {
+			}
+		},
+		fnGetSixMonthUsedResultData() {
+			this.sixMonthUsedResultData = {
 				labels: ['202101', '202102', '202103', '202104', '202105', '202106'],
 				datasets: [
 					{
@@ -373,130 +512,6 @@ export default {
 					}
 				]
 			}
-		}
-	},
-	created: function() {
-		console.log('created HomeMain');
-	},
-	mounted() {
-		this.fnSetIntervalSearchDate(this.searchDateInterval);
-		this.fnGetNoticeList();
-		this.fnGetProjectList();
-	},
-	methods: {
-		fnGetProjectList() {
-			let params = {
-				userId: tokenSvc.getToken().principal.userId
-			};
-
-			homeApi.selectProjectList(params).then(response =>{
-				var result = response.data;
-				if (result.success) {
-					this.projects = result.data;
-				} else {
-					confirm.fnAlert(this.componentsTitle, result.message);
-				}
-			});
-		},
-		fnGetNoticeList() {
-			let params = {
-			};
-
-			homeApi.selectNoticeList(params).then(response =>{
-				var result = response.data;
-				if (result.success) {
-					this.notices = result.data;
-				} else {
-					confirm.fnAlert(this.componentsTitle, result.message);
-				}
-			});
-		},
-		//검색일자변경
-		fnSetIntervalSearchDate(interval){
-			this.searchDateInterval = interval;
-			this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
-			this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
-		},
-		fnUpdateStartDate(sltDate) {
-			this.searchData.searchStartDate = sltDate;
-		},
-		fnUpdateEndDate(sltDate) {
-			this.searchData.searchEndDate = sltDate;
-		},
-		setRandomData(channel) {
-			this.successFailResultData = {
-				labels: ['20210609', '20210610', '20210611', '20210612', '20210613', '20210614', '20210615'],
-				datasets: [
-					{
-						label: '발송성공',
-						backgroundColor: '#f87979',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
-					},
-					{
-						label: '발송실패',
-						backgroundColor: '#8C8C8C',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
-					}
-				]
-			},
-			this.failCodeResultData = {
-				labels: ['20210609', '20210610', '20210611', '20210612', '20210613', '20210614', '20210615'],
-				datasets: [
-					{
-						label: 'Code1',
-						backgroundColor: '#0100FF',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
-					},
-					{
-						label: 'Code2',
-						backgroundColor: '#00D8FF',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
-					},
-					{
-						label: 'Code3',
-						backgroundColor: '#FF0000',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
-					},
-					{
-						label: 'Code4',
-						backgroundColor: '#F2CB61',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
-					}
-				]
-			}
-
-			jQuery('.mt10 > ul > li').removeClass('active');
-			if (channel == 'push') {
-				jQuery("#setPush").addClass('active');
-			} else if (channel == 'rcs') {
-				jQuery("#setRcs").addClass('active');
-			} else if (channel == 'kakaotalk') {
-				jQuery("#setKakaotalk").addClass('active');
-			} else if (channel == 'friendtalk') {
-				jQuery("#setFriendtalk").addClass('active');
-			} else if (channel == 'sms') {
-				jQuery("#setSms").addClass('active');
-			} else if (channel == 'mms') {
-				jQuery("#setMms").addClass('active');
-			}
 		},
 		getRandomInt () {
 			return Math.floor(Math.random() * (50 - 5 + 1)) + 5
@@ -504,6 +519,25 @@ export default {
 		fnPageReload() {
 			this.$router.replace('/');
 			this.$nextTick(() => this.$router.replace("/home"));
+		},
+		fnGetChInfo() {
+			var chInfo = '';
+
+			if (jQuery("#setPush").prop("class") == "active") {
+				chInfo = 'PUSH';
+			} else if (jQuery("#setRcs").prop("class") == "active") {
+				chInfo = 'RCS';
+			} else if (jQuery("#setKakaotalk").prop("class") == "active") {
+				chInfo = 'ALIMTALK';
+			} else if (jQuery("#setFriendtalk").prop("class") == "active") {
+				chInfo = 'FRIENDTALK';
+			} else if (jQuery("#setSms").prop("class") == "active") {
+				chInfo = 'SMS';
+			} else if (jQuery("#setMms").prop("class") == "active") {
+				chInfo = 'MMS';
+			}
+
+			return chInfo;
 		}
 	},
 };

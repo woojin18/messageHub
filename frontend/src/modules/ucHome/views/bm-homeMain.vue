@@ -92,35 +92,35 @@
 									<a class="inline-block text-center active">
 										<h5>PUSH 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.pushSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.pushFailCnt }}<br></span><span class="text">실패</span></p>					
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.pushFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('RCS')" id="setRcs" style="width:16.7%">
 									<a class="inline-block text-center">
 										<h5>RCS 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.rcsSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.rcsFailCnt }}<br></span><span class="text">실패</span></p>					
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.rcsFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('ALIMTALK')" id="setKakaotalk" style="width:16.6%">
 									<a class="inline-block text-center">
 										<h5>알림톡 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.alimSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.alimFailCnt }}<br></span><span class="text">실패</span></p>					
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.alimFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('FRIENDTALK')" id="setFriendtalk" style="width:16.7%">
 									<a class="inline-block text-center">
 										<h5>친구톡 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.friendSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.friendFailCnt }}<br></span><span class="text">실패</span></p>					
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.friendFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('SMS')" id="setSms" style="width:16.7%">
 									<a class="inline-block text-center">
 										<h5>SMS 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.smsSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.smsFailCnt }}<br></span><span class="text">실패</span></p>					
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.smsFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('MMS')" id="setMms" style="width:16.6%">
@@ -202,13 +202,24 @@ export default {
 			notices: [],
 			chName: 'Push',
 			channelTotalCountInfo: {},
-			chStatsList: [],
 			searchDateInterval: 7,
 			dateLine: [],
 			successCnt: [],
 			failCnt: [],
 			failCodeResultDataset: [],
 			failCodeCnt: [],
+			defaultBackgroundColor: [
+				'#4A7AF7', '#83BFFA', '#E86560', '#F1AA72', '#F6CF74', '#F361DC', '#D5D5D5', '#F29661', '#CEF279', '#B2CCFF',
+				'#B2CCFF', '#DE4F4F', '#FAED7D', '#41FF3A', '#F35AA6', '#949494', '#FFFF6C', '#79ABFF', '#FF3636', '#FF9797'
+			 ],
+			backgroundColor: [],
+			timeLine: [],
+			rtUsedPushList: [],
+			rtUsedRcsList: [],
+			rtUsedFriendtalkList: [],
+			rtUsedAlimtalkList: [],
+			rtUsedSmsList: [],
+			rtUsedMmsList: [],
 			successFailResultData: {},
 			failCodeResultData: {},
 			rtUsedResultData: {}
@@ -222,7 +233,7 @@ export default {
 		this.fnGetProjectInfo();
 		this.fnGetNoticeList();
 		this.fnGetChTotCntInfo();
-		this.fnGetDayStatsList();
+		this.fnGetRtUsedTimeLineList();
 		this.fnGetRtUsedData();
 	},
 	methods: {
@@ -310,12 +321,10 @@ export default {
 						for (var j = 0; j < result.data[i].failCodeCnt.length; j++) {
 							this.failCodeCnt.push(result.data[i].failCodeCnt[j].cnt);
 						}
-						console.log(result.data[i].resultCode);
-						console.log(this.failCodeCnt);
 						this.failCodeResultDataset[i] = 
 							{
 								label: result.data[i].resultCode,
-								backgroundColor: '#0100FF',
+								backgroundColor: this.defaultBackgroundColor[i],
 								pointBackgroundColor: 'white',
 								borderWidth: 1,
 								pointBorderColor: '#249EBF',
@@ -327,16 +336,48 @@ export default {
 				}
 			});
 		},
-		fnGetDayStatsList() {
+		fnGetRtUsedTimeLineList() {
 			let params = {
 				projectId: utils.getCookie(consts.projectId),
 				corpId: tokenSvc.getToken().principal.corpId
 			};
 
-			homeApi.selectDayStatsList(params).then(response =>{
+			homeApi.selectRtUsedTimeLineList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
-					this.chStatsList = result.data;
+					for (var i = 0; i < result.data.length; i++) {
+						this.timeLine.push(result.data[i].date);
+					}
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+		},
+		fnGetRtUsedDataList(channel) {
+			let params = {
+				projectId: utils.getCookie(consts.projectId),
+				corpId: tokenSvc.getToken().principal.corpId,
+				channel: channel
+			};
+
+			homeApi.selectRtUsedDataList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					for (var i = 0; i < result.data.length; i++) {
+						if (channel == 'PUSH') {
+							this.rtUsedPushList.push(result.data[i].totCnt);
+						} else if (channel == 'RCS') {
+							this.rtUsedRcsList.push(result.data[i].totCnt);
+						} else if (channel == 'FRIENDTALK') {
+							this.rtUsedFriendtalkList.push(result.data[i].totCnt);
+						} else if (channel == 'ALIMTALK') {
+							this.rtUsedAlimtalkList.push(result.data[i].totCnt);
+						} else if (channel == 'SMS') {
+							this.rtUsedSmsList.push(result.data[i].totCnt);
+						} else if (channel == 'MMS') {
+							this.rtUsedMmsList.push(result.data[i].totCnt);
+						}
+					}
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
@@ -427,12 +468,16 @@ export default {
 				this.chName = 'MMS';
 			}
 		},
-		getRandomInt () {
-			return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-		},
 		fnGetRtUsedData() {
+			this.fnGetRtUsedDataList('PUSH');
+			this.fnGetRtUsedDataList('RCS');
+			this.fnGetRtUsedDataList('FRIENDTALK');
+			this.fnGetRtUsedDataList('ALIMTALK');
+			this.fnGetRtUsedDataList('SMS');
+			this.fnGetRtUsedDataList('MMS');
+
 			this.rtUsedResultData = {
-				labels: ['00~01', '01~02', '02~03', '03~04', '04~05', '05~06', '06~07', '07~08', '08~09', '09~10', '10~11', '11~12', '12~13', '13~14', '14~15'],
+				labels: this.timeLine,
 				datasets: [
 					{
 						label: 'Push',
@@ -440,7 +485,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [140, 120, 130, 110, 150, 160, 150, 70, 320, 210, 60, 90, 150, 260, 400]
+						data: this.rtUsedPushList
 					},
 					{
 						label: 'RCS',
@@ -448,7 +493,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [110, 100, 110, 110, 120, 130, 120, 30, 60, 90, 210, 270, 120, 100, 190]
+						data: this.rtUsedRcsList
 					},
 					{
 						label: '친구톡',
@@ -456,7 +501,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [60, 50, 60, 60, 70, 80, 70, 60, 50, 60, 60, 70, 80, 70, 120]
+						data: this.rtUsedFriendtalkList
 					},
 					{
 						label: '알림톡',
@@ -464,7 +509,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [30, 10, 10, 50, 70, 90, 120, 30, 10, 10, 50, 70, 90, 160, 190]
+						data: this.rtUsedAlimtalkList
 					},
 					{
 						label: 'SMS',
@@ -472,7 +517,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [210, 200, 110, 160, 170, 330, 320, 190, 70, 130, 90, 160, 210, 300, 110]
+						data: this.rtUsedSmsList
 					},
 					{
 						label: 'MMS',
@@ -480,7 +525,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [110, 100, 60, 60, 70, 230, 220, 90, 20, 30, 40, 60, 110, 200, 60]
+						data: this.rtUsedMmsList
 					}
 				]
 			}

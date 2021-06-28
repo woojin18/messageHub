@@ -206,17 +206,34 @@ public class HomeService {
 	}
 
 	/**
-	 * 대시보드 채널별 성공/실패현황 조회
+	 * 대시보드 당일 실시간 이용현황 시간대 조회
 	 * 
 	 * @param params
 	 * @return
 	 * @throws Exception
 	 */
-	public RestResult<Object> selectDayStatsList(Map<String, Object> params) throws Exception {
+	public RestResult<Object> selectRtUsedTimeLineList(Map<String, Object> params) throws Exception {
 
 		RestResult<Object> rtn = new RestResult<Object>();
 
-		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_DAY_STATS_LIST, params);
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RT_USED_TIME_LINE_LIST, params);
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드 당일 실시간 이용현황 조회
+	 * 
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> selectRtUsedDataList(Map<String, Object> params) throws Exception {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RT_USED_DATA_LIST, params);
 		rtn.setData(rtnList);
 
 		return rtn;

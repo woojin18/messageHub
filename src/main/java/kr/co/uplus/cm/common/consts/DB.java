@@ -246,7 +246,8 @@ public class DB {
 	public final static String QRY_SELECT_CH_SUCC_FAIL_COUNT_LIST = "selectChSuccFailCntList";
 	public final static String QRY_SELECT_CH_FAIL_CODE_LIST = "selectChFailCodeList";
 	public final static String QRY_SELECT_CH_FAIL_CODE_COUNT_LIST = "selectChFailCodeCntList";
-	public final static String QRY_SELECT_DAY_STATS_LIST = "dashboard.selectDayStatsList";
+	public final static String QRY_SELECT_RT_USED_TIME_LINE_LIST = "selectRtUsedTimeLineList";
+	public final static String QRY_SELECT_RT_USED_DATA_LIST = "selectRtUsedDataList";
 
 	// 통계
 	public final static String QRY_SELECT_STATIS_SND_LIST = "statisticsUser.selectStatisSndList";
