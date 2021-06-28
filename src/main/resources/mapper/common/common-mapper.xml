@@ -226,6 +226,17 @@
 		</if>
 		ORDER BY DIS_ORDER
 	</select>
+	
+	<select id="selectCodeVal1ByCodeName1" resultType="string">
+	/* common.selectCodeValByCodeName */
+		SELECT	CODE_VAL_1
+		FROM	cm_bo.CM_CODE
+		WHERE	CODE_TYPE_CD = #{codeTypeCd}
+		AND		USE_YN = 'Y'
+		<if test="codeName1 != null and codeName1 != ''">
+		AND		CODE_NAME_1 = #{codeName1}
+		</if>
+	</select>
 
     <select id="selectRelaySvcId" parameterType="hashmap" resultType="string">
     /* common.selectRelaySvcId - 중계사 서비스 ID 조회 */
@@ -235,4 +246,23 @@
             AND RELAY = #{relay}
     </select>
 
+	<insert id="insertFileInfo" >
+		/* common.insertFileInfo */
+		INSERT	cm_bo.CM_ATTACH_FILE 
+		(
+			FILE_ID
+		,	ATTACH_FILE_NAME
+		,	ATTACH_FILE_PATH
+		,	REG_DT
+		,	REG_ID
+		)
+		VALUES
+		(
+			#{attach_file_seq}
+		,	#{attach_file_name}
+		,	#{attach_file_path}
+		,	NOW()
+		,	#{userId}
+		)
+	</insert>
 </mapper>

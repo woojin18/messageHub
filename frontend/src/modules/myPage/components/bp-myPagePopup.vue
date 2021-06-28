@@ -62,6 +62,7 @@
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import myPageApi from '@/modules/myPage/service/myPageApi';
+import tokenSvc from '@/common/token-service';
 
 export default {
   name: 'myPagePopup',
@@ -174,7 +175,8 @@ export default {
         var params = {
           loginPwd : this.loginPwd.trim(),
           hpNumber : this.chgHpNumber.trim(),
-          certifyNumber : this.certifyNumber.trim()
+          certifyNumber : this.certifyNumber.trim(),
+          userId : tokenSvc.getToken().principal.userId
         }
 
         myPageApi.saveMemberInfo(params).then(response =>{

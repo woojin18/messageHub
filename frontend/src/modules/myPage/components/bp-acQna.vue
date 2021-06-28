@@ -64,6 +64,7 @@ import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import myPageApi from '@/modules/myPage/service/myPageApi';
+import tokenSvc from '@/common/token-service';
 
 export default {
   name: 'acQnaPopup',
@@ -127,7 +128,9 @@ export default {
       },
       // 회원정보
       fnMemberInfo(){
-        var params = {};
+        var params = {
+          userId : tokenSvc.getToken().principal.userId
+        };
         myPageApi.selectMemberInfo(params).then(response => {
           var result = response.data;
           if(result.success){
@@ -186,7 +189,8 @@ export default {
           email         : this.email,                       // 이메일
           hpNumber      : this.hpNumber,                    // 전화번호
           title         : this.title,                       // 제목
-          content       : this.content                      // 내용
+          content       : this.content,                     // 내용
+          userId        : tokenSvc.getToken().principal.userId
         }
         myPageApi.saveQnaInfo(params).then(response => {
           var result = response.data;

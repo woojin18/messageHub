@@ -72,12 +72,8 @@ export default {
     watch : {
         popReset(){
             this.index = -1;
-            this.selCorp = {};
             this.data = this.dataList;
         }
-    },
-    mounted(){ 
-
     },
     methods : {
         fnCloseLayer(){
@@ -87,6 +83,19 @@ export default {
             this.index = index;
         },
         fnSelRow(rowData){
+            this.fnGetSelectCustInfo(rowData);
+        },
+        fnSelect(){
+            var rowData = new Object();
+            var td = jQuery("#selCorpTbl tr.selected").children();
+
+            rowData.custNo    = td.eq(0).text();
+
+            this.fnGetSelectCustInfo(rowData);
+        },
+        fnGetSelectCustInfo(rowData){
+            var vm = this;
+
             var params = {
                 custNo : rowData.custNo
             };
@@ -94,26 +103,22 @@ export default {
             signUpApi.selectSelCorpCustInfo(params).then(function(response) {
                 var result = response.data;
                 if(result.success){
-                    rowData.custKdCd = result.data.custKdCd;
-                    rowData.custAddrZip = result.data.custAddrZip;
-                    rowData.woplaceAddress = result.data.custVilgAbvAddr + result.data.custVilgBlwAddr;
-                    rowData.wireTel = result.data.homeTel == "" ? result.data.offcTel.trim() : result.data.homeTel.trim();
+                    rowData.custNm          = result.data.custNm;              // 대표자명
+                    rowData.bizCompNm       = result.data.bizCompNm;           // 사업자명
+                    rowData.custrnmNo       = result.data.custrnmNo;           // 고객 식별번호
+                    rowData.bsRegNo         = result.data.bsRegNo;             // 사업자번호
+                    rowData.custKdCd        = result.data.custKdCd;            // 고객 유형
+                    rowData.custAddrZip     = result.data.custAddrZip;         // 우편번호
+                    rowData.custVilgAbvAddr = result.data.custVilgAbvAddr;     // 주소1
+                    rowData.custVilgBlwAddr = result.data.custVilgBlwAddr;     // 상세주소
+                    rowData.wireTel         = result.data.offcTel == "" ? result.dataoffcTel : result.data.homeTel;     // 유선전화번호
+
+                    vm.$emit("update:selCorp", rowData);
+                    vm.fnCloseLayer();
+                } else {
+                    confirm.fnAlert("", result.message);
                 }
             });
-            this.$emit("update:selCorp", rowData);
-            this.fnCloseLayer();
-        },
-        fnSelect(){
-            var rowData = new Object();
-            var td = jQuery("#selCorpTbl tr.selected").children();
-            rowData.custNo    = td.eq(0).text();
-            rowData.custNm    = td.eq(1).text();
-            rowData.custrnmNo = td.eq(2).text();
-            rowData.bizCompNm      = td.eq(3).text();
-            // rowData.bsRegNo     = this.bsRegNo;
-            
-            this.$emit("update:selCorp", rowData);
-            this.fnCloseLayer();
         }
     }
 }

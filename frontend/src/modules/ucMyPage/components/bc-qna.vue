@@ -94,6 +94,7 @@ import acQnaPop from "@/modules/ucMyPage/components/bp-qna"
 
 import confirm from "@/modules/commonUtil/service/confirm"
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import tokenSvc from '@/common/token-service';
 
 export default {
 	name: 'acQna',
@@ -161,7 +162,8 @@ export default {
 				srcQuestType : this.srcQnaType,
 				srcQuestStatus : this.srcQnaStatus,
 				srcTitle : this.srcTitle,
-				pageInfo : this.pageInfo
+				pageInfo : this.pageInfo,
+				userId : tokenSvc.getToken().principal.userId
 			};
 
 			myPageApi.selectQnaList(params).then(response => {

@@ -92,6 +92,7 @@ import myPageApi from '@/modules/myPage/service/myPageApi';
 import Paging from "@/modules/commonUtil/components/bc-paging"
 import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt"
 import acQnaPop from "@/modules/myPage/components/bp-acQna"
+import tokenSvc from '@/common/token-service';
 
 import confirm from "@/modules/commonUtil/service/confirm"
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
@@ -162,7 +163,8 @@ export default {
 				srcQuestType : this.srcQnaType,
 				srcQuestStatus : this.srcQnaStatus,
 				srcTitle : this.srcTitle,
-				pageInfo : this.pageInfo
+				pageInfo : this.pageInfo,
+				userId : tokenSvc.getToken().principal.userId
 			};
 
 			myPageApi.selectQnaList(params).then(response => {

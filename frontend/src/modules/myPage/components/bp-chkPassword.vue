@@ -25,6 +25,7 @@
 <script>
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import myPageApi from '@/modules/myPage/service/myPageApi';
+import tokenSvc from '@/common/token-service';
 
 export default {
   name: 'chkPwdPopup',
@@ -49,10 +50,11 @@ export default {
       fnCloseLayer(){
           jQuery("#chkPwdPopup").modal("hide");
       },
-      // 저장
+      // 비밀번호 체크
       fnChkPwd(){
         var params = {
-          password : this.password
+          password : this.password,
+          userId : tokenSvc.getToken().principal.userId
         }
         myPageApi.checkPassword(params).then(response =>{
           var result = response.data;

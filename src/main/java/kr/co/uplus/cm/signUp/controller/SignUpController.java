@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -82,12 +84,60 @@ public class SignUpController {
 	}
 	
 	// 회원 가입
+//	@PostMapping("/insertSignUp")
+//	public RestResult<?> insertSignUp(@RequestBody Map<String, Object> params) throws Exception {
+//		
+//		RestResult<Object> rtn = new RestResult<Object>();
+//		try {
+//			signUpSvc.insertSignUp(params);
+//			rtn.setSuccess(true);
+//		} catch (Exception e) {
+//			rtn.setSuccess(false);
+//			rtn.setMessage("회원 가입에 실패하였습니다.");
+//			log.error("{} Error : {}", this.getClass(), e);
+//		}
+//		return rtn;
+//	}
 	@PostMapping("/insertSignUp")
-	public RestResult<?> insertSignUp(@RequestBody Map<String, Object> params) throws Exception {
+	public RestResult<?> insertSignUp(
+			@RequestParam(required=true) String loginId,
+			@RequestParam(required=true) String password,
+			@RequestParam(required=true) String smsCertifyYn,
+			@RequestParam(required=true) String phoneCerti,
+			@RequestParam(required=true) String regno,
+			@RequestParam(required=true) String custNo,
+			@RequestParam(required=true) String corpNm,
+			@RequestParam(required=true) String ceoNm,
+			@RequestParam(required=true) String busiType,
+			@RequestParam(required=true) String busiClass,
+			@RequestParam(required=true) String zipCode,
+			@RequestParam(required=true) String woplaceAddress,
+			@RequestParam(required=true) String woplaceAddressDetail,
+			@RequestParam(required=false) String wireTel,
+			@RequestParam(required=true) MultipartFile attachFile,
+			@RequestParam(required=true) String domainName
+			
+			) throws Exception {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("loginId", loginId);
+		paramMap.put("password", password);
+		paramMap.put("smsCertifyYn", smsCertifyYn);
+		paramMap.put("phoneCerti", phoneCerti);
+		paramMap.put("regno", regno);
+		paramMap.put("custNo", custNo);
+		paramMap.put("ceoNm", ceoNm);
+		paramMap.put("busiType", busiType);
+		paramMap.put("busiClass", busiClass);
+		paramMap.put("zipCode", zipCode);
+		paramMap.put("woplaceAddress", woplaceAddress);
+		paramMap.put("woplaceAddressDetail", woplaceAddressDetail);
+		paramMap.put("wireTel", wireTel);
+		paramMap.put("attachFile", attachFile);
+		paramMap.put("domainName", domainName);
 		try {
-			signUpSvc.insertSignUp(params);
+			signUpSvc.insertSignUp(paramMap);
 			rtn.setSuccess(true);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
@@ -397,19 +447,59 @@ public class SignUpController {
 		return rtn;
 	}
 	
+	/**
+	 * 사업자 번호로 고객사 리스트 조회
+	 * @param params
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
 	@PostMapping("/selectCorpCustList")
 	public RestResult<?> selectCorpCustList(
 			@RequestBody Map<String, Object> params){
 		RestResult<Object> rtn = new RestResult<Object>();
 
-		return signUpSvc.selectCorpCustList(params);
+		try {
+			rtn = (RestResult<Object>) signUpSvc.selectCorpCustList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
 	}
+	
+	/**
+	 * 선택한 고객 정보
+	 * @param params
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
 	@PostMapping("/selectSelCorpCustInfo")
 	public RestResult<?> selectSelCorpCustInfo(
 			@RequestBody Map<String, Object> params){
 		RestResult<Object> rtn = new RestResult<Object>();
 		
-		return signUpSvc.selectSelCorpCustInfo(params);
+		try {
+			rtn = (RestResult<Object>) signUpSvc.selectSelCorpCustInfo(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping("/selectCustAddr")
+	public RestResult<?> selectCustAddr(
+			@RequestBody Map<String, Object> params){
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		try {
+			rtn = (RestResult<Object>) signUpSvc.selectCustAddr(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
 	}
 }
  

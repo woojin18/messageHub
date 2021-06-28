@@ -132,7 +132,9 @@ export default {
 			myHeaderWrap.setAttribute('style', '');
 		},
 		fnMyPage(){
-			var params = {};
+			var params = {
+				userId : tokenSvc.getToken().principal.userId
+			};
 			myPageApi.selectMemberInfo(params).then(response => {
 				var result = response.data.data;
 				this.memberInfo = result;

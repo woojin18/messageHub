@@ -51,6 +51,10 @@ const selectSelCorpCustInfo = (params) => {
 const getNiceCheckInfo = (params) => {
     return httpClient.post('/api/public/signUp/getNiceCheckInfo', { headers: {"show-layer": "Yes"} });
 }
+
+const selectCustAddr = (params) => {
+    return httpClient.post("/api/public/signUp/selectCustAddr", params, { headers: {"show-layer": "Yes"}});
+}
 export default {
     signUpRedirect,
     domainChk,
@@ -64,5 +68,6 @@ export default {
     getNiceCheckFail,
     selectCorpCustList,
     selectSelCorpCustInfo,
-    getNiceCheckInfo
+    getNiceCheckInfo,
+    selectCustAddr
 };

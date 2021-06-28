@@ -94,6 +94,7 @@
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import myPageApi from '@/modules/myPage/service/myPageApi';
+import tokenSvc from '@/common/token-service';
 
 export default {
   name: 'corpInfoPopup',
@@ -191,7 +192,8 @@ export default {
           busiclass : this.busiclass,
           woplaceAddress : this.woplaceAddress,
           woplaceAddressDetail : this.woplaceAddressDetail,
-          wireTel : this.wireTel
+          wireTel : this.wireTel,
+          userId : tokenSvc.getToken().principal.userId
         }
 
         myPageApi.saveCorpInfo(params).then(response =>{
