@@ -1,9 +1,6 @@
 <template>
-	<div>
+	<div class="mt20">
 		<article>
-			<div class="contentHeader mb20">
-				<h2>이용내역</h2>
-			</div>
 			<div class="menuBox">
 				<div class="row">
 					<div class="col-xs-6 text-center">

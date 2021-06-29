@@ -1,9 +1,6 @@
 <template>
-	<div>
+	<div class="mt20">
 		<article>
-			<div class="contentHeader">
-				<h2>서비스 요금</h2>
-			</div>
 			<table class="table_skin1 dataTable">
 				<colgroup>
 					<col style="width:10%">

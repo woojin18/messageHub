@@ -1,9 +1,6 @@
 <template>
-	<div>
+	<div class="mt20">
 		<article>
-			<div class="contentHeader">
-				<h2>이용현황</h2>
-			</div>
 			<div class="row">
 				<div class="col-xs-6">
 					<h4 class="topH4">이용건수추이 (최근 6개월)</h4>
