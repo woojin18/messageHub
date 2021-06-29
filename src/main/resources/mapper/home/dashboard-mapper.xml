@@ -98,7 +98,7 @@
 				<if test="projectId != '' and projectId != null">
 				AND PROJECT_ID = #{projectId}
 				</if>
-				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				GROUP BY CH
 			) B ON A.CH = B.CH
 			UNION ALL
@@ -130,7 +130,7 @@
 				<if test="projectId != '' and projectId != null">
 				AND PROJECT_ID = #{projectId}
 				</if>
-				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				GROUP BY CH
 			) B ON A.CH = B.CH
 			UNION ALL
@@ -162,7 +162,7 @@
 				<if test="projectId != '' and projectId != null">
 				AND PROJECT_ID = #{projectId}
 				</if>
-				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				GROUP BY CH
 			) B ON A.CH = B.CH
 			UNION ALL
@@ -194,7 +194,7 @@
 				<if test="projectId != '' and projectId != null">
 				AND PROJECT_ID = #{projectId}
 				</if>
-				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				GROUP BY CH
 			) B ON A.CH = B.CH
 			UNION ALL
@@ -226,7 +226,7 @@
 				<if test="projectId != '' and projectId != null">
 				AND PROJECT_ID = #{projectId}
 				</if>
-				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				GROUP BY CH
 			) B ON A.CH = B.CH
 			UNION ALL
@@ -258,7 +258,7 @@
 				<if test="projectId != '' and projectId != null">
 				AND PROJECT_ID = #{projectId}
 				</if>
-				AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				GROUP BY CH
 			) B ON A.CH = B.CH
 		) TOT
@@ -293,7 +293,7 @@
 			<if test="projectId != '' and projectId != null">
 			AND PROJECT_ID = #{projectId}
 			</if>
-			AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+			AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 			AND CH = #{channel}
 			GROUP BY YMD
 		) CSCD ON AD.DATE = CSCD.YMD
@@ -311,7 +311,7 @@
 		<if test="projectId != '' and projectId != null">
 		AND PROJECT_ID = #{projectId}
 		</if>
-		AND YMD between DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+		AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 		AND CH = #{channel}
 		GROUP BY RESULT_CODE
 	</select>
@@ -333,7 +333,7 @@
 				    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
 				    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
 				) A
-				WHERE A.DATE BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				WHERE A.DATE BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 			) AD
 			LEFT OUTER JOIN (
 				SELECT 
@@ -348,7 +348,7 @@
 				AND PROJECT_ID = #{projectId}
 				</if>
 				AND RESULT_CODE = #{resultCode}
-				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') and DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				AND CH = #{channel}
 				GROUP BY CH, YMD
 			) CSRD ON AD.DATE = CSRD.YMD
