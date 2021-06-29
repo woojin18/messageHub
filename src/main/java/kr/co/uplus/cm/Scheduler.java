@@ -13,7 +13,7 @@ public class Scheduler {
 	private AuthService authService;
 	
 	/**
-	 * 한시간씩 권한정보를 업데이트 한다. 
+	 * 10분 단위로 권한정보를 업데이트 한다. 
 	 */
 	@Scheduled(initialDelay = 600000, fixedRate = 600000)
 	public void initRole() {
