@@ -586,9 +586,9 @@ public class ChannelService {
 			// API 통신 처리
 			Map<String, Object> result =  apiInterface.listPost("/console/v1/brand/", list, headerMap);
 			
-			System.out.println("-------------------------------------------@@@ result : " + result);
-			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
-			System.out.println("-------------------------------------------@@@ list : " + list);
+//			System.out.println("-------------------------------------------@@@ result : " + result);
+//			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
+//			System.out.println("-------------------------------------------@@@ list : " + list);
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("rslt")) ) {
 			} else if ( "500100".equals(result.get("rslt")) ) {
@@ -922,5 +922,56 @@ public class ChannelService {
 			
 			generalDao.deleteGernal(DB.QRY_DELETE_MO_CALLBACK, params);
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public RestResult<?> getKkoCategory(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		Map<String, Object> getHeaderMap = new HashMap<String, Object>();
+		
+		rtn.setData(apiInterface.post("/console/v1/kko/senderkey/category/all", getHeaderMap));
+		
+		return rtn;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public RestResult<?> selectKkoCh(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
+		List<Object> list = generalDao.selectGernalList("channel.selectKkoCh", params);
+		
+		if (pageInfo != null && !pageInfo.isEmpty()) {
+			int rowNum = list.size();
+			pageInfo.put("rowNum", rowNum);
+			
+			rtn.setPageInfo(pageInfo);
+		}
+		
+				
+		rtn.setData(list);
+		
+		return rtn;
+	}
+
+	@SuppressWarnings("unchecked")
+	public RestResult<?> selectKkoChGroup(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
+		List<Object> list = generalDao.selectGernalList("channel.selectKkoChGroup", params);
+		
+		if (pageInfo != null && !pageInfo.isEmpty()) {
+			int rowNum = list.size();
+			pageInfo.put("rowNum", rowNum);
+			
+			rtn.setPageInfo(pageInfo);
+		}
+		
+				
+		rtn.setData(list);
+		
+		return rtn;
 	}
 }

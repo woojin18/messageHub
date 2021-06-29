@@ -25,7 +25,6 @@
         </div>	
         <div class="col-xs-6 text-center" style="padding: 2.5% 0">	
           <a @click="fnTossPay" class="btnStyle1">캐시 충전</a>
-          <a @click="fnSearchCash" class="btnStyle1">캐시 새로고침</a>
         </div>
       </div>
     </div>

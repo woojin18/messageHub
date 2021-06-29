@@ -134,11 +134,11 @@ public class CashService {
 		Map<String, Object> card		= (Map<String, Object>) postResult.get("card");
 		
 		Map<String, Object> updateMap = new HashMap<>();
-		updateMap.put("orderId"			, CommonUtils.getString(card.get("orderId")));
-		updateMap.put("approvalNumber"	, CommonUtils.getString(card.get("paymentKey")));	//승인번호
-		updateMap.put("cardCompany"		, CommonUtils.getString(card.get("company")));		//카드사
-		updateMap.put("receiptUrl"		, CommonUtils.getString(card.get("receiptUrl")));	//영수증 링크
-		updateMap.put("status"			, "1");												//상태
+		updateMap.put("orderId"			, CommonUtils.getString(postResult.get("orderId")));
+		updateMap.put("approvalNumber"	, CommonUtils.getString(postResult.get("paymentKey")));	//승인번호
+		updateMap.put("cardCompany"		, CommonUtils.getString(card.get("company")));			//카드사
+		updateMap.put("receiptUrl"		, CommonUtils.getString(card.get("receiptUrl")));		//영수증 링크
+		updateMap.put("status"			, "1");													//상태
 		
 		generalDao.updateGernal(DB.QRY_UPDATE_WEB_CASH_INFO, updateMap);
 		
@@ -229,7 +229,7 @@ public class CashService {
 		eventCashBalance = Integer.parseInt(CommonUtils.getString(generalDao.selectGernalObject("cash.selectEventCashBalance", params)));
 		
 		Map<String, Object> cashMap = new HashMap<>();
-		
+		 
 		cashMap.put("cashBalance", cashBalance);
 		cashMap.put("eventCashBalance", eventCashBalance);
 		cashMap.put("balance", cashBalance + eventCashBalance);

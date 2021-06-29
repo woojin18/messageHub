@@ -229,4 +229,14 @@ public class ProjectController {
 				HttpServletResponse response) {
 		return projectService.saveDisRatio(params);
     }
+	
+	//분배서비스 등록/수정
+	@PostMapping("/selectBillIdForApi")
+	public RestResult<?> selectBillIdForApi(
+				@RequestBody Map<String, Object> params,
+				HttpServletRequest request,
+				HttpServletResponse response) {
+		return projectService.selectBillIdForApi(params);
+    }
+	
 }

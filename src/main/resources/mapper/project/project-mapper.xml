@@ -73,9 +73,13 @@
 		,	SUBBILL_YN
 		,	SUBBILL_START_DAY
 		,	NOPAY_YN
+		,	REG_ID
 		,	REG_DT
+		,	MOD_ID
+		,	MOD_DT
 		,	USE_YN
 		,	DEL_YN
+		,	SERVICE_ID
 		)
 		VALUES
 		(
@@ -91,9 +95,13 @@
 		,	#{subbillYn}
 		,	REPLACE(#{subbillStartDay}, '-', '')
 		,	'N'
+		,	#{userId}
+		,	NOW()
+		,	#{userId}
 		,	NOW()
 		,	#{useYn}
 		,	'N'
+		,	#{serviceId}
 		)
 	</insert>
 	
@@ -435,4 +443,45 @@
 		,	NOW()
 		)
 	</insert>
+	
+	<select id="selectCmUcubeDupllicate" resultType="int">
+		/* project.selectCmUcubeDupllicate */
+		SELECT	COUNT(CORP_ID) AS CNT
+		FROM	cm_console.CM_UCUBE
+		WHERE	CORP_ID = #{corpId}
+		AND		BILL_ID = #{billId}
+	</select>
+	
+	<insert id="insertProjectCmUcube">
+		/* project.insertProjectCmUcube */
+		INSERT	cm_console.CM_UCUBE
+		(
+			CORP_ID
+		,	BILL_ID
+		,	UCUBE_INFO
+		,	REG_DT
+		)
+		VALUSE
+		(
+			#{corpId}
+		,	#{billId}
+		,	UCUBE_INFO
+		,	NOW()
+		)
+	</insert>
+	
+	<select id="selectCustNoForSaveProject" resultType="String">
+		/* project.selectCustNoForSaveProject */
+		SELECT	CUST_NO
+		FROM	cm_console.CM_CORP
+		WHERE	CORP_ID = #{corpId}
+	</select>
+	
+	<select id="selectRegNoForSaveProject" resultType="String">
+		/* project.selectRegNoForSaveProject */
+		SELECT	REGNO
+		FROM	cm_console.CM_CORP
+		WHERE	CORP_ID = #{corpId}
+	</select>
+	
 </mapper>

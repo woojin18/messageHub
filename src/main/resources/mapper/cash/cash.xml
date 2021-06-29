@@ -64,6 +64,7 @@
 				,		'-'					AS EVENT_DT
 				FROM	cm_console.CM_WEB_CASH_HIST
 				WHERE	STATUS = '1'
+				AND		CORP_ID = #{corpId}
 				UNION ALL
 				SELECT	cch.AMOUNT
 				,		'이벤트캐시'
@@ -76,6 +77,8 @@
 					FROM	cm.CM_CASH_HIST
 					GROUP BY CORP_ID, CASH_ID
 				) cch
+				WHERE	cc.CORP_ID = #{corpId}
+				AND		cc.CASH_TYPE = 'E'
 		) AA
 	</select>
 	
@@ -89,7 +92,9 @@
 		FROM	cm_console.CM_WEB_CASH_HIST
 		WHERE	STATUS = '1'
 		AND		CORP_ID = #{corpId}
+		
 		UNION ALL
+		
 		SELECT	cch.AMOUNT
 		,		'이벤트캐시'
 		,		'이벤트캐시'
@@ -106,16 +111,19 @@
 			ON	cc.CORP_ID = cch.CORP_ID
 			AND	cc.CASH_ID = cch.CASH_ID
 		WHERE	cc.CORP_ID = #{corpId}
-		ORDER BY REG_DT
+		AND		cc.CASH_TYPE = 'E'
+		ORDER BY REG_DT DESC
 	</select>
 	
 	<select id="selectUcubeInfo" resultType="camel">
 		/* cash.selectUcubeInfo */
-		SELECT	BILL_ID
-		,		JSON_EXTRACT(UCUBE_INFO, '$.a')	AS A
-		,		DATE_FORMAT(REG_DT, '%Y-%m-%d')	AS REG_DT
-		FROM	cm_console.CM_UCUBE
-		WHERE	CORP_ID = #{corpId}
+		SELECT	DISTINCT cp.SERVICE_ID AS A
+		,		cu.BILL_ID
+		,		DATE_FORMAT(cu.REG_DT, '%Y-%m-%d')	AS REG_DT
+		FROM cm_console.CM_PROJECT cp 
+		INNER JOIN cm_console.CM_UCUBE cu 
+			ON cp.BILL_ID = cu.BILL_ID 
+		WHERE	cp.CORP_ID = #{corpId}
 	</select>
 	
 	<select id="selectProjectInfoCnt" resultType="int">

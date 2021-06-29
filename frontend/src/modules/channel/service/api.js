@@ -48,6 +48,19 @@ const saveMoCallback = (params) => {
     return httpClient.post('/projectApi/channel/saveMoCallback', params, { headers: { "show-layer": "Yes", "activity":"SAVE"} });
 };
 
+const getKkoCategory = (params) => {
+    return httpClient.post('/projectApi/channel/getKkoCategory', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
+const selectKkoCh = (params) => {
+    return httpClient.post('/projectApi/channel/selectKkoCh', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
+const selectKkoChGroup = (params) => {
+    return httpClient.post('/projectApi/channel/selectKkoChGroup', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
+
 export default {
     selectRcsBrandList,
     selectRcsRegTmpltList,
@@ -60,5 +73,8 @@ export default {
     deletePushManage,
     selectRcsBrandMsgBaseList,
     selectMoCallbackList,
-    saveMoCallback
+    saveMoCallback,
+    getKkoCategory,
+    selectKkoCh,
+    selectKkoChGroup
 };

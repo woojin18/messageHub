@@ -21,8 +21,8 @@
           </thead>
           <tbody>
             <tr v-for="(data, index) in ucubeData" :key="index">
-              <td class="text-center">{{data.billId}}</td>
               <td class="text-center">{{data.a}}</td>
+              <td class="text-center">{{data.billId}}</td>
               <td class="text-center end">{{data.regDt}}</td>
             </tr>	
           </tbody>

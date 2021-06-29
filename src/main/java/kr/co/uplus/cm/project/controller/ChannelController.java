@@ -390,4 +390,25 @@ public class ChannelController {
 		}
 		return rtn;
 	}
+	
+	@PostMapping("/getKkoCategory")
+	public RestResult<?> getKkoCategory(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		return channelService.getKkoCategory(params);
+	}
+	
+	@PostMapping("/selectKkoCh")
+	public RestResult<?> selectKkoCh(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		return channelService.selectKkoCh(params);
+	}
+	
+	@PostMapping("/selectKkoChGroup")
+	public RestResult<?> selectKkoChGroup(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		return channelService.selectKkoChGroup(params);
+	}
+	
 }

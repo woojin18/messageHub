@@ -107,13 +107,101 @@ public class ProjectService {
 		// 사용자 세션
 		Map<String, Object> userMap = (Map<String, Object>) params.get("userDto");
 		params.put("userId", userMap.get("userId"));
+		String corpId = CommonUtils.getString(params.get("corpId"));
 
 		if ("C".equals(sts)) {
 			// 프로젝트 ID
 			params.put("projectId", CommonUtils.getCommonId("PJT", 4));
-			
-			// 고객사가 개발이 안되서 임시로 고객사 코드 입력
-			params.put("corpId", userMap.get("corpId"));
+			// 후불의 경우 청구ID 관리
+			if ("N".equals(CommonUtils.getString(params.get("payType")))) {
+				// 고객번호 가져오기
+				String custNo	= CommonUtils.getString(generalDao.selectGernalObject("project.selectCustNoForSaveProject", params));
+				String regNo	= CommonUtils.getString(generalDao.selectGernalObject("project.selectRegNoForSaveProject", params));
+				String billId	= CommonUtils.getString(params.get("billId"));
+				
+				// 청구아이디 신규 등록해야할 때
+				if( "".equals(billId) ) {
+					// 아무튼 api
+				}
+				
+				// 리스트 재조회해서 가져오기
+				Map<String, Object> getHeaderMap = new HashMap<String, Object>();
+				
+				List<Map<String, Object>> resultLists = (List<Map<String, Object>>) ((Map<String, Object>) apiInterface.get("/console/v1/ucube/bill/custList?mode=C&custNo=" + custNo, getHeaderMap).get("data")).get("resultList");
+				
+				System.out.println("------------------------------------------------@@ resultLists : " + resultLists);
+				
+				Map<String, Object> billDataMap = new HashMap<>();
+				for( int i = 0; i < resultLists.size(); i++ ) {
+					if( billId.equals(resultLists.get(i).get("billAcntNo")) ) {
+						billDataMap = resultLists.get(i);
+					}
+				}
+				
+				System.out.println("-------------------------------------------------@@ billDataMap :" + billDataMap);
+				// CM_UCUBE 조회해서 없으면 인서트 처리
+				Map<String, Object> ucubeBillInfoVo = new HashMap<>();
+				
+				ucubeBillInfoVo.put("billAcntNo",	billDataMap.get("billAcntNo"));
+				ucubeBillInfoVo.put("billEmail",	billDataMap.get("billEmailAddr"));
+				ucubeBillInfoVo.put("billKind",		"N");	// Y 이메일 N 우편
+				ucubeBillInfoVo.put("billRegNo",	regNo);
+				ucubeBillInfoVo.put("billZip",		billDataMap.get("custAddrZip"));
+				ucubeBillInfoVo.put("billJuso",		billDataMap.get("custVilgAddr"));
+				ucubeBillInfoVo.put("billJuso2",	billDataMap.get("custVilgAddr"));
+				
+				Map<String, Object> ucubePymInfoVO = new HashMap<>();
+				// 납부자고객구분코드(II:개인, GC:일반법인, GD:상장법인, EX:개인사업자, GG:LG그룺 관계사, GH:유한회사, GJ:합자회사, GL:LGT사업자용, 
+				// GM:장애인_국가유공단체, GN:LGT 인정법인, GO:합명회사, GP:공공기관, GR:로밍용, GS:주주사, GU:특수학교, GV:아동복지시설)
+				ucubePymInfoVO.put("napCustKdCd",	"GC");
+				ucubePymInfoVO.put("napCmpNm",		billDataMap.get("custNm"));
+				ucubePymInfoVO.put("napJumin",		regNo);
+				
+				// UCUBE 서비스 등록 API
+				Map<String, Object> ucubeServiceMap = new HashMap<>();
+				
+				ucubeServiceMap.put("ucubeBillInfoVo",	ucubeBillInfoVo);
+				ucubeServiceMap.put("ucubePymInfoVO",	ucubePymInfoVO);
+				
+				ucubeServiceMap.put("custNo",		billDataMap.get("custNo"));
+				ucubeServiceMap.put("logid",		billDataMap.get("logid"));
+				ucubeServiceMap.put("indcId",		billDataMap.get("indcId"));
+				ucubeServiceMap.put("mngrId",		billDataMap.get("mngrId"));
+				ucubeServiceMap.put("rcsCode",		billDataMap.get("rcsCode"));
+				ucubeServiceMap.put("rcsMeta",		billDataMap.get("rcsMeta"));
+				ucubeServiceMap.put("rcsAdd1Meta",	billDataMap.get("napCustKdCd"));
+				ucubeServiceMap.put("rcsAdd2Meta",	billDataMap.get("napCustKdCd"));
+				ucubeServiceMap.put("rcsAdd3Meta",	billDataMap.get("napCustKdCd"));
+				ucubeServiceMap.put("rcsAdd4Meta",	billDataMap.get("napCustKdCd"));
+				
+				// API 통신처리
+				Map<String, Object> result =  apiInterface.post("/console/v1/ucube/service/join", ucubeServiceMap, null);
+				String serviceId = "";
+				
+				if( "10000".equals(result.get("rslt")) ) {
+					serviceId = CommonUtils.getString((Map<String, Object>)((Map<String, Object>)result.get("data")).get("serviceId"));
+				} else if ( "500100".equals(result.get("rslt")) ) {
+					String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+					throw new Exception(errMsg);
+				} else {
+					String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+					throw new Exception(errMsg);
+				}
+				
+				params.put("serviceId", serviceId);
+				
+				// 존재하는지 조회
+				int cmUcubeDupllicate = generalDao.selectGernalCount("project.selectCmUcubeDupllicate", params);
+				if( cmUcubeDupllicate == 0 ) {
+					Map<String, Object> insertProjectCmUcubeSaveMap = new HashMap<>();
+					insertProjectCmUcubeSaveMap.put("corpId", corpId);
+					insertProjectCmUcubeSaveMap.put("billId", billId);
+					insertProjectCmUcubeSaveMap.put("ucubeInfo", ucubeServiceMap);
+					
+					generalDao.insertGernal("project.insertProjectCmUcube", insertProjectCmUcubeSaveMap);
+				}
+				
+			}
 
 			// 사용체널 JSON 값 처리
 			String jsonInfo = "";
@@ -132,21 +220,13 @@ public class ProjectService {
 			generalDao.insertGernal("project.insertProject", params);
 
 			// -------------------------------------------------------------------------------------------------------------------------------------
-			// 프로젝트 멤버 추가 처리, OWNER 권한자는 무조건 추가 처리되야함
+			// 프로젝트 멤버 추가 처리
 			// 사용자 세션의 권한을 체크해서 OWNER 일경우 OWNER 유저 입력 처리 안하도록 처리 
 			if( !"OWNER".equals(params.get("ROLE_CD")) ) {
 				// 사용자 기본 멤버로 추가
 				generalDao.insertGernal("project.insertProjectUser", params);
 			}
 			// -------------------------------------------------------------------------------------------------------------------------------------
-
-			// API관리키 관리 insert ==> 기본 입력 안되기로 처리
-			
-			// -------------------------------------------------------------------------------------------------------------------------------------
-			// 후불의 경우 청구ID 관리 ? ==> API 미개발
-//			if ("N".equals(CommonUtils.getString(params.get("pay_type")))) {
-//				generalDao.updateGernal("project.updateProjectBillId", params);
-//			}
 			
 		} else if ("U".equals(sts)) {
 			// 사용체널 JSON 값 처리
@@ -540,6 +620,29 @@ public class ProjectService {
 			rtn.setMessage("저장에 실패하였습니다.");
 		}
 
+		return rtn;
+	}
+
+	@SuppressWarnings("unchecked")
+	public RestResult<?> selectBillIdForApi(Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		// 추후 가져오는 쪽 작업해야하ㅣㅁ
+		String custNo = "1008105145";
+		
+		Map<String, Object> getHeaderMap = new HashMap<String, Object>();
+		
+		Map<String, Object> result = apiInterface.get("/console/v1/ucube/bill/custList?mode=C&custNo=" + custNo, getHeaderMap);
+		
+		
+		if( "10000".equals(result.get("rslt")) ) {
+			result.put("billDataList", ((Map<String, Object>)result.get("data")).get("resultList"));
+		} else {
+			result.put("billDataList", null);
+		}
+		
+		rtn.setData(result.get("data"));
+		
 		return rtn;
 	}
 }

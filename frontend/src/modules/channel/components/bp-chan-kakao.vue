@@ -1,5 +1,5 @@
 <template>
-	<div id="regPopup" class="modal fade modalStyle" tabindex="-1" role="dialog" aria-hidden="true" @click="fnClose">
+	<div id="regPopup" class="modal fade modalStyle" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -18,14 +18,10 @@
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block float-left" style="width:25%">사업자 카테고리</h5>
 								<div class="float-right" style="width:72%">
-									<select name="admin030404_3" class="selectStyle2" style="width:70%">
-										<option value="">대분류</option>
-									</select>
-									<select name="admin030404_4" class="selectStyle2 consolMarginTop" style="width:70%">
-										<option value="">중분류</option>
-									</select>
-									<select name="admin030404_5" class="selectStyle2 consolMarginTop" style="width:70%">
-										<option value="">소분류</option>
+									<select class="selectStyle2" style="width:72%" >
+										<option v-for="(option, i) in category" v-bind:value="option.code" v-bind:key="i">
+											{{ option.name }}
+										</option>
 									</select>
 								</div>
 							</div>
@@ -51,22 +47,42 @@
 </template>
 
 <script>
-import rcsApi from '../service/api'
+import api from '../service/api'
+import confirm from "@/modules/commonUtil/service/confirm"
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
+
 
 export default {
   name: 'bpChanKakao',
   data() {
     return {
+		phoneNumber : '',
+		category : []
     }
   },
   mounted() {
-    var vm = this;
+    this.fnGetKkoCategory();
   },
   methods: {
     // 닫기
     fnClose(){
       jQuery("#regPopup").modal('hide');
-    }
+    },
+	// API 중복확인 및 상세정보 가져오기
+	fnGetKkoCategory(){
+		var params = {};
+		api.getKkoCategory(params).then(response =>{
+			var result = response.data;
+
+console.log(result.data);
+
+			/* if( response.success ){ */
+				this.category = result.data.data;
+			/* } else {
+				confirm.fnAlert("", "카테고리 불러오기에 실패했습니다.");
+			} */
+		});
+	},
   }
 }
 </script>

@@ -24,8 +24,16 @@
 							</div>
 							<div class="mt30 of_h">
 								<h4 class="font-normal inline-block float-left mt5" style="width:20%">결재조건 *</h4>
-								<input type="radio" name="payType" value="Y" class="cBox" id="payment01" :disabled="this.save_status != 'C'"> <label for="payment01" class="payment mr30 font-size12">선불</label>
-								<input type="radio" name="payType" value="N" class="cBox" id="payment02" :disabled="this.save_status != 'C'"> <label for="payment02" class="payment font-size12">후불</label>								
+								<input @click="fnSelectBillIdForApi('Y')" type="radio" name="payType" value="Y" class="cBox" id="payment01" :disabled="this.save_status != 'C'"> <label for="payment01" class="payment mr30 font-size12">선불</label>
+								<input @click="fnSelectBillIdForApi('N')" type="radio" name="payType" value="N" class="cBox" id="payment02" :disabled="this.save_status != 'C'"> <label for="payment02" class="payment font-size12">후불</label>								
+							</div>
+              <div class="mt30 of_h" v-if=" this.payTypeForDIv === 'N' ">
+								<h4 class="font-normal inline-block float-left mt5" style="width:20%">청구번호 *</h4>
+                <select class="selectStyle2" style="width:72%" v-model="this.billId">
+                  <option v-for="(option, i) in resultList" v-bind:value="option.billAcntNo" v-bind:key="i">
+                    {{ option.custNm }}({{ option.billAcntNo }})
+                  </option>
+                </select>
 							</div>
 							<p class="mt10 lc-1 font-size12 color3" style="margin-left:20%">프로젝트별 결제조건(선/후불)을 선택할 수 있으며, 프로젝트 등록 후 선택된 <br>결제조건은 변경이 불가합니다.</p>
 							<div class="mt30 of_h">
@@ -123,7 +131,13 @@ import Calendar from "@/components/Calendar.vue";
 import confirm from "@/modules/commonUtil/service/confirm"
 
 export default {
-  name: 'MenuManagePopup',
+  data() {
+    return {
+      resultList : [],
+      billId : '',
+      payTypeForDIv : 'Y'
+    }
+  },
   components: {
     Calendar
   },
@@ -159,6 +173,8 @@ export default {
         jQuery("#projectName").val(this.row_data.projectName);
         jQuery("#projectDesc").val(this.row_data.projectDesc);
         jQuery('input:radio[name=payType]:input[value="' + this.row_data.payType + '"]').prop("checked", true);
+        this.fnSelectBillIdForApi(this.row_data.payType);
+
         jQuery('input:radio[name=useYn]:input[value="' + this.row_data.useYn + '"]').prop("checked", true);
 
         jQuery("#resendTitle").val(this.row_data.resendTitle);
@@ -191,6 +207,28 @@ export default {
         jQuery("#subbillStartDay").prop("disabled", false);
       }
     },
+    fnSelectBillIdForApi(payType){
+
+      this.payTypeForDIv = payType;
+
+      var params = {
+      };
+
+      projectApi.selectBillIdForApi(params).then(response =>{
+        var result = response.data;
+        console.log(response);
+        console.log(response.data.data.resultList);
+        if(result.success) {
+          this.resultList = response.data.data.resultList;
+
+          if(this.save_status === 'C'){
+            this.billId = response.data.data.resultList[0].billAcntNo;
+          } else {
+            this.billId = this.row_data.billId;
+          }
+        }
+      });
+    },
     // 등록, 수정
     fnSave(){
       var params = {
@@ -198,6 +236,7 @@ export default {
           "projectName"    : jQuery("#projectName").val(),
           "projectDesc"    : jQuery("#projectDesc").val(),
           "payType"        : jQuery("input[name='payType']:checked").val(),
+          "billId"         : this.billId,
           "useYn"          : jQuery("input[name='useYn']:checked").val(),
           "resendTitle"    : jQuery("#resendTitle").val(),
           "subbillYn"      : jQuery("input[name='subbillYn']:checked").val(),

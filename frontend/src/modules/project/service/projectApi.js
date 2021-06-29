@@ -52,6 +52,11 @@ const selectDisRatio= (params) => {
     return httpClient.post('/projectApi/manage/selectDisRatio', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
+const selectBillIdForApi = (params) => {
+    return httpClient.post('/projectApi/manage/selectBillIdForApi', params, { headers: { "show-layer": "Yes", "activity": "READ" } });
+};
+
+
 export default {
     selectProjectList,
     checkProjectNameDuplicate,
@@ -66,4 +71,5 @@ export default {
     saveDisRatio,
     selectBasicDisRatio,
     selectDisRatio,
+    selectBillIdForApi
 };
