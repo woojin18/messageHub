@@ -9,7 +9,7 @@
 						<div class="row">
 							<div class="col-xs-12 consoleCon">				
 								<div class="of_h">
-									<h4 class="inline-block" style="width:22%">브랜드명</h4>				
+									<h5 class="inline-block" style="width:22%">브랜드명</h5>
 									<div class="float-right" style="width:76%">
                   <select id="cate1" class="selectStyle2" style="width:100%" v-model="brandId">
                     <option v-for="(option, i) in brandList" v-bind:value="option.brandId" v-bind:key="i">
@@ -20,7 +20,7 @@
 									</div>
 								</div>
                 <div class="of_h consolMarginTop">
-                  <h4 class="inline-block" style="width:22%">추가발신번호</h4>
+                  <h5 class="inline-block" style="width:22%">추가발신번호</h5>
                   <div class="float-right" style="width:76%">
                     <p class="txtCaption color3">대표번호문자수신서비스(MO)를 사용하실 경우 MO체크박스에 체크해주세요.</p>
                     <table class="table_skin1 consolMarginTop" style="width:100%">
@@ -56,7 +56,7 @@
                   </div>	
                 </div>
 								<div class="of_h consolMarginTop">
-									<h4 class="inline-block vertical-middle" style="width:22%">통신서비스<br>가입증명원 *</h4>
+									<h5 class="inline-block vertical-middle" style="width:22%">통신서비스<br>가입증명원 *</h5>
 									<div class="float-right" style="width:76%">
 										<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:100%" ref="certiImgFile"/>
 									</div>
@@ -120,6 +120,7 @@ export default {
 
       projectApi.selectApprovalBrandList(params).then(response =>{
         this.brandList = response.data.data;
+        this.brandId = this.brandList[0].brandId;
       });
     },
     // 발신번호추가

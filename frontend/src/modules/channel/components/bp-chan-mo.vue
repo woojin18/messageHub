@@ -31,9 +31,9 @@
 					
 					</div>
 					<div class="text-center mt40">
-						<a v-if="this.save_status ==='C'" @click="fnSave("C")" class="btnStyle3 black font14" data-toggle="modal" activity="SAVE">토큰요청</a>
-            <a v-if="this.save_status ==='U'" @click="fnSave("U")" class="btnStyle3 black font14" data-toggle="modal" activity="SAVE">토큰수정요청</a>
-            <a v-if="this.save_status ==='U'" @click="fnSave("D")" class="btnStyle3 black font14" data-toggle="modal" activity="SAVE">토큰삭제요청</a>
+						<a v-if="this.save_status === 'C'" @click="fnSave('C')" class="btnStyle3 black font14" data-toggle="modal" activity="SAVE">토큰요청</a>
+            <a v-if="this.save_status === 'U'" @click="fnSave('U')" class="btnStyle3 black font14" data-toggle="modal" activity="SAVE">토큰수정요청</a>
+            <a v-if="this.save_status === 'U'" @click="fnSave('D')" class="btnStyle3 black font14" data-toggle="modal" activity="SAVE">토큰삭제요청</a>
 						<a @click="fnClose" ref="closeBtn" class="btnStyle3 white font14" data-dismiss="modal">취소</a>						
 					</div>
 				</div>

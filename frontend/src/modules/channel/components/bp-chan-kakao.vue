@@ -73,9 +73,6 @@ export default {
 		var params = {};
 		api.getKkoCategory(params).then(response =>{
 			var result = response.data;
-
-console.log(result.data);
-
 			/* if( response.success ){ */
 				this.category = result.data.data;
 			/* } else {
