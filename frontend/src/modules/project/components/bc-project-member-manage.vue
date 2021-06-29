@@ -18,7 +18,7 @@
 								<option value="USER">User</option>
 							</select>
 							<h4 class="inline-block ml30" style="width:3%">상태</h4>
-							<select id="selectApprovalStatus" class="selectStyle2" style="width:14%" title="상태 선택란">
+							<select v-model="searchData.approvalStatus" id="selectApprovalStatus" class="selectStyle2" style="width:14%" title="상태 선택란">
 								<option value="">전체</option>
 							</select>
 							<a @click="fnSearch()" class="btnStyle1 float-right" activity="READ" title="검색">검색</a>
