@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="rcsTemplateSend">
+	<select id="selectRcsBaseFormPop" resultType="hashMap">
+		/* rcsTemplateSend.selectRcsBaseFormPop */
+		SELECT	MESSAGEBASE_ID
+		,		CONCAT(TMPLT_NAME, '(', MESSAGEBASE_ID, ')') AS TMPLT_NAME
+		FROM	cm.CM_RCS_MSGBASE
+		WHERE	APPROVAL_STATUS IN ('승인', '반려(수정)')
+		AND		JSON_EXTRACT(MESSAGEBASE_INFO , '$.cardType') = #{cardType}
+		AND		BRAND_ID = #{brandId}
+		<if test="tmpltNm !='' and tmpltNm != null">
+		AND		TMPLT_NAME = #{tmpltNm}
+		</if>
+	</select>
+	
+	<select id="selectRcsMessageForm" resultType="hashMap">
+		/* rcsTemplateSend.selectRcsMessageForm */
+		SELECT	A.TMPLT_NAME
+		,		A.MESSAGEBASE_ID
+		,		B.FORM_NAME
+		,		A.MESSAGEBASE_INFO
+		FROM	cm.CM_RCS_MSGBASE A
+		INNER JOIN cm.CM_RCS_MSGBASEFORM B
+			ON	A.MESSAGEBASEFORM_ID = B.MESSAGEBASEFORM_ID
+		WHERE	A.MESSAGEBASE_ID = #{messagebaseId}
+	</select>
+</mapper>

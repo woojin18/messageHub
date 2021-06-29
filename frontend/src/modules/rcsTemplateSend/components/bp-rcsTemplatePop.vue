@@ -1,6 +1,6 @@
 <template>
     <div v-if="rcsTemplatePopOpen" @click.self="fnClose" class="modalStyle" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal fade modalStyle" id="Tamplet" tabindex="-1" role="dialog" aria-hidden="true">
+        <!--<div class="modal fade modalStyle" id="Tamplet" tabindex="-1" role="dialog" aria-hidden="true">-->
             <div class="modal-dialog" style="width:1120px">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -12,7 +12,7 @@
                                     <h4 class="consolMarginTop">브랜드</h4>
                                 </div>
                                 <div style="width:42%">
-                                    <select v-model="brandId" name="userConsole_sub020201_2" class="selectStyle2" style="width:53%">
+                                    <select @change="fnSearch" v-model="brandId" name="userConsole_sub020201_2" class="selectStyle2" style="width:53%">
                                         <option v-for="option in brandArr" v-bind:value="option.BRAND_ID">
                                             {{option.BRAND_NAME}}
                                         </option>
@@ -23,30 +23,20 @@
                                 <div class="col-xs-4 border-line2" style="height:569px; padding:30px">
                                     <h4 class="color000">템플릿 검색</h4>
                                     <div>
-                                        <input type="text" class="inputStyle" style="width:70%">
-                                        <a href="#self" class="btnStyle1 backLightGray float-right" title="메시지 내용 조회">조회</a>
+                                        <input v-model="tmpltNm" type="text" class="inputStyle" style="width:70%">
+                                        <a @click.prevent="fnSearch" href="#self" class="btnStyle1 backLightGray float-right" title="메시지 내용 조회">조회</a>
                                     </div>
                                     <div>
                                         <h4 class="inline-block">템플릿 이름(템플릿 ID)</h4>
-                                        <h4 class="color000 float-right">총 15건</h4>
+                                        <h4 class="color000 float-right">총 {{msgCnt}}건</h4>
                                     </div>
                                     <div class="border-line2" style="height:354px; overflow-y:scroll;">
                                         <ul class="color4">
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
-                                            <li class="bb-ddd pd5">가입안내(JOIN_INFO)</li>
+                                            <li v-for="content in messagebaseArr" class="bb-ddd pd5">
+                                                <a @click.prevent="fnTemplateContent(content.MESSAGEBASE_ID)" href="#">
+                                                    {{content.TMPLT_NAME}}
+                                                </a>
+                                            </li>
                                         </ul>									
                                     </div>
                                 </div>
@@ -54,45 +44,48 @@
                                 <div class="col-xs-4 of_h">
                                     <div class="of_h">
                                         <h5 style="width:22%" class="float-left ml30 color000">템플릿 명</h5>
-                                        <h5 style="width:59%" class="float-right color4 word-break-all">가입안내</h5>
+                                        <h5 style="width:59%" class="float-right color4 word-break-all">{{tmpltName}}</h5>
                                     </div>
                                     <div class="of_h">
                                         <h5 style="width:22%" class="float-left ml30 color000">템플릿 ID</h5>
-                                        <h5 style="width:59%" class="float-right color4 word-break-all">Temp0924203942304</h5>
+                                        <h5 style="width:59%" class="float-right color4 word-break-all">{{tmpltId}}</h5>
                                     </div>
                                     <div class="of_h">
                                         <h5 style="width:22%" class="float-left ml30 font-size14 color000">유형</h5>
-                                        <h5 style="width:59%" class="float-right color4 word-break-all">{{name}}입니다. {{date}} 할인/특가상품을 안내해드립니다.<br>본 알림은 {{name}} 회원전용 서비스입니다.</h5>
+                                        <h5 style="width:59%" class="float-right color4 word-break-all">{{formNm}}</h5>
                                     </div>
-                                    <div class="of_h">
-                                        <h5 style="width:22%" class="float-left ml30 color000">이미지</h5>
-                                        <h5 style="width:59%" class="float-right color4 word-break-all">
-                                            <select name="userConsole_sub020201_3" class="selectStyle2 vertical-middle" style="width:60%">
-                                                <option value="">선택하세요</option>
-                                            </select>
-                                            사이트 연결<br>http://sms.uplus.co.kr
-                                        </h5>
-                                    </div>						
+                                    <div v-if="templateRadioBtn=='des'" class="of_h">
+                                        <h5 style="width:22%" class="float-left ml30 font-size14 color000">내용</h5>
+                                        <h5 style="width:59%" class="float-right color4 word-break-all">{{desContent}}</h5>
+                                    </div>
+                                    <div v-if="templateRadioBtn=='cell'" class="of_h">
+                                        <h5 style="width:22%" class="float-left ml30 font-size14 color000">내용</h5>
+                                        <h5 style="width:59%" class="float-right color4 word-break-all"></h5>
+                                    </div>
+                                    <div v-for="n in btnCnt" class="of_h">
+                                        <h5 style="width:22%" class="float-left ml30 font-size14 color000">버튼{{n}}</h5>
+                                        <h5 style="width:59%" class="float-right color4 word-break-all">{{selectBtn[n-1]}}</h5>
+                                        <h5 style="width:59%" class="float-right color4 word-break-all">{{btnNm[n-1]}}</h5>
+                                    </div>					
                                 </div>
-
-
                                 <div class="col-xs-4">
                                     <div class="phoneWrap">
                                         <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
                                         <div class="phoneTextWrap">
-                                            <div class="phoneText1 scroll-y2">
-                                                <p>내용이 들어갑니다</p>
+                                            <div v-if="templateRadioBtn=='des'" class="phoneText1 scroll-y2">
+                                                <p>{{desContent}}</p>
+                                            </div>
+                                            <div v-if="templateRadioBtn=='cell'" class="phoneText1 scroll-y2">
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>						
                         </div>						
                         <div class="text-center">
-                            <a href="#self" class="btnStyle1 backBlack" data-toggle="modal" title="템플릿 선택">템플릿 선택</a>
-                            <a href="#self" class="btnStyle1 backWhite" data-dismiss="modal" title="취소">취소</a>						
+                            <a href="#self" @click.prevent="fnTemplateChoice" class="btnStyle1 backBlack" data-toggle="modal" title="템플릿 선택">템플릿 선택</a>
+                            <a href="#self" @click.prevent="fnClose" class="btnStyle1 backWhite" data-dismiss="modal" title="취소">취소</a>						
                         </div>
                     </div>
                 </div>
@@ -123,8 +116,24 @@ export default {
   },
   data() {
     return {
-        brandId : "",
-        brandArr : [],
+        brandId : "",               // 브랜드 ID
+        brandArr : [],              // 브랜드 Arr
+        messagebaseId : "",         // 템플릿 ID
+        messagebaseArr : [],        // 템플릿 Arr
+        msgCnt : 0,                 // 템플릿 개수
+        tmpltNm : "",               // 조회조건 템플릿 검색
+        tmpltName : "",             // 템플릿 명 View
+        tmpltId : "",               // 템플릿 ID
+        formNm : "",                // 유형
+        desContent : "",            // 서술형 내용
+        styleContentCnt: 0,			// 스타일형 inputLine count
+		styleArr: [],			    // 스타일형 inputLine input count
+		styleInput: [],				// 스타일형 첫 input
+		styleInputSec: [],			// 스타일형 두번째 input
+		styleChk: [],	            // 스타일형 lineChk
+        btnCnt: 0,			        // 버튼 개수
+        selectBtn: [],		        // selectBox
+		btnNm:[]			        // 버튼 이름   
     }
   },
   methods: {
@@ -144,15 +153,75 @@ export default {
     },
 
     fnSearch(){
+        var vm = this;
+        var cardType = vm.templateRadioBtn == "des" ? "description" : "cell";
+        var params = {
+            "brandId" : vm.brandId,
+            "cardType" : cardType,
+            "tmpltNm" : vm.tmpltNm
+        }
 
+        rcsTemplateSendApi.rcsTemplateSearch(params).then(response => {
+            var result = response.data;
+            vm.messagebaseId = result.data[0].MESSAGEBASE_ID;
+            vm.messagebaseArr = result.data;
+            vm.msgCnt = result.data.length;
+
+            // 조회된 템플릿이 없는경우 messagebaseId 빈칸처리
+            if(vm.msgCnt==0) {
+                vm.fnTemplateContent("");
+            } else {
+                vm.fnTemplateContent(result.data[0].MESSAGEBASE_ID);
+            }
+        })
 
     },
+
+    fnTemplateContent(messagebaseId) {
+        var vm = this;
+        vm.messagebaseId = messagebaseId;
+        if(messagebaseId != "") {
+            var params = {
+                "messagebaseId" : messagebaseId
+            };
+            rcsTemplateSendApi.rcsTemplateDetail(params).then(response => {
+                var result = response.data;
+                var success = result.success;
+                if(success) {
+                    var data = result.data;
+                    vm.tmpltName = data.tmpltName;
+                    vm.tmpltId = data.tmpltId;
+                    vm.formNm = data.formNm;
+                    vm.desContent = data.textContents;
+
+                    // 버튼 세팅
+                    vm.btnCnt = data.btnCnt;
+                    vm.selectBtn = data.selectBtn;
+                    vm.btnNm = data.btnNm;
+
+                }
+               
+            });
+        }
+    },
+
     //팝업 닫기
     fnClose(){
       //데이터 초기화
       //this.templateList = [];
       //this.templateData = {};
-      this.$emit('update:rcsTemplatePopOpen', false)
+      this.$emit('update:rcsTemplatePopOpen', false);
+    },
+
+    // 템플릿 선택
+    fnTemplateChoice() {
+        var vm = this;
+        var messagebaseId = vm.messagebaseId;
+        if(messagebaseId == "") {
+            confirm.fnAlert("템플릿을 선택해주세요.","");
+        } else {
+            this.$emit('fnResult', messagebaseId);
+        }
     }
   }
 }

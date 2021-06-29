@@ -29,7 +29,7 @@
 							<li>
 								<img src="@/assets/images/common/RCSTemplate1.png" alt="템플릿 승인(스타일)"><h6>템플릿 승인(스타일)</h6>
 								<div class="consolMarginTop">
-									<input v-model="templateRadioBtn" type="radio" name="RCSTemplate1" value="style" id="pushTemplate1-2" class="radioStyle"><label for="pushTemplate1-2"></label>
+									<input v-model="templateRadioBtn" type="radio" name="RCSTemplate1" value="cell" id="pushTemplate1-2" class="radioStyle"><label for="pushTemplate1-2"></label>
 									<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:280px">브랜드 포탈에서 승인이 완료된<br>스타일 템플릿만 발송 할 수 있습니다.</span></i>
 								</div>
 							</li>
@@ -147,14 +147,16 @@
 							<h4>01  메시지 내용</h4>
 						</div>
 						<div class="float-left" style="width:76%">
-							<a v-if="templateRadioBtn!='text'" @click.prevent="fnOpenRcsTemplatePopup" activity="READ" href="#self" class="btnStyle1 backLightGray" data-toggle="modal" data-target="#Tamplet" title="RCS 템플릿 선택">RCS 템플릿 선택</a>
+							<a v-if="templateRadioBtn=='des' || templateRadioBtn=='cell'" @click.prevent="fnOpenRcsTemplatePopup" activity="READ" href="#self" class="btnStyle1 backLightGray" data-toggle="modal" data-target="#Tamplet" title="RCS 템플릿 선택">RCS 템플릿 선택</a>
+							<a v-if="templateRadioBtn=='text'" @click.prevent="fnOpenMsgPop" activity="READ" href="#self" class="btnStyle1 backLightGray" data-toggle="modal" data-target="#Message" title="메세지보관함">메세지보관함</a>
+							<a v-if="templateRadioBtn=='text'" @click.prevent="fnOpenRcsContentPop" activity="READ" href="#self" class="btnStyle1 borderLightGray" data-toggle="modal" data-target="#Tamplet" title="내용입력">내용입력</a>
 							<div class="of_h consolMarginTop">
 								<div style="width:18%" class="float-left">
 									<h5>복사가능여부</h5>
 								</div>
 								<div style="width:82%">
-									<input type="radio" name="copy" value="no" id="no" checked=""> <label for="no" class="mr30">불가능</label>
-									<input type="radio" name="copy" value="yes" id="yes"> <label for="yes" class="mr30">가능</label>
+									<input v-model="sendData.copy" type="radio" name="copy" value="no" id="no" checked=""> <label for="no" class="mr30">불가능</label>
+									<input v-model="sendData.copy" type="radio" name="copy" value="yes" id="yes"> <label for="yes" class="mr30">가능</label>
 									<p class="txtCaption color4">※ 단말 내 메시지에 대한 복사가능여부 설정입니다.</p>
 								</div>
 							</div>
@@ -163,8 +165,10 @@
 									<h5>발신번호 *</h5>
 								</div>
 								<div style="width:82%">
-									<select name="userConsole_sub020201_1" class="selectStyle2" style="width:30%">
-										<option value="">선택하세요</option>
+									<select v-model="sendData.callback" name="userConsole_sub020201_1" class="selectStyle2" style="width:30%">
+										<option v-for="options in sendData.callbackArr">
+											{{options.callback}}
+										</option>
 									</select>
 								</div>
 							</div>
@@ -173,15 +177,15 @@
 									<h5>대체발송</h5>
 								</div>
 								<div style="width:82%">
-									<input type="radio" name="substitution" value="no2" id="no2" checked=""> <label for="no2" class="mr30">미사용</label>
-									<input type="radio" name="substitution" value="SMS" id="SMS"> <label for="SMS" class="mr30">SMS</label>
-									<input type="radio" name="substitution" value="LMS" id="LMS"> <label for="LMS" class="mr30" data-toggle="modal" data-target="#LMS2">LMS</label>
+									<input v-model="sendData.senderType" type="radio" name="substitution" value="UNUSED" id="UNUSED" checked=""> <label for="UNUSED" class="mr30">미사용</label>
+									<input v-model="sendData.senderType" type="radio" name="substitution" value="SMS" id="SMS"> <label for="SMS" class="mr30">SMS</label>
+									<input v-model="sendData.senderType" type="radio" name="substitution" value="LMS" id="LMS"> <label for="LMS" class="mr30" data-toggle="modal" data-target="#LMS2">LMS</label>
 								</div>
 							</div>	
 						</div>	
 					</div>
 					<hr>
-					<div class="user-phone of_h">
+					<div class="of_h user-phone">
 						<div class="float-left" style="width:24%">
 							<h4>02  수신자 선택</h4>
 						</div>
@@ -190,24 +194,32 @@
 								<div style="width:18%" class="float-left">
 									<h5>수신자 *</h5>
 								</div>
-								<div class="of_h">
+								<div style="width:100%">
 									<div>
-										<input type="radio" name="Recipient" value="Directly" id="Directly" checked=""> <label for="Directly" class="mr30">수신자 직접입력</label>
-										<input type="radio" name="Recipient" value="search" id="search"> <label for="search" class="mr30">주소록 검색</label>
-										<input type="radio" name="Recipient" value="excel" id="excel"> <label for="excel">엑셀 업로드</label>
-										<a href="#self" class="btnStyle1 backLightGray ml20" title="샘플">샘플 <i class="far fa-arrow-to-bottom"></i></a>
-									</div>
-									<div class="float-right consolMarginTop" style="width:100%">
-										<textarea class="textareaStyle height120" placeholder="변수로 설정하고자 하는 내용을 {}표시로 작성해 주십시오.&#13;예) 이름과 출금일을 변수 설정: 예) {고객}님 {YYMMDD} 출금 예정입니다."></textarea>
-										<p class="float-right">수신자 : 0명</p>
+										<input type="radio" id="cuInputType_DICT" name="cuInputType" value="DICT" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType" activity="READ">
+										<label for="cuInputType_DICT" class="mr30">수신자 직접입력</label>
+										<input type="radio" id="cuInputType_ADDR" name="cuInputType" value="ADDR" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType" activity="READ">
+										<label for="cuInputType_ADDR" class="mr30">주소록 검색</label>
+										<input type="radio" id="cuInputType_EXCEL" name="cuInputType" value="EXCEL" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType" activity="READ">
+										<label for="cuInputType_EXCEL" class="mr10">엑셀 업로드</label>
+										<a @click="fnExcelTmplteDownLoad" class="btnStyle1 backLightGray" title="샘플" activity="READ">샘플 <i class="far fa-arrow-to-bottom"></i></a>
+										<input ref="excelFile" type="file" style="display:none;">
 									</div>
 								</div>
-							</div>						
+							</div>
+							<div class="of_h">
+								<div class="of_h float-right" style="width:82%">
+									<p>수신자 : {{recvCnt}}명</p>
+									<div class="float-right consolMarginTop" style="width:100%">
+										<textarea class="textareaStyle height120" v-model="sendData.cuInfo" disabled></textarea>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 					<hr>
-					<div class="user-phone of_h">
-						<div class="float-left" style="width:24%">
+					<div class="of_h user-phone">
+						<div style="width:24%" class="float-left">
 							<h4>03  발송옵션 선택</h4>
 						</div>
 						<div style="width:76%" class="float-left">
@@ -215,62 +227,283 @@
 								<div class="float-left" style="width:18%">
 									<h5>발송시간 *</h5>
 								</div>
-								<div class="float-left" style="width:26%">
-									<input type="radio" name="time" value="right" id="right" checked=""> <label for="right" class="mr30">즉시</label>
-									<input type="radio" name="time" value="Reservation" id="Reservation"> <label for="Reservation">예약</label>								
-								</div>
-								<div class="float-left" style="width:18%">
-									<input type="text" class="datepicker inputStyle" title="시작날짜 입력란">
-								</div>
-								<div class="float-right" style="width:36%">
-									<input type="time" name="stime1" class="inputStyle" style="width:47%" value=""> : <input type="time" name="etime1" class="inputStyle" style="width:47%" value="">
-								</div>
+							<div class="float-left" style="width:26%">
+								<input type="radio" id="rsrvSendYn_N" value="N" v-model="sendData.rsrvSendYn">
+								<label for="rsrvSendYn_N" class="mr30">즉시</label>
+								<input type="radio" id="rsrvSendYn_Y" value="Y" v-model="sendData.rsrvSendYn">
+								<label for="rsrvSendYn_Y">예약</label>
 							</div>
+							<div v-if="sendData.rsrvSendYn == 'Y'" class="float-left" style="width:18%">
+								<Calendar @update-date="fnUpdateRsrvDate" calendarId="rsrvDate" classProps="datepicker inputStyle" :initDate="sendData.rsrvDate"></Calendar>
+							</div>
+							<div v-if="sendData.rsrvSendYn == 'Y'" class="float-right" style="width:36%">
+								<select class="selectStyle2" style="width:47%" v-model="sendData.rsrvHH">
+								<option value="00">00</option>
+								<option v-for="hh in 23" :key="hh" :value="hh > 9 ? hh : '0'+hh">{{hh > 9 ? hh : '0'+hh}}</option>
+								</select>
+								: <select class="selectStyle2" style="width:47%" v-model="sendData.rsrvMM">
+								<option value="00">00</option>
+								<option v-for="mm in 5" :key="mm" :value="mm+'0'">{{mm+'0'}}</option>
+								</select>
+							</div>
+						</div>
 							<div class="of_h consolMarginTop">
 								<div style="width:18%" class="float-left">
 									<h5>태그</h5>
 								</div>
 								<div class="of_h" style="width:82%">
-									<input type="text" class="inputStyle" style="width:100%" placeholder="캠페인 ID를 입력해주세요.">
+									<input type="text" class="inputStyle" style="width:100%" placeholder="캠페인 ID를 입력해주세요." v-model="sendData.campaignId" maxlength="20">
 								</div>
-							</div>													
-						</div>	
+							</div>
+						</div>
 					</div>
 					<div class="float-right mt20">
+						<a v-if="templateRadioBtn!='des' && templateRadioBtn !='cell'" @click.prevent="fnOpenSavePop" data-toggle="modal" data-target="#save" href="#self" class="btnStyle2 backWhite float-left" title="저장">저장</a>
 						<a href="#self" class="btnStyle2 float-left ml10" title="테스트 발송">테스트 발송</a>
 						<a href="#self" class="btnStyle2 backRed float-left ml10" title="발송">발송</a>
 					</div>
 				</div>
 			</div>	
 
-			<RcsTemplatePopup :rcsTemplatePopOpen.sync="rcsTemplatePopOpen" :templateRadioBtn.sync="templateRadioBtn" ref="rcsTemplatePop"></RcsTemplatePopup>
+			<RcsTemplatePopup :rcsTemplatePopOpen.sync="rcsTemplatePopOpen" :templateRadioBtn.sync="templateRadioBtn" ref="rcsTemplatePop" @fnResult="fnSetTemplate"></RcsTemplatePopup>
+			<RcsMsgPopup :rcsMsgPopOpen.sync="rcsMsgPopOpen" ref="rcsMsgPop"></RcsMsgPopup>
+			<RcsContentPopup ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
+			<RcsSavePopup ref="rcsSavePop"></RcsSavePopup>
+			<DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
+			<AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
 		</article>
 </template>
 
 <script>
 import RcsTemplatePopup from "@/modules/rcsTemplateSend/components/bp-rcsTemplatePop.vue";
+import RcsMsgPopup from "@/modules/rcsTemplateSend/components/bp-rcsMsgPopup.vue";
+import RcsContentPopup from "@/modules/rcsTemplateSend/components/bp-rcsContentPopup.vue";
+import RcsSavePopup from "@/modules/rcsTemplateSend/components/bp-rcsSavePopup.vue";
+import DirectInputPopup from "@/modules/message/components/bp-directInput.vue";
+import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue";
+import Calendar from "@/components/Calendar.vue";
 import rcsTemplateSendApi from "@/modules/rcsTemplateSend/service/api.js";
+import messageApi from "@/modules/message/service/messageApi.js";
+
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
   name: "pushTemplateList",
   components: {
-	  RcsTemplatePopup
+	  RcsTemplatePopup,
+	  RcsMsgPopup,
+	  RcsContentPopup,
+	  RcsSavePopup,
+	  DirectInputPopup,
+	  AddressInputPopup,
+	  Calendar
   },
   data() {
     return {
+		messagebaseId : "",				// 템플릿 선택 Id
 		rcsTemplatePopOpen : false,		// RCS 템플릿 선택 버튼 
+		rcsMsgPopOpen : false,			// 메세지보관함 선택 버튼
+		directInputOpen : false,		// 수신자 직접입력 버튼
+		addressInputOpen : false,		// 주소록 검색 버튼
+		rcsTemplateSavePopOpen : false,	// 저장 버튼
         templateRadioBtn : "des",       // 템플릿형 라디오 버튼
+		recvCnt : 0,  					// 수신자명수
+		sendData : {
+			brandId : "",								// 브랜드 ID
+			textContents : "",							// 텍스트 미승인형 내용
+			callback: '',  								// 발신번호
+			callbackArr: [],							// 발신번호 selectBox
+			copy: 'no',									// 복사 가능여부
+			senderType : 'UNUSED',						// 대체발송
+			saveContent : "",							// 저장 메시지명
+
+			requiredCuid : false,  //app 로그인 ID 필수여부
+			requiredCuPhone : true,  //수신자 폰번호 필수여부
+			cuInputType:'DICT',  //DICT, ADDR, EXCEL
+			smsTitle:'',  //제목
+			smsContent:'',  //내용
+			rcvblcNumber:'',  //수신거부
+			cuInfo:'',
+			rsrvSendYn:'N',  //예약발송여부
+			rsrvDate:this.$gfnCommonUtils.getCurretDate(),
+			rsrvHH:'00',
+			rsrvMM:'00',
+			campaignId:'',
+			imgInfoList: [],
+			recvInfoLst: [],  //수신자정보
+			contsVarNms: [], //메세지 내용 변수명
+			testRecvInfoLst: [],  //테스트 수신자정보
+		}
+
     }
   },
   mounted() {
-
+	  this.fnInit();
   },
   methods: {
+	// RCS 발송 발신번호 세팅
+	fnInit() {
+		var vm = this;
+		var params = {
+			"approvalStatus" : "승인"
+		}
+		rcsTemplateSendApi.selectCallbackList(params).then(response => {
+			var result = response.data;
+			vm.sendData.callbackArr = result.data;
+			vm.sendData.callback = result.data[0].callback;
+		});
+	},
+
 	fnOpenRcsTemplatePopup() {
 		this.$refs.rcsTemplatePop.fnInit();
+
       	this.rcsTemplatePopOpen = !this.rcsTemplatePopOpen;
+	},
+
+	fnOpenMsgPop() {
+		this.$refs.rcsMsgPop.fnInit();
+      	this.rcsMsgPopOpen = !this.rcsMsgPopOpen;
+	},
+
+	fnOpenRcsContentPop() {
+		this.$refs.rcsContentPop.fnInit();
+		JQuery("#Tamplet").modal("show");
+
+      	//this.rcsContentPopOpen = !this.rcsContentPopOpen;
+	},
+
+	fnOpenSavePop() {
+		JQuery("#save").modal("show");
+	},
+	
+	fnSetTemplate(messagebaseId) {
+		//alert("test");
+		//alert(messagebaseId);
+	},
+
+	// 메시지 내용 입력 return
+	fnSetAddContents(params) {
+		this.sendData.brandId = params.brandId;
+		this.sendData.textContents = params.contents;
+	},
+
+	fnClickCuInputType(e){
+      if(this.sendData.cuInputType == e.target.value){
+        this.fnChgCuInputType('N');
+      }
+    },
+
+	//수신자 입력 타입 변경시
+    fnChgCuInputType(chgYn){
+      if(this.$gfnCommonUtils.defaultIfEmpty(chgYn, 'Y') == 'Y'){
+        this.fnCallbackRecvInfoLst(null);  //수신자 입력 타입 변경시 수신자 정보 초기화
+      }
+      if(this.fnSetContsVarNms() == false){
+        return;
+      }
+
+      if(this.sendData.cuInputType == 'DICT'){  //직접입력
+        //수신자 직접입력 팝업 호출
+        this.directInputOpen = true;
+      } else if(this.sendData.cuInputType == 'ADDR'){  //주소록
+        //주소록 검색 팝업 호출
+        this.addressInputOpen = true;
+      } else if(this.sendData.cuInputType == 'EXCEL'){  //엑셀
+        //엑셀파일찾기 호출
+        this.$refs.excelFile.click();
+      }
+    },
+
+	//수신자 정보 callback
+    fnCallbackRecvInfoLst(recvInfoLst, addYn) {
+      if(recvInfoLst != null){
+        if(this.$gfnCommonUtils.defaultIfEmpty(addYn, 'N') == 'Y'){
+          this.sendData.recvInfoLst = this.sendData.recvInfoLst.concat(recvInfoLst);
+        } else {
+          this.sendData.recvInfoLst = recvInfoLst;
+        }
+        //수신자 중복제거
+        this.fnDelDuplRecvInfo();
+
+        this.recvCnt = this.sendData.recvInfoLst.length;
+        this.sendData.cuInfo = JSON.stringify(this.sendData.recvInfoLst);
+      } else {
+        this.recvCnt = 0;
+        this.sendData.recvInfoLst = [];
+        this.sendData.cuInfo = '';
+      }
+    },
+
+	//수신자 중복 제거
+    fnDelDuplRecvInfo(){
+      const vm = this;
+      this.sendData.recvInfoLst = this.sendData.recvInfoLst.filter(function(item, i){
+        return (
+          vm.sendData.recvInfoLst.findIndex((item2) => {
+            return item.phone === item2.phone
+          }) === i
+        );
+      });
+    },
+
+	fnSetContsVarNms(){
+      const rsvNmSet = new Set(['phone']);
+      const conts = this.sendData.smsContent;
+      let varNms = [];
+      let containRsvNm = false;
+      conts.replace(/\{\{(\w+)\}\}/g, function($0, $1) {
+        if(rsvNmSet.has($1)){
+          containRsvNm = true;
+          return false;
+        }
+        varNms.push($1);
+      });
+      if(containRsvNm){
+        confirm.fnAlert('RCS 발송', '발송 내용 변수 phone 은 예약어로 사용하실 수 없습니다.');
+        return false;
+      } else {
+        this.sendData.contsVarNms = this.fnSetArrayRemoveDupliVal(varNms);
+        return true;
+      }
+    },
+	//array에 중복 항목을 제거한다.
+    fnSetArrayRemoveDupliVal(array){
+      let seen = {};
+      return array.filter(function(item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+      });
+    },
+
+	//SMS 템플릿 엑셀 다운로드
+    async fnExcelTmplteDownLoad(){
+    	if(this.fnSetContsVarNms() == false) return;
+    	const params = {
+        	contsVarNms : this.sendData.contsVarNms
+      	};
+      	await messageApi.excelDownSendSmsRecvTmplt(params);
+    },
+
+	// 저장 버튼 처리
+	fnSaveRcsMsg(saveContent) {
+		var vm = this;
+		vm.sendData.saveContent = saveContent;
+
+		eventBus.$on('callbackEventBus', this.fnProcSavePushTemplate);
+      	confirm.fnConfirm("RCS 메시지", "RCS 메시지를저장하시겠습니까?", "확인");
+	},
+
+	// 저장
+	fnSave() {
+		//this.fnSaveVali();
+
+
+
+	},
+
+	// 저장 유효성 검사
+	fnSaveVali() {
+
 	}
   }
 }

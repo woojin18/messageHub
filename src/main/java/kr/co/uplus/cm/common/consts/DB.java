@@ -162,6 +162,10 @@ public class DB {
 	public final static String QRY_SELECT_RCS_MSGBASEFORM_LIST = "rcsTemplate.selectRcsMsgbaseformList";
 	public final static String QRY_SELECT_RCS_TEMPLATE_UPDATE_FORM = "rcsTemplate.selectRcsTemplateUpdateForm";
 	public final static String QRY_SELECT_RCS_BASE_FORM = "rcsTemplate.selectRcsBaseForm";
+	
+	// RCS 템플릿 등록
+	public final static String QRY_SELECT_RCS_BASE_FORM_POP = "rcsTemplateSend.selectRcsBaseFormPop";
+	public final static String QRY_SELECT_RCS_MESSAGE_FORM = "rcsTemplateSend.selectRcsMessageForm";
 
 	// 주소록 관리
 	public final static String QRY_SELECT_ADDR_CATE_GRP_LIST = "address.selectAddrCateGrpList";

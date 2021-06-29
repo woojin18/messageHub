@@ -44,5 +44,49 @@ public class RcsTemplateSendController {
 
 		return rtn;
 	}
+	
+	@PostMapping("/rcsTemplateSearch")
+	public RestResult<?> rcsTemplateSearch(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			rtn = rcsTemplateSendSvc.rcsTemplateSearch(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
 
+		return rtn;
+	}
+	
+	@PostMapping("/rcsTemplateDetail")
+	public RestResult<?> rcsTemplateDetail(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			rtn = rcsTemplateSendSvc.rcsTemplateDetail(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+	
+	@PostMapping("/selectCallbackList")
+	public RestResult<?> selectCallbackList(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			rtn = rcsTemplateSendSvc.selectCallbackList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
 }
