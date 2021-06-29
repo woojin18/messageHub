@@ -1,7 +1,7 @@
 <template>
 	<!-- Register Modal -->
 	<!--div class="modal fade modalStyle" id="Register" tabindex="-1" role="dialog" aria-hidden="true"-->
-	<div v-if="layerView" class="layerPopup">
+	<div v-if="layerView" class="layerPopup modalStyle">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">

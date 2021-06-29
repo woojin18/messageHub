@@ -1,6 +1,6 @@
 <template>
 	<!-- Release Modal -->
-	<div v-if="layerView" class="layerPopup">
+	<div v-if="layerView" class="layerPopup modalStyle">
 	<!--div class="modal fade modalStyle" id="Releasep" tabindex="-1" role="dialog" aria-hidden="true"-->
 		<div class="modal-dialog">
 			<div class="modal-content">
