@@ -66,7 +66,11 @@ export default {
 		rowData : {
 			type: Object,
 			require: false
-		}
+		},
+		smartChCode : {
+			type: String,
+			require: false
+		},
 	},
 	mounted() {
 
@@ -86,10 +90,12 @@ export default {
 
 		},
 		goSave(){
+			console.log('>>>> projectid : ' + this.projectid);
+			console.log('>>>> smartChCode : ' + this.smartChCode);
 			var params = {
 				"CORP_ID" : this.corpid,
 				"SMART_CH_NAME" : jQuery('#DS_NAME').val(),
-				"SMART_CH_CODE" : jQuery('#DS_NAME').val(),
+				"SMART_CH_CODE" : this.smartChCode,
 				"PROJECT_ID" : this.projectid,
 				"USE_YN" : jQuery('input:radio[name="useYN"]:checked').val(),
 				"iou" : this.insert_or_update,

@@ -12,6 +12,7 @@
       :corpid="row_data.corpId"
       :projectid="row_data.projectId"
       :insert_or_update.sync="save_status"
+	  :smartChCode="row_data.smartChCode"
     >
     </disRatioPop>
 
