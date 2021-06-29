@@ -29,7 +29,7 @@
 				<li class="on"><router-link to="/uc/home"><i class="fal fa-tachometer-alt-fastest navIcon"></i><span>대시보드</span></router-link></li>
 				<li v-for="(item, i) in treeData" :key="i">
 					<a @click="fnOpenDepth2(i)">
-						<i v-bind:class="item.imgTag"></i><span>&nbsp;{{item.menusName}}</span><i class="far fa-chevron-down navArrow"></i>
+						<i v-bind:class="item.imgTag"></i><span>{{item.menusName}}</span><i class="far fa-chevron-down navArrow"></i>
 					</a>
 					<!-- 중메뉴 -->
 					<div class="depth2Lnb" :id="'depth2_' + i" :style="showOption">
@@ -37,7 +37,7 @@
 							<li v-for="(item2, j) in item.children" :key="j" >
 								<router-link  v-if="item2.webUrl != ''" v-bind:to="{path:item2.webUrl}" v-bind:id="'M_'+item2.menusCd" v-bind:r="item2.read" v-bind:w="item2.save">{{item2.menusName}}</router-link>		<!-- url 주소 있으면 페이지 이동 -->
 								<a  v-if="item2.webUrl == ''" @click="fnOpenDepth3(i,j)">
-									<i v-bind:class="item2.imgTag"></i><span>&nbsp;{{item2.menusName}}</span><i class="far fa-chevron-down navArrow" style="font-size: 10px;position: absolute;right: 20px"></i>
+									<i v-bind:class="item2.imgTag"></i><span{{item2.menusName}}</span><i class="far fa-chevron-down navArrow" style="font-size: 10px;position: absolute;right: 20px"></i>
 								</a>
 								<!-- 소메뉴 -->
 								<div class="depth3Lnb" :id="'depth3_' + j">
