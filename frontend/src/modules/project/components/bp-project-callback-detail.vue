@@ -8,19 +8,19 @@
               <hr>
               <div class="row">
                 <div class="col-xs-12 consoleCon">
-                  <div class="of_h consolMarginTop">
-                    <h4 class="inline-block" style="width:22%">발신번호 *</h4>
+                  <div class="of_h">
+                    <h5 class="inline-block" style="width:22%">발신번호 *</h5>
                     <div class="float-right" style="width:76%">
                       <input type="text" class="inputStyle" style="width:55%" v-model="row_data.chatbotId" readonly>
                       <p class="color3 inline-block ml10">휴대폰번호 등록 불가</p>
                     </div>
                   </div>
-                  <div class="of_h">
-                    <h4 class="inline-block" style="width:22%">발신 번호명 *</h4>
+                  <div class="of_h consolMarginTop">
+                    <h5 class="inline-block" style="width:22%">발신 번호명 *</h5>
                     <input type="text" class="inputStyle float-right" style="width:76%" v-model="row_data.subTitle">
                   </div>
                   <div class="of_h consolMarginTop">
-                    <h4 class="inline-block vertical-middle" style="width:22%">통신서비스<br>가입증명원 *</h4>
+                    <h5 class="inline-block vertical-middle" style="width:22%">통신서비스<br>가입증명원 *</h5>
                     <div class="float-right" style="width:76%">
                       <input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:100%" ref="certiImgFile"/>
                     </div>

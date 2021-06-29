@@ -7,28 +7,26 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div>
-						<h5 class="lc-1">프로젝트 등록</h5>
+						<h2>프로젝트 등록</h2>
 						<hr>
-						<div class="mt20 of_h">
-							<h4 class="font-normal inline-block float-left" style="width:20%">프로젝트명 *</h4>
-							<div style="width:78%" class="of_h">
-								<div>
+						<div class="of_h">
+							<h5 class="inline-block" style="width:20%">프로젝트명 *</h5>
+							<div style="width:80%" class="float-right">
 									<input id="projectName" type="text" class="inputStyle float-left" title="프로젝트명 입력란">
-								</div>
 							</div>
-							<div class="mt30 of_h">
-								<h4 class="font-normal inline-block float-left" style="width:20%">프로젝트 설명</h4>
-								<div style="width:78%" class="of_h">
+							<div class="of_h consolMarginTop">
+                <h5 class="inline-block" style="width:20%">프로젝트 설명</h5>
+								<div style="width:80%" class="float-right">
 									<input id="projectDesc" type="text" class="inputStyle float-left" style="width:100%" title="프로젝트 설명 입력란">
 								</div>
 							</div>
-							<div class="mt30 of_h">
-								<h4 class="font-normal inline-block float-left mt5" style="width:20%">결재조건 *</h4>
+							<div class="of_h consolMarginTop">
+                <h5 class="inline-block" style="width:20%">결재조건 *</h5>
 								<input @click="fnSelectBillIdForApi('Y')" type="radio" name="payType" value="Y" class="cBox" id="payment01" :disabled="this.save_status != 'C'"> <label for="payment01" class="payment mr30 font-size12">선불</label>
 								<input @click="fnSelectBillIdForApi('N')" type="radio" name="payType" value="N" class="cBox" id="payment02" :disabled="this.save_status != 'C'"> <label for="payment02" class="payment font-size12">후불</label>								
 							</div>
-              <div class="mt30 of_h" v-if=" this.payTypeForDIv === 'N' ">
-								<h4 class="font-normal inline-block float-left mt5" style="width:20%">청구번호 *</h4>
+              <div class="of_h consolMarginTop" v-if=" this.payTypeForDIv === 'N' ">
+                <h5 class="inline-block" style="width:20%">청구번호 *</h5>
                 <select class="selectStyle2" style="width:72%" v-model="this.billId">
                   <option v-for="(option, i) in resultList" v-bind:value="option.billAcntNo" v-bind:key="i">
                     {{ option.custNm }}({{ option.billAcntNo }})
@@ -36,34 +34,29 @@
                 </select>
 							</div>
 							<p class="mt10 lc-1 font-size12 color3" style="margin-left:20%">프로젝트별 결제조건(선/후불)을 선택할 수 있으며, 프로젝트 등록 후 선택된 <br>결제조건은 변경이 불가합니다.</p>
-							<div class="mt30 of_h">
-								<h4 class="font-normal inline-block mt5" style="width:20%">사용여부</h4>
+							<div class="of_h consolMarginTop">
+                <h5 class="inline-block" style="width:20%">사용여부</h5>
 								<input type="radio" name="useYn" value="Y" class="cBox" id="yes" checked=""> <label for="yes" class="payment mr30 font-size12">예</label>
 								<input type="radio" name="useYn" value="N" class="cBox" id="no"> <label for="no" class="payment font-size12">아니요</label>							
 							</div>
 
-              <div class="mt15 of_h">
-								<h4 class="font-normal inline-block float-left" style="width:20%">재발송 제목</h4>
-								<div style="width:78%" class="of_h">
+              <div class="of_h consolMarginTop">
+                <h5 class="inline-block" style="width:20%">재발송 제목</h5>
+								<div style="width:80%" class="float-right">
 									<input id="resendTitle" type="text" class="inputStyle float-left" >
 								</div>
 							</div>
-              <div class="mt30 of_h">
-								<h4 class="font-normal inline-block mt5" style="width:20%">개별빌링 여부</h4>
+              <div class="of_h consolMarginTop">
+                <h5 class="inline-block" style="width:20%">개별빌링 여부</h5>
 								<input type="radio" name="subbillYn" value="Y" class="cBox" id="subbillYnY" @click="fnCheckSubblillYn()" checked=""> <label for="subbillYnY" class="payment mr30 font-size12">예</label>
 								<input type="radio" name="subbillYn" value="N" class="cBox" id="subbillYnN" @click="fnCheckSubblillYn()"> <label for="subbillYnN" class="payment font-size12">아니요</label>							
 							</div>
-              <div class="mt30 of_h">
-								<h4 class="font-normal inline-block mt5" style="width:20%">개별빌링 시작일</h4>
+              <div class="of_h consolMarginTop">
+                <h5 class="inline-block" style="width:20%">개별빌링 시작일</h5>
 								<Calendar calendarId="subbillStartDay" classProps="datepicker inputStyle maxWidth200"></Calendar>
 							</div>
-              
-              <!-- classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchEndDate" -->
-
-
-
-							<div class="mt30 of_h">
-								<h4 class="font-normal inline-block mt15" style="width:20%">사용채널선택</h4>
+							<div class="of_h consolMarginTop">
+                <h5 class="inline-block" style="width:20%">사용채널선택</h5>
 								<table  id="admin_sub03_1_project1" class="table_skin1 tbl-striped-odd mt0 float-right" style="width:80%">
                   <colgroup>
                     <col style="width:50%">

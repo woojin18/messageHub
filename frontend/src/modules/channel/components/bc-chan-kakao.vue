@@ -19,10 +19,10 @@
 						<div class="menuBox mt10">						
 							<div class="of_h">
 								<h4 class="inline-block" style="width:10%">발신 프로필</h4>
-								<input type="text" class="inputStyle" style="width:15%" v-modal="srcSenderKey">
+								<input type="text" class="inputStyle" style="width:15%" v-model="srcSenderKey">
 
 								<h4 class="inline-block vertical-middle ml100" style="width:11%">플러스친구 상태</h4>
-								<select name="admin030404_1" class="selectStyle2" style="width:15%" v-modal="srcUseYn">
+								<select name="admin030404_1" class="selectStyle2" style="width:15%" v-model="srcUseYn">
 									<option value="">전체</option>
 									<option value="">전체</option>
 								</select>

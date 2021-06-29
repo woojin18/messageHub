@@ -4,10 +4,10 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div class="of_h">
-						<h5 class="lc-1">사전 등록 예외 대상 사업자 등록</h5>
+            <h2>사전 등록 예외 대상 사업자 등록</h2>
 						<hr>
 						<div class="mt20">
-							<h4 class="font-normal inline-block width90">신청유형 *</h4>
+              <h5 class="inline-block" style="width:20%">신청유형 *</h5>
 							<select v-model="reqType" name="admin030502_1" class="selectStyle3 width414 font-size14" >
 								<option value="spam">스팸문자 미발송 사업자</option>
                 <option value="system">발신번호 사전등록 시스템을 갖춘 사업자</option>
@@ -16,19 +16,19 @@
 							</select>
 						</div>
             <div class="mt15">
-							<h4 class="font-normal inline-block width90">첨부파일1</h4>
+              <h5 class="inline-block" style="width:20%">첨부파일1</h5>
               <input id="file1" ref="fileRef1" type="file" class="btnStyle7 minWidthAuto float" style="display : inline; width : 79%;">
 						</div>
             <div class="mt15">
-							<h4 class="font-normal inline-block width90">첨부파일2</h4>
+              <h5 class="inline-block" style="width:20%">첨부파일2</h5>
               <input id="file2" ref="fileRef2" type="file" class="btnStyle7 minWidthAuto float" style="display : inline; width : 79%;">
 						</div>
             <div class="mt15">
-							<h4 class="font-normal inline-block width90">첨부파일3</h4>
+              <h5 class="inline-block" style="width:20%">첨부파일3</h5>
               <input id="file3" ref="fileRef3" type="file" class="btnStyle7 minWidthAuto float" style="display : inline; width : 79%;">
 						</div>
             <div class="mt15">
-							<h4 class="font-normal inline-block width90">첨부파일4</h4>
+              <h5 class="inline-block" style="width:20%">첨부파일4</h5>
               <input id="file4" ref="fileRef4" type="file" class="btnStyle7 minWidthAuto float" style="display : inline; width : 79%;">
 						</div>
 					</div>
