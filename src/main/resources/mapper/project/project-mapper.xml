@@ -363,19 +363,19 @@
 	
 		<select id="selectBasicDisRatio" parameterType="string" resultType="hashmap">
 		/* project.selectBasicDisRatio */
-		SELECT C.CH_RELAY_TYPE, C.RELAY 
+		SELECT C.RELAY_CH_TYPE, C.RELAY 
 		FROM (
 				SELECT	A.RELAY_CH_TYPE
 				, 		A.RELAY
 				FROM cm.CM_RELAY_CH AS A
 				INNER JOIN(
-					SELECT	CH_RELAY_TYPE
+					SELECT	RELAY_CH_TYPE
 					FROM	cm.CM_RELAY_CH 
 					GROUP BY CH_RELAY_TYPE
 				) AS B
-		WHERE A.CH_RELAY_TYPE = B.CH_RELAY_TYPE
+		WHERE A.RELAY_CH_TYPE = B.RELAY_CH_TYPE
 		) AS C
-		GROUP BY C.CH_RELAY_TYPE, C.RELAY
+		GROUP BY C.RELAY_CH_TYPE, C.RELAY
 	</select>
 	
 	<select id="seletDisRatio" parameterType="string" resultType="hashmap">
@@ -411,6 +411,7 @@
 		,		UPD_DT			= NOW()
 		WHERE	1=1
 		AND		SMART_CH_CODE = #{SMART_CH_CODE}
+		AND		PROJECT_ID = #{PROJECT_ID}
 		AND		CORP_ID = #{CORP_ID}
 	</update>
 
@@ -432,6 +433,7 @@
 		,	CH_DIST_INFO
 		,	USE_YN
 		,	REG_DT
+		,	PROJECT_ID
 		)
 		VALUES 
 		(
@@ -441,6 +443,7 @@
 		,	#{CH_DIST_INFO}
 		,	#{USE_YN}
 		,	NOW()
+		,	#{PROJECT_ID}
 		)
 	</insert>
 	
