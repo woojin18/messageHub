@@ -236,6 +236,7 @@ export default {
 		fnRegisterApiKeyPop() {
 			if(this.apiKeyList != null && this.apiKeyList.length == 5) {
 				confirm.fnAlert(this.title, 'API Key는 5개까지 발급됩니다.');
+				return false;
 			}
 			this.apiKeyOpen = !this.apiKeyOpen;
 			this.apiKeyData = {};

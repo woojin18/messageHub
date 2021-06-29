@@ -76,7 +76,7 @@
 						<div class="of_h consolMarginTop">
 							<div class="float-left" style="width:24%"><h5>초당 발송 건수</h5></div>
 							<div class="float-left" style="width:20%">
-								<input type="text" id="cps" class="inputStyle" @input="fnCorrectNumberInput">
+								<input type="text" id="cps" class="inputStyle" @input="fnCorrectNumberInput" maxlength="4">
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
@@ -344,7 +344,7 @@ export default {
 			}
 
 			if(this.$gfnCommonUtils.isEmpty(lineType)) {
-				confirm.fnAlert(this.title, '라인 타입을 입력하세요');
+				confirm.fnAlert(this.title, '라인 타입을 선택하세요');
 				return false;
 			}
 
