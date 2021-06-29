@@ -65,9 +65,18 @@ const selectKkoTmpltCatList = (params) => {
   return httpClient.post('/uc/template/selectKkoTmpltCatList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 const procApprvRequestKkoTmplt = (params) => {
-  return httpClient.post('/uc/template/procApprvRequestKkoTmplt', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+  return httpClient.post('/uc/template/procApprvRequestKkoTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
-
+const selectAlimTalkTmpltList = (params) => {
+  return httpClient.post('/uc/template/selectAlimTalkTmpltList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+const procDeleteRequestKkoTmplt = (params) => {
+  return httpClient.post('/uc/template/procDeleteRequestKkoTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+};
+const excelDownloadAlimTalkTmplt = (params) => {
+  return httpClient.post('/uc/template/excelDownloadAlimTalkTmplt', params, { headers: {"show-layer": "Yes", "activity":"READ"}, responseType: 'arraybuffer' })
+  .then((response) => fnExcelDownCallback(response));
+};
 
 /* RCS */
 const corpBrandCnt = (params) => {
@@ -113,7 +122,10 @@ export default {
     selectSenderKeyList,
     selectKkoTmpltCatGrpList,
     selectKkoTmpltCatList,
+    selectAlimTalkTmpltList,
     procApprvRequestKkoTmplt,
+    procDeleteRequestKkoTmplt,
+    excelDownloadAlimTalkTmplt,
     corpBrandCnt,
     selectRcsTemplateList,
     rcsTemplateInit,

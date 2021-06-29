@@ -25,8 +25,8 @@ import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkButtonsInfo;
-import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltRequestData;
-import kr.co.uplus.cm.sendMessage.dto.ServiceInfo;
+import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltDelRequestData;
+import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltRegRequestData;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
@@ -379,8 +379,8 @@ public class TemplateService {
      * @throws Exception
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public AlimTalkTmpltRequestData setApprvRequestKkoTmpltData(RestResult<Object> rtn, Map<String, Object> params) throws Exception {
-        AlimTalkTmpltRequestData requestData = new AlimTalkTmpltRequestData();
+    public AlimTalkTmpltRegRequestData setApprvRequestKkoTmpltData(RestResult<Object> rtn, Map<String, Object> params) throws Exception {
+        AlimTalkTmpltRegRequestData requestData = new AlimTalkTmpltRegRequestData();
 
         //senderKey
         requestData.setSenderKey(CommonUtils.getStrValue(params, "senderKey"));
@@ -409,22 +409,10 @@ public class TemplateService {
             }
         }
 
-        //서비스정보
-        ServiceInfo svcInfo = new ServiceInfo();
-        svcInfo.setCorpId(CommonUtils.getStrValue(params, "corpId"));
-        svcInfo.setProjectId(CommonUtils.getStrValue(params, "projectId"));
-
-        Map<String, Object> sParam = new HashMap<String, Object>();
-        sParam.put("relayChType", "KKO");
-        sParam.put("relay", "LOTTE");
-        String relaySvcId = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_RELAY_SVC_ID, sParam));
-        svcInfo.setRelay(relaySvcId);
-        requestData.setSvcInfo(svcInfo);
-
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<AlimTalkTmpltRequestData>> violations = validator.validate(requestData);
+        Set<ConstraintViolation<AlimTalkTmpltRegRequestData>> violations = validator.validate(requestData);
         String errorMsg = "";
 
         for (ConstraintViolation violation : violations) {
@@ -457,12 +445,12 @@ public class TemplateService {
      * @throws Exception
      */
     @SuppressWarnings({ "unchecked" })
-    public RestResult<Object> procApprvRequestKkoTmplt(AlimTalkTmpltRequestData requestData) throws Exception {
+    public RestResult<Object> procApprvRequestKkoTmplt(AlimTalkTmpltRegRequestData requestData, Map<String, Object> params) throws Exception {
         log.info("{}.procApprvRequestKkoTmplt requestData: {}", this.getClass(), requestData.toString());
 
         RestResult<Object> rtn = new RestResult<Object>();
-        String corpId = requestData.getSvcInfo().getCorpId();
-        String projectId = requestData.getSvcInfo().getProjectId();
+        String corpId = CommonUtils.getStrValue(params, "corpId");
+        String projectId = CommonUtils.getStrValue(params, "projectId");
         String apiKey = commonService.getApiKey(corpId, projectId);
 
         Map<String, String> headerMap = new HashMap<String, String>();
@@ -483,6 +471,111 @@ public class TemplateService {
         }
 
         return rtn;
+    }
+
+    /**
+     * 알림톡 템플릿 리스트 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectAlimTalkTmpltList(Map<String, Object> params) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        if(params.containsKey("pageNo")
+                && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+                && params.containsKey("listSize")
+                && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+            rtn.setPageProps(params);
+            if(rtn.getPageInfo() != null) {
+                //카운트 쿼리 실행
+                int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_ALIM_TALK_TMPLT_LIST_CNT, params);
+                rtn.getPageInfo().put("totCnt", listCnt);
+            }
+        }
+
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ALIM_TALK_TMPLT_LIST, params);
+        rtn.setData(rtnList);
+
+        return rtn;
+    }
+
+    /**
+     * 알림톡 템플릿 삭제 요청
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public RestResult<Object> procDeleteRequestKkoTmplt(Map<String, Object> params) throws Exception {
+        log.info("{}.procDeleteRequestKkoTmplt Start ====> params : {}", this.getClass(), params);
+
+        RestResult<Object> rtn = new RestResult<Object>();
+        AlimTalkTmpltDelRequestData requestData = null;
+        List<String> tmpltCodes = null;
+
+        if(params.containsKey("tmpltCodes")) {
+            tmpltCodes = (List<String>) params.get("tmpltCodes");
+        }
+
+        if(tmpltCodes == null || tmpltCodes.size() == 0) {
+            rtn.setFail("잘못된 템플릿 코드 정보입니다.");
+            return rtn;
+        }
+
+        String corpId = CommonUtils.getStrValue(params, "corpId");
+        String projectId = CommonUtils.getStrValue(params, "projectId");
+        String apiKey = commonService.getApiKey(corpId, projectId);
+
+        Map<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("apiKey", apiKey);
+
+        Map<String, Object> sParams = null;
+        Map<String, Object> tmpltInfo = null;
+        Map<String, Object> responseBody = null;
+        Gson gson = null;
+
+        String tmpltStatCode = "";
+        String senderKey = "";
+        String jsonString = "";
+        String rslt = "";
+        int success = 0;
+
+        for(String tmpltCode : tmpltCodes) {
+            sParams = new HashMap<String, Object>();
+            sParams.put("tmpltCode", tmpltCode);
+            List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ALIM_TALK_TMPLT_LIST, sParams);
+            if(rtnList == null || rtnList.size() == 0) {
+                continue;
+            }
+
+            tmpltInfo = (Map<String, Object>) rtnList.get(0);
+            tmpltStatCode = CommonUtils.getStrValue(tmpltInfo, "tmpltStatCode");
+            senderKey = CommonUtils.getStrValue(tmpltInfo, "senderKey");
+            if(!StringUtils.equals(tmpltStatCode, Const.TmpltStatCode.REG_COMPLETE)) {
+                continue;
+            }
+
+            requestData = new AlimTalkTmpltDelRequestData();
+            requestData.setSenderKey(senderKey);
+            requestData.setTemplateCode(tmpltCode);
+
+            gson = new Gson();
+            jsonString = gson.toJson(requestData);
+            responseBody = apiInterface.sendMsg(ApiConfig.DELETE_KKO_TMPLT_REQ_API_URI, headerMap, jsonString);
+
+            rslt = "";
+            if(responseBody != null) {
+                rslt = CommonUtils.getStrValue(responseBody, "rslt");
+            }
+
+            if(StringUtils.equals(ApiConfig.GW_API_SUCCESS, rslt)) success++;
+        }
+
+        rtn.setMessage("총 "+tmpltCodes.size()+"건 중 "+success+"건 삭제 요청 되었습니다.");
+        return rtn;
+
     }
 
 

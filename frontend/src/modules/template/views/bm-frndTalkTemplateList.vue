@@ -33,7 +33,7 @@
                   <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
                   <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
                 </ul>
-                <a @click="fnSelectFrndTalkTmpltList()" class="btnStyle1 float-right" title="검색" activity="READ">검색</a>
+                <a @click="fnPageNoResetSearch" class="btnStyle1 float-right" title="검색" activity="READ">검색</a>
               </div>
             </div>
           </div>

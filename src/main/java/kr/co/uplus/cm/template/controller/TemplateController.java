@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
-import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltRequestData;
+import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltRegRequestData;
 import kr.co.uplus.cm.template.service.TemplateService;
 import kr.co.uplus.cm.utils.DateUtil;
 import lombok.extern.log4j.Log4j2;
@@ -471,7 +471,7 @@ public class TemplateController {
             @RequestBody Map<String, Object> params) {
 
         RestResult<Object> rtn = new RestResult<Object>();
-        AlimTalkTmpltRequestData requestData = null;
+        AlimTalkTmpltRegRequestData requestData = null;
 
         try {
             log.info("{}.procApprvRequestKkoTmplt Start ====> params : {}", this.getClass(), params);
@@ -484,7 +484,7 @@ public class TemplateController {
             }
 
             /** 알림톡 템플릿 승인요청 처리 */
-            return tmpltSvc.procApprvRequestKkoTmplt(requestData);
+            return tmpltSvc.procApprvRequestKkoTmplt(requestData, params);
 
         } catch (Exception e) {
             rtn.setFail("실패하였습니다.");
@@ -493,6 +493,80 @@ public class TemplateController {
 
         return rtn;
     }
+
+    /**
+     * 알림톡 템플릿 리스트 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectAlimTalkTmpltList")
+    public RestResult<?> selectAlimTalkTmpltList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = tmpltSvc.selectAlimTalkTmpltList(params);
+        } catch (Exception e) {
+            rtn.setFail("실패하였습니다.");
+            log.error("{}.selectAlimTalkTmpltList Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 카카오 템플릿 삭제 요청
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/procDeleteRequestKkoTmplt")
+    public RestResult<?> procDeleteRequestKkoTmplt(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        try {
+            rtn = tmpltSvc.procDeleteRequestKkoTmplt(params);
+        } catch (Exception e) {
+            rtn.setFail("실패하였습니다.");
+            log.error("{}.procDeleteRequestKkoTmplt Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 알림톡 템플릿 다운로드
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(path = "/excelDownloadAlimTalkTmplt")
+    public ModelAndView excelDownloadAlimTalkTmplt(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) throws Exception {
+        List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("sheetTitle", "알림톡 템플릿 리스트");
+        map.put("colLabels", new String[] { "템플릿 코드", "템플릿명", "상태", "발신프로필 타입", "발신 프로필/그룹", "최종수정일자" });
+        map.put("colIds", new String[] {"tmpltCode", "tmpltName", "tmpltStatCodeName", "senderKeyTypeName", "senderKey", "updDt"});
+        map.put("numColIds", new String[] {});
+        map.put("figureColIds", new String[] {});
+        map.put("colDataList", tmpltSvc.selectAlimTalkTmpltList(params).getData());
+        sheetList.add(map);
+
+        ModelAndView model = new ModelAndView("commonXlsxView");
+        model.addObject("excelFileName", "alimTalkTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
+        model.addObject("sheetList", sheetList);
+
+        return model;
+    }
+
+
+
 
 
 }

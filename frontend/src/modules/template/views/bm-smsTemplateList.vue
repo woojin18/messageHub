@@ -48,7 +48,7 @@
                 <label for="searchOthPrjUseYn_N" class="mr30">전용</label>
               </div>
               <!-- <a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" title="통합발송 검색">검색</a> -->
-              <a @click="fnSelectSmsTmpltList()" class="btnStyle1 float-right" title="검색" activity="READ">검색</a>
+              <a @click="fnPageNoResetSearch" class="btnStyle1 float-right" title="검색" activity="READ">검색</a>
             </div>
           </div>
         </div>

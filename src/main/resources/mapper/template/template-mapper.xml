@@ -464,4 +464,135 @@
             AND CATEGORY_GRP_NAME = #{categoryGrpName}
     </select>
 
+    <sql id ="innerWhereSelectAlimTalkTemplateList">
+        <!-- 2021-06-29 : 실제 고객사ID, 프로젝트 ID 와 다르게 입력되며 사용여부 N으로 등록된다.
+        AND USE_YN = 'Y'
+        AND CORP_ID = #{corpId}
+        AND PROJECT_ID = #{projectId}
+        -->
+        AND TMPLT_STAT_CODE != 'D'
+        <if test="tmpltCode != '' and tmpltCode != null ">
+            AND TMPLT_CODE = #{tmpltCode}
+        </if>
+        <if test="searchText != '' and searchText != null ">
+            <if test="searchCondi == 'tmpltCode' ">
+            AND TMPLT_CODE LIKE CONCAT('%', #{searchText}, '%')
+            </if>
+            <if test="searchCondi == 'tmpltName' ">
+            AND TMPLT_NAME LIKE CONCAT('%', #{searchText}, '%')
+            </if>
+        </if>
+       <if test="searchStartDate != '' and searchStartDate != null ">
+            <if test="searchEndDate != '' and searchEndDate != null ">
+            AND REG_DT BETWEEN CONCAT(#{searchStartDate}, 'T00:00:00') AND CONCAT(#{searchEndDate}, 'T23:59:59')
+            </if>
+        </if>
+        <if test="searchTmpltStatCodes != null and searchTmpltStatCodes.size != 0 ">
+            AND TMPLT_STAT_CODE IN
+            <foreach collection="searchTmpltStatCodes" item="item" index="index" open="(" close=")" separator=",">
+                <if test='item == "RQ" '>'R', 'Q'</if>
+                <if test='item != "RQ" '>#{item}</if>
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id ="whereSelectAlimTalkTemplateList">
+        AND A.RANKING = 1
+    </sql>
+
+    <select id="selectAlimTalkTmpltListCnt" parameterType="hashmap" resultType="int">
+    /* template.selectAlimTalkTmpltListCnt - 알림톡 템플릿 리스트 카운트 조회 */
+        SELECT
+            COUNT(*) AS CNT
+        FROM (
+            SELECT
+                TMPLT.*
+                , CASE @vData WHEN TMPLT_CODE THEN @vRank := @vRank + 1 ELSE @vRank := 1 END AS RANKING
+                , (@vData:=TMPLT_CODE) AS vData
+            FROM (
+                SELECT CKTR.TMPLT_CODE, CKTR.TMPLT_STAT_CODE, CKTR.REG_DT, CKTR.TMPLT_NAME
+                FROM cm.CM_KKO_TMPLT_REQ CKTR
+                WHERE 1=1
+                <include refid="innerWhereSelectAlimTalkTemplateList"/>
+
+                UNION ALL
+
+                SELECT CKT.TMPLT_CODE, CKT.TMPLT_STAT_CODE, CKT.REG_DT, CKT.TMPLT_NAME
+                FROM cm.CM_KKO_TMPLT CKT
+                WHERE CKT.TMPLT_STAT_CODE = 'A'
+                <include refid="innerWhereSelectAlimTalkTemplateList"/>
+            ) TMPLT, (SELECT @vRank:=0, @vData:='') AS R
+        ) A
+        WHERE 1=1
+        <include refid="whereSelectAlimTalkTemplateList"/>
+    </select>
+
+    <select id="selectAlimTalkTmpltList" parameterType="string" resultType="camel">
+    /* template.selectAlimTalkTmpltList - 알림톡 템플릿 리스트 조회 */
+        SELECT
+            A.*
+            , @ROWNUM := @ROWNUM + 1 AS ROWNUM
+        FROM (
+            SELECT
+                TMPLT.*
+                , CASE @vData WHEN TMPLT_CODE THEN @vRank := @vRank + 1 ELSE @vRank := 1 END AS RANKING
+                , (@vData:=TMPLT_CODE) AS vData
+            FROM (
+                SELECT
+                    CKTR.SENDER_KEY
+                    , CKTR.CORP_ID
+                    , CKTR.PROJECT_ID
+                    , CKTR.TMPLT_CODE
+                    , CKTR.TMPLT_CATEGORY_CODE
+                    , CKTR.TMPLT_NAME
+                    , CKTR.TMPLT_MSG_TYPE
+                    , CKTR.SENDER_KEY_TYPE
+                    , cm_console.fnc_get_cd_name('SENDER_KEY_TYPE', CKTR.SENDER_KEY_TYPE, 1) AS SENDER_KEY_TYPE_NAME
+                    , CKTR.USE_YN
+                    , CKTR.TMPLT_STAT_CODE
+                    , cm_console.fnc_get_cd_name('TMPLT_STAT_CODE', CKTR.TMPLT_STAT_CODE, 2) AS TMPLT_STAT_CODE_NAME
+                    , CKTR.REG_DT
+                    , CKTR.TMPLT_REQ_DT
+                    , CKTR.TMPLT_INFO
+                    , CKTR.REASON
+                    , DATE_FORMAT(CKTR.UPD_DT, '%Y.%m.%d') AS UPD_DT
+                    , CKTR.APPROVAL_DT
+                FROM cm.CM_KKO_TMPLT_REQ CKTR
+                WHERE 1=1
+                <include refid="innerWhereSelectAlimTalkTemplateList"/>
+
+                UNION ALL
+
+                SELECT
+                    CKT.SENDER_KEY
+                    , CKT.CORP_ID
+                    , CKT.PROJECT_ID
+                    , CKT.TMPLT_CODE
+                    , CKT.TMPLT_CATEGORY_CODE
+                    , CKT.TMPLT_NAME
+                    , CKT.TMPLT_MSG_TYPE
+                    , CKT.SENDER_KEY_TYPE
+                    , cm_console.fnc_get_cd_name('SENDER_KEY_TYPE', CKT.SENDER_KEY_TYPE, 1) AS SENDER_KEY_TYPE_NAME
+                    , CKT.USE_YN
+                    , CKT.TMPLT_STAT_CODE
+                    , cm_console.fnc_get_cd_name('TMPLT_STAT_CODE', CKT.TMPLT_STAT_CODE, 2) AS TMPLT_STAT_CODE_NAME
+                    , CKT.REG_DT
+                    , CKT.TMPLT_REQ_DT
+                    , CKT.TMPLT_INFO
+                    , '' AS REASON
+                    , DATE_FORMAT(CKT.UPD_DT, '%Y.%m.%d') AS UPD_DT
+                    , CKT.APPROVAL_DT
+                FROM cm.CM_KKO_TMPLT CKT
+                WHERE CKT.TMPLT_STAT_CODE = 'A'
+                <include refid="innerWhereSelectAlimTalkTemplateList"/>
+            ) TMPLT, (SELECT @vRank:=0, @vData:='') AS R
+        ) A, (SELECT @ROWNUM:=0) TMP
+        WHERE 1=1
+        <include refid="whereSelectAlimTalkTemplateList"/>
+        ORDER BY REG_DT DESC
+        <if test='pagingYn == "Y" '>
+        LIMIT #{offset}, #{listSize}
+        </if>
+    </select>
+
 </mapper>
