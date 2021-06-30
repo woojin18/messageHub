@@ -231,7 +231,7 @@ export default {
         this.fnSelectfrndTalkTmpltInfo();
       } else {
         this.isInsert = true;
-        this.fnAddButton();
+        //this.fnAddButton();
       }
     },
     //템플릿 정보 조회

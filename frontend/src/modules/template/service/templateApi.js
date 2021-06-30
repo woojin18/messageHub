@@ -77,6 +77,12 @@ const excelDownloadAlimTalkTmplt = (params) => {
   return httpClient.post('/uc/template/excelDownloadAlimTalkTmplt', params, { headers: {"show-layer": "Yes", "activity":"READ"}, responseType: 'arraybuffer' })
   .then((response) => fnExcelDownCallback(response));
 };
+const selectAlimTalkInfo = (params) => {
+  return httpClient.post('/uc/template/selectAlimTalkInfo', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+const procInspectRequestKkoTmplt = (params) => {
+  return httpClient.post('/uc/template/procInspectRequestKkoTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+};
 
 /* RCS */
 const corpBrandCnt = (params) => {
@@ -126,6 +132,8 @@ export default {
     procApprvRequestKkoTmplt,
     procDeleteRequestKkoTmplt,
     excelDownloadAlimTalkTmplt,
+    procInspectRequestKkoTmplt,
+    selectAlimTalkInfo,
     corpBrandCnt,
     selectRcsTemplateList,
     rcsTemplateInit,

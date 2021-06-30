@@ -36,13 +36,25 @@
           <div class="of_h">
             <div class="float-left" style="width:22%"><h4>발신 프로필/그룹 *</h4></div>
             <div class="float-left" style="width:78%">
-              <select class="float-left selectStyle2" style="width:20%" v-model="tmpltData.senderKeyType" @change="fnSelectSenderKeyList">
+              <select 
+                class="float-left selectStyle2" 
+                style="width:20%" 
+                v-model="tmpltData.senderKeyType" 
+                @change="fnSelectSenderKeyList"
+                :disabled="!isInsert"
+              >
                 <option value="S">일반</option>
                 <option value="G">그룹</option>
               </select>
-              <select class="float-left selectStyle2" style="width:80%" v-model="tmpltData.senderKey">
+              <select v-if="isInsert" class="float-left selectStyle2" style="width:80%" v-model="tmpltData.senderKey">
                 <option value="">선택해주세요.</option>
-                <option v-for="senderKeyInfo in senderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.senderKey}}</option>
+                <option v-for="senderKeyInfo in senderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">
+                  <!-- {{tmpltData.senderKeyType == 'S' ? senderKeyInfo.kkoChId : senderKeyInfo.senderKey}} -->
+                  {{senderKeyInfo.senderKey}}
+                </option>
+              </select>
+              <select v-else class="float-left selectStyle2" style="width:80%" disabled>
+                <option value="">{{tmpltData.senderKey}}</option>
               </select>
             </div>
           </div>
@@ -64,13 +76,13 @@
           <div v-if="tmpltData.emphasizeType == 'TEXT'" class="of_h">
             <div class="float-left" style="width:22%"><h4>템플릿강조제목 *</h4></div>
             <div class="float-left" style="width:78%">
-              <input type="text" class="inputStyle" placeholder="최대 2줄 23자(24자부터 말줄임 처리, 권장하지 않음)" v-model="tmpltData.tmpltEmpsTitle" maxlength="50">
+              <input type="text" class="inputStyle" v-model="tmpltData.tmpltEmpsTitle" maxlength="50">
             </div>
           </div>
           <div v-if="tmpltData.emphasizeType == 'TEXT'" class="of_h">
             <div class="float-left" style="width:22%"><h4>템플릿강조부제목 *</h4></div>
             <div class="float-left" style="width:78%">
-              <input type="text" class="inputStyle" placeholder="최대 2줄 18자 (19자부터 말줄임 처리, 권장하지 않음)" v-model="tmpltData.tmpltEmpsSubTitle" maxlength="50">
+              <input type="text" class="inputStyle" v-model="tmpltData.tmpltEmpsSubTitle" maxlength="50">
             </div>
           </div>
           <div class="of_h">
@@ -80,7 +92,6 @@
               <textarea class="textareaStyle height190" v-model="tmpltData.tmpltContent" placeholder="템플릿 내용 최대 1,000자" maxlength="1000"></textarea>
             </div>
           </div>
-          <!-- TODO 카테고리 작업해야됨 -->
           <div class="of_h consolMarginTop">
             <div class="float-left" style="width:22%"><h4>카테고리 *</h4></div>
             <div class="float-left" style="width:78%">
@@ -100,7 +111,6 @@
               </div>
             </div>
           </div>
-          <!--// TODO 카테고리 작업해야됨 -->
           <div class="of_h">
             <div class="float-left" style="width:22%">
               <h4 class="inline-block mr20">버튼</h4><a @click="fnAddButton" class="btnStyle1 backBlack">추가 +</a>
@@ -166,9 +176,10 @@
           </div>
 
           <div class="mt20 float-right">
-            <a href="#" @click.prevent="fnApprvReqTmplt" class="btnStyle2 backRed float-left ml10" title="승인요청">승인요청</a>
-            <a href="#self" class="btnStyle2 backWhite float-left ml10" title="수정요청">수정요청</a>
-            <a href="#self" class="btnStyle2 float-left ml10">취소</a>
+            <a v-if="isInsert" href="#" @click.prevent="fnApprvReqTmplt" class="btnStyle2 backRed float-left ml10" title="승인요청">승인요청</a>
+            <a v-if="tmpltData.tmpltStatCode == 'T'" href="#" @click.prevent="fnInspectReqTmplt" class="btnStyle2 backRed float-left ml10" title="검수요청">검수요청</a>
+            <a v-if="tmpltData.tmpltStatCode == 'T' || tmpltData.tmpltStatCode == 'S'" href="#self" class="btnStyle2 backWhite float-left ml10" title="수정요청">수정요청</a>
+            <router-link :to="{ name: 'alimTalkTemplateList' }" tag="a" class="btnStyle2 float-left ml10">취소</router-link>
           </div>
 
         </div>
@@ -184,7 +195,7 @@ import {eventBus} from "@/modules/commonUtil/service/eventBus";
 export default {
   name: 'alimTalkTemplateManage',
   props: {
-    tmpltId: {
+    tmpltCode: {
       type: String,
       require: false,
       default: function() {
@@ -236,11 +247,79 @@ export default {
     }
   },
   mounted() {
-    this.fnSelectSenderKeyList();
     this.fnSelectKkoTmpltCatGrpList();
+    this.fnSetTemplateInfo();
+    if(this.isInsert){
+      this.fnSelectSenderKeyList();
+    }
   },
   methods: {
-    fnIsValid(){
+    //template 정보 조회
+    fnSetTemplateInfo(){
+      if(!this.$gfnCommonUtils.isEmpty(this.tmpltCode)){
+        this.isInsert = false;
+        this.fnSelectAlimTalkTmpltInfo();
+      } else {
+        this.isInsert = true;
+        //this.fnAddButton();
+      }
+    },
+    //템플릿 정보 조회
+    fnSelectAlimTalkTmpltInfo(){
+      const params = {tmpltCode: this.tmpltCode};
+      templateApi.selectAlimTalkInfo(params).then(response => {
+        const result = response.data;
+        if(result.success) {
+          if(result.data != null && result.data.length > 0){
+            let rtnData = result.data[0];
+            rtnData.buttonList = [];
+            this.tmpltData = Object.assign({}, rtnData);
+            
+            let tmpltInfo = JSON.parse(rtnData.tmpltInfo);
+            this.tmpltData.emphasizeType = tmpltInfo.templateEmphasizeType;
+            this.tmpltData.tmpltEmpsTitle = tmpltInfo.templateTitle;
+            this.tmpltData.tmpltEmpsSubTitle = tmpltInfo.templateSubtitle;
+            this.tmpltData.tmpltContent = tmpltInfo.templateContent;
+            this.tmpltData.buttonList = tmpltInfo.buttons;
+            
+            //set categoryInfo
+            this.categoryGrpName = this.tmpltData.categoryGrpName;
+            this.fnSelectKkoTmpltCatList();
+            this.tmpltData.categoryCode = this.tmpltData.tmpltCategoryCode;
+          }
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+          this.tmpltData = {imgUrl:'', buttonList:[]};
+          this.isInsert = true;
+        }
+      });
+    },
+    fnIsValidInspectReqTmplt(){
+      if(this.$gfnCommonUtils.isEmpty(this.tmpltCode) || !this.tmpltData.senderKey){
+        confirm.fnAlert(this.componentsTitle, '유효하지 않은 템플릿 정보입니다.');
+        return false;
+      }
+    },
+    fnInspectReqTmplt(){
+      if(this.fnIsValidInspectReqTmplt() == false) return;
+      eventBus.$on('callbackEventBus', this.fnProcInspectReqTmplt);
+      confirm.fnConfirm(this.componentsTitle, "알림톡 템플릿을 검수요청 하시겠습니까?", "확인");
+    },
+    fnProcInspectReqTmplt(){
+      let params = {
+        tmpltCode: this.tmpltCode,
+        senderKey: this.tmpltData.senderKey
+      };
+      templateApi.procInspectRequestKkoTmplt(params).then(response => {
+        const result = response.data;
+        if(result.success) {
+          confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 검수요청 하였습니다.');
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
+    fnIsValidApprvReqTmplt(){
       if(!this.tmpltData.senderKeyType){
         confirm.fnAlert(this.componentsTitle, '발신프로필타입을 선택해주세요.');
         return false;
@@ -318,7 +397,7 @@ export default {
       return true;
     },
     fnApprvReqTmplt(){
-      if(this.fnIsValid() == false) return;
+      if(this.fnIsValidApprvReqTmplt() == false) return;
       eventBus.$on('callbackEventBus', this.fnProcApprvReqTmplt);
       confirm.fnConfirm(this.componentsTitle, "알림톡 템플릿을 승인요청 하시겠습니까?", "확인");
     },
@@ -326,13 +405,11 @@ export default {
       //DATA Set
       let params = Object.assign({}, this.tmpltData);
       params.tmpltButtonsStr = JSON.stringify(this.tmpltData.buttonList);
-      console.log('approval request Data ===> ', params);
 
       templateApi.procApprvRequestKkoTmplt(params).then(response => {
         const result = response.data;
         if(result.success) {
-          console.log('procApprvRequestKkoTmplt result ===> ', result);
-          alert('성공');
+          confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 승인요청 하였습니다.');
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
@@ -380,9 +457,9 @@ export default {
       });
     },
     //카카오 템플릿 카테고리 그룹 목록 조회
-    fnSelectKkoTmpltCatGrpList(){
+    async fnSelectKkoTmpltCatGrpList(){
       const params = {};
-      templateApi.selectKkoTmpltCatGrpList(params).then(response => {
+      await templateApi.selectKkoTmpltCatGrpList(params).then(response => {
         const result = response.data;
         if(result.success) {
           this.kkoTmpltCatGrpList = Object.assign([], result.data);
@@ -392,10 +469,10 @@ export default {
       });
     },
     //카카오 템플릿 카테고리 그룹 목록 조회
-    fnSelectKkoTmpltCatList(){
+    async fnSelectKkoTmpltCatList(){
       this.tmpltData.categoryCode = '';
       const params = {categoryGrpName: this.categoryGrpName};
-      templateApi.selectKkoTmpltCatList(params).then(response => {
+      await templateApi.selectKkoTmpltCatList(params).then(response => {
         const result = response.data;
         if(result.success) {
           this.kkoTmpltCatList = Object.assign([], result.data);

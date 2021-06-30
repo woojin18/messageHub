@@ -565,6 +565,51 @@ public class TemplateController {
         return model;
     }
 
+    /**
+     * 친구톡 템플릿 정보 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectAlimTalkInfo")
+    public RestResult<?> selectAlimTalkInfo(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = tmpltSvc.selectAlimTalkTmpltList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{}.selectFrndTalkInfo Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 카카오 템플릿 검수 요청
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/procInspectRequestKkoTmplt")
+    public RestResult<?> procInspectRequestKkoTmplt(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        try {
+            rtn = tmpltSvc.procInspectRequestKkoTmplt(params);
+        } catch (Exception e) {
+            rtn.setFail("실패하였습니다.");
+            log.error("{}.procInspectRequestKkoTmplt Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
+
 
 
 

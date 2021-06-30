@@ -301,6 +301,7 @@
     /* sendMessage.selectKkoSenderKeyList - 카카오 발신 프로필키 일반 목록 조회 */
         SELECT
             CKC.SENDER_KEY
+            , CKC.KKO_CH_ID
         FROM cm.CM_KKO_CH CKC
         INNER JOIN cm.CM_KKO_CAT CAT
             ON CKC.CATEGORY_CODE = CAT.CATEGORY_CODE
@@ -308,7 +309,8 @@
         WHERE CKC.USE_YN = 'Y'
             AND CKC.CORP_ID = #{corpId}
             AND CKC.PROJECT_ID IN ('ALL', #{projectId})
-            AND JSON_CONTAINS(KKO_SVC_USE_INFO, JSON_OBJECT(#{kkoSvc}, 'Y'))
+            AND CKC.STAT = 'A'
+            AND CKC.KKO_CH_STAT = 'A'
     </select>
 
     <select id="selectKkoSenderGrpKeyList" parameterType="hashmap" resultType="camel">
