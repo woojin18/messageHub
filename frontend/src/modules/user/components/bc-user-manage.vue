@@ -38,7 +38,7 @@
 					<!-- 페이지당 리스트 개수 -->
 					<div class="of_h inline">
 						<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
-							<SelectLayer @fnSelected="fnSelected"></SelectLayer>
+							<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
 						</div>
 					</div>
 
