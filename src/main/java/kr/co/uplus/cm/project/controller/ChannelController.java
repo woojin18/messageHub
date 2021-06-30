@@ -411,4 +411,18 @@ public class ChannelController {
 		return channelService.selectKkoChGroup(params);
 	}
 	
+	@PostMapping("/saveKkoChForApi")
+	public RestResult<?> saveKkoChForApi(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			channelService.saveKkoChForApi(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
+	}
+	
 }

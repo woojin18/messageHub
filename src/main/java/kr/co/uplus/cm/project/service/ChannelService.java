@@ -930,7 +930,18 @@ public class ChannelService {
 		
 		Map<String, Object> getHeaderMap = new HashMap<String, Object>();
 		
-		rtn.setData(apiInterface.post("/console/v1/kko/senderkey/category/all", getHeaderMap));
+		Map<String, Object> result = apiInterface.post("/console/v1/kko/senderkey/category/all", getHeaderMap);
+		
+		// 성공인지 실패인지 체크
+		if( "10000".equals(result.get("rslt")) ) {
+			rtn.setData(result);
+		} else if ( "500100".equals(result.get("rslt")) ) {
+			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+			throw new Exception(errMsg);
+		} else {
+			String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+			throw new Exception(errMsg);
+		}
 		
 		return rtn;
 	}
@@ -973,5 +984,119 @@ public class ChannelService {
 		rtn.setData(list);
 		
 		return rtn;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void saveKkoChForApi(Map<String, Object> params) throws Exception {
+		String sts = CommonUtils.getString(params.get("sts"));
+		
+		if( "C".equals(sts) ) {
+			String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForMoApi",params)); 
+			params.put("apiKey", apiKey);
+			
+			// 토큰 API 통신 처리
+			Map<String, Object> apiBodyMap = new HashMap<>();
+			apiBodyMap.put("phoneNumber",	CommonUtils.getString(params.get("phoneNumber")));
+			apiBodyMap.put("kkoChId",		CommonUtils.getString(params.get("kkoChId")));
+			
+			Map<String, Object> headerMap = new HashMap<String, Object>();
+			headerMap.put("apiKey",		apiKey);
+			
+			Map<String, Object> result =  apiInterface.post("/console/v1/kko/senderkey/token", null, apiBodyMap, headerMap);
+			
+			System.out.println("------------------------------------------------- saveKkoChForApi result : " + result);
+			
+			String kkoToken = "";
+			
+			// 성공인지 실패인지 체크
+			if( "10000".equals(result.get("rslt")) ) {
+				kkoToken = CommonUtils.getString(
+							((Map<String, Object>)result.get("data")).get("token")
+						);
+			} else if ( "500100".equals(result.get("rslt")) ) {
+				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				throw new Exception(errMsg);
+			} else {
+				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				throw new Exception(errMsg);
+			}
+			
+			// 토큰 API 통신 처리
+			Map<String, Object> apiBodyMap2 = new HashMap<>();
+			apiBodyMap.put("phoneNumber",	CommonUtils.getString(params.get("phoneNumber")));
+			apiBodyMap.put("token",			CommonUtils.getString(params.get("token")));
+			apiBodyMap.put("categoryCode",	CommonUtils.getString(params.get("categoryCode")));
+			apiBodyMap.put("kkoChId",		CommonUtils.getString(params.get("kkoChId")));
+			
+			Map<String, Object> headerMap2 = new HashMap<String, Object>();
+			headerMap.put("apiKey",		apiKey);
+			
+			Map<String, Object> result2 =  apiInterface.post("/console/v1/kko/senderkey/channel/create", null, apiBodyMap2, headerMap2);
+			
+			System.out.println("------------------------------------------------- saveKkoChForApi result2 : " + result2);
+			
+			
+		} else if( "U".equals(sts) ) {
+			String apiKey = CommonUtils.getString(params.get("apiKey")); 
+			params.put("apiKey", apiKey);
+			
+			Map<String, Object> apiBodyMap = new HashMap<>();
+			apiBodyMap.put("moNumber",		CommonUtils.getString(params.get("moNumber")));
+			apiBodyMap.put("apiKey",		apiKey);
+			apiBodyMap.put("moType",		CommonUtils.getString(params.get("moType")));
+			apiBodyMap.put("projectId",		CommonUtils.getString(params.get("projectId")));
+			apiBodyMap.put("useYn",			"Y");
+			apiBodyMap.put("webhookUrl",	"");
+			
+			Map<String, Object> headerMap = new HashMap<String, Object>();
+			headerMap.put("type",		sts);
+			
+			// API 통신 처리
+			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
+			
+			System.out.println("------------------------------------------------- saveMoCallback U result : " + result);
+			
+			// 성공인지 실패인지 체크
+			if( "10000".equals(result.get("rslt")) ) {
+			} else if ( "500100".equals(result.get("rslt")) ) {
+				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				throw new Exception(errMsg);
+			} else {
+				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				throw new Exception(errMsg);
+			}
+			
+			generalDao.updateGernal(DB.QRY_UPDATE_MO_CALLBACK, params);
+		} else if( "D".equals(sts) ) {
+			String apiKey = CommonUtils.getString(params.get("apiKey")); 
+			params.put("apiKey", apiKey);
+			
+			Map<String, Object> apiBodyMap = new HashMap<>();
+			apiBodyMap.put("moNumber",		CommonUtils.getString(params.get("moNumber")));
+			apiBodyMap.put("apiKey",		apiKey);
+			apiBodyMap.put("moType",		CommonUtils.getString(params.get("moType")));
+			apiBodyMap.put("projectId",		CommonUtils.getString(params.get("projectId")));
+			apiBodyMap.put("useYn",			"Y");
+			apiBodyMap.put("webhookUrl",	"");
+			
+			Map<String, Object> headerMap = new HashMap<String, Object>();
+			headerMap.put("type",		sts);
+			
+			// API 통신 처리
+			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
+			
+			// 성공인지 실패인지 체크
+			if( "10000".equals(result.get("rslt")) ) {
+			} else if ( "500100".equals(result.get("rslt")) ) {
+				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				throw new Exception(errMsg);
+			} else {
+				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				throw new Exception(errMsg);
+			}
+			
+			generalDao.deleteGernal(DB.QRY_DELETE_MO_CALLBACK, params);
+		}
 	}
 }

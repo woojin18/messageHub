@@ -60,6 +60,11 @@ const selectKkoChGroup = (params) => {
     return httpClient.post('/projectApi/channel/selectKkoChGroup', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
 };
 
+const saveKkoChForApi = (params) => {
+    return httpClient.post('/projectApi/channel/saveKkoChForApi', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
+
 
 export default {
     selectRcsBrandList,
@@ -76,5 +81,6 @@ export default {
     saveMoCallback,
     getKkoCategory,
     selectKkoCh,
-    selectKkoChGroup
+    selectKkoChGroup,
+    saveKkoChForApi
 };

@@ -691,11 +691,12 @@
 		,		A.PROJECT_ID
 		,		A.CORP_ID
 		,		A.KKO_CH_ID
-		,		A.KKO_SVC_USE_INFO
 		,		A.CATEGORY_CODE
-		,		A.ADMIN_PHONE
 		,		A.USE_YN
 		,		A.REG_DT
+		,		A.UPD_DT
+		,		A.KKO_CH_STAT
+		,		A.STAT
 		,		CASE
 					WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
 					ELSE 'N'
@@ -709,24 +710,13 @@
 	
 	<select id="selectKkoChGroup" resultType="camel">
 		/* channel.selectKkoChGroup */
-		SELECT	A.SENDER_KEY
-		,		A.RELAY
-		,		A.PROJECT_ID
+		SELECT	A.GRP_KEY
+		,		A.SENDER_KEY
 		,		A.CORP_ID
-		,		A.KKO_CH_ID
-		,		A.KKO_SVC_USE_INFO
-		,		A.CATEGORY_CODE
-		,		A.ADMIN_PHONE
-		,		A.USE_YN
 		,		A.REG_DT
-		,		CASE
-					WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
-					ELSE 'N'
-				END AS OTHER_PROJECT_USE_YN
-		FROM	cm.CM_KKO_CH A
-		LEFT OUTER JOIN cm_console.CM_PROJECT B
-			ON A.PROJECT_ID = B.PROJECT_ID
-		WHERE	B.CORP_ID = #{corpId}
+		,		A.USE_YN
+		FROM	cm.CM_KKO_SENDER_GRP A
+		WHERE	A.CORP_ID = #{corpId}
 	</select>
 	
 </mapper>

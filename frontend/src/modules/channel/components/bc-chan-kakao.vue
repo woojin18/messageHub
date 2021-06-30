@@ -1,8 +1,8 @@
 <template>
   <div>
-    <regPopup />
-    <grpMngPopup/>
-    <grpAddPopup/>
+    <regPopup :save_status="save_status" :row_data="row_data" :projectId="projectId" />
+    <grpMngPopup :save_status="save_status" :row_data="row_data" :projectId="projectId" />
+    <grpAddPopup :save_status="save_status" :row_data="row_data" :projectId="projectId" />
 		<article>
 			<div class="tab-content" style="border-top:1px solid #D5D5D5">
 				<!--  tab1 -->
@@ -173,11 +173,14 @@ export default {
 		// 리스트 
 		data : {},
 		pageInfo: {},
+		row_data : {},
 		data2 : {},
 		pageInfo2: {},
+		row_data2 : {},
 		// 프로젝트 정보
 		projectId : '',
       	projectName : '',
+		save_status : '',
 		// 검색조건
 		srcSenderKey : '',
 		srcUseYn : ''
@@ -202,7 +205,7 @@ export default {
 	};
 
     this.fnSearch();
-	this.fnSearch2();
+	/* this.fnSearch2(); */
   },
   methods: {
     // 검색
@@ -216,7 +219,7 @@ export default {
 		}
 		
 		Api.selectKkoCh(params).then(response =>{
-			console.log(response);
+			/* console.log(response); */
 			this.data = response.data.data;
 		});
     },
@@ -230,14 +233,21 @@ export default {
 			"pageInfo"    	: this.pageInfo2
 		}
 		
-		Api.selectRcsBrandList(params).then(response =>{
-			console.log(response);
+		Api.selectKkoChGroup(params).then(response =>{
+			/* console.log(response); */
 			this.data2 = response.data.data;
 		});
     },
     // 발신 프로필 그룹 추가
     fnReg(){
-      jQuery("#regPopup").modal('show');
+		this.save_status = "C";
+		this.row_data = { 
+			"phoneNumber" 	    : "",
+			"categoryId"  		: "",
+			"kkoChId"    		: "",
+			"otherProjectYn" 	: "Y" 
+		}
+    	jQuery("#regPopup").modal('show');
     },
     // 발신 프로필 그룹 추가
     fnGrpMng(){
