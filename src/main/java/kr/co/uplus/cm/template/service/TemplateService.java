@@ -25,7 +25,7 @@ import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkButtonsInfo;
-import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltDelRequestData;
+import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltCommonRequestData;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltRegRequestData;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -512,7 +512,7 @@ public class TemplateService {
         log.info("{}.procDeleteRequestKkoTmplt Start ====> params : {}", this.getClass(), params);
 
         RestResult<Object> rtn = new RestResult<Object>();
-        AlimTalkTmpltDelRequestData requestData = null;
+        AlimTalkTmpltCommonRequestData requestData = null;
         List<String> tmpltCodes = null;
 
         if(params.containsKey("tmpltCodes")) {
@@ -553,11 +553,11 @@ public class TemplateService {
             tmpltInfo = (Map<String, Object>) rtnList.get(0);
             tmpltStatCode = CommonUtils.getStrValue(tmpltInfo, "tmpltStatCode");
             senderKey = CommonUtils.getStrValue(tmpltInfo, "senderKey");
-            if(!StringUtils.equals(tmpltStatCode, Const.TmpltStatCode.REG_COMPLETE)) {
+            if(!StringUtils.equals(tmpltStatCode, Const.TmpltStatCode.REQ_DONE)) {
                 continue;
             }
 
-            requestData = new AlimTalkTmpltDelRequestData();
+            requestData = new AlimTalkTmpltCommonRequestData();
             requestData.setSenderKey(senderKey);
             requestData.setTemplateCode(tmpltCode);
 
@@ -578,6 +578,63 @@ public class TemplateService {
 
     }
 
+    /**
+     * 알림톡 템플릿 검수 요청
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public RestResult<Object> procInspectRequestKkoTmplt(Map<String, Object> params) throws Exception {
+        log.info("{}.procDeleteRequestKkoTmplt Start ====> params : {}", this.getClass(), params);
 
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        AlimTalkTmpltCommonRequestData requestData = null;
+        String tmpltCode = CommonUtils.getStrValue(params, "tmpltCode");
+        String senderKey = CommonUtils.getStrValue(params, "senderKey");
+
+        if(StringUtils.isBlank(tmpltCode) || StringUtils.isBlank(senderKey)) {
+            rtn.setFail("잘못된 템플릿 정보입니다.");
+            log.warn("{}.procDeleteRequestKkoTmplt => tmpltCode : {}, senderKey : {}"
+                    , this.getClass(), tmpltCode, senderKey);
+            return rtn;
+        }
+
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ALIM_TALK_TMPLT_LIST, params);
+        if(rtnList == null || rtnList.size() == 0) {
+            rtn.setFail("잘못된 템플릿 정보입니다.");
+            log.warn("{}.procDeleteRequestKkoTmplt => tmpltCode : {}, senderKey : {}"
+                    , this.getClass(), tmpltCode, senderKey);
+            return rtn;
+        }
+
+        requestData = new AlimTalkTmpltCommonRequestData();
+        requestData.setSenderKey(senderKey);
+        requestData.setTemplateCode(tmpltCode);
+
+        String corpId = CommonUtils.getStrValue(params, "corpId");
+        String projectId = CommonUtils.getStrValue(params, "projectId");
+        String apiKey = commonService.getApiKey(corpId, projectId);
+
+        Map<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("apiKey", apiKey);
+
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(requestData);
+        Map<String, Object> responseBody = apiInterface.sendMsg(ApiConfig.INSPECT_KKO_TMPLT_REQ_API_URI, headerMap, jsonString);
+
+        String rslt = "";
+        if(responseBody != null) {
+            rslt = CommonUtils.getStrValue(responseBody, "rslt");
+        }
+
+        if(!StringUtils.equals(ApiConfig.GW_API_SUCCESS, rslt)) {
+            rtn.setFail("알림톡 템플릿 검수요청에 실패하였습니다.");
+            log.warn("{}.procInspectRequestKkoTmplt Fail -request: {}, response: {}", this.getClass(), jsonString, responseBody);
+        }
+
+        return rtn;
+    }
 
 }

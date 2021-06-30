@@ -461,18 +461,26 @@
             , EXCLUSION
         FROM cm.CM_KKO_TMPLT_CAT CKTC
         WHERE CKTC.USE_YN = 'Y'
+        <if test="categoryGrpName != '' and categoryGrpName != null ">
             AND CATEGORY_GRP_NAME = #{categoryGrpName}
+        </if>
+        <if test="categoryCode != '' and categoryCode != null ">
+            AND CATEGORY_CODE = #{categoryCode}
+        </if>
     </select>
 
     <sql id ="innerWhereSelectAlimTalkTemplateList">
         <!-- 2021-06-29 : 실제 고객사ID, 프로젝트 ID 와 다르게 입력되며 사용여부 N으로 등록된다.
         AND USE_YN = 'Y'
         AND CORP_ID = #{corpId}
-        AND PROJECT_ID = #{projectId}
+        AND PROJECT_ID IN ('ALL', #{projectId})
         -->
         AND TMPLT_STAT_CODE != 'D'
         <if test="tmpltCode != '' and tmpltCode != null ">
             AND TMPLT_CODE = #{tmpltCode}
+        </if>
+        <if test="senderKey != '' and senderKey != null ">
+            AND SENDER_KEY = #{senderKey}
         </if>
         <if test="searchText != '' and searchText != null ">
             <if test="searchCondi == 'tmpltCode' ">
@@ -531,6 +539,14 @@
     /* template.selectAlimTalkTmpltList - 알림톡 템플릿 리스트 조회 */
         SELECT
             A.*
+            , CASE
+                WHEN A.SENDER_KEY_TYPE = 'S'
+                THEN (SELECT X.KKO_CH_ID FROM cm.CM_KKO_CH X WHERE X.SENDER_KEY = A.SENDER_KEY AND X.CORP_ID = A.CORP_ID AND X.PROJECT_ID = A.PROJECT_ID)
+                ELSE A.SENDER_KEY
+            END AS KKO_CH_ID
+            , (SELECT X.CATEGORY_GRP_NAME FROM cm.CM_KKO_TMPLT_CAT X WHERE X.CATEGORY_CODE = A.TMPLT_CATEGORY_CODE LIMIT 1) AS CATEGORY_GRP_NAME
+            , cm_console.fnc_get_cd_name('SENDER_KEY_TYPE', A.SENDER_KEY_TYPE, 1) AS SENDER_KEY_TYPE_NAME
+            , cm_console.fnc_get_cd_name('TMPLT_STAT_CODE', A.TMPLT_STAT_CODE, 1) AS TMPLT_STAT_CODE_NAME
             , @ROWNUM := @ROWNUM + 1 AS ROWNUM
         FROM (
             SELECT
@@ -547,10 +563,8 @@
                     , CKTR.TMPLT_NAME
                     , CKTR.TMPLT_MSG_TYPE
                     , CKTR.SENDER_KEY_TYPE
-                    , cm_console.fnc_get_cd_name('SENDER_KEY_TYPE', CKTR.SENDER_KEY_TYPE, 1) AS SENDER_KEY_TYPE_NAME
                     , CKTR.USE_YN
                     , CKTR.TMPLT_STAT_CODE
-                    , cm_console.fnc_get_cd_name('TMPLT_STAT_CODE', CKTR.TMPLT_STAT_CODE, 2) AS TMPLT_STAT_CODE_NAME
                     , CKTR.REG_DT
                     , CKTR.TMPLT_REQ_DT
                     , CKTR.TMPLT_INFO
@@ -572,10 +586,8 @@
                     , CKT.TMPLT_NAME
                     , CKT.TMPLT_MSG_TYPE
                     , CKT.SENDER_KEY_TYPE
-                    , cm_console.fnc_get_cd_name('SENDER_KEY_TYPE', CKT.SENDER_KEY_TYPE, 1) AS SENDER_KEY_TYPE_NAME
                     , CKT.USE_YN
                     , CKT.TMPLT_STAT_CODE
-                    , cm_console.fnc_get_cd_name('TMPLT_STAT_CODE', CKT.TMPLT_STAT_CODE, 2) AS TMPLT_STAT_CODE_NAME
                     , CKT.REG_DT
                     , CKT.TMPLT_REQ_DT
                     , CKT.TMPLT_INFO

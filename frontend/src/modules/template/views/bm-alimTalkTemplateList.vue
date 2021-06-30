@@ -138,7 +138,15 @@
                       <router-link :to="{ name: 'alimTalkTemplateManage', params: { tmpltCode: contant.tmpltCode }}">{{contant.tmpltCode}}</router-link>
                     </td>
                     <td class="text-left">{{contant.tmpltName}}</td>
-                    <td class="text-center">{{contant.tmpltStatCodeName}}</td>
+                    <td v-if="contant.tmpltStatCode == 'S'" class="text-center">
+                      <a 
+                        href="#" 
+                        @click.prevent="fnOpenAlimTalkRejectReasonLayer(contant.reason)"
+                      >{{contant.tmpltStatCodeName}}</a>
+                    </td>
+                    <td v-else class="text-center">
+                      {{contant.tmpltStatCodeName}}
+                    </td>
                     <td class="text-center">{{contant.senderKeyTypeName}}</td>
                     <td class="text-left">{{contant.senderKey}}</td>
                     <td class="text-center">{{contant.updDt}}</td>
@@ -161,6 +169,10 @@
       <!-- pagination -->
       <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
       <!-- //pagination -->
+      <AlimTalkRejectReasonLayer 
+        :alimTalkRejectReasonOpen.sync="alimTalkRejectReasonOpen"
+        :rejectReason="rejectReason"
+      ></AlimTalkRejectReasonLayer>
   </div>
 </template>
 
@@ -168,6 +180,7 @@
 import Calendar from "@/components/Calendar.vue";
 import PageLayer from '@/components/PageLayer.vue';
 import SelectLayer from '@/components/SelectLayer.vue';
+import AlimTalkRejectReasonLayer from "@/modules/template/components/bp-alimTalkRejectReason.vue";
 
 import templateApi from "@/modules/template/service/templateApi.js";
 import commonApi from "@/modules/commonUtil/service/commonUtilApi.js";
@@ -179,7 +192,8 @@ export default {
   components: {
     Calendar,
     PageLayer,
-    SelectLayer
+    SelectLayer,
+    AlimTalkRejectReasonLayer
   },
   props: {
     searchData : {
@@ -205,20 +219,13 @@ export default {
   },
   data() {
     return {
+      alimTalkRejectReasonOpen : false,
+      rejectReason: '',
       tmpltStatCodeAllSelected: false,
       listAllChecked: false,
       listChkBox: [],
       searchDateInterval: 7,
-      tmpltStatCodeList : [
-        /* 
-        R: 검수중(롯데), Q: 검수중(카카오) => 통합
-        D: 삭제 => 제외
-        */
-        {codeVal1: 'T', codeName1: '등록완료'},
-        {codeVal1: 'RQ', codeName1: '검수중'},
-        {codeVal1: 'A', codeName1: '승인'},
-        {codeVal1: 'S', codeName1: '반려'},
-      ],
+      tmpltStatCodeList : [],
       listSize : 10,  // select 박스 value (출력 갯수 이벤트)
       pageNo : 1,  // 현재 페이징 위치
       totCnt : 0,  //전체 리스트 수
@@ -228,10 +235,14 @@ export default {
   },
   mounted() {
     this.fnSetIntervalSearchDate(this.searchDateInterval);
-    //this.fnSelectCodeList();  //DB 코드와 노출이 다름
+    this.fnSelectTmpltStatCodeList();
     this.fnPageNoResetSearch();
   },
   methods: {
+    fnOpenAlimTalkRejectReasonLayer(rejectReason){
+      this.rejectReason = rejectReason;
+      this.alimTalkRejectReasonOpen = true;
+    },
     //템플릿 엑셀 다운로드
     fnExcelDownLoad(){
       const params = this.searchData;
@@ -239,7 +250,6 @@ export default {
     },
     fnDeleteReqTmplt(){
       //유효성 검사
-      console.log('this.listChkBox ===>> ', this.listChkBox);
       if(this.listChkBox == null || this.listChkBox.length == 0){
         confirm.fnAlert(this.componentsTitle, '삭제할 항목을 선택해주세요.');
         return;
@@ -274,7 +284,7 @@ export default {
         });
       }
     },
-    async fnSelectCodeList(){
+    async fnSelectTmpltStatCodeList(){
       let params = {
         codeTypeCd: 'TMPLT_STAT_CODE',
         useYn: 'Y'
@@ -282,7 +292,13 @@ export default {
       await commonApi.selectCodeList(params).then(response =>{
         const result = response.data;
         if(result.success) {
-          this.tmpltStatCodeList = Object.assign([], result.data);
+          const vm = this;
+          this.tmpltStatCodeList = [];
+          result.data.forEach(function(codeInfo){
+            if(codeInfo.codeVal1 != 'D'){
+              vm.tmpltStatCodeList.push(codeInfo);
+            }
+          });
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
@@ -296,8 +312,7 @@ export default {
           return false;
         }
       }
-
-      const vm = this;
+      
       this.contants = [];
       let params = Object.assign({}, this.searchData);
       params.pageNo = this.pageNo;
@@ -346,3 +361,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+input[class="boardCheckStyle"]:disabled + label:before {
+  background: #ccc;
+}
+</style>

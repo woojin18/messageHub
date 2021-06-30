@@ -66,6 +66,13 @@ export default {
         return [];
       }
     },
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: function() {
+        return '테스트 발송';
+      }
+    },
   },
   data() {
     return {
