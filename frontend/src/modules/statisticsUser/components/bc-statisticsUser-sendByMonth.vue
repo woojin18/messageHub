@@ -10,9 +10,9 @@
 						<div>
 							<h4 class="inline-block" style="width:6%">조회기간</h4>
 							<div class="inline-block" style="width:30%">
-								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchData.searchStartDate">
+								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchStartDate">
 								~
-								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchData.searchEndDate">
+								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchEndDate">
 							</div>
 							<ul class="tab_s2 ml20">
 								<li :class="this.searchDateInterval==3 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(3);" title="3개월 서비스 검색">3개월</a></li>
@@ -146,20 +146,10 @@ export default {
 components: {
 		BarChart,
 	},
-	props: {
-		searchData : {
-			type: Object,
-			require: false,
-			default: function() {
-				return {
-					'searchStartDate' : '',
-					'searchEndDate' : '',
-				}
-			}
-		}
-	},
 	data () {
 		return {
+			searchStartDate : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -3+1),
+			searchEndDate : this.$gfnCommonUtils.getCurretDate('yyyy-mm'),
 			searchDateInterval: 3,
 			componentsTitle: '발송 통계',
 			statisDataList: [],
@@ -207,7 +197,6 @@ components: {
 	},
 	mounted() {
 		this.fnCalendarInit();
-		this.fnSetIntervalSearchDate(this.searchDateInterval);
 		this.fnStatisList();
 		this.fnStatisCntList();
 	},
@@ -221,6 +210,7 @@ components: {
 				buttonImage:'../../se2/images/datepicker.png',
 				buttonImageOnly: true,
 				showOn: 'button',
+				maxDate:0,
 			});
 			jQuery("#endDate").monthpicker({
 				monthNames:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
@@ -236,16 +226,24 @@ components: {
 		fnSearch() {
 			this.selectedChannel = 'PUSH';
 			this.loaded = false;
+			// 조회일자 검증
+			if(!this.fnChkValidation()) return false;
 			this.fnInitChart();
 			this.fnStatisList();
 			this.fnStatisCntList();
 		},
-		// 일별 전송건수 및 비율
+		// 월별 전송건수 및 비율
 		fnStatisList() {
 			let vm = this;
-			let params = Object.assign({}, this.searchData);
-			params.corpId = tokenSvc.getToken().principal.corpId;
-			params.dateStatus = 'MONTH';
+			this.searchStartDate = jQuery("#startDate").val();
+			this.searchEndDate = jQuery("#endDate").val();
+
+			let params = {
+				searchStartDate	: this.searchStartDate,
+				searchEndDate	: this.searchEndDate,
+				corpId			: tokenSvc.getToken().principal.corpId,
+				dateStatus		: 'MONTH',
+			};
 
 			statisticsUserApi.selectSendByList(params).then(response =>{
 				let result = response.data;
@@ -257,12 +255,19 @@ components: {
 				}
 			});
 		},
-		// 일별 전송건수 (차트)
+		// 월별 전송건수 (차트)
 		fnStatisCntList() {
 			let vm = this;
-			let params = Object.assign({}, this.searchData);
-			params.corpId = tokenSvc.getToken().principal.corpId;
-			params.dateStatus = 'MONTH';
+
+			this.searchStartDate = jQuery("#startDate").val();
+			this.searchEndDate = jQuery("#endDate").val();
+
+			let params = {
+				searchStartDate	: this.searchStartDate,
+				searchEndDate	: this.searchEndDate,
+				corpId			: tokenSvc.getToken().principal.corpId,
+				dateStatus		: 'MONTH',
+			};
 
 			statisticsUserApi.selectSendByCntList(params).then(response =>{
 				let result = response.data;
@@ -274,7 +279,7 @@ components: {
 					vm.fillData();
 					// Chaart Loding Complete
 					vm.loaded = true;
-				} else { 
+				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
 			});
@@ -282,14 +287,8 @@ components: {
 		//검색일자변경
 		fnSetIntervalSearchDate(interval){
 			this.searchDateInterval = interval;
-			this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate('yyyy-mm');
-			this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -this.searchDateInterval +1);
-		},
-		fnUpdateStartDate(sltDate) {
-			this.searchData.searchStartDate = sltDate;
-		},
-		fnUpdateEndDate(sltDate) {
-			this.searchData.searchEndDate = sltDate;
+			this.searchEndDate = this.$gfnCommonUtils.getCurretDate('yyyy-mm');
+			this.searchStartDate = this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -this.searchDateInterval +1);
 		},
 		// 채널 선택
 		fnSetStatisData(channel) {
@@ -310,7 +309,7 @@ components: {
 				jQuery("#setMms").addClass('active');
 			}
 		},
-		// 상당 타이틀 데이터
+		// 상단 타이틀 데이터
 		fnAssignTitleData() {
 			let dataList		= this.statisDataList;
 			let pushInfo		= this.pushInfo;
@@ -558,7 +557,42 @@ components: {
 			this.friendtalkSuccFailRsltDataLabels = [];
 			this.friendtalkSuccRsltDatasets = [];
 			this.friendtalkFailRsltDatasets = [];
-		}
+		},
+		// 유효성 검사
+		fnChkValidation() {
+			// 5년전 월
+			let date = new Date();
+			date.setFullYear(date.getFullYear() -5);
+			let beforeFiveYear = this.$gfnCommonUtils.formatDate(date, 'yyyymm');
+
+			// 종료월의 12개월 이전 월
+			let searchStartMonth = jQuery("#startDate").val();
+			let searchEndMonth = jQuery("#endDate").val();
+
+			let dateParts = searchEndMonth.split('-');
+			let endMonth = new Date(dateParts[0], dateParts[1] - 1);
+			endMonth.setMonth(endMonth.getMonth()-12);
+			let before12Month = this.$gfnCommonUtils.formatDate(endMonth, 'yyyymm');
+
+			if(searchStartMonth && searchEndMonth) {
+				if(searchStartMonth.replace(/[^0-9]/g, '') > searchEndMonth.replace(/[^0-9]/g, '')){
+					confirm.fnAlert(this.title, '시작월은 종료월보다 클 수 없습니다.');
+					return false;
+				}
+			}
+
+			if(searchStartMonth.replace(/[^0-9]/g, '') < beforeFiveYear
+				|| searchEndMonth.replace(/[^0-9]/g, '') < beforeFiveYear) {
+					confirm.fnAlert(this.title, '발송일 기준 최근 5년까지 조회가 가능합니다.');
+					return false;
+				}
+
+			if(searchStartMonth.replace(/[^0-9]/g, '') < before12Month) {
+				confirm.fnAlert(this.title, '최대 조회 가능 범위는 12개월 입니다.');
+				return false;
+			}
+			return true;
+		},
 	},
 }
 </script>

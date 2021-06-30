@@ -214,6 +214,7 @@ components: {
 	},
 	methods: {
 		fnSearch() {
+			if(!this.fnChkValidation()) return false;
 			this.selectedChannel = 'PUSH';
 			this.loaded = false;
 			this.fnInitChart();
@@ -538,7 +539,38 @@ components: {
 			this.friendtalkSuccFailRsltDataLabels = [];
 			this.friendtalkSuccRsltDatasets = [];
 			this.friendtalkFailRsltDatasets = [];
-		}
+		},
+		// 유효성 검사
+		fnChkValidation() {
+			// 1년전 일자
+			let beforeOneYear = this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -365).replace(/[^0-9]/g, '');
+			// 종료일의 한달 전 일자
+			let dateParts = this.searchData.searchEndDate.split('-');
+			let beforeOneMonth = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+			beforeOneMonth.setMonth(beforeOneMonth.getMonth() -1 );
+			beforeOneMonth = this.$gfnCommonUtils.formatDate(beforeOneMonth, 'yyyymmdd');
+
+			if(this.searchData.searchStartDate && this.searchData.searchEndDate) {
+				if(this.searchData.searchStartDate.replace(/[^0-9]/g, '') > this.searchData.searchEndDate.replace(/[^0-9]/g, '')){
+					confirm.fnAlert(this.title, '시작일은 종료일보다 클 수 없습니다.');
+					return false;
+				}
+			}
+
+			if(this.searchData.searchStartDate.replace(/[^0-9]/g, '') < beforeOneYear
+			|| this.searchData.searchEndDate.replace(/[^0-9]/g, '') < beforeOneYear) {
+				confirm.fnAlert(this.title, '발송일 기준 최근 12개월까지 조회가 가능합니다.');
+				return false;
+			}
+
+			if(this.searchData.searchStartDate.replace(/[^0-9]/g, '') < beforeOneMonth) {
+				confirm.fnAlert(this.title, '최대 조회 가능 범위는 1개월 입니다.');
+				return false;
+			}
+
+			return true;
+		},
 	},
+	
 }
 </script>

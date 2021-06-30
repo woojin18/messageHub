@@ -252,10 +252,12 @@ export default {
 				if(this.searchData.searchStartDate.replace(/[^0-9]/g, '') < beforeOneYear
 				|| this.searchData.searchEndDate.replace(/[^0-9]/g, '') < beforeOneYear) {
 					confirm.fnAlert(this.title, '발송일 기준 최근 12개월까지 조회가 가능합니다.');
+					return false;
 				}
 
 				if(this.searchData.searchStartDate.replace(/[^0-9]/g, '') < beforeOneMonth) {
 					confirm.fnAlert(this.title, '최대 조회 가능 범위는 1개월 입니다.');
+					return false;
 				}
 
 			} else {
@@ -283,10 +285,12 @@ export default {
 				if(searchStartMonth.replace(/[^0-9]/g, '') < beforeFiveYear
 				|| searchEndMonth.replace(/[^0-9]/g, '') < beforeFiveYear) {
 					confirm.fnAlert(this.title, '발송일 기준 최근 5년까지 조회가 가능합니다.');
+					return false;
 				}
 
 				if(searchStartMonth.replace(/[^0-9]/g, '') < before12Month) {
 					confirm.fnAlert(this.title, '최대 조회 가능 범위는 12개월 입니다.');
+					return false;
 				}
 			}
 			return true;
