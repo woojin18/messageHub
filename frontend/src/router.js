@@ -88,6 +88,22 @@ const router = new Router({
 				},
 				...mainRoutes,
 				...customerRoutes,
+			]
+		},
+		{
+			path: '/sign',
+			component: PublicLayout,
+			children: [
+				{
+					path: '/view/error/404',
+					component: () => import('./views/ErrorPage404.vue'),
+					meta: { public: true }
+				},
+				{
+					path: '/view/error/500',
+					component: () => import('./views/ErrorPage500.vue'),
+					meta: { public: true }
+				},
 				...signUpRoutes
 			]
 		},
