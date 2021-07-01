@@ -13,6 +13,11 @@
 		<div class="loading_layer">
 			<div class="loader"></div>
 		</div>
+		<div class="loading hidden">
+			<div class='uil-ring-css' style='transform:scale(0.79);'>
+				<div></div>
+			</div>
+		</div>
 	</div>
 </template>
 

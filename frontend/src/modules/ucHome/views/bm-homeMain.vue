@@ -3,7 +3,7 @@
 		<article>
 			<div class="contentHeader">
 				<h2>{{ projectInfoData.projectName }} 대시보드</h2>
-				<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="비트큐브 대시보드 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+				<a @click="fnPageReload()" class="btnStyle2 backPink absolute top0 right0" title="비트큐브 대시보드 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
 			</div>
 			<!-- 본문 -->
 			<div class="row">
@@ -532,6 +532,10 @@ export default {
 					}
 				]
 			}
+		},
+		fnPageReload() {
+			this.$router.replace('/');
+			this.$nextTick(() => this.$router.replace("/home"));
 		},
 		fnGetChInfo() {
 			var chInfo = '';
