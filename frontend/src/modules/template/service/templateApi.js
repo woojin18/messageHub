@@ -83,6 +83,9 @@ const selectAlimTalkInfo = (params) => {
 const procInspectRequestKkoTmplt = (params) => {
   return httpClient.post('/uc/template/procInspectRequestKkoTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
+const procUpdateRequestKkoTmplt = (params) => {
+  return httpClient.post('/uc/template/procUpdateRequestKkoTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+};
 
 /* RCS */
 const corpBrandCnt = (params) => {
@@ -130,6 +133,7 @@ export default {
     selectKkoTmpltCatList,
     selectAlimTalkTmpltList,
     procApprvRequestKkoTmplt,
+    procUpdateRequestKkoTmplt,
     procDeleteRequestKkoTmplt,
     excelDownloadAlimTalkTmplt,
     procInspectRequestKkoTmplt,

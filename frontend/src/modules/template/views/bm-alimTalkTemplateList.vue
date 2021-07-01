@@ -361,9 +361,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-input[class="boardCheckStyle"]:disabled + label:before {
-  background: #ccc;
-}
-</style>
