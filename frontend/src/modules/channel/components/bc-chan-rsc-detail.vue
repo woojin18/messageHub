@@ -136,8 +136,8 @@
 								<label for="Ticket">Ticket</label>
 							</div>
 							<div class="consolCheck" style="width:25%">
-								<input @change="fnClickMenu('moreinfo', $event.target.checked)" type="checkbox" id="More-Info" class="checkStyle2" v-model="inputVal.moreinfo" :disabled="this.duplCheckYn == 'N'">
-								<label for="More-Info">More Info</label>
+								<input @change="fnClickMenu('moreinfo', $event.target.checked)" type="checkbox" id="MoreInfo" class="checkStyle2" v-model="inputVal.moreinfo" :disabled="this.duplCheckYn == 'N'">
+								<label for="MoreInfo">More Info</label>
 							</div>
 						</div>
 					</div>
@@ -439,9 +439,6 @@ export default {
 	} else {
 		this.otherProjectYn = 'N';
 	}
-
-	console.log(this.projectIdStr);
-	console.log(this.otherProjectYn);
   },
   methods: {
 	// 목록
@@ -517,15 +514,16 @@ export default {
 	},
 	fnClickMenu2(menuCnt, checkName){
 		if( menuCnt > 3 ){
-			if( checkName === 'call'	){ this.inputVal.call		= '';}
-			if( checkName === 'web'		){ this.inputVal.web		= '';}
-			if( checkName === 'store'	){ this.inputVal.store		= '';}
-			if( checkName === 'order'	){ this.inputVal.order		= '';}
-			if( checkName === 'buy'		){ this.inputVal.buy		= '';}
-			if( checkName === 'tickets'	){ this.inputVal.tickets	= '';}
-			if( checkName === 'moreinfo'){ this.inputVal.moreinfo 	= '';}
+			if( checkName === 'call'	){ this.inputVal.call		= '';jQuery("#Call").prop("checked", false);}
+			if( checkName === 'web'		){ this.inputVal.web		= '';jQuery("#Web").prop("checked", false);}
+			if( checkName === 'store'	){ this.inputVal.store		= '';jQuery("#Store").prop("checked", false);}
+			if( checkName === 'order'	){ this.inputVal.order		= '';jQuery("#Order").prop("checked", false);}
+			if( checkName === 'buy'		){ this.inputVal.buy		= '';jQuery("#Buy").prop("checked", false);}
+			if( checkName === 'tickets'	){ this.inputVal.tickets	= '';jQuery("#Ticket").prop("checked", false);}
+			if( checkName === 'moreinfo'){ this.inputVal.moreinfo 	= '';jQuery("#MoreInfo").prop("checked", false);}
 
 			confirm.fnAlert("", "3개이상 메뉴 선택은 되지 않습니다.");
+			return;
 		}
 	},
 	// 대표발신번호 동일 체크여부
