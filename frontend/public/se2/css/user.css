@@ -33,7 +33,7 @@ header.head_type_user {border-bottom:1px solid #E6E6E6}
 
 /* userLogin-form */
 .userLogin-form {width:460px; margin:0 auto}
-.userLogin-form > h2 {font-size:28px; margin-bottom:70px; color:#000}
+.userLogin-form > h2 {font-size:28px !important; margin-bottom:70px; color:#000}
 .userLogin-form h3 {font-size:20px; color:#707070; font-weight:400}
 .userLogin-form .form-control {border:1px solid #E8ECEF; border-radius:5px; font-size:15px; height:60px; line-height:60px; box-shadow:none}
 .userLogin-form .checkbox {margin:0}
@@ -138,13 +138,13 @@ header.head_type_user {border-bottom:1px solid #E6E6E6}
 .quiryAgree .provisionMore {border-bottom:1px solid #000}
 .quiryList .btnStyle2 {padding:15px 50px; font-size:16px; margin-top:45px}
 
-/* user_sub_common*/
+/*
 h2 {margin:0; color:#fff; font-size:28px !important; font-weight:500}
 h3 {font-size:30px; color:000}
 .image-center {text-align:center}
 p {letter-spacing:-0.5px}
 .color333 {color:#333}
-
+*/
 
 /* subVisualWrap01 */
 #subVisualWrap01 section {background:url(../images/subVisual01.png); height:370px; padding-top:110px}
@@ -155,7 +155,7 @@ p {letter-spacing:-0.5px}
 
 /* .serviceCon01 */
 .serviceCon01 section {max-width:1088px; margin:110px auto}
-.serviceCon01 section .subTitle {text-align:center}
+.serviceCon01 section .subTitle {text-align:center; font-size:24px !important}
 .serviceCon01 section .CloudIcon {padding:70px 70px 0 70px; overflow:hidden}
 .serviceCon01 section .CloudIcon li {float:left; text-align:center; width:25%}
 .serviceCon01 section .CloudIcon .IconMainText {font-size:20px; color:#000; margin-top:25px}
@@ -195,7 +195,7 @@ p {letter-spacing:-0.5px}
 
 /* .serviceCon03 */
 .serviceCon03 section {max-width:1088px; margin:110px auto}
-.serviceCon03 section .subTitle {text-align:center}
+.serviceCon03 section .subTitle {text-align:center; font-size:24px !important}
 .serviceCon03 section .subText {text-align:center; font-size:16px; color:#676767; margin-top:34px; margin-bottom:50px}
 .serviceCon03 section .chartWrap {position:relative}
 .serviceCon03 section .people02 {position:absolute; left:0; bottom:0}
@@ -211,12 +211,12 @@ p {letter-spacing:-0.5px}
 .serviceCon04 section ul {overflow:hidden; margin-top:40px}
 .serviceCon04 section ul li {width:50%; float:left}
 .serviceCon04 section ul li .AWS_MainText {margin-top:20px; font-size:22px; color:#000}
-.serviceCon04 section ul li .AWS_SubText {margin-top:23px; font-size:16px; color:#000}
+.serviceCon04 section ul li .AWS_SubText {margin-top:23px; font-size:15px; color:#000}
 
 /* serviceCon05 */
 .serviceCon05 {background-color:#FFE13B; padding:110px 0}
 .serviceCon05 section {max-width:1088px; margin:0 auto}
-.serviceCon05 section .subTitle {text-align:center}
+.serviceCon05 section .subTitle {text-align:center; font-size:24px !important}
 .serviceCon05 section .subText {font-size:16px; color:#000; margin-top:32px; text-align:center}
 .serviceCon05 section .btn {margin-top:65px; text-align:center; display:block}
 .serviceCon05 section .btn .btnBcackRed {font-size:15px; color:#fff; font-weight:700; padding:20px 43px; background-color:#E0007A; border-radius:5px; margin-right:15px}
@@ -343,7 +343,27 @@ p {letter-spacing:-0.5px}
 .modal-body .boardWrite .content-file a {font-size:12px; color:#000; font-weight:300; display:block}
 
 /* PopupClose */
-
+/*
 .PopupBtn_Wrap {position:absolute; top:-20px; right:-25px}
 #Inquiry > .modal-dialog {margin-top:100px}
 .modal-body h2 {font-size:18px !important; color:#333}
+*/
+
+
+/* user_index */
+.subTitle_h3 {font-size:24px}
+
+
+/* user_join */
+.user_join_h2 {font-size:30px !important; margin-top:20px !important; margin-bottom:30px !important;}
+.user_sub_h2 {font-size:30px !important; color:#fff}
+
+
+/* user > PopupBtn_Wrap */
+.PopupBtn_Wrap {position:absolute; top:-20px; right:-20px}
+
+/* phoneWrap > phoneTextWrap btn*/
+
+.phoneWrap > .phoneTextWrap .btnStyle1.backLightGray {background:#F1F1F1; border-color:#ddd; color:#000; width:100%; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient: vertical; margin:5px 0}
+.phoneWrap > .phoneTextWrap .btnStyle1.backLightGray:hover {background:#000; border-color:#000; color:#fff}
+.modal-body .scroll-y_modal {max-height:140px; overflow-y:auto; line-height:1.4em}
