@@ -53,7 +53,6 @@
           </div>
           <table cellspacing="0" id="list" class="table_skin1 bt-000 tbl-striped" style="width:100%; margin-top : 10px;">
             <thead>
-              <th class="text-center lc-1">No.</th>
               <th class="text-center lc-1">프로젝트</th>
               <th class="text-center lc-1">프로젝트ID</th>
               <th class="text-center lc-1">이용 서비스</th>
@@ -67,9 +66,6 @@
             <tbody>
               <tr v-for="(data, index) in items" :key="index">
                 <td>
-                  {{ index + 1 }}
-                </td>
-                <td>
                   {{ data.projectName }}
                 </td>
                 <td>
@@ -82,7 +78,7 @@
                   {{ data.regDt }}
                 </td>
                 <td>
-                  {{ data.payType }}
+                  {{ data.payTypeName }}
                 </td>
                 <td>
                   {{ data.projectMemberCnt }}
@@ -96,7 +92,7 @@
                   <button class="btnStyle1 borderLightGray small mr5" @click="fnProjectDeleteConfirm(data)" activity="SAVE"><a>삭제</a></button>
                 </td>
                 <td>
-                  <button @click="fnDisRatioManage(data)"><a>분배율관리</a></button>
+                  <button class="btnStyle1 borderLightGray small mr5" @click="fnDisRatioManage(data)"><a>분배율관리</a></button>
                 </td>
               </tr>
             </tbody>
@@ -163,7 +159,15 @@ export default {
       },
     // 상세창
     fnProjectDetail(data) {
-      this.$router.push( {name:"projectMain",params:{"projectId" : data.projectId, "projectName" : data.projectName}} );
+      this.$router.push( {name:"projectMain",params:{
+          "projectId" : data.projectId
+        , "projectName" : data.projectName
+        , "rcsYn" : data.rcsYn
+        , "smsmmsYn" : data.smsmmsYn
+        , "pushYn" : data.pushYn
+        , "kakaoYn" : data.kakaoYn
+        , "moYn" : data.moYn
+      }});
     },
     // 수정창
     fnProjectUpdate(data) {

@@ -2,7 +2,8 @@
 	<!-- <div id="content"> -->
 		<article>
 			<div class="contentHeader mb20">
-				<h2>브랜드 등록</h2>				
+				<h2 v-if="this.save_status ==='C'">브랜드 등록</h2>				
+				<h2 v-if="this.save_status ==='U'">브랜드 수정</h2>				
 			</div>
 
 			<!-- 본문 -->
@@ -59,7 +60,7 @@
 				<div class="col-xs-6 of_h consoleCon">
 					<div class="of_h">
 						<h4 style="width:28%" class="inline-block">API Key</h4>
-						<input id="apiKey" type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.apiKey">
+						<input id="apiKey" type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.apiKey" placeholder="등록 및 상세내용 확인을 위해서 API Key와 Secret Key을 입력 후 확인 버튼을 누르십시오.">
 					</div>
 					<div class="of_h">
 						<h4 style="width:28%" class="inline-block">API Secret Key *</h4>
@@ -350,6 +351,7 @@ export default {
 		save_status : '', // 등록 수정 여부
 		approvalStatus : '',
 		projectId : '',
+		projectIdStr : '',
 		brandId : "",
 		tmpBrandYn : "N",
 		duplCheckYn : "N",
@@ -421,6 +423,7 @@ export default {
 	this.save_status	= this.$route.params.save_status;
 	this.approvalStatus	= this.$route.params.approvalStatus;
     this.projectId		= this.$route.params.projectId;
+	this.projectIdStr		= this.$route.params.projectIdStr;
 	this.brandId		= this.$route.params.brandId;
 	this.inputVal		= this.$route.params.inputVal;
 	
@@ -431,11 +434,14 @@ export default {
 		this.tmpBrandYn = "N";
 	}
 	// 프로젝트 공유 여부
-	if( this.projectId != 'ALL' ){
-		this.otherProjectYn = 'N';
-	} else {
+	if( this.projectIdStr === 'ALL' ){
 		this.otherProjectYn = 'Y';
+	} else {
+		this.otherProjectYn = 'N';
 	}
+
+	console.log(this.projectIdStr);
+	console.log(this.otherProjectYn);
   },
   methods: {
 	// 목록
@@ -461,7 +467,11 @@ export default {
 				if(this.save_status === 'U'){
 					this.fnChangeCate2();
 				}
-				confirm.fnAlert("", "정상적으로 확인되었습니다.");
+				
+				if(this.save_status === 'C'){
+					confirm.fnAlert("", "정상적으로 확인되었습니다.");
+				}
+				
 			} else {
 				this.duplCheckYn = 'N';
 				confirm.fnAlert("", "확인에 실패했습니다.");

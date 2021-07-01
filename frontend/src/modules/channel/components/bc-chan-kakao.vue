@@ -210,7 +210,7 @@ export default {
   methods: {
     // 검색
     fnSearch() {
-		this.pageInfo.selPage = 1;
+		
 		var params = {
 			"projectId"     : this.projectId,
 			"srcSenderKey"  : this.srcSenderKey,

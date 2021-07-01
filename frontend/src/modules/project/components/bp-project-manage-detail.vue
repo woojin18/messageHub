@@ -51,7 +51,7 @@
 								<input type="radio" name="subbillYn" value="Y" class="cBox" id="subbillYnY" @click="fnCheckSubblillYn()" checked=""> <label for="subbillYnY" class="payment mr30 font-size12">예</label>
 								<input type="radio" name="subbillYn" value="N" class="cBox" id="subbillYnN" @click="fnCheckSubblillYn()"> <label for="subbillYnN" class="payment font-size12">아니요</label>							
 							</div>
-              <div class="of_h consolMarginTop">
+              <div class="of_h consolMarginTop" v-if="this.subbillStartDayForDiv === 'Y'">
                 <h5 class="inline-block" style="width:20%">개별빌링 시작일</h5>
 								<Calendar calendarId="subbillStartDay" classProps="datepicker inputStyle maxWidth200"></Calendar>
 							</div>
@@ -128,7 +128,8 @@ export default {
     return {
       resultList : [],
       billId : '',
-      payTypeForDIv : 'Y'
+      payTypeForDIv : 'Y',
+      subbillStartDayForDiv : 'Y'
     }
   },
   components: {
@@ -172,6 +173,11 @@ export default {
 
         jQuery("#resendTitle").val(this.row_data.resendTitle);
         jQuery('input:radio[name=subbillYn]:input[value="' + this.row_data.subbillYn + '"]').prop("checked", true);
+        if( this.row_data.subbillYn === 'Y' ){
+          this.subbillStartDayForDiv = 'Y';
+        } else {
+          this.subbillStartDayForDiv = 'N';
+        }
         jQuery("#subbillStartDay").val(this.row_data.subbillStartDay);
 
         jQuery('input:radio[name=radioRcs]:input[value="' + this.row_data.radioYn + '"]').prop("checked", true);
@@ -183,7 +189,7 @@ export default {
     }
   },
   mounted() {
-    var vm = this;
+    
   },
   methods: {
     // 닫기
@@ -196,8 +202,10 @@ export default {
       if( value === 'N' ){
         jQuery("#subbillStartDay").val("")
         jQuery("#subbillStartDay").prop("disabled", true);
+        this.subbillStartDayForDiv = 'N';
       } else {
         jQuery("#subbillStartDay").prop("disabled", false);
+        this.subbillStartDayForDiv = 'Y';
       }
     },
     fnSelectBillIdForApi(payType){
@@ -224,6 +232,14 @@ export default {
     },
     // 등록, 수정
     fnSave(){
+      //벨리데이션
+      if( jQuery("#projectName").val() === ''		|| jQuery("#projectName").val() === undefined  ){
+          confirm.fnAlert("", "프로젝트명을 입력해주세요."); return false;
+      }
+      if( jQuery("input[name='subbillYn']:checked").val() === 'Y' && (jQuery("#subbillStartDay").val() === ''		|| jQuery("#subbillStartDay").val() === undefined ) ){
+          confirm.fnAlert("", "개별빌링 시작일을 입력해주세요.."); return false;
+      }
+
       var params = {
           "projectId"      : this.row_data.projectId,
           "projectName"    : jQuery("#projectName").val(),

@@ -17,11 +17,11 @@
 				</ul>			
 			</div>
 			<ul v-if="selMainTab==4" class="tabStyle tab6 bgColor_tapGray">
-				<li :class="{active:(selMidTab == 1)}" @click="selMidTab=1; selSubTab=1"><a>RCS</a></li>
-				<li :class="{active:(selMidTab == 2)}" @click="selMidTab=2; selSubTab=1"><a>SMS/MMS</a></li>
-				<li :class="{active:(selMidTab == 3)}" @click="selMidTab=3; selSubTab=1"><a>PUSH</a></li>
-				<li :class="{active:(selMidTab == 4)}" @click="selMidTab=4; selSubTab=1"><a>카카오톡</a></li>
-				<li :class="{active:(selMidTab == 5)}" @click="selMidTab=5; selSubTab=1"><a>MO</a></li>
+				<li :class="{active:(selMidTab == 1)}" @click="selMidTab=1; selSubTab=1" v-if="this.rcsYn ==='Y'"><a>RCS</a></li>
+				
+				<li :class="{active:(selMidTab == 3)}" @click="selMidTab=3; selSubTab=1" v-if="this.pushYn ==='Y'"><a>PUSH</a></li>
+				<li :class="{active:(selMidTab == 4)}" @click="selMidTab=4; selSubTab=1" v-if="this.kakaoYn ==='Y'"><a>카카오톡</a></li>
+				<li :class="{active:(selMidTab == 5)}" @click="selMidTab=5; selSubTab=1" v-if="this.moYn ==='Y'"><a>MO</a></li>
 			</ul>
 			
 			<ul v-if="selMainTab==4&&selMidTab==1" class="tab_s6 mt10">
@@ -104,6 +104,11 @@ export default {
     return {
       projectId   : this.$route.params.projectId,
       projectName : this.$route.params.projectName,
+      rcsYn : this.$route.params.rcsYn,
+      smsmmsYn : this.$route.params.smsmmsYn,
+      pushYn : this.$route.params.pushYn,
+      kakaoYn : this.$route.params.kakaoYn,
+      moYn : this.$route.params.moYn,
       selMainTab  : 4,
       selMidTab   : 1,
       selSubTab   : 1

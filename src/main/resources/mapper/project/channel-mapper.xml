@@ -147,10 +147,10 @@
 		<if test=" srcBrandText != null and srcBrandText != '' ">
 			<choose>
 				<when test="srcBrandType == 'brandId'.toString()">
-					AND		A.BRAND_ID = #{srcBrandText}
+					AND		A.BRAND_ID LIKE CONCAT('%', #{srcBrandText}, '%')
 				</when>
 				<when test="srcBrandType == 'brandName'.toString()">
-					AND		A.BRAND_NAME = #{srcBrandText}
+					AND		A.BRAND_NAME LIKE CONCAT('%', #{srcBrandText}, '%')
 				</when>
 			</choose>
 		</if>
@@ -456,9 +456,16 @@
 		,		CARD_TYPE
 		,		PRODUCT_CODE
 		,		MESSAGEBASE_INFO
+		,		cASE
+					WHEN TMPLT_NAME = 'SMS' THEN 1
+					WHEN TMPLT_NAME = 'LMS' THEN 2
+					WHEN TMPLT_NAME LIKE '%세로형%' THEN 3
+					WHEN TMPLT_NAME LIKE '%슬라이드형%' THEN 4
+				END AS RANKING
 		FROM	cm.CM_RCS_MSGBASE CRM 
 		WHERE	CRM.BRAND_ID ='common'
-		ORDER BY REG_DT DESC
+		AND		CRM.TMPLT_NAME NOT LIKE '%가로형%'
+		ORDER BY RANKING
 	</select>
 	
 	<select id="selectMoCallbackListCnt" resultType="int">

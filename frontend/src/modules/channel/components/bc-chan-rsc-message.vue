@@ -10,8 +10,8 @@
 							<div class="col-xs-6">
 								<img v-if="item.tmpltName == 'SMS'" src="../../../../public/se2/images/03_5_1_4_imgage01.png" class="img-responsive inline-block" style="width: 98%;">
 								<img v-if="item.tmpltName == 'LMS'" src="../../../../public/se2/images/03_5_1_4_imgage02.png" class="img-responsive inline-block" style="width: 98%;">
-								<img v-if="item.cardType == 'carousel small'" src="../../../../public/se2/images/03_5_1_4_imgage07.png" class="img-responsive inline-block" style="width: 98%;">
-								<img v-if="item.cardType == 'carousel medium'" src="../../../../public/se2/images/03_5_1_4_imgage08.png" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.tmpltName == '슬라이드형(Small,3장)' || item.tmpltName == '슬라이드형(Small,4장)' ||  item.tmpltName == '슬라이드형(Small,5장)' || item.tmpltName == '슬라이드형(Small,6장)'"  src="../../../../public/se2/images/03_5_1_4_imgage07.png" class="img-responsive inline-block" style="width: 98%;">
+								<img v-if="item.tmpltName == '슬라이드형(Medium,3장)' || item.tmpltName == '슬라이드형(Medium,4장)' ||  item.tmpltName == '슬라이드형(Medium,5장)' || item.tmpltName == '슬라이드형(Medium,6장)'" src="../../../../public/se2/images/03_5_1_4_imgage08.png" class="img-responsive inline-block" style="width: 98%;">
 								<img v-if="item.tmpltName == '가로형(Left)'" src="../../../../public/se2/images/03_5_1_4_imgage06.png" class="img-responsive inline-block" style="width: 98%;">
 								<img v-if="item.tmpltName == '가로형(Right)'" src="../../../../public/se2/images/03_5_1_4_imgage05.png" class="img-responsive inline-block" style="width: 98%;">
 								<img v-if="item.tmpltName == '세로형(Medium)'" src="../../../../public/se2/images/03_5_1_4_imgage03.png" class="img-responsive inline-block" style="width: 98%;">

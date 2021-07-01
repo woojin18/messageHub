@@ -23,7 +23,7 @@
                   <option value="brandName">브랜드 명</option>
                 </select>
 								<input id="srcBrandText" type="text" class="inputStyle ml20 vertical-baseline" style="width:65%" v-model="srcBrandText">
-								<a @click="fnSearch" class="btnStyle2 float-right" activity="READ">검색</a>
+								<a @click="fnSearch2" class="btnStyle2 float-right" activity="READ">검색</a>
 							</div>						
 						</div>
 					</div>
@@ -160,7 +160,26 @@ export default {
   },
   methods: {
     // 검색
+    fnSearch2() {
+      this.pageInfo.selPage = 1;
+      var params = {
+        "projectId"     : this.projectId,
+        "srcBrandType"  : this.srcBrandType,
+        "srcBrandText"  : this.srcBrandText,
+        "pageInfo"    	: this.pageInfo
+      }
+       
+      Api.selectRcsBrandList(params).then(response =>{
+        var result = response.data;
+				if(result.success) {
+          this.data = result.data; 
+          this.pageInfo = result.pageInfo;
+				}
+      });
+    },
+    // 검색
     fnSearch() {
+      
       var params = {
         "projectId"     : this.projectId,
         "srcBrandType"  : this.srcBrandType,
@@ -182,8 +201,8 @@ export default {
       var inputVal = {
         corpId 		  	: "",
         projectId   	: "",
-        apiKey 		  	: "kangyj94",             // 테스트용 임시 키
-        apiSecret 	: "SK.E7nddvJlfZp8JXU",   // 테스트용 임시 키
+        apiKey 		  	: "",  
+        apiSecret 	: "", 
         name			    : "",
         description		: "",
         tel				    : "",
@@ -231,7 +250,12 @@ export default {
     },
     fnRcsBrandDetail(data){
       this.$router.push( {name:"chan-rcs-detail",params:{
-          "projectId" : this.projectId, "brandId" : data.brandId, "save_status" : 'U', "inputVal" : data.inputVal,"approvalStatus" : this.approvalStatus 
+            "projectIdStr" : data.projectId
+          , "brandId" : data.brandId
+          , "save_status" : 'U'
+          , "inputVal" : data.inputVal
+          , "approvalStatus" : this.approvalStatus
+          , "otherProjectYn" : data.otherProjectUseYn 
         }
       });
     },
