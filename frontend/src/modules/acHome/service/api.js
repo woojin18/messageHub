@@ -20,10 +20,15 @@ const selectChSuccFailCntList = (params) => {
 	return httpClient.post('/api/home/selectChSuccFailCntList', params, { headers: { "show-layer": "Yes" } });
 };
 
+const selectChFailCodeList = (params) => {
+	return httpClient.post('/api/home/selectChFailCodeList', params, { headers: { "show-layer": "Yes" } });
+};
+
 export default {
 	logout,
 	selectProjectList,
 	selectNoticeList,
 	selectChTotCntInfo,
-	selectChSuccFailCntList
+	selectChSuccFailCntList,
+	selectChFailCodeList
 };

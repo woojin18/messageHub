@@ -179,12 +179,8 @@ import HomeMain from '../components/bc-homeMain.vue';
 import tokenSvc from '@/common/token-service';
 import confirm from "@/modules/commonUtil/service/confirm";
 import homeApi from '@/modules/acHome/service/api';
-import loginApi from '@/modules/login/service/api';
 import Calendar from "@/components/Calendar.vue";
 import BarChart from '@/components/Chart.vue';
-import * as utils from '@/common/utils';
-import { consts } from '@/common/config';
-import axios from 'axios';
 
 export default {
 	components: {
@@ -221,6 +217,13 @@ export default {
 			dateLine: [],
 			successCnt: [],
 			failCnt: [],
+			failCodeResultDataset: [],
+			failCodeCnt: [],
+			defaultBackgroundColor: [
+				'#4A7AF7', '#83BFFA', '#E86560', '#F1AA72', '#F6CF74', '#F361DC', '#D5D5D5', '#F29661', '#CEF279', '#B2CCFF',
+				'#B2CCFF', '#DE4F4F', '#FAED7D', '#41FF3A', '#F35AA6', '#949494', '#FFFF6C', '#79ABFF', '#FF3636', '#FF9797'
+			],
+			backgroundColor: [],
 			successFailResultData: {},
 			failCodeResultData: {},
 			monthUsedResultData: {},
@@ -292,11 +295,44 @@ export default {
 
 			homeApi.selectChSuccFailCntList(params).then(response =>{
 				var result = response.data;
+				console.log(response.data);
 				if (result.success) {
 					for (var i = 0; i < result.data.length; i++) {
 						this.dateLine.push(result.data[i].date);
 						this.successCnt.push(result.data[i].succCnt);
 						this.failCnt.push(result.data[i].failCnt);
+					}
+					console.log(this.dateLine);
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+		},
+		fnGetChFailCodeList(channel) {
+			let params = {
+				corpId: tokenSvc.getToken().principal.corpId,
+				startDateStr: this.searchData.searchStartDate,
+				endDateStr: this.searchData.searchEndDate,
+				channel: channel
+			};
+
+			homeApi.selectChFailCodeList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					for (var i = 0; i < result.data.length; i++) {
+						this.failCodeCnt = [];
+						for (var j = 0; j < result.data[i].failCodeCnt.length; j++) {
+							this.failCodeCnt.push(result.data[i].failCodeCnt[j].cnt);
+						}
+						this.failCodeResultDataset[i] = 
+							{
+								label: result.data[i].resultCode,
+								backgroundColor: this.defaultBackgroundColor[i],
+								pointBackgroundColor: 'white',
+								borderWidth: 1,
+								pointBorderColor: '#249EBF',
+								data: this.failCodeCnt
+							}
 					}
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
@@ -321,14 +357,16 @@ export default {
 			this.dateLine = [];
 			this.successCnt = [];
 			this.failCnt = [];
+			this.failCodeResultDataset = [];
 			this.fnGetChSuccFailCntList(channel);
+			this.fnGetChFailCodeList(channel);
 
 			this.successFailResultData = {
 				labels: this.dateLine,
 				datasets: [
 					{
 						label: '발송성공',
-						backgroundColor: '#f87979',
+						backgroundColor: '#FD7FA6',
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
@@ -336,7 +374,7 @@ export default {
 					},
 					{
 						label: '발송실패',
-						backgroundColor: '#8C8C8C',
+						backgroundColor: '#A9A9A9',
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
@@ -345,41 +383,8 @@ export default {
 				]
 			},
 			this.failCodeResultData = {
-				labels: ['20210609', '20210610', '20210611', '20210612', '20210613', '20210614', '20210615'],
-				datasets: [
-					{
-						label: 'Code1',
-						backgroundColor: '#0100FF',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
-					},
-					{
-						label: 'Code2',
-						backgroundColor: '#00D8FF',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
-					},
-					{
-						label: 'Code3',
-						backgroundColor: '#FF0000',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
-					},
-					{
-						label: 'Code4',
-						backgroundColor: '#F2CB61',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
-					}
-				]
+				labels: this.dateLine,
+				datasets: this.failCodeResultDataset
 			}
 
 			jQuery('.mt10 > ul > li').removeClass('active');

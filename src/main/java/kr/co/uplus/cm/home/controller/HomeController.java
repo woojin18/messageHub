@@ -109,7 +109,7 @@ public class HomeController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
-			log.error("{}.selectNoticeList Error : {}", this.getClass(), e);
+			log.error("{}.selectChTotCntInfo Error : {}", this.getClass(), e);
 		}
 
 		return rtn;
@@ -132,7 +132,7 @@ public class HomeController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
-			log.error("{}.selectNoticeList Error : {}", this.getClass(), e);
+			log.error("{}.selectChSuccFailCntList Error : {}", this.getClass(), e);
 		}
 
 		return rtn;
@@ -155,14 +155,14 @@ public class HomeController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
-			log.error("{}.selectNoticeList Error : {}", this.getClass(), e);
+			log.error("{}.selectChFailCodeList Error : {}", this.getClass(), e);
 		}
 
 		return rtn;
 	}
 
 	/**
-	 * 대시보드 당일 실시간 이용현황 시간대 조회
+	 * 대시보드(User Console) 당일 실시간 이용현황 시간대 조회
 	 * 
 	 * @param request
 	 * @param response
@@ -178,14 +178,14 @@ public class HomeController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
-			log.error("{}.selectNoticeList Error : {}", this.getClass(), e);
+			log.error("{}.selectRtUsedTimeLineList Error : {}", this.getClass(), e);
 		}
 
 		return rtn;
 	}
 
 	/**
-	 * 대시보드 당일 실시간 이용현황 조회
+	 * 대시보드(User Console) 당일 실시간 이용현황 조회
 	 * 
 	 * @param request
 	 * @param response
@@ -201,7 +201,7 @@ public class HomeController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
-			log.error("{}.selectNoticeList Error : {}", this.getClass(), e);
+			log.error("{}.selectRtUsedDataList Error : {}", this.getClass(), e);
 		}
 
 		return rtn;

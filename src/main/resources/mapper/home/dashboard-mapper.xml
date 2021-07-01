@@ -95,7 +95,7 @@
 				FROM 
 					cm.CM_STAT_CH_DAY
 				WHERE CORP_ID = #{corpId}
-				<if test="projectId != '' and projectId != null">
+				<if test="serviceType == 'UC'">
 				AND PROJECT_ID = #{projectId}
 				</if>
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
@@ -127,7 +127,7 @@
 				FROM 
 					cm.CM_STAT_CH_DAY
 				WHERE CORP_ID = #{corpId}
-				<if test="projectId != '' and projectId != null">
+				<if test="serviceType == 'UC'">
 				AND PROJECT_ID = #{projectId}
 				</if>
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
@@ -159,7 +159,7 @@
 				FROM 
 					cm.CM_STAT_CH_DAY
 				WHERE CORP_ID = #{corpId}
-				<if test="projectId != '' and projectId != null">
+				<if test="serviceType == 'UC'">
 				AND PROJECT_ID = #{projectId}
 				</if>
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
@@ -191,7 +191,7 @@
 				FROM 
 					cm.CM_STAT_CH_DAY
 				WHERE CORP_ID = #{corpId}
-				<if test="projectId != '' and projectId != null">
+				<if test="serviceType == 'UC'">
 				AND PROJECT_ID = #{projectId}
 				</if>
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
@@ -223,7 +223,7 @@
 				FROM 
 					cm.CM_STAT_CH_DAY
 				WHERE CORP_ID = #{corpId}
-				<if test="projectId != '' and projectId != null">
+				<if test="serviceType == 'UC'">
 				AND PROJECT_ID = #{projectId}
 				</if>
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
@@ -255,7 +255,7 @@
 				FROM 
 					cm.CM_STAT_CH_DAY
 				WHERE CORP_ID = #{corpId}
-				<if test="projectId != '' and projectId != null">
+				<if test="serviceType == 'UC'">
 				AND PROJECT_ID = #{projectId}
 				</if>
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
@@ -290,7 +290,7 @@
 			FROM 
 				cm.CM_STAT_CH_DAY
 			WHERE CORP_ID = #{corpId}
-			<if test="projectId != '' and projectId != null">
+			<if test="serviceType == 'UC'">
 			AND PROJECT_ID = #{projectId}
 			</if>
 			AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
@@ -308,7 +308,7 @@
 		FROM 
 			cm.CM_STAT_RSLT_DAY
 		WHERE CORP_ID = #{corpId}
-		<if test="projectId != '' and projectId != null">
+		<if test="serviceType == 'UC'">
 		AND PROJECT_ID = #{projectId}
 		</if>
 		AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
@@ -344,7 +344,7 @@
 				FROM 
 					cm.CM_STAT_RSLT_DAY
 				WHERE CORP_ID = #{corpId}
-				<if test="projectId != '' and projectId != null">
+				<if test="serviceType == 'UC'">
 				AND PROJECT_ID = #{projectId}
 				</if>
 				AND RESULT_CODE = #{resultCode}
@@ -356,55 +356,14 @@
 		) A
 	</select>
 
-	<select id="selectDayStatsList" resultType="camel">
-		/* dashboard.selectDayStatsList */
-		SELECT YMD, CH, TOT_CNT, SUCC_CNT, FAIL_CNT
-		FROM (
-			SELECT YMD, CORP_ID, PROJECT_ID, CH, TOT_CNT, SUCC_CNT, FAIL_CNT
-			FROM cm.CM_STAT_CH_DAY
-			WHERE CORP_ID = #{corpId}
-			AND PROJECT_ID = #{projectId}
-			AND CH = 'PUSH'
-			UNION ALL 
-			SELECT YMD, CORP_ID, PROJECT_ID, CH, TOT_CNT, SUCC_CNT, FAIL_CNT
-			FROM cm.CM_STAT_CH_DAY
-			WHERE CORP_ID = #{corpId}
-			AND PROJECT_ID = #{projectId}
-			AND CH = 'RCS'
-			UNION ALL 
-			SELECT YMD, CORP_ID, PROJECT_ID, CH, TOT_CNT, SUCC_CNT, FAIL_CNT
-			FROM cm.CM_STAT_CH_DAY
-			WHERE CORP_ID = #{corpId}
-			AND PROJECT_ID = #{projectId}
-			AND CH = 'ALIMTALK'
-			UNION ALL 
-			SELECT YMD, CORP_ID, PROJECT_ID, CH, TOT_CNT, SUCC_CNT, FAIL_CNT
-			FROM cm.CM_STAT_CH_DAY
-			WHERE CORP_ID = #{corpId}
-			AND PROJECT_ID = #{projectId}
-			AND CH = 'FRIENDTALK'
-			UNION ALL 
-			SELECT YMD, CORP_ID, PROJECT_ID, CH, TOT_CNT, SUCC_CNT, FAIL_CNT
-			FROM cm.CM_STAT_CH_DAY
-			WHERE CORP_ID = #{corpId}
-			AND PROJECT_ID = #{projectId}
-			AND CH = 'SMS'
-			UNION ALL 
-			SELECT YMD, CORP_ID, PROJECT_ID, CH, TOT_CNT, SUCC_CNT, FAIL_CNT
-			FROM cm.CM_STAT_CH_DAY
-			WHERE CORP_ID = #{corpId}
-			AND PROJECT_ID = #{projectId}
-			AND CH = 'MMS'
-		) CSCD
-	</select>
-
 	<select id="selectRtUsedTimeLineList" resultType="camel">
+		/* dashboard.selectRtUsedTimeLineList */
 		SELECT
 			DATE_FORMAT(STR_TO_DATE(AD.DATE, '%Y%m%d%H'), '%H') AS DATE
 		FROM (
 			SELECT DATE_FORMAT(A.DATE, '%Y%m%d%H') AS DATE 
 			FROM (
-			    SELECT curdate()+1 - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY_HOUR AS DATE
+			    SELECT DATE_ADD(CURDATE(), INTERVAL 1 DAY) - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY_HOUR AS DATE
 			    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
 			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
 			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
@@ -436,6 +395,7 @@
 	</select>
 
 	<select id="selectRtUsedDataList" resultType="camel">
+		/* dashboard.selectRtUsedDataList */
 		SELECT
 			DATE_FORMAT(STR_TO_DATE(AD.DATE, '%Y%m%d%H'), '%H') AS DATE,
 			CSCD.CH,
@@ -443,7 +403,7 @@
 		FROM (
 			SELECT DATE_FORMAT(A.DATE, '%Y%m%d%H') AS DATE 
 			FROM (
-			    SELECT curdate()+1 - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY_HOUR AS DATE
+			    SELECT DATE_ADD(CURDATE(), INTERVAL 1 DAY) - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY_HOUR AS DATE
 			    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
 			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
 			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c

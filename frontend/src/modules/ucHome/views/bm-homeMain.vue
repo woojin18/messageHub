@@ -211,7 +211,7 @@ export default {
 			defaultBackgroundColor: [
 				'#4A7AF7', '#83BFFA', '#E86560', '#F1AA72', '#F6CF74', '#F361DC', '#D5D5D5', '#F29661', '#CEF279', '#B2CCFF',
 				'#B2CCFF', '#DE4F4F', '#FAED7D', '#41FF3A', '#F35AA6', '#949494', '#FFFF6C', '#79ABFF', '#FF3636', '#FF9797'
-			 ],
+			],
 			backgroundColor: [],
 			timeLine: [],
 			rtUsedPushList: [],
@@ -269,6 +269,7 @@ export default {
 			let params = {
 				projectId: utils.getCookie(consts.projectId),
 				corpId: tokenSvc.getToken().principal.corpId,
+				serviceType: 'UC',
 				startDateStr: this.searchData.searchStartDate,
 				endDateStr: this.searchData.searchEndDate
 			};
@@ -286,6 +287,7 @@ export default {
 			let params = {
 				projectId: utils.getCookie(consts.projectId),
 				corpId: tokenSvc.getToken().principal.corpId,
+				serviceType: 'UC',
 				startDateStr: this.searchData.searchStartDate,
 				endDateStr: this.searchData.searchEndDate,
 				channel: channel
@@ -308,6 +310,7 @@ export default {
 			let params = {
 				projectId: utils.getCookie(consts.projectId),
 				corpId: tokenSvc.getToken().principal.corpId,
+				serviceType: 'UC',
 				startDateStr: this.searchData.searchStartDate,
 				endDateStr: this.searchData.searchEndDate,
 				channel: channel
