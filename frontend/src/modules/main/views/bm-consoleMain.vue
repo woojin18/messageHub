@@ -26,7 +26,7 @@
       </section>
     </article>
     <!-- //mainVisualWrap -->
-    
+
     <div id="contentWrap">
       <!-- noticeWrap -->
       <article id="noticeWrap">
@@ -43,7 +43,7 @@
                 <!-- <router-link :to="{ name: 'noticeDetail', params: { noticeId: noticeInfo.noticeId }}" title="해당 게시글로 이동"> -->
                 <a href="#" @click.prevent="fnOpenNoticePopupModal(noticeInfo.noticeId)" title="해당 게시글이 열립니다">
                   <span class="noti_tt">
-                    <span v-if="!$gfnCommonUtils.isEmpty(noticeInfo.noticeTypeCdName)" class="newIcon">{{noticeInfo.noticeTypeCdName}}</span> 
+                    <span v-if="!$gfnCommonUtils.isEmpty(noticeInfo.noticeTypeCdName)" class="newIcon">{{noticeInfo.noticeTypeCdName}}</span>
                     {{noticeInfo.title}}
                   </span>
                   <span class="noti_day">{{noticeInfo.regDt}}</span>
@@ -76,7 +76,7 @@
       <!-- mainConWrap1 -->
       <article id="mainConWrap1">
         <section>
-          <h3 class="subTitle wow animated fadeInUp">쉽고 안전하고 스마트한 U+ 통합 메시징 클라우드를 소개합니다.</h3>
+          <h3 class="subTitle subTitle_h3 wow animated fadeInUp">쉽고 안전하고 스마트한 U+ 통합 메시징 클라우드를 소개합니다.</h3>
           <ul class="CloudIcon">
             <li class="wow animated fadeInLeft" data-wow-duration="1s">
               <img src="@/assets/images/main/mainCloud_icon01.png" alt="아이콘1">
@@ -112,15 +112,15 @@
               <h5 class="inline-block  text-left float-left font-size16" style="width:20%">문의유형</h5>
               <div class="inline-block float-left">
                 <template v-for="(inqueiryType, idx) in inqueiryTypeList">
-                  <input :key="idx" 
-                    type="radio" 
-                    name="inqueiryType" 
-                    :value="inqueiryType.codeVal1" 
+                  <input :key="idx"
+                    type="radio"
+                    name="inqueiryType"
+                    :value="inqueiryType.codeVal1"
                     :id="'inqueiryType_'+inqueiryType.codeVal1"
                     v-model="inqueiryInputData.questType"
                   >
-                  <label :key="idx+'_sub'" 
-                    :for="'inqueiryType_'+inqueiryType.codeVal1" 
+                  <label :key="idx+'_sub'"
+                    :for="'inqueiryType_'+inqueiryType.codeVal1"
                     class="mr20 font-size14"
                   >{{inqueiryType.codeName1}}</label>
                 </template>
@@ -130,17 +130,17 @@
             <input type="text" class="form-control mt15" placeholder="휴대폰 번호 ( - 없이 입력)" v-model="inqueiryInputData.hpNumber" maxlength="20">
             <input type="text" class="form-control mt15" placeholder="E-mail" v-model="inqueiryInputData.email" maxlength="40">
             <input type="text" class="form-control mt15" placeholder="제목" v-model="inqueiryInputData.title" maxlength="100">
-            <textarea 
-              class="form-textarea height180  mt15" 
+            <textarea
+              class="form-textarea height180 mt15"
               placeholder="궁금하신 내용을 적어주세요."
-              v-model="inqueiryInputData.content" 
+              v-model="inqueiryInputData.content"
               maxlength="4000"
             ></textarea>
             <div class="quiryAgree">
               <input type="checkbox" id="agree1" class="checkStyle2" value="서비스 이용약관 동의" v-model="inqueiryInputData.agree">
               <label for="agree1">[필수] 개인정보 수집 및 이용 동의에 동의합니다.</label>
               <!-- <a href="#self" class="provisionMore">내용보기</a> -->
-              
+
             </div>
             <a href="#self" @click.prevent="fnRegisterInquiry" class="btnStyle2 backRed" title="상담신청">상담신청</a>
           </div>

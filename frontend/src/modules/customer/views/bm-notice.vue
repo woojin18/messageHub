@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <CsMenuSubHeader></CsMenuSubHeader>
@@ -12,7 +11,7 @@
               <p class="titleText">공지사항</p>
               <p class="subText">공지 사항 및 신규 서비스에 관련된 소식을 전해드립니다.</p>
             </div>
-            
+
             <table class="user_table_skin2 bt-000 NoticeTable">
               <colgroup>
                 <col style="width:5%">
@@ -39,13 +38,13 @@
                 </tr>
               </tbody>
             </table>
-            
+
             <!-- pagination -->
             <div id="pageContent">
               <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
             </div>
             <!-- //pagination -->
-          </section>  
+          </section>
         </div>
       </div>
     </div>

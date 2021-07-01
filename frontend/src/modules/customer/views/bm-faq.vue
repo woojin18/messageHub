@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <CsMenuSubHeader></CsMenuSubHeader>
@@ -20,7 +19,7 @@
             <ul class="faqList">
               <li v-for="(contant, idx) in contants" :key="idx">
                 <div class="faqTitle">
-                  <span class="faqBg">Q{{contant.rownum+offset}}</span>
+                  <span class="faqBg">Q{{contant.rownum+offset > 9 ? '' : ' '}}{{contant.rownum+offset}}</span>
                   <p>{{contant.titleContent}}<span class="faqIcon">아이콘</span></p>
                 </div>
                 <div class="faqAn">{{contant.answerContent}}</div>

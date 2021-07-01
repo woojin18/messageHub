@@ -3,7 +3,7 @@
     <article id="subVisualWrap02">
       <section>
         <div class="text-center">
-          <h2>요금제 안내</h2>
+          <h2  class="user_sub_h2">요금제 안내</h2>
           <p>채널별 메시지 발송 요금을 확인하실 수 있습니다.</p>
         </div>
       </section>

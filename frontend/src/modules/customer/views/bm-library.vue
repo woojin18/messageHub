@@ -10,7 +10,7 @@
               <p class="titleText">자료실</p>
               <p class="subText">서비스 이용에 관련된 자료들을 제공합니다.</p>
             </div>
-            
+
             <table class="user_table_skin2 bt-000 NoticeTable">
               <colgroup>
                 <col style="width:5%">
@@ -30,7 +30,7 @@
                 <tr v-for="(contant, idx) in contants" :key="idx">
                   <td>{{totCnt-offset-contant.rownum+1}}</td>
                   <td class="text-left">
-                    <router-link 
+                    <router-link
                       :to="{ name: 'libraryDetail', params: { libraryId: contant.libraryId }}">{{contant.title}}</router-link>
                   </td>
                   <td><img v-if="contant.existsFileYn == 'Y'" src="/se2/images/user_sub03_1_fileicon.png" alt="파일 아이콘" class="fileIcon"></td>
@@ -38,13 +38,13 @@
                 </tr>
               </tbody>
             </table>
-            
+
             <!-- pagination -->
             <div id="pageContent">
               <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
             </div>
             <!-- //pagination -->
-          </section>  
+          </section>
         </div>
       </div>
     </div>

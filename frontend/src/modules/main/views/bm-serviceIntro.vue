@@ -4,7 +4,7 @@
     <article id="subVisualWrap01">
       <section>
         <div class="text-center">
-          <h2>U+ 통합 메시징 클라우드</h2>
+          <h2 class="user_sub_h2">U+ 통합 메시징 클라우드</h2>
           <p>엘지유플러스가 만든 모든 메시지 발송 채널 통합 플랫폼</p>
           <div>
             <!-- 
