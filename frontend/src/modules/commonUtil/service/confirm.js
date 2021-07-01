@@ -36,18 +36,18 @@ import {eventBus} from "./eventBus";
 const fnAlert = (cTitle, cMessage, cAfterType, cParam) => {
   var confirmData = {"cTitle" : cTitle, "cMessage" : cMessage, "cButtonView" : false, "cButton" : "", "cAfterType" : (cAfterType ? cAfterType : ''), "cParam" : cParam}
   eventBus.$emit('confirmEventBus', confirmData);
-  jQuery("#confirm").modal("show");
+  //jQuery("#confirm").modal("show");
 }
 
 const fnConfirm = (cTitle, cMessage, cButton) => {
   var confirmData = {"cTitle" : cTitle, "cMessage" : cMessage, "cButtonView" : true, "cButton" : cButton}
   eventBus.$emit('confirmEventBus', confirmData);
-  jQuery("#confirm").modal("show");
+  //jQuery("#confirm").modal("show");
 }
 
 Vue.component('confirm', {
   template:
-    '<div class="modal modalStyle fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">'
+    '<div v-if="confirmOpen" class="modalStyle" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">'
     +  '<div class="modal-dialog">'
     +    '<div class="modal-content">'
     +      '<div class="modal-body">'
@@ -68,6 +68,7 @@ Vue.component('confirm', {
   created: function() {
       var vm = this;
       eventBus.$on('confirmEventBus', function(value){
+        vm.confirmOpen = true;
         vm.cTitle = value.cTitle;
         vm.cMessage = value.cMessage;
         vm.cButtonView = value.cButtonView;
@@ -78,6 +79,7 @@ Vue.component('confirm', {
   },
   data() {
     return {
+        confirmOpen: false,
         cTitle: "",
         cMessage: "",
         cButtonView: true,
@@ -95,7 +97,8 @@ Vue.component('confirm', {
     },
     fnConfirmHide: function() {
       eventBus.$off('callbackEventBus');
-      jQuery("#confirm").modal("hide");
+      //jQuery("#confirm").modal("hide");
+      this.confirmOpen = false;
     },
     fnAfterCallback: function(){
       eventBus.$emit('callbackEventBus', this.cParam);

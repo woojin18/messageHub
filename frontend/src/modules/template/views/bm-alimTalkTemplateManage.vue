@@ -68,9 +68,9 @@
             <div class="float-left" style="width:22%"><h4>템플릿강조유형</h4></div>
             <div class="float-left" style="width:78%">
               <input type="radio" id="emphasizeType_NONE" name="emphasizeType" value="NONE" v-model="tmpltData.emphasizeType">
-              <label for="emphasizeType_NONE" class="mr30">선택 안 함|{{tmpltData.emphasizeType}}</label>
+              <label for="emphasizeType_NONE" class="mr30">선택 안 함</label>
               <input type="radio" id="emphasizeType_TEXT" name="emphasizeType" value="TEXT" v-model="tmpltData.emphasizeType">
-              <label for="emphasizeType_TEXT">강조 표기형|{{tmpltData.emphasizeType}}</label>
+              <label for="emphasizeType_TEXT">강조 표기형</label>
             </div>
           </div>
           <div v-if="tmpltData.emphasizeType == 'TEXT'" class="of_h">
@@ -176,7 +176,7 @@
           </div>
 
           <div class="mt20 float-right">
-            <a v-if="isInsert" href="#" @click.prevent="fnApprvReqTmplt" class="btnStyle2 backRed float-left ml10" title="승인요청">승인요청</a>
+            <a v-if="isInsert" href="#" @click.prevent="fnApprvReqTmplt" class="btnStyle2 backRed float-left ml10" title="등록요청">등록요청</a>
             <a 
               v-if="tmpltData.tmpltStatCode == 'T'" href="#" 
               @click.prevent="fnInspectReqTmplt" 
@@ -284,21 +284,20 @@ export default {
           if(result.data != null && result.data.length > 0){
             let rtnData = result.data[0];
             rtnData.buttonList = [];
-            this.tmpltData = Object.assign({}, result.rtnData);
-            
             let tmpltInfo = JSON.parse(rtnData.tmpltInfo);
-            this.tmpltData.emphasizeType = tmpltInfo.templateEmphasizeType;
-            this.tmpltData.tmpltEmpsTitle = tmpltInfo.templateTitle;
-            this.tmpltData.tmpltEmpsSubTitle = tmpltInfo.templateSubtitle;
-            this.tmpltData.tmpltContent = tmpltInfo.templateContent;
-            this.tmpltData.buttonList = tmpltInfo.buttons;
-            
+            rtnData.emphasizeType = tmpltInfo.templateEmphasizeType;
+            rtnData.tmpltEmpsTitle = tmpltInfo.templateTitle;
+            rtnData.tmpltEmpsSubTitle = tmpltInfo.templateSubtitle;
+            rtnData.tmpltContent = tmpltInfo.templateContent;
+            rtnData.buttonList = tmpltInfo.buttons;
+
+            this.tmpltData = Object.assign({}, rtnData);
+            this.tmpltData.tmpltInfo = '';
+
             //set categoryInfo
             this.categoryGrpName = this.tmpltData.categoryGrpName;
             this.fnSelectKkoTmpltCatList();
             this.tmpltData.categoryCode = this.tmpltData.tmpltCategoryCode;
-
-            console.log('this.tmpltData ===> ', this.tmpltData);
           }
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
@@ -420,7 +419,7 @@ export default {
       params.tmpltCode = this.tmpltCode;
       params.tmpltButtonsStr = JSON.stringify(this.tmpltData.buttonList);
 
-      templateApi.procUpdateRequestKkoTmplt(params).then(response => {
+      await templateApi.procUpdateRequestKkoTmplt(params).then(response => {
         const result = response.data;
         if(result.success) {
           confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 수정요청 하였습니다.');
@@ -432,21 +431,27 @@ export default {
     fnApprvReqTmplt(){
       if(this.fnIsValidApprvReqTmplt() == false) return;
       eventBus.$on('callbackEventBus', this.fnProcApprvReqTmplt);
-      confirm.fnConfirm(this.componentsTitle, "알림톡 템플릿을 승인요청 하시겠습니까?", "확인");
+      confirm.fnConfirm(this.componentsTitle, "알림톡 템플릿을 등록요청 하시겠습니까?", "확인");
     },
     async fnProcApprvReqTmplt(){
       //DATA Set
       let params = Object.assign({}, this.tmpltData);
       params.tmpltButtonsStr = JSON.stringify(this.tmpltData.buttonList);
 
-      templateApi.procApprvRequestKkoTmplt(params).then(response => {
+      await templateApi.procApprvRequestKkoTmplt(params).then(response => {
         const result = response.data;
         if(result.success) {
-          confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 승인요청 하였습니다.');
+          eventBus.$on('callbackEventBus', this.fnMovePage);
+          confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 등록요청 하였습니다.', 'CALLBACK');
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
+    },
+    fnMovePage(){
+      if(this.isInsert){
+        this.$router.push('alimTalkTemplateList')
+      }
     },
     fnAddButton(){
       if(this.tmpltData.buttonList.length < this.buttonLimitSize){
