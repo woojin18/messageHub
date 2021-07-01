@@ -154,4 +154,13 @@ public class MyPageService {
 		
 		return rtn;
 	}
+
+	public RestResult<Object> selectProejctList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_PROJECT_LIST_BY_USERID, params);
+		rtn.setData(list);
+
+		return rtn;
+	}
 }

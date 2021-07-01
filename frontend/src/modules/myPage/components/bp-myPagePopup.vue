@@ -14,7 +14,14 @@
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:20%">이름</h5>
 							<input type="text" class="inputStyle float-right" style="width:80%" title="이름 입력란"  v-model="userName">
-						</div>	
+						</div>
+						<div class="of_h consolMarginTop">
+							<h5 class="inline-block" style="width:20%">대표 프로젝트</h5>
+							<select class="selectStyle2 float-right"  style="width:80%" v-model="repProjectId">
+								<option value="">선택</option>
+								<option  v-for="(row, index) in repProjectArr" :key="index" :value="row.projectId"> {{ row.projectName }} </option>
+							</select>
+						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:20%">비밀번호</h5>
 							<h5 class="inline-block" style="width:53%">최종변경일 : {{ pwdUpdDt }}</h5>
@@ -62,7 +69,6 @@
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import myPageApi from '@/modules/myPage/service/myPageApi';
-import tokenSvc from '@/common/token-service';
 
 export default {
   name: 'myPagePopup',
@@ -76,7 +82,9 @@ export default {
       chkLoginPwd : '',
       chgHpNumber : '',
       certifyNumber  : '',
-      certifyMsg : '인증번호 받기'
+      certifyMsg : '인증번호 받기',
+      repProjectId : "",
+      repProjectArr : []
     }
   },
   props: {
@@ -90,6 +98,7 @@ export default {
   },
   mounted() {
     this.fnReset();
+	this.fnGetRepProjectByUserId();
   },
   watch: {
     popReset() {
@@ -116,6 +125,7 @@ export default {
         this.pwdUpdDt = this.memberInfo.pwdUpdDt;
         this.userName = this.memberInfo.userName;
         this.certifyMsg = "인증번호 받기";
+        this.repProjectId = this.memberInfo.repProjectId != "" && this.memberInfo.repProjectId != null ? this.memberInfo.repProjectId : "";
         
         // 변경할 비밀번호, 전화번호 초기화
         this.chgHpNumber  = '';
@@ -176,7 +186,7 @@ export default {
           loginPwd : this.loginPwd.trim(),
           hpNumber : this.chgHpNumber.trim(),
           certifyNumber : this.certifyNumber.trim(),
-          userId : tokenSvc.getToken().principal.userId
+          repProjectId : this.repProjectId
         }
 
         myPageApi.saveMemberInfo(params).then(response =>{
@@ -186,6 +196,15 @@ export default {
             this.fnCloseLayer();
           } else {
             confirm.fnAlert(result.message, "");
+          }
+        });
+      },
+      fnGetRepProjectByUserId(){
+        // 대표 프로젝트 리스트 조회
+        myPageApi.selectProejctList().then(response=>{
+          var result = response.data;
+          if(result.success){
+            this.repProjectArr = result.data;
           }
         });
       }

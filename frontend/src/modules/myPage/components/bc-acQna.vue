@@ -16,6 +16,7 @@
 							<h4 class="inline-block ml60" style="width:7%">문의상태</h4>
 							<select id="srcQnaStatus" name="srcQnaStatus" class="selectStyle2" style="width:16%" v-model="srcQnaStatus">
 								<option value="">전체</option>
+								<option  v-for="(row, index) in qnaStatusInfo" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
 							</select>
 							<h4 class="inline-block ml60" style="width:7%">문의제목</h4>
 							<input type="text" id="srcTitle" class="inputStyle vertical-baseline" style="width:24%" v-model="srcTitle" @keypress.enter="fnSearch">

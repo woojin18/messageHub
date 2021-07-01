@@ -18,7 +18,7 @@ import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.myPage.service.MyPageService;
 
 @RestController
-@RequestMapping("/api/public/myPage")
+@RequestMapping("/api/myPage")
 public class MyPageController {
 	
 	@Autowired
@@ -209,6 +209,23 @@ public class MyPageController {
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
 			rtn = myPageSvc.saveCorpInfo(params);
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		
+		return rtn;
+	}
+	
+	@PostMapping("/selectProejctList")
+	public RestResult<?> selectProejctList(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = myPageSvc.selectProejctList(params);
+			
 		} catch(Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");

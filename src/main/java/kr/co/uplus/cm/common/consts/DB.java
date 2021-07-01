@@ -199,6 +199,7 @@ public class DB {
 	public final static String QRY_SELECT_MEMBER_INFO = "myPage.selectMemberInfo";
 	public final static String QRY_UPDATE_MEMBER_INFO = "myPage.updateMemberInfo";
 	public final static String QRY_SELECT_SMS_CERTIFY_NUMBER = "myPage.selectSmsCertifyNumber";
+	public final static String QRY_SELECT_PROJECT_LIST_BY_USERID = "myPage.selectProejctListByUserId";
 	// 나의 문의 내역서
 	public final static String QRY_SELECT_QNA_LIST_COUNT = "myPage.selectQnaList_count";
 	public final static String QRY_SELECT_QNA_LIST = "myPage.selectQnaList";

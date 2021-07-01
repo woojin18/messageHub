@@ -9,6 +9,7 @@
 		,		USER_NAME
 		,		DATE_FORMAT(PWD_UPD_DT, '%Y-%m-%d')	AS PWD_UPD_DT
 		,		HP_NUMBER
+		,		REP_PROJECT_ID
 		FROM	cm_console.CM_USER
 		WHERE	USER_ID = #{userId}
 	</select>
@@ -17,6 +18,7 @@
 	/* myPage.updateMemberInfo */
 		UPDATE	cm_console.CM_USER
 		SET		UPD_DT = NOW()
+		,		REP_PROJECT_ID = #{repProjectId}
 		<if test="loginPwd != null and loginPwd != ''">
 		,		LOGIN_PWD = #{loginPwd}
 		,		PWD_UPD_DT = NOW()
@@ -135,4 +137,14 @@
 		,		FILE_ID = #{fileId}
 		WHERE	CORP_ID = #{corpId}
 	</update>
+	
+	<select id="selectProejctListByUserId" resultType="camel">
+		/* myPage.selectProejctListByUserId */
+		SELECT	A.PROJECT_ID
+		,		A.PROJECT_NAME
+		FROM	cm_console.CM_PROJECT A
+		INNER JOIN	cm_console.CM_PROJECT_USER B
+			ON	A.PROJECT_ID = B.PROJECT_ID
+		WHERE	B.USER_ID = #{userId}
+	</select>
 </mapper>
