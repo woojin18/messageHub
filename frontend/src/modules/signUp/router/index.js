@@ -6,19 +6,19 @@ import checkPlusFail from '../views/bm-checkPlus-fail'
 
 export default [
     {
-        path: '/signUp',
+        path: '/sign/signUp',
         name: 'signUp',
         component: signUp,
         meta: { public: true }
     },
     {
-        path: '/mailSend',
+        path: '/sign/mailSend',
         name: 'mailSend',
         component: mailSend,
         meta: { public: true }
     },
     {
-        path: '/signUpMain',
+        path: '/sign/signUpMain',
         name: 'signUpMain',
         component: signUpMain,
         meta: { public: true }

@@ -195,8 +195,8 @@ export default {
 		password : "",				// 비밀번호
 		passwordChk : "",			// 비밀번호 체크
 		smsCertifyYn : "Y",			// sms 인증여부
-		phoneCerti : "0",			// 담당자 휴대폰 인증 전화번호
-		phoneCertiChk : true,		// 담당자 휴대폰 인증 TF (모듈 추가후 defalte false로 변경해야됨)
+		phoneCerti : "",			// 담당자 휴대폰 인증 전화번호
+		phoneCertiChk : false,		// 담당자 휴대폰 인증 TF (모듈 추가후 defalte false로 변경해야됨)
 		regno : "",					// 사업자번호
 		corpNm : "",				// 사업자명
 		ceoNm : "",					// 대표자명
