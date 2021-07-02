@@ -12,10 +12,10 @@
           <!-- phoneWrap -->
           <div class="phoneWrap">
             <img src="@/assets/images/common/phoneMockup2_1.svg" alt="프리 템플릿">
-            <div class="phoneTextWrap4">
+            <div class="phoneTextWrap4 scroll-y">
               <p v-if="tmpltData.msgKind == 'A'">[광고]</p>
               <div class="mt5">
-                <div class="text-sub-wrap scroll-y">
+                <div class="text-sub-wrap">
                   <!-- <p class="text-sub scroll-y"> -->
                     <!-- {{tmpltData.tmpltName}} -->
                     <div v-if="!$gfnCommonUtils.isEmpty(tmpltData.imgUrl)" class="phoneText2 mt10 text-center"
@@ -25,7 +25,7 @@
                     <br v-if="$gfnCommonUtils.isEmpty(tmpltData.imgUrl)"/>
                     <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
                     <div v-for="(buttonInfo, idx) in tmpltData.buttonList" :key="idx">
-                      <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray width100_">{{buttonInfo.name}}</a>
+                      <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
                     </div>
                   <!-- </p> -->
                 </div>

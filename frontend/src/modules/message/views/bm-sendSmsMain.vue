@@ -11,7 +11,7 @@
           <!-- phoneWrap -->
           <div class="phoneWrap">
             <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-            <div class="phoneTextWrap">
+            <div class="phoneTextWrap scroll-y">
               <div v-if="sendData.senderType == 'MMS'" class="phoneText2 mb10">
                 <p v-if="$gfnCommonUtils.isEmpty(sendData.smsTitle)">메시지 제목</p>
                 <p v-else>{{sendData.smsTitle}}</p>
@@ -21,7 +21,7 @@
                   :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+imgInfo.imgUrl+');'">
                 </div>
               </div>
-              <div class="phoneText1 scroll-y">
+              <div class="phoneText1">
                 <p v-if="$gfnCommonUtils.isEmpty(sendData.smsContent) && (sendData.msgKind != 'A' || $gfnCommonUtils.isEmpty(sendData.rcvblcNumber))" class="font-size14 color4 mt10">메시지 내용</p>
                 <p v-else class="font-size14 color4 mt10">
                   <span v-html="$gfnCommonUtils.newLineToBr(sendData.smsContent)"></span>

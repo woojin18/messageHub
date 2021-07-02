@@ -39,15 +39,15 @@
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30 color000">템플릿명</h5>
-                  <h5 style="width:40%" class="float-right color4 word-break-all">{{templateData.tmpltName}}</h5>
+                  <h5 style="width:40%" class="float-right color4 word-break-all scroll-y_modal">{{templateData.tmpltName}}</h5>
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30 color000">제목</h5>
-                  <h5 style="width:40%" class="float-right color4 word-break-all">{{templateData.tmpltTitle}}</h5>
+                  <h5 style="width:40%" class="float-right color4 word-break-all scroll-y_modal">{{templateData.tmpltTitle}}</h5>
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30 color000">내용</h5>
-                  <h5 style="width:40%" class="float-right color4 word-break-all" v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></h5>
+                  <h5 style="width:40%" class="float-right color4 word-break-all scroll-y_modal" v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></h5>
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30 color000">이미지</h5>
@@ -58,7 +58,7 @@
                 <!-- phoneWrap -->
                 <div class="phoneWrap">
                   <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                  <div class="phoneTextWrap">
+                  <div class="phoneTextWrap scroll-y">
                     <div class="phoneText1">
                       <p v-if="fnIsEmpty(templateData.tmpltTitle)">제목</p>
                       <p v-else>{{templateData.tmpltTitle}}</p>
@@ -70,7 +70,7 @@
                     <div v-if="templateData.msgType == 'IMAGE' && !fnIsEmpty(templateData.imgUrl)" class="phoneText2 mt10 text-center"
                       :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+templateData.imgUrl+');'">
                     </div>
-                    <div class="scroll-y">
+                    <div>
                       <p v-if="templateData.msgKind != 'A' || (fnIsEmpty(templateData.tmpltContent) && fnIsEmpty(templateData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
                       <p v-else class="font-size14 color4 mt10">
                         <span v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></span>

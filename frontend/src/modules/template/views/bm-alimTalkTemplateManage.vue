@@ -12,7 +12,7 @@
             <!-- phoneWrap -->
             <div class="phoneWrap">
               <img src="@/assets/images/common/phoneMockup3.svg" alt="알림톡 템플릿">
-              <div class="phoneTextWrap3">
+              <div class="phoneTextWrap3 scroll-y">
                 <div>
                   <p class="text-main"><i class="fal fa-envelope-open-text"></i> 알림톡 도착</p>
                   <div v-if="tmpltData.emphasizeType == 'TEXT'" class="text-sub-wrap" style="padding:10px;">
@@ -24,7 +24,7 @@
                   </div>
                   <!-- <p class="text-sub_2">템플릿 테스트입니다.<br>템플릿 테스트 템플릿 테스트 템플릿 테스트 템플릿 테스트</p> -->
                   <div v-for="(buttonInfo, idx) in tmpltData.buttonList" :key="idx">
-                    <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray width100_">{{buttonInfo.name}}</a>
+                    <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
                   </div>
                 </div>
               </div>

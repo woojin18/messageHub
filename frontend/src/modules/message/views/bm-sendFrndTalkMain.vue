@@ -13,10 +13,10 @@
           <!-- 친구톡 -->
           <div v-if="previewMessageType == 'FRIENDTALK'" class="phoneWrap">
             <img src="@/assets/images/common/phoneMockup2_1.svg" alt="프리 템플릿">
-            <div class="phoneTextWrap4">
+            <div class="phoneTextWrap4 scroll-y">
               <p v-if="sendData.msgKind == 'A'">[광고]</p>
               <div class="mt5">
-                <div class="text-sub-wrap scroll-y">
+                <div class="text-sub-wrap">
                   <!-- <p class="text-sub scroll-y"> -->
                     <div v-if="!$gfnCommonUtils.isEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center"
                       :style="'padding:40px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
@@ -24,7 +24,7 @@
                     <br v-if="$gfnCommonUtils.isEmpty(sendData.imgUrl)"/>
                     <span v-html="$gfnCommonUtils.newLineToBr(sendData.frndTalkContent)"></span>
                     <div v-for="(buttonInfo, idx) in sendData.buttonList" :key="idx">
-                      <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray width100_">{{buttonInfo.name}}</a>
+                      <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
                     </div>
                   <!-- </p> -->
                 </div>

@@ -12,7 +12,7 @@
           <!-- PUSH -->
           <div v-if="previewMessageType == 'PUSH'" class="phoneWrap">
             <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-            <div class="phoneTextWrap">
+            <div class="phoneTextWrap scroll-y">
               <div class="phoneText1">
                 <p v-if="fnIsEmpty(sendData.pushTitle)">제목</p>
                 <p v-else>{{sendData.pushTitle}}</p>
@@ -24,7 +24,7 @@
               <div v-if="sendData.msgType == 'IMAGE' && !fnIsEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center"
                 :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
               </div>
-              <div class="scroll-y">
+              <div>
                 <p v-if="sendData.msgKind != 'A' || (fnIsEmpty(sendData.pushContent) && fnIsEmpty(sendData.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
                 <p v-else class="font-size14 color4 mt10">
                   <span v-html="$gfnCommonUtils.newLineToBr(sendData.pushContent)"></span>

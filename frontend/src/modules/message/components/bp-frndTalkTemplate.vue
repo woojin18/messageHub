@@ -33,11 +33,11 @@
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30 color000">템플릿명</h5>
-                  <h5 style="width:40%" class="float-right ml30 color4 word-break-all">{{templateData.tmpltName}}</h5>
+                  <h5 style="width:40%" class="float-right ml30 color4 word-break-all scroll-y_modal">{{templateData.tmpltName}}</h5>
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30 color000">내용</h5>
-                  <h5 style="width:40%" class="float-right ml30 color4 word-break-all">{{templateData.tmpltContent}}</h5>
+                  <h5 style="width:40%" class="float-right ml30 color4 word-break-all scroll-y_modal">{{templateData.tmpltContent}}</h5>
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30 color000">이미지</h5>
@@ -48,10 +48,10 @@
                 <!-- phoneWrap -->
                 <div class="phoneWrap">
                   <img src="@/assets/images/common/phoneMockup2_1.svg" alt="프리 템플릿">
-                  <div class="phoneTextWrap4">
+                  <div class="phoneTextWrap4 scroll-y">
                     <p v-if="templateData.msgKind == 'A'">[광고]</p>
                     <div class="mt5">
-                      <div class="text-sub-wrap scroll-y">
+                      <div class="text-sub-wrap">
                         <!-- <p class="text-sub scroll-y">친구톡 발송테스트</p> -->
                         <div v-if="!$gfnCommonUtils.isEmpty(templateData.imgUrl)" class="phoneText2 mt10 text-center"
                           :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+templateData.imgUrl+');'">
@@ -59,7 +59,7 @@
                         <br v-if="$gfnCommonUtils.isEmpty(templateData.imgUrl)"/>
                         <span v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></span>
                         <div v-for="(buttonInfo, idx) in templateData.buttonList" :key="idx">
-                          <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray width100_">{{buttonInfo.name}}</a>
+                          <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
                         </div>
                       </div>
                       <p v-if="templateData.msgKind == 'A'" class="text-sub_2">수신거부: 홈 &gt; 친구차단</p>

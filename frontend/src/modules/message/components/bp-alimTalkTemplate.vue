@@ -11,7 +11,15 @@
                 <h4>*발신프로필</h4>
               </div>
               <div style="width:42%">
-                <select name="userConsole_sub0204_2" class="selectStyle2" style="width:53%" v-model="senderKey">
+                <select class="selectStyle2" style="width:18%" v-model="senderKey">
+                  <option value="">선택하세요</option>
+                  <option 
+                    v-for="(senderKeyInfo, idx) in senderKeyList"
+                    :key="idx"
+                    value="senderKeyInfo.senderKey"
+                  >{{senderKeyInfo.senderKey}}</option>
+                </select>
+                <select class="selectStyle2" style="width:35%" v-model="senderKey">
                   <option value="">선택하세요</option>
                   <option 
                     v-for="(senderKeyInfo, idx) in senderKeyList"

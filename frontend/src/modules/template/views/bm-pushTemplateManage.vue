@@ -16,7 +16,7 @@
           <!-- phoneWrap -->
           <div class="phoneWrap">
             <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-            <div class="phoneTextWrap">
+            <div class="phoneTextWrap scroll-y">
               <div class="phoneText2">
                 <p v-if="fnIsEmpty(tmpltData.tmpltTitle)">템플릿 제목</p>
                 <p v-else>{{tmpltData.tmpltTitle}}</p>
@@ -28,7 +28,7 @@
               <div v-if="tmpltData.msgType == 'IMAGE' && !fnIsEmpty(tmpltData.imgUrl)" class="phoneText2 mt10 text-center"
                 :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.imgUrl+');'">
               </div>
-              <div class="scroll-y">
+              <div>
                 <p v-if="fnIsEmpty(tmpltData.tmpltContent) && (tmpltData.msgKind != 'A' || fnIsEmpty(tmpltData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
                 <p v-else class="font-size14 color4 mt10">
                   <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
