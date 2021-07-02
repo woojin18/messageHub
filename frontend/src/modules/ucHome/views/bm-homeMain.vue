@@ -61,7 +61,7 @@
 											<span v-if="ntc.noticeType == 'INFO'" class="Information">{{ntc.noticeTypeCdName}}</span>
 											<span v-else-if="ntc.noticeType == 'INSPEC'" class="Inspect">{{ntc.noticeTypeCdName}}</span>
 											<span v-else-if="ntc.noticeType == 'FAULT'" class="Fault">{{ntc.noticeTypeCdName}}</span>
-											<router-link :to="{ name: 'noticeDetail', params: { noticeId: ntc.noticeId }}">{{ntc.title}}</router-link>
+											<a @click.prevent="fnOpenNoticePopupModal(ntc.noticeId)" title="해당 게시글이 열립니다">{{ntc.title}}</a>
 										</td>
 										<td class="text-center end">{{ntc.regDtYmd}}</td>
 									</tr>
@@ -157,6 +157,7 @@
 
 			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
 		</article>
+		<NoticeLayer ref="noticeLayer"></NoticeLayer>
 	</div>
 </template>
 
@@ -166,6 +167,7 @@ import HomeMain from '../components/bc-homeMain.vue';
 import tokenSvc from '@/common/token-service';
 import confirm from "@/modules/commonUtil/service/confirm";
 import homeApi from '@/modules/ucHome/service/api';
+import NoticeLayer from "@/modules/customer/components/bp-noticeLayer.vue";
 import Calendar from "@/components/Calendar.vue";
 import BarChart from '@/components/Chart.vue';
 import * as utils from '@/common/utils';
@@ -174,6 +176,7 @@ import { consts } from '@/common/config';
 export default {
 	components: {
 		HomeMain,
+		NoticeLayer,
 		Calendar,
 		BarChart
 	},
@@ -264,6 +267,10 @@ export default {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
 			});
+		},
+		fnOpenNoticePopupModal(noticeId){
+			this.$refs.noticeLayer.fnSetNoticeInfo(noticeId);
+			jQuery("#noticeDetailLayer").modal("show");
 		},
 		fnGetChTotCntInfo() {
 			let params = {

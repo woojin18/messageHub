@@ -206,7 +206,7 @@ public class HomeService {
 	}
 
 	/**
-	 * 대시보드 당일 실시간 이용현황 시간대 조회
+	 * 대시보드(User Console) 당일 실시간 이용현황 시간대 조회
 	 * 
 	 * @param params
 	 * @return
@@ -223,7 +223,7 @@ public class HomeService {
 	}
 
 	/**
-	 * 대시보드 당일 실시간 이용현황 조회
+	 * 대시보드(User Console) 당일 실시간 이용현황 조회
 	 * 
 	 * @param params
 	 * @return
@@ -234,6 +234,74 @@ public class HomeService {
 		RestResult<Object> rtn = new RestResult<Object>();
 
 		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RT_USED_DATA_LIST, params);
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드(Admin Console) 당월 이용현황 시간대 조회
+	 * 
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> selectMonthUsedTimeLineList(Map<String, Object> params) throws Exception {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_MONTH_USED_TIME_LINE_LIST, params);
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드(Admin Console) 당월 이용현황 조회
+	 * 
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> selectMonthUsedDataList(Map<String, Object> params) throws Exception {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_MONTH_USED_DATA_LIST, params);
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드(Admin Console) 최근 6개월간 이용현황 시간대 조회
+	 * 
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> selectSixMonthUsedTimeLineList(Map<String, Object> params) throws Exception {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_SIX_MONTH_USED_TIME_LINE_LIST, params);
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드(Admin Console) 최근 6개월간 이용현황 조회
+	 * 
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> selectSixMonthUsedDataList(Map<String, Object> params) throws Exception {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_SIX_MONTH_USED_DATA_LIST, params);
 		rtn.setData(rtnList);
 
 		return rtn;

@@ -24,11 +24,31 @@ const selectChFailCodeList = (params) => {
 	return httpClient.post('/api/home/selectChFailCodeList', params, { headers: { "show-layer": "Yes" } });
 };
 
+const selectMonthUsedTimeLineList = (params) => {
+	return httpClient.post('/api/home/selectMonthUsedTimeLineList', params, { headers: { "show-layer": "Yes" } });
+};
+
+const selectMonthUsedDataList = (params) => {
+	return httpClient.post('/api/home/selectMonthUsedDataList', params, { headers: { "show-layer": "Yes" } });
+};
+
+const selectSixMonthUsedTimeLineList = (params) => {
+	return httpClient.post('/api/home/selectSixMonthUsedTimeLineList', params, { headers: { "show-layer": "Yes" } });
+};
+
+const selectSixMonthUsedDataList = (params) => {
+	return httpClient.post('/api/home/selectSixMonthUsedDataList', params, { headers: { "show-layer": "Yes" } });
+};
+
 export default {
 	logout,
 	selectProjectList,
 	selectNoticeList,
 	selectChTotCntInfo,
 	selectChSuccFailCntList,
-	selectChFailCodeList
+	selectChFailCodeList,
+	selectMonthUsedTimeLineList,
+	selectMonthUsedDataList,
+	selectSixMonthUsedTimeLineList,
+	selectSixMonthUsedDataList
 };

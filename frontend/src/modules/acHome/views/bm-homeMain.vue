@@ -62,7 +62,7 @@
 											<span v-if="ntc.noticeType == 'INFO'" class="Information">{{ntc.noticeTypeCdName}}</span>
 											<span v-else-if="ntc.noticeType == 'INSPEC'" class="Inspect">{{ntc.noticeTypeCdName}}</span>
 											<span v-else-if="ntc.noticeType == 'FAULT'" class="Fault">{{ntc.noticeTypeCdName}}</span>
-											<router-link :to="{name: 'noticeDetail', params: { noticeId: ntc.noticeId }}">{{ntc.title}}</router-link>
+											<a @click.prevent="fnOpenNoticePopupModal(ntc.noticeId)" title="해당 게시글이 열립니다">{{ntc.title}}</a>
 										</td>
 										<td class="text-center end">{{ntc.regDtYmd}}</td>
 									</tr>
@@ -170,6 +170,7 @@
 
 			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
 		</article>
+		<NoticeLayer ref="noticeLayer"></NoticeLayer>
 	</div>
 </template>
 
@@ -179,12 +180,14 @@ import HomeMain from '../components/bc-homeMain.vue';
 import tokenSvc from '@/common/token-service';
 import confirm from "@/modules/commonUtil/service/confirm";
 import homeApi from '@/modules/acHome/service/api';
+import NoticeLayer from "@/modules/customer/components/bp-noticeLayer.vue";
 import Calendar from "@/components/Calendar.vue";
 import BarChart from '@/components/Chart.vue';
 
 export default {
 	components: {
 		HomeMain,
+		NoticeLayer,
 		Calendar,
 		BarChart
 	},
@@ -224,6 +227,20 @@ export default {
 				'#B2CCFF', '#DE4F4F', '#FAED7D', '#41FF3A', '#F35AA6', '#949494', '#FFFF6C', '#79ABFF', '#FF3636', '#FF9797'
 			],
 			backgroundColor: [],
+			timeLine: [],
+			monthUsedPushList: [],
+			monthUsedRcsList: [],
+			monthUsedFriendtalkList: [],
+			monthUsedAlimtalkList: [],
+			monthUsedSmsList: [],
+			monthUsedMmsList: [],
+			sixMonthTimeLine: [],
+			sixMonthUsedPushList: [],
+			sixMonthUsedRcsList: [],
+			sixMonthUsedFriendtalkList: [],
+			sixMonthUsedAlimtalkList: [],
+			sixMonthUsedSmsList: [],
+			sixMonthUsedMmsList: [],
 			successFailResultData: {},
 			failCodeResultData: {},
 			monthUsedResultData: {},
@@ -238,8 +255,10 @@ export default {
 		this.fnGetNoticeList();
 		this.fnGetProjectList();
 		this.fnGetChTotCntInfo();
-		this.fnGetMonthUsedResultData();
-		this.fnGetSixMonthUsedResultData();
+		this.fnGetMonthUsedTimeLineList();
+		this.fnGetMonthUsedData();
+		this.fnGetSixMonthUsedTimeLineList();
+		this.fnGetSixMonthUsedData();
 	},
 	methods: {
 		fnGetProjectList() {
@@ -268,6 +287,10 @@ export default {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
 			});
+		},
+		fnOpenNoticePopupModal(noticeId){
+			this.$refs.noticeLayer.fnSetNoticeInfo(noticeId);
+			jQuery("#noticeDetailLayer").modal("show");
 		},
 		fnGetChTotCntInfo() {
 			let params = {
@@ -339,7 +362,101 @@ export default {
 				}
 			});
 		},
-		//검색일자변경
+		// 당월 이용현황 시간대 조회
+		fnGetMonthUsedTimeLineList() {
+			let params = {
+				corpId: tokenSvc.getToken().principal.corpId
+			};
+
+			homeApi.selectMonthUsedTimeLineList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					for (var i = 0; i < result.data.length; i++) {
+						this.timeLine.push(result.data[i].date);
+					}
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+		},
+		// 당월 이용현황 채널별 데이터 조회
+		fnGetMonthUsedDataList(channel) {
+			let params = {
+				corpId: tokenSvc.getToken().principal.corpId,
+				channel: channel
+			};
+
+			homeApi.selectMonthUsedDataList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					for (var i = 0; i < result.data.length; i++) {
+						if (channel == 'PUSH') {
+							this.monthUsedPushList.push(result.data[i].totCnt);
+						} else if (channel == 'RCS') {
+							this.monthUsedRcsList.push(result.data[i].totCnt);
+						} else if (channel == 'FRIENDTALK') {
+							this.monthUsedFriendtalkList.push(result.data[i].totCnt);
+						} else if (channel == 'ALIMTALK') {
+							this.monthUsedAlimtalkList.push(result.data[i].totCnt);
+						} else if (channel == 'SMS') {
+							this.monthUsedSmsList.push(result.data[i].totCnt);
+						} else if (channel == 'MMS') {
+							this.monthUsedMmsList.push(result.data[i].totCnt);
+						}
+					}
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+		},
+		// 최근 6개월간 이용현황 시간대 조회
+		fnGetSixMonthUsedTimeLineList() {
+			let params = {
+				corpId: tokenSvc.getToken().principal.corpId
+			};
+
+			homeApi.selectSixMonthUsedTimeLineList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					for (var i = 0; i < result.data.length; i++) {
+						this.sixMonthTimeLine.push(result.data[i].date);
+					}
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+		},
+		// 최근 6개월간 이용현황 데이터 조회
+		fnGetSixMonthUsedDataList(channel) {
+			let params = {
+				corpId: tokenSvc.getToken().principal.corpId,
+				channel: channel
+			};
+
+			homeApi.selectSixMonthUsedDataList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					for (var i = 0; i < result.data.length; i++) {
+						if (channel == 'PUSH') {
+							this.sixMonthUsedPushList.push(result.data[i].totCnt);
+						} else if (channel == 'RCS') {
+							this.sixMonthUsedRcsList.push(result.data[i].totCnt);
+						} else if (channel == 'FRIENDTALK') {
+							this.sixMonthUsedFriendtalkList.push(result.data[i].totCnt);
+						} else if (channel == 'ALIMTALK') {
+							this.sixMonthUsedAlimtalkList.push(result.data[i].totCnt);
+						} else if (channel == 'SMS') {
+							this.sixMonthUsedSmsList.push(result.data[i].totCnt);
+						} else if (channel == 'MMS') {
+							this.sixMonthUsedMmsList.push(result.data[i].totCnt);
+						}
+					}
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+		},
+		// 검색일자변경
 		fnSetIntervalSearchDate(interval){
 			this.searchDateInterval = interval;
 			this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
@@ -408,9 +525,16 @@ export default {
 				this.chName = 'MMS';
 			}
 		},
-		fnGetMonthUsedResultData() {
+		fnGetMonthUsedData() {
+			this.fnGetMonthUsedDataList('PUSH');
+			this.fnGetMonthUsedDataList('RCS');
+			this.fnGetMonthUsedDataList('FRIENDTALK');
+			this.fnGetMonthUsedDataList('ALIMTALK');
+			this.fnGetMonthUsedDataList('SMS');
+			this.fnGetMonthUsedDataList('MMS');
+
 			this.monthUsedResultData = {
-				labels: ['20210601', '20210602', '20210603', '20210604', '20210605', '20210606', '20210607', '20210608', '20210609', '20210610', '20210611', '20210612', '20210613', '20210614', '20210615'],
+				labels: this.timeLine,
 				datasets: [
 					{
 						label: 'Push',
@@ -418,7 +542,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [140, 120, 130, 110, 150, 160, 150, 70, 320, 210, 60, 90, 150, 260, 400]
+						data: this.monthUsedPushList
 					},
 					{
 						label: 'RCS',
@@ -426,7 +550,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [110, 100, 110, 110, 120, 130, 120, 30, 60, 90, 210, 270, 120, 100, 190]
+						data: this.monthUsedRcsList
 					},
 					{
 						label: '친구톡',
@@ -434,7 +558,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [60, 50, 60, 60, 70, 80, 70, 60, 50, 60, 60, 70, 80, 70, 120]
+						data: this.monthUsedFriendtalkList
 					},
 					{
 						label: '알림톡',
@@ -442,7 +566,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [30, 10, 10, 50, 70, 90, 120, 30, 10, 10, 50, 70, 90, 160, 190]
+						data: this.monthUsedAlimtalkList
 					},
 					{
 						label: 'SMS',
@@ -450,7 +574,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [210, 200, 110, 160, 170, 330, 320, 190, 70, 130, 90, 160, 210, 300, 110]
+						data: this.monthUsedSmsList
 					},
 					{
 						label: 'MMS',
@@ -458,14 +582,21 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [110, 100, 60, 60, 70, 230, 220, 90, 20, 30, 40, 60, 110, 200, 60]
+						data: this.monthUsedMmsList
 					}
 				]
 			}
 		},
-		fnGetSixMonthUsedResultData() {
+		fnGetSixMonthUsedData() {
+			this.fnGetSixMonthUsedDataList('PUSH');
+			this.fnGetSixMonthUsedDataList('RCS');
+			this.fnGetSixMonthUsedDataList('FRIENDTALK');
+			this.fnGetSixMonthUsedDataList('ALIMTALK');
+			this.fnGetSixMonthUsedDataList('SMS');
+			this.fnGetSixMonthUsedDataList('MMS');
+
 			this.sixMonthUsedResultData = {
-				labels: ['202101', '202102', '202103', '202104', '202105', '202106'],
+				labels: this.sixMonthTimeLine,
 				datasets: [
 					{
 						label: 'Push',
@@ -473,7 +604,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [1140, 1120, 1130, 1110, 1150, 1160]
+						data: this.sixMonthUsedPushList
 					},
 					{
 						label: 'RCS',
@@ -481,7 +612,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [1110, 1100, 1110, 1110, 1120, 1130]
+						data: this.sixMonthUsedRcsList
 					},
 					{
 						label: '친구톡',
@@ -489,7 +620,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [660, 650, 660, 660, 670, 680]
+						data: this.sixMonthUsedFriendtalkList
 					},
 					{
 						label: '알림톡',
@@ -497,7 +628,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [730, 710, 710, 750, 770, 790]
+						data: this.sixMonthUsedAlimtalkList
 					},
 					{
 						label: 'SMS',
@@ -505,7 +636,7 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [810, 800, 710, 760, 770, 930]
+						data: this.sixMonthUsedSmsList
 					},
 					{
 						label: 'MMS',
@@ -513,13 +644,10 @@ export default {
 						pointBackgroundColor: 'white',
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
-						data: [510, 500, 410, 460, 470, 630]
+						data: this.sixMonthUsedMmsList
 					}
 				]
 			}
-		},
-		getRandomInt () {
-			return Math.floor(Math.random() * (50 - 5 + 1)) + 5
 		},
 		fnPageReload() {
 			this.$router.replace('/');

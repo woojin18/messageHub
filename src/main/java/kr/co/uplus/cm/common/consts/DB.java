@@ -13,24 +13,24 @@ public class DB {
 	public final static String QRY_SELECT_IMG_UPLOAD_CH_SET = "common.selectImgUploadChSet";
 	public final static String QRY_SELECT_FILE_UPLOAD_SET = "common.selectFileUploadSet";
 	public final static String QRY_SELECT_CODE = "common.selectCodeList";
-    public final static String QRY_SELECT_RELAY_SVC_ID = "common.selectRelaySvcId";
-    public final static String QRY_SELECT_CODEVAL1_BY_CODENAME1 = "common.selectCodeVal1ByCodeName1";
-    public final static String QRY_INSERT_FILE_INFO = "common.insertFileInfo";
+	public final static String QRY_SELECT_RELAY_SVC_ID = "common.selectRelaySvcId";
+	public final static String QRY_SELECT_CODEVAL1_BY_CODENAME1 = "common.selectCodeVal1ByCodeName1";
+	public final static String QRY_INSERT_FILE_INFO = "common.insertFileInfo";
 
-	//메인
+	// 메인
 	public final static String QRY_SELECT_PRD_UNIT_INFO_LIST = "main.selectPrdUnitInfoList";
 
-    //고객센터
-    public final static String QRY_SELECT_FAQ_TYPE_LIST = "customer.selectFaqTypeList";
-    public final static String QRY_SELECT_FAQ_LIST_CNT = "customer.selectFaqListCnt";
-    public final static String QRY_SELECT_FAQ_LIST = "customer.selectFaqList";
-    public final static String QRY_SELECT_NOTICE_LIST_CNT = "customer.selectNoticeListCnt";
-    public final static String QRY_SELECT_NOTICE_LIST = "customer.selectNoticeList";
-    public final static String QRY_SELECT_LIBRARY_LIST_CNT = "customer.selectLibraryListCnt";
-    public final static String QRY_SELECT_LIBRARY_LIST = "customer.selectLibraryList";
-    public final static String QRY_SELECT_ATTACH_FILE_INFO = "customer.selectAttachFileInfo";
-    public final static String qry_SELECT_CM_USE_TERMS_HIST_LIST = "customer.selectCmUseTermsHistList";
-    public final static String qry_SELECT_CM_USE_TERMS_INFO = "customer.selectCmUseTermsInfo";
+	// 고객센터
+	public final static String QRY_SELECT_FAQ_TYPE_LIST = "customer.selectFaqTypeList";
+	public final static String QRY_SELECT_FAQ_LIST_CNT = "customer.selectFaqListCnt";
+	public final static String QRY_SELECT_FAQ_LIST = "customer.selectFaqList";
+	public final static String QRY_SELECT_NOTICE_LIST_CNT = "customer.selectNoticeListCnt";
+	public final static String QRY_SELECT_NOTICE_LIST = "customer.selectNoticeList";
+	public final static String QRY_SELECT_LIBRARY_LIST_CNT = "customer.selectLibraryListCnt";
+	public final static String QRY_SELECT_LIBRARY_LIST = "customer.selectLibraryList";
+	public final static String QRY_SELECT_ATTACH_FILE_INFO = "customer.selectAttachFileInfo";
+	public final static String qry_SELECT_CM_USE_TERMS_HIST_LIST = "customer.selectCmUseTermsHistList";
+	public final static String qry_SELECT_CM_USE_TERMS_INFO = "customer.selectCmUseTermsInfo";
 
 	// 로그인
 	public final static String QRY_SELECT_USERNAME = "login.qrySelectUserName";
@@ -165,10 +165,10 @@ public class DB {
 	public final static String QRY_SELECT_RCS_MSGBASEFORM_LIST = "rcsTemplate.selectRcsMsgbaseformList";
 	public final static String QRY_SELECT_RCS_TEMPLATE_UPDATE_FORM = "rcsTemplate.selectRcsTemplateUpdateForm";
 	public final static String QRY_SELECT_RCS_BASE_FORM = "rcsTemplate.selectRcsBaseForm";
-	
+
 	// RCS 템플릿 등록
 	public final static String QRY_SELECT_RCS_BASE_FORM_POP = "rcsTemplateSend.selectRcsBaseFormPop";
-	public final static String QRY_SELECT_RCS_MESSAGE_FORM = "rcsTemplateSend.selectRcsMessageForm"; 
+	public final static String QRY_SELECT_RCS_MESSAGE_FORM = "rcsTemplateSend.selectRcsMessageForm";
 
 	// 주소록 관리
 	public final static String QRY_SELECT_ADDR_CATE_GRP_LIST = "address.selectAddrCateGrpList";
@@ -256,6 +256,10 @@ public class DB {
 	public final static String QRY_SELECT_CH_FAIL_CODE_COUNT_LIST = "selectChFailCodeCntList";
 	public final static String QRY_SELECT_RT_USED_TIME_LINE_LIST = "selectRtUsedTimeLineList";
 	public final static String QRY_SELECT_RT_USED_DATA_LIST = "selectRtUsedDataList";
+	public final static String QRY_SELECT_MONTH_USED_TIME_LINE_LIST = "selectMonthUsedTimeLineList";
+	public final static String QRY_SELECT_MONTH_USED_DATA_LIST = "selectMonthUsedDataList";
+	public final static String QRY_SELECT_SIX_MONTH_USED_TIME_LINE_LIST = "selectSixMonthUsedTimeLineList";
+	public final static String QRY_SELECT_SIX_MONTH_USED_DATA_LIST = "selectSixMonthUsedDataList";
 
 	// 통계
 	public final static String QRY_SELECT_STATIS_SND_LIST = "statisticsUser.selectStatisSndList";

@@ -206,4 +206,97 @@ public class HomeController {
 
 		return rtn;
 	}
+
+	/**
+	 * 대시보드(Admin Console) 당월 이용현황 시간대 조회
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectMonthUsedTimeLineList")
+	public RestResult<?> selectMonthUsedTimeLineList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = homeSvc.selectMonthUsedTimeLineList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectMonthUsedTimeLineList Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드(Admin Console) 당월 이용현황 조회
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectMonthUsedDataList")
+	public RestResult<?> selectMonthUsedDataList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = homeSvc.selectMonthUsedDataList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectMonthUsedDataList Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드(Admin Console) 최근 6개월간 이용현황 시간대 조회
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectSixMonthUsedTimeLineList")
+	public RestResult<?> selectSixMonthUsedTimeLineList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = homeSvc.selectSixMonthUsedTimeLineList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectSixMonthUsedTimeLineList Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+
+	/**
+	 * 대시보드(Admin Console) 최근 6개월간 이용현황 조회
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectSixMonthUsedDataList")
+	public RestResult<?> selectSixMonthUsedDataList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = homeSvc.selectSixMonthUsedDataList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectSixMonthUsedDataList Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+
 }
