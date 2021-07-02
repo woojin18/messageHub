@@ -10,7 +10,7 @@
               <div class="col-xs-4 border-line2" style="height:569px; padding:30px">
                 <h4>템플릿 검색</h4>
                 <div>
-                  <input type="text" class="inputStyle" style="width:70%" v-model="searchData.searchText">
+                  <input type="text" class="inputStyle" style="width:70%" v-model="searchData.searchText" @keypress.enter="fnSearch">
                   <a @click="fnSearch" class="btnStyle1 backLightGray float-right" title="메시지 내용 조회">조회</a>
                 </div>
                 <div>

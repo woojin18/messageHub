@@ -16,7 +16,7 @@
                 <option value="tmpltName">템플릿명</option>
                 <option value="tmpltCode">템플릿코드</option>
               </select>
-              <input type="text" class="inputStyle vertical-top ml10" style="width:37.5%" title="검색조건 입력란" v-model="searchData.searchText">
+              <input type="text" class="inputStyle vertical-top ml10" style="width:37.5%" title="검색조건 입력란" v-model="searchData.searchText" @keypress.enter="fnPageNoResetSearch">
             </div>
           </div>
 
