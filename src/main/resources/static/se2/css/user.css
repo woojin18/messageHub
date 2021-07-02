@@ -364,6 +364,6 @@ p {letter-spacing:-0.5px}
 
 /* phoneWrap > phoneTextWrap btn*/
 
-.phoneWrap > .phoneTextWrap .btnStyle1.backLightGray {background:#F1F1F1; border-color:#ddd; color:#000; width:100%; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient: vertical; margin:5px 0}
-.phoneWrap > .phoneTextWrap .btnStyle1.backLightGray:hover {background:#000; border-color:#000; color:#fff}
+.phoneWrap .btnStyle1.backLightGray {background:#F1F1F1; border-color:#ddd; color:#000; width:100%; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient: vertical; margin:5px 0}
+.phoneWrap .btnStyle1.backLightGray:hover {background:#000; border-color:#000; color:#fff}
 .modal-body .scroll-y_modal {max-height:140px; overflow-y:auto; line-height:1.4em}
