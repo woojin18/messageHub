@@ -318,14 +318,12 @@ export default {
 
 			homeApi.selectChSuccFailCntList(params).then(response =>{
 				var result = response.data;
-				console.log(response.data);
 				if (result.success) {
 					for (var i = 0; i < result.data.length; i++) {
 						this.dateLine.push(result.data[i].date);
 						this.successCnt.push(result.data[i].succCnt);
 						this.failCnt.push(result.data[i].failCnt);
 					}
-					console.log(this.dateLine);
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
