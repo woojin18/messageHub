@@ -560,13 +560,17 @@ export default {
       const conts = this.sendData.pushContent + (typeof this.sendData.fbInfo.msg === 'undefined' ? '' : this.sendData.fbInfo.msg);
       let varNms = [];
       let containRsvNm = false;
-      conts.replace(/\{\{(\w+)\}\}/g, function($0, $1) {
+      conts.replace(/#\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}/g, function($0, $1) {
         if(rsvNmSet.has($1)){
           containRsvNm = true;
           return false;
         }
         varNms.push($1);
       });
+
+      console.log('conts ===> ', conts);
+      console.log('varNms ===> ', varNms);
+
       if(containRsvNm){
         confirm.fnAlert(this.componentsTitle, '발송 내용 변수 cuid, phone 은 예약어로 사용하실 수 없습니다.');
         return false;
