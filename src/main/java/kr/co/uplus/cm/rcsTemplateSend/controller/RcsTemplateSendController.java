@@ -89,4 +89,49 @@ public class RcsTemplateSendController {
 
 		return rtn;
 	}
+	
+	@PostMapping("/rcsMsgSave")
+	public RestResult<?> rcsMsgSave(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			rtn = rcsTemplateSendSvc.rcsMsgSave(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+	
+	@PostMapping("/selectRcsMsgList")
+	public RestResult<?> selectRcsMsgList(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			rtn = rcsTemplateSendSvc.selectRcsMsgList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+	
+	@PostMapping("/deleteRcsTmpMsgbase")
+	public RestResult<?> deleteRcsTmpMsgbase(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			rcsTemplateSendSvc.deleteRcsTmpMsgbase(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
 }

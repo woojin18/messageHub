@@ -7,6 +7,7 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -231,6 +232,116 @@ public class RcsTemplateSendService {
 		rtn.setData(result);
 		
 		return rtn;
+	}
+
+	public RestResult<Object> rcsMsgSave(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		Map<String, Object> paramsData = (Map<String, Object>) params.get("data");
+		String templateRadioBtn	= CommonUtils.getString(params.get("templateRadioBtn"));		// RCS 유형
+		String saveBoxId		= CommonUtils.getCommonId("BOX", 5);							// MSGBASE KEY
+		String corpId			= CommonUtils.getString(params.get("corpId"));					// CORPID
+		String brandId			= CommonUtils.getString(paramsData.get("brandId"));				// BRANDID
+		String copyPossYn		= CommonUtils.getString(paramsData.get("copy"));				// 복사여부
+		String callback			= CommonUtils.getString(paramsData.get("callback"));			// 대체발송 전화번호
+		String senderType		= CommonUtils.getString(paramsData.get("senderType"));			// 대체 발송 코드
+		
+		// 공통 파라미터 세팅
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("saveBoxId", saveBoxId);
+		paramMap.put("corpId", corpId);
+		paramMap.put("brandId", brandId);
+		
+		// RCS 유형에 따라 파라미터 세팅
+		if("text".equals(templateRadioBtn)) {
+			// msgbaseId 세팅 로직 수행
+			String msgbaseId = (String) generalDao.selectGernalObject(DB.QRY_SELECT_RCS_MESSAGE_ID, paramMap);
+			
+			paramMap.put("msgbaseId", msgbaseId);
+			paramMap.put("saveBoxName" , CommonUtils.getString(paramsData.get("saveContent")));
+			paramMap.put("adYn", null);
+			paramMap.put("freeReceiveNum", null);
+			if("no".equals(copyPossYn)) {
+				paramMap.put("copyPossYn" , "N");
+			} else {
+				paramMap.put("copyPossYn", "Y");
+			}
+			paramMap.put("callback", callback);
+			if("UNUSED".equals(senderType)) {
+				paramMap.put("replcSenderCode", null);
+				paramMap.put("callbackTitle", null);
+				paramMap.put("callbackContents", null);
+			} else if("SMS".equals(senderType)) {
+				paramMap.put("replcSenderCode", "SMS");
+				paramMap.put("callbackTitle", null);
+				paramMap.put("callbackContents", CommonUtils.getString(paramsData.get("callbackContents")));
+			} else if("LMS".equals(senderType)) {
+				paramMap.put("replcSenderCode", "LMS");
+				paramMap.put("callbackTitle", CommonUtils.getString(paramsData.get("callbackTitle")));
+				paramMap.put("callbackContents", CommonUtils.getString(paramsData.get("callbackContents")));
+			}
+			paramMap.put("userId", CommonUtils.getString(params.get("userId")));
+			
+			JSONArray jsonArr = new JSONArray();
+			JSONObject jsonObj = new JSONObject();
+			JSONArray jsonBtnArr = new JSONArray();
+			
+			jsonObj.put("title", "");
+			jsonObj.put("description", CommonUtils.getString(paramsData.get("textContents")));
+			jsonObj.put("mediaUrl", "");
+			jsonObj.put("media", "");
+			jsonObj.put("suggestions", jsonBtnArr);
+			
+			jsonArr.add(0, jsonObj);
+			
+			String msgBaseInfo = jsonArr.toString();
+			paramMap.put("msgBaseInfo", msgBaseInfo);
+			
+			// table insert
+			generalDao.insertGernal(DB.QRY_INSERT_RCS_TMP_MSGBASE, paramMap);
+		}
+
+		return rtn;
+	}
+
+	public RestResult<Object> selectRcsMsgList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
+		String srcInput= CommonUtils.getString(params.get("srcInput"));
+		String srcSelect = CommonUtils.getString(params.get("srcSelect"));		// brand msg null
+		String templateRadioBtn= CommonUtils.getString(params.get("templateRadioBtn"));
+		String[] msgIdArr = {"SS000000", "SL000000", "SMwThM00", "SMwThT00", "CMwShS0300", "CMwShS0400", "CMwShS0500", "CMwShS0600", "CMwMhM0300", "CMwMhM0400", "CMwMhM0500", "CMwMhM0600"};
+		
+		paramMap.put("srcInput", srcInput);
+		paramMap.put("srcSelect", srcSelect);
+		if("text".equals(templateRadioBtn)) {
+			// 텍스트 미승인형일 경우 조건 세팅
+			paramMap.put("msgIdArr", msgIdArr);
+		} else {
+			paramMap.put("msgbaseId", templateRadioBtn);
+		}
+		
+		if(pageInfo != null && !pageInfo.isEmpty()) {
+			int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_TMP_MSGBASE_CNT, paramMap);
+			pageInfo.put("rowNum", listCnt);
+			
+			rtn.setPageInfo(pageInfo);
+		}
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_TMP_MSGBASE, paramMap);
+		rtn.setData(rtnList);
+		
+		return rtn;
+	}
+
+	public void deleteRcsTmpMsgbase(Map<String, Object> params) throws Exception {
+		List<String> saveBoxList = (List<String>) params.get("saveBoxIdArr");
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		for(String data : saveBoxList) {
+			paramMap.put("saveBoxId", data);
+			generalDao.deleteGernal(DB.QRY_DELETE_RCS_TMP_BSGBASE, paramMap);
+		}
 	}
 
 }

@@ -169,6 +169,12 @@ public class DB {
 	// RCS 템플릿 등록
 	public final static String QRY_SELECT_RCS_BASE_FORM_POP = "rcsTemplateSend.selectRcsBaseFormPop";
 	public final static String QRY_SELECT_RCS_MESSAGE_FORM = "rcsTemplateSend.selectRcsMessageForm";
+	public final static String QRY_SELECT_RCS_MESSAGE_ID = "rcsTemplateSend.selectRcsMessageId";
+	public final static String QRY_INSERT_RCS_TMP_MSGBASE = "rcsTemplateSend.insertRcsTmpMsgbase";
+	public final static String QRY_SELECT_RCS_TMP_MSGBASE_CNT = "rcsTemplateSend.selectRcsTmpMsgbaseCnt";
+	public final static String QRY_SELECT_RCS_TMP_MSGBASE = "rcsTemplateSend.selectRcsTmpMsgbase";
+	public final static String QRY_DELETE_RCS_TMP_BSGBASE = "rcsTemplateSend.deleteRcsTmpMsgbase";
+	
 
 	// 주소록 관리
 	public final static String QRY_SELECT_ADDR_CATE_GRP_LIST = "address.selectAddrCateGrpList";

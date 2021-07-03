@@ -9,7 +9,7 @@
 						<div class="of_h">
 							<div class="float-left" style="width:24%"><h5>메시지명</h5></div>
 							<div class="float-left" style="width:76%">
-                                <input v-model="saveContent" type="text" class="inputStyle" style="width:100%" placeholder="메시지명을 입력해주세요." maxlength="50">
+                <input v-model="saveContent" type="text" class="inputStyle" style="width:100%" placeholder="메시지명을 입력해주세요." maxlength="50">
 							</div>
 							<p class="color3 float-right"><i class="far fa-info-circle"></i> 최대 50byte까지 입력 가능</p>
 						</div>						

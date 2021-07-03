@@ -1,5 +1,5 @@
 <template>
-    <div v-if="rcsTemplatePopOpen" @click.self="fnClose" class="modalStyle" tabindex="-1" role="dialog" aria-hidden="true">
+    <div id="templatePop" class="modal fade modalStyle" tabindex="-1" role="dialog" aria-hidden="true">
         <!--<div class="modal fade modalStyle" id="Tamplet" tabindex="-1" role="dialog" aria-hidden="true">-->
             <div class="modal-dialog" style="width:1120px">
                 <div class="modal-content">
@@ -84,7 +84,7 @@
                             </div>						
                         </div>						
                         <div class="text-center">
-                            <a href="#self" @click.prevent="fnTemplateChoice" class="btnStyle1 backBlack" data-toggle="modal" title="템플릿 선택">템플릿 선택</a>
+                            <a href="#self" @click.prevent="fnTemplateChoice" class="btnStyle1 backBlack" data-dismiss="modal" title="템플릿 선택">템플릿 선택</a>
                             <a href="#self" @click.prevent="fnClose" class="btnStyle1 backWhite" data-dismiss="modal" title="취소">취소</a>						
                         </div>
                     </div>
@@ -210,7 +210,7 @@ export default {
       //데이터 초기화
       //this.templateList = [];
       //this.templateData = {};
-      this.$emit('update:rcsTemplatePopOpen', false);
+      JQuery("#templatePop").modal("hide");
     },
 
     // 템플릿 선택
@@ -220,7 +220,8 @@ export default {
         if(messagebaseId == "") {
             confirm.fnAlert("템플릿을 선택해주세요.","");
         } else {
-            this.$emit('fnResult', messagebaseId);
+            vm.$emit('fnResult', messagebaseId);
+            vm.fnClose();
         }
     }
   }

@@ -26,4 +26,102 @@
 			ON	A.MESSAGEBASEFORM_ID = B.MESSAGEBASEFORM_ID
 		WHERE	A.MESSAGEBASE_ID = #{messagebaseId}
 	</select>
+	
+	<select id="selectRcsMessageId" resultType="String">
+		/* rcsTemplateSend.selectRcsMessageId */
+		SELECT	MESSAGEBASE_ID
+		FROM	cm.CM_RCS_MSGBASE
+		WHERE	MESSAGEBASEFORM_ID = 'GG000F'
+		AND		BRAND_ID = #{brandId}
+	</select>
+	
+	<insert id="insertRcsTmpMsgbase">
+		/* rcsTemplateSend.insertRcsTmpMsgbase */
+		INSERT INTO cm_console.CM_RCS_TMP_MSGBASE (
+				SAVE_BOX_ID
+		,		MESSAGEBASE_ID
+		,		SAVE_BOX_NAME
+		,		CORP_ID
+		,		BRAND_ID
+		,		MESSAGEBASE_INFO
+		,		AD_YN
+		,		FREE_RECEIVE_NUM
+		,		COPY_POSS_YN
+		,		CALLBACK
+		,		REPLC_SENDER_CODE
+		,		CALLBACK_TITLE
+		,		CALLBACK_CONTENTS
+		,		REG_ID
+		,		REG_DT
+		) values (
+				#{saveBoxId}
+		,		#{msgbaseId}
+		,		#{saveBoxName}
+		,		#{corpId}
+		,		#{brandId}
+		,		#{msgBaseInfo}
+		,		#{adYn}
+		,		#{freeReceiveNum}
+		,		#{copyPossYn}
+		,		#{callback}
+		,		#{replcSenderCode}
+		,		#{callbackTitle}
+		,		#{callbackContents}
+		,		#{userId}
+		,		SYSDATE()
+		)
+	</insert>
+	
+	<select id="selectRcsTmpMsgbase" resultType="hashMap">
+		/* rcsTemplateSend.selectRcsTmpMsgbase */
+		SELECT	A.SAVE_BOX_ID
+		,		A.SAVE_BOX_NAME
+		,		CONCAT(A.BRAND_ID, '(', B.BRAND_NAME, ')') AS BRAND_NAME
+		,		C.USER_NAME
+		,		DATE_FORMAT(A.REG_DT, '%Y-%m-%d %h:%i:%s') AS REG_DT
+		FROM	cm_console.CM_RCS_TMP_MSGBASE A
+		INNER JOIN cm.CM_RCS_BRAND B 
+			ON	A.BRAND_ID  = B.BRAND_ID 
+		INNER JOIN cm_console.CM_USER C
+			ON	A.REG_ID = C.USER_ID 
+		WHERE	1=1
+		<include refid="rcsTepMsgbaseSql"/>
+	</select>
+	
+	<select id="selectRcsTmpMsgbaseCnt" resultType="int">
+		/* rcsTemplateSend.selectRcsTmpMsgbaseCnt */
+		SELECT	COUNT(*)
+		FROM	cm_console.CM_RCS_TMP_MSGBASE A
+		INNER JOIN cm.CM_RCS_BRAND B 
+			ON	A.BRAND_ID  = B.BRAND_ID 
+		INNER JOIN cm_console.CM_USER C
+			ON	A.REG_ID = C.USER_ID
+		WHERE	1=1
+	</select>
+	
+	<sql id="rcsTepMsgbaseSql">
+		<if test="msgIdArr != null and msgIdArr != ''">
+		AND		A.MESSAGEBASE_ID NOT IN 
+			<foreach collection="msgIdArr" item="type" open="(" close=")" separator=",">
+				#{type}
+			</foreach>
+		</if>
+		<if test="msgbaseId != null and msgbaseId != ''">
+		AND		A.MESSAGEBASE_ID = #{msgbaseId}
+		</if>
+		<choose>
+			<when test="srcSelect == 'brand'">
+		AND		B.BRAND_NAME LIKE CONCAT('%', #{srcInput}, '%')
+			</when>
+			<when test="srcSelect == 'msg'">
+		AND		B.SAVE_BOX_NAME LIKE CONCAT('%', #{srcInput}, '%')
+			</when>
+		</choose>
+	</sql>
+	
+	<delete id="selectRcsTmpMsgbase">
+		/* rcsTemplateSend.selectRcsTmpMsgbase */
+		DELETE FROM cm_console.CM_RCS_TMP_MSGBASE A
+		WHERE	SAVE_BOX_ID = #{saveBoxId}
+	</delete>
 </mapper>
