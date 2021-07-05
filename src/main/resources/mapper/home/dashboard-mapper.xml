@@ -319,6 +319,7 @@
 	<select id="selectChFailCodeCntList" resultType="camel">
 		/* dashboard.selectChFailCodeCntList */
 		SELECT
+			A.DATE,
 			A.CNT
 		FROM (
 			SELECT

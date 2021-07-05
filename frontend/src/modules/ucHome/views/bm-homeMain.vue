@@ -237,7 +237,6 @@ export default {
 		this.fnGetNoticeList();
 		this.fnGetChTotCntInfo();
 		this.fnGetRtUsedTimeLineList();
-		this.fnGetRtUsedData();
 	},
 	methods: {
 		fnGetProjectInfo() {
@@ -290,7 +289,7 @@ export default {
 				}
 			});
 		},
-		fnGetChSuccFailCntList(channel) {
+		fnSetChartData(channel) {
 			let params = {
 				projectId: utils.getCookie(consts.projectId),
 				corpId: tokenSvc.getToken().principal.corpId,
@@ -303,49 +302,100 @@ export default {
 			homeApi.selectChSuccFailCntList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
-					for (var i = 0; i < result.data.length; i++) {
-						this.dateLine.push(result.data[i].date);
-						this.successCnt.push(result.data[i].succCnt);
-						this.failCnt.push(result.data[i].failCnt);
-					}
+					this.fnGetChSuccFailCntList(result.data);
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
 			});
-		},
-		fnGetChFailCodeList(channel) {
-			let params = {
-				projectId: utils.getCookie(consts.projectId),
-				corpId: tokenSvc.getToken().principal.corpId,
-				serviceType: 'UC',
-				startDateStr: this.searchData.searchStartDate,
-				endDateStr: this.searchData.searchEndDate,
-				channel: channel
-			};
 
 			homeApi.selectChFailCodeList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
-					for (var i = 0; i < result.data.length; i++) {
-						this.failCodeCnt = [];
-						for (var j = 0; j < result.data[i].failCodeCnt.length; j++) {
-							this.failCodeCnt.push(result.data[i].failCodeCnt[j].cnt);
-						}
-						this.failCodeResultDataset[i] = 
-							{
-								label: result.data[i].resultCode,
-								backgroundColor: this.defaultBackgroundColor[i],
-								pointBackgroundColor: 'white',
-								borderWidth: 1,
-								pointBorderColor: '#249EBF',
-								data: this.failCodeCnt
-							}
-					}
+					this.fnGetChFailCodeList(result.data);
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
 			});
+
+			jQuery('.mt10 > ul > li').removeClass('active');
+			if (channel == 'PUSH') {
+				jQuery("#setPush").addClass('active');
+				this.chName = 'Push';
+			} else if (channel == 'RCS') {
+				jQuery("#setRcs").addClass('active');
+				this.chName = 'RCS';
+			} else if (channel == 'ALIMTALK') {
+				jQuery("#setKakaotalk").addClass('active');
+				this.chName = '알림톡';
+			} else if (channel == 'FRIENDTALK') {
+				jQuery("#setFriendtalk").addClass('active');
+				this.chName = '친구톡';
+			} else if (channel == 'SMS') {
+				jQuery("#setSms").addClass('active');
+				this.chName = 'SMS';
+			} else if (channel == 'MMS') {
+				jQuery("#setMms").addClass('active');
+				this.chName = 'MMS';
+			}
 		},
+		fnGetChSuccFailCntList(result) {
+			this.dateLine = [];
+			this.successCnt = [];
+			this.failCnt = [];
+			for (var i = 0; i < result.length; i++) {
+				this.dateLine.push(result[i].date);
+				this.successCnt.push(result[i].succCnt);
+				this.failCnt.push(result[i].failCnt);
+			}
+
+			this.successFailResultData = {
+				labels: this.dateLine,
+				datasets: [
+					{
+						label: '발송성공',
+						backgroundColor: '#FD7FA6',
+						pointBackgroundColor: 'white',
+						borderWidth: 1,
+						pointBorderColor: '#249EBF',
+						data: this.successCnt
+					},
+					{
+						label: '발송실패',
+						backgroundColor: '#A9A9A9',
+						pointBackgroundColor: 'white',
+						borderWidth: 1,
+						pointBorderColor: '#249EBF',
+						data: this.failCnt
+					}
+				]
+			}
+		},
+		fnGetChFailCodeList(result) {
+			this.failCodeResultDataset = [];
+			for (var i = 0; i < result.length; i++) {
+				this.failCodeDateLine = [];
+				this.failCodeCnt = [];
+				for (var j = 0; j < result[i].failCodeCnt.length; j++) {
+					this.failCodeDateLine.push(result[i].failCodeCnt[j].date);
+					this.failCodeCnt.push(result[i].failCodeCnt[j].cnt);
+				}
+
+				this.failCodeResultDataset[i] = {
+					label: result[i].resultCode,
+					backgroundColor: this.defaultBackgroundColor[i],
+					pointBackgroundColor: 'white',
+					borderWidth: 1,
+					pointBorderColor: '#249EBF',
+					data: this.failCodeCnt
+				}
+			}
+
+			this.failCodeResultData = {
+				labels: this.failCodeDateLine,
+				datasets: this.failCodeResultDataset
+			}
+		},
+		// 당일 이용현황 시간대 조회
 		fnGetRtUsedTimeLineList() {
 			let params = {
 				projectId: utils.getCookie(consts.projectId),
@@ -362,7 +412,15 @@ export default {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
 			});
+
+			this.fnGetRtUsedDataList('PUSH');
+			this.fnGetRtUsedDataList('RCS');
+			this.fnGetRtUsedDataList('FRIENDTALK');
+			this.fnGetRtUsedDataList('ALIMTALK');
+			this.fnGetRtUsedDataList('SMS');
+			this.fnGetRtUsedDataList('MMS');
 		},
+		// 당일 이용현황 채널별 데이터 조회
 		fnGetRtUsedDataList(channel) {
 			let params = {
 				projectId: utils.getCookie(consts.projectId),
@@ -387,6 +445,60 @@ export default {
 						} else if (channel == 'MMS') {
 							this.rtUsedMmsList.push(result.data[i].totCnt);
 						}
+					}
+
+					this.rtUsedResultData = {
+						labels: this.timeLine,
+						datasets: [
+							{
+								label: 'Push',
+								backgroundColor: '#f87979',
+								pointBackgroundColor: 'white',
+								borderWidth: 1,
+								pointBorderColor: '#249EBF',
+								data: this.rtUsedPushList
+							},
+							{
+								label: 'RCS',
+								backgroundColor: '#FFE08C',
+								pointBackgroundColor: 'white',
+								borderWidth: 1,
+								pointBorderColor: '#249EBF',
+								data: this.rtUsedRcsList
+							},
+							{
+								label: '친구톡',
+								backgroundColor: '#FFBB00',
+								pointBackgroundColor: 'white',
+								borderWidth: 1,
+								pointBorderColor: '#249EBF',
+								data: this.rtUsedFriendtalkList
+							},
+							{
+								label: '알림톡',
+								backgroundColor: '#5CD1E5',
+								pointBackgroundColor: 'white',
+								borderWidth: 1,
+								pointBorderColor: '#249EBF',
+								data: this.rtUsedAlimtalkList
+							},
+							{
+								label: 'SMS',
+								backgroundColor: '#8041D9',
+								pointBackgroundColor: 'white',
+								borderWidth: 1,
+								pointBorderColor: '#249EBF',
+								data: this.rtUsedSmsList
+							},
+							{
+								label: 'MMS',
+								backgroundColor: '#1DDB16',
+								pointBackgroundColor: 'white',
+								borderWidth: 1,
+								pointBorderColor: '#249EBF',
+								data: this.rtUsedMmsList
+							}
+						]
 					}
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
@@ -421,123 +533,6 @@ export default {
 				} else {
 					this.searchData.searchEndDate = sltDate;
 				}
-			}
-		},
-		fnSetChartData(channel) {
-			this.dateLine = [];
-			this.successCnt = [];
-			this.failCnt = [];
-			this.failCodeResultDataset = [];
-			this.fnGetChSuccFailCntList(channel);
-			this.fnGetChFailCodeList(channel);
-
-			this.successFailResultData = {
-				labels: this.dateLine,
-				datasets: [
-					{
-						label: '발송성공',
-						backgroundColor: '#FD7FA6',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: this.successCnt
-					},
-					{
-						label: '발송실패',
-						backgroundColor: '#A9A9A9',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: this.failCnt
-					}
-				]
-			},
-			this.failCodeResultData = {
-				labels: this.dateLine,
-				datasets: this.failCodeResultDataset
-			}
-
-			jQuery('.mt10 > ul > li').removeClass('active');
-			if (channel == 'PUSH') {
-				jQuery("#setPush").addClass('active');
-				this.chName = 'Push';
-			} else if (channel == 'RCS') {
-				jQuery("#setRcs").addClass('active');
-				this.chName = 'RCS';
-			} else if (channel == 'ALIMTALK') {
-				jQuery("#setKakaotalk").addClass('active');
-				this.chName = '알림톡';
-			} else if (channel == 'FRIENDTALK') {
-				jQuery("#setFriendtalk").addClass('active');
-				this.chName = '친구톡';
-			} else if (channel == 'SMS') {
-				jQuery("#setSms").addClass('active');
-				this.chName = 'SMS';
-			} else if (channel == 'MMS') {
-				jQuery("#setMms").addClass('active');
-				this.chName = 'MMS';
-			}
-		},
-		fnGetRtUsedData() {
-			this.fnGetRtUsedDataList('PUSH');
-			this.fnGetRtUsedDataList('RCS');
-			this.fnGetRtUsedDataList('FRIENDTALK');
-			this.fnGetRtUsedDataList('ALIMTALK');
-			this.fnGetRtUsedDataList('SMS');
-			this.fnGetRtUsedDataList('MMS');
-
-			this.rtUsedResultData = {
-				labels: this.timeLine,
-				datasets: [
-					{
-						label: 'Push',
-						backgroundColor: '#f87979',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: this.rtUsedPushList
-					},
-					{
-						label: 'RCS',
-						backgroundColor: '#FFE08C',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: this.rtUsedRcsList
-					},
-					{
-						label: '친구톡',
-						backgroundColor: '#FFBB00',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: this.rtUsedFriendtalkList
-					},
-					{
-						label: '알림톡',
-						backgroundColor: '#5CD1E5',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: this.rtUsedAlimtalkList
-					},
-					{
-						label: 'SMS',
-						backgroundColor: '#8041D9',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: this.rtUsedSmsList
-					},
-					{
-						label: 'MMS',
-						backgroundColor: '#1DDB16',
-						pointBackgroundColor: 'white',
-						borderWidth: 1,
-						pointBorderColor: '#249EBF',
-						data: this.rtUsedMmsList
-					}
-				]
 			}
 		},
 		fnPageReload() {
