@@ -62,8 +62,8 @@
           </div>
           <!--// XMS -->
           <div class="phone_04_btn">
-            <a @click="fnChgPreviewMessageType('PUSH')" class="btnStyle1 backBlack" title="Push">Push</a>
-            <a v-if="sendData.rplcSendType != 'NONE'" @click="fnChgPreviewMessageType('RPLC')" class="btnStyle1 backWhite" title="Push">{{sendData.rplcSendType}}</a>
+            <a @click="fnChgPreviewMessageType('PUSH')" :class="'btnStyle1 '+(previewMessageType == 'PUSH' ? 'backBlack' : 'backWhite')" title="Push">Push</a>
+            <a v-if="sendData.rplcSendType != 'NONE'" @click="fnChgPreviewMessageType('RPLC')" :class="'btnStyle1 '+(previewMessageType != 'PUSH' ? 'backBlack' : 'backWhite')" title="Push">{{sendData.rplcSendType}}</a>
           </div>
           <!-- //phoneWrap -->
         </div>

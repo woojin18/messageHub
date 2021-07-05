@@ -56,7 +56,7 @@
                   <label :key="idx+'_for'" :for="'tmpltStatCode_'+tmpltStatCodeInfo.codeVal1" class="mr30">{{tmpltStatCodeInfo.codeName1}}</label>
                 </template>
               </div>
-              <a href="#" @click.prevent="fnPageNoResetSearch" class="btnStyle1 float-right" title="통합발송 검색">검색</a>
+              <a href="#" @click.prevent="fnPageNoResetSearch" class="btnStyle1 float-right" title="통합발송 검색" activity="READ">검색</a>
             </div>
           </div>
         </div>

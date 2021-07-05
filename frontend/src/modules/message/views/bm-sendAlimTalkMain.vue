@@ -10,23 +10,61 @@
       <div class="phone3 inline-block" style="width:30%">
         <div class="phoneFixed">
           <!-- phoneWrap -->
-          <div class="phoneWrap">
+          <!-- 알림톡 -->
+          <div v-if="previewMessageType == 'ALIMTALK'" class="phoneWrap">
             <img src="@/assets/images/common/phoneMockup3.svg" alt="알림톡 템플릿">
-            <div class="phoneTextWrap3">
+            <div class="phoneTextWrap3 scroll-y">
               <div>
                 <p class="text-main"><i class="fal fa-envelope-open-text"></i> 알림톡 도착</p>
-                <div class="text-sub-wrap">
-                  <p class="text-sub_1">부제목</p>
-                  <p class="text-sub scroll-y3">템플릿 강조 제목</p>
+                <div v-if="sendData.emphasizeType == 'TEXT'" class="text-sub-wrap" style="padding:10px;">
+                  <p v-if="!$gfnCommonUtils.isEmpty(sendData.tmpltEmpsSubTitle)" class="text-sub_1">{{sendData.tmpltEmpsSubTitle}}</p>
+                  <p v-if="!$gfnCommonUtils.isEmpty(sendData.tmpltEmpsTitle)" class="text-sub scroll-y3">{{sendData.tmpltEmpsTitle}}</p>
                 </div>
-                <p class="text-sub_2">템플릿 테스트입니다.<br>템플릿 테스트 템플릿 테스트 템플릿 테스트 템플릿 테스트</p>
+                <div class="text-sub-wrap" style="padding:10px;">
+                  <span v-html="$gfnCommonUtils.newLineToBr(sendData.tmpltContent)"></span>
+                </div>
+                <!-- <p class="text-sub_2" v-html="$gfnCommonUtils.newLineToBr(sendData.tmpltContent)"></p> -->
+                <div v-for="(buttonInfo, idx) in sendData.buttonList" :key="idx">
+                  <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
+                </div>
               </div>
             </div>
           </div>
+          <!-- 알림톡 -->
+          <!-- XMS -->
+          <div v-if="previewMessageType == 'RPLC'" class="phoneWrap">
+            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
+            <div class="phoneTextWrap">
+              <div class="phoneText1">
+                <p v-if="this.$gfnCommonUtils.isEmpty(sendData.fbInfo.callback)">발신번호</p>
+                <p v-else>{{sendData.fbInfo.callback}}</p>
+              </div>
+              <div v-if="sendData.rplcSendType != 'SMS'" class="phoneText2" style="margin-top: 5px;">
+                <p v-if="this.$gfnCommonUtils.isEmpty(sendData.fbInfo.title)">제목</p>
+                <p v-else>{{sendData.fbInfo.title}}</p>
+              </div>
+              <div class="scroll-y">
+                <p v-if="(this.$gfnCommonUtils.isEmpty(sendData.fbInfo.msg) && this.$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
+                <p v-else class="font-size14 color4 mt10">
+                  <span v-html="$gfnCommonUtils.newLineToBr(sendData.fbInfo.msg)"></span>
+                  <br v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)"/>
+                  {{sendData.fbInfo.rcvblcNumber}}
+                </p>
+              </div>
+              <div v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center"
+                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.fbInfo.imgUrl+');'">
+              </div>
+            </div>
+          </div>
+          <!--// XMS -->
           <!-- //phoneWrap -->
           <div class="phone_04_btn">
+            <!-- 
             <a href="#self" class="btnStyle1 backBlack" title="알림톡">알림톡</a>
             <a href="#self" class="btnStyle1 backWhite" title="Push">SMS</a>
+            -->
+            <a @click="fnChgPreviewMessageType('ALIMTALK')" :class="'btnStyle1 '+(previewMessageType == 'ALIMTALK' ? 'backBlack' : 'backWhite')" title="Push">친구톡</a>
+            <a v-if="sendData.rplcSendType != 'NONE'" @click="fnChgPreviewMessageType('RPLC')" :class="'btnStyle1 '+(previewMessageType != 'ALIMTALK' ? 'backBlack' : 'backWhite')" title="Push">{{sendData.rplcSendType}}</a>
           </div>
         </div>
       </div>
@@ -166,12 +204,6 @@
                     샘플 <i class="far fa-arrow-to-bottom"></i>
                   </a>
                   <input ref="excelFile" type="file" style="display:none;">
-                  <!-- 
-                  <input type="radio" name="Recipient" value="Directly" id="Directly" checked=""> <label for="Directly" class="mr30">수신자 직접입력</label>
-                  <input type="radio" name="Recipient" value="search" id="search"> <label for="search" class="mr30">주소록 검색</label>
-                  <input type="radio" name="Recipient" value="excel" id="excel"> <label for="excel" class="mr10">엑셀 업로드</label>
-                  <a href="#self" class="btnStyle1 backLightGray" title="샘플">샘플 <i class="far fa-arrow-to-bottom"></i></a>
-                  -->
                 </div>
               </div>
             </div>
@@ -328,6 +360,10 @@ export default {
     }
   },
   methods: {
+    //메세지 미리보기 변경
+    fnChgPreviewMessageType(type){
+      this.previewMessageType = type;
+    },
     fnOpenTestSendInputPopup(){
       this.fnSetContsVarNms();
       this.testSendInputOpen = !this.testSendInputOpen;

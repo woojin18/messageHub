@@ -176,12 +176,21 @@
           </div>
 
           <div class="mt20 float-right">
-            <a v-if="isInsert" href="#" @click.prevent="fnApprvReqTmplt" class="btnStyle2 backRed float-left ml10" title="등록요청">등록요청</a>
             <a 
-              v-if="tmpltData.tmpltStatCode == 'T'" href="#" 
+              v-if="isInsert" 
+              href="#" 
+              @click.prevent="fnApprvReqTmplt" 
+              class="btnStyle2 backRed float-left ml10" 
+              title="등록요청"
+              activity="SAVE"
+            >등록요청</a>
+            <a 
+              v-if="tmpltData.tmpltStatCode == 'T'" 
+              href="#" 
               @click.prevent="fnInspectReqTmplt" 
               class="btnStyle2 backRed float-left ml10" 
               title="검수요청"
+              activity="SAVE"
             >검수요청</a>
             <a 
               v-if="tmpltData.tmpltStatCode == 'T' || tmpltData.tmpltStatCode == 'S'" 
@@ -189,6 +198,7 @@
               @click.prevent="fnUpdateReqTmplt" 
               class="btnStyle2 backWhite float-left ml10" 
               title="수정요청"
+              activity="SAVE"
             >수정요청</a>
             <router-link :to="{ name: 'alimTalkTemplateList' }" tag="a" class="btnStyle2 float-left ml10">취소</router-link>
           </div>

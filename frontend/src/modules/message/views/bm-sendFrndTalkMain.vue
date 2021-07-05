@@ -61,8 +61,8 @@
           <!--// XMS -->
           <!-- //phoneWrap -->
           <div class="phone_04_btn">
-            <a @click="fnChgPreviewMessageType('FRIENDTALK')" class="btnStyle1 backBlack" title="Push">친구톡</a>
-            <a v-if="sendData.rplcSendType != 'NONE'" @click="fnChgPreviewMessageType('RPLC')" class="btnStyle1 backWhite" title="Push">{{sendData.rplcSendType}}</a>
+            <a @click="fnChgPreviewMessageType('FRIENDTALK')" :class="'btnStyle1 '+(previewMessageType == 'FRIENDTALK' ? 'backBlack' : 'backWhite')" title="Push">친구톡</a>
+            <a v-if="sendData.rplcSendType != 'NONE'" @click="fnChgPreviewMessageType('RPLC')" :class="'btnStyle1 '+(previewMessageType != 'FRIENDTALK' ? 'backBlack' : 'backWhite')" title="Push">{{sendData.rplcSendType}}</a>
           </div>
         </div>
       </div>
