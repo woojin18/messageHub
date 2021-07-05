@@ -4,7 +4,7 @@ const selectImageList = (params) => {
     return httpClient.post('/commonApi/selectImageList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 const deleteImage = (params) => {
-    return httpClient.post('/commonApin/deleteImageFile', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+    return httpClient.post('/commonApi/deleteImageFile', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 const uploadImage = (params) => {
     return httpClient.post('/commonApi/uploadImage', params, { headers: {"show-layer": "Yes", "activity":"SAVE", "Content-Type": "multipart/form-data"} });
