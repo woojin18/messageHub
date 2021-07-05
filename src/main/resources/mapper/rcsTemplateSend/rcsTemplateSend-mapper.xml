@@ -119,9 +119,18 @@
 		</choose>
 	</sql>
 	
-	<delete id="selectRcsTmpMsgbase">
-		/* rcsTemplateSend.selectRcsTmpMsgbase */
-		DELETE FROM cm_console.CM_RCS_TMP_MSGBASE A
+	<delete id="deleteRcsTmpMsgbase">
+		/* rcsTemplateSend.deleteRcsTmpMsgbase */
+		DELETE FROM cm_console.CM_RCS_TMP_MSGBASE
 		WHERE	SAVE_BOX_ID = #{saveBoxId}
 	</delete>
+	
+	<select id="deleteRcsTmpMsgbaseDetail" resultType="hashMap">
+		/* rcsTemplateSend.deleteRcsTmpMsgbaseDetail */
+		SELECT	BRAND_ID
+		,		SAVE_BOX_NAME
+		,		MESSAGEBASE_INFO
+		FROM	cm_console.CM_RCS_TMP_MSGBASE
+		WHERE	SAVE_BOX_ID = #{saveBoxId}
+	</select>
 </mapper>

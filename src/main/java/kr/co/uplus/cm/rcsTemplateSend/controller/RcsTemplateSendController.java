@@ -131,6 +131,20 @@ public class RcsTemplateSendController {
 			rtn.setMessage("실패하였습니다.");
 			log.error("{} Error : {}", this.getClass(), e);
 		}
+		return rtn;
+	}
+	
+	@PostMapping("/selectRcsMsgDetail")
+	public RestResult<?> selectRcsMsgDetail(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			rtn = rcsTemplateSendSvc.selectRcsMsgDetail(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
 
 		return rtn;
 	}

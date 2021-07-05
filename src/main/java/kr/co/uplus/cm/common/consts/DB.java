@@ -174,7 +174,7 @@ public class DB {
 	public final static String QRY_SELECT_RCS_TMP_MSGBASE_CNT = "rcsTemplateSend.selectRcsTmpMsgbaseCnt";
 	public final static String QRY_SELECT_RCS_TMP_MSGBASE = "rcsTemplateSend.selectRcsTmpMsgbase";
 	public final static String QRY_DELETE_RCS_TMP_BSGBASE = "rcsTemplateSend.deleteRcsTmpMsgbase";
-	
+	public final static String QRY_SELECT_RCS_TMP_MSGBASE_DETAIL = "rcsTemplateSend.deleteRcsTmpMsgbaseDetail";
 
 	// 주소록 관리
 	public final static String QRY_SELECT_ADDR_CATE_GRP_LIST = "address.selectAddrCateGrpList";

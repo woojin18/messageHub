@@ -58,7 +58,7 @@
 						</div>
 					</div>
 					<div class="text-center mt20">
-						<a @click.prevent="fnClose" href="#self" class="btnStyle2 backWhite" data-dismiss="modal" title="닫기">닫기</a>										
+						<a @click.prevent="fnClose" href="#self" class="btnStyle2 backWhite" title="닫기">닫기</a>										
 					</div>
 				</div>
 				
@@ -70,6 +70,7 @@
 <script>
 import rcsTemplateSendApi from "@/modules/rcsTemplateSend/service/api.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import Paging from "@/modules/commonUtil/components/bc-paging";
 
 export default {
@@ -143,27 +144,61 @@ export default {
 		}
 	},
 
+	// 선택
+	fnSelect() {
+		var vm = this;
+		var checkData = this.checkboxArr;
+		if(checkData.length>0 && checkData.length!=1) {
+			confirm.fnAlert("복수건은 선택할 수 없습니다.","");
+		} else if(checkData.length == 0) {
+			confirm.fnAlert("선택하실 메시지를 선택해주세요.","");
+		} else {
+			var data = {
+				"saveBoxId" : checkData[0],
+				"templateRadioBtn" : vm.templateRadioBtn
+			}
+
+			vm.$emit('fnTmpMsgSet', data);
+			vm.fnClose();
+		}
+	},
+
 	// 삭제
 	fnDelete() {
 		var checkData = this.checkboxArr;
 		if(!checkData.length>0) {
 			confirm.fnAlert("삭제하실 메세지를 선택해주세요.","");
 		} else {
-			var params = {
-				"saveBoxIdArr" : checkData
-			};
-			rcsTemplateSendApi.deleteRcsTmpMsgbase(params).then(response => {
-				
-			});
+			eventBus.$on('callbackEventBus', this.fnDeleteList);
+      		confirm.fnConfirm("RCS 메시지", "선택하신 메시지를 삭제하시겠습니까?", "확인");
 		}
+	},
+
+	fnDeleteList() {
+		var vm = this;
+		var checkData = this.checkboxArr;
+		var params = {
+			"saveBoxIdArr" : checkData
+		};
+		rcsTemplateSendApi.deleteRcsTmpMsgbase(params).then(response => {
+			var result = response.data;
+			var success = result.success;
+
+			if(success) {
+				confirm.fnAlert("선택하신 메시지를 삭제하였습니다.","");
+			} else {
+				confirm.fnAlert(result.message,"");
+			}
+			vm.fnSearch();
+		});
 	},
 
     //팝업 닫기
     fnClose() {
       //데이터 초기화
-      //this.templateList = [];
-      //this.templateData = {};
-	  JQuery("#message").modal("hide");
+      this.checkboxArr = [];
+      this.data = {};
+	  jQuery("#message").modal("hide");
     },
   }
 }

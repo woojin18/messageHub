@@ -32,6 +32,11 @@ const deleteRcsTmpMsgbase = (params) => {
     return httpClient.post('/uc/rcsTemplateSend/deleteRcsTmpMsgbase', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
+const selectRcsMsgDetail = (params) => {
+    return httpClient.post('/uc/rcsTemplateSend/selectRcsMsgDetail', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
+
 
 export default {
     rcsTemplatePopInit,
@@ -41,5 +46,6 @@ export default {
     selectCallbackList,
     rcsMsgSave,
     selectRcsMsgList,
-    deleteRcsTmpMsgbase
+    deleteRcsTmpMsgbase,
+    selectRcsMsgDetail
 };

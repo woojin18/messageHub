@@ -344,4 +344,38 @@ public class RcsTemplateSendService {
 		}
 	}
 
+	public RestResult<Object> selectRcsMsgDetail(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> rtnMap = new HashMap<String, Object>();
+		Map<String, Object> msgDatail = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_RCS_TMP_MSGBASE_DETAIL, params);
+		String btnType = CommonUtils.getString(params.get("templateRadioBtn"));
+		
+		// 타입에 따른 json 값 세팅 후 return
+		if("text".equals(btnType)) {
+			String brandId = CommonUtils.getString(msgDatail.get("BRAND_ID"));
+			String saveContent = CommonUtils.getString(msgDatail.get("SAVE_BOX_NAME"));
+			
+			
+			// JSON ARRAY parsing
+			String msgInfo = (String) msgDatail.get("MESSAGEBASE_INFO");
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse(msgInfo);
+			JSONArray jsonArr = (JSONArray) obj;
+			JSONObject jsonObj = (JSONObject) jsonArr.get(0);
+			
+			System.out.println("asdfasdfsdf" + jsonObj);
+			
+			String textContents = (String) jsonObj.get("description");
+			
+			rtnMap.put("brandId", brandId);
+			rtnMap.put("saveContent", saveContent);
+			rtnMap.put("textContents", textContents);
+		}
+		
+		
+		rtn.setData(rtnMap);
+		
+		return rtn;
+	}
+
 }

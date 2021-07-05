@@ -15,6 +15,12 @@
 
 							</div>							
 						</div>
+            <div v-if="templateRadioBtn!='text' && templateRadioBtn!='SS000000'" class="of_h consolMarginTop">
+							<div class="float-left" style="width:15%"><h5>제목</h5></div>
+							<div class="float-left" style="width:80%">
+								<input type="text" class="inputStyle" placeholder="타이틀 입력 (최대 30자)" title="제목 입력란">
+							</div>							
+						</div>
 						<div class="of_h consolMarginTop">
 							<div class="float-left" style="width:15%"><h5>내용</h5></div>
 							<div class="float-left" style="width:80%">
@@ -42,10 +48,10 @@ export default {
   components : {
   },
   props : {
-        rcsContentPopOpen: {
-            type: Boolean,
+        templateRadioBtn: {
+            type: String,
             require: true,
-            default: false,
+            default: "",
         }
   },
   data() {
@@ -84,7 +90,7 @@ export default {
       this.contents = "";
       this.brandId = "";
       this.brandArr = [];
-      JQuery("#Tamplet").modal("hide");
+      //JQuery("#Tamplet").modal("hide");
     },
 
     // 입력 버튼
