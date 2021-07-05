@@ -386,15 +386,15 @@ public class TemplateService {
         AlimTalkTmpltRequestData requestData = new AlimTalkTmpltRequestData();
 
         //templateCode
-        String tmpltCode = CommonUtils.getStrValue(params, "tmpltCode");
-        if(StringUtils.isNotBlank(tmpltCode)) {
+        String templateKey = CommonUtils.getStrValue(params, "tmpltKey");
+        if(StringUtils.isNotBlank(templateKey)) {
             List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ALIM_TALK_TMPLT_LIST, params);
             if(rtnList == null || rtnList.size() == 0) {
                 rtn.setFail("잘못된 요청 정보입니다.");
-                log.warn("{}.setAlimTalkTmpltRequestData Invalid request => tmpltCode : {}", this.getClass(), tmpltCode);
+                log.warn("{}.setAlimTalkTmpltRequestData Invalid request => templateKey : {}", this.getClass(), templateKey);
                 return requestData;
             }
-            requestData.setTemplateCode(tmpltCode);
+            requestData.setTemplateKey(templateKey);
         }
 
         //senderKey
@@ -428,7 +428,7 @@ public class TemplateService {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<AlimTalkTmpltRequestData>> violations = null;
-        if(StringUtils.isNotBlank(requestData.getTemplateCode())) {
+        if(StringUtils.isNotBlank(requestData.getTemplateKey())) {
             violations = validator.validate(requestData, Default.class, AlimTalkTmpltModRequest.class);
         } else {
             violations = validator.validate(requestData, Default.class, AlimTalkTmpltRegRequest.class);
@@ -611,27 +611,27 @@ public class TemplateService {
         RestResult<Object> rtn = new RestResult<Object>();
 
         AlimTalkTmpltEtcRequestData requestData = null;
-        String tmpltCode = CommonUtils.getStrValue(params, "tmpltCode");
+        String tmpltKey = CommonUtils.getStrValue(params, "tmpltKey");
         String senderKey = CommonUtils.getStrValue(params, "senderKey");
 
-        if(StringUtils.isBlank(tmpltCode) || StringUtils.isBlank(senderKey)) {
+        if(StringUtils.isBlank(tmpltKey) || StringUtils.isBlank(senderKey)) {
             rtn.setFail("잘못된 템플릿 정보입니다.");
-            log.warn("{}.procDeleteRequestKkoTmplt => tmpltCode : {}, senderKey : {}"
-                    , this.getClass(), tmpltCode, senderKey);
+            log.warn("{}.procDeleteRequestKkoTmplt => tmpltKey : {}, senderKey : {}"
+                    , this.getClass(), tmpltKey, senderKey);
             return rtn;
         }
 
         List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ALIM_TALK_TMPLT_LIST, params);
         if(rtnList == null || rtnList.size() == 0) {
             rtn.setFail("잘못된 템플릿 정보입니다.");
-            log.warn("{}.procDeleteRequestKkoTmplt => tmpltCode : {}, senderKey : {}"
-                    , this.getClass(), tmpltCode, senderKey);
+            log.warn("{}.procDeleteRequestKkoTmplt => tmpltKey : {}, senderKey : {}"
+                    , this.getClass(), tmpltKey, senderKey);
             return rtn;
         }
 
         requestData = new AlimTalkTmpltEtcRequestData();
         requestData.setSenderKey(senderKey);
-        requestData.setTemplateCode(tmpltCode);
+        requestData.setTemplateKey(tmpltKey);
 
         String corpId = CommonUtils.getStrValue(params, "corpId");
         String projectId = CommonUtils.getStrValue(params, "projectId");

@@ -216,7 +216,7 @@ import {eventBus} from "@/modules/commonUtil/service/eventBus";
 export default {
   name: 'alimTalkTemplateManage',
   props: {
-    tmpltCode: {
+    tmpltKey: {
       type: String,
       require: false,
       default: function() {
@@ -254,6 +254,7 @@ export default {
         //{linkType:'AC', name:'채널 추가'},  //광고 추가/복합형만
       ],
       tmpltData : {
+        tmpltCode: '',
         senderKeyType : 'S',  //S:일반, G:그룹
         senderKey : '',
         tmpltName : '',
@@ -277,7 +278,7 @@ export default {
   methods: {
     //template 정보 조회
     fnSetTemplateInfo(){
-      if(!this.$gfnCommonUtils.isEmpty(this.tmpltCode)){
+      if(!this.$gfnCommonUtils.isEmpty(this.tmpltKey)){
         this.isInsert = false;
         this.fnSelectAlimTalkTmpltInfo();
       } else {
@@ -287,7 +288,7 @@ export default {
     },
     //템플릿 정보 조회
     fnSelectAlimTalkTmpltInfo(){
-      const params = {tmpltCode: this.tmpltCode};
+      const params = {tmpltKey: this.tmpltKey};
       templateApi.selectAlimTalkInfo(params).then(response => {
         const result = response.data;
         if(result.success) {
@@ -317,7 +318,7 @@ export default {
       });
     },
     fnIsValidInspectReqTmplt(){
-      if(this.$gfnCommonUtils.isEmpty(this.tmpltCode) || !this.tmpltData.senderKey){
+      if(this.$gfnCommonUtils.isEmpty(this.tmpltKey) || !this.tmpltData.senderKey){
         confirm.fnAlert(this.componentsTitle, '유효하지 않은 템플릿 정보입니다.');
         return false;
       }
@@ -329,13 +330,14 @@ export default {
     },
     fnProcInspectReqTmplt(){
       let params = {
-        tmpltCode: this.tmpltCode,
+        tmpltKey: this.tmpltKey,
         senderKey: this.tmpltData.senderKey
       };
       templateApi.procInspectRequestKkoTmplt(params).then(response => {
         const result = response.data;
         if(result.success) {
-          confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 검수요청 하였습니다.');
+          eventBus.$on('callbackEventBus', this.fnMovePage);
+          confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 검수요청 하였습니다.', 'CALLBACK');
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
@@ -426,7 +428,7 @@ export default {
     async fnProcUpdateReqTmplt(){
       //DATA Set
       let params = Object.assign({}, this.tmpltData);
-      params.tmpltCode = this.tmpltCode;
+      params.tmpltKey = this.tmpltKey;
       params.tmpltButtonsStr = JSON.stringify(this.tmpltData.buttonList);
 
       await templateApi.procUpdateRequestKkoTmplt(params).then(response => {
@@ -459,9 +461,7 @@ export default {
       });
     },
     fnMovePage(){
-      if(this.isInsert){
-        this.$router.push('alimTalkTemplateList')
-      }
+      this.$router.push('alimTalkTemplateList');
     },
     fnAddButton(){
       if(this.tmpltData.buttonList.length < this.buttonLimitSize){

@@ -135,7 +135,7 @@
                     </td>
                     <td class="text-center">{{totCnt-offset-contant.rownum+1}}</td>
                     <td class="text-center">
-                      <router-link :to="{ name: 'alimTalkTemplateManage', params: { tmpltCode: contant.tmpltCode }}">{{contant.tmpltCode}}</router-link>
+                      <router-link :to="{ name: 'alimTalkTemplateManage', params: { tmpltKey: contant.tmpltKey }}">{{contant.tmpltCode}}</router-link>
                     </td>
                     <td class="text-left">{{contant.tmpltName}}</td>
                     <td v-if="contant.tmpltStatCode == 'S'" class="text-center">
