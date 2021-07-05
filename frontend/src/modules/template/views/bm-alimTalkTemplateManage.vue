@@ -136,7 +136,7 @@
                     <tr :key="idx">
                       <td class="text-left" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
                         <select class="float-left selectStyle2" style="width:100%" v-model="buttonInfo.linkType" @change="fnChgBtnLinkType(idx)">
-                          <option v-for="bottonLinkType in bottonLinkTypeList" :key="bottonLinkType.linkType" :value="bottonLinkType.linkType">{{bottonLinkType.name}}</option>
+                          <option v-for="buttonLinkType in buttonLinkTypeList" :key="buttonLinkType.linkType" :value="buttonLinkType.linkType">{{buttonLinkType.name}}</option>
                         </select>
                       </td>
                       <td class="text-center" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
@@ -144,7 +144,7 @@
                         <input v-else type="text" class="inputStyle float-left" v-model="buttonInfo.name" maxlength="14">
                       </td>
                       <td :class="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? 'text-left' : 'text-left of_h'">
-                        <h6 v-if="buttonInfo.linkType == 'DS'" class="float-left" v-html="bottonDSDescription"></h6>
+                        <h6 v-if="buttonInfo.linkType == 'DS'" class="float-left" v-html="buttonDSDescription"></h6>
                         <h6 v-if="buttonInfo.linkType == 'WL'" class="float-left" style="width:20%">Mobile*</h6>
                         <h6 v-if="buttonInfo.linkType == 'AL'" class="float-left" style="width:20%">Android*</h6>
                         <!-- <input v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" type="text" class="inputStyle float-left" style="width:80%"> -->
@@ -159,7 +159,7 @@
                     <tr v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" :key="idx+'_sub'">
                       <td class="text-left">
                         <div v-if="buttonInfo.linkType == 'WL'">
-                          <h6 class="float-left" style="width:20%">PC</h6>
+                          <h6 class="float-left" style="width:20%">PC*</h6>
                           <input type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkPc" maxlength="200">
                         </div>
                         <div v-if="buttonInfo.linkType == 'AL'">
@@ -231,9 +231,9 @@ export default {
       categoryGrpName : '',
       useCh : 'ALIMTALK',
       buttonLimitSize : 5,
-      bottonACName : '채널 추가',
-      bottonDSDescription : '카카오 메세지에 택배사 명과 송장번호를 기재한 후, 배송 조회 버튼을 추가하시면 메세지에서 택배사 명과 송장번호를 추출하여 배송 조회 카카오 검색페이지 링크가 자동으로 생성됩니다. 카카오에서 지원하는 택배사명과 운송장번호가 알림톡 메시지 내에 포함된 경우에만 배송조회 버튼이 표시됩니다. 배송 조회가 가능한 택배사는 <span style="color:#e11d21"><strong>카카오와 해당 택배사와의 계약 관계에 의해 변동될 수 있음을 유의해주시기 바랍니다.</strong></span>',
-      bottonLinkTypeList : [
+      buttonACName : '채널 추가',
+      buttonDSDescription : '카카오 메세지에 택배사 명과 송장번호를 기재한 후, 배송 조회 버튼을 추가하시면 메세지에서 택배사 명과 송장번호를 추출하여 배송 조회 카카오 검색페이지 링크가 자동으로 생성됩니다. 카카오에서 지원하는 택배사명과 운송장번호가 알림톡 메시지 내에 포함된 경우에만 배송조회 버튼이 표시됩니다. 배송 조회가 가능한 택배사는 <span style="color:#e11d21"><strong>카카오와 해당 택배사와의 계약 관계에 의해 변동될 수 있음을 유의해주시기 바랍니다.</strong></span>',
+      buttonLinkTypeList : [
         {linkType:'DS', name:'배송 조회'},
         {linkType:'WL', name:'웹 링크'},
         {linkType:'AL', name:'앱 링크'},
@@ -474,7 +474,7 @@ export default {
       Object.keys(this.tmpltData.buttonList[idx]).forEach(function(key){
         if(key != 'linkType'){
           if(key == 'name' && vm.tmpltData.buttonList[idx]['linkType'] == 'AC'){
-            vm.tmpltData.buttonList[idx]['name'] = vm.bottonACName;
+            vm.tmpltData.buttonList[idx]['name'] = vm.buttonACName;
           } else {
             delete vm.tmpltData.buttonList[idx][key];
           }

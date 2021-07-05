@@ -212,13 +212,13 @@
                 <h5>대체발송</h5>
               </div>
               <div>
-                <input type="radio" id="rplcSendType_NONE" value="NONE" v-model="sendData.rplcSendType" @change="fnChgRplcSendType">
+                <input type="radio" id="rplcSendType_NONE" name="rplcSendType" value="NONE" v-model="sendData.rplcSendType" @change="fnChgRplcSendType">
                 <label for="rplcSendType_NONE" class="mr30">미사용</label>
-                <input type="radio" id="rplcSendType_SMS" value="SMS" v-model="sendData.rplcSendType" @change="fnChgRplcSendType">
+                <input type="radio" id="rplcSendType_SMS" name="rplcSendType" value="SMS" v-model="sendData.rplcSendType" @change="fnChgRplcSendType">
                 <label for="rplcSendType_SMS" class="mr30">SMS</label>
-                <input type="radio" id="rplcSendType_LMS" value="LMS" v-model="sendData.rplcSendType" @change="fnChgRplcSendType">
+                <input type="radio" id="rplcSendType_LMS" name="rplcSendType" value="LMS" v-model="sendData.rplcSendType" @change="fnChgRplcSendType">
                 <label for="rplcSendType_LMS" class="mr30">LMS</label>
-                <input type="radio" id="rplcSendType_MMS" value="MMS" v-model="sendData.rplcSendType" @change="fnChgRplcSendType">
+                <input type="radio" id="rplcSendType_MMS" name="rplcSendType" value="MMS" v-model="sendData.rplcSendType" @change="fnChgRplcSendType">
                 <label for="rplcSendType_MMS">MMS</label>
               </div>
             </div>

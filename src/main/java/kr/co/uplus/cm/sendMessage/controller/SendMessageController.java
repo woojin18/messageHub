@@ -25,6 +25,7 @@ import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.MultipartFileDTO;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
+import kr.co.uplus.cm.sendMessage.dto.AlimTalkRequestData;
 import kr.co.uplus.cm.sendMessage.dto.FrndTalkRequestData;
 import kr.co.uplus.cm.sendMessage.dto.MmsRequestData;
 import kr.co.uplus.cm.sendMessage.dto.PushRequestData;
@@ -690,6 +691,150 @@ public class SendMessageController {
             log.info("{}.sendFrndTalkMessage aSync API send Error : {}", this.getClass(), e);
         }
         rtn.setMessage("친구톡 발송 요청처리 되었습니다.");
+
+        rtn.setSuccess(true);
+        rtn.setData(rtnMap);
+
+        return rtn;
+    }
+
+    /**
+     * 알림톡 발송 수신자 엑셀업로드 템플릿 다운로드
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    @PostMapping(path = "/excelDownSendAlimTalkRecvTmplt")
+    public ModelAndView excelDownSendAlimTalkRecvTmplt(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) throws Exception {
+
+        List<String> colLabels = new ArrayList<String>();
+        if(params.containsKey("requiredCuid") && (Boolean) params.get("requiredCuid")) {
+            colLabels.add("APP 로그인 ID");
+        }
+        if(params.containsKey("requiredCuPhone") && (Boolean) params.get("requiredCuPhone")) {
+            colLabels.add("휴대폰 번호");
+        }
+        if(params.containsKey("contsVarNms")) {
+            List<String> contsVarNms = (ArrayList<String>)params.get("contsVarNms");
+            for(String varNm : contsVarNms) {
+                colLabels.add(varNm);
+            }
+        }
+
+        List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("sheetTitle", "Template");
+        map.put("colLabels", colLabels.toArray(new String[0]));
+        map.put("colIds", new String[] {});
+        map.put("numColIds", new String[] {});
+        map.put("figureColIds", new String[] {});
+        map.put("colDataList", new ArrayList<T>());
+        sheetList.add(map);
+
+        ModelAndView model = new ModelAndView("commonXlsxView");
+        model.addObject("excelFileName", "alimTalkTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
+        model.addObject("sheetList", sheetList);
+
+        return model;
+    }
+
+    /**
+     * 알림톡 메시지 발송처리
+     * @param request
+     * @param response
+     * @param multipartFileDTO
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(path="/sendAlimTalkMessage")
+    public RestResult<?> sendAlimTalkMessage(HttpServletRequest request, HttpServletResponse response
+            , @ModelAttribute MultipartFileDTO multipartFileDTO) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> sParam = new HashMap<String, Object>();
+        AlimTalkRequestData requestData = null;
+        List<RecvInfo> recvInfoLst = null;
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        try {
+            params = commonService.setUserInfo(multipartFileDTO.getParams());
+            String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
+            log.info("{}.sendAlimTalkMessage Start ====> paramString : {}", this.getClass(), params);
+
+            /** 유효성 체크 */
+            requestData = sendMsgService.setAlimTalkSendData(rtn, params);
+            if(rtn.isSuccess() == false) {
+                log.info("{}.sendAlimTalkMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
+                return rtn;
+            }
+
+            /** 알림톡 수신자 리스트*/
+            recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
+            if(recvInfoLst == null || recvInfoLst.size() == 0) {
+                rtn.setSuccess(false);
+                rtn.setMessage("잘못된 친구톡 수신자 정보입니다.");
+                return rtn;
+            }
+
+            /** 예약건인지 확인 */
+            String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
+            if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+                return sendMsgService.insertAlimTalkCmWebMsg(rtn, params, requestData, recvInfoLst);
+            }
+
+            /** 잔액확인 */
+            String payType = sendMsgService.selectPayType(params);
+
+            //선불일경우
+            if(StringUtils.equals(payType, Const.COMM_YES)) {
+                //남은 금액 조회
+                BigDecimal rmAmount = sendMsgService.getRmAmount(params);
+                //개당 가격 조회
+                List<String> productCodes = new ArrayList<String>();
+                productCodes.add(Const.MsgProductCode.getType("ALIM_TALK"));
+
+                sParam = new HashMap<>();
+                sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
+                sParam.put("productCodes", productCodes);
+                BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
+                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
+
+                if(rmAmount.compareTo(feePerAll) < 0) {
+                    if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
+                        rtn.setSuccess(false);
+                        rtn.setMessage("잔액 부족으로 메시지를 발송할 수 없습니다.");
+                        return rtn;
+                    } else {
+                        rtnMap.put("feeMsg", "잔액 부족으로 메시지가 발송되지 않을 수도 있습니다.");
+                    }
+                }
+            }
+
+            /** 테스트발송(동기화) */
+            if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
+                return sendMsgService.testSendAlimTalkMsg(params, requestData, recvInfoLst);
+            }
+
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{}.sendAlimTalkMessage Error : {}", this.getClass(), e);
+            return rtn;
+        }
+
+        /** 비동기화 발송 */
+        try {
+            List<Object> reSendCdList = sendMsgService.reSendCdList(null);
+            log.info("{}.sendAlimTalkMessage aSync API send Start ====>");
+            sendMsgService.sendAlimTalkMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
+        } catch (Exception e) {
+            log.info("{}.sendAlimTalkMessage aSync API send Error : {}", this.getClass(), e);
+        }
+        rtn.setMessage("알림톡 발송 요청처리 되었습니다.");
 
         rtn.setSuccess(true);
         rtn.setData(rtnMap);

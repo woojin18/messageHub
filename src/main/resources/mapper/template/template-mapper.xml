@@ -476,11 +476,17 @@
         AND PROJECT_ID IN ('ALL', #{projectId})
         -->
         AND TMPLT_STAT_CODE != 'D'
+        <if test="tmpltKey != '' and tmpltKey != null ">
+            AND TMPLT_KEY = #{tmpltKey}
+        </if>
         <if test="tmpltCode != '' and tmpltCode != null ">
             AND TMPLT_CODE = #{tmpltCode}
         </if>
         <if test="senderKey != '' and senderKey != null ">
             AND SENDER_KEY = #{senderKey}
+        </if>
+        <if test="tmpltStatCode != '' and tmpltStatCode != null ">
+            AND TMPLT_STAT_CODE = #{tmpltStatCode}
         </if>
         <if test="searchText != '' and searchText != null ">
             <if test="searchCondi == 'tmpltCode' ">
@@ -555,7 +561,8 @@
                 , (@vData:=TMPLT_CODE) AS vData
             FROM (
                 SELECT
-                    CKTR.SENDER_KEY
+                    CKTR.TMPLT_KEY
+                    , CKTR.SENDER_KEY
                     , CKTR.CORP_ID
                     , CKTR.PROJECT_ID
                     , CKTR.TMPLT_CODE
@@ -578,7 +585,8 @@
                 UNION ALL
 
                 SELECT
-                    CKT.SENDER_KEY
+                    CKT.TMPLT_KEY
+                    , CKT.SENDER_KEY
                     , CKT.CORP_ID
                     , CKT.PROJECT_ID
                     , CKT.TMPLT_CODE

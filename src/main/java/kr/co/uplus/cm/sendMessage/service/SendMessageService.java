@@ -35,6 +35,8 @@ import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
+import kr.co.uplus.cm.sendMessage.dto.AlimTalkButtonsInfo;
+import kr.co.uplus.cm.sendMessage.dto.AlimTalkRequestData;
 import kr.co.uplus.cm.sendMessage.dto.ButtonsInfo;
 import kr.co.uplus.cm.sendMessage.dto.FbInfo;
 import kr.co.uplus.cm.sendMessage.dto.FrndTalkRequestData;
@@ -1480,7 +1482,7 @@ public class SendMessageService {
         int resultCnt = insertCmWebMsg(params);
 
         if (resultCnt <= 0) {
-            log.info("{}.insertMmsCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
+            log.info("{}.insertFrndTalkCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
         }
 
         return rtn;
@@ -1606,7 +1608,7 @@ public class SendMessageService {
             }
             rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
         } else {
-            log.warn("{}.testSendPushMsg Fail ==> response : {}", this.getClass(), resultMap);
+            log.warn("{}.testSendFrndTalkMsg Fail ==> response : {}", this.getClass(), resultMap);
             rtn.setFail("친구톡 테스트 발송이 실패하였습니다.");
         }
 
@@ -1640,6 +1642,353 @@ public class SendMessageService {
         String jsonString = gson.toJson(requestData);
 
         return apiInterface.sendMsg(ApiConfig.SEND_FRND_TALK_API_URI, headerMap, jsonString);
+    }
+
+    /**
+     * 알림톡 발송 데이터 유효성 체크
+     * @param rtn
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public AlimTalkRequestData setAlimTalkSendData(RestResult<Object> rtn, Map<String, Object> params) throws Exception {
+        AlimTalkRequestData requestData = new AlimTalkRequestData();
+
+        //알림톡 정보 Get
+        String tmpltCode = CommonUtils.getStrValue(params, "tmpltCode");
+        String tmpltKey = CommonUtils.getStrValue(params, "tmpltKey");
+        String tmpltStatCode = Const.TmpltStatCode.OK;
+
+        Map<String, Object> sParams = new HashMap<String, Object>();
+        sParams.put("tmpltCode", tmpltCode);
+        sParams.put("tmpltKey", tmpltKey);
+        sParams.put("tmpltStatCode", tmpltStatCode);
+
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ALIM_TALK_TMPLT_LIST, params);
+        if(rtnList == null || rtnList.size() == 0) {
+            rtn.setFail("유효하지 않은 템플릿 정보입니다.");
+            log.warn("{}.setAlimTalkSendData => tmpltCode : {}, tmpltKey : {}, tmpltStatCode : {}"
+                    , this.getClass(), tmpltCode, tmpltKey, tmpltStatCode);
+            return requestData;
+        }
+        Map<String, Object> tmpltMap = (Map<String, Object>) rtnList.get(0);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = CommonUtils.getStrValue(tmpltMap, "tmpltInfo");
+        Map<String, Object> tmpltInfo = mapper.readValue(jsonStr, Map.class);
+
+        //title
+        requestData.setTitle(CommonUtils.getStrValue(tmpltInfo, "templateTitle"));
+        //msg
+        requestData.setMsg(CommonUtils.getStrValue(tmpltInfo, "templateContent"));
+        //senderKey
+        requestData.setSenderKey(CommonUtils.getStrValue(tmpltMap, "senderKey"));
+        //tmpltKey
+        requestData.setTmpltKey(CommonUtils.getStrValue(tmpltMap, "tmpltKey"));
+        //버튼정보
+        if(tmpltInfo.containsKey("buttons")) {
+            List<AlimTalkButtonsInfo> buttonList = (List<AlimTalkButtonsInfo>) tmpltInfo.get("buttons");
+            if(CollectionUtils.isNotEmpty(buttonList)) {
+                requestData.setButtons(buttonList);
+            }
+        }
+
+        //webReqId
+        String webReqId = CommonUtils.getCommonId(Const.WebReqIdPrefix.ALIM_TALK_PREFIX, 5);
+        requestData.setWebReqId(webReqId);
+
+        //callback
+        //대채발송이 아닐 경우 callback 이 없는게 맞으나 G/W 에서 필수로 보내달라고 해서
+        //1. 챗봇 발신번호 조회 해서 setting 한다.
+        //2. 1의 방법에서 발신번호가 없거나 오류시 기본 callback 번호로 setting한다.
+        String callback = "";
+        String rplcSendType = CommonUtils.getStrValue(params, "rplcSendType");
+        if(StringUtils.equals(rplcSendType, Const.RplcSendType.NONE)) {
+            try {
+                sParams = new HashMap<String, Object>(params);
+                sParams.put("approvalStatus", Const.ApprovalStatus.APPROVE);
+                List<Object> callbackList = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_LIST, sParams);
+                if(!CollectionUtils.isEmpty(callbackList)) {
+                    Map<String, Object> callbackInfo = (Map<String, Object>) callbackList.get(0);
+                    callback = CommonUtils.getStrValue(callbackInfo, "callback");
+                }
+            } catch (Exception e) {
+                log.error("{}.setAlimTalkSendData selectGernalList ERROR : {}", this.getClass(), e);
+            }
+            if(StringUtils.isBlank(callback)) {
+                callback = ApiConfig.DEFAULT_CALLBACK;
+            }
+        }
+        requestData.setCallback(callback);
+
+        //campaignId
+        requestData.setCampaignId(CommonUtils.getStrValue(params, "campaignId"));
+
+        //대체발송
+        if(!StringUtils.equals(rplcSendType, Const.RplcSendType.NONE)) {
+            List<FbInfo> fbInfoLst = new ArrayList<FbInfo>();
+            Map<String, Object> fbInfo = (Map<String, Object>) params.get("fbInfo");
+            String fbMsg = CommonUtils.getStrValue(fbInfo, "msg");
+
+            FbInfo pushFbInfo = new FbInfo();
+            pushFbInfo.setCh(rplcSendType);
+            pushFbInfo.setMsg(fbMsg);
+
+            if(StringUtils.equals(rplcSendType, Const.RplcSendType.LMS)) {
+                pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
+            } else if(StringUtils.equals(rplcSendType, Const.RplcSendType.MMS)) {
+                pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
+                pushFbInfo.setFileId(CommonUtils.getStrValue(fbInfo, "fileId"));
+            }
+
+            fbInfoLst.add(pushFbInfo);
+            requestData.setFbInfoLst(fbInfoLst);
+            requestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
+        }
+
+        //유효성 체크
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<AlimTalkRequestData>> violations = validator.validate(requestData);
+        String errorMsg = "";
+
+        for (ConstraintViolation violation : violations) {
+            errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + violation.getMessage();
+            //log.info("path : [{}], message : [{}]", violation.getPropertyPath(), violation.getMessage());
+        }
+
+        if(StringUtils.isNotBlank(errorMsg)) {
+            rtn.setFail(errorMsg);
+        }
+
+        return requestData;
+    }
+
+    /**
+     * 알림톡 웹 발송 내역 등록
+     * @param rtn
+     * @param data
+     * @param requestData
+     * @param recvInfoLst
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> insertAlimTalkCmWebMsg(RestResult<Object> rtn
+            , Map<String, Object> data
+            , AlimTalkRequestData requestData
+            , List<RecvInfo> recvInfoLst) throws Exception {
+
+        String ch = Const.Ch.ALIMTALK;
+        String corpId = CommonUtils.getStrValue(data, "corpId");
+        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String rsrvSendYn = CommonUtils.getStrValue(data, "rsrvSendYn");
+        String rsrvDateStr = "";
+        String allFailYn = CommonUtils.getStrValue(data, "allFailYn");
+        String status = (StringUtils.equals(allFailYn, Const.COMM_YES) ? Const.MsgSendStatus.FAIL : Const.MsgSendStatus.COMPLETED);
+
+        if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+            String rsrvYmd = CommonUtils.getStrValue(data, "rsrvDate");
+            String rsrvHH = CommonUtils.getStrValue(data, "rsrvHH");
+            String rsrvMM = CommonUtils.getStrValue(data, "rsrvMM");
+            rsrvDateStr = rsrvYmd+" "+rsrvHH+":"+rsrvMM;
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date rsrvDate = dateFormat.parse(rsrvDateStr);
+            Date currentDate = new Date();
+
+            currentDate = DateUtils.addMinutes(currentDate, 10);
+            if(currentDate.compareTo(rsrvDate) > 0) {
+                rtn.setSuccess(false);
+                rtn.setMessage("잘못된 예약시간입니다. 현재시간 10분 이후로 설정해주세요.");
+                return rtn;
+            }
+            if(DateUtil.diffDays(rsrvDate) > Const.SEND_RSRV_LIMIT_DAY) {
+                rtn.setFail("잘못된 예약일자입니다. 현재일로 부터 "+Const.SEND_RSRV_LIMIT_DAY+"일 이내로 설정해주세요");
+            }
+            status = Const.MsgSendStatus.SEND_WAIT;
+        }
+
+        requestData.setRecvInfoLst(recvInfoLst);
+        Gson gson = new Gson();
+        String json = gson.toJson(requestData);
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("webReqId", requestData.getWebReqId());
+        params.put("corpId", corpId);
+        params.put("projectId", projectId);
+        params.put("apiKey", commonService.getApiKey(corpId, projectId));
+        params.put("chString", ch);
+        params.put("msgInfo", json);
+        params.put("senderCnt", recvInfoLst.size());
+        params.put("callback", requestData.getCallback());
+        params.put("campaignId", requestData.getCampaignId());
+        params.put("senderType", Const.SenderType.CHANNEL);
+        params.put("status", status);
+        params.put("resvSenderYn", rsrvSendYn);
+        params.put("reqDt", rsrvDateStr);
+
+        int resultCnt = insertCmWebMsg(params);
+        if (resultCnt <= 0) {
+            log.info("{}.insertAlimTalkCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 알림톡 발송 처리
+     * @param rtn
+     * @param fromIndex
+     * @param data
+     * @param requestData
+     * @param recvInfoLst
+     * @param reSendCdList
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    @Async
+    public void sendAlimTalkMsgAsync(RestResult<Object> rtn
+            , int fromIndex
+            , Map<String, Object> data
+            , AlimTalkRequestData requestData
+            , List<RecvInfo> recvInfoLst
+            , List<Object> reSendCdList) throws Exception {
+
+        List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
+        Map<String, Object> responseBody = null;
+        Map<String, Object> sParams = new HashMap<String, Object>(data);
+
+        String corpId = CommonUtils.getStrValue(sParams, "corpId");
+        String projectId = CommonUtils.getStrValue(sParams, "projectId");
+        String apiKey = commonService.getApiKey(corpId, projectId);
+        String jsonString = "";
+        boolean isDone = false;
+        boolean isServerError = false;
+        boolean isAllFail = true;
+
+        Gson gson = new Gson();
+        Map<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("apiKey", apiKey);
+
+        int retryCnt = NumberUtils.INTEGER_ZERO;
+        int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
+        int listSize = recvInfoLst.size();
+        int toIndex = fromIndex;
+
+        while (toIndex < listSize) {
+            isDone = false;
+            isServerError = false;
+            toIndex = fromIndex + cutSize;
+            try {
+                if(toIndex > listSize) toIndex = listSize;
+                requestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
+                jsonString = gson.toJson(requestData);
+                responseBody = apiInterface.sendMsg(ApiConfig.SEND_ALIM_TALK_API_URI, headerMap, jsonString);
+                isDone = isApiRequestAgain(responseBody, reSendCdList);
+                isAllFail = !isSendSuccess(responseBody);
+            } catch (Exception e) {
+                log.error("{}.sendAlimTalkMsgAsync API Request Error ==> {}", this.getClass(), e);
+                isServerError = true;
+            }
+
+            if(isDone) {
+                retryCnt = NumberUtils.INTEGER_ZERO;
+                fromIndex = toIndex;
+            } else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
+                errorRecvInfoLst.addAll(recvInfoLst.subList(fromIndex, toIndex));
+                retryCnt = NumberUtils.INTEGER_ZERO;
+                fromIndex = toIndex;
+            } else {
+                retryCnt++;
+                toIndex = fromIndex;
+                if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
+            }
+        }
+
+        if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
+            try {
+                //CM_MSG Insert
+                sParams.put("apiKey", apiKey);
+                sParams.put("reqCh", Const.Ch.ALIMTALK);
+                sParams.put("productCode", Const.Ch.ALIMTALK.toLowerCase());
+                sParams.put("finalCh", Const.Ch.ALIMTALK);
+                sParams.put("callback", requestData.getCallback());
+                sParams.put("webReqId", requestData.getWebReqId());
+                insertCmMsg(sParams, errorRecvInfoLst);
+            } catch (Exception e) {
+                log.error("{}.sendAlimTalkMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
+            }
+        }
+
+        //웹 발송 내역 등록
+        if(isAllFail) sParams.put("allFailYn", Const.COMM_YES);
+        insertAlimTalkCmWebMsg(rtn, sParams, requestData, recvInfoLst);
+    }
+
+    /**
+     * 알림톡 테스트 발송 처리
+     * @param data
+     * @param requestData
+     * @param sendList
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public RestResult<Object> testSendAlimTalkMsg(
+            Map<String, Object> data
+            , AlimTalkRequestData requestData
+            , List<RecvInfo> sendList) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        requestData.setWebReqId(StringUtils.EMPTY);  //테스트발송은 웹 요청 아이디를 넣지 않는다.
+        Map<String, Object> resultMap = sendAlimTalkMsg(data, requestData, sendList);
+
+        if(isSendSuccess(resultMap)) {
+            int successCnt = 0;
+            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
+            for(Map<String, Object> dataInfo : dataList) {
+                if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                    successCnt++;
+                }
+            }
+            rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
+        } else {
+            log.warn("{}.testSendAlimTalkMsg Fail ==> response : {}", this.getClass(), resultMap);
+            rtn.setFail("알림톡 테스트 발송이 실패하였습니다.");
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 알림톡 메시지 발송 처리
+     * @param data
+     * @param requestData
+     * @param sendList
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> sendAlimTalkMsg(
+            Map<String, Object> data
+            , AlimTalkRequestData requestData
+            , List<RecvInfo> sendList) throws Exception {
+
+        String corpId = CommonUtils.getStrValue(data, "corpId");
+        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String apiKey = commonService.getApiKey(corpId, projectId);
+
+        requestData.setRecvInfoLst(sendList);
+
+        Map<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("apiKey", apiKey);
+
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(requestData);
+
+        return apiInterface.sendMsg(ApiConfig.SEND_ALIM_TALK_API_URI, headerMap, jsonString);
     }
 
 }

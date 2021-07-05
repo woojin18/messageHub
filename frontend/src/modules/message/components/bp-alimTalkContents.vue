@@ -3,17 +3,32 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
-          
-          <div class="of_h">
-            <div class="float-left" style="width:20%"><h5>내용 *</h5></div>
+
+          <div v-if="emphasizeType == 'TEXT'" class="of_h consolMarginTop">
+            <div class="float-left" style="width:20%"><h5>템플릿강조제목</h5></div>
             <div class="float-right" style="width:79%">
-              <textarea class="textareaStyle height120" placeholder=""></textarea>
+              <input type="text" class="inputStyle" title="제목 입력란" :value="tmpltEmpsTitle" disabled>
             </div>
-            <p class="color5" style="margin-left:21%">광고 메시지 대체 발송 시, 080수신 거부번호가 설정되어 있지 않으면 대체 발송 실패할 수 있습니다.</p>
           </div>
+
+          <div v-if="emphasizeType == 'TEXT'" class="of_h consolMarginTop">
+            <div class="float-left" style="width:20%"><h5>템플릿강조부제목</h5></div>
+            <div class="float-right" style="width:79%">
+              <input type="text" class="inputStyle" title="제목 입력란" :value="tmpltEmpsSubTitle" disabled>
+            </div>
+          </div>
+          
+          <div class="of_h consolMarginTop">
+            <div class="float-left" style="width:20%"><h5>내용</h5></div>
+            <div class="float-right" style="width:79%">
+              <textarea class="textareaStyle height120" :value="tmpltContent" disabled></textarea>
+            </div>
+          </div>
+
           <div class="text-center mt20">
-            <a href="#" @click.prevent="fnClose" class="btnStyle2 backWhite" data-dismiss="modal" title="닫기">닫기</a>
+            <a @click="fnClose" class="btnStyle2 backWhite" title="닫기">닫기</a>
           </div>
+
         </div>
       </div>
     </div>
@@ -29,6 +44,10 @@ export default {
       require: true,
       default: false,
     },
+    sendData : {
+      type: Object,
+      require: true,
+    },
     componentsTitle: {
       type: String,
       require: false,
@@ -37,12 +56,26 @@ export default {
       }
     },
   },
+  data() {
+    return {
+      emphasizeType: '',
+      tmpltEmpsTitle : '',
+      tmpltEmpsSubTitle: '',
+      tmpltContent: '',
+    }
+  },
   watch: {
-    frndTalkContsOpen(val){
-      if(val) this.fnSetFrndTalkInfo();
+    alimTalkContsOpen(val){
+      if(val) this.fnSetAlimTalkInfo();
     }
   },
   methods: {
+    fnSetAlimTalkInfo(){
+      this.emphasizeType = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.emphasizeType, 'NONE');
+      this.tmpltEmpsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.tmpltEmpsTitle, '');
+      this.tmpltEmpsSubTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.tmpltEmpsSubTitle, '');
+      this.tmpltContent = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.tmpltContent, '');
+    },
     //팝업 닫기
     fnClose(){
       this.$emit('update:alimTalkContsOpen', false)

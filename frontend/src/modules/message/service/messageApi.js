@@ -42,6 +42,14 @@ const selectKkoSenderKeyList = (params) => {
   return httpClient.post('/uc/sendMessage/selectKkoSenderKeyList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
+const excelDownSendAlimTalkRecvTmplt = (params) => {
+  return httpClient.post('/uc/sendMessage/excelDownSendAlimTalkRecvTmplt', params, { headers: {"show-layer": "Yes", "activity":"READ"}, responseType: 'arraybuffer' })
+  .then((response) => fnExcelDownCallback(response));
+};
+const sendAlimTalkMessage = (params) => {
+  return httpClient.post('/uc/sendMessage/sendAlimTalkMessage', params, { headers: {"show-layer": "Yes", "activity":"SAVE", "Content-Type": "multipart/form-data"} });
+};
+
 
 export default {
     selectAppIdList,
@@ -55,7 +63,9 @@ export default {
     sendMmsMessage,
     excelDownSendFrndTalkRecvTmplt,
     sendFrndTalkMessage,
-    selectKkoSenderKeyList
+    selectKkoSenderKeyList,
+    excelDownSendAlimTalkRecvTmplt,
+    sendAlimTalkMessage
 };
 
 function fnExcelDownCallback(response){

@@ -23,6 +23,7 @@
                       {{templateInfo.tmpltName}}
                       <span v-if="!$gfnCommonUtils.isEmpty(templateInfo.tmpltTitle)">({{templateInfo.tmpltTitle}})</span>
                     </li>
+                    <li v-if="templateList.length == 0" class="bb-ddd pd5 text-center">검색된 내용이 없습니다.</li>
                   </ul>
                 </div>
               </div>
