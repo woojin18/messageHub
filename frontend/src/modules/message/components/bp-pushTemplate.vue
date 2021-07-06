@@ -107,18 +107,6 @@ export default {
       require: true,
       default: false,
     },
-    searchData : {
-      type: Object,
-      require: false,
-      default: function() {
-        return {
-          'searchCondi' : 'tmpltName',
-          'searchText' : '',
-          'pageNo' : 1,
-          'listSize': 999999999
-        }
-      }
-    },
     componentsTitle: {
       type: String,
       require: false,
@@ -131,10 +119,26 @@ export default {
     return {
       totCnt:0,
       templateList:[],
-      templateData:{}
+      templateData:{},
+      searchData:{
+        searchCondi: 'tmpltName',
+        searchText: '',
+        pageNo: 1,
+        listSize: 999999999
+      }
+    }
+  },
+  watch: {
+    pushTemplateOpen(val){
+      if(!val){
+        this.fnResetData();
+      }
     }
   },
   methods: {
+    fnResetData(){
+      Object.assign(this.$data, this.$options.data());
+    },
     //템플릿선택
     fnSelectTemplate(){
       if(Object.keys(this.templateData).length == 0){
@@ -177,9 +181,6 @@ export default {
     },
     //팝업 닫기
     fnClose(){
-      //데이터 초기화
-      this.templateList = [];
-      this.templateData = {};
       this.$emit('update:pushTemplateOpen', false)
     }
   }

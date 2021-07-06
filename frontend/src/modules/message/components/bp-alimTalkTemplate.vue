@@ -119,22 +119,6 @@ export default {
       require: true,
       default: false,
     },
-    searchData : {
-      type: Object,
-      require: false,
-      default: function() {
-        return {
-          useCh : 'ALIMTALK',
-          senderKeyType: 'S',
-          senderKey: '',
-          searchCondi : 'tmpltName',
-          searchText : '',
-          //searchTmpltStatCodes: ['A'],  //TODO - 승인건중에 정산건이 없다.
-          pageNo : 1,
-          listSize: 999999999
-        }
-      }
-    },
     componentsTitle: {
       type: String,
       require: false,
@@ -148,13 +132,33 @@ export default {
       totCnt:0,
       senderKeyList: [],
       templateList:[],
-      templateData:{buttonList:[]}
+      templateData:{buttonList:[]},
+      searchData:{
+        useCh : 'ALIMTALK',
+        senderKeyType: 'S',
+        senderKey: '',
+        searchCondi : 'tmpltName',
+        searchText : '',
+        //searchTmpltStatCodes: ['A'],  //TODO - 승인건중에 정산건이 없다.
+        pageNo : 1,
+        listSize: 999999999
+      }
+    }
+  },
+  watch: {
+    alimTalkTemplateOpen(val){
+      if(!val){
+        this.fnResetData();
+      }
     }
   },
   mounted() {
     this.fnSelectSenderKeyList();
   },
   methods: {
+    fnResetData(){
+      Object.assign(this.$data, this.$options.data());
+    },
     //템플릿선택
     fnSelectTemplate(){
       if(Object.keys(this.templateData).length == 0 || this.$gfnCommonUtils.isEmpty(this.templateData.tmpltCode)){
