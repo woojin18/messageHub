@@ -558,6 +558,6 @@ export default {
 
 			return chInfo;
 		}
-	},
+	}
 };
 </script>

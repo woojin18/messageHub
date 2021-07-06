@@ -78,9 +78,9 @@
 					<div class="">
 						<h4 class="lc-1 text-left">채널별 성공/실패율</h4>
 						<div class="mt20">
-							<Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle" styleProps="width:15%" :initDate="searchData.searchStartDate"></Calendar>
+							<Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle" styleProps="width:15%" :initDate="searchData.searchStartDate" disabled></Calendar>
 							<span style="padding:0 11px">~</span>
-							<Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle" styleProps="width:15%" :initDate="searchData.searchEndDate"></Calendar>
+							<Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle" styleProps="width:15%" :initDate="searchData.searchEndDate" disabled></Calendar>
 							<ul class="tab_s2 ml20">
 								<li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 서비스 검색">오늘</a></li>
 								<li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 서비스 검색">1주일</a></li>
@@ -635,10 +635,26 @@ export default {
 			this.fnSetChartData(this.fnGetChInfo());
 		},
 		fnUpdateStartDate(sltDate) {
-			this.searchData.searchStartDate = sltDate;
+			if (sltDate && this.searchData.searchEndDate) {
+				if (sltDate.replace(/[^0-9]/g, '') > this.searchData.searchEndDate.replace(/[^0-9]/g, '')) {
+					confirm.fnAlert(this.componentsTitle, '시작일은 종료일보다 클 수 없습니다.');
+					jQuery("#searchStartDate").val(this.searchData.searchStartDate);
+					return false;
+				} else {
+					this.searchData.searchStartDate = sltDate;
+				}
+			}
 		},
 		fnUpdateEndDate(sltDate) {
-			this.searchData.searchEndDate = sltDate;
+			if (this.searchData.searchStartDate && sltDate) {
+				if (this.searchData.searchStartDate.replace(/[^0-9]/g, '') > sltDate.replace(/[^0-9]/g, '')) {
+					confirm.fnAlert(this.componentsTitle, '시작일은 종료일보다 클 수 없습니다.');
+					jQuery("#searchEndDate").val(this.searchData.searchEndDate);
+					return false;
+				} else {
+					this.searchData.searchEndDate = sltDate;
+				}
+			}
 		},
 		fnPageReload() {
 			this.$router.replace('/');
@@ -663,6 +679,6 @@ export default {
 
 			return chInfo;
 		}
-	},
+	}
 };
 </script>
