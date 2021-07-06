@@ -6,7 +6,7 @@
           <h2>수신 주소록 검색</h2>
           <hr>
           <div class="of_h">
-            <select name="userConsole02_1" class="selectStyle2" style="width:28%" v-model="searchTextType">
+            <select name="userConsole02_1" class="selectStyle2 mr5" style="width:28%" v-model="searchTextType">
               <option value="cuid">APP 로그인ID</option>
               <option value="cuName">수신자 명</option>
               <option value="hpNumber">휴대폰 번호</option>

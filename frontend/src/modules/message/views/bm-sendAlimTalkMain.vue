@@ -94,7 +94,7 @@
             <a 
               href="#" 
               @click.prevent="fnOpenAlimTalkContentsPopup" 
-              :class="fnIsEmptyObj(sendData.tmpltContent) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" 
+              :class="fnIsEmptyObj(sendData.tmpltContent) ? 'btnStyle1 backLightGray mr5' : 'btnStyle1 backWhite mr5'" 
               title="메시지 내용입력"
               activity="READ"
             >내용보기</a>

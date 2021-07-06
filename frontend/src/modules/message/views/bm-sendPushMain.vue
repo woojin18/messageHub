@@ -112,7 +112,7 @@
             <h4>02  메시지 내용</h4>
           </div>
           <div style="width:76%" class="float-left">
-            <a @click="fnOpenPushContentsPopup" :class="fnIsEmpty(sendData.pushContent) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="메시지 내용입력" activity="READ">내용입력</a>
+            <a @click="fnOpenPushContentsPopup" :class="fnIsEmpty(sendData.pushContent) ? 'btnStyle1 backLightGray mr5' : 'btnStyle1 backWhite mr5'" title="메시지 내용입력" activity="READ">내용입력</a>
             <a v-if="sendData.rplcSendType!='NONE'" @click="fnOpenReplacedSenderPopup" :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="대체발송 내용입력" activity="READ">대체발송 내용입력</a>
             <div class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
