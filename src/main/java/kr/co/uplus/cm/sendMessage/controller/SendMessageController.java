@@ -795,7 +795,12 @@ public class SendMessageController {
                 BigDecimal rmAmount = sendMsgService.getRmAmount(params);
                 //개당 가격 조회
                 List<String> productCodes = new ArrayList<String>();
-                productCodes.add(Const.MsgProductCode.getType("ALIM_TALK"));
+                productCodes.add(Const.MsgProductCode.getType(Const.Ch.ALIMTALK));
+                if(params.containsKey("rplcSendType")
+                        && !CommonUtils.isEmptyValue(params, "rplcSendType")
+                        && !StringUtils.equals((CharSequence) params.get("rplcSendType"), "NONE")) {
+                    productCodes.add(Const.MsgProductCode.getType(CommonUtils.getStrValue(params, "rplcSendType")));
+                }
 
                 sParam = new HashMap<>();
                 sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));

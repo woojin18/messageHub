@@ -45,7 +45,7 @@
                   <h5 style="width:41%" class="float-left ml30">템플릿명</h5>
                   <h5 style="width:40%" class="float-right ml30 color4 word-break-all scroll-y_modal">{{templateData.tmpltName}}</h5>
                 </div>
-                <div class="of_h">
+                <div v-if="templateData.senderType == 'MMS'" class="of_h">
                   <h5 style="width:41%" class="float-left ml30">제목</h5>
                   <h5 style="width:40%" class="float-right ml30 color4 word-break-all scroll-y_modal">{{templateData.tmpltTitle}}</h5>
                 </div>
@@ -74,8 +74,7 @@
                       </div>
                     </div>
                     <div class="phoneText1">
-                      <p v-if="$gfnCommonUtils.isEmpty(templateData.tmpltContent) && (templateData.msgKind != 'A' || $gfnCommonUtils.isEmpty(templateData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
-                      <p v-else class="font-size14 color4 mt10">
+                      <p class="font-size14 color4 mt10">
                         <span v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></span>
                         <br v-if="!$gfnCommonUtils.isEmpty(templateData.tmpltContent)"/>
                         <span v-if="templateData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(templateData.rcvblcNumber)">

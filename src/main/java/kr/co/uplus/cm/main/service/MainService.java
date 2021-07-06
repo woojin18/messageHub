@@ -53,7 +53,7 @@ public class MainService {
 
         params = new HashMap<String, Object>();
         params.put("productCodes", new String[]{
-                Const.MsgProductCode.getType("ALIM_TALK")
+                Const.MsgProductCode.getType("ALIMTALK")
                 , Const.MsgProductCode.getType("FRENDTALK_TEXT")
                 , Const.MsgProductCode.getType("FRENDTALK_IMAGE")
                 , Const.MsgProductCode.getType("FRENDTALK_WIDE")});

@@ -5,7 +5,7 @@
         <div class="modal-body">
           <h2>테스트 발송</h2>
           <hr>
-          <div :class="header=='cuid' || header=='phone'? 'of_h' : 'of_h mt10'" v-for="header in headerList" :key="header">
+          <div :class="idx == 0 ? 'of_h' : 'of_h mt10'" v-for="(header, idx) in headerList" :key="header">
             <div class="inline-block float-left text-center background-color6 colorfff consolLineheight" style="width:19%">
                 * {{header=='cuid' ? 'APP 로그인ID' : (header=='phone' ? '휴대폰번호' : header)}}
             </div>

@@ -25,11 +25,10 @@
                 :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
               </div>
               <div>
-                <p v-if="sendData.msgKind != 'A' || (fnIsEmpty(sendData.pushContent) && fnIsEmpty(sendData.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
-                <p v-else class="font-size14 color4 mt10">
+                <p class="font-size14 color4 mt10">
                   <span v-html="$gfnCommonUtils.newLineToBr(sendData.pushContent)"></span>
                   <br v-if="!fnIsEmpty(sendData.pushContent)"/>
-                  {{sendData.rcvblcNumber}}
+                  {{sendData.msgKind == 'A' ? sendData.rcvblcNumber : ''}}
                 </p>
               </div>
             </div>
@@ -567,9 +566,6 @@ export default {
         }
         varNms.push($1);
       });
-
-      console.log('conts ===> ', conts);
-      console.log('varNms ===> ', varNms);
 
       if(containRsvNm){
         confirm.fnAlert(this.componentsTitle, '발송 내용 변수 cuid, phone 은 예약어로 사용하실 수 없습니다.');

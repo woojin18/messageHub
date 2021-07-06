@@ -72,11 +72,10 @@
                       :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+templateData.imgUrl+');'">
                     </div>
                     <div>
-                      <p v-if="templateData.msgKind != 'A' || (fnIsEmpty(templateData.tmpltContent) && fnIsEmpty(templateData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
-                      <p v-else class="font-size14 color4 mt10">
+                      <p class="font-size14 color4 mt10">
                         <span v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></span>
                         <br v-if="!fnIsEmpty(templateData.tmpltContent)"/>
-                        {{templateData.rcvblcNumber}}
+                        {{templateData.msgKind == 'A' ? templateData.rcvblcNumber : ''}}
                       </p>
                     </div>
                   </div>
