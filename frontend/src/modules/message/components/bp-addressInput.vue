@@ -7,7 +7,7 @@
           <hr>
           <div class="of_h">
             <select name="userConsole02_1" class="selectStyle2" style="width:28%" v-model="searchTextType">
-              <option value="cuid">APP_ID</option>
+              <option value="cuid">APP 로그인ID</option>
               <option value="cuName">수신자 명</option>
               <option value="hpNumber">휴대폰 번호</option>
             </select>
@@ -176,7 +176,6 @@ export default {
 
       this.listChkBox.forEach(function(v){
         sltCuInfo = vm.fnCmCuListGetRowById(v);
-        console.log(">>>>> sdfjlskdfjlskdjflksjdf");
         recvInfo = {phone:'',cuid:'',mergeData:{}};
 
         if(vm.requiredCuid) recvInfo.cuid = sltCuInfo.cuid;
@@ -277,6 +276,7 @@ export default {
       //주소록 그룹 put
       addrGrpList.forEach(function(o){
         addrTreeObj = Object.assign({}, o);
+        addrTreeObj.addressName = o.addressCategoryGrpName+'('+o.projectName+')'
         addrTreeList.push(Object.assign({}, addrTreeObj));
         if(addrTreeList.length != 0){
           vm.fnSetSubItems(addrCtgyList, addrTreeList[addrTreeList.length-1], 'Y');
