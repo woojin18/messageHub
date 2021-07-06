@@ -102,9 +102,9 @@
               v-if="sendData.rplcSendType!='NONE'" 
               @click="fnOpenReplacedSenderPopup" 
               :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" 
-              title="대체발송 발신번호" 
+              title="대체발송 내용입력" 
               activity="READ"
-            >대체발송 발신번호</a>
+            >대체발송 내용입력</a>
             <div class="of_h consolMarginTop">
               <div style="width:20%" class="float-left">
                 <h5 class="inline-block mr10">버튼</h5>

@@ -106,7 +106,7 @@
           </div>
           <div class="float-left" style="width:76%">
             <a @click="fnOpenFrndTalkContentsPopup" :class="this.$gfnCommonUtils.isEmpty(sendData.frndTalkContent) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="메시지 내용입력" activity="READ">내용입력</a>
-            <a v-if="sendData.rplcSendType!='NONE'" @click="fnOpenReplacedSenderPopup" :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="대체발송 발신번호" activity="READ">대체발송 발신번호</a>
+            <a v-if="sendData.rplcSendType!='NONE'" @click="fnOpenReplacedSenderPopup" :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="대체발송 내용입력" activity="READ">대체발송 내용입력</a>
             <!-- 
             <div class="of_h consolMarginTop">
               <div style="width:20%" class="float-left">
