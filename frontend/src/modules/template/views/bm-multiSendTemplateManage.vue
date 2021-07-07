@@ -2857,7 +2857,7 @@
     <div class="float-right">						
       <a @click="save()" class="btnStyle2 borderGray ml10" data-toggle="modal" title="저장" activity="SAVE">저장</a>
       <a @click="complete()" class="btnStyle2 backBlack ml10" data-toggle="modal" title="등록" activity="SAVE">등록</a>
-      <router-link :to="{ name: 'integratedTemplate' }" tag="a" class="btnStyle2 backRed ml10">취소</router-link>
+      <router-link :to="{ name: 'multiSendTemplateList' }" tag="a" class="btnStyle2 backRed ml10">취소</router-link>
     </div>
 
 
@@ -2866,7 +2866,6 @@
 </template>
 
 <script>
-import integratedTemplateApi from "@/modules/integratedTemplate/service/integratedTemplateApi.js";
 import templateApi from "@/modules/template/service/templateApi.js";
 import messageApi from "@/modules/message/service/messageApi.js";
 
@@ -3494,7 +3493,7 @@ export default {
 
     fnSelectBrandList(){
       var params = {};
-      integratedTemplateApi.selectBrandList(params).then(response =>{
+      templateApi.selectBrandList(params).then(response =>{
         var result = response.data;
         if(result.success) {
           this.brandNmList = result.data;
@@ -3578,12 +3577,12 @@ export default {
       params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
       params.useYn = this.useYn; //사용여부
       console.log("444");
-      await integratedTemplateApi.insertIntegratedTemplate(params).then(response =>{
+      await templateApi.insertIntegratedTemplate(params).then(response =>{
         var result = response.data;
         if(result.success) {
         //console.log("555");
           confirm.fnAlert(this.detailTitle, '저장 되었습니다.');
-          this.$router.push('integratedTemplate')
+          this.$router.push('multiSendTemplateList')
         } else {
         //console.log("666");
           confirm.fnAlert(this.detailTitle, result.message);
@@ -3606,11 +3605,11 @@ export default {
       params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
       params.useYn = this.useYn; //사용여부
 
-      await integratedTemplateApi.insertIntegratedTemplate(params).then(response =>{
+      await templateApi.insertIntegratedTemplate(params).then(response =>{
         var result = response.data;
         if(result.success) {
           confirm.fnAlert(this.detailTitle, '등록 되었습니다.');
-          this.$router.push('integratedTemplate');
+          this.$router.push('multiSendTemplateList');
         } else {
           confirm.fnAlert(this.detailTitle, result.message);
         }
@@ -4047,7 +4046,7 @@ export default {
     //템플릿 정보 조회
     fnSelectIntegratedTemplateInfo(){
       const params = {tmpltCode: this.tmpltCodeP};
-      integratedTemplateApi.integratedTemplateInfo(params).then(response => {
+      templateApi.integratedTemplateInfo(params).then(response => {
         const result = response.data;
         if(result.success) {
           if(result.data != null && result.data.length > 0){

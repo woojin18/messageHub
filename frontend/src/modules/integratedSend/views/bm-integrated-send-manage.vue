@@ -761,7 +761,7 @@
 
 <script>
 import integratedSendApi from "@/modules/integratedSend/service/integratedSendApi.js";
-import integratedTemplateApi from "@/modules/integratedTemplate/service/integratedTemplateApi.js";
+import integratedTemplateApi from "@/modules/template/service/templateApi.js";
 import tokenSvc from '@/common/token-service';
 import confirm from "@/modules/commonUtil/service/confirm";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";

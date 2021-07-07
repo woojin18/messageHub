@@ -21,7 +21,6 @@ import signUpRoutes from './modules/signUp/router';
 import cashRoutes from './modules/cash/router';
 import userRoutes from './modules/user/router';
 import messageStatusRoutes from './modules/messageStatus/router';
-import integratedTemplateRoutes from './modules/integratedTemplate/router';
 import addressRoutes from './modules/address/router';
 import acMyPageRoutes from './modules/myPage/router';
 import ucMyPageRoutes from './modules/ucMyPage/router';
@@ -171,7 +170,6 @@ const router = new Router({
 				...messageRoutes,
 				...templateRoutes,
 				...messageStatusRoutes,
-				...integratedTemplateRoutes,
 				...ucMyPageRoutes,
 				...integratedSendRoutes,
 				...smartTemplateRoutes,
