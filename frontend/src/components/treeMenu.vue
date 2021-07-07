@@ -1,5 +1,5 @@
 <template>
-	<div><input id="M_svcTypeCd" type="hidden" value="AC"><input id="M_roleCd" type="hidden"><input id="M_menusCd" type="hidden">
+	<div id="treeMenu"><input id="M_svcTypeCd" type="hidden" value="AC"><input id="M_roleCd" type="hidden"><input id="M_menusCd" type="hidden">
 		<!-- sidebar -->
 		<nav id="sidebar">
 			<!-- 메뉴바 접기 -->
@@ -90,9 +90,54 @@ export default {
 		}
 	},
 	mounted(){
+		this.init();
 		this.fnMenuList();
 	},
 	methods: {
+		init() {
+			//외부 영역 클릭시 닫기
+			jQuery(document).click(function (e){
+				var container = jQuery(".consoleMenu");
+				if( container.has(e.target).length === 0)
+				container.fadeOut('fast');
+			});
+			jQuery('#sidebar > dl > dt > a').click(function() {
+				event.stopPropagation();
+				jQuery('.consoleMenu').fadeToggle();
+				jQuery('#sidebar > dl > dt').removeClass('active');
+				jQuery(this).parent('li').addClass('active');
+			});
+			jQuery('.SideMenuOff').click(function() {
+				setTimeout(function()
+				{
+					jQuery('#sidebar').addClass('thum');
+					jQuery('.depth2Lnb').addClass('thum');
+					jQuery('#sidebar').css('width','70px');
+					jQuery('#sidebar > ul > li > a .navIcon').css('margin-right','0px');
+					jQuery('#sidebar > ul > li > a').css('text-align','center');
+					jQuery('#sidebar > dl > dt > a > span').hide();
+					jQuery('#sidebar > ul > li > a > span').hide();
+					jQuery('.SideMenuOff').hide();
+					jQuery('.navArrow').hide();
+					jQuery('.SideMenuOn').show();
+				}, 300);
+			});
+			jQuery('.SideMenuOn').click(function() {
+				setTimeout(function()
+				{
+					jQuery('#sidebar').removeClass('thum');
+					jQuery('.depth2Lnb').removeClass('thum');
+					jQuery('#sidebar').css('width','230px');
+					jQuery('#sidebar > ul > li > a .navIcon').css('margin-right','10px');
+					jQuery('#sidebar > ul > li > a').css('text-align','left');
+					jQuery('#sidebar > dl > dt > a > span').show();
+					jQuery('#sidebar > ul > li > a > span').show();
+					jQuery('.SideMenuOn').hide();
+					jQuery('.navArrow').show();
+					jQuery('.SideMenuOff').show();		
+				}, 300);
+			});		
+		},
 		fnMenuList() {
 			var roleCd = tokenSvc.getToken().principal.role;
 			jQuery('#M_roleCd').val(roleCd);

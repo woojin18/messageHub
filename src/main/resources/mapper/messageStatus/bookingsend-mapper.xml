@@ -33,7 +33,7 @@
 		      , A.WEB_REQ_ID
 		      , A.CH_STRING
 			   , A.SENDER_TYPE
-			   , CASE WHEN A.SENDER_TYPE = 'C' THEN '개별방송'
+			   , CASE WHEN A.SENDER_TYPE = 'C' THEN '개별발송'
 		        WHEN A.SENDER_TYPE = 'M' THEN '통합발송'
 		        WHEN A.SENDER_TYPE = 'S' THEN '스마트발송'
 		        END AS SENDER_TYPE_NM /*발송타입명*/

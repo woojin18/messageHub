@@ -9,99 +9,106 @@ import kr.co.uplus.cm.common.consts.ResultCode;
 import kr.co.uplus.cm.utils.CommonUtils;
 
 public class RestResult<T> implements IResult<ResultCode, T> {
-    protected boolean success = true;
-    protected ResultCode code;
-    protected String message;
-    protected T data;
-    protected Map<String, Object> pageInfo;
+	protected boolean success = true;
+	protected ResultCode code;
+	protected String message;
+	protected T data;
+	protected Map<String, Object> pageInfo;
 
-    public RestResult() {
-    }
-    public RestResult(boolean success) {
-        this.success = success;
-    }
-    public boolean isSuccess() {
-        return success;
-    }
-    public RestResult<T> setSuccess(boolean success) {
-        this.success = success;
-        return this;
-    }
-    public ResultCode getCode() {
-        return code;
-    }
-    public RestResult<T> setCode(ResultCode code) {
-        this.code = code;
-        return this;
-    }
-    public String getMessage() {
-        return message;
-    }
-    public RestResult<T> setMessage(String message) {
-        this.message = message;
-        return this;
-    }
-    public T getData() {
-        return data;
-    }
-    public RestResult<T> setData(T data) {
-        this.data = data;
-        return this;
-    }
-    public Map<String, Object> getPageInfo() {
-        return pageInfo;
-    }
-    public void setPageInfo(Map<String, Object> pageInfo) {
-        this.pageInfo = pageInfo;
-    }
-    /**
-     * 페이징 구성요성 return
-     * @param params
-     * @return  {
-     *      pagingYn-페이징여부
-     *      pageNo-페이지번호
-     *      listSize-페이지당 리스트노출 수
-     *      offset-시작점
-     * }
-     * @throws Exception
-     */
-    public Map<String, Object> setPageProps(Map<String, Object> params) throws Exception {
-        Map<String, Object> pageInfo = new HashMap<String, Object>();
-        Integer pageNo = null;
-        Integer listSize = null;
+	public RestResult() {
+	}
 
-        if(params != null) {
-            if(params.containsKey("pageNo")
-                    && StringUtils.isNotBlank(CommonUtils.getString(params.get("pageNo")))) {
-                pageNo = CommonUtils.getInt(params.get("pageNo"));
-            }
-            if(params.containsKey("listSize")
-                    && StringUtils.isNotBlank(CommonUtils.getString(params.get("listSize")))) {
-                listSize = CommonUtils.getInt(params.get("listSize"));
-            }
-            if(pageNo != null && listSize != null && pageNo > 0 && listSize > 0) {
-                pageInfo.put("pageNo", pageNo);
-                pageInfo.put("listSize", listSize);
-                pageInfo.put("pagingYn", "Y");
-                pageInfo.put("offset", (pageNo-1)*listSize);
-            }
-        }
-        this.setPageInfo(pageInfo);
-        params.putAll(pageInfo);
+	public RestResult(boolean success) {
+		this.success = success;
+	}
 
-        return pageInfo;
-    }
+	public boolean isSuccess() {
+		return success;
+	}
 
-    public RestResult<T> setFail() {
-        this.success = false;
-        this.message = "시스템 오류입니다. 잠시후 다시시도해주세요.";
-        return this;
-    }
+	public RestResult<T> setSuccess(boolean success) {
+		this.success = success;
+		return this;
+	}
 
-    public RestResult<T> setFail(String failMsg) {
-        this.success = false;
-        this.message = failMsg;
-        return this;
-    }
+	public ResultCode getCode() {
+		return code;
+	}
+
+	public RestResult<T> setCode(ResultCode code) {
+		this.code = code;
+		return this;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public RestResult<T> setMessage(String message) {
+		this.message = message;
+		return this;
+	}
+
+	public T getData() {
+		return data;
+	}
+
+	public RestResult<T> setData(T data) {
+		this.data = data;
+		return this;
+	}
+
+	public Map<String, Object> getPageInfo() {
+		return pageInfo;
+	}
+
+	public void setPageInfo(Map<String, Object> pageInfo) {
+		this.pageInfo = pageInfo;
+	}
+
+	/**
+	 * 페이징 구성요성 return
+	 * 
+	 * @param params
+	 * @return { pagingYn-페이징여부 pageNo-페이지번호 listSize-페이지당 리스트노출 수 offset-시작점 }
+	 * @throws Exception
+	 */
+	public Map<String, Object> setPageProps(Map<String, Object> params) throws Exception {
+		Map<String, Object> pageInfo = new HashMap<String, Object>();
+		Integer pageNo = null;
+		Integer listSize = null;
+
+		if (params != null) {
+			if (params.containsKey("pageNo") && StringUtils.isNotBlank(CommonUtils.getString(params.get("pageNo")))) {
+				pageNo = CommonUtils.getInt(params.get("pageNo"));
+			}
+			if (params.containsKey("listSize")
+					&& StringUtils.isNotBlank(CommonUtils.getString(params.get("listSize")))) {
+				listSize = CommonUtils.getInt(params.get("listSize"));
+			}
+			if (pageNo != null && listSize != null && pageNo > 0 && listSize > 0) {
+				pageInfo.put("pageNo", pageNo);
+				pageInfo.put("listSize", listSize);
+				pageInfo.put("pagingYn", "Y");
+				pageInfo.put("offset", (pageNo - 1) * listSize);
+			}
+		}
+		this.setPageInfo(pageInfo);
+		params.putAll(pageInfo);
+
+		return pageInfo;
+	}
+
+	public RestResult<T> setFail() {
+		this.success = false;
+		this.message = "시스템 오류입니다. 잠시후 다시시도해주세요.";
+		return this;
+	}
+
+	public RestResult<T> setFail(String failMsg) {
+		this.success = false;
+		this.message = failMsg;
+		return this;
+	}
 
 }

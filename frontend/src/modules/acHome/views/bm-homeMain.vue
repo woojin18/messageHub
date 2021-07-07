@@ -29,7 +29,7 @@
 								<tbody>
 									<tr v-for="(pjt, idx) in projects" :key="pjt.projectId">
 										<td class="text-left">
-											<router-link :to="{name: 'projectMain', params: { projectId: pjt.projectId, projectName: pjt.projectName }}">{{pjt.projectName}}</router-link>
+											<router-link :to="{name: 'projectMain', params: { projectId: pjt.projectId, projectName: pjt.projectName }}"><u>{{pjt.projectName}}</u></router-link>
 										</td>
 										<td class="text-center">{{pjt.payTypeCdName}}</td>
 										<td class="text-left">{{pjt.useService}}</td>
@@ -62,7 +62,7 @@
 											<span v-if="ntc.noticeType == 'INFO'" class="Information">{{ntc.noticeTypeCdName}}</span>
 											<span v-else-if="ntc.noticeType == 'INSPEC'" class="Inspect">{{ntc.noticeTypeCdName}}</span>
 											<span v-else-if="ntc.noticeType == 'FAULT'" class="Fault">{{ntc.noticeTypeCdName}}</span>
-											<a @click.prevent="fnOpenNoticePopupModal(ntc.noticeId)" title="해당 게시글이 열립니다">{{ntc.title}}</a>
+											<a @click.prevent="fnOpenNoticePopupModal(ntc.noticeId)" title="해당 게시글이 열립니다"><u>{{ntc.title}}</u></a>
 										</td>
 										<td class="text-center end">{{ntc.regDtYmd}}</td>
 									</tr>
@@ -658,7 +658,7 @@ export default {
 		},
 		fnPageReload() {
 			this.$router.replace('/');
-			this.$nextTick(() => this.$router.replace("/home"));
+			this.$nextTick(() => this.$router.replace("/ac/home"));
 		},
 		fnGetChInfo() {
 			var chInfo = '';

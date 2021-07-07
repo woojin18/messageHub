@@ -61,7 +61,7 @@
 											<span v-if="ntc.noticeType == 'INFO'" class="Information">{{ntc.noticeTypeCdName}}</span>
 											<span v-else-if="ntc.noticeType == 'INSPEC'" class="Inspect">{{ntc.noticeTypeCdName}}</span>
 											<span v-else-if="ntc.noticeType == 'FAULT'" class="Fault">{{ntc.noticeTypeCdName}}</span>
-											<a @click.prevent="fnOpenNoticePopupModal(ntc.noticeId)" title="해당 게시글이 열립니다">{{ntc.title}}</a>
+											<a @click.prevent="fnOpenNoticePopupModal(ntc.noticeId)" title="해당 게시글이 열립니다"><u>{{ntc.title}}</u></a>
 										</td>
 										<td class="text-center end">{{ntc.regDtYmd}}</td>
 									</tr>
@@ -537,7 +537,7 @@ export default {
 		},
 		fnPageReload() {
 			this.$router.replace('/');
-			this.$nextTick(() => this.$router.replace("/home"));
+			this.$nextTick(() => this.$router.replace("/uc/home"));
 		},
 		fnGetChInfo() {
 			var chInfo = '';
