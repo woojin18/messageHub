@@ -1,6 +1,5 @@
 <template>
 	<div id="treeMenu"><input id="M_svcTypeCd" type="hidden" value="AC"><input id="M_roleCd" type="hidden"><input id="M_menusCd" type="hidden">
-		<!-- sidebar -->
 		<nav id="sidebar">
 			<!-- 메뉴바 접기 -->
 			<a href="#" class="sideMenu" title="사이드메뉴 축소/확대">
@@ -57,6 +56,7 @@
 		<!-- //sidebar --> 
 	</div>
 </template>
+
 <script>
 import api from '@/modules/login/service/api';
 import * as utils from '@/common/utils';
