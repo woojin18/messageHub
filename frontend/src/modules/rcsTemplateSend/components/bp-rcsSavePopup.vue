@@ -34,10 +34,10 @@ export default {
   },
   props : {
         rcsSavePopOpen: {
-            type: Boolean,
-            require: true,
-            default: false,
-        },
+          type: Boolean,
+          require: true,
+          default: false,
+        }
   },
   data() {
     return {
@@ -54,7 +54,6 @@ export default {
     // 팝업 닫기
     fnClose(){
         this.saveContent = "";
-        JQuery("#save").model("hide");
     },
 
   }

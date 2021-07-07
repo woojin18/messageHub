@@ -60,7 +60,10 @@
                                     </div>
                                     <div v-if="templateRadioBtn=='cell'" class="of_h">
                                         <h5 style="width:22%" class="float-left ml30 font-size14 color000">내용</h5>
-                                        <h5 style="width:59%" class="float-right color4 word-break-all"></h5>
+                                        <div v-for="n in styleContentCnt" class="of_h consolMarginTop">
+											<p class="lc-1 inline-block">{{styleInput[n-1]}}</p>
+											<p class="lc-1 inline-block float-right">{{styleInputSec[n-1]}}</p>
+										</div>
                                     </div>
                                     <div v-for="n in btnCnt" class="of_h">
                                         <h5 style="width:22%" class="float-left ml30 font-size14 color000">버튼{{n}}</h5>
@@ -74,9 +77,15 @@
                                         <div class="phoneTextWrap">
                                             <div v-if="templateRadioBtn=='des'" class="phoneText1 scroll-y2">
                                                 <p>{{desContent}}</p>
+                                                <p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
                                             </div>
                                             <div v-if="templateRadioBtn=='cell'" class="phoneText1 scroll-y2">
-                                                <p></p>
+                                                <div v-for="n in styleContentCnt" class="of_h consolMarginTop">
+                                                    <p>{{styleInput[n-1]}}</p>
+                                                    <p class="float-right">{{styleInputSec[n-1]}}</p>
+                                                    <hr v-if="styleChk[n-1]">
+                                                </div>
+                                                <p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -163,9 +172,15 @@ export default {
 
         rcsTemplateSendApi.rcsTemplateSearch(params).then(response => {
             var result = response.data;
-            vm.messagebaseId = result.data[0].MESSAGEBASE_ID;
-            vm.messagebaseArr = result.data;
-            vm.msgCnt = result.data.length;
+            if(result.data.length == 0) {
+                vm.messagebaseId = "";
+                vm.messagebaseArr = [];
+                vm.msgCnt = result.data.length;
+            } else {
+                vm.messagebaseId = result.data[0].MESSAGEBASE_ID;
+                vm.messagebaseArr = result.data;
+                vm.msgCnt = result.data.length;
+            }    
 
             // 조회된 템플릿이 없는경우 messagebaseId 빈칸처리
             if(vm.msgCnt==0) {
@@ -194,6 +209,15 @@ export default {
                     vm.formNm = data.formNm;
                     vm.desContent = data.textContents;
 
+
+                    // input 세팅 (cell)
+                    if(vm.templateRadioBtn == 'cell') {
+                        vm.styleContentCnt = data.styleContentCnt;
+                        vm.styleArr = data.styleArr;
+                        vm.styleInput = data.styleInput;
+                        vm.styleInputSec = data.styleInputSec;
+                        vm.styleChk = data.styleChk;
+                    }
                     // 버튼 세팅
                     vm.btnCnt = data.btnCnt;
                     vm.selectBtn = data.selectBtn;
@@ -202,25 +226,61 @@ export default {
                 }
                
             });
+        } else {
+            vm.tmpltName = "";
+            vm.tmpltId = "";
+            vm.formNm = "";
+            vm.desContent = "";
+            vm.btnCnt = 0;
+            vm.selectBtn = [];
+            vm.btnNm = [];
         }
     },
 
     //팝업 닫기
     fnClose(){
       //데이터 초기화
-      //this.templateList = [];
-      //this.templateData = {};
-      JQuery("#templatePop").modal("hide");
+        this.brandId = "",              // 브랜드 ID
+        this.brandArr = [],             // 브랜드 Arr
+        this.messagebaseId = "",        // 템플릿 ID
+        this.messagebaseArr = [],       // 템플릿 Arr
+        this.msgCnt = 0,                // 템플릿 개수
+        this.tmpltNm = "",              // 조회조건 템플릿 검색
+        this.tmpltName = "",            // 템플릿 명 View
+        this.tmpltId = "",              // 템플릿 ID
+        this.formNm = "",               // 유형
+        this.desContent = "",           // 서술형 내용
+        this.styleContentCnt = 0,		// 스타일형 inputLine count
+		this.styleArr = [],			    // 스타일형 inputLine input count
+		this.styleInput = [],			// 스타일형 첫 input
+		this.styleInputSec = [],		// 스타일형 두번째 input
+		this.styleChk = [],	            // 스타일형 lineChk
+        this.btnCnt = 0,			    // 버튼 개수
+        this.selectBtn = [],		    // selectBox
+		this.btnNm = []			        // 버튼 이름   
+
     },
 
     // 템플릿 선택
     fnTemplateChoice() {
         var vm = this;
         var messagebaseId = vm.messagebaseId;
+        var data = new Object();
+        data.radioBtn = vm.templateRadioBtn;
+        data.messagebaseId = vm.messagebaseId;
+        data.formNm = vm.formNm;
+        data.desContent = vm.desContent;
+        data.styleContentCnt = vm.styleContentCnt;
+        data.styleInput = vm.styleInput;
+        data.styleInputSec = vm.styleInputSec;
+        data.styleChk = vm.styleChk;
+        data.btnCnt = vm.btnCnt;
+        data.btnNm = vm.btnNm;
+        
         if(messagebaseId == "") {
             confirm.fnAlert("템플릿을 선택해주세요.","");
         } else {
-            vm.$emit('fnResult', messagebaseId);
+            vm.$emit('fnResult', data);
             vm.fnClose();
         }
     }
