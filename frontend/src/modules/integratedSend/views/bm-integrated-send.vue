@@ -1,8 +1,8 @@
 <template>
 <div class="row row-no-margin">
   <div class="contentHeader">
-      <h2> > 통합발송</h2>
-      <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="메시지 상세조회 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+      <h2>통합발송</h2>
+      <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="메시지 상세조회 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
   </div>
   <!-- 본문 -->
   <div class="row">
@@ -16,7 +16,7 @@
                 <option value="templateName">템플릿명</option>
                 <option value="templateChannel">템플릿채널</option>
             </select>
-            <input type="text" class="inputStyle vertical-top ml10" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="">
+            <input type="text" class="inputStyle vertical-top ml10" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="" @keypress.enter="fnSearch">
           </div>
         </div>
         <div class="of_h consolMarginTop">
@@ -52,7 +52,7 @@
       <!-- 15개씩 보기 -->
       <div class="of_h inline">
         <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
-          <SelectLayer @fnSelected="fnSelected"></SelectLayer>
+          <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
         </div>
       </div>
       <!-- //15개씩 보기 -->
@@ -62,43 +62,43 @@
           <!-- table -->
           <table class="table_skin1 bt-000 tbl-striped">
             <colgroup>
-				<col style="width:3%">
-				<col style="width:3%">
-				<col>
-				<col style="width:10%">
-				<col style="width:20%">
-				<col style="width:8%">
-				<col style="width:8%">
-				<col style="width:10%">
-				<col style="width:12%">
-				<col style="width:12%">
-			</colgroup>
-			<thead>
-				<tr>
-				<th class="text-center lc-1"></th>
-				<th class="text-center lc-1">No.</th>
-				<th class="text-center lc-1">템플릿 ID</th>
-				<th class="text-center lc-1">템플릿명</th>
-				<th class="text-center lc-1">템플릿 채널</th>
-				<th class="text-center lc-1">템플릿유형</th>
-				<th class="text-center lc-1">메시지 타입</th>
-				<th class="text-center lc-1">템플릿 구분</th>
-				<th class="text-center lc-1">등록자</th>
-				<th class="text-center lc-1 end">등록일자</th>
-				</tr>
-			</thead>
+              <col style="width:3%">
+              <col style="width:3%">
+              <col>
+              <col style="width:10%">
+              <col style="width:20%">
+              <col style="width:8%">
+              <col style="width:8%">
+              <col style="width:10%">
+              <col style="width:12%">
+              <col style="width:12%">
+            </colgroup>
+            <thead>
+              <tr>
+              <th class="text-center lc-1"></th>
+              <th class="text-center lc-1">No.</th>
+              <th class="text-center lc-1">템플릿 ID</th>
+              <th class="text-center lc-1">템플릿명</th>
+              <th class="text-center lc-1">템플릿 채널</th>
+              <th class="text-center lc-1">템플릿유형</th>
+              <th class="text-center lc-1">메시지 타입</th>
+              <th class="text-center lc-1">템플릿 구분</th>
+              <th class="text-center lc-1">등록자</th>
+              <th class="text-center lc-1 end">등록일자</th>
+              </tr>
+            </thead>
             <tbody>
               <tr v-for="(data, idx) in datas" :key="data.row_num">
-              	<td class="text-center"><input type="radio" :id="'listCheck_'+idx" class="radioStyle" :value="data.tmpltCode" v-model="chkBox"> 
+                <td class="text-center"><input type="radio" :id="'listCheck_'+idx" class="radioStyle" :value="data.tmpltCode" v-model="chkBox"> 
                 <label :for="'listCheck_'+idx"></label></td>
                 <td>{{ idx + 1 }}</td>
                 <td class="text-center"><router-link :to="{ name: 'integratedSendManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link> </td>
                 <td class="text-center">{{data.tmpltTitle}}</td>
                 <td class="text-center">{{data.tmpltChannel}}</td>
-                <td class="text-center">{{data.msgKind}}</td>
-                <td class="text-center">{{data.msgType}}</td>
+                <td class="text-center">{{data.msgKindName}}</td>
+                <td class="text-center">{{data.msgTypeName}}</td>
                 <td class="text-center">{{data.otherProjectUseYn}}</td>
-                <td class="text-center">{{data.regId}}</td>
+                <td class="text-center">{{data.regNm}}</td>
                 <td class="text-center end">{{data.regDt}}</td>
               </tr>
               <tr v-if="datas.length == 0">
@@ -107,7 +107,7 @@
             </tbody>
           </table>
           <!-- //table -->
-        </div>                  
+        </div>
       </div>
     </div>
   </div>
@@ -190,7 +190,7 @@ export default {
 
     //통합 전송 화면으로 이동  
     async fnProcSmartSend(){
-    	//console.log("this.chkBox : "+this.chkBox);
+      //console.log("this.chkBox : "+this.chkBox);
       if(this.chkBox == null || this.chkBox == ''){
         confirm.fnAlert(this.componentsTitle, '전송할 항목을 선택해주세요.');
         return;

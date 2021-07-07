@@ -226,7 +226,7 @@
 		</if>
 		ORDER BY DIS_ORDER
 	</select>
-	
+
 	<select id="selectCodeVal1ByCodeName1" resultType="string">
 	/* common.selectCodeValByCodeName */
 		SELECT	CODE_VAL_1
@@ -246,9 +246,20 @@
             AND RELAY = #{relay}
     </select>
 
+    <select id="selectUseChGrpInfo" parameterType="hashmap" resultType="string">
+    /* common.selectUseChGrpInfo - 사용 채널 그룹 정보 조회 */
+        SELECT CP.USE_CH_GRP_INFO
+        FROM cm_console.CM_PROJECT CP
+        WHERE CP.CORP_ID = #{corpId}
+            AND CP.PROJECT_ID = #{projectId}
+            AND CP.USE_YN = 'Y'
+            AND CP.DEL_YN = 'N'
+        LIMIT 1
+    </select>
+
 	<insert id="insertFileInfo" >
 		/* common.insertFileInfo */
-		INSERT	cm_bo.CM_ATTACH_FILE 
+		INSERT	cm_bo.CM_ATTACH_FILE
 		(
 			FILE_ID
 		,	ATTACH_FILE_NAME

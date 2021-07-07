@@ -7,10 +7,17 @@
         <!-- AND A.CORP_ID = #{corpId} -->
         AND A.TMPLT_STATUS = 'COMPLETE'
         AND A.TMPLT_TYPE = 'M'
-		AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
+        AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
+        AND JSON_CONTAINS(JSON_ARRAY(<foreach collection="useChGrps" item="item" separator=",">#{item}</foreach>), JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType'), '$') > 0
         <if test="searchText != '' and searchText != null ">
-            AND A.TMPLT_TITLE = CONCAT('%', #{searchText}, '%')
+            <if test="searchCondi == 'templateChannel' ">
+            AND UPPER(A.TMPLT_INFO ->> '$[0].chTypeList') LIKE CONCAT('%', UPPER(#{searchText}), '%')
+            </if>
+            <if test="searchCondi == 'templateName' ">
+            AND A.TMPLT_TITLE LIKE CONCAT('%', #{searchText}, '%')
+            </if>
         </if>
+
         <if test="searchStartDate != '' and searchStartDate != null ">
             <if test="searchEndDate != '' and searchEndDate != null ">
             AND A.REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
@@ -36,20 +43,21 @@
 		        END AS otherProjectUseYn
 		      , A.TMPLT_CODE
 		      , A.MSG_KIND
-		      , C.CODE_NAME_1 AS MSG_KIND_NAME
+		      , cm_console.fnc_get_cd_name('MSG_KIND', A.MSG_KIND, 1) AS MSG_KIND_NAME
 		      , A.MSG_TYPE
-		      , D.CODE_NAME_1 AS MSG_TYPE_NAME
+		      , cm_console.fnc_get_cd_name('MSG_TYPE', A.MSG_TYPE, 1) AS MSG_TYPE_NAME
 		      , A.TMPLT_TITLE
 		      , A.TMPLT_INFO
 		      , A.TMPLT_TYPE
 		      , A.USE_YN
-		      , A.TMPLT_INFO ->> '$[0].chTypeList' AS TMPLT_CHANNEL
+ 		      <!-- , A.TMPLT_INFO ->> '$[0].chTypeList' AS TMPLT_CHANNEL -->
+		      , REPLACE(A.TMPLT_INFO ->> '$[0].chTypeList', 'SMSMMS', 'SMS/MMS') AS TMPLT_CHANNEL
 		      , JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType') CHECKED_CHANNEL
 		      , A.REG_ID
+		      , cm_console.fnc_get_user_name(A.REG_ID) AS REG_NM
 		      , A.REG_DT
-		FROM cm.CM_SMART_TMPLT A LEFT OUTER JOIN cm_bo.CM_CODE C ON A.MSG_KIND = C.CODE_VAL_1 AND C.CODE_TYPE_CD = 'MSG_KIND'
-		                         LEFT OUTER JOIN cm_bo.CM_CODE D ON A.MSG_TYPE = D.CODE_VAL_1 AND D.CODE_TYPE_CD = 'MSG_TYPE'
-		   , (SELECT @rownum:=0) TMP
+		FROM (SELECT @rownum:=0) TMP,
+            cm.CM_SMART_TMPLT A
 		WHERE 1=1
 		<include refid="whereSelectIntegratedSendList"/>
 		ORDER BY A.REG_DT DESC

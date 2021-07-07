@@ -16,6 +16,7 @@ public class DB {
 	public final static String QRY_SELECT_RELAY_SVC_ID = "common.selectRelaySvcId";
 	public final static String QRY_SELECT_CODEVAL1_BY_CODENAME1 = "common.selectCodeVal1ByCodeName1";
 	public final static String QRY_INSERT_FILE_INFO = "common.insertFileInfo";
+	public final static String QRY_SELECT_USE_CH_GRP_INFO = "common.selectUseChGrpInfo";
 
 	// 메인
 	public final static String QRY_SELECT_PRD_UNIT_INFO_LIST = "main.selectPrdUnitInfoList";

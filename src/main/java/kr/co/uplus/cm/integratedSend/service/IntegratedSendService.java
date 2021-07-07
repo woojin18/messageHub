@@ -6,7 +6,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,8 +20,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -38,10 +35,8 @@ import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
-import kr.co.uplus.cm.sendMessage.dto.FbInfo;
-import kr.co.uplus.cm.sendMessage.dto.PushMsg;
-import kr.co.uplus.cm.sendMessage.dto.SmartRequestData;
 import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
+import kr.co.uplus.cm.sendMessage.dto.SmartRequestData;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.DateUtil;
@@ -64,12 +59,12 @@ public class IntegratedSendService {
 
 	@Autowired
 	private GeneralDao generalDao;
-	
+
     @Autowired
     private CommonService commonService;
 
     @Autowired
-    ApiInterface apiInterface;	
+    ApiInterface apiInterface;
 
 	/**
      * 통합 템플릿 리스트 조회
@@ -77,9 +72,34 @@ public class IntegratedSendService {
      * @return
      * @throws Exception
      */
+    @SuppressWarnings("unchecked")
     public RestResult<Object> selectIntegratedSendList(Map<String, Object> params) throws Exception {
 
         RestResult<Object> rtn = new RestResult<Object>();
+
+        //사용 채널 그룹 정보 조회
+        String useChGrpInfoStr = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_USE_CH_GRP_INFO, params));
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> useChGrpInfo = mapper.readValue(useChGrpInfoStr, Map.class);
+        List<String> useChGrps = new ArrayList<String>();
+
+        if(useChGrpInfo != null) {
+            for(String key : useChGrpInfo.keySet()) {
+                if(StringUtils.equals(useChGrpInfo.get(key), Const.COMM_YES)) {
+                    if(StringUtils.equals(key, Const.ChGrp.SMSMMS)) {
+                        useChGrps.add(Const.Ch.SMS);
+                        useChGrps.add(Const.Ch.MMS);
+                    }else if(StringUtils.equals(key, Const.ChGrp.KKO)) {
+                        useChGrps.add(Const.Ch.FRIENDTALK);
+                        useChGrps.add(Const.Ch.ALIMTALK);
+                    } else {
+                        useChGrps.add(key);
+                    }
+                }
+            }
+        }
+        params.put("useChGrps", useChGrps);
+        log.info("params ===> ", params);
 
         if(params.containsKey("pageNo")
                 && CommonUtils.isNotEmptyObject(params.get("pageNo"))
@@ -99,7 +119,7 @@ public class IntegratedSendService {
         return rtn;
     }
 
-    
+
 	/**
      * 통합 템플릿 정보 조회
      * @param params
@@ -111,13 +131,13 @@ public class IntegratedSendService {
         RestResult<Object> rtn = new RestResult<Object>();
 
         List<Object> rtnList = generalDao.selectGernalList("integratedSend.selectIntegratedSendDetail", params);
-        
+
         rtn.setData(rtnList);
 
         return rtn;
     }
-    
-    
+
+
 
     /**
      * 통합 발송 데이터 유효성 체크
@@ -136,7 +156,7 @@ public class IntegratedSendService {
 
         //부서코드
         //smartRequestData.setDeptCode(CommonUtils.getStrValue(params, "campaignId"));
-        
+
         String webReqId = CommonUtils.getCommonId(Const.WebReqIdPrefix.ITG_PREFIX, 5);
 
         //webReqId
@@ -193,8 +213,8 @@ public class IntegratedSendService {
 
         return smartRequestData;
     }
-    
-    
+
+
     /**
      * Get 수신자 리스트
      * @return
@@ -270,7 +290,7 @@ public class IntegratedSendService {
         return recvInfoLst;
     }
 
-    
+
     /**
      * 웹 발송 내역 등록
      * @param data
@@ -283,7 +303,7 @@ public class IntegratedSendService {
             , Map<String, Object> data
             , SmartRequestData smartRequestData
             , List<RecvInfo> recvInfoLst) throws Exception {
-//System.out.println("integratedSendService insertIntegratedCmWebMsg 010");    	
+//System.out.println("integratedSendService insertIntegratedCmWebMsg 010");
         String ch = CommonUtils.getStrValue(data, "chTypeList");
         String corpId = CommonUtils.getStrValue(data, "corpId");
         String projectId = CommonUtils.getStrValue(data, "projectId");
@@ -459,9 +479,9 @@ public class IntegratedSendService {
             }
         }
         return isSuccess;
-    }    
+    }
 
-    
+
     /**
      * 채널별 메시지 내역 등록
      * @throws Exception
@@ -604,8 +624,8 @@ public class IntegratedSendService {
         insertIntegratedCmWebMsg(rtn, sParams, smartRequestData, recvInfoLst);
     }
 
-    
-    
+
+
     /**
      * 결제방식 조회
      * @param Param
@@ -672,5 +692,5 @@ public class IntegratedSendService {
         return (BigDecimal) selectObject;
     }
 
-    
+
 }
