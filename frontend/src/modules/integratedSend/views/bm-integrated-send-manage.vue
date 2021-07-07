@@ -13,10 +13,25 @@
 				<!-- PUSH -->
 		          <div v-if="channelType == 'PUSH'" class="phoneWrap">
 		            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-		            <div class="phoneTextWrap">
-						<div class="phoneText1 scroll-y2">
-							<pre>{{rowData.pushContent}}</pre>
+		            <div class="phoneTextWrap scroll-y">
+						<div class="phoneText1">
+              <p v-if="fnIsEmpty(rowData.pushTitle)">제목</p>
+              <p v-else>{{rowData.pushTitle}}</p>
 						</div>		            
+            <div v-if="rowData.msgType == 'IMAGE' && fnIsEmpty(rowData.pushImgInfo.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
+              <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
+              <p class="font-size14 color3 mt15">이미지 영역</p>
+            </div>
+            <div v-if="rowData.msgType == 'IMAGE' && !fnIsEmpty(rowData.pushImgInfo.imgUrl)" class="phoneText2 mt10 text-center"
+              :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.pushImgInfo.imgUrl+');'">
+            </div>
+            <div>
+              <p class="font-size14 color4 mt10">
+                <span v-html="$gfnCommonUtils.newLineToBr(rowData.pushContent)"></span>
+                <br v-if="!fnIsEmpty(rowData.pushContent)"/>
+                <span v-html="rowData.msgKind == 'A' ? rowData.pushHowToDenyReceipt : ''"></span>
+              </p>
+            </div>
 <!--
 		              <div class="phoneText1">
 		                <p v-if="this.$gfnCommonUtils.isEmpty(rowData.pushTitle)">제목</p>
@@ -41,9 +56,12 @@
 		        <!-- SMS -->
 		          <div v-if="channelType == 'SMSMMS' && previewMessageType == 'SMS'" class="phoneWrap">
 		            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-					<div class="phoneTextWrap">
-						<div class="phoneText1 scroll-y2">
-							<pre>{{rowData.smsContent}}</pre>
+					<div class="phoneTextWrap scroll-y">
+						<div class="phoneText1">
+              <p class="font-size14 color4 mt10">
+                <span v-html="$gfnCommonUtils.newLineToBr(rowData.smsContent)"></span>
+              </p>
+							<!-- <pre>11{{rowData.smsContent}}22</pre> -->
 						</div>
 					</div>
 		          </div>
@@ -52,9 +70,22 @@
 		        <!-- MMS -->
 		          <div v-if="channelType == 'SMSMMS' && previewMessageType == 'MMS'" class="phoneWrap">
 		            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-					<div class="phoneTextWrap">
-						<div class="phoneText1 scroll-y4">
-							<pre>{{rowData.smsContent}}</pre>
+					<div class="phoneTextWrap scroll-y4">
+            <div class="phoneText2 mb10">
+              <p v-if="$gfnCommonUtils.isEmpty(rowData.smsTitle)">메시지 제목</p>
+              <p v-else>{{rowData.smsTitle}}</p>
+            </div>
+            <div>
+              <div v-for="(imgInfo, idx) in rowData.smsImgInfoList" 
+                :key="idx" 
+                class="phoneText2 mt10 text-center"
+                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+imgInfo.imgUrl+');'">
+              </div>
+            </div>
+						<div class="phoneText1">
+							<p class="font-size14 color4 mt10">
+                <span v-html="$gfnCommonUtils.newLineToBr(rowData.smsContent)"></span>
+              </p>
 						</div>
 					</div>
 		          </div>
@@ -1080,6 +1111,7 @@ export default {
       integratedTemplateApi.integratedTemplateInfo(params).then(response => {
         const result = response.data;
         if(result.success) {
+          console.log('result ===> ', result);
           if(result.data != null && result.data.length > 0){
           
           	let rtnData = result.data[0];
@@ -1323,6 +1355,10 @@ export default {
             this.rowData.smsCallback = rtnData.smsCallback;
             
            }
+
+           console.log('this.rowData ===> ', this.rowData);
+
+
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
           //this.rowData = {imgUrl:'', buttonList:[]};
@@ -1690,6 +1726,11 @@ export default {
       var text = "("+val.length+" / "+len+")";
       if(tid) jQuery(tid).html(text);
     },
+    //빈값확인
+    fnIsEmpty(str){
+      if(str) return false;
+      else return true
+    },
 
     
     fnByteLength(title, sid, tid, len){
@@ -1719,5 +1760,3 @@ export default {
   }
 }
 </script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
-<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>

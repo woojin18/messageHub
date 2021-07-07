@@ -16,7 +16,7 @@
                 <option value="templateName">템플릿명</option>
                 <option value="templateChannel">템플릿채널</option>
             </select>
-            <input type="text" class="inputStyle vertical-top ml10" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="" @keypress.enter="fnSearch">
+            <input type="text" class="inputStyle vertical-top ml10" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="" @keypress.enter="fnPageNoResetSearch">
           </div>
         </div>
         <div class="of_h consolMarginTop">
@@ -31,7 +31,7 @@
                 <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
                 <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
             </ul>
-            <a @click="fnSearch()" class="btnStyle2 float-right" title="검색" activity="READ">검색</a>
+            <a @click="fnPageNoResetSearch()" class="btnStyle2 float-right" title="검색" activity="READ">검색</a>
           </div>
         </div>
       </div>
@@ -88,10 +88,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(data, idx) in datas" :key="data.row_num">
+              <tr v-for="(data, idx) in datas" :key="idx">
                 <td class="text-center"><input type="radio" :id="'listCheck_'+idx" class="radioStyle" :value="data.tmpltCode" v-model="chkBox"> 
                 <label :for="'listCheck_'+idx"></label></td>
-                <td>{{ idx + 1 }}</td>
+                <td>{{totCnt-offset-data.rowNum+1}}</td>
                 <td class="text-center"><router-link :to="{ name: 'integratedSendManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link> </td>
                 <td class="text-center">{{data.tmpltTitle}}</td>
                 <td class="text-center">{{data.tmpltChannel}}</td>
@@ -172,7 +172,7 @@ export default {
   },
   mounted() {
     this.fnSetIntervalSearchDate(this.searchDateInterval);
-    this.fnSearch();
+    this.fnPageNoResetSearch();
   },
   methods: {
     //검색일자변경
@@ -223,7 +223,6 @@ export default {
           this.datas = result.data;
           this.totCnt = result.pageInfo.totCnt;
           this.offset = result.pageInfo.offset;
-          
         } else {
           alert(result.message);
         }
@@ -234,6 +233,9 @@ export default {
     // select 박스 선택시 리스트 재출력
     fnSelected(listSize) {
       this.listSize = Number(listSize);
+      this.$refs.updatePaging.fnAllDecrease();
+    },
+    fnPageNoResetSearch(){
       this.$refs.updatePaging.fnAllDecrease();
     },
     fnSearch(pageNum) {
