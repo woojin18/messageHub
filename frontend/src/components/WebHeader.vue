@@ -5,10 +5,10 @@
 			<p class="adminName">관리자 콘솔</p>
 			<ul class="adminUtil">
 				<li><router-link to="/uc/home" class="btnGuideBlack">사용자콘솔</router-link></li>
-				<li><a href="#self" class="btnGuideBlack">이용 가이드</a></li>
-				<li class="ml20"><a href="#self" class="bellIcon active"><i class="fas fa-bell"></i></a></li>
+				<li><a href="#" class="btnGuideBlack">이용 가이드</a></li>
+				<li class="ml20"><a class="bellIcon active"><i class="fas fa-bell"></i></a></li>
 				<li>
-					<a href="#self" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i> designhon@gmail.com</a>	
+					<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i>{{ this.loginId }}@naver.com</a>	
 					<ul class="dropdown-menu userDrop" role="menu">
 						<li @click="fnCheckPwd"><a data-toggle="modal" data-target="#Client">고객사 정보</a></li>
 						<li><a href="#">캐시관리</a></li>
@@ -47,6 +47,7 @@ export default {
 			isErrPage: false,
 			navActive: false,
 			svcTypeCd: '',
+			loginId: '',
 			memberInfo : {},
 			corpInfo : {},
 			popReset : 0
@@ -55,6 +56,7 @@ export default {
 	created() {
 		this.isLogin = !!tokenSvc.getToken();
 		this.svcTypeCd = tokenSvc.getToken().principal.svcTypeCd;
+		this.loginId = tokenSvc.getToken().principal.loginId;
 		let curPage = location.pathname;
 		if (this.isLogin && curPage != "/login") {
 			this.$store.commit("login/isLogin", true);
