@@ -2917,7 +2917,7 @@ import Calendar from "@/components/Calendar.vue";
 
 
 export default {
-  name: 'integratedTemplateManage',
+  name: 'multiSendTemplateManage',
 
   components : {
     ImageManagePopUp,      ImageUploadPopUp,   /* Push */

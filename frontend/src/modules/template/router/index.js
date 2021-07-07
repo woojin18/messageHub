@@ -8,6 +8,8 @@ import RcsTemplateList from '../views/bm-rcsTemplateList.vue'
 import RcsTemplateMod from '../views/bm-rcsTemplateMod.vue'
 import AlimTalkTemplateManage from '../views/bm-alimTalkTemplateManage.vue'
 import AlimTalkTemplateList from '../views/bm-alimTalkTemplateList.vue'
+import multiSendTemplateList from '../views/bm-multiSendTemplateList'
+import multiSendTemplateManage from '../views/bm-multiSendTemplateManage'
 
 export default [
     {
@@ -75,6 +77,18 @@ export default [
         name: 'alimTalkTemplateManage',
         meta: { menu: 'UC_ALIM_TPL' },
         component: AlimTalkTemplateManage,
+        props: true
+    },
+    {
+        path: '/uc/template/multiSendTemplateList',
+        name: 'multiSendTemplateList',
+        meta: {menu: 'UC_INTG_TPL'},
+        component: multiSendTemplateList
+    },
+    {
+        path: '/uc/template/multiSendTemplateManage',
+        name: 'multiSendTemplateManage',
+        component: multiSendTemplateManage,
         props: true
     }
 ]
