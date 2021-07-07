@@ -49,7 +49,7 @@
 				<!-- 15개씩 보기 -->
 				<div class="of_h inline">
 					<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
-						<SelectLayer @fnSelected="fnSelected"></SelectLayer>
+						<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
 					</div>
 				</div>
 				<!-- //15개씩 보기 -->
@@ -86,11 +86,10 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="(data, idx) in datas" :key="data.row_num">
+								<tr v-for="(data, idx) in datas" :key="data.rownum">
 									<td class="text-center"><input type="checkbox" :id="'listCheck_'+idx" class="boardCheckStyle" :value="data.tmpltCode" v-model="listChkBox"><label :for="'listCheck_'+idx"></label></td>
-									<td>{{ idx + 1 }}</td>
+									<td>{{totCnt-offset-data.rownum+1}}</td>
 									<td class="text-center"><router-link :to="{ name: 'multiSendTemplateManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link> </td>
-                                    <!--<router-link :to="{ name: 'pushTemplateManage'      , params: { 'tmpltId' : contant.tmpltId }}">{{contant.tmpltId}}</router-link>-->
 									<td class="text-center">{{data.tmpltTitle}}</td>
 									<td class="text-center">{{data.tmpltChannel}}</td>
 									<td class="text-center">{{data.msgKindName}}</td>

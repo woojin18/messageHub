@@ -29,36 +29,44 @@
 
     <select id="selectIntegratedTemplateList" parameterType="hashmap" resultType="camel">
     /* 통합발송 템플릿 리스트 조회 */
-		SELECT  @rownum:=@rownum+1 AS ROW_NUM
-		      , A.PROJECT_ID
-		      , CASE WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
-		             ELSE 'N'
-		        END AS otherProjectUseYn
-		      , CASE WHEN A.PROJECT_ID = 'ALL' THEN '공용'
-		             ELSE '전용'
-		        END AS otherProjectUseYnName
-		      , A.TMPLT_CODE
-		      , A.MSG_KIND
-		      , C.CODE_NAME_1 AS MSG_KIND_NAME
-		      , A.MSG_TYPE
-		      , D.CODE_NAME_1 AS MSG_TYPE_NAME
-		      , A.TMPLT_TITLE
-		      , A.TMPLT_INFO
-		      , A.TMPLT_TYPE
-		      , A.USE_YN
-		      , A.TMPLT_INFO ->> '$[0].chTypeList' AS TMPLT_CHANNEL
-		      , JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType') CHECKED_CHANNEL
-		      , A.REG_ID
-		      , A.REG_DT
-		FROM cm.CM_SMART_TMPLT A LEFT OUTER JOIN cm_bo.CM_CODE C ON A.MSG_KIND = C.CODE_VAL_1 AND C.CODE_TYPE_CD = 'MSG_KIND'
-		                         LEFT OUTER JOIN cm_bo.CM_CODE D ON A.MSG_TYPE = D.CODE_VAL_1 AND D.CODE_TYPE_CD = 'MSG_TYPE'
-		   , (SELECT @rownum:=0) TMP
-		WHERE 1=1
-		<include refid="whereSelectIntegratedTemplateList"/>
-		ORDER BY A.REG_DT DESC
-        <if test='pagingYn == "Y" '>
-        LIMIT #{offset}, #{listSize}
-        </if>
+		SELECT
+			@ROWNUM := @ROWNUM + 1 AS ROWNUM,
+			B.*
+		FROM (
+			SELECT
+				A.PROJECT_ID,
+				CASE
+					WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
+					ELSE 'N'
+				END AS otherProjectUseYn,
+				CASE
+					WHEN A.PROJECT_ID = 'ALL' THEN '공용'
+					ELSE '전용'
+				END AS otherProjectUseYnName,
+				A.TMPLT_CODE,
+				A.MSG_KIND,
+				C.CODE_NAME_1 AS MSG_KIND_NAME,
+				A.MSG_TYPE,
+				D.CODE_NAME_1 AS MSG_TYPE_NAME,
+				A.TMPLT_TITLE,
+				A.TMPLT_INFO,
+				A.TMPLT_TYPE,
+				A.USE_YN,
+				A.TMPLT_INFO ->> '$[0].chTypeList' AS TMPLT_CHANNEL,
+				JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType') CHECKED_CHANNEL,
+				A.REG_ID,
+				A.REG_DT
+			FROM cm.CM_SMART_TMPLT A
+				LEFT OUTER JOIN cm_bo.CM_CODE C ON A.MSG_KIND = C.CODE_VAL_1 AND C.CODE_TYPE_CD = 'MSG_KIND'
+				LEFT OUTER JOIN cm_bo.CM_CODE D ON A.MSG_TYPE = D.CODE_VAL_1 AND D.CODE_TYPE_CD = 'MSG_TYPE'
+				, (SELECT @ROWNUM:=0) TMP
+			WHERE 1=1
+			<include refid="whereSelectIntegratedTemplateList"/>
+			ORDER BY A.REG_DT DESC
+		) B
+		<if test='pagingYn == "Y" '>
+		LIMIT #{offset}, #{listSize}
+		</if>
     </select>
 
 
