@@ -12,25 +12,10 @@
 			<ul>
 				<li class="on"><router-link to="/ac/home"><i class="fal fa-tachometer-alt-fastest navIcon"></i><span>대시보드</span></router-link></li>
 				<li v-for="(item, i) in treeData" :key="i">
-					<!--
-					<a v-if="item.WEB_URL != ''" v-bind:href="item.WEB_URL">
-						<i v-html="item.IMG_TAG"></i><span>{{item.MENUS_NAME}}</span><i class="far fa-chevron-down navArrow"></i>
-					</a>
-					<a v-if="item.WEB_URL == ''">
-						<i v-html="item.IMG_TAG"></i><span>{{item.MENUS_NAME}}</span><i class="far fa-chevron-down navArrow"></i>
-					</a>
-					<div class="depth2Lnb" :id="'depth2_' + i">
-						<ul>
-							<li v-for="(item2, j) in item.children" :key="j">
-								<a v-bind:href="item2.WEB_URL">{{item2.MENUS_NAME}}</a>
-							</li>
-						</ul>
-					</div>
-					-->
-					<router-link v-if="item.webUrl != ''" v-bind:to="{path:item.webUrl}" v-bind:id="'M_'+item.menusCd" v-bind:r="item.read" v-bind:w="item.save">
+					<router-link v-if="!$gfnCommonUtils.isEmpty(item.webUrl)" v-bind:to="{path:item.webUrl}" v-bind:id="'M_'+item.menusCd" v-bind:r="item.read" v-bind:w="item.save">
 						<i v-bind:class="item.imgTag"></i><span>{{item.menusName}}</span>
 					</router-link>		<!-- url 주소 있으면 페이지 이동 -->
-					<a v-if="item.webUrl == '' || item.webUrl == null" @click="fnOpenDepth2(i)">
+					<a v-if="$gfnCommonUtils.isEmpty(item.webUrl)" @click="fnOpenDepth2(i)">
 						<i v-bind:class="item.imgTag"></i><span>{{item.menusName}}</span><i class="far fa-chevron-down navArrow"></i>
 					</a>
 					<div class="depth2Lnb" :id="'depth2_' + i" :style="showOption">
