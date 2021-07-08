@@ -20,8 +20,8 @@
                 <div class="border-line2" style="height:354px; overflow-y:scroll;">
                   <ul class="color4">
                     <li @click="fnGetTemplateInfo(idx, templateInfo.tmpltId)" v-for="(templateInfo, idx) in templateList" :key="templateInfo.tmpltId" class="bb-ddd pd5">
-                      {{templateInfo.tmpltName}}
-                      <span v-if="!$gfnCommonUtils.isEmpty(templateInfo.tmpltTitle)">({{templateInfo.tmpltTitle}})</span>
+                      {{$gfnCommonUtils.unescapeXss(templateInfo.tmpltName)}}
+                      <span v-if="!$gfnCommonUtils.isEmpty(templateInfo.tmpltTitle)">({{$gfnCommonUtils.unescapeXss(templateInfo.tmpltTitle)}})</span>
                     </li>
                     <li v-if="templateList.length == 0" class="bb-ddd pd5 text-center">검색된 내용이 없습니다.</li>
                   </ul>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30">내용</h5>
-                  <h5 style="width:40%" class="float-right ml30 color4 word-break-all scroll-y_modal" v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></h5>
+                  <h5 style="width:40%" class="float-right ml30 color4 word-break-all scroll-y_modal"><pre>{{templateData.tmpltContent}}</pre></h5>
                 </div>
                 <div class="of_h" v-for="(imgInfo, idx) in templateData.imgInfoList" :key="imgInfo.fileId" >
                   <h5 style="width:41%" class="float-left ml30">이미지-{{idx+1}}</h5>
@@ -75,7 +75,7 @@
                     </div>
                     <div class="phoneText1">
                       <p class="font-size14 color4 mt10">
-                        <span v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></span>
+                        <span><pre>{{templateData.tmpltContent}}</pre></span>
                         <br v-if="!$gfnCommonUtils.isEmpty(templateData.tmpltContent)"/>
                         <span v-if="templateData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(templateData.rcvblcNumber)">
                           {{templateData.rcvblcNumber}}
@@ -155,18 +155,22 @@ export default {
     },
     //템플릿 리스트 선택
     fnGetTemplateInfo(idx, tmpltId){
+      let tempData = {};
+      const targetField = ['tmpltName', 'tmpltDesc', 'tmpltTitle', 'tmpltContent', 'rcvblcNumber'];
       if(this.templateList[idx].tmpltId == tmpltId){
-        this.templateData = this.templateList[idx];
+        tempData = this.templateList[idx];
       } else {
         var vm = this;
         this.templateList.forEach(function(){
           if(this.tmpltId == tmpltId){
-            vm.templateData = this;
+            tempData = this;
             return false;
           }
         });
       }
-      this.templateData.imgInfoList = JSON.parse(this.templateData.imgInfoList);
+      tempData.imgInfoList = JSON.parse(tempData.imgInfoList);
+      this.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
+      this.templateData = Object.assign({}, tempData);
     },
     //템플릿 리스트 검색
     async fnSearch(){

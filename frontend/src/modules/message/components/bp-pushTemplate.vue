@@ -19,7 +19,7 @@
                 <div class="border-line2" style="height:420px; overflow-y:scroll">
                   <ul class="color4">
                     <li @click="fnGetTemplateInfo(idx, templateInfo.tmpltId)" v-for="(templateInfo, idx) in templateList" :key="templateInfo.tmpltId" class="bb-ddd pd5">
-                      {{templateInfo.tmpltName}}({{templateInfo.tmpltTitle}})
+                      {{$gfnCommonUtils.unescapeXss(templateInfo.tmpltName)}}({{$gfnCommonUtils.unescapeXss(templateInfo.tmpltTitle)}})
                     </li>
                     <li v-if="templateList.length == 0" class="bb-ddd pd5 text-center">검색된 내용이 없습니다.</li>
                   </ul>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30 color000">내용</h5>
-                  <h5 style="width:40%" class="float-right color4 word-break-all scroll-y_modal" v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></h5>
+                  <h5 style="width:40%" class="float-right color4 word-break-all scroll-y_modal"><pre>{{templateData.tmpltContent}}</pre></h5>
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30 color000">이미지</h5>
@@ -73,9 +73,9 @@
                     </div>
                     <div>
                       <p class="font-size14 color4 mt10">
-                        <span v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></span>
+                        <span><pre>{{templateData.tmpltContent}}</pre></span>
                         <br v-if="!fnIsEmpty(templateData.tmpltContent)"/>
-                        {{templateData.msgKind == 'A' ? templateData.rcvblcNumber : ''}}
+                        {{templateData.msgKind == 'A' ? this.templateData.rcvblcNumber : ''}}
                       </p>
                     </div>
                   </div>
@@ -154,17 +154,21 @@ export default {
     },
     //템플릿 리스트 선택
     fnGetTemplateInfo(idx, tmpltId){
+      let tempData = {};
+      const targetField = ['tmpltName', 'tmpltTitle', 'tmpltContent', 'rcvblcNumber', 'adtnInfo'];
       if(this.templateList[idx].tmpltId == tmpltId){
-        this.templateData = this.templateList[idx];
+        tempData = this.templateList[idx];
       } else {
         var vm = this;
         this.templateList.forEach(function(){
           if(this.tmpltId == tmpltId){
-            vm.templateData = this;
+            tempData = this;
             return false;
           }
         });
       }
+      this.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
+      this.templateData = Object.assign({}, tempData);
     },
     //템플릿 리스트 검색
     async fnSearch(){

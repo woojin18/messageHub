@@ -84,7 +84,7 @@
                         <p v-if="!$gfnCommonUtils.isEmpty(templateData.tmpltEmpsTitle)" class="text-sub scroll-y3">{{templateData.tmpltEmpsTitle}}</p>
                       </div>
                       <div class="text-sub-wrap" style="padding:10px;">
-                        <span v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></span>
+                        <span><pre>{{templateData.tmpltContent}}</pre></span>
                       </div>
                       <!-- <p class="text-sub_2">템플릿 테스트입니다.<br>템플릿 테스트 템플릿 테스트 템플릿 테스트 템플릿 테스트</p> -->
                       <div v-for="(buttonInfo, idx) in templateData.buttonList" :key="idx">

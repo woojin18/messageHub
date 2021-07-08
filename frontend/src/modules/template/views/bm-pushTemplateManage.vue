@@ -31,7 +31,8 @@
               <div>
                 <p v-if="fnIsEmpty(tmpltData.tmpltContent) && (tmpltData.msgKind != 'A' || fnIsEmpty(tmpltData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
                 <p v-else class="font-size14 color4 mt10">
-                  <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
+                  <span><pre>{{tmpltData.tmpltContent}}</pre></span>
+                  
                   <br v-if="!fnIsEmpty(tmpltData.tmpltContent)"/>
                   <span v-if="tmpltData.msgKind == 'A' && !fnIsEmpty(tmpltData.rcvblcNumber)">
                     {{tmpltData.rcvblcNumber}}
@@ -209,10 +210,14 @@ export default {
       templateApi.selectPushTmpltInfo(params).then(response => {
         var result = response.data;
         if(result.success) {
+          const targetField = ['tmpltName', 'tmpltTitle', 'tmpltContent', 'rcvblcNumber', 'adtnInfo'];
+          let tempData = Object.assign({}, this.tmpltData);
           result.data.forEach(function(obj){
-            vm.tmpltData = obj;
-            vm.tmpltData.otherProjectUseYn = (obj.projectId == 'ALL' ? 'Y' : 'N');
+            tempData = obj;
+            tempData.otherProjectUseYn = (obj.projectId == 'ALL' ? 'Y' : 'N');
+            vm.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
           });
+          this.tmpltData = Object.assign({}, tempData);
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
           this.tmpltData = {};

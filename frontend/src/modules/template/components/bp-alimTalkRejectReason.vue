@@ -8,7 +8,7 @@
             <hr>
             <div class="boardWrite">
               <div class="content scroll-y">
-                <p v-html="$gfnCommonUtils.newLineToBr(rejectReason)"></p>
+                <p><pre>{{rejectReason}}</pre></p>
               </div>
             </div>
           </div>

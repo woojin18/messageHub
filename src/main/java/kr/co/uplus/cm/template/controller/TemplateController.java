@@ -464,7 +464,7 @@ public class TemplateController {
     }
 
     /**
-     * 알림톡 템플릿 승인요청
+     * 알림톡 템플릿 등록요청
      * @param request
      * @param response
      * @param params
@@ -487,7 +487,7 @@ public class TemplateController {
                 return rtn;
             }
 
-            /** 알림톡 템플릿 승인요청 처리 */
+            /** 알림톡 템플릿 등록요청 처리 */
             return tmpltSvc.procApprvRequestKkoTmplt(requestData, params);
 
         } catch (Exception e) {
@@ -614,7 +614,7 @@ public class TemplateController {
     }
 
     /**
-     * 알림톡 템플릿 승인요청
+     * 알림톡 템플릿 수정 요청 처리
      * @param request
      * @param response
      * @param params

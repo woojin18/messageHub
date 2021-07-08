@@ -110,9 +110,9 @@
                   </td>
                   <td class="text-center">{{totCnt-offset-contant.rownum+1}}</td>
                   <td class="text-center">
-                    <router-link :to="{ name: 'smsTemplateManage', params: { tmpltId: contant.tmpltId }}">{{contant.tmpltId}}</router-link>
+                    <u><router-link :to="{ name: 'smsTemplateManage', params: { tmpltId: contant.tmpltId }}">{{contant.tmpltId}}</router-link></u>
                   </td>
-                  <td class="text-center">{{contant.tmpltName}}</td>
+                  <td class="text-center">{{$gfnCommonUtils.unescapeXss(contant.tmpltName)}}</td>
                   <td class="text-center">{{contant.projectIdNm}}</td>
                   <td class="text-center">{{contant.senderType}}</td>
                   <td class="text-center">{{contant.regNm}}</td>

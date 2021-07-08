@@ -20,7 +20,7 @@
                 <div class="border-line2" style="height:354px; overflow-y:scroll;">
                   <ul class="color4">
                     <li @click="fnGetTemplateInfo(idx, templateInfo.tmpltId)" v-for="(templateInfo, idx) in templateList" :key="templateInfo.tmpltId" class="bb-ddd pd5">
-                      {{templateInfo.tmpltName}}
+                      {{$gfnCommonUtils.unescapeXss(templateInfo.tmpltName)}}
                     </li>
                     <li v-if="templateList.length == 0" class="bb-ddd pd5 text-center">검색된 내용이 없습니다.</li>
                   </ul>
@@ -58,7 +58,7 @@
                           :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+templateData.imgUrl+');'">
                         </div>
                         <br v-if="$gfnCommonUtils.isEmpty(templateData.imgUrl)"/>
-                        <span v-html="$gfnCommonUtils.newLineToBr(templateData.tmpltContent)"></span>
+                        <span><pre>{{templateData.tmpltContent}}</pre></span>
                         <div v-for="(buttonInfo, idx) in templateData.buttonList" :key="idx">
                           <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
                         </div>
@@ -138,18 +138,22 @@ export default {
     },
     //템플릿 리스트 선택
     fnGetTemplateInfo(idx, tmpltId){
+      let tempData = {};
+      const targetField = ['tmpltName', 'tmpltContent', 'tmpltButtons'];
       if(this.templateList[idx].tmpltId == tmpltId){
-        this.templateData = this.templateList[idx];
+        tempData = this.templateList[idx];
       } else {
         var vm = this;
         this.templateList.forEach(function(){
           if(this.tmpltId == tmpltId){
-            vm.templateData = this;
+            tempData = this;
             return false;
           }
         });
       }
-      this.templateData.buttonList = JSON.parse(this.templateData.tmpltButtons);
+      this.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
+      tempData.buttonList = JSON.parse(tempData.tmpltButtons);
+      this.templateData = Object.assign({}, tempData);
     },
     //템플릿 리스트 검색
     async fnSearch(){

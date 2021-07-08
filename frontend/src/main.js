@@ -5,8 +5,10 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import { coreUiMixin } from "@/common/vue-mixins";
+import common from '@/assets/js/common';
 
 Vue.use(VueCookies);
+Vue.use(common);
 Vue.$cookies.config("1d");
 Vue.config.productionTip = false;
 

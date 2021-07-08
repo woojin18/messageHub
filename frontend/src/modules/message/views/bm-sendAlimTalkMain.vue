@@ -21,9 +21,8 @@
                   <p v-if="!$gfnCommonUtils.isEmpty(sendData.tmpltEmpsTitle)" class="text-sub scroll-y3">{{sendData.tmpltEmpsTitle}}</p>
                 </div>
                 <div class="text-sub-wrap" style="padding:10px;">
-                  <span v-html="$gfnCommonUtils.newLineToBr(sendData.tmpltContent)"></span>
+                  <span><pre>{{sendData.tmpltContent}}</pre></span>
                 </div>
-                <!-- <p class="text-sub_2" v-html="$gfnCommonUtils.newLineToBr(sendData.tmpltContent)"></p> -->
                 <div v-for="(buttonInfo, idx) in sendData.buttonList" :key="idx">
                   <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
                 </div>
@@ -46,7 +45,7 @@
               <div class="scroll-y">
                 <p v-if="(this.$gfnCommonUtils.isEmpty(sendData.fbInfo.msg) && this.$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
                 <p v-else class="font-size14 color4 mt10">
-                  <span v-html="$gfnCommonUtils.newLineToBr(sendData.fbInfo.msg)"></span>
+                  <span><pre>{{sendData.fbInfo.msg}}</pre></span>
                   <br v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)"/>
                   {{sendData.fbInfo.rcvblcNumber}}
                 </p>

@@ -26,7 +26,7 @@
               <div class="phoneText1">
                 <p v-if="$gfnCommonUtils.isEmpty(tmpltData.tmpltContent) && (tmpltData.msgKind != 'A' || $gfnCommonUtils.isEmpty(tmpltData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
                 <p v-else class="font-size14 color4 mt10">
-                  <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
+                  <span><pre>{{tmpltData.tmpltContent}}</pre></span>
                   <br v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltContent)"/>
                   <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.rcvblcNumber)">
                     {{tmpltData.rcvblcNumber}}
@@ -191,15 +191,19 @@ export default {
       templateApi.selectSmsTmpltInfo(params).then(response => {
         const result = response.data;
         if(result.success) {
+          const targetField = ['tmpltName', 'tmpltDesc', 'tmpltTitle', 'tmpltContent', 'rcvblcNumber'];
+          let tempData = Object.assign({}, this.tmpltData);
           result.data.forEach(function(obj){
-            vm.tmpltData = obj;
+            tempData = obj;
             if(!vm.$gfnCommonUtils.isEmpty(obj.imgInfoList)){
-              vm.tmpltData.imgInfoList = JSON.parse(obj.imgInfoList);
+              tempData.imgInfoList = JSON.parse(obj.imgInfoList);
             } else {
-              vm.tmpltData.imgInfoList = [];
+              tempData.imgInfoList = [];
             }
-            vm.tmpltData.otherProjectUseYn = (obj.projectId == 'ALL' ? 'Y' : 'N');
+            tempData.otherProjectUseYn = (obj.projectId == 'ALL' ? 'Y' : 'N');
+            vm.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
           });
+          this.tmpltData = Object.assign({}, tempData);
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
           this.tmpltData = {};

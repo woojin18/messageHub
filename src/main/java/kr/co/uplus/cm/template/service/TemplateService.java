@@ -459,7 +459,7 @@ public class TemplateService {
     }
 
     /**
-     * 알림톡 템플릿 승인요청 처리
+     * 알림톡 템플릿 등록요청 처리
      * @param requestData
      * @return
      * @throws Exception
@@ -486,7 +486,7 @@ public class TemplateService {
         }
 
         if(!StringUtils.equals(ApiConfig.GW_API_SUCCESS, rslt)) {
-            rtn.setFail("알림톡 템플릿 승인요청에 실패하였습니다.");
+            rtn.setFail("알림톡 템플릿 등록요청에 실패하였습니다.");
             log.warn("{}.procApprvRequestKkoTmplt Fail -request: {}, response: {}", this.getClass(), jsonString, responseBody);
         }
 

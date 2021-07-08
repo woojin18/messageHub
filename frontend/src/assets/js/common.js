@@ -62,6 +62,19 @@ export default {
         let regex = /(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/gi
         return regex.test(str);
       },
+      unescapeXss(str){
+        if(this.isEmpty(str)) return str;
+        let unescapedStr = str.replace(/&gt;/g, '>')
+                               .replace(/&lt;/g, '<')
+                               .replace(/&#39;/g, "'");
+        return unescapedStr;
+      },
+      unescapeXssFields(targetObj, fields){
+        if(fields == null || Array.isArray(fields) == false || fields.length == 0) return targetObj;
+        fields.forEach(field => {
+          targetObj[field] = this.unescapeXss(targetObj[field]);
+        });
+      }
       /**************************정규식 관련 Utils**************************/
     }
   }

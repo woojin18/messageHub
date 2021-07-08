@@ -586,11 +586,24 @@
 			    				    	
 		        	<!-- friendTalk -->
 			          <div v-if="channelType == 'KAKAO' && rowData.kakaoPrdType == 'FRIENDTALK'" class="phoneWrap">
-			            <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-						<div class="phoneTextWrap">
-							<div class="phoneText1 scroll-y2">
-								<pre>{{rowData.friendTalkContent}}</pre>
-							</div>
+                  <img src="@/assets/images/common/phoneMockup2_1.svg" alt="프리 템플릿">
+						<div class="phoneTextWrap4 scroll-y">
+							<p v-if="rowData.msgKind == 'A'">[광고]</p>
+              <div class="mt5">
+                <div class="text-sub-wrap">
+                  <!-- <p class="text-sub scroll-y"> -->
+                    <div v-if="!$gfnCommonUtils.isEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center"
+                      :style="'padding:40px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
+                    </div>
+                    <br v-if="$gfnCommonUtils.isEmpty(sendData.imgUrl)"/>
+                    <span v-html="$gfnCommonUtils.newLineToBr(sendData.frndTalkContent)"></span>
+                    <div v-for="(buttonInfo, idx) in sendData.buttonList" :key="idx">
+                      <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
+                    </div>
+                  <!-- </p> -->
+                </div>
+                <p class="text-sub_2" v-if="sendData.msgKind == 'A'">수신거부: 홈 > 친구차단</p>
+              </div>
 						</div>
 			          </div>
 			    	<!-- //friendTalk -->

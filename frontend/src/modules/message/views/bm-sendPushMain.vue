@@ -26,7 +26,7 @@
               </div>
               <div>
                 <p class="font-size14 color4 mt10">
-                  <span v-html="$gfnCommonUtils.newLineToBr(sendData.pushContent)"></span>
+                  <span><pre>{{sendData.pushContent}}</pre></span>
                   <br v-if="!fnIsEmpty(sendData.pushContent)"/>
                   {{sendData.msgKind == 'A' ? sendData.rcvblcNumber : ''}}
                 </p>
@@ -49,7 +49,7 @@
               <div class="scroll-y">
                 <p v-if="(fnIsEmpty(sendData.fbInfo.msg) && fnIsEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
                 <p v-else class="font-size14 color4 mt10">
-                  <span v-html="$gfnCommonUtils.newLineToBr(sendData.fbInfo.msg)"></span>
+                  <span><pre>{{sendData.fbInfo.msg}}</pre></span>
                   <br v-if="!fnIsEmpty(sendData.fbInfo.rcvblcNumber)"/>
                   {{sendData.fbInfo.rcvblcNumber}}
                 </p>

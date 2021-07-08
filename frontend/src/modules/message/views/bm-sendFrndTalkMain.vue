@@ -22,7 +22,7 @@
                       :style="'padding:40px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
                     </div>
                     <br v-if="$gfnCommonUtils.isEmpty(sendData.imgUrl)"/>
-                    <span v-html="$gfnCommonUtils.newLineToBr(sendData.frndTalkContent)"></span>
+                    <span><pre>{{sendData.frndTalkContent}}</pre></span>
                     <div v-for="(buttonInfo, idx) in sendData.buttonList" :key="idx">
                       <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
                     </div>
@@ -48,7 +48,7 @@
               <div class="scroll-y">
                 <p v-if="(this.$gfnCommonUtils.isEmpty(sendData.fbInfo.msg) && this.$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
                 <p v-else class="font-size14 color4 mt10">
-                  <span v-html="$gfnCommonUtils.newLineToBr(sendData.fbInfo.msg)"></span>
+                  <span><pre>{{sendData.fbInfo.msg}}</pre></span>
                   <br v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)"/>
                   {{sendData.fbInfo.rcvblcNumber}}
                 </p>

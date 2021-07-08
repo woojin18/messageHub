@@ -23,7 +23,7 @@
                     </div>
                     <!-- <br v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltName) && $gfnCommonUtils.isEmpty(tmpltData.imgUrl)"/> -->
                     <br v-if="$gfnCommonUtils.isEmpty(tmpltData.imgUrl)"/>
-                    <span v-html="$gfnCommonUtils.newLineToBr(tmpltData.tmpltContent)"></span>
+                    <span><pre>{{tmpltData.tmpltContent}}</pre></span>
                     <div v-for="(buttonInfo, idx) in tmpltData.buttonList" :key="idx">
                       <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
                     </div>
@@ -240,13 +240,15 @@ export default {
       templateApi.selectFrndTalkInfo(params).then(response => {
         const result = response.data;
         if(result.success) {
+          const targetField = ['tmpltName', 'tmpltContent', 'tmpltButtons'];
+          let tempData = Object.assign({}, this.tmpltData);
           if(result.data != null && result.data.length > 0){
-            let rtnData = result.data[0];
-            rtnData.buttonList = [];
-            this.tmpltData = Object.assign({}, rtnData);
-            this.tmpltData.buttonList = JSON.parse(rtnData.tmpltButtons);
-            this.tmpltData.otherProjectUseYn = (rtnData.projectId == 'ALL' ? 'Y' : 'N');
+            tempData = result.data[0];
+            tempData.otherProjectUseYn = (tempData.projectId == 'ALL' ? 'Y' : 'N');
+            this.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
+            tempData.buttonList = JSON.parse(tempData.tmpltButtons);
           }
+          this.tmpltData = Object.assign({}, tempData);
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
           this.tmpltData = {imgUrl:'', buttonList:[]};
