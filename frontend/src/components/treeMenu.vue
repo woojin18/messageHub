@@ -28,7 +28,7 @@
 					</div>
 					-->
 					<router-link v-if="item.webUrl != ''" v-bind:to="{path:item.webUrl}" v-bind:id="'M_'+item.menusCd" v-bind:r="item.read" v-bind:w="item.save">
-						<i v-bind:class="item.imgTag"></i><span>{{item.menusName}}</span><i class="far fa-chevron-down navArrow"></i>
+						<i v-bind:class="item.imgTag"></i><span>{{item.menusName}}</span>
 					</router-link>		<!-- url 주소 있으면 페이지 이동 -->
 					<a v-if="item.webUrl == '' || item.webUrl == null" @click="fnOpenDepth2(i)">
 						<i v-bind:class="item.imgTag"></i><span>{{item.menusName}}</span><i class="far fa-chevron-down navArrow"></i>
