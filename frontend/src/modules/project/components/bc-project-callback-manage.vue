@@ -16,25 +16,25 @@
 							</div>	
 							<div class="consolMarginTop">
 								<h4 class="inline-block vertical-middle" style="width:6%">SMSMO<br>사용여부</h4>
-								<select name="admin0305_1" class="selectStyle2 vertical-middle" style="width:16%" v-model="srcRcsReply">
+								<select name="admin0305_1" class="selectStyle2 vertical-middle" style="width:16%" v-model="srcRcsReply" @change="fnSearch">
 									<option value="">전체</option>
 									<option value="0">Y</option>
 									<option value="1">N</option>
 								</select>
 								<h4 class="inline-block ml60" style="width:6%">사용여부</h4>
-								<select name="admin0305_2" class="selectStyle2" style="width:16%" v-model="srcIsuse">
+								<select name="admin0305_2" class="selectStyle2" style="width:16%" v-model="srcIsuse" @change="fnSearch">
 									<option value="">전체</option>
 									<option value="Y" selected="selected">사용</option>
 									<option value="N">미사용</option>
 								</select>
 								<h4 class="inline-block ml60" style="width:6%">승인상태</h4>
-								<select name="admin0305_3" class="selectStyle2" style="width:16%" v-model="srcApprovalStatus">
+								<select name="admin0305_3" class="selectStyle2" style="width:16%" v-model="srcApprovalStatus" @change="fnSearch">
 									<option value="">전체</option>
 									<option value="승인대기">승인대기</option>
 									<option value="승인" selected="selected">승인</option>
 									<option value="반려">반려</option>
 								</select>
-								<a @click="fnSearch" class="btnStyle1 float-right">검색</a>
+								<a @click="fnSearch(1)" class="btnStyle1 float-right">검색</a>
 							</div>
 						</div>						
 					</div>
@@ -55,11 +55,15 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<!-- 15개씩 보기 -->
-					<PagingCnt :pageInfo.sync="pageInfo" />
+					<div class="of_h inline">
+						<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+							<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
+						</div>
+					</div>
 					<!-- //15개씩 보기 -->
 					
 					<!-- table -->
-					<table class="table_skin1 bt-000 tbl-striped">
+					<table class="table_skin1 bt-000 tbl-striped mt10">
 						<colgroup>
 							<col style="width:5%">
 							<col>
@@ -86,7 +90,7 @@
 						</thead>
 						<tbody>
 							<tr v-for="(row, index) in data" :key="index">
-								<td class="text-center">{{ index + 1 }}</td>
+								<td class="text-center">{{totCnt-offset-row.rownum+1}}</td>
 								<td class="text-center">{{row.brandName}}</td>
 								<td class="text-center">{{row.subTitle}}</td>
 								<td class="text-center">{{row.chatbotId}}</td>
@@ -106,7 +110,9 @@
 			</div>
 
 			<!-- pagination -->
-			<Paging :pageInfo.sync="pageInfo" />
+			<div id="pageContent">
+				<PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
+			</div>
 			<!-- //pagination -->
 
 
@@ -122,9 +128,8 @@
 import layerPopup from "./bp-project-callback-detail.vue";
 import projectApi from '../service/projectApi';
 
-
-import Paging from "@/modules/commonUtil/components/bc-paging";
-import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt";
+import SelectLayer from '@/components/SelectLayer.vue';
+import PageLayer from '@/components/PageLayer.vue';
 
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import confirm from "@/modules/commonUtil/service/confirm";
@@ -132,8 +137,8 @@ import confirm from "@/modules/commonUtil/service/confirm";
 export default {
 	components: {
 		layerPopup,
-		Paging,
-		PagingCnt
+		PageLayer,
+		SelectLayer
 	},
 	data() {
 		return {
@@ -152,44 +157,49 @@ export default {
 			// 리스트 
 			data : {},
 			pageInfo: {},
-			row_data : {}
+			row_data : {},
+			listSize : 10,  // select 박스 value (출력 갯수 이벤트)
+			pageNo : 1,  // 현재 페이징 위치
+			totCnt : 0,  //전체 리스트 수
+			offset : 0, //페이지 시작점
 		}
 	},
 	mounted() {
 		this.projectId = this.$route.params.projectId;
 		this.projectName = this.$route.params.projectName;
 
-		this.pageInfo = {
-			"pageCnt"   : [10, 30, 50],  //표시할 개수 리스트
-			"selPageCnt": 10,          //선택한 표시 개수
-			"selPage"   : 1,          //선택한 페이지
-			"rowNum"    : 1           //총개수
-		};
-
-		this.fnSearch();
+		this.fnSearch(1);
 	},
 	methods: {
 		fnMoveMainTab(moveTabName){
 			this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
 		},
+		// select 박스 선택시 리스트 재출력
+		fnSelected(listSize) {
+			this.listSize = Number(listSize);
+			this.$refs.updatePaging.fnAllDecrease();
+		},
 		// 검색
-		fnSearch() {
+		fnSearch(pageNo) {
 			var params = {
 				"projectId"		: this.projectId,
-				"pageInfo"		: this.pageInfo,
 				"srcBrandName"	: this.srcBrandName,
 				"srcSubTitle"	: this.srcSubTitle,
 				"srcChatbotId"	: this.srcChatbotId,
 				"srcRcsReply"	: this.srcRcsReply,
 				"srcIsuse"		: this.srcIsuse,
 				"srcApprovalStatus"	: this.srcApprovalStatus,
+				"pageNo"		: (this.$gfnCommonUtils.defaultIfEmpty(pageNo, '1'))*1,
+				"listSize"		: this.listSize
 			}
 			
 			projectApi.selectCallbackManageList(params).then(response =>{
 				var result = response.data;
+				
 				if(result.success) {
 					this.data = result.data; 
-					this.pageInfo = result.pageInfo;
+					this.totCnt = result.pageInfo.totCnt;
+          			this.offset = result.pageInfo.offset;
 				}
 			});
 		},

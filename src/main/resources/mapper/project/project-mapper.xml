@@ -245,6 +245,7 @@
 								END AS RCS_REPLY_TEXT
 						,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "")  AS RCS_REPLY
 						,		IFNULL(crcr.APPROVAL_STATUS, '삭제') AS APPROVAL_STATUS
+						,		'Y' AS USE_YN
 						,		date_format(crcr.REG_DT, '%Y-%m-%d') AS REG_DT
 						,		'' AS APPROVAL_DT
 						,		crcr.REG_DT AS RANKING_DT
@@ -268,6 +269,7 @@
 								END AS RCS_REPLY_TEXT
 						,		REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "")  AS RCS_REPLY
 						,		crc.APPROVAL_STATUS
+						,		crc.USE_YN
 						,		date_format(crc.REG_DT, '%Y-%m-%d') AS REG_DT
 						,		date_format(crc.APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
 						<![CDATA[
@@ -290,7 +292,7 @@
 		WHERE 1 = 1
 		AND		(CRB.PROJECT_ID = #{projectId} OR CRB.PROJECT_ID = 'ALL')
 		<if test="srcBrandName != null and srcBrandName != ''">
-		AND		SUB_CB.BRAND_NAME LIKE CONCAT('%',#{srcBrandName},'%')
+		AND		CRB.BRAND_NAME LIKE CONCAT('%',#{srcBrandName},'%')
 		</if>
 		<if test="srcSubTitle != null and srcSubTitle != ''">
 		AND		SUB_CB.SUB_TITLE LIKE CONCAT('%',#{srcSubTitle},'%')
@@ -301,8 +303,8 @@
 		<if test="srcRcsReply != null and srcRcsReply != ''">
 		AND		SUB_CB.RCS_REPLY = #{srcRcsReply}
 		</if>
-		<if test="srcBrandName != null and srcBrandName != ''">
-		AND		SUB_CB.BRAND_NAME = #{srcBrandName}
+		<if test="srcIsuse != null and srcIsuse != ''">
+		AND		SUB_CB.USE_YN = #{srcIsuse}
 		</if>
 		<if test="srcApprovalStatus != null and srcApprovalStatus != ''">
 		AND		SUB_CB.APPROVAL_STATUS = #{srcApprovalStatus}
@@ -323,12 +325,16 @@
 	
 	<select id="selectCallbackManageList" resultType="camel">
 		/* project.selectCallbackManageList */
-		SELECT *
+		SELECT	*
+		,		@ROWNUM := @ROWNUM + 1 AS ROWNUM
 		FROM (
 			<include refid="callbackManage"/>
-		) CB
+		) CB, (SELECT @ROWNUM:=0) TMP
 		WHERE 1=1
 		ORDER BY CB.REG_DT DESC
+        <if test='pagingYn == "Y" '>
+        LIMIT #{offset}, #{listSize}
+        </if>
 	</select>
 	
 	<select id="selectCallbackManageApprovalBrandList" resultType="camel">

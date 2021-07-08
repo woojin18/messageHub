@@ -18,7 +18,7 @@
 					<div class="col-xs-12">
 						<div class="menuBox">						
 							<div>
-                <select id="srcBrandType" v-model="srcBrandType" class="selectStyle2" style="width:8%">
+                <select id="srcBrandType" v-model="srcBrandType" class="selectStyle2" style="width:20%">
                   <option value="brandId">브랜드 아이디</option>
                   <option value="brandName">브랜드 명</option>
                 </select>

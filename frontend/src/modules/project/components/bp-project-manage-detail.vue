@@ -22,8 +22,8 @@
 							</div>
 							<div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:20%">결재조건 *</h5>
-								<input @click="fnSelectBillIdForApi('Y')" type="radio" name="payType" value="Y" class="cBox" id="payment01" :disabled="this.save_status != 'C'"> <label for="payment01" class="payment mr30 font-size12">선불</label>
-								<input @click="fnSelectBillIdForApi('N')" type="radio" name="payType" value="N" class="cBox" id="payment02" :disabled="this.save_status != 'C'"> <label for="payment02" class="payment font-size12">후불</label>								
+								<input @click="fnSelectBillIdForApi('PRE')" type="radio" name="payType" value="PRE" class="cBox" id="payment01" :disabled="this.save_status != 'C'"> <label for="payment01" class="payment mr30 font-size12">선불</label>
+								<input @click="fnSelectBillIdForApi('POST')" type="radio" name="payType" value="POST" class="cBox" id="payment02" :disabled="this.save_status != 'C'"> <label for="payment02" class="payment font-size12">후불</label>								
 							</div>
               <div class="of_h consolMarginTop" v-if=" this.payTypeForDIv === 'N' ">
                 <h5 class="inline-block" style="width:20%">청구번호 *</h5>
@@ -217,8 +217,7 @@ export default {
 
       projectApi.selectBillIdForApi(params).then(response =>{
         var result = response.data;
-        console.log(response);
-        console.log(response.data.data.resultList);
+        
         if(result.success) {
           this.resultList = response.data.data.resultList;
 

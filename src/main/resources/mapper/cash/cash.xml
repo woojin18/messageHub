@@ -113,6 +113,9 @@
 		WHERE	cc.CORP_ID = #{corpId}
 		AND		cc.CASH_TYPE = 'E'
 		ORDER BY REG_DT DESC
+        <if test='pagingYn == "Y" '>
+        LIMIT #{offset}, #{listSize}
+        </if>
 	</select>
 	
 	<select id="selectUcubeInfo" resultType="camel">

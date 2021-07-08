@@ -413,22 +413,22 @@ public class ProjectService {
 	}
 	
 	// 발신번호관리 리스트 조회
-	@SuppressWarnings("unchecked")
 	public RestResult<?> selectCallbackManageList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-
-		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
-		
-		if (pageInfo != null && !pageInfo.isEmpty()) {
-			int rowNum = generalDao.selectGernalCount(DB.QRY_SELECT_CALLBACK_MANAGE_LIST_CNT, params);
-			pageInfo.put("rowNum", rowNum);
-			
-			rtn.setPageInfo(pageInfo);
+		if(params.containsKey("pageNo")
+				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize")
+				&& CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if(rtn.getPageInfo() != null) {
+				//카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_CALLBACK_MANAGE_LIST_CNT, params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
 		}
-		
-		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_MANAGE_LIST, params);
-				
-		rtn.setData(list);
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_MANAGE_LIST, params);
+		rtn.setData(rtnList);
 
 		return rtn;
 	}

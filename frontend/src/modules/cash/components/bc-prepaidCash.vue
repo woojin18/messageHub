@@ -32,7 +32,9 @@
     <h4>충전 이력조회</h4>
     <div class="row">
       <div class="col-xs-12">
-        <PagingCnt :pageInfo.sync="pageInfo" />
+        <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+          <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
+        </div>
         
         <!-- table -->
         <table class="table_skin1 bt-000 tbl-striped">
@@ -68,7 +70,8 @@
         </table>
         <!-- //table -->
 
-        <Paging :pageInfo.sync="pageInfo" />
+				<PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
+			
       </div>			
     </div>
     <layerPopup />
@@ -81,24 +84,27 @@ import tokenSvc from '@/common/token-service';
 
 import layerPopup from "@/modules/cash/components/bp-prePaidCash"
 
-import Paging from "@/modules/commonUtil/components/bc-paging"
-import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt"
+import SelectLayer from '@/components/SelectLayer.vue';
+import PageLayer from '@/components/PageLayer.vue';
 
 export default {
   name: 'prepaidCash',
   data() {
     return {
       data: [],
-      pageInfo: {},
       cashBalance : 0,
       eventCashBalance : 0,
       balance : 0,
+			listSize : 10,  // select 박스 value (출력 갯수 이벤트)
+			pageNo : 1,  // 현재 페이징 위치
+			totCnt : 0,  //전체 리스트 수
+			offset : 0, //페이지 시작점
     }
   },
   components: {
     layerPopup,
-    Paging,
-    PagingCnt
+		PageLayer,
+		SelectLayer
   },
   filters: {
     formatPrice(val){
@@ -112,31 +118,31 @@ export default {
     }
   },
   mounted() {
-    this.pageInfo = {
-      "pageCnt"   : [3, 5, 7],  //표시할 개수 리스트
-      "selPageCnt": 5,          //선택한 표시 개수
-      "selPage"   : 1,          //선택한 페이지
-      "rowNum"    : 1           //총개수
-    };
-
-    this.fnSearch();
+		this.fnSearch(1);
     this.fnSearchCash();
   },
   methods: {
+		// select 박스 선택시 리스트 재출력
+		fnSelected(listSize) {
+			this.listSize = Number(listSize);
+			this.$refs.updatePaging.fnAllDecrease();
+		},
     fnTossPay: function() {
       jQuery("#cashPop").modal("show");
     },
 
-    fnSearch: function() {
+    fnSearch: function(pageNo) {
       var params = {
-        "pageInfo" : this.pageInfo
+				"pageNo"		: (this.$gfnCommonUtils.defaultIfEmpty(pageNo, '1'))*1,
+				"listSize"		: this.listSize
       };
 
       cashApi.selectCashHist(params).then(response => {
         var result = response.data;
         if(result.success) {
           this.data = result.data; 
-          this.pageInfo = result.pageInfo;
+					this.totCnt = result.pageInfo.totCnt;
+          this.offset = result.pageInfo.offset;
         }
       });
     },
