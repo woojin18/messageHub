@@ -50,7 +50,7 @@ public class IntegratedSendController {
 
     @Autowired
     private CommonService commonService;
-    
+
 	@Autowired
 	private IntegratedSendService integratedSendService;
 
@@ -156,13 +156,13 @@ public class IntegratedSendController {
             String payType = integratedSendService.selectPayType(params);
 //System.out.println("integratedSendController 041  payType: "+payType);
             //선불일경우
-            if(StringUtils.equals(payType, Const.COMM_YES)) {
+            if(StringUtils.equals(payType, Const.PayType.PRE_FEE)) {
                 //남은 금액 조회
                 BigDecimal rmAmount = integratedSendService.getRmAmount(params);
-//System.out.println("integratedSendController 042  rmAmount: "+rmAmount);                
+//System.out.println("integratedSendController 042  rmAmount: "+rmAmount);
                 //개당 가격 조회
                 List<String> productCodes = new ArrayList<String>();
-                
+
                 String[] chTypeArr = (CommonUtils.getStrValue(params, "chTypeList")).split(",");
                 for(String s : chTypeArr) {
 //System.out.println("chTypeArr : "+s);
@@ -183,7 +183,7 @@ public class IntegratedSendController {
 						}
 					}
                 }
-                
+
                 if(params.containsKey("rplcSendType")
                         && !CommonUtils.isEmptyValue(params, "rplcSendType")
                         && !StringUtils.equals((CharSequence) params.get("rplcSendType"), "NONE")) {
@@ -195,8 +195,8 @@ public class IntegratedSendController {
                 sParam.put("productCodes", productCodes);
                 BigDecimal feePerOne = integratedSendService.selectMsgFeePerOne(sParam);
                 BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
-//System.out.println("integratedSendController 043  feePerOne: "+feePerOne);   
-//System.out.println("integratedSendController 044  feePerAll: "+feePerAll);   
+//System.out.println("integratedSendController 043  feePerOne: "+feePerOne);
+//System.out.println("integratedSendController 044  feePerAll: "+feePerAll);
                 if(rmAmount.compareTo(feePerAll) < 0) {
                     if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                         rtn.setSuccess(false);
@@ -224,7 +224,7 @@ public class IntegratedSendController {
         try {
             List<Object> reSendCdList = integratedSendService.reSendCdList(null);
             log.info("{}.sendIntegratedMessage aSync API send Start ====>", this.getClass());
-//System.out.println("integratedSendController 061");            
+//System.out.println("integratedSendController 061");
             integratedSendService.sendIntegratedMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.info("{}.sendIntegratedMessage aSync API send Error : {}", this.getClass(), e);

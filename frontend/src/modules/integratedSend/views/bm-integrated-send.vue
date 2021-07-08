@@ -92,7 +92,9 @@
                 <td class="text-center"><input type="radio" :id="'listCheck_'+idx" class="radioStyle" :value="data.tmpltCode" v-model="chkBox"> 
                 <label :for="'listCheck_'+idx"></label></td>
                 <td>{{totCnt-offset-data.rowNum+1}}</td>
-                <td class="text-center"><router-link :to="{ name: 'integratedSendManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link> </td>
+                <td class="text-center">
+                  <u><router-link :to="{ name: 'integratedSendManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u>
+                </td>
                 <td class="text-center">{{data.tmpltTitle}}</td>
                 <td class="text-center">{{data.tmpltChannel}}</td>
                 <td class="text-center">{{data.msgKindName}}</td>

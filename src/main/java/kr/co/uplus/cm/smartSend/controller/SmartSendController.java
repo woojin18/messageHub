@@ -50,7 +50,7 @@ public class SmartSendController {
 
     @Autowired
     private CommonService commonService;
-    
+
 	@Autowired
 	private SmartSendService smartSendService;
 
@@ -111,16 +111,16 @@ public class SmartSendController {
             String payType = smartSendService.selectPayType(params);
 //System.out.println("smartSendController 041  payType: "+payType);
             //선불일경우
-            if(StringUtils.equals(payType, Const.COMM_YES)) {
+            if(StringUtils.equals(payType, Const.PayType.PRE_FEE)) {
                 //남은 금액 조회
                 BigDecimal rmAmount = smartSendService.getRmAmount(params);
-//System.out.println("smartSendController 042  rmAmount: "+rmAmount);                
+//System.out.println("smartSendController 042  rmAmount: "+rmAmount);
                 //개당 가격 조회
                 List<String> productCodes = new ArrayList<String>();
-                
+
                 //cm_bo.CM_PRODUCT_UNIT WHERE SMART_CH_PRODUCT_YN = 'Y' 에서
                 //PREE_FEE 정보를 가져온다
-//System.out.println("smartSendController 042-1  productCode: "+CommonUtils.getStrValue(params, "productCode"));                
+//System.out.println("smartSendController 042-1  productCode: "+CommonUtils.getStrValue(params, "productCode"));
                 productCodes.add(CommonUtils.getStrValue(params, "productCode"));
                 //스마트 전송은 아래 개별 사항이 필요없음
 //                String[] chTypeArr = (CommonUtils.getStrValue(params, "chTypeList")).split(",");
@@ -142,7 +142,7 @@ public class SmartSendController {
 //						productCodes.add(Const.MsgProductCode.getType(Const.Ch.ALIMTALK));
 //					}
 //                }
-                
+
                 if(params.containsKey("rplcSendType")
                         && !CommonUtils.isEmptyValue(params, "rplcSendType")
                         && !StringUtils.equals((CharSequence) params.get("rplcSendType"), "NONE")) {
@@ -154,8 +154,8 @@ public class SmartSendController {
                 sParam.put("productCodes", productCodes);
                 BigDecimal feePerOne = smartSendService.selectMsgFeePerOne(sParam);
                 BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
-//System.out.println("smartSendController 043  feePerOne: "+feePerOne);   
-//System.out.println("smartSendController 044  feePerAll: "+feePerAll);   
+//System.out.println("smartSendController 043  feePerOne: "+feePerOne);
+//System.out.println("smartSendController 044  feePerAll: "+feePerAll);
                 if(rmAmount.compareTo(feePerAll) < 0) {
                     if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                         rtn.setSuccess(false);
@@ -183,7 +183,7 @@ public class SmartSendController {
         try {
             List<Object> reSendCdList = smartSendService.reSendCdList(null);
             log.info("{}.smartSendMessage aSync API send Start ====>", this.getClass());
-//System.out.println("smartSendController 061");            
+//System.out.println("smartSendController 061");
             smartSendService.sendSmartMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.info("{}.smartSendMessage aSync API send Error : {}", this.getClass(), e);
