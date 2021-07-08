@@ -136,7 +136,7 @@ const selectBrandList = (params) => {
     return httpClient.post('/integratedTemplateApi/selectBrandList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
-const excelDownloadIntegratedTemplate = (params) => {
+const excelDownloadMultiSendTemplate = (params) => {
     return httpClient.post('/integratedTemplateApi/excelDownloadIntegratedTemplate', params, { headers: {"show-layer": "No", "activity":"READ"}, responseType: 'arraybuffer' }).then(function(response) {
         try {
           let blob = new Blob([response.data], { type: response.headers['content-type'] })
@@ -192,7 +192,7 @@ export default {
     rcsTemplateApi,
     selectIntegratedTemplateList,
     integratedTemplateInfo,
-    excelDownloadIntegratedTemplate,
+    excelDownloadMultiSendTemplate,
     insertIntegratedTemplate,
     updateIntegratedTemplate,
     deleteMultiSendTemplate,

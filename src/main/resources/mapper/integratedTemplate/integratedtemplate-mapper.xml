@@ -3,32 +3,38 @@
 
 <mapper namespace="integratedTemplate">
 
-    <sql id ="whereSelectIntegratedTemplateList">
-        <!-- AND A.CORP_ID = #{corpId} -->
-        AND A.TMPLT_STATUS = 'SAVE'
-        AND A.TMPLT_TYPE = 'M'
+	<sql id ="whereSelectIntegratedTemplateList">
+		AND A.TMPLT_TYPE = 'M'
 		AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
-        <if test="searchText != '' and searchText != null ">
-            AND A.TMPLT_TITLE = CONCAT('%', #{searchText}, '%')
-        </if>
-        <if test="searchStartDate != '' and searchStartDate != null ">
-            <if test="searchEndDate != '' and searchEndDate != null ">
-            AND A.REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
-            </if>
-        </if>
-    </sql>
+		<if test="searchText != '' and searchText != null ">
+			<if test="searchCondi == 'templateTitle' ">
+			AND A.TMPLT_TITLE LIKE CONCAT('%', #{searchText}, '%')
+			</if>
+			<if test="searchCondi == 'templateChannel' ">
+			AND A.TMPLT_INFO ->> '$[0].chTypeList' LIKE CONCAT('%', #{searchText}, '%')
+			</if>
+		</if>
+		<if test="searchTmpltStatus != '' and searchTmpltStatus != null ">
+			AND A.TMPLT_STATUS = #{searchTmpltStatus}
+		</if>
+		<if test="searchStartDate != '' and searchStartDate != null ">
+			<if test="searchEndDate != '' and searchEndDate != null ">
+			AND A.REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
+			</if>
+		</if>
+	</sql>
 
     <select id="selectIntegratedTemplateListCnt" parameterType="hashmap" resultType="int">
-    /* 통합발송 템플릿 카운트 조회 */
-        SELECT
-            COUNT(PROJECT_ID) AS CNT
-        FROM cm.CM_SMART_TMPLT A
-        WHERE 1=1
-        <include refid="whereSelectIntegratedTemplateList"/>
-    </select>
+		/* 통합발송 템플릿 카운트 조회 */
+		SELECT
+			COUNT(PROJECT_ID) AS CNT
+		FROM cm.CM_SMART_TMPLT A
+		WHERE 1=1
+		<include refid="whereSelectIntegratedTemplateList"/>
+	</select>
 
-    <select id="selectIntegratedTemplateList" parameterType="hashmap" resultType="camel">
-    /* 통합발송 템플릿 리스트 조회 */
+	<select id="selectIntegratedTemplateList" parameterType="hashmap" resultType="camel">
+		/* 통합발송 템플릿 리스트 조회 */
 		SELECT
 			@ROWNUM := @ROWNUM + 1 AS ROWNUM,
 			B.*
@@ -38,11 +44,11 @@
 				CASE
 					WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
 					ELSE 'N'
-				END AS otherProjectUseYn,
+				END AS OTHER_PROJECT_USE_YN,
 				CASE
 					WHEN A.PROJECT_ID = 'ALL' THEN '공용'
 					ELSE '전용'
-				END AS otherProjectUseYnName,
+				END AS OTHER_PROJECT_USE_YN_NAME,
 				A.TMPLT_CODE,
 				A.MSG_KIND,
 				C.CODE_NAME_1 AS MSG_KIND_NAME,
@@ -51,14 +57,19 @@
 				A.TMPLT_TITLE,
 				A.TMPLT_INFO,
 				A.TMPLT_TYPE,
-				A.USE_YN,
+				E.CODE_NAME_1 AS TMPLT_STATUS_NAME,
 				A.TMPLT_INFO ->> '$[0].chTypeList' AS TMPLT_CHANNEL,
 				JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType') CHECKED_CHANNEL,
 				A.REG_ID,
+				cm_console.fnc_get_user_name(A.REG_ID)  AS REG_NM,
 				A.REG_DT
 			FROM cm.CM_SMART_TMPLT A
-				LEFT OUTER JOIN cm_bo.CM_CODE C ON A.MSG_KIND = C.CODE_VAL_1 AND C.CODE_TYPE_CD = 'MSG_KIND'
-				LEFT OUTER JOIN cm_bo.CM_CODE D ON A.MSG_TYPE = D.CODE_VAL_1 AND D.CODE_TYPE_CD = 'MSG_TYPE'
+				LEFT OUTER JOIN cm_bo.CM_CODE C
+					ON A.MSG_KIND = C.CODE_VAL_1 AND C.CODE_TYPE_CD = 'MSG_KIND'
+				LEFT OUTER JOIN cm_bo.CM_CODE D
+					ON A.MSG_TYPE = D.CODE_VAL_1 AND D.CODE_TYPE_CD = 'MSG_TYPE'
+				LEFT OUTER JOIN cm_bo.CM_CODE E
+					ON A.TMPLT_STATUS = E.CODE_VAL_1 AND E.CODE_TYPE_CD = 'MULTISEND_TMPLT_STATUS'
 				, (SELECT @ROWNUM:=0) TMP
 			WHERE 1=1
 			<include refid="whereSelectIntegratedTemplateList"/>

@@ -12,10 +12,20 @@
 						<div class="inline-block" style="width:8%"><h4 class="font-normal mt15">검색조건</h4></div>
 						<div class="inline-block" style="width:91%">
 							<select v-model="searchData.searchCondi" class="selectStyle2" style="width:15%" title="검색조건">
-								<option value="templateName">템플릿명</option>
+								<option value="templateTitle">템플릿명</option>
 								<option value="templateChannel">템플릿채널</option>
 							</select>
-							<input type="text" class="inputStyle vertical-top ml10" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="">
+							<input type="text" class="inputStyle vertical-top ml10" style="width:37.5%" title="검색조건 입력란" id="searchText" name="searchText" v-model="searchData.searchText" @keypress.enter="fnSearch">
+						</div>
+					</div>
+					<div class="of_h consolMarginTop">
+						<div class="inline-block" style="width:8%"><h4 class="font-normal mt15">템플릿 상태</h4></div>
+						<div class="inline-block" style="width:91%">
+							<select v-model="searchData.searchTmpltStatus" class="selectStyle2" style="width:15%" title="템플릿 상태">
+								<option value="">전체</option>
+								<option value="COMPLETE">완료</option>
+								<option value="SAVE">저장</option>
+							</select>
 						</div>
 					</div>
 					<div class="of_h consolMarginTop">
@@ -58,14 +68,14 @@
 						<!-- table -->
 						<table class="table_skin1 bt-000 tbl-striped">
 							<colgroup>
-								<col style="width:5%">
-								<col style="width:5%">
+								<col style="width:3%">
+								<col style="width:3%">
 								<col>
-								<col style="width:10%">
-								<col style="width:12%">
+								<col style="width:20%">
+								<col style="width:14%">
 								<col style="width:7%">
 								<col style="width:7%">
-								<col style="width:12%">
+								<col style="width:11%">
 								<col style="width:7%">
 								<col style="width:7%">
 								<col style="width:12%">
@@ -89,14 +99,14 @@
 								<tr v-for="(data, idx) in datas" :key="data.rownum">
 									<td class="text-center"><input type="checkbox" :id="'listCheck_'+idx" class="boardCheckStyle" :value="data.tmpltCode" v-model="listChkBox"><label :for="'listCheck_'+idx"></label></td>
 									<td>{{totCnt-offset-data.rownum+1}}</td>
-									<td class="text-center"><router-link :to="{ name: 'multiSendTemplateManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link> </td>
+									<td class="text-center"><router-link :to="{ name: 'multiSendTemplateManage', params: {'tmpltCodeP': data.tmpltCode }}"><u>{{data.tmpltCode}}</u></router-link></td>
 									<td class="text-center">{{data.tmpltTitle}}</td>
 									<td class="text-center">{{data.tmpltChannel}}</td>
 									<td class="text-center">{{data.msgKindName}}</td>
 									<td class="text-center">{{data.msgType}}</td>
-									<td class="text-center">{{data.otherProjectUseYn}}</td>
-									<td class="text-center">{{data.useYn}}</td>
-									<td class="text-center">{{data.regId}}</td>
+									<td class="text-center">{{data.otherProjectUseYnName}}</td>
+									<td class="text-center">{{data.tmpltStatusName}}</td>
+									<td class="text-center">{{data.regNm}}</td>
 									<td class="text-center end">{{data.regDt}}</td>
 								</tr>
 								<tr v-if="datas.length == 0">
@@ -137,10 +147,11 @@ export default {
 			require: false,
 			default: function() {
 				return {
-					'searchCondi' : 'templateName',
-					'searchText' : '',
-					'searchStartDate' : this.$gfnCommonUtils.getCurretDate(),
-					'searchEndDate' : this.$gfnCommonUtils.getCurretDate()
+					'searchCondi'				: 'templateTitle',
+					'searchText'				: '',
+					'searchTmpltStatus'	: '',
+					'searchStartDate'		: this.$gfnCommonUtils.getCurretDate(),
+					'searchEndDate'			: this.$gfnCommonUtils.getCurretDate()
 				}
 			}
 		},
@@ -208,7 +219,7 @@ export default {
 		//엑셀 다운로드
 		fnExcelDownLoad(){
 			var params = this.searchData;
-			templateApi.excelDownloadIntegratedTemplate(params);
+			templateApi.excelDownloadMultiSendTemplate(params);
 		},
 		// 검색
 		async fnSelectIntegratedTemplateList() {

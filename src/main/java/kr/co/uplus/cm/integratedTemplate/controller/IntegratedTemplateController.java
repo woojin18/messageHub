@@ -139,7 +139,7 @@ public class IntegratedTemplateController {
 	}
 
 	/**
-	 * 통합 템플릿 엑셀다운로드
+	 * 통합발송 템플릿 엑셀다운로드
 	 *
 	 * @param request
 	 * @param response
@@ -152,22 +152,22 @@ public class IntegratedTemplateController {
 			@RequestBody Map<String, Object> params) throws Exception {
 		List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("sheetTitle", "푸시 템플릿 리스트");
-		map.put("colLabels", new String[] { "템플릿 ID", "템플릿명", "타 프로젝트 사용여부", "메시지타입", "메시지구분", "등록자", "등록일자" });
-        map.put("colIds", new String[] {"tmpltCode", "tmpltTitle", "otherProjectUseYn", "msgTypeName", "msgKindName", "regId", "regDt"});
+		map.put("sheetTitle", "통합발송 템플릿 리스트");
+		map.put("colLabels", new String[] { "템플릿 ID", "템플릿명", "템플릿 채널", "메시지 구분", "메시지 타입", "타 프로젝트 사용여부", "상태", "등록자", "등록일자" });
+        map.put("colIds", new String[] {"tmpltCode", "tmpltTitle", "tmpltChannel", "msgKindName", "msgTypeName", "otherProjectUseYnName", "tmpltStatusName", "regNm", "regDt"});
 		map.put("numColIds", new String[] {});
 		map.put("figureColIds", new String[] {});
 		map.put("colDataList", integratedTemplateService.selectIntegratedTemplateList(params).getData());
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "pushTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
+        model.addObject("excelFileName", "multiSendTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;
 	}
 
-	   /**
+	/**
      * 브랜드 리스트 조회
      * @param request
      * @param response
