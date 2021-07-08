@@ -4,7 +4,7 @@ export default [
 	{
 		path: '/ac/statisticsAdmin/sendStatis',
 		name: 'sendStatis',
-		meta: { menu: 'AC_SND_STATIS' },
+		meta: { menu: 'AC_STATIS_MON' },
 		component: statisticsAdminSendStatisMain
 	},
 ]
