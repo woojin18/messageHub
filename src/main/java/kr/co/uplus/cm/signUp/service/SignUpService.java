@@ -35,31 +35,9 @@ public class SignUpService {
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void insertSignUp(Map<String, Object> params) throws Exception {
-
-		// 업태 업종 코드값 조회
-		String busiTypeCd = "";				// 업태 코드값
-		String busiClassCd = "";			// 업종 코드값
-		String busiType = CommonUtils.getString(params.get("busiType"));			// 업태
-		String busiClass = CommonUtils.getString(params.get("busiClass"));			// 업태
-		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		
-		paramMap.put("codeName1", busiType);
-		paramMap.put("codeTypeCd", "CORP_CUST_UPTAE");
-		
-		busiTypeCd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_CODEVAL1_BY_CODENAME1, paramMap));
-
-		paramMap.clear();
-		paramMap.put("codeName1", busiClass);
-		paramMap.put("codeTypeCd", "CORP_CUST_UPJONG");
-		
-		busiClassCd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_CODEVAL1_BY_CODENAME1, paramMap));
-		
-		paramMap.clear();
-		
+				
 		paramMap.putAll(params);
-		paramMap.put("busiType", busiTypeCd);
-		paramMap.put("busiClass", busiClassCd);
 
 		// 사용자 비밀번호 암호화
 		SHA sha512 = new SHA(512);

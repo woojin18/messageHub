@@ -101,19 +101,13 @@
 				<div class="of_h mt10">
 					<div class="float-left" style="width:22%"><h5>업태*</h5></div>
 					<div class="float-right" style="width:78%">
-						<select class="selectStyle2" style="width:50%" title="업태 선택란" v-model="busiType" :disabled="selCorpCnt > 0">
-							<option value="">선택하세요</option>
-							<option  v-for="(row, index) in custUpTaeArr" :key="index" :value="row.codeName1"> {{ row.codeName1 }} </option>
-						</select>
+						<input type="text" class="inputStyle" placeholder="업태"  v-model="busiType" :disabled="selCorpCnt > 0">
 					</div>
 				</div>
 				<div class="of_h mt10">
 					<div class="float-left" style="width:22%"><h5>종목*</h5></div>
 					<div class="float-right" style="width:78%">
-						<select class="selectStyle2" style="width:50%" title="종목 선택란" v-model="busiClass" :disabled="selCorpCnt > 0">
-							<option value="">선택하세요</option>
-							<option  v-for="(row, index) in custUpjongArr" :key="index" :value="row.codeName1"> {{ row.codeName1 }} </option>
-						</select>
+						<input type="text" class="inputStyle" placeholder="종목"  v-model="busiClass" :disabled="selCorpCnt > 0">
 					</div>
 				</div>
 				<div class="of_h mt10">
@@ -225,8 +219,8 @@ export default {
 		dataList : [],
 		
 		custTypeArr : [],			// 고객 유형 select box
-		custUpTaeArr : [],			// 업태 select box
-		custUpjongArr : []			// 종목 select box
+		// custUpTaeArr : [],			// 업태 select box
+		// custUpjongArr : []			// 종목 select box
 
 		
     }
@@ -256,8 +250,6 @@ export default {
   mounted() {
 	  this.fnGetNiceCheck();
 	  this.fnGetCustType();
-	  this.fnGetCustUptae();
-	  this.fnGetCustUpjong();
   },
   methods: {
 	fnGetCustType(){
@@ -269,30 +261,6 @@ export default {
 			var result = response.data;
 			if(result.success){
 				this.custTypeArr = result.data;
-			}
-		});
-	},
-	fnGetCustUptae(){
-		var params = {
-			codeTypeCd	: "CORP_CUST_UPTAE",
-			useYN		: "Y"
-		};
-		commonUtilApi.selectCodeList(params).then(response =>{
-			var result = response.data;
-			if(result.success){
-				this.custUpTaeArr = result.data;
-			}
-		});
-	},
-	fnGetCustUpjong(){
-		var params = {
-			codeTypeCd	: "CORP_CUST_UPJONG",
-			useYN		: "Y"
-		};
-		commonUtilApi.selectCodeList(params).then(response =>{
-			var result = response.data;
-			if(result.success){
-				this.custUpjongArr = result.data;
 			}
 		});
 	},
@@ -510,10 +478,7 @@ export default {
 		 this.wireTel				= this.selCorp.wireTel == undefined ? "" : this.selCorp.wireTel;						// 유선 전화번호
 		 this.busiType				= this.selCorp.bsstNm == undefined ? "" : this.selCorp.bsstNm;							// 업태
 		 this.busiClass				= this.selCorp.inkndNm == undefined ? "" : this.selCorp.inkndNm;						// 업종
-		 
 		 this.custKdCd				= this.selCorp.custKdCd == undefined ? "" : this.selCorp.custKdCd;						// 고객유형
-		 this.busiType				= this.selCorp.bsstNm == undefined ? "" : this.selCorp.bsstNm;							// 업태
-		 this.busiClass				= this.selCorp.inkndNm == undefined ? "" : this.selCorp.inkndNm;						// 업종
 	 },
 	 // 본인인증 팝업
 	 fnPopup(){ 

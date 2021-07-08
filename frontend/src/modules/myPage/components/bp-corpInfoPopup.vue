@@ -40,15 +40,11 @@
 							</div>
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block" style="width:20%">업태 <span class="color1">*</span></h5>
-								<select class="selectStyle2 float-right" style="width:80%" title="업태 선택란" v-model="busitype">
-									<option value=""></option>
-								</select>
+                <input type="text" class="inputStyle" placeholder="업태"  v-model="busiType">
 							</div>
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block" style="width:20%">종목 <span class="color1">*</span></h5>
-								<select class="selectStyle2 float-right" style="width:80%" title="종목 선택란" v-model="busiclass">
-									<option value=""></option>
-								</select>
+                <input type="text" class="inputStyle" placeholder="업태"  v-model="busiclass">
 							</div>
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block" style="width:20%">사업장주소 <span class="color1">*</span></h5>
@@ -81,8 +77,8 @@
 						</div>						
 					</div>
 					<div class="text-center mt40">
-						<a @click="fnSave" class="btnStyle2 backBlack" title="저장">저장</a>
-						<a @click="fnCloseLayer" class="btnStyle2 backWhite ml10" title="닫기">닫기</a>
+						<!-- <a @click="fnSave" class="btnStyle2 backBlack" title="저장">저장</a> -->
+						<a href="#self" @click.prevent="fnCloseLayer" class="btnStyle2 backWhite ml10" title="닫기">닫기</a>
 					</div>
 				</div>
 			</div>

@@ -40,11 +40,13 @@
 							<!-- table -->
 							<table class="table_skin1 bt-000 tbl-striped">
 								<colgroup>
-									<col style="width:5%">
+									<col style="width:3%">
 									<col>
+									<col style="width:8%">
 									<col style="width:10%">
 									<col style="width:10%">
-									<col style="width:13%">
+									<col style="width:8%">
+									<col style="width:8%">
 									<col style="width:10%">
 									<col style="width:14%">
 								</colgroup>
@@ -56,6 +58,8 @@
 									<th class="text-center lc-1">이메일</th>
 									<th class="text-center lc-1">연락처</th>
 									<th class="text-center lc-1">문의상태</th>
+									<th class="text-center lc-1">답변자</th>
+									<th class="text-center lc-1">답변일자</th>
 									<th class="text-center lc-1 end">관리</th>
 									</tr>
 								</thead>
@@ -69,6 +73,8 @@
 									<td class="text-center">{{ row.email }}</td>
 									<td class="text-center">{{ row.hpNumber }}</td>
 									<td class="text-center">{{ row.questStatusStr }}</td>
+									<td class="text-center">{{ row.replyUser }}</td>
+									<td class="text-center">{{ row.replyDt }}</td>
 									<td class="end">
 										<a @click="fnEditQna(row)" class="btnStyle1 borderLightGray small mr5">수정</a>
 										<a @click="fnDeleteQna(row)" class="btnStyle1 borderLightGray small mr5">삭제</a>
@@ -110,7 +116,7 @@ export default {
 			srcTitle : '',
 			srcQnaType : '',
 			srcQnaStatus : '',
-			data : {},
+			data : [],
 			pageInfo: {},
 			status : '',
 			selectRow : {},
@@ -171,8 +177,12 @@ export default {
 			myPageApi.selectQnaList(params).then(response => {
 				var result = response.data;
 				if(result.success) {
-					this.data = result.data; 
-					this.pageInfo = result.pageInfo;
+					if(result.data.length > 0){
+						this.data = result.data; 
+						this.pageInfo = result.pageInfo;
+					} else {
+						confirm.fnAlert("","검색된 내용이 없습니다.");
+					}
 				}
 			});
 		},
@@ -185,8 +195,8 @@ export default {
 		},
 		// 문의 내역 수정
 		fnEditQna(row){
-			if(row.questStatus == "03"){
-				confirm.fnAlert("","답변완료인 경우 수정이 불가능합니다.");
+			if(row.questStatus != "01"){
+				confirm.fnAlert("","요청 중인 경우만 수정이 가능합니다.");
 				return;
 			} else {
 				this.status = "edit";
@@ -204,8 +214,8 @@ export default {
 		},
 		// 문의 내역 삭제
 		fnDeleteQna(row){
-			if(row.questStatus == "03"){
-				confirm.fnAlert("","답변완료인 경우 삭제는 불가능합니다.");
+			if(row.questStatus != "01"){
+				confirm.fnAlert("","요청 중인 경우만 삭제가 가능합니다.");
 				return;
 			} else {
 				this.selectRow = row;

@@ -115,8 +115,8 @@
       AND   c.USE_YN      = 'Y'
       AND   b.MENUS_CD    = d.MENUS_CD
       AND   b.ACTIVITY_CD = d.ACTIVITY_CD 
-      AND   d.ROLE_CD     = e.ROLE_CD 
-      AND   a.SVC_TYPE_CD = e.SVC_TYPE_CD
+      AND   d.ROLE_CD     = e.ROLE_CD
+      AND	e.SVC_TYPE_CD IN ('AC', 'UC')
       AND   e.USE_YN      = 'Y'
     ORDER BY e.ROLE_CD, a.MENUS_LEVEL, a.DIS_ORDER
     </select>

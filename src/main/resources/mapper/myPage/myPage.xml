@@ -59,15 +59,19 @@
 		,		(SELECT CODE_NAME_1 FROM cm_bo.CM_CODE WHERE CODE_TYPE_CD = 'QNA_TYPE' AND CODE_VAL_1 = QUEST_TYPE) QUEST_TYPE_STR
 		,		QUEST_TYPE
 		,		TITLE
-		,		EMAIL
-		,		HP_NUMBER
+		,		A.EMAIL
+		,		A.HP_NUMBER
 		,		(SELECT CODE_NAME_1 FROM cm_bo.CM_CODE WHERE CODE_TYPE_CD = 'QNA_STATUS' AND CODE_VAL_1 = QUEST_STATUS) QUEST_STATUS_STR
 		,		QUEST_STATUS
 		,		CONTENT
 		,		REPLY
-		FROM	cm_bo.CM_QUEST_BOARD
+		,		B.USER_NAME				AS REPLY_USER
+		,		DATE_FORMAT(A.REPLY_DT, '%Y-%m-%d')	AS REPLY_DT
+		FROM	cm_bo.CM_QUEST_BOARD A
+		LEFT OUTER JOIN cm_console.CM_USER B
+			ON	A.REPLY_ID = B.USER_ID 
 		WHERE	1 = 1
-		AND		REG_ID = #{userId}
+		AND		A.REG_ID = #{userId}
 		<if test="srcTitle != null and srcTitle != ''">
 		AND		TITLE LIKE '%${srcTitle}%'
 		</if>
@@ -77,7 +81,7 @@
 		<if test="srcQuestStatus != null and srcQuestStatus != ''">
 		AND		QUEST_STATUS = #{srcQuestStatus}
 		</if>
-		ORDER BY REG_DT DESC
+		ORDER BY A.REG_DT DESC
 	</select>
 	
 	<insert id="insertQnaInfo">

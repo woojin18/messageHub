@@ -23,7 +23,7 @@
 									</tr>
 								</thead>
 								<tbody>
-                                    <tr v-for="(row, idx) in data" :key="idx" @click="fnSelectCorpInfo(idx)" :class="index == idx ? 'selected' : ''" @dblclick="fnSelRow(row)">
+                                    <tr v-for="(row, idx) in data" :key="idx" @click="fnSelectCorpInfo(row)" :class="index == idx ? 'selected' : ''" @dblclick="fnSelRow(row)">
                                         <td>{{ row.custNo }}</td>
                                         <td>{{ row.custNm }}</td>
                                         <td>{{ row.custrnmNo }}</td>
@@ -46,6 +46,7 @@
 </template>
 <script>
 import signUpApi from "@/modules/signUp/service/api"
+import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
     name : 'chkCorpPopup',
@@ -66,32 +67,40 @@ export default {
     data(){
         return {
             index : -1,
-            data : []
+            data : [],
+            selRowData : {}
         }
     },
     watch : {
         popReset(){
             this.index = -1;
             this.data = this.dataList;
+            this.selRowData = {};
         }
     },
     methods : {
         fnCloseLayer(){
             jQuery("#chkCorpPopup").modal("hide");
         },
-        fnSelectCorpInfo(index){
-            this.index = index;
+        fnSelectCorpInfo(rowData){
+            this.selRowData = rowData;
         },
         fnSelRow(rowData){
-            this.fnGetSelectCustInfo(rowData);
+            if(rowData.custNo != undefined && rowData.custNo != null && rowData.custNo != ""){
+                this.fnGetSelectCustInfo(rowData);
+            } else {
+                confirm.fnAlert("","고객사를 선택해주세요.");
+            }
         },
         fnSelect(){
             var rowData = new Object();
-            var td = jQuery("#selCorpTbl tr.selected").children();
 
-            rowData.custNo    = td.eq(0).text();
-
-            this.fnGetSelectCustInfo(rowData);
+            if(this.selRowData.custNo != undefined && this.selRowData.custNo != null && this.selRowData.custNo != ""){
+                rowData = this.selRowData;
+                this.fnGetSelectCustInfo(rowData);
+            } else {
+                confirm.fnAlert("","고객사를 선택해주세요.");
+            }
         },
         fnGetSelectCustInfo(rowData){
             var vm = this;
@@ -111,7 +120,7 @@ export default {
                     rowData.custAddrZip     = result.data.custAddrZip;         // 우편번호
                     rowData.custVilgAbvAddr = result.data.custVilgAbvAddr;     // 주소1
                     rowData.custVilgBlwAddr = result.data.custVilgBlwAddr;     // 상세주소
-                    rowData.wireTel         = result.data.offcTel == "" ? result.dataoffcTel : result.data.homeTel;     // 유선전화번호
+                    rowData.wireTel         = result.data.offcTel == "" ? result.data.offcTel : result.data.homeTel;     // 유선전화번호
 
                     vm.$emit("update:selCorp", rowData);
                     vm.fnCloseLayer();

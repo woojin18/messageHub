@@ -11,7 +11,6 @@
 					<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i>{{ this.loginId }}@naver.com</a>	
 					<ul class="dropdown-menu userDrop" role="menu">
 						<li @click="fnCheckPwd"><a data-toggle="modal" data-target="#Client">고객사 정보</a></li>
-						<li><a href="#">캐시관리</a></li>
 						<li @click="fnMyPage"><a data-toggle="modal" data-target="#Member-information">회원정보</a></li>
 						<li><router-link to="/ac/qna">나의 문의내역</router-link></li>
 						<li @click="clickLogout"><a href="#">로그아웃</a></li>
