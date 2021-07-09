@@ -12,13 +12,13 @@
             , CPU.CH
             , CPU.SMART_CH_PRODUCT_YN
             , CPU.SMART_CH_PRODUCT
-            , CPU.PREE_FEE
+            , CPU.PRE_FEE
             , CPU.USE_YN
             , CPU.REG_ID
             , CPU.REG_DT
             , CPU.UPD_ID
             , CPU.UPD_DT
-            , CPU.TOBE_FEE_INFO
+            , CPU.POST_FEE_INFO
         FROM cm_bo.CM_PRODUCT_UNIT CPU
         WHERE CPU.USE_YN = 'Y'
             AND CPU.PRODUCT_CODE IN <foreach collection="productCodes" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>

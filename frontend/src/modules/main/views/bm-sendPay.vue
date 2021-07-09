@@ -8,7 +8,7 @@
         </div>
       </section>
     </article>
-    
+
     <div id="contentWrap">
       <div class="sub02_conWrap">
         <div class="subVisualWrap02 wow animated fadeInUp">
@@ -35,18 +35,18 @@
               </thead>
               <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
                 <template v-for="pushPayInfo in prdUnitInfo.push">
-                  <tr v-for="(feeData, idx) in pushPayInfo.tobeFeeData" :key="pushPayInfo.productCode + idx">
+                  <tr v-for="(feeData, idx) in pushPayInfo.postFeeData" :key="pushPayInfo.productCode + idx">
                     <td v-if="idx == 0" rowspan="3">{{pushPayInfo.productName}}</td>
-                    <td v-if="idx == 0" rowspan="3">{{pushPayInfo.preeFee | formatPrice}} 원</td>
+                    <td v-if="idx == 0" rowspan="3">{{pushPayInfo.preFee | formatPrice}} 원</td>
                     <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
-                    <td class="end">{{feeData.TOBE_FEE | formatPrice}} 원</td>
+                    <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td>
                   </tr>
                 </template>
               </tbody>
             </table>
           </section>
         </div>
-        
+
         <div class="subVisualWrap02 wow animated fadeInUp">
           <section>
             <p class="tableTitle"><i class="fas fa-chevron-square-right"></i> RCS</p>
@@ -71,17 +71,17 @@
               </thead>
               <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
                 <template v-for="rcsPayInfo in prdUnitInfo.rcs">
-                  <tr v-for="(feeData, idx) in rcsPayInfo.tobeFeeData" :key="rcsPayInfo.productCode+idx">
+                  <tr v-for="(feeData, idx) in rcsPayInfo.postFeeData" :key="rcsPayInfo.productCode+idx">
                     <td v-if="idx == 0" rowspan="3">{{rcsPayInfo.productName}}</td>
-                    <td v-if="idx == 0" rowspan="3">{{rcsPayInfo.preeFee | formatPrice}} 원</td>
+                    <td v-if="idx == 0" rowspan="3">{{rcsPayInfo.preFee | formatPrice}} 원</td>
                     <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
-                    <td class="end">{{feeData.TOBE_FEE | formatPrice}} 원</td>
+                    <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td>
                   </tr>
                 </template>
               </tbody>
             </table>
 
-          </section>  
+          </section>
         </div>
 
         <div class="subVisualWrap02 wow animated fadeInUp">
@@ -108,11 +108,11 @@
               </thead>
               <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
                 <template v-for="smsPayInfo in prdUnitInfo.sms">
-                  <tr v-for="(feeData, idx) in smsPayInfo.tobeFeeData" :key="smsPayInfo.productCode+idx">
+                  <tr v-for="(feeData, idx) in smsPayInfo.postFeeData" :key="smsPayInfo.productCode+idx">
                     <td v-if="idx == 0" rowspan="3">{{smsPayInfo.productName}}</td>
-                    <td v-if="idx == 0" rowspan="3">{{smsPayInfo.preeFee | formatPrice}} 원</td>
+                    <td v-if="idx == 0" rowspan="3">{{smsPayInfo.preFee | formatPrice}} 원</td>
                     <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
-                    <td class="end">{{feeData.TOBE_FEE | formatPrice}} 원</td>
+                    <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td>
                   </tr>
                 </template>
               </tbody>
@@ -145,16 +145,16 @@
               </thead>
               <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
                 <template v-for="kkoPayInfo in prdUnitInfo.kko">
-                  <tr v-for="(feeData, idx) in kkoPayInfo.tobeFeeData" :key="kkoPayInfo.productCode+idx">
+                  <tr v-for="(feeData, idx) in kkoPayInfo.postFeeData" :key="kkoPayInfo.productCode+idx">
                     <td v-if="idx == 0" rowspan="3">{{kkoPayInfo.productName}}</td>
-                    <td v-if="idx == 0" rowspan="3">{{kkoPayInfo.preeFee | formatPrice}} 원</td>
+                    <td v-if="idx == 0" rowspan="3">{{kkoPayInfo.preFee | formatPrice}} 원</td>
                     <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
-                    <td class="end">{{feeData.TOBE_FEE | formatPrice}} 원</td>
+                    <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td>
                   </tr>
                 </template>
               </tbody>
             </table>
-          </section>  
+          </section>
         </div>
 
       </div>
@@ -184,7 +184,7 @@ export default {
   },
   data() {
     return {
-/* 
+/*
       productCodes:{
         PUSH: ['PUSH'],
         RCS: ['RCS_TMP', 'RCS_SMS', 'RCS_LMS', 'RCS_MMS'],
@@ -217,7 +217,7 @@ export default {
         if(result.success) {
           Object.keys(result.data).forEach(function(chGrp){
             result.data[chGrp].forEach(function(obj, idx){
-              result.data[chGrp][idx].tobeFeeData = JSON.parse(obj.tobeFeeInfo);
+              result.data[chGrp][idx].postFeeData = JSON.parse(obj.postFeeInfo);
             });
           });
           this.prdUnitInfo = Object.assign({}, result.data);
