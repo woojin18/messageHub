@@ -119,7 +119,7 @@ public class SmartSendController {
                 List<String> productCodes = new ArrayList<String>();
 
                 //cm_bo.CM_PRODUCT_UNIT WHERE SMART_CH_PRODUCT_YN = 'Y' 에서
-                //PREE_FEE 정보를 가져온다
+                //PRE_FEE 정보를 가져온다
 //System.out.println("smartSendController 042-1  productCode: "+CommonUtils.getStrValue(params, "productCode"));
                 productCodes.add(CommonUtils.getStrValue(params, "productCode"));
                 //스마트 전송은 아래 개별 사항이 필요없음
@@ -146,7 +146,7 @@ public class SmartSendController {
                 if(params.containsKey("rplcSendType")
                         && !CommonUtils.isEmptyValue(params, "rplcSendType")
                         && !StringUtils.equals((CharSequence) params.get("rplcSendType"), "NONE")) {
-                    productCodes.add(Const.MsgProductCode.getType(CommonUtils.getStrValue(params, "rplcSendType")));
+                    productCodes.add(Const.MsgProductCode.getCodeByName(CommonUtils.getStrValue(params, "rplcSendType")));
                 }
 
                 sParam = new HashMap<>();

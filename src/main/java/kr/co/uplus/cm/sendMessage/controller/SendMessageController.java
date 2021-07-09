@@ -250,11 +250,11 @@ public class SendMessageController {
                 BigDecimal rmAmount = sendMsgService.getRmAmount(params);
                 //개당 가격 조회
                 List<String> productCodes = new ArrayList<String>();
-                productCodes.add(Const.MsgProductCode.getType(Const.Ch.PUSH));
+                productCodes.add(Const.MsgProductCode.getCodeByName(Const.Ch.PUSH));
                 if(params.containsKey("rplcSendType")
                         && !CommonUtils.isEmptyValue(params, "rplcSendType")
                         && !StringUtils.equals((CharSequence) params.get("rplcSendType"), "NONE")) {
-                    productCodes.add(Const.MsgProductCode.getType(CommonUtils.getStrValue(params, "rplcSendType")));
+                    productCodes.add(Const.MsgProductCode.getCodeByName(CommonUtils.getStrValue(params, "rplcSendType")));
                 }
 
                 sParam = new HashMap<>();
@@ -396,7 +396,7 @@ public class SendMessageController {
                 BigDecimal rmAmount = sendMsgService.getRmAmount(params);
                 //개당 가격 조회
                 List<String> productCodes = new ArrayList<String>();
-                productCodes.add(Const.MsgProductCode.getType(Const.Ch.SMS));
+                productCodes.add(Const.MsgProductCode.getCodeByName(Const.Ch.SMS));
 
                 sParam = new HashMap<>();
                 sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
@@ -497,7 +497,7 @@ public class SendMessageController {
                 BigDecimal rmAmount = sendMsgService.getRmAmount(params);
                 //개당 가격 조회
                 List<String> productCodes = new ArrayList<String>();
-                productCodes.add(Const.MsgProductCode.getType(Const.Ch.MMS));
+                productCodes.add(Const.MsgProductCode.getCodeByName(Const.Ch.MMS));
 
                 sParam = new HashMap<>();
                 sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
@@ -639,18 +639,18 @@ public class SendMessageController {
                 //남은 금액 조회
                 BigDecimal rmAmount = sendMsgService.getRmAmount(params);
                 //개당 가격 조회(frendtalkText/frendtalkImage/frendtalkWide)
-                String productType = Const.MsgProductCode.getType("FRENDTALK_TEXT");
+                String productType = Const.MsgProductCode.FRENDTALK_TEXT.getCode();
                 if(StringUtils.equals(requestData.getWideImageYn(), Const.COMM_YES)) {
-                    productType = Const.MsgProductCode.getType("FRENDTALK_WIDE");
+                    productType = Const.MsgProductCode.FRENDTALK_WIDE.getCode();
                 } else if(requestData.getImage() != null && StringUtils.isNotBlank(requestData.getImage().getImageUrl())) {
-                    productType = Const.MsgProductCode.getType("FRENDTALK_IMAGE");
+                    productType = Const.MsgProductCode.FRENDTALK_IMAGE.getCode();
                 }
                 List<String> productCodes = new ArrayList<String>();
                 productCodes.add(productType);
                 if(params.containsKey("rplcSendType")
                         && !CommonUtils.isEmptyValue(params, "rplcSendType")
                         && !StringUtils.equals((CharSequence) params.get("rplcSendType"), "NONE")) {
-                    productCodes.add(Const.MsgProductCode.getType(CommonUtils.getStrValue(params, "rplcSendType")));
+                    productCodes.add(Const.MsgProductCode.getCodeByName(CommonUtils.getStrValue(params, "rplcSendType")));
                 }
 
                 sParam = new HashMap<>();
@@ -795,11 +795,11 @@ public class SendMessageController {
                 BigDecimal rmAmount = sendMsgService.getRmAmount(params);
                 //개당 가격 조회
                 List<String> productCodes = new ArrayList<String>();
-                productCodes.add(Const.MsgProductCode.getType(Const.Ch.ALIMTALK));
+                productCodes.add(Const.MsgProductCode.getCodeByName(Const.Ch.ALIMTALK));
                 if(params.containsKey("rplcSendType")
                         && !CommonUtils.isEmptyValue(params, "rplcSendType")
                         && !StringUtils.equals((CharSequence) params.get("rplcSendType"), "NONE")) {
-                    productCodes.add(Const.MsgProductCode.getType(CommonUtils.getStrValue(params, "rplcSendType")));
+                    productCodes.add(Const.MsgProductCode.getCodeByName(CommonUtils.getStrValue(params, "rplcSendType")));
                 }
 
                 sParam = new HashMap<>();
