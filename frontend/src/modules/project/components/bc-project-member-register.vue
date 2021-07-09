@@ -12,7 +12,6 @@
 							<select class="selectStyle2 inline-block float-left" style="width:20%" v-model="searchTextType" title="이용권한 선택란">
 								<option value="userName">사용자명</option>
 								<option value="loginId">아이디</option>
-								<option value="approvalStatus">이용권한</option>
 							</select>
 							<div style="width:78%" class="of_h inline-block float-right">
 								<input type="text" class="inputStyle" style="width:70%" v-model="searchText" title="사용자 ID 입력란">

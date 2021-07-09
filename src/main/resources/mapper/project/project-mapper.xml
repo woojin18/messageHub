@@ -10,14 +10,13 @@
 		,		A.PROJECT_DESC
 		,		A.PAY_TYPE
 		,		CASE 
-					WHEN A.PAY_TYPE = 'Y' THEN '선불'
-					WHEN A.PAY_TYPE = 'N' THEN '후불'
+					WHEN A.PAY_TYPE = 'PRE' THEN '선불'
+					WHEN A.PAY_TYPE = 'POST' THEN '후불'
 					ELSE ''
 				END AS PAY_TYPE_NAME
 		,		A.BILL_ID
 		,		A.SMART_CH_CODE
 		,		A.SUBBILL_YN
-		,		A.SUBBILL_START_DAY
 		,		date_format(A.REG_DT, '%Y-%m-%d') AS REG_DT
 		,		A.UPD_DT
 		,		A.USE_YN

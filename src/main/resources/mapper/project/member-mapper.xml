@@ -54,7 +54,6 @@
 					WHERE	ROLE_CD = B.ROLE_CD
 					AND		SVC_TYPE_CD IN ('AC','UC')
 				) AS ROLE_NAME
-		,		B.RESEND_TITLE
 		,		B.REP_PROJECT_ID
 		FROM cm_console.CM_PROJECT_USER A
 		INNER JOIN (SELECT @rownum:=0) T2
@@ -136,9 +135,24 @@
 	 -->
 	<select id="selectProjectUserListCnt" resultType="int">
 		/* member.selectProjectUserListCnt 사용자 리스트 카운트 조회 */
-		SELECT	COUNT(A.USER_ID) AS CNT
+		SELECT COUNT(1) AS CNT FROM (
+			SELECT	@ROWNUM := @ROWNUM + 1 AS ROWNUM
+			,	A.USER_NAME
+			,	A.USER_ID
+			,	A.ROLE_CD
+			,	A.APPROVAL_STATUS
+			,	(	SELECT	CODE_NAME_1
+					FROM	cm_bo.CM_CODE
+					WHERE	CODE_TYPE_CD = 'APPROVAL_STATUS'
+					AND		CODE_VAL_1 = A.APPROVAL_STATUS
+				) AS APPROVAL_STATUS_NAME
+			,	A.LOGIN_ID
+			,	A.HP_NUMBER
+			,	A.CORP_ID
 			FROM	cm_console.CM_USER A
+			, (SELECT @rownum:=0) T2
 			WHERE	A.DEL_YN	= 'N'
+			AND		A.ROLE_CD != 'OWNER'
 			AND		A.CORP_ID	= #{corpId}
 			<if test="searchText != '' and searchText != null ">
 				<if test="searchTextType == 'loginId' ">
@@ -151,6 +165,17 @@
 			AND		A.APPROVAL_STATUS = #{searchText}
 				</if>
 			</if>
+		) A LEFT OUTER JOIN (	SELECT	A.USER_ID
+								FROM cm_console.CM_PROJECT_USER A
+								INNER JOIN cm_console.CM_USER B
+								WHERE A.USER_ID = B.USER_ID
+								AND B.DEL_YN = 'N'
+								AND A.PROJECT_ID = #{projectId}
+								AND A.CORP_ID = #{corpId}
+								AND B.ROLE_CD IN ('ADMIN', 'USER')
+							) B
+		ON A.USER_ID = B.USER_ID
+		WHERE B.USER_ID IS NULL
 	</select>
 
 	<select id="selectProjectUserList" resultType="camel">
@@ -172,6 +197,7 @@
 			FROM	cm_console.CM_USER A
 			, (SELECT @rownum:=0) T2
 			WHERE	A.DEL_YN	= 'N'
+			AND		A.ROLE_CD != 'OWNER'
 			AND		A.CORP_ID	= #{corpId}
 			<if test="searchText != '' and searchText != null ">
 				<if test="searchTextType == 'loginId' ">
@@ -191,7 +217,7 @@
 								AND B.DEL_YN = 'N'
 								AND A.PROJECT_ID = #{projectId}
 								AND A.CORP_ID = #{corpId}
-								AND B.ROLE_CD IN ('ADMIN', 'USER', 'OWNER')
+								AND B.ROLE_CD IN ('ADMIN', 'USER')
 							) B
 		ON A.USER_ID = B.USER_ID
 		WHERE B.USER_ID IS NULL

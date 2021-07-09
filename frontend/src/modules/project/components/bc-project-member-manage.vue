@@ -7,21 +7,21 @@
 					<div class="menuBox">
 						<div class="of_h">
 							<h4 class="inline-block" style="width:6%">사용자명</h4>
-							<input type="text" v-model="searchData.userName" class="inputStyle" style="width:14%" title="사용자명 입력란">
+							<input type="text" v-model="searchData.userName" class="inputStyle" style="width:14%" title="사용자명 입력란" @keypress.enter="fnSearch(1)">
 							<h4 class="inline-block ml30" style="width:5%">아이디</h4>
-							<input type="text" v-model="searchData.loginId" class="inputStyle" style="width:14%" title="아이디 입력란">
+							<input type="text" v-model="searchData.loginId" class="inputStyle" style="width:14%" title="아이디 입력란" @keypress.enter="fnSearch(1)">
 							<h4 class="inline-block ml30" style="width:6%">이용권한</h4>
-							<select v-model="searchData.roleCd" class="selectStyle2" style="width:14%" title="이용권한 선택란">
+							<select v-model="searchData.roleCd" class="selectStyle2" style="width:14%" title="이용권한 선택란" @change="fnSearch">
 								<option value="">전체</option>
 								<option value="OWNER">Owner</option>
 								<option value="ADMIN">Admin</option>
 								<option value="USER">User</option>
 							</select>
 							<h4 class="inline-block ml30" style="width:3%">상태</h4>
-							<select v-model="searchData.approvalStatus" id="selectApprovalStatus" class="selectStyle2" style="width:14%" title="상태 선택란">
+							<select v-model="searchData.approvalStatus" id="selectApprovalStatus" class="selectStyle2" style="width:14%" title="상태 선택란"  @change="fnSearch">
 								<option value="">전체</option>
 							</select>
-							<a @click="fnSearch()" class="btnStyle1 float-right" activity="READ" title="검색">검색</a>
+							<a @click="fnSearch(1)" class="btnStyle1 float-right" activity="READ" title="검색">검색</a>
 						</div>
 					</div>
 				</div>
@@ -66,7 +66,7 @@
 								</thead>
 								<tbody>
 									<tr v-for="(data, index) in memberList" :key="index">
-										<td class="text-center vertical-middle">{{ data.rownum + offset }}</td>
+										<td class="text-center vertical-middle">{{totCnt-offset-data.rownum+1}}</td>
 										<td class="text-center vertical-middle">{{ data.userName }}</td>
 										<td class="text-center lc-1 vertical-middle">{{ data.loginId }}</td>
 										<td class="text-center lc-1 vertical-middle">{{ data.roleCd}}</td>
@@ -75,18 +75,6 @@
 											<a @click="fnDeleteMemberPop(data)" class="btnStyle1 borderLightGray small mr5" title="삭제">삭제</a>
 										</td>
 									</tr>
-									<!--
-									<tr>
-										<td class="text-center vertical-middle">4</td>
-										<td class="text-center vertical-middle">윤상훈</td>
-										<td class="text-center lc-1 vertical-middle">designhon@gmail.com</td>
-										<td class="text-center lc-1 vertical-middle">OWNER</td>
-										<td class="text-center lc-1 vertical-middle">정상</td>
-										<td class="text-center end vertical-middle">
-											<a href="#self" class="btnStyle1 borderLightGray small mr5" data-toggle="modal" data-target="#delWrap" title="삭제">삭제</a>
-										</td>
-									</tr>
-									-->
 									<tr v-if="memberList.length == 0">
 										<td class="text-center"></td>
 										<td class="text-center" colspan="7">검색된 내용이 없습니다.</td>
@@ -102,9 +90,6 @@
 				<PageLayer @fnClick="fnPageClick" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
 			</div>
 			<!-- pagination End-->
-			<!--
-			<footer>CopyrightⓒLG Plus Corp. All Rights Reserved.</footer>
-			-->
 		</article>
 
 		<!-- Member register Modal -->
@@ -165,7 +150,7 @@ data() {
 	},
 	mounted() {
 		this.fnStatusInit();
-		this.fnSearch();
+		this.fnSearch(1);
 	},
 	watch: {
 	},
@@ -173,7 +158,7 @@ data() {
 		fnSearch(pageNum) {
 			this.$refs.updatePaging.fnAllDecrease();
 			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
-			this.fnSearchMemberList();
+			//this.fnSearchMemberList();
 		},
 		//멤버 조회
 		async fnSearchMemberList() {
@@ -185,7 +170,6 @@ data() {
 
 			await memberApi.selectProjectMemberList(params).then(response =>{
 				const result = response.data;
-
 				if(result.success) {
 					this.memberList = Object.assign([], result.data);
 					this.totCnt = result.pageInfo.totCnt;

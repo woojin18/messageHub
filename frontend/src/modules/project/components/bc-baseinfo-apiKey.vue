@@ -95,7 +95,7 @@
 						<div class="of_h consolMarginTop">
 							<div class="float-left" style="width:24%"><h5>결과수신여부</h5></div>
 							<div class="float-left" style="width:76%">
-								<input type="radio" name="rptYn" value="Y" id="agree3-5" checked=""> <label for="agree3-6" class="mr30">예</label>
+								<input type="radio" name="rptYn" value="Y" id="agree3-5" checked=""> <label for="agree3-5" class="mr30">예</label>
 								<input type="radio" name="rptYn" value="N" id="agree3-6"> <label for="agree3-6">아니오</label>
 							</div>
 						</div>
@@ -382,7 +382,7 @@ export default {
 				'status'				: jQuery('#selectStatus option:selected').val(),
 				'rptYn'					: jQuery('input[name="rptYn"]:checked').val(),
 				'lineType'				: jQuery('#selectLineType option:selected').val(),
-				'dupChkYn'				: jQuery('input[name="rptYn"]:checked').val(),
+				'dupChkYn'				: jQuery('input[name="dupChkYn"]:checked').val(),
 				'webSenderYn'			: jQuery('input[name="webSenderYn"]:checked').val(),
 				'daySenderLimitAmount'	: jQuery('#daySenderLimitAmount').val(),
 				'monSenderLimitAmount'	: jQuery('#monSenderLimitAmount').val(),

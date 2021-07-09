@@ -59,7 +59,7 @@
           </thead>
           <tbody>
             <tr v-for="(data, index) in data" :key="index">
-              <td class="text-center">{{index+1}}</td>
+              <td class="text-center">{{totCnt-offset-data.rownum+1}}</td>
               <td class="text-center">{{data.amount | formatPrice}}</td>
               <td class="text-center">{{data.cashType}}</td>
               <td class="text-center">{{data.payMtd}}</td>

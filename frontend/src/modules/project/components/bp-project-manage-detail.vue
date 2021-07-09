@@ -7,7 +7,8 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div>
-						<h2>프로젝트 등록</h2>
+						<h2 v-if="this.save_status === 'C'">프로젝트 등록</h2>
+            <h2 v-if="this.save_status != 'C'">프로젝트 상세</h2>
 						<hr>
 						<div class="of_h">
 							<h5 class="inline-block" style="width:20%">프로젝트명 *</h5>
@@ -175,10 +176,12 @@ export default {
         jQuery('input:radio[name=subbillYn]:input[value="' + this.row_data.subbillYn + '"]').prop("checked", true);
         if( this.row_data.subbillYn === 'Y' ){
           this.subbillStartDayForDiv = 'Y';
+          jQuery("#subbillStartDay").val(this.row_data.subbillStartDay);
         } else {
           this.subbillStartDayForDiv = 'N';
+          jQuery("#subbillStartDay").val("");
         }
-        jQuery("#subbillStartDay").val(this.row_data.subbillStartDay);
+        //jQuery("#subbillStartDay").val(this.row_data.subbillStartDay);
 
         jQuery('input:radio[name=radioRcs]:input[value="' + this.row_data.radioYn + '"]').prop("checked", true);
         jQuery('input:radio[name=radioMms]:input[value="' + this.row_data.smsmmsYn + '"]').prop("checked", true);

@@ -12,10 +12,14 @@
 	<select id="selectRcsBrandList" resultType="camel">
 		/* channel.selectRcsBrandList */
 		SELECT	*
+		,		@ROWNUM := @ROWNUM + 1 AS ROWNUM
 		FROM	(
 			<include refid="rcsBrandList"/>
-		) AA
+		) AA, (SELECT @ROWNUM:=0) TMP
 		ORDER BY AA.REG_DT DESC
+        <if test='pagingYn == "Y" '>
+        LIMIT #{offset}, #{listSize}
+        </if>
 	</select>
 	
 	<sql id="rcsBrandList">

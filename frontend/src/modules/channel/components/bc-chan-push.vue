@@ -3,7 +3,7 @@
 		<article>
 			<h4 class="inline-block">Push APP ID 관리</h4>
 			<div class="float-right h4Button">
-				<a @click="fnReg" class="btnStyle2 borderGray">발신번호 등록 안내</a>
+				<a @click="fnReg" class="btnStyle2 borderGray">Push App 등록</a>
 			</div>
 			<p class="color3"><i class="far fa-info-circle"></i> APP ID는 5개까지 발급받을 수 있으며, 서비스 이용 시 인증에 사용됩니다.</p>
 

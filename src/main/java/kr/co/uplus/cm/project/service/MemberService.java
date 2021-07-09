@@ -132,8 +132,10 @@ public class MemberService {
 		ArrayList<String> userList = (ArrayList<String>)map.get("userList");
 		
 		for (String userId : userList) {
-			map.put("userId", userId);
-			resultCnt = generalDao.insertGernal(DB.QRY_INSERT_PROJECT_MEMBER, map);
+			HashMap<String, Object> saveMap = new HashMap<String, Object>();
+			saveMap.putAll(map);
+			saveMap.put("userId", userId);
+			resultCnt = generalDao.insertGernal(DB.QRY_INSERT_PROJECT_MEMBER, saveMap);
 		}
 		
 		if (resultCnt <= 0) {

@@ -22,8 +22,8 @@
                   <option value="brandId">브랜드 아이디</option>
                   <option value="brandName">브랜드 명</option>
                 </select>
-								<input id="srcBrandText" type="text" class="inputStyle ml20 vertical-baseline" style="width:65%" v-model="srcBrandText">
-								<a @click="fnSearch2" class="btnStyle2 float-right" activity="READ">검색</a>
+								<input id="srcBrandText" type="text" class="inputStyle ml20 vertical-baseline" style="width:65%" v-model="srcBrandText" @keypress.enter="fnSearch(1)">
+								<a @click="fnSearch(1)" class="btnStyle2 float-right" activity="READ">검색</a>
 							</div>						
 						</div>
 					</div>
@@ -34,9 +34,7 @@
 				<div class="row mt20">
 					<div class="col-xs-12">		
 						<div class="of_h">
-							<div class="float-right">
-								<a @click="fnRcsBrandReg" class="btnStyle3 gray font13 minWidth120" activity="SAVE">브랜드 등록</a>
-							</div>
+							
 						</div>
 					</div>			
 				</div>
@@ -47,7 +45,14 @@
 				<div class="row mt20">
 					<div class="col-xs-12">
             <!-- 페이징 카운트 -->
-						<PagingCnt :pageInfo.sync="pageInfo" />
+						<div class="of_h inline">
+              <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+                <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
+              </div>
+            </div>
+            <div class="float-right">
+								<a @click="fnRcsBrandReg" class="btnStyle3 gray font13 minWidth120" activity="SAVE">브랜드 등록</a>
+							</div>
             <!-- 페이징 카운트 -->
             <!-- 본문 -->
             <table id="list" class="table_skin1 bt-000 tbl-striped">
@@ -65,10 +70,10 @@
               <tbody>
                 <tr v-for="(row, index) in data" :key="index">
                   <td>
-                    {{ index + 1 }}
+                    {{totCnt-offset-row.rownum+1}}
                   </td>
                   <td>
-                    <a class="color:blue; text-decoration: underline; cursor:pointer;" @click="fnRcsBrandDetail(row)">{{ row.brandName }}</a>
+                    <a class="text-decoration: underline !important; cursor:pointer !important;" @click="fnRcsBrandDetail(row)">{{ row.brandName }}</a>
                   </td>
                   <td>
                     {{ row.brandId }}
@@ -98,7 +103,9 @@
 				</div>
         <!-- 본문 -->
 				<!-- 페이징 -->
-				<Paging :pageInfo.sync="pageInfo" />
+				<div id="pageContent">
+          <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
+        </div>
 				<!-- 페이징 -->
 
 
@@ -117,15 +124,15 @@ import Api from '../service/api'
 import modalTmplt from "./bp-chan-rcs-tmplt-cnt.vue";
 import modalCallback from "./bp-chan-rcs-callback-cnt.vue";
 
-import Paging from "@/modules/commonUtil/components/bc-paging"
-import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt"
+import SelectLayer from '@/components/SelectLayer.vue';
+import PageLayer from '@/components/PageLayer.vue';
 
 export default {
   components: {
-      Paging
-    , PagingCnt
-    , modalTmplt
-    , modalCallback
+    PageLayer,
+    SelectLayer,
+    modalTmplt,
+    modalCallback
   },
   data() {
     return {
@@ -135,7 +142,10 @@ export default {
       srcBrandText : "",
       // 리스트 
 			data : {},
-			pageInfo: {},
+			listSize : 10,  // select 박스 value (출력 갯수 이벤트)
+			pageNo : 1,  // 현재 페이징 위치
+			totCnt : 0,  //전체 리스트 수
+			offset : 0, //페이지 시작점
 
       // 프로젝트 정보
       projectId : '',
@@ -156,42 +166,31 @@ export default {
 			"rowNum"    : 1           //총개수
 		};
 
-    this.fnSearch();
+    this.fnSearch(1);
   },
   methods: {
+		// select 박스 선택시 리스트 재출력
+		fnSelected(listSize) {
+			this.listSize = Number(listSize);
+			this.$refs.updatePaging.fnAllDecrease();
+		},
     // 검색
-    fnSearch2() {
-      this.pageInfo.selPage = 1;
-      var params = {
-        "projectId"     : this.projectId,
-        "srcBrandType"  : this.srcBrandType,
-        "srcBrandText"  : this.srcBrandText,
-        "pageInfo"    	: this.pageInfo
-      }
-       
-      Api.selectRcsBrandList(params).then(response =>{
-        var result = response.data;
-				if(result.success) {
-          this.data = result.data; 
-          this.pageInfo = result.pageInfo;
-				}
-      });
-    },
-    // 검색
-    fnSearch() {
+    fnSearch(pageNo) {
       
       var params = {
         "projectId"     : this.projectId,
         "srcBrandType"  : this.srcBrandType,
         "srcBrandText"  : this.srcBrandText,
-        "pageInfo"    	: this.pageInfo
+				"pageNo"		: (this.$gfnCommonUtils.defaultIfEmpty(pageNo, '1'))*1,
+				"listSize"		: this.listSize
       }
-       
+
       Api.selectRcsBrandList(params).then(response =>{
         var result = response.data;
 				if(result.success) {
           this.data = result.data; 
-          this.pageInfo = result.pageInfo;
+					this.totCnt = result.pageInfo.totCnt;
+          this.offset = result.pageInfo.offset;
 				}
       });
     },

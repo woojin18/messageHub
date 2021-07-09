@@ -28,14 +28,14 @@
             <div class="mt20">
               <div class="of_h">
                 <h4 class="font-normal inline-block" style="width:10%">프로젝트 명</h4>
-                <input id="srcProjectName" type="text" class="inputStyle inline-block" style="width:30%" v-model="srcProjectName">
+                <input id="srcProjectName" type="text" class="inputStyle inline-block" style="width:30%" v-model="srcProjectName"  @keypress.enter="fnSearch()">
                 <h4 class="font-normal inline-block ml40" style="width:10%">사용여부</h4>
                 <select id="srcUseYn" class="selectStyle2 inline-block" style="width:30%" v-model="srcUseYn" @change="fnSearch">
                   <option value="">전체</option>
                   <option value="Y">Y</option>
                   <option value="N">N</option>
                 </select>
-                <a @click="fnSearch" class="btnStyle2 float-right" activity="SAVE">검색</a>
+                <a @click="fnSearch" class="btnStyle2 float-right" activity="READ">검색</a>
               </div>	
             </div>
           </div>
