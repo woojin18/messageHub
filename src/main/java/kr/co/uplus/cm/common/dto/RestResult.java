@@ -68,7 +68,7 @@ public class RestResult<T> implements IResult<ResultCode, T> {
 
 	/**
 	 * 페이징 구성요성 return
-	 * 
+	 *
 	 * @param params
 	 * @return { pagingYn-페이징여부 pageNo-페이지번호 listSize-페이지당 리스트노출 수 offset-시작점 }
 	 * @throws Exception
@@ -101,7 +101,7 @@ public class RestResult<T> implements IResult<ResultCode, T> {
 
 	public RestResult<T> setFail() {
 		this.success = false;
-		this.message = "시스템 오류입니다. 잠시후 다시시도해주세요.";
+		this.message = "시스템 오류입니다. 잠시후 다시 시도해주세요.";
 		return this;
 	}
 

@@ -6,6 +6,7 @@
     <sql id ="whereSelectIntegratedSendList">
         <!-- AND A.CORP_ID = #{corpId} -->
         AND A.TMPLT_STATUS = 'COMPLETE'
+        AND A.USE_YN = 'Y'
         AND A.TMPLT_TYPE = 'M'
         AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
         AND JSON_CONTAINS(JSON_ARRAY(<foreach collection="useChGrps" item="item" separator=",">#{item}</foreach>), JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType'), '$') > 0
@@ -35,35 +36,64 @@
     </select>
 
     <select id="selectIntegratedSendList" parameterType="hashmap" resultType="camel">
-    /* 통합발송 템플릿 리스트 조회 */
-		SELECT  @rownum:=@rownum+1 AS ROW_NUM
-		      , A.PROJECT_ID
-		      , CASE WHEN A.PROJECT_ID = 'ALL' THEN '프로젝트 공용'
-		             ELSE '프로젝트 개별'
-		        END AS otherProjectUseYn
-		      , A.TMPLT_CODE
-		      , A.MSG_KIND
-		      , cm_console.fnc_get_cd_name('MSG_KIND', A.MSG_KIND, 1) AS MSG_KIND_NAME
-		      , A.MSG_TYPE
-		      , cm_console.fnc_get_cd_name('MSG_TYPE', A.MSG_TYPE, 1) AS MSG_TYPE_NAME
-		      , A.TMPLT_TITLE
-		      , A.TMPLT_INFO
-		      , A.TMPLT_TYPE
-		      , A.USE_YN
- 		      <!-- , A.TMPLT_INFO ->> '$[0].chTypeList' AS TMPLT_CHANNEL -->
-		      , REPLACE(A.TMPLT_INFO ->> '$[0].chTypeList', 'SMSMMS', 'SMS/MMS') AS TMPLT_CHANNEL
-		      , JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType') CHECKED_CHANNEL
-		      , A.REG_ID
-		      , cm_console.fnc_get_user_name(A.REG_ID) AS REG_NM
-		      , A.REG_DT
-		FROM (SELECT @rownum:=0) TMP,
+    /* integratedSend.selectIntegratedSendList - 통합발송 템플릿 리스트 조회 */
+        SELECT  @rownum:=@rownum+1 AS ROW_NUM
+              , A.PROJECT_ID
+              , CASE WHEN A.PROJECT_ID = 'ALL' THEN '프로젝트 공용'
+                     ELSE '프로젝트 개별'
+                END AS otherProjectUseYn
+              , A.TMPLT_CODE
+              , A.MSG_KIND
+              , cm_console.fnc_get_cd_name('MSG_KIND', A.MSG_KIND, 1) AS MSG_KIND_NAME
+              , A.MSG_TYPE
+              , cm_console.fnc_get_cd_name('MSG_TYPE', A.MSG_TYPE, 1) AS MSG_TYPE_NAME
+              , A.TMPLT_TITLE
+              , A.TMPLT_INFO
+              , A.TMPLT_TYPE
+              , A.USE_YN
+              <!-- , A.TMPLT_INFO ->> '$[0].chTypeList' AS TMPLT_CHANNEL -->
+              , REPLACE(A.TMPLT_INFO ->> '$[0].chTypeList', 'SMSMMS', 'SMS/MMS') AS TMPLT_CHANNEL
+              , JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType') CHECKED_CHANNEL
+              , A.REG_ID
+              , cm_console.fnc_get_user_name(A.REG_ID) AS REG_NM
+              , A.REG_DT
+        FROM (SELECT @rownum:=0) TMP,
             cm.CM_SMART_TMPLT A
-		WHERE 1=1
-		<include refid="whereSelectIntegratedSendList"/>
-		ORDER BY A.REG_DT DESC
+        WHERE 1=1
+        <include refid="whereSelectIntegratedSendList"/>
+        ORDER BY A.REG_DT DESC
         <if test='pagingYn == "Y" '>
         LIMIT #{offset}, #{listSize}
         </if>
+    </select>
+
+    <select id="selectIntegTmpltInfo" parameterType="hashmap" resultType="camel">
+    /* integratedSend.selectIntegTmpltInfo - 통합발송 템플릿 정보 조회 */
+        SELECT
+            CST.TMPLT_CODE
+            , CST.CORP_ID
+            , CST.PROJECT_ID
+            , CST.MSG_KIND
+            , cm_console.fnc_get_cd_name('MSG_KIND', CST.MSG_KIND, 1) AS MSG_KIND_NAME
+            , CST.MSG_TYPE
+            , cm_console.fnc_get_cd_name('MSG_TYPE', CST.MSG_TYPE, 1) AS MSG_TYPE_NAME
+            , CST.TMPLT_TITLE
+            , CST.TMPLT_INFO
+            , CST.TMPLT_TYPE
+            , CST.TMPLT_STATUS
+            , CST.PRODUCT_CODE
+            , CST.REG_ID
+            , CST.REG_DT
+            , CST.USE_YN
+            , CST.UPD_ID
+            , CST.UPD_DT
+        FROM cm.CM_SMART_TMPLT CST
+        WHERE CST.TMPLT_CODE = #{tmpltCode}
+            AND CST.CORP_ID = #{corpId}
+            AND CST.PROJECT_ID IN ('ALL', #{projectId})
+            AND CST.USE_YN = 'Y'
+            AND CST.TMPLT_STATUS = 'COMPLETE'
+            AND CST.TMPLT_TYPE = 'M'
     </select>
 
 </mapper>

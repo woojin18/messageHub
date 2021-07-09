@@ -221,7 +221,7 @@ export default {
     return {
       alimTalkRejectReasonOpen : false,
       rejectReason: '',
-      tmpltStatCodeAllSelected: false,
+      tmpltStatCodeAllSelected: true,
       listAllChecked: false,
       listChkBox: [],
       searchDateInterval: 7,
@@ -299,6 +299,7 @@ export default {
               vm.tmpltStatCodeList.push(codeInfo);
             }
           });
+          this.fnSearchtmpltStatCodeChkAll();
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }

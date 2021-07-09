@@ -65,8 +65,10 @@ export default {
       unescapeXss(str){
         if(this.isEmpty(str)) return str;
         let unescapedStr = str.replace(/&gt;/g, '>')
-                               .replace(/&lt;/g, '<')
-                               .replace(/&#39;/g, "'");
+                              .replace(/&lt;/g, '<')
+                              .replace(/&#40;/g, '(')
+                              .replace(/&#41;/g, ')')
+                              .replace(/&#39;/g, "'");
         return unescapedStr;
       },
       unescapeXssFields(targetObj, fields){

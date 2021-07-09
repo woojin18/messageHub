@@ -182,7 +182,7 @@ export default {
   },
   data() {
     return {
-      othPrjUseYnAllSelected: false,
+      othPrjUseYnAllSelected: true,
       listAllChecked: false,
       listChkBox: [],
       listSize : 10,  // select 박스 value (출력 갯수 이벤트)
@@ -194,6 +194,7 @@ export default {
     }
   },
   mounted() {
+    this.fnSearchOthPrjUseYnChkAll();
     this.fnSetIntervalSearchDate(this.searchDateInterval);
     this.fnPageNoResetSearch();
   },

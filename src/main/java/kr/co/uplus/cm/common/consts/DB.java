@@ -89,6 +89,8 @@ public class DB {
 	public final static String QRY_SELECT_ALL_APP_USER_LIST = "sendMessage.selectAllAppUserList";
 	public final static String QRY_SELECT_KKO_SENDER_KEY_LIST = "sendMessage.selectKkoSenderKeyList";
 	public final static String QRY_SELECT_KKO_SENDER_GRP_KEY_LIST = "sendMessage.selectKkoSenderGrpKeyList";
+	//통합발송
+	public final static String QRY_SELECT_INTEG_TMPLT_INFO = "integratedSend.selectIntegTmpltInfo";
 	// RCS 채널 브랜드 정보
 	public final static String QRY_SELECT_RCS_BRANDLIST_CNT = "channel.selectRcsBrandListCnt";
 	public final static String QRY_SELECT_RCS_BRANDLIST = "channel.selectRcsBrandList";
