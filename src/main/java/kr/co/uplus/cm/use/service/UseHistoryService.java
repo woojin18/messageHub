@@ -139,7 +139,7 @@ public class UseHistoryService {
 	@SuppressWarnings("unchecked")
 	public RestResult<?> selectCorpProductUnitDetail(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-		List<Object> rtnList = new ArrayList<Object>();
+		Map<String, Object> returnMap = new HashMap<String, Object>();
 		List<Object> list = new ArrayList<Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
@@ -147,6 +147,11 @@ public class UseHistoryService {
 		int isExists = generalDao.selectGernalCount(DB.QRY_SELECT_ISEXISTS_CORP_PRODUCTUNIT, params);
 		paramMap.put("isExists", isExists);
 		paramMap.putAll(params);
+		
+		List<Object> rcsList = new ArrayList<Object>();
+		List<Object> pushList = new ArrayList<Object>();
+		List<Object> smsmmsList = new ArrayList<Object>();
+		List<Object> kkoList = new ArrayList<Object>();
 		
 		list = generalDao.selectGernalList(DB.QRY_SELECT_CORP_PRODUCTUNIT, paramMap);
 		for(Object map : list) {
@@ -172,7 +177,16 @@ public class UseHistoryService {
 					rtnMap.put("tobeInfoLength", jsonList.length());		// 후불 요금 jsonlist length
 					rtnMap.put("tobeInfoIdx", cnt);							// 후불 요금 index
 					rtnMap.putAll(listMap);
-					rtnList.add(rtnMap);
+					if( "RCS".equals(listMap.get("ch")) ) {
+						rcsList.add(rtnMap);
+					} else if( "PUSH".equals(listMap.get("ch")) ) {
+						pushList.add(rtnMap);
+					} else if( "SMS".equals(listMap.get("ch")) || "MMS".equals(listMap.get("ch")) ) {
+						smsmmsList.add(rtnMap);
+					} else if( "ALIMTALK".equals(listMap.get("ch")) || "FRIENDTALK".equals(listMap.get("ch")) ) {
+						kkoList.add(rtnMap);
+					}
+					//rtnList.add(rtnMap);
 					cnt++;
 				}
 			
@@ -184,10 +198,26 @@ public class UseHistoryService {
 				listMap.put("feeEndCnt", "");
 				listMap.put("tobeInfoLength", 0);
 				listMap.put("tobeInfoIdx", 0);
-				rtnList.add(listMap);
+				if( "RCS".equals(listMap.get("ch")) ) {
+					rcsList.add(listMap);
+				} else if( "PUSH".equals(listMap.get("ch")) ) {
+					pushList.add(listMap);
+				} else if( "SMS".equals(listMap.get("ch")) || "MMS".equals(listMap.get("ch")) ) {
+					smsmmsList.add(listMap);
+				} else if( "ALIMTALK".equals(listMap.get("ch")) || "FRIENDTALK".equals(listMap.get("ch")) ) {
+					kkoList.add(listMap);
+				}
+				//rtnList.add(listMap);
 			}
 		}
-		rtn.setData(rtnList);
+		
+		returnMap.put("rcsList", rcsList);
+		returnMap.put("pushList", pushList);
+		returnMap.put("smsmmsList", smsmmsList);
+		returnMap.put("kkoList", kkoList);
+		
+		rtn.setData(returnMap);
+		
 		return rtn;
 	}
 	

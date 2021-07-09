@@ -1,47 +1,132 @@
 <template>
 	<div class="mt20">
 		<article>
-			<table class="table_skin1 dataTable">
+			<h4 class="topH4">Push</h4>
+			<table class="table_skin1 bt-000 tbl-striped">
 				<colgroup>
-					<col style="width:10%">
-					<col style="width:15%">
-					<col style="width:15%">
-					<col style="width:15%">
-					<col style="width:15%">
-					<col style="width:15%">
-					<col style="width:15%">
-			</colgroup>
-			<thead>
-				<tr>
-					<th class="text-center lc-1">채널구분</th>
-					<th class="text-center lc-1">채널명</th>
-					<th class="text-center lc-1">상품코드</th>
-					<th class="text-center lc-1">상품별</th>
-					<th class="text-center lc-1">선물 건별 요금<br/>(VAT별도)</th>
-					<th class="text-center lc-1">후불 과금<br/>(월 수신 건)</th>
-					<th class="text-center lc-1 end">후불 요금<br/>(VAT별도)</th>
-				</tr>
-			</thead>
+					<col style="width:25%">
+					<col style="width:25%">
+					<col style="width:25%">
+					<col>
+				</colgroup>
+				<thead>
+					<tr>
+						<th class="text-center lc-1" rowspan="2">상품명</th>
+						<th class="text-center lc-1" rowspan="2">선불 수신 건별 요금<br>(VAT별도)</th>
+						<th class="text-center lc-1 end" colspan="2">후불요금</th>
+					</tr>
+					<tr style="border-top: 1px solid #D5D5D5;">
+						<th class="text-center lc-1">월 수신건</th>
+						<th class="text-center lc-1 end">후불 수신 건별 요금<br>(VAT별도)</th>
+					</tr>
+				</thead>
 				<tbody>
-					<tr v-for="(row, index) in data" :key="index">
-						<td class="text-center" :rowspan="row.tobeInfoLength" v-if="row.tobeInfoIdx == 0 ? true : false">{{ row.smartChProductYn }}</td>
-						<td class="text-center" :rowspan="row.tobeInfoLength" v-if="row.tobeInfoIdx == 0 ? true : false">{{ row.chName}}</td>
-						<td class="text-center" :rowspan="row.tobeInfoLength" v-if="row.tobeInfoIdx == 0 ? true : false">{{ row.productCode }}</td>
-						<td class="text-center" :rowspan="row.tobeInfoLength" v-if="row.tobeInfoIdx == 0 ? true : false">{{ row.productName }}</td>
-						<td class="text-center" :rowspan="row.tobeInfoLength" v-if="row.tobeInfoIdx == 0 ? true : false">
-							<!--
-							 <input type="text" class="inputStyle text-right" style="padding:0; height:20px;" v-model="row.preeFee" oninput="javascript: this.value = this.value.replace(/[^0-9.]/g, '');">
-							 -->
-							 {{ row.preeFee }}
+					<tr v-for="(row, index) in pushList" :key="index">
+						<td class="text-center" style="border-bottom: none;" :rowspan="row.tobeInfoLength" v-if="row.tobeInfoIdx == 0 ? true : false">{{ row.productName}}</td>
+						<td class="text-center" style="border-bottom: none;" :rowspan="row.tobeInfoLength" v-if="row.tobeInfoIdx == 0 ? true : false">
+							 {{ row.preeFee }}원
 						</td>
-						<td class="text-right">{{ row.feeCnt }}</td>
-						<td class="text-center">
-							<!--
-							<input type="text" class="inputStyle text-right" style="padding:0; height:20px;" v-model="row.tobeFee" oninput="javascript: this.value = this.value.replace(/[^0-9.]/g, '');">
-							-->
-							 {{ row.tobeFee }}
+						<td class="text-center">{{ row.feeCnt }}</td>
+						<td class="text-center end">
+							 {{ row.tobeFee }}원
 						</td>
-					</tr>					
+					</tr>	
+				</tbody>
+			</table>
+			<h4 class="topH4 mt30">RCS</h4>
+			<table class="table_skin1 bt-000 tbl-striped">
+				<colgroup>
+					<col style="width:25%">
+					<col style="width:25%">
+					<col style="width:25%">
+					<col>
+				</colgroup>
+				<thead>
+					<tr>
+						<th class="text-center lc-1" rowspan="2">상품명</th>
+						<th class="text-center lc-1" rowspan="2">선불 수신 건별 요금<br>(VAT별도)</th>
+						<th class="text-center lc-1 end" colspan="2">후불요금</th>
+					</tr>
+					<tr style="border-top: 1px solid #D5D5D5;">
+						<th class="text-center lc-1">월 수신건</th>
+						<th class="text-center lc-1 end">후불 수신 건별 요금<br>(VAT별도)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(row, index) in rcsList" :key="index">
+						<td class="text-center" style="border-bottom: none;" :rowspan="row.tobeInfoLength" v-if="row.tobeInfoIdx == 0 ? true : false">{{ row.productName}}</td>
+						<td class="text-center" style="border-bottom: none;" :rowspan="row.tobeInfoLength" v-if="row.tobeInfoIdx == 0 ? true : false">
+							 {{ row.preeFee }}원
+						</td>
+						<td class="text-center">{{ row.feeCnt }}</td>
+						<td class="text-center end">
+							 {{ row.tobeFee }}원
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<h4 class="topH4 mt30">SMS/MMS</h4>
+			<table class="table_skin1 bt-000 tbl-striped">
+				<colgroup>
+					<col style="width:25%">
+					<col style="width:25%">
+					<col style="width:25%">
+					<col>
+				</colgroup>
+				<thead>
+					<tr>
+						<th class="text-center lc-1" rowspan="2">상품명</th>
+						<th class="text-center lc-1" rowspan="2">선불 수신 건별 요금<br>(VAT별도)</th>
+						<th class="text-center lc-1 end" colspan="2">후불요금</th>
+					</tr>
+					<tr style="border-top: 1px solid #D5D5D5;">
+						<th class="text-center lc-1">월 수신건</th>
+						<th class="text-center lc-1 end">후불 수신 건별 요금<br>(VAT별도)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(row, index) in smsmmsList" :key="index">
+						<td class="text-center" style="border-bottom: none;" :rowspan="row.tobeInfoLength" v-if="row.tobeInfoIdx == 0 ? true : false">{{ row.productName}}</td>
+						<td class="text-center" style="border-bottom: none;" :rowspan="row.tobeInfoLength" v-if="row.tobeInfoIdx == 0 ? true : false">
+							 {{ row.preeFee }}원
+						</td>
+						<td class="text-center">{{ row.feeCnt }}</td>
+						<td class="text-center end">
+							 {{ row.tobeFee }}원
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<h4 class="topH4 mt30">KakaoTalk Bizmessage</h4>
+			<table class="table_skin1 bt-000 tbl-striped">
+				<colgroup>
+					<col style="width:25%">
+					<col style="width:25%">
+					<col style="width:25%">
+					<col>
+				</colgroup>
+				<thead>
+					<tr>
+						<th class="text-center lc-1" rowspan="2">상품명</th>
+						<th class="text-center lc-1" rowspan="2">선불 수신 건별 요금<br>(VAT별도)</th>
+						<th class="text-center lc-1 end" colspan="2">후불요금</th>
+					</tr>
+					<tr style="border-top: 1px solid #D5D5D5;">
+						<th class="text-center lc-1">월 수신건</th>
+						<th class="text-center lc-1 end">후불 수신 건별 요금<br>(VAT별도)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(row, index) in kkoList" :key="index">
+						<td class="text-center" style="border-bottom: none;" :rowspan="row.tobeInfoLength" v-if="row.tobeInfoIdx == 0 ? true : false">{{ row.productName}}</td>
+						<td class="text-center" style="border-bottom: none;" :rowspan="row.tobeInfoLength" v-if="row.tobeInfoIdx == 0 ? true : false">
+							 {{ row.preeFee }}원
+						</td>
+						<td class="text-center">{{ row.feeCnt }}</td>
+						<td class="text-center end">
+							 {{ row.tobeFee }}원
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</article>
@@ -61,7 +146,11 @@ export default {
 	},
 	data() {
 		return {
-			data : []
+			data : [],
+			rcsList : [],
+			pushList : [],
+			smsmmsList : [],
+			kkoList : [],
 		}
 	},
 	mounted() {
@@ -76,9 +165,13 @@ export default {
 			}
 			useApi.selectCorpProductUnitDetail(params).then(response =>{
 				var result = response.data;
-				console.log("debug point");
+				console.log(response);
 				if(result.success) {
 					this.data = result.data;
+					this.rcsList = result.data.rcsList;
+					this.pushList = result.data.pushList;
+					this.smsmmsList = result.data.smsmmsList;
+					this.kkoList = result.data.kkoList;
 				} else {
 					confirm.fnAlert("", result.message);
 				}
