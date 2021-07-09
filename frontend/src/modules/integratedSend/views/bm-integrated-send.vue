@@ -93,7 +93,8 @@
                 <label :for="'listCheck_'+idx"></label></td>
                 <td>{{totCnt-offset-data.rowNum+1}}</td>
                 <td class="text-center">
-                  <u><router-link :to="{ name: 'integratedSendManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u>
+                  <!-- <u><router-link :to="{ name: 'integratedSendManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u> -->
+                  <u><router-link :to="{ name: 'sendIntegMessage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u>
                 </td>
                 <td class="text-center">{{data.tmpltTitle}}</td>
                 <td class="text-center">{{data.tmpltChannel}}</td>
@@ -198,7 +199,8 @@ export default {
         return;
       }
       
-      this.$router.push({name: 'integratedSendManage', params: {'tmpltCodeP': this.chkBox }});
+      /* this.$router.push({name: 'integratedSendManage', params: {'tmpltCodeP': this.chkBox }}); */
+      this.$router.push({name: 'sendIntegMessage', params: {'tmpltCodeP': this.chkBox }});
     },
 
     // 검색
@@ -222,6 +224,7 @@ export default {
       await integratedSendApi.selectIntegratedSendList(params).then(response =>{
         var result = response.data;
         if(result.success) {
+          this.chkBox = ''
           this.datas = result.data;
           this.totCnt = result.pageInfo.totCnt;
           this.offset = result.pageInfo.offset;

@@ -79,6 +79,7 @@
             , cm_console.fnc_get_cd_name('MSG_TYPE', CST.MSG_TYPE, 1) AS MSG_TYPE_NAME
             , CST.TMPLT_TITLE
             , CST.TMPLT_INFO
+            , CST.TMPLT_INFO ->> '$[0].chTypeList' AS CH_TYPE_LIST
             , CST.TMPLT_TYPE
             , CST.TMPLT_STATUS
             , CST.PRODUCT_CODE

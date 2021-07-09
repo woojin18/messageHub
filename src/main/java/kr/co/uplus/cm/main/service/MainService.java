@@ -30,33 +30,33 @@ public class MainService {
 
         Map<String, Object> rtnMap = new HashMap<String, Object>();
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("productCodes", new String[]{Const.MsgProductCode.getType("PUSH")});
+        params.put("productCodes", new String[]{Const.MsgProductCode.PUSH.getCode()});
         List<Object> pushList = generalDao.selectGernalList(DB.QRY_SELECT_PRD_UNIT_INFO_LIST, params);
         rtnMap.put("push", pushList);
 
         params = new HashMap<String, Object>();
         params.put("productCodes", new String[]{
-                Const.MsgProductCode.getType("RCS_TMP")
-                , Const.MsgProductCode.getType("RCS_SMS")
-                , Const.MsgProductCode.getType("RCS_LMS")
-                , Const.MsgProductCode.getType("RCS_MMS")});
+                Const.MsgProductCode.RCS_TMP.getCode()
+                , Const.MsgProductCode.RCS_SMS.getCode()
+                , Const.MsgProductCode.RCS_LMS.getCode()
+                , Const.MsgProductCode.RCS_MMS.getCode()});
         List<Object> rcsList = generalDao.selectGernalList(DB.QRY_SELECT_PRD_UNIT_INFO_LIST, params);
         rtnMap.put("rcs", rcsList);
 
         params = new HashMap<String, Object>();
         params.put("productCodes", new String[]{
-                Const.MsgProductCode.getType("SMS")
-                , Const.MsgProductCode.getType("LMS")
-                , Const.MsgProductCode.getType("MMS")});
+                Const.MsgProductCode.SMS.getCode()
+                , Const.MsgProductCode.LMS.getCode()
+                , Const.MsgProductCode.MMS.getCode()});
         List<Object> smsList = generalDao.selectGernalList(DB.QRY_SELECT_PRD_UNIT_INFO_LIST, params);
         rtnMap.put("sms", smsList);
 
         params = new HashMap<String, Object>();
         params.put("productCodes", new String[]{
-                Const.MsgProductCode.getType("ALIMTALK")
-                , Const.MsgProductCode.getType("FRENDTALK_TEXT")
-                , Const.MsgProductCode.getType("FRENDTALK_IMAGE")
-                , Const.MsgProductCode.getType("FRENDTALK_WIDE")});
+                Const.MsgProductCode.ALIMTALK.getCode()
+                , Const.MsgProductCode.FRENDTALK_TEXT.getCode()
+                , Const.MsgProductCode.FRENDTALK_IMAGE.getCode()
+                , Const.MsgProductCode.FRENDTALK_WIDE.getCode()});
         List<Object> kkoList = generalDao.selectGernalList(DB.QRY_SELECT_PRD_UNIT_INFO_LIST, params);
         rtnMap.put("kko", kkoList);
 

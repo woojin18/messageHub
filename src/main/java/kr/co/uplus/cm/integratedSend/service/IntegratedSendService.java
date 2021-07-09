@@ -692,5 +692,19 @@ public class IntegratedSendService {
         return (BigDecimal) selectObject;
     }
 
+    /**
+     * 통합발송 템플릿 정보 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectIntegTmpltInfo(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        rtn.setData(generalDao.selectGernalObject(DB.QRY_SELECT_INTEG_TMPLT_INFO, params));
+        return rtn;
+    }
+
+
+
 
 }
