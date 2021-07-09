@@ -1,11 +1,9 @@
 <template>
 	<div >
 		<article>
-			<!--
 			<div class="contentHeader mb20">
-				<h2>이용내역</h2>
+				<h2>이용현황</h2>
 			</div>
-			-->
 			<!-- 본문 -->
 			<div class="contentBody">
 				<ul class="tab_s3">

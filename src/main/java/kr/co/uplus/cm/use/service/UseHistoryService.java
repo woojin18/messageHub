@@ -164,8 +164,8 @@ public class UseHistoryService {
 				for(Object obj : jsonList) {
 					Map<String, Object> rtnMap = new HashMap<String, Object>();
 					kong.unirest.json.JSONObject jsonObj = (kong.unirest.json.JSONObject) obj;
-					rtnMap.put("tobeFee", jsonObj.get("TOBE_FEE"));			// 후불 요금
-					rtnMap.put("orgTobeFee", jsonObj.get("TOBE_FEE"));		// 변경 가격 비교를 위한 후불 요금
+					rtnMap.put("tobeFee", jsonObj.get("POST_FEE"));			// 후불 요금
+					rtnMap.put("orgTobeFee", jsonObj.get("POST_FEE"));		// 변경 가격 비교를 위한 후불 요금
 					rtnMap.put("feeCnt", jsonObj.get("FEE_START_CNT") + " ~ " + jsonObj.get("FEE_END_CNT"));	// 후불 과금
 					rtnMap.put("feeStartCnt", jsonObj.get("FEE_START_CNT"));
 					rtnMap.put("feeEndCnt", jsonObj.get("FEE_END_CNT"));

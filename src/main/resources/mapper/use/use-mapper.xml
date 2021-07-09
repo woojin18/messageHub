@@ -103,12 +103,12 @@
 		,		A.PRODUCT_NAME
 		<choose>
 		<when test="isExists == '1'.toString()">
-		,		B.PRE_FEE
-		,		B.POST_FEE_INFO
+		,		B.PRE_FEE AS PREE_FEE
+		,		B.POST_FEE_INFO AS TOBE_FEE_INFO
 		</when>
 		<otherwise>
-		,		A.PRE_FEE
-		,		A.POST_FEE_INFO
+		,		A.PRE_FEE AS PREE_FEE
+		,		A.POST_FEE_INFO AS TOBE_FEE_INFO
 		</otherwise>
 		</choose>
 		FROM cm_bo.CM_PRODUCT_UNIT A
