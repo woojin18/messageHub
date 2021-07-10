@@ -53,7 +53,7 @@ export default {
 			userApi.stopUser(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					confirm.fnAlert("", "이용중지에 성공했습니다.");
+					confirm.fnAlert("", "이용정지에 성공했습니다.");
 					this.$parent.fnSelectUserList();
 				} else {
 					confirm.fnAlert("", result.message);

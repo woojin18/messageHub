@@ -1,6 +1,4 @@
 <template>
-	<!-- Modify Modal -->
-	<!--div class="modal fade modalStyle" id="Modify" tabindex="-1" role="dialog" aria-hidden="true"-->
 	<div v-if="layerView" class="layerPopup modalStyle">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -14,23 +12,23 @@
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block">사용자 명*</h5>
-							<input ref="userName" type="text" :value="modifyUserName" class="inputStyle float-right" style="width:80%" title="사용자 명 입력란" placeholder="사용자명을 입력해 주세요">
+							<input ref="userName" type="text" :value="modifyUserName" class="inputStyle float-right" style="width:80%" maxlength="100" title="사용자 명 입력란" placeholder="사용자명을 입력해 주세요">
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block">휴대폰 번호*</h5>
-							<input @input="fnCorrectNumberInput" ref="hpNumber" type="text" :value="modifyHpNumber" class="inputStyle float-right" style="width:80%" title="휴대폰 번호 입력란" placeholder="- 없이 입력해 주세요">
+							<input @input="fnCorrectNumberInput" ref="hpNumber" type="text" :value="modifyHpNumber" class="inputStyle float-right" style="width:80%" maxlength="20" title="휴대폰 번호 입력란" placeholder="- 없이 입력해 주세요">
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block">이용권한</h5>
-							<span v-if="curRoleCd == 'OWNER' && modifyRoleCd != 'OWNER'">
+							<span v-if="curRoleCd == 'OWNER' && modifyRoleCd == 'OWNER'"> <!-- OWNER가 OWNER를 변경시 이용권한은 변경 막음-->
 								<select ref="roleCd" :value="modifyRoleCd" class="selectStyle2 float-right inline-block" title="이용권한 선택란" style="width:80%">
-									<option value="USER">USER</option>
-									<option value="ADMIN">ADMIN</option>
 									<option value="OWNER">OWNER</option>
 								</select>
 							</span>
-							<span v-else-if="curRoleCd == 'OWNER' && modifyRoleCd == 'OWNER'"> <!-- OWNER가 OWNER를 변경시 이용권한은 변경 막음-->
+							<span v-else-if="curRoleCd == 'OWNER' && modifyRoleCd != 'OWNER' &&  approvalStatus != 'ING'">
 								<select ref="roleCd" :value="modifyRoleCd" class="selectStyle2 float-right inline-block" title="이용권한 선택란" style="width:80%">
+									<option value="USER">USER</option>
+									<option value="ADMIN">ADMIN</option>
 									<option value="OWNER">OWNER</option>
 								</select>
 							</span>
@@ -50,14 +48,13 @@
 				</div>
 			</div>
 		</div>
-	<!--/div-->
 	</div>
 </template>
 
 <script>
 import userApi from '../service/userApi'
-import confirm from "@/modules/commonUtil/service/confirm";
-import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import confirm from '@/modules/commonUtil/service/confirm';
+import {eventBus} from '@/modules/commonUtil/service/eventBus';
 import tokenSvc from '@/common/token-service';
 
 export default {
@@ -102,7 +99,11 @@ export default {
 		curRoleCd: {
 			type: String,
 			require: true,
-		}
+		},
+		approvalStatus: {
+			type: String,
+			require: true,
+		},
 	},
 	data() {
 		return {
@@ -128,7 +129,12 @@ export default {
 			if(!this.fnInputCheckChange()) return false;
 
 			eventBus.$on('callbackEventBus', this.fnModifyUserCallBack);
-			confirm.fnConfirm(this.modifyLayerTitle, "저장하시겠습니까?", "확인");
+
+			if(this.roleCd == 'OWNER') {
+				confirm.fnConfirm(this.modifyLayerTitle, 'Owner으로 변경 시 현재 Owner권한을 가진 사용자는 Admin 권한으로 변경됩니다. 저장 하시겠습니까?', '확인');
+			} else {
+				confirm.fnConfirm(this.modifyLayerTitle, '저장하시겠습니까?', '확인');
+			}			
 		},
 		fnModifyUserCallBack() {
 			
@@ -140,12 +146,12 @@ export default {
 				isOwnerSelf = 'F'
 
 			var params = {
-				"userId"	:this.modifyUserId,
-				"userName"	:this.userName,
-				"hpNumber"	:this.hpNumber,
-				"roleCd"	:this.roleCd,
-				"curUserId"	:tokenSvc.getToken().principal.userId,
-				"isOwnerSelf" :isOwnerSelf,
+				'userId'	:this.modifyUserId,
+				'userName'	:this.userName,
+				'hpNumber'	:this.hpNumber,
+				'roleCd'	:this.roleCd,
+				'curUserId'	:tokenSvc.getToken().principal.userId,
+				'isOwnerSelf' :isOwnerSelf,
 			}
 
 			userApi.modifyUser(params).then(response => {
@@ -155,23 +161,23 @@ export default {
 					if(this.roleCd == 'OWNER' && this.modifyRoleCd != 'OWNER') {
 						this.$parent.curRoleCd = 'ADMIN';
 					}
-					alert("사용자정보 수정에 성공했습니다.");
+					confirm.fnAlert(this.modifyLayerTitle, '사용자정보 수정에 성공했습니다.');
 					this.$parent.fnSelectUserList();
 				} else {
-					alert(result.message);
+					confirm.fnAlert(this.modifyLayerTitle, result.message);
 				}
 			});
 			this.fnCloseLayer();
 		},
 		// 필수값 입력 체크
 		fnInputCheckReq() {
-			if(this.userName == "" || this.userName == null) {
-				confirm.fnAlert(this.modifyLayerTitle, "사용자명을 입력하세요.");
+			if(this.userName == '' || this.userName == null) {
+				confirm.fnAlert(this.modifyLayerTitle, '사용자명을 입력하세요.');
 				return false;
 			}
 
-			if(this.hpNumber == "" || this.hpNumber == null) {
-				confirm.fnAlert(this.modifyLayerTitle, "휴대폰번호를 입력하세요.");
+			if(this.hpNumber == '' || this.hpNumber == null) {
+				confirm.fnAlert(this.modifyLayerTitle, '휴대폰번호를 입력하세요.');
 				return false;
 			}
 			return true;
@@ -187,14 +193,14 @@ export default {
 			if(this.userName == this.modifyUserName
 				&& this.hpNumber == this.modifyHpNumber
 				&& this.roleCd == this.modifyRoleCd) {
-				confirm.fnAlert(this.modifyLayerTitle, "변경된 내역이 없습니다.");
+				confirm.fnAlert(this.modifyLayerTitle, '변경된 내역이 없습니다.');
 				return false;
 			}
 			return true;
 		},
 		// 숫자만 입력
 		fnCorrectNumberInput(event) {
-			event.target.value = event.target.value.replace(/[^0-9]/g, "");
+			event.target.value = event.target.value.replace(/[^0-9]/g, '');
 		},
 	}
 }

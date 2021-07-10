@@ -1,6 +1,4 @@
 <template>
-	<!-- Register Modal -->
-	<!--div class="modal fade modalStyle" id="Register" tabindex="-1" role="dialog" aria-hidden="true"-->
 	<div v-if="layerView" class="layerPopup modalStyle">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -11,17 +9,17 @@
 						<div class="of_h">
 							<h5 class="inline-block" style="width:20%">사용자 ID *</h5>
 							<div style="width:80%" class="of_h inline-block float-right">
-								<input type="text" v-model="loginId" @change="fnChangeUserId" class="inputStyle" style="width:70%" title="사용자 ID 입력란" placeholder="이메일 정보를 입력해 주세요">
+								<input type="text" v-model="loginId" @change="fnChangeUserId" class="inputStyle" style="width:70%" maxlength="100" title="사용자 ID 입력란" placeholder="이메일 정보를 입력해 주세요">
 								<a @click="fnCheckDupcUser()" class="btnStyle1 backLightGray float-right" style="width:28%" activity="READ" title="중복체크">중복체크</a>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:20%">사용자 명*</h5>
-							<input type="text" v-model="userName" class="inputStyle float-right" style="width:80%" title="사용자 명 입력란" placeholder="사용자명을 입력해 주세요">
+							<input type="text" v-model="userName" class="inputStyle float-right" style="width:80%" maxlength="100" title="사용자 명 입력란" placeholder="사용자명을 입력해 주세요">
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:20%">휴대폰 번호*</h5>
-							<input oninput="javascript: this.value = this.value.replace(/[^0-9]/g, '');" type="text" v-model="hpNumber" class="inputStyle float-right" style="width:80%" title="휴대폰 번호 입력란" placeholder="- 없이 입력해 주세요">
+							<input oninput="javascript: this.value = this.value.replace(/[^0-9]/g, '');" type="text" v-model="hpNumber" class="inputStyle float-right" style="width:80%" maxlength="20" title="휴대폰 번호 입력란" placeholder="- 없이 입력해 주세요">
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:20%">이용권한</h5>
@@ -39,15 +37,14 @@
 				</div>
 			</div>
 		</div>
-	<!--/div-->
 	</div>
 </template>
 
 <script>
 import userApi from '../service/userApi'
 import tokenSvc from '@/common/token-service';
-import confirm from "@/modules/commonUtil/service/confirm";
-import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import confirm from '@/modules/commonUtil/service/confirm';
+import {eventBus} from '@/modules/commonUtil/service/eventBus';
 
 export default {
 	name: 'RegisterLayer',
@@ -60,13 +57,6 @@ export default {
 		title: {
 			type: String,
 			require: false
-		},
-		componentsTitle: {
-			type: String,
-			require: false,
-			default: function() {
-				return '사용자 등록';
-			}
 		},
 		registerLayerOpen: {
 			type: Boolean,
@@ -90,6 +80,7 @@ export default {
 			userName	: '',
 			hpNumber	: '',
 			roleCd		: 'USER',
+			componentsTitle : '사용자 등록',
 		}
 	},
 	methods: {
@@ -100,8 +91,8 @@ export default {
 		//중복체크
 		fnCheckDupcUser() {
 			// 사용자ID 입력체크
-			if(this.loginId == "" || this.loginId == null) {
-				confirm.fnAlert(this.componentsTitle, "사용자ID를 입력하세요.");
+			if(this.loginId == '' || this.loginId == null) {
+				confirm.fnAlert(this.componentsTitle, '사용자ID를 입력하세요.');
 				return false;
 			}
 
@@ -109,16 +100,16 @@ export default {
 			if(!this.fnIsEmail(this.loginId)) return false;
 
 			var params = {
-				"loginId" :this.loginId
+				'loginId' :this.loginId
 			}
 
 			userApi.checkDupcUser(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					confirm.fnAlert(this.componentsTitle, "사용 가능한 사용자ID 입니다.");
+					confirm.fnAlert(this.componentsTitle, '사용 가능한 사용자ID 입니다.');
 					this.isDupcUser =  true;
 				} else {
-					confirm.fnAlert(this.componentsTitle, "사용할 수 없는 사용자ID 입니다.");
+					confirm.fnAlert(this.componentsTitle, '사용할 수 없는 사용자ID 입니다.');
 					this.isDupcUser = false;
 				}
 			});
@@ -135,22 +126,21 @@ export default {
 			if(!this.fnIsEmail(this.loginId)) return false;
 
 			eventBus.$on('callbackEventBus', this.fnRegisterUserCallBack);
-			confirm.fnConfirm(this.componentsTitle, "저장하시겠습니까?", "확인");
+			confirm.fnConfirm(this.componentsTitle, '메일 인증을 통한 비밀번호 설정을 마치면 서비스를 사용하실  수 있습니다.333', '확인');
 		},
 		fnRegisterUserCallBack() {
 			var params = {
-				"loginId"	: this.loginId,
-				"userName"	: this.userName,
-				"hpNumber"	: this.hpNumber,
-				"roleCd"	: this.roleCd,
-				"regId"		: tokenSvc.getToken().principal.userId,
-				"corpId"	: tokenSvc.getToken().principal.corpId,
+				'loginId'	: this.loginId,
+				'userName'	: this.userName,
+				'hpNumber'	: this.hpNumber,
+				'roleCd'	: this.roleCd,
+				'regId'		: tokenSvc.getToken().principal.userId,
+				'corpId'	: tokenSvc.getToken().principal.corpId,
 			}
-
 			userApi.registerUser(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					alert("사용자 등록에 성공했습니다.");
+					confirm.fnAlert(this.componentsTitle,'사용자 등록에 성공했습니다.');
 					this.$parent.fnSelectUserList();
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
@@ -161,7 +151,7 @@ export default {
 		// 중복체크여부
 		fnIsDupcChk() {
 			if(!this.isDupcUser) {
-				confirm.fnAlert(this.componentsTitle, "사용자ID 중복체크를 확인해주세요.");
+				confirm.fnAlert(this.componentsTitle, '사용자ID 중복체크를 확인해주세요.');
 				return false;
 			}
 			return true;
@@ -170,7 +160,7 @@ export default {
 		fnIsEmail(asValue) {
 			var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 			if(!regExp.test(asValue)) {
-				confirm.fnAlert(this.componentsTitle, "입력한 이메일 형식이 올바르지 않습니다.");
+				confirm.fnAlert(this.componentsTitle, '입력한 이메일 형식이 올바르지 않습니다.');
 				return false;
 			}
 			return true;
@@ -181,18 +171,18 @@ export default {
 			var userName = this.userName;
 			var hpNumber = this.hpNumber;
 
-			if(loginId == "" || loginId == null) {
-				confirm.fnAlert(this.componentsTitle, "사용자ID를 입력하세요.");
+			if(loginId == '' || loginId == null) {
+				confirm.fnAlert(this.componentsTitle, '사용자ID를 입력하세요.');
 				return false;
 			}
 			
-			if(userName == "" || userName == null) {
-			confirm.fnAlert(this.componentsTitle, "사용자명을 입력하세요.");
+			if(userName == '' || userName == null) {
+			confirm.fnAlert(this.componentsTitle, '사용자명을 입력하세요.');
 			return false;
 			}
 
-			if(hpNumber == "" || hpNumber == null) {
-				confirm.fnAlert(this.componentsTitle, "휴대폰번호를 입력하세요.");
+			if(hpNumber == '' || hpNumber == null) {
+				confirm.fnAlert(this.componentsTitle, '휴대폰번호를 입력하세요.');
 				return false;
 			}
 
@@ -204,7 +194,7 @@ export default {
 		},
 		// 숫자만 입력
 		fnCorrectNumberInput(event) {
-			event.target.value = event.target.value.replace(/[^0-9]/g, "");
+			event.target.value = event.target.value.replace(/[^0-9]/g, '');
 		},
 	}
 }

@@ -68,7 +68,7 @@
 								</thead>
 								<tbody>
 									<tr v-for="(data, index) in items" :key="index">
-										<td class="text-center vertical-middle">{{ data.rownum + offset }}</td>
+										<td class="text-center vertical-middle">{{ data.listNo }}</td>
 										<td class="text-center vertical-middle">{{ data.userName }}</td>
 										<td class="text-center vertical-middle">
 											<div v-html="data.projectName" />
@@ -120,7 +120,7 @@
 		<DeleteLayer :title="deleteLayerTitle" :layerView.sync="deleteLayerView" :deleteUserId="deleteLayerUserId"></DeleteLayer>
 
 		<!-- modify Modal -->
-		<ModifyLayer :title="modifyLayerTitle" :layerView.sync="modifyLayerView" :modifyUserId="modifyLayerUserId" :modifyUserName="modifyLayerUserName" :modifyHpNumber="modifyLayerHpNumber" :modifyRoleCd="modifyLayerRoleCd" :modifyLoginId="modifyLayerLoginId" :curRoleCd="curRoleCd"></ModifyLayer>
+		<ModifyLayer :title="modifyLayerTitle" :layerView.sync="modifyLayerView" :modifyUserId="modifyLayerUserId" :modifyUserName="modifyLayerUserName" :modifyHpNumber="modifyLayerHpNumber" :modifyRoleCd="modifyLayerRoleCd" :modifyLoginId="modifyLayerLoginId" :curRoleCd="curRoleCd" :approvalStatus="modifyApprovalStatus"></ModifyLayer>
 
 		<!-- register Modal -->
 		<RegisterLayer :title="registerLayerTitle" :layerView.sync="registerLayerView" :registerLayerOpen="registerLayerOpen"></RegisterLayer>
@@ -186,31 +186,34 @@ export default {
 			items: [],
 			// Popup
 			stopLayerView: false,
-			stopLayerTitle: "이용정지",
-			stopLayerUserId: "",
+			stopLayerTitle: '이용정지',
+			stopLayerUserId: '',
 
 			releaseLayerView: false,
-			releaseLayerTitle: "이용정지 해제",
-			releaseLayerUserId: "",
+			releaseLayerTitle: '이용정지 해제',
+			releaseLayerUserId: '',
 
 			deleteLayerView: false,
-			deleteLayerTitle: "삭제",
-			deleteLayerUserId: "",
+			deleteLayerTitle: '삭제',
+			deleteLayerUserId: '',
 
 			modifyLayerView: false,
-			modifyLayerTitle: "사용자정보 수정",
-			modifyLayerUserId: "",
-			modifyLayerUserName: "",
-			modifyLayerHpNumber: "",
-			modifyLayerRoleCd: "",
-			modifyLayerLoginId: "",
+			modifyLayerTitle: '사용자정보 수정',
+			modifyLayerUserId: '',
+			modifyLayerUserName: '',
+			modifyLayerHpNumber: '',
+			modifyLayerRoleCd: '',
+			modifyLayerLoginId: '',
 
 			registerLayerView: false,
-			registerLayerTitle: "사용자 등록",
-			registerLayerUserId: "",
+			registerLayerTitle: '사용자 등록',
+			registerLayerUserId: '',
 			registerLayerOpen: false,
 
 			curRoleCd: tokenSvc.getToken().principal.role,
+			modifyApprovalStatus: '',
+
+			listNo:0,
 		}
 	},
 	mounted() {
@@ -221,13 +224,13 @@ export default {
 	methods: {
 		fnStatusInit() {
 			var params = {
-				codeTypeCd	: "APPROVAL_STATUS",
-				useYN		: "Y"
+				codeTypeCd	: 'APPROVAL_STATUS',
+				useYN		: 'Y'
 			};
 			commonUtilApi.selectCodeList(params).then(response =>{
 				var result = response.data.data;
 				for(var i = 0; i < result.length; i++){
-					jQuery("#selectApprovalStatus").append('<option value="'+result[i].codeVal1+'">'+result[i].codeName1+'</option>');
+					jQuery('#selectApprovalStatus').append('<option value="'+result[i].codeVal1+'">'+result[i].codeName1+'</option>');
 				}
 			});
 		},
@@ -248,7 +251,6 @@ export default {
 			await userApi.selectUserList(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-
 					//프로젝트명이 n개일때 개행처리
 					for (var i in result.data){
 						if(result.data[i].projectName != null) {
@@ -259,6 +261,7 @@ export default {
 					this.items = result.data;
 					this.totCnt = result.pageInfo.totCnt;
 					this.offset = result.pageInfo.offset;
+
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
@@ -273,13 +276,13 @@ export default {
 			}
 
 			this.stopLayerView = true;
-			this.stopLayerTitle = "UserStop";
+			this.stopLayerTitle = 'UserStop';
 			this.stopLayerUserId = this.items[index].userId;
 		},
 		//이용정지 해제
 		fnReleaseUserPop(index) {
 			this.releaseLayerView = true;
-			this.releaseLayerTitle = "UserRelease";
+			this.releaseLayerTitle = 'UserRelease';
 			this.releaseLayerUserId = this.items[index].userId;
 		},
 		// 삭제
@@ -291,7 +294,7 @@ export default {
 			}
 
 			this.deleteLayerView = true;
-			this.deleteLayerTitle = "UserDelete";
+			this.deleteLayerTitle = 'UserDelete';
 			this.deleteLayerUserId = this.items[index].userId;
 		},
 		// 사용자정보 수정
@@ -300,7 +303,8 @@ export default {
 			this.modifyLayerUserId = this.items[index].userId;
 			this.modifyLayerUserName = this.items[index].userName;
 			this.modifyLayerHpNumber = this.items[index].hpNumber;
-			this.modifyLayerLoginId = this.items[index].loginId
+			this.modifyLayerLoginId = this.items[index].loginId;
+			this.modifyApprovalStatus = this.items[index].approvalStatus;
 
 			if(this.modifyLayerRoleCd == 'OWNER' && this.curRoleCd == 'ADMIN') {
 				confirm.fnAlert(this.componentsTitle, '관리자는 OWNER를 수정할 수 없습니다.');
@@ -312,18 +316,18 @@ export default {
 		fnRegisterUserPop() {
 			this.registerLayerOpen = !this.registerLayerOpen;
 			this.registerLayerView = true;
-			this.registerLayerTitle = "UserRegister";
+			this.registerLayerTitle = 'UserRegister';
 		},
 		// 비밀번호설정 화면이동
 		fnToPassword() {
 			eventBus.$on('callbackEventBus', this.fnToPasswordCallBack);
-			confirm.fnConfirm(this.componentsTitle, "비밀번호 설정을 위해서 로그아웃 하시겠습니까?", "확인");
+			confirm.fnConfirm(this.componentsTitle, '비밀번호 설정을 위해서 로그아웃 하시겠습니까?', '확인');
 		},
 		fnToPasswordCallBack() {
 			loginApi.logout().then(response => {
 				if (response.data.success) {
 					this.$router.push({
-						path: "/login/findUserPwd"
+						path: '/login/findUserPwd'
 					});
 				}
 			});
