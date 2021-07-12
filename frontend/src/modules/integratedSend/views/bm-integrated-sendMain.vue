@@ -297,11 +297,93 @@ export default {
         campaignId: '',
         contsVarNms: [], //메세지 내용 변수명
         recvInfoLst: [],  //수신자정보
+        test: [
+                {
+                    "CH": "PUSH",
+                    "data": {
+                        "msg": {
+                            "title": "제목제목제목제목제목",
+                            "body": "내용 내용 내용 내용 ㅇㅍㅇㅍㅇㅍㅇㅍ"
+                        },
+                        "appId": "LGU-SAMPLEAPP-00001",
+                        "ext": {
+                            "imageUrl": "http://api.ums-dev.uplus.co.kr/contents/v1/1/push/FLETR4QIVb"
+                        },
+                        "fileId": "FLETR4QIVb",
+                        "serviceCode": "ALL"
+                    }
+                },
+                {
+                    "CH": "SMS",
+                    "data": {
+                        "callback": "0243113369",
+                        "msg": "테스트 내용입니다."
+                    }
+                },
+                {
+                    "CH": "ALIMTALK",
+                    "data": {
+                        "callback": "0243113369",
+                        "title": "테스트",
+                        "msg": "알뜰모바일에 가입되었습니다.",
+                        "senderKey": "da17d231bbf13f83174a36a4bb0353476ae012b3",
+                        "tmpltKey": "22",
+                        "service": "0",
+                        "buttons": [
+                            {
+                                "name": "연결하기",
+                                "linkMo": "http://sms.uplus.co.kr",
+                                "linkPc": "http://sms.uplus.co.kr",
+                                "linkType": "WL"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "CH": "FRIENDTALK",
+                    "data": {
+                        "callback": "0243113369",
+                        "wideImageYn": "Y",
+                        "fileId": "FLE2106251778960",
+                        "adFlag": "N",
+                        "msg": "내용이 들어갑니다.",
+                        "image": {
+                            "imageUrl": "https://mud-kage.kakao.com/dn/lIneN/btq79XIlJ5e/UUKNqXEu2gwoV2ZkabPQf0/img_l.jpg",
+                            "imageLink": "http://www.naver.com"
+                        },
+                        "senderKey": "da17d231bbf13f83174a36a4bb0353476ae012b3",
+                        "buttons": [
+                            {
+                                "name": "앱링크버튼",
+                                "type": "AL",
+                                "scheme_ios": "test",
+                                "scheme_android": "test"
+                            },
+                            {
+                                "name": "웹링크버튼",
+                                "type": "WL",
+                                "url_pc": "5555",
+                                "url_mobile": "333"
+                            },
+                            {
+                                "name": "봇키워드",
+                                "type": "BK"
+                            },
+                            {
+                                "name": "메시지전달",
+                                "type": "MD"
+                            }
+                        ]
+                    }
+                }
+            ]
       }
     }
   },
   mounted() {
     this.fnGetTmpltInfo();
+    console.log(this.sendData.test);
+    console.log(JSON.stringify(this.sendData.test));
   },
   methods: {
     fnUpdateRsrvDate(sltDate){

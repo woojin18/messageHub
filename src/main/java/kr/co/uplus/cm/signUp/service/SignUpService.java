@@ -56,8 +56,21 @@ public class SignUpService {
 
 			paramMap.put("fileId", fileSeq);
 		}
+		String custNo = CommonUtils.getString(paramMap.get("custNo"));
+
+		// corp_id
+		String corpId = CommonUtils.getCommonId("COM", 7);
+		paramMap.put("corpId", corpId);
+		
+		if("".equals(custNo)) {
+			String newCustNo = CommonUtils.randomGeneration(10);
+			paramMap.put("custNo", newCustNo);
+		}
 		// 고객사 등록
-//		generalDao.insertGernal(DB.QRY_INSERT_CM_CORP, params);
+//		generalDao.insertGernal(DB.QRY_INSERT_CM_CORP, paramMap);
+		// CM_CMD table update
+		
+		
 		// owner 등록 (이메일 발송때 insert된 data에 update 처리)
 //		generalDao.updateGernal(DB.QRY_UPDATE_CM_USER, params);
 		
@@ -83,8 +96,8 @@ public class SignUpService {
 		Object rtnMap = generalDao.selectGernalObject(DB.QRY_SELECT_CM_USE_TERMS, params);
 		rtnResult.put("useTerms", rtnMap);
 		
-		// 개인정보수집 일경우에만 예전 약관을 가져오도록 처리
-		if("PRI".equals(srcTermsCd)) {
+		// 서비스 이용약관 일경우에만 예전 약관을 가져오도록 처리
+		if("SVC".equals(srcTermsCd)) {
 			// 예전 약관
 			List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CM_USE_TERMS_PRI_VERSION, params);
 			rtnResult.put("preUseTerms", rtnList);
@@ -107,12 +120,12 @@ public class SignUpService {
 		// API 통신 처리
 		Map<String, Object> result = apiInterface.get("/console/v1/ucube/customer/"+regno+"/mode/BS", headerMap);
 		
-		if("10000".equals(result.get("rslt"))) {
+		if("10000".equals(result.get("code"))) {
 			Map<String, Object> dataMap = (Map<String, Object>) result.get("data");
 			List<Map<String, Object>> list =  (List<Map<String, Object>>) dataMap.get("resultList");
 			rtn.setData(list);
 		} else {
-			throw new Exception(CommonUtils.getString(result.get("rsltDesc")));
+			throw new Exception(CommonUtils.getString(result.get("message")));
 		}
 		
 		return rtn;
@@ -128,11 +141,11 @@ public class SignUpService {
 		// API 통신 처리
 		Map<String, Object> result = apiInterface.get("/console/v1/ucube/customer/"+custNo, headerMap);
 		
-		if("10000".equals(result.get("rslt"))) {
+		if("10000".equals(result.get("code"))) {
 			Map<String, Object> data = (Map<String, Object>) result.get("data");
 			rtn.setData(data);
 		} else {
-			throw new Exception(CommonUtils.getString(result.get("rsltDesc")));
+			throw new Exception(CommonUtils.getString(result.get("message")));
 		}
 		
 		return rtn;
@@ -151,7 +164,7 @@ public class SignUpService {
 		// API 통신 처리
 		Map<String, Object> result = apiInterface.get("/console/v1/ucube/juso", paramMap, null);
 		
-		if("10000".equals(result.get("rslt"))) {
+		if("10000".equals(result.get("code"))) {
 			if(CommonUtils.isEmptyObject(result.get("data"))) {
 				throw new Exception("조회된 주소가 없습니다.");
 			} else {
@@ -159,7 +172,7 @@ public class SignUpService {
 				rtn.setData(list);
 			}
 		} else {
-			throw new Exception(CommonUtils.getString(result.get("rsltDesc")));
+			throw new Exception(CommonUtils.getString(result.get("message")));
 		}
 		
 		return rtn;

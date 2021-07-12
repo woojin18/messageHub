@@ -248,11 +248,11 @@ public class CommonService {
 
                 // send result
                 imgUrl = "";
-                if (!CommonUtils.isEmptyValue(resultMap, "rslt")
-                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
-                    if (!CommonUtils.isEmptyValue(resultMap, "data")) {
+                if (!CommonUtils.isEmptyValue(resultMap, ApiConfig.GW_RESULT_CODE_FIELD_NM)
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(resultMap.get(ApiConfig.GW_RESULT_CODE_FIELD_NM)))) {
+                    if (!CommonUtils.isEmptyValue(resultMap, ApiConfig.COMMON_DATA_FIELD_NM)) {
                         mapper = new ObjectMapper();
-                        dataMap = mapper.convertValue(resultMap.get("data"), Map.class);
+                        dataMap = mapper.convertValue(resultMap.get(ApiConfig.COMMON_DATA_FIELD_NM), Map.class);
                         if (!CommonUtils.isEmptyValue(dataMap, "imgUrl")
                                 && !CommonUtils.isEmptyValue(dataMap, "fileId")) {
                             imgUrl = (String) dataMap.get("imgUrl");
@@ -263,8 +263,8 @@ public class CommonService {
 
                 if (StringUtils.isBlank(imgUrl) || StringUtils.isBlank(fileId)
                         || !StringUtils.equals(responseFileId, fileId)) {
-                    if (!CommonUtils.isEmptyValue(resultMap, "rsltDesc")) {
-                        throw new Exception((String) resultMap.get("rsltDesc"));
+                    if (!CommonUtils.isEmptyValue(resultMap, ApiConfig.GW_RESULT_MESSAGE_FIELD_NM)) {
+                        throw new Exception((String) resultMap.get(ApiConfig.GW_RESULT_MESSAGE_FIELD_NM));
                     } else {
                         throw new Exception("API 파일 전송 실패");
                     }
@@ -421,48 +421,48 @@ public class CommonService {
 
         return rtn;
     }
-    
+
  // 파일 업로드 및 테이블 인서트
  	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackFor={Exception.class})
  	public String uploadFile(MultipartFile files, String userId, String uploadDirPath) throws Exception {
  		String fileName = "";	//원본 파일명
  		File destinationFile = null;	//업로드된 파일정보
- 		
+
  		File uploadDir = new File(uploadDirPath);
  		String filePath = "";
  		String pattern = "[\"!@#$%^&'.*]";
- 		
+
  		if(!uploadDir.exists()) {
  			uploadDir.mkdirs();
  		}
- 		
+
  		String preFileName = getFileNameExt(files.getOriginalFilename(),0).replaceAll(pattern, "");
  		String ext = getFileNameExt(files.getOriginalFilename(),1);
 // 		fileName = files.getOriginalFilename().replaceAll(pattern, "");
  		fileName = preFileName+"."+ext;
  		destinationFile = File.createTempFile("upload", fileName, uploadDir);
  		FileCopyUtils.copy(files.getInputStream(), new FileOutputStream(destinationFile));
- 		
+
  		// FILEINFO isert
  		Map<String, Object> saveMap = new HashMap<String, Object>();
- 		
+
  		filePath = destinationFile.getAbsolutePath().replaceAll("\\\\", "/");
  		saveMap.put("attach_file_name", fileName);
  		saveMap.put("attach_file_path", filePath);
  		saveMap.put("userId", userId);
  		String rtnSeqString = this.insertFileInfo(saveMap);
- 		
+
  		return rtnSeqString;
  	}
- 	
+
  	// 파일 업로드 후 인서트
  	public String insertFileInfo(Map<String, Object> saveMap) throws Exception {
  		String seq = CommonUtils.getCommonId("FLE", 5);
- 		
+
  		saveMap.put("attach_file_seq", seq);
- 		
+
  		generalDao.insertGernal(DB.QRY_INSERT_FILE_INFO, saveMap);
- 		
+
  		return seq;
  	}
 
