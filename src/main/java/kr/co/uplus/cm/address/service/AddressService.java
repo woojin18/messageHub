@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
+import kr.co.uplus.cm.dto.CamelDto;
 import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
@@ -154,7 +155,7 @@ public class AddressService {
 	 */
 	public RestResult<Object> selectCmCuList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-		
+
 		if(params.containsKey("pageNo")
 				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
 				&& params.containsKey("listSize")
@@ -166,7 +167,6 @@ public class AddressService {
 				rtn.getPageInfo().put("totCnt", listCnt);
 			}
 		}
-		
 		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_CM_CU_LIST, params);
 		rtn.setData(rtnList);
 		return rtn;
@@ -247,6 +247,43 @@ public class AddressService {
 	 * @throws Exception
 	 */
 	public RestResult<Object> selectReceiverList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		int totCnt = 0;
+		if(params.containsKey("pageNo")
+				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize")
+				&& CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if(rtn.getPageInfo() != null) {
+				//카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_ADDR_RCVR_LIST_CNT, params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+				totCnt = listCnt;
+			}
+		}
+		// 역순으로 No 생성
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_RCVR_LIST, params);
+		
+		int pageNo = ((Integer)params.get("pageNo")).intValue();
+		int listSize = ((Integer)params.get("listSize")).intValue();
+		int listNo = totCnt - ((pageNo-1) * listSize);
+		CamelDto cd = null;
+		for (int i = 0; i < rtnList.size(); i++) {
+			cd = (CamelDto)rtnList.get(i);
+			cd.put("listNo", listNo--);
+		}
+
+		rtn.setData(rtnList);
+		return rtn;
+	}
+	
+	/**
+	 * 수신자 목록 조회 엑셀다운로드
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> excelDownloadReceiverList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
 		if(params.containsKey("pageNo")

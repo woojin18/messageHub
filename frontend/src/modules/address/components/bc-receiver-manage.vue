@@ -33,6 +33,7 @@
 							<a @click="fnRegisterReceiverPop" class="btnStyle2 borderGray mr5" >수신자 추가</a>
 							<a @click="fnExcelDownLoad" class="btnStyle2 borderGray mr5" activity="READ">엑셀 다운로드</a>
 							<a @click="fnExcelUpload" class="btnStyle2 borderGray mr5" activity="SAVE">엑셀 업로드</a>
+							<a @click="fnExcelUploadTemplate" class="btnStyle1 backLightGray ml10" title="업로드샘플" activity="READ">업로드샘플 <i class="far fa-arrow-to-bottom"></i></a>
 							<input ref="excelFile" type="file" style="display:none;" @change="fnChgInputFile()">
 						</div>
 					</div>
@@ -68,7 +69,7 @@
 								</thead>
 								<tbody>
 									<tr v-for="(data) in items" :key="data.cuInfoId">
-										<td class="text-center"> {{ data.rownum + offset}} </td>
+										<td class="text-center"> {{ data.listNo }} </td>
 										<td class="text-left"> {{ data.cuName }} </td>
 										<td class="text-left"> {{ data.cuid }} </td>
 										<td class="text-center"> {{ data.hpNumber | phoneNumber }} </td>
@@ -105,14 +106,14 @@
 <script>
 import addressApi from '../service/addressApi'
 //import tokenSvc from '@/common/token-service';
-import confirm from "@/modules/commonUtil/service/confirm";
+import confirm from '@/modules/commonUtil/service/confirm';
 import PageLayer from '@/components/PageLayer.vue';
 import SelectLayer from '@/components/SelectLayer.vue';
 import RcvrRegMdfyLayer from '../components/bc-receiver-register.vue';
-import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import {eventBus} from '@/modules/commonUtil/service/eventBus';
 
 export default {
-	name: "receiverManageList",
+	name: 'receiverManageList',
 	components: {
 		SelectLayer,
 		PageLayer,
@@ -223,10 +224,11 @@ export default {
 				var result = response.data;
 				if(result.success) {
 					this.items = result.data;
+					console.log('debug point')
 					this.totCnt = result.pageInfo.totCnt;
 					this.offset = result.pageInfo.offset;
 				} else {
-					confirm.fnAlert("", result.message);
+					confirm.fnAlert('', result.message);
 				}
 			});
 		},
@@ -234,7 +236,7 @@ export default {
 		fnDeleteReceiver(data) {
 			this.cuInfoId = data.cuInfoId;
 			eventBus.$on('callbackEventBus', this.fnProcDeleteReceiver);
-			confirm.fnConfirm('', "선택 항목을 삭제하시겠습니까?", "확인");
+			confirm.fnConfirm('', '선택 항목을 삭제하시겠습니까?', '확인');
 		},
 		fnProcDeleteReceiver() {
 			let params = {
@@ -256,14 +258,14 @@ export default {
 		fnModifyReceiverPop(data) {
 			this.status = 'U';
 			this.rowData = data
-			jQuery("#RcvrRegMdfyLayer").modal("show");
+			jQuery('#RcvrRegMdfyLayer').modal('show');
 			
 		},
 		// 수신자 등록
 		fnRegisterReceiverPop() {
 			this.status = 'R';
 			this.rowData = {};
-			jQuery("#RcvrRegMdfyLayer").modal("show");
+			jQuery('#RcvrRegMdfyLayer').modal('show');
 		},
 		fnPageClick(pageNo) {
 			this.pageNo = pageNo;
@@ -272,7 +274,13 @@ export default {
 		//엑셀 다운로드
 		fnExcelDownLoad() {
 			var params = this.searchData;
-			addressApi.excelDownloadReceiverTemplate(params);
+			addressApi.excelDownloadReceiverList(params);
+		},
+		//엑셀 업로용 템플릿 다운로드
+		fnExcelUploadTemplate() {
+			let params = {
+			};
+			addressApi.excelUploadTemplate(params);
 		},
 		//엑셀 업로드
 		fnExcelUpload() {

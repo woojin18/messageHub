@@ -58,8 +58,8 @@ const deleteAddressCategory = (params) => {
 
 
 
-const excelDownloadReceiverTemplate = (params) => {
-	return httpClient.post('/addressApi/manage/excelDownloadReceiverTemplate', params, { headers: {"show-layer": "No", "activity":"READ"}, responseType: 'arraybuffer' }).then(function(response) {
+const excelDownloadReceiverList = (params) => {
+	return httpClient.post('/addressApi/manage/excelDownloadReceiverList', params, { headers: {"show-layer": "No", "activity":"READ"}, responseType: 'arraybuffer' }).then(function(response) {
 		try {
 			let blob = new Blob([response.data], { type: response.headers['content-type'] })
 			let fileName = getFileName(response.headers['content-disposition'])
@@ -80,6 +80,11 @@ const excelDownloadReceiverTemplate = (params) => {
 	});
 }
 
+const excelUploadTemplate = (params) => {
+	return httpClient.post('/addressApi/manage/excelUploadTemplate', params, { headers: {"show-layer": "Yes", "activity":"READ"}, responseType: 'arraybuffer' })
+	.then((response) => fnExcelDownCallback(response));
+};
+
 const excelUploadReceiver = (params) => {
 	return httpClient.post('/addressApi/manage/excelUploadReceiver', params, { headers: {"show-layer": "Yes", "activity":"SAVE", "Content-Type": "multipart/form-data"} });
 };
@@ -96,7 +101,8 @@ export default {
 	deleteMember,
 	selectReceiverList,
 	saveReceiver,
-	excelDownloadReceiverTemplate,
+	excelDownloadReceiverList,
+	excelUploadTemplate,
 	excelUploadReceiver,
 	deleteReceiver,
 	saveAddressCategory,
@@ -116,3 +122,23 @@ function getFileName (contentDisposition) {
 	})
 	return fileName[0] ? fileName[0] : null
 }
+
+function fnExcelDownCallback(response){
+	try {
+	  let blob = new Blob([response.data], { type: response.headers['content-type'] })
+	  let fileName = getFileName(response.headers['content-disposition'])
+	  fileName = decodeURI(fileName)
+  
+	  if (window.navigator.msSaveOrOpenBlob) { // IE 10+
+		window.navigator.msSaveOrOpenBlob(blob, fileName)
+	  } else { // not IE
+		let link = document.createElement('a')
+		link.href = window.URL.createObjectURL(blob)
+		link.target = '_self'
+		if (fileName) link.download = fileName
+		link.click()
+	  }
+	} catch (e) {
+	  console.error(e)
+	}
+  }

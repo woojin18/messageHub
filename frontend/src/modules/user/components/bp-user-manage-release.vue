@@ -56,7 +56,6 @@ export default {
 					confirm.fnAlert("", "이용정지 해제에 성공했습니다.");
 					this.$parent.fnSelectUserList();
 				} else {
-					alert(result.message);
 					confirm.fnAlert("", result.message);
 				}
 			});

@@ -212,8 +212,6 @@ export default {
 
 			curRoleCd: tokenSvc.getToken().principal.role,
 			modifyApprovalStatus: '',
-
-			listNo:0,
 		}
 	},
 	mounted() {

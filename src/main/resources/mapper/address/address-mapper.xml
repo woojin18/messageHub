@@ -272,6 +272,9 @@
 			,	CUID
 			,	HP_NUMBER
 			,	USE_YN
+			,	CASE WHEN USE_YN = 'Y' THEN '사용'
+				ELSE '미사용'
+				END AS USE_YN_NAME
 		FROM cm_console.CM_CU_INFO, (SELECT @ROWNUM:=0) TMP
 		WHERE	CORP_ID = #{corpId}
 		<if test="searchText != '' and searchText != null ">

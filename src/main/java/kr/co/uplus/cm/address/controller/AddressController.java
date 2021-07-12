@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -291,33 +292,65 @@ public class AddressController {
 	}
 
 	/**
-	 * 수신자 엑셀 템플릿 다운로드
+	 * 수신자 목록 조회 엑셀다운로드
 	 * @param request
 	 * @param response
 	 * @param params
 	 * @return
 	 * @throws Exception
 	 */
-	@PostMapping(path = "/excelDownloadReceiverTemplate")
-	public ModelAndView excelDownloadReceiverTemplate(HttpServletRequest request, HttpServletResponse response,
+	@PostMapping(path = "/excelDownloadReceiverList")
+	public ModelAndView excelDownloadReceiverList(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) throws Exception {
 		List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sheetTitle", "수신자 리스트");
-		map.put("colLabels", new String[] { "수신자명", "앱로그인ID", "휴대폰번호"});
-		map.put("colIds", new String[] {"cuName", "cuid", "hpNumber"});
+		map.put("colLabels", new String[] { "수신자명", "앱로그인ID", "휴대폰번호", "사용여부"});
+		map.put("colIds", new String[] {"cuName", "cuid", "hpNumber", "useYnName"});
 		map.put("numColIds", new String[] {});
 		map.put("figureColIds", new String[] {});
-		map.put("colDataList", addressSvc.selectReceiverList(params).getData());
+		map.put("colDataList", addressSvc.excelDownloadReceiverList(params).getData());
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-		model.addObject("excelFileName", "rcvrTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
+		model.addObject("excelFileName", "receiverList_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;
 	}
 
+	/**
+	 * 수신자 엑셀업로드 템플릿
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping(path = "/excelUploadTemplate")
+	public ModelAndView excelUploadTemplate(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) throws Exception {
+		List<String> colLabels = new ArrayList<String>();
+		colLabels.add("수신자명");
+		colLabels.add("앱로그인ID");
+		colLabels.add("휴대폰번호");
+		
+		List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sheetTitle", "수신자 리스트");
+		map.put("colLabels", colLabels.toArray(new String[0]));
+		map.put("colIds", new String[] {});
+		map.put("numColIds", new String[] {});
+		map.put("figureColIds", new String[] {});
+		map.put("colDataList", new ArrayList<T>());
+		sheetList.add(map);
+
+		ModelAndView model = new ModelAndView("commonXlsxView");
+		model.addObject("excelFileName", "ReceiverTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
+		model.addObject("sheetList", sheetList);
+
+		return model;
+	}
 	/**
 	 * 수신자 엑셀 업로드
 	 * @param request
