@@ -13,7 +13,7 @@
 								<option value="cuid">아이디</option>
 								<option value="hpNumber">휴대폰번호</option>
 							</select>
-							<input type="text" class="inputStyle ml10" style="width:44%" v-model="searchData.searchText">
+							<input type="text" class="inputStyle ml10" style="width:44%" v-model="searchData.searchText" @keyup.enter="fnSearch()">
 							<h4 class="inline-block ml50" style="width:7%">사용여부</h4>
 							<select class="selectStyle2" style="width:15%" v-model="searchData.useYn">
 								<option value="">전체</option>
