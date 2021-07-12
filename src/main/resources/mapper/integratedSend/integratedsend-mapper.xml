@@ -9,7 +9,7 @@
         AND A.USE_YN = 'Y'
         AND A.TMPLT_TYPE = 'M'
         AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
-        AND JSON_CONTAINS(JSON_ARRAY(<foreach collection="useChGrps" item="item" separator=",">#{item}</foreach>), JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType'), '$') > 0
+        AND JSON_CONTAINS(JSON_ARRAY(<foreach collection="useChGrps" item="item" separator=",">#{item}</foreach>), JSON_EXTRACT(A.TMPLT_INFO, '$[*].CH'), '$') > 0
         <if test="searchText != '' and searchText != null ">
             <if test="searchCondi == 'templateChannel' ">
             AND UPPER(A.TMPLT_INFO ->> '$[0].chTypeList') LIKE CONCAT('%', UPPER(#{searchText}), '%')
@@ -52,8 +52,8 @@
               , A.TMPLT_TYPE
               , A.USE_YN
               <!-- , A.TMPLT_INFO ->> '$[0].chTypeList' AS TMPLT_CHANNEL -->
-              , REPLACE(A.TMPLT_INFO ->> '$[0].chTypeList', 'SMSMMS', 'SMS/MMS') AS TMPLT_CHANNEL
-              , JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType') CHECKED_CHANNEL
+              <!-- , REPLACE(A.TMPLT_INFO ->> '$[0].chTypeList', 'SMSMMS', 'SMS/MMS') AS TMPLT_CHANNEL -->
+              , JSON_EXTRACT(A.TMPLT_INFO, '$[*].CH') CHECKED_CHANNEL
               , A.REG_ID
               , cm_console.fnc_get_user_name(A.REG_ID) AS REG_NM
               , A.REG_DT

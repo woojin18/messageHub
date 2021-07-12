@@ -224,6 +224,7 @@ export default {
       await integratedSendApi.selectIntegratedSendList(params).then(response =>{
         var result = response.data;
         if(result.success) {
+          console.log('result ====> ', result);
           this.chkBox = ''
           this.datas = result.data;
           this.totCnt = result.pageInfo.totCnt;
