@@ -491,7 +491,6 @@ public class ChannelService {
 		
 		// map to json
 		kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(map);
-		System.out.println("----------------------------------------json2222 : " + json2222);
 		
 //		list.add(json2222);
 		list.add(map);
@@ -592,12 +591,12 @@ public class ChannelService {
 //			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
 //			System.out.println("-------------------------------------------@@@ list : " + list);
 			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("rslt")) ) {
-			} else if ( "500100".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("code")) ) {
+			} else if ( "500100".equals(result.get("code")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
 			} else {
-				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			}
 		} if( "update".equals(sts) ) {
@@ -615,12 +614,12 @@ public class ChannelService {
 			Map<String, Object> result =  apiInterface.put("/console/v1/brand/" + brandId, null, map, headerMap);
 			
 			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("rslt")) ) {
-			} else if ( "500100".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("code")) ) {
+			} else if ( "500100".equals(result.get("code")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
 			} else {
-				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			}
 		} else if ( "delete".equals(sts) ) {
@@ -633,12 +632,12 @@ public class ChannelService {
 			Map<String, Object> result =  apiInterface.listDelete("/console/v1/brand/" + brandId, list, headerMap);
 			
 			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("rslt")) ) {
-			} else if ( "500100".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("code")) ) {
+			} else if ( "500100".equals(result.get("code")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
 			} else {
-				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			}
 		}
@@ -663,12 +662,12 @@ public class ChannelService {
 		System.out.println("------------------------------------------------- deleteRcsBrandForApi result : " + result);
 		
 		// 성공인지 실패인지 체크
-		if( "10000".equals(result.get("rslt")) ) {
-		} else if ( "500100".equals(result.get("rslt")) ) {
+		if( "10000".equals(result.get("code")) ) {
+		} else if ( "500100".equals(result.get("code")) ) {
 			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 			throw new Exception(errMsg);
 		} else {
-			String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+			String errMsg = CommonUtils.getString(result.get("message"));
 			throw new Exception(errMsg);
 		}
 	}
@@ -853,12 +852,12 @@ public class ChannelService {
 			System.out.println("------------------------------------------------- saveMoCallback result : " + result);
 			
 			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("rslt")) ) {
-			} else if ( "500100".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("code")) ) {
+			} else if ( "500100".equals(result.get("code")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
 			} else {
-				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			}
 			
@@ -884,12 +883,12 @@ public class ChannelService {
 			System.out.println("------------------------------------------------- saveMoCallback U result : " + result);
 			
 			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("rslt")) ) {
-			} else if ( "500100".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("code")) ) {
+			} else if ( "500100".equals(result.get("code")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
 			} else {
-				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			}
 			
@@ -913,12 +912,12 @@ public class ChannelService {
 			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
 			
 			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("rslt")) ) {
-			} else if ( "500100".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("code")) ) {
+			} else if ( "500100".equals(result.get("code")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
 			} else {
-				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			}
 			
@@ -935,13 +934,13 @@ public class ChannelService {
 		Map<String, Object> result = apiInterface.post("/console/v1/kko/senderkey/category/all", getHeaderMap);
 		
 		// 성공인지 실패인지 체크
-		if( "10000".equals(result.get("rslt")) ) {
+		if( "10000".equals(result.get("code")) ) {
 			rtn.setData(result);
-		} else if ( "500100".equals(result.get("rslt")) ) {
+		} else if ( "500100".equals(result.get("code")) ) {
 			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 			throw new Exception(errMsg);
 		} else {
-			String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+			String errMsg = CommonUtils.getString(result.get("message"));
 			throw new Exception(errMsg);
 		}
 		
@@ -1012,15 +1011,15 @@ public class ChannelService {
 			String kkoToken = "";
 			
 			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("code")) ) {
 				kkoToken = CommonUtils.getString(
 							((Map<String, Object>)result.get("data")).get("token")
 						);
-			} else if ( "500100".equals(result.get("rslt")) ) {
+			} else if ( "500100".equals(result.get("code")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
 			} else {
-				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			}
 			
@@ -1060,12 +1059,12 @@ public class ChannelService {
 			System.out.println("------------------------------------------------- saveMoCallback U result : " + result);
 			
 			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("rslt")) ) {
-			} else if ( "500100".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("code")) ) {
+			} else if ( "500100".equals(result.get("code")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
 			} else {
-				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			}
 			
@@ -1089,12 +1088,12 @@ public class ChannelService {
 			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
 			
 			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("rslt")) ) {
-			} else if ( "500100".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("code")) ) {
+			} else if ( "500100".equals(result.get("code")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
 			} else {
-				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			}
 			

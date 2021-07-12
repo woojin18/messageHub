@@ -129,8 +129,6 @@ public class ProjectService {
 				
 				List<Map<String, Object>> resultLists = (List<Map<String, Object>>) ((Map<String, Object>) apiInterface.get("/console/v1/ucube/bill/custList?mode=C&custNo=" + custNo, getHeaderMap).get("data")).get("resultList");
 				
-				System.out.println("------------------------------------------------@@ resultLists : " + resultLists);
-				
 				Map<String, Object> billDataMap = new HashMap<>();
 				for( int i = 0; i < resultLists.size(); i++ ) {
 					if( billId.equals(resultLists.get(i).get("billAcntNo")) ) {
@@ -138,7 +136,6 @@ public class ProjectService {
 					}
 				}
 				
-				System.out.println("-------------------------------------------------@@ billDataMap :" + billDataMap);
 				// CM_UCUBE 조회해서 없으면 인서트 처리
 				Map<String, Object> ucubeBillInfoVo = new HashMap<>();
 				
@@ -178,13 +175,13 @@ public class ProjectService {
 				Map<String, Object> result =  apiInterface.post("/console/v1/ucube/service/join", ucubeServiceMap, null);
 				String serviceId = "";
 				
-				if( "10000".equals(result.get("rslt")) ) {
+				if( "10000".equals(result.get("code")) ) {
 					serviceId = CommonUtils.getString((Map<String, Object>)((Map<String, Object>)result.get("data")).get("serviceId"));
-				} else if ( "500100".equals(result.get("rslt")) ) {
+				} else if ( "500100".equals(result.get("code")) ) {
 					String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 					throw new Exception(errMsg);
 				} else {
-					String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+					String errMsg = CommonUtils.getString(result.get("message"));
 					throw new Exception(errMsg);
 				}
 				
@@ -368,12 +365,12 @@ public class ProjectService {
 			System.out.println("-----------------------------------------@@@ result : " + result);
 			
 			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("rslt")) ) {
-			} else if ( "500100".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("code")) ) {
+			} else if ( "500100".equals(result.get("code")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
 			} else {
-				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			}
 		} else if ( "U".equals(sts) ) {
@@ -401,12 +398,12 @@ public class ProjectService {
 			System.out.println("-----------------------------------------@@@ result : " + result);
 			
 			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("rslt")) ) {
-			} else if ( "500100".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("code")) ) {
+			} else if ( "500100".equals(result.get("code")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
 			} else {
-				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			}
 		}
@@ -463,12 +460,12 @@ public class ProjectService {
 		System.out.println("------------------------------------------------- deleteCallbackForApi result : " + result);
 		
 		// 성공인지 실패인지 체크
-		if( "10000".equals(result.get("rslt")) ) {
-		} else if ( "500100".equals(result.get("rslt")) ) {
+		if( "10000".equals(result.get("code")) ) {
+		} else if ( "500100".equals(result.get("code")) ) {
 			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 			throw new Exception(errMsg);
 		} else {
-			String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+			String errMsg = CommonUtils.getString(result.get("message"));
 			throw new Exception(errMsg);
 		}
 	}
@@ -635,7 +632,7 @@ public class ProjectService {
 		Map<String, Object> result = apiInterface.get("/console/v1/ucube/bill/custList?mode=C&custNo=" + custNo, getHeaderMap);
 		
 		
-		if( "10000".equals(result.get("rslt")) ) {
+		if( "10000".equals(result.get("code")) ) {
 			result.put("billDataList", ((Map<String, Object>)result.get("data")).get("resultList"));
 		} else {
 			result.put("billDataList", null);
