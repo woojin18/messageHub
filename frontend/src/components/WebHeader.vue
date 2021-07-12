@@ -163,9 +163,12 @@ export default {
 				userId : tokenSvc.getToken().principal.userId
 			};
 			myPageApi.selectCorpInfo(params).then(response => {
-				var result = response.data.data;
-				this.corpInfo = result;
-				this.popReset = this.popReset + 1;
+				var result = response.data;
+				if(result.success){
+					this.corpInfo = result.data;
+					console.log(this.corpInfo);
+					this.popReset = this.popReset + 1;
+				}
 			});
 			jQuery("#corpInfoPopup").modal("show");
 		}

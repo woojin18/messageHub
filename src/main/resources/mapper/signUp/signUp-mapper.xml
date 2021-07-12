@@ -40,6 +40,8 @@
 		FROM	cm_bo.CM_USE_TERMS
 		WHERE	TERMS_CD = #{srcTermsCd}
 		AND		USE_YN = 'Y'
+		ORDER BY REG_DT DESC
+		LIMIT 1
 	</select>
 	
 	<select id="selectCmUseTermsPriVersion" resultType = "camel">
@@ -52,4 +54,45 @@
 		AND		USE_YN = 'N'
 		ORDER BY REVISE_DAY DESC
 	</select>
+	
+	<insert id="insertCmCorp">
+		/* signUp.insertCmCorp */
+		INSERT INTO CM_CORP (
+				CORP_ID
+		,		CUST_NO
+		,		CORP_NAME
+		,		REGNO
+<!-- 		,		REG_ID -->
+		,		REG_DT
+		,		CEO_NAME
+		,		ZIPCODE
+		,		WOPLACE_ADDRESS
+		,		WOPLACE_ADDRESS_DETAIL
+		,		BUSITYPE
+		,		BUSICLASS
+<!-- 		,		SVC_TERMS_ID -->
+		,		SMS_CERTIFY_YN
+		,		WIRE_TEL
+		,		FILE_ID
+		,		DOMAIN_NAME
+		) VALUES (
+				#{corpId}
+		,		#{custNo}
+		,		#{corpNm}
+		,		#{regno}
+<!-- 		,		#{userId} -->
+		,		NOW()
+		,		#{ceoNm}
+		,		#{zipCode}
+		,		#{woplaceAddress}
+		,		#{woplaceAddressDetail}
+		,		#{busiType}
+		,		#{busiClass}
+<!-- 		,		#{svcTermsId} -->
+		,		#{smsCertifyYn}
+		,		#{wireTel}
+		,		#{fileId}
+		,		#{domainName}
+		)
+	</insert>
 </mapper>

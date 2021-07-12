@@ -1,11 +1,11 @@
 <template>
 	<div>
-	<provisionViewService :svcFlag.sync="svcFlag" />
-	<provisionViewPri :priFlag.sync="priFlag" />
+	<provisionViewService :popReset="popReset" />
+	<provisionViewPri :popReset="popReset" />
 	<section class="userSection width540 mt70">
 		<h2 class="text-center">회원가입</h2>
 
-		<input type="checkbox" id="agree0" class="checkStyle3 mainCheck" value="전체 동의" v-model="agree0" @click="checkAll($event.target.checked)"><label for="agree0">전체 이용약관에 동의합니다.</label>	
+		<input type="checkbox" id="agree0" class="checkStyle3 mainCheck" value="전체 동의" v-model="agree0" @click="checkAll(jQueryevent.target.checked)"><label for="agree0">전체 이용약관에 동의합니다.</label>	
 
 		<hr>
 
@@ -26,7 +26,7 @@
 		<div class="of_h">
 			<h4 class="font-normal float-left font-size14 mt15" style="width:20%">이메일 *</h4>
 			<div class="float-left" style="width:80%">
-				<input type="text" id="email" class="inputStyle" placeholder="이메일 입력" v-model="email">
+				<input type="text" id="email" class="inputStyle" placeholder="이메일 입력" v-model="email" maxlength="100">
 				<p class="font-size12 color3 mt10">이메일 인증 유효시간은 <span class="color1">1시간</span>입니다.</p>
 			</div>
 		</div>
@@ -41,8 +41,8 @@
 <script>
 import confirm from "@/modules/commonUtil/service/confirm";
 import signUpApi from "@/modules/signUp/service/api"
-import provisionViewService from "./provisionViewService.vue";
-import provisionViewPri from "./provisionViewPri.vue";
+import provisionViewPri from "./provisionViewService.vue";
+import provisionViewService from "./provisionViewPri.vue";
 
 export default {
   components: {
@@ -60,8 +60,7 @@ export default {
 		email : "",
 		randonNum : "",
 		// 약관 호출 팝업 flag
-		priFlag : false,
-		svcFlag : false
+		popReset : 0
     }
   },
 
@@ -158,20 +157,12 @@ export default {
 
 	  // 팝업 호출 닫기
 	  svcPopView() {
-		  this.svcFlag = true;
-		  $("#provisionView1").modal('show');
-	  },
-	  svcPopViewClose() {
-		  this.svcFlag = false;
-		  $("#provisionView1").modal('hide');
+		  this.popReset++;
+		  jQuery("#provisionView1").modal('show');
 	  },
 	  priPopView () {
-		  this.priFlag = true;
-		  $("#provisionView2").modal('show');
-	  },
-	  priPopViewClose() {
-		  this.priFlag = false;
-		  $("#provisionView2").modal('hide');
+		  this.popReset++;
+		  jQuery("#provisionView2").modal('show');
 	  },
 
 	  apiTest() {

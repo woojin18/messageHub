@@ -63,7 +63,7 @@
 									<th class="text-center lc-1 end">관리</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody v-if="this.data.length > 0">
 									<tr v-for="(row, index) in data" :key="index">
 									<td class="text-center">{{ index + 1 }}</td>
 									<td class="text-left clickClass">
@@ -79,6 +79,11 @@
 										<a @click="fnEditQna(row)" class="btnStyle1 borderLightGray small mr5">수정</a>
 										<a @click="fnDeleteQna(row)" class="btnStyle1 borderLightGray small mr5">삭제</a>
 									</td>
+									</tr>
+								</tbody>
+								<tbody v-else>
+									<tr>
+										<td colspan="9">검색 내역이 없습니다.</td>
 									</tr>
 								</tbody>
 							</table>
@@ -181,7 +186,7 @@ export default {
 						this.data = result.data; 
 						this.pageInfo = result.pageInfo;
 					} else {
-						confirm.fnAlert("","검색된 내용이 없습니다.");
+						this.data = [];
 					}
 				}
 			});

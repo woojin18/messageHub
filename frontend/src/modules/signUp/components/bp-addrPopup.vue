@@ -27,11 +27,12 @@
                                 </div>
 							</div>
 							<p class="mt20">도로명, 건물명, 건물지번으로 조회됩니다.</p>
+							<p class="mt20">- 도로명 + 건물명 혹은 도로명 + 건물지번으로 조회해주시기 바랍니다. </p>
 							<!-- <p class="mt10">지번 주소를 선택하신 경우, 읍/면/동으로 조회됩니다.</p> -->
 							<p class="mt20">도로명을 모르실 경우, 도로명 주소 안내시스템(http://www.juso.go.kr)에서 확인하시<br>기 바랍니다.</p>
 							<p class="color4 mt20">주소를 클릭하시면 자동으로 주소가 선택 됩니다.</p>
 
-							<div class="mt10" style="height:203px; overflow-y:scroll; border-top: 2px solid #222; border-bottom: 1px solid #222">
+							<div class="mt10" style="max-height:203px; overflow-y:scroll; border-top: 1px solid #222; border-bottom: 1px solid #222">
 								<table class="table_skin1" style="border:none">
 									<tbody>
 										<tr v-for="(row, index) in data" :key="index" @dblclick="fnSelectAddr(row)">

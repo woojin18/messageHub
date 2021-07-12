@@ -39,14 +39,23 @@
 							<textarea v-else class="textareaStyle height120 float-right" style="width:80%" placeholder="문의내용을 입력하세요(500자)" v-model="content"></textarea>
 						</div>
 					</div>
-					<div v-if="this.status == 'detail'" class="mt20">
+					<div v-if="this.status == 'detail'">
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">문의상태</h5>
 							<h5 class="font-normal inline-block float-right" style="width:80%">{{ qnaStatusStr }}</h5>
 						</div>
-						<div class="of_h consolMarginTop">
+						<hr v-if="this.qnaStatus == '03'">
+						<div class="of_h consolMarginTop mt20" v-if="this.qnaStatus == '03'">
+							<h5 class="inline-block" style="width:18%">답변자</h5>
+							<h5 class="font-normal inline-block float-right" style="width:80%"><pre>{{ replyUser }}</pre></h5>
+						</div>
+						<div class="of_h consolMarginTop" v-if="this.qnaStatus == '03'">
 							<h5 class="inline-block" style="width:18%">답변 내용</h5>
 							<h5 class="font-normal inline-block float-right" style="width:80%"><pre>{{ reply }}</pre></h5>
+						</div>
+						<div class="of_h consolMarginTop" v-if="this.qnaStatus == '03'">
+							<h5 class="inline-block" style="width:18%">답변 일자</h5>
+							<h5 class="font-normal inline-block float-right" style="width:80%"><pre>{{ replyDt }}</pre></h5>
 						</div>
 					</div>
 					<div class="text-center mt20">
@@ -70,14 +79,17 @@ export default {
   name: 'acQnaPopup',
   data() {
     return {
-      qnaType : '',       // 문의 상태 유형
-      qnaTypeStr : '',    // 문의 상태 유형 문자열
+      qnaType : '',       // 문의 유형
+      qnaTypeStr : '',    // 문의 유형 문자열
       email : '',         // 이메일
       hpNumber : '',      // 전화번호
       title : '',         // 제목
       content :'',        // 내용
+      qnaStatus : "",
       qnaStatusStr : '',  // 문의 상태
       reply : '',         // 답변
+      replyUser : "",     // 답변자
+      replyDt : "",       // 답변 일자
       qnaTypeArr : [],
 
       memberInfo : {},
@@ -146,8 +158,11 @@ export default {
         this.hpNumber = this.status == "add" ? this.memberInfo.hpNumber : this.selectRow.hpNumber;    // 신규 문의 사항인 경우 로그인 회원의 전화번호
         this.email = this.status == "add" ? this.memberInfo.loginId : this.selectRow.email;           // 신규 문의 사항인 경우 로그인 회원의 이메일
         this.content = this.selectRow.content;
+        this.qnaStatus = this.selectRow.questStatus;
         this.qnaStatusStr = this.selectRow.questStatusStr;
         this.reply = this.selectRow.reply;
+        this.replyUser = this.selectRow.replyUser;
+        this.replyDt = this.selectRow.replyDt;
       },
       fnSave(){
         if(this.qnaType == undefined || this.qnaType == ''){

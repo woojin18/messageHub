@@ -100,23 +100,26 @@ public class SignUpController {
 //	}
 	@PostMapping("/insertSignUp")
 	public RestResult<?> insertSignUp(
-			@RequestParam(required=true) String loginId,
-			@RequestParam(required=true) String password,
-			@RequestParam(required=true) String smsCertifyYn,
-			@RequestParam(required=true) String phoneCerti,
-			@RequestParam(required=true) String regno,
-			@RequestParam(required=true) String custNo,
-			@RequestParam(required=true) String corpNm,
-			@RequestParam(required=true) String ceoNm,
-			@RequestParam(required=true) String busiType,
-			@RequestParam(required=true) String busiClass,
-			@RequestParam(required=true) String zipCode,
-			@RequestParam(required=true) String woplaceAddress,
-			@RequestParam(required=true) String woplaceAddressDetail,
-			@RequestParam(required=false) String wireTel,
-			@RequestParam(required=true) MultipartFile attachFile,
-			@RequestParam(required=true) String domainName
-			
+			@RequestParam(required=true) String loginId,				// 아이디
+			@RequestParam(required=true) String password,				// 비밀번호
+			@RequestParam(required=true) String smsCertifyYn,			// sms 인증 여부
+			@RequestParam(required=true) String phoneCerti,				// user 핸드폰 번호
+			@RequestParam(required=true) String regno,					// 사업자 번호
+			@RequestParam(required=true) String custNo,					// 고객번호
+			@RequestParam(required=true) String corpNm,					// 고객사 명
+			@RequestParam(required=true) String ceoNm,					// 대표자 명
+			@RequestParam(required=true) String busiType,				// 업태
+			@RequestParam(required=true) String busiClass,				// 업종
+			@RequestParam(required=true) String zipCode,				// 우편번호
+			@RequestParam(required=true) String woplaceAddress,			// 주소
+			@RequestParam(required=true) String woplaceAddressDetail,	// 상세주소
+			@RequestParam(required=false) String wireTel,				// 유선전화번호
+			@RequestParam(required=true) MultipartFile attachFile,		// 사업자 등록증
+			@RequestParam(required=true) String domainName,				// 도메인
+			@RequestParam(required=true) String custKdCd,				// 고객유형
+			@RequestParam(required=false) String custrnmNo,				// 고객식별번호
+			@RequestParam(required=false) String coInfo,				// 본인인증 토큰 (개인사업자 필수)
+			@RequestParam(required=false) String genderCode				// 성별 (0: 여성, 1: 남성)
 			) throws Exception {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -136,6 +139,24 @@ public class SignUpController {
 		paramMap.put("wireTel", wireTel);
 		paramMap.put("attachFile", attachFile);
 		paramMap.put("domainName", domainName);
+		
+		// 유큐브 파라미터
+		paramMap.put("custKdCd", custKdCd);
+		paramMap.put("persNo", custrnmNo);
+		paramMap.put("cmpNm", corpNm);
+		paramMap.put("zipcode", zipCode);
+		paramMap.put("juso", woplaceAddress);
+		paramMap.put("juso2", woplaceAddressDetail);
+		paramMap.put("damEmail", loginId);
+		paramMap.put("coInfo1", coInfo);
+		paramMap.put("genderCode", genderCode);
+		paramMap.put("corpTel", wireTel);
+		paramMap.put("regNo", regno);
+		paramMap.put("ceoNm", ceoNm);
+		paramMap.put("busiType", busiType);
+		paramMap.put("upjongNm", busiClass);
+		paramMap.put("vatExmptKdCd", "N");
+		
 		try {
 			signUpSvc.insertSignUp(paramMap);
 			rtn.setSuccess(true);

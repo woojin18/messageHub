@@ -128,15 +128,19 @@
 	<select id="selectCorpInfoByUserId" resultType="camel">
 	/* common.selectCorpInfoByUserId */
 		SELECT	cu.CORP_ID
+		,		cc.CUST_NO
 		,		cc.CORP_NAME
 		,		cc.REGNO
 		,		cc.CEO_NAME
 		,		cc.BUSITYPE
 		,		cc.BUSICLASS
+		,		cc.ZIPCODE
 		,		cc.WOPLACE_ADDRESS
 		,		cc.WOPLACE_ADDRESS_DETAIL
 		,		cc.WIRE_TEL
 		,		cc.FILE_ID
+		,		caf.ATTACH_FILE_PATH
+		,		caf.ATTACH_FILE_NAME
 		,		cc.DOMAIN_NAME
 		FROM	cm_console.CM_USER cu
 		INNER JOIN cm_console.CM_CORP cc

@@ -1,11 +1,20 @@
 package kr.co.uplus.cm.myPage.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.config.FileConfig;
 import kr.co.uplus.cm.myPage.service.MyPageService;
+import kr.co.uplus.cm.utils.CommonUtils;
+import kr.co.uplus.cm.utils.FileDownUtil;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @RestController
 @RequestMapping("/api/myPage")
 public class MyPageController {
@@ -232,5 +246,32 @@ public class MyPageController {
 		}
 		
 		return rtn;
+	}
+	
+	@PostMapping("/downloadRegCardImage")
+	public ResponseEntity<Resource> downloadRegCardImage(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) throws Exception {
+		
+		Map<String, Object> fileInfo = myPageSvc.selectAttachFileInfo(params);
+		String filePath = CommonUtils.getStrValue(fileInfo, "attachFilePath");
+		String fileName = FileDownUtil.getFileNm(FileDownUtil.getBrowser(request), CommonUtils.getStrValue(fileInfo, "attachFileName"));
+		
+		if(StringUtils.indexOf(filePath, FileConfig.FileSvcType.BIZ_REG_CARD.getPath()) < 0) {
+			String errorMsg = "unauthorized path access";
+			log.error("{}.procDownloadLibraryFile Error : {}", this.getClass(), errorMsg);
+			throw new Exception(errorMsg);
+		}
+		
+		Path path = Paths.get(filePath);
+		String contentType = Files.probeContentType(path);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
+		
+		Resource resource = new InputStreamResource(Files.newInputStream(path));
+		return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 	}
 }

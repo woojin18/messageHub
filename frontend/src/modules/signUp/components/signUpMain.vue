@@ -44,6 +44,7 @@
 					<div class="float-right" style="width:75%">
 						<input type="text" id="phoneCerti" class="inputStyle" placeholder="" v-model="phoneCerti" disabled>
 						<input type="hidden" id="gender" v-model="gender" disabled>
+						<input type="hidden" id="coInfo" v-model="coInfo" disabled>
 						<button id="nice" style="display:none;" @click="fnGetNiceCheckInfo"></button>
 					</div>
 				</div>
@@ -205,6 +206,7 @@ export default {
 		custAddrZip : "",			// 우편번호
 		custKdCd : "",				// 고객 유형
 		gender : "",				// 성별
+		coInfo : "",				// ci 값
 
 		selCorp : {},				// 선택한 고객사 정보
 		selAddr : {},				// 선택한 주소 정보
@@ -399,23 +401,26 @@ export default {
 	// 	});
 	async signUpSubmit() {
 		var fd = new FormData();
-		fd.append('loginId', this.loginId);
-		fd.append('password', this.password);
-		fd.append('smsCertifyYn', this.smsCertifyYn);
-		fd.append('phoneCerti', this.phoneCerti);
-		fd.append('regno', this.selRegno);
-		fd.append('custKdCd', this.custKdCd)
-		fd.append('custNo', this.custNo);
-		fd.append('corpNm', this.corpNm);
-		fd.append('ceoNm', this.ceoNm);
-		fd.append('busiType', this.busiType);
-		fd.append('busiClass', this.busiClass);
-		fd.append('zipCode', this.custAddrZip);
-		fd.append('woplaceAddress', this.woplaceAddress);
-		fd.append('woplaceAddressDetail', this.woplaceAddressDetail);
-		fd.append('wireTel', this.wireTel);
-		fd.append('attachFile', this.$refs.attachFile.files[0]);
-		fd.append('domainName', this.domainName);
+		fd.append('loginId', this.loginId);								// 아이디
+		fd.append('password', this.password);							// 비밀번호
+		fd.append('smsCertifyYn', this.smsCertifyYn);					// sms 인증 여부
+		fd.append('phoneCerti', this.phoneCerti);						// 휴대폰 번호
+		fd.append('regno', this.selRegno);								// 사업자번호
+		fd.append('custKdCd', this.custKdCd)							// 고객유형
+		fd.append('custNo', this.custNo);								// 고객번호
+		fd.append('corpNm', this.corpNm);								// 사업명
+		fd.append('ceoNm', this.ceoNm);									// 사업자 명
+		fd.append('busiType', this.busiType);							// 업태
+		fd.append('busiClass', this.busiClass);							// 업종
+		fd.append('zipCode', this.custAddrZip);							// 우편번호
+		fd.append('woplaceAddress', this.woplaceAddress);				// 주소
+		fd.append('woplaceAddressDetail', this.woplaceAddressDetail);	// 상세주소
+		fd.append('wireTel', this.wireTel);								// 유선 전화
+		fd.append('attachFile', this.$refs.attachFile.files[0]);		// 사업자 등록증
+		fd.append('domainName', this.domainName);						// 도메인 주소
+		fd.append('custrnmNo', this.custrnmNo);							// 고객 식별번호
+		fd.append('coInfo', this.coInfo);								// 본인인증 토큰 (개인사업자 필수)
+		fd.append('genderCode', this.gender);							// 성별 (0: 여성 / 1: 남성)
 
 		await axios.post('/api/public/signUp/insertSignUp',
 			fd,
@@ -485,6 +490,7 @@ export default {
 			window.open('', 'popupChk', 'width=400, height=705, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
 			document.form_chk.action = "https://nice.checkplus.co.kr/CheckPlusSafeModel/checkplus.cb";
 			document.form_chk.target = "popupChk";
+			console.log(document.form_chk);
 			document.form_chk.submit();
 	},
 	// 본인인증시 사용될 데이터 조회
@@ -506,6 +512,7 @@ export default {
 		confirm.fnAlert("본인인증 성공", "본인인증에 성공하였습니다.");
 		this.phoneCerti = jQuery("#phoneCerti").val();
 		this.gender = jQuery("#gender").val();
+		this.coInfo = jQuery("#coInfo").val();
 		this.phoneCertiChk = true;
 	},
 	// 주소 조회 팝업

@@ -56,19 +56,22 @@ public class SignUpService {
 
 			paramMap.put("fileId", fileSeq);
 		}
-		String custNo = CommonUtils.getString(paramMap.get("custNo"));
-
+		
 		// corp_id
 		String corpId = CommonUtils.getCommonId("COM", 7);
 		paramMap.put("corpId", corpId);
 		
+		// 고객 번호
+		String custNo = CommonUtils.getString(paramMap.get("custNo"));
 		if("".equals(custNo)) {
 			String newCustNo = CommonUtils.randomGeneration(10);
 			paramMap.put("custNo", newCustNo);
 		}
 		// 고객사 등록
-//		generalDao.insertGernal(DB.QRY_INSERT_CM_CORP, paramMap);
-		// CM_CMD table update
+		// generalDao.insertGernal(DB.QRY_INSERT_CM_CORP, paramMap);
+		
+
+		// redis update
 		
 		
 		// owner 등록 (이메일 발송때 insert된 data에 update 처리)

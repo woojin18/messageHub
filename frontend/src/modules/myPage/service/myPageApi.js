@@ -36,6 +36,11 @@ const selectProejctList = () => {
     return httpClient.post('/api/myPage/selectProejctList', { headers: {"show-layer": "Yes"} });
 };
 
+const downloadRegCardImage = (params) => {
+    return httpClient.post('/api/myPage/downloadRegCardImage', params, { headers: {"show-layer": "Yes"}, responseType: 'arraybuffer' })
+    .then((response) => fnDownCallback(response));
+  };
+
 export default {
     selectMemberInfo,
     saveMemberInfo,
@@ -45,5 +50,6 @@ export default {
     checkPassword,
     selectCorpInfo,
     saveCorpInfo,
-    selectProejctList
+    selectProejctList,
+    downloadRegCardImage
 };

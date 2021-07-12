@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.crypto.Sha256PasswordEncoder;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 
@@ -23,6 +24,9 @@ public class MyPageService {
 
 	@Autowired
 	private Sha256PasswordEncoder sha256;
+
+	@Autowired
+	private ApiInterface apiInterface;
 	
 	public RestResult<Object> selectMemberInfo(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -131,12 +135,30 @@ public class MyPageService {
 		return rtn;
 	}
 
+	@SuppressWarnings("unchecked")
 	public RestResult<Object> selectCorpInfo(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-
-		Object rtnObj = generalDao.selectGernalObject(DB.QRY_SELECT_CORP_INFO, params);
-		rtn.setData(rtnObj);
-
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		
+		Map<String, Object> rtnObj = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_CORP_INFO, params);
+		
+		String custNo = CommonUtils.getString(rtnObj.get("custNo"));
+		
+		// 고객번호 수정
+		custNo = "3020989575";
+		headerMap.put("custNo", custNo);
+		
+		// API 통신 처리
+		Map<String, Object> result = apiInterface.get("/console/v1/ucube/customer/"+custNo, headerMap);
+		
+		if("10000".equals(result.get("code"))) {
+			Map<String, Object> data = (Map<String, Object>) result.get("data");
+			rtnObj.putAll(data);
+			rtn.setData(rtnObj);
+		} else {
+			throw new Exception(CommonUtils.getString(result.get("message")));
+		}
+		
 		return rtn;
 	}
 
@@ -162,5 +184,10 @@ public class MyPageService {
 		rtn.setData(list);
 
 		return rtn;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> selectAttachFileInfo(Map<String, Object> params) throws Exception {
+		return (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_ATTACH_FILE_INFO, params);
 	}
 }

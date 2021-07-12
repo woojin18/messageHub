@@ -8,11 +8,6 @@ import qna from '../components/bc-qna.vue'
 export default {
     components : {
         qna
-    },
-    data(){
-        return {
-            
-        }
     }
 }
 </script>
