@@ -264,13 +264,13 @@ public class SendMessageService {
         log.info("{}.getRmAmount API Result : {}", this.getClass(), resultMap);
         log.info("{}.getRmAmount API END=======>", this.getClass());
 
-        if (!CommonUtils.isEmptyValue(resultMap, "rslt")
-                && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(resultMap.get("rslt")))) {
-            Map<String, Object> dataMap = (Map<String, Object>) resultMap.get("data");
-            List<Map<String, Object>> cashInfoList = (List<Map<String, Object>>) dataMap.get("cashInfo");
+        if (!CommonUtils.isEmptyValue(resultMap, ApiConfig.GW_RESULT_CODE_FIELD_NM)
+                && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(resultMap.get(ApiConfig.GW_RESULT_CODE_FIELD_NM)))) {
+            Map<String, Object> dataMap = (Map<String, Object>) resultMap.get(ApiConfig.COMMON_DATA_FIELD_NM);
+            List<Map<String, Object>> cashInfoList = (List<Map<String, Object>>) dataMap.get(ApiConfig.CASH_INFO_FIELD_NM);
 
             for(Map<String, Object> cashInfo : cashInfoList) {
-                cashBalance = CommonUtils.getStrValue(cashInfo, "cashBalance");
+                cashBalance = CommonUtils.getStrValue(cashInfo, ApiConfig.CASH_BALANCE_FIELD_NM);
                 rmAmount = rmAmount.add(new BigDecimal(cashBalance));
             }
         } else {
@@ -500,10 +500,10 @@ public class SendMessageService {
 
         if(isSendSuccess(resultMap)) {
             int successCnt = 0;
-            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
+            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get(ApiConfig.COMMON_DATA_FIELD_NM);
             for(Map<String, Object> dataInfo : dataList) {
-                if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
-                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                if(!CommonUtils.isEmptyValue(dataInfo, ApiConfig.GW_RESULT_CODE_FIELD_NM)
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get(ApiConfig.GW_RESULT_CODE_FIELD_NM)))) {
                     successCnt++;
                 }
             }
@@ -555,8 +555,8 @@ public class SendMessageService {
     private boolean isApiRequestAgain(Map<String, Object> responseBody, List<Object> reSendCdList) {
         boolean isDone = true;
         if(responseBody != null) {
-            if(!CommonUtils.isEmptyValue(responseBody, "rslt")){
-                String resultCode = CommonUtils.getString(responseBody.get("rslt"));
+            if(!CommonUtils.isEmptyValue(responseBody, ApiConfig.GW_RESULT_CODE_FIELD_NM)){
+                String resultCode = CommonUtils.getString(responseBody.get(ApiConfig.GW_RESULT_CODE_FIELD_NM));
                 for(Object reSendCd : reSendCdList) {
                     if(StringUtils.equals(resultCode, CommonUtils.getString(reSendCd))) {
                         isDone = false;
@@ -576,8 +576,8 @@ public class SendMessageService {
     private boolean isSendSuccess(Map<String, Object> responseBody) {
         boolean isSuccess = false;
         if(responseBody != null) {
-            if(!CommonUtils.isEmptyValue(responseBody, "rslt")
-                    && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(responseBody.get("rslt")))) {
+            if(!CommonUtils.isEmptyValue(responseBody, ApiConfig.GW_RESULT_CODE_FIELD_NM)
+                    && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(responseBody.get(ApiConfig.GW_RESULT_CODE_FIELD_NM)))) {
                 isSuccess = true;
             }
         }
@@ -1208,10 +1208,10 @@ public class SendMessageService {
 
         if(isSendSuccess(resultMap)) {
             int successCnt = 0;
-            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
+            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get(ApiConfig.COMMON_DATA_FIELD_NM);
             for(Map<String, Object> dataInfo : dataList) {
-                if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
-                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                if(!CommonUtils.isEmptyValue(dataInfo, ApiConfig.GW_RESULT_CODE_FIELD_NM)
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get(ApiConfig.GW_RESULT_CODE_FIELD_NM)))) {
                     successCnt++;
                 }
             }
@@ -1274,10 +1274,10 @@ public class SendMessageService {
 
         if(isSendSuccess(resultMap)) {
             int successCnt = 0;
-            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
+            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get(ApiConfig.COMMON_DATA_FIELD_NM);
             for(Map<String, Object> dataInfo : dataList) {
-                if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
-                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                if(!CommonUtils.isEmptyValue(dataInfo, ApiConfig.GW_RESULT_CODE_FIELD_NM)
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get(ApiConfig.GW_RESULT_CODE_FIELD_NM)))) {
                     successCnt++;
                 }
             }
@@ -1599,10 +1599,10 @@ public class SendMessageService {
 
         if(isSendSuccess(resultMap)) {
             int successCnt = 0;
-            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
+            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get(ApiConfig.COMMON_DATA_FIELD_NM);
             for(Map<String, Object> dataInfo : dataList) {
-                if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
-                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                if(!CommonUtils.isEmptyValue(dataInfo, ApiConfig.GW_RESULT_CODE_FIELD_NM)
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get(ApiConfig.GW_RESULT_CODE_FIELD_NM)))) {
                     successCnt++;
                 }
             }
@@ -1946,10 +1946,10 @@ public class SendMessageService {
 
         if(isSendSuccess(resultMap)) {
             int successCnt = 0;
-            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get("data");
+            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get(ApiConfig.COMMON_DATA_FIELD_NM);
             for(Map<String, Object> dataInfo : dataList) {
-                if(!CommonUtils.isEmptyValue(dataInfo, "rsltCode")
-                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get("rsltCode")))) {
+                if(!CommonUtils.isEmptyValue(dataInfo, ApiConfig.GW_RESULT_CODE_FIELD_NM)
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get(ApiConfig.GW_RESULT_CODE_FIELD_NM)))) {
                     successCnt++;
                 }
             }

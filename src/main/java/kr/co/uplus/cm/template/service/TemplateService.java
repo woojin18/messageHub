@@ -480,12 +480,12 @@ public class TemplateService {
         String jsonString = gson.toJson(requestData);
         Map<String, Object> responseBody = apiInterface.sendMsg(ApiConfig.CREATE_KKO_TMPLT_REQ_API_URI, headerMap, jsonString);
 
-        String rslt = "";
+        String rsltCode = "";
         if(responseBody != null) {
-            rslt = CommonUtils.getStrValue(responseBody, "rslt");
+            rsltCode = CommonUtils.getStrValue(responseBody, ApiConfig.GW_RESULT_CODE_FIELD_NM);
         }
 
-        if(!StringUtils.equals(ApiConfig.GW_API_SUCCESS, rslt)) {
+        if(!StringUtils.equals(ApiConfig.GW_API_SUCCESS, rsltCode)) {
             rtn.setFail("알림톡 템플릿 등록요청에 실패하였습니다.");
             log.warn("{}.procApprvRequestKkoTmplt Fail -request: {}, response: {}", this.getClass(), jsonString, responseBody);
         }
@@ -559,7 +559,7 @@ public class TemplateService {
         String tmpltStatCode = "";
         String senderKey = "";
         String jsonString = "";
-        String rslt = "";
+        String rtltCode = "";
         int success = 0;
 
         for(String tmpltCode : tmpltCodes) {
@@ -585,12 +585,12 @@ public class TemplateService {
             jsonString = gson.toJson(requestData);
             responseBody = apiInterface.sendMsg(ApiConfig.DELETE_KKO_TMPLT_REQ_API_URI, headerMap, jsonString);
 
-            rslt = "";
+            rtltCode = "";
             if(responseBody != null) {
-                rslt = CommonUtils.getStrValue(responseBody, "rslt");
+                rtltCode = CommonUtils.getStrValue(responseBody, ApiConfig.GW_RESULT_CODE_FIELD_NM);
             }
 
-            if(StringUtils.equals(ApiConfig.GW_API_SUCCESS, rslt)) success++;
+            if(StringUtils.equals(ApiConfig.GW_API_SUCCESS, rtltCode)) success++;
         }
 
         rtn.setMessage("총 "+tmpltCodes.size()+"건 중 "+success+"건 삭제 요청 되었습니다.");
@@ -644,12 +644,12 @@ public class TemplateService {
         String jsonString = gson.toJson(requestData);
         Map<String, Object> responseBody = apiInterface.sendMsg(ApiConfig.INSPECT_KKO_TMPLT_REQ_API_URI, headerMap, jsonString);
 
-        String rslt = "";
+        String rtltCode = "";
         if(responseBody != null) {
-            rslt = CommonUtils.getStrValue(responseBody, "rslt");
+            rtltCode = CommonUtils.getStrValue(responseBody, ApiConfig.GW_RESULT_CODE_FIELD_NM);
         }
 
-        if(!StringUtils.equals(ApiConfig.GW_API_SUCCESS, rslt)) {
+        if(!StringUtils.equals(ApiConfig.GW_API_SUCCESS, rtltCode)) {
             rtn.setFail("알림톡 템플릿 검수요청에 실패하였습니다.");
             log.warn("{}.procInspectRequestKkoTmplt Fail -request: {}, response: {}", this.getClass(), jsonString, responseBody);
         }
@@ -679,12 +679,12 @@ public class TemplateService {
         String jsonString = gson.toJson(requestData);
         Map<String, Object> responseBody = apiInterface.sendMsg(ApiConfig.CREATE_KKO_TMPLT_UPDATE_API_URI, headerMap, jsonString);
 
-        String rslt = "";
+        String rtltCode = "";
         if(responseBody != null) {
-            rslt = CommonUtils.getStrValue(responseBody, "rslt");
+            rtltCode = CommonUtils.getStrValue(responseBody, ApiConfig.GW_RESULT_CODE_FIELD_NM);
         }
 
-        if(!StringUtils.equals(ApiConfig.GW_API_SUCCESS, rslt)) {
+        if(!StringUtils.equals(ApiConfig.GW_API_SUCCESS, rtltCode)) {
             rtn.setFail("알림톡 템플릿 수정요청에 실패하였습니다.");
             log.warn("{}.procUpdateRequestKkoTmplt Fail -request: {}, response: {}", this.getClass(), jsonString, responseBody);
         }
