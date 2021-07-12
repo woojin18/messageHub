@@ -9,13 +9,13 @@
 						<div class="of_h">
 							<h5 class="inline-block" style="width:18%">주소록명 *</h5>
 							<div class="float-right" style="width:80%">
-								<input type="text" id="addressCategoryGrpName" class="inputStyle" />
+								<input type="text" id="addressCategoryGrpName" class="inputStyle" maxlength="50" />
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block">주소록 설명</h5>
 							<div class="float-right" style="width:80%">
-								<input type="text" id="addressCategoryGrpDesc" class="inputStyle" />
+								<input type="text" id="addressCategoryGrpDesc" class="inputStyle" maxlength="200" />
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">

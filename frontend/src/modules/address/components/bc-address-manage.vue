@@ -24,16 +24,16 @@
 			</div>
 			<div class="row mt15">
 				<div class="col-xs-4">
-					<div class="fl border-line" style="width:100%; height:500px">
+					<div class="fl border-line" style="width:100%">
 						<div class="bb-d5 pd20">
 							<div v-if="!this.$gfnCommonUtils.isEmpty(selectedAddrCateGrp.addressCategoryGrpName)">
-								<h4>{{ selectedAddrCateGrp.addressCategoryGrpName }}</h4>
+								<h4 class="mb0 mt0">{{ selectedAddrCateGrp.addressCategoryGrpName }}</h4>
 							</div>
 							<div v-else>
-								<h4>주소록</h4>
+								<h4 class="mb0 mt0">주소록</h4>
 							</div>
 						</div>
-						<div class="bb-d5 pd20" style="height:340px">
+						<div class="bb-d5 pd20 scroll-y" style="height:380px">
 							<div v-if="!this.$gfnCommonUtils.isEmpty(selectedAddrCateGrp.addressCategoryGrpId)">
 								<!-- addList -->
 								<addr-tree-menu v-for="(addrTreeData, idx) in addrTreeList" :key="idx"
@@ -48,8 +48,8 @@
 						<div class="of_h pd20">
 							<div class="of_h text-right">
 								<div class="of_h" style="width:100%">
-									<a @click="fnSaveMemberPop('I')" class="btnStyle1 borderGray mr5">하위 카테고리 추가</a>
-									<a @click="fnSaveMemberPop('U')" class="btnStyle1 borderGray mr5">수정</a>
+									<a @click="fnSaveMemberPop('I')" class="btnStyle1 borderGray mr10">하위 카테고리 추가</a>
+									<a @click="fnSaveMemberPop('U')" class="btnStyle1 borderGray mr10">수정</a>
 									<a @click="fndelAddrCate" class="btnStyle1 borderGray" activity="SAVE">삭제</a>
 								</div>
 							</div>
@@ -58,48 +58,22 @@
 					</div>
 				</div>
 				<div class="col-xs-8">
-					<div class="fl border-line" style="width:100%; height:500px">
+					<div class="fl border-line" style="width:100%">
 						<div class="bb-d5 pd20">
-							<h4>구성원</h4>
+							<h4 class="mb0 mt0">구성원</h4>
 						</div>
-						<div class="bb-d5">
-							<!--table class="table_skin4"  style="width:100%"-->
-							<!-- 페이지당 리스트 개수 -->
-							<div class="of_h inline">
-								<div class="float-left mt10">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
-								</div>
-							</div>
-							<table class="table_skin1 tbl-striped" style="width:100%">
+						<div class="bb-d5 scroll-y" style="height:380px">
+							<table class="table_skin4"  style="width:100%">
 								<colgroup>
 									<col style="width:10%">
-									<col style="width:30%">
-									<col style="width:20%">
-									<col style="width:20%">
+									<col style="width:22%">
+									<col style="width:22%">
+									<col style="width:22%">
 									<col>
 								</colgroup>
-								<thead>
-									<tr>
-										<th class="text-center lc-1">
-											<div class="consolCheck ml10">
-												<input type="checkbox" id="listCheck_all" class="checkStyle2" @change="fnListChkAll" v-model="listAllChecked">
-												<label for="listCheck_all"></label>
-											</div>
-										</th>
-										<th class="text-center lc-1">주소 카테고리명</th>
-										<th class="text-center lc-1">사용자명</th>
-										<th class="text-center lc-1">사용자 아이디</th>
-										<th class="text-center lc-1end">휴대폰번호</th>
-									</tr>
-								</thead>
 								<tbody>
 									<tr v-for="(data, index) in memberList" :key="index">
 										<td class="text-center">
-											<!--
-											<div class="consolCheck ml10">
-												<input type="checkbox" id="check1" class="checkStyle2" value="check1" />
-													<label for="check1"></label>
-											</div>
-											-->
 											<div class="consolCheck ml10">
 												<input type="checkbox" :id="'listCheck_'+index" class="checkStyle2" :value="data.cuInfoId+','+data.addressCategoryId" v-model="listChkBox">
 												<label :for="'listCheck_'+index"></label>
@@ -110,22 +84,17 @@
 										<td class="text-left color4"> {{ data.cuid }} </td>
 										<td class="text-center color4 end"> {{ data.hpNumber | phoneNumber }} </td>
 									</tr>
-									<tr v-if="memberList.length == 0">
-										<td class="text-center"></td>
-										<td class="text-center" colspan="5">검색된 내용이 없습니다.</td>
-									</tr>
 								</tbody>
 							</table>
 						</div>
-						<!-- pagination Start -->
-						<div id="pageContent">
-							<PageLayer @fnClick="fnPageClick" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
-						</div>
-						<!-- pagination End-->
-						<div class="bb-d5 height45">
-						</div>
 						<div class="pd20">
 							<div class="of_h">
+								<div class="float-left" style="margin-left:24px">
+									<div class="consolCheck">
+										<input type="checkbox" id="listCheck_all" class="checkStyle2" @change="fnListChkAll" v-model="listAllChecked">
+										<label for="listCheck_all">전체선택</label>
+									</div>
+								</div>
 								<div class="float-right">
 									<a @click="fnRegisterMemberPop" class="btnStyle1 borderGray ml10">구성원 추가</a>
 									<a @click="fnDeletemember" class="btnStyle1 backWhite ml10" activity="SAVE">구성원 삭제</a>
@@ -272,17 +241,12 @@ export default {
 			saveStatus: '',
 			// 구성원 목록
 			memberList: [],	//구성원 리스트
-			listSize : 5,	// select 박스 value (출력 갯수 이벤트)
-			pageNo : 1,		// 현재 페이징 위치
-			totCnt : 0,		// 전체 리스트 수
-			offset : 0,		// 페이지 시작점
 			memberRegisterOpen: false,
 			listAllChecked: false,
 			listChkBox: [],
 			searchAddrCateId: -1,
 			//Tree 목록에서 선택값
 			selectAddrName: '',
-			// selectTopAddrCateId: -1,
 		}
 	},
 	mounted() {
@@ -305,6 +269,7 @@ export default {
 		// 주소록 선택시 리스트 재출력
 		fnSelected() {
 			var index = this.$refs.selectAddrCateGrp.selectedIndex;
+			this.memberList = [];
 			if(index == 0) {
 				this.selectedAddrCateGrp = {}; // init
 			} else {
@@ -374,6 +339,9 @@ export default {
 		},
 		//주소 카테고리 클릭
 		fnAddrCateMem(addrCateId, addrName) {
+			// 체크박스 초기화
+			this.fnResetChkbox();
+
 			//root 클릭
 			if(this.$gfnCommonUtils.isEmpty(addrCateId) && !this.$gfnCommonUtils.isEmpty(addrName)) {
 				this.searchAddrCateId = -1;
@@ -387,8 +355,7 @@ export default {
 			}
 			this.searchAddrCateId = addrCateId;
 			this.selectAddrName = addrName;
-			// this.selectTopAddrCateId = topAddressCategoryId;
-			this.fnSearchMember();
+			this.fnSearchMemberList();
 		},
 		// 주소 하위 카테고리 등록/수정
 		fnSaveMemberPop(saveStatus) {
@@ -419,31 +386,25 @@ export default {
 				var result = response.data;
 				if(result.success) {
 					confirm.fnAlert('카테고리 삭제','삭제에 성공했습니다.');
-					this.$refs.updatePaging.fnAllDecrease();
+					// 삭제한 주소 카테고리 초기화
+					this.memberList = [];
+					this.searchAddrCateId = -1;
+					this.selectAddrName = '';
+					// 카테고리 재조회
 					this.fnGetAddrList();
 				} else {
 					confirm.fnAlert('카테고리 삭제',result.message);
 				}
 			});
 		},
-		//주소록 구성원 조회
-		fnSearchMember(pageNum) {
-			this.$refs.updatePaging.fnAllDecrease();
-			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
-			this.fnSearchMemberList();
-		},
 		async fnSearchMemberList() {
 			let params = {
 				addressCategoryId: this.searchAddrCateId,
-				pageNo: this.pageNo,
-				listSize: this.listSize,
 			};
 			await addressApi.selectMemberList(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
 					this.memberList = Object.assign([], result.data);
-					this.totCnt = result.pageInfo.totCnt;
-					this.offset = result.pageInfo.offset;
 				} else {
 					confirm.fnAlert(this.title, result.message);
 				}
@@ -496,11 +457,11 @@ export default {
 			addressApi.deleteMember(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					alert('삭제 했습니다.');
+					confirm.fnAlert('구성원 삭제', '구성원을 삭제 했습니다.');
 					this.fnSearchMemberList();
 					this.fnResetChkbox();
 				} else {
-					alert(result.message);
+					confirm.fnAlert('구성원 삭제', result.message);
 				}
 			});
 		},

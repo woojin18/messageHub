@@ -18,7 +18,7 @@
 											<option value="cuid">아이디</option>
 											<option value="hpNumber">휴대폰번호</option>
 										</select>
-										<input type="text" class="inputStyle ml10" style="width:50%" v-model="searchText">
+										<input type="text" class="inputStyle ml10" style="width:50%" v-model="searchText" @keyup.enter="fnSearch()">
 										<a @click='fnSearch()' class="btnStyle1 float-right" activity="READ">검색</a>
 									</div>
 								</div>
@@ -82,10 +82,10 @@
 
 <script>
 import addressApi from '../service/addressApi.js'
-import confirm from "@/modules/commonUtil/service/confirm";
+import confirm from '@/modules/commonUtil/service/confirm';
 import PageLayer from '@/components/PageLayer.vue';
 import tokenSvc from '@/common/token-service';
-import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import {eventBus} from '@/modules/commonUtil/service/eventBus';
 
 export default {
 	name: 'MemberLayer',
@@ -170,27 +170,27 @@ export default {
 		fnRegisterMember() {
 			//유효성 검사
 			if(this.listMemChkBox == null || this.listMemChkBox.length == 0) {
-				confirm.fnAlert(this.title, "수신자를 선택해주세요.");
+				confirm.fnAlert(this.title, '수신자를 선택해주세요.');
 				return false;
 			}
 
 			eventBus.$on('callbackEventBus', this.fnRegisterMemberCallBack);
-			confirm.fnConfirm(this.title, "추가하시겠습니까?", "확인");
+			confirm.fnConfirm(this.title, '추가하시겠습니까?', '확인');
 		},
 		fnRegisterMemberCallBack() {
 			let params = {
-				"regId": tokenSvc.getToken().principal.userId,
-				"addressCategoryId": this.searchAddrCateId,
-				"memberList": this.listMemChkBox,
+				'regId': tokenSvc.getToken().principal.userId,
+				'addressCategoryId': this.searchAddrCateId,
+				'memberList': this.listMemChkBox,
 			};
 			
 			addressApi.registerMember(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					alert("구성원 등록을 성공했습니다.");
-					this.$parent.fnSearchMemberList();					
+					confirm.fnAlert(this.title, '구성원 등록을 성공했습니다.');
+					this.$parent.fnSearchMemberList();
 				} else {
-					alert(result.message);
+					confirm.fnAlert(this.title, result.message);
 				}
 			});
 			
@@ -202,7 +202,7 @@ export default {
 		fnCloseLayer(){
 			this.fnInit();
 			this.fnResetChkbox();
-			jQuery("#MemberRegisterLayer").modal("hide");
+			jQuery('#MemberRegisterLayer').modal('hide');
 		},
 		// 입력값 초기화
 		fnInit() {

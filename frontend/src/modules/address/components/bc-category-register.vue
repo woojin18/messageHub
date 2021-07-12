@@ -31,7 +31,7 @@
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block">카테고리명</h5>
 							<div class="float-right" style="width:80%">
-								<input type="text" class="inputStyle" v-model="cateName">
+								<input type="text" class="inputStyle" v-model="cateName" maxlength="50" />
 							</div>
 						</div>
 					</div>
@@ -139,10 +139,10 @@ export default {
 			addressApi.saveAddressCategory(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					alert('저장에 성공했습니다.');
+					confirm.fnAlert(this.title, '저장에 성공했습니다.');
 					this.$parent.fnGetAddrList();
 				} else {
-					alert(result.message);
+					confirm.fnAlert(this.title, result.message);
 				}
 			});
 
