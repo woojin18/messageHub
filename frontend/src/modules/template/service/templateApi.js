@@ -120,8 +120,8 @@ const integratedTemplateInfo = (params) => {
     return httpClient.post('/integratedTemplateApi/selectIntegratedTemplateInfo', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
-const insertIntegratedTemplate = (params) => {
-    return httpClient.post('/integratedTemplateApi/insertIntegratedTemplate', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+const insertMultiSendTemplate = (params) => {
+    return httpClient.post('/integratedTemplateApi/insertMultiSendTemplate', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 
 const updateIntegratedTemplate = (params) => {
@@ -193,7 +193,7 @@ export default {
     selectIntegratedTemplateList,
     integratedTemplateInfo,
     excelDownloadMultiSendTemplate,
-    insertIntegratedTemplate,
+    insertMultiSendTemplate,
     updateIntegratedTemplate,
     deleteMultiSendTemplate,
     selectBrandList

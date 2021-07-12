@@ -41,7 +41,7 @@ public class IntegratedTemplateController {
 	@Autowired
 	private IntegratedTemplateService integratedTemplateService;
 
-    @InitBinder
+	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
 	}
@@ -63,7 +63,7 @@ public class IntegratedTemplateController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+			log.error("{} Error : {}", this.getClass(), e);
 		}
 
 		return rtn;
@@ -86,7 +86,7 @@ public class IntegratedTemplateController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+			log.error("{} Error : {}", this.getClass(), e);
 		}
 
 		return rtn;
@@ -100,17 +100,17 @@ public class IntegratedTemplateController {
 	 * @param params
 	 * @return
 	 */
-	@PostMapping("/insertIntegratedTemplate")
-	public RestResult<?> insertIntegratedTemplate(HttpServletRequest request, HttpServletResponse response,
+	@PostMapping("/insertMultiSendTemplate")
+	public RestResult<?> insertMultiSendTemplate(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
 
 		try {
-			rtn = integratedTemplateService.insertIntegratedTemplate(params);
+			rtn = integratedTemplateService.insertMultiSendTemplate(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+			log.error("{} Error : {}", this.getClass(), e);
 		}
 		return rtn;
 	}
@@ -132,7 +132,7 @@ public class IntegratedTemplateController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
-            log.error("{} Error : {}", this.getClass(), e);
+			log.error("{} Error : {}", this.getClass(), e);
 		}
 
 		return rtn;
@@ -153,39 +153,42 @@ public class IntegratedTemplateController {
 		List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sheetTitle", "통합발송 템플릿 리스트");
-		map.put("colLabels", new String[] { "템플릿 ID", "템플릿명", "템플릿 채널", "메시지 구분", "메시지 타입", "타 프로젝트 사용여부", "상태", "등록자", "등록일자" });
-        map.put("colIds", new String[] {"tmpltCode", "tmpltTitle", "tmpltChannel", "msgKindName", "msgTypeName", "otherProjectUseYnName", "tmpltStatusName", "regNm", "regDt"});
+		map.put("colLabels",
+				new String[] { "템플릿 ID", "템플릿명", "템플릿 채널", "메시지 구분", "메시지 타입", "타 프로젝트 사용여부", "상태", "등록자", "등록일자" });
+		map.put("colIds", new String[] { "tmpltCode", "tmpltTitle", "tmpltChannel", "msgKindName", "msgTypeName",
+				"otherProjectUseYnName", "tmpltStatusName", "regNm", "regDt" });
 		map.put("numColIds", new String[] {});
 		map.put("figureColIds", new String[] {});
 		map.put("colDataList", integratedTemplateService.selectIntegratedTemplateList(params).getData());
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
-        model.addObject("excelFileName", "multiSendTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
+		model.addObject("excelFileName", "multiSendTemplate_" + DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		model.addObject("sheetList", sheetList);
 
 		return model;
 	}
 
 	/**
-     * 브랜드 리스트 조회
-     * @param request
-     * @param response
-     * @param params
-     * @return
-     */
-    @PostMapping("/selectBrandList")
-    public RestResult<?> selectBrandList(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody Map<String, Object> params) {
-        RestResult<Object> rtn = new RestResult<Object>();
-        try {
-            rtn = integratedTemplateService.selectBrandList(params);
-        } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
-            log.error("{}.selectCallbackList Error : {}", this.getClass(), e);
-        }
-        return rtn;
-    }
+	 * 브랜드 리스트 조회
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectBrandList")
+	public RestResult<?> selectBrandList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = integratedTemplateService.selectBrandList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectCallbackList Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
 
 }

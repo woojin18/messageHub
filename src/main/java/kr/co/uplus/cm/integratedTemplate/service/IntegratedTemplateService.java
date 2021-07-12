@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
@@ -91,7 +92,7 @@ public class IntegratedTemplateService {
 	 * @throws Exception
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-	public RestResult<Object> insertIntegratedTemplate(Map<String, Object> params) throws Exception {
+	public RestResult<Object> insertMultiSendTemplate(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 
 		int resultCnt = 0;
@@ -135,35 +136,33 @@ public class IntegratedTemplateService {
 			sb.append("{");
 			sb.append(sbChannel.toString());// 채널순서를 기억하기 위해 추가
 			if (checkChannelArr[i].equalsIgnoreCase("PUSH")) {
-//PUSH ====================================================================  
-				// System.out.println(">>>>service 003 PUSH 001 :
-				// "+params.get("pushImgInfo").getClass().getName());
+				// PUSH ====================================================================  
 				LinkedHashMap<String, String> pushImgInfoMap = (LinkedHashMap<String, String>) params
 						.get("pushImgInfo");
-				// System.out.println(">>>>service 004 PUSH 002 :
-				// "+pushImgInfoMap.get("imgUrl"));
+
 				sb.append("\"chTypeList\" : \"" + chTypeList + "\",");
-				sb.append("\"chType\" : \"PUSH\",");// 발송채널
-				sb.append("\"sendType\" : \"" + params.get("pushSend") + "\","); // 발송타입(ALL, FCM, APNS)
+				sb.append("\"ch\" : \"PUSH\",");// 발송채널
+
+				sb.append("\"data\" : { ");
+
 				sb.append("\"title\" : \"" + params.get("pushTitle") + "\","); // 제목
-				// String pushContent = ((String) params.get("pushContent")).replaceAll("\n",
-				// "CHR(13)CHR(10)");
 				sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("pushContent")) + "\","); // 메시지
-				sb.append("\"rcvblcInput\" : \"" + params.get("pushHowToDenyReceipt") + "\","); // 수신거부방법
+				sb.append("\"appId\" : \"" + params.get("pushAppId") + "\","); // APP ID
+				sb.append("\"serviceCode\" : \"" + params.get("pushSend") + "\","); // 발송타입(ALL, FCM, APNS)
+				sb.append("\"rcvblcInput\" : \"" + params.get("pushHowToDenyReceipt") + "\""); // 수신거부방법
+
 				if (pushImgInfoMap.containsKey("fileId")) {
-					sb.append("\"fileId\" : \"" + pushImgInfoMap.get("fileId") + "\","); // 이미지 파일ID
-					// sb.append("\"imgUrl\" : \"" +pushImgInfoMap.get("imgUrl")+"\","); // 이미지
-					// 파일url
+					sb.append(",\"fileId\" : \"" + pushImgInfoMap.get("fileId") + "\""); // 이미지 파일ID
 				}
-				sb.append("\"appId\" : \"" + params.get("pushAppId") + "\""); // APP ID
+				sb.append("} ");
 			} else if (checkChannelArr[i].equalsIgnoreCase("RCS")) {
 				System.out.println(">>>>service 003  RCS 001 : " + (int) params.get("rcsTemplateTable"));
-//RCS ====================================================================
+				// RCS ====================================================================
 				sb.append("\"chTypeList\" : \"" + chTypeList + "\",");
 				sb.append("\"chType\" : \"RCS\",");// 발송채널
 
 				if ((int) params.get("rcsTemplateTable") == 0) {//
-//RCS FREE TYPE ====================================================================
+					// RCS FREE TYPE ====================================================================
 					// String brand = (String) params.get("brandNm");
 					String freeMessageBaseId = selectMessageBaseId(params);
 					sb.append("\"rcsPrdType\" : \"FREE\","); // RCS상품타입(프리 템플릿) rcsTemplateTable => 0
@@ -1067,34 +1066,32 @@ public class IntegratedTemplateService {
 				// System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
 			} else if (checkChannelArr[i].equalsIgnoreCase("KAKAO")) {
-				// System.out.println(">>>>service 003 kakao 001 :
-				// "+params.get("kakaoTemplateTable"));
-//KAKAO ====================================================================  
-				String buttonType = null;
-				String buttonName = null;
-				String buttonLink = null;
-				String buttonLink1 = null;
-				String startDate = null;
-				String endDate = null;
+				// KAKAO ====================================================================
+				String type = null;
+				String name = null;
+				String linkUrl1 = null;
+				String linkUrl2 = null;
 				List<Map<String, Object>> buttonInfoList = null;
 
-				if ((int) params.get("kakaoTemplateTable") == 0) {
-					// System.out.println(">>>>service 003 RCS 002 FRIENDTALK");
+				if ((int) params.get("kakaoTemplateTable") == 0) { // FRIENDTALK
 					if (params.containsKey("friendTalkButtons")) {
 						buttonInfoList = (List<Map<String, Object>>) params.get("friendTalkButtons");
 					}
 
 					sb.append("\"chTypeList\" : \"" + chTypeList + "\",");
-					sb.append("\"chType\" : \"FRIENDTALK\",");
+					sb.append("\"ch\" : \"FRIENDTALK\",");
 
-					sb.append("\"friendtalk\" : { ");
+					sb.append("\"data\" : { ");
+					sb.append("\"callback\" : \"" + ApiConfig.DEFAULT_CALLBACK + "\",");
 					sb.append("\"senderKeyType\" : \"" + params.get("friendTalkSenderKeyType") + "\",");
 					sb.append("\"senderKey\" : \"" + params.get("friendTalkSenderKey") + "\",");
 					sb.append("\"wideImageYn\" : \"N\",");
-					// String friendTalkContent = ((String)
-					// params.get("friendTalkContent")).replaceAll("\n", "CHR(13)CHR(10)");
+					if ("I".equals(params.get("msgKind"))) {
+						sb.append("\"adFlag\" : \"N\",");
+					} else if ("A".equals(params.get("msgKind"))) {
+						sb.append("\"adFlag\" : \"Y\",");
+					}
 					sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("friendTalkContent")) + "\",");
-					// System.out.println(">>>>service 003 RCS 003 friendtalk : "+sb.toString());
 					Map<String, Object> imgInfo = null;
 					if (params.containsKey("friendTalkImgInfo")) {
 						imgInfo = (Map<String, Object>) params.get("friendTalkImgInfo");
@@ -1110,136 +1107,55 @@ public class IntegratedTemplateService {
 						}
 						sb.append("	}, "); // 이미지
 					}
-					// System.out.println(">>>>service 003 RCS 004 friendtalk : "+sb.toString());
-					sb.append("\"buttons\": [{ ");
-					sb.append("\"suggestions\": [ ");
+					sb.append("\"buttons\": [ ");
 
 					int fTalkIdx = 1;
 					for (Map<String, Object> buttonInfo : buttonInfoList) {
+						type = CommonUtils.getStrValue(buttonInfo, "type");
+						name = CommonUtils.getStrValue(buttonInfo, "name");
+						linkUrl1 = CommonUtils.getStrValue(buttonInfo, "linkUrl1");
+						linkUrl2 = CommonUtils.getStrValue(buttonInfo, "linkUrl2");
 
-						buttonType = CommonUtils.getStrValue(buttonInfo, "buttonType");
-						buttonName = CommonUtils.getStrValue(buttonInfo, "buttonName");
-						buttonLink = CommonUtils.getStrValue(buttonInfo, "buttonLink");
-
-						buttonLink1 = CommonUtils.getStrValue(buttonInfo, "buttonLink1");
-						startDate = CommonUtils.getStrValue(buttonInfo, "startDate");
-						endDate = CommonUtils.getStrValue(buttonInfo, "endDate");
-
-						// System.out.println(">>>>service 003 button 003 : buttonType : "+buttonType);
-						// System.out.println(">>>>service 003 button 004 : buttonName : "+buttonName);
-						// System.out.println(">>>>service 003 button 005 : buttonLink : "+buttonLink);
-						// System.out.println(">>>>service 003 button 006 : buttonLink1 :
-						// "+buttonLink1);
-						// System.out.println(">>>>service 003 button 007 : startDate : "+startDate);
-						// System.out.println(">>>>service 003 button 008 : endDate : "+endDate);
-
-						if (buttonType.equalsIgnoreCase("U")) {
+						if (type.equalsIgnoreCase("WL")) { // 웹 링크
 							sb.append("	{ ");
-							sb.append("	\"action\": { ");
-							sb.append("	\"urlAction\": { "); // URL링크 버튼인 경우
-							sb.append("	\"openUrl\": { ");
-							sb.append("	\"url\": \"" + buttonLink + "\" "); // 내용
-							sb.append("	} ");
-							sb.append("	}, ");
-							sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
-							sb.append("	\"displayText\": \"" + buttonName + "\","); // 버튼이름
-							sb.append("	\"postback\": { ");
-							// sb.append(" \"data\": \""+params.get("")+"\" "); //set_by_chatbot_open_url
-							sb.append("	\"data\": \"set_by_chatbot_open_url\" ");
-							sb.append("	} ");
-							sb.append("	} ");
+							sb.append("	\"name\": \"" + name + "\","); // 버튼이름
+							sb.append("	\"type\": \"" + type + "\", "); // 버튼타입
+							sb.append("	\"url_pc\": \"" + linkUrl2 + "\", "); // 내용
+							sb.append("	\"url_mobile\": \"" + linkUrl1 + "\" "); // 내용
 							sb.append("	} ");
 						}
-						if (buttonType.equalsIgnoreCase("C")) {
+						if (type.equalsIgnoreCase("AL")) { // 앱 랭크
 							sb.append("	{ ");
-							sb.append("	\"action\": { ");
-							sb.append("	\"clipboardAction\": { "); // 복사하기 버튼인 경우
-							sb.append("	\"copyToClipboard\": { ");
-							sb.append("	\"text\": \"" + buttonLink + "\" "); // 내용
-							sb.append("	} ");
-							sb.append("	}, ");
-							sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
-							sb.append("	\"displayText\": \"" + buttonName + "\", "); // 버튼이름
-							sb.append("	\"postback\": { ");
-							// sb.append(" \"data\": \""+params.get("")+"\" ");
-							// //set_by_chatbot_copy_to_clipboard
-							sb.append("	\"data\": \"set_by_chatbot_copy_to_clipboard\" ");
-							sb.append("	} ");
-							sb.append("	} ");
+							sb.append("	\"name\": \"" + name + "\","); // 버튼이름
+							sb.append("	\"type\": \"" + type + "\", "); // 버튼타입
+							sb.append("	\"scheme_ios\": \"" + linkUrl2 + "\", "); // 내용
+							sb.append("	\"scheme_android\": \"" + linkUrl1 + "\" "); // 내용
 							sb.append("	} ");
 						}
-						if (buttonType.equalsIgnoreCase("T")) {
+						if (type.equalsIgnoreCase("BK")) { // 봇 키워드
 							sb.append("	{ ");
-							sb.append("	\"action\": { ");
-							sb.append("	\"dialerAction\": { "); // 전화걸기 버튼인 경우
-							sb.append("	\"dialPhoneNumber\": { ");
-							sb.append("	\"phoneNumber\": \"" + buttonLink + "\" "); // 휴대폰번호
-							sb.append("	} ");
-							sb.append("	}, ");
-							sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
-							sb.append("	\"displayText\": \"" + buttonName + "\", "); // 버튼이름
-							sb.append("	\"postback\": { ");
-							// sb.append(" \"data\": \""+params.get("")+"\" ");
-							// //set_by_chatbot_dial_phone_number
-							sb.append("	\"data\": \"set_by_chatbot_dial_phone_number\" ");
-							sb.append("	} ");
-							sb.append("	} ");
+							sb.append("	\"name\": \"" + name + "\","); // 버튼이름
+							sb.append("	\"type\": \"" + type + "\" "); // 버튼타입
 							sb.append("	} ");
 						}
-						if (buttonType.equalsIgnoreCase("S")) {
+						if (type.equalsIgnoreCase("MD")) { // 메시지 전달
 							sb.append("	{ ");
-							sb.append("	\"action\": { ");
-							sb.append("	\"calendarAction\": { "); // 일정추가 버튼인 경우
-							sb.append("	\"createCalendarEvent\": { ");
-							sb.append("	\"startTime\": \"" + startDate + "\", "); // 시작일 2017-03-14T00:00:00Z
-							sb.append("	\"endTime\": \"" + endDate + "\", "); // 종료일
-							sb.append("	\"title\": \"" + buttonLink + "\", "); // 제목
-							sb.append("	\"description\": \"" + buttonLink1 + "\" "); // 내용
-							sb.append("	} ");
-							sb.append("	}, ");
-							sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
-							sb.append("	\"displayText\": \"" + buttonName + "\", "); // 버튼이름
-							sb.append("	\"postback\": { ");
-							// sb.append(" \"data\": \""+params.get("")+"\"
-							// ");//set_by_chatbot_create_calendar_event
-							sb.append("	\"data\": \"set_by_chatbot_create_calendar_event\" ");
-							sb.append("	} ");
-							sb.append("	} ");
-							sb.append("	} ");
-						}
-						if (buttonType.equalsIgnoreCase("M")) {
-							sb.append("	{ ");
-							sb.append("	\"action\": { ");
-							sb.append("	\"mapAction\": { "); // 지도맵 버튼인 경우
-							sb.append("	\"requestLocationPush\": {} ");
-							sb.append("	}, ");
-							sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
-							sb.append("	\"displayText\": \"" + buttonName + "\", "); // 버튼이름
-							sb.append("	\"postback\": { ");
-							// sb.append(" \"data\": \""+buttonLink+"\"
-							// ");//set_by_chatbot_request_location_push
-							sb.append("	\"data\": \"set_by_chatbot_request_location_push\" ");
-							sb.append("	} ");
-							sb.append("	} ");
+							sb.append("	\"name\": \"" + name + "\","); // 버튼이름
+							sb.append("	\"type\": \"" + type + "\" "); // 버튼타입
 							sb.append("	} ");
 						}
 
 						if (fTalkIdx++ < buttonInfoList.size()) {
 							sb.append(", ");
 						}
-						// fTalkIdx = fTalkIdx + 1;
-
-					} // end for(Map<String, Object> buttonInfo : buttonInfoList) {
-						// System.out.println(">>>>service 005 RCS 002 friendtalk : "+sb.toString());
+					}
 					sb.append("	]         ");
-					sb.append("	}]         ");
 					sb.append("} ");
-				} else if ((int) params.get("kakaoTemplateTable") == 1) {
-					// System.out.println(">>>>service 003 RCS 002 ALIMTALK");
+				} else if ((int) params.get("kakaoTemplateTable") == 1) { // ALIMTALK
 					sb.append("\"chTypeList\" : \"" + chTypeList + "\",");
-					sb.append("\"chType\" : \"ALIMTALK\",");
+					sb.append("\"ch\" : \"ALIMTALK\",");
 
-					sb.append("\"alimtalkInfo\" : { ");
+					sb.append("\"data\" : { ");
 					sb.append("\"senderKey\" : \"" + params.get("alimTalkSendKey") + "\",");
 					sb.append("\"tmpltCode\" : \"" + params.get("alimTalkTmpltCode") + "\",");
 					sb.append("} ");

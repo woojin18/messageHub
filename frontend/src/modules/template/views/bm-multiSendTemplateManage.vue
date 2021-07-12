@@ -58,31 +58,31 @@
 
 		<!-- 본문 -->
 		<div class="row">
-			<div class="col-xs-6" style="padding-right:100px">
+			<div class="col-xs-7" style="padding-right:100px">
 				<h4 class="topH4">01 발송정보</h4>
 				<div class="of_h">
 					<div class="float-left" style="width:34%"><h5>메시지 구분*</h5></div>
 					<div class="float-left" style="width:66%">
-						<input type="radio" name="mSort" value="I" id="mSort1" checked="" v-model="rowData.msgKind"> <label for="mSort1" class="mr20">정보성</label>
-						<input type="radio" name="mSort" value="A" id="mSort2" v-model="rowData.msgKind"> <label for="mSort2">광고용</label>
-						<span class="txtCaption color4">광고 메시지는 20시~8시 발송이 제한됩니다.</span>
+						<input type="radio" name="mSort" value="I" id="mSort1" checked="" v-model="rowData.msgKind"><label for="mSort1" class="mr20">정보성</label>
+						<input type="radio" name="mSort" value="A" id="mSort2" v-model="rowData.msgKind"><label for="mSort2">광고용</label>
+						<span class="txtCaption vertical-middle colorRed">광고 메시지는 20시~8시 발송이 제한됩니다.</span>
 					</div>
 				</div>
-				<div class="of_h">
+				<div class="of_h mt15">
 					<div class="float-left" style="width:34%"><h5>메시지 타입*</h5></div>
 					<div class="float-left" style="width:66%">
 						<input type="radio" name="mType" value="BASE" id="mType_text" checked="" v-model="rowData.msgType"> <label for="mType_text" class="mr20">텍스트</label>
 						<input type="radio" name="mType" value="IMAGE" id="mType_image" v-model="rowData.msgType"> <label for="mType_image">이미지</label>
 					</div>
 				</div>
-				<div class="of_h">
+				<div class="of_h mt15">
 					<div class="float-left" style="width:34%"><h5>타 프로젝트 사용여부*</h5></div>
 					<div class="float-left" style="width:66%">
 						<input type="radio" name="otherUse" value="Y" id="otherUse1" checked="" v-model="rowData.otherProjectUseYn"> <label for="otherUse1" class="mr20">공용</label>
 						<input type="radio" name="otherUse" value="N" id="otherUse2" v-model="rowData.otherProjectUseYn"> <label for="otherUse2">전용</label>
 					</div>
 				</div>
-				<div class="of_h">
+				<div class="of_h mt15">
 					<div class="float-left" style="width:34%"><h5>템플릿 명</h5></div>
 					<div class="float-left" style="width:66%">
 						<div class="float-left" style="width:68%"><input type="text" class="inputStyle" v-model="rowData.tmpltTitle"></div>
@@ -90,7 +90,7 @@
 				</div>
 			</div>
 
-			<div class="col-xs-5" style="border-left:1px solid #D5D5D5; padding-left:100px">
+			<div class="col-xs-4" style="border-left:1px solid #D5D5D5; padding-left:100px">
 				<h4 class="topH4">02 채널 선택</h4>
 				<div class="of_h">
 					<div class="float-left" style="width:50%">
@@ -99,28 +99,28 @@
 						</div>
 						<div class="of_h consolMarginTop">
 							<div class="float-left" style="width:60%"><h5>PUSH</h5></div>
-							<div class="float-left consolMarginTop" style="width:40%">
+							<div class="float-left mt5" style="width:40%">
 								<input type="checkbox" id="PUSH" class="checkStyle2" value="PUSH" v-model="rowData.checkedChannel" @click="toggleOnOffPush">
 								<label for="PUSH"></label>
 							</div>
 						</div>
-						<div class="of_h consolMarginTop">
+						<div class="of_h mt15">
 							<div class="float-left" style="width:60%"><h5>RCS</h5></div>
-							<div class="float-left consolMarginTop" style="width:40%">
+							<div class="float-left mt5" style="width:40%">
 								<input type="checkbox" id="RCS" class="checkStyle2" value="RCS" v-model="rowData.checkedChannel" @click="toggleOnOffRCS">
 								<label for="RCS"></label>
 							</div>
 						</div>
-						<div class="of_h consolMarginTop">
+						<div class="of_h mt15">
 							<div class="float-left" style="width:60%"><h5>카카오톡</h5></div>
-							<div class="float-left consolMarginTop" style="width:40%">
+							<div class="float-left mt5" style="width:40%">
 								<input type="checkbox" id="KAKAO" class="checkStyle2" value="KAKAO" v-model="rowData.checkedChannel" @click="toggleOnOffKakao">
 								<label for="KAKAO"></label>
 							</div>
 						</div>
-						<div class="of_h consolMarginTop">
+						<div class="of_h mt15">
 							<div class="float-left" style="width:60%"><h5>SMS/MMS</h5></div>
-							<div class="float-left consolMarginTop" style="width:40%">
+							<div class="float-left mt5" style="width:40%">
 								<input type="checkbox" id="SMSMMS" class="checkStyle2" value="SMSMMS" v-model="rowData.checkedChannel" @click="toggleOnOffSmsMms">
 								<label for="SMSMMS"></label>
 							</div>
@@ -130,7 +130,7 @@
 						<div class="of_h">
 							<div class="float-right text-center" style="width:100%">발송순서</div>
 						</div>
-						<div class="of_h consolMarginTop" v-for="(channel, index) in rowData.checkedChannel" :key="channel">
+						<div v-for="(channel, index) in rowData.checkedChannel" :key="channel" class="of_h mt13">
 							<div class="float-left" style="width:100%"><a class="btnStyle1 borderLightGray " style="min-width:auto; width:100%"  @click="putData(index)">{{channel}}</a></div>
 						</div>
 					</div>
@@ -249,9 +249,9 @@
 			<div class="templateBox">
 				<!-- templateList -->
 				<ul class="templateList">
-          <li v-if="rowData.msgKind == 'I'"><!-- 정보성인경우만 사용가능 -->
-            <img src="../../../common/images/pushTemplate1.svg" alt="프리 템플릿"><h6>프리 템플릿</h6>
-            <div class="consolMarginTop">
+					<li v-if="rowData.msgKind == 'I'"><!-- 정보성인경우만 사용가능 -->
+						<img src="../../../common/images/pushTemplate1.svg" alt="프리 템플릿"><h6>프리 템플릿</h6>
+						<div class="consolMarginTop">
               <input type="radio" name="rcsTemplate1" value="0" id="rcsTemplate1-1" class="radioStyle" checked="" v-on:click="rcsTemplateTable=0" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-1"></label>
               <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
             </div>
@@ -2525,13 +2525,11 @@
           </div>
         </div>	
 
-      </div>
+			</div>
+		</div>
 
-    </div>
-
-
-<!-- KAKAO -->
-    <div class="of_h mt20" v-show="channelTab === 2" >
+		<!-- KAKAO -->
+		<div class="of_h mt20" v-show="channelTab === 2" >
 			<h4>카카오톡 상품</h4>
 			<div class="templateBox" style="width:80%">
 				<ul class="of_h">
@@ -2553,118 +2551,129 @@
 					</li>
 				</ul>
 			</div>
-<!-- KAKAO 친구톡 -->
+			<!-- KAKAO 친구톡 -->
 			<div class="of_h mt20" v-if="kakaoTemplateTable === 0">
 				<div class="float-left" style="width:28%">
 					<!-- phoneWrap -->
 					<div class="phoneWrap">
-						<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
-						<div class="phoneTextWrap">
-							<div class="phoneText1 scroll-y2">
-								<pre>{{rowData.friendTalkContent}}</pre>
+						<img src="@/assets/images/common/phoneMockup2_1.svg" alt="프리 템플릿">
+						<div class="phoneTextWrap4 scroll-y">
+							<p v-if="rowData.msgKind == 'A'">[광고]</p>
+							<div class="mt5">
+								<div class="text-sub-wrap">
+									<div v-if="!$gfnCommonUtils.isEmpty(rowData.friendTalkImgInfo.imgUrl)" class="phoneText2 mt10 text-center" :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.friendTalkImgInfo.imgUrl+');'">
+									</div>
+									<br v-if="$gfnCommonUtils.isEmpty(rowData.friendTalkImgInfo.imgUrl)"/>
+									<span><pre>{{rowData.friendTalkContent}}</pre></span>
+									<div v-for="(buttonInfo, idx) in rowData.friendTalkButtons" :key="idx">
+										<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
+									</div>
+								</div>
+								<p class="text-sub_2" v-if="rowData.msgKind == 'A'">수신거부: 홈 > 친구차단</p>
 							</div>
-							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.friendTalkImgInfo.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
-				                <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
-				                <p class="font-size14 color3 mt15">이미지 영역</p>
-			              	</div>
-			              	<div v-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.friendTalkImgInfo.imgUrl)" class="phoneText2 mt10 text-center"
-			                	:style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.friendTalkImgInfo.imgUrl+');'">
-			              	</div>
 						</div>
 					</div>
 					<!-- //phoneWrap -->
 				</div>
 				<div class="float-left consoleCon" style="width:72%">
 					<div class="of_h">
-						<div class="float-left" style="width:13%"><h4>발신 그룹/프로필 *</h4></div>
-			            <div class="float-left" style="width:59%">
-			              <select class="float-left selectStyle2" style="width:20%" v-model="rowData.friendTalkSenderKeyType" @change="fnSelectFriendTalkSenderKeyList">
-			                <option value="NOMAL">일반</option>
-			                <option value="GROUP">그룹</option>
-			              </select>
-			              <select class="float-left selectStyle2" style="width:80%" v-model="rowData.friendTalkSenderKey">
-			                <option value="">선택해주세요.</option>
-			                <option v-for="senderKeyInfo in friendTalkSenderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.senderKey}}</option>
-			              </select>
-			            </div>					
+						<div class="float-left" style="width:13%"><h4>발신 프로필 *</h4></div>
+						<div class="float-left" style="width:59%">
+							<select class="float-left selectStyle2" style="width:100%" v-model="rowData.friendTalkSenderKey">
+								<option value="">선택해주세요.</option>
+								<option v-for="senderKeyInfo in friendTalkSenderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.senderKey}}</option>
+							</select>
+						</div>
 					</div>
-
-					<div class="of_h" v-if="rowData.msgType == 'IMAGE'">
-				            <div class="float-left" style="width:13%"><h4>이미지</h4></div>
-				            <div class="float-left" style="width:57%">
-				              <div class="float-left" style="width:25%">
-				                <a @click="fnFriendTalkOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
-				              </div>
-				              <ul class="float-right attachList" style="width:74%; padding:5px 15px; height:30px;">
-				                <li><a @click="fnFriendTalkDelImg">{{fnSubString(rowData.friendTalkImgInfo.imgUrl, 0, 35)}}  <i v-if="!isEmpty(rowData.friendTalkImgInfo.imgUrl)" class="fal fa-times"></i></a></li>
-				              </ul>
-				            </div>
- 					</div>
-
+					<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
+						<div class="float-left" style="width:13%"><h4>이미지</h4></div>
+						<div class="float-left" style="width:59%">
+							<div class="float-left" style="width:25%">
+								<a @click="fnFriendTalkOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
+							</div>
+							<ul class="float-right attachList" style="width:74%; padding:5px 15px; height:30px;">
+								<li><a @click="fnFriendTalkDelImg">{{fnSubString(rowData.friendTalkImgInfo.imgUrl, 0, 35)}}  <i v-if="!isEmpty(rowData.friendTalkImgInfo.imgUrl)" class="fal fa-times"></i></a></li>
+							</ul>
+						</div>
+					</div>
 					<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
 						<div class="float-left" style="width:13%"><h4>이미지 링크</h4></div>
 						<div class="float-left" style="width:59%">
 							<input type="text" class="inputStyle" placeholder="http://..." id="friendTalkImageLinkId" v-model="rowData.friendTalkImageLink">
 						</div>
 					</div>
-
 					<div class="of_h consolMarginTop">
 						<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 						<div class="float-left" style="width:59%">
 							<textarea class="textareaStyle height190" v-model="rowData.friendTalkContent" :placeholder="kakaoPlaceHoder"></textarea>
 						</div>
 					</div>					
-
 					<div class="of_h consolMarginTop">
-		                  <div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowFriendTalk" class="btnStyle1 backBlack">추가 +</a></div>
-		                  <div class="float-left" style="width:57%">
-		                    
+						<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowFriendTalk" class="btnStyle1 backBlack">추가 +</a></div>
+						<div class="float-left" style="width:57%">
 							<table class="table_skin1 mt0" style="width:100%" v-if="buttonFriendTalkFlag">
-		                      <colgroup>
-		                        <col style="width:22%">
-		                        <col style="width:20%">
-		                        <col>
-		                        <col style="width:15%">
-		                      </colgroup>
-		                      <thead>
-		                        <tr>
-		                        <th class="text-center">타입</th>
-		                        <th class="text-center">버튼이름</th>
-		                        <th class="text-center">버튼링크</th>
-		                        <th class="text-center end">구분</th>
-		                        </tr>
-		                      </thead>
-		                      <tbody>
-		                        <tr v-for="(row,index) in rowData.friendTalkButtons" v-bind:key="index">
-		                          <td class="text-center">
-		                            <select name="userConsole04060202_1" class="selectStyle2" style="width:100%" v-model="row.buttonType">
-		                              <option value="U">URL 링크</option>
-		                              <option value="C">복사하기</option>
-		                              <option value="T">전화걸기</option>
-		                              <option value="S">일정추가</option>
-		                              <option value="M">지도맵</option>
-		                            </select>
-		                          </td>
-		                          <td class="text-left"><input type="text" class="inputStyle" v-model="row.buttonName"></td>
-		                          <td class="text-center">
-		                            <input v-if="row.buttonType == 'U'" type="text" class="inputStyle" placeholder="URL입력(http:// 또는 https:// 필수입력)" v-model="row.buttonLink">
-		                            <input v-if="row.buttonType == 'C'" type="text" class="inputStyle" placeholder="복사할 값 입력" v-model="row.buttonLink">
-		                            <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
-		                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
-		                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-		                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnFriendTalkButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
-				                    <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnFriendTalkButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
-		                            <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" readOnly>
-		                          </td>
-		                          <td class="text-center end"><a @click="addRowFriendTalk" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowFriendTalk(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
-		                        </tr>
-		                      </tbody>
-		                    </table>		                    
-		                  </div>
+								<colgroup>
+									<col style="width:22%">
+									<col style="width:20%">
+									<col>
+									<col style="width:15%">
+								</colgroup>
+								<thead>
+									<tr>
+										<th class="text-center">타입</th>
+										<th class="text-center">버튼이름</th>
+										<th class="text-center">버튼링크</th>
+										<th class="text-center end">구분</th>
+									</tr>
+								</thead>
+								<tbody>
+									<template v-for="(buttonInfo, idx) in rowData.friendTalkButtons">
+										<tr :key="idx">
+											<td class="text-center" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
+												<select class="float-left selectStyle2" style="width:100%" v-model="buttonInfo.type" @change="fnChgBtnType(idx)">
+													<option v-for="friendTalkButtonType in friendTalkButtonTypeList" :key="friendTalkButtonType.type" :value="friendTalkButtonType.type">{{friendTalkButtonType.name}}</option>
+												</select>
+											</td>
+											<td class="text-left" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
+												<input type="text" class="inputStyle" v-model="buttonInfo.name" maxlength="20">
+											</td>
+											<td v-if="buttonInfo.type == 'WL' || buttonInfo.type == 'AL'" class="text-center">
+												<div v-if="buttonInfo.type == 'WL'">
+													<h6 class="font-normal float-left" style="width:20%">Mobile</h6>
+													<input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkUrl1']" maxlength="200">
+												</div>
+												<div v-if="buttonInfo.type == 'AL'">
+													<h6 class="font-normal float-left" style="width:20%">Android</h6>
+													<input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkUrl1']" maxlength="200">
+												</div>
+											</td>
+											<td v-else>
+											</td>
+											<td class="text-center end" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
+												<a @click="addRowFriendTalk" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
+												<a @click="removeRowFriendTalk(idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
+											</td>
+										</tr>
+										<tr v-if="buttonInfo.type == 'WL' || buttonInfo.type == 'AL'" :key="idx+'_sub'">
+											<td class="text-left of_h">
+												<div v-if="buttonInfo.type == 'WL'">
+													<h6 class="font-normal float-left" style="width:20%">PC</h6>
+													<input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkUrl2']" maxlength="200">
+												</div>
+												<div v-if="buttonInfo.type == 'AL'">
+													<h6 class="font-normal float-left" style="width:20%">IOS</h6>
+													<input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkUrl2']" maxlength="200">
+												</div>
+											</td>
+										</tr>
+									</template>
+								</tbody>
+							</table>		                    
+						</div>
 					</div>
 				</div>
 			</div>	
-<!-- KAKAO 알림톡 -->			
+			<!-- KAKAO 알림톡 -->			
 			<div class="of_h mt20" v-if="kakaoTemplateTable === 1">
 				<div class="float-left" style="width:28%">
 					<!-- phoneWrap -->
@@ -2683,8 +2692,8 @@
 					<div class="of_h mt20">
 						<div class="float-left" style="width:15%"><h4>발신프로필 *</h4></div>
 						<div class="float-left" style="width:57%">
-              <input type="text" class="inputStyle" v-model="rowData.alimTalkSendProfileName" readOnly>
-              <input type="hidden" class="inputStyle" v-model="rowData.alimTalkSendProfile" readOnly>
+							<input type="text" class="inputStyle" v-model="rowData.alimTalkSendProfileName" readOnly>
+							<input type="hidden" class="inputStyle" v-model="rowData.alimTalkSendProfile" readOnly>
 						</div>
 					</div>
 					<div class="of_h consolMarginTop">
@@ -2703,57 +2712,54 @@
 						<div class="float-left" style="width:15%"><h4>내용*</h4></div>
 						<div class="float-left" style="width:57%">
 							<textarea class="textareaStyle height190" :placeholder="kakaoPlaceHoder" v-model="rowData.alimTalkContent" readOnly></textarea>
-							
 						</div>
 					</div>
-          <div class="of_h consolMarginTop">
+					<div class="of_h consolMarginTop">
 						<div class="float-left" style="width:15%"><h4>카테고리*</h4></div>
 						<div class="float-left" style="width:28%"><input type="text" class="inputStyle" v-model="rowData.alimTalkCategory1" placeholder="대분류" readOnly></div>
-            <div class="float-left" style="width:1%">&nbsp;</div>
-            <div class="float-left" style="width:28%"><input type="text" class="inputStyle" v-model="rowData.alimTalkCategory2" placeholder="중분류" readOnly></div>
+						<div class="float-left" style="width:1%">&nbsp;</div>
+						<div class="float-left" style="width:28%"><input type="text" class="inputStyle" v-model="rowData.alimTalkCategory2" placeholder="중분류" readOnly></div>
 					</div>   
-
 					<div class="of_h consolMarginTop">
-		                  <div class="float-left" style="width:13%"><h4>버튼</h4></div>
-		                  <div class="float-left" style="width:57%">
-		                    <table class="table_skin1 mt0" style="width:100%" v-if="buttonAlimTalkFlag">
-		                      <colgroup>
-		                        <col style="width:22%">
-		                        <col style="width:20%">
-		                        <col>
-		                        <col style="width:15%">
-		                      </colgroup>
-		                      <thead>
-		                        <tr>
-		                        <th class="text-center">타입</th>
-		                        <th class="text-center">버튼이름</th>
-		                        <th class="text-center">버튼링크</th>
-		                        </tr>
-		                      </thead>
-		                      <tbody>
-		                        <tr v-for="(row,index) in rowData.alimTalkButtons" v-bind:key="index">
-		                          <td class="text-center">{{row.buttonTypeName}}</td>
-		                          <td class="text-left">{{row.buttonName}}</td>
-		                          <td class="text-center">{{row.buttonLink}}
-		                            <input type="hidden" class="inputStyle" v-model="row.buttonType">
-                                <input type="hidden" class="inputStyle" v-model="row.buttonName">
-                                <input type="hidden" class="inputStyle" v-model="row.buttonLink">
-		                            <input type="hidden" class="inputStyle" v-model="row.buttonLink1">
-                                <input type="hidden" class="inputStyle" v-model="row.startDate">
-                                <input type="hidden" class="inputStyle" v-model="row.endDate">
-		                          </td>
-		                        </tr>
-		                      </tbody>
-		                    </table>
-		                  </div>
+						<div class="float-left" style="width:13%"><h4>버튼</h4></div>
+						<div class="float-left" style="width:57%">
+							<table class="table_skin1 mt0" style="width:100%" v-if="buttonAlimTalkFlag">
+								<colgroup>
+									<col style="width:22%">
+									<col style="width:20%">
+									<col>
+									<col style="width:15%">
+								</colgroup>
+								<thead>
+									<tr>
+										<th class="text-center">타입</th>
+										<th class="text-center">버튼이름</th>
+										<th class="text-center">버튼링크</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="(row,index) in rowData.alimTalkButtons" v-bind:key="index">
+										<td class="text-center">{{row.buttonTypeName}}</td>
+										<td class="text-left">{{row.buttonName}}</td>
+										<td class="text-center">{{row.buttonLink}}
+											<input type="hidden" class="inputStyle" v-model="row.buttonType">
+											<input type="hidden" class="inputStyle" v-model="row.buttonName">
+											<input type="hidden" class="inputStyle" v-model="row.buttonLink">
+											<input type="hidden" class="inputStyle" v-model="row.buttonLink1">
+											<input type="hidden" class="inputStyle" v-model="row.startDate">
+											<input type="hidden" class="inputStyle" v-model="row.endDate">
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>	
-    </div>
+		</div>
 
-
-<!-- SMS/MMS -->
-    <div class="of_h mt20" v-show="channelTab === 3" >
+		<!-- SMS/MMS -->
+		<div class="of_h mt20" v-show="channelTab === 3" >
 				<div class="float-left" style="width:28%">
 					<!-- phoneWrap -->
 					<div class="phoneWrap" v-if="smsTemplateTable === 0">
@@ -3147,10 +3153,17 @@ export default {
 			friendTalkImgMngOpen : false, /* MMS 이미지 */
 			friendTalkImgUploadOpen : false,
 			friendTalkUseCh : 'FRIENDTALK',
-			friendTalkImgLimitSize : 1, 
+			friendTalkImgLimitSize : 1,
 
 			friendTalkSenderKeyType: 'NOMAL',  //NOMAL, GROUP //friendTalk 발신프로필 그룹
 			friendTalkSenderKeyList: [],
+
+			friendTalkButtonTypeList : [
+				{type:'WL', name:'웹 링크'},
+				{type:'AL', name:'앱 링크'},
+				{type:'BK', name:'봇 키워드'},
+				{type:'MD', name:'메시지전달'}
+			],
 
 			smsImgMngOpen : false, /* MMS 이미지 */
 			smsImgUploadOpen : false,
@@ -3191,7 +3204,7 @@ export default {
 		}
 	},
 	watch: {
-		//RCS 템플릿 종류 선택에 따라 v-if를 이용하여 active되었을 경우에만 값을 가져온다.
+		// RCS 템플릿 종류 선택에 따라 v-if를 이용하여 active되었을 경우에만 값을 가져온다.
 		rcsTemplateTable(val){
 			if (val === 0) {//rcsTemplateTable === 0 프리템플릿
 				this.fnRcs0SelectCallbackList();
@@ -3339,6 +3352,14 @@ export default {
 			if(str) return false;
 			else return true
 		},
+		fnChgBtnType(idx){
+			const vm = this;
+			Object.keys(this.rowData.friendTalkButtons[idx]).forEach(function(key){
+				if (key != 'type') {
+					delete vm.rowData.friendTalkButtons[idx][key];
+				}
+			});
+		},
 		fnPushGetAppId(){
 			var params = {};
 			messageApi.selectAppIdList(params).then(response => {
@@ -3350,154 +3371,140 @@ export default {
 				}
 			});
 		},
-    
-    fnSelectFriendTalkSenderKeyList(){
-      const params = {kkoSvc: 'FRIENDTALK', senderKeyType: this.friendTalkSenderKeyType};
-      templateApi.selectSenderKeyList(params).then(response => {
-        const result = response.data;
-        if(result.success) {
-          this.rowData.friendTalkSenderKey = '';
-          this.friendTalkSenderKeyList = Object.assign({}, result.data);
-        } else {
-          confirm.fnAlert(this.componentsTitle, result.message);
-        }
-      });
-    },
-
-        
-    //rcs 프로템플릿 발신번호 리스트 조회
-    fnRcs0SelectCallbackList(){
-      var params = {};
-      messageApi.selectCallbackList(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          this.rcs0CallbackList = result.data;
-        } else {
-          confirm.fnAlert("rcs 프로템플릿 발신번호 리스트 조회", result.message);
-        }
-      });
-    },    
-
-    fnRcs1SelectCallbackList(){
-      var params = {};
-      messageApi.selectCallbackList(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          this.rcs1CallbackList = result.data;
-        } else {
-          confirm.fnAlert("RCS 템플릿 승인 서술 발신번호 리스트 조회", result.message);
-        }
-      });
-    },    
-
-    fnRcs2SelectCallbackList(){
-      var params = {};
-      messageApi.selectCallbackList(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          this.RCS2CallbackList = result.data;
-        } else {
-          confirm.fnAlert("RCS 템플릿 승인 스타일 발신번호 리스트 조회", result.message);
-        }
-      });
-    },          
-
-    fnRcsSMSSelectCallbackList(){
-      var params = {};
-      messageApi.selectCallbackList(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          this.rcsSMSCallbackList = result.data;
-        } else {
-          confirm.fnAlert("RCS SMS 발신번호 리스트 조회", result.message);
-        }
-      });
-    },      
-
-    fnRcsLMSSelectCallbackList(){
-      var params = {};
-      messageApi.selectCallbackList(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          this.rcsLMSCallbackList = result.data;
-        } else {
-          confirm.fnAlert("RCS LMS 발신번호 리스트 조회", result.message);
-        }
-      });
-    },  
-
-    fnRcsShortSelectCallbackList(){
-      var params = {};
-      messageApi.selectCallbackList(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          this.rcsShortCallbackList = result.data;
-        } else {
-          confirm.fnAlert("RCS 세로형 SHORT 발신번호 리스트 조회", result.message);
-        }
-      });
-    },  
-
-    fnRcsTallSelectCallbackList(){
-      var params = {};
-      messageApi.selectCallbackList(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          this.rcsTallCallbackList = result.data;
-        } else {
-          confirm.fnAlert("RCS 세로형 TALL 발신번호 리스트 조회", result.message);
-        }
-      });
-    }, 
-
-    fnRcs9SelectCallbackList(){
-      var params = {};
-      messageApi.selectCallbackList(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          this.rcs9CallbackList = result.data;
-        } else {
-          confirm.fnAlert("RCS 캐러셀 TALL 발신번호 리스트 조회", result.message);
-        }
-      });
-    }, 
-
-    fnRcs10SelectCallbackList(){
-      var params = {};
-      messageApi.selectCallbackList(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          this.rcs10CallbackList = result.data;
-        } else {
-          confirm.fnAlert("RCS 캐러셀 TALL 발신번호 리스트 조회", result.message);
-        }
-      });
-    },   
-
-    fnSMSSelectCallbackList(){
-      var params = {};
-      messageApi.selectCallbackList(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          this.smsCallbackList = result.data;
-        } else {
-          confirm.fnAlert("SMSMMS 발신번호 리스트 조회", result.message);
-        }
-      });
-    },     
-
-    fnSelectBrandList(){
-      var params = {};
-      templateApi.selectBrandList(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          this.brandNmList = result.data;
-        } else {
-          confirm.fnAlert("브랜드 리스트 조회", result.message);
-        }
-      });
-    }, 
-    
+		fnSelectFriendTalkSenderKeyList(){
+			const params = {kkoSvc: 'FRIENDTALK', senderKeyType: this.friendTalkSenderKeyType};
+			templateApi.selectSenderKeyList(params).then(response => {
+				const result = response.data;
+				if (result.success) {
+					this.rowData.friendTalkSenderKey = '';
+					this.friendTalkSenderKeyList = Object.assign({}, result.data);
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+		},
+		//rcs 프로템플릿 발신번호 리스트 조회
+		fnRcs0SelectCallbackList(){
+			var params = {};
+			messageApi.selectCallbackList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.rcs0CallbackList = result.data;
+				} else {
+					confirm.fnAlert("rcs 프로템플릿 발신번호 리스트 조회", result.message);
+				}
+			});
+		},
+		fnRcs1SelectCallbackList(){
+			var params = {};
+			messageApi.selectCallbackList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.rcs1CallbackList = result.data;
+				} else {
+					confirm.fnAlert("RCS 템플릿 승인 서술 발신번호 리스트 조회", result.message);
+				}
+			});
+		},
+		fnRcs2SelectCallbackList(){
+			var params = {};
+			messageApi.selectCallbackList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.RCS2CallbackList = result.data;
+				} else {
+					confirm.fnAlert("RCS 템플릿 승인 스타일 발신번호 리스트 조회", result.message);
+				}
+			});
+		},
+		fnRcsSMSSelectCallbackList(){
+			var params = {};
+			messageApi.selectCallbackList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.rcsSMSCallbackList = result.data;
+				} else {
+					confirm.fnAlert("RCS SMS 발신번호 리스트 조회", result.message);
+				}
+			});
+		},
+		fnRcsLMSSelectCallbackList(){
+			var params = {};
+			messageApi.selectCallbackList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.rcsLMSCallbackList = result.data;
+				} else {
+					confirm.fnAlert("RCS LMS 발신번호 리스트 조회", result.message);
+				}
+			});
+		},
+		fnRcsShortSelectCallbackList(){
+			var params = {};
+			messageApi.selectCallbackList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.rcsShortCallbackList = result.data;
+				} else {
+					confirm.fnAlert("RCS 세로형 SHORT 발신번호 리스트 조회", result.message);
+				}
+			});
+		},
+		fnRcsTallSelectCallbackList(){
+			var params = {};
+			messageApi.selectCallbackList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.rcsTallCallbackList = result.data;
+				} else {
+					confirm.fnAlert("RCS 세로형 TALL 발신번호 리스트 조회", result.message);
+				}
+			});
+		},
+		fnRcs9SelectCallbackList(){
+			var params = {};
+			messageApi.selectCallbackList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.rcs9CallbackList = result.data;
+				} else {
+					confirm.fnAlert("RCS 캐러셀 TALL 발신번호 리스트 조회", result.message);
+				}
+			});
+		},
+		fnRcs10SelectCallbackList(){
+			var params = {};
+			messageApi.selectCallbackList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.rcs10CallbackList = result.data;
+				} else {
+					confirm.fnAlert("RCS 캐러셀 TALL 발신번호 리스트 조회", result.message);
+				}
+			});
+		},
+		fnSMSSelectCallbackList(){
+			var params = {};
+			messageApi.selectCallbackList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.smsCallbackList = result.data;
+				} else {
+					confirm.fnAlert("SMSMMS 발신번호 리스트 조회", result.message);
+				}
+			});
+		},
+		fnSelectBrandList(){
+			var params = {};
+			templateApi.selectBrandList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.brandNmList = result.data;
+				} else {
+					confirm.fnAlert("브랜드 리스트 조회", result.message);
+				}
+			});
+		},
     // showRcsTemplateTable(num){
     //   if(num == 0){
 
@@ -3523,67 +3530,62 @@ export default {
 
     //   }
     // },
-    putData:function(idx){//채널 발송순서 변경시 클릭한 채널 인덱스를 가져온다
-      //console.log("idxData : ", idx);
-      this.idxData = idx;
-    },
-    
-    moveup:function () {//발송순서를 위로
-      //console.log("start index : ",this.idxData);
-      //Insert the item in the previous item
-      if (this.idxData > 0) {
-        this.rowData.checkedChannel.splice (this.idxData-1,0, (this.rowData.checkedChannel [this.idxData]));
-        
-        //Delete the next item
-        this.rowData.checkedChannel.splice (this.idxData + 1,1);
-      
-        this.idxData = this.idxData -1;
-      }
-      //console.log(this.rowData.checkedChannel);
-    },  
-    
-    movedown:function () { //발송순서를 아래로
-      //console.log("start index : ",this.idxData);
-      if (this.idxData < this.rowData.checkedChannel.length-1) {
-        //Insert the item in the next item
-        this.rowData.checkedChannel.splice (this.idxData + 2,0, (this.rowData.checkedChannel [this.idxData]));
-        
-        this.rowData.checkedChannel.splice (this.idxData, 1);
-        //item.isshow=false;
-     
-        this.idxData = this.idxData +1;
-      }
-    },
+		// 채널 발송순서 변경시 클릭한 채널 인덱스를 가져온다
+		putData:function(idx){
+			this.idxData = idx;
+		},
+		// 채널 발송순서를 위로
+		moveup:function () {
+			//console.log("start index : ",this.idxData);
+			//Insert the item in the previous item
+			if (this.idxData > 0) {
+				this.rowData.checkedChannel.splice (this.idxData-1,0, (this.rowData.checkedChannel [this.idxData]));
+				//Delete the next item
+				this.rowData.checkedChannel.splice (this.idxData + 1,1);
+				this.idxData = this.idxData -1;
+			}
+			//console.log(this.rowData.checkedChannel);
+		},
+		// 채널 발송순서를 아래로
+		movedown:function () {
+			//console.log("start index : ",this.idxData);
+			if (this.idxData < this.rowData.checkedChannel.length-1) {
+				//Insert the item in the next item
+				this.rowData.checkedChannel.splice (this.idxData + 2,0, (this.rowData.checkedChannel [this.idxData]));
+				this.rowData.checkedChannel.splice (this.idxData, 1);
+				//item.isshow=false;
+				this.idxData = this.idxData +1;
+			}
+		},
+		async fnSaveMultiSendTemplate(){
+			console.log("333");
+			var params = this.rowData;
 
-    async fnSaveIntegratedTemplate(){
-      console.log("333");
-      var params = this.rowData;
+			//console.log("fnSaveMultiSendTemplate params : ", params);
 
-      //console.log("fnSaveIntegratedTemplate params : ",params);
+			//유효성 검사
+			//if(this.fnIsValid() == false) return;
 
-      //유효성 검사
-      //if(this.fnIsValid() == false) return;
-
-      params.tmpltStatus = 'SAVE';
-      //params.projectId = this.testProjectId;
-      params.rcsTemplateTable = this.rcsTemplateTable;//rcs일경우 사용한 템플릿 번호를 가져간다.
-      params.rcs9CardCount = this.rcs9CardCount;//캐러셀 SHORT 카드 수
-      params.rcs10CardCount = this.rcs10CardCount;//캐러셀 TALL 카드 수
-      params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
-      params.useYn = this.useYn; //사용여부
-      console.log("444");
-      await templateApi.insertIntegratedTemplate(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-        //console.log("555");
-          confirm.fnAlert(this.detailTitle, '저장 되었습니다.');
-          this.$router.push('multiSendTemplateList')
-        } else {
-        //console.log("666");
-          confirm.fnAlert(this.detailTitle, result.message);
-        }
-      });
-    },
+			params.tmpltStatus = 'SAVE';
+			//params.projectId = this.testProjectId;
+			params.rcsTemplateTable = this.rcsTemplateTable;//rcs일경우 사용한 템플릿 번호를 가져간다.
+			params.rcs9CardCount = this.rcs9CardCount;//캐러셀 SHORT 카드 수
+			params.rcs10CardCount = this.rcs10CardCount;//캐러셀 TALL 카드 수
+			params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
+			params.useYn = this.useYn; //사용여부
+			console.log("444");
+			await templateApi.insertMultiSendTemplate(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					//console.log("555");
+					confirm.fnAlert(this.detailTitle, '저장 되었습니다.');
+					this.$router.push('multiSendTemplateList')
+				} else {
+					//console.log("666");
+					confirm.fnAlert(this.detailTitle, result.message);
+				}
+			});
+		},
 
     async fnCompleteIntegratedTemplate(){
       var params = this.rowData;
@@ -3600,7 +3602,7 @@ export default {
       params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
       params.useYn = this.useYn; //사용여부
 
-      await templateApi.insertIntegratedTemplate(params).then(response =>{
+      await templateApi.insertMultiSendTemplate(params).then(response =>{
         var result = response.data;
         if(result.success) {
           confirm.fnAlert(this.detailTitle, '등록 되었습니다.');
@@ -4009,26 +4011,25 @@ export default {
       return true;
     },
 
-    //임시저장 => 채널 설정관련 유효성 체크를  무시한다.
-    save:function(){
-      console.log("111");
-      this.registYn = false;
-      //유효성 검사
-      if(this.fnIsValid() == false) return;
-      console.log("222");
-      eventBus.$on('callbackEventBus', this.fnSaveIntegratedTemplate);
-      confirm.fnConfirm(this.detailTitle, "템플릿을 저장 하시겠습니까?", "확인");
-    },
-    //등록 => 채널 설정관련 유효성 체크 필수
-    complete:function(){
-      this.registYn = true;
-      //유효성 검사
-      if(this.fnIsValid() == false) return;
-      
-      eventBus.$on('callbackEventBus', this.fnCompleteIntegratedTemplate);
-      confirm.fnConfirm(this.detailTitle, "템플릿을 등록 하시겠습니까?", "확인");
-    },
+		// 임시저장 => 채널 설정관련 유효성 체크를  무시한다.
+		save:function(){
+			console.log("111");
+			this.registYn = false;
+			//유효성 검사
+			if (this.fnIsValid() == false) return;
+			console.log("222");
+			eventBus.$on('callbackEventBus', this.fnSaveMultiSendTemplate);
+			confirm.fnConfirm(this.detailTitle, "템플릿을 저장 하시겠습니까?", "확인");
+		},
+		// 등록 => 채널 설정관련 유효성 체크 필수
+		complete:function(){
+			this.registYn = true;
+			//유효성 검사
+			if (this.fnIsValid() == false) return;
 
+			eventBus.$on('callbackEventBus', this.fnCompleteIntegratedTemplate);
+			confirm.fnConfirm(this.detailTitle, "템플릿을 등록 하시겠습니까?", "확인");
+		},
 
     //template 정보 조회
     fnSetIntegratedTemplateInfo(){
@@ -4038,485 +4039,397 @@ export default {
       }
     },
 
-    //템플릿 정보 조회
-    fnSelectIntegratedTemplateInfo(){
-      const params = {tmpltCode: this.tmpltCodeP};
-      templateApi.integratedTemplateInfo(params).then(response => {
-        const result = response.data;
-        if(result.success) {
-          if(result.data != null && result.data.length > 0){
-		
-            let rtnData = result.data[0];
-            
-            //1. 템플릿설정 => 메시지 구분, 메시지 타입, 타프로젝트 사용여부 체크,  템플릿 명 적용
-            //2. 채널선택 체크 및 발송순서 처리
-            //3. 1) Push인 경우 해당 내용 적용
-            //   2) RCS인 경우 1-1) 상품 선택 체크  => rcsPrdType을 이용해서 처리
-            //               1-2) 해당 내용 적용
-            //        3) 카카오톡인 경우
-            //        4) SMS/MMS인 경우
-                 
-            this.rowData.checkedChannel = rtnData.chTypeList.split(',');
-            for(var i=0; i < this.rowData.checkedChannel.length; i++){
-            	if(this.rowData.checkedChannel[i] == 'PUSH'){
-            		this.channelTab = 0;
-            		this.checkedPush = true;
-            	}else if(this.rowData.checkedChannel[i] == 'RCS'){
-            		this.channelTab = 1;
-            		this.checkedRCS = true;
-            	}else if(this.rowData.checkedChannel[i] == 'KAKAO'){
-            		this.channelTab = 2;
-            		this.checkedKakao = true;
-            	}else if(this.rowData.checkedChannel[i] == 'SMSMMS'){
-            		this.channelTab = 3;
-            		this.checkedSmsMms = true;
-            	}
-            }
-            this.rowData.tmpltCode 		= rtnData.tmpltCode;
-            this.rowData.msgType 		= rtnData.msgType;
-            this.rowData.msgKind 		= rtnData.msgKind;
-            this.rowData.tmpltTitle 	= rtnData.tmpltTitle;
-            this.rowData.otherProjectUseYn = rtnData.otherProjectUseYn;
-            
-//PUSH DATA SET            
-            this.rowData.pushHowToDenyReceipt = rtnData.pushHowToDenyReceipt;
-            this.rowData.pushContent = rtnData.pushMsg;
-            this.rowData.pushAppId = rtnData.pushAppId;
-            this.rowData.pushTitle = rtnData.pushTitle;
-            this.rowData.pushImgInfo.fileId = rtnData.pushFileId;
-            this.rowData.pushImgInfo.imgUrl = rtnData.pushChImgUrl;
-            this.rowData.pushSend = rtnData.pushSendType;
-            this.rowData.pushHowToDenyReceipt = rtnData.pushRcvblcInput;//수신거부방법
-            
-//RCS DATA SET            
-            //console.log(">>>>>>>>>>>>>>>>rtnData.rcsPrdType : "+rtnData.rcsPrdType);
-            if(rtnData.rcsPrdType == 'FREE'){
-				this.rcsTemplateTable = 0;
-				this.rcsTemplateTableChecked = 0;
-			}else if(rtnData.rcsPrdType == 'DESCRIPTION'){
-				this.rcsTemplateTable = 1;
-				this.rcsTemplateTableChecked = 1;
-			}else if(rtnData.rcsPrdType == 'CELL'){
-				this.rcsTemplateTable = 2;
-				this.rcsTemplateTableChecked = 2;
-			}else if(rtnData.rcsPrdType == 'SMS'){
-				this.rcsTemplateTable = 3;
-				this.rcsTemplateTableChecked = 3;
-			}else if(rtnData.rcsPrdType == 'LMS'){
-				this.rcsTemplateTable = 4;
-				this.rcsTemplateTableChecked = 4;
-			}else if(rtnData.rcsPrdType == 'SHORT'){
-				this.rcsTemplateTable = 5;
-				this.rcsTemplateTableChecked = 5;
-			}else if(rtnData.rcsPrdType == 'TALL'){
-				this.rcsTemplateTable = 6;
-				this.rcsTemplateTableChecked = 6;
-			}else if(rtnData.rcsPrdType == 'CSHORT'){
-				this.rcsTemplateTable = 9;
-				this.rcsTemplateTableChecked = 9;
-			}else if(rtnData.rcsPrdType == 'CTALL'){
-				this.rcsTemplateTable = 10;
-				this.rcsTemplateTableChecked = 10;
-			}
-			//console.log(">>>>>>>>>>>>>>>>this.rcsTemplateTable : "+this.rcsTemplateTable);
-			
-           if(rtnData.rcsPrdType == 'FREE'){
-	 			this.rowData.rcs0Content 		= rtnData.rcsBodyDescription;
-	            this.rowData.callback 			= rtnData.rcsCallback; //발신번호
-	            
-	            //console.log("===========this.rowData.callback : "+this.rowData.callback);
-            }
-            
-            
-            if(rtnData.rcsPrdType == 'SMS'){
-	 			this.rowData.rcsSMSContent 			= rtnData.rcsBodyDescription;
-	            this.rowData.rcsSMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
-	            this.rowData.callback 				= rtnData.rcsCallback; //발신번호
-   
-	            if(rtnData.rcsButton0ButtonType){//RCS SMS는 버튼 1개까지 추가 가능
-	            	this.buttonSMSFlag = true;
-	            	//this.rowData.buttonType = rtnData.rcsButton0ButtonType;
-	            	this.rowData.rcsSMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
-	            }
-            }
-            
+		//템플릿 정보 조회
+		fnSelectIntegratedTemplateInfo() {
+			const params = {tmpltCode: this.tmpltCodeP};
+			templateApi.integratedTemplateInfo(params).then(response => {
+				const result = response.data;
+				if (result.success) {
+					if (result.data != null && result.data.length > 0) {
+						let rtnData = result.data[0];
 
-            
-            if(rtnData.rcsPrdType == 'LMS'){
-	            this.rowData.rcsLMSTitle			= rtnData.rcsBodyTitle;
-	            this.rowData.rcsLMSContent 			= rtnData.rcsBodyDescription;
-	            this.rowData.rcsLMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
-	            this.rowData.callback 				= rtnData.rcsCallback; //발신번호
-                        
-	            if(rtnData.rcsButton0ButtonType){//RCS LMS는 버튼 3개까지 추가 가능
-	            	this.buttonLMSFlag = true;
-	            	//this.rowData.buttonType = rtnData.rcsButton0ButtonType;//validation에서 buttonType 확인필요
-	            	this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
-	            }
-            
-	            if(rtnData.rcsButton1ButtonType){
-	            	this.buttonLMSFlag = true;
-	            	//this.rowData.buttonType = rtnData.rcsButton1ButtonType;
-	            	this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr1));
-	            }
+						//1. 템플릿설정 => 메시지 구분, 메시지 타입, 타프로젝트 사용여부 체크,  템플릿 명 적용
+						//2. 채널선택 체크 및 발송순서 처리
+						//3. 1) Push인 경우 해당 내용 적용
+						//   2) RCS인 경우 1-1) 상품 선택 체크  => rcsPrdType을 이용해서 처리
+						//               1-2) 해당 내용 적용
+						//        3) 카카오톡인 경우
+						//        4) SMS/MMS인 경우
 
-	            if(rtnData.rcsButton2ButtonType){
-	            	this.buttonLMSFlag = true;
-	            	//this.rowData.buttonType = rtnData.rcsButton2ButtonType;
-	            	this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr2));
-	            }
-            }
-            
+						this.rowData.checkedChannel = rtnData.chTypeList.split(',');
+						for (var i=0; i < this.rowData.checkedChannel.length; i++) {
+							if (this.rowData.checkedChannel[i] == 'PUSH') {
+								this.channelTab = 0;
+								this.checkedPush = true;
+							} else if(this.rowData.checkedChannel[i] == 'RCS') {
+								this.channelTab = 1;
+								this.checkedRCS = true;
+							} else if(this.rowData.checkedChannel[i] == 'KAKAO') {
+								this.channelTab = 2;
+								this.checkedKakao = true;
+							} else if(this.rowData.checkedChannel[i] == 'SMSMMS') {
+								this.channelTab = 3;
+								this.checkedSmsMms = true;
+							}
+						}
+						this.rowData.tmpltCode 		= rtnData.tmpltCode;
+						this.rowData.msgType 		= rtnData.msgType;
+						this.rowData.msgKind 		= rtnData.msgKind;
+						this.rowData.tmpltTitle 	= rtnData.tmpltTitle;
+						this.rowData.otherProjectUseYn = rtnData.otherProjectUseYn;
 
-            
-            if(rtnData.rcsPrdType == 'SHORT'){
-	            this.rowData.rcsShortTitle				= rtnData.rcsBodyTitle;
-	            this.rowData.rcsShortContent 			= rtnData.rcsBodyDescription;
-	            this.rowData.rcsShortHowToDenyReceipt 	= rtnData.rcsFooter;   //무료수신거부번호
-	            this.rowData.callback 					= rtnData.rcsCallback; //발신번호
-	            
-	            if(rtnData.rcsBodyMediaUrl){
-	            	this.rowData.rcsShortImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
-	            }
-           
-	            if(rtnData.rcsButton0ButtonType){//RCS SHORT은 버튼 2개까지 추가 가능
-	            	this.buttonShortFlag = true;
-	            	//this.rowData.buttonType = rtnData.rcsButton0ButtonType;
-	            	this.rowData.rcsShortButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
-	            }
-	            if(rtnData.rcsButton1ButtonType){
-	            	this.buttonTallFlag = true;
-	            	//this.rowData.buttonType = rtnData.rcsButton1ButtonType;
-	            	this.rowData.rcsShortButtons.push(JSON.parse(rtnData.rcs0ButtonArr1));
-	            }
-			}
-           
-            if(rtnData.rcsPrdType == 'TALL'){
-            	this.rowData.rcsTallTitle				= rtnData.rcsBodyTitle;
-	            this.rowData.rcsTallContent 			= rtnData.rcsBodyDescription;
-	            this.rowData.rcsTallHowToDenyReceipt 	= rtnData.rcsFooter;   //무료수신거부번호
-	            this.rowData.callback 					= rtnData.rcsCallback; //발신번호
-	            
-	            if(rtnData.rcsBodyMediaUrl){
-	            	this.rowData.rcsTallImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
-	            }
-	            
-            
-	            if(rtnData.rcsButton0ButtonType){//RCS TALL은 버튼 2개까지 추가 가능
-	            	this.buttonTallFlag = true;
-	            	//this.rowData.buttonType = rtnData.rcsButton0ButtonType;
-	            	this.rowData.rcsTallButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
-	            }            
-	            if(rtnData.rcsButton1ButtonType){
-	            	this.buttonTallFlag = true;
-	            	//this.rowData.buttonType = rtnData.rcsButton1ButtonType;
-	            	this.rowData.rcsTallButtons.push(JSON.parse(rtnData.rcs0ButtonArr1));
-	            }
+						// PUSH DATA SET            
+						this.rowData.pushHowToDenyReceipt = rtnData.pushHowToDenyReceipt;
+						this.rowData.pushContent = rtnData.pushMsg;
+						this.rowData.pushAppId = rtnData.pushAppId;
+						this.rowData.pushTitle = rtnData.pushTitle;
+						this.rowData.pushImgInfo.fileId = rtnData.pushFileId;
+						this.rowData.pushImgInfo.imgUrl = rtnData.pushChImgUrl;
+						this.rowData.pushSend = rtnData.pushSendType;
+						this.rowData.pushHowToDenyReceipt = rtnData.pushRcvblcInput;//수신거부방법
 
-			}
-
-            if(rtnData.rcsPrdType == 'CSHORT'){
-	            this.rcs9CardCount				= rtnData.rcsCardCount;
-	            this.rowData.rcs9HowToDenyReceipt 		= rtnData.rcsFooter;   //무료수신거부번호
-	            this.rowData.callback 					= rtnData.rcsCallback; //발신번호
-	            
-	            this.rowData.rcs90Title					= rtnData.rcsBodyTitle;
-	            this.rowData.rcs90Content				= rtnData.rcsBodyDescription;
-	            this.rowData.rcs91Title					= rtnData.rcs1BodyTitle;
-	            this.rowData.rcs91Content				= rtnData.rcs1BodyDescription;
-	            this.rowData.rcs92Title					= rtnData.rcs2BodyTitle;
-	            this.rowData.rcs92Content				= rtnData.rcs2BodyDescription;
-	            this.rowData.rcs93Title					= rtnData.rcs3BodyTitle;
-	            this.rowData.rcs93Content				= rtnData.rcs3BodyDescription;
-	            this.rowData.rcs94Title					= rtnData.rcs4BodyTitle;
-	            this.rowData.rcs94Content				= rtnData.rcs4BodyDescription;
-	            this.rowData.rcs95Title					= rtnData.rcs5BodyTitle;
-	            this.rowData.rcs95Content				= rtnData.rcs5BodyDescription;
-	            
-	            if(rtnData.rcsBodyMediaUrl){
-	            	this.rowData.rcs90ImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
-	            }
-	            
-	            if(rtnData.rcs1BodyMediaUrl){
-	            	this.rowData.rcs91ImgInfoList.push({'fileId':rtnData.rcs1BodyMedia, 'imgUrl':rtnData.rcs1BodyMediaUrl});
-	            }
-            	
-            	if(rtnData.rcs2BodyMediaUrl){
-	            	this.rowData.rcs92ImgInfoList.push({'fileId':rtnData.rcs2BodyMedia, 'imgUrl':rtnData.rcs2BodyMediaUrl});
-	            }
-	            
-	            if(rtnData.rcs3BodyMediaUrl){
-	            	this.rowData.rcs93ImgInfoList.push({'fileId':rtnData.rcs3BodyMedia, 'imgUrl':rtnData.rcs3BodyMediaUrl});
-	            }
-	            
-	            if(rtnData.rcs4BodyMediaUrl){
-	            	this.rowData.rcs94ImgInfoList.push({'fileId':rtnData.rcs4BodyMedia, 'imgUrl':rtnData.rcs4BodyMediaUrl});
-	            }
-	            
-	            if(rtnData.rcs5BodyMediaUrl){
-	            	this.rowData.rcs95ImgInfoList.push({'fileId':rtnData.rcs5BodyMedia, 'imgUrl':rtnData.rcs5BodyMediaUrl});
-	            }
-            
-            	
-	            if(rtnData.rcsButton0ButtonType){//RCS CSHORT은 카드 6개, 버튼 2개까지 추가 가능
-	            	this.button90Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcsButton0ButtonType;
-	            	this.rowData.rcs90Buttons.push(JSON.parse(rtnData.rcs0ButtonArr0));
-	            }      
-	            
-	            if(rtnData.rcsButton1ButtonType){
-	            	this.button90Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcsButton1ButtonType;
-	            	this.rowData.rcs90Buttons.push(JSON.parse(rtnData.rcs0ButtonArr1));
-	            }
-	           
-	            if(rtnData.rcs1Button0ButtonType){
-	            	this.button91Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs1Button0ButtonType;
-	            	this.rowData.rcs91Buttons.push(JSON.parse(rtnData.rcs1ButtonArr0));
-	            }            
-	            if(rtnData.rcs1Button1ButtonType){
-	            	this.button91Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs1Button1ButtonType;
-	            	this.rowData.rcs91Buttons.push(JSON.parse(rtnData.rcs1ButtonArr1));
-	            }
-	            
-	            if(rtnData.rcs2Button0ButtonType){
-	            	this.button92Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs2Button0ButtonType;
-	            	this.rowData.rcs92Buttons.push(JSON.parse(rtnData.rcs2ButtonArr0));
-	            }            
-	            if(rtnData.rcs2Button1ButtonType){
-	            	this.button92Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs2Button1ButtonType;
-	            	this.rowData.rcs92Buttons.push(JSON.parse(rtnData.rcs2ButtonArr1));
-	            }
-	            
-	            if(rtnData.rcs3Button0ButtonType){
-	            	this.button93Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs3Button0ButtonType;
-	            	this.rowData.rcs93Buttons.push(JSON.parse(rtnData.rcs3ButtonArr0));
-	            }            
-	            if(rtnData.rcs3Button1ButtonType){
-	            	this.button93Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs3Button1ButtonType;
-	            	this.rowData.rcs93Buttons.push(JSON.parse(rtnData.rcs3ButtonArr1));
-	            }
-	            
-	            if(rtnData.rcs4Button0ButtonType){
-	            	this.button94Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs4Button0ButtonType;
-	            	this.rowData.rcs94Buttons.push(JSON.parse(rtnData.rcs4ButtonArr0));
-	            }            
-	            if(rtnData.rcs4Button1ButtonType){
-	            	this.button94Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs4Button1ButtonType;
-	            	this.rowData.rcs94Buttons.push(JSON.parse(rtnData.rcs4ButtonArr1));
-	            }
-	            
-	            if(rtnData.rcs5Button0ButtonType){
-	            	this.button95Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs5Button0ButtonType;
-	            	this.rowData.rcs95Buttons.push(JSON.parse(rtnData.rcs5ButtonArr0));
-	            }            
-	            if(rtnData.rcs5Button1ButtonType){
-	            	this.button95Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs5Button1ButtonType;
-	            	this.rowData.rcs95Buttons.push(JSON.parse(rtnData.rcs5ButtonArr1));
-	            }
-
-			}
-            
-
-           if(rtnData.rcsPrdType == 'CTALL'){
-	            this.rcs10CardCount				= rtnData.rcsCardCount;
-	            this.rowData.rcs10HowToDenyReceipt 		= rtnData.rcsFooter;   //무료수신거부번호
-	            this.rowData.callback 				= rtnData.rcsCallback; //발신번호
-	            
-	            this.rowData.rcs100Title				= rtnData.rcsBodyTitle;
-	            this.rowData.rcs100Content				= rtnData.rcsBodyDescription;
-	            this.rowData.rcs101Title				= rtnData.rcs1BodyTitle;
-	            this.rowData.rcs101Content				= rtnData.rcs1BodyDescription;
-	            this.rowData.rcs102Title				= rtnData.rcs2BodyTitle;
-	            this.rowData.rcs102Content				= rtnData.rcs2BodyDescription;
-	            this.rowData.rcs103Title				= rtnData.rcs3BodyTitle;
-	            this.rowData.rcs103Content				= rtnData.rcs3BodyDescription;
-	            this.rowData.rcs104Title				= rtnData.rcs4BodyTitle;
-	            this.rowData.rcs104Content				= rtnData.rcs4BodyDescription;
-	            this.rowData.rcs105Title				= rtnData.rcs5BodyTitle;
-	            this.rowData.rcs105Content				= rtnData.rcs5BodyDescription;
-	            
-	            if(rtnData.rcsBodyMediaUrl){
-	            	this.rowData.rcs100ImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
-	            }
-	            
-	            if(rtnData.rcs1BodyMediaUrl){
-	            	this.rowData.rcs101ImgInfoList.push({'fileId':rtnData.rcs1BodyMedia, 'imgUrl':rtnData.rcs1BodyMediaUrl});
-	            }
-	            
-	            if(rtnData.rcs2BodyMediaUrl){
-	            	this.rowData.rcs102ImgInfoList.push({'fileId':rtnData.rcs2BodyMedia, 'imgUrl':rtnData.rcs2BodyMediaUrl});
-	            }
-	            
-	            if(rtnData.rcs3BodyMediaUrl){
-	            	this.rowData.rcs103ImgInfoList.push({'fileId':rtnData.rcs3BodyMedia, 'imgUrl':rtnData.rcs3BodyMediaUrl});
-	            }
-	            
-	            if(rtnData.rcs4BodyMediaUrl){
-	            	this.rowData.rcs104ImgInfoList.push({'fileId':rtnData.rcs4BodyMedia, 'imgUrl':rtnData.rcs4BodyMediaUrl});
-	            }
-	            
-	            if(rtnData.rcs5BodyMediaUrl){
-	            	this.rowData.rcs105ImgInfoList.push({'fileId':rtnData.rcs5BodyMedia, 'imgUrl':rtnData.rcs5BodyMediaUrl});
-	            }
-            
-	            if(rtnData.rcsButton0ButtonType){//RCS CTALL은 카드 6개, 버튼 2개까지 추가 가능
-	            	this.button100Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcsButton0ButtonType;
-	            	this.rowData.rcs100Buttons.push(JSON.parse(rtnData.rcs0ButtonArr0));
-	            }            
-	            if(rtnData.rcsButton1ButtonType){
-	            	this.button100Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcsButton1ButtonType;
-	            	this.rowData.rcs100Buttons.push(JSON.parse(rtnData.rcs0ButtonArr1));
-	            }
-	            
-	            if(rtnData.rcs1Button0ButtonType){
-	            	this.button101Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs1Button0ButtonType;
-	            	this.rowData.rcs101Buttons.push(JSON.parse(rtnData.rcs1ButtonArr0));
-	            }            
-	            if(rtnData.rcs1Button1ButtonType){
-	            	this.button101Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs1Button1ButtonType;
-	            	this.rowData.rcs101Buttons.push(JSON.parse(rtnData.rcs1ButtonArr1));
-	            }
-	            
-	            if(rtnData.rcs2Button0ButtonType){
-	            	this.button102Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs2Button0ButtonType;
-	            	this.rowData.rcs102Buttons.push(JSON.parse(rtnData.rcs2ButtonArr0));
-	            }            
-	            if(rtnData.rcs2Button1ButtonType){
-	            	this.button102Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs2Button1ButtonType;
-	            	this.rowData.rcs102Buttons.push(JSON.parse(rtnData.rcs2ButtonArr1));
-	            }
-	            
-	            if(rtnData.rcs3Button0ButtonType){
-	            	this.button103Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs3Button0ButtonType;
-	            	this.rowData.rcs103Buttons.push(JSON.parse(rtnData.rcs3ButtonArr0));
-	            }            
-	            if(rtnData.rcs3Button1ButtonType){
-	            	this.button103Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs3Button1ButtonType;
-	            	this.rowData.rcs103Buttons.push(JSON.parse(rtnData.rcs3ButtonArr1));
-	            }
-	            
-	            if(rtnData.rcs4Button0ButtonType){
-	            	this.button104Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs4Button0ButtonType;
-	            	this.rowData.rcs104Buttons.push(JSON.parse(rtnData.rcs4ButtonArr0));
-	            }            
-	            if(rtnData.rcs4Button1ButtonType){
-	            	this.button104Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs4Button1ButtonType;
-	            	this.rowData.rcs104Buttons.push(JSON.parse(rtnData.rcs4ButtonArr1));
-	            }
-	            
-	            if(rtnData.rcs5Button0ButtonType){
-	            	this.button105Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs5Button0ButtonType;
-	            	this.rowData.rcs105Buttons.push(JSON.parse(rtnData.rcs5ButtonArr0));
-	            }            
-	            if(rtnData.rcs5Button1ButtonType){
-	            	this.button105Flag = true;
-	            	//this.rowData.buttonType = rtnData.rcs5Button1ButtonType;
-	            	this.rowData.rcs105Buttons.push(JSON.parse(rtnData.rcs5ButtonArr1));
-	            }
-
-			}
-			
-			
-
-//FRIENDTALK DATA SET            
-            this.rowData.friendTalkSenderKeyType	= rtnData.friendTalkSenderKeyType;
-            this.rowData.friendTalkSenderKey 		= rtnData.friendTalkSenderKey;
-            this.rowData.friendTalkImageLink 		= rtnData.friendTalkImageLink;
-            this.rowData.friendTalkContent 			= rtnData.friendTalkContent;
-            this.rowData.friendTalkImgInfo.fileId 	= rtnData.friendTalkFileId;
-            this.rowData.friendTalkImgInfo.imgUrl 	= rtnData.friendTalkImgUrl;
-            
-            if(rtnData.friendTalkPrdType == 'FRIENDTALK'){//카카오톡 친구톡은 5개 버튼까지 추가 가능
-	            if(rtnData.friendTalkButton0ButtonType){
-	            	this.buttonFriendTalkFlag = true;
-	            	//this.rowData.buttonType = rtnData.friendTalkButton0ButtonType;
-	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr0));
-	            }
-	            
-	            if(rtnData.friendTalkButton1ButtonType){
-	            	this.buttonFriendTalkFlag = true;
-	            	//this.rowData.buttonType = rtnData.friendTalkButton1ButtonType;
-	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr1));
-	            }
-	            
-	            if(rtnData.friendTalkButton2ButtonType){
-	            	this.buttonFriendTalkFlag = true;
-	            	//this.rowData.buttonType = rtnData.friendTalkButton2ButtonType;
-	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr2));
-	            }
-	            
-	            if(rtnData.friendTalkButton3ButtonType){
-	            	this.buttonFriendTalkFlag = true;
-	            	//this.rowData.buttonType = rtnData.friendTalkButton3ButtonType;
-	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr3));
-	            }
-	            
-	            if(rtnData.friendTalkButton4ButtonType){
-	            	this.buttonFriendTalkFlag = true;
-	            	//this.rowData.buttonType = rtnData.friendTalkButton4ButtonType;
-	            	this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr4));
-	            }
-			}
-
-//NOTICETALK DATA SET
-
-//SMS/MMS DATA SET
-
-
-			if(rtnData.smsSendType == 'S'){
-				this.smsTemplateTable = 0;
-			}else if(rtnData.smsSendType == 'M'){
-				this.smsTemplateTable = 1;
-			}
-			if(rtnData.smsSendType == 'S' || rtnData.smsSendType == 'M'){
-	            this.rowData.smsSendType = rtnData.smsSendType;
-	            this.rowData.smsTitle = rtnData.smsTitle;
-	            this.rowData.smsContent = rtnData.smsContent;
-	            
-	            if(rtnData.smsFileId0){
-	            	this.rowData.smsImgInfoList.push({'fileId':rtnData.smsFileId0 , 'imgUrl':rtnData.mmsChImgUrl0});
-	            }
-	            
-	            if(rtnData.smsFileId1){
-	            	this.rowData.smsImgInfoList.push({'fileId':rtnData.smsFileId1, 'imgUrl':rtnData.mmsChImgUrl1});
-	            }
-	            
-	            this.rowData.callback = rtnData.smsCallback;
-            }
-            
-            //rtnData.buttonList = [];
-            //this.rowData = Object.assign({}, rtnData);
-            //this.rowData.buttonList = JSON.parse(rtnData.tmpltButtons);
-            //this.rowData.otherProjectUseYn = (rtnData.projectId == 'ALL' ? 'Y' : 'N');
-          }
-        } else {
-          confirm.fnAlert(this.componentsTitle, result.message);
-          //this.rowData = {imgUrl:'', buttonList:[]};
-        }
-      });
-    },
+						// RCS DATA SET            
+						if (rtnData.rcsPrdType == 'FREE') {
+							this.rcsTemplateTable = 0;
+							this.rcsTemplateTableChecked = 0;
+						} else if(rtnData.rcsPrdType == 'DESCRIPTION') {
+							this.rcsTemplateTable = 1;
+							this.rcsTemplateTableChecked = 1;
+						} else if(rtnData.rcsPrdType == 'CELL') {
+							this.rcsTemplateTable = 2;
+							this.rcsTemplateTableChecked = 2;
+						} else if(rtnData.rcsPrdType == 'SMS') {
+							this.rcsTemplateTable = 3;
+							this.rcsTemplateTableChecked = 3;
+						} else if(rtnData.rcsPrdType == 'LMS') {
+							this.rcsTemplateTable = 4;
+							this.rcsTemplateTableChecked = 4;
+						} else if(rtnData.rcsPrdType == 'SHORT') {
+							this.rcsTemplateTable = 5;
+							this.rcsTemplateTableChecked = 5;
+						} else if(rtnData.rcsPrdType == 'TALL') {
+							this.rcsTemplateTable = 6;
+							this.rcsTemplateTableChecked = 6;
+						} else if(rtnData.rcsPrdType == 'CSHORT') {
+							this.rcsTemplateTable = 9;
+							this.rcsTemplateTableChecked = 9;
+						} else if(rtnData.rcsPrdType == 'CTALL') {
+							this.rcsTemplateTable = 10;
+							this.rcsTemplateTableChecked = 10;
+						}
+	
+						if (rtnData.rcsPrdType == 'FREE') {
+							this.rowData.rcs0Content 		= rtnData.rcsBodyDescription;
+							this.rowData.callback 			= rtnData.rcsCallback; //발신번호
+						}
+	
+						if (rtnData.rcsPrdType == 'SMS') {
+							this.rowData.rcsSMSContent 			= rtnData.rcsBodyDescription;
+							this.rowData.rcsSMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
+							this.rowData.callback 				= rtnData.rcsCallback; //발신번호
+	   
+							if (rtnData.rcsButton0ButtonType) {//RCS SMS는 버튼 1개까지 추가 가능
+								this.buttonSMSFlag = true;
+								this.rowData.rcsSMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
+							}
+						}
+	
+						if (rtnData.rcsPrdType == 'LMS') {
+							this.rowData.rcsLMSTitle			= rtnData.rcsBodyTitle;
+							this.rowData.rcsLMSContent 			= rtnData.rcsBodyDescription;
+							this.rowData.rcsLMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
+							this.rowData.callback 				= rtnData.rcsCallback; //발신번호
+	
+							if (rtnData.rcsButton0ButtonType) {//RCS LMS는 버튼 3개까지 추가 가능
+								this.buttonLMSFlag = true;
+								this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
+							}
+	
+							if (rtnData.rcsButton1ButtonType) {
+								this.buttonLMSFlag = true;
+								this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr1));
+							}
+	
+							if (rtnData.rcsButton2ButtonType) {
+								this.buttonLMSFlag = true;
+								this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr2));
+							}
+						}
+	
+						if (rtnData.rcsPrdType == 'SHORT') {
+							this.rowData.rcsShortTitle				= rtnData.rcsBodyTitle;
+							this.rowData.rcsShortContent 			= rtnData.rcsBodyDescription;
+							this.rowData.rcsShortHowToDenyReceipt 	= rtnData.rcsFooter;   //무료수신거부번호
+							this.rowData.callback 					= rtnData.rcsCallback; //발신번호
+	
+							if (rtnData.rcsBodyMediaUrl) {
+								this.rowData.rcsShortImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
+							}
+							if (rtnData.rcsButton0ButtonType) {//RCS SHORT은 버튼 2개까지 추가 가능
+								this.buttonShortFlag = true;
+								this.rowData.rcsShortButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
+							}
+							if (rtnData.rcsButton1ButtonType) {
+								this.buttonTallFlag = true;
+								this.rowData.rcsShortButtons.push(JSON.parse(rtnData.rcs0ButtonArr1));
+							}
+						}
+	
+						if (rtnData.rcsPrdType == 'TALL') {
+							this.rowData.rcsTallTitle				= rtnData.rcsBodyTitle;
+							this.rowData.rcsTallContent 			= rtnData.rcsBodyDescription;
+							this.rowData.rcsTallHowToDenyReceipt 	= rtnData.rcsFooter;   //무료수신거부번호
+							this.rowData.callback 					= rtnData.rcsCallback; //발신번호
+	
+							if (rtnData.rcsBodyMediaUrl) {
+								this.rowData.rcsTallImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
+							}
+							if (rtnData.rcsButton0ButtonType) {//RCS TALL은 버튼 2개까지 추가 가능
+								this.buttonTallFlag = true;
+								this.rowData.rcsTallButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
+							}
+							if (rtnData.rcsButton1ButtonType) {
+								this.buttonTallFlag = true;
+								this.rowData.rcsTallButtons.push(JSON.parse(rtnData.rcs0ButtonArr1));
+							}
+						}
+	
+						if (rtnData.rcsPrdType == 'CSHORT') {
+							this.rcs9CardCount				= rtnData.rcsCardCount;
+							this.rowData.rcs9HowToDenyReceipt 		= rtnData.rcsFooter;   //무료수신거부번호
+							this.rowData.callback 					= rtnData.rcsCallback; //발신번호
+	
+							this.rowData.rcs90Title					= rtnData.rcsBodyTitle;
+							this.rowData.rcs90Content				= rtnData.rcsBodyDescription;
+							this.rowData.rcs91Title					= rtnData.rcs1BodyTitle;
+							this.rowData.rcs91Content				= rtnData.rcs1BodyDescription;
+							this.rowData.rcs92Title					= rtnData.rcs2BodyTitle;
+							this.rowData.rcs92Content				= rtnData.rcs2BodyDescription;
+							this.rowData.rcs93Title					= rtnData.rcs3BodyTitle;
+							this.rowData.rcs93Content				= rtnData.rcs3BodyDescription;
+							this.rowData.rcs94Title					= rtnData.rcs4BodyTitle;
+							this.rowData.rcs94Content				= rtnData.rcs4BodyDescription;
+							this.rowData.rcs95Title					= rtnData.rcs5BodyTitle;
+							this.rowData.rcs95Content				= rtnData.rcs5BodyDescription;
+	
+							if (rtnData.rcsBodyMediaUrl) {
+								this.rowData.rcs90ImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
+							}
+							if (rtnData.rcs1BodyMediaUrl) {
+								this.rowData.rcs91ImgInfoList.push({'fileId':rtnData.rcs1BodyMedia, 'imgUrl':rtnData.rcs1BodyMediaUrl});
+							}
+							if (rtnData.rcs2BodyMediaUrl) {
+								this.rowData.rcs92ImgInfoList.push({'fileId':rtnData.rcs2BodyMedia, 'imgUrl':rtnData.rcs2BodyMediaUrl});
+							}
+							if (rtnData.rcs3BodyMediaUrl) {
+								this.rowData.rcs93ImgInfoList.push({'fileId':rtnData.rcs3BodyMedia, 'imgUrl':rtnData.rcs3BodyMediaUrl});
+							}
+							if (rtnData.rcs4BodyMediaUrl) {
+								this.rowData.rcs94ImgInfoList.push({'fileId':rtnData.rcs4BodyMedia, 'imgUrl':rtnData.rcs4BodyMediaUrl});
+							}
+							if (rtnData.rcs5BodyMediaUrl) {
+								this.rowData.rcs95ImgInfoList.push({'fileId':rtnData.rcs5BodyMedia, 'imgUrl':rtnData.rcs5BodyMediaUrl});
+							}
+							if (rtnData.rcsButton0ButtonType) {//RCS CSHORT은 카드 6개, 버튼 2개까지 추가 가능
+								this.button90Flag = true;
+								this.rowData.rcs90Buttons.push(JSON.parse(rtnData.rcs0ButtonArr0));
+							}
+							if (rtnData.rcsButton1ButtonType) {
+								this.button90Flag = true;
+								this.rowData.rcs90Buttons.push(JSON.parse(rtnData.rcs0ButtonArr1));
+							}
+							if (rtnData.rcs1Button0ButtonType) {
+								this.button91Flag = true;
+								this.rowData.rcs91Buttons.push(JSON.parse(rtnData.rcs1ButtonArr0));
+							}
+							if (rtnData.rcs1Button1ButtonType) {
+								this.button91Flag = true;
+								this.rowData.rcs91Buttons.push(JSON.parse(rtnData.rcs1ButtonArr1));
+							}
+							if (rtnData.rcs2Button0ButtonType) {
+								this.button92Flag = true;
+								this.rowData.rcs92Buttons.push(JSON.parse(rtnData.rcs2ButtonArr0));
+							}
+							if (rtnData.rcs2Button1ButtonType) {
+								this.button92Flag = true;
+								this.rowData.rcs92Buttons.push(JSON.parse(rtnData.rcs2ButtonArr1));
+							}
+							if (rtnData.rcs3Button0ButtonType) {
+								this.button93Flag = true;
+								this.rowData.rcs93Buttons.push(JSON.parse(rtnData.rcs3ButtonArr0));
+							}
+							if (rtnData.rcs3Button1ButtonType) {
+								this.button93Flag = true;
+								this.rowData.rcs93Buttons.push(JSON.parse(rtnData.rcs3ButtonArr1));
+							}
+							if (rtnData.rcs4Button0ButtonType) {
+								this.button94Flag = true;
+								this.rowData.rcs94Buttons.push(JSON.parse(rtnData.rcs4ButtonArr0));
+							}
+							if (rtnData.rcs4Button1ButtonType) {
+								this.button94Flag = true;
+								this.rowData.rcs94Buttons.push(JSON.parse(rtnData.rcs4ButtonArr1));
+							}
+							if (rtnData.rcs5Button0ButtonType) {
+								this.button95Flag = true;
+								this.rowData.rcs95Buttons.push(JSON.parse(rtnData.rcs5ButtonArr0));
+							}
+							if (rtnData.rcs5Button1ButtonType) {
+								this.button95Flag = true;
+								this.rowData.rcs95Buttons.push(JSON.parse(rtnData.rcs5ButtonArr1));
+							}
+						}
+	
+						if (rtnData.rcsPrdType == 'CTALL') {
+							this.rcs10CardCount				= rtnData.rcsCardCount;
+							this.rowData.rcs10HowToDenyReceipt 		= rtnData.rcsFooter;   //무료수신거부번호
+							this.rowData.callback 				= rtnData.rcsCallback; //발신번호
+	
+							this.rowData.rcs100Title				= rtnData.rcsBodyTitle;
+							this.rowData.rcs100Content				= rtnData.rcsBodyDescription;
+							this.rowData.rcs101Title				= rtnData.rcs1BodyTitle;
+							this.rowData.rcs101Content				= rtnData.rcs1BodyDescription;
+							this.rowData.rcs102Title				= rtnData.rcs2BodyTitle;
+							this.rowData.rcs102Content				= rtnData.rcs2BodyDescription;
+							this.rowData.rcs103Title				= rtnData.rcs3BodyTitle;
+							this.rowData.rcs103Content				= rtnData.rcs3BodyDescription;
+							this.rowData.rcs104Title				= rtnData.rcs4BodyTitle;
+							this.rowData.rcs104Content				= rtnData.rcs4BodyDescription;
+							this.rowData.rcs105Title				= rtnData.rcs5BodyTitle;
+							this.rowData.rcs105Content				= rtnData.rcs5BodyDescription;
+	
+							if (rtnData.rcsBodyMediaUrl) {
+								this.rowData.rcs100ImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
+							}
+							if (rtnData.rcs1BodyMediaUrl) {
+								this.rowData.rcs101ImgInfoList.push({'fileId':rtnData.rcs1BodyMedia, 'imgUrl':rtnData.rcs1BodyMediaUrl});
+							}
+							if (rtnData.rcs2BodyMediaUrl) {
+								this.rowData.rcs102ImgInfoList.push({'fileId':rtnData.rcs2BodyMedia, 'imgUrl':rtnData.rcs2BodyMediaUrl});
+							}
+							if (rtnData.rcs3BodyMediaUrl) {
+								this.rowData.rcs103ImgInfoList.push({'fileId':rtnData.rcs3BodyMedia, 'imgUrl':rtnData.rcs3BodyMediaUrl});
+							}
+							if (rtnData.rcs4BodyMediaUrl) {
+								this.rowData.rcs104ImgInfoList.push({'fileId':rtnData.rcs4BodyMedia, 'imgUrl':rtnData.rcs4BodyMediaUrl});
+							}
+							if (rtnData.rcs5BodyMediaUrl) {
+								this.rowData.rcs105ImgInfoList.push({'fileId':rtnData.rcs5BodyMedia, 'imgUrl':rtnData.rcs5BodyMediaUrl});
+							}
+							if (rtnData.rcsButton0ButtonType) {//RCS CTALL은 카드 6개, 버튼 2개까지 추가 가능
+								this.button100Flag = true;
+								this.rowData.rcs100Buttons.push(JSON.parse(rtnData.rcs0ButtonArr0));
+							}
+							if (rtnData.rcsButton1ButtonType) {
+								this.button100Flag = true;
+								this.rowData.rcs100Buttons.push(JSON.parse(rtnData.rcs0ButtonArr1));
+							}
+							if (rtnData.rcs1Button0ButtonType) {
+								this.button101Flag = true;
+								this.rowData.rcs101Buttons.push(JSON.parse(rtnData.rcs1ButtonArr0));
+							}
+							if (rtnData.rcs1Button1ButtonType) {
+								this.button101Flag = true;
+								this.rowData.rcs101Buttons.push(JSON.parse(rtnData.rcs1ButtonArr1));
+							}
+							if (rtnData.rcs2Button0ButtonType) {
+								this.button102Flag = true;
+								this.rowData.rcs102Buttons.push(JSON.parse(rtnData.rcs2ButtonArr0));
+							}
+							if (rtnData.rcs2Button1ButtonType) {
+								this.button102Flag = true;
+								this.rowData.rcs102Buttons.push(JSON.parse(rtnData.rcs2ButtonArr1));
+							}
+							if (rtnData.rcs3Button0ButtonType) {
+								this.button103Flag = true;
+								this.rowData.rcs103Buttons.push(JSON.parse(rtnData.rcs3ButtonArr0));
+							}
+							if (rtnData.rcs3Button1ButtonType) {
+								this.button103Flag = true;
+								this.rowData.rcs103Buttons.push(JSON.parse(rtnData.rcs3ButtonArr1));
+							}
+							if (rtnData.rcs4Button0ButtonType) {
+								this.button104Flag = true;
+								this.rowData.rcs104Buttons.push(JSON.parse(rtnData.rcs4ButtonArr0));
+							}
+							if (rtnData.rcs4Button1ButtonType) {
+								this.button104Flag = true;
+								this.rowData.rcs104Buttons.push(JSON.parse(rtnData.rcs4ButtonArr1));
+							}
+							if (rtnData.rcs5Button0ButtonType) {
+								this.button105Flag = true;
+								this.rowData.rcs105Buttons.push(JSON.parse(rtnData.rcs5ButtonArr0));
+							}
+							if (rtnData.rcs5Button1ButtonType) {
+								this.button105Flag = true;
+								this.rowData.rcs105Buttons.push(JSON.parse(rtnData.rcs5ButtonArr1));
+							}
+						}
+	
+						// FRIENDTALK DATA SET            
+						this.rowData.friendTalkSenderKeyType	= rtnData.friendTalkSenderKeyType;
+						this.rowData.friendTalkSenderKey 		= rtnData.friendTalkSenderKey;
+						this.rowData.friendTalkImageLink 		= rtnData.friendTalkImageLink;
+						this.rowData.friendTalkContent 			= rtnData.friendTalkContent;
+						this.rowData.friendTalkImgInfo.fileId 	= rtnData.friendTalkFileId;
+						this.rowData.friendTalkImgInfo.imgUrl 	= rtnData.friendTalkImgUrl;
+	
+						if (rtnData.friendTalkPrdType == 'FRIENDTALK') {//카카오톡 친구톡은 5개 버튼까지 추가 가능
+							if (rtnData.friendTalkButton0Type) {
+								this.buttonFriendTalkFlag = true;
+								this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr0));
+							}
+	
+							if (rtnData.friendTalkButton1Type) {
+								this.buttonFriendTalkFlag = true;
+								this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr1));
+							}
+	
+							if (rtnData.friendTalkButton2Type) {
+								this.buttonFriendTalkFlag = true;
+								this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr2));
+							}
+	
+							if (rtnData.friendTalkButton3Type) {
+								this.buttonFriendTalkFlag = true;
+								this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr3));
+							}
+	
+							if (rtnData.friendTalkButton4Type) {
+								this.buttonFriendTalkFlag = true;
+								this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr4));
+							}
+						}
+	
+						//ALIMTALK DATA SET
+	
+						//SMS/MMS DATA SET
+						if (rtnData.smsSendType == 'S') {
+							this.smsTemplateTable = 0;
+						} else if(rtnData.smsSendType == 'M') {
+							this.smsTemplateTable = 1;
+						}
+						if (rtnData.smsSendType == 'S' || rtnData.smsSendType == 'M') {
+							this.rowData.smsSendType = rtnData.smsSendType;
+							this.rowData.smsTitle = rtnData.smsTitle;
+							this.rowData.smsContent = rtnData.smsContent;
+	
+							if (rtnData.smsFileId0) {
+								this.rowData.smsImgInfoList.push({'fileId':rtnData.smsFileId0 , 'imgUrl':rtnData.mmsChImgUrl0});
+							}
+	
+							if (rtnData.smsFileId1) {
+								this.rowData.smsImgInfoList.push({'fileId':rtnData.smsFileId1, 'imgUrl':rtnData.mmsChImgUrl1});
+							}
+	
+							this.rowData.callback = rtnData.smsCallback;
+						}
+					}
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+		},
 
     fnPushOpenImageManagePopUp(){
       this.$refs.pushImgMng.fnSearch();
@@ -4746,32 +4659,26 @@ export default {
       }
     },
 
-    addRowFriendTalk: function(){
-      //if(this.rowData.friendTalkButtons.length >= this.friendTalkButtonsSize){
-      //  alert("button은 "+this.friendTalkButtonsSize+"개까지 추가가능합니다.");
-      if(this.rowData.friendTalkButtons.length >= 5){
-        alert("button은 5개까지 추가가능합니다.");
-      }else{
-        this.buttonFriendTalkFlag = true;
-        //console.log("this.friendTalkButtonsMaxLen : ",this.friendTalkButtonsMaxLen);
-        this.friendTalkButtonsMaxLen = this.friendTalkButtonsMaxLen + 1;
-        //console.log("maxLen : ",this.friendTalkButtonsMaxLen);
-        var startDateId = 'friendTalkStartDateId'+this.friendTalkButtonsMaxLen;
-        var endDateId = 'friendTalkEndDateId'+this.friendTalkButtonsMaxLen;
+		addRowFriendTalk: function(){
+			if (this.rowData.friendTalkButtons.length >= 5) {
+				alert("button은 5개까지 추가가능합니다.");
+			} else {
+				this.buttonFriendTalkFlag = true;
+				this.friendTalkButtonsMaxLen = this.friendTalkButtonsMaxLen + 1;
+				var startDateId = 'friendTalkStartDateId'+this.friendTalkButtonsMaxLen;
+				var endDateId = 'friendTalkEndDateId'+this.friendTalkButtonsMaxLen;
         
-        this.rowData.friendTalkButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-        //this.rowData.friendTalkButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'buttonLink1':''});
-      }
-    },
-    removeRowFriendTalk: function(row){
-      //if(this.rowData.friendTalkButtons.length <= this.friendTalkButtonsSize){
-      if(this.rowData.friendTalkButtons.length <= 1){
-        this.rowData.friendTalkButtons.splice(row,1);
-        this.rowData.friendTalkButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':'', 'endDateId':'', 'buttonLink1':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.friendTalkButtons.splice(row,1);
-      }
-    },
+				this.rowData.friendTalkButtons.push({'type':'WL', 'name':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRowFriendTalk: function(row){
+			if (this.rowData.friendTalkButtons.length <= 1) {
+				this.rowData.friendTalkButtons.splice(row,1);
+				this.rowData.friendTalkButtons.push({'type':'', 'name':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':'', 'endDateId':'', 'buttonLink1':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.friendTalkButtons.splice(row,1);
+			}
+		},
 
 
     fnRcs90OpenImageManagePopUp(){
