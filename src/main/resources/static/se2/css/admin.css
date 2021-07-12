@@ -201,6 +201,7 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .mt8 {margin-top:8px !important}
 .mt10 {margin-top:10px !important}
 .mt12 {margin-top:12px !important}
+.mt13 {margin-top:13px !important}
 .mt15 {margin-top:15px !important}
 .mt20 {margin-top:20px !important}
 .mt25 {margin-top:25px !important}
@@ -278,6 +279,7 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .color5 {color:#727272 !important}
 .color6 {color:#505050 !important}
 .color7 {color:#666666 !important}
+.colorRed {color:red !important}
 .background-color6 {background:#505050 !important}
 .color000 {color:#000 !important}
 .colorfff {color:#fff !important}
