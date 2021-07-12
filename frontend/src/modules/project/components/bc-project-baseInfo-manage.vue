@@ -58,6 +58,7 @@
 							</colgroup>
 							<thead>
 								<tr>
+									<th class="text-center">API Key 명</th>
 									<th class="text-center">API Key</th>
 									<th class="text-center">웹 사용</th>
 									<th class="text-center">생성일</th>
@@ -66,6 +67,7 @@
 							</thead>
 							<tbody>
 								<tr v-for="(data) in apiKeyList" :key="data.apiKey">
+									<td class="text-center">{{ data.apiKeyName }}</td>
 									<td class="text-center">{{ data.apiKey }}</td>
 									<td class="text-center">{{ data.webSenderYnName }}</td>
 									<td class="text-center">{{ data.regDt }}</td>

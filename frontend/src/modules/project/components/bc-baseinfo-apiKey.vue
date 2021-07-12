@@ -7,7 +7,13 @@
 					<div>
 						<h2>API Key 상세</h2>
 						<hr>
-						<div id="apiKeyDiv" class="of_h">
+						<div class="of_h">
+							<div class="float-left" style="width:24%"><h5>API KEY 명</h5></div>
+							<div class="float-left" style="width:76%">
+								<input type="text" id="apiKeyName" class="inputStyle">
+							</div>
+						</div>
+						<div id="apiKeyDiv" class="of_h consolMarginTop">
 							<div class="float-left" style="width:24%"><h5>API KEY</h5></div>
 							<div class="float-left" style="width:76%">
 								<input type="text" id="apiKey" class="inputStyle" :disabled="true">
@@ -199,6 +205,8 @@ export default {
 				jQuery('input:radio[name=monSenderChkYn]:input[value="N"]').prop('checked', true);
 				jQuery('#monSenderLimitAmount').val(null);
 				jQuery('#monSenderLimitAmountSpan').hide();
+				jQuery('#apiKeyName').val(null);
+				
 			}
 			if(this.saveStatus === 'U') {
 				jQuery('#apiKeyDiv').show();
@@ -240,36 +248,9 @@ export default {
 					jQuery('#monSenderLimitAmountSpan').hide();
 
 				jQuery('#monSenderLimitAmount').val(this.apiKeyData.monSenderLimitAmount);
+				jQuery('#apiKeyName').val(this.apiKeyData.apiKeyName);
 			}
 		},
-		// daySenderLimitAmount: function(val) {
-		// 	const reg1 = /^[0-9]*$/;
-		// 	val = val.replace(/,/gi, '');
-		// 	val = parseInt(val);
-
-		// 	if(isNaN(val)) {
-		// 		val = 0;
-		// 	} else if(!reg1.test(val)) {
-		// 		val = val.toString().slice(0, -1);
-		// 	} else {
-		// 		val = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		// 	}
-		// 	return this.daySenderLimitAmount = val;
-		// },
-		// monSenderLimitAmount: function(val) {
-		// 	const reg1 = /^[0-9]*$/;
-		// 	val = val.replace(/,/gi, '');
-		// 	val = parseInt(val);
-
-		// 	if(isNaN(val)) {
-		// 		val = 0;
-		// 	} else if(!reg1.test(val)) {
-		// 		val = val.toString().slice(0, -1);
-		// 	} else {
-		// 		val = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		// 	}
-		// 	return this.monSenderLimitAmount = val;
-		// },
 	},
 	data() {
 		return {
@@ -379,6 +360,7 @@ export default {
 				'cps'					: jQuery('#cps').val(),
 				'daySenderChkYn'		: jQuery('input[name="daySenderChkYn"]:checked').val(),
 				'monSenderChkYn'		: jQuery('input[name="monSenderChkYn"]:checked').val(),
+				'apiKeyName'			: jQuery('#apiKeyName').val(),
 				'status'				: jQuery('#selectStatus option:selected').val(),
 				'rptYn'					: jQuery('input[name="rptYn"]:checked').val(),
 				'lineType'				: jQuery('#selectLineType option:selected').val(),

@@ -178,6 +178,9 @@ public class BaseInfoService {
 		} else {
 			resultCnt = generalDao.insertGernal(DB.QRY_UPDATE_APIKEY, map);
 		}
+		
+		// redis 테이블 처리
+		commonService.updateCmCmdForRedis("CM_APIKEY");
 
 		if (resultCnt <= 0) {
 			rtn.setSuccess(false);

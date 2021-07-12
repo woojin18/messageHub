@@ -665,4 +665,16 @@ public class CommonService {
         String[] fileNameExt = {fileName,ext};
         return fileNameExt[flag];
     }
+
+    /**
+     * REDIS 테이블 동기화처리
+     * @param cmdTgt : 업데이트할 테이블 명
+     * @return
+     */
+    public void updateCmCmdForRedis(String cmdTgt) throws Exception {
+    	HashMap<String, Object> saveMap = new HashMap<>();
+    	saveMap.put("cmdTgt", cmdTgt);
+    	
+        generalDao.updateGernal("common.updateCmCmdForRedis", saveMap);
+    }
 }

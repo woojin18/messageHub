@@ -276,4 +276,11 @@
 		,	#{userId}
 		)
 	</insert>
+	
+	<update id="updateCmCmdForRedis">
+		/* common.updateCmCmdForRedis */
+		UPDATE cm.CM_CMD 
+		SET UPD_DT = NOW()
+		WHERE CMD_TGT = #{cmdTgt}
+	</update>
 </mapper>

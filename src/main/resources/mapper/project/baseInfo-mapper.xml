@@ -55,6 +55,7 @@
 		,		DAY_SENDER_CHK_YN
 		,		MON_SENDER_CHK_YN
 		,		ALARM_USE_YN
+		,		API_KEY_NAME
 		,		STATUS
 		,		RPT_YN
 		,		LINE_TYPE
@@ -82,6 +83,7 @@
 		,		CPS
 		,		DAY_SENDER_CHK_YN
 		,		MON_SENDER_CHK_YN
+		,		API_KEY_NAME
 		,		STATUS
 		,		RPT_YN
 		,		LINE_TYPE
@@ -105,6 +107,7 @@
 		,		#{cps}
 		,		#{daySenderChkYn}
 		,		#{monSenderChkYn}
+		,		#{apiKeyName}
 		,		#{status}
 		,		#{rptYn}
 		,		#{lineType}
@@ -143,6 +146,7 @@
 		<if test="monSenderLimitAmount != null and monSenderLimitAmount != ''">
 		,	MON_SENDER_LIMIT_AMOUNT	= #{monSenderLimitAmount}
 		</if>
+		,	API_KEY_NAME			= #{apiKeyName}
 		WHERE
 			API_KEY					= #{apiKey}
 	</update>
