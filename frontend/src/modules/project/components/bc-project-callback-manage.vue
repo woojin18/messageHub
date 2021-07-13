@@ -8,11 +8,11 @@
 						<div class="of_h">
 							<div>
 								<h4 class="inline-block" style="width:6%">브랜드명</h4>
-								<input type="text" class="inputStyle" style="width:16%" v-model="srcBrandName">
+								<input type="text" class="inputStyle" style="width:16%" v-model="srcBrandName" @keypress.enter="fnSearch(1)">
 								<h4 class="inline-block ml60" style="width:6%">발신번호명</h4>
-								<input type="text" class="inputStyle" style="width:16%" v-model="srcSubTitle">
+								<input type="text" class="inputStyle" style="width:16%" v-model="srcSubTitle" @keypress.enter="fnSearch(1)">
 								<h4 class="inline-block ml60" style="width:6%">발신번호</h4>
-								<input type="text" class="inputStyle" style="width:16%" v-model="srcChatbotId">
+								<input type="text" class="inputStyle" style="width:16%" v-model="srcChatbotId" @keypress.enter="fnSearch(1)">
 							</div>	
 							<div class="consolMarginTop">
 								<h4 class="inline-block vertical-middle" style="width:6%">SMSMO<br>사용여부</h4>
