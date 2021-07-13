@@ -221,6 +221,10 @@ export default {
 				else
 					jQuery('#ipListSpan').hide();
 
+				// 고객사 접속 IP 입력칸 생성 초기화
+				this.ipList = [];
+				this.ipList.push('');
+				this.loopCnt = 1;
 				// 고객사 접속 IP 입력칸 생성
 				if(!this.$gfnCommonUtils.isEmpty(this.apiKeyData.ipList)) {
 					this.ipList = JSON.parse(this.apiKeyData.ipList);
