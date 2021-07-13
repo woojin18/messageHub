@@ -30,6 +30,7 @@ import kr.co.uplus.cm.sendMessage.dto.FrndTalkRequestData;
 import kr.co.uplus.cm.sendMessage.dto.MmsRequestData;
 import kr.co.uplus.cm.sendMessage.dto.PushRequestData;
 import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
+import kr.co.uplus.cm.sendMessage.dto.SmartRequestData;
 import kr.co.uplus.cm.sendMessage.dto.SmsRequestData;
 import kr.co.uplus.cm.sendMessage.service.SendMessageService;
 import kr.co.uplus.cm.utils.ApiInterface;
@@ -845,6 +846,192 @@ public class SendMessageController {
         rtn.setData(rtnMap);
 
         return rtn;
+    }
+
+    /**
+     * 통합발송 발송처리
+     * @param request
+     * @param response
+     * @param multipartFileDTO
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(path="/sendSmartMessage")
+    public RestResult<?> sendSmartMessage(HttpServletRequest request, HttpServletResponse response
+            , @ModelAttribute MultipartFileDTO multipartFileDTO) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> sParam = new HashMap<String, Object>();
+        SmartRequestData requestData = null;
+        List<RecvInfo> recvInfoLst = null;
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        try {
+            params = commonService.setUserInfo(multipartFileDTO.getParams());
+            String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
+            log.info("{}.sendSmartMessage Start ====> paramString : {}", this.getClass(), params);
+
+            /** 유효성 체크 */
+            requestData = sendMsgService.setSmartSendData(rtn, params);
+            if(rtn.isSuccess() == false) {
+                log.info("{}.sendSmartMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
+                return rtn;
+            }
+
+            /** 수신자 리스트*/
+            recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
+            if(recvInfoLst == null || recvInfoLst.size() == 0) {
+                rtn.setSuccess(false);
+                rtn.setMessage("잘못된 수신자 정보입니다.");
+                return rtn;
+            }
+
+            /** 예약건인지 확인 */
+            String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
+            if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+                return sendMsgService.insertSmartCmWebMsg(rtn, params, requestData, recvInfoLst);
+            }
+
+            /** 잔액확인 */
+            String payType = sendMsgService.selectPayType(params);
+
+            //선불일경우
+            if(StringUtils.equals(payType, Const.PayType.PRE_FEE)) {
+                //남은 금액 조회
+                BigDecimal rmAmount = sendMsgService.getRmAmount(params);
+                //개당 가격 조회
+                sParam = new HashMap<>();
+                sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
+                sParam.put("productCodes", params.get("chTypeList"));
+                BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
+                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
+
+                if(rmAmount.compareTo(feePerAll) < 0) {
+                    if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
+                        rtn.setSuccess(false);
+                        rtn.setMessage("잔액 부족으로 메시지를 발송할 수 없습니다.");
+                        return rtn;
+                    } else {
+                        rtnMap.put("feeMsg", "잔액 부족으로 메시지가 발송되지 않을 수도 있습니다.");
+                    }
+                }
+            }
+
+            /** 테스트발송(동기화) */
+            if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
+                return sendMsgService.testSendSmartMsg(params, requestData, recvInfoLst);
+            }
+
+
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{}.sendSmartMessage Error : {}", this.getClass(), e);
+            return rtn;
+        }
+
+        /** 비동기화 발송 */
+        try {
+            List<Object> reSendCdList = sendMsgService.reSendCdList(null);
+            log.info("{}.sendSmartMessage aSync API send Start ====>");
+            sendMsgService.sendSmartMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
+        } catch (Exception e) {
+            log.info("{}.sendSmartMessage aSync API send Error : {}", this.getClass(), e);
+        }
+        String senderType = CommonUtils.getStrValue(params, "senderType");
+        String msg = (StringUtils.equals(senderType, Const.SenderType.SMART) ? "스마트" : "통합");
+        rtn.setMessage(msg+" 발송 요청처리 되었습니다.");
+
+        rtn.setSuccess(true);
+        rtn.setData(rtnMap);
+
+        return rtn;
+    }
+
+    /**
+     * 스마트 템플릿 리스트 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectSmartTmpltList")
+    public RestResult<?> selectSmartTmpltList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = sendMsgService.selectSmartTmpltList(params);
+        } catch (Exception e) {
+            rtn.setFail("실패하였습니다");
+            log.error("{}.selectSmartTmpltList Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 스마트 템플릿 정보 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectSmartTmpltInfo")
+    public RestResult<?> selectSmartTmpltInfo(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = sendMsgService.selectSmartTmpltInfo(params);
+        } catch (Exception e) {
+            rtn.setFail("실패하였습니다.");
+            log.error("{}.selectSmartTmpltInfo Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 통합/스마트 발송 수신자 엑셀업로드 템플릿 다운로드
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    @PostMapping(path = "/excelDownSendSmartRecvTmplt")
+    public ModelAndView excelDownSendIntegRecvTmplt(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) throws Exception {
+
+        List<String> colLabels = new ArrayList<String>();
+        if(params.containsKey("requiredCuid") && (Boolean) params.get("requiredCuid")) {
+            colLabels.add("APP 로그인 ID");
+        }
+        if(params.containsKey("requiredCuPhone") && (Boolean) params.get("requiredCuPhone")) {
+            colLabels.add("휴대폰 번호");
+        }
+        if(params.containsKey("contsVarNms")) {
+            List<String> contsVarNms = (ArrayList<String>)params.get("contsVarNms");
+            for(String varNm : contsVarNms) {
+                colLabels.add(varNm);
+            }
+        }
+
+        List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("sheetTitle", "Template");
+        map.put("colLabels", colLabels.toArray(new String[0]));
+        map.put("colIds", new String[] {});
+        map.put("numColIds", new String[] {});
+        map.put("figureColIds", new String[] {});
+        map.put("colDataList", new ArrayList<T>());
+        sheetList.add(map);
+
+        ModelAndView model = new ModelAndView("commonXlsxView");
+        model.addObject("excelFileName", "smartTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
+        model.addObject("sheetList", sheetList);
+
+        return model;
     }
 
 }

@@ -11,29 +11,74 @@
         <div class="phoneFixed">
           <div class="tab-content">
             <!-- phoneWrap -->
-            <div role="tabpanel" class="tab-pane active" id="productCate1">
+            <!-- PUSH -->
+            <div v-if="previewMessageType == 'PUSH'" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap">
-                  <div class="phoneText1 scroll-y2">
-                    <p>제목</p>
+                <div class="phoneTextWrap scroll-y2">
+                  <div class="phoneText1">
+                    <p v-if="$gfnCommonUtils.isEmpty(tmpltData.PUSH.msg.title)">제목</p>
+                    <p v-else>{{tmpltData.PUSH.msg.title}}</p>
                   </div>
-                  <p class="consolMarginTop">내용</p>
+                  <div 
+                    v-if="tmpltData.msgType == 'IMAGE'" 
+                    class="phoneText2 mt10 text-center"
+                    :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.PUSH.ext.imageUrl+');'"
+                  >
+                  </div>
+                  <p class="consolMarginTop"><pre>{{tmpltData.PUSH.msg.body}}</pre></p>
                 </div>
               </div>
             </div>
-            <div role="tabpanel" class="tab-pane" id="productCate2">
+            <!--// PUSH -->
+            <!-- FRIENDTALK -->
+            <div v-if="previewMessageType == 'FRIENDTALK'" class="tab-pane active">
               <div class="phoneWrap">
-                <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap">
-                  <div class="phoneText1 scroll-y2">
-                    <p>제목</p>
+                <img src="@/assets/images/common/phoneMockup2_1.svg" alt="프리 템플릿">
+                <div class="phoneTextWrap4 scroll-y">
+                  <p v-if="tmpltData.msgKind == 'A'">[광고]</p>
+                  <div class="mt5">
+                    <div 
+                      v-if="tmpltData.msgType == 'IMAGE'" 
+                      class="phoneText2 text-center"
+                      :style="'padding:40px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.FRIENDTALK.image.imageUrl+');'"
+                    >
+                    </div>
+                    <div class="text-sub-wrap">
+                      <p class="text-sub"><pre>{{tmpltData.FRIENDTALK.msg}}</pre></p>
+                    </div>
+                    <div v-for="(buttonInfo, idx) in tmpltData.FRIENDTALK.buttons" :key="idx">
+                      <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
+                    </div>
+                    <p v-if="tmpltData.msgKind == 'A'" class="text-sub_2">수신거부: 홈 &gt; 친구차단</p>
                   </div>
-                  <p class="consolMarginTop">내용</p>
                 </div>
               </div>
             </div>
-            <div role="tabpanel" class="tab-pane" id="productCate3">
+            <!--// FRIENDTALK -->
+            <!-- SMS -->
+            <div v-if="previewMessageType == 'SMS'" class="tab-pane active">
+              <div class="phoneWrap">
+                <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
+                <div class="phoneTextWrap scroll-y2">
+                  <div class="phoneText1">
+                    <p>{{tmpltData.SMS.callback}}</p>
+                  </div>
+                  <p class="consolMarginTop"><pre>{{tmpltData.SMS.msg}}</pre></p>
+                </div>
+              </div>
+            </div>
+            <!--// SMS -->
+
+
+
+
+
+
+
+
+            <!-- ALIMTALK -->
+            <div v-if="fnContainsChannel('ALIMTALK')" role="tabpanel" class="tab-pane" id="productCate3">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup3.svg" alt="알림톡 템플릿">
                 <div class="phoneTextWrap3">
@@ -48,31 +93,9 @@
                 </div>
               </div>
             </div>
-            <div role="tabpanel" class="tab-pane" id="productCate4">
-              <div class="phoneWrap">
-                <img src="@/assets/images/common/phoneMockup2_1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap4">
-                  <p>[광고]</p>
-                  <div class="mt5">                  
-                    <div class="text-sub-wrap">
-                      <p class="text-sub scroll-y">친구톡 발송테스트</p>
-                    </div>
-                    <p class="text-sub_2">수신거부: 홈 &gt; 친구차단</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="productCate5">
-              <div class="phoneWrap">
-                <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap">
-                  <div class="phoneText1 scroll-y2">
-                    <p>발신번호</p>
-                  </div>
-                  <p class="consolMarginTop">내용</p>
-                </div>
-              </div>
-            </div>
+            <!--// ALIMTALK -->
+            
+            
             <div role="tabpanel" class="tab-pane" id="productCate6">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
@@ -92,14 +115,14 @@
           
           <div class="phone_04_btn7">
             <ul>
-              <li role="presentation" class="active"><a href="#productCate1" aria-controls="productCate1" role="tab" data-toggle="tab" title="Push">Push</a></li>
-              <li role="presentation"><a href="#productCate2" aria-controls="productCate2" role="tab" data-toggle="tab" title="RCS">RCS</a></li>
-              <li role="presentation"><a href="#productCate3" aria-controls="productCate3" role="tab" data-toggle="tab" title="알림톡">알림톡</a></li>
+              <li v-for="(chTypeInfo, idx) in tmpltData.chTypeList.slice(0, 3)" :key="idx" :class="(previewMessageType == chTypeInfo ? 'active' : '')">
+                <a href="#" @click.prevent="fnChgPreviewMessageType(chTypeInfo)" :title="chTypeInfo">{{chInfo[chTypeInfo]}}</a>
+              </li>
             </ul>
-            <ul class="mt5">
-              <li role="presentation"><a href="#productCate4" aria-controls="productCate4" role="tab" data-toggle="tab" title="친구톡">친구톡</a></li>
-              <li role="presentation"><a href="#productCate5" aria-controls="productCate5" role="tab" data-toggle="tab" title="SMS">SMS</a></li>
-              <li role="presentation"><a href="#productCate6" aria-controls="productCate6" role="tab" data-toggle="tab" title="MMS">MMS</a></li>
+            <ul v-if="tmpltData.chTypeList.length > 3" class="mt5">
+              <li v-for="(chTypeInfo, idx) in tmpltData.chTypeList.slice(3, tmpltData.chTypeList.length)" :key="idx" :class="(previewMessageType == chTypeInfo ? 'active' : '')">
+                <a href="#" @click.prevent="fnChgPreviewMessageType(chTypeInfo)" :title="chTypeInfo">{{chInfo[chTypeInfo]}}</a>
+              </li>
             </ul>
           </div>
           
@@ -109,7 +132,7 @@
       <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
         <div class="of_h user-phone">
           <div class="float-left" style="width:24%">
-            <h4>01  템플릿</h4>
+            <h4>01  템플릿|{{previewMessageType}}</h4>
           </div>
           <div class="float-left" style="width:76%">
             <div class="of_h">
@@ -118,13 +141,13 @@
                 <h5>{{tmpltData.msgTypeName}}, {{tmpltData.msgKindName}}</h5>
               </div>
               <div v-if="fnContainsChannel('PUSH')" style="width:78%">
-                <h5>발송정책 : {{tmpltData.PUSH.sendType}}</h5>
+                <h5>발송정책 : {{tmpltData.PUSH.serviceCode}}</h5>
                 <!-- 
-                <input type="radio" name="serviceCode" value="ALL" id="serviceCode_ALL" v-model="tmpltData.PUSH.sendType" disabled>
+                <input type="radio" name="serviceCode" value="ALL" id="serviceCode_ALL" v-model="tmpltData.PUSH.serviceCode" disabled>
                 <label for="serviceCode_ALL" class="mr30">ALL</label>
-                <input type="radio" name="serviceCode" value="FCM" id="serviceCode_FCM" v-model="tmpltData.PUSH.sendType" disabled>
+                <input type="radio" name="serviceCode" value="FCM" id="serviceCode_FCM" v-model="tmpltData.PUSH.serviceCode" disabled>
                 <label for="serviceCode_FCM" class="mr30">FCM</label>
-                <input type="radio" name="serviceCode" value="APNS" id="serviceCode_APNS" v-model="tmpltData.PUSH.sendType" disabled>
+                <input type="radio" name="serviceCode" value="APNS" id="serviceCode_APNS" v-model="tmpltData.PUSH.serviceCode" disabled>
                 <label for="serviceCode_APNS">APNS</label>
                 -->
               </div>
@@ -233,18 +256,19 @@
           </div>
           <div class="float-left" style="width:78%">
             <p>모든 채널에 메시지를 보냅니다.</p>
-            <a href="#self" class="btnStyle1 backLightGray consolMarginTop" title="테스트 발송">테스트 발송</a>
+            <a href="#" @click.prevent="fnOpenTestSendInputPopup" class="btnStyle1 backLightGray consolMarginTop" title="테스트 발송">테스트 발송</a>
           </div>
           
         </div>
         <div class="mt20 float-right">
-          <a href="#self" class="btnStyle2 backRed float-left mr10" title="발송">발송</a>
+          <a href="#" @click.prevent="fnSendIntegratedMessage('N')" class="btnStyle2 backRed float-left mr10" title="발송">발송</a>
           <router-link :to="{ name: 'integratedSend' }" tag="a" class="btnStyle2 float-left">목록</router-link>
         </div>
       </div>
     </div>
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
     <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
+    <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :testRecvInfoLst="sendData.testRecvInfoLst" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></TestSendInputPopup>
   </div>
 </template>
 
@@ -252,8 +276,10 @@
 import DirectInputPopup from "@/modules/message/components/bp-directInput.vue";
 import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue";
 import Calendar from "@/components/Calendar.vue";
+import TestSendInputPopup from "@/modules/message/components/bc-testSendInput.vue";
 
-import integratedSendApi from '../service/integratedSendApi';
+//import integratedSendApi from '../service/integratedSendApi';
+import messageApi from "@/modules/message/service/messageApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
@@ -261,7 +287,8 @@ export default {
   components : {
     DirectInputPopup,
     AddressInputPopup,
-    Calendar
+    Calendar,
+    TestSendInputPopup
   },
   props: {
     tmpltCodeP: {
@@ -280,16 +307,26 @@ export default {
     return {
       directInputOpen: false,
       addressInputOpen: false,
+      testSendInputOpen: false,
       recvCnt : 0,  //수신자명수
       tmpltData: {
         chTypeList: [],
       },
+      chInfo: {
+        PUSH: "PUSH",
+        SMS: "SMS",
+        MMS: "MMS",
+        FRIENDTALK: "친구톡",
+        ALIMTALK: "알림톡",
+        RCS: "RCS",
+      },
+      inProgress: false,
+      previewMessageType : '',
       sendData: {
-        requiredCuid : false,  //app 로그인 ID 필수여부
-        requiredCuPhone : false,  //수신자 폰번호 필수여부
+        requiredCuid: false,  //app 로그인 ID 필수여부
+        requiredCuPhone: false,  //수신자 폰번호 필수여부
         cuInputType:'DICT',  //DICT, ADDR, EXCEL
         cuInfo:'',
-        tmpltCode: '',
         rsrvSendYn:'N',  //예약발송여부
         rsrvDate:this.$gfnCommonUtils.getCurretDate(),
         rsrvHH:'00',
@@ -297,95 +334,99 @@ export default {
         campaignId: '',
         contsVarNms: [], //메세지 내용 변수명
         recvInfoLst: [],  //수신자정보
-        test: [
-                {
-                    "CH": "PUSH",
-                    "data": {
-                        "msg": {
-                            "title": "제목제목제목제목제목",
-                            "body": "내용 내용 내용 내용 ㅇㅍㅇㅍㅇㅍㅇㅍ"
-                        },
-                        "appId": "LGU-SAMPLEAPP-00001",
-                        "ext": {
-                            "imageUrl": "http://api.ums-dev.uplus.co.kr/contents/v1/1/push/FLETR4QIVb"
-                        },
-                        "fileId": "FLETR4QIVb",
-                        "serviceCode": "ALL"
-                    }
-                },
-                {
-                    "CH": "SMS",
-                    "data": {
-                        "callback": "0243113369",
-                        "msg": "테스트 내용입니다."
-                    }
-                },
-                {
-                    "CH": "ALIMTALK",
-                    "data": {
-                        "callback": "0243113369",
-                        "title": "테스트",
-                        "msg": "알뜰모바일에 가입되었습니다.",
-                        "senderKey": "da17d231bbf13f83174a36a4bb0353476ae012b3",
-                        "tmpltKey": "22",
-                        "service": "0",
-                        "buttons": [
-                            {
-                                "name": "연결하기",
-                                "linkMo": "http://sms.uplus.co.kr",
-                                "linkPc": "http://sms.uplus.co.kr",
-                                "linkType": "WL"
-                            }
-                        ]
-                    }
-                },
-                {
-                    "CH": "FRIENDTALK",
-                    "data": {
-                        "callback": "0243113369",
-                        "wideImageYn": "Y",
-                        "fileId": "FLE2106251778960",
-                        "adFlag": "N",
-                        "msg": "내용이 들어갑니다.",
-                        "image": {
-                            "imageUrl": "https://mud-kage.kakao.com/dn/lIneN/btq79XIlJ5e/UUKNqXEu2gwoV2ZkabPQf0/img_l.jpg",
-                            "imageLink": "http://www.naver.com"
-                        },
-                        "senderKey": "da17d231bbf13f83174a36a4bb0353476ae012b3",
-                        "buttons": [
-                            {
-                                "name": "앱링크버튼",
-                                "type": "AL",
-                                "scheme_ios": "test",
-                                "scheme_android": "test"
-                            },
-                            {
-                                "name": "웹링크버튼",
-                                "type": "WL",
-                                "url_pc": "5555",
-                                "url_mobile": "333"
-                            },
-                            {
-                                "name": "봇키워드",
-                                "type": "BK"
-                            },
-                            {
-                                "name": "메시지전달",
-                                "type": "MD"
-                            }
-                        ]
-                    }
-                }
-            ]
+        testRecvInfoLst: [],  //테스트 수신자정보
       }
     }
   },
   mounted() {
     this.fnGetTmpltInfo();
-    console.log(this.sendData.test);
-    console.log(JSON.stringify(this.sendData.test));
   },
   methods: {
+    //메세지 미리보기 변경
+    fnChgPreviewMessageType(type){
+      this.previewMessageType = type;
+    },
+    fnOpenTestSendInputPopup(){
+      this.fnSetContsVarNms();
+      this.testSendInputOpen = !this.testSendInputOpen;
+    },
+    //테스트 발송 callback
+    fnCallbackTestRecvInfoLst(testRecvInfoLst){
+      if(testRecvInfoLst != null){
+        this.sendData.testRecvInfoLst = testRecvInfoLst;
+        this.fnSendIntegratedMessage('Y');
+      } else {
+        this.sendData.testRecvInfoLst = [];
+      }
+    },
+    //발송 정보 유효성 체크
+    fnValidSendMsgData(testSendYn){
+      return true;
+    },
+    //통합 메시지 발송 처리
+    async fnSendIntegratedMessage(testSendYn){
+      if(this.inProgress){
+        confirm.fnAlert(this.componentsTitle, '통합 메시지 발송 처리중입니다.');
+        return;
+      }
+
+      if(this.fnValidSendMsgData(testSendYn) == false) return;
+
+      //발송처리
+      let params = Object.assign({}, this.sendData);
+      params.tmpltCode = this.tmpltCodeP;
+      params.testSendYn = testSendYn;
+
+      if(testSendYn == 'Y'){
+        params.recvInfoLst = Object.assign([], this.sendData.testRecvInfoLst);
+        params.cuInputType = 'DICT';
+        //테스트 발송은 즉시발송만 가능
+        params.rsrvSendYn = 'N';
+      }
+
+      let fd = new FormData();
+      fd.append('paramString', JSON.stringify(params));
+      if(this.sendData.cuInputType == 'EXCEL'){
+        fd.append('file', this.$refs.excelFile.files[0]);
+      }
+
+      this.inProgress = true;
+      const vm = this;
+
+      await messageApi.sendSmartMessage(fd).then(response =>{
+        this.inProgress = false;
+        const result = response.data;
+        
+        if(result.success) {
+          if(testSendYn == 'Y'){
+            if(!this.$gfnCommonUtils.isEmpty(result.message)){
+              confirm.fnAlert(this.componentsTitle, result.message);
+            } else {
+              confirm.fnAlert(this.componentsTitle, '발송하였습니다.');
+            }
+          } else {
+            if(result.data != null && !this.$gfnCommonUtils.isEmpty(result.data.feeMsg)){
+              eventBus.$on('callbackEventBus', this.fnAlertFeeMsgCallBack);
+              confirm.fnAlert(this.componentsTitle, result.data.feeMsg, 'ALERT', result);
+            } else {
+              this.fnAlertFeeMsgCallBack(result);
+            }
+          }
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      })
+      .catch(function () {
+        vm.inProgress = false;
+      });
+    },
+    fnAlertFeeMsgCallBack(result){
+      if(this.$gfnCommonUtils.isEmpty(result.message)){
+        confirm.fnAlert(this.componentsTitle, '발송 요청 처리 되었습니다.');
+      } else {
+        confirm.fnAlert(this.componentsTitle, result.message);
+      }
+    },
     fnUpdateRsrvDate(sltDate){
       this.sendData.rsrvDate = sltDate;
     },
@@ -516,23 +557,29 @@ export default {
     //템플릿 정보 조회
     fnGetTmpltInfo(){
       let params = {tmpltCode: this.tmpltCodeP};
-      integratedSendApi.selectIntegTmpltInfo(params).then(response => {
+      messageApi.selectSmartTmpltInfo(params).then(response => {
         let result = response.data;
         if(result.success) {
           console.log('result ===>> ', Object.assign({}, result));
           let tempData = Object.assign({}, result.data);
-          tempData.chTypeList = tempData.chTypeList.split(',').map(item => { return item.trim(); });
+          tempData.chTypeList = JSON.parse(tempData.chTypeList);
           tempData.tmpltInfo = JSON.parse(tempData.tmpltInfo);
           
           this.fnSetTmpltInfoByChannel(tempData);
           this.tmpltData = Object.assign({}, tempData);
           console.log('tmpltData ===>> ', this.tmpltData);
 
+          this.previewMessageType = this.tmpltData.chTypeList[0];
+          console.log('this.tmpltData.chTypeList[0] ===>> ', this.tmpltData.chTypeList[0]);
+          console.log('previewMessageType ===>> ', this.previewMessageType);
+
           if(this.fnContainsChannel('PUSH')){
             this.sendData.requiredCuid = true;
           }
-          if(this.fnContainsChannel('SMSMMS')
-            || this.fnContainsChannel('KAKAO')
+          if(this.fnContainsChannel('SMS')
+            || this.fnContainsChannel('MMS')
+            || this.fnContainsChannel('FRIENDTALK')
+            || this.fnContainsChannel('ALIMTALK')
             || this.fnContainsChannel('RCS')){
             this.sendData.requiredCuPhone = true;
           }
@@ -551,7 +598,7 @@ export default {
       
       if(chTypeList != null && chTypeList.length > 0){
         chTypeList.forEach((chType, idx) => {
-          tempData[chType] = tmpltInfo[idx];
+          tempData[chType] = tmpltInfo[idx]['data'];
         });
       }
     },
@@ -566,7 +613,7 @@ export default {
         requiredCuid: this.sendData.requiredCuid,
         requiredCuPhone: this.sendData.requiredCuPhone
       };
-      await integratedSendApi.excelDownSendIntegRecvTmplt(params);
+      await messageApi.excelDownSendSmartRecvTmplt(params);
     },
   }
 }

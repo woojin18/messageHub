@@ -50,6 +50,19 @@ const sendAlimTalkMessage = (params) => {
   return httpClient.post('/uc/sendMessage/sendAlimTalkMessage', params, { headers: {"show-layer": "Yes", "activity":"SAVE", "Content-Type": "multipart/form-data"} });
 };
 
+const selectSmartTmpltList = (params) => {
+  return httpClient.post('/uc/sendMessage/selectSmartTmpltList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+const selectSmartTmpltInfo = (params) => {
+  return httpClient.post('/uc/sendMessage/selectSmartTmpltInfo', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+const sendSmartMessage = (params) => {
+  return httpClient.post('/uc/sendMessage/sendSmartMessage', params, { headers: {"show-layer": "Yes", "activity":"SAVE", "Content-Type": "multipart/form-data"} });
+};
+const excelDownSendSmartRecvTmplt = (params) => {
+  return httpClient.post('/uc/sendMessage/excelDownSendSmartRecvTmplt', params, { headers: {"show-layer": "Yes", "activity":"READ"}, responseType: 'arraybuffer' })
+  .then((response) => fnExcelDownCallback(response));
+};
 
 export default {
     selectAppIdList,
@@ -65,7 +78,11 @@ export default {
     sendFrndTalkMessage,
     selectKkoSenderKeyList,
     excelDownSendAlimTalkRecvTmplt,
-    sendAlimTalkMessage
+    sendAlimTalkMessage,
+    selectSmartTmpltList,
+    selectSmartTmpltInfo,
+    sendSmartMessage,
+    excelDownSendSmartRecvTmplt
 };
 
 function fnExcelDownCallback(response){

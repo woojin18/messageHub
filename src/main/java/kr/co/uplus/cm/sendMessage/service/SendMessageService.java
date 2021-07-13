@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -44,6 +45,7 @@ import kr.co.uplus.cm.sendMessage.dto.MmsRequestData;
 import kr.co.uplus.cm.sendMessage.dto.PushMsg;
 import kr.co.uplus.cm.sendMessage.dto.PushRequestData;
 import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
+import kr.co.uplus.cm.sendMessage.dto.SmartRequestData;
 import kr.co.uplus.cm.sendMessage.dto.SmsRequestData;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -1991,4 +1993,346 @@ public class SendMessageService {
         return apiInterface.sendMsg(ApiConfig.SEND_ALIM_TALK_API_URI, headerMap, jsonString);
     }
 
+    /**
+     * 통합/스마트 데이터 유효성 체크
+     * @param rtn
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public SmartRequestData setSmartSendData(RestResult<Object> rtn, Map<String, Object> params) throws Exception {
+        SmartRequestData requestData = new SmartRequestData();
+
+        //통합/스마트 정보 Get
+        Map<String, Object> tmpltInfo = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_INFO, params);
+        if(tmpltInfo == null || StringUtils.isBlank(CommonUtils.getStrValue(tmpltInfo, "tmpltCode"))) {
+            rtn.setFail("유효하지 않은 템플릿 정보입니다.");
+            return requestData;
+        }
+
+        String senderType = CommonUtils.getStrValue(tmpltInfo, "tmpltType");
+
+        //tmpltCode
+        requestData.setTmpltCode(CommonUtils.getStrValue(params, "tmpltCode"));
+
+        //campaignId
+        requestData.setCampaignId(CommonUtils.getStrValue(params, "campaignId"));
+
+        //webReqId
+        String prefix = (StringUtils.equals(senderType, Const.SenderType.SMART) ? Const.WebReqIdPrefix.SMT_PREFIX : Const.WebReqIdPrefix.ITG_PREFIX);
+        String webReqId = CommonUtils.getCommonId(prefix, 5);
+        requestData.setWebReqId(webReqId);
+
+        //내부용 데이터 Set
+        ObjectMapper mapper = new ObjectMapper();
+        List<String> chTypeList = mapper.readValue(CommonUtils.getStrValue(tmpltInfo, "chTypeList"), List.class);
+        String chString = chTypeList.stream().map(n -> String.valueOf(n)).collect(Collectors.joining(","));
+        params.put("chTypeList", chTypeList);
+        params.put("chString", chString);
+        params.put("senderType", senderType);
+
+        //유효성 체크
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<SmartRequestData>> violations = validator.validate(requestData);
+        String errorMsg = "";
+
+        for (ConstraintViolation violation : violations) {
+            errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + violation.getMessage();
+            //log.info("path : [{}], message : [{}]", violation.getPropertyPath(), violation.getMessage());
+        }
+
+        if(StringUtils.isNotBlank(errorMsg)) {
+            rtn.setFail(errorMsg);
+        }
+
+        return requestData;
+    }
+
+    /**
+     * 통합/스마트 발송 내역 등록
+     * @param rtn
+     * @param data
+     * @param requestData
+     * @param recvInfoLst
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> insertSmartCmWebMsg(RestResult<Object> rtn
+            , Map<String, Object> data
+            , SmartRequestData requestData
+            , List<RecvInfo> recvInfoLst) throws Exception {
+
+        String ch = CommonUtils.getStrValue(data, "chString");
+        String corpId = CommonUtils.getStrValue(data, "corpId");
+        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String rsrvSendYn = CommonUtils.getStrValue(data, "rsrvSendYn");
+        String rsrvDateStr = "";
+        String allFailYn = CommonUtils.getStrValue(data, "allFailYn");
+        String status = (StringUtils.equals(allFailYn, Const.COMM_YES) ? Const.MsgSendStatus.FAIL : Const.MsgSendStatus.COMPLETED);
+
+        if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+            String rsrvYmd = CommonUtils.getStrValue(data, "rsrvDate");
+            String rsrvHH = CommonUtils.getStrValue(data, "rsrvHH");
+            String rsrvMM = CommonUtils.getStrValue(data, "rsrvMM");
+            rsrvDateStr = rsrvYmd+" "+rsrvHH+":"+rsrvMM;
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date rsrvDate = dateFormat.parse(rsrvDateStr);
+            Date currentDate = new Date();
+
+            currentDate = DateUtils.addMinutes(currentDate, 10);
+            if(currentDate.compareTo(rsrvDate) > 0) {
+                rtn.setSuccess(false);
+                rtn.setMessage("잘못된 예약시간입니다. 현재시간 10분 이후로 설정해주세요.");
+                return rtn;
+            }
+            if(DateUtil.diffDays(rsrvDate) > Const.SEND_RSRV_LIMIT_DAY) {
+                rtn.setFail("잘못된 예약일자입니다. 현재일로 부터 "+Const.SEND_RSRV_LIMIT_DAY+"일 이내로 설정해주세요");
+            }
+            status = Const.MsgSendStatus.SEND_WAIT;
+        }
+
+        requestData.setRecvInfoLst(recvInfoLst);
+        Gson gson = new Gson();
+        String json = gson.toJson(requestData);
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("webReqId", requestData.getWebReqId());
+        params.put("corpId", corpId);
+        params.put("projectId", projectId);
+        params.put("apiKey", commonService.getApiKey(corpId, projectId));
+        params.put("chString", ch);
+        params.put("msgInfo", json);
+        params.put("senderCnt", recvInfoLst.size());
+        //params.put("callback", requestData.getCallback());
+        params.put("campaignId", requestData.getCampaignId());
+        params.put("senderType", CommonUtils.getStrValue(data, "senderType"));
+        params.put("status", status);
+        params.put("resvSenderYn", rsrvSendYn);
+        params.put("reqDt", rsrvDateStr);
+
+        int resultCnt = insertCmWebMsg(params);
+        if (resultCnt <= 0) {
+            log.info("{}.insertSmartCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 통합/스마트 테스트 발송 처리
+     * @param data
+     * @param requestData
+     * @param sendList
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public RestResult<Object> testSendSmartMsg(
+            Map<String, Object> data
+            , SmartRequestData requestData
+            , List<RecvInfo> sendList) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        requestData.setWebReqId(StringUtils.EMPTY);  //테스트발송은 웹 요청 아이디를 넣지 않는다.
+        Map<String, Object> resultMap = sendSmartMsg(data, requestData, sendList);
+
+        if(isSendSuccess(resultMap)) {
+            int successCnt = 0;
+            List<Map<String, Object>> dataList = (List<Map<String, Object>>) resultMap.get(ApiConfig.COMMON_DATA_FIELD_NM);
+            for(Map<String, Object> dataInfo : dataList) {
+                if(!CommonUtils.isEmptyValue(dataInfo, ApiConfig.GW_RESULT_CODE_FIELD_NM)
+                        && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(dataInfo.get(ApiConfig.GW_RESULT_CODE_FIELD_NM)))) {
+                    successCnt++;
+                }
+            }
+            rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
+        } else {
+            log.warn("{}.testSendSmartMsg Fail ==> response : {}", this.getClass(), resultMap);
+            rtn.setFail("알림톡 테스트 발송이 실패하였습니다.");
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 통합/스마트 메시지 발송 처리
+     * @param data
+     * @param requestData
+     * @param sendList
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> sendSmartMsg(
+            Map<String, Object> data
+            , SmartRequestData requestData
+            , List<RecvInfo> sendList) throws Exception {
+
+        String corpId = CommonUtils.getStrValue(data, "corpId");
+        String projectId = CommonUtils.getStrValue(data, "projectId");
+        String apiKey = commonService.getApiKey(corpId, projectId);
+
+        requestData.setRecvInfoLst(sendList);
+
+        Map<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("apiKey", apiKey);
+
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(requestData);
+
+        return apiInterface.sendMsg(ApiConfig.SEND_SMART_API_URI, headerMap, jsonString);
+    }
+
+    /**
+     * 통합/스마트 메시지 발송 처리(비동기)
+     * @param rtn
+     * @param fromIndex
+     * @param data
+     * @param requestData
+     * @param recvInfoLst
+     * @param reSendCdList
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    @Async
+    public void sendSmartMsgAsync(RestResult<Object> rtn
+            , int fromIndex
+            , Map<String, Object> data
+            , SmartRequestData requestData
+            , List<RecvInfo> recvInfoLst
+            , List<Object> reSendCdList) throws Exception {
+
+        List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
+        Map<String, Object> responseBody = null;
+        Map<String, Object> sParams = new HashMap<String, Object>(data);
+
+        String corpId = CommonUtils.getStrValue(sParams, "corpId");
+        String projectId = CommonUtils.getStrValue(sParams, "projectId");
+        String apiKey = commonService.getApiKey(corpId, projectId);
+        String jsonString = "";
+        boolean isDone = false;
+        boolean isServerError = false;
+        boolean isAllFail = true;
+
+        Gson gson = new Gson();
+        Map<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("apiKey", apiKey);
+
+        int retryCnt = NumberUtils.INTEGER_ZERO;
+        int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
+        int listSize = recvInfoLst.size();
+        int toIndex = fromIndex;
+
+        while (toIndex < listSize) {
+            isDone = false;
+            isServerError = false;
+            toIndex = fromIndex + cutSize;
+            try {
+                if(toIndex > listSize) toIndex = listSize;
+                requestData.setRecvInfoLst(recvInfoLst.subList(fromIndex, toIndex));
+                jsonString = gson.toJson(requestData);
+                responseBody = apiInterface.sendMsg(ApiConfig.SEND_SMART_API_URI, headerMap, jsonString);
+                isDone = isApiRequestAgain(responseBody, reSendCdList);
+                isAllFail = !isSendSuccess(responseBody);
+            } catch (Exception e) {
+                log.error("{}.sendSmartMsgAsync API Request Error ==> {}", this.getClass(), e);
+                isServerError = true;
+            }
+
+            if(isDone) {
+                retryCnt = NumberUtils.INTEGER_ZERO;
+                fromIndex = toIndex;
+            } else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
+                errorRecvInfoLst.addAll(recvInfoLst.subList(fromIndex, toIndex));
+                retryCnt = NumberUtils.INTEGER_ZERO;
+                fromIndex = toIndex;
+            } else {
+                retryCnt++;
+                toIndex = fromIndex;
+                if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
+            }
+        }
+
+        if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
+            try {
+                //CM_MSG Insert
+                sParams.put("apiKey", apiKey);
+                sParams.put("reqCh", Const.Ch.SMART);
+                sParams.put("productCode", CommonUtils.getStrValue(sParams, "chString").toLowerCase());
+                //sParams.put("finalCh", Const.Ch.ALIMTALK);
+                //sParams.put("callback", requestData.getCallback());
+                sParams.put("webReqId", requestData.getWebReqId());
+                insertCmMsg(sParams, errorRecvInfoLst);
+            } catch (Exception e) {
+                log.error("{}.sendSmartMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
+            }
+        }
+
+        //웹 발송 내역 등록
+        if(isAllFail) sParams.put("allFailYn", Const.COMM_YES);
+        insertSmartCmWebMsg(rtn, sParams, requestData, recvInfoLst);
+    }
+
+    /**
+     * 스마트 템플릿 리스트 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public RestResult<Object> selectSmartTmpltList(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        //사용 채널 그룹 정보 조회
+        String useChGrpInfoStr = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_USE_CH_GRP_INFO, params));
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> useChGrpInfo = mapper.readValue(useChGrpInfoStr, Map.class);
+        List<String> useChGrps = new ArrayList<String>();
+
+        if(useChGrpInfo != null) {
+            for(String key : useChGrpInfo.keySet()) {
+                if(StringUtils.equals(useChGrpInfo.get(key), Const.COMM_YES)) {
+                    if(StringUtils.equals(key, Const.ChGrp.SMSMMS)) {
+                        useChGrps.add(Const.Ch.SMS);
+                        useChGrps.add(Const.Ch.MMS);
+                    }else if(StringUtils.equals(key, Const.ChGrp.KKO)) {
+                        useChGrps.add(Const.Ch.FRIENDTALK);
+                        useChGrps.add(Const.Ch.ALIMTALK);
+                    } else {
+                        useChGrps.add(key);
+                    }
+                }
+            }
+        }
+        params.put("useChGrps", useChGrps);
+
+        if(params.containsKey("pageNo")
+                && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+                && params.containsKey("listSize")
+                && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+            rtn.setPageProps(params);
+            if(rtn.getPageInfo() != null) {
+                //카운트 쿼리 실행
+                int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_SMART_TMPLT_LIST_CNT, params);
+                rtn.getPageInfo().put("totCnt", listCnt);
+            }
+        }
+
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_SMART_TMPLT_LIST, params);
+        rtn.setData(rtnList);
+
+        return rtn;
+    }
+
+    public RestResult<Object> selectSmartTmpltInfo(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        rtn.setData(generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_INFO, params));
+        return rtn;
+    }
+
 }
+

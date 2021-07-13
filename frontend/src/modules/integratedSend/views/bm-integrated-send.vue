@@ -97,7 +97,7 @@
                   <u><router-link :to="{ name: 'sendIntegMessage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u>
                 </td>
                 <td class="text-center">{{data.tmpltTitle}}</td>
-                <td class="text-center">{{data.tmpltChannel}}</td>
+                <td class="text-center">{{fnJsonArrayToChannelLit(data.checkedChannel)}}</td>
                 <td class="text-center">{{data.msgKindName}}</td>
                 <td class="text-center">{{data.msgTypeName}}</td>
                 <td class="text-center">{{data.otherProjectUseYn}}</td>
@@ -123,12 +123,13 @@
 
 
 <script>
-import integratedSendApi from '../service/integratedSendApi'
+//import integratedSendApi from '../service/integratedSendApi'
+import messageApi from "@/modules/message/service/messageApi.js";
 import PageLayer from '@/components/PageLayer.vue';
 import SelectLayer from '@/components/SelectLayer.vue';
 import Calendar from "@/components/Calendar.vue";
 import tokenSvc from '@/common/token-service';
-//import confirm from "@/modules/commonUtil/service/confirm.js";
+import confirm from "@/modules/commonUtil/service/confirm.js";
 //import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
@@ -160,6 +161,14 @@ export default {
   },
   data() {
     return {
+      chInfo: {
+        PUSH: "PUSH",
+        SMS: "SMS",
+        MMS: "MMS",
+        FRIENDTALK: "친구톡",
+        ALIMTALK: "알림톡",
+        RCS: "RCS",
+      },
       listAllChecked: false,
       listChkBox: [],
       listSize : 10,  // select 박스 value (출력 갯수 이벤트)
@@ -178,6 +187,18 @@ export default {
     this.fnPageNoResetSearch();
   },
   methods: {
+    //채널 jsonArray -> 채널명
+    fnJsonArrayToChannelLit(json){
+      const vm = this;
+      let chList = JSON.parse(json);
+      let chStr = '';
+
+      chList.forEach(element => {
+        chStr += (vm.$gfnCommonUtils.isEmpty(chStr) ? '' : ', ') + vm.chInfo[element];
+      });
+      
+      return chStr;
+    },
     //검색일자변경
     fnSetIntervalSearchDate(interval){
       this.searchDateInterval = interval;
@@ -221,10 +242,9 @@ export default {
       params.loginId = tokenSvc.getToken().principal.userId;
       params.roleCd = tokenSvc.getToken().principal.roleCd
 
-      await integratedSendApi.selectIntegratedSendList(params).then(response =>{
+      await messageApi.selectSmartTmpltList(params).then(response =>{
         var result = response.data;
         if(result.success) {
-          console.log('result ====> ', result);
           this.chkBox = ''
           this.datas = result.data;
           this.totCnt = result.pageInfo.totCnt;
