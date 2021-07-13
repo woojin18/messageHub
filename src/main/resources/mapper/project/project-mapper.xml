@@ -366,24 +366,18 @@
 		AND		APPROVAL_STATUS = '승인'
 	</select>
 	
-		<select id="selectBasicDisRatio" parameterType="string" resultType="hashmap">
+		<select id="selectBasicDisRatio" parameterType="string" resultType="camel">
 		/* project.selectBasicDisRatio */
-		SELECT C.RELAY_CH_TYPE, C.RELAY 
-		FROM (
-				SELECT	A.RELAY_CH_TYPE
-				, 		A.RELAY
-				FROM cm.CM_RELAY_CH AS A
-				INNER JOIN(
-					SELECT	RELAY_CH_TYPE
-					FROM	cm.CM_RELAY_CH 
-					GROUP BY RELAY_CH_TYPE
-				) AS B
-		WHERE A.RELAY_CH_TYPE = B.RELAY_CH_TYPE
-		) AS C
-		GROUP BY C.RELAY_CH_TYPE, C.RELAY
+		SELECT	RELAY_CH_TYPE 
+		,		RELAY
+		,		VENDOR_YN 
+		FROM	cm.CM_RELAY_CH CRC 
+		WHERE	MO_YN = 'N'
+		AND		USE_YN = 'Y'
+		GROUP BY RELAY_CH_TYPE, RELAY, VENDOR_YN
 	</select>
 	
-	<select id="seletDisRatio" parameterType="string" resultType="hashmap">
+	<select id="seletDisRatio" parameterType="string" resultType="camel">
 		/* project.seletDisRatio */
 		SELECT	CH_DIST_INFO
 			,	USE_YN

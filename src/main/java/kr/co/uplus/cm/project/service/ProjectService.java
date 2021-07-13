@@ -479,28 +479,33 @@ public class ProjectService {
 		List<Object> rtnList2 = new ArrayList<Object>();
 		HashMap<String,String> typehm = new HashMap<String,String>();
 		HashMap<String,String> relayhm = new HashMap<String,String>();
+		HashMap<String,String> vendorYnhm = new HashMap<String,String>();
+		
 		typehm.put("isExist", "F");
 		
 		for(int i=0; i<rtnList.size(); i++) {
 			try {
 				HashMap<String,String> hmrtn = (HashMap<String, String>) rtnList.get(i);
 				
-				String relayKey = hmrtn.get("CH_RELAY_TYPE");
-				String relay = hmrtn.get("RELAY");
+				String relayKey = hmrtn.get("relayChType");
+				String relay = hmrtn.get("relay");
+				String vendorYn = hmrtn.get("vendorYn");
 				boolean isexist = relayhm.containsKey(relayKey+"relay");
 				if(!isexist) {
-					if(typehm.containsKey("CH_RELAY_TYPE")) {
-						String crt_tmp = typehm.get("CH_RELAY_TYPE");
+					if(typehm.containsKey("chRelayType")) {
+						String crt_tmp = typehm.get("chRelayType");
 						crt_tmp += ","+relayKey;
-						typehm.replace("CH_RELAY_TYPE", crt_tmp);
+						typehm.replace("chRelayType", crt_tmp);
 					}else {
-						typehm.put("CH_RELAY_TYPE", relayKey);
+						typehm.put("chRelayType", relayKey);
 					}
 					relayhm.put(relayKey+"relay", relay);
+					vendorYnhm.put(relayKey+"vendorYn", vendorYn);
 				}else {
 					String tmp = relayhm.get(relayKey+"relay");
 					tmp += ","+relay;
 					relayhm.replace(relayKey+"relay", tmp);
+					vendorYnhm.put(relayKey+"vendorYn", vendorYn);
 				}
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -508,6 +513,7 @@ public class ProjectService {
 		}
 		rtnList2.add(typehm);
 		rtnList2.add(relayhm);
+		rtnList2.add(vendorYnhm);
 		
 		rtn.setData(rtnList2);
 		
@@ -524,14 +530,15 @@ public class ProjectService {
 		List<Object> rtnList2 = new ArrayList<Object>();
 		HashMap<String,String> typehm = new HashMap<String,String>();
 		HashMap<String,String> relayhm = new HashMap<String,String>();
+		HashMap<String,String> vendorYnhm = new HashMap<String,String>();
 		
 		typehm.put("isExist", "T");
 		
 		HashMap<String,String> hmrtn = (HashMap<String, String>) rtnList.get(0);	//only one
-		String rtnStr = hmrtn.get("CH_DIST_INFO");
+		String rtnStr = hmrtn.get("chDistInfo");
 		
-		relayhm.put("USE_YN", hmrtn.get("USE_YN"));
-		relayhm.put("SMART_CH_NAME", hmrtn.get("SMART_CH_NAME"));
+		relayhm.put("USE_YN", hmrtn.get("useYn"));
+		relayhm.put("SMART_CH_NAME", hmrtn.get("smartChName"));
 		
 		kong.unirest.json.JSONObject jo = new kong.unirest.json.JSONObject(rtnStr);
 		Iterator it = jo.keys();
@@ -541,9 +548,9 @@ public class ProjectService {
 	    	String jokey = it.next().toString();
 	        ar.add(jokey); // 키 값 저장
 	    }
-	    typehm.put("CH_RELAY_TYPE", "");
+	    typehm.put("chRelayType", "");
 		for(int i=0; i<ar.size(); i++){
-			String crtStr = typehm.get("CH_RELAY_TYPE");
+			String crtStr = typehm.get("chRelayType");
 			String relayKey = (String) ar.get(i);
 			crtStr += relayKey;
 			
@@ -552,29 +559,33 @@ public class ProjectService {
 				kong.unirest.json.JSONObject jajo = (kong.unirest.json.JSONObject) ja.get(j);
 				String relayCh = jajo.getString("relayCh");
 				String distRatio = jajo.getString("distRatio");
+				String vendorYn = jajo.getString("vendorYn");
 				
 				if(relayhm.containsKey(relayKey+"relay")) {
 					String re_tmp = relayhm.get(relayKey+"relay");
 					String dis_tmp = relayhm.get(relayKey+"ratio");
+					String vendorYn_tmp = relayhm.get(relayKey+"vendorYn");
 					re_tmp += ","+relayCh;
 					dis_tmp += ","+distRatio;
 					relayhm.replace(relayKey+"relay", re_tmp);
 					relayhm.replace(relayKey+"ratio", dis_tmp);
+					vendorYnhm.replace(relayKey+"vendorYn", vendorYn_tmp);
 				}else {
 					relayhm.put(relayKey+"relay", relayCh);
 					relayhm.put(relayKey+"ratio", distRatio);
+					vendorYnhm.put(relayKey+"vendorYn", vendorYn);
 				}
 			}
 
 			if((i+1)<ar.size()) {
 				crtStr += ",";
 			}
-			typehm.replace("CH_RELAY_TYPE", crtStr);
+			typehm.replace("chRelayType", crtStr);
 		}
 
 		rtnList2.add(typehm);
 		rtnList2.add(relayhm);
-		
+		rtnList2.add(vendorYnhm);
 		
 		rtn.setData(rtnList2);
 
@@ -612,6 +623,9 @@ public class ProjectService {
 					generalDao.updateGernal(DB.QRY_UPDATE_PROJECT_DISTRIBUTION, map);
 				}
 			}
+			// redis 테이블 처리
+			commonService.updateCmCmdForRedis("CM_SMART_CH");
+			
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("저장에 실패하였습니다.");

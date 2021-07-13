@@ -90,8 +90,8 @@ export default {
 
 		},
 		goSave(){
-			console.log('>>>> projectid : ' + this.projectid);
-			console.log('>>>> smartChCode : ' + this.smartChCode);
+			/* console.log('>>>> projectid : ' + this.projectid);
+			console.log('>>>> smartChCode : ' + this.smartChCode); */
 			var params = {
 				"CORP_ID" : this.corpid,
 				"SMART_CH_NAME" : jQuery('#DS_NAME').val(),
@@ -101,14 +101,14 @@ export default {
 				"iou" : this.insert_or_update,
 				"CH_DIST_INFO" : this.make_CHDISTINFO()
 			}
-
+			
 			projectApi.saveDisRatio(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
 					confirm.fnAlert("등록 되었습니다.", "");
 					// 창닫기
 					jQuery("#disRatioPop").modal("hide");
-					this.$parent.selectProjectList();
+					this.$parent.fnSearch();
 					// this.PopClose();
 				}else{
 					confirm.fnAlert(result.message, "");
@@ -133,12 +133,20 @@ export default {
 					if(ratioStr == ""){
 						ratioStr = "0";
 					}
+					var vendorYnStr = trobj.eq(j).find('input:hidden[name=vendorYn]').val();
+					if(vendorYnStr == "" || vendorYnStr == null){
+						vendorYnStr = "N";
+					}
 					rtnStr += '{';
 					rtnStr += '"relayCh":"';
 					rtnStr += relayStr;
 					rtnStr += '",';
 					rtnStr += '"distRatio":';
 					rtnStr += ratioStr;
+					rtnStr += ',';
+					rtnStr += '"vendorYn":"';
+					rtnStr += vendorYnStr;
+					rtnStr += '"';
 					rtnStr += '}';
 					if((j+1)<trobj.length){
 						rtnStr += ',';
