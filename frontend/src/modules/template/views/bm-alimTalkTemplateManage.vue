@@ -240,6 +240,7 @@ export default {
       kkoTmpltCatList : [],
       categoryGrpName : '',
       useCh : 'ALIMTALK',
+      reflectionMsg: '반영까지 최대 5분의 시간이 소요될 수 있습니다.',
       buttonLimitSize : 5,
       buttonACName : '채널 추가',
       buttonDSDescription : '카카오 메세지에 택배사 명과 송장번호를 기재한 후, 배송 조회 버튼을 추가하시면 메세지에서 택배사 명과 송장번호를 추출하여 배송 조회 카카오 검색페이지 링크가 자동으로 생성됩니다. 카카오에서 지원하는 택배사명과 운송장번호가 알림톡 메시지 내에 포함된 경우에만 배송조회 버튼이 표시됩니다. 배송 조회가 가능한 택배사는 <span style="color:#e11d21"><strong>카카오와 해당 택배사와의 계약 관계에 의해 변동될 수 있음을 유의해주시기 바랍니다.</strong></span>',
@@ -337,7 +338,7 @@ export default {
         const result = response.data;
         if(result.success) {
           eventBus.$on('callbackEventBus', this.fnMovePage);
-          confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 검수요청 하였습니다.', 'CALLBACK');
+          confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 검수요청 하였습니다.'+'\n'+this.reflectionMsg, 'CALLBACK');
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
@@ -434,7 +435,8 @@ export default {
       await templateApi.procUpdateRequestKkoTmplt(params).then(response => {
         const result = response.data;
         if(result.success) {
-          confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 수정요청 하였습니다.');
+          eventBus.$on('callbackEventBus', this.fnMovePage);
+          confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 수정요청 하였습니다.'+'\n'+this.reflectionMsg, 'CALLBACK');
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
@@ -454,7 +456,7 @@ export default {
         const result = response.data;
         if(result.success) {
           eventBus.$on('callbackEventBus', this.fnMovePage);
-          confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 등록요청 하였습니다.', 'CALLBACK');
+          confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 등록요청 하였습니다.'+'\n'+this.reflectionMsg, 'CALLBACK');
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }

@@ -533,13 +533,13 @@ public class TemplateService {
 
         RestResult<Object> rtn = new RestResult<Object>();
         AlimTalkTmpltEtcRequestData requestData = null;
-        List<String> tmpltCodes = null;
+        List<String> tmpltKeys = null;
 
-        if(params.containsKey("tmpltCodes")) {
-            tmpltCodes = (List<String>) params.get("tmpltCodes");
+        if(params.containsKey("tmpltKeys")) {
+            tmpltKeys = (List<String>) params.get("tmpltKeys");
         }
 
-        if(tmpltCodes == null || tmpltCodes.size() == 0) {
+        if(tmpltKeys == null || tmpltKeys.size() == 0) {
             rtn.setFail("잘못된 템플릿 코드 정보입니다.");
             return rtn;
         }
@@ -562,9 +562,9 @@ public class TemplateService {
         String rtltCode = "";
         int success = 0;
 
-        for(String tmpltCode : tmpltCodes) {
+        for(String tmpltKey : tmpltKeys) {
             sParams = new HashMap<String, Object>();
-            sParams.put("tmpltCode", tmpltCode);
+            sParams.put("tmpltKey", tmpltKey);
             List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ALIM_TALK_TMPLT_LIST, sParams);
             if(rtnList == null || rtnList.size() == 0) {
                 continue;
@@ -579,7 +579,7 @@ public class TemplateService {
 
             requestData = new AlimTalkTmpltEtcRequestData();
             requestData.setSenderKey(senderKey);
-            requestData.setTemplateCode(tmpltCode);
+            requestData.setTemplateKey(tmpltKey);
 
             gson = new Gson();
             jsonString = gson.toJson(requestData);
@@ -593,7 +593,8 @@ public class TemplateService {
             if(StringUtils.equals(ApiConfig.GW_API_SUCCESS, rtltCode)) success++;
         }
 
-        rtn.setMessage("총 "+tmpltCodes.size()+"건 중 "+success+"건 삭제 요청 되었습니다.");
+        String reflectionMsg = "반영까지 최대 5분의 시간이 소요될 수 있습니다.";
+        rtn.setMessage("총 "+tmpltKeys.size()+"건 중 "+success+"건 삭제 요청 되었습니다."+(success != 0 ? "\n"+reflectionMsg : ""));
         return rtn;
 
     }

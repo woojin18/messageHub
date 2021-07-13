@@ -118,7 +118,7 @@
                         :id="'listCheck_'+idx" 
                         name="listCheck_" 
                         class="boardCheckStyle" 
-                        :value="contant.tmpltCode" 
+                        :value="contant.tmpltKey" 
                         v-model="listChkBox"
                       >
                       <input 
@@ -127,7 +127,7 @@
                         :id="'listCheck_'+idx" 
                         name="listCheck_" 
                         class="boardCheckStyle" 
-                        :value="contant.tmpltCode" 
+                        :value="contant.tmpltKey" 
                         v-model="listChkBox" 
                         disabled="disabled"
                       >
@@ -230,7 +230,7 @@ export default {
       pageNo : 1,  // 현재 페이징 위치
       totCnt : 0,  //전체 리스트 수
       offset : 0, //페이지 시작점
-      contants: []
+      contants: [],
     }
   },
   mounted() {
@@ -259,7 +259,7 @@ export default {
       confirm.fnConfirm(this.componentsTitle, "선택한 템플릿을 삭제요청 하시겠습니까?", "확인");
     },
     async fnProcDeleteReqTmplt(){
-      var params = {tmpltCodes : this.listChkBox};
+      var params = {tmpltKeys : this.listChkBox};
       await templateApi.procDeleteRequestKkoTmplt(params).then(response =>{
         var result = response.data;
         confirm.fnAlert(this.componentsTitle, result.message);
@@ -341,7 +341,7 @@ export default {
       if(this.listAllChecked){
         this.contants.forEach(function(contant){
           if(contant.tmpltStatCode == 'T'){
-            vm.listChkBox.push(contant.tmpltCode);
+            vm.listChkBox.push(contant.tmpltKey);
           }
         });
       } else {
