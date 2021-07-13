@@ -100,7 +100,7 @@
 									<td class="text-center"><input type="checkbox" :id="'listCheck_'+idx" class="boardCheckStyle" :value="data.tmpltCode" v-model="listChkBox"><label :for="'listCheck_'+idx"></label></td>
 									<td>{{totCnt-offset-data.rownum+1}}</td>
 									<td class="text-center"><router-link :to="{ name: 'multiSendTemplateManage', params: {'tmpltCodeP': data.tmpltCode }}"><u>{{data.tmpltCode}}</u></router-link></td>
-									<td class="text-center">{{data.tmpltTitle}}</td>
+									<td class="text-center">{{$gfnCommonUtils.unescapeXss(data.tmpltTitle)}}</td>
 									<td class="text-center">{{data.tmpltChannel}}</td>
 									<td class="text-center">{{data.msgKindName}}</td>
 									<td class="text-center">{{data.msgType}}</td>

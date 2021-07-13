@@ -252,88 +252,87 @@
 					<li v-if="rowData.msgKind == 'I'"><!-- 정보성인경우만 사용가능 -->
 						<img src="../../../common/images/pushTemplate1.svg" alt="프리 템플릿"><h6>프리 템플릿</h6>
 						<div class="consolMarginTop">
-              <input type="radio" name="rcsTemplate1" value="0" id="rcsTemplate1-1" class="radioStyle" checked="" v-on:click="rcsTemplateTable=0" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-1"></label>
-              <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
-            </div>
-            <!--<span>선택: {{ rcsTemplateTable }}</span>-->
-          </li>
-          <li v-if="rowData.msgKind == 'I'"><!-- 정보성인경우만 사용가능 -->
-            <img src="../../../common/images/pushTemplate2.svg" alt="템플릿 승인(서술)"><h6>템플릿 승인<br>(서술)</h6>
-            <div class="consolMarginTop">
-              <input type="radio" name="rcsTemplate1" value="1" id="rcsTemplate1-2" class="radioStyle" v-on:click="rcsTemplateTable=1" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-2"></label>
-              <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
-            </div>
-          </li>
-          <li v-if="rowData.msgKind == 'I'"><!-- 정보성인경우만 사용가능 -->
-            <img src="../../../common/images/pushTemplate3.svg" alt="템플릿 승인(스타일)"><h6>템플릿 승인<br>(스타일)</h6>
-            <div class="consolMarginTop">
-              <input type="radio" name="rcsTemplate1" value="2" id="rcsTemplate1-3" class="radioStyle" v-on:click="rcsTemplateTable=2" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-3"></label>
-              <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
-            </div>
-          </li>
-          <li>
-            <img src="../../../common/images/pushTemplate4.svg" alt="SMS"><h6>SMS</h6>
-            <div class="consolMarginTop">
-              <input type="radio" name="rcsTemplate1" value="3" id="rcsTemplate1-4" class="radioStyle" v-on:click="rcsTemplateTable=3" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-4"></label>
-              <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
-            </div>
-          </li>
-          <li>
-            <img src="../../../common/images/pushTemplate5.svg" alt="LMS"><h6>LMS</h6>
-            <div class="consolMarginTop">
-              <input type="radio" name="rcsTemplate1" value="4" id="rcsTemplate1-5" class="radioStyle" v-on:click="rcsTemplateTable=4" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-5"></label>
-              <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
-            </div>
-          </li>
-          <li>
-            <img src="../../../common/images/pushTemplate6.svg" alt="세로형(SHORT)"><h6>세로형<br>(SHORT)</h6>
-            <div class="consolMarginTop">
-              <input type="radio" name="rcsTemplate1" value="5" id="rcsTemplate1-6" class="radioStyle" v-on:click="rcsTemplateTable=5" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-6"></label>
-              <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
-            </div>
-          </li>
-          <li>
-            <img src="../../../common/images/pushTemplate7.svg" alt="세로형(Tall)"><h6>세로형<br>(Tall)</h6>
-            <div class="consolMarginTop">
-              <input type="radio" name="rcsTemplate1" value="6" id="rcsTemplate1-7" class="radioStyle" v-on:click="rcsTemplateTable=6" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-7"></label>
-              <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
-            </div>
-          </li>
-          <li>
-            <img src="../../../common/images/pushTemplate10.svg" alt="캐러셀(SHORT)"><h6>캐러셀<br>(SHORT)</h6>
-            <div class="consolMarginTop">
-              <input type="radio" name="rcsTemplate1" value="9" id="rcsTemplate1-10" class="radioStyle" v-on:click="rcsTemplateTable=9" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-10"></label>
-              <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
-            </div>
-          </li>
-          <li>
-            <img src="../../../common/images/pushTemplate11.svg" alt="캐러셀(Tall)"><h6>캐러셀<br>(Tall)</h6>
-            <div class="consolMarginTop">
-              <input type="radio" name="rcsTemplate1" value="10" id="rcsTemplate1-11" class="radioStyle" v-on:click="rcsTemplateTable=10" v-model="rcsTemplateTableChecked"><label for="rcsTemplate1-11"></label>
-              <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
-            </div>
-          </li>
-        </ul>
-        <!-- //templateList -->
-      </div>
+							<input type="radio" name="rcsTemplate1" value="0" id="rcsTemplate1-1" class="radioStyle" checked="" v-on:click="rcsTemplateTable=0" v-model="rcsTemplateTableChecked">
+							<label for="rcsTemplate1-1"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+						</div>
+					</li>
+					<li v-if="rowData.msgKind == 'I'"><!-- 정보성인경우만 사용가능 -->
+						<img src="../../../common/images/pushTemplate2.svg" alt="템플릿 승인(서술)"><h6>템플릿 승인<br>(서술)</h6>
+						<div class="consolMarginTop">
+							<input type="radio" name="rcsTemplate1" value="1" id="rcsTemplate1-2" class="radioStyle" v-on:click="rcsTemplateTable=1" v-model="rcsTemplateTableChecked">
+							<label for="rcsTemplate1-2"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+						</div>
+					</li>
+					<li v-if="rowData.msgKind == 'I'"><!-- 정보성인경우만 사용가능 -->
+						<img src="../../../common/images/pushTemplate3.svg" alt="템플릿 승인(스타일)"><h6>템플릿 승인<br>(스타일)</h6>
+						<div class="consolMarginTop">
+							<input type="radio" name="rcsTemplate1" value="2" id="rcsTemplate1-3" class="radioStyle" v-on:click="rcsTemplateTable=2" v-model="rcsTemplateTableChecked">
+							<label for="rcsTemplate1-3"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+						</div>
+					</li>
+					<li>
+						<img src="../../../common/images/pushTemplate4.svg" alt="SMS"><h6>SMS</h6>
+						<div class="consolMarginTop">
+							<input type="radio" name="rcsTemplate1" value="3" id="rcsTemplate1-4" class="radioStyle" v-on:click="rcsTemplateTable=3" v-model="rcsTemplateTableChecked">
+							<label for="rcsTemplate1-4"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+						</div>
+					</li>
+					<li>
+						<img src="../../../common/images/pushTemplate5.svg" alt="LMS"><h6>LMS</h6>
+						<div class="consolMarginTop">
+							<input type="radio" name="rcsTemplate1" value="4" id="rcsTemplate1-5" class="radioStyle" v-on:click="rcsTemplateTable=4" v-model="rcsTemplateTableChecked">
+							<label for="rcsTemplate1-5"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+						</div>
+					</li>
+					<li>
+						<img src="../../../common/images/pushTemplate6.svg" alt="세로형(SHORT)"><h6>세로형<br>(SHORT)</h6>
+						<div class="consolMarginTop">
+							<input type="radio" name="rcsTemplate1" value="5" id="rcsTemplate1-6" class="radioStyle" v-on:click="rcsTemplateTable=5" v-model="rcsTemplateTableChecked">
+							<label for="rcsTemplate1-6"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+						</div>
+					</li>
+					<li>
+						<img src="../../../common/images/pushTemplate7.svg" alt="세로형(Tall)"><h6>세로형<br>(Tall)</h6>
+						<div class="consolMarginTop">
+							<input type="radio" name="rcsTemplate1" value="6" id="rcsTemplate1-7" class="radioStyle" v-on:click="rcsTemplateTable=6" v-model="rcsTemplateTableChecked">
+							<label for="rcsTemplate1-7"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+						</div>
+					</li>
+					<li>
+						<img src="../../../common/images/pushTemplate10.svg" alt="캐러셀(SHORT)"><h6>캐러셀<br>(SHORT)</h6>
+						<div class="consolMarginTop">
+							<input type="radio" name="rcsTemplate1" value="9" id="rcsTemplate1-10" class="radioStyle" v-on:click="rcsTemplateTable=9" v-model="rcsTemplateTableChecked">
+							<label for="rcsTemplate1-10"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+						</div>
+					</li>
+					<li>
+						<img src="../../../common/images/pushTemplate11.svg" alt="캐러셀(Tall)"><h6>캐러셀<br>(Tall)</h6>
+						<div class="consolMarginTop">
+							<input type="radio" name="rcsTemplate1" value="10" id="rcsTemplate1-11" class="radioStyle" v-on:click="rcsTemplateTable=10" v-model="rcsTemplateTableChecked">
+							<label for="rcsTemplate1-11"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+						</div>
+					</li>
+				</ul>
+				<!-- //templateList -->
+			</div>
 
-<!-- 프리 템플릿 -->
-      <div v-if="rcsTemplateTable === 0">
-        <h4>내용작성</h4>
-        <div class="of_h mt20">
-          <div class="float-left" style="width:28%">
-            <!-- phoneWrap -->
-            <div class="phoneWrap">
-              <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
-              <div class="phoneTextWrap">
-                <div class="phoneText1">
-                  <pre>{{rowData.rcs0Content}}</pre>
-                </div>
-              </div>
-            </div>
-            <!-- //phoneWrap -->
-          </div>
-          <div class="float-left consoleCon" style="width:72%">
+			<!-- 프리 템플릿 -->
+			<div v-if="rcsTemplateTable === 0">
+				<h4>내용작성</h4>
+				<div class="of_h mt20">
+					<div class="float-left" style="width:28%">
+						<!-- phoneWrap -->
+						<div class="phoneWrap">
+							<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
+							<div class="phoneTextWrap">
+								<div class="phoneText1">
+									<pre>{{rowData.rcs0Content}}</pre>
+								</div>
+							</div>
+						</div>
+						<!-- //phoneWrap -->
+					</div>
+					<div class="float-left consoleCon" style="width:72%">
             
 				<div class="of_h">
 					<h4 class="inline-block" style="width:10%">브랜드명</h4>
@@ -2760,117 +2759,109 @@
 
 		<!-- SMS/MMS -->
 		<div class="of_h mt20" v-show="channelTab === 3" >
-				<div class="float-left" style="width:28%">
-					<!-- phoneWrap -->
-					<div class="phoneWrap" v-if="smsTemplateTable === 0">
-						<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
-						<div class="phoneTextWrap">
-							<div class="phoneText1 scroll-y2">
-								<pre>{{rowData.smsContent}}</pre>
+			<div class="float-left" style="width:28%">
+				<!-- phoneWrap -->
+				<div class="phoneWrap">
+					<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
+					<div class="phoneTextWrap scroll-y">
+						<div v-if="smsTemplateTable === 1" class="phoneText2 mb10">
+							<p v-if="$gfnCommonUtils.isEmpty(rowData.smsTitle)">템플릿 제목</p>
+							<p v-else>{{rowData.smsTitle}}</p>
+						</div>
+						<div v-if="smsTemplateTable === 1">
+							<div v-for="(imgInfo, idx) in rowData.smsImgInfoList" :key="idx" class="phoneText2 mt10 text-center" :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+imgInfo.imgUrl+');'">
 							</div>
 						</div>
-					</div>
-					<div class="phoneWrap" v-if="smsTemplateTable === 1">
-						<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
-						<div class="phoneTextWrap">
-							<div class="phoneText1 scroll-y4">
-								<pre>{{rowData.smsContent}}</pre>
-							</div>
-<!-- mms 미리보기에 이미지 보이는 부분이 없어서 주석처리함...있었던거 같은데...	 				                
-				            <div v-for="imgIdx in smsImgLimitSize" :key="imgIdx">  
-				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.smsImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.smsImgInfoList[imgIdx-1].imgUrl+');'">  
-				            		</div>
-				            		<div v-else>
-				            			<i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
-					                  	<p class="font-size14 color3 mt15">이미지 영역</p>
-				            		</div>
-				            </div>
--->				            
+						<div class="phoneText1">
+							<p v-if="$gfnCommonUtils.isEmpty(rowData.smsContent) && (rowData.msgKind != 'A' || $gfnCommonUtils.isEmpty(rowData.smsRcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
+							<p v-else class="font-size14 color4 mt10">
+								<span><pre>{{rowData.smsContent}}</pre></span>
+								<br v-if="!$gfnCommonUtils.isEmpty(rowData.smsContent)"/>
+								<span v-if="rowData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(rowData.smsRcvblcNumber)">{{rowData.smsRcvblcNumber}}</span>
+							</p>
 						</div>
 					</div>
-					
-					<!-- //phoneWrap -->
 				</div>
-				<div class="float-left consoleCon" style="width:72%">
-					<div class="of_h">
-						<div class="float-left" style="width:13%"><h4>발송 유형 *</h4></div>
-						<div class="float-left" style="width:57%">
-							<input type="radio" name="smsSendType" value="S" id="smsSendType1"  v-on:click="checkSmsSend('S')" v-model="rowData.smsSendType"> <label for="smsSendType1" class="mr30">SMS</label>
-							<input type="radio" name="smsSendType" value="M" id="smsSendType2"  v-on:click="checkSmsSend('M')" v-model="rowData.smsSendType"> <label for="smsSendType2">MMS</label>
-						</div>
-					</div>
-
-					
-					<div v-if="smsTemplateTable === 0">
-						<div class="of_h" >
-							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
-							<div class="float-left" style="width:57%">
-								<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" id="smsContent" @keyup="fnByteLength('내용', '#smsContent', '#smsTextLength', '90')"  key="smsContent0"></textarea>
-								<strong class="letter" id="smsTextLength" key="smsTextLength0">00 / 90 Byte</strong>
-							</div>
-						</div>
-					</div>
-					<div v-else-if="smsTemplateTable === 1">
-						<div class="of_h" >
-							<div class="float-left" style="width:13%"><h4>제목</h4></div>
-							<div class="float-left" style="width:57%">
-								<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.smsTitle" id="smsTitle" @keyup="fnByteLength('제목', '#smsTitle', '#smsTitleLength', '40')">
-								<strong class="letter" id="smsTitleLength" key="smsTitleLength1">00 / 40 Byte</strong>
-							</div>
-						</div>
-						
-						<div class="of_h" >
-							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
-							<div class="float-left" style="width:57%">
-								<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" id="smsContent" @keyup="fnByteLength('내용', '#smsContent', '#smsTextLength', '2000')" key="smsContent1"></textarea>
-								<strong class="letter" id="smsTextLength" key="smsTextLength1">00 / 2000 Byte</strong>
-							</div>
-						</div>					
-	
-						<div class="of_h consolMarginTop"  v-if="rowData.msgType == 'IMAGE'">
-				              <div class="float-left" style="width:13%"><h4>이미지</h4></div>
-				              <div class="float-left" style="width:57%">
-				                <div class="float-left" style="width:25%">
-				                  <a @click="fnSmsOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
-				                </div>
-				 
-				                <ul v-for="imgIdx in smsImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
-				                  <li v-if="rowData.smsImgInfoList.length > imgIdx -1">
-				                    <a @click="fnSmsDelImg(imgIdx-1)">{{fnSubString(rowData.smsImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
-				                  </li>
-				                  <li v-else>
-				                    <a></a>
-				                  </li>
-				                </ul>
-				
-				              </div>
-						</div>
-					</div>
-
-		          <div class="of_h consolMarginTop">
-		            <div class="float-left" style="width:13%"><h5>발신번호 *</h5></div>
-		            <div class="float-left" style="width:57%">
-		              <select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
-		                <option v-for="info in smsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
-		              </select>
-		            </div>
-		          </div>
-
+				<!-- //phoneWrap -->
 			</div>
-    </div>
-
-
-    <hr>
-    <div class="float-right">						
-      <a @click="save()" class="btnStyle2 borderGray ml10" data-toggle="modal" title="저장" activity="SAVE">저장</a>
-      <a @click="complete()" class="btnStyle2 backBlack ml10" data-toggle="modal" title="등록" activity="SAVE">등록</a>
-      <router-link :to="{ name: 'multiSendTemplateList' }" tag="a" class="btnStyle2 backRed ml10">취소</router-link>
-    </div>
-
-
-
-  </div>
+			<div class="float-left consoleCon" style="width:72%">
+				<div class="of_h">
+					<div class="float-left" style="width:13%"><h4>발송 유형 *</h4></div>
+					<div class="float-left" style="width:57%">
+						<input type="radio" name="smsSendType" value="S" id="smsSendType1"  v-on:click="checkSmsSend('S')" v-model="rowData.smsSendType"> <label for="smsSendType1" class="mr30">SMS</label>
+						<input type="radio" name="smsSendType" value="M" id="smsSendType2"  v-on:click="checkSmsSend('M')" v-model="rowData.smsSendType"> <label for="smsSendType2">MMS</label>
+					</div>
+				</div>
+				<div v-if="smsTemplateTable === 0">
+					<div class="of_h" >
+						<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+						<div class="float-left" style="width:57%">
+							<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" id="smsContent" @keyup="fnByteLength('내용', '#smsContent', '#smsTextLength', '90')"  key="smsContent0"></textarea>
+							<strong class="letter" id="smsTextLength" key="smsTextLength0">00 / 90 Byte</strong>
+						</div>
+					</div>
+					<div class="of_h" v-if="rowData.msgKind == 'A'">
+						<div class="float-left" style="width:13%"><h4>광고성메시지<br/>수신거부번호</h4></div>
+						<div class="float-left mt10" style="width:57%">
+							<input type="text" class="inputStyle" v-model="rowData.smsRcvblcNumber" maxlength="10">
+						</div>
+					</div>
+				</div>
+				<div v-else-if="smsTemplateTable === 1">
+					<div class="of_h" >
+						<div class="float-left" style="width:13%"><h4>제목</h4></div>
+						<div class="float-left" style="width:57%">
+							<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.smsTitle" id="smsTitle" @keyup="fnByteLength('제목', '#smsTitle', '#smsTitleLength', '40')">
+							<strong class="letter" id="smsTitleLength" key="smsTitleLength1">00 / 40 Byte</strong>
+						</div>
+					</div>
+					<div class="of_h" >
+						<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+						<div class="float-left" style="width:57%">
+							<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" id="smsContent" @keyup="fnByteLength('내용', '#smsContent', '#smsTextLength', '2000')" key="smsContent1"></textarea>
+							<strong class="letter" id="smsTextLength" key="smsTextLength1">00 / 2000 Byte</strong>
+						</div>
+					</div>
+					<div class="of_h" v-if="rowData.msgKind == 'A'">
+						<div class="float-left" style="width:13%"><h4>광고성메시지<br/>수신거부번호</h4></div>
+						<div class="float-left mt10" style="width:57%">
+							<input type="text" class="inputStyle" v-model="rowData.smsRcvblcNumber" maxlength="10">
+						</div>
+					</div>
+					<div class="of_h consolMarginTop"  v-if="rowData.msgType == 'IMAGE'">
+						<div class="float-left" style="width:13%"><h4>이미지</h4></div>
+						<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:25%">
+								<a @click="fnSmsOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
+							</div>
+							<ul v-for="imgIdx in smsImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
+								<li v-if="rowData.smsImgInfoList.length > imgIdx -1">
+									<a @click="fnSmsDelImg(imgIdx-1)">{{fnSubString(rowData.smsImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
+								</li>
+								<li v-else>
+									<a></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="of_h consolMarginTop">
+					<div class="float-left" style="width:13%"><h4>발신번호 *</h4></div>
+					<div class="float-left" style="width:57%">
+						<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
+							<option v-for="info in smsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="float-right">						
+			<a @click="save()" class="btnStyle2 borderGray ml10" data-toggle="modal" title="저장" activity="SAVE">저장</a>
+			<a @click="complete()" class="btnStyle2 backBlack ml10" data-toggle="modal" title="등록" activity="SAVE">등록</a>
+			<router-link :to="{ name: 'multiSendTemplateList' }" tag="a" class="btnStyle2 backRed ml10">취소</router-link>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -3587,31 +3578,30 @@ export default {
 			});
 		},
 
-    async fnCompleteIntegratedTemplate(){
-      var params = this.rowData;
-      //console.log("fnCompleteIntegratedTemplate params : ",params);
+		async fnCompleteIntegratedTemplate(){
+			var params = this.rowData;
+			//console.log("fnCompleteIntegratedTemplate params : ",params);
 
-      //유효성 검사
-      //if(this.fnIsValid() == false) return;
+			// 유효성 검사
+			//if(this.fnIsValid() == false) return;
+			params.tmpltStatus = 'COMPLETE';//템플릿 상태값 저장:SAVE, 완료:COMPLETE
+			//params.projectId = this.testProjectId;
+			params.rcsTemplateTable = this.rcsTemplateTable;//rcs일경우 사용한 템플릿 번호를 가져간다.
+			params.rcs9CardCount = this.rcs9CardCount;//캐러셀 SHORT 카드 수
+			params.rcs10CardCount = this.rcs10CardCount;//캐러셀 TALL 카드 수
+			params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
+			params.useYn = this.useYn; //사용여부
 
-      params.tmpltStatus = 'COMPLETE';//템플릿 상태값 저장:SAVE, 완료:COMPLETE
-      //params.projectId = this.testProjectId;
-      params.rcsTemplateTable = this.rcsTemplateTable;//rcs일경우 사용한 템플릿 번호를 가져간다.
-      params.rcs9CardCount = this.rcs9CardCount;//캐러셀 SHORT 카드 수
-      params.rcs10CardCount = this.rcs10CardCount;//캐러셀 TALL 카드 수
-      params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
-      params.useYn = this.useYn; //사용여부
-
-      await templateApi.insertMultiSendTemplate(params).then(response =>{
-        var result = response.data;
-        if(result.success) {
-          confirm.fnAlert(this.detailTitle, '등록 되었습니다.');
-          this.$router.push('multiSendTemplateList');
-        } else {
-          confirm.fnAlert(this.detailTitle, result.message);
-        }
-      });
-    },
+			await templateApi.insertMultiSendTemplate(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					confirm.fnAlert(this.detailTitle, '등록 되었습니다.');
+					this.$router.push('multiSendTemplateList');
+				} else {
+					confirm.fnAlert(this.detailTitle, result.message);
+				}
+			});
+		},
 
     //유효성 체크
     fnIsValid(){
@@ -4030,15 +4020,13 @@ export default {
 			eventBus.$on('callbackEventBus', this.fnCompleteIntegratedTemplate);
 			confirm.fnConfirm(this.detailTitle, "템플릿을 등록 하시겠습니까?", "확인");
 		},
-
-    //template 정보 조회
-    fnSetIntegratedTemplateInfo(){
-    	//console.log("this.tmpltCode : "+this.tmpltCodeP);
-      if(!this.isEmpty(this.tmpltCodeP)){
-        this.fnSelectIntegratedTemplateInfo();
-      }
-    },
-
+		//template 정보 조회
+		fnSetIntegratedTemplateInfo(){
+			//console.log("this.tmpltCode : "+this.tmpltCodeP);
+			if (!this.isEmpty(this.tmpltCodeP)) {
+				this.fnSelectIntegratedTemplateInfo();
+			}
+		},
 		//템플릿 정보 조회
 		fnSelectIntegratedTemplateInfo() {
 			const params = {tmpltCode: this.tmpltCodeP};
@@ -4072,23 +4060,36 @@ export default {
 								this.checkedSmsMms = true;
 							}
 						}
-						this.rowData.tmpltCode 		= rtnData.tmpltCode;
-						this.rowData.msgType 		= rtnData.msgType;
-						this.rowData.msgKind 		= rtnData.msgKind;
-						this.rowData.tmpltTitle 	= rtnData.tmpltTitle;
+						var firstChannel = this.rowData.checkedChannel[0];
+						if (firstChannel == 'PUSH') {
+							this.channelTab = 0;
+							this.checkedPush = true;
+						} else if (firstChannel == 'RCS') {
+							this.channelTab = 1;
+							this.checkedRCS = true;
+						} else if (firstChannel == 'KAKAO') {
+							this.channelTab = 2;
+							this.checkedKakao = true;
+						} else if (firstChannel == 'SMSMMS') {
+							this.channelTab = 3;
+							this.checkedSmsMms = true;
+						}
+						this.rowData.tmpltCode		= rtnData.tmpltCode;
+						this.rowData.msgType			= rtnData.msgType;
+						this.rowData.msgKind			= rtnData.msgKind;
+						this.rowData.tmpltTitle		= this.$gfnCommonUtils.unescapeXss(rtnData.tmpltTitle);
 						this.rowData.otherProjectUseYn = rtnData.otherProjectUseYn;
 
-						// PUSH DATA SET            
-						this.rowData.pushHowToDenyReceipt = rtnData.pushHowToDenyReceipt;
-						this.rowData.pushContent = rtnData.pushMsg;
+						// PUSH DATA SET
+						this.rowData.pushContent = this.$gfnCommonUtils.unescapeXss(rtnData.pushMsg);
 						this.rowData.pushAppId = rtnData.pushAppId;
-						this.rowData.pushTitle = rtnData.pushTitle;
+						this.rowData.pushTitle = this.$gfnCommonUtils.unescapeXss(rtnData.pushTitle);
 						this.rowData.pushImgInfo.fileId = rtnData.pushFileId;
 						this.rowData.pushImgInfo.imgUrl = rtnData.pushChImgUrl;
 						this.rowData.pushSend = rtnData.pushSendType;
 						this.rowData.pushHowToDenyReceipt = rtnData.pushRcvblcInput;//수신거부방법
 
-						// RCS DATA SET            
+						// RCS DATA SET
 						if (rtnData.rcsPrdType == 'FREE') {
 							this.rcsTemplateTable = 0;
 							this.rcsTemplateTableChecked = 0;
@@ -4117,7 +4118,7 @@ export default {
 							this.rcsTemplateTable = 10;
 							this.rcsTemplateTableChecked = 10;
 						}
-	
+
 						if (rtnData.rcsPrdType == 'FREE') {
 							this.rowData.rcs0Content 		= rtnData.rcsBodyDescription;
 							this.rowData.callback 			= rtnData.rcsCallback; //발신번호
@@ -4370,7 +4371,7 @@ export default {
 						this.rowData.friendTalkSenderKeyType	= rtnData.friendTalkSenderKeyType;
 						this.rowData.friendTalkSenderKey 		= rtnData.friendTalkSenderKey;
 						this.rowData.friendTalkImageLink 		= rtnData.friendTalkImageLink;
-						this.rowData.friendTalkContent 			= rtnData.friendTalkContent;
+						this.rowData.friendTalkContent 			= this.$gfnCommonUtils.unescapeXss(rtnData.friendTalkContent);
 						this.rowData.friendTalkImgInfo.fileId 	= rtnData.friendTalkFileId;
 						this.rowData.friendTalkImgInfo.imgUrl 	= rtnData.friendTalkImgUrl;
 	
@@ -4411,8 +4412,8 @@ export default {
 						}
 						if (rtnData.smsSendType == 'S' || rtnData.smsSendType == 'M') {
 							this.rowData.smsSendType = rtnData.smsSendType;
-							this.rowData.smsTitle = rtnData.smsTitle;
-							this.rowData.smsContent = rtnData.smsContent;
+							this.rowData.smsTitle = this.$gfnCommonUtils.unescapeXss(rtnData.smsTitle);
+							this.rowData.smsContent = this.$gfnCommonUtils.unescapeXss(rtnData.smsContent);
 	
 							if (rtnData.smsFileId0) {
 								this.rowData.smsImgInfoList.push({'fileId':rtnData.smsFileId0 , 'imgUrl':rtnData.mmsChImgUrl0});
@@ -4423,6 +4424,7 @@ export default {
 							}
 	
 							this.rowData.callback = rtnData.smsCallback;
+							this.rowData.smsRcvblcNumber = rtnData.smsRcvblcNumber;
 						}
 					}
 				} else {
@@ -4431,234 +4433,223 @@ export default {
 			});
 		},
 
-    fnPushOpenImageManagePopUp(){
-      this.$refs.pushImgMng.fnSearch();
-      this.pushImgMngOpen = !this.pushImgMngOpen;
-    },
+		fnPushOpenImageManagePopUp(){
+			this.$refs.pushImgMng.fnSearch();
+			this.pushImgMngOpen = !this.pushImgMngOpen;
+		},
+		fnPushCallbackImgInfo(imgInfo){
+			this.rowData.pushImgInfo.imgUrl = imgInfo.chImgUrl;
+			this.rowData.pushImgInfo.fileId = imgInfo.fileId;
+		},
+		// 푸시 이미지 삭제
+		fnPushDelImg(){
+			this.rowData.pushImgInfo = {};
+		},
+		// RCS(SMS상품) 버튼 추가
+		addRowSMS: function(){
+			if (this.rowData.rcsSMSButtons.length >= 1) {
+				alert("button은 1개까지 추가가능합니다.");
+			} else {
+				this.buttonSMSFlag = true;
+				this.smsButtonsMaxLen = this.smsButtonsMaxLen + 1;
+				var startDateId = 'rcsSMSStartDateId'	+ this.smsButtonsMaxLen;
+				var endDateId 	= 'rcsSMSEndDateId'		+ this.smsButtonsMaxLen;
 
-    fnPushCallbackImgInfo(imgInfo){
-      
-      this.rowData.pushImgInfo.imgUrl = imgInfo.chImgUrl;
-      this.rowData.pushImgInfo.fileId = imgInfo.fileId;
-     
-    },
+				this.rowData.rcsSMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		// RCS(SMS상품) 버튼 삭제
+		removeRowSMS: function(row){
+			if (this.rowData.rcsSMSButtons.length <= 1) {
+				this.rowData.rcsSMSButtons.splice(row,1);
+				this.rowData.rcsSMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcsSMSButtons.splice(row,1);
+			}
+		},
+		// RCS(LMS상품) 버튼 추가
+		addRowLMS: function(){
+			if (this.rowData.rcsLMSButtons.length >= 3) {
+				alert("button은 3개까지 추가가능합니다.");
+			} else {
+				this.buttonLMSFlag = true;
+				this.lmsButtonsMaxLen = this.lmsButtonsMaxLen + 1;
+				var startDateId = 'rcsLMSStartDateId'+this.lmsButtonsMaxLen;
+				var endDateId = 'rcsLMSEndDateId'+this.lmsButtonsMaxLen;
 
-    fnPushDelImg(){
-       this.rowData.pushImgInfo = {};
-     },
+				this.rowData.rcsLMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		// RCS(LMS상품) 버튼 삭제
+		removeRowLMS: function(row){
+			if (this.rowData.rcsLMSButtons.length <= 1) {
+				this.rowData.rcsLMSButtons.splice(row,1);
+				this.rowData.rcsLMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcsLMSButtons.splice(row,1);
+			}
+		},
+		addRow90: function(){
+			if (this.rowData.rcs90Buttons.length >= 2) {
+				alert("button은 2개까지 추가가능합니다.");
+			} else {
+				this.button90Flag = true;
+				this.rcs90ButtonsMaxLen = this.rcs90ButtonsMaxLen + 1;
+				var startDateId = 'rcs90StartDateId'	+ this.rcs90ButtonsMaxLen;
+				var endDateId 	= 'rcs90EndDateId'		+ this.rcs90ButtonsMaxLen;
 
-    addRowSMS: function(){
-      if(this.rowData.rcsSMSButtons.length >= 1){
-        alert("button은 1개까지 추가가능합니다.");
-      }else{
-      	this.buttonSMSFlag = true;
-        this.smsButtonsMaxLen = this.smsButtonsMaxLen + 1;
-        var startDateId = 'rcsSMSStartDateId'	+ this.smsButtonsMaxLen;
-        var endDateId 	= 'rcsSMSEndDateId'		+ this.smsButtonsMaxLen;
-        
-        this.rowData.rcsSMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-        
-      }
-      
-    },
-    removeRowSMS: function(row){
-      if(this.rowData.rcsSMSButtons.length <= 1){
-        this.rowData.rcsSMSButtons.splice(row,1);
-        this.rowData.rcsSMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcsSMSButtons.splice(row,1);
-      }
-      
-    },
+				this.rowData.rcs90Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRow90: function(row){
+			if (this.rowData.rcs90Buttons.length <= 1) {
+				this.rowData.rcs90Buttons.splice(row,1);
+				this.rowData.rcs90Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcs90Buttons.splice(row,1);
+			}
+		},
+		addRow91: function(){
+			if (this.rowData.rcs91Buttons.length >= 2) {
+				alert("button은 2개까지 추가가능합니다.");
+			} else {
+				this.button91Flag = true;
+				this.rcs91ButtonsMaxLen = this.rcs91ButtonsMaxLen + 1;
+				var startDateId = 'rcs91StartDateId'	+ this.rcs91ButtonsMaxLen;
+				var endDateId 	= 'rcs91EndDateId'		+ this.rcs91ButtonsMaxLen;
 
-    addRowLMS: function(){
-      if(this.rowData.rcsLMSButtons.length >= 3){
-        alert("button은 3개까지 추가가능합니다.");
-      }else{
-      	this.buttonLMSFlag = true;
-        this.lmsButtonsMaxLen = this.lmsButtonsMaxLen + 1;
-        var startDateId = 'rcsLMSStartDateId'+this.lmsButtonsMaxLen;
-        var endDateId = 'rcsLMSEndDateId'+this.lmsButtonsMaxLen;
-        
-        this.rowData.rcsLMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-        
-      }
-      
-    },
-    removeRowLMS: function(row){
-      if(this.rowData.rcsLMSButtons.length <= 1){
-        this.rowData.rcsLMSButtons.splice(row,1);
-        this.rowData.rcsLMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcsLMSButtons.splice(row,1);
-      }
-      
-    },
+				this.rowData.rcs91Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRow91: function(row){
+			if (this.rowData.rcs91Buttons.length <= 1) {
+				this.rowData.rcs91Buttons.splice(row,1);
+				this.rowData.rcs91Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcs91Buttons.splice(row,1);
+			}
+		},
+		addRow92: function(){
+			if (this.rowData.rcs92Buttons.length >= 2) {
+				alert("button은 2개까지 추가가능합니다.");
+			} else {
+				this.button92Flag = true;
+				this.rcs92ButtonsMaxLen = this.rcs92ButtonsMaxLen + 1;
+				var startDateId = 'rcs92StartDateId'	+ this.rcs92ButtonsMaxLen;
+				var endDateId 	= 'rcs92EndDateId'		+ this.rcs92ButtonsMaxLen;
 
-    addRow90: function(){
-      if(this.rowData.rcs90Buttons.length >= 2){
-        alert("button은 2개까지 추가가능합니다.");
-      }else{
-        this.button90Flag = true;
-        this.rcs90ButtonsMaxLen = this.rcs90ButtonsMaxLen + 1;
-        var startDateId = 'rcs90StartDateId'	+ this.rcs90ButtonsMaxLen;
-        var endDateId 	= 'rcs90EndDateId'		+ this.rcs90ButtonsMaxLen;
-        
-        this.rowData.rcs90Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-      }
-    },
-    removeRow90: function(row){
-      if(this.rowData.rcs90Buttons.length <= 1){
-        this.rowData.rcs90Buttons.splice(row,1);
-        this.rowData.rcs90Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcs90Buttons.splice(row,1);
-      }
-    },
-    addRow91: function(){
-      if(this.rowData.rcs91Buttons.length >= 2){
-        alert("button은 2개까지 추가가능합니다.");
-      }else{
-        this.button91Flag = true;
-        this.rcs91ButtonsMaxLen = this.rcs91ButtonsMaxLen + 1;
-        var startDateId = 'rcs91StartDateId'	+ this.rcs91ButtonsMaxLen;
-        var endDateId 	= 'rcs91EndDateId'		+ this.rcs91ButtonsMaxLen;
-        
-        this.rowData.rcs91Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-      }
-    },
-    removeRow91: function(row){
-      if(this.rowData.rcs91Buttons.length <= 1){
-        this.rowData.rcs91Buttons.splice(row,1);
-        this.rowData.rcs91Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcs91Buttons.splice(row,1);
-      }
-    },
-    addRow92: function(){
-      if(this.rowData.rcs92Buttons.length >= 2){
-        alert("button은 2개까지 추가가능합니다.");
-      }else{
-        this.button92Flag = true;
-        this.rcs92ButtonsMaxLen = this.rcs92ButtonsMaxLen + 1;
-        var startDateId = 'rcs92StartDateId'	+ this.rcs92ButtonsMaxLen;
-        var endDateId 	= 'rcs92EndDateId'		+ this.rcs92ButtonsMaxLen;
-        
-        this.rowData.rcs92Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-      }
-    },
-    removeRow92: function(row){
-      if(this.rowData.rcs92Buttons.length <= 1){
-        this.rowData.rcs92Buttons.splice(row,1);
-        this.rowData.rcs92Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcs92Buttons.splice(row,1);
-      }
-    },
-    addRow93: function(){
-      if(this.rowData.rcs93Buttons.length >= 2){
-        alert("button은 2개까지 추가가능합니다.");
-      }else{
-        this.button93Flag = true;
-         this.rcs93ButtonsMaxLen = this.rcs93ButtonsMaxLen + 1;
-        var startDateId = 'rcs93StartDateId'	+ this.rcs93ButtonsMaxLen;
-        var endDateId 	= 'rcs93EndDateId'		+ this.rcs93ButtonsMaxLen;
-        
-        this.rowData.rcs93Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-      }
-    },
-    removeRow93: function(row){
-      if(this.rowData.rcs93Buttons.length <= 1){
-        this.rowData.rcs93Buttons.splice(row,1);
-        this.rowData.rcs93Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcs93Buttons.splice(row,1);
-      }
-    },
-    addRow94: function(){
-      if(this.rowData.rcs94Buttons.length >= 2){
-        alert("button은 2개까지 추가가능합니다.");
-      }else{
-        this.button94Flag = true;
-         this.rcs94ButtonsMaxLen = this.rcs94ButtonsMaxLen + 1;
-        var startDateId = 'rcs94StartDateId'	+ this.rcs94ButtonsMaxLen;
-        var endDateId 	= 'rcs94EndDateId'		+ this.rcs94ButtonsMaxLen;
-        
-        this.rowData.rcs94Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-      }
-    },
-    removeRow94: function(row){
-      if(this.rowData.rcs94Buttons.length <= 1){
-        this.rowData.rcs94Buttons.splice(row,1);
-        this.rowData.rcs94Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcs94Buttons.splice(row,1);
-      }
-    },
-    addRow95: function(){
-      if(this.rowData.rcs95Buttons.length >= 2){
-        alert("button은 2개까지 추가가능합니다.");
-      }else{
-        this.button95Flag = true;
-        this.rcs95ButtonsMaxLen = this.rcs95ButtonsMaxLen + 1;
-        var startDateId = 'rcs95StartDateId'	+ this.rcs95ButtonsMaxLen;
-        var endDateId 	= 'rcs95EndDateId'		+ this.rcs95ButtonsMaxLen;
-        
-        this.rowData.rcs95Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-      }
-    },
-    removeRow95: function(row){
-      if(this.rowData.rcs95Buttons.length <= 1){
-        this.button95Flag = false;
-        this.rowData.rcs95Buttons.splice(row,1);
-        //this.rowData.rcs95Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcs95Buttons.splice(row,1);
-      }
-    },
+				this.rowData.rcs92Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRow92: function(row){
+			if (this.rowData.rcs92Buttons.length <= 1) {
+				this.rowData.rcs92Buttons.splice(row,1);
+				this.rowData.rcs92Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcs92Buttons.splice(row,1);
+			}
+		},
+		addRow93: function(){
+			if (this.rowData.rcs93Buttons.length >= 2) {
+				alert("button은 2개까지 추가가능합니다.");
+			} else {
+				this.button93Flag = true;
+				this.rcs93ButtonsMaxLen = this.rcs93ButtonsMaxLen + 1;
+				var startDateId = 'rcs93StartDateId'	+ this.rcs93ButtonsMaxLen;
+				var endDateId 	= 'rcs93EndDateId'		+ this.rcs93ButtonsMaxLen;
 
-    addRowShort: function(){
-      if(this.rowData.rcsShortButtons.length >= 1){
-        alert("button은 1개까지 추가가능합니다.");
-      }else{
-        this.buttonShortFlag = true;
-        this.rcsShortButtonsMaxLen = this.rcsShortButtonsMaxLen + 1;
-        var startDateId = 'rcsShortStartDateId'	+ this.rcsShortButtonsMaxLen;
-        var endDateId 	= 'rcsShortEndDateId'	+ this.rcsShortButtonsMaxLen;
-        
-        this.rowData.rcsShortButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-      }
-    },
-    removeRowShort: function(row){
-      if(this.rowData.rcsShortButtons.length <= 1){
-        this.rowData.rcsShortButtons.splice(row,1);
-        this.rowData.rcsShortButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcsShortButtons.splice(row,1);
-      }
-    },    
+				this.rowData.rcs93Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRow93: function(row){
+			if (this.rowData.rcs93Buttons.length <= 1) {
+				this.rowData.rcs93Buttons.splice(row,1);
+				this.rowData.rcs93Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcs93Buttons.splice(row,1);
+			}
+		},
+		addRow94: function(){
+			if (this.rowData.rcs94Buttons.length >= 2) {
+				alert("button은 2개까지 추가가능합니다.");
+			} else {
+				this.button94Flag = true;
+				this.rcs94ButtonsMaxLen = this.rcs94ButtonsMaxLen + 1;
+				var startDateId = 'rcs94StartDateId'	+ this.rcs94ButtonsMaxLen;
+				var endDateId 	= 'rcs94EndDateId'		+ this.rcs94ButtonsMaxLen;
 
-    addRowTall: function(){
-      if(this.rowData.rcsTallButtons.length >= 1){
-        alert("button은 1개까지 추가가능합니다.");
-      }else{
-        this.buttonTallFlag = true;
-        this.rcsTallButtonsMaxLen = this.rcsTallButtonsMaxLen + 1;
-        var startDateId = 'rcsTallStartDateId'	+ this.rcsTallButtonsMaxLen;
-        var endDateId 	= 'rcsTallEndDateId'	+ this.rcsTallButtonsMaxLen;
-        
-        this.rowData.rcsTallButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-      }
-    },
-    removeRowTall: function(row){
-      if(this.rowData.rcsTallButtons.length <= 1){
-        this.rowData.rcsTallButtons.splice(row,1);
-        this.rowData.rcsTallButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcsTallButtons.splice(row,1);
-      }
-    },
+				this.rowData.rcs94Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRow94: function(row){
+			if (this.rowData.rcs94Buttons.length <= 1) {
+				this.rowData.rcs94Buttons.splice(row,1);
+				this.rowData.rcs94Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcs94Buttons.splice(row,1);
+			}
+		},
+		addRow95: function(){
+			if (this.rowData.rcs95Buttons.length >= 2) {
+				alert("button은 2개까지 추가가능합니다.");
+			} else {
+				this.button95Flag = true;
+				this.rcs95ButtonsMaxLen = this.rcs95ButtonsMaxLen + 1;
+				var startDateId = 'rcs95StartDateId'	+ this.rcs95ButtonsMaxLen;
+				var endDateId 	= 'rcs95EndDateId'		+ this.rcs95ButtonsMaxLen;
 
+				this.rowData.rcs95Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRow95: function(row){
+			if (this.rowData.rcs95Buttons.length <= 1) {
+				this.button95Flag = false;
+				this.rowData.rcs95Buttons.splice(row,1);
+				//this.rowData.rcs95Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcs95Buttons.splice(row,1);
+			}
+		},
+		addRowShort: function(){
+			if (this.rowData.rcsShortButtons.length >= 1) {
+				alert("button은 1개까지 추가가능합니다.");
+			} else {
+				this.buttonShortFlag = true;
+				this.rcsShortButtonsMaxLen = this.rcsShortButtonsMaxLen + 1;
+				var startDateId = 'rcsShortStartDateId'	+ this.rcsShortButtonsMaxLen;
+				var endDateId 	= 'rcsShortEndDateId'	+ this.rcsShortButtonsMaxLen;
+
+				this.rowData.rcsShortButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRowShort: function(row){
+			if (this.rowData.rcsShortButtons.length <= 1) {
+				this.rowData.rcsShortButtons.splice(row,1);
+				this.rowData.rcsShortButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcsShortButtons.splice(row,1);
+			}
+		},
+		addRowTall: function(){
+			if (this.rowData.rcsTallButtons.length >= 1) {
+				alert("button은 1개까지 추가가능합니다.");
+			} else {
+				this.buttonTallFlag = true;
+				this.rcsTallButtonsMaxLen = this.rcsTallButtonsMaxLen + 1;
+				var startDateId = 'rcsTallStartDateId'	+ this.rcsTallButtonsMaxLen;
+				var endDateId 	= 'rcsTallEndDateId'	+ this.rcsTallButtonsMaxLen;
+
+				this.rowData.rcsTallButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRowTall: function(row){
+			if (this.rowData.rcsTallButtons.length <= 1) {
+				this.rowData.rcsTallButtons.splice(row,1);
+				this.rowData.rcsTallButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcsTallButtons.splice(row,1);
+			}
+		},
 		addRowFriendTalk: function(){
 			if (this.rowData.friendTalkButtons.length >= 5) {
 				alert("button은 5개까지 추가가능합니다.");
@@ -5588,106 +5579,95 @@ export default {
     fnRcs105ButtonED(sltDate, params){
       this.rowData.rcs105Buttons[params.idx].endDate = sltDate;
     }, 
-    //get 문자열 byte
-    getByte(str) {
-      return str
-        .split('')
-        .map(s => s.charCodeAt(0))
-        .reduce((prev, c) => (prev + ((c === 10) ? 2 : ((c >> 7) ? 2 : 1))), 0);
-    },
-
-    fnSubString(str, sIdx, length){
-      let shortStr = ''
-      if(!this.isEmpty(str)){
-        shortStr = str.toString();
-        if(shortStr.length > length){
-          shortStr = shortStr.substring(sIdx, length) + '...  ';
-        } else {
-          shortStr = shortStr + '  ';
-        }
-      }
-      return shortStr;
-    },
-
-
-    fnTextLength(title, sid, tid, len){
-      var val = jQuery(sid).val();
-      //console.log("val : "+val.length);
-      if(val.length > len){
-        var msg = title + '의 최대 입력 길이는 ' + len + '입니다.';
-        alert(msg);
-        var temp = val.substr(0,len);
-        //console.log("temp : "+temp.length);
-        jQuery(sid).val(temp);
-        val = jQuery(sid).val();
-      }
-      var text = "("+val.length+" / "+len+")";
-      if(tid) jQuery(tid).html(text);
-    },
-
-    
-    fnByteLength(title, sid, tid, len){
-        var value = jQuery(sid).val();
-	    var nBytes = 0;
-	    var term = 0;
-	    for (var idx = 0; idx < value.length; idx++) {
-	        term = 0;
-	        var oneChar = escape(value.charAt(idx));
-	        if ( oneChar.length == 1 ) {
-	            term = 1;
-	        } else if (oneChar.indexOf("%u") != -1) {
-	            term = 2;
-	        } else if (oneChar.indexOf("%") != -1) {
-	            term = 1;
-	        }
-	        nBytes += term;
-	        if(nBytes > len){
-	        	var temp = value.substr(0,idx);
-	        	jQuery(sid).val(temp);
-	        	nBytes -= term;
-	        }
-	    }
-	    var text = ""+nBytes+" / "+len+"Byte";
-        if(tid) jQuery(tid).html(text);
-    },
-
-	checkSmsSend(flag) {
-        if(flag === "S") {
-        	this.smsTemplateTable = 0;
-        }else if(flag === "M") {
-        	this.smsTemplateTable = 1;
-        }
-        this.rowData.smsTitle = "";
-        this.rowData.smsContent = "";
-
-    },
-    
-    fnImgReset(){
-    	this.rowData.rcsShortImgInfoList.push({'fileId':'', 'imgUrl':''});
-		this.rowData.rcsTallImgInfoList.push({'fileId':'', 'imgUrl':''});
-		this.rowData.rcs90ImgInfoList.push({'fileId':'', 'imgUrl':''});
-		this.rowData.rcs91ImgInfoList.push({'fileId':'', 'imgUrl':''});
-		this.rowData.rcs92ImgInfoList.push({'fileId':'', 'imgUrl':''});
-		this.rowData.rcs93ImgInfoList.push({'fileId':'', 'imgUrl':''});
-		this.rowData.rcs94ImgInfoList.push({'fileId':'', 'imgUrl':''});
-		this.rowData.rcs95ImgInfoList.push({'fileId':'', 'imgUrl':''});
-		this.rowData.rcs100ImgInfoList.push({'fileId':'', 'imgUrl':''});
-		this.rowData.rcs101ImgInfoList.push({'fileId':'', 'imgUrl':''});
-		this.rowData.rcs102ImgInfoList.push({'fileId':'', 'imgUrl':''});
-		this.rowData.rcs103ImgInfoList.push({'fileId':'', 'imgUrl':''});
-		this.rowData.rcs104ImgInfoList.push({'fileId':'', 'imgUrl':''});
-		this.rowData.rcs105ImgInfoList.push({'fileId':'', 'imgUrl':''});
-		this.rowData.smsImgInfoList.push({'fileId':'', 'imgUrl':''});    
-    },
-
-
-	isEmpty(str){
-        if(typeof str == "undefined" || str == null || str == "")
-            return true;
-        else
-            return false ;
-    }
-    
-  }
+		//get 문자열 byte
+		getByte(str) {
+			return str
+			.split('')
+			.map(s => s.charCodeAt(0))
+			.reduce((prev, c) => (prev + ((c === 10) ? 2 : ((c >> 7) ? 2 : 1))), 0);
+		},
+		fnSubString(str, sIdx, length){
+			let shortStr = ''
+			if (!this.isEmpty(str)) {
+				shortStr = str.toString();
+				if (shortStr.length > length) {
+					shortStr = shortStr.substring(sIdx, length) + '...  ';
+				} else {
+					shortStr = shortStr + '  ';
+				}
+			}
+			return shortStr;
+		},
+		fnTextLength(title, sid, tid, len){
+			var val = jQuery(sid).val();
+			//console.log("val : "+val.length);
+			if (val.length > len) {
+				var msg = title + '의 최대 입력 길이는 ' + len + '입니다.';
+				alert(msg);
+				var temp = val.substr(0,len);
+				//console.log("temp : "+temp.length);
+				jQuery(sid).val(temp);
+				val = jQuery(sid).val();
+			}
+			var text = "("+val.length+" / "+len+")";
+			if(tid) jQuery(tid).html(text);
+		},
+		fnByteLength(title, sid, tid, len){
+			var value = jQuery(sid).val();
+			var nBytes = 0;
+			var term = 0;
+			for (var idx = 0; idx < value.length; idx++) {
+				term = 0;
+				var oneChar = escape(value.charAt(idx));
+				if ( oneChar.length == 1 ) {
+					term = 1;
+				} else if (oneChar.indexOf("%u") != -1) {
+					term = 2;
+				} else if (oneChar.indexOf("%") != -1) {
+					term = 1;
+				}
+				nBytes += term;
+				if (nBytes > len){
+					var temp = value.substr(0,idx);
+					jQuery(sid).val(temp);
+					nBytes -= term;
+				}
+			}
+			var text = ""+nBytes+" / "+len+"Byte";
+			if(tid) jQuery(tid).html(text);
+		},
+		checkSmsSend(flag) {
+			if (flag === "S") {
+				this.smsTemplateTable = 0;
+			} else if(flag === "M") {
+				this.smsTemplateTable = 1;
+			}
+			this.rowData.smsTitle = "";
+			this.rowData.smsContent = "";
+		},
+		fnImgReset(){
+			this.rowData.rcsShortImgInfoList.push({'fileId':'', 'imgUrl':''});
+			this.rowData.rcsTallImgInfoList.push({'fileId':'', 'imgUrl':''});
+			this.rowData.rcs90ImgInfoList.push({'fileId':'', 'imgUrl':''});
+			this.rowData.rcs91ImgInfoList.push({'fileId':'', 'imgUrl':''});
+			this.rowData.rcs92ImgInfoList.push({'fileId':'', 'imgUrl':''});
+			this.rowData.rcs93ImgInfoList.push({'fileId':'', 'imgUrl':''});
+			this.rowData.rcs94ImgInfoList.push({'fileId':'', 'imgUrl':''});
+			this.rowData.rcs95ImgInfoList.push({'fileId':'', 'imgUrl':''});
+			this.rowData.rcs100ImgInfoList.push({'fileId':'', 'imgUrl':''});
+			this.rowData.rcs101ImgInfoList.push({'fileId':'', 'imgUrl':''});
+			this.rowData.rcs102ImgInfoList.push({'fileId':'', 'imgUrl':''});
+			this.rowData.rcs103ImgInfoList.push({'fileId':'', 'imgUrl':''});
+			this.rowData.rcs104ImgInfoList.push({'fileId':'', 'imgUrl':''});
+			this.rowData.rcs105ImgInfoList.push({'fileId':'', 'imgUrl':''});
+			this.rowData.smsImgInfoList.push({'fileId':'', 'imgUrl':''});    
+		},
+		isEmpty(str){
+			if (typeof str == "undefined" || str == null || str == "")
+				return true;
+			else
+				return false ;
+		}
+	}
 }
 </script>

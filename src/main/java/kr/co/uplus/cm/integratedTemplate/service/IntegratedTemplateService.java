@@ -136,7 +136,7 @@ public class IntegratedTemplateService {
 			sb.append("{");
 			sb.append(sbChannel.toString());// 채널순서를 기억하기 위해 추가
 			if (checkChannelArr[i].equalsIgnoreCase("PUSH")) {
-				// PUSH ====================================================================  
+				// PUSH ====================================================================
 				LinkedHashMap<String, String> pushImgInfoMap = (LinkedHashMap<String, String>) params
 						.get("pushImgInfo");
 
@@ -162,7 +162,8 @@ public class IntegratedTemplateService {
 				sb.append("\"chType\" : \"RCS\",");// 발송채널
 
 				if ((int) params.get("rcsTemplateTable") == 0) {//
-					// RCS FREE TYPE ====================================================================
+					// RCS FREE TYPE
+					// ====================================================================
 					// String brand = (String) params.get("brandNm");
 					String freeMessageBaseId = selectMessageBaseId(params);
 					sb.append("\"rcsPrdType\" : \"FREE\","); // RCS상품타입(프리 템플릿) rcsTemplateTable => 0
@@ -1162,40 +1163,35 @@ public class IntegratedTemplateService {
 				}
 
 			} else if (checkChannelArr[i].equalsIgnoreCase("SMSMMS")) {
-//SMSMMS ====================================================================    
-				// System.out.println("=============================================");
-				// System.out.println("smsSendType : "+params.get("smsSendType"));
-				// System.out.println("=============================================");
+				// SMSMMS ====================================================================
 				if (params.get("smsSendType").equals("S")) {// SMS
 					sb.append("\"chTypeList\" : \"" + chTypeList + "\",");
-					sb.append("\"chType\" : \"SMS\",");// 발송채널
-
-					sb.append("\"smsInfo\" : {");
+					sb.append("\"ch\" : \"SMS\","); // 발송채널
+					sb.append("\"data\" : { ");
 					sb.append("\"callback\" : \"" + params.get("callback") + "\",");
-					// String smsContent = ((String) params.get("smsContent")).replaceAll("\n",
-					// "CHR(13)CHR(10)");
-					sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + "\" ");
-					sb.append("}");
-
+					sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + "\" "); // 메시지
+					if (params.containsKey("smsRcvblcNumber")) {
+						sb.append(",\"rcvblcInput\" : \"" + params.get("smsRcvblcNumber") + "\""); // 수신거부방법
+					}
+					sb.append("} ");
 				} else if (params.get("smsSendType").equals("M")) {// MMS
 					sb.append("\"chTypeList\" : \"" + chTypeList + "\",");
-					sb.append("\"chType\" : \"MMS\",");// 발송채널
-
-					sb.append("\"mmsInfo\" : {");
+					sb.append("\"ch\" : \"MMS\",");// 발송채널
+					sb.append("\"data\" : { ");
 					sb.append("\"callback\" : \"" + params.get("callback") + "\",");
 					sb.append("\"title\" : \"" + params.get("smsTitle") + "\",");
-					// String smsContent = ((String) params.get("smsContent")).replaceAll("\n",
-					// "CHR(13)CHR(10)");
-					sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + "\",");
+					sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + "\" ");
+					if (params.containsKey("smsRcvblcNumber")) {
+						sb.append(",\"rcvblcInput\" : \"" + params.get("smsRcvblcNumber") + "\" "); // 수신거부방법
+					}
 
 					List<Map<String, Object>> imgInfoList = null;
 					if (params.containsKey("smsImgInfoList")) {
 						imgInfoList = (List<Map<String, Object>>) params.get("smsImgInfoList");
 						int maxSize = imgInfoList.size();
 						int idx = 0;
-						sb.append("	\"fileIdLst\" : [ "); // 이미지
+						sb.append(",\"fileIdLst\" : [ "); // 이미지
 						for (Map<String, Object> imgInfo : imgInfoList) {
-
 							if (imgInfo.containsKey("fileId")) {
 								idx = idx + 1;
 								if (idx < maxSize) {
@@ -1207,9 +1203,7 @@ public class IntegratedTemplateService {
 						}
 						sb.append("	] "); // 이미지
 					}
-
 					sb.append("}");
-
 				}
 			}
 			sb.append("}");

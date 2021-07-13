@@ -62,7 +62,7 @@
 				JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType') CHECKED_CHANNEL,
 				A.REG_ID,
 				cm_console.fnc_get_user_name(A.REG_ID)  AS REG_NM,
-				A.REG_DT
+				DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%S') AS REG_DT
 			FROM cm.CM_SMART_TMPLT A
 				LEFT OUTER JOIN cm_bo.CM_CODE C
 					ON A.MSG_KIND = C.CODE_VAL_1 AND C.CODE_TYPE_CD = 'MSG_KIND'
@@ -453,7 +453,7 @@
 							,',\"name\":\"'	, IFNULL(M.friendTalkButton4Name,'')	,'\"'
 							,',\"linkUrl1\":\"'	, IFNULL(M.friendTalkButton4LinkUrl1,'')			,'\"'
 							,',\"linkUrl2\":\"'	, IFNULL(M.friendTalkButton4LinkUrl2,'')	,'\"}') AS friendTalkButtonArr4,
-			M.smsSendType, M.smsCallback, M.smsContent, M.smsTitle, M.smsFileId0, M.smsFileId1,
+			M.smsSendType, M.smsCallback, M.smsContent, M.smsRcvblcNumber, M.smsTitle, M.smsFileId0, M.smsFileId1,
 			M.MMS_CH_IMG_URL0,
 			M.MMS_CH_IMG_URL1
 		FROM (
@@ -611,7 +611,7 @@
 				T.friendTalkButton2Type, T.friendTalkButton2Name, T.friendTalkButton2LinkUrl1, T.friendTalkButton2LinkUrl2,
 				T.friendTalkButton3Type, T.friendTalkButton3Name, T.friendTalkButton3LinkUrl1, T.friendTalkButton3LinkUrl2,
 				T.friendTalkButton4Type, T.friendTalkButton4Name, T.friendTalkButton4LinkUrl1, T.friendTalkButton4LinkUrl2,
-				T.smsSendType, T.smsCallback, T.smsContent, T.smsTitle, T.smsFileId0, T.smsFileId1,
+				T.smsSendType, T.smsCallback, T.smsContent, T.smsRcvblcNumber, T.smsTitle, T.smsFileId0, T.smsFileId1,
 				@MMS_PATH_TO_NAME0 := JSON_UNQUOTE(JSON_SEARCH(sms0.USE_CH_INFO, "one", 'MMS', NULL, '$[*].CH')) AS MMS_PATH_TO_NAME0,
 				@MMS_PATH_TO_PARENT0 := TRIM(TRAILING '.CH' FROM @MMS_PATH_TO_NAME0) AS MMS_PATH_TO_PARENT0,
 				@MMS_CH_OBJECT0 := JSON_EXTRACT(sms0.USE_CH_INFO, @MMS_PATH_TO_PARENT0) AS MMS_CH_OBJECT0,
@@ -3696,45 +3696,52 @@
 							ELSE ''
 						END AS friendTalkButton4LinkUrl2,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'SMS' then 'S' WHEN A.TMPLT_INFO ->> '$[0].chType' = 'MMS' then 'M'
-						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'SMS' then 'S' WHEN A.TMPLT_INFO ->> '$[1].chType' = 'MMS' then 'M'
-						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'SMS' then 'S' WHEN A.TMPLT_INFO ->> '$[2].chType' = 'MMS' then 'M'
-						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'SMS' then 'S' WHEN A.TMPLT_INFO ->> '$[3].chType' = 'MMS' then 'M'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'SMS' then 'S' WHEN A.TMPLT_INFO ->> '$[0].ch' = 'MMS' then 'M'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'SMS' then 'S' WHEN A.TMPLT_INFO ->> '$[1].ch' = 'MMS' then 'M'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'SMS' then 'S' WHEN A.TMPLT_INFO ->> '$[2].ch' = 'MMS' then 'M'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'SMS' then 'S' WHEN A.TMPLT_INFO ->> '$[3].ch' = 'MMS' then 'M'
 						ELSE ''
 					END AS smsSendType,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'SMS' then A.TMPLT_INFO ->> '$[0].smsInfo.callback' WHEN A.TMPLT_INFO ->> '$[0].chType' = 'MMS' then A.TMPLT_INFO ->> '$[0].mmsInfo.callback'
-						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'SMS' then A.TMPLT_INFO ->> '$[1].smsInfo.callback' WHEN A.TMPLT_INFO ->> '$[1].chType' = 'MMS' then A.TMPLT_INFO ->> '$[1].mmsInfo.callback'
-						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'SMS' then A.TMPLT_INFO ->> '$[2].smsInfo.callback'  WHEN A.TMPLT_INFO ->> '$[2].chType' = 'MMS' then A.TMPLT_INFO ->> '$[2].mmsInfo.callback'
-						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'SMS' then A.TMPLT_INFO ->> '$[3].smsInfo.callback' WHEN A.TMPLT_INFO ->> '$[3].chType' = 'MMS' then A.TMPLT_INFO ->> '$[3].mmsInfo.callback'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'SMS' then A.TMPLT_INFO ->> '$[0].data.callback' WHEN A.TMPLT_INFO ->> '$[0].ch' = 'MMS' then A.TMPLT_INFO ->> '$[0].data.callback'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'SMS' then A.TMPLT_INFO ->> '$[1].data.callback' WHEN A.TMPLT_INFO ->> '$[1].ch' = 'MMS' then A.TMPLT_INFO ->> '$[1].data.callback'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'SMS' then A.TMPLT_INFO ->> '$[2].data.callback'  WHEN A.TMPLT_INFO ->> '$[2].ch' = 'MMS' then A.TMPLT_INFO ->> '$[2].data.callback'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'SMS' then A.TMPLT_INFO ->> '$[3].data.callback' WHEN A.TMPLT_INFO ->> '$[3].ch' = 'MMS' then A.TMPLT_INFO ->> '$[3].data.callback'
 						ELSE ''
 					END AS smsCallback,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'SMS' then A.TMPLT_INFO ->> '$[0].smsInfo.msg' WHEN A.TMPLT_INFO ->> '$[0].chType' = 'MMS' then A.TMPLT_INFO ->> '$[0].mmsInfo.msg'
-						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'SMS' then A.TMPLT_INFO ->> '$[1].smsInfo.msg' WHEN A.TMPLT_INFO ->> '$[1].chType' = 'MMS' then A.TMPLT_INFO ->> '$[1].mmsInfo.msg'
-						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'SMS' then A.TMPLT_INFO ->> '$[2].smsInfo.msg' WHEN A.TMPLT_INFO ->> '$[2].chType' = 'MMS' then A.TMPLT_INFO ->> '$[2].mmsInfo.msg'
-						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'SMS' then A.TMPLT_INFO ->> '$[3].smsInfo.msg' WHEN A.TMPLT_INFO ->> '$[3].chType' = 'MMS' then A.TMPLT_INFO ->> '$[3].mmsInfo.msg'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'SMS' then A.TMPLT_INFO ->> '$[0].data.msg' WHEN A.TMPLT_INFO ->> '$[0].ch' = 'MMS' then A.TMPLT_INFO ->> '$[0].data.msg'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'SMS' then A.TMPLT_INFO ->> '$[1].data.msg' WHEN A.TMPLT_INFO ->> '$[1].ch' = 'MMS' then A.TMPLT_INFO ->> '$[1].data.msg'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'SMS' then A.TMPLT_INFO ->> '$[2].data.msg' WHEN A.TMPLT_INFO ->> '$[2].ch' = 'MMS' then A.TMPLT_INFO ->> '$[2].data.msg'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'SMS' then A.TMPLT_INFO ->> '$[3].data.msg' WHEN A.TMPLT_INFO ->> '$[3].ch' = 'MMS' then A.TMPLT_INFO ->> '$[3].data.msg'
 						ELSE ''
 					END AS smsContent,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'MMS' then A.TMPLT_INFO ->> '$[0].mmsInfo.title'
-						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'MMS' then A.TMPLT_INFO ->> '$[1].mmsInfo.title'
-						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'MMS' then A.TMPLT_INFO ->> '$[2].mmsInfo.title'
-						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'MMS' then A.TMPLT_INFO ->> '$[3].mmsInfo.title'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'SMS' then A.TMPLT_INFO ->> '$[0].data.rcvblcInput' WHEN A.TMPLT_INFO ->> '$[0].ch' = 'MMS' then A.TMPLT_INFO ->> '$[0].data.rcvblcInput'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'SMS' then A.TMPLT_INFO ->> '$[1].data.rcvblcInput' WHEN A.TMPLT_INFO ->> '$[1].ch' = 'MMS' then A.TMPLT_INFO ->> '$[1].data.rcvblcInput'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'SMS' then A.TMPLT_INFO ->> '$[2].data.rcvblcInput' WHEN A.TMPLT_INFO ->> '$[2].ch' = 'MMS' then A.TMPLT_INFO ->> '$[2].data.rcvblcInput'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'SMS' then A.TMPLT_INFO ->> '$[3].data.rcvblcInput' WHEN A.TMPLT_INFO ->> '$[3].ch' = 'MMS' then A.TMPLT_INFO ->> '$[3].data.rcvblcInput'
+						ELSE ''
+					END AS smsRcvblcNumber,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'MMS' then A.TMPLT_INFO ->> '$[0].data.title'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'MMS' then A.TMPLT_INFO ->> '$[1].data.title'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'MMS' then A.TMPLT_INFO ->> '$[2].data.title'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'MMS' then A.TMPLT_INFO ->> '$[3].data.title'
 						ELSE ''
 					END AS smsTitle,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'MMS' then A.TMPLT_INFO ->> '$[0].mmsInfo.fileIdLst[0]'
-						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'MMS' then A.TMPLT_INFO ->> '$[1].mmsInfo.fileIdLst[0]'
-						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'MMS' then A.TMPLT_INFO ->> '$[2].mmsInfo.fileIdLst[0]'
-						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'MMS' then A.TMPLT_INFO ->> '$[3].mmsInfo.fileIdLst[0]'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'MMS' then A.TMPLT_INFO ->> '$[0].data.fileIdLst[0]'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'MMS' then A.TMPLT_INFO ->> '$[1].data.fileIdLst[0]'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'MMS' then A.TMPLT_INFO ->> '$[2].data.fileIdLst[0]'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'MMS' then A.TMPLT_INFO ->> '$[3].data.fileIdLst[0]'
 						ELSE ''
 					END AS smsFileId0,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'MMS' then A.TMPLT_INFO ->> '$[0].mmsInfo.fileIdLst[1]'
-						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'MMS' then A.TMPLT_INFO ->> '$[1].mmsInfo.fileIdLst[1]'
-						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'MMS' then A.TMPLT_INFO ->> '$[2].mmsInfo.fileIdLst[1]'
-						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'MMS' then A.TMPLT_INFO ->> '$[3].mmsInfo.fileIdLst[1]'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'MMS' then A.TMPLT_INFO ->> '$[0].data.fileIdLst[1]'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'MMS' then A.TMPLT_INFO ->> '$[1].data.fileIdLst[1]'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'MMS' then A.TMPLT_INFO ->> '$[2].data.fileIdLst[1]'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'MMS' then A.TMPLT_INFO ->> '$[3].data.fileIdLst[1]'
 						ELSE ''
 					END AS smsFileId1
 				FROM cm.CM_SMART_TMPLT A
