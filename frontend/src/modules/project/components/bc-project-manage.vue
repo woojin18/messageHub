@@ -285,7 +285,6 @@ export default {
         }
       }
     }
-    }
   }
 }
 </script>
