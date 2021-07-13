@@ -846,20 +846,20 @@ public class ChannelService {
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			headerMap.put("type",		sts);
 			
-			// API 통신 처리
-			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
-			
-			System.out.println("------------------------------------------------- saveMoCallback result : " + result);
-			
-			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("code")) ) {
-			} else if ( "500100".equals(result.get("code")) ) {
-				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
-				throw new Exception(errMsg);
-			} else {
-				String errMsg = CommonUtils.getString(result.get("message"));
-				throw new Exception(errMsg);
-			}
+//			// API 통신 처리
+//			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
+//			
+//			System.out.println("------------------------------------------------- saveMoCallback result : " + result);
+//			
+//			// 성공인지 실패인지 체크
+//			if( "10000".equals(result.get("code")) ) {
+//			} else if ( "500100".equals(result.get("code")) ) {
+//				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+//				throw new Exception(errMsg);
+//			} else {
+//				String errMsg = CommonUtils.getString(result.get("message"));
+//				throw new Exception(errMsg);
+//			}
 			
 			generalDao.insertGernal(DB.QRY_INSERT_MO_CALLBACK, params);
 		} else if( "U".equals(sts) ) {
@@ -877,20 +877,20 @@ public class ChannelService {
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			headerMap.put("type",		sts);
 			
-			// API 통신 처리
-			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
-			
-			System.out.println("------------------------------------------------- saveMoCallback U result : " + result);
-			
-			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("code")) ) {
-			} else if ( "500100".equals(result.get("code")) ) {
-				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
-				throw new Exception(errMsg);
-			} else {
-				String errMsg = CommonUtils.getString(result.get("message"));
-				throw new Exception(errMsg);
-			}
+//			// API 통신 처리
+//			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
+//			
+//			System.out.println("------------------------------------------------- saveMoCallback U result : " + result);
+//			
+//			// 성공인지 실패인지 체크
+//			if( "10000".equals(result.get("code")) ) {
+//			} else if ( "500100".equals(result.get("code")) ) {
+//				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+//				throw new Exception(errMsg);
+//			} else {
+//				String errMsg = CommonUtils.getString(result.get("message"));
+//				throw new Exception(errMsg);
+//			}
 			
 			generalDao.updateGernal(DB.QRY_UPDATE_MO_CALLBACK, params);
 		} else if( "D".equals(sts) ) {
@@ -908,21 +908,24 @@ public class ChannelService {
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			headerMap.put("type",		sts);
 			
-			// API 통신 처리
-			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
-			
-			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("code")) ) {
-			} else if ( "500100".equals(result.get("code")) ) {
-				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
-				throw new Exception(errMsg);
-			} else {
-				String errMsg = CommonUtils.getString(result.get("message"));
-				throw new Exception(errMsg);
-			}
+//			// API 통신 처리
+//			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
+//			
+//			// 성공인지 실패인지 체크
+//			if( "10000".equals(result.get("code")) ) {
+//			} else if ( "500100".equals(result.get("code")) ) {
+//				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+//				throw new Exception(errMsg);
+//			} else {
+//				String errMsg = CommonUtils.getString(result.get("message"));
+//				throw new Exception(errMsg);
+//			}
 			
 			generalDao.deleteGernal(DB.QRY_DELETE_MO_CALLBACK, params);
 		}
+		
+		// redis 테이블 처리
+		commonService.updateCmCmdForRedis("CM_MO_CALLBACK");
 	}
 	
 	@SuppressWarnings("unchecked")
