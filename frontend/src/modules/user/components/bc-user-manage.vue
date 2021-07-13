@@ -11,14 +11,14 @@
 					<div class="menuBox">
 						<div class="of_h">
 							<h4 class="inline-block" style="width:6%">사용자명</h4>
-							<input v-model="searchData.userName" type="text" class="inputStyle" style="width:14%" title="사용자명 입력란" v-focus @keyup.enter="fnSearch()">
+							<input v-model="searchData.userName" type="text" class="inputStyle" style="width:14%" title="사용자명 입력란" v-focus @keyup.enter="fnPageNoResetSearch()">
 							<h4 class="inline-block ml30" style="width:5%">아이디</h4>
-							<input type="text" v-model="searchData.loginId" class="inputStyle" style="width:14%" title="아이디 입력란" @keyup.enter="fnSearch()">
+							<input type="text" v-model="searchData.loginId" class="inputStyle" style="width:14%" title="아이디 입력란" @keyup.enter="fnPageNoResetSearch()">
 							<h4 class="inline-block ml30" style="width:3%">상태</h4>
 							<select id="selectApprovalStatus" @fnSelected="fnSelected" v-model="searchData.approvalStatus" class="selectStyle2" style="width:14%" title="상태 선택란">
 								<option value="">전체</option>
 							</select>
-							<a @click="fnSearch()" class="btnStyle1 float-right" activity="READ" title="검색">검색</a>
+							<a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" activity="READ" title="검색">검색</a>
 						</div>
 					</div>
 				</div>
@@ -68,7 +68,7 @@
 								</thead>
 								<tbody>
 									<tr v-for="(data, index) in items" :key="index">
-										<td class="text-center vertical-middle">{{ data.listNo }}</td>
+										<td class="text-center vertical-middle">{{ totCnt-offset-data.rownum+1 }}</td>
 										<td class="text-center vertical-middle">{{ data.userName }}</td>
 										<td class="text-center vertical-middle">
 											<div v-html="data.projectName" />
@@ -216,7 +216,7 @@ export default {
 	},
 	mounted() {
 		this.fnStatusInit();
-		this.fnSearch();
+		this.fnPageNoResetSearch();
 		
 	},
 	methods: {
@@ -239,6 +239,9 @@ export default {
 		// select 박스 선택시 리스트 재출력
 		fnSelected(listSize) {
 			this.listSize = Number(listSize);
+			this.$refs.updatePaging.fnAllDecrease();
+		},
+		fnPageNoResetSearch(){
 			this.$refs.updatePaging.fnAllDecrease();
 		},
 		//사용자 리스트 검색

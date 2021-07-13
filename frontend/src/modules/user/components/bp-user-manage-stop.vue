@@ -46,7 +46,6 @@ export default {
 		},
 		//이용정지
 		fnStopUser() {
-			console.log("userId : " + this.stopUserId);
 			var params = {
 				"userId":this.stopUserId
 			}

@@ -299,7 +299,6 @@ export default {
 			if(ipChkYn == 'Y') {
 				for(let i = 0; i < ipList.length; i++) {
 					// IP입력 한개는 필수
-					console.log('debug point');
 					if( ipList[i] == null || ipList[i] == '') {
 						confirm.fnAlert(this.title, 'IP를 입력하세요');
 						return false;

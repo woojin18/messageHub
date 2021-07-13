@@ -13,14 +13,14 @@
 								<option value="cuid">아이디</option>
 								<option value="hpNumber">휴대폰번호</option>
 							</select>
-							<input type="text" class="inputStyle ml10" style="width:44%" v-model="searchData.searchText" @keyup.enter="fnSearch()">
+							<input type="text" class="inputStyle ml10" style="width:44%" v-model="searchData.searchText" @keyup.enter="fnPageNoResetSearch()">
 							<h4 class="inline-block ml50" style="width:7%">사용여부</h4>
 							<select class="selectStyle2" style="width:15%" v-model="searchData.useYn">
 								<option value="">전체</option>
 								<option value="Y">사용</option>
 								<option value="N">미사용</option>
 							</select>
-							<a @click="fnSearch()" class="btnStyle1 float-right" activity="READ">검색</a>
+							<a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" activity="READ">검색</a>
 						</div>
 					</div>
 				</div>
@@ -69,7 +69,7 @@
 								</thead>
 								<tbody>
 									<tr v-for="(data) in items" :key="data.cuInfoId">
-										<td class="text-center"> {{ data.listNo }} </td>
+										<td class="text-center"> {{ totCnt-offset-data.rownum+1 }} </td>
 										<td class="text-left"> {{ data.cuName }} </td>
 										<td class="text-left"> {{ data.cuid }} </td>
 										<td class="text-center"> {{ data.hpNumber | phoneNumber }} </td>
@@ -202,7 +202,7 @@ export default {
 		}
 	},
 	mounted() {
-		this.fnSearch();
+		this.fnPageNoResetSearch();
 	},
 	methods: {
 		fnSearch(pageNum) {
@@ -212,6 +212,9 @@ export default {
 		// select 박스 선택시 리스트 재출력
 		fnSelected(listSize) {
 			this.listSize = Number(listSize);
+			this.$refs.updatePaging.fnAllDecrease();
+		},
+		fnPageNoResetSearch(){
 			this.$refs.updatePaging.fnAllDecrease();
 		},
 		//수신자 리스트 검색
@@ -224,7 +227,6 @@ export default {
 				var result = response.data;
 				if(result.success) {
 					this.items = result.data;
-					console.log('debug point')
 					this.totCnt = result.pageInfo.totCnt;
 					this.offset = result.pageInfo.offset;
 				} else {
@@ -304,8 +306,6 @@ export default {
 		async fnChgInputFile() {
 			this.fnValidExcel();
 			const uploadFile = this.$refs.excelFile;
-			console.log('uploadFile.value : ' + uploadFile.value);
-
 			let fd = new FormData();
 			fd.append('file', this.$refs.excelFile.files[0]);
 			//const vmSelectLayer = this;

@@ -177,7 +177,6 @@ export default {
 		// select 박스 선택
 		fnSelected() {
 			var index = jQuery('#selectProjectId option').index(jQuery('#selectProjectId option:selected'));
-			console.log('>>> fnSelected child: ' + index);
 			if(index != 0) {
 				this.projectId = this.projectItems[index-1].projectId;
 			}

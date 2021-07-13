@@ -18,8 +18,8 @@
 											<option value="cuid">아이디</option>
 											<option value="hpNumber">휴대폰번호</option>
 										</select>
-										<input type="text" class="inputStyle ml10" style="width:50%" v-model="searchText" @keyup.enter="fnSearch()">
-										<a @click='fnSearch()' class="btnStyle1 float-right" activity="READ">검색</a>
+										<input type="text" class="inputStyle ml10" style="width:50%" v-model="searchText" @keyup.enter="fnPageNoResetSearch()">
+										<a @click='fnPageNoResetSearch()' class="btnStyle1 float-right" activity="READ">검색</a>
 									</div>
 								</div>
 							</div>
@@ -127,6 +127,9 @@ export default {
 			this.$refs.updatePaging.fnAllDecrease();
 			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
 			this.fnSearchCmCuList();
+		},
+		fnPageNoResetSearch(){
+			this.$refs.updatePaging.fnAllDecrease();
 		},
 		//수신자 조회
 		async fnSearchCmCuList() {

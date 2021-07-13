@@ -14,8 +14,8 @@
 								<option value="loginId">아이디</option>
 							</select>
 							<div style="width:78%" class="of_h inline-block float-right">
-								<input type="text" class="inputStyle" style="width:70%" v-model="searchText" title="사용자 ID 입력란">
-								<a @click="fnSearchUser()" class="btnStyle1 backLightGray float-right" style="width:28%" activity="READ" title="중복체크">검색</a>
+								<input type="text" class="inputStyle" style="width:70%" v-model="searchText" title="사용자 ID 입력란" @keypress.enter="fnPageNoResetSearch()">
+								<a @click="fnPageNoResetSearch()" class="btnStyle1 backLightGray float-right" style="width:28%" activity="READ" title="중복체크">검색</a>
 							</div>
 						</div>
 						<!-- 검색창 End -->
@@ -87,7 +87,7 @@
 import memberApi from '../service/memberApi.js'
 import tokenSvc from '@/common/token-service';
 import PageLayer from '@/components/PageLayer.vue';
-import confirm from "@/modules/commonUtil/service/confirm";
+import confirm from '@/modules/commonUtil/service/confirm';
 
 export default {
 	name: 'MemberRegisterPop',
@@ -115,19 +115,21 @@ export default {
 		}
 	},
 	mounted() {
-		this.fnSearchUser();
+		this.fnPageNoResetSearch();
 	},
 	watch: {
 		memberRegisterOpen: function() {
-			jQuery('#selectStatus').val('userName').attr("selected", "selected");
+			jQuery('#selectStatus').val('userName').attr('selected', 'selected');
 			this.fnSearchUserList();
 		}
 	},
 	methods: {
 		fnSearchUser(pageNum) {
-			this.$refs.updatePaging.fnAllDecrease();
 			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
 			this.fnSearchUserList();
+		},
+		fnPageNoResetSearch(){
+			this.$refs.updatePaging.fnAllDecrease();
 		},
 		//사용자 조회
 		async fnSearchUserList() {
@@ -161,7 +163,7 @@ export default {
 		// 닫기
 		fnClose(){
 			this.fnInit();
-			jQuery("#regMembmerPop").modal("hide");
+			jQuery('#regMembmerPop').modal('hide');
 		},
 		// 입력값 초기화
 		fnInit() {
@@ -187,23 +189,23 @@ export default {
 		fnRegisterMember() {
 			//유효성 검사
 			if(this.listMemChkBox == null || this.listMemChkBox.length == 0) {
-				confirm.fnAlert("", "사용자를 선택해주세요.");
+				confirm.fnAlert('', '사용자를 선택해주세요.');
 				return false;
 			}
 
 			let params = {
-				"loginId": tokenSvc.getToken().principal.loginId,
-				"projectId": this.$parent.projectId,
-				"userList": this.listMemChkBox,
+				'loginId': tokenSvc.getToken().principal.loginId,
+				'projectId': this.$parent.projectId,
+				'userList': this.listMemChkBox,
 			};
 
 			memberApi.registerMember(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					confirm.fnAlert("", "등록을 성공했습니다.");
+					confirm.fnAlert('', '등록을 성공했습니다.');
 					this.$parent.fnSearch();
 				} else {
-					confirm.fnAlert("", result.message);
+					confirm.fnAlert('', result.message);
 				}
 			});
 			this.fnInit();

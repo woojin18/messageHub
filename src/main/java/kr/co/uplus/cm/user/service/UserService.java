@@ -11,7 +11,6 @@ import org.springframework.util.StringUtils;
 
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
-import kr.co.uplus.cm.dto.CamelDto;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 
@@ -29,7 +28,7 @@ public class UserService {
 	 */
 	public RestResult<Object> selectUserList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-		int totCnt = 0;
+
 		if(params.containsKey("pageNo")
 				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
 				&& params.containsKey("listSize")
@@ -39,21 +38,10 @@ public class UserService {
 				//카운트 쿼리 실행
 				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_USER_LIST_CNT, params);
 				rtn.getPageInfo().put("totCnt", listCnt);
-				totCnt = listCnt;
 			}
 		}
-		// 역순으로 No 생성
-		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_USER_LIST, params);
-		
-		int pageNo = ((Integer)params.get("pageNo")).intValue();
-		int listSize = ((Integer)params.get("listSize")).intValue();
-		int listNo = totCnt - ((pageNo-1) * listSize);
-		CamelDto cd = null;
-		for (int i = 0; i < rtnList.size(); i++) {
-			cd = (CamelDto)rtnList.get(i);
-			cd.put("listNo", listNo--);
-		}
 
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_USER_LIST, params);
 		rtn.setData(rtnList);
 		return rtn;
 	}

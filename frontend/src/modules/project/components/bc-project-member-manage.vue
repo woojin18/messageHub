@@ -7,21 +7,21 @@
 					<div class="menuBox">
 						<div class="of_h">
 							<h4 class="inline-block" style="width:6%">사용자명</h4>
-							<input type="text" v-model="searchData.userName" class="inputStyle" style="width:14%" title="사용자명 입력란" @keypress.enter="fnSearch(1)">
+							<input type="text" v-model="searchData.userName" class="inputStyle" style="width:14%" title="사용자명 입력란" @keypress.enter="fnPageNoResetSearch()">
 							<h4 class="inline-block ml30" style="width:5%">아이디</h4>
-							<input type="text" v-model="searchData.loginId" class="inputStyle" style="width:14%" title="아이디 입력란" @keypress.enter="fnSearch(1)">
+							<input type="text" v-model="searchData.loginId" class="inputStyle" style="width:14%" title="아이디 입력란" @keypress.enter="fnPageNoResetSearch()">
 							<h4 class="inline-block ml30" style="width:6%">이용권한</h4>
-							<select v-model="searchData.roleCd" class="selectStyle2" style="width:14%" title="이용권한 선택란" @change="fnSearch">
+							<select v-model="searchData.roleCd" class="selectStyle2" style="width:14%" title="이용권한 선택란" @change="fnPageNoResetSearch">
 								<option value="">전체</option>
 								<option value="OWNER">Owner</option>
 								<option value="ADMIN">Admin</option>
 								<option value="USER">User</option>
 							</select>
 							<h4 class="inline-block ml30" style="width:3%">상태</h4>
-							<select v-model="searchData.approvalStatus" id="selectApprovalStatus" class="selectStyle2" style="width:14%" title="상태 선택란"  @change="fnSearch">
+							<select v-model="searchData.approvalStatus" id="selectApprovalStatus" class="selectStyle2" style="width:14%" title="상태 선택란"  @change="fnPageNoResetSearch">
 								<option value="">전체</option>
 							</select>
-							<a @click="fnSearch(1)" class="btnStyle1 float-right" activity="READ" title="검색">검색</a>
+							<a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" activity="READ" title="검색">검색</a>
 						</div>
 					</div>
 				</div>
@@ -105,10 +105,10 @@ import PageLayer from '@/components/PageLayer.vue';
 import memberApi from '../service/memberApi.js'
 import SelectLayer from '@/components/SelectLayer.vue';
 import tokenSvc from '@/common/token-service';
-import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi.js";
+import commonUtilApi from '@/modules/commonUtil/service/commonUtilApi.js';
 import regMembmerPop from '../components/bc-project-member-register.vue';
 import delMemberPop from '../components/bc-project-member-delete.vue';
-import confirm from "@/modules/commonUtil/service/confirm";
+import confirm from '@/modules/commonUtil/service/confirm';
 
 export default {
 	name: 'MemberLayer',
@@ -134,7 +134,7 @@ export default {
 		}
 	},
 
-data() {
+	data() {
 		return {
 			memberList: [],
 			listSize : 10,	// select 박스 value (출력 갯수 이벤트)
@@ -150,15 +150,17 @@ data() {
 	},
 	mounted() {
 		this.fnStatusInit();
-		this.fnSearch(1);
+		this.fnPageNoResetSearch();
 	},
 	watch: {
 	},
 	methods: {
 		fnSearch(pageNum) {
-			this.$refs.updatePaging.fnAllDecrease();
 			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
 			//this.fnSearchMemberList();
+		},
+		fnPageNoResetSearch(){
+			this.$refs.updatePaging.fnAllDecrease();
 		},
 		//멤버 조회
 		async fnSearchMemberList() {
@@ -187,18 +189,18 @@ data() {
 		// 삭제
 		// fnDeleteUserPop(index) {
 		// 	// this.deleteLayerView = true;
-		// 	// this.deleteLayerTitle = "UserDelete";
+		// 	// this.deleteLayerTitle = 'UserDelete';
 		// 	// this.deleteLayerUserId = this.items[index].userId;
 		// },
 		fnStatusInit() {
 			var params = {
-				codeTypeCd	: "APPROVAL_STATUS",
-				useYN		: "Y"
+				codeTypeCd	: 'APPROVAL_STATUS',
+				useYN		: 'Y'
 			};
 			commonUtilApi.selectCodeList(params).then(response =>{
 				var result = response.data.data;
 				for(var i = 0; i < result.length; i++){
-					jQuery("#selectApprovalStatus").append('<option value="'+result[i].codeVal1+'">'+result[i].codeName1+'</option>');
+					jQuery('#selectApprovalStatus').append('<option value="'+result[i].codeVal1+'">'+result[i].codeName1+'</option>');
 				}
 			});
 		},
@@ -209,13 +211,13 @@ data() {
 		// 멤버 추가
 		fnRegisterMemberPop() {
 			this.memberRegisterOpen = !this.memberRegisterOpen;
-			jQuery("#regMembmerPop").modal("show");
+			jQuery('#regMembmerPop').modal('show');
 		},
 		// 멤버 삭제
 		fnDeleteMemberPop(delMember) {
 			this.delMember = delMember
 			this.memberDeleteOpen = !this.memberDeleteOpen;
-			jQuery("#delMemberPop").modal("show");
+			jQuery('#delMemberPop').modal('show');
 		},
 	}
 }
