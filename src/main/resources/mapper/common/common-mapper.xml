@@ -281,6 +281,13 @@
 		)
 	</insert>
 	
+	<select id="selectFilePathByFileId" resultType="string">
+		/* common.selectFilePathByFileId */
+		SELECT	ATTACH_FILE_PATH
+		FROM	cm_bo.CM_ATTACH_FILE
+		WHERE	FILE_ID = #{fileId}
+	</select>
+	
 	<update id="updateCmCmdForRedis">
 		/* common.updateCmCmdForRedis */
 		UPDATE cm.CM_CMD 

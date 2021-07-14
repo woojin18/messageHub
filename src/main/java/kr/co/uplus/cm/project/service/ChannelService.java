@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
+import kr.co.uplus.cm.config.FileConfig;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
@@ -362,37 +363,82 @@ public class ChannelService {
 		return rtn;
 	}
 	
+	@SuppressWarnings("static-access")
+	public String checkFileSizeExtension(MultipartFile file) {
+		boolean rtnboolean = true;
+		// 이미지 업로드 용량 유효성 체크
+		if (file.getSize() > 1000000) {
+			rtnboolean = false;
+		}
+		
+		// 확장자
+		String fileExtension = commonService.getFileNameExt(file.getOriginalFilename(),1);
+		if( !"jpg".equals(fileExtension) ) {
+			rtnboolean =  false;
+		} else if ( !"png".equals(fileExtension) ) {
+			rtnboolean =  false;
+		}
+		
+		if( !rtnboolean ) {
+			return "최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : jpg, png (최대 1MB)에 맞지않습니다.";
+		} else {
+			return "";
+		}
+	}
 	
 	// RCS 브랜드 등록 요청
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void saveRcsBrandReqForApi(Map<String, Object> params) throws Exception {
 		// 임시 파일 패스 사용 
-		String tempYn = "Y";
+		String tempYn = "N";
 		
-		Map<String, Object> profileImgFileRtnMap = new HashMap<String, Object>();
-		Map<String, Object> bgImgFileRtnMap = new HashMap<String, Object>();
-		Map<String, Object> certiFileRtnMap = new HashMap<String, Object>();
+		String profileImgFilePath = "";
+		String bgImgFilePath = "";
+		String certiFilePath = "";
 		
 		if( "N".equals(tempYn) ) {
+			String uploadDirPath = FileConfig.getFilePath(FileConfig.FileSvcType.LIBRARY);
 			// 프로필 파일 업로드 처리
 			MultipartFile profileImgFile = (MultipartFile) params.get("profileImgFile");
 			
-			RestResult<Object> profileImgFileRtn = commonService.uploadFile(profileImgFile, CommonUtils.getString(params.get("loginId")));
+			String profileImgFileCheckStr = checkFileSizeExtension(profileImgFile);
+			if( !"".equals(profileImgFileCheckStr) ) {
+				throw new Exception(profileImgFileCheckStr);
+			}
 			
-			profileImgFileRtnMap = (Map<String, Object>) profileImgFileRtn.getData();
+			String profileImgFileSeq = commonService.uploadFile(profileImgFile, CommonUtils.getString(params.get("loginId")), uploadDirPath);
+			
+			Map<String, Object> profileImgFileMap = new HashMap<String, Object>();
+			profileImgFileMap.put("fileId", profileImgFileSeq);
+			profileImgFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", profileImgFileMap));
+			
 			// 배경 파일 업로드 처리
 			MultipartFile bgImgFile = (MultipartFile) params.get("bgImgFile");
 			
-			RestResult<Object> bgImgFileRtn = commonService.uploadFile(bgImgFile, CommonUtils.getString(params.get("loginId")));
+			String bgImgFileCheckStr = checkFileSizeExtension(bgImgFile);
+			if( !"".equals(bgImgFileCheckStr) ) {
+				throw new Exception(bgImgFileCheckStr);
+			}
 			
-			bgImgFileRtnMap = (Map<String, Object>) bgImgFileRtn.getData();
+			String bgImgFileSeq = commonService.uploadFile(bgImgFile, CommonUtils.getString(params.get("loginId")), uploadDirPath);
+			
+			Map<String, Object> bgImgFileMap = new HashMap<String, Object>();
+			bgImgFileMap.put("fileId", bgImgFileSeq);
+			bgImgFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", bgImgFileMap));
+			
 			// 가입증명 파일 업로드 처리
 			MultipartFile certiFile = (MultipartFile) params.get("certiFile");
 			
-			RestResult<Object> certiFileRtn = commonService.uploadFile(certiFile, CommonUtils.getString(params.get("loginId")));
+			String certiFileSeq = commonService.uploadFile(certiFile, CommonUtils.getString(params.get("loginId")), uploadDirPath);
 			
-			certiFileRtnMap = (Map<String, Object>) certiFileRtn.getData();
+			Map<String, Object> certiFileMap = new HashMap<String, Object>();
+			certiFileMap.put("fileId", certiFileSeq);
+			certiFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", certiFileMap));
+		} else {
+			profileImgFilePath	= "/efs/file/console/2021/05/28/10/test1234.png";
+			bgImgFilePath		= "/efs/file/console/2021/05/28/10/test1234.png";
+			certiFilePath		= "/efs/file/console/2021/05/28/10/test1234.png";
 		}
 		
 		// 데이터 처리
@@ -467,17 +513,9 @@ public class ChannelService {
 		
 		map.put("mainMdn",		params.get("mainMdn"));
 		
-		if( "N".equals(tempYn) ) {
-			map.put("profileImgFilePath",	params.get("profileImgFilePath"));
-			map.put("bgImgFilePath",		params.get("profileImgFilePath"));
-			map.put("certiFilePath",		params.get("profileImgFilePath"));
-		} else {
-			// 임시
-			map.put("profileImgFilePath", "/efs/file/console/2021/05/28/10/test1234.png");
-			map.put("bgImgFilePath", "/efs/file/console/2021/05/28/10/test1234.png");
-			map.put("certiFilePath", "/efs/file/console/2021/05/28/10/test1234.png");
-		}
-		
+		map.put("profileImgFilePath",	profileImgFilePath);
+		map.put("bgImgFilePath",		bgImgFilePath);
+		map.put("certiFilePath",		certiFilePath);
 		
 		String chatbotStr = CommonUtils.getString(params.get("chatbots"));
 		JSONParser parser = new JSONParser();
@@ -492,6 +530,7 @@ public class ChannelService {
 		// map to json
 		kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(map);
 		
+		System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
 //		list.add(json2222);
 		list.add(map);
 		
@@ -517,9 +556,9 @@ public class ChannelService {
 			brandInfo.put("email",			params.get("email")+ "@" + params.get("email2"));
 			brandInfo.put("webSiteUrl",		params.get("webSiteUrl"));
 			brandInfo.put("mainMdn",		params.get("mainMdn"));
-			brandInfo.put("profileImgFilePath", "/efs/file/console/2021/05/28/10/test1234.png");
-			brandInfo.put("bgImgFilePath", "/efs/file/console/2021/05/28/10/test1234.png");
-			brandInfo.put("certiFilePath", "/efs/file/console/2021/05/28/10/test1234.png");
+			brandInfo.put("profileImgFilePath",	profileImgFilePath);
+			brandInfo.put("bgImgFilePath",		bgImgFilePath);
+			brandInfo.put("certiFilePath",		certiFilePath);
 			brandInfo.put("chatbots",		chatbotJson);	// 임시저장 시, 쳇봇들을 관리하기 위해 저장
 			String brandInfoStr = mapper.writeValueAsString(brandInfo);
 			params.put("brandInfo", brandInfoStr);
