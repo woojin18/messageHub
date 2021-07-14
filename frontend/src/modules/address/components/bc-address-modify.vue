@@ -27,7 +27,7 @@
 								<label @click="fnShowProjectList(true)" for="otherProjectUseN">전용</label>
 							</div>
 						</div>
-						<span v-if="isShowProjectList">
+						<span v-show="isShowProjectList">
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block">프로젝트</h5>
 								<div class="float-right" style="width:80%">

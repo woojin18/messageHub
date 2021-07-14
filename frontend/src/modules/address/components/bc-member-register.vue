@@ -53,7 +53,7 @@
 											</td>
 											<td class="text-center">{{ data.cuName }}</td>
 											<td class="text-center">{{ data.cuid }}</td>
-											<td class="text-center end">{{ data.hpNumber }}</td>
+											<td class="text-center end">{{ data.hpNumber | phoneNumber }}</td>
 										</tr>
 										<tr v-if="cmCuList.length == 0">
 											<td class="text-center"></td>
@@ -119,12 +119,65 @@ export default {
 	},
 	watch: {
 		memberRegisterOpen: function() {
-			this.fnSearchCmCuList();
+			this.fnPageNoResetSearch();
+		}
+	},
+	filters:{
+		phoneNumber(val) {
+			if(!val) return val
+
+			val = val.replace(/[^0-9]/g, '')
+
+			let tmp = ''
+			if( val.length < 4){
+				return val;
+			} else if(val.length < 7) {
+				tmp += val.substr(0, 3);
+				tmp += '-';
+				tmp += val.substr(3);
+				return tmp;
+			} else if(val.length == 8) {
+				tmp += val.substr(0, 4);
+				tmp += '-';
+				tmp += val.substr(4);
+				return tmp;
+			} else if(val.length < 10) {
+				if(val.substr(0, 2) =='02') { //02-123-5678
+					tmp += val.substr(0, 2);
+					tmp += '-';
+					tmp += val.substr(2, 3);
+					tmp += '-';
+					tmp += val.substr(5);
+					return tmp;
+				}
+			} else if(val.length < 11) {
+				if(val.substr(0, 2) =='02') { //02-1234-5678
+					tmp += val.substr(0, 2);
+					tmp += '-';
+					tmp += val.substr(2, 4);
+					tmp += '-';
+					tmp += val.substr(6);
+					return tmp;
+				} else { //010-123-4567
+					tmp += val.substr(0, 3);
+					tmp += '-';
+					tmp += val.substr(3, 3);
+					tmp += '-';
+					tmp += val.substr(6);
+					return tmp;
+				}
+			} else { //010-1234-5678
+				tmp += val.substr(0, 3);
+				tmp += '-';
+				tmp += val.substr(3, 4);
+				tmp += '-';
+				tmp += val.substr(7);
+				return tmp;
+			}
 		}
 	},
 	methods: {
 		fnSearch(pageNum) {
-			this.$refs.updatePaging.fnAllDecrease();
 			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
 			this.fnSearchCmCuList();
 		},

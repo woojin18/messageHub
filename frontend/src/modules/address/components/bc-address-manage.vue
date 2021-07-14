@@ -12,7 +12,7 @@
 							<select ref="selectAddrCateGrp" v-on:change="fnSelected" class="selectStyle2" style="width:25%">
 								<option value="" selected>주소록을 선택해 주세요</option>
 								<option v-for="(content, index) in addrCateGrpList" :key="index" :value="content.addressCategoryGrpId">
-									{{ content.addressCategoryGrpName }}
+									{{ content.addressCategoryGrpFullName }}
 								</option>
 							</select>
 							<a @click="fnRegAddrPop()" class="btnStyle1 ml20" title="주소록 등록">등록</a>

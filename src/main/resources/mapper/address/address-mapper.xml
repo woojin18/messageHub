@@ -6,12 +6,19 @@
 		SELECT	ADDRESS_CATEGORY_GRP_ID
 			,	CORP_ID
 			,	PROJECT_ID					/* 전용: project id 입력, 사용: ALL */
+			,	CASE WHEN PROJECT_ID = 'ALL'
+				THEN CONCAT(ADDRESS_CATEGORY_GRP_NAME, ' (공용)')
+				ELSE CONCAT(ADDRESS_CATEGORY_GRP_NAME
+							, ' ('
+							, (SELECT PROJECT_NAME FROM CM_PROJECT WHERE PROJECT_ID = A.PROJECT_ID)
+							, ')')
+				END AS ADDRESS_CATEGORY_GRP_FULL_NAME
 			,	ADDRESS_CATEGORY_GRP_NAME
 			,	ADDRESS_CATEGORY_GRP_DESC
 			,	USE_YN
 			,	REG_ID
 			,	REG_DT
-		FROM cm_console.CM_ADDR_CATE_GRP
+		FROM cm_console.CM_ADDR_CATE_GRP A
 		WHERE 1=1
 		AND	CORP_ID = #{corpId}
 	</select>
@@ -126,7 +133,8 @@
 		FROM cm_console.CM_PROJECT_USER A
 		INNER JOIN cm_console.CM_PROJECT B
 		ON A.PROJECT_ID = B.PROJECT_ID
-		WHERE A.USER_ID = #{userId}
+		WHERE	A.USER_ID = #{userId}
+		AND		B.DEL_YN != 'Y'
 	</select>
 
 	<insert id="insertAddrCateGrp">
