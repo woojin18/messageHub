@@ -2,7 +2,7 @@
 	<div>
 		<article>
 			<div class="contentHeader mb20">
-				<h2>채널별 월별 발송통계</h2>
+				<h2>월별발송통계</h2>
 			</div>
 			<div class="row">
 				<div class="col-xs-12 mt10">
@@ -10,9 +10,9 @@
 						<div>
 							<h4 class="inline-block" style="width:6%">조회기간</h4>
 							<div class="inline-block" style="width:30%">
-								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchStartDate">
+								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchStartDate" maxlength="7" readonly>
 								~
-								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchEndDate">
+								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchEndDate" maxlength="7"  readonly>
 							</div>
 							<ul class="tab_s2 ml20">
 								<li :class="this.searchDateInterval==3 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(3);" title="3개월 서비스 검색">3개월</a></li>
