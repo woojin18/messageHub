@@ -374,6 +374,7 @@ public class SendMessageService {
             pushFbInfo.setMsg(fbMsgBody);
 
             if(StringUtils.equals(rplcSendType, Const.RplcSendType.LMS)) {
+                pushFbInfo.setCh(Const.RplcSendType.MMS);  //LMS 는 MMS로 전송
                 pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
             } else if(StringUtils.equals(rplcSendType, Const.RplcSendType.MMS)) {
                 pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
@@ -1382,6 +1383,7 @@ public class SendMessageService {
             pushFbInfo.setMsg(fbMsgBody);
 
             if(StringUtils.equals(rplcSendType, Const.RplcSendType.LMS)) {
+                pushFbInfo.setCh(Const.RplcSendType.MMS);  //LMS 는 MMS로 전송
                 pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
             } else if(StringUtils.equals(rplcSendType, Const.RplcSendType.MMS)) {
                 pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
@@ -1740,6 +1742,7 @@ public class SendMessageService {
             pushFbInfo.setMsg(fbMsg);
 
             if(StringUtils.equals(rplcSendType, Const.RplcSendType.LMS)) {
+                pushFbInfo.setCh(Const.RplcSendType.MMS);  //LMS 는 MMS로 전송
                 pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
             } else if(StringUtils.equals(rplcSendType, Const.RplcSendType.MMS)) {
                 pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
