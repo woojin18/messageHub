@@ -353,6 +353,18 @@ public class CommonService {
         return rtn;
     }
 
+    /**
+     * 이미지 URL 정보 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectImageUrlInfo(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        rtn.setData(generalDao.selectGernalObject(DB.QRY_SELECT_IMAGE_URL_INFO, params));
+        return rtn;
+    }
+
     // 파일업로드
     public RestResult<Object> uploadFile(MultipartFile files, String loginId) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
@@ -674,7 +686,7 @@ public class CommonService {
     public void updateCmCmdForRedis(String cmdTgt) throws Exception {
     	HashMap<String, Object> saveMap = new HashMap<>();
     	saveMap.put("cmdTgt", cmdTgt);
-    	
+
         generalDao.updateGernal("common.updateCmCmdForRedis", saveMap);
     }
 }

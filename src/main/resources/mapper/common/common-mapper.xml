@@ -261,6 +261,18 @@
         LIMIT 1
     </select>
 
+    <select id="selectImageUrlInfo" parameterType="hashmap" resultType="camel">
+    /* common.selectImageUrlInfo - 이미지 URL 정보 조회 */
+        SELECT
+            FILE_ID
+            , @PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(USE_CH_INFO, "one", #{ch}, NULL, '$[*].CH')) AS PATH_TO_NAME
+            , @PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
+            , @CH_OBJECT := JSON_EXTRACT(USE_CH_INFO, @PATH_TO_PARENT) AS CH_OBJECT
+            , @CH_IMG_URL := JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.URL')) AS CH_IMG_URL
+        FROM CM_IMAGE_FILE CIF
+        WHERE FILE_ID = #{fileId}
+    </select>
+
 	<insert id="insertFileInfo" >
 		/* common.insertFileInfo */
 		INSERT	cm_bo.CM_ATTACH_FILE

@@ -64,9 +64,9 @@
             <colgroup>
               <col style="width:3%">
               <col style="width:3%">
-              <col>
               <col style="width:10%">
-              <col style="width:20%">
+              <col>
+              <col style="width:15%">
               <col style="width:8%">
               <col style="width:8%">
               <col style="width:10%">
@@ -96,8 +96,8 @@
                   <!-- <u><router-link :to="{ name: 'integratedSendManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u> -->
                   <u><router-link :to="{ name: 'sendIntegMessage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u>
                 </td>
-                <td class="text-center">{{data.tmpltTitle}}</td>
-                <td class="text-center">{{fnJsonArrayToChannelLit(data.checkedChannel)}}</td>
+                <td class="text-left">{{$gfnCommonUtils.unescapeXss(data.tmpltTitle)}}</td>
+                <td class="text-left">{{fnJsonArrayToChannelLit(data.checkedChannel)}}</td>
                 <td class="text-center">{{data.msgKindName}}</td>
                 <td class="text-center">{{data.msgTypeName}}</td>
                 <td class="text-center">{{data.otherProjectUseYn}}</td>
@@ -194,7 +194,8 @@ export default {
       let chStr = '';
 
       chList.forEach(element => {
-        chStr += (vm.$gfnCommonUtils.isEmpty(chStr) ? '' : ', ') + vm.chInfo[element];
+        //chStr += (vm.$gfnCommonUtils.isEmpty(chStr) ? '' : ', ') + vm.chInfo[element];
+        chStr += (vm.$gfnCommonUtils.isEmpty(chStr) ? '' : ', ') + element;
       });
       
       return chStr;

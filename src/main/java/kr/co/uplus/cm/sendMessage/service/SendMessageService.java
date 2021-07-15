@@ -2,7 +2,6 @@ package kr.co.uplus.cm.sendMessage.service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -204,14 +203,14 @@ public class SendMessageService {
                 excelList = commonService.getExcelDataList(excelFile, 2, colKeys);
 
                 RecvInfo recvInfo = null;
-                Map<String, String> mergeData = null;
+                Map<String, Object> mergeData = null;
                 for(Map<String, Object> excelInfo : excelList) {
                     recvInfo = new RecvInfo();
                     recvInfo.setCliKey(String.valueOf(cliKey++));
                     if(excelInfo.containsKey("cuid")) recvInfo.setCuid((String) excelInfo.get("cuid"));
                     if(excelInfo.containsKey("phone")) recvInfo.setPhone((String) excelInfo.get("phone"));
 
-                    mergeData = new HashMap<String, String>();
+                    mergeData = new HashMap<String, Object>();
                     for(String key : excelInfo.keySet()) {
                         if(!StringUtils.equals(key, "cuid") && !StringUtils.equals(key, "phone")) {
                             mergeData.put(key, (String) excelInfo.get(key));
@@ -226,6 +225,11 @@ public class SendMessageService {
                 List<Object> sltObjList = generalDao.selectGernalList(DB.QRY_SELECT_ALL_APP_USER_LIST, params);
                 recvInfoLst = (List<RecvInfo>)(Object)sltObjList;
             }
+        }
+
+        String senderType = CommonUtils.getStrValue(params, "tmpltType");
+        if(StringUtils.equals(senderType, Const.SenderType.MERGER) || StringUtils.equals(senderType, Const.SenderType.SMART)) {
+            setMergeDataByChannel((List<Map<String, Object>>) params.get("chMappingVarList"), recvInfoLst);
         }
 
         return recvInfoLst;
@@ -614,7 +618,6 @@ public class SendMessageService {
             params.put("senderType", senderType);
             params.put("reqCh", reqCh);
             params.put("productCode", productCode);
-            params.put("zonedDateTime", ZonedDateTime.now().toString());
             params.put("finalCh", finalCh);
             params.put("phone", recvInfo.getPhone());
             params.put("pushAppId", pushAppId);
@@ -2332,6 +2335,31 @@ public class SendMessageService {
         RestResult<Object> rtn = new RestResult<Object>();
         rtn.setData(generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_INFO, params));
         return rtn;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setMergeDataByChannel(List<Map<String, Object>> chMappingVarList, List<RecvInfo> recvInfoLst) {
+        Map<String, Object> mergeData = new HashMap<String, Object>();
+        Map<String, Object> tempData = new HashMap<String, Object>();
+        String ch = "";
+        List<String> varNms = null;
+
+        for(RecvInfo recvInfo : recvInfoLst) {
+            log.info("recvInfo  ===>> {}", recvInfo);
+            mergeData = new HashMap<String, Object>();
+
+            for(Map<String, Object> chMappingVar : chMappingVarList) {
+                ch = CommonUtils.getStrValue(chMappingVar, "ch");
+                varNms = (List<String>) chMappingVar.get("varNms");
+                tempData = new HashMap<String, Object>();
+
+                for(String key : varNms) {
+                    tempData.put(key, CommonUtils.getStrValue(recvInfo.getMergeData(), key));
+                }
+                mergeData.put(ch, tempData);
+            }
+            recvInfo.setMergeData(mergeData);
+        }
     }
 
 }

@@ -289,7 +289,7 @@
             , #{reqCh}
             , #{productCode}
             , '9999'
-            , SUBSTR(#{zonedDateTime}, 1, 26)
+            , NOW()
             , #{finalCh}
             , #{phone}
             , #{pushAppId}
@@ -340,7 +340,7 @@
             , cm_console.fnc_get_cd_name('MSG_TYPE', CST.MSG_TYPE, 1) AS MSG_TYPE_NAME
             , CST.TMPLT_TITLE
             , CST.TMPLT_INFO
-            , JSON_EXTRACT(CST.TMPLT_INFO, '$[*].CH') CH_TYPE_LIST
+            , JSON_EXTRACT(CST.TMPLT_INFO, '$[*].ch') CH_TYPE_LIST
             , CST.TMPLT_TYPE
             , CST.TMPLT_STATUS
             , CST.PRODUCT_CODE
@@ -364,10 +364,10 @@
         AND A.USE_YN = 'Y'
         AND A.TMPLT_TYPE = 'M'
         AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
-        AND JSON_CONTAINS(JSON_ARRAY(<foreach collection="useChGrps" item="item" separator=",">#{item}</foreach>), JSON_EXTRACT(A.TMPLT_INFO, '$[*].CH'), '$') > 0
+        AND JSON_CONTAINS(JSON_ARRAY(<foreach collection="useChGrps" item="item" separator=",">#{item}</foreach>), JSON_EXTRACT(A.TMPLT_INFO, '$[*].ch'), '$') > 0
         <if test="searchText != '' and searchText != null ">
             <if test="searchCondi == 'templateChannel' ">
-            AND UPPER(A.TMPLT_INFO ->> '$[0].chTypeList') LIKE CONCAT('%', UPPER(#{searchText}), '%')
+            AND UPPER(JSON_EXTRACT(A.TMPLT_INFO, '$[*].ch')) LIKE CONCAT('%', UPPER(#{searchText}), '%')
             </if>
             <if test="searchCondi == 'templateName' ">
             AND A.TMPLT_TITLE LIKE CONCAT('%', #{searchText}, '%')
@@ -408,7 +408,7 @@
               , A.USE_YN
               <!-- , A.TMPLT_INFO ->> '$[0].chTypeList' AS TMPLT_CHANNEL -->
               <!-- , REPLACE(A.TMPLT_INFO ->> '$[0].chTypeList', 'SMSMMS', 'SMS/MMS') AS TMPLT_CHANNEL -->
-              , JSON_EXTRACT(A.TMPLT_INFO, '$[*].CH') CHECKED_CHANNEL
+              , JSON_EXTRACT(A.TMPLT_INFO, '$[*].ch') CHECKED_CHANNEL
               , A.REG_ID
               , cm_console.fnc_get_user_name(A.REG_ID) AS REG_NM
               , A.REG_DT

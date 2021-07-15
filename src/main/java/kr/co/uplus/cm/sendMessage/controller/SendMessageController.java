@@ -924,8 +924,7 @@ public class SendMessageController {
 
 
         } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
+            rtn.setFail("실패하였습니다.");
             log.error("{}.sendSmartMessage Error : {}", this.getClass(), e);
             return rtn;
         }
