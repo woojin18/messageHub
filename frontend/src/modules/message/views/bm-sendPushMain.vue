@@ -306,6 +306,7 @@ export default {
       previewMessageType : 'PUSH',  //메세지미리보기 타입(PUSH, RPLC)
       inProgress: false,
       sendData : {
+        chGrp: 'PUSH',
         ch: 'PUSH',
         serviceCode:'ALL', //발송정책(ALL, FCM, APNS)
         requiredCuid : true,  //app 로그인 ID 필수여부
@@ -336,8 +337,24 @@ export default {
   },
   mounted() {
     this.fnGetAppId();
+    this.fnValidUseChGrp();
   },
   methods: {
+    async fnValidUseChGrp(){
+      let params = {chGrp: this.sendData.chGrp};
+      await MessageApi.selectValidUseChGrp(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          if(this.$gfnCommonUtils.isEmpty(result.data)){
+            confirm.fnAlert(this.componentsTitle, '이용하실 수 없는 채널입니다.');
+            this.$router.back();
+          }
+        } else {
+          confirm.fnAlert(this.componentsTitle, '시스템 오류입니다. 잠시 후 다시 시도하세요.');
+          this.$router.back();
+        }
+      });
+    },
     //발송 정보 유효성 체크
     fnValidSendMsgData(testSendYn){
       if(this.fnSetContsVarNms() == false){

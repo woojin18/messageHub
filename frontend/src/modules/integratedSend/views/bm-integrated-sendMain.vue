@@ -166,7 +166,7 @@
       <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
         <div class="of_h user-phone">
           <div class="float-left" style="width:24%">
-            <h4>01  템플릿|{{previewMessageType}}</h4>
+            <h4>01  템플릿</h4>
           </div>
           <div class="float-left" style="width:76%">
             <div class="of_h">

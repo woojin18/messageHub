@@ -227,7 +227,7 @@ public class SendMessageService {
             }
         }
 
-        String senderType = CommonUtils.getStrValue(params, "tmpltType");
+        String senderType = CommonUtils.getStrValue(params, "senderType");
         if(StringUtils.equals(senderType, Const.SenderType.MERGER) || StringUtils.equals(senderType, Const.SenderType.SMART)) {
             setMergeDataByChannel((List<Map<String, Object>>) params.get("chMappingVarList"), recvInfoLst);
         }
@@ -2298,16 +2298,9 @@ public class SendMessageService {
 
         if(useChGrpInfo != null) {
             for(String key : useChGrpInfo.keySet()) {
-                if(StringUtils.equals(useChGrpInfo.get(key), Const.COMM_YES)) {
-                    if(StringUtils.equals(key, Const.ChGrp.SMSMMS)) {
-                        useChGrps.add(Const.Ch.SMS);
-                        useChGrps.add(Const.Ch.MMS);
-                    }else if(StringUtils.equals(key, Const.ChGrp.KKO)) {
-                        useChGrps.add(Const.Ch.FRIENDTALK);
-                        useChGrps.add(Const.Ch.ALIMTALK);
-                    } else {
-                        useChGrps.add(key);
-                    }
+                if(StringUtils.equals(useChGrpInfo.get(key), Const.COMM_YES)
+                        && Const.chGrp.containsKey(key)) {
+                    useChGrps.addAll((List<String>) Const.chGrp.get(key));
                 }
             }
         }
@@ -2331,12 +2324,23 @@ public class SendMessageService {
         return rtn;
     }
 
+    /**
+     * 스마트 템플릿 정보 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
     public RestResult<Object> selectSmartTmpltInfo(Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
         rtn.setData(generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_INFO, params));
         return rtn;
     }
 
+    /**
+     * 채널별 변수바인딩
+     * @param chMappingVarList
+     * @param recvInfoLst
+     */
     @SuppressWarnings("unchecked")
     public void setMergeDataByChannel(List<Map<String, Object>> chMappingVarList, List<RecvInfo> recvInfoLst) {
         Map<String, Object> mergeData = new HashMap<String, Object>();
@@ -2345,7 +2349,6 @@ public class SendMessageService {
         List<String> varNms = null;
 
         for(RecvInfo recvInfo : recvInfoLst) {
-            log.info("recvInfo  ===>> {}", recvInfo);
             mergeData = new HashMap<String, Object>();
 
             for(Map<String, Object> chMappingVar : chMappingVarList) {
@@ -2362,5 +2365,27 @@ public class SendMessageService {
         }
     }
 
-}
+    /**
+     * 채널 사용 가능 여부
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectValidUseChGrp(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
 
+        String chGrp = CommonUtils.getStrValue(params, "chGrp");
+        if(StringUtils.isBlank(chGrp)) {
+            rtn.setFail();
+            log.error("{}.selectValidUseChGrp Invalid parameter information. params ==> {}", this.getClass(), params);
+            return rtn;
+        }
+
+        //사용 채널 그룹 정보 조회
+        Map<String, Object> sParams = new HashMap<String, Object>(params);
+        sParams.put("chGrp", "\""+chGrp+"\"");
+        rtn.setData(CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_USE_CH_GRP_INFO, sParams)));
+        return rtn;
+    }
+
+}

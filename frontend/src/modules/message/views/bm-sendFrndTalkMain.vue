@@ -376,6 +376,7 @@ export default {
       senderKeyType: 'NOMAL',
       senderKeyList: [],
       sendData : {
+        chGrp: 'KKO',
         ch: 'FRIENDTALK',
         requiredCuid : false,
         requiredCuPhone : true,
@@ -403,10 +404,26 @@ export default {
     }
   },
   mounted() {
+    this.fnValidUseChGrp();
     this.fnGetSenderKeyList();
     this.fnAddButton();
   },
   methods: {
+    async fnValidUseChGrp(){
+      let params = {chGrp: this.sendData.chGrp};
+      await messageApi.selectValidUseChGrp(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          if(this.$gfnCommonUtils.isEmpty(result.data)){
+            confirm.fnAlert(this.componentsTitle, '이용하실 수 없는 채널입니다.');
+            this.$router.back();
+          }
+        } else {
+          confirm.fnAlert(this.componentsTitle, '시스템 오류입니다. 잠시 후 다시 시도하세요.');
+          this.$router.back();
+        }
+      });
+    },
     fnGetSenderKeyList(){
       const params = {kkoSvc: this.sendData.ch, senderKeyType: this.senderKeyType};
       templateApi.selectSenderKeyList(params).then(response => {

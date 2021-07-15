@@ -330,6 +330,7 @@ export default {
       ],
       buttonDSDescription : '카카오 메세지에 택배사 명과 송장번호를 기재한 후, 배송 조회 버튼을 추가하시면 메세지에서 택배사 명과 송장번호를 추출하여 배송 조회 카카오 검색페이지 링크가 자동으로 생성됩니다. 카카오에서 지원하는 택배사명과 운송장번호가 알림톡 메시지 내에 포함된 경우에만 배송조회 버튼이 표시됩니다. 배송 조회가 가능한 택배사는 <span style="color:#e11d21"><strong>카카오와 해당 택배사와의 계약 관계에 의해 변동될 수 있음을 유의해주시기 바랍니다.</strong></span>',
       sendData : {
+        chGrp: 'KKO',
         ch: 'ALIMTALK',
         requiredCuid : false,
         requiredCuPhone : true,
@@ -358,7 +359,25 @@ export default {
       }
     }
   },
+  mounted() {
+    this.fnValidUseChGrp();
+  },
   methods: {
+    async fnValidUseChGrp(){
+      let params = {chGrp: this.sendData.chGrp};
+      await messageApi.selectValidUseChGrp(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          if(this.$gfnCommonUtils.isEmpty(result.data)){
+            confirm.fnAlert(this.componentsTitle, '이용하실 수 없는 채널입니다.');
+            this.$router.back();
+          }
+        } else {
+          confirm.fnAlert(this.componentsTitle, '시스템 오류입니다. 잠시 후 다시 시도하세요.');
+          this.$router.back();
+        }
+      });
+    },
     //메세지 미리보기 변경
     fnChgPreviewMessageType(type){
       this.previewMessageType = type;

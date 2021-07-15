@@ -258,6 +258,9 @@
             AND CP.PROJECT_ID = #{projectId}
             AND CP.USE_YN = 'Y'
             AND CP.DEL_YN = 'N'
+        <if test="chGrp != '' and chGrp != null ">
+            AND JSON_EXTRACT(CP.USE_CH_GRP_INFO, CONCAT('$.', #{chGrp})) = 'Y'
+        </if>
         LIMIT 1
     </select>
 
@@ -292,17 +295,17 @@
 		,	#{userId}
 		)
 	</insert>
-	
+
 	<select id="selectFilePathByFileId" resultType="string">
 		/* common.selectFilePathByFileId */
 		SELECT	ATTACH_FILE_PATH
 		FROM	cm_bo.CM_ATTACH_FILE
 		WHERE	FILE_ID = #{fileId}
 	</select>
-	
+
 	<update id="updateCmCmdForRedis">
 		/* common.updateCmCmdForRedis */
-		UPDATE cm.CM_CMD 
+		UPDATE cm.CM_CMD
 		SET UPD_DT = NOW()
 		WHERE CMD_TGT = #{cmdTgt}
 	</update>
