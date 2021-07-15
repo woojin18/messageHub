@@ -19,7 +19,7 @@
                 <div class="text-sub-wrap">
                   <!-- <p class="text-sub scroll-y"> -->
                     <div v-if="!$gfnCommonUtils.isEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center"
-                      :style="'padding:40px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
+                      :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
                     </div>
                     <br v-if="$gfnCommonUtils.isEmpty(sendData.imgUrl)"/>
                     <span><pre>{{sendData.frndTalkContent}}</pre></span>

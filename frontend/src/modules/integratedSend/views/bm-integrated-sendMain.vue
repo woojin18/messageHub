@@ -45,7 +45,7 @@
                     <div 
                       v-if="tmpltData.msgType == 'IMAGE' && tmpltData.FRIENDTALK.image && tmpltData.FRIENDTALK.image.imageUrl" 
                       class="phoneText2 text-center"
-                      :style="'padding:40px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.FRIENDTALK.image.imageUrl+');'"
+                      :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.FRIENDTALK.image.imageUrl+');'"
                     >
                     </div>
                     <div class="text-sub-wrap">

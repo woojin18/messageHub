@@ -407,11 +407,10 @@
               , A.TMPLT_TYPE
               , A.USE_YN
               <!-- , A.TMPLT_INFO ->> '$[0].chTypeList' AS TMPLT_CHANNEL -->
-              <!-- , REPLACE(A.TMPLT_INFO ->> '$[0].chTypeList', 'SMSMMS', 'SMS/MMS') AS TMPLT_CHANNEL -->
               , JSON_EXTRACT(A.TMPLT_INFO, '$[*].ch') CHECKED_CHANNEL
               , A.REG_ID
               , cm_console.fnc_get_user_name(A.REG_ID) AS REG_NM
-              , A.REG_DT
+              , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%S') AS REG_DT
         FROM (SELECT @rownum:=0) TMP,
             cm.CM_SMART_TMPLT A
         WHERE 1=1
