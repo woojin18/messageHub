@@ -42,7 +42,7 @@
 									ELSE 'N'
 								END AS OTHER_PROJECT_USE_YN
 						,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
-									FROM	cm_console.CM_RCS_TMP_MSGBASE
+									FROM	cm.CM_RCS_MSGBASE
 									WHERE	BRAND_ID  = A.BRAND_ID 
 								) AS TMPL_CNT
 						,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인' ELSE '' END	AS APPROVAL_STATUS		
@@ -77,7 +77,7 @@
 									ELSE 'N'
 								END AS OTHER_PROJECT_USE_YN
 						,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
-									FROM	cm_console.CM_RCS_TMP_MSGBASE
+									FROM	cm.CM_RCS_MSGBASE
 									WHERE	BRAND_ID  = A.BRAND_ID 
 								) AS TMPL_CNT
 						,		A.APPROVAL_STATUS
@@ -206,9 +206,17 @@
 		WHERE	RANKING = 1
 	</select>
 	
+	<select id="selectRcsRegTmpltListCount" resultType="int">
+		/* channel.selectRcsRegTmpltListCount */
+		SELECT	COUNT(1) AS CNT
+		FROM	cm.CM_RCS_MSGBASE
+		WHERE	BRAND_ID = #{brandId}
+	</select>
 	<select id="selectRcsRegTmpltList" resultType="camel">
 		/* channel.selectRcsRegTmpltList */
-		SELECT	MESSAGEBASE_ID
+		SELECT	
+				MESSAGEBASE_ID
+		,		@ROWNUM := @ROWNUM + 1 AS ROWNUM
 		,		MESSAGEBASEFORM_ID
 		,		BRAND_ID
 		,		CORP_ID
@@ -218,12 +226,22 @@
 		,		APPROVAL_STATUS
 		,		REG_ID
 		,		UPD_ID
-		,		USE_YN
-		,		REG_DT
-		,		UPD_DT
-		,		APPROVAL_DT
+		,		CASE
+					WHEN REPLACE(JSON_EXTRACT(MESSAGEBASE_INFO , '$.cardType[0]'), "\"", "") = 'description' THEN '서술형'
+					ELSE '스타일'
+				END CARD_TYPE
+		,		REPLACE(REPLACE(REPLACE(JSON_EXTRACT(MESSAGEBASE_INFO , '$.attribute'), "\"", ""), '[', ''), ']', '') AS CH
+		,		case when USE_YN = 'Y' then '예' else '아니오' end as USE_YN
+		,		date_format(REG_DT, '%Y-%m-%d') AS REG_DT
+		,		date_format(UPD_DT, '%Y-%m-%d') AS UPD_DT
+		,		date_format(APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
 		FROM	cm.CM_RCS_MSGBASE
+		, (SELECT @ROWNUM:=0) TMP
 		WHERE	BRAND_ID = #{brandId}
+		ORDER BY REG_DT
+        <if test='pagingYn == "Y" '>
+        LIMIT #{offset}, #{listSize}
+        </if>
 	</select>
 	
 	<select id="selectRcsCallbackList" resultType="camel">
@@ -539,9 +557,9 @@
 		AND		API_KEY		= #{apiKey}
 	</delete>
 	
-	<select id="selectRcsBrandListCallbackList" resultType="camel">
-		/* channel.selectRcsBrandListCallbackList */
-		SELECT	*
+	<select id="selectRcsBrandListCallbackListCount" resultType="int">
+		/* channel.selectRcsBrandListCallbackListCount */
+		SELECT	COUNT(1) AS CNT
 		FROM	(
 		
 			SELECT	CALLBACK_CNT.*
@@ -642,6 +660,7 @@
 								,		crcr.APPROVAL_STATUS 
 								,		date_format(crcr.REG_DT, '%Y-%m-%d') AS REG_DT
 								,		date_format(crcr.APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
+								,		date_format(crcr.REG_DT, '%Y-%m-%d') AS RANKING_DT
 								from cm.CM_RCS_CHATBOT_REQ crcr
 								where crcr.CHATBOT_ID not in (
 									select	crc.CHATBOT_ID
@@ -681,8 +700,157 @@
 		WHERE	RANKING = 1
 		and A.BRAND_ID = #{brandId}
 		) AA
+	</select>
+	
+	<select id="selectRcsBrandListCallbackList" resultType="camel">
+		/* channel.selectRcsBrandListCallbackList */
+		SELECT	*
+		,		@ROWNUM := @ROWNUM + 1 AS ROWNUM
+		FROM	(
 		
+			SELECT	CALLBACK_CNT.*
+			FROM 	(
+				SELECT	BRAND.*
+				,		case @vData when BRAND_ID then @vRank := @vRank + 1 else @vRank := 1 end AS RANKING
+				,		(@vData:=BRAND_ID) AS vData
+				FROM	(
+						select	'BRAND' AS TB_NAME
+						,		A.BRAND_ID 
+						,		A.PROJECT_ID  
+						,		A.CORP_ID 
+						,		A.BRAND_NAME
+						,		'' as BRAND_DESC
+						,		A.BRAND_INFO
+						,		CASE
+									WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
+									ELSE 'N'
+								END AS OTHER_PROJECT_USE_YN
+						,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
+									FROM	cm_console.CM_RCS_TMP_MSGBASE
+									WHERE	BRAND_ID  = A.BRAND_ID 
+								) AS TMPL_CNT
+						,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인' ELSE '' END	AS APPROVAL_STATUS		
+						,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
+						,		date_format(A.REG_DT, '%Y-%m-%d') AS REQ_DT
+						,		date_format(A.APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
+						,		'' AS MAIN_MDN
+						,		'' AS MAIN_TITLE
+						<![CDATA[
+						,		CASE
+									WHEN A.APPROVAL_DT > A.REG_DT	THEN A.APPROVAL_DT
+									WHEN A.APPROVAL_DT > A.UPD_DT	THEN A.APPROVAL_DT
+									WHEN A.UPD_DT > A.REG_DT		THEN A.UPD_DT
+									ELSE A.REG_DT
+								END AS RANKING_DT 
+						]]>
+						from 	cm.CM_RCS_BRAND A
+						WHERE 	A.CORP_ID = #{corpId}
+						and		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+		
+						UNION ALL
+		
+						select	'BRAND_REQ' AS TB_NAME
+						,		A.BRAND_ID
+						,		A.PROJECT_ID  
+						,		A.CORP_ID 
+						,		A.BRAND_NAME
+						,		A.BRAND_DESC
+						,		A.BRAND_INFO
+						,		CASE
+									WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
+									ELSE 'N'
+								END AS OTHER_PROJECT_USE_YN
+						,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
+									FROM	cm_console.CM_RCS_TMP_MSGBASE
+									WHERE	BRAND_ID  = A.BRAND_ID 
+								) AS TMPL_CNT
+						,		A.APPROVAL_STATUS
+						,		A.REG_DT
+						,		'' AS REQ_DT
+						,		'' AS APPROVAL_DT
+						,		B.MAIN_MDN
+						,		B.MAIN_TITLE
+						,		A.REG_DT AS RANKING_DT 
+						from 	cm.CM_RCS_BRAND_REQ A
+						left outer join (
+							SELECT	crcr.BRAND_ID 
+							,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.mdn[0]'), "\"", "") as MAIN_MDN
+							,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") as MAIN_TITLE
+							FROM cm.CM_RCS_CHATBOT_REQ crcr 
+							where JSON_EXTRACT(crcr.CHATBOT_INFO , '$.isMainNum[0]') = true
+						) B
+							ON A.BRAND_ID = B.BRAND_ID
+						WHERE 	A.CORP_ID = #{corpId}
+						and		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+				) BRAND, (SELECT @vRank:=0, @vData:='') as r
+				ORDER BY BRAND.BRAND_ID, BRAND.RANKING_DT DESC
+			) A
+			LEFT OUTER JOIN (
+				select *
+				from (
+					SELECT	*
+					FROM 	(
+							SELECT	CHATBOT.*
+							,		case @vData when CHATBOT_ID then @vRank := @vRank + 1 else @vRank := 1 end AS CHANBOT_RANKING
+							,		(@vData:=CHATBOT_ID) AS vData
+							FROM	(
+								select	crcr.CHATBOT_ID
+								,		crcr.CHATBOT_ID AS MAIN_MDN
+								,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS MAIN_TITLE
+								,		CASE
+											WHEN REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "") = 1 THEN '예'
+											ELSE '아니오'
+										END AS RCS_REPLY_TEXT
+								,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "")  AS RCS_REPLY
+								,		crcr.BRAND_ID 
+								,		crcr.APPROVAL_STATUS 
+								,		date_format(crcr.REG_DT, '%Y-%m-%d') AS REG_DT
+								,		date_format(crcr.APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
+								,		date_format(crcr.REG_DT, '%Y-%m-%d') AS RANKING_DT
+								from cm.CM_RCS_CHATBOT_REQ crcr
+								where crcr.CHATBOT_ID not in (
+									select	crc.CHATBOT_ID
+									from cm.CM_RCS_CHATBOT crc 
+								)
+			
+								UNION 
+			
+								select	crc.CHATBOT_ID
+								,		crc.CHATBOT_ID AS MAIN_MDN
+								,		REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS MAIN_TITLE
+								,		CASE
+											WHEN REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "") = 1 THEN '예'
+											ELSE '아니오'
+										END AS RCS_REPLY_TEXT
+								,		REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "")  AS RCS_REPLY
+								,		crc.BRAND_ID 
+								,		crc.APPROVAL_STATUS 
+								,		date_format(crc.REG_DT, '%Y-%m-%d') AS REG_DT
+								,		date_format(crc.APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
+								<![CDATA[
+								,		CASE
+											WHEN crc.APPROVAL_DT > crc.REG_DT	THEN crc.APPROVAL_DT
+											WHEN crc.APPROVAL_DT > crc.UPD_DT	THEN crc.APPROVAL_DT
+											WHEN crc.UPD_DT > crc.REG_DT		THEN crc.UPD_DT
+											ELSE crc.REG_DT
+										END AS RANKING_DT 
+								]]>
+								from cm.CM_RCS_CHATBOT crc 
+							) CHATBOT, (SELECT @vRank:=0, @vData:='') as r
+							ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.RANKING_DT DESC
+					) A
+					WHERE	CHANBOT_RANKING = 1  
+				) CHATBOT_RANK
+			) CALLBACK_CNT
+			ON A.BRAND_ID = CALLBACK_CNT.BRAND_ID
+		WHERE	RANKING = 1
+		and A.BRAND_ID = #{brandId}
+		) AA
+		, (SELECT @ROWNUM:=0) TMP
 		ORDER BY AA.REG_DT DESC
+        <if test='pagingYn == "Y" '>
+        LIMIT #{offset}, #{listSize}
+        </if>
 	</select>
 	
 	<select id="selectApikeyForMoApi" resultType="String">

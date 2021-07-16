@@ -16,39 +16,41 @@
 						</div>
             
             <!-- 페이징 카운트 -->
-						<PagingCnt :pageInfo.sync="pageInfo" />
+            <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+              <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
+            </div>
             <!-- 페이징 카운트 -->
             <table cellspacing="0" id="list" class="table_skin1 tbl-striped" style="width:100%">
               <thead>
-                <th>No.</th>
-                <th>발신번호명</th>
-                <th>발신번호</th>
-                <th>SMSMO<br>사용여부</th>
-                <th>등록일</th>
-                <th>승인상태</th>
-                <th>승인일</th>
+                <th class="text-center lc-1">No.</th>
+                <th class="text-center lc-1">발신번호명</th>
+                <th class="text-center lc-1">발신번호</th>
+                <th class="text-center lc-1">SMSMO<br>사용여부</th>
+                <th class="text-center lc-1">등록일</th>
+                <th class="text-center lc-1">승인상태</th>
+                <th class="text-center lc-1 end">승인일</th>
               </thead>
               <tbody>
                 <tr v-for="(data, index) in callbackItems" :key="index">
-                  <td>
-                    {{ index + 1 }}
+                  <td class="text-center">
+                    {{totCnt-offset-data.rownum+1}}
                   </td>
-                  <td>
+                  <td class="text-center">
                     {{ data.mainTitle }}
                   </td>
-                  <td>
+                  <td class="text-center">
                     {{ data.chatbotId }}
                   </td>
-                  <td>
+                  <td class="text-center">
                     {{ data.rcsReplyText }}
                   </td>
-                  <td>
+                  <td class="text-center">
                     {{ data.regDt }}
                   </td>
-                  <td>
+                  <td class="text-center">
                     {{ data.approvalStatus }}
                   </td>
-                  <td>
+                  <td class="text-center end">
                     {{ data.approvalDt }}
                   </td>
                 </tr>
@@ -56,7 +58,7 @@
             </table>
 					</div>
           <!-- 페이징 -->
-          <Paging :pageInfo.sync="pageInfo" />
+          <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
           <!-- 페이징 -->
 					<div class="text-center mt40">
 						<a @click="fnClose" class="btnStyle3 black font14" data-toggle="modal">닫기</a>
@@ -70,20 +72,23 @@
 <script>
 import rcsApi from '../service/api'
 
-import Paging from "@/modules/commonUtil/components/bc-paging"
-import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt"
+import SelectLayer from '@/components/SelectLayer.vue';
+import PageLayer from '@/components/PageLayer.vue';
 
 export default {
   components: {
-      Paging
-    , PagingCnt
+		PageLayer,
+		SelectLayer
   },
   data() {
     return {
       
       // 리스트 
       callbackItems : [],
-      pageInfo: {}
+			listSize : 10,  // select 박스 value (출력 갯수 이벤트)
+			pageNo : 1,  // 현재 페이징 위치
+			totCnt : 0,  //전체 리스트 수
+			offset : 0, //페이지 시작점
     }
   },
   props: {
@@ -106,36 +111,38 @@ export default {
       }
     },
     row_data: function(newVal, oldVal) {
-      this.fnSearch();
+      this.fnSearch(1);
     }
   },
   mounted() {
-    this.pageInfo = {
-			"pageCnt"   : [10, 30, 50],  //표시할 개수 리스트
-			"selPageCnt": 10,          //선택한 표시 개수
-			"selPage"   : 1,          //선택한 페이지
-			"rowNum"    : 1           //총개수
-		};
-
+    this.fnSearch(1);
   },
   methods: {
+		// select 박스 선택시 리스트 재출력
+		fnSelected(listSize) {
+			this.listSize = Number(listSize);
+			this.$refs.updatePaging.fnAllDecrease();
+		},
     // 닫기
     fnClose(){
       this.$emit('update:visibleCallback', false);
     },
     // 조회
-    fnSearch(){
+    fnSearch(pageNo){
       var params = {
           "brandId"    : this.row_data.brandId,
           "projectId"  : this.row_data.projectId,
-          "pageInfo"    	: this.pageInfo
+          "pageNo"		: (this.$gfnCommonUtils.defaultIfEmpty(pageNo, '1'))*1,
+				  "listSize"		: this.listSize
       };
 
       rcsApi.selectRcsCallbackList(params).then(response =>{
         var result = response.data;
 				if(result.success) {
           this.callbackItems = result.data; 
-          this.pageInfo = result.pageInfo;
+          
+					this.totCnt = result.pageInfo.totCnt;
+          this.offset = result.pageInfo.offset;
 				}
       });
     }

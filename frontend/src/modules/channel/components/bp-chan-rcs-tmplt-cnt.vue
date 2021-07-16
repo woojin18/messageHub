@@ -14,54 +14,60 @@
 								브랜드ID : {{this.row_data.brandId}}
 							</div>
 						</div>
+            
+            <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+              <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
+            </div>
             <table cellspacing="0" id="list" class="table_skin1 tbl-striped" style="width:100%">
               <thead>
-                <th>No.</th>
-                <th>포멧ID</th>
-                <th>템플릿명</th>
-                <th>속성</th>
-                <th>등록채널</th>
-                <th>등록일</th>
-                <th>승인상태</th>
-                <th>승인요청일</th>
-                <th>승인완료일</th>
-                <th>사용여부</th>
+                <th class="text-center lc-1">No.</th>
+                <th class="text-center lc-1">포멧ID</th>
+                <th class="text-center lc-1">템플릿명</th>
+                <th class="text-center lc-1">속성</th>
+                <th class="text-center lc-1">등록채널</th>
+                <th class="text-center lc-1">등록일</th>
+                <th class="text-center lc-1">승인상태</th>
+                <th class="text-center lc-1">승인요청일</th>
+                <th class="text-center lc-1">승인완료일</th>
+                <th class="text-center lc-1 end">사용여부</th>
               </thead>
               <tbody>
                 <tr v-for="(data, index) in tmpltItems" :key="index">
-                  <td>
-                    {{ index + 1 }}
+                  <td class="text-center">
+                    {{totCnt-offset-data.rownum+1}}
                   </td>
-                  <td>
-                    {{ data.PROJECT_NAME }}
+                  <td class="text-center">
+                    {{ data.messagebaseId }}
                   </td>
-                  <td>
-                    {{ data.PROJECT_ID }}
+                  <td class="text-center">
+                    {{ data.tmpltName }}
                   </td>
-                  <td>
-                    {{ data.USE_CH_LIST }}
+                  <td class="text-center">
+                    {{ data.cardType }}
                   </td>
-                  <td>
-                    {{ data.REG_DT }}
+                  <td class="text-center">
+                    {{ data.ch }}
                   </td>
-                  <td>
-                    {{ data.PAY_TYPE }}
+                  <td class="text-center">
+                    {{ data.regDt }} 
                   </td>
-                  <td>
-                    {{ data.PROJECT_MEMBER_CNT }}
+                  <td class="text-center">
+                    {{ data.approvalStatus }} 
                   </td>
-                  <td>
-                    {{ data.REG_DT }}
+                  <td class="text-center">
+                    {{ data.updDt }}
                   </td>
-                  <td>
-                    {{ data.REG_DT }}
+                  <td class="text-center">
+                    {{ data.approvalDt }}
                   </td>
-                  <td>
-                    {{ data.REG_DT }}
+                  <td class="text-center end">
+                    {{ data.useYn }}
                   </td>
                 </tr>
               </tbody>
             </table>
+          	<PageLayer @fnClick="fnSearchRegTmplt" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
+			
 					</div>
 					<div class="text-center mt40">
 						<a @click="fnClose" class="btnStyle3 black font14" data-toggle="modal">닫기</a>
@@ -75,18 +81,23 @@
 <script>
 import rcsApi from '../service/api'
 
+import SelectLayer from '@/components/SelectLayer.vue';
+import PageLayer from '@/components/PageLayer.vue';
+
 export default {
   name: 'bpChanRcsTmpltCnt',
   data() {
     return {
-      // select 박스 value (출력 갯수 이벤트)
-      selected : 10,
-      // 현재 페이징 위치
-      pagingCnt : 1,
-      // 리스트 
-      tmpltItems : [],
-      count : 0
+			listSize : 10,  // select 박스 value (출력 갯수 이벤트)
+			pageNo : 1,  // 현재 페이징 위치
+			totCnt : 0,  //전체 리스트 수
+			offset : 0, //페이지 시작점
+      tmpltItems : []
     }
+  },
+  components: {
+		PageLayer,
+		SelectLayer
   },
   props: {
     visibleTmplt: {
@@ -108,26 +119,32 @@ export default {
       }
     },
     row_data: function(newVal, oldVal) {
-      this.fnSearchRegTmplt();
+      this.fnSearchRegTmplt(1);
     }
   },
   mounted() {
-    var vm = this;
   },
   methods: {
+		// select 박스 선택시 리스트 재출력
+		fnSelected(listSize) {
+			this.listSize = Number(listSize);
+			this.$refs.updatePaging.fnAllDecrease();
+		},
     // 닫기
     fnClose(){
       this.$emit('update:visibleTmplt', false);
     },
     // 조회
-    fnSearchRegTmplt(){
+    fnSearchRegTmplt(pageNo){
       var params = {
-        "brand_id"    : this.row_data.brandId,
-        "rows"        : 15,
-        "paging"      : 1
+        "brandId"    : this.row_data.brandId,
+				"pageNo"		: (this.$gfnCommonUtils.defaultIfEmpty(pageNo, '1'))*1,
+				"listSize"		: this.listSize
       };
-      rcsApi.selectRcsRegTmpltList(params).then(response =>{
-        this.tmpltItems = response.data.data;
+      rcsApi.selectRcsRegTmpltList(params).then(response2 =>{
+        this.tmpltItems = response2.data.data;
+        this.totCnt = response2.data.pageInfo.totCnt;
+        this.offset = response2.data.pageInfo.offset;
       });
     }
   }

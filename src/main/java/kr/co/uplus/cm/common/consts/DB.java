@@ -101,8 +101,10 @@ public class DB {
 	public final static String QRY_SELECT_RCS_BRAND_MSGBASE_LIST = "channel.selectRcsBrandMsgBaseList";
 	public final static String QRY_SELECT_RCS_BRAND_CHATBOT = "channel.selectRcsBrandChatbotList";
 	public final static String QRY_SELECT_RCS_BRAND_LIST_CALLBACK_LIST = "channel.selectRcsBrandListCallbackList";
+	public final static String QRY_SELECT_RCS_BRAND_LIST_CALLBACK_LIST_CNT = "channel.selectRcsBrandListCallbackListCount";
 	// RCS 등록 템플릿 조회
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";
+	public final static String QRY_SELECT_RCS_REGTMPLTLIST_CNT = "channel.selectRcsRegTmpltListCount";
 	// RCS 채널 브랜드
 	public final static String QRY_INSERT_RCS_BRANDREQ = "channel.insertRcsReqTemp";
 	public final static String QRY_UPDATE_RCS_BRANDREQ = "channel.updateRcsReqTemp";

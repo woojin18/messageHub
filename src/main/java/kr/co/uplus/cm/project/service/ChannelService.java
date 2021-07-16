@@ -193,10 +193,21 @@ public class ChannelService {
 	public RestResult<?> selectRcsRegTmpltList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 
+		if(params.containsKey("pageNo")
+				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize")
+				&& CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if(rtn.getPageInfo() != null) {
+				//카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_REGTMPLTLIST_CNT, params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
+		}
+
 		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_REGTMPLTLIST, params);
-
 		rtn.setData(rtnList);
-
+		
 		return rtn;
 	}
 
@@ -205,18 +216,20 @@ public class ChannelService {
 	public RestResult<?> selectRcsCallbackList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
-		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
-		List<Object> list = generalDao.selectGernalList(DB.QRY_SELECT_RCS_BRAND_LIST_CALLBACK_LIST, params);
-		
-		if (pageInfo != null && !pageInfo.isEmpty()) {
-			int rowNum = list.size();
-			pageInfo.put("rowNum", rowNum);
-			
-			rtn.setPageInfo(pageInfo);
+		if(params.containsKey("pageNo")
+				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize")
+				&& CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if(rtn.getPageInfo() != null) {
+				//카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_BRAND_LIST_CALLBACK_LIST_CNT, params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
 		}
-		
-				
-		rtn.setData(list);
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_BRAND_LIST_CALLBACK_LIST, params);
+		rtn.setData(rtnList);
 
 		return rtn;
 	}
