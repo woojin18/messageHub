@@ -414,6 +414,37 @@ export default {
       if(this.fnSetContsVarNms() == false){
         return false;
       }
+      if(!this.tmpltCodeP){
+        confirm.fnAlert(this.componentsTitle, '유효하지 않은 템플릿 정보입니다.');
+        return false;
+      }
+      if(testSendYn == 'Y'){
+        if(!this.sendData.testRecvInfoLst == null || this.sendData.testRecvInfoLst.length == 0){
+          confirm.fnAlert(this.componentsTitle, '테스트 수신자 정보를 입력해주세요.');
+          return false;
+        }
+      } else {
+        if(this.sendData.cuInputType == 'DICT' || this.sendData.cuInputType == 'ADDR'){
+          if(!this.sendData.recvInfoLst == null || this.sendData.recvInfoLst.length == 0){
+            confirm.fnAlert(this.componentsTitle, '수신자 정보를 입력해주세요.');
+            return false;
+          }
+        }
+        if(this.sendData.cuInputType == 'EXCEL'){
+          const uploadFile = this.$refs.excelFile;
+          if(uploadFile.value == 0){
+            confirm.fnAlert(this.componentsTitle, '엑셀파일을 등록해주세요.');
+            return false;
+          }
+          const permitExten = 'xls,xlsx'.split(',');
+          const extnIdx = uploadFile.value.lastIndexOf('.');
+          const extn = uploadFile.value.substring(extnIdx+1);
+          if((permitExten.indexOf(extn) < 0)){
+            confirm.fnAlert(this.componentsTitle, '허용되지 않는 확장자입니다.');
+            return false;
+          }
+        }
+      }
       return true;
     },
     //통합 메시지 발송 처리
