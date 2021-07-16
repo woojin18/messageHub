@@ -9,14 +9,14 @@
 		FROM	CM_CORP
 		WHERE	DOMAIN_NAME = #{domainName}
 	</select>
-	
+
 	<insert id="insertCmUser">
 		/* signUp.insertCmUser */
 		INSERT INTO CM_USER (
 				USER_ID
 		,		LOGIN_ID
-		,		MAIL_CERTIFY_NUMBER
-		,		MAIL_CERTIFY_SENDER_DT
+<!-- 		,		MAIL_CERTIFY_NUMBER -->
+<!-- 		,		MAIL_CERTIFY_SENDER_DT -->
 		,		APPROVAL_STATUS
 		,		ROLE_CD
 		,		REG_ID
@@ -24,15 +24,15 @@
 		) VALUES (
 				#{userId}
 		,		#{email}
-		,		#{ranDomNum}
-		,		SYSDATE()
+<!-- 		,		#{ranDomNum} -->
+<!-- 		,		SYSDATE() -->
 		,		'ING'
 		,		#{cmRole}
 		,		#{regId}
 		,		SYSDATE()
 		)
 	</insert>
-	
+
 	<select id="selectCmUseTerms" resultType = "camel">
 		/* signUp.selectCmUseTerms */
 		SELECT	SVC_TERMS_ID
@@ -43,7 +43,7 @@
 		ORDER BY REG_DT DESC
 		LIMIT 1
 	</select>
-	
+
 	<select id="selectCmUseTermsPriVersion" resultType = "camel">
 		/* signUp.selectCmUseTermsPriVersion */
 		SELECT	SVC_TERMS_ID
@@ -54,7 +54,7 @@
 		AND		USE_YN = 'N'
 		ORDER BY REVISE_DAY DESC
 	</select>
-	
+
 	<insert id="insertCmCorp">
 		/* signUp.insertCmCorp */
 		INSERT INTO CM_CORP (

@@ -220,6 +220,13 @@ public class SendMessageController {
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
             log.info("{}.sendPushMessage Start ====> params : {}", this.getClass(), params);
 
+            /** 사용 가능 채널 확인 */
+            if(StringUtils.isBlank((String) sendMsgService.selectValidUseChGrp(params).getData())) {
+                log.info("{}.sendPushMessage validation use channel fail - params: {}", this.getClass(), params);
+                rtn.setFail("이용하실 수 없는 채널입니다.");
+                return rtn;
+            }
+
             /** 유효성 체크 */
             requestData = sendMsgService.setPushSendData(rtn, params);
             if(rtn.isSuccess() == false) {
@@ -366,6 +373,13 @@ public class SendMessageController {
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
             log.info("{}.sendSmsMessage Start ====> paramString : {}", this.getClass(), params);
 
+            /** 사용 가능 채널 확인 */
+            if(StringUtils.isBlank((String) sendMsgService.selectValidUseChGrp(params).getData())) {
+                log.info("{}.sendSmsMessage validation use channel fail - params: {}", this.getClass(), params);
+                rtn.setFail("이용하실 수 없는 채널입니다.");
+                return rtn;
+            }
+
             /** 유효성 체크 */
             requestData = sendMsgService.setSmsSendData(rtn, params);
             if(rtn.isSuccess() == false) {
@@ -467,6 +481,13 @@ public class SendMessageController {
             params = commonService.setUserInfo(multipartFileDTO.getParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
             log.info("{}.sendMmsMessage Start ====> paramString : {}", this.getClass(), params);
+
+            /** 사용 가능 채널 확인 */
+            if(StringUtils.isBlank((String) sendMsgService.selectValidUseChGrp(params).getData())) {
+                log.info("{}.sendSmsMessage validation use channel fail - params: {}", this.getClass(), params);
+                rtn.setFail("이용하실 수 없는 채널입니다.");
+                return rtn;
+            }
 
             /** 유효성 체크 */
             requestData = sendMsgService.setMmsSendData(rtn, params);
@@ -610,6 +631,13 @@ public class SendMessageController {
             params = commonService.setUserInfo(multipartFileDTO.getParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
             log.info("{}.sendFrndTalkMessage Start ====> paramString : {}", this.getClass(), params);
+
+            /** 사용 가능 채널 확인 */
+            if(StringUtils.isBlank((String) sendMsgService.selectValidUseChGrp(params).getData())) {
+                log.info("{}.sendSmsMessage validation use channel fail - params: {}", this.getClass(), params);
+                rtn.setFail("이용하실 수 없는 채널입니다.");
+                return rtn;
+            }
 
             /** 유효성 체크 */
             requestData = sendMsgService.setFrndTalkSendData(rtn, params);
@@ -765,6 +793,13 @@ public class SendMessageController {
             params = commonService.setUserInfo(multipartFileDTO.getParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
             log.info("{}.sendAlimTalkMessage Start ====> paramString : {}", this.getClass(), params);
+
+            /** 사용 가능 채널 확인 */
+            if(StringUtils.isBlank((String) sendMsgService.selectValidUseChGrp(params).getData())) {
+                log.info("{}.sendSmsMessage validation use channel fail - params: {}", this.getClass(), params);
+                rtn.setFail("이용하실 수 없는 채널입니다.");
+                return rtn;
+            }
 
             /** 유효성 체크 */
             requestData = sendMsgService.setAlimTalkSendData(rtn, params);
@@ -924,8 +959,7 @@ public class SendMessageController {
 
 
         } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
+            rtn.setFail("실패하였습니다.");
             log.error("{}.sendSmartMessage Error : {}", this.getClass(), e);
             return rtn;
         }
@@ -1032,6 +1066,26 @@ public class SendMessageController {
         model.addObject("sheetList", sheetList);
 
         return model;
+    }
+
+    /**
+     * 채널 사용 가능 여부
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectValidUseChGrp")
+    public RestResult<?> selectValidUseChGrp(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = sendMsgService.selectValidUseChGrp(params);
+        } catch (Exception e) {
+            rtn.setFail("실패하였습니다.");
+            log.error("{}.selectUseChannel Error : {}", this.getClass(), e);
+        }
+        return rtn;
     }
 
 }

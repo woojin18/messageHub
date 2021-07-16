@@ -418,6 +418,13 @@ export default {
         }
       });
       if(!buttonValid) return false;
+
+      //예약어 사용여부
+      const validContainRsvNm = this.$gfnCommonUtils.validContainRsvNm('ALIMTALK', this.tmpltData.tmpltContent);
+      if(validContainRsvNm.success == false){
+        confirm.fnAlert(this.componentsTitle, validContainRsvNm.message);
+        return false;
+      }
       
       return true;
     },

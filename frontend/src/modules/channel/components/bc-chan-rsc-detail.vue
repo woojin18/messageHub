@@ -207,29 +207,20 @@
 								<option value="daum.com">daum.com</option>
 								<option value="gmail.com">gmail.com</option>
 								<option value="nate.com">nate.com</option>
-								<!-- <option value="hanmail.net">hanmail.net</option>
-								<option value="hotmail.com">hotmail.com</option>
-								<option value="yahoo.co.kr">yahoo.co.kr</option>
-								<option value="empas.com">empas.com</option>
-								<option value="dreamwiz.com">dreamwiz.com</option>
-								<option value="freechal.com">freechal.com</option>
-								<option value="lycos.co.kr">lycos.co.kr</option>
-								<option value="korea.com">korea.com</option>
-								<option value="hanmir.com">hanmir.com</option>
-								<option value="paran.com">paran.com</option> -->
 							</select>
 						</div>
 					</div>
 					<div class="of_h consolMarginTop">
 						<h4 style="width:28%" class="inline-block">주소 *</h4>
 						<div style="width:72%" class="float-right">
-							<input id="postAddr" type="text" class="inputStyle vertical-top" style="width:50%" v-model="inputVal.zipCode" :disabled="this.duplCheckYn == 'N'">
-							<a  class="btnStyle1 backLightGray" style="width:24%">우편번호</a>
+							<input id="postAddr" type="text" class="inputStyle vertical-top" style="width:47%" v-model="inputVal.zipCode" :disabled="this.duplCheckYn == 'N'">
+							<div style="width:25%; display:inline-block;margin-left:10px;"><a class="btnStyle1 backLightGray" style="min-width:auto; width:100%" @click="fnAddrPopup">주소 조회</a></div>
 						</div>
+						
 					</div>
 					<div class="ml_28">
-						<input id="addr1" type="text" class="inputStyle mr10" style="width:65%" v-model="inputVal.roadAddress" :disabled="this.duplCheckYn == 'N'">
-						<input id="addr2" type="text" class="inputStyle" style="width:32%" v-model="inputVal.detailAddress" :disabled="this.duplCheckYn == 'N'">						
+						<input id="addr1" type="text" class="inputStyle mr10" style="width:47%" v-model="inputVal.roadAddress" :disabled="this.duplCheckYn == 'N'">
+						<input id="addr2" type="text" class="inputStyle" style="width:50%" v-model="inputVal.detailAddress" :disabled="this.duplCheckYn == 'N'">						
 					</div>
 
 					<hr>
@@ -332,6 +323,8 @@
 					</div>
 				</div>		
 			</div>
+
+			<addrPopup :popReset="popReset"  :selAddr.sync="selAddr"></addrPopup>
 			<!-- //본문 -->
 		</article>
 	<!-- </div> -->
@@ -343,11 +336,18 @@ import axios from 'axios'
 import tokenSvc from '@/common/token-service';
 import confirm from "@/modules/commonUtil/service/confirm"
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import addrPopup from "@/modules/signUp/components/bp-addrPopup"
 
 export default {
   name: 'bcChanRcsDetail',
+  components: {
+    //modal
+	addrPopup
+  },
   data() {
 	return {
+		popReset : 0,
+		selAddr : {},
 		save_status : '', // 등록 수정 여부
 		approvalStatus : '',
 		projectId : '',
@@ -417,6 +417,11 @@ export default {
 			}
 		],
 		subCategory : {}
+	}
+  },
+  watch: {
+	selAddr(){
+		this.fnSetCorpAddr();
 	}
   },
   mounted() {
@@ -659,6 +664,9 @@ export default {
 			}
 			var listString = list.join(", ");
 			fd.append('chatbots'		, listString) ;
+
+			// 메인발신번호 추가된 것 삭제
+			this.fnDeleteChatbotTr();
 		}
 
       
@@ -707,7 +715,17 @@ export default {
 				confirm.fnAlert("", response.data.message);
 			}
 		});
-	}
+	},
+	// 선택한 주소 set
+	fnSetCorpAddr(){
+		this.inputVal.zipCode = this.selAddr.mailNo;
+		this.inputVal.roadAddress = this.selAddr.roadMailFullAddr;
+		this.inputVal.detailAddress = this.selAddr.roadMailFullAddr2;
+	},
+	// 주소 조회 팝업
+	fnAddrPopup(){
+		jQuery("#addrPopup").modal("show");
+	},
   }
 }
 </script>

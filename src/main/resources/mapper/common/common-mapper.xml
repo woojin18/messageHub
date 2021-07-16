@@ -258,7 +258,22 @@
             AND CP.PROJECT_ID = #{projectId}
             AND CP.USE_YN = 'Y'
             AND CP.DEL_YN = 'N'
+        <if test="chGrp != '' and chGrp != null ">
+            AND JSON_EXTRACT(CP.USE_CH_GRP_INFO, CONCAT('$.', #{chGrp})) = 'Y'
+        </if>
         LIMIT 1
+    </select>
+
+    <select id="selectImageUrlInfo" parameterType="hashmap" resultType="camel">
+    /* common.selectImageUrlInfo - 이미지 URL 정보 조회 */
+        SELECT
+            FILE_ID
+            , @PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(USE_CH_INFO, "one", #{ch}, NULL, '$[*].CH')) AS PATH_TO_NAME
+            , @PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
+            , @CH_OBJECT := JSON_EXTRACT(USE_CH_INFO, @PATH_TO_PARENT) AS CH_OBJECT
+            , @CH_IMG_URL := JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.URL')) AS CH_IMG_URL
+        FROM CM_IMAGE_FILE CIF
+        WHERE FILE_ID = #{fileId}
     </select>
 
 	<insert id="insertFileInfo" >
@@ -280,10 +295,17 @@
 		,	#{userId}
 		)
 	</insert>
-	
+
+	<select id="selectFilePathByFileId" resultType="string">
+		/* common.selectFilePathByFileId */
+		SELECT	ATTACH_FILE_PATH
+		FROM	cm_bo.CM_ATTACH_FILE
+		WHERE	FILE_ID = #{fileId}
+	</select>
+
 	<update id="updateCmCmdForRedis">
 		/* common.updateCmCmdForRedis */
-		UPDATE cm.CM_CMD 
+		UPDATE cm.CM_CMD
 		SET UPD_DT = NOW()
 		WHERE CMD_TGT = #{cmdTgt}
 	</update>

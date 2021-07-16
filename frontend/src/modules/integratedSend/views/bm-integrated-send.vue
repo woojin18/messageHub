@@ -44,7 +44,7 @@
     <div class="col-xs-12 consolMarginTop">
       <div class="of_h inline">
         <div class="float-right">
-          <router-link :to="{ name: 'integratedTemplate' }" tag="a" class="btnStyle2 borderGray"  activity="READ">통합발송 템플릿 관리<i class="fal fa-arrow-to-bottom"></i></router-link>
+          <router-link :to="{ path: '/uc/template/multiSendTemplateList' }" tag="a" class="btnStyle2 borderGray"  activity="READ">통합발송 템플릿 관리<i class="fal fa-arrow-to-bottom"></i></router-link>
           <a @click="fnProcSmartSend()" class="btnStyle2 backBlack ml10" title="통합 메시지 발송" activity="READ">통합 메시지 발송</a>
         </div>
       </div>
@@ -64,9 +64,9 @@
             <colgroup>
               <col style="width:3%">
               <col style="width:3%">
-              <col>
               <col style="width:10%">
-              <col style="width:20%">
+              <col>
+              <col style="width:15%">
               <col style="width:8%">
               <col style="width:8%">
               <col style="width:10%">
@@ -96,8 +96,8 @@
                   <!-- <u><router-link :to="{ name: 'integratedSendManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u> -->
                   <u><router-link :to="{ name: 'sendIntegMessage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u>
                 </td>
-                <td class="text-center">{{data.tmpltTitle}}</td>
-                <td class="text-center">{{fnJsonArrayToChannelLit(data.checkedChannel)}}</td>
+                <td class="text-left">{{$gfnCommonUtils.unescapeXss(data.tmpltTitle)}}</td>
+                <td class="text-left">{{fnJsonArrayToChannelLit(data.checkedChannel)}}</td>
                 <td class="text-center">{{data.msgKindName}}</td>
                 <td class="text-center">{{data.msgTypeName}}</td>
                 <td class="text-center">{{data.otherProjectUseYn}}</td>
@@ -194,7 +194,8 @@ export default {
       let chStr = '';
 
       chList.forEach(element => {
-        chStr += (vm.$gfnCommonUtils.isEmpty(chStr) ? '' : ', ') + vm.chInfo[element];
+        //chStr += (vm.$gfnCommonUtils.isEmpty(chStr) ? '' : ', ') + vm.chInfo[element];
+        chStr += (vm.$gfnCommonUtils.isEmpty(chStr) ? '' : ', ') + element;
       });
       
       return chStr;

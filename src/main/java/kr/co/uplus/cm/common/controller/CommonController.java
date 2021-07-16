@@ -91,6 +91,23 @@ public class CommonController {
         return rtn;
     }
 
+    /**
+     * 이미지 URL 정보 조회
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectImageUrlInfo")
+    public RestResult<?> selectImageUrlInfo(@RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = commonService.selectImageUrlInfo(params);
+        } catch(Exception e) {
+            rtn.setFail("실패하였습니다.");
+            log.error("{}.selectImageUrlInfo Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
+
     // 파일 업로드
     // 사용체널, 이미지 확장자 등의 문제가 있어서 파일 업로드 따로 땀
     @PostMapping("/uploadFile")

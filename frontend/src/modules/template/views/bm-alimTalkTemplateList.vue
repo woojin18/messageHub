@@ -138,8 +138,8 @@
                       <u><router-link :to="{ name: 'alimTalkTemplateManage', params: { tmpltKey: contant.tmpltKey }}">{{contant.tmpltCode}}</router-link></u>
                     </td>
                     <td class="text-left">{{contant.tmpltName}}</td>
-                    <td v-if="contant.tmpltStatCode == 'S'" class="text-center">
-                      <a 
+                    <td v-if="contant.tmpltStatCode == 'S' && !$gfnCommonUtils.isEmpty(contant.reason)" class="text-center">
+                      <a
                         href="#" 
                         @click.prevent="fnOpenAlimTalkRejectReasonLayer(contant.reason)"
                       >{{contant.tmpltStatCodeName}}</a>

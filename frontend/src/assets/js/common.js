@@ -76,8 +76,68 @@ export default {
         fields.forEach(field => {
           targetObj[field] = this.unescapeXss(targetObj[field]);
         });
-      }
+      },
       /**************************정규식 관련 Utils**************************/
+      /**************************비즈니스 관련 Utils**************************/
+      //ch - SMS, MMS, RCS, ALIMTALK, FRIENDTALK, PUSH
+      //str - 검사내용
+      //return - result = {
+      //            success: ture/false(유효성 통과여부)
+      //            message: '', '변수 phone, title, description 은 예약어로 사용하실 수 없습니다.'(통과시 '', 실패시 '' 또는 해당 메시지)
+      //          }
+      validContainRsvNm(ch, str){
+        let result = {
+          success: true,
+          message: ''
+        }
+
+        if(this.isEmpty(ch) || this.isEmpty(str)){
+          result.success = false;
+          result.message = '시스템 오류입니다. 잠시후 다시 시도해주세요.';
+          console.error('validContainRsvNm 잘못된 파라미터 정보 ==> ch: '+ch+', str : '+str);
+          return result;
+        }
+
+        let rsvNmSet;
+        if(ch == 'PUSH'){
+          rsvNmSet = new Set(['cuid', 'phone', 'title', 'description']);
+        } else if(ch == 'SMS' || ch == 'MMS' || ch == 'ALIMTALK' || ch == 'FRIENDTALK'){
+          rsvNmSet = new Set(['phone', 'title', 'description']);
+        } else if(ch == 'RCS'){
+          rsvNmSet = new Set(['phone']);
+        }
+
+        if(!rsvNmSet || rsvNmSet.length == 0){
+          result.success = false;
+          result.message = '시스템 오류입니다. 잠시후 다시 시도해주세요.';
+          console.error('validContainRsvNm 잘못된 채널정보입니다. ==> ch: '+ch+', rsvNmSet : '+rsvNmSet);
+          return result;
+        }
+
+        if(ch == 'RCS'){
+          str.replace(/\{\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}\}/g, function($0, $1) {
+            if(rsvNmSet.has($1)){
+              result.success = false;
+              return false;
+            }
+          });
+        } else {
+          str.replace(/#\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}/g, function($0, $1) {
+            if(rsvNmSet.has($1)){
+              result.success = false;
+              return false;
+            }
+          });
+        }
+        
+        if(result.success == false){
+          const rsvNmStr = Array.from(rsvNmSet).join(', ');
+          result.message = '변수 '+rsvNmStr+' 은 예약어로 사용하실 수 없습니다.';
+        }
+        
+        return result;
+      },
+      /**************************비즈니스 관련 Utils**************************/
     }
   }
 }

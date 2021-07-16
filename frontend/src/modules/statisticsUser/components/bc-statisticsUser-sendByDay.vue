@@ -2,7 +2,7 @@
 	<div>
 		<article>
 			<div class="contentHeader mb20">
-				<h2>채널별 일별 발송통계</h2>
+				<h2>일별발송통계</h2>
 			</div>
 			<div class="row">
 				<div class="col-xs-12 mt10">

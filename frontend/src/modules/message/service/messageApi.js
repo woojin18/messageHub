@@ -64,25 +64,30 @@ const excelDownSendSmartRecvTmplt = (params) => {
   .then((response) => fnExcelDownCallback(response));
 };
 
+const selectValidUseChGrp = (params) => {
+  return httpClient.post('/uc/sendMessage/selectValidUseChGrp', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
 export default {
-    selectAppIdList,
-    selectCallbackList,
-    selectAddressList,
-    selectCmCuList,
-    excelDownSendPushRecvTmplt,
-    sendPushMessage,
-    excelDownSendSmsRecvTmplt,
-    sendSmsMessage,
-    sendMmsMessage,
-    excelDownSendFrndTalkRecvTmplt,
-    sendFrndTalkMessage,
-    selectKkoSenderKeyList,
-    excelDownSendAlimTalkRecvTmplt,
-    sendAlimTalkMessage,
-    selectSmartTmpltList,
-    selectSmartTmpltInfo,
-    sendSmartMessage,
-    excelDownSendSmartRecvTmplt
+  selectAppIdList,
+  selectCallbackList,
+  selectAddressList,
+  selectCmCuList,
+  excelDownSendPushRecvTmplt,
+  sendPushMessage,
+  excelDownSendSmsRecvTmplt,
+  sendSmsMessage,
+  sendMmsMessage,
+  excelDownSendFrndTalkRecvTmplt,
+  sendFrndTalkMessage,
+  selectKkoSenderKeyList,
+  excelDownSendAlimTalkRecvTmplt,
+  sendAlimTalkMessage,
+  selectSmartTmpltList,
+  selectSmartTmpltInfo,
+  sendSmartMessage,
+  excelDownSendSmartRecvTmplt,
+  selectValidUseChGrp
 };
 
 function fnExcelDownCallback(response){

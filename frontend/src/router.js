@@ -32,6 +32,7 @@ import customerRoutes from './modules/customer/router';
 import rcsTemplateSendRoutes from './modules/rcsTemplateSend/router';
 import statisticsUserRoutes from './modules/statisticsUser/router';
 import statisticsAdminRoutes from './modules/statisticsAdmin/router';
+import alarmRoutes from './modules/alarm/router';
 
 //import confirm from "@/modules/commonUtil/service/confirm.js";
 
@@ -148,7 +149,8 @@ const router = new Router({
 				...addressRoutes,
 				...acMyPageRoutes,
 				...useRoutes,
-				...statisticsAdminRoutes
+				...statisticsAdminRoutes,
+				...alarmRoutes
 			],
 		},
 		{

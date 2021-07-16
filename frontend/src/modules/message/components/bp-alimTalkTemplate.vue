@@ -139,7 +139,7 @@ export default {
         senderKey: '',
         searchCondi : 'tmpltName',
         searchText : '',
-        //searchTmpltStatCodes: ['A'],  //TODO - 승인건중에 정산건이 없다.
+        searchTmpltStatCodes: ['A'],
         pageNo : 1,
         listSize: 999999999
       }

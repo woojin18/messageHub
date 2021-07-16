@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="contentHeader">
-      <h2>통합 발송2</h2>
+      <h2>통합 발송</h2>
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="통합 발송 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
     </div>
 
@@ -12,36 +12,40 @@
           <div class="tab-content">
             <!-- phoneWrap -->
             <!-- PUSH -->
-            <div v-if="previewMessageType == 'PUSH'" class="tab-pane active">
+            <div v-if="previewMessageType == 'PUSH' && tmpltData.PUSH" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
                 <div class="phoneTextWrap scroll-y2">
                   <div class="phoneText1">
-                    <p v-if="$gfnCommonUtils.isEmpty(tmpltData.PUSH.msg.title)">제목</p>
-                    <p v-else>{{tmpltData.PUSH.msg.title}}</p>
+                    <p v-if="$gfnCommonUtils.isEmpty(tmpltData.PUSH.title)">제목</p>
+                    <p v-else>{{tmpltData.PUSH.title}}</p>
                   </div>
                   <div 
-                    v-if="tmpltData.msgType == 'IMAGE'" 
+                    v-if="tmpltData.msgType == 'IMAGE' && tmpltData.PUSH.ext && tmpltData.PUSH.ext.imageUrl" 
                     class="phoneText2 mt10 text-center"
                     :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.PUSH.ext.imageUrl+');'"
                   >
                   </div>
-                  <p class="consolMarginTop"><pre>{{tmpltData.PUSH.msg.body}}</pre></p>
+                  <p class="consolMarginTop">
+                    <pre>{{tmpltData.PUSH.msg}}</pre>
+                    <br/>
+                    {{tmpltData.msgKind == 'A' ? tmpltData.PUSH.rcvblcInput : ''}}
+                  </p>
                 </div>
               </div>
             </div>
             <!--// PUSH -->
             <!-- FRIENDTALK -->
-            <div v-if="previewMessageType == 'FRIENDTALK'" class="tab-pane active">
+            <div v-if="previewMessageType == 'FRIENDTALK' && tmpltData.FRIENDTALK" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup2_1.svg" alt="프리 템플릿">
                 <div class="phoneTextWrap4 scroll-y">
                   <p v-if="tmpltData.msgKind == 'A'">[광고]</p>
                   <div class="mt5">
                     <div 
-                      v-if="tmpltData.msgType == 'IMAGE'" 
+                      v-if="tmpltData.msgType == 'IMAGE' && tmpltData.FRIENDTALK.image && tmpltData.FRIENDTALK.image.imageUrl" 
                       class="phoneText2 text-center"
-                      :style="'padding:40px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.FRIENDTALK.image.imageUrl+');'"
+                      :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.FRIENDTALK.image.imageUrl+');'"
                     >
                     </div>
                     <div class="text-sub-wrap">
@@ -56,6 +60,28 @@
               </div>
             </div>
             <!--// FRIENDTALK -->
+            <!-- MMS -->
+            <div v-if="previewMessageType == 'MMS'" class="tab-pane active">
+              <div class="phoneWrap">
+                <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
+                <div class="phoneTextWrap scroll-y2">
+                  <div class="phoneText1">
+                    <p>{{tmpltData.MMS.callback}}</p>
+                  </div>
+                  <div v-if="tmpltData.msgType == 'IMAGE'">
+                    <div v-for="(fileUrl, idx) in tmpltData.MMS.fileUrlLst" :key="idx" class="phoneText2 mt10 text-center"
+                      :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+fileUrl+');'">
+                    </div>
+                  </div>
+                  <p class="consolMarginTop"><pre>{{tmpltData.MMS.msg}}</pre></p>
+                  <br v-if="tmpltData.msgKind == 'A'"/>
+                  <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.MMS.rcvblcInput)">
+                    {{tmpltData.MMS.rcvblcInput}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!--// MMS -->
             <!-- SMS -->
             <div v-if="previewMessageType == 'SMS'" class="tab-pane active">
               <div class="phoneWrap">
@@ -65,10 +91,18 @@
                     <p>{{tmpltData.SMS.callback}}</p>
                   </div>
                   <p class="consolMarginTop"><pre>{{tmpltData.SMS.msg}}</pre></p>
+                  <br v-if="tmpltData.msgKind == 'A'"/>
+                  <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.SMS.rcvblcInput)">
+                    {{tmpltData.SMS.rcvblcInput}}
+                  </span>
                 </div>
               </div>
             </div>
             <!--// SMS -->
+
+
+
+
 
 
 
@@ -132,7 +166,7 @@
       <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
         <div class="of_h user-phone">
           <div class="float-left" style="width:24%">
-            <h4>01  템플릿|{{previewMessageType}}</h4>
+            <h4>01  템플릿</h4>
           </div>
           <div class="float-left" style="width:76%">
             <div class="of_h">
@@ -280,6 +314,7 @@ import TestSendInputPopup from "@/modules/message/components/bc-testSendInput.vu
 
 //import integratedSendApi from '../service/integratedSendApi';
 import messageApi from "@/modules/message/service/messageApi.js";
+import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
@@ -332,6 +367,7 @@ export default {
         rsrvHH:'00',
         rsrvMM:'00',
         campaignId: '',
+        chMappingVarList: [],  //매핑변수 채널리스트
         contsVarNms: [], //메세지 내용 변수명
         recvInfoLst: [],  //수신자정보
         testRecvInfoLst: [],  //테스트 수신자정보
@@ -342,6 +378,20 @@ export default {
     this.fnGetTmpltInfo();
   },
   methods: {
+    fnGetImageUrl(ch, fileId){
+      let params = {ch: ch, fileId: fileId};
+      return new Promise((resolve, reject) => {
+        commonUtilApi.selectImageUrlInfo(params).then(response =>{
+          var result = response.data;
+          console.log('result ===> ', result);
+          if(result.success) {
+            resolve(this.$gfnCommonUtils.defaultIfEmpty(result.data.chImgUrl));
+          } else {
+            reject('');
+          }
+        });
+      });
+    },
     //메세지 미리보기 변경
     fnChgPreviewMessageType(type){
       this.previewMessageType = type;
@@ -361,6 +411,40 @@ export default {
     },
     //발송 정보 유효성 체크
     fnValidSendMsgData(testSendYn){
+      if(this.fnSetContsVarNms() == false){
+        return false;
+      }
+      if(!this.tmpltCodeP){
+        confirm.fnAlert(this.componentsTitle, '유효하지 않은 템플릿 정보입니다.');
+        return false;
+      }
+      if(testSendYn == 'Y'){
+        if(!this.sendData.testRecvInfoLst == null || this.sendData.testRecvInfoLst.length == 0){
+          confirm.fnAlert(this.componentsTitle, '테스트 수신자 정보를 입력해주세요.');
+          return false;
+        }
+      } else {
+        if(this.sendData.cuInputType == 'DICT' || this.sendData.cuInputType == 'ADDR'){
+          if(!this.sendData.recvInfoLst == null || this.sendData.recvInfoLst.length == 0){
+            confirm.fnAlert(this.componentsTitle, '수신자 정보를 입력해주세요.');
+            return false;
+          }
+        }
+        if(this.sendData.cuInputType == 'EXCEL'){
+          const uploadFile = this.$refs.excelFile;
+          if(uploadFile.value == 0){
+            confirm.fnAlert(this.componentsTitle, '엑셀파일을 등록해주세요.');
+            return false;
+          }
+          const permitExten = 'xls,xlsx'.split(',');
+          const extnIdx = uploadFile.value.lastIndexOf('.');
+          const extn = uploadFile.value.substring(extnIdx+1);
+          if((permitExten.indexOf(extn) < 0)){
+            confirm.fnAlert(this.componentsTitle, '허용되지 않는 확장자입니다.');
+            return false;
+          }
+        }
+      }
       return true;
     },
     //통합 메시지 발송 처리
@@ -487,63 +571,53 @@ export default {
     },
     fnSetContsVarNms(){
       const vm = this;
-      const rsvNmSet = new Set(['cuid', 'phone']);
+      let chMappingVarInfo = {};
+      let chMappingVarList = [];
       let conts = '';
       let chTmpltInfo = {};
       let varNms = [];
+      let tempVarNms = [];
       let containRsvNm = false;
 
       this.tmpltData.chTypeList.forEach(ch => {
         chTmpltInfo = vm.tmpltData[ch];
 
-        if(ch == 'PUSH'){
-          conts += chTmpltInfo.msg;
-          console.log('conts PUSH ===> ', chTmpltInfo.msg);
-        } else if(ch == 'SMSMMS'){
-          if(chTmpltInfo.chType == 'SMS'){
-            conts += chTmpltInfo.smsInfo.msg;
-            console.log('conts SMS ===> ', chTmpltInfo.smsInfo.msg);
-          } else if(chTmpltInfo.chType == 'MMS'){
-            conts += chTmpltInfo.mmsInfo.msg;
-            console.log('conts MMS ===> ', chTmpltInfo.mmsInfo.msg);
-          }
-        } else if(ch == 'KAKAO'){
-          if(chTmpltInfo.chType == 'FRIENDTALK'){
-            conts += chTmpltInfo.friendtalk.msg;
-            console.log('conts FRIENDTALK ===> ', chTmpltInfo.friendtalk.msg);
-          } else if(chTmpltInfo.chType == 'ALIMTALK'){  //TODO : 확인
-            conts += chTmpltInfo.alimtalk.msg;
-          }
+        if(ch == 'PUSH' || ch == 'SMS' || ch == 'MMS' || ch == 'FRIENDTALK'){
+          conts = chTmpltInfo.msg;
+        } else if(ch == 'ALIMTALK'){
         } else if(ch == 'RCS'){
-          //TODO : 확인
         }
-      });
 
-      console.log('conts COMPLATE ===> ', conts);
+        console.log('conts ch ===> ', ch);
+        console.log('conts ===> ', conts);
 
-      conts.replace(/#\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}/g, function($0, $1) {
-        if(rsvNmSet.has($1)){
-          containRsvNm = true;
-          return false;
+        if(ch == 'RCS'){
+          conts.replace(/\{\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}\}/g, function($0, $1) {
+            tempVarNms.push($1);
+          });
+        } else {
+          conts.replace(/#\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}/g, function($0, $1) {
+            tempVarNms.push($1);
+          });
         }
-        varNms.push($1);
+
+        chMappingVarInfo = {};
+        chMappingVarInfo.ch = ch;
+        chMappingVarInfo.varNms = this.fnSetArrayRemoveDupliVal(tempVarNms);
+        chMappingVarList.push(chMappingVarInfo);
+        varNms = varNms.concat(tempVarNms);
+        tempVarNms = [];
       });
-      if(this.fnContainsChannel('RCS')){
-        conts.replace(/\{\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}\}/g, function($0, $1) {
-          if(rsvNmSet.has($1)){
-            containRsvNm = true;
-            return false;
-          }
-          varNms.push($1);
-        });
-      }
+      
       if(containRsvNm){
         confirm.fnAlert(this.componentsTitle, '발송 내용 변수 cuid, phone 은 예약어로 사용하실 수 없습니다.');
         return false;
       } else {
         console.log('varNms ===> ', varNms);
         this.sendData.contsVarNms = this.fnSetArrayRemoveDupliVal(varNms);
+        this.sendData.chMappingVarList = Object.assign([], chMappingVarList);
         console.log('contsVarNms ===> ', this.sendData.contsVarNms);
+        console.log('chMappingVarList ===> ', chMappingVarList);
         return true;
       }
     },
@@ -560,15 +634,24 @@ export default {
       messageApi.selectSmartTmpltInfo(params).then(response => {
         let result = response.data;
         if(result.success) {
+          const targetField = ['tmpltTitle', 'tmpltInfo'];
           console.log('result ===>> ', Object.assign({}, result));
           let tempData = Object.assign({}, result.data);
+          this.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
           tempData.chTypeList = JSON.parse(tempData.chTypeList);
           tempData.tmpltInfo = JSON.parse(tempData.tmpltInfo);
           
           this.fnSetTmpltInfoByChannel(tempData);
-          this.tmpltData = Object.assign({}, tempData);
-          console.log('tmpltData ===>> ', this.tmpltData);
+          if(tempData.msgType == 'IMAGE' 
+            && this.fnContainsChannel('MMS', tempData.chTypeList)
+            && tempData.MMS.fileIdLst){
+            tempData.MMS.fileUrlLst = [];
+            tempData.MMS.fileIdLst.forEach(fileId => {
+              this.fnGetImageUrl('MMS', fileId).then(url => {console.log('url ===>> ', url); tempData.MMS.fileUrlLst.push(url)});
+            });
+          }
 
+          this.tmpltData = Object.assign({}, tempData);
           this.previewMessageType = this.tmpltData.chTypeList[0];
           console.log('this.tmpltData.chTypeList[0] ===>> ', this.tmpltData.chTypeList[0]);
           console.log('previewMessageType ===>> ', this.previewMessageType);
@@ -583,9 +666,10 @@ export default {
             || this.fnContainsChannel('RCS')){
             this.sendData.requiredCuPhone = true;
           }
-
+          
           console.log('requiredCuid ===>> ', this.sendData.requiredCuid);
           console.log('requiredCuPhone ===>> ', this.sendData.requiredCuPhone);
+          console.log('tmpltData ===>> ', this.tmpltData);
 
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
@@ -603,7 +687,8 @@ export default {
       }
     },
     //채널정보 존재 확인
-    fnContainsChannel(ch){
+    fnContainsChannel(ch, obj){
+      if(obj) return obj.includes(ch);
       return this.tmpltData.chTypeList.includes(ch);
     },
     async fnExcelTmplteDownLoad(){
