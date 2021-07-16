@@ -63,8 +63,8 @@
 				<div class="of_h">
 					<div class="float-left" style="width:34%"><h5>메시지 구분*</h5></div>
 					<div class="float-left" style="width:66%">
-						<input type="radio" name="mSort" value="I" id="mSort1" checked="" v-model="rowData.msgKind"><label for="mSort1" class="mr20">정보성</label>
-						<input type="radio" name="mSort" value="A" id="mSort2" v-model="rowData.msgKind"><label for="mSort2">광고용</label>
+						<input type="radio" name="mSort" value="I" id="mSort1" checked="" v-model="rowData.msgKind" v-on:click="checkMsgKind('I')"><label for="mSort1" class="mr20">정보성</label>
+						<input type="radio" name="mSort" value="A" id="mSort2" v-model="rowData.msgKind" v-on:click="checkMsgKind('A')"><label for="mSort2">광고용</label>
 						<span class="txtCaption vertical-middle colorRed">광고 메시지는 20시~8시 발송이 제한됩니다.</span>
 					</div>
 				</div>
@@ -215,6 +215,14 @@
 						<div class="float-left" style="width:57%">
 							<input type="text" class="inputStyle" name="pushHowToDenyReceipt" v-model="rowData.pushHowToDenyReceipt" placeholder="설정 > 푸시 알림 설정 변경">
 							<p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
+						</div>
+					</div>
+				</div>
+				<div class="of_h">
+					<div class="of_h consolMarginTop">
+						<div class="float-left" style="width:13%"><h4>부가정보(EXT)</h4></div>
+						<div class="float-left" style="width:57%">
+							<input type="text" class="inputStyle" name="adtnInfo" v-model="rowData.adtnInfo">
 						</div>
 					</div>
 				</div>
@@ -480,7 +488,7 @@
             <!-- //phoneWrap -->
           </div>
           <div class="float-left consoleCon" style="width:72%">
-            <div class="text-right" style="width:70%"><a href="#self" class="btnStyle1 backBlack" style="min-width:auto" data-toggle="modal" data-target="#Tamplet" title="알림톡 템플릿 선택">알림톡 템플릿 선택</a></div>
+            <div class="text-right" style="width:70%"><a href="#self" class="btnStyle1 backBlack" style="min-width:auto" @click.prevent="fnOpenAlimTalkTemplatePopup" title="알림톡 템플릿 불러오기">알림톡 템플릿 선택</a></div>
             <div class="of_h mt20">						
               <div class="float-left" style="width:13%"><h4>유형</h4></div>
               <div class="float-left" style="width:57%">
@@ -2536,7 +2544,7 @@
 						<div class="talk_Gray"><h5>친구톡</h5></div>
 						<div style="width:78px">
 							<div class="consolMarginTop text-center">
-								<input type="radio" name="kakao" value="friend" id="friend" class="radioStyle" checked="" v-on:click="kakaoTemplateTable=0"><label for="friend"></label>
+								<input type="radio" name="kakao" value="friend" id="friend" class="radioStyle" v-on:click="kakaoTemplateTable=0" checked><label for="friend"></label>
 							</div>
 						</div>
 					</li>
@@ -2677,81 +2685,111 @@
 				<div class="float-left" style="width:28%">
 					<!-- phoneWrap -->
 					<div class="phoneWrap">
-						<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
-						<div class="phoneTextWrap">
-							<div class="phoneText1 scroll-y2">
-								<pre>{{rowData.alimTalkContent}}</pre>
+						<img src="@/assets/images/common/phoneMockup3.svg" alt="알림톡 템플릿">
+						<div class="phoneTextWrap3 scroll-y">
+							<div>
+								<p class="text-main"><i class="fal fa-envelope-open-text"></i> 알림톡 도착</p>
+								<div v-if="rowData.emphasizeType == 'TEXT'" class="text-sub-wrap" style="padding:10px;">
+									<p v-if="!$gfnCommonUtils.isEmpty(rowData.tmpltEmpsSubTitle)" class="text-sub_1">{{rowData.tmpltEmpsSubTitle}}</p>
+									<p v-if="!$gfnCommonUtils.isEmpty(rowData.tmpltEmpsTitle)" class="text-sub scroll-y3">{{rowData.tmpltEmpsTitle}}</p>
+								</div>
+								<div class="text-sub-wrap" style="padding:10px;">
+									<span><pre>{{rowData.tmpltContent}}</pre></span>
+								</div>
+								<div v-for="(buttonInfo, idx) in rowData.buttonList" :key="idx">
+									<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
+								</div>
 							</div>
 						</div>
 					</div>
 					<!-- //phoneWrap -->
 				</div>
 				<div class="float-left consoleCon" style="width:72%">
-					<div class="text-right" style="width:72%"><a href="#self" class="btnStyle1 backBlack" style="min-width:auto" data-toggle="modal" data-target="#Tamplet" title="알림톡 템플릿 선택">알림톡 템플릿 선택</a></div>
-					<div class="of_h mt20">
-						<div class="float-left" style="width:15%"><h4>발신프로필 *</h4></div>
-						<div class="float-left" style="width:57%">
-							<input type="text" class="inputStyle" v-model="rowData.alimTalkSendProfileName" readOnly>
-							<input type="hidden" class="inputStyle" v-model="rowData.alimTalkSendProfile" readOnly>
+					<div class="text-right" style="width:72%">
+						<a href="#" class="btnStyle1 backBlack" style="min-width:auto" @click.prevent="fnOpenAlimTalkTemplatePopup" title="알림톡 템플릿 불러오기">알림톡 템플릿 선택</a>
+					</div>
+					<div v-if="selectedAlimTalkTemplate">
+						<div class="of_h mt20">
+							<div class="float-left" style="width:15%"><h4>발신프로필</h4></div>
+							<div class="float-left" style="width:57%">
+								<select class="float-left selectStyle2" style="width:100%" v-model="rowData.senderKey" disabled>
+									<option value="">선택해주세요.</option>
+									<option v-for="senderKeyInfo in friendTalkSenderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.senderKey}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:15%"><h4>템플릿 명</h4></div>
+							<div class="float-left" style="width:57%"><input type="text" class="inputStyle" v-model="rowData.tmpltName" disabled></div>
+						</div>
+						<div class="of_h consolMarginTop" v-if="rowData.emphasizeType == 'TEXT'">
+							<div class="float-left" style="width:15%"><h4>템플릿강조제목</h4></div>
+							<div class="float-left" style="width:57%"><input type="text" class="inputStyle" v-model="rowData.tmpltEmpsTitle" disabled></div>
+						</div>
+						<div class="of_h consolMarginTop" v-if="rowData.emphasizeType == 'TEXT'">
+							<div class="float-left" style="width:15%"><h4>템플릿강조부제목</h4></div>
+							<div class="float-left" style="width:57%"><input type="text" class="inputStyle" v-model="rowData.tmpltEmpsSubTitle" disabled></div>
+						</div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:15%"><h4>내용</h4></div>
+							<div class="float-left" style="width:57%">
+								<textarea class="textareaStyle height190" v-model="rowData.tmpltContent" disabled></textarea>
+							</div>
+						</div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:15%"><h4>버튼</h4></div>
+							<div class="float-left" style="width:57%">
+								<table class="table_skin1 mt0" style="width:100%" v-if="buttonAlimTalkFlag">
+									<colgroup>
+										<col style="width:22%">
+										<col style="width:25%">
+										<col style="width:53%">
+									</colgroup>
+									<thead>
+										<tr>
+											<th class="text-center">타입</th>
+											<th class="text-center">버튼이름</th>
+											<th class="text-center">버튼링크</th>
+										</tr>
+									</thead>
+									<tbody>
+										<template v-for="(buttonInfo, idx) in rowData.buttonList">
+											<tr :key="idx">
+												<td class="text-left" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
+													<input type="text" class="inputStyle float-left" :value="fnGetButtonNm(buttonInfo.linkType)" disabled>
+												</td>
+												<td class="text-center" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
+													<input v-if="buttonInfo.linkType == 'AC'" type="text" class="inputStyle float-left" disabled v-model="buttonInfo.name">
+													<input v-else type="text" class="inputStyle float-left" disabled v-model="buttonInfo.name">
+												</td>
+												<td :class="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? 'text-left' : 'text-left of_h'">
+													<h6 v-if="buttonInfo.linkType == 'DS'" class="float-left" v-html="buttonDSDescription"></h6>
+													<h6 v-if="buttonInfo.linkType == 'WL'" class="float-left" style="width:25%">Mobile*</h6>
+													<h6 v-if="buttonInfo.linkType == 'AL'" class="float-left" style="width:25%">Android*</h6>
+													<input v-if="buttonInfo.linkType == 'WL'" type="text" class="inputStyle float-left" style="width:75%" v-model="buttonInfo.linkMo" disabled>
+													<input v-if="buttonInfo.linkType == 'AL'" type="text" class="inputStyle float-left" style="width:75%" v-model="buttonInfo.linkAnd" disabled>
+												</td>
+											</tr>
+											<tr v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" :key="idx+'_sub'">
+												<td class="text-left">
+													<div v-if="buttonInfo.linkType == 'WL'">
+														<h6 class="float-left" style="width:25%">PC*</h6>
+														<input type="text" class="inputStyle float-left" style="width:75%" v-model="buttonInfo.linkPc" disabled>
+													</div>
+													<div v-if="buttonInfo.linkType == 'AL'">
+														<h6 class="float-left" style="width:25%">IOS*</h6>
+														<input type="text" class="inputStyle float-left" style="width:75%" v-model="buttonInfo.linkIos" disabled>
+													</div>
+												</td>
+											</tr>
+										</template>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
-					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:15%"><h4>템플릿 명 *</h4></div>
-						<div class="float-left" style="width:57%"><input type="text" class="inputStyle" v-model="rowData.alimTalkTitle" readOnly></div>
-					</div>
-					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:15%"><h4>템플릿강조제목</h4></div>
-						<div class="float-left" style="width:57%"><input type="text" class="inputStyle" v-model="rowData.alimTalkEmphasisTitle" readOnly></div>
-					</div>
-					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:15%"><h4>템플릿강조부제목</h4></div>
-						<div class="float-left" style="width:57%"><input type="text" class="inputStyle" v-model="rowData.alimTalkEmphasisSubTitle" readOnly></div>
-					</div>
-					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:15%"><h4>내용*</h4></div>
-						<div class="float-left" style="width:57%">
-							<textarea class="textareaStyle height190" :placeholder="kakaoPlaceHoder" v-model="rowData.alimTalkContent" readOnly></textarea>
-						</div>
-					</div>
-					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:15%"><h4>카테고리*</h4></div>
-						<div class="float-left" style="width:28%"><input type="text" class="inputStyle" v-model="rowData.alimTalkCategory1" placeholder="대분류" readOnly></div>
-						<div class="float-left" style="width:1%">&nbsp;</div>
-						<div class="float-left" style="width:28%"><input type="text" class="inputStyle" v-model="rowData.alimTalkCategory2" placeholder="중분류" readOnly></div>
-					</div>   
-					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:13%"><h4>버튼</h4></div>
-						<div class="float-left" style="width:57%">
-							<table class="table_skin1 mt0" style="width:100%" v-if="buttonAlimTalkFlag">
-								<colgroup>
-									<col style="width:22%">
-									<col style="width:20%">
-									<col>
-									<col style="width:15%">
-								</colgroup>
-								<thead>
-									<tr>
-										<th class="text-center">타입</th>
-										<th class="text-center">버튼이름</th>
-										<th class="text-center">버튼링크</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr v-for="(row,index) in rowData.alimTalkButtons" v-bind:key="index">
-										<td class="text-center">{{row.buttonTypeName}}</td>
-										<td class="text-left">{{row.buttonName}}</td>
-										<td class="text-center">{{row.buttonLink}}
-											<input type="hidden" class="inputStyle" v-model="row.buttonType">
-											<input type="hidden" class="inputStyle" v-model="row.buttonName">
-											<input type="hidden" class="inputStyle" v-model="row.buttonLink">
-											<input type="hidden" class="inputStyle" v-model="row.buttonLink1">
-											<input type="hidden" class="inputStyle" v-model="row.startDate">
-											<input type="hidden" class="inputStyle" v-model="row.endDate">
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+					<div v-else>
+						<span class="txtCaption vertical-middle colorRed">알림톡은 기 등록 된, 템플릿 정보를 선택하여서 사용 할 수 있습니다.</span>
 					</div>
 				</div>
 			</div>	
@@ -2861,12 +2899,15 @@
 			<a @click="complete()" class="btnStyle2 backBlack ml10" data-toggle="modal" title="등록" activity="SAVE">등록</a>
 			<router-link :to="{ name: 'multiSendTemplateList' }" tag="a" class="btnStyle2 backRed ml10">취소</router-link>
 		</div>
+
+		<AlimTalkTemplatePopup :alimTalkTemplateOpen.sync="alimTalkTemplateOpen" ref="alimTalkTmplPopup"></AlimTalkTemplatePopup>
 	</div>
 </template>
 
 <script>
 import templateApi from "@/modules/template/service/templateApi.js";
 import messageApi from "@/modules/message/service/messageApi.js";
+import AlimTalkTemplatePopup from "@/modules/message/components/bp-alimTalkTemplate.vue";
 
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
 import ImageUploadPopUp from "@/modules/commonUtil/components/bp-imageUpload.vue";
@@ -2916,6 +2957,8 @@ import Calendar from "@/components/Calendar.vue";
 export default {
 	name: 'multiSendTemplateManage',
 	components : {
+		AlimTalkTemplatePopup,
+
 		ImageManagePopUp,      ImageUploadPopUp,   /* Push */
 
 		Image90ManagePopUp,    Image90UploadPopUp, /* RCS 캐러셀 SHORT 카드1 */
@@ -2960,13 +3003,14 @@ export default {
 			default: function() {
 				return {
 					'checkedChannel':[],
-					'tmpltCode':'',
+					'multiSendTmpltCode':'',
 					'msgType':'BASE', //BASE: 텍스트, IMAGE:이미지
 					'msgKind':'I', //정보성 I, 광고용: A
 					'otherProjectUseYn':'Y', //Y:공용, N:전용
 					'tmpltType':'M',  //tmpltType:통합발송 M, 스마트발송:S
 					'tmpltTitle':'', //템플릿 명
 					'pushHowToDenyReceipt':'',
+					'adtnInfo':'',
 					'pushAppId': '',
 					'brandNm': '', //브랜드
 
@@ -3018,6 +3062,9 @@ export default {
 					'friendTalkButtons':[], //kakao friend talk 버튼정보
 					'friendTalkButtonsSize': 5, //kakao friend talk 버튼 최대 갯수
 					'friendTalkImgInfo':{}, //kakao friend talk 이미지정보
+
+					'buttonList': [], //kakao alim talk 버튼정보
+					'tmpltKey': '', //kakao template Key
 
 					'callback':'',
 					'smsImgInfoList':[], //sms/mms이미지정보
@@ -3155,6 +3202,19 @@ export default {
 				{type:'BK', name:'봇 키워드'},
 				{type:'MD', name:'메시지전달'}
 			],
+			alimTalkButtonTypeList : [
+				{linkType:'DS', name:'배송 조회'},
+				{linkType:'WL', name:'웹 링크'},
+				{linkType:'AL', name:'앱 링크'},
+				{linkType:'BK', name:'봇 키워드'},
+				{linkType:'MD', name:'메시지 전달'},
+				{linkType:'BC', name:'상담톡 전환'},
+				{linkType:'BT', name:'봇 전환'},
+				//{type:'AC', name:'채널 추가'},  //광고 추가/복합형만
+			],
+
+			alimTalkTemplateOpen: false,
+			selectedAlimTalkTemplate: false,
 
 			smsImgMngOpen : false, /* MMS 이미지 */
 			smsImgUploadOpen : false,
@@ -3166,6 +3226,7 @@ export default {
 			buttonShortFlag: false,
 			buttonTallFlag: false,
 			buttonFriendTalkFlag: false,
+			buttonAlimTalkFlag: false,
 
 			smsButtonsMaxLen: 0, 		//start, endDate의 ID값을 유일하게 잡기위해 설정
 			lmsButtonsMaxLen: 0, 		//start, endDate의 ID값을 유일하게 잡기위해 설정
@@ -3192,6 +3253,8 @@ export default {
 			rcsPlaceHoder: 	"변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
 			kakaoPlaceHoder: 	"변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
 			smsmmsPlaceHoder: "변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
+
+			buttonDSDescription : '카카오 메세지에 택배사 명과 송장번호를 기재한 후, 배송 조회 버튼을 추가하시면 메세지에서 택배사 명과 송장번호를 추출하여 배송 조회 카카오 검색페이지 링크가 자동으로 생성됩니다. 카카오에서 지원하는 택배사명과 운송장번호가 알림톡 메시지 내에 포함된 경우에만 배송조회 버튼이 표시됩니다. 배송 조회가 가능한 택배사는 <span style="color:#e11d21"><strong>카카오와 해당 택배사와의 계약 관계에 의해 변동될 수 있음을 유의해주시기 바랍니다.</strong></span>',
 		}
 	},
 	watch: {
@@ -3225,7 +3288,7 @@ export default {
 		this.fnRcs0SelectCallbackList();
 		this.fnSMSSelectCallbackList();
 		this.fnSelectBrandList();
-		this.fnSetIntegratedTemplateInfo();
+		this.fnSetMultiSendTemplateInfo();
 	},
 	methods: {
 		//채널선택에서 체크박스를 클릭하면 채널설정탭을 설정한다.
@@ -3239,8 +3302,6 @@ export default {
 						i--;
 					}
 				}
-				//console.log("this.rowData.checkedChannel : "+this.rowData.checkedChannel);
-				//console.log("this.rowData.checkedChannel.length : "+this.rowData.checkedChannel.length);
 				if (this.rowData.checkedChannel.length === 0) {
 					this.channelTab = 9;
 				} else {
@@ -3346,7 +3407,7 @@ export default {
 		fnChgBtnType(idx){
 			const vm = this;
 			Object.keys(this.rowData.friendTalkButtons[idx]).forEach(function(key){
-				if (key != 'type') {
+				if (key != 'linkType') {
 					delete vm.rowData.friendTalkButtons[idx][key];
 				}
 			});
@@ -3373,6 +3434,22 @@ export default {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
 			});
+		},
+		// 알림톡 템플릿 불러오기 팝업
+		fnOpenAlimTalkTemplatePopup(){
+			this.$refs.alimTalkTmplPopup.fnSelectSenderKeyList();
+			this.alimTalkTemplateOpen = true;
+		},
+		// 알림톡 버튼명 가져오기
+		fnGetButtonNm(type){
+			let buttonNm = '';
+			this.alimTalkButtonTypeList.forEach(function(buttonInfo){
+				if (buttonInfo.linkType == type) {
+					buttonNm = buttonInfo.name;
+					return false;
+				}
+			});
+			return buttonNm;
 		},
 		//rcs 프로템플릿 발신번호 리스트 조회
 		fnRcs0SelectCallbackList(){
@@ -3527,52 +3604,38 @@ export default {
 		},
 		// 채널 발송순서를 위로
 		moveup:function () {
-			//console.log("start index : ",this.idxData);
-			//Insert the item in the previous item
 			if (this.idxData > 0) {
 				this.rowData.checkedChannel.splice (this.idxData-1,0, (this.rowData.checkedChannel [this.idxData]));
 				//Delete the next item
 				this.rowData.checkedChannel.splice (this.idxData + 1,1);
 				this.idxData = this.idxData -1;
 			}
-			//console.log(this.rowData.checkedChannel);
 		},
 		// 채널 발송순서를 아래로
 		movedown:function () {
-			//console.log("start index : ",this.idxData);
 			if (this.idxData < this.rowData.checkedChannel.length-1) {
 				//Insert the item in the next item
 				this.rowData.checkedChannel.splice (this.idxData + 2,0, (this.rowData.checkedChannel [this.idxData]));
 				this.rowData.checkedChannel.splice (this.idxData, 1);
-				//item.isshow=false;
 				this.idxData = this.idxData +1;
 			}
 		},
 		async fnSaveMultiSendTemplate(){
-			console.log("333");
 			var params = this.rowData;
 
-			//console.log("fnSaveMultiSendTemplate params : ", params);
-
 			//유효성 검사
-			//if(this.fnIsValid() == false) return;
-
 			params.tmpltStatus = 'SAVE';
-			//params.projectId = this.testProjectId;
 			params.rcsTemplateTable = this.rcsTemplateTable;//rcs일경우 사용한 템플릿 번호를 가져간다.
 			params.rcs9CardCount = this.rcs9CardCount;//캐러셀 SHORT 카드 수
 			params.rcs10CardCount = this.rcs10CardCount;//캐러셀 TALL 카드 수
 			params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
 			params.useYn = this.useYn; //사용여부
-			console.log("444");
 			await templateApi.insertMultiSendTemplate(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
-					//console.log("555");
 					confirm.fnAlert(this.detailTitle, '저장 되었습니다.');
 					this.$router.push('multiSendTemplateList')
 				} else {
-					//console.log("666");
 					confirm.fnAlert(this.detailTitle, result.message);
 				}
 			});
@@ -3602,412 +3665,323 @@ export default {
 				}
 			});
 		},
-
-    //유효성 체크
-    fnIsValid(){
-      if(!this.rowData.tmpltTitle){
-        confirm.fnAlert(this.detailTitle, '템플릿명을 입력해주세요.');
-        return false;
-      }
-      if(!this.rowData.msgType){
-        confirm.fnAlert(this.detailTitle, '메시지타입을 선택해주세요.');
-        return false;
-      }
-      if(!this.rowData.msgKind){
-        confirm.fnAlert(this.detailTitle, '메시지구분을 선택해주세요.');
-        return false;
-      }
-      if(!this.rowData.otherProjectUseYn){
-        confirm.fnAlert(this.detailTitle, '타 프로젝트 사용여부를 선택해주세요.');
-        return false;
-      }
-      
-      
-      if(this.rowData.checkedChannel.length == 0){
-        confirm.fnAlert(this.detailTitle, '채널을 선택해주세요.');
-        return false;
-      }else{
-        if(this.rowData.checkedChannel.includes('PUSH')){
-
-	          if(!this.rowData.pushSend){
-	            confirm.fnAlert(this.detailTitle, 'Push 발송타입을 선택해주세요.');
-	            return false;
-	          }
-	
-	          if(!this.rowData.pushTitle){
-	            confirm.fnAlert(this.detailTitle, 'Push 제목을 입력해주세요.');
-	            return false;
-	          }
-	
-	          if(!this.rowData.pushContent){
-	            confirm.fnAlert(this.detailTitle, 'Push 메시지를 입력해주세요.');
-	            return false;
-	          }
-	
-	          if(this.rowData.msgKind == 'A' && !this.rowData.pushHowToDenyReceipt){
-	            confirm.fnAlert(this.detailTitle, 'Push 수신거부 방법을 입력해주세요.');
-	            return false;
-	          }
-	
-	          if(this.rowData.msgType == 'IMAGE' && !this.rowData.pushImgInfo.imgUrl){
-	            confirm.fnAlert(this.detailTitle, 'Push 이미지를 선택해주세요.');
-	            return false;
-	          }
-	
-	          if(this.rowData.msgType == 'IMAGE' && !this.rowData.pushImgInfo.fileId){
-	            confirm.fnAlert(this.detailTitle, 'Push 이미지 정보가 잘못되었습니다. 다시 이미지를 선택해주세요.');
-	            return false;
-	          }
-	
-	          if(!this.rowData.pushAppId){
-	            confirm.fnAlert(this.detailTitle, 'Push APP ID를 선택해주세요.');
-	            return false;
-	          }
-        }
-
-        if(this.rowData.checkedChannel.includes('RCS')){
-			if(this.rcsTemplateTable === 0){  //FREE
-				if(!this.rowData.rcs0Content){ 
-					confirm.fnAlert(this.detailTitle, 'RCS FREE 템플릿 내용을 입력해주세요.');
-		            return false;
-		        }
-		        
-				if(!this.rowData.callback){ 
-					confirm.fnAlert(this.detailTitle, 'RCS FREE 템플릿 발신번호를 선택해주세요.');
-		            return false;
-		        }		        
+		// 유효성 체크
+		fnIsValid(){
+			if (!this.rowData.tmpltTitle) {
+				confirm.fnAlert(this.detailTitle, '템플릿명을 입력해주세요.');
+				return false;
+			}
+			if (!this.rowData.msgType) {
+				confirm.fnAlert(this.detailTitle, '메시지타입을 선택해주세요.');
+				return false;
+			}
+			if (!this.rowData.msgKind) {
+				confirm.fnAlert(this.detailTitle, '메시지구분을 선택해주세요.');
+				return false;
+			}
+			if (!this.rowData.otherProjectUseYn) {
+				confirm.fnAlert(this.detailTitle, '타 프로젝트 사용여부를 선택해주세요.');
+				return false;
 			}
 
-			if(this.rcsTemplateTable === 1){  //DESCRIPTION
-				if(!this.rowData.rcs1MessageFormId){ 
-					confirm.fnAlert(this.detailTitle, 'RCS 승인 서술형 템플릿을 팝업을 통해 선택해 주세요.');
-		            return false;
-		        }
-		        			
-				//if(!this.rowData.rcs1Title){ 
-				//	confirm.fnAlert(this.detailTitle, 'RCS 템플릿 승인 서술형 제목을 입력해주세요.');
-		        //    return false;
-		        //}
-		        
-				//if(!this.rowData.rcs1Content){ 
-				//	confirm.fnAlert(this.detailTitle, 'RCS 템플릿 승인 서술형 내용을 입력해주세요.');
-		        //    return false;
-		        //}		        
-			}
-			
-			if(this.rcsTemplateTable === 2){  //CELL
-				if(!this.rowData.rcs2MessageFormId){ 
-					confirm.fnAlert(this.detailTitle, 'RCS 승인 스타일 템플릿을 팝업을 통해 선택해 주세요.');
-		            return false;
-		        }
-		        			
-				//if(!this.rowData.rcs2Title){ 
-				//	confirm.fnAlert(this.detailTitle, 'RCS 템플릿 승인 스타일 제목을 입력해주세요.');
-		        //    return false;
-		        //}
-		        
-				//if(!this.rowData.rcs2Content){ 
-				//	confirm.fnAlert(this.detailTitle, 'RCS 템플릿 승인 스타일 내용을 입력해주세요.');
-		        //    return false;
-		        //}		        
-			}
-			//console.log("this.rcsTemplateTable : "+this.rcsTemplateTable);
-			if(this.rcsTemplateTable === 3){  //SMS
-			
-				if(!this.rowData.rcsSMSContent){ 
-					confirm.fnAlert(this.detailTitle, 'RCS SMS 내용을 입력해주세요.');
-		            return false;
-		        }
-
-				if(this.rowData.msgKind == 'A' && !this.rowData.rcsSMSHowToDenyReceipt){ 
-					confirm.fnAlert(this.detailTitle, 'RCS SMS 무료수신거부 정보를 입력해주세요.');
-		            return false;
-		        }	
-		        
-		        //if(this.rowData.buttonType == 'U'){ 
-		        //    var str = this.row.buttonLink.toLowerCase();
-		        //    console.log("button U >>>>>>>>>"+str);
-		        //    if(str.indexOf("http://")  == -1 && str.indexOf("https://")  == -1){
-			    //        confirm.fnAlert(this.detailTitle, 'RCS URL에 http:// 또는 https://를 입력해주세요.');
-			    //        return false;
-		        //    }
-		        //}        
-			}
-
-
-			if(this.rcsTemplateTable === 4){  //LMS
-				if(!this.rowData.rcsLMSTitle){ 
-					confirm.fnAlert(this.detailTitle, 'RCS LMS 제목을 입력해주세요.');
-		            return false;
-		        }
-
-				if(!this.rowData.rcsLMSContent){ 
-					confirm.fnAlert(this.detailTitle, 'RCS LMS 내용을 입력해주세요.');
-		            return false;
-		        }
-		        
-				if(this.rowData.msgKind == 'A' && !this.rowData.rcsLMSHowToDenyReceipt){ 
-					confirm.fnAlert(this.detailTitle, 'RCS LMS 무료수신거부 정보를 입력해주세요.');
-		            return false;
-		        }	        
-			}
-
-			if(this.rcsTemplateTable === 5){  //shart
-				if(!this.rowData.rcsShortTitle){ 
-					confirm.fnAlert(this.detailTitle, 'RCS SHORT 제목을 입력해주세요.');
-		            return false;
-		        }
-
-				if(!this.rowData.rcsShortContent){ 
-					confirm.fnAlert(this.detailTitle, 'RCS SHORT 내용을 입력해주세요.');
-		            return false;
-		        }
-		        
-				if(this.rowData.msgKind == 'A' && !this.rowData.rcsShortHowToDenyReceipt){ 
-					confirm.fnAlert(this.detailTitle, 'RCS SHORT 무료수신거부 정보를 입력해주세요.');
-		            return false;
-		        }	        
-			}
-			
-			if(this.rcsTemplateTable === 6){  //TALL
-				if(!this.rowData.rcsTallTitle){ 
-					confirm.fnAlert(this.detailTitle, 'RCS TALL 제목을 입력해주세요.');
-		            return false;
-		        }
-
-				if(!this.rowData.rcsTallContent){ 
-					confirm.fnAlert(this.detailTitle, 'RCS TALL 내용을 입력해주세요.');
-		            return false;
-		        }
-		        
-				if(this.rowData.msgKind == 'A' && !this.rowData.rcsTallHowToDenyReceipt){ 
-					confirm.fnAlert(this.detailTitle, 'RCS TALL 무료수신거부 정보를 입력해주세요.');
-		            return false;
-		        }	        
-			}
-				
-			if(this.rcsTemplateTable === 9){  //CSHORT
-				if(this.rcs9CardCount >= 3){
-					if(!this.rowData.rcs90Title){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드1의 제목을 입력해주세요.');
-			            return false;
-			        }
-	
-					if(!this.rowData.rcs90Content){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드1의 내용을 입력해주세요.');
-			            return false;
-			        }
-
-					if(!this.rowData.callback){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CSHORT 발신번호를 선택해주세요.');
-			            return false;
-			        }
-			        				
-			        if(!this.rowData.rcs91Title){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드2의 제목을 입력해주세요.');
-			            return false;
-			        }
-	
-					if(!this.rowData.rcs91Content){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드2의 내용을 입력해주세요.');
-			            return false;
-			        }
-
-					if(!this.rowData.rcs92Title){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드3의 제목을 입력해주세요.');
-			            return false;
-			        }
-	
-					if(!this.rowData.rcs92Content){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드3의 내용을 입력해주세요.');
-			            return false;
-			        }
+			if (this.rowData.checkedChannel.length == 0) {
+				confirm.fnAlert(this.detailTitle, '채널을 선택해주세요.');
+				return false;
+			} else {
+				if (this.rowData.checkedChannel.includes('PUSH')) {
+					if (!this.rowData.pushSend) {
+						confirm.fnAlert(this.detailTitle, 'Push 발송타입을 선택해주세요.');
+						return false;
+					}
+					if (!this.rowData.pushTitle) {
+						confirm.fnAlert(this.detailTitle, 'Push 제목을 입력해주세요.');
+						return false;
+					}
+					if (!this.rowData.pushContent) {
+						confirm.fnAlert(this.detailTitle, 'Push 메시지를 입력해주세요.');
+						return false;
+					}
+					if (this.rowData.msgKind == 'A' && !this.rowData.pushHowToDenyReceipt) {
+						confirm.fnAlert(this.detailTitle, 'Push 수신거부 방법을 입력해주세요.');
+						return false;
+					}
+					if (this.rowData.msgType == 'IMAGE' && !this.rowData.pushImgInfo.imgUrl) {
+						confirm.fnAlert(this.detailTitle, 'Push 이미지를 선택해주세요.');
+						return false;
+					}
+					if (this.rowData.msgType == 'IMAGE' && !this.rowData.pushImgInfo.fileId) {
+						confirm.fnAlert(this.detailTitle, 'Push 이미지 정보가 잘못되었습니다. 다시 이미지를 선택해주세요.');
+						return false;
+					}
+					if (!this.rowData.pushAppId) {
+						confirm.fnAlert(this.detailTitle, 'Push APP ID를 선택해주세요.');
+						return false;
+					}
 				}
 
-				if(this.rcs9CardCount >= 4){
-					if(!this.rowData.rcs93Title){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드4의 제목을 입력해주세요.');
-			            return false;
-			        }
+				if (this.rowData.checkedChannel.includes('RCS')) {
+					if (this.rcsTemplateTable === 0) {  //FREE
+						if (!this.rowData.rcs0Content) { 
+							confirm.fnAlert(this.detailTitle, 'RCS FREE 템플릿 내용을 입력해주세요.');
+							return false;
+						}
+						if (!this.rowData.callback) { 
+							confirm.fnAlert(this.detailTitle, 'RCS FREE 템플릿 발신번호를 선택해주세요.');
+							return false;
+						}
+					}
+
+					if (this.rcsTemplateTable === 1) {  //DESCRIPTION
+						if (!this.rowData.rcs1MessageFormId) { 
+							confirm.fnAlert(this.detailTitle, 'RCS 승인 서술형 템플릿을 팝업을 통해 선택해 주세요.');
+							return false;
+						}
+					}
+
+					if (this.rcsTemplateTable === 2) {  //CELL
+						if (!this.rowData.rcs2MessageFormId) { 
+							confirm.fnAlert(this.detailTitle, 'RCS 승인 스타일 템플릿을 팝업을 통해 선택해 주세요.');
+							return false;
+						}
+					}
 	
-					if(!this.rowData.rcs93Content){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드4의 내용을 입력해주세요.');
-			            return false;
-			        }				
+					if (this.rcsTemplateTable === 3) {  //SMS
+						if (!this.rowData.rcsSMSContent) { 
+							confirm.fnAlert(this.detailTitle, 'RCS SMS 내용을 입력해주세요.');
+							return false;
+						}
+						if (this.rowData.msgKind == 'A' && !this.rowData.rcsSMSHowToDenyReceipt) { 
+							confirm.fnAlert(this.detailTitle, 'RCS SMS 무료수신거부 정보를 입력해주세요.');
+							return false;
+						}
+					}
+
+					if (this.rcsTemplateTable === 4) {  //LMS
+						if (!this.rowData.rcsLMSTitle) { 
+							confirm.fnAlert(this.detailTitle, 'RCS LMS 제목을 입력해주세요.');
+							return false;
+						}
+						if (!this.rowData.rcsLMSContent) { 
+							confirm.fnAlert(this.detailTitle, 'RCS LMS 내용을 입력해주세요.');
+							return false;
+						}
+						if (this.rowData.msgKind == 'A' && !this.rowData.rcsLMSHowToDenyReceipt) { 
+							confirm.fnAlert(this.detailTitle, 'RCS LMS 무료수신거부 정보를 입력해주세요.');
+							return false;
+						}
+					}
+
+					if (this.rcsTemplateTable === 5) {  //shart
+						if (!this.rowData.rcsShortTitle) { 
+							confirm.fnAlert(this.detailTitle, 'RCS SHORT 제목을 입력해주세요.');
+							return false;
+						}
+						if (!this.rowData.rcsShortContent) { 
+							confirm.fnAlert(this.detailTitle, 'RCS SHORT 내용을 입력해주세요.');
+							return false;
+						}
+						if (this.rowData.msgKind == 'A' && !this.rowData.rcsShortHowToDenyReceipt) { 
+							confirm.fnAlert(this.detailTitle, 'RCS SHORT 무료수신거부 정보를 입력해주세요.');
+							return false;
+						}
+					}
+
+					if (this.rcsTemplateTable === 6) {  //TALL
+						if (!this.rowData.rcsTallTitle) { 
+							confirm.fnAlert(this.detailTitle, 'RCS TALL 제목을 입력해주세요.');
+							return false;
+						}
+						if (!this.rowData.rcsTallContent) { 
+							confirm.fnAlert(this.detailTitle, 'RCS TALL 내용을 입력해주세요.');
+							return false;
+						}
+						if (this.rowData.msgKind == 'A' && !this.rowData.rcsTallHowToDenyReceipt) { 
+							confirm.fnAlert(this.detailTitle, 'RCS TALL 무료수신거부 정보를 입력해주세요.');
+							return false;
+						}
+					}
+
+					if (this.rcsTemplateTable === 9) {  //CSHORT
+						if (this.rcs9CardCount >= 3) {
+							if (!this.rowData.rcs90Title) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드1의 제목을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs90Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드1의 내용을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.callback) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CSHORT 발신번호를 선택해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs91Title) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드2의 제목을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs91Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드2의 내용을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs92Title) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드3의 제목을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs92Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드3의 내용을 입력해주세요.');
+								return false;
+							}
+						}
+
+						if (this.rcs9CardCount >= 4) {
+							if (!this.rowData.rcs93Title) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드4의 제목을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs93Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드4의 내용을 입력해주세요.');
+								return false;
+							}
+						}
+
+						if (this.rcs9CardCount >= 5) {
+							if (!this.rowData.rcs94Title) {
+								confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드5의 제목을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs94Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드5의 내용을 입력해주세요.');
+								return false;
+							}
+						}
+
+						if (this.rcs9CardCount >= 6) {
+							if (!this.rowData.rcs95Title) {
+								confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드6의 제목을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs95Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드6의 내용을 입력해주세요.');
+								return false;
+							}
+						}
+					}
+
+					if (this.rcsTemplateTable === 10) {  //CTALL
+						if (this.rcs10CardCount >= 3) {
+							if (!this.rowData.rcs100Title) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드1의 제목을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs100Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드1의 내용을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.callback) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CTALL 발신번호를 선택해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs101Title) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드2의 제목을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs101Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드2의 내용을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs102Title) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드3의 제목을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs102Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드3의 내용을 입력해주세요.');
+								return false;
+							}
+						}
+
+						if (this.rcs10CardCount >= 4) {
+							if (!this.rowData.rcs103Title) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드4의 제목을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs103Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드4의 내용을 입력해주세요.');
+								return false;
+							}
+						}
+
+						if (this.rcs10CardCount >= 5) {
+							if (!this.rowData.rcs104Title) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드5의 제목을 입력해주세요.');
+								return false;
+							}
+							if (!this.rowData.rcs104Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드5의 내용을 입력해주세요.');
+								return false;
+							}
+						}
+
+						if (this.rcs10CardCount >= 6) {
+							if (!this.rowData.rcs105Title) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드6의 제목을 입력해주세요.');
+								return false;
+							}
+	
+							if (!this.rowData.rcs105Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드6의 내용을 입력해주세요.');
+								return false;
+							}
+						}
+					}
 				}
 
-				if(this.rcs9CardCount >= 5){
-					if(!this.rowData.rcs94Title){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드5의 제목을 입력해주세요.');
-			            return false;
-			        }
-	
-					if(!this.rowData.rcs94Content){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드5의 내용을 입력해주세요.');
-			            return false;
-			        }				
+				if (this.rowData.checkedChannel.includes('KAKAO')) {
+					if (this.kakaoTemplateTable === 0) { //FRIENDTALK
+						if (!this.rowData.friendTalkSenderKey) {
+							confirm.fnAlert(this.detailTitle, '친구톡 발신프로필을 선택해주세요.');
+							return false;
+						}
+						if (!this.rowData.friendTalkContent) {
+							confirm.fnAlert(this.detailTitle, '친구톡 내용을 입력해주세요.');
+							return false;
+						}
+					}
+
+					if (this.kakaoTemplateTable === 1) { //ALIMTALK
+						if (!this.selectedAlimTalkTemplate) {
+							confirm.fnAlert(this.detailTitle, '알림톡 템플릿을 선택해주세요.');
+							return false;
+						}
+					}
 				}
-				
-				if(this.rcs9CardCount >= 6){
-					if(!this.rowData.rcs95Title){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드6의 제목을 입력해주세요.');
-			            return false;
-			        }
-	
-					if(!this.rowData.rcs95Content){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CSHORT 카드6의 내용을 입력해주세요.');
-			            return false;
-			        }				
+
+				if (this.rowData.checkedChannel.includes('SMSMMS')) {
+					if (this.smsTemplateTable === 0) { //SMS
+						if (!this.rowData.smsContent) {
+							confirm.fnAlert(this.detailTitle, 'sms 내용을 입력해주세요.');
+							return false;
+						}
+					}
+
+					if (this.smsTemplateTable === 1) { //MMS
+						if (!this.rowData.smsTitle) {
+							confirm.fnAlert(this.detailTitle, 'MMS 제목을 입력해주세요.');
+							return false;
+						}
+						if (!this.rowData.smsContent) {
+							confirm.fnAlert(this.detailTitle, 'MMS 내용을 입력해주세요.');
+							return false;
+						}
+					}
 				}
 			}
-			
-			if(this.rcsTemplateTable === 10){  //CTALL
-				if(this.rcs10CardCount >= 3){
-					if(!this.rowData.rcs100Title){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드1의 제목을 입력해주세요.');
-			            return false;
-			        }
-	
-					if(!this.rowData.rcs100Content){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드1의 내용을 입력해주세요.');
-			            return false;
-			        }
-
-					if(!this.rowData.callback){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CTALL 발신번호를 선택해주세요.');
-			            return false;
-			        }
-			        				
-			        if(!this.rowData.rcs101Title){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드2의 제목을 입력해주세요.');
-			            return false;
-			        }
-	
-					if(!this.rowData.rcs101Content){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드2의 내용을 입력해주세요.');
-			            return false;
-			        }
-
-					if(!this.rowData.rcs102Title){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드3의 제목을 입력해주세요.');
-			            return false;
-			        }
-	
-					if(!this.rowData.rcs102Content){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드3의 내용을 입력해주세요.');
-			            return false;
-			        }
-				}
-
-				if(this.rcs10CardCount >= 4){
-					if(!this.rowData.rcs103Title){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드4의 제목을 입력해주세요.');
-			            return false;
-			        }
-	
-					if(!this.rowData.rcs103Content){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드4의 내용을 입력해주세요.');
-			            return false;
-			        }				
-				}
-
-				if(this.rcs10CardCount >= 5){
-					if(!this.rowData.rcs104Title){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드5의 제목을 입력해주세요.');
-			            return false;
-			        }
-	
-					if(!this.rowData.rcs104Content){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드5의 내용을 입력해주세요.');
-			            return false;
-			        }				
-				}
-				
-				if(this.rcs10CardCount >= 6){
-					if(!this.rowData.rcs105Title){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드6의 제목을 입력해주세요.');
-			            return false;
-			        }
-	
-					if(!this.rowData.rcs105Content){ 
-						confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드6의 내용을 입력해주세요.');
-			            return false;
-			        }				
-				}	        
-			}			
-        }
-
-        if(this.rowData.checkedChannel.includes('KAKAO')){
-			if(this.kakaoTemplateTable === 0){ //FRIENDTALK
-				  if(!this.rowData.friendTalkSenderKey){
-		            confirm.fnAlert(this.detailTitle, '친구톡 발신프로필을 선택해주세요.');
-		            return false;
-		          }
-		          
-				  if(!this.rowData.friendTalkContent){
-		            confirm.fnAlert(this.detailTitle, '친구톡 내용을 입력해주세요.');
-		            return false;
-		          }
-			}
-			
-			if(this.kakaoTemplateTable === 1){ //ALIMTALK
-				  if(!this.rowData.alimTalkSendProfile){
-		            confirm.fnAlert(this.detailTitle, '알림톡 발신프로필을 선택해주세요.');
-		            return false;
-		          }
-
-				  if(!this.rowData.alimTalkTitle){
-		            confirm.fnAlert(this.detailTitle, '알림톡 제목을 입력해주세요.');
-		            return false;
-		          }	
-		          		          
-				  if(!this.rowData.alimTalkContent){
-		            confirm.fnAlert(this.detailTitle, '알림톡 내용을 입력해주세요.');
-		            return false;
-		          }		
-			}
-        }
-        
-        if(this.rowData.checkedChannel.includes('SMSMMS')){
-        	if(this.smsTemplateTable === 0){ //SMS
-				  if(!this.rowData.smsContent){
-		            confirm.fnAlert(this.detailTitle, 'sms 내용을 입력해주세요.');
-		            return false;
-		          }
-			}
-
-        	if(this.smsTemplateTable === 1){ //MMS
-				  if(!this.rowData.smsTitle){
-		            confirm.fnAlert(this.detailTitle, 'MMS 제목을 입력해주세요.');
-		            return false;
-		          }
-		          
-				  if(!this.rowData.smsContent){
-		            confirm.fnAlert(this.detailTitle, 'MMS 내용을 입력해주세요.');
-		            return false;
-		          }	   
-		          
-		          //if(this.rowData.smsImgInfoList.length == 0){
-		          //	confirm.fnAlert(this.detailTitle, '버튼을 추가해주세요.');
-		          //  return false;
-		          //}	
-			}
-        }        
-
-      }
-
-
-
-      return true;
-    },
-
+			return true;
+		},
 		// 임시저장 => 채널 설정관련 유효성 체크를  무시한다.
 		save:function(){
-			console.log("111");
 			this.registYn = false;
 			//유효성 검사
 			if (this.fnIsValid() == false) return;
-			console.log("222");
 			eventBus.$on('callbackEventBus', this.fnSaveMultiSendTemplate);
 			confirm.fnConfirm(this.detailTitle, "템플릿을 저장 하시겠습니까?", "확인");
 		},
@@ -4020,16 +3994,21 @@ export default {
 			eventBus.$on('callbackEventBus', this.fnCompleteIntegratedTemplate);
 			confirm.fnConfirm(this.detailTitle, "템플릿을 등록 하시겠습니까?", "확인");
 		},
-		//template 정보 조회
-		fnSetIntegratedTemplateInfo(){
-			//console.log("this.tmpltCode : "+this.tmpltCodeP);
+		//템플릿 정보 Set
+		fnSetTemplateInfo(templateInfo){
+			Object.assign(this.rowData, templateInfo);
+			this.selectedAlimTalkTemplate = true;
+			this.buttonAlimTalkFlag = true;
+		},
+		// template 정보 조회
+		fnSetMultiSendTemplateInfo(){
 			if (!this.isEmpty(this.tmpltCodeP)) {
-				this.fnSelectIntegratedTemplateInfo();
+				this.fnSelectMultiSendTemplateInfo();
 			}
 		},
-		//템플릿 정보 조회
-		fnSelectIntegratedTemplateInfo() {
-			const params = {tmpltCode: this.tmpltCodeP};
+		// 템플릿 정보 조회
+		fnSelectMultiSendTemplateInfo() {
+			const params = {multiSendTmpltCode: this.tmpltCodeP};
 			templateApi.integratedTemplateInfo(params).then(response => {
 				const result = response.data;
 				if (result.success) {
@@ -4074,11 +4053,11 @@ export default {
 							this.channelTab = 3;
 							this.checkedSmsMms = true;
 						}
-						this.rowData.tmpltCode		= rtnData.tmpltCode;
-						this.rowData.msgType			= rtnData.msgType;
-						this.rowData.msgKind			= rtnData.msgKind;
-						this.rowData.tmpltTitle		= this.$gfnCommonUtils.unescapeXss(rtnData.tmpltTitle);
-						this.rowData.otherProjectUseYn = rtnData.otherProjectUseYn;
+						this.rowData.multiSendTmpltCode	= rtnData.tmpltCode;
+						this.rowData.msgType						= rtnData.msgType;
+						this.rowData.msgKind						= rtnData.msgKind;
+						this.rowData.tmpltTitle					= this.$gfnCommonUtils.unescapeXss(rtnData.tmpltTitle);
+						this.rowData.otherProjectUseYn		= rtnData.otherProjectUseYn;
 
 						// PUSH DATA SET
 						this.rowData.pushContent = this.$gfnCommonUtils.unescapeXss(rtnData.pushMsg);
@@ -4087,7 +4066,8 @@ export default {
 						this.rowData.pushImgInfo.fileId = rtnData.pushFileId;
 						this.rowData.pushImgInfo.imgUrl = rtnData.pushChImgUrl;
 						this.rowData.pushSend = rtnData.pushSendType;
-						this.rowData.pushHowToDenyReceipt = rtnData.pushRcvblcInput;//수신거부방법
+						this.rowData.pushHowToDenyReceipt = rtnData.pushRcvblcInput; // 수신거부방법
+						this.rowData.adtnInfo = this.$gfnCommonUtils.unescapeXss(rtnData.adtnInfo); // 부가정보
 
 						// RCS DATA SET
 						if (rtnData.rcsPrdType == 'FREE') {
@@ -4367,7 +4347,7 @@ export default {
 							}
 						}
 	
-						// FRIENDTALK DATA SET            
+						// FRIENDTALK DATA SET
 						this.rowData.friendTalkSenderKeyType	= rtnData.friendTalkSenderKeyType;
 						this.rowData.friendTalkSenderKey 		= rtnData.friendTalkSenderKey;
 						this.rowData.friendTalkImageLink 		= rtnData.friendTalkImageLink;
@@ -4403,7 +4383,25 @@ export default {
 						}
 	
 						//ALIMTALK DATA SET
-	
+						if (rtnData.alimTalkPrdType == 'ALIMTALK') {//카카오톡 알림톡은 5개 버튼까지 추가 가능
+							jQuery('input:radio[name=kakao]:input[value="Notification"]').click();
+							this.selectedAlimTalkTemplate = true;
+						}
+
+						this.rowData.senderKey = rtnData.alimTalkSenderKey;
+						this.rowData.tmpltName = this.$gfnCommonUtils.unescapeXss(rtnData.alimTalkTmpltName);
+						this.rowData.emphasizeType = rtnData.alimTalkEmphasizeType;
+						this.rowData.tmpltEmpsTitle = rtnData.alimTalkTmpltEmpsTitle;
+						this.rowData.tmpltEmpsSubTitle = rtnData.alimTalkTmpltEmpsSubTitle;
+						this.rowData.tmpltContent = this.$gfnCommonUtils.unescapeXss(rtnData.alimTalkTmpltContent);
+
+						if (rtnData.alimTalkPrdType == 'ALIMTALK') {//카카오톡 알림톡은 5개 버튼까지 추가 가능
+							if (rtnData.alimTalkButton0Type) {
+								this.buttonAlimTalkFlag = true;
+								this.rowData.buttonList.push(JSON.parse(rtnData.alimTalkButtonArr0));
+							}
+						}
+
 						//SMS/MMS DATA SET
 						if (rtnData.smsSendType == 'S') {
 							this.smsTemplateTable = 0;
@@ -4432,7 +4430,6 @@ export default {
 				}
 			});
 		},
-
 		fnPushOpenImageManagePopUp(){
 			this.$refs.pushImgMng.fnSearch();
 			this.pushImgMngOpen = !this.pushImgMngOpen;
@@ -4670,915 +4667,755 @@ export default {
 				this.rowData.friendTalkButtons.splice(row,1);
 			}
 		},
-
-
-    fnRcs90OpenImageManagePopUp(){
-      if(this.fnRcs90ImgLimitSize() == false) return;
-      this.$refs.rcs90ImgMng.fnSearch();
-      this.rcs90ImgMngOpen = !this.rcs90ImgMngOpen;
-    },
-    fnRcs90CallbackImgInfo(imgInfo){
-      if(this.fnRcs90ImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-     
-      this.rowData.rcs90ImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcs90ImgInfoList));
-      this.fnRcs90DelDuplImgInfo();
-    },
-
-
-     fnRcs90DelDuplImgInfo(){
-       const vm = this;
-       this.rowData.rcs90ImgInfoList = this.rowData.rcs90ImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.rcs90ImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnRcs90ImgLimitSize(){
-      if(this.rowData.rcs90ImgInfoList != null && this.rowData.rcs90ImgInfoList.length >= this.rcs90ImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs90ImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnRcs90DelImg(idx){
-      //console.log("idx : ",idx);
-      //console.log("this.rowData.rcs90ImgInfoList : ",this.rowData.rcs90ImgInfoList)
-      
-       this.rowData.rcs90ImgInfoList.splice(idx, 1);
-     },
-     
-
-    fnRcs91OpenImageManagePopUp(){
-      if(this.fnRcs91ImgLimitSize() == false) return;
-      this.$refs.rcs91ImgMng.fnSearch();
-      this.rcs91ImgMngOpen = !this.rcs91ImgMngOpen;
-    },
-    fnRcs91CallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
-      if(this.fnRcs91ImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      //console.log('2222 : '+JSON.stringify(temp));
-      this.rowData.rcs91ImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcs91ImgInfoList));
-      this.fnRcs91DelDuplImgInfo();
-    },
-
-
-     fnRcs91DelDuplImgInfo(){
-       const vm = this;
-       this.rowData.rcs91ImgInfoList = this.rowData.rcs91ImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.rcs91ImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnRcs91ImgLimitSize(){
-      if(this.rowData.rcs91ImgInfoList != null && this.rowData.rcs91ImgInfoList.length >= this.rcs91ImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs91ImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnRcs91DelImg(idx){
-       this.rowData.rcs91ImgInfoList.splice(idx, 1);
-     },
-
-
-    fnRcs92OpenImageManagePopUp(){
-      if(this.fnRcs92ImgLimitSize() == false) return;
-      this.$refs.rcs92ImgMng.fnSearch();
-      this.rcs92ImgMngOpen = !this.rcs92ImgMngOpen;
-    },
-    fnRcs92CallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
-      if(this.fnRcs92ImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      //console.log('2222 : '+JSON.stringify(temp));
-      this.rowData.rcs92ImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcs92ImgInfoList));
-      this.fnRcs92DelDuplImgInfo();
-    },
-
-
-     fnRcs92DelDuplImgInfo(){
-       const vm = this;
-       this.rowData.rcs92ImgInfoList = this.rowData.rcs92ImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.rcs92ImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnRcs92ImgLimitSize(){
-      if(this.rowData.rcs92ImgInfoList != null && this.rowData.rcs92ImgInfoList.length >= this.rcs92ImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs92ImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnRcs92DelImg(idx){
-       this.rowData.rcs92ImgInfoList.splice(idx, 1);
-     },
-     
-     
-    fnRcs93OpenImageManagePopUp(){
-      if(this.fnRcs93ImgLimitSize() == false) return;
-      this.$refs.rcs93ImgMng.fnSearch();
-      this.rcs93ImgMngOpen = !this.rcs93ImgMngOpen;
-    },
-    fnRcs93CallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
-      if(this.fnRcs93ImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      //console.log('2222 : '+JSON.stringify(temp));
-      this.rowData.rcs93ImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcs93ImgInfoList));
-      this.fnRcs93DelDuplImgInfo();
-    },
-
-
-     fnRcs93DelDuplImgInfo(){
-       const vm = this;
-       this.rowData.rcs93ImgInfoList = this.rowData.rcs93ImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.rcs93ImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnRcs93ImgLimitSize(){
-      if(this.rowData.rcs93ImgInfoList != null && this.rowData.rcs93ImgInfoList.length >= this.rcs93ImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs93ImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnRcs93DelImg(idx){
-       this.rowData.rcs93ImgInfoList.splice(idx, 1);
-     },
-     
-     
-    fnRcs94OpenImageManagePopUp(){
-      if(this.fnRcs94ImgLimitSize() == false) return;
-      this.$refs.rcs94ImgMng.fnSearch();
-      this.rcs94ImgMngOpen = !this.rcs94ImgMngOpen;
-    },
-    fnRcs94CallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
-      if(this.fnRcs94ImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      //console.log('2222 : '+JSON.stringify(temp));
-      this.rowData.rcs94ImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcs94ImgInfoList));
-      this.fnRcs94DelDuplImgInfo();
-    },
-
-
-     fnRcs94DelDuplImgInfo(){
-       const vm = this;
-       this.rowData.rcs94ImgInfoList = this.rowData.rcs94ImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.rcs94ImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnRcs94ImgLimitSize(){
-      if(this.rowData.rcs94ImgInfoList != null && this.rowData.rcs94ImgInfoList.length >= this.rcs94ImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs94ImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnRcs94DelImg(idx){
-       this.rowData.rcs94ImgInfoList.splice(idx, 1);
-     },
-     
-     
-    fnRcs95OpenImageManagePopUp(){
-      if(this.fnRcs95ImgLimitSize() == false) return;
-      this.$refs.rcs95ImgMng.fnSearch();
-      this.rcs95ImgMngOpen = !this.rcs95ImgMngOpen;
-    },
-    fnRcs95CallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
-      if(this.fnRcs95ImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      //console.log('2222 : '+JSON.stringify(temp));
-      this.rowData.rcs95ImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcs95ImgInfoList));
-      this.fnRcs95DelDuplImgInfo();
-    },
-
-
-     fnRcs95DelDuplImgInfo(){
-       const vm = this;
-       this.rowData.rcs95ImgInfoList = this.rowData.rcs95ImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.rcs95ImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnRcs95ImgLimitSize(){
-      if(this.rowData.rcs95ImgInfoList != null && this.rowData.rcs95ImgInfoList.length >= this.rcs95ImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs95ImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnRcs95DelImg(idx){
-       this.rowData.rcs95ImgInfoList.splice(idx, 1);
-    },
-     
-
-    addRow100: function(){
-      if(this.rowData.rcs100Buttons.length >= 2){
-        alert("button은 2개까지 추가가능합니다.");
-      }else{
-        this.button100Flag = true;
-        this.rcs100ButtonsMaxLen = this.rcs100ButtonsMaxLen + 1;
-        var startDateId = 'rcs100StartDateId'	+ this.rcs100ButtonsMaxLen;
-        var endDateId 	= 'rcs100EndDateId'	+ this.rcs100ButtonsMaxLen;
-        
-        this.rowData.rcs100Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-      }
-    },
-    removeRow100: function(row){
-      if(this.rowData.rcs100Buttons.length <= 1){
-        this.rowData.rcs100Buttons.splice(row,1);
-        this.rowData.rcs100Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcs100Buttons.splice(row,1);
-      }
-    },
-    addRow101: function(){
-      if(this.rowData.rcs101Buttons.length >= 2){
-        alert("button은 2개까지 추가가능합니다.");
-      }else{
-        this.button101Flag = true;
-        this.rcs101ButtonsMaxLen = this.rcs101ButtonsMaxLen + 1;
-        var startDateId = 'rcs101StartDateId'	+ this.rcs101ButtonsMaxLen;
-        var endDateId 	= 'rcs101EndDateId'	+ this.rcs101ButtonsMaxLen;
-        
-        this.rowData.rcs101Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-      }
-    },
-    removeRow101: function(row){
-      if(this.rowData.rcs101Buttons.length <= 1){
-        this.rowData.rcs101Buttons.splice(row,1);
-        this.rowData.rcs101Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcs101Buttons.splice(row,1);
-      }
-    },
-    addRow102: function(){
-      if(this.rowData.rcs102Buttons.length >= 2){
-        alert("button은 2개까지 추가가능합니다.");
-      }else{
-        this.button102Flag = true;
-        this.rcs102ButtonsMaxLen = this.rcs102ButtonsMaxLen + 1;
-        var startDateId = 'rcs102StartDateId'	+ this.rcs102ButtonsMaxLen;
-        var endDateId 	= 'rcs102EndDateId'	+ this.rcs102ButtonsMaxLen;
-        
-        this.rowData.rcs102Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-      }
-    },
-    removeRow102: function(row){
-      if(this.rowData.rcs102Buttons.length <= 1){
-        this.rowData.rcs102Buttons.splice(row,1);
-        this.rowData.rcs102Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcs102Buttons.splice(row,1);
-      }
-    },
-    addRow103: function(){
-      if(this.rowData.rcs103Buttons.length >= 2){
-        alert("button은 2개까지 추가가능합니다.");
-      }else{
-        this.button103Flag = true;
-        this.rcs103ButtonsMaxLen = this.rcs103ButtonsMaxLen + 1;
-        var startDateId = 'rcs103StartDateId'	+ this.rcs103ButtonsMaxLen;
-        var endDateId 	= 'rcs103EndDateId'	+ this.rcs103ButtonsMaxLen;
-        
-        this.rowData.rcs103Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-      }
-    },
-    removeRow103: function(row){
-      if(this.rowData.rcs103Buttons.length <= 1){
-        this.rowData.rcs103Buttons.splice(row,1);
-        this.rowData.rcs103Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcs103Buttons.splice(row,1);
-      }
-    },
-    addRow104: function(){
-      if(this.rowData.rcs104Buttons.length >= 2){
-        alert("button은 2개까지 추가가능합니다.");
-      }else{
-        this.button104Flag = true;
-        this.rcs104ButtonsMaxLen = this.rcs104ButtonsMaxLen + 1;
-        var startDateId = 'rcs104StartDateId'	+ this.rcs104ButtonsMaxLen;
-        var endDateId 	= 'rcs104EndDateId'	+ this.rcs104ButtonsMaxLen;
-        
-        this.rowData.rcs104Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-      }
-    },
-    removeRow104: function(row){
-      if(this.rowData.rcs104Buttons.length <= 1){
-        this.rowData.rcs104Buttons.splice(row,1);
-        this.rowData.rcs104Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcs104Buttons.splice(row,1);
-      }
-    },
-    addRow105: function(){
-      if(this.rowData.rcs105Buttons.length >= 2){
-        alert("button은 2개까지 추가가능합니다.");
-      }else{
-        this.button105Flag = true;
-        this.rcs105ButtonsMaxLen = this.rcs105ButtonsMaxLen + 1;
-        var startDateId = 'rcs105StartDateId'	+ this.rcs105ButtonsMaxLen;
-        var endDateId 	= 'rcs105EndDateId'	+ this.rcs105ButtonsMaxLen;
-        
-        this.rowData.rcs105Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-      }
-    },
-    removeRow105: function(row){
-      if(this.rowData.rcs105Buttons.length <= 1){
-        this.rowData.rcs105Buttons.splice(row,1);
-        this.rowData.rcs105Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-      }else{
-        this.rowData.rcs105Buttons.splice(row,1);
-      }
-    },
-  
-
-    fnRcs100OpenImageManagePopUp(){
-      if(this.fnRcs100ImgLimitSize() == false) return;
-      this.$refs.rcs100ImgMng.fnSearch();
-      this.rcs100ImgMngOpen = !this.rcs100ImgMngOpen;
-    },
-    fnRcs100CallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
-      if(this.fnRcs100ImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      //console.log('2222 : '+JSON.stringify(temp));
-      this.rowData.rcs100ImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcs100ImgInfoList));
-      this.fnRcs100DelDuplImgInfo();
-    },
-
-
-     fnRcs100DelDuplImgInfo(){
-       const vm = this;
-       this.rowData.rcs100ImgInfoList = this.rowData.rcs100ImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.rcs100ImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnRcs100ImgLimitSize(){
-      if(this.rowData.rcs100ImgInfoList != null && this.rowData.rcs100ImgInfoList.length >= this.rcs100ImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs100ImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnRcs100DelImg(idx){
-       this.rowData.rcs100ImgInfoList.splice(idx, 1);
-     },
-     
-
-    fnRcs101OpenImageManagePopUp(){
-      if(this.fnRcs101ImgLimitSize() == false) return;
-      this.$refs.rcs101ImgMng.fnSearch();
-      this.rcs101ImgMngOpen = !this.rcs101ImgMngOpen;
-    },
-    fnRcs101CallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
-      if(this.fnRcs101ImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      //console.log('2222 : '+JSON.stringify(temp));
-      this.rowData.rcs101ImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcs101ImgInfoList));
-      this.fnRcs101DelDuplImgInfo();
-    },
-
-
-     fnRcs101DelDuplImgInfo(){
-       const vm = this;
-       this.rowData.rcs101ImgInfoList = this.rowData.rcs101ImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.rcs101ImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnRcs101ImgLimitSize(){
-      if(this.rowData.rcs101ImgInfoList != null && this.rowData.rcs101ImgInfoList.length >= this.rcs101ImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs101ImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnRcs101DelImg(idx){
-       this.rowData.rcs101ImgInfoList.splice(idx, 1);
-     },
-
-
-    fnRcs102OpenImageManagePopUp(){
-      if(this.fnRcs102ImgLimitSize() == false) return;
-      this.$refs.rcs102ImgMng.fnSearch();
-      this.rcs102ImgMngOpen = !this.rcs102ImgMngOpen;
-    },
-    fnRcs102CallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
-      if(this.fnRcs102ImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      //console.log('2222 : '+JSON.stringify(temp));
-      this.rowData.rcs102ImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcs102ImgInfoList));
-      this.fnRcs102DelDuplImgInfo();
-    },
-
-
-     fnRcs102DelDuplImgInfo(){
-       const vm = this;
-       this.rowData.rcs102ImgInfoList = this.rowData.rcs102ImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.rcs102ImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnRcs102ImgLimitSize(){
-      if(this.rowData.rcs102ImgInfoList != null && this.rowData.rcs102ImgInfoList.length >= this.rcs102ImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs102ImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnRcs102DelImg(idx){
-       this.rowData.rcs102ImgInfoList.splice(idx, 1);
-     },
-     
-     
-    fnRcs103OpenImageManagePopUp(){
-      if(this.fnRcs103ImgLimitSize() == false) return;
-      this.$refs.rcs103ImgMng.fnSearch();
-      this.rcs103ImgMngOpen = !this.rcs103ImgMngOpen;
-    },
-    fnRcs103CallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
-      if(this.fnRcs103ImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      //console.log('2222 : '+JSON.stringify(temp));
-      this.rowData.rcs103ImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcs103ImgInfoList));
-      this.fnRcs103DelDuplImgInfo();
-    },
-
-
-     fnRcs103DelDuplImgInfo(){
-       const vm = this;
-       this.rowData.rcs103ImgInfoList = this.rowData.rcs103ImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.rcs103ImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnRcs103ImgLimitSize(){
-      if(this.rowData.rcs103ImgInfoList != null && this.rowData.rcs103ImgInfoList.length >= this.rcs103ImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs103ImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnRcs103DelImg(idx){
-       this.rowData.rcs103ImgInfoList.splice(idx, 1);
-     },
-     
-     
-    fnRcs104OpenImageManagePopUp(){
-      if(this.fnRcs104ImgLimitSize() == false) return;
-      this.$refs.rcs104ImgMng.fnSearch();
-      this.rcs104ImgMngOpen = !this.rcs104ImgMngOpen;
-    },
-    fnRcs104CallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
-      if(this.fnRcs104ImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      //console.log('2222 : '+JSON.stringify(temp));
-      this.rowData.rcs104ImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcs104ImgInfoList));
-      this.fnRcs104DelDuplImgInfo();
-    },
-
-
-     fnRcs104DelDuplImgInfo(){
-       const vm = this;
-       this.rowData.rcs104ImgInfoList = this.rowData.rcs104ImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.rcs104ImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnRcs104ImgLimitSize(){
-      if(this.rowData.rcs104ImgInfoList != null && this.rowData.rcs104ImgInfoList.length >= this.rcs104ImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs104ImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnRcs104DelImg(idx){
-       this.rowData.rcs104ImgInfoList.splice(idx, 1);
-     },
-     
-     
-    fnRcs105OpenImageManagePopUp(){
-      if(this.fnRcs105ImgLimitSize() == false) return;
-      this.$refs.rcs105ImgMng.fnSearch();
-      this.rcs105ImgMngOpen = !this.rcs105ImgMngOpen;
-    },
-    fnRcs105CallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
-      if(this.fnRcs105ImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      //console.log('2222 : '+JSON.stringify(temp));
-      this.rowData.rcs105ImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcs105ImgInfoList));
-      this.fnRcs105DelDuplImgInfo();
-    },
-
-
-     fnRcs105DelDuplImgInfo(){
-       const vm = this;
-       this.rowData.rcs105ImgInfoList = this.rowData.rcs105ImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.rcs105ImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnRcs105ImgLimitSize(){
-      if(this.rowData.rcs105ImgInfoList != null && this.rowData.rcs105ImgInfoList.length >= this.rcs105ImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs105ImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnRcs105DelImg(idx){
-       this.rowData.rcs105ImgInfoList.splice(idx, 1);
-    },
-
-
-
-
-
-
-    fnRcsShortOpenImageManagePopUp(){
-      if(this.fnRcsShortImgLimitSize() == false) return;
-      this.$refs.rcsShortImgMng.fnSearch();
-      this.rcsShortImgMngOpen = !this.rcsShortImgMngOpen;
-    },
-    fnRcsShortCallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
-      if(this.fnRcsShortImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      //console.log('2222 : '+JSON.stringify(temp));
-      this.rowData.rcsShortImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcsShortImgInfoList));
-      this.fnRcsShortDelDuplImgInfo();
-    },
-
-
-     fnRcsShortDelDuplImgInfo(){
-       const vm = this;
-       this.rowData.rcsShortImgInfoList = this.rowData.rcsShortImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.rcsShortImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnRcsShortImgLimitSize(){
-      if(this.rowData.rcsShortImgInfoList != null && this.rowData.rcsShortImgInfoList.length >= this.rcsShortImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcsShortImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnRcsShortDelImg(idx){
-       this.rowData.rcsShortImgInfoList.splice(idx, 1);
-     },
-
-
-    fnRcsTallOpenImageManagePopUp(){
-      if(this.fnRcsTallImgLimitSize() == false) return;
-      this.$refs.rcsTallImgMng.fnSearch();
-      this.rcsTallImgMngOpen = !this.rcsTallImgMngOpen;
-    },
-    fnRcsTallCallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
-      if(this.fnRcsTallImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      //console.log('2222 : '+JSON.stringify(temp));
-      this.rowData.rcsTallImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.rcsTallImgInfoList));
-      this.fnRcsTallDelDuplImgInfo();
-    },
-
-
-     fnRcsTallDelDuplImgInfo(){
-       const vm = this;
-       this.rowData.rcsTallImgInfoList = this.rowData.rcsTallImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.rcsTallImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnRcsTallImgLimitSize(){
-      if(this.rowData.rcsTallImgInfoList != null && this.rowData.rcsTallImgInfoList.length >= this.rcsTallImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcsTallImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnRcsTallDelImg(idx){
-       this.rowData.rcsTallImgInfoList.splice(idx, 1);
-     },
-
-
-
-
-
-    fnFriendTalkOpenImageManagePopUp(){
-      this.$refs.friendTalkImgMng.fnSearch();
-      this.friendTalkImgMngOpen = !this.friendTalkImgMngOpen;
-    },
-
-    fnFriendTalkCallbackImgInfo(imgInfo){
-      
-      this.rowData.friendTalkImgInfo.imgUrl = imgInfo.chImgUrl;
-      this.rowData.friendTalkImgInfo.fileId = imgInfo.fileId;
-     
-    },
-
-    fnFriendTalkDelImg(){
-       this.rowData.friendTalkImgInfo = {};
-     },
-     
-	
-    fnSmsOpenImageManagePopUp(){
-      if(this.fnSmsImgLimitSize() == false) return;
-      this.$refs.smsImgMng.fnSearch();
-      this.smsImgMngOpen = !this.smsImgMngOpen;
-    },
-    fnSmsCallbackImgInfo(imgInfo){
-      //console.log('1111 : '+JSON.stringify(imgInfo));
-      if(this.fnSmsImgLimitSize() == false) return;
-      let temp = {
-        imgUrl: imgInfo.chImgUrl,
-        fileId: imgInfo.fileId
-      };
-      
-      //console.log('2222 : '+JSON.stringify(temp));
-      this.rowData.smsImgInfoList.push(temp);
-      //console.log('3333 : '+JSON.stringify(this.rowData.smsImgInfoList));
-      this.fnSmsDelDuplImgInfo();
-    },
-
-
-     fnSmsDelDuplImgInfo(){
-       const vm = this;
-       this.rowData.smsImgInfoList = this.rowData.smsImgInfoList.filter(function(item, i){
-         return (
-           vm.rowData.smsImgInfoList.findIndex((item2) => {
-             return item.fileId === item2.fileId;
-           }) === i
-         );
-       });
-     },
-    
-    fnSmsImgLimitSize(){
-      if(this.rowData.smsImgInfoList != null && this.rowData.smsImgInfoList.length >= this.smsImgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.smsImgLimitSize +' 개까지 등록 가능합니다.');
-        return false;
-      }
-    },
-
-    fnSmsDelImg(idx){
-    //console.log("fnSmsDelImg=============================");
-       this.rowData.smsImgInfoList.splice(idx, 1);
-     },
-     
- 
-
-    fnRcsSMSButtonSD(sltDate, params){
-      this.rowData.rcsSMSButtons[params.idx].startDate = sltDate;
-    },
-    fnRcsSMSButtonED(sltDate, params){
-      this.rowData.rcsSMSButtons[params.idx].endDate = sltDate;
-    },
-    
-    fnRcsLMSButtonSD(sltDate, params){
-      this.rowData.rcsLMSButtons[params.idx].startDate = sltDate;
-    },
-    fnRcsLMSButtonED(sltDate, params){
-      this.rowData.rcsLMSButtons[params.idx].endDate = sltDate;
-    },
-        
-    fnRcsShortButtonSD(sltDate, params){
-      this.rowData.rcsShortButtons[params.idx].startDate = sltDate;
-    },
-    fnRcsShortButtonED(sltDate, params){
-      this.rowData.rcsShortButtons[params.idx].endDate = sltDate;
-    },
-    fnRcsShortButtonDel(idx){
-      this.rowData.rcsShortButtons.splice(idx, 1);
-    },
-    
-    fnRcsTallButtonSD(sltDate, params){
-      this.rowData.rcsTallButtons[params.idx].startDate = sltDate;
-    },
-    fnRcsTallButtonED(sltDate, params){
-      this.rowData.rcsTallButtons[params.idx].endDate = sltDate;
-    },
-    fnRcsTallButtonDel(idx){
-      this.rowData.rcsTallButtons.splice(idx, 1);
-    },
-
-    fnFriendTalkButtonSD(sltDate, params){
-    //console.log(sltDate, params.idx)
-      this.rowData.friendTalkButtons[params.idx].startDate = sltDate;
-      //console.log(">>>>>>>>>>>>startDate : ",this.rowData.friendTalkButtons[params.idx].startDate, params.idx);
-    },
-    fnFriendTalkButtonED(sltDate, params){
-      this.rowData.friendTalkButtons[params.idx].endDate = sltDate;
-      //console.log(">>>>>>>>>>>>endDate : ",this.rowData.friendTalkButtons[params.idx].endDate, params.idx);
-    },
-
-	fnRcs90ButtonSD(sltDate, params){
-      this.rowData.rcs90Buttons[params.idx].startDate = sltDate;
-    },
-    fnRcs90ButtonED(sltDate, params){
-      this.rowData.rcs90Buttons[params.idx].endDate = sltDate;
-    },
-    
-	fnRcs91ButtonSD(sltDate, params){
-      this.rowData.rcs91Buttons[params.idx].startDate = sltDate;
-    },
-    fnRcs91ButtonED(sltDate, params){
-      this.rowData.rcs91Buttons[params.idx].endDate = sltDate;
-    },
-    
-    fnRcs92ButtonSD(sltDate, params){
-      this.rowData.rcs92Buttons[params.idx].startDate = sltDate;
-    },
-    fnRcs92ButtonED(sltDate, params){
-      this.rowData.rcs92Buttons[params.idx].endDate = sltDate;
-    },
-    
-	fnRcs93ButtonSD(sltDate, params){
-      this.rowData.rcs93Buttons[params.idx].startDate = sltDate;
-    },
-    fnRcs93ButtonED(sltDate, params){
-      this.rowData.rcs93Buttons[params.idx].endDate = sltDate;
-    },
-    
-	fnRcs94ButtonSD(sltDate, params){
-      this.rowData.rcs94Buttons[params.idx].startDate = sltDate;
-    },
-    fnRcs94ButtonED(sltDate, params){
-      this.rowData.rcs94Buttons[params.idx].endDate = sltDate;
-    },  
-    fnRcs95ButtonSD(sltDate, params){
-      this.rowData.rcs95Buttons[params.idx].startDate = sltDate;
-    },
-    fnRcs95ButtonED(sltDate, params){
-      this.rowData.rcs95Buttons[params.idx].endDate = sltDate;
-    }, 
-
-
-	fnRcs100ButtonSD(sltDate, params){
-      this.rowData.rcs100Buttons[params.idx].startDate = sltDate;
-    },
-    fnRcs100ButtonED(sltDate, params){
-      this.rowData.rcs100Buttons[params.idx].endDate = sltDate;
-    },
-    
-	fnRcs101ButtonSD(sltDate, params){
-      this.rowData.rcs101Buttons[params.idx].startDate = sltDate;
-    },
-    fnRcs101ButtonED(sltDate, params){
-      this.rowData.rcs101Buttons[params.idx].endDate = sltDate;
-    },
-    
-    fnRcs102ButtonSD(sltDate, params){
-      this.rowData.rcs102Buttons[params.idx].startDate = sltDate;
-    },
-    fnRcs102ButtonED(sltDate, params){
-      this.rowData.rcs102Buttons[params.idx].endDate = sltDate;
-    },
-    
-	fnRcs103ButtonSD(sltDate, params){
-      this.rowData.rcs103Buttons[params.idx].startDate = sltDate;
-    },
-    fnRcs103ButtonED(sltDate, params){
-      this.rowData.rcs103Buttons[params.idx].endDate = sltDate;
-    },
-    
-	fnRcs104ButtonSD(sltDate, params){
-      this.rowData.rcs104Buttons[params.idx].startDate = sltDate;
-    },
-    fnRcs104ButtonED(sltDate, params){
-      this.rowData.rcs104Buttons[params.idx].endDate = sltDate;
-    },  
-    fnRcs105ButtonSD(sltDate, params){
-      this.rowData.rcs105Buttons[params.idx].startDate = sltDate;
-    },
-    fnRcs105ButtonED(sltDate, params){
-      this.rowData.rcs105Buttons[params.idx].endDate = sltDate;
-    }, 
+		fnRcs90OpenImageManagePopUp(){
+			if (this.fnRcs90ImgLimitSize() == false) return;
+			this.$refs.rcs90ImgMng.fnSearch();
+			this.rcs90ImgMngOpen = !this.rcs90ImgMngOpen;
+		},
+		fnRcs90CallbackImgInfo(imgInfo){
+			if (this.fnRcs90ImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+
+			this.rowData.rcs90ImgInfoList.push(temp);
+			this.fnRcs90DelDuplImgInfo();
+		},
+		fnRcs90DelDuplImgInfo(){
+			const vm = this;
+			this.rowData.rcs90ImgInfoList = this.rowData.rcs90ImgInfoList.filter(function(item, i) {
+				return (
+					vm.rowData.rcs90ImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnRcs90ImgLimitSize(){
+			if (this.rowData.rcs90ImgInfoList != null && this.rowData.rcs90ImgInfoList.length >= this.rcs90ImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs90ImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnRcs90DelImg(idx){
+			this.rowData.rcs90ImgInfoList.splice(idx, 1);
+		},
+		fnRcs91OpenImageManagePopUp(){
+			if (this.fnRcs91ImgLimitSize() == false) return;
+			this.$refs.rcs91ImgMng.fnSearch();
+			this.rcs91ImgMngOpen = !this.rcs91ImgMngOpen;
+		},
+		fnRcs91CallbackImgInfo(imgInfo){
+			if (this.fnRcs91ImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+			this.rowData.rcs91ImgInfoList.push(temp);
+			this.fnRcs91DelDuplImgInfo();
+		},
+		fnRcs91DelDuplImgInfo(){
+			const vm = this;
+			this.rowData.rcs91ImgInfoList = this.rowData.rcs91ImgInfoList.filter(function(item, i) {
+				return (
+					vm.rowData.rcs91ImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnRcs91ImgLimitSize(){
+			if (this.rowData.rcs91ImgInfoList != null && this.rowData.rcs91ImgInfoList.length >= this.rcs91ImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs91ImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnRcs91DelImg(idx){
+			this.rowData.rcs91ImgInfoList.splice(idx, 1);
+		},
+		fnRcs92OpenImageManagePopUp(){
+			if (this.fnRcs92ImgLimitSize() == false) return;
+			this.$refs.rcs92ImgMng.fnSearch();
+			this.rcs92ImgMngOpen = !this.rcs92ImgMngOpen;
+		},
+		fnRcs92CallbackImgInfo(imgInfo){
+			if (this.fnRcs92ImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+			this.rowData.rcs92ImgInfoList.push(temp);
+			this.fnRcs92DelDuplImgInfo();
+		},
+		fnRcs92DelDuplImgInfo(){
+			const vm = this;
+			this.rowData.rcs92ImgInfoList = this.rowData.rcs92ImgInfoList.filter(function(item, i) {
+				return (
+					vm.rowData.rcs92ImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnRcs92ImgLimitSize(){
+			if (this.rowData.rcs92ImgInfoList != null && this.rowData.rcs92ImgInfoList.length >= this.rcs92ImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs92ImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnRcs92DelImg(idx){
+			this.rowData.rcs92ImgInfoList.splice(idx, 1);
+		},
+		fnRcs93OpenImageManagePopUp(){
+			if (this.fnRcs93ImgLimitSize() == false) return;
+			this.$refs.rcs93ImgMng.fnSearch();
+			this.rcs93ImgMngOpen = !this.rcs93ImgMngOpen;
+		},
+		fnRcs93CallbackImgInfo(imgInfo){
+			if (this.fnRcs93ImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+			this.rowData.rcs93ImgInfoList.push(temp);
+			this.fnRcs93DelDuplImgInfo();
+		},
+		fnRcs93DelDuplImgInfo(){
+			const vm = this;
+			this.rowData.rcs93ImgInfoList = this.rowData.rcs93ImgInfoList.filter(function(item, i) {
+				return (
+					vm.rowData.rcs93ImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnRcs93ImgLimitSize(){
+			if (this.rowData.rcs93ImgInfoList != null && this.rowData.rcs93ImgInfoList.length >= this.rcs93ImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs93ImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnRcs93DelImg(idx){
+			this.rowData.rcs93ImgInfoList.splice(idx, 1);
+		},
+		fnRcs94OpenImageManagePopUp(){
+			if (this.fnRcs94ImgLimitSize() == false) return;
+			this.$refs.rcs94ImgMng.fnSearch();
+			this.rcs94ImgMngOpen = !this.rcs94ImgMngOpen;
+		},
+		fnRcs94CallbackImgInfo(imgInfo){
+			if (this.fnRcs94ImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+			this.rowData.rcs94ImgInfoList.push(temp);
+			this.fnRcs94DelDuplImgInfo();
+		},
+		fnRcs94DelDuplImgInfo(){
+			const vm = this;
+			this.rowData.rcs94ImgInfoList = this.rowData.rcs94ImgInfoList.filter(function(item, i) {
+				return (
+					vm.rowData.rcs94ImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnRcs94ImgLimitSize(){
+			if (this.rowData.rcs94ImgInfoList != null && this.rowData.rcs94ImgInfoList.length >= this.rcs94ImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs94ImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnRcs94DelImg(idx){
+			this.rowData.rcs94ImgInfoList.splice(idx, 1);
+		},
+		fnRcs95OpenImageManagePopUp(){
+			if (this.fnRcs95ImgLimitSize() == false) return;
+			this.$refs.rcs95ImgMng.fnSearch();
+			this.rcs95ImgMngOpen = !this.rcs95ImgMngOpen;
+		},
+		fnRcs95CallbackImgInfo(imgInfo){
+			if (this.fnRcs95ImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+			this.rowData.rcs95ImgInfoList.push(temp);
+			this.fnRcs95DelDuplImgInfo();
+		},
+		fnRcs95DelDuplImgInfo(){
+			const vm = this;
+			this.rowData.rcs95ImgInfoList = this.rowData.rcs95ImgInfoList.filter(function(item, i) {
+				return (
+					vm.rowData.rcs95ImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnRcs95ImgLimitSize(){
+			if (this.rowData.rcs95ImgInfoList != null && this.rowData.rcs95ImgInfoList.length >= this.rcs95ImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs95ImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnRcs95DelImg(idx){
+			this.rowData.rcs95ImgInfoList.splice(idx, 1);
+		},
+		addRow100: function(){
+			if (this.rowData.rcs100Buttons.length >= 2) {
+				alert("button은 2개까지 추가가능합니다.");
+			} else {
+				this.button100Flag = true;
+				this.rcs100ButtonsMaxLen = this.rcs100ButtonsMaxLen + 1;
+				var startDateId = 'rcs100StartDateId'	+ this.rcs100ButtonsMaxLen;
+				var endDateId 	= 'rcs100EndDateId'	+ this.rcs100ButtonsMaxLen;
+
+				this.rowData.rcs100Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRow100: function(row){
+			if (this.rowData.rcs100Buttons.length <= 1){
+				this.rowData.rcs100Buttons.splice(row,1);
+				this.rowData.rcs100Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcs100Buttons.splice(row,1);
+			}
+		},
+		addRow101: function(){
+			if (this.rowData.rcs101Buttons.length >= 2) {
+				alert("button은 2개까지 추가가능합니다.");
+			} else {
+				this.button101Flag = true;
+				this.rcs101ButtonsMaxLen = this.rcs101ButtonsMaxLen + 1;
+				var startDateId = 'rcs101StartDateId'	+ this.rcs101ButtonsMaxLen;
+				var endDateId 	= 'rcs101EndDateId'	+ this.rcs101ButtonsMaxLen;
+
+				this.rowData.rcs101Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRow101: function(row){
+			if (this.rowData.rcs101Buttons.length <= 1) {
+				this.rowData.rcs101Buttons.splice(row,1);
+				this.rowData.rcs101Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcs101Buttons.splice(row,1);
+			}
+		},
+		addRow102: function(){
+			if (this.rowData.rcs102Buttons.length >= 2) {
+				alert("button은 2개까지 추가가능합니다.");
+			} else {
+				this.button102Flag = true;
+				this.rcs102ButtonsMaxLen = this.rcs102ButtonsMaxLen + 1;
+				var startDateId = 'rcs102StartDateId'	+ this.rcs102ButtonsMaxLen;
+				var endDateId 	= 'rcs102EndDateId'	+ this.rcs102ButtonsMaxLen;
+
+				this.rowData.rcs102Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRow102: function(row){
+			if (this.rowData.rcs102Buttons.length <= 1) {
+				this.rowData.rcs102Buttons.splice(row,1);
+				this.rowData.rcs102Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcs102Buttons.splice(row,1);
+			}
+		},
+		addRow103: function(){
+			if (this.rowData.rcs103Buttons.length >= 2) {
+				alert("button은 2개까지 추가가능합니다.");
+			} else {
+				this.button103Flag = true;
+				this.rcs103ButtonsMaxLen = this.rcs103ButtonsMaxLen + 1;
+				var startDateId = 'rcs103StartDateId'	+ this.rcs103ButtonsMaxLen;
+				var endDateId 	= 'rcs103EndDateId'	+ this.rcs103ButtonsMaxLen;
+
+				this.rowData.rcs103Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRow103: function(row){
+			if (this.rowData.rcs103Buttons.length <= 1) {
+				this.rowData.rcs103Buttons.splice(row,1);
+				this.rowData.rcs103Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcs103Buttons.splice(row,1);
+			}
+		},
+		addRow104: function(){
+			if (this.rowData.rcs104Buttons.length >= 2) {
+				alert("button은 2개까지 추가가능합니다.");
+			} else {
+				this.button104Flag = true;
+				this.rcs104ButtonsMaxLen = this.rcs104ButtonsMaxLen + 1;
+				var startDateId = 'rcs104StartDateId'	+ this.rcs104ButtonsMaxLen;
+				var endDateId 	= 'rcs104EndDateId'	+ this.rcs104ButtonsMaxLen;
+
+				this.rowData.rcs104Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRow104: function(row){
+			if (this.rowData.rcs104Buttons.length <= 1) {
+				this.rowData.rcs104Buttons.splice(row,1);
+				this.rowData.rcs104Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcs104Buttons.splice(row,1);
+			}
+		},
+		addRow105: function(){
+			if (this.rowData.rcs105Buttons.length >= 2) {
+				alert("button은 2개까지 추가가능합니다.");
+			} else {
+				this.button105Flag = true;
+				this.rcs105ButtonsMaxLen = this.rcs105ButtonsMaxLen + 1;
+				var startDateId = 'rcs105StartDateId'	+ this.rcs105ButtonsMaxLen;
+				var endDateId 	= 'rcs105EndDateId'	+ this.rcs105ButtonsMaxLen;
+
+				this.rowData.rcs105Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
+			}
+		},
+		removeRow105: function(row){
+			if (this.rowData.rcs105Buttons.length <= 1) {
+				this.rowData.rcs105Buttons.splice(row,1);
+				this.rowData.rcs105Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
+			} else {
+				this.rowData.rcs105Buttons.splice(row,1);
+			}
+		},
+		fnRcs100OpenImageManagePopUp(){
+			if (this.fnRcs100ImgLimitSize() == false) return;
+			this.$refs.rcs100ImgMng.fnSearch();
+			this.rcs100ImgMngOpen = !this.rcs100ImgMngOpen;
+		},
+		fnRcs100CallbackImgInfo(imgInfo){
+			if (this.fnRcs100ImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+			this.rowData.rcs100ImgInfoList.push(temp);
+			this.fnRcs100DelDuplImgInfo();
+		},
+		fnRcs100DelDuplImgInfo(){
+			const vm = this;
+			this.rowData.rcs100ImgInfoList = this.rowData.rcs100ImgInfoList.filter(function(item, i) {
+				return (
+					vm.rowData.rcs100ImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnRcs100ImgLimitSize(){
+			if (this.rowData.rcs100ImgInfoList != null && this.rowData.rcs100ImgInfoList.length >= this.rcs100ImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs100ImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnRcs100DelImg(idx){
+			this.rowData.rcs100ImgInfoList.splice(idx, 1);
+		},
+		fnRcs101OpenImageManagePopUp(){
+			if (this.fnRcs101ImgLimitSize() == false) return;
+			this.$refs.rcs101ImgMng.fnSearch();
+			this.rcs101ImgMngOpen = !this.rcs101ImgMngOpen;
+		},
+		fnRcs101CallbackImgInfo(imgInfo){
+			if (this.fnRcs101ImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+			this.rowData.rcs101ImgInfoList.push(temp);
+			this.fnRcs101DelDuplImgInfo();
+		},
+		fnRcs101DelDuplImgInfo(){
+			const vm = this;
+			this.rowData.rcs101ImgInfoList = this.rowData.rcs101ImgInfoList.filter(function(item, i) {
+				return (
+					vm.rowData.rcs101ImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnRcs101ImgLimitSize(){
+			if (this.rowData.rcs101ImgInfoList != null && this.rowData.rcs101ImgInfoList.length >= this.rcs101ImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs101ImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnRcs101DelImg(idx){
+			this.rowData.rcs101ImgInfoList.splice(idx, 1);
+		},
+		fnRcs102OpenImageManagePopUp(){
+			if (this.fnRcs102ImgLimitSize() == false) return;
+			this.$refs.rcs102ImgMng.fnSearch();
+			this.rcs102ImgMngOpen = !this.rcs102ImgMngOpen;
+		},
+		fnRcs102CallbackImgInfo(imgInfo){
+			if (this.fnRcs102ImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+			this.rowData.rcs102ImgInfoList.push(temp);
+			this.fnRcs102DelDuplImgInfo();
+		},
+		fnRcs102DelDuplImgInfo(){
+			const vm = this;
+			this.rowData.rcs102ImgInfoList = this.rowData.rcs102ImgInfoList.filter(function(item, i) {
+				return (
+					vm.rowData.rcs102ImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnRcs102ImgLimitSize(){
+			if (this.rowData.rcs102ImgInfoList != null && this.rowData.rcs102ImgInfoList.length >= this.rcs102ImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs102ImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnRcs102DelImg(idx){
+			this.rowData.rcs102ImgInfoList.splice(idx, 1);
+		},
+		fnRcs103OpenImageManagePopUp(){
+			if (this.fnRcs103ImgLimitSize() == false) return;
+			this.$refs.rcs103ImgMng.fnSearch();
+			this.rcs103ImgMngOpen = !this.rcs103ImgMngOpen;
+		},
+		fnRcs103CallbackImgInfo(imgInfo){
+			if (this.fnRcs103ImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+			this.rowData.rcs103ImgInfoList.push(temp);
+			this.fnRcs103DelDuplImgInfo();
+		},
+		fnRcs103DelDuplImgInfo(){
+			const vm = this;
+			this.rowData.rcs103ImgInfoList = this.rowData.rcs103ImgInfoList.filter(function(item, i) {
+				return (
+					vm.rowData.rcs103ImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnRcs103ImgLimitSize(){
+			if (this.rowData.rcs103ImgInfoList != null && this.rowData.rcs103ImgInfoList.length >= this.rcs103ImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs103ImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnRcs103DelImg(idx){
+			this.rowData.rcs103ImgInfoList.splice(idx, 1);
+		},
+		fnRcs104OpenImageManagePopUp(){
+			if (this.fnRcs104ImgLimitSize() == false) return;
+			this.$refs.rcs104ImgMng.fnSearch();
+			this.rcs104ImgMngOpen = !this.rcs104ImgMngOpen;
+		},
+		fnRcs104CallbackImgInfo(imgInfo){
+			if (this.fnRcs104ImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+			this.rowData.rcs104ImgInfoList.push(temp);
+			this.fnRcs104DelDuplImgInfo();
+		},
+		fnRcs104DelDuplImgInfo(){
+			const vm = this;
+			this.rowData.rcs104ImgInfoList = this.rowData.rcs104ImgInfoList.filter(function(item, i) {
+				return (
+					vm.rowData.rcs104ImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnRcs104ImgLimitSize(){
+			if (this.rowData.rcs104ImgInfoList != null && this.rowData.rcs104ImgInfoList.length >= this.rcs104ImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs104ImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnRcs104DelImg(idx){
+			this.rowData.rcs104ImgInfoList.splice(idx, 1);
+		},
+		fnRcs105OpenImageManagePopUp(){
+			if (this.fnRcs105ImgLimitSize() == false) return;
+			this.$refs.rcs105ImgMng.fnSearch();
+			this.rcs105ImgMngOpen = !this.rcs105ImgMngOpen;
+		},
+		fnRcs105CallbackImgInfo(imgInfo){
+			if (this.fnRcs105ImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+			this.rowData.rcs105ImgInfoList.push(temp);
+			this.fnRcs105DelDuplImgInfo();
+		},
+		fnRcs105DelDuplImgInfo(){
+			const vm = this;
+			this.rowData.rcs105ImgInfoList = this.rowData.rcs105ImgInfoList.filter(function(item, i) {
+				return (
+					vm.rowData.rcs105ImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnRcs105ImgLimitSize(){
+			if (this.rowData.rcs105ImgInfoList != null && this.rowData.rcs105ImgInfoList.length >= this.rcs105ImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs105ImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnRcs105DelImg(idx){
+			this.rowData.rcs105ImgInfoList.splice(idx, 1);
+		},
+		fnRcsShortOpenImageManagePopUp(){
+			if (this.fnRcsShortImgLimitSize() == false) return;
+			this.$refs.rcsShortImgMng.fnSearch();
+			this.rcsShortImgMngOpen = !this.rcsShortImgMngOpen;
+		},
+		fnRcsShortCallbackImgInfo(imgInfo){
+			//console.log('1111 : '+JSON.stringify(imgInfo));
+			if (this.fnRcsShortImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+			//console.log('2222 : '+JSON.stringify(temp));
+			this.rowData.rcsShortImgInfoList.push(temp);
+			//console.log('3333 : '+JSON.stringify(this.rowData.rcsShortImgInfoList));
+			this.fnRcsShortDelDuplImgInfo();
+		},
+		fnRcsShortDelDuplImgInfo(){
+			const vm = this;
+			this.rowData.rcsShortImgInfoList = this.rowData.rcsShortImgInfoList.filter(function(item, i) {
+				return (
+					vm.rowData.rcsShortImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnRcsShortImgLimitSize(){
+			if (this.rowData.rcsShortImgInfoList != null && this.rowData.rcsShortImgInfoList.length >= this.rcsShortImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcsShortImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnRcsShortDelImg(idx){
+			this.rowData.rcsShortImgInfoList.splice(idx, 1);
+		},
+		fnRcsTallOpenImageManagePopUp(){
+			if(this.fnRcsTallImgLimitSize() == false) return;
+			this.$refs.rcsTallImgMng.fnSearch();
+			this.rcsTallImgMngOpen = !this.rcsTallImgMngOpen;
+		},
+		fnRcsTallCallbackImgInfo(imgInfo){
+			//console.log('1111 : '+JSON.stringify(imgInfo));
+			if (this.fnRcsTallImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+			//console.log('2222 : '+JSON.stringify(temp));
+			this.rowData.rcsTallImgInfoList.push(temp);
+			//console.log('3333 : '+JSON.stringify(this.rowData.rcsTallImgInfoList));
+			this.fnRcsTallDelDuplImgInfo();
+		},
+		fnRcsTallDelDuplImgInfo(){
+			const vm = this;
+			this.rowData.rcsTallImgInfoList = this.rowData.rcsTallImgInfoList.filter(function(item, i) {
+				return (
+					vm.rowData.rcsTallImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnRcsTallImgLimitSize(){
+			if (this.rowData.rcsTallImgInfoList != null && this.rowData.rcsTallImgInfoList.length >= this.rcsTallImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcsTallImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnRcsTallDelImg(idx){
+			this.rowData.rcsTallImgInfoList.splice(idx, 1);
+		},
+		fnFriendTalkOpenImageManagePopUp(){
+			this.$refs.friendTalkImgMng.fnSearch();
+			this.friendTalkImgMngOpen = !this.friendTalkImgMngOpen;
+		},
+		fnFriendTalkCallbackImgInfo(imgInfo){
+			this.rowData.friendTalkImgInfo.imgUrl = imgInfo.chImgUrl;
+			this.rowData.friendTalkImgInfo.fileId = imgInfo.fileId;
+		},
+		fnFriendTalkDelImg(){
+			this.rowData.friendTalkImgInfo = {};
+		},
+		fnSmsOpenImageManagePopUp(){
+			if (this.fnSmsImgLimitSize() == false) return;
+			this.$refs.smsImgMng.fnSearch();
+			this.smsImgMngOpen = !this.smsImgMngOpen;
+		},
+		fnSmsCallbackImgInfo(imgInfo){
+			//console.log('1111 : '+JSON.stringify(imgInfo));
+			if (this.fnSmsImgLimitSize() == false) return;
+			let temp = {
+				imgUrl: imgInfo.chImgUrl,
+				fileId: imgInfo.fileId
+			};
+
+			//console.log('2222 : '+JSON.stringify(temp));
+			this.rowData.smsImgInfoList.push(temp);
+			//console.log('3333 : '+JSON.stringify(this.rowData.smsImgInfoList));
+			this.fnSmsDelDuplImgInfo();
+		},
+		fnSmsDelDuplImgInfo(){
+			const vm = this;
+			this.rowData.smsImgInfoList = this.rowData.smsImgInfoList.filter(function(item, i){
+				return (
+					vm.rowData.smsImgInfoList.findIndex((item2) => {
+						return item.fileId === item2.fileId;
+					}) === i
+				);
+			});
+		},
+		fnSmsImgLimitSize(){
+			if (this.rowData.smsImgInfoList != null && this.rowData.smsImgInfoList.length >= this.smsImgLimitSize) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.smsImgLimitSize +' 개까지 등록 가능합니다.');
+				return false;
+			}
+		},
+		fnSmsDelImg(idx){
+			//console.log("fnSmsDelImg=============================");
+			this.rowData.smsImgInfoList.splice(idx, 1);
+		},
+		fnRcsSMSButtonSD(sltDate, params){
+			this.rowData.rcsSMSButtons[params.idx].startDate = sltDate;
+		},
+		fnRcsSMSButtonED(sltDate, params){
+			this.rowData.rcsSMSButtons[params.idx].endDate = sltDate;
+		},
+		fnRcsLMSButtonSD(sltDate, params){
+			this.rowData.rcsLMSButtons[params.idx].startDate = sltDate;
+		},
+		fnRcsLMSButtonED(sltDate, params){
+			this.rowData.rcsLMSButtons[params.idx].endDate = sltDate;
+		},
+		fnRcsShortButtonSD(sltDate, params){
+			this.rowData.rcsShortButtons[params.idx].startDate = sltDate;
+		},
+		fnRcsShortButtonED(sltDate, params){
+			this.rowData.rcsShortButtons[params.idx].endDate = sltDate;
+		},
+		fnRcsShortButtonDel(idx){
+			this.rowData.rcsShortButtons.splice(idx, 1);
+		},
+		fnRcsTallButtonSD(sltDate, params){
+			this.rowData.rcsTallButtons[params.idx].startDate = sltDate;
+		},
+		fnRcsTallButtonED(sltDate, params){
+			this.rowData.rcsTallButtons[params.idx].endDate = sltDate;
+		},
+		fnRcsTallButtonDel(idx){
+			this.rowData.rcsTallButtons.splice(idx, 1);
+		},
+		fnFriendTalkButtonSD(sltDate, params){
+			//console.log(sltDate, params.idx)
+			this.rowData.friendTalkButtons[params.idx].startDate = sltDate;
+			//console.log(">>>>>>>>>>>>startDate : ",this.rowData.friendTalkButtons[params.idx].startDate, params.idx);
+		},
+		fnFriendTalkButtonED(sltDate, params){
+			this.rowData.friendTalkButtons[params.idx].endDate = sltDate;
+			//console.log(">>>>>>>>>>>>endDate : ",this.rowData.friendTalkButtons[params.idx].endDate, params.idx);
+		},
+		fnRcs90ButtonSD(sltDate, params){
+			this.rowData.rcs90Buttons[params.idx].startDate = sltDate;
+		},
+		fnRcs90ButtonED(sltDate, params){
+			this.rowData.rcs90Buttons[params.idx].endDate = sltDate;
+		},
+		fnRcs91ButtonSD(sltDate, params){
+			this.rowData.rcs91Buttons[params.idx].startDate = sltDate;
+		},
+		fnRcs91ButtonED(sltDate, params){
+			this.rowData.rcs91Buttons[params.idx].endDate = sltDate;
+		},
+		fnRcs92ButtonSD(sltDate, params){
+			this.rowData.rcs92Buttons[params.idx].startDate = sltDate;
+		},
+		fnRcs92ButtonED(sltDate, params){
+			this.rowData.rcs92Buttons[params.idx].endDate = sltDate;
+		},
+		fnRcs93ButtonSD(sltDate, params){
+			this.rowData.rcs93Buttons[params.idx].startDate = sltDate;
+		},
+		fnRcs93ButtonED(sltDate, params){
+			this.rowData.rcs93Buttons[params.idx].endDate = sltDate;
+		},
+		fnRcs94ButtonSD(sltDate, params){
+			this.rowData.rcs94Buttons[params.idx].startDate = sltDate;
+		},
+		fnRcs94ButtonED(sltDate, params){
+			this.rowData.rcs94Buttons[params.idx].endDate = sltDate;
+		},
+		fnRcs95ButtonSD(sltDate, params){
+			this.rowData.rcs95Buttons[params.idx].startDate = sltDate;
+		},
+		fnRcs95ButtonED(sltDate, params){
+			this.rowData.rcs95Buttons[params.idx].endDate = sltDate;
+		},
+		fnRcs100ButtonSD(sltDate, params){
+			this.rowData.rcs100Buttons[params.idx].startDate = sltDate;
+		},
+		fnRcs100ButtonED(sltDate, params){
+			this.rowData.rcs100Buttons[params.idx].endDate = sltDate;
+		},
+		fnRcs101ButtonSD(sltDate, params){
+			this.rowData.rcs101Buttons[params.idx].startDate = sltDate;
+		},
+		fnRcs101ButtonED(sltDate, params){
+			this.rowData.rcs101Buttons[params.idx].endDate = sltDate;
+		},
+		fnRcs102ButtonSD(sltDate, params){
+			this.rowData.rcs102Buttons[params.idx].startDate = sltDate;
+		},
+		fnRcs102ButtonED(sltDate, params){
+			this.rowData.rcs102Buttons[params.idx].endDate = sltDate;
+		},
+		fnRcs103ButtonSD(sltDate, params){
+			this.rowData.rcs103Buttons[params.idx].startDate = sltDate;
+		},
+		fnRcs103ButtonED(sltDate, params){
+			this.rowData.rcs103Buttons[params.idx].endDate = sltDate;
+		},
+		fnRcs104ButtonSD(sltDate, params){
+			this.rowData.rcs104Buttons[params.idx].startDate = sltDate;
+		},
+		fnRcs104ButtonED(sltDate, params){
+			this.rowData.rcs104Buttons[params.idx].endDate = sltDate;
+		},
+		fnRcs105ButtonSD(sltDate, params){
+			this.rowData.rcs105Buttons[params.idx].startDate = sltDate;
+		},
+		fnRcs105ButtonED(sltDate, params){
+			this.rowData.rcs105Buttons[params.idx].endDate = sltDate;
+		},
 		//get 문자열 byte
 		getByte(str) {
 			return str
@@ -5644,6 +5481,12 @@ export default {
 			}
 			this.rowData.smsTitle = "";
 			this.rowData.smsContent = "";
+		},
+		// 메시지 구분 선택 시 EVENT
+		checkMsgKind(flag) {
+			if (flag === "A") {
+				jQuery('input:radio[name=kakao]:input[value="friend"]').click();
+			}
 		},
 		fnImgReset(){
 			this.rowData.rcsShortImgInfoList.push({'fileId':'', 'imgUrl':''});

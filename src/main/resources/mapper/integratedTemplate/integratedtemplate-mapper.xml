@@ -88,7 +88,7 @@
 			M.MSG_TYPE_NAME, M.TMPLT_TITLE, M.TMPLT_TYPE, M.otherProjectUseYn,
 			M.USE_YN, M.chTypeList, M.CHECKED_CHANNEL,
 			M.pushMsg, M.pushAppId, M.pushTitle, M.pushFileId, M.pushSendType, M.pushRcvblcInput,
-			M.PUSH_CH_IMG_URL,
+			M.ADTN_INFO, M.PUSH_CH_IMG_URL,
 			M.rcsCardCount, M.rcsPrdType, M.rcsCallback, M.rcsMessageBaseId, M.rcsFooter,
 			M.rcsBodyMedia, M.rcsBodyTitle, M.rcsBodyDescription,
 			M.rcsBodyMediaUrl,
@@ -165,116 +165,116 @@
 							,',\"startDateId\":\"'	, IFNULL(M.rcs1Button0StartTimeId,'')	,'\"'
 							,',\"endDateId\":\"'	, IFNULL(M.rcs1Button0EndTimeId,'')		,'\"'
 							,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button0Description,'')	,'\"}') AS rcs1ButtonArr0,
-			M.rcs1Button1ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button1ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs1Button1DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button1Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs1Button1StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs1Button1EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs1Button1StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs1Button1EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button1Description,'')	,'\"}') AS rcs1ButtonArr1
-	 , M.rcs1Button2ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button2ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs1Button2DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button2Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs1Button2StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs1Button2EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs1Button2StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs1Button2EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button2Description,'')	,'\"}') AS rcs1ButtonArr2
-	 , M.rcs1Button3ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button3ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs1Button3DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button3Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs1Button3StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs1Button3EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs1Button3StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs1Button3EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button3Description,'')	,'\"}') AS rcs1ButtonArr3
-	 , M.rcs1Button4ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button4ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs1Button4DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button4Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs1Button4StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs1Button4EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs1Button4StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs1Button4EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button4Description,'')	,'\"}') AS rcs1ButtonArr4
-	 , M.rcs1Button5ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button5ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs1Button5DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button5Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs1Button5StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs1Button5EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs1Button5StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs1Button5EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button5Description,'')	,'\"}') AS rcs1ButtonArr5
-	 , M.rcs2Button0ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button0ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs2Button0DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button0Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs2Button0StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs2Button0EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs2Button0StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs2Button0EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button0Description,'')	,'\"}') AS rcs2ButtonArr0
-	 , M.rcs2Button1ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button1ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs2Button1DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button1Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs2Button1StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs2Button1EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs2Button1StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs2Button1EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button1Description,'')	,'\"}') AS rcs2ButtonArr1
-	 , M.rcs2Button2ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button2ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs2Button2DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button2Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs2Button2StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs2Button2EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs2Button2StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs2Button2EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button2Description,'')	,'\"}') AS rcs2ButtonArr2
-	 , M.rcs2Button3ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button3ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs2Button3DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button3Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs2Button3StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs2Button3EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs2Button3StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs2Button3EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button3Description,'')	,'\"}') AS rcs2ButtonArr3
-	 , M.rcs2Button4ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button4ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs2Button4DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button4Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs2Button4StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs2Button4EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs2Button4StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs2Button4EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button4Description,'')	,'\"}') AS rcs2ButtonArr4
-	 , M.rcs2Button5ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button5ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs2Button5DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button5Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs2Button5StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs2Button5EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs2Button5StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs2Button5EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button5Description,'')	,'\"}') AS rcs2ButtonArr5
-	 , M.rcs3Button0ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs3Button0ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs3Button0DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs3Button0Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs3Button0StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs3Button0EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs3Button0StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs3Button0EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs3Button0Description,'')	,'\"}') AS rcs3ButtonArr0
-	 , M.rcs3Button1ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs3Button1ButtonType,'')		,'\"'
+			M.rcs1Button1ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button1ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs1Button1DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button1Title,'')			,'\"'
+							,',\"startDate\":\"'		, IFNULL(M.rcs1Button1StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs1Button1EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs1Button1StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs1Button1EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button1Description,'')	,'\"}') AS rcs1ButtonArr1,
+			M.rcs1Button2ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button2ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs1Button2DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button2Title,'')			,'\"'
+							,',\"startDate\":\"'		, IFNULL(M.rcs1Button2StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs1Button2EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs1Button2StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs1Button2EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button2Description,'')	,'\"}') AS rcs1ButtonArr2,
+			M.rcs1Button3ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button3ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs1Button3DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button3Title,'')			,'\"'
+							,',\"startDate\":\"'		, IFNULL(M.rcs1Button3StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs1Button3EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs1Button3StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs1Button3EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button3Description,'')	,'\"}') AS rcs1ButtonArr3,
+			M.rcs1Button4ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button4ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs1Button4DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button4Title,'')			,'\"'
+							,',\"startDate\":\"'		, IFNULL(M.rcs1Button4StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs1Button4EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs1Button4StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs1Button4EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button4Description,'')	,'\"}') AS rcs1ButtonArr4,
+			M.rcs1Button5ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs1Button5ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs1Button5DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs1Button5Title,'')			,'\"'
+							,',\"startDate\":\"'		, IFNULL(M.rcs1Button5StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs1Button5EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs1Button5StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs1Button5EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs1Button5Description,'')	,'\"}') AS rcs1ButtonArr5,
+			M.rcs2Button0ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button0ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs2Button0DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button0Title,'')			,'\"'
+							,',\"startDate\":\"'	, IFNULL(M.rcs2Button0StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs2Button0EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs2Button0StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs2Button0EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button0Description,'')	,'\"}') AS rcs2ButtonArr0,
+			M.rcs2Button1ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button1ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs2Button1DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button1Title,'')			,'\"'
+							,',\"startDate\":\"'	, IFNULL(M.rcs2Button1StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs2Button1EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs2Button1StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs2Button1EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button1Description,'')	,'\"}') AS rcs2ButtonArr1,
+			M.rcs2Button2ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button2ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs2Button2DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button2Title,'')			,'\"'
+							,',\"startDate\":\"'	, IFNULL(M.rcs2Button2StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs2Button2EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs2Button2StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs2Button2EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button2Description,'')	,'\"}') AS rcs2ButtonArr2,
+			M.rcs2Button3ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button3ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs2Button3DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button3Title,'')			,'\"'
+							,',\"startDate\":\"'	, IFNULL(M.rcs2Button3StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs2Button3EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs2Button3StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs2Button3EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button3Description,'')	,'\"}') AS rcs2ButtonArr3,
+			M.rcs2Button4ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button4ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs2Button4DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button4Title,'')			,'\"'
+							,',\"startDate\":\"'	, IFNULL(M.rcs2Button4StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs2Button4EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs2Button4StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs2Button4EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button4Description,'')	,'\"}') AS rcs2ButtonArr4,
+			M.rcs2Button5ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs2Button5ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs2Button5DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs2Button5Title,'')			,'\"'
+							,',\"startDate\":\"'	, IFNULL(M.rcs2Button5StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs2Button5EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs2Button5StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs2Button5EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs2Button5Description,'')	,'\"}') AS rcs2ButtonArr5,
+			M.rcs3Button0ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs3Button0ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs3Button0DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs3Button0Title,'')			,'\"'
+							,',\"startDate\":\"'	, IFNULL(M.rcs3Button0StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs3Button0EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs3Button0StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs3Button0EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs3Button0Description,'')	,'\"}') AS rcs3ButtonArr0,
+			M.rcs3Button1ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs3Button1ButtonType,'')		,'\"'
                 ,',\"buttonName\":\"'	, IFNULL(M.rcs3Button1DisplayText,'')	,'\"'
  			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs3Button1Title,'')			,'\"'
 				,',\"startDate\":\"'	, IFNULL(M.rcs3Button1StartTime,'')		,'\"'
@@ -399,35 +399,34 @@
 				,',\"startDateId\":\"'	, IFNULL(M.rcs5Button2StartTimeId,'')	,'\"'
 				,',\"endDateId\":\"'	, IFNULL(M.rcs5Button2EndTimeId,'')		,'\"'
 				,',\"buttonLink1\":\"'	, IFNULL(M.rcs5Button2Description,'')	,'\"}') AS rcs5ButtonArr2
-	 , M.rcs5Button3ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs5Button3ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs5Button3DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs5Button3Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs5Button3StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs5Button3EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs5Button3StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs5Button3EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs5Button3Description,'')	,'\"}') AS rcs5ButtonArr3
-	 , M.rcs5Button4ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs5Button4ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs5Button4DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs5Button4Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs5Button4StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs5Button4EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs5Button4StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs5Button4EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs5Button4Description,'')	,'\"}') AS rcs5ButtonArr4
-	 , M.rcs5Button5ButtonType
- 	 , CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs5Button5ButtonType,'')		,'\"'
-                ,',\"buttonName\":\"'	, IFNULL(M.rcs5Button5DisplayText,'')	,'\"'
- 			    ,',\"buttonLink\":\"'	, IFNULL(M.rcs5Button5Title,'')			,'\"'
-				,',\"startDate\":\"'	, IFNULL(M.rcs5Button5StartTime,'')		,'\"'
-				,',\"endDate\":\"'		, IFNULL(M.rcs5Button5EndTime,'')		,'\"'
-				,',\"startDateId\":\"'	, IFNULL(M.rcs5Button5StartTimeId,'')	,'\"'
-				,',\"endDateId\":\"'	, IFNULL(M.rcs5Button5EndTimeId,'')		,'\"'
-				,',\"buttonLink1\":\"'	, IFNULL(M.rcs5Button5Description,'')	,'\"}') AS rcs5ButtonArr5
-	 , M.friendTalkSenderKeyType, M.friendTalkSenderKey, M.friendTalkWideImageYn, M.friendTalkContent, M.friendTalkFileId, M.friendTalkImgUrl, M.friendTalkImageLink, M.friendTalkPrdType,
-
+	 , M.rcs5Button3ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs5Button3ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs5Button3DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs5Button3Title,'')			,'\"'
+							,',\"startDate\":\"'	, IFNULL(M.rcs5Button3StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs5Button3EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs5Button3StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs5Button3EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs5Button3Description,'')	,'\"}') AS rcs5ButtonArr3,
+			M.rcs5Button4ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs5Button4ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs5Button4DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs5Button4Title,'')			,'\"'
+							,',\"startDate\":\"'	, IFNULL(M.rcs5Button4StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs5Button4EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs5Button4StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs5Button4EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs5Button4Description,'')	,'\"}') AS rcs5ButtonArr4,
+			M.rcs5Button5ButtonType,
+			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcs5Button5ButtonType,'')		,'\"'
+							,',\"buttonName\":\"'	, IFNULL(M.rcs5Button5DisplayText,'')	,'\"'
+							,',\"buttonLink\":\"'	, IFNULL(M.rcs5Button5Title,'')			,'\"'
+							,',\"startDate\":\"'	, IFNULL(M.rcs5Button5StartTime,'')		,'\"'
+							,',\"endDate\":\"'		, IFNULL(M.rcs5Button5EndTime,'')		,'\"'
+							,',\"startDateId\":\"'	, IFNULL(M.rcs5Button5StartTimeId,'')	,'\"'
+							,',\"endDateId\":\"'	, IFNULL(M.rcs5Button5EndTimeId,'')		,'\"'
+							,',\"buttonLink1\":\"'	, IFNULL(M.rcs5Button5Description,'')	,'\"}') AS rcs5ButtonArr5,
+			M.friendTalkSenderKeyType, M.friendTalkSenderKey, M.friendTalkWideImageYn, M.friendTalkContent, M.friendTalkFileId, M.friendTalkImgUrl, M.friendTalkImageLink, M.friendTalkPrdType,
 			M.friendTalkButton0Type,
 			CONCAT('{','\"type\":\"'	, IFNULL(M.friendTalkButton0Type,'')		,'\"'
 							,',\"name\":\"'	, IFNULL(M.friendTalkButton0Name,'')	,'\"'
@@ -453,6 +452,14 @@
 							,',\"name\":\"'	, IFNULL(M.friendTalkButton4Name,'')	,'\"'
 							,',\"linkUrl1\":\"'	, IFNULL(M.friendTalkButton4LinkUrl1,'')			,'\"'
 							,',\"linkUrl2\":\"'	, IFNULL(M.friendTalkButton4LinkUrl2,'')	,'\"}') AS friendTalkButtonArr4,
+			M.alimTalkSenderKey, M.alimTalkTmpltName, M.alimTalkEmphasizeType, M.alimTalkTmpltEmpsTitle, M.alimTalkTmpltEmpsSubTitle, M.alimTalkTmpltContent, M.alimTalkPrdType,
+			M.alimTalkButton0Type,
+			CONCAT('{','\"linkType\":\"'	, IFNULL(M.alimTalkButton0Type,'')		,'\"'
+							,',\"name\":\"'	, IFNULL(M.alimTalkButton0Name,'')	,'\"'
+							,',\"linkMo\":\"'	, IFNULL(M.alimTalkButton0LinkMo,'')			,'\"'
+							,',\"linkPc\":\"'	, IFNULL(M.alimTalkButton0LinkPc,'')			,'\"'
+							,',\"linkAnd\":\"'	, IFNULL(M.alimTalkButton0LinkAnd,'')			,'\"'
+							,',\"linkIos\":\"'	, IFNULL(M.alimTalkButton0LinkIos,'')	,'\"}') AS alimTalkButtonArr0,
 			M.smsSendType, M.smsCallback, M.smsContent, M.smsRcvblcNumber, M.smsTitle, M.smsFileId0, M.smsFileId1,
 			M.MMS_CH_IMG_URL0,
 			M.MMS_CH_IMG_URL1
@@ -461,7 +468,7 @@
 				T.PROJECT_ID, T.TMPLT_CODE, T.MSG_KIND, T.MSG_KIND_NAME, T.MSG_TYPE,
 				T.MSG_TYPE_NAME, T.TMPLT_TITLE, T.TMPLT_INFO, T.TMPLT_TYPE, T.otherProjectUseYn,
 				T.USE_YN, T.chTypeList, T.CHECKED_CHANNEL,
-				T.pushMsg, T.pushAppId, T.pushTitle, T.pushFileId, T.pushSendType, T.pushRcvblcInput,
+				T.pushMsg, T.pushAppId, T.pushTitle, T.pushFileId, T.pushSendType, T.pushRcvblcInput, T.ADTN_INFO,
 				@PUSH_PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(B.USE_CH_INFO, "one", 'PUSH', NULL, '$[*].CH')) AS PUSH_PATH_TO_NAME,
 				@PUSH_PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PUSH_PATH_TO_NAME) AS PUSH_PATH_TO_PARENT,
 				@PUSH_CH_OBJECT := JSON_EXTRACT(B.USE_CH_INFO, @PUSH_PATH_TO_PARENT) AS PUSH_CH_OBJECT,
@@ -611,6 +618,8 @@
 				T.friendTalkButton2Type, T.friendTalkButton2Name, T.friendTalkButton2LinkUrl1, T.friendTalkButton2LinkUrl2,
 				T.friendTalkButton3Type, T.friendTalkButton3Name, T.friendTalkButton3LinkUrl1, T.friendTalkButton3LinkUrl2,
 				T.friendTalkButton4Type, T.friendTalkButton4Name, T.friendTalkButton4LinkUrl1, T.friendTalkButton4LinkUrl2,
+				T.alimTalkSenderKey, T.alimTalkTmpltName, T.alimTalkEmphasizeType, T.alimTalkTmpltEmpsTitle, T.alimTalkTmpltEmpsSubTitle, T.alimTalkTmpltContent, T.alimTalkPrdType,
+				T.alimTalkButton0Type, T.alimTalkButton0Name, T.alimTalkButton0LinkMo, T.alimTalkButton0LinkPc, T.alimTalkButton0LinkAnd, T.alimTalkButton0LinkIos,
 				T.smsSendType, T.smsCallback, T.smsContent, T.smsRcvblcNumber, T.smsTitle, T.smsFileId0, T.smsFileId1,
 				@MMS_PATH_TO_NAME0 := JSON_UNQUOTE(JSON_SEARCH(sms0.USE_CH_INFO, "one", 'MMS', NULL, '$[*].CH')) AS MMS_PATH_TO_NAME0,
 				@MMS_PATH_TO_PARENT0 := TRIM(TRAILING '.CH' FROM @MMS_PATH_TO_NAME0) AS MMS_PATH_TO_PARENT0,
@@ -687,6 +696,13 @@
 						ELSE ''
 					END AS pushRcvblcInput,
 					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'PUSH' then A.TMPLT_INFO ->> '$[0].data.ext.data1'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'PUSH' then A.TMPLT_INFO ->> '$[1].data.ext.data1'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'PUSH' then A.TMPLT_INFO ->> '$[2].data.ext.data1'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'PUSH' then A.TMPLT_INFO ->> '$[3].data.ext.data1'
+						ELSE ''
+					END AS ADTN_INFO,
+					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then JSON_LENGTH(A.TMPLT_INFO ->> '$[0].body')
 						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then JSON_LENGTH(A.TMPLT_INFO ->> '$[1].body')
 						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then JSON_LENGTH(A.TMPLT_INFO ->> '$[2].body')
@@ -748,28 +764,28 @@
 						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[1].description'
 						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[1].description'
 						ELSE ''
-					END AS rcs1BodyDescription
-
-			  , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[2].media'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[2].media'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[2].media'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[2].media'
-			        	 ELSE ''
-			   	END AS rcs2BodyMedia
-
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[2].mediaUrl'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[2].mediaUrl'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[2].mediaUrl'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[2].mediaUrl'
-			        	 ELSE ''
-			   	END AS rcs2BodyMediaUrl
-
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[2].title'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[2].title'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[2].title'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[2].title'
-			        	 ELSE ''
-			   	END AS rcs2BodyTitle
+					END AS rcs1BodyDescription,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[2].media'
+						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[2].media'
+						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[2].media'
+						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[2].media'
+						ELSE ''
+					END AS rcs2BodyMedia,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[2].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[2].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[2].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[2].mediaUrl'
+						ELSE ''
+					END AS rcs2BodyMediaUrl,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[2].title'
+						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[2].title'
+						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[2].title'
+						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[2].title'
+						ELSE ''
+					END AS rcs2BodyTitle
 
 		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[2].description'
 			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[2].description'
@@ -3378,62 +3394,62 @@
 			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.buttonType'
 			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.buttonType'
 			        	 ELSE ''
-			   	END AS rcs5Button5ButtonType
+			   	END AS rcs5Button5ButtonType,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.displayText'
+						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.displayText'
+						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.displayText'
+						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.displayText'
+						ELSE ''
+					END AS rcs5Button5DisplayText,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcs5Button5ButtonType = 'S' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.calendarAction.createCalendarEvent.title'
+						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcs5Button5ButtonType = 'S' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.calendarAction.createCalendarEvent.title'
+						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcs5Button5ButtonType = 'S' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.calendarAction.createCalendarEvent.title'
+						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcs5Button5ButtonType = 'S' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.calendarAction.createCalendarEvent.title'
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.displayText'
-			        	 ELSE ''
-			   	END AS rcs5Button5DisplayText
+						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcs5Button5ButtonType = 'U' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.urlAction.openUrl.url'
+						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcs5Button5ButtonType = 'U' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.urlAction.openUrl.url'
+						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcs5Button5ButtonType = 'U' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.urlAction.openUrl.url'
+						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcs5Button5ButtonType = 'U' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.urlAction.openUrl.url'
 
-              , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcs5Button5ButtonType = 'S' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.calendarAction.createCalendarEvent.title'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcs5Button5ButtonType = 'S' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.calendarAction.createCalendarEvent.title'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcs5Button5ButtonType = 'S' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.calendarAction.createCalendarEvent.title'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcs5Button5ButtonType = 'S' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.calendarAction.createCalendarEvent.title'
+						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcs5Button5ButtonType = 'C' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.clipboardAction.copyToClipboard.text'
+						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcs5Button5ButtonType = 'C' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.clipboardAction.copyToClipboard.text'
+						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcs5Button5ButtonType = 'C' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.clipboardAction.copyToClipboard.text'
+						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcs5Button5ButtonType = 'C' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.clipboardAction.copyToClipboard.text'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcs5Button5ButtonType = 'U' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcs5Button5ButtonType = 'U' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcs5Button5ButtonType = 'U' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcs5Button5ButtonType = 'U' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.urlAction.openUrl.url'
+						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcs5Button5ButtonType = 'T' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.dialerAction.dialPhoneNumber.phoneNumber'
+						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcs5Button5ButtonType = 'T' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.dialerAction.dialPhoneNumber.phoneNumber'
+						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcs5Button5ButtonType = 'T' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.dialerAction.dialPhoneNumber.phoneNumber'
+						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcs5Button5ButtonType = 'T' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.dialerAction.dialPhoneNumber.phoneNumber'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcs5Button5ButtonType = 'C' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcs5Button5ButtonType = 'C' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcs5Button5ButtonType = 'C' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcs5Button5ButtonType = 'C' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.clipboardAction.copyToClipboard.text'
-
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcs5Button5ButtonType = 'T' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcs5Button5ButtonType = 'T' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcs5Button5ButtonType = 'T' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcs5Button5ButtonType = 'T' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.dialerAction.dialPhoneNumber.phoneNumber'
-
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcs5Button5ButtonType = 'M' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcs5Button5ButtonType = 'M' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcs5Button5ButtonType = 'M' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcs5Button5ButtonType = 'M' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.mapAction.requestLocationPush.url'
-			        	 ELSE ''
-			   	END AS rcs5Button5Title
-
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.calendarAction.createCalendarEvent.startTime'
-			        	 ELSE ''
-			   	END AS rcs5Button5StartTime
-
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.calendarAction.createCalendarEvent.endTime'
-			        	 ELSE ''
-			   	END AS rcs5Button5EndTime
-
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.calendarAction.createCalendarEvent.description'
-			        	 ELSE ''
-			   	END AS rcs5Button5Description,
+						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcs5Button5ButtonType = 'M' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.mapAction.requestLocationPush.url'
+						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcs5Button5ButtonType = 'M' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.mapAction.requestLocationPush.url'
+						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcs5Button5ButtonType = 'M' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.mapAction.requestLocationPush.url'
+						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcs5Button5ButtonType = 'M' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.mapAction.requestLocationPush.url'
+						ELSE ''
+					END AS rcs5Button5Title,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.calendarAction.createCalendarEvent.startTime'
+						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.calendarAction.createCalendarEvent.startTime'
+						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.calendarAction.createCalendarEvent.startTime'
+						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.calendarAction.createCalendarEvent.startTime'
+						ELSE ''
+					END AS rcs5Button5StartTime,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.calendarAction.createCalendarEvent.endTime'
+						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.calendarAction.createCalendarEvent.endTime'
+						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.calendarAction.createCalendarEvent.endTime'
+						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.calendarAction.createCalendarEvent.endTime'
+						ELSE ''
+					END AS rcs5Button5EndTime,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[5].suggestions[5].action.calendarAction.createCalendarEvent.description'
+						WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[5].suggestions[5].action.calendarAction.createCalendarEvent.description'
+						WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[5].suggestions[5].action.calendarAction.createCalendarEvent.description'
+						WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[5].suggestions[5].action.calendarAction.createCalendarEvent.description'
+						ELSE ''
+					END AS rcs5Button5Description,
 					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then 'FRIENDTALK'
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then 'FRIENDTALK'
@@ -3492,10 +3508,10 @@
 					END AS friendTalkImageLink,
 					@friendTalkButton0Type :=
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].data.buttons[0].type'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].data.buttons[0].type'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].data.buttons[0].type'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].data.buttons[0].type'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].data.buttons[0].linkType'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].data.buttons[0].linkType'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].data.buttons[0].linkType'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].data.buttons[0].linkType'
 							ELSE ''
 						END AS friendTalkButton0Type,
 						CASE
@@ -3506,37 +3522,33 @@
 							ELSE ''
 						END AS friendTalkButton0Name,
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[0].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[0].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[0].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[0].url_mobile'
-
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[0].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[0].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[0].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[0].scheme_android'
-
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[0].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[0].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[0].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[0].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[0].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[0].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[0].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[0].linkAnd'
 							ELSE ''
 						END AS friendTalkButton0LinkUrl1,
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[0].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[0].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[0].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[0].url_pc'
-
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[0].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[0].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[0].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[0].scheme_ios'
-
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[0].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[0].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[0].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[0].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[0].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[0].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[0].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[0].linkIos'
 							ELSE ''
 						END AS friendTalkButton0LinkUrl2,
 					@friendTalkButton1Type :=
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].data.buttons[1].type'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].data.buttons[1].type'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].data.buttons[1].type'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].data.buttons[1].type'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].data.buttons[1].linkType'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].data.buttons[1].linkType'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].data.buttons[1].linkType'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].data.buttons[1].linkType'
 							ELSE ''
 						END AS friendTalkButton1Type,
 						CASE
@@ -3547,37 +3559,33 @@
 							ELSE ''
 						END AS friendTalkButton1Name,
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[1].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[1].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[1].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[1].url_mobile'
-
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[1].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[1].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[1].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[1].scheme_android'
-
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[1].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[1].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[1].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[1].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[1].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[1].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[1].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[1].linkAnd'
 							ELSE ''
 						END AS friendTalkButton1LinkUrl1,
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[1].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[1].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[1].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[1].url_pc'
-
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[1].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[1].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[1].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[1].scheme_ios'
-
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[1].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[1].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[1].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[1].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[1].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[1].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[1].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton1Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[1].linkIos'
 							ELSE ''
 						END AS friendTalkButton1LinkUrl2,
 					@friendTalkButton2Type :=
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].data.buttons[2].type'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].data.buttons[2].type'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].data.buttons[2].type'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].data.buttons[2].type'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].data.buttons[2].linkType'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].data.buttons[2].linkType'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].data.buttons[2].linkType'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].data.buttons[2].linkType'
 							ELSE ''
 						END AS friendTalkButton2Type,
 						CASE
@@ -3588,37 +3596,33 @@
 							ELSE ''
 						END AS friendTalkButton2Name,
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[2].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[2].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[2].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[2].url_mobile'
-
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[2].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[2].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[2].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[2].scheme_android'
-
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[2].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[2].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[2].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[2].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[2].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[2].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[2].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[2].linkAnd'
 							ELSE ''
 						END AS friendTalkButton2LinkUrl1,
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[2].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[2].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[2].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[2].url_pc'
-
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[2].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[2].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[2].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[2].scheme_ios'
-
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[2].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[2].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[2].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[2].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[2].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[2].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[2].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton2Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[2].linkIos'
 							ELSE ''
 						END AS friendTalkButton2LinkUrl2,
 					@friendTalkButton3Type :=
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].data.buttons[3].type'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].data.buttons[3].type'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].data.buttons[3].type'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].data.buttons[3].type'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].data.buttons[3].linkType'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].data.buttons[3].linkType'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].data.buttons[3].linkType'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].data.buttons[3].linkType'
 							ELSE ''
 						END AS friendTalkButton3Type,
 						CASE
@@ -3629,37 +3633,33 @@
 							ELSE ''
 						END AS friendTalkButton3Name,
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[3].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[3].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[3].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[3].url_mobile'
-
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[3].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[3].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[3].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[3].scheme_android'
-
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[3].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[3].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[3].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[3].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[3].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[3].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[3].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[3].linkAnd'
 							ELSE ''
 						END AS friendTalkButton3LinkUrl1,
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[3].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[3].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[3].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[3].url_pc'
-
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[3].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[3].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[3].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[3].scheme_ios'
-
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[3].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[3].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[3].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[3].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[3].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[3].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[3].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton3Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[3].linkIos'
 							ELSE ''
 						END AS friendTalkButton3LinkUrl2,
 					@friendTalkButton4Type :=
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].data.buttons[4].type'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].data.buttons[4].type'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].data.buttons[4].type'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].data.buttons[4].type'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].data.buttons[4].linkType'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].data.buttons[4].linkType'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].data.buttons[4].linkType'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].data.buttons[4].linkType'
 							ELSE ''
 						END AS friendTalkButton4Type,
 						CASE
@@ -3670,31 +3670,137 @@
 							ELSE ''
 						END AS friendTalkButton4Name,
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[4].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[4].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[4].url_mobile'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[4].url_mobile'
-
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[4].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[4].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[4].scheme_android'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[4].scheme_android'
-
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[4].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[4].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[4].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[4].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[4].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[4].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[4].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[4].linkAnd'
 							ELSE ''
 						END AS friendTalkButton4LinkUrl1,
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[4].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[4].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[4].url_pc'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[4].url_pc'
-
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[4].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[4].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[4].scheme_ios'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[4].scheme_ios'
-
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[4].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[4].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[4].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[4].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[4].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[4].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[4].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' and @friendTalkButton4Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[4].linkIos'
 							ELSE ''
 						END AS friendTalkButton4LinkUrl2,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' then 'ALIMTALK'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' then 'ALIMTALK'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'ALIMTALK' then 'ALIMTALK'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' then 'ALIMTALK'
+						ELSE ''
+					END AS alimTalkPrdType,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[0].data.senderKey'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[1].data.senderKey'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[2].data.senderKey'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[3].data.senderKey'
+						ELSE ''
+					END AS alimTalkSenderKey,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[0].data.subData.tmpltName'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[1].data.subData.tmpltName'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[2].data.subData.tmpltName'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[3].data.subData.tmpltName'
+						ELSE ''
+					END AS alimTalkTmpltName,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[0].data.subData.emphasizeType'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[1].data.subData.emphasizeType'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[2].data.subData.emphasizeType'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[3].data.subData.emphasizeType'
+						ELSE ''
+					END AS alimTalkEmphasizeType,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[0].data.subData.tmpltEmpsTitle'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[1].data.subData.tmpltEmpsTitle'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[2].data.subData.tmpltEmpsTitle'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[3].data.subData.tmpltEmpsTitle'
+						ELSE ''
+					END AS alimTalkTmpltEmpsTitle,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[0].data.subData.tmpltEmpsSubTitle'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[1].data.subData.tmpltEmpsSubTitle'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[2].data.subData.tmpltEmpsSubTitle'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[3].data.subData.tmpltEmpsSubTitle'
+						ELSE ''
+					END AS alimTalkTmpltEmpsSubTitle,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[0].data.msg'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[1].data.msg'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[2].data.msg'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[3].data.msg'
+						ELSE ''
+					END AS alimTalkTmpltContent,
+					@alimTalkButton0Type :=
+						CASE
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[0].data.buttons[0].linkType'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[1].data.buttons[0].linkType'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[2].data.buttons[0].linkType'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[3].data.buttons[0].linkType'
+							WHEN A.TMPLT_INFO ->> '$[4].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[4].data.buttons[0].linkType'
+							WHEN A.TMPLT_INFO ->> '$[5].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[5].data.buttons[0].linkType'
+							WHEN A.TMPLT_INFO ->> '$[6].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[6].data.buttons[0].linkType'
+							ELSE ''
+						END AS alimTalkButton0Type,
+						CASE
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[0].data.buttons[0].name'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[1].data.buttons[0].name'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[2].data.buttons[0].name'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[3].data.buttons[0].name'
+							WHEN A.TMPLT_INFO ->> '$[4].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[4].data.buttons[0].name'
+							WHEN A.TMPLT_INFO ->> '$[5].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[5].data.buttons[0].name'
+							WHEN A.TMPLT_INFO ->> '$[6].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[6].data.buttons[0].name'
+							ELSE ''
+						END AS alimTalkButton0Name,
+						CASE
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[0].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[0].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[0].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[0].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[4].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[4].data.buttons[0].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[5].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[5].data.buttons[0].linkMo'
+							WHEN A.TMPLT_INFO ->> '$[6].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[6].data.buttons[0].linkMo'
+							ELSE ''
+						END AS alimTalkButton0LinkMo,
+						CASE
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[0].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[0].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[0].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[0].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[4].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[4].data.buttons[0].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[5].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[5].data.buttons[0].linkAnd'
+							WHEN A.TMPLT_INFO ->> '$[6].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[6].data.buttons[0].linkAnd'
+							ELSE ''
+						END AS alimTalkButton0LinkAnd,
+						CASE
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[0].data.buttons[0].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[1].data.buttons[0].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[2].data.buttons[0].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[3].data.buttons[0].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[4].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[4].data.buttons[0].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[5].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[5].data.buttons[0].linkPc'
+							WHEN A.TMPLT_INFO ->> '$[6].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'WL' then A.TMPLT_INFO ->> '$[6].data.buttons[0].linkPc'
+							ELSE ''
+						END AS alimTalkButton0LinkPc,
+						CASE
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[0].data.buttons[0].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[1].data.buttons[0].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[2].data.buttons[0].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[3].data.buttons[0].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[4].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[4].data.buttons[0].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[5].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[5].data.buttons[0].linkIos'
+							WHEN A.TMPLT_INFO ->> '$[6].ch' = 'ALIMTALK' and @alimTalkButton0Type = 'AL' then A.TMPLT_INFO ->> '$[6].data.buttons[0].linkIos'
+							ELSE ''
+						END AS alimTalkButton0LinkIos,
 					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'SMS' then 'S' WHEN A.TMPLT_INFO ->> '$[0].ch' = 'MMS' then 'M'
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'SMS' then 'S' WHEN A.TMPLT_INFO ->> '$[1].ch' = 'MMS' then 'M'
@@ -3747,7 +3853,7 @@
 				FROM cm.CM_SMART_TMPLT A
 				WHERE 1=1
 				AND A.TMPLT_TYPE = 'M'
-				AND A.TMPLT_CODE = #{tmpltCode}
+				AND A.TMPLT_CODE = #{multiSendTmpltCode}
 			) T
 			LEFT OUTER JOIN cm_console.CM_IMAGE_FILE B
 				ON T.pushFileId = B.FILE_ID
@@ -3758,13 +3864,12 @@
 		) M
 	</select>
 
-
-    <insert id="insertIntegratedTemplate" parameterType="hashmap">
-    /* integraedtemplate.insertIntegratedTemplate - 통합 템플릿 등록 */
-        INSERT
-            INTO cm.CM_SMART_TMPLT
-        (
-            PROJECT_ID
+	<insert id="insertIntegratedTemplate" parameterType="hashmap">
+		/* integraedtemplate.insertIntegratedTemplate - 통합 템플릿 등록 */
+		INSERT
+			INTO cm.CM_SMART_TMPLT
+		(
+			PROJECT_ID
             , TMPLT_CODE
             , MSG_KIND
             , MSG_TYPE
@@ -3780,7 +3885,7 @@
             , CORP_ID
         ) VALUES (
             #{projectId}
-            , #{tmpltCode}
+            , #{multiSendTmpltCode}
             , #{msgKind}
             , #{msgType}
             , #{tmpltTitle}
@@ -3806,32 +3911,31 @@
 					            , CORP_ID = #{corpId}
     </insert>
 
-    <update id="updateIntegratedTemplate" parameterType="hashmap">
-    /* integraedtemplate.updateIntegratedTemplate - 통합 템플릿 수정 */
-        UPDATE cm.CM_SMART_TMPLT
-        SET
-            MSG_KIND = #{msgKind}
-            , MSG_TYPE = #{msgType}
-            , TMPLT_TITLE = #{tmpltTitle}
-            , TMPLT_INFO = #{tmpltInfo}
-            , TMPLT_TYPE = #{tmpltType}
-            , TMPLT_STATUS = #{tmpltStatus}
-            , UPD_DT = NOW()
-            , UPD_ID = #{userId}
-            , CORP_ID = #{corpId}
-        WHERE PROJECT_ID = #{projectId}
-          AND TMPLT_CODE = #{tmpltCode}
-    </update>
+	<update id="updateIntegratedTemplate" parameterType="hashmap">
+		/* integraedtemplate.updateIntegratedTemplate - 통합 템플릿 수정 */
+		UPDATE cm.CM_SMART_TMPLT
+		SET
+			MSG_KIND = #{msgKind},
+			MSG_TYPE = #{msgType},
+			TMPLT_TITLE = #{tmpltTitle},
+			TMPLT_INFO = #{tmpltInfo},
+			TMPLT_TYPE = #{tmpltType},
+			TMPLT_STATUS = #{tmpltStatus},
+			UPD_DT = NOW(),
+			UPD_ID = #{userId},
+			CORP_ID = #{corpId}
+		WHERE PROJECT_ID = #{projectId}
+		AND TMPLT_CODE = #{tmpltCode}
+	</update>
 
 
-    <delete id="deleteIntegratedTemplate" parameterType="hashmap">
-    /* integraedtemplate.deleteIntegratedTemplate - 통합 템플릿 삭제 */
-        DELETE
-        FROM cm.CM_SMART_TMPLT
-        WHERE 1=1
+	<delete id="deleteIntegratedTemplate" parameterType="hashmap">
+		/* integraedtemplate.deleteIntegratedTemplate - 통합 템플릿 삭제 */
+		DELETE
+		FROM cm.CM_SMART_TMPLT
+		WHERE 1=1
 		AND TMPLT_TYPE = 'M'
-        AND TMPLT_CODE IN <foreach collection="tmpltCodes" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
-    </delete>
-
+		AND TMPLT_CODE IN <foreach collection="tmpltCodes" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
 
 </mapper>
