@@ -23,6 +23,7 @@ import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltRequestData;
 import kr.co.uplus.cm.template.service.TemplateService;
 import kr.co.uplus.cm.utils.DateUtil;
+import kr.co.uplus.cm.xss.XssPreventer;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -479,6 +480,8 @@ public class TemplateController {
 
         try {
             log.info("{}.procApprvRequestKkoTmplt Start ====> params : {}", this.getClass(), params);
+            params = XssPreventer.unescapeMap(params);
+            log.info("{}.procApprvRequestKkoTmplt Unescape ====> params : {}", this.getClass(), params);
 
             /** 유효성 체크 */
             requestData = tmpltSvc.setAlimTalkTmpltRequestData(rtn, params);
@@ -629,6 +632,8 @@ public class TemplateController {
 
         try {
             log.info("{}.procUpdateRequestKkoTmplt Start ====> params : {}", this.getClass(), params);
+            params = XssPreventer.unescapeMap(params);
+            log.info("{}.procApprvRequestKkoTmplt Unescape ====> params : {}", this.getClass(), params);
 
             /** Set User Info */
             params = commonService.setUserInfo(params);

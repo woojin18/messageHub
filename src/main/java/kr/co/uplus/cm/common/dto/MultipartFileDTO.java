@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.uplus.cm.common.utils.SpringUtils;
+import kr.co.uplus.cm.xss.XssPreventer;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
@@ -31,6 +32,21 @@ public class MultipartFileDTO implements Serializable {
         ObjectMapper mapper = new ObjectMapper();
         try {
             params = mapper.readValue(this.paramString, Map.class);
+        } catch (Exception e) {
+            log.error("{} getParams : {}", this.getClass(), e);
+        }
+
+        return params;
+    }
+
+    @SuppressWarnings({ "unused", "unchecked" })
+    public Map<String, Object> getUnescapeParams() {
+        Map<String, Object> params = new HashMap<String, Object>();
+        HttpServletRequest request = SpringUtils.getCurrentRequest();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String unescapeParamStr = XssPreventer.unescape(paramString);
+            params = mapper.readValue(unescapeParamStr, Map.class);
         } catch (Exception e) {
             log.error("{} getParams : {}", this.getClass(), e);
         }

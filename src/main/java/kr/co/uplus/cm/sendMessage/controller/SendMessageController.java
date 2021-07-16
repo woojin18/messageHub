@@ -216,7 +216,7 @@ public class SendMessageController {
         PushRequestData requestData = null;
 
         try {
-            params = commonService.setUserInfo(multipartFileDTO.getParams());
+            params = commonService.setUserInfo(multipartFileDTO.getUnescapeParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
             log.info("{}.sendPushMessage Start ====> params : {}", this.getClass(), params);
 
@@ -369,7 +369,7 @@ public class SendMessageController {
         Map<String, Object> rtnMap = new HashMap<>();
 
         try {
-            params = commonService.setUserInfo(multipartFileDTO.getParams());
+            params = commonService.setUserInfo(multipartFileDTO.getUnescapeParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
             log.info("{}.sendSmsMessage Start ====> paramString : {}", this.getClass(), params);
 
@@ -478,7 +478,7 @@ public class SendMessageController {
         Map<String, Object> rtnMap = new HashMap<>();
 
         try {
-            params = commonService.setUserInfo(multipartFileDTO.getParams());
+            params = commonService.setUserInfo(multipartFileDTO.getUnescapeParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
             log.info("{}.sendMmsMessage Start ====> paramString : {}", this.getClass(), params);
 
@@ -628,7 +628,7 @@ public class SendMessageController {
         Map<String, Object> rtnMap = new HashMap<>();
 
         try {
-            params = commonService.setUserInfo(multipartFileDTO.getParams());
+            params = commonService.setUserInfo(multipartFileDTO.getUnescapeParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
             log.info("{}.sendFrndTalkMessage Start ====> paramString : {}", this.getClass(), params);
 
@@ -790,7 +790,7 @@ public class SendMessageController {
         Map<String, Object> rtnMap = new HashMap<>();
 
         try {
-            params = commonService.setUserInfo(multipartFileDTO.getParams());
+            params = commonService.setUserInfo(multipartFileDTO.getUnescapeParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
             log.info("{}.sendAlimTalkMessage Start ====> paramString : {}", this.getClass(), params);
 
