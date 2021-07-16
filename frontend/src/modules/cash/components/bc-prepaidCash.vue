@@ -153,6 +153,7 @@ export default {
       };
       cashApi.selectCashBalance(params).then(response => {
         var result = response.data;
+        console.log(result);
         if(result.success) {
           this.cashBalance = result.data.cashBalance;
           this.eventCashBalance = result.data.eventCashBalance;

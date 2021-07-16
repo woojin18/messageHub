@@ -72,8 +72,8 @@ public class CashService {
 			cashId = CommonUtils.getString(((Map<String, Object>)result.get("data")).get("error"));
 			
 			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("rslt")) ) {
-			} else if ( "500100".equals(result.get("rslt")) ) {
+			if( "10000".equals(result.get("code")) ) {
+			} else if ( "500100".equals(result.get("code")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
 			} else {
@@ -163,8 +163,8 @@ public class CashService {
 		System.out.println("------------------------------------------------- cashInfo C U result : " + result);
 		
 		// 성공인지 실패인지 체크
-		if( "10000".equals(result.get("rslt")) ) {
-		} else if ( "500100".equals(result.get("rslt")) ) {
+		if( "10000".equals(result.get("code")) ) {
+		} else if ( "500100".equals(result.get("code")) ) {
 			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 			throw new Exception(errMsg);
 		} else {
@@ -201,8 +201,8 @@ public class CashService {
 	public RestResult<Object> selectCashBalance(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
-		int cashBalance = 0;
-		int eventCashBalance = 0;
+		double cashBalance = 0;
+		double eventCashBalance = 0;
 		
 		Map<String, Object> cashInfo = (Map<String, Object>) generalDao.selectGernalObject("cash.selectCashInfoForCorpIdCashType", params);
 		String corpId = CommonUtils.getString(cashInfo.get("corpId"));
@@ -215,12 +215,16 @@ public class CashService {
 		
 		System.out.println("------------------------------------------------- selectCashBalance : " + result);
 		
+		String cashBalanceStr = "";
 		// 성공인지 실패인지 체크
-		if( "10000".equals(result.get("rslt")) ) {
+		if( "10000".equals(result.get("code")) ) {
 			List cashInfoList = (List) ((Map<String, Object>)result.get("data")).get("cashInfo");
 			Map<String, Object> cashInfoListMap = (Map<String, Object>) cashInfoList.get(0);
-			cashBalance = Integer.parseInt( CommonUtils.getString(cashInfoListMap.get("cashBalance")).replace(".0", "") );
 			
+			System.out.println("------------------------------------------------- cashInfoListMap : " + CommonUtils.getString(cashInfoListMap.get("cashBalance")));
+			
+			cashBalance = Double.parseDouble( CommonUtils.getString(cashInfoListMap.get("cashBalance")) );
+			//cashBalanceStr = CommonUtils.getString(cashInfoListMap.get("cashBalance"));
 			System.out.println("------------------------------------------------- result.get(\"data\") : " + cashBalance);
 			
 			
@@ -228,7 +232,7 @@ public class CashService {
 			cashBalance = 0;
 		}
 		
-		eventCashBalance = Integer.parseInt(CommonUtils.getString(generalDao.selectGernalObject("cash.selectEventCashBalance", params)));
+		eventCashBalance = Double.parseDouble(CommonUtils.getString(generalDao.selectGernalObject("cash.selectEventCashBalance", params)));
 		
 		Map<String, Object> cashMap = new HashMap<>();
 		 
