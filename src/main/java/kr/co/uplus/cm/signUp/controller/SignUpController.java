@@ -1,10 +1,12 @@
 package kr.co.uplus.cm.signUp.controller;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,8 +33,13 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RestController
 @RequestMapping("/api/public/signUp")
-public class SignUpController {
+public class SignUpController implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8690584852883891055L;
+
 	@Autowired GeneralDao generalDao;
 	
 	@Autowired SignUpService signUpSvc;
@@ -214,7 +221,9 @@ public class SignUpController {
 		// 업체에서 적절하게 변경하여 쓰거나, 아래와 같이 생성한다.
 		sRequestNumber = niceCheck.getRequestNO(sSiteCode);
 		
-		request.getSession().setAttribute("REQ_SEQ" , sRequestNumber);
+		CommonUtils.addToSession(request, "REQ_SEQ", this);
+//		HttpSession hs = request.getSession(true);
+//		hs.setAttribute("REQ_SEQ" , sRequestNumber);
 //		*************************
 //		session.setAttribute("REQ_SEQ" , sRequestNumber);	// 해킹등의 방지를 위하여 세션을 쓴다면, 세션에 요청번호를 넣는다.
 		
