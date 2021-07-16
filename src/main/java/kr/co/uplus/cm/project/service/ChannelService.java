@@ -373,9 +373,9 @@ public class ChannelService {
 		
 		// 확장자
 		String fileExtension = commonService.getFileNameExt(file.getOriginalFilename(),1);
-		if( !"jpg".equals(fileExtension) ) {
-			rtnboolean =  false;
-		} else if ( !"png".equals(fileExtension) ) {
+		if( "jpg".equals(fileExtension) ) {
+		} else if ( "png".equals(fileExtension) ) {
+		} else {
 			rtnboolean =  false;
 		}
 		
@@ -404,7 +404,7 @@ public class ChannelService {
 			
 			String profileImgFileCheckStr = checkFileSizeExtension(profileImgFile);
 			if( !"".equals(profileImgFileCheckStr) ) {
-				throw new Exception(profileImgFileCheckStr);
+				throw new Exception("프로필 이미지의 형식이 "+profileImgFileCheckStr);
 			}
 			
 			String profileImgFileSeq = commonService.uploadFile(profileImgFile, CommonUtils.getString(params.get("loginId")), uploadDirPath);
@@ -418,7 +418,7 @@ public class ChannelService {
 			
 			String bgImgFileCheckStr = checkFileSizeExtension(bgImgFile);
 			if( !"".equals(bgImgFileCheckStr) ) {
-				throw new Exception(bgImgFileCheckStr);
+				throw new Exception("백그라운드 이미지의 형식이 "+bgImgFileCheckStr);
 			}
 			
 			String bgImgFileSeq = commonService.uploadFile(bgImgFile, CommonUtils.getString(params.get("loginId")), uploadDirPath);
