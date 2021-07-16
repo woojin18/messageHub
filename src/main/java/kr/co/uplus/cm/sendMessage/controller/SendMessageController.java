@@ -269,8 +269,12 @@ public class SendMessageController {
                 sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
                 sParam.put("productCodes", productCodes);
                 BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
-                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
+                if(rmAmount.compareTo(feePerOne) < 0) {
+                    rtn.setFail("잔액 부족으로 메시지를 발송할 수 없습니다.");
+                    return rtn;
+                }
 
+                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
                 if(rmAmount.compareTo(feePerAll) < 0) {
                     if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                         rtn.setSuccess(false);
@@ -417,8 +421,12 @@ public class SendMessageController {
                 sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
                 sParam.put("productCodes", productCodes);
                 BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
-                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
+                if(rmAmount.compareTo(feePerOne) < 0) {
+                    rtn.setFail("잔액 부족으로 메시지를 발송할 수 없습니다.");
+                    return rtn;
+                }
 
+                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
                 if(rmAmount.compareTo(feePerAll) < 0) {
                     if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                         rtn.setSuccess(false);
@@ -525,8 +533,12 @@ public class SendMessageController {
                 sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
                 sParam.put("productCodes", productCodes);
                 BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
-                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
+                if(rmAmount.compareTo(feePerOne) < 0) {
+                    rtn.setFail("잔액 부족으로 메시지를 발송할 수 없습니다.");
+                    return rtn;
+                }
 
+                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
                 if(rmAmount.compareTo(feePerAll) < 0) {
                     if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                         rtn.setSuccess(false);
@@ -686,8 +698,12 @@ public class SendMessageController {
                 sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
                 sParam.put("productCodes", productCodes);
                 BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
-                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
+                if(rmAmount.compareTo(feePerOne) < 0) {
+                    rtn.setFail("잔액 부족으로 메시지를 발송할 수 없습니다.");
+                    return rtn;
+                }
 
+                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
                 if(rmAmount.compareTo(feePerAll) < 0) {
                     if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                         rtn.setSuccess(false);
@@ -842,8 +858,12 @@ public class SendMessageController {
                 sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
                 sParam.put("productCodes", productCodes);
                 BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
-                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
+                if(rmAmount.compareTo(feePerOne) < 0) {
+                    rtn.setFail("잔액 부족으로 메시지를 발송할 수 없습니다.");
+                    return rtn;
+                }
 
+                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
                 if(rmAmount.compareTo(feePerAll) < 0) {
                     if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                         rtn.setSuccess(false);
@@ -939,8 +959,12 @@ public class SendMessageController {
                 sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
                 sParam.put("productCodes", params.get("chTypeList"));
                 BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
-                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
+                if(rmAmount.compareTo(feePerOne) < 0) {
+                    rtn.setFail("잔액 부족으로 메시지를 발송할 수 없습니다.");
+                    return rtn;
+                }
 
+                BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
                 if(rmAmount.compareTo(feePerAll) < 0) {
                     if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
                         rtn.setSuccess(false);

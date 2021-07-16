@@ -316,6 +316,7 @@ import TestSendInputPopup from "@/modules/message/components/bc-testSendInput.vu
 import messageApi from "@/modules/message/service/messageApi.js";
 import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
   name: 'sendIntegMain',
@@ -561,10 +562,17 @@ export default {
     //수신자 중복 제거
     fnDelDuplRecvInfo(){
       const vm = this;
+      let key, key2;
       this.sendData.recvInfoLst = this.sendData.recvInfoLst.filter(function(item, i){
         return (
           vm.sendData.recvInfoLst.findIndex((item2) => {
-            return item.phone === item2.phone
+            key = '';
+            if ('phone' in item) key += item.phone;
+            if ('cuid' in item) key += item.cuid;
+            key2 = '';
+            if ('phone' in item2) key2 += item2.phone;
+            if ('cuid' in item2) key2 += item2.cuid;
+            return key === key2
           }) === i
         );
       });
