@@ -44,7 +44,7 @@ public class JwtService {
 		setTokenToCookie(response, token);
 		// 로그인 시 대표프로젝트 정보 쿠키에 세팅
 		Cookie project = new Cookie("project", user.getRepProjectId());
-		project.setPath("/uc");
+		project.setPath("/");
 		response.addCookie(project);
 	}
 
