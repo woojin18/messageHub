@@ -34,21 +34,23 @@
 					<!-- 중메뉴 -->
 					<div class="depth2Lnb" :id="'depth2_' + i" :style="showOption">
 						<ul>
-							<li v-for="(item2, j) in item.children" :key="j" >
-								<router-link  v-if="item2.webUrl != ''" v-bind:to="{path:item2.webUrl}" v-bind:id="'M_'+item2.menusCd" v-bind:r="item2.read" v-bind:w="item2.save">{{item2.menusName}}</router-link>		<!-- url 주소 있으면 페이지 이동 -->
-								<a  v-if="item2.webUrl == ''" @click="fnOpenDepth3(i,j)">
-									<i v-bind:class="item2.imgTag"></i><span{{item2.menusName}}</span><i class="far fa-chevron-down navArrow" style="font-size: 10px;position: absolute;right: 20px"></i>
-								</a>
-								<!-- 소메뉴 -->
-								<div class="depth3Lnb" :id="'depth3_' + j">
-									<ul>
-										<li v-for="(item3, m) in item2.children" :key="m">
-											<router-link v-bind:to="{path:item3.webUrl}" v-bind:id="'M_'+item3.menusCd" v-bind:r="item3.read" v-bind:w="item3.save">{{item3.menusName}}</router-link>
-										</li>
-									</ul>
-								</div>
-								<!-- 소메뉴 -->
-							</li>
+								<li v-for="(item2, j) in item.children" :key="j" >
+							<div v-if="fnCheckUseCh(item2)">
+									<router-link  v-if="item2.webUrl != ''" v-bind:to="{path:item2.webUrl}" v-bind:id="'M_'+item2.menusCd" v-bind:r="item2.read" v-bind:w="item2.save">{{item2.menusName}}</router-link>		<!-- url 주소 있으면 페이지 이동 -->
+									<a  v-if="item2.webUrl == ''" @click="fnOpenDepth3(i,j)">
+										<i v-bind:class="item2.imgTag"></i><span{{item2.menusName}}</span><i class="far fa-chevron-down navArrow" style="font-size: 10px;position: absolute;right: 20px"></i>
+									</a>
+									<!-- 소메뉴 -->
+									<div class="depth3Lnb" :id="'depth3_' + j">
+										<ul>
+											<li v-for="(item3, m) in item2.children" :key="m">
+												<router-link v-bind:to="{path:item3.webUrl}" v-bind:id="'M_'+item3.menusCd" v-bind:r="item3.read" v-bind:w="item3.save">{{item3.menusName}}</router-link>
+											</li>
+										</ul>
+									</div>
+									<!-- 소메뉴 -->
+							</div>
+								</li>
 						</ul>
 					</div>
 					<!-- 중메뉴 -->
@@ -86,6 +88,7 @@ export default {
 				}
 			],
 			prdData : [],
+			useChData : [],
 			projectId : utils.getCookie(consts.projectId),
 			showOption: {
 				display: 'none'
@@ -94,8 +97,9 @@ export default {
 	},
 	mounted(){
 		this.init();
-		this.fnMenuList();
+		this.fnProjectChUseListForUser();
 		this.fnProjectList();
+		this.fnMenuList();
 	},
 	methods: {
 		init() {
@@ -157,6 +161,44 @@ export default {
 					this.treeData = result.data.children;
 				}
 			});
+		},
+		fnProjectChUseListForUser() {
+			var params = {};
+
+			api.getProjectChUseListForUser(params).then(response =>{
+				var result = response.data;
+				if (result.success && result.data != null) {
+					this.useChData = result.data[0];
+				}
+			});
+		},
+		fnCheckUseCh(data){
+			// 프로젝트 채널 사용 여부 확인해서 메뉴 생성
+			var moYn = this.useChData.moYn;		// 메뉴 없음
+			var kkoYn = this.useChData.kkoYn;
+			var rcsYn = this.useChData.rcsYn;
+			var pushYn = this.useChData.pushYn;
+			var smsmmsYn = this.useChData.smsmmsYn;  
+			
+
+			if( kkoYn === 'N' ){
+				if( data.menusCd === 'UC_SND_FRND_MSG' || data.menusCd === 'UC_SND_ALIM_MSG' ||  data.menusCd === 'UC_FRND_TPL' || data.menusCd === 'UC_ALIM_TPL' ){
+					return false;
+				}
+			} else if( rcsYn === 'N' ){
+				if( data.menusCd === 'UC_SND_RCS_MSG' || data.menusCd === 'UC_SND_RCS_MSG' ){
+					return false;
+				}
+			} else if( pushYn === 'N' ){
+				if( data.menusCd === 'UC_SND_PUSH_MSG' || data.menusCd === 'UC_PUSH_TPL'  ){
+					return false;
+				}
+			} else if( smsmmsYn === 'N' ){
+				if( data.menusCd === 'UC_SND_SMS_MSG' || data.menusCd === 'UC_SMS_TPL' ){
+					return false;
+				}
+			}
+			return true;
 		},
 		fnOpenDepth2(index) {
 			var depth2Sts = jQuery("#depth2_" + index).css("display");

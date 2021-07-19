@@ -16,9 +16,14 @@ const getProjectForUser = (params) => {
 	return httpClient.post('/api/auth/getProjectForUser', params, { headers: {"show-layer": "Yes"} });
 };
 
+const getProjectChUseListForUser = (params) => {
+	return httpClient.post('/api/auth/getProjectChUseListForUser', params, { headers: {"show-layer": "Yes"} });
+};
+
 export default {
     login,
     logout,
     getMenuForRole,
-	getProjectForUser
+	getProjectForUser,
+    getProjectChUseListForUser
 };

@@ -69,6 +69,12 @@ public class AuthController {
 		return authSvc.getProjectForUser(params, request, response);
 	}
 
+	@PostMapping("/auth/getProjectChUseListForUser")
+	public RestResult<?> getProjectChUseListForUser(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		return authSvc.getProjectChUseListForUser(params, request, response);
+	}
+
 	@PostMapping("/public/token")
 	public RestResult<?> publicToken(@RequestBody Map<String, Object> params) {
 

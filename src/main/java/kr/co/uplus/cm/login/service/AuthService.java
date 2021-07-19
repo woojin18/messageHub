@@ -203,6 +203,16 @@ public class AuthService implements UserDetailsService {
 
 		return rtn;
 	}
+
+	// 프로젝트 사용 채널 조회
+	public RestResult<?> getProjectChUseListForUser(Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		List<Object> rtnList = generalDao.selectGernalList("login.getProjectChUseListForUser", params);
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
 	
 	private Map<String, Menu> tACMenuByRole = new HashMap<String, Menu>();
 	private Map<String, Map<String, Menu>> tACMenusByRole = new HashMap<String, Map<String, Menu>>();

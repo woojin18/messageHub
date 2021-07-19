@@ -81,6 +81,19 @@
 		AND DEL_YN = 'N'
 		ORDER BY CPU.REG_DT DESC
 	</select>
+	
+	
+	<select id="getProjectChUseListForUser" parameterType="string" resultType="camel">
+		/* login.getProjectChUseListForUser */
+		SELECT 
+			REPLACE(JSON_EXTRACT(A.USE_CH_GRP_INFO , '$.MO[0]'), "\"", "")  AS MO_YN
+		,	REPLACE(JSON_EXTRACT(A.USE_CH_GRP_INFO , '$.KKO[0]'), "\"", "")  AS KKO_YN
+		,	REPLACE(JSON_EXTRACT(A.USE_CH_GRP_INFO , '$.RCS[0]'), "\"", "")  AS RCS_YN
+		,	REPLACE(JSON_EXTRACT(A.USE_CH_GRP_INFO , '$.PUSH[0]'), "\"", "")  AS PUSH_YN
+		,	REPLACE(JSON_EXTRACT(REPLACE(A.USE_CH_GRP_INFO, '/', '') , '$.SMSMMS[0]'), "\"", "")  AS SMSMMS_YN
+		FROM cm_console.CM_PROJECT A 
+		WHERE	A.PROJECT_ID = #{projectId}
+	</select>
 
     <select id="getMenuForRole" resultType="kr.co.uplus.cm.common.dto.Menu">
     /* login.getMenuForRole */
