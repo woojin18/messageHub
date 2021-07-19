@@ -15,6 +15,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import javax.validation.groups.Default;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,17 +30,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
-import kr.co.uplus.cm.sendMessage.dto.AlimTalkButtonsInfo;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkRequestData;
-import kr.co.uplus.cm.sendMessage.dto.ButtonsInfo;
 import kr.co.uplus.cm.sendMessage.dto.FbInfo;
 import kr.co.uplus.cm.sendMessage.dto.FrndTalkRequestData;
+import kr.co.uplus.cm.sendMessage.dto.KkoButtonInfo;
+import kr.co.uplus.cm.sendMessage.dto.KkoButtonInfo.AlimTalkSendRequest;
+import kr.co.uplus.cm.sendMessage.dto.KkoButtonInfo.FrndTalkSendRequest;
 import kr.co.uplus.cm.sendMessage.dto.MmsRequestData;
 import kr.co.uplus.cm.sendMessage.dto.PushMsg;
 import kr.co.uplus.cm.sendMessage.dto.PushRequestData;
@@ -1359,9 +1363,13 @@ public class SendMessageService {
 
         //버튼정보
         if(!CommonUtils.isEmptyValue(params, "buttonList")) {
-            List<ButtonsInfo> buttonList = (List<ButtonsInfo>) params.get("buttonList");
-            if(CollectionUtils.isNotEmpty(buttonList)) {
-                requestData.setButtons(buttonList);
+            List<Map<String, Object>> tempList = (List<Map<String, Object>>) params.get("buttonList");
+
+            if(CollectionUtils.isNotEmpty(tempList)) {
+                Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                String json = gson.toJson(tempList);
+                List<KkoButtonInfo> buttons = gson.fromJson(json, new TypeToken<List<KkoButtonInfo>>(){}.getType());
+                requestData.setButtons(buttons);
             }
         }
 
@@ -1398,12 +1406,12 @@ public class SendMessageService {
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<FrndTalkRequestData>> violations = validator.validate(requestData);
+        Set<ConstraintViolation<FrndTalkRequestData>> violations = validator.validate(requestData, Default.class, FrndTalkSendRequest.class);
         String errorMsg = "";
 
         for (ConstraintViolation violation : violations) {
             errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + violation.getMessage();
-            //log.info("path : [{}], message : [{}]", violation.getPropertyPath(), violation.getMessage());
+            log.info("path : [{}], message : [{}]", violation.getPropertyPath(), violation.getMessage());
         }
 
         //연관유효성 체크
@@ -1694,9 +1702,13 @@ public class SendMessageService {
         requestData.setTmpltKey(CommonUtils.getStrValue(tmpltMap, "tmpltKey"));
         //버튼정보
         if(tmpltInfo.containsKey("buttons")) {
-            List<AlimTalkButtonsInfo> buttonList = (List<AlimTalkButtonsInfo>) tmpltInfo.get("buttons");
-            if(CollectionUtils.isNotEmpty(buttonList)) {
-                requestData.setButtons(buttonList);
+            List<Map<String, Object>> tempList = (List<Map<String, Object>>) tmpltInfo.get("buttons");
+
+            if(CollectionUtils.isNotEmpty(tempList)) {
+                Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                String json = gson.toJson(tempList);
+                List<KkoButtonInfo> buttons = gson.fromJson(json, new TypeToken<List<KkoButtonInfo>>(){}.getType());
+                requestData.setButtons(buttons);
             }
         }
 
@@ -1757,7 +1769,7 @@ public class SendMessageService {
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<AlimTalkRequestData>> violations = validator.validate(requestData);
+        Set<ConstraintViolation<AlimTalkRequestData>> violations = validator.validate(requestData, Default.class, AlimTalkSendRequest.class);
         String errorMsg = "";
 
         for (ConstraintViolation violation : violations) {

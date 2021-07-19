@@ -96,7 +96,7 @@
               </div>
             </div>
           </div>
-          
+
         </div>
         <hr>
 
@@ -107,7 +107,7 @@
           <div class="float-left" style="width:76%">
             <a @click="fnOpenFrndTalkContentsPopup" :class="this.$gfnCommonUtils.isEmpty(sendData.frndTalkContent) ? 'btnStyle1 backLightGray mr5' : 'btnStyle1 backWhite mr5'" title="메시지 내용입력" activity="READ">내용입력</a>
             <a v-if="sendData.rplcSendType!='NONE'" @click="fnOpenReplacedSenderPopup" :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="대체발송 내용입력" activity="READ">대체발송 내용입력</a>
-            <!-- 
+            <!--
             <div class="of_h consolMarginTop">
               <div style="width:20%" class="float-left">
                 <h5>메시지타입 *</h5>
@@ -140,7 +140,7 @@
                 <input type="text" class="inputStyle" style="width:100%" placeholder="http://" v-model="sendData.imgLink" maxlength="200">
               </div>
             </div>
-            
+
             <div class="of_h consolMarginTop">
               <div style="width:20%" class="float-left">
                 <h5 class="inline-block mr10">버튼</h5>
@@ -165,39 +165,39 @@
                   <tbody class="of_h">
                     <template v-for="(buttonInfo, idx) in sendData.buttonList">
                     <tr :key="idx">
-                      <td class="text-left" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
-                        <select class="float-left selectStyle2" style="width:100%" v-model="buttonInfo.type" @change="fnChgBtnType(idx)">
-                          <option v-for="bottonType in bottonTypeList" :key="bottonType.type" :value="bottonType.type">{{bottonType.name}}</option>
+                      <td class="text-left" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
+                        <select class="float-left selectStyle2" style="width:100%" v-model="buttonInfo.linkType" @change="fnChgBtnType(idx)">
+                          <option v-for="bottonType in bottonTypeList" :key="bottonType.linkType" :value="bottonType.linkType">{{bottonType.name}}</option>
                         </select>
                       </td>
-                      <td class="text-center" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
+                      <td class="text-center" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
                         <input type="text" class="inputStyle float-left" v-model="buttonInfo.name" maxlength="20">
                       </td>
-                      <td v-if="buttonInfo.type == 'WL' || buttonInfo.type == 'AL'" class="text-left of_h">
-                        <div v-if="buttonInfo.type == 'WL'">
+                      <td v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" class="text-left of_h">
+                        <div v-if="buttonInfo.linkType == 'WL'">
                           <h6 class="font-normal float-left" style="width:20%">Mobile</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['url_mobile']" maxlength="200">
+                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkMo']" maxlength="200">
                         </div>
-                        <div v-if="buttonInfo.type == 'AL'">
+                        <div v-if="buttonInfo.linkType == 'AL'">
                           <h6 class="font-normal float-left" style="width:20%">Android</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['scheme_android']" maxlength="200">
+                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkAnd']" maxlength="200">
                         </div>
                       </td>
                       <td v-else>
                       </td>
-                      <td class="text-center end" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
+                      <td class="text-center end" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
                         <a @click="fnDelButton(idx)" class="btnStyle1 backLightGray">삭제</a>
                       </td>
                     </tr>
-                    <tr v-if="buttonInfo.type == 'WL' || buttonInfo.type == 'AL'" :key="idx+'_sub'">
+                    <tr v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" :key="idx+'_sub'">
                       <td class="text-left of_h">
-                        <div v-if="buttonInfo.type == 'WL'">
+                        <div v-if="buttonInfo.linkType == 'WL'">
                           <h6 class="font-normal float-left" style="width:20%">PC</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['url_pc']" maxlength="200">
+                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkPc']" maxlength="200">
                         </div>
-                        <div v-if="buttonInfo.type == 'AL'">
+                        <div v-if="buttonInfo.linkType == 'AL'">
                           <h6 class="font-normal float-left" style="width:20%">IOS</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['scheme_ios']" maxlength="200">
+                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkIos']" maxlength="200">
                         </div>
                       </td>
                     </tr>
@@ -223,7 +223,7 @@
               </div>
             </div>
           </div>
-          
+
         </div>
         <hr>
 
@@ -258,7 +258,7 @@
               </div>
             </div>
           </div>
-          
+
         </div>
         <hr>
 
@@ -368,10 +368,10 @@ export default {
       inProgress: false,
       previewMessageType: 'FRIENDTALK',  //FRIENDTALK, RPLC
       bottonTypeList : [
-        {type:'WL', name:'웹 링크'},
-        {type:'AL', name:'앱 링크'},
-        {type:'BK', name:'봇 키워드'},
-        {type:'MD', name:'메시지전달'}
+        {linkType:'WL', name:'웹 링크'},
+        {linkType:'AL', name:'앱 링크'},
+        {linkType:'BK', name:'봇 키워드'},
+        {linkType:'MD', name:'메시지전달'}
       ],
       senderKeyType: 'NOMAL',
       senderKeyList: [],
@@ -499,7 +499,7 @@ export default {
           }
         }
       }
-      
+
       return true;
     },
     //메시지 발송 처리
@@ -538,7 +538,7 @@ export default {
       await messageApi.sendFrndTalkMessage(fd).then(response =>{
         this.inProgress = false;
         const result = response.data;
-        
+
         if(result.success) {
           if(testSendYn == 'Y'){
             if(!this.$gfnCommonUtils.isEmpty(result.message)){
@@ -680,9 +680,9 @@ export default {
       if(this.sendData.buttonList.length < this.buttonLimitSize){
         const baseButtonInfo = {
           name : '',
-          type : 'WL',
-          url_pc: '',
-          url_mobile: '',
+          linkType : 'WL',
+          linkPc: '',
+          linkMo: '',
         };
         this.sendData.buttonList.push(baseButtonInfo);
       } else {

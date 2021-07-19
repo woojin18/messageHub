@@ -20,12 +20,13 @@
                 <caption>수신자 추가의 사용자명, 아이디, 이용권한을 제공하는 표</caption>
                 <colgroup>
                 <col style="width:3%">
-                <col style="width:10%">
-                <col style="width:16%">
-                <col style="width:18%">
-                <col style="width:20%">
+                <col style="width:8%">
                 <col>
+                <col v-if="useCh == 'FRIENDTALK'" style="width:10%">
                 <col style="width:16%">
+                <col style="width:16%">
+                <col style="width:10%">
+                <col style="width:10%">
                 </colgroup>
                 <thead>
                 <tr>
@@ -35,6 +36,7 @@
                   </th>
                   <th class="text-center lc-1">File ID</th>
                   <th class="text-center lc-1">파일명</th>
+                  <th v-if="useCh == 'FRIENDTALK'" class="text-center lc-1">와이드여부</th>
                   <th class="text-center lc-1">사용채널</th>
                   <th class="text-center lc-1">업로드일시</th>
                   <th class="text-center lc-1">미리보기</th>
@@ -49,6 +51,7 @@
                     </td>
                     <td class="text-center">{{contant.fileId}}</td>
                     <td class="text-left word-break-all">{{contant.originFileName}}</td>
+                    <td v-if="useCh == 'FRIENDTALK'" class="text-center">{{contant.wideImgYn}}</td>
                     <td class="text-left">{{contant.useChInfo}}</td>
                     <td class="text-center">{{contant.regDt}}</td>
                     <td class="text-center"><a @click="fnOpenImagePreviewPopUp(contant.chImgUrl)" title="미리보기"><i class="far fa-search"></i></a></td>
