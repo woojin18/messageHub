@@ -41,7 +41,7 @@ export default {
 		return {
 			errors: [],
 			userId: '',
-			loginPwd: '',
+			loginPwd: null,
 			status: '',
 			findUserIdUrl: '/login/findUserId',
 			findUserPwdUrl: '/login/findUserPwd'

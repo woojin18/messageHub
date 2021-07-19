@@ -29,7 +29,7 @@ export default {
 		return {
 			errors: [],
 			userId: '',
-			loginPwd: '',
+			loginPwd: null,
 			status: ''
 		};
 	},

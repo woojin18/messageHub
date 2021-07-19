@@ -78,8 +78,8 @@ export default {
       userName  : '',
       pwdUpdDt  : '',
       hpNumber  : '',
-      loginPwd  : '',
-      chkLoginPwd : '',
+      loginPwd  : null,
+      chkLoginPwd : null,
       chgHpNumber : '',
       certifyNumber  : '',
       certifyMsg : '인증번호 받기',
@@ -130,8 +130,8 @@ export default {
         // 변경할 비밀번호, 전화번호 초기화
         this.chgHpNumber  = '';
         this.certifyNumber   = '';
-        this.loginPwd     = '';
-        this.chkLoginPwd  = '';
+        this.loginPwd     = null;
+        this.chkLoginPwd  = null;
       },
       // 번호 변경 버튼 선택시
       fnChgHpNumDiv(){
@@ -146,8 +146,8 @@ export default {
       // 비밀번호 변경 버튼 선택시
       fnChgPwdDiv(){
         if(jQuery("#chgPwdDiv").is(":visible")){
-          this.loginPwd     = '';
-          this.chkLoginPwd  = '';
+          this.loginPwd     = null;
+          this.chkLoginPwd  = null;
           jQuery("#chgPwdDiv").css("display", "none");
         } else {
           jQuery("#chgPwdDiv").css("display", "block");
