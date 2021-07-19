@@ -68,6 +68,10 @@ export default {
                               .replace(/&lt;/g, '<')
                               .replace(/&#40;/g, '(')
                               .replace(/&#41;/g, ')')
+                              .replace(/&amp;/g, '&')
+                              .replace(/&apos;/g, "'")
+                              .replace(/&quot;/g, '"')
+                              .replace(/&nbsp;/g, ' ')
                               .replace(/&#39;/g, "'");
         return unescapedStr;
       },

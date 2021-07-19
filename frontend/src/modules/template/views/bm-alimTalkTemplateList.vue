@@ -138,11 +138,11 @@
                       <u><router-link :to="{ name: 'alimTalkTemplateManage', params: { tmpltKey: contant.tmpltKey }}">{{contant.tmpltCode}}</router-link></u>
                     </td>
                     <td class="text-left">{{contant.tmpltName}}</td>
-                    <td v-if="contant.tmpltStatCode == 'S' && !$gfnCommonUtils.isEmpty(contant.reason)" class="text-center">
-                      <a
+                    <td v-if="contant.tmpltStatCode == 'S' && contant.existsRejResnYn == 'Y'" class="text-center">
+                      <u><a
                         href="#" 
-                        @click.prevent="fnOpenAlimTalkRejectReasonLayer(contant.reason)"
-                      >{{contant.tmpltStatCodeName}}</a>
+                        @click.prevent="fnOpenAlimTalkRejectReasonLayer(contant.tmpltKey)"
+                      >{{contant.tmpltStatCodeName}}</a></u>
                     </td>
                     <td v-else class="text-center">
                       {{contant.tmpltStatCodeName}}
@@ -171,7 +171,7 @@
       <!-- //pagination -->
       <AlimTalkRejectReasonLayer 
         :alimTalkRejectReasonOpen.sync="alimTalkRejectReasonOpen"
-        :rejectReason="rejectReason"
+        :tmpltKey="rejectTmpltKey"
       ></AlimTalkRejectReasonLayer>
   </div>
 </template>
@@ -220,7 +220,7 @@ export default {
   data() {
     return {
       alimTalkRejectReasonOpen : false,
-      rejectReason: '',
+      rejectTmpltKey: '',
       tmpltStatCodeAllSelected: true,
       listAllChecked: false,
       listChkBox: [],
@@ -239,8 +239,8 @@ export default {
     this.fnPageNoResetSearch();
   },
   methods: {
-    fnOpenAlimTalkRejectReasonLayer(rejectReason){
-      this.rejectReason = rejectReason;
+    fnOpenAlimTalkRejectReasonLayer(rejectTmpltKey){
+      this.rejectTmpltKey = rejectTmpltKey;
       this.alimTalkRejectReasonOpen = true;
     },
     //템플릿 엑셀 다운로드

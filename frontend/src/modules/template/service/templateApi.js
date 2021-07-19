@@ -86,6 +86,9 @@ const procInspectRequestKkoTmplt = (params) => {
 const procUpdateRequestKkoTmplt = (params) => {
   return httpClient.post('/uc/template/procUpdateRequestKkoTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
+const selectKkoTmpltRejResn = (params) => {
+  return httpClient.post('/uc/template/selectKkoTmpltRejResn', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
 
 /* RCS */
 const corpBrandCnt = (params) => {
@@ -184,6 +187,7 @@ export default {
     excelDownloadAlimTalkTmplt,
     procInspectRequestKkoTmplt,
     selectAlimTalkInfo,
+    selectKkoTmpltRejResn,
     corpBrandCnt,
     selectRcsTemplateList,
     rcsTemplateInit,

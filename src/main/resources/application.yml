@@ -39,7 +39,7 @@ datasource:
     #jdbc-url: jdbc:log4jdbc:mariadb://sandbox.ums-dev.uplus.co.kr:43306/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     jdbc-url: jdbc:log4jdbc:mysql://mysql.ums-dev.uplus.co.kr:43306/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: cm_console
-    password: test1234
+    password: ENC(YrccTPRMqk+u5utdFupqFIM3y2Nx+THl)
     pool-name: hikari-cp
     maximum-pool-size: 30
     minimum-idle: 5
@@ -108,7 +108,7 @@ datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     jdbc-url: jdbc:log4jdbc:mysql://dev-advmsg-db.cluster-crvzo9rgathe.ap-northeast-2.rds.amazonaws.com/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: cm_console
-    password: test1234
+    password: ENC(YrccTPRMqk+u5utdFupqFIM3y2Nx+THl)
     pool-name: hikari-cp
     maximum-pool-size: 30
     minimum-idle: 5
@@ -146,6 +146,8 @@ spring:
     multipart:
       max-file-size: 15MB 
       max-request-size: 15MB
+    cookie:
+      path: /
       
 app.props:
   jwt:
@@ -170,7 +172,7 @@ datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     jdbc-url: jdbc:log4jdbc:mysql://stg-advmsg-db.cluster-crvzo9rgathe.ap-northeast-2.rds.amazonaws.com:3306/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: cm_console
-    password: aptlwld123
+    password: ENC(8HgUompybWqUfzu4jGY8Hj0KYhXoDPhD)
     pool-name: hikari-cp
     maximum-pool-size: 30
     minimum-idle: 5
@@ -232,7 +234,7 @@ datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     jdbc-url: jdbc:mysql://15.165.121.147:3306/rcs?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: rcs
-    password: rcsrcs
+    password: ENC(g55eFnBx3iw5g0LxQI50Rw==)
     pool-name: hikari-cp
     maximum-pool-size: 30
     minimum-idle: 5

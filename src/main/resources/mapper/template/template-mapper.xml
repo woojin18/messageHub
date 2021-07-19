@@ -564,6 +564,10 @@
                 , CKTR.REASON
                 , DATE_FORMAT(CKTR.UPD_DT, '%Y.%m.%d') AS UPD_DT
                 , CKTR.APPROVAL_DT
+                , CASE
+                    WHEN JSON_CONTAINS(JSON_EXTRACT(TMPLT_INFO, CONCAT('$.comments[*].status')), JSON_ARRAY('REJ'), '$') > 0 THEN 'Y'
+                    ELSE 'N'
+                END AS EXISTS_REJ_RESN_YN
             FROM cm.CM_KKO_TMPLT_REQ CKTR
             WHERE 1=1
             <include refid="innerWhereSelectAlimTalkTemplateList"/>
@@ -588,6 +592,7 @@
                 , '' AS REASON
                 , DATE_FORMAT(CKT.UPD_DT, '%Y.%m.%d') AS UPD_DT
                 , CKT.APPROVAL_DT
+                , 'N' AS EXISTS_REJ_RESN_YN
             FROM cm.CM_KKO_TMPLT CKT
             WHERE CKT.TMPLT_STAT_CODE = 'A'
             <include refid="innerWhereSelectAlimTalkTemplateList"/>
@@ -598,6 +603,17 @@
         <if test='pagingYn == "Y" '>
         LIMIT #{offset}, #{listSize}
         </if>
+    </select>
+
+    <select id="selectKkoTmpltRejResn" parameterType="hashmap" resultType="camel">
+    /* template.selectKkoTmpltRejResn 카카오 템플릿 반려 사유 조회 */
+        SELECT
+            @PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(TMPLT_INFO, "one", 'REJ', NULL, '$.comments[*].status')) AS PATH_TO_NAME
+            , @PATH_TO_PARENT := TRIM(TRAILING '.status' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
+            , @COMMENTS_OBJECT := JSON_EXTRACT(TMPLT_INFO, @PATH_TO_PARENT) AS CH_OBJECT
+            , JSON_UNQUOTE(JSON_EXTRACT(@COMMENTS_OBJECT, '$.content')) AS REJECT_RESON
+        FROM cm.CM_KKO_TMPLT_REQ
+        WHERE TMPLT_KEY = #{tmpltKey}
     </select>
 
 </mapper>

@@ -8,7 +8,7 @@
             <hr>
             <div class="boardWrite">
               <div class="content scroll-y">
-                <p><pre>{{rejectReason}}</pre></p>
+                <p><pre>{{$gfnCommonUtils.unescapeXss(rejectReson)}}</pre></p>
               </div>
             </div>
           </div>
@@ -22,6 +22,9 @@
 </template>
 
 <script>
+import confirm from "@/modules/commonUtil/service/confirm.js";
+import templateApi from "@/modules/template/service/templateApi.js";
+
 export default {
   name: "alimTalkRejectReason",
   props: {
@@ -30,7 +33,7 @@ export default {
       require: true,
       default: false,
     },
-    rejectReason: {
+    tmpltKey: {
       type: String,
       require: true
     },
@@ -42,10 +45,35 @@ export default {
       }
     },
   },
+  data() {
+    return {
+      rejectReson : '',
+    }
+  },
+  watch: {
+    alimTalkRejectReasonOpen(val){
+      if(val){
+        this.fnSelectKkoTmpltRejResn();
+      }
+    }
+  },
   methods: {
+    async fnSelectKkoTmpltRejResn(){
+      var params = {tmpltKey : this.tmpltKey};
+      await templateApi.selectKkoTmpltRejResn(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          console.log('result3 ==== >>>> ', result);
+          if(result.data.rejectReson){
+            this.rejectReson = result.data.rejectReson;
+          }
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
     fnClose(){
-      this.loopCnt=3;
-      this.$emit('update:alimTalkRejectReasonOpen', false)
+      this.$emit('update:alimTalkRejectReasonOpen', false);
     }
   }
 }
