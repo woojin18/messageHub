@@ -257,7 +257,7 @@
 			<div class="templateBox">
 				<!-- templateList -->
 				<ul class="templateList">
-					<li v-if="rowData.msgKind == 'I'"><!-- 정보성인경우만 사용가능 -->
+					<li>
 						<img src="../../../common/images/pushTemplate1.svg" alt="프리 템플릿"><h6>프리 템플릿</h6>
 						<div class="consolMarginTop">
 							<input type="radio" name="rcsTemplate1" value="0" id="rcsTemplate1-1" class="radioStyle" checked="" v-on:click="rcsTemplateTable=0" v-model="rcsTemplateTableChecked">
@@ -341,41 +341,38 @@
 						<!-- //phoneWrap -->
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
-            
-				<div class="of_h">
-					<h4 class="inline-block" style="width:10%">브랜드명</h4>
-					<select v-model="rowData.brandNm" name="userConsole_sub040202_1" class="selectStyle2" style="width:24%" title="브랜드명 선택란">
-						<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">
-							{{option.BRAND_NAME}}
-						</option>
-					</select>
-				</div>
-            
-	          <div class="of_h consolMarginTop">
-					<div class="float-left" style="width:13%"><h4>내용*</h4></div>
-		            <div class="float-left" style="width:57%">
-		              <textarea class="textareaStyle height190" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder"></textarea>
-		            </div>
-			  </div>
-			  
-			  <div class="of_h consolMarginTop">
-		            <div class="float-left" style="width:13%"><h5>발신번호 *</h5></div>
-		            <div class="float-left" style="width:57%">
-		              <select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
-		                <option v-for="info in rcs0CallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
-		              </select>
-		            </div>
-			  </div>
-          </div>
-          
+						<div class="of_h">
+							<h4 class="inline-block" style="width:13%">브랜드명</h4>
+							<select class="selectStyle2" v-model="rowData.brandNm" style="width:24%" title="브랜드명 선택란">
+								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
+							</select>
+						</div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+							<div class="float-left" style="width:57%">
+								<textarea class="textareaStyle height190" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder"></textarea>
+							</div>
+						</div>
+						<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">
+							<div class="float-left" style="width:13%"><h4>무료수신거부*</h4></div>
+							<div class="float-left" style="width:57%">
+								<input type="text" class="inputStyle" v-model="rowData.rcsBlockNumber" placeholder="수신거부번호 설정" maxlength="15">
+							</div>
+						</div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:13%"><h5>발신번호 *</h5></div>
+							<div class="float-left" style="width:57%">
+								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
+									<option v-for="info in rcs0CallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>		
+			</div>
 
-            
-        </div>		
-      </div>
-
-
-<!-- 템플릿 승인(서술) 메시지구분이 광고일경우 사용불가 -->
-      <div v-if="rcsTemplateTable === 1 ">
+			<!-- 템플릿 승인(서술) 메시지구분이 광고일경우 사용불가 -->
+			<div v-if="rcsTemplateTable === 1 ">
 
         <h4>내용작성</h4>
         <div class="of_h mt20">
@@ -3729,6 +3726,12 @@ export default {
 							confirm.fnAlert(this.detailTitle, 'RCS FREE 템플릿 발신번호를 선택해주세요.');
 							return false;
 						}
+						if (this.rowData.msgKind == 'A') {
+							if (!this.rowData.rcsBlockNumber) { 
+								confirm.fnAlert(this.detailTitle, 'RCS FREE 템플릿 수신거부번호를 입력해주세요.');
+								return false;
+							}
+						}
 					}
 
 					if (this.rcsTemplateTable === 1) {  //DESCRIPTION
@@ -4100,12 +4103,15 @@ export default {
 						}
 
 						if (rtnData.rcsPrdType == 'FREE') {
-							this.rowData.rcs0Content 		= rtnData.rcsBodyDescription;
-							this.rowData.callback 			= rtnData.rcsCallback; //발신번호
+							console.log(rtnData.rcsBodyBrandNm);
+							this.rowData.brandNm				= rtnData.rcsBodyBrandNm;
+							this.rowData.rcs0Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcsBodyMessage);
+							this.rowData.callback					= rtnData.rcsCallback; //발신번호
+							this.rowData.rcsBlockNumber		= rtnData.rcsBlockNumber; //수신거부번호
 						}
 	
 						if (rtnData.rcsPrdType == 'SMS') {
-							this.rowData.rcsSMSContent 			= rtnData.rcsBodyDescription;
+							this.rowData.rcsSMSContent 			= rtnData.rcsBodyMessage;
 							this.rowData.rcsSMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
 							this.rowData.callback 				= rtnData.rcsCallback; //발신번호
 	   
@@ -4117,7 +4123,7 @@ export default {
 	
 						if (rtnData.rcsPrdType == 'LMS') {
 							this.rowData.rcsLMSTitle			= rtnData.rcsBodyTitle;
-							this.rowData.rcsLMSContent 			= rtnData.rcsBodyDescription;
+							this.rowData.rcsLMSContent 			= rtnData.rcsBodyMessage;
 							this.rowData.rcsLMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
 							this.rowData.callback 				= rtnData.rcsCallback; //발신번호
 	
@@ -4139,7 +4145,7 @@ export default {
 	
 						if (rtnData.rcsPrdType == 'SHORT') {
 							this.rowData.rcsShortTitle				= rtnData.rcsBodyTitle;
-							this.rowData.rcsShortContent 			= rtnData.rcsBodyDescription;
+							this.rowData.rcsShortContent 			= rtnData.rcsBodyMessage;
 							this.rowData.rcsShortHowToDenyReceipt 	= rtnData.rcsFooter;   //무료수신거부번호
 							this.rowData.callback 					= rtnData.rcsCallback; //발신번호
 	
@@ -4158,7 +4164,7 @@ export default {
 	
 						if (rtnData.rcsPrdType == 'TALL') {
 							this.rowData.rcsTallTitle				= rtnData.rcsBodyTitle;
-							this.rowData.rcsTallContent 			= rtnData.rcsBodyDescription;
+							this.rowData.rcsTallContent 			= rtnData.rcsBodyMessage;
 							this.rowData.rcsTallHowToDenyReceipt 	= rtnData.rcsFooter;   //무료수신거부번호
 							this.rowData.callback 					= rtnData.rcsCallback; //발신번호
 	
@@ -4181,7 +4187,7 @@ export default {
 							this.rowData.callback 					= rtnData.rcsCallback; //발신번호
 	
 							this.rowData.rcs90Title					= rtnData.rcsBodyTitle;
-							this.rowData.rcs90Content				= rtnData.rcsBodyDescription;
+							this.rowData.rcs90Content				= rtnData.rcsBodyMessage;
 							this.rowData.rcs91Title					= rtnData.rcs1BodyTitle;
 							this.rowData.rcs91Content				= rtnData.rcs1BodyDescription;
 							this.rowData.rcs92Title					= rtnData.rcs2BodyTitle;
@@ -4267,7 +4273,7 @@ export default {
 							this.rowData.callback 				= rtnData.rcsCallback; //발신번호
 	
 							this.rowData.rcs100Title				= rtnData.rcsBodyTitle;
-							this.rowData.rcs100Content				= rtnData.rcsBodyDescription;
+							this.rowData.rcs100Content				= rtnData.rcsBodyMessage;
 							this.rowData.rcs101Title				= rtnData.rcs1BodyTitle;
 							this.rowData.rcs101Content				= rtnData.rcs1BodyDescription;
 							this.rowData.rcs102Title				= rtnData.rcs2BodyTitle;
@@ -4353,7 +4359,8 @@ export default {
 						this.rowData.friendTalkImageLink 		= rtnData.friendTalkImageLink;
 						this.rowData.friendTalkContent 			= this.$gfnCommonUtils.unescapeXss(rtnData.friendTalkContent);
 						this.rowData.friendTalkImgInfo.fileId 	= rtnData.friendTalkFileId;
-						this.rowData.friendTalkImgInfo.imgUrl 	= rtnData.friendTalkImgUrl;
+						this.rowData.friendTalkImgInfo.imgUrl	= rtnData.friendTalkImgUrl;
+						this.rowData.friendTalkImgInfo.wideImgYn = rtnData.friendTalkWideImageYn;
 	
 						if (rtnData.friendTalkPrdType == 'FRIENDTALK') {//카카오톡 친구톡은 5개 버튼까지 추가 가능
 							if (rtnData.friendTalkButton0Type) {
@@ -5263,6 +5270,7 @@ export default {
 		fnFriendTalkCallbackImgInfo(imgInfo){
 			this.rowData.friendTalkImgInfo.imgUrl = imgInfo.chImgUrl;
 			this.rowData.friendTalkImgInfo.fileId = imgInfo.fileId;
+			this.rowData.friendTalkImgInfo.wideImgYn = imgInfo.wideImgYn;
 		},
 		fnFriendTalkDelImg(){
 			this.rowData.friendTalkImgInfo = {};

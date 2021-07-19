@@ -123,9 +123,9 @@
 		,		BRAND_NAME
 		FROM	cm.CM_RCS_BRAND
 		WHERE	(PROJECT_ID = #{projectId} OR PROJECT_ID = 'ALL')
-		<!--AND		CORP_ID = #{corpId}
+		AND		CORP_ID = #{corpId}
 		AND		USE_YN = 'Y'
-		AND		APPROVAL_STATUS IN ('승인', '반려(수정)') -->
+		AND		APPROVAL_STATUS IN ('승인', '반려(수정)')
 	</select>
 
 	<select id="selectRcsMsgbaseformList" resultType="hashMap">
