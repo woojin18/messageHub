@@ -863,6 +863,23 @@
 		LIMIT 1
 	</select>
 	
+	
+	<select id="selectKkoChCount" resultType="int">
+		/* channel.selectKkoChCount */
+		SELECT	COUNT(1) AS CNT
+		FROM	cm.CM_KKO_CH A
+		LEFT OUTER JOIN cm_console.CM_PROJECT B
+			ON A.PROJECT_ID = B.PROJECT_ID
+		WHERE	B.CORP_ID = #{corpId}
+		AND		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+		<if test="srcKkoChId != '' and srcKkoChId != null ">
+		AND A.KKO_CH_ID LIKE CONCAT('%', #{srcKkoChId}, '%')
+		</if>
+		<if test="srcUseYn != '' and srcUseYn != null ">
+		AND A.USE_YN = #{srcUseYn}
+		</if>
+	</select>
+	
 	<select id="selectKkoCh" resultType="camel">
 		/* channel.selectKkoCh */
 		SELECT	A.SENDER_KEY
@@ -872,8 +889,8 @@
 		,		A.KKO_CH_ID
 		,		A.CATEGORY_CODE
 		,		A.USE_YN
-		,		A.REG_DT
-		,		A.UPD_DT
+		,		date_format(A.REG_DT, '%Y-%m-%d') AS REG_DT
+		,		date_format(A.UPD_DT, '%Y-%m-%d') AS UPD_DT
 		,		A.KKO_CH_STAT
 		,		A.STAT
 		,		CASE
@@ -884,6 +901,17 @@
 		LEFT OUTER JOIN cm_console.CM_PROJECT B
 			ON A.PROJECT_ID = B.PROJECT_ID
 		WHERE	B.CORP_ID = #{corpId}
+		AND		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+		<if test="srcKkoChId != '' and srcKkoChId != null ">
+		AND A.KKO_CH_ID LIKE CONCAT('%', #{srcKkoChId}, '%')
+		</if>
+		<if test="srcUseYn != '' and srcUseYn != null ">
+		AND A.USE_YN = #{srcUseYn}
+		</if>
+		ORDER BY A.REG_DT DESC
+        <if test='pagingYn == "Y" '>
+        LIMIT #{offset}, #{listSize}
+        </if>
 	</select>
 	
 	
@@ -896,6 +924,14 @@
 		,		A.USE_YN
 		FROM	cm.CM_KKO_SENDER_GRP A
 		WHERE	A.CORP_ID = #{corpId}
+	</select>
+	
+	<select id="selectApikeyListForKko" resultType="camel">
+		/* channel.selectApikeyListForKko */
+		SELECT	API_KEY
+		FROM	cm.CM_APIKEY ca 
+		WHERE	ca.CORP_ID = #{corpId}
+		ORDER BY ca.REG_DT  DESC
 	</select>
 	
 </mapper>

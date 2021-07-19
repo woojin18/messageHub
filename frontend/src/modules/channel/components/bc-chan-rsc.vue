@@ -159,13 +159,6 @@ export default {
     this.projectId = this.$parent.projectId;
     this.projectName = this.$parent.projectName;
 
-		this.pageInfo = {
-			"pageCnt"   : [10, 30, 50],  //표시할 개수 리스트
-			"selPageCnt": 10,          //선택한 표시 개수
-			"selPage"   : 1,          //선택한 페이지
-			"rowNum"    : 1           //총개수
-		};
-
     this.fnSearch(1);
   },
   methods: {

@@ -979,6 +979,16 @@ public class ChannelService {
 		// redis 테이블 처리
 		commonService.updateCmCmdForRedis("CM_MO_CALLBACK");
 	}
+
+	public RestResult<?> getApiKeyListForKko(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		List<Object> rtnList = generalDao.selectGernalList("channel.selectApikeyListForKko", params);
+		
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public RestResult<?> getKkoCategory(Map<String, Object> params) throws Exception {
@@ -1003,21 +1013,52 @@ public class ChannelService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public RestResult<?> selectKkoCh(Map<String, Object> params) throws Exception {
+	public RestResult<?> getSenderKeyToken(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
-		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
-		List<Object> list = generalDao.selectGernalList("channel.selectKkoCh", params);
+		String apiKey = CommonUtils.getString(params.get("apiKey")); 
 		
-		if (pageInfo != null && !pageInfo.isEmpty()) {
-			int rowNum = list.size();
-			pageInfo.put("rowNum", rowNum);
-			
-			rtn.setPageInfo(pageInfo);
+		Map<String, Object> getHeaderMap = new HashMap<String, Object>();
+		getHeaderMap.put("apiKey", apiKey);
+		
+		Map<String, Object> apiBodyMap = new HashMap<>();
+		apiBodyMap.put("phoneNumber",	CommonUtils.getString(params.get("phoneNumber")));
+		apiBodyMap.put("kkoChId",		CommonUtils.getString(params.get("kkoChId")));
+		
+		Map<String, Object> result = apiInterface.post("/console/v1/kko/senderkey/token", null, apiBodyMap, getHeaderMap);
+		
+		// 성공인지 실패인지 체크
+		if( "10000".equals(result.get("code")) ) {
+			rtn.setData(result);
+		} else if ( "500100".equals(result.get("code")) ) {
+			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+			throw new Exception(errMsg);
+		} else {
+			String errMsg = CommonUtils.getString(result.get("message"));
+			throw new Exception(errMsg);
 		}
 		
-				
-		rtn.setData(list);
+		return rtn;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public RestResult<?> selectKkoCh(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		if(params.containsKey("pageNo")
+				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize")
+				&& CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if(rtn.getPageInfo() != null) {
+				//카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount("channel.selectKkoChCount", params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
+		}
+
+		List<Object> rtnList = generalDao.selectGernalList("channel.selectKkoCh", params);
+		rtn.setData(rtnList);
 		
 		return rtn;
 	}
@@ -1048,28 +1089,26 @@ public class ChannelService {
 		String sts = CommonUtils.getString(params.get("sts"));
 		
 		if( "C".equals(sts) ) {
-			String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForMoApi",params)); 
-			params.put("apiKey", apiKey);
 			
 			// 토큰 API 통신 처리
 			Map<String, Object> apiBodyMap = new HashMap<>();
 			apiBodyMap.put("phoneNumber",	CommonUtils.getString(params.get("phoneNumber")));
+			apiBodyMap.put("token",			CommonUtils.getString(params.get("token")));
+			apiBodyMap.put("categoryCode",	CommonUtils.getString(params.get("categoryCode")));
 			apiBodyMap.put("kkoChId",		CommonUtils.getString(params.get("kkoChId")));
 			
+			String apiKey = CommonUtils.getString(params.get("apiKey"));
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			headerMap.put("apiKey",		apiKey);
+			headerMap.put("commonProjectYN",		"N");
 			
-			Map<String, Object> result =  apiInterface.post("/console/v1/kko/senderkey/token", null, apiBodyMap, headerMap);
+			
+			Map<String, Object> result =  apiInterface.post("/console/v1/kko/senderkey/channel/create", null, apiBodyMap, headerMap);
 			
 			System.out.println("------------------------------------------------- saveKkoChForApi result : " + result);
 			
-			String kkoToken = "";
-			
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
-				kkoToken = CommonUtils.getString(
-							((Map<String, Object>)result.get("data")).get("token")
-						);
 			} else if ( "500100".equals(result.get("code")) ) {
 				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
 				throw new Exception(errMsg);
@@ -1077,22 +1116,6 @@ public class ChannelService {
 				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			}
-			
-			// 토큰 API 통신 처리
-			Map<String, Object> apiBodyMap2 = new HashMap<>();
-			apiBodyMap.put("phoneNumber",	CommonUtils.getString(params.get("phoneNumber")));
-			apiBodyMap.put("token",			CommonUtils.getString(params.get("token")));
-			apiBodyMap.put("categoryCode",	CommonUtils.getString(params.get("categoryCode")));
-			apiBodyMap.put("kkoChId",		CommonUtils.getString(params.get("kkoChId")));
-			
-			Map<String, Object> headerMap2 = new HashMap<String, Object>();
-			headerMap.put("apiKey",		apiKey);
-			
-			Map<String, Object> result2 =  apiInterface.post("/console/v1/kko/senderkey/channel/create", null, apiBodyMap2, headerMap2);
-			
-			System.out.println("------------------------------------------------- saveKkoChForApi result2 : " + result2);
-			
-			
 		} else if( "U".equals(sts) ) {
 			String apiKey = CommonUtils.getString(params.get("apiKey")); 
 			params.put("apiKey", apiKey);
@@ -1108,22 +1131,22 @@ public class ChannelService {
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			headerMap.put("type",		sts);
 			
-			// API 통신 처리
-			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
-			
-			System.out.println("------------------------------------------------- saveMoCallback U result : " + result);
-			
-			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("code")) ) {
-			} else if ( "500100".equals(result.get("code")) ) {
-				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
-				throw new Exception(errMsg);
-			} else {
-				String errMsg = CommonUtils.getString(result.get("message"));
-				throw new Exception(errMsg);
-			}
-			
-			generalDao.updateGernal(DB.QRY_UPDATE_MO_CALLBACK, params);
+//			// API 통신 처리
+//			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
+//			
+//			System.out.println("------------------------------------------------- saveMoCallback U result : " + result);
+//			
+//			// 성공인지 실패인지 체크
+//			if( "10000".equals(result.get("code")) ) {
+//			} else if ( "500100".equals(result.get("code")) ) {
+//				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+//				throw new Exception(errMsg);
+//			} else {
+//				String errMsg = CommonUtils.getString(result.get("message"));
+//				throw new Exception(errMsg);
+//			}
+//			
+//			generalDao.updateGernal(DB.QRY_UPDATE_MO_CALLBACK, params);
 		} else if( "D".equals(sts) ) {
 			String apiKey = CommonUtils.getString(params.get("apiKey")); 
 			params.put("apiKey", apiKey);
@@ -1139,20 +1162,20 @@ public class ChannelService {
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			headerMap.put("type",		sts);
 			
-			// API 통신 처리
-			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
-			
-			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("code")) ) {
-			} else if ( "500100".equals(result.get("code")) ) {
-				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
-				throw new Exception(errMsg);
-			} else {
-				String errMsg = CommonUtils.getString(result.get("message"));
-				throw new Exception(errMsg);
-			}
-			
-			generalDao.deleteGernal(DB.QRY_DELETE_MO_CALLBACK, params);
+//			// API 통신 처리
+//			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
+//			
+//			// 성공인지 실패인지 체크
+//			if( "10000".equals(result.get("code")) ) {
+//			} else if ( "500100".equals(result.get("code")) ) {
+//				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+//				throw new Exception(errMsg);
+//			} else {
+//				String errMsg = CommonUtils.getString(result.get("message"));
+//				throw new Exception(errMsg);
+//			}
+//			
+//			generalDao.deleteGernal(DB.QRY_DELETE_MO_CALLBACK, params);
 		}
 	}
 }

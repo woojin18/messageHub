@@ -390,12 +390,25 @@ public class ChannelController {
 		}
 		return rtn;
 	}
-	
+	// 카카오톡 API KEY LIST 불러오기
+	@PostMapping("/getApiKeyListForKko")
+	public RestResult<?> getApiKeyListForKko(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		return channelService.getApiKeyListForKko(params);
+	}
+	// 카카오톡 카테고리 불러오기
 	@PostMapping("/getKkoCategory")
 	public RestResult<?> getKkoCategory(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		return channelService.getKkoCategory(params);
 	}
+	// 알림톡 토큰 요청
+	@PostMapping("/getSenderKeyToken")
+	public RestResult<?> getSenderKeyToken(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		return channelService.getSenderKeyToken(params);
+	}
+	
 	
 	@PostMapping("/selectKkoCh")
 	public RestResult<?> selectKkoCh(@RequestBody Map<String, Object> params, HttpServletRequest request,

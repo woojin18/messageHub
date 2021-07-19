@@ -19,12 +19,13 @@
 						<div class="menuBox mt10">						
 							<div class="of_h">
 								<h4 class="inline-block" style="width:10%">발신 프로필</h4>
-								<input type="text" class="inputStyle" style="width:15%" v-model="srcSenderKey">
+								<input type="text" class="inputStyle" style="width:15%" v-model="srcKkoChId">
 
-								<h4 class="inline-block vertical-middle ml100" style="width:11%">플러스친구 상태</h4>
+								<h4 class="inline-block vertical-middle ml100" style="width:11%">프로필 상태</h4>
 								<select name="admin030404_1" class="selectStyle2" style="width:15%" v-model="srcUseYn">
 									<option value="">전체</option>
-									<option value="">전체</option>
+									<option value="Y">Y</option>
+									<option value="N">N</option>
 								</select>
 								<a class="btnStyle1 float-right" @click="fnSearch">검색</a>
 							</div>						
@@ -37,8 +38,9 @@
 									<a href="https://center-pf.kakao.com/" target="_blank" class="btnStyle2 borderGray ml10">카카오톡 채널 생성</a>
 								</div>
 							</div>
-							
-							<PagingCnt :pageInfo.sync="pageInfo" />
+							<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+								<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
+							</div>
 						</div>
 						<div class="row">
 							<div class="col-xs-12">
@@ -54,13 +56,13 @@
 									<tbody>
 										<tr v-for="(row, index) in data" :key="index">
 											<td>
-												{{row.senderKey}}
+												{{row.kkoChId}}
 											</td>
 											<td>
 												{{row.senderKey}}
 											</td>
 											<td>
-												{{ row.otherProjectUseYn }}
+												{{ row.useYn }}
 											</td>
 											<td>
 												{{row.otherProjectUseYn}}
@@ -69,16 +71,17 @@
 												{{row.regDt}}
 											</td>
 											<td>
-												<button class="btnStyle1 borderLightGray small mr5" @click="fnProjectDetail(data)" activity="SAVE"><a>상세</a></button>
-												<button class="btnStyle1 borderLightGray small mr5" @click="fnProjectUpdate(data)" activity="SAVE"><a>수정</a></button>
+												<button class="btnStyle1 borderLightGray small mr5" @click="fnMod(row)" activity="SAVE"><a>상세</a></button>
+												<button class="btnStyle1 borderLightGray small mr5" @click="fnMod(row)" activity="SAVE"><a>수정</a></button>
 											</td>
 										</tr>
 									</tbody>
 								</table>
 							</div>			
 						</div>
-
-						<Paging :pageInfo.sync="pageInfo" />
+						<div id="pageContent">
+							<PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
+						</div>
 					</div>
 				</div>
 
@@ -102,7 +105,11 @@
 						<div class="row mt20">
 							<div class="col-xs-12">
 								<!-- 페이징 카운트 -->
-								<PagingCnt :pageInfo.sync="pageInfo2" />
+								<div class="of_h inline">
+									<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+										<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
+									</div>
+								</div>
 								<!-- 페이징 카운트 -->
 								<!-- 본문 -->
 								<table id="list" class="table_skin1 bt-000 tbl-striped">
@@ -137,7 +144,9 @@
 						</div>
 						<!-- 본문 -->
 						<!-- 페이징 -->
-						<Paging :pageInfo.sync="pageInfo2" />
+						<div id="pageContent">
+							<PageLayer @fnClick="fnSearch2" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
+						</div>
 						<!-- 페이징 -->
 					</div>
 				</div>
@@ -155,9 +164,8 @@ import regPopup from "./bp-chan-kakao.vue";
 import grpMngPopup from "./bp-chan-kakao-groupManage.vue";
 import grpAddPopup from "./bp-chan-kakao-groupAdd.vue";
 
-
-import Paging from "@/modules/commonUtil/components/bc-paging"
-import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt"
+import SelectLayer from '@/components/SelectLayer.vue';
+import PageLayer from '@/components/PageLayer.vue';
 
 
 export default {
@@ -165,24 +173,32 @@ export default {
     regPopup,
     grpMngPopup,
     grpAddPopup,
-	Paging,
-	PagingCnt
+	PageLayer,
+	SelectLayer
   },
   data() {
     return {
 		// 리스트 
+		// 프로필 일반
 		data : {},
-		pageInfo: {},
+		listSize : 10,  // select 박스 value (출력 갯수 이벤트)
+		pageNo : 1,  // 현재 페이징 위치
+		totCnt : 0,  //전체 리스트 수
+		offset : 0, //페이지 시작점
 		row_data : {},
+		// 프로필 그룹
 		data2 : {},
-		pageInfo2: {},
+		listSize2 : 10,  // select 박스 value (출력 갯수 이벤트)
+		pageNo2 : 1,  // 현재 페이징 위치
+		totCnt2 : 0,  //전체 리스트 수
+		offset2 : 0, //페이지 시작점
 		row_data2 : {},
 		// 프로젝트 정보
 		projectId : '',
       	projectName : '',
 		save_status : '',
 		// 검색조건
-		srcSenderKey : '',
+		srcKkoChId : '',
 		srcUseYn : ''
     }
   },
@@ -190,37 +206,32 @@ export default {
     this.projectId = this.$parent.projectId;
     this.projectName = this.$parent.projectName;
 
-	this.pageInfo = {
-		"pageCnt"   : [10, 30, 50],  //표시할 개수 리스트
-		"selPageCnt": 10,          //선택한 표시 개수
-		"selPage"   : 1,          //선택한 페이지
-		"rowNum"    : 1           //총개수
-	};
-
-	this.pageInfo2 = {
-		"pageCnt"   : [10, 30, 50],  //표시할 개수 리스트
-		"selPageCnt": 10,          //선택한 표시 개수
-		"selPage"   : 1,          //선택한 페이지
-		"rowNum"    : 1           //총개수
-	};
-
-    this.fnSearch();
-	/* this.fnSearch2(); */
+    this.fnSearch(1);
+	/* this.fnSearch2(1); */
   },
   methods: {
+	// select 박스 선택시 리스트 재출력
+	fnSelected(listSize) {
+		this.listSize = Number(listSize);
+		this.$refs.updatePaging.fnAllDecrease();
+	},
     // 검색
-    fnSearch() {
-		
+    fnSearch(pageNo) {
 		var params = {
 			"projectId"     : this.projectId,
-			"srcSenderKey"  : this.srcSenderKey,
+			"srcKkoChId"  	: this.srcKkoChId,
 			"srcUseYn"  	: this.srcUseYn,
-			"pageInfo"    	: this.pageInfo
+			"pageNo"		: (this.$gfnCommonUtils.defaultIfEmpty(pageNo, '1'))*1,
+			"listSize"		: this.listSize
 		}
 		
 		Api.selectKkoCh(params).then(response =>{
-			/* console.log(response); */
-			this.data = response.data.data;
+			var result = response.data;
+			if(result.success) {
+				this.data = result.data; 
+				this.totCnt = result.pageInfo.totCnt;
+				this.offset = result.pageInfo.offset;
+			}
 		});
     },
 	// 검색
@@ -230,12 +241,19 @@ export default {
 			"projectId"     : this.projectId,
 			"srcSenderKey"  : this.srcSenderKey,
 			"srcUseYn"  	: this.srcUseYn,
-			"pageInfo"    	: this.pageInfo2
+			"pageNo"		: (this.$gfnCommonUtils.defaultIfEmpty(pageNo, '1'))*1,
+			"listSize"		: this.listSize
 		}
 		
 		Api.selectKkoChGroup(params).then(response =>{
 			/* console.log(response); */
-			this.data2 = response.data.data;
+			/* this.data2 = response.data.data; */
+			var result = response.data;
+			if(result.success) {
+				this.data = result.data; 
+				this.totCnt2 = result.pageInfo.totCnt;
+				this.offset2 = result.pageInfo.offset;
+			}
 		});
     },
     // 발신 프로필 그룹 추가
@@ -247,7 +265,12 @@ export default {
 			"kkoChId"    		: "",
 			"otherProjectYn" 	: "Y" 
 		}
-    	jQuery("#regPopup").modal('show');
+		jQuery("#regPopup").modal('show');
+    },
+    fnMod(row_data){
+		this.save_status = "U";
+		this.row_data = row_data;
+		jQuery("#regPopup").modal('show');
     },
     // 발신 프로필 그룹 추가
     fnGrpMng(){

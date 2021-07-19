@@ -3,7 +3,11 @@
     <layerPopup  :reqType = "reqType" />
     <article v-if="!preRegYn">
 		<h4 class="mt40">발신번호 사전 등록</h4>
-		<p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i> 발신번호 미등록 시 메시지가 정상적으로 전송되지 않을 수 있습니다.<br><i class="far fa-info-circle"></i> 발신번호는 문자발송장비 사용자의 최대 3배까지만 등록할 수 있습니다.</p>
+		<p class="font-size12 color3 mt30 inline-block">
+			<i class="far fa-info-circle"></i> 발신번호 미등록 시 메시지가 정상적으로 전송되지 않을 수 있습니다.
+			<br>
+			<i class="far fa-info-circle"></i> 발신번호는 문자발송장비 사용자의 최대 3배까지만 등록할 수 있습니다.
+		</p>
 
 		<ul class="tabStyle tab6 bgColor_tapGray mt30">
 			<li @click="fnMoveMainTab('callbackPreReg')"><a style="width:23%">발신번호 인증 등록</a></li>
@@ -21,7 +25,10 @@
 				<div class="of_h pd20">
 					<p class="color4">사기, 도박, 불법의약품 및 성매매알선 등 위법한 영리목적의 광고성 정보를 발송하지 않는 자에 한하여 KISA에서 확인서를 발급받은 사업자</p>
 					<p class="color4 consolMarginTop">[신청절차]<br>&nbsp;&nbsp;- 한국인터넷진흥원(이하 KISA)확인서 발급요청(요청서 작성, 첨부01 참고)→KISA 심사후 결과 통보(1주일 예상) <br>&nbsp;&nbsp; → 예외사업자 등록 완료(1년간만 유효, 1년 이후 갱신필요)</p>	
-					<p class="color4 consolMarginTop">[제출서류]<br>&nbsp;&nbsp; - 신청서 1부 <a @click="fnReg" class="btnStyle1 borderLightGray small mr5 ml10">다운로드 </a></p>	
+					<p class="color4 consolMarginTop">[제출서류]<br>&nbsp;&nbsp; - 신청서 1부 
+						<a href="./src/downloadDoc/copy1.jpg" class="btnStyle1 borderLightGray small mr5 ml10" download="특부가 샘플.jpg">다운로드 </a>
+						<a href="../downloadDoc/copy1.jpg" class="btnStyle1 borderLightGray small mr5 ml10" download="특부가 샘플.jpg">다운로드2 </a>
+					</p>	
 				</div>
 			</div>	
 			<div class="col-xs-3 text-center" style="padding:7% 0; border-left:1px solid #fff">
@@ -67,7 +74,7 @@
 						<br>(<a href="http://www.alio.go.kr/management.do?p=public02" target="blank">http://www.alio.go.kr/management.do?p=public02</a> 에서 확인 가능)
 					</p>	
 					<p class="color4 consolMarginTop">[제출서류]<br>&nbsp;&nbsp;- 고유번호증(고유번호증이 없는 공공기관의 경우 사업자등록증)
-						<a @click="fnReg('government')" class="btnStyle1 borderLightGray small mr5 ml10">다운로드 </a>
+						<a href="/public/downloadDoc/01_위법한 문자를 발송한 적이 없는 사업자.zip" class="btnStyle1 borderLightGray small mr5 ml10" download>다운로드 </a>
 					</p>	
 				</div>
 			</div>	

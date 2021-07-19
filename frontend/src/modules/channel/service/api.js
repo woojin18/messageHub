@@ -63,6 +63,12 @@ const selectKkoChGroup = (params) => {
 const saveKkoChForApi = (params) => {
     return httpClient.post('/projectApi/channel/saveKkoChForApi', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
 };
+const getSenderKeyToken = (params) => {
+    return httpClient.post('/projectApi/channel/getSenderKeyToken', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+const getApiKeyListForKko = (params) => {
+    return httpClient.post('/projectApi/channel/getApiKeyListForKko', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
 
 
 
@@ -82,5 +88,7 @@ export default {
     getKkoCategory,
     selectKkoCh,
     selectKkoChGroup,
-    saveKkoChForApi
+    saveKkoChForApi,
+    getSenderKeyToken,
+    getApiKeyListForKko
 };
