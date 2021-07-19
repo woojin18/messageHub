@@ -122,48 +122,48 @@
                 <tbody class="of_h">
                   <template v-for="(buttonInfo, idx) in tmpltData.buttonList">
                     <tr :key="idx">
-                      <td class="text-left" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
-                        <select class="float-left selectStyle2" style="width:100%" v-model="buttonInfo.type" @change="fnChgBtnType(idx)">
-                          <option v-for="bottonType in bottonTypeList" :key="bottonType.type" :value="bottonType.type">{{bottonType.name}}</option>
+                      <td class="text-left" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
+                        <select class="float-left selectStyle2" style="width:100%" v-model="buttonInfo.linkType" @change="fnChgBtnType(idx)">
+                          <option v-for="bottonType in bottonTypeList" :key="bottonType.linkType" :value="bottonType.linkType">{{bottonType.name}}</option>
                         </select>
                       </td>
-                      <td class="text-center" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
+                      <td class="text-center" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
                         <input type="text" class="inputStyle float-left" v-model="buttonInfo.name" maxlength="20">
                       </td>
-                      <td v-if="buttonInfo.type == 'WL' || buttonInfo.type == 'AL'" class="text-left of_h">
-                        <div v-if="buttonInfo.type == 'WL'">
+                      <td v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" class="text-left of_h">
+                        <div v-if="buttonInfo.linkType == 'WL'">
                           <h6 class="font-normal float-left" style="width:20%">Mobile</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['url_mobile']" maxlength="200">
+                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkMo']" maxlength="200">
                         </div>
-                        <div v-if="buttonInfo.type == 'AL'">
+                        <div v-if="buttonInfo.linkType == 'AL'">
                           <h6 class="font-normal float-left" style="width:20%">Android</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['scheme_android']" maxlength="200">
+                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkAnd']" maxlength="200">
                         </div>
                       </td>
                       <td v-else>
                       </td>
-                      <td class="text-center end" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
+                      <td class="text-center end" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
                         <a @click="fnDelButton(idx)" class="btnStyle1 backLightGray">삭제</a>
                       </td>
                     </tr>
-                    <tr v-if="buttonInfo.type == 'WL' || buttonInfo.type == 'AL'" :key="idx+'_sub'">
+                    <tr v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" :key="idx+'_sub'">
                       <td class="text-left of_h">
-                        <div v-if="buttonInfo.type == 'WL'">
+                        <div v-if="buttonInfo.linkType == 'WL'">
                           <h6 class="font-normal float-left" style="width:20%">PC</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['url_pc']" maxlength="200">
+                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkPc']" maxlength="200">
                         </div>
-                        <div v-if="buttonInfo.type == 'AL'">
+                        <div v-if="buttonInfo.linkType == 'AL'">
                           <h6 class="font-normal float-left" style="width:20%">IOS</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['scheme_ios']" maxlength="200">
+                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkIos']" maxlength="200">
                         </div>
                       </td>
                     </tr>
                   </template>
-                  
+
                 </tbody>
               </table>
             </div>
-          </div>  
+          </div>
           <div class="mt20 float-right">
             <a v-if="isInsert" @click="fnSaveFrndTalkTemplate" class="btnStyle2 backRed float-left" title="등록" activity="SAVE">등록</a>
             <a v-else @click="fnSaveFrndTalkTemplate" class="btnStyle2 backWhite float-left ml10" title="수정" activity="SAVE">수정</a>
@@ -212,10 +212,10 @@ export default {
       useCh : 'FRIENDTALK',
       isInsert : true,
       bottonTypeList : [
-        {type:'WL', name:'웹 링크'},
-        {type:'AL', name:'앱 링크'},
-        {type:'BK', name:'봇 키워드'},
-        {type:'MD', name:'메시지전달'}
+        {linkType:'WL', name:'웹 링크'},
+        {linkType:'AL', name:'앱 링크'},
+        {linkType:'BK', name:'봇 키워드'},
+        {linkType:'MD', name:'메시지전달'}
       ],
       tmpltData : {imgUrl:'', buttonList:[]}
     }
@@ -259,7 +259,7 @@ export default {
     fnChgBtnType(idx){
       const vm = this;
       Object.keys(this.tmpltData.buttonList[idx]).forEach(function(key){
-        if(key != 'type'){
+        if(key != 'linkType'){
           delete vm.tmpltData.buttonList[idx][key];
         }
       });
@@ -297,7 +297,7 @@ export default {
       const vm = this;
       let buttonValid = true;
       this.tmpltData.buttonList.forEach(function(buttonInfo){
-        if(vm.$gfnCommonUtils.isEmpty(buttonInfo.type)){
+        if(vm.$gfnCommonUtils.isEmpty(buttonInfo.linkType)){
           confirm.fnAlert(vm.componentsTitle, '버튼 타입을 선택해주세요.');
           buttonValid = false;
           return false;
@@ -307,22 +307,22 @@ export default {
           buttonValid = false;
           return false;
         }
-        if(buttonInfo.type == 'WL' && vm.$gfnCommonUtils.isEmpty(buttonInfo['url_mobile'])){
+        if(buttonInfo.linkType == 'WL' && vm.$gfnCommonUtils.isEmpty(buttonInfo['linkMo'])){
           confirm.fnAlert(vm.componentsTitle, 'Mobile 버튼링크를 입력해주세요.');
           buttonValid = false;
           return false;
         }
-        if(buttonInfo.type == 'WL' && vm.$gfnCommonUtils.isEmpty(buttonInfo['url_pc'])){
+        if(buttonInfo.linkType == 'WL' && vm.$gfnCommonUtils.isEmpty(buttonInfo['linkPc'])){
           confirm.fnAlert(vm.componentsTitle, 'PC 버튼링크를 입력해주세요.');
           buttonValid = false;
           return false;
         }
-        if(buttonInfo.type == 'AL' && vm.$gfnCommonUtils.isEmpty(buttonInfo['scheme_android'])){
+        if(buttonInfo.linkType == 'AL' && vm.$gfnCommonUtils.isEmpty(buttonInfo['linkAnd'])){
           confirm.fnAlert(vm.componentsTitle, 'Android 버튼링크를 입력해주세요.');
           buttonValid = false;
           return false;
         }
-        if(buttonInfo.type == 'AL' && vm.$gfnCommonUtils.isEmpty(buttonInfo['scheme_ios'])){
+        if(buttonInfo.linkType == 'AL' && vm.$gfnCommonUtils.isEmpty(buttonInfo['linkIos'])){
           confirm.fnAlert(vm.componentsTitle, 'IOS 버튼링크를 입력해주세요.');
           buttonValid = false;
           return false;
@@ -373,9 +373,9 @@ export default {
       if(this.tmpltData.buttonList.length < this.buttonLimitSize){
         const baseButtonInfo = {
           name : '',
-          type : 'WL',
-          url_pc: '',
-          url_mobile: '',
+          linkType : 'WL',
+          linkPc: '',
+          linkMo: '',
         };
         this.tmpltData.buttonList.push(baseButtonInfo);
       } else {

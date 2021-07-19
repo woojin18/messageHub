@@ -19,17 +19,20 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
-import kr.co.uplus.cm.sendMessage.dto.AlimTalkButtonsInfo;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltEtcRequestData;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltRequestData;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltRequestData.AlimTalkTmpltModRequest;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltRequestData.AlimTalkTmpltRegRequest;
+import kr.co.uplus.cm.sendMessage.dto.KkoButtonInfo.AlimTalkSendRequest;
+import kr.co.uplus.cm.sendMessage.dto.KkoButtonInfo;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
@@ -418,9 +421,12 @@ public class TemplateService {
 
         //버튼정보
         if(!CommonUtils.isEmptyValue(params, "buttonList")) {
-            List<AlimTalkButtonsInfo> buttonList = (List<AlimTalkButtonsInfo>) params.get("buttonList");
-            if(CollectionUtils.isNotEmpty(buttonList)) {
-                requestData.setButtons(buttonList);
+            List<Map<String, Object>> tempList = (List<Map<String, Object>>) params.get("buttonList");
+            if(CollectionUtils.isNotEmpty(tempList)) {
+                Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                String json = gson.toJson(tempList);
+                List<KkoButtonInfo> buttons = gson.fromJson(json, new TypeToken<List<KkoButtonInfo>>(){}.getType());
+                requestData.setButtons(buttons);
             }
         }
 
@@ -429,9 +435,9 @@ public class TemplateService {
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<AlimTalkTmpltRequestData>> violations = null;
         if(StringUtils.isNotBlank(requestData.getTemplateKey())) {
-            violations = validator.validate(requestData, Default.class, AlimTalkTmpltModRequest.class);
+            violations = validator.validate(requestData, Default.class, AlimTalkTmpltModRequest.class, AlimTalkSendRequest.class);
         } else {
-            violations = validator.validate(requestData, Default.class, AlimTalkTmpltRegRequest.class);
+            violations = validator.validate(requestData, Default.class, AlimTalkTmpltRegRequest.class, AlimTalkSendRequest.class);
         }
         String errorMsg = "";
 
