@@ -50,7 +50,7 @@ public class DB {
 	public final static String QRY_SELECT_KKO_TMPLT_CAT_LIST = "template.selectKkoTmpltCatList";
 	public final static String QRY_SELECT_ALIM_TALK_TMPLT_LIST = "template.selectAlimTalkTmpltList";
 	public final static String QRY_SELECT_ALIM_TALK_TMPLT_LIST_CNT = "template.selectAlimTalkTmpltListCnt";
-
+	public final static String QRY_SELECT_KKO_TMPLT_REJ_RESN = "template.selectKkoTmpltRejResn";
 	// 친구톡 템플릿
 	public final static String QRY_INSERT_FRND_TALK_TEMPLATE = "template.insertFrndTalkTemplate";
 	public final static String QRY_SELECT_FRND_TALK_TMPLT_LIST_CNT = "template.selectFrndTalkTmpltListCnt";

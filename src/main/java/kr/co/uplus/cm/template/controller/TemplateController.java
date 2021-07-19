@@ -657,4 +657,25 @@ public class TemplateController {
         return rtn;
     }
 
+    /**
+     * 알림톡 템플릿 반려 사유 조회
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectKkoTmpltRejResn")
+    public RestResult<?> selectKkoTmpltRejResn(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = tmpltSvc.selectKkoTmpltRejResn(params);
+        } catch (Exception e) {
+            rtn.setFail("실패하였습니다.");
+            log.error("{}.selectKkoTmpltRejResn Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
 }

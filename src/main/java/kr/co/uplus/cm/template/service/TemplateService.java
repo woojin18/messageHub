@@ -699,4 +699,16 @@ public class TemplateService {
         return rtn;
     }
 
+    /**
+     * 알림톡 템플릿 반려 사유 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectKkoTmpltRejResn(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        rtn.setData(generalDao.selectGernalObject(DB.QRY_SELECT_KKO_TMPLT_REJ_RESN, params));
+        return rtn;
+    }
+
 }
