@@ -41,7 +41,7 @@ datasource:
     username: cm_console
     password: test1234
     pool-name: hikari-cp
-    maximum-pool-size: 10
+    maximum-pool-size: 30
     minimum-idle: 5
     connectionTimeout: 10000
     idleTimeout: 600000
@@ -110,7 +110,7 @@ datasource:
     username: cm_console
     password: test1234
     pool-name: hikari-cp
-    maximum-pool-size: 10
+    maximum-pool-size: 30
     minimum-idle: 5
     connectionTimeout: 10000
     idleTimeout: 600000
@@ -172,7 +172,7 @@ datasource:
     username: cm_console
     password: aptlwld123
     pool-name: hikari-cp
-    maximum-pool-size: 10
+    maximum-pool-size: 30
     minimum-idle: 5
     connectionTimeout: 10000
     idleTimeout: 600000
@@ -234,7 +234,7 @@ datasource:
     username: rcs
     password: rcsrcs
     pool-name: hikari-cp
-    maximum-pool-size: 10
+    maximum-pool-size: 30
     minimum-idle: 5
     connectionTimeout: 10000
     idleTimeout: 600000

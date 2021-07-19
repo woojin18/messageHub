@@ -43,7 +43,7 @@
 		WHERE	1 = 1
 		AND		REG_ID = #{userId}
 		<if test="srcTitle != null and srcTitle != ''">
-		AND		TITLE LIKE '%${srcTitle}%'
+		AND		TITLE LIKE CONCAT('%',#{srcTitle},'%')
 		</if>
 		<if test="srcQuestType != null and srcQuestType != ''">
 		AND		QUEST_TYPE = #{srcQuestType}
@@ -73,7 +73,7 @@
 		WHERE	1 = 1
 		AND		A.REG_ID = #{userId}
 		<if test="srcTitle != null and srcTitle != ''">
-		AND		TITLE LIKE '%${srcTitle}%'
+		AND		TITLE LIKE CONCAT('%',#{srcTitle},'%')
 		</if>
 		<if test="srcQuestType != null and srcQuestType != ''">
 		AND		QUEST_TYPE = #{srcQuestType}

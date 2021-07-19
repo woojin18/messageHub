@@ -81,7 +81,7 @@
 		AND		A.DEL_YN = 'N'
 		AND		A.CORP_ID = #{corpId}
 		<if test='pagingYn == "Y" '>
-		LIMIT ${offset}, #{listSize}
+		LIMIT #{offset}, #{listSize}
 		</if>
 	</select>
 
