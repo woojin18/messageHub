@@ -116,12 +116,12 @@ public class CashController {
 			HttpServletResponse response,
 			@RequestBody Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-//		try {
+		try {
 			rtn = cashService.selectCashBalance(params);
-//		} catch(Exception e) {
-//			rtn.setSuccess(false);
-//			rtn.setMessage("실패하였습니다.");
-//		}
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
 		
 		return rtn;
 	}

@@ -212,22 +212,14 @@ public class CashService {
 		// API 통신 처리
 //		Map<String, Object> result =  apiInterface.get(ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/cashInfo/" + corpId + "?cashId=" + cashId, null);
 		Map<String, Object> result =  apiInterface.request("GET", ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/cashInfo/" + corpId + "?cashId=" + cashId, null, null, null);
-		
-		System.out.println("------------------------------------------------- selectCashBalance : " + result);
-		
-		String cashBalanceStr = "";
+				String cashBalanceStr = "";
 		// 성공인지 실패인지 체크
 		if( "10000".equals(result.get("code")) ) {
 			List cashInfoList = (List) ((Map<String, Object>)result.get("data")).get("cashInfo");
 			Map<String, Object> cashInfoListMap = (Map<String, Object>) cashInfoList.get(0);
 			
-			System.out.println("------------------------------------------------- cashInfoListMap : " + CommonUtils.getString(cashInfoListMap.get("cashBalance")));
-			
 			cashBalance = Double.parseDouble( CommonUtils.getString(cashInfoListMap.get("cashBalance")) );
 			//cashBalanceStr = CommonUtils.getString(cashInfoListMap.get("cashBalance"));
-			System.out.println("------------------------------------------------- result.get(\"data\") : " + cashBalance);
-			
-			
 		} else {
 			cashBalance = 0;
 		}
