@@ -93,7 +93,7 @@ public class DB {
 	public final static String QRY_SELECT_SMART_TMPLT_INFO = "sendMessage.selectSmartTmpltInfo";
 	public final static String QRY_SELECT_SMART_TMPLT_LIST_CNT = "sendMessage.selectSmartTmpltListCnt";
 	public final static String QRY_SELECT_SMART_TMPLT_LIST = "sendMessage.selectSmartTmpltList";
-
+	public final static String QRY_SELECT_SMART_TMPLT_FRND_PRDT_INFO = "sendMessage.selectSmartTmpltFrndPrdtInfo";
 
 	// RCS 채널 브랜드 정보
 	public final static String QRY_SELECT_RCS_BRANDLIST_CNT = "channel.selectRcsBrandListCnt";

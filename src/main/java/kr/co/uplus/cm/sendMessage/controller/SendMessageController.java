@@ -2,6 +2,7 @@ package kr.co.uplus.cm.sendMessage.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -911,6 +913,7 @@ public class SendMessageController {
      * @return
      * @throws Exception
      */
+    @SuppressWarnings("unchecked")
     @PostMapping(path="/sendSmartMessage")
     public RestResult<?> sendSmartMessage(HttpServletRequest request, HttpServletResponse response
             , @ModelAttribute MultipartFileDTO multipartFileDTO) throws Exception {
@@ -955,9 +958,26 @@ public class SendMessageController {
                 //남은 금액 조회
                 BigDecimal rmAmount = sendMsgService.getRmAmount(params);
                 //개당 가격 조회
+                List<String> chTypeList = (List<String>) params.get("chTypeList");
+                if(CollectionUtils.isNotEmpty(chTypeList) && chTypeList.stream().anyMatch(Const.Ch.FRIENDTALK::equals)) {
+                    Map<String, Object> frndPrdtInfo = sendMsgService.selectSmartTmpltFrndPrdtInfo(params);
+                    String msgType = CommonUtils.getStrValue(frndPrdtInfo, "msgType");
+                    String wideImageYn = CommonUtils.getStrValue(frndPrdtInfo, "wideImageYn");
+                    String productType = "";
+
+                    if(StringUtils.equals(msgType, Const.MsgType.BASE)) {
+                        productType = Const.MsgProductCode.FRENDTALK_TEXT.getCode();
+                    }else if(StringUtils.equals(wideImageYn, Const.COMM_YES)) {
+                        productType = Const.MsgProductCode.FRENDTALK_WIDE.getCode();
+                    } else {
+                        productType = Const.MsgProductCode.FRENDTALK_IMAGE.getCode();
+                    }
+                    Collections.replaceAll(chTypeList, Const.Ch.FRIENDTALK, productType);
+                }
+
                 sParam = new HashMap<>();
                 sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
-                sParam.put("productCodes", params.get("chTypeList"));
+                sParam.put("productCodes", chTypeList);
                 BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
                 if(rmAmount.compareTo(feePerOne) < 0) {
                     rtn.setFail("잔액 부족으로 메시지를 발송할 수 없습니다.");

@@ -2403,4 +2403,15 @@ public class SendMessageService {
         return rtn;
     }
 
+    /**
+     * 스마트 템플릿 친구톡 상품 정보 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> selectSmartTmpltFrndPrdtInfo(Map<String, Object> params) throws Exception {
+        return (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_FRND_PRDT_INFO, params);
+    }
+
 }

@@ -15,7 +15,7 @@
             <div v-if="previewMessageType == 'PUSH' && tmpltData.PUSH" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap scroll-y2">
+                <div class="phoneTextWrap scroll-y">
                   <div class="phoneText1">
                     <p v-if="$gfnCommonUtils.isEmpty(tmpltData.PUSH.title)">제목</p>
                     <p v-else>{{tmpltData.PUSH.title}}</p>
@@ -61,10 +61,10 @@
             </div>
             <!--// FRIENDTALK -->
             <!-- MMS -->
-            <div v-if="previewMessageType == 'MMS'" class="tab-pane active">
+            <div v-if="previewMessageType == 'MMS' && tmpltData.MMS" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap scroll-y2">
+                <div class="phoneTextWrap scroll-y">
                   <div class="phoneText1">
                     <p>{{tmpltData.MMS.callback}}</p>
                   </div>
@@ -83,10 +83,10 @@
             </div>
             <!--// MMS -->
             <!-- SMS -->
-            <div v-if="previewMessageType == 'SMS'" class="tab-pane active">
+            <div v-if="previewMessageType == 'SMS' && tmpltData.SMS" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap scroll-y2">
+                <div class="phoneTextWrap scroll-y">
                   <div class="phoneText1">
                     <p>{{tmpltData.SMS.callback}}</p>
                   </div>
@@ -99,37 +99,37 @@
               </div>
             </div>
             <!--// SMS -->
-
-
-
-
-
-
-
-
-
-
-
-
             <!-- ALIMTALK -->
-            <div v-if="fnContainsChannel('ALIMTALK')" role="tabpanel" class="tab-pane" id="productCate3">
+            <div v-if="previewMessageType == 'ALIMTALK' && tmpltData.ALIMTALK" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup3.svg" alt="알림톡 템플릿">
-                <div class="phoneTextWrap3">
+                <div class="phoneTextWrap3 scroll-y">
                   <div>
                     <p class="text-main"><i class="fal fa-envelope-open-text"></i> 알림톡 도착</p>
-                    <div class="text-sub-wrap">
-                      <p class="text-sub_1">부제목</p>
-                      <p class="text-sub scroll-y3">템플릿 강조 제목</p>
+                    <div v-if="tmpltData.ALIMTALK.subData && tmpltData.ALIMTALK.subData.emphasizeType == 'TEXT'" class="text-sub-wrap" style="padding:10px;">
+                      <p v-if="!$gfnCommonUtils.isEmpty(tmpltData.ALIMTALK.subData.tmpltEmpsSubTitle)" class="text-sub_1">{{tmpltData.ALIMTALK.subData.tmpltEmpsSubTitle}}</p>
+                      <p v-if="!$gfnCommonUtils.isEmpty(tmpltData.ALIMTALK.subData.tmpltEmpsTitle)" class="text-sub scroll-y3">{{tmpltData.ALIMTALK.subData.tmpltEmpsTitle}}</p>
                     </div>
-                    <p class="text-sub_2">템플릿 테스트입니다.<br>템플릿 테스트 템플릿 테스트 템플릿 테스트 템플릿 테스트</p>
+                    <div class="text-sub-wrap" style="padding:10px;">
+                      <span><pre>{{tmpltData.ALIMTALK.msg}}</pre></span>
+                    </div>
+                    <!-- <p class="text-sub_2">템플릿 테스트입니다.<br>템플릿 테스트 템플릿 테스트 템플릿 테스트 템플릿 테스트</p> -->
+                    <div v-for="(buttonInfo, idx) in tmpltData.ALIMTALK.buttons" :key="idx">
+                      <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
+                    </div>
                   </div>
+                  
                 </div>
               </div>
             </div>
             <!--// ALIMTALK -->
             
+
+
+
+
             
+            <!-- 
             <div role="tabpanel" class="tab-pane" id="productCate6">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
@@ -144,6 +144,7 @@
                 </div>
               </div>
             </div>
+             -->
             <!-- //phoneWrap -->
           </div>
           
