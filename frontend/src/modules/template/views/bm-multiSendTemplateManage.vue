@@ -4101,8 +4101,7 @@ export default {
 						}
 
 						if (rtnData.rcsPrdType == 'FREE') {
-							console.log(rtnData.rcsBodyBrandNm);
-							this.rowData.brandNm				= rtnData.rcs0BrandNm;
+							this.rowData.brandNm				= rtnData.rcsBrandNm;
 							this.rowData.rcs0Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content);
 							this.rowData.callback					= rtnData.rcsCallback; //발신번호
 							this.rowData.rcsBlockNumber		= rtnData.rcsBlockNumber; //수신거부번호

@@ -163,13 +163,13 @@ public class IntegratedTemplateService {
 				}
 				sb.append("\"copyAllowed\" : \"false\","); // 복사/공유 허용여부
 				sb.append("\"expiryOption\" : \"2\","); // expire 옵션(1:72시간, 2:30초)
+				sb.append("\"brandNm\" : \"" + params.get("brandNm") + "\", "); //
 
 				if ((int) params.get("rcsTemplateTable") == 0) {//
 					// RCS FREE TYPE ====================================================================
 					sb.append("\"rcsPrdType\" : \"FREE\","); // RCS상품타입(프리 템플릿) rcsTemplateTable => 0
 					
 					sb.append("\"mergeData\": [{ ");
-					sb.append("	\"brandNm\" : \"" + params.get("brandNm") + "\", "); //
 					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs0Content")) + "\""); // 메시지
 					sb.append("	}]");
 				} else if ((int) params.get("rcsTemplateTable") == 1) {

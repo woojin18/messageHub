@@ -89,8 +89,8 @@
 			M.USE_YN, M.chTypeList, M.CHECKED_CHANNEL,
 			M.pushMsg, M.pushAppId, M.pushTitle, M.pushFileId, M.pushSendType, M.PUSH_RCVBLC_INPUT,
 			M.ADTN_INFO, M.PUSH_CH_IMG_URL,
-			M.rcsCardCount, M.rcsPrdType, M.rcsCallback, M.rcsMessageBaseId, M.rcsBlockNumber,
-			M.rcs0Media, M.rcs0BrandNm, M.rcs0Title, M.rcs0Content,
+			M.rcsCardCount, M.rcsPrdType, M.rcsCallback, M.rcsMessageBaseId, M.rcsBlockNumber, M.rcsBrandNm,
+			M.rcs0Media, M.rcs0Title, M.rcs0Content,
 			M.rcs0MediaUrl,
 			M.rcs1BodyMedia, M.rcs1BodyTitle, M.rcs1BodyMessage,
 			M.rcs1BodyMediaUrl,
@@ -473,8 +473,8 @@
 				@PUSH_PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PUSH_PATH_TO_NAME) AS PUSH_PATH_TO_PARENT,
 				@PUSH_CH_OBJECT := JSON_EXTRACT(B.USE_CH_INFO, @PUSH_PATH_TO_PARENT) AS PUSH_CH_OBJECT,
 				@PUSH_CH_IMG_URL := JSON_UNQUOTE(JSON_EXTRACT(@PUSH_CH_OBJECT, '$.URL')) AS PUSH_CH_IMG_URL,
-				T.rcsCardCount, T.rcsPrdType, T.rcsCallback, T.rcsMessageBaseId, T.rcsBlockNumber,
-				T.rcs0Media, T.rcs0BrandNm, T.rcs0Title, T.rcs0Content,
+				T.rcsCardCount, T.rcsPrdType, T.rcsCallback, T.rcsMessageBaseId, T.rcsBlockNumber, T.rcsBrandNm,
+				T.rcs0Media, T.rcs0Title, T.rcs0Content,
 				CASE
 					WHEN rcs0MediaUrl = '{}' then ''
 					ELSE replace(replace(T.rcs0MediaUrl,'{',''),'}','')
@@ -703,6 +703,13 @@
 						ELSE ''
 					END AS ADTN_INFO,
 					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.brandNm'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.brandNm'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.brandNm'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.brandNm'
+						ELSE ''
+					END AS rcsBrandNm,
+					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then JSON_LENGTH(A.TMPLT_INFO ->> '$[0].data.mergeData')
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then JSON_LENGTH(A.TMPLT_INFO ->> '$[1].data.mergeData')
 						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then JSON_LENGTH(A.TMPLT_INFO ->> '$[2].data.mergeData')
@@ -723,13 +730,6 @@
 						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[0].mediaUrl'
 						ELSE ''
 					END AS rcs0MediaUrl,
-					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[0].brandNm'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[0].brandNm'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[0].brandNm'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[0].brandNm'
-						ELSE ''
-					END AS rcs0BrandNm,
 					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[0].title'
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[0].title'
@@ -935,286 +935,286 @@
 			        	 ELSE ''
 			   	END AS rcsButton0DisplayText
 
-              , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton0ButtonType = 'S' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.calendarAction.createCalendarEvent.title'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton0ButtonType = 'S' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.calendarAction.createCalendarEvent.title'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton0ButtonType = 'S' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.calendarAction.createCalendarEvent.title'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton0ButtonType = 'S' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.calendarAction.createCalendarEvent.title'
+              , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton0ButtonType = 'S' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.calendarAction.createCalendarEvent.title'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton0ButtonType = 'S' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.calendarAction.createCalendarEvent.title'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton0ButtonType = 'S' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.calendarAction.createCalendarEvent.title'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton0ButtonType = 'S' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.calendarAction.createCalendarEvent.title'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton0ButtonType = 'U' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton0ButtonType = 'U' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton0ButtonType = 'U' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton0ButtonType = 'U' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton0ButtonType = 'U' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton0ButtonType = 'U' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton0ButtonType = 'U' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton0ButtonType = 'U' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.urlAction.openUrl.url'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton0ButtonType = 'C' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton0ButtonType = 'C' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton0ButtonType = 'C' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton0ButtonType = 'C' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton0ButtonType = 'C' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton0ButtonType = 'C' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton0ButtonType = 'C' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton0ButtonType = 'C' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.clipboardAction.copyToClipboard.text'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton0ButtonType = 'T' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton0ButtonType = 'T' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton0ButtonType = 'T' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton0ButtonType = 'T' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton0ButtonType = 'T' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton0ButtonType = 'T' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton0ButtonType = 'T' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton0ButtonType = 'T' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.dialerAction.dialPhoneNumber.phoneNumber'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton0ButtonType = 'M' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton0ButtonType = 'M' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton0ButtonType = 'M' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton0ButtonType = 'M' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton0ButtonType = 'M' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton0ButtonType = 'M' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton0ButtonType = 'M' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton0ButtonType = 'M' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.mapAction.requestLocationPush.url'
 						 ELSE ''
 			   	END AS rcsButton0Title
 
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.calendarAction.createCalendarEvent.startTime'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.calendarAction.createCalendarEvent.startTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.calendarAction.createCalendarEvent.startTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.calendarAction.createCalendarEvent.startTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.calendarAction.createCalendarEvent.startTime'
 			        	 ELSE ''
 			   	END AS rcsButton0StartTime
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.calendarAction.createCalendarEvent.endTime'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.calendarAction.createCalendarEvent.endTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.calendarAction.createCalendarEvent.endTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.calendarAction.createCalendarEvent.endTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.calendarAction.createCalendarEvent.endTime'
 			        	 ELSE ''
 			   	END AS rcsButton0EndTime
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.calendarAction.createCalendarEvent.description'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.calendarAction.createCalendarEvent.description'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.calendarAction.createCalendarEvent.description'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.calendarAction.createCalendarEvent.description'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.calendarAction.createCalendarEvent.description'
 			        	 ELSE ''
 			   	END AS rcsButton0Description
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.postback.data'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.postback.data'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.postback.data'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.postback.data'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.postback.data'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.postback.data'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.postback.data'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.postback.data'
 			        	 ELSE ''
 			   	END AS rcsButton1Data
 
 		      , @rcsButton1ButtonType :=
-				  CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.buttonType'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.buttonType'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.buttonType'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.buttonType'
+				  CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.buttonType'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.buttonType'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.buttonType'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.buttonType'
 			        	 ELSE ''
 			   	END AS rcsButton1ButtonType
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.displayText'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.displayText'
 			        	 ELSE ''
 			   	END AS rcsButton1DisplayText
 
-              , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton1ButtonType = 'S' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.calendarAction.createCalendarEvent.title'
-		  	        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton1ButtonType = 'S' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.calendarAction.createCalendarEvent.title'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton1ButtonType = 'S' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.calendarAction.createCalendarEvent.title'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton1ButtonType = 'S' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.calendarAction.createCalendarEvent.title'
+              , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton1ButtonType = 'S' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.calendarAction.createCalendarEvent.title'
+		  	        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton1ButtonType = 'S' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.calendarAction.createCalendarEvent.title'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton1ButtonType = 'S' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.calendarAction.createCalendarEvent.title'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton1ButtonType = 'S' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.calendarAction.createCalendarEvent.title'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton1ButtonType = 'U' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton1ButtonType = 'U' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton1ButtonType = 'U' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton1ButtonType = 'U' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton1ButtonType = 'U' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton1ButtonType = 'U' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton1ButtonType = 'U' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton1ButtonType = 'U' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.urlAction.openUrl.url'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton1ButtonType = 'C' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton1ButtonType = 'C' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton1ButtonType = 'C' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton1ButtonType = 'C' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton1ButtonType = 'C' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton1ButtonType = 'C' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton1ButtonType = 'C' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton1ButtonType = 'C' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.clipboardAction.copyToClipboard.text'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton1ButtonType = 'T' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton1ButtonType = 'T' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton1ButtonType = 'T' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton1ButtonType = 'T' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton1ButtonType = 'T' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton1ButtonType = 'T' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton1ButtonType = 'T' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton1ButtonType = 'T' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.dialerAction.dialPhoneNumber.phoneNumber'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton1ButtonType = 'M' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton1ButtonType = 'M' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton1ButtonType = 'M' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton1ButtonType = 'M' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton1ButtonType = 'M' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton1ButtonType = 'M' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton1ButtonType = 'M' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton1ButtonType = 'M' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.mapAction.requestLocationPush.url'
 			        	 ELSE ''
 			   	END AS rcsButton1Title
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.calendarAction.createCalendarEvent.startTime'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.calendarAction.createCalendarEvent.startTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.calendarAction.createCalendarEvent.startTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.calendarAction.createCalendarEvent.startTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.calendarAction.createCalendarEvent.startTime'
 			        	 ELSE ''
 			   	END AS rcsButton1StartTime
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.calendarAction.createCalendarEvent.endTime'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.calendarAction.createCalendarEvent.endTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.calendarAction.createCalendarEvent.endTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.calendarAction.createCalendarEvent.endTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.calendarAction.createCalendarEvent.endTime'
 			        	 ELSE ''
 			   	END AS rcsButton1EndTime
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.calendarAction.createCalendarEvent.description'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[1].action.calendarAction.createCalendarEvent.description'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[1].action.calendarAction.createCalendarEvent.description'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[1].action.calendarAction.createCalendarEvent.description'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[1].action.calendarAction.createCalendarEvent.description'
 			        	 ELSE ''
 			   	END AS rcsButton1Description
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.postback.data'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.postback.data'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.postback.data'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.postback.data'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.postback.data'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.postback.data'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.postback.data'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.postback.data'
 			        	 ELSE ''
 			   	END AS rcsButton2Data
 
 		      , @rcsButton2ButtonType :=
-				  CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.buttonType'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.buttonType'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.buttonType'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.buttonType'
+				  CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.buttonType'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.buttonType'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.buttonType'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.buttonType'
 			        	 ELSE ''
 			   	END AS rcsButton2ButtonType
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.displayText'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.displayText'
 			        	 ELSE ''
 			   	END AS rcsButton2DisplayText
 
-              , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton2ButtonType = 'S' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.calendarAction.createCalendarEvent.title'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton2ButtonType = 'S' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.calendarAction.createCalendarEvent.title'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton2ButtonType = 'S' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.calendarAction.createCalendarEvent.title'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton2ButtonType = 'S' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.calendarAction.createCalendarEvent.title'
+              , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton2ButtonType = 'S' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.calendarAction.createCalendarEvent.title'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton2ButtonType = 'S' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.calendarAction.createCalendarEvent.title'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton2ButtonType = 'S' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.calendarAction.createCalendarEvent.title'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton2ButtonType = 'S' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.calendarAction.createCalendarEvent.title'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton2ButtonType = 'U' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton2ButtonType = 'U' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton2ButtonType = 'U' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton2ButtonType = 'U' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton2ButtonType = 'U' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton2ButtonType = 'U' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton2ButtonType = 'U' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton2ButtonType = 'U' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.urlAction.openUrl.url'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton2ButtonType = 'C' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton2ButtonType = 'C' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton2ButtonType = 'C' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton2ButtonType = 'C' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton2ButtonType = 'C' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton2ButtonType = 'C' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton2ButtonType = 'C' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton2ButtonType = 'C' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.clipboardAction.copyToClipboard.text'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton2ButtonType = 'T' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton2ButtonType = 'T' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton2ButtonType = 'T' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton2ButtonType = 'T' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton2ButtonType = 'T' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton2ButtonType = 'T' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton2ButtonType = 'T' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton2ButtonType = 'T' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.dialerAction.dialPhoneNumber.phoneNumber'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton2ButtonType = 'M' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton2ButtonType = 'M' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton2ButtonType = 'M' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton2ButtonType = 'M' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton2ButtonType = 'M' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton2ButtonType = 'M' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton2ButtonType = 'M' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton2ButtonType = 'M' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.mapAction.requestLocationPush.url'
 			        	 ELSE ''
 			   	END AS rcsButton2Title
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.calendarAction.createCalendarEvent.startTime'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.calendarAction.createCalendarEvent.startTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.calendarAction.createCalendarEvent.startTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.calendarAction.createCalendarEvent.startTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.calendarAction.createCalendarEvent.startTime'
 			        	 ELSE ''
 			   	END AS rcsButton2StartTime
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.calendarAction.createCalendarEvent.endTime'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.calendarAction.createCalendarEvent.endTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.calendarAction.createCalendarEvent.endTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.calendarAction.createCalendarEvent.endTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.calendarAction.createCalendarEvent.endTime'
 			        	 ELSE ''
 			   	END AS rcsButton2EndTime
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.calendarAction.createCalendarEvent.description'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[2].action.calendarAction.createCalendarEvent.description'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[2].action.calendarAction.createCalendarEvent.description'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[2].action.calendarAction.createCalendarEvent.description'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[2].action.calendarAction.createCalendarEvent.description'
 			        	 ELSE ''
 			   	END AS rcsButton2Description
 
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.postback.data'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.postback.data'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.postback.data'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.postback.data'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.postback.data'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.postback.data'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.postback.data'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.postback.data'
 			        	 ELSE ''
 			   	END AS rcsButton3Data
 
 		      , @rcsButton3ButtonType :=
-				  CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.buttonType'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.buttonType'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.buttonType'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.buttonType'
+				  CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.buttonType'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.buttonType'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.buttonType'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.buttonType'
 			        	 ELSE ''
 			   	END AS rcsButton3ButtonType
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.displayText'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.displayText'
 			        	 ELSE ''
 			   	END AS rcsButton3DisplayText
 
-              , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton3ButtonType = 'S' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.calendarAction.createCalendarEvent.title'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton3ButtonType = 'S' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.calendarAction.createCalendarEvent.title'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton3ButtonType = 'S' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.calendarAction.createCalendarEvent.title'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton3ButtonType = 'S' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.calendarAction.createCalendarEvent.title'
+              , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton3ButtonType = 'S' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.calendarAction.createCalendarEvent.title'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton3ButtonType = 'S' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.calendarAction.createCalendarEvent.title'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton3ButtonType = 'S' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.calendarAction.createCalendarEvent.title'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton3ButtonType = 'S' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.calendarAction.createCalendarEvent.title'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton3ButtonType = 'U' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton3ButtonType = 'U' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton3ButtonType = 'U' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.urlAction.openUrl.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton3ButtonType = 'U' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton3ButtonType = 'U' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton3ButtonType = 'U' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton3ButtonType = 'U' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.urlAction.openUrl.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton3ButtonType = 'U' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.urlAction.openUrl.url'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton3ButtonType = 'C' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton3ButtonType = 'C' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton3ButtonType = 'C' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.clipboardAction.copyToClipboard.text'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton3ButtonType = 'C' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton3ButtonType = 'C' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton3ButtonType = 'C' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton3ButtonType = 'C' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.clipboardAction.copyToClipboard.text'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton3ButtonType = 'C' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.clipboardAction.copyToClipboard.text'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton3ButtonType = 'T' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton3ButtonType = 'T' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton3ButtonType = 'T' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.dialerAction.dialPhoneNumber.phoneNumber'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton3ButtonType = 'T' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton3ButtonType = 'T' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton3ButtonType = 'T' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton3ButtonType = 'T' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.dialerAction.dialPhoneNumber.phoneNumber'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton3ButtonType = 'T' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.dialerAction.dialPhoneNumber.phoneNumber'
 
-			        	 WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' and @rcsButton3ButtonType = 'M' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' and @rcsButton3ButtonType = 'M' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' and @rcsButton3ButtonType = 'M' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.mapAction.requestLocationPush.url'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' and @rcsButton3ButtonType = 'M' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' and @rcsButton3ButtonType = 'M' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' and @rcsButton3ButtonType = 'M' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' and @rcsButton3ButtonType = 'M' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.mapAction.requestLocationPush.url'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' and @rcsButton3ButtonType = 'M' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.mapAction.requestLocationPush.url'
 			        	 ELSE ''
 			   	END AS rcsButton3Title
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.calendarAction.createCalendarEvent.startTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.calendarAction.createCalendarEvent.startTime'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.calendarAction.createCalendarEvent.startTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.calendarAction.createCalendarEvent.startTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.calendarAction.createCalendarEvent.startTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.calendarAction.createCalendarEvent.startTime'
 			        	 ELSE ''
 			   	END AS rcsButton3StartTime
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.calendarAction.createCalendarEvent.endTime'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.calendarAction.createCalendarEvent.endTime'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.calendarAction.createCalendarEvent.endTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.calendarAction.createCalendarEvent.endTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.calendarAction.createCalendarEvent.endTime'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.calendarAction.createCalendarEvent.endTime'
 			        	 ELSE ''
 			   	END AS rcsButton3EndTime
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.calendarAction.createCalendarEvent.description'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.calendarAction.createCalendarEvent.description'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[3].action.calendarAction.createCalendarEvent.description'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[3].action.calendarAction.createCalendarEvent.description'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[3].action.calendarAction.createCalendarEvent.description'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[3].action.calendarAction.createCalendarEvent.description'
 			        	 ELSE ''
 			   	END AS rcsButton3Description
 
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[4].action.postback.data'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[4].action.postback.data'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[4].action.postback.data'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[4].action.postback.data'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[4].action.postback.data'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[4].action.postback.data'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[4].action.postback.data'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[4].action.postback.data'
 			        	 ELSE ''
 			   	END AS rcsButton4Data
 
 		      , @rcsButton4ButtonType :=
-				  CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[4].action.buttonType'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[4].action.buttonType'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[4].action.buttonType'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[4].action.buttonType'
+				  CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[4].action.buttonType'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[4].action.buttonType'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[4].action.buttonType'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[4].action.buttonType'
 			        	 ELSE ''
 			   	END AS rcsButton4ButtonType
 
-		      , CASE WHEN A.TMPLT_INFO ->> '$[0].chType' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[4].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[1].chType' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[4].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[2].chType' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[4].action.displayText'
-			        	 WHEN A.TMPLT_INFO ->> '$[3].chType' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[4].action.displayText'
+		      , CASE WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[4].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[4].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[4].action.displayText'
+			        	 WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[4].action.displayText'
 			        	 ELSE ''
 			   	END AS rcsButton4DisplayText
 
