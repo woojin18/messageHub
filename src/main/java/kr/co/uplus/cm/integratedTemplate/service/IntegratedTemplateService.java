@@ -152,28 +152,26 @@ public class IntegratedTemplateService {
 				sb.append("\"ch\" : \"RCS\",");// 발송채널
 
 				sb.append("\"data\" : { ");
+				String messageBaseId = selectMessageBaseId(params);
+				sb.append("\"messagebaseId\": \"" + messageBaseId + "\","); // cm.CM_RCS_MSGBASE의 MESSAGEBASE_ID값을 설정
+				sb.append("\"callback\": \"" + params.get("callback") + "\","); // 발신번호
+				if ("I".equals(params.get("msgKind"))) {
+					sb.append("\"header\" : \"0\","); // 정보성 메시지
+				} else if ("A".equals(params.get("msgKind"))) {
+					sb.append("\"header\" : \"1\","); // 광고성 메시지
+					sb.append("\"footer\" : \"" + params.get("rcsBlockNumber") + "\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
+				}
+				sb.append("\"copyAllowed\" : \"false\","); // 복사/공유 허용여부
+				sb.append("\"expiryOption\" : \"2\","); // expire 옵션(1:72시간, 2:30초)
+
 				if ((int) params.get("rcsTemplateTable") == 0) {//
 					// RCS FREE TYPE ====================================================================
-					String freeMessageBaseId = selectMessageBaseId(params);
 					sb.append("\"rcsPrdType\" : \"FREE\","); // RCS상품타입(프리 템플릿) rcsTemplateTable => 0
-					sb.append("\"messagebaseId\": \"" + freeMessageBaseId + "\","); // cm.CM_RCS_MSGBASE, c
-																					// cm_console.CM_RCS_TMP_MSGBASE의
-																					// MESSAGEBASEFORM_ID값을 설정
-					sb.append("\"callback\": \"" + params.get("callback") + "\",");
-					if ("I".equals(params.get("msgKind"))) {
-						sb.append("\"header\" : \"0\","); // 정보성 메시지
-					} else if ("A".equals(params.get("msgKind"))) {
-						sb.append("\"header\" : \"1\","); // 광고성 메시지
-						sb.append("\"footer\" : \"" + params.get("rcsBlockNumber") + "\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
-					}
-					sb.append("\"copyAllowed\" : \"false\","); // 복사/공유 허용여부
-					sb.append("\"expiryOption\" : \"2\","); // expire 옵션(1:72시간, 2:30초)
-
-					sb.append("\"body\": [{ ");
+					
+					sb.append("\"mergeData\": [{ ");
 					sb.append("	\"brandNm\" : \"" + params.get("brandNm") + "\", "); //
-					sb.append("	\"msg\" : \"" + JSONObject.escape((String) params.get("rcs0Content")) + "\""); // 메시지
+					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs0Content")) + "\""); // 메시지
 					sb.append("	}]");
-
 				} else if ((int) params.get("rcsTemplateTable") == 1) {
 					// RCS DESCRIPTION TYPE ====================================================================        			
 					sb.append("\"rcsPrdType\" : \"DESCRIPTION\","); // RCS상품타입(서술 승인템플릿) rcsTemplateTable => 1
@@ -181,13 +179,8 @@ public class IntegratedTemplateService {
 																									// cm_console.CM_RCS_TMP_MSGBASE의
 																									// MESSAGEBASEFORM_ID값을
 																									// 설정
-					sb.append("\"callback\": \"" + params.get("callback") + "\",");
-					sb.append("\"footer\": \"\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
-
-					sb.append("\"body\": [{ ");
+					sb.append("\"mergeData\": [{ ");
 					sb.append("	\"title\" : \"" + params.get("rcs1Title") + "\", "); //
-					// String rcs1Content = ((String) params.get("rcs1Content")).replaceAll("\n",
-					// "CHR(13)CHR(10)");
 					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs1Content")) + "\", "); // 메시지
 					sb.append("	\"mediaUrl\" : \"{}\", "); //
 					sb.append("	\"media\" : \"\" "); //
@@ -195,11 +188,10 @@ public class IntegratedTemplateService {
 					List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params
 							.get("rcsDescriptionButtons");
 					sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
-
 					sb.append("	}] ");
 
 				} else if ((int) params.get("rcsTemplateTable") == 2) {
-//RCS CELL(STYLE) TYPE ====================================================================   
+					// RCS CELL(STYLE) TYPE ====================================================================   
 					sb.append("\"rcsPrdType\" : \"CELL\","); // RCS상품타입(스타일 승인템플릿) rcsTemplateTable => 2
 					sb.append("\"messagebaseId\": \"" + params.get("rcs2MessageFormId") + "\","); // cm.CM_RCS_MSGBASEFORM,
 																									// cm_console.CM_RCS_TMP_MSGBASE의

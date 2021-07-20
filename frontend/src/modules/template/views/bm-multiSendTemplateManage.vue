@@ -344,6 +344,7 @@
 						<div class="of_h">
 							<h4 class="inline-block" style="width:13%">브랜드명</h4>
 							<select class="selectStyle2" v-model="rowData.brandNm" style="width:24%" title="브랜드명 선택란">
+								<option value="">선택해주세요.</option>
 								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 							</select>
 						</div>
@@ -363,6 +364,7 @@
 							<div class="float-left" style="width:13%"><h5>발신번호 *</h5></div>
 							<div class="float-left" style="width:57%">
 								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
+									<option value="">선택해주세요.</option>
 									<option v-for="info in rcs0CallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
 								</select>
 							</div>
@@ -373,93 +375,89 @@
 
 			<!-- 템플릿 승인(서술) 메시지구분이 광고일경우 사용불가 -->
 			<div v-if="rcsTemplateTable === 1 ">
-
-        <h4>내용작성</h4>
-        <div class="of_h mt20">
-          <div class="float-left" style="width:28%">
-            <!-- phoneWrap -->
-            <div class="phoneWrap">
-              <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
-              <div class="phoneTextWrap">
-                <div class="phoneText1 relative scroll-y4">
-                  	<p><img src="../../../common/images/phone_Icon10.png" alt="주문 아이콘"></p>
-					<div class="scroll-y5">
-                    	<pre class="mt15 lc-1">{{rowData.rcs1Content}}</pre>
-                  	</div>
-                  	<div class="absolute" style="bottom:25px; left:85px">
-                  		<p class="text-center mt20" style="color:#69C8FF">사이트 연결</p>
+				<h4>내용작성</h4>
+				<div class="of_h mt20">
+					<div class="float-left" style="width:28%">
+						<!-- phoneWrap -->
+						<div class="phoneWrap">
+							<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
+							<div class="phoneTextWrap">
+								<div class="phoneText1 relative scroll-y4">
+									<p><img src="@/assets/images/common/phone_Icon10.png" alt="주문 아이콘"></p>
+									<div class="scroll-y5">
+										<pre class="mt15 lc-1">{{rowData.rcs1Content}}</pre>
+									</div>
+									<div class="absolute" style="bottom:25px; left:85px">
+										<p class="text-center mt20" style="color:#69C8FF">사이트 연결</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- //phoneWrap -->
 					</div>
-                </div>
-              </div>
-            </div>
-            <!-- //phoneWrap -->
-          </div>
-          <div class="float-left consoleCon" style="width:72%">
-            <div class="text-right" style="width:70%"><a href="#self" class="btnStyle1 backBlack" style="min-width:auto" data-toggle="modal" data-target="#Tamplet" title="알림톡 템플릿 선택">알림톡 템플릿 선택</a></div>
-            <div class="of_h mt20">						
-              <div class="float-left" style="width:13%"><h4>유형</h4></div>
-              <div class="float-left" style="width:57%">
-                <input type="text" class="inputStyle" placeholder="" v-model="rowData.rcs1Title" id="rcs1TitleId" readOnly>
-                <input type="hidden" class="inputStyle" placeholder="" v-model="rowData.rcs1MessageFormId" id="rcs1MessageFormId" >
-              </div>
-            </div>
-
-            <div class="of_h">
-              <div class="float-left" style="width:13%"><h4>내용*</h4></div>
-              <div class="float-left" style="width:57%">
-                <textarea class="textareaStyle height190"  v-model="rowData.rcs1Content" id="rcs1ContentId" :placeholder="rcsPlaceHoder" readOnly></textarea>
-                <strong class="letter" id="rcs1TextLength">(00 / 90)</strong>
-              </div>
-            </div>
-
-            <div class="of_h consolMarginTop">
-              <div class="float-left" style="width:13%"><h4>버튼</h4></div>
-              <div class="float-left" style="width:57%">
-                <table class="table_skin1 mt0" style="width:100%">
-                  <colgroup>
-                    <col style="width:22%">
-                    <col style="width:20%">
-                    <col>
-                  </colgroup>
-                  <thead>
-                    <tr>
-                    <th class="text-center">타입</th>
-                    <th class="text-center">버튼이름</th>
-                    <th class="text-center end">내용</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(row,index) in rowData.rcs1Buttons" v-bind:key="index">
-                      <td class="text-center">{{row.buttonTypeName}}</td>
-                      <td class="text-left">{{row.buttonName}}</td>
-                      <td class="text-center">{{row.buttonLink}}
-                        <input type="hidden" class="inputStyle" v-model="row.buttonType">
-                        <input type="hidden" class="inputStyle" v-model="row.buttonName">
-                        <input type="hidden" class="inputStyle" v-model="row.buttonLink">
-                        <input type="hidden" class="inputStyle" v-model="row.buttonLink1">
-                        <input type="hidden" class="inputStyle" v-model="row.startDate">
-                        <input type="hidden" class="inputStyle" v-model="row.endDate">
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="of_h consolMarginTop">
-	            <div class="float-left" style="width:13%"><h5>발신번호 *</h5></div>
-	            <div class="float-left" style="width:57%">
-	              <select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
-	                <option v-for="info in rcs1CallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
-	              </select>
-	            </div>
-			      </div>
-
-          </div>
-        </div>
-
-
-      </div>
+					<div class="float-left consoleCon" style="width:72%">
+						<div class="text-right" style="width:70%">
+							<a href="#" class="btnStyle1 backBlack" style="min-width:auto" @click.prevent="fnOpenRcsTemplatePopup" title="RCS 템플릿 선택">RCS 템플릿 선택</a>
+						</div>
+						<div class="of_h mt20">						
+							<div class="float-left" style="width:13%"><h4>유형</h4></div>
+							<div class="float-left" style="width:57%">
+								<input type="text" class="inputStyle" placeholder="" v-model="rowData.rcs1Title" id="rcs1TitleId" readOnly>
+								<input type="hidden" class="inputStyle" placeholder="" v-model="rowData.rcs1MessageFormId" id="rcs1MessageFormId" >
+							</div>
+						</div>
+						<div class="of_h">
+							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+							<div class="float-left" style="width:57%">
+								<textarea class="textareaStyle height190"  v-model="rowData.rcs1Content" id="rcs1ContentId" :placeholder="rcsPlaceHoder" readOnly></textarea>
+								<strong class="letter" id="rcs1TextLength">(00 / 90)</strong>
+							</div>
+						</div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:13%"><h4>버튼</h4></div>
+							<div class="float-left" style="width:57%">
+								<table class="table_skin1 mt0" style="width:100%">
+									<colgroup>
+										<col style="width:22%">
+										<col style="width:20%">
+										<col>
+									</colgroup>
+									<thead>
+										<tr>
+											<th class="text-center">타입</th>
+											<th class="text-center">버튼이름</th>
+											<th class="text-center end">내용</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr v-for="(row,index) in rowData.rcs1Buttons" v-bind:key="index">
+											<td class="text-center">{{row.buttonTypeName}}</td>
+											<td class="text-left">{{row.buttonName}}</td>
+											<td class="text-center">{{row.buttonLink}}
+												<input type="hidden" class="inputStyle" v-model="row.buttonType">
+												<input type="hidden" class="inputStyle" v-model="row.buttonName">
+												<input type="hidden" class="inputStyle" v-model="row.buttonLink">
+												<input type="hidden" class="inputStyle" v-model="row.buttonLink1">
+												<input type="hidden" class="inputStyle" v-model="row.startDate">
+												<input type="hidden" class="inputStyle" v-model="row.endDate">
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:13%"><h5>발신번호 *</h5></div>
+							<div class="float-left" style="width:57%">
+								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
+									<option value="">선택해주세요.</option>
+									<option v-for="info in rcs1CallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
 <!-- 템플릿 승인(스타일) 메시지구분이 광고일경우 사용불가 -->
       <div v-if="rcsTemplateTable === 2 ">
@@ -4104,8 +4102,8 @@ export default {
 
 						if (rtnData.rcsPrdType == 'FREE') {
 							console.log(rtnData.rcsBodyBrandNm);
-							this.rowData.brandNm				= rtnData.rcsBodyBrandNm;
-							this.rowData.rcs0Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcsBodyMessage);
+							this.rowData.brandNm				= rtnData.rcs0BrandNm;
+							this.rowData.rcs0Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content);
 							this.rowData.callback					= rtnData.rcsCallback; //발신번호
 							this.rowData.rcsBlockNumber		= rtnData.rcsBlockNumber; //수신거부번호
 						}
