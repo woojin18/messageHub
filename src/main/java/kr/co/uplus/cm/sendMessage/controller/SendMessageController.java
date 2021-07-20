@@ -946,7 +946,7 @@ public class SendMessageController {
             /** RCS 변수 매핑 */
             List<String> chTypeList = (List<String>) params.get("chTypeList");
             if(CollectionUtils.isNotEmpty(chTypeList) && chTypeList.stream().anyMatch(Const.Ch.RCS::equals)) {
-                //recvInfoLst = sendMsgService.replaceRcsMsgVar(recvInfoLst, params);
+                recvInfoLst = sendMsgService.replaceRcsMsgVar(recvInfoLst, params);
             }
 
             /** 예약건인지 확인 */
