@@ -17,10 +17,15 @@ const selectCodeList = (params) => {
     return httpClient.post('/commonApi/selectCodeList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
+const downloadFile = (params) => {
+    return httpClient.post('/commonApi/file/downloadFile', params, { headers: {"show-layer": "No"}, responseType: 'arraybuffer' });
+};
+
 export default {
     selectImageList,
     deleteImage,
     uploadImage,
     selectImageUrlInfo,
-    selectCodeList
+    selectCodeList,
+    downloadFile
 };
