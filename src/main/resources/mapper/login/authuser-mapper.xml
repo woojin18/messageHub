@@ -113,7 +113,6 @@
       ,   DIS_ORDER
       ,   WEB_URL
       ,   a.SVC_TYPE_CD
-      ,   FIXED_MENUS_YN
       ,   c.ACTIVITY_CD
       FROM  cm_bo.CM_MENU               a
          ,  cm_bo.CM_MENU_ACTIVITY      b
