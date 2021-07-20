@@ -148,17 +148,17 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .checkbox span {color:#707070; vertical-align:top; margin-left:8px}
 
 /* addList */
-.addList {background:url('../images/treeLine.svg') 25px 0 repeat-y}
+.addList {/*background:url('../images/treeLine.svg') 25px 0 repeat-y*/}
 .addList a {color:#505050;display: block;line-height:20px; background:#fff}
 .addList a i {vertical-align:baseline; color:#D5D5D5; margin-right:10px; background-color:#fff}
 .addList a.active {color:#FD004E}
 .addList ul {margin-left:25px}
 .addList > li li {padding-left:16px; background:url('../images/addressList_line.png') 0 -23px no-repeat; line-height:40px; padding-top:10px}
-.addList > li li.last {background-position: 0px -67px;}
+.addList > li li.last {background-position: 0px -67px; background-color:#fff}
 .addList_minus {background-position:0 -68px !important; margin-left:-21px; background-image:none !important}
 .addList_plus {background-position:0 -68px !important; margin-left:-21px; background-image:none !important}
 .addList_plus > ul {display:none}
-.addList_minus > ul {display:show}
+.addList_minus > ul {display:block; background:url('../images/treeLine.svg') 0 0 repeat-y}
 .addList > li {margin-left:0}
 
 .addList2 {background:url('../images/treeLine.svg') 25px 0 repeat-y}
