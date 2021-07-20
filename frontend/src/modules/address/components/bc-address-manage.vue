@@ -35,13 +35,8 @@
 						</div>
 						<div class="bb-d5 pd20 scroll-y" style="height:380px">
 							<div v-if="!this.$gfnCommonUtils.isEmpty(selectedAddrCateGrp.addressCategoryGrpId)">
-								<!-- addList -->
-								<addr-tree-menu v-for="(addrTreeData, idx) in addrTreeList" :key="idx"
-									:item="addrTreeData.addressName"
-									:id="addrTreeData.addressCategoryId"
-									:subItems="addrTreeData.subItems"
-								>
-								</addr-tree-menu>
+								<div id="addrTreeMenu">
+								</div>
 							</div>
 						</div>
 
@@ -133,22 +128,18 @@
 import addressApi from '../service/addressApi'
 import tokenSvc from '@/common/token-service';
 import confirm from '@/modules/commonUtil/service/confirm';
-import AddrTreeMenu from '@/modules/address/components/bc-addressTree.vue';
 import AddrModifyLayer from '../components/bc-address-modify.vue';
 import AddrRegisterLayer from '../components/bc-address-register.vue';
 import AddrCategoryLayer from '../components/bc-category-register.vue';
 import MemberRegisterLayer from '../components/bc-member-register.vue';
-import PageLayer from '@/components/PageLayer.vue';
 import {eventBus} from '@/modules/commonUtil/service/eventBus';
 
 export default {
 	name: 'addressManageList',
 	components: {
-		AddrTreeMenu,
 		AddrRegisterLayer,
 		AddrModifyLayer,
 		MemberRegisterLayer,
-		PageLayer,
 		AddrCategoryLayer,
 	},
 	props: {
@@ -224,6 +215,9 @@ export default {
 			}
 		}
 	},
+	created () {
+		window.fnAddrCateMem = this.fnAddrCateMem.bind(this);
+	},
 	data() {
 		return {
 			//주소록관리
@@ -292,15 +286,56 @@ export default {
 				}
 			});
 		},
+		//TreeView Root 생성
+		fnDrawTreeMenu() {
+			let setTag = '';
+			setTag += '<ul class="addList">';
+			setTag += '<li class="addList_minus">';
+			setTag += '<a>';
+			setTag += '<i class="fal fa-minus-square addIcon"></i>'
+			setTag += this.addrTreeList[0].addressName;
+			setTag += '</a>';
+			setTag += this.fndDrawSubitems(this.addrTreeList[0].subItems);
+			setTag += '</li>';
+			setTag += '</ul>';
+			jQuery("#addrTreeMenu").html(setTag);
+		},
+		//TreeView 하위 노드 생성
+		fndDrawSubitems(child) {
+			if(this.$gfnCommonUtils.isEmpty(child) || child.length == 0) {
+				return '';
+			}
+			let tag = '<ul>';
+			for(let i = 0; i < child.length; i++) {
+				if(child[i].subItems.length > 0) {
+					tag += '<li class="addList_minus">'; // class only subItem
+				} else if( child.length == i+1) {
+					tag += '<li class="last">';
+				} else {
+					tag += '<li>';
+				}
+				tag += '<a href="javascript:void(0)" onclick="fnAddrCateMem('+ child[i].addressCategoryId + ',\'' + child[i].addressName + '\', this);" test="testValue">';
+
+				if(child[i].subItems.length > 0) {
+					tag += '<i class="fal fa-minus-square addIcon"></i>'; // if only subItem
+				}
+				tag += child[i].addressName;
+				tag += '</a>';
+				tag += this.fndDrawSubitems(child[i].subItems);
+				tag += '</li>';
+			}
+			tag += '</ul>';
+			return tag;
+		},
 		//주소목록을 트리구조로 변경
 		fnSetAddrListToTree(addrList) {
-			const vm = this;
 			const addrCateGrp = Object.assign([], addrList.addrCateGrp);
 			let addrCateList = Object.assign([], addrList.addrCateList);
 
 			//주소록 그룹 put
-			vm.fnSetSubItems(addrCateList, addrCateGrp, 'Y');
-			vm.addrTreeList.push(addrCateGrp);
+			this.fnSetSubItems(addrCateList, addrCateGrp, 'Y');
+			this.addrTreeList.push(addrCateGrp);
+			this.fnDrawTreeMenu();
 		},
 		// target을 tree형태로 변경
 		fnSetSubItems(addrCateList, target, targetGrpYn) {
@@ -338,16 +373,15 @@ export default {
 			}
 		},
 		//주소 카테고리 클릭
-		fnAddrCateMem(addrCateId, addrName) {
+		fnAddrCateMem(addrCateId, addrName, obj) {
+			//기존 선택건 초기화
+			jQuery('#addrTreeMenu .active').removeClass('active');
+
+			// 선택건 강조표시
+			jQuery(obj).addClass('active');
+
 			// 체크박스 초기화
 			this.fnResetChkbox();
-
-			//root 클릭
-			if(this.$gfnCommonUtils.isEmpty(addrCateId) && !this.$gfnCommonUtils.isEmpty(addrName)) {
-				this.searchAddrCateId = -1;
-				this.selectAddrName = addrName;
-				return;
-			}
 
 			if(this.$gfnCommonUtils.isEmpty(addrCateId)){
 				this.memberList = [];
