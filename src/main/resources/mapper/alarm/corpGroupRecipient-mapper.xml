@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="alarm">
+    
+    <select id="selectGroupRecipientListCnt" resultType="int">
+        /* alarm.selectGroupRecipientListCnt */
+        SELECT COUNT(1) AS CNT
+          FROM cm_console.CM_CORP_GROUP_RECIPIENT a
+             , cm_console.CM_CORP_RECIPIENT       b
+         WHERE a.RECIPIENT_ID     = b.RECIPIENT_ID
+           AND a.RECEPT_GROUP_ID  = #{srcReceptGroupId}
+    </select>
+    
+    <select id="selectGroupRecipientList" resultType="camel">
+        /* alarm.selectGroupRecipientList */
+        SELECT RECEPT_GROUP_ID 
+             , a.RECIPIENT_ID
+             , RECIPIENT_NAME 
+             , (SELECT GROUP_CONCAT(RECEPT_GROUP_NAME ORDER BY RECEPT_GROUP_NAME) FROM cm_console.CM_RECEPT_GROUP x, cm_console.CM_CORP_GROUP_RECIPIENT y WHERE x.RECEPT_GROUP_ID = y.RECEPT_GROUP_ID AND y.RECIPIENT_ID = a.RECIPIENT_ID) AS RECEPT_GROUP
+             , HP_NUMBER 
+          FROM cm_console.CM_CORP_GROUP_RECIPIENT a
+             , cm_console.CM_CORP_RECIPIENT       b
+         WHERE a.RECIPIENT_ID     = b.RECIPIENT_ID
+           AND a.CORP_ID          = #{corpId}
+           AND a.RECEPT_GROUP_ID  = #{srcReceptGroupId}
+         ORDER BY b.RECIPIENT_NAME ASC
+    </select>
+    
+    <select id="selectGroupRecipientList1Cnt" resultType="int">
+        /* alarm.selectGroupRecipientList1Cnt */
+        SELECT COUNT(1) AS CNT
+          FROM cm_console.CM_CORP_RECIPIENT       a
+         WHERE NOT EXISTS (SELECT 1
+                             FROM cm_console.CM_CORP_GROUP_RECIPIENT b
+                            WHERE a.RECIPIENT_ID = b.RECIPIENT_ID
+                              AND b.RECEPT_GROUP_ID  = #{srcReceptGroupId})
+           AND CORP_ID          = #{corpId}
+        <if test="srcRecipientName != null and srcRecipientName != ''">
+           AND RECIPIENT_NAME LIKE CONCAT('%',#{srcRecipientName},'%')
+        </if>
+    </select>
+    
+    <select id="selectGroupRecipientList1" resultType="camel">
+        /* alarm.selectGroupRecipientList1 */
+        SELECT RECIPIENT_ID
+             , RECIPIENT_NAME 
+             , HP_NUMBER 
+          FROM cm_console.CM_CORP_RECIPIENT       a
+         WHERE NOT EXISTS (SELECT 1
+                             FROM cm_console.CM_CORP_GROUP_RECIPIENT b
+                            WHERE a.RECIPIENT_ID = b.RECIPIENT_ID
+                              AND b.RECEPT_GROUP_ID  = #{srcReceptGroupId})
+           AND CORP_ID          = #{corpId}
+        <if test="srcRecipientName != null and srcRecipientName != ''">
+           AND RECIPIENT_NAME LIKE CONCAT('%',#{srcRecipientName},'%')
+        </if>
+         ORDER BY RECIPIENT_NAME ASC
+    </select>
+	
+	<insert id="insertGroupRecipient">
+       /* alarm.insertGroupRecipient */
+        INSERT INTO cm_console.CM_CORP_GROUP_RECIPIENT (
+	           RECEPT_GROUP_ID 
+	         , RECIPIENT_ID 
+	         , CORP_ID
+        ) VALUES <foreach collection="recipientIds" item="recipientId" separator="," >(#{srcReceptGroupId}, #{recipientId}, #{corpId})</foreach>
+	</insert>
+	
+	<delete id="deleteGroupRecipient">
+       /* alarm.deleteGroupRecipient */
+        DELETE 
+          FROM cm_console.CM_CORP_GROUP_RECIPIENT
+         WHERE RECEPT_GROUP_ID   = #{srcReceptGroupId}
+           AND CORP_ID           = #{corpId}
+           AND RECIPIENT_ID      IN (<foreach collection="recipientIds" item="recipientId" separator="," >#{recipientId}</foreach>)
+	</delete>
+    
+    <insert id="insertGroupRecipient2">
+       /* alarm.insertGroupRecipient2 */
+        INSERT INTO cm_console.CM_CORP_GROUP_RECIPIENT (
+               RECEPT_GROUP_ID 
+             , RECIPIENT_ID 
+             , CORP_ID
+        ) VALUES <foreach collection="receptGroups" item="receptGroup" separator="," >(#{receptGroup.receptGroupId}, #{recipientId}, #{corpId})</foreach>
+    </insert>
+    
+    <delete id="deleteGroupRecipient2">
+       /* alarm.deleteGroupRecipient2 */
+        DELETE 
+          FROM cm_console.CM_CORP_GROUP_RECIPIENT
+         WHERE RECIPIENT_ID     = #{recipientId}
+           AND CORP_ID          = #{corpId}
+    </delete>
+</mapper>

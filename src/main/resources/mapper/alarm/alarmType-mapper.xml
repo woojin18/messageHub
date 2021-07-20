@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="alarm">
+    
+    <select id="selectAlarmTypeList" resultType="camel">
+        /* alarm.selectAlarmTypeList */
+		SELECT ALARM_TYPE_CODE
+		     , ALARM_TYPE_NAME
+		     , ALARM_DESC 
+		     , ALARM_MSG
+		  FROM cm_bo.CM_ALARM_TYPE
+		 ORDER BY ORDR ASC
+    </select>
+    
+    <select id="selectAlarmType" resultType="camel">
+        /* alarm.selectAlarmType */
+        SELECT ALARM_TYPE_CODE
+             , ALARM_TYPE_NAME
+             , ALARM_DESC 
+             , ALARM_MSG
+          FROM cm_bo.CM_ALARM_TYPE
+         WHERE ALARM_TYPE_CODE = #{alarmTypeCode}
+    </select>
+    
+</mapper>

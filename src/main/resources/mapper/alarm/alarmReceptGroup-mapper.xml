@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="alarm">
+    
+	<select id="selectalarmReceptGroupList" resultType="camel">
+	    /* alarm.selectalarmReceptGroupList */
+        SELECT a.RECEPT_GROUP_ID 
+             , RECEPT_GROUP_NAME
+             , (SELECT COUNT(1) FROM cm_console.CM_GROUP_RECIPIENT x WHERE x.RECEPT_GROUP_ID = a.RECEPT_GROUP_ID) AS RECIPIENT_CNT
+          FROM cm_console.CM_ALARM_RECEPT_GROUP a
+             , cm_console.CM_RECEPT_GROUP      b
+         WHERE alarm_CODE         = #{alarmCode} 
+           AND a.RECEPT_GROUP_ID = b.RECEPT_GROUP_ID
+         ORDER BY RECEPT_GROUP_NAME ASC 
+	</select>
+	
+	<insert id="insertalarmReceptGroup">
+       /* alarm.insertalarmReceptGroup */
+        INSERT INTO cm_console.CM_ALARM_RECEPT_GROUP (
+	           alarm_CODE 
+	         , RECEPT_GROUP_ID
+        ) VALUES (
+               #{alarmCode} 
+	         , #{receptGroupId}
+        )
+	</insert>
+	
+	<delete id="deletealarmReceptGroup">
+       /* alarm.deletealarmReceptGroup */
+        DELETE 
+          FROM cm_console.CM_ALARM_RECEPT_GROUP
+         WHERE alarm_CODE         = #{alarmCode} 
+	</delete>
+	
+</mapper>

@@ -1,4 +1,5 @@
 import alarm from '../views/bm-alarm'
+import alarmType from '../views/bm-alarmType'
 import receptGroup from '../views/bm-receptGroup'
 import recipient from '../views/bm-recipient'
 export default [
@@ -7,6 +8,18 @@ export default [
 		name: 'alarm',
 		meta: { menu: 'AC_AL_ALARM'},
 		component: alarm
+	},
+	{
+		path: '/ac/alarm/alarm/:typeCode',
+		name: 'alarmType',
+		meta: { menu: 'AC_AL_ALARM'},
+		component: alarmType
+	},
+	{
+		path: '/ac/alarm/alarm/:typeCode/:alarmId',
+		name: 'updAlarmType',
+		meta: { menu: 'AC_AL_ALARM'},
+		component: alarmType
 	},
 	{
 		path: '/ac/alarm/receptGroup',

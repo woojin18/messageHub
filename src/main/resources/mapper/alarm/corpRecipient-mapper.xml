@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="alarm">
+
+    <select id="selectRecipientListCnt" resultType="int">
+        /* alarm.selectRecipientListCnt */
+        SELECT COUNT(1) AS CNT
+          FROM cm_console.CM_CORP_RECIPIENT
+         WHERE 1 = 1
+        <if test="srcalarmGroup != null and srcalarmGroup != ''">
+           AND alarm_CODE LIKE CONCAT('%',#{srcalarmGroup},'%')
+        </if>
+        <if test="srcRecipientName != null and srcRecipientName != ''">
+           AND RECIPIENT_NAME LIKE CONCAT('%',#{srcRecipientName},'%')
+        </if>
+        <if test="srcHpNumber != null and srcHpNumber != ''">
+           AND HP_NUMBER  LIKE CONCAT('%',#{srcHpNumber},'%')
+        </if>
+    </select>
+    
+	<select id="selectRecipientList" resultType="camel">
+	    /* alarm.selectRecipientList */
+		SELECT @ROWNUM := @ROWNUM + 1 AS ROWNUM
+		     , RECIPIENT_ID 
+		     , RECIPIENT_NAME 
+             , (SELECT GROUP_CONCAT(RECEPT_GROUP_NAME ORDER BY RECEPT_GROUP_NAME) FROM cm_console.CM_CORP_RECEPT_GROUP x, cm_console.CM_CORP_GROUP_RECIPIENT y WHERE x.RECEPT_GROUP_ID = y.RECEPT_GROUP_ID AND y.RECIPIENT_ID = a.RECIPIENT_ID) AS RECEPT_GROUP
+	         , HP_NUMBER 
+		  FROM cm_console.CM_CORP_RECIPIENT a, (SELECT @ROWNUM:=0) TMP
+         WHERE a.CORP_ID        = #{corpId}
+        <if test="srcAlarmGroup != null and srcAlarmGroup != ''">
+           AND alarm_CODE LIKE CONCAT('%',#{srcAlarmGroup},'%')
+        </if>
+        <if test="srcRecipientName != null and srcRecipientName != ''">
+           AND RECIPIENT_NAME LIKE CONCAT('%',#{srcRecipientName},'%')
+        </if>
+        <if test="srcHpNumber != null and srcHpNumber != ''">
+           AND HP_NUMBER  LIKE CONCAT('%',#{srcHpNumber},'%')
+        </if>
+	 	 ORDER BY REG_DT DESC 
+         LIMIT #{offset}, #{listSize}
+	</select>
+	
+    <select id="selectRecipientList2" resultType="camel">
+        /* alarm.selectRecipientList2 */
+        SELECT a.RECIPIENT_ID 
+             , RECIPIENT_NAME 
+             , HP_NUMBER 
+          FROM cm_console.CM_CORP_RECIPIENT a
+        <if test="srcReceptGroupId != null and srcReceptGroupId != ''">
+         INNER JOIN cm_console.CM_CORP_GROUP_RECIPIENT b 
+            ON a.RECIPIENT_ID   = b.RECIPIENT_ID
+           AND a.CORP_ID        = b.CORP_ID
+           AND RECEPT_GROUP_ID  = #{srcReceptGroupId}
+        </if>
+         WHERE a.CORP_ID        = #{corpId}
+        <if test="srcRecipientName != null and srcRecipientName != ''">
+           AND RECIPIENT_NAME LIKE CONCAT('%',#{srcRecipientName},'%')
+        </if>
+         ORDER BY a.REG_DT DESC 
+    </select>
+	
+	<insert id="insertRecipient" useGeneratedKeys="true" keyProperty="recipientId">
+       /* alarm.insertRecipient */
+        INSERT INTO cm_console.CM_CORP_RECIPIENT (
+	           CORP_ID 
+             , RECIPIENT_NAME 
+	         , HP_NUMBER 
+	         , REG_ID
+	         , REG_DT 
+	         , UPD_ID
+	         , UPD_DT 
+        ) VALUES (
+               #{corpId} 
+             , #{recipientName} 
+	         , #{hpNumber} 
+	         , #{userId}
+	         , NOW()
+             , #{userId}
+	         , NOW()
+        )
+	</insert>
+	
+	<update id="updateRecipient">
+       /* alarm.updateRecipient */
+        UPDATE cm_console.CM_CORP_RECIPIENT
+           SET RECIPIENT_NAME   = #{recipientName}  
+	         , HP_NUMBER        = #{hpNumber} 
+	         , UPD_ID           = #{userId}
+	         , UPD_DT           = NOW()
+	     WHERE RECIPIENT_ID     = #{recipientId}
+	       AND CORP_ID          = #{corpId}
+	</update>
+	
+	<delete id="deleteRecipient">
+       /* alarm.deleteRecipient */
+        DELETE 
+          FROM cm_console.CM_CORP_RECIPIENT
+         WHERE RECIPIENT_ID     = #{recipientId}
+           AND CORP_ID          = #{corpId}
+	</delete>
+</mapper>

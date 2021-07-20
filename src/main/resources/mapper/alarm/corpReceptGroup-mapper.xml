@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="alarm">
+
+    <select id="selectReceptGroupListCnt" resultType="int">
+        /* alarm.selectReceptGroupListCnt */
+        SELECT COUNT(1) AS CNT
+          FROM cm_console.CM_CORP_RECEPT_GROUP a
+         WHERE 1 = 1
+        <if test="srcReceptGroupName != null and srcReceptGroupName != ''">
+           AND RECEPT_GROUP_NAME LIKE CONCAT('%',#{srcReceptGroupName},'%')
+        </if>
+        <if test="srcUseYn != null and srcUseYn != ''">
+           AND USE_YN  = #{srcUseYn}
+        </if>
+    </select>
+    
+	<select id="selectReceptGroupList" resultType="camel">
+	    /* alarm.selectReceptGroupList */
+		SELECT RECEPT_GROUP_ID 
+		     , RECEPT_GROUP_NAME
+             , USE_YN
+             , (SELECT COUNT(1) FROM cm_console.CM_CORP_GROUP_RECIPIENT x WHERE x.RECEPT_GROUP_ID = a.RECEPT_GROUP_ID) AS RECIPIENT_CNT
+		  FROM cm_console.CM_CORP_RECEPT_GROUP a
+		 WHERE 1 = 1
+        <if test="srcReceptGroupName != null and srcReceptGroupName != ''">
+           AND RECEPT_GROUP_NAME LIKE CONCAT('%',#{srcReceptGroupName},'%')
+        </if>
+        <if test="srcUseYn != null and srcUseYn != ''">
+           AND USE_YN  = #{srcUseYn}
+        </if>
+	 	 ORDER BY REG_DT DESC 
+	</select>
+    
+    <select id="selectReceptGroupList2" resultType="camel">
+        /* alarm.selectReceptGroupList2 */
+        SELECT RECEPT_GROUP_ID 
+             , RECEPT_GROUP_NAME
+             , (SELECT COUNT(1) FROM cm_console.CM_CORP_GROUP_RECIPIENT x WHERE x.RECEPT_GROUP_ID = a.RECEPT_GROUP_ID) AS RECIPIENT_CNT
+          FROM cm_console.CM_CORP_RECEPT_GROUP a
+         WHERE USE_YN  = 'Y'
+        <if test="srcReceptGroupName != null and srcReceptGroupName != ''">
+           AND RECEPT_GROUP_NAME LIKE CONCAT('%',#{srcReceptGroupName},'%')
+        </if>
+         ORDER BY RECEPT_GROUP_NAME ASC
+    </select>
+    
+    <select id="selectReceptGroupList3" resultType="camel">
+        /* alarm.selectReceptGroupList3 */
+        SELECT a.RECEPT_GROUP_ID 
+             , RECEPT_GROUP_NAME
+          FROM cm_console.CM_CORP_RECEPT_GROUP    a
+             , cm_console.CM_CORP_GROUP_RECIPIENT b
+         WHERE USE_YN  = 'Y'
+           AND a.RECEPT_GROUP_ID = b.RECEPT_GROUP_ID
+           AND b.RECIPIENT_ID    = #{recipientId}
+         ORDER BY RECEPT_GROUP_NAME ASC
+    </select>
+    
+    <select id="selectReceptGroupList4" resultType="camel">
+        /* alarm.selectReceptGroupList4 */
+        SELECT 1          AS SEQ
+             , NULL       AS RECEPT_GROUP_ID
+             , '수신자 전체'  AS RECEPT_GROUP_NAME
+             , (SELECT COUNT(1) FROM cm_console.CM_RECIPIENT x) AS RECIPIENT_CNT
+         UNION ALL
+        SELECT 2          AS SEQ
+             , RECEPT_GROUP_ID 
+             , RECEPT_GROUP_NAME
+             , (SELECT COUNT(1) FROM cm_console.CM_CORP_GROUP_RECIPIENT x WHERE x.RECEPT_GROUP_ID = a.RECEPT_GROUP_ID) AS RECIPIENT_CNT
+          FROM cm_console.CM_CORP_RECEPT_GROUP a
+         WHERE USE_YN  = 'Y'
+        <if test="srcReceptGroupName != null and srcReceptGroupName != ''">
+           AND RECEPT_GROUP_NAME LIKE CONCAT('%',#{srcReceptGroupName},'%')
+        </if>
+         ORDER BY SEQ, RECEPT_GROUP_NAME ASC
+    </select>
+	
+	<insert id="insertReceptGroup">
+       /* alarm.insertReceptGroup */
+        INSERT INTO cm_console.CM_CORP_RECEPT_GROUP (
+	           RECEPT_GROUP_NAME 
+	         , USE_YN
+	         , REG_ID
+	         , REG_DT 
+	         , UPD_ID
+	         , UPD_DT 
+        ) VALUES (
+               #{receptGroupName} 
+	         , #{useYn}
+	         , #{userId}
+	         , NOW()
+             , #{userId}
+	         , NOW()
+        )
+	</insert>
+	
+	<update id="updateReceptGroup">
+       /* alarm.updateReceptGroup */
+        UPDATE cm_console.CM_CORP_RECEPT_GROUP
+           SET RECEPT_GROUP_NAME = #{receptGroupName}  
+	         , USE_YN            = #{useYn}
+	         , UPD_ID            = #{userId}
+	         , UPD_DT            = NOW()
+         WHERE RECEPT_GROUP_ID   = #{receptGroupId}
+	</update>
+	
+	<delete id="deleteReceptGroup">
+       /* alarm.deleteReceptGroup */
+        DELETE 
+          FROM cm_console.CM_CORP_RECEPT_GROUP
+         WHERE RECEPT_GROUP_ID   = #{receptGroupId}
+	</delete>
+</mapper>
