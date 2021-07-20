@@ -20,9 +20,9 @@
               <li v-for="(contant, idx) in contants" :key="idx">
                 <div class="faqTitle">
                   <span class="faqBg">Q{{contant.rownum+offset > 9 ? '' : ' '}}{{contant.rownum+offset}}</span>
-                  <p>{{contant.titleContent}}<span class="faqIcon">아이콘</span></p>
+                  <p>{{$gfnCommonUtils.unescapeXss(contant.titleContent)}}<span class="faqIcon">아이콘</span></p>
                 </div>
-                <div class="faqAn">{{contant.answerContent}}</div>
+                <div class="faqAn"><pre>{{$gfnCommonUtils.unescapeXss(contant.answerContent)}}</pre></div>
               </li>
             </ul>
             <!-- pagination -->

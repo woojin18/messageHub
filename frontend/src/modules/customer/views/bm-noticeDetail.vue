@@ -14,7 +14,7 @@
               <div class="title">
                 <p>
                   <span v-if="!$gfnCommonUtils.isEmpty(noticeData.noticeTypeCdName)" class="new2">{{noticeData.noticeTypeCdName}}</span>
-                  {{noticeData.title}}
+                  {{$gfnCommonUtils.unescapeXss(noticeData.title)}}
                 </p>
                 <span class="date">{{noticeData.regDt}}</span>
               </div>

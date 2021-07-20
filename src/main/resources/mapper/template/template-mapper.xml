@@ -470,10 +470,8 @@
     </select>
 
     <sql id ="innerWhereSelectAlimTalkTemplateList">
-        <!-- 2021-06-29 : 실제 고객사ID, 프로젝트 ID 와 다르게 입력되며 사용여부 N으로 등록된다.
         AND CORP_ID = #{corpId}
         AND PROJECT_ID IN ('ALL', #{projectId})
-        -->
         AND USE_YN = 'Y'
         AND TMPLT_STAT_CODE != 'D'
         <if test="tmpltKey != '' and tmpltKey != null ">

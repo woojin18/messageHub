@@ -31,7 +31,7 @@
                   <td>{{totCnt-offset-contant.rownum+1}}</td>
                   <td class="text-left">
                     <router-link
-                      :to="{ name: 'libraryDetail', params: { libraryId: contant.libraryId }}">{{contant.title}}</router-link>
+                      :to="{ name: 'libraryDetail', params: { libraryId: contant.libraryId }}">{{$gfnCommonUtils.unescapeXss(contant.title)}}</router-link>
                   </td>
                   <td><img v-if="contant.existsFileYn == 'Y'" src="/se2/images/user_sub03_1_fileicon.png" alt="파일 아이콘" class="fileIcon"></td>
                   <td class="end">{{contant.regDt}}</td>

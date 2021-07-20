@@ -359,7 +359,7 @@
     </select>
 
     <sql id ="whereSelectSmartTmpltList">
-        <!-- AND A.CORP_ID = #{corpId} -->
+        AND A.CORP_ID = #{corpId}
         AND A.TMPLT_STATUS = 'COMPLETE'
         AND A.USE_YN = 'Y'
         AND A.TMPLT_TYPE = 'M'
