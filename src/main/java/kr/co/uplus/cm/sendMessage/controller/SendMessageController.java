@@ -939,9 +939,14 @@ public class SendMessageController {
             /** 수신자 리스트*/
             recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
-                rtn.setSuccess(false);
-                rtn.setMessage("잘못된 수신자 정보입니다.");
+                rtn.setFail("잘못된 수신자 정보입니다.");
                 return rtn;
+            }
+
+            /** RCS 변수 매핑 */
+            List<String> chTypeList = (List<String>) params.get("chTypeList");
+            if(CollectionUtils.isNotEmpty(chTypeList) && chTypeList.stream().anyMatch(Const.Ch.RCS::equals)) {
+                //recvInfoLst = sendMsgService.replaceRcsMsgVar(recvInfoLst, params);
             }
 
             /** 예약건인지 확인 */
@@ -958,8 +963,10 @@ public class SendMessageController {
                 //남은 금액 조회
                 BigDecimal rmAmount = sendMsgService.getRmAmount(params);
                 //개당 가격 조회
-                List<String> chTypeList = (List<String>) params.get("chTypeList");
-                if(CollectionUtils.isNotEmpty(chTypeList) && chTypeList.stream().anyMatch(Const.Ch.FRIENDTALK::equals)) {
+                List<String> productCodes = new ArrayList<String>(chTypeList);
+
+                //Friend Talk
+                if(CollectionUtils.isNotEmpty(productCodes) && productCodes.stream().anyMatch(Const.Ch.FRIENDTALK::equals)) {
                     Map<String, Object> frndPrdtInfo = sendMsgService.selectSmartTmpltFrndPrdtInfo(params);
                     String msgType = CommonUtils.getStrValue(frndPrdtInfo, "msgType");
                     String wideImageYn = CommonUtils.getStrValue(frndPrdtInfo, "wideImageYn");
@@ -972,12 +979,28 @@ public class SendMessageController {
                     } else {
                         productType = Const.MsgProductCode.FRENDTALK_IMAGE.getCode();
                     }
-                    Collections.replaceAll(chTypeList, Const.Ch.FRIENDTALK, productType);
+                    Collections.replaceAll(productCodes, Const.Ch.FRIENDTALK, productType);
+                }
+                //RCS
+                if(CollectionUtils.isNotEmpty(productCodes) && productCodes.stream().anyMatch(Const.Ch.RCS::equals)) {
+                    Map<String, Object> rcsInfo = sendMsgService.selectSmartTmpltRcsInfo(params);
+                    String rcsPrdType = CommonUtils.getStrValue(rcsInfo, "rcsPrdType");
+                    String productType = "";
+
+                    for(String key : Const.rcsPrdGrp.keySet()) {
+                        if(Const.rcsPrdGrp.get(key).stream().anyMatch(rcsPrdType::equals)) {
+                            productType = Const.MsgProductCode.getCodeByName(key);
+                            break;
+                        }
+                    }
+                    if(StringUtils.isNotBlank(productType)) {
+                        Collections.replaceAll(productCodes, Const.Ch.RCS, productType);
+                    }
                 }
 
                 sParam = new HashMap<>();
                 sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
-                sParam.put("productCodes", chTypeList);
+                sParam.put("productCodes", productCodes);
                 BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
                 if(rmAmount.compareTo(feePerOne) < 0) {
                     rtn.setFail("잔액 부족으로 메시지를 발송할 수 없습니다.");

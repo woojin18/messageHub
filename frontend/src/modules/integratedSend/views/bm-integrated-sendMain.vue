@@ -123,7 +123,26 @@
               </div>
             </div>
             <!--// ALIMTALK -->
+
+
             
+
+            <!-- RCS -->
+            <div v-if="previewMessageType == 'RCS' && tmpltData.RCS" class="tab-pane active">
+              <!-- FREE -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'FREE'" class="phoneWrap">
+                <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
+                <div class="phoneTextWrap scroll-y">
+                  <div class="phoneText1">
+                    <!-- <p><img src="@/assets/images/common/phone_Icon10.png" alt="주문 아이콘"></p> -->
+                    <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
+                    <!-- <p class="text-center mt20" style="color:#69C8FF">복사</p> -->
+                  </div>
+                </div>
+              </div>
+              <!--// FREE -->
+            </div>
+            <!--// RCS -->
 
 
 
@@ -591,10 +610,12 @@ export default {
       this.tmpltData.chTypeList.forEach(ch => {
         chTmpltInfo = vm.tmpltData[ch];
 
-        if(ch == 'PUSH' || ch == 'SMS' || ch == 'MMS' || ch == 'FRIENDTALK'){
+        if(ch == 'PUSH' || ch == 'SMS' || ch == 'MMS' || ch == 'FRIENDTALK' || ch == 'ALIMTALK'){
           conts = chTmpltInfo.msg;
-        } else if(ch == 'ALIMTALK'){
         } else if(ch == 'RCS'){
+          if(chTmpltInfo.mergeData && chTmpltInfo.mergeData.length > 0){
+            conts = chTmpltInfo.mergeData[0].description; //TODO : 프리템플릿 일경우인데 다른 템플릿일 경우 다른수 있다.
+          }
         }
 
         console.log('conts ch ===> ', ch);
@@ -603,6 +624,7 @@ export default {
         if(ch == 'RCS'){
           conts.replace(/\{\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}\}/g, function($0, $1) {
             tempVarNms.push($1);
+            console.log('conts rcs var ===> ', $1);
           });
         } else {
           conts.replace(/#\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}/g, function($0, $1) {

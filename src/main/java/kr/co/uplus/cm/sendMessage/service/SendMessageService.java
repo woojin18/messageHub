@@ -2315,7 +2315,7 @@ public class SendMessageService {
             for(String key : useChGrpInfo.keySet()) {
                 if(StringUtils.equals(useChGrpInfo.get(key), Const.COMM_YES)
                         && Const.chGrp.containsKey(key)) {
-                    useChGrps.addAll((List<String>) Const.chGrp.get(key));
+                    useChGrps.addAll(Const.chGrp.get(key));
                 }
             }
         }
@@ -2414,4 +2414,48 @@ public class SendMessageService {
         return (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_FRND_PRDT_INFO, params);
     }
 
+    /**
+     * RCS 정보 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> selectSmartTmpltRcsInfo(Map<String, Object> params) throws Exception {
+        return (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_RCS_INFO, params);
+    }
+
+    /**
+     * RCS 메시지 변수 바인딩
+     * @param recvInfoLst
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public List<RecvInfo> replaceRcsMsgVar(List<RecvInfo> recvInfoLst, Map<String, Object> params) throws Exception{
+        log.info("{}.replaceRcsMsgVar start. recvInfoLst ==> {}", this.getClass(), recvInfoLst);
+
+        Map<String, Object> smartTmpltInfo = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_INFO, params);
+
+
+        return null;
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

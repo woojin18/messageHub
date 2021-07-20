@@ -433,4 +433,18 @@
         WHERE TMPLT_CODE = #{tmpltCode}
     </select>
 
+    <select id="selectSmartTmpltRcsInfo" parameterType="hashmap" resultType="camel">
+    /* sendMessage.selectSmartTmpltRcsInfo - 스마트 템플릿 RCS 정보 조회 */
+        SELECT
+            CST.TMPLT_INFO
+            , @PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(CST.TMPLT_INFO, "one", 'RCS', NULL, '$[*].ch')) AS PATH_TO_NAME
+            , @PATH_TO_PARENT := TRIM(TRAILING '.ch' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
+            , @COMMENTS_OBJECT := JSON_EXTRACT(TMPLT_INFO, @PATH_TO_PARENT) AS CH_OBJECT
+            , JSON_UNQUOTE(JSON_EXTRACT(@COMMENTS_OBJECT, '$.data.rcsPrdType')) AS RCS_PRD_TYPE
+            , JSON_UNQUOTE(JSON_EXTRACT(@COMMENTS_OBJECT, '$.data.mergeData')) AS MERGE_DATA
+        FROM cm.CM_SMART_TMPLT CST
+        WHERE CST.TMPLT_CODE = #{tmpltCode}
+            AND JSON_CONTAINS(CST.TMPLT_INFO, JSON_OBJECT('ch', 'RCS'))
+    </select>
+
 </mapper>
