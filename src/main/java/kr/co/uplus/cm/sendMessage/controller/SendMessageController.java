@@ -494,7 +494,7 @@ public class SendMessageController {
 
             /** 사용 가능 채널 확인 */
             if(StringUtils.isBlank((String) sendMsgService.selectValidUseChGrp(params).getData())) {
-                log.info("{}.sendSmsMessage validation use channel fail - params: {}", this.getClass(), params);
+                log.info("{}.sendMmsMessage validation use channel fail - params: {}", this.getClass(), params);
                 rtn.setFail("이용하실 수 없는 채널입니다.");
                 return rtn;
             }
@@ -648,7 +648,7 @@ public class SendMessageController {
 
             /** 사용 가능 채널 확인 */
             if(StringUtils.isBlank((String) sendMsgService.selectValidUseChGrp(params).getData())) {
-                log.info("{}.sendSmsMessage validation use channel fail - params: {}", this.getClass(), params);
+                log.info("{}.sendFrndTalkMessage validation use channel fail - params: {}", this.getClass(), params);
                 rtn.setFail("이용하실 수 없는 채널입니다.");
                 return rtn;
             }
@@ -814,7 +814,7 @@ public class SendMessageController {
 
             /** 사용 가능 채널 확인 */
             if(StringUtils.isBlank((String) sendMsgService.selectValidUseChGrp(params).getData())) {
-                log.info("{}.sendSmsMessage validation use channel fail - params: {}", this.getClass(), params);
+                log.info("{}.sendAlimTalkMessage validation use channel fail - params: {}", this.getClass(), params);
                 rtn.setFail("이용하실 수 없는 채널입니다.");
                 return rtn;
             }

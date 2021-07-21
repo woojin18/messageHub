@@ -90,7 +90,6 @@ public class DB {
 	public final static String QRY_INSERT_CM_MSG = "sendMessage.insertCmMsg";
 	public final static String QRY_SELECT_ALL_APP_USER_LIST = "sendMessage.selectAllAppUserList";
 	public final static String QRY_SELECT_KKO_SENDER_KEY_LIST = "sendMessage.selectKkoSenderKeyList";
-	public final static String QRY_SELECT_KKO_SENDER_GRP_KEY_LIST = "sendMessage.selectKkoSenderGrpKeyList";
 	public final static String QRY_SELECT_SMART_TMPLT_INFO = "sendMessage.selectSmartTmpltInfo";
 	public final static String QRY_SELECT_SMART_TMPLT_LIST_CNT = "sendMessage.selectSmartTmpltListCnt";
 	public final static String QRY_SELECT_SMART_TMPLT_LIST = "sendMessage.selectSmartTmpltList";

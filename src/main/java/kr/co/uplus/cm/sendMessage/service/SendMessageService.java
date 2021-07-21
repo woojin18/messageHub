@@ -779,8 +779,7 @@ public class SendMessageService {
         }
 
         if(StringUtils.isNotBlank(errorMsg)) {
-            rtn.setSuccess(false);
-            rtn.setMessage(errorMsg);
+            rtn.setFail(errorMsg);
         }
 
         return requestData;
@@ -2442,6 +2441,7 @@ public class SendMessageService {
         String rcsPrdType = CommonUtils.getStrValue(rcsltInfo, "rcsPrdType");
         String tmpltMergeDataStr = CommonUtils.getStrValue(rcsltInfo, "mergeData");
 
+        //미승인형
         if(StringUtils.equals(Const.RcsPrd.FREE, rcsPrdType)) {
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             List<Map<String, Object>> tmpltMergeDataList = gson.fromJson(tmpltMergeDataStr, new TypeToken<List<Map<String, Object>>>(){}.getType());
