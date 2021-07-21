@@ -31,8 +31,6 @@
       </div>			
     </div>
 
-    <hr>
-    
     <h4>프로젝트별 정산</h4>
     <div class="row">
       <div class="col-xs-12">
@@ -78,8 +76,6 @@
         <!-- //table -->
       </div>			
     </div>
-
-    <hr>
 
     <h4>부서별 정산</h4>
     <div class="row">
