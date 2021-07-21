@@ -101,7 +101,7 @@
 					</p>
 					<p class="color4 consolMarginTop">
 						[제출서류]<br>- 특수부가통신사업자 등록증 1부
-						<a @click="fnFileDown('FLEaPOER1r', '특수부가통신사업자 등록증 샘플.jpg')">다운로드 </a>
+						<a @click="fnFileDown('FLEaPOER1r', '특수부가통신사업자 등록증 샘플.jpg')" class="btnStyle1 borderLightGray small mr5 ml10">다운로드 </a>
 					</p>	
 				</div>
 			</div>	
