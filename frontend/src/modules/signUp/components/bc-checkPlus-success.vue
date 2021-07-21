@@ -4,7 +4,7 @@
             <p></p><p></p>
             본인인증이 완료 되었습니다.<br>
             <table border=1>
-                <tr>
+                <!-- <tr>
                     <td>복호화한 시간</td>
                     <td>{{ sCipherTime }} (YYMMDDHHMMSS)</td>
                 </tr>
@@ -51,7 +51,7 @@
                 <tr>
                     <td>통신사</td>
                     <td>{{ sMobileCo }}</td>
-                </tr>
+                </tr> -->
                 <tr>
                     <td colspan="2">
                         인증 후 결과값은 내부 설정에 따른 값만 리턴받으실 수 있습니다. <br>
@@ -68,6 +68,7 @@
 <script>
 import signUpApi from "@/modules/signUp/service/api"
 import confirm from "@/modules/commonUtil/service/confirm.js";
+import {eventBus} from '@/modules/commonUtil/service/eventBus';
 
 export default {
     props: {
@@ -123,10 +124,13 @@ export default {
                     window.opener.document.getElementById('nice').click();
                     self.close();
                 } else {
-                    confirm.fnAlert("본인인증 실패", result.message);
-                    self.close();
+                    eventBus.$on('callbackEventBus', this.fnClosePopup);
+			        confirm.fnAlert('본인인증 실패', result.message+'\n다시 시도하여주세요.', "CALLBACK", null);
                 }
             });
+        },
+        fnClosePopup(){
+            self.close();
         }
     }
 }

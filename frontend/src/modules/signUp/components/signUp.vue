@@ -5,7 +5,7 @@
 	<section class="userSection width540 mt70">
 		<h2 class="text-center">회원가입</h2>
 
-		<input type="checkbox" id="agree0" class="checkStyle3 mainCheck" value="전체 동의" v-model="agree0" @click="checkAll(jQueryevent.target.checked)"><label for="agree0">전체 이용약관에 동의합니다.</label>	
+		<input type="checkbox" id="agree0" class="checkStyle3 mainCheck" value="전체 동의" v-model="agree0" @change="checkAll(agree0)"><label for="agree0">전체 이용약관에 동의합니다.</label>	
 
 		<hr>
 
@@ -45,131 +45,155 @@ import provisionViewPri from "./provisionViewService.vue";
 import provisionViewService from "./provisionViewPri.vue";
 
 export default {
-  components: {
-    //modal
-	provisionViewService,
-	provisionViewPri
-  },
-  data() {
-    return {
-		// 약관 동의 체크 
-		agree0 : false,
-		agree1 : false,
-		agree2 : false,
-		agree3 : false,
-		email : "",
-		randonNum : "",
-		// 약관 호출 팝업 flag
-		popReset : 0
-    }
-  },
-
-  methods: {
-	  emailSend() {
-		// 약관 동의 validation 처리 확인
-		let termsVali = this.termsValidation();
-		if(!termsVali) return false;
-
-		// 이메일 입력 처리 확인
-		let emailVali = this.emailValidation();
-		if(!emailVali) return false;
-
-		// 이메일 정규식 체크
-		let isEmail = this.isEmail(this.email);
-		if(!isEmail) {
-			confirm.fnAlert("", "입력한 이메일 형식이 올바르지 않습니다.");
-			return false;
+	components: {
+		//modal
+		provisionViewService,
+		provisionViewPri
+	},
+	data() {
+		return {
+			// 약관 동의 체크 
+			agree0 : false,
+			agree1 : false,
+			agree2 : false,
+			agree3 : false,
+			email : "",
+			randonNum : "",
+			// 약관 호출 팝업 flag
+			popReset : 0
 		}
-		// 이메일 인증 메일 발송
+	},
+	watch : {
+		agree1(){
+			if(this.agree1 == false){
+				this.agree0 = false;
+			} else if (this.agree1 && this.agree2 && this.agree3){
+				this.agree0 = true;
+			}
+		},
+		agree2(){
+			if(this.agree2 == false){
+				this.agree0 = false;
+			} else if (this.agree1 && this.agree2 && this.agree3){
+				this.agree0 = true;
+			}
+		},
+		agree3(){
+			if(this.agree3 == false){
+				this.agree0 = false;
+			} else if (this.agree1 && this.agree2 && this.agree3){
+				this.agree0 = true;
+			}
+		}
+	},
+	methods: {
+		emailSend() {
+			// 약관 동의 validation 처리 확인
+			let termsVali = this.termsValidation();
+			if(!termsVali) return false;
 
-		// 메일 발송 정상 처리 후 CM_USER 회원 INSERT -> 이후 페이지 이동
-		this.insertEmailUser();
-	  },
+			// 이메일 입력 처리 확인
+			let emailVali = this.emailValidation();
+			if(!emailVali) return false;
 
-	  // 약관 동의 체크 validation
-	  termsValidation() {
-		  if(!this.agree1){
-			  confirm.fnAlert("", "서비스 이용약관 동의는 필수입니다.");
-			  return false;
-		  } else if(!this.agree2) {
-			  confirm.fnAlert("", "개인정보수집 및 이용동의는 필수입니다.");
-			  return false;
-		  } else {
-			  return true;
-		  }
-	  },
+			// 이메일 정규식 체크
+			let isEmail = this.isEmail(this.email);
+			if(!isEmail) {
+				confirm.fnAlert("", "입력한 이메일 형식이 올바르지 않습니다.");
+				return false;
+			}
+			// 이메일 인증 메일 발송
 
-	  // email validation (email 체크 정규식은 아직 추가 안함.)
-	  emailValidation() {
-		  var email = this.email;
-			if(email == "" || email == null){
+			// 메일 발송 정상 처리 후 CM_USER 회원 INSERT -> 이후 페이지 이동
+			this.insertEmailUser();
+		},
+
+		// 약관 동의 체크 validation
+		termsValidation() {
+			if(!this.agree1){
+				confirm.fnAlert("", "서비스 이용약관 동의는 필수입니다.");
+				return false;
+			} else if(!this.agree2) {
+				confirm.fnAlert("", "개인정보수집 및 이용동의는 필수입니다.");
+				return false;
+			} else {
+				return true;
+			}
+		},
+
+		// email validation (email 체크 정규식은 아직 추가 안함.)
+		emailValidation() {
+			var email = this.email;
+			
+			if(this.$gfnCommonUtils.isEmpty(email)){
 				confirm.fnAlert("", "인증메일 발송을 위한 email을 입력해 주세요.");
 				return false;
 			} else {
 				return true;
 			}
-	  },
-	  isEmail(asValue) {
-		var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+		},
+		isEmail(asValue) {
+			var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
-		return regExp.test(asValue); // 형식에 맞는 경우 true 리턴	
-	  },
+			return regExp.test(asValue); // 형식에 맞는 경우 true 리턴	
+		},
 
-	  // 전체 약관 동의 체크
-	  checkAll(check) {
-		  if(check) {
-			  this.agree1 = true;
-			  this.agree2 = true;
-			  this.agree3 = true;
-		  } else { 
-			  this.agree1 = false;
-			  this.agree2 = false;
-			  this.agree3 = false;
-		  }
-	  },
+		// 전체 약관 동의 체크
+		checkAll(check) {
+			if(check) {
+				this.agree1 = true;
+				this.agree2 = true;
+				this.agree3 = true;
+			} else { 
+				this.agree1 = false;
+				this.agree2 = false;
+				this.agree3 = false;
+			}
+		},
 
-	  // 회원 INSERT -> 페이지 이동
-	  insertEmailUser() {
-		  var vm = this;
-		  var randomNum = this.randomNum;
-		  var params = {
-			  "email" : this.email,
-			  "randomNum" : this.randomNum
-		  }
-		  /*
-		  if(randomNum == "") {
-			  confirm.fnAlert("", "인증번호가 올바르지 않습니다. 메일 발송을 다시 진행해 주세요.");
-			  return false;
-		  }*/
+		// 회원 INSERT -> 페이지 이동
+		insertEmailUser() {
+			var vm = this;
+			var randomNum = this.randomNum;
+			var params = {
+				"email" : this.email,
+				"randomNum" : this.randomNum
+			}
+			/*
+			if(randomNum == "") {
+				confirm.fnAlert("", "인증번호가 올바르지 않습니다. 메일 발송을 다시 진행해 주세요.");
+				return false;
+			}*/
+			
 
 
-		  signUpApi.insertEmailUser(params).then(function(response) { 
-			  var result = response.data.success;		  
-			  if(result) {
-				vm.$router.push({name : "mailSend"});
-			  } else {
-				var message = response.data.message;
-				confirm.fnAlert("", message);
-				vm.$router.push({name : "login"});
-			  }
-		  });
-	  },
+			signUpApi.insertEmailUser(params).then(function(response) { 
+				var result = response.data.success;		  
+				if(result) {
+					vm.$router.push({name : "mailSend"});
+				} else {
+					var message = response.data.message;
+					confirm.fnAlert("", message);
+					vm.$router.push({name : "login"});
+				}
+			});
+		},
 
-	  // 팝업 호출 닫기
-	  svcPopView() {
-		  this.popReset++;
-		  jQuery("#provisionView1").modal('show');
-	  },
-	  priPopView () {
-		  this.popReset++;
-		  jQuery("#provisionView2").modal('show');
-	  },
+		// 팝업 호출 닫기
+		svcPopView() {
+			this.popReset++;
+			jQuery("#provisionView1").modal('show');
+		},
+		priPopView () {
+			this.popReset++;
+			jQuery("#provisionView2").modal('show');
+		},
 
-	  apiTest() {
-		  signUpApi.apiTest().then(function(res) {
+		apiTest() {
+			signUpApi.apiTest().then(function(res) {
 
-		  });
-	  }
-  }
+			});
+		}
+	}
 }
 </script>

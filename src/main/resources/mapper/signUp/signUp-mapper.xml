@@ -15,21 +15,27 @@
 		INSERT INTO CM_USER (
 				USER_ID
 		,		LOGIN_ID
-<!-- 		,		MAIL_CERTIFY_NUMBER -->
-<!-- 		,		MAIL_CERTIFY_SENDER_DT -->
+		,		LOGIN_PWD
+		,		PWD_UPD_DT
+		,		HP_NUMBER
 		,		APPROVAL_STATUS
+		,		DEL_YN
+		,		CORP_ID
 		,		ROLE_CD
 		,		REG_ID
 		,		REG_DT
 		) VALUES (
 				#{userId}
-		,		#{email}
-<!-- 		,		#{ranDomNum} -->
-<!-- 		,		SYSDATE() -->
+		,		#{loginId}
+		,		#{password}
+		,		NOW()
+		,		#{phoneCerti}
 		,		'ING'
+		,		'N'
+		,		#{corpId}
 		,		#{cmRole}
-		,		#{regId}
-		,		SYSDATE()
+		,		#{userId}
+		,		NOW()
 		)
 	</insert>
 
@@ -62,7 +68,7 @@
 		,		CUST_NO
 		,		CORP_NAME
 		,		REGNO
-<!-- 		,		REG_ID -->
+		,		REG_ID
 		,		REG_DT
 		,		CEO_NAME
 		,		ZIPCODE
@@ -70,7 +76,6 @@
 		,		WOPLACE_ADDRESS_DETAIL
 		,		BUSITYPE
 		,		BUSICLASS
-<!-- 		,		SVC_TERMS_ID -->
 		,		SMS_CERTIFY_YN
 		,		WIRE_TEL
 		,		FILE_ID
@@ -80,7 +85,7 @@
 		,		#{custNo}
 		,		#{corpNm}
 		,		#{regno}
-<!-- 		,		#{userId} -->
+		,		#{userId}
 		,		NOW()
 		,		#{ceoNm}
 		,		#{zipCode}
@@ -88,7 +93,6 @@
 		,		#{woplaceAddressDetail}
 		,		#{busiType}
 		,		#{busiClass}
-<!-- 		,		#{svcTermsId} -->
 		,		#{smsCertifyYn}
 		,		#{wireTel}
 		,		#{fileId}

@@ -10,19 +10,19 @@
 							<div class="of_h mt10">
                                 <div class="float-left" style="width:22%"><h5>도로명</h5></div>
                                 <div class="float-left" style="width:78%">
-                                    <input type="text" class="inputStyle" placeholder="도로명" style="width:65%" v-model="roadNm">
+                                    <input type="text" class="inputStyle" placeholder="도로명" style="width:65%" v-model="roadNm" @keypress.enter="fnSearch">
                                 </div>
 							</div>
                             <div class="of_h mt10">
                                 <div class="float-left" style="width:22%"><h5>건물명</h5></div>
                                 <div class="float-left" style="width:78%">
-                                    <input type="text" class="inputStyle" placeholder="건물명" style="width:65%" v-model="sggBldNm">
+                                    <input type="text" class="inputStyle" placeholder="건물명" style="width:65%" v-model="sggBldNm" @keypress.enter="fnSearch">
                                 </div>
 							</div>
                             <div class="of_h mt10">
                                 <div class="float-left" style="width:22%"><h5>건물지번</h5></div>
                                 <div class="float-left" style="width:78%">
-                                    <input type="text" class="inputStyle" placeholder="건물지번" style="width:65%" v-model="bldRpstNo">
+                                    <input type="text" class="inputStyle" placeholder="건물지번" style="width:65%" v-model="bldRpstNo" @keypress.enter="fnSearch">
 									<div class="float-right"><button class="btnStyle1 backLightGray" style="width:100%" @click="fnSearch">검색</button></div>
                                 </div>
 							</div>
