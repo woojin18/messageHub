@@ -64,19 +64,22 @@
 		/* statisticsUser.selectStatisSndCntList 전송건수 조회 */
 		SELECT	CH
 			,	YMD
+			,	YMDSTR
 			,	SUM(SUCC_CNT) AS SUCC_CNT
 			,	SUM(FAIL_CNT) AS FAIL_CNT
 		FROM (
 			SELECT	CH
-				,	YMD
+				,	YMD AS YMDSTR
+				,	DATE_FORMAT(STR_TO_DATE(YMD, '%Y-%m-%d'), '%c.%d') AS YMD
 				,	SUM(SUCC_CNT) AS SUCC_CNT
 				,	SUM(FAIL_CNT) AS FAIL_CNT
 			FROM (
 				SELECT	CH
 		<choose>
 			<when test="dateStatus == 'DAY'.toString()">
+					,	YMD
 				<!--,	DATE_FORMAT(YMD, '%c.%d')	AS YMD  -->
-					,	DATE_FORMAT(STR_TO_DATE(YMD, '%Y-%m-%d'), '%c.%d') AS YMD
+<!-- 					,	DATE_FORMAT(STR_TO_DATE(YMD, '%Y-%m-%d'), '%c.%d') AS YMD -->
 			</when>
 			<otherwise>
 					,	DATE_FORMAT(YMD, '%y.%m')	AS YMD
@@ -103,6 +106,7 @@
 			UNION ALL
 			
 			SELECT	C.CH
+					,	YMD AS YMDSTR
 					,	DATE_FORMAT(STR_TO_DATE(YMD, '%Y-%m-%d'), '%c.%d') AS YMD
 					,	0 AS SUCC_CNT
 					,	0 AS FAIL_CNT
@@ -130,7 +134,7 @@
 							SELECT 'MMS'
 			) C
 		) D GROUP BY D.YMD, D.CH
-		ORDER BY CH, YMD
+		ORDER BY CH, YMDSTR
 	</select>
 	
 	<select id="selectStatisSndMonthCntList" resultType="camel" >
