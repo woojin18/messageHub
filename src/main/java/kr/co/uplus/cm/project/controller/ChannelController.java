@@ -437,5 +437,18 @@ public class ChannelController {
 		}
 		return rtn;
 	}
-	
+
+	@PostMapping("/saveKkoChGroupForApi")
+	public RestResult<?> saveKkoChGroupForApi(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			channelService.saveKkoChGroupForApi(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
+	}
 }

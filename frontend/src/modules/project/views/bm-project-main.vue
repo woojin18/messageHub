@@ -33,7 +33,7 @@
 			<ul v-if="selMainTab==4&&selMidTab==4" class="tab_s6 mt10">
 				<!-- 체널관리 - 카카오톡 탭 -->
 				<li :class="{active:(selMainTab==4&&selMidTab==4&&selSubTab==1)}" @click="selSubTab=1"><a>발신 프로필 일반</a></li>
-				<li :class="{active:(selMainTab==4&&selMidTab==4&&selSubTab==2)}" @click="selSubTab=2"><a>발신 프로필 그룹</a></li>
+				<!-- <li :class="{active:(selMainTab==4&&selMidTab==4&&selSubTab==2)}" @click="selSubTab=2"><a>발신 프로필 그룹</a></li> -->
 				<!-- 체널관리 - 카카오톡 탭 -->
 			</ul>
 

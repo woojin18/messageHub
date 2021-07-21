@@ -42,14 +42,6 @@
 									</select>
 								</div>
 							</div>
-							<!-- <div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:25%">타 프로젝트 사용여부 *</h5>
-								<div class="inline-block float-right" style="width:72%">
-									<input type="radio" name="use" value="Y" id="yes" v-model="otherProjectYn"> <label for="yes" class="mr30">공용</label>
-									<input type="radio" name="use" value="N" id="no"  v-model="otherProjectYn"> <label for="no">개별</label>		
-								</div>
-							</div> -->
-							
 						</div>
 					
 					</div>
@@ -66,8 +58,6 @@
 <script>
 import api from '../service/api'
 import confirm from "@/modules/commonUtil/service/confirm"
-import {eventBus} from "@/modules/commonUtil/service/eventBus";
-
 
 export default {
   name: 'bpChanKakao',
