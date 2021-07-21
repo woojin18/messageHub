@@ -15,11 +15,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import kr.co.uplus.cm.common.consts.Const.CmdTgt;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
-import kr.co.uplus.cm.common.model.AuthUser;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -624,7 +622,7 @@ public class ProjectService {
 				}
 			}
 			// redis 테이블 처리
-			commonService.updateCmCmdForRedis("CM_SMART_CH");
+			commonService.updateCmCmdForRedis(CmdTgt.SMART_CH);
 			
 		} catch (Exception e) {
 			rtn.setSuccess(false);

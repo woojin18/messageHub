@@ -14,8 +14,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.uplus.cm.common.consts.Const;
+import kr.co.uplus.cm.common.consts.Const.CmdTgt;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
@@ -34,6 +36,9 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Service
 public class IntegratedTemplateService {
+
+	@Autowired
+	private CommonService commonService;
 
 	@Autowired
 	private GeneralDao generalDao;
@@ -159,21 +164,25 @@ public class IntegratedTemplateService {
 					sb.append("\"header\" : \"0\","); // 정보성 메시지
 				} else if ("A".equals(params.get("msgKind"))) {
 					sb.append("\"header\" : \"1\","); // 광고성 메시지
-					sb.append("\"footer\" : \"" + params.get("rcsBlockNumber") + "\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
+					sb.append("\"footer\" : \"" + params.get("rcsBlockNumber") + "\","); // 무료수신거부 번호, header의 값이 광고성일 때
+																							// footer 값을 포함하지 않고 발송하면 실패
+																							// 처리
 				}
 				sb.append("\"copyAllowed\" : \"false\","); // 복사/공유 허용여부
 				sb.append("\"expiryOption\" : \"2\","); // expire 옵션(1:72시간, 2:30초)
 				sb.append("\"brandNm\" : \"" + params.get("brandNm") + "\", "); //
 
 				if ((int) params.get("rcsTemplateTable") == 0) {//
-					// RCS FREE TYPE ====================================================================
+					// RCS FREE TYPE
+					// ====================================================================
 					sb.append("\"rcsPrdType\" : \"FREE\","); // RCS상품타입(프리 템플릿) rcsTemplateTable => 0
-					
+
 					sb.append("\"mergeData\": [{ ");
 					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs0Content")) + "\""); // 메시지
 					sb.append("	}]");
 				} else if ((int) params.get("rcsTemplateTable") == 1) {
-					// RCS DESCRIPTION TYPE ====================================================================        			
+					// RCS DESCRIPTION TYPE
+					// ====================================================================
 					sb.append("\"rcsPrdType\" : \"DESCRIPTION\","); // RCS상품타입(서술 승인템플릿) rcsTemplateTable => 1
 					sb.append("\"messagebaseId\": \"" + params.get("rcs1MessageFormId") + "\","); // cm.CM_RCS_MSGBASEFORM,
 																									// cm_console.CM_RCS_TMP_MSGBASE의
@@ -191,7 +200,8 @@ public class IntegratedTemplateService {
 					sb.append("	}] ");
 
 				} else if ((int) params.get("rcsTemplateTable") == 2) {
-					// RCS CELL(STYLE) TYPE ====================================================================   
+					// RCS CELL(STYLE) TYPE
+					// ====================================================================
 					sb.append("\"rcsPrdType\" : \"CELL\","); // RCS상품타입(스타일 승인템플릿) rcsTemplateTable => 2
 					sb.append("\"messagebaseId\": \"" + params.get("rcs2MessageFormId") + "\","); // cm.CM_RCS_MSGBASEFORM,
 																									// cm_console.CM_RCS_TMP_MSGBASE의
@@ -1291,6 +1301,10 @@ public class IntegratedTemplateService {
 		}
 
 		resultCnt = generalDao.insertGernal("integratedTemplate.insertIntegratedTemplate", sParams);
+
+		// redis 테이블 처리
+		commonService.updateCmCmdForRedis(CmdTgt.SMART_TMPLT);
+
 		if (resultCnt <= 0) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
