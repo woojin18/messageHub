@@ -84,7 +84,7 @@ public class SignUpController implements Serializable{
 			rtn.setSuccess(true);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage("회원 가입에 실패하였습니다.");
+			rtn.setMessage(e.getMessage());
 			log.error("{} Error : {}", this.getClass(), e);
 		}
 		return rtn;
@@ -162,15 +162,15 @@ public class SignUpController implements Serializable{
 		paramMap.put("ceoNm", ceoNm);
 		paramMap.put("vatExmptKdCd", "N");
 		
-		try {
-			signUpSvc.insertSignUp(paramMap);
-			rtn.setSuccess(true);
-		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("회원 가입에 실패하였습니다.");
-			log.error("{} Error : {}", this.getClass(), e);
-		}
-		return rtn;
+//		try {
+//			rtn = signUpSvc.insertSignUp(paramMap);
+//			rtn.setSuccess(true);
+//		} catch (Exception e) {
+//			rtn.setSuccess(false);
+//			rtn.setMessage("회원 가입에 실패하였습니다.");
+//			log.error("{} Error : {}", this.getClass(), e);
+//		}
+		return signUpSvc.insertSignUp(paramMap);
 	}
 	
 	// 사용 약관 가져오기
@@ -528,6 +528,39 @@ public class SignUpController implements Serializable{
 		
 		try {
 			rtn = (RestResult<Object>) signUpSvc.selectCustAddr(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
+	}
+	
+//	@PostMapping("/sendMail")
+//	public RestResult<?> sendMail(@RequestBody Map<String, Object> params){
+//		RestResult<Object> rtn = new RestResult<Object>();
+//		
+//		try {
+//			signUpSvc.sendMail(params);
+//		} catch (Exception e) {
+//			rtn.setSuccess(false);
+//			rtn.setMessage("메일 전송 에러!");
+//		}
+//		
+//		return rtn;
+//	}
+	
+	/**
+	 * 메일 본인 인증
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/certifyMailByLoginId")
+	public RestResult<?> selectMailCertifyByLoginId(
+			@RequestBody Map<String, Object> params){
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		try {
+			rtn = signUpSvc.certifyMailByLoginId(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage(e.getMessage());

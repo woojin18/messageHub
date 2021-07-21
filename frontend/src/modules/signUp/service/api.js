@@ -55,6 +55,12 @@ const getNiceCheckInfo = (params) => {
 const selectCustAddr = (params) => {
     return httpClient.post("/api/public/signUp/selectCustAddr", params, { headers: {"show-layer": "Yes"}});
 }
+
+
+const certifyMailByLoginId = (params) => {
+    return httpClient.post("/api/public/signUp/certifyMailByLoginId", params, { headers: {"show-layer": "Yes"}});
+}
+
 export default {
     signUpRedirect,
     domainChk,
@@ -69,5 +75,6 @@ export default {
     selectCorpCustList,
     selectSelCorpCustInfo,
     getNiceCheckInfo,
-    selectCustAddr
+    selectCustAddr,
+    certifyMailByLoginId
 };

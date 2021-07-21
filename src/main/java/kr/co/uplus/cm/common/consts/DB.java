@@ -90,6 +90,7 @@ public class DB {
 	public final static String QRY_INSERT_CM_MSG = "sendMessage.insertCmMsg";
 	public final static String QRY_SELECT_ALL_APP_USER_LIST = "sendMessage.selectAllAppUserList";
 	public final static String QRY_SELECT_KKO_SENDER_KEY_LIST = "sendMessage.selectKkoSenderKeyList";
+	public final static String QRY_SELECT_KKO_SENDER_GRP_KEY_LIST = "sendMessage.selectKkoSenderGrpKeyList";
 	public final static String QRY_SELECT_SMART_TMPLT_INFO = "sendMessage.selectSmartTmpltInfo";
 	public final static String QRY_SELECT_SMART_TMPLT_LIST_CNT = "sendMessage.selectSmartTmpltListCnt";
 	public final static String QRY_SELECT_SMART_TMPLT_LIST = "sendMessage.selectSmartTmpltList";
@@ -151,6 +152,8 @@ public class DB {
 	public final static String QRY_UPDATE_CM_USER = "signUp.updateCmUser";
 	public final static String QRY_SELECT_CM_USE_TERMS = "signUp.selectCmUseTerms";
 	public final static String QRY_SELECT_CM_USE_TERMS_PRI_VERSION = "signUp.selectCmUseTermsPriVersion";
+	public final static String QRY_CHK_MAIL_CERTIFY_BY_LOGINID = "signUp.checkMailCertifyByLoginId";
+	
 	// 사용자 등록
 	public final static String QRY_SELECT_USER_LIST = "user.selectUserList";
 	public final static String QRY_SELECT_USER_LIST_CNT = "user.selectUserListCnt";

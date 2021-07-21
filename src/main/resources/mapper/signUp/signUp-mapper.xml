@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="signUp">
-
+	
 	<select id="selectDomainChkCount" resultType="int">
 		/* signUp.selectDomainChkCount */
-		SELECT	COUNT(*)
+		SELECT	COUNT(1)
 		FROM	CM_CORP
 		WHERE	DOMAIN_NAME = #{domainName}
 	</select>
@@ -99,4 +99,12 @@
 		,		#{domainName}
 		)
 	</insert>
+	
+	<select id="checkMailCertifyByLoginId" resultType="string">
+		/* signUp.checkMailCertifyByLoginId */
+		SELECT	COUNT(1)
+		FROM	cm_console.CM_USER
+		WHERE	LOGIN_ID = #{loginId}
+		AND		MAIL_CERTIFY_NUMBER =#{authKey}
+	</select>
 </mapper>
