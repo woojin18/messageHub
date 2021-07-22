@@ -1082,8 +1082,8 @@ public class ChannelService {
 			
 			String apiKey = CommonUtils.getString(params.get("apiKey"));
 			Map<String, Object> headerMap = new HashMap<String, Object>();
-			headerMap.put("apiKey",		apiKey);
-			headerMap.put("commonProjectYN",		"N");
+			headerMap.put("apiKey",				apiKey);
+			headerMap.put("commonProjectYN",	CommonUtils.getString(params.get("otherProjectYn")));
 			
 			
 			Map<String, Object> result =  apiInterface.post("/console/v1/kko/senderkey/channel/create", null, apiBodyMap, headerMap);

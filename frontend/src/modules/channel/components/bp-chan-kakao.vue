@@ -42,6 +42,11 @@
 									</select>
 								</div>
 							</div>
+							<div class="of_h consolMarginTop">
+								<h5 class="inline-block" style="width:20%">프로젝트 공용 여부 *</h5>
+								<input type="radio" v-model="otherProjectYn" name="otherProjectYn" value="Y" class="cBox" id="Y"> <label for="Y" class="payment mr30 font-size12">공용</label>
+								<input type="radio" v-model="otherProjectYn" name="otherProjectYn" value="N" class="cBox" id="N"> <label for="N" class="payment font-size12">전용</label>
+							</div>
 						</div>
 					
 					</div>
@@ -92,6 +97,7 @@ export default {
   mounted() {
 	this.fnGetApiKeyListForKko();
     this.fnGetKkoCategory();
+	this.otherProjectYn = 'Y';
   },
   methods: {
     // 닫기
@@ -128,7 +134,7 @@ export default {
 		var params = {
 			"apiKey"		: this.apiKey,
 			"kkoChId"		: this.kkoChId,
-			"phoneNumber"	: this.phoneNumber
+			"phoneNumber"	: this.phoneNumber,
 		};
 		api.getSenderKeyToken(params).then(response =>{
 			var result = response.data;
@@ -141,7 +147,7 @@ export default {
 		});
 	},
 	fnSave(){
-		if( this.tokenYn != 'Y' ){
+		/* if( this.tokenYn != 'Y' ){
 			confirm.fnAlert("", "토큰 발급 후, 진행해주세요.");
 			return;
 		} else if( this.kkoChId === '' ){
@@ -156,7 +162,7 @@ export default {
 		} else if( this.token === '' ){
 			confirm.fnAlert("", "발급된 토큰을 입력해주세요.");
 			return;
-		}
+		} */
 
 		var params = {
 			"sts"			: this.save_status,
@@ -166,7 +172,12 @@ export default {
 			"token"			: this.token,
 			"categoryCode"	: this.categoryCode,
 			"projectId"		: this.projectId,
+			"otherProjectYn": this.otherProjectYn
 		};
+
+		console.log(params);
+		return;
+
 		api.saveKkoChForApi(params).then(response =>{
 			var result = response.data.data;
 
