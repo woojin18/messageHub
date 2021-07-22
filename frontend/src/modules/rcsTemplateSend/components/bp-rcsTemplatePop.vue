@@ -133,7 +133,8 @@ export default {
         tmpltNm : "",               // 조회조건 템플릿 검색
         tmpltName : "",             // 템플릿 명 View
         tmpltId : "",               // 템플릿 ID
-        formNm : "",                // 유형
+        messagebaseformId : "", // 유형ID
+        formNm : "",                // 유형명
         desContent : "",            // 서술형 내용
         styleContentCnt: 0,			// 스타일형 inputLine count
 		styleArr: [],			    // 스타일형 inputLine input count
@@ -206,6 +207,7 @@ export default {
                     var data = result.data;
                     vm.tmpltName = data.tmpltName;
                     vm.tmpltId = data.tmpltId;
+                    vm.messagebaseformId = data.desNm;
                     vm.formNm = data.formNm;
                     vm.desContent = data.textContents;
 
@@ -229,6 +231,7 @@ export default {
         } else {
             vm.tmpltName = "";
             vm.tmpltId = "";
+            vm.messagebaseformId = "";
             vm.formNm = "";
             vm.desContent = "";
             vm.btnCnt = 0;
@@ -248,7 +251,8 @@ export default {
         this.tmpltNm = "",              // 조회조건 템플릿 검색
         this.tmpltName = "",            // 템플릿 명 View
         this.tmpltId = "",              // 템플릿 ID
-        this.formNm = "",               // 유형
+        this.messagebaseformId = "", // 유형ID
+        this.formNm = "",               // 유형명
         this.desContent = "",           // 서술형 내용
         this.styleContentCnt = 0,		// 스타일형 inputLine count
 		this.styleArr = [],			    // 스타일형 inputLine input count
@@ -268,6 +272,8 @@ export default {
         var data = new Object();
         data.radioBtn = vm.templateRadioBtn;
         data.messagebaseId = vm.messagebaseId;
+        data.brandId = vm.brandId;
+        data.messagebaseformId = vm.messagebaseformId;
         data.formNm = vm.formNm;
         data.desContent = vm.desContent;
         data.styleContentCnt = vm.styleContentCnt;

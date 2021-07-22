@@ -19,6 +19,7 @@
 		/* rcsTemplateSend.selectRcsMessageForm */
 		SELECT	A.TMPLT_NAME
 		,		A.MESSAGEBASE_ID
+		,		B.MESSAGEBASEFORM_ID
 		,		B.FORM_NAME
 		,		A.MESSAGEBASE_INFO
 		FROM	cm.CM_RCS_MSGBASE A
