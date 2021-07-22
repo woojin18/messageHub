@@ -19,7 +19,7 @@
 			,	REG_ID
 			,	REG_DT
 		FROM cm_console.CM_ADDR_CATE_GRP A
-		WHERE 1=1
+		WHERE USE_YN = 'Y'
 		AND	CORP_ID = #{corpId}
 	</select>
 
@@ -46,11 +46,10 @@
 			, B.DIS_ORDER
 			, B.ADDRESS_CATEGORY_NAME  AS ADDRESS_NAME
 			, B.PAR_ADDRESS_CATEGORY_ID
-			, B.TOP_ADDRESS_CATEGORY_ID
+			, B.TOP_ADDRESS_CATEGORY_ID AS DEPTH_NUMBER
 		FROM cm_console.CM_ADDR_CATE_GRP A
 		INNER JOIN cm_console.CM_ADDR_CATE B
 			ON A.ADDRESS_CATEGORY_GRP_ID = B.ADDRESS_CATEGORY_GRP_ID
-			AND B.DEL_YN = 'N'
 		WHERE 1=1
 			AND A.CORP_ID = #{corpId}
 			AND	A.ADDRESS_CATEGORY_GRP_ID = #{addressCategoryGrpId}
@@ -373,8 +372,8 @@
 		,	ADDRESS_CATEGORY_GRP_ID
 		,	DIS_ORDER
 		,	ADDRESS_CATEGORY_NAME
+		,	TOP_ADDRESS_CATEGORY_ID
 		,	PAR_ADDRESS_CATEGORY_ID
-		,	DEL_YN
 		,	REG_ID
 		,	REG_DT
 		,	UPD_ID
@@ -387,11 +386,10 @@
 				FROM	cm_console.CM_ADDR_CATE B
 				WHERE	ADDRESS_CATEGORY_GRP_ID = #{addressCategoryGrpId}
 				AND		PAR_ADDRESS_CATEGORY_ID = #{parAddressCategoryId}
-				AND		DEL_YN = 'N'
 			)
 		,	#{addressCategoryName}
+		,	#{depthNumber}
 		,	#{parAddressCategoryId}
-		,	'N'
 		,	#{regId}
 		,	NOW()
 		,	#{regId}
@@ -416,23 +414,19 @@
 		WHERE	ADDRESS_CATEGORY_ID = #{addressCategoryId}
 	</update>
 
-	<update id="deleteAddrCate">
+	<delete id="deleteAddrCate">
 		/* address.deleteAddrCate 주소카테고리삭제 하위카테고리까지 삭제*/
-		UPDATE	cm_console.CM_ADDR_CATE
-		SET		DEL_YN = 'Y'
-			,	UPD_DT = NOW()
-			,	UPD_ID = #{regId}
+		DELETE	FROM	cm_console.CM_ADDR_CATE
 		WHERE	ADDRESS_CATEGORY_ID = #{addressCategoryId}
 		OR	ADDRESS_CATEGORY_ID IN (
 				SELECT	ADDRESS_CATEGORY_ID
 				FROM	(	SELECT * FROM cm_console.CM_ADDR_CATE
-							WHERE DEL_YN='N'
 							ORDER BY PAR_ADDRESS_CATEGORY_ID, ADDRESS_CATEGORY_ID) PRODUCTS_SORTED,
 						(select @pv := #{addressCategoryId}) INITIALISATION
 				WHERE	FIND_IN_SET(PAR_ADDRESS_CATEGORY_ID, @pv) > 0
 				AND		@pv := CONCAT(@pv, ',', ADDRESS_CATEGORY_ID)
 			)
-	</update>
+	</delete>
 
 	<delete id="deleteAddrCateMember">
 		/* address.deleteAddrCateMember 주소카테고리 삭제시 구성원 삭제 (하위 카테고리의 구성원까지 삭제)*/
@@ -441,7 +435,6 @@
 		OR	ADDRESS_CATEGORY_ID IN (
 				SELECT	ADDRESS_CATEGORY_ID
 				FROM	(	SELECT * FROM cm_console.CM_ADDR_CATE
-							WHERE DEL_YN='N'
 							ORDER BY PAR_ADDRESS_CATEGORY_ID, ADDRESS_CATEGORY_ID) PRODUCTS_SORTED,
 						(select @pv := #{addressCategoryId}) INITIALISATION
 				WHERE	FIND_IN_SET(PAR_ADDRESS_CATEGORY_ID, @pv) > 0

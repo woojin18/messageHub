@@ -120,6 +120,7 @@
 			:addrCateOpen="addrCateOpen"
 			:saveStatus="saveStatus"
 			:addrCateGrpName="selectedAddrCateGrp.addressCategoryGrpName"
+			:parDepthNumber="selectDepthNumber"
 		></AddrCategoryLayer>
 	</div>
 </template>
@@ -243,6 +244,8 @@ export default {
 			selectAddrName: '',
 			//Root선택여부
 			isSelectRoot: false,
+			//Tree 목록에서 선택 건의 뎁스
+			selectDepthNumber: -1,
 		}
 	},
 	mounted() {
@@ -269,6 +272,7 @@ export default {
 			this.searchAddrCateId = -1;
 			this.selectAddrName = '';
 			this.isSelectRoot = false;
+			this.selectDepthNumber = -1;
 
 			if(index == 0) {
 				this.selectedAddrCateGrp = {}; // init
@@ -297,7 +301,7 @@ export default {
 			let setTag = '';
 			setTag += '<ul class="addList">';
 			setTag += '<li class="addList_minus">';
-			setTag += '<a href="javascript:void(0)" onclick="fnAddrCateMem(null, \'' + this.addrTreeList[0].addressName + '\', this, true);">';
+			setTag += '<a href="javascript:void(0)" onclick="fnAddrCateMem(null, \'' + this.addrTreeList[0].addressName + '\',' + this.addrTreeList[0].parAddressCategoryId +', this, true);">';
 			setTag += '<i class="fal fa-minus-square addIcon"></i>'
 			setTag += this.addrTreeList[0].addressName;
 			setTag += '</a>';
@@ -320,7 +324,7 @@ export default {
 				} else {
 					tag += '<li>';
 				}
-				tag += '<a href="javascript:void(0)" onclick="fnAddrCateMem('+ child[i].addressCategoryId + ',\'' + child[i].addressName + '\', this, false);">';
+				tag += '<a href="javascript:void(0)" onclick="fnAddrCateMem('+ child[i].addressCategoryId + ',\'' + child[i].addressName + '\',' + child[i].depthNumber +', this, false);">';
 
 				if(child[i].subItems.length > 0) {
 					tag += '<i class="fal fa-minus-square addIcon"></i>'; // if only subItem
@@ -379,7 +383,7 @@ export default {
 			}
 		},
 		//주소 카테고리 클릭
-		fnAddrCateMem(addrCateId, addrName, obj, isRoot) {
+		fnAddrCateMem(addrCateId, addrName, parDepthNumber, obj, isRoot) {
 			//기존 선택건 초기화
 			jQuery('#addrTreeMenu .active').removeClass('active');
 
@@ -395,12 +399,14 @@ export default {
 				this.searchAddrCateId = -1;
 				this.selectAddrName = addrName;
 				this.isSelectRoot = true;
+				this.selectDepthNumber = parDepthNumber;
 				return;
 			}
 
 			this.isSelectRoot = false;
 			this.searchAddrCateId = addrCateId;
 			this.selectAddrName = addrName;
+			this.selectDepthNumber = parDepthNumber;
 			this.fnSearchMemberList();
 		},
 		// 주소 하위 카테고리 등록/수정
@@ -412,6 +418,11 @@ export default {
 
 			if(saveStatus == 'U' && this.isSelectRoot) {
 				confirm.fnAlert('', '최상위 카테고리명은 수정할 수 없습니다.');
+				return false;
+			}
+
+			if(saveStatus == 'I' && this.selectDepthNumber == 3) {
+				confirm.fnAlert('', '3단계 이상의 하위 카테고리를 추가할 수 없습니다.');
 				return false;
 			}
 
