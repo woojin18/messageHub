@@ -9,10 +9,10 @@
 						<div class="mt20">
               <h5 class="inline-block" style="width:20%">신청유형 *</h5>
 							<select v-model="reqType" name="admin030502_1" class="selectStyle3 width414 font-size14" >
-								<option value="spam">스팸문자 미발송 사업자</option>
-                <option value="system">발신번호 사전등록 시스템을 갖춘 사업자</option>
-                <option value="government">공공기관</option>
-                <option value="special">특수부가통신사업자</option>
+								<option value="NOSPAM">스팸문자 미발송 사업자</option>
+                <option value="REGNUM">발신번호 사전등록 시스템을 갖춘 사업자</option>
+                <option value="PUBLIC">공공기관</option>
+                <option value="SPECIAL">특수부가통신사업자</option>
 							</select>
 						</div>
             <div class="mt15">

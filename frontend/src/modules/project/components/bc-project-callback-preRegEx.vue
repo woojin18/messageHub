@@ -31,7 +31,7 @@
 				</div>
 			</div>	
 			<div class="col-xs-3 text-center" style="padding:7% 0; border-left:1px solid #fff">
-				<a @click="fnReg('spam')"  class="btnStyle1 font13" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
+				<a @click="fnReg('NOSPAM')"  class="btnStyle1 font13" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
 			</div>
 		</div>
 
@@ -61,7 +61,7 @@
 				</div>
 			</div>	
 			<div class="col-xs-3 text-center" style="padding:6% 0; border-left:1px solid #fff">
-				<a @click="fnReg('system')" class="btnStyle1" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
+				<a @click="fnReg('REGNUM')" class="btnStyle1" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
 			</div>
 		</div>
 
@@ -82,7 +82,7 @@
 				</div>
 			</div>	
 			<div class="col-xs-3 text-center" style="border-left:1px solid #fff; padding:6% 0">
-				<a @click="fnReg('government')" class="btnStyle1" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
+				<a @click="fnReg('PUBLIC')" class="btnStyle1" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
 			</div>
 		</div>
 
@@ -106,7 +106,7 @@
 				</div>
 			</div>	
 			<div class="col-xs-3 text-center" style="border-left:1px solid #fff; padding:7.5% 0">
-				<a @click="fnReg('special')" class="btnStyle1" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
+				<a @click="fnReg('SPECIAL')" class="btnStyle1" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
 			</div>
 		</div>
 
