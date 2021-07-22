@@ -147,7 +147,7 @@ export default {
 		});
 	},
 	fnSave(){
-		/* if( this.tokenYn != 'Y' ){
+		if( this.tokenYn != 'Y' ){
 			confirm.fnAlert("", "토큰 발급 후, 진행해주세요.");
 			return;
 		} else if( this.kkoChId === '' ){
@@ -162,7 +162,7 @@ export default {
 		} else if( this.token === '' ){
 			confirm.fnAlert("", "발급된 토큰을 입력해주세요.");
 			return;
-		} */
+		}
 
 		var params = {
 			"sts"			: this.save_status,
@@ -174,9 +174,6 @@ export default {
 			"projectId"		: this.projectId,
 			"otherProjectYn": this.otherProjectYn
 		};
-
-		console.log(params);
-		return;
 
 		api.saveKkoChForApi(params).then(response =>{
 			var result = response.data.data;
