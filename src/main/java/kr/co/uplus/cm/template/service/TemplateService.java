@@ -560,6 +560,8 @@ public class TemplateService {
         for(String tmpltKey : tmpltKeys) {
             sParams = new HashMap<String, Object>();
             sParams.put("tmpltKey", tmpltKey);
+            sParams.put("corpId", corpId);
+            sParams.put("projectId", projectId);
             List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ALIM_TALK_TMPLT_LIST, sParams);
             if(rtnList == null || rtnList.size() == 0) {
                 continue;
