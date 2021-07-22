@@ -270,7 +270,7 @@ public class ProjectService {
 		return rtn;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "static-access" })
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void savePreRegExWithUploadFiles(List<MultipartFile> uploadFiles, Map<String, Object> params) throws Exception{
 		// 이미 등록되어있는지 확인
@@ -285,16 +285,23 @@ public class ProjectService {
 			for (int i = 0; i < uploadFiles.size(); i++) {
 				
 				MultipartFile uploadFile = uploadFiles.get(i);
+				String fileName = "";
+				String pattern = "[\"!@#$%^&'.*]";
+				String preFileName = commonService.getFileNameExt(uploadFile.getOriginalFilename(),0).replaceAll(pattern, "");
+				String ext = commonService.getFileNameExt(uploadFile.getOriginalFilename(),1);
+				fileName = preFileName+"."+ext;
 				
-				RestResult<Object> rtn = commonService.uploadFile(uploadFile, CommonUtils.getString(params.get("loginId")));
+				String fileId = commonService.uploadFile2(uploadFile, CommonUtils.getString(params.get("loginId")));
+				Map<String, Object> fileMap = new HashMap<>();
+				fileMap.put("fileId", fileId);
 				
-				Map<String, Object> rtnMap = (Map<String, Object>) rtn.getData();
+				String attachFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", fileMap));
 				
-				jsonInfoStr += "	\"fileName" + (i+1) + "\"		: \"" + CommonUtils.getString(rtnMap.get("attachFileName")) + "\",";
+				jsonInfoStr += "	\"fileName" + (i+1) + "\"		: \"" + fileName + "\",";
 				if( i == (uploadFiles.size() - 1) ) {
-					jsonInfoStr += "	\"filePath" + (i+1) + "\"		: \"" + CommonUtils.getString(rtnMap.get("attachFilePath")) + "\"";
+					jsonInfoStr += "	\"filePath" + (i+1) + "\"		: \"" + attachFilePath + "\"";
 				} else {
-					jsonInfoStr += "	\"filePath" + (i+1) + "\"		: \"" + CommonUtils.getString(rtnMap.get("attachFilePath")) + "\",";
+					jsonInfoStr += "	\"filePath" + (i+1) + "\"		: \"" + attachFilePath + "\",";
 				}
 			}
 			

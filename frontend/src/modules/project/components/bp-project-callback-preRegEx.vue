@@ -16,7 +16,7 @@
 							</select>
 						</div>
             <div class="mt15">
-              <h5 class="inline-block" style="width:20%">첨부파일1</h5>
+              <h5 class="inline-block" style="width:20%">첨부파일1 *</h5>
               <input id="file1" ref="fileRef1" type="file" class="btnStyle7 minWidthAuto float" style="display : inline; width : 79%;">
 						</div>
             <div class="mt15">
@@ -45,6 +45,7 @@
 <script>
 import axios from 'axios'
 import tokenSvc from '@/common/token-service';
+import confirm from "@/modules/commonUtil/service/confirm"
 
 export default {
   name: 'preRegExPop',
@@ -69,22 +70,31 @@ export default {
   methods: {
     // 닫기
     fnCloseLayer: function() {
-      $("#preRegExPop").modal("hide");
+      jQuery("#preRegExPop").modal("hide");
     },
     // 파일 업로드와 같이 저장
     async fnSaveWithFile(){
-      if(this.$refs.fileRef1.files[0].value == 0){
-        alert("파일을 등록해주세요.");
+      console.log(this.$refs.fileRef1.files[0]);
+      if(this.$refs.fileRef1.files[0] === null || this.$refs.fileRef1.files[0] === undefined ){
+				confirm.fnAlert("", "파일을 등록해주세요.");
         return;
       }
 
       var fd = new FormData();
 
       // 첨부파일 정리
-      fd.append('uploadFiles', this.$refs.fileRef1.files[0]);
-      fd.append('uploadFiles', this.$refs.fileRef2.files[0]);
-      fd.append('uploadFiles', this.$refs.fileRef3.files[0]);
-      fd.append('uploadFiles', this.$refs.fileRef4.files[0]);
+      if( this.$refs.fileRef1.files[0] != null || this.$refs.fileRef1.files[0] != undefined ){
+        fd.append('uploadFiles', this.$refs.fileRef1.files[0]);
+      }
+      if( this.$refs.fileRef2.files[0] != null || this.$refs.fileRef2.files[0] != undefined ){
+        fd.append('uploadFiles', this.$refs.fileRef2.files[0]);
+      }
+      if( this.$refs.fileRef3.files[0] != null || this.$refs.fileRef3.files[0] != undefined ){
+        fd.append('uploadFiles', this.$refs.fileRef3.files[0]);
+      }
+      if( this.$refs.fileRef4.files[0] != null || this.$refs.fileRef4.files[0] != undefined ){
+        fd.append('uploadFiles', this.$refs.fileRef4.files[0]);
+      }
       
       fd.append('loginId', tokenSvc.getToken().principal.userId);
       fd.append('corpId', tokenSvc.getToken().principal.corpId);
@@ -99,18 +109,18 @@ export default {
       ).then( response => {
         var result = response.data;
         if(result.success) {
-          alert("저장에 성공했습니다.");
+          confirm.fnAlert("", "저장에 성공했습니다.");
           // 닫기 버튼
           this.$refs.closeBtn.click();
           // 발신번호관리 화면으로 이동
           this.$parent.fnMoveMainTab('callbackManage');
         } else {
-          alert("저장에 실패했습니다.");
+  				confirm.fnAlert("", "저장에 실패했습니다.");
         }
       })
       .catch(function (e) {
         console.log(e);
-        alert("등록에 실패했습니다.");
+				confirm.fnAlert("", "등록에 실패했습니다.");
       });
     }
   }
