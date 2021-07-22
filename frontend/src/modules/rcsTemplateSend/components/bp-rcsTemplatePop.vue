@@ -143,7 +143,8 @@ export default {
 		styleChk: [],	            // 스타일형 lineChk
         btnCnt: 0,			        // 버튼 개수
         selectBtn: [],		        // selectBox
-		btnNm:[]			        // 버튼 이름   
+		btnNm:[],			        // 버튼 이름
+		rcsButtons:[]				// 버튼 리스트   
     }
   },
   methods: {
@@ -211,7 +212,6 @@ export default {
                     vm.formNm = data.formNm;
                     vm.desContent = data.textContents;
 
-
                     // input 세팅 (cell)
                     if(vm.templateRadioBtn == 'cell') {
                         vm.styleContentCnt = data.styleContentCnt;
@@ -224,7 +224,7 @@ export default {
                     vm.btnCnt = data.btnCnt;
                     vm.selectBtn = data.selectBtn;
                     vm.btnNm = data.btnNm;
-
+					vm.rcsButtons = data.rcsButtons;
                 }
                
             });
@@ -261,7 +261,8 @@ export default {
 		this.styleChk = [],	            // 스타일형 lineChk
         this.btnCnt = 0,			    // 버튼 개수
         this.selectBtn = [],		    // selectBox
-		this.btnNm = []			        // 버튼 이름   
+		this.btnNm = [],			// 버튼 이름
+		this.rcsButtons = []		// 버튼 리스트   
 
     },
 
@@ -281,7 +282,9 @@ export default {
         data.styleInputSec = vm.styleInputSec;
         data.styleChk = vm.styleChk;
         data.btnCnt = vm.btnCnt;
+        data.selectBtn = vm.selectBtn;
         data.btnNm = vm.btnNm;
+        data.rcsButtonList = vm.rcsButtons;
         
         if(messagebaseId == "") {
             confirm.fnAlert("템플릿을 선택해주세요.","");

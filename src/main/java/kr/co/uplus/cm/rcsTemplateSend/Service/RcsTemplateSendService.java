@@ -42,6 +42,7 @@ public class RcsTemplateSendService {
 		return rtn;
 	}
 
+	@SuppressWarnings("unchecked")
 	public RestResult<Object> rcsTemplateDetail(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		Map<String, Object> resultData = new HashMap<String, Object>();
@@ -187,30 +188,35 @@ public class RcsTemplateSendService {
 			if(jsonArrObj.get("urlAction") != null) {
 				urlObj = (JSONObject) jsonArrObj.get("urlAction");
 				urlObj = (JSONObject) urlObj.get("openUrl");
+				jsonArrObj.put("linkType", "urlAction");
 				
 				selectBtn[i] = "URL 링크";
 				btnNm[i] = CommonUtils.getString(jsonArrObj.get("displayText"));
 			} else if(jsonArrObj.get("clipboardAction") != null) {
 				clipboardObj = (JSONObject) jsonArrObj.get("clipboardAction");
 				clipboardObj = (JSONObject) clipboardObj.get("copyToClipboard");
+				jsonArrObj.put("linkType", "clipboardAction");
 				
 				selectBtn[i] = "복사하기";
 				btnNm[i] = CommonUtils.getString(jsonArrObj.get("displayText"));
 			} else if(jsonArrObj.get("dialerAction") != null) {
 				dialerObj = (JSONObject) jsonArrObj.get("dialerAction");
 				dialerObj = (JSONObject) dialerObj.get("dialPhoneNumber");
+				jsonArrObj.put("linkType", "dialerAction");
 				
 				selectBtn[i] = "전화걸기";
 				btnNm[i] = CommonUtils.getString(jsonArrObj.get("displayText"));
 			} else if(jsonArrObj.get("calendarAction") != null) {
 				calendarObj = (JSONObject) jsonArrObj.get("calendarAction");
 				calendarObj = (JSONObject) calendarObj.get("createCalendarEvent");
+				jsonArrObj.put("linkType", "calendarAction");
 				
 				selectBtn[i] = "일정추가";
 				btnNm[i] = CommonUtils.getString(jsonArrObj.get("displayText"));
 			} else if(jsonArrObj.get("mapAction") != null) {
 				mapActionObj = (JSONObject) jsonArrObj.get("mapAction");
 				mapActionObj = (JSONObject) mapActionObj.get("dialPhoneNumber");
+				jsonArrObj.put("linkType", "mapAction");
 				
 				selectBtn[i] = "지도맵";
 				btnNm[i] = CommonUtils.getString(jsonArrObj.get("displayText"));
@@ -219,6 +225,7 @@ public class RcsTemplateSendService {
 		
 		resultData.put("selectBtn", selectBtn);
 		resultData.put("btnNm", btnNm);
+		resultData.put("rcsButtons", jsonArr);
 		
 		return rtn.setData(resultData);
 	}

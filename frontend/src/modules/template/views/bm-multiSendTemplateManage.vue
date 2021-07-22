@@ -342,7 +342,7 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<h4 class="inline-block" style="width:13%">브랜드명</h4>
+							<div class="float-left" style="width:13%"><h4>브랜드명*</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
 								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
@@ -383,12 +383,9 @@
 							<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 							<div class="phoneTextWrap">
 								<div class="phoneText1 relative scroll-y4">
-									<p><img src="@/assets/images/common/phone_Icon10.png" alt="주문 아이콘"></p>
+									<p><img :src="rcsImgsrc" style="width:70px;"></p>
 									<div class="scroll-y5">
 										<pre class="mt15 lc-1">{{rowData.rcs1Content}}</pre>
-									</div>
-									<div class="absolute" style="bottom:25px; left:85px">
-										<p class="text-center mt20" style="color:#69C8FF">사이트 연결</p>
 									</div>
 								</div>
 							</div>
@@ -397,63 +394,89 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="text-right" style="width:70%">
-							<a href="#" class="btnStyle1 backBlack" style="min-width:auto" @click.prevent="fnOpenRcsTemplatePopup" title="RCS 템플릿 선택">RCS 템플릿 선택</a>
+							<a href="#" class="btnStyle1 backBlack" style="min-width:auto" @click.prevent="fnOpenRcsTemplatePopup" data-toggle="modal" data-target="#templatePop" title="RCS 템플릿 선택">RCS 템플릿 선택</a>
 						</div>
-						<div class="of_h mt20">						
-							<div class="float-left" style="width:13%"><h4>유형</h4></div>
-							<div class="float-left" style="width:57%">
-								<input type="text" class="inputStyle" placeholder="" v-model="rowData.rcs1Title" id="rcs1TitleId" readOnly>
-								<input type="hidden" class="inputStyle" placeholder="" v-model="rowData.rcs1MessageFormId" id="rcs1MessageFormId" >
-							</div>
-						</div>
-						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
-							<div class="float-left" style="width:57%">
-								<textarea class="textareaStyle height190"  v-model="rowData.rcs1Content" id="rcs1ContentId" :placeholder="rcsPlaceHoder" readOnly></textarea>
-								<strong class="letter" id="rcs1TextLength">(00 / 90)</strong>
-							</div>
-						</div>
-						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h4>버튼</h4></div>
-							<div class="float-left" style="width:57%">
-								<table class="table_skin1 mt0" style="width:100%">
-									<colgroup>
-										<col style="width:22%">
-										<col style="width:20%">
-										<col>
-									</colgroup>
-									<thead>
-										<tr>
-											<th class="text-center">타입</th>
-											<th class="text-center">버튼이름</th>
-											<th class="text-center end">내용</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr v-for="(row,index) in rowData.rcs1Buttons" v-bind:key="index">
-											<td class="text-center">{{row.buttonTypeName}}</td>
-											<td class="text-left">{{row.buttonName}}</td>
-											<td class="text-center">{{row.buttonLink}}
-												<input type="hidden" class="inputStyle" v-model="row.buttonType">
-												<input type="hidden" class="inputStyle" v-model="row.buttonName">
-												<input type="hidden" class="inputStyle" v-model="row.buttonLink">
-												<input type="hidden" class="inputStyle" v-model="row.buttonLink1">
-												<input type="hidden" class="inputStyle" v-model="row.startDate">
-												<input type="hidden" class="inputStyle" v-model="row.endDate">
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h5>발신번호 *</h5></div>
-							<div class="float-left" style="width:57%">
-								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
-									<option value="">선택해주세요.</option>
-									<option v-for="info in rcs1CallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+						<div v-if="selectedRcsDesTemplate">
+							<div class="of_h mt20">
+								<div class="float-left" style="width:13%"><h4>브랜드명</h4></div>
+								<select class="selectStyle2" v-model="rowData.brandNm" style="width:24%" title="브랜드명 선택란" disabled>
+									<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 								</select>
 							</div>
+							<div class="of_h">						
+								<div class="float-left" style="width:13%"><h4>유형</h4></div>
+								<select class="selectStyle2" v-model="rowData.rcsDesFormNm" title="유형 선택란" disabled>
+									<option v-for="rcsType in rcsDesFormNmList" v-bind:value="rcsType.MESSAGEBASEFORM_ID">{{rcsType.FORM_NAME}}</option>
+								</select>
+							</div>
+							<div class="of_h">
+								<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+								<div class="float-left" style="width:57%">
+									<textarea class="textareaStyle height190"  v-model="rowData.rcs1Content" id="rcs1ContentId" disabled></textarea>
+									<strong class="letter" id="rcs1TextLength">(00 / 90)</strong>
+								</div>
+							</div>
+							<div class="of_h consolMarginTop">
+								<div class="float-left" style="width:13%"><h4>버튼</h4></div>
+								<div class="float-left" style="width:57%">
+									<table class="table_skin1 mt0" style="width:100%">
+										<colgroup>
+											<col style="width:22%">
+											<col style="width:20%">
+											<col>
+										</colgroup>
+										<thead>
+											<tr>
+												<th class="text-center">타입</th>
+												<th class="text-center">버튼이름</th>
+												<th class="text-center end">내용</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="(row,index) in rowData.rcsDesButtons" v-bind:key="index">
+												<td class="text-center">
+													<select class="selectStyle2" style="width:100%" v-model="row.action.linkType" disabled>
+														<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
+													</select>
+												</td>
+												<td class="text-left"><input v-model="row.action.displayText" type="text" class="inputStyle" disabled></td>
+												<td v-if="row.action.linkType=='urlAction'" class="text-center"><input v-model="row.action.urlAction.openUrl.url" type="text" class="inputStyle" disabled></td>
+												<td v-if="row.action.linkType=='clipboardAction'" class="text-center"><input v-model="row.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle" disabled></td>
+												<td v-if="row.action.linkType=='dialerAction'" class="text-center"><input v-model="row.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle" disabled></td>
+												<td v-if="row.action.linkType=='calendarAction'" class="text-center">
+													<input v-model="row.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력" disabled>
+													<input v-model="row.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력" disabled>
+													<div class="consolMarginTop of_h">
+														<span class="float-left mt5" style="width:20%">시작일</span>
+														<div class="float-right" style="width:80%">
+															<Calendar classProps="datepicker inputStyle" :initDate="row.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+														</div>
+													</div>
+													<div class="consolMarginTop of_h">
+														<span class="float-left mt5" style="width:20%">종료일</span>
+														<div class="float-right" style="width:80%">
+															<Calendar classProps="datepicker inputStyle" :initDate="row.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+														</div>
+													</div>
+												</td>
+												<td v-if="row.action.linkType=='mapAction'" class="text-center"><input v-model="row.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="of_h consolMarginTop">
+								<div class="float-left" style="width:13%"><h4>발신번호 *</h4></div>
+								<div class="float-left" style="width:57%">
+									<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
+										<option value="">선택해주세요.</option>
+										<option v-for="info in rcs1CallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div v-else>
+							<span class="txtCaption vertical-middle colorRed">템플릿 승인형 RCS상품은 기 등록 된, 템플릿 정보를 선택하여서 사용 할 수 있습니다.</span>
 						</div>
 					</div>
 				</div>
@@ -2895,6 +2918,7 @@
 			<router-link :to="{ name: 'multiSendTemplateList' }" tag="a" class="btnStyle2 backRed ml10">취소</router-link>
 		</div>
 
+		<RcsTemplatePopup :templateRadioBtn.sync="templateRadioBtn" ref="rcsTemplatePop" @fnResult="fnSetRcsTemplate"></RcsTemplatePopup>
 		<AlimTalkTemplatePopup :alimTalkTemplateOpen.sync="alimTalkTemplateOpen" ref="alimTalkTmplPopup"></AlimTalkTemplatePopup>
 	</div>
 </template>
@@ -2902,6 +2926,7 @@
 <script>
 import templateApi from "@/modules/template/service/templateApi.js";
 import messageApi from "@/modules/message/service/messageApi.js";
+import RcsTemplatePopup from "@/modules/rcsTemplateSend/components/bp-rcsTemplatePop.vue";
 import AlimTalkTemplatePopup from "@/modules/message/components/bp-alimTalkTemplate.vue";
 
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
@@ -2952,6 +2977,7 @@ import Calendar from "@/components/Calendar.vue";
 export default {
 	name: 'multiSendTemplateManage',
 	components : {
+		RcsTemplatePopup,
 		AlimTalkTemplatePopup,
 
 		ImageManagePopUp,      ImageUploadPopUp,   /* Push */
@@ -3035,6 +3061,7 @@ export default {
 					'rcs104ImgInfoList':[], //RCS 캐러셀 카드5 이미지정보
 					'rcs105ImgInfoList':[], //RCS 캐러셀 카드6 이미지정보
 
+					'rcsDesButtons':[], // RCS 서술형 버튼리스트
 					'rcs90Buttons':[], //button 은 초기에 숨겨져있고, 입력부분없이 제목만 출력
 					'rcs91Buttons':[],
 					'rcs92Buttons':[],
@@ -3072,42 +3099,48 @@ export default {
 	},
 	data() {
 		return {
-			channelTab: 9,  //채널설정 Push/RCS/카카오톡/SMSMMS 탭 show/hide
-			rcsTemplateTable: 0, //채널설정 RCS탭 내 템플릿 구분 //저장등록시 유효성 체크 대상으로 사용
-			rcsTemplateTableChecked: 0, //채널설정 RCS탭 내 템플릿 구분 //v-model이용 radio 선택표시용으로 사용 //rcsTemplateTable로 사용하려 했으나 작동하지 않음
-			kakaoTemplateTable: 0, //채널설정 kakao내 템플릿 구분
-			smsTemplateTable: 0, //채널설정 SMS/MMS내 구분
-			cShortTab:0, //캐러셀 CSHORT 탭변경에 따른 미리보기 변경용
-			cTallTab:0, //캐러셀 CTALL 탭변경에 따른 미리보기 변경용
-			checkedPush: false,   //채널선택에서 push 선택여부
-			checkedRCS: false,    //채널선택에서 RCS 선택여부
-			checkedKakao: false,  //채널선택에서 kakaotalk 선택여부
-			checkedSmsMms: false, //채널선택에서 sms/mms 선택여부
-			aplnIdList: {}, //app_id selectbox설정용
-			kakaoChKeyList: {}, //카카오채널키 selectbox설정용
+			channelTab: 9,						//채널설정 Push/RCS/카카오톡/SMSMMS 탭 show/hide
+			rcsTemplateTable: 0,				//채널설정 RCS탭 내 템플릿 구분 //저장등록시 유효성 체크 대상으로 사용
+			rcsTemplateTableChecked: 0,	//채널설정 RCS탭 내 템플릿 구분 //v-model이용 radio 선택표시용으로 사용 //rcsTemplateTable로 사용하려 했으나 작동하지 않음
+			kakaoTemplateTable: 0,			//채널설정 kakao내 템플릿 구분
+			smsTemplateTable: 0,				//채널설정 SMS/MMS내 구분
+			cShortTab:0,							//캐러셀 CSHORT 탭변경에 따른 미리보기 변경용
+			cTallTab:0,								//캐러셀 CTALL 탭변경에 따른 미리보기 변경용
+			checkedPush: false,				//채널선택에서 push 선택여부
+			checkedRCS: false,					//채널선택에서 RCS 선택여부
+			checkedKakao: false,				//채널선택에서 kakaotalk 선택여부
+			checkedSmsMms: false,			//채널선택에서 sms/mms 선택여부
+			aplnIdList: {},						//app_id selectbox설정용
+			kakaoChKeyList: {},				//카카오채널키 selectbox설정용
 			indexData:0,
 			itemDatas:[],
-			rcs0CallbackList: [], //RCS 프리템플릿 발신번호 리스트
-			rcs1CallbackList: [], //RCS 서술 발신번호 리스트
-			rcs2CallbackList: [], //RCS 스타일 발신번호 리스트
-			rcsSMSCallbackList: [], //RCS sms 발신번호 리스트
-			rcsLMSCallbackList: [], //RCS lms 발신번호 리스트
-			rcsShortCallbackList: [], //RCS SHORT 발신번호 리스트
-			rcsTallCallbackList: [], //RCS TALL 발신번호 리스트
+			rcs0CallbackList: [],				//RCS 프리템플릿 발신번호 리스트
+			rcs1CallbackList: [],				//RCS 서술 발신번호 리스트
+			rcs2CallbackList: [],				//RCS 스타일 발신번호 리스트
+			rcsSMSCallbackList: [],			//RCS sms 발신번호 리스트
+			rcsLMSCallbackList: [],			//RCS lms 발신번호 리스트
+			rcsShortCallbackList: [],			//RCS SHORT 발신번호 리스트
+			rcsTallCallbackList: [],				//RCS TALL 발신번호 리스트
+			rcs9CallbackList: [],				//RCS 캐러셀 Short 카드 발신번호 리스트
+			rcs10CallbackList: [],				//RCS 캐러셀 Tall 카드 발신번호 리스트
 
-			rcs9CallbackList: [], //RCS 캐러셀 Short 카드 발신번호 리스트
-			rcs10CallbackList: [], //RCS 캐러셀 Tall 카드 발신번호 리스트
+			smsCallbackList: [],				//smslms 발신번호 리스트
 
-			smsCallbackList: [], //smslms 발신번호 리스트
+			rcsDesMessagebaseId: '',		//서술형 MessagebaseId
+			rcsDesFormNm: '',					//서술형 유형
+			rcsDesFormNmList: [],			//RCS 서술형 유형 selectBox
+			rcsStyleFormNm: '',				// 스타일형 유형
+			rcsStyleFormNmList: [],			// 스타일형 유형 selectBox
+			rcsImgsrc : require("@/assets/images/common/approve.png"),			// 이미지
 
 			detailTitle:'통합발송 템플릿',
 
-			pushImgMngOpen : false, /* Push 이미지 */
+			pushImgMngOpen : false,		/* Push 이미지 */
 			pushImgUploadOpen : false,
 			pushUseCh : 'PUSH',
 			pushImgLimitSize : 1,
 
-			rcs90ImgMngOpen : false, /* RCS 캐러셀 Short 카드1 이미지 */
+			rcs90ImgMngOpen : false,		/* RCS 캐러셀 Short 카드1 이미지 */
 			rcs90ImgUploadOpen : false,
 			rcs90UseCh : 'RCS',
 			rcs90ImgLimitSize : 1,
@@ -3131,16 +3164,16 @@ export default {
 			rcs95ImgUploadOpen : false,
 			rcs95UseCh : 'RCS',
 			rcs95ImgLimitSize : 1,
-			rcs9CardCount: 3, // rcs탭 캐러셀 Short 카드탭 갯수  //카드탭은 갯수만큼 service단에서 배열로 저장되어야 한다.
+			rcs9CardCount: 3,					// rcs탭 캐러셀 Short 카드탭 갯수  //카드탭은 갯수만큼 service단에서 배열로 저장되어야 한다.
 
-			button90Flag: false, //버튼 추가 여부
+			button90Flag: false,				//버튼 추가 여부
 			button91Flag: false,
 			button92Flag: false,
 			button93Flag: false,
 			button94Flag: false,
 			button95Flag: false,
 
-			rcs100ImgMngOpen : false, /* RCS 캐러셀 TALL 카드1 이미지 */
+			rcs100ImgMngOpen : false,	/* RCS 캐러셀 TALL 카드1 이미지 */
 			rcs100ImgUploadOpen : false,
 			rcs100UseCh : 'RCS',
 			rcs100ImgLimitSize : 1,
@@ -3164,33 +3197,40 @@ export default {
 			rcs105ImgUploadOpen : false,
 			rcs105UseCh : 'RCS',
 			rcs105ImgLimitSize : 1,
-			rcs10CardCount: 3, // RCS탭 캐러셀 TALL 카드탭 갯수  //카드탭은 갯수만큼 service단에서 배열로 저장되어야 한다.
+			rcs10CardCount: 3,				// RCS탭 캐러셀 TALL 카드탭 갯수  //카드탭은 갯수만큼 service단에서 배열로 저장되어야 한다.
 
-			button100Flag: false, //버튼 추가 여부
+			button100Flag: false,				//버튼 추가 여부
 			button101Flag: false,
 			button102Flag: false,
 			button103Flag: false,
 			button104Flag: false,
 			button105Flag: false,
 
-			rcsShortImgMngOpen : false, /* RCS 세로형 SHORT 이미지 */
+			rcsShortImgMngOpen : false,	/* RCS 세로형 SHORT 이미지 */
 			rcsShortImgUploadOpen : false,
 			rcsShortUseCh : 'RCS',
 			rcsShortImgLimitSize : 1,
 
-			rcsTallImgMngOpen : false, /* RCS 세로형 TALL 이미지 */
+			rcsTallImgMngOpen : false,		/* RCS 세로형 TALL 이미지 */
 			rcsTallImgUploadOpen : false,
 			rcsTallUseCh : 'RCS',
 			rcsTallImgLimitSize : 1,
 
-			friendTalkImgMngOpen : false, /* MMS 이미지 */
+			friendTalkImgMngOpen : false,	/* MMS 이미지 */
 			friendTalkImgUploadOpen : false,
 			friendTalkUseCh : 'FRIENDTALK',
 			friendTalkImgLimitSize : 1,
 
-			friendTalkSenderKeyType: 'NOMAL',  //NOMAL, GROUP //friendTalk 발신프로필 그룹
+			friendTalkSenderKeyType: 'NOMAL',	//NOMAL, GROUP //friendTalk 발신프로필 그룹
 			friendTalkSenderKeyList: [],
 
+			rcsButtonTypeList : [
+				{type:'urlAction', name:'URL 링크'},
+				{type:'clipboardAction', name:'복사하기'},
+				{type:'dialerAction', name:'전화걸기'},
+				{type:'calendarAction', name:'일정추가'},
+				{type:'mapAction', name:'지도맵'}
+			],
 			friendTalkButtonTypeList : [
 				{type:'WL', name:'웹 링크'},
 				{type:'AL', name:'앱 링크'},
@@ -3208,8 +3248,10 @@ export default {
 				//{type:'AC', name:'채널 추가'},  //광고 추가/복합형만
 			],
 
+			templateRadioBtn: 'des',					// 템플릿형 라디오 버튼
 			alimTalkTemplateOpen: false,
-			selectedAlimTalkTemplate: false,
+			selectedRcsDesTemplate: false,		// RCS 템플릿(승인형) 선택 전
+			selectedAlimTalkTemplate: false,		// 알림톡 템플릿 선택 전
 
 			smsImgMngOpen : false, /* MMS 이미지 */
 			smsImgUploadOpen : false,
@@ -3278,6 +3320,7 @@ export default {
 		}
 	},
 	mounted() {
+		this.init();
 		this.fnPushGetAppId();// v-show 사용으로 항상 살아있어서 mounted에 놓음
 		this.fnSelectFriendTalkSenderKeyList();
 		this.fnRcs0SelectCallbackList();
@@ -3286,6 +3329,20 @@ export default {
 		this.fnSetMultiSendTemplateInfo();
 	},
 	methods: {
+		init() {
+			var params = {};
+			var vm = this;
+
+			templateApi.rcsTemplateInit(params).then(response => {
+				var result = response.data;
+				var resultData = result.data;
+
+				vm.rcsDesFormNm = resultData.desFormList[0].MESSAGEBASEFORM_ID;
+				vm.rcsDesFormNmList = resultData.desFormList;
+				vm.rcsStyleFormNm = resultData.styleFormList[0].MESSAGEBASEFORM_ID;
+				vm.rcsStyleFormNmList = resultData.styleFormList;
+			});
+		},
 		//채널선택에서 체크박스를 클릭하면 채널설정탭을 설정한다.
 		toggleOnOffPush:function(){
 			if (this.checkedPush == true) {
@@ -3429,6 +3486,10 @@ export default {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
 			});
+		},
+		// RCS 템플릿 불러오기 팝업
+		fnOpenRcsTemplatePopup() {
+			this.$refs.rcsTemplatePop.fnInit();
 		},
 		// 알림톡 템플릿 불러오기 팝업
 		fnOpenAlimTalkTemplatePopup(){
@@ -3733,7 +3794,7 @@ export default {
 					}
 
 					if (this.rcsTemplateTable === 1) {  //DESCRIPTION
-						if (!this.rowData.rcs1MessageFormId) { 
+						if (!this.selectedRcsDesTemplate) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 승인 서술형 템플릿을 팝업을 통해 선택해 주세요.');
 							return false;
 						}
@@ -3995,6 +4056,66 @@ export default {
 			eventBus.$on('callbackEventBus', this.fnCompleteIntegratedTemplate);
 			confirm.fnConfirm(this.detailTitle, "템플릿을 등록 하시겠습니까?", "확인");
 		},
+		// RCS 템플릿 정보 Set
+		fnSetRcsTemplate(data) {
+			var vm = this;
+			var formNm = data.formNm;
+			if (formNm.indexOf("승인") != -1) {
+				this.rcsImgsrc = require("@/assets/images/common/approve.png");
+			}
+			if (formNm.indexOf("취소") != -1) {
+				this.rcsImgsrc = require("@/assets/images/common/cancel.png");
+			}
+			if (formNm.indexOf("인증") != -1) {
+				this.rcsImgsrc = require("@/assets/images/common/certification.png");
+			}
+			if (formNm.indexOf("출고") != -1) {
+				this.rcsImgsrc = require("@/assets/images/common/delivery.png");
+			}
+			if (formNm.indexOf("안내") != -1) {
+				this.rcsImgsrc = require("@/assets/images/common/infomation.png");
+			}
+			if (formNm.indexOf("회원가입") != -1) {
+				this.rcsImgsrc = require("@/assets/images/common/join.png");
+			}
+			if (formNm.indexOf("주문") != -1) {
+				this.rcsImgsrc = require("@/assets/images/common/order.png");
+			}
+			if (formNm.indexOf("출금") != -1) {
+				this.rcsImgsrc = require("@/assets/images/common/payment.png");
+			}
+			if (formNm.indexOf("입금") != -1) {
+				this.rcsImgsrc = require("@/assets/images/common/receipts.png");
+			}
+			if (formNm.indexOf("예약") != -1) {
+				this.rcsImgsrc = require("@/assets/images/common/reservation.png");
+			}
+			if (formNm.indexOf("배송") != -1) {
+				this.rcsImgsrc = require("@/assets/images/common/ship.png");
+			}
+			if (formNm.indexOf("명세서") != -1) {
+				this.rcsImgsrc = require("@/assets/images/common/specifications.png");
+			}
+
+			if (data.radioBtn == 'des') {
+				vm.rowData.rcsDesMessagebaseId = data.messagebaseId;
+				vm.rowData.brandNm = data.brandId;
+				vm.rowData.rcsDesFormNm = data.messagebaseformId;
+				vm.rowData.rcs1Content = data.desContent;
+				console.log(data.rcsButtonList);
+				vm.rowData.rcsDesButtons = data.rcsButtonList;
+			} else {
+				//vm.sendData.messagebaseId = data.messagebaseId;
+				//vm.styleContentCnt = data.styleContentCnt;
+				//vm.styleInput  = data.styleInput ;
+				//vm.styleInputSec = data.styleInputSec;
+				//vm.styleChk = data.styleChk;
+				//vm.btnCnt = data.btnCnt;
+				//vm.btnNm = data.btnNm;
+			}
+
+			this.selectedRcsDesTemplate = true;
+		},
 		//템플릿 정보 Set
 		fnSetTemplateInfo(templateInfo){
 			Object.assign(this.rowData, templateInfo);
@@ -4074,28 +4195,29 @@ export default {
 						if (rtnData.rcsPrdType == 'FREE') {
 							this.rcsTemplateTable = 0;
 							this.rcsTemplateTableChecked = 0;
-						} else if(rtnData.rcsPrdType == 'DESCRIPTION') {
+						} else if (rtnData.rcsPrdType == 'DESCRIPTION') {
 							this.rcsTemplateTable = 1;
 							this.rcsTemplateTableChecked = 1;
-						} else if(rtnData.rcsPrdType == 'CELL') {
+							this.selectedRcsDesTemplate = true;
+						} else if (rtnData.rcsPrdType == 'CELL') {
 							this.rcsTemplateTable = 2;
 							this.rcsTemplateTableChecked = 2;
-						} else if(rtnData.rcsPrdType == 'SMS') {
+						} else if (rtnData.rcsPrdType == 'SMS') {
 							this.rcsTemplateTable = 3;
 							this.rcsTemplateTableChecked = 3;
-						} else if(rtnData.rcsPrdType == 'LMS') {
+						} else if (rtnData.rcsPrdType == 'LMS') {
 							this.rcsTemplateTable = 4;
 							this.rcsTemplateTableChecked = 4;
-						} else if(rtnData.rcsPrdType == 'SHORT') {
+						} else if (rtnData.rcsPrdType == 'SHORT') {
 							this.rcsTemplateTable = 5;
 							this.rcsTemplateTableChecked = 5;
-						} else if(rtnData.rcsPrdType == 'TALL') {
+						} else if (rtnData.rcsPrdType == 'TALL') {
 							this.rcsTemplateTable = 6;
 							this.rcsTemplateTableChecked = 6;
-						} else if(rtnData.rcsPrdType == 'CSHORT') {
+						} else if (rtnData.rcsPrdType == 'CSHORT') {
 							this.rcsTemplateTable = 9;
 							this.rcsTemplateTableChecked = 9;
-						} else if(rtnData.rcsPrdType == 'CTALL') {
+						} else if (rtnData.rcsPrdType == 'CTALL') {
 							this.rcsTemplateTable = 10;
 							this.rcsTemplateTableChecked = 10;
 						}
@@ -4106,7 +4228,15 @@ export default {
 							this.rowData.callback					= rtnData.rcsCallback; //발신번호
 							this.rowData.rcsBlockNumber		= rtnData.rcsBlockNumber; //수신거부번호
 						}
-	
+
+						if (rtnData.rcsPrdType == 'DESCRIPTION') {
+							this.rowData.rcsDesMessagebaseId	= rtnData.rcsMessagebaseId;
+							this.rowData.brandNm					= rtnData.rcsBrandNm;
+							this.rowData.rcsDesFormNm			= '';
+							this.rowData.rcs1Content				= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content);
+							this.rowData.callback						= rtnData.rcsCallback; //발신번호
+						}
+
 						if (rtnData.rcsPrdType == 'SMS') {
 							this.rowData.rcsSMSContent 			= rtnData.rcsBodyMessage;
 							this.rowData.rcsSMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
@@ -5230,15 +5360,12 @@ export default {
 			this.rcsTallImgMngOpen = !this.rcsTallImgMngOpen;
 		},
 		fnRcsTallCallbackImgInfo(imgInfo){
-			//console.log('1111 : '+JSON.stringify(imgInfo));
 			if (this.fnRcsTallImgLimitSize() == false) return;
 			let temp = {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
-			//console.log('2222 : '+JSON.stringify(temp));
 			this.rowData.rcsTallImgInfoList.push(temp);
-			//console.log('3333 : '+JSON.stringify(this.rowData.rcsTallImgInfoList));
 			this.fnRcsTallDelDuplImgInfo();
 		},
 		fnRcsTallDelDuplImgInfo(){
@@ -5278,16 +5405,13 @@ export default {
 			this.smsImgMngOpen = !this.smsImgMngOpen;
 		},
 		fnSmsCallbackImgInfo(imgInfo){
-			//console.log('1111 : '+JSON.stringify(imgInfo));
 			if (this.fnSmsImgLimitSize() == false) return;
 			let temp = {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
 
-			//console.log('2222 : '+JSON.stringify(temp));
 			this.rowData.smsImgInfoList.push(temp);
-			//console.log('3333 : '+JSON.stringify(this.rowData.smsImgInfoList));
 			this.fnSmsDelDuplImgInfo();
 		},
 		fnSmsDelDuplImgInfo(){
@@ -5307,7 +5431,6 @@ export default {
 			}
 		},
 		fnSmsDelImg(idx){
-			//console.log("fnSmsDelImg=============================");
 			this.rowData.smsImgInfoList.splice(idx, 1);
 		},
 		fnRcsSMSButtonSD(sltDate, params){
@@ -5341,13 +5464,10 @@ export default {
 			this.rowData.rcsTallButtons.splice(idx, 1);
 		},
 		fnFriendTalkButtonSD(sltDate, params){
-			//console.log(sltDate, params.idx)
 			this.rowData.friendTalkButtons[params.idx].startDate = sltDate;
-			//console.log(">>>>>>>>>>>>startDate : ",this.rowData.friendTalkButtons[params.idx].startDate, params.idx);
 		},
 		fnFriendTalkButtonED(sltDate, params){
 			this.rowData.friendTalkButtons[params.idx].endDate = sltDate;
-			//console.log(">>>>>>>>>>>>endDate : ",this.rowData.friendTalkButtons[params.idx].endDate, params.idx);
 		},
 		fnRcs90ButtonSD(sltDate, params){
 			this.rowData.rcs90Buttons[params.idx].startDate = sltDate;
@@ -5442,12 +5562,10 @@ export default {
 		},
 		fnTextLength(title, sid, tid, len){
 			var val = jQuery(sid).val();
-			//console.log("val : "+val.length);
 			if (val.length > len) {
 				var msg = title + '의 최대 입력 길이는 ' + len + '입니다.';
 				alert(msg);
 				var temp = val.substr(0,len);
-				//console.log("temp : "+temp.length);
 				jQuery(sid).val(temp);
 				val = jQuery(sid).val();
 			}
@@ -5490,7 +5608,12 @@ export default {
 		// 메시지 구분 선택 시 EVENT
 		checkMsgKind(flag) {
 			if (flag === "A") {
+				// 메시지 구분 광고성 선택 시, 카카오톡 상품 친구톡 클릭
 				jQuery('input:radio[name=kakao]:input[value="friend"]').click();
+				// 메시지 구분 광고성 선택 시, RCS상품이 템플릿 승인형인 경우 프리템플릿으로 초기화
+				if (jQuery("input:radio[name=rcsTemplate1]:checked").val() == 0 || jQuery("input:radio[name=rcsTemplate1]:checked").val() == 1) {
+					jQuery("input:radio[id=rcsTemplate1-1]").click();
+				}
 			}
 		},
 		fnImgReset(){

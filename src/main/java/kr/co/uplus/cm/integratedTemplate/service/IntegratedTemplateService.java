@@ -157,16 +157,12 @@ public class IntegratedTemplateService {
 				sb.append("\"ch\" : \"RCS\",");// 발송채널
 
 				sb.append("\"data\" : { ");
-				String messageBaseId = selectMessageBaseId(params);
-				sb.append("\"messagebaseId\": \"" + messageBaseId + "\","); // cm.CM_RCS_MSGBASE의 MESSAGEBASE_ID값을 설정
 				sb.append("\"callback\": \"" + params.get("callback") + "\","); // 발신번호
 				if ("I".equals(params.get("msgKind"))) {
 					sb.append("\"header\" : \"0\","); // 정보성 메시지
 				} else if ("A".equals(params.get("msgKind"))) {
 					sb.append("\"header\" : \"1\","); // 광고성 메시지
-					sb.append("\"footer\" : \"" + params.get("rcsBlockNumber") + "\","); // 무료수신거부 번호, header의 값이 광고성일 때
-																							// footer 값을 포함하지 않고 발송하면 실패
-																							// 처리
+					sb.append("\"footer\" : \"" + params.get("rcsBlockNumber") + "\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패처리
 				}
 				sb.append("\"copyAllowed\" : \"false\","); // 복사/공유 허용여부
 				sb.append("\"expiryOption\" : \"2\","); // expire 옵션(1:72시간, 2:30초)
@@ -176,6 +172,9 @@ public class IntegratedTemplateService {
 					// RCS FREE TYPE
 					// ====================================================================
 					sb.append("\"rcsPrdType\" : \"FREE\","); // RCS상품타입(프리 템플릿) rcsTemplateTable => 0
+					String messageBaseId = selectMessageBaseId(params);
+					sb.append("\"messagebaseId\": \"" + messageBaseId + "\","); // cm.CM_RCS_MSGBASE의 MESSAGEBASE_ID값을
+																				// 설정
 
 					sb.append("\"mergeData\": [{ ");
 					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs0Content")) + "\""); // 메시지
@@ -184,45 +183,104 @@ public class IntegratedTemplateService {
 					// RCS DESCRIPTION TYPE
 					// ====================================================================
 					sb.append("\"rcsPrdType\" : \"DESCRIPTION\","); // RCS상품타입(서술 승인템플릿) rcsTemplateTable => 1
-					sb.append("\"messagebaseId\": \"" + params.get("rcs1MessageFormId") + "\","); // cm.CM_RCS_MSGBASEFORM,
-																									// cm_console.CM_RCS_TMP_MSGBASE의
-																									// MESSAGEBASEFORM_ID값을
-																									// 설정
+					sb.append("\"messagebaseId\": \"" + params.get("rcsDesMessagebaseId") + "\","); // 서술형 템플릿의 RCS MESSAGEBASE_ID 를 설정
+
 					sb.append("\"mergeData\": [{ ");
-					sb.append("	\"title\" : \"" + params.get("rcs1Title") + "\", "); //
-					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs1Content")) + "\", "); // 메시지
-					sb.append("	\"mediaUrl\" : \"{}\", "); //
-					sb.append("	\"media\" : \"\" "); //
+					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs1Content")) + "\" "); // 메시지
+					sb.append("	}], ");
 
-					List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params
-							.get("rcsDescriptionButtons");
-					sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
-					sb.append("	}] ");
+					List<Map<String, Object>> buttonInfoList = null;
+					if (params.containsKey("rcsDesButtons")) {
+						buttonInfoList = (List<Map<String, Object>>) params.get("rcsDesButtons");
+					}
 
+					sb.append("\"buttons\": [ ");
+
+					int rcsDesIdx = 1;
+					Map<String, Object> btnInfo = null;
+					String linkType = "";
+					String name = "";
+					String url = "";
+					String text = "";
+					String phoneNumber = "";
+					String title = "";
+					String description = "";
+					String startTime = "";
+					String endTime = "";
+					for (Map<String, Object> buttonInfo : buttonInfoList) {
+
+						btnInfo = (Map<String, Object>) buttonInfo.get("action");
+						linkType = (String) btnInfo.get("linkType");
+						name = (String) btnInfo.get("displayText");
+
+						if (linkType.equalsIgnoreCase("urlAction")) { // URL 링크
+							Map<String, Object> urlAction = (Map<String, Object>) btnInfo.get("urlAction");
+							Map<String, Object> openUrl = (Map<String, Object>) urlAction.get("openUrl");
+							url = (String) openUrl.get("url");
+							sb.append("	{ ");
+							sb.append("	\"name\": \"" + name + "\","); // 버튼이름
+							sb.append("	\"linkType\": \"U\", "); // 버튼타입
+							sb.append("	\"url\": \"" + url + "\" "); // 내용
+							sb.append("	} ");
+						}
+						if (linkType.equalsIgnoreCase("clipboardAction")) { // 복사하기
+							Map<String, Object> clipboardAction = (Map<String, Object>) btnInfo.get("clipboardAction");
+							Map<String, Object> copyToClipboard = (Map<String, Object>) clipboardAction.get("copyToClipboard");
+							text = (String) copyToClipboard.get("text");
+							sb.append("	{ ");
+							sb.append("	\"name\": \"" + name + "\","); // 버튼이름
+							sb.append("	\"linkType\": \"C\", "); // 버튼타입
+							sb.append("	\"text\": \"" + text + "\" "); // 내용
+							sb.append("	} ");
+						}
+						if (linkType.equalsIgnoreCase("dialerAction")) { // 전화걸기
+							Map<String, Object> dialerAction = (Map<String, Object>) btnInfo.get("dialerAction");
+							Map<String, Object> dialPhoneNumber = (Map<String, Object>) dialerAction.get("dialPhoneNumber");
+							phoneNumber = (String) dialPhoneNumber.get("phoneNumber");
+							sb.append("	{ ");
+							sb.append("	\"name\": \"" + name + "\","); // 버튼이름
+							sb.append("	\"linkType\": \"T\", "); // 버튼타입
+							sb.append("	\"phoneNumber\": \"" + phoneNumber + "\" "); // 내용
+							sb.append("	} ");
+						}
+						if (linkType.equalsIgnoreCase("calendarAction")) { // 일정추가
+							Map<String, Object> calendarAction = (Map<String, Object>) btnInfo.get("calendarAction");
+							Map<String, Object> createCalendarEvent = (Map<String, Object>) calendarAction.get("createCalendarEvent");
+							title = (String) createCalendarEvent.get("title");
+							description = (String) createCalendarEvent.get("description");
+							startTime = (String) createCalendarEvent.get("startTime");
+							endTime = (String) createCalendarEvent.get("endTime");
+							sb.append("	{ ");
+							sb.append("	\"name\": \"" + name + "\","); // 버튼이름
+							sb.append("	\"linkType\": \"S\", "); // 버튼타입
+							sb.append("	\"title\": \"" + title + "\", "); // 제목
+							sb.append("	\"description\": \"" + description + "\", "); // 설명
+							sb.append("	\"startTime\": \"" + startTime + "\", "); // 시작일
+							sb.append("	\"endTime\": \"" + endTime + "\" "); // 종료일
+							sb.append("	} ");
+						}
+						if (linkType.equalsIgnoreCase("mapAction")) { // 지도맵
+							sb.append("	{ ");
+							sb.append("	\"name\": \"" + name + "\","); // 버튼이름
+							sb.append("	\"linkType\": \"M\" "); // 버튼타입
+							sb.append("	} ");
+						}
+
+						if (rcsDesIdx++ < buttonInfoList.size()) {
+							sb.append(", ");
+						}
+					}
+					sb.append("	]         ");
 				} else if ((int) params.get("rcsTemplateTable") == 2) {
 					// RCS CELL(STYLE) TYPE
 					// ====================================================================
 					sb.append("\"rcsPrdType\" : \"CELL\","); // RCS상품타입(스타일 승인템플릿) rcsTemplateTable => 2
 					sb.append("\"messagebaseId\": \"" + params.get("rcs2MessageFormId") + "\","); // cm.CM_RCS_MSGBASEFORM,
-																									// cm_console.CM_RCS_TMP_MSGBASE의
-																									// MESSAGEBASEFORM_ID값을
-																									// 설정
-					sb.append("\"callback\": \"" + params.get("callback") + "\",");
-					sb.append("\"footer\": \"\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패 처리
 
-					sb.append("\"body\": [{ ");
-					sb.append("	\"title\" : \"" + params.get("rcs2Title") + "\", "); //
-					// String rcs2Content1 = ((String) params.get("rcs2Content1")).replaceAll("\n",
-					// "CHR(13)CHR(10)");
-					// String rcs2Content2 = ((String) params.get("rcs2Content2")).replaceAll("\n",
-					// "CHR(13)CHR(10)");
-					// String rcs2Content3 = ((String) params.get("rcs2Content3")).replaceAll("\n",
-					// "CHR(13)CHR(10)");
+					sb.append("\"mergeData\": [{ ");
 					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs2Content1")) + ","
 							+ JSONObject.escape((String) params.get("rcs2Content2")) + ","
 							+ JSONObject.escape((String) params.get("rcs2Content3")) + "\", "); // 메시지
-					sb.append("	\"mediaUrl\" : \"{}\", "); //
-					sb.append("	\"media\" : \"\" "); //
 
 					List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params
 							.get("rcsStyleButtons");
@@ -231,7 +289,8 @@ public class IntegratedTemplateService {
 					sb.append("	}] ");
 
 				} else if ((int) params.get("rcsTemplateTable") == 3) {
-//RCS SMS TYPE ====================================================================
+					// RCS SMS TYPE
+					// ====================================================================
 					sb.append("\"rcsPrdType\" : \"SMS\","); // RCS상품타입(SMS 템플릿) rcsTemplateTable => 3
 					sb.append("\"messagebaseId\": \"SS000000\","); // cm.CM_RCS_MSGBASE, cm_console.CM_RCS_TMP_MSGBASE의
 																	// MESSAGEBASEFORM_ID값을 설정
@@ -1351,124 +1410,125 @@ public class IntegratedTemplateService {
 		String startDate = null;
 		String endDate = null;
 
-		// sb.append("\"buttons\": [{ ");
-		sb.append("\"suggestions\": [ ");
+		sb.append("\", buttons\": [ ");
+		// sb.append("\"suggestions\": [ ");
 
 		int rcsIdx = 1;
-		for (Map<String, Object> buttonInfo : buttonInfoList) {
+		if (!buttonInfoList.isEmpty()) {
+			for (Map<String, Object> buttonInfo : buttonInfoList) {
 
-			buttonType = CommonUtils.getStrValue(buttonInfo, "buttonType");
-			buttonName = CommonUtils.getStrValue(buttonInfo, "buttonName");
-			buttonLink = CommonUtils.getStrValue(buttonInfo, "buttonLink");
+				buttonType = CommonUtils.getStrValue(buttonInfo, "buttonType");
+				buttonName = CommonUtils.getStrValue(buttonInfo, "buttonName");
+				buttonLink = CommonUtils.getStrValue(buttonInfo, "buttonLink");
 
-			buttonLink1 = CommonUtils.getStrValue(buttonInfo, "buttonLink1");
-			startDate = CommonUtils.getStrValue(buttonInfo, "startDate");
-			endDate = CommonUtils.getStrValue(buttonInfo, "endDate");
+				buttonLink1 = CommonUtils.getStrValue(buttonInfo, "buttonLink1");
+				startDate = CommonUtils.getStrValue(buttonInfo, "startDate");
+				endDate = CommonUtils.getStrValue(buttonInfo, "endDate");
 
-			// System.out.println(">>>>service 003 button 003 : buttonType : "+buttonType);
-			// System.out.println(">>>>service 003 button 004 : buttonName : "+buttonName);
-			// System.out.println(">>>>service 003 button 005 : buttonLink : "+buttonLink);
-			// System.out.println(">>>>service 003 button 006 : buttonLink1 :
-			// "+buttonLink1);
-			// System.out.println(">>>>service 003 button 007 : startDate : "+startDate);
-			// System.out.println(">>>>service 003 button 008 : endDate : "+endDate);
+				// System.out.println(">>>>service 003 button 003 : buttonType : "+buttonType);
+				// System.out.println(">>>>service 003 button 004 : buttonName : "+buttonName);
+				// System.out.println(">>>>service 003 button 005 : buttonLink : "+buttonLink);
+				// System.out.println(">>>>service 003 button 006 : buttonLink1 :
+				// "+buttonLink1);
+				// System.out.println(">>>>service 003 button 007 : startDate : "+startDate);
+				// System.out.println(">>>>service 003 button 008 : endDate : "+endDate);
 
-			if (buttonType.equalsIgnoreCase("U")) {
-				sb.append("	{ ");
-				sb.append("	\"action\": { ");
-				sb.append("	\"urlAction\": { "); // URL링크 버튼인 경우
-				sb.append("	\"openUrl\": { ");
-				sb.append("	\"url\": \"" + buttonLink + "\" "); // 내용
-				sb.append("	} ");
-				sb.append("	}, ");
-				sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
-				sb.append("	\"displayText\": \"" + buttonName + "\","); // 버튼이름
-				sb.append("	\"postback\": { ");
-				// sb.append(" \"data\": \""+params.get("")+"\" "); //set_by_chatbot_open_url
-				sb.append("	\"data\": \"set_by_chatbot_open_url\" ");
-				sb.append("	} ");
-				sb.append("	} ");
-				sb.append("	} ");
-			}
-			if (buttonType.equalsIgnoreCase("C")) {
-				sb.append("	{ ");
-				sb.append("	\"action\": { ");
-				sb.append("	\"clipboardAction\": { "); // 복사하기 버튼인 경우
-				sb.append("	\"copyToClipboard\": { ");
-				sb.append("	\"text\": \"" + buttonLink + "\" "); // 내용
-				sb.append("	} ");
-				sb.append("	}, ");
-				sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
-				sb.append("	\"displayText\": \"" + buttonName + "\", "); // 버튼이름
-				sb.append("	\"postback\": { ");
-				// sb.append(" \"data\": \""+params.get("")+"\" ");
-				// //set_by_chatbot_copy_to_clipboard
-				sb.append("	\"data\": \"set_by_chatbot_copy_to_clipboard\" ");
-				sb.append("	} ");
-				sb.append("	} ");
-				sb.append("	} ");
-			}
-			if (buttonType.equalsIgnoreCase("T")) {
-				sb.append("	{ ");
-				sb.append("	\"action\": { ");
-				sb.append("	\"dialerAction\": { "); // 전화걸기 버튼인 경우
-				sb.append("	\"dialPhoneNumber\": { ");
-				sb.append("	\"phoneNumber\": \"" + buttonLink + "\" "); // 휴대폰번호
-				sb.append("	} ");
-				sb.append("	}, ");
-				sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
-				sb.append("	\"displayText\": \"" + buttonName + "\", "); // 버튼이름
-				sb.append("	\"postback\": { ");
-				// sb.append(" \"data\": \""+params.get("")+"\" ");
-				// //set_by_chatbot_dial_phone_number
-				sb.append("	\"data\": \"set_by_chatbot_dial_phone_number\" ");
-				sb.append("	} ");
-				sb.append("	} ");
-				sb.append("	} ");
-			}
-			if (buttonType.equalsIgnoreCase("S")) {
-				sb.append("	{ ");
-				sb.append("	\"action\": { ");
-				sb.append("	\"calendarAction\": { "); // 일정추가 버튼인 경우
-				sb.append("	\"createCalendarEvent\": { ");
-				sb.append("	\"startTime\": \"" + startDate + "\", "); // 시작일 2017-03-14T00:00:00Z
-				sb.append("	\"endTime\": \"" + endDate + "\", "); // 종료일
-				sb.append("	\"title\": \"" + buttonLink + "\", "); // 제목
-				sb.append("	\"description\": \"" + buttonLink1 + "\" "); // 내용
-				sb.append("	} ");
-				sb.append("	}, ");
-				sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
-				sb.append("	\"displayText\": \"" + buttonName + "\", "); // 버튼이름
-				sb.append("	\"postback\": { ");
-				// sb.append(" \"data\": \""+params.get("")+"\"
-				// ");//set_by_chatbot_create_calendar_event
-				sb.append("	\"data\": \"set_by_chatbot_create_calendar_event\" ");
-				sb.append("	} ");
-				sb.append("	} ");
-				sb.append("	} ");
-			}
-			if (buttonType.equalsIgnoreCase("M")) {
-				sb.append("	{ ");
-				sb.append("	\"action\": { ");
-				sb.append("	\"mapAction\": { "); // 지도맵 버튼인 경우
-				sb.append("	\"requestLocationPush\": {} ");
-				sb.append("	}, ");
-				sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
-				sb.append("	\"displayText\": \"" + buttonName + "\", "); // 버튼이름
-				sb.append("	\"postback\": { ");
-				// sb.append(" \"data\": \""+buttonLink+"\"
-				// ");//set_by_chatbot_request_location_push
-				sb.append("	\"data\": \"set_by_chatbot_request_location_push\" ");
-				sb.append("	} ");
-				sb.append("	} ");
-				sb.append("	} ");
-			}
+				if (buttonType.equalsIgnoreCase("U")) {
+					sb.append("	{ ");
+					sb.append("	\"action\": { ");
+					sb.append("	\"urlAction\": { "); // URL링크 버튼인 경우
+					sb.append("	\"openUrl\": { ");
+					sb.append("	\"url\": \"" + buttonLink + "\" "); // 내용
+					sb.append("	} ");
+					sb.append("	}, ");
+					sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
+					sb.append("	\"displayText\": \"" + buttonName + "\","); // 버튼이름
+					sb.append("	\"postback\": { ");
+					// sb.append(" \"data\": \""+params.get("")+"\" "); //set_by_chatbot_open_url
+					sb.append("	\"data\": \"set_by_chatbot_open_url\" ");
+					sb.append("	} ");
+					sb.append("	} ");
+					sb.append("	} ");
+				}
+				if (buttonType.equalsIgnoreCase("C")) {
+					sb.append("	{ ");
+					sb.append("	\"action\": { ");
+					sb.append("	\"clipboardAction\": { "); // 복사하기 버튼인 경우
+					sb.append("	\"copyToClipboard\": { ");
+					sb.append("	\"text\": \"" + buttonLink + "\" "); // 내용
+					sb.append("	} ");
+					sb.append("	}, ");
+					sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
+					sb.append("	\"displayText\": \"" + buttonName + "\", "); // 버튼이름
+					sb.append("	\"postback\": { ");
+					// sb.append(" \"data\": \""+params.get("")+"\" ");
+					// //set_by_chatbot_copy_to_clipboard
+					sb.append("	\"data\": \"set_by_chatbot_copy_to_clipboard\" ");
+					sb.append("	} ");
+					sb.append("	} ");
+					sb.append("	} ");
+				}
+				if (buttonType.equalsIgnoreCase("T")) {
+					sb.append("	{ ");
+					sb.append("	\"action\": { ");
+					sb.append("	\"dialerAction\": { "); // 전화걸기 버튼인 경우
+					sb.append("	\"dialPhoneNumber\": { ");
+					sb.append("	\"phoneNumber\": \"" + buttonLink + "\" "); // 휴대폰번호
+					sb.append("	} ");
+					sb.append("	}, ");
+					sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
+					sb.append("	\"displayText\": \"" + buttonName + "\", "); // 버튼이름
+					sb.append("	\"postback\": { ");
+					// sb.append(" \"data\": \""+params.get("")+"\" ");
+					// //set_by_chatbot_dial_phone_number
+					sb.append("	\"data\": \"set_by_chatbot_dial_phone_number\" ");
+					sb.append("	} ");
+					sb.append("	} ");
+					sb.append("	} ");
+				}
+				if (buttonType.equalsIgnoreCase("S")) {
+					sb.append("	{ ");
+					sb.append("	\"action\": { ");
+					sb.append("	\"calendarAction\": { "); // 일정추가 버튼인 경우
+					sb.append("	\"createCalendarEvent\": { ");
+					sb.append("	\"startTime\": \"" + startDate + "\", "); // 시작일 2017-03-14T00:00:00Z
+					sb.append("	\"endTime\": \"" + endDate + "\", "); // 종료일
+					sb.append("	\"title\": \"" + buttonLink + "\", "); // 제목
+					sb.append("	\"description\": \"" + buttonLink1 + "\" "); // 내용
+					sb.append("	} ");
+					sb.append("	}, ");
+					sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
+					sb.append("	\"displayText\": \"" + buttonName + "\", "); // 버튼이름
+					sb.append("	\"postback\": { ");
+					// sb.append(" \"data\": \""+params.get("")+"\"
+					// ");//set_by_chatbot_create_calendar_event
+					sb.append("	\"data\": \"set_by_chatbot_create_calendar_event\" ");
+					sb.append("	} ");
+					sb.append("	} ");
+					sb.append("	} ");
+				}
+				if (buttonType.equalsIgnoreCase("M")) {
+					sb.append("	{ ");
+					sb.append("	\"action\": { ");
+					sb.append("	\"mapAction\": { "); // 지도맵 버튼인 경우
+					sb.append("	\"requestLocationPush\": {} ");
+					sb.append("	}, ");
+					sb.append("	\"buttonType\": \"" + buttonType + "\", "); // 버튼타입
+					sb.append("	\"displayText\": \"" + buttonName + "\", "); // 버튼이름
+					sb.append("	\"postback\": { ");
+					// sb.append(" \"data\": \""+buttonLink+"\"
+					// ");//set_by_chatbot_request_location_push
+					sb.append("	\"data\": \"set_by_chatbot_request_location_push\" ");
+					sb.append("	} ");
+					sb.append("	} ");
+					sb.append("	} ");
+				}
 
-			if (rcsIdx++ < buttonInfoList.size()) {
-				sb.append(", ");
-			}
-		} // end for(Map<String, Object> buttonInfo : buttonInfoList) {
-
+				if (rcsIdx++ < buttonInfoList.size()) {
+					sb.append(", ");
+				}
+			} // end for(Map<String, Object> buttonInfo : buttonInfoList) {
+		}
 		sb.append("	] ");
 		// sb.append(" }] ");
 

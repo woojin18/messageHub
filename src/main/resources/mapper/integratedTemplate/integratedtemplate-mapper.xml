@@ -89,19 +89,13 @@
 			M.USE_YN, M.chTypeList, M.CHECKED_CHANNEL,
 			M.pushMsg, M.pushAppId, M.pushTitle, M.pushFileId, M.pushSendType, M.PUSH_RCVBLC_INPUT,
 			M.ADTN_INFO, M.PUSH_CH_IMG_URL,
-			M.rcsCardCount, M.rcsPrdType, M.rcsCallback, M.rcsMessageBaseId, M.rcsBlockNumber, M.rcsBrandNm,
-			M.rcs0Media, M.rcs0Title, M.rcs0Content,
-			M.rcs0MediaUrl,
-			M.rcs1BodyMedia, M.rcs1BodyTitle, M.rcs1BodyMessage,
-			M.rcs1BodyMediaUrl,
-			M.rcs2BodyMedia, M.rcs2BodyTitle, M.rcs2BodyMessage,
-			M.rcs2BodyMediaUrl,
-			M.rcs3BodyMedia, M.rcs3BodyTitle, M.rcs3BodyMessage,
-			M.rcs3BodyMediaUrl,
-			M.rcs4BodyMedia, M.rcs4BodyTitle, M.rcs4BodyMessage,
-			M.rcs4BodyMediaUrl,
-			M.rcs5BodyMedia, M.rcs5BodyTitle, M.rcs5BodyMessage,
-			M.rcs5BodyMediaUrl,
+			M.rcsCardCount, M.rcsPrdType, M.rcsCallback, M.rcsMessagebaseId, M.rcsBlockNumber, M.rcsBrandNm,
+			M.rcs0Media, M.rcs0MediaUrl, M.rcs0Title, M.rcs0Content,
+			M.rcs1Media, M.rcs1MediaUrl, M.rcs1Title, M.rcs1Content,
+			M.rcs2Media, M.rcs2MediaUrl, M.rcs2Title, M.rcs2Content,
+			M.rcs3Media, M.rcs3MediaUrl, M.rcs3Title, M.rcs3Content,
+			M.rcs4Media, M.rcs4MediaUrl, M.rcs4Title, M.rcs4Content,
+			M.rcs5Media, M.rcs5MediaUrl, M.rcs5Title, M.rcs5Content,
 			M.rcsButton0ButtonType,
 			CONCAT('{','\"buttonType\":\"'	, IFNULL(M.rcsButton0ButtonType,'')		,'\"'
 							,',\"buttonName\":\"'	, IFNULL(M.rcsButton0DisplayText,'')	,'\"'
@@ -473,37 +467,37 @@
 				@PUSH_PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PUSH_PATH_TO_NAME) AS PUSH_PATH_TO_PARENT,
 				@PUSH_CH_OBJECT := JSON_EXTRACT(B.USE_CH_INFO, @PUSH_PATH_TO_PARENT) AS PUSH_CH_OBJECT,
 				@PUSH_CH_IMG_URL := JSON_UNQUOTE(JSON_EXTRACT(@PUSH_CH_OBJECT, '$.URL')) AS PUSH_CH_IMG_URL,
-				T.rcsCardCount, T.rcsPrdType, T.rcsCallback, T.rcsMessageBaseId, T.rcsBlockNumber, T.rcsBrandNm,
+				T.rcsCardCount, T.rcsPrdType, T.rcsCallback, T.rcsMessagebaseId, T.rcsBlockNumber, T.rcsBrandNm,
 				T.rcs0Media, T.rcs0Title, T.rcs0Content,
 				CASE
 					WHEN rcs0MediaUrl = '{}' then ''
 					ELSE replace(replace(T.rcs0MediaUrl,'{',''),'}','')
 				END AS rcs0MediaUrl,
-				T.rcs1BodyMedia, T.rcs1BodyTitle, T.rcs1BodyMessage,
+				T.rcs1Media, T.rcs1Title, T.rcs1Content,
 				CASE
-					WHEN rcs1BodyMediaUrl = '{}' then ''
-					ELSE replace(replace(T.rcs1BodyMediaUrl,'{',''),'}','')
-				END AS rcs1BodyMediaUrl,
-				T.rcs2BodyMedia, T.rcs2BodyTitle, T.rcs2BodyMessage,
+					WHEN rcs1MediaUrl = '{}' then ''
+					ELSE replace(replace(T.rcs1MediaUrl,'{',''),'}','')
+				END AS rcs1MediaUrl,
+				T.rcs2Media, T.rcs2Title, T.rcs2Content,
 				CASE
-					WHEN rcs2BodyMediaUrl = '{}' then ''
-					ELSE replace(replace(T.rcs2BodyMediaUrl,'{',''),'}','')
-				END AS rcs2BodyMediaUrl,
-				T.rcs3BodyMedia, T.rcs3BodyTitle, T.rcs3BodyMessage,
+					WHEN rcs2MediaUrl = '{}' then ''
+					ELSE replace(replace(T.rcs2MediaUrl,'{',''),'}','')
+				END AS rcs2MediaUrl,
+				T.rcs3Media, T.rcs3Title, T.rcs3Content,
 				CASE
-					WHEN rcs3BodyMediaUrl = '{}' then ''
-					ELSE replace(replace(T.rcs3BodyMediaUrl,'{',''),'}','')
-				END AS rcs3BodyMediaUrl,
-				T.rcs4BodyMedia, T.rcs4BodyTitle, T.rcs4BodyMessage,
+					WHEN rcs3MediaUrl = '{}' then ''
+					ELSE replace(replace(T.rcs3MediaUrl,'{',''),'}','')
+				END AS rcs3MediaUrl,
+				T.rcs4Media, T.rcs4Title, T.rcs4Content,
 				CASE
-					WHEN rcs4BodyMediaUrl = '{}' then ''
-					ELSE replace(replace(T.rcs4BodyMediaUrl,'{',''),'}','')
-				END AS rcs4BodyMediaUrl,
-				T.rcs5BodyMedia, T.rcs5BodyTitle, T.rcs5BodyMessage,
+					WHEN rcs4MediaUrl = '{}' then ''
+					ELSE replace(replace(T.rcs4MediaUrl,'{',''),'}','')
+				END AS rcs4MediaUrl,
+				T.rcs5Media, T.rcs5Title, T.rcs5Content,
 				CASE
-					WHEN rcs5BodyMediaUrl = '{}' then ''
-					ELSE replace(replace(T.rcs5BodyMediaUrl,'{',''),'}','')
-				END AS rcs5BodyMediaUrl,
+					WHEN rcs5MediaUrl = '{}' then ''
+					ELSE replace(replace(T.rcs5MediaUrl,'{',''),'}','')
+				END AS rcs5MediaUrl,
 				T.rcsButton0Data, T.rcsButton0ButtonType, T.rcsButton0DisplayText, T.rcsButton0Title, T.rcsButton0StartTime, T.rcsButton0EndTime, T.rcsButton0Description,
 				CASE WHEN T.rcsButton0StartTime != '' THEN 'rcsStartDateId0' ELSE '' END AS rcsButton0StartTimeId,
 				CASE WHEN T.rcsButton0EndTime   != '' THEN 'rcsEndDateId0'   ELSE '' END AS rcsButton0EndTimeId,
@@ -703,6 +697,13 @@
 						ELSE ''
 					END AS ADTN_INFO,
 					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.messagebaseId'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.messagebaseId'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.messagebaseId'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.messagebaseId'
+						ELSE ''
+					END AS rcsMessagebaseId,
+					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.brandNm'
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.brandNm'
 						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.brandNm'
@@ -750,140 +751,140 @@
 						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[1].media'
 						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[1].media'
 						ELSE ''
-					END AS rcs1BodyMedia,
+					END AS rcs1Media,
 					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[1].mediaUrl'
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[1].mediaUrl'
 						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[1].mediaUrl'
 						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[1].mediaUrl'
 						ELSE ''
-					END AS rcs1BodyMediaUrl,
+					END AS rcs1MediaUrl,
 					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[1].title'
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[1].title'
 						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[1].title'
 						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[1].title'
 						ELSE ''
-					END AS rcs1BodyTitle,
+					END AS rcs1Title,
 					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[1].description'
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[1].description'
 						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[1].description'
 						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[1].description'
 						ELSE ''
-					END AS rcs1BodyMessage,
+					END AS rcs1Content,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[2].media'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[2].media'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[2].media'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[2].media'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[2].media'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[2].media'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[2].media'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[2].media'
 						ELSE ''
-					END AS rcs2BodyMedia,
+					END AS rcs2Media,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[2].mediaUrl'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[2].mediaUrl'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[2].mediaUrl'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[2].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[2].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[2].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[2].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[2].mediaUrl'
 						ELSE ''
-					END AS rcs2BodyMediaUrl,
+					END AS rcs2MediaUrl,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[2].title'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[2].title'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[2].title'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[2].title'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[2].title'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[2].title'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[2].title'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[2].title'
 						ELSE ''
-					END AS rcs2BodyTitle,
+					END AS rcs2Title,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[2].msg'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[2].msg'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[2].msg'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[2].msg'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[2].description'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[2].description'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[2].description'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[2].description'
 						ELSE ''
-					END AS rcs2BodyMessage,
+					END AS rcs2Content,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[3].media'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[3].media'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[3].media'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[3].media'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[3].media'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[3].media'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[3].media'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[3].media'
 						ELSE ''
-					END AS rcs3BodyMedia,
+					END AS rcs3Media,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[3].mediaUrl'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[3].mediaUrl'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[3].mediaUrl'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[3].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[3].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[3].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[3].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[3].mediaUrl'
 						ELSE ''
-					END AS rcs3BodyMediaUrl,
+					END AS rcs3MediaUrl,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[3].title'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[3].title'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[3].title'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[3].title'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[3].title'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[3].title'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[3].title'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[3].title'
 						ELSE ''
-					END AS rcs3BodyTitle,
+					END AS rcs3Title,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[3].msg'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[3].msg'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[3].msg'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[3].msg'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[3].description'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[3].description'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[3].description'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[3].description'
 						ELSE ''
-					END AS rcs3BodyMessage,
+					END AS rcs3Content,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[4].media'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[4].media'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[4].media'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[4].media'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[4].media'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[4].media'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[4].media'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[4].media'
 						ELSE ''
-					END AS rcs4BodyMedia,
+					END AS rcs4Media,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[4].mediaUrl'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[4].mediaUrl'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[4].mediaUrl'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[4].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[4].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[4].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[4].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[4].mediaUrl'
 						ELSE ''
-					END AS rcs4BodyMediaUrl,
+					END AS rcs4MediaUrl,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[4].title'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[4].title'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[4].title'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[4].title'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[4].title'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[4].title'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[4].title'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[4].title'
 						ELSE ''
-					END AS rcs4BodyTitle,
+					END AS rcs4Title,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[4].msg'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[4].msg'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[4].msg'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[4].msg'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[4].description'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[4].description'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[4].description'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[4].description'
 						ELSE ''
-					END AS rcs4BodyMessage,
+					END AS rcs4Content,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[5].media'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[5].media'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[5].media'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[5].media'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[5].media'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[5].media'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[5].media'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[5].media'
 						ELSE ''
-					END AS rcs5BodyMedia,
+					END AS rcs5Media,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[5].mediaUrl'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[5].mediaUrl'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[5].mediaUrl'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[5].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[5].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[5].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[5].mediaUrl'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[5].mediaUrl'
 						ELSE ''
-					END AS rcs5BodyMediaUrl,
+					END AS rcs5MediaUrl,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[5].title'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[5].title'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[5].title'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[5].title'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[5].title'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[5].title'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[5].title'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[5].title'
 						ELSE ''
-					END AS rcs5BodyTitle,
+					END AS rcs5Title,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.body[5].msg'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.body[5].msg'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.body[5].msg'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.body[5].msg'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[5].description'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[5].description'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.mergeData[5].description'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[5].description'
 						ELSE ''
-					END AS rcs5BodyMessage,
+					END AS rcs5Content,
 					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.rcsPrdType'
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.rcsPrdType'
@@ -899,13 +900,6 @@
 						ELSE ''
 					END AS rcsCallback,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.messagebaseId'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.messagebaseId'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.messagebaseId'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.messagebaseId'
-						ELSE ''
-					END AS rcsMessageBaseId,
-					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.footer'
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.footer'
 						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.footer'
@@ -913,18 +907,18 @@
 						ELSE ''
 					END AS rcsBlockNumber,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.postback.data'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.postback.data'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.postback.data'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.postback.data'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.buttons[0]'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.buttons[0]'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.buttons[0]'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.buttons[0]'
 						ELSE ''
 					END AS rcsButton0Data,
 					@rcsButton0ButtonType :=
 						CASE
-							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].body[0].suggestions[0].action.buttonType'
-							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].body[0].suggestions[0].action.buttonType'
-							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].body[0].suggestions[0].action.buttonType'
-							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].body[0].suggestions[0].action.buttonType'
+							WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.buttons[0].linkType'
+							WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.buttons[0].linkType'
+							WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.buttons[0].linkType'
+							WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.buttons[0].linkType'
 							ELSE ''
 						END AS rcsButton0ButtonType
 
