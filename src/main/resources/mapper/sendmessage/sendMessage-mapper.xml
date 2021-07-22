@@ -77,6 +77,7 @@
         </if>
         INNER JOIN CM_ADDR_CATE CAC
             ON CACG.ADDRESS_CATEGORY_GRP_ID = CAC.ADDRESS_CATEGORY_GRP_ID
+            AND CAC.DEL_YN = 'N'
         <if test="searchText != '' and searchText != null and searchTextType != '' and searchTextType != null ">
             AND FIND_IN_SET(CAC.ADDRESS_CATEGORY_ID, fnc_addr_hierarchi_id(@ids))
         </if>
@@ -142,6 +143,7 @@
         FROM CM_ADDR_CATE_GRP CACG
         INNER JOIN CM_ADDR_CATE CAC
             ON CACG.ADDRESS_CATEGORY_GRP_ID = CAC.ADDRESS_CATEGORY_GRP_ID
+            AND CAC.DEL_YN = 'N'
         INNER JOIN CM_ADDR_CATE_MEM CACM
             ON CACM.ADDRESS_CATEGORY_ID = CAC.ADDRESS_CATEGORY_ID
         INNER JOIN CM_CU_INFO CCI
