@@ -73,7 +73,7 @@
                       </td>
                       <td class="text-center">{{cmCuInfo.cuName}}</td>
                       <td v-if="requiredCuid" class="text-left">{{cmCuInfo.cuid}}</td>
-                      <td v-if="requiredCuPhone" class="text-left">{{cmCuInfo.hpNumber}}</td>
+                      <td v-if="requiredCuPhone" class="text-left">{{cmCuInfo.hpNumber | phoneNumAddDash}}</td>
                       <td v-for="varNm in contsVarNms" :key="varNm" class="text-center">
                         <input type="text" class="inputStyle" v-model="cmCuInfo[varNm]">
                       </td>

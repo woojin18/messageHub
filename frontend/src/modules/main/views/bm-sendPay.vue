@@ -195,17 +195,6 @@ export default {
       prdUnitInfo: {}
     }
   },
-  filters: {
-    formatPrice(val){
-      if(String(val).indexOf('.') > 0){
-        let arrVal = String(val).split('.');
-        if(arrVal.length == 2){
-          return String(arrVal[0]).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '.' + arrVal[1];
-        }
-      }
-      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-  },
   created() {
     this.fnSelectPrdUnitInfoList();
   },

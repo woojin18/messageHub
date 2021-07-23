@@ -6,6 +6,7 @@ import router from './router';
 import store from './store';
 import { coreUiMixin } from "@/common/vue-mixins";
 import common from '@/assets/js/common';
+import './filters'
 
 Vue.use(VueCookies);
 Vue.use(common);
