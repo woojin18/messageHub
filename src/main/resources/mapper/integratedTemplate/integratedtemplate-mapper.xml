@@ -89,7 +89,7 @@
 			M.USE_YN, M.chTypeList, M.CHECKED_CHANNEL,
 			M.pushMsg, M.pushAppId, M.pushTitle, M.pushFileId, M.pushSendType, M.PUSH_RCVBLC_INPUT,
 			M.ADTN_INFO, M.PUSH_CH_IMG_URL,
-			M.rcsCardCount, M.rcsPrdType, M.rcsCallback, M.rcsMessagebaseId, M.rcsMessagebaseformId, M.rcsBlockNumber, M.rcsBrandNm,
+			M.rcsCardCount, M.rcsPrdType, M.rcsDesFormNm, M.rcsCallback, M.rcsMessagebaseId, M.rcsMessagebaseformId, M.rcsBlockNumber, M.rcsBrandNm,
 			M.rcs0Media, M.rcs0MediaUrl, M.rcs0Title, M.rcs0Content,
 			M.rcs1Media, M.rcs1MediaUrl, M.rcs1Title, M.rcs1Content,
 			M.rcs2Media, M.rcs2MediaUrl, M.rcs2Title, M.rcs2Content,
@@ -467,7 +467,7 @@
 				@PUSH_PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PUSH_PATH_TO_NAME) AS PUSH_PATH_TO_PARENT,
 				@PUSH_CH_OBJECT := JSON_EXTRACT(B.USE_CH_INFO, @PUSH_PATH_TO_PARENT) AS PUSH_CH_OBJECT,
 				@PUSH_CH_IMG_URL := JSON_UNQUOTE(JSON_EXTRACT(@PUSH_CH_OBJECT, '$.URL')) AS PUSH_CH_IMG_URL,
-				T.rcsCardCount, T.rcsPrdType, T.rcsCallback, T.rcsMessagebaseId, T.rcsMessagebaseformId, T.rcsBlockNumber, T.rcsBrandNm,
+				T.rcsCardCount, T.rcsPrdType, T.rcsDesFormNm, T.rcsCallback, T.rcsMessagebaseId, T.rcsMessagebaseformId, T.rcsBlockNumber, T.rcsBrandNm,
 				T.rcs0Media, T.rcs0Title, T.rcs0Content,
 				CASE
 					WHEN rcs0MediaUrl = '{}' then ''
@@ -899,6 +899,13 @@
 						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.rcsPrdType'
 						ELSE ''
 					END AS rcsPrdType,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.rcsDesFormNm'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.rcsDesFormNm'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.rcsDesFormNm'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.rcsDesFormNm'
+						ELSE ''
+					END AS rcsDesFormNm,
 					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.callback'
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.callback'

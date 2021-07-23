@@ -387,6 +387,9 @@
 									<div class="scroll-y5">
 										<pre class="mt15 lc-1">{{rowData.rcs1Content}}</pre>
 									</div>
+									<div v-for="(buttonInfo, idx) in rowData.rcsDesButtons" :key="idx">
+										<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)" class="btnStyle1 backLightGray">{{buttonInfo.action.displayText}}</a>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -405,7 +408,7 @@
 							</div>
 							<div class="of_h">						
 								<div class="float-left" style="width:13%"><h4>유형</h4></div>
-								<select class="selectStyle2" v-model="rowData.rcsDesFormNm" title="유형 선택란" disabled>
+								<select class="selectStyle2" v-model="rowData.rcsDesMessagebaseformId" title="유형 선택란" disabled>
 									<option v-for="rcsType in rcsDesFormNmList" v-bind:value="rcsType.MESSAGEBASEFORM_ID">{{rcsType.FORM_NAME}}</option>
 								</select>
 							</div>
@@ -482,52 +485,52 @@
 				</div>
 			</div>
 
-<!-- 템플릿 승인(스타일) 메시지구분이 광고일경우 사용불가 -->
-      <div v-if="rcsTemplateTable === 2 ">
-        <h4>내용작성</h4>
-        <div class="of_h mt20">
-          <div class="float-left" style="width:28%">
-            <!-- phoneWrap -->
-            <div class="phoneWrap">
-              <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
-              <div class="phoneTextWrap">
-                <div class="phoneText1 of_h">
-                  	<p><img src="common/images/phone_Icon08.png" alt="인증 아이콘"></p>
-					<div class="scroll-y">
-						<p class="mt15 lc-1">인증번호 안내</p>
+			<!-- 템플릿 승인(스타일) 메시지구분이 광고일경우 사용불가 -->
+			<div v-if="rcsTemplateTable === 2 ">
+				<h4>내용작성</h4>
+				<div class="of_h mt20">
+					<div class="float-left" style="width:28%">
+						<!-- phoneWrap -->
+						<div class="phoneWrap">
+							<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
+							<div class="phoneTextWrap">
+								<div class="phoneText1 of_h">
+									<p><img src="common/images/phone_Icon08.png" alt="인증 아이콘"></p>
+									<div class="scroll-y">
+										<p class="mt15 lc-1">인증번호 안내</p>
+									</div>
+									<p class="mt10 lc-1 inline-block">인증번호</p>
+									<p class="mt10 lc-1 inline-block float-right">{{}}</p>
+									<p class="text-center mt30" style="color:#69C8FF">홈페이지 연결하기</p>
+									<p class="text-center mt10" style="color:#69C8FF">인증번호 복사하기</p>
+								</div>
+							</div>
+						</div>
+						<!-- //phoneWrap -->
 					</div>
-                  <p class="mt10 lc-1 inline-block">인증번호</p>
-                  <p class="mt10 lc-1 inline-block float-right">{{}}</p>
-                  <p class="text-center mt30" style="color:#69C8FF">홈페이지 연결하기</p>
-                  <p class="text-center mt10" style="color:#69C8FF">인증번호 복사하기</p>
-                </div>
-              </div>
-            </div>
-            <!-- //phoneWrap -->
-          </div>
-          <div class="float-left consoleCon" style="width:72%">
-            <div class="text-right" style="width:70%"><a href="#self" class="btnStyle1 backBlack" style="min-width:auto" @click.prevent="fnOpenAlimTalkTemplatePopup" title="알림톡 템플릿 불러오기">알림톡 템플릿 선택</a></div>
-            <div class="of_h mt20">						
-              <div class="float-left" style="width:13%"><h4>유형</h4></div>
-              <div class="float-left" style="width:57%">
-                <input type="text" class="inputStyle" placeholder="인증" v-model="rowData.rcs2Title" readOnly>
-              </div>
-            </div>
-
-            <div class="of_h">
-              <div class="float-left" style="width:13%"><h4>내용</h4></div>
-              <div class="float-left" style="width:57%">
-                <input type="text" class="inputStyle" placeholder="인증번호 안내" v-model="rowData.rcs2Content1" readOnly>
-                <input type="hidden" class="inputStyle" placeholder="" v-model="rowData.rcs2MessageFormId" id="rcs2MessageFormId" >
-              </div>
-              <div class="float-left of_h consolMarginTop" style="width:57%">
-                <input type="text" class="inputStyle" style="width:49%" placeholder="인증번호" v-model="rowData.rcs2Content2" readOnly>
-                <input type="text" class="inputStyle float-right" style="width:49%" v-model="rowData.rcs2Content3" readOnly>
-              </div>
-            </div>
-
-            <div class="of_h consolMarginTop">
-              <div class="float-left" style="width:13%"><h4>버튼</h4></div>
+					<div class="float-left consoleCon" style="width:72%">
+						<div class="text-right" style="width:70%">
+							<a href="#" class="btnStyle1 backBlack" style="min-width:auto" @click.prevent="fnOpenRcsTemplatePopup" data-toggle="modal" data-target="#templatePop" title="RCS 템플릿 선택">RCS 템플릿 선택</a>
+						</div>
+						<div class="of_h mt20">						
+							<div class="float-left" style="width:13%"><h4>유형</h4></div>
+							<div class="float-left" style="width:57%">
+								<input type="text" class="inputStyle" placeholder="인증" v-model="rowData.rcs2Title" readOnly>
+							</div>
+						</div>
+						<div class="of_h">
+							<div class="float-left" style="width:13%"><h4>내용</h4></div>
+							<div class="float-left" style="width:57%">
+								<input type="text" class="inputStyle" placeholder="인증번호 안내" v-model="rowData.rcs2Content1" readOnly>
+								<input type="hidden" class="inputStyle" placeholder="" v-model="rowData.rcs2MessageFormId" id="rcs2MessageFormId" >
+							</div>
+							<div class="float-left of_h consolMarginTop" style="width:57%">
+								<input type="text" class="inputStyle" style="width:49%" placeholder="인증번호" v-model="rowData.rcs2Content2" readOnly>
+								<input type="text" class="inputStyle float-right" style="width:49%" v-model="rowData.rcs2Content3" readOnly>
+							</div>
+						</div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:13%"><h4>버튼</h4></div>
               <div class="float-left" style="width:57%">
                 <table class="table_skin1 mt0" style="width:100%">
                   <colgroup>
@@ -3127,7 +3130,8 @@ export default {
 			smsCallbackList: [],				//smslms 발신번호 리스트
 
 			rcsDesMessagebaseId: '',		//서술형 MessagebaseId
-			rcsDesFormNm: '',					//서술형 유형
+			rcsDesMessagebaseformId: '',	//서술형 유형
+			rcsDesFormNm: '',	//서술형 유형명
 			rcsDesFormNmList: [],			//RCS 서술형 유형 selectBox
 			rcsStyleFormNm: '',				// 스타일형 유형
 			rcsStyleFormNmList: [],			// 스타일형 유형 selectBox
@@ -3337,7 +3341,7 @@ export default {
 				var result = response.data;
 				var resultData = result.data;
 
-				vm.rcsDesFormNm = resultData.desFormList[0].MESSAGEBASEFORM_ID;
+				vm.rcsDesMessagebaseformId = resultData.desFormList[0].MESSAGEBASEFORM_ID;
 				vm.rcsDesFormNmList = resultData.desFormList;
 				vm.rcsStyleFormNm = resultData.styleFormList[0].MESSAGEBASEFORM_ID;
 				vm.rcsStyleFormNmList = resultData.styleFormList;
@@ -3699,7 +3703,6 @@ export default {
 
 		async fnCompleteIntegratedTemplate(){
 			var params = this.rowData;
-			//console.log("fnCompleteIntegratedTemplate params : ",params);
 
 			// 유효성 검사
 			//if(this.fnIsValid() == false) return;
@@ -4104,9 +4107,9 @@ export default {
 			if (data.radioBtn == 'des') {
 				vm.rowData.rcsDesMessagebaseId = data.messagebaseId;
 				vm.rowData.brandNm = data.brandId;
-				vm.rowData.rcsDesFormNm = data.messagebaseformId;
+				vm.rowData.rcsDesFormNm = data.formNm;
+				vm.rowData.rcsDesMessagebaseformId = data.messagebaseformId;
 				vm.rowData.rcs1Content = data.desContent;
-				console.log(data.rcsButtonList);
 				vm.rowData.rcsDesButtons = data.rcsButtonList;
 			} else {
 				//vm.sendData.messagebaseId = data.messagebaseId;
@@ -4234,13 +4237,52 @@ export default {
 						}
 
 						if (rtnData.rcsPrdType == 'DESCRIPTION') {
-							this.rowData.rcsDesMessagebaseId	= rtnData.rcsMessagebaseId;
-							this.rowData.brandNm					= rtnData.rcsBrandNm;
-							this.rowData.rcsDesFormNm			= rtnData.rcsMessagebaseformId;
-							this.rowData.rcs1Content				= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content);
-							this.rowData.callback						= rtnData.rcsCallback; //발신번호
-							console.log(rtnData.rcsButton0Data);
-							this.rowData.rcsDesButtons				= rtnData.rcsButton0Data;
+							this.rowData.rcsDesMessagebaseId			= rtnData.rcsMessagebaseId;
+							this.rowData.brandNm							= rtnData.rcsBrandNm;
+							console.log(rtnData.rcsDesFormNm);
+							console.log(rtnData.rcsMessagebaseformId);
+							this.rowData.rcsDesFormNm					= rtnData.rcsDesFormNm;
+							this.rowData.rcsDesMessagebaseformId	= rtnData.rcsMessagebaseformId;
+							this.rowData.rcs1Content						= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content);
+							this.rowData.callback								= rtnData.rcsCallback; //발신번호
+							this.rowData.rcsDesButtons						= rtnData.rcsButton0Data;
+
+							if (rtnData.rcsDesFormNm.indexOf("승인") != -1) {
+								this.rcsImgsrc = require("@/assets/images/common/approve.png");
+							}
+							if (rtnData.rcsDesFormNm.indexOf("취소") != -1) {
+								this.rcsImgsrc = require("@/assets/images/common/cancel.png");
+							}
+							if (rtnData.rcsDesFormNm.indexOf("인증") != -1) {
+								this.rcsImgsrc = require("@/assets/images/common/certification.png");
+							}
+							if (rtnData.rcsDesFormNm.indexOf("출고") != -1) {
+								this.rcsImgsrc = require("@/assets/images/common/delivery.png");
+							}
+							if (rtnData.rcsDesFormNm.indexOf("안내") != -1) {
+								this.rcsImgsrc = require("@/assets/images/common/infomation.png");
+							}
+							if (rtnData.rcsDesFormNm.indexOf("회원가입") != -1) {
+								this.rcsImgsrc = require("@/assets/images/common/join.png");
+							}
+							if (rtnData.rcsDesFormNm.indexOf("주문") != -1) {
+								this.rcsImgsrc = require("@/assets/images/common/order.png");
+							}
+							if (rtnData.rcsDesFormNm.indexOf("출금") != -1) {
+								this.rcsImgsrc = require("@/assets/images/common/payment.png");
+							}
+							if (rtnData.rcsDesFormNm.indexOf("입금") != -1) {
+								this.rcsImgsrc = require("@/assets/images/common/receipts.png");
+							}
+							if (rtnData.rcsDesFormNm.indexOf("예약") != -1) {
+								this.rcsImgsrc = require("@/assets/images/common/reservation.png");
+							}
+							if (rtnData.rcsDesFormNm.indexOf("배송") != -1) {
+								this.rcsImgsrc = require("@/assets/images/common/ship.png");
+							}
+							if (rtnData.rcsDesFormNm.indexOf("명세서") != -1) {
+								this.rcsImgsrc = require("@/assets/images/common/specifications.png");
+							}
 						}
 
 						if (rtnData.rcsPrdType == 'SMS') {
@@ -5330,15 +5372,12 @@ export default {
 			this.rcsShortImgMngOpen = !this.rcsShortImgMngOpen;
 		},
 		fnRcsShortCallbackImgInfo(imgInfo){
-			//console.log('1111 : '+JSON.stringify(imgInfo));
 			if (this.fnRcsShortImgLimitSize() == false) return;
 			let temp = {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
-			//console.log('2222 : '+JSON.stringify(temp));
 			this.rowData.rcsShortImgInfoList.push(temp);
-			//console.log('3333 : '+JSON.stringify(this.rowData.rcsShortImgInfoList));
 			this.fnRcsShortDelDuplImgInfo();
 		},
 		fnRcsShortDelDuplImgInfo(){

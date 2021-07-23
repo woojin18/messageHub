@@ -198,7 +198,8 @@ public class IntegratedTemplateService {
 					// ====================================================================
 					sb.append("\"rcsPrdType\" : \"DESCRIPTION\","); // RCS상품타입(서술 승인템플릿) rcsTemplateTable => 1
 					sb.append("\"messagebaseId\": \"" + params.get("rcsDesMessagebaseId") + "\","); // 서술형 템플릿의 RCS MESSAGEBASE_ID 를 설정
-					sb.append("\"messagebaseformId\": \"" + params.get("rcsDesFormNm") + "\","); // 서술형 템플릿의 RCS MESSAGEBASEFORM_ID 를 설정
+					sb.append("\"messagebaseformId\": \"" + params.get("rcsDesMessagebaseformId") + "\","); // 서술형 템플릿의 RCS MESSAGEBASEFORM_ID 를 설정
+					sb.append("\"rcsDesFormNm\": \"" + params.get("rcsDesFormNm") + "\","); // 서술형 템플릿의 RCS MESSAGEBASEFORM_ID 를 설정
 
 					sb.append("\"mergeData\": [{ ");
 					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs1Content")) + "\" "); // 메시지
