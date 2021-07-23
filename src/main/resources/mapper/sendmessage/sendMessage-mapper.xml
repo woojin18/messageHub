@@ -38,9 +38,9 @@
             , NULL AS PAR_ADDRESS_CATEGORY_ID
             , CASE
                 WHEN PROJECT_ID = 'ALL' THEN '공용'
-                ELSE (SELECT X.PROJECT_NAME FROM CM_PROJECT X WHERE X.PROJECT_ID = CACG.PROJECT_ID)
+                ELSE (SELECT X.PROJECT_NAME FROM cm_console.CM_PROJECT X WHERE X.PROJECT_ID = CACG.PROJECT_ID)
             END AS PROJECT_NAME
-        FROM CM_ADDR_CATE_GRP CACG
+        FROM cm_console.CM_ADDR_CATE_GRP CACG
         WHERE CACG.USE_YN = 'Y'
             AND CACG.CORP_ID = #{corpId}
             AND CACG.PROJECT_ID IN ('ALL', #{projectId})
@@ -55,12 +55,12 @@
             , CAC.DIS_ORDER
             , CAC.ADDRESS_CATEGORY_NAME  AS ADDRESS_NAME
             , CAC.PAR_ADDRESS_CATEGORY_ID
-        FROM CM_ADDR_CATE_GRP CACG
+        FROM cm_console.CM_ADDR_CATE_GRP CACG
         <if test="searchText != '' and searchText != null ">
         INNER JOIN (
             SELECT @ids := GROUP_CONCAT(DISTINCT XCACM.ADDRESS_CATEGORY_ID)
-            FROM CM_ADDR_CATE_MEM XCACM
-            INNER JOIN CM_CU_INFO XCCI
+            FROM cm_console.CM_ADDR_CATE_MEM XCACM
+            INNER JOIN cm_console.CM_CU_INFO XCCI
                 ON XCACM.CU_INFO_ID = XCCI.CU_INFO_ID
                 AND XCCI.USE_YN = 'Y'
             WHERE 1=1
@@ -75,7 +75,7 @@
                 </if>
         ) VARS
         </if>
-        INNER JOIN CM_ADDR_CATE CAC
+        INNER JOIN cm_console.CM_ADDR_CATE CAC
             ON CACG.ADDRESS_CATEGORY_GRP_ID = CAC.ADDRESS_CATEGORY_GRP_ID
         <if test="searchText != '' and searchText != null and searchTextType != '' and searchTextType != null ">
             AND FIND_IN_SET(CAC.ADDRESS_CATEGORY_ID, fnc_addr_hierarchi_id(@ids))
@@ -105,7 +105,7 @@
     /* sendMessage.selectCmCuListCnt 주소록 카테고리 구성원 목록 카운트 조회 */
         SELECT
             COUNT(*) AS CNT
-        FROM CM_ADDR_CATE_MEM CACM
+        FROM cm_console.CM_ADDR_CATE_MEM CACM
         INNER JOIN CM_CU_INFO CCI
             ON CACM.CU_INFO_ID = CCI.CU_INFO_ID
             AND CCI.USE_YN = 'Y'
@@ -121,8 +121,8 @@
             , CCI.CUID
             , CCI.HP_NUMBER
             , CCI.EMAIL
-        FROM CM_ADDR_CATE_MEM CACM
-        INNER JOIN CM_CU_INFO CCI
+        FROM cm_console.CM_ADDR_CATE_MEM CACM
+        INNER JOIN cm_console.CM_CU_INFO CCI
             ON CACM.CU_INFO_ID = CCI.CU_INFO_ID
             AND CCI.USE_YN = 'Y'
         WHERE 1=1
@@ -139,12 +139,12 @@
             CCI.CUID
             , CCI.HP_NUMBER AS PHONE
             , @ROWNUM := @ROWNUM + 1 AS CLI_KEY
-        FROM CM_ADDR_CATE_GRP CACG
-        INNER JOIN CM_ADDR_CATE CAC
+        FROM cm_console.CM_ADDR_CATE_GRP CACG
+        INNER JOIN cm_console.CM_ADDR_CATE CAC
             ON CACG.ADDRESS_CATEGORY_GRP_ID = CAC.ADDRESS_CATEGORY_GRP_ID
-        INNER JOIN CM_ADDR_CATE_MEM CACM
+        INNER JOIN cm_console.CM_ADDR_CATE_MEM CACM
             ON CACM.ADDRESS_CATEGORY_ID = CAC.ADDRESS_CATEGORY_ID
-        INNER JOIN CM_CU_INFO CCI
+        INNER JOIN cm_console.CM_CU_INFO CCI
             ON CACM.CU_INFO_ID = CCI.CU_INFO_ID
             AND CCI.USE_YN = 'Y'
         INNER JOIN (SELECT @ROWNUM:=0) TMP
@@ -169,8 +169,8 @@
     <select id="selectPayType" parameterType="hashmap" resultType="string">
     /* sendMessage.selectPayType 결제방식 조회 */
         SELECT CP.PAY_TYPE
-        FROM CM_CORP CC
-        INNER JOIN CM_PROJECT CP
+        FROM cm_console.CM_CORP CC
+        INNER JOIN cm_console.CM_PROJECT CP
             ON CC.CORP_ID = CP.CORP_ID
             AND CP.USE_YN = 'Y'
             AND CP.DEL_YN = 'N'
@@ -190,7 +190,7 @@
     /* sendMessage.selectMsgFeePerOne 메시지 발송 가격 */
         SELECT MAX(IFNULL(CCPU.PRE_FEE, CPU.PRE_FEE)) AS MAX_FEE
         FROM cm_bo.CM_PRODUCT_UNIT CPU
-        LEFT OUTER JOIN CM_CORP_PRODUCT_UNIT CCPU
+        LEFT OUTER JOIN cm_console.CM_CORP_PRODUCT_UNIT CCPU
             ON CPU.PRODUCT_CODE = CCPU.PRODUCT_CODE
             AND CCPU.CORP_ID = #{corpId}
             AND CCPU.USE_YN = 'Y'
@@ -200,7 +200,7 @@
 
     <insert id="insertCmWebMsg" parameterType="hashmap">
     /* sendMessage.insertCmWebMsg - 웹 발송 내역 등록 */
-        INSERT INTO CM_WEB_MSG
+        INSERT INTO cm_console.CM_WEB_MSG
         (
             WEB_REQ_ID
             , CORP_ID

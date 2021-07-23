@@ -39,7 +39,7 @@
     /* template.selectPushTemplate 푸시 템플릿 리스트 카운트 조회 */
         SELECT
             COUNT(*) AS CNT
-        FROM CM_PUSH_TMPLT
+        FROM cm_console.CM_PUSH_TMPLT
         WHERE 1=1
         <include refid="whereSelectPushTemplateList"/>
     </select>
@@ -67,7 +67,7 @@
             , CIF.UPD_DT
             , CIF.UPD_ID
             , CIF.ADTN_INFO
-        FROM CM_PUSH_TMPLT CIF, (SELECT @ROWNUM:=0) TMP
+        FROM cm_console.CM_PUSH_TMPLT CIF, (SELECT @ROWNUM:=0) TMP
         WHERE 1=1
         <include refid="whereSelectPushTemplateList"/>
         ORDER BY REG_DT DESC
@@ -79,7 +79,7 @@
     <delete id="deletePushTemplate" parameterType="hashmap">
     /* template.deletePushTemplate - 푸시 템플릿 삭제 */
         DELETE
-        FROM CM_PUSH_TMPLT
+        FROM cm_console.CM_PUSH_TMPLT
         WHERE CORP_ID = #{corpId}
             AND TMPLT_ID IN <foreach collection="tmpltIds" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
     </delete>
@@ -87,7 +87,7 @@
     <insert id="insertPushTemplate" parameterType="hashmap">
     /* template.insertPushTemplate - 푸시 템플릿 등록 */
         INSERT
-            INTO CM_PUSH_TMPLT
+            INTO cm_console.CM_PUSH_TMPLT
         (
             TMPLT_ID
             , TMPLT_NAME
@@ -131,7 +131,7 @@
 
     <update id="updatePushTemplate" parameterType="hashmap">
     /* template.insertPushTemplate - 푸시 템플릿 수정 */
-        UPDATE CM_PUSH_TMPLT
+        UPDATE cm_console.CM_PUSH_TMPLT
         SET
             TMPLT_NAME = #{tmpltName}
             , MSG_TYPE = #{msgType}
@@ -159,7 +159,7 @@
     <insert id="insertSmsTemplate" parameterType="hashmap">
     /* template.insertPushTemplate - SMS 템플릿 등록 */
         INSERT
-            INTO CM_SMS_TMPLT
+            INTO cm_console.CM_SMS_TMPLT
         (
             TMPLT_ID
             , TMPLT_NAME
@@ -231,7 +231,7 @@
     /* template.selectSmsTmpltListCnt SMS 템플릿 리스트 카운트 조회 */
         SELECT
             COUNT(*) AS CNT
-        FROM CM_SMS_TMPLT
+        FROM cm_console.CM_SMS_TMPLT
         WHERE 1=1
         <include refid="whereSelectSmsTemplateList"/>
     </select>
@@ -257,7 +257,7 @@
             , cm_console.fnc_get_user_name(CST.REG_ID)  AS REG_NM
             , CST.UPD_DT
             , CST.UPD_ID
-        FROM CM_SMS_TMPLT CST, (SELECT @ROWNUM:=0) TMP
+        FROM cm_console.CM_SMS_TMPLT CST, (SELECT @ROWNUM:=0) TMP
         WHERE 1=1
         <include refid="whereSelectSmsTemplateList"/>
         ORDER BY REG_DT DESC
@@ -268,7 +268,7 @@
 
     <update id="updateSmsTmplt" parameterType="hashmap">
     /* template.updateSmsTmplt - SMS 템플릿 수정 */
-        UPDATE CM_SMS_TMPLT
+        UPDATE cm_console.CM_SMS_TMPLT
         SET
             TMPLT_NAME = #{tmpltName}
             , TMPLT_DESC = #{tmpltDesc}
@@ -287,7 +287,7 @@
     <delete id="deleteSmsTmplt" parameterType="hashmap">
     /* template.deleteSmsTmplt - SMS 템플릿 삭제 */
         DELETE
-        FROM CM_SMS_TMPLT
+        FROM cm_console.CM_SMS_TMPLT
         WHERE CORP_ID = #{corpId}
             AND TMPLT_ID IN <foreach collection="tmpltIds" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
     </delete>
@@ -295,7 +295,7 @@
     <insert id="insertFrndTalkTemplate" parameterType="hashmap">
     /* template.insertFrndTalkTemplate - 친구톡 템플릿 등록 */
         INSERT
-            INTO CM_FRIENDTALK_TMPLT
+            INTO cm_console.CM_FRIENDTALK_TMPLT
         (
             TMPLT_ID
             , TMPLT_NAME
@@ -337,7 +337,7 @@
 
     <update id="updateFrndTalkTmplt" parameterType="hashmap">
     /* template.updateFrndTalkTmplt - 친구톡 템플릿 수정 */
-        UPDATE CM_FRIENDTALK_TMPLT
+        UPDATE cm_console.CM_FRIENDTALK_TMPLT
         SET
             TMPLT_NAME = #{tmpltName}
             , MSG_KIND = #{msgKind}
@@ -399,7 +399,7 @@
     /* template.selectFrndTalkTmpltListCnt 친구톡 템플릿 리스트 카운트 조회 */
         SELECT
             COUNT(*) AS CNT
-        FROM CM_FRIENDTALK_TMPLT
+        FROM cm_console.CM_FRIENDTALK_TMPLT
         WHERE 1=1
         <include refid="whereSelectFrndTalkTemplateList"/>
     </select>
@@ -425,7 +425,7 @@
             , CFT.UPD_DT
             , CFT.UPD_ID
             , CFT.PROJECT_ID
-        FROM CM_FRIENDTALK_TMPLT CFT, (SELECT @ROWNUM:=0) TMP
+        FROM cm_console.CM_FRIENDTALK_TMPLT CFT, (SELECT @ROWNUM:=0) TMP
         WHERE 1=1
         <include refid="whereSelectFrndTalkTemplateList"/>
         ORDER BY REG_DT DESC
@@ -437,7 +437,7 @@
     <delete id="deleteFrndTalkTmplt" parameterType="hashmap">
     /* template.deleteFrndTalkTmplt - 친구톡 템플릿 삭제 */
         DELETE
-        FROM CM_FRIENDTALK_TMPLT
+        FROM cm_console.CM_FRIENDTALK_TMPLT
         WHERE CORP_ID = #{corpId}
             AND TMPLT_ID IN <foreach collection="tmpltIds" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
     </delete>

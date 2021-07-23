@@ -6,7 +6,7 @@
     <insert id="insertImageFile" >
     /* common.insertImageFile - 고객사별 이미지 관리 등록 */
         INSERT
-            INTO CM_IMAGE_FILE
+            INTO cm_console.CM_IMAGE_FILE
         (
             FILE_ID
             , CORP_ID
@@ -45,7 +45,7 @@
     /* common.selectImageListCnt 고객사별 이미지 리스트 카운트 조회 */
         SELECT
             COUNT(*) AS CNT
-        FROM CM_IMAGE_FILE
+        FROM cm_console.CM_IMAGE_FILE
         WHERE 1=1
         <include refid="whereSelectImageList"/>
     </select>
@@ -67,7 +67,7 @@
             , DATE_FORMAT(UPD_DT, '%Y-%m-%d %H:%i') AS UPD_DT
             , REG_ID
             , UPD_ID
-        FROM CM_IMAGE_FILE
+        FROM cm_console.CM_IMAGE_FILE
         WHERE 1=1
         <include refid="whereSelectImageList"/>
         ORDER BY REG_DT DESC
@@ -79,7 +79,7 @@
     <delete id="deleteImage" parameterType="hashmap">
     /* template.deletePushTemplate - 이미지 삭제 */
         DELETE
-        FROM CM_IMAGE_FILE
+        FROM cm_console.CM_IMAGE_FILE
         WHERE FILE_ID IN
         <foreach collection="fileIds" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
             AND CORP_ID = #{corpId}
@@ -91,19 +91,19 @@
         SELECT (
             (
                 SELECT COUNT(FILE_ID) AS PUSH_CNT
-                FROM CM_PUSH_TMPLT
+                FROM cm_console.CM_PUSH_TMPLT
                 WHERE FILE_ID IN <foreach collection="fileIds" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
             )
             +
             (
                 SELECT COUNT(FILE_ID) AS FRIENDTALK_CNT
-                FROM CM_FRIENDTALK_TMPLT
+                FROM cm_console.CM_FRIENDTALK_TMPLT
                 WHERE FILE_ID IN <foreach collection="fileIds" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
             )
             +
             (
                 SELECT COUNT(*) AS MMS_CNT
-                FROM CM_SMS_TMPLT
+                FROM cm_console.CM_SMS_TMPLT
                 WHERE 1=1
                     AND (
                     <foreach collection="fileIds" item="item" index="index" separator="OR ">
@@ -272,7 +272,7 @@
             , @PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
             , @CH_OBJECT := JSON_EXTRACT(USE_CH_INFO, @PATH_TO_PARENT) AS CH_OBJECT
             , @CH_IMG_URL := JSON_UNQUOTE(JSON_EXTRACT(@CH_OBJECT, '$.URL')) AS CH_IMG_URL
-        FROM CM_IMAGE_FILE CIF
+        FROM cm_console.CM_IMAGE_FILE CIF
         WHERE FILE_ID = #{fileId}
     </select>
 
