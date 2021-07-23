@@ -17,8 +17,8 @@
                 <p v-else>{{sendData.smsTitle}}</p>
               </div>
               <div v-if="sendData.senderType == 'MMS'">
-                <div v-for="(imgInfo, idx) in sendData.imgInfoList" :key="idx" class="phoneText2 mt10 text-center"
-                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+imgInfo.imgUrl+');'">
+                <div v-for="(imgInfo, idx) in sendData.imgInfoList" :key="idx" class="phoneText2 mt10 text-center simulatorImg"
+                  :style="'padding:65px;background-image: url('+imgInfo.imgUrl+');'">
                 </div>
               </div>
               <div class="phoneText1">

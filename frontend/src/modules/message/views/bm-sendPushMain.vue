@@ -21,8 +21,8 @@
                 <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
                 <p class="font-size14 color3 mt15">이미지 영역</p>
               </div>
-              <div v-if="sendData.msgType == 'IMAGE' && !fnIsEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center"
-                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
+              <div v-if="sendData.msgType == 'IMAGE' && !fnIsEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center simulatorImg"
+                :style="'padding:65px;background-image: url('+sendData.imgUrl+');'">
               </div>
               <div>
                 <p class="font-size14 color4 mt10">
@@ -54,8 +54,8 @@
                   {{sendData.fbInfo.rcvblcNumber}}
                 </p>
               </div>
-              <div v-if="!fnIsEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center"
-                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.fbInfo.imgUrl+');'">
+              <div v-if="!fnIsEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center simulatorImg"
+                :style="'padding:65px;background-image: url('+sendData.fbInfo.imgUrl+');'">
               </div>
             </div>
           </div>

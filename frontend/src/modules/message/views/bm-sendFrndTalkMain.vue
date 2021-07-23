@@ -18,8 +18,8 @@
               <div class="mt5">
                 <div class="text-sub-wrap">
                   <!-- <p class="text-sub scroll-y"> -->
-                    <div v-if="!$gfnCommonUtils.isEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center"
-                      :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.imgUrl+');'">
+                    <div v-if="!$gfnCommonUtils.isEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center simulatorImg"
+                      :style="'padding:65px;background-image: url('+sendData.imgUrl+');'">
                     </div>
                     <br v-if="$gfnCommonUtils.isEmpty(sendData.imgUrl)"/>
                     <span><pre>{{sendData.frndTalkContent}}</pre></span>
@@ -53,8 +53,8 @@
                   {{sendData.fbInfo.rcvblcNumber}}
                 </p>
               </div>
-              <div v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center"
-                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.fbInfo.imgUrl+');'">
+              <div v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center simulatorImg"
+                :style="'padding:65px;background-image: url('+sendData.fbInfo.imgUrl+');'">
               </div>
             </div>
           </div>

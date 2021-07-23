@@ -22,8 +22,8 @@
                   </div>
                   <div 
                     v-if="tmpltData.msgType == 'IMAGE' && tmpltData.PUSH.ext && tmpltData.PUSH.ext.imageUrl" 
-                    class="phoneText2 mt10 text-center"
-                    :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.PUSH.ext.imageUrl+');'"
+                    class="phoneText2 mt10 text-center simulatorImg"
+                    :style="'padding:65px;background-image: url('+tmpltData.PUSH.ext.imageUrl+');'"
                   >
                   </div>
                   <p class="consolMarginTop">
@@ -44,8 +44,8 @@
                   <div class="mt5">
                     <div 
                       v-if="tmpltData.msgType == 'IMAGE' && tmpltData.FRIENDTALK.image && tmpltData.FRIENDTALK.image.imageUrl" 
-                      class="phoneText2 text-center"
-                      :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.FRIENDTALK.image.imageUrl+');'"
+                      class="phoneText2 text-center simulatorImg"
+                      :style="'padding:65px;background-image: url('+tmpltData.FRIENDTALK.image.imageUrl+');'"
                     >
                     </div>
                     <div class="text-sub-wrap">
@@ -69,8 +69,8 @@
                     <p>{{tmpltData.MMS.callback}}</p>
                   </div>
                   <div v-if="tmpltData.msgType == 'IMAGE'">
-                    <div v-for="(fileUrl, idx) in tmpltData.MMS.fileUrlLst" :key="idx" class="phoneText2 mt10 text-center"
-                      :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+fileUrl+');'">
+                    <div v-for="(fileUrl, idx) in tmpltData.MMS.fileUrlLst" :key="idx" class="phoneText2 mt10 text-center simulatorImg"
+                      :style="'padding:65px;background-image: url('+fileUrl+');'">
                     </div>
                   </div>
                   <p class="consolMarginTop"><pre>{{tmpltData.MMS.msg}}</pre></p>

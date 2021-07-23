@@ -54,8 +54,8 @@
                     <div class="mt5">
                       <div class="text-sub-wrap">
                         <!-- <p class="text-sub scroll-y">친구톡 발송테스트</p> -->
-                        <div v-if="!$gfnCommonUtils.isEmpty(templateData.imgUrl)" class="phoneText2 mt10 text-center"
-                          :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+templateData.imgUrl+');'">
+                        <div v-if="!$gfnCommonUtils.isEmpty(templateData.imgUrl)" class="phoneText2 mt10 text-center simulatorImg"
+                          :style="'padding:65px;background-image: url('+templateData.imgUrl+');'">
                         </div>
                         <br v-if="$gfnCommonUtils.isEmpty(templateData.imgUrl)"/>
                         <span><pre>{{templateData.tmpltContent}}</pre></span>
