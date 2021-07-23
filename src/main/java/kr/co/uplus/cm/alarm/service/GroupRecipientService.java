@@ -2,7 +2,6 @@ package kr.co.uplus.cm.alarm.service;
 
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -14,23 +13,19 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Service
-public class ReceptGroupService {
+public class GroupRecipientService {
 	
 	@Autowired GeneralDao generalDao;
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackFor={Exception.class})
-	public void saveReceptGroup(Map<String, Object> params) throws Exception {
-		String recipientId = CommonUtils.getString(params.get("receptGroupId"));
-		if (StringUtils.isEmpty(recipientId)) {
-			generalDao.insertGernal("alarm.insertReceptGroup", params);
-		} else {
-			generalDao.updateGernal("alarm.updateReceptGroup", params);
-		}
+	public void saveGroupRecipient(Map<String, Object> params) throws Exception {
+		generalDao.insertGernal("alarm.insertGroupRecipient", params);
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackFor={Exception.class})
-	public void delReceptGroup(Map<String, Object> params) throws Exception {
-		generalDao.deleteGernal("alarm.deleteReceptGroup", params);
+	public void delGroupRecipient(Map<String, Object> params) throws Exception {
+		generalDao.deleteGernal("alarm.deleteGroupRecipient", params);
+		generalDao.deleteGernal("alarm.deleteGroupRecipient3", params);
 	}
 
 }

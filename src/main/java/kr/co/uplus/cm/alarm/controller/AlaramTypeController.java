@@ -1,5 +1,7 @@
 package kr.co.uplus.cm.alarm.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +27,21 @@ public class AlaramTypeController {
 	@PostMapping("/selectAlarmTypeList")
 	public RestResult<?> selectAlarmTypeList(@RequestBody Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-		List<Object> rtnList = generalDao.selectGernalList("alarm.selectAlarmTypeList", params);
+		List rtnList = generalDao.selectGernalList("alarm.selectAlarmTypeList", params);
+		Map<String, Map> alarmType = new HashMap<String, Map>();
+		for (Object obj : rtnList) {
+			Map type = (Map) obj;
+			type.put("list", new ArrayList());
+			alarmType.put(type.get("alarmTypeCode").toString(), type);
+		}
+		List list = generalDao.selectGernalList("alarm.selectAlarmList", params);
+		for (Object obj : list) {
+			Map alarm = (Map) obj;
+			Map type = alarmType.get(alarm.get("alarmTypeCode").toString());
+			List tl = (List) type.get("list");
+			tl.add(alarm);
+		}
+		
 		rtn.setData(rtnList);
 		return rtn;
 	}

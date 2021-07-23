@@ -2,7 +2,7 @@
     <div>
         <article>
 			<div class="contentHeader">
-				<h2>메시지 발송 성공율 알람</h2>				
+				<h2>알람 수신그룹 관리</h2>				
 			</div>
 
 			<!-- 본문 -->
@@ -11,13 +11,14 @@
 					<div class="menuBox">						
 						<div class="of_h">
 							<h4 class="inline-block" style="width:6%">수신그룹명</h4>
-							<input type="text" class="inputStyle" style="width:14%" title="수신그룹명 입력란">
+							<input type="text" class="inputStyle" style="width:14%" title="수신그룹명 입력란" v-model="params1.srcReceptGroupName">
 							<h4 class="inline-block ml30" style="width:6%">사용여부</h4>
-							<select name="admin_sub14" class="selectStyle2" style="width:5%" title="사용여부 선택란">
-								<option value="">Y</option>
-								<option value="">N</option>
+							<select name="admin_sub14" class="selectStyle2" style="width:5%" title="사용여부 선택란" v-model="params1.srcUseYn">
+                            <option value="">전체</option>
+                            <option value="Y">Y</option>
+                            <option value="N">N</option>
 							</select>
-							<a class="btnStyle1 float-right" title="검색">검색</a>
+							<a @click="fnSearch1" class="btnStyle1 float-right" title="검색">검색</a>
 						</div>						
 					</div>
 				</div>
@@ -26,11 +27,11 @@
 			<div class="row">
 				<div class="col-xs-6 mt30">
 					<div class="float-right mb20">						
-						<a @click="fnAdd1" class="btnStyle2 backBlack" style="min-width:auto" title="수신그룹 등록" data-toggle="modal" data-target="#add1">수신그룹 등록</a>&nbsp;
-						<a class="btnStyle2 borderGray" style="min-width:auto" title="수신그룹 삭제">수신그룹 삭제</a>
+						<a @click="fnAdd1" class="btnStyle2 backBlack" style="min-width:auto" title="수신그룹 등록">수신그룹 등록</a>&nbsp;
+						<a @click="fnDel1" class="btnStyle2 borderGray" style="min-width:auto" title="수신그룹 삭제">수신그룹 삭제</a>
 					</div>
 					<div class="scroll-y5" style="width:100%">
-						<table class="table_skin1" style="width:100%">
+						<table class="table_skin1" style="width:100%" id="list1">
 							<caption>수신그룹명, 사용여부, 수신자수를 나타내는 표</caption>
 							<colgroup>
 								<col style="width:10%">
@@ -48,92 +49,23 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td class="text-center">1</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center">Y</td>
-									<td class="text-center end">5</td>
+                            	<tr v-for="(data, idx) in list1" @click="fnSelect(idx)">
+									<td v-bind:class="{'bgColor_sky':idx==0}" class="text-center">{{list1.length-data.rownum+1}}</td>
+									<td v-bind:class="{'bgColor_sky':idx==0}"><a @click="fnEdit1(data)" class="linkStyle">{{data.receptGroupName}}</a></td>
+									<td v-bind:class="{'bgColor_sky':idx==0}" class="text-center">{{data.useYn}}</td>
+									<td v-bind:class="{'bgColor_sky':idx==0}" class="text-center end">{{data.recipientCnt}}</td>
 								</tr>	
-								<tr>
-									<td class="text-center">1</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center">Y</td>
-									<td class="text-center end">5</td>
-								</tr>	
-								<tr>
-									<td class="text-center">1</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center">Y</td>
-									<td class="text-center end">5</td>
-								</tr>	
-								<tr>
-									<td class="text-center">1</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center">Y</td>
-									<td class="text-center end">5</td>
-								</tr>	
-								<tr>
-									<td class="text-center">1</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center">Y</td>
-									<td class="text-center end">5</td>
-								</tr>	
-								<tr>
-									<td class="text-center">1</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center">Y</td>
-									<td class="text-center end">5</td>
-								</tr>	
-								<tr>
-									<td class="text-center bgColor_sky">1</td>
-									<td class="bgColor_sky"><a class="linkStyle">영업부</a></td>
-									<td class="text-center bgColor_sky">Y</td>
-									<td class="text-center bgColor_sky end">5</td>
-								</tr>	
-								<tr>
-									<td class="text-center">1</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center">Y</td>
-									<td class="text-center end">5</td>
-								</tr>	
-								<tr>
-									<td class="text-center">1</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center">Y</td>
-									<td class="text-center end">5</td>
-								</tr>	
-								<tr>
-									<td class="text-center">1</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center">Y</td>
-									<td class="text-center end">5</td>
-								</tr>	
-								<tr>
-									<td class="text-center">1</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center">Y</td>
-									<td class="text-center end">5</td>
-								</tr>	
-								<tr>
-									<td class="text-center">1</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center">Y</td>
-									<td class="text-center end">5</td>
-								</tr>	
-								<tr>
-									<td class="text-center">1</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center">Y</td>
-									<td class="text-center end">5</td>
-								</tr>	
+								<tr v-if="list1.length == 0">
+								  <td class="text-center" colspan="4">검색된 내용이 없습니다.</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
 				</div>
 				<div class="col-xs-6 mt30">
 					<div class="float-right mb20">						
-						<a @click="fnAdd2" class="btnStyle2 backBlack" style="min-width:auto" title="그룹 수신자  추가" data-toggle="modal" data-target="#add2">그룹 수신자  추가</a>&nbsp;
-						<a class="btnStyle2 borderGray" style="min-width:auto" title="그룹 수신자 삭제">그룹 수신자 삭제</a>
+						<a @click="fnAdd2" class="btnStyle2 backBlack" style="min-width:auto" title="그룹 수신자  추가">그룹 수신자  추가</a>&nbsp;
+						<a @click="fnDel2" class="btnStyle2 borderGray" style="min-width:auto" title="그룹 수신자 삭제">그룹 수신자 삭제</a>
 					</div>
 					<div class="scroll-y5" style="width:100%">
 						<table class="table_skin1" style="width:100%">
@@ -147,84 +79,21 @@
 							</colgroup>
 							<thead>
 								<tr>
-									<th class="text-center lc-1"><div class="consolCheck ml10"><input type="checkbox" id="check1" class="checkStyle2" value="check1"><label for="check1"></label></div></th>
+									<th class="text-center lc-1"><div class="consolCheck ml10"><input type="checkbox" id="chk_all" class="checkStyle2"><label for="chk_all"></label></div></th>
 									<th class="text-center lc-1">수신자명</th>
 									<th class="text-center lc-1">수신그룹명</th>
 									<th class="text-center lc-1 end">휴대폰</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check2" class="checkStyle2" value="check2"><label for="check2" class="trSelect"></label></div></td>
-									<td>홍길동</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center end">010-4123-5678</td>
-								</tr>	
-								<tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check3" class="checkStyle2" value="check3"><label for="check3" class="trSelect"></label></div></td>
-									<td>홍길동</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center end">010-4123-5678</td>
+                            	<tr v-for="(data, idx) in list2">
+									<td><div class="consolCheck ml10"><input type="checkbox" name="chk" v-bind:id="'chk'+idx" class="checkStyle2" v-bind:value="data.recipientId"><label v-bind:for="'chk'+idx" class="trSelect"></label></div></td>
+									<td class="text-left">{{data.recipientName}}</td>
+									<td class="text-left">{{data.receptGroup}}</td>
+									<td class="end">{{data.hpNumber}}</td>
 								</tr>
-								<tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check4" class="checkStyle2" value="check4"><label for="check4" class="trSelect"></label></div></td>
-									<td>홍길동</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center end">010-4123-5678</td>
-								</tr>
-								<tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check5" class="checkStyle2" value="check5"><label for="check5" class="trSelect"></label></div></td>
-									<td>홍길동</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center end">010-4123-5678</td>
-								</tr>
-								<tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check6" class="checkStyle2" value="check6"><label for="check6" class="trSelect"></label></div></td>
-									<td>홍길동</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center end">010-4123-5678</td>
-								</tr>
-								<tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check7" class="checkStyle2" value="check7"><label for="check7" class="trSelect"></label></div></td>
-									<td>홍길동</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center end">010-4123-5678</td>
-								</tr>
-								<tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check8" class="checkStyle2" value="check8"><label for="check8" class="trSelect"></label></div></td>
-									<td>홍길동</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center end">010-4123-5678</td>
-								</tr>
-								<tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check9" class="checkStyle2" value="check9"><label for="check9" class="trSelect"></label></div></td>
-									<td>홍길동</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center end">010-4123-5678</td>
-								</tr>
-								<tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check10" class="checkStyle2" value="check10"><label for="check10" class="trSelect"></label></div></td>
-									<td>홍길동</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center end">010-4123-5678</td>
-								</tr>
-								<tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check11" class="checkStyle2" value="check11"><label for="check11" class="trSelect"></label></div></td>
-									<td>홍길동</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center end">010-4123-5678</td>
-								</tr>
-								<tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check10" class="checkStyle2" value="check10"><label for="check10" class="trSelect"></label></div></td>
-									<td>홍길동</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center end">010-4123-5678</td>
-								</tr>
-								<tr>
-									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" id="check11" class="checkStyle2" value="check11"><label for="check11" class="trSelect"></label></div></td>
-									<td>홍길동</td>
-									<td><a class="linkStyle">영업부</a></td>
-									<td class="text-center end">010-4123-5678</td>
+								<tr v-if="list2.length == 0">
+								  <td class="text-center" colspan="4">검색된 내용이 없습니다.</td>
 								</tr>
 							</tbody>
 						</table>
@@ -233,12 +102,13 @@
 			</div>
 		</article>
       <receptGroupPopup :popupTitle="popupTitle1" :rowData="rowData1" :popReset="popReset1"/>
-      <recipientListPopup :popupTitle="popupTitle2" :rowData="rowData2" :popReset="popReset2"/>
+      <recipientListPopup :rowData="rowData2" :popReset="popReset2"/>
     </div>
 </template>
 
 <script>
-import alarmApi from "@/modules/alarm/service/alarmApi"
+import receptGroupApi from "@/modules/alarm/service/receptGroupApi"
+import groupRecipientApi from "@/modules/alarm/service/groupRecipientApi"
 import receptGroupPopup from "@/modules/alarm/components/bp-receptGroup"
 import recipientListPopup from "@/modules/alarm/components/bp-recipientList"
 import confirm from "@/modules/commonUtil/service/confirm.js";
@@ -247,15 +117,21 @@ import {eventBus} from "@/modules/commonUtil/service/eventBus";
 export default {
   data() {
     return {
-      alarmType: {
-        alarmTypeCode : null,
-        alarmTypeName : null,
-        alarmDesc : null
+	  selectedIndex: -1,
+      params1: {
+        srcReceptGroupName : null,
+        srcUseYn : ''
       },
-      popupTitle1: '등록',
+      list1: [], 
       rowData1: {},
+      popupTitle1: '등록',
       popReset1: 0,
-      popupTitle2: '등록',
+
+      params2: {
+        srcReceptGroupId : null,
+		recipientIds: []
+      },
+      list2: [],
       rowData2: {},
       popReset2: 0
     }
@@ -269,14 +145,41 @@ export default {
   },
   methods: {
     fnInit() {
-      var params = {alarmTypeCode:this.$route.params.typeCode}
-      var vm = this
-      alarmApi.selectAlarmType(params).then(response => {
-        var result = response.data
+	  this.fnSearch1()
+	  jQuery("#chk_all").click(function(){
+		//클릭되었으면
+		if(jQuery("#chk_all").prop("checked")){
+		  jQuery("input[name=chk]").prop("checked",true);
+		}else{
+	      jQuery("input[name=chk]").prop("checked",false);
+		}
+	  })
+    },
+    async fnSearch1() {
+	  this.selectedIndex = -1
+      this.params2.srcReceptGroupId = null
+	  jQuery("#chk_all").prop("checked", false)
+      jQuery('#list1 tbody td').removeClass('bgColor_sky')
+      var params = Object.assign({}, this.params1)
+      await receptGroupApi.selectReceptGroupList(params).then(response =>{
+        var result = response.data;
         if(result.success) {
-          vm.alarmType = result.data
+          this.list1 = result.data;
+		  if (this.list1.length > 0) {
+			  this.fnSelect(0)
+		  }
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
         }
-      })
+      });
+    },
+    fnSelect(idx) {
+	  this.selectedIndex = idx
+	  jQuery("#chk_all").prop("checked", false)
+      this.params2.srcReceptGroupId = this.list1[idx].receptGroupId
+      jQuery('#list1 tbody td').removeClass('bgColor_sky')
+      jQuery(jQuery('#list1 tbody tr').get(idx)).find('td').addClass('bgColor_sky')
+	  this.fnSearch2()
     },
     fnAdd1() {
         this.popupTitle1 = '등록'
@@ -284,12 +187,78 @@ export default {
         this.popReset1 = this.popReset1 + 1
         jQuery("#receptGroupPopup").modal("show")
     },
+    fnEdit1(data) {
+        this.popupTitle1 = '수정'
+        this.rowData1 = data
+        this.popReset1 = this.popReset1 + 1
+        jQuery("#receptGroupPopup").modal("show")
+    },
+	fnDel1() {
+		if (this.params2.srcReceptGroupId == null) {
+			confirm.fnAlert( "알람 수신그룹 관리", "삭제하실 수신그룹을 선택해주세요.");
+			return;
+		}
+		var vm = this
+        this.rowData1 = this.list1[this.selectedIndex]
+		var params = Object.assign({}, this.rowData1)
+		receptGroupApi.delReceptGroup(params).then(response =>{
+			var result = response.data;
+			if(result.success) {
+			confirm.fnAlert( "알람 수신그룹 관리", "삭제되었습니다.");
+			// 리스트 조회
+			this.fnSearch1();
+			} else {
+			confirm.fnAlert("", result.message);
+			}
+		});
+	},
+    async fnSearch2() {
+      jQuery('#list2 tbody td').removeClass('bgColor_sky')
+      var params = Object.assign({}, this.params2)
+      await groupRecipientApi.selectGroupRecipientList(params).then(response =>{
+        var result = response.data;
+        if(result.success) {
+          this.list2 = result.data;
+		  this.list1[this.selectedIndex].recipientCnt = this.list2.length
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
+    },
     fnAdd2() {
-        this.popupTitle2 = '등록'
-        this.rowData2 = {}
+		if (this.params2.srcReceptGroupId == null) {
+			confirm.fnAlert( "알람 수신그룹 관리", "수신그룹을 먼저 선택해주세요.");
+			return;
+		}
+        this.rowData2 = Object.assign({}, this.params2)
         this.popReset2 = this.popReset2 + 1
         jQuery("#recipientListPopup").modal("show")
-    }
+    },
+	fnDel2() {
+		var checked = jQuery(":checkbox[name='chk']:checked");
+		if( checked.length == 0 ){
+			confirm.fnAlert( "알람 수신그룹 관리", "삭제하실 수신자를 선택해주세요.");
+			return;
+		} else {
+			var vm = this
+			vm.params2.recipientIds = []
+			checked.each(function() {
+                var value = jQuery(this).val();
+                vm.params2.recipientIds.push(value);
+            })
+			var params = Object.assign({}, this.params2)
+			groupRecipientApi.delGroupRecipient(params).then(response =>{
+				var result = response.data;
+			  if(result.success) {
+				confirm.fnAlert( "알람 수신그룹 관리", "삭제되었습니다.");
+				// 리스트 조회
+				this.fnSearch2();
+			  } else {
+				confirm.fnAlert("", result.message);
+			  }
+			});
+		}
+	}
   }
 }
 </script>
