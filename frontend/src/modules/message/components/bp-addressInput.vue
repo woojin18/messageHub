@@ -60,7 +60,14 @@
                     <tr v-for="(cmCuInfo, idx) in cmCuList" :key="cmCuInfo.cuInfoId">
                       <td class="text-center">
                         <div class="consolCheck ml10">
-                          <input type="checkbox" :id="'listCheck_'+idx" class="checkStyle2" :value="cmCuInfo.cuInfoId" v-model="listChkBox">
+                          <input 
+                            type="checkbox" 
+                            :id="'listCheck_'+idx" 
+                            class="checkStyle2" 
+                            :value="cmCuInfo.cuInfoId" 
+                            v-model="listChkBox" 
+                            :disabled="(requiredCuid && $gfnCommonUtils.isEmpty(cmCuInfo.cuid)) || (requiredCuPhone && $gfnCommonUtils.isEmpty(cmCuInfo.hpNumber))"
+                          >
                           <label :for="'listCheck_'+idx"></label>
                         </div>
                       </td>
@@ -305,8 +312,7 @@ export default {
 
       for(let ctgyIdx=0; ctgyIdx<addrCtgyList.length; ctgyIdx++){
         ctgyInfo = addrCtgyList[ctgyIdx];
-        if(targetGrpYn == 'Y'
-          && (ctgyInfo.parAddressCategoryId == 0 || ctgyInfo.parAddressCategoryId == ctgyInfo.addressCategoryGrpId)){
+        if(targetGrpYn == 'Y' && ctgyInfo.parAddressCategoryId == 0){
           if(tGrpId == ctgyInfo.addressCategoryGrpId){
             target.subItems.push(ctgyInfo);
             if(target.subItems.length != 0) vm.fnSetSubItems(addrCtgyList, target.subItems[target.subItems.length - 1], 'N');

@@ -127,7 +127,7 @@
             AND CCI.USE_YN = 'Y'
         WHERE 1=1
         <include refid="whereSelectCmCuList"/>
-        ORDER BY CU_INFO_ID
+        ORDER BY CU_NAME
         <if test='pagingYn == "Y" '>
         LIMIT #{offset}, #{listSize}
         </if>

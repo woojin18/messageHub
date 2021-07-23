@@ -21,6 +21,9 @@
 input[class="boardCheckStyle"]:disabled + label:before {
   background: #ccc;
 }
+input[class="checkStyle2"]:disabled + label:before {
+  background: #ccc;
+}
 
 pre {
   white-space: pre-wrap;       /* Since CSS 2.1 */
