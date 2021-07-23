@@ -7,9 +7,9 @@
           <hr>
           <div class="of_h">
             <select name="userConsole02_1" class="selectStyle2 mr5" style="width:28%" v-model="searchTextType">
-              <option value="cuid">APP 로그인ID</option>
               <option value="cuName">수신자 명</option>
-              <option value="hpNumber">휴대폰 번호</option>
+              <option v-if="requiredCuid" value="cuid">APP 로그인ID</option>
+              <option v-if="requiredCuPhone" value="hpNumber">휴대폰 번호</option>
             </select>
             <input type="text" class="inputStyle" style="width:60%" v-model="searchText" @keypress.enter="fnSearchAddrMem">
             <a @click='fnSearchAddrMem' class="btnStyle1 backLightGray float-right" style="width:10%" title="검색">검색</a>
@@ -143,7 +143,7 @@ export default {
     return {
       listAllChecked: false,
       listChkBox: [],
-      searchTextType: 'cuid',
+      searchTextType: 'cuName',
       searchText: '',
       searchCategoryId: 0,
       addrTreeList: [],
