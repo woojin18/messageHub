@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -83,6 +85,18 @@ public class IntegratedTemplateService {
 		RestResult<Object> rtn = new RestResult<Object>();
 
 		List<Object> rtnList = generalDao.selectGernalList("integratedTemplate.selectIntegratedTemplateDetail", params);
+
+		for (int i = 0; i < rtnList.size(); i++) {
+			Map<String, Object> rtnMap = (Map<String, Object>) rtnList.get(i);
+			String rcsButtonData = (String) rtnMap.get("rcsButton0Data");
+			if (!"".equals(rcsButtonData) && rcsButtonData != null) {
+				JSONParser parser = new JSONParser();
+				JSONObject obj = (JSONObject) parser.parse(rcsButtonData);
+				JSONArray jsonArr = null;
+				jsonArr = (JSONArray) obj.get("suggestions");
+				rtnMap.put("rcsButton0Data", jsonArr);
+			}
+		}
 
 		rtn.setData(rtnList);
 
@@ -184,6 +198,7 @@ public class IntegratedTemplateService {
 					// ====================================================================
 					sb.append("\"rcsPrdType\" : \"DESCRIPTION\","); // RCS상품타입(서술 승인템플릿) rcsTemplateTable => 1
 					sb.append("\"messagebaseId\": \"" + params.get("rcsDesMessagebaseId") + "\","); // 서술형 템플릿의 RCS MESSAGEBASE_ID 를 설정
+					sb.append("\"messagebaseformId\": \"" + params.get("rcsDesFormNm") + "\","); // 서술형 템플릿의 RCS MESSAGEBASEFORM_ID 를 설정
 
 					sb.append("\"mergeData\": [{ ");
 					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs1Content")) + "\" "); // 메시지
@@ -194,12 +209,14 @@ public class IntegratedTemplateService {
 						buttonInfoList = (List<Map<String, Object>>) params.get("rcsDesButtons");
 					}
 
-					sb.append("\"buttons\": [ ");
+					sb.append("\"buttons\": [{ ");
+					sb.append("\"suggestions\": [ ");
 
 					int rcsDesIdx = 1;
 					Map<String, Object> btnInfo = null;
+					Map<String, Object> postback = null;
 					String linkType = "";
-					String name = "";
+					String displayText = "";
 					String url = "";
 					String text = "";
 					String phoneNumber = "";
@@ -211,36 +228,43 @@ public class IntegratedTemplateService {
 
 						btnInfo = (Map<String, Object>) buttonInfo.get("action");
 						linkType = (String) btnInfo.get("linkType");
-						name = (String) btnInfo.get("displayText");
+						displayText = (String) btnInfo.get("displayText");
+						postback = (Map<String, Object>) btnInfo.get("postback");
+						sb.append("{\"action\": { "); // action 열기
+						sb.append("	\"displayText\": \"" + displayText + "\","); // 버튼이름
+						sb.append("	\"postback\": {\"data\": \"" + postback.get("data") + "\"},"); // 버튼이름
 
 						if (linkType.equalsIgnoreCase("urlAction")) { // URL 링크
 							Map<String, Object> urlAction = (Map<String, Object>) btnInfo.get("urlAction");
 							Map<String, Object> openUrl = (Map<String, Object>) urlAction.get("openUrl");
 							url = (String) openUrl.get("url");
-							sb.append("	{ ");
-							sb.append("	\"name\": \"" + name + "\","); // 버튼이름
-							sb.append("	\"linkType\": \"U\", "); // 버튼타입
+							sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
+							sb.append("	\"urlAction\": { "); // urlAction
+							sb.append("	\"openUrl\": { "); // openUrl
 							sb.append("	\"url\": \"" + url + "\" "); // 내용
+							sb.append("	} ");
 							sb.append("	} ");
 						}
 						if (linkType.equalsIgnoreCase("clipboardAction")) { // 복사하기
 							Map<String, Object> clipboardAction = (Map<String, Object>) btnInfo.get("clipboardAction");
 							Map<String, Object> copyToClipboard = (Map<String, Object>) clipboardAction.get("copyToClipboard");
 							text = (String) copyToClipboard.get("text");
-							sb.append("	{ ");
-							sb.append("	\"name\": \"" + name + "\","); // 버튼이름
-							sb.append("	\"linkType\": \"C\", "); // 버튼타입
+							sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
+							sb.append("	\"clipboardAction\": { "); // clipboardAction
+							sb.append("	\"copyToClipboard\": { "); // copyToClipboard
 							sb.append("	\"text\": \"" + text + "\" "); // 내용
+							sb.append("	} ");
 							sb.append("	} ");
 						}
 						if (linkType.equalsIgnoreCase("dialerAction")) { // 전화걸기
 							Map<String, Object> dialerAction = (Map<String, Object>) btnInfo.get("dialerAction");
 							Map<String, Object> dialPhoneNumber = (Map<String, Object>) dialerAction.get("dialPhoneNumber");
 							phoneNumber = (String) dialPhoneNumber.get("phoneNumber");
-							sb.append("	{ ");
-							sb.append("	\"name\": \"" + name + "\","); // 버튼이름
-							sb.append("	\"linkType\": \"T\", "); // 버튼타입
+							sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
+							sb.append("	\"dialerAction\": { "); // dialerAction
+							sb.append("	\"dialPhoneNumber\": { "); // dialPhoneNumber
 							sb.append("	\"phoneNumber\": \"" + phoneNumber + "\" "); // 내용
+							sb.append("	} ");
 							sb.append("	} ");
 						}
 						if (linkType.equalsIgnoreCase("calendarAction")) { // 일정추가
@@ -250,27 +274,31 @@ public class IntegratedTemplateService {
 							description = (String) createCalendarEvent.get("description");
 							startTime = (String) createCalendarEvent.get("startTime");
 							endTime = (String) createCalendarEvent.get("endTime");
-							sb.append("	{ ");
-							sb.append("	\"name\": \"" + name + "\","); // 버튼이름
-							sb.append("	\"linkType\": \"S\", "); // 버튼타입
+							sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
+							sb.append("	\"calendarAction\": { "); // calendarAction
+							sb.append("	\"createCalendarEvent\": { "); // createCalendarEvent
 							sb.append("	\"title\": \"" + title + "\", "); // 제목
-							sb.append("	\"description\": \"" + description + "\", "); // 설명
+							sb.append("	\"description\": \"" + description + "\", "); // 내용
 							sb.append("	\"startTime\": \"" + startTime + "\", "); // 시작일
 							sb.append("	\"endTime\": \"" + endTime + "\" "); // 종료일
 							sb.append("	} ");
-						}
-						if (linkType.equalsIgnoreCase("mapAction")) { // 지도맵
-							sb.append("	{ ");
-							sb.append("	\"name\": \"" + name + "\","); // 버튼이름
-							sb.append("	\"linkType\": \"M\" "); // 버튼타입
 							sb.append("	} ");
 						}
+						if (linkType.equalsIgnoreCase("mapAction")) { // 지도맵
+							sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
+							sb.append("	\"mapAction\": { "); // mapAction
+							sb.append("	\"requestLocationPush\": { "); // requestLocationPush
+							sb.append("	} ");
+							sb.append("	} ");
+						}
+						sb.append("	}} "); // action 닫기
 
 						if (rcsDesIdx++ < buttonInfoList.size()) {
 							sb.append(", ");
 						}
 					}
-					sb.append("	]         ");
+					sb.append("	]");
+					sb.append("}]");
 				} else if ((int) params.get("rcsTemplateTable") == 2) {
 					// RCS CELL(STYLE) TYPE
 					// ====================================================================

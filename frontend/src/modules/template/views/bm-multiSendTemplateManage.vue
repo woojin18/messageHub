@@ -3798,6 +3798,10 @@ export default {
 							confirm.fnAlert(this.detailTitle, 'RCS 승인 서술형 템플릿을 팝업을 통해 선택해 주세요.');
 							return false;
 						}
+						if (!this.rowData.callback) { 
+							confirm.fnAlert(this.detailTitle, 'RCS 서술형 템플릿 발신번호를 선택해주세요.');
+							return false;
+						}
 					}
 
 					if (this.rcsTemplateTable === 2) {  //CELL
@@ -4232,9 +4236,11 @@ export default {
 						if (rtnData.rcsPrdType == 'DESCRIPTION') {
 							this.rowData.rcsDesMessagebaseId	= rtnData.rcsMessagebaseId;
 							this.rowData.brandNm					= rtnData.rcsBrandNm;
-							this.rowData.rcsDesFormNm			= '';
+							this.rowData.rcsDesFormNm			= rtnData.rcsMessagebaseformId;
 							this.rowData.rcs1Content				= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content);
 							this.rowData.callback						= rtnData.rcsCallback; //발신번호
+							console.log(rtnData.rcsButton0Data);
+							this.rowData.rcsDesButtons				= rtnData.rcsButton0Data;
 						}
 
 						if (rtnData.rcsPrdType == 'SMS') {
