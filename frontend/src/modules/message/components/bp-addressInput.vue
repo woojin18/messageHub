@@ -11,8 +11,8 @@
               <option value="cuName">수신자 명</option>
               <option value="hpNumber">휴대폰 번호</option>
             </select>
-            <input type="text" class="inputStyle" style="width:60%" v-model="searchText" @keypress.enter="fnGetAddrList">
-            <a @click='fnGetAddrList' class="btnStyle1 backLightGray float-right" style="width:10%" title="검색">검색</a>
+            <input type="text" class="inputStyle" style="width:60%" v-model="searchText" @keypress.enter="fnSearchAddrMem">
+            <a @click='fnSearchAddrMem' class="btnStyle1 backLightGray float-right" style="width:10%" title="검색">검색</a>
           </div>
           <h5 class="color5">조직 조회 후 체크된 사용자를 선택하면  수신자에 추가됩니다.</h5>
 
@@ -240,6 +240,10 @@ export default {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
+    },
+    fnSearchAddrMem(){
+      this.fnGetAddrList();
+      this.fnAddrCatgMem(this.searchCategoryId);
     },
     //주소 카테고리 클릭
     fnAddrCatgMem(addressCategoryId){

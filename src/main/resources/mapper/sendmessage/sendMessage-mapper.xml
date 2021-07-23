@@ -5,9 +5,9 @@
 
     <select id="selectAppIdList" parameterType="hashmap" resultType="camel">
     /* sendMessage.selectAppIdList APP ID 리스트 조회 */
-        SELECT APLN_ID
-        FROM CM_PUSH_SET
-        WHERE 1=1
+        SELECT TPC.APP_ID AS APLN_ID
+        FROM cm_push.T_PUSH_CONFIG TPC
+        WHERE TPC.SERVICE_STATUS = 'ON'
             AND CORP_ID = #{corpId}
             AND PROJECT_ID IN ('ALL', #{projectId})
     </select>
