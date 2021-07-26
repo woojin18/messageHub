@@ -66,15 +66,6 @@ public class ChannelController {
 	public RestResult<?> selectRcsRegTmpltList(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		// commonutils에 집어 넣을것
-//		int paging = Integer.parseInt(CommonUtils.getString(params.get("paging")));
-//		int rows = Integer.parseInt(CommonUtils.getString(params.get("rows")));
-//
-//		int rowsFront = (paging - 1) * rows;
-//
-//		params.put("rowsFront", rowsFront);
-//		params.put("rowsEnd", rows);
-
 		return channelService.selectRcsRegTmpltList(params);
 	}
 
@@ -233,8 +224,6 @@ public class ChannelController {
 		RestResult<Object> rtn = new RestResult<Object>();
 		rtn.setSuccess(true);
 		
-		System.out.println("-------------------------------------@@ deleteRcsBrandForApi params : " + params);
-		
 		try {
 			channelService.deleteRcsBrandForApi(params);
 			rtn.setSuccess(true);
@@ -257,9 +246,6 @@ public class ChannelController {
 	@PostMapping("/selectPushManageList")
 	public RestResult<?> selectPushManageList(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
-//		AuthUser authUser = getUserInfo(CommonUtils.getString(params.get("loginId")));
-//		params.put("corpId",			authUser.getCorpId());
 		
 		return channelService.selectPushManageList(params);
 	}
@@ -285,10 +271,6 @@ public class ChannelController {
 		Map<String, Object> params = new HashMap<String, Object>();
 		RestResult<Object> rtn = new RestResult<Object>();
 		rtn.setSuccess(true);
-		// 세션정보
-//		AuthUser authUser = getUserInfo(loginId);
-//		params.put("corpId",			authUser.getCorpId());
-//		params.put("userId",			authUser.getUserId());
 		
 		// 파라미터 정리
 		params.put("sts",				sts);
@@ -324,10 +306,6 @@ public class ChannelController {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
 		rtn.setSuccess(true);
-		// 세션정보
-//		AuthUser authUser = getUserInfo(CommonUtils.getString(params.get("loginId")));
-//		params.put("corpId",			authUser.getCorpId());
-//		params.put("userId",			authUser.getUserId());
 		
 		try {
 			channelService.deletePushManage(params);

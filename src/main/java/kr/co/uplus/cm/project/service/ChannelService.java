@@ -538,7 +538,7 @@ public class ChannelService {
 		// map to json
 		kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(map);
 		
-		System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
+		//System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
 //		list.add(json2222);
 		list.add(map);
 		
@@ -706,7 +706,7 @@ public class ChannelService {
 		// API 통신 처리
 		Map<String, Object> result =  apiInterface.delete("/console/v1/brand/" + CommonUtils.getString(params.get("brandId")), null, apiBodyMap, headerMap);
 		
-		System.out.println("------------------------------------------------- deleteRcsBrandForApi result : " + result);
+		//System.out.println("------------------------------------------------- deleteRcsBrandForApi result : " + result);
 		
 		// 성공인지 실패인지 체크
 		if( "10000".equals(result.get("code")) ) {
@@ -1119,7 +1119,7 @@ public class ChannelService {
 		
 		Map<String, Object> result =  apiInterface.get("/console/v1/kko/senderkey/group/all", null, apiBodyMap, headerMap);
 		
-		System.out.println("------------------------------------------------- result : " + result);
+		//System.out.println("------------------------------------------------- result : " + result);
 		
 		// 성공인지 실패인지 체크
 		if( "10000".equals(result.get("code")) ) {
