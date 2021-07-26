@@ -141,6 +141,25 @@
                 </div>
               </div>
               <!--// FREE -->
+              <!-- DESCRIPTION -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'DESCRIPTION'" class="phoneWrap">
+                <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
+                <div class="phoneTextWrap scroll-y">
+                  <div class="phoneText1">
+                    <img :src="tmpltData.RCS.rcsDesFormNm | getIconURlByFormNm" style="width:70px;">
+                    <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
+                    <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
+                      <p 
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
+                        :key="idx" 
+                        class="text-center mt20" 
+                        style="color:#69C8FF"
+                      >{{btn.action.displayText}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--// DESCRIPTION -->
             </div>
             <!--// RCS -->
 
