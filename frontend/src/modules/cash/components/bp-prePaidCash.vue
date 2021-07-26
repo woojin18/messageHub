@@ -4,14 +4,14 @@
       <div class="modal-content">
         <div class="modal-body">
           <div>
-						<h5 class="lc-1">캐시 충전</h5>
+						<h2 class="lc-1">캐시 충전</h2>
 						<hr>
 					  <!-- <div class="mt15">
               <h4 class="font-normal inline-block width90 mr10">결제유형</h4>
               <select class="inputStyle width291"></select>
             </div> -->
             <div class="mt15">
-              <h4 class="font-normal inline-block width90 mr10">충전금액</h4>
+              <h5 class="font-normal inline-block width90 mr10">충전금액</h5>
               <input v-model="amount" class="inputStyle width291">
             </div>
             <div class="mt15">
