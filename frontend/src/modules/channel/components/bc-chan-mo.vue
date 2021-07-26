@@ -43,7 +43,8 @@
 							<tr v-for="(item, i) in data" :key="i">
 								<td class="text-center">{{item.apiKey}}</td>
 								<td class="text-center">{{item.moType}}</td>
-								<td class="text-center"><a @click="fnMod(item)">{{item.moNumber}}</a></td>
+								<!-- <td class="text-center"><a @click="fnMod(item)">{{item.moNumber}}</a></td> -->
+								<td class="text-center">{{item.moNumber}}</td>
 								<td class="text-center">{{item.useYn}}</td>
 								<td class="end">{{item.regDt}}</td>
 								<!-- <td class="end">{{item.updDt}}</td> -->

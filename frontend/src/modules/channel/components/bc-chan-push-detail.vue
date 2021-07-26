@@ -194,8 +194,6 @@ export default {
 		},
 		// 등록, 수정
 		async fnSave(){
-			console.log(this.otherProjectYn);
-
 			// 벨리데이션 처리
 			if( !this.fnValidate() ){
 				return;
