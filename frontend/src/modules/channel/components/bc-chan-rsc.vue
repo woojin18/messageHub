@@ -238,16 +238,37 @@ export default {
         chatbotCnt : 1,
         chatbots: []
       }
-      this.$router.push( {name:"chan-rcs-detail",params:{"projectId" : this.projectId, "brandId" : "", "save_status" : 'C', "inputVal" : inputVal }} );
+      this.$router.push( {name:"chan-rcs-detail",params:{
+          "mainProjectId" : this.projectId, 
+          "mainProjectName" : this.projectName,
+          "rcsYn" : this.$route.params.rcsYn,
+          "smsmmsYn" : this.$route.params.smsmmsYn,
+          "pushYn" : this.$route.params.pushYn,
+          "kakaoYn" : this.$route.params.kakaoYn,
+          "moYn" : this.$route.params.moYn,
+
+          "projectId" : this.projectId,
+          "brandId" : "", 
+          "save_status" : 'C', 
+          "inputVal" : inputVal 
+        }
+      } );
     },
     fnRcsBrandDetail(data){
       this.$router.push( {name:"chan-rcs-detail",params:{
-            "projectIdStr" : data.projectId
-          , "brandId" : data.brandId
-          , "save_status" : 'U'
-          , "inputVal" : data.inputVal
-          , "approvalStatus" : this.approvalStatus
-          , "otherProjectYn" : data.otherProjectUseYn 
+          "mainProjectId" : this.projectId,
+          "mainProjectName" : this.projectName,
+          "rcsYn" : this.$route.params.rcsYn,
+          "smsmmsYn" : this.$route.params.smsmmsYn,
+          "pushYn" : this.$route.params.pushYn,
+          "kakaoYn" : this.$route.params.kakaoYn,
+          "moYn" : this.$route.params.moYn,
+          "brandId" : data.brandId,
+          "save_status" : 'U',
+          "projectIdStr" : data.projectId,
+          "inputVal" : data.inputVal,
+          "approvalStatus" : this.approvalStatus,
+          "otherProjectYn" : data.otherProjectUseYn 
         }
       });
     },

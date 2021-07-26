@@ -99,6 +99,8 @@ export default {
 	name: 'bcChanRcsDetail',
 	data() {
 		return {
+			mainProjectId : '', // 선택한 프로젝트 ID
+			mainProjectName : '',// 선택한 프로젝트 명
 			save_status	: '', // 등록 수정 여부
 			projectId		: '',
 			// 상세
@@ -117,6 +119,9 @@ export default {
 		}
 	},
 	mounted() {
+		this.mainProjectId		= this.$route.params.mainProjectId;
+		this.mainProjectName	= this.$route.params.mainProjectName;
+
 		this.projectId		= this.$route.params.projectId;
 		this.save_status	= this.$route.params.save_status;
 
@@ -151,7 +156,21 @@ export default {
 	methods: {
 		// 목록
 		fnBack(){
-			this.$router.push( {name:"projectMain",params:{"projectId" : this.projectId, "selMainTab" : 4, "selMidTab" : 3 }} );
+			//this.$router.push( {name:"projectMain",params:{"projectId" : this.projectId, "selMainTab" : 4, "selMidTab" : 3 }} );
+			
+			this.$router.push( {name:"projectMain",params:{
+					"projectId" : this.mainProjectId,
+					"projectName" : this.mainProjectName,
+					"selMainTab" : 4, 
+					"selMidTab" : 3, 
+					"selSubTab" : 1,
+					"rcsYn" : this.$route.params.rcsYn,
+					"smsmmsYn" : this.$route.params.smsmmsYn,
+					"pushYn" : this.$route.params.pushYn,
+					"kakaoYn" : this.$route.params.kakaoYn,
+					"moYn" : this.$route.params.moYn,
+				}
+			} );
 		},
 		fnFileNameChange(){
 			this.apnsFileName = this.$refs.apnsCetificationFile.files[0].name;
