@@ -690,24 +690,23 @@
 
 			<!-- LMS -->
 			<div v-if="rcsTemplateTable === 4">
-
-        <h4>내용작성</h4>
-        <div class="of_h mt20">
-          <div class="float-left" style="width:28%">
-            <!-- phoneWrap -->
-            <div class="phoneWrap">
-              <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
-              <div class="phoneTextWrap">
-                <div class="phoneText1 scroll-y4">
-                  <pre>{{rowData.rcsLMSContent}}</pre>
-                </div>
-              </div>
-            </div>
-            <!-- //phoneWrap -->
-          </div>
-          <div class="float-left consoleCon" style="width:72%">
-            <div class="of_h">
-              <div class="float-left" style="width:13%"><h4>제목</h4></div>
+				<h4>내용작성</h4>
+				<div class="of_h mt20">
+					<div class="float-left" style="width:28%">
+						<!-- phoneWrap -->
+						<div class="phoneWrap">
+							<img src="@/assets/images/common/phoneMockup1.svg" alt="LMS 템플릿">
+							<div class="phoneTextWrap">
+								<div class="phoneText1 scroll-y4">
+									<pre>{{rowData.rcsLMSContent}}</pre>
+								</div>
+							</div>
+						</div>
+						<!-- //phoneWrap -->
+					</div>
+					<div class="float-left consoleCon" style="width:72%">
+						<div class="of_h">
+							<div class="float-left" style="width:13%"><h4>제목</h4></div>
               <div class="float-left" style="width:57%">
                 <input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." maxlength="30" v-model="rowData.rcsLMSTitle" id="rcsLMSTitleId" @keyup="fnTextLength('제목', '#rcsLMSTitleId', '', '30')">
               </div>
@@ -3296,10 +3295,10 @@ export default {
 			useYn : 'Y',
 			brandNmList: [],		// 브랜드 명 selectBox
 
-			pushPlaceHoder: 	"변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
+			pushPlaceHoder: 	"변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) #{고객}님 #{YYMMDD} 출금 예정입니다.",
 			rcsPlaceHoder: 	"변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
-			kakaoPlaceHoder: 	"변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
-			smsmmsPlaceHoder: "변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
+			kakaoPlaceHoder: 	"변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) #{고객}님 #{YYMMDD} 출금 예정입니다.",
+			smsmmsPlaceHoder: "변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) #{고객}님 #{YYMMDD} 출금 예정입니다.",
 
 			buttonDSDescription : '카카오 메세지에 택배사 명과 송장번호를 기재한 후, 배송 조회 버튼을 추가하시면 메세지에서 택배사 명과 송장번호를 추출하여 배송 조회 카카오 검색페이지 링크가 자동으로 생성됩니다. 카카오에서 지원하는 택배사명과 운송장번호가 알림톡 메시지 내에 포함된 경우에만 배송조회 버튼이 표시됩니다. 배송 조회가 가능한 택배사는 <span style="color:#e11d21"><strong>카카오와 해당 택배사와의 계약 관계에 의해 변동될 수 있음을 유의해주시기 바랍니다.</strong></span>',
 		}
@@ -3459,15 +3458,16 @@ export default {
 				this.channelTab = 3;
 			}
 		},
-		//빈값확인
+		// 빈값확인
 		fnIsEmpty(str) {
 			if(str) return false;
 			else return true
 		},
+		// 친구톡 버튼타입 변경 이벤트
 		fnChgBtnType(idx){
 			const vm = this;
 			Object.keys(this.rowData.friendTalkButtons[idx]).forEach(function(key){
-				if (key != 'linkType') {
+				if (key != 'type') {
 					delete vm.rowData.friendTalkButtons[idx][key];
 				}
 			});
