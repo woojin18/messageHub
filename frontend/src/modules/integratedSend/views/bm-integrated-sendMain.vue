@@ -123,9 +123,6 @@
               </div>
             </div>
             <!--// ALIMTALK -->
-            
-
-            
             <!-- RCS -->
             <div v-if="previewMessageType == 'RCS' && tmpltData.RCS" class="tab-pane active">
               <!-- FREE -->
@@ -133,9 +130,11 @@
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
                 <div class="phoneTextWrap scroll-y">
                   <div class="phoneText1">
-                    <!-- <p><img src="@/assets/images/common/phone_Icon10.png" alt="주문 아이콘"></p> -->
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
-                    <!-- <p class="text-center mt20" style="color:#69C8FF">복사</p> -->
+                    <br v-if="tmpltData.msgKind == 'A'"/>
+                    <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
+                      {{tmpltData.RCS.footer}}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -165,6 +164,10 @@
                 <div class="phoneTextWrap scroll-y">
                   <div class="phoneText1">
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
+                    <br v-if="tmpltData.msgKind == 'A'"/>
+                    <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
+                      {{tmpltData.RCS.footer}}
+                    </span>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
                       <p 
                         v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
@@ -184,6 +187,10 @@
                   <div class="phoneText1">
                     <h5 v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].title">{{tmpltData.RCS.mergeData[0].title}}</h5>
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
+                    <br v-if="tmpltData.msgKind == 'A'"/>
+                    <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
+                      {{tmpltData.RCS.footer}}
+                    </span>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
                       <p 
                         v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
@@ -198,28 +205,6 @@
               <!--// LMS -->
             </div>
             <!--// RCS -->
-
-
-
-
-            
-            <!-- 
-            <div role="tabpanel" class="tab-pane" id="productCate6">
-              <div class="phoneWrap">
-                <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap">
-                  <div class="phoneText1 scroll-y2">
-                    <p>발신번호</p>
-                  </div>
-                  <div class="phoneText1 scroll-y3 consolMarginTop">
-                    <p>제목</p>
-                  </div>
-                  <p class="consolMarginTop">내용</p>
-                </div>
-              </div>
-            </div>
-             -->
-            <!-- //phoneWrap -->
           </div>
           
           <div class="phone_04_btn7">
