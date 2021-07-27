@@ -4350,13 +4350,12 @@ FROM (
 
 
 
-    <select id="selectMessageBaseId" parameterType="hashmap" resultType="string">
-    /* sendMessage.selectPayType 결제방식 조회 */
-        SELECT MESSAGEBASE_ID
-        FROM cm.CM_RCS_MSGBASE
-        WHERE CORP_ID = #{corpId}
-          AND BRAND_ID = #{brandNm}
-    </select>
-
+	<select id="selectMessageBaseId" parameterType="hashmap" resultType="string">
+		/* smartTemplate.selectMessageBaseId 메시지베이스ID 조회 */
+		SELECT MESSAGEBASE_ID
+		FROM cm.CM_RCS_MSGBASE
+		WHERE CORP_ID = #{corpId}
+		AND BRAND_ID = #{brandNm}
+	</select>
 
 </mapper>

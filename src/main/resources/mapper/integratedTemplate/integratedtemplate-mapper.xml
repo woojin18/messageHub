@@ -697,6 +697,13 @@
 						ELSE ''
 					END AS ADTN_INFO,
 					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then JSON_LENGTH(A.TMPLT_INFO ->> '$[0].data.mergeData')
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then JSON_LENGTH(A.TMPLT_INFO ->> '$[1].data.mergeData')
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then JSON_LENGTH(A.TMPLT_INFO ->> '$[2].data.mergeData')
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then JSON_LENGTH(A.TMPLT_INFO ->> '$[3].data.mergeData')
+						ELSE 0
+					END AS rcsCardCount,
+					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.messagebaseId'
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.messagebaseId'
 						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.messagebaseId'
@@ -718,12 +725,33 @@
 						ELSE ''
 					END AS rcsBrandNm,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then JSON_LENGTH(A.TMPLT_INFO ->> '$[0].data.mergeData')
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then JSON_LENGTH(A.TMPLT_INFO ->> '$[1].data.mergeData')
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then JSON_LENGTH(A.TMPLT_INFO ->> '$[2].data.mergeData')
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then JSON_LENGTH(A.TMPLT_INFO ->> '$[3].data.mergeData')
-						ELSE 0
-					END AS rcsCardCount,
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.rcsPrdType'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.rcsPrdType'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.rcsPrdType'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.rcsPrdType'
+						ELSE ''
+					END AS rcsPrdType,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.rcsDesFormNm'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.rcsDesFormNm'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.rcsDesFormNm'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.rcsDesFormNm'
+						ELSE ''
+					END AS rcsDesFormNm,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.callback'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.callback'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.callback'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.callback'
+						ELSE ''
+					END AS rcsCallback,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.footer'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.footer'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.footer'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.footer'
+						ELSE ''
+					END AS rcsBlockNumber,
 					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.mergeData[0].media'
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.mergeData[0].media'
@@ -892,34 +920,6 @@
 						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.mergeData[5].description'
 						ELSE ''
 					END AS rcs5Content,
-					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.rcsPrdType'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.rcsPrdType'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.rcsPrdType'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.rcsPrdType'
-						ELSE ''
-					END AS rcsPrdType,
-					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.rcsDesFormNm'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.rcsDesFormNm'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.rcsDesFormNm'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.rcsDesFormNm'
-						ELSE ''
-					END AS rcsDesFormNm,
-					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.callback'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.callback'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.callback'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.callback'
-						ELSE ''
-					END AS rcsCallback,
-					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.footer'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.footer'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'RCS' then A.TMPLT_INFO ->> '$[2].data.footer'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'RCS' then A.TMPLT_INFO ->> '$[3].data.footer'
-						ELSE ''
-					END AS rcsBlockNumber,
 					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'RCS' then A.TMPLT_INFO ->> '$[0].data.buttons[0]'
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'RCS' then A.TMPLT_INFO ->> '$[1].data.buttons[0]'
