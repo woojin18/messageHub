@@ -671,7 +671,7 @@ export default {
         } else if(ch == 'RCS'){
           if(chTmpltInfo.mergeData && chTmpltInfo.mergeData.length > 0){
             //TODO : 프리템플릿 일경우인데 다른 템플릿일 경우 다른수 있다.
-            //FREE, SMS, 서술형
+            //FREE, SMS, LMS, 서술형
             conts = this.$gfnCommonUtils.defaultIfEmpty(chTmpltInfo.mergeData[0].title, '');
             conts += this.$gfnCommonUtils.defaultIfEmpty(chTmpltInfo.mergeData[0].description, '');
           }
