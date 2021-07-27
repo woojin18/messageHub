@@ -60,7 +60,7 @@
                                 <td class="text-center end">{{data.hpNumber}}</td>
                             </tr>	
                             <tr v-if="list.length == 0">
-                            <td class="text-center" colspan="4">검색된 내용이 없습니다.</td>
+                              <td class="text-center" colspan="4">검색된 내용이 없습니다.</td>
                             </tr>
                         </tbody>
                     </table>

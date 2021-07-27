@@ -350,6 +350,8 @@ export default {
 		selAddr : {},
 		save_status : '', // 등록 수정 여부
 		approvalStatus : '',
+		mainProjectId : '', // 선택한 프로젝트 ID
+		mainProjectName : '',// 선택한 프로젝트 명
 		projectId : '',
 		projectIdStr : '',
 		brandId : "",
@@ -425,10 +427,13 @@ export default {
 	}
   },
   mounted() {
+	this.mainProjectId		= this.$route.params.mainProjectId;
+	this.mainProjectName	= this.$route.params.mainProjectName;
+
 	this.save_status	= this.$route.params.save_status;
 	this.approvalStatus	= this.$route.params.approvalStatus;
     this.projectId		= this.$route.params.projectId;
-	this.projectIdStr		= this.$route.params.projectIdStr;
+	this.projectIdStr	= this.$route.params.projectIdStr;
 	this.brandId		= this.$route.params.brandId;
 	this.inputVal		= this.$route.params.inputVal;
 	
@@ -449,7 +454,19 @@ export default {
 	// 목록
 	fnBack(){
 		//this.$router.go(-1);
-		this.$router.push( {name:"projectMain",params:{"projectId" : this.projectId, "selMainTab" : 4, "selMidTab" : 1 }} );
+		this.$router.push( {name:"projectMain",params:{
+				"projectId" : this.mainProjectId,
+				"projectName" : this.mainProjectName,
+				"selMainTab" : 4, 
+				"selMidTab" : 1, 
+				"selSubTab" : 1,
+				"rcsYn" : this.$route.params.rcsYn,
+				"smsmmsYn" : this.$route.params.smsmmsYn,
+				"pushYn" : this.$route.params.pushYn,
+				"kakaoYn" : this.$route.params.kakaoYn,
+				"moYn" : this.$route.params.moYn,
+			}
+		} );
 	},
 	// API 중복확인 및 상세정보 가져오기
 	fnCheckApiKey(){

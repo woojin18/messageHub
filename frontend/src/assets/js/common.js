@@ -25,6 +25,71 @@ export default {
         if(this.isEmpty(str)) return str;
         return str.replace(/(?:\r\n|\r|\n)/g, '<br>');
       },
+      //3자리 콤마, 소수점 존재시 소수점 그대로 리턴
+      formatPrice(val){
+        if(!val) return '';
+        val = val.toString();
+
+        if(val.indexOf('.') > 0){
+          let arrVal = val.split('.');
+          if(arrVal.length == 2){
+            return arrVal[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '.' + arrVal[1];
+          }
+        }
+        return val.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
+      phoneNumAddDash(val){
+        if (!val) return '';
+        val = val.toString();
+        val = val.replace(/[^0-9]/g, '')
+      
+        let tmp = ''
+        if( val.length < 4){
+          return val;
+        } else if(val.length < 7) {
+          tmp += val.substr(0, 3);
+          tmp += '-';
+          tmp += val.substr(3);
+          return tmp;
+        } else if(val.length == 8) {
+          tmp += val.substr(0, 4);
+          tmp += '-';
+          tmp += val.substr(4);
+          return tmp;
+        } else if(val.length < 10) {
+          if(val.substr(0, 2) =='02') { //02-123-5678
+            tmp += val.substr(0, 2);
+            tmp += '-';
+            tmp += val.substr(2, 3);
+            tmp += '-';
+            tmp += val.substr(5);
+            return tmp;
+          }
+        } else if(val.length < 11) {
+          if(val.substr(0, 2) =='02') { //02-1234-5678
+            tmp += val.substr(0, 2);
+            tmp += '-';
+            tmp += val.substr(2, 4);
+            tmp += '-';
+            tmp += val.substr(6);
+            return tmp;
+          } else { //010-123-4567
+            tmp += val.substr(0, 3);
+            tmp += '-';
+            tmp += val.substr(3, 3);
+            tmp += '-';
+            tmp += val.substr(6);
+            return tmp;
+          }
+        } else { //010-1234-5678
+          tmp += val.substr(0, 3);
+          tmp += '-';
+          tmp += val.substr(3, 4);
+          tmp += '-';
+          tmp += val.substr(7);
+          return tmp;
+        }
+      },
       /**************************문자열 관련 Utils**************************/
       /**************************날짜관련 관련 Utils**************************/
       //현재일자 return

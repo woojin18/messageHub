@@ -36,6 +36,7 @@
           <div class="of_h">
             <div class="float-left" style="width:22%"><h4>발신 프로필/그룹 *</h4></div>
             <div class="float-left" style="width:78%">
+              <!-- 발신프로필그룹관리 기능 제외
               <select 
                 class="float-left selectStyle2" 
                 style="width:20%" 
@@ -46,14 +47,15 @@
                 <option value="S">일반</option>
                 <option value="G">그룹</option>
               </select>
-              <select v-if="isInsert" class="float-left selectStyle2" style="width:80%" v-model="tmpltData.senderKey">
+              -->
+              <select v-if="isInsert" class="float-left selectStyle2" style="width:100%" v-model="tmpltData.senderKey">
                 <option value="">선택해주세요.</option>
                 <option v-for="senderKeyInfo in senderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">
                   <!-- {{tmpltData.senderKeyType == 'S' ? senderKeyInfo.kkoChId : senderKeyInfo.senderKey}} -->
                   {{senderKeyInfo.senderKey}}
                 </option>
               </select>
-              <select v-else class="float-left selectStyle2" style="width:80%" disabled>
+              <select v-else class="float-left selectStyle2" style="width:100%" disabled>
                 <option value="">{{tmpltData.senderKey}}</option>
               </select>
             </div>

@@ -1,5 +1,5 @@
 <template>
-	<div id="grpAddPopup" class="modal fade modalStyle" tabindex="-1" role="dialog" aria-hidden="true" @click="fnClose">
+	<div id="grpAddPopup" class="modal fade modalStyle" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -10,12 +10,18 @@
 						<div class="consoleCon">							
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block float-left" style="width:25%">발신 프로필 그룹 ID *</h5>
-								<input type="text" class="inputStyle float-right" style="width:72%">
+								<input type="text" class="inputStyle float-right" style="width:72%" v-model="grpKey">
+							</div>
+						</div>
+						<div class="consoleCon mt10">							
+							<div class="of_h consolMarginTop">
+								<h5 class="inline-block float-left" style="width:25%">발신키 *</h5>
+								<input type="text" class="inputStyle float-right" style="width:72%" v-model="senderKey">
 							</div>
 						</div>
 					</div>
 					<div class="text-center mt20">
-						<a class="btnStyle1 backBlack" data-toggle="modal">토큰요청</a>
+						<a @click="fnSave" class="btnStyle1 backBlack" data-toggle="modal">저장</a>
 						<a @click="fnClose" class="btnStyle1 backWhite" data-dismiss="modal">취소</a>						
 					</div>
 				</div>
@@ -25,22 +31,44 @@
 </template>
 
 <script>
-import rcsApi from '../service/api'
+import api from '../service/api'
+import confirm from "@/modules/commonUtil/service/confirm"
 
 export default {
-  name: 'bpChanKakao',
-  data() {
-    return {
-    }
-  },
-  mounted() {
-    var vm = this;
-  },
-  methods: {
-    // 닫기
-    fnClose(){
-      jQuery("#grpAddPopup").modal('hide');
-    }
-  }
+	data() {
+		return {
+			grpKey : "",
+			senderKey : ""
+		}
+	},
+	mounted() {
+			
+	},
+	methods: {
+		// 닫기
+		fnClose(){
+			jQuery("#grpAddPopup").modal('hide');
+		},
+		fnSave(){
+			var params = {
+				"grpKey"      : this.grpKey,
+				"senderKey"   : this.senderKey,
+			}
+
+			api.saveKkoChGroupForApi(params).then(response =>{
+				var result = response.data;
+
+				if(result.success) {
+					confirm.fnAlert("", "저장되었습니다.");
+					// 닫기 버튼
+					this.$refs.closeBtn.click();
+					// 부모창 리스트 조회
+					this.$parent.fnSearch2();
+				} else {
+					confirm.fnAlert("", result.message);
+				}
+			});
+		}
+	}
 }
 </script>

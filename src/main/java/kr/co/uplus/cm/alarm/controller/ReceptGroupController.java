@@ -32,12 +32,6 @@ public class ReceptGroupController {
 	public RestResult<?> selectReceptGroupList(@RequestBody Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		List<Object> rtnList = generalDao.selectGernalList("alarm.selectReceptGroupList", params);
-		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
-		if (pageInfo != null && !pageInfo.isEmpty()) {
-			int rowNum = generalDao.selectGernalCount("alarm.selectReceptGroupListCnt", params);
-			pageInfo.put("rowNum", rowNum);
-			rtn.setPageInfo(pageInfo);
-		}
 		rtn.setData(rtnList);
 		return rtn;
 	}
@@ -60,7 +54,7 @@ public class ReceptGroupController {
 		return rtn;
 	}
 
-	// 수신자별 수신그룹 목록 조회(검색박스용)
+	// 수신자별 수신그룹 목록 조회(알람관리-알람수신팝업용)
 	@PostMapping("/selectReceptGroupList4")
 	public RestResult<?> selectReceptGroupList4(@RequestBody Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();

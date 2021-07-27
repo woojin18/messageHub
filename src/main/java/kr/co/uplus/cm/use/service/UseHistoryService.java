@@ -106,9 +106,9 @@ public class UseHistoryService {
 			sumAmount = sumAmount.add(addAmount); // 프로젝트 합계금액
 
 			// 선불,후불요금 합계
-			if(payType.equalsIgnoreCase("Y")) {
+			if(payType.equalsIgnoreCase("PRE")) {
 				prepaidAmount = prepaidAmount.add(addAmount); // 선불요금
-			} else if(payType.equalsIgnoreCase("N")) {
+			} else if(payType.equalsIgnoreCase("POST")) {
 				postpaidAmount = postpaidAmount.add(addAmount); // 후불요금
 			}
 		}
@@ -125,7 +125,8 @@ public class UseHistoryService {
 		rtnObj.put("prepaidTaxAmount"	, prepaidTaxAmount.setScale(0, RoundingMode.FLOOR).toString());
 		rtnObj.put("postpaidTaxAmount"	, postpaidTaxAmount.setScale(0, RoundingMode.FLOOR).toString());
 		rtnObj.put("useHistoryList"		, rtnList);
-
+		
+		
 		rtn.setData(rtnObj);
 		return rtn;
 	}

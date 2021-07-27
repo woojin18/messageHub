@@ -21,6 +21,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.text.StringSubstitutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -778,8 +779,7 @@ public class SendMessageService {
         }
 
         if(StringUtils.isNotBlank(errorMsg)) {
-            rtn.setSuccess(false);
-            rtn.setMessage(errorMsg);
+            rtn.setFail(errorMsg);
         }
 
         return requestData;
@@ -2315,7 +2315,7 @@ public class SendMessageService {
             for(String key : useChGrpInfo.keySet()) {
                 if(StringUtils.equals(useChGrpInfo.get(key), Const.COMM_YES)
                         && Const.chGrp.containsKey(key)) {
-                    useChGrps.addAll((List<String>) Const.chGrp.get(key));
+                    useChGrps.addAll(Const.chGrp.get(key));
                 }
             }
         }
@@ -2414,4 +2414,69 @@ public class SendMessageService {
         return (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_FRND_PRDT_INFO, params);
     }
 
+    /**
+     * RCS 정보 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> selectSmartTmpltRcsInfo(Map<String, Object> params) throws Exception {
+        return (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_RCS_INFO, params);
+    }
+
+    /**
+     * RCS 메시지 변수 바인딩
+     * @param recvInfoLst
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    public List<RecvInfo> replaceRcsMsgVar(List<RecvInfo> recvInfoLst, Map<String, Object> params) throws Exception{
+        log.info("{}.replaceRcsMsgVar start. recvInfoLst ==> {}", this.getClass(), recvInfoLst);
+
+        List<RecvInfo> rtnList = new ArrayList<RecvInfo>(recvInfoLst);
+        Map<String, Object> rcsltInfo = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_RCS_INFO, params);
+        String rcsPrdType = CommonUtils.getStrValue(rcsltInfo, "rcsPrdType");
+        String tmpltMergeDataStr = CommonUtils.getStrValue(rcsltInfo, "mergeData");
+
+        //미승인형
+        if(StringUtils.equals(Const.RcsPrd.FREE, rcsPrdType)) {
+            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+            List<Map<String, Object>> tmpltMergeDataList = gson.fromJson(tmpltMergeDataStr, new TypeToken<List<Map<String, Object>>>(){}.getType());
+            Map<String, Object> tmpltMergeData = new HashMap<String, Object>();
+
+            if(CollectionUtils.isNotEmpty(tmpltMergeDataList)) {
+                tmpltMergeData = tmpltMergeDataList.get(0);
+            }
+
+            String description = CommonUtils.getStrValue(tmpltMergeData, "description");
+            if(StringUtils.isNotBlank(description)) {
+                Map<String, Object> rcsVar = null;
+                Map<String, Object> rcsMergeData = null;
+                Map<String, Object> sendMergeData = null;
+                StringSubstitutor ss;
+
+                for(RecvInfo recvInfo : rtnList) {
+                    rcsVar = new HashMap<String, Object>();
+                    rcsMergeData = new HashMap<String, Object>();
+                    sendMergeData = recvInfo.getMergeData();
+
+                    if(sendMergeData.containsKey(Const.Ch.RCS)) {
+                        rcsVar = (Map<String, Object>) sendMergeData.get(Const.Ch.RCS);
+                        ss = new StringSubstitutor(rcsVar, ApiConfig.RCS_VAR_START, ApiConfig.RCS_VAR_END);
+
+                        rcsMergeData.put("description", ss.replace(description));
+                        sendMergeData.put(Const.Ch.RCS, rcsMergeData);
+                    }
+                }
+            }
+        }
+
+        return rtnList;
+    }
+
 }
+
+

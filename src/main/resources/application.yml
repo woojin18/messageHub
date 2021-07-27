@@ -14,6 +14,17 @@ spring:
     multipart:
       max-file-size: 15MB 
       max-request-size: 15MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: test@test
+    password: test
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
       
 app.props:
   jwt:
@@ -84,6 +95,17 @@ spring:
     multipart:
       max-file-size: 15MB 
       max-request-size: 15MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: test@test
+    password: test
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
       
 app.props:
   jwt:
@@ -148,6 +170,17 @@ spring:
       max-request-size: 15MB
     cookie:
       path: /
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: test@test
+    password: test
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
       
 app.props:
   jwt:
@@ -172,7 +205,7 @@ datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     jdbc-url: jdbc:log4jdbc:mysql://stg-advmsg-db.cluster-crvzo9rgathe.ap-northeast-2.rds.amazonaws.com:3306/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: cm_console
-    password: ENC(8HgUompybWqUfzu4jGY8Hj0KYhXoDPhD)
+    password: aptlwld123
     pool-name: hikari-cp
     maximum-pool-size: 30
     minimum-idle: 5

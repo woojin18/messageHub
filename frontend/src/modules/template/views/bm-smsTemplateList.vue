@@ -222,7 +222,8 @@ export default {
         const result = response.data;
         if(result.success) {
           confirm.fnAlert(this.componentsTitle, '삭제되었습니다.');
-          this.listChkBox = [];
+          this.listAllChecked = false;
+          this.fnListChkAll();
           this.fnPageNoResetSearch();
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="alarm">
+    
+    <select id="selectApikeyList" resultType="camel">
+        /* alarm.selectApikeyList */
+		SELECT b.PROJECT_NAME 
+		     , b.PAY_TYPE
+             , (CASE b.PAY_TYPE WHEN 'PRE' THEN '선불' WHEN 'POST' THEN '후불' END) AS PAY_TYPE_NM
+		     , a.API_KEY_NAME
+		     , a.API_KEY
+		  FROM cm.CM_APIKEY          a
+		     , cm_console.CM_PROJECT b
+		 WHERE a.PROJECT_ID = b.PROJECT_ID
+		   AND b.USE_YN       = 'Y'
+		   AND b.DEL_YN       = 'N'
+		  -- AND a.ALARM_USE_YN = 'Y'
+		   AND a.CORP_ID      = #{corpId}
+        <if test="srcProjectName != null and srcProjectName != ''">
+           AND b.PROJECT_NAME LIKE CONCAT('%',#{srcProjectName},'%')
+        </if>
+		 ORDER BY b.PROJECT_NAME ASC, a.REG_DT DESC
+    </select>
+    
+    <select id="selectCollectTargetApiList" resultType="camel">
+        /* alarm.selectCollectTargetApiList */
+		SELECT b.PROJECT_NAME 
+		     , b.PAY_TYPE
+             , (CASE b.PAY_TYPE WHEN 'PRE' THEN '선불' WHEN 'POST' THEN '후불' END) AS PAY_TYPE_NM
+		     , a.API_KEY_NAME
+		     , a.API_KEY
+		  FROM cm_console.CM_COLLECT_TARGET_API c
+		     , cm.CM_APIKEY                     a
+		     , cm_console.CM_PROJECT            b
+		 WHERE a.PROJECT_ID = b.PROJECT_ID
+		   AND b.USE_YN       = 'Y'
+		   AND b.DEL_YN       = 'N'
+          -- AND a.ALARM_USE_YN = 'Y'
+		   AND a.CORP_ID      = #{corpId}
+		   AND c.ALARM_ID     = #{alarmId}
+		   AND c.API_KEY      = a.API_KEY
+		 ORDER BY b.PROJECT_NAME ASC, a.REG_DT DESC
+    </select>
+    
+    <insert id="insertCollectTargetApi">
+       /* alarm.insertCollectTargetApi */
+        INSERT INTO cm_console.CM_COLLECT_TARGET_API (
+               ALARM_ID
+             , API_KEY 
+        ) VALUES <foreach collection="list1" item="item" separator="," >(#{alarmId}, #{item.apiKey})</foreach>
+    </insert>
+    
+    <delete id="deleteCollectTargetApi">
+       /* alarm.deleteCollectTargetApi */
+        DELETE 
+          FROM cm_console.CM_COLLECT_TARGET_API
+         WHERE ALARM_ID         = #{alarmId}
+    </delete>
+    
+</mapper>

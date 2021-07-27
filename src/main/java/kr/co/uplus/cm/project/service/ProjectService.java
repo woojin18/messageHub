@@ -15,11 +15,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import kr.co.uplus.cm.common.consts.Const.CmdTgt;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
-import kr.co.uplus.cm.common.model.AuthUser;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -272,7 +270,7 @@ public class ProjectService {
 		return rtn;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "static-access" })
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void savePreRegExWithUploadFiles(List<MultipartFile> uploadFiles, Map<String, Object> params) throws Exception{
 		// 이미 등록되어있는지 확인
@@ -287,16 +285,23 @@ public class ProjectService {
 			for (int i = 0; i < uploadFiles.size(); i++) {
 				
 				MultipartFile uploadFile = uploadFiles.get(i);
+				String fileName = "";
+				String pattern = "[\"!@#$%^&'.*]";
+				String preFileName = commonService.getFileNameExt(uploadFile.getOriginalFilename(),0).replaceAll(pattern, "");
+				String ext = commonService.getFileNameExt(uploadFile.getOriginalFilename(),1);
+				fileName = preFileName+"."+ext;
 				
-				RestResult<Object> rtn = commonService.uploadFile(uploadFile, CommonUtils.getString(params.get("loginId")));
+				String fileId = commonService.uploadFile2(uploadFile, CommonUtils.getString(params.get("loginId")));
+				Map<String, Object> fileMap = new HashMap<>();
+				fileMap.put("fileId", fileId);
 				
-				Map<String, Object> rtnMap = (Map<String, Object>) rtn.getData();
+				String attachFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", fileMap));
 				
-				jsonInfoStr += "	\"fileName" + (i+1) + "\"		: \"" + CommonUtils.getString(rtnMap.get("attachFileName")) + "\",";
+				jsonInfoStr += "	\"fileName" + (i+1) + "\"		: \"" + fileName + "\",";
 				if( i == (uploadFiles.size() - 1) ) {
-					jsonInfoStr += "	\"filePath" + (i+1) + "\"		: \"" + CommonUtils.getString(rtnMap.get("attachFilePath")) + "\"";
+					jsonInfoStr += "	\"filePath" + (i+1) + "\"		: \"" + attachFilePath + "\"";
 				} else {
-					jsonInfoStr += "	\"filePath" + (i+1) + "\"		: \"" + CommonUtils.getString(rtnMap.get("attachFilePath")) + "\",";
+					jsonInfoStr += "	\"filePath" + (i+1) + "\"		: \"" + attachFilePath + "\",";
 				}
 			}
 			
@@ -624,7 +629,7 @@ public class ProjectService {
 				}
 			}
 			// redis 테이블 처리
-			commonService.updateCmCmdForRedis("CM_SMART_CH");
+			commonService.updateCmCmdForRedis(CmdTgt.SMART_CH);
 			
 		} catch (Exception e) {
 			rtn.setSuccess(false);

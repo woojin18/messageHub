@@ -84,7 +84,7 @@ public class SignUpController implements Serializable{
 			rtn.setSuccess(true);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage("회원 가입에 실패하였습니다.");
+			rtn.setMessage(e.getMessage());
 			log.error("{} Error : {}", this.getClass(), e);
 		}
 		return rtn;
@@ -126,7 +126,7 @@ public class SignUpController implements Serializable{
 			@RequestParam(required=true) String custKdCd,				// 고객유형
 			@RequestParam(required=false) String custrnmNo,				// 고객식별번호
 			@RequestParam(required=false) String coInfo,				// 본인인증 토큰 (개인사업자 필수)
-			@RequestParam(required=false) String genderCode				// 성별 (0: 여성, 1: 남성)
+			@RequestParam(required=false) String genderCode				// 성별 (1: 남성,2: 여성)
 			) throws Exception {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -149,30 +149,28 @@ public class SignUpController implements Serializable{
 		
 		// 유큐브 파라미터
 		paramMap.put("custKdCd", custKdCd);
-		paramMap.put("persNo", custrnmNo);
+		if(!"GEX".equals(custKdCd) && !"II".equals(custKdCd)) {
+			paramMap.put("ctype", "1");					// 기본
+			paramMap.put("corpNo", custrnmNo);			// 법인번호
+		} else {
+			paramMap.put("ctype", "2");					// 개인
+			paramMap.put("persNo", custrnmNo);			// 개인 사업자 주민번호(YYYYMMDD)
+		}
 		paramMap.put("cmpNm", corpNm);
-		paramMap.put("zipcode", zipCode);
-		paramMap.put("juso", woplaceAddress);
-		paramMap.put("juso2", woplaceAddressDetail);
-		paramMap.put("damEmail", loginId);
 		paramMap.put("coInfo1", coInfo);
 		paramMap.put("genderCode", genderCode);
-		paramMap.put("corpTel", wireTel);
-		paramMap.put("regNo", regno);
 		paramMap.put("ceoNm", ceoNm);
-		paramMap.put("busiType", busiType);
-		paramMap.put("upjongNm", busiClass);
 		paramMap.put("vatExmptKdCd", "N");
 		
-		try {
-			signUpSvc.insertSignUp(paramMap);
-			rtn.setSuccess(true);
-		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("회원 가입에 실패하였습니다.");
-			log.error("{} Error : {}", this.getClass(), e);
-		}
-		return rtn;
+//		try {
+//			rtn = signUpSvc.insertSignUp(paramMap);
+//			rtn.setSuccess(true);
+//		} catch (Exception e) {
+//			rtn.setSuccess(false);
+//			rtn.setMessage("회원 가입에 실패하였습니다.");
+//			log.error("{} Error : {}", this.getClass(), e);
+//		}
+		return signUpSvc.insertSignUp(paramMap);
 	}
 	
 	// 사용 약관 가져오기
@@ -221,14 +219,14 @@ public class SignUpController implements Serializable{
 		// 업체에서 적절하게 변경하여 쓰거나, 아래와 같이 생성한다.
 		sRequestNumber = niceCheck.getRequestNO(sSiteCode);
 		
-		CommonUtils.addToSession(request, "REQ_SEQ", this);
+//		CommonUtils.addToSession(request, "REQ_SEQ", this);
+		HttpSession sess = request.getSession(true);
+		sess.setAttribute("REQ_SEQ", sRequestNumber);
 //		HttpSession hs = request.getSession(true);
 //		hs.setAttribute("REQ_SEQ" , sRequestNumber);
 //		*************************
 //		session.setAttribute("REQ_SEQ" , sRequestNumber);	// 해킹등의 방지를 위하여 세션을 쓴다면, 세션에 요청번호를 넣는다.
-		
-		
-		
+
 		String sAuthType = "";			// 없으면 기본 선택화면, M: 핸드폰, C: 신용카드, X: 공인인증서
 		
 		String popgubun 	= "N";		//Y : 취소버튼 있음 / N : 취소버튼 없음
@@ -369,7 +367,12 @@ public class SignUpController implements Serializable{
 			sMobileNo		= (String)mapresult.get("MOBILE_NO");
 			sMobileCo		= (String)mapresult.get("MOBILE_CO");
 			
-			String session_sRequestNumber = CommonUtils.getString(request.getSession().getAttribute("REQ_SEQ"));
+			// 유큐브 고객사 등록시 남자 1 / 여자 2
+			if("0".equals(sGender)) {
+				sGender = "2";
+			}
+			
+			Object session_sRequestNumber = request.getSession(true).getAttribute("REQ_SEQ");
 //			String session_sRequestNumber = (String)session.getAttribute("REQ_SEQ");
 			if(!sRequestNumber.equals(session_sRequestNumber)) {
 				sMessage = "세션값 불일치 오류입니다.";
@@ -525,6 +528,39 @@ public class SignUpController implements Serializable{
 		
 		try {
 			rtn = (RestResult<Object>) signUpSvc.selectCustAddr(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
+	}
+	
+//	@PostMapping("/sendMail")
+//	public RestResult<?> sendMail(@RequestBody Map<String, Object> params){
+//		RestResult<Object> rtn = new RestResult<Object>();
+//		
+//		try {
+//			signUpSvc.sendMail(params);
+//		} catch (Exception e) {
+//			rtn.setSuccess(false);
+//			rtn.setMessage("메일 전송 에러!");
+//		}
+//		
+//		return rtn;
+//	}
+	
+	/**
+	 * 메일 본인 인증
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/certifyMailByLoginId")
+	public RestResult<?> selectMailCertifyByLoginId(
+			@RequestBody Map<String, Object> params){
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		try {
+			rtn = signUpSvc.certifyMailByLoginId(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage(e.getMessage());

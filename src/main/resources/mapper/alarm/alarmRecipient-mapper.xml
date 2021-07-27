@@ -2,35 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="alarm">
     
-    <select id="selectalarmRecipientList" resultType="camel">
-        /* alarm.selectalarmRecipientList */
+    <select id="selectAlarmRecipientList" resultType="camel">
+        /* alarm.selectAlarmRecipientList */
         SELECT a.RECIPIENT_ID 
              , RECIPIENT_NAME 
              , HP_NUMBER 
-             , EMAIL 
           FROM cm_console.CM_ALARM_RECIPIENT a
-             , cm_console.CM_RECIPIENT      b
-         WHERE alarm_CODE         = #{alarmCode} 
+             , cm_console.CM_CORP_RECIPIENT  b
+         WHERE ALARM_ID          = #{alarmId} 
            AND a.RECIPIENT_ID    = b.RECIPIENT_ID
          ORDER BY RECIPIENT_NAME ASC 
     </select>
     
-    <insert id="insertalarmRecipient">
-       /* alarm.insertalarmRecipient */
+    <insert id="insertAlarmRecipient">
+       /* alarm.insertAlarmRecipient */
         INSERT INTO cm_console.CM_ALARM_RECIPIENT (
-               ALARM_CODE 
+               ALARM_ID
              , RECIPIENT_ID
-        ) VALUES (
-               #{alarmCode} 
-             , #{recipientId}
-        )
+        ) VALUES <foreach collection="list3" item="item" separator="," >(#{alarmId}, #{item.recipientId})</foreach>
     </insert>
     
-    <delete id="deletealarmRecipient">
-       /* alarm.deletealarmRecipient */
+    <delete id="deleteAlarmRecipient">
+       /* alarm.deleteAlarmRecipient */
         DELETE 
           FROM cm_console.CM_ALARM_RECIPIENT
-         WHERE ALARM_CODE         = #{alarmCode} 
+         WHERE ALARM_ID         = #{alarmId} 
     </delete>
     
 </mapper>

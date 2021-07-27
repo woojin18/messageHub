@@ -68,8 +68,8 @@
                       <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
                       <p class="font-size14 color3 mt15">이미지 영역</p>
                     </div>
-                    <div v-if="templateData.msgType == 'IMAGE' && !fnIsEmpty(templateData.imgUrl)" class="phoneText2 mt10 text-center"
-                      :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+templateData.imgUrl+');'">
+                    <div v-if="templateData.msgType == 'IMAGE' && !fnIsEmpty(templateData.imgUrl)" class="phoneText2 mt10 text-center simulatorImg"
+                      :style="'padding:65px;background-image: url('+templateData.imgUrl+');'">
                     </div>
                     <div>
                       <p class="font-size14 color4 mt10">

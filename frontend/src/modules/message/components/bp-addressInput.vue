@@ -7,12 +7,12 @@
           <hr>
           <div class="of_h">
             <select name="userConsole02_1" class="selectStyle2 mr5" style="width:28%" v-model="searchTextType">
-              <option value="cuid">APP 로그인ID</option>
               <option value="cuName">수신자 명</option>
-              <option value="hpNumber">휴대폰 번호</option>
+              <option v-if="requiredCuid" value="cuid">APP 로그인ID</option>
+              <option v-if="requiredCuPhone" value="hpNumber">휴대폰 번호</option>
             </select>
-            <input type="text" class="inputStyle" style="width:60%" v-model="searchText" @keypress.enter="fnGetAddrList">
-            <a @click='fnGetAddrList' class="btnStyle1 backLightGray float-right" style="width:10%" title="검색">검색</a>
+            <input type="text" class="inputStyle" style="width:60%" v-model="searchText" @keypress.enter="fnSearchAddrMem">
+            <a @click='fnSearchAddrMem' class="btnStyle1 backLightGray float-right" style="width:10%" title="검색">검색</a>
           </div>
           <h5 class="color5">조직 조회 후 체크된 사용자를 선택하면  수신자에 추가됩니다.</h5>
 
@@ -60,13 +60,20 @@
                     <tr v-for="(cmCuInfo, idx) in cmCuList" :key="cmCuInfo.cuInfoId">
                       <td class="text-center">
                         <div class="consolCheck ml10">
-                          <input type="checkbox" :id="'listCheck_'+idx" class="checkStyle2" :value="cmCuInfo.cuInfoId" v-model="listChkBox">
+                          <input 
+                            type="checkbox" 
+                            :id="'listCheck_'+idx" 
+                            class="checkStyle2" 
+                            :value="cmCuInfo.cuInfoId" 
+                            v-model="listChkBox" 
+                            :disabled="(requiredCuid && $gfnCommonUtils.isEmpty(cmCuInfo.cuid)) || (requiredCuPhone && $gfnCommonUtils.isEmpty(cmCuInfo.hpNumber))"
+                          >
                           <label :for="'listCheck_'+idx"></label>
                         </div>
                       </td>
                       <td class="text-center">{{cmCuInfo.cuName}}</td>
                       <td v-if="requiredCuid" class="text-left">{{cmCuInfo.cuid}}</td>
-                      <td v-if="requiredCuPhone" class="text-left">{{cmCuInfo.hpNumber}}</td>
+                      <td v-if="requiredCuPhone" class="text-left">{{cmCuInfo.hpNumber | phoneNumAddDash}}</td>
                       <td v-for="varNm in contsVarNms" :key="varNm" class="text-center">
                         <input type="text" class="inputStyle" v-model="cmCuInfo[varNm]">
                       </td>
@@ -143,7 +150,7 @@ export default {
     return {
       listAllChecked: false,
       listChkBox: [],
-      searchTextType: 'cuid',
+      searchTextType: 'cuName',
       searchText: '',
       searchCategoryId: 0,
       addrTreeList: [],
@@ -241,6 +248,10 @@ export default {
         }
       });
     },
+    fnSearchAddrMem(){
+      this.fnGetAddrList();
+      this.fnAddrCatgMem(this.searchCategoryId);
+    },
     //주소 카테고리 클릭
     fnAddrCatgMem(addressCategoryId){
       if(this.$gfnCommonUtils.isEmpty(addressCategoryId)){
@@ -301,8 +312,7 @@ export default {
 
       for(let ctgyIdx=0; ctgyIdx<addrCtgyList.length; ctgyIdx++){
         ctgyInfo = addrCtgyList[ctgyIdx];
-        if(targetGrpYn == 'Y'
-          && (ctgyInfo.parAddressCategoryId == 0 || ctgyInfo.parAddressCategoryId == ctgyInfo.addressCategoryGrpId)){
+        if(targetGrpYn == 'Y' && ctgyInfo.parAddressCategoryId == 0){
           if(tGrpId == ctgyInfo.addressCategoryGrpId){
             target.subItems.push(ctgyInfo);
             if(target.subItems.length != 0) vm.fnSetSubItems(addrCtgyList, target.subItems[target.subItems.length - 1], 'N');

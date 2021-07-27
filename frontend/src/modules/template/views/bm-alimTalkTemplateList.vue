@@ -264,7 +264,8 @@ export default {
         var result = response.data;
         confirm.fnAlert(this.componentsTitle, result.message);
         if(result.success) {
-          this.listChkBox = [];
+          this.listAllChecked = false;
+          this.fnListChkAll();
           this.fnPageNoResetSearch();
         }
       });

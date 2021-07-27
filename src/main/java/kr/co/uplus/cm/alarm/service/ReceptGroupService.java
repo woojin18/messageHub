@@ -24,7 +24,7 @@ public class ReceptGroupService {
 		if (StringUtils.isEmpty(recipientId)) {
 			generalDao.insertGernal("alarm.insertReceptGroup", params);
 		} else {
-			generalDao.updateGernal("noti.updateReceptGroup", params);
+			generalDao.updateGernal("alarm.updateReceptGroup", params);
 		}
 	}
 	

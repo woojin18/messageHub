@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="alarm">
+    
+    <select id="selectAlarmList" resultType="camel">
+        /* alarm.selectAlarmList */
+	    SELECT ALARM_ID
+	         , a.ALARM_TYPE_CODE 
+	         , ALARM_NAME
+	      FROM cm_console.CM_ALARM a
+	         , cm_bo.CM_ALARM_TYPE b
+	     WHERE a.ALARM_TYPE_CODE = b.ALARM_TYPE_CODE
+           AND CORP_ID           = #{corpId}
+    </select>
+    
+    <select id="selectAlarm" resultType="camel">
+        /* alarm.selectAlarm */
+        SELECT ALARM_ID
+	         , ALARM_TYPE_CODE
+	         , ALARM_NAME
+	         , COLT_DAY_WEEK_JSON
+	         , COLT_MIN_QTY
+	         , SEND_SUCC_RATE
+	         , DAY_LIMIT_JSON
+	         , MTH_LIMIT_AMT 
+	         , MTH_LIMIT_JSON
+	      FROM cm_console.CM_ALARM
+         WHERE ALARM_ID         = #{alarmId}
+           AND CORP_ID          = #{corpId}
+    </select>
+    
+    <insert id="insertAlarm" useGeneratedKeys="true" keyProperty="alarmId">
+       /* alarm.insertAlarm */
+        INSERT INTO cm_console.CM_ALARM (
+               CORP_ID 
+             , ALARM_TYPE_CODE
+             , ALARM_NAME
+             , COLT_DAY_WEEK_JSON
+             , COLT_MIN_QTY
+             , SEND_SUCC_RATE
+             , DAY_LIMIT_JSON
+             , MTH_LIMIT_AMT 
+             , MTH_LIMIT_JSON
+             , REG_ID
+             , REG_DT 
+             , UPD_ID
+             , UPD_DT 
+        ) VALUES (
+               #{corpId} 
+             , #{alarmTypeCode}
+             , #{alarmName}
+             , #{coltDayWeekJson}
+             , #{coltMinQty}
+             , #{sendSuccRate}
+             , #{dayLimitJson}
+             , #{mthLimitAmt}
+             , #{mthLimitJson}
+             , #{userId}
+             , NOW()
+             , #{userId}
+             , NOW()
+        )
+    </insert>
+    
+    <update id="updateAlarm">
+       /* alarm.updateAlarm */
+        UPDATE cm_console.CM_ALARM
+           SET ALARM_NAME       = #{alarmName}  
+             , COLT_DAY_WEEK_JSON = #{coltDayWeekJson} 
+             , COLT_MIN_QTY     = #{coltMinQty} 
+             , SEND_SUCC_RATE   = #{sendSuccRate} 
+             , DAY_LIMIT_JSON   = #{dayLimitJson} 
+             , MTH_LIMIT_AMT    = #{mthLimitAmt} 
+             , MTH_LIMIT_JSON   = #{mthLimitJson} 
+             , UPD_ID           = #{userId}
+             , UPD_DT           = NOW()
+         WHERE ALARM_ID         = #{alarmId}
+           AND CORP_ID          = #{corpId}
+    </update>
+    
+    <delete id="deleteAlarm">
+       /* alarm.deleteAlarm */
+        DELETE 
+          FROM cm_console.CM_ALARM
+         WHERE ALARM_ID         = #{alarmId}
+           AND CORP_ID          = #{corpId}
+    </delete>
+    
+</mapper>

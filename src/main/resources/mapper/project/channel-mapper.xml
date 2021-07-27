@@ -920,7 +920,7 @@
 		SELECT	A.GRP_KEY
 		,		A.SENDER_KEY
 		,		A.CORP_ID
-		,		A.REG_DT
+		,		date_format(A.REG_DT, '%Y-%m-%d') AS REG_DT
 		,		A.USE_YN
 		FROM	cm.CM_KKO_SENDER_GRP A
 		WHERE	A.CORP_ID = #{corpId}
@@ -933,5 +933,25 @@
 		WHERE	ca.CORP_ID = #{corpId}
 		ORDER BY ca.REG_DT  DESC
 	</select>
+	
+	<insert id="insertKkoChGroupForApi">
+		/* channel.insertKkoChGroupForApi */
+		INSERT INTO cm.CM_KKO_SENDER_GRP
+		(
+			GRP_KEY
+		,	SENDER_KEY
+		,	CORP_ID
+		,	USE_YN
+		,	REG_DT
+		)
+		VALUSE
+		(
+			#{grpKey}
+		,	#{senderKey}
+		,	#{corpId}
+		,	'Y'
+		,	NOW()
+		)
+	</insert>
 	
 </mapper>

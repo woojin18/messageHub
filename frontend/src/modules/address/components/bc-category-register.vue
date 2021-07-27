@@ -81,7 +81,11 @@ export default {
 		addrCateGrpName: {
 			type: String,
 			require: false,
-		}
+		},
+		parDepthNumber: {
+			type: Number,
+			require: false,
+		},
 	},
 	data() {
 		return {
@@ -120,6 +124,7 @@ export default {
 					'regId': tokenSvc.getToken().principal.userId,
 					'addressCategoryName': this.cateName,
 					'saveStatus': this.saveStatus,
+					'depthNumber' : this.parDepthNumber + 1, // 상위 카테고리의 depth + 1이 현재 depth
 				};
 
 				if(this.parAddrCateId  == -1) { // root 하위에 카테고리 추가

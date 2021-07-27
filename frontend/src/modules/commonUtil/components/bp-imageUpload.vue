@@ -155,9 +155,14 @@ export default {
     },
     //이미지미리보기 클릭시
     fnImagePreview(e) {
-      var file = e.target.files[0]; // Get first index in files
-      this.imageUrl = URL.createObjectURL(file); // Create File URL
+      if(e.target.files && e.target.files.length > 0){
+        var file = e.target.files[0];
+        this.imageUrl = URL.createObjectURL(file);
+      } else {
+        this.imageUrl = '';
+      }
     }
+    
   }
 }
 </script>

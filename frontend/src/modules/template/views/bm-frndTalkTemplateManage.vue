@@ -18,8 +18,8 @@
                 <div class="text-sub-wrap">
                   <!-- <p class="text-sub scroll-y"> -->
                     <!-- {{tmpltData.tmpltName}} -->
-                    <div v-if="!$gfnCommonUtils.isEmpty(tmpltData.imgUrl)" class="phoneText2 mt10 text-center"
-                      :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+tmpltData.imgUrl+');'">
+                    <div v-if="!$gfnCommonUtils.isEmpty(tmpltData.imgUrl)" class="phoneText2 mt10 text-center simulatorImg"
+                      :style="'padding:65px;background-image: url('+tmpltData.imgUrl+');'">
                     </div>
                     <!-- <br v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltName) && $gfnCommonUtils.isEmpty(tmpltData.imgUrl)"/> -->
                     <br v-if="$gfnCommonUtils.isEmpty(tmpltData.imgUrl)"/>

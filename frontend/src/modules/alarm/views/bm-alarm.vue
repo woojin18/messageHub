@@ -7,7 +7,7 @@
 
 			<!-- 본문 -->
 			<div class="row">
-                <div class="col-xs-6 mt10" v-for="alarmType in alarmTypeList">			
+                <div class="col-xs-6 mt10" v-for="(alarmType, idx1) in alarmTypeList">			
                     <div class="mt20">
                         <div class="row">
                             <div class="col-xs-6 pr0">
@@ -15,29 +15,18 @@
                                     <h4>{{alarmType.alarmTypeName}}</h4>		
                                     <p class="color4 mt10">{{alarmType.alarmDesc}}</p>
                                     <div class="mt40">
-                                        <router-link :to="{name:'alarmType', params:{typeCode:alarmType.alarmTypeCode}}" class="btnStyle2 backRed">등록</router-link>
+                                        <router-link v-if="((alarmType.alarmTypeCode == 'IP' || alarmType.alarmTypeCode == 'PRE') && alarmType.list.length == 0) || !(alarmType.alarmTypeCode == 'IP' || alarmType.alarmTypeCode == 'PRE')" :to="{name:'alarmType', params:{typeCode:alarmType.alarmTypeCode}}" class="btnStyle2 backRed">등록</router-link>
                                     </div>			
                                 </div>
                             </div>
                             <div class="col-xs-6 pl0">
                                 <div class="pl0 border-line2 pd20 height170">
                                     <div class="scroll-y7">
-                                        <div class="of_h">
-                                            <router-link :to="{name:'updAlarmType', params:{typeCode:alarmType.alarmTypeCode, alarmId:1}}" class="inline-block float-left text-underline mt5" style="width:60%">구매부 알람</router-link>
-                                            <div class="ilnine-block float-right of_h" style="width:40%"><a href="#self" class="btnStyle1 borderLightGray mr5 float-right">삭제</a></div>
+                                        <div class="of_h" v-for="(data,idx2) in alarmType.list" v-bind:class="{'mt10':idx2>0}">
+                                            <router-link :to="{name:'updAlarmType', params:{typeCode:alarmType.alarmTypeCode, alarmId:data.alarmId}}" class="inline-block float-left text-underline mt5" style="width:60%">{{data.alarmName}}</router-link>
+                                            <div class="ilnine-block float-right of_h" style="width:40%"><a @click="fnDel(idx1, idx2)" class="btnStyle1 borderLightGray mr5 float-right">삭제</a></div>
                                         </div>
-                                        <div class="of_h mt10">
-                                            <p class="inline-block float-left text-underline mt5" style="width:60%">지원부 알람</p>
-                                            <div class="ilnine-block float-right of_h" style="width:40%"><a href="#self" class="btnStyle1 borderLightGray mr5 float-right">삭제</a></div>
-                                        </div>
-                                        <div class="of_h mt10">
-                                            <p class="inline-block float-left text-underline mt5" style="width:60%">지원부 알람</p>
-                                            <div class="ilnine-block float-right of_h" style="width:40%"><a href="#self" class="btnStyle1 borderLightGray mr5 float-right">삭제</a></div>
-                                        </div>
-                                        <div class="of_h mt10">
-                                            <p class="inline-block float-left text-underline mt5" style="width:60%">지원부 알람</p>
-                                            <div class="ilnine-block float-right of_h" style="width:40%"><a href="#self" class="btnStyle1 borderLightGray mr5 float-right">삭제</a></div>
-                                        </div>
+                                        <p v-if="alarmType.list.length==0">알람설정을 하지 않았습니다.<br>먼저 등록해 주십시오.</p>
                                     </div>
                                 </div>
                             </div>	
@@ -57,7 +46,8 @@ import {eventBus} from "@/modules/commonUtil/service/eventBus";
 export default {
   data() {
     return {
-      alarmTypeList: []
+      alarmTypeList: [],
+      del1 : -1, del2 : -2
     }
   },
   components: {
@@ -74,6 +64,24 @@ export default {
           vm.alarmTypeList = result.data
         }
       })
+    },
+    fnDel(idx1, idx2) {
+      this.del1 = idx1
+      this.del2 = idx2
+			eventBus.$on('callbackEventBus', this.fnDelCallback);
+			confirm.fnConfirm('알람 삭제', '삭제하시겠습니까?', '확인');
+    },
+    fnDelCallback() {
+      let params = {'alarmId': this.alarmTypeList[this.del1].list[this.del2].alarmId}
+			alarmApi.delAlarm(params).then(response =>{
+				var result = response.data;
+				if(result.success) {
+          this.alarmTypeList[this.del1].list.splice(this.del2, 1)
+					confirm.fnAlert('알람 삭제', '알람을 삭제 했습니다.');
+				} else {
+					confirm.fnAlert('알람 삭제', result.message);
+				}
+			});
     }
   }
 }

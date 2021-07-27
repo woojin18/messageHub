@@ -33,7 +33,7 @@
 			<ul v-if="selMainTab==4&&selMidTab==4" class="tab_s6 mt10">
 				<!-- 체널관리 - 카카오톡 탭 -->
 				<li :class="{active:(selMainTab==4&&selMidTab==4&&selSubTab==1)}" @click="selSubTab=1"><a>발신 프로필 일반</a></li>
-				<li :class="{active:(selMainTab==4&&selMidTab==4&&selSubTab==2)}" @click="selSubTab=2"><a>발신 프로필 그룹</a></li>
+				<!-- <li :class="{active:(selMainTab==4&&selMidTab==4&&selSubTab==2)}" @click="selSubTab=2"><a>발신 프로필 그룹</a></li> -->
 				<!-- 체널관리 - 카카오톡 탭 -->
 			</ul>
 
@@ -121,12 +121,14 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route.params.selMainTab);
     if( this.$route.params.selMainTab != null || this.$route.params.selMainTab != undefined ){
       this.selMainTab = this.$route.params.selMainTab;
     }
     if( this.$route.params.selMidTab != null || this.$route.params.selMidTab != undefined ){
       this.selMidTab = this.$route.params.selMidTab;
+    }
+    if( this.$route.params.selSubTab != null || this.$route.params.selSubTab != undefined ){
+      this.selSubTab = this.$route.params.selSubTab;
     }
     // 내부에서 새로그침시 프로젝트 화면으로 이동하게 처리
     if( this.projectId === undefined || this.projectId === null ){

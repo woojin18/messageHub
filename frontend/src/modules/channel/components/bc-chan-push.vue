@@ -94,11 +94,36 @@ export default {
     },
     // 등록 템플릿 상세 
     fnReg(){
-      this.$router.push( {name:"chan-push-detail",params:{"projectId" : this.projectId, "save_status" : 'C' }} );
+      this.$router.push( {name:"chan-push-detail",params:{
+          "mainProjectId" : this.projectId, 
+          "mainProjectName" : this.projectName,
+          "rcsYn" : this.$route.params.rcsYn,
+          "smsmmsYn" : this.$route.params.smsmmsYn,
+          "pushYn" : this.$route.params.pushYn,
+          "kakaoYn" : this.$route.params.kakaoYn,
+          "moYn" : this.$route.params.moYn,
+
+          "projectId" : this.projectId,
+          "save_status" : 'C', 
+        }
+      } );
     },
     // 수정하기위한 상세창
     fnMod(rowData){
-      this.$router.push( {name:"chan-push-detail",params:{"projectId" : this.projectId, "save_status" : 'U', "rowData" : rowData }} );
+      this.$router.push( 
+        {name:"chan-push-detail",params:{
+            "mainProjectId" : this.projectId,
+            "mainProjectName" : this.projectName,
+            "rcsYn" : this.$route.params.rcsYn,
+            "smsmmsYn" : this.$route.params.smsmmsYn,
+            "pushYn" : this.$route.params.pushYn,
+            "kakaoYn" : this.$route.params.kakaoYn,
+            "moYn" : this.$route.params.moYn,
+            "projectId" : this.projectId, 
+            "save_status" : 'U', 
+            "rowData" : rowData 
+          }
+      });
     },
     // 삭제 확인
     fnDeleteConfirm(rowData){

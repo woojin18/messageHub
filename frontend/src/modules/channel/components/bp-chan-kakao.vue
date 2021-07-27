@@ -42,14 +42,11 @@
 									</select>
 								</div>
 							</div>
-							<!-- <div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:25%">타 프로젝트 사용여부 *</h5>
-								<div class="inline-block float-right" style="width:72%">
-									<input type="radio" name="use" value="Y" id="yes" v-model="otherProjectYn"> <label for="yes" class="mr30">공용</label>
-									<input type="radio" name="use" value="N" id="no"  v-model="otherProjectYn"> <label for="no">개별</label>		
-								</div>
-							</div> -->
-							
+							<div class="of_h consolMarginTop">
+								<h5 class="inline-block" style="width:20%">프로젝트 공용 여부 *</h5>
+								<input type="radio" v-model="otherProjectYn" name="otherProjectYn" value="Y" class="cBox" id="Y"> <label for="Y" class="payment mr30 font-size12">공용</label>
+								<input type="radio" v-model="otherProjectYn" name="otherProjectYn" value="N" class="cBox" id="N"> <label for="N" class="payment font-size12">전용</label>
+							</div>
 						</div>
 					
 					</div>
@@ -66,8 +63,6 @@
 <script>
 import api from '../service/api'
 import confirm from "@/modules/commonUtil/service/confirm"
-import {eventBus} from "@/modules/commonUtil/service/eventBus";
-
 
 export default {
   name: 'bpChanKakao',
@@ -102,6 +97,7 @@ export default {
   mounted() {
 	this.fnGetApiKeyListForKko();
     this.fnGetKkoCategory();
+	this.otherProjectYn = 'Y';
   },
   methods: {
     // 닫기
@@ -138,7 +134,7 @@ export default {
 		var params = {
 			"apiKey"		: this.apiKey,
 			"kkoChId"		: this.kkoChId,
-			"phoneNumber"	: this.phoneNumber
+			"phoneNumber"	: this.phoneNumber,
 		};
 		api.getSenderKeyToken(params).then(response =>{
 			var result = response.data;
@@ -176,7 +172,9 @@ export default {
 			"token"			: this.token,
 			"categoryCode"	: this.categoryCode,
 			"projectId"		: this.projectId,
+			"otherProjectYn": this.otherProjectYn
 		};
+
 		api.saveKkoChForApi(params).then(response =>{
 			var result = response.data.data;
 

@@ -5,8 +5,8 @@
     <select id="selectRecipientListCnt" resultType="int">
         /* alarm.selectRecipientListCnt */
         SELECT COUNT(1) AS CNT
-          FROM cm_console.CM_CORP_RECIPIENT
-         WHERE 1 = 1
+          FROM cm_console.CM_CORP_RECIPIENT a
+         WHERE a.CORP_ID        = #{corpId}
         <if test="srcalarmGroup != null and srcalarmGroup != ''">
            AND alarm_CODE LIKE CONCAT('%',#{srcalarmGroup},'%')
         </if>

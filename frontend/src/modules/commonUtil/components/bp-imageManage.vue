@@ -80,7 +80,7 @@
 
           <div class="border-line2 bgColor_f7 mt10 pd10">
             <ul class="color5">
-              <li>•  이미지는 .jpg, .jpeg, .png, .gif 형식만 지원합니다.</li>
+              <li>•  이미지는 .jpg, .jpeg, .png 형식만 지원합니다.</li>
               <li>•  이미지 크기는 PUSH(1MB), RCS(1MB), 친구톡(Normal-500KB, Wide-2MB), MMS(300KB) 이하여야합니다. </li>
               <li>•  이미지는 가로 길이는 최소 500px, 세로 길이는 최소 250px 이상이어야합니다.</li>
               <li>•  이미지의 가로:세로 비율은 2:1 이상, 3:4 이하여야 합니다.</li>

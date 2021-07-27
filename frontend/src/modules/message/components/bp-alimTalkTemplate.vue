@@ -11,11 +11,13 @@
                 <h4>*발신프로필</h4>
               </div>
               <div style="width:42%">
+                <!-- 발신프로필그룹관리 기능 제외
                 <select class="selectStyle2" style="width:18%" v-model="searchData.senderKeyType" @change="fnSelectSenderKeyList">
                   <option value="S">일반</option>
                   <option value="G">그룹</option>
                 </select>
-                <select class="selectStyle2" style="width:35%" v-model="searchData.senderKey" @change="fnChgSenderKey">
+                -->
+                <select class="selectStyle2" style="width:53%" v-model="searchData.senderKey" @change="fnChgSenderKey">
                   <option value="">선택하세요</option>
                   <option 
                     v-for="(senderKeyInfo, idx) in senderKeyList"

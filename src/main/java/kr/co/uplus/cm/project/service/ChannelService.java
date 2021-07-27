@@ -1,13 +1,9 @@
 package kr.co.uplus.cm.project.service;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -212,7 +208,6 @@ public class ChannelService {
 	}
 
 	// RCS 브랜드 발신번호 상세 조회
-	@SuppressWarnings("unchecked")
 	public RestResult<?> selectRcsCallbackList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
@@ -543,7 +538,7 @@ public class ChannelService {
 		// map to json
 		kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(map);
 		
-		System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
+		//System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
 //		list.add(json2222);
 		list.add(map);
 		
@@ -711,7 +706,7 @@ public class ChannelService {
 		// API 통신 처리
 		Map<String, Object> result =  apiInterface.delete("/console/v1/brand/" + CommonUtils.getString(params.get("brandId")), null, apiBodyMap, headerMap);
 		
-		System.out.println("------------------------------------------------- deleteRcsBrandForApi result : " + result);
+		//System.out.println("------------------------------------------------- deleteRcsBrandForApi result : " + result);
 		
 		// 성공인지 실패인지 체크
 		if( "10000".equals(result.get("code")) ) {
@@ -878,7 +873,6 @@ public class ChannelService {
 	}
 	
 	// MO 수신번호 저장
-	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void saveMoCallback(Map<String, Object> params) throws Exception {
 		String sts = CommonUtils.getString(params.get("sts"));
@@ -1041,7 +1035,6 @@ public class ChannelService {
 		return rtn;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public RestResult<?> selectKkoCh(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 
@@ -1063,21 +1056,11 @@ public class ChannelService {
 		return rtn;
 	}
 
-	@SuppressWarnings("unchecked")
 	public RestResult<?> selectKkoChGroup(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
-		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
 		List<Object> list = generalDao.selectGernalList("channel.selectKkoChGroup", params);
 		
-		if (pageInfo != null && !pageInfo.isEmpty()) {
-			int rowNum = list.size();
-			pageInfo.put("rowNum", rowNum);
-			
-			rtn.setPageInfo(pageInfo);
-		}
-		
-				
 		rtn.setData(list);
 		
 		return rtn;
@@ -1099,13 +1082,13 @@ public class ChannelService {
 			
 			String apiKey = CommonUtils.getString(params.get("apiKey"));
 			Map<String, Object> headerMap = new HashMap<String, Object>();
-			headerMap.put("apiKey",		apiKey);
-			headerMap.put("commonProjectYN",		"N");
+			headerMap.put("apiKey",				apiKey);
+			headerMap.put("commonProjectYN",	CommonUtils.getString(params.get("otherProjectYn")));
 			
 			
 			Map<String, Object> result =  apiInterface.post("/console/v1/kko/senderkey/channel/create", null, apiBodyMap, headerMap);
 			
-			System.out.println("------------------------------------------------- saveKkoChForApi result : " + result);
+			//System.out.println("------------------------------------------------- saveKkoChForApi result : " + result);
 			
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
@@ -1116,66 +1099,55 @@ public class ChannelService {
 				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			}
-		} else if( "U".equals(sts) ) {
-			String apiKey = CommonUtils.getString(params.get("apiKey")); 
-			params.put("apiKey", apiKey);
-			
-			Map<String, Object> apiBodyMap = new HashMap<>();
-			apiBodyMap.put("moNumber",		CommonUtils.getString(params.get("moNumber")));
-			apiBodyMap.put("apiKey",		apiKey);
-			apiBodyMap.put("moType",		CommonUtils.getString(params.get("moType")));
-			apiBodyMap.put("projectId",		CommonUtils.getString(params.get("projectId")));
-			apiBodyMap.put("useYn",			"Y");
-			apiBodyMap.put("webhookUrl",	"");
-			
-			Map<String, Object> headerMap = new HashMap<String, Object>();
-			headerMap.put("type",		sts);
-			
-//			// API 통신 처리
-//			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
-//			
-//			System.out.println("------------------------------------------------- saveMoCallback U result : " + result);
-//			
-//			// 성공인지 실패인지 체크
-//			if( "10000".equals(result.get("code")) ) {
-//			} else if ( "500100".equals(result.get("code")) ) {
-//				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
-//				throw new Exception(errMsg);
-//			} else {
-//				String errMsg = CommonUtils.getString(result.get("message"));
-//				throw new Exception(errMsg);
-//			}
-//			
-//			generalDao.updateGernal(DB.QRY_UPDATE_MO_CALLBACK, params);
-		} else if( "D".equals(sts) ) {
-			String apiKey = CommonUtils.getString(params.get("apiKey")); 
-			params.put("apiKey", apiKey);
-			
-			Map<String, Object> apiBodyMap = new HashMap<>();
-			apiBodyMap.put("moNumber",		CommonUtils.getString(params.get("moNumber")));
-			apiBodyMap.put("apiKey",		apiKey);
-			apiBodyMap.put("moType",		CommonUtils.getString(params.get("moType")));
-			apiBodyMap.put("projectId",		CommonUtils.getString(params.get("projectId")));
-			apiBodyMap.put("useYn",			"Y");
-			apiBodyMap.put("webhookUrl",	"");
-			
-			Map<String, Object> headerMap = new HashMap<String, Object>();
-			headerMap.put("type",		sts);
-			
-//			// API 통신 처리
-//			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
-//			
-//			// 성공인지 실패인지 체크
-//			if( "10000".equals(result.get("code")) ) {
-//			} else if ( "500100".equals(result.get("code")) ) {
-//				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
-//				throw new Exception(errMsg);
-//			} else {
-//				String errMsg = CommonUtils.getString(result.get("message"));
-//				throw new Exception(errMsg);
-//			}
-//			
-//			generalDao.deleteGernal(DB.QRY_DELETE_MO_CALLBACK, params);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void saveKkoChGroupForApi(Map<String, Object> params) throws Exception {
+		// 이미 등록된 정보와 맞는지 매칭
+		String grpKey		= CommonUtils.getString(params.get("grpKey"));
+		String senderKey	= CommonUtils.getString(params.get("senderKey"));
+		
+		
+		Map<String, Object> apiBodyMap = new HashMap<>();
+		
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForMoApi",params));
+		headerMap.put("apiKey",		apiKey);
+		
+		
+		Map<String, Object> result =  apiInterface.get("/console/v1/kko/senderkey/group/all", null, apiBodyMap, headerMap);
+		
+		//System.out.println("------------------------------------------------- result : " + result);
+		
+		// 성공인지 실패인지 체크
+		if( "10000".equals(result.get("code")) ) {
+		} else if ( "500100".equals(result.get("code")) ) {
+			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+			throw new Exception(errMsg);
+		} else {
+			String errMsg = CommonUtils.getString(result.get("message"));
+			throw new Exception(errMsg);
+		}
+		
+		List<Map<String, Object>> kkoListApi = (List<Map<String, Object>>) result.get("data");
+		
+		if( kkoListApi.size() == 0 ) {
+			throw new Exception("등록된 카카오 그룹 정보가 없습니다.");
+		} else {
+			for( Map<String, Object> kkoMapApi : kkoListApi ) {
+				String grpKeyApi		= CommonUtils.getString(kkoMapApi.get("grpKey"));
+				String senderKeyApi		= CommonUtils.getString(kkoMapApi.get("senderKey")); 
+				
+				if( grpKeyApi.equals(grpKey) && senderKeyApi.equals(senderKey) ) {
+					Map<String, Object> saveMap = new HashMap<>();
+					saveMap.putAll(params);
+					generalDao.insertGernal("channel.insertKkoChGroupForApi", params);
+				} else {
+					throw new Exception("등록된 카카오 그룹 정보가 없습니다.");
+				}
+			}
 		}
 	}
 }

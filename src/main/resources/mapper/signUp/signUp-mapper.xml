@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="signUp">
-
+	
 	<select id="selectDomainChkCount" resultType="int">
 		/* signUp.selectDomainChkCount */
-		SELECT	COUNT(*)
+		SELECT	COUNT(1)
 		FROM	CM_CORP
 		WHERE	DOMAIN_NAME = #{domainName}
 	</select>
@@ -15,21 +15,27 @@
 		INSERT INTO CM_USER (
 				USER_ID
 		,		LOGIN_ID
-<!-- 		,		MAIL_CERTIFY_NUMBER -->
-<!-- 		,		MAIL_CERTIFY_SENDER_DT -->
+		,		LOGIN_PWD
+		,		PWD_UPD_DT
+		,		HP_NUMBER
 		,		APPROVAL_STATUS
+		,		DEL_YN
+		,		CORP_ID
 		,		ROLE_CD
 		,		REG_ID
 		,		REG_DT
 		) VALUES (
 				#{userId}
-		,		#{email}
-<!-- 		,		#{ranDomNum} -->
-<!-- 		,		SYSDATE() -->
+		,		#{loginId}
+		,		#{password}
+		,		NOW()
+		,		#{phoneCerti}
 		,		'ING'
+		,		'N'
+		,		#{corpId}
 		,		#{cmRole}
-		,		#{regId}
-		,		SYSDATE()
+		,		#{userId}
+		,		NOW()
 		)
 	</insert>
 
@@ -62,7 +68,7 @@
 		,		CUST_NO
 		,		CORP_NAME
 		,		REGNO
-<!-- 		,		REG_ID -->
+		,		REG_ID
 		,		REG_DT
 		,		CEO_NAME
 		,		ZIPCODE
@@ -70,7 +76,6 @@
 		,		WOPLACE_ADDRESS_DETAIL
 		,		BUSITYPE
 		,		BUSICLASS
-<!-- 		,		SVC_TERMS_ID -->
 		,		SMS_CERTIFY_YN
 		,		WIRE_TEL
 		,		FILE_ID
@@ -80,7 +85,7 @@
 		,		#{custNo}
 		,		#{corpNm}
 		,		#{regno}
-<!-- 		,		#{userId} -->
+		,		#{userId}
 		,		NOW()
 		,		#{ceoNm}
 		,		#{zipCode}
@@ -88,11 +93,18 @@
 		,		#{woplaceAddressDetail}
 		,		#{busiType}
 		,		#{busiClass}
-<!-- 		,		#{svcTermsId} -->
 		,		#{smsCertifyYn}
 		,		#{wireTel}
 		,		#{fileId}
 		,		#{domainName}
 		)
 	</insert>
+	
+	<select id="checkMailCertifyByLoginId" resultType="string">
+		/* signUp.checkMailCertifyByLoginId */
+		SELECT	COUNT(1)
+		FROM	cm_console.CM_USER
+		WHERE	LOGIN_ID = #{loginId}
+		AND		MAIL_CERTIFY_NUMBER =#{authKey}
+	</select>
 </mapper>

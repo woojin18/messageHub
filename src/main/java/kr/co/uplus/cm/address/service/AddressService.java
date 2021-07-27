@@ -442,7 +442,7 @@ public class AddressService {
 		generalDao.deleteGernal(DB.QRY_DELETE_ADDR_CATE_MEMBER, params);
 		
 		// 하위카테고리 포함 삭제
-		resultCnt = generalDao.updateGernal(DB.QRY_DELETE_ADDR_CATE, params);
+		resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_ADDR_CATE, params);
 		
 		
 		if (resultCnt <= 0) {

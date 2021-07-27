@@ -335,18 +335,7 @@ public class TemplateService {
      */
     public RestResult<Object> selectSenderKeyList(Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
-
-        List<Object> rtnList = null;
-        String senderKeyType = CommonUtils.getStrValue(params, "senderKeyType");
-        String kkoSvc = CommonUtils.getStrValue(params, "kkoSvc");
-
-        if(StringUtils.equals(senderKeyType, Const.KkoSenderKeyType.GROUP)) {
-            rtnList = generalDao.selectGernalList(DB.QRY_SELECT_KKO_SENDER_GRP_KEY_LIST, params);
-        } else {
-            params.put("kkoSvc", Const.KkoSvcUseCode.getType(kkoSvc));
-            rtnList = generalDao.selectGernalList(DB.QRY_SELECT_KKO_SENDER_KEY_LIST, params);
-        }
-
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_KKO_SENDER_KEY_LIST, params);
         rtn.setData(rtnList);
         return rtn;
     }
@@ -571,6 +560,8 @@ public class TemplateService {
         for(String tmpltKey : tmpltKeys) {
             sParams = new HashMap<String, Object>();
             sParams.put("tmpltKey", tmpltKey);
+            sParams.put("corpId", corpId);
+            sParams.put("projectId", projectId);
             List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ALIM_TALK_TMPLT_LIST, sParams);
             if(rtnList == null || rtnList.size() == 0) {
                 continue;

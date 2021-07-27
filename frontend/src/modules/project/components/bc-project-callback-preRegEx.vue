@@ -26,13 +26,12 @@
 					<p class="color4">사기, 도박, 불법의약품 및 성매매알선 등 위법한 영리목적의 광고성 정보를 발송하지 않는 자에 한하여 KISA에서 확인서를 발급받은 사업자</p>
 					<p class="color4 consolMarginTop">[신청절차]<br>&nbsp;&nbsp;- 한국인터넷진흥원(이하 KISA)확인서 발급요청(요청서 작성, 첨부01 참고)→KISA 심사후 결과 통보(1주일 예상) <br>&nbsp;&nbsp; → 예외사업자 등록 완료(1년간만 유효, 1년 이후 갱신필요)</p>	
 					<p class="color4 consolMarginTop">[제출서류]<br>&nbsp;&nbsp; - 신청서 1부 
-						<a href="./src/downloadDoc/copy1.jpg" class="btnStyle1 borderLightGray small mr5 ml10" download="특부가 샘플.jpg">다운로드 </a>
-						<a href="../downloadDoc/copy1.jpg" class="btnStyle1 borderLightGray small mr5 ml10" download="특부가 샘플.jpg">다운로드2 </a>
+						<a @click="fnFileDown('FLEZv2KRZJ', '위법한 문자를 발송한 적이 없는 사업자.zip')" class="btnStyle1 borderLightGray small mr5 ml10" >다운로드 </a>
 					</p>	
 				</div>
 			</div>	
 			<div class="col-xs-3 text-center" style="padding:7% 0; border-left:1px solid #fff">
-				<a @click="fnReg('spam')"  class="btnStyle1 font13" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
+				<a @click="fnReg('NOSPAM')"  class="btnStyle1 font13" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
 			</div>
 		</div>
 
@@ -44,21 +43,25 @@
 			<div class="col-xs-6">					
 				<div class="of_h pd20">
 					<p class="color4">
-						[제출서류]<br>&nbsp;&nbsp; - 자체 발신번호 시스템 구축 사실 공문 1부<a @click="fnReg('system')"  class="btnStyle1 borderLightGray small mr5 ml10">다운로드 </a>
+						[제출서류]<br>&nbsp;&nbsp; - 자체 발신번호 시스템 구축 사실 공문 1부
+						<a @click="fnFileDown('FLEZ9BwU67', '발신번호 사전등록 시스템_구축사실 공문.zip')"  class="btnStyle1 borderLightGray small mr5 ml10">다운로드 </a>
 					</p>
 					<p class="color4 consolMarginTop">
-						&nbsp;&nbsp; - 발신번호 사전등록 시스템 설계화면<a @click="fnReg('system')"  class="btnStyle1 borderLightGray small mr5 ml10">다운로드 </a>
+						&nbsp;&nbsp; - 발신번호 사전등록 시스템 설계화면
+						<a @click="fnFileDown('FLEIZyTr7Y', '발신번호 사전등록 시스템_설계도.zip')"  class="btnStyle1 borderLightGray small mr5 ml10">다운로드 </a>
 					</p>
 					<p class="color4 consolMarginTop">
-						&nbsp;&nbsp; - 발신번호 사전등록 화면<a @click="fnReg('system')"  class="btnStyle1 borderLightGray small mr5 ml10">다운로드 </a>
+						&nbsp;&nbsp; - 발신번호 사전등록 화면
+						<a @click="fnFileDown('FLEPxALXTj', '발신번호 사전등록 시스템_발신번호 사전등록 화면.zip')"  class="btnStyle1 borderLightGray small mr5 ml10">다운로드 </a>
 					</p>
 					<p class="color4 consolMarginTop">
-						&nbsp;&nbsp; - 미등록 발신번호 차단처리 화면<a @click="fnReg('system')"  class="btnStyle1 borderLightGray small mr5 ml10">다운로드 </a>
+						&nbsp;&nbsp; - 미등록 발신번호 차단처리 화면
+						<a @click="fnFileDown('FLEuuvKvJp', '발신번호 사전등록 시스템_잘못된 발신번호 입력시 차단화면.zip')"  class="btnStyle1 borderLightGray small mr5 ml10">다운로드 </a>
 					</p>	
 				</div>
 			</div>	
 			<div class="col-xs-3 text-center" style="padding:6% 0; border-left:1px solid #fff">
-				<a @click="fnReg('system')" class="btnStyle1" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
+				<a @click="fnReg('REGNUM')" class="btnStyle1" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
 			</div>
 		</div>
 
@@ -74,12 +77,12 @@
 						<br>(<a href="http://www.alio.go.kr/management.do?p=public02" target="blank">http://www.alio.go.kr/management.do?p=public02</a> 에서 확인 가능)
 					</p>	
 					<p class="color4 consolMarginTop">[제출서류]<br>&nbsp;&nbsp;- 고유번호증(고유번호증이 없는 공공기관의 경우 사업자등록증)
-						<a href="/public/downloadDoc/01_위법한 문자를 발송한 적이 없는 사업자.zip" class="btnStyle1 borderLightGray small mr5 ml10" download>다운로드 </a>
+						<a @click="fnFileDown('FLEBMfrTJi', '고유번호증 샘플.jpg')" class="btnStyle1 borderLightGray small mr5 ml10" download>다운로드 </a>
 					</p>	
 				</div>
 			</div>	
 			<div class="col-xs-3 text-center" style="border-left:1px solid #fff; padding:6% 0">
-				<a @click="fnReg('government')" class="btnStyle1" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
+				<a @click="fnReg('PUBLIC')" class="btnStyle1" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
 			</div>
 		</div>
 
@@ -92,12 +95,18 @@
 					<p class="color4">- 중앙전파관리소에서 지정한 부가통신사업 등록서류<br>&nbsp;&nbsp; (서류 종류 및 제출 방법에 대해서는 중앙전파관리소
 						<br>&nbsp;&nbsp;&nbsp; 홈페이지 <a href="http://www.crmo.go.kr/administ/brdcstadm/specialaddedSMS.do" target="blank">http://www.crmo.go.kr/administ/brdcstadm/specialaddedSMS.do</a> 참고)
 					</p>
-					<p class="color4 consolMarginTop">- 중앙전파관리소로부터 특수부가통신사업자로 등록 완료된 리스트를 전달받아 등록 처리됨.<br>&nbsp;&nbsp; 단, 정기적으로 전달되지 않으므로 당사 홈페이지에서 예외사업자로 적용되었는지 반드시 확인 필요</p>
-					<p class="color4 consolMarginTop">[제출서류]<br>- 특수부가통신사업자 등록증 1부<a @click="fnReg('special')" class="btnStyle1 borderLightGray small mr5 ml10">다운로드 </a></p>	
+					<p class="color4 consolMarginTop">
+						- 중앙전파관리소로부터 특수부가통신사업자로 등록 완료된 리스트를 전달받아 등록 처리됨.<br>
+						&nbsp;&nbsp; 단, 정기적으로 전달되지 않으므로 당사 홈페이지에서 예외사업자로 적용되었는지 반드시 확인 필요
+					</p>
+					<p class="color4 consolMarginTop">
+						[제출서류]<br>- 특수부가통신사업자 등록증 1부
+						<a @click="fnFileDown('FLEaPOER1r', '특수부가통신사업자 등록증 샘플.jpg')" class="btnStyle1 borderLightGray small mr5 ml10">다운로드 </a>
+					</p>	
 				</div>
 			</div>	
 			<div class="col-xs-3 text-center" style="border-left:1px solid #fff; padding:7.5% 0">
-				<a @click="fnReg('special')" class="btnStyle1" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
+				<a @click="fnReg('SPECIAL')" class="btnStyle1" data-toggle="modal" data-target="#Register">발신번호 예외사업자 등록 요청</a>
 			</div>
 		</div>
 
@@ -137,6 +146,8 @@
 
 <script>
 import api from '../service/projectApi'
+import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi";
+
 import layerPopup from "./bp-project-callback-preRegEx.vue";
 import tokenSvc from '@/common/token-service';
 
@@ -180,7 +191,28 @@ export default {
       api.checkPreRegYn(params).then(response =>{
         this.preRegYn = response.data.success;
       });
+    },
+	// 파일다운로드
+    fnFileDown: function(fileId, name) {
+      if(fileId != "") {
+        var params = {
+              fileId    : fileId,
+              fileNm      : name
+          };
+
+        commonUtilApi.downloadFile(params).then(response =>{
+            var result = response;
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", name); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+        });
+      }
     }
+
   }
 }
 </script>
