@@ -2307,6 +2307,11 @@ public class SendMessageService {
 
         //사용 채널 그룹 정보 조회
         String useChGrpInfoStr = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_USE_CH_GRP_INFO, params));
+        if(StringUtils.isEmpty(useChGrpInfoStr)) {
+            rtn.setFail("이용 가능한 채널이 존재하지 않습니다.");
+            return rtn;
+        }
+
         ObjectMapper mapper = new ObjectMapper();
         Map<String, String> useChGrpInfo = mapper.readValue(useChGrpInfoStr, Map.class);
         List<String> useChGrps = new ArrayList<String>();
