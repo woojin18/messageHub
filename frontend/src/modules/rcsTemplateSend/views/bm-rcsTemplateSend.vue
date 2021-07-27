@@ -185,6 +185,7 @@
 										<p class="color6">{{sendData.textContents}}</p>
 									</div>								
 								</div>
+								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
 							<div v-if="templateRadioBtn == 'SMwThT00'">
 								<img :src="sendData.SMwThT00Img" alt="프리 템플릿">
@@ -194,6 +195,7 @@
 										<p class="color6">{{sendData.textContents}}</p>
 									</div>								
 								</div>
+								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
 						</div>
 						<div  v-if="pushTab!='push'" class="phoneTextWrap">
@@ -221,19 +223,31 @@
 							<a v-if="templateRadioBtn=='des' || templateRadioBtn=='cell'" @click.prevent="fnOpenRcsTemplatePopup" activity="READ" href="#self" class="btnStyle1 backLightGray mr10" data-toggle="modal" data-target="#templatePop" title="RCS 템플릿 선택">RCS 템플릿 선택</a>
 							<a v-if="formatCard==true" @click.prevent="fnOpenMsgPop" activity="READ" href="#self" class="btnStyle1 backLightGray mr10" data-toggle="modal" data-target="#message" title="메세지보관함">메세지보관함</a>
 							<a v-if="formatCard==true && carouSelType==false" @click.prevent="fnOpenRcsContentPop(0)" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" title="내용입력">내용입력</a>
-							<a v-if="formatCard==true && carouSelType==false && templateRadioBtn!='text'" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" data-toggle="modal" data-target="#Tamplet" title="버튼입력">버튼입력</a>
+							<a v-if="formatCard==true && carouSelType==false && templateRadioBtn!='text'" @click.prevent="fnOpenRcsBtnPop(0)" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" data-toggle="modal" data-target="#Recipient" title="버튼입력">버튼입력</a>
 							<div v-if="carouSelType==true" class="inline-block ml20">
 								<p class="inline-block mr10">카드개수</p>
-								<select v-model="carouSelSelect" name="userConsole_sub020204_1" class="selectStyle2">
+								<select v-model="carouselSelect" name="userConsole_sub020204_1" class="selectStyle2" @change="changeCarousel">
 									<option value=3>3</option>
 									<option value=4>4</option>
 									<option value=5>5</option>
 									<option value=6>6</option>
 								</select>
 							</div>
+							<div v-if="carouSelType==true" class="of_h consolMarginTop">
+								<div style="width:18%" class="float-left">
+									<h5>브랜드</h5>
+								</div>
+								<div style="width:82%">
+									<select v-model="carouselBrandId" name="userConsole_sub020201_1" class="selectStyle2" style="width:70%">
+										<option v-for="option in carouselBrandArr" v-bind:value="option.BRAND_ID">
+											{{option.BRAND_NAME}}
+										</option>
+									</select>
+								</div>
+							</div>
 							<div v-if="carouSelType==true" class="consolMarginTop">
 								<ul class="tab_s7" role="tablist">
-									<li @click="fnClickTab(n)" v-for="n in carouSelSelect" role="presentation"><a href="#card" aria-controls="card" role="tab" data-toggle="tab">카드 {{n}}</a></li>
+									<li @click="fnClickTab(n)" v-for="n in carouselSelect" role="presentation"><a href="#card" aria-controls="card" role="tab" data-toggle="tab">카드 {{n}}</a></li>
 								</ul>
 
 								<div class="tab-content">
@@ -241,22 +255,22 @@
 									<div role="tabpanel" class="tab-paneactive" id="card">
 										<div class="templateBox pd20">
 											<!-- templateList -->
-											<a @click.prevent="fnOpenRcsContentPop(carouSelTabCnt)" href="#self" class="btnStyle1 borderLightGray mr10" title="내용입력">내용입력</a>
-											<a href="#self" class="btnStyle1 borderLightGray" title="버튼입력">버튼입력</a>
+											<a @click.prevent="fnOpenRcsContentPop(carouSelTabCnt)" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" title="내용입력">내용입력</a>
+											<a @click.prevent="fnOpenRcsBtnPop(carouSelTabCnt)" activity="READ" href="#self" class="btnStyle1 borderLightGray" title="버튼입력">버튼입력</a>
 											<!-- //templateList -->
 										</div>
 									</div>
 								</div>
 							</div>
-							<div v-if="formatCard==true" class="of_h consolMarginTop">
+							<div v-if="formatCard==true && templateRadioBtn!='text'" class="of_h consolMarginTop">
 								<div style="width:18%" class="float-left">
 									<h5>광고</h5>
 								</div>
 								<div class="of_h">
-									<input type="radio" name="ad" value="Display" id="Display"> <label for="Display" class="mr30">미표시</label>
-									<input type="radio" name="ad" value="not-Display" id="not-Display" checked=""> <label for="not-Display" class="mr20">표시</label>
+									<input v-model="sendData.adYn" type="radio" name="ad" value="no" id="Display"> <label for="Display" class="mr30">미표시</label>
+									<input v-model="sendData.adYn" type="radio" name="ad" value="yes" id="not-Display" checked=""> <label for="not-Display" class="mr20">표시</label>
 									<div class="inline-block">
-										<p class="inline-block mr10">무료수신거부</p><input type="text" class="inputStyle" style="width:50%">
+										<p v-model="sendData.freeReceiveNum" class="inline-block mr10">무료수신거부</p><input type="text" class="inputStyle" style="width:50%">
 									</div>
 								</div>
 							</div>
@@ -369,8 +383,8 @@
 					</div>
 					<div class="float-right mt20">
 						<a v-if="templateRadioBtn!='des' && templateRadioBtn !='cell'" activity="SAVE" data-toggle="modal" data-target="#save" href="#self" class="btnStyle2 backWhite float-left" title="저장">저장</a>
-						<a href="#self" class="btnStyle2 float-left ml10" title="테스트 발송">테스트 발송</a>
-						<a href="#self" class="btnStyle2 backRed float-left ml10" title="발송">발송</a>
+						<a @click.prevent="fnTestSendData" activity="SAVE" href="#self" class="btnStyle2 float-left ml10" title="테스트 발송">테스트 발송</a>
+						<a @click.prevent="fnSendData" activity="SAVE" href="#self" class="btnStyle2 backRed float-left ml10" title="발송">발송</a>
 					</div>
 				</div>
 			</div>	
@@ -378,6 +392,7 @@
 			<RcsTemplatePopup :templateRadioBtn.sync="templateRadioBtn" ref="rcsTemplatePop" @fnResult="fnSetTemplate"></RcsTemplatePopup>
 			<RcsMsgPopup :templateRadioBtn.sync="templateRadioBtn" ref="rcsMsgPop" @fnTmpMsgSet="fnTmpMsgSet" ></RcsMsgPopup>
 			<RcsContentPopup :templateRadioBtn.sync="templateRadioBtn" :contentPopCnt.sync="contentPopCnt" ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
+			<RcsBtnPopup :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
 			<RcsSenderPopup :senderType.sync="sendData.senderType" ref="rcsSenderPop"></RcsSenderPopup>
 			<RcsSavePopup ref="rcsSavePop"></RcsSavePopup>
 			<DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
@@ -389,6 +404,7 @@
 import RcsTemplatePopup from "@/modules/rcsTemplateSend/components/bp-rcsTemplatePop.vue";
 import RcsMsgPopup from "@/modules/rcsTemplateSend/components/bp-rcsMsgPopup.vue";
 import RcsContentPopup from "@/modules/rcsTemplateSend/components/bp-rcsContentPopup.vue";
+import RcsBtnPopup from "@/modules/rcsTemplateSend/components/bp-RcsBtnPopup.vue";
 import RcsSenderPopup from "@/modules/rcsTemplateSend/components/bp-rcsTemplateSenderPop.vue";
 import RcsSavePopup from "@/modules/rcsTemplateSend/components/bp-rcsSavePopup.vue";
 import DirectInputPopup from "@/modules/message/components/bp-directInput.vue";
@@ -406,6 +422,7 @@ export default {
 	  RcsTemplatePopup,
 	  RcsMsgPopup,
 	  RcsContentPopup,
+	  RcsBtnPopup,
 	  RcsSenderPopup,
 	  RcsSavePopup,
 	  DirectInputPopup,
@@ -414,7 +431,10 @@ export default {
   },
   data() {
     return {
+		dataSet : false,				// dataSet (데이터가 입력될시 true로 변환 radio버튼으로 발송 스타일 변경시 true인 경우 경고)
 		pushTab : "push",				// push 버튼
+		carouselBrandId : "",			// carousel형 brandid
+		carouselBrandArr : [],			// carousel형 brandArr
 		imgsrc : require("@/assets/images/common/approve.png"),			// 이미지
 		text : "테스트입니다.[한글]",    //	미리보기 text (des형)
 		styleContentCnt: 0,				// 스타일형 inputLine count
@@ -428,7 +448,7 @@ export default {
 		formatCard : false,				// 버튼입력 버튼
 		carouSelType : false,			// 캐러셀 영역 세팅
 		test : "",						// 
-		carouSelSelect : 3,				// 캐러셀 selectBox
+		carouselSelect : 3,				// 캐러셀 selectBox
 		carouSelTabCnt : 1,				// 캐러셀 탭
 		messagebaseId : "",				// 템플릿 선택 Id
 		directInputOpen : false,		// 수신자 직접입력 버튼
@@ -445,6 +465,15 @@ export default {
 			brandId : "",								// 브랜드 ID
 			textTitle : "",								// 텍스트 제목
 			textContents : "",							// 텍스트 내용
+			btnCnt : 0,                     			// 버튼 갯수
+      		selectBtn: [],		  			 			// selectBox
+			btnNm:[],			           				// 버튼 이름
+			contents:[],		           				// 내용
+			calendarTitle: [],	     
+			calendarDes: [],	 
+			initStartDate: [],
+			initEndDate: [],
+
 			imgUrl : "",								// 이미지
 			fileId : "",								// 이미지
 			wideImgYn : "",								// 이미지
@@ -453,17 +482,24 @@ export default {
 			callback: '',  								// 발신번호
 			callbackArr: [],							// 발신번호 selectBox
 			copy: 'no',									// 복사 가능여부
+			adYn: 'no',									// 광고여부
+			freeReceiveNum: '',							// 무료수신거부
 			senderType : 'UNUSED',						// 대체발송
 			callbackTitle : "",							// 대체발송 TITLE
 			callbackContents : "",						// 대체발송 CONTENTS
 			saveContent : "",							// 저장 메시지명
-			carouselArr : [],							// 캐러셀형 데이터 배열처리
+			carouselObj : {
+				textTitle : [],
+				textContents : [],
+				imgUrl : [],
+				fileId : [],
+				wideImgYn : [],
+				btnArr : [],
+			},							// 캐러셀형 데이터
 
 			requiredCuid : false,  //app 로그인 ID 필수여부
 			requiredCuPhone : true,  //수신자 폰번호 필수여부
 			cuInputType:'DICT',  //DICT, ADDR, EXCEL
-			smsTitle:'',  //제목
-			smsContent:'',  //내용
 			rcvblcNumber:'',  //수신거부
 			cuInfo:'',
 			rsrvSendYn:'N',  //예약발송여부
@@ -480,17 +516,32 @@ export default {
     }
   },
   watch : {
-	  carouSelSelect(newval, oldval) {
+	  carouselSelect(newval, oldval) {
 		  // type 변경
-		  this.carouSelSelect = newval*1;
+		  this.carouselSelect = newval*1;
 	  },
-	  carouSelType(newval, oldval) {
+	 /* carouSelType(newval, oldval) {
 		  var vm = this;
 		  if(newval) {
 			  setTimeout(function() {
 				  vm.fnSetSlider();
 			  }, 3000)
 		  } 
+	  }, */
+	  'sendData.brandId'(newval, oldval) {
+		  this.callbackList();
+	  },
+	  carouselBrandId (newval, oldval){
+		var vm = this;
+		var params = {
+			"approvalStatus" : "승인",
+			"brandId" : oldval
+		}
+		rcsTemplateSendApi.selectCallbackList(params).then(response => {
+			var result = response.data;
+			vm.sendData.callbackArr = result.data;
+			vm.sendData.callback = result.data[0].callback;
+		});
 	  }
   },
   mounted() {
@@ -500,8 +551,23 @@ export default {
 	// RCS 발송 발신번호 세팅
 	fnInit() {
 		var vm = this;
+		var params = {};
+		rcsTemplateSendApi.rcsTemplatePopInit(params).then(response => {
+            var result = response.data;
+            vm.carouselBrandId = result.data[0].BRAND_ID;
+            vm.carouselBrandArr = result.data;
+        });
+	},
+
+	fnResetData() {
+		// 데이터 초기화
+	},
+	
+	callbackList() {
+		var vm = this;
 		var params = {
-			"approvalStatus" : "승인"
+			"approvalStatus" : "승인",
+			"brandId" : vm.sendData.brandId
 		}
 		rcsTemplateSendApi.selectCallbackList(params).then(response => {
 			var result = response.data;
@@ -509,6 +575,7 @@ export default {
 			vm.sendData.callback = result.data[0].callback;
 		});
 	},
+
 
 	fnSetSlider() {
 		jQuery('.cardBxslider').bxSlider({
@@ -539,6 +606,11 @@ export default {
 		this.$refs.rcsContentPop.fnInit();
 		this.contentPopCnt = cnt;
 		jQuery("#contentPop").modal("show");
+	},
+
+	fnOpenRcsBtnPop(cnt) {
+		this.btnPopCnt = cnt;
+		jQuery("#recipient").modal("show");
 	},
 	
 	fnSetTemplate(data) {
@@ -583,11 +655,13 @@ export default {
 
 		if(data.radioBtn == 'des') {
 			vm.sendData.messagebaseId = data.messagebaseId;
+			vm.sendData.brandId = data.brandId;
 			vm.text = data.desContent;
 			vm.btnCnt = data.btnCnt;
 			vm.btnNm = data.btnNm;
 		} else {
 			vm.sendData.messagebaseId = data.messagebaseId;
+			vm.sendData.brandId = data.brandId;
 			vm.styleContentCnt = data.styleContentCnt;
 			vm.styleInput  = data.styleInput ;
 			vm.styleInputSec = data.styleInputSec;
@@ -607,28 +681,50 @@ export default {
 			vm.sendData.imgUrl = params.imgUrl;
 			vm.sendData.fileId = params.fileId;
 			vm.sendData.wideImgYn = params.wideImgYn;
-			if("SMwThM00" == data.radioBtn) {
+			if("SMwThM00" == params.radioBtn) {
 				vm.sendData.SMwThM00Img = require(params.imgUrl);
 			} 
-			if("SMwThT00Img" == data.radioBtn) {
+			if("SMwThT00" == params.radioBtn) {
 				vm.sendData.SMwThT00Img = require(params.imgUrl);
 			}
 		} else {
 			var carouSelTabCnt = vm.carouSelTabCnt;
-			vm.sendData.brandId = params.brandId;
-			vm.sendData.carouselArr[carouSelTabCnt].textTitle = params.title;
-			vm.sendData.carouselArr[carouSelTabCnt].textContents = params.contents;
-			vm.sendData.carouselArr[carouSelTabCnt].imgUrl = params.imgUrl;
-			vm.sendData.carouselArr[carouSelTabCnt].fileId = params.fileId;
-			vm.sendData.carouselArr[carouSelTabCnt].wideImgYn = params.wideImgYn;
+			vm.sendData.brandId = vm.carouselBrandId;
+			vm.sendData.carouselObj.textTitle[carouSelTabCnt-1] = params.title;
+			vm.sendData.carouselObj.textContents[carouSelTabCnt-1] = params.contents;
+			vm.sendData.carouselObj.imgUrl[carouSelTabCnt-1] = params.imgUrl;
+			vm.sendData.carouselObj.fileId[carouSelTabCnt-1] = params.fileId;
+			vm.sendData.carouselObj.wideImgYn[carouSelTabCnt-1] = params.wideImgYn;
 		}
 	},
 
-	fnClickCuInputType(e){
-      if(this.sendData.cuInputType == e.target.value){
-        this.fnChgCuInputType('N');
-      }
-    },
+	// 버튼 내용 입력 return
+	fnSetAddBtns(data) {
+		var vm = this;
+		if(!vm.carouSelType) {
+			vm.btnCnt = data.btnCnt;
+			vm.btnNm = data.btnNm;
+			vm.sendData.btnCnt = data.btnCnt;
+			vm.sendData.selectBtn = data.selectBtn;
+			vm.sendData.btnNm = data.btnNm;
+			vm.sendData.contents = data.contents;
+			vm.sendData.calendarTitle = data.calendarTitle;
+			vm.sendData.calendarDes = data.calendarDes;
+			vm.sendData.initStartDate = data.initStartDate;
+			vm.sendData.initEndDate = data.initEndDate;
+		} else {
+			var carouSelTabCnt = vm.carouSelTabCnt;
+			vm.sendData.carouselObj.btnArr[carouSelTabCnt-1] = new Object();
+			vm.$set(vm.sendData.carouselObj.btnArr[carouSelTabCnt-1] , 'btnCnt' , data.btnCnt);
+			vm.$set(vm.sendData.carouselObj.btnArr[carouSelTabCnt-1] , 'selectBtn' , data.selectBtn);
+			vm.$set(vm.sendData.carouselObj.btnArr[carouSelTabCnt-1] , 'btnNm' , data.btnNm);
+			vm.$set(vm.sendData.carouselObj.btnArr[carouSelTabCnt-1] , 'contents' , data.contents);
+			vm.$set(vm.sendData.carouselObj.btnArr[carouSelTabCnt-1] , 'calendarTitle' , data.calendarTitle);
+			vm.$set(vm.sendData.carouselObj.btnArr[carouSelTabCnt-1] , 'calendarDes' , data.calendarDes);
+			vm.$set(vm.sendData.carouselObj.btnArr[carouSelTabCnt-1] , 'initStartDate' , data.initStartDate);
+			vm.$set(vm.sendData.carouselObj.btnArr[carouSelTabCnt-1] , 'initEndDate' , data.initEndDate);
+		}
+	},
 
 	// 대체발송 버튼 미리보기
 	fnclickPushBtn(senderType) {
@@ -640,6 +736,12 @@ export default {
 		this.sendData.callbackTitle = data.senderTitle;
 		this.sendData.callbackContents = data.senderContents;
 	},
+
+	fnClickCuInputType(e){
+      if(this.sendData.cuInputType == e.target.value){
+        this.fnChgCuInputType('N');
+      }
+    },
 
 	//수신자 입력 타입 변경시
     fnChgCuInputType(chgYn){
@@ -695,8 +797,43 @@ export default {
     },
 
 	fnSetContsVarNms(){
+	  var vm = this;
       const rsvNmSet = new Set(['phone']);
-      const conts = this.sendData.smsContent;
+
+		// RCS 상품에 따라서 Validation 처리 및 textContents 확인해야됨.
+	  var templateRadioBtn = vm.templateRadioBtn;
+	  var conts = "";
+
+	  // 버튼 종류에 따른 validation 세팅
+	  if("des" == templateRadioBtn) {
+		  conts = this.text;
+	  } else if("cell" == templateRadioBtn) {
+		var styleContentCnt = vm.styleContentCnt;
+		for(var i=0; i<styleContentCnt; i++) {
+			conts += vm.styleInput[i];
+			conts += vm.styleInputSec[i];
+		}
+	  } else if("text" == templateRadioBtn) {
+		  conts = vm.sendData.textContents;
+	  } else if("SS000000" == templateRadioBtn) {
+		  conts = vm.sendData.textContents;
+	  } else if("SL000000" == templateRadioBtn || "SMwThM00" == templateRadioBtn || "SMwThT00" == templateRadioBtn) {
+		  conts = vm.sendData.textTitle;
+		  conts += vm.sendData.textContents;
+
+		  alert(conts);
+	  } else {
+		  for(var i=0; i<vm.sendData.carouselObj.textTitle.length; i++) {
+			  conts += vm.sendData.carouselObj.textTitle[i];
+			  conts += vm.sendData.carouselObj.textContents[i];
+		  }
+	  }
+
+	  if("" == conts) {
+		  confirm.fnAlert("RCS 발송", "전송하실 RCS 내용을 먼저 입력해 주세요.");
+		  return false;
+	  }
+
       let varNms = [];
       let containRsvNm = false;
       conts.replace(/\{\{(\w+)\}\}/g, function($0, $1) {
@@ -746,7 +883,8 @@ export default {
 		if(!vali) return false;
 		var params = {
 			"data" : this.sendData,
-			"templateRadioBtn" : this.templateRadioBtn
+			"templateRadioBtn" : this.templateRadioBtn,
+			"carouSelType" : this.carouSelType
 		}
 
 		rcsTemplateSendApi.rcsMsgSave(params).then(response => {
@@ -780,18 +918,29 @@ export default {
 
 		var params = {
 			"saveBoxId" : saveBoxId,
-			"templateRadioBtn" : returnRadioBtn
+			"templateRadioBtn" : returnRadioBtn,
+			"carouSelType" : vm.carouSelType
 		}
 
 		rcsTemplateSendApi.selectRcsMsgDetail(params).then(response => {
 			var result = response.data;
 			var data = result.data;
-			if(returnRadioBtn == "text") {
+			var carouSelType = this.carouSelType;
+			if(!carouSelType) {
+				vm.sendData.brandId = data.brandId;						// brandId
+				vm.sendData.saveContent = data.saveContent;				// 저장 메시지 명
+				vm.sendData.textTitle = data.textTitle;					// 텍스트 제목 
+				vm.sendData.textContents = data.textContents;			// 텍스트 내용
+				vm.sendData.copy = data.copy;							// 복사 가능여부
+				vm.sendData.adYn = data.adYn;							// 광고여부
+				vm.sendData.freeReceiveNum = data.freeReceiveNum;		// 무료수신거부
+				vm.sendData.senderType = data.senderType;				// 대체발송 radio
+				vm.sendData.callbackTitle = data.callbackTitle;			// 대체발송 title
+				vm.sendData.callbackContents = data.callbackContents;	// 대체발송 contents
+				vm.sendData.imgUrl = data.imgUrl;						// 이미지
+				vm.sendData.fileId = data.fileId;						// 이미지
 
-				vm.sendData.brandId = data.brandId;
-				vm.sendData.saveContent = data.saveContent;
-				vm.sendData.textContents = data.textContents;
-			} else if (returnRadioBtn == "te2t") {
+			} else {
 
 			}
 		});
@@ -799,6 +948,8 @@ export default {
 
 	// 템플릿 카드 버튼
 	fnSetTemplateCard(type) {
+		this.fnConfirmChangeRadioBtn(event);
+
 		if("text"==type) {
 			this.formatCard = true;
 			this.carouSelType = false;
@@ -810,19 +961,66 @@ export default {
 
 	// 포멧카드 선택시 버튼입력 버튼 활성화
 	fnSetFormatCard() {
+		this.fnConfirmChangeRadioBtn(event);
+
 		this.formatCard = true;
 		this.carouSelType = false;
 	},
 
 	// 캐러셀형
 	fnSetCarousel() {
+		this.fnConfirmChangeRadioBtn(event);
+
 		this.formatCard = true;
 		this.carouSelType = true;
+	},
+
+	fnConfirmChangeRadioBtn(event) {
+		//eventBus.$on('callbackEventBus', this.fnResetData);
+		//confirm.fnConfirm("RCS 발송" ,"템플릿을 변경하면 입력된 데이터가 모두 초기화됩니다. 변경하시겠습니까?", "확인");
 	},
 
 	// 캐러셀형 탭 클릭 이벤트 처리
 	fnClickTab(n) {
 		this.carouSelTabCnt = n;
+	},
+
+	// 캐러셀 형 카드 갯수 변경시 msgId 세팅
+	changeCarousel () {
+		var vm = this;
+		var carouselSelect = vm.carouselSelect;
+
+		if(carouselSelect==3) {
+			vm.carouselSmall = 'CMwShS0300';
+			vm.carouselMedium = 'CMwMhM0300';
+		} else if(carouselSelect==4) {
+			vm.carouselSmall = 'CMwShS0400';
+			vm.carouselMedium = 'CMwMhM0400';
+		} else if(carouselSelect==5) {
+			vm.carouselSmall = 'CMwShS0500';
+			vm.carouselMedium = 'CMwMhM0500';
+		} else if(carouselSelect==6) {
+			vm.carouselSmall = 'CMwShS0600';
+			vm.carouselMedium = 'CMwMhM0600';
+		}
+	},
+
+	fnSendData() {
+		var params = {
+			"data" : this.sendData,
+			"templateRadioBtn" : this.templateRadioBtn,
+			"brandId" : this.carouselBrandId,
+			"carouselSelect" : this.carouselSelect
+		}
+
+		rcsTemplateSendApi.sendRcsData(params).then(response => {
+			
+		});
+
+	},
+
+	fnTestSendData() {
+
 	}
   }
 }

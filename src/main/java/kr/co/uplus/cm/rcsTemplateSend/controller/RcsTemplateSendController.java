@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.rcsTemplateSend.Service.RcsTemplateSendService;
+import kr.co.uplus.cm.utils.CommonUtils;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -114,6 +115,7 @@ public class RcsTemplateSendController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
+			log.error(e.getStackTrace());
 			log.error("{} Error : {}", this.getClass(), e);
 		}
 
@@ -143,6 +145,41 @@ public class RcsTemplateSendController {
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
+			e.printStackTrace();
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
+	
+	@PostMapping("/sendRcsData")
+	public RestResult<?> sendRcsData(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			String templateRadioBtn = CommonUtils.getString(params.get("templateRadioBtn"));
+			
+			System.out.println("asdfasdf" + templateRadioBtn);
+			
+			// 유형에 따라서 통신 세팅 모듈 case 처리
+			if("des".equals(templateRadioBtn) || "cell".equals(templateRadioBtn)) {
+				// 서술형, 스타일형
+				rtn = rcsTemplateSendSvc.sendRcsDataTemplate(params);
+			} else if("text".equals(templateRadioBtn)) {
+				// 미승인형
+				rtn = rcsTemplateSendSvc.sendRcsDataNonTemplate(params);
+			} else if ("SS000000".equals(templateRadioBtn) || "SL000000".equals(templateRadioBtn) || "SMwThM00".equals(templateRadioBtn) || "SMwThT00".equals(templateRadioBtn)) {
+				// SMS,LMS, 세로형
+				rtn = rcsTemplateSendSvc.sendRcsDataFormat(params);
+				
+			} else {
+				// 캐러셀 형
+				rtn = rcsTemplateSendSvc.sendRcsDataCarousel(params);
+			}
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			e.printStackTrace();
 			log.error("{} Error : {}", this.getClass(), e);
 		}
 

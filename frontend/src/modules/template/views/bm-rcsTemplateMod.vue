@@ -654,10 +654,11 @@ export default {
 
 	  // 템플릿 승인, 수정요청
 	  recTemplateIns(flag, paramCardType) {
-		eventBus.$on('callbackEventBus', this.fnRcsTemplateApi(flag, paramCardType));
 		if("INS" == flag) {
+			eventBus.$on('callbackEventBus', this.fnRcsTemplateApi(flag, paramCardType));
 			confirm.fnConfirm("RCS 템플릿 승인", "RCS 템플릿을 승인 요청 하시겠습니까?", "승인");
 		} else {
+			eventBus.$on('callbackEventBus', this.fnRcsTemplateApi(flag, paramCardType));
 			confirm.fnConfirm("RCS 템플릿 수정", "RCS 템플릿을 수정 요청 하시겠습니까?", "수정");
 		}
 	  },
@@ -667,7 +668,7 @@ export default {
 		var vm = this;
 		var messagebaseformId = paramCardType == "des" ? vm.desFormNm : vm.styleFormNm;
 		var custTmpltId = vm.templateCode;
-		if(flag = "UPT") {
+		if(flag == "UPT") {
 			var custTmpltIdArr = custTmpltId.split("-");
 			custTmpltId = custTmpltIdArr[1];
 		}
@@ -731,10 +732,10 @@ export default {
 			var result = response.data;
 			var success = result.success;
 			var message = result.message;
-			var flag = vm.flag;
+			alert(flag);
 			var flagNm = flag== "INS" ? "등록" : "수정";
 			if(success) {
-				confirm.fnAlert(flagNm + "삭청이 완료되었습니다.","");
+				confirm.fnAlert(flagNm + "이 완료되었습니다.","");
 				this.$router.push({name : "rcsTemplateList"});
 			} else {
 				confirm.fnAlert(message,"");

@@ -4,7 +4,7 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div>
-						<div class="of_h">
+						<div v-if="contentPopCnt==0" class="of_h">
 							<div class="float-left" style="width:15%"><h5>브랜드</h5></div>
 							<div class="float-left" style="width:80%">
                 <select v-model="brandId" name="userConsole_sub020202_3" class="selectStyle2" style="width:100%">

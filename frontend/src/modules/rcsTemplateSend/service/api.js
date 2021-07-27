@@ -36,6 +36,10 @@ const selectRcsMsgDetail = (params) => {
     return httpClient.post('/uc/rcsTemplateSend/selectRcsMsgDetail', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
+const sendRcsData = (params) => {
+    return httpClient.post('/uc/rcsTemplateSend/sendRcsData', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+};
+
 
 
 export default {
@@ -47,5 +51,6 @@ export default {
     rcsMsgSave,
     selectRcsMsgList,
     deleteRcsTmpMsgbase,
-    selectRcsMsgDetail
+    selectRcsMsgDetail,
+    sendRcsData
 };

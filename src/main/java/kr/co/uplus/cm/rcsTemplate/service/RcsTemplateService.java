@@ -328,7 +328,7 @@ public class RcsTemplateService {
 		Map<String, Object> result = apiInterface.delete("/console/v1/brand/" + brandId + "/messagebase/" + messagebaseId, null, apiMap, headerMap);
 		
 		// 성공인지 실패인지 체크
-		if(!"10000".equals(result.get("rslt")) ) {
+		if(!"10000".equals(result.get("code")) ) {
 			throw new Exception("API 통신 에러");
 		}
 		
@@ -526,7 +526,7 @@ public class RcsTemplateService {
 		}
 		
 		// 성공인지 실패인지 체크
-		if(!"10000".equals(result.get("rslt")) ) {
+		if(!"10000".equals(result.get("code")) ) {
 			throw new Exception("API 통신 에러");
 		}
 	}
