@@ -111,7 +111,7 @@
                   <td class="text-center">
                     <u><router-link :to="{ name: 'pushTemplateManage', params: { 'tmpltId' : contant.tmpltId }}">{{contant.tmpltId}}</router-link></u>
                   </td>
-                  <td class="text-center">{{$gfnCommonUtils.unescapeXss(contant.tmpltName)}}</td>
+                  <td class="text-center">{{contant.tmpltName | unescapeXss}}</td>
                   <td class="text-center">{{contant.projectIdNm}}</td>
                   <td class="text-center">{{contant.msgTypeName}}</td>
                   <td class="text-center">{{contant.msgKindName}}</td>

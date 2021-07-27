@@ -13,11 +13,11 @@
 
             <div class="boardWrite">
               <div class="title">
-                <p>{{$gfnCommonUtils.unescapeXss(libraryData.title)}}</p>
+                <p>{{libraryData.title | unescapeXss}}</p>
                 <span class="date">{{libraryData.regDt}}</span>
               </div>
               <div class="content2">
-                <p><pre>{{$gfnCommonUtils.unescapeXss(libraryData.content)}}</pre></p>
+                <p><pre>{{libraryData.content | unescapeXss}}</pre></p>
               </div>
               <div v-if="libraryData.existsFileYn == 'Y'" class="content-file">
                 <a v-if="!$gfnCommonUtils.isEmpty(libraryData.fileId1)" href="#" @click.prevent="fnDownloadLibraryFile(libraryData.fileId1)">

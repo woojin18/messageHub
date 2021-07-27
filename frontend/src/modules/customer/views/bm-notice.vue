@@ -31,7 +31,7 @@
                   <td class="text-left">
                     <a href="user_sub03_2_view.html">
                       <span v-if="!$gfnCommonUtils.isEmpty(contant.noticeTypeCdName)" class="new2">{{contant.noticeTypeCdName}}</span>
-                      <router-link :to="{ name: 'noticeDetail', params: { noticeId: contant.noticeId }}">{{$gfnCommonUtils.unescapeXss(contant.title)}}</router-link>
+                      <router-link :to="{ name: 'noticeDetail', params: { noticeId: contant.noticeId }}">{{contant.title | unescapeXss}}</router-link>
                     </a>
                   </td>
                   <td class="end">{{contant.regDt}}</td>

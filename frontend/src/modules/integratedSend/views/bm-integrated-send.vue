@@ -96,7 +96,7 @@
                   <!-- <u><router-link :to="{ name: 'integratedSendManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u> -->
                   <u><router-link :to="{ name: 'sendIntegMessage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u>
                 </td>
-                <td class="text-left">{{$gfnCommonUtils.unescapeXss(data.tmpltTitle)}}</td>
+                <td class="text-left">{{data.tmpltTitle | unescapeXss}}</td>
                 <td class="text-left">{{fnJsonArrayToChannelLit(data.checkedChannel)}}</td>
                 <td class="text-center">{{data.msgKindName}}</td>
                 <td class="text-center">{{data.msgTypeName}}</td>
