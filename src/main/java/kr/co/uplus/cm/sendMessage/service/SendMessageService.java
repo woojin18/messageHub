@@ -2456,8 +2456,9 @@ public class SendMessageService {
                 tmpltMergeData = tmpltMergeDataList.get(0);
             }
 
+            String title = CommonUtils.getStrValue(tmpltMergeData, "title");
             String description = CommonUtils.getStrValue(tmpltMergeData, "description");
-            if(StringUtils.isNotBlank(description)) {
+            if(StringUtils.isNotBlank(title) || StringUtils.isNotBlank(description)) {
                 Map<String, Object> rcsVar = null;
                 Map<String, Object> rcsMergeData = null;
                 Map<String, Object> sendMergeData = null;
@@ -2472,6 +2473,7 @@ public class SendMessageService {
                         rcsVar = (Map<String, Object>) sendMergeData.get(Const.Ch.RCS);
                         ss = new StringSubstitutor(rcsVar, ApiConfig.RCS_VAR_START, ApiConfig.RCS_VAR_END);
 
+                        rcsMergeData.put("title", ss.replace(title));
                         rcsMergeData.put("description", ss.replace(description));
                         sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                     }

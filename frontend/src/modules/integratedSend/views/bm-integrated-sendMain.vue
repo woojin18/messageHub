@@ -177,6 +177,25 @@
                 </div>
               </div>
               <!--// SMS -->
+              <!-- LMS -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'LMS'" class="phoneWrap">
+                <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
+                <div class="phoneTextWrap scroll-y">
+                  <div class="phoneText1">
+                    <h5 v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].title">{{tmpltData.RCS.mergeData[0].title}}</h5>
+                    <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
+                    <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
+                      <p 
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
+                        :key="idx" 
+                        class="text-center mt20" 
+                        style="color:#69C8FF"
+                      >{{btn.action.displayText}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--// LMS -->
             </div>
             <!--// RCS -->
 
@@ -346,12 +365,12 @@
           </div>
           <div class="float-left" style="width:78%">
             <p>모든 채널에 메시지를 보냅니다.</p>
-            <a href="#" @click.prevent="fnOpenTestSendInputPopup" class="btnStyle1 backLightGray consolMarginTop" title="테스트 발송">테스트 발송</a>
+            <a href="#" @click.prevent="fnOpenTestSendInputPopup" class="btnStyle1 backLightGray consolMarginTop" title="테스트 발송" activity="SAVE">테스트 발송</a>
           </div>
           
         </div>
         <div class="mt20 float-right">
-          <a href="#" @click.prevent="fnSendIntegratedMessage('N')" class="btnStyle2 backRed float-left mr10" title="발송">발송</a>
+          <a href="#" @click.prevent="fnSendIntegratedMessage('N')" class="btnStyle2 backRed float-left mr10" title="발송" activity="SAVE">발송</a>
           <router-link :to="{ name: 'integratedSend' }" tag="a" class="btnStyle2 float-left">목록</router-link>
         </div>
       </div>
@@ -644,6 +663,7 @@ export default {
       let containRsvNm = false;
 
       this.tmpltData.chTypeList.forEach(ch => {
+        conts = '';
         chTmpltInfo = vm.tmpltData[ch];
 
         if(ch == 'PUSH' || ch == 'SMS' || ch == 'MMS' || ch == 'FRIENDTALK' || ch == 'ALIMTALK'){
@@ -652,7 +672,8 @@ export default {
           if(chTmpltInfo.mergeData && chTmpltInfo.mergeData.length > 0){
             //TODO : 프리템플릿 일경우인데 다른 템플릿일 경우 다른수 있다.
             //FREE, SMS, 서술형
-            conts = chTmpltInfo.mergeData[0].description; 
+            conts = this.$gfnCommonUtils.defaultIfEmpty(chTmpltInfo.mergeData[0].title, '');
+            conts += this.$gfnCommonUtils.defaultIfEmpty(chTmpltInfo.mergeData[0].description, '');
           }
         }
 
