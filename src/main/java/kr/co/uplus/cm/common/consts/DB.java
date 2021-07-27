@@ -18,6 +18,7 @@ public class DB {
 	public final static String QRY_INSERT_FILE_INFO = "common.insertFileInfo";
 	public final static String QRY_SELECT_USE_CH_GRP_INFO = "common.selectUseChGrpInfo";
 	public final static String QRY_SELECT_IMAGE_URL_INFO = "common.selectImageUrlInfo";
+	public final static String QRY_UPDATE_CM_CMD = "common.updateCmCmdForRedis";
 
 	// 메인
 	public final static String QRY_SELECT_PRD_UNIT_INFO_LIST = "main.selectPrdUnitInfoList";
@@ -94,6 +95,7 @@ public class DB {
 	public final static String QRY_SELECT_SMART_TMPLT_LIST_CNT = "sendMessage.selectSmartTmpltListCnt";
 	public final static String QRY_SELECT_SMART_TMPLT_LIST = "sendMessage.selectSmartTmpltList";
 	public final static String QRY_SELECT_SMART_TMPLT_FRND_PRDT_INFO = "sendMessage.selectSmartTmpltFrndPrdtInfo";
+	public final static String QRY_SELECT_SMART_TMPLT_RCS_INFO = "sendMessage.selectSmartTmpltRcsInfo";
 
 	// RCS 채널 브랜드 정보
 	public final static String QRY_SELECT_RCS_BRANDLIST_CNT = "channel.selectRcsBrandListCnt";
@@ -150,6 +152,8 @@ public class DB {
 	public final static String QRY_UPDATE_CM_USER = "signUp.updateCmUser";
 	public final static String QRY_SELECT_CM_USE_TERMS = "signUp.selectCmUseTerms";
 	public final static String QRY_SELECT_CM_USE_TERMS_PRI_VERSION = "signUp.selectCmUseTermsPriVersion";
+	public final static String QRY_CHK_MAIL_CERTIFY_BY_LOGINID = "signUp.checkMailCertifyByLoginId";
+	
 	// 사용자 등록
 	public final static String QRY_SELECT_USER_LIST = "user.selectUserList";
 	public final static String QRY_SELECT_USER_LIST_CNT = "user.selectUserListCnt";
@@ -187,6 +191,7 @@ public class DB {
 	public final static String QRY_SELECT_RCS_TMP_MSGBASE = "rcsTemplateSend.selectRcsTmpMsgbase";
 	public final static String QRY_DELETE_RCS_TMP_BSGBASE = "rcsTemplateSend.deleteRcsTmpMsgbase";
 	public final static String QRY_SELECT_RCS_TMP_MSGBASE_DETAIL = "rcsTemplateSend.deleteRcsTmpMsgbaseDetail";
+	public final static String QRY_SELECT_RCS_CALLBACK_LIST = "rcsTemplateSend.selectRcsCallbackList";
 
 	// 주소록 관리
 	public final static String QRY_SELECT_ADDR_CATE_GRP_LIST = "address.selectAddrCateGrpList";
