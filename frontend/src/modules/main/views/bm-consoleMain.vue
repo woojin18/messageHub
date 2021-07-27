@@ -44,7 +44,7 @@
                 <a href="#" @click.prevent="fnOpenNoticePopupModal(noticeInfo.noticeId)" title="해당 게시글이 열립니다">
                   <span class="noti_tt">
                     <span v-if="!$gfnCommonUtils.isEmpty(noticeInfo.noticeTypeCdName)" class="newIcon">{{noticeInfo.noticeTypeCdName}}</span>
-                    {{$gfnCommonUtils.unescapeXss(noticeInfo.title)}}
+                    {{noticeInfo.title | unescapeXss}}
                   </span>
                   <span class="noti_day">{{noticeInfo.regDt}}</span>
                 </a>
@@ -61,7 +61,7 @@
             <ul class="listSt">
               <li v-for="(libraryInfo, idx) in libraryInfoList" :key="idx">
                 <router-link :to="{ name: 'libraryDetail', params: { libraryId: libraryInfo.libraryId }}" title="해당 게시글로 이동">
-                  <span class="noti_tt">{{$gfnCommonUtils.unescapeXss(libraryInfo.title)}}
+                  <span class="noti_tt">{{libraryInfo.title | unescapeXss}}
                     <img v-if="libraryInfo.existsFileYn == 'Y'" src="@/assets/images/main/user_sub03_1_fileicon.png" alt="파일 아이콘" class="fileIcon">
                   </span>
                   <span class="noti_day">{{libraryInfo.regDt}}</span>
