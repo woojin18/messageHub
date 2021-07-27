@@ -204,7 +204,7 @@
 				<div class="of_h">
 					<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 					<div class="float-left" style="width:57%">
-						<textarea class="textareaStyle height190" name="pushContent" :placeholder="pushPlaceHoder" v-model="rowData.pushContent" id="pushContentId" @keyup="fnTextLength('내용', '#pushContentId', '#pushTextLength', '512')"></textarea>
+						<textarea class="textareaStyle height190" :placeholder="pushPlaceHoder" v-model="rowData.pushContent" id="pushContentId" @keyup="fnTextLength('내용', '#pushContentId', '#pushTextLength', '512')"></textarea>
 						<strong class="letter" id="pushTextLength">(00 / 512)</strong>
 						<p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
 					</div>
@@ -343,7 +343,7 @@
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
 							<div class="float-left" style="width:13%"><h4>브랜드명*</h4></div>
-							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgFreeTmpltBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
+							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
 								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 							</select>
@@ -385,7 +385,7 @@
 								<div class="phoneText1 relative scroll-y4">
 									<p><img :src="rowData.rcsDesFormNm | getIconURlByFormNm" style="width:70px;"></p>
 									<div class="scroll-y5">
-										<pre class="mt15 lc-1">{{rowData.rcs1Content}}</pre>
+										<pre class="mt15 lc-1">{{rowData.rcs0Content}}</pre>
 									</div>
 									<div v-for="(buttonInfo, idx) in rowData.rcsDesButtons" :key="idx">
 										<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)" class="btnStyle1 backLightGray">{{buttonInfo.action.displayText}}</a>
@@ -415,7 +415,7 @@
 							<div class="of_h">
 								<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 								<div class="float-left" style="width:57%">
-									<textarea class="textareaStyle height190"  v-model="rowData.rcs1Content" id="rcs1ContentId" disabled></textarea>
+									<textarea class="textareaStyle height190"  v-model="rowData.rcs0Content" disabled></textarea>
 									<strong class="letter" id="rcs1TextLength">(00 / 90)</strong>
 								</div>
 							</div>
@@ -589,10 +589,10 @@
 							<img src="@/assets/images/common/phoneMockup1.svg" alt="SMS 템플릿">
 							<div class="phoneTextWrap">
 								<div class="phoneText1 scroll-y2">
-									<pre>{{rowData.rcsSMSContent}}</pre>
-									<br v-if="!fnIsEmpty(rowData.rcsSMSContent)"/>
-									<span v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsSMSHowToDenyReceipt)">
-										{{rowData.rcsSMSHowToDenyReceipt}}
+									<pre>{{rowData.rcs0Content}}</pre>
+									<br v-if="!fnIsEmpty(rowData.rcs0Content)"/>
+									<span v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)">
+										{{rowData.rcsBlockNumber}}
 									</span>
 								</div>
 								<div v-for="(buttonInfo, idx) in rowData.rcsSMSButtons" :key="idx">
@@ -605,7 +605,7 @@
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
 							<div class="float-left" style="width:13%"><h4>브랜드명*</h4></div>
-							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgSmsTmpltBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
+							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
 								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 							</select>
@@ -613,7 +613,7 @@
 						<div class="of_h">
 							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 							<div class="float-left" style="width:57%">
-								<textarea class="textareaStyle height190" maxlength="100" v-model="rowData.rcsSMSContent" :placeholder="rcsPlaceHoder" id="rcsSMSContentId" @keyup="fnTextLength('내용', '#rcsSMSContentId', '#rcsSMSTextLength', '1300')"></textarea>
+								<textarea class="textareaStyle height190" maxlength="100" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsSMSContentId" @keyup="fnTextLength('내용', '#rcsSMSContentId', '#rcsSMSTextLength', '1300')"></textarea>
 								<strong class="letter" id="rcsSMSTextLength">(00 / 1300)</strong>
 							</div>
 						</div>
@@ -624,7 +624,7 @@
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowSMS" class="btnStyle1 backBlack">추가 +</a></div>
+							<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('SMS')" class="btnStyle1 backBlack">추가 +</a></div>
 							<div class="float-left" style="width:57%">
 								<table class="table_skin1 mt0" style="width:100%" v-if="buttonSMSFlag">
 									<colgroup>
@@ -669,7 +669,7 @@
 												</div>
 											</td>
 											<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
-											<td class="text-center end"><a @click="addRowSMS" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowSMS(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
+											<td class="text-center end"><a @click="addRowRcsButton('SMS')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('SMS', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
 										</tr>
 									</tbody>
 								</table>
@@ -697,8 +697,137 @@
 						<div class="phoneWrap">
 							<img src="@/assets/images/common/phoneMockup1.svg" alt="LMS 템플릿">
 							<div class="phoneTextWrap">
-								<div class="phoneText1 scroll-y4">
-									<pre>{{rowData.rcsLMSContent}}</pre>
+								<div class="phoneText1">
+									<div class="scroll-y">
+										<h5 v-if="rowData.rcs0Title!=''">{{rowData.rcs0Title}}</h5>
+										<p class="mt15">{{rowData.rcs0Content}}</p>
+									</div>
+									<br v-if="!fnIsEmpty(rowData.rcs0Content)"/>
+									<span v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)">
+										{{rowData.rcsBlockNumber}}
+									</span>
+								</div>
+								<div v-for="(buttonInfo, idx) in rowData.rcsLMSButtons" :key="idx">
+									<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)" class="btnStyle1 backLightGray">{{buttonInfo.action.displayText}}</a>
+								</div>
+							</div>
+						</div>
+						<!-- //phoneWrap -->
+					</div>
+					<div class="float-left consoleCon" style="width:72%">
+						<div class="of_h">
+							<div class="float-left" style="width:13%"><h4>브랜드명*</h4></div>
+							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
+								<option value="">선택해주세요.</option>
+								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
+							</select>
+						</div>
+						<div class="of_h">
+							<div class="float-left" style="width:13%"><h4>제목*</h4></div>
+							<div class="float-left" style="width:57%">
+								<input type="text" class="inputStyle" v-model="rowData.rcs0Title" placeholder="최대 30자 입력 가능니다." maxlength="30">
+							</div>
+						</div>
+						<div class="of_h">
+							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+							<div class="float-left" style="width:57%">
+								<textarea class="textareaStyle height190" maxlength="1300" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsLMSContentId" @keyup="fnTextLength('내용', '#rcsLMSContentId', '#rcsLMSTextLength', '1300')"></textarea>
+								<strong class="letter" id="rcsLMSTextLength">(00 / 1300)</strong>
+							</div>
+						</div>
+						<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">
+							<div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
+							<div class="float-left" style="width:57%">
+								<input type="text" class="inputStyle" v-model="rowData.rcsBlockNumber" placeholder="설정 > 푸시 알림 설정 변경">
+							</div>
+						</div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('LMS')" class="btnStyle1 backBlack">추가 +</a></div>
+							<div class="float-left" style="width:57%">
+								<table class="table_skin1 mt0" style="width:100%" v-if="buttonLMSFlag">
+									<colgroup>
+										<col style="width:22%">
+										<col style="width:20%">
+										<col>
+										<col style="width:15%">
+									</colgroup>
+									<thead>
+										<tr>
+											<th class="text-center">타입</th>
+											<th class="text-center">버튼이름</th>
+											<th class="text-center">버튼링크</th>
+											<th class="text-center end">구분</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr v-for="(buttonInfo, index) in rowData.rcsLMSButtons" v-bind:key="index">
+											<td class="text-center">
+												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
+													<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
+												</select>
+											</td>
+											<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+												<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
+												<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
+												<div class="consolMarginTop of_h">
+													<span class="float-left mt5" style="width:20%">시작일</span>
+													<div class="float-right" style="width:80%">
+														<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+													</div>
+												</div>
+												<div class="consolMarginTop of_h">
+													<span class="float-left mt5" style="width:20%">종료일</span>
+													<div class="float-right" style="width:80%">
+														<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+													</div>
+												</div>
+											</td>
+											<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
+											<td class="text-center end"><a @click="addRowRcsButton('LMS')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('LMS', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="of_h consolMarginTop">
+							<div class="float-left" style="width:13%"><h5>발신번호 *</h5></div>
+							<div class="float-left" style="width:57%">
+								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
+									<option value="">선택해주세요.</option>
+									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 세로형 SHORT -->
+			<div v-if="rcsTemplateTable === 5 ">
+				<h4>내용작성</h4>
+				<div class="of_h mt20">
+					<div class="float-left" style="width:28%">
+						<!-- phoneWrap -->
+						<div class="phoneWrap">
+							<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
+							<div class="phoneTextWrap">
+								<div v-for="imgIdx in rcsShortImgLimitSize" :key="imgIdx">  
+									<div v-if="rowData.msgType == 'IMAGE' && rowData.rcsShortImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+										:style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsShortImgInfoList[imgIdx-1].imgUrl+');'">  
+									</div>
+									<div v-else>
+										<img src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
+									</div>
+								</div>
+								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
+									<h5>{{rowData.rcsShortTitle}}</h5>
+									<div class="scroll-y3">
+										<pre class="color6">{{rowData.rcsShortContent}}</pre>
+									</div>								
 								</div>
 							</div>
 						</div>
@@ -707,139 +836,10 @@
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
 							<div class="float-left" style="width:13%"><h4>제목</h4></div>
-              <div class="float-left" style="width:57%">
-                <input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." maxlength="30" v-model="rowData.rcsLMSTitle" id="rcsLMSTitleId" @keyup="fnTextLength('제목', '#rcsLMSTitleId', '', '30')">
-              </div>
-            </div>
-
-            <div class="of_h">
-              <div class="float-left" style="width:13%"><h4>내용*</h4></div>
-              <div class="float-left" style="width:57%">
-                <textarea class="textareaStyle height190" maxlength="1300" v-model="rowData.rcsLMSContent" :placeholder="rcsPlaceHoder" id="rcsLMSContentId" @keyup="fnTextLength('내용', '#rcsLMSContentId', '#rcsLMSTextLength', '1300')"></textarea>
-                <strong class="letter" id="rcsLMSTextLength">(00 / 1300)</strong>
-              </div>
-            </div>
-
-            <div v-if="rowData.msgKind == 'A'">
-              <div class="of_h consolMarginTop">
-                <div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
-                <div class="float-left" style="width:57%">
-                  <input type="text" class="inputStyle" name="rcsLMSHowToDenyReceipt" v-model="rowData.rcsLMSHowToDenyReceipt" placeholder="설정 > 푸시 알림 설정 변경">
-                  <!--<p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>-->
-                </div>
-              </div>
-            </div>
-
-            <div class="of_h consolMarginTop">
-                  <div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowLMS" class="btnStyle1 backBlack">추가 +</a></div>
-                  <div class="float-left" style="width:57%">
-                    <table class="table_skin1 mt0" style="width:100%" v-if="buttonLMSFlag">
-                      <colgroup>
-                        <col style="width:22%">
-                        <col style="width:20%">
-                        <col>
-                        <col style="width:15%">
-                      </colgroup>
-                      <thead>
-                        <tr>
-                        <th class="text-center">타입</th>
-                        <th class="text-center">버튼이름</th>
-                        <th class="text-center">버튼링크</th>
-                        <th class="text-center end">구분</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(row,index) in rowData.rcsLMSButtons" v-bind:key="index">
-                          <td class="text-center">
-                            <select name="userConsole04060202_1" class="selectStyle2" style="width:100%" v-model="row.buttonType">
-                              <option value="U">URL 링크</option>
-                              <option value="C">복사하기</option>
-                              <option value="T">전화걸기</option>
-                              <option value="S">일정추가</option>
-                              <option value="M">지도맵</option>
-                            </select>
-                          </td>
-                          <td class="text-left"><input type="text" class="inputStyle" v-model="row.buttonName"></td>
-                          <td class="text-center">
-                            <input v-if="row.buttonType == 'U'" type="text" class="inputStyle" placeholder="URL입력(http:// 또는 https:// 필수입력)" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'C'" type="text" class="inputStyle" placeholder="복사할 값 입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsLMSButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcsLMSButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
-                            <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" readOnly>
-                          </td>
-                          <td class="text-center end"><a @click="addRowLMS" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowLMS(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-            </div>
-
-            <div class="of_h consolMarginTop">
-	            <div class="float-left" style="width:13%"><h5>발신번호 *</h5></div>
-	            <div class="float-left" style="width:57%">
-	              <select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
-	                <option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
-	              </select>
-	            </div>
-			      </div>
-
-          </div>
-        </div>
-
-      </div>
-
-<!-- 세로형 SHORT -->
-      <div v-if="rcsTemplateTable === 5 ">
-
-        <h4>내용작성</h4>
-        <div class="of_h mt20">
-          <div class="float-left" style="width:28%">
-            <!-- phoneWrap -->
-            <div class="phoneWrap">
-              <img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
-              <div class="phoneTextWrap">
-		            <div v-for="imgIdx in rcsShortImgLimitSize" :key="imgIdx">  
-		            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcsShortImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-			                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsShortImgInfoList[imgIdx-1].imgUrl+');'">  
-		            		</div>
-		            		<div v-else>
-		            			<img src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
-		            		</div>
-		            </div>              
-              
-              
-<!--
-					<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcsShortImgInfoList[0])" class="phoneText2 mt10 text-center">
-		                <img src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
-		            </div>
-		            <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcsShortImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
-		                <img src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
-		            </div>
-		            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcsShortImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
-		                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsShortImgInfoList[0].imgUrl+');'">
-		            </div>
--->
-					
-					<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
-						<h5>{{rowData.rcsShortTitle}}</h5>
-						<div class="scroll-y3">
-							<pre class="color6">{{rowData.rcsShortContent}}</pre>
-						</div>								
-					</div>              
-              </div>
-            </div>
-            <!-- //phoneWrap -->
-          </div>
-          <div class="float-left consoleCon" style="width:72%">
-            <div class="of_h">
-              <div class="float-left" style="width:13%"><h4>제목</h4></div>
-              <div class="float-left" style="width:57%">
-                <input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcsShortTitle" id="rcsShortTitleId" @keyup="fnTextLength('제목', '#rcsShortTitleId', '', '30')">
-              </div>
-            </div>
+							<div class="float-left" style="width:57%">
+								<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcsShortTitle" id="rcsShortTitleId" @keyup="fnTextLength('제목', '#rcsShortTitleId', '', '30')">
+							</div>
+						</div>
 
             <div class="of_h">
               <div class="float-left" style="width:13%"><h4>내용*</h4></div>
@@ -3052,7 +3052,6 @@ export default {
 					'brandNm': '', //브랜드
 
 					'rcsSMSsHowToDenyReceipt':'',
-					'rcsLMSHowToDenyReceipt':'',
 					'rcsShortHowToDenyReceipt':'',
 					'rcsTallHowToDenyReceipt':'',
 					'rcs9HowToDenyReceipt':'',
@@ -3472,27 +3471,16 @@ export default {
 				}
 			});
 		},
-		fnChgFreeTmpltBrandValue(brandNm) {
+		// RCS 브랜드 변경 이벤트
+		fnChgBrandValue(brandNm) {
 			var params = {brandId: brandNm};
-			// rcs 프리템플릿 발신번호 리스트 조회
+			// rcs 템플릿 발신번호 리스트 조회
 			messageApi.selectCallbackList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.rcsCallbackList = result.data;
 				} else {
-					confirm.fnAlert("RCS 프리템플릿 발신번호 리스트 조회", result.message);
-				}
-			});
-		},
-		fnChgSmsTmpltBrandValue(brandNm) {
-			var params = {brandId: brandNm};
-			// rcs SMS템플릿 발신번호 리스트 조회
-			messageApi.selectCallbackList(params).then(response =>{
-				var result = response.data;
-				if (result.success) {
-					this.rcsCallbackList = result.data;
-				} else {
-					confirm.fnAlert("RCS SMS템플릿 발신번호 리스트 조회", result.message);
+					confirm.fnAlert("RCS 템플릿 발신번호 리스트 조회", result.message);
 				}
 			});
 		},
@@ -3763,6 +3751,10 @@ export default {
 
 				if (this.rowData.checkedChannel.includes('RCS')) {
 					if (this.rcsTemplateTable === 0) {  //FREE
+						if (!this.rowData.brandNm) {
+							confirm.fnAlert(this.detailTitle, 'RCS FREE 템플릿 브랜드명을 선택해주세요.');
+							return false;
+						}
 						if (!this.rowData.rcs0Content) { 
 							confirm.fnAlert(this.detailTitle, 'RCS FREE 템플릿 내용을 입력해주세요.');
 							return false;
@@ -3780,6 +3772,10 @@ export default {
 					}
 
 					if (this.rcsTemplateTable === 1) {  //DESCRIPTION
+						if (!this.rowData.brandNm) {
+							confirm.fnAlert(this.detailTitle, 'RCS 승인 서술형 템플릿 브랜드명을 선택해주세요.');
+							return false;
+						}
 						if (!this.selectedRcsDesTemplate) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 승인 서술형 템플릿을 팝업을 통해 선택해 주세요.');
 							return false;
@@ -3798,27 +3794,43 @@ export default {
 					}
 	
 					if (this.rcsTemplateTable === 3) {  //SMS
-						if (!this.rowData.rcsSMSContent) { 
-							confirm.fnAlert(this.detailTitle, 'RCS SMS 내용을 입력해주세요.');
+						if (!this.rowData.brandNm) {
+							confirm.fnAlert(this.detailTitle, 'RCS SMS 템플릿 브랜드명을 선택해주세요.');
+							return false;
+						}
+						if (!this.rowData.rcs0Content) { 
+							confirm.fnAlert(this.detailTitle, 'RCS SMS 템플릿 내용을 입력해주세요.');
 							return false;
 						}
 						if (this.rowData.msgKind == 'A' && !this.rowData.rcsBlockNumber) { 
-							confirm.fnAlert(this.detailTitle, 'RCS SMS 무료수신거부 정보를 입력해주세요.');
+							confirm.fnAlert(this.detailTitle, 'RCS SMS 템플릿 무료수신거부 정보를 입력해주세요.');
+							return false;
+						}
+						if (!this.rowData.callback) { 
+							confirm.fnAlert(this.detailTitle, 'RCS SMS 템플릿 발신번호를 선택해주세요.');
 							return false;
 						}
 					}
 
 					if (this.rcsTemplateTable === 4) {  //LMS
-						if (!this.rowData.rcsLMSTitle) { 
-							confirm.fnAlert(this.detailTitle, 'RCS LMS 제목을 입력해주세요.');
+						if (!this.rowData.brandNm) {
+							confirm.fnAlert(this.detailTitle, 'RCS LMS 템플릿 브랜드명을 선택해주세요.');
 							return false;
 						}
-						if (!this.rowData.rcsLMSContent) { 
-							confirm.fnAlert(this.detailTitle, 'RCS LMS 내용을 입력해주세요.');
+						if (!this.rowData.rcs0Title) { 
+							confirm.fnAlert(this.detailTitle, 'RCS LMS 템플릿 제목을 입력해주세요.');
 							return false;
 						}
-						if (this.rowData.msgKind == 'A' && !this.rowData.rcsLMSHowToDenyReceipt) { 
-							confirm.fnAlert(this.detailTitle, 'RCS LMS 무료수신거부 정보를 입력해주세요.');
+						if (!this.rowData.rcs0Content) { 
+							confirm.fnAlert(this.detailTitle, 'RCS LMS 템플릿 내용을 입력해주세요.');
+							return false;
+						}
+						if (this.rowData.msgKind == 'A' && !this.rowData.rcsBlockNumber) { 
+							confirm.fnAlert(this.detailTitle, 'RCS LMS 템플릿 무료수신거부 정보를 입력해주세요.');
+							return false;
+						}
+						if (!this.rowData.callback) { 
+							confirm.fnAlert(this.detailTitle, 'RCS LMS 템플릿 발신번호를 선택해주세요.');
 							return false;
 						}
 					}
@@ -4055,7 +4067,7 @@ export default {
 				vm.rowData.brandNm = data.brandId;
 				vm.rowData.rcsDesFormNm = data.formNm;
 				vm.rowData.rcsDesMessagebaseformId = data.messagebaseformId;
-				vm.rowData.rcs1Content = data.desContent;
+				vm.rowData.rcs0Content = data.desContent;
 				vm.rowData.rcsDesButtons = data.rcsButtonList;
 
 				var params = {brandId : data.brandId};
@@ -4221,7 +4233,7 @@ export default {
 							this.rowData.brandNm							= rtnData.rcsBrandNm;
 							this.rowData.rcsDesFormNm					= rtnData.rcsDesFormNm;
 							this.rowData.rcsDesMessagebaseformId	= rtnData.rcsMessagebaseformId;
-							this.rowData.rcs1Content						= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content);
+							this.rowData.rcs0Content						= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content);
 							this.rowData.callback								= rtnData.rcsCallback; //발신번호
 							this.rowData.rcsDesButtons						= rtnData.rcsButton0Data;
 						}
@@ -4252,36 +4264,26 @@ export default {
 									confirm.fnAlert("rcs SMS템플릿 발신번호 리스트 조회", result.message);
 								}
 							});
-							this.rowData.rcsSMSMessagebaseId			= rtnData.rcsMessagebaseId;
-							this.rowData.brandNm							= rtnData.rcsBrandNm;
-							this.rowData.rcsSMSContent					= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content);
-							this.rowData.callback								= rtnData.rcsCallback; //발신번호
-							this.rowData.rcsBlockNumber					= rtnData.rcsBlockNumber;   //수신거부번호
+							this.rowData.brandNm				= rtnData.rcsBrandNm;
+							this.rowData.rcs0Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content);
+							this.rowData.rcsBlockNumber		= rtnData.rcsBlockNumber;		//수신거부번호
+							this.rowData.callback					= rtnData.rcsCallback;			//발신번호
 							if (rtnData.rcsButton0Data.length > 0) {
 								this.buttonSMSFlag = true;
-								this.rowData.rcsSMSButtons					= rtnData.rcsButton0Data;
+								this.rowData.rcsSMSButtons	= rtnData.rcsButton0Data;
 							}
 						}
 	
 						if (rtnData.rcsPrdType == 'LMS') {
-							this.rowData.rcsLMSTitle			= rtnData.rcsBodyTitle;
-							this.rowData.rcsLMSContent 			= rtnData.rcsBodyMessage;
-							this.rowData.rcsLMSHowToDenyReceipt = rtnData.rcsFooter;   //무료수신거부번호
-							this.rowData.callback 				= rtnData.rcsCallback; //발신번호
+							this.rowData.brandNm				= rtnData.rcsBrandNm;
+							this.rowData.rcs0Title					= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Title);
+							this.rowData.rcs0Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content);
+							this.rowData.rcsBlockNumber		= rtnData.rcsBlockNumber;		//수신거부번호
+							this.rowData.callback					= rtnData.rcsCallback;			//발신번호
 	
-							if (rtnData.rcsButton0ButtonType) {//RCS LMS는 버튼 3개까지 추가 가능
+							if (rtnData.rcsButton0Data.length > 0) {
 								this.buttonLMSFlag = true;
-								this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr0));
-							}
-	
-							if (rtnData.rcsButton1ButtonType) {
-								this.buttonLMSFlag = true;
-								this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr1));
-							}
-	
-							if (rtnData.rcsButton2ButtonType) {
-								this.buttonLMSFlag = true;
-								this.rowData.rcsLMSButtons.push(JSON.parse(rtnData.rcs0ButtonArr2));
+								this.rowData.rcsLMSButtons	= rtnData.rcsButton0Data;
 							}
 						}
 	
@@ -4591,73 +4593,43 @@ export default {
 		fnPushDelImg(){
 			this.rowData.pushImgInfo = {};
 		},
-		// RCS(SMS상품) 버튼 추가
-		addRowSMS: function(){
-			if (this.rowData.rcsSMSButtons.length >= 1) {
-				alert("button은 1개까지 추가가능합니다.");
-			} else {
-				this.buttonSMSFlag = true;
-				//this.smsButtonsMaxLen = this.smsButtonsMaxLen + 1;
-				//var startDateId = 'rcsSMSStartDateId'	+ this.smsButtonsMaxLen;
-				//var endDateId 	= 'rcsSMSEndDateId'		+ this.smsButtonsMaxLen;
+		// RCS 버튼 추가
+		addRowRcsButton: function(rcsType) {
+			var action = {
+				linkType : 'urlAction',
+				displayText : '',
+				postback : {data : ''},
+				urlAction : {openUrl : {url : ''}},
+				clipboardAction : {copyToClipboard : {text : ''}},
+				dialerAction : {dialPhoneNumber : {phoneNumber : ''}},
+				calendarAction : {createCalendarEvent : {title : '', description : '', startTime : '', endTime : ''}},
+				mapAction : {}
+			};
+			let temp = {
+				'action': action
+			};
 
-				var action = {
-					linkType : 'urlAction',
-					displayText : '',
-					postback : {data : ''},
-					urlAction : {openUrl : {url : ''}},
-					clipboardAction : {copyToClipboard : {text : ''}},
-					dialerAction : {dialPhoneNumber : {phoneNumber : ''}},
-					calendarAction : {createCalendarEvent : {title : '', description : '', startTime : '', endTime : ''}},
-					mapAction : {}
-				};
-				let temp = {
-					'action': action
-				};
-				this.rowData.rcsSMSButtons.push(temp);
+			if (rcsType == 'SMS') {
+				if (this.rowData.rcsSMSButtons.length >= 1) {
+					alert("button은 1개까지 추가가능합니다.");
+				} else {
+					this.buttonSMSFlag = true;
+					this.rowData.rcsSMSButtons.push(temp);
+				}
+			} else if (rcsType == 'LMS') {
+				if (this.rowData.rcsLMSButtons.length >= 3) {
+					alert("button은 3개까지 추가가능합니다.");
+				} else {
+					this.buttonLMSFlag = true;
+					this.rowData.rcsLMSButtons.push(temp);
+				}
 			}
 		},
-		// RCS(SMS상품) 버튼 삭제
-		removeRowSMS: function(row){
-			//if (this.rowData.rcsSMSButtons.length <= 1) {
-			//	this.rowData.rcsSMSButtons.splice(row,1);
-			//	var action = {
-			//		linkType : 'urlAction',
-			//		displayText : '',
-			//		urlAction : {openUrl : {url : ''}},
-			//		clipboardAction : {copyToClipboard : {text : ''}},
-			//		dialerAction : {dialPhoneNumber : {phoneNumber : ''}},
-			//		calendarAction : {createCalendarEvent : {title : '', description : '', startTime : '', endTime : ''}},
-			//		mapAction : {}
-			//	};
-			//	let temp = {
-			//		'action': action
-			//	};
-			//	this.rowData.rcsSMSButtons.push(temp); //입력할수 있도록 빈공백의 한칸은 남겨둔다.
-			//} else {
-			//	this.rowData.rcsSMSButtons.splice(row,1);
-			//}
-			this.rowData.rcsSMSButtons.splice(row,1);
-		},
-		// RCS(LMS상품) 버튼 추가
-		addRowLMS: function(){
-			if (this.rowData.rcsLMSButtons.length >= 3) {
-				alert("button은 3개까지 추가가능합니다.");
-			} else {
-				this.buttonLMSFlag = true;
-				this.lmsButtonsMaxLen = this.lmsButtonsMaxLen + 1;
-				var startDateId = 'rcsLMSStartDateId'+this.lmsButtonsMaxLen;
-				var endDateId = 'rcsLMSEndDateId'+this.lmsButtonsMaxLen;
-
-				this.rowData.rcsLMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-			}
-		},
-		// RCS(LMS상품) 버튼 삭제
-		removeRowLMS: function(row){
-			if (this.rowData.rcsLMSButtons.length <= 1) {
-				this.rowData.rcsLMSButtons.splice(row,1);
-				this.rowData.rcsLMSButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-			} else {
+		// RCS 버튼 삭제
+		removeRowRcsButton: function(rcsType, row){
+			if (rcsType == 'SMS') {
+				this.rowData.rcsSMSButtons.splice(row,1);
+			} else if (rcsType == 'LMS') {
 				this.rowData.rcsLMSButtons.splice(row,1);
 			}
 		},
@@ -5470,18 +5442,6 @@ export default {
 		},
 		fnSmsDelImg(idx){
 			this.rowData.smsImgInfoList.splice(idx, 1);
-		},
-		fnRcsSMSButtonSD(sltDate, params){
-			this.rowData.rcsSMSButtons[params.idx].startDate = sltDate;
-		},
-		fnRcsSMSButtonED(sltDate, params){
-			this.rowData.rcsSMSButtons[params.idx].endDate = sltDate;
-		},
-		fnRcsLMSButtonSD(sltDate, params){
-			this.rowData.rcsLMSButtons[params.idx].startDate = sltDate;
-		},
-		fnRcsLMSButtonED(sltDate, params){
-			this.rowData.rcsLMSButtons[params.idx].endDate = sltDate;
 		},
 		fnRcsShortButtonSD(sltDate, params){
 			this.rowData.rcsShortButtons[params.idx].startDate = sltDate;
