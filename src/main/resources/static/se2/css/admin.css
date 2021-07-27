@@ -342,11 +342,13 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .font-size20 {font-size:20px !important}
 .font-size22 {font-size:22px !important}
 .font-size26 {font-size:26px !important}
+.text-underline {text-decoration:underline}
 .vertical-middle {vertical-align:middle !important}
 .vertical-bottom {vertical-align:bottom !important}
 .vertical-baseline {vertical-align:baseline !important}
 .vertical-top {vertical-align:top !important}
 .vertical-unset {vertical-align:unset !important}
+.vertical-sub {vertical-align:sub !important}
 .bt-000 {border-top:1px solid #000}
 .draggable {cursor:pointer}
 .form01 {display:inline; margin-left:40px}
@@ -357,6 +359,7 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .height45 {height: 45px !important}
 .height90 {height: 90px !important}
 .height120 {height: 120px !important}
+.height170 {height: 170px !important}
 .height190 {height: 190px !important}
 .form01 input {border: 1px solid #d5d5d5; border-radius: 0; width: 432px !important; height: 45px;}
 .modalStyle .modal-body {padding:60px 40px; overflow:hidden}
@@ -969,6 +972,7 @@ footer {font-size:12px; color:#B2B2B2; font-weight:400; position:absolute; botto
 .scroll-y4 {height:450px; overflow-y:auto}
 .scroll-y5 {max-height:354px; overflow-y:auto}
 .scroll-y6 {max-height:100px; overflow-y:auto}
+.scroll-y7 {max-height:130px; overflow-y:auto}
 
 
 /* phoneCardWrap */
@@ -993,6 +997,8 @@ footer {font-size:12px; color:#B2B2B2; font-weight:400; position:absolute; botto
 
 /* admin_sub03_4_1_1 */
 .admin_sub03_4_1_1 .underLine:hover {text-decoration:underline}
+
+.trBg {background:#f7f7f7}
 
 
 @media screen and (max-width:1850px) {
