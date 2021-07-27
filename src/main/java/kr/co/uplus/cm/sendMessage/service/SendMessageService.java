@@ -2447,7 +2447,7 @@ public class SendMessageService {
         String tmpltMergeDataStr = CommonUtils.getStrValue(rcsltInfo, "mergeData");
 
         //미승인형
-        if(StringUtils.equals(Const.RcsPrd.FREE, rcsPrdType)) {
+        if((StringUtils.equals(Const.RcsPrd.NARRATIVE, rcsPrdType) || StringUtils.equals(Const.RcsPrd.STYEL, rcsPrdType)) == false) {
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             List<Map<String, Object>> tmpltMergeDataList = gson.fromJson(tmpltMergeDataStr, new TypeToken<List<Map<String, Object>>>(){}.getType());
             Map<String, Object> tmpltMergeData = new HashMap<String, Object>();

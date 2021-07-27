@@ -123,10 +123,9 @@
               </div>
             </div>
             <!--// ALIMTALK -->
-
-
             
 
+            
             <!-- RCS -->
             <div v-if="previewMessageType == 'RCS' && tmpltData.RCS" class="tab-pane active">
               <!-- FREE -->
@@ -160,6 +159,24 @@
                 </div>
               </div>
               <!--// DESCRIPTION -->
+              <!-- SMS -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'SMS'" class="phoneWrap">
+                <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
+                <div class="phoneTextWrap scroll-y">
+                  <div class="phoneText1">
+                    <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
+                    <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
+                      <p 
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
+                        :key="idx" 
+                        class="text-center mt20" 
+                        style="color:#69C8FF"
+                      >{{btn.action.displayText}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--// SMS -->
             </div>
             <!--// RCS -->
 
@@ -633,7 +650,9 @@ export default {
           conts = chTmpltInfo.msg;
         } else if(ch == 'RCS'){
           if(chTmpltInfo.mergeData && chTmpltInfo.mergeData.length > 0){
-            conts = chTmpltInfo.mergeData[0].description; //TODO : 프리템플릿 일경우인데 다른 템플릿일 경우 다른수 있다.
+            //TODO : 프리템플릿 일경우인데 다른 템플릿일 경우 다른수 있다.
+            //FREE, SMS, 서술형
+            conts = chTmpltInfo.mergeData[0].description; 
           }
         }
 

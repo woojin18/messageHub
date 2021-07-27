@@ -830,7 +830,7 @@ public class SendMessageController {
             recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
                 rtn.setSuccess(false);
-                rtn.setMessage("잘못된 친구톡 수신자 정보입니다.");
+                rtn.setMessage("잘못된 알림톡 수신자 정보입니다.");
                 return rtn;
             }
 
