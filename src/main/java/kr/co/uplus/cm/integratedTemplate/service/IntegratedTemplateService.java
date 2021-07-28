@@ -257,7 +257,7 @@ public class IntegratedTemplateService {
 					sb.append("\"messagebaseId\": \"SL000000\","); // LMS 템플릿의 RCS MESSAGEBASE_ID 를 설정
 
 					sb.append("\"mergeData\": [{ ");
-					sb.append("	\"title\" : \"" + JSONObject.escape((String) params.get("rcs0Title")) + "\", "); // 메시지
+					sb.append("	\"title\" : \"" + JSONObject.escape((String) params.get("rcs0Title")) + "\", "); // 제목
 					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs0Content")) + "\" "); // 메시지
 					sb.append("	}]");
 
@@ -278,7 +278,7 @@ public class IntegratedTemplateService {
 					sb.append("\"messagebaseId\": \"SMwThM00\","); // 세로형(SHORT) 템플릿의 RCS MESSAGEBASE_ID 를 설정
 
 					sb.append("\"mergeData\": [{ ");
-					sb.append("	\"title\" : \"" + JSONObject.escape((String) params.get("rcs0Title")) + "\", "); // 메시지
+					sb.append("	\"title\" : \"" + JSONObject.escape((String) params.get("rcs0Title")) + "\", "); // 제목
 					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs0Content")) + "\" "); // 메시지
 					if (params.containsKey("rcsShortImgInfoList")) {
 						rcsShortImgInfoList = (List<Map<String, Object>>) params.get("rcsShortImgInfoList");
@@ -304,47 +304,39 @@ public class IntegratedTemplateService {
 						sb.append(newButtonAddStr(buttonInfoList));
 					}
 				} else if ((int) params.get("rcsTemplateTable") == 6) {
-//RCS TALL TYPE ====================================================================
-					sb.append("\"rcsPrdType\" : \"TALL\","); // RCS상품타입(세로형[TALL]템플릿) rcsTemplateTable => 6
-					sb.append("\"messagebaseId\": \"SMwThT00\","); // cm.CM_RCS_MSGBASE, cm_console.CM_RCS_TMP_MSGBASE의
-																	// MESSAGEBASEFORM_ID값을 설정
-					sb.append("\"callback\": \"" + params.get("callback") + "\",");
-					sb.append("\"footer\": \"" + params.get("rcsTallHowToDenyReceipt") + "\","); // 무료수신거부 번호, header의
-																									// 값이 광고성일 때 footer
-																									// 값을 포함하지 않고 발송하면
-																									// 실패 처리
-
-					sb.append("\"body\": [{ ");
-					sb.append("	\"title\" : \"" + params.get("rcsTallTitle") + "\", "); //
-					// String rcsTallContent = ((String)
-					// params.get("rcsTallContent")).replaceAll("\n", "CHR(13)CHR(10)");
-
-					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcsTallContent"))
-							+ "\", "); // 메시지
-					// image List
+					// RCS TALL TYPE
+					// ====================================================================
 					List<Map<String, Object>> rcsTallImgInfoList = null;
+
+					sb.append("\"rcsPrdType\" : \"TALL\","); // RCS상품타입(세로형[TALL]템플릿) rcsTemplateTable => 6
+					sb.append("\"messagebaseId\": \"SMwThT00\","); // 세로형(TALL) 템플릿의 RCS MESSAGEBASE_ID 를 설정
+
+					sb.append("\"mergeData\": [{ ");
+					sb.append("	\"title\" : \"" + JSONObject.escape((String) params.get("rcs0Title")) + "\", "); // 제목
+					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs0Content")) + "\" "); // 메시지
 					if (params.containsKey("rcsTallImgInfoList")) {
 						rcsTallImgInfoList = (List<Map<String, Object>>) params.get("rcsTallImgInfoList");
 						if (rcsTallImgInfoList.size() > 0) {
 							Map<String, Object> imgInfo = rcsTallImgInfoList.get(0);// rcs에서 SHORT, TALL에는 이미지가 1개만 들어온다
 							if (imgInfo.containsKey("fileId")) {
-								// sb.append(" \""+CommonUtils.getStrValue(imgInfo, "fileId")+"\" "); // 이미지
-								sb.append("	\"mediaUrl\" : \"{" + CommonUtils.getStrValue(imgInfo, "imgUrl") + "}\", "); //
-								sb.append("	\"media\" : \"" + CommonUtils.getStrValue(imgInfo, "fileId") + "\", "); //
-
+								sb.append("	,\"mediaUrl\" : \"{" + CommonUtils.getStrValue(imgInfo, "imgUrl") + "}\", "); //
+								sb.append("	\"media\" : \"" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" "); //
 							}
 						} else {
 							sb.append("	\"mediaUrl\" : \"{}\", "); //
 							sb.append("	\"media\" : \"\", "); //
 						}
+					}
+					sb.append("	}]");
 
-						List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params
-								.get("rcsTallButtons");
-						sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+					List<Map<String, Object>> buttonInfoList = null;
+					if (params.containsKey("rcsTallButtons")) {
+						buttonInfoList = (List<Map<String, Object>>) params.get("rcsTallButtons");
 					}
 
-					sb.append("	}] ");
-
+					if (buttonInfoList.size() > 0) {
+						sb.append(newButtonAddStr(buttonInfoList));
+					}
 				} else if ((int) params.get("rcsTemplateTable") == 9) {
 //RCS CSHORT TYPE ====================================================================        			
 					sb.append("\"rcsPrdType\" : \"CSHORT\","); // RCS상품타입(캐러셀[SHORT]템플릿) rcsTemplateTable => 9
