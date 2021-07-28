@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration status="DEBUG" >
+<configuration xmlns="http://logging.apache.org/log4j/2.0/config"
+       status="DEBUG" packages="kr.co.uplus.cm.log">
 	<Properties>
 		<Property name="app-name">cloud-web-sample</Property>
 		<Property name="log-path">logs/sample</Property>
@@ -7,9 +8,10 @@
 	</Properties>
 	<appenders>
   		<Console name="console" >
-   			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %m%n%wEx" />
+<!--    			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %m%n%wEx" /> -->
+   			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %spi%n%wEx" />
   		</Console>
-  		
+
 		<RollingFile name="service_file" fileName="${log-path}/service/${hostName}.log" filePattern="${log-path}/service/%d{yyyyMMdd}/${hostName}-%i.log">
    			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %m%n%wEx" />
    			<Policies>
@@ -25,14 +27,14 @@
     			<CronTriggeringPolicy schedule="0 0 0 * * ?" />
    			</Policies>
   		</RollingFile>
-  		
+
 		<RollingFile name="error_file" fileName="${log-path-efs}/error/cloud-web-sample.log" filePattern="${log-path-efs}/error/$${date:yyyyMMdd}/cloud-web-sample.log">
    			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${hostName}] [%20.20t] [%-40.40logger{39}] (%-4L) : %m%n%wEx" />
    			<Policies>
     			<CronTriggeringPolicy schedule="0 0 0 * * ?" />
    			</Policies>
   		</RollingFile>
-  		
+
   	</appenders>
 
 	<loggers>
@@ -44,12 +46,12 @@
 		<logger name="kr.co.uplus.rcs.common.cmd.HealthCheckCmd" level="debug"  >
 			<appender-ref ref="alive_file" />
 		</logger>
-		
+
 		<logger name="org.apache" level="info" />
   		<logger name="org.springframework" level="info" />
 		<logger name="io.lettuce.core" level="info" />
 		<logger name="org.mybatis" level="info" />
 		<logger name="io.netty" level="info" />
-		
+
  	</loggers>
 </configuration>

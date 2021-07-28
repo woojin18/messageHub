@@ -203,6 +203,52 @@
                 </div>
               </div>
               <!--// LMS -->
+
+
+
+
+              
+
+              <!-- CAROUSEL -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'CAROUSEL'" class="cardBxsliderWrap">
+                <div class="phoneWrap">
+                  <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
+                  <div class="phoneCardWrap">
+                    <p class="color000">[WEB발신] (광고)</p>
+                    <ul class="cardBxslider mt10">
+                      <li class="slide cardBox">
+                        <img src="/se2/images/cardThumImg.png" alt="카드 썸네일">
+                        <div>
+                          <div class="scroll-y">
+                            <p class="color000 font-size13">타이틀 영역1</p>
+                          </div>
+                          <p class="color3 font-size10 mt5">무료수신거부:</p>
+                        </div>
+                      </li>
+                      <li class="slide cardBox">
+                        <img src="/se2/images/cardThumImg.png" alt="카드 썸네일">
+                        <div>
+                          <div class="scroll-y">
+                            <p class="color000 font-size13">타이틀 영역2</p>
+                          </div>
+                          <p class="color3 font-size10 mt5">무료수신거부:</p>
+                        </div>
+                      </li>
+                      <li class="slide cardBox">
+                        <img src="/se2/images/cardThumImg.png" alt="카드 썸네일">
+                        <div>
+                          <div class="scroll-y">
+                            <p class="color000 font-size13">타이틀 영역3</p>
+                          </div>
+                          <p class="color3 font-size10 mt5">무료수신거부:</p>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <!--// CAROUSEL -->
+
             </div>
             <!--// RCS -->
           </div>
@@ -435,10 +481,32 @@ export default {
       }
     }
   },
+  updated() {
+    if(this.previewMessageType == 'RCS') {
+      this.fnSetBxslider();
+    }
+  },
   mounted() {
     this.fnGetTmpltInfo();
   },
   methods: {
+    fnSetBxslider(){
+      jQuery('.cardBxslider').bxSlider({
+        auto: false,
+        autoControls: false,
+        slideWidth: 204,
+        minSlides: 1,
+        maxSlides: 2,
+        slideMargin: 10,
+        controls: true,
+        pager: true,
+        pagerType: 'short',
+        touchEnabled : (navigator.maxTouchPoints > 0),
+        autoHover: false,
+        pause: 6000
+      });
+      return true;
+    },
     fnGetImageUrl(ch, fileId){
       let params = {ch: ch, fileId: fileId};
       return new Promise((resolve, reject) => {
