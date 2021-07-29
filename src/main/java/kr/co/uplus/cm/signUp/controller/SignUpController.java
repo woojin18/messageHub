@@ -50,6 +50,8 @@ public class SignUpController implements Serializable{
 	
 	@Value("${nice.checkplus.sitePassword}") String sSitePassword;
 	
+	@Value("${console.domain.baseUrl}") String baseUrl;
+	
     @InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
@@ -69,18 +71,12 @@ public class SignUpController implements Serializable{
 	}
 	
 	// 인증 메일 발송 후 cm_user insert
-	@PostMapping("/insertEmailUser")
-	public RestResult<?> insertEmailUser(@RequestBody Map<String, Object> params) throws Exception {
-		
+	@PostMapping("/insertEmailCertify")
+	public RestResult<?> insertEmailCertify(@RequestBody Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-		String userId = CommonUtils.getCommonId("SIGN", 5);
-		
-		
-		params.put("userId", userId);
-		params.put("regId", userId);
 		
 		try {
-			signUpSvc.insertEmailUser(params);
+			signUpSvc.insertEmailCertify(params);
 			rtn.setSuccess(true);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
@@ -91,23 +87,10 @@ public class SignUpController implements Serializable{
 	}
 	
 	// 회원 가입
-//	@PostMapping("/insertSignUp")
-//	public RestResult<?> insertSignUp(@RequestBody Map<String, Object> params) throws Exception {
-//		
-//		RestResult<Object> rtn = new RestResult<Object>();
-//		try {
-//			signUpSvc.insertSignUp(params);
-//			rtn.setSuccess(true);
-//		} catch (Exception e) {
-//			rtn.setSuccess(false);
-//			rtn.setMessage("회원 가입에 실패하였습니다.");
-//			log.error("{} Error : {}", this.getClass(), e);
-//		}
-//		return rtn;
-//	}
 	@PostMapping("/insertSignUp")
 	public RestResult<?> insertSignUp(
 			@RequestParam(required=true) String loginId,				// 아이디
+			@RequestParam(required=true) String userNm,					// 사용자명
 			@RequestParam(required=true) String password,				// 비밀번호
 			@RequestParam(required=true) String smsCertifyYn,			// sms 인증 여부
 			@RequestParam(required=true) String phoneCerti,				// user 핸드폰 번호
@@ -122,21 +105,24 @@ public class SignUpController implements Serializable{
 			@RequestParam(required=true) String woplaceAddressDetail,	// 상세주소
 			@RequestParam(required=false) String wireTel,				// 유선전화번호
 			@RequestParam(required=true) MultipartFile attachFile,		// 사업자 등록증
-			@RequestParam(required=true) String domainName,				// 도메인
+//			@RequestParam(required=true) String domainName,				// 도메인
 			@RequestParam(required=true) String custKdCd,				// 고객유형
 			@RequestParam(required=false) String custrnmNo,				// 고객식별번호
 			@RequestParam(required=false) String coInfo,				// 본인인증 토큰 (개인사업자 필수)
-			@RequestParam(required=false) String genderCode				// 성별 (1: 남성,2: 여성)
+			@RequestParam(required=false) String genderCode,			// 성별 (1: 남성,2: 여성)
+			@RequestParam(required=false) String promotionYn			// 홍보 정보 수신 동의
 			) throws Exception {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("loginId", loginId);
+		paramMap.put("userNm", userNm);
 		paramMap.put("password", password);
 		paramMap.put("smsCertifyYn", smsCertifyYn);
 		paramMap.put("phoneCerti", phoneCerti);
 		paramMap.put("regno", regno);
 		paramMap.put("custNo", custNo);
+		paramMap.put("corpNm", corpNm);
 		paramMap.put("ceoNm", ceoNm);
 		paramMap.put("busiType", busiType);
 		paramMap.put("busiClass", busiClass);
@@ -145,7 +131,8 @@ public class SignUpController implements Serializable{
 		paramMap.put("woplaceAddressDetail", woplaceAddressDetail);
 		paramMap.put("wireTel", wireTel);
 		paramMap.put("attachFile", attachFile);
-		paramMap.put("domainName", domainName);
+//		paramMap.put("domainName", domainName);
+		paramMap.put("promotionYn", promotionYn);
 		
 		// 유큐브 파라미터
 		paramMap.put("custKdCd", custKdCd);
@@ -159,17 +146,8 @@ public class SignUpController implements Serializable{
 		paramMap.put("cmpNm", corpNm);
 		paramMap.put("coInfo1", coInfo);
 		paramMap.put("genderCode", genderCode);
-		paramMap.put("ceoNm", ceoNm);
 		paramMap.put("vatExmptKdCd", "N");
 		
-//		try {
-//			rtn = signUpSvc.insertSignUp(paramMap);
-//			rtn.setSuccess(true);
-//		} catch (Exception e) {
-//			rtn.setSuccess(false);
-//			rtn.setMessage("회원 가입에 실패하였습니다.");
-//			log.error("{} Error : {}", this.getClass(), e);
-//		}
 		return signUpSvc.insertSignUp(paramMap);
 	}
 	
@@ -236,8 +214,8 @@ public class SignUpController implements Serializable{
 		
 		// CheckPlus(본인인증) 처리 후, 결과 데이타를 리턴 받기위해 다음예제와 같이 http부터 입력합니다.
 		//리턴url은 인증 전 인증페이지를 호출하기 전 url과 동일해야 합니다. ex) 인증 전 url : http://www.~ 리턴 url : http://www.~
-		String sReturnUrl = "http://localhost:3000/checkPlusSuccess";      // 성공시 이동될 URL
-		String sErrorUrl = "http://localhost:3000/checkPlusFail";          // 실패시 이동될 URL
+		String sReturnUrl = this.baseUrl+"/checkPlusSuccess";      // 성공시 이동될 URL
+		String sErrorUrl = this.baseUrl+"/checkPlusFail";          // 실패시 이동될 URL
 //		String sReturnUrl = "http://www.test.co.kr/checkplus_success.jsp";      // 성공시 이동될 URL
 //		String sErrorUrl = "http://www.test.co.kr/checkplus_fail.jsp";          // 실패시 이동될 URL
 		
@@ -535,32 +513,32 @@ public class SignUpController implements Serializable{
 		return rtn;
 	}
 	
-//	@PostMapping("/sendMail")
-//	public RestResult<?> sendMail(@RequestBody Map<String, Object> params){
-//		RestResult<Object> rtn = new RestResult<Object>();
-//		
-//		try {
-//			signUpSvc.sendMail(params);
-//		} catch (Exception e) {
-//			rtn.setSuccess(false);
-//			rtn.setMessage("메일 전송 에러!");
-//		}
-//		
-//		return rtn;
-//	}
+	@PostMapping("/sendMail")
+	public RestResult<?> sendMail(@RequestBody Map<String, Object> params){
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		try {
+			signUpSvc.sendMail(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("메일 전송 에러!");
+		}
+		
+		return rtn;
+	}
 	
 	/**
 	 * 메일 본인 인증
 	 * @param params
 	 * @return
 	 */
-	@PostMapping("/certifyMailByLoginId")
-	public RestResult<?> selectMailCertifyByLoginId(
+	@PostMapping("/certifyMailByAuthKey")
+	public RestResult<?> certifyMailByAuthKey(
 			@RequestBody Map<String, Object> params){
 		RestResult<Object> rtn = new RestResult<Object>();
 		
 		try {
-			rtn = signUpSvc.certifyMailByLoginId(params);
+			rtn = signUpSvc.certifyMailByAuthKey(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage(e.getMessage());

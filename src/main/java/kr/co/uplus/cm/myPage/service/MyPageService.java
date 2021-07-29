@@ -145,7 +145,7 @@ public class MyPageService {
 		String custNo = CommonUtils.getString(rtnObj.get("custNo"));
 		
 		// 고객번호 수정
-		custNo = "3020989575";
+//		custNo = "3020989575";
 		headerMap.put("custNo", custNo);
 		
 		// API 통신 처리

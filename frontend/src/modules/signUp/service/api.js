@@ -8,8 +8,8 @@ const domainChk = (params) => {
     return httpClient.post('/api/public/signUp/domainChk', params, { headers: {"show-layer": "Yes"} });
 };
 
-const insertEmailUser = (params) => {
-    return httpClient.post('/api/public/signUp/insertEmailUser', params, { headers: {"show-layer": "Yes"} });
+const insertEmailCertify = (params) => {
+    return httpClient.post('/api/public/signUp/insertEmailCertify', params, { headers: {"show-layer": "Yes"} });
 };
 
 const insertSignUp = (params) => {
@@ -57,15 +57,15 @@ const selectCustAddr = (params) => {
 }
 
 
-const certifyMailByLoginId = (params) => {
-    return httpClient.post("/api/public/signUp/certifyMailByLoginId", params, { headers: {"show-layer": "Yes"}});
+const certifyMailByAuthKey = (params) => {
+    return httpClient.post("/api/public/signUp/certifyMailByAuthKey", params, { headers: {"show-layer": "Yes"}});
 }
 
 export default {
     signUpRedirect,
     domainChk,
     insertSignUp,
-    insertEmailUser,
+    insertEmailCertify,
     selectUseTerms,
     selectUseTermsPreVersion,
     apiTest,
@@ -76,5 +76,5 @@ export default {
     selectSelCorpCustInfo,
     getNiceCheckInfo,
     selectCustAddr,
-    certifyMailByLoginId
+    certifyMailByAuthKey
 };

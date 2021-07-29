@@ -8,7 +8,7 @@
 				<li><a href="#" class="btnGuideBlack">이용 가이드</a></li>
 				<li class="ml20"><a class="bellIcon active"><i class="fas fa-bell"></i></a></li>
 				<li>
-					<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i>{{ this.loginId }}@naver.com</a>	
+					<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i> {{ this.loginId }}</a>	
 					<ul class="dropdown-menu userDrop" role="menu">
 						<li @click="fnCheckPwd"><a data-toggle="modal" data-target="#Client">고객사 정보</a></li>
 						<li @click="fnMyPage"><a data-toggle="modal" data-target="#Member-information">회원정보</a></li>

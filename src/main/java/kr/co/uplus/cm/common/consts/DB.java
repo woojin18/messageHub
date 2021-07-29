@@ -152,7 +152,8 @@ public class DB {
 	public final static String QRY_UPDATE_CM_USER = "signUp.updateCmUser";
 	public final static String QRY_SELECT_CM_USE_TERMS = "signUp.selectCmUseTerms";
 	public final static String QRY_SELECT_CM_USE_TERMS_PRI_VERSION = "signUp.selectCmUseTermsPriVersion";
-	public final static String QRY_CHK_MAIL_CERTIFY_BY_LOGINID = "signUp.checkMailCertifyByLoginId";
+	public final static String QRY_CHK_MAIL_CERTIFY_BY_AUTHKEY = "signUp.checkMailCertifyByAuthKey";
+	public final static String QRY_INSERT_MAIL_CERTIFY = "signUp.insertCmMailCertify";
 	
 	// 사용자 등록
 	public final static String QRY_SELECT_USER_LIST = "user.selectUserList";

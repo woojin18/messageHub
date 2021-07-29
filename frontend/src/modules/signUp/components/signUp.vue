@@ -32,7 +32,6 @@
 		</div>
 
 		<button type="submit" class="btn btn-login mt45" @click.prevent="emailSend">인증메일 발송</button>
-		<button type="submit" class="btn btn-login mt45" @click.prevent="apiTest">API TEST</button>
 	</section>
 
 	</div>
@@ -105,7 +104,7 @@ export default {
 			// 이메일 인증 메일 발송
 
 			// 메일 발송 정상 처리 후 CM_USER 회원 INSERT -> 이후 페이지 이동
-			this.insertEmailUser();
+			this.insertEmailCertify();
 		},
 
 		// 약관 동의 체크 validation
@@ -152,12 +151,17 @@ export default {
 		},
 
 		// 회원 INSERT -> 페이지 이동
-		insertEmailUser() {
+		insertEmailCertify() {
 			var vm = this;
-			var randomNum = this.randomNum;
+
+			var promotionYn = "N";
+			if(this.agree3){
+				promotionYn = "Y";
+			}
+			
 			var params = {
 				"email" : this.email,
-				"randomNum" : this.randomNum
+				promotionYn : promotionYn
 			}
 			/*
 			if(randomNum == "") {
@@ -167,14 +171,13 @@ export default {
 			
 
 
-			signUpApi.insertEmailUser(params).then(function(response) { 
+			signUpApi.insertEmailCertify(params).then(function(response) { 
 				var result = response.data.success;		  
 				if(result) {
 					vm.$router.push({name : "mailSend"});
 				} else {
 					var message = response.data.message;
 					confirm.fnAlert("", message);
-					vm.$router.push({name : "login"});
 				}
 			});
 		},
@@ -187,12 +190,6 @@ export default {
 		priPopView () {
 			this.popReset++;
 			jQuery("#provisionView2").modal('show');
-		},
-
-		apiTest() {
-			signUpApi.apiTest().then(function(res) {
-
-			});
 		}
 	}
 }
