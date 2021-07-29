@@ -2,7 +2,7 @@
 <div class="row row-no-margin">
   <div class="contentHeader">
       <h2> > MO 수신현황</h2>
-      <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="MO 수신현황 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+      <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="MO 수신현황 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
   </div>
   <!-- 본문 -->
   <div class="row">
