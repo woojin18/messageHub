@@ -119,7 +119,7 @@ app.props:
     prefix: "Bearer "
 
 logging:
-  config: classpath:log4j2-spring.local.xml
+  config: classpath:log4j2-spring.dev.xml
 
 cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw
@@ -127,8 +127,8 @@ cash.pg:
 
 datasource: 
   rcs:
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    jdbc-url: jdbc:log4jdbc:mysql://dev-advmsg-db.cluster-crvzo9rgathe.ap-northeast-2.rds.amazonaws.com/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbc-url: jdbc:mysql://dev-advmsg-db.cluster-crvzo9rgathe.ap-northeast-2.rds.amazonaws.com/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: cm_console
     password: ENC(YrccTPRMqk+u5utdFupqFIM3y2Nx+THl)
     pool-name: hikari-cp
@@ -194,7 +194,7 @@ app.props:
     prefix: "Bearer "
 
 logging:
-  config: classpath:log4j2-spring.local.xml
+  config: classpath:log4j2-spring.stg.xml
 
 cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw
@@ -256,7 +256,7 @@ app.props:
     prefix: "Bearer "
 
 logging:
-  config: classpath:log4j2-spring.local.xml
+  config: classpath:log4j2-spring.prod.xml
 
 cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw
