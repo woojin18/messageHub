@@ -230,7 +230,7 @@ public class ProjectController {
 		return projectService.saveDisRatio(params);
     }
 	
-	//분배서비스 등록/수정
+	//
 	@PostMapping("/selectBillIdForApi")
 	public RestResult<?> selectBillIdForApi(
 				@RequestBody Map<String, Object> params,
@@ -238,5 +238,16 @@ public class ProjectController {
 				HttpServletResponse response) {
 		return projectService.selectBillIdForApi(params);
     }
+	
+
+	// 분배정책 가져오기
+	@PostMapping("/selectDistDetail")
+	public RestResult<?> selectDistDetail(
+				@RequestBody Map<String, Object> params,
+				HttpServletRequest request,
+				HttpServletResponse response) throws Exception {
+		return projectService.selectDistDetail(params);
+    }
+	
 	
 }

@@ -92,6 +92,9 @@ import baseInfoManage     from "@/modules/project/components/bc-project-baseInfo
 // 멤버관리
 import memberManage     from "@/modules/project/components/bc-project-member-manage.vue";
 
+import projectApi from '../service/projectApi'
+import tokenSvc from '@/common/token-service';
+
 export default {
   components: {
       rcs
@@ -110,11 +113,13 @@ export default {
     return {
       projectId   : this.$route.params.projectId,
       projectName : this.$route.params.projectName,
+
       rcsYn : this.$route.params.rcsYn,
       smsmmsYn : this.$route.params.smsmmsYn,
       pushYn : this.$route.params.pushYn,
       kakaoYn : this.$route.params.kakaoYn,
       moYn : this.$route.params.moYn,
+	
       selMainTab  : 1,
       selMidTab   : 1,
       selSubTab   : 1
@@ -134,8 +139,28 @@ export default {
     if( this.projectId === undefined || this.projectId === null ){
       this.$router.push( {name:'projectManage', params:{}} );
     }
+
+	this.fnSelectProjectTabYn();
   },
   methods: {
+	fnSelectProjectTabYn(){
+		var vm = this;
+		var params = {
+			"detailProjectId"  : this.projectId,
+			"loginId"         : tokenSvc.getToken().principal.userId,
+			"roleCd"         : tokenSvc.getToken().principal.roleCd
+		}
+		
+		projectApi.selectProjectList(params).then(response =>{
+			var items = response.data.data[0];
+			console.log(items);
+			this.rcsYn = items.rcsYn;
+			this.smsmmsYn  = items.smsmmsYn;
+			this.pushYn  = items.pushYn;
+			this.kakaoYn  = items.kakaoYn;
+			this.moYn  = items.moYn;
+		});
+	}
   }
 }
 </script>

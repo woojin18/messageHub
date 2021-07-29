@@ -40,6 +40,9 @@
 		<if test="srcUseYn != '' and srcUseYn != null ">
 		AND A.USE_YN = #{srcUseYn}
 		</if>
+		<if test="detailProjectId != '' and detailProjectId != null ">
+		AND A.PROJECT_ID = #{detailProjectId}
+		</if>
 		ORDER BY A.PROJECT_ID DESC
 	</select>
 	
@@ -486,4 +489,14 @@
 		WHERE	CORP_ID = #{corpId}
 	</select>
 	
+	<select id="selectDistDetail" resultType="camel">
+		/* project.selectDistDetail */
+		SELECT	B.DIST_ID 
+		,		B.DIST_INFO
+		,		B.DIS_NAME 
+		FROM cm_console.CM_CORP A
+		INNER JOIN cm.CM_DISTRIBUTION B
+			ON A.DIST_ID = B.DIST_ID 
+		WHERE	A.CORP_ID = #{corpId}
+	</select>
 </mapper>

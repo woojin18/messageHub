@@ -36,9 +36,12 @@
     </appenders>
 
     <loggers>
-        <root level="debug" >
+        <root level="info" >
+            <!--
             <appender-ref ref="service_file" />
             <appender-ref ref="error_file" level="error" />
+            -->
+            <appender-ref ref="console" />
         </root>
 
         <logger name="kr.co.uplus.rcs.common.cmd.HealthCheckCmd" level="debug"  >
