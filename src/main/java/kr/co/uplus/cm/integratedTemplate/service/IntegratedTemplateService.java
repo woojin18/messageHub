@@ -319,7 +319,7 @@ public class IntegratedTemplateService {
 						if (rcsTallImgInfoList.size() > 0) {
 							Map<String, Object> imgInfo = rcsTallImgInfoList.get(0);// rcs에서 SHORT, TALL에는 이미지가 1개만 들어온다
 							if (imgInfo.containsKey("fileId")) {
-								sb.append("	,\"mediaUrl\" : \"{" + CommonUtils.getStrValue(imgInfo, "imgUrl") + "}\", "); //
+								sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(imgInfo, "imgUrl") + "\", "); //
 								sb.append("	\"media\" : \"" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" "); //
 							}
 						} else {
