@@ -15,7 +15,7 @@
             <div v-if="previewMessageType == 'PUSH' && tmpltData.PUSH" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap scroll-y">
+                <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
                     <p v-if="$gfnCommonUtils.isEmpty(tmpltData.PUSH.title)">제목</p>
                     <p v-else>{{tmpltData.PUSH.title}}</p>
@@ -39,7 +39,7 @@
             <div v-if="previewMessageType == 'FRIENDTALK' && tmpltData.FRIENDTALK" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup2_1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap4 scroll-y">
+                <div class="phoneTextWrap4 scroll-yc">
                   <p v-if="tmpltData.msgKind == 'A'">[광고]</p>
                   <div class="mt5">
                     <div 
@@ -64,7 +64,7 @@
             <div v-if="previewMessageType == 'MMS' && tmpltData.MMS" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap scroll-y">
+                <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
                     <p>{{tmpltData.MMS.callback}}</p>
                   </div>
@@ -86,7 +86,7 @@
             <div v-if="previewMessageType == 'SMS' && tmpltData.SMS" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap scroll-y">
+                <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
                     <p>{{tmpltData.SMS.callback}}</p>
                   </div>
@@ -108,7 +108,7 @@
                     <p class="text-main"><i class="fal fa-envelope-open-text"></i> 알림톡 도착</p>
                     <div v-if="tmpltData.ALIMTALK.subData && tmpltData.ALIMTALK.subData.emphasizeType == 'TEXT'" class="text-sub-wrap" style="padding:10px;">
                       <p v-if="!$gfnCommonUtils.isEmpty(tmpltData.ALIMTALK.subData.tmpltEmpsSubTitle)" class="text-sub_1">{{tmpltData.ALIMTALK.subData.tmpltEmpsSubTitle}}</p>
-                      <p v-if="!$gfnCommonUtils.isEmpty(tmpltData.ALIMTALK.subData.tmpltEmpsTitle)" class="text-sub scroll-y3">{{tmpltData.ALIMTALK.subData.tmpltEmpsTitle}}</p>
+                      <p v-if="!$gfnCommonUtils.isEmpty(tmpltData.ALIMTALK.subData.tmpltEmpsTitle)" class="text-sub">{{tmpltData.ALIMTALK.subData.tmpltEmpsTitle}}</p>
                     </div>
                     <div class="text-sub-wrap" style="padding:10px;">
                       <span><pre>{{tmpltData.ALIMTALK.msg}}</pre></span>
@@ -128,7 +128,7 @@
               <!-- FREE -->
               <div v-if="tmpltData.RCS.rcsPrdType == 'FREE'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
-                <div class="phoneTextWrap scroll-y">
+                <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
                     <br v-if="tmpltData.msgKind == 'A'"/>
@@ -142,7 +142,7 @@
               <!-- DESCRIPTION -->
               <div v-if="tmpltData.RCS.rcsPrdType == 'DESCRIPTION'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
-                <div class="phoneTextWrap scroll-y">
+                <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
                     <img :src="tmpltData.RCS.rcsDesFormNm | getIconURlByFormNm" style="width:70px;">
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
@@ -161,7 +161,7 @@
               <!-- SMS -->
               <div v-if="tmpltData.RCS.rcsPrdType == 'SMS'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
-                <div class="phoneTextWrap scroll-y">
+                <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
                     <br v-if="tmpltData.msgKind == 'A'"/>
@@ -183,7 +183,7 @@
               <!-- LMS -->
               <div v-if="tmpltData.RCS.rcsPrdType == 'LMS'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
-                <div class="phoneTextWrap scroll-y">
+                <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
                     <h5 v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].title">{{tmpltData.RCS.mergeData[0].title}}</h5>
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
@@ -206,21 +206,20 @@
               <!-- 세로형 SHORT -->
               <div v-if="tmpltData.RCS.rcsPrdType == 'SHORT'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
-                <div class="phoneTextWrap scroll-y">
+                <div class="phoneTextWrap scroll-yc">
 
-                  
-
-                  <div v-for="imgIdx in rcsShortImgLimitSize" :key="imgIdx"> 
-                    <div v-if="tmpltData.msgType == 'IMAGE' && rowData.rcsShortImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-                      :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsShortImgInfoList[imgIdx-1].imgUrl+');'">  
-                    </div>
-                    <div v-else>
-                      <img src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
-                    </div>
+                  <div 
+                    v-if="tmpltData.msgType == 'IMAGE' 
+                      && tmpltData.RCS.mergeData
+                      && tmpltData.RCS.mergeData.length > 0
+                      && tmpltData.RCS.mergeData[0].mediaUrl" 
+                    class="phoneText2 mt10 text-center simulatorImg"
+                    :style="'padding:65px;background-image: url('+tmpltData.RCS.mergeData[0].mediaUrl+');'"
+                  >
                   </div>
-                  
-
-
+                  <div v-else>
+                    <img src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
+                  </div>
                   <div class="phoneText1">
                     <h5 v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].title">{{tmpltData.RCS.mergeData[0].title}}</h5>
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
@@ -241,6 +240,47 @@
                 </div>
               </div>
               <!--// 세로형 SHORT -->
+              <!-- 세로형 TALL -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'TALL'" class="phoneWrap">
+                <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
+                <div class="phoneTextWrap scroll-yc">
+
+                  <div 
+                    v-if="tmpltData.msgType == 'IMAGE' 
+                      && tmpltData.RCS.mergeData
+                      && tmpltData.RCS.mergeData.length > 0
+                      && tmpltData.RCS.mergeData[0].mediaUrl" 
+                    class="phoneText2 mt10 text-center simulatorImg"
+                    :style="'padding:110px;background-image: url('+tmpltData.RCS.mergeData[0].mediaUrl+');'"
+                  >
+                  </div>
+                  <div v-else>
+                    <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
+                  </div>
+                  <div class="phoneText1">
+                    <h5 v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].title">{{tmpltData.RCS.mergeData[0].title}}</h5>
+                    <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
+                    <br v-if="tmpltData.msgKind == 'A'"/>
+                    <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
+                      {{tmpltData.RCS.footer}}
+                    </span>
+                    <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
+                      <p 
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
+                        :key="idx" 
+                        class="text-center mt20" 
+                        style="color:#69C8FF"
+                      >{{btn.action.displayText}}</p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <!--// 세로형 TALL -->
+
+
+
+              
 
 
 

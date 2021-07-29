@@ -59,7 +59,7 @@
                 <!-- phoneWrap -->
                 <div class="phoneWrap">
                   <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                  <div class="phoneTextWrap scroll-y">
+                  <div class="phoneTextWrap scroll-yc">
                     <div class="phoneText1">
                       <p v-if="fnIsEmpty(templateData.tmpltTitle)">제목</p>
                       <p v-else>{{templateData.tmpltTitle}}</p>
