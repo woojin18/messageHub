@@ -139,6 +139,7 @@ export default {
       // 분배 id
       distId : "default",
       distName : "기본분배정책",
+      distNameArr : {},
       distInfo : {},
     }
   },
@@ -167,21 +168,21 @@ export default {
        
       projectApi.selectDistDetail(params).then(response =>{
         this.distId = response.data.data[0];
-        this.distName = response.data.data[1];
+        this.distName = response.data.data[2].DIS_NAME;
+        this.distNameArr = response.data.data[1];
         this.distInfo = response.data.data[2];
-
       });
     },
     fnDistDetail(){
 
-      jQuery("#DS_NAME").val(this.distId);
+      jQuery("#DS_NAME").val(this.distName);
       this.makeDistTable(this.distInfo);
       
       jQuery("#disRatioPopNew").modal("show");
     },
     makeDistTable : function(){
       jQuery('#RSTab > tbody').remove(); //기존 테이블 삭제
-      var params = this.distName.chRelayType;
+      var params = this.distNameArr.chRelayType;
       params = params.split(',');
       var params2 = this.distInfo;
       

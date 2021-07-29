@@ -676,12 +676,10 @@ public class ProjectService {
 		
 		
 		String rtnStr = hmrtn.get("distInfo");
-		System.out.println("-------------------------------@@ rtnStr :  " + rtnStr);
 		
-		relayhm.put("DIST_NAME", hmrtn.get("distName"));
+		relayhm.put("DIS_NAME", hmrtn.get("disName"));
 		
 		kong.unirest.json.JSONObject jo = new kong.unirest.json.JSONObject(rtnStr);
-		System.out.println("-------------------------------@@ jo :  " + jo);
 		Iterator it = jo.keys();
 		ArrayList ar = new ArrayList();
 	    while(it.hasNext())
@@ -689,7 +687,6 @@ public class ProjectService {
 	    	String jokey = it.next().toString();
 	        ar.add(jokey); // 키 값 저장
 	    }
-	    System.out.println("-------------------------------@@ ar :  " + ar);
 	    typehm.put("chRelayType", "");
 		for(int i=0; i<ar.size(); i++){
 			String crtStr = typehm.get("chRelayType");
