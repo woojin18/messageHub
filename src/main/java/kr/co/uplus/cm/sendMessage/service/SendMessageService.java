@@ -474,7 +474,7 @@ public class SendMessageService {
         int resultCnt = insertCmWebMsg(params);
 
         if (resultCnt <= 0) {
-            log.info("{}.insertPushCmWebMsg Fail =>  webReqId : {}", this.getClass(), pushRequestData.getWebReqId());
+            log.warn("{}.insertPushCmWebMsg Fail =>  webReqId : {}", this.getClass(), pushRequestData.getWebReqId());
         }
 
         return rtn;
@@ -850,7 +850,7 @@ public class SendMessageService {
         int resultCnt = insertCmWebMsg(params);
 
         if (resultCnt <= 0) {
-            log.info("{}.insertSmsCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
+            log.warn("{}.insertSmsCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
         }
 
         return rtn;
@@ -1074,7 +1074,7 @@ public class SendMessageService {
         int resultCnt = insertCmWebMsg(params);
 
         if (resultCnt <= 0) {
-            log.info("{}.insertMmsCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
+            log.warn("{}.insertMmsCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
         }
 
         return rtn;
@@ -1411,7 +1411,7 @@ public class SendMessageService {
 
         for (ConstraintViolation violation : violations) {
             errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + violation.getMessage();
-            log.info("path : [{}], message : [{}]", violation.getPropertyPath(), violation.getMessage());
+            //log.info("path : [{}], message : [{}]", violation.getPropertyPath(), violation.getMessage());
         }
 
         //연관유효성 체크
@@ -1497,7 +1497,7 @@ public class SendMessageService {
         int resultCnt = insertCmWebMsg(params);
 
         if (resultCnt <= 0) {
-            log.info("{}.insertFrndTalkCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
+            log.warn("{}.insertFrndTalkCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
         }
 
         return rtn;
@@ -1849,7 +1849,7 @@ public class SendMessageService {
 
         int resultCnt = insertCmWebMsg(params);
         if (resultCnt <= 0) {
-            log.info("{}.insertAlimTalkCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
+            log.warn("{}.insertAlimTalkCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
         }
 
         return rtn;
@@ -2133,7 +2133,7 @@ public class SendMessageService {
 
         int resultCnt = insertCmWebMsg(params);
         if (resultCnt <= 0) {
-            log.info("{}.insertSmartCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
+            log.warn("{}.insertSmartCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
         }
 
         return rtn;
@@ -2439,7 +2439,7 @@ public class SendMessageService {
      */
     @SuppressWarnings("unchecked")
     public List<RecvInfo> replaceRcsMsgVar(List<RecvInfo> recvInfoLst, Map<String, Object> params) throws Exception{
-        log.info("{}.replaceRcsMsgVar start. recvInfoLst ==> {}", this.getClass(), recvInfoLst);
+        log.debug("{}.replaceRcsMsgVar start. recvInfoLst ==> {}", this.getClass(), recvInfoLst);
 
         List<RecvInfo> rtnList = new ArrayList<RecvInfo>(recvInfoLst);
         Map<String, Object> rcsltInfo = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_RCS_INFO, params);
