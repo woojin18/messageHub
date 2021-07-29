@@ -93,4 +93,10 @@ public class AuthController {
 		return authSvc.logout(request, response);
 	}
 
+	
+	@PostMapping("/public/updatePassword")
+	public RestResult<?> updatePassword(@RequestBody Map<String, Object> params){
+		return authSvc.updatePassword(params);
+	}
+
 }

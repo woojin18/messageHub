@@ -471,6 +471,7 @@ public class SignUpController implements Serializable{
 
 		try {
 			rtn = (RestResult<Object>) signUpSvc.selectCorpCustList(params);
+			rtn.setSuccess(true);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage(e.getMessage());
@@ -510,20 +511,6 @@ public class SignUpController implements Serializable{
 			rtn.setSuccess(false);
 			rtn.setMessage(e.getMessage());
 		}
-		return rtn;
-	}
-	
-	@PostMapping("/sendMail")
-	public RestResult<?> sendMail(@RequestBody Map<String, Object> params){
-		RestResult<Object> rtn = new RestResult<Object>();
-		
-		try {
-			signUpSvc.sendMail(params);
-		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("메일 전송 에러!");
-		}
-		
 		return rtn;
 	}
 	

@@ -38,6 +38,7 @@ public class DB {
 	// 로그인
 	public final static String QRY_SELECT_USERNAME = "login.qrySelectUserName";
 	public final static String QRY_INSERT_USERNAME = "login.qryInsertAuthUser";
+	public final static String QRY_UPDATE_USER_PASSWORD = "login.updatePassword";
 	// 푸시 템플릿
 	public final static String QRY_SELECT_PUSH_TMPLT_LIST_CNT = "template.selectPushTemplateListCnt";
 	public final static String QRY_SELECT_PUSH_TMPLT_LIST = "template.selectPushTemplateList";

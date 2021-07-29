@@ -1,6 +1,7 @@
 import loginMain from '../views/bm-loginMain'
 import findUserId from '../views/bm-findUserId'
 import findUserPwd from '../views/bm-findUserPwd'
+import setUserPwd from '../views/bm-setUserPwd'
 
 export default [
 	{
@@ -19,6 +20,12 @@ export default [
 		path: '/login/findUserPwd',
 		name: 'findUserPwd',
 		component: findUserPwd,
+		meta: { public: true }
+	},
+	{
+		path: '/login/setUserPwd',
+		name: 'setUserPwd',
+		component: setUserPwd,
 		meta: { public: true }
 	}
 ]

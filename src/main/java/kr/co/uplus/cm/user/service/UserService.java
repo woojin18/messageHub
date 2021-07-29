@@ -4,13 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.signUp.service.SignUpService;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 
@@ -19,6 +21,8 @@ public class UserService {
 
 	@Autowired
 	private GeneralDao generalDao;
+	
+	@Autowired SignUpService signUpSvc;
 	
 	/**
 	 * 사용자 리스트 조회
@@ -152,7 +156,7 @@ public class UserService {
 	 * @return
 	 * @throws Exception
 	 */
-	public RestResult<Object> registerUser(Map<String, Object> params) throws Exception {
+	public RestResult<Object> registerUser(Map<String, Object> params) {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -161,16 +165,31 @@ public class UserService {
 		String userId = CommonUtils.getCommonId("MBR", 5);
 		map.putAll(params);
 		map.put("userId", userId);
-					
-		int resultCnt = generalDao.insertGernal(DB.QRY_INSERT_USER, map);
-		if (resultCnt <= 0) {
-			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
-		} else {
+		map.put("email", params.get("loginId"));
+
+		try {
+			generalDao.insertGernal(DB.QRY_INSERT_USER, map);
+			// 난수 생성
+			String randomNum = CommonUtils.randomGeneration(10);
+			map.put("authKey", randomNum);
+			
+			// 메일 인증 table insert
+			generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, map);
+			
+			// 메일 전송
+			signUpSvc.sendMail(map, "/login/setUserPwd");
+			
 			rtn.setSuccess(true);
 			rtn.setData(params);
+		} catch (MessagingException e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("메일 전송 중 오류가 발생했습니다.");
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("사용자 등록에 실패하였습니다.");
 		}
-			return rtn;
+		
+		return rtn;
 	}
 	
 	/**
@@ -191,6 +210,36 @@ public class UserService {
 			rtn.setSuccess(true);
 		}
 		
+		return rtn;
+	}
+
+
+	public RestResult<Object> sendCertifyMail(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		// 이동할 페이지 설정
+		String location = "";
+		location = CommonUtils.getString(params.get("location"));
+		
+		String randomNum = CommonUtils.randomGeneration(10);
+		params.put("authKey", randomNum);
+
+		try {
+			// 메일 인증 table insert
+			generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, params);
+			
+			// 메일 전송
+			signUpSvc.sendMail(params, location);
+			
+			rtn.setSuccess(true);
+		} catch (MessagingException e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("메일 전송 중 오류가 발생했습니다.");
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("오류가 발생했습니다.");
+		}
+			
 		return rtn;
 	}
 }

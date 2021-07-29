@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -166,7 +168,7 @@ public class SignUpService {
 			
 			generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, params);
 			
-			this.sendMail(params);
+			this.sendMail(params, "/sign/signUpMain");
 		}
 	}
 
@@ -260,7 +262,7 @@ public class SignUpService {
 		return rtn;
 	}
 
-	public void sendMail(Map<String, Object> params) throws Exception {
+	public void sendMail(Map<String, Object> params, String location) throws Exception {
 		MailHandler mailHandler = new MailHandler(mailSender);
 		
 		// 받는 사람
@@ -272,12 +274,11 @@ public class SignUpService {
 		
 		String html = "";
 		html += "본인인증이 완료되었습니다.\n";
-//		html += "<form method='get' action='"+this.baseUrl+"/sign/signUpMain'>";
+//		html += "<form method='POST' name='certifyFrm' action='"+this.baseUrl+location+"'>";
 //		html += "<input type='hidden' name='authKey' value='"+params.get("authKey")+"'>";
 //		html += "<input type='submit' value='전송'>";
 //		html += "</form>";
-		html += "<a href='"+this.baseUrl+"/sign/signUpMain?authKey="+params.get("authKey")+"'> 홈페이지로 이동 </a>";
-		
+		html += "<a href='"+this.baseUrl+location+"?authKey="+params.get("authKey")+"'> 홈페이지로 이동 </a>";
 		
 		mailHandler.setText(html, true);
 		
@@ -289,12 +290,14 @@ public class SignUpService {
 		
 		Map<String, Object> certifyMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_CHK_MAIL_CERTIFY_BY_AUTHKEY, params);
 		if(!certifyMap.isEmpty()) {
+			// 유효 만료 시간 여부 확인
 			SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
 			Date now = new Date();
 			String formatTime = format.format(now);
 			
+			// 현재시간
 			Date nowDt = format.parse(formatTime);
-			
+			// 유효시간
 			Date certifyDt = format.parse(CommonUtils.getString(certifyMap.get("mailCertifyDt")));
 			if(certifyDt.getTime() < nowDt.getTime()) {
 				rtn.setSuccess(false);

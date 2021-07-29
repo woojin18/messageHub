@@ -20,10 +20,15 @@ const getProjectChUseListForUser = (params) => {
 	return httpClient.post('/api/auth/getProjectChUseListForUser', params, { headers: {"show-layer": "Yes"} });
 };
 
+const updatePassword = (params) => {
+	return httpClient.post('/api/public/updatePassword', params, { headers: {"show-layer": "Yes"} });
+};
+
 export default {
     login,
     logout,
     getMenuForRole,
 	getProjectForUser,
-    getProjectChUseListForUser
+    getProjectChUseListForUser,
+    updatePassword
 };

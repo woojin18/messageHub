@@ -126,7 +126,7 @@ export default {
 			if(!this.fnIsEmail(this.loginId)) return false;
 
 			eventBus.$on('callbackEventBus', this.fnRegisterUserCallBack);
-			confirm.fnConfirm(this.componentsTitle, '메일 인증을 통한 비밀번호 설정을 마치면 서비스를 사용하실  수 있습니다.333', '확인');
+			confirm.fnConfirm(this.componentsTitle, '메일 인증을 통한 비밀번호 설정을 마치면 서비스를 사용하실  수 있습니다.', '확인');
 		},
 		fnRegisterUserCallBack() {
 			var params = {
@@ -140,7 +140,7 @@ export default {
 			userApi.registerUser(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
-					confirm.fnAlert(this.componentsTitle,'사용자 등록에 성공했습니다.');
+					confirm.fnAlert(this.componentsTitle,'사용자 등록 및 본인 인증 메일 전송완료하였습니다.\n메일함을 확인해주세요');
 					this.$parent.fnSelectUserList();
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
