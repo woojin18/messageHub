@@ -2,7 +2,7 @@
 	<div class="row row-no-margin">
 		<div class="contentHeader">
 			<h2>통합발송 템플릿</h2>
-			<!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
+			<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="이용안내">이용안내 <i class="fal fa-book-open"></i></a>
 		</div>
 
 		<ImageManagePopUp @img-callback="fnPushCallbackImgInfo" :imgMngOpen.sync="pushImgMngOpen" :useCh="pushUseCh" ref="pushImgMng"></ImageManagePopUp>
@@ -388,7 +388,12 @@
 										<pre class="mt15 lc-1">{{rowData.rcs0Content}}</pre>
 									</div>
 									<div v-for="(buttonInfo, idx) in rowData.rcsDesButtons" :key="idx">
-										<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)" class="btnStyle1 backLightGray">{{buttonInfo.action.displayText}}</a>
+										<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
+											<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+										</p>
+										<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
+											<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+										</p>
 									</div>
 								</div>
 							</div>
@@ -594,9 +599,14 @@
 									<span v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)">
 										{{rowData.rcsBlockNumber}}
 									</span>
-								</div>
-								<div v-for="(buttonInfo, idx) in rowData.rcsSMSButtons" :key="idx">
-									<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)" class="btnStyle1 backLightGray">{{buttonInfo.action.displayText}}</a>
+									<div v-for="(buttonInfo, idx) in rowData.rcsSMSButtons" :key="idx">
+										<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
+											<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+										</p>
+										<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
+											<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -698,17 +708,22 @@
 							<img src="@/assets/images/common/phoneMockup1.svg" alt="LMS 템플릿">
 							<div class="phoneTextWrap">
 								<div class="phoneText1">
+									<h5>{{rowData.rcs0Title}}</h5>
 									<div class="scroll-y">
-										<h5 v-if="rowData.rcs0Title!=''">{{rowData.rcs0Title}}</h5>
-										<p class="mt15">{{rowData.rcs0Content}}</p>
+										<pre class="color6">{{rowData.rcs0Content}}</pre>
 									</div>
 									<br v-if="!fnIsEmpty(rowData.rcs0Content)"/>
 									<span v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)">
 										{{rowData.rcsBlockNumber}}
 									</span>
-								</div>
-								<div v-for="(buttonInfo, idx) in rowData.rcsLMSButtons" :key="idx">
-									<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)" class="btnStyle1 backLightGray">{{buttonInfo.action.displayText}}</a>
+									<div v-for="(buttonInfo, idx) in rowData.rcsLMSButtons" :key="idx">
+										<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
+											<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+										</p>
+										<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
+											<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -832,9 +847,14 @@
 									<span v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)">
 										{{rowData.rcsBlockNumber}}
 									</span>
-								</div>
-								<div v-for="(buttonInfo, idx) in rowData.rcsShortButtons" :key="idx">
-									<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)" class="btnStyle1 backLightGray">{{buttonInfo.action.displayText}}</a>
+									<div v-for="(buttonInfo, idx) in rowData.rcsShortButtons" :key="idx">
+										<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
+											<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+										</p>
+										<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
+											<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -959,7 +979,7 @@
 							<div class="phoneTextWrap">
 								<div v-for="imgIdx in rcsTallImgLimitSize" :key="imgIdx">  
 									<div v-if="rowData.msgType == 'IMAGE' && rowData.rcsTallImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-										:style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsTallImgInfoList[imgIdx-1].imgUrl+');'">  
+										:style="'padding:120px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcsTallImgInfoList[imgIdx-1].imgUrl+');'">  
 									</div>
 									<div v-else>
 										<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
@@ -974,9 +994,14 @@
 									<span v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)">
 										{{rowData.rcsBlockNumber}}
 									</span>
-								</div>
-								<div v-for="(buttonInfo, idx) in rowData.rcsTallButtons" :key="idx">
-									<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)" class="btnStyle1 backLightGray">{{buttonInfo.action.displayText}}</a>
+									<div v-for="(buttonInfo, idx) in rowData.rcsTallButtons" :key="idx">
+										<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
+											<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+										</p>
+										<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
+											<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>
