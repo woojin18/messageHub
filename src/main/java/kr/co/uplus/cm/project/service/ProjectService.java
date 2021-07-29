@@ -270,7 +270,7 @@ public class ProjectService {
 		return rtn;
 	}
 
-	@SuppressWarnings({ "unchecked", "static-access" })
+	@SuppressWarnings({ "static-access" })
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void savePreRegExWithUploadFiles(List<MultipartFile> uploadFiles, Map<String, Object> params) throws Exception{
 		// 이미 등록되어있는지 확인
@@ -314,7 +314,7 @@ public class ProjectService {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public void saveRcsChatbotReqForApi(Map<String, Object> params) throws Exception {
 		String brandId = CommonUtils.getString(params.get("brandId"));
 		String sts = CommonUtils.getString(params.get("sts"));
@@ -661,4 +661,73 @@ public class ProjectService {
 		
 		return rtn;
 	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public RestResult<?> selectDistDetail(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		//rtn.setData(generalDao.selectGernalList("project.selectDistDetail", params).get(0));
+		
+		List<Object> rtnList2 = new ArrayList<Object>();
+		HashMap<String,String> typehm = new HashMap<String,String>();
+		HashMap<String,String> relayhm = new HashMap<String,String>();
+		
+		HashMap<String,String> hmrtn = (HashMap<String, String>) generalDao.selectGernalList("project.selectDistDetail", params).get(0);
+		
+		
+		String rtnStr = hmrtn.get("distInfo");
+		System.out.println("-------------------------------@@ rtnStr :  " + rtnStr);
+		
+		relayhm.put("DIST_NAME", hmrtn.get("distName"));
+		
+		kong.unirest.json.JSONObject jo = new kong.unirest.json.JSONObject(rtnStr);
+		System.out.println("-------------------------------@@ jo :  " + jo);
+		Iterator it = jo.keys();
+		ArrayList ar = new ArrayList();
+	    while(it.hasNext())
+	    {
+	    	String jokey = it.next().toString();
+	        ar.add(jokey); // 키 값 저장
+	    }
+	    System.out.println("-------------------------------@@ ar :  " + ar);
+	    typehm.put("chRelayType", "");
+		for(int i=0; i<ar.size(); i++){
+			String crtStr = typehm.get("chRelayType");
+			String relayKey = (String) ar.get(i);
+			crtStr += relayKey;
+			
+			kong.unirest.json.JSONArray ja = (kong.unirest.json.JSONArray) jo.get((String) ar.get(i));
+			for(int j=0; j<ja.length(); j++) {
+				kong.unirest.json.JSONObject jajo = (kong.unirest.json.JSONObject) ja.get(j);
+				String relayCh = jajo.getString("cidGroup");
+				String distRatio = jajo.getString("distRatio");
+				
+				if(relayhm.containsKey(relayKey+"cidGroup")) {
+					String re_tmp = relayhm.get(relayKey+"cidGroup");
+					String dis_tmp = relayhm.get(relayKey+"ratio");
+					re_tmp += ","+relayCh;
+					dis_tmp += ","+distRatio;
+					relayhm.replace(relayKey+"cidGroup", re_tmp);
+					relayhm.replace(relayKey+"ratio", dis_tmp);
+				}else {
+					relayhm.put(relayKey+"cidGroup", relayCh);
+					relayhm.put(relayKey+"ratio", distRatio);
+				}
+			}
+
+			if((i+1)<ar.size()) {
+				crtStr += ",";
+			}
+			typehm.replace("chRelayType", crtStr);
+		}
+		
+		rtnList2.add(hmrtn.get("distId"));
+		rtnList2.add(typehm);
+		rtnList2.add(relayhm);
+		
+		rtn.setData(rtnList2);
+		
+		return rtn;
+	}
+	
 }

@@ -7,14 +7,20 @@
     </modal>
     
     <!--  분배서비스 관리 -->
-    <disRatioPop
+    <!-- <disRatioPop
       :rowData="row_data"
       :corpid="row_data.corpId"
       :projectid="row_data.projectId"
       :insert_or_update.sync="save_status"
-	  :smartChCode="row_data.smartChCode"
+      :smartChCode="row_data.smartChCode"
     >
-    </disRatioPop>
+    </disRatioPop> -->
+
+    <!--  분배서비스 관리 -->
+    <disRatioPopNew
+      :smartChCode="row_data.smartChCode"
+    >
+    </disRatioPopNew>
 
     <article>
       <div class="contentHeader">
@@ -48,7 +54,8 @@
         <div class="col-xs-12">
           <div class="of_h">
             <div class="float-right">
-              <a @click="fnProjectReg" class="btnStyle2 borderGray">추가</a>
+              <a v-if="distId != 'default'" @click="fnDistDetail" class="btnStyle2 borderGray">메시지 발송 분배율 확인</a>
+              <a @click="fnProjectReg" class="btnStyle2 borderGray  ml20">추가</a>
             </div>
           </div>
           <table cellspacing="0" id="list" class="table_skin1 bt-000 tbl-striped" style="width:100%; margin-top : 10px;">
@@ -60,8 +67,7 @@
               <th class="text-center lc-1">결재유형</th>
               <th class="text-center lc-1">멤버</th>
               <th class="text-center lc-1">최종접속일</th>
-              <th class="text-center lc-1">관리</th>
-              <th class="text-center lc-1 end">분배율관리</th>
+              <th class="text-center lc-1 end">관리</th>
             </thead>
             <tbody>
               <tr v-for="(data, index) in items" :key="index">
@@ -86,13 +92,10 @@
                 <td>
                   {{ data.regDt }}
                 </td>
-                <td>
+                <td  class="end">
                   <button class="btnStyle1 borderLightGray small mr5" @click="fnProjectDetail(data)" activity="SAVE"><a>상세</a></button>
                   <button class="btnStyle1 borderLightGray small mr5" @click="fnProjectUpdate(data)" activity="SAVE"><a>수정</a></button>
                   <button class="btnStyle1 borderLightGray small mr5" @click="fnProjectDeleteConfirm(data)" activity="SAVE"><a>삭제</a></button>
-                </td>
-                <td>
-                  <button class="btnStyle1 borderLightGray small mr5" @click="fnDisRatioManage(data)"><a>분배율관리</a></button>
                 </td>
               </tr>
             </tbody>
@@ -114,11 +117,13 @@ import confirm from "@/modules/commonUtil/service/confirm"
 
 import modal from "./bp-project-manage-detail.vue";
 import disRatioPop from './bp-distributionServiceManage.vue';
+import disRatioPopNew from './bp-distributionServiceManageNew.vue';
 
 export default {
   components: {
     modal,
-    disRatioPop
+    disRatioPop,
+    disRatioPopNew,
   },
   data() {
     return {
@@ -130,11 +135,16 @@ export default {
       // 삭제용
       deleteProjectId : "",
       // 리스트
-      items : []
+      items : [],
+      // 분배 id
+      distId : "default",
+      distName : "기본분배정책",
+      distInfo : {},
     }
   },
   mounted() {
     this.fnSearch();
+    this.fnDistDetailInit();
   },
   methods: {
     // 검색
@@ -151,6 +161,67 @@ export default {
         vm.items = response.data.data;
       });
     },
+    fnDistDetailInit(){
+      var params = {
+      }
+       
+      projectApi.selectDistDetail(params).then(response =>{
+        this.distId = response.data.data[0];
+        this.distName = response.data.data[1];
+        this.distInfo = response.data.data[2];
+
+      });
+    },
+    fnDistDetail(){
+
+      jQuery("#DS_NAME").val(this.distId);
+      this.makeDistTable(this.distInfo);
+      
+      jQuery("#disRatioPopNew").modal("show");
+    },
+    makeDistTable : function(){
+      jQuery('#RSTab > tbody').remove(); //기존 테이블 삭제
+      var params = this.distName.chRelayType;
+      params = params.split(',');
+      var params2 = this.distInfo;
+      
+      for(var i=0; i<params.length; i++){
+        var make_tbody = "";
+        make_tbody += '<tbody id="'+params[i]+'">';
+        make_tbody += '</tbody>';
+        jQuery('#RSTab:last').append(make_tbody);
+        var make_tr = "";
+        make_tr += '<tr>';
+        make_tr += '<td class="text-center">채널명</td>';
+        make_tr += '<td colspan="2" class="text-center"><input type="text" value="'+params[i]+'" name="chname" class="inputStyle input3 float-left" style="width:100%; background:#D5D5D5" readonly></td>';
+        make_tr += '</tr>';
+        jQuery('#'+params[i]+':last').append(make_tr);
+
+        var keyname = params[i]+"cidGroup";
+        var keyArr = params2[keyname];
+        keyArr = keyArr.split(',');
+        var rationame = params[i]+"ratio";
+        var ratioArr ="";
+
+        ratioArr = params2[rationame];
+        ratioArr = ratioArr.split(',');
+
+        for(var k=0; k<keyArr.length; k++){
+          var make_tr2 = "";
+          make_tr2 += '<tr>';
+          make_tr2 += '<td class="text-center">'
+          if(k==0){
+            make_tr2 += '분배율(%)';
+          }
+          make_tr2 += '</td>';
+          make_tr2 += '<td class="text-center"><input type="text" name="relay" value="'+keyArr[k]+'" class="inputStyle input3 float-left" style="width:100%" readonly></td>';
+          make_tr2 += '<td class="text-center"><input type="text" name="ratio" value="'+ratioArr[k]+'" class="inputStyle input3 float-left" style="width:100%" readonly></td>';
+          make_tr2 += '</tr>';
+          jQuery('#'+params[i]+':last').append(make_tr2);
+          make_tr2 = "";
+        }
+      }
+    },
     // 등록창
     fnProjectReg : function(){
         this.save_status = 'C';
@@ -162,11 +233,11 @@ export default {
       this.$router.push( {name:"projectMain",params:{
           "projectId" : data.projectId
         , "projectName" : data.projectName
-        , "rcsYn" : data.rcsYn
+       /*  , "rcsYn" : data.rcsYn
         , "smsmmsYn" : data.smsmmsYn
         , "pushYn" : data.pushYn
         , "kakaoYn" : data.kakaoYn
-        , "moYn" : data.moYn
+        , "moYn" : data.moYn */
       }});
     },
     // 수정창
@@ -202,7 +273,7 @@ export default {
         }
       }); 
     },
-    // 분배율관리
+    /* // 분배율관리
     fnDisRatioManage(data) {
       var vm = this;
       this.row_data = data;
@@ -284,7 +355,7 @@ export default {
           make_tr2 = "";
         }
       }
-    }
+    } */
   }
 }
 </script>
