@@ -207,19 +207,16 @@
               <div v-if="tmpltData.RCS.rcsPrdType == 'SHORT'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
-
-                  <div 
+                  <img 
                     v-if="tmpltData.msgType == 'IMAGE' 
                       && tmpltData.RCS.mergeData
                       && tmpltData.RCS.mergeData.length > 0
                       && tmpltData.RCS.mergeData[0].mediaUrl" 
-                    class="phoneText2 mt10 text-center simulatorImg"
-                    :style="'padding:65px;background-image: url('+tmpltData.RCS.mergeData[0].mediaUrl+');'"
+                    :src="tmpltData.RCS.mergeData[0].mediaUrl" 
+                    style="width: 240px;height: 200px;"
+                    alt="프리 템플릿"
                   >
-                  </div>
-                  <div v-else>
-                    <img src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
-                  </div>
+                  <img v-else src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
                   <div class="phoneText1">
                     <h5 v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].title">{{tmpltData.RCS.mergeData[0].title}}</h5>
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
@@ -244,7 +241,18 @@
               <div v-if="tmpltData.RCS.rcsPrdType == 'TALL'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
+                  <img 
+                    v-if="tmpltData.msgType == 'IMAGE' 
+                      && tmpltData.RCS.mergeData
+                      && tmpltData.RCS.mergeData.length > 0
+                      && tmpltData.RCS.mergeData[0].mediaUrl" 
+                    :src="tmpltData.RCS.mergeData[0].mediaUrl" 
+                    style="width: 240px;height: 300px;"
+                    alt="프리 템플릿"
+                  >
+                  <img v-else src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
 
+                  <!--
                   <div 
                     v-if="tmpltData.msgType == 'IMAGE' 
                       && tmpltData.RCS.mergeData
@@ -257,6 +265,7 @@
                   <div v-else>
                     <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
                   </div>
+                   -->
                   <div class="phoneText1">
                     <h5 v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].title">{{tmpltData.RCS.mergeData[0].title}}</h5>
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
