@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration xmlns="http://logging.apache.org/log4j/2.0/config"
-       status="DEBUG" packages="kr.co.uplus.cm.log">
+<configuration status="DEBUG" >
 	<Properties>
 		<Property name="app-name">cloud-web-sample</Property>
 		<Property name="log-path">logs/sample</Property>
@@ -8,8 +7,7 @@
 	</Properties>
 	<appenders>
   		<Console name="console" >
-<!--    			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %m%n%wEx" /> -->
-   			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %spi%n%wEx" />
+   			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %m%n%wEx" />
   		</Console>
 
 		<RollingFile name="service_file" fileName="${log-path}/service/${hostName}.log" filePattern="${log-path}/service/%d{yyyyMMdd}/${hostName}-%i.log">
