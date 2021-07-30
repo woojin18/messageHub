@@ -63,6 +63,7 @@
         <logger name="jdbc.resultset" level="OFF" />
         <logger name="jdbc.resultsettable" level="OFF" />
         <logger name="jdbc.connection" level="OFF" />
+        <logger name="org.mongodb.driver" level="OFF"/>
 
     </loggers>
 </configuration>
