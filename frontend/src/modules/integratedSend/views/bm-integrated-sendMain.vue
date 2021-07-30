@@ -292,7 +292,7 @@
                     <p class="color000">[WEB발신] (광고)</p>
                     <ul class="cardBxslider mt10">
                       <li class="slide cardBox">
-                        <img src="/se2/images/cardThumImg.png" alt="카드 썸네일">
+                        <img :src="tmpltData.RCS.mergeData[0].mediaUrl" alt="카드 썸네일">
                         <div>
                           <div class="scroll-y">
                             <p class="color000 font-size13">타이틀 영역1</p>
@@ -301,7 +301,7 @@
                         </div>
                       </li>
                       <li class="slide cardBox">
-                        <img src="/se2/images/cardThumImg.png" alt="카드 썸네일">
+                        <img :src="tmpltData.RCS.mergeData[0].mediaUrl" alt="카드 썸네일">
                         <div>
                           <div class="scroll-y">
                             <p class="color000 font-size13">타이틀 영역2</p>
@@ -310,7 +310,7 @@
                         </div>
                       </li>
                       <li class="slide cardBox">
-                        <img src="/se2/images/cardThumImg.png" alt="카드 썸네일">
+                        <img :src="tmpltData.RCS.mergeData[0].mediaUrl" alt="카드 썸네일">
                         <div>
                           <div class="scroll-y">
                             <p class="color000 font-size13">타이틀 영역3</p>
