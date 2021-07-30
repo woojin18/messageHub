@@ -7,8 +7,7 @@
     </Properties>
     <appenders>
         <Console name="console" >
-<!--             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %m%n%wEx" /> -->
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %spi%n%wEx" />
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %m%n%wEx" />
         </Console>
 
         <RollingFile name="service_file" fileName="${log-path}/service/${hostName}.log" filePattern="${log-path}/service/%d{yyyyMMdd}/${hostName}-%i.log">
@@ -40,7 +39,7 @@
     </appenders>
 
     <loggers>
-        <root level="debug" >
+        <root level="info" >
             <!--
             <appender-ref ref="service_file" />
             <appender-ref ref="error_file" level="error" />

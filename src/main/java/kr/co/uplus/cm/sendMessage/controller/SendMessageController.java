@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.sendMessage.controller;
 
+import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -210,6 +211,8 @@ public class SendMessageController {
     @PostMapping(path="/sendPushMessage")
     public RestResult<?> sendPushMessage(HttpServletRequest request, HttpServletResponse response
             , @ModelAttribute MultipartFileDTO multipartFileDTO) throws Exception {
+
+        log.info("package =============> {}", MethodHandles.lookup().lookupClass().getPackage().getName());
 
         List<RecvInfo> recvInfoLst = null;
         Map<String, Object> params = new HashMap<String, Object>();
