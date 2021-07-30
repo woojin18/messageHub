@@ -9,10 +9,10 @@
 						<h5 class="lc-1">서비스 이용 약관</h5>
 						<hr>
 						<div class="provisionWrap mt20">
-							<select name="provisionList" class="selectStyle3 font-size14" @change="fnChangeSvc">
+							<!-- <select name="provisionList" class="selectStyle3 font-size14" @change="fnChangeSvc">
 								<option value="">이전 약관 보기</option>
 								<option v-for="(item, index) in preVerList" :key="index" :value="item.termsContent"> {{item.reviseDay}} </option>
-							</select>
+							</select> -->
 							<!-- 내용 -->
 							<div v-html="contents"></div>
 						</div>

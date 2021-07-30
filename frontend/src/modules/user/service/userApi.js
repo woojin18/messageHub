@@ -28,6 +28,10 @@ const checkDupcUser = (params) => {
 	return httpClient.post('/userApi/manage/checkDupcUser', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
+const sendCertifyMail = (params) => {
+	return httpClient.post('/userApi/manage/sendCertifyMail', params, { headers: {"show-layer": "Yes"} });
+};
+
 export default {
 	selectUserList,
 	stopUser,
@@ -35,5 +39,6 @@ export default {
 	deleteUser,
 	modifyUser,
 	registerUser,
-	checkDupcUser
+	checkDupcUser,
+    sendCertifyMail
 };

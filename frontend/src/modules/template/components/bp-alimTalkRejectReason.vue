@@ -8,7 +8,7 @@
             <hr>
             <div class="boardWrite">
               <div class="content scroll-y">
-                <p><pre>{{$gfnCommonUtils.unescapeXss(rejectReson)}}</pre></p>
+                <p><pre>{{rejectReson | unescapeXss}}</pre></p>
               </div>
             </div>
           </div>

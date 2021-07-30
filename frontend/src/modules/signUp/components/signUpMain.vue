@@ -12,6 +12,13 @@
 					</div>
 				</div>
 
+				<div class="of_h">
+					<div class="float-left" style="width:22%"><h5>이름</h5></div>
+					<div class="float-left" style="width:78%">
+						<input type="text" class="inputStyle" placeholder="사용자명" v-model="userNm">
+					</div>
+				</div>
+
 				<div class="of_h mt10">
 					<div class="float-left" style="width:22%"><h5>비밀번호*</h5></div>
 					<div class="float-left" style="width:78%">
@@ -143,7 +150,7 @@
 				</div>	
 			</div>
 
-			<h4 class="mt40">도메인설정</h4>
+			<!-- <h4 class="mt40">도메인설정</h4>
 			<div class="joinBox mt10">
 				<div class="of_h mt10">
 					<div class="float-left" style="width:22%"><h5>도메인 이름*</h5></div>
@@ -156,7 +163,7 @@
 						</div>					
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<div class="text-center mt70"><a href="#" class="btn btn-login" @click.prevent="signUp">가입완료</a></div>
 		</section>
 		<chkCorpPopup :popReset="popReset" :dataList="dataList" :selCorp.sync="selCorp"></chkCorpPopup>
@@ -171,6 +178,7 @@
 
 <script>
 import confirm from "@/modules/commonUtil/service/confirm.js";
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import signUpApi from "@/modules/signUp/service/api"
 import chkCorpPopup from "@/modules/signUp/components/bp-selectCorpPopup"
 import addrPopup from "@/modules/signUp/components/bp-addrPopup"
@@ -184,9 +192,14 @@ export default {
 		chkCorpPopup,
 		addrPopup
 	},
+	props: {
+    	authKey : String,
+		require : true
+  	},
 	data() {
 		return {
-			loginId : "test@test.test",				// 아이디
+			loginId : "",				// 아이디
+			userNm : "",
 			password : "",				// 비밀번호
 			passwordChk : "",			// 비밀번호 체크
 			smsCertifyYn : "Y",			// sms 인증여부
@@ -201,12 +214,13 @@ export default {
 			woplaceAddressDetail : "",	// 상세주소
 			wireTel : "",				// 유선 전화번호
 			attachFileNm : "",			// 첨부파일명
-			domainName : "",			// 도메인 이름
-			domainNameChk : "N",		// 도메인 이름 TF
+			// domainName : "",			// 도메인 이름
+			// domainNameChk : "N",		// 도메인 이름 TF
 			custAddrZip : "",			// 우편번호
 			custKdCd : "",				// 고객 유형
 			gender : "",				// 성별
 			coInfo : "",				// ci 값
+			promotionYn : "",			// 홍보성 정보 동의 여부
 
 			selCorp : {},				// 선택한 고객사 정보
 			selAddr : {},				// 선택한 주소 정보
@@ -226,9 +240,9 @@ export default {
 	// 도메인 이름 영어(소문자), 숫자만 입력 가능하도록 처리
 	// 핸드폰번호 사업자번호 숫자만 입력 가능하도록 처리
 	watch: {
-		domainName : function() {
-			return this.domainName = this.domainName.replace(/[^a-z0-9]/g, '');
-		},
+		// domainName : function() {
+		// 	return this.domainName = this.domainName.replace(/[^a-z0-9]/g, '');
+		// },
 		phoneCerti : function() {
 			return this.phoneCerti = this.phoneCerti.replace(/[^0-9]/g, '');
 		},
@@ -251,10 +265,28 @@ export default {
 		}
 	},
 	mounted() {
-		this.fnGetNiceCheck();		// nice 본인인증 인증키 조회
-		this.fnGetCustType();		// 고객사 고객 유형 코드 값 조회
+		this.fnChkMailCertify();
 	},
 	methods: {
+		fnChkMailCertify(){
+			var params = {
+				authKey : this.authKey
+			};
+
+			signUpApi.certifyMailByAuthKey(params).then(response => {
+				var result = response.data;
+				var vm = this;
+				if(result.success){
+					this.loginId = result.data.email;
+					this.promotionYn = result.data.promotionYn;
+					this.fnGetNiceCheck();		// nice 본인인증 인증키 조회
+					this.fnGetCustType();		// 고객사 고객 유형 코드 값 조회
+				} else {
+					confirm.fnAlert("", result.message);
+					vm.$router.push({name : "login"});
+				}
+			})
+		},
 		fnGetCustType(){
 			var params = {
 				codeTypeCd	: "CORP_CUST_TYPE",
@@ -288,13 +320,19 @@ export default {
 			
 			// 사업자 번호 유효성 검사
 			var regnoVali = this.regnoVali(regno);
-			if(!regnoVali) return false;
-
-			this.signUpSubmit();
+			if(!regnoVali) {
+				confirm.fnAlert("", "사업자 번호를 정확히 입력해주세요.");
+				return false;
+			}
+			eventBus.$on('callbackEventBus', this.signUpSubmit);
+     		confirm.fnConfirm( "", "가입하시겠습니까?", "확인");
 		},
 		// 기초 validation 처리
 		defaultVali() {
-			if(this.password == "" || this.passwordChk == ""){
+			if(this.userNm == ""){
+				confirm.fnAlert("", "이름을 입력해주세요.");
+				return false;
+			} else if(this.password == "" || this.passwordChk == ""){
 				confirm.fnAlert("", "비밀번호를 입력해주세요.");
 				return false;
 			} else if (this.password != this.passwordChk) {
@@ -314,12 +352,12 @@ export default {
 			} else if (this.attachFileNm == "") {
 				confirm.fnAlert("", "사업자등록증 파일을 첨부해주세요.");
 				return false;
-			} else if (this.domainName == "") {
-				confirm.fnAlert("", "도메인 이름을 입력해주세요.");
-				return false;
-			} else if (this.domainNameChk == false) {
-				confirm.fnAlert("", "도메인 이름 충복체크를 진행해주세요.");
-				return false;
+			// } else if (this.domainName == "") {
+			// 	confirm.fnAlert("", "도메인 이름을 입력해주세요.");
+			// 	return false;
+			// } else if (this.domainNameChk == false) {
+			// 	confirm.fnAlert("", "도메인 이름 충복체크를 진행해주세요.");
+			// 	return false;
 			} else {
 				return true;
 			}
@@ -381,7 +419,7 @@ export default {
 				}
 
 				checkSum += parseInt((multiply[8] * valueMap[8]) / 10, 10);
-				console.log(Math.floor(valueMap[9]) === (10 - (checkSum % 10)))
+
 				return Math.floor(valueMap[9]) === (10 - (checkSum % 10));
 			} else {
 				confirm.fnAlert("","사업자번호(10자리)를 정확히 입력해주세요.");
@@ -417,6 +455,7 @@ export default {
 		async signUpSubmit() {
 			var fd = new FormData();
 			fd.append('loginId', this.loginId);								// 아이디
+			fd.append('userNm', this.userNm);								// 이름
 			fd.append('password', this.password);							// 비밀번호
 			fd.append('smsCertifyYn', this.smsCertifyYn);					// sms 인증 여부
 			fd.append('phoneCerti', this.phoneCerti);						// 휴대폰 번호
@@ -432,10 +471,11 @@ export default {
 			fd.append('woplaceAddressDetail', this.woplaceAddressDetail);	// 상세주소
 			fd.append('wireTel', this.wireTel);								// 유선 전화
 			fd.append('attachFile', this.$refs.attachFile.files[0]);		// 사업자 등록증
-			fd.append('domainName', this.domainName);						// 도메인 주소
+			// fd.append('domainName', this.domainName);						// 도메인 주소
 			fd.append('custrnmNo', this.custrnmNo);							// 고객 식별번호
 			fd.append('coInfo', this.coInfo);								// 본인인증 토큰 (개인사업자 필수)
 			fd.append('genderCode', this.gender);							// 성별 (1: 남성 / 2: 여성)
+			fd.append('promotionYn', this.promotionYn);						// 홍보성 정보 수신 동의
 
 			await axios.post('/api/public/signUp/insertSignUp',
 				fd,
@@ -447,10 +487,16 @@ export default {
 				var result = response.data;
 				if(!result.success) {
 				confirm.fnAlert("", result.message);
+				} else {
+					eventBus.$on('callbackEventBus', this.fnEmitLoginPage);
+     				confirm.fnConfirm( "", "가입완료하였습니다. 확인 창을 누르면 로그인 창으로 이동합니다.", "확인");
 				}
 			}).catch(function () {
 				confirm.fnAlert("", result.message);
 			});
+		},
+		fnEmitLoginPage(){
+			this.$router.push({name : "login"});
 		},
 		fnSelCorp(){
 			if(!this.phoneCertiChk){

@@ -13,7 +13,7 @@
           <!-- 친구톡 -->
           <div v-if="previewMessageType == 'FRIENDTALK'" class="phoneWrap">
             <img src="@/assets/images/common/phoneMockup2_1.svg" alt="프리 템플릿">
-            <div class="phoneTextWrap4 scroll-y">
+            <div class="phoneTextWrap4 scroll-yc">
               <p v-if="sendData.msgKind == 'A'">[광고]</p>
               <div class="mt5">
                 <div class="text-sub-wrap">

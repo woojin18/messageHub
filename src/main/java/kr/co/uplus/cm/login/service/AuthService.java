@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import kr.co.uplus.cm.common.config.SecurityConfig;
 import kr.co.uplus.cm.common.consts.Const;
+import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.consts.ResultCode;
 import kr.co.uplus.cm.common.crypto.Sha256PasswordEncoder;
 import kr.co.uplus.cm.common.dao.AuthUserDao;
@@ -40,8 +41,11 @@ import kr.co.uplus.cm.common.jwt.JwtService;
 import kr.co.uplus.cm.common.model.AuthUser;
 import kr.co.uplus.cm.common.model.PublicToken;
 import kr.co.uplus.cm.common.utils.SpringUtils;
+import kr.co.uplus.cm.signUp.service.SignUpService;
+import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
+import yoyozo.security.SHA;
 
 @Log4j2
 @Service
@@ -278,5 +282,23 @@ public class AuthService implements UserDetailsService {
 		} else {
 			return tUCMenusByRole.get(roleCd);
 		}
+	}
+
+	public RestResult<Object> updatePassword(Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			// 사용자 비밀번호 암호화
+			SHA sha512 = new SHA(512);
+			String encPwd = sha512.encryptToBase64(CommonUtils.getString(params.get("password")));
+			params.put("pwd", encPwd);
+			
+			// 비밀번호 update
+			generalDao.updateGernal(DB.QRY_UPDATE_USER_PASSWORD, params);
+			rtn.setSuccess(true);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("비밀번호 설정에 실패하였습니다.");
+		}
+		return rtn;
 	}
 }

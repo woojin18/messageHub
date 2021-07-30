@@ -20,7 +20,7 @@
                 <div class="border-line2" style="height:354px; overflow-y:scroll;">
                   <ul class="color4">
                     <li @click="fnGetTemplateInfo(idx, templateInfo.tmpltId)" v-for="(templateInfo, idx) in templateList" :key="templateInfo.tmpltId" class="bb-ddd pd5">
-                      {{$gfnCommonUtils.unescapeXss(templateInfo.tmpltName)}}
+                      {{templateInfo.tmpltName | unescapeXss}}
                     </li>
                     <li v-if="templateList.length == 0" class="bb-ddd pd5 text-center">검색된 내용이 없습니다.</li>
                   </ul>
@@ -49,7 +49,7 @@
                 <!-- phoneWrap -->
                 <div class="phoneWrap">
                   <img src="@/assets/images/common/phoneMockup2_1.svg" alt="프리 템플릿">
-                  <div class="phoneTextWrap4 scroll-y">
+                  <div class="phoneTextWrap4 scroll-yc">
                     <p v-if="templateData.msgKind == 'A'">[광고]</p>
                     <div class="mt5">
                       <div class="text-sub-wrap">

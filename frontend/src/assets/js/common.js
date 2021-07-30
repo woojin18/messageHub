@@ -42,7 +42,7 @@ export default {
         if (!val) return '';
         val = val.toString();
         val = val.replace(/[^0-9]/g, '')
-      
+
         let tmp = ''
         if( val.length < 4){
           return val;
@@ -198,12 +198,12 @@ export default {
             }
           });
         }
-        
+
         if(result.success == false){
           const rsvNmStr = Array.from(rsvNmSet).join(', ');
           result.message = '변수 '+rsvNmStr+' 은 예약어로 사용하실 수 없습니다.';
         }
-        
+
         return result;
       },
       /**************************비즈니스 관련 Utils**************************/

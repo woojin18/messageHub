@@ -15,7 +15,7 @@
             <div v-if="previewMessageType == 'PUSH' && tmpltData.PUSH" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap scroll-y">
+                <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
                     <p v-if="$gfnCommonUtils.isEmpty(tmpltData.PUSH.title)">제목</p>
                     <p v-else>{{tmpltData.PUSH.title}}</p>
@@ -39,7 +39,7 @@
             <div v-if="previewMessageType == 'FRIENDTALK' && tmpltData.FRIENDTALK" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup2_1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap4 scroll-y">
+                <div class="phoneTextWrap4 scroll-yc">
                   <p v-if="tmpltData.msgKind == 'A'">[광고]</p>
                   <div class="mt5">
                     <div 
@@ -64,7 +64,7 @@
             <div v-if="previewMessageType == 'MMS' && tmpltData.MMS" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap scroll-y">
+                <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
                     <p>{{tmpltData.MMS.callback}}</p>
                   </div>
@@ -86,7 +86,7 @@
             <div v-if="previewMessageType == 'SMS' && tmpltData.SMS" class="tab-pane active">
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap scroll-y">
+                <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
                     <p>{{tmpltData.SMS.callback}}</p>
                   </div>
@@ -108,7 +108,7 @@
                     <p class="text-main"><i class="fal fa-envelope-open-text"></i> 알림톡 도착</p>
                     <div v-if="tmpltData.ALIMTALK.subData && tmpltData.ALIMTALK.subData.emphasizeType == 'TEXT'" class="text-sub-wrap" style="padding:10px;">
                       <p v-if="!$gfnCommonUtils.isEmpty(tmpltData.ALIMTALK.subData.tmpltEmpsSubTitle)" class="text-sub_1">{{tmpltData.ALIMTALK.subData.tmpltEmpsSubTitle}}</p>
-                      <p v-if="!$gfnCommonUtils.isEmpty(tmpltData.ALIMTALK.subData.tmpltEmpsTitle)" class="text-sub scroll-y3">{{tmpltData.ALIMTALK.subData.tmpltEmpsTitle}}</p>
+                      <p v-if="!$gfnCommonUtils.isEmpty(tmpltData.ALIMTALK.subData.tmpltEmpsTitle)" class="text-sub">{{tmpltData.ALIMTALK.subData.tmpltEmpsTitle}}</p>
                     </div>
                     <div class="text-sub-wrap" style="padding:10px;">
                       <span><pre>{{tmpltData.ALIMTALK.msg}}</pre></span>
@@ -123,20 +123,18 @@
               </div>
             </div>
             <!--// ALIMTALK -->
-
-
-            
-
             <!-- RCS -->
             <div v-if="previewMessageType == 'RCS' && tmpltData.RCS" class="tab-pane active">
               <!-- FREE -->
               <div v-if="tmpltData.RCS.rcsPrdType == 'FREE'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
-                <div class="phoneTextWrap scroll-y">
+                <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
-                    <!-- <p><img src="@/assets/images/common/phone_Icon10.png" alt="주문 아이콘"></p> -->
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
-                    <!-- <p class="text-center mt20" style="color:#69C8FF">복사</p> -->
+                    <br v-if="tmpltData.msgKind == 'A'"/>
+                    <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
+                      {{tmpltData.RCS.footer}}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -144,7 +142,7 @@
               <!-- DESCRIPTION -->
               <div v-if="tmpltData.RCS.rcsPrdType == 'DESCRIPTION'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
-                <div class="phoneTextWrap scroll-y">
+                <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
                     <img :src="tmpltData.RCS.rcsDesFormNm | getIconURlByFormNm" style="width:70px;">
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
@@ -160,30 +158,173 @@
                 </div>
               </div>
               <!--// DESCRIPTION -->
-            </div>
-            <!--// RCS -->
-
-
-
-
-            
-            <!-- 
-            <div role="tabpanel" class="tab-pane" id="productCate6">
-              <div class="phoneWrap">
-                <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                <div class="phoneTextWrap">
-                  <div class="phoneText1 scroll-y2">
-                    <p>발신번호</p>
+              <!-- SMS -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'SMS'" class="phoneWrap">
+                <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
+                <div class="phoneTextWrap scroll-yc">
+                  <div class="phoneText1">
+                    <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
+                    <br v-if="tmpltData.msgKind == 'A'"/>
+                    <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
+                      {{tmpltData.RCS.footer}}
+                    </span>
+                    <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
+                      <p 
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
+                        :key="idx" 
+                        class="text-center mt20" 
+                        style="color:#69C8FF"
+                      >{{btn.action.displayText}}</p>
+                    </div>
                   </div>
-                  <div class="phoneText1 scroll-y3 consolMarginTop">
-                    <p>제목</p>
-                  </div>
-                  <p class="consolMarginTop">내용</p>
                 </div>
               </div>
+              <!--// SMS -->
+              <!-- LMS -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'LMS'" class="phoneWrap">
+                <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
+                <div class="phoneTextWrap scroll-yc">
+                  <div class="phoneText1">
+                    <h5 v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].title">{{tmpltData.RCS.mergeData[0].title}}</h5>
+                    <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
+                    <br v-if="tmpltData.msgKind == 'A'"/>
+                    <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
+                      {{tmpltData.RCS.footer}}
+                    </span>
+                    <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
+                      <p 
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
+                        :key="idx" 
+                        class="text-center mt20" 
+                        style="color:#69C8FF"
+                      >{{btn.action.displayText}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--// LMS -->
+              <!-- 세로형 SHORT -->
+              <!-- style="width: 240px;height: 200px;" => short, tall 해서 사이즈가 있으나 RCS는 2:1 로 이미지가 등록된다. -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'SHORT'" class="phoneWrap">
+                <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
+                <div class="phoneTextWrap scroll-yc">
+                  <img 
+                    v-if="tmpltData.msgType == 'IMAGE' 
+                      && tmpltData.RCS.mergeData
+                      && tmpltData.RCS.mergeData.length > 0
+                      && tmpltData.RCS.mergeData[0].mediaUrl" 
+                    :src="tmpltData.RCS.mergeData[0].mediaUrl" 
+                    style="width: 240px;height: 120px;"
+                    alt="프리 템플릿"
+                  >
+                  <img v-else src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
+                  <div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
+                    <h5 v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].title">{{tmpltData.RCS.mergeData[0].title}}</h5>
+                    <div>
+                      <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
+                      <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
+                        <br/>{{tmpltData.RCS.footer}}
+                      </span>
+                    </div>
+                    <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
+                      <p 
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
+                        :key="idx" 
+                        class="text-center mt20" 
+                        style="color:#69C8FF"
+                      >{{btn.action.displayText}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--// 세로형 SHORT -->
+              <!-- 세로형 TALL -->
+              <!-- style="width: 240px;height: 300px;" => short, tall 해서 사이즈가 있으나 RCS는 2:1 로 이미지가 등록된다. -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'TALL'" class="phoneWrap">
+                <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
+                <div class="phoneTextWrap scroll-yc">
+                  <img 
+                    v-if="tmpltData.msgType == 'IMAGE' 
+                      && tmpltData.RCS.mergeData
+                      && tmpltData.RCS.mergeData.length > 0
+                      && tmpltData.RCS.mergeData[0].mediaUrl" 
+                    :src="tmpltData.RCS.mergeData[0].mediaUrl" 
+                    style="width: 240px;height: 120px;"
+                    alt="프리 템플릿"
+                  >
+                  <img v-else src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
+                  <div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
+                    <h5 v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].title">{{tmpltData.RCS.mergeData[0].title}}</h5>
+                    <div>
+                      <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
+                      <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
+                        <br/>{{tmpltData.RCS.footer}}
+                      </span>
+                    </div>
+                    <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
+                      <p 
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
+                        :key="idx" 
+                        class="text-center mt20" 
+                        style="color:#69C8FF"
+                      >{{btn.action.displayText}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--// 세로형 TALL -->
+
+
+
+              
+
+
+
+
+              
+
+              <!-- CAROUSEL -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'CAROUSEL'" class="cardBxsliderWrap">
+                <div class="phoneWrap">
+                  <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
+                  <div class="phoneCardWrap">
+                    <p class="color000">[WEB발신] (광고)</p>
+                    <ul class="cardBxslider mt10">
+                      <li class="slide cardBox">
+                        <img src="/se2/images/cardThumImg.png" alt="카드 썸네일">
+                        <div>
+                          <div class="scroll-y">
+                            <p class="color000 font-size13">타이틀 영역1</p>
+                          </div>
+                          <p class="color3 font-size10 mt5">무료수신거부:</p>
+                        </div>
+                      </li>
+                      <li class="slide cardBox">
+                        <img src="/se2/images/cardThumImg.png" alt="카드 썸네일">
+                        <div>
+                          <div class="scroll-y">
+                            <p class="color000 font-size13">타이틀 영역2</p>
+                          </div>
+                          <p class="color3 font-size10 mt5">무료수신거부:</p>
+                        </div>
+                      </li>
+                      <li class="slide cardBox">
+                        <img src="/se2/images/cardThumImg.png" alt="카드 썸네일">
+                        <div>
+                          <div class="scroll-y">
+                            <p class="color000 font-size13">타이틀 영역3</p>
+                          </div>
+                          <p class="color3 font-size10 mt5">무료수신거부:</p>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <!--// CAROUSEL -->
+
             </div>
-             -->
-            <!-- //phoneWrap -->
+            <!--// RCS -->
           </div>
           
           <div class="phone_04_btn7">
@@ -329,12 +470,12 @@
           </div>
           <div class="float-left" style="width:78%">
             <p>모든 채널에 메시지를 보냅니다.</p>
-            <a href="#" @click.prevent="fnOpenTestSendInputPopup" class="btnStyle1 backLightGray consolMarginTop" title="테스트 발송">테스트 발송</a>
+            <a href="#" @click.prevent="fnOpenTestSendInputPopup" class="btnStyle1 backLightGray consolMarginTop" title="테스트 발송" activity="SAVE">테스트 발송</a>
           </div>
           
         </div>
         <div class="mt20 float-right">
-          <a href="#" @click.prevent="fnSendIntegratedMessage('N')" class="btnStyle2 backRed float-left mr10" title="발송">발송</a>
+          <a href="#" @click.prevent="fnSendIntegratedMessage('N')" class="btnStyle2 backRed float-left mr10" title="발송" activity="SAVE">발송</a>
           <router-link :to="{ name: 'integratedSend' }" tag="a" class="btnStyle2 float-left">목록</router-link>
         </div>
       </div>
@@ -414,10 +555,32 @@ export default {
       }
     }
   },
+  updated() {
+    if(this.previewMessageType == 'RCS') {
+      this.fnSetBxslider();
+    }
+  },
   mounted() {
     this.fnGetTmpltInfo();
   },
   methods: {
+    fnSetBxslider(){
+      jQuery('.cardBxslider').bxSlider({
+        auto: false,
+        autoControls: false,
+        slideWidth: 204,
+        minSlides: 1,
+        maxSlides: 2,
+        slideMargin: 10,
+        controls: true,
+        pager: true,
+        pagerType: 'short',
+        touchEnabled : (navigator.maxTouchPoints > 0),
+        autoHover: false,
+        pause: 6000
+      });
+      return true;
+    },
     fnGetImageUrl(ch, fileId){
       let params = {ch: ch, fileId: fileId};
       return new Promise((resolve, reject) => {
@@ -627,13 +790,17 @@ export default {
       let containRsvNm = false;
 
       this.tmpltData.chTypeList.forEach(ch => {
+        conts = '';
         chTmpltInfo = vm.tmpltData[ch];
 
         if(ch == 'PUSH' || ch == 'SMS' || ch == 'MMS' || ch == 'FRIENDTALK' || ch == 'ALIMTALK'){
           conts = chTmpltInfo.msg;
         } else if(ch == 'RCS'){
           if(chTmpltInfo.mergeData && chTmpltInfo.mergeData.length > 0){
-            conts = chTmpltInfo.mergeData[0].description; //TODO : 프리템플릿 일경우인데 다른 템플릿일 경우 다른수 있다.
+            //TODO : 프리템플릿 일경우인데 다른 템플릿일 경우 다른수 있다.
+            //FREE, SMS, LMS, 서술형
+            conts = this.$gfnCommonUtils.defaultIfEmpty(chTmpltInfo.mergeData[0].title, '');
+            conts += this.$gfnCommonUtils.defaultIfEmpty(chTmpltInfo.mergeData[0].description, '');
           }
         }
 

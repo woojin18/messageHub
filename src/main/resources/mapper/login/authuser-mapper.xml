@@ -130,5 +130,13 @@
       AND   e.USE_YN      = 'Y'
     ORDER BY e.ROLE_CD, a.MENUS_LEVEL, a.DIS_ORDER
     </select>
-
+	
+	<update id="updatePassword">
+		/* login.updatePassword */
+		UPDATE	cm_console.CM_USER
+		SET		LOGIN_PWD = #{pwd}
+		,		PWD_UPD_DT = NOW()
+		,		APPROVAL_STATUS = 'Y'
+		WHERE	LOGIN_ID = #{loginId}
+	</update>
 </mapper>

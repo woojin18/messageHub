@@ -95,7 +95,7 @@
                     <td class="text-center">
                       <u><router-link :to="{ name: 'frndTalkTemplateManage', params: { tmpltId: contant.tmpltId }}">{{contant.tmpltId}}</router-link></u>
                     </td>
-                    <td class="text-center">{{$gfnCommonUtils.unescapeXss(contant.tmpltName)}}</td>
+                    <td class="text-center">{{contant.tmpltName | unescapeXss}}</td>
                     <td class="text-center">{{contant.msgKindName}}</td>
                     <td class="text-center">{{contant.regNm}}</td>
                     <td class="text-center end">{{contant.regDt}}</td>

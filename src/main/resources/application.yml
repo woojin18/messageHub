@@ -119,7 +119,7 @@ app.props:
     prefix: "Bearer "
 
 logging:
-  config: classpath:log4j2-spring.local.xml
+  config: classpath:log4j2-spring.dev.xml
 
 cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw
@@ -194,7 +194,7 @@ app.props:
     prefix: "Bearer "
 
 logging:
-  config: classpath:log4j2-spring.local.xml
+  config: classpath:log4j2-spring.stg.xml
 
 cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw
@@ -256,7 +256,7 @@ app.props:
     prefix: "Bearer "
 
 logging:
-  config: classpath:log4j2-spring.local.xml
+  config: classpath:log4j2-spring.prod.xml
 
 cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw

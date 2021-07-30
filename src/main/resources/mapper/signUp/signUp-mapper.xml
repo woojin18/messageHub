@@ -15,6 +15,7 @@
 		INSERT INTO CM_USER (
 				USER_ID
 		,		LOGIN_ID
+		,		USER_NAME
 		,		LOGIN_PWD
 		,		PWD_UPD_DT
 		,		HP_NUMBER
@@ -22,11 +23,13 @@
 		,		DEL_YN
 		,		CORP_ID
 		,		ROLE_CD
+		,		PROMOTION_YN
 		,		REG_ID
 		,		REG_DT
 		) VALUES (
 				#{userId}
 		,		#{loginId}
+		,		#{userNm}
 		,		#{password}
 		,		NOW()
 		,		#{phoneCerti}
@@ -34,6 +37,7 @@
 		,		'N'
 		,		#{corpId}
 		,		#{cmRole}
+		,		#{promotionYn}
 		,		#{userId}
 		,		NOW()
 		)
@@ -79,7 +83,8 @@
 		,		SMS_CERTIFY_YN
 		,		WIRE_TEL
 		,		FILE_ID
-		,		DOMAIN_NAME
+<!-- 		,		DOMAIN_NAME -->
+		,		UPD_DT
 		) VALUES (
 				#{corpId}
 		,		#{custNo}
@@ -96,15 +101,34 @@
 		,		#{smsCertifyYn}
 		,		#{wireTel}
 		,		#{fileId}
-		,		#{domainName}
+<!-- 		,		#{domainName} -->
+		,		NOW()
 		)
 	</insert>
 	
-	<select id="checkMailCertifyByLoginId" resultType="string">
-		/* signUp.checkMailCertifyByLoginId */
-		SELECT	COUNT(1)
-		FROM	cm_console.CM_USER
-		WHERE	LOGIN_ID = #{loginId}
-		AND		MAIL_CERTIFY_NUMBER =#{authKey}
+	<select id="checkMailCertifyByAuthKey" resultType="camel">
+		/* signUp.checkMailCertifyByAuthKey */
+		SELECT	EMAIL
+		,		DATE_FORMAT(MAIL_CERTIFY_DT, '%Y-%m-%d %H:%i:%s')	AS MAIL_CERTIFY_DT
+		,		PROMOTION_YN
+		FROM	cm_console.CM_MAIL_CERTIFY
+		WHERE	MAIL_CERTIFY_KEY =#{authKey}
 	</select>
+	
+	<insert id="insertCmMailCertify">
+		/* signUp.insertCmMailCertify */
+		INSERT INTO cm_console.CM_MAIL_CERTIFY (
+				EMAIL
+		,		MAIL_CERTIFY_KEY
+		,		MAIL_CERTIFY_DT
+		,		PROMOTION_YN
+		,		REG_DT
+		) VALUES (
+				#{email}
+		,		#{authKey}
+		,		DATE_ADD(NOW(), INTERVAL 1 HOUR)
+		,		#{promotionYn}
+		,		NOW()
+		)
+	</insert>
 </mapper>

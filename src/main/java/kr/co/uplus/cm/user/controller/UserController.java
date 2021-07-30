@@ -158,7 +158,7 @@ public class UserController {
 			rtn = userSvc.registerUser(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
+			rtn.setMessage(e.getMessage());
 			log.error("{} Error : {}", this.getClass(), e);
 		}
 
@@ -186,5 +186,11 @@ public class UserController {
 		}
 
 		return rtn;
+	}
+	
+	@PostMapping("/sendCertifyMail")
+	public RestResult<?> sendCertifyMail(@RequestBody Map<String, Object> params) throws Exception{
+		RestResult<Object> rtn = new RestResult<Object>();
+		return userSvc.sendCertifyMail(params);
 	}
 }

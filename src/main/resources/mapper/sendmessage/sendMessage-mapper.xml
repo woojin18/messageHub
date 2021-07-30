@@ -25,6 +25,9 @@
             AND CRB.USE_YN = 'Y'
             AND CRB.CORP_ID = #{corpId}
             AND CRB.PROJECT_ID IN ('ALL', #{projectId})
+			<if test="brandId != '' and brandId != null ">
+			AND CRB.BRAND_ID = #{brandId}
+			</if>
     </select>
 
     <select id="selectAddrGrpList" parameterType="hashmap" resultType="camel">

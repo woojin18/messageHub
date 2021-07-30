@@ -54,7 +54,6 @@
 		,		CPS
 		,		DAY_SENDER_CHK_YN
 		,		MON_SENDER_CHK_YN
-		,		ALARM_USE_YN
 		,		API_KEY_NAME
 		,		STATUS
 		,		RPT_YN

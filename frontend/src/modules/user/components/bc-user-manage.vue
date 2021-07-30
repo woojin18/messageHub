@@ -77,7 +77,7 @@
 										<td class="text-center lc-1 vertical-middle">{{ data.roleName }}</td>
 										<td class="text-center lc-1 vertical-middle">{{ data.approvalStatusName }}</td>
 										<td class="text-center end vertical-middle">
-											<a @click="fnToPassword" class="btnStyle1 borderLightGray small mr5" title="비밀번호설정 메일보내기">비밀번호설정 메일보내기</a>
+											<button @click="fnToPassword(index)" class="btnStyle1 borderLightGray small mr5" title="비밀번호설정 메일보내기">비밀번호설정 메일보내기</button>
 											<span v-if="data.approvalStatus == 'Y' ">
 												<a @click="fnStopUserPop(index)" class="btnStyle1 borderLightGray small mr5" title="이용정지">이용정지</a>
 											</span>
@@ -179,7 +179,7 @@ export default {
 	},
 	data() {
 		return {
-			listSize : 10,	// select 박스 value (출력 갯수 이벤트)
+			listSize : 5,	// select 박스 value (출력 갯수 이벤트)
 			pageNo : 1,		// 현재 페이징 위치
 			totCnt : 0,		//전체 리스트 수
 			offset : 0,		 //페이지 시작점
@@ -212,12 +212,13 @@ export default {
 
 			curRoleCd: tokenSvc.getToken().principal.role,
 			modifyApprovalStatus: '',
+
+			disabledArr : []
 		}
 	},
 	mounted() {
 		this.fnStatusInit();
 		this.fnPageNoResetSearch();
-		
 	},
 	methods: {
 		fnStatusInit() {
@@ -320,19 +321,34 @@ export default {
 			this.registerLayerTitle = 'UserRegister';
 		},
 		// 비밀번호설정 화면이동
-		fnToPassword() {
-			eventBus.$on('callbackEventBus', this.fnToPasswordCallBack);
-			confirm.fnConfirm(this.componentsTitle, '비밀번호 설정을 위해서 로그아웃 하시겠습니까?', '확인');
-		},
-		fnToPasswordCallBack() {
-			loginApi.logout().then(response => {
-				if (response.data.success) {
-					this.$router.push({
-						path: '/login/findUserPwd'
-					});
+		fnToPassword(index) {
+			var params = {
+				email : this.items[index].loginId,
+				location : "/login/setUserPwd"
+			};
+
+			userApi.sendCertifyMail(params).then(response => {
+				var result = response.data;
+				var vm = this;
+				if(!result.success){
+					confirm.fnAlert("", result.message);
+					return;
+				} else {
+					confirm.fnAlert("", "인증메일을 전송하였습니다. 메일함을 확인해주세요.");
 				}
 			});
-		}
+			// eventBus.$on('callbackEventBus', this.fnToPasswordCallBack);
+			// confirm.fnConfirm(this.componentsTitle, '비밀번호 설정을 위해서 로그아웃 하시겠습니까?', '확인');
+		},
+		// fnToPasswordCallBack() {
+		// 	loginApi.logout().then(response => {
+		// 		if (response.data.success) {
+		// 			this.$router.push({
+		// 				path: '/login/findUserPwd'
+		// 			});
+		// 		}
+		// 	});
+		// }
 	}
 }
 </script>

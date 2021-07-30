@@ -1,8 +1,12 @@
 package kr.co.uplus.cm.signUp.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +42,8 @@ public class SignUpService {
 	
 	@Value("${spring.mail.username}")
 	String mailHost;
+	
+	@Value("${console.domain.baseUrl}") String baseUrl;
 	
 	@Autowired
 	private JavaMailSender mailSender;
@@ -119,25 +125,26 @@ public class SignUpService {
 					rtn.setMessage(CommonUtils.getString(((Map<String, Object>) result.get("data")).get("resultMsg")));
 					return rtn;
 				}
-	
-				// 사업자 등록증 첨부파일
-				MultipartFile file = (MultipartFile) paramMap.get("attachFile");
-				
-				String fileSeq = "";
-				
-				String uploadDirPath = FileConfig.getFilePath(FileConfig.FileSvcType.BIZ_REG_CARD);
-				
-				if(file != null) {
-					fileSeq = commonService.uploadFile(file, null, uploadDirPath);
-	
-					paramMap.put("fileId", fileSeq);
-				}
 			}
+			
+			// 사업자 등록증 첨부파일
+			MultipartFile file = (MultipartFile) paramMap.get("attachFile");
+			
+			String fileSeq = "";
+			
+			String uploadDirPath = FileConfig.getFilePath(FileConfig.FileSvcType.BIZ_REG_CARD);
+			
+			if(file != null) {
+				fileSeq = commonService.uploadFile(file, userId, uploadDirPath);
+
+				paramMap.put("fileId", fileSeq);
+			}
+			
 			// 고객사 등록
 			generalDao.insertGernal(DB.QRY_INSERT_CM_CORP, paramMap);
 			
 			// redis update
-			commonService.updateCmCmdForRedis("CM_USER");
+			commonService.updateCmCmdForRedis("CM_CORP");
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("회원 가입에 실패하였습니다.");
@@ -147,15 +154,22 @@ public class SignUpService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-	public void insertEmailUser(Map<String, Object> params) throws Exception {
-		// 난수 생성은 이전 로직에서 처리해야됨 이메일 발송모듈 추가후 삭제 예정 _서동욱
-		String randomNum = CommonUtils.randomGeneration(10);
-		params.put("ranDomNum", randomNum);
-		params.put("cmRole", "OWNER");
+	public void insertEmailCertify(Map<String, Object> params) throws Exception {
 		
-		generalDao.insertGernal(DB.QRY_INSERT_CM_USER, params);
+		params.put("loginId", params.get("email"));
 		
-		this.sendMail(params);
+		int cnt = generalDao.selectGernalCount(DB.QRY_SELECT_USER_DUPC_CNT, params);
+		if(cnt > 0) {
+			throw new Exception("이미 회원가입이 완료된 이메일입니다.");
+		} else {
+			// 난수 생성은 이전 로직에서 처리해야됨 이메일 발송모듈 추가후 삭제 예정 _서동욱
+			String randomNum = CommonUtils.randomGeneration(10);
+			params.put("authKey", randomNum);
+			
+			generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, params);
+			
+			this.sendMail(params, "/sign/signUpMain");
+		}
 	}
 
 	public RestResult<?> selectUseTerms(Map<String, Object> params) throws Exception {
@@ -248,7 +262,7 @@ public class SignUpService {
 		return rtn;
 	}
 
-	public void sendMail(Map<String, Object> params) throws Exception {
+	public void sendMail(Map<String, Object> params, String location) throws Exception {
 		MailHandler mailHandler = new MailHandler(mailSender);
 		
 		// 받는 사람
@@ -260,20 +274,38 @@ public class SignUpService {
 		
 		String html = "";
 		html += "본인인증이 완료되었습니다.\n";
-		html += "<a href='http://localhost:3000/sign/signUpMain?loginId="+params.get("email")+"&authKey="+params.get("ranDomNum")+"'> 홈페이지로 이동 </a>";
-		
+//		html += "<form method='POST' name='certifyFrm' action='"+this.baseUrl+location+"'>";
+//		html += "<input type='hidden' name='authKey' value='"+params.get("authKey")+"'>";
+//		html += "<input type='submit' value='전송'>";
+//		html += "</form>";
+		html += "<a href='"+this.baseUrl+location+"?authKey="+params.get("authKey")+"'> 홈페이지로 이동 </a>";
 		
 		mailHandler.setText(html, true);
 		
 		mailHandler.send();
 	}
 
-	public RestResult<Object> certifyMailByLoginId(Map<String, Object> params) throws Exception {
+	public RestResult<Object> certifyMailByAuthKey(Map<String, Object> params) throws Exception {
 		RestResult<Object>	rtn = new RestResult<Object>();
 		
-		int cnt = generalDao.selectGernalCount(DB.QRY_CHK_MAIL_CERTIFY_BY_LOGINID, params);
-		if(cnt> 0) {
+		Map<String, Object> certifyMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_CHK_MAIL_CERTIFY_BY_AUTHKEY, params);
+		if(!certifyMap.isEmpty()) {
+			// 유효 만료 시간 여부 확인
+			SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+			Date now = new Date();
+			String formatTime = format.format(now);
+			
+			// 현재시간
+			Date nowDt = format.parse(formatTime);
+			// 유효시간
+			Date certifyDt = format.parse(CommonUtils.getString(certifyMap.get("mailCertifyDt")));
+			if(certifyDt.getTime() < nowDt.getTime()) {
+				rtn.setSuccess(false);
+				rtn.setMessage("이메일 인증 유효시간은 1시간 입니다.");
+				return rtn;
+			}
 			rtn.setSuccess(true);
+			rtn.setData(certifyMap);
 		} else {
 			rtn.setSuccess(false);
 			rtn.setMessage("메일 인증 실패하였습니다.");

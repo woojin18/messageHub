@@ -12,7 +12,7 @@
           <!-- PUSH -->
           <div v-if="previewMessageType == 'PUSH'" class="phoneWrap">
             <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-            <div class="phoneTextWrap scroll-y">
+            <div class="phoneTextWrap scroll-yc">
               <div class="phoneText1">
                 <p v-if="fnIsEmpty(sendData.pushTitle)">제목</p>
                 <p v-else>{{sendData.pushTitle}}</p>
@@ -37,7 +37,7 @@
           <!-- XMS -->
           <div v-if="previewMessageType == 'RPLC'" class="phoneWrap">
             <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-            <div class="phoneTextWrap">
+            <div class="phoneTextWrap scroll-yc">
               <div class="phoneText1">
                 <p v-if="fnIsEmpty(sendData.fbInfo.callback)">발신번호</p>
                 <p v-else>{{sendData.fbInfo.callback}}</p>
@@ -46,7 +46,7 @@
                 <p v-if="fnIsEmpty(sendData.fbInfo.title)">제목</p>
                 <p v-else>{{sendData.fbInfo.title}}</p>
               </div>
-              <div class="scroll-y">
+              <div>
                 <p v-if="(fnIsEmpty(sendData.fbInfo.msg) && fnIsEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
                 <p v-else class="font-size14 color4 mt10">
                   <span><pre>{{sendData.fbInfo.msg}}</pre></span>

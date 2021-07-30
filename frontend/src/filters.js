@@ -10,6 +10,11 @@ Vue.filter('formatPrice', (value) => {
   return Vue.prototype.$gfnCommonUtils.formatPrice(value);
 });
 
+//xss unescape
+Vue.filter('unescapeXss', (value) => {
+  return Vue.prototype.$gfnCommonUtils.unescapeXss(value);
+});
+
 //RCS 아이콘 URL
 Vue.filter('getIconURlByFormNm', (value) => {
   if(!value) return '';

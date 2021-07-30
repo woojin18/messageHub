@@ -13,7 +13,7 @@
         </if>
         <if test="searchStartDate != '' and searchStartDate != null ">
             <if test="searchEndDate != '' and searchEndDate != null ">
-            AND A.REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
+            <!-- AND A.REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59') -->
             </if>
         </if>
     </sql>
@@ -38,15 +38,19 @@
 		        WHEN A.SENDER_TYPE = 'S' THEN '스마트발송'
 		        END AS SENDER_TYPE_NM /*발송타입명*/
 			   , A.SENDER_CNT
+			   , A.CAMPAIGN_ID
+			   , A.STATUS
 			   , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%s') AS REG_DT /*등록일시*/
 			   , DATE_FORMAT(A.REQ_DT, '%Y.%m.%d %H:%i:%s') AS REQ_DT /*예약발송일시*/
 			    , CASE WHEN A.REQ_DT <![CDATA[<=]]> NOW() THEN 'FALSE'
 			          ELSE 'TRUE'
 			          END AS CANCEL_SHOW_FLAG
 			   , C.CORP_NAME
+<!-- 			   , A.MSG_INFO->>'$.send_info[1].chType' AS REPLC_SEND -->
+				, A.MSG_INFO->>'$.fbInfoLst[0].ch' AS REPLC_SEND
 			   , A.MSG_INFO->>'$.send_info[1].chType' AS REPLC_SEND
 			   <!--  , CONCAT(A.MSG_INFO->>'$.send_info[0].chType', ' : ', '\n', A.MSG_INFO->>'$.send_info[0].content', '\n', A.MSG_INFO->>'$.send_info[1].chType', ' : ', '\n', A.MSG_INFO->>'$.send_info[1].content') AS CONTENT-->
-			   , A.MSG_INFO->>'$.msg' AS CONTENT
+			   , A.MSG_INFO->>'$.msg.body' AS CONTENT
 		FROM cm_console.CM_WEB_MSG A LEFT OUTER JOIN cm_console.CM_CORP C ON A.CORP_ID = C.CORP_ID
 		   , (SELECT @rownum:=0) TMP
 		WHERE 1=1

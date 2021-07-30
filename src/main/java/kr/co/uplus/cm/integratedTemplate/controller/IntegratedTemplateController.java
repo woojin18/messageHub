@@ -109,7 +109,11 @@ public class IntegratedTemplateController {
 			rtn = integratedTemplateService.insertMultiSendTemplate(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
+			if (!"".equals(e.getMessage())) {
+				rtn.setMessage(e.getMessage());
+			} else {
+				rtn.setMessage("실패하였습니다.");
+			}
 			log.error("{} Error : {}", this.getClass(), e);
 		}
 		return rtn;

@@ -20,8 +20,8 @@
                 <div class="border-line2" style="height:354px; overflow-y:scroll;">
                   <ul class="color4">
                     <li @click="fnGetTemplateInfo(idx, templateInfo.tmpltId)" v-for="(templateInfo, idx) in templateList" :key="templateInfo.tmpltId" class="bb-ddd pd5">
-                      {{$gfnCommonUtils.unescapeXss(templateInfo.tmpltName)}}
-                      <span v-if="!$gfnCommonUtils.isEmpty(templateInfo.tmpltTitle)">({{$gfnCommonUtils.unescapeXss(templateInfo.tmpltTitle)}})</span>
+                      {{templateInfo.tmpltName | unescapeXss}}
+                      <span v-if="!$gfnCommonUtils.isEmpty(templateInfo.tmpltTitle)">({{templateInfo.tmpltTitle | unescapeXss}})</span>
                     </li>
                     <li v-if="templateList.length == 0" class="bb-ddd pd5 text-center">검색된 내용이 없습니다.</li>
                   </ul>
@@ -63,7 +63,7 @@
                 <!-- phoneWrap -->
                 <div class="phoneWrap">
                   <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-                  <div class="phoneTextWrap scroll-y">
+                  <div class="phoneTextWrap scroll-yc">
                     <div v-if="templateData.senderType == 'MMS'" class="phoneText2 mb10">
                       <p v-if="$gfnCommonUtils.isEmpty(templateData.tmpltTitle)">템플릿 제목</p>
                       <p v-else>{{templateData.tmpltTitle}}</p>

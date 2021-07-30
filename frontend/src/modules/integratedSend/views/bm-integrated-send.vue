@@ -96,7 +96,7 @@
                   <!-- <u><router-link :to="{ name: 'integratedSendManage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u> -->
                   <u><router-link :to="{ name: 'sendIntegMessage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u>
                 </td>
-                <td class="text-left">{{$gfnCommonUtils.unescapeXss(data.tmpltTitle)}}</td>
+                <td class="text-left">{{data.tmpltTitle | unescapeXss}}</td>
                 <td class="text-left">{{fnJsonArrayToChannelLit(data.checkedChannel)}}</td>
                 <td class="text-center">{{data.msgKindName}}</td>
                 <td class="text-center">{{data.msgTypeName}}</td>
@@ -231,7 +231,7 @@ export default {
       //유효성 검사
       if(this.searchData.searchStartDate && this.searchData.searchEndDate){
         if(this.searchData.searchStartDate.replace(/[^0-9]/g, '') > this.searchData.searchEndDate.replace(/[^0-9]/g, '')){
-          alert('시작일은 종료일보다 클 수 없습니다.');
+          confirm.fnAlert(this.componentsTitle, '시작일은 종료일보다 클 수 없습니다.');
           return false;
         }
       }
@@ -251,7 +251,7 @@ export default {
           this.totCnt = result.pageInfo.totCnt;
           this.offset = result.pageInfo.offset;
         } else {
-          alert(result.message);
+          confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
     },

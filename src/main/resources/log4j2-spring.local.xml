@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration status="DEBUG" >
-	<appenders>
-  		<Console name="console" >
-   			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %m%n%wEx" />
-  		</Console>
-  	</appenders>
+<configuration status="DEBUG" packages="kr.co.uplus.cm.common.log">
+    <appenders>
+        <Console name="console" >
+<!--             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %m%n%wEx" /> -->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %spi%n%wEx" />
+        </Console>
+    </appenders>
 
-	<loggers>
-  		<root level="info" >
-   			<appender-ref ref="console" />
-  		</root>
+    <loggers>
+        <root level="debug" >
+            <appender-ref ref="console" />
+        </root>
 
-		<logger name="org.apache" level="info" />
-  		<logger name="org.springframework" level="info" />
-		<logger name="io.lettuce.core" level="info" />
+        <logger name="org.apache" level="info" />
+        <logger name="org.springframework" level="info" />
+        <logger name="io.lettuce.core" level="info" />
 
-		<logger name="io.netty" level="info" />
-		<logger name="org.mybatis" level="info" />
-		<logger name="com.zaxxer.hikari" level="info" />
-		<logger name="test" level="info" />
-        
+        <logger name="io.netty" level="info" />
+        <logger name="org.mybatis" level="info" />
+        <logger name="com.zaxxer.hikari" level="info" />
+        <logger name="test" level="info" />
+
         <!-- DB 관련 -->
         <logger name="jdbc" level="OFF"/>
         <logger name="jdbc.sqlonly" level="OFF" />
         <logger name="jdbc.sqltiming" level="DEBUG" />
         <logger name="jdbc.audit" level="OFF" />
         <logger name="jdbc.resultset" level="OFF" />
-        <logger name="jdbc.resultsettable" level="DEBUG" />
+        <logger name="jdbc.resultsettable" level="OFF" />
         <logger name="jdbc.connection" level="OFF" />
+        <logger name="org.mongodb.driver" level="OFF"/>
 
- 	</loggers>
- 	
+    </loggers>
+
 </configuration>

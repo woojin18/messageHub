@@ -37,6 +37,7 @@ import com.google.gson.reflect.TypeToken;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.common.log.LogMaskingConverter;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkRequestData;
@@ -474,7 +475,7 @@ public class SendMessageService {
         int resultCnt = insertCmWebMsg(params);
 
         if (resultCnt <= 0) {
-            log.info("{}.insertPushCmWebMsg Fail =>  webReqId : {}", this.getClass(), pushRequestData.getWebReqId());
+            log.warn("{}.insertPushCmWebMsg Fail =>  webReqId : {}", this.getClass(), pushRequestData.getWebReqId());
         }
 
         return rtn;
@@ -850,7 +851,7 @@ public class SendMessageService {
         int resultCnt = insertCmWebMsg(params);
 
         if (resultCnt <= 0) {
-            log.info("{}.insertSmsCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
+            log.warn("{}.insertSmsCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
         }
 
         return rtn;
@@ -1074,7 +1075,7 @@ public class SendMessageService {
         int resultCnt = insertCmWebMsg(params);
 
         if (resultCnt <= 0) {
-            log.info("{}.insertMmsCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
+            log.warn("{}.insertMmsCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
         }
 
         return rtn;
@@ -1411,7 +1412,7 @@ public class SendMessageService {
 
         for (ConstraintViolation violation : violations) {
             errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + violation.getMessage();
-            log.info("path : [{}], message : [{}]", violation.getPropertyPath(), violation.getMessage());
+            //log.info("path : [{}], message : [{}]", violation.getPropertyPath(), violation.getMessage());
         }
 
         //연관유효성 체크
@@ -1497,7 +1498,7 @@ public class SendMessageService {
         int resultCnt = insertCmWebMsg(params);
 
         if (resultCnt <= 0) {
-            log.info("{}.insertFrndTalkCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
+            log.warn("{}.insertFrndTalkCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
         }
 
         return rtn;
@@ -1849,7 +1850,7 @@ public class SendMessageService {
 
         int resultCnt = insertCmWebMsg(params);
         if (resultCnt <= 0) {
-            log.info("{}.insertAlimTalkCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
+            log.warn("{}.insertAlimTalkCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
         }
 
         return rtn;
@@ -2133,7 +2134,7 @@ public class SendMessageService {
 
         int resultCnt = insertCmWebMsg(params);
         if (resultCnt <= 0) {
-            log.info("{}.insertSmartCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
+            log.warn("{}.insertSmartCmWebMsg Fail =>  webReqId : {}", this.getClass(), requestData.getWebReqId());
         }
 
         return rtn;
@@ -2307,6 +2308,11 @@ public class SendMessageService {
 
         //사용 채널 그룹 정보 조회
         String useChGrpInfoStr = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_USE_CH_GRP_INFO, params));
+        if(StringUtils.isEmpty(useChGrpInfoStr)) {
+            rtn.setFail("이용 가능한 채널이 존재하지 않습니다.");
+            return rtn;
+        }
+
         ObjectMapper mapper = new ObjectMapper();
         Map<String, String> useChGrpInfo = mapper.readValue(useChGrpInfoStr, Map.class);
         List<String> useChGrps = new ArrayList<String>();
@@ -2434,7 +2440,7 @@ public class SendMessageService {
      */
     @SuppressWarnings("unchecked")
     public List<RecvInfo> replaceRcsMsgVar(List<RecvInfo> recvInfoLst, Map<String, Object> params) throws Exception{
-        log.info("{}.replaceRcsMsgVar start. recvInfoLst ==> {}", this.getClass(), recvInfoLst);
+        log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.replaceRcsMsgVar start. recvInfoLst ==> {}", this.getClass(), recvInfoLst);
 
         List<RecvInfo> rtnList = new ArrayList<RecvInfo>(recvInfoLst);
         Map<String, Object> rcsltInfo = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_RCS_INFO, params);
@@ -2442,7 +2448,7 @@ public class SendMessageService {
         String tmpltMergeDataStr = CommonUtils.getStrValue(rcsltInfo, "mergeData");
 
         //미승인형
-        if(StringUtils.equals(Const.RcsPrd.FREE, rcsPrdType)) {
+        if((StringUtils.equals(Const.RcsPrd.NARRATIVE, rcsPrdType) || StringUtils.equals(Const.RcsPrd.STYEL, rcsPrdType)) == false) {
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             List<Map<String, Object>> tmpltMergeDataList = gson.fromJson(tmpltMergeDataStr, new TypeToken<List<Map<String, Object>>>(){}.getType());
             Map<String, Object> tmpltMergeData = new HashMap<String, Object>();
@@ -2451,8 +2457,9 @@ public class SendMessageService {
                 tmpltMergeData = tmpltMergeDataList.get(0);
             }
 
+            String title = CommonUtils.getStrValue(tmpltMergeData, "title");
             String description = CommonUtils.getStrValue(tmpltMergeData, "description");
-            if(StringUtils.isNotBlank(description)) {
+            if(StringUtils.isNotBlank(title) || StringUtils.isNotBlank(description)) {
                 Map<String, Object> rcsVar = null;
                 Map<String, Object> rcsMergeData = null;
                 Map<String, Object> sendMergeData = null;
@@ -2467,6 +2474,7 @@ public class SendMessageService {
                         rcsVar = (Map<String, Object>) sendMergeData.get(Const.Ch.RCS);
                         ss = new StringSubstitutor(rcsVar, ApiConfig.RCS_VAR_START, ApiConfig.RCS_VAR_END);
 
+                        rcsMergeData.put("title", ss.replace(title));
                         rcsMergeData.put("description", ss.replace(description));
                         sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                     }

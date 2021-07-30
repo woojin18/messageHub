@@ -66,13 +66,13 @@
 							</div>
 						</div>
 
-						<h4>도메인 설정</h4>
+						<!-- <h4>도메인 설정</h4>
 						<div class="border-line mt20 Dashboard06">
 							<div class="of_h">
 								<h5 class="inline-block" style="width:20%">도메인 이름</h5>
 								<h5 class="inline-block" style="width:80%">{{ domainName }}</h5>
 							</div>	
-						</div>						
+						</div>						 -->
 					</div>
 					<div class="text-center mt40">
 						<a href="#self" @click.prevent="fnCloseLayer" class="btnStyle2 backWhite ml10" title="닫기">닫기</a>
@@ -155,19 +155,6 @@ export default {
     },
     // 데이터 초기화
     fnReset(){
-      // this.regno = this.corpInfo.regno;
-      // this.corpName = this.corpInfo.corpName;
-      // this.ceoName = this.corpInfo.ceoName;
-      // this.busitype = this.corpInfo.busitype;
-      // this.busiclass = this.corpInfo.busiclass;
-      // this.woplaceAddress = this.corpInfo.woplaceAddress;
-      // this.woplaceAddressDetail = this.corpInfo.woplaceAddressDetail;
-      // this.wireTel = this.corpInfo.wireTel;
-      // this.attachFileName = this.corpInfo.attachFileName;
-      // this.attachFilePath = this.corpInfo.attachFilePath;
-      // this.custKdCd = this.corpInfo.custKdCd;
-      // this.domainName = this.corpInfo.domainName;
-
       this.regno = this.corpInfo.bsRegNo;
       this.corpName = this.corpInfo.bizCompNm;
       this.ceoName = this.corpInfo.custNm;
@@ -191,7 +178,7 @@ export default {
         var params = {
             fileId    : fileId
         };
-        // myPageApi.downloadRegCardImage(params);
+        myPageApi.downloadRegCardImage(params);
       }
     },
   }

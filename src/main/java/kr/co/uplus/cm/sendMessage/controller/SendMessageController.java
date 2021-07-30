@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.MultipartFileDTO;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.common.log.LogMaskingConverter;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkRequestData;
 import kr.co.uplus.cm.sendMessage.dto.FrndTalkRequestData;
@@ -220,11 +221,11 @@ public class SendMessageController {
         try {
             params = commonService.setUserInfo(multipartFileDTO.getUnescapeParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
-            log.info("{}.sendPushMessage Start ====> params : {}", this.getClass(), params);
+            log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.sendPushMessage Start ====> params : {}", this.getClass(), params);
 
             /** 사용 가능 채널 확인 */
             if(StringUtils.isBlank((String) sendMsgService.selectValidUseChGrp(params).getData())) {
-                log.info("{}.sendPushMessage validation use channel fail - params: {}", this.getClass(), params);
+                log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.sendPushMessage validation use channel fail - params: {}", this.getClass(), params);
                 rtn.setFail("이용하실 수 없는 채널입니다.");
                 return rtn;
             }
@@ -235,7 +236,7 @@ public class SendMessageController {
                 log.info("{}.sendPushMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
                 return rtn;
             }
-            log.info("{}.sendPushMessage pushRequestData: {}", this.getClass(), requestData.toString());
+            log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.sendPushMessage pushRequestData: {}", this.getClass(), requestData.toString());
 
             /** 푸시 수신자 리스트*/
             recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
@@ -306,7 +307,7 @@ public class SendMessageController {
             log.info("{}.sendPushMessage aSync API send Start ====>", this.getClass());
             sendMsgService.sendPushMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
-            log.info("{}.sendPushMessage aSync API send Error : {}", this.getClass(), e);
+            log.error("{}.sendPushMessage aSync API send Error : {}", this.getClass(), e);
         }
         rtn.setMessage("푸시 발송 요청처리 되었습니다.");
 
@@ -377,11 +378,11 @@ public class SendMessageController {
         try {
             params = commonService.setUserInfo(multipartFileDTO.getUnescapeParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
-            log.info("{}.sendSmsMessage Start ====> paramString : {}", this.getClass(), params);
+            log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.sendSmsMessage Start ====> paramString : {}", this.getClass(), params);
 
             /** 사용 가능 채널 확인 */
             if(StringUtils.isBlank((String) sendMsgService.selectValidUseChGrp(params).getData())) {
-                log.info("{}.sendSmsMessage validation use channel fail - params: {}", this.getClass(), params);
+                log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.sendSmsMessage validation use channel fail - params: {}", this.getClass(), params);
                 rtn.setFail("이용하실 수 없는 채널입니다.");
                 return rtn;
             }
@@ -392,7 +393,7 @@ public class SendMessageController {
                 log.info("{}.sendSmsMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
                 return rtn;
             }
-            log.info("{}.sendSmsMessage requestData: {}", this.getClass(), requestData.toString());
+            log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.sendSmsMessage requestData: {}", this.getClass(), requestData.toString());
 
             /** SMS 수신자 리스트*/
             recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
@@ -457,7 +458,7 @@ public class SendMessageController {
             log.info("{}.sendSmsMessage aSync API send Start ====>", this.getClass());
             sendMsgService.sendSmsMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
-            log.info("{}.sendSmsMessage aSync API send Error : {}", this.getClass(), e);
+            log.error("{}.sendSmsMessage aSync API send Error : {}", this.getClass(), e);
         }
 
         rtn.setMessage("SMS 발송 요청처리 되었습니다.");
@@ -490,11 +491,11 @@ public class SendMessageController {
         try {
             params = commonService.setUserInfo(multipartFileDTO.getUnescapeParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
-            log.info("{}.sendMmsMessage Start ====> paramString : {}", this.getClass(), params);
+            log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.sendMmsMessage Start ====> paramString : {}", this.getClass(), params);
 
             /** 사용 가능 채널 확인 */
             if(StringUtils.isBlank((String) sendMsgService.selectValidUseChGrp(params).getData())) {
-                log.info("{}.sendMmsMessage validation use channel fail - params: {}", this.getClass(), params);
+                log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.sendMmsMessage validation use channel fail - params: {}", this.getClass(), params);
                 rtn.setFail("이용하실 수 없는 채널입니다.");
                 return rtn;
             }
@@ -569,7 +570,7 @@ public class SendMessageController {
             log.info("{}.sendMmsMessage aSync API send Start ====>", this.getClass());
             sendMsgService.sendMmsMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
-            log.info("{}.sendMmsMessage aSync API send Error : {}", this.getClass(), e);
+            log.error("{}.sendMmsMessage aSync API send Error : {}", this.getClass(), e);
         }
 
         rtn.setMessage("MMS 발송 요청처리 되었습니다.");
@@ -644,11 +645,11 @@ public class SendMessageController {
         try {
             params = commonService.setUserInfo(multipartFileDTO.getUnescapeParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
-            log.info("{}.sendFrndTalkMessage Start ====> paramString : {}", this.getClass(), params);
+            log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.sendFrndTalkMessage Start ====> paramString : {}", this.getClass(), params);
 
             /** 사용 가능 채널 확인 */
             if(StringUtils.isBlank((String) sendMsgService.selectValidUseChGrp(params).getData())) {
-                log.info("{}.sendFrndTalkMessage validation use channel fail - params: {}", this.getClass(), params);
+                log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.sendFrndTalkMessage validation use channel fail - params: {}", this.getClass(), params);
                 rtn.setFail("이용하실 수 없는 채널입니다.");
                 return rtn;
             }
@@ -735,7 +736,7 @@ public class SendMessageController {
             log.info("{}.sendFrndTalkMessage aSync API send Start ====>");
             sendMsgService.sendFrndTalkMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
-            log.info("{}.sendFrndTalkMessage aSync API send Error : {}", this.getClass(), e);
+            log.error("{}.sendFrndTalkMessage aSync API send Error : {}", this.getClass(), e);
         }
         rtn.setMessage("친구톡 발송 요청처리 되었습니다.");
 
@@ -810,11 +811,11 @@ public class SendMessageController {
         try {
             params = commonService.setUserInfo(multipartFileDTO.getUnescapeParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
-            log.info("{}.sendAlimTalkMessage Start ====> paramString : {}", this.getClass(), params);
+            log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.sendAlimTalkMessage Start ====> paramString : {}", this.getClass(), params);
 
             /** 사용 가능 채널 확인 */
             if(StringUtils.isBlank((String) sendMsgService.selectValidUseChGrp(params).getData())) {
-                log.info("{}.sendAlimTalkMessage validation use channel fail - params: {}", this.getClass(), params);
+                log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.sendAlimTalkMessage validation use channel fail - params: {}", this.getClass(), params);
                 rtn.setFail("이용하실 수 없는 채널입니다.");
                 return rtn;
             }
@@ -830,7 +831,7 @@ public class SendMessageController {
             recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
                 rtn.setSuccess(false);
-                rtn.setMessage("잘못된 친구톡 수신자 정보입니다.");
+                rtn.setMessage("잘못된 알림톡 수신자 정보입니다.");
                 return rtn;
             }
 
@@ -895,7 +896,7 @@ public class SendMessageController {
             log.info("{}.sendAlimTalkMessage aSync API send Start ====>");
             sendMsgService.sendAlimTalkMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
-            log.info("{}.sendAlimTalkMessage aSync API send Error : {}", this.getClass(), e);
+            log.error("{}.sendAlimTalkMessage aSync API send Error : {}", this.getClass(), e);
         }
         rtn.setMessage("알림톡 발송 요청처리 되었습니다.");
 
@@ -927,12 +928,12 @@ public class SendMessageController {
         try {
             params = commonService.setUserInfo(multipartFileDTO.getParams());
             String testSendYn = CommonUtils.getStrValue(params, "testSendYn");
-            log.info("{}.sendSmartMessage Start ====> paramString : {}", this.getClass(), params);
+            log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.sendSmartMessage Start ====> paramString : {}", this.getClass(), params);
 
             /** 유효성 체크 */
             requestData = sendMsgService.setSmartSendData(rtn, params);
             if(rtn.isSuccess() == false) {
-                log.info("{}.sendSmartMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
+                log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.sendSmartMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
                 return rtn;
             }
 
@@ -1037,7 +1038,7 @@ public class SendMessageController {
             log.info("{}.sendSmartMessage aSync API send Start ====>");
             sendMsgService.sendSmartMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
-            log.info("{}.sendSmartMessage aSync API send Error : {}", this.getClass(), e);
+            log.error("{}.sendSmartMessage aSync API send Error : {}", this.getClass(), e);
         }
         String senderType = CommonUtils.getStrValue(params, "senderType");
         String msg = (StringUtils.equals(senderType, Const.SenderType.SMART) ? "스마트" : "통합");

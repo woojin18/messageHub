@@ -1,8 +1,8 @@
 <template>
 <div class="row row-no-margin">
   <div class="contentHeader">
-      <h2> > MO 수신현황</h2>
-      <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="MO 수신현황 이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+      <h2>MO 수신현황</h2>
+      <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="MO 수신현황 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
   </div>
   <!-- 본문 -->
   <div class="row">
@@ -11,7 +11,7 @@
         <div class="of_h">
           <div class="inline-block" style="width:8%"><h4 class="font-normal mt15">수신일자</h4></div>
           <div class="inline-block" style="width:91%">
-            <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" ></Calendar>
+            <!-- <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" ></Calendar>
             <span style="padding:0 11px">~</span>
             <Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchEndDate"></Calendar>
             <ul class="tab_s2 ml20">
@@ -19,28 +19,30 @@
                 <li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 등록일자 검색">1주일</a></li>
                 <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
                 <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
+            </ul> -->
+            <Calendar @update-date="fnUpdateStartDate2" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" @change="fnSearch(1)"></Calendar>
+            <ul class="tab_s2 ml20">
+                <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 등록일자 검색">오늘</a></li>
             </ul>
           </div>  
         </div>
 
         <div class="consolMarginTop">
+          <h4 class="inline-block" style="width:8%">상태</h4>
+          <select v-model="searchData.searchCondi"  class="selectStyle2 maxWidth200" style="width:15%" title="상태 선택란">
+            <option v-for="data in condiDatas" :key="data.codeVal" :value="data.codeVal">{{data.codeName}}</option>
+          </select>
+          <h4 class="inline-block ml30" style="width:8%">발신번호</h4>
+          <input type="text" class="inputStyle ml10" id="searchSendNumber" name="searchSendNumber" v-model="searchData.searchSendNumber" style="width:25%" title="발신번호"  @keypress.enter="fnSearch(1)">
+        </div>	
+        <div class="consolMarginTop">
           <h4 class="inline-block" style="width:8%">수신번호 : </h4>
-          <div class="inline-block" style="width:29%" ><!-- <span v-html="receptionNumber"></span> -->
+          <div class="inline-block" style="width:29%" >
             <div v-for="(data, idx) in receptionDatas" :key="idx">
               <input type="checkbox" id="searchReceptionNumber" name="searchReceptionNumber" class="checkStyle2" :value="data.moNumber" v-model="searchData.searchReceptionNumber">
               <label for="searchReceptionNumber">{{ data.moNumber }}</label>
             </div>
-            <!-- <input type="checkbox" id="searchReceptionNumber" name="searchReceptionNumber" class="checkStyle2" value="1111" v-model="searchData.searchReceptionNumber"><label for="searchReceptionNumber">1111</label>
-            <input type="checkbox" id="searchReceptionNumber" name="searchReceptionNumber" class="checkStyle2" value="2222" v-model="searchData.searchReceptionNumber"><label for="searchReceptionNumber">2222</label> -->
           </div>
-          <h4 class="inline-block" style="width:8%">발신번호</h4>
-          <input type="text" class="inputStyle ml10" id="searchSendNumber" name="searchSendNumber" v-model="searchData.searchSendNumber" style="width:37.5%" title="발신번호">
-        </div>	
-        <div class="consolMarginTop">
-          <h4 class="inline-block" style="width:8%">상태</h4>
-          <select v-model="searchData.searchCondi"  class="selectStyle2" style="width:15%" title="상태 선택란">
-            <option v-for="data in condiDatas" :key="data.codeName" :value="data.codeName">{{data.codeVal}}</option>
-          </select>
           <a @click="fnSearch()" class="btnStyle1 float-right" title="검색" activity="READ">검색</a>
         </div>
 
@@ -61,7 +63,7 @@
       <!-- 15개씩 보기 -->
       <div class="of_h inline">
         <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
-          <SelectLayer @fnSelected="fnSelected"></SelectLayer>
+          <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
         </div>
       </div>
       <!-- //15개씩 보기 -->
@@ -96,7 +98,7 @@
             </thead>
             <tbody>
               <tr v-for="(data, idx) in datas" :key="data.row_num">
-                  <td>{{ idx + 1 }}</td>
+                  <td>{{totCnt-offset-data.rowNum+1}}</td>
                   <td class="text-center">{{data.moType}}</td>
                   <td class="text-center">{{data.moNumber}}</td>
                   <td class="text-center">{{data.moCallback}}</td>
@@ -159,7 +161,7 @@ export default {
       pageNo : 1,  // 현재 페이징 위치
       totCnt : 0,  //전체 리스트 수
       offset : 0, //페이지 시작점
-      searchDateInterval: 7,
+      searchDateInterval: 0,
       datas: [],
       condiDatas: [],
       receptionDatas: [],
@@ -181,6 +183,7 @@ export default {
       this.searchDateInterval = interval;
       this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
       this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
+      this.fnSearch();
     },
     fnUpdateStartDate(sltDate) {
       this.searchData.searchStartDate = sltDate;
@@ -189,16 +192,18 @@ export default {
       this.searchData.searchEndDate = sltDate;
     },
 
+    fnUpdateStartDate2(sltDate) {
+      this.searchData.searchStartDate = sltDate;
+      this.fnSearch(1);
+    },
     //엑셀 다운로드
     fnExcelDownLoad(){
       var params = this.searchData;
-      //params.projectId = this.testProjectId;
       messageStatusApi.excelDownloadMoReceptionStatus(params);
     },
 
     // 검색
     async fnSelectMoReceptionStatusList() {
-
       //유효성 검사
       if(this.searchData.searchStartDate && this.searchData.searchEndDate){
         if(this.searchData.searchStartDate.replace(/[^0-9]/g, '') > this.searchData.searchEndDate.replace(/[^0-9]/g, '')){
@@ -213,14 +218,11 @@ export default {
 
       params.loginId = tokenSvc.getToken().principal.userId;
       params.roleCd = tokenSvc.getToken().principal.roleCd;
-      //params.projectId = this.testProjectId;
 
       await messageStatusApi.selectMoReceptionStatusList(params).then(response =>{
         var result = response.data;
         if(result.success) {
           this.datas = result.data;
-          //this.totCnt = result.pageDto.totCnt;
-          //this.offset = result.pageDto.offset;
           this.totCnt = result.pageInfo.totCnt;
           this.offset = result.pageInfo.offset;
         } else {
@@ -243,14 +245,17 @@ export default {
       this.selectConditionList();
     },
  
-
+    // 상태
     async selectConditionList(){
       var params = {};
       await messageStatusApi.selectConditionList(params).then(response =>{
         var result = response.data;
         if(result.success) {
-          this.condiDatas = result.data;
-          //console.log(">>>>"+this.condiDatas[0].codeName);
+          this.condiDatas[0] = {"codeName": "전체", "codeVal": "", };
+          for( var i = 0; i < result.data.length; i++ ){
+            this.condiDatas[i+1] = result.data[i];
+          }
+
         } else {
           alert(result.message);
         }
@@ -262,19 +267,21 @@ export default {
       this.selectReceptionNumber();
     },
  
-
+    // 수신번호 검색창
     async selectReceptionNumber(){
-       var params = {};
-      //  "projectId" : this.testProjectId 
-      //};
+      var params = {};
+
       await messageStatusApi.selectReceptionNumberList(params).then(response =>{
         var result = response.data;
         if(result.success) {
+          console.log(result);
           this.receptionDatas = result.data;
           this.receptionNumber = result.data[0].receptionNumber;
-          console.log("receptionNumber >>>>"+ this.receptionNumber);
+          for( var i = 0; i < result.data.length; i++ ){
+            this.searchData.searchReceptionNumber[i] = result.data[i].moNumber;
+          }
         } else {
-          alert(result.message);
+          //alert(result.message);
         }
       });
     }
