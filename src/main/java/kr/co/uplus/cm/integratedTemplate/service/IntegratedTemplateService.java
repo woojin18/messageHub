@@ -88,13 +88,53 @@ public class IntegratedTemplateService {
 
 		for (int i = 0; i < rtnList.size(); i++) {
 			Map<String, Object> rtnMap = (Map<String, Object>) rtnList.get(i);
-			String rcsButtonData = (String) rtnMap.get("rcsButton0Data");
-			if (!"".equals(rcsButtonData) && rcsButtonData != null) {
+			String rcsButton0Data = (String) rtnMap.get("rcsButton0Data");
+			if (!"".equals(rcsButton0Data) && rcsButton0Data != null) {
 				JSONParser parser = new JSONParser();
-				JSONObject obj = (JSONObject) parser.parse(rcsButtonData);
+				JSONObject obj = (JSONObject) parser.parse(rcsButton0Data);
 				JSONArray jsonArr = null;
 				jsonArr = (JSONArray) obj.get("suggestions");
 				rtnMap.put("rcsButton0Data", jsonArr);
+			}
+			String rcsButton1Data = (String) rtnMap.get("rcsButton1Data");
+			if (!"".equals(rcsButton1Data) && rcsButton1Data != null) {
+				JSONParser parser = new JSONParser();
+				JSONObject obj = (JSONObject) parser.parse(rcsButton1Data);
+				JSONArray jsonArr = null;
+				jsonArr = (JSONArray) obj.get("suggestions");
+				rtnMap.put("rcsButton1Data", jsonArr);
+			}
+			String rcsButton2Data = (String) rtnMap.get("rcsButton2Data");
+			if (!"".equals(rcsButton2Data) && rcsButton2Data != null) {
+				JSONParser parser = new JSONParser();
+				JSONObject obj = (JSONObject) parser.parse(rcsButton2Data);
+				JSONArray jsonArr = null;
+				jsonArr = (JSONArray) obj.get("suggestions");
+				rtnMap.put("rcsButton2Data", jsonArr);
+			}
+			String rcsButton3Data = (String) rtnMap.get("rcsButton3Data");
+			if (!"".equals(rcsButton3Data) && rcsButton3Data != null) {
+				JSONParser parser = new JSONParser();
+				JSONObject obj = (JSONObject) parser.parse(rcsButton3Data);
+				JSONArray jsonArr = null;
+				jsonArr = (JSONArray) obj.get("suggestions");
+				rtnMap.put("rcsButton3Data", jsonArr);
+			}
+			String rcsButton4Data = (String) rtnMap.get("rcsButton4Data");
+			if (!"".equals(rcsButton4Data) && rcsButton4Data != null) {
+				JSONParser parser = new JSONParser();
+				JSONObject obj = (JSONObject) parser.parse(rcsButton4Data);
+				JSONArray jsonArr = null;
+				jsonArr = (JSONArray) obj.get("suggestions");
+				rtnMap.put("rcsButton4Data", jsonArr);
+			}
+			String rcsButton5Data = (String) rtnMap.get("rcsButton5Data");
+			if (!"".equals(rcsButton5Data) && rcsButton5Data != null) {
+				JSONParser parser = new JSONParser();
+				JSONObject obj = (JSONObject) parser.parse(rcsButton5Data);
+				JSONArray jsonArr = null;
+				jsonArr = (JSONArray) obj.get("suggestions");
+				rtnMap.put("rcsButton5Data", jsonArr);
 			}
 		}
 
@@ -319,12 +359,12 @@ public class IntegratedTemplateService {
 						if (rcsTallImgInfoList.size() > 0) {
 							Map<String, Object> imgInfo = rcsTallImgInfoList.get(0);// rcs에서 SHORT, TALL에는 이미지가 1개만 들어온다
 							if (imgInfo.containsKey("fileId")) {
-								sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(imgInfo, "imgUrl") + "\", "); //
-								sb.append("	\"media\" : \"" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" "); //
+								sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(imgInfo, "imgUrl") + "\", ");
+								sb.append("	\"media\" : \"" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" ");
 							}
 						} else {
-							sb.append("	\"mediaUrl\" : \"{}\", "); //
-							sb.append("	\"media\" : \"\", "); //
+							sb.append("	,\"mediaUrl\" : \"{}\", ");
+							sb.append("	\"media\" : \"\" ");
 						}
 					}
 					sb.append("	}]");
@@ -338,235 +378,86 @@ public class IntegratedTemplateService {
 						sb.append(newButtonAddStr(buttonInfoList));
 					}
 				} else if ((int) params.get("rcsTemplateTable") == 9) {
-//RCS CSHORT TYPE ====================================================================        			
+					// RCS CSHORT TYPE
+					// ====================================================================        			
 					sb.append("\"rcsPrdType\" : \"CSHORT\","); // RCS상품타입(캐러셀[SHORT]템플릿) rcsTemplateTable => 9
 
-					// System.out.println("rcs9CardCount type :
-					// "+params.get("rcs9CardCount").getClass().getName());
 					int rcs9CardCount;
+					int rcs9ButtonCardCount;
 					if (params.get("rcs9CardCount").getClass().getName().equalsIgnoreCase("java.lang.Integer")) {
 						rcs9CardCount = (int) params.get("rcs9CardCount");
+						rcs9ButtonCardCount = (int) params.get("rcs9CardCount");
 					} else {
 						rcs9CardCount = Integer.parseInt((String) params.get("rcs9CardCount"));
+						rcs9ButtonCardCount = Integer.parseInt((String) params.get("rcs9CardCount"));
 					}
 
-					String msgbaseId = "";
+					String messagebaseId = "";
 					if (rcs9CardCount == 3) {
-						msgbaseId = "CMwShS0300"; // 슬라이드형(Small,3장)
+						messagebaseId = "CMwShS0300"; // 슬라이드형(Small,3장)
 					} else if (rcs9CardCount == 4) {
-						msgbaseId = "CMwShS0400"; // 슬라이드형(Small,4장)
+						messagebaseId = "CMwShS0400"; // 슬라이드형(Small,4장)
 					} else if (rcs9CardCount == 5) {
-						msgbaseId = "CMwShS0500"; // 슬라이드형(Small,5장)
+						messagebaseId = "CMwShS0500"; // 슬라이드형(Small,5장)
 					} else if (rcs9CardCount == 6) {
-						msgbaseId = "CMwShS0600"; // 슬라이드형(Small,6장)
+						messagebaseId = "CMwShS0600"; // 슬라이드형(Small,6장)
 					}
+					sb.append("\"messagebaseId\": \"" + messagebaseId + "\","); /// 캐러셀형(SHORT) 템플릿의 RCS MESSAGEBASE_ID 를 설정
+					sb.append("\"cardCount\": \"" + rcs9CardCount + "\","); /// 캐러셀형(SHORT) 템플릿의 페이지 카운트
 
-					sb.append("\"messagebaseId\": \"" + msgbaseId + "\","); // cm.CM_RCS_MSGBASE,
-																			// cm_console.CM_RCS_TMP_MSGBASE의
-																			// MESSAGEBASEFORM_ID값을 설정
-					sb.append("\"callback\": \"" + params.get("callback") + "\",");
-					sb.append("\"footer\": \"" + params.get("rcs9HowToDenyReceipt") + "\","); // 무료수신거부 번호, header의 값이
-																								// 광고성일 때 footer 값을 포함하지
-																								// 않고 발송하면 실패 처리
-
-					sb.append("\"body\": [ ");
+					sb.append("\"mergeData\": [ ");
 					for (int k = 0; k < rcs9CardCount; k++) {
-						if (k == 0) {
-							sb.append(" { ");
-							sb.append("	\"title\" : \"" + params.get("rcs90Title") + "\", "); //
-							// String rcs90Content = ((String) params.get("rcs90Content")).replaceAll("\n",
-							// "CHR(13)CHR(10)");
-							sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs90Content"))
-									+ "\", "); // 메시지
+						String rcsTitle = "rcs" + k + "Title";
+						String rcsContent = "rcs" + k + "Content";
+						String rcsImgInfoList = "rcs9" + k + "ImgInfoList";
 
-							List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params
-									.get("rcs90Buttons");
-							// image List
-							List<Map<String, Object>> rcs90ImgInfoList = null;
-							if (params.containsKey("rcs90ImgInfoList")) {
-								rcs90ImgInfoList = (List<Map<String, Object>>) params.get("rcs90ImgInfoList");
-								if (rcs90ImgInfoList.size() > 0) {
-									Map<String, Object> imgInfo = rcs90ImgInfoList.get(0);// rcs에서 SHORT, TALL, CSHORT,
-																							// CTALL에는 이미지가 1개만 들어온다
-									if (imgInfo.containsKey("fileId")) {
-										sb.append("	\"mediaUrl\" : \"{" + imgInfo.get("imgUrl") + "}\", "); //
-										sb.append("	\"media\" : \"" + imgInfo.get("fileId") + "\", "); //
-									}
-								} else {
-									sb.append("	\"mediaUrl\" : \"{}\", "); //
-									sb.append("	\"media\" : \"\", "); //
+						sb.append(" { ");
+						sb.append("	\"title\" : \"" + JSONObject.escape((String) params.get(rcsTitle)) + "\", "); // 제목
+						sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get(rcsContent)) + "\" "); // 메시지
+
+						// image List
+						List<Map<String, Object>> rcsCarouselImgInfoList = null;
+						if (params.containsKey(rcsImgInfoList)) {
+							rcsCarouselImgInfoList = (List<Map<String, Object>>) params.get(rcsImgInfoList);
+							if (rcsCarouselImgInfoList.size() > 0) {
+								Map<String, Object> imgInfo = rcsCarouselImgInfoList.get(0);// rcs에서 SHORT, TALL, CSHORT, CTALL에는 이미지가 1개만 들어온다
+								if (imgInfo.containsKey("fileId")) {
+									sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(imgInfo, "imgUrl") + "\", ");
+									sb.append("	\"media\" : \"" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" ");
 								}
-								sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
+							} else {
+								sb.append("	,\"mediaUrl\" : \"{}\", ");
+								sb.append("	\"media\" : \"\" ");
 							}
-							sb.append("	} ");
-							if (k < rcs9CardCount - 1)
-								sb.append(", ");
+						}
+						sb.append("	} ");
+						if (k < rcs9CardCount - 1)
+							sb.append(", ");
+					}
+					sb.append("	] ");
+
+					sb.append(",\"buttons\": [ ");
+					for (int k = 0; k < rcs9ButtonCardCount; k++) {
+						sb.append(" { ");
+						sb.append("\"suggestions\": [ ");
+						String rcsButton = "rcs9" + k + "Buttons";
+						List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get(rcsButton);
+
+						if (buttonInfoList.size() > 0) {
+							sb.append(newCarouselButtonAddStr(buttonInfoList));
 						}
 
-						if (k == 1) {
-							sb.append(" { ");
-							sb.append("	\"title\" : \"" + params.get("rcs91Title") + "\", "); //
-							// String rcs91Content = ((String) params.get("rcs91Content")).replaceAll("\n",
-							// "CHR(13)CHR(10)");
-							sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs91Content"))
-									+ "\", "); // 메시지
+						sb.append("	]");
+						sb.append("	} ");
 
-							List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params
-									.get("rcs91Buttons");
-							// image List
-							List<Map<String, Object>> rcs91ImgInfoList = null;
-							if (params.containsKey("rcs91ImgInfoList")) {
-								rcs91ImgInfoList = (List<Map<String, Object>>) params.get("rcs91ImgInfoList");
-								if (rcs91ImgInfoList.size() > 0) {
-									Map<String, Object> imgInfo = rcs91ImgInfoList.get(0);// rcs에서 SHORT, TALL에는 이미지가
-																							// 1개만 들어온다
-									if (imgInfo.containsKey("fileId")) {
-										sb.append("	\"mediaUrl\" : \"{" + imgInfo.get("imgUrl") + "}\", "); //
-										sb.append("	\"media\" : \"" + imgInfo.get("fileId") + "\", "); //
-									}
-								} else {
-									sb.append("	\"mediaUrl\" : \"{}\", "); //
-									sb.append("	\"media\" : \"\", "); //
-								}
-								sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
-							}
-							sb.append("	} ");
-							if (k < rcs9CardCount - 1)
-								sb.append(", ");
-						}
-
-						if (k == 2) {
-							sb.append(" { ");
-							sb.append("	\"title\" : \"" + params.get("rcs92Title") + "\", "); //
-							// String rcs92Content = ((String) params.get("rcs92Content")).replaceAll("\n",
-							// "CHR(13)CHR(10)");
-							sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs92Content"))
-									+ "\", "); // 메시지
-
-							List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params
-									.get("rcs92Buttons");
-							// image List
-							List<Map<String, Object>> rcs92ImgInfoList = null;
-							if (params.containsKey("rcs92ImgInfoList")) {
-								rcs92ImgInfoList = (List<Map<String, Object>>) params.get("rcs92ImgInfoList");
-								if (rcs92ImgInfoList.size() > 0) {
-									Map<String, Object> imgInfo = rcs92ImgInfoList.get(0);// rcs에서 SHORT, TALL에는 이미지가
-																							// 1개만 들어온다
-									if (imgInfo.containsKey("fileId")) {
-										sb.append("	\"mediaUrl\" : \"{" + imgInfo.get("imgUrl") + "}\", "); //
-										sb.append("	\"media\" : \"" + imgInfo.get("fileId") + "\", "); //
-									}
-								} else {
-									sb.append("	\"mediaUrl\" : \"{}\", "); //
-									sb.append("	\"media\" : \"\", "); //
-								}
-								sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
-							}
-							sb.append("	} ");
-							if (k < rcs9CardCount - 1)
-								sb.append(", ");
-						}
-
-						if (k == 3) {
-							sb.append(" { ");
-							sb.append("	\"title\" : \"" + params.get("rcs93Title") + "\", "); //
-							// String rcs93Content = ((String) params.get("rcs93Content")).replaceAll("\n",
-							// "CHR(13)CHR(10)");
-							sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs93Content"))
-									+ "\", "); // 메시지
-
-							List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params
-									.get("rcs93Buttons");
-							// image List
-							List<Map<String, Object>> rcs93ImgInfoList = null;
-							if (params.containsKey("rcs93ImgInfoList")) {
-								rcs93ImgInfoList = (List<Map<String, Object>>) params.get("rcs93ImgInfoList");
-								if (rcs93ImgInfoList.size() > 0) {
-									Map<String, Object> imgInfo = rcs93ImgInfoList.get(0);// rcs에서 SHORT, TALL에는 이미지가
-																							// 1개만 들어온다
-									if (imgInfo.containsKey("fileId")) {
-										sb.append("	\"mediaUrl\" : \"{" + imgInfo.get("imgUrl") + "}\", "); //
-										sb.append("	\"media\" : \"" + imgInfo.get("fileId") + "\", "); //
-									}
-								} else {
-									sb.append("	\"mediaUrl\" : \"{}\", "); //
-									sb.append("	\"media\" : \"\", "); //
-								}
-								sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
-							}
-							sb.append("	} ");
-							if (k < rcs9CardCount - 1)
-								sb.append(", ");
-						}
-
-						if (k == 4) {
-							sb.append(" { ");
-							sb.append("	\"title\" : \"" + params.get("rcs94Title") + "\", "); //
-							// String rcs94Content = ((String) params.get("rcs94Content")).replaceAll("\n",
-							// "CHR(13)CHR(10)");
-							sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs94Content"))
-									+ "\", "); // 메시지
-
-							List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params
-									.get("rcs94Buttons");
-							// image List
-							List<Map<String, Object>> rcs94ImgInfoList = null;
-							if (params.containsKey("rcs94ImgInfoList")) {
-								rcs94ImgInfoList = (List<Map<String, Object>>) params.get("rcs94ImgInfoList");
-								if (rcs94ImgInfoList.size() > 0) {
-									Map<String, Object> imgInfo = rcs94ImgInfoList.get(0);// rcs에서 SHORT, TALL에는 이미지가
-																							// 1개만 들어온다
-									if (imgInfo.containsKey("fileId")) {
-										sb.append("	\"mediaUrl\" : \"{" + imgInfo.get("imgUrl") + "}\", "); //
-										sb.append("	\"media\" : \"" + imgInfo.get("fileId") + "\", "); //
-									}
-								} else {
-									sb.append("	\"mediaUrl\" : \"{}\", "); //
-									sb.append("	\"media\" : \"\", "); //
-								}
-								sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
-							}
-							sb.append("	} ");
-							if (k < rcs9CardCount - 1)
-								sb.append(", ");
-						}
-
-						if (k == 5) {
-							sb.append(" { ");
-							sb.append("	\"title\" : \"" + params.get("rcs95Title") + "\", "); //
-							// String rcs95Content = ((String) params.get("rcs95Content")).replaceAll("\n",
-							// "CHR(13)CHR(10)");
-							sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs95Content"))
-									+ "\", "); // 메시지
-
-							List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params
-									.get("rcs95Buttons");
-							// image List
-							List<Map<String, Object>> rcs95ImgInfoList = null;
-							if (params.containsKey("rcs95ImgInfoList")) {
-								rcs95ImgInfoList = (List<Map<String, Object>>) params.get("rcs95ImgInfoList");
-								if (rcs95ImgInfoList.size() > 0) {
-									Map<String, Object> imgInfo = rcs95ImgInfoList.get(0);// rcs에서 SHORT, TALL에는 이미지가
-																							// 1개만 들어온다
-									if (imgInfo.containsKey("fileId")) {
-										sb.append("	\"mediaUrl\" : \"{" + imgInfo.get("imgUrl") + "}\", "); //
-										sb.append("	\"media\" : \"" + imgInfo.get("fileId") + "\", "); //
-									}
-								} else {
-									sb.append("	\"mediaUrl\" : \"{}\", "); //
-									sb.append("	\"media\" : \"\", "); //
-								}
-								sb.append(buttonAddStr(params, checkChannelArr[i], buttonInfoList));
-							}
-							sb.append("	} ");
-							// if(k < rcs9CardCount-1) sb.append(", ");
-						}
-
+						if (k < rcs9CardCount - 1)
+							sb.append(", ");
 					}
 					sb.append("	] ");
 
 				} else if ((int) params.get("rcsTemplateTable") == 10) {
-//RCS CTALL TYPE ====================================================================
+					// RCS CTALL TYPE
+					// ====================================================================
 					sb.append("\"rcsPrdType\" : \"CTALL\","); // RCS상품타입(캐러셀[TALL]템플릿) rcsTemplateTable => 10
 
 					// System.out.println("rcs10CardCount type :
@@ -1172,6 +1063,100 @@ public class IntegratedTemplateService {
 		}
 		sb.append("	]");
 		sb.append("}]");
+
+		return sb.toString();
+	}
+
+	private String newCarouselButtonAddStr(List<Map<String, Object>> buttonInfoList) {
+		StringBuffer sb = new StringBuffer();
+
+		int rcsIdx = 1;
+		Map<String, Object> btnInfo = null;
+		String linkType = "";
+		String displayText = "";
+		String url = "";
+		String text = "";
+		String phoneNumber = "";
+		String title = "";
+		String description = "";
+		String startTime = "";
+		String endTime = "";
+		for (Map<String, Object> buttonInfo : buttonInfoList) {
+
+			btnInfo = (Map<String, Object>) buttonInfo.get("action");
+			linkType = (String) btnInfo.get("linkType");
+			displayText = (String) btnInfo.get("displayText");
+			sb.append("{\"action\": { "); // action 열기
+			sb.append("	\"displayText\": \"" + displayText + "\","); // 버튼이름
+
+			if (linkType.equalsIgnoreCase("urlAction")) { // URL 링크
+				Map<String, Object> urlAction = (Map<String, Object>) btnInfo.get("urlAction");
+				Map<String, Object> openUrl = (Map<String, Object>) urlAction.get("openUrl");
+				url = (String) openUrl.get("url");
+				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
+				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_open_url\"},");
+				sb.append("	\"urlAction\": { "); // urlAction
+				sb.append("	\"openUrl\": { "); // openUrl
+				sb.append("	\"url\": \"" + url + "\" "); // 내용
+				sb.append("	} ");
+				sb.append("	} ");
+			}
+			if (linkType.equalsIgnoreCase("clipboardAction")) { // 복사하기
+				Map<String, Object> clipboardAction = (Map<String, Object>) btnInfo.get("clipboardAction");
+				Map<String, Object> copyToClipboard = (Map<String, Object>) clipboardAction.get("copyToClipboard");
+				text = (String) copyToClipboard.get("text");
+				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
+				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_copy_to_clipboard\"},");
+				sb.append("	\"clipboardAction\": { "); // clipboardAction
+				sb.append("	\"copyToClipboard\": { "); // copyToClipboard
+				sb.append("	\"text\": \"" + text + "\" "); // 내용
+				sb.append("	} ");
+				sb.append("	} ");
+			}
+			if (linkType.equalsIgnoreCase("dialerAction")) { // 전화걸기
+				Map<String, Object> dialerAction = (Map<String, Object>) btnInfo.get("dialerAction");
+				Map<String, Object> dialPhoneNumber = (Map<String, Object>) dialerAction.get("dialPhoneNumber");
+				phoneNumber = (String) dialPhoneNumber.get("phoneNumber");
+				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
+				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_dial_phone_number\"},");
+				sb.append("	\"dialerAction\": { "); // dialerAction
+				sb.append("	\"dialPhoneNumber\": { "); // dialPhoneNumber
+				sb.append("	\"phoneNumber\": \"" + phoneNumber + "\" "); // 내용
+				sb.append("	} ");
+				sb.append("	} ");
+			}
+			if (linkType.equalsIgnoreCase("calendarAction")) { // 일정추가
+				Map<String, Object> calendarAction = (Map<String, Object>) btnInfo.get("calendarAction");
+				Map<String, Object> createCalendarEvent = (Map<String, Object>) calendarAction.get("createCalendarEvent");
+				title = (String) createCalendarEvent.get("title");
+				description = (String) createCalendarEvent.get("description");
+				startTime = (String) createCalendarEvent.get("startTime");
+				endTime = (String) createCalendarEvent.get("endTime");
+				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
+				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_create_calendar_event\"},");
+				sb.append("	\"calendarAction\": { "); // calendarAction
+				sb.append("	\"createCalendarEvent\": { "); // createCalendarEvent
+				sb.append("	\"title\": \"" + title + "\", "); // 제목
+				sb.append("	\"description\": \"" + description + "\", "); // 내용
+				sb.append("	\"startTime\": \"" + startTime + "\", "); // 시작일
+				sb.append("	\"endTime\": \"" + endTime + "\" "); // 종료일
+				sb.append("	} ");
+				sb.append("	} ");
+			}
+			if (linkType.equalsIgnoreCase("mapAction")) { // 지도맵
+				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
+				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_request_location_push\"},");
+				sb.append("	\"mapAction\": { "); // mapAction
+				sb.append("	\"requestLocationPush\": { "); // requestLocationPush
+				sb.append("	} ");
+				sb.append("	} ");
+			}
+			sb.append("	}} "); // action 닫기
+
+			if (rcsIdx++ < buttonInfoList.size()) {
+				sb.append(", ");
+			}
+		}
 
 		return sb.toString();
 	}
