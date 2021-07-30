@@ -21,6 +21,9 @@
 input[class="boardCheckStyle"]:disabled + label:before {
   background: #ccc;
 }
+input[class="checkStyle2"]:disabled + label:before {
+  background: #ccc;
+}
 
 pre {
   white-space: pre-wrap;       /* Since CSS 2.1 */
@@ -29,3 +32,24 @@ pre {
   white-space: -o-pre-wrap;    /* Opera 7 */
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
+
+/*
+.bx-wrapper .bx-controls-direction a {
+  position: absolute;
+  top: 50%;
+  margin-top: -16px;
+  outline: 0;
+  width: 32px;
+  height: 32px;
+  text-indent: -9999px;
+  z-index: 9999;
+}
+*/
+
+.simulatorImg {
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
+}
+
+.scroll-yc {max-height:450px; overflow-y:auto; overflow-x:hidden;}

@@ -189,7 +189,7 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 
 
 /* common */
-.row-no-margin {margin-left:0px; margin-right:0px} 
+.row-no-margin {margin-left:0px; margin-right:0px}
 .lc-1 {letter-spacing:-1px}
 .fr, .float-right {float:right}
 .fl, .float-left {float:left}
@@ -342,11 +342,13 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .font-size20 {font-size:20px !important}
 .font-size22 {font-size:22px !important}
 .font-size26 {font-size:26px !important}
+.text-underline {text-decoration:underline}
 .vertical-middle {vertical-align:middle !important}
 .vertical-bottom {vertical-align:bottom !important}
 .vertical-baseline {vertical-align:baseline !important}
 .vertical-top {vertical-align:top !important}
 .vertical-unset {vertical-align:unset !important}
+.vertical-sub {vertical-align:sub !important}
 .bt-000 {border-top:1px solid #000}
 .draggable {cursor:pointer}
 .form01 {display:inline; margin-left:40px}
@@ -357,6 +359,7 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .height45 {height: 45px !important}
 .height90 {height: 90px !important}
 .height120 {height: 120px !important}
+.height170 {height: 170px !important}
 .height190 {height: 190px !important}
 .form01 input {border: 1px solid #d5d5d5; border-radius: 0; width: 432px !important; height: 45px;}
 .modalStyle .modal-body {padding:60px 40px; overflow:hidden}
@@ -466,8 +469,8 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .btnStyle9 {background:#F1F1F1; color:#222; border:1px solid #ddd; font-size:11px; border-radius:2px; padding:7px 20px; font-weight:500; display:inline-block; transition:0.3s; min-width:120px; text-align:center}
 .btnStyle9:hover {background:#222; color:#fff !important; border-color:#222}
 
-.btnStyle10 {background:#50504D; color:#fff; padding:5px 10px; border-radius:3px} 
-.btnStyle10:hover {background:#40403d; color:#fff} 
+.btnStyle10 {background:#50504D; color:#fff; padding:5px 10px; border-radius:3px}
+.btnStyle10:hover {background:#40403d; color:#fff}
 
 .btn.btn-login {background:#FD004E; border-color:#FD004E; color:#fff; font-size:17px; width:100%; height:60px; line-height:60px; padding:0; transition:0.3s; text-shadow:none}
 .btn.btn-login:hover, .btn.btn-login:focus {background:#000; border-color:#000}
@@ -517,7 +520,7 @@ input[class="boardCheckStyle"] + label:before {content:''; position:absolute; le
 input[class="boardCheckStyle"]:checked + label:before {border-color:#FD004E; background:url('../images/consolCheck.svg') #FD004E no-repeat}
 .checkbox span {color:#707070; font-size:12px; vertical-align:top; margin-left:8px}
 
-/* 라디오 버튼 
+/* 라디오 버튼
 input[type='radio'] {appearance:none; width:14px; height:14px; border-radius:100%; margin-right:5px; background:#fff; border:1px solid #B2B2B2; cursor:pointer}
 input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:14px; height:14px; border-radius:100%; margin-right:5px; background:#fff; border:5px solid #FD004E; outline:none; outline-offset:0}
 */
@@ -582,7 +585,7 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 .tab_s5 li:nth-child(2) a {border-left:none}
 .tab_s5 > li.active > a, .tab_s5 > li > a:hover {background-color:#fff}
 .tab_s5 > li.active > a {border-bottom-color:#fff}
- 
+
 
 .tab_s7 {display:inline-block; vertical-align:middle; margin-bottom:-1px}
 .tab_s7 > li {display:inline-block; float:left; margin-left:-1px}
@@ -605,13 +608,13 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 /* pagination */
 .pagination1 .number {border: 1px solid #D5D5D5; background-color: #fff; color: #A3A3A5; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px}
 .pagination1 .number.active, .pagination1 .number:hover {border: 1px solid #FD004E; color: #FD004E}
-.pagination1 .fa-chevron-left {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom; margin-right: 17px}	
+.pagination1 .fa-chevron-left {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom; margin-right: 17px}
 .pagination1 .fa-chevron-left:hover {border: 1px solid #9a9a9a; color:#9a9a9a}
-.pagination1 .fa-chevron-right {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom; ; margin-left: 17px}	
+.pagination1 .fa-chevron-right {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom; ; margin-left: 17px}
 .pagination1 .fa-chevron-right:hover {border: 1px solid #9a9a9a; color:#9a9a9a}
-.pagination1 .fa-chevron-double-left {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom}	
+.pagination1 .fa-chevron-double-left {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom}
 .pagination1 .fa-chevron-double-left:hover {border: 1px solid #9a9a9a; color:#9a9a9a}
-.pagination1 .fa-chevron-double-right {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom}	
+.pagination1 .fa-chevron-double-right {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom}
 .pagination1 .fa-chevron-double-right:hover {border: 1px solid #9a9a9a; color:#9a9a9a}
 
 .pagination2 .number {border: 1px solid #E8ECEF; background-color:#fff; color: #727272; font-size: 10px; padding: 3px 8px; border-radius: 5px}
@@ -969,6 +972,7 @@ footer {font-size:12px; color:#B2B2B2; font-weight:400; position:absolute; botto
 .scroll-y4 {height:450px; overflow-y:auto}
 .scroll-y5 {max-height:354px; overflow-y:auto}
 .scroll-y6 {max-height:100px; overflow-y:auto}
+.scroll-y7 {max-height:130px; overflow-y:auto}
 
 
 /* phoneCardWrap */
@@ -993,6 +997,8 @@ footer {font-size:12px; color:#B2B2B2; font-weight:400; position:absolute; botto
 
 /* admin_sub03_4_1_1 */
 .admin_sub03_4_1_1 .underLine:hover {text-decoration:underline}
+
+.trBg {background:#f7f7f7}
 
 
 @media screen and (max-width:1850px) {
