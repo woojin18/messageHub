@@ -1,7 +1,7 @@
 <template>
 <div class="row row-no-margin">
   <div class="contentHeader">
-      <h2> > MO 수신현황</h2>
+      <h2>MO 수신현황</h2>
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="MO 수신현황 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
   </div>
   <!-- 본문 -->
@@ -11,7 +11,7 @@
         <div class="of_h">
           <div class="inline-block" style="width:8%"><h4 class="font-normal mt15">수신일자</h4></div>
           <div class="inline-block" style="width:91%">
-            <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" ></Calendar>
+            <!-- <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" ></Calendar>
             <span style="padding:0 11px">~</span>
             <Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchEndDate"></Calendar>
             <ul class="tab_s2 ml20">
@@ -19,6 +19,10 @@
                 <li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 등록일자 검색">1주일</a></li>
                 <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
                 <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
+            </ul> -->
+            <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" ></Calendar>
+            <ul class="tab_s2 ml20">
+                <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 등록일자 검색">오늘</a></li>
             </ul>
           </div>  
         </div>
@@ -29,7 +33,7 @@
             <option v-for="data in condiDatas" :key="data.codeName" :value="data.codeName">{{data.codeVal}}</option>
           </select>
           <h4 class="inline-block ml30" style="width:8%">발신번호</h4>
-          <input type="text" class="inputStyle ml10" id="searchSendNumber" name="searchSendNumber" v-model="searchData.searchSendNumber" style="width:25%" title="발신번호">
+          <input type="text" class="inputStyle ml10" id="searchSendNumber" name="searchSendNumber" v-model="searchData.searchSendNumber" style="width:25%" title="발신번호"  @keypress.enter="fnSearch(1)">
         </div>	
         <div class="consolMarginTop">
           <h4 class="inline-block" style="width:8%">수신번호 : </h4>
@@ -157,7 +161,7 @@ export default {
       pageNo : 1,  // 현재 페이징 위치
       totCnt : 0,  //전체 리스트 수
       offset : 0, //페이지 시작점
-      searchDateInterval: 7,
+      searchDateInterval: 0,
       datas: [],
       condiDatas: [],
       receptionDatas: [],
@@ -263,8 +267,12 @@ export default {
       await messageStatusApi.selectReceptionNumberList(params).then(response =>{
         var result = response.data;
         if(result.success) {
+          console.log(result);
           this.receptionDatas = result.data;
           this.receptionNumber = result.data[0].receptionNumber;
+          for( var i = 0; i < result.data.length; i++ ){
+            this.searchData.searchReceptionNumber[i] = result.data[i].moNumber;
+          }
         } else {
           //alert(result.message);
         }

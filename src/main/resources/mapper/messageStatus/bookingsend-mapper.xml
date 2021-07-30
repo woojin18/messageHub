@@ -44,9 +44,11 @@
 			          ELSE 'TRUE'
 			          END AS CANCEL_SHOW_FLAG
 			   , C.CORP_NAME
+<!-- 			   , A.MSG_INFO->>'$.send_info[1].chType' AS REPLC_SEND -->
+				, A.MSG_INFO->>'$.fbInfoLst[0].ch' AS REPLC_SEND
 			   , A.MSG_INFO->>'$.send_info[1].chType' AS REPLC_SEND
 			   <!--  , CONCAT(A.MSG_INFO->>'$.send_info[0].chType', ' : ', '\n', A.MSG_INFO->>'$.send_info[0].content', '\n', A.MSG_INFO->>'$.send_info[1].chType', ' : ', '\n', A.MSG_INFO->>'$.send_info[1].content') AS CONTENT-->
-			   , A.MSG_INFO->>'$.msg' AS CONTENT
+			   , A.MSG_INFO->>'$.msg.body' AS CONTENT
 		FROM cm_console.CM_WEB_MSG A LEFT OUTER JOIN cm_console.CM_CORP C ON A.CORP_ID = C.CORP_ID
 		   , (SELECT @rownum:=0) TMP
 		WHERE 1=1
