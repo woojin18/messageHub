@@ -20,7 +20,7 @@
                 <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
                 <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
             </ul> -->
-            <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" ></Calendar>
+            <Calendar @update-date="fnUpdateStartDate2" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" @change="fnSearch(1)"></Calendar>
             <ul class="tab_s2 ml20">
                 <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 등록일자 검색">오늘</a></li>
             </ul>
@@ -30,7 +30,7 @@
         <div class="consolMarginTop">
           <h4 class="inline-block" style="width:8%">상태</h4>
           <select v-model="searchData.searchCondi"  class="selectStyle2 maxWidth200" style="width:15%" title="상태 선택란">
-            <option v-for="data in condiDatas" :key="data.codeName" :value="data.codeName">{{data.codeVal}}</option>
+            <option v-for="data in condiDatas" :key="data.codeVal" :value="data.codeVal">{{data.codeName}}</option>
           </select>
           <h4 class="inline-block ml30" style="width:8%">발신번호</h4>
           <input type="text" class="inputStyle ml10" id="searchSendNumber" name="searchSendNumber" v-model="searchData.searchSendNumber" style="width:25%" title="발신번호"  @keypress.enter="fnSearch(1)">
@@ -192,6 +192,10 @@ export default {
       this.searchData.searchEndDate = sltDate;
     },
 
+    fnUpdateStartDate2(sltDate) {
+      this.searchData.searchStartDate = sltDate;
+      this.fnSearch(1);
+    },
     //엑셀 다운로드
     fnExcelDownLoad(){
       var params = this.searchData;
@@ -247,7 +251,10 @@ export default {
       await messageStatusApi.selectConditionList(params).then(response =>{
         var result = response.data;
         if(result.success) {
-          this.condiDatas = result.data;
+          this.condiDatas[0] = {"codeName": "전체", "codeVal": "", };
+          for( var i = 0; i < result.data.length; i++ ){
+            this.condiDatas[i+1] = result.data[i];
+          }
 
         } else {
           alert(result.message);

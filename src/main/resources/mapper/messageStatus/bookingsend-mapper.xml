@@ -38,6 +38,8 @@
 		        WHEN A.SENDER_TYPE = 'S' THEN '스마트발송'
 		        END AS SENDER_TYPE_NM /*발송타입명*/
 			   , A.SENDER_CNT
+			   , A.CAMPAIGN_ID
+			   , A.STATUS
 			   , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%s') AS REG_DT /*등록일시*/
 			   , DATE_FORMAT(A.REQ_DT, '%Y.%m.%d %H:%i:%s') AS REQ_DT /*예약발송일시*/
 			    , CASE WHEN A.REQ_DT <![CDATA[<=]]> NOW() THEN 'FALSE'

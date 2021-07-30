@@ -20,15 +20,16 @@
                 <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
                 <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
             </ul>
+            <a @click="fnSearch(1)" class="btnStyle2 float-right" title="검색" activity="READ" >검색</a>
           </div>
         </div>
-        <div class="of_h consolMarginTop">
+        <!-- <div class="of_h consolMarginTop">
           <div class="inline-block" style="width:8%"><h4>발송자ID</h4></div>
           <div class="inline-block" style="width:16%">
             <input type="text" class="inputStyle" id="searchText" name="searchText" v-model="searchData.searchText" title="수신자정보" @keypress.enter="fnSearch(1)">
           </div>
           <a @click="fnSearch(1)" class="btnStyle2 float-right" title="검색" activity="READ" >검색</a>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -73,8 +74,10 @@
               <thead>
                 <tr>								
                   <th class="text-center lc-1" rowspan="2">No.</th>
-                  <th class="text-center lc-1" rowspan="2">발송자</th>
+                  <!-- <th class="text-center lc-1" rowspan="2">발송자</th> -->
                   <th class="text-center lc-1" rowspan="2">발송채널</th>
+                  <th class="text-center lc-1" rowspan="2">상태</th>
+                  <th class="text-center lc-1" rowspan="2">캠페인</th>
                   <th class="text-center lc-1" colspan="5" style="border-bottom:1px solid #d5d5d5 !important">채널별 예약발송항목</th>
                   <th class="text-center lc-1" rowspan="2">대체발송</th>
                   <th class="text-center lc-1" rowspan="2">등록일시</th>
@@ -92,8 +95,10 @@
               <tbody>
                 <tr v-for="(data, idx) in datas" :key="data.row_num">
                     <td>{{totCnt-offset-data.rowNum+1}}</td>
-                    <td class="text-center">{{data.corpName}}</td>
+                    <!-- <td class="text-center">{{data.corpName}}</td> -->
                     <td class="text-center">{{data.senderTypeNm}}</td>
+                    <td class="text-center">{{data.status}}</td>
+                    <td class="text-center">{{data.campaignId}}</td>
                     <td class="text-center">{{data.push}}</td>
                     <td class="text-center">{{data.rcs}}</td>
                     <td class="text-center">{{data.alimTalk}}</td>
