@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration status="DEBUG" packages="kr.co.uplus.cm.common.log">
+<configuration status="DEBUG" >
     <appenders>
         <Console name="console" >
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%20.20t] %5p [%-40.40logger{39}] (%-4L) : %m%n%wEx" />
