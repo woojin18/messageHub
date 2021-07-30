@@ -13,7 +13,7 @@
         </if>
         <if test="searchStartDate != '' and searchStartDate != null ">
             <if test="searchEndDate != '' and searchEndDate != null ">
-            AND A.REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
+            <!-- AND A.REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59') -->
             </if>
         </if>
     </sql>

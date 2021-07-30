@@ -1,7 +1,7 @@
 <template>
 <div class="row row-no-margin">
   <div class="contentHeader">
-      <h2> > 예약발송관리</h2>
+      <h2>예약발송관리</h2>
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="예약발송관리 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
   </div>
   <!-- 본문 -->
@@ -11,9 +11,9 @@
         <div class="of_h">
           <div class="inline-block" style="width:8%"><h4>등록일자</h4></div>
           <div class="inline-block" style="width:91%">
-            <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate"></Calendar>
+            <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" @change="fnSearch(1)"></Calendar>
             <span style="padding:0 11px">~</span>
-            <Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchEndDate"></Calendar>
+            <Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchEndDate" @change="fnSearch(1)"></Calendar>
             <ul class="tab_s2 ml20">
                 <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 등록일자 검색">오늘</a></li>
                 <li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 등록일자 검색">1주일</a></li>
@@ -25,9 +25,9 @@
         <div class="of_h consolMarginTop">
           <div class="inline-block" style="width:8%"><h4>발송자ID</h4></div>
           <div class="inline-block" style="width:16%">
-            <input type="text" class="inputStyle" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="수신자정보">
+            <input type="text" class="inputStyle" id="searchText" name="searchText" v-model="searchData.searchText" title="수신자정보" @keypress.enter="fnSearch(1)">
           </div>
-          <a @click="fnSearch()" class="btnStyle2 float-right" title="검색" activity="READ" >검색</a>
+          <a @click="fnSearch(1)" class="btnStyle2 float-right" title="검색" activity="READ" >검색</a>
         </div>
       </div>
     </div>
@@ -46,9 +46,9 @@
 
       <div class="of_h inline">
         <!-- 15개씩 보기 -->
-        <div class="of_h mb20">
+        <div class="of_h">
           <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
-            <SelectLayer @fnSelected="fnSelected"></SelectLayer>
+            <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
           </div>
         </div>
         <!-- //15개씩 보기 -->
@@ -91,7 +91,7 @@
               </thead>
               <tbody>
                 <tr v-for="(data, idx) in datas" :key="data.row_num">
-                    <td>{{ idx + 1 }}</td>
+                    <td>{{totCnt-offset-data.rowNum+1}}</td>
                     <td class="text-center">{{data.corpName}}</td>
                     <td class="text-center">{{data.senderTypeNm}}</td>
                     <td class="text-center">{{data.push}}</td>
@@ -172,7 +172,7 @@ export default {
   },
   mounted() {
     this.fnSetIntervalSearchDate(this.searchDateInterval);
-    this.fnSearch();
+    this.fnSearch(1);
   },
   methods: {
     //검색일자변경
@@ -180,6 +180,7 @@ export default {
       this.searchDateInterval = interval;
       this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
       this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
+      this.fnSearch(1);
     },
     fnUpdateStartDate(sltDate) {
       this.searchData.searchStartDate = sltDate;
@@ -216,8 +217,6 @@ export default {
         var result = response.data;
         if(result.success) {
           this.datas = result.data;
-          //this.totCnt = result.pageDto.totCnt;
-          //this.offset = result.pageDto.offset;
           this.totCnt = result.pageInfo.totCnt;
           this.offset = result.pageInfo.offset;
         } else {
@@ -238,10 +237,7 @@ export default {
 
         // 현황상세 팝업
     fnCancelPop(row) {
-        //console.log(this.datas[row].webReqId);
-        //console.log(this.datas[row].content);
         this.detailLayerView = true;
-        //this.detailTitle = 
         this.detailWebReqId = this.datas[row].webReqId; 
         this.detailMsg = this.datas[row].content ; 
       }
