@@ -638,8 +638,6 @@ public class RcsTemplateSendService {
 			paramMap.put("msgbaseId", templateRadioBtn);
 		}
 		
-		
-		
 		if (params.containsKey("pageNo") && CommonUtils.isNotEmptyObject(params.get("pageNo"))
 				&& params.containsKey("listSize") && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
 			rtn.setPageProps(params);
