@@ -66,7 +66,7 @@
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
-                    <p>{{tmpltData.MMS.callback}}</p>
+                    <p>{{tmpltData.MMS.title}}</p>
                   </div>
                   <div v-if="tmpltData.msgType == 'IMAGE'">
                     <div v-for="(fileUrl, idx) in tmpltData.MMS.fileUrlLst" :key="idx" class="phoneText2 mt10 text-center simulatorImg"
@@ -240,7 +240,7 @@
               <!--// 세로형 SHORT -->
               <!-- 세로형 TALL -->
               <!-- style="width: 240px;height: 300px;" => short, tall 해서 사이즈가 있으나 RCS는 2:1 로 이미지가 등록된다. -->
-              <div v-if="tmpltData.RCS.rcsPrdType == 'TALL'" class="phoneWrap">
+              <div v-if="tmpltData.RCS.rcsPrdType == 'TALL1'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
                   <img 
@@ -284,7 +284,8 @@
               
 
               <!-- CAROUSEL -->
-              <div v-if="tmpltData.RCS.rcsPrdType == 'CAROUSEL'" class="cardBxsliderWrap">
+              <div v-if="tmpltData.RCS.rcsPrdType == 'TALL'" class="cardBxsliderWrap">
+              <!-- <div v-if="tmpltData.RCS.rcsPrdType == 'CAROUSEL'" class="cardBxsliderWrap"> -->
                 <div class="phoneWrap">
                   <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
                   <div class="phoneCardWrap">
@@ -327,7 +328,7 @@
             <!--// RCS -->
           </div>
           
-          <div class="phone_04_btn7">
+          <div :class="'phone_04_btn7' + (showBxPage ? ' mt20' : '')">
             <ul>
               <li v-for="(chTypeInfo, idx) in tmpltData.chTypeList.slice(0, 3)" :key="idx" :class="(previewMessageType == chTypeInfo ? 'active' : '')">
                 <a href="#" @click.prevent="fnChgPreviewMessageType(chTypeInfo)" :title="chTypeInfo">{{chInfo[chTypeInfo]}}</a>
@@ -525,6 +526,7 @@ export default {
       addressInputOpen: false,
       testSendInputOpen: false,
       recvCnt : 0,  //수신자명수
+      showBxPage : false,
       tmpltData: {
         chTypeList: [],
       },
@@ -558,6 +560,9 @@ export default {
   updated() {
     if(this.previewMessageType == 'RCS') {
       this.fnSetBxslider();
+      this.showBxPage = true;
+    } else {
+      this.showBxPage = false;
     }
   },
   mounted() {
@@ -574,10 +579,9 @@ export default {
         slideMargin: 10,
         controls: true,
         pager: true,
-        pagerType: 'short',
+        pagerType: 'full',
         touchEnabled : (navigator.maxTouchPoints > 0),
         autoHover: false,
-        pause: 6000
       });
       return true;
     },
