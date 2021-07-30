@@ -9,7 +9,7 @@
     <div class="col-xs-12">
       <div class="menuBox">
         <div class="of_h">
-          <div class="inline-block" style="width:8%"><h4>등록일자</h4></div>
+          <div class="inline-block" style="width:8%; vertical-align: middle;"><h4>등록일자</h4></div>
           <div class="inline-block" style="width:91%">
             <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" @change="fnSearch(1)"></Calendar>
             <span style="padding:0 11px">~</span>

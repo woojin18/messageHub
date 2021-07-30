@@ -28,14 +28,14 @@
         </div>
 
         <div class="consolMarginTop">
-          <h4 class="inline-block" style="width:8%">상태</h4>
+          <h4 class="inline-block" style="width:8%; vertical-align: middle;">상태</h4>
           <select v-model="searchData.searchCondi"  class="selectStyle2 maxWidth200" style="width:15%" title="상태 선택란">
             <option v-for="data in condiDatas" :key="data.codeVal" :value="data.codeVal">{{data.codeName}}</option>
           </select>
-          <h4 class="inline-block ml30" style="width:8%">발신번호</h4>
+          <h4 class="inline-block ml30" style="width:8%; vertical-align: middle;">발신번호</h4>
           <input type="text" class="inputStyle ml10" id="searchSendNumber" name="searchSendNumber" v-model="searchData.searchSendNumber" style="width:25%" title="발신번호"  @keypress.enter="fnSearch(1)">
           <br />
-          <h4 class="inline-block" style="width:8%">수신번호 : </h4>
+          <h4 class="inline-block" style="width:8%; vertical-align: middle;">수신번호 : </h4>
           <div v-for="(data, idx) in receptionDatas" :key="idx" style="display:inline-block; margin-left:10px;" class="mt20">
             <input type="checkbox" id="searchReceptionNumber" name="searchReceptionNumber" class="checkStyle2" :value="data.moNumber" v-model="searchData.searchReceptionNumber" >
             <label for="searchReceptionNumber">{{ data.moNumber }}</label>
