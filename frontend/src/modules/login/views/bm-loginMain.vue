@@ -5,9 +5,9 @@
 			<div class="userLogin-form">
 				<h2 class="text-center">U+ 통합메시징 클라우드 로그인</h2>
 				<input type="email" class="form-control" id="inputEmail" placeholder="이메일 주소를 입력하세요"
-				 name="userId" v-model="userId" :maxlength="30" v-focus @keyup.enter="ajaxlogin">
+					name="userId" v-model="userId" :maxlength="30" v-focus @keyup.enter="ajaxlogin">
 				<input type="password" class="form-control mt20" id="inputPassword" placeholder="비밀번호를 입력하세요"
-				 name="loginPwd" v-model="loginPwd" :maxlength="30" @keyup.enter="ajaxlogin"> 
+					name="loginPwd" v-model="loginPwd" :maxlength="30" @keyup.enter="ajaxlogin"> 
 				<!-- 에러메세지 출력 -->
 				<div class="message_area" v-if="errors.length">
 					<p class="text_error">{{ errors[0] }}</p>
@@ -25,7 +25,7 @@
 					</div>
 				</div>	
 				<button type="submit" class="btn btn-login mt45" data-toggle="modal" data-target="#smsAcc" @click.prevent="ajaxlogin">로그인</button>
-			<!--	<a href="user_join.html" class="btn btn-join mt15">회원가입</a> -->
+				<a href="user_join.html" class="btn btn-join mt15">회원가입</a>
 			</div>
 			<!-- //userLogin-form -->
 		</section>

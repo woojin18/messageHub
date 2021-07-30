@@ -24,11 +24,16 @@ const updatePassword = (params) => {
 	return httpClient.post('/api/public/updatePassword', params, { headers: {"show-layer": "Yes"} });
 };
 
+const findLoginId = (params) => {
+	return httpClient.post('/api/public/findLoginId', params, { headers: {"show-layer": "Yes"} });
+};
+
 export default {
     login,
     logout,
     getMenuForRole,
 	getProjectForUser,
     getProjectChUseListForUser,
-    updatePassword
+    updatePassword,
+    findLoginId
 };

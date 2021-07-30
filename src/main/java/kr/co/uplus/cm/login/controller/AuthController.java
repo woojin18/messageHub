@@ -98,5 +98,12 @@ public class AuthController {
 	public RestResult<?> updatePassword(@RequestBody Map<String, Object> params){
 		return authSvc.updatePassword(params);
 	}
+	
+	// 아이디 찾기
+	@PostMapping("/public/findLoginId")
+	public RestResult<?> findLoginId(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception{
+		return authSvc.findLoginId(params);
+	}
 
 }
