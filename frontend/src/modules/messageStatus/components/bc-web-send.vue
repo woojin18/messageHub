@@ -1,14 +1,13 @@
 <template>
 <div class="row row-no-margin">
   <div class="contentHeader">
-      <h2> > 웹 발송현황</h2>
-      <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title=" 웹 발송현황 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
+      <h2>웹 발송현황</h2>
   </div>
   <!-- 본문 -->
   <div class="row">
     <div class="col-xs-12">
       <div class="menuBox">
-        <div class="of_h">
+        <!-- <div class="of_h">
           <div class="inline-block" style="width:8%"><h4>발송일자</h4></div>
           <div class="inline-block" style="width:91%">
             <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate"></Calendar>
@@ -21,11 +20,16 @@
                 <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
             </ul>
           </div>
-        </div>
-        <div class="of_h consolMarginTop">
-          <div class="inline-block" style="width:8%"><h4>발송자ID</h4></div>
-          <div class="inline-block" style="width:16%">
-            <input type="text" class="inputStyle vertical-top ml10" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="수신자정보">
+        </div> -->
+        <div class="of_h">
+          <div class="inline-block" style="width:8%; vertical-align: middle;"><h4>발송일자</h4></div>
+          <Calendar @update-date="fnUpdateStartDate2" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" @change="fnSearch(1)"></Calendar>
+          <ul class="tab_s2 ml20">
+              <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 등록일자 검색">오늘</a></li>
+          </ul>
+          <div class="inline-block ml60" style="width:8%; vertical-align: middle;"><h4>발송자ID</h4></div>
+          <div class="inline-block" style="width:50%">
+            <input type="text" class="inputStyle vertical-top" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="수신자정보" @keypress.enter="fnSearch(1)">
           </div>
           <a @click="fnSearch()" class="btnStyle2 float-right" title="검색" activity="READ">검색</a>
         </div>
@@ -46,9 +50,9 @@
 
       <div class="of_h inline">
         <!-- 15개씩 보기 -->
-        <div class="of_h mb20">
+        <div class="of_h">
           <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
-            <SelectLayer @fnSelected="fnSelected"></SelectLayer>
+            <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
           </div>
         </div>
         <!-- //15개씩 보기 -->
@@ -90,9 +94,8 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(data, idx) in datas" :key="data.row_num">
-                    <td>{{ idx + 1 }}</td>
-                    <!-- <td class="text-center"><a href="#self" title="메세지상세" data-toggle="modal" data-target="#Message">{{data.phoneNumber}}</a></td> -->
+                <tr v-for="(data, idx) in datas" :key="idx">
+                    <td>{{totCnt-offset-data.rowNum+1}}</td>
                     <td class="text-center">{{data.corpName}}</td>
                     <td class="text-center">{{data.senderCnt}}</td>
                     <td class="text-center">{{data.senderTypeNm}}</td>
@@ -160,7 +163,7 @@ export default {
       pageNo : 1,  // 현재 페이징 위치
       totCnt : 0,  //전체 리스트 수
       offset : 0, //페이지 시작점
-      searchDateInterval: 7,
+      searchDateInterval: 0,
       datas: [],
       // 팝업
       detailLayerView: false,
@@ -180,12 +183,17 @@ export default {
       this.searchDateInterval = interval;
       this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
       this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
+      this.fnSearch(1);
     },
     fnUpdateStartDate(sltDate) {
       this.searchData.searchStartDate = sltDate;
     },
     fnUpdateEndDate(sltDate) {
       this.searchData.searchEndDate = sltDate;
+    },
+    fnUpdateStartDate2(sltDate) {
+      this.searchData.searchStartDate = sltDate;
+      this.fnSearch(1);
     },
 
     //엑셀 다운로드
@@ -218,14 +226,11 @@ export default {
 
       params.loginId = tokenSvc.getToken().principal.userId;
       params.roleCd = tokenSvc.getToken().principal.roleCd
-      console.log('token:', tokenSvc.getToken());
 
       await messageStatusApi.selectWebSendList(params).then(response =>{
         var result = response.data;
         if(result.success) {
           this.datas = result.data;
-          //this.totCnt = result.pageDto.totCnt;
-          //this.offset = result.pageDto.offset;
           this.totCnt = result.pageInfo.totCnt;
           this.offset = result.pageInfo.offset;
         } else {
@@ -246,12 +251,9 @@ export default {
 
         // 현황상세 팝업
     fnDetailPop(row) {
-      //alert(row);
-      //alert(this.datas[row].msgKey);
         this.detailLayerView = true;
         this.detailLayerTitle = "발송실패 리스트";
         this.detailLayerWebReqId = this.datas[row].webReqId; 
-        
       },
 
  

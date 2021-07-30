@@ -139,4 +139,13 @@
 		,		APPROVAL_STATUS = 'Y'
 		WHERE	LOGIN_ID = #{loginId}
 	</update>
+	
+	
+	<select id="findLoginId" resultType="String">
+		/* login.findLoginId */
+		SELECT	LOGIN_ID
+		FROM	cm_console.CM_USER
+		WHERE	USER_NAME = #{findUserName}
+		AND		HP_NUMBER = #{findHpNumber}
+	</select>
 </mapper>

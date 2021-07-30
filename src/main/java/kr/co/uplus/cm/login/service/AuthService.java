@@ -301,4 +301,21 @@ public class AuthService implements UserDetailsService {
 		}
 		return rtn;
 	}
+	
+
+	public RestResult<Object> findLoginId(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		String findedLoginId = CommonUtils.getString(generalDao.selectGernalObject("login.findLoginId", params));
+		
+		if( "".equals(findedLoginId) ) {
+			rtn.setSuccess(false);
+			rtn.setMessage("검색된 아이디가 없습니다.");
+		} else {
+			rtn.setSuccess(true);
+			rtn.setData(CommonUtils.setMaskingLoginId(findedLoginId));
+		}
+		
+		return rtn;
+	}
 }
