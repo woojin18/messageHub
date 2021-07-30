@@ -32,7 +32,6 @@ public class RcsTemplateService {
 		
 		String inputTag =  CommonUtils.getString(params.get("inputTag"));
 		String searchTag = CommonUtils.getString(params.get("searchTag"));
-		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
 		
 		// input 값이 있으면 해당 searchTag의 값을 구분해서 파라미터를 다시 세팅
 		if(!"".equals(inputTag)) {
@@ -46,12 +45,15 @@ public class RcsTemplateService {
 			default: break;
 			}
 		}
-
-		if(pageInfo != null && !pageInfo.isEmpty()) {
-			int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_TEMPLATE_LIST_CNT, params);
-			pageInfo.put("rowNum", listCnt);
-			
-			rtn.setPageInfo(pageInfo);
+		
+		if (params.containsKey("pageNo") && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize") && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if (rtn.getPageInfo() != null) {
+				// 카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_TEMPLATE_LIST_CNT, params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
 		}
 
 		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_TEMPLATE_LIST, params);

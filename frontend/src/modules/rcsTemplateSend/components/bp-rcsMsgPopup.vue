@@ -12,7 +12,7 @@
                                 <option value="msg">메세지명</option>
 							</select>
 							<input v-model="srcInput" type="text" class="inputStyle vertical-unset ml5" style="width:34%">
-							<a @click.prevent="fnSearch" href="#self" activity="READ" class="btnStyle1 backBlack float-right" style="width:10%" title="검색">검색</a>							
+							<a @click.prevent="fnSearch()" href="#self" activity="READ" class="btnStyle1 backBlack float-right" style="width:10%" title="검색">검색</a>							
 						</div>			
 						<div class="float-right consolMarginTop">
 							<a @click.prevent="fnSelect" activity="READ" href="#self" class="btnStyle1 borderLightGray" title="선택">선택</a>
@@ -52,7 +52,9 @@
 								<!-- //table -->
 
 								<!-- pagination -->
-								<Paging :pageInfo.sync="pageInfo" />
+								<div id="pageContent">
+									<PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
+								</div>
 								<!-- //pagination -->
 							</div>								
 						</div>
@@ -71,12 +73,12 @@
 import rcsTemplateSendApi from "@/modules/rcsTemplateSend/service/api.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
-import Paging from "@/modules/commonUtil/components/bc-paging";
+import PageLayer from '@/components/PageLayer.vue';
 
 export default {
   name: "rcsMsgPop",
   components : {
-	  Paging
+	  PageLayer
   },
   props : {
         templateRadioBtn: {
@@ -87,12 +89,10 @@ export default {
   },
   data() {
     return { 
-		pageInfo: {
-			"pageCnt"   : [5, 10, 15],    //표시할 개수 리스트
-			"selPageCnt": 5,              //선택한 표시 개수
-			"selPage"   : 1,              //선택한 페이지
-			"rowNum"    : 0               //총개수
-		},						// paging
+		listSize : 5,  // select 박스 value (출력 갯수 이벤트)
+	    pageNo : 1,  // 현재 페이징 위치
+	    totCnt : 0,  //전체 리스트 수
+	    offset : 0, //페이지 시작점
         srcSelect : "brand",    // 검색 select box
         srcInput : "" ,         // 검색 input box
 		checkboxAll : false,	// checkboxAll
@@ -105,7 +105,12 @@ export default {
 		this.fnSearch();
 	},
 
-    fnSearch() {
+	fnSearch(pageNum) {
+		this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
+		this.fnSelectMsgList();
+	},
+
+    fnSelectMsgList() {
 		var vm = this;
 		var srcInput = this.srcInput;
 		var srcSelect = this.srcSelect;
@@ -114,7 +119,8 @@ export default {
 		}
 
 		var params = {
-			"pageInfo" : this.pageInfo,
+			"pageNo" : this.pageNo,
+			"listSize" : this.listSize,
 			"srcInput" : srcInput,
 			"srcSelect" : srcSelect,
 			"templateRadioBtn" : this.templateRadioBtn
@@ -125,7 +131,8 @@ export default {
 			for(var i=0; i<result.data; i++) {
 				vm.checkboxArr[i] = false;
 			}
-			vm.pageInfo = result.pageInfo;
+			vm.totCnt = result.pageInfo.totCnt;
+			vm.offset = result.pageInfo.offset;
 			vm.data = result.data;
 		});
 
@@ -198,6 +205,7 @@ export default {
       //데이터 초기화
       this.checkboxArr = [];
       this.data = {};
+	  this.srcInput = "";
 	  jQuery("#message").modal("hide");
     },
   }

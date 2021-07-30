@@ -88,6 +88,7 @@
 			ON	A.REG_ID = C.USER_ID 
 		WHERE	1=1
 		<include refid="rcsTepMsgbaseSql"/>
+		LIMIT #{offset}, #{listSize}
 	</select>
 	
 	<select id="selectRcsTmpMsgbaseCnt" resultType="int">

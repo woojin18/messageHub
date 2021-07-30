@@ -638,14 +638,19 @@ public class RcsTemplateSendService {
 			paramMap.put("msgbaseId", templateRadioBtn);
 		}
 		
-		if(pageInfo != null && !pageInfo.isEmpty()) {
-			int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_TMP_MSGBASE_CNT, paramMap);
-			pageInfo.put("rowNum", listCnt);
-			
-			rtn.setPageInfo(pageInfo);
+		
+		
+		if (params.containsKey("pageNo") && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize") && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if (rtn.getPageInfo() != null) {
+				// 카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_TMP_MSGBASE_CNT, params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
 		}
 
-		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_TMP_MSGBASE, paramMap);
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_TMP_MSGBASE, params);
 		rtn.setData(rtnList);
 		
 		return rtn;

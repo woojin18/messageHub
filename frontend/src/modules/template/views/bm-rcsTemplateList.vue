@@ -34,7 +34,7 @@
                 				<option value="brandNm">브랜드명</option>
 							</select>
 							<input type="text" class="inputStyle vertical-top ml10" style="width:30%" title="검색조건 입력란" v-model="inputTag">
-							<a href="#self" @click.prevent="fnSearch" class="btnStyle1 float-right" title="검색">검색</a>	
+							<a href="#self" @click.prevent="fnSearch()" class="btnStyle1 float-right" title="검색">검색</a>	
 						</div>					
 					</div>
 				</div>				
@@ -48,10 +48,13 @@
 
 			<div class="row">
 				<div class="col-xs-12">
-          <!-- 15개씩 보기 -->
-					<PagingCnt :pageInfo.sync="pageInfo" />
-					<!-- //15개씩 보기 -->
-					<!-- table -->
+        			  <!-- 15개씩 보기 -->
+		  			<div class="of_h inline">
+						<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+							<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
+						</div>
+					</div>
+
 					<table class="table_skin1 bt-000 tbl-striped">
 						<colgroup>
 							<col style="width:5%">
@@ -81,8 +84,8 @@
 						</thead>
 						<tbody>
 							<tr v-for="(contant, idx) in contants">
-							<td class="text=center">{{ idx + 1 }}</td>
-							<td class="text-center"><a href="#" @click.prevent="templateUpdate(contant.MESSAGEBASE_ID)">{{contant.MESSAGEBASE_ID}}</a></td>
+							<td>{{totCnt-offset-contant.ROWNUM+1}}</td>
+							<td class="text-center"><a href="#" @click.prevent="templateUpdate(contant.MESSAGEBASE_ID)"><u>{{contant.MESSAGEBASE_ID}}</u></a></td>
 							<td class="text-center">{{contant.TMPLT_NAME}}</td>
 							<td class="text-center">{{contant.BRAND_NAME}}</td>
 							<td class="text-center">{{contant.BRAND_NAME}}</td>
@@ -102,7 +105,9 @@
 			</div>
 
       		<!-- pagination -->
-			<Paging :pageInfo.sync="pageInfo" />
+			<div id="pageContent">
+				<PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
+			</div>
 			<!-- //pagination -->
 		</article>
 	</div>
@@ -111,49 +116,52 @@
 <script>
 import confirm from "@/modules/commonUtil/service/confirm";
 import templateApi from "@/modules/template/service/templateApi.js";
-import Paging from "@/modules/commonUtil/components/bc-paging";
-import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt";
+import PageLayer from '@/components/PageLayer.vue';
+import SelectLayer from '@/components/SelectLayer.vue';
+
 
 export default {
   components: {
-    PagingCnt,
-    Paging
+    PageLayer,
+	SelectLayer
   },
   data() {
     return {
       status: "",
       searchTag: "temNm",
       inputTag: "",
-      pageInfo: {},
+	  listSize : 10,  // select 박스 value (출력 갯수 이벤트)
+	  pageNo : 1,  // 현재 페이징 위치
+	  totCnt : 0,  //전체 리스트 수
+	  offset : 0, //페이지 시작점
       contants: []
     }
   },
   mounted() {
-    this.pageInfo = {
-      "pageCnt"   : [10, 20, 30],   //표시할 개수 리스트
-      "selPageCnt": 10,             //선택한 표시 개수
-      "selPage"   : 1,              //선택한 페이지
-      "rowNum"    : 0               //총개수
-    };
-
     this.fnSearch();
   },
 
   methods: {
+	fnSearch(pageNum) {
+		this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
+		this.fnSelectRcsList();
+	},
     // 검색
-    fnSearch() {
+    async fnSelectRcsList() {
 		var params = {
-			"pageInfo" : this.pageInfo,
+			"pageNo" : this.pageNo,
+			"listSize" : this.listSize,
 			"status" : this.status,
 			"searchTag" : this.searchTag,
 			"inputTag" : this.inputTag
     	};
 
-		templateApi.selectRcsTemplateList(params).then(response => {
+		await templateApi.selectRcsTemplateList(params).then(response => {
 		  	var result = response.data;
 			if(result.success) {
-			this.contants = result.data;
-			this.pageInfo = result.pageInfo;
+				this.contants = result.data;
+				this.totCnt = result.pageInfo.totCnt;
+				this.offset = result.pageInfo.offset;
 			}
 		});
     },
@@ -178,7 +186,12 @@ export default {
     // 템플릿 복사
     templateCopy (msgId) {
 		this.$router.push({name:"rcsTemplateMod", params: {status:"CPY", msgId:msgId}})
-    }
+    },
+
+	fnSelected(listSize) {
+		this.listSize = Number(listSize);
+		this.$refs.updatePaging.fnAllDecrease();
+	},
   }
 }
 </script>
