@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -157,9 +158,37 @@ public class RcsTemplateSendController {
 		RestResult<Object> rtn = new RestResult<Object>(true);
 		
 		try {
+			// 예약 발송일 경우 금액 계산을 하지 않음. (DB insert 처리는 service에서 처리)
+			Map<String, Object> data = (Map<String, Object>) params.get("data");
+			String rsrvSendYn = CommonUtils.getString(data.get("rsrvSendYn"));
+			
+			System.out.println("asdfasdf" + rsrvSendYn);
+			
+			if("N".equals(rsrvSendYn)) {
+				// 금액 세팅
+				String resultMsg = rcsTemplateSendSvc.setAccountSendMessage(params);
+				rtn.setMessage(resultMsg);
+			}
+
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+			e.printStackTrace();
+			log.error("{} Error : {}", this.getClass(), e);
+			
+			// 금액계산에서 오류가 생기면 API 통신을하지 않고 로직 종료
+			return rtn;
+		}
+		
+		try {
 			String templateRadioBtn = CommonUtils.getString(params.get("templateRadioBtn"));
 			
-			System.out.println("asdfasdf" + templateRadioBtn);
+			boolean real = (boolean) params.get("real"); // 테스트 발송일 경우 테스트 발신자 리스트로 치환
+			if(!real) {
+				Map<String, Object> data = (Map<String, Object>) params.get("data");
+				String testRecvInfoLst = CommonUtils.getString(data.get("testRecvInfoLst"));
+				data.put("RecvInfoLst", testRecvInfoLst);
+			}
 			
 			// 유형에 따라서 통신 세팅 모듈 case 처리
 			if("des".equals(templateRadioBtn) || "cell".equals(templateRadioBtn)) {
@@ -178,7 +207,7 @@ public class RcsTemplateSendController {
 			}
 		} catch (Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
+			rtn.setMessage(e.getMessage());
 			e.printStackTrace();
 			log.error("{} Error : {}", this.getClass(), e);
 		}

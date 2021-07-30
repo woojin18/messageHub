@@ -1,26 +1,42 @@
 package kr.co.uplus.cm.rcsTemplateSend.Service;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
+import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
+import kr.co.uplus.cm.sendMessage.dto.PushRequestData;
+import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
+import kr.co.uplus.cm.sendMessage.service.SendMessageService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
+import kr.co.uplus.cm.utils.DateUtil;
 import kr.co.uplus.cm.utils.GeneralDao;
 
 @Service
@@ -34,6 +50,9 @@ public class RcsTemplateSendService {
 	
 	@Autowired
 	private CommonService commonService;
+	
+	@Autowired
+	private SendMessageService sendMsgService;
 
 	public RestResult<Object> rcsTemplatePopInit(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -754,6 +773,7 @@ public class RcsTemplateSendService {
 					initDateArr[i] = initDate;
 					initEndDateArr[i] = initEndDate;
 				}
+				rtnMap.put("btnCnt", btnCnt);
 				rtnMap.put("selectBtn", selectBtnArr);
 				rtnMap.put("btnNm", btnNmArr);
 				rtnMap.put("contents", contentsArr);
@@ -790,7 +810,166 @@ public class RcsTemplateSendService {
 			rtnMap.put("imgUrl", mediaUrl);
 			rtnMap.put("fileId", media);
 		} else {
+			String brandId = CommonUtils.getString(msgDetail.get("BRAND_ID"));
+			String saveContent = CommonUtils.getString(msgDetail.get("SAVE_BOX_NAME"));
+			String adYn = CommonUtils.getString(msgDetail.get("AD_YN"));
+			String freeReceiveNum = CommonUtils.getString(msgDetail.get("FREE_RECEIVE_NUM"));
+			String copyPossYn = CommonUtils.getString(msgDetail.get("COPY_POSS_YN"));
+			String callback = CommonUtils.getString(msgDetail.get("CALLBACK"));
+			String replcSenderCode = CommonUtils.getString(msgDetail.get("REPLC_SENDER_CODE"));
+			String callbackTitle = CommonUtils.getString(msgDetail.get("CALLBACK_TITLE"));
+			String callbackContents = CommonUtils.getString(msgDetail.get("CALLBACK_CONTENTS"));
 			
+			// JSON ARRAY parsing
+			String msgInfo = (String) msgDetail.get("MESSAGEBASE_INFO");
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse(msgInfo);
+			JSONArray jsonArr = (JSONArray) obj;
+			
+			// 제목 url description media 세팅
+			ArrayList<Object> textTitleArr = new ArrayList<>();
+			ArrayList<Object> textContentsArr = new ArrayList<>();
+			ArrayList<Object> mediaUrlArr = new ArrayList<>();
+			ArrayList<Object> mediaArr = new ArrayList<>();
+			ArrayList<Object> btnArrLst = new ArrayList<>();
+			
+			for(int i=0; i<jsonArr.size(); i++) {
+				JSONObject jsonObj = (JSONObject) jsonArr.get(i);
+				textTitleArr.add(i, jsonObj.get("title"));
+				textContentsArr.add(i, jsonObj.get("description"));
+				mediaUrlArr.add(i, jsonObj.get("mediaUrl"));
+				mediaArr.add(i, jsonObj.get("media"));
+			}
+			
+			// 버튼 정보 세팅
+			for(int i=0; i<jsonArr.size(); i++) {
+				JSONObject jsonObj = (JSONObject) jsonArr.get(i);
+				JSONArray btnArr = (JSONArray) jsonObj.get("suggestions");
+				Map<String, Object> btnMap = new HashMap<String, Object>();
+				if(btnArr.size()>0) {
+					
+					System.out.println("asdfasdfasdf"+ btnArr);
+					
+					int btnCnt = btnArr.size();
+					String[] selectBtnArr		= new String[btnCnt];
+					String[] btnNmArr			= new String[btnCnt];
+					String[] contentsArr		= new String[btnCnt];
+					String[] calendarTitleArr	= new String[btnCnt];
+					String[] calendarDesArr		= new String[btnCnt];
+					String[] initDateArr		= new String[btnCnt];
+					String[] initEndDateArr		= new String[btnCnt];
+					
+					for(int j=0; j<btnArr.size(); j++) {
+						JSONObject btnObj = (JSONObject) btnArr.get(j);
+						btnObj = (JSONObject) btnObj.get("action");
+						
+						JSONObject btnDetailObj = new JSONObject();
+						String selectBtn = "";
+						String btnNm = "";
+						String contents = "";
+						String calendarTitle = "";
+						String calendarDes = "";
+						String initDate = "";
+						String initEndDate = "";
+						
+						if(btnObj.get("urlAction") != null) {
+							// 버튼 이름 세팅
+							selectBtn = "urlAction";
+							btnNm = CommonUtils.getString(btnObj.get("displayText"));
+							
+							btnDetailObj = (JSONObject) btnObj.get("urlAction");
+							btnDetailObj = (JSONObject) btnDetailObj.get("openUrl");
+							// 내용 세팅
+							contents = CommonUtils.getString(btnDetailObj.get("url"));
+							
+						} else if(btnObj.get("clipboardAction") != null) {
+							// 버튼 이름 세팅
+							selectBtn = "clipboardAction";
+							btnNm = CommonUtils.getString(btnObj.get("displayText"));
+							
+							btnDetailObj = (JSONObject) btnObj.get("clipboardAction");
+							btnDetailObj = (JSONObject) btnDetailObj.get("copyToClipboard");
+							// 내용 세팅
+							contents = CommonUtils.getString(btnDetailObj.get("text"));
+						
+						} else if(btnObj.get("dialerAction") != null) {
+							// 버튼 이름 세팅
+							selectBtn = "dialerAction";
+							btnNm = CommonUtils.getString(btnObj.get("displayText"));
+							
+							btnDetailObj = (JSONObject) btnObj.get("dialerAction");
+							btnDetailObj = (JSONObject) btnDetailObj.get("dialPhoneNumber");
+							// 내용 세팅
+							contents = CommonUtils.getString(btnDetailObj.get("phoneNumber"));
+							
+						} else if(btnObj.get("calendarAction") != null) {
+							// 버튼 이름 세팅
+							selectBtn = "calendarAction";
+							btnNm = CommonUtils.getString(btnObj.get("displayText"));
+							
+							btnDetailObj = (JSONObject) btnObj.get("calendarAction");
+							btnDetailObj = (JSONObject) btnDetailObj.get("createCalendarEvent");
+							// 내용 세팅
+							calendarTitle = CommonUtils.getString(btnDetailObj.get("title"));
+							calendarDes = CommonUtils.getString(btnDetailObj.get("description"));
+							initDate = CommonUtils.getString(btnDetailObj.get("startTime"));
+							initEndDate = CommonUtils.getString(btnDetailObj.get("endTime"));
+							
+						} else if(btnObj.get("mapAction") != null) {
+							// 버튼 이름 세팅
+							selectBtn = "mapAction";
+							btnNm = CommonUtils.getString(btnObj.get("displayText"));
+						}
+						selectBtnArr[j] = selectBtn;
+						btnNmArr[j] = btnNm;
+						contentsArr[j] = contents;
+						calendarTitleArr[j] = calendarTitle;
+						calendarDesArr[j] = calendarDes;
+						initDateArr[j] = initDate;
+						initEndDateArr[j] = initEndDate;
+					}
+					btnMap.put("btnCnt" , btnCnt);
+					btnMap.put("selectBtn", selectBtnArr);
+					btnMap.put("btnNm", btnNmArr);
+					btnMap.put("contents", contentsArr);
+					btnMap.put("calendarTitle", calendarTitleArr);
+					btnMap.put("calendarDes", calendarDesArr);
+					btnMap.put("initDate", initDateArr);
+					btnMap.put("initEndDate", initEndDateArr);
+				}
+				btnArrLst.add(i, btnMap);
+			}
+			
+			rtnMap.put("brandId", brandId);
+			rtnMap.put("saveContent", saveContent);
+			if("Y".equals(adYn)) {
+				rtnMap.put("adYn", "yes");
+			} else {
+				rtnMap.put("adYn", "no");
+			}
+			rtnMap.put("freeReceiveNum", freeReceiveNum);
+			if("Y".equals(copyPossYn)) {
+				rtnMap.put("copy", "yes");
+			} else {
+				rtnMap.put("copy", "no");
+			}
+			rtnMap.put("callback", callback);
+			if("SMS".equals(replcSenderCode)) {
+				rtnMap.put("senderType", "SMS");
+			} else if("LMS".equals(replcSenderCode)) {
+				rtnMap.put("senderType", "LMS");
+			} else {
+				rtnMap.put("senderType", "UNUSED");
+			}
+			
+			
+			rtnMap.put("callbackTitle", callbackTitle);
+			rtnMap.put("callbackContents", callbackContents);
+			rtnMap.put("textTitle", textTitleArr);
+			rtnMap.put("textContents", textContentsArr);
+			rtnMap.put("imgUrl", mediaUrlArr);
+			rtnMap.put("fileId", mediaArr);
+			rtnMap.put("btnArr", btnArrLst);
 		}
 		
 		rtn.setData(rtnMap);
@@ -801,7 +980,6 @@ public class RcsTemplateSendService {
 	// RCS 상품 템플릿 승인(서술형, 스타일형) 발송
 	public RestResult<Object> sendRcsDataTemplate(Map<String, Object> params) throws Exception {
 		RestResult<Object> resultObj = new RestResult<>(true);
-		Map<String, Object> result = new HashMap<String, Object>();
 		Map<String, Object> data = (Map<String, Object>) params.get("data");
 		
 		// header 세팅
@@ -843,28 +1021,22 @@ public class RcsTemplateSendService {
 		
 		// recvInfoLst 세팅
 		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListTemplate(data);
-		ArrayList<Map<String, Object>> returnRecvInfoLst = new ArrayList<Map<String, Object>>();
 		
-		int recvInfoTotalCnt = recvInfoLst.size();
-		int recvInfoLstCnt = (int) Math.ceil(recvInfoLst.size()/(double) 10);
+		// 예약발송일경우 웹 발송 내역을 등록하고 통신은 하지 않도록 처리
 		
-		// 수신자를 10개씩 끊어서 통신 세팅
-		for(int i=0; i<recvInfoLstCnt; i++) {
-			int addCnt = 0;
-			for(int j=(i*10); j<((i*10)+10); j++) {
-				if(recvInfoTotalCnt>j) {
-					returnRecvInfoLst.add(addCnt,recvInfoLst.get(j));
-					addCnt++;
-				}
-			}
-			
-			apiMap.put("recvInfoLst", returnRecvInfoLst);
-			
-			System.out.println("++++" + apiMap);
-			result = apiInterface.post("/console/v1/rcs", apiMap, headerMap);
-			
-			if(!"10000".equals(result.get("code")) ) {
-				throw new Exception("API 통신 에러");
+		String rsrvSendYn = CommonUtils.getString(data.get("rsrvSendYn"));
+		Map<String, Object> msgMap = new HashMap<String, Object>();
+		msgMap = apiMap;
+		msgMap.put("recvInfoLst", recvInfoLst);
+		if("Y".equals(rsrvSendYn)) {
+			this.insertPushCmWebMsg(headerMap, msgMap, params, "SEND");
+		} else {
+			boolean real = (boolean) params.get("real");
+			if(real) {
+				List<Object> reSendCdList = sendMsgService.reSendCdList(null);
+				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, reSendCdList);
+			} else {
+				this.sendTestRcs(apiMap, headerMap);
 			}
 		}
 		
@@ -874,7 +1046,6 @@ public class RcsTemplateSendService {
 	// RCS 텍스트 미승인형 발송
 	public RestResult<Object> sendRcsDataNonTemplate(Map<String, Object> params) throws Exception {
 		RestResult<Object> resultObj = new RestResult<>(true);
-		Map<String, Object> result = new HashMap<String, Object>();
 		Map<String, Object> data = (Map<String, Object>) params.get("data");
 		
 		// header 세팅
@@ -897,26 +1068,22 @@ public class RcsTemplateSendService {
 		
 		// recvInfoLst 세팅
 		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListNonTemplate(data);
-		ArrayList<Map<String, Object>> returnRecvInfoLst = new ArrayList<Map<String, Object>>();
 		
-		int recvInfoTotalCnt = recvInfoLst.size();
-		int recvInfoLstCnt = (int) Math.ceil(recvInfoLst.size()/(double) 10);
+		// 예약발송일경우 웹 발송 내역을 등록하고 통신은 하지 않도록 처리
 		
-		// 수신자를 10개씩 끊어서 통신 세팅
-		for(int i=0; i<recvInfoLstCnt; i++) {
-			int addCnt = 0;
-			for(int j=(i*10); j<((i*10)+10); j++) {
-				if(recvInfoTotalCnt>j) {
-					returnRecvInfoLst.add(addCnt,recvInfoLst.get(j));
-					addCnt++;
-				}
-			}
-			
-			apiMap.put("recvInfoLst", returnRecvInfoLst);
-			result = apiInterface.post("/console/v1/rcs", apiMap, headerMap);
-			
-			if(!"10000".equals(result.get("code")) ) {
-				throw new Exception("API 통신 에러");
+		String rsrvSendYn = CommonUtils.getString(data.get("rsrvSendYn"));
+		Map<String, Object> msgMap = new HashMap<String, Object>();
+		msgMap = apiMap;
+		msgMap.put("recvInfoLst", recvInfoLst);
+		if("Y".equals(rsrvSendYn)) {
+			this.insertPushCmWebMsg(headerMap, msgMap, params, "SEND");
+		} else {
+			boolean real = (boolean) params.get("real");
+			if(real) {
+				List<Object> reSendCdList = sendMsgService.reSendCdList(null);
+				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, reSendCdList);
+			} else {
+				this.sendTestRcs(apiMap, headerMap);
 			}
 		}
 		
@@ -927,20 +1094,15 @@ public class RcsTemplateSendService {
 	// RCS 포멧형 발송
 	public RestResult<Object> sendRcsDataFormat(Map<String, Object> params) throws Exception {
 		RestResult<Object> resultObj = new RestResult<>(true);
-		Map<String, Object> result = new HashMap<String, Object>();
 		Map<String, Object> data = (Map<String, Object>) params.get("data");
 		
 		// header 세팅
 		Map<String, Object> headerMap = this.setHeader(params);
 		
-		System.out.println("+++" + headerMap);
-		
 		// body 기본 데이터 세팅
 		// 포멧형 mesbaseId는 templateRadioBtn 으로 세팅
 		data.put("messagebaseId", params.get("templateRadioBtn"));
 		Map<String, Object> apiMap = this.setRcsData(params);
-		
-		System.out.println("+++" + apiMap);
 		
 		// button 세팅
 		ArrayList<Map<String, Object>> btnArr = new ArrayList<>();
@@ -959,34 +1121,29 @@ public class RcsTemplateSendService {
 		// recvInfoLst 세팅
 		String radioBtn = CommonUtils.getString(params.get("templateRadioBtn"));
 		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListFormat(data, radioBtn);
-		ArrayList<Map<String, Object>> returnRecvInfoLst = new ArrayList<Map<String, Object>>();
 		
-		int recvInfoTotalCnt = recvInfoLst.size();
-		int recvInfoLstCnt = (int) Math.ceil(recvInfoLst.size()/(double) 10);
-		
-		// 수신자를 10개씩 끊어서 통신 세팅
-		for(int i=0; i<recvInfoLstCnt; i++) {
-			int addCnt = 0;
-			for(int j=(i*10); j<((i*10)+10); j++) {
-				if(recvInfoTotalCnt>j) {
-					returnRecvInfoLst.add(addCnt,recvInfoLst.get(j));
-					addCnt++;
-				}
-			}
-			apiMap.put("recvInfoLst", returnRecvInfoLst);
-			System.out.println("++asdfasdfasdf+++" + apiMap);
-			result = apiInterface.post("/console/v1/rcs", apiMap, headerMap);
-			if(!"10000".equals(result.get("code")) ) {
-				throw new Exception("API 통신 에러");
+		String rsrvSendYn = CommonUtils.getString(data.get("rsrvSendYn"));
+		Map<String, Object> msgMap = new HashMap<String, Object>();
+		msgMap = apiMap;
+		msgMap.put("recvInfoLst", recvInfoLst);
+		if("Y".equals(rsrvSendYn)) {
+			this.insertPushCmWebMsg(headerMap, msgMap, params, "SEND");
+		} else {
+			boolean real = (boolean) params.get("real");
+			if(real) {
+				List<Object> reSendCdList = sendMsgService.reSendCdList(null);
+				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, reSendCdList);
+			} else {
+				this.sendTestRcs(apiMap, headerMap);
 			}
 		}
+		
 		return resultObj;
 	}
 	
 	// RCS 포멧형 발송
 	public RestResult<Object> sendRcsDataCarousel(Map<String, Object> params) throws Exception {
 		RestResult<Object> resultObj = new RestResult<>(true);
-		Map<String, Object> result = new HashMap<String, Object>();
 		Map<String, Object> data = (Map<String, Object>) params.get("data");
 		
 		// header 세팅
@@ -1019,26 +1176,23 @@ public class RcsTemplateSendService {
 		// recvInfoLst 세팅
 		int carouselCnt = CommonUtils.getInt(params.get("carouselSelect"));
 		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListCarousel(data, carouselCnt);
-		ArrayList<Map<String, Object>> returnRecvInfoLst = new ArrayList<Map<String, Object>>();
 		
-		int recvInfoTotalCnt = recvInfoLst.size();
-		int recvInfoLstCnt = (int) Math.ceil(recvInfoLst.size()/(double) 10);
-		
-		// 수신자를 10개씩 끊어서 통신 세팅
-		for(int i=0; i<recvInfoLstCnt; i++) {
-			int addCnt = 0;
-			for(int j=(i*10); j<((i*10)+10); j++) {
-				if(recvInfoTotalCnt>j) {
-					returnRecvInfoLst.add(addCnt,recvInfoLst.get(j));
-					addCnt++;
-				}
-			}
-			apiMap.put("recvInfoLst", returnRecvInfoLst);
-			result = apiInterface.post("/console/v1/rcs", apiMap, headerMap);
-			if(!"10000".equals(result.get("code")) ) {
-				throw new Exception("API 통신 에러");
+		String rsrvSendYn = CommonUtils.getString(data.get("rsrvSendYn"));
+		Map<String, Object> msgMap = new HashMap<String, Object>();
+		msgMap = apiMap;
+		msgMap.put("recvInfoLst", recvInfoLst);
+		if("Y".equals(rsrvSendYn)) {
+			this.insertPushCmWebMsg(headerMap, msgMap, params, "SEND");
+		} else {
+			boolean real = (boolean) params.get("real");
+			if(real) {
+				List<Object> reSendCdList = sendMsgService.reSendCdList(null);
+				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, reSendCdList);
+			} else {
+				this.sendTestRcs(apiMap, headerMap);
 			}
 		}
+		
 		return resultObj;
 	}
 	
@@ -1082,6 +1236,7 @@ public class RcsTemplateSendService {
 		String agencyId	= "uplus";														// 대행사 ID
 		String campaignId	= CommonUtils.getString(data.get("campaignId"));			// 캠페인 ID
 		String deptCode	= "";															// 부서 코드
+		String webReqId = CommonUtils.getCommonId("RCS", 10);							// webReqId
 		
 		Map<String, Object> apiMap = new HashMap<>();
 		apiMap.put("messagebaseId", messagebaseId);
@@ -1093,6 +1248,7 @@ public class RcsTemplateSendService {
 		apiMap.put("agencyId", agencyId);
 		apiMap.put("campaignId", campaignId);
 		apiMap.put("deptCode", deptCode);
+		apiMap.put("webReqId", webReqId);
 		return apiMap;
 	}
 	
@@ -1365,5 +1521,203 @@ public class RcsTemplateSendService {
 	
 		return map;
 	}
+	
+	public void insertPushCmWebMsg(Map<String, Object> headerMap, Map<String, Object> msgMap, Map<String, Object> params, String Chstr) throws Exception {
+		Map<String, Object> data = (Map<String, Object>) params.get("data");
+		
+		System.out.println("asdfasdfasdfasdfasdf" + msgMap);
+		
+		String webReqId = CommonUtils.getString(msgMap.get("webReqId"));
+		String ch = "RCS";
+		String corpId = CommonUtils.getString(params.get("corpId"));
+		String projectId = CommonUtils.getString(params.get("projectId"));
+		String rsrvSendYn = CommonUtils.getString(data.get("rsrvSendYn"));
+		String rsrvDateStr = "";
+		String status = Chstr;
+		String callback = CommonUtils.getString(msgMap.get("callback"));
+		String campaignId = CommonUtils.getString(msgMap.get("campaignId"));
+		ArrayList<Map<String, Object>> recvInfoLst = (ArrayList<Map<String, Object>>) msgMap.get("recvInfoLst");
 
+		if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+			System.out.println("+++++" + data);
+			
+			String rsrvYmd = CommonUtils.getString(data.get("rsrvDate"));
+			String rsrvHH = CommonUtils.getString(data.get("rsrvHH"));
+			String rsrvMM = CommonUtils.getString(data.get("rsrvMM"));
+			rsrvDateStr = rsrvYmd+" "+rsrvHH+":"+rsrvMM;
+
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			Date rsrvDate = dateFormat.parse(rsrvDateStr);
+			Date currentDate = new Date();
+
+			currentDate = DateUtils.addMinutes(currentDate, 10);
+			if(currentDate.compareTo(rsrvDate) > 0) {
+				throw new Exception("잘못된 예약시간입니다. 현재시간 10분 이후로 설정해주세요.");
+			}
+			if(DateUtil.diffDays(rsrvDate) > Const.SEND_RSRV_LIMIT_DAY) {
+				throw new Exception("잘못된 예약일자입니다. 현재일로 부터 "+Const.SEND_RSRV_LIMIT_DAY+"일 이내로 설정해주세요");
+			}
+		}
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		Gson gson = new Gson();
+		String json = gson.toJson(msgMap);
+		
+		params.put("webReqId", webReqId);
+		params.put("corpId", corpId);
+		params.put("projectId", projectId);
+		params.put("apiKey", commonService.getApiKey(corpId, projectId));
+		params.put("chString", ch);
+		params.put("msgInfo", json);
+		params.put("senderCnt", recvInfoLst.size());
+		params.put("callback", callback);
+		params.put("campaignId", campaignId);
+		params.put("senderType", Const.SenderType.CHANNEL);
+		params.put("status", status);
+		params.put("resvSenderYn", rsrvSendYn);
+		params.put("reqDt", rsrvDateStr);
+		
+		generalDao.insertGernal(DB.QRY_INSERT_CM_WEB_MSG, params);
+	}
+	
+	// 금액 계산
+	public String setAccountSendMessage(Map<String, Object> params) throws Exception {
+		// 계산 타입
+		String payType = sendMsgService.selectPayType(params);
+
+		//선불일경우
+		if(StringUtils.equals(payType, Const.PayType.PRE_FEE)) {
+			//남은 금액 조회
+			BigDecimal rmAmount = sendMsgService.getRmAmount(params);
+			//개당 가격 조회
+			List<String> productCodes = new ArrayList<String>();
+			productCodes.add(Const.MsgProductCode.getCodeByName(Const.Ch.PUSH));
+			if(params.containsKey("rplcSendType")
+					&& !CommonUtils.isEmptyValue(params, "rplcSendType")
+					&& !StringUtils.equals((CharSequence) params.get("rplcSendType"), "NONE")) {
+				productCodes.add(Const.MsgProductCode.getCodeByName(CommonUtils.getStrValue(params, "rplcSendType")));
+			}
+
+			Map<String, Object> sParam = new HashMap<>();
+			sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
+			sParam.put("productCodes", productCodes);
+			BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
+			if(rmAmount.compareTo(feePerOne) < 0) {
+				throw new Exception("잔액 부족으로 메시지를 발송할 수 없습니다.");
+			}
+			
+			Map<String, Object> data = (Map<String, Object>) params.get("data");
+			ArrayList<Object> recvInfoLst = (ArrayList<Object>) data.get("recvInfoLst");
+			BigDecimal feePerAll = feePerOne.multiply(new BigDecimal(recvInfoLst.size()));
+			if(rmAmount.compareTo(feePerAll) < 0) {
+				String testSendYn = "N";
+				if(StringUtils.equals(testSendYn, Const.COMM_YES)) {
+					throw new Exception("잔액 부족으로 메시지를 발송할 수 없습니다.");
+				} else {
+					return "잔액 부족으로 메시지가 발송되지 않을 수도 있습니다.";
+				}
+			}
+		}
+		return "";
+	}
+	
+	@Async
+	public void sendRcs(Map<String, Object> params, int fromIndex, Map<String, Object> apiMap, Map<String, Object> headerMap, ArrayList<Map<String, Object>> recvInfoLst, List<Object> reSendCdList) throws Exception {
+		List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
+		Map<String, Object> responseBody = null;
+		String jsonString = "";
+		boolean isDone = false;
+		boolean isServerError = false;
+		boolean isAllFail = true;
+
+		Gson gson = new Gson();
+
+		int retryCnt = NumberUtils.INTEGER_ZERO;
+		int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
+		int listSize = recvInfoLst.size();
+		int toIndex = fromIndex;
+
+		while (toIndex < listSize) {
+			isDone = false;
+			isServerError = false;
+			toIndex = fromIndex + cutSize;
+			try {
+				if(toIndex > listSize) toIndex = listSize;
+				apiMap.put("recvInfoLst", recvInfoLst.subList(fromIndex, toIndex));
+				jsonString = gson.toJson(apiMap);
+				responseBody = apiInterface.sendMsg(ApiConfig.SEND_RCS_API_URI, headerMap, jsonString);
+				isDone = isApiRequestAgain(responseBody, reSendCdList);
+				isAllFail = !isSendSuccess(responseBody);
+			} catch (Exception e) {
+				isServerError = true;
+			}
+
+			if(isDone) {
+				retryCnt = NumberUtils.INTEGER_ZERO;
+				fromIndex = toIndex;
+			} else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
+				retryCnt = NumberUtils.INTEGER_ZERO;
+				fromIndex = toIndex;
+			} else {
+				retryCnt++;
+				toIndex = fromIndex;
+				if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
+			}
+		}
+
+		//웹 발송 내역 등록
+		if(isAllFail) {
+			this.insertPushCmWebMsg(headerMap, apiMap, params, "FAIL");
+		} else {
+			this.insertPushCmWebMsg(headerMap, apiMap, params, "COMPLETED");
+		}
+		
+	}
+	
+	public void sendTestRcs(Map<String, Object> apiMap, Map<String, Object> headerMap) throws Exception {
+		Map<String, Object> result = apiInterface.post("/console/v1/rcs", apiMap, headerMap);
+		
+		if(!"10000".equals(result.get("code")) ) {
+			throw new Exception("RCS 테스트 메세지 발송에 실패하였습니다.");
+		}
+	}
+	
+    /**
+     * API 재요청 여부
+     * 재요청 코드에 등록되지 않은 모든 상황은 재요청 하지 않는다.
+     * @param responseBody
+     * @param reSendCdList
+     * @return
+     */
+    private boolean isApiRequestAgain(Map<String, Object> responseBody, List<Object> reSendCdList) {
+        boolean isDone = true;
+        if(responseBody != null) {
+            if(!CommonUtils.isEmptyValue(responseBody, ApiConfig.GW_RESULT_CODE_FIELD_NM)){
+                String resultCode = CommonUtils.getString(responseBody.get(ApiConfig.GW_RESULT_CODE_FIELD_NM));
+                for(Object reSendCd : reSendCdList) {
+                    if(StringUtils.equals(resultCode, CommonUtils.getString(reSendCd))) {
+                        isDone = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return isDone;
+    }
+
+    /**
+     * 발송 성공여부
+     * @param responseBody
+     * @return
+     */
+    private boolean isSendSuccess(Map<String, Object> responseBody) {
+        boolean isSuccess = false;
+        if(responseBody != null) {
+            if(!CommonUtils.isEmptyValue(responseBody, ApiConfig.GW_RESULT_CODE_FIELD_NM)
+                    && StringUtils.equals(ApiConfig.GW_API_SUCCESS, CommonUtils.getString(responseBody.get(ApiConfig.GW_RESULT_CODE_FIELD_NM)))) {
+                isSuccess = true;
+            }
+        }
+        return isSuccess;
+    }
 }
