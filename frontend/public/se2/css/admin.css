@@ -706,8 +706,8 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 #sidebar > ul > li .depth2Lnb {display:none}
 #sidebar > ul > li .depth2Lnb > ul {background:#F7F7F7; padding:0 10px 0 52px}
 #sidebar > ul > li .depth2Lnb > ul > li {}
-#sidebar > ul > li .depth2Lnb > ul > li > a {display:block; font-size:14px; color:#707070; padding:7px 0; transition:0.3s}
-#sidebar > ul > li .depth2Lnb > ul > li.active > a, #sidebar > ul > li .depth2Lnb > ul >  li > a:hover {color:#FD004E; font-weight:500}
+#sidebar > ul > li .depth2Lnb > ul > li a {display:block; font-size:14px; color:#707070; padding:7px 0; transition:0.3s}
+#sidebar > ul > li .depth2Lnb > ul > li.active a, #sidebar > ul > li .depth2Lnb > ul > li a:hover {color:#FD004E; font-weight:500}
 #sidebar > ul > li.active .depth2Lnb {display:block}
 
 .depth2Lnb > ul > li .depth3Lnb {display:none}

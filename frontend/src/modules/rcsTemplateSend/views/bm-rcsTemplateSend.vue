@@ -2,7 +2,7 @@
 		<article>
 			<div class="contentHeader">
 				<h2>RCS 발송</h2>
-				<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="이용안내">이용안내 <i class="fal fa-book-open"></i></a>
+				<!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
 			</div>
 			<!-- 본문 -->
 			<div>
@@ -103,46 +103,39 @@
 				<div v-if="carouSelType" class="phone3 inline-block" style="width:30%">
 					<div class="cardBxsliderWrap">						
 						<!-- phoneWrap -->
-						<div class="phoneWrap">
+						<div class="phoneWrap" style="height:660px">
 							<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-							<div class="phoneCardWrap">
+							<div v-if="pushTab=='push'" class="phoneCardWrap">
 								<p class="color000">[WEB발신] (광고)</p>
 								<ul class="cardBxslider mt10">
-									<li class="slide cardBox">
+									<li v-for="n in carouselSelect" class="slide cardBox">
 										<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
-										<div>
-											<div class="scroll-y">
-												<p class="color000 font-size13">타이틀 영역1</p>
+										<div class="relative">
+											<div class="scroll-y" style="min-height:150px">
+											{{n}}
+												<p class="color000 font-size13">{{sendData.carouselObj.textTitle[n-1]}}</p>
+												<p class="color3 mt5">{{sendData.carouselObj.textContents[n-1]}}</p>
 											</div>
-											<p class="color3 font-size10 mt5">무료수신거부:</p>
-										</div>
-									</li>
-									<li class="slide cardBox">
-										<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
-										<div>
-											<div class="scroll-y">
-												<p class="color000 font-size13">타이틀 영역2</p>
-											</div>
-											<p class="color3 font-size10 mt5">무료수신거부:</p>
-										</div>
-									</li>
-									<li class="slide cardBox">
-										<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
-										<div>
-											<div class="scroll-y">
-												<p class="color000 font-size13">타이틀 영역3</p>
-											</div>
-											<p class="color3 font-size10 mt5">무료수신거부:</p>
+											<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{sendData.freeReceiveNum}}</p>
 										</div>
 									</li>
 								</ul>
 							</div>
+							<div  v-if="pushTab!='push'" class="phoneCardWrap">
+								<div class="phoneText1">
+									<div class="scroll-y">
+										<p class="mt15">{{sendData.callbackTitle}}</p>
+										<p class="mt15">{{sendData.callbackContents}}</p>
+									</div>
+								</div>
+							</div>
 						</div>
 						<!-- //phoneWrap -->						
 					</div>
-					<div class="phone_04_btn mt50" style="margin-left:70px">
-						<a href="#self" class="btnStyle1 backBlack" title="Push">Push</a>
-						<a href="#self" class="btnStyle1 backWhite" title="Push">SMS</a>						
+					<div class="phone_04_btn">
+						<a @click.prevent="fnclickPushBtn('push')" href="#self" class="btnStyle1 backBlack" title="Push">Push</a>
+						<a @click.prevent="fnclickPushBtn('SMS')" v-if="sendData.senderType=='SMS'" href="#self" class="btnStyle1 backWhite" title="Push">SMS</a>
+						<a @click.prevent="fnclickPushBtn('LMS')" v-if="sendData.senderType=='LMS'" href="#self" class="btnStyle1 backWhite" title="Push">LMS</a>								
 					</div>
 				</div>
 				<div v-if="!carouSelType" class="phone3 inline-block" style="width:30%">
@@ -178,7 +171,8 @@
 								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
 							<div v-if="templateRadioBtn == 'SMwThM00'">
-								<img :src="sendData.SMwThM00Img" alt="프리 템플릿">
+								<img v-if="sendData.imgUrl == ''" :src="sendData.SMwThM00Img" alt="프리 템플릿">
+								<div v-if="sendData.imgUrl != ''" :style="'background-image: url('+sendData.imgUrl+');padding:65px;'" class="mt10 text-center simulatorImg"> </div>
 								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
 									<h5>{{sendData.textTitle}}</h5>
 									<div class="scroll-y3">
@@ -188,7 +182,8 @@
 								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
 							<div v-if="templateRadioBtn == 'SMwThT00'">
-								<img :src="sendData.SMwThT00Img" alt="프리 템플릿">
+								<img v-if="sendData.imgUrl == ''" :src="sendData.SMwThM00Img" alt="프리 템플릿">
+								<div v-if="sendData.imgUrl != ''" :style="'background-image: url('+sendData.imgUrl+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
 								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20">
 									<h5>{{sendData.textTitle}}</h5>
 									<div class="scroll-y6">
@@ -383,7 +378,7 @@
 					</div>
 					<div class="float-right mt20">
 						<a v-if="templateRadioBtn!='des' && templateRadioBtn !='cell'" activity="SAVE" data-toggle="modal" data-target="#save" href="#self" class="btnStyle2 backWhite float-left" title="저장">저장</a>
-						<a @click.prevent="fnTestSendData" activity="SAVE" href="#self" class="btnStyle2 float-left ml10" title="테스트 발송">테스트 발송</a>
+						<a @click.prevent="fnOpenTestSendInputPopup" activity="SAVE" href="#self" class="btnStyle2 float-left ml10" title="테스트 발송">테스트 발송</a>
 						<a @click.prevent="fnSendData" activity="SAVE" href="#self" class="btnStyle2 backRed float-left ml10" title="발송">발송</a>
 					</div>
 				</div>
@@ -397,6 +392,7 @@
 			<RcsSavePopup ref="rcsSavePop"></RcsSavePopup>
 			<DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
 			<AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
+			<TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :testRecvInfoLst="sendData.testRecvInfoLst" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></TestSendInputPopup>
 		</article>
 </template>
 
@@ -409,12 +405,15 @@ import RcsSenderPopup from "@/modules/rcsTemplateSend/components/bp-rcsTemplateS
 import RcsSavePopup from "@/modules/rcsTemplateSend/components/bp-rcsSavePopup.vue";
 import DirectInputPopup from "@/modules/message/components/bp-directInput.vue";
 import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue";
+import TestSendInputPopup from "@/modules/message/components/bc-testSendInput.vue";
 import Calendar from "@/components/Calendar.vue";
 import rcsTemplateSendApi from "@/modules/rcsTemplateSend/service/api.js";
 import messageApi from "@/modules/message/service/messageApi.js";
 
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
+
+var slider;
 
 export default {
   name: "pushTemplateList",
@@ -427,6 +426,7 @@ export default {
 	  RcsSavePopup,
 	  DirectInputPopup,
 	  AddressInputPopup,
+	  TestSendInputPopup,
 	  Calendar
   },
   data() {
@@ -447,13 +447,12 @@ export default {
 		btnNm:[],			     	    // 버튼 이름
 		formatCard : false,				// 버튼입력 버튼
 		carouSelType : false,			// 캐러셀 영역 세팅
-		test : "",						// 
 		carouselSelect : 3,				// 캐러셀 selectBox
 		carouSelTabCnt : 1,				// 캐러셀 탭
 		messagebaseId : "",				// 템플릿 선택 Id
 		directInputOpen : false,		// 수신자 직접입력 버튼
 		addressInputOpen : false,		// 주소록 검색 버튼
-		rcsTemplateSavePopOpen : false,	// 저장 버튼
+		testSendInputOpen : false,		// 테스트 발송 팝업 버튼
         templateRadioBtn : "des",       // 템플릿형 라디오 버튼
 		recvCnt : 0,  					// 수신자명수
 		carouselSmall : 'CMwShS0300',	// 캐러셀형 msgId
@@ -500,7 +499,6 @@ export default {
 			requiredCuid : false,  //app 로그인 ID 필수여부
 			requiredCuPhone : true,  //수신자 폰번호 필수여부
 			cuInputType:'DICT',  //DICT, ADDR, EXCEL
-			rcvblcNumber:'',  //수신거부
 			cuInfo:'',
 			rsrvSendYn:'N',  //예약발송여부
 			rsrvDate:this.$gfnCommonUtils.getCurretDate(),
@@ -520,14 +518,6 @@ export default {
 		  // type 변경
 		  this.carouselSelect = newval*1;
 	  },
-	 /* carouSelType(newval, oldval) {
-		  var vm = this;
-		  if(newval) {
-			  setTimeout(function() {
-				  vm.fnSetSlider();
-			  }, 3000)
-		  } 
-	  }, */
 	  'sendData.brandId'(newval, oldval) {
 		  this.callbackList();
 	  },
@@ -545,7 +535,7 @@ export default {
 	  }
   },
   mounted() {
-	  this.fnInit();
+	  //this.fnInit();
   },
   methods: {
 	// RCS 발송 발신번호 세팅
@@ -561,6 +551,69 @@ export default {
 
 	fnResetData() {
 		// 데이터 초기화
+		this.pushTab = "push";
+		this.imgsrc = require("@/assets/images/common/approve.png");
+		this.text = "테스트입니다.[한글]";
+		this.styleContentCnt = 0;			
+		this.styleInput = [];				
+		this.styleInputSec = [];				
+		this.styleChk = [];	        	   
+		this.contentTitle = "";				
+		this.contentText = "";			
+        this.btnCnt = 0;		     	  
+		this.btnNm = [];		
+		this.carouselSelect = 3;
+		this.carouSelTabCnt = 1;
+		this.messagebaseId = "";
+		this.recvCnt = 0;
+		this.carouselSmall = 'CMwShS0300';
+		this.carouselMedium = 'CMwMhM0300';
+		this.contentPopCnt = 0;
+		this.btnPopCnt = 0;
+		this.sendData.messagebaseId = "";
+		this.sendData.brandId = "";
+		this.sendData.textTitle = "";
+		this.sendData.textContents = "";
+		this.sendData.btnCnt = 0;
+		this.sendData.selectBtn = [];
+		this.sendData.btnNm = [];
+		this.sendData.contents = [];
+		this.sendData.calendarTitle = [];
+		this.sendData.calendarDes = [];
+		this.sendData.initStartDate = [];
+		this.sendData.initEndDate = [];
+		this.sendData.imgUrl = "";
+		this.sendData.fileId = "";
+		this.sendData.wideImgYn = "";
+		this.sendData.SMwThM00Img = require("@/assets/images/common/cardThumImg2_2.png");
+		this.sendData.SMwThT00Img = require("@/assets/images/common/cardThumImg2_1.png");
+		this.sendData.callback = "";
+		this.sendData.callbackArr = [];
+		this.sendData.copy = "no";
+		this.sendData.adYn = "no";
+		this.sendData.freeReceiveNum = "";
+		this.sendData.senderType = "UNUSED";
+		this.sendData.callbackTitle = "";
+		this.sendData.callbackContents = "";
+		this.sendData.saveContent = "";
+		this.sendData.cuInputType = "DICT";
+		this.sendData.cuInfo = "";
+		this.sendData.rsrvSendYn = "N";
+		this.sendData.rsrvDate = this.$gfnCommonUtils.getCurretDate();
+		this.sendData.rsrvHH = "00";
+		this.sendData.rsrvMM = "00";
+		this.sendData.campaignId = "";
+		this.sendData.imgInfoList = [];
+		this.sendData.recvInfoLst = [];
+		this.sendData.contsVarNms = [];
+		this.sendData.testRecvInfoLst = [];
+		this.sendData.carouselObj.textTitle = [];
+		this.sendData.carouselObj.textContents = [];
+		this.sendData.carouselObj.imgUrl = [];
+		this.sendData.carouselObj.fileId = [];
+		this.sendData.carouselObj.wideImgYn = [];
+		this.sendData.carouselObj.btnArr = [];
+
 	},
 	
 	callbackList() {
@@ -578,7 +631,7 @@ export default {
 
 
 	fnSetSlider() {
-		jQuery('.cardBxslider').bxSlider({
+		slider = jQuery('.cardBxslider').bxSlider({
 			auto: false,
 			autoControls: false,
 			slideWidth: 204,
@@ -681,12 +734,7 @@ export default {
 			vm.sendData.imgUrl = params.imgUrl;
 			vm.sendData.fileId = params.fileId;
 			vm.sendData.wideImgYn = params.wideImgYn;
-			if("SMwThM00" == params.radioBtn) {
-				vm.sendData.SMwThM00Img = require(params.imgUrl);
-			} 
-			if("SMwThT00" == params.radioBtn) {
-				vm.sendData.SMwThT00Img = require(params.imgUrl);
-			}
+			
 		} else {
 			var carouSelTabCnt = vm.carouSelTabCnt;
 			vm.sendData.brandId = vm.carouselBrandId;
@@ -939,8 +987,32 @@ export default {
 				vm.sendData.callbackContents = data.callbackContents;	// 대체발송 contents
 				vm.sendData.imgUrl = data.imgUrl;						// 이미지
 				vm.sendData.fileId = data.fileId;						// 이미지
-
+				vm.sendData.btnCnt = data.btnCnt;                   	// 버튼 갯수
+				vm.btnCnt = data.btnCnt;
+				for(var i=0; i<data.btnCnt; i++) {
+					vm.$set(vm.btnNm, i, data.btnNm[i]);
+					vm.$set(vm.sendData.selectBtn, i, data.selectBtn[i]);
+					vm.$set(vm.sendData.btnNm, i, data.btnNm[i]);
+					vm.$set(vm.sendData.contents, i, data.contents[i]);
+					vm.$set(vm.sendData.calendarTitle, i, data.calendarTitle[i]);
+					vm.$set(vm.sendData.calendarDes, i, data.calendarDes[i]);
+					vm.$set(vm.sendData.initStartDate, i, data.initStartDate[i]);
+					vm.$set(vm.sendData.initEndDate, i, data.initEndDate[i]);
+				}
 			} else {
+				vm.sendData.brandId = data.brandId;							// brandId
+				vm.sendData.saveContent = data.saveContent;					// 저장 메시지 명
+				vm.sendData.copy = data.copy;								// 복사 가능여부
+				vm.sendData.adYn = data.adYn;								// 광고여부
+				vm.sendData.freeReceiveNum = data.freeReceiveNum;			// 무료수신거부
+				vm.sendData.senderType = data.senderType;					// 대체발송 radio
+				vm.sendData.callbackTitle = data.callbackTitle;				// 대체발송 title
+				vm.sendData.callbackContents = data.callbackContents;		// 대체발송 contents
+				vm.sendData.carouselObj.textTitle = data.textTitle;			// 텍스트 제목
+				vm.sendData.carouselObj.textContents = data.textContents;	// 텍스트 내용
+				vm.sendData.carouselObj.imgUrl = data.imgUrl;				// 이미지
+				vm.sendData.carouselObj.fileId = data.fileId;				// 이미지
+				vm.sendData.carouselObj.btnArr = data.btnArr;				// 버튼
 
 			}
 		});
@@ -970,19 +1042,27 @@ export default {
 	// 캐러셀형
 	fnSetCarousel() {
 		this.fnConfirmChangeRadioBtn(event);
+		this.fnInit();
 
 		this.formatCard = true;
 		this.carouSelType = true;
+		var vm = this;
+
+		setTimeout(function() {
+			vm.fnSetSlider();
+		}, 10)
+
 	},
 
 	fnConfirmChangeRadioBtn(event) {
-		//eventBus.$on('callbackEventBus', this.fnResetData);
-		//confirm.fnConfirm("RCS 발송" ,"템플릿을 변경하면 입력된 데이터가 모두 초기화됩니다. 변경하시겠습니까?", "확인");
+		eventBus.$on('callbackEventBus', this.fnResetData);
+		confirm.fnConfirm("RCS 발송" ,"템플릿을 변경하면 입력된 데이터가 모두 초기화됩니다. 변경하시겠습니까?", "확인");
 	},
 
 	// 캐러셀형 탭 클릭 이벤트 처리
 	fnClickTab(n) {
 		this.carouSelTabCnt = n;
+
 	},
 
 	// 캐러셀 형 카드 갯수 변경시 msgId 세팅
@@ -1003,23 +1083,80 @@ export default {
 			vm.carouselSmall = 'CMwShS0600';
 			vm.carouselMedium = 'CMwMhM0600';
 		}
+
+		setTimeout(function() {
+			slider.reloadSlider();
+		}, 10)
 	},
 
 	fnSendData() {
+		var vali = this.validation();
+		if(!vali) return false;
+
 		var params = {
 			"data" : this.sendData,
 			"templateRadioBtn" : this.templateRadioBtn,
 			"brandId" : this.carouselBrandId,
-			"carouselSelect" : this.carouselSelect
+			"carouselSelect" : this.carouselSelect,
+			"real" : true
 		}
 
 		rcsTemplateSendApi.sendRcsData(params).then(response => {
-			
+			var result = response.data;
+			var success = result.success;
+			if(success) {
+				if("" == result.message) confirm.fnAlert("RCS 발송", "메세지 발송처리를 완료하였습니다.");
+				else confirm.fnAlert("RCS 발송", result.message);
+
+			} else {
+				confirm.fnAlert("RCS 발송", result.message);
+			}
 		});
 
 	},
 
+	// 테스트 발송
 	fnTestSendData() {
+		//var vali = this.validation();
+		//if(!vali) return false;
+
+		var params = {
+			"data" : this.sendData,
+			"templateRadioBtn" : this.templateRadioBtn,
+			"brandId" : this.carouselBrandId,
+			"carouselSelect" : this.carouselSelect,
+			"real" : false
+		}
+
+		rcsTemplateSendApi.sendRcsData(params).then(response => {
+			var result = response.data;
+			var success = result.success;
+			if(success) {
+				alert(result.message);
+				if("" == result.message || null == result.message) confirm.fnAlert("RCS 발송", "테스트 메세지 발송처리를 완료하였습니다.");
+				else confirm.fnAlert("RCS 발송", result.message);
+
+			} else {
+				confirm.fnAlert("RCS 발송", result.message);
+			}
+		});
+	},
+
+	fnOpenTestSendInputPopup(){
+      this.fnSetContsVarNms();
+      this.testSendInputOpen = !this.testSendInputOpen;
+    },
+
+	fnCallbackTestRecvInfoLst(testRecvInfoLst){
+      if(testRecvInfoLst != null){
+        this.sendData.testRecvInfoLst = testRecvInfoLst;
+        this.fnTestSendData();
+      } else {
+        this.sendData.testRecvInfoLst = [];
+      }
+    },
+
+	validation() {
 
 	}
   }
