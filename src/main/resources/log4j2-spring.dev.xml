@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration status="DEBUG" >
+<configuration status="DEBUG" packages="kr.co.uplus.cm.common.log">
     <Properties>
         <Property name="app-name">cloud-web-sample</Property>
         <Property name="log-path">logs/sample</Property>
