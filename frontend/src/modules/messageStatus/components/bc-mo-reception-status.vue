@@ -24,23 +24,21 @@
         </div>
 
         <div class="consolMarginTop">
+          <h4 class="inline-block" style="width:8%">상태</h4>
+          <select v-model="searchData.searchCondi"  class="selectStyle2 maxWidth200" style="width:15%" title="상태 선택란">
+            <option v-for="data in condiDatas" :key="data.codeName" :value="data.codeName">{{data.codeVal}}</option>
+          </select>
+          <h4 class="inline-block ml30" style="width:8%">발신번호</h4>
+          <input type="text" class="inputStyle ml10" id="searchSendNumber" name="searchSendNumber" v-model="searchData.searchSendNumber" style="width:25%" title="발신번호">
+        </div>	
+        <div class="consolMarginTop">
           <h4 class="inline-block" style="width:8%">수신번호 : </h4>
-          <div class="inline-block" style="width:29%" ><!-- <span v-html="receptionNumber"></span> -->
+          <div class="inline-block" style="width:29%" >
             <div v-for="(data, idx) in receptionDatas" :key="idx">
               <input type="checkbox" id="searchReceptionNumber" name="searchReceptionNumber" class="checkStyle2" :value="data.moNumber" v-model="searchData.searchReceptionNumber">
               <label for="searchReceptionNumber">{{ data.moNumber }}</label>
             </div>
-            <!-- <input type="checkbox" id="searchReceptionNumber" name="searchReceptionNumber" class="checkStyle2" value="1111" v-model="searchData.searchReceptionNumber"><label for="searchReceptionNumber">1111</label>
-            <input type="checkbox" id="searchReceptionNumber" name="searchReceptionNumber" class="checkStyle2" value="2222" v-model="searchData.searchReceptionNumber"><label for="searchReceptionNumber">2222</label> -->
           </div>
-          <h4 class="inline-block" style="width:8%">발신번호</h4>
-          <input type="text" class="inputStyle ml10" id="searchSendNumber" name="searchSendNumber" v-model="searchData.searchSendNumber" style="width:37.5%" title="발신번호">
-        </div>	
-        <div class="consolMarginTop">
-          <h4 class="inline-block" style="width:8%">상태</h4>
-          <select v-model="searchData.searchCondi"  class="selectStyle2" style="width:15%" title="상태 선택란">
-            <option v-for="data in condiDatas" :key="data.codeName" :value="data.codeName">{{data.codeVal}}</option>
-          </select>
           <a @click="fnSearch()" class="btnStyle1 float-right" title="검색" activity="READ">검색</a>
         </div>
 
@@ -61,7 +59,7 @@
       <!-- 15개씩 보기 -->
       <div class="of_h inline">
         <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
-          <SelectLayer @fnSelected="fnSelected"></SelectLayer>
+          <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
         </div>
       </div>
       <!-- //15개씩 보기 -->
@@ -96,7 +94,7 @@
             </thead>
             <tbody>
               <tr v-for="(data, idx) in datas" :key="data.row_num">
-                  <td>{{ idx + 1 }}</td>
+                  <td>{{totCnt-offset-data.rowNum+1}}</td>
                   <td class="text-center">{{data.moType}}</td>
                   <td class="text-center">{{data.moNumber}}</td>
                   <td class="text-center">{{data.moCallback}}</td>
@@ -181,6 +179,7 @@ export default {
       this.searchDateInterval = interval;
       this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
       this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
+      this.fnSearch();
     },
     fnUpdateStartDate(sltDate) {
       this.searchData.searchStartDate = sltDate;
@@ -192,13 +191,11 @@ export default {
     //엑셀 다운로드
     fnExcelDownLoad(){
       var params = this.searchData;
-      //params.projectId = this.testProjectId;
       messageStatusApi.excelDownloadMoReceptionStatus(params);
     },
 
     // 검색
     async fnSelectMoReceptionStatusList() {
-
       //유효성 검사
       if(this.searchData.searchStartDate && this.searchData.searchEndDate){
         if(this.searchData.searchStartDate.replace(/[^0-9]/g, '') > this.searchData.searchEndDate.replace(/[^0-9]/g, '')){
@@ -213,14 +210,11 @@ export default {
 
       params.loginId = tokenSvc.getToken().principal.userId;
       params.roleCd = tokenSvc.getToken().principal.roleCd;
-      //params.projectId = this.testProjectId;
 
       await messageStatusApi.selectMoReceptionStatusList(params).then(response =>{
         var result = response.data;
         if(result.success) {
           this.datas = result.data;
-          //this.totCnt = result.pageDto.totCnt;
-          //this.offset = result.pageDto.offset;
           this.totCnt = result.pageInfo.totCnt;
           this.offset = result.pageInfo.offset;
         } else {
@@ -243,14 +237,14 @@ export default {
       this.selectConditionList();
     },
  
-
+    // 상태
     async selectConditionList(){
       var params = {};
       await messageStatusApi.selectConditionList(params).then(response =>{
         var result = response.data;
         if(result.success) {
           this.condiDatas = result.data;
-          //console.log(">>>>"+this.condiDatas[0].codeName);
+
         } else {
           alert(result.message);
         }
@@ -262,19 +256,17 @@ export default {
       this.selectReceptionNumber();
     },
  
-
+    // 수신번호 검색창
     async selectReceptionNumber(){
-       var params = {};
-      //  "projectId" : this.testProjectId 
-      //};
+      var params = {};
+
       await messageStatusApi.selectReceptionNumberList(params).then(response =>{
         var result = response.data;
         if(result.success) {
           this.receptionDatas = result.data;
           this.receptionNumber = result.data[0].receptionNumber;
-          console.log("receptionNumber >>>>"+ this.receptionNumber);
         } else {
-          alert(result.message);
+          //alert(result.message);
         }
       });
     }
