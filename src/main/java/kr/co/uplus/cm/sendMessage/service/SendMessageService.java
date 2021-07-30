@@ -37,7 +37,6 @@ import com.google.gson.reflect.TypeToken;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
-import kr.co.uplus.cm.common.log.LogMaskingConverter;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkRequestData;
@@ -2440,7 +2439,7 @@ public class SendMessageService {
      */
     @SuppressWarnings("unchecked")
     public List<RecvInfo> replaceRcsMsgVar(List<RecvInfo> recvInfoLst, Map<String, Object> params) throws Exception{
-        log.info(LogMaskingConverter.PRIVACY_MARKER, "{}.replaceRcsMsgVar start. recvInfoLst ==> {}", this.getClass(), recvInfoLst);
+        log.info(Const.PRIVACY_MARKER, "{}.replaceRcsMsgVar start. recvInfoLst ==> {}", this.getClass(), recvInfoLst);
 
         List<RecvInfo> rtnList = new ArrayList<RecvInfo>(recvInfoLst);
         Map<String, Object> rcsltInfo = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_RCS_INFO, params);
