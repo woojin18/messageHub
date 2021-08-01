@@ -1661,7 +1661,7 @@ public class RcsTemplateSendService {
 				isDone = isApiRequestAgain(responseBody, reSendCdList);
 				isAllFail = !isSendSuccess(responseBody);
 			} catch (Exception e) {
-				isServerError = true;
+				isServerError = true; 
 			}
 
 			if(isDone) {
