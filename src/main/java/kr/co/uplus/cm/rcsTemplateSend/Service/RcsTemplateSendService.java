@@ -1130,7 +1130,7 @@ public class RcsTemplateSendService {
 		msgMap = apiMap;
 		msgMap.put("recvInfoLst", recvInfoLst);
 		if("Y".equals(rsrvSendYn)) {
-			this.insertPushCmWebMsg(headerMap, msgMap, params, "SEND");
+			this.insertPushCmWebMsg(headerMap, msgMap, params, "SEND_WAIT");
 		} else {
 			boolean real = (boolean) params.get("real");
 			if(real) {
@@ -1528,8 +1528,6 @@ public class RcsTemplateSendService {
 	public void insertPushCmWebMsg(Map<String, Object> headerMap, Map<String, Object> msgMap, Map<String, Object> params, String Chstr) throws Exception {
 		Map<String, Object> data = (Map<String, Object>) params.get("data");
 		
-		System.out.println("asdfasdfasdfasdfasdf" + msgMap);
-		
 		String webReqId = CommonUtils.getString(msgMap.get("webReqId"));
 		String ch = "RCS";
 		String corpId = CommonUtils.getString(params.get("corpId"));
@@ -1539,11 +1537,13 @@ public class RcsTemplateSendService {
 		String status = Chstr;
 		String callback = CommonUtils.getString(msgMap.get("callback"));
 		String campaignId = CommonUtils.getString(msgMap.get("campaignId"));
-		ArrayList<Map<String, Object>> recvInfoLst = (ArrayList<Map<String, Object>>) msgMap.get("recvInfoLst");
-
+		
+		if(!StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+			msgMap.put("recvInfoLst", msgMap.get("msgRecvInfoLst"));
+			msgMap.remove("msgRecvInfoLst");
+		}
+		
 		if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
-			System.out.println("+++++" + data);
-			
 			String rsrvYmd = CommonUtils.getString(data.get("rsrvDate"));
 			String rsrvHH = CommonUtils.getString(data.get("rsrvHH"));
 			String rsrvMM = CommonUtils.getString(data.get("rsrvMM"));
@@ -1572,7 +1572,13 @@ public class RcsTemplateSendService {
 		params.put("apiKey", commonService.getApiKey(corpId, projectId));
 		params.put("chString", ch);
 		params.put("msgInfo", json);
-		params.put("senderCnt", recvInfoLst.size());
+		if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
+			ArrayList<Map<String, Object>> recvInfoLst = (ArrayList<Map<String, Object>>) msgMap.get("recvInfoLst");
+			int senderCnt = recvInfoLst.size();
+			params.put("senderCnt", senderCnt);
+		} else {
+			params.put("senderCnt", CommonUtils.getInt(params.get("recvInfoLstCnt")));
+		}
 		params.put("callback", callback);
 		params.put("campaignId", campaignId);
 		params.put("senderType", Const.SenderType.CHANNEL);
@@ -1639,6 +1645,9 @@ public class RcsTemplateSendService {
 		int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
 		int listSize = recvInfoLst.size();
 		int toIndex = fromIndex;
+		
+		params.put("recvInfoLstCnt", listSize);
+		apiMap.put("msgRecvInfoLst", recvInfoLst);
 
 		while (toIndex < listSize) {
 			isDone = false;
@@ -1671,6 +1680,7 @@ public class RcsTemplateSendService {
 		//웹 발송 내역 등록
 		if(isAllFail) {
 			this.insertPushCmWebMsg(headerMap, apiMap, params, "FAIL");
+			throw new Exception("RCS 메시지 발송에 실패하였습니다.");
 		} else {
 			this.insertPushCmWebMsg(headerMap, apiMap, params, "COMPLETED");
 		}

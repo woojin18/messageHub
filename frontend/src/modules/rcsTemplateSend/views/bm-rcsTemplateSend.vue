@@ -82,14 +82,14 @@
 							<li class="ml40">
 								<img src="@/assets/images/common/RCSTemplate10.png" alt="캐러셀(short)"><h6>캐러셀 (Small)</h6>
 								<div class="consolMarginTop">
-									<input v-model="templateRadioBtn" @click="fnSetCarousel" type="radio" name="RCSTemplate1" :value="carouselSmall" id="RCSTemplate2-10" class="radioStyle"><label for="RCSTemplate2-10"></label>
+									<input v-model="templateRadioBtn" @click="fnSetCarousel" type="radio" name="RCSTemplate1" value="carouselSmall" id="RCSTemplate2-10" class="radioStyle"><label for="RCSTemplate2-10"></label>
 									<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
 								</div>
 							</li>
 							<li>
 								<img src="@/assets/images/common/RCSTemplate11.png" alt="캐러셀(Tall)"><h6>캐러셀 (Medium)</h6>
 								<div class="consolMarginTop">
-									<input v-model="templateRadioBtn" @click="fnSetCarousel" type="radio" name="RCSTemplate2" :value="carouselMedium" id="RCSTemplate2-11" class="radioStyle"><label for="RCSTemplate2-11"></label>
+									<input v-model="templateRadioBtn" @click="fnSetCarousel" type="radio" name="RCSTemplate2" value="carouselMedium" id="RCSTemplate2-11" class="radioStyle"><label for="RCSTemplate2-11"></label>
 									<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
 								</div>
 							</li>
@@ -109,10 +109,13 @@
 								<p class="color000">[WEB발신] (광고)</p>
 								<ul class="cardBxslider mt10">
 									<li v-for="n in carouselSelect" class="slide cardBox">
-										<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
+										<img v-if="templateRadioBtn == 'carouselSmall'" src="@/assets/images/common/cardThumImg.png" alt="프리 템플릿">
+										<div v-if="templateRadioBtn == 'carouselSmall'" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:65px;'" class="mt10 text-center simulatorImg"> </div>
+										<img v-if="templateRadioBtn == 'carouselMedium'" src="@/assets/images/common/cardThumImg2_1.png" alt="프리 템플릿">
+										<div v-if="templateRadioBtn == 'carouselMedium'" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
 										<div class="relative">
 											<div class="scroll-y" style="min-height:150px">
-											{{n}}
+												{{sendData.carouselObj.imgUrl[n-1]}}
 												<p class="color000 font-size13">{{sendData.carouselObj.textTitle[n-1]}}</p>
 												<p class="color3 mt5">{{sendData.carouselObj.textContents[n-1]}}</p>
 											</div>
@@ -868,8 +871,6 @@ export default {
 	  } else if("SL000000" == templateRadioBtn || "SMwThM00" == templateRadioBtn || "SMwThT00" == templateRadioBtn) {
 		  conts = vm.sendData.textTitle;
 		  conts += vm.sendData.textContents;
-
-		  alert(conts);
 	  } else {
 		  for(var i=0; i<vm.sendData.carouselObj.textTitle.length; i++) {
 			  conts += vm.sendData.carouselObj.textTitle[i];
@@ -1093,6 +1094,16 @@ export default {
 		var vali = this.validation();
 		if(!vali) return false;
 
+		var vm = this;
+
+		// 캐러셀형 msgId 세팅
+		var templateRadioBtn = this.templateRadioBtn;
+		if(templateRadioBtn == "carouselSmall") {
+			templateRadioBtn = vm.carouselSmall;
+		} else if(templateRadioBtn == "carouselMedium") {
+			templateRadioBtn = vm.carouselMedium;
+		}
+
 		var params = {
 			"data" : this.sendData,
 			"templateRadioBtn" : this.templateRadioBtn,
@@ -1105,7 +1116,7 @@ export default {
 			var result = response.data;
 			var success = result.success;
 			if(success) {
-				if("" == result.message) confirm.fnAlert("RCS 발송", "메세지 발송처리를 완료하였습니다.");
+				if("" == result.message || null == result.message) confirm.fnAlert("RCS 발송", "메세지 발송처리를 완료하였습니다.");
 				else confirm.fnAlert("RCS 발송", result.message);
 
 			} else {
@@ -1117,8 +1128,16 @@ export default {
 
 	// 테스트 발송
 	fnTestSendData() {
-		//var vali = this.validation();
-		//if(!vali) return false;
+		var vali = this.validation();
+		if(!vali) return false;
+
+		// 캐러셀형 msgId 세팅
+		var templateRadioBtn = this.templateRadioBtn;
+		if(templateRadioBtn == "carouselSmall") {
+			templateRadioBtn = vm.carouselSmall;
+		} else if(templateRadioBtn == "carouselMedium") {
+			templateRadioBtn = vm.carouselMedium;
+		}
 
 		var params = {
 			"data" : this.sendData,
@@ -1157,7 +1176,69 @@ export default {
     },
 
 	validation() {
+		var vm = this;
+		var templateRadioBtn = this.templateRadioBtn;
+		if(templateRadioBtn == "des" || templateRadioBtn == "cell") {
+			var messagebaseId = vm.sendData.messagebaseId;
+			if("" == messagebaseId) {
+				confirm.fnAlert("RCS 발송", "템플릿을 선택해주세요.");
+				return false;
+			}
+		} else if(templateRadioBtn == "text") {
+			var textContents = vm.sendData.textContents;
+			if("" == textContents) {
+				confirm.fnAlert("RCS 발송", "내용을 입력해주세요.");
+				return false;
+			}
+		} else if(templateRadioBtn == "SS000000") {
+			var textContents = vm.sendData.textContents;
+			if("" == textContents) {
+				confirm.fnAlert("RCS 발송", "내용을 입력해주세요.");
+				return false;
+			}
+		} else if(templateRadioBtn == "SL000000") {
+			var textTitle = vm.sendData.textTitle;
+			var textContents = vm.sendData.textContents;
+			if("" == textTitle) {
+				confirm.fnAlert("RCS 발송", "제목을 입력해주세요.");
+				return false;
+			}
+			if("" == textContents) {
+				confirm.fnAlert("RCS 발송", "내용을 입력해주세요.");
+				return false;
+			}
+		} else if(templateRadioBtn == "SMwThM00" || templateRadioBtn == "SMwThT00") {
+			var textTitle = vm.sendData.textTitle;
+			var textContents = vm.sendData.textContents;
+			var imgUrl = vm.sendData.imgUrl;
+			if("" == textTitle) {
+				confirm.fnAlert("RCS 발송", "제목을 입력해주세요.");
+				return false;
+			}
+			if("" == textContents) {
+				confirm.fnAlert("RCS 발송", "내용을 입력해주세요.");
+				return false;
+			}
+			if("" == imgUrl) {
+				confirm.fnAlert("RCS 발송", "이미지를 선택해주세요.");
+				return false;
+			}
+		} else {
+			var carouselObj = vm.sendData.carouselObj;
+			var carouselSelect = vm.carouselSelect;
+			var objCnt = carouselObj.textTitle;
+			if(carouselSelect != objCnt.length) {
+				confirm.fnAlert("RCS 발송", "내용입력을 완료해주세요.");
+				return false;
+			}
+		}
 
+		var cuInfo = vm.sendData.cuInfo;
+		if("" == cuInfo) {
+			confirm.fnAlert("RCS 발송", "수신자를 입력해주세요.");
+			return false;
+		}
+		return true;
 	}
   }
 }
