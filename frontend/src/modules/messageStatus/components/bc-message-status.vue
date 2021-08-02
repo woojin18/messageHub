@@ -1,7 +1,7 @@
 <template>
 <div class="row row-no-margin">
   <div class="contentHeader">
-      <h2> > 메시지 상세조회</h2>
+      <h2>메시지 상세조회</h2>
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="메시지 상세조회 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
   </div>
   <!-- 본문 -->
@@ -9,16 +9,11 @@
     <div class="col-xs-12">
       <div class="menuBox">
         <div class="of_h">
-          <div class="inline-block" style="width:8%"><h4 class="font-normal mt15">등록일자</h4></div>
+          <div class="inline-block" style="width:8%"><h4 class="font-normal mt15">발송일자</h4></div>
           <div class="inline-block" style="width:91%">
             <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" ></Calendar>
-            <span style="padding:0 11px">~</span>
-            <Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchEndDate"></Calendar>
             <ul class="tab_s2 ml20">
-                <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 등록일자 검색">오늘</a></li>
-                <li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 등록일자 검색">1주일</a></li>
-                <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
-                <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
+                <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate();" title="오늘 날짜 발송일자 검색">오늘</a></li>
             </ul>
           <!-- </div> -->
 
@@ -26,9 +21,9 @@
             <h4 class="inline-block vertical-middle ml30 mr20">발송구분 :</h4>
             <div class="inline-block" style="width:27%">
                 <!-- <div class="consolCheck vertical-middle"> -->
-                    <input type="radio" id="searchSendFlag_CLOUD" class="checkStyle2" value="Y" v-model="searchData.searchSendFlag">
+                    <input type="checkbox" id="searchSendFlag_CLOUD" class="checkStyle2" v-model="searchData.searchSendCloud">
                     <label for="searchSendFlag_CLOUD" class="mr30">클라우드발송</label>
-                    <input type="radio" id="searchSendFlag_API" class="checkStyle2" value="N" v-model="searchData.searchSendFlag">
+                    <input type="checkbox" id="searchSendFlag_API" class="checkStyle2" v-model="searchData.searchSendAPI">
                     <label for="searchSendFlag_API">API발송</label>
                 <!-- </div> -->
             </div>
@@ -40,23 +35,18 @@
           <div class="inline-block" style="width:91%">
             <select v-model="searchData.searchCondi" class="selectStyle2" style="width:15%" title="수신자정보 검색조건">
                 <option value="receiverId">아이디</option>
-                <option value="receiverName">이름</option>
                 <option value="receiverPhone">휴대전화</option>
             </select>
             <input type="text" class="inputStyle vertical-top ml10" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="수신자정보">
           </div>
         </div>
-
-
         <div class="of_h consolMarginTop">
           <div class="inline-block" style="width:8%"><h4 class="font-normal mt3">결과</h4></div>
           <div class="inline-block" style="width:91%">
             <div class="consolCheck">
-              <input type="checkbox" id="resultYn_ALL" class="checkStyle2" @change="searchResultYnChkAll" v-model="resultYnAllSelected">
-              <label for="resultYn_ALL" class="mr30">전체</label>
-              <input type="checkbox" id="searchResultYn_SUCC" class="checkStyle2" value="Y" v-model="searchData.searchResultYn">
+              <input type="checkbox" id="searchResultYn_SUCC" class="checkStyle2" v-model="searchData.searchResultY">
               <label for="searchResultYn_SUCC" class="mr30">성공</label>
-              <input type="checkbox" id="searchResultYn_FAIL" class="checkStyle2" value="N" v-model="searchData.searchResultYn">
+              <input type="checkbox" id="searchResultYn_FAIL" class="checkStyle2" v-model="searchData.searchResultN">
               <label for="searchResultYn_FAIL">실패</label>
             </div>
             <a @click="fnSearch()" class="btnStyle2 float-right" title="검색" activity="READ">검색</a>
@@ -77,13 +67,11 @@
         </div>
       </div>
 
-      <!-- 15개씩 보기 -->
       <div class="of_h inline">
         <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
-          <SelectLayer @fnSelected="fnSelected"></SelectLayer>
+          <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
         </div>
       </div>
-      <!-- //15개씩 보기 -->
 
       <div class="row">
         <div class="col-xs-12 consolMarginTop">
@@ -111,10 +99,8 @@
             </thead>
             <tbody>
               <tr v-for="(data, idx) in datas" :key="data.rowNum">
-                  <td>{{ idx + 1 }}</td>
-                  <!-- <td class="text-center"><a href="#self" title="메세지상세" data-toggle="modal" data-target="#Message">{{data.phoneNumber}}</a></td> -->
-                  <!-- <td class="text-center"><router-link :to="{ name: 'messageStatusDetail', params: { rowData: {'msgKey' : data.msgKey, 'regDt' : data.regDt, 'senderTypeNm' : data.senderTypeNm, 'campaignId' : data.campaignId, 'pushCuid' : data.pushCuid, 'gwResultNm' : data.gwResultNm} }}">{{data.phoneNumber}}</router-link></td> -->
-                  <td class="text-center"><a href="javascript:void(0);" @click="fnDetailPop(idx)">{{data.phoneNumber}}</a></td>
+                  <td>{{totCnt-offset-data.rowNum+1}}</td>
+                  <td class="text-center"><a href="javascript:void(0);" @click="fnDetailPop(idx)"><u>{{data.phoneNumber}}</u></a></td>
                   <td class="text-center">{{data.regDt}}</td>
                   <td class="text-center">{{data.senderTypeNm}}</td>
                   <td class="text-center">{{data.campaignId}}</td>
@@ -146,6 +132,7 @@ import SelectLayer from '@/components/SelectLayer.vue';
 import Calendar from "@/components/Calendar.vue";
 import tokenSvc from '@/common/token-service';
 import DetailLayer from '../components/bp-message-status-detail.vue';
+import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
   components: {
@@ -163,16 +150,16 @@ export default {
           'searchCondi' : 'receiverId',
           'searchText' : '',
           'searchStartDate' : this.$gfnCommonUtils.getCurretDate(),
-          'searchEndDate' : this.$gfnCommonUtils.getCurretDate(),
-          'searchSendFlag' : '',
-          'searchResultYn' : []
+          'searchSendCloud' : true,
+          'searchSendAPI' : true,
+          'searchResultY' : true,
+          'searchResultN' : true,
         }
       }
     }
   },
   data() {
     return {
-      resultYnAllSelected: false,
       listSize : 10,  // select 박스 value (출력 갯수 이벤트)
       pageNo : 1,  // 현재 페이징 위치
       totCnt : 0,  //전체 리스트 수
@@ -188,21 +175,16 @@ export default {
         
   },
   mounted() {
-    this.fnSetIntervalSearchDate(this.searchDateInterval);
-    this.fnSearch();
+    this.fnSetIntervalSearchDate();
+    //this.fnSearch();
   },
   methods: {
     //검색일자변경
-    fnSetIntervalSearchDate(interval){
-      this.searchDateInterval = interval;
-      this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
-      this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
+    fnSetIntervalSearchDate(){
+      this.searchData.searchStartDate = this.$gfnCommonUtils.getCurretDate();
     },
     fnUpdateStartDate(sltDate) {
       this.searchData.searchStartDate = sltDate;
-    },
-    fnUpdateEndDate(sltDate) {
-      this.searchData.searchEndDate = sltDate;
     },
 
     //엑셀 다운로드
@@ -210,42 +192,45 @@ export default {
       var params = this.searchData;
       messageStatusApi.excelDownloadMessageStatus(params);
     },
-    //결과 전체 선택시
-    searchResultYnChkAll(){
-      if(this.resultYnAllSelected){
-        this.searchData.searchResultYn = ['Y', 'N'];
-      } else {
-        this.searchData.searchResultYn = [];
-      }
-    },
+    
     // 검색
-    async fnSelectMessageStatusList() {
-
-      //유효성 검사
-      if(this.searchData.searchStartDate && this.searchData.searchEndDate){
-        if(this.searchData.searchStartDate.replace(/[^0-9]/g, '') > this.searchData.searchEndDate.replace(/[^0-9]/g, '')){
-          alert('시작일은 종료일보다 클 수 없습니다.');
-          return false;
-        }
-      }
-          
+    async fnSelectMessageStatusList() {   
       var params = Object.assign({}, this.searchData);
       params.pageNo = this.pageNo;
       params.listSize = this.listSize;
 
       params.loginId = tokenSvc.getToken().principal.userId;
-      params.roleCd = tokenSvc.getToken().principal.roleCd
+      params.roleCd = tokenSvc.getToken().principal.roleCd;
+      var searchData = this.searchData;
+      var searchSendCloud = searchData.searchSendCloud;
+      var searchSendAPI = searchData.searchSendAPI;
+      var searchResultY = searchData.searchResultY;
+      var searchResultN = searchData.searchResultN;
+      var searchText = searchData.searchText;
+
+      if(searchSendCloud == false && searchSendAPI == false) {
+        confirm.fnAlert("메시지 상세조회", "발송 구분을 선택해주세요.");
+        return false;
+      }
+
+      if(searchResultY == false && searchResultN == false) {
+        confirm.fnAlert("메시지 상세조회", "결과를 선택해주세요.");
+        return false;
+      }
+
+      if(searchText == "") {
+        confirm.fnAlert("메시지 상세조회", "검색조건을 입력해주세요.");
+        return false;
+      }
 
       await messageStatusApi.selectMessageStatusList(params).then(response =>{
         var result = response.data;
         if(result.success) {
           this.datas = result.data;
-          //this.totCnt = result.pageDto.totCnt;
-          //this.offset = result.pageDto.offset;
           this.totCnt = result.pageInfo.totCnt;
           this.offset = result.pageInfo.offset;
-        } else {
-          alert(result.message);
+        } else { 
+          confirm.fnAlert("메시지 상세조회", result.message);
         }
       });
     },
@@ -262,14 +247,11 @@ export default {
 
     // 현황상세 팝업
     fnDetailPop(row) {
-      //alert(row);
-      //alert(this.datas[row].msgKey);
         this.detailLayerView = true;
         this.detailLayerTitle = "메시지현황 상세";
         this.detailLayerMsgKey = this.datas[row].msgKey; 
         
       },
- 
   }
 }
 </script>
