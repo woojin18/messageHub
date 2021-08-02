@@ -25,7 +25,7 @@
 					</div>
 				</div>	
 				<button type="submit" class="btn btn-login mt45" data-toggle="modal" data-target="#smsAcc" @click.prevent="ajaxlogin">로그인</button>
-				<a href="user_join.html" class="btn btn-join mt15">회원가입</a>
+				<a @click="signUp" class="btn btn-join mt15">회원가입</a>
 			</div>
 			<!-- //userLogin-form -->
 		</section>
