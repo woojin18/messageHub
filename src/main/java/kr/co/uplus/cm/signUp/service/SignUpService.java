@@ -279,7 +279,7 @@ public class SignUpService {
 		
 		html += "<div style='width:640px; min-height:600px; margin:0 auto; background:#fff; padding:38px 64px 87px 64px; box-sizing:border-box; position:relative; font-family:\"Noto Sans KR\", sans-serif'>";
 		html += "<div style='border-bottom:1px solid #9F9F9F; padding-bottom:30px; margin-bottom:30px'>";
-		html += "<img src='" + this.baseUrl + "/frontend/public/se2/images/" + "userLogo.svg' alt='유플러스 통합메시징 클라우드' />";
+		html += "<img src='" + this.baseUrl + "/se2/images/" + "userLogo.svg' alt='유플러스 통합메시징 클라우드' />";
 		html += "</div>";
 		html += "<div style='font-size:14px; line-height:24px'>이메일 인증을 진행해주세요.<br/>";
 		html += "안녕하세요. NHN Cloud를 이용해주셔서 감사합니다.<br/>";
