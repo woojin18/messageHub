@@ -85,6 +85,16 @@ export default {
             type: String,
             require: true,
             default: false,
+        },
+		carouselSmall: {
+            type: String,
+            require: true,
+            default: false,
+        },
+		carouselMedium: {
+            type: String,
+            require: true,
+            default: false,
         }
   },
   data() {
@@ -114,8 +124,15 @@ export default {
 		var vm = this;
 		var srcInput = this.srcInput;
 		var srcSelect = this.srcSelect;
+		var templateRadioBtn = this.templateRadioBtn;
 		if("" == srcInput) {
 			srcSelect = "";
+		}
+
+		if(templateRadioBtn == "carouselSmall") {
+			templateRadioBtn = vm.carouselSmall;
+		} else if(templateRadioBtn == "carouselMedium") {
+			templateRadioBtn = vm.carouselMedium;
 		}
 
 		var params = {
@@ -123,7 +140,7 @@ export default {
 			"listSize" : this.listSize,
 			"srcInput" : srcInput,
 			"srcSelect" : srcSelect,
-			"templateRadioBtn" : this.templateRadioBtn
+			"templateRadioBtn" : templateRadioBtn
 		};
 
 		rcsTemplateSendApi.selectRcsMsgList(params).then(response => {
