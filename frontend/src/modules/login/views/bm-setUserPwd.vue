@@ -75,7 +75,7 @@ export default {
 		fnSetPwdCallback(){
 			var params = {
 				loginId : this.loginId,
-				pwd : this.pwd
+				password : this.pwd
 			}
 
 			loginApi.updatePassword(params).then(response => {

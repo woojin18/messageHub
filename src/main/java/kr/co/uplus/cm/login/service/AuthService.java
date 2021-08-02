@@ -288,8 +288,8 @@ public class AuthService implements UserDetailsService {
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
 			// 사용자 비밀번호 암호화
-			SHA sha512 = new SHA(512);
-			String encPwd = sha512.encryptToBase64(CommonUtils.getString(params.get("password")));
+			SHA sha256 = new SHA(256);
+			String encPwd = sha256.encryptToBase64(CommonUtils.getString(params.get("password")));
 			params.put("pwd", encPwd);
 			
 			// 비밀번호 update

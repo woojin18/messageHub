@@ -28,6 +28,10 @@ const findLoginId = (params) => {
 	return httpClient.post('/api/public/findLoginId', params, { headers: {"show-layer": "Yes"} });
 };
 
+const sendCertifyMail = (params) => {
+	return httpClient.post('/api/public/sendCertifyMail', params, { headers: {"show-layer": "Yes"} });
+};
+
 export default {
     login,
     logout,
@@ -35,5 +39,6 @@ export default {
 	getProjectForUser,
     getProjectChUseListForUser,
     updatePassword,
-    findLoginId
+    findLoginId,
+    sendCertifyMail
 };

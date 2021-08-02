@@ -126,7 +126,14 @@
 		) VALUES (
 				#{email}
 		,		#{authKey}
+		<choose>
+			<when test="time != '' and time != null">
+		,		#{time}
+			</when>
+			<otherwise>
 		,		DATE_ADD(NOW(), INTERVAL 1 HOUR)
+			</otherwise>
+		</choose>
 		,		#{promotionYn}
 		,		NOW()
 		)
