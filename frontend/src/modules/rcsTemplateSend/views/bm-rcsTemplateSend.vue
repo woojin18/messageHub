@@ -105,17 +105,16 @@
 						<!-- phoneWrap -->
 						<div class="phoneWrap" style="height:660px">
 							<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
-							<div v-if="pushTab=='push'" class="phoneCardWrap">
+							<div v-show="pushTab=='push'" class="phoneCardWrap">
 								<p class="color000">[WEB발신] (광고)</p>
 								<ul class="cardBxslider mt10">
 									<li v-for="n in carouselSelect" class="slide cardBox">
-										<img v-if="templateRadioBtn == 'carouselSmall'" src="@/assets/images/common/cardThumImg.png" alt="프리 템플릿">
-										<div v-if="templateRadioBtn == 'carouselSmall'" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:65px;'" class="mt10 text-center simulatorImg"> </div>
-										<img v-if="templateRadioBtn == 'carouselMedium'" src="@/assets/images/common/cardThumImg2_1.png" alt="프리 템플릿">
-										<div v-if="templateRadioBtn == 'carouselMedium'" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
+										<img v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]==''" src="@/assets/images/common/cardThumImg.png" alt="프리 템플릿">
+										<div v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]!=''" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:81px;'" class="mt10 text-center simulatorImg"> </div>
+										<img v-if="templateRadioBtn == 'carouselMedium' && sendData.carouselObj.imgUrl[n-1]==''" src="@/assets/images/common/cardThumImg2_1.png" alt="프리 템플릿">
+										<div v-if="templateRadioBtn == 'carouselMedium' && sendData.carouselObj.imgUrl[n-1]!=''" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:123px;'" class="mt10 text-center simulatorImg"> </div>
 										<div class="relative">
 											<div class="scroll-y" style="min-height:150px">
-												{{sendData.carouselObj.imgUrl[n-1]}}
 												<p class="color000 font-size13">{{sendData.carouselObj.textTitle[n-1]}}</p>
 												<p class="color3 mt5">{{sendData.carouselObj.textContents[n-1]}}</p>
 											</div>
@@ -124,7 +123,7 @@
 									</li>
 								</ul>
 							</div>
-							<div  v-if="pushTab!='push'" class="phoneCardWrap">
+							<div v-show="pushTab!='push'" class="phoneCardWrap">
 								<div class="phoneText1">
 									<div class="scroll-y">
 										<p class="mt15">{{sendData.callbackTitle}}</p>
@@ -388,7 +387,7 @@
 			</div>	
 
 			<RcsTemplatePopup :templateRadioBtn.sync="templateRadioBtn" ref="rcsTemplatePop" @fnResult="fnSetTemplate"></RcsTemplatePopup>
-			<RcsMsgPopup :templateRadioBtn.sync="templateRadioBtn" ref="rcsMsgPop" @fnTmpMsgSet="fnTmpMsgSet" ></RcsMsgPopup>
+			<RcsMsgPopup :templateRadioBtn.sync="templateRadioBtn" :carouselSmall.sync="carouselSmall" :carouselMedium.sync="carouselMedium" ref="rcsMsgPop" @fnTmpMsgSet="fnTmpMsgSet" ></RcsMsgPopup>
 			<RcsContentPopup :templateRadioBtn.sync="templateRadioBtn" :contentPopCnt.sync="contentPopCnt" ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
 			<RcsBtnPopup :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
 			<RcsSenderPopup :senderType.sync="sendData.senderType" ref="rcsSenderPop"></RcsSenderPopup>
@@ -491,9 +490,9 @@ export default {
 			callbackContents : "",						// 대체발송 CONTENTS
 			saveContent : "",							// 저장 메시지명
 			carouselObj : {
-				textTitle : [],
-				textContents : [],
-				imgUrl : [],
+				textTitle : ['','','','','',''],
+				textContents : ['','','','','',''],
+				imgUrl : ['1','1','1','1','1','1'],
 				fileId : [],
 				wideImgYn : [],
 				btnArr : [],
@@ -610,9 +609,9 @@ export default {
 		this.sendData.recvInfoLst = [];
 		this.sendData.contsVarNms = [];
 		this.sendData.testRecvInfoLst = [];
-		this.sendData.carouselObj.textTitle = [];
-		this.sendData.carouselObj.textContents = [];
-		this.sendData.carouselObj.imgUrl = [];
+		this.sendData.carouselObj.textTitle = ['','','','','',''];
+		this.sendData.carouselObj.textContents = ['','','','','',''];
+		this.sendData.carouselObj.imgUrl = ['','','','','',''];
 		this.sendData.carouselObj.fileId = [];
 		this.sendData.carouselObj.wideImgYn = [];
 		this.sendData.carouselObj.btnArr = [];
@@ -639,7 +638,7 @@ export default {
 			autoControls: false,
 			slideWidth: 204,
 			minSlides: 1,
-			maxSlides: 2,
+			maxSlides: 6,
 			slideMargin: 10,
 			controls: true,
 			pager: true,
@@ -779,6 +778,18 @@ export default {
 
 	// 대체발송 버튼 미리보기
 	fnclickPushBtn(senderType) {
+		var vm = this;
+		var carouSelType = vm.carouSelType;
+		if(carouSelType) {
+			if(senderType=="push") {
+				setTimeout(function() {
+					slider.reloadSlider();
+				}, 10);
+			} else {
+				jQuery('.bx-controls-direction').css('display', 'none');
+				jQuery('.bx-pager').css('display', 'none');
+			}
+		}
 		this.pushTab = senderType;
 	},
 
@@ -1058,12 +1069,14 @@ export default {
 	fnConfirmChangeRadioBtn(event) {
 		eventBus.$on('callbackEventBus', this.fnResetData);
 		confirm.fnConfirm("RCS 발송" ,"템플릿을 변경하면 입력된 데이터가 모두 초기화됩니다. 변경하시겠습니까?", "확인");
+		//event.preventDefault();
+		//alert(cancelConfirm);
+
 	},
 
 	// 캐러셀형 탭 클릭 이벤트 처리
 	fnClickTab(n) {
 		this.carouSelTabCnt = n;
-
 	},
 
 	// 캐러셀 형 카드 갯수 변경시 msgId 세팅
