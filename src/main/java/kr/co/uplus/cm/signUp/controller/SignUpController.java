@@ -92,7 +92,7 @@ public class SignUpController implements Serializable{
 			@RequestParam(required=true) String loginId,				// 아이디
 			@RequestParam(required=true) String userNm,					// 사용자명
 			@RequestParam(required=true) String password,				// 비밀번호
-			@RequestParam(required=true) String smsCertifyYn,			// sms 인증 여부
+//			@RequestParam(required=true) String smsCertifyYn,			// sms 인증 여부
 			@RequestParam(required=true) String phoneCerti,				// user 핸드폰 번호
 			@RequestParam(required=true) String regno,					// 사업자 번호
 			@RequestParam(required=true) String custNo,					// 고객번호
@@ -118,7 +118,7 @@ public class SignUpController implements Serializable{
 		paramMap.put("loginId", loginId);
 		paramMap.put("userNm", userNm);
 		paramMap.put("password", password);
-		paramMap.put("smsCertifyYn", smsCertifyYn);
+//		paramMap.put("smsCertifyYn", smsCertifyYn);
 		paramMap.put("phoneCerti", phoneCerti);
 		paramMap.put("regno", regno);
 		paramMap.put("custNo", custNo);

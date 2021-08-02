@@ -2,6 +2,7 @@ import loginMain from '../views/bm-loginMain'
 import findUserId from '../views/bm-findUserId'
 import findUserPwd from '../views/bm-findUserPwd'
 import setUserPwd from '../views/bm-setUserPwd'
+import chkCertifyFail from '../views/bm-chkCertifyFail'
 
 export default [
 	{
@@ -26,6 +27,12 @@ export default [
 		path: '/login/setUserPwd',
 		name: 'setUserPwd',
 		component: setUserPwd,
+		meta: { public: true }
+	},
+	{
+		path: '/login/chkCertifyFail',
+		name: 'chkCertifyFail',
+		component: chkCertifyFail,
 		meta: { public: true }
 	}
 ]

@@ -1,6 +1,7 @@
 package kr.co.uplus.cm.signUp.service;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -71,8 +72,8 @@ public class SignUpService {
 			}
 			
 			// 사용자 비밀번호 암호화
-			SHA sha512 = new SHA(512);
-			String encPwd = sha512.encryptToBase64(CommonUtils.getString(paramMap.get("password")));
+			SHA sha256 = new SHA(256);
+			String encPwd = sha256.encryptToBase64(CommonUtils.getString(paramMap.get("password")));
 			paramMap.put("password", encPwd);
 			
 			// corp_id
@@ -165,6 +166,12 @@ public class SignUpService {
 			// 난수 생성은 이전 로직에서 처리해야됨 이메일 발송모듈 추가후 삭제 예정 _서동욱
 			String randomNum = CommonUtils.randomGeneration(10);
 			params.put("authKey", randomNum);
+			
+			SimpleDateFormat	sdformat	= new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+			Calendar			cal			= Calendar.getInstance();
+			cal.add(Calendar.HOUR, 1);
+			String				time		= sdformat.format(cal.getTime());
+			params.put("time", time);
 			
 			generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, params);
 			
@@ -263,6 +270,9 @@ public class SignUpService {
 	}
 
 	public void sendMail(Map<String, Object> params, String location) throws Exception {
+		String time = CommonUtils.getString(params.get("time"));
+		String[] timeArr = time.split(" ");
+		
 		MailHandler mailHandler = new MailHandler(mailSender);
 		
 		// 받는 사람
@@ -273,12 +283,23 @@ public class SignUpService {
 		mailHandler.setSubject("이메일 본인인증");
 		
 		String html = "";
-		html += "본인인증이 완료되었습니다.\n";
-//		html += "<form method='POST' name='certifyFrm' action='"+this.baseUrl+location+"'>";
-//		html += "<input type='hidden' name='authKey' value='"+params.get("authKey")+"'>";
-//		html += "<input type='submit' value='전송'>";
-//		html += "</form>";
-		html += "<a href='"+this.baseUrl+location+"?authKey="+params.get("authKey")+"'> 홈페이지로 이동 </a>";
+		
+		html += "<div style='width:640px; min-height:600px; margin:0 auto; background:#fff; padding:38px 64px 87px 64px; box-sizing:border-box; position:relative; font-family:\"Noto Sans KR\", sans-serif'>";
+		html += "<div style='border-bottom:1px solid #9F9F9F; padding-bottom:30px; margin-bottom:30px'>";
+		html += "<img src='" + this.baseUrl + "/se2/images/" + "userLogo.svg' alt='유플러스 통합메시징 클라우드' />";
+		html += "</div>";
+		html += "<div style='font-size:14px; line-height:24px'>이메일 인증을 진행해주세요.<br/>";
+		html += "안녕하세요. NHN Cloud를 이용해주셔서 감사합니다.<br/>";
+		html += "본인 이메일이 맞는지 확인하고 있습니다.<br/>";
+		html += "아래 [인증] 버튼을 클릭하면 다음 단계로 진행할 수 있습니다.<br/><br/>";
+		html += "인증 링크 유효시간 : " + timeArr[0];
+		html += "<span style='color:#FD004E'>" + timeArr[1];
+		html += "</span> (UTC+09:00)</div>";
+		html += "<a href='"+this.baseUrl+location+"?authKey="+params.get("authKey")+"' target='_blank' title='인증' style='display:inline-block; width:120px; text-align:center; background:#E93978; color:#fff; border-radius:4px; line-height:40px; text-decoration:none; font-size:16px; margin:40px 0;'>인증</a>";
+		html += "<div style='position:absolute; left:0; bottom:0; width:100%; box-sizing:border-box; padding:0 64px'>";
+		html += "<div style='border-top:1px solid #E6E6E6; color:#858585; font-size:11px; padding:20px 0;'>Copyright©LG Plus Corp. All Rights Reserved.</div>";
+		html += "</div>";
+		html += "</div>";
 		
 		mailHandler.setText(html, true);
 		

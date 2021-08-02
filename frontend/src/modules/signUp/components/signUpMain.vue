@@ -33,13 +33,13 @@
 					</div>
 				</div>
 
-				<div class="of_h mt10">
+				<!-- <div class="of_h mt10">
 					<div class="float-left" style="width:22%"><h5>SMS 인증여부*</h5></div>
 					<div class="float-left" style="width:78%">
 						<input type="radio" name="payment" value="Y" class="cBox" id="sms_agree01" v-model="smsCertifyYn"> <label for="sms_agree01" class="font-normal mr30">예</label>
 						<input type="radio" name="payment" value="N" class="cBox" id="sms_agree02" v-model="smsCertifyYn"> <label for="sms_agree02" class="font-normal">아니요</label>
 					</div>
-				</div>
+				</div> -->
 			</div>
 
 			<h4 class="mt40">담당자 휴대폰 인증*</h4>
@@ -202,7 +202,7 @@ export default {
 			userNm : "",
 			password : "",				// 비밀번호
 			passwordChk : "",			// 비밀번호 체크
-			smsCertifyYn : "Y",			// sms 인증여부
+			// smsCertifyYn : "Y",			// sms 인증여부
 			phoneCerti : "",			// 담당자 휴대폰 인증 전화번호
 			phoneCertiChk : false,		// 담당자 휴대폰 인증 TF (모듈 추가후 defalte false로 변경해야됨)
 			regno : "",					// 사업자번호
@@ -340,9 +340,9 @@ export default {
 				this.password = "";
 				this.passwordChk = "";
 				return false;
-			} else if (this.smsCertifyYn == "") {
-				confirm.fnAlert("", "SMS 인증여부 선택은 필수 사항입니다.");
-				return false;
+			// } else if (this.smsCertifyYn == "") {
+			// 	confirm.fnAlert("", "SMS 인증여부 선택은 필수 사항입니다.");
+			// 	return false;
 			} else if (this.phoneCert == "" || this.phoneCertiChk == false) {
 				confirm.fnAlert("", "담당자 휴대폰 인증을 진행해 주세요.");
 				return false;
@@ -457,7 +457,7 @@ export default {
 			fd.append('loginId', this.loginId);								// 아이디
 			fd.append('userNm', this.userNm);								// 이름
 			fd.append('password', this.password);							// 비밀번호
-			fd.append('smsCertifyYn', this.smsCertifyYn);					// sms 인증 여부
+			// fd.append('smsCertifyYn', this.smsCertifyYn);					// sms 인증 여부
 			fd.append('phoneCerti', this.phoneCerti);						// 휴대폰 번호
 			fd.append('regno', this.$gfnCommonUtils.isEmpty(this.selRegno) ? this.regno : this.selRegno);								// 사업자번호
 			fd.append('custKdCd', this.custKdCd)							// 고객유형

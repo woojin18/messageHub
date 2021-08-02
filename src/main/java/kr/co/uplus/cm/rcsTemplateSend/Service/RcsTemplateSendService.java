@@ -621,7 +621,7 @@ public class RcsTemplateSendService {
 
 	public RestResult<Object> selectRcsMsgList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-		Map<String, Object> paramMap = new HashMap<String, Object>();
+		Map<String, Object> paramMap = params;
 		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
 		String srcInput= CommonUtils.getString(params.get("srcInput"));
 		String srcSelect = CommonUtils.getString(params.get("srcSelect"));		// brand msg null
@@ -638,17 +638,17 @@ public class RcsTemplateSendService {
 			paramMap.put("msgbaseId", templateRadioBtn);
 		}
 		
-		if (params.containsKey("pageNo") && CommonUtils.isNotEmptyObject(params.get("pageNo"))
-				&& params.containsKey("listSize") && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
-			rtn.setPageProps(params);
+		if (paramMap.containsKey("pageNo") && CommonUtils.isNotEmptyObject(paramMap.get("pageNo"))
+				&& paramMap.containsKey("listSize") && CommonUtils.isNotEmptyObject(paramMap.get("listSize"))) {
+			rtn.setPageProps(paramMap);
 			if (rtn.getPageInfo() != null) {
 				// 카운트 쿼리 실행
-				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_TMP_MSGBASE_CNT, params);
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_TMP_MSGBASE_CNT, paramMap);
 				rtn.getPageInfo().put("totCnt", listCnt);
 			}
 		}
 
-		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_TMP_MSGBASE, params);
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_TMP_MSGBASE, paramMap);
 		rtn.setData(rtnList);
 		
 		return rtn;

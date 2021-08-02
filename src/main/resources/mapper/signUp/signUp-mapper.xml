@@ -33,7 +33,7 @@
 		,		#{password}
 		,		NOW()
 		,		#{phoneCerti}
-		,		'ING'
+		,		'Y'
 		,		'N'
 		,		#{corpId}
 		,		#{cmRole}
@@ -80,7 +80,7 @@
 		,		WOPLACE_ADDRESS_DETAIL
 		,		BUSITYPE
 		,		BUSICLASS
-		,		SMS_CERTIFY_YN
+<!-- 		,		SMS_CERTIFY_YN -->
 		,		WIRE_TEL
 		,		FILE_ID
 <!-- 		,		DOMAIN_NAME -->
@@ -98,7 +98,7 @@
 		,		#{woplaceAddressDetail}
 		,		#{busiType}
 		,		#{busiClass}
-		,		#{smsCertifyYn}
+<!-- 		,		#{smsCertifyYn} -->
 		,		#{wireTel}
 		,		#{fileId}
 <!-- 		,		#{domainName} -->
@@ -126,7 +126,14 @@
 		) VALUES (
 				#{email}
 		,		#{authKey}
+		<choose>
+			<when test="time != '' and time != null">
+		,		#{time}
+			</when>
+			<otherwise>
 		,		DATE_ADD(NOW(), INTERVAL 1 HOUR)
+			</otherwise>
+		</choose>
 		,		#{promotionYn}
 		,		NOW()
 		)

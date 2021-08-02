@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.login.service.AuthService;
+import kr.co.uplus.cm.user.service.UserService;
 
 /**
  * <pre>
@@ -34,6 +35,9 @@ public class AuthController {
 
 	@Autowired
 	private AuthService authSvc;
+	
+	@Autowired
+	private UserService userSvc;
 	
     @InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -104,6 +108,12 @@ public class AuthController {
 	public RestResult<?> findLoginId(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception{
 		return authSvc.findLoginId(params);
+	}
+	
+	@PostMapping("/public/sendCertifyMail")
+	public RestResult<?> sendCertifyMail(@RequestBody Map<String, Object> params) throws Exception{
+		RestResult<Object> rtn = new RestResult<Object>();
+		return userSvc.sendCertifyMail(params);
 	}
 
 }
