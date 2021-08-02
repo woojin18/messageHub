@@ -721,8 +721,8 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 #sidebar > ul > li .depth2Lnb.thum {background:url('../images/consoleMenuArr.png') 0 15px no-repeat; display:none; position:absolute; top:10px; right:-212px; width:220px; z-index:999; padding-left:8px}
 #sidebar > ul > li .depth2Lnb.thum > ul {border:1px solid #999; background:#fff; padding:0}
 #sidebar > ul > li .depth2Lnb.thum > ul > li {}
-#sidebar > ul > li .depth2Lnb.thum > ul > li > a {display:block; font-size:14px; color:#707070; transition:0.3s; line-height:45px; padding:0 0 0 40px; font-weight:400; border-bottom:1px solid #d5d5d5}
-#sidebar > ul > li .depth2Lnb.thum > ul > li.active > a, #sidebar > ul > li .depth2Lnb.thum > ul > li > a:hover {color:#FD004E; font-weight:500}
+#sidebar > ul > li .depth2Lnb.thum > ul > li a {display:block; font-size:14px; color:#707070; transition:0.3s; line-height:45px; padding:0 0 0 40px; font-weight:400; border-bottom:1px solid #d5d5d5}
+#sidebar > ul > li .depth2Lnb.thum > ul > li.active a, #sidebar > ul > li .depth2Lnb.thum > ul > li a:hover {color:#FD004E; font-weight:500}
 #sidebar > ul > li.active .depth2Lnb.thum {display:block}
 
 
