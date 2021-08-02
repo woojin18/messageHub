@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.mail.MessagingException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -71,8 +69,8 @@ public class SignUpService {
 			}
 			
 			// 사용자 비밀번호 암호화
-			SHA sha512 = new SHA(512);
-			String encPwd = sha512.encryptToBase64(CommonUtils.getString(paramMap.get("password")));
+			SHA sha256 = new SHA(256);
+			String encPwd = sha256.encryptToBase64(CommonUtils.getString(paramMap.get("password")));
 			paramMap.put("password", encPwd);
 			
 			// corp_id
