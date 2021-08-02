@@ -30,7 +30,7 @@ import kr.co.uplus.cm.login.service.AuthService;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	public static final String LOGIN_FORM_URL = "/login";
+	public static final String LOGIN_FORM_URL = "/login/**";
 	public static final String LOGIN_API_URL = "/api/auth/login";
 	public static final String LOGIN_FAIL_URL = "/login?error=true";
 	public static final String LOGIN_SUCC_AC_URL = "/ac/home";
