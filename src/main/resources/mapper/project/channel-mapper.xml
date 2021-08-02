@@ -870,7 +870,7 @@
 		FROM	cm.CM_KKO_CH A
 		LEFT OUTER JOIN cm_console.CM_PROJECT B
 			ON A.PROJECT_ID = B.PROJECT_ID
-		WHERE	B.CORP_ID = #{corpId}
+		WHERE	A.CORP_ID = #{corpId}
 		AND		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
 		<if test="srcKkoChId != '' and srcKkoChId != null ">
 		AND A.KKO_CH_ID LIKE CONCAT('%', #{srcKkoChId}, '%')
@@ -885,7 +885,6 @@
 		SELECT	A.SENDER_KEY
 		,		A.RELAY
 		,		A.PROJECT_ID
-		,		A.CORP_ID
 		,		A.KKO_CH_ID
 		,		A.CATEGORY_CODE
 		,		A.USE_YN
@@ -894,13 +893,13 @@
 		,		A.KKO_CH_STAT
 		,		A.STAT
 		,		CASE
-					WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
-					ELSE 'N'
-				END AS OTHER_PROJECT_USE_YN
+					WHEN A.PROJECT_ID = 'ALL' THEN '공용'
+					ELSE '전용'
+				END AS OTHER_PROJECT_YN
 		FROM	cm.CM_KKO_CH A
 		LEFT OUTER JOIN cm_console.CM_PROJECT B
 			ON A.PROJECT_ID = B.PROJECT_ID
-		WHERE	B.CORP_ID = #{corpId}
+		WHERE	A.CORP_ID = #{corpId}
 		AND		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
 		<if test="srcKkoChId != '' and srcKkoChId != null ">
 		AND A.KKO_CH_ID LIKE CONCAT('%', #{srcKkoChId}, '%')
@@ -919,11 +918,11 @@
 		/* channel.selectKkoChGroup */
 		SELECT	A.GRP_KEY
 		,		A.SENDER_KEY
-		,		A.CORP_ID
+		,		A.PROJECT_ID 
 		,		date_format(A.REG_DT, '%Y-%m-%d') AS REG_DT
 		,		A.USE_YN
 		FROM	cm.CM_KKO_SENDER_GRP A
-		WHERE	A.CORP_ID = #{corpId}
+		WHERE	(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
 	</select>
 	
 	<select id="selectApikeyListForKko" resultType="camel">
@@ -931,6 +930,7 @@
 		SELECT	API_KEY
 		FROM	cm.CM_APIKEY ca 
 		WHERE	ca.CORP_ID = #{corpId}
+		AND		(ca.PROJECT_ID = #{projectId} OR ca.PROJECT_ID = 'ALL' )
 		ORDER BY ca.REG_DT  DESC
 	</select>
 	

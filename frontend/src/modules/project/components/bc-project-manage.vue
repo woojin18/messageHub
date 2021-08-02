@@ -98,6 +98,9 @@
                   <button class="btnStyle1 borderLightGray small mr5" @click="fnProjectDeleteConfirm(data)" activity="SAVE"><a>삭제</a></button>
                 </td>
               </tr>
+              <tr v-if="items.length == 0">
+                <td class="text-center" colspan="8">검색된 내용이 없습니다.</td>
+              </tr>
             </tbody>
           </table>
         </div>

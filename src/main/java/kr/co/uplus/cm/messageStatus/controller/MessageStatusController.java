@@ -104,12 +104,10 @@ public class MessageStatusController {
 		
 		String msg = "";//메시지 내용
 		String msgTitle = "";//메시지 제목
-		//System.out.println(">>>>>>>>>>>>>>msgInfo : "+msgInfo);
 		if(msgInfo != null) {
 			msg = msgInfo.getMsg();
 		}
-		
-		//System.out.println(">>>>>>>>>>>>>>msg : "+msg);
+
 		
 		RestResult<Object> rtn = new RestResult<Object>();
 

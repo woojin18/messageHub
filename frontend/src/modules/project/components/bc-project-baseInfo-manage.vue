@@ -73,6 +73,9 @@
 									<td class="text-center">{{ data.regDt }}</td>
 									<td class="text-center end"><a @click="fnUpdateApiKeyPop(data)" class="btnStyle1 borderLightGray small mr5">수정</a></td>
 								</tr>
+								<tr v-if="apiKeyList.length == 0">
+									<td class="text-center" colspan="5">검색된 내용이 없습니다.</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>

@@ -111,7 +111,7 @@
 		</div>
 
 		<div>
-			<div class="text-center mt40">
+			<div class="text-center">
 				<a @click="fnMovePjtTab" class="btnStyle3 white font14" data-dismiss="modal">목록</a>						
 			</div>
 		</div>
@@ -130,11 +130,10 @@
 
 		<p class="font-size12 color3 mt10"><i class="far fa-info-circle"></i> 특수부가통신사업자 으로 사전등록 예외 사업자로 등록되어 있습니다.</p>
 
-		<div class="row bgColor_f1 row-no-margin mt10">
-			<div class="text-center mt40">
-				<a @click="fnMovePjtTab" class="btnStyle3 white font14" data-dismiss="modal">목록</a>						
-			</div>
+		<div class="text-center">
+			<a @click="fnMovePjtTab" class="btnStyle3 white font14" data-dismiss="modal">목록</a>						
 		</div>
+		
 		<p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i>U+ Biz SMS 고객센터 : 이메일 smshelp@lguplus.co.kr, 팩스 02) 6919-1000<br><i class="far fa-info-circle"></i>사전 등록 예외 사업자는 서버 전송 시에만 적용됩니다. 웹 전송 시에는 등록된 발신번호가 없으면 전송이 실패되오니 유의하시기 바랍니다.</p>
 		<!-- //본문 -->
 

@@ -26,9 +26,9 @@
 			<!-- lnb -->
 			<ul>
 				<!-- 대메뉴 -->
-				<li class="on"><router-link to="/uc/home"><i class="fal fa-tachometer-alt-fastest navIcon"></i><span>대시보드</span></router-link></li>
+				<li><router-link to="/uc/home" @click.native="fnOpenDepth2($event)"><i class="fal fa-tachometer-alt-fastest navIcon"></i><span>대시보드</span></router-link></li>
 				<li v-for="(item, i) in treeData" :key="i">
-					<a @click="fnOpenDepth2(i)">
+					<a @click="fnOpenDepth2($event)">
 						<i v-bind:class="item.imgTag"></i><span>{{item.menusName}}</span><i class="far fa-chevron-down navArrow"></i>
 					</a>
 					<!-- 중메뉴 -->
@@ -36,15 +36,15 @@
 						<ul>
 								<li v-for="(item2, j) in item.children" :key="j" >
 							<div v-if="fnCheckUseCh(item2)">
-									<router-link  v-if="item2.webUrl != ''" v-bind:to="{path:item2.webUrl}" v-bind:id="'M_'+item2.menusCd" v-bind:r="item2.read" v-bind:w="item2.save">{{item2.menusName}}</router-link>		<!-- url 주소 있으면 페이지 이동 -->
-									<a  v-if="item2.webUrl == ''" @click="fnOpenDepth3(i,j)">
+									<router-link  v-if="item2.webUrl != ''" @click.native="fnOpenDepth3($event)" v-bind:to="{path:item2.webUrl}" v-bind:id="'M_'+item2.menusCd" v-bind:r="item2.read" v-bind:w="item2.save">{{item2.menusName}}</router-link>		<!-- url 주소 있으면 페이지 이동 -->
+									<a  v-if="item2.webUrl == ''" @click="fnOpenDepth3($event)">
 										<i v-bind:class="item2.imgTag"></i><span{{item2.menusName}}</span><i class="far fa-chevron-down navArrow" style="font-size: 10px;position: absolute;right: 20px"></i>
 									</a>
 									<!-- 소메뉴 -->
 									<div class="depth3Lnb" :id="'depth3_' + j">
 										<ul>
 											<li v-for="(item3, m) in item2.children" :key="m">
-												<router-link v-bind:to="{path:item3.webUrl}" v-bind:id="'M_'+item3.menusCd" v-bind:r="item3.read" v-bind:w="item3.save">{{item3.menusName}}</router-link>
+												<router-link v-bind:to="{path:item3.webUrl}" @click.native="fnOpenDepth4($event)" v-bind:id="'M_'+item3.menusCd" v-bind:r="item3.read" v-bind:w="item3.save">{{item3.menusName}}</router-link>
 											</li>
 										</ul>
 									</div>
@@ -200,23 +200,40 @@ export default {
 			}
 			return true;
 		},
-		fnOpenDepth2(index) {
-			var depth2Sts = jQuery("#depth2_" + index).css("display");
-			if (depth2Sts === 'block') {
-				jQuery("#depth2_" + index).css("display", "none");
-			} else {
-				jQuery(".depth2Lnb").css("display", "none");
-				jQuery("#depth2_" + index).css("display", "block");
+		fnOpenDepth2(event) {
+			var $this = event.currentTarget
+			if (jQuery('.SideMenuOff').is('visible') == true && jQuery($this).parent('li').hasClass('active')) {
+				return
+			}
+			if ($this.href.length > 0) {
+				jQuery('#sidebar > ul > li .depth2Lnb > ul li.active').removeClass('active')
+			}
+			jQuery('#sidebar > ul > li.active > a').next('.depth2Lnb').hide()
+			jQuery('#sidebar > ul > li.active').removeClass('active').children("a").find(".navArrow").removeClass("fa-chevron-up").addClass("fa-chevron-down")
+
+			jQuery($this).parent('li').addClass('active').children("a").find(".navArrow").removeClass("fa-chevron-down").addClass("fa-chevron-up")
+			if ($this.href.length == 0) {
+				jQuery($this).next('.depth2Lnb').show()
 			}
 		},
-		fnOpenDepth3(index1, index2) {
-			jQuery("#depth2_" + index1).css("display", "block");
-			var depth3Sts = jQuery("#depth3_" + index2).css("display");
-			if (depth3Sts === 'block') {
-				jQuery("#depth3_" + index2).css("display", "none");
-			} else {
-				jQuery("#depth3_" + index2).css("display", "block");
-			}
+		fnOpenDepth3(event) {
+			var $this = event.currentTarget
+			
+			jQuery('#sidebar > ul > li .depth2Lnb > ul > li.active').removeClass('active').children("a").find(".navArrow").removeClass("fa-chevron-up").addClass("fa-chevron-down")
+			jQuery($this).closest('li').addClass('active').children("a").find(".navArrow").removeClass("fa-chevron-down").addClass("fa-chevron-up")
+
+			jQuery('.depth3Lnb').hide();
+			jQuery($this).next('.depth3Lnb').fadeIn();
+			jQuery('.depth2Lnb > ul > li').removeClass('active');
+			jQuery($this).closest('li').addClass('active');
+			jQuery('.depth2Lnb > ul > li > a > .depth2Lnb_icon').attr("class","far fa-plus-square depth2Lnb_icon");
+			jQuery('.depth2Lnb > ul > li.active > a > .depth2Lnb_icon').attr("class","far fa-minus-square depth2Lnb_icon");
+		},
+		fnOpenDepth4(event) {
+			var $this = event.currentTarget
+			
+			jQuery('#sidebar > ul > li .depth2Lnb > ul > li .depth3Lnb > ul > li.active').removeClass('active')
+			jQuery($this).parent('li').addClass('active')
 		},
 		fnProjectList() {
 			var params = {

@@ -44,6 +44,9 @@
                   <a @click="fnDeleteConfirm(row)" class="btnStyle1 borderLightGray small mr5" activity="SAVE">삭제</a>
                 </td>
 							</tr>
+              <tr v-if="data.length == 0">
+                <td class="text-center" colspan="7">검색된 내용이 없습니다.</td>
+              </tr>
 						</tbody>
 					</table>
 					<!-- //table -->

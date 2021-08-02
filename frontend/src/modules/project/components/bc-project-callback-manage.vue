@@ -45,6 +45,14 @@
 			<div class="row mt20">
 				<div class="col-xs-12">		
 					<div class="of_h">
+						<!-- 15개씩 보기 -->
+						<div class="of_h inline">
+							<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+								<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
+							</div>
+						</div>
+						<!-- //15개씩 보기 -->
+						
 						<div class="float-right">
 							<a @click="fnMoveMainTab('callbackPreReg')" class="btnStyle3 gray font13 width180">발신번호 사전 등록</a>
 						</div>
@@ -54,14 +62,6 @@
 			
 			<div class="row">
 				<div class="col-xs-12">
-					<!-- 15개씩 보기 -->
-					<div class="of_h inline">
-						<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
-							<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
-						</div>
-					</div>
-					<!-- //15개씩 보기 -->
-					
 					<!-- table -->
 					<table class="table_skin1 bt-000 tbl-striped mt10">
 						<colgroup>
@@ -102,6 +102,9 @@
 									<a v-if="row.approvalStatus === '승인' || row.approvalStatus === '반려(수정)'" @click="fnCallbackDetail(row)" class="btnStyle8 mr5">수정</a>
 									<a v-if="row.approvalStatus === '승인' || row.approvalStatus === '반려(수정)'" @click="fnCallbackDeleteConfirm(row)" class="btnStyle8 mr5">삭제</a>
 								</td>
+							</tr>
+							<tr v-if="data.length == 0">
+								<td class="text-center" colspan="9">검색된 내용이 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>

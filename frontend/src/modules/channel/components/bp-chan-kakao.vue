@@ -43,9 +43,11 @@
 								</div>
 							</div>
 							<div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:20%">프로젝트 공용 여부 *</h5>
-								<input type="radio" v-model="otherProjectYn" name="otherProjectYn" value="Y" class="cBox" id="Y"> <label for="Y" class="payment mr30 font-size12">공용</label>
-								<input type="radio" v-model="otherProjectYn" name="otherProjectYn" value="N" class="cBox" id="N"> <label for="N" class="payment font-size12">전용</label>
+								<h5 class="inline-block float-left" style="width:25%">프로젝트 공용 여부 *</h5>
+								<div class="float-right" style="width:72%">
+									<input type="radio" v-model="otherProjectYn" name="otherProjectYn" value="Y" class="cBox" id="Y"> <label for="Y" class="payment mr30 font-size12">공용</label>
+									<input type="radio" v-model="otherProjectYn" name="otherProjectYn" value="N" class="cBox" id="N"> <label for="N" class="payment font-size12">전용</label>
+								</div>
 							</div>
 						</div>
 					

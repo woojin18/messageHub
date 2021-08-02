@@ -62,7 +62,7 @@ export default {
     fnClose(){
         this.senderPopData.senderTitle = "";
         this.senderPopData.senderContents = "";
-        jQuery("#sender").model("hide");
+        jQuery("#sender").modal("hide");
     },
 
   }

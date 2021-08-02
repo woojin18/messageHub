@@ -31,7 +31,7 @@
 
     <h4>충전 이력조회</h4>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-12 mb10">
         <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
           <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
         </div>

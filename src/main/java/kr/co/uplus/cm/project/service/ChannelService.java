@@ -979,7 +979,12 @@ public class ChannelService {
 		
 		List<Object> rtnList = generalDao.selectGernalList("channel.selectApikeyListForKko", params);
 		
-		rtn.setData(rtnList);
+		if( rtnList.size() == 0 ) {
+			rtn.setSuccess(false);
+		} else {
+			rtn.setSuccess(true);
+			rtn.setData(rtnList);
+		}
 
 		return rtn;
 	}

@@ -69,7 +69,7 @@
               <td class="text-center" v-if="data.useYn=='Y'">예</td>
               <td class="text-center" v-else>아니오</td>
               <td class="text-center">{{data.b}}</td>
-              <td @click="fnModClaimId(data)" class="text-center end">{{data.a}}</td>
+              <td @click="fnModClaimId(data)" class="text-center end" style="text-decoration: underline; cursor: pointer;">{{data.a}}</td>
             </tr>
           </tbody>
         </table>
