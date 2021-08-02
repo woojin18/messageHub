@@ -103,6 +103,9 @@
 									<a v-if="row.approvalStatus === '승인' || row.approvalStatus === '반려(수정)'" @click="fnCallbackDeleteConfirm(row)" class="btnStyle8 mr5">삭제</a>
 								</td>
 							</tr>
+							<tr v-if="data.length == 0">
+								<td class="text-center" colspan="9">검색된 내용이 없습니다.</td>
+							</tr>
 						</tbody>
 					</table>
 					<!-- //table -->

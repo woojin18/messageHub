@@ -72,8 +72,8 @@
                   <td>
                     {{totCnt-offset-row.rownum+1}}
                   </td>
-                  <td>
-                    <a class="text-decoration: underline !important; cursor:pointer !important;" @click="fnRcsBrandDetail(row)">{{ row.brandName }}</a>
+                  <td style="text-decoration: underline; cursor: pointer;">
+                    <a @click="fnRcsBrandDetail(row)">{{ row.brandName }}</a>
                   </td>
                   <td>
                     {{ row.brandId }}
@@ -81,11 +81,11 @@
                   <td>
                     {{ row.otherProjectUseYn }}
                   </td>
-                  <td>
-                    <a class="color:blue; text-decoration: underline; cursor:pointer;" @click="fnRcsTmpltDetail(row)">{{ row.tmplCnt }}</a>
+                  <td style="text-decoration: underline; cursor: pointer;">
+                    <a @click="fnRcsTmpltDetail(row)">{{ row.tmplCnt }}</a>
                   </td>
-                  <td>
-                    <a class="color:blue; text-decoration: underline; cursor:pointer;" @click="fnRcsCallbackDetail(row)">{{ row.callbackCnt }}</a>
+                  <td style="text-decoration: underline; cursor: pointer;">
+                    <a @click="fnRcsCallbackDetail(row)">{{ row.callbackCnt }}</a>
                   </td>
                   <td>
                     {{ row.approvalStatus }}
@@ -96,6 +96,9 @@
                   <td>
                     {{ row.approvalDt }}
                   </td>
+                </tr>
+                <tr v-if="data.length == 0">
+                  <td class="text-center" colspan="9">검색된 내용이 없습니다.</td>
                 </tr>
               </tbody>
             </table>

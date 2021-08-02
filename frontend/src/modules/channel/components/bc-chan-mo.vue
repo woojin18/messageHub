@@ -49,6 +49,9 @@
 								<td class="end">{{item.regDt}}</td>
 								<!-- <td class="end">{{item.updDt}}</td> -->
 							</tr>
+							<tr v-if="data.length == 0">
+								<td class="text-center" colspan="5">검색된 내용이 없습니다.</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>			
