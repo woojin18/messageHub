@@ -145,6 +145,7 @@
 			ON	cp.CORP_ID = cu.CORP_ID
 			AND	cp.BILL_ID = cu.BILL_ID
 		WHERE	cp.CORP_ID = #{corpId}
+		AND		cp.PAY_TYPE = 'POST'
 	</select>
 	
 	<select id="selectProjectInfo" resultType="camel">
@@ -161,6 +162,7 @@
 			ON	cp.CORP_ID = cu.CORP_ID
 			AND	cp.BILL_ID = cu.BILL_ID
 		WHERE	cp.CORP_ID = #{corpId}
+		AND		cp.PAY_TYPE = 'POST'
 	</select>
 	
 	<select id="selectProjectSubBillCodeCnt" resultType="int">

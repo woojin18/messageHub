@@ -918,11 +918,11 @@
 		/* channel.selectKkoChGroup */
 		SELECT	A.GRP_KEY
 		,		A.SENDER_KEY
-		,		A.CORP_ID
+		,		A.PROJECT_ID 
 		,		date_format(A.REG_DT, '%Y-%m-%d') AS REG_DT
 		,		A.USE_YN
 		FROM	cm.CM_KKO_SENDER_GRP A
-		WHERE	A.CORP_ID = #{corpId}
+		WHERE	(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
 	</select>
 	
 	<select id="selectApikeyListForKko" resultType="camel">
@@ -930,6 +930,7 @@
 		SELECT	API_KEY
 		FROM	cm.CM_APIKEY ca 
 		WHERE	ca.CORP_ID = #{corpId}
+		AND		(ca.PROJECT_ID = #{projectId} OR ca.PROJECT_ID = 'ALL' )
 		ORDER BY ca.REG_DT  DESC
 	</select>
 	
