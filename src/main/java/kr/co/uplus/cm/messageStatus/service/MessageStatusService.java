@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.messageStatus.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +24,6 @@ public class MessageStatusService {
 	// 메시지 현황 리스트 조회
 	public RestResult<Object> selectMessageStatusList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-
-		//List<Object> rtnList = generalDao.selectGernalList("messageStatus.selectMessageStatusList", params);
-        //rtn.setData(rtnList);
-        //return rtn;
 		
         if(params.containsKey("pageNo")
                 && CommonUtils.isNotEmptyObject(params.get("pageNo"))
