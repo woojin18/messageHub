@@ -43,11 +43,12 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-xs-12">
+							<div class="col-xs-12 mt10">
 								<table id="list" class="table_skin1 bt-000 tbl-striped">
 									<thead>
 										<th class="text-center lc-1">발신프로필</th>
 										<th class="text-center lc-1">발신키</th>
+										<th class="text-center lc-1">프로젝트 공용 여부</th>
 										<th class="text-center lc-1 end">등록일시</th>
 									</thead>
 									<tbody>
@@ -58,9 +59,15 @@
 											<td>
 												{{row.senderKey}}
 											</td>
+											<td>
+												{{row.otherProjectYn}}
+											</td>
 											<td class="text-center lc-1 end">
 												{{row.regDt}}
 											</td>
+										</tr>
+										<tr v-if="data.length == 0">
+											<td class="text-center" colspan="4">검색된 내용이 없습니다.</td>
 										</tr>
 									</tbody>
 								</table>

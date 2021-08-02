@@ -73,10 +73,14 @@
 				,		DATE_FORMAT(cc.START_DT, '%Y-%m-%d') + '~' + DATE_FORMAT(cc.EXP_DT, '%Y-%m-%d')
 				FROM	cm.CM_CASH cc
 				INNER JOIN (
-					SELECT	MAX(AMOUNT)	AS AMOUNT
-					FROM	cm.CM_CASH_HIST
-					GROUP BY CORP_ID, CASH_ID
+				SELECT	MAX(AMOUNT)	AS AMOUNT
+				,		CORP_ID
+				,		CASH_ID
+				FROM	cm.CM_CASH_HIST
+				GROUP BY CORP_ID, CASH_ID
 				) cch
+					ON	cc.CORP_ID = cch.CORP_ID
+					AND	cc.CASH_ID = cch.CASH_ID
 				WHERE	cc.CORP_ID = #{corpId}
 				AND		cc.CASH_TYPE = 'E'
 		) AA

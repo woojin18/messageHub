@@ -179,7 +179,7 @@ export default {
 	},
 	data() {
 		return {
-			listSize : 5,	// select 박스 value (출력 갯수 이벤트)
+			listSize : 10,	// select 박스 value (출력 갯수 이벤트)
 			pageNo : 1,		// 현재 페이징 위치
 			totCnt : 0,		//전체 리스트 수
 			offset : 0,		 //페이지 시작점

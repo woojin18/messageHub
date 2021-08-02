@@ -97,14 +97,14 @@ public class ProjectController {
 		params.put("corpId", corpId);
 		params.put("reqType", reqType);
 		
-//		try {
+		try {
 			projectService.savePreRegExWithUploadFiles(uploadFiles, params);
 			rtn.setSuccess(true);
 			rtn.setData(params);
-//		} catch (Exception e) {
-//			rtn.setSuccess(false);
-//			rtn.setMessage(e.getMessage());
-//		}
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
 		
 		return rtn;
 	}
@@ -166,8 +166,6 @@ public class ProjectController {
 	public RestResult<?> selectCallbackList(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		System.out.println("-------------------------------------@@ selectCallbackManageList params : " + params);
-		
 		return projectService.selectCallbackManageList(params);
 	}
 	
@@ -176,8 +174,6 @@ public class ProjectController {
 	public RestResult<?> selectApprovalBrandList(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		System.out.println("-------------------------------------@@ selectApprovalBrandList params : " + params);
-		
 		return projectService.selectApprovalBrandList(params);
 	}
 	
@@ -189,8 +185,6 @@ public class ProjectController {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
 		rtn.setSuccess(true);
-		
-		System.out.println("-------------------------------------@@ deleteCallbackForApi params : " + params);
 		
 		try {
 			projectService.deleteCallbackForApi(params);
