@@ -1,6 +1,7 @@
 package kr.co.uplus.cm.signUp.service;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -165,6 +166,12 @@ public class SignUpService {
 			// 난수 생성은 이전 로직에서 처리해야됨 이메일 발송모듈 추가후 삭제 예정 _서동욱
 			String randomNum = CommonUtils.randomGeneration(10);
 			params.put("authKey", randomNum);
+			
+			SimpleDateFormat	sdformat	= new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+			Calendar			cal			= Calendar.getInstance();
+			cal.add(Calendar.HOUR, 1);
+			String				time		= sdformat.format(cal.getTime());
+			params.put("time", time);
 			
 			generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, params);
 			

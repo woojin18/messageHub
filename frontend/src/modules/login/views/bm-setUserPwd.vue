@@ -50,8 +50,7 @@ export default {
 				var result = response.data;
 				var vm = this;
 				if(!result.success){
-					confirm.fnAlert("", result.message);
-					vm.$router.push({name : "findUserPwd"});
+					vm.$router.push({name : "chkCertifyFail"});
 				} else {
 					this.loginId = result.data.email
 				}
