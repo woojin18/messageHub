@@ -85,7 +85,9 @@
               <input type="checkbox" id="agree" value="서비스 이용약관 동의" v-model="agree">
               <label for="agree">[필수] 개인정보 수집 및 이용 동의에 동의합니다.</label>
             </div>
-            
+            <div class="of_h mt20">
+              <div class="inline-block">* 서비스 문의 작성 시 답변 내용은 개인 메일로 회신됩니다.</div>
+            </div>
           </div>
           <div class="text-center mt20">
             <a href="#" 
