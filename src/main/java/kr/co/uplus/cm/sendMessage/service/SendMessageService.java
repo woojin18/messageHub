@@ -2450,31 +2450,35 @@ public class SendMessageService {
         if((StringUtils.equals(Const.RcsPrd.NARRATIVE, rcsPrdType) || StringUtils.equals(Const.RcsPrd.STYEL, rcsPrdType)) == false) {
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             List<Map<String, Object>> tmpltMergeDataList = gson.fromJson(tmpltMergeDataStr, new TypeToken<List<Map<String, Object>>>(){}.getType());
-            Map<String, Object> tmpltMergeData = new HashMap<String, Object>();
 
             if(CollectionUtils.isNotEmpty(tmpltMergeDataList)) {
-                tmpltMergeData = tmpltMergeDataList.get(0);
-            }
-
-            String title = CommonUtils.getStrValue(tmpltMergeData, "title");
-            String description = CommonUtils.getStrValue(tmpltMergeData, "description");
-            if(StringUtils.isNotBlank(title) || StringUtils.isNotBlank(description)) {
                 Map<String, Object> rcsVar = null;
                 Map<String, Object> rcsMergeData = null;
                 Map<String, Object> sendMergeData = null;
                 StringSubstitutor ss;
+                int carouselCnt = 1;
 
                 for(RecvInfo recvInfo : rtnList) {
-                    rcsVar = new HashMap<String, Object>();
                     rcsMergeData = new HashMap<String, Object>();
+                    rcsVar = new HashMap<String, Object>();
                     sendMergeData = recvInfo.getMergeData();
+
 
                     if(sendMergeData.containsKey(Const.Ch.RCS)) {
                         rcsVar = (Map<String, Object>) sendMergeData.get(Const.Ch.RCS);
                         ss = new StringSubstitutor(rcsVar, ApiConfig.RCS_VAR_START, ApiConfig.RCS_VAR_END);
 
-                        rcsMergeData.put("title", ss.replace(title));
-                        rcsMergeData.put("description", ss.replace(description));
+                        if(StringUtils.equals(Const.RcsPrd.CAROUSEL_SMALL, rcsPrdType) || StringUtils.equals(Const.RcsPrd.CAROUSEL_TALL, rcsPrdType)) {
+                            carouselCnt = 1;
+                            for(Map<String, Object> tmpltMergeData : tmpltMergeDataList) {
+                                rcsMergeData.put("title"+carouselCnt, ss.replace(CommonUtils.getStrValue(tmpltMergeData, "title")));
+                                rcsMergeData.put("description"+carouselCnt, ss.replace(CommonUtils.getStrValue(tmpltMergeData, "description")));
+                                carouselCnt++;
+                            }
+                        } else {
+                            rcsMergeData.put("title", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "title")));
+                            rcsMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
+                        }
                         sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                     }
                 }

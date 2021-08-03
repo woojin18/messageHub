@@ -240,7 +240,7 @@
               <!--// 세로형 SHORT -->
               <!-- 세로형 TALL -->
               <!-- style="width: 240px;height: 300px;" => short, tall 해서 사이즈가 있으나 RCS는 2:1 로 이미지가 등록된다. -->
-              <div v-if="tmpltData.RCS.rcsPrdType == 'TALL1'" class="phoneWrap">
+              <div v-if="tmpltData.RCS.rcsPrdType == 'TALL'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
                   <img 
@@ -283,41 +283,44 @@
 
               
 
-              <!-- CAROUSEL -->
-              <div v-if="tmpltData.RCS.rcsPrdType == 'TALL'" class="cardBxsliderWrap">
-              <!-- <div v-if="tmpltData.RCS.rcsPrdType == 'CAROUSEL'" class="cardBxsliderWrap"> -->
+              <!-- CSHORT -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'CSHORT'" class="cardBxsliderWrap">
                 <div class="phoneWrap">
                   <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
                   <div class="phoneCardWrap">
-                    <p class="color000">[WEB발신] (광고)</p>
+                    <p class="color000">
+                      <span>[WEB발신]</span>
+                      <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
+                    </p>
                     <ul class="cardBxslider mt10">
-                      <li class="slide cardBox">
-                        <img :src="tmpltData.RCS.mergeData[0].mediaUrl" alt="카드 썸네일">
+                      <li v-for="(msgData, idx) in tmpltData.RCS.mergeData" :key="idx" class="slide cardBox">
+                        <img 
+                          v-if="tmpltData.msgType == 'IMAGE' && msgData.mediaUrl" 
+                          :src="msgData.mediaUrl" 
+                          style="width: 240px;height: 120px;"
+                          alt="프리 템플릿"
+                        >
                         <div>
                           <div class="scroll-y">
-                            <p class="color000 font-size13">타이틀 영역1</p>
+                            <p class="color000 font-size13">{{msgData.title}}</p>
+                            <p class="mt15"><pre>{{msgData.description}}</pre></p>
                           </div>
-                          <p class="color3 font-size10 mt5">무료수신거부:</p>
                         </div>
-                      </li>
-                      <li class="slide cardBox">
-                        <img :src="tmpltData.RCS.mergeData[0].mediaUrl" alt="카드 썸네일">
-                        <div>
-                          <div class="scroll-y">
-                            <p class="color000 font-size13">타이틀 영역2</p>
-                          </div>
-                          <p class="color3 font-size10 mt5">무료수신거부:</p>
+
+                        <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > idx">
+                          <p 
+                            v-for="(btn, sIdx) in tmpltData.RCS.buttons[idx].suggestions" 
+                            :key="sIdx" 
+                            class="text-center mt20" 
+                            style="color:#69C8FF"
+                          >{{btn.action.displayText}}</p>
                         </div>
+
+                        <p  v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)" class="color3 font-size10 mt5">무료수신거부: {{tmpltData.RCS.footer}}</p>
+
                       </li>
-                      <li class="slide cardBox">
-                        <img :src="tmpltData.RCS.mergeData[0].mediaUrl" alt="카드 썸네일">
-                        <div>
-                          <div class="scroll-y">
-                            <p class="color000 font-size13">타이틀 영역3</p>
-                          </div>
-                          <p class="color3 font-size10 mt5">무료수신거부:</p>
-                        </div>
-                      </li>
+                      
+
                     </ul>
                   </div>
                 </div>
@@ -558,10 +561,12 @@ export default {
     }
   },
   updated() {
-    if(this.previewMessageType == 'RCS') {
+    if(this.previewMessageType == 'RCS' && this.tmpltData.RCS 
+      && (this.tmpltData.RCS.rcsPrdType == 'CSHORT' || this.tmpltData.RCS.rcsPrdType == 'CTALL')) {
       this.fnSetBxslider();
       this.showBxPage = true;
     } else {
+      jQuery('.bx-wrapper').remove();
       this.showBxPage = false;
     }
   },
@@ -570,7 +575,7 @@ export default {
   },
   methods: {
     fnSetBxslider(){
-      jQuery('.cardBxslider').bxSlider({
+      let mySider = jQuery('.cardBxslider').bxSlider({
         auto: false,
         autoControls: false,
         slideWidth: 204,
@@ -579,11 +584,18 @@ export default {
         slideMargin: 10,
         controls: true,
         pager: true,
-        pagerType: 'full',
+        pagerType: 'short',
         touchEnabled : (navigator.maxTouchPoints > 0),
         autoHover: false,
+        onSliderLoad: function(){
+          jQuery('.bx-default-pager').text(1 + ' / ' + 4);
+        }
       });
-      return true;
+      jQuery('.bx-prev, .bx-next').parent().on('click', function () {
+        if(mySider){
+          jQuery('.bx-default-pager').text(mySider.getCurrentSlide()+1 + ' / ' + mySider.getSlideCount());
+        }
+      });
     },
     fnGetImageUrl(ch, fileId){
       let params = {ch: ch, fileId: fileId};
@@ -801,10 +813,11 @@ export default {
           conts = chTmpltInfo.msg;
         } else if(ch == 'RCS'){
           if(chTmpltInfo.mergeData && chTmpltInfo.mergeData.length > 0){
-            //TODO : 프리템플릿 일경우인데 다른 템플릿일 경우 다른수 있다.
-            //FREE, SMS, LMS, 서술형
-            conts = this.$gfnCommonUtils.defaultIfEmpty(chTmpltInfo.mergeData[0].title, '');
-            conts += this.$gfnCommonUtils.defaultIfEmpty(chTmpltInfo.mergeData[0].description, '');
+            conts = '';
+            chTmpltInfo.mergeData.forEach(element => {
+              conts += this.$gfnCommonUtils.defaultIfEmpty(element.title, '');
+              conts += this.$gfnCommonUtils.defaultIfEmpty(element.description, '');
+            });
           }
         }
 
