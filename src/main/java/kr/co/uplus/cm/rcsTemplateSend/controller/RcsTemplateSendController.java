@@ -161,9 +161,6 @@ public class RcsTemplateSendController {
 			// 예약 발송일 경우 금액 계산을 하지 않음. (DB insert 처리는 service에서 처리)
 			Map<String, Object> data = (Map<String, Object>) params.get("data");
 			String rsrvSendYn = CommonUtils.getString(data.get("rsrvSendYn"));
-			
-			System.out.println("asdfasdf" + rsrvSendYn);
-			
 			if("N".equals(rsrvSendYn)) {
 				// 금액 세팅
 				String resultMsg = rcsTemplateSendSvc.setAccountSendMessage(params);

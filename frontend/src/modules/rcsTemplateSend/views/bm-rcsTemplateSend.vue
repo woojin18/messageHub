@@ -22,22 +22,20 @@
 							<li>
 								<img src="@/assets/images/common/RCSTemplate1.png" alt="템플릿 승인(서술)"><h6>템플릿 승인(서술)</h6>
 								<div class="consolMarginTop">
-									<input v-model="templateRadioBtn" @click="fnSetTemplateCard('des')" type="radio" name="RCSTemplate1" value="des" id="pushTemplate1-1" class="radioStyle" checked=""><label for="pushTemplate1-1"></label>
-									<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:280px">브랜드 포탈에서 승인이 완료된<br>서술형 템플릿만 발송 할 수 있습니다.</span></i>
+									<input v-model="templateRadioBtn" type="radio" name="RCSTemplate1" value="des" id="pushTemplate1-1" class="radioStyle" checked=""><label for="pushTemplate1-1"></label>
+									
 								</div>
 							</li>
 							<li>
 								<img src="@/assets/images/common/RCSTemplate1.png" alt="템플릿 승인(스타일)"><h6>템플릿 승인(스타일)</h6>
 								<div class="consolMarginTop">
-									<input v-model="templateRadioBtn" @click="fnSetTemplateCard('cell')" type="radio" name="RCSTemplate1" value="cell" id="pushTemplate1-2" class="radioStyle"><label for="pushTemplate1-2"></label>
-									<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:280px">브랜드 포탈에서 승인이 완료된<br>스타일 템플릿만 발송 할 수 있습니다.</span></i>
+									<input v-model="templateRadioBtn" type="radio" name="RCSTemplate1" value="cell" id="pushTemplate1-2" class="radioStyle"><label for="pushTemplate1-2"></label>
 								</div>
 							</li>
 							<li>
 								<img src="@/assets/images/common/RCSTemplate2.png" alt="텍스트 미승인형"><h6>텍스트 미승인형</h6>
 								<div class="consolMarginTop">
-									<input v-model="templateRadioBtn" @click="fnSetTemplateCard('text')" type="radio" name="RCSTemplate1" value="text" id="pushTemplate1-3" class="radioStyle"><label for="pushTemplate1-3"></label>
-									<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">90자 이내의 단문의 안내성<br>메시지 발송에 적합합니다.</span></i>
+									<input v-model="templateRadioBtn" type="radio" name="RCSTemplate1" value="text" id="pushTemplate1-3" class="radioStyle"><label for="pushTemplate1-3"></label>
 								</div>
 							</li>
 							
@@ -54,43 +52,37 @@
 							<li>
 								<img src="@/assets/images/common/RCSTemplate3.png" alt="텍스트(SMS)"><h6>텍스트(SMS)</h6>
 								<div class="consolMarginTop">
-									<input v-model="templateRadioBtn" @click="fnSetFormatCard" type="radio" name="RCSTemplate1" value="SS000000" id="RCSTemplate2-1" class="radioStyle" checked=""><label for="RCSTemplate2-1"></label>
-									<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+									<input v-model="templateRadioBtn" type="radio" name="RCSTemplate1" value="SS000000" id="RCSTemplate2-1" class="radioStyle" checked=""><label for="RCSTemplate2-1"></label>
 								</div>
 							</li>
 							<li>
 								<img src="@/assets/images/common/RCSTemplate4.png" alt="텍스트(LMS)"><h6>텍스트(LMS)</h6>
 								<div class="consolMarginTop">
-									<input v-model="templateRadioBtn" @click="fnSetFormatCard" type="radio" name="RCSTemplate1" value="SL000000" id="RCSTemplate2-2" class="radioStyle"><label for="RCSTemplate2-2"></label>
-									<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+									<input v-model="templateRadioBtn" type="radio" name="RCSTemplate1" value="SL000000" id="RCSTemplate2-2" class="radioStyle"><label for="RCSTemplate2-2"></label>
 								</div>
 							</li>
 							<li class="ml40">
 								<img src="@/assets/images/common/RCSTemplate6.png" alt="세로형(short)"><h6>세로형 (Medium)</h6>
 								<div class="consolMarginTop">
-									<input v-model="templateRadioBtn" @click="fnSetFormatCard" type="radio" name="RCSTemplate1" value="SMwThM00" id="RCSTemplate2-6-1" class="radioStyle"><label for="RCSTemplate2-6-1"></label>
-									<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+									<input v-model="templateRadioBtn" type="radio" name="RCSTemplate1" value="SMwThM00" id="RCSTemplate2-6-1" class="radioStyle"><label for="RCSTemplate2-6-1"></label>
 								</div>
 							</li>
 							<li class="ml40">
 								<img src="@/assets/images/common/RCSTemplate7.png" alt="세로형(Tall)"><h6>세로형 (Tall)</h6>
 								<div class="consolMarginTop">
-									<input v-model="templateRadioBtn" @click="fnSetFormatCard" type="radio" name="RCSTemplate1" value="SMwThT00" id="RCSTemplate2-7" class="radioStyle"><label for="RCSTemplate2-7"></label>
-									<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+									<input v-model="templateRadioBtn" type="radio" name="RCSTemplate1" value="SMwThT00" id="RCSTemplate2-7" class="radioStyle"><label for="RCSTemplate2-7"></label>
 								</div>
 							</li>
 							<li class="ml40">
 								<img src="@/assets/images/common/RCSTemplate10.png" alt="캐러셀(short)"><h6>캐러셀 (Small)</h6>
 								<div class="consolMarginTop">
-									<input v-model="templateRadioBtn" @click="fnSetCarousel" type="radio" name="RCSTemplate1" value="carouselSmall" id="RCSTemplate2-10" class="radioStyle"><label for="RCSTemplate2-10"></label>
-									<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+									<input v-model="templateRadioBtn" type="radio" name="RCSTemplate1" value="carouselSmall" id="RCSTemplate2-10" class="radioStyle"><label for="RCSTemplate2-10"></label>
 								</div>
 							</li>
 							<li>
 								<img src="@/assets/images/common/RCSTemplate11.png" alt="캐러셀(Tall)"><h6>캐러셀 (Medium)</h6>
 								<div class="consolMarginTop">
-									<input v-model="templateRadioBtn" @click="fnSetCarousel" type="radio" name="RCSTemplate2" value="carouselMedium" id="RCSTemplate2-11" class="radioStyle"><label for="RCSTemplate2-11"></label>
-									<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+									<input v-model="templateRadioBtn" type="radio" name="RCSTemplate2" value="carouselMedium" id="RCSTemplate2-11" class="radioStyle"><label for="RCSTemplate2-11"></label>
 								</div>
 							</li>
 						</ul>
@@ -392,6 +384,7 @@
 			<RcsBtnPopup :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
 			<RcsSenderPopup :senderType.sync="sendData.senderType" ref="rcsSenderPop"></RcsSenderPopup>
 			<RcsSavePopup ref="rcsSavePop"></RcsSavePopup>
+			<ConfirmPopup :newval.sync="newval" :oldval.sync="oldval" ref="confirmPop"></ConfirmPopup>
 			<DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
 			<AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
 			<TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :testRecvInfoLst="sendData.testRecvInfoLst" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></TestSendInputPopup>
@@ -411,6 +404,7 @@ import TestSendInputPopup from "@/modules/message/components/bc-testSendInput.vu
 import Calendar from "@/components/Calendar.vue";
 import rcsTemplateSendApi from "@/modules/rcsTemplateSend/service/api.js";
 import messageApi from "@/modules/message/service/messageApi.js";
+import ConfirmPopup from "@/modules/rcsTemplateSend/components/bp-confirmPopup.vue";
 
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
@@ -429,10 +423,13 @@ export default {
 	  DirectInputPopup,
 	  AddressInputPopup,
 	  TestSendInputPopup,
-	  Calendar
+	  Calendar,
+	  ConfirmPopup
   },
   data() {
     return {
+		newval : '',
+		oldval : '',
 		dataSet : false,				// dataSet (데이터가 입력될시 true로 변환 radio버튼으로 발송 스타일 변경시 true인 경우 경고)
 		pushTab : "push",				// push 버튼
 		carouselBrandId : "",			// carousel형 brandid
@@ -523,6 +520,12 @@ export default {
 	  'sendData.brandId'(newval, oldval) {
 		  this.callbackList();
 	  },
+	  templateRadioBtn (newval, oldval) {
+		  this.newval = newval;
+		  this.oldval = oldval;
+
+		  this.fnConfirmChangeRadioBtn(newval, oldval);
+	  },
 	  carouselBrandId (newval, oldval){
 		var vm = this;
 		var params = {
@@ -552,6 +555,17 @@ export default {
 	},
 
 	fnResetData() {
+		var vm = this;
+		var templateRadioBtn = this.templateRadioBtn;
+
+		if(templateRadioBtn == "des" || templateRadioBtn == "cell" || templateRadioBtn == "text") {
+			vm.fnSetTemplateCard(templateRadioBtn);
+		} else if(templateRadioBtn == "carouselSmall" || templateRadioBtn == "carouselMedium") {
+			vm.fnSetCarousel();
+		} else {
+			vm.fnSetFormatCard();
+		}
+
 		// 데이터 초기화
 		this.pushTab = "push";
 		this.imgsrc = require("@/assets/images/common/approve.png");
@@ -1032,8 +1046,6 @@ export default {
 
 	// 템플릿 카드 버튼
 	fnSetTemplateCard(type) {
-		this.fnConfirmChangeRadioBtn(event);
-
 		if("text"==type) {
 			this.formatCard = true;
 			this.carouSelType = false;
@@ -1045,15 +1057,12 @@ export default {
 
 	// 포멧카드 선택시 버튼입력 버튼 활성화
 	fnSetFormatCard() {
-		this.fnConfirmChangeRadioBtn(event);
-
 		this.formatCard = true;
 		this.carouSelType = false;
 	},
 
 	// 캐러셀형
 	fnSetCarousel() {
-		this.fnConfirmChangeRadioBtn(event);
 		this.fnInit();
 
 		this.formatCard = true;
@@ -1066,12 +1075,11 @@ export default {
 
 	},
 
-	fnConfirmChangeRadioBtn(event) {
-		eventBus.$on('callbackEventBus', this.fnResetData);
-		confirm.fnConfirm("RCS 발송" ,"템플릿을 변경하면 입력된 데이터가 모두 초기화됩니다. 변경하시겠습니까?", "확인");
-		//event.preventDefault();
-		//alert(cancelConfirm);
-
+	fnConfirmChangeRadioBtn(oldval, newval) {
+		jQuery("#confirm").modal("show");
+	},
+	parentFunction() {
+		this.templateRadioBtn = this.oldval;
 	},
 
 	// 캐러셀형 탭 클릭 이벤트 처리
@@ -1119,7 +1127,7 @@ export default {
 
 		var params = {
 			"data" : this.sendData,
-			"templateRadioBtn" : this.templateRadioBtn,
+			"templateRadioBtn" : templateRadioBtn,
 			"brandId" : this.carouselBrandId,
 			"carouselSelect" : this.carouselSelect,
 			"real" : true
@@ -1164,7 +1172,6 @@ export default {
 			var result = response.data;
 			var success = result.success;
 			if(success) {
-				alert(result.message);
 				if("" == result.message || null == result.message) confirm.fnAlert("RCS 발송", "테스트 메세지 발송처리를 완료하였습니다.");
 				else confirm.fnAlert("RCS 발송", result.message);
 
@@ -1239,10 +1246,13 @@ export default {
 		} else {
 			var carouselObj = vm.sendData.carouselObj;
 			var carouselSelect = vm.carouselSelect;
-			var objCnt = carouselObj.textTitle;
-			if(carouselSelect != objCnt.length) {
-				confirm.fnAlert("RCS 발송", "내용입력을 완료해주세요.");
-				return false;
+			for(var i=0; i<carouselSelect; i++) {
+				if("" == carouselObj.textTitle[i]) {
+					confirm.fnAlert("RCS 발송", "내용입력을 완료해주세요.");
+				}
+				if("" == carouselObj.textContents[i]) {
+					confirm.fnAlert("RCS 발송", "내용입력을 완료해주세요.");
+				}
 			}
 		}
 

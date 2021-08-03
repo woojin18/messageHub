@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -18,7 +17,6 @@ import org.apache.commons.text.StringSubstitutor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -31,7 +29,6 @@ import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
-import kr.co.uplus.cm.sendMessage.dto.PushRequestData;
 import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
 import kr.co.uplus.cm.sendMessage.service.SendMessageService;
 import kr.co.uplus.cm.utils.ApiInterface;
@@ -850,9 +847,6 @@ public class RcsTemplateSendService {
 				JSONArray btnArr = (JSONArray) jsonObj.get("suggestions");
 				Map<String, Object> btnMap = new HashMap<String, Object>();
 				if(btnArr.size()>0) {
-					
-					System.out.println("asdfasdfasdf"+ btnArr);
-					
 					int btnCnt = btnArr.size();
 					String[] selectBtnArr		= new String[btnCnt];
 					String[] btnNmArr			= new String[btnCnt];
@@ -1487,7 +1481,7 @@ public class RcsTemplateSendService {
 			for(int i=0; i<carouselCnt; i++) {
 				returnMergeMap.put("title"+(i+1), sub.replace(textTitleArr.get(i)));
 				returnMergeMap.put("description"+(i+1), sub.replace(textContentsArr.get(i)));
-				returnMergeMap.put("mediaUrl"+(i+1), imgUrlArr.get(i));
+				returnMergeMap.put("media"+(i+1), imgUrlArr.get(i));
 			}
 
 			returnMap.put("cliKey", "CLI"+CommonUtils.randomGeneration(27));
