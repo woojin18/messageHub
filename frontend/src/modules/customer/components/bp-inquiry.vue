@@ -144,6 +144,9 @@ export default {
       return this.inputData.hpNumber = this.inputData.hpNumber.replace(/[^0-9]/g, '');
     }
   },
+  mounted(){
+    this.fnSelectFaqType();
+  },
   methods: {
     fnIsValid(){
       if(!this.inputData.inputName){
@@ -194,7 +197,7 @@ export default {
       await customereApi.insertQuestBoard(params).then(response => {
         const result = response.data;
         if(result.success) {
-          confirm.fnAlert(this.componentsTitle, '문의 되었습니다.');
+          confirm.fnAlert(this.componentsTitle, '문의 되었습니다.\n서비스 문의 작성 답변은 개인 메일로 회신됩니다.');
           this.$refs.btnClose.click();
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
