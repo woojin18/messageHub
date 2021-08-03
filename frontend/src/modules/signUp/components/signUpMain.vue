@@ -282,8 +282,7 @@ export default {
 					this.fnGetNiceCheck();		// nice 본인인증 인증키 조회
 					this.fnGetCustType();		// 고객사 고객 유형 코드 값 조회
 				} else {
-					confirm.fnAlert("", result.message);
-					vm.$router.push({name : "login"});
+					vm.$router.push({name : "chkCertifyFail"});
 				}
 			})
 		},
