@@ -1872,746 +1872,761 @@
 				</div>
 			</div>
 
-
-
-
-
-
-<!-- 캐러셀 Tall-->
-      <div v-if="rcsTemplateTable === 10" >
-
-        <h4>내용작성</h4>
-        <div class="of_h mt20">
-          <div class="float-left" style="width:28%">
-            <!-- phoneWrap -->
-            <div class="phoneWrap">
-              	<img src="../../../common/images/phoneMockup1.svg" alt="프리 템플릿">
-				<div class="phoneCardWrap">
-					<p class="color000">[WEB발신] (광고)</p>
-					<ul class="cardBxslider mt10">
-						<li class="slide cardBox" v-show="cTallTab === 0">
-				            <div v-for="imgIdx in rcs100ImgLimitSize" :key="imgIdx">  
-				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs100ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs100ImgInfoList[imgIdx-1].imgUrl+');'">  
-				            		</div>
-				            		<div v-else>
-				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
-				            		</div>
-				            </div>
-<!--						
-							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs100ImgInfoList[0])" class="phoneText2 mt10 text-center">
-				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
-				            </div>
-				            <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs100ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
-				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
-				            </div>
-				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs100ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
-				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs100ImgInfoList[0].imgUrl+');'">
-				            </div>
--->				            
-							<div class="relative">
-								<div class="scroll-y6" style="min-height:140px">
-									<p class="color000 font-size13">{{rowData.rcs100Title}}</p>
-									<pre class="color3 mt5">{{rowData.rcs100Content}}</pre>
+			<!-- 캐러셀 Tall-->
+			<div v-if="rcsTemplateTable === 10" >
+				<h4>내용작성</h4>
+				<div class="of_h mt20">
+					<div class="float-left" style="width:28%">
+						<div class="cardBxsliderWrap">
+							<!-- phoneWrap -->
+							<div class="phoneWrap" style="height:660px">
+								<img src="@/assets/images/common/phoneMockup1.svg" alt="캐러셀(Tall) 템플릿">
+								<div class="phoneCardWrap">
+									<p class="color000">
+										<span>[WEB발신]</span>
+										<span v-if="rowData.msgKind == 'A'"> (광고)</span>
+									</p>
+									<ul class="cardBxslider mt10">
+										<li class="slide cardBox">
+											<div v-for="imgIdx in rcs100ImgLimitSize" :key="imgIdx">
+												<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs100ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+													:style="'padding:25%;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs100ImgInfoList[imgIdx-1].imgUrl+');'">  
+												</div>
+												<div v-else-if="rowData.msgType == 'IMAGE' && rowData.rcs100ImgInfoList.length == 0">
+													<img src="@/assets/images/common/cardThumImg2.png" alt="카드 썸네일">
+												</div>
+											</div>
+											<div class="relative">
+												<h5>{{rowData.rcs0Title}}</h5>
+												<div class="scroll-y" style="min-height:150px">
+													<pre class="color6">{{rowData.rcs0Content}}</pre>
+												</div>
+												<p v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)" class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcsBlockNumber}}</p>
+												<div v-for="(buttonInfo, idx) in rowData.rcs100Buttons" :key="idx">
+													<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
+														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+													</p>
+													<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
+														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+													</p>
+												</div>
+											</div>
+										</li>
+										<li class="slide cardBox">
+											<div v-for="imgIdx in rcs101ImgLimitSize" :key="imgIdx">
+												<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs101ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+													:style="'padding:25%;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs101ImgInfoList[imgIdx-1].imgUrl+');'">  
+												</div>
+												<div v-else-if="rowData.msgType == 'IMAGE' && rowData.rcs101ImgInfoList.length == 0">
+													<img src="@/assets/images/common/cardThumImg2.png" alt="카드 썸네일">
+												</div>
+											</div>
+											<div class="relative">
+												<h5>{{rowData.rcs1Title}}</h5>
+												<div class="scroll-y" style="min-height:150px">
+													<pre class="color6">{{rowData.rcs1Content}}</pre>
+												</div>
+												<p v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)" class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcsBlockNumber}}</p>
+												<div v-for="(buttonInfo, idx) in rowData.rcs101Buttons" :key="idx">
+													<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
+														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+													</p>
+													<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
+														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+													</p>
+												</div>
+											</div>
+										</li>
+										<li class="slide cardBox">
+											<div v-for="imgIdx in rcs102ImgLimitSize" :key="imgIdx">
+												<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs102ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+													:style="'padding:25%;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs102ImgInfoList[imgIdx-1].imgUrl+');'">  
+												</div>
+												<div v-else-if="rowData.msgType == 'IMAGE' && rowData.rcs102ImgInfoList.length == 0">
+													<img src="@/assets/images/common/cardThumImg2.png" alt="카드 썸네일">
+												</div>
+											</div>
+											<div class="relative">
+												<h5>{{rowData.rcs2Title}}</h5>
+												<div class="scroll-y" style="min-height:150px">
+													<pre class="color6">{{rowData.rcs2Content}}</pre>
+												</div>
+												<p v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)" class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcsBlockNumber}}</p>
+												<div v-for="(buttonInfo, idx) in rowData.rcs102Buttons" :key="idx">
+													<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
+														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+													</p>
+													<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
+														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+													</p>
+												</div>
+											</div>
+										</li>
+										<li class="slide cardBox" v-show="cShortTab === 3">
+											<div v-for="imgIdx in rcs103ImgLimitSize" :key="imgIdx">
+												<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs103ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+													:style="'padding:25%;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs103ImgInfoList[imgIdx-1].imgUrl+');'">  
+												</div>
+												<div v-else-if="rowData.msgType == 'IMAGE' && rowData.rcs103ImgInfoList.length == 0">
+													<img src="@/assets/images/common/cardThumImg2.png" alt="카드 썸네일">
+												</div>
+											</div>
+											<div class="relative">
+												<h5>{{rowData.rcs3Title}}</h5>
+												<div class="scroll-y" style="min-height:150px">
+													<pre class="color6">{{rowData.rcs3Content}}</pre>
+												</div>
+												<p v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)" class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcsBlockNumber}}</p>
+												<div v-for="(buttonInfo, idx) in rowData.rcs103Buttons" :key="idx">
+													<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
+														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+													</p>
+													<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
+														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+													</p>
+												</div>
+											</div>
+										</li>
+										<li class="slide cardBox" v-show="cShortTab === 4">
+											<div v-for="imgIdx in rcs104ImgLimitSize" :key="imgIdx">
+												<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs104ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+													:style="'padding:25%;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs104ImgInfoList[imgIdx-1].imgUrl+');'">  
+												</div>
+												<div v-else-if="rowData.msgType == 'IMAGE' && rowData.rcs104ImgInfoList.length == 0">
+													<img src="@/assets/images/common/cardThumImg2.png" alt="카드 썸네일">
+												</div>
+											</div>
+											<div class="relative">
+												<h5>{{rowData.rcs4Title}}</h5>
+												<div class="scroll-y" style="min-height:150px">
+													<pre class="color6">{{rowData.rcs4Content}}</pre>
+												</div>
+												<p v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)" class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcsBlockNumber}}</p>
+												<div v-for="(buttonInfo, idx) in rowData.rcs104Buttons" :key="idx">
+													<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
+														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+													</p>
+													<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
+														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+													</p>
+												</div>
+											</div>
+										</li>
+										<li class="slide cardBox" v-show="cShortTab === 5">
+											<div v-for="imgIdx in rcs105ImgLimitSize" :key="imgIdx">
+												<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs105ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
+													:style="'padding:25%;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs105ImgInfoList[imgIdx-1].imgUrl+');'">  
+												</div>
+												<div v-else-if="rowData.msgType == 'IMAGE' && rowData.rcs105ImgInfoList.length == 0">
+													<img src="@/assets/images/common/cardThumImg2.png" alt="카드 썸네일">
+												</div>
+											</div>
+											<div class="relative">
+												<h5>{{rowData.rcs5Title}}</h5>
+												<div class="scroll-y" style="min-height:150px">
+													<pre class="color6">{{rowData.rcs5Content}}</pre>
+												</div>
+												<p v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)" class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcsBlockNumber}}</p>
+												<div v-for="(buttonInfo, idx) in rowData.rcs105Buttons" :key="idx">
+													<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
+														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+													</p>
+													<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
+														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+													</p>
+												</div>
+											</div>
+										</li>
+									</ul>
 								</div>
-								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 							</div>
-						</li>
-						<li class="slide cardBox" v-show="cTallTab === 1">
-				            <div v-for="imgIdx in rcs101ImgLimitSize" :key="imgIdx">  
-				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs101ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs101ImgInfoList[imgIdx-1].imgUrl+');'">  
-				            		</div>
-				            		<div v-else>
-				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
-				            		</div>
-				            </div>
-<!--						
-							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs101ImgInfoList[0])" class="phoneText2 mt10 text-center">
-				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
-				            </div>
-				            <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs101ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
-				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
-				            </div>
-				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs101ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
-				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs101ImgInfoList[0].imgUrl+');'">
-				            </div>
--->				            
-							<div class="relative">
-								<div class="scroll-y6" style="min-height:140px">
-									<p class="color000 font-size13">{{rowData.rcs101Title}}</p>
-									<pre class="color3 mt5">{{rowData.rcs101Content}}</pre>
+							<!-- //phoneWrap -->
+						</div>
+					</div>
+					<div class="float-left consoleCon" style="width:72%">
+						<div class="of_h">
+							<div class="float-left" style="width:13%"><h4>브랜드명*</h4></div>
+							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
+								<option value="">선택해주세요.</option>
+								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
+							</select>
+						</div>
+						<div class="of_h">
+							<div class="float-left" style="width:13%"><h4>카드개수</h4></div>
+							<div class="float-left" style="width:57%">
+								<select class="selectStyle2" style="width:70px" v-model="rcs10CardCount">
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+								</select>
+							</div>
+						</div>
+						<div class="of_h">
+							<div class="float-right" style="width:87%">
+								<ul class="tab_s6" role="tablist">
+									<li role="presentation" class="active"><a href="#card101" aria-controls="card101" role="tab" data-toggle="tab" v-on:click="cTallTab=0">카드 1</a></li>
+									<li role="presentation"><a href="#card102" aria-controls="card102" role="tab" data-toggle="tab" v-on:click="cTallTab=1">카드 2</a></li>
+									<li role="presentation"><a href="#card103" aria-controls="card103" role="tab" data-toggle="tab" v-on:click="cTallTab=2">카드 3</a></li>
+									<li role="presentation" v-if="rcs10CardCount == '4' || rcs10CardCount == '5' || rcs10CardCount == '6' "><a href="#card104" aria-controls="card104" role="tab" data-toggle="tab" v-on:click="cTallTab=3">카드 4</a></li>
+									<li role="presentation" v-if="rcs10CardCount == '5' || rcs10CardCount == '6' "><a href="#card105" aria-controls="card105" role="tab" data-toggle="tab" v-on:click="cTallTab=4">카드 5</a></li>
+									<li role="presentation" v-if="rcs10CardCount == '6'"><a href="#card106" aria-controls="card106" role="tab" data-toggle="tab" v-on:click="cTallTab=5">카드 6</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="tab-content">
+							<!--  tab1 -->
+							<div role="tabpanel" class="tab-pane active" id="card101">
+								<div class="of_h consolMarginTop">
+									<div class="float-left" style="width:13%"><h4>제목</h4></div>
+									<div class="float-left" style="width:57%">
+										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs0Title">
+									</div>
 								</div>
-								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
-							</div>
-						</li>
-						<li class="slide cardBox" v-show="cTallTab === 2">
-				            <div v-for="imgIdx in rcs102ImgLimitSize" :key="imgIdx">  
-				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs102ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs102ImgInfoList[imgIdx-1].imgUrl+');'">  
-				            		</div>
-				            		<div v-else>
-				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
-				            		</div>
-				            </div>
-<!--						
-							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs102ImgInfoList[0])" class="phoneText2 mt10 text-center">
-				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
-				            </div>
-				            <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs102ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
-				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
-				            </div>
-				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs102ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
-				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs102ImgInfoList[0].imgUrl+');'">
-				            </div>
--->				            
-							<div class="relative">
-								<div class="scroll-y6" style="min-height:140px">
-									<p class="color000 font-size13">{{rowData.rcs102Title}}</p>
-									<pre class="color3 mt5">{{rowData.rcs102Content}}</pre>
+								<div class="of_h">
+									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+									<div class="float-left" style="width:57%">
+										<textarea class="textareaStyle height190" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsCarouselTab1" @keyup="fnTextLength('내용', '#rcsCarouselTab1', '#rcsCarouselTab1TextLength', '1300')"></textarea>
+										<strong class="letter" id="rcsCarouselTab1TextLength">(00 / 1300)</strong>
+									</div>
 								</div>
-								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
-							</div>
-						</li>
-						<li class="slide cardBox" v-show="cTallTab === 3">
-				            <div v-for="imgIdx in rcs103ImgLimitSize" :key="imgIdx">  
-				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs103ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs103ImgInfoList[imgIdx-1].imgUrl+');'">  
-				            		</div>
-				            		<div v-else>
-				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
-				            		</div>
-				            </div>
-<!--						
-							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs103ImgInfoList[0])" class="phoneText2 mt10 text-center">
-				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
-				            </div>
-				            <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs103ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
-				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
-				            </div>
-				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs103ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
-				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs103ImgInfoList[0].imgUrl+');'">
-				            </div>
--->				            
-							<div class="relative">
-								<div class="scroll-y6" style="min-height:140px">
-									<p class="color000 font-size13">{{rowData.rcs103Title}}</p>
-									<pre class="color3 mt5">{{rowData.rcs103Content}}</pre>
+								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
+									<div class="float-left" style="width:13%"><h4>이미지</h4></div>
+									<div class="float-left" style="width:57%">
+										<div class="float-left" style="width:25%">
+											<a @click="fnRcs100OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
+										</div>
+										<ul v-for="imgIdx in rcs100ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
+											<li v-if="rowData.rcs100ImgInfoList.length > imgIdx -1">
+												<a @click="fnRcs100DelImg(imgIdx-1)">{{fnSubString(rowData.rcs100ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
+											</li>
+											<li v-else>
+												<a></a>
+											</li>
+										</ul>
+									</div>
 								</div>
-								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
-							</div>
-						</li>
-						<li class="slide cardBox" v-show="cTallTab === 4">
-				            <div v-for="imgIdx in rcs104ImgLimitSize" :key="imgIdx">  
-				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs104ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs104ImgInfoList[imgIdx-1].imgUrl+');'">  
-				            		</div>
-				            		<div v-else>
-				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
-				            		</div>
-				            </div>
-<!--						
-							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs104ImgInfoList[0])" class="phoneText2 mt10 text-center">
-				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
-				            </div>
-				            <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs104ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
-				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
-				            </div>
-				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs104ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
-				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs104ImgInfoList[0].imgUrl+');'">
-				            </div>
--->				            
-							<div class="relative">
-								<div class="scroll-y6" style="min-height:140px">
-									<p class="color000 font-size13">{{rowData.rcs104Title}}</p>
-									<pre class="color3 mt5">{{rowData.rcs104Content}}</pre>
+								<div class="of_h consolMarginTop">
+									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('CTALL_TAB1')" class="btnStyle1 backBlack">추가 +</a></div>
+									<div class="float-left" style="width:57%">
+										<table class="table_skin1 mt0" style="width:100%" v-if="button100Flag">
+											<colgroup>
+												<col style="width:22%">
+												<col style="width:20%">
+												<col>
+												<col style="width:15%">
+											</colgroup>
+											<thead>
+												<tr>
+													<th class="text-center">타입</th>
+													<th class="text-center">버튼이름</th>
+													<th class="text-center">버튼링크</th>
+													<th class="text-center end">구분</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="(buttonInfo, index) in rowData.rcs100Buttons" v-bind:key="index">
+													<td class="text-center">
+														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
+															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
+														</select>
+													</td>
+													<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
+														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
+														<div class="consolMarginTop of_h">
+															<span class="float-left mt5" style="width:20%">시작일</span>
+															<div class="float-right" style="width:80%">
+																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+															</div>
+														</div>
+														<div class="consolMarginTop of_h">
+															<span class="float-left mt5" style="width:20%">종료일</span>
+															<div class="float-right" style="width:80%">
+																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+															</div>
+														</div>
+													</td>
+													<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
+													<td class="text-center end">
+														<a @click="addRowRcsButton('CTALL_TAB1')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
+														<a @click="removeRowRcsButton('CTALL_TAB1', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
 								</div>
-								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
 							</div>
-						</li>
-						<li class="slide cardBox" v-show="cTallTab === 5">
-				            <div v-for="imgIdx in rcs105ImgLimitSize" :key="imgIdx">  
-				            		<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs105ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-					                  :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs105ImgInfoList[imgIdx-1].imgUrl+');'">  
-				            		</div>
-				            		<div v-else>
-				            			<img src="@/assets/images/common/cardThumImg.png" alt="카드 썸네일">
-				            		</div>
-				            </div>
-<!--						
-							<div v-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs105ImgInfoList[0])" class="phoneText2 mt10 text-center">
-				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
-				            </div>
-				            <div v-else-if="rowData.msgType == 'IMAGE' && isEmpty(rowData.rcs105ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center">
-				                <img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
-				            </div>
-				            <div v-else-if="rowData.msgType == 'IMAGE' && !isEmpty(rowData.rcs105ImgInfoList[0].imgUrl)" class="phoneText2 mt10 text-center"
-				                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs105ImgInfoList[0].imgUrl+');'">
-				            </div>
--->				            
-							<div class="relative">
-								<div class="scroll-y6" style="min-height:140px">
-									<p class="color000 font-size13">{{rowData.rcs105Title}}</p>
-									<pre class="color3 mt5">{{rowData.rcs105Content}}</pre>
+							<!--  //tab1 -->
+
+							<!--  tab2 -->
+							<div role="tabpanel" class="tab-pane" id="card102">
+								<div class="of_h consolMarginTop">
+									<div class="float-left" style="width:13%"><h4>제목</h4></div>
+									<div class="float-left" style="width:57%">
+										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs1Title">
+									</div>
 								</div>
-								<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcs10HowToDenyReceipt}}</p>
+								<div class="of_h">
+									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+									<div class="float-left" style="width:57%">
+										<textarea class="textareaStyle height190" v-model="rowData.rcs1Content" :placeholder="rcsPlaceHoder" id="rcsCarouselTab2" @keyup="fnTextLength('내용', '#rcsCarouselTab2', '#rcsCarouselTab2TextLength', '1300')"></textarea>
+										<strong class="letter" id="rcsCarouselTab2TextLength">(00 / 1300)</strong>
+									</div>
+								</div>
+								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
+									<div class="float-left" style="width:13%"><h4>이미지</h4></div>
+									<div class="float-left" style="width:57%">
+										<div class="float-left" style="width:25%">
+											<a @click="fnRcs101OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
+										</div>
+										<ul v-for="imgIdx in rcs101ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
+											<li v-if="rowData.rcs101ImgInfoList.length > imgIdx -1">
+												<a @click="fnRcs101DelImg(imgIdx-1)">{{fnSubString(rowData.rcs101ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
+											</li>
+											<li v-else>
+												<a></a>
+											</li>
+										</ul>
+									</div>
+								</div>
+								<div class="of_h consolMarginTop">
+									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('CTALL_TAB2')" class="btnStyle1 backBlack">추가 +</a></div>
+									<div class="float-left" style="width:57%">
+										<table class="table_skin1 mt0" style="width:100%" v-if="button101Flag">
+											<colgroup>
+												<col style="width:22%">
+												<col style="width:20%">
+												<col>
+												<col style="width:15%">
+											</colgroup>
+											<thead>
+												<tr>
+													<th class="text-center">타입</th>
+													<th class="text-center">버튼이름</th>
+													<th class="text-center">버튼링크</th>
+													<th class="text-center end">구분</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="(buttonInfo, index) in rowData.rcs101Buttons" v-bind:key="index">
+													<td class="text-center">
+														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
+															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
+														</select>
+													</td>
+													<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
+														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
+														<div class="consolMarginTop of_h">
+															<span class="float-left mt5" style="width:20%">시작일</span>
+															<div class="float-right" style="width:80%">
+																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+															</div>
+														</div>
+														<div class="consolMarginTop of_h">
+															<span class="float-left mt5" style="width:20%">종료일</span>
+															<div class="float-right" style="width:80%">
+																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+															</div>
+														</div>
+													</td>
+													<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
+													<td class="text-center end">
+														<a @click="addRowRcsButton('CTALL_TAB2')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
+														<a @click="removeRowRcsButton('CTALL_TAB2', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
 							</div>
-						</li>						
-					</ul>
-				</div>              
-            </div>
-            <!-- //phoneWrap -->
-          </div>
-          <div class="float-left consoleCon" style="width:72%">
-            <div class="of_h">
-              <div class="float-left" style="width:13%"><h4>카드개수</h4></div>
-              <div class="float-left" style="width:57%">
-                <select class="selectStyle2" style="width:70px" v-model="rcs10CardCount">
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                </select>
-              </div>
-            </div>
+							<!--  //tab2 -->
 
-            <div class="of_h">
-              <div class="float-right" style="width:87%">
-                <ul class="tab_s6" role="tablist">
-                  <li role="presentation" class="active"><a href="#card101" aria-controls="card101" role="tab" data-toggle="tab" v-on:click="cTallTab=0">카드 1</a></li>
-                  <li role="presentation"><a href="#card102" aria-controls="card102" role="tab" data-toggle="tab" v-on:click="cTallTab=1">카드 2</a></li>
-                  <li role="presentation"><a href="#card103" aria-controls="card103" role="tab" data-toggle="tab" v-on:click="cTallTab=2">카드 3</a></li>
-                  <li role="presentation" v-if="rcs10CardCount == '4' || rcs10CardCount == '5' || rcs10CardCount == '6' "><a href="#card104" aria-controls="card104" role="tab" data-toggle="tab" v-on:click="cTallTab=3">카드 4</a></li>
-                  <li role="presentation" v-if="rcs10CardCount == '5' || rcs10CardCount == '6' "><a href="#card105" aria-controls="card105" role="tab" data-toggle="tab" v-on:click="cTallTab=4">카드 5</a></li>
-                  <li role="presentation" v-if="rcs10CardCount == '6'"><a href="#card106" aria-controls="card106" role="tab" data-toggle="tab" v-on:click="cTallTab=5">카드 6</a></li>
-                </ul>
-              </div>
-            </div>
+							<!--  tab3 -->
+							<div role="tabpanel" class="tab-pane" id="card103">
+								<div class="of_h consolMarginTop">
+									<div class="float-left" style="width:13%"><h4>제목</h4></div>
+									<div class="float-left" style="width:57%">
+										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs2Title">
+									</div>
+								</div>
+								<div class="of_h">
+									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+									<div class="float-left" style="width:57%">
+										<textarea class="textareaStyle height190" v-model="rowData.rcs2Content" :placeholder="rcsPlaceHoder" id="rcsCarouselTab3" @keyup="fnTextLength('내용', '#rcsCarouselTab3', '#rcsCarouselTab3TextLength', '1300')"></textarea>
+										<strong class="letter" id="rcsCarouselTab3TextLength">(00 / 1300)</strong>
+									</div>
+								</div>
+								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
+									<div class="float-left" style="width:13%"><h4>이미지</h4></div>
+									<div class="float-left" style="width:57%">
+										<div class="float-left" style="width:25%">
+											<a @click="fnRcs102OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
+										</div>
+										<ul v-for="imgIdx in rcs102ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
+											<li v-if="rowData.rcs102ImgInfoList.length > imgIdx -1">
+												<a @click="fnRcs102DelImg(imgIdx-1)">{{fnSubString(rowData.rcs102ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
+											</li>
+											<li v-else>
+												<a></a>
+											</li>
+										</ul>
+									</div>
+								</div>
+								<div class="of_h consolMarginTop">
+									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('CTALL_TAB3')" class="btnStyle1 backBlack">추가 +</a></div>
+									<div class="float-left" style="width:57%">
+										<table class="table_skin1 mt0" style="width:100%" v-if="button102Flag">
+											<colgroup>
+												<col style="width:22%">
+												<col style="width:20%">
+												<col>
+												<col style="width:15%">
+											</colgroup>
+											<thead>
+												<tr>
+													<th class="text-center">타입</th>
+													<th class="text-center">버튼이름</th>
+													<th class="text-center">버튼링크</th>
+													<th class="text-center end">구분</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="(buttonInfo, index) in rowData.rcs102Buttons" v-bind:key="index">
+													<td class="text-center">
+														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
+															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
+														</select>
+													</td>
+													<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
+														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
+														<div class="consolMarginTop of_h">
+															<span class="float-left mt5" style="width:20%">시작일</span>
+															<div class="float-right" style="width:80%">
+																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+															</div>
+														</div>
+														<div class="consolMarginTop of_h">
+															<span class="float-left mt5" style="width:20%">종료일</span>
+															<div class="float-right" style="width:80%">
+																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+															</div>
+														</div>
+													</td>
+													<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
+													<td class="text-center end">
+														<a @click="addRowRcsButton('CTALL_TAB3')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
+														<a @click="removeRowRcsButton('CTALL_TAB3', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!--  //tab3 -->
 
-            <div class="tab-content">
-              <!--  tab1 -->
-              <div role="tabpanel" class="tab-pane active" id="card101">
-                <div class="of_h consolMarginTop">
-                  <div class="float-left" style="width:13%"><h4>제목</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs100Title" id="rcs100TitleId" @keyup="fnTextLength('제목', '#rcs100TitleId', '', '30')">
-                  </div>
-                </div>
+							<!--  tab4 -->
+							<div role="tabpanel" class="tab-pane" id="card104">
+								<div class="of_h consolMarginTop">
+									<div class="float-left" style="width:13%"><h4>제목</h4></div>
+									<div class="float-left" style="width:57%">
+										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs3Title">
+									</div>
+								</div>
+								<div class="of_h">
+									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+									<div class="float-left" style="width:57%">
+										<textarea class="textareaStyle height190" v-model="rowData.rcs3Content" :placeholder="rcsPlaceHoder" id="rcsCarouselTab4" @keyup="fnTextLength('내용', '#rcsCarouselTab4', '#rcsCarouselTab4TextLength', '1300')"></textarea>
+										<strong class="letter" id="rcsCarouselTab4TextLength">(00 / 1300)</strong>
+									</div>
+								</div>
+								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
+									<div class="float-left" style="width:13%"><h4>이미지</h4></div>
+									<div class="float-left" style="width:57%">
+										<div class="float-left" style="width:25%">
+											<a @click="fnRcs103OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
+										</div>
+										<ul v-for="imgIdx in rcs103ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
+											<li v-if="rowData.rcs103ImgInfoList.length > imgIdx -1">
+												<a @click="fnRcs103DelImg(imgIdx-1)">{{fnSubString(rowData.rcs103ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
+											</li>
+											<li v-else>
+												<a></a>
+											</li>
+										</ul>
+									</div>
+								</div>
+								<div class="of_h consolMarginTop">
+									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('CTALL_TAB4')" class="btnStyle1 backBlack">추가 +</a></div>
+									<div class="float-left" style="width:57%">
+										<table class="table_skin1 mt0" style="width:100%" v-if="button103Flag">
+											<colgroup>
+												<col style="width:22%">
+												<col style="width:20%">
+												<col>
+												<col style="width:15%">
+											</colgroup>
+											<thead>
+												<tr>
+													<th class="text-center">타입</th>
+													<th class="text-center">버튼이름</th>
+													<th class="text-center">버튼링크</th>
+													<th class="text-center end">구분</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="(buttonInfo, index) in rowData.rcs103Buttons" v-bind:key="index">
+													<td class="text-center">
+														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
+															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
+														</select>
+													</td>
+													<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
+														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
+														<div class="consolMarginTop of_h">
+															<span class="float-left mt5" style="width:20%">시작일</span>
+															<div class="float-right" style="width:80%">
+																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+															</div>
+														</div>
+														<div class="consolMarginTop of_h">
+															<span class="float-left mt5" style="width:20%">종료일</span>
+															<div class="float-right" style="width:80%">
+																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+															</div>
+														</div>
+													</td>
+													<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
+													<td class="text-center end">
+														<a @click="addRowRcsButton('CTALL_TAB4')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
+														<a @click="removeRowRcsButton('CTALL_TAB4', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!--  //tab4 -->
 
-                <div class="of_h">
-                  <div class="float-left" style="width:13%"><h4>내용*</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs100Content" :placeholder="rcsPlaceHoder" id="rcs100ContentId" @keyup="fnTextLength('내용', '#rcs100ContentId', '#rcs100TextLength', '1300')"></textarea>
-                <strong class="letter" id="rcs100TextLength">(00 / 1300)</strong>
-                  </div>
-                </div>
+							<!--  tab5 -->
+							<div role="tabpanel" class="tab-pane" id="card105">
+								<div class="of_h consolMarginTop">
+									<div class="float-left" style="width:13%"><h4>제목</h4></div>
+									<div class="float-left" style="width:57%">
+										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs4Title">
+									</div>
+								</div>
+								<div class="of_h">
+									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+									<div class="float-left" style="width:57%">
+										<textarea class="textareaStyle height190" v-model="rowData.rcs4Content" :placeholder="rcsPlaceHoder" id="rcsCarouselTab5" @keyup="fnTextLength('내용', '#rcsCarouselTab5', '#rcsCarouselTab5TextLength', '1300')"></textarea>
+										<strong class="letter" id="rcsCarouselTab5TextLength">(00 / 1300)</strong>
+									</div>
+								</div>
+								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
+									<div class="float-left" style="width:13%"><h4>이미지</h4></div>
+									<div class="float-left" style="width:57%">
+										<div class="float-left" style="width:25%">
+											<a @click="fnRcs104OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
+										</div>
+										<ul v-for="imgIdx in rcs104ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
+											<li v-if="rowData.rcs104ImgInfoList.length > imgIdx -1">
+												<a @click="fnRcs104DelImg(imgIdx-1)">{{fnSubString(rowData.rcs104ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
+											</li>
+											<li v-else>
+												<a></a>
+											</li>
+										</ul>
+									</div>
+								</div>
+								<div class="of_h consolMarginTop">
+									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('CTALL_TAB5')" class="btnStyle1 backBlack">추가 +</a></div>
+									<div class="float-left" style="width:57%">
+										<table class="table_skin1 mt0" style="width:100%" v-if="button104Flag">
+											<colgroup>
+												<col style="width:22%">
+												<col style="width:20%">
+												<col>
+												<col style="width:15%">
+											</colgroup>
+											<thead>
+												<tr>
+													<th class="text-center">타입</th>
+													<th class="text-center">버튼이름</th>
+													<th class="text-center">버튼링크</th>
+													<th class="text-center end">구분</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="(buttonInfo, index) in rowData.rcs104Buttons" v-bind:key="index">
+													<td class="text-center">
+														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
+															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
+														</select>
+													</td>
+													<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
+														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
+														<div class="consolMarginTop of_h">
+															<span class="float-left mt5" style="width:20%">시작일</span>
+															<div class="float-right" style="width:80%">
+																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+															</div>
+														</div>
+														<div class="consolMarginTop of_h">
+															<span class="float-left mt5" style="width:20%">종료일</span>
+															<div class="float-right" style="width:80%">
+																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+															</div>
+														</div>
+													</td>
+													<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
+													<td class="text-center end">
+														<a @click="addRowRcsButton('CTALL_TAB5')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
+														<a @click="removeRowRcsButton('CTALL_TAB5', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!--  //tab5 -->
 
-                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-                  <div class="float-left" style="width:13%"><h4>이미지</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <div class="float-left" style="width:25%">
-                      <a @click="fnRcs100OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
-                    </div>
-                    <ul v-for="imgIdx in rcs100ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
-                      <li v-if="rowData.rcs100ImgInfoList.length > imgIdx -1">
-                        <a @click="fnRcs100DelImg(imgIdx-1)">{{fnSubString(rowData.rcs100ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
-                      </li>
-                      <li v-else>
-                        <a></a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+							<!--  tab6 -->
+							<div role="tabpanel" class="tab-pane" id="card106">
+								<div class="of_h consolMarginTop">
+									<div class="float-left" style="width:13%"><h4>제목</h4></div>
+									<div class="float-left" style="width:57%">
+										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs5Title">
+									</div>
+								</div>
+								<div class="of_h">
+									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+									<div class="float-left" style="width:57%">
+										<textarea class="textareaStyle height190" v-model="rowData.rcs5Content" :placeholder="rcsPlaceHoder" id="rcsCarouselTab6" @keyup="fnTextLength('내용', '#rcsCarouselTab6', '#rcsCarouselTab6TextLength', '1300')"></textarea>
+										<strong class="letter" id="rcsCarouselTab6TextLength">(00 / 1300)</strong>
+									</div>
+								</div>
+								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
+									<div class="float-left" style="width:13%"><h4>이미지</h4></div>
+									<div class="float-left" style="width:57%">
+										<div class="float-left" style="width:25%">
+											<a @click="fnRcs105OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
+										</div>
+										<ul v-for="imgIdx in rcs105ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
+											<li v-if="rowData.rcs105ImgInfoList.length > imgIdx -1">
+												<a @click="fnRcs105DelImg(imgIdx-1)">{{fnSubString(rowData.rcs105ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
+											</li>
+											<li v-else>
+												<a></a>
+											</li>
+										</ul>
+									</div>
+								</div>
+								<div class="of_h consolMarginTop">
+									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('CTALL_TAB6')" class="btnStyle1 backBlack">추가 +</a></div>
+									<div class="float-left" style="width:57%">
+										<table class="table_skin1 mt0" style="width:100%" v-if="button105Flag">
+											<colgroup>
+												<col style="width:22%">
+												<col style="width:20%">
+												<col>
+												<col style="width:15%">
+											</colgroup>
+											<thead>
+												<tr>
+													<th class="text-center">타입</th>
+													<th class="text-center">버튼이름</th>
+													<th class="text-center">버튼링크</th>
+													<th class="text-center end">구분</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="(buttonInfo, index) in rowData.rcs105Buttons" v-bind:key="index">
+													<td class="text-center">
+														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
+															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
+														</select>
+													</td>
+													<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
+														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
+														<div class="consolMarginTop of_h">
+															<span class="float-left mt5" style="width:20%">시작일</span>
+															<div class="float-right" style="width:80%">
+																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+															</div>
+														</div>
+														<div class="consolMarginTop of_h">
+															<span class="float-left mt5" style="width:20%">종료일</span>
+															<div class="float-right" style="width:80%">
+																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+															</div>
+														</div>
+													</td>
+													<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
+													<td class="text-center end">
+														<a @click="addRowRcsButton('CTALL_TAB6')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
+														<a @click="removeRowRcsButton('CTALL_TAB6', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!--  //tab6 -->
 
-                <div class="of_h consolMarginTop">
-                  <div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRow100" class="btnStyle1 backBlack">추가 +</a></div>
-                  <div class="float-left" style="width:57%">
-                    <table class="table_skin1 mt0" style="width:100%" v-if="button100Flag">
-                      <colgroup>
-                        <col style="width:22%">
-                        <col style="width:20%">
-                        <col>
-                        <col style="width:15%">
-                      </colgroup>
-                      <thead>
-                        <tr>
-                        <th class="text-center">타입</th>
-                        <th class="text-center">버튼이름</th>
-                        <th class="text-center">버튼링크</th>
-                        <th class="text-center end">구분</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(row,index) in rowData.rcs100Buttons" v-bind:key="index">
-                          <td class="text-center">
-                            <select name="userConsole04060202_1" class="selectStyle2" style="width:100%" v-model="row.buttonType">
-                              <option value="U">URL 링크</option>
-                              <option value="C">복사하기</option>
-                              <option value="T">전화걸기</option>
-                              <option value="S">일정추가</option>
-                              <option value="M">지도맵</option>
-                            </select>
-                          </td>
-                          <td class="text-left"><input type="text" class="inputStyle" v-model="row.buttonName"></td>
-                          <td class="text-center">
-                            <input v-if="row.buttonType == 'U'" type="text" class="inputStyle" placeholder="URL입력(http:// 또는 https:// 필수입력)" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'C'" type="text" class="inputStyle" placeholder="복사할 값 입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs100ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs100ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
-                            <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" readOnly>
-                          </td>
-                          <td class="text-center end"><a @click="addRow100" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow100(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <!--  //tab1 -->
-
-              <!--  tab2 -->
-              <div role="tabpanel" class="tab-pane" id="card102">
-                <div class="of_h consolMarginTop">
-                  <div class="float-left" style="width:13%"><h4>제목</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <input type="text" class="inputStyle" placeholder="최대 30자 입력 가능합니다." v-model="rowData.rcs101Title" id="rcs101TitleId" @keyup="fnTextLength('제목', '#rcs101TitleId', '', '30')">
-                  </div>
-                </div>
-
-                <div class="of_h">
-                  <div class="float-left" style="width:13%"><h4>내용*</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs101Content" :placeholder="rcsPlaceHoder" id="rcs101ContentId" @keyup="fnTextLength('내용', '#rcs101ContentId', '#rcs101TextLength', '1300')"></textarea>
-                <strong class="letter" id="rcs101TextLength">(00 / 1300)</strong>
-                  </div>
-                </div>
-
-                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-                  <div class="float-left" style="width:13%"><h4>이미지</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <div class="float-left" style="width:25%">
-                      <a @click="fnRcs101OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
-                    </div>
-                    <ul v-for="imgIdx in rcs101ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
-                      <li v-if="rowData.rcs101ImgInfoList.length > imgIdx -1">
-                        <a @click="fnRcs101DelImg(imgIdx-1)">{{fnSubString(rowData.rcs101ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
-                      </li>
-                      <li v-else>
-                        <a></a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div class="of_h consolMarginTop">
-                  <div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRow101" class="btnStyle1 backBlack">추가 +</a></div>
-                  <div class="float-left" style="width:57%">
-                    <table class="table_skin1 mt0" style="width:100%" v-if="button101Flag">
-                      <colgroup>
-                        <col style="width:22%">
-                        <col style="width:20%">
-                        <col>
-                        <col style="width:15%">
-                      </colgroup>
-                      <thead>
-                        <tr>
-                        <th class="text-center">타입</th>
-                        <th class="text-center">버튼이름</th>
-                        <th class="text-center">버튼링크</th>
-                        <th class="text-center end">구분</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(row,index) in rowData.rcs101Buttons" v-bind:key="index">
-                          <td class="text-center">
-                            <select name="userConsole04060202_1" class="selectStyle2" style="width:100%" v-model="row.buttonType">
-                              <option value="U">URL 링크</option>
-                              <option value="C">복사하기</option>
-                              <option value="T">전화걸기</option>
-                              <option value="S">일정추가</option>
-                              <option value="M">지도맵</option>
-                            </select>
-                          </td>
-                          <td class="text-left"><input type="text" class="inputStyle" v-model="row.buttonName"></td>
-                          <td class="text-center">
-                            <input v-if="row.buttonType == 'U'" type="text" class="inputStyle" placeholder="URL입력(http:// 또는 https:// 필수입력)" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'C'" type="text" class="inputStyle" placeholder="복사할 값 입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs101ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs101ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
-                            <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" readOnly>
-                          </td>
-                          <td class="text-center end"><a @click="addRow101" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow101(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <!--  //tab2 -->
-
-              <!--  tab3 -->
-              <div role="tabpanel" class="tab-pane" id="card103">
-                <div class="of_h consolMarginTop">
-                  <div class="float-left" style="width:13%"><h4>제목</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs102Title" id="rcs102TitleId" @keyup="fnTextLength('제목', '#rcs102TitleId', '', '30')">
-                  </div>
-                </div>
-
-                <div class="of_h">
-                  <div class="float-left" style="width:13%"><h4>내용*</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs102Content" :placeholder="rcsPlaceHoder" id="rcs102ContentId" @keyup="fnTextLength('내용', '#rcs102ContentId', '#rcs102TextLength', '1300')"></textarea>
-                <strong class="letter" id="rcs102TextLength">(00 / 1300)</strong>
-                  </div>
-                </div>
-
-                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-                  <div class="float-left" style="width:13%"><h4>이미지</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <div class="float-left" style="width:25%">
-                      <a @click="fnRcs102OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
-                    </div>
-                    <ul v-for="imgIdx in rcs102ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
-                      <li v-if="rowData.rcs102ImgInfoList.length > imgIdx -1">
-                        <a @click="fnRcs102DelImg(imgIdx-1)">{{fnSubString(rowData.rcs102ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
-                      </li>
-                      <li v-else>
-                        <a></a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div class="of_h consolMarginTop">
-                  <div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRow102" class="btnStyle1 backBlack">추가 +</a></div>
-                  <div class="float-left" style="width:57%">
-                    <table class="table_skin1 mt0" style="width:100%" v-if="button102Flag">
-                      <colgroup>
-                        <col style="width:22%">
-                        <col style="width:20%">
-                        <col>
-                        <col style="width:15%">
-                      </colgroup>
-                      <thead>
-                        <tr>
-                        <th class="text-center">타입</th>
-                        <th class="text-center">버튼이름</th>
-                        <th class="text-center">버튼링크</th>
-                        <th class="text-center end">구분</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(row,index) in rowData.rcs102Buttons" v-bind:key="index">
-                          <td class="text-center">
-                            <select name="userConsole04060202_1" class="selectStyle2" style="width:100%" v-model="row.buttonType">
-                              <option value="U">URL 링크</option>
-                              <option value="C">복사하기</option>
-                              <option value="T">전화걸기</option>
-                              <option value="S">일정추가</option>
-                              <option value="M">지도맵</option>
-                            </select>
-                          </td>
-                          <td class="text-left"><input type="text" class="inputStyle" v-model="row.buttonName"></td>
-                          <td class="text-center">
-                            <input v-if="row.buttonType == 'U'" type="text" class="inputStyle" placeholder="URL입력(http:// 또는 https:// 필수입력)" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'C'" type="text" class="inputStyle" placeholder="복사할 값 입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs102ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs102ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
-                            <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" readOnly>
-                          </td>
-                          <td class="text-center end"><a @click="addRow102" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow102(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <!--  //tab3 -->
-
-              <!--  tab4 -->
-              <div role="tabpanel" class="tab-pane" id="card104">
-                <div class="of_h consolMarginTop">
-                  <div class="float-left" style="width:13%"><h4>제목</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs103Title" id="rcs103TitleId" @keyup="fnTextLength('제목', '#rcs103TitleId', '', '30')">
-                  </div>
-                </div>
-
-                <div class="of_h">
-                  <div class="float-left" style="width:13%"><h4>내용*</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs103Content" :placeholder="rcsPlaceHoder" id="rcs103ContentId" @keyup="fnTextLength('내용', '#rcs103ContentId', '#rcs103TextLength', '1300')"></textarea>
-                <strong class="letter" id="rcs103TextLength">(00 / 1300)</strong>
-                  </div>
-                </div>
-
-                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-                  <div class="float-left" style="width:13%"><h4>이미지</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <div class="float-left" style="width:25%">
-                      <a @click="fnRcs103OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
-                    </div>
-                    <ul v-for="imgIdx in rcs103ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
-                      <li v-if="rowData.rcs103ImgInfoList.length > imgIdx -1">
-                        <a @click="fnRcs103DelImg(imgIdx-1)">{{fnSubString(rowData.rcs103ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
-                      </li>
-                      <li v-else>
-                        <a></a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div class="of_h consolMarginTop">
-                  <div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRow103" class="btnStyle1 backBlack">추가 +</a></div>
-                  <div class="float-left" style="width:57%">
-                    <table class="table_skin1 mt0" style="width:100%" v-if="button103Flag">
-                      <colgroup>
-                        <col style="width:22%">
-                        <col style="width:20%">
-                        <col>
-                        <col style="width:15%">
-                      </colgroup>
-                      <thead>
-                        <tr>
-                        <th class="text-center">타입</th>
-                        <th class="text-center">버튼이름</th>
-                        <th class="text-center">버튼링크</th>
-                        <th class="text-center end">구분</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(row,index) in rowData.rcs103Buttons" v-bind:key="index">
-                          <td class="text-center">
-                            <select name="userConsole04060202_1" class="selectStyle2" style="width:100%" v-model="row.buttonType">
-                              <option value="U">URL 링크</option>
-                              <option value="C">복사하기</option>
-                              <option value="T">전화걸기</option>
-                              <option value="S">일정추가</option>
-                              <option value="M">지도맵</option>
-                            </select>
-                          </td>
-                          <td class="text-left"><input type="text" class="inputStyle" v-model="row.buttonName"></td>
-                          <td class="text-center">
-                            <input v-if="row.buttonType == 'U'" type="text" class="inputStyle" placeholder="URL입력(http:// 또는 https:// 필수입력)" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'C'" type="text" class="inputStyle" placeholder="복사할 값 입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs103ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs103ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
-                            <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" readOnly>
-                          </td>
-                          <td class="text-center end"><a @click="addRow103" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow103(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <!--  //tab4 -->
-
-              <!--  tab5 -->
-              <div role="tabpanel" class="tab-pane" id="card105">
-                <div class="of_h consolMarginTop">
-                  <div class="float-left" style="width:13%"><h4>제목</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs104Title" id="rcs104TitleId" @keyup="fnTextLength('제목', '#rcs104TitleId', '', '30')">
-                  </div>
-                </div>
-
-                <div class="of_h">
-                  <div class="float-left" style="width:13%"><h4>내용*</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs104Content" :placeholder="rcsPlaceHoder" id="rcs104ContentId" @keyup="fnTextLength('내용', '#rcs104ContentId', '#rcs104TextLength', '1300')"></textarea>
-                <strong class="letter" id="rcs104TextLength">(00 / 1300)</strong>
-                  </div>
-                </div>
-
-                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-                  <div class="float-left" style="width:13%"><h4>이미지</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <div class="float-left" style="width:25%">
-                      <a @click="fnRcs104OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
-                    </div>
-                    <ul v-for="imgIdx in rcs104ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
-                      <li v-if="rowData.rcs104ImgInfoList.length > imgIdx -1">
-                         <a @click="fnRcs104DelImg(imgIdx-1)">{{fnSubString(rowData.rcs104ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
-                      </li>
-                      <li v-else>
-                        <a></a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div class="of_h consolMarginTop">
-                  <div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRow104" class="btnStyle1 backBlack">추가 +</a></div>
-                  <div class="float-left" style="width:57%">
-                    <table class="table_skin1 mt0" style="width:100%" v-if="button104Flag">
-                      <colgroup>
-                        <col style="width:22%">
-                        <col style="width:20%">
-                        <col>
-                        <col style="width:15%">
-                      </colgroup>
-                      <thead>
-                        <tr>
-                        <th class="text-center">타입</th>
-                        <th class="text-center">버튼이름</th>
-                        <th class="text-center">버튼링크</th>
-                        <th class="text-center end">구분</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(row,index) in rowData.rcs104Buttons" v-bind:key="index">
-                          <td class="text-center">
-                            <select name="userConsole04060202_1" class="selectStyle2" style="width:100%" v-model="row.buttonType">
-                              <option value="U">URL 링크</option>
-                              <option value="C">복사하기</option>
-                              <option value="T">전화걸기</option>
-                              <option value="S">일정추가</option>
-                              <option value="M">지도맵</option>
-                            </select>
-                          </td>
-                          <td class="text-left"><input type="text" class="inputStyle" v-model="row.buttonName"></td>
-                          <td class="text-center">
-                            <input v-if="row.buttonType == 'U'" type="text" class="inputStyle" placeholder="URL입력(http:// 또는 https:// 필수입력)" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'C'" type="text" class="inputStyle" placeholder="복사할 값 입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs104ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs104ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
-                            <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" readOnly>
-                          </td>
-                          <td class="text-center end"><a @click="addRow104" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow104(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <!--  //tab5 -->
-
-              <!--  tab6 -->
-              <div role="tabpanel" class="tab-pane" id="card106">
-                <div class="of_h consolMarginTop">
-                  <div class="float-left" style="width:13%"><h4>제목</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs105Title" id="rcs105TitleId" @keyup="fnTextLength('제목', '#rcs105TitleId', '', '30')">
-                  </div>
-                </div>
-
-                <div class="of_h">
-                  <div class="float-left" style="width:13%"><h4>내용*</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <textarea class="textareaStyle height190" v-model="rowData.rcs105Content" :placeholder="rcsPlaceHoder" id="rcs105ContentId" @keyup="fnTextLength('내용', '#rcs105ContentId', '#rcs105TextLength', '1300')"></textarea>
-                <strong class="letter" id="rcs105TextLength">(00 / 1300)</strong>
-                  </div>
-                </div>
-
-                <div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-                  <div class="float-left" style="width:13%"><h4>이미지</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <div class="float-left" style="width:25%">
-                      <a @click="fnRcs105OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
-                    </div>
-                    <ul v-for="imgIdx in rcs105ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
-                      <li v-if="rowData.rcs105ImgInfoList.length > imgIdx -1">
-                        <a @click="fnRcs105DelImg(imgIdx-1)">{{fnSubString(rowData.rcs105ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
-                      </li>
-                      <li v-else>
-                        <a></a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div class="of_h consolMarginTop">
-                  <div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRow105" class="btnStyle1 backBlack">추가 +</a></div>
-                  <div class="float-left" style="width:57%">
-                    <table class="table_skin1 mt0" style="width:100%" v-if="button105Flag">
-                      <colgroup>
-                        <col style="width:22%">
-                        <col style="width:20%">
-                        <col>
-                        <col style="width:15%">
-                      </colgroup>
-                      <thead>
-                        <tr>
-                        <th class="text-center">타입</th>
-                        <th class="text-center">버튼이름</th>
-                        <th class="text-center">버튼링크</th>
-                        <th class="text-center end">구분</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(row,index) in rowData.rcs105Buttons" v-bind:key="index">
-                          <td class="text-center">
-                            <select name="userConsole04060202_1" class="selectStyle2" style="width:100%" v-model="row.buttonType">
-                              <option value="U">URL 링크</option>
-                              <option value="C">복사하기</option>
-                              <option value="T">전화걸기</option>
-                              <option value="S">일정추가</option>
-                              <option value="M">지도맵</option>
-                            </select>
-                          </td>
-                          <td class="text-left"><input type="text" class="inputStyle" v-model="row.buttonName"></td>
-                          <td class="text-center">
-                            <input v-if="row.buttonType == 'U'" type="text" class="inputStyle" placeholder="URL입력(http:// 또는 https:// 필수입력)" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'C'" type="text" class="inputStyle" placeholder="복사할 값 입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'T'" type="text" class="inputStyle" placeholder="전화번호입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="제목입력" v-model="row.buttonLink">
-                            <input v-if="row.buttonType == 'S'" type="text" class="inputStyle" placeholder="내용입력" v-model="row.buttonLink1">
-                            <p v-if="row.buttonType == 'S'">시작일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs105ButtonSD" :calendarId="row.startDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.startDate" :params="{idx:index}"></Calendar>
-		                        <p v-if="row.buttonType == 'S'">종료일</p><Calendar v-if="row.buttonType == 'S'" @update-date="fnRcs105ButtonED" :calendarId="row.endDateId" classProps="datepicker inputStyle maxWidth200" :initDate="row.endDate"  :params="{idx:index}"></Calendar>
-
-                            <input v-if="row.buttonType == 'M'" type="text" class="inputStyle" placeholder="현재위치공유" readOnly>
-                          </td>
-                          <td class="text-center end"><a @click="addRow105" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRow105(index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <!--  //tab6 -->
-
-              <div v-if="rowData.msgKind == 'A'">
-                <div class="of_h consolMarginTop">
-                  <div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
-                  <div class="float-left" style="width:57%">
-                    <input type="text" class="inputStyle" name="rcs10HowToDenyReceipt" v-model="rowData.rcs10HowToDenyReceipt" placeholder="설정 > 푸시 알림 설정 변경">
-                    <!--<p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>-->
-                  </div>
-                </div>
-              </div>
-
-              <div class="of_h consolMarginTop">
-                    <div class="float-left" style="width:13%"><h5>발신번호 *</h5></div>
-                    <div class="float-left" style="width:57%">
-                      <select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
-                        <option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
-                      </select>
-                    </div>
-              </div>               
-            </div>
-
-
-          </div>
-        </div>	
-
+							<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">
+								<div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
+								<div class="float-left" style="width:57%">
+									<input type="text" class="inputStyle" v-model="rowData.rcsBlockNumber" placeholder="수신거부번호 설정">
+								</div>
+							</div>
+							<div class="of_h consolMarginTop">
+								<div class="float-left" style="width:13%"><h4>발신번호 *</h4></div>
+								<div class="float-left" style="width:57%">
+									<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
+										<option value="">선택해주세요.</option>
+										<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+									</select>
+								</div>
+							</div>         
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -4023,67 +4038,74 @@ export default {
 					}
 
 					if (this.rcsTemplateTable === 10) {  //CTALL
+						if (this.rowData.msgKind == 'A' && !this.rowData.rcsBlockNumber) { 
+							confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 무료수신거부 정보를 입력해주세요.');
+							return false;
+						}
+						if (!this.rowData.callback) { 
+							confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 템플릿 발신번호를 선택해주세요.');
+							return false;
+						}
 						if (this.rcs10CardCount >= 3) {
-							if (!this.rowData.rcs100Title) { 
-								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드1의 제목을 입력해주세요.');
+							if (!this.rowData.rcs0Title) { 
+								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드1의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcs100Content) { 
-								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드1의 내용을 입력해주세요.');
+							if (!this.rowData.rcs0Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드1의 내용을 입력해주세요.');
 								return false;
 							}
 							if (!this.rowData.callback) { 
-								confirm.fnAlert(this.detailTitle, 'RCS CTALL 발신번호를 선택해주세요.');
+								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 발신번호를 선택해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcs101Title) { 
-								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드2의 제목을 입력해주세요.');
+							if (!this.rowData.rcs1Title) { 
+								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드2의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcs101Content) { 
-								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드2의 내용을 입력해주세요.');
+							if (!this.rowData.rcs1Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드2의 내용을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcs102Title) { 
-								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드3의 제목을 입력해주세요.');
+							if (!this.rowData.rcs2Title) { 
+								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드3의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcs102Content) { 
-								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드3의 내용을 입력해주세요.');
+							if (!this.rowData.rcs2Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드3의 내용을 입력해주세요.');
 								return false;
 							}
 						}
 
 						if (this.rcs10CardCount >= 4) {
-							if (!this.rowData.rcs103Title) { 
-								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드4의 제목을 입력해주세요.');
+							if (!this.rowData.rcs3Title) { 
+								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드4의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcs103Content) { 
-								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드4의 내용을 입력해주세요.');
+							if (!this.rowData.rcs3Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드4의 내용을 입력해주세요.');
 								return false;
 							}
 						}
 
 						if (this.rcs10CardCount >= 5) {
-							if (!this.rowData.rcs104Title) { 
-								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드5의 제목을 입력해주세요.');
+							if (!this.rowData.rcs4Title) {
+								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드5의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcs104Content) { 
-								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드5의 내용을 입력해주세요.');
+							if (!this.rowData.rcs4Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드5의 내용을 입력해주세요.');
 								return false;
 							}
 						}
 
 						if (this.rcs10CardCount >= 6) {
-							if (!this.rowData.rcs105Title) { 
-								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드6의 제목을 입력해주세요.');
+							if (!this.rowData.rcs5Title) {
+								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드6의 제목을 입력해주세요.');
 								return false;
 							}
-	
-							if (!this.rowData.rcs105Content) { 
-								confirm.fnAlert(this.detailTitle, 'RCS CTALL 카드6의 내용을 입력해주세요.');
+							if (!this.rowData.rcs5Content) { 
+								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드6의 내용을 입력해주세요.');
 								return false;
 							}
 						}
@@ -4389,7 +4411,9 @@ export default {
 							this.rowData.rcs0Content 			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content);
 							this.rowData.rcsBlockNumber		= rtnData.rcsBlockNumber;		//수신거부번호
 							this.rowData.callback					= rtnData.rcsCallback;			//발신번호
-							this.rowData.rcsShortImgInfoList.push({'fileId':rtnData.rcs0Media, 'imgUrl':rtnData.rcs0MediaUrl});
+							if (rtnData.rcs0Media != '' && rtnData.rcs0MediaUrl != '') {
+								this.rowData.rcsShortImgInfoList.push({'fileId':rtnData.rcs0Media, 'imgUrl':rtnData.rcs0MediaUrl});
+							}
 
 							if (!this.isEmpty(rtnData.rcsButton0Data)) {
 								if (rtnData.rcsButton0Data.length > 0) {
@@ -4405,7 +4429,9 @@ export default {
 							this.rowData.rcs0Content 			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content);
 							this.rowData.rcsBlockNumber		= rtnData.rcsBlockNumber;		//수신거부번호
 							this.rowData.callback					= rtnData.rcsCallback;			//발신번호
-							this.rowData.rcsTallImgInfoList.push({'fileId':rtnData.rcs0Media, 'imgUrl':rtnData.rcs0MediaUrl});
+							if (rtnData.rcs0Media != '' && rtnData.rcs0MediaUrl != '') {
+								this.rowData.rcsTallImgInfoList.push({'fileId':rtnData.rcs0Media, 'imgUrl':rtnData.rcs0MediaUrl});
+							}
 
 							if (!this.isEmpty(rtnData.rcsButton0Data)) {
 								if (rtnData.rcsButton0Data.length > 0) {
@@ -4434,12 +4460,24 @@ export default {
 							this.rowData.rcs5Title					= this.$gfnCommonUtils.unescapeXss(rtnData.rcs5Title);
 							this.rowData.rcs5Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs5Content);
 
-							this.rowData.rcs90ImgInfoList.push({'fileId':rtnData.rcs0Media, 'imgUrl':rtnData.rcs0MediaUrl});
-							this.rowData.rcs91ImgInfoList.push({'fileId':rtnData.rcs1Media, 'imgUrl':rtnData.rcs1MediaUrl});
-							this.rowData.rcs92ImgInfoList.push({'fileId':rtnData.rcs2Media, 'imgUrl':rtnData.rcs2MediaUrl});
-							this.rowData.rcs93ImgInfoList.push({'fileId':rtnData.rcs3Media, 'imgUrl':rtnData.rcs3MediaUrl});
-							this.rowData.rcs94ImgInfoList.push({'fileId':rtnData.rcs4Media, 'imgUrl':rtnData.rcs4MediaUrl});
-							this.rowData.rcs95ImgInfoList.push({'fileId':rtnData.rcs5Media, 'imgUrl':rtnData.rcs5MediaUrl});
+							if (rtnData.rcs0Media != '' && rtnData.rcs0MediaUrl != '') {
+								this.rowData.rcs90ImgInfoList.push({'fileId':rtnData.rcs0Media, 'imgUrl':rtnData.rcs0MediaUrl});
+							}
+							if (rtnData.rcs1Media != '' && rtnData.rcs1MediaUrl != '') {
+								this.rowData.rcs91ImgInfoList.push({'fileId':rtnData.rcs1Media, 'imgUrl':rtnData.rcs1MediaUrl});
+							}
+							if (rtnData.rcs2Media != '' && rtnData.rcs2MediaUrl != '') {
+								this.rowData.rcs92ImgInfoList.push({'fileId':rtnData.rcs2Media, 'imgUrl':rtnData.rcs2MediaUrl});
+							}
+							if (rtnData.rcs3Media != '' && rtnData.rcs3MediaUrl != '') {
+								this.rowData.rcs93ImgInfoList.push({'fileId':rtnData.rcs3Media, 'imgUrl':rtnData.rcs3MediaUrl});
+							}
+							if (rtnData.rcs4Media != '' && rtnData.rcs4MediaUrl != '') {
+								this.rowData.rcs94ImgInfoList.push({'fileId':rtnData.rcs4Media, 'imgUrl':rtnData.rcs4MediaUrl});
+							}
+							if (rtnData.rcs5Media != '' && rtnData.rcs5MediaUrl != '') {
+								this.rowData.rcs95ImgInfoList.push({'fileId':rtnData.rcs5Media, 'imgUrl':rtnData.rcs5MediaUrl});
+							}
 
 							if (!this.isEmpty(rtnData.rcsButton0Data)) {
 								if (rtnData.rcsButton0Data.length > 0) {
@@ -4480,88 +4518,78 @@ export default {
 						}
 	
 						if (rtnData.rcsPrdType == 'CTALL') {
-							this.rcs10CardCount				= rtnData.rcsCardCount;
-							this.rowData.rcs10HowToDenyReceipt 		= rtnData.rcsFooter;   //무료수신거부번호
-							this.rowData.callback 				= rtnData.rcsCallback; //발신번호
+							this.rowData.brandNm				= rtnData.rcsBrandNm;
+							this.rcs10CardCount					= rtnData.rcsCardCount;
+							this.rowData.rcsBlockNumber		= rtnData.rcsBlockNumber;   //수신거부번호
+							this.rowData.callback					= rtnData.rcsCallback; //발신번호
 	
-							this.rowData.rcs100Title				= rtnData.rcsBodyTitle;
-							this.rowData.rcs100Content				= rtnData.rcsBodyMessage;
-							this.rowData.rcs101Title				= rtnData.rcs1BodyTitle;
-							this.rowData.rcs101Content				= rtnData.rcs1BodyDescription;
-							this.rowData.rcs102Title				= rtnData.rcs2BodyTitle;
-							this.rowData.rcs102Content				= rtnData.rcs2BodyDescription;
-							this.rowData.rcs103Title				= rtnData.rcs3BodyTitle;
-							this.rowData.rcs103Content				= rtnData.rcs3BodyDescription;
-							this.rowData.rcs104Title				= rtnData.rcs4BodyTitle;
-							this.rowData.rcs104Content				= rtnData.rcs4BodyDescription;
-							this.rowData.rcs105Title				= rtnData.rcs5BodyTitle;
-							this.rowData.rcs105Content				= rtnData.rcs5BodyDescription;
-	
-							if (rtnData.rcsBodyMediaUrl) {
-								this.rowData.rcs100ImgInfoList.push({'fileId':rtnData.rcsBodyMedia, 'imgUrl':rtnData.rcsBodyMediaUrl});
+							this.rowData.rcs0Title					= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Title);
+							this.rowData.rcs0Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content);
+							this.rowData.rcs1Title					= this.$gfnCommonUtils.unescapeXss(rtnData.rcs1Title);
+							this.rowData.rcs1Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs1Content);
+							this.rowData.rcs2Title					= this.$gfnCommonUtils.unescapeXss(rtnData.rcs2Title);
+							this.rowData.rcs2Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs2Content);
+							this.rowData.rcs3Title					= this.$gfnCommonUtils.unescapeXss(rtnData.rcs3Title);
+							this.rowData.rcs3Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs3Content);
+							this.rowData.rcs4Title					= this.$gfnCommonUtils.unescapeXss(rtnData.rcs4Title);
+							this.rowData.rcs4Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs4Content);
+							this.rowData.rcs5Title					= this.$gfnCommonUtils.unescapeXss(rtnData.rcs5Title);
+							this.rowData.rcs5Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs5Content);
+
+							if (rtnData.rcs0Media != '' && rtnData.rcs0MediaUrl != '') {
+								this.rowData.rcs100ImgInfoList.push({'fileId':rtnData.rcs0Media, 'imgUrl':rtnData.rcs0MediaUrl});
 							}
-							if (rtnData.rcs1BodyMediaUrl) {
-								this.rowData.rcs101ImgInfoList.push({'fileId':rtnData.rcs1BodyMedia, 'imgUrl':rtnData.rcs1BodyMediaUrl});
+							if (rtnData.rcs1Media != '' && rtnData.rcs1MediaUrl != '') {
+								this.rowData.rcs101ImgInfoList.push({'fileId':rtnData.rcs1Media, 'imgUrl':rtnData.rcs1MediaUrl});
 							}
-							if (rtnData.rcs2BodyMediaUrl) {
-								this.rowData.rcs102ImgInfoList.push({'fileId':rtnData.rcs2BodyMedia, 'imgUrl':rtnData.rcs2BodyMediaUrl});
+							if (rtnData.rcs2Media != '' && rtnData.rcs2MediaUrl != '') {
+								this.rowData.rcs102ImgInfoList.push({'fileId':rtnData.rcs2Media, 'imgUrl':rtnData.rcs2MediaUrl});
 							}
-							if (rtnData.rcs3BodyMediaUrl) {
-								this.rowData.rcs103ImgInfoList.push({'fileId':rtnData.rcs3BodyMedia, 'imgUrl':rtnData.rcs3BodyMediaUrl});
+							if (rtnData.rcs3Media != '' && rtnData.rcs3MediaUrl != '') {
+								this.rowData.rcs103ImgInfoList.push({'fileId':rtnData.rcs3Media, 'imgUrl':rtnData.rcs3MediaUrl});
 							}
-							if (rtnData.rcs4BodyMediaUrl) {
-								this.rowData.rcs104ImgInfoList.push({'fileId':rtnData.rcs4BodyMedia, 'imgUrl':rtnData.rcs4BodyMediaUrl});
+							if (rtnData.rcs4Media != '' && rtnData.rcs4MediaUrl != '') {
+								this.rowData.rcs104ImgInfoList.push({'fileId':rtnData.rcs4Media, 'imgUrl':rtnData.rcs4MediaUrl});
 							}
-							if (rtnData.rcs5BodyMediaUrl) {
-								this.rowData.rcs105ImgInfoList.push({'fileId':rtnData.rcs5BodyMedia, 'imgUrl':rtnData.rcs5BodyMediaUrl});
+							if (rtnData.rcs5Media != '' && rtnData.rcs5MediaUrl != '') {
+								this.rowData.rcs105ImgInfoList.push({'fileId':rtnData.rcs5Media, 'imgUrl':rtnData.rcs5MediaUrl});
 							}
-							if (rtnData.rcsButton0ButtonType) {//RCS CTALL은 카드 6개, 버튼 2개까지 추가 가능
-								this.button100Flag = true;
-								this.rowData.rcs100Buttons.push(JSON.parse(rtnData.rcs0ButtonArr0));
+
+							if (!this.isEmpty(rtnData.rcsButton0Data)) {
+								if (rtnData.rcsButton0Data.length > 0) {
+									this.button100Flag = true;
+									this.rowData.rcs100Buttons	= rtnData.rcsButton0Data;
+								}
 							}
-							if (rtnData.rcsButton1ButtonType) {
-								this.button100Flag = true;
-								this.rowData.rcs100Buttons.push(JSON.parse(rtnData.rcs0ButtonArr1));
+							if (!this.isEmpty(rtnData.rcsButton1Data)) {
+								if (rtnData.rcsButton1Data.length > 0) {
+									this.button101Flag = true;
+									this.rowData.rcs101Buttons	= rtnData.rcsButton1Data;
+								}
 							}
-							if (rtnData.rcs1Button0ButtonType) {
-								this.button101Flag = true;
-								this.rowData.rcs101Buttons.push(JSON.parse(rtnData.rcs1ButtonArr0));
+							if (!this.isEmpty(rtnData.rcsButton2Data)) {
+								if (rtnData.rcsButton2Data.length > 0) {
+									this.button102Flag = true;
+									this.rowData.rcs102Buttons	= rtnData.rcsButton2Data;
+								}
 							}
-							if (rtnData.rcs1Button1ButtonType) {
-								this.button101Flag = true;
-								this.rowData.rcs101Buttons.push(JSON.parse(rtnData.rcs1ButtonArr1));
+							if (!this.isEmpty(rtnData.rcsButton3Data)) {
+								if (rtnData.rcsButton3Data.length > 0) {
+									this.button103Flag = true;
+									this.rowData.rcs103Buttons	= rtnData.rcsButton3Data;
+								}
 							}
-							if (rtnData.rcs2Button0ButtonType) {
-								this.button102Flag = true;
-								this.rowData.rcs102Buttons.push(JSON.parse(rtnData.rcs2ButtonArr0));
+							if (!this.isEmpty(rtnData.rcsButton4Data)) {
+								if (rtnData.rcsButton4Data.length > 0) {
+									this.button104Flag = true;
+									this.rowData.rcs104Buttons	= rtnData.rcsButton4Data;
+								}
 							}
-							if (rtnData.rcs2Button1ButtonType) {
-								this.button102Flag = true;
-								this.rowData.rcs102Buttons.push(JSON.parse(rtnData.rcs2ButtonArr1));
-							}
-							if (rtnData.rcs3Button0ButtonType) {
-								this.button103Flag = true;
-								this.rowData.rcs103Buttons.push(JSON.parse(rtnData.rcs3ButtonArr0));
-							}
-							if (rtnData.rcs3Button1ButtonType) {
-								this.button103Flag = true;
-								this.rowData.rcs103Buttons.push(JSON.parse(rtnData.rcs3ButtonArr1));
-							}
-							if (rtnData.rcs4Button0ButtonType) {
-								this.button104Flag = true;
-								this.rowData.rcs104Buttons.push(JSON.parse(rtnData.rcs4ButtonArr0));
-							}
-							if (rtnData.rcs4Button1ButtonType) {
-								this.button104Flag = true;
-								this.rowData.rcs104Buttons.push(JSON.parse(rtnData.rcs4ButtonArr1));
-							}
-							if (rtnData.rcs5Button0ButtonType) {
-								this.button105Flag = true;
-								this.rowData.rcs105Buttons.push(JSON.parse(rtnData.rcs5ButtonArr0));
-							}
-							if (rtnData.rcs5Button1ButtonType) {
-								this.button105Flag = true;
-								this.rowData.rcs105Buttons.push(JSON.parse(rtnData.rcs5ButtonArr1));
+							if (!this.isEmpty(rtnData.rcsButton5Data)) {
+								if (rtnData.rcsButton5Data.length > 0) {
+									this.button105Flag = true;
+									this.rowData.rcs105Buttons	= rtnData.rcsButton5Data;
+								}
 							}
 						}
 	
@@ -4747,6 +4775,48 @@ export default {
 					this.button95Flag = true;
 					this.rowData.rcs95Buttons.push(temp);
 				}
+			} else if (rcsType == 'CTALL_TAB1') {
+				if (this.rowData.rcs100Buttons.length >= 2) {
+					alert("button은 2개까지 추가가능합니다.");
+				} else {
+					this.button100Flag = true;
+					this.rowData.rcs100Buttons.push(temp);
+				}
+			} else if (rcsType == 'CTALL_TAB2') {
+				if (this.rowData.rcs101Buttons.length >= 2) {
+					alert("button은 2개까지 추가가능합니다.");
+				} else {
+					this.button101Flag = true;
+					this.rowData.rcs101Buttons.push(temp);
+				}
+			} else if (rcsType == 'CTALL_TAB3') {
+				if (this.rowData.rcs102Buttons.length >= 2) {
+					alert("button은 2개까지 추가가능합니다.");
+				} else {
+					this.button102Flag = true;
+					this.rowData.rcs102Buttons.push(temp);
+				}
+			} else if (rcsType == 'CTALL_TAB4') {
+				if (this.rowData.rcs103Buttons.length >= 2) {
+					alert("button은 2개까지 추가가능합니다.");
+				} else {
+					this.button103Flag = true;
+					this.rowData.rcs103Buttons.push(temp);
+				}
+			} else if (rcsType == 'CTALL_TAB5') {
+				if (this.rowData.rcs104Buttons.length >= 2) {
+					alert("button은 2개까지 추가가능합니다.");
+				} else {
+					this.button104Flag = true;
+					this.rowData.rcs104Buttons.push(temp);
+				}
+			} else if (rcsType == 'CTALL_TAB5') {
+				if (this.rowData.rcs105Buttons.length >= 2) {
+					alert("button은 2개까지 추가가능합니다.");
+				} else {
+					this.button105Flag = true;
+					this.rowData.rcs105Buttons.push(temp);
+				}
 			}
 		},
 		// RCS 버튼 삭제
@@ -4771,6 +4841,18 @@ export default {
 				this.rowData.rcs94Buttons.splice(row,1);
 			} else if (rcsType == 'CSHORT_TAB6') {
 				this.rowData.rcs95Buttons.splice(row,1);
+			} else if (rcsType == 'CTALL_TAB1') {
+				this.rowData.rcs100Buttons.splice(row,1);
+			} else if (rcsType == 'CTALL_TAB2') {
+				this.rowData.rcs101Buttons.splice(row,1);
+			} else if (rcsType == 'CTALL_TAB3') {
+				this.rowData.rcs102Buttons.splice(row,1);
+			} else if (rcsType == 'CTALL_TAB4') {
+				this.rowData.rcs103Buttons.splice(row,1);
+			} else if (rcsType == 'CTALL_TAB5') {
+				this.rowData.rcs104Buttons.splice(row,1);
+			} else if (rcsType == 'CTALL_TAB6') {
+				this.rowData.rcs105Buttons.splice(row,1);
 			}
 		},
 		addRowFriendTalk: function(){
