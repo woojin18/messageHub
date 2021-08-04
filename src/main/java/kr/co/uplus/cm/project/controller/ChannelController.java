@@ -254,6 +254,7 @@ public class ChannelController {
 	public RestResult<?> savePushManage(
 			@RequestParam String sts,
 			@RequestParam String loginId,
+			@RequestParam String corpId,
 			@RequestParam String projectId,
 			@RequestParam String saveProjectId,
 			@RequestParam String appId,
@@ -274,6 +275,8 @@ public class ChannelController {
 		
 		// 파라미터 정리
 		params.put("sts",				sts);
+		params.put("loginId",			loginId);
+		params.put("corpId",			corpId);
 		params.put("projectId",			projectId);
 		params.put("saveProjectId",		saveProjectId);
 		

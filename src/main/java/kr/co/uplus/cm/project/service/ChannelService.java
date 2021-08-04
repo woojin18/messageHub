@@ -856,13 +856,16 @@ public class ChannelService {
 	public RestResult<?> selectMoCallbackList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
-		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
-		
-		if (pageInfo != null && !pageInfo.isEmpty()) {
-			int rowNum = generalDao.selectGernalCount(DB.QRY_SELECT_MO_CALLBACK_LIST_CNT, params);
-			pageInfo.put("rowNum", rowNum);
-			
-			rtn.setPageInfo(pageInfo);
+		if(params.containsKey("pageNo")
+				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize")
+				&& CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if(rtn.getPageInfo() != null) {
+				//카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_MO_CALLBACK_LIST_CNT, params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
 		}
 		
 		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_MO_CALLBACK_LIST, params);

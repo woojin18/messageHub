@@ -343,6 +343,7 @@
 		/* project.selectCallbackManageApprovalBrandList */
 		SELECT	CRB.BRAND_NAME
 		,		CRB.CORP_ID 
+		,		CRB.BRAND_ID
 		FROM cm.CM_RCS_BRAND CRB
 		WHERE 1=1
 		AND		CRB.CORP_ID  = #{corpId}

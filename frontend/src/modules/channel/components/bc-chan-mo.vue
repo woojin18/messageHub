@@ -4,9 +4,16 @@
 		<article>
 			<h4 class="mt40">MO 수신번호 현황</h4>
 			
-			<div class="row mt20">
+			<div class="row mt20 mb10">
 				<div class="col-xs-12">		
 					<div class="of_h">
+						<!-- 페이징 카운트 -->
+						<div class="of_h inline mb10">
+							<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+							<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
+							</div>
+						</div>
+						<!-- 페이징 카운트 -->
 						<div class="float-right">
 							<a class="btnStyle3 gray font13 width180" data-toggle="modal" data-target="#Register" @click="fnReg" activity="SAVE">MO 수신번호 등록</a>
 						</div>
@@ -16,9 +23,6 @@
 			
 			<div class="row">
 				<div class="col-xs-12">
-					<!-- 페이징 카운트 -->
-					<PagingCnt :pageInfo.sync="pageInfo" />
-					<!-- 페이징 카운트 -->
 					<!-- 본문 -->
 					<table class="table_skin1 bt-000 tbl-striped">
 						<colgroup>
@@ -58,7 +62,9 @@
 			</div>
 			<!-- 본문 -->
 			<!-- 페이징 -->
-			<Paging :pageInfo.sync="pageInfo" />
+			<div id="pageContent">
+				<PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
+			</div>
 			<!-- 페이징 -->
 		</article>
 	</div>
@@ -68,16 +74,16 @@
 <script>
 import Api from '../service/api'
 
-import Paging from "@/modules/commonUtil/components/bc-paging"
-import PagingCnt from "@/modules/commonUtil/components/bc-pagingCnt"
+import SelectLayer from '@/components/SelectLayer.vue';
+import PageLayer from '@/components/PageLayer.vue';
 
 import layerPopup from "./bp-chan-mo.vue";
 
 export default {
 	components: {
 		layerPopup,
-		Paging,
-		PagingCnt
+		SelectLayer,
+		PageLayer
 	},
 	data() {
 		return {
@@ -87,7 +93,13 @@ export default {
 			data : {},
 			pageInfo: {},
 			save_status : "",
-			row_data : {}
+			row_data : {},
+
+			
+			listSize : 10,  // select 박스 value (출력 갯수 이벤트)
+			pageNo : 1,  // 현재 페이징 위치
+			totCnt : 0,  //전체 리스트 수
+			offset : 0, //페이지 시작점
 		}
 	},
 	mounted() {
@@ -101,18 +113,30 @@ export default {
 			"rowNum"    : 1           //총개수
 		};
 
-		this.fnSearch();
+		this.fnSearch(1);
 	},
 	methods: {
+		// select 박스 선택시 리스트 재출력
+		fnSelected(listSize) {
+			this.listSize = Number(listSize);
+			this.$refs.updatePaging.fnAllDecrease();
+		},
 		// 검색
-		fnSearch() {
+		fnSearch(pageNo) {
 			var params = {
 				"projectId"		: this.projectId,
-				"pageInfo"    	: this.pageInfo
+				"pageNo"		: (this.$gfnCommonUtils.defaultIfEmpty(pageNo, '1'))*1,
+				"pageInfo"    	: this.pageInfo,
+				"listSize"		: this.listSize
 			}
 			
 			Api.selectMoCallbackList(params).then(response =>{
-				this.data = response.data.data;
+				var result = response.data;
+				if(result.success) {
+					this.data = result.data; 
+					this.totCnt = result.pageInfo.totCnt;
+					this.offset = result.pageInfo.offset;
+				}
 			});
 		},
 		// 등록 템플릿 상세 
