@@ -657,6 +657,10 @@ export default {
 			fd.append('bgImgFile'		, this.$refs.bgImgFile.files[0]);
 			fd.append('profileImgFile'	, this.$refs.profileImgFile.files[0]);
 			fd.append('certiFile'		, this.$refs.certiImgFile.files[0]);
+		} else if ( this.save_status == 'U' && this.$refs.bgImgFile.files[0] != '' && this.$refs.bgImgFile.files[0] != undefined ){
+			fd.append('bgImgFile'		, this.$refs.bgImgFile.files[0]);
+		} else if ( this.save_status == 'U' && this.$refs.profileImgFile.files[0] != '' && this.$refs.profileImgFile.files[0] != undefined ){
+			fd.append('profileImgFile'		, this.$refs.profileImgFile.files[0]);
 		}
 
 		// 챗봇(발신번호) 정리

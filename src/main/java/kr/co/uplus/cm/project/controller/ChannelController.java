@@ -208,7 +208,11 @@ public class ChannelController {
 			rtn.setSuccess(true);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage(e.getMessage());
+			if("".equals(e.getMessage())) {
+				rtn.setMessage("저장에 실패했습니다.");
+			} else {
+				rtn.setMessage(e.getMessage());
+			}
 		}
 		
 		return rtn;
@@ -387,7 +391,15 @@ public class ChannelController {
 	@PostMapping("/getSenderKeyToken")
 	public RestResult<?> getSenderKeyToken(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		return channelService.getSenderKeyToken(params);
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			channelService.getSenderKeyToken(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
 	}
 	
 	
