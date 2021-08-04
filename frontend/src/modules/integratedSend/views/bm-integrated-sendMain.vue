@@ -519,7 +519,6 @@ import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue"
 import Calendar from "@/components/Calendar.vue";
 import TestSendInputPopup from "@/modules/message/components/bc-testSendInput.vue";
 
-//import integratedSendApi from '../service/integratedSendApi';
 import messageApi from "@/modules/message/service/messageApi.js";
 import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
