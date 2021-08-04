@@ -398,6 +398,8 @@ public class ChannelService {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void saveRcsBrandReqForApi(Map<String, Object> params) throws Exception {
+		// 저장
+		String sts = CommonUtils.getString(params.get("sts"));
 		// 임시 파일 패스 사용 
 		String tempYn = "N";
 		
@@ -407,42 +409,54 @@ public class ChannelService {
 		
 		if( "N".equals(tempYn) ) {
 			String uploadDirPath = FileConfig.getFilePath(FileConfig.FileSvcType.LIBRARY);
+			
 			// 프로필 파일 업로드 처리
 			MultipartFile profileImgFile = (MultipartFile) params.get("profileImgFile");
-			
-			String profileImgFileCheckStr = checkFileSizeExtension(profileImgFile);
-			if( !"".equals(profileImgFileCheckStr) ) {
-				throw new Exception("프로필 이미지의 형식이 "+profileImgFileCheckStr);
+			if( "save".equals(sts) ||  
+				"approval".equals(sts) ||
+				("update".equals(sts) && profileImgFile != null)	) {
+				
+				String profileImgFileCheckStr = checkFileSizeExtension(profileImgFile);
+				if( !"".equals(profileImgFileCheckStr) ) {
+					throw new Exception("프로필 이미지의 형식이 "+profileImgFileCheckStr);
+				}
+				
+				String profileImgFileSeq = commonService.uploadFile(profileImgFile, CommonUtils.getString(params.get("loginId")), uploadDirPath);
+				
+				Map<String, Object> profileImgFileMap = new HashMap<String, Object>();
+				profileImgFileMap.put("fileId", profileImgFileSeq);
+				profileImgFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", profileImgFileMap));
 			}
 			
-			String profileImgFileSeq = commonService.uploadFile(profileImgFile, CommonUtils.getString(params.get("loginId")), uploadDirPath);
-			
-			Map<String, Object> profileImgFileMap = new HashMap<String, Object>();
-			profileImgFileMap.put("fileId", profileImgFileSeq);
-			profileImgFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", profileImgFileMap));
 			
 			// 배경 파일 업로드 처리
 			MultipartFile bgImgFile = (MultipartFile) params.get("bgImgFile");
-			
-			String bgImgFileCheckStr = checkFileSizeExtension(bgImgFile);
-			if( !"".equals(bgImgFileCheckStr) ) {
-				throw new Exception("백그라운드 이미지의 형식이 "+bgImgFileCheckStr);
+			if( "save".equals(sts) ||  
+				"approval".equals(sts) ||
+				("update".equals(sts) && profileImgFile != null)	) {
+				
+				String bgImgFileCheckStr = checkFileSizeExtension(bgImgFile);
+				if( !"".equals(bgImgFileCheckStr) ) {
+					throw new Exception("백그라운드 이미지의 형식이 "+bgImgFileCheckStr);
+				}
+				
+				String bgImgFileSeq = commonService.uploadFile(bgImgFile, CommonUtils.getString(params.get("loginId")), uploadDirPath);
+				
+				Map<String, Object> bgImgFileMap = new HashMap<String, Object>();
+				bgImgFileMap.put("fileId", bgImgFileSeq);
+				bgImgFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", bgImgFileMap));
 			}
 			
-			String bgImgFileSeq = commonService.uploadFile(bgImgFile, CommonUtils.getString(params.get("loginId")), uploadDirPath);
-			
-			Map<String, Object> bgImgFileMap = new HashMap<String, Object>();
-			bgImgFileMap.put("fileId", bgImgFileSeq);
-			bgImgFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", bgImgFileMap));
-			
 			// 가입증명 파일 업로드 처리
-			MultipartFile certiFile = (MultipartFile) params.get("certiFile");
-			
-			String certiFileSeq = commonService.uploadFile(certiFile, CommonUtils.getString(params.get("loginId")), uploadDirPath);
-			
-			Map<String, Object> certiFileMap = new HashMap<String, Object>();
-			certiFileMap.put("fileId", certiFileSeq);
-			certiFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", certiFileMap));
+			if( "save".equals(sts) || "approval".equals(sts) ) {
+				MultipartFile certiFile = (MultipartFile) params.get("certiFile");
+				
+				String certiFileSeq = commonService.uploadFile(certiFile, CommonUtils.getString(params.get("loginId")), uploadDirPath);
+				
+				Map<String, Object> certiFileMap = new HashMap<String, Object>();
+				certiFileMap.put("fileId", certiFileSeq);
+				certiFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", certiFileMap));
+			}
 		} else {
 			profileImgFilePath	= "/efs/file/console/2021/05/28/10/test1234.png";
 			bgImgFilePath		= "/efs/file/console/2021/05/28/10/test1234.png";
@@ -538,12 +552,11 @@ public class ChannelService {
 		// map to json
 		kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(map);
 		
-		//System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
+//		System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
 //		list.add(json2222);
 		list.add(map);
 		
 		// 임시저장
-		String sts = CommonUtils.getString(params.get("sts"));
 		if( "save".equals(sts) ) {
 			ObjectMapper mapper = new ObjectMapper();
 			
@@ -659,6 +672,11 @@ public class ChannelService {
 			bodyMap.put("list", json);
 			
 			Map<String, Object> result =  apiInterface.put("/console/v1/brand/" + brandId, null, map, headerMap);
+			
+
+//			System.out.println("-------------------------------------------@@@ result : " + result);
+//			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
+//			System.out.println("-------------------------------------------@@@ list : " + list);
 			
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
