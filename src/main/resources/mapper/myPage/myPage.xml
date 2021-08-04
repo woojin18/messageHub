@@ -29,6 +29,13 @@
 		WHERE	USER_ID = #{userId}
 	</update>
 	
+	<update id="updateUserSmsCertifyNumb">
+		/* myPage.updateUserSmsCertifyNumb */
+		UPDATE	cm_console.CM_USER
+		SET		SMS_CERTIFY_NUMBER = #{certifyNumb}
+		WHERE	USER_ID = #{userId}
+	</update>
+	
 	<select id="selectSmsCertifyNumber" resultType="string">
 	/* myPage.selectSmsCertifyNumber */
 		SELECT	SMS_CERTIFY_NUMBER

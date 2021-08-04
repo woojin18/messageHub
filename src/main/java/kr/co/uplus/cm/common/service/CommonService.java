@@ -30,6 +30,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -37,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.uplus.cm.common.consts.Const;
@@ -74,6 +76,8 @@ public class CommonService {
 
 	@Deprecated
 	long imgUploadLimitSize;
+	
+	@Value("${console.domain.baseUrl}") String baseUrl;
 
 	/**
 	 * 엑셀파일에서 엑셀데이터 가져오기
@@ -750,5 +754,103 @@ public class CommonService {
 		saveMap.put("cmdTgt", cmdTgt);
 
 		generalDao.updateGernal(DB.QRY_UPDATE_CM_CMD, saveMap);
+	}
+	
+	/**
+	 * noti api 통신
+	 * @param params
+	 * @throws Exception
+	 */
+	@SuppressWarnings({ "unused", "unchecked" })
+	public void sendNoti(String type, Map<String,Object> params) throws Exception {
+		Map<String, Object> rtn = new HashMap<String, Object>();
+		
+		String noticeApiKey = "NAPM7n6Sm1";
+		String notiCode = "NTI4hDV8ly";
+		
+		Map<String, Object> apiMap = new HashMap<String, Object>();
+		apiMap.put("notiCode", notiCode);
+
+		ArrayList<Map<String, Object>> recvInfoLst = new ArrayList<Map<String,Object>>();
+		
+		if("mail".equals(type)) {
+			Map<String, Object> rcvMap = new HashMap<String, Object>();
+			Map<String, Object> mailMap = new HashMap<String, Object>();
+			// 메일 인증
+			
+			// 수신자 설정
+			rcvMap.put("toEmail", params.get("email"));
+			recvInfoLst.add(rcvMap);
+			
+			// 메일 내용 설정
+			ArrayList<Map<String, Object>> emailCh = new ArrayList<Map<String,Object>>();
+			
+			String contents = this.setContents(params);
+			mailMap.put("title", "메시지클라우드 인증");
+			mailMap.put("contents", contents);
+			mailMap.put("fromEmail", "test@test.co.kr");
+			
+			emailCh.add(mailMap);
+			
+			apiMap.put("recvInfoLst", recvInfoLst);
+			apiMap.put("emailCh", emailCh);
+			
+		} else if("sms".equals(type)) {
+			// sms 인증
+			
+			// 수신자 설정
+			Map<String, Object> rcvMap = new HashMap<String, Object>();
+			rcvMap.put("phone", params.get("phone"));
+			recvInfoLst.add(rcvMap);
+			
+			// 메일 내용 설정
+			ArrayList<Map<String, Object>> sendChLst = new ArrayList<Map<String,Object>>();
+			Map<String, Object> smsMap = new HashMap<String, Object>();
+			smsMap.put("ch", "SMS");
+			
+			smsMap.put("contents", "인증번호는 ["+params.get("certifyNumb")+"] 입니다.");
+			smsMap.put("callback", "");		// 발신번호 - cm_noti에서 수신자 지정으로 설정 .. 하드코딩.. ?
+			
+			sendChLst.add(smsMap);
+			
+			apiMap.put("recvInfoLst", recvInfoLst);
+			apiMap.put("sendChLst", sendChLst);
+		}
+		
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		headerMap.put("X-API-KEY", noticeApiKey);
+		Map<String, Object> result = apiInterface.etcPost(ApiConfig.NOTI_SERVER_DOMAIN+"/noti/v1/msg", apiMap, headerMap);
+		if(!"10000".equals(result.get("code"))) {
+			throw new Exception(CommonUtils.getString(result.get("message")));
+		}
+		
+	}
+
+	private String setContents(Map<String, Object> params) {
+		String html = "";
+		
+		String time = CommonUtils.getString(params.get("time"));
+		String[] timeArr = time.split(" ");
+		
+		String location = CommonUtils.getString(params.get("location"));
+		
+		html += "<div style='width:640px; min-height:600px; margin:0 auto; background:#fff; padding:38px 64px 87px 64px; box-sizing:border-box; position:relative; font-family:\"Noto Sans KR\", sans-serif'>";
+		html += "<div style='border-bottom:1px solid #9F9F9F; padding-bottom:30px; margin-bottom:30px'>";
+		html += "<img src='" + this.baseUrl + "/se2/images/" + "userLogo.svg' alt='유플러스 통합메시징 클라우드' />";
+		html += "</div>";
+		html += "<div style='font-size:14px; line-height:24px'>이메일 인증을 진행해주세요.<br/>";
+		html += "안녕하세요. NHN Cloud를 이용해주셔서 감사합니다.<br/>";
+		html += "본인 이메일이 맞는지 확인하고 있습니다.<br/>";
+		html += "아래 [인증] 버튼을 클릭하면 다음 단계로 진행할 수 있습니다.<br/><br/>";
+		html += "인증 링크 유효시간 : " + timeArr[0];
+		html += "<span style='color:#FD004E'>" + timeArr[1];
+		html += "</span> (UTC+09:00)</div>";
+		html += "<a href='"+this.baseUrl+location+"?authKey="+params.get("authKey")+"' target='_blank' title='인증' style='display:inline-block; width:120px; text-align:center; background:#E93978; color:#fff; border-radius:4px; line-height:40px; text-decoration:none; font-size:16px; margin:40px 0;'>인증</a>";
+		html += "<div style='position:absolute; left:0; bottom:0; width:100%; box-sizing:border-box; padding:0 64px'>";
+		html += "<div style='border-top:1px solid #E6E6E6; color:#858585; font-size:11px; padding:20px 0;'>Copyright©LG Plus Corp. All Rights Reserved.</div>";
+		html += "</div>";
+		html += "</div>";
+		
+		return html;
 	}
 }

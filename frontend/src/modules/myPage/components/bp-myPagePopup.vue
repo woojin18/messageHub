@@ -45,7 +45,7 @@
               <div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:20%">휴대폰 번호 변경</h5>
                 <input type="text" class="inputStyle" style="width:55%" title="휴대폰 번호 변경 입력란" v-model="chgHpNumber" placeholder="-없이 입력">
-                <button @click="fnGetCertifyNumber" id="certifyBtn" class="btnStyle1 backLightGray float-right width120" title="인증번호 받기">{{ certifyMsg }}</button>
+                <button @click="fnSetCertifyNumber" id="certifyBtn" class="btnStyle1 backLightGray float-right width120" title="인증번호 받기" >{{ certifyMsg }}</button>
               </div>
               <div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:20%">인증번호</h5>
@@ -154,24 +154,38 @@ export default {
         }
       },
       // 휴대폰 변경 인증번호 받기
-      fnGetCertifyNumber(){
+      fnSetCertifyNumber(){
         if(this.chgHpNumber.trim().length == 0){
             confirm.fnAlert("", "변경하실 휴대폰 번호를 입력해주세요.");
             return;
         }
 
-        this.certifyMsg = "전송 중.."
+        this.certifyMsg = "전송 중..";
+        var params = {
+          chgHpNumber : this.chgHpNumber
+        };
+
+        myPageApi.setCertifyNumber(params).then(response => {
+          var result = response.data;
+          if(result.success){
+            this.certifyMsg = "인증 요청";
+
+          } else {
+            confirm.fnAlert("", result.message);
+            return;
+          }
+        })
       },
       // 저장
       fnSave(){
-        if(this.loginPwd.trim().length > 0){
+        if(jQuery.trim(this.loginPwd).length > 0){
           if(this.loginPwd != this.chkLoginPwd){
             confirm.fnAlert("", "변경하려는 비밀번호가 일치하지 않습니다.");
             return;
           }
         }
 
-        if(this.chgHpNumber.trim().length > 0){
+        if(jQuery.trim(this.chgHpNumber).length > 0){
           if(this.certifyNumber.trim().length == 0){
             confirm.fnAlert("", "인증번호를 입력해주세요.");
             return;
@@ -183,9 +197,9 @@ export default {
       },
       fnSaveCallBack(){
         var params = {
-          loginPwd : this.loginPwd.trim(),
-          hpNumber : this.chgHpNumber.trim(),
-          certifyNumber : this.certifyNumber.trim(),
+          loginPwd : this.loginPwd,
+          hpNumber : jQuery.trim(this.chgHpNumber),
+          certifyNumber : jQuery.trim(this.certifyNumber),
           repProjectId : this.repProjectId
         }
 

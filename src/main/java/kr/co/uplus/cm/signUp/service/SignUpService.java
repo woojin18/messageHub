@@ -155,7 +155,7 @@ public class SignUpService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-	public void insertEmailCertify(Map<String, Object> params) throws Exception {
+	public void insertEmailCertify(Map<String, Object> params) throws Exception{
 		
 		params.put("loginId", params.get("email"));
 		
@@ -175,7 +175,11 @@ public class SignUpService {
 			
 			generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, params);
 			
+			params.put("location", "/sign/signUpMain");
+			
 			this.sendMail(params, "/sign/signUpMain");
+//			commonService.sendNoti("mail", params);
+
 		}
 	}
 

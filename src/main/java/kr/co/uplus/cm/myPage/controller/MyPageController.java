@@ -66,6 +66,30 @@ public class MyPageController {
 		
 		return rtn;
 	}
+	/**
+	 * 전화번호 변경시 인증번호 생성
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/setCertifyNumber")
+	public RestResult<?> setCertifyNumber(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			myPageSvc.setCertifyNumber(params);
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+//			rtn.setMessage("인증번호 전송에 실패하였습니다.");
+			rtn.setMessage(e.getMessage());
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+		
+		return rtn;
+	}
 	
 	/**
 	 *  회원정보 저장

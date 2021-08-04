@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.crypto.Sha256PasswordEncoder;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
@@ -27,6 +29,9 @@ public class MyPageService {
 
 	@Autowired
 	private ApiInterface apiInterface;
+	
+	@Autowired
+	private CommonService commonService;
 	
 	public RestResult<Object> selectMemberInfo(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -189,5 +194,16 @@ public class MyPageService {
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> selectAttachFileInfo(Map<String, Object> params) throws Exception {
 		return (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_ATTACH_FILE_INFO, params);
+	}
+
+//	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void setCertifyNumber(Map<String, Object> params) throws Exception {
+		String certifyNumb = RandomStringUtils.randomNumeric(6);
+		params.put("certifyNumb", certifyNumb);
+		params.put("phone", params.get("chgHpNumber"));
+		
+		generalDao.updateGernal(DB.QRY_UPDATE_USER_SMS_CERTIFY_NUMB, params);
+		
+//		commonService.sendNoti("sms", params);
 	}
 }

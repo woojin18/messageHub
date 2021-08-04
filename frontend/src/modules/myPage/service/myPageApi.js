@@ -41,6 +41,10 @@ const downloadRegCardImage = (params) => {
     .then((response) => fnDownCallback(response));
   };
 
+const setCertifyNumber = (params) => {
+  return httpClient.post('/api/myPage/setCertifyNumber', params, { headers: {"show-layer": "Yes"} });
+};
+
 export default {
     selectMemberInfo,
     saveMemberInfo,
@@ -51,7 +55,8 @@ export default {
     selectCorpInfo,
     saveCorpInfo,
     selectProejctList,
-    downloadRegCardImage
+    downloadRegCardImage,
+    setCertifyNumber
 };
 
 function fnDownCallback(response){
