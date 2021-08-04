@@ -102,9 +102,11 @@
 								<ul class="cardBxslider mt10">
 									<li v-for="n in carouselSelect" class="slide cardBox">
 										<img v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]==''" src="@/assets/images/common/cardThumImg.png" alt="프리 템플릿">
-										<div v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]!=''" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:81px;'" class="mt10 text-center simulatorImg"> </div>
+										<img v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]!=''" :src="sendData.carouselObj.imgUrl[n-1]" alt="프리 템플릿">
+										<!--<div v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]!=''" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:81px;'" class="mt10 text-center simulatorImg"> </div>-->
 										<img v-if="templateRadioBtn == 'carouselMedium' && sendData.carouselObj.imgUrl[n-1]==''" src="@/assets/images/common/cardThumImg2_1.png" alt="프리 템플릿">
-										<div v-if="templateRadioBtn == 'carouselMedium' && sendData.carouselObj.imgUrl[n-1]!=''" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:123px;'" class="mt10 text-center simulatorImg"> </div>
+										<!--<div v-if="templateRadioBtn == 'carouselMedium' && sendData.carouselObj.imgUrl[n-1]!=''" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:123px;'" class="mt10 text-center simulatorImg"> </div>-->
+										<img v-if="templateRadioBtn == 'carouselMedium' && sendData.carouselObj.imgUrl[n-1]!=''" :src="sendData.carouselObj.imgUrl[n-1]" alt="프리 템플릿">
 										<div class="relative">
 											<div class="scroll-y" style="min-height:150px">
 												<p class="color000 font-size13">{{sendData.carouselObj.textTitle[n-1]}}</p>
@@ -114,6 +116,7 @@
 										</div>
 									</li>
 								</ul>
+								<div id="slide-counter"><span class="current"></span> / <span class="total"></span></div>
 							</div>
 							<div v-show="pushTab!='push'" class="phoneCardWrap">
 								<div class="phoneText1">
@@ -489,7 +492,7 @@ export default {
 			carouselObj : {
 				textTitle : ['','','','','',''],
 				textContents : ['','','','','',''],
-				imgUrl : ['1','1','1','1','1','1'],
+				imgUrl : ['','','','','',''],
 				fileId : [],
 				wideImgYn : [],
 				btnArr : [],
@@ -655,12 +658,19 @@ export default {
 			maxSlides: 6,
 			slideMargin: 10,
 			controls: true,
-			pager: true,
+			pager: false,
 			pagerType: 'short',
 			touchEnabled : (navigator.maxTouchPoints > 0),
 			autoHover: false,
-			pause: 6000
+			pause: 6000,
+			onSliderLoad: function (currentIndex) {
+				jQuery("#slide-counter .current").text(currentIndex+1);
+			},
+			onSlideBefore: function ($slideElement, oldIndex, newIndex) {
+				jQuery("#slide-counter .current").text(newIndex+1);
+			}
 		});
+		jQuery("#slide-counter .total").text(slider.getSlideCount());
 	},
 
 	fnOpenRcsTemplatePopup() {
@@ -799,10 +809,7 @@ export default {
 				setTimeout(function() {
 					slider.reloadSlider();
 				}, 10);
-			} else {
-				jQuery('.bx-controls-direction').css('display', 'none');
-				jQuery('.bx-pager').css('display', 'none');
-			}
+			} 
 		}
 		this.pushTab = senderType;
 	},
@@ -1108,7 +1115,8 @@ export default {
 
 		setTimeout(function() {
 			slider.reloadSlider();
-		}, 10)
+		}, 10);
+		jQuery("#slide-counter .total").text(carouselSelect);
 	},
 
 	fnSendData() {
