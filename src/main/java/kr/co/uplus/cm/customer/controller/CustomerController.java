@@ -6,9 +6,11 @@ import java.nio.file.Paths;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -207,5 +209,25 @@ public class CustomerController {
         }
         return rtn;
     }
+
+	@Value("${userGuide.domain.baseUrl}")
+	private String userGuideUrl;
+
+	/**
+	 * 이용가이드 URL 정보 조회
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/api/public/selectUserGuideUrl")
+    public RestResult<?> selectUserGuideUrl(@RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+		
+		rtn.setData(userGuideUrl);
+
+		return rtn;
+	}
 
 }

@@ -27,6 +27,9 @@ const selectCmUseTermsInfo = (params) => {
   return httpClient.post('/api/public/customer/selectCmUseTermsInfo', params, { headers: {"show-layer": "Yes"} });
 };
 
+const selectUserGuideUrl = (params) => {
+	return httpClient.post('/api/public/selectUserGuideUrl', params, { headers: { "show-layer": "Yes" } });
+};
 
 export default {
   selectCodeList,
@@ -36,7 +39,8 @@ export default {
   selectLibraryList,
   procDownloadLibraryFile,
   selectCmUseTermsHistList,
-  selectCmUseTermsInfo
+  selectCmUseTermsInfo,
+  selectUserGuideUrl
 };
 
 function fnDownCallback(response){

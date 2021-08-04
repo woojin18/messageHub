@@ -5,7 +5,7 @@
 			<p class="adminName">관리자 콘솔</p>
 			<ul class="adminUtil">
 				<li><router-link to="/uc/home" class="btnGuideBlack">사용자콘솔</router-link></li>
-				<li><a href="#" class="btnGuideBlack">이용 가이드</a></li>
+				<li><a @click="fnGoUserGuide" class="btnGuideBlack">이용 가이드</a></li>
 				<li class="ml20"><a class="bellIcon active"><i class="fas fa-bell"></i></a></li>
 				<li>
 					<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i> {{ this.loginId }}</a>	
@@ -30,6 +30,7 @@
 
 <script>
 import loginApi from '@/modules/login/service/api';
+import customerApi from '@/modules/customer/service/customerApi';
 import tokenSvc from '@/common/token-service';
 import { mapGetters } from 'vuex';
 import myPagePopup from '@/modules/myPage/components/bp-myPagePopup.vue';
@@ -49,7 +50,8 @@ export default {
 			loginId: '',
 			memberInfo : {},
 			corpInfo : {},
-			popReset : 0
+			popReset : 0,
+      		userGuideUrl : "www.naver.com"
 		}
 	},
 	created() {
@@ -64,6 +66,11 @@ export default {
 			this.isLogin = false;
 			this.svcTypeCd = '';
 		}
+		customerApi.selectUserGuideUrl({}).then(response => {
+			if (response.data.success) {
+			this.userGuideUrl = response.data.data
+			}
+		});
 	},
 	components : {
 		myPagePopup,
@@ -94,6 +101,9 @@ export default {
 		},
 	},
 	methods: {
+		fnGoUserGuide(){
+		window.open(this.userGuideUrl)
+		},
 		clickMenu(link, useYn) {
 			if (useYn == "Y") {
 				if (link != null && link != '') {

@@ -26,7 +26,7 @@
                 <li><a href="#" @click.prevent="fnOpenInquiryModal">서비스 문의</a></li>
               </ul>
             </li>
-            <li><a href="#" @click.prevent="fnComingSoon" title="사용자 가이드 페이지로 이동">사용자 가이드</a></li>
+            <li><a @click="fnGoUserGuide" title="사용자 가이드 페이지로 이동">사용자 가이드</a></li>
             <li class="console"><router-link to="/ac/home" title="CONSOLE 페이지로 이동">CONSOLE</router-link></li>
           </ul>
         </nav>
@@ -46,6 +46,7 @@
 import InquiryPopup from "@/modules/customer/components/bp-inquiry.vue";
 
 import loginApi from '@/modules/login/service/api';
+import customerApi from '@/modules/customer/service/customerApi';
 import tokenSvc from '@/common/token-service';
 
 export default {
@@ -55,7 +56,8 @@ export default {
   },
   data() {
     return {
-      isLogin: false
+      isLogin: false,
+      userGuideUrl : "www.naver.com"
     }
   },
   created() {
@@ -67,10 +69,18 @@ export default {
       this.$store.commit("login/isLogin", false);
       this.isLogin = false;
     }
+    this.fnInit()
   },
   methods: {
-    fnComingSoon(){
-      alert('준비중입니다.');
+    fnInit() {
+      customerApi.selectUserGuideUrl({}).then(response => {
+        if (response.data.success) {
+          this.userGuideUrl = response.data.data
+        }
+      });
+    },
+    fnGoUserGuide(){
+      window.open(this.userGuideUrl)
     },
     fnOpenInquiryModal(){
       this.$refs.inquiryPopup.fnRestData();
