@@ -12,21 +12,21 @@
 								<Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle" styleProps="width:40%" :initDate="searchData.searchEndDate"></Calendar>
 							</div>
 							<div v-show="searchData.searchDateType == 'MONTH'">
-								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchStartMonth">
+								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchStartMonth" @change="fnSearch">
 								<span style="padding:0 11px">~</span>
-								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchEndMonth">
+								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchEndMonth" @change="fnSearch">
 							</div>
 						</div>
 						<div class="inline-block" style="width:30%">
-							<input type="radio" name="dayMonth" value="DAY" id="day" checked="" v-model="searchData.searchDateType">
+							<input type="radio" name="dayMonth" value="DAY" id="day" checked="" v-model="searchData.searchDateType" @change="fnSearch">
 							<label for="day" class="ml20">일별</label>
-							<input type="radio" name="dayMonth" value="MONTH" id="month" v-model="searchData.searchDateType">
+							<input type="radio" name="dayMonth" value="MONTH" id="month" v-model="searchData.searchDateType" @change="fnSearch">
 							<label for="month">월별</label>
 						</div>
 					</div>
 					<div class="consolMarginTop">
 						<h4 class="inline-block" style="width:6%">프로젝트명</h4>
-						<select class="selectStyle2" style="width:25%" v-model="searchData.searchProjectId">
+						<select class="selectStyle2" style="width:25%" v-model="searchData.searchProjectId" @change="fnSearch">
 							<option value="">전체</option>
 							<option v-for="(content, index) in projectItems" :key="index" :value="content.projectId">
 								{{ content.projectName }}
@@ -191,9 +191,11 @@ export default {
 		},*/
 		fnUpdateStartDate(sltDate) {
 			this.searchData.searchStartDate = sltDate;
+			this.fnSearch();
 		},
 		fnUpdateEndDate(sltDate) {
 			this.searchData.searchEndDate = sltDate;
+			this.fnSearch();
 		},
 		fnCalendarInit() {
 			jQuery("#startDate").monthpicker({
