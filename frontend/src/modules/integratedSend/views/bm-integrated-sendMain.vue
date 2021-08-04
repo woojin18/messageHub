@@ -249,7 +249,7 @@
                       && tmpltData.RCS.mergeData.length > 0
                       && tmpltData.RCS.mergeData[0].mediaUrl" 
                     :src="tmpltData.RCS.mergeData[0].mediaUrl" 
-                    style="width: 240px;height: 120px;"
+                    style="width: 240px;height: 300px;"
                     alt="프리 템플릿"
                   >
                   <img v-else src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
@@ -273,16 +273,6 @@
                 </div>
               </div>
               <!--// 세로형 TALL -->
-
-
-
-              
-
-
-
-
-              
-
               <!-- CSHORT -->
               <div v-if="tmpltData.RCS.rcsPrdType == 'CSHORT'" class="cardBxsliderWrap">
                 <div class="phoneWrap">
@@ -306,7 +296,6 @@
                             <p class="mt15"><pre>{{msgData.description}}</pre></p>
                           </div>
                         </div>
-
                         <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > idx">
                           <p 
                             v-for="(btn, sIdx) in tmpltData.RCS.buttons[idx].suggestions" 
@@ -315,17 +304,51 @@
                             style="color:#69C8FF"
                           >{{btn.action.displayText}}</p>
                         </div>
-
                         <p  v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)" class="color3 font-size10 mt5">무료수신거부: {{tmpltData.RCS.footer}}</p>
-
                       </li>
-                      
-
                     </ul>
                   </div>
                 </div>
               </div>
               <!--// CAROUSEL -->
+              <!-- CTALL -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'CTALL'" class="cardBxsliderWrap">
+                <div class="phoneWrap">
+                  <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
+                  <div class="phoneCardWrap">
+                    <p class="color000">
+                      <span>[WEB발신]</span>
+                      <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
+                    </p>
+                    <ul class="cardBxslider mt10">
+                      <li v-for="(msgData, idx) in tmpltData.RCS.mergeData" :key="idx" class="slide cardBox">
+                        <img 
+                          v-if="tmpltData.msgType == 'IMAGE' && msgData.mediaUrl" 
+                          :src="msgData.mediaUrl" 
+                          style="width: 240px;height: 300px;"
+                          alt="프리 템플릿"
+                        >
+                        <div>
+                          <div class="scroll-y">
+                            <p class="color000 font-size13">{{msgData.title}}</p>
+                            <p class="mt15"><pre>{{msgData.description}}</pre></p>
+                          </div>
+                        </div>
+                        <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > idx">
+                          <p 
+                            v-for="(btn, sIdx) in tmpltData.RCS.buttons[idx].suggestions" 
+                            :key="sIdx" 
+                            class="text-center mt20" 
+                            style="color:#69C8FF"
+                          >{{btn.action.displayText}}</p>
+                        </div>
+                        <p  v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)" class="color3 font-size10 mt5">무료수신거부: {{tmpltData.RCS.footer}}</p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <!--// CTALL -->
 
             </div>
             <!--// RCS -->
