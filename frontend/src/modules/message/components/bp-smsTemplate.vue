@@ -168,7 +168,9 @@ export default {
           }
         });
       }
-      tempData.imgInfoList = JSON.parse(tempData.imgInfoList);
+      if(tempData.imgInfoList && typeof(tempData.imgInfoList) === 'string'){
+        tempData.imgInfoList = JSON.parse(tempData.imgInfoList);
+      }
       this.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
       this.templateData = Object.assign({}, tempData);
     },
