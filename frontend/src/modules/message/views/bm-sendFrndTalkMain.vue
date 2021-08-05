@@ -534,7 +534,7 @@ export default {
 
       this.inProgress = true;
       const vm = this;
-
+      
       await messageApi.sendFrndTalkMessage(fd).then(response =>{
         this.inProgress = false;
         const result = response.data;
@@ -723,7 +723,7 @@ export default {
       this.sendData.fileId = this.$gfnCommonUtils.defaultIfEmpty(templateInfo.fileId, '');
       this.sendData.imgUrl = this.$gfnCommonUtils.defaultIfEmpty(templateInfo.imgUrl, '');
       this.sendData.imgLink = this.$gfnCommonUtils.defaultIfEmpty(templateInfo.imgLink, '');
-      this.sendData.wideImgYn = this.$gfnCommonUtils.defaultIfEmpty(templateInfo.wideImgYn, '');
+      this.sendData.wideImgYn = this.$gfnCommonUtils.defaultIfEmpty(templateInfo.wideImgYn, 'N');
       this.sendData.buttonList = JSON.parse(this.$gfnCommonUtils.defaultIfEmpty(templateInfo.tmpltButtons, ''));
     },
     fnOpenFrndTalkTemplatePopup(){
