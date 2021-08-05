@@ -818,6 +818,9 @@
         }
         slider.pagerEl.html((slideIndex + 1) + slider.settings.pagerShortSeparator + len);
         return;
+      } else if (slider.settings.pagerType === 'customPage') {
+        slider.pagerEl.html((slideIndex + 1) + slider.settings.pagerShortSeparator + len);
+        return;
       }
       // remove all pager active classes
       slider.pagerEl.find('a').removeClass('active');

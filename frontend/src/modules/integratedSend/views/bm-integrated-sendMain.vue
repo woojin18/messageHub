@@ -606,17 +606,9 @@ export default {
         slideMargin: 10,
         controls: true,
         pager: true,
-        pagerType: 'short',
+        pagerType: 'customPage',
         touchEnabled : (navigator.maxTouchPoints > 0),
-        autoHover: false,
-        onSliderLoad: function(){
-          jQuery('.bx-default-pager').text(1 + ' / ' + 4);
-        }
-      });
-      jQuery('.bx-prev, .bx-next').parent().on('click', function () {
-        if(mySider){
-          jQuery('.bx-default-pager').text(mySider.getCurrentSlide()+1 + ' / ' + mySider.getSlideCount());
-        }
+        autoHover: false
       });
     },
     fnGetImageUrl(ch, fileId){
