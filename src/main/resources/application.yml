@@ -205,7 +205,7 @@ datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     jdbc-url: jdbc:log4jdbc:mysql://stg-advmsg-db.cluster-crvzo9rgathe.ap-northeast-2.rds.amazonaws.com/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: cm_console
-    password: aptlwld123
+    password: ENC(8yxau7b5v41ZqVEU3AGtQ5bQVNLB41ce)
     pool-name: hikari-cp
     maximum-pool-size: 30
     minimum-idle: 5
