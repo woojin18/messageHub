@@ -20,7 +20,7 @@
 						</div>
 					</div>
 					<div class="forgot col-md-6">
-						<a v-bind:href="findUserIdUrl">아이디 찾기</a><span>·</span>
+						<a v-bind:href="findUserIdUrl">아이디 찾기james</a><span>·</span>
 						<a v-bind:href="findUserPwdUrl"><i class="fas fa-lock-alt mr5"></i> 비밀번호 분실</a>
 					</div>
 				</div>	
