@@ -59,13 +59,13 @@
         <logger name="org.apache" level="info" />
         <logger name="org.springframework" level="info" />
         <logger name="io.lettuce.core" level="info" />
-        <logger name="org.mybatis" level="info" />
+        <logger name="org.mybatis" level="OFF" />
         <logger name="io.netty" level="info" />
 
         <!-- DB 관련 -->
         <logger name="jdbc" level="OFF"/>
         <logger name="jdbc.sqlonly" level="OFF" />
-        <logger name="jdbc.sqltiming" level="DEBUG" />
+        <logger name="jdbc.sqltiming" level="OFF" />
         <logger name="jdbc.audit" level="OFF" />
         <logger name="jdbc.resultset" level="OFF" />
         <logger name="jdbc.resultsettable" level="OFF" />
