@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300" viewBox="0 0 300 300">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="100" height="68" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="그룹_3959" data-name="그룹 3959" transform="translate(-380 -854)">
+    <g id="box" transform="translate(380 854)" fill="#fff" stroke="#d5d5d5" stroke-width="1">
+      <rect width="300" height="300" stroke="none"/>
+      <rect x="0.5" y="0.5" width="299" height="299" fill="none"/>
+    </g>
+    <g id="그룹_3938" data-name="그룹 3938">
+      <g id="사각형_939" data-name="사각형 939" transform="translate(460 914)" fill="#fff" stroke="#d4d4d4" stroke-width="1">
+        <rect width="140" height="180" rx="4" stroke="none"/>
+        <rect x="0.5" y="0.5" width="139" height="179" rx="3.5" fill="none"/>
+      </g>
+      <g id="그룹_3936" data-name="그룹 3936" transform="translate(119 495)">
+        <rect id="사각형_504" data-name="사각형 504" width="100" height="14" transform="translate(361 501)" fill="#ddd"/>
+        <g id="반복_그리드_1" data-name="반복 그리드 1" transform="translate(361 523)" clip-path="url(#clip-path)">
+          <g transform="translate(-361 -523)">
+            <rect id="사각형_505" data-name="사각형 505" width="100" height="6" transform="translate(361 523)" fill="#eee"/>
+          </g>
+          <g transform="translate(-361 -513)">
+            <rect id="사각형_505-2" data-name="사각형 505" width="100" height="6" transform="translate(361 523)" fill="#eee"/>
+          </g>
+          <g transform="translate(-361 -503)">
+            <rect id="사각형_505-3" data-name="사각형 505" width="100" height="6" transform="translate(361 523)" fill="#eee"/>
+          </g>
+          <g transform="translate(-361 -493)">
+            <rect id="사각형_505-4" data-name="사각형 505" width="100" height="6" transform="translate(361 523)" fill="#eee"/>
+          </g>
+          <g transform="translate(-361 -483)">
+            <rect id="사각형_505-5" data-name="사각형 505" width="100" height="6" transform="translate(361 523)" fill="#eee"/>
+          </g>
+          <g transform="translate(-361 -473)">
+            <rect id="사각형_505-6" data-name="사각형 505" width="100" height="6" transform="translate(361 523)" fill="#eee"/>
+          </g>
+          <g transform="translate(-361 -463)">
+            <rect id="사각형_505-7" data-name="사각형 505" width="100" height="6" transform="translate(361 523)" fill="#eee"/>
+          </g>
+        </g>
+      </g>
+      <g id="사각형_940" data-name="사각형 940" transform="translate(460 914)" fill="#f1f1f1" stroke="#d4d4d4" stroke-width="1">
+        <path d="M4,0H136a4,4,0,0,1,4,4V70a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V4A4,4,0,0,1,4,0Z" stroke="none"/>
+        <path d="M4,.5H136A3.5,3.5,0,0,1,139.5,4V69a.5.5,0,0,1-.5.5H1A.5.5,0,0,1,.5,69V4A3.5,3.5,0,0,1,4,.5Z" fill="none"/>
+      </g>
+      <text id="image-polaroid" transform="translate(530 959)" fill="#d5d5d5" font-size="25" font-family="FontAwesome5Pro-Solid, 'Font Awesome \35  Pro'"><tspan x="-10.938" y="0">image-polaroid</tspan></text>
+    </g>
+  </g>
+</svg>

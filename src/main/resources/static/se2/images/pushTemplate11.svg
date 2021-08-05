@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="83" height="116" viewBox="0 0 83 116">
+  <g id="그룹_3197" data-name="그룹 3197" transform="translate(0)">
+    <g id="그룹_3194" data-name="그룹 3194">
+      <g id="사각형_826" data-name="사각형 826" transform="translate(0)" fill="#fff" stroke="#d5d5d5" stroke-width="1">
+        <rect width="74" height="107" stroke="none"/>
+        <rect x="0.5" y="0.5" width="73" height="106" fill="none"/>
+      </g>
+      <rect id="사각형_828" data-name="사각형 828" width="58" height="7" transform="translate(9 77)" fill="#ddd"/>
+      <rect id="사각형_827" data-name="사각형 827" width="58" height="68" transform="translate(9 7)" fill="#f1f1f1"/>
+      <rect id="사각형_829" data-name="사각형 829" width="58" height="2" transform="translate(9 88)" fill="#e9e9e9"/>
+      <rect id="사각형_830" data-name="사각형 830" width="58" height="3" transform="translate(9 94)" fill="#e9e9e9"/>
+      <text id="image-polaroid" transform="translate(27 50)" fill="#d5d5d5" font-size="24" font-family="FontAwesome5Pro-Solid, 'Font Awesome \35  Pro'"><tspan x="0" y="0">image-polaroid</tspan></text>
+    </g>
+    <g id="그룹_3195" data-name="그룹 3195" transform="translate(5 5)">
+      <g id="사각형_826-2" data-name="사각형 826" transform="translate(0)" fill="#fff" stroke="#d5d5d5" stroke-width="1">
+        <rect width="74" height="107" stroke="none"/>
+        <rect x="0.5" y="0.5" width="73" height="106" fill="none"/>
+      </g>
+      <rect id="사각형_828-2" data-name="사각형 828" width="58" height="7" transform="translate(8 77)" fill="#ddd"/>
+      <rect id="사각형_827-2" data-name="사각형 827" width="58" height="67" transform="translate(8 7)" fill="#f1f1f1"/>
+      <rect id="사각형_829-2" data-name="사각형 829" width="58" height="3" transform="translate(8 87)" fill="#e9e9e9"/>
+      <rect id="사각형_830-2" data-name="사각형 830" width="58" height="2" transform="translate(8 94)" fill="#e9e9e9"/>
+      <text id="image-polaroid-2" data-name="image-polaroid" transform="translate(27 49)" fill="#d5d5d5" font-size="24" font-family="FontAwesome5Pro-Solid, 'Font Awesome \35  Pro'"><tspan x="0" y="0">image-polaroid</tspan></text>
+    </g>
+    <g id="그룹_3196" data-name="그룹 3196" transform="translate(10 9)">
+      <g id="사각형_826-3" data-name="사각형 826" transform="translate(0)" fill="#fff" stroke="#d5d5d5" stroke-width="1">
+        <rect width="73" height="107" stroke="none"/>
+        <rect x="0.5" y="0.5" width="72" height="106" fill="none"/>
+      </g>
+      <rect id="사각형_828-3" data-name="사각형 828" width="58" height="6" transform="translate(8 78)" fill="#ddd"/>
+      <rect id="사각형_827-3" data-name="사각형 827" width="58" height="67" transform="translate(8 8)" fill="#f1f1f1"/>
+      <rect id="사각형_829-3" data-name="사각형 829" width="58" height="3" transform="translate(8 88)" fill="#e9e9e9"/>
+      <rect id="사각형_830-3" data-name="사각형 830" width="58" height="3" transform="translate(8 94)" fill="#e9e9e9"/>
+      <text id="image-polaroid-3" data-name="image-polaroid" transform="translate(26 50)" fill="#d5d5d5" font-size="24" font-family="FontAwesome5Pro-Solid, 'Font Awesome \35  Pro'"><tspan x="0" y="0">image-polaroid</tspan></text>
+    </g>
+  </g>
+</svg>
