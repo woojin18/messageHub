@@ -208,17 +208,19 @@ export default {
                     var data = result.data;
                     vm.tmpltName = data.tmpltName;
                     vm.tmpltId = data.tmpltId;
-                    vm.messagebaseformId = data.desNm;
                     vm.formNm = data.formNm;
                     vm.desContent = data.textContents;
 
                     // input 세팅 (cell)
-                    if(vm.templateRadioBtn == 'cell') {
+                    if (vm.templateRadioBtn == 'cell') {
                         vm.styleContentCnt = data.styleContentCnt;
                         vm.styleArr = data.styleArr;
                         vm.styleInput = data.styleInput;
                         vm.styleInputSec = data.styleInputSec;
                         vm.styleChk = data.styleChk;
+                        vm.messagebaseformId = data.styleNm;
+                    } else {
+                    	vm.messagebaseformId = data.desNm;
                     }
                     // 버튼 세팅
                     vm.btnCnt = data.btnCnt;

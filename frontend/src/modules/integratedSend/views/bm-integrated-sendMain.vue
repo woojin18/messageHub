@@ -158,6 +158,34 @@
                 </div>
               </div>
               <!--// DESCRIPTION -->
+              <!-- CELL -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'CELL'" class="phoneWrap">
+                <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
+                <div class="phoneTextWrap scroll-yc">
+                  <div class="phoneText1 of_h">
+                    <img :src="tmpltData.RCS.rcsStyleFormNm | getIconURlByFormNm" style="width:70px;">
+
+                    <div v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0">
+                      <div v-for="(cellContent, idx) in tmpltData.RCS.mergeData[0].content" :key="idx">
+                        <div class="of_h consolMarginTop">
+                          <p v-if="cellContent.description0" :class="'lc-1'+ (cellContent.description1 ? ' inline-block' : '')">{{cellContent.description0}}</p>
+                          <p v-if="cellContent.description1" class="lc-1 inline-block float-right">{{cellContent.description1}}</p>
+                        </div>
+                        <hr/>
+                      </div>
+                    </div>
+                    <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
+                      <p 
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
+                        :key="idx" 
+                        class="text-center mt20" 
+                        style="color:#69C8FF"
+                      >{{btn.action.displayText}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--// CELL -->
               <!-- SMS -->
               <div v-if="tmpltData.RCS.rcsPrdType == 'SMS'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
@@ -597,7 +625,7 @@ export default {
   },
   methods: {
     fnSetBxslider(){
-      let mySider = jQuery('.cardBxslider').bxSlider({
+      jQuery('.cardBxslider').bxSlider({
         auto: false,
         autoControls: false,
         slideWidth: 204,
@@ -606,17 +634,9 @@ export default {
         slideMargin: 10,
         controls: true,
         pager: true,
-        pagerType: 'short',
+        pagerType: 'customPage',
         touchEnabled : (navigator.maxTouchPoints > 0),
-        autoHover: false,
-        onSliderLoad: function(){
-          jQuery('.bx-default-pager').text(1 + ' / ' + 4);
-        }
-      });
-      jQuery('.bx-prev, .bx-next').parent().on('click', function () {
-        if(mySider){
-          jQuery('.bx-default-pager').text(mySider.getCurrentSlide()+1 + ' / ' + mySider.getSlideCount());
-        }
+        autoHover: false
       });
     },
     fnGetImageUrl(ch, fileId){
@@ -836,10 +856,20 @@ export default {
         } else if(ch == 'RCS'){
           if(chTmpltInfo.mergeData && chTmpltInfo.mergeData.length > 0){
             conts = '';
-            chTmpltInfo.mergeData.forEach(element => {
-              conts += this.$gfnCommonUtils.defaultIfEmpty(element.title, '');
-              conts += this.$gfnCommonUtils.defaultIfEmpty(element.description, '');
-            });
+            if(chTmpltInfo.rcsPrdType == 'CELL'){
+              let styleContent = chTmpltInfo.mergeData[0];
+              if(styleContent.content){
+                styleContent.content.forEach(element => {
+                  conts += this.$gfnCommonUtils.defaultIfEmpty(element.description0, '');
+                  conts += this.$gfnCommonUtils.defaultIfEmpty(element.description1, '');
+                });
+              }
+            } else {
+              chTmpltInfo.mergeData.forEach(element => {
+                conts += this.$gfnCommonUtils.defaultIfEmpty(element.title, '');
+                conts += this.$gfnCommonUtils.defaultIfEmpty(element.description, '');
+              });
+            }
           }
         }
 
