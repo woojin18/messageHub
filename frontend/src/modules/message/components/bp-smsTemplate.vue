@@ -78,7 +78,7 @@
                         <span><pre>{{templateData.tmpltContent}}</pre></span>
                         <br v-if="!$gfnCommonUtils.isEmpty(templateData.tmpltContent)"/>
                         <span v-if="templateData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(templateData.rcvblcNumber)">
-                          {{templateData.rcvblcNumber}}
+                          수신거부번호 : {{templateData.rcvblcNumber}}
                         </span>
                       </p>
                     </div>
@@ -160,7 +160,6 @@ export default {
       if(this.templateList[idx].tmpltId == tmpltId){
         tempData = this.templateList[idx];
       } else {
-        var vm = this;
         this.templateList.forEach(function(){
           if(this.tmpltId == tmpltId){
             tempData = this;

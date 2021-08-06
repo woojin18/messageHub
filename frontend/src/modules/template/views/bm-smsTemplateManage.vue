@@ -29,7 +29,7 @@
                   <span><pre>{{tmpltData.tmpltContent}}</pre></span>
                   <br v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltContent)"/>
                   <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.rcvblcNumber)">
-                    {{tmpltData.rcvblcNumber}}
+                    수신거부번호 : {{tmpltData.rcvblcNumber}}
                   </span>
                 </p>
               </div>

@@ -76,7 +76,7 @@
                   <p class="consolMarginTop"><pre>{{tmpltData.MMS.msg}}</pre></p>
                   <br v-if="tmpltData.msgKind == 'A'"/>
                   <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.MMS.rcvblcInput)">
-                    {{tmpltData.MMS.rcvblcInput}}
+                    수신거부번호 : {{tmpltData.MMS.rcvblcInput}}
                   </span>
                 </div>
               </div>
@@ -93,7 +93,7 @@
                   <p class="consolMarginTop"><pre>{{tmpltData.SMS.msg}}</pre></p>
                   <br v-if="tmpltData.msgKind == 'A'"/>
                   <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.SMS.rcvblcInput)">
-                    {{tmpltData.SMS.rcvblcInput}}
+                    수신거부번호 : {{tmpltData.SMS.rcvblcInput}}
                   </span>
                 </div>
               </div>
@@ -133,7 +133,7 @@
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
                     <br v-if="tmpltData.msgKind == 'A'"/>
                     <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
-                      {{tmpltData.RCS.footer}}
+                      수신거부번호 : {{tmpltData.RCS.footer}}
                     </span>
                   </div>
                 </div>
@@ -194,7 +194,7 @@
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
                     <br v-if="tmpltData.msgKind == 'A'"/>
                     <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
-                      {{tmpltData.RCS.footer}}
+                      수신거부번호 : {{tmpltData.RCS.footer}}
                     </span>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
                       <p 
@@ -217,7 +217,7 @@
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
                     <br v-if="tmpltData.msgKind == 'A'"/>
                     <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
-                      {{tmpltData.RCS.footer}}
+                      수신거부번호 : {{tmpltData.RCS.footer}}
                     </span>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
                       <p 
@@ -251,7 +251,7 @@
                     <div>
                       <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
                       <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
-                        <br/>{{tmpltData.RCS.footer}}
+                        <br/>수신거부번호 : {{tmpltData.RCS.footer}}
                       </span>
                     </div>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
@@ -286,7 +286,7 @@
                     <div>
                       <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
                       <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
-                        <br/>{{tmpltData.RCS.footer}}
+                        <br/>수신거부번호 : {{tmpltData.RCS.footer}}
                       </span>
                     </div>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
@@ -315,7 +315,7 @@
                         <img 
                           v-if="tmpltData.msgType == 'IMAGE' && msgData.mediaUrl" 
                           :src="msgData.mediaUrl" 
-                          style="width: 240px;height: 120px;"
+                          style="width: 204px;height: 172px;"
                           alt="프리 템플릿"
                         >
                         <div>
@@ -332,7 +332,7 @@
                             style="color:#69C8FF"
                           >{{btn.action.displayText}}</p>
                         </div>
-                        <p  v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)" class="color3 font-size10 mt5">무료수신거부: {{tmpltData.RCS.footer}}</p>
+                        <p  v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)" class="color3 font-size10 mt5">수신거부번호: {{tmpltData.RCS.footer}}</p>
                       </li>
                     </ul>
                   </div>
@@ -349,15 +349,15 @@
                       <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
                     </p>
                     <ul class="cardBxslider mt10">
-                      <li v-for="(msgData, idx) in tmpltData.RCS.mergeData" :key="idx" class="slide cardBox">
+                      <li v-for="(msgData, idx) in tmpltData.RCS.mergeData" :key="idx" class="slide cardBox scroll-yc">
                         <img 
                           v-if="tmpltData.msgType == 'IMAGE' && msgData.mediaUrl" 
                           :src="msgData.mediaUrl" 
-                          style="width: 240px;height: 300px;"
+                          style="width: 204px;height: 255px;"
                           alt="프리 템플릿"
                         >
                         <div>
-                          <div class="scroll-y">
+                          <div>
                             <p class="color000 font-size13">{{msgData.title}}</p>
                             <p class="mt15"><pre>{{msgData.description}}</pre></p>
                           </div>
@@ -370,7 +370,7 @@
                             style="color:#69C8FF"
                           >{{btn.action.displayText}}</p>
                         </div>
-                        <p  v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)" class="color3 font-size10 mt5">무료수신거부: {{tmpltData.RCS.footer}}</p>
+                        <p  v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)" class="color3 font-size10 mt5">수신거부번호: {{tmpltData.RCS.footer}}</p>
                       </li>
                     </ul>
                   </div>

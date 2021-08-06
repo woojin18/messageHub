@@ -45,16 +45,18 @@
                 <p v-if="this.$gfnCommonUtils.isEmpty(sendData.fbInfo.title)">제목</p>
                 <p v-else>{{sendData.fbInfo.title}}</p>
               </div>
+              <div v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center simulatorImg"
+                :style="'padding:65px;background-image: url('+sendData.fbInfo.imgUrl+');'">
+              </div>
               <div class="scroll-y">
                 <p v-if="(this.$gfnCommonUtils.isEmpty(sendData.fbInfo.msg) && this.$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
                 <p v-else class="font-size14 color4 mt10">
                   <span><pre>{{sendData.fbInfo.msg}}</pre></span>
                   <br v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)"/>
-                  {{sendData.fbInfo.rcvblcNumber}}
+                  <span v-if="sendData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)">
+                    수신거부번호 : {{sendData.fbInfo.rcvblcNumber}}
+                  </span>
                 </p>
-              </div>
-              <div v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center simulatorImg"
-                :style="'padding:65px;background-image: url('+sendData.fbInfo.imgUrl+');'">
               </div>
             </div>
           </div>
