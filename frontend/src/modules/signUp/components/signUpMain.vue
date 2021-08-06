@@ -318,11 +318,11 @@ export default {
 			var regno =  this.$gfnCommonUtils.isEmpty(this.selRegno) ? this.regno : this.selRegno;
 			
 			// 사업자 번호 유효성 검사
-			var regnoVali = this.regnoVali(regno);
-			if(!regnoVali) {
-				confirm.fnAlert("", "사업자 번호를 정확히 입력해주세요.");
-				return false;
-			}
+			// var regnoVali = this.regnoVali(regno);
+			// if(!regnoVali) {
+			// 	confirm.fnAlert("", "사업자 번호를 정확히 입력해주세요.");
+			// 	return false;
+			// }
 			eventBus.$on('callbackEventBus', this.signUpSubmit);
      		confirm.fnConfirm( "", "가입하시겠습니까?", "확인");
 		},
