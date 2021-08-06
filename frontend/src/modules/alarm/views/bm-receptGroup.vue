@@ -18,7 +18,7 @@
                             <option value="Y">Y</option>
                             <option value="N">N</option>
 							</select>
-							<a @click="fnSearch1" class="btnStyle1 float-right" title="검색">검색</a>
+							<a @click="fnSearch1" class="btnStyle1 float-right" activity="READ" title="검색">검색</a>
 						</div>						
 					</div>
 				</div>
@@ -27,8 +27,8 @@
 			<div class="row">
 				<div class="col-xs-6 mt30">
 					<div class="float-right mb20">						
-						<a @click="fnAdd1" class="btnStyle2 backBlack" style="min-width:auto" title="수신그룹 등록">수신그룹 등록</a>&nbsp;
-						<a @click="fnDel1" class="btnStyle2 borderGray" style="min-width:auto" title="수신그룹 삭제">수신그룹 삭제</a>
+						<a @click="fnAdd1" class="btnStyle2 backBlack" style="min-width:auto" activity="SAVE" title="수신그룹 등록">수신그룹 등록</a>&nbsp;
+						<a @click="fnDel1" class="btnStyle2 borderGray" style="min-width:auto" activity="SAVE" title="수신그룹 삭제">수신그룹 삭제</a>
 					</div>
 					<div class="scroll-y5" style="width:100%">
 						<table class="table_skin1" style="width:100%" id="list1">
@@ -64,8 +64,8 @@
 				</div>
 				<div class="col-xs-6 mt30">
 					<div class="float-right mb20">						
-						<a @click="fnAdd2" class="btnStyle2 backBlack" style="min-width:auto" title="그룹 수신자  추가">그룹 수신자  추가</a>&nbsp;
-						<a @click="fnDel2" class="btnStyle2 borderGray" style="min-width:auto" title="그룹 수신자 삭제">그룹 수신자 삭제</a>
+						<a @click="fnAdd2" class="btnStyle2 backBlack" style="min-width:auto" activity="SAVE" title="그룹 수신자 추가">그룹 수신자  추가</a>&nbsp;
+						<a @click="fnDel2" class="btnStyle2 borderGray" style="min-width:auto" activity="SAVE" title="그룹 수신자 삭제">그룹 수신자 삭제</a>
 					</div>
 					<div class="scroll-y5" style="width:100%">
 						<table class="table_skin1" style="width:100%">

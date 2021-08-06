@@ -9,7 +9,7 @@
 						<div class="of_h">
 							<h5 class="inline-block" style="width:20%">수신그룹 명 *</span></h5>
 							<div class="of_h float-right" style="width:80%">								
-								<div class="float-left" style="width:75%"><input type="text" class="inputStyle" title="수신그룹 명 입력란"></div>
+								<div class="float-left" style="width:75%"><input type="text" class="inputStyle" title="수신그룹 명 입력란" v-model="params.srcRecipientName"></div>
 								<div class="float-right" style="width:23%"><a class="btnStyle1 borderGray" style="width:100%" title="검색" @click="fnSearch">검색</a></div>
 							</div>
 						</div>
@@ -42,7 +42,7 @@
 						</div>
 					</div>
 					<div class="text-center mt40">
-						<a @click="fnSave" class="btnStyle1 backBlack" title="선택">선택</a>&nbsp;
+						<a @click="fnSave" class="btnStyle1 backBlack" activity="SAVE" title="선택">선택</a>&nbsp;
 						<a @click="fnClose" class="btnStyle1 backWhite" title="닫기">닫기</a>						
 					</div>
 				</div>
@@ -72,6 +72,7 @@ export default {
     return {
       params: {
         srcReceptGroupId : null,
+		srcRecipientName : null,
 		recipientIds:[]
       },
 	  list : []

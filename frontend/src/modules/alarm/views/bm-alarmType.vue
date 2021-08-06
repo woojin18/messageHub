@@ -204,7 +204,7 @@
           <div class="col-xs-6 consolMarginTop" v-if="alarmType.alarmTypeCode == 'MSG' || alarmType.alarmTypeCode == 'SEND' || alarmType.alarmTypeCode == 'QTY'">
             <div class="of_h consoleCon">
               <h4 class="inline-block">수집 대상 API</h4>
-              <a @click="fnAdd1" class="btnStyle1 backBlack float-right" style="min-width:auto" title="등록">등록</a>
+              <a @click="fnAdd1" activity="SAVE" class="btnStyle1 backBlack float-right" style="min-width:auto" title="등록">등록</a>
             </div>
             <div class="scroll-y2">
               <table class="table_skin1 tbl-striped" style="width:100%">
@@ -230,7 +230,7 @@
                     <td>{{data.apiKeyName}}</td>
                     <td>{{data.apiKey}}</td>
                     <td class="text-center end vertical-middle">
-                      <a class="btnStyle1 backLightGray" title="삭제" @click="fnDel1(idx)">삭제</a>
+                      <a class="btnStyle1 backLightGray" activity="SAVE" title="삭제" @click="fnDel1(idx)">삭제</a>
                     </td>
                   </tr>	
 								  <tr v-if="alarm.list1.length == 0">
@@ -243,7 +243,7 @@
           <div class="col-xs-6 consolMarginTop">
             <div class="of_h consoleCon">
               <h4 class="inline-block">알람 수신</h4>
-              <a @click="fnAdd2" class="btnStyle1 backBlack float-right" style="min-width:auto" title="등록">등록</a>
+              <a @click="fnAdd2" class="btnStyle1 backBlack float-right" activity="SAVE" style="min-width:auto" title="등록">등록</a>
             </div>
             <div class="scroll-y2">
               <table class="table_skin1" style="width:100%">
@@ -256,13 +256,13 @@
                   <tr v-for="(data, idx) in alarm.list2">
                     <td class="end of_h text-left">
                       <p class="inline-block vertical-sub">{{data.receptGroupName}} ({{data.recipientCnt}}명)</p>
-                      <a class="btnStyle1 backLightGray float-right" title="삭제" @click="fnDel2(idx)">삭제</a>
+                      <a class="btnStyle1 backLightGray float-right" title="삭제" activity="SAVE" @click="fnDel2(idx)">삭제</a>
                     </td>
                   </tr>	
                   <tr v-for="(data, idx) in alarm.list3">					
                     <td class="end of_h text-left">
                       <p class="inline-block vertical-sub">{{data.recipientName}} ({{data.hpNumber}})</p>
-                      <a class="btnStyle1 backLightGray float-right" title="삭제" @click="fnDel3(idx)">삭제</a>
+                      <a class="btnStyle1 backLightGray float-right" title="삭제" activity="SAVE" @click="fnDel3(idx)">삭제</a>
                     </td>
                   </tr>		
 								  <tr v-if="alarm.list2.length == 0 && alarm.list3.length == 0">
@@ -274,7 +274,7 @@
           </div>
         </div>
         <div class="float-right mt40">						
-          <a @click="fnSave" class="btnStyle2 backRed ml10" title="등록">저장</a>
+          <a @click="fnSave" class="btnStyle2 backRed ml10" activity="SAVE" title="등록">저장</a>
           <a @click="fnCancel" class="btnStyle2 ml10">취소</a>
         </div>
       </article>

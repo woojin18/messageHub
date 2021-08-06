@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div class="text-center mt40">
-                        <a @click="fnSave" class="btnStyle1 backBlack" title="저장">저장</a>&nbsp;
+                        <a @click="fnSave" class="btnStyle1 backBlack" activity="SAVE" title="저장">저장</a>&nbsp;
                         <a @click="fnClose" class="btnStyle1 backWhite" title="닫기">닫기</a>			
                     </div>
                 </div>
