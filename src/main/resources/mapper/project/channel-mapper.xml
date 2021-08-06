@@ -429,7 +429,6 @@
 		,	#{appNm}
 		,	#{corpId}
 		,	#{projectId}
-<!-- 		,	#{serviceStatus} -->
 		,	'ON'
 		,	#{fcmPackageName}
 		,	#{fcmServerKey}
@@ -875,9 +874,6 @@
 		<if test="srcKkoChId != '' and srcKkoChId != null ">
 		AND A.KKO_CH_ID LIKE CONCAT('%', #{srcKkoChId}, '%')
 		</if>
-		<if test="srcUseYn != '' and srcUseYn != null ">
-		AND A.USE_YN = #{srcUseYn}
-		</if>
 	</select>
 	
 	<select id="selectKkoCh" resultType="camel">
@@ -903,9 +899,6 @@
 		AND		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
 		<if test="srcKkoChId != '' and srcKkoChId != null ">
 		AND A.KKO_CH_ID LIKE CONCAT('%', #{srcKkoChId}, '%')
-		</if>
-		<if test="srcUseYn != '' and srcUseYn != null ">
-		AND A.USE_YN = #{srcUseYn}
 		</if>
 		ORDER BY A.REG_DT DESC
         <if test='pagingYn == "Y" '>
