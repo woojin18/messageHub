@@ -5,46 +5,51 @@
         <Property name="log-path">logs/web-console</Property>
         <Property name="log-path-efs">efs/logs/web-console</Property>
     </Properties>
-	<appenders>
-  		<Console name="console" >
-   			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%15.15t] %5p [%-30.30logger{1.}] (%-4L) : %m%n%wEx" />
-  		</Console>
-  		
-		<RollingFile name="service_file" fileName="${log-path}/service/${hostName}.log" filePattern="${log-path}/service/%d{yyyyMMdd}/${hostName}-%i.log">
-   			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%15.15t] %5p [%-30.30logger{1.}] (%-4L) : %m%n%wEx" />
-   			<Policies>
-    			<SizeBasedTriggeringPolicy size="500MB" /> <!-- 이 용량이 초과되면 아래 DefaultRolloverStrategy 정책만큼 넘버링  -->
-    			<TimeBasedTriggeringPolicy /><!-- Rotated everyday -->
-   			</Policies>
-			<DefaultRolloverStrategy max="500" fileIndex="min" />
-  		</RollingFile>
-  		
-		<RollingFile name="access_file" fileName="${log-path}/access/${hostName}-access.log" filePattern="${log-path}/access/%d{yyyyMMdd}/${hostName}-access-%i.log">
-   			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%15.15t] %5p [%-30.30logger{1.}] (%-4L) : %m%n%wEx" />
-   			<Policies>
-    			<SizeBasedTriggeringPolicy size="500MB" /> <!-- 이 용량이 초과되면 아래 DefaultRolloverStrategy 정책만큼 넘버링  -->
-    			<TimeBasedTriggeringPolicy /><!-- Rotated everyday -->
-   			</Policies>
-			<DefaultRolloverStrategy max="500" fileIndex="min" />
-  		</RollingFile>
+    <appenders>
+        <Console name="console" >
+            <MarkerFilter marker="PRIVACY" onMatch="DENY" onMismatch="ACCEPT"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%15.15t] %5p [%-30.30logger{1.}] (%-4L) : %m%n%wEx" />
+        </Console>
 
-		<RollingFile name="alive_file" fileName="${log-path-efs}/alive/${hostName}-alive.log" filePattern="${log-path-efs}/alive/%d{yyyyMMdd}/${hostName}-alive-%i.log">
-   			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %m%n%wEx" />
-   			<Policies>
-    			<SizeBasedTriggeringPolicy size="500MB" /> <!-- 이 용량이 초과되면 아래 DefaultRolloverStrategy 정책만큼 넘버링  -->
-    			<TimeBasedTriggeringPolicy /><!-- Rotated everyday -->
-   			</Policies>
-			<DefaultRolloverStrategy max="500" fileIndex="min" />
-  		</RollingFile>
-  		
-		<RollingFile name="error_file" fileName="${log-path-efs}/error/${app-name}.log" filePattern="${log-path-efs}/error/$${date:yyyyMMdd}/${app-name}.log">
-   			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${hostName}] [%20.20t] [%-40.40logger{39}] (%-4L) : %m%n%wEx" />
-   			<Policies>
-    			<CronTriggeringPolicy schedule="0 0 0 * * ?" />
-   			</Policies>
-  		</RollingFile>
+        <RollingFile name="service_file" fileName="${log-path}/service/${hostName}.log" filePattern="${log-path}/service/%d{yyyyMMdd}/${hostName}-%i.log">
+            <MarkerFilter marker="PRIVACY" onMatch="DENY" onMismatch="ACCEPT"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%15.15t] %5p [%-30.30logger{1.}] (%-4L) : %m%n%wEx" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500MB" /> <!-- 이 용량이 초과되면 아래 DefaultRolloverStrategy 정책만큼 넘버링  -->
+                <TimeBasedTriggeringPolicy /><!-- Rotated everyday -->
+            </Policies>
+            <DefaultRolloverStrategy max="500" fileIndex="min" />
+        </RollingFile>
 
-  	</appenders>
+        <RollingFile name="access_file" fileName="${log-path}/access/${hostName}-access.log" filePattern="${log-path}/access/%d{yyyyMMdd}/${hostName}-access-%i.log">
+            <MarkerFilter marker="PRIVACY" onMatch="DENY" onMismatch="ACCEPT"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%15.15t] %5p [%-30.30logger{1.}] (%-4L) : %m%n%wEx" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500MB" /> <!-- 이 용량이 초과되면 아래 DefaultRolloverStrategy 정책만큼 넘버링  -->
+                <TimeBasedTriggeringPolicy /><!-- Rotated everyday -->
+            </Policies>
+            <DefaultRolloverStrategy max="500" fileIndex="min" />
+        </RollingFile>
+
+        <RollingFile name="alive_file" fileName="${log-path-efs}/alive/${hostName}-alive.log" filePattern="${log-path-efs}/alive/%d{yyyyMMdd}/${hostName}-alive-%i.log">
+            <MarkerFilter marker="PRIVACY" onMatch="DENY" onMismatch="ACCEPT"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %m%n%wEx" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500MB" /> <!-- 이 용량이 초과되면 아래 DefaultRolloverStrategy 정책만큼 넘버링  -->
+                <TimeBasedTriggeringPolicy /><!-- Rotated everyday -->
+            </Policies>
+            <DefaultRolloverStrategy max="500" fileIndex="min" />
+        </RollingFile>
+
+        <RollingFile name="error_file" fileName="${log-path-efs}/error/${app-name}.log" filePattern="${log-path-efs}/error/$${date:yyyyMMdd}/${app-name}.log">
+            <MarkerFilter marker="PRIVACY" onMatch="DENY" onMismatch="ACCEPT"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${hostName}] [%20.20t] [%-40.40logger{39}] (%-4L) : %m%n%wEx" />
+            <Policies>
+                <CronTriggeringPolicy schedule="0 0 0 * * ?" />
+            </Policies>
+        </RollingFile>
+
+    </appenders>
 
     <loggers>
         <root level="debug" >
