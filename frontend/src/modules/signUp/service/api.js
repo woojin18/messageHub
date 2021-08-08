@@ -48,7 +48,7 @@ const selectSelCorpCustInfo = (params) => {
     return httpClient.post('/api/public/signUp/selectSelCorpCustInfo', params, { headers: {"show-layer": "Yes"} });
 }
 
-const getNiceCheckInfo = (params) => {
+const getNiceCheckInfo = () => {
     return httpClient.post('/api/public/signUp/getNiceCheckInfo', { headers: {"show-layer": "Yes"} });
 }
 
