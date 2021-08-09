@@ -12,7 +12,8 @@
 						FROM	cm.CM_MSG A
 						INNER JOIN cm_console.CM_CH_INFO B
 						ON		A.FINAL_CH = B.CH_NAME
-						WHERE	DATE_FORMAT(A.YMD, '%Y%m') = #{searchMonth}
+						WHERE	A.YMD BETWEEN CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') 
+											AND LAST_DAY(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') )
 						AND		A.CORP_ID =  #{corpId}
 						<if test="role == 'ADMIN'.toString()">
 						AND		A.PROJECT_ID IN (	SELECT	A.PROJECT_ID
@@ -63,7 +64,9 @@
 						FROM	cm.CM_MSG A
 						INNER JOIN cm_console.CM_CH_INFO B
 						ON		A.FINAL_CH = B.CH_NAME
-						WHERE	DATE_FORMAT(A.YMD, '%Y%m') = #{searchMonth}
+						<!-- WHERE	DATE_FORMAT(A.YMD, '%Y%m') = #{searchMonth} -->
+						WHERE	A.YMD BETWEEN CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') 
+											AND LAST_DAY(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') )
 						AND		A.CORP_ID =  #{corpId}
 						<if test="role == 'ADMIN'.toString()">
 						AND		A.PROJECT_ID IN (	SELECT	A.PROJECT_ID
