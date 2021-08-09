@@ -15,6 +15,14 @@ Vue.filter('unescapeXss', (value) => {
   return Vue.prototype.$gfnCommonUtils.unescapeXss(value);
 });
 
+//NOTICE 아이콘 class(noticeType -> class)
+Vue.filter('getNotiTypeClass', (noticeType) => {
+  if(noticeType == 'INFO') return 'Information';
+  else if(noticeType == 'INSPEC') return 'Inspect';
+  else if(noticeType == 'FAULT') return 'Fault';
+  else return 'newIcon';
+});
+
 //RCS 아이콘 URL
 Vue.filter('getIconURlByFormNm', (value) => {
   if(!value) return '';

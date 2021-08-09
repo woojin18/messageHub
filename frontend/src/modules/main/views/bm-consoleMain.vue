@@ -43,7 +43,7 @@
                 <!-- <router-link :to="{ name: 'noticeDetail', params: { noticeId: noticeInfo.noticeId }}" title="해당 게시글로 이동"> -->
                 <a href="#" @click.prevent="fnOpenNoticePopupModal(noticeInfo.noticeId)" title="해당 게시글이 열립니다">
                   <span class="noti_tt">
-                    <span v-if="!$gfnCommonUtils.isEmpty(noticeInfo.noticeTypeCdName)" class="newIcon">{{noticeInfo.noticeTypeCdName}}</span>
+                    <span v-if="!$gfnCommonUtils.isEmpty(noticeInfo.noticeTypeCdName)" :class="noticeInfo.noticeType | getNotiTypeClass">{{noticeInfo.noticeTypeCdName}}</span>
                     {{noticeInfo.title | unescapeXss}}
                   </span>
                   <span class="noti_day">{{noticeInfo.regDt}}</span>
