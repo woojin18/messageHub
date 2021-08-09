@@ -112,7 +112,7 @@
                   <td class="text-center">
                     <u><router-link :to="{ name: 'smsTemplateManage', params: { tmpltId: contant.tmpltId }}">{{contant.tmpltId}}</router-link></u>
                   </td>
-                  <td class="text-center">{{contant.tmpltName | unescapeXss}}</td>
+                  <td class="text-left">{{contant.tmpltName | unescapeXss}}</td>
                   <td class="text-center">{{contant.projectIdNm}}</td>
                   <td class="text-center">{{contant.senderType}}</td>
                   <td class="text-center">{{contant.regNm}}</td>
