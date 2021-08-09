@@ -28,7 +28,7 @@
                 <p class="font-size14 color4 mt10">
                   <span><pre>{{sendData.pushContent}}</pre></span>
                   <br v-if="!fnIsEmpty(sendData.pushContent)"/>
-                  {{sendData.msgKind == 'A' ? sendData.rcvblcNumber : ''}}
+                  {{sendData.msgKind == 'A' ? '수신거부 : '+sendData.rcvblcNumber : ''}}
                 </p>
               </div>
             </div>
