@@ -21,7 +21,7 @@
 							<select v-model="searchData.approvalStatus" id="selectApprovalStatus" class="selectStyle2" style="width:14%" title="상태 선택란"  @change="fnPageNoResetSearch">
 								<option value="">전체</option>
 							</select>
-							<a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" activity="READ" title="검색">검색</a>
+							<a @click="fnSearch(1)" class="btnStyle1 float-right" activity="READ" title="검색">검색</a>
 						</div>
 					</div>
 				</div>
@@ -69,10 +69,10 @@
 										<td class="text-center vertical-middle">{{totCnt-offset-data.rownum+1}}</td>
 										<td class="text-center vertical-middle">{{ data.userName }}</td>
 										<td class="text-center lc-1 vertical-middle">{{ data.loginId }}</td>
-										<td class="text-center lc-1 vertical-middle">{{ data.roleCd}}</td>
+										<td class="text-center lc-1 vertical-middle">{{ data.roleName}}</td>
 										<td class="text-center lc-1 vertical-middle">{{ data.approvalStatusName }}</td>
 										<td class="text-center end vertical-middle">
-											<a @click="fnDeleteMemberPop(data)" class="btnStyle1 borderLightGray small mr5" title="삭제">삭제</a>
+											<a v-if="data.roleCd != 'OWNER'" @click="fnDeleteMemberPop(data)" class="btnStyle1 borderLightGray small mr5" title="삭제">삭제</a>
 										</td>
 									</tr>
 									<tr v-if="memberList.length == 0">
@@ -157,7 +157,7 @@ export default {
 	methods: {
 		fnSearch(pageNum) {
 			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
-			//this.fnSearchMemberList();
+			this.fnSearchMemberList();
 		},
 		fnPageNoResetSearch(){
 			this.$refs.updatePaging.fnAllDecrease();

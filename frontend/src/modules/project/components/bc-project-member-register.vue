@@ -202,8 +202,8 @@ export default {
 			memberApi.registerMember(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
+					this.$parent.fnSearch(1);
 					confirm.fnAlert('', '등록을 성공했습니다.');
-					this.$parent.fnSearch();
 				} else {
 					confirm.fnAlert('', result.message);
 				}
