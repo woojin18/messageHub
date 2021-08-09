@@ -10,10 +10,13 @@ import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.signUp.service.SignUpService;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
@@ -25,6 +28,7 @@ public class UserService {
 	private GeneralDao generalDao;
 	
 	@Autowired SignUpService signUpSvc;
+	@Autowired CommonService commonService;
 	
 	/**
 	 * 사용자 리스트 조회
@@ -121,6 +125,7 @@ public class UserService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public RestResult<Object> modifyUser(Map<String, Object> params) throws Exception {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -158,6 +163,7 @@ public class UserService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public RestResult<Object> registerUser(Map<String, Object> params) {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -179,7 +185,9 @@ public class UserService {
 			generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, map);
 			
 			// 메일 전송
-			signUpSvc.sendMail(map, "/login/setUserPwd");
+//			signUpSvc.sendMail(map, "/login/setUserPwd");
+			map.put("location",  "/login/setUserPwd");
+			commonService.sendNoti("mail", map);
 			
 			rtn.setSuccess(true);
 			rtn.setData(params);
@@ -215,13 +223,9 @@ public class UserService {
 		return rtn;
 	}
 
-
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public RestResult<Object> sendCertifyMail(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-		
-		// 이동할 페이지 설정
-		String location = "";
-		location = CommonUtils.getString(params.get("location"));
 		
 		String randomNum = CommonUtils.randomGeneration(10);
 		params.put("authKey", randomNum);
@@ -237,7 +241,8 @@ public class UserService {
 			generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, params);
 			
 			// 메일 전송
-			signUpSvc.sendMail(params, location);
+//			signUpSvc.sendMail(params, location);
+			commonService.sendNoti("mail", params);
 			
 			rtn.setSuccess(true);
 		} catch (MessagingException e) {
