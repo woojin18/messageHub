@@ -29,7 +29,7 @@
                   <p class="consolMarginTop">
                     <pre>{{tmpltData.PUSH.msg}}</pre>
                     <br/>
-                    {{tmpltData.msgKind == 'A' ? tmpltData.PUSH.rcvblcInput : ''}}
+                    {{tmpltData.msgKind == 'A' ? '(수신거부 : '+tmpltData.PUSH.rcvblcInput+')' : ''}}
                   </p>
                 </div>
               </div>
@@ -76,7 +76,7 @@
                   <p class="consolMarginTop"><pre>{{tmpltData.MMS.msg}}</pre></p>
                   <br v-if="tmpltData.msgKind == 'A'"/>
                   <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.MMS.rcvblcInput)">
-                    {{tmpltData.MMS.rcvblcInput}}
+                    수신거부번호 : {{tmpltData.MMS.rcvblcInput}}
                   </span>
                 </div>
               </div>
@@ -93,7 +93,7 @@
                   <p class="consolMarginTop"><pre>{{tmpltData.SMS.msg}}</pre></p>
                   <br v-if="tmpltData.msgKind == 'A'"/>
                   <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.SMS.rcvblcInput)">
-                    {{tmpltData.SMS.rcvblcInput}}
+                    수신거부번호 : {{tmpltData.SMS.rcvblcInput}}
                   </span>
                 </div>
               </div>
@@ -133,7 +133,7 @@
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
                     <br v-if="tmpltData.msgKind == 'A'"/>
                     <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
-                      {{tmpltData.RCS.footer}}
+                      수신거부번호 : {{tmpltData.RCS.footer}}
                     </span>
                   </div>
                 </div>
@@ -158,6 +158,34 @@
                 </div>
               </div>
               <!--// DESCRIPTION -->
+              <!-- CELL -->
+              <div v-if="tmpltData.RCS.rcsPrdType == 'CELL'" class="phoneWrap">
+                <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
+                <div class="phoneTextWrap scroll-yc">
+                  <div class="phoneText1 of_h">
+                    <img :src="tmpltData.RCS.rcsStyleFormNm | getIconURlByFormNm" style="width:70px;">
+
+                    <div v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0">
+                      <div v-for="(cellContent, idx) in tmpltData.RCS.mergeData[0].content" :key="idx">
+                        <div class="of_h consolMarginTop">
+                          <p v-if="cellContent.description0" :class="'lc-1'+ (cellContent.description1 ? ' inline-block' : '')">{{cellContent.description0}}</p>
+                          <p v-if="cellContent.description1" class="lc-1 inline-block float-right">{{cellContent.description1}}</p>
+                        </div>
+                        <hr v-if="tmpltData.RCS.hrStyleArr && tmpltData.RCS.hrStyleArr.length > idx && tmpltData.RCS.hrStyleArr[idx]"/>
+                      </div>
+                    </div>
+                    <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
+                      <p 
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
+                        :key="idx" 
+                        class="text-center mt20" 
+                        style="color:#69C8FF"
+                      >{{btn.action.displayText}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--// CELL -->
               <!-- SMS -->
               <div v-if="tmpltData.RCS.rcsPrdType == 'SMS'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
@@ -166,7 +194,7 @@
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
                     <br v-if="tmpltData.msgKind == 'A'"/>
                     <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
-                      {{tmpltData.RCS.footer}}
+                      수신거부번호 : {{tmpltData.RCS.footer}}
                     </span>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
                       <p 
@@ -189,7 +217,7 @@
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
                     <br v-if="tmpltData.msgKind == 'A'"/>
                     <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
-                      {{tmpltData.RCS.footer}}
+                      수신거부번호 : {{tmpltData.RCS.footer}}
                     </span>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
                       <p 
@@ -223,7 +251,7 @@
                     <div>
                       <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
                       <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
-                        <br/>{{tmpltData.RCS.footer}}
+                        <br/>수신거부번호 : {{tmpltData.RCS.footer}}
                       </span>
                     </div>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
@@ -258,7 +286,7 @@
                     <div>
                       <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
                       <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
-                        <br/>{{tmpltData.RCS.footer}}
+                        <br/>수신거부번호 : {{tmpltData.RCS.footer}}
                       </span>
                     </div>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
@@ -282,12 +310,12 @@
                       <span>[WEB발신]</span>
                       <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
                     </p>
-                    <ul class="cardBxslider mt10">
+                    <ul class="cardBxslider mt10" style="list-style-type:none;display:none">
                       <li v-for="(msgData, idx) in tmpltData.RCS.mergeData" :key="idx" class="slide cardBox">
                         <img 
                           v-if="tmpltData.msgType == 'IMAGE' && msgData.mediaUrl" 
                           :src="msgData.mediaUrl" 
-                          style="width: 240px;height: 120px;"
+                          style="width: 204px;height: 172px;"
                           alt="프리 템플릿"
                         >
                         <div>
@@ -304,7 +332,7 @@
                             style="color:#69C8FF"
                           >{{btn.action.displayText}}</p>
                         </div>
-                        <p  v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)" class="color3 font-size10 mt5">무료수신거부: {{tmpltData.RCS.footer}}</p>
+                        <p  v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)" class="color3 font-size10 mt5">수신거부번호: {{tmpltData.RCS.footer}}</p>
                       </li>
                     </ul>
                   </div>
@@ -320,16 +348,16 @@
                       <span>[WEB발신]</span>
                       <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
                     </p>
-                    <ul class="cardBxslider mt10">
-                      <li v-for="(msgData, idx) in tmpltData.RCS.mergeData" :key="idx" class="slide cardBox">
+                    <ul class="cardBxslider mt10" style="list-style-type:none;display:none">
+                      <li v-for="(msgData, idx) in tmpltData.RCS.mergeData" :key="idx" class="slide cardBox scroll-yc">
                         <img 
                           v-if="tmpltData.msgType == 'IMAGE' && msgData.mediaUrl" 
                           :src="msgData.mediaUrl" 
-                          style="width: 240px;height: 300px;"
+                          style="width: 204px;height: 255px;"
                           alt="프리 템플릿"
                         >
                         <div>
-                          <div class="scroll-y">
+                          <div>
                             <p class="color000 font-size13">{{msgData.title}}</p>
                             <p class="mt15"><pre>{{msgData.description}}</pre></p>
                           </div>
@@ -342,7 +370,7 @@
                             style="color:#69C8FF"
                           >{{btn.action.displayText}}</p>
                         </div>
-                        <p  v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)" class="color3 font-size10 mt5">무료수신거부: {{tmpltData.RCS.footer}}</p>
+                        <p  v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)" class="color3 font-size10 mt5">수신거부번호: {{tmpltData.RCS.footer}}</p>
                       </li>
                     </ul>
                   </div>
@@ -597,7 +625,7 @@ export default {
   },
   methods: {
     fnSetBxslider(){
-      let mySider = jQuery('.cardBxslider').bxSlider({
+      jQuery('.cardBxslider').show().bxSlider({
         auto: false,
         autoControls: false,
         slideWidth: 204,
@@ -606,17 +634,9 @@ export default {
         slideMargin: 10,
         controls: true,
         pager: true,
-        pagerType: 'short',
+        pagerType: 'customPage',
         touchEnabled : (navigator.maxTouchPoints > 0),
-        autoHover: false,
-        onSliderLoad: function(){
-          jQuery('.bx-default-pager').text(1 + ' / ' + 4);
-        }
-      });
-      jQuery('.bx-prev, .bx-next').parent().on('click', function () {
-        if(mySider){
-          jQuery('.bx-default-pager').text(mySider.getCurrentSlide()+1 + ' / ' + mySider.getSlideCount());
-        }
+        autoHover: false
       });
     },
     fnGetImageUrl(ch, fileId){
@@ -624,7 +644,6 @@ export default {
       return new Promise((resolve, reject) => {
         commonUtilApi.selectImageUrlInfo(params).then(response =>{
           var result = response.data;
-          console.log('result ===> ', result);
           if(result.success) {
             resolve(this.$gfnCommonUtils.defaultIfEmpty(result.data.chImgUrl));
           } else {
@@ -836,20 +855,26 @@ export default {
         } else if(ch == 'RCS'){
           if(chTmpltInfo.mergeData && chTmpltInfo.mergeData.length > 0){
             conts = '';
-            chTmpltInfo.mergeData.forEach(element => {
-              conts += this.$gfnCommonUtils.defaultIfEmpty(element.title, '');
-              conts += this.$gfnCommonUtils.defaultIfEmpty(element.description, '');
-            });
+            if(chTmpltInfo.rcsPrdType == 'CELL'){
+              let styleContent = chTmpltInfo.mergeData[0];
+              if(styleContent.content){
+                styleContent.content.forEach(element => {
+                  conts += this.$gfnCommonUtils.defaultIfEmpty(element.description0, '');
+                  conts += this.$gfnCommonUtils.defaultIfEmpty(element.description1, '');
+                });
+              }
+            } else {
+              chTmpltInfo.mergeData.forEach(element => {
+                conts += this.$gfnCommonUtils.defaultIfEmpty(element.title, '');
+                conts += this.$gfnCommonUtils.defaultIfEmpty(element.description, '');
+              });
+            }
           }
         }
-
-        console.log('conts ch ===> ', ch);
-        console.log('conts ===> ', conts);
-
+        
         if(ch == 'RCS'){
           conts.replace(/\{\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}\}/g, function($0, $1) {
             tempVarNms.push($1);
-            console.log('conts rcs var ===> ', $1);
           });
         } else {
           conts.replace(/#\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}/g, function($0, $1) {
@@ -869,11 +894,8 @@ export default {
         confirm.fnAlert(this.componentsTitle, '발송 내용 변수 cuid, phone 은 예약어로 사용하실 수 없습니다.');
         return false;
       } else {
-        console.log('varNms ===> ', varNms);
         this.sendData.contsVarNms = this.fnSetArrayRemoveDupliVal(varNms);
         this.sendData.chMappingVarList = Object.assign([], chMappingVarList);
-        console.log('contsVarNms ===> ', this.sendData.contsVarNms);
-        console.log('chMappingVarList ===> ', chMappingVarList);
         return true;
       }
     },
@@ -891,7 +913,6 @@ export default {
         let result = response.data;
         if(result.success) {
           const targetField = ['tmpltTitle', 'tmpltInfo'];
-          console.log('result ===>> ', Object.assign({}, result));
           let tempData = Object.assign({}, result.data);
           this.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
           tempData.chTypeList = JSON.parse(tempData.chTypeList);
@@ -903,14 +924,19 @@ export default {
             && tempData.MMS.fileIdLst){
             tempData.MMS.fileUrlLst = [];
             tempData.MMS.fileIdLst.forEach(fileId => {
-              this.fnGetImageUrl('MMS', fileId).then(url => {console.log('url ===>> ', url); tempData.MMS.fileUrlLst.push(url)});
+              this.fnGetImageUrl('MMS', fileId).then(url => {tempData.MMS.fileUrlLst.push(url)});
             });
+          }
+
+          //RCS 스타일형 스타일 정보 Set
+          if(tempData.rcsTmpltInfo 
+            && tempData.RCS
+            && tempData.RCS.rcsPrdType == 'CELL'){
+            this.fnSetRcsStyle(tempData);
           }
 
           this.tmpltData = Object.assign({}, tempData);
           this.previewMessageType = this.tmpltData.chTypeList[0];
-          console.log('this.tmpltData.chTypeList[0] ===>> ', this.tmpltData.chTypeList[0]);
-          console.log('previewMessageType ===>> ', this.previewMessageType);
 
           if(this.fnContainsChannel('PUSH')){
             this.sendData.requiredCuid = true;
@@ -922,15 +948,44 @@ export default {
             || this.fnContainsChannel('RCS')){
             this.sendData.requiredCuPhone = true;
           }
-          
-          console.log('requiredCuid ===>> ', this.sendData.requiredCuid);
-          console.log('requiredCuPhone ===>> ', this.sendData.requiredCuPhone);
-          console.log('tmpltData ===>> ', this.tmpltData);
 
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
+    },
+    fnSetRcsStyle(tempData){
+      const rcsTmpltInfo = JSON.parse(tempData.rcsTmpltInfo);
+      
+      let rcsLayout;
+      try {
+        rcsLayout = rcsTmpltInfo.formattedString.RCSMessage.openrichcardMessage.layout;
+      } catch (error) {}
+
+      //수평선
+      if(rcsLayout && rcsLayout.children && rcsLayout.children.length > 1 && rcsLayout.children[1].children){
+        const layoutInfo = rcsLayout.children[1].children;
+        let hrStyleArr = [];
+        let ne;
+
+        layoutInfo.forEach((e, idx) => {
+          if(e.widget && e.widget != 'LinearLayout'){
+            if(e.visibility && e.visibility == 'visible'){
+              hrStyleArr.push(true);
+            } else {
+              hrStyleArr.push(false);
+            }
+          } else {
+            if(idx === layoutInfo.length - 1){
+              ne = layoutInfo[idx+1];
+              if(ne.widget && ne.widget === 'LinearLayout'){
+                hrStyleArr.push(false);
+              }
+            }
+          }
+        });
+        tempData.RCS.hrStyleArr = hrStyleArr;
+      }
     },
     fnSetTmpltInfoByChannel(tempData){
       let chTypeList = tempData.chTypeList;

@@ -35,6 +35,15 @@ public class GroupRecipientController {
 		rtn.setData(rtnList);
 		return rtn;
 	}
+
+	// 수신그룹별수신자 목록 조회
+	@PostMapping("/selectGroupRecipientList1")
+	public RestResult<?> selectGroupRecipientList1(@RequestBody Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		List<Object> rtnList = generalDao.selectGernalList("alarm.selectGroupRecipientList1", params);
+		rtn.setData(rtnList);
+		return rtn;
+	}
 	
 	// 수신그룹별수신자 저장
 	@PostMapping("/saveGroupRecipient")

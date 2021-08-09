@@ -8,7 +8,7 @@
           <div class="boardWrite">
             <div class="title">
               <p>
-                <span v-if="!$gfnCommonUtils.isEmpty(noticeData.noticeTypeCdName)" class="new2">{{noticeData.noticeTypeCdName}}</span>
+                <span v-if="!$gfnCommonUtils.isEmpty(noticeData.noticeTypeCdName)" :class="noticeData.noticeType | getNotiTypeClass">{{noticeData.noticeTypeCdName}}</span>
                 {{noticeData.title | unescapeXss}}
               </p>
               <span class="date">{{noticeData.regDt}}</span>

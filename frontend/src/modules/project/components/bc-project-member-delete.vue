@@ -50,8 +50,8 @@ export default {
 			memberApi.deleteProjectMember(params).then(response =>{
 				var result = response.data;
 				if(result.success) {
+					this.$parent.fnSearch(1);
 					confirm.fnAlert("", "삭제에 성공했습니다.");
-					this.$parent.fnSearch();
 					this.fnClose();
 				} else {
 					confirm.fnAlert("", result.message);

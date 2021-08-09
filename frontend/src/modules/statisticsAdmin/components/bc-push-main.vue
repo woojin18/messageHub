@@ -12,21 +12,21 @@
 								<Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle" styleProps="width:40%" :initDate="searchData.searchEndDate"></Calendar>
 							</div>
 							<div v-show="searchData.searchDateType == 'MONTH'">
-								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchStartMonth">
+								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchStartMonth" @change="fnSearch">
 								<span style="padding:0 11px">~</span>
-								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchEndMonth">
+								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchEndMonth" @change="fnSearch">
 							</div>
 						</div>
 						<div class="inline-block" style="width:30%">
-							<input type="radio" name="dayMonth" value="DAY" id="day" checked="" v-model="searchData.searchDateType">
+							<input type="radio" name="dayMonth" value="DAY" id="day" checked="" v-model="searchData.searchDateType" @change="fnSearch">
 							<label for="day" class="ml20">일별</label>
-							<input type="radio" name="dayMonth" value="MONTH" id="month" v-model="searchData.searchDateType">
+							<input type="radio" name="dayMonth" value="MONTH" id="month" v-model="searchData.searchDateType" @change="fnSearch">
 							<label for="month">월별</label>
 						</div>
 					</div>
 					<div class="consolMarginTop">
 						<h4 class="inline-block" style="width:6%">프로젝트명</h4>
-						<select class="selectStyle2" style="width:25%" v-model="searchData.searchProjectId">
+						<select class="selectStyle2" style="width:25%" v-model="searchData.searchProjectId" @change="fnSearch">
 							<option value="">전체</option>
 							<option v-for="(content, index) in projectItems" :key="index" :value="content.projectId">
 								{{ content.projectName }}
@@ -56,14 +56,12 @@
 								<col style="width:10%">
 								<col style="width:10%">
 								<col style="width:10%">
-								<col style="width:10%">
 							</colgroup>
 							<thead>
 								<tr>
 								<th class="text-center lc-1">날짜</th>
 								<th class="text-center lc-1">프로젝트명</th>
 								<th class="text-center lc-1">API KEY</th>
-								<th class="text-center lc-1">부서명</th>
 								<th class="text-center lc-1">발송</th>
 								<th class="text-center lc-1">성공</th>
 								<th class="text-center lc-1 end">성공율</th>
@@ -74,20 +72,19 @@
 									<td class="text-center">{{data.sendDate}}</td>
 									<td class="text-left">{{data.projectName}}</td>
 									<td class="text-left">{{data.apiKey}}</td>
-									<td class="text-center">{{data.deptName}}</td>
 									<td class="text-right">{{data.totCnt | comma}}</td>
 									<td class="text-right">{{data.succCnt | comma}}</td>
 									<td class="text-right end">{{data.succRatio}}</td>
 								</tr>
 								<tr v-if="statisItem.length > 0" class="of_h">
-									<th class="text-left end bgColor_sky" colspan="4">합계</th>
+									<th class="text-left end bgColor_sky" colspan="3">합계</th>
 									<th class="text-right">{{sumTotCnt | comma}}</th>
 									<th class="text-right">{{sumSuccCnt | comma}}</th>
 									<th class="text-right end">{{totalSuccRatio}}</th>
 								</tr>
 								<tr v-if="statisItem.length == 0">
 									<td class="text-center"></td>
-									<td class="text-center" colspan="7">검색된 내용이 없습니다.</td>
+									<td class="text-center" colspan="6">검색된 내용이 없습니다.</td>
 								</tr>
 							</tbody>
 						</table>
@@ -191,9 +188,11 @@ export default {
 		},*/
 		fnUpdateStartDate(sltDate) {
 			this.searchData.searchStartDate = sltDate;
+			this.fnSearch();
 		},
 		fnUpdateEndDate(sltDate) {
 			this.searchData.searchEndDate = sltDate;
+			this.fnSearch();
 		},
 		fnCalendarInit() {
 			jQuery("#startDate").monthpicker({

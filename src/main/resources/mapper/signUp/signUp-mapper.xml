@@ -6,13 +6,13 @@
 	<select id="selectDomainChkCount" resultType="int">
 		/* signUp.selectDomainChkCount */
 		SELECT	COUNT(1)
-		FROM	CM_CORP
+		FROM	cm_console.CM_CORP
 		WHERE	DOMAIN_NAME = #{domainName}
 	</select>
 
 	<insert id="insertCmUser">
 		/* signUp.insertCmUser */
-		INSERT INTO CM_USER (
+		INSERT INTO cm_console.CM_USER (
 				USER_ID
 		,		LOGIN_ID
 		,		USER_NAME
@@ -67,7 +67,7 @@
 
 	<insert id="insertCmCorp">
 		/* signUp.insertCmCorp */
-		INSERT INTO CM_CORP (
+		INSERT INTO cm_console.CM_CORP (
 				CORP_ID
 		,		CUST_NO
 		,		CORP_NAME

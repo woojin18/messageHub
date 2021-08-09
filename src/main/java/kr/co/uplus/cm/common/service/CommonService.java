@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -78,6 +79,8 @@ public class CommonService {
 	long imgUploadLimitSize;
 	
 	@Value("${console.domain.baseUrl}") String baseUrl;
+	
+	@Value("${send.noti.mail}") String mailHost;
 
 	/**
 	 * 엑셀파일에서 엑셀데이터 가져오기
@@ -765,17 +768,17 @@ public class CommonService {
 	public void sendNoti(String type, Map<String,Object> params) throws Exception {
 		Map<String, Object> rtn = new HashMap<String, Object>();
 		
-		String noticeApiKey = "NAPM7n6Sm1";
-		String notiCode = "NTI4hDV8ly";
+		String noticeApiKey = "NAP13izIa1";
+		String notiCode = "NTI1f4pDIj";
 		
-		Map<String, Object> apiMap = new HashMap<String, Object>();
+		LinkedHashMap<String, Object> apiMap = new LinkedHashMap<String, Object>();
 		apiMap.put("notiCode", notiCode);
 
 		ArrayList<Map<String, Object>> recvInfoLst = new ArrayList<Map<String,Object>>();
 		
 		if("mail".equals(type)) {
-			Map<String, Object> rcvMap = new HashMap<String, Object>();
-			Map<String, Object> mailMap = new HashMap<String, Object>();
+			LinkedHashMap<String, Object> rcvMap = new LinkedHashMap<String, Object>();
+			LinkedHashMap<String, Object> mailMap = new LinkedHashMap<String, Object>();
 			// 메일 인증
 			
 			// 수신자 설정
@@ -788,28 +791,28 @@ public class CommonService {
 			String contents = this.setContents(params);
 			mailMap.put("title", "메시지클라우드 인증");
 			mailMap.put("contents", contents);
-			mailMap.put("fromEmail", "test@test.co.kr");
+			mailMap.put("fromEmail", this.mailHost);
 			
-			emailCh.add(mailMap);
+//			emailCh.add(mailMap);
 			
 			apiMap.put("recvInfoLst", recvInfoLst);
-			apiMap.put("emailCh", emailCh);
+			apiMap.put("emailCh", mailMap);
 			
 		} else if("sms".equals(type)) {
 			// sms 인증
 			
 			// 수신자 설정
-			Map<String, Object> rcvMap = new HashMap<String, Object>();
+			LinkedHashMap<String, Object> rcvMap = new LinkedHashMap<String, Object>();
 			rcvMap.put("phone", params.get("phone"));
 			recvInfoLst.add(rcvMap);
 			
 			// 메일 내용 설정
 			ArrayList<Map<String, Object>> sendChLst = new ArrayList<Map<String,Object>>();
-			Map<String, Object> smsMap = new HashMap<String, Object>();
+			LinkedHashMap<String, Object> smsMap = new LinkedHashMap<String, Object>();
 			smsMap.put("ch", "SMS");
 			
 			smsMap.put("contents", "인증번호는 ["+params.get("certifyNumb")+"] 입니다.");
-			smsMap.put("callback", "");		// 발신번호 - cm_noti에서 수신자 지정으로 설정 .. 하드코딩.. ?
+			smsMap.put("callback", "07052227696");
 			
 			sendChLst.add(smsMap);
 			

@@ -26,7 +26,7 @@
                   <span><pre>{{sendData.smsContent}}</pre></span>
                   <br v-if="!$gfnCommonUtils.isEmpty(sendData.smsContent)"/>
                   <span v-if="sendData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(sendData.rcvblcNumber)">
-                    {{sendData.rcvblcNumber}}
+                    수신거부번호 : {{sendData.rcvblcNumber}}
                   </span>
                 </p>
               </div>

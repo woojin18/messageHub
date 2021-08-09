@@ -15,7 +15,7 @@
                                     <h4>{{alarmType.alarmTypeName}}</h4>		
                                     <p class="color4 mt10">{{alarmType.alarmDesc}}</p>
                                     <div class="mt40">
-                                        <router-link v-if="((alarmType.alarmTypeCode == 'IP' || alarmType.alarmTypeCode == 'PRE') && alarmType.list.length == 0) || !(alarmType.alarmTypeCode == 'IP' || alarmType.alarmTypeCode == 'PRE')" :to="{name:'alarmType', params:{typeCode:alarmType.alarmTypeCode}}" class="btnStyle2 backRed">등록</router-link>
+                                        <router-link activity="SAVE" v-if="((alarmType.alarmTypeCode == 'IP' || alarmType.alarmTypeCode == 'PRE') && alarmType.list.length == 0) || !(alarmType.alarmTypeCode == 'IP' || alarmType.alarmTypeCode == 'PRE')" :to="{name:'alarmType', params:{typeCode:alarmType.alarmTypeCode}}" class="btnStyle2 backRed">등록</router-link>
                                     </div>			
                                 </div>
                             </div>
@@ -24,7 +24,7 @@
                                     <div class="scroll-y7">
                                         <div class="of_h" v-for="(data,idx2) in alarmType.list" v-bind:class="{'mt10':idx2>0}">
                                             <router-link :to="{name:'updAlarmType', params:{typeCode:alarmType.alarmTypeCode, alarmId:data.alarmId}}" class="inline-block float-left text-underline mt5" style="width:60%">{{data.alarmName}}</router-link>
-                                            <div class="ilnine-block float-right of_h" style="width:40%"><a @click="fnDel(idx1, idx2)" class="btnStyle1 borderLightGray mr5 float-right">삭제</a></div>
+                                            <div class="ilnine-block float-right of_h" style="width:40%"><a activity="SAVE" @click="fnDel(idx1, idx2)" class="btnStyle1 borderLightGray mr5 float-right">삭제</a></div>
                                         </div>
                                         <p v-if="alarmType.list.length==0">알람설정을 하지 않았습니다.<br>먼저 등록해 주십시오.</p>
                                     </div>

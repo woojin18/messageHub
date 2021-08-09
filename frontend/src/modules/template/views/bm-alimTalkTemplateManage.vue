@@ -34,7 +34,9 @@
         </div>
         <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
           <div class="of_h">
-            <div class="float-left" style="width:22%"><h4>발신 프로필/그룹 *</h4></div>
+            <!-- 발신프로필그룹관리 기능 제외 -->
+            <!-- <div class="float-left" style="width:22%"><h4>발신 프로필/그룹 *</h4></div> -->
+            <div class="float-left" style="width:22%"><h4>발신 프로필 *</h4></div>
             <div class="float-left" style="width:78%">
               <!-- 발신프로필그룹관리 기능 제외
               <select 

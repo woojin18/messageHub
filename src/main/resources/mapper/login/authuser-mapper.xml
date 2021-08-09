@@ -141,11 +141,12 @@
 	</update>
 	
 	
-	<select id="findLoginId" resultType="String">
+	<select id="findLoginId" resultType="camel">
 		/* login.findLoginId */
 		SELECT	LOGIN_ID
 		FROM	cm_console.CM_USER
 		WHERE	USER_NAME = #{findUserName}
 		AND		HP_NUMBER = #{findHpNumber}
+		AND		DEL_YN = 'N'
 	</select>
 </mapper>

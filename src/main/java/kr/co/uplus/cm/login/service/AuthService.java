@@ -306,14 +306,24 @@ public class AuthService implements UserDetailsService {
 	public RestResult<Object> findLoginId(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
-		String findedLoginId = CommonUtils.getString(generalDao.selectGernalObject("login.findLoginId", params));
+		List<Object> findedLoginIdList = generalDao.selectGernalList("login.findLoginId", params);
+		String findedLoginId = "";
+		if( findedLoginIdList.size() > 0 ) {
+			for(int i = 0; i < findedLoginIdList.size(); i++) {
+				Map<String, Object> findedLoginIdMap = (Map<String, Object>) findedLoginIdList.get(i);
+				findedLoginId += CommonUtils.setMaskingLoginId(CommonUtils.getString(findedLoginIdMap.get("loginId")));
+				if( (i+1) != findedLoginIdList.size() ) {
+					findedLoginId += ", ";
+				}
+			}
+		}
 		
 		if( "".equals(findedLoginId) ) {
 			rtn.setSuccess(false);
 			rtn.setMessage("검색된 아이디가 없습니다.");
 		} else {
 			rtn.setSuccess(true);
-			rtn.setData(CommonUtils.setMaskingLoginId(findedLoginId));
+			rtn.setData(findedLoginId);
 		}
 		
 		return rtn;

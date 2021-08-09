@@ -50,7 +50,7 @@
                 <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
               </div>
             </div>
-            <div class="float-right">
+            <div class="float-right mb10">
 								<a @click="fnRcsBrandReg" class="btnStyle3 gray font13 minWidth120" activity="SAVE">브랜드 등록</a>
 							</div>
             <!-- 페이징 카운트 -->
@@ -269,7 +269,7 @@ export default {
           "brandId" : data.brandId,
           "save_status" : 'U',
           "projectIdStr" : data.projectId,
-          "inputVal" : data.inputVal,
+          /* "inputVal" : data.inputVal, */
           "approvalStatus" : this.approvalStatus,
           "otherProjectYn" : data.otherProjectUseYn 
         }

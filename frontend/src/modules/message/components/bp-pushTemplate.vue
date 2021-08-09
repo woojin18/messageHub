@@ -75,7 +75,7 @@
                       <p class="font-size14 color4 mt10">
                         <span><pre>{{templateData.tmpltContent}}</pre></span>
                         <br v-if="!fnIsEmpty(templateData.tmpltContent)"/>
-                        {{templateData.msgKind == 'A' ? this.templateData.rcvblcNumber : ''}}
+                        {{templateData.msgKind == 'A' ? '(수신거부 : '+this.templateData.rcvblcNumber+')' : ''}}
                       </p>
                     </div>
                   </div>

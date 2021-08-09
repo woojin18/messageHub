@@ -7,8 +7,8 @@
         SELECT COUNT(1) AS CNT
           FROM cm_console.CM_CORP_RECIPIENT a
          WHERE a.CORP_ID        = #{corpId}
-        <if test="srcalarmGroup != null and srcalarmGroup != ''">
-           AND alarm_CODE LIKE CONCAT('%',#{srcalarmGroup},'%')
+        <if test="srcAlarmGroup != null and srcAlarmGroup != ''">
+           AND EXISTS(SELECT 1 FROM cm_console.CM_CORP_RECEPT_GROUP x, cm_console.CM_CORP_GROUP_RECIPIENT y WHERE x.RECEPT_GROUP_ID = y.RECEPT_GROUP_ID AND y.RECIPIENT_ID = a.RECIPIENT_ID AND x.RECEPT_GROUP_NAME LIKE CONCAT('%',#{srcAlarmGroup},'%'))
         </if>
         <if test="srcRecipientName != null and srcRecipientName != ''">
            AND RECIPIENT_NAME LIKE CONCAT('%',#{srcRecipientName},'%')
@@ -28,7 +28,7 @@
 		  FROM cm_console.CM_CORP_RECIPIENT a, (SELECT @ROWNUM:=0) TMP
          WHERE a.CORP_ID        = #{corpId}
         <if test="srcAlarmGroup != null and srcAlarmGroup != ''">
-           AND alarm_CODE LIKE CONCAT('%',#{srcAlarmGroup},'%')
+           AND EXISTS(SELECT 1 FROM cm_console.CM_CORP_RECEPT_GROUP x, cm_console.CM_CORP_GROUP_RECIPIENT y WHERE x.RECEPT_GROUP_ID = y.RECEPT_GROUP_ID AND y.RECIPIENT_ID = a.RECIPIENT_ID AND x.RECEPT_GROUP_NAME LIKE CONCAT('%',#{srcAlarmGroup},'%'))
         </if>
         <if test="srcRecipientName != null and srcRecipientName != ''">
            AND RECIPIENT_NAME LIKE CONCAT('%',#{srcRecipientName},'%')

@@ -87,11 +87,11 @@
                 <colgroup>
                   <col style="width:5%">
                   <col style="width:5%">
-                  <col style="width:10%">
+                  <col style="width:17%">
                   <col>
                   <col style="width:10%">
                   <col style="width:10%">
-                  <col style="width:20%">
+                  <col style="width:25%">
                   <col style="width:8%">
                 </colgroup>
                 <thead>
@@ -105,7 +105,9 @@
                   <th class="text-center lc-1">템플릿명</th>
                   <th class="text-center lc-1">상태</th>
                   <th class="text-center lc-1">발신프로필 타입</th>
-                  <th class="text-center lc-1">발신 프로필/그룹</th>
+                  <!-- 발신프로필그룹관리 기능 제외 -->
+                  <!-- <th class="text-center lc-1">발신 프로필/그룹</th> -->
+                  <th class="text-center lc-1">발신 프로필</th>
                   <th class="text-center lc-1">최종수정일자</th>
                   </tr>
                 </thead> 

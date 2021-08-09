@@ -242,6 +242,7 @@ public class ChannelService {
 		result.put("cateData", apiInterface.get("/console/v1/brand/categories", getHeaderMap));
 		
 		String brandId = CommonUtils.getString(params.get("brandId"));
+		String tmpBrandYn = CommonUtils.getString(params.get("tmpBrandYn"));
 		
 		if( !"".equals(brandId) ) {
 			Map<String, Object> getHeaderMap2 = new HashMap<String, Object>();
@@ -251,9 +252,28 @@ public class ChannelService {
 			
 			// 파라미터 정리
 			Map<String, Object> inputVal = new HashMap<>();
-			List<Map<String, Object>> resultLists = (List<Map<String, Object>>) apiInterface.get("/console/v1/brand/" + brandId, getHeaderMap).get("data");
+
+			List<Object> resultLists = null;
 			
-			Map<String, Object> rtnMap = resultLists.get(0);
+			Map<String, Object> rtnMap = null;
+			
+			// 임시저장의 경우 DB에서 가져옴
+			if( "Y".equals(tmpBrandYn) ) {
+				Map<String, Object> detailMap = new HashMap<String, Object>();
+				detailMap.put("detailBrandId", brandId);
+				detailMap.put("projectId", params.get("mainProjectId"));
+				detailMap.put("corpId", params.get("corpId"));
+				
+				String rscTempBrandInfoStr = (String) generalDao.selectGernalObject("channel.selectRcsBrandTemp", detailMap);
+				
+
+				JSONParser jParser = new JSONParser();
+				JSONObject brandInfo = (JSONObject) jParser.parse(rscTempBrandInfoStr);
+				rtnMap = brandInfo;
+			} else {
+				resultLists = (List<Object>) apiInterface.get("/console/v1/brand/" + brandId, getHeaderMap2).get("data");
+				rtnMap = (Map<String, Object>) resultLists.get(0);
+			}
 			
 			inputVal.put("apiKey",		CommonUtils.getString(params.get("apiKey")));
 			inputVal.put("apiSecret",	CommonUtils.getString(params.get("apiSecret")));
@@ -324,17 +344,22 @@ public class ChannelService {
 			inputVal.put("detailAddress",	rtnMap.get("detailAddress"));
 			
 			List<Map<String, Object>> fileList = (List<Map<String, Object>>) rtnMap.get("mediaUrl");
-			if(menusList != null) {
-				for(int j = 0; j < fileList.size(); j++){
-					Map<String, Object> file = fileList.get(j);
-					String typeName = CommonUtils.getString(file.get("typeName"));
-					if( "background".equals(typeName) ) {
-						inputVal.put("preBgImg",		file.get("url"));
-						inputVal.put("bgImgFilePath",	file.get("url"));
-					}
-					if( "profile".equals(typeName) ) {
-						inputVal.put("preProfileImg",		file.get("url"));
-						inputVal.put("profileImgFilePath",	file.get("url"));
+			if( "Y".equals(tmpBrandYn) ) {
+				inputVal.put("profileImgFilePath",	rtnMap.get("profileImgFilePath"));
+				inputVal.put("bgImgFilePath",		rtnMap.get("bgImgFilePath"));
+			} else {
+				if(menusList != null) {
+					for(int j = 0; j < fileList.size(); j++){
+						Map<String, Object> file = fileList.get(j);
+						String typeName = CommonUtils.getString(file.get("typeName"));
+						if( "background".equals(typeName) ) {
+							inputVal.put("preBgImg",		file.get("url"));
+							inputVal.put("bgImgFilePath",	file.get("url"));
+						}
+						if( "profile".equals(typeName) ) {
+							inputVal.put("preProfileImg",		file.get("url"));
+							inputVal.put("profileImgFilePath",	file.get("url"));
+						}
 					}
 				}
 			}
@@ -647,13 +672,14 @@ public class ChannelService {
 			// API 통신 처리
 			Map<String, Object> result =  apiInterface.listPost("/console/v1/brand/", list, headerMap);
 			
-//			System.out.println("-------------------------------------------@@@ result : " + result);
-//			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
-//			System.out.println("-------------------------------------------@@@ list : " + list);
+			System.out.println("-------------------------------------------@@@ result : " + result);
+			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
+			System.out.println("-------------------------------------------@@@ list : " + list);
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
 			} else if ( "500100".equals(result.get("code")) ) {
-				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+//				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				String errMsg = CommonUtils.getString(result.get("message")) + CommonUtils.getString(result.get("data"));
 				throw new Exception(errMsg);
 			} else {
 				String errMsg = CommonUtils.getString(result.get("message"));
@@ -681,7 +707,7 @@ public class ChannelService {
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
 			} else if ( "500100".equals(result.get("code")) ) {
-				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				String errMsg = CommonUtils.getString(result.get("message")) + CommonUtils.getString(result.get("data"));
 				throw new Exception(errMsg);
 			} else {
 				String errMsg = CommonUtils.getString(result.get("message"));
@@ -699,7 +725,7 @@ public class ChannelService {
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
 			} else if ( "500100".equals(result.get("code")) ) {
-				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				String errMsg = CommonUtils.getString(result.get("message")) + CommonUtils.getString(result.get("data"));
 				throw new Exception(errMsg);
 			} else {
 				String errMsg = CommonUtils.getString(result.get("message"));

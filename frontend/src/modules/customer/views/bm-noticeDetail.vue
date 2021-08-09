@@ -13,7 +13,7 @@
             <div class="boardWrite">
               <div class="title">
                 <p>
-                  <span v-if="!$gfnCommonUtils.isEmpty(noticeData.noticeTypeCdName)" class="new2">{{noticeData.noticeTypeCdName}}</span>
+                  <span v-if="!$gfnCommonUtils.isEmpty(noticeData.noticeTypeCdName)" :class="noticeData.noticeType | getNotiTypeClass">{{noticeData.noticeTypeCdName}}</span>
                   {{noticeData.title | unescapeXss}}
                 </p>
                 <span class="date">{{noticeData.regDt}}</span>
@@ -23,7 +23,7 @@
               </div>
             </div>
             <div class="btn_more">
-              <router-link :to="{name: 'notice'}" tag="a" title="목록">목록 ></router-link>
+              <router-link :to="{name: 'notice'}" tag="a" title="목록">목록</router-link>
             </div>
           </section>
         </div>

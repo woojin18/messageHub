@@ -79,13 +79,13 @@
 										<td class="text-center end vertical-middle">
 											<button @click="fnToPassword(index)" class="btnStyle1 borderLightGray small mr5" title="비밀번호설정 메일보내기">비밀번호설정 메일보내기</button>
 											<span v-if="data.approvalStatus == 'Y' ">
-												<a @click="fnStopUserPop(index)" class="btnStyle1 borderLightGray small mr5" title="이용정지">이용정지</a>
+												<a v-if="data.roleCd != 'OWNER'" @click="fnStopUserPop(index)" class="btnStyle1 borderLightGray small mr5" title="이용정지">이용정지</a>
 											</span>
 											<span v-else-if="data.approvalStatus == 'N' ">
-												<a @click="fnReleaseUserPop(index)" class="btnStyle1 borderLightGray small mr5" title="이용정지 해제">이용정지 해제</a>
+												<a v-if="data.roleCd != 'OWNER'" @click="fnReleaseUserPop(index)" class="btnStyle1 borderLightGray small mr5" title="이용정지 해제">이용정지 해제</a>
 											</span>
 											<a @click="fnModifyUserPop(index)" class="btnStyle1 borderLightGray small mr5" title="수정">수정</a>
-											<a @click="fnDeleteUserPop(index)" class="btnStyle1 borderLightGray small mr5" title="삭제">삭제</a>
+											<a v-if="data.roleCd != 'OWNER'" @click="fnDeleteUserPop(index)" class="btnStyle1 borderLightGray small mr5" title="삭제">삭제</a>
 										</td>
 									</tr>
 									<tr v-if="items.length == 0">

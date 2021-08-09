@@ -257,11 +257,6 @@ export default {
 		},
 		selAddr(){
 			this.fnSetCorpAddr();
-		},
-		custrnmNo : function() {
-			if(this.custKdCd == "II" || this.custKdCd == "GEX"){
-				return this.custrnmNo = this.custrnmNo.replace(/[^0-9]/g, '');
-			}
 		}
 	},
 	mounted() {
@@ -306,12 +301,14 @@ export default {
 			// 기초 validation 처리
 			var defaultVali = true;
 			defaultVali = this.defaultVali();
+			console.log(defaultVali);
 			if(!defaultVali) return false;
 
 			// 신규 고객사 validation
 			if (this.selRegno == ""){
 				var custVali = true;
 				custVali = this.custVali();
+				console.log(custVali);
 				if(!custVali) return false;
 			} 
 
@@ -366,42 +363,51 @@ export default {
 			if(this.custKdCd == ""){
 				confirm.fnAlert("", "고객 유형을 선택해주세요.");
 				return false;
-			} else if(this.custrnmNo != ""){
+			}
+			if(this.custrnmNo != ""){
 				if(this.custKdCd == "II" || this.custKdCd == "GEX"){
 					var regex = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
 					if(!regex.test(this.custrnmNo)) {
 						confirm.fnAlert("", "개인 사업자의 생년월일(YYYYMMDD) 형식으로 입력해주세요.");
 						return false;
 					}
-				}
-			} else if (this.corpNm == "") {
+				} 
+			}
+			if (this.corpNm == "") {
 				confirm.fnAlert("", "사업자명을 입력해주세요.");
 				return false;	
-			} else if (this.ceoNm == "") {
+			}
+			if (this.ceoNm == "") {
 				confirm.fnAlert("", "대표자명을 입력해주세요.");
 				return false;
-			} else if (this.busiType == "") {
+			}
+			if (this.busiType == "") {
 				confirm.fnAlert("", "업태를 입력해주세요.");
 				return false;
-			} else if (this.busiClass == "") {
+			}
+			if (this.busiClass == "") {
 				confirm.fnAlert("", "종목을 입력해주세요.");
 				return false;
-			} else if (this.custAddrZip == "") {
+			}
+			if (this.custAddrZip == "") {
 				confirm.fnAlert("", "우편번호를 입력해주세요.");
 				return false;
-			} else if (this.woplaceAddress == "") {
+			}
+			if (this.woplaceAddress == "") {
 				confirm.fnAlert("", "주소를 입력해주세요.");
 				return false;
-			} else if (this.woplaceAddressDetail == "") {
+			}
+			if (this.woplaceAddressDetail == "") {
 				confirm.fnAlert("", "상세 주소를 입력해주세요.");
 				return false;
-			} else if (this.wireTel == "") {
+			}
+			if (this.wireTel == "") {
 				confirm.fnAlert("", "유선 전화번호를 입력해주세요.");
 				return false;
-			} else {
-				return true;
 			}
+			return true;
 		},
+
 
 		// 사업자 등록번호 validation
 		regnoVali(value) {
@@ -410,20 +416,21 @@ export default {
 			});
 
 			if (valueMap.length === 10) {
-				var multiply = new Array(1, 3, 7, 1, 3, 7, 1, 3, 5);
-				var checkSum = 0;
+				// var multiply = new Array(1, 3, 7, 1, 3, 7, 1, 3, 5);
+				// var checkSum = 0;
 
-				for (var i = 0; i < multiply.length; ++i) {
-					checkSum += multiply[i] * valueMap[i];
-				}
+				// for (var i = 0; i < multiply.length; ++i) {
+				// 	checkSum += multiply[i] * valueMap[i];
+				// }
 
-				checkSum += parseInt((multiply[8] * valueMap[8]) / 10, 10);
+				// checkSum += parseInt((multiply[8] * valueMap[8]) / 10, 10);
 
-				return Math.floor(valueMap[9]) === (10 - (checkSum % 10));
+				// return Math.floor(valueMap[9]) === (10 - (checkSum % 10));
 			} else {
 				confirm.fnAlert("","사업자번호(10자리)를 정확히 입력해주세요.");
 				return false;
 			}
+			return true;
 		},
 
 		// 도메인 중복 체크 function

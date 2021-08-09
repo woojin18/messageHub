@@ -349,7 +349,7 @@ export default {
       this.listChkBox = [];
     },
     fnClose(){
-      this.searchTextType = 'cuid';
+      this.searchTextType = 'cuName';
       this.searchText = '';
       this.searchCategoryId = '';
       this.addrTreeList = [];

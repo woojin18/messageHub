@@ -19,7 +19,7 @@
 						<div class="menuBox mt10">						
 							<div class="of_h">
 								<h4 class="inline-block" style="width:10%">발신 프로필</h4>
-								<input type="text" class="inputStyle" style="width:15%" v-model="srcKkoChId">
+								<input type="text" class="inputStyle" style="width:15%" v-model="srcKkoChId" @keypress.enter="fnSearch(1)">
 
 								<!-- <h4 class="inline-block vertical-middle ml100" style="width:11%">프로필 상태</h4>
 								<select name="admin030404_1" class="selectStyle2" style="width:15%" v-model="srcUseYn">
@@ -27,7 +27,7 @@
 									<option value="Y">Y</option>
 									<option value="N">N</option>
 								</select> -->
-								<a class="btnStyle1 float-right" @click="fnSearch">검색</a>
+								<a class="btnStyle1 float-right" @click="fnSearch(1)">검색</a>
 							</div>						
 						</div>
 
@@ -183,7 +183,7 @@ export default {
     this.projectName = this.$parent.projectName;
 
     this.fnSearch(1);
-	this.fnSearch2();
+	//this.fnSearch2();
   },
   methods: {
 	// select 박스 선택시 리스트 재출력

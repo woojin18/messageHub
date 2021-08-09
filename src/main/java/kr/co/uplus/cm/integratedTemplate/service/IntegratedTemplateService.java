@@ -136,6 +136,29 @@ public class IntegratedTemplateService {
 				jsonArr = (JSONArray) obj.get("suggestions");
 				rtnMap.put("rcsButton5Data", jsonArr);
 			}
+			if ("CELL".equals(rtnMap.get("rcsPrdType"))) {
+				String content = (String) rtnMap.get("rcsStyleContent");
+				JSONParser parser = new JSONParser();
+				JSONObject obj = (JSONObject) parser.parse(content);
+				JSONArray jsonArr = null;
+				jsonArr = (JSONArray) obj.get("content");
+				String[] styleInput = new String[jsonArr.size()];
+				String[] styleInputSec = new String[jsonArr.size()];
+				Boolean[] rcsStyleChk = new Boolean[jsonArr.size()];
+				for (int j = 0; j < jsonArr.size(); j++) {
+					JSONObject styleInputObj = (JSONObject) jsonArr.get(j);
+					styleInput[j] = CommonUtils.getString(styleInputObj.get("description0"));
+					styleInputSec[j] = CommonUtils.getString(styleInputObj.get("description1"));
+					if ("".equals(CommonUtils.getString(styleInputObj.get("description1")))) {
+						rcsStyleChk[j] = true;
+					} else {
+						rcsStyleChk[j] = false;
+					}
+				}
+				rtnMap.put("rcsStyleInput", styleInput);
+				rtnMap.put("rcsStyleInputSec", styleInputSec);
+				rtnMap.put("rcsStyleChk", rcsStyleChk);
+			}
 		}
 
 		rtn.setData(rtnList);
@@ -216,9 +239,7 @@ public class IntegratedTemplateService {
 					sb.append("\"header\" : \"0\","); // 정보성 메시지
 				} else if ("A".equals(params.get("msgKind"))) {
 					sb.append("\"header\" : \"1\","); // 광고성 메시지
-					sb.append("\"footer\" : \"" + params.get("rcsBlockNumber") + "\","); // 무료수신거부 번호, header의 값이 광고성일 때
-																							// footer 값을 포함하지 않고 발송하면
-																							// 실패처리
+					sb.append("\"footer\" : \"" + params.get("rcsBlockNumber") + "\","); // 무료수신거부 번호, header의 값이 광고성일 때 footer 값을 포함하지 않고 발송하면 실패처리
 				}
 				sb.append("\"copyAllowed\" : \"false\","); // 복사/공유 허용여부
 				sb.append("\"expiryOption\" : \"2\","); // expire 옵션(1:72시간, 2:30초)
@@ -232,8 +253,7 @@ public class IntegratedTemplateService {
 					if ("".equals(messageBaseId) || "null".equals(messageBaseId) || messageBaseId == null) {
 						throw new Exception("템플릿 상품에 해당하는 메시지베이스ID가 존재하지 않습니다.");
 					}
-					sb.append("\"messagebaseId\": \"" + messageBaseId + "\","); // cm.CM_RCS_MSGBASE의 MESSAGEBASE_ID값을
-																				// 설정
+					sb.append("\"messagebaseId\": \"" + messageBaseId + "\","); // cm.CM_RCS_MSGBASE의 MESSAGEBASE_ID값을 설정
 
 					sb.append("\"mergeData\": [{ ");
 					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs0Content")) + "\""); // 메시지
@@ -242,15 +262,9 @@ public class IntegratedTemplateService {
 					// RCS DESCRIPTION TYPE
 					// ====================================================================
 					sb.append("\"rcsPrdType\" : \"DESCRIPTION\","); // RCS상품타입(서술 승인템플릿) rcsTemplateTable => 1
-					sb.append("\"messagebaseId\": \"" + params.get("rcsDesMessagebaseId") + "\","); // 서술형 템플릿의 RCS
-																									// MESSAGEBASE_ID 를
-																									// 설정
-					sb.append("\"messagebaseformId\": \"" + params.get("rcsDesMessagebaseformId") + "\","); // 서술형 템플릿의
-																											// RCS
-																											// MESSAGEBASEFORM_ID
-																											// 를 설정
-					sb.append("\"rcsDesFormNm\": \"" + params.get("rcsDesFormNm") + "\","); // 서술형 템플릿의 RCS
-																							// MESSAGEBASEFORM_ID 를 설정
+					sb.append("\"messagebaseId\": \"" + params.get("rcsDesMessagebaseId") + "\","); // 서술형 템플릿의 RCS MESSAGEBASE_ID 를 설정
+					sb.append("\"messagebaseformId\": \"" + params.get("rcsDesMessagebaseformId") + "\","); // 서술형 템플릿의 RCS MESSAGEBASEFORM_ID 를 설정
+					sb.append("\"rcsDesFormNm\": \"" + params.get("rcsDesFormNm") + "\","); // 서술형 템플릿의 RCS MESSAGEBASEFORM_ID 를 설정
 
 					sb.append("\"mergeData\": [{ ");
 					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs0Content")) + "\" "); // 메시지
@@ -268,18 +282,33 @@ public class IntegratedTemplateService {
 					// RCS CELL(STYLE) TYPE
 					// ====================================================================
 					sb.append("\"rcsPrdType\" : \"CELL\","); // RCS상품타입(스타일 승인템플릿) rcsTemplateTable => 2
-					sb.append("\"messagebaseId\": \"" + params.get("rcs2MessageFormId") + "\","); // cm.CM_RCS_MSGBASEFORM,
+					sb.append("\"messagebaseId\": \"" + params.get("rcsStyleMessagebaseId") + "\","); // 스타일형 템플릿의 RCS MESSAGEBASE_ID 를 설정
+					sb.append("\"messagebaseformId\": \"" + params.get("rcsStyleMessagebaseformId") + "\","); // 스타일형 템플릿의 RCS MESSAGEBASEFORM_ID 를 설정
+					sb.append("\"rcsStyleFormNm\": \"" + params.get("rcsStyleFormNm") + "\","); // 서술형 템플릿의 RCS MESSAGEBASEFORM_ID 를 설정
 
-					sb.append("\"mergeData\": [{ ");
-					sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get("rcs2Content1")) + ","
-							+ JSONObject.escape((String) params.get("rcs2Content2")) + ","
-							+ JSONObject.escape((String) params.get("rcs2Content3")) + "\", "); // 메시지
+					ArrayList<String> rcsStyleInput = (ArrayList<String>) params.get("rcsStyleInput");
+					ArrayList<String> rcsStyleInputSec = (ArrayList<String>) params.get("rcsStyleInputSec");
+					sb.append("\"mergeData\": [{\"content\":[");
+					for (int j = 0; j < Integer.parseInt(params.get("rcsStyleContentCnt").toString()); j++) {
+						sb.append("{");
+						sb.append("	\"description0\" : \"" + JSONObject.escape(rcsStyleInput.get(j)) + "\" "); // 메시지
+						if (!"".equals(rcsStyleInputSec.get(j)) && rcsStyleInputSec.get(j) != null) {
+							sb.append("	,\"description1\" : \"" + JSONObject.escape(rcsStyleInputSec.get(j)) + "\" "); // 메시지
+						}
+						sb.append("}");
+						if (j < Integer.parseInt(params.get("rcsStyleContentCnt").toString()) - 1)
+							sb.append(", ");
+					}
+					sb.append("]}]");
 
-					List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params
-							.get("rcsStyleButtons");
-					sb.append(newButtonAddStr(buttonInfoList));
+					List<Map<String, Object>> buttonInfoList = null;
+					if (params.containsKey("rcsStyleButtons")) {
+						buttonInfoList = (List<Map<String, Object>>) params.get("rcsStyleButtons");
+					}
 
-					sb.append("	}] ");
+					if (buttonInfoList.size() > 0) {
+						sb.append(newButtonAddStr(buttonInfoList));
+					}
 
 				} else if ((int) params.get("rcsTemplateTable") == 3) {
 					// RCS SMS TYPE

@@ -19,12 +19,6 @@
 					AND		CORP_ID = #{corpId}
 					AND		PROJECT_ID = A.PROJECT_ID)	AS PROJECT_NAME
 			,	API_KEY
-			,	DEPT_CODE
-			,	(	SELECT	DEPT_NAME
-					FROM		cm_console.CM_PROJECT_SUBBILL_CODE
-					WHERE		USE_YN = 'Y'
-					AND		CORP_ID = #{corpId}
-					AND		DEPT_CODE = A.DEPT_CODE) AS DEPT_NAME
 			,	SUM(TOT_CNT) AS TOT_CNT
 			,	SUM(SUCC_CNT) AS SUCC_CNT
 			,	SUM(FAIL_CNT) AS FAIL_CNT
@@ -67,8 +61,8 @@
 		AND		CH = #{searchChanType} <!-- PUSH, RCS -->
 			</otherwise>
 		</choose>
-		GROUP BY SEND_DATE, PROJECT_ID, API_KEY, DEPT_CODE
-		ORDER BY SEND_DATE, PROJECT_NAME, API_KEY, DEPT_NAME
+		GROUP BY SEND_DATE, PROJECT_ID, API_KEY
+		ORDER BY SEND_DATE, PROJECT_NAME, API_KEY
 	</select>
 	
 	<select id="selectStatisProjectList" parameterType="hashmap" resultType="camel">

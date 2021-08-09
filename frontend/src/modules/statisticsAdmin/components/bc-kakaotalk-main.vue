@@ -18,26 +18,26 @@
 							</div>
 						</div>
 						<div class="inline-block" style="width:30%">
-							<input type="radio" name="dayMonth" value="DAY" id="day" checked="" v-model="searchData.searchDateType">
+							<input type="radio" name="dayMonth" value="DAY" id="day" checked="" v-model="searchData.searchDateType" @change="fnSearch">
 							<label for="day" class="ml20">일별</label>
-							<input type="radio" name="dayMonth" value="MONTH" id="month" v-model="searchData.searchDateType">
+							<input type="radio" name="dayMonth" value="MONTH" id="month" v-model="searchData.searchDateType" @change="fnSearch">
 							<label for="month">월별</label>
 						</div>
 					</div>
 					<div class="consolMarginTop">
 						<h4 class="inline-block" style="width:6%">프로젝트명</h4>
-						<select class="selectStyle2" style="width:25%" v-model="searchData.searchProjectId">
+						<select class="selectStyle2" style="width:25%" v-model="searchData.searchProjectId" @change="fnSearch">
 							<option value="">전체</option>
 							<option v-for="(content, index) in projectItems" :key="index" :value="content.projectId">
 								{{ content.projectName }}
 							</option>
 						</select>
 						<div class="inline-block" style="width:30%">
-							<input type="radio" name="kakaoType" id="all" value="" v-model="searchData.searchKakaoType">
+							<input type="radio" name="kakaoType" id="all" value="" v-model="searchData.searchKakaoType" @change="fnSearch">
 							<label for="all" class="ml20">전체</label>
-							<input type="radio" name="kakaoType" id="alimTalk" value="ALIMTALK" v-model="searchData.searchKakaoType">
+							<input type="radio" name="kakaoType" id="alimTalk" value="ALIMTALK" v-model="searchData.searchKakaoType" @change="fnSearch">
 							<label for="alimTalk">알림톡</label>
-							<input type="radio" name="kakaoType" id="friendTalk" value="FRIENDTALK" v-model="searchData.searchKakaoType">
+							<input type="radio" name="kakaoType" id="friendTalk" value="FRIENDTALK" v-model="searchData.searchKakaoType" @change="fnSearch">
 							<label for="friendTalk">친구톡</label>
 						</div>
 						<a @click="fnSearch" class="btnStyle1 float-right" activity="READ">조회</a>
@@ -64,14 +64,12 @@
 								<col style="width:10%">
 								<col style="width:10%">
 								<col style="width:10%">
-								<col style="width:10%">
 							</colgroup>
 							<thead>
 								<tr>
 								<th class="text-center lc-1">날짜</th>
 								<th class="text-center lc-1">프로젝트명</th>
 								<th class="text-center lc-1">API KEY</th>
-								<th class="text-center lc-1">부서명</th>
 								<th class="text-center lc-1">발송</th>
 								<th class="text-center lc-1">성공</th>
 								<th class="text-center lc-1 end">성공율</th>
@@ -82,20 +80,19 @@
 									<td class="text-center">{{data.sendDate}}</td>
 									<td class="text-left">{{data.projectName}}</td>
 									<td class="text-left">{{data.apiKey}}</td>
-									<td class="text-center">{{data.deptName}}</td>
 									<td class="text-right">{{data.totCnt | comma}}</td>
 									<td class="text-right">{{data.succCnt | comma}}</td>
 									<td class="text-right end">{{data.succRatio}}</td>
 								</tr>
 								<tr v-if="statisItem.length > 0" class="of_h">
-									<th class="text-left end bgColor_sky" colspan="4">합계</th>
+									<th class="text-left end bgColor_sky" colspan="3">합계</th>
 									<th class="text-right">{{sumTotCnt | comma}}</th>
 									<th class="text-right">{{sumSuccCnt | comma}}</th>
 									<th class="text-right end">{{totalSuccRatio}}</th>
 								</tr>
 								<tr v-if="statisItem.length == 0">
 									<td class="text-center"></td>
-									<td class="text-center" colspan="7">검색된 내용이 없습니다.</td>
+									<td class="text-center" colspan="6">검색된 내용이 없습니다.</td>
 								</tr>
 							</tbody>
 						</table>

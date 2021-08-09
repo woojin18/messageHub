@@ -115,6 +115,7 @@ const rcsTemplateApi = (params) => {
   return httpClient.post('/uc/rcsTemplate/rcsTemplateApi', params, {headers: {"show-layer":"yes"}});
 };
 
+/* 통합발송 */
 const selectIntegratedTemplateList = (params) => {
     return httpClient.post('/integratedTemplateApi/selectIntegratedTemplateList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };

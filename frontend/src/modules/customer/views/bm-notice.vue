@@ -30,7 +30,7 @@
                   <td>{{totCnt-offset-contant.rownum+1}}</td>
                   <td class="text-left">
                     <a href="user_sub03_2_view.html">
-                      <span v-if="!$gfnCommonUtils.isEmpty(contant.noticeTypeCdName)" class="new2">{{contant.noticeTypeCdName}}</span>
+                      <span v-if="!$gfnCommonUtils.isEmpty(contant.noticeTypeCdName)" :class="contant.noticeType | getNotiTypeClass">{{contant.noticeTypeCdName}}</span>
                       <router-link :to="{ name: 'noticeDetail', params: { noticeId: contant.noticeId }}">{{contant.title | unescapeXss}}</router-link>
                     </a>
                   </td>

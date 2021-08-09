@@ -51,6 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public static final String COMMON_API_URL = "/commonApi/**";
 	public static final String USER_CONSOLE_URL = "/uc/**";
 	public static final String ADMIN_CONSOLE_URL = "/ac/**";
+	public static final String ADMIN_SIGN = "/sign/**";
+	public static final String ADMIN_SIGN_NICE_SUCCESS = "/checkPlusSuccess";
+	public static final String ADMIN_SIGN_NICE_FAIL = "/checkPlusFail";
 
 	public static final String LOGIN_ID_PARAM = "userId";
 	@SuppressWarnings("unused")
@@ -106,7 +109,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/", PUBLIC_API_URL, LOGIN_FORM_URL, LOGIN_API_URL, LOGOUT_URL, LIST_API_URL,
 						PROJECT_API_URL, MENUBAR_URL, MESSAGESTATUS_API_URL, INTEGRATEDTEMPLATE_API_URL,
 						INTEGRATEDSEND_API_URL, SMARTTEMPLATE_API_URL,SMARTSEND_API_URL, COMMON_API_URL,
-						USER_CONSOLE_URL, ADMIN_CONSOLE_URL).permitAll()
+						USER_CONSOLE_URL, ADMIN_CONSOLE_URL, ADMIN_SIGN, ADMIN_SIGN_NICE_SUCCESS, ADMIN_SIGN_NICE_FAIL).permitAll()
 				.antMatchers(API_URL).authenticated()
 				.anyRequest().authenticated();
 	}
