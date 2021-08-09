@@ -6,13 +6,13 @@
                     <div class="of_h">
                         <h2>사업자 확인</h2>
                         <hr>
-                        <div class="tableScrollxy">
+                        <div style="height:450px; overflow:auto;">
                             <table class="table_skin1 bt-000" id="selCorpTbl">
                                 <colgroup>
 									<col style="width:20%">
-									<col style="width:20%">
-									<col style="width:30%">
-									<col style="width:30%">
+									<col style="width:25%">
+									<col style="width:25%">
+									<col style="width:*%">
 								</colgroup>
 								<thead>
 									<tr>

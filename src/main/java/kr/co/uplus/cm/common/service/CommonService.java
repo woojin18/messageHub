@@ -768,8 +768,8 @@ public class CommonService {
 	public void sendNoti(String type, Map<String,Object> params) throws Exception {
 		Map<String, Object> rtn = new HashMap<String, Object>();
 		
-		String noticeApiKey = "NAPM7n6Sm1";
-		String notiCode = "NTI4hDV8ly";
+		String noticeApiKey = "NAP13izIa1";
+		String notiCode = "NTI1f4pDIj";
 		
 		LinkedHashMap<String, Object> apiMap = new LinkedHashMap<String, Object>();
 		apiMap.put("notiCode", notiCode);

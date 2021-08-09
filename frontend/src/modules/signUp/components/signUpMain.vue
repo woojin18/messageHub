@@ -257,11 +257,6 @@ export default {
 		},
 		selAddr(){
 			this.fnSetCorpAddr();
-		},
-		custrnmNo : function() {
-			if(this.custKdCd == "II" || this.custKdCd == "GEX"){
-				return this.custrnmNo = this.custrnmNo.replace(/[^0-9]/g, '');
-			}
 		}
 	},
 	mounted() {
@@ -306,35 +301,37 @@ export default {
 			// 기초 validation 처리
 			var defaultVali = true;
 			defaultVali = this.defaultVali();
-			if(!defaultVali) return false;
-
+			console.log(defaultVali);
+			
 			// 신규 고객사 validation
 			if (this.selRegno == ""){
 				var custVali = true;
 				custVali = this.custVali();
-				if(!custVali) return false;
+				console.log(custVali);
 			} 
 
 			var regno =  this.$gfnCommonUtils.isEmpty(this.selRegno) ? this.regno : this.selRegno;
 			
 			// 사업자 번호 유효성 검사
-			// var regnoVali = this.regnoVali(regno);
-			// if(!regnoVali) {
-			// 	confirm.fnAlert("", "사업자 번호를 정확히 입력해주세요.");
-			// 	return false;
-			// }
+			var regnoVali = true;
+			regnoVali = this.regnoVali(regno);
+			alert("c"+regnoVali);
+			if(!regnoVali) return false;
+
 			eventBus.$on('callbackEventBus', this.signUpSubmit);
      		confirm.fnConfirm( "", "가입하시겠습니까?", "확인");
 		},
 		// 기초 validation 처리
 		defaultVali() {
-			if(this.userNm == ""){
+			if(jQuery.trim(this.userNm) == ""){
 				confirm.fnAlert("", "이름을 입력해주세요.");
 				return false;
-			} else if(this.password == "" || this.passwordChk == ""){
+			}
+			if(jQuery.trim(this.password) == "" || jQuery.trim(this.passwordChk) == ""){
 				confirm.fnAlert("", "비밀번호를 입력해주세요.");
 				return false;
-			} else if (this.password != this.passwordChk) {
+			}
+			if(this.password != this.passwordChk) {
 				confirm.fnAlert("", "비밀번호가 일치하지 않습니다.");
 				this.password = "";
 				this.passwordChk = "";
@@ -342,13 +339,16 @@ export default {
 			// } else if (this.smsCertifyYn == "") {
 			// 	confirm.fnAlert("", "SMS 인증여부 선택은 필수 사항입니다.");
 			// 	return false;
-			} else if (this.phoneCert == "" || this.phoneCertiChk == false) {
-				confirm.fnAlert("", "담당자 휴대폰 인증을 진행해 주세요.");
-				return false;
-			} else if (this.regno == "") {
+			}
+			// if(jQuery.trim(this.phoneCert) == "" || this.phoneCertiChk == false) {
+			// 	confirm.fnAlert("", "담당자 휴대폰 인증을 진행해 주세요.");
+			// 	return false;
+			// }
+			if(jQuery.trim(this.regno) == "") {
 				confirm.fnAlert("", "사업자 등록번호를 입력해주세요.");
 				return false;
-			} else if (this.attachFileNm == "") {
+			}
+			if(jQuery.trim(this.attachFileNm) == "") {
 				confirm.fnAlert("", "사업자등록증 파일을 첨부해주세요.");
 				return false;
 			// } else if (this.domainName == "") {
@@ -357,8 +357,6 @@ export default {
 			// } else if (this.domainNameChk == false) {
 			// 	confirm.fnAlert("", "도메인 이름 충복체크를 진행해주세요.");
 			// 	return false;
-			} else {
-				return true;
 			}
 		},
 		// 신규 고객사 validation
@@ -366,7 +364,8 @@ export default {
 			if(this.custKdCd == ""){
 				confirm.fnAlert("", "고객 유형을 선택해주세요.");
 				return false;
-			} else if(this.custrnmNo != ""){
+			}
+			if(jQuery.trim(this.custrnmNo) != ""){
 				if(this.custKdCd == "II" || this.custKdCd == "GEX"){
 					var regex = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
 					if(!regex.test(this.custrnmNo)) {
@@ -374,32 +373,38 @@ export default {
 						return false;
 					}
 				}
-			} else if (this.corpNm == "") {
+			}
+			if(jQuery.trim(this.corpNm) == "") {
 				confirm.fnAlert("", "사업자명을 입력해주세요.");
 				return false;	
-			} else if (this.ceoNm == "") {
+			} 
+			if(jQuery.trim(this.ceoNm) == "") {
 				confirm.fnAlert("", "대표자명을 입력해주세요.");
 				return false;
-			} else if (this.busiType == "") {
+			}
+			if(jQuery.trim(this.busiType) == "") {
 				confirm.fnAlert("", "업태를 입력해주세요.");
 				return false;
-			} else if (this.busiClass == "") {
+			}
+			if(jQuery.trim(this.busiClass) == "") {
 				confirm.fnAlert("", "종목을 입력해주세요.");
 				return false;
-			} else if (this.custAddrZip == "") {
+			}
+			if(this.custAddrZip == "") {
 				confirm.fnAlert("", "우편번호를 입력해주세요.");
 				return false;
-			} else if (this.woplaceAddress == "") {
+			}
+			if(this.woplaceAddress == "") {
 				confirm.fnAlert("", "주소를 입력해주세요.");
 				return false;
-			} else if (this.woplaceAddressDetail == "") {
+			}
+			if(jQuery.trim(this.woplaceAddressDetail) == "") {
 				confirm.fnAlert("", "상세 주소를 입력해주세요.");
 				return false;
-			} else if (this.wireTel == "") {
+			}
+			if(jQuery.trim(this.wireTel) == "") {
 				confirm.fnAlert("", "유선 전화번호를 입력해주세요.");
 				return false;
-			} else {
-				return true;
 			}
 		},
 
@@ -419,7 +424,13 @@ export default {
 
 				checkSum += parseInt((multiply[8] * valueMap[8]) / 10, 10);
 
-				return Math.floor(valueMap[9]) === (10 - (checkSum % 10));
+				var chkReg = Math.floor(valueMap[9]) === (10 - (checkSum % 10));
+				return chkReg;
+				// if(!chkReg){
+				// 	confirm.fnAlert("", "사업자 번호를 정확히 입력해주세요.");
+				// 	return chkReg;
+				// }
+				// return Math.floor(valueMap[9]) === (10 - (checkSum % 10));
 			} else {
 				confirm.fnAlert("","사업자번호(10자리)를 정확히 입력해주세요.");
 				return false;
@@ -498,6 +509,7 @@ export default {
 			this.$router.push({name : "login"});
 		},
 		fnSelCorp(){
+			this.phoneCertiChk = true;
 			if(!this.phoneCertiChk){
 				confirm.fnAlert("","휴대폰 본인인증을 완료해주세요.");
 				return false;

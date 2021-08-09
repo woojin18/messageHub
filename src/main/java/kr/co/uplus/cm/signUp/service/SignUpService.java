@@ -177,8 +177,8 @@ public class SignUpService {
 			
 			params.put("location", "/sign/signUpMain");
 			
-			this.sendMail(params, "/sign/signUpMain");
-//			commonService.sendNoti("mail", params);
+//			this.sendMail(params, "/sign/signUpMain");
+			commonService.sendNoti("mail", params);
 
 		}
 	}
@@ -273,6 +273,7 @@ public class SignUpService {
 		return rtn;
 	}
 
+	@Deprecated
 	public void sendMail(Map<String, Object> params, String location) throws Exception {
 		String time = CommonUtils.getString(params.get("time"));
 		String[] timeArr = time.split(" ");

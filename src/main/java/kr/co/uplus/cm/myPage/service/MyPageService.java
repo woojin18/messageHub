@@ -196,7 +196,7 @@ public class MyPageService {
 		return (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_ATTACH_FILE_INFO, params);
 	}
 
-//	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void setCertifyNumber(Map<String, Object> params) throws Exception {
 		String certifyNumb = RandomStringUtils.randomNumeric(6);
 		params.put("certifyNumb", certifyNumb);
@@ -204,6 +204,6 @@ public class MyPageService {
 		
 		generalDao.updateGernal(DB.QRY_UPDATE_USER_SMS_CERTIFY_NUMB, params);
 		
-//		commonService.sendNoti("sms", params);
+		commonService.sendNoti("sms", params);
 	}
 }
