@@ -106,7 +106,7 @@
                     <td class="text-center">{{data.friendTalk}}</td>
                     <td class="text-center">{{data.sms}}</td>
 
-                    <td class="text-center"><a href="javascript:void(0);" @click="fnDetailPop(idx)">{{data.sendFailCnt}}</a></td>
+                    <td class="text-center"><a href="javascript:void(0);" @click="fnDetailPop(idx)"><u>{{data.sendFailCnt}}</u></a></td>
                     <td class="text-center end">{{data.regDt}}</td>
                 </tr>
                 <tr v-if="datas.length == 0">

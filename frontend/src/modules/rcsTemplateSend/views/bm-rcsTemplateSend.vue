@@ -1264,11 +1264,6 @@ export default {
 			}
 		}
 
-		var cuInfo = vm.sendData.cuInfo;
-		if("" == cuInfo) {
-			confirm.fnAlert("RCS 발송", "수신자를 입력해주세요.");
-			return false;
-		}
 		return true;
 	}
   }

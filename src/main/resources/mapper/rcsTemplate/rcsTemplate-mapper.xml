@@ -129,7 +129,7 @@
 	</select>
 
 	<select id="selectRcsMsgbaseformList" resultType="hashMap">
-		/* recTemplate.selectRcsMsgbaseformList */
+		/* rcsTemplate.selectRcsMsgbaseformList */
 		SELECT	MESSAGEBASEFORM_ID
 		,		FORM_NAME
 		FROM	cm.CM_RCS_MSGBASEFORM
@@ -137,6 +137,7 @@
 	</select>
 
 	<select id="selectRcsTemplateUpdateForm" resultType="hashMap">
+		/* rcsTemplate.selectRcsTemplateUpdateForm */
 	SELECT	A.*
 	FROM 	(
 			SELECT	MSGBASE.*

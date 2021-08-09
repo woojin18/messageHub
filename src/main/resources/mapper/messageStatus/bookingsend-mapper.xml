@@ -8,12 +8,9 @@
 		AND A.PROJECT_ID = #{projectId}
 		AND A.RESV_SENDER_YN = 'Y'
 		AND A.DEL_YN = 'N'
-		<if test="searchText != '' and searchText != null ">
-            AND C.CORP_NAME like CONCAT('%', #{searchText}, '%')
-        </if>
         <if test="searchStartDate != '' and searchStartDate != null ">
             <if test="searchEndDate != '' and searchEndDate != null ">
-            <!-- AND A.REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59') -->
+            AND A.REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
             </if>
         </if>
     </sql>

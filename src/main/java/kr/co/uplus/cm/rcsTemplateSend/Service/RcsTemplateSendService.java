@@ -1651,7 +1651,13 @@ public class RcsTemplateSendService {
 				if(toIndex > listSize) toIndex = listSize;
 				apiMap.put("recvInfoLst", recvInfoLst.subList(fromIndex, toIndex));
 				jsonString = gson.toJson(apiMap);
+				
+				System.out.println("asdfasdfsdf" + jsonString);
+				
 				responseBody = apiInterface.sendMsg(ApiConfig.SEND_RCS_API_URI, headerMap, jsonString);
+				
+				System.out.println("asdfasdfasdf" + responseBody);
+				
 				isDone = isApiRequestAgain(responseBody, reSendCdList);
 				isAllFail = !isSendSuccess(responseBody);
 			} catch (Exception e) {

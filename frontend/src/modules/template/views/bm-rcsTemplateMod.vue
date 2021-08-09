@@ -50,11 +50,13 @@
 									<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 									<div class="phoneTextWrap">
 										<div class="phoneText1">
-											<p><img src="@/assets/images/common/phone_Icon10.png" alt="주문 아이콘"></p>
+											<p><img :src="desImgSrc" alt="주문 아이콘" style="width:70px;"></p>
 											<div class="scroll-y">
 												<p class="mt15 lc-1">{{desContentsExam}}</p>
 											</div>
-											<p class="text-center mt20" style="color:#69C8FF">사이트 연결</p>
+											<div v-for="n in btnCnt">
+												<p class="text-center" style="color:#69C8FF">{{btnNm[n-1]}}</p>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -67,7 +69,7 @@
 									</div>
 									<div class="float-left" style="width:78%">
 										<div class="of_h">
-											<select v-model="desFormNm" name="userConsole_sub040202_2" class="selectStyle2">
+											<select @change="fnSetDesformImg" v-model="desFormNm" name="userConsole_sub040202_2" class="selectStyle2">
 												<option v-for="option in desFormNmList" v-bind:value="option.MESSAGEBASEFORM_ID">
 													{{option.FORM_NAME}}
 												</option>
@@ -172,7 +174,7 @@
 									<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 									<div class="phoneTextWrap">
 										<div class="phoneText1 of_h scroll-y4 relative" style="padding:20px 15px 70px 15px;">
-											<p><img src="@/assets/images/common/phone_Icon08.png" alt="인증 아이콘"></p>
+											<p><img :src="styleImgSrc" alt="주문 아이콘" style="width:70px;"></p>
 											<div v-for="n in styleContentCnt" class="scroll-y3">
 												<div v-if="styleArr[n-1]==1">
 													<p class="lc-1 inline-block">{{styleInput[n-1]}}</p>
@@ -182,9 +184,8 @@
 													<p class="lc-1 inline-block float-right">{{styleInputSec[n-1]}}</p>
 												</div>
 												<hr v-if="styleChk[n-1]==true">
-												<div v-if="n==styleContentCnt" class="absolute" style="bottom:25px; left:28%">
-													<p class="text-center" style="color:#69C8FF">홈페이지 연결하기</p>
-													<p class="text-center mt5" style="color:#69C8FF">인증번호 복사하기</p>
+												<div v-if="n==styleContentCnt" class="revert" style="bottom:25px; left:28%">
+													<p v-for="n in btnCnt" class="text-center" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 												</div>
 											</div>
 										</div>
@@ -199,7 +200,7 @@
 									</div>
 									<div class="float-left" style="width:78%">
 										<div class="of_h">
-											<select v-model="styleFormNm" name="userConsole_sub040202_2" class="selectStyle2">
+											<select @change="fnSetStyleformImg" v-model="styleFormNm" name="userConsole_sub040202_2" class="selectStyle2">
 												<option v-for="option in styleFormNmList" v-bind:value="option.MESSAGEBASEFORM_ID">
 													{{option.FORM_NAME}}
 												</option>
@@ -343,6 +344,8 @@ export default {
   },
   data() {
     return {
+		desImgSrc : require("@/assets/images/common/order.png"),
+		styleImgSrc : require("@/assets/images/common/order.png"),
 		deleteBtn: false,
 		cancelBtn: false,
 		insertBtn: false,
@@ -383,6 +386,8 @@ export default {
 		styleEndDate: ["desFirstEndDate","desSecondEndDate"],			// 서술형 달력 id
 		styleInitStartDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
 		styleInitEndDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
+		flag : '',
+		paramCardType : ''
 
     }
   },
@@ -401,6 +406,7 @@ export default {
 	  init() {
 		var params = {};
 		var vm = this;
+
 		// 승인요청 버튼 활성화
 		if(vm.status == "INS") {
 			vm.insertBtn = true;
@@ -428,6 +434,7 @@ export default {
 
 	  updateInit() {
 		var vm = this;
+		var status = vm.status;
 		var params = {
 			"msgId" : this.msgId
 		};
@@ -437,13 +444,17 @@ export default {
 			// 상태값에 따라서 버튼 표시 처리해야됨. (승인, 반려일 경우 수정요청 버튼 활성화, 모든 상태에서 삭제 버튼 활성화)
 			// 수정버튼은 반려(수정) 상태에선 노출 X, 해당 상태에선 취소 버튼노출
 			var approvalStatus = resultData.approvalStatus;
-			if("승인" == approvalStatus || "반려" == approvalStatus) {
-				vm.updateBtn = true;
+			if("UPT" == status) {
+				if("승인" == approvalStatus || "반려" == approvalStatus) {
+					vm.updateBtn = true;
+				}
+				if("반려(수정)" == approvalStatus) {
+					vm.cancelBtn = true;
+				}
+				vm.deleteBtn = true;
+			} else if("CPY" == status) {
+				vm.insertBtn = true;
 			}
-			if("반려(수정)" == approvalStatus) {
-				vm.cancelBtn = true;
-			}
-			vm.deleteBtn = true;
 
 			vm.templateNm = resultData.templateNm;
 			if(vm.status=="UPT") vm.templateCode = resultData.templateCode;
@@ -466,7 +477,7 @@ export default {
 				vm.styleChk = resultData.styleChk;
 
 				// Tab 이벤트 처리
-				jQuery("#styleTag").tab("show");	
+				jQuery("#styleTab").tab("show");	
 				jQuery("#desTab").remove();
 				jQuery("#styleTab").attr("active");
 			}
@@ -647,6 +658,66 @@ export default {
 		});
 	  },
 
+	  fnSetDesformImg() {
+		  var vm = this;
+		  var desFormNm = this.desFormNm;
+		  if("CC001D" == desFormNm) {	// 출고
+			vm.desImgSrc = require("@/assets/images/common/delivery.png");
+		  } else if("CC002D" == desFormNm) { // 주문
+			vm.desImgSrc = require("@/assets/images/common/order.png");
+		  } else if("CC003D" == desFormNm) { // 배송
+			vm.desImgSrc = require("@/assets/images/common/ship.png");
+		  } else if("EE001D" == desFormNm) { // 예약
+			vm.desImgSrc = require("@/assets/images/common/reservation.png");
+		  } else if("FF001D" == desFormNm) { // 승인
+			vm.desImgSrc = require("@/assets/images/common/approve.png");
+		  } else if("FF002D" == desFormNm) { // 입금
+			vm.desImgSrc = require("@/assets/images/common/receipts.png");
+		  } else if("FF003D" == desFormNm) { // 출금
+			vm.desImgSrc = require("@/assets/images/common/payment.png");
+		  } else if("FF004D" == desFormNm) { // 취소
+			vm.desImgSrc = require("@/assets/images/common/cancel.png");
+		  } else if("FF005D" == desFormNm) { // 명세서
+			vm.desImgSrc = require("@/assets/images/common/specifications.png");
+		  } else if("GG001D" == desFormNm) { // 회원가입
+			vm.desImgSrc = require("@/assets/images/common/join.png");
+		  } else if("GG002D" == desFormNm) { // 인증
+			vm.desImgSrc = require("@/assets/images/common/certification.png");
+		  } else if("GG003D" == desFormNm) { // 안내
+			vm.desImgSrc = require("@/assets/images/common/infomation.png");
+		  }
+	  },
+
+	  fnSetStyleformImg() {
+		  var vm = this;
+		  var styleFormNm = this.styleFormNm;
+		  if("CC001C" == styleFormNm) {	// 출고
+			vm.styleImgSrc = require("@/assets/images/common/delivery.png");
+		  } else if("CC002C" == styleFormNm) { // 주문
+			vm.styleImgSrc = require("@/assets/images/common/order.png");
+		  } else if("CC003C" == styleFormNm) { // 배송
+			vm.styleImgSrc = require("@/assets/images/common/ship.png");
+		  } else if("EE001C" == styleFormNm) { // 예약
+			vm.styleImgSrc = require("@/assets/images/common/reservation.png");
+		  } else if("FF001C" == styleFormNm) { // 승인
+			vm.styleImgSrc = require("@/assets/images/common/approve.png");
+		  } else if("FF002C" == styleFormNm) { // 입금
+			vm.styleImgSrc = require("@/assets/images/common/receipts.png");
+		  } else if("FF003C" == styleFormNm) { // 출금
+			vm.styleImgSrc = require("@/assets/images/common/payment.png");
+		  } else if("FF004C" == styleFormNm) { // 취소
+			vm.styleImgSrc = require("@/assets/images/common/cancel.png");
+		  } else if("FF005C" == styleFormNm) { // 명세서
+			vm.styleImgSrc = require("@/assets/images/common/specifications.png");
+		  } else if("GG001C" == styleFormNm) { // 회원가입
+			vm.styleImgSrc = require("@/assets/images/common/join.png");
+		  } else if("GG002C" == styleFormNm) { // 인증
+			vm.styleImgSrc = require("@/assets/images/common/certification.png");
+		  } else if("GG003C" == styleFormNm) { // 안내
+			vm.styleImgSrc = require("@/assets/images/common/infomation.png");
+		  }
+	  },
+
 	  // 목록
 	  returnRcsTemplateList() {
 		  this.$router.push({name : "rcsTemplateList"});
@@ -654,19 +725,25 @@ export default {
 
 	  // 템플릿 승인, 수정요청
 	  recTemplateIns(flag, paramCardType) {
+		this.flag = flag;
+		this.paramCardType = paramCardType;
+
 		if("INS" == flag) {
-			eventBus.$on('callbackEventBus', this.fnRcsTemplateApi(flag, paramCardType));
+			eventBus.$on('callbackEventBus', this.fnRcsTemplateApi);
 			confirm.fnConfirm("RCS 템플릿 승인", "RCS 템플릿을 승인 요청 하시겠습니까?", "승인");
 		} else {
-			eventBus.$on('callbackEventBus', this.fnRcsTemplateApi(flag, paramCardType));
+			eventBus.$on('callbackEventBus', this.fnRcsTemplateApi);
 			confirm.fnConfirm("RCS 템플릿 수정", "RCS 템플릿을 수정 요청 하시겠습니까?", "수정");
 		}
 	  },
 
 	  // 승인, 수정요청
-	  fnRcsTemplateApi(flag, paramCardType) {
+	  fnRcsTemplateApi() {
 		var vm = this;
+		var flag = vm.flag;
+		var paramCardType = vm.paramCardType;
 		var messagebaseformId = paramCardType == "des" ? vm.desFormNm : vm.styleFormNm;
+		var messagebaseId = vm.templateCode;
 		var custTmpltId = vm.templateCode;
 		if(flag == "UPT") {
 			var custTmpltIdArr = custTmpltId.split("-");
@@ -703,6 +780,7 @@ export default {
 			"flag" : flag,
 			// 공통 처리
 			"messagebaseformId" : messagebaseformId,
+			"messagebaseId" : messagebaseId,
 			"custTmpltId" : custTmpltId,
 			"tmpltName" : tmpltName,
 			"brandId" : brandId,
@@ -732,7 +810,6 @@ export default {
 			var result = response.data;
 			var success = result.success;
 			var message = result.message;
-			alert(flag);
 			var flagNm = flag== "INS" ? "등록" : "수정";
 			if(success) {
 				confirm.fnAlert(flagNm + "이 완료되었습니다.","");
