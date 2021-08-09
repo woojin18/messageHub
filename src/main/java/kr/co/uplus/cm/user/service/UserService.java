@@ -180,23 +180,29 @@ public class UserService {
 			// 난수 생성
 			String randomNum = CommonUtils.randomGeneration(10);
 			map.put("authKey", randomNum);
+
+			// 위치 설정
+			map.put("location",  "/login/setUserPwd");
+			
+			// 시간 설정
+			SimpleDateFormat	sdformat	= new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+			Calendar			cal			= Calendar.getInstance();
+			cal.add(Calendar.HOUR, 1);
+			String				time		= sdformat.format(cal.getTime());
+			map.put("time", time);
 			
 			// 메일 인증 table insert
 			generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, map);
 			
 			// 메일 전송
 //			signUpSvc.sendMail(map, "/login/setUserPwd");
-			map.put("location",  "/login/setUserPwd");
 			commonService.sendNoti("mail", map);
 			
 			rtn.setSuccess(true);
 			rtn.setData(params);
-		} catch (MessagingException e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("메일 전송 중 오류가 발생했습니다.");
 		} catch (Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage("사용자 등록에 실패하였습니다.");
+			rtn.setMessage(e.getMessage());
 		}
 		
 		return rtn;
