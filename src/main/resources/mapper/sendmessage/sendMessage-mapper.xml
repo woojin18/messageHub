@@ -325,31 +325,42 @@
     <select id="selectSmartTmpltInfo" parameterType="hashmap" resultType="camel">
     /* sendMessage.selectSmartTmpltInfo - 통합/스마트발송 템플릿 정보 조회 */
         SELECT
-            CST.TMPLT_CODE
-            , CST.CORP_ID
-            , CST.PROJECT_ID
-            , CST.MSG_KIND
-            , cm_console.fnc_get_cd_name('MSG_KIND', CST.MSG_KIND, 1) AS MSG_KIND_NAME
-            , CST.MSG_TYPE
-            , cm_console.fnc_get_cd_name('MSG_TYPE', CST.MSG_TYPE, 1) AS MSG_TYPE_NAME
-            , CST.TMPLT_TITLE
-            , CST.TMPLT_INFO
-            , JSON_EXTRACT(CST.TMPLT_INFO, '$[*].ch') CH_TYPE_LIST
-            , CST.TMPLT_TYPE
-            , CST.TMPLT_STATUS
-            , CST.PRODUCT_CODE
-            , CST.REG_ID
-            , CST.REG_DT
-            , CST.USE_YN
-            , CST.UPD_ID
-            , CST.UPD_DT
-        FROM cm.CM_SMART_TMPLT CST
-        WHERE CST.TMPLT_CODE = #{tmpltCode}
-            AND CST.CORP_ID = #{corpId}
-            AND CST.PROJECT_ID IN ('ALL', #{projectId})
-            AND CST.USE_YN = 'Y'
-            AND CST.TMPLT_STATUS = 'COMPLETE'
-            AND CST.TMPLT_TYPE = 'M'
+            SMT.*
+            , RCS.MESSAGEBASE_INFO AS RCS_TMPLT_INFO
+        FROM (
+            SELECT
+                CST.TMPLT_CODE
+                , CST.CORP_ID
+                , CST.PROJECT_ID
+                , CST.MSG_KIND
+                , cm_console.fnc_get_cd_name('MSG_KIND', CST.MSG_KIND, 1) AS MSG_KIND_NAME
+                , CST.MSG_TYPE
+                , cm_console.fnc_get_cd_name('MSG_TYPE', CST.MSG_TYPE, 1) AS MSG_TYPE_NAME
+                , CST.TMPLT_TITLE
+                , CST.TMPLT_INFO
+                , JSON_EXTRACT(CST.TMPLT_INFO, '$[*].ch') CH_TYPE_LIST
+                , CST.TMPLT_TYPE
+                , CST.TMPLT_STATUS
+                , CST.PRODUCT_CODE
+                , CST.REG_ID
+                , CST.REG_DT
+                , CST.USE_YN
+                , CST.UPD_ID
+                , CST.UPD_DT
+                , @PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(CST.TMPLT_INFO, "one", 'RCS', NULL, '$[*].ch')) AS PATH_TO_NAME
+                , @PATH_TO_PARENT := TRIM(TRAILING '.ch' FROM @PATH_TO_NAME) AS PATH_TO_PARENT
+                , @COMMENTS_OBJECT := JSON_EXTRACT(TMPLT_INFO, @PATH_TO_PARENT) AS CH_OBJECT
+                , JSON_UNQUOTE(JSON_EXTRACT(@COMMENTS_OBJECT, '$.data.messagebaseId')) AS MESSAGEBASE_ID
+            FROM cm.CM_SMART_TMPLT CST
+            WHERE CST.TMPLT_CODE = #{tmpltCode}
+                AND CST.CORP_ID = #{corpId}
+                AND CST.PROJECT_ID IN ('ALL', #{projectId})
+                AND CST.USE_YN = 'Y'
+                AND CST.TMPLT_STATUS = 'COMPLETE'
+                AND CST.TMPLT_TYPE = 'M'
+        ) SMT
+        LEFT OUTER JOIN cm.CM_RCS_MSGBASE RCS
+            ON SMT.MESSAGEBASE_ID = RCS.MESSAGEBASE_ID
     </select>
 
     <sql id ="whereSelectSmartTmpltList">

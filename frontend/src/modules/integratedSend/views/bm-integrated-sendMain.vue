@@ -171,7 +171,7 @@
                           <p v-if="cellContent.description0" :class="'lc-1'+ (cellContent.description1 ? ' inline-block' : '')">{{cellContent.description0}}</p>
                           <p v-if="cellContent.description1" class="lc-1 inline-block float-right">{{cellContent.description1}}</p>
                         </div>
-                        <hr/>
+                        <hr v-if="tmpltData.RCS.hrStyleArr && tmpltData.RCS.hrStyleArr.length > idx && tmpltData.RCS.hrStyleArr[idx]"/>
                       </div>
                     </div>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
@@ -644,7 +644,6 @@ export default {
       return new Promise((resolve, reject) => {
         commonUtilApi.selectImageUrlInfo(params).then(response =>{
           var result = response.data;
-          console.log('result ===> ', result);
           if(result.success) {
             resolve(this.$gfnCommonUtils.defaultIfEmpty(result.data.chImgUrl));
           } else {
@@ -872,14 +871,10 @@ export default {
             }
           }
         }
-
-        console.log('conts ch ===> ', ch);
-        console.log('conts ===> ', conts);
-
+        
         if(ch == 'RCS'){
           conts.replace(/\{\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}\}/g, function($0, $1) {
             tempVarNms.push($1);
-            console.log('conts rcs var ===> ', $1);
           });
         } else {
           conts.replace(/#\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}/g, function($0, $1) {
@@ -899,11 +894,8 @@ export default {
         confirm.fnAlert(this.componentsTitle, '발송 내용 변수 cuid, phone 은 예약어로 사용하실 수 없습니다.');
         return false;
       } else {
-        console.log('varNms ===> ', varNms);
         this.sendData.contsVarNms = this.fnSetArrayRemoveDupliVal(varNms);
         this.sendData.chMappingVarList = Object.assign([], chMappingVarList);
-        console.log('contsVarNms ===> ', this.sendData.contsVarNms);
-        console.log('chMappingVarList ===> ', chMappingVarList);
         return true;
       }
     },
@@ -921,7 +913,6 @@ export default {
         let result = response.data;
         if(result.success) {
           const targetField = ['tmpltTitle', 'tmpltInfo'];
-          console.log('result ===>> ', Object.assign({}, result));
           let tempData = Object.assign({}, result.data);
           this.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
           tempData.chTypeList = JSON.parse(tempData.chTypeList);
@@ -933,14 +924,19 @@ export default {
             && tempData.MMS.fileIdLst){
             tempData.MMS.fileUrlLst = [];
             tempData.MMS.fileIdLst.forEach(fileId => {
-              this.fnGetImageUrl('MMS', fileId).then(url => {console.log('url ===>> ', url); tempData.MMS.fileUrlLst.push(url)});
+              this.fnGetImageUrl('MMS', fileId).then(url => {tempData.MMS.fileUrlLst.push(url)});
             });
+          }
+
+          //RCS 스타일형 스타일 정보 Set
+          if(tempData.rcsTmpltInfo 
+            && tempData.RCS
+            && tempData.RCS.rcsPrdType == 'CELL'){
+            this.fnSetRcsStyle(tempData);
           }
 
           this.tmpltData = Object.assign({}, tempData);
           this.previewMessageType = this.tmpltData.chTypeList[0];
-          console.log('this.tmpltData.chTypeList[0] ===>> ', this.tmpltData.chTypeList[0]);
-          console.log('previewMessageType ===>> ', this.previewMessageType);
 
           if(this.fnContainsChannel('PUSH')){
             this.sendData.requiredCuid = true;
@@ -952,15 +948,44 @@ export default {
             || this.fnContainsChannel('RCS')){
             this.sendData.requiredCuPhone = true;
           }
-          
-          console.log('requiredCuid ===>> ', this.sendData.requiredCuid);
-          console.log('requiredCuPhone ===>> ', this.sendData.requiredCuPhone);
-          console.log('tmpltData ===>> ', this.tmpltData);
 
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
+    },
+    fnSetRcsStyle(tempData){
+      const rcsTmpltInfo = JSON.parse(tempData.rcsTmpltInfo);
+      
+      let rcsLayout;
+      try {
+        rcsLayout = rcsTmpltInfo.formattedString.RCSMessage.openrichcardMessage.layout;
+      } catch (error) {}
+
+      //수평선
+      if(rcsLayout && rcsLayout.children && rcsLayout.children.length > 1 && rcsLayout.children[1].children){
+        const layoutInfo = rcsLayout.children[1].children;
+        let hrStyleArr = [];
+        let ne;
+
+        layoutInfo.forEach((e, idx) => {
+          if(e.widget && e.widget != 'LinearLayout'){
+            if(e.visibility && e.visibility == 'visible'){
+              hrStyleArr.push(true);
+            } else {
+              hrStyleArr.push(false);
+            }
+          } else {
+            if(idx === layoutInfo.length - 1){
+              ne = layoutInfo[idx+1];
+              if(ne.widget && ne.widget === 'LinearLayout'){
+                hrStyleArr.push(false);
+              }
+            }
+          }
+        });
+        tempData.RCS.hrStyleArr = hrStyleArr;
+      }
     },
     fnSetTmpltInfoByChannel(tempData){
       let chTypeList = tempData.chTypeList;
