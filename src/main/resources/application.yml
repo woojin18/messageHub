@@ -203,7 +203,7 @@ cash.pg:
 datasource: 
   rcs:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    jdbc-url: jdbc:log4jdbc:mysql://stg-advmsg-db.cluster-crvzo9rgathe.ap-northeast-2.rds.amazonaws.com/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    jdbc-url: jdbc:log4jdbc:mysql://stg-advmsg-db-cluster.cluster-crvzo9rgathe.ap-northeast-2.rds.amazonaws.com/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: cm_console
     password: ENC(8yxau7b5v41ZqVEU3AGtQ5bQVNLB41ce)
     pool-name: hikari-cp
