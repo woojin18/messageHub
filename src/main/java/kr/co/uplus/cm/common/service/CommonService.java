@@ -793,10 +793,10 @@ public class CommonService {
 			mailMap.put("contents", contents);
 			mailMap.put("fromEmail", this.mailHost);
 			
-			emailCh.add(mailMap);
+//			emailCh.add(mailMap);
 			
 			apiMap.put("recvInfoLst", recvInfoLst);
-			apiMap.put("emailCh", emailCh);
+			apiMap.put("emailCh", mailMap);
 			
 		} else if("sms".equals(type)) {
 			// sms 인증
