@@ -7,7 +7,7 @@
     </Properties>
     <appenders>
         <Console name="console" >
-            <MarkerFilter marker="PRIVACY" onMatch="DENY" onMismatch="ACCEPT"/>
+            <!-- <MarkerFilter marker="PRIVACY" onMatch="DENY" onMismatch="ACCEPT"/> --> <!-- 개인정보 마커필터 qa 이후 주석처리 -->
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [${app-name}] [%15.15t] %5p [%-30.30logger{1.}] (%-4L) : %m%n%wEx" />
         </Console>
 
@@ -55,6 +55,7 @@
         <root level="debug" >
             <appender-ref ref="service_file" />
             <appender-ref ref="error_file" level="error" />
+            <appender-ref ref="console" />
         </root>
 
         <logger name="kr.co.uplus.rcs.common.cmd.HealthCheckCmd" >
