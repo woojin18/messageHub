@@ -64,14 +64,12 @@
 								<col style="width:10%">
 								<col style="width:10%">
 								<col style="width:10%">
-								<col style="width:10%">
 							</colgroup>
 							<thead>
 								<tr>
 								<th class="text-center lc-1">날짜</th>
 								<th class="text-center lc-1">프로젝트명</th>
 								<th class="text-center lc-1">API KEY</th>
-								<th class="text-center lc-1">부서명</th>
 								<th class="text-center lc-1">발송</th>
 								<th class="text-center lc-1">성공</th>
 								<th class="text-center lc-1 end">성공율</th>
@@ -82,20 +80,19 @@
 									<td class="text-center">{{data.sendDate}}</td>
 									<td class="text-left">{{data.projectName}}</td>
 									<td class="text-left">{{data.apiKey}}</td>
-									<td class="text-center">{{data.deptName}}</td>
 									<td class="text-right">{{data.totCnt | comma}}</td>
 									<td class="text-right">{{data.succCnt | comma}}</td>
 									<td class="text-right end">{{data.succRatio}}</td>
 								</tr>
 								<tr v-if="statisItem.length > 0" class="of_h">
-									<th class="text-left end bgColor_sky" colspan="4">합계</th>
+									<th class="text-left end bgColor_sky" colspan="3">합계</th>
 									<th class="text-right">{{sumTotCnt | comma}}</th>
 									<th class="text-right">{{sumSuccCnt | comma}}</th>
 									<th class="text-right end">{{totalSuccRatio}}</th>
 								</tr>
 								<tr v-if="statisItem.length == 0">
 									<td class="text-center"></td>
-									<td class="text-center" colspan="7">검색된 내용이 없습니다.</td>
+									<td class="text-center" colspan="6">검색된 내용이 없습니다.</td>
 								</tr>
 							</tbody>
 						</table>
