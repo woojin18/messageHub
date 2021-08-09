@@ -139,8 +139,8 @@
                           <h6 v-if="buttonInfo.linkType == 'WL'" class="float-left" style="width:20%">Mobile</h6>
                           <h6 v-if="buttonInfo.linkType == 'AL'" class="float-left" style="width:20%">Android</h6>
                           <!-- <input v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" type="text" class="inputStyle float-left" style="width:80%"> -->
-                          <input v-if="buttonInfo.linkType == 'WL'" type="text" class="inputStyle float-left" style="width:80%" :value="buttonInfo.linkMo">
-                          <input v-if="buttonInfo.linkType == 'AL'" type="text" class="inputStyle float-left" style="width:80%" :value="buttonInfo.linkAnd">
+                          <input v-if="buttonInfo.linkType == 'WL'" type="text" class="inputStyle float-left" style="width:80%" :value="buttonInfo.linkMo" disabled>
+                          <input v-if="buttonInfo.linkType == 'AL'" type="text" class="inputStyle float-left" style="width:80%" :value="buttonInfo.linkAnd" disabled>
                         </td>
                       </tr>
                       <tr v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" :key="idx+'_sub'">
