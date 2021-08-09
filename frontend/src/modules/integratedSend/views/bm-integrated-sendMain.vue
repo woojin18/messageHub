@@ -29,7 +29,7 @@
                   <p class="consolMarginTop">
                     <pre>{{tmpltData.PUSH.msg}}</pre>
                     <br/>
-                    {{tmpltData.msgKind == 'A' ? '수신거부 : '+tmpltData.PUSH.rcvblcInput : ''}}
+                    {{tmpltData.msgKind == 'A' ? '(수신거부 : '+tmpltData.PUSH.rcvblcInput+')' : ''}}
                   </p>
                 </div>
               </div>
