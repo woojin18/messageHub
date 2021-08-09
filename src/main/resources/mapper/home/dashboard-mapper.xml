@@ -463,6 +463,7 @@
 	</select>
 
 	<select id="selectMonthUsedDataList" resultType="camel">
+		/* dashboard.selectMonthUsedDataList */
 		SELECT
 			AD.DATE,
 			CH,
@@ -494,6 +495,7 @@
 	</select>
 
 	<select id="selectSixMonthUsedTimeLineList" resultType="camel">
+		/* dashboard.selectSixMonthUsedTimeLineList */
 		SELECT
 			AD.DATE
 		FROM (
@@ -520,6 +522,7 @@
 	</select>
 
 	<select id="selectSixMonthUsedDataList" resultType="camel">
+		/* dashboard.selectSixMonthUsedDataList */
 		SELECT
 			AD.DATE,
 			CH,
