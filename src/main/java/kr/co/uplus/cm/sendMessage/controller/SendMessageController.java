@@ -240,8 +240,7 @@ public class SendMessageController {
             /** 푸시 수신자 리스트*/
             recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
-                rtn.setSuccess(false);
-                rtn.setMessage("잘못된 푸시 수신자 정보입니다.");
+                rtn.setFail(Const.SendMsgErrorSet.INVALID_RECIPIENT_INFO);
                 return rtn;
             }
 
@@ -397,8 +396,7 @@ public class SendMessageController {
             /** SMS 수신자 리스트*/
             recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
-                rtn.setSuccess(false);
-                rtn.setMessage("잘못된 SMS 수신자 정보입니다.");
+                rtn.setFail(Const.SendMsgErrorSet.INVALID_RECIPIENT_INFO);
                 return rtn;
             }
 
@@ -509,8 +507,7 @@ public class SendMessageController {
             /** MMS 수신자 리스트*/
             recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
-                rtn.setSuccess(false);
-                rtn.setMessage("잘못된 MMS 수신자 정보입니다.");
+                rtn.setFail(Const.SendMsgErrorSet.INVALID_RECIPIENT_INFO);
                 return rtn;
             }
 
@@ -663,8 +660,7 @@ public class SendMessageController {
             /** 친구톡 수신자 리스트*/
             recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
-                rtn.setSuccess(false);
-                rtn.setMessage("잘못된 친구톡 수신자 정보입니다.");
+                rtn.setFail(Const.SendMsgErrorSet.INVALID_RECIPIENT_INFO);
                 return rtn;
             }
 
@@ -829,8 +825,7 @@ public class SendMessageController {
             /** 알림톡 수신자 리스트*/
             recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
-                rtn.setSuccess(false);
-                rtn.setMessage("잘못된 알림톡 수신자 정보입니다.");
+                rtn.setFail(Const.SendMsgErrorSet.INVALID_RECIPIENT_INFO);
                 return rtn;
             }
 
@@ -939,7 +934,7 @@ public class SendMessageController {
             /** 수신자 리스트*/
             recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
-                rtn.setFail("잘못된 수신자 정보입니다.");
+                rtn.setFail(Const.SendMsgErrorSet.INVALID_RECIPIENT_INFO);
                 return rtn;
             }
 
