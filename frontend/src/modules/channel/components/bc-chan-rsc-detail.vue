@@ -288,8 +288,9 @@
 							<h4 class="inline-block vertical-middle" style="width:22%">통신서비스<br>가입증명원 *</h4>
 							<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:72%" ref="certiImgFile"/>
 							<div class="font-size12 color3 mt10 ml_28 float-left" style="width:73%">
-								<div class="consolCheck float-left mb40"><input type="checkbox" id="Lmit" class="checkStyle2" value="Lmit"><label for="Lmit"></label></div>
-								<p>메시지 발송 시 기본템플릿(구.Free템플릿)은 정보성에 한하여 이용 가능합니다.<br>규정위반 시 서비스 이용이 제한될 수 있습니다.</p>
+								<div class="consolCheck float-left mb40"><input type="checkbox" id="Lmit" class="checkStyle2" value="Lmit"><label for="Lmit">
+									<p>메시지 발송 시 기본템플릿(구.Free템플릿)은 정보성에 한하여 이용 가능합니다.<br>규정위반 시 서비스 이용이 제한될 수 있습니다.</p>
+								</label></div>
 							</div>						
 						</div>
 					</div>
@@ -361,11 +362,11 @@ export default {
 		inputVal : {
 			corpId 			: "",
 			projectId 		: "",
-			apiKey 			: "kangyj94",
-			apiSecret 		: "SK.E7nddvJlfZp8JXU",
-			name			: "브랜드 이름",
-			description		: "브랜드 설명",
-			tel				: "브랜드 전화번호",
+			apiKey 			: "",
+			apiSecret 		: "",
+			name			: "",
+			description		: "",
+			tel				: "",
 			// 메뉴버튼설정
 			chat			: "",
 			call			: false,
@@ -383,17 +384,17 @@ export default {
 			moreinfo		: false,
 			moreinfoWeblink	: "",
 
-			categoryId		: "버튼 정보",
-			subCategoryId	: "버튼 정보",
-			categoryOpt		: "검색용 키워드",
-			zipCode			: "우편번호",
-			roadAddress		: "도로명주소",
-			detailAddress	: "상세주소",
-			email			: "이메일주소",
+			categoryId		: "",
+			subCategoryId	: "",
+			categoryOpt		: "",
+			zipCode			: "",
+			roadAddress		: "",
+			detailAddress	: "",
+			email			: "",
 			email2			: "",
-			webSiteUrl		: "홈페이지 주소",
-			mainMdn			: "",	// 대표발신번호
-			mainTitle		: "대표발신명",
+			webSiteUrl		: "",
+			mainMdn			: "",
+			mainTitle		: "",
 			// 파일
 			profileImgFilePath: "",
 			preProfileImg : "/se2/images/rcsProfileImageSample.jpg",
@@ -435,7 +436,7 @@ export default {
     this.projectId		= this.$route.params.projectId;
 	this.projectIdStr	= this.$route.params.projectIdStr;
 	this.brandId		= this.$route.params.brandId;
-	this.inputVal		= this.$route.params.inputVal;
+	//this.inputVal		= this.$route.params.inputVal;
 	
 	// 임시저장인지 확인
 	if( this.brandId.substring(0,1) === 'T' ){
@@ -473,12 +474,14 @@ export default {
 		var params = {
 			"apiKey"	: this.inputVal.apiKey,
 			"apiSecret"	: this.inputVal.apiSecret,
-			"brandId"   : this.brandId
+			"brandId"   : this.brandId,
+			"tmpBrandYn": this.tmpBrandYn,
+			"mainProjectId" : this.mainProjectId,
 		};
 		api.checkApiKey(params).then(response =>{
 			var result = response.data.data;
 			this.category = result.cateData.data;
-			if( this.tmpBrandYn === 'N' && this.save_status != 'C' ){
+			if( this.save_status != 'C' ){
 				this.inputVal = result.inputVal;
 			}
 			if( result.cateData.data != null && result.cateData.data != undefined ){

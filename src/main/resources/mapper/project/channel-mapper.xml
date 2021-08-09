@@ -160,6 +160,13 @@
 		</if>
 	</sql>
 	
+	<select id="selectRcsBrandTemp" resultType="String">
+		/* channel.selectRcsBrandTemp */
+		SELECT	BRAND_INFO
+		FROM	cm.CM_RCS_BRAND_REQ
+		WHERE	BRAND_ID = #{detailBrandId}
+	</select>
+	
 	<select id="selectRcsBrandChatbotList" resultType="camel">
 		/* channel.selectRcsBrandChatbotList */
 		SELECT	A.*
