@@ -310,7 +310,7 @@
                       <span>[WEB발신]</span>
                       <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
                     </p>
-                    <ul class="cardBxslider mt10">
+                    <ul class="cardBxslider mt10" style="list-style-type:none;display:none">
                       <li v-for="(msgData, idx) in tmpltData.RCS.mergeData" :key="idx" class="slide cardBox">
                         <img 
                           v-if="tmpltData.msgType == 'IMAGE' && msgData.mediaUrl" 
@@ -348,7 +348,7 @@
                       <span>[WEB발신]</span>
                       <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
                     </p>
-                    <ul class="cardBxslider mt10">
+                    <ul class="cardBxslider mt10" style="list-style-type:none;display:none">
                       <li v-for="(msgData, idx) in tmpltData.RCS.mergeData" :key="idx" class="slide cardBox scroll-yc">
                         <img 
                           v-if="tmpltData.msgType == 'IMAGE' && msgData.mediaUrl" 
@@ -625,7 +625,7 @@ export default {
   },
   methods: {
     fnSetBxslider(){
-      jQuery('.cardBxslider').bxSlider({
+      jQuery('.cardBxslider').show().bxSlider({
         auto: false,
         autoControls: false,
         slideWidth: 204,
