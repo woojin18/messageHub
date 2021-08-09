@@ -141,7 +141,7 @@
 	</update>
 	
 	
-	<select id="findLoginId" resultType="String">
+	<select id="findLoginId" resultType="camel">
 		/* login.findLoginId */
 		SELECT	LOGIN_ID
 		FROM	cm_console.CM_USER
