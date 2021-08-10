@@ -19,6 +19,7 @@ import kr.co.uplus.cm.common.consts.Const.CmdTgt;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
+import kr.co.uplus.cm.config.FileConfig;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
@@ -318,16 +319,29 @@ public class ProjectService {
 	public void saveRcsChatbotReqForApi(Map<String, Object> params) throws Exception {
 		String brandId = CommonUtils.getString(params.get("brandId"));
 		String sts = CommonUtils.getString(params.get("sts"));
-		String tempYn = "Y";
+		String tempYn = "N";
 		Map<String, Object> certiFileRtnMap = new HashMap<String, Object>();
-		
+		String certiFilePath = "";
+
 		if( "N".equals(tempYn) ) {
 			// 가입증명 파일 업로드 처리
+//			MultipartFile certiFile = (MultipartFile) params.get("certiFile");
+//			
+//			RestResult<Object> certiFileRtn = commonService.uploadFile(certiFile, CommonUtils.getString(params.get("loginId")));
+//			
+//			certiFileRtnMap = (Map<String, Object>) certiFileRtn.getData();
+			
+			String uploadDirPath = FileConfig.getFilePath(FileConfig.FileSvcType.LIBRARY);
+			
 			MultipartFile certiFile = (MultipartFile) params.get("certiFile");
 			
-			RestResult<Object> certiFileRtn = commonService.uploadFile(certiFile, CommonUtils.getString(params.get("loginId")));
+			String certiFileSeq = commonService.uploadFile(certiFile, CommonUtils.getString(params.get("loginId")), uploadDirPath);
 			
-			certiFileRtnMap = (Map<String, Object>) certiFileRtn.getData();
+			Map<String, Object> certiFileMap = new HashMap<String, Object>();
+			certiFileMap.put("fileId", certiFileSeq);
+//			System.out.println("------------------------------------------------@ certiFileSeq : " + certiFileSeq);
+			certiFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", certiFileMap));
+//			System.out.println("------------------------------------------------@ certiFilePath : " + certiFilePath);
 		}
 		
 		// 데이터 처리
@@ -336,7 +350,7 @@ public class ProjectService {
 		map.put("corpId",		params.get("corpId"));
 		
 		if( "N".equals(tempYn) ) {
-			map.put("subNumCertificate",		params.get("certiFile"));
+			map.put("subNumCertificate",		certiFilePath);
 		} else {
 			// 임시
 			map.put("subNumCertificate", "/efs/file/console/2021/05/28/10/test1234.png");
@@ -357,7 +371,7 @@ public class ProjectService {
 			
 			// json object 편하게 보기 위한 용도
 			kong.unirest.json.JSONObject jsonParam =  new kong.unirest.json.JSONObject(map);
-			System.out.println("----------------------------------------@@@ jsonParam : " + jsonParam);
+			//System.out.println("----------------------------------------@@@ jsonParam : " + jsonParam);
 			
 			// 등록요청
 			Map<String, Object> headerMap = new HashMap<String, Object>();
@@ -367,7 +381,7 @@ public class ProjectService {
 			// API 통신 처리
 			Map<String, Object> result =  apiInterface.post("/console/v1/brand/" + brandId + "/chatbot", map, headerMap);
 			
-			System.out.println("-----------------------------------------@@@ result : " + result);
+			//System.out.println("-----------------------------------------@@@ result : " + result);
 			
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
@@ -389,7 +403,7 @@ public class ProjectService {
 			
 			// json object 편하게 보기 위한 용도
 			kong.unirest.json.JSONObject jsonParam =  new kong.unirest.json.JSONObject(map);
-			System.out.println("----------------------------------------@@@ jsonParam : " + jsonParam);
+			//System.out.println("----------------------------------------@@@ jsonParam : " + jsonParam);
 			
 			// 수정요청
 			Map<String, Object> headerMap = new HashMap<String, Object>();
@@ -399,8 +413,6 @@ public class ProjectService {
 			
 			// API 통신 처리
 			Map<String, Object> result =  apiInterface.put("/console/v1/brand/" + brandId + "/chatbot/" + params.get("chatbotId"), null, map, headerMap);
-			
-			System.out.println("-----------------------------------------@@@ result : " + result);
 			
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
@@ -461,8 +473,6 @@ public class ProjectService {
 		
 		// API 통신 처리
 		Map<String, Object> result =  apiInterface.delete("/console/v1/brand/" + brandId + "/chatbot/" + chatbotId, null, apiMap, headerMap);
-		
-		System.out.println("------------------------------------------------- deleteCallbackForApi result : " + result);
 		
 		// 성공인지 실패인지 체크
 		if( "10000".equals(result.get("code")) ) {
