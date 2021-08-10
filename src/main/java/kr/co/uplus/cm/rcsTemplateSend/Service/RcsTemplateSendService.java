@@ -1052,7 +1052,7 @@ public class RcsTemplateSendService {
 		Map<String, Object> apiMap = this.setRcsData(params);
 		
 		// button 세팅 (텍스트 미승인형의 경우 버튼이 없음)
-		apiMap.put("buttons", new HashMap<String, Object>());
+		apiMap.put("buttons", new ArrayList());
 		
 		// 대체발송 세팅
 		ArrayList<Map<String, Object>> fbInfoLst = new ArrayList<Map<String, Object>>();
