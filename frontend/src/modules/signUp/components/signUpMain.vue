@@ -301,14 +301,12 @@ export default {
 			// 기초 validation 처리
 			var defaultVali = true;
 			defaultVali = this.defaultVali();
-			console.log(defaultVali);
 			if(!defaultVali) return false;
 
 			// 신규 고객사 validation
 			if (this.selRegno == ""){
 				var custVali = true;
 				custVali = this.custVali();
-				console.log(custVali);
 				if(!custVali) return false;
 			} 
 
@@ -316,10 +314,8 @@ export default {
 			
 			// 사업자 번호 유효성 검사
 			var regnoVali = this.regnoVali(regno);
-			if(!regnoVali) {
-				confirm.fnAlert("", "사업자 번호를 정확히 입력해주세요.");
-				return false;
-			}
+			if(!regnoVali) return false;
+
 			eventBus.$on('callbackEventBus', this.signUpSubmit);
      		confirm.fnConfirm( "", "가입하시겠습니까?", "확인");
 		},
@@ -533,6 +529,7 @@ export default {
 						jQuery("#chkCorpPopup").modal("show");
 					} else {
 						// 선택할 수 있는 고객사가 없는 경우 고객번호 제외 입력 가능
+						confirm.fnAlert("","신규 고객사 정보를 입력해주세요.");
 						vm.selCorpCnt = 0;
 						vm.selCorp = {};
 					}

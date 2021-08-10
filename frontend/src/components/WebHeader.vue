@@ -10,8 +10,8 @@
 				<li>
 					<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i> {{ this.loginId }}</a>	
 					<ul class="dropdown-menu userDrop" role="menu">
-						<li @click="fnCheckPwd"><a data-toggle="modal" data-target="#Client">고객사 정보</a></li>
-						<li @click="fnMyPage"><a data-toggle="modal" data-target="#Member-information">회원정보</a></li>
+						<li @click="fnCheckPwd('corp')"><a data-toggle="modal" data-target="#Client">고객사 정보</a></li>
+						<li @click="fnCheckPwd('member')"><a data-toggle="modal" data-target="#Member-information">회원정보</a></li>
 						<li><router-link to="/ac/qna">나의 문의내역</router-link></li>
 						<li @click="clickLogout"><a href="#">로그아웃</a></li>
 					</ul>
@@ -20,7 +20,7 @@
 			<!-- 회원정보 팝업-->
 			<myPagePopup :memberInfo="memberInfo" :popReset="popReset"></myPagePopup>
 			<!-- 회원정보 팝업 끝 -->
-			<chkPwdPopup :popReset="popReset"></chkPwdPopup>
+			<chkPwdPopup :popReset="popReset" :type="type"></chkPwdPopup>
 			<!-- 고객사정보 팝업-->
 			<corpInfoPopup :corpInfo="corpInfo" :popReset="popReset"></corpInfoPopup>
 			<!-- 고객사정보 팝업 끝 -->
@@ -51,7 +51,8 @@ export default {
 			memberInfo : {},
 			corpInfo : {},
 			popReset : 0,
-      		userGuideUrl : "www.naver.com"
+      		userGuideUrl : "www.naver.com",
+			type : ""
 		}
 	},
 	created() {
@@ -164,8 +165,9 @@ export default {
 
 			jQuery("#myPagePopup").modal("show");
 		},
-		fnCheckPwd(){
+		fnCheckPwd(type){
 			this.popReset = this.popReset + 1;
+			this.type = type;
 			jQuery("#chkPwdPopup").modal("show");
 		},
 		fnMyCorp(){
@@ -176,7 +178,6 @@ export default {
 				var result = response.data;
 				if(result.success){
 					this.corpInfo = result.data;
-					console.log(this.corpInfo);
 					this.popReset = this.popReset + 1;
 				}
 			});
