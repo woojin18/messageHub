@@ -386,7 +386,7 @@ public class ProjectService {
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
 			} else if ( "500100".equals(result.get("code")) ) {
-				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			} else {
 				String errMsg = CommonUtils.getString(result.get("message"));
@@ -417,7 +417,7 @@ public class ProjectService {
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
 			} else if ( "500100".equals(result.get("code")) ) {
-				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			} else {
 				String errMsg = CommonUtils.getString(result.get("message"));
@@ -477,7 +477,7 @@ public class ProjectService {
 		// 성공인지 실패인지 체크
 		if( "10000".equals(result.get("code")) ) {
 		} else if ( "500100".equals(result.get("code")) ) {
-			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+			String errMsg = CommonUtils.getString(result.get("message"));
 			throw new Exception(errMsg);
 		} else {
 			String errMsg = CommonUtils.getString(result.get("message"));
