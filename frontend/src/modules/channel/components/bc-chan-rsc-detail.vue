@@ -200,13 +200,14 @@
 						<div style="width:72%" class="float-right">
 							<input id="email1" type="text" class="inputStyle mr20" style="width:30%" v-model="inputVal.email" :disabled="this.duplCheckYn == 'N'">
 							@
-							<input id="email2" type="text" class="inputStyle ml20" style="width:30%; margin-right: 10px !important;" v-model="inputVal.email2" :disabled="this.duplCheckYn == 'N'">
-							<select id="emailSelect" class="selectStyle2 consolMarginTop" style="width:100%"  v-model="inputVal.email2" :disabled="this.duplCheckYn == 'N'">
-								<option value="" selected>직접입력</option>
+							<input id="email2" type="text" class="inputStyle ml20" style="width:30%; margin-right: 10px !important;" v-model="inputVal.email2" 
+									:disabled="this.duplCheckYn == 'N' && ( inputVal.email2 == 'naver.com' || inputVal.email2 == 'daum.com' || inputVal.email2 == 'gmail.com' || inputVal.email2 == 'nate.com' )">
+							<select id="emailSelect" class="selectStyle2 consolMarginTop" style="width:100%"  v-model="inputVal.email2">
 								<option value="naver.com">naver.com</option>
 								<option value="daum.com">daum.com</option>
 								<option value="gmail.com">gmail.com</option>
 								<option value="nate.com">nate.com</option>
+								<option :value="inputVal.email2">직접입력</option>
 							</select>
 						</div>
 					</div>
