@@ -24,13 +24,9 @@
         /* alarm.selectReceptGroupList2 */
         SELECT RECEPT_GROUP_ID 
              , RECEPT_GROUP_NAME
-             , (SELECT COUNT(1) FROM cm_console.CM_CORP_GROUP_RECIPIENT x WHERE x.RECEPT_GROUP_ID = a.RECEPT_GROUP_ID) AS RECIPIENT_CNT
           FROM cm_console.CM_CORP_RECEPT_GROUP a
          WHERE USE_YN  = 'Y'
            AND a.CORP_ID        = #{corpId}
-        <if test="srcReceptGroupName != null and srcReceptGroupName != ''">
-           AND RECEPT_GROUP_NAME LIKE CONCAT('%',#{srcReceptGroupName},'%')
-        </if>
          ORDER BY RECEPT_GROUP_NAME ASC
     </select>
     
