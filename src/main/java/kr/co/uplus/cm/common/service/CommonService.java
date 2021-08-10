@@ -841,7 +841,7 @@ public class CommonService {
 		html += "<div style='border-bottom:1px solid #9F9F9F; padding-bottom:30px; margin-bottom:30px'>";
 		html += "<img src='" + this.baseUrl + "/se2/images/" + "userLogo.svg' alt='유플러스 통합메시징 클라우드' />";
 		html += "</div>";
-		html += "<div style='font-size:14px; line-height:24px'>이메일 인증을 진행해주세요.<br/>";
+		html += "<div style='font-size:14px; line-height:24px'>";
 		html += "안녕하세요. 유플러스 통합메시징 클라우드를 이용해주셔서 감사합니다.<br/>";
 		html += "본인 이메일이 맞는지 확인하고 있습니다.<br/>";
 		html += "아래 [인증] 버튼을 클릭하면 다음 단계로 진행할 수 있습니다.<br/><br/>";
