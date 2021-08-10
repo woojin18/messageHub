@@ -10,7 +10,7 @@
 				<li>
 					<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i>{{ this.loginId }}</a>	
 					<ul class="dropdown-menu userDrop" role="menu">
-						<li @click="fnMyPage"><a data-toggle="modal" data-target="#Member-information">회원정보</a></li>
+						<li @click="fnCheckPwd"><a data-toggle="modal" data-target="#Member-information">회원정보</a></li>
 						<li><router-link to="/uc/qna">나의 문의내역</router-link></li>
 						<li @click="clickLogout"><a href="#">로그아웃</a></li>
 					</ul>
@@ -19,6 +19,7 @@
 			<!-- 회원정보 팝업-->
 			<myPagePopup :memberInfo="memberInfo" :popReset="popReset"></myPagePopup>
 			<!-- 회원정보 팝업 끝 -->
+			<chkPwdPopup :popReset="popReset" :type="type"></chkPwdPopup>
 		</header>
 	</section>
 </template>
@@ -30,6 +31,8 @@ import tokenSvc from '@/common/token-service';
 import { mapGetters } from 'vuex';
 import myPagePopup from '@/modules/myPage/components/bp-myPagePopup.vue';
 import myPageApi from '@/modules/myPage/service/myPageApi';
+import chkPwdPopup from '@/modules/myPage/components/bp-chkPassword.vue';
+
 
 export default {
 	name: "webUcHeader",
@@ -43,7 +46,8 @@ export default {
 			loginId: '',
 			memberInfo : {},
 			popReset : 0,
-      		userGuideUrl : "www.naver.com"
+      		userGuideUrl : "www.naver.com",
+			type : ""
 		}
 	},
 	created() {
@@ -65,7 +69,8 @@ export default {
 		});
 	},
 	components : {
-		myPagePopup
+		myPagePopup,
+		chkPwdPopup
 	},
 	computed: {
 		...mapGetters({
@@ -153,6 +158,11 @@ export default {
 			});
 
 			jQuery("#myPagePopup").modal("show");
+		},
+		fnCheckPwd(){
+			this.popReset = this.popReset + 1;
+			this.type = 'member';
+			jQuery("#chkPwdPopup").modal("show");
 		}
 	}
 };

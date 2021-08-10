@@ -37,6 +37,10 @@ export default {
   props: {
     popReset: {
       type: Number
+    },
+    type : {
+      type : String,
+      require : false
     }
   },
   mounted() {
@@ -60,7 +64,11 @@ export default {
           var result = response.data;
           if(result.success) {
             this.fnCloseLayer();
-            this.$parent.fnMyCorp();
+            if(this.type == 'corp'){
+              this.$parent.fnMyCorp();
+            } else {
+              this.$parent.fnMyPage();
+            }
           } else {
             confirm.fnAlert("", result.message);
           }
