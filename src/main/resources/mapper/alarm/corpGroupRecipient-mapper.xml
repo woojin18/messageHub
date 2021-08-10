@@ -70,12 +70,4 @@
          WHERE RECIPIENT_ID     = #{recipientId}
            AND CORP_ID          = #{corpId}
     </delete>
-    
-    <delete id="deleteGroupRecipient3">
-       /* alarm.deleteGroupRecipient3 */
-        DELETE 
-          FROM cm_console.CM_CORP_GROUP_RECIPIENT
-         WHERE RECEPT_GROUP_ID   = #{srcReceptGroupId}
-           AND CORP_ID           = #{corpId}
-    </delete>
 </mapper>

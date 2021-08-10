@@ -25,7 +25,6 @@ public class GroupRecipientService {
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackFor={Exception.class})
 	public void delGroupRecipient(Map<String, Object> params) throws Exception {
 		generalDao.deleteGernal("alarm.deleteGroupRecipient", params);
-		generalDao.deleteGernal("alarm.deleteGroupRecipient3", params);
 	}
 
 }
