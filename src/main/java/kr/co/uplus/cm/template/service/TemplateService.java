@@ -481,7 +481,7 @@ public class TemplateService {
         }
 
         if(!StringUtils.equals(ApiConfig.GW_API_SUCCESS, rsltCode)) {
-            rtn.setFail("알림톡 템플릿 등록요청에 실패하였습니다.");
+            rtn.setFail(CommonUtils.getFailMsg(responseBody, "알림톡 템플릿 등록요청에 실패하였습니다."));
             log.warn("{}.procApprvRequestKkoTmplt Fail -request: {}, response: {}", this.getClass(), jsonString, responseBody);
         }
 
@@ -648,7 +648,7 @@ public class TemplateService {
         }
 
         if(!StringUtils.equals(ApiConfig.GW_API_SUCCESS, rtltCode)) {
-            rtn.setFail("알림톡 템플릿 검수요청에 실패하였습니다.");
+            rtn.setFail(CommonUtils.getFailMsg(responseBody, "알림톡 템플릿 검수요청에 실패하였습니다."));
             log.warn("{}.procInspectRequestKkoTmplt Fail -request: {}, response: {}", this.getClass(), jsonString, responseBody);
         }
 
@@ -683,7 +683,7 @@ public class TemplateService {
         }
 
         if(!StringUtils.equals(ApiConfig.GW_API_SUCCESS, rtltCode)) {
-            rtn.setFail("알림톡 템플릿 수정요청에 실패하였습니다.");
+            rtn.setFail(CommonUtils.getFailMsg(responseBody, "알림톡 템플릿 수정요청에 실패하였습니다."));
             log.warn("{}.procUpdateRequestKkoTmplt Fail -request: {}, response: {}", this.getClass(), jsonString, responseBody);
         }
 
