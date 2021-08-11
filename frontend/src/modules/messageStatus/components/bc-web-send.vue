@@ -95,7 +95,7 @@
               </thead>
               <tbody>
                 <tr v-for="(data, idx) in datas" :key="idx">
-                    <td>{{totCnt-offset-data.rowNum+1}}</td>
+                    <td>{{data.rowNum}}</td>
                     <td class="text-center">{{data.corpName}}</td>
                     <td class="text-center">{{data.senderCnt}}</td>
                     <td class="text-center">{{data.senderTypeNm}}</td>

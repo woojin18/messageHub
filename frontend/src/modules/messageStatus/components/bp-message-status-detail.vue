@@ -47,7 +47,7 @@
 							</div>
 						</div>	
 						<div class="text-center mt20">
-							<a href="#self" class="btnStyle1 backBlack" @click.self="fnCloseLayer" title="닫기">닫기</a>	
+							<a class="btnStyle1 backBlack" @click.self="fnCloseLayer" title="닫기">닫기</a>	
 						</div>
 					</div>											
 				</div>

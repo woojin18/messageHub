@@ -26,7 +26,7 @@
 
     <select id="selectWebSendList" parameterType="hashmap" resultType="camel">
     /* 웹발송 현황 리스트 조회 */
-		SELECT AA.*
+		SELECT	AA.*
 		,		@rownum:=@rownum+1 AS ROW_NUM
 		FROM (
 			SELECT  
@@ -46,10 +46,10 @@
 			WHERE 1=1
 			<include refid="whereSelectWebSendList"/>
 	        GROUP BY A.WEB_REQ_ID, A.CH_STRING, A.SENDER_TYPE, A.SENDER_TYPE, A.SENDER_CNT, A.REG_DT, C.CORP_NAME
-			ORDER BY A.REG_DT DESC
+			ORDER BY A.REG_DT
 		) AA
 		, (SELECT @rownum:=0) TMP
-		ORDER BY ROW_NUM
+		ORDER BY ROW_NUM DESC
         <if test='pagingYn == "Y" '>
         LIMIT #{offset}, #{listSize}
         </if>
@@ -64,40 +64,43 @@
 
 
 
-   <select id="selectWebSendFailListCnt" parameterType="hashmap" resultType="int">
-    /* 웹 현황 발송실패 리스트 카운트 조회 */
-        SELECT
-            COUNT(A.WEB_REQ_ID) AS CNT
-        FROM cm_console.CM_WEB_MSG A LEFT OUTER JOIN cm.CM_MSG B ON A.WEB_REQ_ID = B.WEB_REQ_ID
-			                         LEFT OUTER JOIN cm_console.CM_CU_INFO C ON B.PHONE = C.HP_NUMBER
-        WHERE 1=1
-        <include refid="whereSelectWebSendFailList"/>
-    </select>
-
-    <select id="selectWebSendFailList" parameterType="hashmap" resultType="camel">
-    /* 웹발송 현황 발송실패 리스트 조회 */
-		SELECT  @rownum:=@rownum+1 AS ROW_NUM
-		      , A.WEB_REQ_ID
-		      , A.CH_STRING
-			  , A.SENDER_TYPE
-			  , CASE WHEN A.SENDER_TYPE = 'C' THEN '개별방송'
-			         WHEN A.SENDER_TYPE = 'M' THEN '통합발송'
-			         WHEN A.SENDER_TYPE = 'S' THEN '스마트발송'
-			         END AS SENDER_TYPE_NM /*발송타입명*/
-			  , A.SENDER_CNT
-			  , C.CU_INFO_ID
-			  , C.CU_NAME
-			  , C.HP_NUMBER
-			FROM cm_console.CM_WEB_MSG A LEFT OUTER JOIN cm.CM_MSG B ON A.WEB_REQ_ID = B.WEB_REQ_ID
-			                             LEFT OUTER JOIN cm_console.CM_CU_INFO C ON B.PHONE = C.HP_NUMBER
-			, (SELECT @rownum:=0) TMP
-		WHERE 1=1
+	<select id="selectWebSendFailListCnt" parameterType="hashmap" resultType="camel">
+	/* 웹 현황 발송실패 리스트 카운트 조회 */
+		SELECT	COUNT(A.WEB_REQ_ID)															AS TOT_CNT
+		,		SUM(CASE WHEN IFNULL(B.GW_RESULT_CODE, '0') != '10000' THEN 1 ELSE 0 END)	AS FAIL_CNT
+		,		MAX(A.CH_STRING)															AS CH_STRING
+		,		MAX(A.SENDER_TYPE)															AS SENDER_TYPE
+		,		MAX(
+					CASE
+						WHEN A.SENDER_TYPE = 'C' THEN '개별발송'
+						WHEN A.SENDER_TYPE = 'M' THEN '통합발송'
+						WHEN A.SENDER_TYPE = 'S' THEN '스마트발송'
+					END
+				)																			AS SENDER_TYPE_NM /*발송타입명*/
+		FROM	cm_console.CM_WEB_MSG A
+		LEFT OUTER JOIN cm.CM_MSG B
+			ON A.WEB_REQ_ID = B.WEB_REQ_ID
+		WHERE	1=1
+		<include refid="whereSelectWebSendFailList"/>
+	</select>
+	
+	<select id="selectWebSendFailList" parameterType="hashmap" resultType="camel">
+	/* 웹발송 현황 발송실패 리스트 조회 */
+		SELECT	@rownum:=@rownum+1 AS ROW_NUM
+		,		B.PHONE
+		,		B.PUSH_CUID
+		FROM	cm_console.CM_WEB_MSG A
+		LEFT OUTER JOIN	cm.CM_MSG B
+			ON A.WEB_REQ_ID = B.WEB_REQ_ID
+		,		(SELECT @rownum:=0) TMP
+		WHERE	1=1
+		AND		IFNULL(B.GW_RESULT_CODE, '0') != '10000'
 		<include refid="whereSelectWebSendFailList"/>
 		ORDER BY A.REG_DT DESC
-        <if test='pagingYn == "Y" '>
-        LIMIT #{offset}, #{listSize}
-        </if>
-    </select>
+		<if test='pagingYn == "Y" '>
+		LIMIT #{offset}, #{listSize}
+		</if>
+	</select>
 
 
 

@@ -34,8 +34,8 @@
           <div class="inline-block" style="width:8%"><h4 class="font-normal mt15">검색조건</h4></div>
           <div class="inline-block" style="width:91%">
             <select v-model="searchData.searchCondi" class="selectStyle2" style="width:15%" title="수신자정보 검색조건">
-                <option value="receiverId">아이디</option>
-                <option value="receiverPhone">휴대전화</option>
+                <option value="receiverPhone">수신자 전화번호</option>
+                <option value="receiverId">앱아이디</option>
             </select>
             <input type="text" class="inputStyle vertical-top ml10" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="수신자정보">
           </div>
@@ -79,32 +79,35 @@
           <table class="table_skin1 bt-000 tbl-striped">
             <colgroup>
                 <col style="width:5%">
-                <col>
-                <col style="width:25%">
-                <col style="width:20%">
                 <col style="width:15%">
                 <col style="width:15%">
+                <col style="width:15%">
+                <col style="width:15%">
+                <col style="width:15%">
+                <col style="width:10%">
                 <col style="width:10%">
             </colgroup>
             <thead>
               <tr>
                 <th class="text-center lc-1">No.</th>
                 <th class="text-center lc-1">수신자휴대폰</th>
+                <th class="text-center lc-1">Push로그인ID</th>
                 <th class="text-center lc-1">발송일시</th>
                 <th class="text-center lc-1">발송타입</th>
+                <th class="text-center lc-1">발송채널</th>
                 <th class="text-center lc-1">태그</th>
-                <th class="text-center lc-1">Push로그인ID</th>
                 <th class="text-center lc-1 end">결과</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(data, idx) in datas" :key="data.rowNum">
-                  <td>{{totCnt-offset-data.rowNum+1}}</td>
+                  <td>{{data.rowNum}}</td>
                   <td class="text-center"><a href="javascript:void(0);" @click="fnDetailPop(idx)"><u>{{data.phoneNumber}}</u></a></td>
+                  <td class="text-center">{{data.pushCuid}}</td>
                   <td class="text-center">{{data.regDt}}</td>
                   <td class="text-center">{{data.senderTypeNm}}</td>
+                  <td class="text-center">{{data.finalCh}}</td>
                   <td class="text-center">{{data.campaignId}}</td>
-                  <td class="text-center">{{data.pushCuid}}</td>
                   <td class="text-center end">{{data.gwResultNm}}</td>
               </tr>
               <tr v-if="datas.length == 0">
@@ -147,7 +150,7 @@ export default {
       require: false,
       default: function() {
         return {
-          'searchCondi' : 'receiverId',
+          'searchCondi' : 'receiverPhone',
           'searchText' : '',
           'searchStartDate' : this.$gfnCommonUtils.getCurretDate(),
           'searchSendCloud' : true,

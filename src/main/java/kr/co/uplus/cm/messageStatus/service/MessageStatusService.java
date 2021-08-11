@@ -103,46 +103,50 @@ public class MessageStatusService {
 	
 	
 	// 웹 현황 실패 리스트 조회
+	@SuppressWarnings("unchecked")
 	public RestResult<Object> selectWebSendFailList(Map<String, Object> params) throws Exception {
-		RestResult<Object> rtn = new RestResult<Object>();
+		RestResult<Object>	rtn		= new RestResult<Object>();
+		List<Object>		rtnList	= null;
 		
-        if(params.containsKey("pageNo")
-                && CommonUtils.isNotEmptyObject(params.get("pageNo"))
-                && params.containsKey("listSize")
-                && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
-        	rtn.setPageProps(params);
-            if(rtn.getPageInfo() != null) {
-	            //카운트 쿼리 실행
-	            int listCnt = generalDao.selectGernalCount("webSend.selectWebSendFailListCnt", params);
-	            rtn.getPageInfo().put("totCnt", listCnt);
-            }
-        }
-
-        List<Object> rtnList = generalDao.selectGernalList("webSend.selectWebSendFailList", params);
-        
-        //for(int i=0; i < rtnList.size(); i++){//o번째에만 발송채널을  html구조로 넘겨서 사용한다
-        if(rtnList.size() > 0) {
-        	HashMap<String,Object> hMap = (HashMap<String, Object>) rtnList.get(0);
-        	
-        	String chStr = (String) hMap.get("chString");
-        	String [] stringArray= chStr.split(",");
-        	String chString = "";
-        	for(int j=0; j < stringArray.length; j++) {
-        		//발송채널구분 : PUSH, RCS, SMS, MMS, ALIMTALK, FRIENDTALK, SMARTMSG
-        		
-        		chString = chString + "<h5 style=\"width:18%\" class=\"float-left ml color000\">"+stringArray[j];
-        		if(j < stringArray.length -1) chString = chString+"<i class=\"far fa-chevron-right ml40\" style=\"font-size: 10px; color: #a3a3a3; font-weight: 700;\"></i>";
-        		chString = chString + "</h5>";
-        	}
-        	
-        	hMap.put("chString", chString);
-        	rtnList.set(0, hMap);
-        }
-        //}
+		if(params.containsKey("pageNo")
+			&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
+			&& params.containsKey("listSize")
+			&& CommonUtils.isNotEmptyObject(params.get("listSize"))) {
 		
-        rtn.setData(rtnList);
-
-        return rtn;
+			rtn.setPageProps(params);
+			
+			Map<String, Object> listCnt = (Map<String, Object>) generalDao.selectGernalObject("webSend.selectWebSendFailListCnt", params);
+			
+			rtn.getPageInfo().put("totCnt", 12);
+			
+			String chStr = (String) listCnt.get("chString");
+			String [] stringArray= chStr.split(",");
+			String chString = "";
+			for(int j=0; j < stringArray.length; j++) {
+				//발송채널구분 : PUSH, RCS, SMS, MMS, ALIMTALK, FRIENDTALK, SMARTMSG
+				
+				chString = chString + "<h5 style=\"width:18%\" class=\"float-left ml color000\">"+stringArray[j];
+				if(j < stringArray.length -1) chString = chString+"<i class=\"far fa-chevron-right ml40\" style=\"font-size: 10px; color: #a3a3a3; font-weight: 700;\"></i>";
+				chString = chString + "</h5>";
+			}
+			
+			rtnList = generalDao.selectGernalList("webSend.selectWebSendFailList", params);
+			
+			Map<String, Object> rtnMap = new HashMap<>();
+			rtnMap.put("list"			, rtnList);
+			rtnMap.put("totCnt"			, listCnt.get("totCnt"));
+			rtnMap.put("failCnt"		, 12);
+			rtnMap.put("senderTypeNm"	, listCnt.get("senderTypeNm"));
+			rtnMap.put("senderType"		, listCnt.get("senderType"));
+			rtnMap.put("chString"		, chString);
+			
+			rtn.setData(rtnMap);
+		} else {
+			rtnList = generalDao.selectGernalList("webSend.selectWebSendFailList", params);
+			rtn.setData(rtnList);
+		}
+		
+		return rtn;
 	}
 	
 	

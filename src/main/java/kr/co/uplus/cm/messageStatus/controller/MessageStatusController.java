@@ -210,8 +210,8 @@ public class MessageStatusController {
 		List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sheetTitle", "웹 발송 실패 현황 리스트");
-		map.put("colLabels", new String[] { "수신자 ID", "수신자 이름", "수신자 휴대폰" });
-        map.put("colIds", new String[] {"cuInfoId", "cuName", "hpNumber"});
+		map.put("colLabels", new String[] { "수신자 휴대폰", "수신자 ID", });
+        map.put("colIds", new String[] {"phone", "pushCuid"});
 		map.put("numColIds", new String[] {});
 		map.put("figureColIds", new String[] {});
 		map.put("colDataList", messageStatusService.selectWebSendFailList(params).getData());
