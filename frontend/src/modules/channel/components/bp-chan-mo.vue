@@ -4,29 +4,31 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div>
-						<h5 class="lc-1">MO 수신번호 상세</h5>
+						<h2>MO 수신번호 등록</h2>
 						<hr>
-						<div class="mt20">
-							<div>
-								<h4 class="font-normal inline-block width120">API KEY</h4>
-								<input type="text" class="inputStyle" style="width:76%" v-model="apiKey" placeholder="자동 채번됩니다." disabled>
+						<div class="of_h">
+								<h5 class="inline-block" style="width:20%">API KEY</h5>
+                <div style="width:80%" class="float-right">
+                  <input type="text" class="inputStyle float-left" v-model="apiKey" placeholder="자동 채번됩니다." disabled>
+                </div>
+							<div class="of_h mt10">
+								<h5 class="inline-block" style="width:20%">MO 수신번호</h5>
+                <div style="width:80%" class="float-right">
+                  <input type="text" class="inputStyle float-left" v-model="moNumber">
+                </div>
 							</div>
-							<div class="mt10">
-								<h4 class="font-normal inline-block width120">MO 수신번호</h4>
-								<input type="text" class="inputStyle" style="width:76%" v-model="moNumber">
-							</div>
-							<div class="mt20">
-								<h4 class="font-normal inline-block width120">MO 유형</h4>
+							<div class="of_h mt10">
+								<h5 class="inline-block" style="width:20%">MO 유형</h5>
 								<div class="inline-block">
 									<input type="radio" id="SMS" value="SMSMO" class="cBox" v-model="moType"> <label for="SMS" class="payment mr30 font-size12">SMS MO</label>
 									<input type="radio" id="MMS" value="MMSMO" class="cBox" v-model="moType"> <label for="MMS" class="payment font-size12">MMS MO</label>		
 								</div>
 							</div>
-							<p class="mt30 lc-1 Modaltext font-size12" style="margin:0">
+							<!-- <p class="mt30 lc-1 Modaltext font-size12" style="margin:0">
                 <i class="far fa-info-circle"></i> MO 기본료 부과: 면제
                 <br>
                 <i class="far fa-info-circle"></i> 건당 수신료: SMS 7원/LMS 20원/MMS 50원
-              </p>
+              </p> -->
 						</div>
 					
 					</div>

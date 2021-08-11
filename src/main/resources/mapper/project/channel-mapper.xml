@@ -496,11 +496,21 @@
 		ORDER BY RANKING
 	</select>
 	
+	<select id="selectMoCallbackDupl" resultType="int">
+	/* channel.selectMoCallbackDupl */
+		SELECT	COUNT(1) AS CNT
+		FROM	cm.CM_MO_CALLBACK A
+		WHERE	PROJECT_ID = #{projectId}
+		AND		A.CORP_ID = #{corpId}
+		AND		A.MO_NUMBER = #{detailMoNumber}
+		AND		A.MO_TYPE = #{moType}
+	</select>
+	
 	<select id="selectMoCallbackListCnt" resultType="int">
 	/* channel.selectMoCallbackListCnt */
 		SELECT	COUNT(1) AS CNT
 		FROM	cm.CM_MO_CALLBACK A
-		WHERE	(PROJECT_ID = #{projectId} OR PROJECT_ID = 'ALL' )
+		WHERE	PROJECT_ID = #{projectId}
 		AND		A.CORP_ID = #{corpId}
 	</select>
 	
@@ -519,7 +529,7 @@
 		,		date_format(A.UPD_DT, '%Y-%m-%d') AS UPD_DT
 		,		A.WEBHOOK_URL
 		FROM	cm.CM_MO_CALLBACK A
-		WHERE	(PROJECT_ID = #{projectId} OR PROJECT_ID = 'ALL' )
+		WHERE	PROJECT_ID = #{projectId}
 		AND		A.CORP_ID = #{corpId}
 	</select>
 	

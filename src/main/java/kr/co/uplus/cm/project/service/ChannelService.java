@@ -672,9 +672,9 @@ public class ChannelService {
 			// API 통신 처리
 			Map<String, Object> result =  apiInterface.listPost("/console/v1/brand/", list, headerMap);
 			
-			System.out.println("-------------------------------------------@@@ result : " + result);
-			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
-			System.out.println("-------------------------------------------@@@ list : " + list);
+//			System.out.println("-------------------------------------------@@@ result : " + result);
+//			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
+//			System.out.println("-------------------------------------------@@@ list : " + list);
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
 			} else if ( "500100".equals(result.get("code")) ) {
@@ -928,94 +928,30 @@ public class ChannelService {
 			String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForMoApi",params)); 
 			params.put("apiKey", apiKey);
 			
-			Map<String, Object> apiBodyMap = new HashMap<>();
-			apiBodyMap.put("moNumber",		CommonUtils.getString(params.get("moNumber")));
-			apiBodyMap.put("apiKey",		apiKey);
-			apiBodyMap.put("moType",		CommonUtils.getString(params.get("moType")));
-			apiBodyMap.put("projectId",		CommonUtils.getString(params.get("projectId")));
-			apiBodyMap.put("useYn",			"Y");
-			apiBodyMap.put("webhookUrl",	"");
+			// 중복 체크
+			Map<String, Object> checkParams = new HashMap<>();
+			checkParams.putAll(params);
+			checkParams.put("detailMoNumber", params.get("moNumber"));
+			int duplCnt = generalDao.selectGernalCount(DB.QRY_SELECT_MO_CALLBACK_DUPL, checkParams);
 			
-			Map<String, Object> headerMap = new HashMap<String, Object>();
-			headerMap.put("type",		sts);
-			
-//			// API 통신 처리
-//			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
-//			
-//			System.out.println("------------------------------------------------- saveMoCallback result : " + result);
-//			
-//			// 성공인지 실패인지 체크
-//			if( "10000".equals(result.get("code")) ) {
-//			} else if ( "500100".equals(result.get("code")) ) {
-//				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
-//				throw new Exception(errMsg);
-//			} else {
-//				String errMsg = CommonUtils.getString(result.get("message"));
-//				throw new Exception(errMsg);
-//			}
+			if( duplCnt > 0 ) {
+				throw new Exception("이미 해당 MO 수신번호, 서비스 유형으로 등록된 번호가 있습니다.");
+			}
 			
 			generalDao.insertGernal(DB.QRY_INSERT_MO_CALLBACK, params);
-		} else if( "U".equals(sts) ) {
-			String apiKey = CommonUtils.getString(params.get("apiKey")); 
-			params.put("apiKey", apiKey);
-			
-			Map<String, Object> apiBodyMap = new HashMap<>();
-			apiBodyMap.put("moNumber",		CommonUtils.getString(params.get("moNumber")));
-			apiBodyMap.put("apiKey",		apiKey);
-			apiBodyMap.put("moType",		CommonUtils.getString(params.get("moType")));
-			apiBodyMap.put("projectId",		CommonUtils.getString(params.get("projectId")));
-			apiBodyMap.put("useYn",			"Y");
-			apiBodyMap.put("webhookUrl",	"");
-			
-			Map<String, Object> headerMap = new HashMap<String, Object>();
-			headerMap.put("type",		sts);
-			
-//			// API 통신 처리
-//			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
-//			
-//			System.out.println("------------------------------------------------- saveMoCallback U result : " + result);
-//			
-//			// 성공인지 실패인지 체크
-//			if( "10000".equals(result.get("code")) ) {
-//			} else if ( "500100".equals(result.get("code")) ) {
-//				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
-//				throw new Exception(errMsg);
-//			} else {
-//				String errMsg = CommonUtils.getString(result.get("message"));
-//				throw new Exception(errMsg);
-//			}
-			
-			generalDao.updateGernal(DB.QRY_UPDATE_MO_CALLBACK, params);
-		} else if( "D".equals(sts) ) {
-			String apiKey = CommonUtils.getString(params.get("apiKey")); 
-			params.put("apiKey", apiKey);
-			
-			Map<String, Object> apiBodyMap = new HashMap<>();
-			apiBodyMap.put("moNumber",		CommonUtils.getString(params.get("moNumber")));
-			apiBodyMap.put("apiKey",		apiKey);
-			apiBodyMap.put("moType",		CommonUtils.getString(params.get("moType")));
-			apiBodyMap.put("projectId",		CommonUtils.getString(params.get("projectId")));
-			apiBodyMap.put("useYn",			"Y");
-			apiBodyMap.put("webhookUrl",	"");
-			
-			Map<String, Object> headerMap = new HashMap<String, Object>();
-			headerMap.put("type",		sts);
-			
-//			// API 통신 처리
-//			Map<String, Object> result =  apiInterface.post("/redis/v1/moCallback/" + sts, null, apiBodyMap, headerMap);
-//			
-//			// 성공인지 실패인지 체크
-//			if( "10000".equals(result.get("code")) ) {
-//			} else if ( "500100".equals(result.get("code")) ) {
-//				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
-//				throw new Exception(errMsg);
-//			} else {
-//				String errMsg = CommonUtils.getString(result.get("message"));
-//				throw new Exception(errMsg);
-//			}
-			
-			generalDao.deleteGernal(DB.QRY_DELETE_MO_CALLBACK, params);
+						
 		}
+//		else if( "U".equals(sts) ) {
+//			String apiKey = CommonUtils.getString(params.get("apiKey")); 
+//			params.put("apiKey", apiKey);
+//			
+//			generalDao.updateGernal(DB.QRY_UPDATE_MO_CALLBACK, params);
+//		} else if( "D".equals(sts) ) {
+//			String apiKey = CommonUtils.getString(params.get("apiKey")); 
+//			params.put("apiKey", apiKey);
+//			
+//			generalDao.deleteGernal(DB.QRY_DELETE_MO_CALLBACK, params);
+//		}
 		
 		// redis 테이블 처리
 		commonService.updateCmCmdForRedis("CM_MO_CALLBACK");

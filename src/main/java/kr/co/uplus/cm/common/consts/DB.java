@@ -126,6 +126,7 @@ public class DB {
 
 	public final static String QRY_SELECT_MO_CALLBACK_LIST_CNT = "channel.selectMoCallbackListCnt";
 	public final static String QRY_SELECT_MO_CALLBACK_LIST = "channel.selectMoCallbackList";
+	public final static String QRY_SELECT_MO_CALLBACK_DUPL = "channel.selectMoCallbackDupl";
 	public final static String QRY_INSERT_MO_CALLBACK = "channel.insertMoCallback";
 	public final static String QRY_UPDATE_MO_CALLBACK = "channel.updateMoCallback";
 	public final static String QRY_DELETE_MO_CALLBACK = "channel.deleteMoCallback";
