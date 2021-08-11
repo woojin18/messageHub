@@ -6,16 +6,16 @@
 				<div class="col-xs-12">
 					<div class="menuBox">						
 						<div class="of_h">
-							<h4 class="font-normal inline-block vertical-middle" style="width:15%">APP 명*</h4>
+							<h4 class="font-normal inline-block vertical-middle" style="width:20%">APP 명*</h4>
 							<input type="text" class="inputStyle" style="width:72%" v-model="appNm">
 						</div>
 						<div class="of_h mt10">
-							<h4 class="font-normal inline-block vertical-middle" style="width:15%">APP ID*</h4>
-							<input type="text" class="inputStyle" style="width:72%" v-model="appId" readonly>
+							<h4 class="font-normal inline-block vertical-middle" style="width:20%">APP ID*</h4>
+							<input type="text" class="inputStyle" style="width:72%" v-model="appId" placeholder="자동채번됩니다." disabled>
 						</div>	
 						<div class="of_h mt10">
-							<h4 class="font-normal inline-block vertical-middle" style="width:15%">타 프로젝트 사용여부*</h4>
-							<div class="inline-block float-right" style="width:72%">
+							<h4 class="font-normal inline-block vertical-middle" style="width:20%">타 프로젝트 사용여부*</h4>
+							<div class="inline-block" style="width:72%">
 								<input type="radio" name="otherProjectYn" value="Y" class="cBox" id="yes" v-model="otherProjectYn">
 								<label for="yes" class="payment mt10 mr30">공용</label>
 								<input type="radio" name="otherProjectYn" value="N" class="cBox" id="no" v-model="otherProjectYn">
@@ -32,15 +32,15 @@
 				<div class="col-xs-12">
 					<div class="menuBox">						
 						<div>
-							<h4 class="font-normal inline-block" style="width:15%">Package name</h4>
+							<h4 class="font-normal inline-block" style="width:20%">Package name</h4>
 							<input type="text" class="inputStyle" style="width:72%" v-model="fcmPackageName">
 						</div>
 						<div class="mt10">
-							<h4 class="font-normal inline-block" style="width:15%">FCM Server Key</h4>
+							<h4 class="font-normal inline-block" style="width:20%">FCM Server Key</h4>
 							<input type="text" class="inputStyle" style="width:72%" v-model="fcmServerKey">
 						</div>
 						<div class="mt10">
-							<h4 class="font-normal inline-block" style="width:15%">Sender ID</h4>
+							<h4 class="font-normal inline-block" style="width:20%">Sender ID</h4>
 							<input type="text" class="inputStyle" style="width:72%" v-model="senderId">
 						</div>				
 					</div>
@@ -52,27 +52,27 @@
 				<div class="col-xs-12">
 					<div class="menuBox">
 						<!-- <div class="of_h">
-							<h4 class="font-normal inline-block" style="width:15%">P8인증서</h4>
+							<h4 class="font-normal inline-block" style="width:20%">P8인증서</h4>
 							<div class="consolCheck display-block mt5" style="width:72%">
 								{{this.apnsFileName}}
 								<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:65%; height: 40px;" @change="fnFileNameChange" ref="apnsCetificationFile"/>
 							</div>
 						</div> -->
 						<div class="of_h">
-							<h4 class="font-normal inline-block" style="width:15%">P8인증서</h4>
+							<h4 class="font-normal inline-block" style="width:20%">P8인증서</h4>
 							<input type="text" class="inputStyle vertical-top" style="width:72%" v-model="apnsFileName" disabled>
 							<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:8%; height: 40px;" @change="fnFileNameChange" ref="apnsCetificationFile"/>
 						</div>
 						<div class="mt10">
-							<h4 class="font-normal inline-block" style="width:15%">Bundle ID</h4>
+							<h4 class="font-normal inline-block" style="width:20%">Bundle ID</h4>
 							<input type="text" class="inputStyle" style="width:72%" v-model="iosAppId">
 						</div>
 						<div class="mt15">
-							<h4 class="font-normal inline-block" style="width:15%">Team ID</h4>
+							<h4 class="font-normal inline-block" style="width:20%">Team ID</h4>
 							<input type="text" class="inputStyle" style="width:72%" v-model="teamKey">
 						</div>
 						<div class="mt10">
-							<h4 class="font-normal inline-block" style="width:15%">Key ID</h4>
+							<h4 class="font-normal inline-block" style="width:20%">Key ID</h4>
 							<input type="text" class="inputStyle" style="width:72%" v-model="keyId">
 						</div>	
 					</div>
