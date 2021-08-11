@@ -34,8 +34,8 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		String connUrl = request.getRequestURL().toString();
 		String svcTypeCd = request.getHeader("svcType");
-		String roleCd = request.getHeader("role");
-		String menusCd = request.getHeader("menu");
+		String roleCd = request.getHeader("roleCd");
+		String menusCd = request.getHeader("menuCd");
 		String activityCd = request.getHeader("activity");
 		log.info("권한 체크 : connUrl:" + connUrl + ",svcTypeCd:" + svcTypeCd + ",roleCd:"+roleCd + ",menusCd:" + menusCd + ",activityCd:" + activityCd);
 		if (!StringUtils.isEmpty(svcTypeCd) && !StringUtils.isEmpty(roleCd) && !StringUtils.isEmpty(menusCd) && !StringUtils.isEmpty(activityCd)) {
