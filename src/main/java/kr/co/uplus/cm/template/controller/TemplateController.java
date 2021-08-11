@@ -22,6 +22,7 @@ import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltRequestData;
 import kr.co.uplus.cm.template.service.TemplateService;
+import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.DateUtil;
 import kr.co.uplus.cm.xss.XssPreventer;
 import lombok.extern.log4j.Log4j2;
@@ -470,10 +471,11 @@ public class TemplateController {
      * @param response
      * @param params
      * @return
+     * @throws Exception
      */
     @PostMapping("/procApprvRequestKkoTmplt")
     public RestResult<?> procApprvRequestKkoTmplt(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody Map<String, Object> params) {
+            @RequestBody Map<String, Object> params) throws Exception {
 
         RestResult<Object> rtn = new RestResult<Object>();
         AlimTalkTmpltRequestData requestData = null;
@@ -494,7 +496,7 @@ public class TemplateController {
             return tmpltSvc.procApprvRequestKkoTmplt(requestData, params);
 
         } catch (Exception e) {
-            rtn.setFail("실패하였습니다.");
+            rtn.setFail(CommonUtils.getCMExceptionMsg(e, "실패하였습니다."));
             log.error("{}.procApprvRequestKkoTmplt Error : {}", this.getClass(), e);
         }
 
@@ -528,16 +530,17 @@ public class TemplateController {
      * @param response
      * @param params
      * @return
+     * @throws Exception
      */
     @PostMapping("/procDeleteRequestKkoTmplt")
     public RestResult<?> procDeleteRequestKkoTmplt(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody Map<String, Object> params) {
+            @RequestBody Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
 
         try {
             rtn = tmpltSvc.procDeleteRequestKkoTmplt(params);
         } catch (Exception e) {
-            rtn.setFail("실패하였습니다.");
+            rtn.setFail(CommonUtils.getCMExceptionMsg(e, "실패하였습니다."));
             log.error("{}.procDeleteRequestKkoTmplt Error : {}", this.getClass(), e);
         }
 
@@ -573,7 +576,7 @@ public class TemplateController {
     }
 
     /**
-     * 친구톡 템플릿 정보 조회
+     * 알림톡 템플릿 정보 조회
      * @param request
      * @param response
      * @param params
@@ -600,16 +603,17 @@ public class TemplateController {
      * @param response
      * @param params
      * @return
+     * @throws Exception
      */
     @PostMapping("/procInspectRequestKkoTmplt")
     public RestResult<?> procInspectRequestKkoTmplt(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody Map<String, Object> params) {
+            @RequestBody Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
 
         try {
             rtn = tmpltSvc.procInspectRequestKkoTmplt(params);
         } catch (Exception e) {
-            rtn.setFail("실패하였습니다.");
+            rtn.setFail(CommonUtils.getCMExceptionMsg(e, "실패하였습니다."));
             log.error("{}.procInspectRequestKkoTmplt Error : {}", this.getClass(), e);
         }
 
@@ -622,10 +626,11 @@ public class TemplateController {
      * @param response
      * @param params
      * @return
+     * @throws Exception
      */
     @PostMapping("/procUpdateRequestKkoTmplt")
     public RestResult<?> procUpdateRequestKkoTmplt(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody Map<String, Object> params) {
+            @RequestBody Map<String, Object> params) throws Exception {
 
         RestResult<Object> rtn = new RestResult<Object>();
         AlimTalkTmpltRequestData requestData = null;
@@ -650,7 +655,7 @@ public class TemplateController {
             return tmpltSvc.procUpdateRequestKkoTmplt(requestData, params);
 
         } catch (Exception e) {
-            rtn.setFail("실패하였습니다.");
+            rtn.setFail(CommonUtils.getCMExceptionMsg(e, "실패하였습니다."));
             log.error("{}.procUpdateRequestKkoTmplt Error : {}", this.getClass(), e);
         }
 
