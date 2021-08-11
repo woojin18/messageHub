@@ -59,7 +59,7 @@ public class CashService {
 			
 			Map<String, Object> apiBodyMap = new HashMap<>();
 			apiBodyMap.put("cashType",		"C");	// C 일반 캐시  E 이벤트 캐시
-			apiBodyMap.put("cashBalance",	params.get("amount"));
+			apiBodyMap.put("cashBalance",	0);
 			apiBodyMap.put("startDt",		"");
 			apiBodyMap.put("expDt",			"");
 			apiBodyMap.put("memo",			"캐시 충전");
@@ -67,14 +67,14 @@ public class CashService {
 			// API 통신 처리
 			Map<String, Object> result =  apiInterface.etcPost(ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/cashInfo/" + corpId, apiBodyMap, headerMap);
 			
-			System.out.println("------------------------------------------------- cashInfo C result : " + result);
+			//System.out.println("------------------------------------------------- cashInfo C result : " + result);
 			
-			cashId = CommonUtils.getString(((Map<String, Object>)result.get("data")).get("error"));
+			cashId = CommonUtils.getString(((Map<String, Object>)result.get("data")).get("cashId"));
 			
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
 			} else if ( "500100".equals(result.get("code")) ) {
-				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			} else {
 				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
