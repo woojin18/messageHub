@@ -68,15 +68,15 @@
                     <tr>
                       <td class="text-left end">RCS</td>
                       <td class="text-right end">
-                        <input type="radio" name="radioRcs" value="Y" class="cBox" id="yes1" checked=""> <label for="yes1" class="payment mr30 font-size12">사용</label>
-                        <input type="radio" name="radioRcs" value="N" class="cBox" id="no1"> <label for="no1" class="payment font-size12">미사용</label>	
+                        <input type="radio" name="radioRcs" value="Y" class="cBox" id="yes1" checked="" disabled> <label for="yes1" class="payment mr30 font-size12">사용</label>
+                        <input type="radio" name="radioRcs" value="N" class="cBox" id="no1" disabled> <label for="no1" class="payment font-size12">미사용</label>	
                       </td>							
                     </tr>
                     <tr>
                       <td class="text-left end">SMS/MMS</td>
                       <td class="text-right end">
-                        <input type="radio" name="radioMms" value="Y" class="cBox" id="yes2" checked=""> <label for="yes2" class="payment mr30 font-size12">사용</label>
-                        <input type="radio" name="radioMms" value="N" class="cBox" id="no2"> <label for="no2" class="payment font-size12">미사용</label>	
+                        <input type="radio" name="radioMms" value="Y" class="cBox" id="yes2" checked="" disabled> <label for="yes2" class="payment mr30 font-size12">사용</label>
+                        <input type="radio" name="radioMms" value="N" class="cBox" id="no2" disabled> <label for="no2" class="payment font-size12">미사용</label>	
                       </td>							
                     </tr>
                     <tr>

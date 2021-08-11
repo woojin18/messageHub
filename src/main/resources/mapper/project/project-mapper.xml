@@ -31,6 +31,7 @@
 			ON A.PROJECT_ID = B.PROJECT_ID
 		WHERE	1=1
 		AND		A.DEL_YN != 'Y'
+		AND		A.CORP_ID = #{corpId}
 		<if test="roleCd != 'OWNER'.toString()">
 		AND		B.USER_ID = #{loginId}
 		</if>

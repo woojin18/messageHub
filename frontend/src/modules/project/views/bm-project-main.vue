@@ -148,12 +148,12 @@ export default {
 		var params = {
 			"detailProjectId"  : this.projectId,
 			"loginId"         : tokenSvc.getToken().principal.userId,
-			"roleCd"         : tokenSvc.getToken().principal.roleCd
+			"roleCd"         : tokenSvc.getToken().principal.role
 		}
 		
 		projectApi.selectProjectList(params).then(response =>{
 			var items = response.data.data[0];
-			console.log(items);
+			//console.log(items);
 			this.rcsYn = items.rcsYn;
 			this.smsmmsYn  = items.smsmmsYn;
 			this.pushYn  = items.pushYn;

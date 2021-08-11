@@ -158,8 +158,11 @@ export default {
         "srcProjectName"  : this.srcProjectName,
         "srcUseYn"        : this.srcUseYn,
         "loginId"         : tokenSvc.getToken().principal.userId,
-        "roleCd"         : tokenSvc.getToken().principal.roleCd
+        //"roleCd"         : tokenSvc.getToken().principal.roleCd,
+        "roleCd"         : tokenSvc.getToken().principal.role,
       }
+
+      console.log(params);
        
       projectApi.selectProjectList(params).then(response =>{
         vm.items = response.data.data;
