@@ -33,7 +33,7 @@
         <ul class="list_login">
           <li v-if="isLogin == false" class="active"><router-link :to="{name: 'login'}" tag="a" title="로그인 페이지로 이동">로그인</router-link></li>
           <li v-if="isLogin == true" class="active"><a href="#" @click.prevent="clickLogout">로그아웃</a></li>
-          <li><a href="#" @click.prevent="signUp">회원가입</a></li>
+          <li v-if="isLogin == false"><a href="#" @click.prevent="signUp">회원가입</a></li>
         </ul>
       </div>
     </div>
