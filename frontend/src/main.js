@@ -16,6 +16,14 @@ Vue.config.productionTip = false;
 Vue.mixin(coreUiMixin);
 Vue.prototype.runModeType = "LIVE";
 
+Vue.directive('campaignIdFilter', {
+  bind(el) {
+    el.addEventListener('keyup', () => {
+      el.value = el.value.replace(/[^a-zA-Z0-9-_]/g,'');
+    });
+  }
+});
+
 new Vue({
   router,
   store,

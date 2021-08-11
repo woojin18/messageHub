@@ -38,21 +38,21 @@
             <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
             <div class="phoneTextWrap">
               <div class="phoneText1">
-                <p v-if="this.$gfnCommonUtils.isEmpty(sendData.fbInfo.callback)">발신번호</p>
+                <p v-if="$gfnCommonUtils.isEmpty(sendData.fbInfo.callback)">발신번호</p>
                 <p v-else>{{sendData.fbInfo.callback}}</p>
               </div>
               <div v-if="sendData.rplcSendType != 'SMS'" class="phoneText2" style="margin-top: 5px;">
-                <p v-if="this.$gfnCommonUtils.isEmpty(sendData.fbInfo.title)">제목</p>
+                <p v-if="$gfnCommonUtils.isEmpty(sendData.fbInfo.title)">제목</p>
                 <p v-else><span v-if="sendData.msgKind == 'A'">(광고)</span>{{sendData.fbInfo.title}}</p>
               </div>
-              <div v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center simulatorImg"
+              <div v-if="!$gfnCommonUtils.isEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center simulatorImg"
                 :style="'padding:65px;background-image: url('+sendData.fbInfo.imgUrl+');'">
               </div>
               <div class="scroll-y">
-                <p v-if="(this.$gfnCommonUtils.isEmpty(sendData.fbInfo.msg) && this.$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
+                <p v-if="($gfnCommonUtils.isEmpty(sendData.fbInfo.msg) && $gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
                 <p v-else class="font-size14 color4 mt10">
                   <span><pre><span v-if="sendData.rplcSendType == 'SMS' && sendData.msgKind == 'A'">(광고)</span>{{sendData.fbInfo.msg}}</pre></span>
-                  <br v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)"/>
+                  <br v-if="!$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)"/>
                   <span v-if="sendData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)">
                     수신거부번호 : {{sendData.fbInfo.rcvblcNumber}}
                   </span>
@@ -107,7 +107,7 @@
             <h4>02  메시지 내용</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a @click="fnOpenFrndTalkContentsPopup" :class="this.$gfnCommonUtils.isEmpty(sendData.frndTalkContent) ? 'btnStyle1 backLightGray mr5' : 'btnStyle1 backWhite mr5'" title="메시지 내용입력" activity="READ">내용입력</a>
+            <a @click="fnOpenFrndTalkContentsPopup" :class="$gfnCommonUtils.isEmpty(sendData.frndTalkContent) ? 'btnStyle1 backLightGray mr5' : 'btnStyle1 backWhite mr5'" title="메시지 내용입력" activity="READ">내용입력</a>
             <a v-if="sendData.rplcSendType!='NONE'" @click="fnOpenReplacedSenderPopup" :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="대체발송 내용입력" activity="READ">대체발송 내용입력</a>
             <!--
             <div class="of_h consolMarginTop">
@@ -298,7 +298,7 @@
                 <h5>태그</h5>
               </div>
               <div class="of_h" style="width:82%">
-                <input type="text" class="inputStyle" style="width:100%" placeholder="캠페인 ID를 입력해주세요." v-model="sendData.campaignId" maxlength="20">
+                <input type="text" class="inputStyle" style="width:100%" placeholder="캠페인 ID를 입력해주세요.(숫자, 영문, '-', '_' 만 입력가능합니다.)" v-model="sendData.campaignId" v-campaignIdFilter maxlength="20">
               </div>
             </div>
           </div>

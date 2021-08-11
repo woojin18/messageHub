@@ -35,21 +35,21 @@
             <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
             <div class="phoneTextWrap">
               <div class="phoneText1">
-                <p v-if="this.$gfnCommonUtils.isEmpty(sendData.fbInfo.callback)">발신번호</p>
+                <p v-if="$gfnCommonUtils.isEmpty(sendData.fbInfo.callback)">발신번호</p>
                 <p v-else>{{sendData.fbInfo.callback}}</p>
               </div>
               <div v-if="sendData.rplcSendType != 'SMS'" class="phoneText2" style="margin-top: 5px;">
-                <p v-if="this.$gfnCommonUtils.isEmpty(sendData.fbInfo.title)">제목</p>
+                <p v-if="$gfnCommonUtils.isEmpty(sendData.fbInfo.title)">제목</p>
                 <p v-else>{{sendData.fbInfo.title}}</p>
               </div>
-              <div v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center"
+              <div v-if="!$gfnCommonUtils.isEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center"
                 :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.fbInfo.imgUrl+');'">
               </div>
               <div class="scroll-y">
-                <p v-if="(this.$gfnCommonUtils.isEmpty(sendData.fbInfo.msg) && this.$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
+                <p v-if="($gfnCommonUtils.isEmpty(sendData.fbInfo.msg) && $gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
                 <p v-else class="font-size14 color4 mt10">
                   <span><pre>{{sendData.fbInfo.msg}}</pre></span>
-                  <br v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)"/>
+                  <br v-if="!$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)"/>
                   {{sendData.fbInfo.rcvblcNumber}}
                 </p>
               </div>
@@ -253,7 +253,7 @@
                 <h5>태그</h5>
               </div>
               <div class="of_h" style="width:82%">
-                <input type="text" class="inputStyle" style="width:100%" placeholder="캠페인 ID를 입력해주세요." v-model="sendData.campaignId" maxlength="20">
+                <input type="text" class="inputStyle" style="width:100%" placeholder="캠페인 ID를 입력해주세요.(숫자, 영문, '-', '_' 만 입력가능합니다.)" v-model="sendData.campaignId" v-campaignIdFilter maxlength="20">
               </div>
             </div>
           </div>
