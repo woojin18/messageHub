@@ -501,4 +501,11 @@
 			ON A.DIST_ID = B.DIST_ID 
 		WHERE	A.CORP_ID = #{corpId}
 	</select>
+	
+	<select id="selectCorpDistId" resultType="String">
+		/* project.selectCorpDistId */
+		SELECT	DIST_ID
+		FROM	cm_console.CM_CORP
+		WHERE	CORP_ID = #{corpId}
+	</select>
 </mapper>

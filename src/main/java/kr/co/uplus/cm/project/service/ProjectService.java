@@ -736,5 +736,12 @@ public class ProjectService {
 		
 		return rtn;
 	}
+
+	public RestResult<?> selectCorpDistId(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		String distId = CommonUtils.getString(generalDao.selectGernalObject("project.selectCorpDistId", params));
+		rtn.setData(distId);
+		return rtn;
+	}
 	
 }

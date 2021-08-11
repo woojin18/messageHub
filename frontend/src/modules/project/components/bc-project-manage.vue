@@ -147,10 +147,20 @@ export default {
     }
   },
   mounted() {
+    this.fnSelectCorpDistId();
     this.fnSearch();
-    this.fnDistDetailInit();
   },
   methods: {
+    fnSelectCorpDistId(){
+      var params = {}
+
+      projectApi.selectCorpDistId(params).then(response =>{
+
+        this.distId = response.data.data;
+        
+        this.fnDistDetailInit();
+      });
+    },
     // 검색
     fnSearch() {
       var vm = this;

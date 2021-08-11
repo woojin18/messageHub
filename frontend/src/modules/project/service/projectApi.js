@@ -59,6 +59,9 @@ const selectBillIdForApi = (params) => {
 const selectDistDetail = (params) => {
     return httpClient.post('/projectApi/manage/selectDistDetail', params, { headers: { "show-layer": "Yes", "activity": "READ" } });
 };
+const selectCorpDistId = (params) => {
+    return httpClient.post('/projectApi/manage/selectCorpDistId', params, { headers: { "show-layer": "Yes", "activity": "READ" } });
+};
 
 
 export default {
@@ -76,5 +79,6 @@ export default {
     selectBasicDisRatio,
     selectDisRatio,
     selectBillIdForApi,
-    selectDistDetail
+    selectDistDetail,
+    selectCorpDistId
 };

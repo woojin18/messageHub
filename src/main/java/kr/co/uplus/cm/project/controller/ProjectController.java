@@ -242,6 +242,14 @@ public class ProjectController {
 				HttpServletResponse response) throws Exception {
 		return projectService.selectDistDetail(params);
     }
-	
+
+	// 분배정책 가져오기
+	@PostMapping("/selectCorpDistId")
+	public RestResult<?> selectCorpDistId(
+				@RequestBody Map<String, Object> params,
+				HttpServletRequest request,
+				HttpServletResponse response) throws Exception {
+		return projectService.selectCorpDistId(params);
+    }
 	
 }
