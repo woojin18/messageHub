@@ -79,12 +79,12 @@
 								</div>
 							</div>
 						</span>
-						<div class="of_h consolMarginTop">
+						<!-- <div class="of_h consolMarginTop">
 							<div class="float-left" style="width:24%"><h5>초당 발송 건수</h5></div>
 							<div class="float-left" style="width:20%">
 								<input type="text" id="cps" class="inputStyle" @input="fnCorrectNumberInput" maxlength="4">
 							</div>
-						</div>
+						</div> -->
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:24%">상태</h5>
 							<select id="selectStatus" class="selectStyle2" style="width:20%">
@@ -92,12 +92,12 @@
 								<option value="CANCEL">미사용</option>
 							</select>
 						</div>
-						<div class="of_h consolMarginTop">
+						<!-- <div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:24%">라인 타입</h5>
 							<select id="selectLineType" class="selectStyle2" style="width:20%">
 								<option value="">선택</option>
 							</select>
-						</div>
+						</div> -->
 						<div class="of_h consolMarginTop">
 							<div class="float-left" style="width:24%"><h5>결과수신여부</h5></div>
 							<div class="float-left" style="width:76%">
@@ -317,12 +317,12 @@ export default {
 				}
 			}
 
-			if(this.$gfnCommonUtils.isEmpty(cps)) {
+			/* if(this.$gfnCommonUtils.isEmpty(cps)) {
 				confirm.fnAlert(this.title, '초당 발송 건수를 입력하세요');
 				return false;
-			}
+			} */
 
-			if(parseInt(cps) < 0 || parseInt(cps) > 9999) {
+			/* if(parseInt(cps) < 0 || parseInt(cps) > 9999) {
 				confirm.fnAlert(this.title, '초당 발송 건수는 0~9999 사이의 값을 입력하세요');
 				return false;
 			}
@@ -330,7 +330,7 @@ export default {
 			if(this.$gfnCommonUtils.isEmpty(lineType)) {
 				confirm.fnAlert(this.title, '라인 타입을 선택하세요');
 				return false;
-			}
+			} */
 
 			if(daySenderChkYn == 'Y'
 					&& (this.$gfnCommonUtils.isEmpty(daySenderLimitAmount)
@@ -360,13 +360,13 @@ export default {
 				'corpId'				: tokenSvc.getToken().principal.corpId,
 				'apiPwd'				: jQuery('#apiPwd').val(),
 				'ipChkYn'				: jQuery('input[name="ipChkYn"]:checked').val(),
-				'cps'					: jQuery('#cps').val(),
+				'cps'					: 0,
 				'daySenderChkYn'		: jQuery('input[name="daySenderChkYn"]:checked').val(),
 				'monSenderChkYn'		: jQuery('input[name="monSenderChkYn"]:checked').val(),
 				'apiKeyName'			: jQuery('#apiKeyName').val(),
 				'status'				: jQuery('#selectStatus option:selected').val(),
 				'rptYn'					: jQuery('input[name="rptYn"]:checked').val(),
-				'lineType'				: jQuery('#selectLineType option:selected').val(),
+				'lineType'				: 'NORMAL',
 				'dupChkYn'				: jQuery('input[name="dupChkYn"]:checked').val(),
 				'webSenderYn'			: jQuery('input[name="webSenderYn"]:checked').val(),
 				'daySenderLimitAmount'	: jQuery('#daySenderLimitAmount').val(),
