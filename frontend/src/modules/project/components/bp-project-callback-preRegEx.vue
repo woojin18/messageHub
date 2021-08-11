@@ -4,7 +4,7 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div class="of_h">
-            <h2>사전 등록 예외 대상 사업자 등록</h2>
+            <h2>SMS 사전 등록 예외 대상 사업자 등록</h2>
 						<hr>
 						<div class="mt20">
               <h5 class="inline-block" style="width:20%">신청유형 *</h5>

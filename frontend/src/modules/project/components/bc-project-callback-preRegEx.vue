@@ -11,7 +11,7 @@
 
 		<ul class="tabStyle tab6 bgColor_tapGray mt30">
 			<li @click="fnMoveMainTab('callbackPreReg')"><a style="width:23%">발신번호 인증 등록</a></li>
-			<li @click="fnMoveMainTab('callbackPreRegEx')" class="active"><a style="width:23%">사전 등록 예외 대상 사업자로 등록</a></li>
+			<li @click="fnMoveMainTab('callbackPreRegEx')" class="active"><a style="width:23%">SMS 사전 등록 예외 대상 사업자로 등록</a></li>
 		</ul>
 
 		<p class="font-size12 color3 mt10"><i class="far fa-info-circle"></i> 웹발송방식 및 서버발송방식을 통한 문자 발송 시 모두 이용 가능합니다.</p>
@@ -125,7 +125,7 @@
 
 		<ul class="tabStyle tab6 bgColor_tapGray mt30">
 			<li @click="fnMoveMainTab('callbackPreReg')"><a style="width:23%">발신번호 인증 등록</a></li>
-				<li @click="fnMoveMainTab('callbackPreRegEx')" class="active"><a style="width:23%">사전 등록 예외 대상 사업자로 등록</a></li>
+				<li @click="fnMoveMainTab('callbackPreRegEx')" class="active"><a style="width:23%">SMS 사전 등록 예외 대상 사업자로 등록</a></li>
 		</ul>
 
 		<p class="font-size12 color3 mt10"><i class="far fa-info-circle"></i> 특수부가통신사업자 으로 사전등록 예외 사업자로 등록되어 있습니다.</p>
