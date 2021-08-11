@@ -130,8 +130,8 @@
 		WHERE	SAVE_BOX_ID = #{saveBoxId}
 	</delete>
 	
-	<select id="deleteRcsTmpMsgbaseDetail" resultType="hashMap">
-		/* rcsTemplateSend.deleteRcsTmpMsgbaseDetail */
+	<select id="selectRcsTmpMsgbaseDetail" resultType="hashMap">
+		/* rcsTemplateSend.selectRcsTmpMsgbaseDetail */
 		SELECT	BRAND_ID
 		,		SAVE_BOX_NAME
 		,		AD_YN
@@ -147,7 +147,7 @@
 	</select>
 	
 	<select id="selectRcsCallbackList" resultType="camel">
-		/* sendMessage.selectCallbackList */
+		/* rcsTemplateSend.selectCallbackList */
 		SELECT	CHATBOT_ID AS CALLBACK
 		FROM	cm.CM_RCS_CHATBOT
 		WHERE	APPROVAL_STATUS = #{approvalStatus}
