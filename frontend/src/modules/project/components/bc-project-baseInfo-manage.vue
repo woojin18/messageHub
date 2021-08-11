@@ -95,15 +95,15 @@
 								<tr>
 									<td class="text-left">RCS</td>
 									<td class= "end">
-										<input type="radio" name="radioRcs" value="Y" id="yes1" checked=""> <label for="yes1" class="mr30">사용</label>
-										<input type="radio" name="radioRcs" value="N" id="no1"> <label for="no1">미사용</label>
+										<input type="radio" name="radioRcs" value="Y" id="yes1" disabled checked=""> <label for="yes1" class="mr30">사용</label>
+										<input type="radio" name="radioRcs" value="N" id="no1" disabled> <label for="no1">미사용</label>
 									</td>
 								</tr>
 								<tr>
 									<td class="text-left">SMS/MMS</td>
 									<td class="end">
-										<input type="radio" name="radioMms" value="Y" id="yes2" checked=""> <label for="yes2" class="mr30">사용</label>
-										<input type="radio" name="radioMms" value="N" id="no2"> <label for="no2">미사용</label>
+										<input type="radio" name="radioMms" value="Y" id="yes2" disabled checked=""> <label for="yes2" class="mr30">사용</label>
+										<input type="radio" name="radioMms" value="N" id="no2" disabled> <label for="no2">미사용</label>
 									</td>
 								</tr>
 								<tr>
@@ -239,7 +239,7 @@ export default {
 		},
 		// API키 등록
 		fnRegisterApiKeyPop() {
-			if(this.apiKeyList != null && this.apiKeyList.length == 5) {
+			if(this.apiKeyList != null && this.apiKeyList.length >= 5) {
 				confirm.fnAlert(this.title, 'API Key는 5개까지 발급됩니다.');
 				return false;
 			}

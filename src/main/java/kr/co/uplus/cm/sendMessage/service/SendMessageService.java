@@ -39,6 +39,7 @@ import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
+import kr.co.uplus.cm.exception.CMException;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkRequestData;
 import kr.co.uplus.cm.sendMessage.dto.FbInfo;
 import kr.co.uplus.cm.sendMessage.dto.FrndTalkRequestData;
@@ -286,7 +287,7 @@ public class SendMessageService {
             }
         } else {
             log.error("{}.getRmAmount API Fail => API response Body: {}", this.getClass(), resultMap);
-            throw new Exception("캐시 정보 조회 실패");
+            throw new CMException("캐시 정보 조회에 실패하였습니다.");
         }
 
         return rmAmount;

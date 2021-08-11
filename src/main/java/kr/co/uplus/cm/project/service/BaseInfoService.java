@@ -177,6 +177,14 @@ public class BaseInfoService {
 		}
 
 		if (saveStatus.equals("R")) {
+			// api key 5개 이상인지 체크
+			int apiKeyCnt = generalDao.selectGernalList(DB.QRY_SELECT_APIKEY_LIST, params).size();
+			
+			if( apiKeyCnt >= 5 ) {
+				rtn.setSuccess(false);
+				rtn.setMessage("API Key는 5개까지 발급됩니다.");
+			}
+			
 			apiKey = CommonUtils.getCommonId("API", 5); // APIKEY 생성
 			map.put("apiKey", apiKey);
 

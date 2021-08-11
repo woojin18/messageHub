@@ -39,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.uplus.cm.common.consts.Const;
@@ -48,6 +47,7 @@ import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.model.AuthUser;
 import kr.co.uplus.cm.common.utils.SpringUtils;
 import kr.co.uplus.cm.config.ApiConfig;
+import kr.co.uplus.cm.exception.CMException;
 import kr.co.uplus.cm.login.service.AuthService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -77,9 +77,9 @@ public class CommonService {
 
 	@Deprecated
 	long imgUploadLimitSize;
-	
+
 	@Value("${console.domain.baseUrl}") String baseUrl;
-	
+
 	@Value("${send.noti.mail}") String mailHost;
 
 	/**
@@ -137,7 +137,7 @@ public class CommonService {
 
 	/**
 	 * 파일업로드
-	 * 
+	 *
 	 * @param files
 	 * @param params
 	 * @return
@@ -308,7 +308,7 @@ public class CommonService {
 
 	/**
 	 * 고객사별 이미지 조회
-	 * 
+	 *
 	 * @param params
 	 * @return
 	 * @throws Exception
@@ -367,7 +367,7 @@ public class CommonService {
 
 	/**
 	 * 이미지 URL 정보 조회
-	 * 
+	 *
 	 * @param params
 	 * @return
 	 * @throws Exception
@@ -479,13 +479,13 @@ public class CommonService {
 
 		return rtnSeqString;
 	}
-	
+
 	// 파일 업로드 및 테이블 인서트
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackFor={Exception.class})
 	public String uploadFile2(MultipartFile files, String userId) throws Exception {
 		String fileName = "";	//원본 파일명
 		File destinationFile = null;	//업로드된 파일정보
-		
+
 		String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
 		String month = String.valueOf(Calendar.getInstance().get(Calendar.MONTH) + 1);
 		if(month.length() == 1) month = "0" + month;
@@ -493,34 +493,34 @@ public class CommonService {
 		if(date.length() == 1) date = "0" + date;
 		String hour = String.valueOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
 		if(hour.length() == 1) hour = "0" + hour;
-		
+
 		String uploadPath = "";
 //			String uploadDirPath = this.uploadPath + year + "/" + month + "/" + date + "/" + hour;
 		String uploadDirPath = uploadPath + year + "/" + month + "/" + date + "/" + hour;
 		File uploadDir = new File(uploadDirPath);
 		String filePath = "";
 		String pattern = "[\"!@#$%^&'.*]";
-		
+
 		if(!uploadDir.exists()) {
 			uploadDir.mkdirs();
 		}
-		
+
 		String preFileName = getFileNameExt(files.getOriginalFilename(),0).replaceAll(pattern, "");
 		String ext = getFileNameExt(files.getOriginalFilename(),1);
 //			fileName = files.getOriginalFilename().replaceAll(pattern, "");
 		fileName = preFileName+"."+ext;
 		destinationFile = File.createTempFile("upload", fileName, uploadDir);
 		FileCopyUtils.copy(files.getInputStream(), new FileOutputStream(destinationFile));
-		
+
 		// FILEINFO isert
 		Map<String, Object> saveMap = new HashMap<String, Object>();
-		
+
 		filePath = destinationFile.getAbsolutePath().replaceAll("\\\\", "/");
 		saveMap.put("attach_file_name", fileName);
 		saveMap.put("attach_file_path", filePath);
 		saveMap.put("userId", userId);
 		String rtnSeqString = this.insertFileInfo(saveMap);
-		
+
 		return rtnSeqString;
 	}
 
@@ -537,7 +537,7 @@ public class CommonService {
 
 	/**
 	 * get API Key
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */
@@ -550,7 +550,7 @@ public class CommonService {
 		if (StringUtils.isBlank(apiKey)) {
 			log.error("{}.getApiKey no result search for api key. corpID : {}, projectId : {}", this.getClass(), corpId,
 					projectId);
-			throw new Exception("API 키에 대한 검색 결과 없음.");
+			throw new CMException("API 키가 존재하지 않습니다.");
 		}
 
 		return apiKey;
@@ -580,7 +580,7 @@ public class CommonService {
 
 	/**
 	 * 이미지업로드 채널 설정 조회
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public List<Object> selectImgUploadChSet() throws Exception {
@@ -596,7 +596,7 @@ public class CommonService {
 
 	/**
 	 * 파일업로드 설정 조회
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public Object selectFileUploadSet(String fileUploadSet) throws Exception {
@@ -616,7 +616,7 @@ public class CommonService {
 
 	/**
 	 * 사용자 정보 Set
-	 * 
+	 *
 	 * @param params
 	 * @return
 	 */
@@ -653,7 +653,7 @@ public class CommonService {
 
 	/**
 	 * get 이미지 업로드 채널별 용량제한 정보
-	 * 
+	 *
 	 * @param imgSetInfoList
 	 * @param ch
 	 * @return
@@ -674,7 +674,7 @@ public class CommonService {
 
 	/**
 	 * get 이미지 업로드 채널별 리사이즈 정보
-	 * 
+	 *
 	 * @param imgSetInfoList
 	 * @param ch
 	 * @return
@@ -729,7 +729,7 @@ public class CommonService {
 
 	/**
 	 * 파일명과 확장자를 구분해서가져오기
-	 * 
+	 *
 	 * @param fullFileName
 	 * @param flag         (0:파일명, 1:확장자)
 	 * @return
@@ -748,7 +748,7 @@ public class CommonService {
 
 	/**
 	 * REDIS 테이블 동기화처리
-	 * 
+	 *
 	 * @param cmdTgt : 업데이트할 테이블 명
 	 * @return
 	 */
@@ -758,7 +758,7 @@ public class CommonService {
 
 		generalDao.updateGernal(DB.QRY_UPDATE_CM_CMD, saveMap);
 	}
-	
+
 	/**
 	 * noti api 통신
 	 * @param params
@@ -767,76 +767,76 @@ public class CommonService {
 	@SuppressWarnings({ "unused", "unchecked" })
 	public void sendNoti(String type, Map<String,Object> params) throws Exception {
 		Map<String, Object> rtn = new HashMap<String, Object>();
-		
+
 		String noticeApiKey = "NAP13izIa1";
 		String notiCode = "NTI1f4pDIj";
-		
+
 		LinkedHashMap<String, Object> apiMap = new LinkedHashMap<String, Object>();
 		apiMap.put("notiCode", notiCode);
 
 		ArrayList<Map<String, Object>> recvInfoLst = new ArrayList<Map<String,Object>>();
-		
+
 		if("mail".equals(type)) {
 			LinkedHashMap<String, Object> rcvMap = new LinkedHashMap<String, Object>();
 			LinkedHashMap<String, Object> mailMap = new LinkedHashMap<String, Object>();
 			// 메일 인증
-			
+
 			// 수신자 설정
 			rcvMap.put("toEmail", params.get("email"));
 			recvInfoLst.add(rcvMap);
-			
+
 			// 메일 내용 설정
 			ArrayList<Map<String, Object>> emailCh = new ArrayList<Map<String,Object>>();
-			
+
 			String contents = this.setContents(params);
 			mailMap.put("title", "메시지클라우드 인증");
 			mailMap.put("contents", contents);
 			mailMap.put("fromEmail", this.mailHost);
-			
+
 //			emailCh.add(mailMap);
-			
+
 			apiMap.put("recvInfoLst", recvInfoLst);
 			apiMap.put("emailCh", mailMap);
-			
+
 		} else if("sms".equals(type)) {
 			// sms 인증
-			
+
 			// 수신자 설정
 			LinkedHashMap<String, Object> rcvMap = new LinkedHashMap<String, Object>();
 			rcvMap.put("phone", params.get("phone"));
 			recvInfoLst.add(rcvMap);
-			
+
 			// 메일 내용 설정
 			ArrayList<Map<String, Object>> sendChLst = new ArrayList<Map<String,Object>>();
 			LinkedHashMap<String, Object> smsMap = new LinkedHashMap<String, Object>();
 			smsMap.put("ch", "SMS");
-			
+
 			smsMap.put("contents", "인증번호는 ["+params.get("certifyNumb")+"] 입니다.");
 			smsMap.put("callback", "07052227696");
-			
+
 			sendChLst.add(smsMap);
-			
+
 			apiMap.put("recvInfoLst", recvInfoLst);
 			apiMap.put("sendChLst", sendChLst);
 		}
-		
+
 		Map<String, Object> headerMap = new HashMap<String, Object>();
 		headerMap.put("X-API-KEY", noticeApiKey);
 		Map<String, Object> result = apiInterface.etcPost(ApiConfig.NOTI_SERVER_DOMAIN+"/noti/v1/msg", apiMap, headerMap);
 		if(!"10000".equals(result.get("code"))) {
 			throw new Exception(CommonUtils.getString(result.get("message")));
 		}
-		
+
 	}
 
 	private String setContents(Map<String, Object> params) {
 		String html = "";
-		
+
 		String time = CommonUtils.getString(params.get("time"));
 		String[] timeArr = time.split(" ");
-		
+
 		String location = CommonUtils.getString(params.get("location"));
-		
+
 		html += "<div style='width:640px; min-height:600px; margin:0 auto; background:#fff; padding:38px 64px 87px 64px; box-sizing:border-box; position:relative; font-family:\"Noto Sans KR\", sans-serif'>";
 		html += "<div style='border-bottom:1px solid #9F9F9F; padding-bottom:30px; margin-bottom:30px'>";
 		html += "<img src='" + this.baseUrl + "/se2/images/" + "userLogo.svg' alt='유플러스 통합메시징 클라우드' />";
@@ -853,7 +853,7 @@ public class CommonService {
 		html += "<div style='border-top:1px solid #E6E6E6; color:#858585; font-size:11px; padding:20px 0;'>Copyright©LG Plus Corp. All Rights Reserved.</div>";
 		html += "</div>";
 		html += "</div>";
-		
+
 		return html;
 	}
 }

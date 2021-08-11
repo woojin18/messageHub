@@ -293,8 +293,7 @@ public class SendMessageController {
             }
 
         } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
+            rtn.setFail(CommonUtils.getCMExceptionMsg(e, "실패하였습니다."));
             log.error("{}.sendPushMessage Error : {}", this.getClass(), e);
             return rtn;
         }
@@ -444,8 +443,7 @@ public class SendMessageController {
             }
 
         } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
+            rtn.setFail(CommonUtils.getCMExceptionMsg(e, "실패하였습니다."));
             log.error("{}.sendSmsMessage Error : {}", this.getClass(), e);
             return rtn;
         }
@@ -555,8 +553,7 @@ public class SendMessageController {
             }
 
         } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
+            rtn.setFail(CommonUtils.getCMExceptionMsg(e, "실패하였습니다."));
             log.error("{}.sendMmsMessage Error : {}", this.getClass(), e);
             return rtn;
         }
@@ -719,8 +716,7 @@ public class SendMessageController {
             }
 
         } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
+            rtn.setFail(CommonUtils.getCMExceptionMsg(e, "실패하였습니다."));
             log.error("{}.sendFrndTalkMessage Error : {}", this.getClass(), e);
             return rtn;
         }
@@ -878,8 +874,7 @@ public class SendMessageController {
             }
 
         } catch (Exception e) {
-            rtn.setSuccess(false);
-            rtn.setMessage("실패하였습니다.");
+            rtn.setFail(CommonUtils.getCMExceptionMsg(e, "실패하였습니다."));
             log.error("{}.sendAlimTalkMessage Error : {}", this.getClass(), e);
             return rtn;
         }
@@ -1021,8 +1016,7 @@ public class SendMessageController {
 
 
         } catch (Exception e) {
-            rtn.setFail("실패하였습니다.");
-            log.error("{}.sendSmartMessage Error : {}", this.getClass(), e);
+            rtn.setFail(CommonUtils.getCMExceptionMsg(e, "실패하였습니다."));
             return rtn;
         }
 

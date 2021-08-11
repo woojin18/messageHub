@@ -49,8 +49,8 @@
 							</div>
               <div class="of_h consolMarginTop" v-if="this.payTypeForDIv === 'POST'">
                 <h5 class="inline-block" style="width:20%">개별빌링 여부</h5>
-								<input :disabled="this.payTypeForDIv =='POST'" type="radio" name="subbillYn" value="Y" class="cBox" id="subbillYnY" @click="fnCheckSubblillYn()" checked=""> <label for="subbillYnY" class="payment mr30 font-size12">예</label>
-								<input :disabled="this.payTypeForDIv =='POST'" type="radio" name="subbillYn" value="N" class="cBox" id="subbillYnN" @click="fnCheckSubblillYn()"> <label for="subbillYnN" class="payment font-size12">아니요</label>							
+								<input :disabled="this.payTypeForDIv =='PRE'" type="radio" name="subbillYn" value="Y" class="cBox" id="subbillYnY" @click="fnCheckSubblillYn()" checked=""> <label for="subbillYnY" class="payment mr30 font-size12">예</label>
+								<input :disabled="this.payTypeForDIv =='PRE'" type="radio" name="subbillYn" value="N" class="cBox" id="subbillYnN" @click="fnCheckSubblillYn()"> <label for="subbillYnN" class="payment font-size12">아니요</label>							
 							</div>
               <!-- <div class="of_h consolMarginTop" v-if="this.subbillStartDayForDiv === 'Y'"> -->
               <div class="of_h consolMarginTop" v-if="this.payTypeForDIv === 'POST'">
