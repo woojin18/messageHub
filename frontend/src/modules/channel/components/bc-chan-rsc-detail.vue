@@ -2,8 +2,8 @@
 	<!-- <div id="content"> -->
 		<article>
 			<div class="contentHeader mb20">
-				<h2 v-if="this.save_status ==='C'">브랜드 등록</h2>				
-				<h2 v-if="this.save_status ==='U'">브랜드 상세</h2>				
+				<h2 v-if="this.save_status ==='C'">RCS 브랜드 등록</h2>				
+				<h2 v-if="this.save_status ==='U'">RCS 브랜드 상세</h2>				
 			</div>
 
 			<!-- 본문 -->
