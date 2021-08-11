@@ -10,13 +10,13 @@
 						<div class="of_h">
 							<div class="float-left" style="width:24%"><h5>API KEY 명</h5></div>
 							<div class="float-left" style="width:76%">
-								<input type="text" id="apiKeyName" class="inputStyle">
+								<input type="text" id="apiKeyName" class="inputStyle" maxlength="25">
 							</div>
 						</div>
 						<div id="apiKeyDiv" class="of_h consolMarginTop">
 							<div class="float-left" style="width:24%"><h5>API KEY</h5></div>
 							<div class="float-left" style="width:76%">
-								<input type="text" id="apiKey" class="inputStyle" :disabled="true">
+								<input type="text" id="apiKey" class="inputStyle" :disabled="true" >
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">

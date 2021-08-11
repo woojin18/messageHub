@@ -13,12 +13,12 @@
 						<div class="of_h">
 							<h5 class="inline-block" style="width:20%">프로젝트명 *</h5>
 							<div style="width:80%" class="float-right">
-									<input id="projectName" type="text" class="inputStyle float-left" title="프로젝트명 입력란">
+									<input id="projectName" type="text" class="inputStyle float-left" title="프로젝트명 입력란" maxlength="25">
 							</div>
 							<div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:20%">프로젝트 설명</h5>
 								<div style="width:80%" class="float-right">
-									<input id="projectDesc" type="text" class="inputStyle float-left" style="width:100%" title="프로젝트 설명 입력란">
+									<input id="projectDesc" type="text" class="inputStyle float-left" style="width:100%" title="프로젝트 설명 입력란" maxlength="100">
 								</div>
 							</div>
 							<div class="of_h consolMarginTop">
@@ -44,7 +44,7 @@
               <div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:20%">재발송 제목</h5>
 								<div style="width:80%" class="float-right">
-									<input id="resendTitle" type="text" class="inputStyle float-left" >
+									<input id="resendTitle" type="text" class="inputStyle float-left" maxlength="4" placeholder="최대 4글자까지 가능합니다.">
 								</div>
 							</div>
               <div class="of_h consolMarginTop" v-if="this.payTypeForDIv === 'POST'">

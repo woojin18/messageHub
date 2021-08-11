@@ -10,7 +10,7 @@
 							<h5 class="inline-block" style="width:10%">프로젝트명 *</h5>
 							<div style="width:88%" class="of_h float-right">
 								<div style="width:83%">
-									<input id="projectName" type="text" class="inputStyle float-left">
+									<input id="projectName" type="text" class="inputStyle float-left" maxlength="25">
 								</div>
 							</div>
 						</div>
@@ -18,7 +18,7 @@
 							<h5 class="inline-block" style="width:10%">프로젝트명 설명</h5>
 							<div style="width:88%" class="of_h float-right">
 								<div>
-									<textarea id="projectDesc" class="textareaStyle height120" placeholder=""></textarea>
+									<textarea id="projectDesc" class="textareaStyle height120" maxlength="100"></textarea>
 								</div>
 							</div>
 						</div>
