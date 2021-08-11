@@ -252,6 +252,10 @@ export default {
           confirm.fnAlert("", "개별빌링 시작일을 입력해주세요.."); return false;
       }
 
+      var subbillYn = jQuery("input[name='subbillYn']:checked").val();
+      if( this.payTypeForDIv === 'PRE' ){
+          subbillYn = 'N';
+      }
       var params = {
           "projectId"      : this.row_data.projectId,
           "projectName"    : jQuery("#projectName").val(),
@@ -260,7 +264,7 @@ export default {
           "billId"         : this.billId,
           "useYn"          : jQuery("input[name='useYn']:checked").val(),
           "resendTitle"    : jQuery("#resendTitle").val(),
-          "subbillYn"      : jQuery("input[name='subbillYn']:checked").val(),
+          "subbillYn"      : subbillYn,
           "subbillStartDay": jQuery("#subbillStartDay").val(),
           "radioRcs"       : jQuery("input[name='radioRcs']:checked").val(),
           "radioMms"       : jQuery("input[name='radioMms']:checked").val(),

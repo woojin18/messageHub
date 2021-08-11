@@ -162,8 +162,6 @@ export default {
         "roleCd"         : tokenSvc.getToken().principal.role,
       }
 
-      console.log(params);
-       
       projectApi.selectProjectList(params).then(response =>{
         vm.items = response.data.data;
       });
