@@ -72,7 +72,7 @@
             <h4>내용 *</h4>
           </div>
           <div class="float-left" style="width:73%">
-            <textarea class="textareaStyle height120" v-model="tmpltData.tmpltContent" maxlength="2000"></textarea>
+            <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="tmpltData.tmpltContent" maxlength="2000"></textarea>
           </div>
         </div>
 
@@ -210,6 +210,7 @@ export default {
       imgUploadOpen : false,
       buttonLimitSize : 5,
       useCh : 'FRIENDTALK',
+      contentAreaPlaceholder: '변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정\n:예) #{name}님 #{yyyymmdd} 출금 예정입니다.',
       isInsert : true,
       bottonTypeList : [
         {linkType:'WL', name:'웹 링크'},

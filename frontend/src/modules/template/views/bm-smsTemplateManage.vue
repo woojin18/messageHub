@@ -16,7 +16,7 @@
             <div class="phoneTextWrap scroll-yc">
               <div v-if="tmpltData.senderType == 'MMS'" class="phoneText2 mb10">
                 <p v-if="$gfnCommonUtils.isEmpty(tmpltData.tmpltTitle)">템플릿 제목</p>
-                <p v-else>{{tmpltData.tmpltTitle}}</p>
+                <p v-else><span v-if="tmpltData.senderType == 'MMS' && tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.tmpltTitle}}</p>
               </div>
               <div v-if="tmpltData.senderType == 'MMS'">
                 <div v-for="(imgInfo, idx) in tmpltData.imgInfoList" :key="idx" class="phoneText2 mt10 text-center simulatorImg"
@@ -26,7 +26,7 @@
               <div class="phoneText1">
                 <p v-if="$gfnCommonUtils.isEmpty(tmpltData.tmpltContent) && (tmpltData.msgKind != 'A' || $gfnCommonUtils.isEmpty(tmpltData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
                 <p v-else class="font-size14 color4 mt10">
-                  <span><pre>{{tmpltData.tmpltContent}}</pre></span>
+                  <span><pre><span v-if="tmpltData.senderType == 'SMS' && tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.tmpltContent}}</pre></span>
                   <br v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltContent)"/>
                   <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.rcvblcNumber)">
                     수신거부번호 : {{tmpltData.rcvblcNumber}}
@@ -87,7 +87,7 @@
         <div class="of_h">
           <div class="float-left" style="width:31%"><h4>내용 *</h4></div>
           <div class="float-left" style="width:69%">
-            <textarea class="textareaStyle height190" v-model="tmpltData.tmpltContent" maxlength="2000"></textarea>
+            <textarea class="textareaStyle height190" :placeholder="contentAreaPlaceholder" v-model="tmpltData.tmpltContent" maxlength="2000"></textarea>
           </div>
         </div>
         <div v-if="tmpltData.msgKind == 'A'" class="of_h consolMarginTop">
@@ -168,6 +168,7 @@ export default {
       imgLimitSize : 2,
       useCh : 'MMS',
       isInsert : true,
+      contentAreaPlaceholder: '변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정\n:예) #{name}님 #{yyyymmdd} 출금 예정입니다.',
       tmpltData : {imgInfoList:[]}
     }
   },

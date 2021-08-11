@@ -19,7 +19,7 @@
                 <div class="border-line2" style="height:420px; overflow-y:scroll">
                   <ul class="color4">
                     <li @click="fnGetTemplateInfo(idx, templateInfo.tmpltId)" v-for="(templateInfo, idx) in templateList" :key="templateInfo.tmpltId" class="bb-ddd pd5">
-                      {{templateInfo.tmpltName | unescapeXss}}({{templateInfo.tmpltTitle | unescapeXss}})
+                      {{templateInfo.tmpltName | unescapeXss}}<sapn v-if="!$gfnCommonUtils.isEmpty(templateInfo.tmpltTitle)">({{templateInfo.tmpltTitle | unescapeXss}})</sapn>
                     </li>
                     <li v-if="templateList.length == 0" class="bb-ddd pd5 text-center">검색된 내용이 없습니다.</li>
                   </ul>
@@ -60,9 +60,8 @@
                 <div class="phoneWrap">
                   <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
                   <div class="phoneTextWrap scroll-yc">
-                    <div class="phoneText1">
-                      <p v-if="fnIsEmpty(templateData.tmpltTitle)">제목</p>
-                      <p v-else>{{templateData.tmpltTitle}}</p>
+                    <div v-if="!fnIsEmpty(templateData.tmpltTitle)" class="phoneText1">
+                      <p><span v-if="templateData.msgKind == 'A'">(광고)</span>{{templateData.tmpltTitle}}</p>
                     </div>
                     <div v-if="templateData.msgType == 'IMAGE' && fnIsEmpty(templateData.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
                       <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
@@ -73,7 +72,7 @@
                     </div>
                     <div>
                       <p class="font-size14 color4 mt10">
-                        <span><pre>{{templateData.tmpltContent}}</pre></span>
+                        <span><pre><span v-if="fnIsEmpty(templateData.tmpltTitle) && templateData.msgKind == 'A'">(광고)</span>{{templateData.tmpltContent}}</pre></span>
                         <br v-if="!fnIsEmpty(templateData.tmpltContent)"/>
                         {{templateData.msgKind == 'A' ? '(수신거부 : '+this.templateData.rcvblcNumber+')' : ''}}
                       </p>

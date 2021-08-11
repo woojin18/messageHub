@@ -13,9 +13,8 @@
           <div v-if="previewMessageType == 'PUSH'" class="phoneWrap">
             <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
             <div class="phoneTextWrap scroll-yc">
-              <div class="phoneText1">
-                <p v-if="fnIsEmpty(sendData.pushTitle)">제목</p>
-                <p v-else>{{sendData.pushTitle}}</p>
+              <div v-if="!fnIsEmpty(sendData.pushTitle)" class="phoneText1">
+                <p><span v-if="sendData.msgKind == 'A'">(광고)</span>{{sendData.pushTitle}}</p>
               </div>
               <div v-if="sendData.msgType == 'IMAGE' && fnIsEmpty(sendData.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
                 <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
@@ -26,9 +25,11 @@
               </div>
               <div>
                 <p class="font-size14 color4 mt10">
-                  <span><pre>{{sendData.pushContent}}</pre></span>
+                  <span><pre><span v-if="fnIsEmpty(sendData.pushTitle) && sendData.msgKind == 'A'">(광고)</span>{{sendData.pushContent}}</pre></span>
                   <br v-if="!fnIsEmpty(sendData.pushContent)"/>
-                  {{sendData.msgKind == 'A' ? '(수신거부 : '+sendData.rcvblcNumber+')' : ''}}
+                  <span v-if="sendData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(sendData.rcvblcNumber)">
+                    {{sendData.msgKind == 'A' ? '(수신거부 : '+sendData.rcvblcNumber+')' : ''}}
+                  </span>
                 </p>
               </div>
             </div>
@@ -44,7 +45,7 @@
               </div>
               <div v-if="sendData.rplcSendType != 'SMS'" class="phoneText2" style="margin-top: 5px;">
                 <p v-if="fnIsEmpty(sendData.fbInfo.title)">제목</p>
-                <p v-else>{{sendData.fbInfo.title}}</p>
+                <p v-else><span v-if="sendData.msgKind == 'A'">(광고)</span>{{sendData.fbInfo.title}}</p>
               </div>
               <div v-if="!fnIsEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center simulatorImg"
                 :style="'padding:65px;background-image: url('+sendData.fbInfo.imgUrl+');'">
@@ -52,7 +53,7 @@
               <div>
                 <p v-if="(fnIsEmpty(sendData.fbInfo.msg) && fnIsEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
                 <p v-else class="font-size14 color4 mt10">
-                  <span><pre>{{sendData.fbInfo.msg}}</pre></span>
+                  <span><pre><span v-if="sendData.rplcSendType == 'SMS' && sendData.msgKind == 'A'">(광고)</span>{{sendData.fbInfo.msg}}</pre></span>
                   <br v-if="!fnIsEmpty(sendData.fbInfo.rcvblcNumber)"/>
                   <span v-if="sendData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)">
                     수신거부번호 : {{sendData.fbInfo.rcvblcNumber}}
