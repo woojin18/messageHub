@@ -226,7 +226,7 @@ datasource:
   continue-on-error: true
   
 mongodb:
-  uri: mongodb://cm:test1234@mongodb.default.svc.cluster.local:27017/cm?authSource=cm&authMechanism=SCRAM-SHA-256
+  uri: mongodb://cm:aptlwld123@mongodb.default.svc.cluster.local:27017/cm?authSource=cm&authMechanism=SCRAM-SHA-256
   database: cm
   connectionsPerHost: 30
   connectionsPerHostMin: 10
