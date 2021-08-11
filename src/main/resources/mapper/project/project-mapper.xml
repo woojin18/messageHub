@@ -27,14 +27,14 @@
 		,		date_format(A.SUBBILL_START_DAY, '%Y-%m-%d') as SUBBILL_START_DAY
 		,		( SELECT COUNT(USER_ID) FROM cm_console.CM_PROJECT_USER WHERE PROJECT_ID = A.PROJECT_ID ) AS PROJECT_MEMBER_CNT
 		FROM	cm_console.CM_PROJECT A
+		<if test="roleCd != 'OWNER'.toString()">
 		INNER JOIN cm_console.CM_PROJECT_USER B
 			ON A.PROJECT_ID = B.PROJECT_ID
+			AND		B.USER_ID = #{loginId}
+		</if>
 		WHERE	1=1
 		AND		A.DEL_YN != 'Y'
 		AND		A.CORP_ID = #{corpId}
-		<if test="roleCd != 'OWNER'.toString()">
-		AND		B.USER_ID = #{loginId}
-		</if>
 		<if test="srcProjectName != '' and srcProjectName != null ">
 		AND A.PROJECT_NAME LIKE CONCAT('%', #{srcProjectName}, '%')
 		</if>
