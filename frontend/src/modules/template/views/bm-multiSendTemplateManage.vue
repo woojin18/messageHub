@@ -1142,7 +1142,7 @@
 			</div>
 
 			<!-- 캐러셀 SHORT -->
-			<div id="carousel" v-if="rcsTemplateTable === 9" >
+			<div v-if="rcsTemplateTable === 9" >
 				<h4>내용작성</h4>
 				<div class="of_h mt20">
 					<div class="float-left" style="width:28%">
@@ -1918,14 +1918,14 @@
 												<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs100ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
 													:style="'padding:25%;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs100ImgInfoList[imgIdx-1].imgUrl+');'">  
 												</div>
-												<div v-else-if="rowData.msgType == 'IMAGE' && rowData.rcs100ImgInfoList.length == 0">
+												<div v-else>
 													<img src="@/assets/images/common/cardThumImg2.png" alt="카드 썸네일">
 												</div>
 											</div>
 											<div class="relative">
-												<h5>{{rowData.rcs0Title}}</h5>
-												<div class="scroll-y" style="min-height:150px">
-													<pre class="color6">{{rowData.rcs0Content}}</pre>
+												<div class="scroll-y6" style="min-height:140px">
+													<p class="color000 font-size13">{{rowData.rcs0Title}}</p>
+													<pre class="color3 mt5">{{rowData.rcs0Content}}</pre>
 												</div>
 												<p v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)" class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcsBlockNumber}}</p>
 												<div v-for="(buttonInfo, idx) in rowData.rcs100Buttons" :key="idx">
@@ -3421,6 +3421,9 @@ export default {
 				}, 100)
 			} else if(val === 10) {//rcsTemplateTable === 10 캐러셀 TALL
 				this.fnRcs10SelectCallbackList();
+				setTimeout(function() {
+					vm.fnSetSlider();
+				}, 100)
 			}
 		}
 	},
@@ -3457,7 +3460,7 @@ export default {
 				slideMargin: 10,
 				controls: true,
 				pager: true,
-				pagerType: 'short',
+				pagerType: 'customPage',
 				touchEnabled : (navigator.maxTouchPoints > 0),
 				autoHover: false,
 				pause: 6000

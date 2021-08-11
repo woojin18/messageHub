@@ -14,7 +14,7 @@
             <div class="phoneTextWrap scroll-yc">
               <div v-if="sendData.senderType == 'MMS'" class="phoneText2 mb10">
                 <p v-if="$gfnCommonUtils.isEmpty(sendData.smsTitle)">메시지 제목</p>
-                <p v-else>{{sendData.smsTitle}}</p>
+                <p v-else><span v-if="sendData.senderType == 'MMS' && sendData.msgKind == 'A'">(광고)</span>{{sendData.smsTitle}}</p>
               </div>
               <div v-if="sendData.senderType == 'MMS'">
                 <div v-for="(imgInfo, idx) in sendData.imgInfoList" :key="idx" class="phoneText2 mt10 text-center simulatorImg"
@@ -23,7 +23,7 @@
               </div>
               <div class="phoneText1">
                 <p class="font-size14 color4 mt10">
-                  <span><pre>{{sendData.smsContent}}</pre></span>
+                  <span><pre><span v-if="sendData.senderType == 'SMS' && sendData.msgKind == 'A'">(광고)</span>{{sendData.smsContent}}</pre></span>
                   <br v-if="!$gfnCommonUtils.isEmpty(sendData.smsContent)"/>
                   <span v-if="sendData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(sendData.rcvblcNumber)">
                     수신거부번호 : {{sendData.rcvblcNumber}}

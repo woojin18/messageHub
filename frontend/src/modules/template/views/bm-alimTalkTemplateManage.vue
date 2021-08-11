@@ -93,7 +93,7 @@
             <div class="float-left" style="width:22%"><h4>내용 *</h4></div>
             <div class="float-left" style="width:78%">
               <!-- 템플릿 내용/부가 정보/광고성 메시지 합 최대 1,000자 -->
-              <textarea class="textareaStyle height190" v-model="tmpltData.tmpltContent" placeholder="템플릿 내용 최대 1,000자" maxlength="1000"></textarea>
+              <textarea class="textareaStyle height190" v-model="tmpltData.tmpltContent" :placeholder="contentAreaPlaceholder" maxlength="1000"></textarea>
             </div>
           </div>
           <div class="of_h consolMarginTop">
@@ -244,6 +244,7 @@ export default {
       kkoTmpltCatList : [],
       categoryGrpName : '',
       useCh : 'ALIMTALK',
+      contentAreaPlaceholder: '변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정\n:예) #{name}님 #{yyyymmdd} 출금 예정입니다.',
       reflectionMsg: '반영까지 최대 5분의 시간이 소요될 수 있습니다.',
       buttonLimitSize : 5,
       buttonACName : '채널 추가',

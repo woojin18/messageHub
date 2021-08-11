@@ -43,7 +43,7 @@
               </div>
               <div v-if="sendData.rplcSendType != 'SMS'" class="phoneText2" style="margin-top: 5px;">
                 <p v-if="this.$gfnCommonUtils.isEmpty(sendData.fbInfo.title)">제목</p>
-                <p v-else>{{sendData.fbInfo.title}}</p>
+                <p v-else><span v-if="sendData.msgKind == 'A'">(광고)</span>{{sendData.fbInfo.title}}</p>
               </div>
               <div v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center simulatorImg"
                 :style="'padding:65px;background-image: url('+sendData.fbInfo.imgUrl+');'">
@@ -51,7 +51,7 @@
               <div class="scroll-y">
                 <p v-if="(this.$gfnCommonUtils.isEmpty(sendData.fbInfo.msg) && this.$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
                 <p v-else class="font-size14 color4 mt10">
-                  <span><pre>{{sendData.fbInfo.msg}}</pre></span>
+                  <span><pre><span v-if="sendData.rplcSendType == 'SMS' && sendData.msgKind == 'A'">(광고)</span>{{sendData.fbInfo.msg}}</pre></span>
                   <br v-if="!this.$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)"/>
                   <span v-if="sendData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)">
                     수신거부번호 : {{sendData.fbInfo.rcvblcNumber}}

@@ -16,9 +16,8 @@
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
-                  <div class="phoneText1">
-                    <p v-if="$gfnCommonUtils.isEmpty(tmpltData.PUSH.title)">제목</p>
-                    <p v-else>{{tmpltData.PUSH.title}}</p>
+                  <div v-if="!$gfnCommonUtils.isEmpty(tmpltData.PUSH.title)" class="phoneText1">
+                    <p><span v-if="tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.PUSH.title}}</p>
                   </div>
                   <div 
                     v-if="tmpltData.msgType == 'IMAGE' && tmpltData.PUSH.ext && tmpltData.PUSH.ext.imageUrl" 
@@ -27,7 +26,7 @@
                   >
                   </div>
                   <p class="consolMarginTop">
-                    <pre>{{tmpltData.PUSH.msg}}</pre>
+                    <pre><span v-if="$gfnCommonUtils.isEmpty(tmpltData.PUSH.title) && tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.PUSH.msg}}</pre>
                     <br/>
                     {{tmpltData.msgKind == 'A' ? '(수신거부 : '+tmpltData.PUSH.rcvblcInput+')' : ''}}
                   </p>
@@ -66,7 +65,7 @@
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
-                    <p>{{tmpltData.MMS.title}}</p>
+                    <p><span v-if="tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.MMS.title}}</p>
                   </div>
                   <div v-if="tmpltData.msgType == 'IMAGE'">
                     <div v-for="(fileUrl, idx) in tmpltData.MMS.fileUrlLst" :key="idx" class="phoneText2 mt10 text-center simulatorImg"
@@ -90,7 +89,7 @@
                   <div class="phoneText1">
                     <p>{{tmpltData.SMS.callback}}</p>
                   </div>
-                  <p class="consolMarginTop"><pre>{{tmpltData.SMS.msg}}</pre></p>
+                  <p class="consolMarginTop"><pre><span v-if="tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.SMS.msg}}</pre></p>
                   <br v-if="tmpltData.msgKind == 'A'"/>
                   <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.SMS.rcvblcInput)">
                     수신거부번호 : {{tmpltData.SMS.rcvblcInput}}
@@ -129,8 +128,14 @@
               <div v-if="tmpltData.RCS.rcsPrdType == 'FREE'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
+                  <p class="color000">
+                    <span>[WEB발신]</span>
+                    <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
+                  </p>
                   <div class="phoneText1">
-                    <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
+                    <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15">
+                      <pre>{{tmpltData.RCS.mergeData[0].description}}</pre>
+                    </p>
                     <br v-if="tmpltData.msgKind == 'A'"/>
                     <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.RCS.footer)">
                       수신거부번호 : {{tmpltData.RCS.footer}}
@@ -190,6 +195,10 @@
               <div v-if="tmpltData.RCS.rcsPrdType == 'SMS'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
+                  <p class="color000">
+                    <span>[WEB발신]</span>
+                    <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
+                  </p>
                   <div class="phoneText1">
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
                     <br v-if="tmpltData.msgKind == 'A'"/>
@@ -212,6 +221,10 @@
               <div v-if="tmpltData.RCS.rcsPrdType == 'LMS'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
+                  <p class="color000">
+                    <span>[WEB발신]</span>
+                    <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
+                  </p>
                   <div class="phoneText1">
                     <h5 v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].title">{{tmpltData.RCS.mergeData[0].title}}</h5>
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].description" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
@@ -236,6 +249,10 @@
               <div v-if="tmpltData.RCS.rcsPrdType == 'SHORT'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
+                  <p class="color000">
+                    <span>[WEB발신]</span>
+                    <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
+                  </p>
                   <img 
                     v-if="tmpltData.msgType == 'IMAGE' 
                       && tmpltData.RCS.mergeData
@@ -271,6 +288,10 @@
               <div v-if="tmpltData.RCS.rcsPrdType == 'TALL'" class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="RCS 프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
+                  <p class="color000">
+                    <span>[WEB발신]</span>
+                    <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
+                  </p>
                   <img 
                     v-if="tmpltData.msgType == 'IMAGE' 
                       && tmpltData.RCS.mergeData

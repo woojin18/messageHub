@@ -17,9 +17,8 @@
           <div class="phoneWrap">
             <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
             <div class="phoneTextWrap scroll-yc">
-              <div class="phoneText2">
-                <p v-if="fnIsEmpty(tmpltData.tmpltTitle)">템플릿 제목</p>
-                <p v-else>{{tmpltData.tmpltTitle}}</p>
+              <div v-if="!fnIsEmpty(tmpltData.tmpltTitle)" class="phoneText2">
+                <p><span v-if="tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.tmpltTitle}}</p>
               </div>
               <div v-if="tmpltData.msgType == 'IMAGE' && fnIsEmpty(tmpltData.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
                 <i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
@@ -31,7 +30,7 @@
               <div>
                 <p v-if="fnIsEmpty(tmpltData.tmpltContent) && (tmpltData.msgKind != 'A' || fnIsEmpty(tmpltData.rcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
                 <p v-else class="font-size14 color4 mt10">
-                  <span><pre>{{tmpltData.tmpltContent}}</pre></span>
+                  <span><pre><span v-if="fnIsEmpty(tmpltData.tmpltTitle) && tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.tmpltContent}}</pre></span>
                   
                   <br v-if="!fnIsEmpty(tmpltData.tmpltContent)"/>
                   <span v-if="tmpltData.msgKind == 'A' && !fnIsEmpty(tmpltData.rcvblcNumber)">
@@ -99,7 +98,7 @@
             <h4>내용 *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <textarea class="textareaStyle height120" placeholder="" v-model="tmpltData.tmpltContent" maxlength="2000"></textarea>
+            <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="tmpltData.tmpltContent" maxlength="2000"></textarea>
             <div v-if="tmpltData.msgKind == 'A'">
               <p class="color5">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
               <input type="text" id="rcvblcNumber" name="rcvblcNumber" class="inputStyle float-right mt10" title="내용 입력란" v-model="tmpltData.rcvblcNumber" placeholder="설정 > 푸시 알림 설정 변경" maxlength="45">
@@ -175,6 +174,7 @@ export default {
       imgUploadOpen : false,
       useCh : 'PUSH',
       isInsert : true,
+      contentAreaPlaceholder: '변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정\n:예) #{name}님 #{yyyymmdd} 출금 예정입니다.',
       tmpltData : {imgUrl:''}
     }
   },
@@ -263,10 +263,12 @@ export default {
         confirm.fnAlert(this.componentsTitle, '타 프로젝트 사용여부를 선택해주세요.');
         return false;
       }
+      /*
       if(!this.tmpltData.tmpltTitle){
         confirm.fnAlert(this.componentsTitle, '제목을 입력해주세요.');
         return false;
       }
+      */
       if(!this.tmpltData.tmpltContent){
         confirm.fnAlert(this.componentsTitle, '내용을 입력해주세요.');
         return false;
