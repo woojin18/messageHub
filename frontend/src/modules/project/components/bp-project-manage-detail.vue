@@ -23,10 +23,10 @@
 							</div>
 							<div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:20%">결재조건 *</h5>
-								<input @click="fnSelectBillIdForApi('PRE')" type="radio" name="payType" value="PRE" class="cBox" id="payment01" :disabled="this.save_status != 'C'"> <label for="payment01" class="payment mr30 font-size12">선불</label>
+								<input @click="fnSelectBillIdForApi('PRE')" type="radio" name="payType" value="PRE" class="cBox" id="payment01" :disabled="this.save_status != 'C'" checked> <label for="payment01" class="payment mr30 font-size12">선불</label>
 								<input @click="fnSelectBillIdForApi('POST')" type="radio" name="payType" value="POST" class="cBox" id="payment02" :disabled="this.save_status != 'C'"> <label for="payment02" class="payment font-size12">후불</label>								
 							</div>
-              <div class="of_h consolMarginTop" v-if=" this.payTypeForDIv === 'N' ">
+              <div class="of_h consolMarginTop" v-if=" this.payTypeForDIv === 'POST' ">
                 <h5 class="inline-block" style="width:20%">청구번호 *</h5>
                 <select class="selectStyle2" style="width:72%" v-model="this.billId">
                   <option v-for="(option, i) in resultList" v-bind:value="option.billAcntNo" v-bind:key="i">
@@ -47,12 +47,13 @@
 									<input id="resendTitle" type="text" class="inputStyle float-left" >
 								</div>
 							</div>
-              <div class="of_h consolMarginTop">
+              <div class="of_h consolMarginTop" v-if="this.payTypeForDIv === 'POST'">
                 <h5 class="inline-block" style="width:20%">개별빌링 여부</h5>
-								<input type="radio" name="subbillYn" value="Y" class="cBox" id="subbillYnY" @click="fnCheckSubblillYn()" checked=""> <label for="subbillYnY" class="payment mr30 font-size12">예</label>
-								<input type="radio" name="subbillYn" value="N" class="cBox" id="subbillYnN" @click="fnCheckSubblillYn()"> <label for="subbillYnN" class="payment font-size12">아니요</label>							
+								<input :disabled="this.payTypeForDIv =='POST'" type="radio" name="subbillYn" value="Y" class="cBox" id="subbillYnY" @click="fnCheckSubblillYn()" checked=""> <label for="subbillYnY" class="payment mr30 font-size12">예</label>
+								<input :disabled="this.payTypeForDIv =='POST'" type="radio" name="subbillYn" value="N" class="cBox" id="subbillYnN" @click="fnCheckSubblillYn()"> <label for="subbillYnN" class="payment font-size12">아니요</label>							
 							</div>
-              <div class="of_h consolMarginTop" v-if="this.subbillStartDayForDiv === 'Y'">
+              <!-- <div class="of_h consolMarginTop" v-if="this.subbillStartDayForDiv === 'Y'"> -->
+              <div class="of_h consolMarginTop" v-if="this.payTypeForDIv === 'POST'">
                 <h5 class="inline-block" style="width:20%">개별빌링 시작일</h5>
 								<Calendar calendarId="subbillStartDay" classProps="datepicker inputStyle maxWidth200"></Calendar>
 							</div>
@@ -157,6 +158,7 @@ export default {
         jQuery("#resendTitle").val('');
         jQuery('input:radio[name=subbillYn]:input[value="Y"]').prop("checked", true);
         jQuery("#subbillStartDay").val('');
+        this.fnSelectBillIdForApi('PRE');
 
         jQuery('input:radio[name=radioRcs]:input[value="Y"]').prop("checked", true);
         jQuery('input:radio[name=radioMms]:input[value="Y"]').prop("checked", true);
@@ -214,23 +216,31 @@ export default {
     fnSelectBillIdForApi(payType){
 
       this.payTypeForDIv = payType;
+      if( payType === 'PRE' ){
+        jQuery('input:radio[name=subbillYn]:input[value="N"]').prop("checked", true);
+      } else {
+        jQuery('input:radio[name=subbillYn]:input[value="Y"]').prop("checked", true);
+      }
 
-      var params = {
-      };
+      if( payType === 'POST' ){
+        var params = {
+        };
 
-      projectApi.selectBillIdForApi(params).then(response =>{
-        var result = response.data;
-        
-        if(result.success) {
-          this.resultList = response.data.data.resultList;
+        projectApi.selectBillIdForApi(params).then(response =>{
+          var result = response.data;
+          
+          if(result.success) {
+            this.resultList = response.data.data.resultList;
 
-          if(this.save_status === 'C'){
-            this.billId = response.data.data.resultList[0].billAcntNo;
-          } else {
-            this.billId = this.row_data.billId;
+            if(this.save_status === 'C'){
+              this.billId = response.data.data.resultList[0].billAcntNo;
+            } else {
+              this.billId = this.row_data.billId;
+            }
           }
-        }
-      });
+        });
+      }
+      
     },
     // 등록, 수정
     fnSave(){

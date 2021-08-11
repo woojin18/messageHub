@@ -166,15 +166,18 @@ export default {
       });
     },
     fnDistDetailInit(){
-      var params = {
+      if(this.distId != 'default'){
+        var params = {
+        }
+        
+        projectApi.selectDistDetail(params).then(response =>{
+          this.distId = response.data.data[0];
+          this.distName = response.data.data[2].DIS_NAME;
+          this.distNameArr = response.data.data[1];
+          this.distInfo = response.data.data[2];
+        });
       }
-       
-      projectApi.selectDistDetail(params).then(response =>{
-        this.distId = response.data.data[0];
-        this.distName = response.data.data[2].DIS_NAME;
-        this.distNameArr = response.data.data[1];
-        this.distInfo = response.data.data[2];
-      });
+      
     },
     fnDistDetail(){
 
