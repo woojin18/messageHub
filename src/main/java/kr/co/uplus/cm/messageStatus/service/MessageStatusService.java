@@ -117,7 +117,7 @@ public class MessageStatusService {
 			
 			Map<String, Object> listCnt = (Map<String, Object>) generalDao.selectGernalObject("webSend.selectWebSendFailListCnt", params);
 			
-			rtn.getPageInfo().put("totCnt", 12);
+			rtn.getPageInfo().put("totCnt", listCnt.get("failCnt"));
 			
 			String chStr = (String) listCnt.get("chString");
 			String [] stringArray= chStr.split(",");
@@ -135,7 +135,7 @@ public class MessageStatusService {
 			Map<String, Object> rtnMap = new HashMap<>();
 			rtnMap.put("list"			, rtnList);
 			rtnMap.put("totCnt"			, listCnt.get("totCnt"));
-			rtnMap.put("failCnt"		, 12);
+			rtnMap.put("failCnt"		, listCnt.get("failCnt"));
 			rtnMap.put("senderTypeNm"	, listCnt.get("senderTypeNm"));
 			rtnMap.put("senderType"		, listCnt.get("senderType"));
 			rtnMap.put("chString"		, chString);

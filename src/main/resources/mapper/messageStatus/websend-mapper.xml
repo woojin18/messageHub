@@ -89,6 +89,8 @@
 		SELECT	@rownum:=@rownum+1 AS ROW_NUM
 		,		B.PHONE
 		,		B.PUSH_CUID
+		,		B.GW_RESULT_CODE
+		,		B.GW_RESULT_DESC
 		FROM	cm_console.CM_WEB_MSG A
 		LEFT OUTER JOIN	cm.CM_MSG B
 			ON A.WEB_REQ_ID = B.WEB_REQ_ID
@@ -101,7 +103,4 @@
 		LIMIT #{offset}, #{listSize}
 		</if>
 	</select>
-
-
-
 </mapper>

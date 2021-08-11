@@ -40,28 +40,35 @@
 									<!-- table -->
 									<table class="table_skin1 bt-000 tbl-striped">
 										<colgroup>
-											<col style="width:20%">
-											<col style="width:40%">
-											<col style="width:40%">
+											<col style="width:10%">
+											<col style="width:23%">
+											<col style="width:23%">
+											<col style="width:23%">
+											<col style="width:23%">
 										</colgroup>
 										<thead>
 											<tr>								
 												<th class="text-center lc-1" rowspan="2">No.</th>
-												<th class="text-center lc-1 end" colspan="2" style="border-bottom:1px solid #d5d5d5 !important">발송대상자</th>
+												<th class="text-center lc-1" colspan="2" style="border-bottom:1px solid #d5d5d5 !important">발송 대상자</th>
+												<th class="text-center lc-1 end" colspan="2" style="border-bottom:1px solid #d5d5d5 !important">발송 실패</th>
 											</tr>
 											<tr>		
 												<th class="text-center lc-1">휴대폰</th>
 												<th class="text-center lc-1">아이디</th>
+												<th class="text-center lc-1">코드</th>
+												<th class="text-center lc-1">사유</th>
 											</tr>
 										</thead>
 										<tbody>
                       						<tr v-for="(data, idx) in resultList" :key="idx">
 												<td class="text-center">{{data.rowNum}}</td>
 												<td class="text-center">{{data.phone}}</td>
-												<td class="text-center end">{{data.pushCuid}}</td>
+												<td class="text-center">{{data.pushCuid}}</td>
+												<td class="text-center">{{data.gwResultCode}}</td>
+												<td class="text-center end">{{data.gwResultDesc}}</td>
 											</tr>
 											<tr v-if="resultList.length == 0">
-												<td class="text-center" colspan="3">검색된 내용이 없습니다.</td>
+												<td class="text-center" colspan="4">검색된 내용이 없습니다.</td>
 											</tr>
 										</tbody>
 									</table>
