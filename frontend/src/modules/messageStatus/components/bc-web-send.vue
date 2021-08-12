@@ -83,7 +83,7 @@
               <tbody>
                 <tr v-for="(data, idx) in datas" :key="idx">
                     <td>{{data.rowNum}}</td>
-                    <td class="text-center">{{data.corpName}}</td>
+                    <td class="text-center">{{data.userName}}</td>
                     <td class="text-center">{{data.senderCnt}}</td>
                     <td class="text-center">{{data.senderTypeNm}}</td>
 

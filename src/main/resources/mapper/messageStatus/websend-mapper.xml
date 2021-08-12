@@ -4,10 +4,10 @@
 <mapper namespace="webSend">
 
 	<sql id ="whereSelectWebSendList">
-		AND A.CORP_ID = #{corpId}
-		AND A.PROJECT_ID = #{projectId}
+		AND	A.CORP_ID = #{corpId}
+		AND	A.PROJECT_ID = #{projectId}
 		<if test="searchText != '' and searchText != null ">
-		
+		AND B.USER_NAME LIKE CONCAT('%', #{searchText}, '%')
 		</if>
 		<if test="searchStartDate != '' and searchStartDate != null ">
 			AND A.REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchStartDate}, ' 23:59:59')
@@ -37,8 +37,10 @@
 					END												AS SENDER_TYPE_NM /*발송타입명*/
 			,		A.SENDER_CNT
 			,		DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%s')		AS REG_DT /*발송일시*/
-			
+			,		B.USER_NAME
 			FROM cm_console.CM_WEB_MSG A
+			LEFT OUTER JOIN	cm_console.CM_USER B
+				ON	A.REG_ID = B.REG_ID
 			WHERE 1=1
 			<include refid="whereSelectWebSendList"/>
 			ORDER BY A.REG_DT
