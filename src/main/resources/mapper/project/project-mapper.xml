@@ -166,20 +166,6 @@
 		FROM	cm.CM_APIKEY
 	</select>
 	
-	<select id="selectProjectUseCnt" resultType="int">
-		/* project.selectProjectUseCnt */
-		SELECT
-		(
-			SELECT	COUNT(MSG_KEY) AS CNT
-			FROM	cm.CM_MSG
-			WHERE	PROJECT_ID = #{projectId}
-		) + (
-			SELECT	COUNT(WEB_REQ_ID) AS CNT
-			FROM	cm_console.CM_WEB_MSG
-			WHERE	PROJECT_ID = #{projectId}
-		) AS CNT
-	</select>
-	
 	<delete id="deleteProject">
 		/* project.deleteProject */
 		UPDATE	cm_console.CM_PROJECT
