@@ -79,19 +79,21 @@
           <table class="table_skin1 bt-000 tbl-striped">
             <colgroup>
                 <col style="width:5%">
-                <col style="width:15%">
-                <col style="width:15%">
-                <col style="width:15%">
-                <col style="width:15%">
-                <col style="width:15%">
                 <col style="width:10%">
                 <col style="width:10%">
+                <col style="width:10%">
+                <col style="width:10%">
+                <col style="width:8%">
+                <col style="width:8%">
+                <col style="width:8%">
+                <col style="width:5%">
             </colgroup>
             <thead>
               <tr>
                 <th class="text-center lc-1">No.</th>
                 <th class="text-center lc-1">수신자휴대폰</th>
                 <th class="text-center lc-1">Push로그인ID</th>
+                <th class="text-center lc-1">클라이언트키</th>
                 <th class="text-center lc-1">발송일시</th>
                 <th class="text-center lc-1">발송타입</th>
                 <th class="text-center lc-1">발송채널</th>
@@ -104,6 +106,7 @@
                   <td>{{data.rowNum}}</td>
                   <td class="text-center"><a href="javascript:void(0);" @click="fnDetailPop(idx)"><u>{{data.phoneNumber}}</u></a></td>
                   <td class="text-center">{{data.pushCuid}}</td>
+                  <td class="text-center">{{data.cliKey}}</td>
                   <td class="text-center">{{data.regDt}}</td>
                   <td class="text-center">{{data.senderTypeNm}}</td>
                   <td class="text-center">{{data.finalCh}}</td>

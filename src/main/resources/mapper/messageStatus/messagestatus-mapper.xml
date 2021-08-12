@@ -15,7 +15,7 @@
             </if>
         </if>
         <if test="searchStartDate != '' and searchStartDate != null ">
-            AND A.REQ_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchStartDate}, ' 23:59:59')
+            AND A.YMD BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchStartDate}, ' 23:59:59')
         </if>
         <if test='searchResultY and !searchResultN'>
         	AND A.GW_RESULT_CODE = '10000'
@@ -46,35 +46,43 @@
 		SELECT	AA.*
 		,		@rownum:=@rownum+1 AS ROW_NUM
 		FROM	(
-			SELECT A.YMD, A.MSG_KEY, A.CORP_ID, A.PROJECT_ID
-			, A.REQ_CH  /*채널구분*/
-			, DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%s') AS REG_DT /*발송일시*/
-			, A.SENDER_TYPE /*발송타입*/
-			, CASE WHEN A.SENDER_TYPE = 'C' THEN '개별방송'
-			       WHEN A.SENDER_TYPE = 'M' THEN '통합발송'
-			       WHEN A.SENDER_TYPE = 'S' THEN '스마트발송'
-			       END AS SENDER_TYPE_NM /*발송타입명*/
-			, A.GW_RESULT_CODE /*결과*/
-			, CASE WHEN A.GW_RESULT_CODE = '10000' THEN '성공'
-			       ELSE '실패'
-			       END AS GW_RESULT_NM  /*결과명*/
-			, A.PUSH_CUID /*push수신자ID
-			, B.CAMPAIGN_ID /*테그*/
-			, A.PHONE /*수신자전화번호*/
-			, CONCAT(SUBSTR(A.PHONE,1,3), '-',  SUBSTR(A.PHONE,4,4), '-', SUBSTR(A.PHONE,8,4)) AS PHONE_NUMBER
-			, '' AS MESSAGE
-			, A.FINAL_CH
-			FROM cm.CM_MSG A LEFT OUTER JOIN cm_console.CM_WEB_MSG B ON A.WEB_REQ_ID = B.WEB_REQ_ID
+			SELECT	A.YMD
+			,		A.MSG_KEY
+			,		A.CORP_ID
+			,		A.PROJECT_ID
+			,		A.REQ_CH  /*채널구분*/
+			,		DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%s') AS REG_DT /*발송일시*/
+			,		A.SENDER_TYPE /*발송타입*/
+			,		CASE
+						WHEN A.SENDER_TYPE = 'C' THEN '개별방송'
+						WHEN A.SENDER_TYPE = 'M' THEN '통합발송'
+						WHEN A.SENDER_TYPE = 'S' THEN '스마트발송'
+					END AS SENDER_TYPE_NM /*발송타입명*/
+			,		A.GW_RESULT_CODE /*결과*/
+			,		CASE
+						WHEN A.GW_RESULT_CODE = '10000' THEN '성공'
+						ELSE '실패'
+						END AS GW_RESULT_NM  /*결과명*/
+			,			A.PUSH_CUID /*push수신자ID
+			,			B.CAMPAIGN_ID /*테그*/
+			,			A.PHONE /*수신자전화번호*/
+			,			CONCAT(SUBSTR(A.PHONE,1,3), '-',  SUBSTR(A.PHONE,4,4), '-', SUBSTR(A.PHONE,8,4)) AS PHONE_NUMBER
+			,			'' AS MESSAGE
+			,			A.FINAL_CH
+			,			A.CLI_KEY
+			FROM	cm.CM_MSG A
+			LEFT OUTER JOIN	cm_console.CM_WEB_MSG B
+				ON A.WEB_REQ_ID = B.WEB_REQ_ID
 			WHERE	1=1
 			<include refid="whereSelectMessageStatusList"/>
 			ORDER BY A.REG_DT
 		) AA
 		, (SELECT @rownum:=0) TMP
 		ORDER BY ROW_NUM DESC
-        <if test='pagingYn == "Y" '>
-        LIMIT #{offset}, #{listSize}
-        </if>
-    </select>
+		<if test='pagingYn == "Y" '>
+		LIMIT #{offset}, #{listSize}
+		</if>
+	</select>
 
 	<select id="selectMessageStatusDetail" parameterType="hashmap" resultType="camel">
 	/* 메시지 현황 상세 조회 */

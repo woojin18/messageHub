@@ -97,7 +97,7 @@ export default {
     }
   },
   watch: {
-    projectId: function(newVal, oldVal) {
+    save_status: function(newVal, oldVal) {
 		this.fnGetApiKeyListForKko();
     }
   },

@@ -541,7 +541,7 @@
             END AS KKO_CH_ID
             , (SELECT X.CATEGORY_GRP_NAME FROM cm.CM_KKO_TMPLT_CAT X WHERE X.CATEGORY_CODE = A.TMPLT_CATEGORY_CODE LIMIT 1) AS CATEGORY_GRP_NAME
             , cm_console.fnc_get_cd_name('SENDER_KEY_TYPE', A.SENDER_KEY_TYPE, 1) AS SENDER_KEY_TYPE_NAME
-            , cm_console.fnc_get_cd_name('TMPLT_STAT_CODE', A.TMPLT_STAT_CODE, 1) AS TMPLT_STAT_CODE_NAME
+            , cm_console.fnc_get_cd_name('TMPLT_STAT_CODE', A.TMPLT_STAT_CODE, 2) AS TMPLT_STAT_CODE_NAME
             , @ROWNUM := @ROWNUM + 1 AS ROWNUM
         FROM (
             SELECT
@@ -560,7 +560,7 @@
                 , CKTR.TMPLT_REQ_DT
                 , CKTR.TMPLT_INFO
                 , CKTR.REASON
-                , DATE_FORMAT(CKTR.UPD_DT, '%Y.%m.%d') AS UPD_DT
+                , DATE_FORMAT(CKTR.UPD_DT, '%Y-%m-%d %H:%i:%S') AS UPD_DT
                 , CKTR.APPROVAL_DT
                 , CASE
                     WHEN JSON_CONTAINS(JSON_EXTRACT(TMPLT_INFO, CONCAT('$.comments[*].status')), JSON_ARRAY('REJ'), '$') > 0 THEN 'Y'

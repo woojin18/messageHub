@@ -471,6 +471,7 @@ public class SendMessageService {
         params.put("status", status);
         params.put("resvSenderYn", rsrvSendYn);
         params.put("reqDt", rsrvDateStr);
+        params.put("userId", CommonUtils.getStrValue(data, "userId"));
 
         int resultCnt = insertCmWebMsg(params);
 
@@ -847,6 +848,7 @@ public class SendMessageService {
         params.put("status", status);
         params.put("resvSenderYn", rsrvSendYn);
         params.put("reqDt", rsrvDateStr);
+        params.put("userId", CommonUtils.getStrValue(data, "userId"));
 
         int resultCnt = insertCmWebMsg(params);
 
@@ -1071,6 +1073,7 @@ public class SendMessageService {
         params.put("status", status);
         params.put("resvSenderYn", rsrvSendYn);
         params.put("reqDt", rsrvDateStr);
+        params.put("userId", CommonUtils.getStrValue(data, "userId"));
 
         int resultCnt = insertCmWebMsg(params);
 
@@ -1494,6 +1497,7 @@ public class SendMessageService {
         params.put("status", status);
         params.put("resvSenderYn", rsrvSendYn);
         params.put("reqDt", rsrvDateStr);
+        params.put("userId", CommonUtils.getStrValue(data, "userId"));
 
         int resultCnt = insertCmWebMsg(params);
 
@@ -1847,6 +1851,7 @@ public class SendMessageService {
         params.put("status", status);
         params.put("resvSenderYn", rsrvSendYn);
         params.put("reqDt", rsrvDateStr);
+        params.put("userId", CommonUtils.getStrValue(data, "userId"));
 
         int resultCnt = insertCmWebMsg(params);
         if (resultCnt <= 0) {
@@ -2131,6 +2136,7 @@ public class SendMessageService {
         params.put("status", status);
         params.put("resvSenderYn", rsrvSendYn);
         params.put("reqDt", rsrvDateStr);
+        params.put("userId", CommonUtils.getStrValue(data, "userId"));
 
         int resultCnt = insertCmWebMsg(params);
         if (resultCnt <= 0) {

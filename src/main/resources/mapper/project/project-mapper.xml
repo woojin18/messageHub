@@ -128,16 +128,14 @@
 		WHERE	PROJECT_ID = #{projectId}
 	</update>
 	
-	<select id="selectProjectOwnerUser" resultType="hashMap">
+	<select id="selectProjectOwnerUser" resultType="camel">
 		/* project.selectProjectOwnerUser */
 		SELECT * 
 		FROM cm_console.CM_CORP CC
 		INNER JOIN cm_console.CM_USER CU 
 			ON CC.CORP_ID  = CU.CORP_ID 
-		INNER JOIN cm_bo.CM_USER_ROLE CUR 
-			ON CU.USER_ID  = CUR.USER_ID 
 		WHERE	CC.CORP_ID = #{corpId}
-		AND		CUR.ROLE_CD = 'OWNER'
+		AND		CU.ROLE_CD = 'OWNER'
 	</select>
 	
 	<insert id="insertProjectUser">
@@ -164,20 +162,6 @@
 		/* project.selectApikeyMaxId */
 		SELECT	IFNULL(MAX(API_KEY),0) + 1 AS api_max_id
 		FROM	cm.CM_APIKEY
-	</select>
-	
-	<select id="selectProjectUseCnt" resultType="int">
-		/* project.selectProjectUseCnt */
-		SELECT
-		(
-			SELECT	COUNT(MSG_KEY) AS CNT
-			FROM	cm.CM_MSG
-			WHERE	PROJECT_ID = #{projectId}
-		) + (
-			SELECT	COUNT(WEB_REQ_ID) AS CNT
-			FROM	cm_console.CM_WEB_MSG
-			WHERE	PROJECT_ID = #{projectId}
-		) AS CNT
 	</select>
 	
 	<delete id="deleteProject">
