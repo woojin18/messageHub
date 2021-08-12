@@ -7,27 +7,13 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="menuBox">
-        <!-- <div class="of_h">
-          <div class="inline-block" style="width:8%"><h4>발송일자</h4></div>
-          <div class="inline-block" style="width:91%">
-            <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate"></Calendar>
-            <span style="padding:0 11px">~</span>
-            <Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchEndDate"></Calendar>
-            <ul class="tab_s2 ml20">
-                <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 등록일자 검색">오늘</a></li>
-                <li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 등록일자 검색">1주일</a></li>
-                <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
-                <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
-            </ul>
-          </div>
-        </div> -->
         <div class="of_h">
           <div class="inline-block" style="width:8%; vertical-align: middle;"><h4>발송일자</h4></div>
           <Calendar @update-date="fnUpdateStartDate2" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" @change="fnSearch(1)"></Calendar>
           <ul class="tab_s2 ml20">
               <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 등록일자 검색">오늘</a></li>
           </ul>
-          <div class="inline-block ml60" style="width:8%; vertical-align: middle;"><h4>발송자ID</h4></div>
+          <div class="inline-block ml60" style="width:8%; vertical-align: middle;"><h4>발송자명</h4></div>
           <div class="inline-block" style="width:50%">
             <input type="text" class="inputStyle vertical-top" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="수신자정보" @keypress.enter="fnSearch(1)">
           </div>
@@ -64,20 +50,21 @@
                 <col style="width:5%">
                 <col>
                 <col style="width:9%">
-                <col style="width:13%">
-                <col style="width:5%">
-                <col style="width:5%">
-                <col style="width:5%">
-                <col style="width:5%">
-                <col style="width:5%">
+                <col style="width:10%">
+                
                 <col style="width:8%">
+                <col style="width:8%">
+                <col style="width:8%">
+                <col style="width:8%">
+                <col style="width:8%">
+                <col style="width:120px">
                 
                 <col style="width:13%">
               </colgroup>
               <thead>
                 <tr>								
                   <th class="text-center lc-1" rowspan="2">No.</th>
-                  <th class="text-center lc-1" rowspan="2">발송자</th>
+                  <th class="text-center lc-1" rowspan="2">발송자명</th>
                   <th class="text-center lc-1" rowspan="2">전체발송수</th>
                   <th class="text-center lc-1" rowspan="2">발송타입</th>
                   <th class="text-center lc-1" colspan="5" style="border-bottom:1px solid #d5d5d5 !important">발송 채널</th>
@@ -106,7 +93,7 @@
                     <td class="text-center">{{data.friendTalk}}</td>
                     <td class="text-center">{{data.sms}}</td>
 
-                    <td class="text-center"><a href="javascript:void(0);" @click="fnDetailPop(idx)"><u>{{data.sendFailCnt}}</u></a></td>
+                    <td class="text-center"><a class="btnStyle3 gray" @click="fnDetailPop(idx)"> 발송실패확인 </a></td>
                     <td class="text-center end">{{data.regDt}}</td>
                 </tr>
                 <tr v-if="datas.length == 0">
