@@ -128,16 +128,14 @@
 		WHERE	PROJECT_ID = #{projectId}
 	</update>
 	
-	<select id="selectProjectOwnerUser" resultType="hashMap">
+	<select id="selectProjectOwnerUser" resultType="camel">
 		/* project.selectProjectOwnerUser */
 		SELECT * 
 		FROM cm_console.CM_CORP CC
 		INNER JOIN cm_console.CM_USER CU 
 			ON CC.CORP_ID  = CU.CORP_ID 
-		INNER JOIN cm_bo.CM_USER_ROLE CUR 
-			ON CU.USER_ID  = CUR.USER_ID 
 		WHERE	CC.CORP_ID = #{corpId}
-		AND		CUR.ROLE_CD = 'OWNER'
+		AND		CU.ROLE_CD = 'OWNER'
 	</select>
 	
 	<insert id="insertProjectUser">

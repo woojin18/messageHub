@@ -217,11 +217,20 @@ public class ProjectService {
 
 			// -------------------------------------------------------------------------------------------------------------------------------------
 			// 프로젝트 멤버 추가 처리
-			// 사용자 세션의 권한을 체크해서 OWNER 일경우 OWNER 유저 입력 처리 안하도록 처리 
+			// 사용자 세션의 권한을 체크해서 OWNER가 아닐 경우 OWNER 사용자는 추가되도록 처리 
 			if( !"OWNER".equals(params.get("ROLE_CD")) ) {
-				// 사용자 기본 멤버로 추가
-				generalDao.insertGernal("project.insertProjectUser", params);
-			}
+				// OWNER 사용자 기본 멤버로 추가
+				List<Object> ownerList = generalDao.selectGernalList("project.selectProjectOwnerUser", params);
+				
+				for(int j = 0; j < ownerList.size(); j++) {
+					Map<String, Object> ownerMap = (Map<String, Object>) ownerList.get(j);
+					ownerMap.put("projectId", params.get("projectId"));
+					ownerMap.put("corpId", params.get("corpId"));
+					ownerMap.put("userId", ownerMap.get("userId"));
+					generalDao.insertGernal("project.insertProjectUser", ownerMap);
+				}
+			} 
+			generalDao.insertGernal("project.insertProjectUser", params);
 			// -------------------------------------------------------------------------------------------------------------------------------------
 			
 		} else if ("U".equals(sts)) {
