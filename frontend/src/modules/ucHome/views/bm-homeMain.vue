@@ -232,6 +232,7 @@ export default {
 		console.log('created HomeMain');
 	},
 	mounted() {
+		this.fnInit();
 		this.fnSetIntervalSearchDate(this.searchDateInterval);
 		this.fnGetProjectInfo();
 		this.fnGetNoticeList();
@@ -239,6 +240,27 @@ export default {
 		this.fnGetRtUsedTimeLineList();
 	},
 	methods: {
+		fnInit() {
+			var svcTypeCd = tokenSvc.getToken().principal.svcTypeCd;
+			if (svcTypeCd == 'AC') {
+				console.log("AC start");
+				let params = {
+					userId: tokenSvc.getToken().principal.userId
+				};
+
+				homeApi.selectProjectList(params).then(response =>{
+					var result = response.data;
+					if (result.success) {
+						if (result.data.length == 0) {
+							alert("참여되어 있는 프로젝트가 없습니다.");
+							this.$router.replace("/ac/home");
+						}
+					} else {
+						confirm.fnAlert(this.componentsTitle, result.message);
+					}
+				});
+			}
+		},
 		fnGetProjectInfo() {
 			let params = {
 				projectId: utils.getCookie(consts.projectId),

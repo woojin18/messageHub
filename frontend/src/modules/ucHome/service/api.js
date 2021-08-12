@@ -8,6 +8,10 @@ const selectProjectInfo = (params) => {
 	return httpClient.post('/api/home/selectProjectInfo', params, { headers: { "show-layer": "Yes" } });
 };
 
+const selectProjectList = (params) => {
+	return httpClient.post('/api/home/selectProjectList', params, { headers: { "show-layer": "Yes" } });
+};
+
 const selectNoticeList = (params) => {
 	return httpClient.post('/api/home/selectNoticeList', params, { headers: { "show-layer": "Yes" } });
 };
@@ -35,6 +39,7 @@ const selectRtUsedDataList = (params) => {
 export default {
 	logout,
 	selectProjectInfo,
+	selectProjectList,
 	selectNoticeList,
 	selectChTotCntInfo,
 	selectChSuccFailCntList,

@@ -142,6 +142,9 @@ export default {
 						case 'SE_INTERNAL': // 최근 접속일시 업데이트 실패
 							msg = '데이터베이스와 통신에 실패하였습니다.';
 							break;
+						case 'SS_NOT_PROJECT': // 참여 프로젝트 없음
+							msg = '참여되어 있는 프로젝트가 존재하지 않습니다.';
+							break;
 						default:
 							vm.errmsg = '인증에 실패했습니다.';
 					}

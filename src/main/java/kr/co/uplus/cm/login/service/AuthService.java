@@ -117,6 +117,13 @@ public class AuthService implements UserDetailsService {
 			return new RestResult<String>(false).setCode(resultCode);
 		}
 
+		AuthUser user = (AuthUser) authentication.getPrincipal();
+		if ("UC".equals(user.getSvcTypeCd())) {
+			if ("".equals(user.getRepProjectId()) || user.getRepProjectId() == null) {
+				return new RestResult<String>(false).setCode(ResultCode.SS_NOT_PROJECT);
+			}
+		}
+
 		ResultCode rcode = loginSuccessHandler.process(request, response, authentication);
 		jwtSvc.generatePrivateToken(response, authentication);
 

@@ -8,6 +8,7 @@ public enum ResultCode {
 	, SS_NOT_USE						("20000101", "중지 계정")
 	, SS_LOCK							("20000102", "잠김 계정")
 	, SS_NOT_AUTH					("20000103", "미인증 계정")
+	, SS_NOT_PROJECT				("20000104", "참여 프로젝트 없음")
 //	, SS_PWD_EXPIRE					("20000103", "비밀번호 만료")
 //	, SS_INIT_PWD						("20000104", "최초 비밀번호 변경 필요")
 	, SS_XLS_LIMIT					("20000206", "최대 엑셀 rows 초과")
