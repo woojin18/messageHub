@@ -560,7 +560,7 @@
                 , CKTR.TMPLT_REQ_DT
                 , CKTR.TMPLT_INFO
                 , CKTR.REASON
-                , DATE_FORMAT(CKTR.UPD_DT, '%Y.%m.%d') AS UPD_DT
+                , DATE_FORMAT(CKTR.UPD_DT, '%Y-%m-%d %H:%i:%S') AS UPD_DT
                 , CKTR.APPROVAL_DT
                 , CASE
                     WHEN JSON_CONTAINS(JSON_EXTRACT(TMPLT_INFO, CONCAT('$.comments[*].status')), JSON_ARRAY('REJ'), '$') > 0 THEN 'Y'
