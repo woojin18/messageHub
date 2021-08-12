@@ -88,6 +88,7 @@ export default [
     {
         path: '/uc/template/multiSendTemplateManage',
         name: 'multiSendTemplateManage',
+        meta: {menu: 'UC_INTG_TPL'},
         component: multiSendTemplateManage,
         props: true
     }
