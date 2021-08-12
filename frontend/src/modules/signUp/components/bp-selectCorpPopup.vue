@@ -9,24 +9,24 @@
                         <div style="height:450px; overflow:auto;">
                             <table class="table_skin1 bt-000" id="selCorpTbl">
                                 <colgroup>
-									<col style="width:20%">
-									<col style="width:25%">
-									<col style="width:25%">
-									<col style="width:*%">
+									<!-- <col style="width:20%"> -->
+									<col style="width:50%">
+									<!-- <col style="width:25%"> -->
+									<col style="width:50%">
 								</colgroup>
 								<thead>
 									<tr>
-                                        <th class="text-center lc-1">고객번호</th>
+                                        <!-- <th class="text-center lc-1">고객번호</th> -->
                                         <th class="text-center lc-1">고객명</th>
-                                        <th class="text-center lc-1">고객식별번호</th>
+                                        <!-- <th class="text-center lc-1">고객식별번호</th> -->
                                         <th class="text-center lc-1">사업회사명</th>
 									</tr>
 								</thead>
 								<tbody>
-                                    <tr v-for="(row, idx) in data" :key="idx" @click="fnSelectCorpInfo(row)" :class="index == idx ? 'selected' : ''" @dblclick="fnSelRow(row)">
-                                        <td>{{ row.custNo }}</td>
+                                    <tr v-for="(row, idx) in data" :key="idx" @click="fnSelectCorpInfo(row,idx)" :class="index == idx ? 'selected' : ''" @dblclick="fnSelRow(row)">
+                                        <!-- <td>{{ row.custNo }}</td> -->
                                         <td>{{ row.custNm }}</td>
-                                        <td>{{ row.custrnmNo }}</td>
+                                        <!-- <td>{{ row.custrnmNo }}</td> -->
                                         <td>{{ row.bizCompNm }}</td>
                                     </tr>
                                 </tbody>
@@ -82,8 +82,9 @@ export default {
         fnCloseLayer(){
             jQuery("#chkCorpPopup").modal("hide");
         },
-        fnSelectCorpInfo(rowData){
+        fnSelectCorpInfo(rowData,idx){
             this.selRowData = rowData;
+            this.index = idx;
         },
         fnSelRow(rowData){
             if(rowData.custNo != undefined && rowData.custNo != null && rowData.custNo != ""){
@@ -132,3 +133,6 @@ export default {
     }
 }
 </script>
+<style>
+.table_skin1 tr.selected td{background-color:#b0bed9}
+</style>
