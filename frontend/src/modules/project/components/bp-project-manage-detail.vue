@@ -272,7 +272,7 @@ export default {
           "radioKko"       : jQuery("input[name='radioKko']:checked").val(),
           "radioMo"        : jQuery("input[name='radioMo']:checked").val(),
           "sts"             : this.save_status,
-          "userDto"         : tokenSvc.getToken().principal    
+          "userDto"         : tokenSvc.getToken().principal
       };
 
       projectApi.saveProject(params).then(response =>{

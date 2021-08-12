@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -100,7 +102,7 @@ public class ProjectService {
 	// 프로젝트 저장
 	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-	public void saveProject(Map<String, Object> params) throws Exception {
+	public void saveProject(HttpServletRequest request, Map<String, Object> params) throws Exception {
 		// 저장 상태값
 		String sts = CommonUtils.getString(params.get("sts"));
 		// 사용자 세션
@@ -218,7 +220,10 @@ public class ProjectService {
 			// -------------------------------------------------------------------------------------------------------------------------------------
 			// 프로젝트 멤버 추가 처리
 			// 사용자 세션의 권한을 체크해서 OWNER가 아닐 경우 OWNER 사용자는 추가되도록 처리 
-			if( !"OWNER".equals(params.get("ROLE_CD")) ) {
+			
+			System.out.println("jameskang ROLE_CD : "+ request.getHeader("roleCd"));
+			
+			if( !"OWNER".equals(request.getHeader("roleCd"))) {
 				// OWNER 사용자 기본 멤버로 추가
 				List<Object> ownerList = generalDao.selectGernalList("project.selectProjectOwnerUser", params);
 				
