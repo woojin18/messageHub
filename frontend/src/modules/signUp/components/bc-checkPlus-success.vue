@@ -121,6 +121,7 @@ export default {
                     window.opener.document.getElementById("phoneCerti").value = this.sMobileNo;
                     window.opener.document.getElementById("gender").value = this.sGender;
                     window.opener.document.getElementById("coInfo").value = this.sConnInfo;
+                    window.opener.document.getElementById("userNm").value = this.sName;
                     window.opener.document.getElementById('nice').click();
                     self.close();
                 } else {

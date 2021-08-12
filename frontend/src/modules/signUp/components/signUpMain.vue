@@ -15,7 +15,7 @@
 				<div class="of_h">
 					<div class="float-left" style="width:22%"><h5>이름</h5></div>
 					<div class="float-left" style="width:78%">
-						<input type="text" class="inputStyle" placeholder="사용자명" v-model="userNm">
+						<input type="text" class="inputStyle" id="userNm" placeholder="휴대폰 인증 후 자동 입력됩니다." v-model="userNm" disabled>
 					</div>
 				</div>
 
@@ -579,6 +579,7 @@ export default {
 			this.phoneCerti = jQuery("#phoneCerti").val();
 			this.gender = jQuery("#gender").val();
 			this.coInfo = jQuery("#coInfo").val();
+			this.userNm = jQuery("#userNm").val();
 			this.phoneCertiChk = true;
 		},
 		// 주소 조회 팝업

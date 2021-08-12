@@ -128,6 +128,11 @@ export default {
 				confirm.fnAlert("", "인증메일 발송을 위한 email을 입력해 주세요.");
 				return false;
 			} else {
+				var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+				if(!regExp.test(this.email)) {
+					confirm.fnAlert(this.componentsTitle, '입력한 이메일 형식이 올바르지 않습니다.');
+					return false;
+				}
 				return true;
 			}
 		},
