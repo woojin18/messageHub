@@ -242,7 +242,7 @@
         <if test="reqDt != null and reqDt != '' ">
             , DATE_FORMAT(#{reqDt}, '%Y-%m-%d %H:%i')
         </if>
-            , #{regId}
+            , #{userId}
            )
     </insert>
 
