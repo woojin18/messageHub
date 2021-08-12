@@ -15,8 +15,8 @@
 				<div class="col-xs-12">
 					<div class="menuBox">
 						<div>
-							<select name="userConsole_sub040201_1" class="selectStyle2 mr10" style="width:15%" title="RCS 템플릿 선택란" v-model="status">
-								<option value="">전체</option>
+							<select name="userConsole_sub040201_1" @change="fnSearch()" class="selectStyle2 mr10" style="width:15%" title="RCS 템플릿 선택란" v-model="status">
+								<option value="">상태</option>
                 				<option value="저장">저장</option>
                 				<option value="승인대기">승인대기</option>
                 				<option value="검수시작">검수시작</option>
@@ -28,6 +28,9 @@
                 				<option value="반려(수정)">반려(수정)</option>
                 				<option value="검수완료(수정)">검수완료(수정)</option>
 							</select>
+							
+						</div>	
+						<div class="of_h consolMarginTop">
 							<select name="userConsole_sub040201_2" class="selectStyle2 " style="width:15%" title="RCS 템플릿 선택란" v-model="searchTag">
 								<option value="temNm">템플릿명</option>
                 				<option value="temId">템플릿ID</option>
@@ -35,12 +38,18 @@
 							</select>
 							<input type="text" class="inputStyle vertical-top ml10" style="width:30%" title="검색조건 입력란" v-model="inputTag">
 							<a href="#self" @click.prevent="fnSearch()" class="btnStyle1 float-right" title="검색">검색</a>	
-						</div>					
+						</div>				
 					</div>
 				</div>				
 			</div>
 			
-			<div class="of_h mt20">
+			<div class="of_h mt20 mb20">
+			 <!-- 15개씩 보기 -->
+				<div class="of_h inline">
+					<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+						<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
+					</div>
+				</div>
 				<div class="float-right">
 					<a href="#" class="btnStyle2 backBlack" @click.prevent="templateInsert">템플릿 등록</a>
 				</div>
@@ -48,13 +57,6 @@
 
 			<div class="row">
 				<div class="col-xs-12">
-        			  <!-- 15개씩 보기 -->
-		  			<div class="of_h inline">
-						<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
-							<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
-						</div>
-					</div>
-
 					<table class="table_skin1 bt-000 tbl-striped">
 						<colgroup>
 							<col style="width:5%">
@@ -66,7 +68,7 @@
 							<col style="width:10%">
 							<col style="width:8%">
 							<col style="width:10%">
-              				<col style="width:9%">
+              				<col style="width:12%">
 						</colgroup>
 						<thead>
 							<tr>							
