@@ -22,8 +22,9 @@
 			USER.REG_DT,
 			USER.UPD_DT,
 			CASE
-				WHEN USER.APPROVAL_STATUS = 'Y' THEN 'USE'
-				WHEN IFNULL(USER.LOGIN_FAIL_CNT, 0) > 5 THEN 'LOCK'
+				WHEN USER.APPROVAL_STATUS = 'Y' AND IFNULL(USER.LOGIN_FAIL_CNT, 0) <![CDATA[<]]> 5 THEN 'USE'
+				WHEN USER.APPROVAL_STATUS = 'ING' THEN 'NOTAUTH'
+				WHEN IFNULL(USER.LOGIN_FAIL_CNT, 0) <![CDATA[>=]]> 5 THEN 'LOCK'
 				ELSE 'NOTUSE'
 			END	AS STATUS,
 			ROLE.ROLE_CD	AS ROLE,
@@ -139,8 +140,7 @@
 		,		APPROVAL_STATUS = 'Y'
 		WHERE	LOGIN_ID = #{loginId}
 	</update>
-	
-	
+
 	<select id="findLoginId" resultType="camel">
 		/* login.findLoginId */
 		SELECT	LOGIN_ID
@@ -149,4 +149,23 @@
 		AND		HP_NUMBER = #{findHpNumber}
 		AND		DEL_YN = 'N'
 	</select>
+
+	<update id="updateRecentConnDt">
+		/* login.updateRecentConnDt */
+		UPDATE	cm_console.CM_USER
+		SET
+			RECENT_CONN_DT = NOW(),
+			LOGIN_FAIL_CNT = 0,
+			APPROVAL_STATUS = 'Y'
+		WHERE	LOGIN_ID = #{userId}
+	</update>
+
+	<update id="updateLoginFailCnt">
+		/* login.updateLoginFailCnt */
+		UPDATE cm_console.CM_USER
+		SET
+			LOGIN_FAIL_CNT = IFNULL(LOGIN_FAIL_CNT, 0)+1
+		WHERE	LOGIN_ID = #{userId}
+	</update>
+
 </mapper>

@@ -41,7 +41,6 @@ import kr.co.uplus.cm.common.jwt.JwtService;
 import kr.co.uplus.cm.common.model.AuthUser;
 import kr.co.uplus.cm.common.model.PublicToken;
 import kr.co.uplus.cm.common.utils.SpringUtils;
-import kr.co.uplus.cm.signUp.service.SignUpService;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
@@ -103,11 +102,18 @@ public class AuthService implements UserDetailsService {
 			userPwd = (String) params.get("userPwd");
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userId, userPwd);
 			authentication = authManager.authenticate(token);
-
-		} catch (AuthenticationException e) {
+		} catch (AuthenticationException ae) {
 			request.setAttribute(SecurityConfig.LOGIN_ID_PARAM, userId);
-			ResultCode resultCode = loginFailureHandler.process(request, response, e);
+			ResultCode resultCode = loginFailureHandler.process(request, response, ae);
 
+			if (ResultCode.CE_ID_PWD.equals(resultCode)) {
+				try {
+					// 로그인 실패 카운트 update
+					generalDao.updateGernal(DB.QRY_UPDATE_LOGIN_FAIL_CNT, params);
+				} catch (Exception e) {
+					return new RestResult<String>(false).setCode(ResultCode.SE_INTERNAL);
+				}
+			}
 			return new RestResult<String>(false).setCode(resultCode);
 		}
 
@@ -117,8 +123,16 @@ public class AuthService implements UserDetailsService {
 		String nextUrl = getReturnUrl(request, response);
 		log.debug("login success - nextUrl = [{}]", nextUrl);
 
-		if (rcode != ResultCode.SUCCESS)
+		if (rcode != ResultCode.SUCCESS) {
 			return new RestResult<String>(false).setCode(rcode);
+		} else {
+			try {
+				// 최근 접속일시 update
+				generalDao.updateGernal(DB.QRY_UPDATE_RECENT_CONN_DT, params);
+			} catch (Exception e) {
+				return new RestResult<String>(false).setCode(ResultCode.SE_INTERNAL);
+			}
+		}
 
 		return new RestResult<String>().setData(nextUrl);
 	}

@@ -34,6 +34,7 @@
 
 <script>
 import loginApi from '@/modules/login/service/api';
+import confirm from '@/modules/commonUtil/service/confirm';
 import * as utils from '@/common/utils';
 
 export default {
@@ -113,8 +114,14 @@ export default {
 					switch (rsp.code) {
 						case 'CE_ID_PWD': // ID/PWD 불일치
 							vm.errors.push('로그인 실패하였습니다. (5회 실패 시 계정 잠김)');
+							msg = '로그인 실패하였습니다.';
+							break;
+						case 'SS_NOT_AUTH': // 미인증 계정
+							msg = 'Email 인증 후 이용할 수 있습니다.';
 							break;
 						case 'SS_NOT_USE': // 중지 계정
+							msg = '관리자 승인 후 이용할 수 있습니다.';
+							break;
 						case 'SS_LOCK': // 잠김 계정
 							msg = '관리자 승인 후 이용할 수 있습니다.';
 							break;
@@ -132,12 +139,15 @@ export default {
 						case 'CE_TO_LOCK': // ID/PWD 불일치 횟수초과로 계정 잠김
 							msg = '5회 이상 로그인 실패하여 해당 아이디에 대한 계정이 잠금처리되었습니다.\n관리자에게 문의하세요.';
 							break;
+						case 'SE_INTERNAL': // 최근 접속일시 업데이트 실패
+							msg = '데이터베이스와 통신에 실패하였습니다.';
+							break;
 						default:
 							vm.errmsg = '인증에 실패했습니다.';
 					}
 
 					if (msg != null) {
-						alert(msg);
+						confirm.fnAlert('', msg);
 						if (next != null) {
 							next();
 						}

@@ -39,6 +39,8 @@ public class DB {
 	public final static String QRY_SELECT_USERNAME = "login.qrySelectUserName";
 	public final static String QRY_INSERT_USERNAME = "login.qryInsertAuthUser";
 	public final static String QRY_UPDATE_USER_PASSWORD = "login.updatePassword";
+	public final static String QRY_UPDATE_RECENT_CONN_DT = "login.updateRecentConnDt";
+	public final static String QRY_UPDATE_LOGIN_FAIL_CNT = "login.updateLoginFailCnt";
 	// 푸시 템플릿
 	public final static String QRY_SELECT_PUSH_TMPLT_LIST_CNT = "template.selectPushTemplateListCnt";
 	public final static String QRY_SELECT_PUSH_TMPLT_LIST = "template.selectPushTemplateList";

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -40,7 +41,9 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 		} else if (exception instanceof DisabledException) {
 			resultCode = ResultCode.SS_NOT_USE;
 		} else if (exception instanceof LockedException) {
-			resultCode = ResultCode.SS_LOCK;
+			resultCode = ResultCode.CE_TO_LOCK;
+		} else if (exception instanceof InternalAuthenticationServiceException) {
+			resultCode = ResultCode.SS_NOT_AUTH;
 		}
 
 		return resultCode;
