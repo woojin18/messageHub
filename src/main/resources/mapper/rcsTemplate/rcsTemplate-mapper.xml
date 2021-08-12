@@ -135,7 +135,7 @@
 	<select id="selectRcsMsgbaseformList" resultType="hashMap">
 		/* rcsTemplate.selectRcsMsgbaseformList */
 		SELECT	MESSAGEBASEFORM_ID
-		,		FORM_NAME
+		,		BIZ_SERVICE AS FORM_NAME
 		FROM	cm.CM_RCS_MSGBASEFORM
 		WHERE	CARD_TYPE = #{cardType}
 	</select>
