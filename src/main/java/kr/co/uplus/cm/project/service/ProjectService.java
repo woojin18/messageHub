@@ -240,9 +240,9 @@ public class ProjectService {
 			
 			generalDao.updateGernal("project.updateProject", params);
 		} else if ("D".equals(sts)) {
-			// 테이블 이력 조회 CM_MSG, CM_WEB_MSG
-			int projectUseCnt = Integer.parseInt(
-					CommonUtils.getString(generalDao.selectGernalCount("project.selectProjectUseCnt", params)));
+			// 테이블 이력조회 ->> CM_MSG, CM_WEB_MSG에서 API KEY 숫자로 변경
+			int projectUseCnt = generalDao.selectGernalList("baseInfo.selectApiKeyList", params).size();
+			
 
 			if (projectUseCnt == 0) {
 				generalDao.deleteGernal("project.deleteProject", params);
