@@ -25,6 +25,7 @@ public class AuthUser implements UserDetails {
 	private String repProjectId; // 대표프로젝트ID
 	private String currentProjectId;
 	private String bizType; // 특수사업자 유형
+	private int diffDate; // 현재날짜 - 패스워드 변경일시
 
 	public String getPassword() {
 		return userPwd;

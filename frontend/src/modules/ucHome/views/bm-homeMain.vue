@@ -243,7 +243,6 @@ export default {
 		fnInit() {
 			var svcTypeCd = tokenSvc.getToken().principal.svcTypeCd;
 			if (svcTypeCd == 'AC') {
-				console.log("AC start");
 				let params = {
 					userId: tokenSvc.getToken().principal.userId
 				};

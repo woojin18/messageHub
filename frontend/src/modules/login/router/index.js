@@ -3,6 +3,7 @@ import findUserId from '../views/bm-findUserId'
 import findUserPwd from '../views/bm-findUserPwd'
 import setUserPwd from '../views/bm-setUserPwd'
 import chkCertifyFail from '../views/bm-chkCertifyFail'
+import resetUserPwd from '../views/bm-resetUserPwd'
 
 export default [
 	{
@@ -34,5 +35,11 @@ export default [
 		name: 'chkCertifyFail',
 		component: chkCertifyFail,
 		meta: { public: true }
-	}
+	},
+	{
+		path: '/login/resetUserPwd',
+		name: 'resetUserPwd',
+		component: resetUserPwd,
+		meta: { public: true }
+	},
 ]

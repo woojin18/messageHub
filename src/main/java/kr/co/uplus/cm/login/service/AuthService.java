@@ -118,6 +118,7 @@ public class AuthService implements UserDetailsService {
 		}
 
 		AuthUser user = (AuthUser) authentication.getPrincipal();
+		int diffDate = user.getDiffDate();
 		if ("UC".equals(user.getSvcTypeCd())) {
 			if ("".equals(user.getRepProjectId()) || user.getRepProjectId() == null) {
 				return new RestResult<String>(false).setCode(ResultCode.SS_NOT_PROJECT);
@@ -127,7 +128,7 @@ public class AuthService implements UserDetailsService {
 		ResultCode rcode = loginSuccessHandler.process(request, response, authentication);
 		jwtSvc.generatePrivateToken(response, authentication);
 
-		String nextUrl = getReturnUrl(request, response);
+		String nextUrl = getReturnUrl(request, response, diffDate);
 		log.debug("login success - nextUrl = [{}]", nextUrl);
 
 		if (rcode != ResultCode.SUCCESS) {
@@ -186,7 +187,7 @@ public class AuthService implements UserDetailsService {
 	/**
 	 * 로그인 전에 요청했던 URL 반환
 	 */
-	private String getReturnUrl(HttpServletRequest request, HttpServletResponse response) {
+	private String getReturnUrl(HttpServletRequest request, HttpServletResponse response, int diffDate) {
 		RequestCache requestCache = new HttpSessionRequestCache();
 		String resultUrl = "";
 
@@ -198,6 +199,9 @@ public class AuthService implements UserDetailsService {
 				resultUrl = SecurityConfig.LOGIN_SUCC_AC_URL;
 			} else if (SecurityConfig.UC_SVC_TP_CD.equals(user.getSvcTypeCd())) {
 				resultUrl = SecurityConfig.LOGIN_SUCC_UC_URL;
+			}
+			if (diffDate > 90) {
+				resultUrl = SecurityConfig.LOGIN_RESET_PWD_URL;
 			}
 			return resultUrl;
 		}
