@@ -295,13 +295,24 @@ export default {
       await commonApi.selectCodeList(params).then(response =>{
         const result = response.data;
         if(result.success) {
-          const vm = this;
           this.tmpltStatCodeList = [];
-          result.data.forEach(function(codeInfo){
-            if(codeInfo.codeVal1 != 'D'){
-              vm.tmpltStatCodeList.push(codeInfo);
-            }
-          });
+          let tempStatCodeList = result.data
+            //R-검수중(롯데), Q-검수중(카카오) => (업체) 제거 요청
+            .map((code) => {
+              let codeVal = code.codeVal1;
+              let codeName = code.codeName1;
+              if(codeVal === 'R' || codeVal === 'Q'){
+                codeVal = 'RQ';
+                codeName = '검수중'
+              }
+              return { ...code, codeVal1: codeVal, codeName1: codeName };
+            })
+            //D-삭제 미노출 및 R-검수중(롯데), Q-검수중(카카오) 검수중 중복제거
+            .filter((code, idx, callback) => {
+              return code.codeVal1 !== 'D' && idx === callback.findIndex(t => t.codeVal1 === code.codeVal1)
+            });
+
+          this.tmpltStatCodeList = Object.assign([], tempStatCodeList);
           this.fnSearchtmpltStatCodeChkAll();
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
