@@ -15,7 +15,7 @@
             </if>
         </if>
         <if test="searchStartDate != '' and searchStartDate != null ">
-            AND A.REQ_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchStartDate}, ' 23:59:59')
+            AND A.YMD BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchStartDate}, ' 23:59:59')
         </if>
         <if test='searchResultY and !searchResultN'>
         	AND A.GW_RESULT_CODE = '10000'

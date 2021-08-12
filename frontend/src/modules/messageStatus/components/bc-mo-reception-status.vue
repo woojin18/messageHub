@@ -93,7 +93,7 @@
                   <th class="text-center lc-1">MO 제목</th>
                   <th class="text-center lc-1">이통사</th>
                   <th class="text-center lc-1">상태</th>
-                  <th class="text-center lc-1 end">등록일자</th>
+                  <th class="text-center lc-1 end">수신일자</th>
               </tr>
             </thead>
             <tbody>

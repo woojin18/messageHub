@@ -18,8 +18,7 @@
     /* 웹 현황 리스트 카운트 조회 */
         SELECT
             COUNT(DISTINCT A.WEB_REQ_ID) AS CNT
-        FROM cm_console.CM_WEB_MSG A LEFT OUTER JOIN cm.CM_MSG B ON A.WEB_REQ_ID = B.WEB_REQ_ID
-		                             LEFT OUTER JOIN cm_console.CM_CORP C ON A.CORP_ID = C.CORP_ID
+        FROM cm_console.CM_WEB_MSG A
         WHERE 1=1
         <include refid="whereSelectWebSendList"/>
     </select>
