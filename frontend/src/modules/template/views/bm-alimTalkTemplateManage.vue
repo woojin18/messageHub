@@ -274,7 +274,9 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
+    await this.fnExistApiKey();
+    await this.fnValidUseChGrp();
     this.fnSelectKkoTmpltCatGrpList();
     this.fnSetTemplateInfo();
     if(this.isInsert){
@@ -282,6 +284,32 @@ export default {
     }
   },
   methods: {
+    async fnExistApiKey(){
+      let params = {};
+      await templateApi.selectApiKey(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          if(this.$gfnCommonUtils.isEmpty(result.data)){
+            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 API 키가 존재하지 않습니다.\n템플릿을 등록/수정/검수요청 하실 수 없습니다.');
+          }
+        }
+      });
+    },
+    async fnValidUseChGrp(){
+      let params = {chGrp: 'KKO'};
+      await templateApi.selectValidUseChGrp(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          if(this.$gfnCommonUtils.isEmpty(result.data)){
+            confirm.fnAlert(this.componentsTitle, '이용하실 수 없는 채널입니다.');
+            this.$router.back();
+          }
+        } else {
+          confirm.fnAlert(this.componentsTitle, '시스템 오류입니다. 잠시 후 다시 시도하세요.');
+          this.$router.back();
+        }
+      });
+    },
     //template 정보 조회
     fnSetTemplateInfo(){
       if(!this.$gfnCommonUtils.isEmpty(this.tmpltKey)){

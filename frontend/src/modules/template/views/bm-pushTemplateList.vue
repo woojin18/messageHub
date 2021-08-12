@@ -192,11 +192,27 @@ export default {
     }
   },
   mounted() {
+    this.fnValidUseChGrp();
     this.fnSearchOthPrjUseYnChkAll();
     this.fnSetIntervalSearchDate(this.searchDateInterval);
     this.fnPageNoResetSearch();
   },
   methods: {
+    async fnValidUseChGrp(){
+      let params = {chGrp: 'PUSH'};
+      await TemplateApi.selectValidUseChGrp(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          if(this.$gfnCommonUtils.isEmpty(result.data)){
+            confirm.fnAlert(this.componentsTitle, '이용하실 수 없는 채널입니다.');
+            this.$router.back();
+          }
+        } else {
+          confirm.fnAlert(this.componentsTitle, '시스템 오류입니다. 잠시 후 다시 시도하세요.');
+          this.$router.back();
+        }
+      });
+    },
     //검색일자변경
     fnSetIntervalSearchDate(interval){
       this.searchDateInterval = interval;

@@ -67,6 +67,9 @@ const excelDownSendSmartRecvTmplt = (params) => {
 const selectValidUseChGrp = (params) => {
   return httpClient.post('/uc/sendMessage/selectValidUseChGrp', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
+const selectApiKey = (params) => {
+  return httpClient.post('/commonApi/getApiKey', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
 
 export default {
   selectAppIdList,
@@ -87,7 +90,8 @@ export default {
   selectSmartTmpltInfo,
   sendSmartMessage,
   excelDownSendSmartRecvTmplt,
-  selectValidUseChGrp
+  selectValidUseChGrp,
+  selectApiKey
 };
 
 function fnExcelDownCallback(response){

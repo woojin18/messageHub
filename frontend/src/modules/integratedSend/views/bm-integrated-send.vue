@@ -183,10 +183,22 @@ export default {
         
   },
   mounted() {
+    this.fnExistApiKey();
     this.fnSetIntervalSearchDate(this.searchDateInterval);
     this.fnPageNoResetSearch();
   },
   methods: {
+    async fnExistApiKey(){
+      let params = {};
+      await messageApi.selectApiKey(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          if(this.$gfnCommonUtils.isEmpty(result.data)){
+            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 API 키가 존재하지 않습니다.\n메시지 발송하실 수 없습니다.');
+          }
+        }
+      });
+    },
     //채널 jsonArray -> 채널명
     fnJsonArrayToChannelLit(json){
       const vm = this;

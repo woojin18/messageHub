@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.uplus.cm.common.consts.Const;
-import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.MultipartFileDTO;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
@@ -41,7 +40,7 @@ public class CommonController {
 
     @Autowired
     private CommonService commonService;
-    
+
 	@Autowired
 	private GeneralDao generalDao;
 
@@ -177,7 +176,7 @@ public class CommonController {
             HttpServletResponse response) throws Exception {
 
         log.info("{}.downloadFile - params : {}", this.getClass(), params);
-        
+
 //        FILE_ID로 ATTACH_FILE_PATH 조회
         String filePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", params));
         log.info("{}.downloadFile - filePath : {}", this.getClass(), filePath);
@@ -205,4 +204,18 @@ public class CommonController {
         Resource resource = new InputStreamResource(Files.newInputStream(path));
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 	}
+
+    // API Key 조회
+    @PostMapping("/getApiKey")
+    public RestResult<?> getApiKey(@RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = commonService.getApiKey(params);
+        } catch(Exception e) {
+            rtn.setFail("실패하였습니다.");
+            log.error("{}.getApiKey Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
 }
