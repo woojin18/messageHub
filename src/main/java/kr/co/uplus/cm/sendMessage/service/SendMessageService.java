@@ -523,7 +523,7 @@ public class SendMessageService {
             rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
         } else {
             log.warn("{}.testSendPushMsg Fail ==> response : {}", this.getClass(), resultMap);
-            rtn.setFail("푸시 테스트 발송이 실패하였습니다.");
+            rtn.setFail(CommonUtils.getGWApiFailMsg(resultMap, "테스트 발송이 실패하였습니다."));
         }
 
         return rtn;
@@ -1229,7 +1229,7 @@ public class SendMessageService {
             rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
         } else {
             log.warn("{}.testSendMmsMsg Fail ==> response : {}", this.getClass(), resultMap);
-            rtn.setFail("MMS 테스트 발송이 실패하였습니다.");
+            rtn.setFail(CommonUtils.getGWApiFailMsg(resultMap, "테스트 발송이 실패하였습니다."));
         }
 
         return rtn;
@@ -1294,8 +1294,8 @@ public class SendMessageService {
             }
             rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
         } else {
-            log.warn("{}.testSendMmsMsg Fail ==> response : {}", this.getClass(), resultMap);
-            rtn.setFail("SMS 테스트 발송이 실패하였습니다.");
+            log.warn("{}.testSendSmsMsg Fail ==> response : {}", this.getClass(), resultMap);
+            rtn.setFail(CommonUtils.getGWApiFailMsg(resultMap, "테스트 발송이 실패하였습니다."));
         }
 
         return rtn;
@@ -1625,7 +1625,7 @@ public class SendMessageService {
             rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
         } else {
             log.warn("{}.testSendFrndTalkMsg Fail ==> response : {}", this.getClass(), resultMap);
-            rtn.setFail("친구톡 테스트 발송이 실패하였습니다.");
+            rtn.setFail(CommonUtils.getGWApiFailMsg(resultMap, "테스트 발송이 실패하였습니다."));
         }
 
         return rtn;
@@ -1977,7 +1977,7 @@ public class SendMessageService {
             rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
         } else {
             log.warn("{}.testSendAlimTalkMsg Fail ==> response : {}", this.getClass(), resultMap);
-            rtn.setFail("알림톡 테스트 발송이 실패하였습니다.");
+            rtn.setFail(CommonUtils.getGWApiFailMsg(resultMap, "테스트 발송이 실패하였습니다."));
         }
 
         return rtn;
@@ -2171,7 +2171,7 @@ public class SendMessageService {
             rtn.setMessage(dataList.size() + "건 중 " + successCnt + "건 발송 성공하였습니다.");
         } else {
             log.warn("{}.testSendSmartMsg Fail ==> response : {}", this.getClass(), resultMap);
-            rtn.setFail("테스트 발송이 실패하였습니다.");
+            rtn.setFail(CommonUtils.getGWApiFailMsg(resultMap, "테스트 발송이 실패하였습니다."));
         }
 
         return rtn;
