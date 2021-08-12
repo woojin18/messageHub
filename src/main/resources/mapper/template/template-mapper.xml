@@ -541,7 +541,7 @@
             END AS KKO_CH_ID
             , (SELECT X.CATEGORY_GRP_NAME FROM cm.CM_KKO_TMPLT_CAT X WHERE X.CATEGORY_CODE = A.TMPLT_CATEGORY_CODE LIMIT 1) AS CATEGORY_GRP_NAME
             , cm_console.fnc_get_cd_name('SENDER_KEY_TYPE', A.SENDER_KEY_TYPE, 1) AS SENDER_KEY_TYPE_NAME
-            , cm_console.fnc_get_cd_name('TMPLT_STAT_CODE', A.TMPLT_STAT_CODE, 1) AS TMPLT_STAT_CODE_NAME
+            , cm_console.fnc_get_cd_name('TMPLT_STAT_CODE', A.TMPLT_STAT_CODE, 2) AS TMPLT_STAT_CODE_NAME
             , @ROWNUM := @ROWNUM + 1 AS ROWNUM
         FROM (
             SELECT
