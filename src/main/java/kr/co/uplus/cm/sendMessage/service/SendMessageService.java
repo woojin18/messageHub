@@ -802,6 +802,7 @@ public class SendMessageService {
         String ch = CommonUtils.getStrValue(data, "senderType");
         String corpId = CommonUtils.getStrValue(data, "corpId");
         String projectId = CommonUtils.getStrValue(data, "projectId");
+        String loginId = CommonUtils.getStrValue(data, "userId");
         String rsrvSendYn = CommonUtils.getStrValue(data, "rsrvSendYn");
         String rsrvDateStr = "";
         String allFailYn = CommonUtils.getStrValue(data, "allFailYn");
@@ -847,6 +848,7 @@ public class SendMessageService {
         params.put("status", status);
         params.put("resvSenderYn", rsrvSendYn);
         params.put("reqDt", rsrvDateStr);
+        params.put("regId", loginId);
 
         int resultCnt = insertCmWebMsg(params);
 
