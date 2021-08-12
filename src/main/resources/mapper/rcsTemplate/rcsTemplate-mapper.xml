@@ -20,7 +20,11 @@
 								,		A.TMPLT_NAME		AS TMPLT_NAME
 								,		A.PRODUCT_CODE		AS PRODUCT_CODE
 								,		A.REG_ID			AS REG_ID
-								,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
+								,		CASE
+											WHEN A.UPD_DT IS NULL OR A.UPD_DT=''
+											THEN DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%s')
+											ELSE DATE_FORMAT(A.UPD_DT, '%Y-%m-%d %H:%i:%s')
+										END AS REG_DT
 								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS
 								,		A.APPROVAL_DT		AS APPROVAL_DT
 								FROM	cm.CM_RCS_MSGBASE A
@@ -31,9 +35,9 @@
 								,		A.TMPLT_NAME		AS TMPLT_NAME
 								,		A.PRODUCT_CODE		AS PRODUCT_CODE
 								,		A.REG_ID			AS REG_ID
-								,		A.REG_DT			AS REG_DT
+								,		DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%s')		AS REG_DT
 								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS
-								,		A.APPROVAL_DT		AS APPROVAL_DT
+								,		DATE_FORMAT(A.APPROVAL_DT, '%Y-%m-%d %H:%i:%s')	AS APPROVAL_DT
 								FROM	cm.CM_RCS_MSGBASE_REQ A
 						) MSGBASE, (SELECT @vRank:=0, @vData:='') as r
 						ORDER BY MSGBASE.MESSAGEBASE_ID, MSGBASE.REG_DT
@@ -177,9 +181,16 @@
 	</select>
 
 	<select id="selectRcsBaseForm" resultType="String">
-		/* recTemplate.selectRcsBaseForm */
+		/* rcsTemplate.selectRcsBaseForm */
 		SELECT	FORMATTED_STRING
 		FROM	cm.CM_RCS_MSGBASEFORM
 		WHERE	MESSAGEBASEFORM_ID = #{msgFormId}
+	</select>
+	
+	<select id="selectMsgCardType" resultType="String">
+		/* rcsTemplate.selectMsgCardType */
+		SELECT	CARD_TYPE
+		FROM	cm.CM_RCS_MSGBASEFORM
+		WHERE	MESSAGEBASEFORM_ID = #{messagebaseformId}
 	</select>
 </mapper>

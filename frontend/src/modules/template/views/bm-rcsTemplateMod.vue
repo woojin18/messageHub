@@ -344,8 +344,8 @@ export default {
   },
   data() {
     return {
-		desImgSrc : require("@/assets/images/common/order.png"),
-		styleImgSrc : require("@/assets/images/common/order.png"),
+		desImgSrc : require("@/assets/images/common/delivery.png"),
+		styleImgSrc : require("@/assets/images/common/delivery.png"),
 		deleteBtn: false,
 		cancelBtn: false,
 		insertBtn: false,
@@ -465,6 +465,7 @@ export default {
 			if(cardType=="description") {
 				vm.desFormNm = resultData.desNm;
 				vm.desContents = resultData.textContents;
+				this.fnSetDesformImg();
 
 				// Tab 이벤트 처리
 				jQuery("#styleTab").remove();
@@ -475,11 +476,13 @@ export default {
 				vm.styleInput = resultData.styleInput;
 				vm.styleInputSec = resultData.styleInputSec;
 				vm.styleChk = resultData.styleChk;
+				this.fnSetStyleformImg();
 
 				// Tab 이벤트 처리
 				jQuery("#styleTab").tab("show");	
 				jQuery("#desTab").remove();
-				jQuery("#styleTab").attr("active");
+				jQuery("#productCate1").removeClass("active");
+				jQuery("#productCate2").addClass("active");
 			}
 
 			// 버튼 세팅

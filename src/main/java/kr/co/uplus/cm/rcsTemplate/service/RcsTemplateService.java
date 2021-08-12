@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
@@ -115,9 +116,21 @@ public class RcsTemplateService {
 		JSONObject obj = null;
 		obj = (JSONObject) parser.parse(msgInfo);
 		
+		boolean cardTypeTf = true;
 		resultData.put("cardType", obj.get("cardType"));					// 카드 타입 (서술형, 스타일형)
 		
 		String cardType = CommonUtils.getString(obj.get("cardType"));
+		
+		// REQ 테이블에서 데이터를 가져올시 cardType이 정의되어 있지 않아 해당 json의 msgFormId를 기준으로 카드 타입을 세팅
+		if("".equals(cardType)) {
+			Map<String, Object> cardTypeMap = new HashMap<String, Object>();
+			String messagebaseformId = CommonUtils.getString(obj.get("messagebaseformId"));
+			cardTypeMap.put("messagebaseformId", messagebaseformId);
+			cardType = (String) generalDao.selectGernalObject("rcsTemplate.selectMsgCardType", cardTypeMap);
+			resultData.put("cardType", cardType);
+			cardTypeTf = false;
+		}
+		
 		if("cell".equals(cardType)) {
 			// 유형 세팅
 			resultData.put("styleNm", rcsTemMap.get("MESSAGEBASEFORM_ID"));		// 유형
@@ -155,7 +168,6 @@ public class RcsTemplateService {
 				// input json인 경우 배열에 값을 추가하고 다음 widget의 속성을 체크
 				if("LinearLayout".equals(widget)) {
 					JSONArray styleInputArr = (JSONArray) styleObj.get("children");
-					
 					int inputCnt = styleInputArr.size();
 					styleArr[styleChkCnt] = CommonUtils.getString(inputCnt);							// 칸 개수 세팅
 					// input 컬럼이 한개인경우 styleInputSec 빈칸으로 처리
@@ -201,8 +213,24 @@ public class RcsTemplateService {
 			resultData.put("styleInputSec", styleInputSec);
 			resultData.put("styleChk", styleChk);
 		} else if ("description".equals(cardType)) {
+			// REQ 테이블에서 가져오는경우 fommatString에서 값을 가져옴
+			if(cardTypeTf) {
+				resultData.put("textContents", obj.get("inputText"));			// 내용
+			} else {
+				JSONObject cellObj = null;
+				cellObj = (JSONObject) obj.get("formattedString");
+				cellObj = (JSONObject) cellObj.get("RCSMessage");
+				cellObj = (JSONObject) cellObj.get("openrichcardMessage");
+				cellObj = (JSONObject) cellObj.get("layout");
+				JSONArray cellArray = null;
+				cellArray = (JSONArray) cellObj.get("children");
+				cellObj = (JSONObject) cellArray.get(1);
+				cellArray = (JSONArray) cellObj.get("children");
+				cellObj = (JSONObject) cellArray.get(0);
+				String textContents = CommonUtils.getString(cellObj.get("text"));
+				resultData.put("textContents", textContents);					// 내용
+			}
 			resultData.put("desNm", rcsTemMap.get("MESSAGEBASEFORM_ID"));		// 유형
-			resultData.put("textContents", obj.get("inputText"));				// 내용
 		}
 		
 		// 버튼 파라미터 세팅
@@ -212,15 +240,18 @@ public class RcsTemplateService {
 		JSONArray jsonArr = null;
 		
 		jsonArr = (JSONArray) obj.get("suggestions");
+		
 		// 비어있는 버튼 Action 배열을 삭제
 		if(jsonArr != null) {
 			int btnCnt = jsonArr.size();
 			if(btnCnt > 0) {
 				for(int i=0; i<jsonArr.size(); i++) {
 					Map<String, Object> btnMap = (Map<String, Object>) jsonArr.get(i);
-					if(btnMap==null) {
+					
+					if(ObjectUtils.isEmpty(btnMap)) {
 						jsonArr.remove(i);
 					}
+					
 				}
 			}
 		}

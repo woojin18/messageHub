@@ -1526,6 +1526,7 @@ public class RcsTemplateSendService {
 		String ch = "RCS";
 		String corpId = CommonUtils.getString(params.get("corpId"));
 		String projectId = CommonUtils.getString(params.get("projectId"));
+		String userId = CommonUtils.getString(params.get("userId"));
 		String rsrvSendYn = CommonUtils.getString(data.get("rsrvSendYn"));
 		String rsrvDateStr = "";
 		String status = Chstr;
@@ -1560,27 +1561,28 @@ public class RcsTemplateSendService {
 		Gson gson = new Gson();
 		String json = gson.toJson(msgMap);
 		
-		params.put("webReqId", webReqId);
-		params.put("corpId", corpId);
-		params.put("projectId", projectId);
-		params.put("apiKey", commonService.getApiKey(corpId, projectId));
-		params.put("chString", ch);
-		params.put("msgInfo", json);
+		paramMap.put("webReqId", webReqId);
+		paramMap.put("corpId", corpId);
+		paramMap.put("projectId", projectId);
+		paramMap.put("userId", userId);
+		paramMap.put("apiKey", commonService.getApiKey(corpId, projectId));
+		paramMap.put("chString", ch);
+		paramMap.put("msgInfo", json);
 		if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
 			ArrayList<Map<String, Object>> recvInfoLst = (ArrayList<Map<String, Object>>) msgMap.get("recvInfoLst");
 			int senderCnt = recvInfoLst.size();
-			params.put("senderCnt", senderCnt);
+			paramMap.put("senderCnt", senderCnt);
 		} else {
-			params.put("senderCnt", CommonUtils.getInt(params.get("recvInfoLstCnt")));
+			paramMap.put("senderCnt", CommonUtils.getInt(params.get("recvInfoLstCnt")));
 		}
-		params.put("callback", callback);
-		params.put("campaignId", campaignId);
-		params.put("senderType", Const.SenderType.CHANNEL);
-		params.put("status", status);
-		params.put("resvSenderYn", rsrvSendYn);
-		params.put("reqDt", rsrvDateStr);
+		paramMap.put("callback", callback);
+		paramMap.put("campaignId", campaignId);
+		paramMap.put("senderType", Const.SenderType.CHANNEL);
+		paramMap.put("status", status);
+		paramMap.put("resvSenderYn", rsrvSendYn);
+		paramMap.put("reqDt", rsrvDateStr);
 		
-		generalDao.insertGernal(DB.QRY_INSERT_CM_WEB_MSG, params);
+		generalDao.insertGernal(DB.QRY_INSERT_CM_WEB_MSG, paramMap);
 	}
 	
 	// 금액 계산
