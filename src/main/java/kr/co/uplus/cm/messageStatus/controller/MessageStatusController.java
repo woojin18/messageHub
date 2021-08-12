@@ -97,17 +97,23 @@ public class MessageStatusController {
 			HttpServletResponse response) throws Exception {
 
 		String msgKey 		= params.get("msgKey").toString();
-		log.debug("msgKey : "+msgKey);
-
+		
 		Query query = new Query(Criteria.where("msgKey").is(msgKey));
 		CmMsgInfoDto msgInfo = mongoCmd.findOne(query, CmMsgInfoDto.class, MongoConf.CM_MSG_INFO.key);
 		
 		String msg = "";//메시지 내용
-		String msgTitle = "";//메시지 제목
+//		String msgTitle = "";//메시지 제목
+		
+		log.info("jameskang msgInfo : "+msgInfo.toString());
+		
 		if(msgInfo != null) {
-			msg = msgInfo.getMsg();
+//			msg = msgInfo.getSmsMsg()
+//			msgInfo.getMmsMsg()
+//			msgInfo.getPushMsg()
+//			msgInfo.getRcsMsg()
+//			msgInfo.getAlimtalkMsg()
+//			msgInfo.getFriendtalkMsg()
 		}
-
 		
 		RestResult<Object> rtn = new RestResult<Object>();
 
@@ -305,33 +311,33 @@ public class MessageStatusController {
 
 
 	// 메시지 현황 상세 조회
-	@PostMapping("/selectBookingMsgInfo")
-	public RestResult<?> selectBookingMsgInfo(@RequestBody Map<String, Object> params, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-
-		String msgKey 		= params.get("msgKey").toString();
-		log.debug("msgKey : "+msgKey);
-
-		Query query = new Query(Criteria.where("msgKey").is(msgKey));
-		CmMsgInfoDto msgInfo = mongoCmd.findOne(query, CmMsgInfoDto.class, MongoConf.CM_MSG_INFO.key);
-		String msg = "";//메시지 내용
-		String msgTitle = "";//메시지 제목
-
-		if(msgInfo != null) {
-			msg = msgInfo.getMsg();
-		}
-		RestResult<Object> rtn = new RestResult<Object>();
-
-		List<HashMap<String, Object>> mapList = (List<HashMap<String, Object>>) rtn.getData();
-		HashMap<String,Object> hMap = mapList.get(0);
-		hMap.put("msg", msg);
-
-		mapList.set(0, hMap);
-
-		rtn.setData(mapList);
-
-		return rtn;
-	}
+//	@PostMapping("/selectBookingMsgInfo")
+//	public RestResult<?> selectBookingMsgInfo(@RequestBody Map<String, Object> params, HttpServletRequest request,
+//			HttpServletResponse response) throws Exception {
+//
+//		String msgKey 		= params.get("msgKey").toString();
+//		log.debug("msgKey : "+msgKey);
+//
+//		Query query = new Query(Criteria.where("msgKey").is(msgKey));
+//		CmMsgInfoDto msgInfo = mongoCmd.findOne(query, CmMsgInfoDto.class, MongoConf.CM_MSG_INFO.key);
+//		String msg = "";//메시지 내용
+//		String msgTitle = "";//메시지 제목
+//
+//		if(msgInfo != null) {
+//			msg = msgInfo.getMsg();
+//		}
+//		RestResult<Object> rtn = new RestResult<Object>();
+//
+//		List<HashMap<String, Object>> mapList = (List<HashMap<String, Object>>) rtn.getData();
+//		HashMap<String,Object> hMap = mapList.get(0);
+//		hMap.put("msg", msg);
+//
+//		mapList.set(0, hMap);
+//
+//		rtn.setData(mapList);
+//
+//		return rtn;
+//	}
 
 
 	// MO 수신 리스트 조회
