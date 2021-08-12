@@ -96,8 +96,12 @@ export default {
       require : true
     }
   },
+  watch: {
+    projectId: function(newVal, oldVal) {
+		this.fnGetApiKeyListForKko();
+    }
+  },
   mounted() {
-	this.fnGetApiKeyListForKko();
     this.fnGetKkoCategory();
 	this.otherProjectYn = 'Y';
   },
@@ -108,7 +112,9 @@ export default {
     },
 	// API KEY 리스트 불러오기
 	fnGetApiKeyListForKko(){
-		var params = {};
+		var params = {
+			"projectId" : this.projectId
+		};
 		api.getApiKeyListForKko(params).then(response =>{
 			var result = response.data;
 			if( result.success ){

@@ -13,7 +13,7 @@
 					
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:20%">이름</h5>
-							<input type="text" class="inputStyle float-right" style="width:80%" title="이름 입력란"  v-model="userName">
+							<input type="text" class="inputStyle float-right" style="width:80%" title="이름 입력란"  v-model="userName" disabled>
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:20%">대표 프로젝트</h5>

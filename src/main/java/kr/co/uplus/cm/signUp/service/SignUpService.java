@@ -76,16 +76,21 @@ public class SignUpService {
 			String encPwd = sha256.encryptToBase64(CommonUtils.getString(paramMap.get("password")));
 			paramMap.put("password", encPwd);
 			
+			// 고객 번호
+			String custNo = CommonUtils.getString(paramMap.get("custNo"));
+			int existCustNo = generalDao.selectGernalCount(DB.QRY_SELECT_EXISTS_CUSTNO, paramMap);
+			
+			if(existCustNo > 0) {
+				rtn.setSuccess(false);
+				rtn.setMessage("이미 등록된 고객사입니다. 신규 고객사를 등록해주세요.");
+				return rtn;
+			}
+
 			// corp_id
 			String corpId = CommonUtils.getCommonId("COM", 7);
 			paramMap.put("corpId", corpId);
-			
-			
+
 			generalDao.insertGernal(DB.QRY_INSERT_CM_USER, paramMap);
-			
-			
-			// 고객 번호
-			String custNo = CommonUtils.getString(paramMap.get("custNo"));
 			
 			// 고객번호가 없는 경우 신규 고객사 등록
 			if("".equals(custNo)) {

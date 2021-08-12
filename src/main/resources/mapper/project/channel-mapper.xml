@@ -122,7 +122,7 @@
 								select	crc.CHATBOT_ID
 								from cm.CM_RCS_CHATBOT crc 
 							)
-							
+							and crcr.CORP_ID = #{corpId}
 							UNION 
 							
 							select	crc.CHATBOT_ID
@@ -138,7 +138,9 @@
 										ELSE crc.REG_DT
 									END AS RANKING_DT 
 							]]>
-							from cm.CM_RCS_CHATBOT crc 
+							from cm.CM_RCS_CHATBOT crc
+							where 1=1
+							and crc.CORP_ID = #{corpId} 
 						) CHATBOT, (SELECT @vRank:=0, @vData:='') as r
 						ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.RANKING_DT DESC
 				) A
@@ -682,6 +684,7 @@
 									select	crc.CHATBOT_ID
 									from cm.CM_RCS_CHATBOT crc 
 								)
+								and crcr.CORP_ID = #{corpId}
 			
 								UNION 
 			
@@ -706,6 +709,8 @@
 										END AS RANKING_DT 
 								]]>
 								from cm.CM_RCS_CHATBOT crc 
+								where 1=1
+								and crc.CORP_ID = #{corpId}
 							) CHATBOT, (SELECT @vRank:=0, @vData:='') as r
 							ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.RANKING_DT DESC
 					) A

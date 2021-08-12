@@ -138,4 +138,13 @@
 		,		NOW()
 		)
 	</insert>
+	
+	<select id="selectIsExistCustNo" resultType="int">
+		/* signUp.selectIsExistCustNo */
+		SELECT EXISTS (
+			SELECT CUST_NO
+			FROM cm_console.CM_CORP
+			WHERE CUST_NO = #{custNo}
+		)
+	</select>
 </mapper>
