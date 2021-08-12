@@ -76,9 +76,9 @@
             <table class="table_skin1 bt-000 tbl-striped">
               <colgroup>
                 <col style="width:5%">
+                <col style="width:7%">
+                <col style="width:10%">
                 <col>
-                <col style="width:17%">
-                <col style="width:14%">
                 <col style="width:15%">
                 <col style="width:10%">
                 <col style="width:10%">

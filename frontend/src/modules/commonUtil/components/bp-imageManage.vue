@@ -20,7 +20,7 @@
                 <caption>수신자 추가의 사용자명, 아이디, 이용권한을 제공하는 표</caption>
                 <colgroup>
                 <col style="width:3%">
-                <col style="width:8%">
+                <col style="width:13%">
                 <col>
                 <col v-if="useCh == 'FRIENDTALK'" style="width:10%">
                 <col style="width:16%">
