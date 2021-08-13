@@ -22,7 +22,7 @@
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">휴대폰 번호 *</h5>
-							<input @input="fnCorrectNumberInput" type="text" id="hpNumber" class="inputStyle float-right" style="width:80%" maxlength="20" placeholder="- 없이 입력해 주세요">
+							<input @input="fnCorrectNumberInput" type="text" id="hpNumber" class="inputStyle float-right" style="width:80%" maxlength="11" placeholder="- 없이 입력해 주세요">
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">사용여부</h5>

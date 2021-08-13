@@ -78,7 +78,7 @@
                         <span><pre><span v-if="templateData.senderType == 'SMS' && templateData.msgKind == 'A'">(광고)</span>{{templateData.tmpltContent}}</pre></span>
                         <br v-if="!$gfnCommonUtils.isEmpty(templateData.tmpltContent)"/>
                         <span v-if="templateData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(templateData.rcvblcNumber)">
-                          수신거부번호 : {{templateData.rcvblcNumber}}
+                          {{templateData.rcvblcNumber}}
                         </span>
                       </p>
                     </div>
