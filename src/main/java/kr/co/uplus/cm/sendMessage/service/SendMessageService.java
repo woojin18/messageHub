@@ -170,6 +170,8 @@ public class SendMessageService {
     public List<RecvInfo> getRecvInfoLst(Map<String, Object> params, MultipartFile excelFile) throws Exception{
         List<RecvInfo> recvInfoLst = new ArrayList<RecvInfo>();
         long cliKey = NumberUtils.LONG_ONE;
+        String separator = "_";
+        String webReqId = CommonUtils.getStrValue(params, "webReqId");
 
         if(params.containsKey("cuInputType")) {
 
@@ -182,7 +184,7 @@ public class SendMessageService {
                 ObjectMapper mapper = new ObjectMapper();
                 for(Map<String, Object> recvObj : objList) {
                     recvInfo = mapper.convertValue(recvObj, RecvInfo.class);
-                    recvInfo.setCliKey(String.valueOf(cliKey++));
+                    recvInfo.setCliKey(webReqId+separator+String.valueOf(cliKey++));
                     recvInfoLst.add(recvInfo);
                 }
 
@@ -212,7 +214,7 @@ public class SendMessageService {
                 Map<String, Object> mergeData = null;
                 for(Map<String, Object> excelInfo : excelList) {
                     recvInfo = new RecvInfo();
-                    recvInfo.setCliKey(String.valueOf(cliKey++));
+                    recvInfo.setCliKey(webReqId+separator+String.valueOf(cliKey++));
                     if(excelInfo.containsKey("cuid")) recvInfo.setCuid((String) excelInfo.get("cuid"));
                     if(excelInfo.containsKey("phone")) recvInfo.setPhone((String) excelInfo.get("phone"));
 
@@ -321,6 +323,7 @@ public class SendMessageService {
 
         //webReqId
         pushRequestData.setWebReqId(webReqId);
+        params.put("webReqId", webReqId);
 
         //appId
         pushRequestData.setAppId(CommonUtils.getStrValue(params, "appId"));
@@ -750,6 +753,7 @@ public class SendMessageService {
         //webReqId
         String webReqId = CommonUtils.getCommonId(Const.WebReqIdPrefix.SMS_PREFIX, 5);
         requestData.setWebReqId(webReqId);
+        params.put("webReqId", webReqId);
 
         //callback
         requestData.setCallback(CommonUtils.getStrValue(params, "callback"));
@@ -960,6 +964,7 @@ public class SendMessageService {
         //webReqId
         String webReqId = CommonUtils.getCommonId(Const.WebReqIdPrefix.MMS_PREFIX, 5);
         requestData.setWebReqId(webReqId);
+        params.put("webReqId", webReqId);
 
         //callback
         requestData.setCallback(CommonUtils.getStrValue(params, "callback"));
@@ -1317,6 +1322,7 @@ public class SendMessageService {
         //webReqId
         String webReqId = CommonUtils.getCommonId(Const.WebReqIdPrefix.FRND_TALK_PREFIX, 5);
         requestData.setWebReqId(webReqId);
+        params.put("webReqId", webReqId);
 
         //callback
         //대채발송이 아닐 경우 callback 이 없는게 맞으나 G/W 에서 필수로 보내달라고 해서
@@ -1720,6 +1726,7 @@ public class SendMessageService {
         //webReqId
         String webReqId = CommonUtils.getCommonId(Const.WebReqIdPrefix.ALIM_TALK_PREFIX, 5);
         requestData.setWebReqId(webReqId);
+        params.put("webReqId", webReqId);
 
         //callback
         //대채발송이 아닐 경우 callback 이 없는게 맞으나 G/W 에서 필수로 보내달라고 해서
@@ -2047,6 +2054,7 @@ public class SendMessageService {
         String prefix = (StringUtils.equals(senderType, Const.SenderType.SMART) ? Const.WebReqIdPrefix.SMT_PREFIX : Const.WebReqIdPrefix.ITG_PREFIX);
         String webReqId = CommonUtils.getCommonId(prefix, 5);
         requestData.setWebReqId(webReqId);
+        params.put("webReqId", webReqId);
 
         //내부용 데이터 Set
         ObjectMapper mapper = new ObjectMapper();

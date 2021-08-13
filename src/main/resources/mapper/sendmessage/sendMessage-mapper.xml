@@ -164,7 +164,8 @@
         <if test="requiredCuPhone">
             , TPUI.PHONENO AS PHONE
         </if>
-            , @ROWNUM := @ROWNUM + 1 AS CLI_KEY
+            , @ROWNUM := @ROWNUM + 1
+            , CONCAT(#{webReqId}, '_', @ROWNUM) AS CLI_KEY
         FROM cm_push.T_PUSH_USER_INFO TPUI
         INNER JOIN (SELECT @ROWNUM:=0) TMP
         WHERE TPUI.APPID = #{appId}
