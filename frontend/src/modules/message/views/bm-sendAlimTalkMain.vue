@@ -62,8 +62,8 @@
             <a href="#self" class="btnStyle1 backBlack" title="알림톡">알림톡</a>
             <a href="#self" class="btnStyle1 backWhite" title="Push">SMS</a>
             -->
-            <a @click="fnChgPreviewMessageType('ALIMTALK')" :class="'btnStyle1 '+(previewMessageType == 'ALIMTALK' ? 'backBlack' : 'backWhite')" title="Push">친구톡</a>
-            <a v-if="sendData.rplcSendType != 'NONE'" @click="fnChgPreviewMessageType('RPLC')" :class="'btnStyle1 '+(previewMessageType != 'ALIMTALK' ? 'backBlack' : 'backWhite')" title="Push">{{sendData.rplcSendType}}</a>
+            <a @click="fnChgPreviewMessageType('ALIMTALK')" :class="'btnStyle1 '+(previewMessageType == 'ALIMTALK' ? 'backBlack' : 'backWhite')" title="알림톡">알림톡</a>
+            <a v-if="sendData.rplcSendType != 'NONE'" @click="fnChgPreviewMessageType('RPLC')" :class="'btnStyle1 '+(previewMessageType != 'ALIMTALK' ? 'backBlack' : 'backWhite')" title="대체발송">{{sendData.rplcSendType}}</a>
           </div>
         </div>
       </div>
