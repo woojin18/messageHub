@@ -139,7 +139,9 @@
                 <h5>이미지 링크</h5>
               </div>
               <div class="of_h" style="width:80%">
-                <input type="text" class="inputStyle" style="width:100%" placeholder="http://" v-model="sendData.imgLink" maxlength="200">
+                <!-- #10478 - 사용자콘솔 내 친구톡 발송(이미지링크) -->
+                <!-- <input type="text" class="inputStyle" style="width:100%" placeholder="http://" v-model="sendData.imgLink" maxlength="200"> -->
+                <input type="text" class="inputStyle" style="width:100%" v-model="sendData.imgLink" maxlength="200">
               </div>
             </div>
 
@@ -388,7 +390,7 @@ export default {
         imgUrl: '',
         fileId: '',
         wideImgYn: 'N',
-        imgLink: '',
+        imgLink: 'http://',
         rplcSendType: 'NONE',  //NONE, SMS, LMS, MMS
         cuInputType:'DICT',  //DICT, ADDR, EXCEL
         cuInfo: '',
@@ -471,7 +473,7 @@ export default {
           confirm.fnAlert(this.componentsTitle, '잘못된 이미지 정보입니다.');
           return false;
         }
-        if(!this.sendData.imgLink){
+        if(!this.sendData.imgLink || this.sendData.imgLink == 'http://'){
           confirm.fnAlert(this.componentsTitle, '이미지 파일 선택시 이미지 링크 URL은 필수입니다.');
           return false;
         }

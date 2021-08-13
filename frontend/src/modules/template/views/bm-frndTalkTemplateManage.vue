@@ -94,7 +94,9 @@
             <h4>이미지 링크 *</h4>
           </div>
           <div class="float-left" style="width:73%">
-            <input type="text" class="inputStyle float-right" title="이미지 링크 입력란" placeholder="http://" v-model="tmpltData.imgLink" maxlength="200">
+            <!-- #10478 - 사용자콘솔 내 친구톡 발송(이미지링크) -->
+            <!-- <input type="text" class="inputStyle float-right" title="이미지 링크 입력란" placeholder="http://" v-model="tmpltData.imgLink" maxlength="200"> -->
+            <input type="text" class="inputStyle float-right" title="이미지 링크 입력란" v-model="tmpltData.imgLink" maxlength="200">
           </div>
         </div>
         <div class="of_h user-phone consolMarginTop">
@@ -218,7 +220,7 @@ export default {
         {linkType:'BK', name:'봇 키워드'},
         {linkType:'MD', name:'메시지전달'}
       ],
-      tmpltData : {imgUrl:'', buttonList:[]}
+      tmpltData : {imgUrl:'', imgLink: 'http://', buttonList:[]}
     }
   },
   mounted() {
