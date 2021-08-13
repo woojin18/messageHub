@@ -50,6 +50,7 @@
 			REG_DT,
 			DATE_FORMAT(REG_DT, '%Y-%m-%d') AS REG_DT_YMD
 		FROM cm_bo.CM_NOTICE
+		WHERE VIEW_TYPE IN ('ALL', 'OUT')
 		ORDER BY REG_DT DESC
 		LIMIT 3
 	</select>
