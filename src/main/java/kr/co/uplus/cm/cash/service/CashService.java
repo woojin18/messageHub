@@ -62,7 +62,7 @@ public class CashService {
 			apiBodyMap.put("cashBalance",	0);
 			apiBodyMap.put("startDt",		"");
 			apiBodyMap.put("expDt",			"");
-			apiBodyMap.put("memo",			"캐시 충전");
+			apiBodyMap.put("memo",			"캐시 생성");
 			
 			// API 통신 처리
 			Map<String, Object> result =  apiInterface.etcPost(ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/cashInfo/" + corpId, apiBodyMap, headerMap);
