@@ -232,12 +232,14 @@ export default {
 		console.log('created HomeMain');
 	},
 	mounted() {
-		this.fnInit();
-		this.fnSetIntervalSearchDate(this.searchDateInterval);
-		this.fnGetProjectInfo();
-		this.fnGetNoticeList();
-		this.fnGetChTotCntInfo();
-		this.fnGetRtUsedTimeLineList();
+		var vm = this;
+		vm.fnGetProjectInfo();
+		setTimeout(function() {
+			vm.fnInit();
+			vm.fnGetNoticeList();
+			vm.fnSetIntervalSearchDate(vm.searchDateInterval);
+			vm.fnGetRtUsedTimeLineList();
+		}, 100);
 	},
 	methods: {
 		fnInit() {

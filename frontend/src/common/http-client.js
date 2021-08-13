@@ -101,7 +101,6 @@ httpClient.interceptors.response.use(
 		} else if (error.response.status == 403) {
 			alert('권한이 없습니다.');
 		} else if (error.response.status == 401 || error.response.status == 418) {
-			console.log(1);
 			alert('세션이 만료되었습니다.');
 			window.top.location.href = '/login';
 		} else if (error.response.status == 500) {

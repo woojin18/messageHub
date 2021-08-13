@@ -251,12 +251,14 @@ export default {
 		console.log('created HomeMain');
 	},
 	mounted() {
-		this.fnSetIntervalSearchDate(this.searchDateInterval);
-		this.fnGetNoticeList();
-		this.fnGetProjectList();
-		this.fnGetChTotCntInfo();
-		this.fnGetMonthUsedTimeLineList();
-		this.fnGetSixMonthUsedTimeLineList();
+		var vm = this;
+		vm.fnGetProjectList();
+		setTimeout(function() {
+			vm.fnGetNoticeList();
+			vm.fnSetIntervalSearchDate(vm.searchDateInterval);
+			vm.fnGetMonthUsedTimeLineList();
+			vm.fnGetSixMonthUsedTimeLineList();
+		}, 100);
 	},
 	methods: {
 		fnGetProjectList() {
