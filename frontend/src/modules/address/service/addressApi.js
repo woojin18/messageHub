@@ -56,6 +56,10 @@ const deleteAddressCategory = (params) => {
 	return httpClient.post('/addressApi/manage/deleteAddressCategory', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 
+const deleteAddress = (params) => {
+	return httpClient.post('/addressApi/manage/deleteAddress', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+};
+
 
 
 const excelDownloadReceiverList = (params) => {
@@ -107,6 +111,7 @@ export default {
 	deleteReceiver,
 	saveAddressCategory,
 	deleteAddressCategory,
+	deleteAddress,
 };
 
 function getFileName (contentDisposition) {

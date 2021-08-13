@@ -9,7 +9,7 @@
 					<div class="menuBox">
 						<div>
 							<h4 class="font-normal inline-block" style="width:12%">주소록 선택</h4>
-							<select ref="selectAddrCateGrp" v-on:change="fnSelected" class="selectStyle2" style="width:25%">
+							<select ref="selectAddrCateGrp" v-on:change="fnSelected" class="selectStyle2" style="width:25%" v-model="selectAddressCategoryGrpId">
 								<option value="" selected>주소록을 선택해 주세요</option>
 								<option v-for="(content, index) in addrCateGrpList" :key="index" :value="content.addressCategoryGrpId">
 									{{ content.addressCategoryGrpFullName }}
@@ -17,6 +17,7 @@
 							</select>
 							<a @click="fnRegAddrPop()" class="btnStyle1 ml20" title="주소록 등록">등록</a>
 							<a @click="fnModAddrPop()" class="btnStyle1 ml5" title="주소록 수정">수정</a>
+							<a @click="fnDelAddrPopConfirm()" class="btnStyle1 ml5" title="주소록 삭제">삭제</a>
 						</div>
 						<p class="txtCaption color4" style="margin-left:12.5%;margin-top:10px">{{ selectedAddrCateGrp.addressCategoryGrpDesc }}</p>
 					</div>
@@ -246,6 +247,7 @@ export default {
 			isSelectRoot: false,
 			//Tree 목록에서 선택 건의 뎁스
 			selectDepthNumber: -1,
+			selectAddressCategoryGrpId : ""
 		}
 	},
 	mounted() {
@@ -537,7 +539,31 @@ export default {
 			this.listAllChecked = false;
 			this.listChkBox = [];
 		},
+		//주소록 삭제 확인
+		fnDelAddrPopConfirm(){
+			if( this.selectAddressCategoryGrpId === "" ){
+				confirm.fnAlert('', '삭제할 주소록을 선택해주세요.');
+				return;
+			}
+			eventBus.$on('callbackEventBus', this.fnDeleteAddr);
+			confirm.fnConfirm('주소록 삭제', '해당 주소록을 삭제하시겠습니까?', '확인');
+		},
+		fnDeleteAddr(){
+			let params = {
+				'addressCategoryGrpId': this.selectAddressCategoryGrpId,
+			};
 
+			addressApi.deleteAddress(params).then(response =>{
+				var result = response.data;
+				if(result.success) {
+					confirm.fnAlert('주소록 삭제', '주소록을 삭제 했습니다.');
+					this.fnSearchAddressCateGrpList();
+					this.selectAddressCategoryGrpId = "";
+				} else {
+					confirm.fnAlert('주소록 삭제', result.message);
+				}
+			});
+		}
 	}
 }
 </script>

@@ -441,4 +441,10 @@
 				AND		@pv := CONCAT(@pv, ',', ADDRESS_CATEGORY_ID)
 			)
 	</delete>
+	
+	<delete id="deleteAddrCateGrp">
+		/* address.deleteAddrCateGrp */
+		DELETE FROM cm_console.CM_ADDR_CATE_GRP
+		WHERE ADDRESS_CATEGORY_GRP_ID = #{addressCategoryGrpId}
+	</delete>
 </mapper>

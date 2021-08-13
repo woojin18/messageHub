@@ -454,4 +454,35 @@ public class AddressService {
 		}
 			return rtn;
 	}
+	
+	// 주소록 삭제
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<Object> deleteAddress(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		// 그룹키 하위의 카테고리 키들을 가져오기
+		List<Object> cateList = generalDao.selectGernalList(DB.QRY_SELECT_ADDR_CATE_LIST, params);
+		
+		for( int i = 0; i < cateList.size(); i++ ) {
+			Map<String, Object> cataMap = (Map<String, Object>) cateList.get(i); 
+			
+			Map<String, Object> deleteMap = new HashMap<>();
+			
+			deleteMap.put("addressCategoryId", cataMap.get("addressCategoryId"));
+			
+			// 하위카테고리 포함 구성원 삭제
+			generalDao.deleteGernal(DB.QRY_DELETE_ADDR_CATE_MEMBER, cataMap);
+			
+			// 하위카테고리 포함 삭제
+			generalDao.deleteGernal(DB.QRY_DELETE_ADDR_CATE, cataMap);
+		}
+		
+		// 주소록 그룹 삭제
+		generalDao.deleteGernal(DB.QRY_DELETE_ADDR_CATE_GRP, params);
+		
+		rtn.setSuccess(true);
+		
+		return rtn;
+	}
 }
