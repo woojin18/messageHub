@@ -114,7 +114,7 @@
                   </td>
                   <td class="text-left">{{contant.tmpltName | unescapeXss}}</td>
                   <td class="text-center">{{contant.projectIdNm}}</td>
-                  <td class="text-center">{{contant.senderType}}</td>
+                  <td class="text-center">{{contant.senderType | lmsmms}}</td>
                   <td class="text-center">{{contant.regNm}}</td>
                   <td class="text-center end">{{contant.regDt}}</td>
                 </tr>

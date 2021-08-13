@@ -57,7 +57,7 @@
             <input type="radio" id="senderType_SMS" name="senderType" value="SMS" v-model="tmpltData.senderType">
             <label for="senderType_SMS" class="mr30">SMS</label>
             <input type="radio" id="senderType_MMS" name="senderType" value="MMS" v-model="tmpltData.senderType">
-            <label for="senderType_MMS">MMS</label>
+            <label for="senderType_MMS">LMS/MMS</label>
           </div>
         </div>
         <div class="of_h">

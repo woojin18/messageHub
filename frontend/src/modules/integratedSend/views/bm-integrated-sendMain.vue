@@ -406,12 +406,12 @@
           <div :class="'phone_04_btn7' + (showBxPage ? ' mt20' : '')">
             <ul>
               <li v-for="(chTypeInfo, idx) in tmpltData.chTypeList.slice(0, 3)" :key="idx" :class="(previewMessageType == chTypeInfo ? 'active' : '')">
-                <a href="#" @click.prevent="fnChgPreviewMessageType(chTypeInfo)" :title="chTypeInfo">{{chInfo[chTypeInfo]}}</a>
+                <a href="#" @click.prevent="fnChgPreviewMessageType(chTypeInfo)" :title="chTypeInfo">{{chInfo[chTypeInfo]  | lmsmms}}</a>
               </li>
             </ul>
             <ul v-if="tmpltData.chTypeList.length > 3" class="mt5">
               <li v-for="(chTypeInfo, idx) in tmpltData.chTypeList.slice(3, tmpltData.chTypeList.length)" :key="idx" :class="(previewMessageType == chTypeInfo ? 'active' : '')">
-                <a href="#" @click.prevent="fnChgPreviewMessageType(chTypeInfo)" :title="chTypeInfo">{{chInfo[chTypeInfo]}}</a>
+                <a href="#" @click.prevent="fnChgPreviewMessageType(chTypeInfo)" :title="chTypeInfo">{{chInfo[chTypeInfo]  | lmsmms}}</a>
               </li>
             </ul>
           </div>

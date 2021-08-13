@@ -31,7 +31,7 @@
               <div class="col-xs-4 of_h">
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30">발송유형</h5>
-                  <h5 style="width:40%" class="float-right ml30 color4 word-break-all">{{templateData.senderType}}</h5>
+                  <h5 style="width:40%" class="float-right ml30 color4 word-break-all">{{templateData.senderType | lmsmms}}</h5>
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30">메시지구분</h5>

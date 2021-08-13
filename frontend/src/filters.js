@@ -23,6 +23,13 @@ Vue.filter('getNotiTypeClass', (noticeType) => {
   else return 'newIcon';
 });
 
+//MMS -> LMS/MMS
+Vue.filter('lmsmms', (value) => {
+  if(!value) return '';
+  else if(value == 'MMS') return 'LMS/MMS';
+  else return value;
+});
+
 //RCS 아이콘 URL
 Vue.filter('getIconURlByFormNm', (value) => {
   if(!value) return '';
