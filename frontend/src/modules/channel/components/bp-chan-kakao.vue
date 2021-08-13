@@ -184,13 +184,13 @@ export default {
 		};
 
 		api.saveKkoChForApi(params).then(response =>{
-			var result = response.data.data;
+			var result = response.data;
 
 			if( result.success ){
 				confirm.fnAlert("", "저장에 성공했습니다.");
 				this.tokenYn = 'N';
 			} else {
-				confirm.fnAlert("", "저장에 실패했습니다.");
+				confirm.fnAlert("", result.message);
 			}
 		});
 	}
