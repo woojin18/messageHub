@@ -309,7 +309,7 @@ export default {
         confirm.fnAlert(this.componentsTitle, '이미지 입력시 이미지 링크 URL은 필수입니다.');
         return false;
       }
-      if(this.tmpltData.imgLink && !this.$gfnCommonUtils.isUrl(this.tmpltData.imgLink)){
+      if(this.tmpltData.imgUrl && this.tmpltData.imgLink && !this.$gfnCommonUtils.isUrl(this.tmpltData.imgLink)){
         confirm.fnAlert(this.componentsTitle, '유효하지 않은 이미지 링크 URL 입니다.');
         return false;
       }

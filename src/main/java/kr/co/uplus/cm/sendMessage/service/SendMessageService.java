@@ -1382,8 +1382,10 @@ public class SendMessageService {
         //이미지파일관련
         requestData.setFileId(CommonUtils.getStrValue(params, "fileId"));
         requestData.setWideImageYn(CommonUtils.getStrValue(params, "wideImgYn"));
-        requestData.getImage().setImageUrl(CommonUtils.getStrValue(params, "imgUrl"));
-        requestData.getImage().setImageLink(CommonUtils.getStrValue(params, "imgLink"));
+        if(StringUtils.isNotBlank(requestData.getFileId())) {
+            requestData.getImage().setImageUrl(CommonUtils.getStrValue(params, "imgUrl"));
+            requestData.getImage().setImageLink(CommonUtils.getStrValue(params, "imgLink"));
+        }
 
         //버튼정보
         if(!CommonUtils.isEmptyValue(params, "buttonList")) {
