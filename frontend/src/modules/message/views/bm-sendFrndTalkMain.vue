@@ -54,7 +54,7 @@
                   <span><pre><span v-if="sendData.rplcSendType == 'SMS' && sendData.msgKind == 'A'">(광고)</span>{{sendData.fbInfo.msg}}</pre></span>
                   <br v-if="!$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)"/>
                   <span v-if="sendData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)">
-                    수신거부번호 : {{sendData.fbInfo.rcvblcNumber}}
+                    {{sendData.fbInfo.rcvblcNumber}}
                   </span>
                 </p>
               </div>

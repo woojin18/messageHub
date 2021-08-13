@@ -74,7 +74,7 @@
                       <p class="font-size14 color4 mt10">
                         <span><pre><span v-if="fnIsEmpty(templateData.tmpltTitle) && templateData.msgKind == 'A'">(광고)</span>{{templateData.tmpltContent}}</pre></span>
                         <br v-if="!fnIsEmpty(templateData.tmpltContent)"/>
-                        {{templateData.msgKind == 'A' ? '(수신거부 : '+this.templateData.rcvblcNumber+')' : ''}}
+                        {{this.templateData.rcvblcNumber}}
                       </p>
                     </div>
                   </div>

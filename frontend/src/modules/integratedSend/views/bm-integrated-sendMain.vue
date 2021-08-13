@@ -28,7 +28,7 @@
                   <p class="consolMarginTop">
                     <pre><span v-if="$gfnCommonUtils.isEmpty(tmpltData.PUSH.title) && tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.PUSH.msg}}</pre>
                     <br/>
-                    {{tmpltData.msgKind == 'A' ? '(수신거부 : '+tmpltData.PUSH.rcvblcInput+')' : ''}}
+                    {{tmpltData.PUSH.rcvblcInput}}
                   </p>
                 </div>
               </div>
@@ -75,7 +75,7 @@
                   <p class="consolMarginTop"><pre>{{tmpltData.MMS.msg}}</pre></p>
                   <br v-if="tmpltData.msgKind == 'A'"/>
                   <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.MMS.rcvblcInput)">
-                    수신거부번호 : {{tmpltData.MMS.rcvblcInput}}
+                    {{tmpltData.MMS.rcvblcInput}}
                   </span>
                 </div>
               </div>
@@ -92,7 +92,7 @@
                   <p class="consolMarginTop"><pre><span v-if="tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.SMS.msg}}</pre></p>
                   <br v-if="tmpltData.msgKind == 'A'"/>
                   <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.SMS.rcvblcInput)">
-                    수신거부번호 : {{tmpltData.SMS.rcvblcInput}}
+                    {{tmpltData.SMS.rcvblcInput}}
                   </span>
                 </div>
               </div>

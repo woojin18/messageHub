@@ -29,7 +29,7 @@
                   <span><pre><span v-if="tmpltData.senderType == 'SMS' && tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.tmpltContent}}</pre></span>
                   <br v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltContent)"/>
                   <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.rcvblcNumber)">
-                    수신거부번호 : {{tmpltData.rcvblcNumber}}
+                    {{tmpltData.rcvblcNumber}}
                   </span>
                 </p>
               </div>
@@ -95,7 +95,7 @@
             <h4>광고성메시지 수신거부번호</h4>
           </div>
           <div class="float-left" style="width:69%">
-            <input type="text" class="inputStyle" v-model="tmpltData.rcvblcNumber" maxlength="10">
+            <input type="text" class="inputStyle" v-model="tmpltData.rcvblcNumber" maxlength="10" placeholder="ex) 수신거부번호 : 08000000000">
           </div>
         </div>
 
@@ -173,7 +173,7 @@ export default {
     }
   },
   mounted() {
-    this.fnExistApiKey();
+    this.fnValidUseChGrp();
     this.fnSetTemplateInfo();
   },
   methods: {

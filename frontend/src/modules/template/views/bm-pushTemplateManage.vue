@@ -34,7 +34,7 @@
                   
                   <br v-if="!fnIsEmpty(tmpltData.tmpltContent)"/>
                   <span v-if="tmpltData.msgKind == 'A' && !fnIsEmpty(tmpltData.rcvblcNumber)">
-                    (수신거부 : {{tmpltData.rcvblcNumber}})
+                    {{tmpltData.rcvblcNumber}}
                   </span>
                 </p>
               </div>
