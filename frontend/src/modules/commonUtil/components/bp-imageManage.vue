@@ -136,6 +136,7 @@ export default {
       imgPreviewOpen: false,
       listAllChecked: false,
       listChkBox: [],
+      rtnParams: {},
       totCnt : 0,  //전체 리스트 수
       listSize : 10,  // select 박스 value (출력 갯수 이벤트)
       pageNo : 1,  // 현재 페이징 위치
@@ -145,10 +146,17 @@ export default {
     if(this.imgMngOpen) this.fnSearch();
   },
   methods: {
+    fnSetRtnParams(params){
+      this.rtnParams = Object.assign({}, params);
+    },
     // 이미지 선택
     fnSelectImage(idx){
+      let rtnData = this.contants[idx];
+      if(this.rtnParams){
+        rtnData.rtnParams = this.rtnParams;
+      }
+      this.$emit('img-callback', rtnData);
       this.fnClose();
-      this.$emit('img-callback',this.contants[idx]);
     },
     // 조회
     async fnSearch(){
@@ -195,7 +203,8 @@ export default {
     //파일업로드팝업 초기화
     fnClose(){
       this.$refs.updatePaging.fnAllDecrease();
-      this.$emit('update:imgMngOpen', false)
+      Object.assign(this.$data, this.$options.data());
+      this.$emit('update:imgMngOpen', false);
     },
     //이미지 추가 버튼 클릭시
     fnOpenImageUploadPopUp() {

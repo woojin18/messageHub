@@ -82,7 +82,7 @@
                 <div class="float-left" style="width:24%"><a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택" activity="READ">이미지선택</a></div>
                 <ul v-for="imgIdx in imgLimitSize" :key="imgIdx" class="float-right attachList" style="width:74%; padding:5px 15px; height:30px;">
                   <li v-if="sendData.imgInfoList.length > imgIdx-1">
-                    <a @click="fnDelImg(idx)">{{fnSubString(sendData.imgInfoList[imgIdx-1].imgUrl, 0, 35)}} <i class="fal fa-times"></i></a>
+                    <a @click="fnUpdateImg(imgIdx)">{{fnSubString(sendData.imgInfoList[imgIdx-1].imgUrl, 0, 35)}}</a><a @click="fnDelImg(imgIdx)"> <i class="fal fa-times"></i></a>
                   </li>
                   <li v-else>
                     <a></a>
@@ -456,13 +456,18 @@ export default {
       });
     },
     fnCallbackImgInfo(imgInfo){
-      if(this.fnImgLimitSize() == false) return;
       let temp = {
         imgUrl: imgInfo.chImgUrl,
         fileId: imgInfo.fileId
       };
-      this.sendData.imgInfoList.push(temp);
-      this.fnDelDuplImgInfo();
+      if(imgInfo.rtnParams && imgInfo.rtnParams.updIdx > 0){
+        this.sendData.imgInfoList[imgInfo.rtnParams.updIdx-1] = temp;
+      } else {
+        if(this.fnImgLimitSize() == false) return;
+        this.sendData.imgInfoList.push(temp);
+      }
+
+      //this.fnDelDuplImgInfo();
     },
     fnDelDuplImgInfo(){
       const vm = this;
@@ -520,8 +525,14 @@ export default {
       this.sendData.smsContent = data.smsContent;
       this.sendData.rcvblcNumber = data.rcvblcNumber;
     },
+    fnUpdateImg(idx){
+      let params = {updIdx: idx};
+      this.$refs.imgMngPopup.fnSearch();
+      this.$refs.imgMngPopup.fnSetRtnParams(params);
+      this.imgMngOpen = !this.imgMngOpen;
+    },
     fnDelImg(idx){
-      this.sendData.imgInfoList.splice(idx, 1);
+      this.sendData.imgInfoList.splice(idx-1, 1);
     },
     //수신자 정보 callback
     fnCallbackRecvInfoLst(recvInfoLst, addYn) {

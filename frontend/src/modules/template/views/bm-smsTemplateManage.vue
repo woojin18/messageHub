@@ -110,7 +110,7 @@
               </div>
               <ul v-for="imgIdx in imgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
                 <li v-if="tmpltData.imgInfoList.length > imgIdx-1">
-                  <a @click="fnDelImg(idx)">{{fnSubString(tmpltData.imgInfoList[imgIdx-1].imgUrl, 0, 35)}} <i class="fal fa-times"></i></a>
+                  <a @click="fnUpdateImg(imgIdx)">{{fnSubString(tmpltData.imgInfoList[imgIdx-1].imgUrl, 0, 35)}}</a><a @click="fnDelImg(imgIdx)"><i class="fal fa-times"></i></a>
                 </li>
                 <li v-else>
                   <a></a>
@@ -316,6 +316,12 @@ export default {
         this.$router.push('smsTemplateList')
       }
     },
+    fnUpdateImg(idx){
+      let params = {updIdx: idx};
+      this.$refs.imgMngPopup.fnSearch();
+      this.$refs.imgMngPopup.fnSetRtnParams(params);
+      this.imgMngOpen = !this.imgMngOpen;
+    },
     fnDelImg(idx){
       this.tmpltData.imgInfoList.splice(idx, 1);
     },
@@ -337,13 +343,17 @@ export default {
       this.imgMngOpen = !this.imgMngOpen;
     },
     fnCallbackImgInfo(imgInfo){
-      if(this.fnImgLimitSize() == false) return;
       let temp = {
         imgUrl: imgInfo.chImgUrl,
         fileId: imgInfo.fileId
       };
-      this.tmpltData.imgInfoList.push(temp);
-      this.fnDelDuplImgInfo();
+      if(imgInfo.rtnParams && imgInfo.rtnParams.updIdx > 0){
+        this.tmpltData.imgInfoList[imgInfo.rtnParams.updIdx-1] = temp;
+      } else {
+        if(this.fnImgLimitSize() == false) return;
+        this.tmpltData.imgInfoList.push(temp);
+      }
+      //this.fnDelDuplImgInfo();
     },
     fnDelDuplImgInfo(){
       const vm = this;
