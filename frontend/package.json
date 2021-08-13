@@ -25,6 +25,7 @@
     "tui-grid": "4.5.2",
     "v-runtime-template": "^1.10.0",
     "vue": "^2.6.10",
+    "vue-captcha": "^1.0.2",
     "vue-chartjs": "^3.5.1",
     "vue-chartkick": "^1.1.0",
     "vue-cookies": "^1.7.4",

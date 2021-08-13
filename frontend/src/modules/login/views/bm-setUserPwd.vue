@@ -14,7 +14,14 @@
 					*이전 사용되었던 패스워드는 재사용 할 수 없습니다.</p>
 				</div>
 			</div>
-			<div class="text-center mt40"><a href="#self" @click.prevent="fnSetUserPwd" class="btnStyle3 black font14 minWidth120">비밀번호 저장</a></div>
+			
+			<div class="mt40">
+				<my-captcha :callSuccess="captchaBtn" color="black" resolve="text" style="margin: 0 auto;"></my-captcha>
+			</div>
+
+			<div class="text-center mt40">
+				<a id="btnSave" v-bind:disabled="btndis" @click.prevent="fnSetUserPwd" class="btnStyle3 black font14 minWidth120">비밀번호 저장</a>
+			</div>
 		</section>
 	</article>
 </template>
@@ -25,22 +32,33 @@ import * as utils from '@/common/utils';
 import confirm from "@/modules/commonUtil/service/confirm";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import signUpApi from "@/modules/signUp/service/api"
+import myCaptcha from 'vue-captcha'
+import jq from 'jquery'
 
 export default {
+	components: {
+    	'my-captcha': myCaptcha
+  	},
 	data: function() {
 		return {
 			authKey : this.$route.query.authKey,
 			pwd : "",
 			pwdChk : "",
-			loginId : ""
+			loginId : "",
+			btndis: true
 		};
 	},
 	created() {
 	},
 	mounted() {
+		jq("button[title='Written']").click();
+
 		this.fnChkCertify();
 	},
 	methods: {
+		captchaBtn () {
+			this.btndis = false
+		},
 		fnChkCertify() {
 			var params = {
 				authKey : this.authKey
@@ -57,6 +75,11 @@ export default {
 			})
 		},
 		fnSetUserPwd(){
+			if(this.btndis) {
+				confirm.fnAlert("화면에 보이는 문자를 입력해주세요.");
+				return;
+			}
+
 			if(this.pwd.length == 0 || this.pwdChk.length == 0){
 				confirm.fnAlert("비밀번호는 필수 입력 사항입니다.");
 				return;
@@ -94,3 +117,13 @@ export default {
 	}
 };
 </script>
+
+<style scope>
+#btnSave[disabled] {
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+button[title="Written"] {
+	display: none !important;
+}
+</style> 
