@@ -9,7 +9,8 @@
             <div class="float-right" style="width:79%">
               <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="frndTalkContent" maxlength="2000"></textarea>
             </div>
-            <p class="txtCaption color5" style="margin-left:21%">광고 메시지 대체 발송 시, 080수신 거부번호가 설정되어 있지 않으면 대체 발송 실패할 수 있습니다.</p>
+            <!-- #10476 : 친구톡은 enduser가 별도 수신차단 가능하여, 해당 문구 필요없음 -->
+            <!-- <p class="txtCaption color5" style="margin-left:21%">광고 메시지 대체 발송 시, 080수신 거부번호가 설정되어 있지 않으면 대체 발송 실패할 수 있습니다.</p> -->
           </div>
           
           <div class="text-center mt20">
