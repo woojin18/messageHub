@@ -118,11 +118,15 @@ public class AuthService implements UserDetailsService {
 		}
 
 		AuthUser user = (AuthUser) authentication.getPrincipal();
+		String delYn = user.getDelYn();
 		int diffDate = user.getDiffDate();
 		if ("UC".equals(user.getSvcTypeCd())) {
 			if ("".equals(user.getRepProjectId()) || user.getRepProjectId() == null) {
 				return new RestResult<String>(false).setCode(ResultCode.SS_NOT_PROJECT);
 			}
+		}
+		if ("Y".equals(delYn)) {
+			return new RestResult<String>(false).setCode(ResultCode.SS_DEL_USE);
 		}
 
 		ResultCode rcode = loginSuccessHandler.process(request, response, authentication);

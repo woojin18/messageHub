@@ -125,6 +125,9 @@ export default {
 						case 'SS_LOCK': // 잠김 계정
 							msg = '관리자 승인 후 이용할 수 있습니다.';
 							break;
+						case 'SS_DEL_USE': // 삭제 계정
+							msg = '삭제 된 계정입니다.';
+							break;
 						case 'SS_PWD_EXPIRE': // 비밀번호 만료
 							msg = '비밀번호를 변경하신지 90일이 지났습니다.\n비밀번호 변경 화면으로 이동합니다.';
 							next = '/login?expire';

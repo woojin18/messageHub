@@ -41,5 +41,5 @@ export default [
 		name: 'resetUserPwd',
 		component: resetUserPwd,
 		meta: { public: true }
-	},
+	}
 ]
