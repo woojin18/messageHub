@@ -17,7 +17,7 @@
 									<img src="/se2/images/phoneMockup1.svg" alt="프리 템플릿">
 									<div class="phoneTextWrap">
 										<div class="phoneText1">
-											<p class="color3">{{body}}</p>
+											<p class="color3">{{msg}}</p>
 										</div>
 									</div>
 								</div>
@@ -85,7 +85,7 @@ export default {
       phoneNumber : '',
       gwResultNm : '',
       regDt : '',
-      body : ''
+      msg : ''
     }
   },
  // mounted() {
@@ -102,10 +102,10 @@ export default {
             }
 
              messageStatusApi.selectMessageStatusDetail(params).then(response=> {
-                var result = response.data.data[0];
-
+                var result = response.data.data;
+                
                 //var title         = result.title;
-                var body          = result.body;
+                var msg           = result.msg;
                 var senderTypeNm  = result.senderTypeNm;
                 var campaignId    = result.campaignId;
                 var phoneNumber   = result.phoneNumber;
@@ -113,7 +113,7 @@ export default {
                 var regDt         = result.regDt;
 
                 //this.title        = title;
-                this.body         = body;
+                this.msg          = msg;
                 this.senderTypeNm = senderTypeNm;
                 this.campaignId   = campaignId;
                 this.phoneNumber  = phoneNumber;

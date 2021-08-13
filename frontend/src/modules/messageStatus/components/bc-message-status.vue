@@ -104,7 +104,7 @@
             <tbody>
               <tr v-for="(data, idx) in datas" :key="data.rowNum">
                   <td>{{data.rowNum}}</td>
-                  <td class="text-center"><a href="javascript:void(0);" @click="fnDetailPop(idx)"><u>{{data.phoneNumber}}</u></a></td>
+                  <td class="text-center"><a @click="fnDetailPop(idx)"><u>{{data.phoneNumber}}</u></a></td>
                   <td class="text-center">{{data.pushCuid}}</td>
                   <td class="text-center">{{data.cliKey}}</td>
                   <td class="text-center">{{data.regDt}}</td>

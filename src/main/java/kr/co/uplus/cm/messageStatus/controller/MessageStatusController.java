@@ -8,27 +8,16 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-//import bin.main.kr.co.uplus.cm.common.type.MongoConf;
-//import bin.main.kr.co.uplus.cm.gw.model.mongo.CmMsgInfoDto;
 import kr.co.uplus.cm.common.dto.RestResult;
-import kr.co.uplus.cm.common.type.MongoConf;
-import kr.co.uplus.cm.gw.model.mongo.CmMsgInfoDto;
 import kr.co.uplus.cm.messageStatus.service.MessageStatusService;
 import kr.co.uplus.cm.utils.DateUtil;
-import kr.co.uplus.config.mongo.cmd.MongoCmd;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -38,10 +27,7 @@ public class MessageStatusController {
 
 	@Autowired
 	MessageStatusService messageStatusService;
-
-	@Autowired
-	private MongoCmd mongoCmd;
-
+	
 	// 메시지 현황 리스트 조회
 	@PostMapping("/selectMessageStatusList")
 	public RestResult<?> selectMessageStatusList(@RequestBody Map<String, Object> params, HttpServletRequest request,
@@ -95,38 +81,11 @@ public class MessageStatusController {
 	@PostMapping("/selectMessageStatusDetail")
 	public RestResult<?> selectMessageStatusDetail(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-
-		String msgKey 		= params.get("msgKey").toString();
-		
-		Query query = new Query(Criteria.where("msgKey").is(msgKey));
-		CmMsgInfoDto msgInfo = mongoCmd.findOne(query, CmMsgInfoDto.class, MongoConf.CM_MSG_INFO.key);
-		
-		String msg = "";//메시지 내용
-//		String msgTitle = "";//메시지 제목
-		
-		log.info("jameskang msgInfo : "+msgInfo.toString());
-		
-		if(msgInfo != null) {
-//			msg = msgInfo.getSmsMsg()
-//			msgInfo.getMmsMsg()
-//			msgInfo.getPushMsg()
-//			msgInfo.getRcsMsg()
-//			msgInfo.getAlimtalkMsg()
-//			msgInfo.getFriendtalkMsg()
-		}
 		
 		RestResult<Object> rtn = new RestResult<Object>();
-
+		
 		rtn = messageStatusService.selectMessageStatusDetail(params);
-
-		List<HashMap<String, Object>> mapList = (List<HashMap<String, Object>>) rtn.getData();
-		HashMap<String,Object> hMap = mapList.get(0);
-		hMap.put("body", msg);
-
-		mapList.set(0, hMap);
-
-		rtn.setData(mapList);
-
+		
 		return rtn;
 	}
 

@@ -6,21 +6,31 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.common.type.MongoConf;
+import kr.co.uplus.cm.gw.model.mongo.CmMsgInfoDto;
+import kr.co.uplus.cm.gw.model.mongo.msgInfo.AlimtalkMsg;
+import kr.co.uplus.cm.gw.model.mongo.msgInfo.FriendtalkMsg;
+import kr.co.uplus.cm.gw.model.mongo.msgInfo.MmsMsg;
+import kr.co.uplus.cm.gw.model.mongo.msgInfo.PushMsg;
+import kr.co.uplus.cm.gw.model.mongo.msgInfo.RcsMsg;
+import kr.co.uplus.cm.gw.model.mongo.msgInfo.SmsMsg;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
+import kr.co.uplus.config.mongo.cmd.MongoCmd;
 
 @Service
 public class MessageStatusService {
 
 	@Autowired
 	private GeneralDao generalDao;
-
+	
+	@Autowired
+	private MongoCmd mongoCmd;
+	
 	// 메시지 현황 리스트 조회
 	public RestResult<Object> selectMessageStatusList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -44,13 +54,56 @@ public class MessageStatusService {
 	}
 	
 	// 메시지 현황 상세 조회
+	@SuppressWarnings("unchecked")
 	public RestResult<Object> selectMessageStatusDetail(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-
-        List<Object> rtnList = generalDao.selectGernalList("messageStatus.selectMessageStatusDetail", params);
-        rtn.setData(rtnList);
-
-        return rtn;
+		
+		Map<String, Object> rtnMap = (Map<String, Object>) generalDao.selectGernalObject("messageStatus.selectMessageStatusDetail", params);
+		
+		String			reqCh		= CommonUtils.getString(rtnMap.get("reqCh"));
+		String			msgKey		= params.get("msgKey").toString();
+		Query			query		= new Query(Criteria.where("msgKey").is(msgKey));
+		CmMsgInfoDto	msgInfo		= mongoCmd.findOne(query, CmMsgInfoDto.class, MongoConf.CM_MSG_INFO.key);
+		String			msg			= "";//메시지 내용
+		
+		if(msgInfo != null) {
+			switch (reqCh) {
+			case "SMS":
+				SmsMsg sms = msgInfo.getSmsMsg();
+				msg = sms.getMsg();
+				break;
+			case "MMS":
+				MmsMsg mms = msgInfo.getMmsMsg();
+				msg = mms.getMsg();
+				break;
+			case "PUSH":
+				PushMsg push = msgInfo.getPushMsg();
+				msg = CommonUtils.getString(push.getMsg());
+				break;
+			case "RCS":
+				RcsMsg rcs = msgInfo.getRcsMsg();
+				msg = CommonUtils.getString(rcs.getBody());
+				//rcs는 body에서 가져오는데 메세지 풀 내용을 가지고 있지않기 때문에 body의 내용을 뿌리기로 하였습니다.(손왕구 차장)
+				break;
+			case "ALIMTALK":
+				AlimtalkMsg alim = msgInfo.getAlimtalkMsg();
+				msg = alim.getMsg();
+				break;
+			case "FRIENDTALK":
+				FriendtalkMsg fri = msgInfo.getFriendtalkMsg();
+				msg = fri.getMsg();
+				break;
+			case "SMART":
+				break;
+			default:
+				break;
+			}
+		}
+		
+		rtnMap.put("msg", msg);
+		rtn.setData(rtnMap);
+		
+		return rtn;
 	}	
 
 
