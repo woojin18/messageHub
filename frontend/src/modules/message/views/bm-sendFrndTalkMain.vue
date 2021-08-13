@@ -519,7 +519,7 @@ export default {
       return true;
     },
     //메시지 발송 처리
-    async fnSendFrndTalkMessage(testSendYn){
+    fnSendFrndTalkMessage(testSendYn){
       if(this.inProgress){
         confirm.fnAlert(this.componentsTitle, '친구톡 메시지 발송 처리중입니다.');
         return;
@@ -546,12 +546,13 @@ export default {
       fd.append('paramString', JSON.stringify(params));
       if(this.sendData.cuInputType == 'EXCEL'){
         fd.append('file', this.$refs.excelFile.files[0]);
+        this.$refs.excelFile.value = '';
       }
 
       this.inProgress = true;
       const vm = this;
       
-      await messageApi.sendFrndTalkMessage(fd).then(response =>{
+      messageApi.sendFrndTalkMessage(fd).then(response =>{
         this.inProgress = false;
         const result = response.data;
 

@@ -185,6 +185,13 @@ public class SendMessageService {
                 for(Map<String, Object> recvObj : objList) {
                     recvInfo = mapper.convertValue(recvObj, RecvInfo.class);
                     recvInfo.setCliKey(webReqId+separator+String.valueOf(cliKey++));
+
+                    if(params.containsKey("requiredCuPhone") && (Boolean) params.get("requiredCuPhone")) {
+                        if(CommonUtils.isHpNumber(recvInfo.getPhone()) == false) {
+                            throw new CMException("유효하지 않은 핸드폰번호가 존재합니다.("+recvInfo.getPhone()+")");
+                        }
+                    }
+
                     recvInfoLst.add(recvInfo);
                 }
 
@@ -212,11 +219,18 @@ public class SendMessageService {
 
                 RecvInfo recvInfo = null;
                 Map<String, Object> mergeData = null;
+                String hpNumber = "";
                 for(Map<String, Object> excelInfo : excelList) {
                     recvInfo = new RecvInfo();
                     recvInfo.setCliKey(webReqId+separator+String.valueOf(cliKey++));
                     if(excelInfo.containsKey("cuid")) recvInfo.setCuid((String) excelInfo.get("cuid"));
-                    if(excelInfo.containsKey("phone")) recvInfo.setPhone((String) excelInfo.get("phone"));
+                    if(excelInfo.containsKey("phone")) {
+                        hpNumber = (String) excelInfo.get("phone");
+                        if(CommonUtils.isHpNumber(hpNumber) == false) {
+                            throw new CMException("유효하지 않은 핸드폰번호가 존재합니다.("+hpNumber+")");
+                        }
+                        recvInfo.setPhone(hpNumber);
+                    }
 
                     mergeData = new HashMap<String, Object>();
                     for(String key : excelInfo.keySet()) {

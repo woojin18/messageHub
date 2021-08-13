@@ -459,6 +459,7 @@ export default {
       fd.append('paramString', JSON.stringify(params));
       if(this.sendData.cuInputType == 'EXCEL'){
         fd.append('file', this.$refs.excelFile.files[0]);
+        this.$refs.excelFile.value = '';
       }
 
       this.inProgress = true;
