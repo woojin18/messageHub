@@ -110,8 +110,33 @@ export default {
         confirm.fnAlert(this.componentsTitle, '광고성메시지 수신거부번호를 입력해주세요.');
         return false;
       }
+
+      let msgLimitByte;
+      const totalMsg = this.smsTitle + this.smsContent + '\n' + this.rcvblcNumber;
+      const totByte = this.getByte(totalMsg);
+
+      if(this.sendData.senderType == 'SMS'){
+        msgLimitByte = 80;
+      } else if(this.sendData.senderType == 'LMS'){
+        msgLimitByte = 1000;
+      } else if(this.sendData.senderType == 'MMS'){
+        msgLimitByte = 2000;
+      }
+
+      if(msgLimitByte < totByte){
+        const alertMsg = (this.sendData.senderType == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+msgLimitByte+'byte 를 넘지 않아야됩니다.\n(현재 : '+totByte+'byte)';
+        confirm.fnAlert(this.componentsTitle, alertMsg);
+        return false;
+      }
       this.$parent.fnSetSmsInfo(this.$data);
       this.fnClose();
+    },
+    //get 문자열 byte
+    getByte(str) {
+      return str
+        .split('')
+        .map(s => s.charCodeAt(0))
+        .reduce((prev, c) => (prev + ((c === 10) ? 2 : ((c >> 7) ? 2 : 1))), 0);
     },
     //초기 정보 Set
     fnSetPushInfo(){

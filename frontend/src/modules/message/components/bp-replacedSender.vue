@@ -147,7 +147,7 @@ export default {
       }
 
       if(msgLimitByte < totByte){
-        const alertMsg = (this.fbInfo.ch == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+msgLimitByte+'를 넘지 않아야됩니다.\n(현재 : '+totByte+'byte)';
+        const alertMsg = (this.fbInfo.ch == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+msgLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+totByte+'byte)';
         confirm.fnAlert(this.componentsTitle, alertMsg);
         return;
       }
