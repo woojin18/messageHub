@@ -44,7 +44,8 @@ public class CashController {
 			rtn = cashService.insertWebCashInfo(params);
 		} catch(Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
+//			rtn.setMessage("실패하였습니다.");
+			rtn.setMessage("실패하였습니다." + e.getMessage());
 		}
 		
 		return rtn;
@@ -77,10 +78,10 @@ public class CashController {
 		}
 		
 		if(!message.equals("")) {
-			return new RedirectView("http://localhost:3000/ac/cash" + "?pgMessage=" + message);
+			return new RedirectView("/ac/cash" + "?pgMessage=" + message);
 		}
 		
-		return new RedirectView("http://localhost:3000/ac/cash");
+		return new RedirectView("/ac/cash");
 	}
 	
 	@GetMapping("/cardFail")

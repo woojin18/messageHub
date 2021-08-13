@@ -77,7 +77,7 @@ public class CashService {
 				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			} else {
-				String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+				String errMsg = CommonUtils.getString(result.get("message"));
 				throw new Exception(errMsg);
 			}
 		}
@@ -160,15 +160,15 @@ public class CashService {
 		// API 통신 처리
 		Map<String, Object> result =  apiInterface.etcPost(ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/amount/" + corpId + "/" + cashId, apiBodyMap2, headerMap2);
 		
-		System.out.println("------------------------------------------------- cashInfo C U result : " + result);
+		//System.out.println("------------------------------------------------- cashInfo C U result : " + result);
 		
 		// 성공인지 실패인지 체크
 		if( "10000".equals(result.get("code")) ) {
 		} else if ( "500100".equals(result.get("code")) ) {
-			String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+			String errMsg = CommonUtils.getString(result.get("message"));
 			throw new Exception(errMsg);
 		} else {
-			String errMsg = CommonUtils.getString(result.get("rsltDesc"));
+			String errMsg = CommonUtils.getString(result.get("message"));
 			throw new Exception(errMsg);
 		}
 		
