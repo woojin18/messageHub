@@ -92,7 +92,7 @@ public class CashController {
 			@RequestParam(value="message"	, required = true) String message
 			) {
 		
-		return new RedirectView("http://localhost:3000/ac/cash" + "?pgMessage=" + message);
+		return new RedirectView("/ac/cash" + "?pgMessage=" + message);
 	}
 	
 	@PostMapping("/selectCashHist")
