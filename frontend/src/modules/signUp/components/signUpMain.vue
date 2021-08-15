@@ -70,25 +70,26 @@
 			</div>
 
 			<div class="joinBox mt10">
-				<div class="of_h mt10">
+			<div class="of_h mt10" v-if="selCorpCnt == 0">
 					<div class="float-left" style="width:22%"><h5>고객번호*</h5></div>
 					<div class="float-left" style="width:78%">
-						<input type="text" class="inputStyle" placeholder="고객번호"  v-model="custNo" disabled>
+						<input type="text" class="inputStyle" placeholder="고객사 신규 등록의 경우 자동 생성됩니다.ㅞ"  v-model="custNo" disabled>
 					</div>
 				</div>
 
-				<div class="of_h mt10">
+				<div class="of_h mt10" v-if="selCorpCnt == 0">
 					<div class="float-left" style="width:22%"><h5>고객유형*</h5></div>
 					<div class="float-right" style="width:78%">
 						<select class="selectStyle2" title="고객유형선택란" v-model="custKdCd" :disabled="selCorpCnt > 0">
 							<option value="">선택하세요</option>
 							<option  v-for="(row, index) in custTypeArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
 						</select>
+						<input type="hidden" class="inputStyle" placeholder="고객유형"  v-model="custKdCd" :disabled="selCorpCnt > 0">
 					</div>
-				</div>
+				</div> 
 
 
-				<div class="of_h mt10">
+				<div class="of_h mt10" v-if="selCorpCnt == 0">
 					<div class="float-left" style="width:22%"><h5>생년월일/<br>법인번호</h5></div>
 					<div class="float-left" style="width:78%">
 						<input type="text" class="inputStyle" placeholder="개인사업자의 생년월일(YYYYMMDD) 또는 법인번호"  v-model="custrnmNo" :disabled="selCorpCnt > 0">
@@ -100,19 +101,21 @@
 						<input type="text" class="inputStyle" placeholder="사업자명"  v-model="corpNm" :disabled="selCorpCnt > 0">
 					</div>
 				</div>
+
 				<div class="of_h mt10">
 					<div class="float-left" style="width:22%"><h5> 대표자명*</h5></div>
 					<div class="float-left" style="width:78%">
-						<input type="text" class="inputStyle" placeholder="대표자명"  v-model="ceoNm" :disabled="selCorpCnt > 0">
+						<input type="text" class="inputStyle" placeholder="대표자명"  v-model="rtnCustNm" :disabled="selCorpCnt > 0">
+						<input type="hidden" class="inputStyle" placeholder="대표자명"  v-model="ceoNm">
 					</div>
 				</div>
-				<div class="of_h mt10">
+				<div class="of_h mt10" v-if="selCorpCnt == 0">
 					<div class="float-left" style="width:22%"><h5>업태*</h5></div>
 					<div class="float-right" style="width:78%">
 						<input type="text" class="inputStyle" placeholder="업태"  v-model="busiType" :disabled="selCorpCnt > 0">
 					</div>
 				</div>
-				<div class="of_h mt10">
+				<div class="of_h mt10" v-if="selCorpCnt == 0">
 					<div class="float-left" style="width:22%"><h5>종목*</h5></div>
 					<div class="float-right" style="width:78%">
 						<input type="text" class="inputStyle" placeholder="종목"  v-model="busiClass" :disabled="selCorpCnt > 0">
@@ -128,7 +131,7 @@
 					<div class="float-right mt5" style="width:78%"><input type="text" class="inputStyle" placeholder="상세주소 입력" v-model="woplaceAddressDetail"  :disabled="selCorpCnt > 0"></div>
 				</div>
 
-				<div class="of_h mt10">
+				<div class="of_h mt10" v-if="selCorpCnt == 0">
 					<div class="float-left" style="width:22%"><h5>유선전화번호*</h5></div>
 					<div class="float-left" style="width:78%">
 						<input type="text" class="inputStyle" placeholder="전화번호 ( - 없이 입력 )" v-model="wireTel" :disabled="selCorpCnt > 0">
@@ -208,6 +211,7 @@ export default {
 			regno : "",					// 사업자번호
 			corpNm : "",				// 사업자명
 			ceoNm : "",					// 대표자명
+			rtnCustNm : "",		
 			busiType : "",				// 업태
 			busiClass : "",				// 종목
 			woplaceAddress : "",		// 주소
@@ -373,7 +377,7 @@ export default {
 				confirm.fnAlert("", "사업자명을 입력해주세요.");
 				return false;	
 			}
-			if (this.ceoNm == "") {
+			if (this.rtnCustNm == "") {
 				confirm.fnAlert("", "대표자명을 입력해주세요.");
 				return false;
 			}
@@ -465,7 +469,7 @@ export default {
 			fd.append('custKdCd', this.custKdCd)							// 고객유형
 			fd.append('custNo', this.custNo);								// 고객번호
 			fd.append('corpNm', this.corpNm);								// 사업명
-			fd.append('ceoNm', this.ceoNm);									// 사업자 명
+			fd.append('ceoNm', this.$gfnCommonUtils.isEmpty(this.ceoNm) ? this.rtnCustNm : this.ceoNm);									// 사업자 명
 			fd.append('busiType', this.busiType);							// 업태
 			fd.append('busiClass', this.busiClass);							// 업종
 			fd.append('zipCode', this.custAddrZip);							// 우편번호
@@ -541,7 +545,8 @@ export default {
 		fnSetCorpInfo(){
 			this.custNo					= this.selCorp.custNo == undefined ? "" : this.selCorp.custNo;							// 고객번호
 			this.custrnmNo				= this.selCorp.custrnmNo == undefined ? "" : this.selCorp.custrnmNo;					// 고객 식별번호
-			this.ceoNm					= this.selCorp.custNm == undefined ? "" : this.selCorp.custNm;							// 대표자 명
+			this.ceoNm					= this.selCorp.custNm == undefined ? "" : this.selCorp.custNm;						// 대표자 명
+			this.rtnCustNm				= this.selCorp.rtnCustNm == undefined ? "" : this.selCorp.rtnCustNm;
 			this.corpNm					= this.selCorp.bizCompNm == undefined ? "" : this.selCorp.bizCompNm;					// 사업자명
 			this.selRegno				= this.selCorp.bsRegNo == undefined ? "" : this.selCorp.bsRegNo;						// 선택한 사업자 번호(hidden)
 			this.custAddrZip			= this.selCorp.custAddrZip == undefined ? "" : this.selCorp.custAddrZip;				// 우편번호

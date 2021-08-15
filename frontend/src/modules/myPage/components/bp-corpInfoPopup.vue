@@ -8,15 +8,15 @@
 						<hr>
 						<h4>사업자 정보</h4>
 						<div class="border-line mt20 Dashboard06">
-							<div class="of_h">
+							<!-- <div class="of_h">
 								<h5 class="inline-block" style="width:20%">고객번호 <span class="color1">*</span></h5>
 								<input type="text" class="inputStyle float-right" style="width:80%" title="고객번호 입력란" v-model="custNo" disabled>
-							</div>
+							</div> -->
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block" style="width:20%">사업자번호 <span class="color1">*</span></h5>
 								<input type="text" class="inputStyle float-right" style="width:80%" title="사업자번호 입력란" v-model="regno" disabled>
 							</div>
-							<div class="of_h consolMarginTop">
+							<!-- <div class="of_h consolMarginTop">
 								<h5 class="inline-block" style="width:20%">고객유형 <span class="color1">*</span></h5>
 								<select class="selectStyle2" style="width:80%" title="고객유형선택란" v-model="custKdCd" disabled>
 									<option value="">선택하세요</option>
@@ -26,7 +26,7 @@
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block" style="width:20%">생년월일/<br>법인번호 <span class="color1">*</span></h5>
 								<input type="text" class="inputStyle float-right" style="width:80%" title="생년월일/법인번호 입력란" v-model="custrnmNo" disabled>
-							</div>
+							</div> -->
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block" style="width:20%">사업자명 <span class="color1">*</span></h5>
 								<input type="text" class="inputStyle float-right" style="width:80%" title="사업자명 입력란" v-model="corpName" disabled>
@@ -35,14 +35,14 @@
 								<h5 class="inline-block" style="width:20%">대표자명 <span class="color1">*</span></h5>
 								<input type="text" class="inputStyle float-right" style="width:80%" title="대표자명 입력란" v-model="ceoName" disabled>
 							</div>
-							<div class="of_h consolMarginTop">
+							<!-- <div class="of_h consolMarginTop">
 								<h5 class="inline-block" style="width:20%">업태 <span class="color1">*</span></h5>
 								<input type="text" class="inputStyle" placeholder="업태" style="width:80%"  v-model="busitype" disabled>
 							</div>
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block" style="width:20%">종목 <span class="color1">*</span></h5>
 								<input type="text" class="inputStyle" placeholder="종목" style="width:80%"  v-model="busiclass" disabled>
-							</div>
+							</div> -->
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block" style="width:20%">사업장주소 <span class="color1">*</span></h5>
 								<input type="text" class="inputStyle" style="width:58%" title="우편번호 입력란" placeholder="우편번호" disabled v-model="zipcode">
@@ -50,10 +50,10 @@
 								<input type="text" class="inputStyle consolMarginTop float-right" style="width:80%" title="사업장 주소 입력란" v-model="woplaceAddress" placeholder="주소" disabled>
 								<input type="text" class="inputStyle consolMarginTop float-right" style="width:80%" title="사업장 상세주소 입력란" v-model="woplaceAddressDetail" placeholder="상세주소" disabled>
 							</div>
-							<div class="of_h consolMarginTop">
+							<!-- <div class="of_h consolMarginTop">
 								<h5 class="inline-block" style="width:20%">유선전화번호</h5>
 								<input type="text" class="inputStyle float-right" style="width:80%" title="유선전화번호 입력란" v-model="wireTel" placeholder="-없이 입력" disabled>
-							</div>
+							</div> -->
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block" style="width:20%">사업자등록증 <span class="color1">*</span></h5>
 								<input type="text" class="inputStyle" style="width:58%" title="사업자등록증 입력란" v-model="attachFileName" disabled>

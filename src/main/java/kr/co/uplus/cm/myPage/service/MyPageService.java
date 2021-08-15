@@ -159,6 +159,7 @@ public class MyPageService {
 		if("10000".equals(result.get("code"))) {
 			Map<String, Object> data = (Map<String, Object>) result.get("data");
 			rtnObj.putAll(data);
+			rtnObj.put("custNm", CommonUtils.setMaskingUserNm(CommonUtils.getString(data.get("custNm"))));
 			rtn.setData(rtnObj);
 		} else {
 			throw new Exception(CommonUtils.getString(result.get("message")));

@@ -791,6 +791,7 @@ public class CommonService {
      * @throws Exception
      */
     @SuppressWarnings({ "unused", "unchecked" })
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackFor={Exception.class})
     public void sendNoti(String type, Map<String,Object> params) throws Exception {
         Map<String, Object> rtn = new HashMap<String, Object>();
 
@@ -850,7 +851,7 @@ public class CommonService {
         headerMap.put("X-API-KEY", noticeApiKey);
         Map<String, Object> result = apiInterface.etcPost(ApiConfig.NOTI_SERVER_DOMAIN+"/noti/v1/msg", apiMap, headerMap);
         if(!"10000".equals(result.get("code"))) {
-            throw new Exception(CommonUtils.getString(result.get("message")));
+            throw new Exception(CommonUtils.getString(result.get("message")+"\n전송에 실패하였습니다."));
         }
 
     }

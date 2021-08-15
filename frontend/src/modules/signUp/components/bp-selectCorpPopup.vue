@@ -9,24 +9,18 @@
                         <div style="height:450px; overflow:auto;">
                             <table class="table_skin1 bt-000" id="selCorpTbl">
                                 <colgroup>
-									<!-- <col style="width:20%"> -->
 									<col style="width:50%">
-									<!-- <col style="width:25%"> -->
 									<col style="width:50%">
 								</colgroup>
 								<thead>
 									<tr>
-                                        <!-- <th class="text-center lc-1">고객번호</th> -->
                                         <th class="text-center lc-1">고객명</th>
-                                        <!-- <th class="text-center lc-1">고객식별번호</th> -->
                                         <th class="text-center lc-1">사업회사명</th>
 									</tr>
 								</thead>
 								<tbody>
                                     <tr v-for="(row, idx) in data" :key="idx" @click="fnSelectCorpInfo(row,idx)" :class="index == idx ? 'selected' : ''" @dblclick="fnSelRow(row)">
-                                        <!-- <td>{{ row.custNo }}</td> -->
                                         <td>{{ row.custNm }}</td>
-                                        <!-- <td>{{ row.custrnmNo }}</td> -->
                                         <td>{{ row.bizCompNm }}</td>
                                     </tr>
                                 </tbody>
@@ -114,6 +108,7 @@ export default {
                 var result = response.data;
                 if(result.success){
                     rowData.custNm          = result.data.custNm;              // 대표자명
+                    rowData.rtnCustNm       = result.data.rtnCustNm;            // 대표자명 마스킹처리
                     rowData.bizCompNm       = result.data.bizCompNm;           // 사업자명
                     rowData.custrnmNo       = result.data.custrnmNo;           // 고객 식별번호
                     rowData.bsRegNo         = result.data.bsRegNo;             // 사업자번호

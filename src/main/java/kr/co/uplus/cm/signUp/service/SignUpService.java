@@ -128,7 +128,7 @@ public class SignUpService {
 					paramMap.put("custNo", custNo);
 				} else {
 					rtn.setSuccess(false);
-					rtn.setMessage(CommonUtils.getString(((Map<String, Object>) result.get("data")).get("resultMsg")));
+					rtn.setMessage(CommonUtils.getString(((Map<String, Object>) result.get("data")).get("resultMsg")+"\n회원가입에 실패하였습니다."));
 					return rtn;
 				}
 			}
@@ -243,6 +243,7 @@ public class SignUpService {
 		
 		if("10000".equals(result.get("code"))) {
 			Map<String, Object> data = (Map<String, Object>) result.get("data");
+			data.put("rtnCustNm", CommonUtils.setMaskingUserNm(CommonUtils.getString(data.get("custNm"))));
 			rtn.setData(data);
 		} else {
 			throw new Exception(CommonUtils.getString(result.get("message")));
