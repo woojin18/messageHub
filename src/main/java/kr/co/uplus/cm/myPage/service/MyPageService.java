@@ -17,6 +17,7 @@ import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
+import yoyozo.security.SHA;
 
 @Service
 public class MyPageService {
@@ -66,7 +67,20 @@ public class MyPageService {
 			// 비밀번호 암호화
 			if(!"".equals(params.get("loginPwd")) && params.get("loginPwd") != null) {
 				String loginPwd = CommonUtils.getString(params.get("loginPwd"));
-				paramMap.put("loginPwd", sha256.encode(loginPwd));
+
+				// 사용자 비밀번호 암호화
+				SHA sha256 = new SHA(256);
+				String encPwd = sha256.encryptToBase64(loginPwd);
+				paramMap.put("loginPwd", encPwd);
+				
+				// 기존 비밀번호 비교
+				String exPwd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD_BY_USERID, params));
+				
+				if(exPwd.equals(encPwd)) {
+					rtn.setSuccess(false);
+					rtn.setMessage("기존과 동일한 비밀번호는 사용할 수 없습니다.");
+					return rtn;
+				}
 			}
 			
 			// 회원정보 update

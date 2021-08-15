@@ -321,6 +321,14 @@ public class AuthService implements UserDetailsService {
 			String encPwd = sha256.encryptToBase64(CommonUtils.getString(params.get("password")));
 			params.put("pwd", encPwd);
 			
+			// 기존 비밀번호 비교
+			String exPwd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, params));
+			
+			if(exPwd.equals(encPwd)) {
+				rtn.setSuccess(false);
+				rtn.setMessage("기존과 동일한 비밀번호는 사용할 수 없습니다.");
+				return rtn;
+			}
 			// 비밀번호 update
 			generalDao.updateGernal(DB.QRY_UPDATE_USER_PASSWORD, params);
 			rtn.setSuccess(true);

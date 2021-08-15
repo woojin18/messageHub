@@ -168,5 +168,19 @@
 			LOGIN_FAIL_CNT = IFNULL(LOGIN_FAIL_CNT, 0)+1
 		WHERE	LOGIN_ID = #{userId}
 	</update>
-
+	
+	<select id="selectExLoginPwd" resultType="string">
+		/* login.selectExPwdChk */
+		SELECT	LOGIN_PWD
+		FROM	cm_console.CM_USER
+		WHERE	LOGIN_ID = #{loginId}
+	</select>
+	
+	<select id="selectExLoginPwdByUserid" resultType="string">
+		/* login.selectExPwdChk */
+		SELECT	LOGIN_PWD
+		FROM	cm_console.CM_USER
+		WHERE	USER_ID = #{userId}
+	</select>
+	
 </mapper>

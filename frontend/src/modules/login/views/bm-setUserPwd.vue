@@ -85,6 +85,12 @@ export default {
 				return;
 			}
 
+			var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+			if (!reg.test(this.pwd)){
+				confirm.fnAlert("", "비밀번호는 8자 이상이어야 하며, 숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
+				return;
+			}
+
 			if(this.pwd != this.pwdChk){
 				confirm.fnAlert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
 				return;
@@ -107,7 +113,8 @@ export default {
 					confirm.fnConfirm("", "비밀번호 설정이 완료되었습니다.\n확인창을 누르면 로그인 창으로 이동합니다.","확인");
 				} else {
 					confirm.fnAlert("", result.message);
-					this.$router.push({name : "findUserPwd"});
+					return;
+					// this.$router.push({name : "findUserPwd"});
 				}
 			});
 		},
