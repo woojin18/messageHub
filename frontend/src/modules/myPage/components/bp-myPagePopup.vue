@@ -13,7 +13,7 @@
 					
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:20%">이름</h5>
-							<input type="text" class="inputStyle float-right" style="width:80%" title="이름 입력란"  v-model="userName" disabled>
+							<input type="text" class="inputStyle float-right" style="width:80%" title="이름 입력란"  v-model="userName" maxlength="100" disabled>
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:20%">대표 프로젝트</h5>
@@ -31,8 +31,8 @@
               <div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:20%">비밀번호 변경</h5>
                 <div class="float-right" style="width:80%">
-                  <input type="password" class="inputStyle" title="비밀번호 변경 입력란" v-model="loginPwd" placeholder="새 비밀번호">
-                  <input type="password" class="inputStyle consolMarginTop" title="비밀번호 변경 확인 입력란" v-model="chkLoginPwd" placeholder="새 비밀번호 확인">
+                  <input type="password" class="inputStyle" title="비밀번호 변경 입력란" v-model="loginPwd" placeholder="새 비밀번호" maxlength="100">
+                  <input type="password" class="inputStyle consolMarginTop" title="비밀번호 변경 확인 입력란" v-model="chkLoginPwd" placeholder="새 비밀번호 확인" maxlength="100">
                 </div>
               </div>
             </div>
@@ -44,12 +44,12 @@
             <div id="fnChgHpNumDiv" style="display:none;">
               <div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:20%">휴대폰 번호 변경</h5>
-                <input type="text" class="inputStyle" style="width:55%" title="휴대폰 번호 변경 입력란" v-model="chgHpNumber" placeholder="-없이 입력">
+                <input type="text" class="inputStyle" style="width:55%" title="휴대폰 번호 변경 입력란" v-model="chgHpNumber" placeholder="-없이 입력" @change="fnHpNumInit" maxlength="20">
                 <button @click="fnSetCertifyNumber" id="certifyBtn" class="btnStyle1 backLightGray float-right width120" title="인증번호 받기" >{{ certifyMsg }}</button>
               </div>
               <div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:20%">인증번호</h5>
-                <input type="text" class="inputStyle float-right" style="width:80%" title="인증번호 입력란" placeholder="인증번호 입력" v-model="certifyNumber">
+                <input type="text" class="inputStyle float-right" style="width:80%" title="인증번호 입력란" placeholder="인증번호 입력" v-model="certifyNumber" maxlength="6">
               </div>
             </div>
 						<div class="of_h mt30">
@@ -69,6 +69,7 @@
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import myPageApi from '@/modules/myPage/service/myPageApi';
+import loginApi from '@/modules/login/service/api';
 
 export default {
   name: 'myPagePopup',
@@ -78,8 +79,8 @@ export default {
       userName  : '',
       pwdUpdDt  : '',
       hpNumber  : '',
-      loginPwd  : null,
-      chkLoginPwd : null,
+      loginPwd  : '',
+      chkLoginPwd : '',
       chgHpNumber : '',
       certifyNumber  : '',
       certifyMsg : '인증번호 받기',
@@ -130,8 +131,8 @@ export default {
         // 변경할 비밀번호, 전화번호 초기화
         this.chgHpNumber  = '';
         this.certifyNumber   = '';
-        this.loginPwd     = null;
-        this.chkLoginPwd  = null;
+        this.loginPwd     = '';
+        this.chkLoginPwd  = '';
       },
       // 번호 변경 버튼 선택시
       fnChgHpNumDiv(){
@@ -146,8 +147,8 @@ export default {
       // 비밀번호 변경 버튼 선택시
       fnChgPwdDiv(){
         if(jQuery("#chgPwdDiv").is(":visible")){
-          this.loginPwd     = null;
-          this.chkLoginPwd  = null;
+          this.loginPwd     = '';
+          this.chkLoginPwd  = '';
           jQuery("#chgPwdDiv").css("display", "none");
         } else {
           jQuery("#chgPwdDiv").css("display", "block");
@@ -160,7 +161,7 @@ export default {
             return;
         }
 
-        this.certifyMsg = "전송 중..";
+        this.certifyMsg = "전송 중";
         var params = {
           chgHpNumber : this.chgHpNumber
         };
@@ -198,8 +199,13 @@ export default {
           }
         }
 
-        eventBus.$on('callbackEventBus', this.fnSaveCallBack);
-        confirm.fnConfirm( "회원 정보 저장", "저장하시겠습니까?", "저장");
+        if(this.userName == this.memberInfo.userName && this.repProjectId == this.memberInfo.repProjectId
+        && jQuery.trim(this.loginPwd) == '' && this.chgHpNumber == ''){
+          this.fnCloseLayer();
+        } else {
+          eventBus.$on('callbackEventBus', this.fnSaveCallBack);
+          confirm.fnConfirm( "회원 정보 저장", "변경된 회원 정보를 저장 후 로그아웃 처리됩니다.\n저장하시겠습니까?", "저장");
+        }
       },
       fnSaveCallBack(){
         var params = {
@@ -212,10 +218,12 @@ export default {
         myPageApi.saveMemberInfo(params).then(response =>{
           var result = response.data;
           if(result.success) {
-            confirm.fnAlert( "저장되었습니다.", "");
+            // confirm.fnAlert( "", "저장되었습니다.");
             this.fnCloseLayer();
+            this.clickLogout();
           } else {
-            confirm.fnAlert(result.message, "");
+            confirm.fnAlert("", result.message);
+            return;
           }
         });
       },
@@ -227,7 +235,17 @@ export default {
             this.repProjectArr = result.data;
           }
         });
+      },
+      fnHpNumInit(){
+        this.certifyNumber = "";
+      },
+      clickLogout() {
+        loginApi.logout().then(response => {
+          if (response.data.success) {
+            this.$router.push({path: "/login"});
+          }
+        });
       }
+    }
   }
-}
 </script>
