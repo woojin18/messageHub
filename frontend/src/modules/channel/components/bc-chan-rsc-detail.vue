@@ -406,7 +406,8 @@ export default {
 			// 발신번호 관련
 			rcsReply : "",
 			chatbotCnt : 1,
-			chatbots: []
+			chatbots: [],
+			chatbotsStr: "",
 		},
 		category : [
 			{
@@ -621,7 +622,7 @@ export default {
 		if( this.otherProjectYn === 'Y' ){
 			fd.append('projectId'		, 'ALL');
 		} else {
-			fd.append('projectId'		, this.projectId);
+			fd.append('projectId'		, this.mainProjectId);
 		}
 		fd.append('brandId'			, this.brandId);
 		fd.append('apiKey'			, this.inputVal.apiKey);
@@ -661,10 +662,23 @@ export default {
 			fd.append('bgImgFile'		, this.$refs.bgImgFile.files[0]);
 			fd.append('profileImgFile'	, this.$refs.profileImgFile.files[0]);
 			fd.append('certiFile'		, this.$refs.certiImgFile.files[0]);
-		} else if ( this.save_status == 'U' && this.$refs.bgImgFile.files[0] != '' && this.$refs.bgImgFile.files[0] != undefined ){
+		} 
+		if ( this.save_status == 'U' && this.$refs.bgImgFile.files[0] != '' && this.$refs.bgImgFile.files[0] != undefined ){
 			fd.append('bgImgFile'		, this.$refs.bgImgFile.files[0]);
-		} else if ( this.save_status == 'U' && this.$refs.profileImgFile.files[0] != '' && this.$refs.profileImgFile.files[0] != undefined ){
+		} 
+		
+		if ( this.save_status == 'U' && this.$refs.profileImgFile.files[0] != '' && this.$refs.profileImgFile.files[0] != undefined ){
 			fd.append('profileImgFile'		, this.$refs.profileImgFile.files[0]);
+		} 
+		// 임시저장 상태에서 승인처리 하는 경우 + 파일 변경이 없는 경우 
+		if ( this.save_status == 'U' && (this.$refs.bgImgFile.files[0] === '' || this.$refs.bgImgFile.files[0] === undefined) ){
+			fd.append('bgImgFilePath'		, this.inputVal.bgImgFilePath);
+		} 
+		if ( this.save_status == 'U' && (this.$refs.profileImgFile.files[0] === '' || this.$refs.profileImgFile.files[0] === undefined) ){
+			fd.append('profileImgFilePath'		, this.inputVal.profileImgFilePath);
+		} 
+		if( this.save_status == 'U' ){
+			fd.append('certiFilePath'		, this.inputVal.certiFilePath);
 		}
 
 		// 챗봇(발신번호) 정리
@@ -692,6 +706,8 @@ export default {
 
 			// 메인발신번호 추가된 것 삭제
 			this.fnDeleteChatbotTr();
+		} else {
+			fd.append('chatbots'		, this.inputVal.chatbotsStr) ;
 		}
 
       

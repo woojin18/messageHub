@@ -270,15 +270,20 @@ public class ChannelService {
 				JSONParser jParser = new JSONParser();
 				JSONObject brandInfo = (JSONObject) jParser.parse(rscTempBrandInfoStr);
 				rtnMap = brandInfo;
+				
+				
+				inputVal.put("projectId",	params.get("mainProjectId"));
+				inputVal.put("chatbotsStr",	CommonUtils.getString(brandInfo.get("chatbots")).replace("[", "").replace("]", ""));
 			} else {
 				resultLists = (List<Object>) apiInterface.get("/console/v1/brand/" + brandId, getHeaderMap2).get("data");
 				rtnMap = (Map<String, Object>) resultLists.get(0);
+				// 프로젝트 아이디
+				inputVal.put("projectId",	rtnMap.get("projectId"));
 			}
 			
 			inputVal.put("apiKey",		CommonUtils.getString(params.get("apiKey")));
 			inputVal.put("apiSecret",	CommonUtils.getString(params.get("apiSecret")));
 			inputVal.put("corpId",		rtnMap.get("corpId"));
-			inputVal.put("projectId",	rtnMap.get("projectId"));
 			inputVal.put("name",		rtnMap.get("name"));
 			inputVal.put("description",	rtnMap.get("description"));
 			inputVal.put("tel",			rtnMap.get("tel"));
@@ -345,8 +350,12 @@ public class ChannelService {
 			
 			List<Map<String, Object>> fileList = (List<Map<String, Object>>) rtnMap.get("mediaUrl");
 			if( "Y".equals(tmpBrandYn) ) {
+				inputVal.put("preBgImg",			rtnMap.get("bgImgFilePath"));
+				inputVal.put("preProfileImg",		rtnMap.get("profileImgFilePath"));
+				
 				inputVal.put("profileImgFilePath",	rtnMap.get("profileImgFilePath"));
 				inputVal.put("bgImgFilePath",		rtnMap.get("bgImgFilePath"));
+				inputVal.put("certiFilePath",		rtnMap.get("certiFilePath"));
 			} else {
 				if(menusList != null) {
 					for(int j = 0; j < fileList.size(); j++){
@@ -438,7 +447,7 @@ public class ChannelService {
 			// 프로필 파일 업로드 처리
 			MultipartFile profileImgFile = (MultipartFile) params.get("profileImgFile");
 			if( "save".equals(sts) ||  
-				"approval".equals(sts) ||
+				("approval".equals(sts) && profileImgFile != null) ||
 				("update".equals(sts) && profileImgFile != null)	) {
 				
 				String profileImgFileCheckStr = checkFileSizeExtension(profileImgFile);
@@ -453,12 +462,15 @@ public class ChannelService {
 				profileImgFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", profileImgFileMap));
 			}
 			
+			if( ("approval".equals(sts) && profileImgFile == null) ) {
+				profileImgFilePath = CommonUtils.getString(params.get("profileImgFilePath"));
+			}
 			
 			// 배경 파일 업로드 처리
 			MultipartFile bgImgFile = (MultipartFile) params.get("bgImgFile");
 			if( "save".equals(sts) ||  
-				"approval".equals(sts) ||
-				("update".equals(sts) && profileImgFile != null)	) {
+				("approval".equals(sts) && bgImgFile != null)  ||
+				("update".equals(sts) && bgImgFile != null)	) {
 				
 				String bgImgFileCheckStr = checkFileSizeExtension(bgImgFile);
 				if( !"".equals(bgImgFileCheckStr) ) {
@@ -472,8 +484,14 @@ public class ChannelService {
 				bgImgFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", bgImgFileMap));
 			}
 			
+
+			if( ("approval".equals(sts) && bgImgFile == null) ) {
+				bgImgFilePath = CommonUtils.getString(params.get("bgImgFilePath"));
+			}
+			
 			// 가입증명 파일 업로드 처리
-			if( "save".equals(sts) || "approval".equals(sts) ) {
+			if( "save".equals(sts) || 
+				( "approval".equals(sts) && "".equals(CommonUtils.getString(params.get("brandId"))) ) ) {
 				MultipartFile certiFile = (MultipartFile) params.get("certiFile");
 				
 				String certiFileSeq = commonService.uploadFile(certiFile, CommonUtils.getString(params.get("loginId")), uploadDirPath);
@@ -481,6 +499,8 @@ public class ChannelService {
 				Map<String, Object> certiFileMap = new HashMap<String, Object>();
 				certiFileMap.put("fileId", certiFileSeq);
 				certiFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", certiFileMap));
+			} else if ( "approval".equals(sts) && !"".equals(CommonUtils.getString(params.get("brandId")))) {
+				certiFilePath = CommonUtils.getString(params.get("certiFilePath"));
 			}
 		} else {
 			profileImgFilePath	= "/efs/file/console/2021/05/28/10/test1234.png";
@@ -577,7 +597,7 @@ public class ChannelService {
 		// map to json
 		kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(map);
 		
-//		System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
+		//System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
 //		list.add(json2222);
 		list.add(map);
 		
@@ -679,7 +699,7 @@ public class ChannelService {
 			if( "10000".equals(result.get("code")) ) {
 			} else if ( "500100".equals(result.get("code")) ) {
 //				String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
-				String errMsg = CommonUtils.getString(result.get("message")) + CommonUtils.getString(result.get("data"));
+				String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
 				throw new Exception(errMsg);
 			} else {
 				String errMsg = CommonUtils.getString(result.get("message"));
@@ -707,7 +727,7 @@ public class ChannelService {
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
 			} else if ( "500100".equals(result.get("code")) ) {
-				String errMsg = CommonUtils.getString(result.get("message")) + CommonUtils.getString(result.get("data"));
+				String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
 				throw new Exception(errMsg);
 			} else {
 				String errMsg = CommonUtils.getString(result.get("message"));
@@ -725,7 +745,7 @@ public class ChannelService {
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
 			} else if ( "500100".equals(result.get("code")) ) {
-				String errMsg = CommonUtils.getString(result.get("message")) + CommonUtils.getString(result.get("data"));
+				String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
 				throw new Exception(errMsg);
 			} else {
 				String errMsg = CommonUtils.getString(result.get("message"));

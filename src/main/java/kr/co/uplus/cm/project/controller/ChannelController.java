@@ -151,6 +151,10 @@ public class ChannelController {
 			@RequestParam(required = false) MultipartFile bgImgFile,
 			@RequestParam(required = false) MultipartFile certiFile,
 			
+			@RequestParam(required = false) String bgImgFilePath,
+			@RequestParam(required = false) String profileImgFilePath,
+			@RequestParam(required = false) String certiFilePath,
+			
 			@RequestParam(required = false) String chatbots,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -200,6 +204,12 @@ public class ChannelController {
 		params.put("profileImgFile",	profileImgFile);
 		params.put("bgImgFile",			bgImgFile);
 		params.put("certiFile",			certiFile);
+		
+		// 임시저장용
+		params.put("bgImgFilePath",	bgImgFilePath);
+		params.put("profileImgFilePath",	profileImgFilePath);
+		params.put("certiFilePath",	certiFilePath);
+		
 		
 		params.put("chatbots",			chatbots);
 		
