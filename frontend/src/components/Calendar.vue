@@ -33,6 +33,13 @@ export default {
         return '';
       }
     },
+    customOption: {
+      type: Object,
+      require: false,
+      default: function() {
+        return {};
+      }
+    },
     params: {
       type: Object,
       require: false,
@@ -44,7 +51,7 @@ export default {
   template: '<input/>',
   mounted: function() {
     const vm = this;
-    jq('#'+this.calendarId).datepicker({
+    let defaultOption = {
       dateFormat: "yy-mm-dd"
       ,monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
       ,monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
@@ -57,7 +64,9 @@ export default {
       ,showOtherMonths: true // 다른 월 달력에 보이기
       ,selectOtherMonths: true // 다른 월 달력에 보이는거 클릭 가능하게 하기
       ,onSelect: function(d){vm.$emit('update-date',d, vm.params)}
-    });
+    }
+
+    jq('#'+this.calendarId).datepicker({...this.customOption, ...defaultOption});
   },
   beforeDestroy: function(){jq('#'+this.calendarId).datepicker('hide').datepicker('destroy')}
 };

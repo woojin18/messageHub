@@ -219,7 +219,7 @@
                 <label for="rsrvSendYn_Y">예약</label>
               </div>
               <div v-if="sendData.rsrvSendYn == 'Y'" class="float-left" style="width:20%">
-                <Calendar @update-date="fnUpdateRsrvDate" calendarId="rsrvDate" classProps="datepicker inputStyle" :initDate="sendData.rsrvDate"></Calendar>
+                <Calendar @update-date="fnUpdateRsrvDate" calendarId="rsrvDate" classProps="datepicker inputStyle" :initDate="sendData.rsrvDate" :customOption="{minDate: '-0y'}"></Calendar>
               </div>
               <div v-if="sendData.rsrvSendYn == 'Y'" class="float-right" style="width:34%">
                 <select class="selectStyle2" style="width:47%" v-model="sendData.rsrvHH">
