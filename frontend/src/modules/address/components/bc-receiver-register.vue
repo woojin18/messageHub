@@ -141,6 +141,10 @@ export default {
 				confirm.fnAlert(this.componentsTitle, '휴대폰번호를 입력하세요');
 				return false;
 			}
+			if(hpNumber.length < 10) {
+				confirm.fnAlert(this.componentsTitle, '휴대폰번호를 정확히 입력해주세요');
+				return false;
+			}
 			return true;
 		},
 		// 숫자만 입력
