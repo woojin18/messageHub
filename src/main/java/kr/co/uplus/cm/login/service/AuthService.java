@@ -96,9 +96,17 @@ public class AuthService implements UserDetailsService {
 
 		String userId = (String) params.get("userId");
 		String userPwd = (String) params.get("userPwd");
+		String salt = "";
 
 		try {
-			params.put("userPwd", sha256.encode(userPwd));
+			// userId에 해당되는 salt 문자열 취득
+			salt = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO, params));
+		} catch (Exception e) {
+			return new RestResult<String>(false).setCode(ResultCode.SE_INTERNAL);
+		}
+
+		try {
+			params.put("userPwd", sha256.encode(salt+userPwd));
 			userPwd = (String) params.get("userPwd");
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userId, userPwd);
 			authentication = authManager.authenticate(token);
