@@ -131,7 +131,7 @@
 							<div class="float-right text-center" style="width:100%">발송순서</div>
 						</div>
 						<div v-for="(channel, index) in rowData.checkedChannel" :key="channel" class="of_h mt13">
-							<div class="float-left" style="width:100%"><a class="btnStyle1 borderLightGray " style="min-width:auto; width:100%"  @click="putData(index)">{{channel}}</a></div>
+							<div class="float-left" style="width:100%"><a class="btnStyle1 borderLightGray" style="min-width:auto; width:100%"  @click="putData(index)" :id="channelName(index)">{{channel}}</a></div>
 						</div>
 					</div>
 				</div>
@@ -140,6 +140,9 @@
 						<a @click="moveup()" title="위버튼"><i class="far fa-chevron-up channelBtn"></i></a>
 						<a @click="movedown()" title="아래버튼"><i class="far fa-chevron-down channelBtn"></i></a>
 					</div>
+				</div>
+				<div class="of_h mt15">
+					<div class="float-right" style="width:50%"><a @click="prioritySort()" class="btnStyle1 backBlack" style="min-width:auto; width:100%" title="저가 우선정렬">저가 우선정렬</a></div>
 				</div>
 			</div>
 		</div>
@@ -3750,23 +3753,128 @@ export default {
 		// 채널 발송순서 변경시 클릭한 채널 인덱스를 가져온다
 		putData:function(idx){
 			this.idxData = idx;
+			jQuery(".borderLightGray").removeClass("active");
+			jQuery("#channel"+idx).addClass("active");
+		},
+		channelName:function(idx){
+			var str = "channel" + idx;
+			return str;
 		},
 		// 채널 발송순서를 위로
-		moveup:function () {
+		moveup:function() {
 			if (this.idxData > 0) {
-				this.rowData.checkedChannel.splice (this.idxData-1,0, (this.rowData.checkedChannel [this.idxData]));
+				this.rowData.checkedChannel.splice(this.idxData-1, 0 , (this.rowData.checkedChannel[this.idxData]));
 				//Delete the next item
-				this.rowData.checkedChannel.splice (this.idxData + 1,1);
+				this.rowData.checkedChannel.splice(this.idxData+1, 1);
 				this.idxData = this.idxData -1;
 			}
 		},
 		// 채널 발송순서를 아래로
-		movedown:function () {
+		movedown:function() {
 			if (this.idxData < this.rowData.checkedChannel.length-1) {
 				//Insert the item in the next item
-				this.rowData.checkedChannel.splice (this.idxData + 2,0, (this.rowData.checkedChannel [this.idxData]));
-				this.rowData.checkedChannel.splice (this.idxData, 1);
+				this.rowData.checkedChannel.splice(this.idxData+2, 0, (this.rowData.checkedChannel[this.idxData]));
+				this.rowData.checkedChannel.splice(this.idxData, 1);
 				this.idxData = this.idxData +1;
+			}
+		},
+		// 저가 우선정렬
+		prioritySort:function() {
+			var pushFlag = false;
+			var kakaoFlag = false;
+			var rcsFlag = false;
+			var smsFlag = false;
+			if (this.rowData.checkedChannel.length == 4) {
+				for (var i=0; i < this.rowData.checkedChannel.length; i++) {
+					this.rowData.checkedChannel.splice(i, 1);
+				}
+				this.rowData.checkedChannel[0] = 'PUSH';
+				this.rowData.checkedChannel[1] = 'KAKAO'
+				this.rowData.checkedChannel[2] = 'RCS';
+				this.rowData.checkedChannel[3] = 'SMSMMS';
+				jQuery(".borderLightGray").removeClass("active");
+			} else if (this.rowData.checkedChannel.length == 3) {
+				for (var i=0; i < this.rowData.checkedChannel.length; i++) {
+					if (this.rowData.checkedChannel[i] == 'PUSH') {
+						pushFlag = true;
+					} else if(this.rowData.checkedChannel[i] == 'RCS') {
+						rcsFlag = true;
+					} else if(this.rowData.checkedChannel[i] == 'KAKAO') {
+						kakaoFlag = true;
+					} else if(this.rowData.checkedChannel[i] == 'SMSMMS') {
+						smsFlag = true;
+					}
+				}
+				for (var i=0; i < this.rowData.checkedChannel.length; i++) {
+					this.rowData.checkedChannel.splice(i, 1);
+				}
+				if (pushFlag == false) {
+					this.rowData.checkedChannel[0] = 'KAKAO';
+					this.rowData.checkedChannel[1] = 'RCS'
+					this.rowData.checkedChannel[2] = 'SMSMMS';
+				}
+				if (kakaoFlag == false) {
+					this.rowData.checkedChannel[0] = 'PUSH';
+					this.rowData.checkedChannel[1] = 'RCS'
+					this.rowData.checkedChannel[2] = 'SMSMMS';
+				}
+				if (rcsFlag == false) {
+					this.rowData.checkedChannel[0] = 'PUSH';
+					this.rowData.checkedChannel[1] = 'KAKAO'
+					this.rowData.checkedChannel[2] = 'SMSMMS';
+				}
+				if (smsFlag == false) {
+					this.rowData.checkedChannel[0] = 'PUSH';
+					this.rowData.checkedChannel[1] = 'KAKAO'
+					this.rowData.checkedChannel[2] = 'RCS';
+				}
+				jQuery(".borderLightGray").removeClass("active");
+			} else if (this.rowData.checkedChannel.length == 2) {
+				for (var i=0; i < this.rowData.checkedChannel.length; i++) {
+					if (this.rowData.checkedChannel[i] == 'PUSH') {
+						pushFlag = true;
+					} else if(this.rowData.checkedChannel[i] == 'RCS') {
+						rcsFlag = true;
+					} else if(this.rowData.checkedChannel[i] == 'KAKAO') {
+						kakaoFlag = true;
+					} else if(this.rowData.checkedChannel[i] == 'SMSMMS') {
+						smsFlag = true;
+					}
+				}
+				for (var i=0; i < this.rowData.checkedChannel.length; i++) {
+					this.rowData.checkedChannel.splice(i, 1);
+				}
+				if (pushFlag == true) {
+					if (kakaoFlag == true) {
+						this.rowData.checkedChannel[0] = 'PUSH';
+						this.rowData.checkedChannel[1] = 'KAKAO'
+					}
+					if (rcsFlag == true) {
+						this.rowData.checkedChannel[0] = 'PUSH';
+						this.rowData.checkedChannel[1] = 'RCS'
+					}
+					if (smsFlag == true) {
+						this.rowData.checkedChannel[0] = 'PUSH';
+						this.rowData.checkedChannel[1] = 'SMSMMS'
+					}
+				}
+				if (kakaoFlag == true) {
+					if (rcsFlag == true) {
+						this.rowData.checkedChannel[0] = 'KAKAO';
+						this.rowData.checkedChannel[1] = 'RCS'
+					}
+					if (smsFlag == true) {
+						this.rowData.checkedChannel[0] = 'KAKAO';
+						this.rowData.checkedChannel[1] = 'SMSMMS'
+					}
+				}
+				if (rcsFlag == true) {
+					if (smsFlag == true) {
+						this.rowData.checkedChannel[0] = 'RCS';
+						this.rowData.checkedChannel[1] = 'SMSMMS'
+					}
+				}
+				jQuery(".borderLightGray").removeClass("active");
 			}
 		},
 		async fnSaveMultiSendTemplate(){
