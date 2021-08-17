@@ -99,6 +99,7 @@ public class JwtService {
 		// header.payload 부분만 일반 쿠키에 저장 - JS로 읽기 가능
 		Cookie part1 = new Cookie(jwtProps.getPart1(), payload);
 		part1.setPath("/");
+		part1.setSecure(true);
 		response.addCookie(part1);
 
 		// signature 부분만 httpOnly 쿠키에 저장 - JS로 읽기 불가능
