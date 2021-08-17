@@ -14,7 +14,7 @@
 					<div class="of_h consolMarginTop">
 						<div class="float-left" style="width:32%"><h5>내용</h5></div>
 						<div class="float-right" style="width:66%">
-							<textarea v-model="senderPopData.senderContents" class="textareaStyle height120" ></textarea>
+							<textarea v-model="senderPopData.senderContents" class="textareaStyle height120" :placeholder="preText" ></textarea>
 						</div>
 					</div>
 					
@@ -45,6 +45,7 @@ export default {
   },
   data() {
     return {
+        preText : "변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오. 예) 이름과 출금일을 변수 설정: 예) #{고객}님 #{YYMMDD} 출금 예정입니다.",
         senderPopData : {
             senderTitle : "",
             senderContents : ""

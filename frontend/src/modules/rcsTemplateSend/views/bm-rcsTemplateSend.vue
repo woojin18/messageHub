@@ -98,7 +98,6 @@
 						<div class="phoneWrap" style="height:660px">
 							<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 							<div v-show="pushTab=='push'" class="phoneCardWrap">
-								<p class="color000">[WEB발신] (광고)</p>
 								<ul class="cardBxslider mt10">
 									<li v-for="n in carouselSelect" class="slide cardBox">
 										<img v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]==''" src="@/assets/images/common/cardThumImg.png" alt="프리 템플릿">
@@ -109,10 +108,10 @@
 										<img v-if="templateRadioBtn == 'carouselMedium' && sendData.carouselObj.imgUrl[n-1]!=''" :src="sendData.carouselObj.imgUrl[n-1]" alt="프리 템플릿">
 										<div class="relative">
 											<div class="scroll-y" style="min-height:150px">
-												<p class="color000 font-size13">{{sendData.carouselObj.textTitle[n-1]}}</p>
+												<p class="color000 font-size13"><span v-if="sendData.adYn == 'yes'">(광고)</span>{{sendData.carouselObj.textTitle[n-1]}}</p>
 												<p class="color3 mt5">{{sendData.carouselObj.textContents[n-1]}}</p>
+												<p v-if="sendData.freeReceiveNum != ''" class="color3">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 											</div>
-											<p class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{sendData.freeReceiveNum}}</p>
 										</div>
 									</li>
 								</ul>
@@ -121,8 +120,9 @@
 							<div v-show="pushTab!='push'" class="phoneCardWrap">
 								<div class="phoneText1">
 									<div class="scroll-y">
-										<p class="mt15">{{sendData.callbackTitle}}</p>
-										<p class="mt15">{{sendData.callbackContents}}</p>
+										<p class="mt15 font-size13"><span v-if="sendData.adYn=='yes' && sendData.senderType=='LMS'">(광고)</span>{{sendData.callbackTitle}}</p>
+										<p class="mt15"><span v-if="sendData.adYn=='yes' && sendData.senderType=='SMS'">(광고)</span>{{sendData.callbackContents}}</p>
+										<p calss="mt15" v-if="sendData.freeReceiveNum != ''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 									</div>
 								</div>
 							</div>
@@ -130,7 +130,7 @@
 						<!-- //phoneWrap -->						
 					</div>
 					<div class="phone_04_btn">
-						<a @click.prevent="fnclickPushBtn('push')" href="#self" class="btnStyle1 backBlack" title="Push">Push</a>
+						<a @click.prevent="fnclickPushBtn('push')" href="#self" class="btnStyle1 backBlack" title="RCS">RCS</a>
 						<a @click.prevent="fnclickPushBtn('SMS')" v-if="sendData.senderType=='SMS'" href="#self" class="btnStyle1 backWhite" title="Push">SMS</a>
 						<a @click.prevent="fnclickPushBtn('LMS')" v-if="sendData.senderType=='LMS'" href="#self" class="btnStyle1 backWhite" title="Push">LMS</a>								
 					</div>
@@ -162,8 +162,9 @@
 							</div>
 							<div v-if="templateRadioBtn =='text' || templateRadioBtn == 'SS000000' || templateRadioBtn == 'SL000000'" class="phoneText1">
 								<div class="scroll-y">
-									<h5 v-if="sendData.textTitle!=''">{{sendData.textTitle}}</h5>
-									<p class="mt15">{{sendData.textContents}}</p>
+									<h5 v-if="sendData.textTitle!=''"><span v-if="sendData.adYn=='yes' && templateRadioBtn == 'SL000000'">(광고)</span>{{sendData.textTitle}}</h5>
+									<p class="mt15"><pre><span v-if="sendData.adYn=='yes' && templateRadioBtn == 'SS000000'">(광고)</span>{{sendData.textContents}}</pre></p>
+									<p class="mt15" v-if="sendData.freeReceiveNum!=''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 								</div>
 								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
@@ -171,9 +172,10 @@
 								<img v-if="sendData.imgUrl == ''" :src="sendData.SMwThM00Img" alt="프리 템플릿">
 								<div v-if="sendData.imgUrl != ''" :style="'background-image: url('+sendData.imgUrl+');padding:65px;'" class="mt10 text-center simulatorImg"> </div>
 								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
-									<h5>{{sendData.textTitle}}</h5>
+									<h5><span v-if="sendData.adYn=='yes'">(광고)</span>{{sendData.textTitle}}</h5>
 									<div class="scroll-y3">
-										<p class="color6">{{sendData.textContents}}</p>
+										<p class="color6"><pre>{{sendData.textContents}}</pre></p>
+										<p class="mt15" v-if="sendData.freeReceiveNum!=''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 									</div>								
 								</div>
 								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
@@ -182,9 +184,10 @@
 								<img v-if="sendData.imgUrl == ''" :src="sendData.SMwThM00Img" alt="프리 템플릿">
 								<div v-if="sendData.imgUrl != ''" :style="'background-image: url('+sendData.imgUrl+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
 								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20">
-									<h5>{{sendData.textTitle}}</h5>
+									<h5><span v-if="sendData.adYn=='yes'">(광고)</span>{{sendData.textTitle}}</h5>
 									<div class="scroll-y6">
-										<p class="color6">{{sendData.textContents}}</p>
+										<p class="color6"><pre>{{sendData.textContents}}</pre></p>
+										<p class="mt15" v-if="sendData.freeReceiveNum!=''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 									</div>								
 								</div>
 								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
@@ -193,13 +196,14 @@
 						<div  v-if="pushTab!='push'" class="phoneTextWrap">
 							<div class="phoneText1">
 								<div class="scroll-y">
-									<p class="mt15">{{sendData.callbackTitle}}</p>
-									<p class="mt15">{{sendData.callbackContents}}</p>
+									<p class="mt15 font-size13"><span v-if="sendData.adYn=='yes' && sendData.senderType=='LMS'">(광고)</span>{{sendData.callbackTitle}}</p>
+									<p class="mt15"><span v-if="sendData.adYn=='yes' && sendData.senderType=='SMS'">(광고)</span>{{sendData.callbackContents}}</p>
+									<p calss="mt15" v-if="sendData.freeReceiveNum != ''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 								</div>
 							</div>
 						</div>
 						<div class="phone_04_btn">
-							<a @click.prevent="fnclickPushBtn('push')" href="#self" class="btnStyle1 backBlack" title="Push">Push</a>
+							<a @click.prevent="fnclickPushBtn('push')" href="#self" class="btnStyle1 backBlack" title="RCS">RCS</a>
 							<a @click.prevent="fnclickPushBtn('SMS')" v-if="sendData.senderType=='SMS'" href="#self" class="btnStyle1 backWhite" title="Push">SMS</a>
 							<a @click.prevent="fnclickPushBtn('LMS')" v-if="sendData.senderType=='LMS'" href="#self" class="btnStyle1 backWhite" title="Push">LMS</a>								
 						</div>
@@ -259,10 +263,10 @@
 									<h5>광고</h5>
 								</div>
 								<div class="of_h">
-									<input v-model="sendData.adYn" type="radio" name="ad" value="no" id="Display"> <label for="Display" class="mr30">미표시</label>
-									<input v-model="sendData.adYn" type="radio" name="ad" value="yes" id="not-Display" checked=""> <label for="not-Display" class="mr20">표시</label>
+									<input @change="fnChangeDataSet" v-model="sendData.adYn" type="radio" name="ad" value="no" id="Display" checked=""> <label for="Display" class="mr30">미표시</label>
+									<input @change="fnChangeDataSet" v-model="sendData.adYn" type="radio" name="ad" value="yes" id="not-Display"> <label for="not-Display" class="mr20">표시</label>
 									<div class="inline-block">
-										<p v-model="sendData.freeReceiveNum" class="inline-block mr10">무료수신거부</p><input type="text" class="inputStyle" style="width:50%">
+										<p class="inline-block mr10">무료수신거부</p><input v-model="sendData.freeReceiveNum" type="text" class="inputStyle" style="width:50%">
 									</div>
 								</div>
 							</div>
@@ -271,8 +275,8 @@
 									<h5>복사가능여부</h5>
 								</div>
 								<div style="width:82%">
-									<input v-model="sendData.copy" type="radio" name="copy" value="no" id="no" checked=""> <label for="no" class="mr30">불가능</label>
-									<input v-model="sendData.copy" type="radio" name="copy" value="yes" id="yes"> <label for="yes" class="mr30">가능</label>
+									<input @change="fnChangeDataSet" v-model="sendData.copy" type="radio" name="copy" value="no" id="no" checked=""> <label for="no" class="mr30">불가능</label>
+									<input @change="fnChangeDataSet" v-model="sendData.copy" type="radio" name="copy" value="yes" id="yes"> <label for="yes" class="mr30">가능</label>
 									<p class="txtCaption color4">※ 단말 내 메시지에 대한 복사가능여부 설정입니다.</p>
 								</div>
 							</div>
@@ -281,7 +285,7 @@
 									<h5>발신번호 *</h5>
 								</div>
 								<div style="width:82%">
-									<select v-model="sendData.callback" name="userConsole_sub020201_1" class="selectStyle2" style="width:30%">
+									<select @change="fnChangeDataSet" v-model="sendData.callback" name="userConsole_sub020201_1" class="selectStyle2" style="width:30%">
 										<option v-for="options in sendData.callbackArr">
 											{{options.callback}}
 										</option>
@@ -293,9 +297,9 @@
 									<h5>대체발송</h5>
 								</div>
 								<div style="width:82%">
-									<input v-model="sendData.senderType" type="radio" name="substitution" value="UNUSED" id="UNUSED" checked="" activity="READ"> <label for="UNUSED" class="mr30">미사용</label>
-									<input v-model="sendData.senderType" type="radio" name="substitution" value="SMS" id="SMS" activity="READ"> <label for="SMS" class="mr30" data-toggle="modal" data-target="#sender">SMS</label>
-									<input v-model="sendData.senderType" type="radio" name="substitution" value="LMS" id="LMS" activity="READ"> <label for="LMS" class="mr30" data-toggle="modal" data-target="#sender">LMS</label>
+									<input @change="fnChangeDataSet" v-model="sendData.senderType" type="radio" name="substitution" value="UNUSED" id="UNUSED" checked="" activity="READ"> <label for="UNUSED" class="mr30">미사용</label>
+									<input @change="fnChangeDataSet" v-model="sendData.senderType" type="radio" name="substitution" value="SMS" id="SMS" activity="READ"> <label for="SMS" class="mr30" data-toggle="modal" data-target="#sender">SMS</label>
+									<input @change="fnChangeDataSet" v-model="sendData.senderType" type="radio" name="substitution" value="LMS" id="LMS" activity="READ"> <label for="LMS" class="mr30" data-toggle="modal" data-target="#sender">LMS</label>
 								</div>
 							</div>	
 						</div>	
@@ -570,6 +574,7 @@ export default {
 		}
 
 		// 데이터 초기화
+		this.dataSet = false;
 		this.pushTab = "push";
 		this.imgsrc = require("@/assets/images/common/approve.png");
 		this.text = "테스트입니다.[한글]";
@@ -694,6 +699,7 @@ export default {
 	
 	fnSetTemplate(data) {
 		var vm = this;
+		vm.dataSet = true;
 		var formNm = data.formNm;
 		if(formNm.indexOf("승인") != -1) {
 			this.imgsrc = require("@/assets/images/common/approve.png");
@@ -753,6 +759,7 @@ export default {
 	// 메시지 내용 입력 return
 	fnSetAddContents(params) {
 		var vm = this;
+		vm.dataSet = true;
 		if(!vm.carouSelType) {
 			vm.sendData.brandId = params.brandId;
 			vm.sendData.textTitle = params.title;
@@ -775,6 +782,7 @@ export default {
 	// 버튼 내용 입력 return
 	fnSetAddBtns(data) {
 		var vm = this;
+		vm.dataSet = true;
 		if(!vm.carouSelType) {
 			vm.btnCnt = data.btnCnt;
 			vm.btnNm = data.btnNm;
@@ -924,6 +932,19 @@ export default {
         }
         varNms.push($1);
       });
+
+	  var adYn = vm.sendData.adYn;
+	  if(adYn == "yes") {
+		    var callbackContents = vm.sendData.callbackContents;
+		  	callbackContents.replace(/\#\{(\w+)\}/g, function($0, $1) {
+			if(rsvNmSet.has($1)){
+			containRsvNm = true;
+			return false;
+			}
+			varNms.push($1);
+		});
+	  }
+
       if(containRsvNm){
         confirm.fnAlert('RCS 발송', '발송 내용 변수 phone 은 예약어로 사용하실 수 없습니다.');
         return false;
@@ -994,6 +1015,7 @@ export default {
 	// 메시지 보관함 세팅
 	fnTmpMsgSet(data) {
 		var vm = this;
+		vm.dataSet = true;
 		var returnRadioBtn = data.templateRadioBtn;
 		var saveBoxId = data.saveBoxId;
 
@@ -1083,7 +1105,12 @@ export default {
 	},
 
 	fnConfirmChangeRadioBtn(oldval, newval) {
-		jQuery("#confirm").modal("show");
+		var dataSet = this.dataSet;
+		if(dataSet) {
+			jQuery("#confirm").modal("show");
+		} else {
+			this.fnResetData();
+		}
 	},
 	parentFunction() {
 		this.templateRadioBtn = this.oldval;
@@ -1120,7 +1147,7 @@ export default {
 	},
 
 	fnSendData() {
-		var vali = this.validation();
+		var vali = this.validation("real");
 		if(!vali) return false;
 
 		var vm = this;
@@ -1157,7 +1184,7 @@ export default {
 
 	// 테스트 발송
 	fnTestSendData() {
-		var vali = this.validation();
+		var vali = this.validation("test");
 		if(!vali) return false;
 
 		// 캐러셀형 msgId 세팅
@@ -1203,7 +1230,7 @@ export default {
       }
     },
 
-	validation() {
+	validation(sendFlag) {
 		var vm = this;
 		var templateRadioBtn = this.templateRadioBtn;
 		if(templateRadioBtn == "des" || templateRadioBtn == "cell") {
@@ -1257,14 +1284,61 @@ export default {
 			for(var i=0; i<carouselSelect; i++) {
 				if("" == carouselObj.textTitle[i]) {
 					confirm.fnAlert("RCS 발송", "내용입력을 완료해주세요.");
+					return false;
 				}
 				if("" == carouselObj.textContents[i]) {
 					confirm.fnAlert("RCS 발송", "내용입력을 완료해주세요.");
+					return false;
 				}
 			}
 		}
 
+		// 무료 수신 거부 validation
+		var adYn = vm.sendData.adYn;
+		if(adYn == "yes") {
+			var freeReceiveNum = vm.sendData.freeReceiveNum;
+			if(freeReceiveNum == "") {
+				confirm.fnAlert("RCS 발송", "무료수신거부 번호를 입력해 주세요.");
+				return false;
+			}
+		}
+
+		// 대체 발송 validation
+		var senderType = vm.sendData.senderType;
+		if(senderType == "SMS") {
+			var callbackContents = vm.sendData.callbackContents;
+			if(callbackContents == "") {
+				confirm.fnAlert("RCS 발송", "대체발송 내용을 입력해 주세요.");
+				return false;
+			}
+		} else if (senderType == "LMS") {
+			var callbackTitle = vm.sendData.callbackTitle;
+			var callbackContents = vm.sendData.callbackContents;
+			if(callbackTitle == "") {
+				confirm.fnAlert("RCS 발송", "대체발송 제목을 입력해 주세요.");
+				return false;
+			}
+			if(callbackContents == "") {
+				confirm.fnAlert("RCS 발송", "대체발송 내용을 입력해 주세요.");
+				return false;
+			}
+		}
+
+		// 수신자 목록 validation 실제 발송일 경우에만 체크
+		if(sendFlag == "real") {
+			var recvInfoLst = vm.sendData.recvInfoLst;
+			if(recvInfoLst.length==0) {
+				confirm.fnAlert("RCS 발송", "수신자를 입력해 주세요.");
+				return false;
+			}
+		}
+
 		return true;
+	},
+
+	// 수정 여부 dataset 처리
+	fnChangeDataSet() {
+		this.dataSet = true;
 	}
   }
 }

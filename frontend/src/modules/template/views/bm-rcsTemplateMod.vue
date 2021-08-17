@@ -357,9 +357,9 @@ export default {
 		// 서술형 Data 세팅
 		desFormNm: "",			// 서술형 유형
 		desFormNmList: [],		// 서술형 유형 selectBox
-		desContentsExam: "{{name}}입니다.{{date}} 할인/특가<br>상품을 안내해 드립니다.<br>본 알림은 {{name}} 회원전용 서비스<br>입니다.",	// 서술형 sampleView
+		desContentsExam: "{{name}}입니다.{{date}} 할인/특가 상품을 안내해 드립니다. 본 알림은 {{name}} 회원전용 서비스 입니다.",	// 서술형 sampleView
 		desContents: "",	// 서술형 내용
-		desContentsPlaceHoder: "변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.&#13;예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",	// 서술형 내용 holder
+		desContentsPlaceHoder: "변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오. 예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",	// 서술형 내용 holder
 		desContentsCnt: 0,	// 글자 수
 		// 스타일형 Data 세팅
 		styleFormNm: "",			// 스타일형 유형

@@ -1008,12 +1008,7 @@ public class RcsTemplateSendService {
 		apiMap.put("buttons", btnArr);
 		
 		// 대체발송 세팅
-		ArrayList<Map<String, Object>> fbInfoLst = new ArrayList<Map<String, Object>>();
-		Map<String, Object> fbInfoMap = this.setFbInfoMap(data);
-		
-		if(fbInfoMap.size() > 0) {
-			fbInfoLst.add(0, fbInfoMap);
-		}
+		ArrayList<Map<String, Object>> fbInfoLst = this.setFbInfoLst(data);
 		apiMap.put("fbInfoLst", fbInfoLst);
 		
 		// recvInfoLst 세팅
@@ -1031,7 +1026,7 @@ public class RcsTemplateSendService {
 			boolean real = (boolean) params.get("real");
 			if(real) {
 				List<Object> reSendCdList = sendMsgService.reSendCdList(null);
-				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, reSendCdList);
+				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, fbInfoLst, reSendCdList);
 			} else {
 				this.sendTestRcs(apiMap, headerMap);
 			}
@@ -1055,12 +1050,7 @@ public class RcsTemplateSendService {
 		apiMap.put("buttons", new ArrayList());
 		
 		// 대체발송 세팅
-		ArrayList<Map<String, Object>> fbInfoLst = new ArrayList<Map<String, Object>>();
-		Map<String, Object> fbInfoMap = this.setFbInfoMap(data);
-		
-		if(fbInfoMap.size() > 0) {
-			fbInfoLst.add(0, fbInfoMap);
-		}
+		ArrayList<Map<String, Object>> fbInfoLst = this.setFbInfoLst(data);
 		apiMap.put("fbInfoLst", fbInfoLst);
 		
 		// recvInfoLst 세팅
@@ -1078,7 +1068,7 @@ public class RcsTemplateSendService {
 			boolean real = (boolean) params.get("real");
 			if(real) {
 				List<Object> reSendCdList = sendMsgService.reSendCdList(null);
-				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, reSendCdList);
+				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, fbInfoLst, reSendCdList);
 			} else {
 				this.sendTestRcs(apiMap, headerMap);
 			}
@@ -1107,12 +1097,7 @@ public class RcsTemplateSendService {
 		apiMap.put("buttons", btnArr);
 		
 		// 대체발송 세팅
-		ArrayList<Map<String, Object>> fbInfoLst = new ArrayList<Map<String, Object>>();
-		Map<String, Object> fbInfoMap = this.setFbInfoMap(data);
-		
-		if(fbInfoMap.size() > 0) {
-			fbInfoLst.add(0, fbInfoMap);
-		}
+		ArrayList<Map<String, Object>> fbInfoLst = this.setFbInfoLst(data);
 		apiMap.put("fbInfoLst", fbInfoLst);
 		
 		// recvInfoLst 세팅
@@ -1129,7 +1114,7 @@ public class RcsTemplateSendService {
 			boolean real = (boolean) params.get("real");
 			if(real) {
 				List<Object> reSendCdList = sendMsgService.reSendCdList(null);
-				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, reSendCdList);
+				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, fbInfoLst, reSendCdList);
 			} else {
 				this.sendTestRcs(apiMap, headerMap);
 			}
@@ -1162,12 +1147,7 @@ public class RcsTemplateSendService {
 		apiMap.put("buttons", btnArr);
 		
 		// 대체발송 세팅
-		ArrayList<Map<String, Object>> fbInfoLst = new ArrayList<Map<String, Object>>();
-		Map<String, Object> fbInfoMap = this.setFbInfoMap(data);
-		
-		if(fbInfoMap.size() > 0) {
-			fbInfoLst.add(0, fbInfoMap);
-		}
+		ArrayList<Map<String, Object>> fbInfoLst = this.setFbInfoLst(data);
 		apiMap.put("fbInfoLst", fbInfoLst);
 		
 		// recvInfoLst 세팅
@@ -1184,7 +1164,7 @@ public class RcsTemplateSendService {
 			boolean real = (boolean) params.get("real");
 			if(real) {
 				List<Object> reSendCdList = sendMsgService.reSendCdList(null);
-				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, reSendCdList);
+				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, fbInfoLst, reSendCdList);
 			} else {
 				this.sendTestRcs(apiMap, headerMap);
 			}
@@ -1384,6 +1364,67 @@ public class RcsTemplateSendService {
 		return resultMap;
 	}
 	
+	public ArrayList<Map<String, Object>> setFbInfoLst(Map<String, Object> data) {
+		ArrayList<Map<String, Object>> resultLst = new ArrayList<Map<String, Object>>();
+		String senderType = CommonUtils.getString(data.get("senderType"));
+		String adYn = CommonUtils.getString(data.get("adYn"));
+		String freeReceiveNum = CommonUtils.getString(data.get("freeReceiveNum"));
+		ArrayList<Map<String, Object>> dataList = (ArrayList<Map<String, Object>>) data.get("recvInfoLst");
+		
+		int resultListCnt = 0;
+		
+		if("SMS".equals(senderType)) {
+			for(Map<String, Object> dataMap : dataList) {
+				Map<String, Object> resultMap = new HashMap<String, Object>();
+				Map<String, Object> mergeMap = (Map<String, Object>) dataMap.get("mergeData");
+				String callbackContents = CommonUtils.getString(data.get("callbackContents"));
+				if("yes".equals(adYn)) {
+					callbackContents = "(광고)"+callbackContents;
+				}
+				if(!"".equals(freeReceiveNum)) {
+					callbackContents = callbackContents + "무료수신거부 : " + freeReceiveNum;
+				}
+				
+				StringSubstitutor sub = new StringSubstitutor(mergeMap, ApiConfig.RCS_REPLACE_VAR_START, ApiConfig.RCS_REPLACE_VAR_END);
+				String replaceStr = sub.replace(callbackContents);
+				
+				resultMap.put("ch", "SMS");
+				resultMap.put("title", "");
+				resultMap.put("msg", replaceStr);
+				resultMap.put("fileId", "");
+				
+				resultLst.add(resultListCnt, resultMap);
+				resultListCnt++;
+			}
+		} else if("LMS".equals(senderType)) {
+			for(Map<String, Object> dataMap : dataList) {
+				Map<String, Object> resultMap = new HashMap<String, Object>();
+				Map<String, Object> mergeMap = (Map<String, Object>) dataMap.get("mergeData");
+				String callbackTitle = CommonUtils.getString(data.get("callbackTitle"));
+				String callbackContents = CommonUtils.getString(data.get("callbackContents"));
+				if("yes".equals(adYn)) {
+					callbackTitle = "(광고)"+callbackTitle;
+				}
+				if(!"".equals(freeReceiveNum)) {
+					callbackContents = callbackContents + "무료수신거부 : " + freeReceiveNum;
+				}
+				
+				StringSubstitutor sub = new StringSubstitutor(mergeMap, ApiConfig.RCS_REPLACE_VAR_START, ApiConfig.RCS_REPLACE_VAR_END);
+				String replaceStr = sub.replace(callbackContents);
+				
+				resultMap.put("ch", "SMS");
+				resultMap.put("title", callbackTitle);
+				resultMap.put("msg", replaceStr);
+				resultMap.put("fileId", "");
+				
+				resultLst.add(resultListCnt, resultMap);
+				resultListCnt++;
+			}
+		}
+		
+		return resultLst;
+	}
+	
 	public ArrayList<Map<String ,Object>> setRecvInfoListTemplate(Map<String, Object> data) {
 		ArrayList<Map<String, Object>> dataList = (ArrayList<Map<String, Object>>) data.get("recvInfoLst");
 		ArrayList<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
@@ -1430,6 +1471,7 @@ public class RcsTemplateSendService {
 		String textTitle = CommonUtils.getString(data.get("textTitle"));				// 제목
 		String textContents = CommonUtils.getString(data.get("textContents"));			// 내용
 		String imgUrl = CommonUtils.getString(data.get("imgUrl"));						// 이미지 URL
+		System.out.println("456456456456" + data);
 		ArrayList<Map<String, Object>> dataList = (ArrayList<Map<String, Object>>) data.get("recvInfoLst");
 		ArrayList<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 		int resultListCnt = 0;
@@ -1533,9 +1575,12 @@ public class RcsTemplateSendService {
 		String callback = CommonUtils.getString(msgMap.get("callback"));
 		String campaignId = CommonUtils.getString(msgMap.get("campaignId"));
 		
+		// 발송 리스트, 대체 발송 리스트 세팅
 		if(!StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
 			msgMap.put("recvInfoLst", msgMap.get("msgRecvInfoLst"));
 			msgMap.remove("msgRecvInfoLst");
+			msgMap.put("fbInfoLst", msgMap.get("msgFbInfoLst"));
+			msgMap.remove("msgFbInfoLst");
 		}
 		
 		if(StringUtils.equals(rsrvSendYn, Const.COMM_YES)) {
@@ -1627,10 +1672,12 @@ public class RcsTemplateSendService {
 	}
 	
 	@Async
-	public void sendRcs(Map<String, Object> params, int fromIndex, Map<String, Object> apiMap, Map<String, Object> headerMap, ArrayList<Map<String, Object>> recvInfoLst, List<Object> reSendCdList) throws Exception {
+	public void sendRcs(Map<String, Object> params, int fromIndex, Map<String, Object> apiMap, Map<String, Object> headerMap,
+			ArrayList<Map<String, Object>> recvInfoLst, ArrayList<Map<String, Object>> fbInfoLst, List<Object> reSendCdList) throws Exception {
 		List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
 		Map<String, Object> responseBody = null;
 		String jsonString = "";
+		String failMsg = "";
 		boolean isDone = false;
 		boolean isServerError = false;
 		boolean isAllFail = true;
@@ -1644,6 +1691,7 @@ public class RcsTemplateSendService {
 		
 		params.put("recvInfoLstCnt", listSize);
 		apiMap.put("msgRecvInfoLst", recvInfoLst);
+		apiMap.put("msgFbInfoLst", fbInfoLst);
 
 		while (toIndex < listSize) {
 			isDone = false;
@@ -1652,16 +1700,12 @@ public class RcsTemplateSendService {
 			try {
 				if(toIndex > listSize) toIndex = listSize;
 				apiMap.put("recvInfoLst", recvInfoLst.subList(fromIndex, toIndex));
+				apiMap.put("fbInfoLst", fbInfoLst.subList(fromIndex, toIndex));
 				jsonString = gson.toJson(apiMap);
-				
-				System.out.println("asdfasdfsdf" + jsonString);
-				
 				responseBody = apiInterface.sendMsg(ApiConfig.SEND_RCS_API_URI, headerMap, jsonString);
-				
-				System.out.println("asdfasdfasdf" + responseBody);
-				
 				isDone = isApiRequestAgain(responseBody, reSendCdList);
 				isAllFail = !isSendSuccess(responseBody);
+				if(isAllFail) failMsg = CommonUtils.getString(responseBody.get("message"));
 			} catch (Exception e) {
 				isServerError = true;
 			}
@@ -1682,7 +1726,7 @@ public class RcsTemplateSendService {
 		//웹 발송 내역 등록
 		if(isAllFail) {
 			this.insertPushCmWebMsg(headerMap, apiMap, params, "FAIL");
-			throw new Exception("RCS 메시지 발송에 실패하였습니다.");
+			throw new Exception(failMsg);
 		} else {
 			this.insertPushCmWebMsg(headerMap, apiMap, params, "COMPLETED");
 		}
@@ -1693,7 +1737,8 @@ public class RcsTemplateSendService {
 		Map<String, Object> result = apiInterface.post("/console/v1/rcs", apiMap, headerMap);
 		
 		if(!"10000".equals(result.get("code")) ) {
-			throw new Exception("RCS 테스트 메세지 발송에 실패하였습니다.");
+			String resultMsg = CommonUtils.getString(result.get("message"));
+			throw new Exception(resultMsg);
 		}
 	}
 	
