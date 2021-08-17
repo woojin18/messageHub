@@ -16,8 +16,13 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="mt40">
+				<my-captcha :callSuccess="captchaBtn" color="black" resolve="text" style="margin: 0 auto;"></my-captcha>
+			</div>
+
 			<div class="text-center mt40">
-				<a href="#self" @click.prevent="fnSetUserPwd" class="btnStyle3 black font14 minWidth120">비밀번호 저장</a>
+				<a id="btnSave" v-bind:disabled="btndis" @click.prevent="fnSetUserPwd" class="btnStyle3 black font14 minWidth120">비밀번호 저장</a>
 				<a @click="changeNext" class="btnStyle3 gray font14 minWidth120 ml10">다음에 변경</a>
 			</div>
 		</section>
@@ -30,18 +35,34 @@ import tokenSvc from '@/common/token-service';
 import * as utils from '@/common/utils';
 import confirm from "@/modules/commonUtil/service/confirm";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import myCaptcha from 'vue-captcha'
+import jq from 'jquery'
 
 export default {
+	components: {
+    	'my-captcha': myCaptcha
+  	},
 	data: function() {
 		return {
 			pwd : "",
 			pwdChk : "",
 			loginId : tokenSvc.getToken().principal.loginId,
-			svcTypeCd : tokenSvc.getToken().principal.svcTypeCd
+			svcTypeCd : tokenSvc.getToken().principal.svcTypeCd,
+			btndis: true
 		};
 	},
+	mounted() {
+		jq("button[title='Written']").click();
+	},
 	methods: {
+		captchaBtn () {
+			this.btndis = false
+		},
 		fnSetUserPwd(){
+			if(this.btndis) {
+				confirm.fnAlert("화면에 보이는 문자를 입력해주세요.");
+				return;
+			}
 			if (this.pwd.length == 0 || this.pwdChk.length == 0) {
 				confirm.fnAlert("비밀번호는 필수 입력 사항입니다.");
 				return;
@@ -88,3 +109,13 @@ export default {
 	}
 };
 </script>
+
+<style scope>
+#btnSave[disabled] {
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+button[title="Written"] {
+	display: none !important;
+}
+</style> 
