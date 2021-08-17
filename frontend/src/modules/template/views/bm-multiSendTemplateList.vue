@@ -51,9 +51,9 @@
 			<div class="col-xs-12 consolMarginTop">
 				<div class="of_h inline">
 					<div class="float-right">
-						<router-link :to="{ name: 'multiSendTemplateManage' }" tag="a" class="btnStyle2 borderGray"  activity="SAVE">템플릿 등록<i class="fal fa-arrow-to-bottom"></i></router-link>
-						<a @click="fnDelete" class="btnStyle2 borderGray" title="삭제" activity="SAVE">삭제 <i class="fal fa-arrow-to-bottom"></i></a>
-						<a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="엑셀 다운로드" activity="READ">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
+						<router-link :to="{ name: 'multiSendTemplateManage' }" tag="a" class="btnStyle2 backBlack"  activity="SAVE">템플릿 등록<i class="fal fa-arrow-to-bottom"></i></router-link>
+						<a @click="fnDelete" class="btnStyle2 borderGray ml10" title="삭제" activity="SAVE">삭제 <i class="fal fa-arrow-to-bottom"></i></a>
+						<a @click="fnExcelDownLoad" class="btnStyle2 borderGray ml10" title="엑셀 다운로드" activity="READ">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
 					</div>
 				</div>
 				<!-- 15개씩 보기 -->
