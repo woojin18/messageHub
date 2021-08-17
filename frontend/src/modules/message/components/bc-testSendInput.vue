@@ -5,6 +5,33 @@
         <div class="modal-body">
           <h2>테스트 발송</h2>
           <hr>
+          <div class="of_h">
+            <p class="color000 inline-block">테스트발송시 대체발송은 하지 않습니다.</p>
+          </div>
+
+          <div class="of_h mt10">
+            <div class="overflow-x-auto white-space-nowrap">
+
+              <div class="inline-block mr20 WidthAuto" v-for="header in headerList" :key="header">
+                <div class="text-center background-color6 colorfff consolLineheight">* {{header=='cuid' ? 'APP 로그인ID' : (header=='phone' ? '휴대폰번호' : header)}}</div>
+                <div class="consolMarginTop" v-for="rowIdx in loopCnt" :key="rowIdx">
+                  <div v-if="testRecvInfoLst.length >= rowIdx">
+                    <input v-if="header == 'cuid' || header == 'phone'" type="text" class="inputStyle" 
+                      :ref="header+'_'+rowIdx" v-model="testRecvInfoLst[rowIdx-1][header]">
+                    <input v-else type="text" class="inputStyle" 
+                      :ref="header+'_'+rowIdx" v-model="testRecvInfoLst[rowIdx-1].mergeData[header]">
+                  </div>
+                  <div v-else>
+                    <input type="text" class="inputStyle" :ref="header+'_'+rowIdx">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- 
           <div :class="idx == 0 ? 'of_h' : 'of_h mt10'" v-for="(header, idx) in headerList" :key="header">
             <div class="inline-block float-left text-center background-color6 colorfff consolLineheight" style="width:19%">
                 * {{header=='cuid' ? 'APP 로그인ID' : (header=='phone' ? '휴대폰번호' : header)}}
@@ -22,6 +49,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <div class="text-center mt20">
             <a @click="fnSendTestData" class="btnStyle1 backBlack" title="발송">발송</a>
