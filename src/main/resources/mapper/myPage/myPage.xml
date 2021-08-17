@@ -17,11 +17,12 @@
 	<update id="updateMemberInfo">
 	/* myPage.updateMemberInfo */
 		UPDATE	cm_console.CM_USER
-		SET		UPD_DT = NOW()
-		,		REP_PROJECT_ID = #{repProjectId}
+		SET		UPD_DT			= NOW()
+		,		REP_PROJECT_ID	= #{repProjectId}
 		<if test="loginPwd != null and loginPwd != ''">
-		,		LOGIN_PWD = #{loginPwd}
-		,		PWD_UPD_DT = NOW()
+		,		LOGIN_PWD	= #{loginPwd}
+		,		PWD_UPD_DT	= NOW()
+		,		SALT		= #{salt}
 		</if>
 		<if test="hpNumber != null and hpNumber != ''">
 		,		HP_NUMBER = #{hpNumber}

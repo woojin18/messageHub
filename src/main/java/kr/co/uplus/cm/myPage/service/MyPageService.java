@@ -1,5 +1,7 @@
 package kr.co.uplus.cm.myPage.service;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,14 +69,19 @@ public class MyPageService {
 			// 비밀번호 암호화
 			if(!"".equals(params.get("loginPwd")) && params.get("loginPwd") != null) {
 				String loginPwd = CommonUtils.getString(params.get("loginPwd"));
-
 				// 사용자 비밀번호 암호화
+				SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+				byte[] bytes = new byte[16];
+				random.nextBytes(bytes);
+				String salt = new String(Base64.getEncoder().encode(bytes));
+				paramMap.put("salt", salt);
+				
 				SHA sha256 = new SHA(256);
-				String encPwd = sha256.encryptToBase64(loginPwd);
+				String encPwd = sha256.encryptToBase64(salt + loginPwd);
 				paramMap.put("loginPwd", encPwd);
 				
 				// 기존 비밀번호 비교
-				String exPwd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, params));
+				String exPwd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, paramMap));
 				
 				if(exPwd.equals(encPwd)) {
 					rtn.setSuccess(false);
