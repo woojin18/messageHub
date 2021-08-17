@@ -323,6 +323,34 @@ public class SendMessageService {
         return (BigDecimal) selectObject;
     }
 
+    /**
+     * 광고성 멘트 추가
+     * @param params
+     * @param titleKey
+     * @param msgKey
+     * @param rcvblcNumKey
+     * @return
+     */
+    public Map<String, Object> SetAdText(String title, String msg, String rcvblcNum) {
+
+        Map<String, Object> rtnMap = new HashMap<String, Object>();
+
+        //광고 글자 추가
+        if(StringUtils.isNotBlank(title)) {
+            title = ApiConfig.AD_TEXT + title;
+        } else {
+            msg = ApiConfig.AD_TEXT + msg;
+        }
+        //수신거부번호 Set
+        if(StringUtils.isNotBlank(rcvblcNum)) {
+            msg += "\n" +  rcvblcNum;
+        }
+
+        rtnMap.put("title", title);
+        rtnMap.put("msg", msg);
+
+        return rtnMap;
+    }
 
     /**
      * 푸시 발송 데이터 유효성 체크
@@ -349,18 +377,21 @@ public class SendMessageService {
         pushRequestData.setServiceCode(CommonUtils.getStrValue(params, "serviceCode"));
 
         //푸시 메시지
+        String msgTitle = CommonUtils.getStrValue(params, "pushTitle");
         String pushContent = (CommonUtils.getStrValue(params, "pushContent"));
         String rcvblcNumber = (CommonUtils.getStrValue(params, "rcvblcNumber"));
         String msgKind = (CommonUtils.getStrValue(params, "msgKind"));
         String pushBody = pushContent;
 
-        if(StringUtils.equals(msgKind, Const.MsgKind.AD)
-                && StringUtils.isNotBlank(rcvblcNumber)) {
-            pushBody += "\n" +  rcvblcNumber;
+        //광고성일 경우
+        if(StringUtils.equals(msgKind, Const.MsgKind.AD)) {
+            Map<String, Object> adMap = SetAdText(msgTitle, pushBody, rcvblcNumber);
+            msgTitle = CommonUtils.getStrValue(adMap, "title");
+            pushBody = (CommonUtils.getStrValue(adMap, "msg"));
         }
 
         PushMsg pushMsg = new PushMsg();
-        pushMsg.setTitle(CommonUtils.getStrValue(params, "pushTitle"));
+        pushMsg.setTitle(msgTitle);
         pushMsg.setBody(pushBody);
         pushRequestData.setMsg(pushMsg);
 
@@ -383,13 +414,16 @@ public class SendMessageService {
         if(!StringUtils.equals(rplcSendType, Const.RplcSendType.NONE)) {
             List<FbInfo> fbInfoLst = new ArrayList<FbInfo>();
             Map<String, Object> fbInfo = (Map<String, Object>) params.get("fbInfo");
+            String fbTitle = CommonUtils.getStrValue(fbInfo, "title");
             String fbMsg = CommonUtils.getStrValue(fbInfo, "msg");
             String fbRcvblcNumber = CommonUtils.getStrValue(fbInfo, "rcvblcNumber");
             String fbMsgBody = fbMsg;
 
-            if(StringUtils.equals(msgKind, Const.MsgKind.AD)
-                    && StringUtils.isNotBlank(fbRcvblcNumber)) {
-                fbMsgBody += "\n" +  fbRcvblcNumber;
+            //광고성일 경우
+            if(StringUtils.equals(msgKind, Const.MsgKind.AD)) {
+                Map<String, Object> adMap = SetAdText(fbTitle, fbMsgBody, fbRcvblcNumber);
+                fbTitle = CommonUtils.getStrValue(adMap, "title");
+                fbMsgBody = (CommonUtils.getStrValue(adMap, "msg"));
             }
 
             FbInfo pushFbInfo = new FbInfo();
@@ -398,9 +432,9 @@ public class SendMessageService {
 
             if(StringUtils.equals(rplcSendType, Const.RplcSendType.LMS)) {
                 pushFbInfo.setCh(Const.RplcSendType.MMS);  //LMS 는 MMS로 전송
-                pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
+                pushFbInfo.setTitle(fbTitle);
             } else if(StringUtils.equals(rplcSendType, Const.RplcSendType.MMS)) {
-                pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
+                pushFbInfo.setTitle(fbTitle);
                 pushFbInfo.setFileId(CommonUtils.getStrValue(fbInfo, "fileId"));
             }
 
@@ -781,9 +815,9 @@ public class SendMessageService {
         String msgKind = CommonUtils.getStrValue(params, "msgKind");
         String msg = smsContent;
 
-        if(StringUtils.equals(msgKind, Const.MsgKind.AD)
-                && StringUtils.isNotBlank(rcvblcNumber)) {
-            msg += "\n" +  rcvblcNumber;
+        if(StringUtils.equals(msgKind, Const.MsgKind.AD)) {
+            Map<String, Object> adMap = SetAdText("", msg, rcvblcNumber);
+            msg = (CommonUtils.getStrValue(adMap, "msg"));
         }
         requestData.setMsg(msg);
 
@@ -986,19 +1020,20 @@ public class SendMessageService {
         //캠페인 ID
         requestData.setCampaignId(CommonUtils.getStrValue(params, "campaignId"));
 
-        //MMS 제목
-        requestData.setTitle(CommonUtils.getStrValue(params, "smsTitle"));
-
-        //MMS 메시지
+        //MMS 내용
+        String title = CommonUtils.getStrValue(params, "smsTitle");
         String smsContent = CommonUtils.getStrValue(params, "smsContent");
         String rcvblcNumber = CommonUtils.getStrValue(params, "rcvblcNumber");
         String msgKind = CommonUtils.getStrValue(params, "msgKind");
         String msg = smsContent;
 
-        if(StringUtils.equals(msgKind, Const.MsgKind.AD)
-                && StringUtils.isNotBlank(rcvblcNumber)) {
-            msg += "\n" +  rcvblcNumber;
+        //광고성일 경우
+        if(StringUtils.equals(msgKind, Const.MsgKind.AD)) {
+            Map<String, Object> adMap = SetAdText(title, msg, rcvblcNumber);
+            title = CommonUtils.getStrValue(adMap, "title");
+            msg = (CommonUtils.getStrValue(adMap, "msg"));
         }
+        requestData.setTitle(title);
         requestData.setMsg(msg);
 
         //File List
@@ -1403,13 +1438,16 @@ public class SendMessageService {
         if(!StringUtils.equals(rplcSendType, Const.RplcSendType.NONE)) {
             List<FbInfo> fbInfoLst = new ArrayList<FbInfo>();
             Map<String, Object> fbInfo = (Map<String, Object>) params.get("fbInfo");
+            String fbTitle = CommonUtils.getStrValue(fbInfo, "title");
             String fbMsg = CommonUtils.getStrValue(fbInfo, "msg");
             String fbRcvblcNumber = CommonUtils.getStrValue(fbInfo, "rcvblcNumber");
             String fbMsgBody = fbMsg;
 
-            if(StringUtils.equals(msgKind, Const.MsgKind.AD)
-                    && StringUtils.isNotBlank(fbRcvblcNumber)) {
-                fbMsgBody += "\n" +  fbRcvblcNumber;
+            //광고성일 경우
+            if(StringUtils.equals(msgKind, Const.MsgKind.AD)) {
+                Map<String, Object> adMap = SetAdText(fbTitle, fbMsgBody, fbRcvblcNumber);
+                fbTitle = CommonUtils.getStrValue(adMap, "title");
+                fbMsgBody = (CommonUtils.getStrValue(adMap, "msg"));
             }
 
             FbInfo pushFbInfo = new FbInfo();
@@ -1418,9 +1456,9 @@ public class SendMessageService {
 
             if(StringUtils.equals(rplcSendType, Const.RplcSendType.LMS)) {
                 pushFbInfo.setCh(Const.RplcSendType.MMS);  //LMS 는 MMS로 전송
-                pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
+                pushFbInfo.setTitle(fbTitle);
             } else if(StringUtils.equals(rplcSendType, Const.RplcSendType.MMS)) {
-                pushFbInfo.setTitle(CommonUtils.getStrValue(fbInfo, "title"));
+                pushFbInfo.setTitle(fbTitle);
                 pushFbInfo.setFileId(CommonUtils.getStrValue(fbInfo, "fileId"));
             }
 

@@ -19,7 +19,7 @@
                 <div class="border-line2" style="height:420px; overflow-y:scroll">
                   <ul class="color4">
                     <li @click="fnGetTemplateInfo(idx, templateInfo.tmpltId)" v-for="(templateInfo, idx) in templateList" :key="templateInfo.tmpltId" class="bb-ddd pd5">
-                      {{templateInfo.tmpltName | unescapeXss}}<sapn v-if="!$gfnCommonUtils.isEmpty(templateInfo.tmpltTitle)">({{templateInfo.tmpltTitle | unescapeXss}})</sapn>
+                      {{templateInfo.tmpltName | unescapeXss}}<span v-if="!$gfnCommonUtils.isEmpty(templateInfo.tmpltTitle)">({{templateInfo.tmpltTitle | unescapeXss}})</span>
                     </li>
                     <li v-if="templateList.length == 0" class="bb-ddd pd5 text-center">검색된 내용이 없습니다.</li>
                   </ul>

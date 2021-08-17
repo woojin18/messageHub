@@ -17,7 +17,7 @@
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
                   <div v-if="!$gfnCommonUtils.isEmpty(tmpltData.PUSH.title)" class="phoneText1">
-                    <p><span v-if="tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.PUSH.title}}</p>
+                    <p>{{tmpltData.PUSH.title}}</p>
                   </div>
                   <div 
                     v-if="tmpltData.msgType == 'IMAGE' && tmpltData.PUSH.ext && tmpltData.PUSH.ext.imageUrl" 
@@ -26,7 +26,7 @@
                   >
                   </div>
                   <p class="consolMarginTop">
-                    <pre><span v-if="$gfnCommonUtils.isEmpty(tmpltData.PUSH.title) && tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.PUSH.msg}}</pre>
+                    <pre>{{tmpltData.PUSH.msg}}</pre>
                     <br/>
                     {{tmpltData.PUSH.rcvblcInput}}
                   </p>
@@ -65,7 +65,7 @@
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
                   <div class="phoneText1">
-                    <p><span v-if="tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.MMS.title}}</p>
+                    <p>{{tmpltData.MMS.title}}</p>
                   </div>
                   <div v-if="tmpltData.msgType == 'IMAGE'">
                     <div v-for="(fileUrl, idx) in tmpltData.MMS.fileUrlLst" :key="idx" class="phoneText2 mt10 text-center simulatorImg"
@@ -89,7 +89,7 @@
                   <div class="phoneText1">
                     <p>{{tmpltData.SMS.callback}}</p>
                   </div>
-                  <p class="consolMarginTop"><pre><span v-if="tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.SMS.msg}}</pre></p>
+                  <p class="consolMarginTop"><pre>{{tmpltData.SMS.msg}}</pre></p>
                   <br v-if="tmpltData.msgKind == 'A'"/>
                   <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.SMS.rcvblcInput)">
                     {{tmpltData.SMS.rcvblcInput}}
@@ -130,7 +130,6 @@
                 <div class="phoneTextWrap scroll-yc">
                   <p class="color000">
                     <span>[WEB발신]</span>
-                    <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
                   </p>
                   <div class="phoneText1">
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15">
@@ -197,7 +196,6 @@
                 <div class="phoneTextWrap scroll-yc">
                   <p class="color000">
                     <span>[WEB발신]</span>
-                    <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
                   </p>
                   <div class="phoneText1">
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
@@ -223,7 +221,6 @@
                 <div class="phoneTextWrap scroll-yc">
                   <p class="color000">
                     <span>[WEB발신]</span>
-                    <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
                   </p>
                   <div class="phoneText1">
                     <h5 v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0 && tmpltData.RCS.mergeData[0].title">{{tmpltData.RCS.mergeData[0].title}}</h5>
@@ -251,7 +248,6 @@
                 <div class="phoneTextWrap scroll-yc">
                   <p class="color000">
                     <span>[WEB발신]</span>
-                    <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
                   </p>
                   <img 
                     v-if="tmpltData.msgType == 'IMAGE' 
@@ -290,7 +286,6 @@
                 <div class="phoneTextWrap scroll-yc">
                   <p class="color000">
                     <span>[WEB발신]</span>
-                    <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
                   </p>
                   <img 
                     v-if="tmpltData.msgType == 'IMAGE' 
@@ -329,7 +324,6 @@
                   <div class="phoneCardWrap">
                     <p class="color000">
                       <span>[WEB발신]</span>
-                      <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
                     </p>
                     <ul class="cardBxslider mt10" style="list-style-type:none;display:none">
                       <li v-for="(msgData, idx) in tmpltData.RCS.mergeData" :key="idx" class="slide cardBox">
@@ -367,7 +361,6 @@
                   <div class="phoneCardWrap">
                     <p class="color000">
                       <span>[WEB발신]</span>
-                      <span v-if="tmpltData.msgKind == 'A'"> (광고)</span>
                     </p>
                     <ul class="cardBxslider mt10" style="list-style-type:none;display:none">
                       <li v-for="(msgData, idx) in tmpltData.RCS.mergeData" :key="idx" class="slide cardBox scroll-yc">

@@ -6,13 +6,13 @@
           <div class="of_h">
             <div class="float-left" style="width:20%"><h5>제목</h5></div>
             <div class="float-right" style="width:79%">
-              <input type="text" class="inputStyle" title="제목 입력란" v-model="pushTitle" maxlength="45">
+              <input type="text" class="inputStyle" title="제목 입력란" v-model="pushTitle" maxlength="30">
             </div>
           </div>
           <div class="of_h mt7">
             <div class="float-left" style="width:20%"><h5>내용 *</h5></div>
             <div class="float-right" style="width:79%">
-              <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="pushContent" maxlength="512"></textarea>
+              <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="pushContent" maxlength="500"></textarea>
             </div>
             <div v-if="sendData.msgKind == 'A'">
               <p class="txtCaption color5 lc-1 mt7" style="margin-left:21%">광고성 메시지 발송 시, 자동으로 광고가 표기 됩니다.</p>

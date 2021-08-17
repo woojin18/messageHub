@@ -21,7 +21,7 @@
           <div v-if="fbInfo.ch != 'SMS'" class="of_h consolMarginTop">
             <div class="float-left" style="width:32%"><h5>제목</h5></div>
             <div class="float-right" style="width:66%">
-              <input type="text" class="inputStyle" title="제목 입력란" v-model="fbInfo.title">
+              <input type="text" class="inputStyle" title="제목 입력란" v-model="fbInfo.title" maxlength="30">
             </div>
           </div>
 
@@ -135,7 +135,7 @@ export default {
       }
 
       let msgLimitByte;
-      const totalMsg = this.fbInfo.title + this.fbInfo.msg + '\n' + this.fbInfo.rcvblcNumber;
+      const totalMsg = this.fbInfo.title + this.fbInfo.msg + '\n' + this.fbInfo.rcvblcNumber + (this.msgKind == 'A' ? '(광고)' : '');
       const totByte = this.getByte(totalMsg);
 
       if(this.fbInfo.ch == 'SMS'){

@@ -17,7 +17,7 @@
           <div v-if="sendData.senderType == 'MMS'" class="of_h consolMarginTop">
             <div class="float-left" style="width:34%"><h5>제목 *</h5></div>
             <div class="float-right" style="width:66%">
-              <input type="text" class="inputStyle" title="제목 입력란" v-model="smsTitle" maxlength="45">
+              <input type="text" class="inputStyle" title="제목 입력란" v-model="smsTitle" maxlength="30">
             </div>
           </div>
 
@@ -30,7 +30,7 @@
           <div v-if="sendData.msgKind == 'A'" class="of_h consolMarginTop">
             <div class="float-left" style="width:34%"><h5>광고성메시지 수신거부번호 *</h5></div>
             <div class="float-right" style="width:66%">
-              <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rcvblcNumber" maxlength="10" placeholder="ex) 수신거부번호 : 08000000000">
+              <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rcvblcNumber" placeholder="ex) 수신거부번호 : 08000000000">
             </div>
           </div>
           <div class="text-center mt20">
@@ -112,7 +112,7 @@ export default {
       }
 
       let msgLimitByte;
-      const totalMsg = this.smsTitle + this.smsContent + '\n' + this.rcvblcNumber;
+      const totalMsg = this.smsTitle + this.smsContent + '\n' + this.rcvblcNumber  + (this.sendData.msgKind == 'A' ? '(광고)' : '');
       const totByte = this.getByte(totalMsg);
 
       if(this.sendData.senderType == 'SMS'){
