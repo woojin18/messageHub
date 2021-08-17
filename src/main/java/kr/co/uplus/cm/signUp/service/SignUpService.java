@@ -1,13 +1,13 @@
 package kr.co.uplus.cm.signUp.service;
 
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -72,8 +72,14 @@ public class SignUpService {
 			}
 			
 			// 사용자 비밀번호 암호화
+			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+			byte[] bytes = new byte[16];
+			random.nextBytes(bytes);
+			String salt = new String(Base64.getEncoder().encode(bytes));
+			paramMap.put("salt", salt);
+			
 			SHA sha256 = new SHA(256);
-			String encPwd = sha256.encryptToBase64(CommonUtils.getString(paramMap.get("password")));
+			String encPwd = sha256.encryptToBase64(salt+ CommonUtils.getString(paramMap.get("password")));
 			paramMap.put("password", encPwd);
 			
 			// 고객 번호

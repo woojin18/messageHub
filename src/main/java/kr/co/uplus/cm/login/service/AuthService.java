@@ -1,6 +1,8 @@
 package kr.co.uplus.cm.login.service;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -324,9 +326,16 @@ public class AuthService implements UserDetailsService {
 	public RestResult<Object> updatePassword(Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
+			
 			// 사용자 비밀번호 암호화
+			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+			byte[] bytes = new byte[16];
+			random.nextBytes(bytes);
+			String salt = new String(Base64.getEncoder().encode(bytes));
+			params.put("salt", salt);
+			
 			SHA sha256 = new SHA(256);
-			String encPwd = sha256.encryptToBase64(CommonUtils.getString(params.get("password")));
+			String encPwd = sha256.encryptToBase64(salt+ CommonUtils.getString(params.get("password")));
 			params.put("pwd", encPwd);
 			
 			// 기존 비밀번호 비교
