@@ -42,7 +42,6 @@ public class DB {
 	public final static String QRY_UPDATE_RECENT_CONN_DT = "login.updateRecentConnDt";
 	public final static String QRY_UPDATE_LOGIN_FAIL_CNT = "login.updateLoginFailCnt";
 	public final static String QRY_SELECT_EX_LOGIN_PWD = "login.selectExLoginPwd";
-	public final static String QRY_SELECT_EX_LOGIN_PWD_BY_USERID = "login.selectExLoginPwdByUserid";
 	// 푸시 템플릿
 	public final static String QRY_SELECT_PUSH_TMPLT_LIST_CNT = "template.selectPushTemplateListCnt";
 	public final static String QRY_SELECT_PUSH_TMPLT_LIST = "template.selectPushTemplateList";

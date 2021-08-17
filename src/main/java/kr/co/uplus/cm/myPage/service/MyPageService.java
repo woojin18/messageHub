@@ -74,7 +74,7 @@ public class MyPageService {
 				paramMap.put("loginPwd", encPwd);
 				
 				// 기존 비밀번호 비교
-				String exPwd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD_BY_USERID, params));
+				String exPwd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, params));
 				
 				if(exPwd.equals(encPwd)) {
 					rtn.setSuccess(false);

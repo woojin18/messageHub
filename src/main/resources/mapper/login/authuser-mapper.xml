@@ -173,14 +173,12 @@
 		/* login.selectExPwdChk */
 		SELECT	LOGIN_PWD
 		FROM	cm_console.CM_USER
-		WHERE	LOGIN_ID = #{loginId}
+		WHERE	1=1
+		<if test="loginId != null and loginId != ''">
+		AND		LOGIN_ID = #{loginId}
+		</if>
+		<if test="userId != null and userId != ''">
+		AND	USER_ID = #{userId}
+		</if>
 	</select>
-	
-	<select id="selectExLoginPwdByUserid" resultType="string">
-		/* login.selectExPwdChk */
-		SELECT	LOGIN_PWD
-		FROM	cm_console.CM_USER
-		WHERE	USER_ID = #{userId}
-	</select>
-	
 </mapper>
