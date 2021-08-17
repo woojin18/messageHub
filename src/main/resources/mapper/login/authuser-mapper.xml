@@ -149,6 +149,7 @@
 		SET		LOGIN_PWD = #{pwd}
 		,		PWD_UPD_DT = NOW()
 		,		APPROVAL_STATUS = 'Y'
+		,		SALT = #{salt}
 		WHERE	LOGIN_ID = #{loginId}
 	</update>
 

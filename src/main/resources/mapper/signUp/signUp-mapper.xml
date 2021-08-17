@@ -26,6 +26,7 @@
 		,		PROMOTION_YN
 		,		REG_ID
 		,		REG_DT
+		,		SALT
 		) VALUES (
 				#{userId}
 		,		#{loginId}
@@ -40,6 +41,7 @@
 		,		#{promotionYn}
 		,		#{userId}
 		,		NOW()
+		,		#{salt}
 		)
 	</insert>
 
