@@ -65,6 +65,15 @@
 		WHERE LOGIN_ID = #{userId}
 		LIMIT 1
 	</select>
+	
+	<select id="qrySelectSaltInfoByUserId" parameterType="string" resultType="string">
+		/* login.qrySelectSaltInfoByUserId */
+		SELECT
+			USER.SALT
+		FROM cm_console.CM_USER USER
+		WHERE USER_ID = #{userId}
+		LIMIT 1
+	</select>
 
 	<select id="qryInsertAuthUser" parameterType="kr.co.uplus.cm.common.model.AuthUser" resultType="Integer">
 		/* login.qryInsertAuthUser */

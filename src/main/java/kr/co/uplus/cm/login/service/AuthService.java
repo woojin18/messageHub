@@ -326,7 +326,8 @@ public class AuthService implements UserDetailsService {
 	public RestResult<Object> updatePassword(Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
-			
+			String password = CommonUtils.getString(params.get("password"));
+			params.put("userId", params.get("loginId"));
 			// 사용자 비밀번호 암호화
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 			byte[] bytes = new byte[16];
@@ -335,17 +336,20 @@ public class AuthService implements UserDetailsService {
 			params.put("salt", salt);
 			
 			SHA sha256 = new SHA(256);
-			String encPwd = sha256.encryptToBase64(salt+ CommonUtils.getString(params.get("password")));
-			params.put("pwd", encPwd);
-			
 			// 기존 비밀번호 비교
-			String exPwd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, params));
+			String exSalt = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO, params));
+			String rtnPwd = sha256.encryptToBase64(exSalt + password);
+			params.remove("userId");
 			
-			if(exPwd.equals(encPwd)) {
+			String exPwd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, params));
+			if(exPwd.equals(rtnPwd)) {
 				rtn.setSuccess(false);
 				rtn.setMessage("기존과 동일한 비밀번호는 사용할 수 없습니다.");
 				return rtn;
 			}
+			
+			String encPwd = sha256.encryptToBase64(salt+ password);
+			params.put("pwd", encPwd);
 			// 비밀번호 update
 			generalDao.updateGernal(DB.QRY_UPDATE_USER_PASSWORD, params);
 			rtn.setSuccess(true);

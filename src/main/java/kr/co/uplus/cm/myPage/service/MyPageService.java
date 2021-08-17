@@ -75,19 +75,21 @@ public class MyPageService {
 				random.nextBytes(bytes);
 				String salt = new String(Base64.getEncoder().encode(bytes));
 				paramMap.put("salt", salt);
-				
+
 				SHA sha256 = new SHA(256);
-				String encPwd = sha256.encryptToBase64(salt + loginPwd);
-				paramMap.put("loginPwd", encPwd);
-				
 				// 기존 비밀번호 비교
-				String exPwd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, paramMap));
+				String exSalt = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params));
+				String rtnPwd = sha256.encryptToBase64(exSalt + loginPwd);
 				
-				if(exPwd.equals(encPwd)) {
+				String exPwd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, paramMap));
+				if(exPwd.equals(rtnPwd)) {
 					rtn.setSuccess(false);
 					rtn.setMessage("기존과 동일한 비밀번호는 사용할 수 없습니다.");
 					return rtn;
 				}
+				
+				String encPwd = sha256.encryptToBase64(salt + loginPwd);
+				paramMap.put("loginPwd", encPwd);
 			}
 			
 			// 회원정보 update
@@ -139,7 +141,10 @@ public class MyPageService {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.putAll(params);
 		
-		String password = CommonUtils.getString(paramMap.get("password"));
+		//salt
+		String salt = "";
+		salt = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params));
+		String password = CommonUtils.getString(salt + paramMap.get("password"));
 		paramMap.put("password", sha256.encode(password));
 		
 		int cnt = generalDao.selectGernalCount(DB.QRY_CHK_PASSWORD, paramMap);
