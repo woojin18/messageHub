@@ -57,7 +57,7 @@
 		OR (ROLE.SVC_TYPE_CD = 'BO' AND ROLE.ROLE_CD = 'GUEST'))
 	</select>
 
-	<select id="qrySelectSaltInfo" parameterType="string" resultType="camel">
+	<select id="qrySelectSaltInfo" parameterType="string" resultType="string">
 		/* login.qrySelectSaltInfo */
 		SELECT
 			USER.SALT
