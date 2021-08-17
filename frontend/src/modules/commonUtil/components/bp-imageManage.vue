@@ -23,10 +23,10 @@
                 <col style="width:13%">
                 <col>
                 <col v-if="useCh == 'FRIENDTALK'" style="width:10%">
-                <col style="width:16%">
+                <col style="width:12%">
                 <col style="width:16%">
                 <col style="width:10%">
-                <col style="width:10%">
+                <col style="width:15%">
                 </colgroup>
                 <thead>
                 <tr>
@@ -56,7 +56,7 @@
                     <td class="text-center">{{contant.regDt}}</td>
                     <td class="text-center"><a @click="fnOpenImagePreviewPopUp(contant.chImgUrl)" title="미리보기"><i class="far fa-search"></i></a></td>
                     <td class="text-center end">
-                      <a @click="fnSelectImage(idx)" class="btnStyle6 vertical-middle" style="min-width:auto; width:100%" title="선택">선택</a>
+                      <a @click="fnSelectImage(idx)" class="btnStyle6 vertical-middle" style="min-width:auto; width:100%" title="선택">이미지선택</a>
                     </td>
                   </tr>
                   <tr v-if="contants.length == 0">
