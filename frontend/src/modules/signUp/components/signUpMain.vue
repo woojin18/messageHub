@@ -73,7 +73,7 @@
 			<div class="of_h mt10" v-if="selCorpCnt == 0">
 					<div class="float-left" style="width:22%"><h5>고객번호*</h5></div>
 					<div class="float-left" style="width:78%">
-						<input type="text" class="inputStyle" placeholder="고객사 신규 등록의 경우 자동 생성됩니다.ㅞ"  v-model="custNo" disabled>
+						<input type="text" class="inputStyle" placeholder="고객사 신규 등록의 경우 자동 생성됩니다."  v-model="custNo" disabled>
 					</div>
 				</div>
 

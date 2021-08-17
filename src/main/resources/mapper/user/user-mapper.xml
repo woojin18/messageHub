@@ -144,16 +144,16 @@
 	<update id="stopUser" parameterType="hashmap">
 		/* user.stopUser 사용자 이용정지*/
 		UPDATE cm_console.CM_USER
-		SET
-			APPROVAL_STATUS = 'N'
+		SET	APPROVAL_STATUS = 'N'
+		,	UPD_DT		= NOW()
 		WHERE USER_ID = #{userId}
 	</update>
 
 	<update id="releaseUser" parameterType="hashmap">
 		/* user.releaseUser 사용자 이용정지 해제*/
 		UPDATE cm_console.CM_USER
-		SET
-			APPROVAL_STATUS = 'Y'
+		SET	APPROVAL_STATUS = 'Y'
+		,	UPD_DT		= NOW()
 		WHERE USER_ID = #{userId}
 	</update>
 
@@ -162,6 +162,7 @@
 		UPDATE cm_console.CM_USER
 		SET	LOGIN_ID	=  CONCAT('DEL_', LOGIN_ID)
 		,	DEL_YN		= 'Y'
+		,	UPD_DT		= NOW()
 		WHERE USER_ID = #{userId}
 	</update>
 
