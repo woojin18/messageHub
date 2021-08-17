@@ -180,6 +180,7 @@ export default {
       let recvInfo = {};
       let sltCuInfo = {};
       let isValid = true;
+      let inValidVarNm = '';
 
       this.listChkBox.forEach(function(v){
         sltCuInfo = vm.fnCmCuListGetRowById(v);
@@ -192,17 +193,17 @@ export default {
 
         vm.contsVarNms.forEach(function(key){
           if(vm.$gfnCommonUtils.isEmpty(sltCuInfo[key])){
-            isValid = false;
+            inValidVarNm = key;
             return false;
           } else {
             recvInfo.mergeData[key] = sltCuInfo[key];
           }
         });
-        if(!isValid) return false;
+        if(vm.$gfnCommonUtils.isEmpty(inValidVarNm) == false) return false;
         recvInfoLst.push(recvInfo);
       });
-      if(!isValid){
-        confirm.fnAlert(this.componentsTitle, '변수값을 모두 입력해주세요.');
+      if(this.$gfnCommonUtils.isEmpty(inValidVarNm) == false){
+        confirm.fnAlert(this.componentsTitle, '선택항목의 '+inValidVarNm+'을 모두 입력해주세요.');
         return;
       }
 
