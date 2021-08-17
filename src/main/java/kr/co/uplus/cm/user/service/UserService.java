@@ -176,6 +176,9 @@ public class UserService {
 		map.put("email", params.get("loginId"));
 
 		try {
+			// 기존 삭제처리된 사용자 LOGIN 아이디 변경
+			generalDao.updateGernal(DB.QRY_UPDATE_DEL_USER_LOGINID, params);
+			
 			generalDao.insertGernal(DB.QRY_INSERT_USER, map);
 			// 난수 생성
 			String randomNum = CommonUtils.randomGeneration(10);

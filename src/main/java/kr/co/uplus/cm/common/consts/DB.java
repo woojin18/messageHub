@@ -172,6 +172,7 @@ public class DB {
 	public final static String QRY_SELECT_USER_DUPC_CNT = "user.selectUserDupcCnt";
 	public final static String QRY_CHK_PASSWORD = "user.checkPassword";
 	public final static String QRY_UPDATE_USER_ROLE_ADMIN = "user.updateUserRoleAdmin";
+	public final static String QRY_UPDATE_DEL_USER_LOGINID = "user.updateDeleteUserLoginId";
 
 	// 프로젝트 발신번호 관리
 	public final static String QRY_SELECT_CALLBACK_MANAGE_LIST_CNT = "project.selectCallbackManageListCnt";
