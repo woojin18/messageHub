@@ -338,7 +338,12 @@ public class AuthService implements UserDetailsService {
 			SHA sha256 = new SHA(256);
 			// 기존 비밀번호 비교
 			String exSalt = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO, params));
-			String rtnPwd = sha256.encryptToBase64(exSalt + password);
+			String rtnPwd = "";
+			if(exSalt != null && !"".equals(exSalt)) {
+				rtnPwd = sha256.encryptToBase64(exSalt + password);
+			} else {
+				rtnPwd = sha256.encryptToBase64(password);
+			}
 			params.remove("userId");
 			
 			String exPwd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, params));

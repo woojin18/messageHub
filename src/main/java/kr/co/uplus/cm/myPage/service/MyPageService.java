@@ -79,7 +79,12 @@ public class MyPageService {
 				SHA sha256 = new SHA(256);
 				// 기존 비밀번호 비교
 				String exSalt = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params));
-				String rtnPwd = sha256.encryptToBase64(exSalt + loginPwd);
+				String rtnPwd = "";
+				if(exSalt != null && !"".equals(exSalt)) {
+					rtnPwd = sha256.encryptToBase64(exSalt + loginPwd);
+				} else {
+					rtnPwd = sha256.encryptToBase64(loginPwd);
+				}
 				
 				String exPwd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, paramMap));
 				if(exPwd.equals(rtnPwd)) {
@@ -144,8 +149,14 @@ public class MyPageService {
 		//salt
 		String salt = "";
 		salt = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params));
-		String password = CommonUtils.getString(salt + paramMap.get("password"));
-		paramMap.put("password", sha256.encode(password));
+		if(salt != null && !"".equals(salt)) {
+			String password = CommonUtils.getString(salt + paramMap.get("password"));
+			paramMap.put("password", sha256.encode(password));
+			
+		} else {
+			String password = CommonUtils.getString(paramMap.get("password"));
+			paramMap.put("password", sha256.encode(password));
+		}
 		
 		int cnt = generalDao.selectGernalCount(DB.QRY_CHK_PASSWORD, paramMap);
 		
