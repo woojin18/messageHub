@@ -1083,7 +1083,7 @@ public class IntegratedTemplateService {
 	 * @return
 	 * @throws Exception
 	 */
-	public String selectMessageBaseId(Map<String, Object> params) throws Exception {
+	private String selectMessageBaseId(Map<String, Object> params) throws Exception {
 		return (String) generalDao.selectGernalObject("smartTemplate.selectMessageBaseId", params);
 	}
 
