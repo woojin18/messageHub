@@ -129,6 +129,9 @@ export default {
       },
       /**************************날짜관련 관련 Utils**************************/
       /**************************정규식 관련 Utils**************************/
+      isRemoveHangle(str){
+        return str.replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g,'');
+      },
       isDashNum(str){
         let regex = /^(\d{2}|\d{3}|\d{4})-?(\d{3}|\d{4})-?(\d{4})$/
         return regex.test(str.toString());

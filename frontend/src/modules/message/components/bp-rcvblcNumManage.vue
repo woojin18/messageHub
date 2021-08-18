@@ -16,11 +16,12 @@
               type="text" 
               class="inputStyle" 
               style="width:55%; margin-left: 5px;" 
-              placeholder="080-0000-0000" 
-              @keypress="fnPreventPhoneNumInput"
+              placeholder="080-0000-0000"
               v-model="rejectNumber"
+              oninput="javascript: this.value = this.value.replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '' );"
+              @keypress="fnPreventPhoneNumInput"
             >
-            <a href="#" @click.prevent="fnInsertRejectNum" class="btnStyle1 backLightGray float-right" title="등록">등록</a>
+            <a href="#" @click.prevent="fnInsertRejectNum" class="btnStyle1 backLightGray float-right" title="등록" activity="SAVE">등록</a>
           </div>
           <div class="consolMarginTop pd0">
             <!-- table -->
@@ -33,8 +34,8 @@
               <tbody>
                 <tr v-for="(contant, idx) in contants" :key="idx">
                   <td class="text-left end">{{contant.phone}}</td>
-                  <td class="text-center end"><a href="#" @click.prevent="fnSelectRejectNum(contant.phone)" class="btnStyle1 small backLightGray" title="선택">선택</a></td>
-                  <td class="text-center end"><a href="#" @click.prevent="fnDeleteRejectNum(contant.rejectId)" class="btnStyle1 small backLightGray" title="삭제">삭제</a></td>
+                  <td class="text-center end"><a href="#" @click.prevent="fnSelectRejectNum(contant.phone)" class="btnStyle1 small backLightGray" title="선택" activity="READ">선택</a></td>
+                  <td class="text-center end"><a href="#" @click.prevent="fnDeleteRejectNum(contant.rejectId)" class="btnStyle1 small backLightGray" title="삭제" activity="SAVE">삭제</a></td>
                 </tr>
               </tbody>
             </table>
@@ -123,7 +124,6 @@ export default {
     fnInsertRejectNum(){
       //유효성 검사
       if(this.fnIsValid() == false) return;
-
       eventBus.$on('callbackEventBus', this.fnProcInsertRejectNum);
       confirm.fnConfirm(this.componentsTitle, "입력하신 정보를 등록하시겠습니까?", "확인");
     },
@@ -136,6 +136,7 @@ export default {
         const result = response.data;
         if(result.success) {
           confirm.fnAlert(this.componentsTitle, '등록되었습니다.');
+          Object.assign(this.$data, this.$options.data());
           this.fnSelectRejectPhoneList();
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);

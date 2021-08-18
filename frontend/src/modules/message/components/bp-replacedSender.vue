@@ -17,7 +17,7 @@
               <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="fbInfo.rcvblcNumber" maxlength="20" placeholder="ex) 수신거부번호 : 080-0000-0000">
             </div>
             <div class="float-right" style="width:15%">
-              <a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택">선택</a>
+              <a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</a>
             </div>
           </div>
 

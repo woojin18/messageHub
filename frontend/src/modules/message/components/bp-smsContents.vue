@@ -30,7 +30,7 @@
           <div v-if="sendData.msgKind == 'A'" class="of_h consolMarginTop">
             <div class="float-left" style="width:34%">
               <h5>광고성메시지 수신거부번호 *</h5>
-              <a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택">선택</a>
+              <a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</a>
             </div>
             <div class="float-right" style="width:66%">
               <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rcvblcNumber" placeholder="ex) 수신거부번호 : 080-0000-0000">
