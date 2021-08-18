@@ -267,6 +267,10 @@ public class ProjectService {
 			}
 
 		}
+		
+
+		// redis 테이블 처리
+		commonService.updateCmCmdForRedis("CM_PROJECT");
 
 	}
 
