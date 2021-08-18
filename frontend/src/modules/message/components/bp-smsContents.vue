@@ -17,20 +17,24 @@
           <div v-if="sendData.senderType == 'MMS'" class="of_h consolMarginTop">
             <div class="float-left" style="width:34%"><h5>제목 *</h5></div>
             <div class="float-right" style="width:66%">
-              <input type="text" class="inputStyle" title="제목 입력란" v-model="smsTitle" maxlength="30">
+              <input type="text" class="inputStyle" title="제목 입력란" v-model="smsTitle" maxlength="30" @input="fnSetCurrByte">
             </div>
           </div>
 
           <div class="of_h consolMarginTop">
             <div class="float-left" style="width:34%"><h5>내용 *</h5></div>
             <div class="float-right" style="width:66%">
-              <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="smsContent" maxlength="2000"></textarea>
+              <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="smsContent" maxlength="2000" @input="fnSetCurrByte"></textarea>
+              <strong class="letter">({{msgCurrByte}} / {{msgLimitByte}})</strong>
             </div>
           </div>
           <div v-if="sendData.msgKind == 'A'" class="of_h consolMarginTop">
-            <div class="float-left" style="width:34%"><h5>광고성메시지 수신거부번호 *</h5></div>
+            <div class="float-left" style="width:34%">
+              <h5>광고성메시지 수신거부번호 *</h5>
+              <a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</a>
+            </div>
             <div class="float-right" style="width:66%">
-              <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rcvblcNumber" placeholder="ex) 수신거부번호 : 080-0000-0000">
+              <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rcvblcNumber" placeholder="ex) 수신거부번호 : 080-0000-0000" @input="fnSetCurrByte">
             </div>
           </div>
           <div class="text-center mt20">
@@ -41,15 +45,22 @@
         </div>
       </div>
     </div>
+
+    <RcvblcNumPopup @callback-func="fnCallbackRcvblcNum" :rcvblcNumOpen.sync="rcvblcNumOpen"></RcvblcNumPopup>
   </div>
 </template>
 
 <script>
+import RcvblcNumPopup from "@/modules/message/components/bp-rcvblcNumManage.vue";
+
 import messageApi from "@/modules/message/service/messageApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
   name: "smsContentsPopup",
+  components : {
+    RcvblcNumPopup
+  },
   props: {
     smsContsOpen: {
       type: Boolean,
@@ -75,10 +86,13 @@ export default {
   },
   data() {
     return {
+      rcvblcNumOpen: false,
       callback: '',
       smsTitle: '',
       smsContent : '',
       rcvblcNumber: '',
+      msgCurrByte: 0,
+      msgLimitByte: 0,
       contentAreaPlaceholder: '변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정\n:예) #{name}님 #{yyyymmdd} 출금 예정입니다.',
       callbackList: [],
     }
@@ -86,12 +100,38 @@ export default {
   watch: {
     smsContsOpen(val){
       if(val){
-        this.fnSetPushInfo();
+        this.fnSetInitInfo();
         this.fnSelectCallbackList();
+        this.fnGetLimitByte();
+        this.fnSetCurrByte();
       }
     }
   },
   methods: {
+    fnSetCurrByte(){
+      let title = this.$gfnCommonUtils.defaultIfEmpty(this.smsTitle, '');
+      let body = this.$gfnCommonUtils.defaultIfEmpty(this.smsContent, '');
+      let rcvblcNum = this.$gfnCommonUtils.defaultIfEmpty(this.rcvblcNumber, '');
+      let totalMsg = title + body ;
+      if(this.sendData.msgKind == 'A'){
+        totalMsg += '\n' + rcvblcNum + '(광고)';
+      }
+      this.msgCurrByte = this.getByte(totalMsg);
+    },
+    fnGetLimitByte(){
+      if(this.sendData.senderType == 'SMS'){
+        this.msgLimitByte = 80;
+      } else if(this.sendData.senderType == 'LMS'){
+        this.msgLimitByte = 1000;
+      } else if(this.sendData.senderType == 'MMS'){
+        this.msgLimitByte = 2000;
+      }
+    },
+    fnCallbackRcvblcNum(rcvblcNum){
+      this.$set(this.$data, 'rcvblcNumber', rcvblcNum)
+      //this.rcvblcNumber = rcvblcNum;
+      this.fnSetCurrByte();
+    },
     //입력정보 callback
     fnCallbackInputData(){
       if(!this.callback && !this.isSpecialBusi){
@@ -111,20 +151,8 @@ export default {
         return false;
       }
 
-      let msgLimitByte;
-      const totalMsg = this.smsTitle + this.smsContent + '\n' + this.rcvblcNumber  + (this.sendData.msgKind == 'A' ? '(광고)' : '');
-      const totByte = this.getByte(totalMsg);
-
-      if(this.sendData.senderType == 'SMS'){
-        msgLimitByte = 80;
-      } else if(this.sendData.senderType == 'LMS'){
-        msgLimitByte = 1000;
-      } else if(this.sendData.senderType == 'MMS'){
-        msgLimitByte = 2000;
-      }
-
-      if(msgLimitByte < totByte){
-        const alertMsg = (this.sendData.senderType == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+msgLimitByte+'byte 를 넘지 않아야됩니다.\n(현재 : '+totByte+'byte)';
+      if(this.msgLimitByte < this.msgCurrByte){
+        const alertMsg = (this.sendData.senderType == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+this.msgLimitByte+'byte 를 넘지 않아야됩니다.\n(현재 : '+this.msgCurrByte+'byte)';
         confirm.fnAlert(this.componentsTitle, alertMsg);
         return false;
       }
@@ -139,11 +167,13 @@ export default {
         .reduce((prev, c) => (prev + ((c === 10) ? 2 : ((c >> 7) ? 2 : 1))), 0);
     },
     //초기 정보 Set
-    fnSetPushInfo(){
+    fnSetInitInfo(){
       this.callback = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.callback, '');
       this.smsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsTitle, '');
       this.smsContent = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsContent, '');
       this.rcvblcNumber = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.rcvblcNumber, '');
+      this.msgCurrByte = 0;
+      this.msgLimitByte = 0;
     },
     //팝업 닫기
     fnClose(){

@@ -13,22 +13,26 @@
 
           <div v-if="msgKind == 'A'" class="of_h consolMarginTop">
             <div class="float-left" style="width:32%"><h5>광고성메시지 수신거부번호</h5></div>
-            <div class="float-right" style="width:66%">
-              <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="fbInfo.rcvblcNumber" maxlength="20" placeholder="ex) 수신거부번호 : 080-0000-0000">
+            <div class="float-right" style="width:51%">
+              <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="fbInfo.rcvblcNumber" maxlength="20" placeholder="ex) 수신거부번호 : 080-0000-0000" @input="fnSetCurrByte">
+            </div>
+            <div class="float-right" style="width:15%">
+              <a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</a>
             </div>
           </div>
 
           <div v-if="fbInfo.ch != 'SMS'" class="of_h consolMarginTop">
             <div class="float-left" style="width:32%"><h5>제목</h5></div>
             <div class="float-right" style="width:66%">
-              <input type="text" class="inputStyle" title="제목 입력란" v-model="fbInfo.title" maxlength="30">
+              <input type="text" class="inputStyle" title="제목 입력란" v-model="fbInfo.title" maxlength="30" @input="fnSetCurrByte">
             </div>
           </div>
 
           <div class="of_h consolMarginTop">
             <div class="float-left" style="width:32%"><h5>내용</h5></div>
             <div class="float-right" style="width:66%">
-              <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="fbInfo.msg"></textarea>
+              <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="fbInfo.msg" @input="fnSetCurrByte"></textarea>
+              <strong class="letter">({{msgCurrByte}} / {{msgLimitByte}})</strong>
             </div>
           </div>
 
@@ -52,11 +56,13 @@
     </div>
 
     <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
+    <RcvblcNumPopup @callback-func="fnCallbackRcvblcNum" :rcvblcNumOpen.sync="rcvblcNumOpen"></RcvblcNumPopup>
 
   </div>
 </template>
 
 <script>
+import RcvblcNumPopup from "@/modules/message/components/bp-rcvblcNumManage.vue";
 import MessageApi from "@/modules/message/service/messageApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
@@ -64,7 +70,8 @@ import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue
 export default {
   name: "replacedSenderPopup",
   components : {
-    ImageManagePopUp
+    ImageManagePopUp,
+    RcvblcNumPopup
   },
   props: {
     rplcSendOpen: {
@@ -82,10 +89,13 @@ export default {
   },
   data() {
     return {
+      rcvblcNumOpen: false,
       imgMngOpen : false,
       useCh : 'MMS',
       callbackList: [],
       msgKind : 'A',
+      msgCurrByte: 0,
+      msgLimitByte: 0,
       fbInfo: {
         callback:'',
         ch:'',
@@ -101,10 +111,39 @@ export default {
   },
   watch: {
     rplcSendOpen(val){
-      if(val) this.fnSelectCallbackList();
+      if(val){
+        this.fnSelectCallbackList();
+        this.fnGetLimitByte();
+        this.fnSetCurrByte();
+      }
     }
   },
   methods: {
+    fnSetCurrByte(){
+      let title = this.$gfnCommonUtils.defaultIfEmpty(this.fbInfo.title, '');
+      let body = this.$gfnCommonUtils.defaultIfEmpty(this.fbInfo.msg, '');
+      let rcvblcNum = this.$gfnCommonUtils.defaultIfEmpty(this.fbInfo.rcvblcNumber, '');
+      let totalMsg = title + body ;
+      if(this.msgKind == 'A'){
+        totalMsg += '\n' + rcvblcNum + '(광고)';
+      }
+      this.msgCurrByte = this.getByte(totalMsg);
+    },
+    fnGetLimitByte(){
+      this.msgCurrByte = 0;
+      this.msgLimitByte = 0;
+
+      if(this.fbInfo.ch == 'SMS'){
+        this.msgLimitByte = 80;
+      } else if(this.fbInfo.ch == 'LMS'){
+        this.msgLimitByte = 1000;
+      } else if(this.fbInfo.ch == 'MMS'){
+        this.msgLimitByte = 2000;
+      }
+    },
+    fnCallbackRcvblcNum(rcvblcNum){
+      this.fbInfo.rcvblcNumber = rcvblcNum;
+    },
     fnDelImg(){
       this.shortImgUrl = '';
       this.fbInfo.imgUrl = '';
@@ -133,21 +172,9 @@ export default {
         confirm.fnAlert(this.componentsTitle, '내용을 입력해주세요.');
         return;
       }
-
-      let msgLimitByte;
-      const totalMsg = this.fbInfo.title + this.fbInfo.msg + '\n' + this.fbInfo.rcvblcNumber + (this.msgKind == 'A' ? '(광고)' : '');
-      const totByte = this.getByte(totalMsg);
-
-      if(this.fbInfo.ch == 'SMS'){
-        msgLimitByte = 80;
-      } else if(this.fbInfo.ch == 'LMS'){
-        msgLimitByte = 1000;
-      } else if(this.fbInfo.ch == 'MMS'){
-        msgLimitByte = 2000;
-      }
-
-      if(msgLimitByte < totByte){
-        const alertMsg = (this.fbInfo.ch == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+msgLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+totByte+'byte)';
+      
+      if(this.msgLimitByte < this.msgCurrByte){
+        const alertMsg = (this.fbInfo.ch == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+this.msgLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+this.msgCurrByte+'byte)';
         confirm.fnAlert(this.componentsTitle, alertMsg);
         return;
       }

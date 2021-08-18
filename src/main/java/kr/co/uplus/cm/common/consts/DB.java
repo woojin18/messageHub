@@ -102,6 +102,10 @@ public class DB {
 	public final static String QRY_SELECT_SMART_TMPLT_LIST = "sendMessage.selectSmartTmpltList";
 	public final static String QRY_SELECT_SMART_TMPLT_FRND_PRDT_INFO = "sendMessage.selectSmartTmpltFrndPrdtInfo";
 	public final static String QRY_SELECT_SMART_TMPLT_RCS_INFO = "sendMessage.selectSmartTmpltRcsInfo";
+	public final static String QRY_INSERT_REJECT_PHONE = "sendMessage.insertRejectPhone";
+	public final static String QRY_SELECT_DUPL_REJECT_PHONE = "sendMessage.selectDuplRejectPhone";
+	public final static String QRY_SELECT_REJECT_PHONE_LIST = "sendMessage.selectRejectPhoneList";
+	public final static String QRY_DELETE_REJECT_PHONE_LIST = "sendMessage.deleteRejectPhoneList";
 
 	// RCS 채널 브랜드 정보
 	public final static String QRY_SELECT_RCS_BRANDLIST_CNT = "channel.selectRcsBrandListCnt";
@@ -162,7 +166,7 @@ public class DB {
 	public final static String QRY_CHK_MAIL_CERTIFY_BY_AUTHKEY = "signUp.checkMailCertifyByAuthKey";
 	public final static String QRY_INSERT_MAIL_CERTIFY = "signUp.insertCmMailCertify";
 	public final static String QRY_SELECT_EXISTS_CUSTNO = "signUp.selectIsExistCustNo";
-	
+
 	// 사용자 등록
 	public final static String QRY_SELECT_USER_LIST = "user.selectUserList";
 	public final static String QRY_SELECT_USER_LIST_CNT = "user.selectUserListCnt";

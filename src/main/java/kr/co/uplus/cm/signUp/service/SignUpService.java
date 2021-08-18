@@ -152,6 +152,16 @@ public class SignUpService {
 				paramMap.put("fileId", fileSeq);
 			}
 			
+			String salesMan = CommonUtils.getString(paramMap.get("salesMan"));
+			// 영업사원 미선택인 경우 오진욱 default
+			if("".equals(salesMan) || salesMan == null) {
+				Map<String, Object> saleManMap = new HashMap<String, Object>();
+				saleManMap.put("codeTypeCd", "SALES_MAN");
+				saleManMap.put("codeName1", "오진욱");
+				salesMan = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_CODEVAL1_BY_CODENAME1, saleManMap));
+			}
+			paramMap.put("salesMan", salesMan);
+			
 			// 고객사 등록
 			generalDao.insertGernal(DB.QRY_INSERT_CM_CORP, paramMap);
 			

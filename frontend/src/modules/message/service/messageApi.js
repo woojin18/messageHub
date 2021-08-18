@@ -71,6 +71,16 @@ const selectApiKey = (params) => {
   return httpClient.post('/commonApi/getApiKey', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
+const insertRejectPhone = (params) => {
+  return httpClient.post('/uc/sendMessage/insertRejectPhone', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+};
+const selectRejectPhoneList = (params) => {
+  return httpClient.post('/uc/sendMessage/selectRejectPhoneList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+const deleteRejectPhoneList = (params) => {
+  return httpClient.post('/uc/sendMessage/deleteRejectPhoneList', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+};
+
 export default {
   selectAppIdList,
   selectCallbackList,
@@ -91,7 +101,10 @@ export default {
   sendSmartMessage,
   excelDownSendSmartRecvTmplt,
   selectValidUseChGrp,
-  selectApiKey
+  selectApiKey,
+  insertRejectPhone,
+  selectRejectPhoneList,
+  deleteRejectPhoneList
 };
 
 function fnExcelDownCallback(response){

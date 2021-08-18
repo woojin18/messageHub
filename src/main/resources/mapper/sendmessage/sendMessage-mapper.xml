@@ -25,9 +25,9 @@
             AND CRB.USE_YN = 'Y'
             AND CRB.CORP_ID = #{corpId}
             AND CRB.PROJECT_ID IN ('ALL', #{projectId})
-			<if test="brandId != '' and brandId != null ">
-			AND CRB.BRAND_ID = #{brandId}
-			</if>
+           <if test="brandId != '' and brandId != null ">
+           AND CRB.BRAND_ID = #{brandId}
+           </if>
     </select>
 
     <select id="selectAddrGrpList" parameterType="hashmap" resultType="camel">
@@ -454,5 +454,52 @@
         WHERE CST.TMPLT_CODE = #{tmpltCode}
             AND JSON_CONTAINS(CST.TMPLT_INFO, JSON_OBJECT('ch', 'RCS'))
     </select>
+
+    <insert id="insertRejectPhone" parameterType="hashmap">
+    /* sendMessage.insertRejectPhone - 수신거부번호관리 등록 */
+        INSERT INTO cm_console.CM_REJECT_PHONE
+        (
+            CORP_ID
+            , PHONE
+            , REG_ID
+            , REG_DT
+        )
+        VALUES
+        (
+            #{corpId}
+            , #{phone}
+            , #{userId}
+            , NOW()
+           )
+    </insert>
+
+    <select id="selectDuplRejectPhone" parameterType="hashmap" resultType="int">
+    /* sendMessage.selectDuplRejectPhone - 수신거부번호관리 중복 확인 */
+        SELECT COUNT(*)
+        FROM cm_console.CM_REJECT_PHONE
+        WHERE PHONE = #{phone}
+            AND CORP_ID = #{corpId}
+    </select>
+
+    <select id="selectRejectPhoneList" parameterType="hashmap" resultType="camel">
+    /* sendMessage.selectRejectPhoneList - 수신거부번호관리 리스트 조회 */
+        SELECT
+            REJECT_ID
+            , CORP_ID
+            , PHONE
+            , REG_ID
+            , REG_DT
+        FROM cm_console.CM_REJECT_PHONE
+        WHERE CORP_ID = #{corpId}
+        ORDER BY REG_DT DESC
+    </select>
+
+    <delete id="deleteRejectPhoneList" parameterType="hashmap">
+    /* sendMessage.deleteRejectPhoneList - 수신거부번호 삭제 */
+        DELETE
+        FROM cm_console.CM_REJECT_PHONE
+        WHERE REJECT_ID = #{rejectId}
+            AND CORP_ID = #{corpId}
+    </delete>
 
 </mapper>

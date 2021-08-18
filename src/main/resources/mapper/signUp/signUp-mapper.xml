@@ -87,6 +87,7 @@
 		,		FILE_ID
 <!-- 		,		DOMAIN_NAME -->
 		,		UPD_DT
+		,		SALES_ID
 		) VALUES (
 				#{corpId}
 		,		#{custNo}
@@ -105,6 +106,7 @@
 		,		#{fileId}
 <!-- 		,		#{domainName} -->
 		,		NOW()
+		,		#{salesMan}
 		)
 	</insert>
 	

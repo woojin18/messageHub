@@ -1144,5 +1144,58 @@ public class SendMessageController {
         return rtn;
     }
 
+    /**
+     * 수신거부번호관리 등록
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/insertRejectPhone")
+    public RestResult<?> insertRejectPhone(@RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = sendMsgService.insertRejectPhone(params);
+        } catch (Exception e) {
+            rtn.setFail("실패하였습니다.");
+            log.error("{}.insertRejectPhone Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
+
+    /**
+     * 수신거부번호관리 리스트 조회
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectRejectPhoneList")
+    public RestResult<?> selectRejectPhoneList(@RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = sendMsgService.selectRejectPhoneList(params);
+        } catch (Exception e) {
+            rtn.setFail("실패하였습니다.");
+            log.error("{}.selectRejectPhoneList Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
+
+    /**
+     * 수신거부번호 삭제처리
+     * @param params
+     * @return
+     */
+    @PostMapping("/deleteRejectPhoneList")
+    public RestResult<?> deleteRejectPhoneList(@RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = sendMsgService.deleteRejectPhoneList(params);
+        } catch (Exception e) {
+            rtn.setFail("실패하였습니다.");
+            log.error("{}.deleteRejectPhoneList Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
+
 }
 

@@ -1674,7 +1674,6 @@ public class RcsTemplateSendService {
 	@Async
 	public void sendRcs(Map<String, Object> params, int fromIndex, Map<String, Object> apiMap, Map<String, Object> headerMap,
 			ArrayList<Map<String, Object>> recvInfoLst, ArrayList<Map<String, Object>> fbInfoLst, List<Object> reSendCdList) throws Exception {
-		List<RecvInfo> errorRecvInfoLst = new ArrayList<RecvInfo>();
 		Map<String, Object> responseBody = null;
 		String jsonString = "";
 		String failMsg = "";
@@ -1692,7 +1691,7 @@ public class RcsTemplateSendService {
 		params.put("recvInfoLstCnt", listSize);
 		apiMap.put("msgRecvInfoLst", recvInfoLst);
 		apiMap.put("msgFbInfoLst", fbInfoLst);
-
+		
 		while (toIndex < listSize) {
 			isDone = false;
 			isServerError = false;
@@ -1700,7 +1699,9 @@ public class RcsTemplateSendService {
 			try {
 				if(toIndex > listSize) toIndex = listSize;
 				apiMap.put("recvInfoLst", recvInfoLst.subList(fromIndex, toIndex));
-				apiMap.put("fbInfoLst", fbInfoLst.subList(fromIndex, toIndex));
+				if(fbInfoLst.size() > 0) {
+					apiMap.put("fbInfoLst", fbInfoLst.subList(fromIndex, toIndex));
+				}
 				jsonString = gson.toJson(apiMap);
 				responseBody = apiInterface.sendMsg(ApiConfig.SEND_RCS_API_URI, headerMap, jsonString);
 				isDone = isApiRequestAgain(responseBody, reSendCdList);

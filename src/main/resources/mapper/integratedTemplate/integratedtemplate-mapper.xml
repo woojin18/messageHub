@@ -86,7 +86,7 @@
 		SELECT
 			M.PROJECT_ID, M.TMPLT_CODE, M.MSG_KIND, M.MSG_KIND_NAME, M.MSG_TYPE,
 			M.MSG_TYPE_NAME, M.TMPLT_TITLE, M.TMPLT_TYPE, M.otherProjectUseYn,
-			M.USE_YN, M.chTypeList, M.CHECKED_CHANNEL,
+			M.USE_YN, M.TMPLT_STATUS, M.chTypeList, M.CHECKED_CHANNEL,
 			M.pushMsg, M.pushAppId, M.pushTitle, M.pushFileId, M.pushSendType, M.PUSH_RCVBLC_INPUT,
 			M.ADTN_INFO, M.PUSH_CH_IMG_URL,
 			M.rcsCardCount, M.rcsStyleCount, M.rcsStyleContent, M.rcsPrdType, M.rcsDesFormNm, M.rcsStyleFormNm, M.rcsCallback, M.rcsMessagebaseId, M.rcsMessagebaseformId, M.rcsBlockNumber, M.rcsBrandNm,
@@ -138,7 +138,7 @@
 			SELECT
 				T.PROJECT_ID, T.TMPLT_CODE, T.MSG_KIND, T.MSG_KIND_NAME, T.MSG_TYPE,
 				T.MSG_TYPE_NAME, T.TMPLT_TITLE, T.TMPLT_INFO, T.TMPLT_TYPE, T.otherProjectUseYn,
-				T.USE_YN, T.chTypeList, T.CHECKED_CHANNEL,
+				T.USE_YN, T.TMPLT_STATUS, T.chTypeList, T.CHECKED_CHANNEL,
 				T.pushMsg, T.pushAppId, T.pushTitle, T.pushFileId, T.pushSendType, T.PUSH_RCVBLC_INPUT, T.ADTN_INFO,
 				@PUSH_PATH_TO_NAME := JSON_UNQUOTE(JSON_SEARCH(B.USE_CH_INFO, "one", 'PUSH', NULL, '$[*].CH')) AS PUSH_PATH_TO_NAME,
 				@PUSH_PATH_TO_PARENT := TRIM(TRAILING '.CH' FROM @PUSH_PATH_TO_NAME) AS PUSH_PATH_TO_PARENT,
@@ -220,6 +220,7 @@
 						ELSE 'N'
 					END AS otherProjectUseYn,
 					A.USE_YN,
+					A.TMPLT_STATUS,
 					A.TMPLT_INFO ->> '$[0].chTypeList' AS chTypeList,
 					REPLACE(REPLACE(REPLACE(JSON_EXTRACT(A.TMPLT_INFO, '$[*].ch'),'[',''),']',''),'"','') CHECKED_CHANNEL,
 					CASE

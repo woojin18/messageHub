@@ -4356,6 +4356,8 @@ FROM (
 		FROM cm.CM_RCS_MSGBASE
 		WHERE CORP_ID = #{corpId}
 		AND BRAND_ID = #{brandNm}
+		AND APPROVAL_STATUS = '승인'
+		AND CARD_TYPE = 'free'
 	</select>
 
 </mapper>

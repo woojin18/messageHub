@@ -65,7 +65,7 @@
 					<div class="float-left" style="width:66%">
 						<input type="radio" name="mSort" value="I" id="mSort1" checked="" v-model="rowData.msgKind" v-on:click="checkMsgKind('I')"><label for="mSort1" class="mr20">정보성</label>
 						<input type="radio" name="mSort" value="A" id="mSort2" v-model="rowData.msgKind" v-on:click="checkMsgKind('A')"><label for="mSort2">광고용</label>
-						<span class="txtCaption vertical-middle colorRed">광고 메시지는 20시~8시 발송이 제한됩니다.</span>
+						<span class="txtCaption vertical-middle colorRed">친구톡 광고는 20시~8시 발송이 제한됩니다.</span>
 					</div>
 				</div>
 				<div class="of_h mt15">
@@ -3019,7 +3019,7 @@
 		</div>
 		<hr>
 		<div class="float-right">						
-			<a @click="save()" class="btnStyle2 borderGray ml10" data-toggle="modal" title="저장" activity="SAVE">저장</a>
+			<a v-if="rowData.tmpltStatus != 'COMPLETE'" @click="save()" class="btnStyle2 borderGray ml10" data-toggle="modal" title="저장" activity="SAVE">저장</a>
 			<a @click="complete()" class="btnStyle2 backBlack ml10" data-toggle="modal" title="등록" activity="SAVE">등록</a>
 			<router-link :to="{ name: 'multiSendTemplateList' }" tag="a" class="btnStyle2 backRed ml10">취소</router-link>
 		</div>
@@ -4421,6 +4421,7 @@ export default {
 						this.rowData.msgKind						= rtnData.msgKind;
 						this.rowData.tmpltTitle					= this.$gfnCommonUtils.unescapeXss(rtnData.tmpltTitle);
 						this.rowData.otherProjectUseYn		= rtnData.otherProjectUseYn;
+						this.rowData.tmpltStatus				= rtnData.tmpltStatus;
 
 						// PUSH DATA SET
 						this.rowData.pushContent = this.$gfnCommonUtils.unescapeXss(rtnData.pushMsg);
