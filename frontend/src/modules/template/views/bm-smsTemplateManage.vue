@@ -93,6 +93,7 @@
         <div v-if="tmpltData.msgKind == 'A'" class="of_h consolMarginTop">
           <div class="float-left" style="width:31%">
             <h4>광고성메시지 수신거부번호</h4>
+            <a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택">선택</a>
           </div>
           <div class="float-left" style="width:69%">
             <input type="text" class="inputStyle" v-model="tmpltData.rcvblcNumber" maxlength="10" placeholder="ex) 수신거부번호 : 080-0000-0000">
@@ -129,13 +130,15 @@
     </div>
 
     <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
-
+    <RcvblcNumPopup @callback-func="fnCallbackRcvblcNum" :rcvblcNumOpen.sync="rcvblcNumOpen"></RcvblcNumPopup>
   </div>
 
 </template>
 
 <script>
+import RcvblcNumPopup from "@/modules/message/components/bp-rcvblcNumManage.vue";
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
+
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import templateApi from "@/modules/template/service/templateApi.js";
@@ -143,6 +146,7 @@ import templateApi from "@/modules/template/service/templateApi.js";
 export default {
   name: 'smsTemplateManage',
   components : {
+    RcvblcNumPopup,
     ImageManagePopUp
   },
   props: {
@@ -163,6 +167,7 @@ export default {
   },
   data() {
     return {
+      rcvblcNumOpen: false,
       imgMngOpen : false,
       imgUploadOpen : false,
       imgLimitSize : 2,
@@ -177,6 +182,9 @@ export default {
     this.fnSetTemplateInfo();
   },
   methods: {
+    fnCallbackRcvblcNum(rcvblcNum){
+      this.tmpltData.rcvblcNumber = rcvblcNum;
+    },
     async fnValidUseChGrp(){
       let params = {chGrp: 'SMS/MMS'};
       await templateApi.selectValidUseChGrp(params).then(response =>{
@@ -265,7 +273,7 @@ export default {
         totalMsg += this.tmpltData.tmpltTitle;
       }
       if(this.tmpltData.msgKind == 'A'){
-        totalMsg += '\n' + this.tmpltData.rcvblcNumber;
+        totalMsg += '\n' + this.tmpltData.rcvblcNumber + '(광고)';
       }
       const totByte = this.getByte(totalMsg);
       if(msgLimitByte < totByte){

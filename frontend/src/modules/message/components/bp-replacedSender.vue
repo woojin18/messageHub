@@ -13,8 +13,11 @@
 
           <div v-if="msgKind == 'A'" class="of_h consolMarginTop">
             <div class="float-left" style="width:32%"><h5>광고성메시지 수신거부번호</h5></div>
-            <div class="float-right" style="width:66%">
+            <div class="float-right" style="width:51%">
               <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="fbInfo.rcvblcNumber" maxlength="20" placeholder="ex) 수신거부번호 : 080-0000-0000">
+            </div>
+            <div class="float-right" style="width:15%">
+              <a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택">선택</a>
             </div>
           </div>
 
@@ -52,11 +55,13 @@
     </div>
 
     <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
+    <RcvblcNumPopup @callback-func="fnCallbackRcvblcNum" :rcvblcNumOpen.sync="rcvblcNumOpen"></RcvblcNumPopup>
 
   </div>
 </template>
 
 <script>
+import RcvblcNumPopup from "@/modules/message/components/bp-rcvblcNumManage.vue";
 import MessageApi from "@/modules/message/service/messageApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
@@ -64,7 +69,8 @@ import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue
 export default {
   name: "replacedSenderPopup",
   components : {
-    ImageManagePopUp
+    ImageManagePopUp,
+    RcvblcNumPopup
   },
   props: {
     rplcSendOpen: {
@@ -82,6 +88,7 @@ export default {
   },
   data() {
     return {
+      rcvblcNumOpen: false,
       imgMngOpen : false,
       useCh : 'MMS',
       callbackList: [],
@@ -105,6 +112,9 @@ export default {
     }
   },
   methods: {
+    fnCallbackRcvblcNum(rcvblcNum){
+      this.fbInfo.rcvblcNumber = rcvblcNum;
+    },
     fnDelImg(){
       this.shortImgUrl = '';
       this.fbInfo.imgUrl = '';

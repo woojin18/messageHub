@@ -2557,6 +2557,65 @@ public class SendMessageService {
         return rtnList;
     }
 
+    /**
+     * 수신거부번호관리 등록
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+    public RestResult<Object> insertRejectPhone(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        //중복확인
+        if(generalDao.selectGernalCount(DB.QRY_SELECT_DUPL_REJECT_PHONE, params) > 0) {
+            String rejectNum = CommonUtils.getStrValue(params, "phone");
+            rtn.setFail("이미 등록되어 있는 수신거부번호입니다."+(StringUtils.isNoneBlank(rejectNum) ? "("+rejectNum+")" : ""));
+            return rtn;
+        }
+        if (generalDao.insertGernal(DB.QRY_INSERT_REJECT_PHONE, params) > 0) {
+            rtn.setSuccess(true);
+            rtn.setData(params);
+        } else {
+            rtn.setFail("실패하였습니다.");
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 수신거부번호관리 리스트 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectRejectPhoneList(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_REJECT_PHONE_LIST, params);
+        rtn.setData(rtnList);
+        return rtn;
+    }
+
+    /**
+     * 수신거부번호 삭제
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+    public RestResult<Object> deleteRejectPhoneList(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+
+        if (generalDao.deleteGernal(DB.QRY_DELETE_REJECT_PHONE_LIST, params) > 0) {
+            rtn.setSuccess(true);
+            rtn.setData(params);
+        } else {
+            rtn.setFail("실패하였습니다.");
+        }
+
+        return rtn;
+    }
+
 }
 
 

@@ -28,7 +28,10 @@
             </div>
           </div>
           <div v-if="sendData.msgKind == 'A'" class="of_h consolMarginTop">
-            <div class="float-left" style="width:34%"><h5>광고성메시지 수신거부번호 *</h5></div>
+            <div class="float-left" style="width:34%">
+              <h5>광고성메시지 수신거부번호 *</h5>
+              <a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택">선택</a>
+            </div>
             <div class="float-right" style="width:66%">
               <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rcvblcNumber" placeholder="ex) 수신거부번호 : 080-0000-0000">
             </div>
@@ -41,15 +44,22 @@
         </div>
       </div>
     </div>
+
+    <RcvblcNumPopup @callback-func="fnCallbackRcvblcNum" :rcvblcNumOpen.sync="rcvblcNumOpen"></RcvblcNumPopup>
   </div>
 </template>
 
 <script>
+import RcvblcNumPopup from "@/modules/message/components/bp-rcvblcNumManage.vue";
+
 import messageApi from "@/modules/message/service/messageApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
   name: "smsContentsPopup",
+  components : {
+    RcvblcNumPopup
+  },
   props: {
     smsContsOpen: {
       type: Boolean,
@@ -75,6 +85,7 @@ export default {
   },
   data() {
     return {
+      rcvblcNumOpen: false,
       callback: '',
       smsTitle: '',
       smsContent : '',
@@ -92,6 +103,9 @@ export default {
     }
   },
   methods: {
+    fnCallbackRcvblcNum(rcvblcNum){
+      this.rcvblcNumber = rcvblcNum;
+    },
     //입력정보 callback
     fnCallbackInputData(){
       if(!this.callback && !this.isSpecialBusi){
@@ -112,7 +126,7 @@ export default {
       }
 
       let msgLimitByte;
-      const totalMsg = this.smsTitle + this.smsContent + '\n' + this.rcvblcNumber  + (this.sendData.msgKind == 'A' ? '(광고)' : '');
+      const totalMsg = this.smsTitle + this.smsContent + '\n' + this.rcvblcNumber + (this.sendData.msgKind == 'A' ? '(광고)' : '');
       const totByte = this.getByte(totalMsg);
 
       if(this.sendData.senderType == 'SMS'){
