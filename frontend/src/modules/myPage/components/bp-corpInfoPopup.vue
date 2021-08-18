@@ -22,8 +22,8 @@
 									<option value="">선택하세요</option>
 									<option  v-for="(row, index) in custTypeArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
 								</select>
-							</div>
-							<div class="of_h consolMarginTop">
+							</div> -->
+							<!-- <div class="of_h consolMarginTop">
 								<h5 class="inline-block" style="width:20%">생년월일/<br>법인번호 <span class="color1">*</span></h5>
 								<input type="text" class="inputStyle float-right" style="width:80%" title="생년월일/법인번호 입력란" v-model="custrnmNo" disabled>
 							</div> -->
@@ -63,6 +63,14 @@
 								<!-- <a class="btnStyle1 backLightGray ml15" title="파일첨부">파일첨부</a> -->
 								<a href="#self" @click.prevent="fnFileDown(fileId)" class="btnStyle1 backLightGray float-right" title="다운로드">다운로드</a>
 								<!-- <p class="mt10 lc-1 Modaltext2" style="margin-left:20%"><i class="far fa-info-circle"></i>PDF, JPG, JPEG, PNG 형식으로 등록해주세요. (최대용량: 5MB)</p> -->
+							</div>
+
+							<div class="of_h consolMarginTop">
+								<h5 class="inline-block" style="width:20%">영업사원</h5>
+								<select class="selectStyle2" style="width:80%" title="영업사원 선택란" v-model="salesMan" disabled>
+									<option value="">선택하세요</option>
+									<option  v-for="(row, index) in salesManArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
+								</select>
 							</div>
 						</div>
 
@@ -109,8 +117,10 @@ export default {
       custNo : "",                  // 고객사 번호
       custKdCd : "",                // 고객 유형
       custrnmNo : "",               // 고객 식별 번호
+      salesMan : "",                // 영업사원
 
-      custTypeArr : []              // 고객 유형 코드값
+      custTypeArr : [],              // 고객 유형 코드값
+      salesManArr : []
     }
   },
   props: {
@@ -125,6 +135,7 @@ export default {
   mounted() {
     this.fnReset();
     this.fnGetCustType();
+    this.fnGetSalesMan();
   },
   watch: {
     popReset(){
@@ -153,6 +164,18 @@ export default {
         }
       });
     },
+    fnGetSalesMan(){
+      var params = {
+        codeTypeCd	: "SALES_MAN",
+        useYN		: "Y"
+      };
+      commonUtilApi.selectCodeList(params).then(response =>{
+        var result = response.data;
+        if(result.success){
+          this.salesManArr = result.data;
+        }
+      });
+    },
     // 데이터 초기화
     fnReset(){
       this.regno = this.corpInfo.bsRegNo;
@@ -171,6 +194,7 @@ export default {
       this.custrnmNo = this.corpInfo.custrnmNo;
       this.custNo = this.corpInfo.custNo;
       this.domainName = this.corpInfo.domainName;
+      this.salesMan = this.corpInfo.salesId;
     },
     // 사업자 등록증 다운로드
     fnFileDown(fileId) {

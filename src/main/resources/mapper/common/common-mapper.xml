@@ -142,6 +142,7 @@
 		,		caf.ATTACH_FILE_PATH
 		,		caf.ATTACH_FILE_NAME
 		,		cc.DOMAIN_NAME
+		,		cc.SALES_ID
 		FROM	cm_console.CM_USER cu
 		INNER JOIN cm_console.CM_CORP cc
 			ON	cu.CORP_ID = cc.CORP_ID
@@ -232,7 +233,7 @@
 	</select>
 
 	<select id="selectCodeVal1ByCodeName1" resultType="string">
-	/* common.selectCodeValByCodeName */
+	/* common.selectCodeVal1ByCodeName1 */
 		SELECT	CODE_VAL_1
 		FROM	cm_bo.CM_CODE
 		WHERE	CODE_TYPE_CD = #{codeTypeCd}

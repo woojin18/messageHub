@@ -110,7 +110,8 @@ public class SignUpController implements Serializable{
 			@RequestParam(required=false) String custrnmNo,				// 고객식별번호
 			@RequestParam(required=false) String coInfo,				// 본인인증 토큰 (개인사업자 필수)
 			@RequestParam(required=false) String genderCode,			// 성별 (1: 남성,2: 여성)
-			@RequestParam(required=false) String promotionYn			// 홍보 정보 수신 동의
+			@RequestParam(required=false) String promotionYn,			// 홍보 정보 수신 동의
+			@RequestParam(required=false) String salesMan				// 영업사원
 			) throws Exception {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -133,6 +134,7 @@ public class SignUpController implements Serializable{
 		paramMap.put("attachFile", attachFile);
 //		paramMap.put("domainName", domainName);
 		paramMap.put("promotionYn", promotionYn);
+		paramMap.put("salesMan", salesMan);
 		
 		// 유큐브 파라미터
 		paramMap.put("custKdCd", custKdCd);

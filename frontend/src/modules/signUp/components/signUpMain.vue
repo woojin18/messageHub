@@ -70,7 +70,7 @@
 			</div>
 
 			<div class="joinBox mt10">
-			<div class="of_h mt10" v-if="selCorpCnt == 0">
+				<div class="of_h mt10" v-if="selCorpCnt == 0">
 					<div class="float-left" style="width:22%"><h5>고객번호*</h5></div>
 					<div class="float-left" style="width:78%">
 						<input type="text" class="inputStyle" placeholder="고객사 신규 등록의 경우 자동 생성됩니다."  v-model="custNo" disabled>
@@ -80,7 +80,7 @@
 				<div class="of_h mt10" v-if="selCorpCnt == 0">
 					<div class="float-left" style="width:22%"><h5>고객유형*</h5></div>
 					<div class="float-right" style="width:78%">
-						<select class="selectStyle2" title="고객유형선택란" v-model="custKdCd" :disabled="selCorpCnt > 0">
+						<select class="selectStyle2" title="고객유형선택란" v-model="custKdCd" :disabled="selCorpCnt > 0" style="width:50%">
 							<option value="">선택하세요</option>
 							<option  v-for="(row, index) in custTypeArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
 						</select>
@@ -150,7 +150,16 @@
 						</div>					
 					</div>
 					<div class="float-right color3 mt5" style="width:78%">* PDF, JPG, JPEG, PNG 형식으로 등록해주세요. (최대용량: 5MB)</div>
-				</div>	
+				</div>
+				<div class="of_h mt10">
+					<div class="float-left" style="width:22%"><h5>영업사원</h5></div>
+					<div class="float-right" style="width:78%">
+						<select class="selectStyle2" title="영업사원 선택란" v-model="salesMan" style="width:50%">
+							<option value="">선택하세요</option>
+							<option  v-for="(row, index) in salesManArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
+						</select>
+					</div>
+				</div>
 			</div>
 
 			<!-- <h4 class="mt40">도메인설정</h4>
@@ -225,6 +234,7 @@ export default {
 			gender : "",				// 성별
 			coInfo : "",				// ci 값
 			promotionYn : "",			// 홍보성 정보 동의 여부
+			salesMan : "",
 
 			selCorp : {},				// 선택한 고객사 정보
 			selAddr : {},				// 선택한 주소 정보
@@ -239,6 +249,7 @@ export default {
 			dataList : [],
 			
 			custTypeArr : [],			// 고객 유형 select box
+			salesManArr : []			// 영업사원 selectbox
 		}
 	},
 	// 도메인 이름 영어(소문자), 숫자만 입력 가능하도록 처리
@@ -279,7 +290,8 @@ export default {
 					this.loginId = result.data.email;
 					this.promotionYn = result.data.promotionYn;
 					this.fnGetNiceCheck();		// nice 본인인증 인증키 조회
-					this.fnGetCustType();		// 고객사 고객 유형 코드 값 조회
+					this.fnGetCustType();		// 고객사 고객 유형 코드 값 조회		
+					this.fnGetSalesMan();		// 영업사원 목록
 				} else {
 					vm.$router.push({name : "chkCertifyFail"});
 				}
@@ -295,6 +307,20 @@ export default {
 				if(result.success){
 					if(result.data.length > 0){
 						this.custTypeArr = result.data;
+					}
+				}
+			});
+		},
+		fnGetSalesMan(){
+			var params = {
+				codeTypeCd	: "SALES_MAN",
+				useYN		: "Y"
+			};
+			commonUtilApi.selectCodeList(params).then(response =>{
+				var result = response.data;
+				if(result.success){
+					if(result.data.length > 0){
+						this.salesManArr = result.data;
 					}
 				}
 			});
@@ -486,6 +512,7 @@ export default {
 			fd.append('coInfo', this.coInfo);								// 본인인증 토큰 (개인사업자 필수)
 			fd.append('genderCode', this.gender);							// 성별 (1: 남성 / 2: 여성)
 			fd.append('promotionYn', this.promotionYn);						// 홍보성 정보 수신 동의
+			fd.append('salesMan', this.salesMan);							// 영업사원
 
 			await axios.post('/api/public/signUp/insertSignUp',
 				fd,
