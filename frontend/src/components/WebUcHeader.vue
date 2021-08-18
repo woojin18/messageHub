@@ -6,7 +6,7 @@
 			<ul class="adminUtil">
 				<li><router-link to="/ac/home" class="btnGuideBlack">관리자콘솔</router-link></li>
 				<li><a @click="fnGoUserGuide" class="btnGuideBlack">이용 가이드</a></li>
-				<li class="ml20"><router-link to="/public/main" class="bellIcon active"><i class="fas fa-bell"></i></router-link></li>
+				<!--li class="ml20"><router-link to="/public/main" class="bellIcon active"><i class="fas fa-bell"></i></router-link></li-->
 				<li>
 					<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i>{{ this.loginId }}</a>	
 					<ul class="dropdown-menu userDrop" role="menu">
