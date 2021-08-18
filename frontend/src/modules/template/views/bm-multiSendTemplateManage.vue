@@ -3780,101 +3780,105 @@ export default {
 		},
 		// 저가 우선정렬
 		prioritySort:function() {
-			var pushFlag = false;
-			var kakaoFlag = false;
-			var rcsFlag = false;
-			var smsFlag = false;
-			if (this.rowData.checkedChannel.length == 4) {
-				for (var i=0; i < this.rowData.checkedChannel.length; i++) {
-					this.rowData.checkedChannel.splice(i, 1);
-				}
-				this.rowData.checkedChannel[0] = 'PUSH';
-				this.rowData.checkedChannel[1] = 'KAKAO'
-				this.rowData.checkedChannel[2] = 'RCS';
-				this.rowData.checkedChannel[3] = 'SMSMMS';
-				jQuery(".borderLightGray").removeClass("active");
-			} else if (this.rowData.checkedChannel.length == 3) {
-				for (var i=0; i < this.rowData.checkedChannel.length; i++) {
-					if (this.rowData.checkedChannel[i] == 'PUSH') {
-						pushFlag = true;
-					} else if(this.rowData.checkedChannel[i] == 'RCS') {
-						rcsFlag = true;
-					} else if(this.rowData.checkedChannel[i] == 'KAKAO') {
-						kakaoFlag = true;
-					} else if(this.rowData.checkedChannel[i] == 'SMSMMS') {
-						smsFlag = true;
+			if (this.rowData.checkedChannel.length < 2) {
+				alert("채널을 2개 이상 선택하세요.");
+			} else {
+				var pushFlag = false;
+				var kakaoFlag = false;
+				var rcsFlag = false;
+				var smsFlag = false;
+				if (this.rowData.checkedChannel.length == 4) {
+					for (var i=0; i < this.rowData.checkedChannel.length; i++) {
+						this.rowData.checkedChannel.splice(i, 1);
 					}
-				}
-				for (var i=0; i < this.rowData.checkedChannel.length; i++) {
-					this.rowData.checkedChannel.splice(i, 1);
-				}
-				if (pushFlag == false) {
-					this.rowData.checkedChannel[0] = 'KAKAO';
-					this.rowData.checkedChannel[1] = 'RCS'
-					this.rowData.checkedChannel[2] = 'SMSMMS';
-				}
-				if (kakaoFlag == false) {
-					this.rowData.checkedChannel[0] = 'PUSH';
-					this.rowData.checkedChannel[1] = 'RCS'
-					this.rowData.checkedChannel[2] = 'SMSMMS';
-				}
-				if (rcsFlag == false) {
-					this.rowData.checkedChannel[0] = 'PUSH';
-					this.rowData.checkedChannel[1] = 'KAKAO'
-					this.rowData.checkedChannel[2] = 'SMSMMS';
-				}
-				if (smsFlag == false) {
 					this.rowData.checkedChannel[0] = 'PUSH';
 					this.rowData.checkedChannel[1] = 'KAKAO'
 					this.rowData.checkedChannel[2] = 'RCS';
-				}
-				jQuery(".borderLightGray").removeClass("active");
-			} else if (this.rowData.checkedChannel.length == 2) {
-				for (var i=0; i < this.rowData.checkedChannel.length; i++) {
-					if (this.rowData.checkedChannel[i] == 'PUSH') {
-						pushFlag = true;
-					} else if(this.rowData.checkedChannel[i] == 'RCS') {
-						rcsFlag = true;
-					} else if(this.rowData.checkedChannel[i] == 'KAKAO') {
-						kakaoFlag = true;
-					} else if(this.rowData.checkedChannel[i] == 'SMSMMS') {
-						smsFlag = true;
+					this.rowData.checkedChannel[3] = 'SMSMMS';
+					jQuery(".borderLightGray").removeClass("active");
+				} else if (this.rowData.checkedChannel.length == 3) {
+					for (var i=0; i < this.rowData.checkedChannel.length; i++) {
+						if (this.rowData.checkedChannel[i] == 'PUSH') {
+							pushFlag = true;
+						} else if(this.rowData.checkedChannel[i] == 'RCS') {
+							rcsFlag = true;
+						} else if(this.rowData.checkedChannel[i] == 'KAKAO') {
+							kakaoFlag = true;
+						} else if(this.rowData.checkedChannel[i] == 'SMSMMS') {
+							smsFlag = true;
+						}
 					}
-				}
-				for (var i=0; i < this.rowData.checkedChannel.length; i++) {
-					this.rowData.checkedChannel.splice(i, 1);
-				}
-				if (pushFlag == true) {
-					if (kakaoFlag == true) {
+					for (var i=0; i < this.rowData.checkedChannel.length; i++) {
+						this.rowData.checkedChannel.splice(i, 1);
+					}
+					if (pushFlag == false) {
+						this.rowData.checkedChannel[0] = 'KAKAO';
+						this.rowData.checkedChannel[1] = 'RCS'
+						this.rowData.checkedChannel[2] = 'SMSMMS';
+					}
+					if (kakaoFlag == false) {
+						this.rowData.checkedChannel[0] = 'PUSH';
+						this.rowData.checkedChannel[1] = 'RCS'
+						this.rowData.checkedChannel[2] = 'SMSMMS';
+					}
+					if (rcsFlag == false) {
 						this.rowData.checkedChannel[0] = 'PUSH';
 						this.rowData.checkedChannel[1] = 'KAKAO'
+						this.rowData.checkedChannel[2] = 'SMSMMS';
+					}
+					if (smsFlag == false) {
+						this.rowData.checkedChannel[0] = 'PUSH';
+						this.rowData.checkedChannel[1] = 'KAKAO'
+						this.rowData.checkedChannel[2] = 'RCS';
+					}
+					jQuery(".borderLightGray").removeClass("active");
+				} else if (this.rowData.checkedChannel.length == 2) {
+					for (var i=0; i < this.rowData.checkedChannel.length; i++) {
+						if (this.rowData.checkedChannel[i] == 'PUSH') {
+							pushFlag = true;
+						} else if(this.rowData.checkedChannel[i] == 'RCS') {
+							rcsFlag = true;
+						} else if(this.rowData.checkedChannel[i] == 'KAKAO') {
+							kakaoFlag = true;
+						} else if(this.rowData.checkedChannel[i] == 'SMSMMS') {
+							smsFlag = true;
+						}
+					}
+					for (var i=0; i < this.rowData.checkedChannel.length; i++) {
+						this.rowData.checkedChannel.splice(i, 1);
+					}
+					if (pushFlag == true) {
+						if (kakaoFlag == true) {
+							this.rowData.checkedChannel[0] = 'PUSH';
+							this.rowData.checkedChannel[1] = 'KAKAO'
+						}
+						if (rcsFlag == true) {
+							this.rowData.checkedChannel[0] = 'PUSH';
+							this.rowData.checkedChannel[1] = 'RCS'
+						}
+						if (smsFlag == true) {
+							this.rowData.checkedChannel[0] = 'PUSH';
+							this.rowData.checkedChannel[1] = 'SMSMMS'
+						}
+					}
+					if (kakaoFlag == true) {
+						if (rcsFlag == true) {
+							this.rowData.checkedChannel[0] = 'KAKAO';
+							this.rowData.checkedChannel[1] = 'RCS'
+						}
+						if (smsFlag == true) {
+							this.rowData.checkedChannel[0] = 'KAKAO';
+							this.rowData.checkedChannel[1] = 'SMSMMS'
+						}
 					}
 					if (rcsFlag == true) {
-						this.rowData.checkedChannel[0] = 'PUSH';
-						this.rowData.checkedChannel[1] = 'RCS'
+						if (smsFlag == true) {
+							this.rowData.checkedChannel[0] = 'RCS';
+							this.rowData.checkedChannel[1] = 'SMSMMS'
+						}
 					}
-					if (smsFlag == true) {
-						this.rowData.checkedChannel[0] = 'PUSH';
-						this.rowData.checkedChannel[1] = 'SMSMMS'
-					}
+					jQuery(".borderLightGray").removeClass("active");
 				}
-				if (kakaoFlag == true) {
-					if (rcsFlag == true) {
-						this.rowData.checkedChannel[0] = 'KAKAO';
-						this.rowData.checkedChannel[1] = 'RCS'
-					}
-					if (smsFlag == true) {
-						this.rowData.checkedChannel[0] = 'KAKAO';
-						this.rowData.checkedChannel[1] = 'SMSMMS'
-					}
-				}
-				if (rcsFlag == true) {
-					if (smsFlag == true) {
-						this.rowData.checkedChannel[0] = 'RCS';
-						this.rowData.checkedChannel[1] = 'SMSMMS'
-					}
-				}
-				jQuery(".borderLightGray").removeClass("active");
 			}
 		},
 		async fnSaveMultiSendTemplate(){

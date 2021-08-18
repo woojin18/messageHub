@@ -106,6 +106,7 @@ public class JwtService {
 		Cookie csrfToken = new Cookie(jwtProps.getPart2(), signature);
 		csrfToken.setHttpOnly(true);
 		csrfToken.setPath("/");
+		csrfToken.setSecure(true);
 		response.addCookie(csrfToken);
 	}
 
