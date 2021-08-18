@@ -179,11 +179,11 @@
                       </td>
                       <td v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" class="text-left of_h">
                         <div v-if="buttonInfo.linkType == 'WL'">
-                          <h6 class="font-normal float-left" style="width:20%">Mobile</h6>
+                          <h6 class="font-normal float-left" style="width:30%">Mobile</h6>
                           <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkMo']" maxlength="200">
                         </div>
                         <div v-if="buttonInfo.linkType == 'AL'">
-                          <h6 class="font-normal float-left" style="width:20%">Android</h6>
+                          <h6 class="font-normal float-left" style="width:30%">Android</h6>
                           <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkAnd']" maxlength="200">
                         </div>
                       </td>
@@ -196,11 +196,11 @@
                     <tr v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" :key="idx+'_sub'">
                       <td class="text-left of_h">
                         <div v-if="buttonInfo.linkType == 'WL'">
-                          <h6 class="font-normal float-left" style="width:20%">PC</h6>
+                          <h6 class="font-normal float-left" style="width:30%">PC</h6>
                           <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkPc']" maxlength="200">
                         </div>
                         <div v-if="buttonInfo.linkType == 'AL'">
-                          <h6 class="font-normal float-left" style="width:20%">IOS</h6>
+                          <h6 class="font-normal float-left" style="width:30%">IOS</h6>
                           <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkIos']" maxlength="200">
                         </div>
                       </td>

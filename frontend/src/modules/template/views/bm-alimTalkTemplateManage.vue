@@ -149,11 +149,11 @@
                       </td>
                       <td :class="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? 'text-left' : 'text-left of_h'">
                         <h6 v-if="buttonInfo.linkType == 'DS'" class="float-left" v-html="buttonDSDescription"></h6>
-                        <h6 v-if="buttonInfo.linkType == 'WL'" class="float-left" style="width:20%">Mobile*</h6>
-                        <h6 v-if="buttonInfo.linkType == 'AL'" class="float-left" style="width:20%">Android*</h6>
+                        <h6 v-if="buttonInfo.linkType == 'WL'" class="float-left" style="width:30%">Mobile*</h6>
+                        <h6 v-if="buttonInfo.linkType == 'AL'" class="float-left" style="width:30%">Android*</h6>
                         <!-- <input v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" type="text" class="inputStyle float-left" style="width:80%"> -->
-                        <input v-if="buttonInfo.linkType == 'WL'" type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkMo" maxlength="200">
-                        <input v-if="buttonInfo.linkType == 'AL'" type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkAnd" maxlength="200">
+                        <input v-if="buttonInfo.linkType == 'WL'" type="text" class="inputStyle float-left" style="width:70%" v-model="buttonInfo.linkMo" maxlength="200">
+                        <input v-if="buttonInfo.linkType == 'AL'" type="text" class="inputStyle float-left" style="width:70%" v-model="buttonInfo.linkAnd" maxlength="200">
 
                       </td>
                       <td class="text-center end" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
@@ -163,12 +163,12 @@
                     <tr v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" :key="idx+'_sub'">
                       <td class="text-left">
                         <div v-if="buttonInfo.linkType == 'WL'">
-                          <h6 class="float-left" style="width:20%">PC*</h6>
-                          <input type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkPc" maxlength="200">
+                          <h6 class="float-left" style="width:30%">PC*</h6>
+                          <input type="text" class="inputStyle float-left" style="width:70%" v-model="buttonInfo.linkPc" maxlength="200">
                         </div>
                         <div v-if="buttonInfo.linkType == 'AL'">
-                          <h6 class="float-left" style="width:20%">IOS*</h6>
-                          <input type="text" class="inputStyle float-left" style="width:80%" v-model="buttonInfo.linkIos" maxlength="200">
+                          <h6 class="float-left" style="width:30%">IOS*</h6>
+                          <input type="text" class="inputStyle float-left" style="width:70%" v-model="buttonInfo.linkIos" maxlength="200">
                         </div>
                       </td>
                     </tr>
