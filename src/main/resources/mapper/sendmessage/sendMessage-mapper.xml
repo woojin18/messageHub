@@ -455,12 +455,6 @@
             AND JSON_CONTAINS(CST.TMPLT_INFO, JSON_OBJECT('ch', 'RCS'))
     </select>
 
-
-
-
-
-
-
     <insert id="insertRejectPhone" parameterType="hashmap">
     /* sendMessage.insertRejectPhone - 수신거부번호관리 등록 */
         INSERT INTO cm_console.CM_REJECT_PHONE

@@ -81,13 +81,14 @@
         <div v-if="tmpltData.senderType == 'MMS'" class="of_h">
           <div class="float-left" style="width:31%"><h4>제목 *</h4></div>
           <div class="float-left" style="width:69%">
-            <input type="text" class="inputStyle" v-model="tmpltData.tmpltTitle" maxlength="45">
+            <input type="text" class="inputStyle" v-model="tmpltData.tmpltTitle" maxlength="45" @input="fnSetCurrByte">
           </div>
         </div>
         <div class="of_h">
           <div class="float-left" style="width:31%"><h4>내용 *</h4></div>
           <div class="float-left" style="width:69%">
-            <textarea class="textareaStyle height190" :placeholder="contentAreaPlaceholder" v-model="tmpltData.tmpltContent" maxlength="2000"></textarea>
+            <textarea class="textareaStyle height190" :placeholder="contentAreaPlaceholder" v-model="tmpltData.tmpltContent" maxlength="2000" @input="fnSetCurrByte"></textarea>
+            <strong class="letter">({{msgCurrByte}} / {{msgLimitByte}})</strong>
           </div>
         </div>
         <div v-if="tmpltData.msgKind == 'A'" class="of_h consolMarginTop">
@@ -96,7 +97,7 @@
             <a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</a>
           </div>
           <div class="float-left" style="width:69%">
-            <input type="text" class="inputStyle" v-model="tmpltData.rcvblcNumber" maxlength="10" placeholder="ex) 수신거부번호 : 080-0000-0000">
+            <input type="text" class="inputStyle" v-model="tmpltData.rcvblcNumber" maxlength="10" placeholder="ex) 수신거부번호 : 080-0000-0000" @input="fnSetCurrByte">
           </div>
         </div>
 
@@ -171,17 +172,57 @@ export default {
       imgMngOpen : false,
       imgUploadOpen : false,
       imgLimitSize : 2,
+      msgCurrByte: 0,
+      msgLimitByte: 0,
       useCh : 'MMS',
+      beforeSenderTyep: 'SMS',
+      beforemsgKind: 'I',
       isInsert : true,
       contentAreaPlaceholder: '변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정\n:예) #{name}님 #{yyyymmdd} 출금 예정입니다.',
-      tmpltData : {imgInfoList:[]}
+      tmpltData : {otherProjectUseYn: 'N', msgKind: 'I', senderType: 'SMS', imgInfoList:[]}
+    }
+  },
+  watch: {
+    tmpltData: {
+      deep: true,
+      handler(nData) {
+        if(nData.senderType != this.beforeSenderTyep){
+          this.beforeSenderTyep = nData.senderType;
+          this.fnGetLimitByte();
+        }
+        if(nData.msgKind != this.beforemsgKind){
+          this.beforemsgKind = nData.msgKind;
+          this.fnSetCurrByte();
+        }
+      }
     }
   },
   mounted() {
     this.fnValidUseChGrp();
     this.fnSetTemplateInfo();
+    this.fnGetLimitByte();
+    this.fnSetCurrByte();
   },
   methods: {
+    fnSetCurrByte(){
+      let title = this.$gfnCommonUtils.defaultIfEmpty(this.tmpltData.tmpltTitle, '');
+      let body = this.$gfnCommonUtils.defaultIfEmpty(this.tmpltData.tmpltContent, '');
+      let rcvblcNum = this.$gfnCommonUtils.defaultIfEmpty(this.tmpltData.rcvblcNumber, '');
+      let totalMsg = title + body ;
+      if(this.tmpltData.msgKind == 'A'){
+        totalMsg += '\n' + rcvblcNum + '(광고)';
+      }
+      this.msgCurrByte = this.getByte(totalMsg);
+    },
+    fnGetLimitByte(){
+      if(this.tmpltData.senderType == 'SMS'){
+        this.msgLimitByte = 80;
+      } else if(this.tmpltData.senderType == 'LMS'){
+        this.msgLimitByte = 1000;
+      } else if(this.tmpltData.senderType == 'MMS'){
+        this.msgLimitByte = 2000;
+      }
+    },
     fnCallbackRcvblcNum(rcvblcNum){
       this.tmpltData.rcvblcNumber = rcvblcNum;
     },
@@ -229,6 +270,7 @@ export default {
             vm.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
           });
           this.tmpltData = Object.assign({}, tempData);
+          this.fnSetCurrByte();
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
           this.tmpltData = {};
@@ -266,18 +308,9 @@ export default {
         confirm.fnAlert(this.componentsTitle, '광고성메시지 수신거부번호를 입력해주세요.');
         return false;
       }
-
-      const msgLimitByte = (this.tmpltData.senderType == 'SMS' ? 80 : 2000);
-      let totalMsg = this.tmpltData.tmpltContent;
-      if(this.tmpltData.senderType != 'SMS'){
-        totalMsg += this.tmpltData.tmpltTitle;
-      }
-      if(this.tmpltData.msgKind == 'A'){
-        totalMsg += '\n' + this.tmpltData.rcvblcNumber + '(광고)';
-      }
-      const totByte = this.getByte(totalMsg);
-      if(msgLimitByte < totByte){
-        const alertMsg = (this.tmpltData.senderType == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+msgLimitByte+'를 넘지 않아야됩니다.\n(현재 : '+totByte+'byte)';
+      
+      if(this.msgLimitByte < this.msgCurrByte){
+        const alertMsg = (this.tmpltData.senderType == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+this.msgLimitByte+'를 넘지 않아야됩니다.\n(현재 : '+this.msgCurrByte+'byte)';
         confirm.fnAlert(this.componentsTitle, alertMsg);
         return false;
       }
