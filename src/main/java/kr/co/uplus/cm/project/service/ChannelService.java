@@ -273,12 +273,28 @@ public class ChannelService {
 				
 				
 				inputVal.put("projectId",	params.get("mainProjectId"));
+
+				// 쳇봇데이터
+				inputVal.put("mainMdn",			CommonUtils.getString(brandInfo.get("mainMdn")));
+				inputVal.put("mainTitle",		CommonUtils.getString(brandInfo.get("mainTitle")));
 				inputVal.put("chatbotsStr",	CommonUtils.getString(brandInfo.get("chatbots")).replace("[", "").replace("]", ""));
 			} else {
 				resultLists = (List<Object>) apiInterface.get("/console/v1/brand/" + brandId, getHeaderMap2).get("data");
 				rtnMap = (Map<String, Object>) resultLists.get(0);
 				// 프로젝트 아이디
 				inputVal.put("projectId",	rtnMap.get("projectId"));
+
+				// 쳇봇데이터
+				List<Object> chatbotList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_BRAND_CHATBOT, params);
+				if(chatbotList.size() > 0) {
+					Map<String, Object> chatbotMap = (Map<String, Object>) chatbotList.get(0);
+					inputVal.put("mainMdn",			chatbotMap.get("mainMdn"));
+					inputVal.put("mainTitle",		chatbotMap.get("mainTitle"));
+				} else {
+					inputVal.put("mainMdn",			"");
+					inputVal.put("mainTitle",		"");
+				}
+				
 			}
 			
 			inputVal.put("apiKey",		CommonUtils.getString(params.get("apiKey")));
@@ -385,17 +401,6 @@ public class ChannelService {
 			
 			inputVal.put("webSiteUrl",		rtnMap.get("webSiteUrl"));
 			inputVal.put("rcsReply",		rtnMap.get("projectId"));
-			
-			// 쳇봇데이터
-			List<Object> chatbotList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_BRAND_CHATBOT, params);
-			if(chatbotList.size() > 0) {
-				Map<String, Object> chatbotMap = (Map<String, Object>) chatbotList.get(0);
-				inputVal.put("mainMdn",			chatbotMap.get("mainMdn"));
-				inputVal.put("mainTitle",		chatbotMap.get("mainTitle"));
-			} else {
-				inputVal.put("mainMdn",			"");
-				inputVal.put("mainTitle",		"");
-			}
 			
 			result.put("inputVal", inputVal);
 		}
@@ -622,6 +627,7 @@ public class ChannelService {
 			brandInfo.put("email",			params.get("email")+ "@" + params.get("email2"));
 			brandInfo.put("webSiteUrl",		params.get("webSiteUrl"));
 			brandInfo.put("mainMdn",		params.get("mainMdn"));
+			brandInfo.put("mainTitle",		params.get("mainTitle"));
 			brandInfo.put("profileImgFilePath",	profileImgFilePath);
 			brandInfo.put("bgImgFilePath",		bgImgFilePath);
 			brandInfo.put("certiFilePath",		certiFilePath);

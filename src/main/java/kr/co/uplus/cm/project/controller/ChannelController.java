@@ -131,6 +131,7 @@ public class ChannelController {
 			@RequestParam String email2,
 			@RequestParam String webSiteUrl,
 			@RequestParam String mainMdn,
+			@RequestParam String mainTitle,
 			
 			@RequestParam String call,
 			@RequestParam String callWeblink,
@@ -184,6 +185,8 @@ public class ChannelController {
 		params.put("email2",			email2);
 		params.put("webSiteUrl",		webSiteUrl);
 		params.put("mainMdn",			mainMdn);
+		params.put("mainTitle",			mainTitle);
+		
 		
 		params.put("call",				call);
 		params.put("callWeblink",		callWeblink);
