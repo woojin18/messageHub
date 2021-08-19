@@ -61,10 +61,10 @@
 
 	<select id="selectWebSendFailListCnt" parameterType="hashmap" resultType="camel">
 	/* 웹 현황 발송실패 리스트 카운트 조회 */
-		SELECT	COUNT(A.WEB_REQ_ID)															AS TOT_CNT
-		,		SUM(CASE WHEN IFNULL(B.GW_RESULT_CODE, '0') != '10000' THEN 1 ELSE 0 END)	AS FAIL_CNT
-		,		MAX(A.CH_STRING)															AS CH_STRING
-		,		MAX(A.SENDER_TYPE)															AS SENDER_TYPE
+		SELECT	COUNT(A.WEB_REQ_ID)			AS TOT_CNT
+		,		COUNT(B.GW_RESULT_CODE)		AS FAIL_CNT
+		,		MAX(A.CH_STRING)			AS CH_STRING
+		,		MAX(A.SENDER_TYPE)			AS SENDER_TYPE
 		,		MAX(
 					CASE
 						WHEN A.SENDER_TYPE = 'C' THEN '개별발송'
@@ -74,7 +74,10 @@
 				)																			AS SENDER_TYPE_NM /*발송타입명*/
 		FROM	cm_console.CM_WEB_MSG A
 		LEFT OUTER JOIN cm.CM_MSG B
-			ON A.WEB_REQ_ID = B.WEB_REQ_ID
+			ON	A.WEB_REQ_ID = B.WEB_REQ_ID
+			AND	DATE_FORMAT(A.REG_DT, '%Y-%m-%d') = B.YMD
+			AND	A.API_KEY = B.API_KEY
+			AND	IFNULL(B.GW_RESULT_CODE, '0') != '10000'
 		WHERE	1=1
 		<include refid="whereSelectWebSendFailList"/>
 	</select>
@@ -87,8 +90,10 @@
 		,		B.GW_RESULT_CODE
 		,		B.GW_RESULT_DESC
 		FROM	cm_console.CM_WEB_MSG A
-		LEFT OUTER JOIN	cm.CM_MSG B
-			ON A.WEB_REQ_ID = B.WEB_REQ_ID
+		INNER JOIN	cm.CM_MSG B
+			ON	A.WEB_REQ_ID = B.WEB_REQ_ID
+			AND	DATE_FORMAT(A.REG_DT, '%Y-%m-%d') = B.YMD
+			AND	A.API_KEY = B.API_KEY
 		,		(SELECT @rownum:=0) TMP
 		WHERE	1=1
 		AND		IFNULL(B.GW_RESULT_CODE, '0') != '10000'
