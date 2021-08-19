@@ -2963,9 +2963,12 @@
 						</div>
 					</div>
 					<div class="of_h" v-if="rowData.msgKind == 'A'">
-						<div class="float-left" style="width:13%"><h4>광고성메시지<br/>수신거부번호</h4></div>
+						<div class="float-left" style="width:13%">
+							<h4>광고성메시지<br/>수신거부번호</h4>
+							<a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</a>
+						</div>
 						<div class="float-left mt10" style="width:57%">
-							<input type="text" class="inputStyle" v-model="rowData.smsRcvblcNumber" maxlength="10">
+							<input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rowData.smsRcvblcNumber" maxlength="20">
 						</div>
 					</div>
 				</div>
@@ -2985,9 +2988,12 @@
 						</div>
 					</div>
 					<div class="of_h" v-if="rowData.msgKind == 'A'">
-						<div class="float-left" style="width:13%"><h4>광고성메시지<br/>수신거부번호</h4></div>
+						<div class="float-left" style="width:13%">
+							<h4>광고성메시지<br/>수신거부번호</h4>
+							<a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</a>
+						</div>
 						<div class="float-left mt10" style="width:57%">
-							<input type="text" class="inputStyle" v-model="rowData.smsRcvblcNumber" maxlength="10">
+							<input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rowData.smsRcvblcNumber" maxlength="20">
 						</div>
 					</div>
 					<div class="of_h consolMarginTop"  v-if="rowData.msgType == 'IMAGE'">
@@ -3026,6 +3032,7 @@
 
 		<RcsTemplatePopup :templateRadioBtn.sync="templateRadioBtn" ref="rcsTemplatePop" @fnResult="fnSetRcsTemplate"></RcsTemplatePopup>
 		<AlimTalkTemplatePopup :alimTalkTemplateOpen.sync="alimTalkTemplateOpen" ref="alimTalkTmplPopup"></AlimTalkTemplatePopup>
+		<RcvblcNumPopup @callback-func="fnCallbackRcvblcNum" :rcvblcNumOpen.sync="rcvblcNumOpen"></RcvblcNumPopup>
 	</div>
 </template>
 
@@ -3034,6 +3041,7 @@ import templateApi from "@/modules/template/service/templateApi.js";
 import messageApi from "@/modules/message/service/messageApi.js";
 import RcsTemplatePopup from "@/modules/rcsTemplateSend/components/bp-rcsTemplatePop.vue";
 import AlimTalkTemplatePopup from "@/modules/message/components/bp-alimTalkTemplate.vue";
+import RcvblcNumPopup from "@/modules/message/components/bp-rcvblcNumManage.vue";
 
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
 import ImageUploadPopUp from "@/modules/commonUtil/components/bp-imageUpload.vue";
@@ -3085,6 +3093,7 @@ export default {
 	components : {
 		RcsTemplatePopup,
 		AlimTalkTemplatePopup,
+		RcvblcNumPopup,
 
 		ImageManagePopUp,      ImageUploadPopUp,   /* Push */
 
@@ -3222,6 +3231,7 @@ export default {
 			itemDatas:[],
 			rcsCallbackList: [],					//RCS 발신번호 리스트
 			smsCallbackList: [],				//smslms 발신번호 리스트
+			rcvblcNumOpen: false,
 
 			rcsDesMessagebaseId: '',		//서술형 MessagebaseId
 			rcsDesMessagebaseformId: '',	//서술형 유형
@@ -5785,6 +5795,9 @@ export default {
 					jQuery("input:radio[id=rcsTemplate1-1]").click();
 				}
 			}
+		},
+		fnCallbackRcvblcNum(rcvblcNum){
+			this.rowData.smsRcvblcNumber = rcvblcNum;
 		},
 		fnImgReset(){
 			this.rowData.rcsShortImgInfoList.push({'fileId':'', 'imgUrl':''});
