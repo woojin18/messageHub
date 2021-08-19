@@ -194,7 +194,7 @@ export default {
       this.custrnmNo = this.corpInfo.custrnmNo;
       this.custNo = this.corpInfo.custNo;
       this.domainName = this.corpInfo.domainName;
-      this.salesMan = this.corpInfo.salesId;
+      this.salesMan = !this.$gfnCommonUtils.isEmpty(this.corpInfo.salesId) ? this.corpInfo.saelsId : "";
     },
     // 사업자 등록증 다운로드
     fnFileDown(fileId) {
