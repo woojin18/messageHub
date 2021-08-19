@@ -39,8 +39,8 @@ const fnAlert = (cTitle, cMessage, cAfterType, cParam) => {
   //jQuery("#confirm").modal("show");
 }
 
-const fnConfirm = (cTitle, cMessage, cButton) => {
-  var confirmData = {"cTitle" : cTitle, "cMessage" : cMessage, "cButtonView" : true, "cButton" : cButton}
+const fnConfirm = (cTitle, cMessage, cButton, cParam) => {
+  var confirmData = {"cTitle" : cTitle, "cMessage" : cMessage, "cButtonView" : true, "cButton" : cButton, "cParam" : cParam}
   eventBus.$emit('confirmEventBus', confirmData);
   //jQuery("#confirm").modal("show");
 }
@@ -91,7 +91,7 @@ Vue.component('confirm', {
   methods: {
     fnCallback: function() {
       if(this.cButtonView) {
-        eventBus.$emit('callbackEventBus');
+        eventBus.$emit('callbackEventBus', this.cParam);
       }
       this.fnConfirmHide();
     },

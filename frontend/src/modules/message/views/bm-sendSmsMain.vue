@@ -179,7 +179,7 @@
     <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="sendData.senderType" ref="imgMngPopup"></ImageManagePopUp>
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
     <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
-    <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :testRecvInfoLst="sendData.testRecvInfoLst" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></TestSendInputPopup>
+    <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" ref="testSendInputPopup"></TestSendInputPopup>
   </div>
 </template>
 
@@ -586,12 +586,13 @@ export default {
     },
     fnOpenTestSendInputPopup(){
       this.fnSetContsVarNms();
+      this.$refs.testSendInputPopup.fnSetTestRecvInfoLst(this.sendData.testRecvInfoLst);
       this.testSendInputOpen = !this.testSendInputOpen;
     },
     //테스트 발송 callback
     fnCallbackTestRecvInfoLst(testRecvInfoLst){
       if(testRecvInfoLst != null){
-        this.sendData.testRecvInfoLst = testRecvInfoLst;
+        this.sendData.testRecvInfoLst = Object.assign([], testRecvInfoLst);
         this.fnSendSmsMessage('Y');
       } else {
         this.sendData.testRecvInfoLst = [];

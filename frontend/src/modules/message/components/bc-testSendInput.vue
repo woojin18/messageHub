@@ -87,13 +87,6 @@ export default {
       type: Array,
       require: true
     },
-    testRecvInfoLst : {
-      type: Array,
-      require: false,
-      default: function() {
-        return [];
-      }
-    },
     componentsTitle: {
       type: String,
       require: false,
@@ -104,6 +97,7 @@ export default {
   },
   data() {
     return {
+      testRecvInfoLst: [],
       loopCnt: 3,
       headerList: [],
     }
@@ -138,6 +132,9 @@ export default {
     }
   },
   methods: {
+    fnSetTestRecvInfoLst(testRecvInfoLst){
+      this.testRecvInfoLst = Object.assign([], testRecvInfoLst);
+    },
     //발송버튼 클릭시
     fnSendTestData(){
       const vm = this;

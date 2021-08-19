@@ -255,7 +255,7 @@
     <ReplacedSenderPopup :rplcSendOpen.sync="rplcSendOpen" ref="rplcSendPopup"></ReplacedSenderPopup>
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
     <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
-    <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :testRecvInfoLst="sendData.testRecvInfoLst" :requiredCuPhone="false" :requiredCuid="sendData.requiredCuid"></TestSendInputPopup>
+    <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="false" :requiredCuid="sendData.requiredCuid" ref="testSendInputPopup"></TestSendInputPopup>
   </div>
   <!-- //본문 -->
 </template>
@@ -540,6 +540,7 @@ export default {
     },
     fnOpenTestSendInputPopup(){
       this.fnSetContsVarNms();
+      this.$refs.testSendInputPopup.fnSetTestRecvInfoLst(this.sendData.testRecvInfoLst);
       this.testSendInputOpen = !this.testSendInputOpen;
     },
     fnOpenImageManagePopUp(){
@@ -632,7 +633,7 @@ export default {
     //테스트 발송 callback
     fnCallbackTestRecvInfoLst(testRecvInfoLst){
       if(testRecvInfoLst != null){
-        this.sendData.testRecvInfoLst = testRecvInfoLst;
+        this.sendData.testRecvInfoLst = Object.assign([], testRecvInfoLst);
         this.fnSendPushMessage('Y');
       } else {
         this.sendData.testRecvInfoLst = [];

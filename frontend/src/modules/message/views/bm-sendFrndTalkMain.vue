@@ -91,10 +91,13 @@
                 <h5>메시지구분 *</h5>
               </div>
               <div style="width:80%">
-                <input type="radio" name="msgKind" value="A" id="msgKind_A" v-model="sendData.msgKind">
-                <label for="msgKind_A" class="mr30">광고성</label>
                 <input type="radio" name="msgKind" value="I" id="msgKind_I" v-model="sendData.msgKind">
                 <label for="msgKind_I">정보성</label>
+                <input type="radio" name="msgKind" value="A" id="msgKind_A" v-model="sendData.msgKind">
+                <label for="msgKind_A" class="mr30">
+                  광고성
+                  <span style="font-size: 8px;color: red;">(광고 메시지는 20시~8시 발송 시 실패 처리 됩니다.)</span>
+                </label>
               </div>
             </div>
           </div>
@@ -318,7 +321,7 @@
     <ReplacedSenderPopup :rplcSendOpen.sync="rplcSendOpen" ref="rplcSendPopup"></ReplacedSenderPopup>
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
     <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
-    <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :testRecvInfoLst="sendData.testRecvInfoLst" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></TestSendInputPopup>
+    <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" ref="testSendInputPopup"></TestSendInputPopup>
   </div>
 </template>
 
@@ -537,6 +540,21 @@ export default {
       //유효성 체크
       if(this.fnValidSendMsgData(testSendYn) == false) return;
 
+      //광고성 야간발송 확인
+      if(this.sendData.msgKind == 'A'){
+        const msg = '친구톡 광고성 메시지는 20~8시 발송시 실패 처리 됩니다.\n메시지를 발송하시겠습니까?';
+        if(
+          (this.sendData.rsrvSendYn == 'Y' && this.$gfnCommonUtils.islimitAdMsgSendTime(this.sendData.rsrvHH))
+          || (this.sendData.rsrvSendYn == 'N' && this.$gfnCommonUtils.islimitAdMsgSendTime())
+        ){
+          eventBus.$on('callbackEventBus', this.fnProcSendFrndTalkMessage);
+          confirm.fnConfirm(this.componentsTitle, msg, "확인", testSendYn);
+          return;
+        }
+      }
+      this.fnProcSendFrndTalkMessage(testSendYn);
+    },
+    fnProcSendFrndTalkMessage(testSendYn){
       //발송처리
       let params = Object.assign({}, this.sendData);
       params.testSendYn = testSendYn;
@@ -759,12 +777,13 @@ export default {
     },
     fnOpenTestSendInputPopup(){
       this.fnSetContsVarNms();
+      this.$refs.testSendInputPopup.fnSetTestRecvInfoLst(this.sendData.testRecvInfoLst);
       this.testSendInputOpen = !this.testSendInputOpen;
     },
     //테스트 발송 callback
     fnCallbackTestRecvInfoLst(testRecvInfoLst){
       if(testRecvInfoLst != null){
-        this.sendData.testRecvInfoLst = testRecvInfoLst;
+        this.sendData.testRecvInfoLst = Object.assign([], testRecvInfoLst);
         this.fnSendFrndTalkMessage('Y');
       } else {
         this.sendData.testRecvInfoLst = [];

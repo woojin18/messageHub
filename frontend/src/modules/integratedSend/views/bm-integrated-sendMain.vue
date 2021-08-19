@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="contentHeader">
-      <h2>통합 발송</h2>
+      <h2>통합 발송&nbsp;<span style="font-size: 12px;color: red;">(친구톡 광고 메시지는 20시~8시 발송 시 실패 처리 됩니다.)</span></h2>
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="통합 발송 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
     </div>
 
@@ -551,7 +551,7 @@
     </div>
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
     <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
-    <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :testRecvInfoLst="sendData.testRecvInfoLst" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></TestSendInputPopup>
+    <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" ref="testSendInputPopup"></TestSendInputPopup>
   </div>
 </template>
 
@@ -639,6 +639,10 @@ export default {
     this.fnGetTmpltInfo();
   },
   methods: {
+    fnReset(){
+      Object.assign(this.$data, this.$options.data.apply(this));
+      this.fnGetTmpltInfo();
+    },
     async fnExistApiKey(){
       let params = {};
       await messageApi.selectApiKey(params).then(response =>{
@@ -684,12 +688,13 @@ export default {
     },
     fnOpenTestSendInputPopup(){
       this.fnSetContsVarNms();
-      this.testSendInputOpen = !this.testSendInputOpen;
+      this.$refs.testSendInputPopup.fnSetTestRecvInfoLst(this.sendData.testRecvInfoLst);
+      this.testSendInputOpen = true;
     },
     //테스트 발송 callback
     fnCallbackTestRecvInfoLst(testRecvInfoLst){
       if(testRecvInfoLst != null){
-        this.sendData.testRecvInfoLst = testRecvInfoLst;
+        this.sendData.testRecvInfoLst = Object.assign([], testRecvInfoLst);
         this.fnSendIntegratedMessage('Y');
       } else {
         this.sendData.testRecvInfoLst = [];
@@ -734,14 +739,30 @@ export default {
       return true;
     },
     //통합 메시지 발송 처리
-    async fnSendIntegratedMessage(testSendYn){
+    fnSendIntegratedMessage(testSendYn){
       if(this.inProgress){
         confirm.fnAlert(this.componentsTitle, '통합 메시지 발송 처리중입니다.');
         return;
       }
 
+      //유효성 체크
       if(this.fnValidSendMsgData(testSendYn) == false) return;
 
+      //친구톡 광고성 야간발송 확인
+      if(this.tmpltData.msgKind == 'A' && this.fnContainsChannel('FRIENDTALK')){
+        const msg = '친구톡 광고성 메시지는 20~8시 발송시 실패 처리 됩니다.\n메시지를 발송하시겠습니까?';
+        if(
+          (this.sendData.rsrvSendYn == 'Y' && this.$gfnCommonUtils.islimitAdMsgSendTime(this.sendData.rsrvHH))
+          || (this.sendData.rsrvSendYn == 'N' && this.$gfnCommonUtils.islimitAdMsgSendTime())
+        ){
+          eventBus.$on('callbackEventBus', this.fnProcSendIntegratedMessage);
+          confirm.fnConfirm(this.componentsTitle, msg, "확인", testSendYn);
+          return;
+        }
+      }
+      this.fnProcSendIntegratedMessage(testSendYn);
+    },
+    async fnProcSendIntegratedMessage(testSendYn){
       //발송처리
       let params = Object.assign({}, this.sendData);
       params.tmpltCode = this.tmpltCodeP;
@@ -796,6 +817,7 @@ export default {
       } else {
         confirm.fnAlert(this.componentsTitle, result.message);
       }
+      this.fnReset();
     },
     fnUpdateRsrvDate(sltDate){
       this.sendData.rsrvDate = sltDate;
