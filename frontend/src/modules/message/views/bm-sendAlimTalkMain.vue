@@ -364,6 +364,9 @@ export default {
     await this.fnValidUseChGrp();
   },
   methods: {
+    fnReset(){
+      Object.assign(this.$data, this.$options.data.apply(this));
+    },
     async fnExistApiKey(){
       let params = {};
       await messageApi.selectApiKey(params).then(response =>{
@@ -525,6 +528,7 @@ export default {
       } else {
         confirm.fnAlert(this.componentsTitle, result.message);
       }
+      this.fnReset();
     },
     fnUpdateRsrvDate(sltDate){
       this.sendData.rsrvDate = sltDate;

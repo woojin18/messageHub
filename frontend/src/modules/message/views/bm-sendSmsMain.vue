@@ -258,6 +258,9 @@ export default {
     await this.fnValidUseChGrp();
   },
   methods: {
+    fnReset(){
+      Object.assign(this.$data, this.$options.data.apply(this));
+    },
     async fnExistApiKey(){
       let params = {};
       await messageApi.selectApiKey(params).then(response =>{
@@ -331,7 +334,7 @@ export default {
 
       return true;
     },
-    //푸시 메시지 발송 처리
+    //메시지 발송 처리
     async fnSendSmsMessage(testSendYn){
       if(this.inProgress){
         confirm.fnAlert(this.componentsTitle, 'SMS 메시지 발송 처리중입니다.');
@@ -399,6 +402,7 @@ export default {
       } else {
         confirm.fnAlert(this.componentsTitle, result.message);
       }
+      this.fnReset();
     },
     fnClickCuInputType(e){
       if(this.sendData.cuInputType == e.target.value){

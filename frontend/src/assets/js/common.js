@@ -137,7 +137,7 @@ export default {
         return regex.test(str.toString());
       },
       isUrl(str){
-        let regex = /(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/gi
+        let regex = /(http|https):\/\/(\S+)/g
         return regex.test(str);
       },
       unescapeXss(str){

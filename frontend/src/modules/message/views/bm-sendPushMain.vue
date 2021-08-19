@@ -345,6 +345,10 @@ export default {
     
   },
   methods: {
+    fnReset(){
+      Object.assign(this.$data, this.$options.data.apply(this));
+      this.fnGetAppId();
+    },
     async fnExistApiKey(){
       let params = {};
       await MessageApi.selectApiKey(params).then(response =>{
@@ -497,6 +501,7 @@ export default {
       } else {
         confirm.fnAlert(this.componentsTitle, result.message);
       }
+      this.fnReset();
     },
     fnUpdateRsrvDate(sltDate){
       this.sendData.rsrvDate = sltDate;
