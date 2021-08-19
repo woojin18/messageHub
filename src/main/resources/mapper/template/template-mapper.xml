@@ -393,6 +393,9 @@
         <if test="tmpltId != '' and tmpltId != null ">
             AND TMPLT_ID = #{tmpltId}
         </if>
+        <if test="searchMsgKindCd != null and searchMsgKindCd.size != 0 ">
+            AND MSG_KIND IN <foreach collection="searchMsgKindCd" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
+        </if>
     </sql>
 
     <select id="selectFrndTalkTmpltListCnt" parameterType="hashmap" resultType="int">

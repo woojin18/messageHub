@@ -33,9 +33,24 @@
                   <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
                   <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
                 </ul>
-                <a @click="fnPageNoResetSearch" class="btnStyle1 float-right" title="검색" activity="READ">검색</a>
               </div>
             </div>
+            
+            <div class="of_h">
+            <div class="inline-block" style="width:8%"><h4>메시지구분</h4></div>
+            <div class="inline-block" style="width:91%">
+              <div class="consolCheck consolMarginTop">
+                <input type="checkbox" id="otherUse_all" class="checkStyle2" @change="fnSearchMsgKindCdChkAll" v-model="msgKindCdAllSelected">
+                <label for="otherUse_all" class="mr30">전체</label>
+                <input type="checkbox" id="searchMsgKindCd_A" class="checkStyle2" value="A" v-model="searchData.searchMsgKindCd">
+                <label for="searchMsgKindCd_A" class="mr30">광고성</label>
+                <input type="checkbox" id="searchMsgKindCd_I" class="checkStyle2" value="I" v-model="searchData.searchMsgKindCd">
+                <label for="searchMsgKindCd_I" class="mr30">정보성</label>
+              </div>
+              <a @click="fnPageNoResetSearch" class="btnStyle1 float-right" title="검색" activity="READ">검색</a>
+            </div>
+          </div>
+
           </div>
         </div>
       </div>
@@ -148,7 +163,7 @@ export default {
           'searchText' : '',
           'searchStartDate' : this.$gfnCommonUtils.getCurretDate(),
           'searchEndDate' : this.$gfnCommonUtils.getCurretDate(),
-          'searchOthPrjUseYn' : []
+          'searchMsgKindCd' : []
         }
       }
     },
@@ -162,7 +177,7 @@ export default {
   },
   data() {
     return {
-      othPrjUseYnAllSelected: false,
+      msgKindCdAllSelected: true,
       listAllChecked: false,
       listChkBox: [],
       listSize : 10,  // select 박스 value (출력 갯수 이벤트)
@@ -176,9 +191,18 @@ export default {
   async mounted() {
     this.fnValidUseChGrp();
     this.fnSetIntervalSearchDate(this.searchDateInterval);
+    this.fnSearchMsgKindCdChkAll();
     this.fnPageNoResetSearch();
   },
   methods: {
+    //메시지구분 전체 선택시
+    fnSearchMsgKindCdChkAll(){
+      if(this.msgKindCdAllSelected){
+        this.searchData.searchMsgKindCd = ['A', 'I'];
+      } else {
+        this.searchData.searchMsgKindCd = [];
+      }
+    },
     async fnValidUseChGrp(){
       let params = {chGrp: 'KKO'};
       await templateApi.selectValidUseChGrp(params).then(response =>{
