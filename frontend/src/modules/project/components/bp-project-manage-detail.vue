@@ -21,19 +21,25 @@
 									<input id="projectDesc" type="text" class="inputStyle float-left" style="width:100%" title="프로젝트 설명 입력란" maxlength="100">
 								</div>
 							</div>
-							<div class="of_h consolMarginTop">
+							<div class="of_h consolMarginTop" v-if="this.save_status === 'C'">
                 <h5 class="inline-block" style="width:20%">결재조건 *</h5>
 								<input @click="fnSelectBillIdForApi('PRE')" type="radio" name="payType" value="PRE" class="cBox" id="payment01" :disabled="this.save_status != 'C'" checked> <label for="payment01" class="payment mr30 font-size12">선불</label>
 								<input @click="fnSelectBillIdForApi('POST')" type="radio" name="payType" value="POST" class="cBox" id="payment02" :disabled="this.save_status != 'C'"> <label for="payment02" class="payment font-size12">후불</label>								
 							</div>
-              <div class="of_h consolMarginTop" v-if=" this.payTypeForDIv === 'POST' ">
+							<div class="of_h consolMarginTop" v-if="this.save_status != 'C'">
+                <h5 class="inline-block" style="width:20%">결재조건 *</h5>
+                <div style="width:80%" class="float-right" v-if="this.row_data.payType === 'PRE' && this.row_data.nopayYn != 'Y'">선불</div>
+                <div style="width:80%" class="float-right" v-if="this.row_data.payType === 'POST' && this.row_data.nopayYn != 'Y'">후불</div>
+                <div style="width:80%" class="float-right" v-if="this.row_data.nopayYn === 'Y'">무과금</div>
+							</div>
+              <!-- <div class="of_h consolMarginTop" v-if=" this.payTypeForDIv === 'POST' ">
                 <h5 class="inline-block" style="width:20%">청구번호 *</h5>
                 <select class="selectStyle2" style="width:72%" v-model="this.billId">
                   <option v-for="(option, i) in resultList" v-bind:value="option.billAcntNo" v-bind:key="i">
                     {{ option.custNm }}({{ option.billAcntNo }})
                   </option>
                 </select>
-							</div>
+							</div> -->
 							<p class="mt10 lc-1 font-size12 color3" style="margin-left:20%">프로젝트별 결제조건(선/후불)을 선택할 수 있으며, 프로젝트 등록 후 선택된 <br>결제조건은 변경이 불가합니다.</p>
 							<div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:20%">사용여부</h5>
@@ -109,7 +115,7 @@
 					
 					</div>
 					<div class="text-center mt40">
-						<a @click="fnSave" class="btnStyle3 black font14" activity="SAVE">등록</a>
+						<a @click="fnSave" class="btnStyle3 black font14" activity="SAVE">저장</a>
             <a @click="fnClose" ref="closeBtn" class="btnStyle3 white font14">닫기</a>						
 					</div>
 				</div>
@@ -226,7 +232,7 @@ export default {
         var params = {
         };
 
-        projectApi.selectBillIdForApi(params).then(response =>{
+        /* projectApi.selectBillIdForApi(params).then(response =>{
           var result = response.data;
           
           if(result.success) {
@@ -238,7 +244,7 @@ export default {
               this.billId = this.row_data.billId;
             }
           }
-        });
+        }); */
       }
       
     },
@@ -256,11 +262,18 @@ export default {
       if( this.payTypeForDIv === 'PRE' ){
           subbillYn = 'N';
       }
+
+      var payTypeVal = jQuery("input[name='payType']:checked").val();
+
+      if( this.save_status != "C" ){
+        payTypeVal = this.row_data.payType;
+      }
+
       var params = {
           "projectId"      : this.row_data.projectId,
           "projectName"    : jQuery("#projectName").val(),
           "projectDesc"    : jQuery("#projectDesc").val(),
-          "payType"        : jQuery("input[name='payType']:checked").val(),
+          "payType"        : payTypeVal,
           "billId"         : this.billId,
           "useYn"          : jQuery("input[name='useYn']:checked").val(),
           "resendTitle"    : jQuery("#resendTitle").val(),

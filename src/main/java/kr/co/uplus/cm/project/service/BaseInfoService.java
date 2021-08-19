@@ -190,6 +190,11 @@ public class BaseInfoService {
 
 			resultCnt = generalDao.insertGernal(DB.QRY_INSERT_APIKEY, map);
 		} else {
+			// 변경 비밀번호가 있을경우
+			String changeApiPwd = CommonUtils.getString(params.get("changeApiPwd"));
+			if( !"".equals(changeApiPwd) ) {
+				map.put("apiPwd", sha512.encryptToBase64(changeApiPwd));
+			}
 			resultCnt = generalDao.insertGernal(DB.QRY_UPDATE_APIKEY, map);
 		}
 

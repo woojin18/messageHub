@@ -19,11 +19,18 @@
 								<input type="text" id="apiKey" class="inputStyle" :disabled="true" >
 							</div>
 						</div>
-						<div class="of_h consolMarginTop">
+						<div class="of_h consolMarginTop" v-if="this.saveStatus == 'R'">
 							<div class="float-left" style="width:24%"><h5>API 암호</h5></div>
 							<div class="float-left" style="width:76%">
 								<input type="password" id="apiPwd" class="inputStyle">
 							</div>
+						</div>
+						<div class="of_h consolMarginTop" v-if="this.saveStatus == 'U'">
+							<div class="float-left" style="width:24%"><h5>API 암호</h5></div>
+							<div class="float-left" style="width:61%">
+								<input type="password" id="apiPwd" class="inputStyle">
+							</div>
+							<a @click="fnPasswordChange" class="btnStyle1 backWhite ml10">변경</a>
 						</div>
 						<div id="apiPwdConfirmDiv" class="of_h consolMarginTop">
 							<div class="float-left" style="width:24%"><h5>API 암호 확인</h5></div>
@@ -31,6 +38,20 @@
 								<input type="password" id="apiPwdConfirm" class="inputStyle">
 							</div>
 						</div>
+						
+						<div v-if="this.changeYn" class="of_h consolMarginTop">
+							<div class="float-left" style="width:24%"><h5>변경 API 암호</h5></div>
+							<div class="float-left" style="width:76%">
+								<input type="password" v-model="changeApiPwd" class="inputStyle">
+							</div>
+						</div>
+						<div v-if="this.changeYn" class="of_h consolMarginTop">
+							<div class="float-left" style="width:24%"><h5>변경 API 암호 확인</h5></div>
+							<div class="float-left" style="width:76%">
+								<input type="password" v-model="changeApiPwdConfirm" class="inputStyle">
+							</div>
+						</div>
+
 						<div class="of_h consolMarginTop">
 							<div class="float-left" style="width:24%"><h5>웹 사용</h5></div>
 							<div class="float-left" style="width:76%">
@@ -180,6 +201,9 @@ export default {
 	},
 	watch: {
 		apiKeyOpen: function() {
+			this.changeYn = false;
+			this.changeApiPwd = '';
+			this.changeApiPwdConfirm = '';
 			if(this.saveStatus === 'R') {
 				this.apiKeyData.apiKey = '';
 				jQuery('#apiKeyDiv').hide();
@@ -261,6 +285,9 @@ export default {
 			ipList: [],
 			loopCnt: 0,
 			title: 'API Key 상세',
+			changeYn : false,
+			changeApiPwd : "",
+			changeApiPwdConfirm : "",
 		}
 	},
 	mounted() {
@@ -295,6 +322,19 @@ export default {
 				confirm.fnAlert(this.title, '입력하신 API 암호가 일치하지 않습니다.');
 				return false;
 			}
+
+			// 비밀번호 변경 시
+			if( this.changeYn ){
+				if( this.changeApiPwd === '' || this.changeApiPwdConfirm === '' ){
+					confirm.fnAlert(this.title, '변경 API 암호, 암호 확인을 입력하세요.');
+					return false;
+				}
+				if( this.changeApiPwd != this.changeApiPwdConfirm  ){
+					confirm.fnAlert(this.title, '입력하신 변경 API 암호가 일치하지 않습니다.');
+					return false;
+				}
+			}
+
 			// validate an IP address
 			if(ipChkYn == 'Y') {
 				for(let i = 0; i < ipList.length; i++) {
@@ -357,6 +397,7 @@ export default {
 				'newProjectId'			: this.apiKeyData.projectId,
 				'apiKey'				: this.apiKeyData.apiKey,
 				'apiPwdConfirm'			: jQuery('#apiPwdConfirm').val(),
+				'changeApiPwd'			: this.changeApiPwd,
 				'corpId'				: tokenSvc.getToken().principal.corpId,
 				'apiPwd'				: jQuery('#apiPwd').val(),
 				'ipChkYn'				: jQuery('input[name="ipChkYn"]:checked').val(),
@@ -440,6 +481,11 @@ export default {
 		// 닫기
 		fnClose() {
 			jQuery('#apiKeyPop').modal('hide');
+		},
+		fnPasswordChange(){
+			this.changeYn = !this.changeYn;
+			this.changeApiPwd = '';
+			this.changeApiPwdConfirm = '';
 		},
 	}
 }
