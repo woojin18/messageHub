@@ -146,6 +146,7 @@
 		,	MON_SENDER_LIMIT_AMOUNT	= #{monSenderLimitAmount}
 		</if>
 		,	API_KEY_NAME			= #{apiKeyName}
+		,	UPD_DT					= NOW()
 		WHERE
 			API_KEY					= #{apiKey}
 	</update>
