@@ -10,8 +10,9 @@
 		,		A.PROJECT_DESC
 		,		A.PAY_TYPE
 		,		CASE 
-					WHEN A.PAY_TYPE = 'PRE' THEN '선불'
-					WHEN A.PAY_TYPE = 'POST' THEN '후불'
+					WHEN A.PAY_TYPE = 'PRE' AND A.NOPAY_YN != 'Y' THEN '선불'
+					WHEN A.PAY_TYPE = 'POST' AND A.NOPAY_YN != 'Y' THEN '후불'
+					WHEN A.NOPAY_YN = 'Y' THEN '무과금'
 					ELSE ''
 				END AS PAY_TYPE_NAME
 		,		A.BILL_ID
@@ -118,6 +119,7 @@
 		,		SUBBILL_YN			= #{subbillYn}
 		,		SUBBILL_START_DAY	= REPLACE(#{subbillStartDay}, '-', '')
 		,		USE_YN				= #{useYn}
+		,		UPD_DT				= NOW()
 		WHERE	PROJECT_ID			= #{projectId}
 	</update>
 	
@@ -125,6 +127,7 @@
 		/* project.updateProjectBillId */
 		UPDATE	cm_console.CM_PROJECT
 		SET		BILL_ID = #{billId}
+		,		UPD_DT	= NOW()
 		WHERE	PROJECT_ID = #{projectId}
 	</update>
 	
@@ -407,6 +410,7 @@
 		/* project.updateProjectDistribution */
 		UPDATE	cm_console.CM_PROJECT
 		SET		SMART_CH_CODE = #{SMART_CH_CODE}
+		,		UPD_DT				= NOW()
 		WHERE	1=1
 		AND		PROJECT_ID = #{PROJECT_ID}
 	</update>

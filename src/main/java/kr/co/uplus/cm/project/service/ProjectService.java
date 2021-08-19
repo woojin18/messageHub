@@ -654,6 +654,9 @@ public class ProjectService {
 					map.put("SMART_CH_CODE", CommonUtils.getCommonId("SCC", 5));
 					generalDao.insertGernal(DB.QRY_INSERT_DISTRIBUTIONDATA, map);
 					generalDao.updateGernal(DB.QRY_UPDATE_PROJECT_DISTRIBUTION, map);
+					
+					// redis 테이블 처리
+					commonService.updateCmCmdForRedis(CmdTgt.PROJECT);
 				}
 			}
 			// redis 테이블 처리
