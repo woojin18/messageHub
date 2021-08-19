@@ -184,23 +184,20 @@ public class MyPageService {
 		
 		Map<String, Object> rtnObj = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_CORP_INFO, params);
 		
-		String custNo = CommonUtils.getString(rtnObj.get("custNo"));
-		
-		// 고객번호 수정
-//		custNo = "3020989575";
-		headerMap.put("custNo", custNo);
+//		String custNo = CommonUtils.getString(rtnObj.get("custNo"));
 		
 		// API 통신 처리
-		Map<String, Object> result = apiInterface.get("/console/v1/ucube/customer/"+custNo, headerMap);
-		
-		if("10000".equals(result.get("code"))) {
-			Map<String, Object> data = (Map<String, Object>) result.get("data");
-			rtnObj.putAll(data);
-			rtnObj.put("custNm", CommonUtils.setMaskingUserNm(CommonUtils.getString(data.get("custNm"))));
+//		headerMap.put("custNo", custNo);
+//		Map<String, Object> result = apiInterface.get("/console/v1/ucube/customer/"+custNo, headerMap);
+//		
+//		if("10000".equals(result.get("code"))) {
+//			Map<String, Object> data = (Map<String, Object>) result.get("data");
+//			rtnObj.putAll(data);
+//			rtnObj.put("custNm", CommonUtils.setMaskingUserNm(CommonUtils.getString(rtnObj.get("custNm"))));
 			rtn.setData(rtnObj);
-		} else {
-			throw new Exception(CommonUtils.getString(result.get("message")));
-		}
+//		} else {
+//			throw new Exception(CommonUtils.getString(result.get("message")));
+//		}
 		
 		return rtn;
 	}

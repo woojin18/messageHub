@@ -226,7 +226,7 @@ public class MyPageController {
 			
 		} catch(Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
+			rtn.setMessage("고객사 정보 조회에 실패하였습니다.");
 		}
 		
 		return rtn;
