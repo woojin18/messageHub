@@ -334,7 +334,7 @@ export default {
 					confirm.fnAlert("", result.message);
 					return;
 				} else {
-					confirm.fnAlert("", "인증메일을 전송하였습니다. 메일함을 확인해주세요.");
+					confirm.fnAlert("인증메일을 전송하였습니다. 메일함을 확인해주세요.", "Google메일을 이용할 시 이메일 인증에는 문제가 없으나,\n구글의 보안프록시 서버를 사용하여 이미지를 제공하기 때문에 본문 상 이미지가 보이지 않을 수 있습니다.");
 				}
 			});
 			// eventBus.$on('callbackEventBus', this.fnToPasswordCallBack);

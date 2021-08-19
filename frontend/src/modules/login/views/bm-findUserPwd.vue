@@ -11,10 +11,14 @@
 							<input type="text" class="inputStyle" placeholder="이메일 입력" v-model="email">
 							<p class="font-size12 color3 mt20">이메일 인증 유효시간은 1시간입니다.</p>
 						</div>
+						<div class="float-left mt50">
+							<p class="font-size12 color3">Google메일을 이용할 시 이메일 인증에는 문제가 없으나,</p>
+							<p class="font-size12 color3">구글의 보안프록시 서버를 사용하여 이미지를 제공하기 때문에 본문 상 이미지가 보이지 않을 수 있습니다.</p>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="text-center mt40"><a href="#self" @click.prevent="fnSendMail" class="btnStyle3 black font14 minWidth120">인증메일 발송</a></div>
+			<div class="text-center mt30"><a href="#self" @click.prevent="fnSendMail" class="btnStyle3 black font14 minWidth120">인증메일 발송</a></div>
 		</section>
 	</article>
 </template>
