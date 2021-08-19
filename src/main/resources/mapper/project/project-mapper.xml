@@ -119,6 +119,7 @@
 		,		SUBBILL_YN			= #{subbillYn}
 		,		SUBBILL_START_DAY	= REPLACE(#{subbillStartDay}, '-', '')
 		,		USE_YN				= #{useYn}
+		,		UPD_ID				= #{userId}
 		,		UPD_DT				= NOW()
 		WHERE	PROJECT_ID			= #{projectId}
 	</update>
@@ -128,6 +129,7 @@
 		UPDATE	cm_console.CM_PROJECT
 		SET		BILL_ID = #{billId}
 		,		UPD_DT	= NOW()
+		,		UPD_ID				= #{userId}
 		WHERE	PROJECT_ID = #{projectId}
 	</update>
 	
@@ -411,6 +413,7 @@
 		UPDATE	cm_console.CM_PROJECT
 		SET		SMART_CH_CODE = #{SMART_CH_CODE}
 		,		UPD_DT				= NOW()
+		,		UPD_ID				= #{userId}
 		WHERE	1=1
 		AND		PROJECT_ID = #{PROJECT_ID}
 	</update>
