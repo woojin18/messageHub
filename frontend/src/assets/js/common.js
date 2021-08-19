@@ -164,7 +164,7 @@ export default {
       //친구톡 광고성 야간발송 제한(20~8)
       islimitAdMsgSendTime(hours){
         hours = (this.isEmpty(hours) ? new Date().getHours() : hours);
-        return (hours <= 8 || hours >= 13);
+        return (hours <= 8 || hours >= 20);
       },
       //ch - SMS, MMS, RCS, ALIMTALK, FRIENDTALK, PUSH
       //str - 검사내용
