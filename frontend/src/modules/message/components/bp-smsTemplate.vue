@@ -174,8 +174,9 @@ export default {
       this.templateData = Object.assign({}, tempData);
     },
     //템플릿 리스트 검색
-    async fnSearch(){
-      await templateApi.selectSmsTmpltList(this.searchData).then(response =>{
+    async fnSearch(senderType){
+      let params = {...this.searchData, searchSenderType: senderType};
+      await templateApi.selectSmsTmpltList(params).then(response =>{
         var result = response.data;
         if(result.success) {
           this.templateList = result.data;

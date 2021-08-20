@@ -225,6 +225,9 @@
         <if test="tmpltId != '' and tmpltId != null ">
             AND TMPLT_ID = #{tmpltId}
         </if>
+        <if test="searchSenderType != '' and searchSenderType != null ">
+            AND SENDER_TYPE = #{searchSenderType}
+        </if>
     </sql>
 
     <select id="selectSmsTmpltListCnt" parameterType="hashmap" resultType="int">

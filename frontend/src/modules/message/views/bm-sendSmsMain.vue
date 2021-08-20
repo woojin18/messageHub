@@ -599,7 +599,7 @@ export default {
       }
     },
     fnOpenSmsTemplatePopup(){
-      this.$refs.smsTmplPopup.fnSearch();
+      this.$refs.smsTmplPopup.fnSearch(this.sendData.senderType);
       this.smsTemplateOpen = !this.smsTemplateOpen;
     },
     fnOpenSmsContentsPopup(){
