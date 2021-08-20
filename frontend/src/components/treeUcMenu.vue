@@ -12,10 +12,10 @@
 			<!-- consoleMenu -->
 			<dl>
 				<dt>
-					<a href="#" title="비트큐브"><i class="fal fa-folder navIcon"></i><span>비트큐브<i class="fas fa-cog cog"></i> <i class="far fa-chevron-right navArrow"></i></span></a>
+					<a :title="projectName"><i class="fal fa-folder navIcon"></i><span>{{projectName}}<i class="fas fa-cog cog"></i> <i class="far fa-chevron-right navArrow"></i></span>(이동)</a>
 					<div class="consoleMenu">
 						<ul class="box-shadow">
-							<li v-for="(item, i) in prdData" :key="i" :class="{active : repPrdState(item.projectId)}"><a @click="chgProject(item.projectId)">{{item.projectName}}</a></li>
+							<li v-for="(item, i) in prdData" :key="i" :class="{active : repPrdState(item.projectId,item.projectName)}"><a @click="chgProject(item.projectId)">{{item.projectName}}</a></li>
 						</ul>
 					</div>
 				</dt>
@@ -90,6 +90,7 @@ export default {
 			prdData : [],
 			useChData : [],
 			projectId : utils.getCookie(consts.projectId),
+			projectName : null,
 			showOption: {
 				display: 'none'
 			}
@@ -246,8 +247,11 @@ export default {
 				}
 			});
 		},
-		repPrdState(prdId) {
-			if (prdId == this.projectId) return true;
+		repPrdState(prdId, prdName) {
+			if (prdId == this.projectId) {
+				this.projectName = prdName
+				return true;
+			}
 			else false;
 		},
 		chgProject(prdId) {
