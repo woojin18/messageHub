@@ -52,7 +52,7 @@
 										<div class="phoneText1">
 											<p><img :src="desImgSrc" alt="주문 아이콘" style="width:70px;"></p>
 											<div class="scroll-y">
-												<p class="mt15 lc-1">{{desContentsExam}}</p>
+												<p class="mt15 lc-1"><pre>{{desContentsExam}}</pre></p>
 											</div>
 											<div v-for="n in btnCnt">
 												<p class="text-center" style="color:#69C8FF">{{btnNm[n-1]}}</p>
@@ -147,7 +147,7 @@
 										</div>
 									</div>									
 								</div>
-								<div class="consolCheck consolMarginTop"><input type="checkbox" id="agree2" class="checkStyle2" value="agree2"><label for="agree2" class="color4">정보성 메시지만 보낼 수 있으며, 광고 등 정책에 위배되는 메시지 발송 시  템플릿 사용이 중지될 수 있음을 동의합니다.</label></div>
+								<div class="consolCheck consolMarginTop"><input v-model="agreeChk" type="checkbox" id="agree2" class="checkStyle2"><label for="agree2" class="color4">정보성 메시지만 보낼 수 있으며, 광고 등 정책에 위배되는 메시지 발송 시  템플릿 사용이 중지될 수 있음을 동의합니다.</label></div>
 								<div class="of_h">
 									<div class="mt20 text-right" style="width:100%">
 										<a href="#self" v-if="deleteBtn" @click.prevent="rcsTemplateDelete" class="btnStyle2 backWhite ml10" title="삭제">삭제</a>
@@ -300,7 +300,7 @@
 										</div>
 									</div>									
 								</div>
-								<div class="consolCheck consolMarginTop"><input type="checkbox" id="agree2" class="checkStyle2" value="agree2"><label for="agree2" class="color4">정보성 메시지만 보낼 수 있으며, 광고 등 정책에 위배되는 메시지 발송 시  템플릿 사용이 중지될 수 있음을 동의합니다.</label></div>
+								<div class="consolCheck consolMarginTop"><input v-model="agreeChk" type="checkbox" id="agree2" class="checkStyle2"><label for="agree2" class="color4">정보성 메시지만 보낼 수 있으며, 광고 등 정책에 위배되는 메시지 발송 시  템플릿 사용이 중지될 수 있음을 동의합니다.</label></div>
 								<div class="of_h">
 									<div class="mt20 text-right" style="width:100%">
 										<a href="#self" v-if="deleteBtn" @click.prevent="rcsTemplateDelete" class="btnStyle2 backWhite ml10" title="삭제">삭제</a>
@@ -387,7 +387,8 @@ export default {
 		styleInitStartDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
 		styleInitEndDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
 		flag : '',
-		paramCardType : ''
+		paramCardType : '',
+		agreeChk : false		// 정보성 동의
 
     }
   },
@@ -730,6 +731,12 @@ export default {
 	  recTemplateIns(flag, paramCardType) {
 		this.flag = flag;
 		this.paramCardType = paramCardType;
+		var agreeChk = this.agreeChk;
+
+		if(!agreeChk) {
+			confirm.fnAlert("RCS 템플릿", "정보성 메시지 동의 버튼을 눌러주세요.");
+			return false;
+		}
 
 		if("INS" == flag) {
 			eventBus.$on('callbackEventBus', this.fnRcsTemplateApi);
