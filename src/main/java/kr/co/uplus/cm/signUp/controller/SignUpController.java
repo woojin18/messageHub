@@ -145,7 +145,6 @@ public class SignUpController implements Serializable{
 			paramMap.put("ctype", "2");					// 개인
 			paramMap.put("persNo", custrnmNo);			// 개인 사업자 주민번호(YYYYMMDD)
 		}
-		paramMap.put("cmpNm", corpNm);
 		paramMap.put("coInfo1", coInfo);
 		paramMap.put("genderCode", genderCode);
 		paramMap.put("vatExmptKdCd", "N");

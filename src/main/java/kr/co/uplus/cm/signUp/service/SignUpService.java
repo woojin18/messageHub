@@ -25,6 +25,7 @@ import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 import kr.co.uplus.cm.utils.MailHandler;
+import kr.co.uplus.cm.xss.XssPreventer;
 import lombok.extern.log4j.Log4j2;
 import yoyozo.security.SHA;
 
@@ -61,6 +62,31 @@ public class SignUpService {
 		paramMap.put("userId", userId);
 		paramMap.put("cmRole", "OWNER");
 
+		// escape
+		String corpNm = CommonUtils.getString(paramMap.get("corpNm"));		// 사업자명
+		corpNm = XssPreventer.unescape(corpNm);
+		paramMap.put("corpNm", corpNm);
+		
+		String ceoNm = CommonUtils.getString(paramMap.get("ceoNm"));		// 대표자명
+		ceoNm = XssPreventer.unescape(ceoNm);
+		paramMap.put("ceoNm", ceoNm);
+		
+		String woplaceAddress = CommonUtils.getString(paramMap.get("woplaceAddress"));		// 주소
+		woplaceAddress = XssPreventer.unescape(woplaceAddress);
+		paramMap.put("woplaceAddress", woplaceAddress);
+		
+		String woplaceAddressDetail = CommonUtils.getString(paramMap.get("woplaceAddressDetail"));	// 상세주소
+		woplaceAddressDetail = XssPreventer.unescape(woplaceAddressDetail);
+		paramMap.put("woplaceAddressDetail", woplaceAddressDetail);
+		
+		String upjongNm = CommonUtils.getString(paramMap.get("upjongNm"));		// 업종명
+		upjongNm = XssPreventer.unescape(upjongNm);
+		paramMap.put("upjongNm", upjongNm);
+		
+		String uptaeNm = CommonUtils.getString(paramMap.get("uptaeNm"));		// 업태명
+		uptaeNm = XssPreventer.unescape(uptaeNm);
+		paramMap.put("uptaeNm", uptaeNm);
+
 		try {
 			// 아이디 중복 check
 			int cnt = generalDao.selectGernalCount(DB.QRY_SELECT_USER_DUPC_CNT, paramMap);
@@ -84,6 +110,7 @@ public class SignUpService {
 			
 			// 고객 번호
 			String custNo = CommonUtils.getString(paramMap.get("custNo"));
+			
 			int existCustNo = generalDao.selectGernalCount(DB.QRY_SELECT_EXISTS_CUSTNO, paramMap);
 			
 			if(existCustNo > 0) {
@@ -113,7 +140,7 @@ public class SignUpService {
 				apiBodyMap.put("ctype",			paramMap.get("ctype"));			// 기본 / 개인
 				apiBodyMap.put("corpNo",		paramMap.get("corpNo"));		// 법인번호
 				apiBodyMap.put("persNo",		paramMap.get("persNo"));		// 주민번호
-				apiBodyMap.put("cmpNm",			paramMap.get("cmpNm"));			// 가입자(상호)명
+				apiBodyMap.put("cmpNm",			paramMap.get("corpNm"));			// 가입자(상호)명
 				apiBodyMap.put("zipcode",		paramMap.get("zipCode"));		// 우편번호
 				apiBodyMap.put("juso",			paramMap.get("woplaceAddress"));			// 주소
 				apiBodyMap.put("juso2",			paramMap.get("woplaceAddressDetail"));			// 상세주소
@@ -155,10 +182,7 @@ public class SignUpService {
 			String salesMan = CommonUtils.getString(paramMap.get("salesMan"));
 			// 영업사원 미선택인 경우 오진욱 default
 			if("".equals(salesMan) || salesMan == null) {
-				Map<String, Object> saleManMap = new HashMap<String, Object>();
-				saleManMap.put("codeTypeCd", "SALES_MAN");
-				saleManMap.put("codeName1", "오진욱");
-				salesMan = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_CODEVAL1_BY_CODENAME1, saleManMap));
+				salesMan = "juoh";
 			}
 			paramMap.put("salesMan", salesMan);
 			
