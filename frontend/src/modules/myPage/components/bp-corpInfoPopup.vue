@@ -181,13 +181,13 @@ export default {
     fnReset(){
       this.corpId = this.corpInfo.corpId;
       this.regno = this.corpInfo.regno;
-      this.corpName = this.corpInfo.corpName;
-      this.ceoName = this.corpInfo.ceoName;
+      this.corpName = this.$gfnCommonUtils.unescapeXss(this.corpInfo.corpName);
+      this.ceoName = this.$gfnCommonUtils.unescapeXss(this.corpInfo.ceoName);
       // this.busitype = this.corpInfo.busitype;
       // this.busiclass = this.corpInfo.busiclass;
       this.zipcode = this.corpInfo.zipcode;
-      this.woplaceAddress = this.corpInfo.woplaceAddress;
-      this.woplaceAddressDetail = this.corpInfo.woplaceAddressDetail;
+      this.woplaceAddress = this.$gfnCommonUtils.unescapeXss(this.corpInfo.woplaceAddress);
+      this.woplaceAddressDetail = this.$gfnCommonUtils.unescapeXss(this.corpInfo.woplaceAddressDetail);
       // this.wireTel = this.corpInfo.offcTel;
       this.fileId = this.corpInfo.fileId;
       this.attachFileName = this.corpInfo.attachFileName;

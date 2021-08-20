@@ -378,7 +378,8 @@ public class RcsTemplateService {
 		String custTmpltId			= CommonUtils.getString(params.get("custTmpltId"));
 		String tmpltName			= CommonUtils.getString(params.get("tmpltName"));
 		String brandId				= CommonUtils.getString(params.get("brandId"));
-		String agencyId				= CommonUtils.getString(params.get("agencyId"));
+		String agencyId				= this.setAgencyId();
+		
 		String mediaUrl				= this.setMediaUrlFormList(messagebaseformId);
 		Map<String, Object> formattedStringMap = new HashMap<String, Object>();
 		
@@ -698,6 +699,28 @@ public class RcsTemplateService {
 		String mediaUrl = CommonUtils.getString(obj.get("mediaUrl"));
 		
 		return mediaUrl;
+	}
+	
+	public String setAgencyId() throws Exception {
+		String formattedStr = (String) generalDao.selectGernalObject("rcsTemplate.selectCmCommonCode", new HashMap<String, Object>());
+		String resultStr = "";
+		
+		JSONParser parser = new JSONParser();
+		JSONObject obj = null;
+		obj = (JSONObject) parser.parse(formattedStr);
+		
+		JSONArray jsonArr = (JSONArray) obj.get("commonLst");
+		
+		for(int i=0; i<jsonArr.size(); i++) {
+			JSONObject commonLstObj = (JSONObject) jsonArr.get(i);
+			String fieldId = CommonUtils.getString(commonLstObj.get("fieldId"));
+			if("rbcAgencyId".equals(fieldId)) {
+				resultStr = CommonUtils.getString(commonLstObj.get("fieldValue"));
+				break;
+			}
+		}
+		
+		return resultStr;
 	}
 
 }

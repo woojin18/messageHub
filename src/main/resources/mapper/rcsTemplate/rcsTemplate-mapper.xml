@@ -193,4 +193,10 @@
 		FROM	cm.CM_RCS_MSGBASEFORM
 		WHERE	MESSAGEBASEFORM_ID = #{messagebaseformId}
 	</select>
+	
+	<select id="selectCmCommonCode" resultType="String">
+		/* rcsTemplate.selectCmCommonCode */
+		SELECT	COMMON_MGR_INFO
+		FROM	cm.CM_COMMON
+	</select>
 </mapper>

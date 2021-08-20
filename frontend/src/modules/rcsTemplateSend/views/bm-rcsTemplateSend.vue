@@ -101,15 +101,13 @@
 								<ul class="cardBxslider mt10">
 									<li v-for="n in carouselSelect" class="slide cardBox">
 										<img v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]==''" src="@/assets/images/common/cardThumImg.png" alt="프리 템플릿">
-										<img v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]!=''" :src="sendData.carouselObj.imgUrl[n-1]" alt="프리 템플릿">
-										<!--<div v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]!=''" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:81px;'" class="mt10 text-center simulatorImg"> </div>-->
+										<div v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]!=''" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:81px;'" class="mt10 text-center simulatorImg"> </div>
 										<img v-if="templateRadioBtn == 'carouselMedium' && sendData.carouselObj.imgUrl[n-1]==''" src="@/assets/images/common/cardThumImg2_1.png" alt="프리 템플릿">
-										<!--<div v-if="templateRadioBtn == 'carouselMedium' && sendData.carouselObj.imgUrl[n-1]!=''" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:123px;'" class="mt10 text-center simulatorImg"> </div>-->
-										<img v-if="templateRadioBtn == 'carouselMedium' && sendData.carouselObj.imgUrl[n-1]!=''" :src="sendData.carouselObj.imgUrl[n-1]" alt="프리 템플릿">
+										<div v-if="templateRadioBtn == 'carouselMedium' && sendData.carouselObj.imgUrl[n-1]!=''" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:123px;'" class="mt10 text-center simulatorImg"> </div>
 										<div class="relative">
 											<div class="scroll-y" style="min-height:150px">
 												<p class="color000 font-size13"><span v-if="sendData.adYn == 'yes'">(광고)</span>{{sendData.carouselObj.textTitle[n-1]}}</p>
-												<p class="color3 mt5">{{sendData.carouselObj.textContents[n-1]}}</p>
+												<p class="color3 mt5"><pre>{{sendData.carouselObj.textContents[n-1]}}</pre></p>
 												<p v-if="sendData.freeReceiveNum != ''" class="color3">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 											</div>
 										</div>
@@ -121,7 +119,7 @@
 								<div class="phoneText1">
 									<div class="scroll-y">
 										<p class="mt15 font-size13"><span v-if="sendData.adYn=='yes' && sendData.senderType=='LMS'">(광고)</span>{{sendData.callbackTitle}}</p>
-										<p class="mt15"><span v-if="sendData.adYn=='yes' && sendData.senderType=='SMS'">(광고)</span>{{sendData.callbackContents}}</p>
+										<p class="mt15"><span v-if="sendData.adYn=='yes' && sendData.senderType=='SMS'">(광고)</span><pre>{{sendData.callbackContents}}</pre></p>
 										<p calss="mt15" v-if="sendData.freeReceiveNum != ''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 									</div>
 								</div>
@@ -197,7 +195,7 @@
 							<div class="phoneText1">
 								<div class="scroll-y">
 									<p class="mt15 font-size13"><span v-if="sendData.adYn=='yes' && sendData.senderType=='LMS'">(광고)</span>{{sendData.callbackTitle}}</p>
-									<p class="mt15"><span v-if="sendData.adYn=='yes' && sendData.senderType=='SMS'">(광고)</span>{{sendData.callbackContents}}</p>
+									<p class="mt15"><span v-if="sendData.adYn=='yes' && sendData.senderType=='SMS'">(광고)</span><pre>{{sendData.callbackContents}}</pre></p>
 									<p calss="mt15" v-if="sendData.freeReceiveNum != ''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 								</div>
 							</div>
@@ -372,7 +370,7 @@
 									<h5>태그</h5>
 								</div>
 								<div class="of_h" style="width:82%">
-									<input type="text" class="inputStyle" style="width:100%" placeholder="캠페인 ID를 입력해주세요." v-model="sendData.campaignId" maxlength="20">
+									<input type="text" class="inputStyle" style="width:100%" placeholder="캠페인 ID를 입력해주세요. (영문, 숫자만 가능)" v-model="sendData.campaignId" maxlength="20">
 								</div>
 							</div>
 						</div>
@@ -387,14 +385,14 @@
 
 			<RcsTemplatePopup :templateRadioBtn.sync="templateRadioBtn" ref="rcsTemplatePop" @fnResult="fnSetTemplate"></RcsTemplatePopup>
 			<RcsMsgPopup :templateRadioBtn.sync="templateRadioBtn" :carouselSmall.sync="carouselSmall" :carouselMedium.sync="carouselMedium" ref="rcsMsgPop" @fnTmpMsgSet="fnTmpMsgSet" ></RcsMsgPopup>
-			<RcsContentPopup :templateRadioBtn.sync="templateRadioBtn" :contentPopCnt.sync="contentPopCnt" ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
+			<RcsContentPopup :templateRadioBtn.sync="templateRadioBtn" :contentPopCnt.sync="contentPopCnt" :dataSet.sync="dataSet" :sendData.sync="sendData" ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
 			<RcsBtnPopup :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
 			<RcsSenderPopup :senderType.sync="sendData.senderType" ref="rcsSenderPop"></RcsSenderPopup>
 			<RcsSavePopup ref="rcsSavePop"></RcsSavePopup>
 			<ConfirmPopup :newval.sync="newval" :oldval.sync="oldval" ref="confirmPop"></ConfirmPopup>
 			<DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
 			<AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
-			<TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :testRecvInfoLst="sendData.testRecvInfoLst" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></TestSendInputPopup>
+			<TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" ref="testSendInputPopup"></TestSendInputPopup>
 		</article>
 </template>
 
@@ -527,6 +525,9 @@ export default {
 	  'sendData.brandId'(newval, oldval) {
 		  this.callbackList();
 	  },
+	  'sendData.campaignId'(newval, oldval) {
+		  return this.sendData.campaignId = this.sendData.campaignId.replace(/[^a-zA-Z0-9]/g, '');
+	  },
 	  templateRadioBtn (newval, oldval) {
 		  this.newval = newval;
 		  this.oldval = oldval;
@@ -542,7 +543,10 @@ export default {
 		rcsTemplateSendApi.selectCallbackList(params).then(response => {
 			var result = response.data;
 			vm.sendData.callbackArr = result.data;
-			vm.sendData.callback = result.data[0].callback;
+			if(vm.sendData.callbackArr.length > 0) {
+				vm.sendData.callback = result.data[0].callback;
+			}
+			
 		});
 	  }
   },
@@ -771,11 +775,12 @@ export default {
 		} else {
 			var carouSelTabCnt = vm.carouSelTabCnt;
 			vm.sendData.brandId = vm.carouselBrandId;
-			vm.sendData.carouselObj.textTitle[carouSelTabCnt-1] = params.title;
-			vm.sendData.carouselObj.textContents[carouSelTabCnt-1] = params.contents;
-			vm.sendData.carouselObj.imgUrl[carouSelTabCnt-1] = params.imgUrl;
-			vm.sendData.carouselObj.fileId[carouSelTabCnt-1] = params.fileId;
-			vm.sendData.carouselObj.wideImgYn[carouSelTabCnt-1] = params.wideImgYn;
+
+			vm.$set(vm.sendData.carouselObj.textTitle, carouSelTabCnt-1, params.title);
+			vm.$set(vm.sendData.carouselObj.textContents, carouSelTabCnt-1, params.contents);
+			vm.$set(vm.sendData.carouselObj.imgUrl, carouSelTabCnt-1, params.imgUrl);
+			vm.$set(vm.sendData.carouselObj.fileId, carouSelTabCnt-1, params.fileId);
+			vm.$set(vm.sendData.carouselObj.wideImgYn, carouSelTabCnt-1, params.wideImgYn);
 		}
 	},
 
@@ -1169,15 +1174,7 @@ export default {
 		}
 
 		rcsTemplateSendApi.sendRcsData(params).then(response => {
-			var result = response.data;
-			var success = result.success;
-			if(success) {
-				if("" == result.message || null == result.message) confirm.fnAlert("RCS 발송", "메세지 발송처리를 완료하였습니다.");
-				else confirm.fnAlert("RCS 발송", result.message);
-
-			} else {
-				confirm.fnAlert("RCS 발송", result.message);
-			}
+			confirm.fnAlert("RCS 발송", "메시지 발송처리를 완료하였습니다. 메시지 발송 성공/실패는 발송/수신현황에서 확인이 가능합니다.");
 		});
 
 	},
@@ -1217,13 +1214,14 @@ export default {
 	},
 
 	fnOpenTestSendInputPopup(){
-      this.fnSetContsVarNms();
+	  this.fnSetContsVarNms();
+      this.$refs.testSendInputPopup.fnSetTestRecvInfoLst(this.sendData.testRecvInfoLst);
       this.testSendInputOpen = !this.testSendInputOpen;
     },
 
 	fnCallbackTestRecvInfoLst(testRecvInfoLst){
       if(testRecvInfoLst != null){
-        this.sendData.testRecvInfoLst = testRecvInfoLst;
+        this.sendData.testRecvInfoLst = Object.assign([], testRecvInfoLst);
         this.fnTestSendData();
       } else {
         this.sendData.testRecvInfoLst = [];
