@@ -27,6 +27,7 @@ import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.MultipartFileDTO;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
+import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkRequestData;
 import kr.co.uplus.cm.sendMessage.dto.FrndTalkRequestData;
 import kr.co.uplus.cm.sendMessage.dto.MmsRequestData;
@@ -306,7 +307,7 @@ public class SendMessageController {
         } catch (Exception e) {
             log.error("{}.sendPushMessage aSync API send Error : {}", this.getClass(), e);
         }
-        rtn.setMessage("푸시 발송 요청처리 되었습니다.");
+        rtn.setMessage("푸시 "+ApiConfig.MSG_SEND_REQUET_TEXT);
 
         rtn.setSuccess(true);
         rtn.setData(rtnMap);
@@ -456,7 +457,7 @@ public class SendMessageController {
             log.error("{}.sendSmsMessage aSync API send Error : {}", this.getClass(), e);
         }
 
-        rtn.setMessage("SMS 발송 요청처리 되었습니다.");
+        rtn.setMessage("SMS "+ApiConfig.MSG_SEND_REQUET_TEXT);
         rtn.setSuccess(true);
         rtn.setData(rtnMap);
 
@@ -566,7 +567,7 @@ public class SendMessageController {
             log.error("{}.sendMmsMessage aSync API send Error : {}", this.getClass(), e);
         }
 
-        rtn.setMessage("MMS 발송 요청처리 되었습니다.");
+        rtn.setMessage("MMS "+ApiConfig.MSG_SEND_REQUET_TEXT);
         rtn.setSuccess(true);
         rtn.setData(rtnMap);
 
@@ -729,7 +730,7 @@ public class SendMessageController {
         } catch (Exception e) {
             log.error("{}.sendFrndTalkMessage aSync API send Error : {}", this.getClass(), e);
         }
-        rtn.setMessage("친구톡 발송 요청처리 되었습니다.");
+        rtn.setMessage("친구톡 "+ApiConfig.MSG_SEND_REQUET_TEXT);
 
         rtn.setSuccess(true);
         rtn.setData(rtnMap);
@@ -887,7 +888,7 @@ public class SendMessageController {
         } catch (Exception e) {
             log.error("{}.sendAlimTalkMessage aSync API send Error : {}", this.getClass(), e);
         }
-        rtn.setMessage("알림톡 발송 요청처리 되었습니다.");
+        rtn.setMessage("알림톡 "+ApiConfig.MSG_SEND_REQUET_TEXT);
 
         rtn.setSuccess(true);
         rtn.setData(rtnMap);
@@ -1030,7 +1031,7 @@ public class SendMessageController {
         }
         String senderType = CommonUtils.getStrValue(params, "senderType");
         String msg = (StringUtils.equals(senderType, Const.SenderType.SMART) ? "스마트" : "통합");
-        rtn.setMessage(msg+" 발송 요청처리 되었습니다.");
+        rtn.setMessage(msg+StringUtils.SPACE+ApiConfig.MSG_SEND_REQUET_TEXT);
 
         rtn.setSuccess(true);
         rtn.setData(rtnMap);
