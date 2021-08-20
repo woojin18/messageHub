@@ -111,14 +111,19 @@ public class SignUpService {
 			// 고객 번호
 			String custNo = CommonUtils.getString(paramMap.get("custNo"));
 			
-			int existCustNo = generalDao.selectGernalCount(DB.QRY_SELECT_EXISTS_CUSTNO, paramMap);
+			// 고객사 중복 허용 여부 확인
+			String dupliCustYn = CommonUtils.getString(generalDao.selectGernalObject("signUp.selectCustNoDuplicateYn", paramMap));
 			
-			if(existCustNo > 0) {
-				rtn.setSuccess(false);
-				rtn.setMessage("이미 등록된 고객사입니다. 신규 고객사를 등록해주세요.");
-				return rtn;
+			if("N".equals(dupliCustYn)) {
+				int existCustNo = generalDao.selectGernalCount(DB.QRY_SELECT_EXISTS_CUSTNO, paramMap);
+				
+				if(existCustNo > 0) {
+					rtn.setSuccess(false);
+					rtn.setMessage("이미 등록된 고객사입니다. 신규 고객사를 등록해주세요.");
+					return rtn;
+				}
 			}
-
+			
 			// corp_id
 			String corpId = CommonUtils.getCommonId("COM", 7);
 			paramMap.put("corpId", corpId);

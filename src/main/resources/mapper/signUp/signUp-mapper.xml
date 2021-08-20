@@ -151,4 +151,11 @@
 			WHERE CUST_NO = #{custNo}
 		)
 	</select>
+	
+	<select id="selectCustNoDuplicateYn" resultType="string">
+		/* signUp.selectCustNoDuplicateYn */
+		SELECT	USE_YN
+		FROM	cm_bo.CM_CODE_TYPE
+		WHERE	CODE_TYPE_CD = 'CUST_NO_DULICATE'
+	</select>
 </mapper>
