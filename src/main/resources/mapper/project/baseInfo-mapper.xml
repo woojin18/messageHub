@@ -132,7 +132,6 @@
 		,	WEB_SENDER_YN			= #{webSenderYn}
 		,	IP_CHK_YN				= #{ipChkYn}
 		,	IP_LIST					= #{jsonInfo}
-		,	CPS						= #{cps}
 		,	STATUS					= #{status}
 		,	LINE_TYPE				= #{lineType}
 		,	RPT_YN					= #{rptYn}
