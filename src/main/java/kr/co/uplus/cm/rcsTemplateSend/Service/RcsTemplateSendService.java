@@ -29,6 +29,7 @@ import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
+import kr.co.uplus.cm.rcsTemplate.service.RcsTemplateService;
 import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
 import kr.co.uplus.cm.sendMessage.service.SendMessageService;
 import kr.co.uplus.cm.utils.ApiInterface;
@@ -50,6 +51,9 @@ public class RcsTemplateSendService {
 	
 	@Autowired
 	private SendMessageService sendMsgService;
+	
+	@Autowired
+	private RcsTemplateService rcsTemplateService;
 
 	public RestResult<Object> rcsTemplatePopInit(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -1012,6 +1016,7 @@ public class RcsTemplateSendService {
 		apiMap.put("fbInfoLst", fbInfoLst);
 		
 		// recvInfoLst 세팅
+		data.put("webReqId", apiMap.get("webReqId"));
 		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListTemplate(data);
 		
 		// 예약발송일경우 웹 발송 내역을 등록하고 통신은 하지 않도록 처리
@@ -1054,6 +1059,7 @@ public class RcsTemplateSendService {
 		apiMap.put("fbInfoLst", fbInfoLst);
 		
 		// recvInfoLst 세팅
+		data.put("webReqId", apiMap.get("webReqId"));
 		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListNonTemplate(data);
 		
 		// 예약발송일경우 웹 발송 내역을 등록하고 통신은 하지 않도록 처리
@@ -1101,6 +1107,7 @@ public class RcsTemplateSendService {
 		apiMap.put("fbInfoLst", fbInfoLst);
 		
 		// recvInfoLst 세팅
+		data.put("webReqId", apiMap.get("webReqId"));
 		String radioBtn = CommonUtils.getString(params.get("templateRadioBtn"));
 		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListFormat(data, radioBtn);
 		
@@ -1151,6 +1158,7 @@ public class RcsTemplateSendService {
 		apiMap.put("fbInfoLst", fbInfoLst);
 		
 		// recvInfoLst 세팅
+		data.put("webReqId", apiMap.get("webReqId"));
 		int carouselCnt = CommonUtils.getInt(params.get("carouselSelect"));
 		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListCarousel(data, carouselCnt);
 		
@@ -1210,7 +1218,7 @@ public class RcsTemplateSendService {
 			copyAllowed	= false;														// 복사/공유 허용 여부
 		}
 		String expiryOption = "2";														// expire 옵션 (2 고정)
-		String agencyId	= "uplus";														// 대행사 ID
+		String agencyId = rcsTemplateService.setAgencyId();								// agencyId
 		String campaignId	= CommonUtils.getString(data.get("campaignId"));			// 캠페인 ID
 		String deptCode	= "";															// 부서 코드
 		String webReqId = CommonUtils.getCommonId("RCS", 10);							// webReqId
@@ -1428,17 +1436,21 @@ public class RcsTemplateSendService {
 	public ArrayList<Map<String ,Object>> setRecvInfoListTemplate(Map<String, Object> data) {
 		ArrayList<Map<String, Object>> dataList = (ArrayList<Map<String, Object>>) data.get("recvInfoLst");
 		ArrayList<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+		String webReqId = CommonUtils.getString(data.get("webReqId"));
+		long cliKey = NumberUtils.LONG_ONE;
 		int resultListCnt = 0;
 		
 		for(Map<String, Object>dataMap : dataList) {
 			Map<String, Object> resultMap = new HashMap<String, Object>();
-				resultMap.put("cliKey", "CLI"+CommonUtils.randomGeneration(27));
+				String clikeyStr = webReqId + "_" + cliKey;
+				resultMap.put("cliKey", clikeyStr);
 				resultMap.put("phone", dataMap.get("phone"));
 				resultMap.put("mergeData", dataMap.get("mergeData"));
-				
 				resultList.add(resultListCnt, resultMap);
+				cliKey++;
 				resultListCnt++;
 		}
+		
 		return resultList;
 	}
 	
@@ -1446,6 +1458,8 @@ public class RcsTemplateSendService {
 		String textContents = CommonUtils.getString(data.get("textContents"));			// 미승인형 내용
 		ArrayList<Map<String, Object>> dataList = (ArrayList<Map<String, Object>>) data.get("recvInfoLst");
 		ArrayList<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+		String webReqId = CommonUtils.getString(data.get("webReqId"));
+		long cliKey = NumberUtils.LONG_ONE;
 		int resultListCnt = 0;
 		
 		for(Map<String, Object> dataMap : dataList) {
@@ -1456,7 +1470,8 @@ public class RcsTemplateSendService {
 			String replaceStr = sub.replace(textContents);
 			returnMergeMap.put("description", replaceStr);
 
-			returnMap.put("cliKey", "CLI"+CommonUtils.randomGeneration(27));
+			String clikeyStr = webReqId + "_" + cliKey;
+			returnMap.put("cliKey", clikeyStr);
 			returnMap.put("phone", dataMap.get("phone"));
 			returnMap.put("mergeData", returnMergeMap);
 			
@@ -1471,9 +1486,10 @@ public class RcsTemplateSendService {
 		String textTitle = CommonUtils.getString(data.get("textTitle"));				// 제목
 		String textContents = CommonUtils.getString(data.get("textContents"));			// 내용
 		String imgUrl = CommonUtils.getString(data.get("imgUrl"));						// 이미지 URL
-		System.out.println("456456456456" + data);
 		ArrayList<Map<String, Object>> dataList = (ArrayList<Map<String, Object>>) data.get("recvInfoLst");
 		ArrayList<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+		String webReqId = CommonUtils.getString(data.get("webReqId"));
+		long cliKey = NumberUtils.LONG_ONE;
 		int resultListCnt = 0;
 		
 		for(Map<String, Object> dataMap : dataList) {
@@ -1492,8 +1508,9 @@ public class RcsTemplateSendService {
 				}
 			}
 			returnMergeMap.put("description", replaceTextContents);
-
-			returnMap.put("cliKey", "CLI"+CommonUtils.randomGeneration(27));
+			
+			String clikeyStr = webReqId + "_" + cliKey;
+			returnMap.put("cliKey", clikeyStr);
 			returnMap.put("phone", dataMap.get("phone"));
 			returnMap.put("mergeData", returnMergeMap);
 			
@@ -1512,6 +1529,8 @@ public class RcsTemplateSendService {
 		ArrayList<Object> textTitleArr = (ArrayList<Object>) carouselMap.get("textTitle");
 		ArrayList<Object> textContentsArr = (ArrayList<Object>) carouselMap.get("textContents");
 		ArrayList<Object> imgUrlArr = (ArrayList<Object>) carouselMap.get("imgUrl");
+		String webReqId = CommonUtils.getString(data.get("webReqId"));
+		long cliKey = NumberUtils.LONG_ONE;
 		int resultListCnt = 0;
 		
 		for(Map<String, Object> dataMap : dataList) {
@@ -1526,7 +1545,8 @@ public class RcsTemplateSendService {
 				returnMergeMap.put("media"+(i+1), imgUrlArr.get(i));
 			}
 
-			returnMap.put("cliKey", "CLI"+CommonUtils.randomGeneration(27));
+			String clikeyStr = webReqId + "_" + cliKey;
+			returnMap.put("cliKey", clikeyStr);
 			returnMap.put("phone", dataMap.get("phone"));
 			returnMap.put("mergeData", returnMergeMap);
 			

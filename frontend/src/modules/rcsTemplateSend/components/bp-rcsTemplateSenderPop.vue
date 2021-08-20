@@ -5,22 +5,22 @@
 				<div class="modal-body">								
 					
 					<div v-if="senderType=='LMS'"class="of_h">
-						<div class="float-left" style="width:32%"><h5>제목</h5></div>
-						<div class="float-right" style="width:66%">
+						<div class="float-left" style="width:15%"><h5>제목</h5></div>
+						<div class="float-right" style="width:85%">
 							<input v-model="senderPopData.senderTitle" type="text" class="inputStyle" placeholder="LMS 문자로 대체발송 될 제목입력" title="제목 입력란">
 						</div>
 					</div>
 
 					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:32%"><h5>내용</h5></div>
-						<div class="float-right" style="width:66%">
+						<div class="float-left" style="width:15%"><h5>내용</h5></div>
+						<div class="float-right" style="width:85%">
 							<textarea v-model="senderPopData.senderContents" class="textareaStyle height120" :placeholder="preText" ></textarea>
 						</div>
 					</div>
 					
 					<div class="text-center mt20">
 						<a @click.prevent="fnSaveAdd" href="#self" class="btnStyle1 backBlack" data-dismiss="modal" title="입력">입력</a>
-						<a @click.prevent="fnClose" href="#self" class="btnStyle1 backWhite" data-dismiss="modal" title="닫기">닫기</a>						
+						<a @click.prevent="fnClose" href="#self" class="btnStyle1 backWhite ml20" data-dismiss="modal" title="닫기">닫기</a>						
 					</div>
 
 				</div>

@@ -16,7 +16,7 @@
 						</div>			
 						<div class="float-right consolMarginTop">
 							<a @click.prevent="fnSelect" activity="READ" href="#self" class="btnStyle1 borderLightGray" title="선택">선택</a>
-							<a @click.prevent="fnDelete" activity="SAVE" href="#self" class="btnStyle1 borderLightGray" title="삭제">삭제</a>
+							<a @click.prevent="fnDelete" activity="SAVE" href="#self" class="btnStyle1 borderLightGray ml20" title="삭제">삭제</a>
 						</div>
 						<div class="row">
 							<div class="col-xs-12">

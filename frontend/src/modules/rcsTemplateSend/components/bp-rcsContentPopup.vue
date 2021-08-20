@@ -19,11 +19,11 @@
 							<div class="float-left" style="width:15%"><h5>이미지선택</h5></div>
 							<div class="float-left" style="width:85%">
                 <div class="float-left" style="width:24%"><a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지 선택">이미지선택</a></div>
-                <ul class="float-right attachList" style="width: 61%;margin: 0px 25px 0px 0px;height: 30px;">
-                  <li v-if="imgUrl">
-                    <a @click="fnDelImg">{{fnSubString(imgUrl, 0, 40)}} <i class="fal fa-times"></i></a>
-                  </li>
-                </ul>
+                  <ul class="float-right attachList" style="width: 61%; margin: 0px 25px 0px 0px;padding: 5px 15px; height: 30px;">
+                    <li v-if="imgUrl">
+                      <a @click="fnDelImg">{{fnSubString(imgUrl, 0, 40)}} <i class="fal fa-times"></i></a>
+                    </li>
+                  </ul>
               </div>
 						
 						</div>
@@ -42,8 +42,8 @@
 						</div>
 					</div>	
 					<div class="text-center mt20">
-						<a @click.prevent="fnAdd" href="#self" class="btnStyle2 backBlack" data-dismiss="modal" title="입력">입력</a>
-						<a @click.prevent="fnClose" href="#self" class="btnStyle2 backWhite" data-dismiss="modal" title="닫기">닫기</a>																
+						<a @click.prevent="fnAdd" href="#self" class="btnStyle2 backBlack" title="입력">입력</a>
+						<a @click.prevent="fnClose" href="#self" class="btnStyle2 backWhite ml20" data-dismiss="modal" title="닫기">닫기</a>																
 					</div>
 				</div>				
 			</div>
@@ -71,6 +71,13 @@ export default {
         contentPopCnt: {
             type: Number,
             default: 0
+        },
+        sendData: {
+            type: Object
+        },
+        dataSet: {
+            type: Boolean,
+            default: false
         }
   },
   data() {
@@ -103,7 +110,35 @@ export default {
             var result = response.data;
             vm.brandId = result.data[0].BRAND_ID;
             vm.brandArr = result.data;
+            
+            // 기존 입력 값이 있으면 data를 세팅
+            if(vm.dataSet) {
+              vm.fnSetData();
+            }
         });
+    },
+
+    fnSetData() {
+      var sendData = this.sendData;
+      var contentPopCnt = this.contentPopCnt;
+
+      // contentPopCnt가 0보다 큰 경우 carousel Type
+      if(contentPopCnt > 0) {
+        this.title = sendData.carouselObj.textTitle[contentPopCnt-1];
+        this.contents = sendData.carouselObj.textContents[contentPopCnt-1];
+        this.imgUrl = sendData.carouselObj.imgUrl[contentPopCnt-1];
+        this.fileId = sendData.carouselObj.fileId[contentPopCnt-1];
+
+      } else {
+        var brandId = sendData.brandId;
+        if(brandId != "" && brandId != null) {
+          this.title = sendData.textTitle;
+          this.contents = sendData.textContents;
+          this.brandId = sendData.brandId;
+          this.imgUrl = sendData.imgUrl;
+          this.fileId = sendData.fileId;
+        }
+      }
 
     },
 
@@ -115,6 +150,11 @@ export default {
       this.contents = "";
       this.brandId = "";
       this.brandArr = [];
+      this.imgUrl = "";
+      this.fileId = "";
+      this.wideImgYn = "N"; 
+
+      jQuery("#contentPop").modal("hide");
     },
 
     // 입력 버튼
@@ -139,15 +179,14 @@ export default {
 
       // validation
       if(templateRadioBtn == "SMwThM00" || templateRadioBtn == "SMwThT00" ||
-        templateRadioBtn == "CMwShS0300" || templateRadioBtn == "CMwShS0400" || templateRadioBtn == "CMwShS0500" || templateRadioBtn == "CMwShS0600" ||
-        templateRadioBtn == "CMwMhM0300" || templateRadioBtn == "CMwMhM0400" || templateRadioBtn == "CMwMhM0500" || templateRadioBtn == "CMwMhM0600") {
+        templateRadioBtn == "carouselSmall" || templateRadioBtn == "carouselMedium" ) {
           titleTf = true;
           imgTf = true;
         }
       if(templateRadioBtn == "SL000000") {
         titleTf = true;
       }
-    
+
       if(contents == "") {
         confirm.fnAlert("내용을 입력해주세요.","");
       } else if (textCnt > 90) {
@@ -156,13 +195,10 @@ export default {
         if(titleTf) {
           confirm.fnAlert("제목을 입력해주세요.", "");
         }
-      } else if(fileId == "") {
-         if(imgTf) {
-          confirm.fnAlert("이미지를 등록해주세요.", "");
-        }
+      } else {
+        this.$emit('fnAddResult', params);
+        this.fnClose();
       }
-      this.$emit('fnAddResult', params);
-      this.fnClose();
     },
 
     // IMG 팝업

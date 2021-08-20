@@ -94,7 +94,7 @@
                         </div>						
                         <div class="text-center">
                             <a href="#self" @click.prevent="fnTemplateChoice" class="btnStyle1 backBlack" data-dismiss="modal" title="템플릿 선택">템플릿 선택</a>
-                            <a href="#self" @click.prevent="fnClose" class="btnStyle1 backWhite" data-dismiss="modal" title="취소">취소</a>						
+                            <a href="#self" @click.prevent="fnClose" class="btnStyle1 backWhite ml20" data-dismiss="modal" title="취소">취소</a>						
                         </div>
                     </div>
                 </div>
