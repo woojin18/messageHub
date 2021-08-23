@@ -7,9 +7,9 @@
 						<h2>그룹 수신자 추가</h2>
 						<hr>
 						<div class="of_h">
-							<h5 class="inline-block" style="width:20%">수신그룹 명 *</span></h5>
+							<h5 class="inline-block" style="width:20%">수신자 명 *</span></h5>
 							<div class="of_h float-right" style="width:80%">								
-								<div class="float-left" style="width:75%"><input type="text" class="inputStyle" title="수신그룹 명 입력란" v-model="params.srcRecipientName"></div>
+								<div class="float-left" style="width:75%"><input type="text" class="inputStyle" title="수신자 명 입력란" v-model="params.srcRecipientName"></div>
 								<div class="float-right" style="width:23%"><a class="btnStyle1 borderGray" style="width:100%" title="검색" @click="fnSearch">검색</a></div>
 							</div>
 						</div>
