@@ -119,6 +119,10 @@ const rcsTemplateDeleteApi = (params) => {
   return httpClient.post('/uc/rcsTemplate/rcsTemplateDeleteApi', params, {headers: {"show-layer":"yes"}});
 };
 
+const rcsTemplateCancelApi = (params) => {
+  return httpClient.post('/uc/rcsTemplate/rcsTemplateCancelApi', params, {headers: {"show-layer":"yes"}});
+};
+
 const rcsTemplateApi = (params) => {
   return httpClient.post('/uc/rcsTemplate/rcsTemplateApi', params, {headers: {"show-layer":"yes"}});
 };
@@ -204,6 +208,7 @@ export default {
   rcsTemplateInit,
   rcsTemplateUpdateInit,
   rcsTemplateDeleteApi,
+  rcsTemplateCancelApi,
   rcsTemplateApi,
   selectIntegratedTemplateList,
   integratedTemplateInfo,

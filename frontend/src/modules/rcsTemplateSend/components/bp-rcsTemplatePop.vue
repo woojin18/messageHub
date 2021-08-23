@@ -76,7 +76,7 @@
                                         <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
                                         <div class="phoneTextWrap">
                                             <div v-if="templateRadioBtn=='des'" class="phoneText1 scroll-y2">
-                                                <p>{{desContent}}</p>
+                                                <p><pre>{{desContent}}</pre></p>
                                                 <p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
                                             </div>
                                             <div v-if="templateRadioBtn=='cell'" class="phoneText1 scroll-y2">

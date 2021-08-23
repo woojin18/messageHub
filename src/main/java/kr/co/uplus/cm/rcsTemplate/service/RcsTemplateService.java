@@ -353,18 +353,26 @@ public class RcsTemplateService {
 		Map<String, Object> apiMap = new HashMap<>();
 		apiMap.put("corpId", CommonUtils.getString(params.get("corpId")));
 		
-		Map<String, Object> headerMap = new HashMap<String, Object>();
-		headerMap.put("brandId",	brandId);
-		headerMap.put("messagebaseId",	messagebaseId);
-		
 		// API 통신 처리
-		Map<String, Object> result = apiInterface.delete("/console/v1/brand/" + brandId + "/messagebase/" + messagebaseId, null, apiMap, headerMap);
+		Map<String, Object> result = apiInterface.delete("/console/v1/brand/" + brandId + "/messagebase/" + messagebaseId, null, apiMap, null);
 		
 		// 성공인지 실패인지 체크
 		if(!"10000".equals(result.get("code")) ) {
-			throw new Exception("API 통신 에러");
+			throw new Exception(CommonUtils.getString(result.get("message")));
 		}
+	}
+	
+	public void rcsTemplateCancelApi(Map<String, Object> params) throws Exception {
+		String brandId		= CommonUtils.getString(params.get("brandId"));
+		String messagebaseId	= CommonUtils.getString(params.get("messagebaseId"));
 		
+		// API 통신 처리
+		Map<String, Object> result = apiInterface.put("/console/v1/brand/" + brandId + "/messagebase/" + messagebaseId + "/cancel", null, null, null);
+		
+		// 성공인지 실패인지 체크
+		if(!"10000".equals(result.get("code")) ) {
+			throw new Exception(CommonUtils.getString(result.get("message")));
+		}
 	}
 
 	public void rcsTemplateApi(Map<String, Object> params) throws Exception {

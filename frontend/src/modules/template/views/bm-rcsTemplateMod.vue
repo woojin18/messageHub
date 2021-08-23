@@ -442,17 +442,16 @@ export default {
 		templateApi.rcsTemplateUpdateInit(params).then(response => {
 			var result = response.data;
 			var resultData = result.data;
-			// 상태값에 따라서 버튼 표시 처리해야됨. (승인, 반려일 경우 수정요청 버튼 활성화, 모든 상태에서 삭제 버튼 활성화)
-			// 수정버튼은 반려(수정) 상태에선 노출 X, 해당 상태에선 취소 버튼노출
+			// 상태값에 따라서 버튼 표시 처리해야됨. (승인, 반려, 반려(수정), 저장 상태 -> 수정요청, 삭제요청) (승인대기, 승인대기(수정), 반려(수정) -> 취소 요청)
 			var approvalStatus = resultData.approvalStatus;
 			if("UPT" == status) {
-				if("승인" == approvalStatus || "반려" == approvalStatus) {
+				if("승인" == approvalStatus || "반려" == approvalStatus || "반려(수정)" == approvalStatus || "저장" == approvalStatus) {
 					vm.updateBtn = true;
+					vm.deleteBtn = true;
 				}
-				if("반려(수정)" == approvalStatus) {
+				if("승인대기" == approvalStatus || "승인대기(수정)" == approvalStatus || "반려(수정)" == approvalStatus) {
 					vm.cancelBtn = true;
 				}
-				vm.deleteBtn = true;
 			} else if("CPY" == status) {
 				vm.insertBtn = true;
 			}
@@ -632,7 +631,24 @@ export default {
 	  },
 
 	  fnRcsTemplateCancelApi() {
-
+		  	var vm = this;
+			var params = {
+				"brandId" : vm.brandNm,
+				"messagebaseId" : vm.templateCode
+			}
+			
+			templateApi.rcsTemplateCancelApi(params).then(response => {
+				var result = response.data;
+				var success = result.success;
+				var message = result.message;
+				if(success) {
+					confirm.fnAlert("취소요청이 완료되었습니다.","");
+					this.$router.push({name : "rcsTemplateList"});
+				} else {
+					confirm.fnAlert(message,"");
+					this.$router.push({name : "rcsTemplateList"});
+				}
+			});
 	  },
 
 	  // 템플릿 삭제

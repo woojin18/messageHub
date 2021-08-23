@@ -191,9 +191,12 @@ export default {
         confirm.fnAlert("내용을 입력해주세요.","");
       } else if (textCnt > 90) {
         confirm.fnAlert("내용을 90자 이내로 입력해주세요.","");
-      } else if(title == "") {
-        if(titleTf) {
+      } else if(titleTf) {
+        if(title == "") {
           confirm.fnAlert("제목을 입력해주세요.", "");
+        } else {
+          this.$emit('fnAddResult', params);
+          this.fnClose();
         }
       } else {
         this.$emit('fnAddResult', params);
