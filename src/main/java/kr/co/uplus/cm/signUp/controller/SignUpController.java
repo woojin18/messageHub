@@ -148,8 +148,15 @@ public class SignUpController implements Serializable{
 		paramMap.put("coInfo1", coInfo);
 		paramMap.put("genderCode", genderCode);
 		paramMap.put("vatExmptKdCd", "N");
-		
-		return signUpSvc.insertSignUp(paramMap);
+		try {
+			signUpSvc.insertSignUp(paramMap);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+//			rtn.setMessage("회원 가입에 실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+		return rtn;
 	}
 	
 	// 사용 약관 가져오기

@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.signUp.service;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
@@ -52,7 +53,7 @@ public class SignUpService {
 
 	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-	public RestResult<Object> insertSignUp(Map<String, Object> params) {
+	public void insertSignUp(Map<String, Object> params) throws Exception{
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		RestResult<Object> rtn = new RestResult<Object>(true);
 		paramMap.putAll(params);
@@ -87,17 +88,18 @@ public class SignUpService {
 		uptaeNm = XssPreventer.unescape(uptaeNm);
 		paramMap.put("uptaeNm", uptaeNm);
 
+		// 아이디 중복 check
+		int cnt = generalDao.selectGernalCount(DB.QRY_SELECT_USER_DUPC_CNT, paramMap);
+		
+		if(cnt > 0) {
+			throw new Exception("이미 등록된 아이디입니다.");
+//				rtn.setSuccess(false);
+//				rtn.setMessage("이미 등록된 아이디입니다.");
+//				return rtn;
+		}
+		
+		// 사용자 비밀번호 암호화
 		try {
-			// 아이디 중복 check
-			int cnt = generalDao.selectGernalCount(DB.QRY_SELECT_USER_DUPC_CNT, paramMap);
-			
-			if(cnt > 0) {
-				rtn.setSuccess(false);
-				rtn.setMessage("이미 등록된 아이디입니다.");
-				return rtn;
-			}
-			
-			// 사용자 비밀번호 암호화
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 			byte[] bytes = new byte[16];
 			random.nextBytes(bytes);
@@ -107,101 +109,103 @@ public class SignUpService {
 			SHA sha256 = new SHA(256);
 			String encPwd = sha256.encryptToBase64(salt+ CommonUtils.getString(paramMap.get("password")));
 			paramMap.put("password", encPwd);
-			
-			// 고객 번호
-			String custNo = CommonUtils.getString(paramMap.get("custNo"));
-			
-			// 고객사 중복 허용 여부 확인
-			String dupliCustYn = CommonUtils.getString(generalDao.selectGernalObject("signUp.selectCustNoDuplicateYn", paramMap));
-			
-			if("N".equals(dupliCustYn)) {
-				int existCustNo = generalDao.selectGernalCount(DB.QRY_SELECT_EXISTS_CUSTNO, paramMap);
-				
-				if(existCustNo > 0) {
-					rtn.setSuccess(false);
-					rtn.setMessage("이미 등록된 고객사입니다. 신규 고객사를 등록해주세요.");
-					return rtn;
-				}
-			}
-			
-			// corp_id
-			String corpId = CommonUtils.getCommonId("COM", 7);
-			paramMap.put("corpId", corpId);
+		} catch (NoSuchAlgorithmException e) {
+			throw new Exception("회원 가입에 실패하였습니다.");
+		}
+		
+		
+		// corp_id
+		String corpId = CommonUtils.getCommonId("COM", 7);
+		paramMap.put("corpId", corpId);
 
-			generalDao.insertGernal(DB.QRY_INSERT_CM_USER, paramMap);
+		generalDao.insertGernal(DB.QRY_INSERT_CM_USER, paramMap);
+
+		// 고객 번호
+		String custNo = CommonUtils.getString(paramMap.get("custNo"));
+		
+		// 고객사 중복 허용 여부 확인
+		String dupliCustYn = CommonUtils.getString(generalDao.selectGernalObject("signUp.selectCustNoDuplicateYn", paramMap));
+		
+		if("N".equals(dupliCustYn)) {
+			int existCustNo = generalDao.selectGernalCount(DB.QRY_SELECT_EXISTS_CUSTNO, paramMap);
 			
-			// 고객번호가 없는 경우 신규 고객사 등록
-			if("".equals(custNo)) {
-				Map<String, Object> codeMap = new HashMap<String, Object>();
-				codeMap.put("codeTypeCd", "CORP_CUST_UPJONG");
-				codeMap.put("useYn", "Y");
-				codeMap.put("codeName1", CommonUtils.getString(paramMap.get("busiClass")));
-	
-				// 업종 코드 조회
-				String upjongCd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_CODEVAL1_BY_CODENAME1, codeMap));
-	
-				Map<String, Object> apiBodyMap = new HashMap<String, Object>();
-				apiBodyMap.put("custKdCd",		paramMap.get("custKdCd"));		// 고객유형
-				apiBodyMap.put("ctype",			paramMap.get("ctype"));			// 기본 / 개인
-				apiBodyMap.put("corpNo",		paramMap.get("corpNo"));		// 법인번호
-				apiBodyMap.put("persNo",		paramMap.get("persNo"));		// 주민번호
-				apiBodyMap.put("cmpNm",			paramMap.get("corpNm"));			// 가입자(상호)명
-				apiBodyMap.put("zipcode",		paramMap.get("zipCode"));		// 우편번호
-				apiBodyMap.put("juso",			paramMap.get("woplaceAddress"));			// 주소
-				apiBodyMap.put("juso2",			paramMap.get("woplaceAddressDetail"));			// 상세주소
-				apiBodyMap.put("damEmail",		paramMap.get("loginId"));		// 담당자 이메일
-				apiBodyMap.put("coInfo1",		paramMap.get("coInfo1"));		// 본인인증 토큰(개인사업자 필수)
-				apiBodyMap.put("genderCode",	paramMap.get("genderCode"));	// 성별
-				apiBodyMap.put("corpTel",		paramMap.get("wireTel"));		// 대표 전화번호
-				apiBodyMap.put("regNo",			paramMap.get("regno"));			// 사업자 번호
-				apiBodyMap.put("ceoNm",			paramMap.get("ceoNm"));			// 대표자
-				apiBodyMap.put("uptaeNm",		paramMap.get("busiType"));		// 업태명
-				apiBodyMap.put("upjongNm",		paramMap.get("busiClass"));		// 업종명
-				apiBodyMap.put("upjong",		upjongCd);						// 업종
-				apiBodyMap.put("vatExmptKdCd",	paramMap.get("vatExmptKdCd"));	// 부가세 면제
-				
-				Map<String, Object> result = apiInterface.post("/console/v1/ucube/customer", null, apiBodyMap, null);
-				if("10000".equals(result.get("code"))) {
-					custNo = CommonUtils.getString(((Map<String, Object>) result.get("data")).get("resultMsg"));
-					paramMap.put("custNo", custNo);
-				} else {
-					rtn.setSuccess(false);
-					rtn.setMessage(CommonUtils.getString(((Map<String, Object>) result.get("data")).get("resultMsg")+"\n회원가입에 실패하였습니다."));
-					return rtn;
-				}
+			if(existCustNo > 0) {
+				throw new Exception("이미 등록된 고객사입니다. 신규 고객사를 등록해주세요.");
+//					rtn.setSuccess(false);
+//					rtn.setMessage("이미 등록된 고객사입니다. 신규 고객사를 등록해주세요.");
+//					return rtn;
 			}
+		}
+		
+		// 고객번호가 없는 경우 신규 고객사 등록
+		if("".equals(custNo)) {
+			Map<String, Object> codeMap = new HashMap<String, Object>();
+			codeMap.put("codeTypeCd", "CORP_CUST_UPJONG");
+			codeMap.put("useYn", "Y");
+			codeMap.put("codeName1", CommonUtils.getString(paramMap.get("busiClass")));
+
+			// 업종 코드 조회
+			String upjongCd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_CODEVAL1_BY_CODENAME1, codeMap));
+
+			Map<String, Object> apiBodyMap = new HashMap<String, Object>();
+			apiBodyMap.put("custKdCd",		paramMap.get("custKdCd"));		// 고객유형
+			apiBodyMap.put("ctype",			paramMap.get("ctype"));			// 기본 / 개인
+			apiBodyMap.put("corpNo",		paramMap.get("corpNo"));		// 법인번호
+			apiBodyMap.put("persNo",		paramMap.get("persNo"));		// 주민번호
+			apiBodyMap.put("cmpNm",			paramMap.get("corpNm"));			// 가입자(상호)명
+			apiBodyMap.put("zipcode",		paramMap.get("zipCode"));		// 우편번호
+			apiBodyMap.put("juso",			paramMap.get("woplaceAddress"));			// 주소
+			apiBodyMap.put("juso2",			paramMap.get("woplaceAddressDetail"));			// 상세주소
+			apiBodyMap.put("damEmail",		paramMap.get("loginId"));		// 담당자 이메일
+			apiBodyMap.put("coInfo1",		paramMap.get("coInfo1"));		// 본인인증 토큰(개인사업자 필수)
+			apiBodyMap.put("genderCode",	paramMap.get("genderCode"));	// 성별
+			apiBodyMap.put("corpTel",		paramMap.get("wireTel"));		// 대표 전화번호
+			apiBodyMap.put("regNo",			paramMap.get("regno"));			// 사업자 번호
+			apiBodyMap.put("ceoNm",			paramMap.get("ceoNm"));			// 대표자
+			apiBodyMap.put("uptaeNm",		paramMap.get("busiType"));		// 업태명
+			apiBodyMap.put("upjongNm",		paramMap.get("busiClass"));		// 업종명
+			apiBodyMap.put("upjong",		upjongCd);						// 업종
+			apiBodyMap.put("vatExmptKdCd",	paramMap.get("vatExmptKdCd"));	// 부가세 면제
 			
-			// 사업자 등록증 첨부파일
-			MultipartFile file = (MultipartFile) paramMap.get("attachFile");
-			
-			String fileSeq = "";
-			
-			String uploadDirPath = FileConfig.getFilePath(FileConfig.FileSvcType.BIZ_REG_CARD);
-			
+			Map<String, Object> result = apiInterface.post("/console/v1/ucube/customer", null, apiBodyMap, null);
+			if("10000".equals(result.get("code"))) {
+				custNo = CommonUtils.getString(((Map<String, Object>) result.get("data")).get("resultMsg"));
+				paramMap.put("custNo", custNo);
+			} else {
+				throw new Exception(CommonUtils.getString(((Map<String, Object>) result.get("data")).get("resultMsg")+"\n회원가입에 실패하였습니다."));
+//					rtn.setSuccess(false);
+//					rtn.setMessage(CommonUtils.getString(((Map<String, Object>) result.get("data")).get("resultMsg")+"\n회원가입에 실패하였습니다."));
+//					return rtn;
+			}
+		}
+		
+		// 사업자 등록증 첨부파일
+		MultipartFile file = (MultipartFile) paramMap.get("attachFile");
+		
+		String fileSeq = "";
+		
+		String uploadDirPath = FileConfig.getFilePath(FileConfig.FileSvcType.BIZ_REG_CARD);
+
+		try {
 			if(file != null) {
 				fileSeq = commonService.uploadFile(file, userId, uploadDirPath);
-
 				paramMap.put("fileId", fileSeq);
 			}
-			
-			String salesMan = CommonUtils.getString(paramMap.get("salesMan"));
-			// 영업사원 미선택인 경우 오진욱 default
-			if("".equals(salesMan) || salesMan == null) {
-				salesMan = "juoh";
-			}
-			paramMap.put("salesMan", salesMan);
-			
-			// 고객사 등록
-			generalDao.insertGernal(DB.QRY_INSERT_CM_CORP, paramMap);
-			
-			// redis update
-			commonService.updateCmCmdForRedis("CM_CORP");
 		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("회원 가입에 실패하였습니다.");
-			log.error("{} Error : {}", this.getClass(), e);
+			throw new Exception("회원 가입에 실패하였습니다.");
 		}
-		return rtn;
+		String salesMan = CommonUtils.getString(paramMap.get("salesMan"));
+		// 영업사원 미선택인 경우 오진욱 default
+		if("".equals(salesMan) || salesMan == null) {
+			salesMan = "juoh";
+		}
+		paramMap.put("salesMan", salesMan);
+		
+		// 고객사 등록
+		generalDao.insertGernal(DB.QRY_INSERT_CM_CORP, paramMap);
+		
+		// redis update
+		commonService.updateCmCmdForRedis("CM_CORP");
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
