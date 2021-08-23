@@ -364,7 +364,7 @@ export default {
       this.imgMngOpen = !this.imgMngOpen;
     },
     fnDelImg(idx){
-      this.tmpltData.imgInfoList.splice(idx, 1);
+      this.tmpltData.imgInfoList.splice(idx-1, 1);
     },
     fnSubString(str, sIdx, length){
       let shortStr = ''
