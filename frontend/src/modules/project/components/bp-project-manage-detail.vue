@@ -155,10 +155,11 @@ export default {
   },
   watch: {
     row_data: function(newVal, oldVal) {
+      // 초기화 
       if(this.save_status === 'C'){
         jQuery("#projectName").val('');
         jQuery("#projectDesc").val('');
-        jQuery('input:radio[name=payType]:input[value="Y"]').prop("checked", true);
+        jQuery('input:radio[name=payType]:input[value="PRE"]').prop("checked", true);
         jQuery('input:radio[name=useYn]:input[value="Y"]').prop("checked", true);
 
         jQuery("#resendTitle").val('');
@@ -200,7 +201,6 @@ export default {
     }
   },
   mounted() {
-    
   },
   methods: {
     // 닫기
