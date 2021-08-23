@@ -9,12 +9,21 @@
 						,	A.PROJECT_ID
 						,	ROUND(SUM(IFNULL(A.AMOUNT, 0))) SUM_CH_GRP_AMOUNT
 						,	COUNT(B.CH_GRP) CNT
-						FROM	cm.CM_MSG A
+						FROM	(
+								SELECT	IFNULL(msg.AMOUNT, 0) AS AMOUNT
+								,		msg.CORP_ID
+								,		msg.PROJECT_ID
+								,		msg.FINAL_CH						
+								FROM 	cm.CM_MSG msg
+								WHERE	msg.YMD BETWEEN CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') 
+													AND LAST_DAY(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') )
+								AND		msg.CORP_ID =  #{corpId}
+								AND		msg.GW_RESULT_CODE = '10000'
+								AND		msg.CLI_RESULT_CODE = '10000'
+						) A
 						INNER JOIN cm_console.CM_CH_INFO B
 						ON		A.FINAL_CH = B.CH_NAME
-						WHERE	A.YMD BETWEEN CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') 
-											AND LAST_DAY(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') )
-						AND		A.CORP_ID =  #{corpId}
+						WHERE	A.CORP_ID =  #{corpId}
 						<if test="role == 'ADMIN'.toString()">
 						AND		A.PROJECT_ID IN (	SELECT	A.PROJECT_ID
 													FROM	cm_console.CM_PROJECT_USER A
@@ -23,8 +32,6 @@
 													AND B.DEL_YN = 'N'
 													AND B.USER_ID = #{userId} )
 						</if>
-						AND		A.GW_RESULT_CODE = '10000'
-						AND		A.CLI_RESULT_CODE = '10000'
 						GROUP BY A.CORP_ID, A.PROJECT_ID) B
 		USING(PROJECT_ID, CORP_ID)
 		WHERE	A.USE_YN = 'Y'
@@ -61,13 +68,21 @@
 						,	A.PROJECT_ID
 						,	ROUND(SUM(IFNULL(A.AMOUNT, 0))) SUM_CH_GRP_AMOUNT
 						,	COUNT(B.CH_GRP) CNT
-						FROM	cm.CM_MSG A
+						FROM	(
+								SELECT	IFNULL(msg.AMOUNT, 0) AS AMOUNT
+								,		msg.CORP_ID
+								,		msg.PROJECT_ID
+								,		msg.FINAL_CH						
+								FROM 	cm.CM_MSG msg
+								WHERE	msg.YMD BETWEEN CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') 
+													AND LAST_DAY(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') )
+								AND		msg.CORP_ID =  #{corpId}
+								AND		msg.GW_RESULT_CODE = '10000'
+								AND		msg.CLI_RESULT_CODE = '10000'
+						) A
 						INNER JOIN cm_console.CM_CH_INFO B
 						ON		A.FINAL_CH = B.CH_NAME
-						<!-- WHERE	DATE_FORMAT(A.YMD, '%Y%m') = #{searchMonth} -->
-						WHERE	A.YMD BETWEEN CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') 
-											AND LAST_DAY(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') )
-						AND		A.CORP_ID =  #{corpId}
+						WHERE	A.CORP_ID =  #{corpId}
 						<if test="role == 'ADMIN'.toString()">
 						AND		A.PROJECT_ID IN (	SELECT	A.PROJECT_ID
 													FROM	cm_console.CM_PROJECT_USER A
@@ -76,8 +91,6 @@
 													AND B.DEL_YN = 'N'
 													AND B.USER_ID = #{userId} )
 						</if>
-						AND		A.GW_RESULT_CODE = '10000'
-						AND		A.CLI_RESULT_CODE = '10000'
 						GROUP BY A.CORP_ID, A.PROJECT_ID) B
 		USING(PROJECT_ID, CORP_ID)
 		WHERE	A.USE_YN = 'Y'
