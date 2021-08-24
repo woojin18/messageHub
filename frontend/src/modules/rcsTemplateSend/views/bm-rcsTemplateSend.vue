@@ -141,7 +141,7 @@
 							<div v-if="templateRadioBtn =='des'" class="phoneText1">
 								<img :src="imgsrc" style="width:70px;">
 								<div class="scroll-y">
-									<p class="mt15">{{text}}</p>
+									<p class="mt15"><pre>{{text}}</pre></p>
 								</div>
 								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
@@ -155,8 +155,9 @@
 										</div>
 										<hr v-if="styleChk[n-1]==true">
 									</div>
+									<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 								</div>
-								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
+								
 							</div>
 							<div v-if="templateRadioBtn =='text' || templateRadioBtn == 'SS000000' || templateRadioBtn == 'SL000000'" class="phoneText1">
 								<div class="scroll-y">
@@ -186,9 +187,10 @@
 									<div class="scroll-y6">
 										<p class="color6"><pre>{{sendData.textContents}}</pre></p>
 										<p class="mt15" v-if="sendData.freeReceiveNum!=''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
-									</div>								
+									</div>		
+									<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>						
 								</div>
-								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
+								
 							</div>
 						</div>
 						<div  v-if="pushTab!='push'" class="phoneTextWrap">
