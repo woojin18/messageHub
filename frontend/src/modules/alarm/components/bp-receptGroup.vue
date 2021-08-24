@@ -13,7 +13,7 @@
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
-							<h5 class="inline-block" style="width:20%">수신그룹 명 *</span></h5>
+							<h5 class="inline-block" style="width:20%">사용여부 *</span></h5>
 							<div class="of_h float-right" style="width:80%">	
 								<input id="useYn-Y" type="radio" value="Y" class="cBox" v-model="receptGroup.useYn"><label for="useYn-Y" class="payment mt10 mr30">사용</label>
 								<input id="useYn-N" type="radio" value="N" class="cBox" v-model="receptGroup.useYn"><label for="useYn-N" class="payment mt10">미사용</label>	
