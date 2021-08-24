@@ -157,7 +157,7 @@
 									</div>
 									<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 								</div>
-								
+								 
 							</div>
 							<div v-if="templateRadioBtn =='text' || templateRadioBtn == 'SS000000' || templateRadioBtn == 'SL000000'" class="phoneText1">
 								<div class="scroll-y">
