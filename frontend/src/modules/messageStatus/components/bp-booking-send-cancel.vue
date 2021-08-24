@@ -7,13 +7,12 @@
             <div class="of_h">
               <h2>예약발송 취소</h2>
               <hr>						
-              <div class="of_h">
+              <!-- <div class="of_h">
                 <div class="float-left" style="width:15%"><h5>메시지</h5></div>
                 <div class="float-right" style="width:84%">
-                  <!--<textarea class="textareaStyle height120" placeholder="" v-model="msg"></textarea>-->
                   <pre>{{msg}}</pre>
                 </div>							
-              </div>
+              </div> -->
               <div class="of_h consolMarginTop">
                 <div class="float-left" style="width:15%"><h5>취소사유</h5></div>
                 <div class="float-right" style="width:84%">
@@ -24,7 +23,7 @@
             </div>						
             <div class="text-center mt20">
               <a class="btnStyle1 backBlack" @click="fnCancelLayer" title="등록" activity="SAVE">등록</a>
-              <a class="btnStyle1 backWhite" data-dismiss="modal" @click="fnCloseLayer" title="닫기">닫기</a>						
+              <a class="btnStyle1 backWhite ml5" data-dismiss="modal" @click="fnCloseLayer" title="닫기">닫기</a>						
             </div>
           </div>
         </div>
