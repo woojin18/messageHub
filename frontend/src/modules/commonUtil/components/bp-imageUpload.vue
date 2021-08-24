@@ -114,9 +114,10 @@ export default {
       //확장자 검사
       const permitExten = 'jpg,jpeg,png'.split(',');
       const extnIdx = uploadFile.value.lastIndexOf('.');
-      const extn = uploadFile.value.substring(extnIdx+1);
-      if((permitExten.indexOf(extn) < 0)){
-        confirm.fnAlert(this.componentsTitle, '허용되지 않는 확장자입니다.');
+      const extn = uploadFile.value.substring(extnIdx+1).toLowerCase();
+
+      if((permitExten.indexOf(extn) < 0) || (this.chkboxUseCh.includes('MMS') && extn == 'png')){
+        confirm.fnAlert(this.componentsTitle, '허용되지 않는 확장자입니다.\n(이미지는 .jpg, .jpeg, .png(MMS 제외) 확장자 지원합니다.)');
         return;
       }
 
