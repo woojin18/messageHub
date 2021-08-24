@@ -564,7 +564,7 @@ public class RcsTemplateService {
 		if("INS".equals(flag)) {
 			result = apiInterface.listPost("/console/v1/brand/" + brandId + "/messagebase", paramList, headerMap);
 		} else {
-			result = apiInterface.put("/console/v1/brand/" + brandId + "/messagebase/" + messagebaseId, paramMap, headerMap);
+			result = apiInterface.put("/console/v1/brand/" + brandId + "/messagebase/" + messagebaseId, paramMap, paramMap, headerMap);
 		}
 		
 		// 성공인지 실패인지 체크

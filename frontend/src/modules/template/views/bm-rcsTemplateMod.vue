@@ -304,7 +304,7 @@
 								<div class="of_h">
 									<div class="mt20 text-right" style="width:100%">
 										<a href="#self" v-if="deleteBtn" @click.prevent="rcsTemplateDelete" class="btnStyle2 backWhite ml10" title="삭제">삭제</a>
-										<a href="#self" v-if="cancelBtn" @click.prevent="rcsTemplateCancel" class="btnStyle2 backWhite ml10" title="삭제">삭제</a>
+										<a href="#self" v-if="cancelBtn" @click.prevent="rcsTemplateCancel" class="btnStyle2 backWhite ml10" title="취소">취소</a>
 										<a href="#self" v-if="updateBtn" @click.prevent="recTemplateIns('UPT','cell')" class="btnStyle2 backRed  ml10" title="수정요청">수정요청</a>
 										<a href="#self" v-if="insertBtn" @click.prevent="recTemplateIns('INS','cell')" class="btnStyle2 backRed  ml10" title="승인요청">승인요청</a>
 										<a href="#self" @click.prevent="returnRcsTemplateList" class="btnStyle2 ml10" title="목록">목록</a>

@@ -103,6 +103,7 @@
 	<sql id="selectRcsTemplateSql">
 			AND		AA.MESSAGEBASEFORM_ID != 'GG000F'
 			AND		BB.PROJECT_ID IN ('ALL' , #{projectId})
+			AND		AA.APPROVAL_STATUS IS NOT NULL
 		<if test="corpId != '' and corpId != null">
 			AND		AA.CORP_ID = #{corpId}
 		</if>
