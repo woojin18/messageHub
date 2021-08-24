@@ -51,12 +51,10 @@ export default {
 			btndis: true
 		};
 	},
-	mounted() {
-		jq("button[title='Written']").click();
-	},
 	methods: {
 		captchaBtn () {
-			this.btndis = false
+			this.btndis = false;
+			jq("#VueCaptcha div:nth-child(2)").attr("style", "display : none !important");
 		},
 		fnSetUserPwd(){
 			if(this.btndis) {
@@ -124,5 +122,8 @@ export default {
 }
 button[title="Written"] {
 	display: none !important;
+}
+#VueCaptcha div:nth-child(2) {
+	display: block !important;
 }
 </style> 
