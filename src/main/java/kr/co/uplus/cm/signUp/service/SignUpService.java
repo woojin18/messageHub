@@ -98,6 +98,12 @@ public class SignUpService {
 //				return rtn;
 		}
 		
+		// 비밀번호 유효성 검사
+		boolean pwdChk = commonService.pwdResularExpressionChk(CommonUtils.getString(paramMap.get("password")));
+		if(!pwdChk) {
+			throw new Exception("비밀번호는 8~20자리이어야 하며,\n숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
+		}
+		
 		// 사용자 비밀번호 암호화
 		try {
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");

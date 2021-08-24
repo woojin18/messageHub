@@ -350,7 +350,7 @@ export default {
 		// 기초 validation 처리
 		defaultVali() {
 			// 비밀번호 정책 validation
-			var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+			var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/;
 
 			if(this.userNm == ""){
 				confirm.fnAlert("", "이름을 입력해주세요.");
@@ -359,7 +359,7 @@ export default {
 				confirm.fnAlert("", "비밀번호를 입력해주세요.");
 				return false;
 			} else if (!reg.test(this.password)){
-				confirm.fnAlert("", "비밀번호는 8자 이상이어야 하며, 숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
+				confirm.fnAlert("", "비밀번호는 8~20자리이어야 하며,\n숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
 				return false;
 			} else if (this.password != this.passwordChk) {
 				confirm.fnAlert("", "비밀번호가 일치하지 않습니다.");

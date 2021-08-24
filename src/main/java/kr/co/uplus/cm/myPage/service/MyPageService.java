@@ -69,6 +69,16 @@ public class MyPageService {
 			// 비밀번호 암호화
 			if(!"".equals(params.get("loginPwd")) && params.get("loginPwd") != null) {
 				String loginPwd = CommonUtils.getString(params.get("loginPwd"));
+				
+				// 비밀번호 유효성 검사
+				boolean pwdChk = commonService.pwdResularExpressionChk(loginPwd);
+				if(!pwdChk) {
+					rtn.setSuccess(false);
+					rtn.setMessage("비밀번호는 8~20자리이어야 하며,\n숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
+					
+					return rtn; 
+				}
+				
 				// 사용자 비밀번호 암호화
 				SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 				byte[] bytes = new byte[16];

@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
@@ -889,4 +891,16 @@ public class CommonService {
 
         return html;
     }
+    
+    // 비밀번호 유효성검사
+	public boolean pwdResularExpressionChk(String pwd) {
+		boolean chk = false;
+		
+		String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$";
+		Matcher match = Pattern.compile(pattern).matcher(pwd);
+		if(match.find()) {
+			chk = true;
+		}
+		return chk;
+	}
 }

@@ -42,6 +42,7 @@ import kr.co.uplus.cm.common.handler.LoginSuccessHandler;
 import kr.co.uplus.cm.common.jwt.JwtService;
 import kr.co.uplus.cm.common.model.AuthUser;
 import kr.co.uplus.cm.common.model.PublicToken;
+import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.common.utils.SpringUtils;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
@@ -72,6 +73,9 @@ public class AuthService implements UserDetailsService {
 
 	@Autowired
 	private GeneralDao generalDao;
+	
+	@Autowired
+	private CommonService commonService;
 
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		log.debug("username = [{}]", username);
@@ -328,6 +332,14 @@ public class AuthService implements UserDetailsService {
 		try {
 			String password = CommonUtils.getString(params.get("password"));
 			params.put("userId", params.get("loginId"));
+
+			// 비밀번호 유효성 검사
+			boolean pwdChk = commonService.pwdResularExpressionChk(password);
+			if(!pwdChk) {
+				rtn.setSuccess(false);
+				rtn.setMessage("비밀번호는 8~20자리이어야 하며,\n숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
+				return rtn;
+			}
 			// 사용자 비밀번호 암호화
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 			byte[] bytes = new byte[16];
