@@ -524,37 +524,24 @@ public class IntegratedTemplateService {
 						messagebaseId = "CMwMhM0600"; // 슬라이드형(Medium,6장)
 					}
 
-					sb.append("\"messagebaseId\": \"" + messagebaseId + "\","); /// 캐러셀형(TALL) 템플릿의 RCS MESSAGEBASE_ID 를
-																				/// 설정
+					sb.append("\"messagebaseId\": \"" + messagebaseId + "\","); /// 캐러셀형(TALL) 템플릿의 RCS MESSAGEBASE_ID 를 설정
 					sb.append("\"cardCount\": \"" + rcs10CardCount + "\","); /// 캐러셀형(SHORT) 템플릿의 페이지 카운트
 
 					sb.append("\"mergeData\": [ ");
-					for (int k = 0; k < rcs10CardCount; k++) {
-						String rcsTitle = "rcs" + k + "Title";
-						String rcsContent = "rcs" + k + "Content";
-						String rcsImgInfoList = "rcs10" + k + "ImgInfoList";
-
+					List<Map<String, Object>> rcsCTallImgInfoList = (List<Map<String, Object>>) params.get("rcsCTallImgInfoList");
+					for (int k = 0; k < rcsCTallImgInfoList.size(); k++) {
 						sb.append(" { ");
-						sb.append("	\"title\" : \"" + JSONObject.escape((String) params.get(rcsTitle)) + "\", "); // 제목
-						sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get(rcsContent)) + "\" "); // 메시지
+						Map<String, Object> rcsCTallImgInfo = rcsCTallImgInfoList.get(k);
+						sb.append("	\"title\" : \"" + CommonUtils.getStrValue(rcsCTallImgInfo, "rcsTitle") + "\", "); // 제목
+						sb.append("	\"description\" : \"" + CommonUtils.getStrValue(rcsCTallImgInfo, "rcsContent") + "\" "); // 메시지
 
 						// image List
-						List<Map<String, Object>> rcsCarouselImgInfoList = null;
-						if (params.containsKey(rcsImgInfoList)) {
-							rcsCarouselImgInfoList = (List<Map<String, Object>>) params.get(rcsImgInfoList);
-							if (rcsCarouselImgInfoList.size() > 0) {
-								Map<String, Object> imgInfo = rcsCarouselImgInfoList.get(0);// rcs에서 SHORT, TALL,
-																							// CSHORT, CTALL에는 이미지가 1개만
-																							// 들어온다
-								if (imgInfo.containsKey("fileId")) {
-									sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(imgInfo, "imgUrl")
-											+ "\", ");
-									sb.append("	\"media\" : \"" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" ");
-								}
-							} else {
-								sb.append("	,\"mediaUrl\" : \"{}\", ");
-								sb.append("	\"media\" : \"\" ");
-							}
+						if (!"".equals(CommonUtils.getStrValue(rcsCTallImgInfo, "imgUrl")) && !"".equals(CommonUtils.getStrValue(rcsCTallImgInfo, "fileId"))) {
+							sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(rcsCTallImgInfo, "imgUrl") + "\", ");
+							sb.append("	\"media\" : \"" + CommonUtils.getStrValue(rcsCTallImgInfo, "fileId") + "\" ");
+						} else {
+							sb.append("	,\"mediaUrl\" : \"{}\", ");
+							sb.append("	\"media\" : \"\" ");
 						}
 						sb.append("	} ");
 						if (k < rcs10CardCount - 1)
@@ -563,11 +550,12 @@ public class IntegratedTemplateService {
 					sb.append("	] ");
 
 					sb.append(",\"buttons\": [ ");
-					for (int k = 0; k < rcs10ButtonCardCount; k++) {
+					for (int k = 0; k < rcsCTallImgInfoList.size(); k++) {
+						Map<String, Object> rcsCTallImgInfo = rcsCTallImgInfoList.get(k);
+						List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) rcsCTallImgInfo.get("rcsButtons");
+
 						sb.append(" { ");
 						sb.append("\"suggestions\": [ ");
-						String rcsButton = "rcs10" + k + "Buttons";
-						List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get(rcsButton);
 
 						if (buttonInfoList.size() > 0) {
 							sb.append(newCarouselButtonAddStr(buttonInfoList));
@@ -576,8 +564,9 @@ public class IntegratedTemplateService {
 						sb.append("	]");
 						sb.append("	} ");
 
-						if (k < rcs10ButtonCardCount - 1)
+						if (k < rcsCTallImgInfoList.size() - 1) {
 							sb.append(", ");
+						}
 					}
 					sb.append("	] ");
 				}
