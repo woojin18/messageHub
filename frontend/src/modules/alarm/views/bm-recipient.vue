@@ -25,8 +25,8 @@
             <div class="row">
                 <div class="col-xs-12 mt30">
                     <div class="float-right mb20">						
-                        <a @click="fnAdd" class="btnStyle2 backBlack" style="min-width:auto" activity="SAVE" title="그룹 수신자  추가">그룹 수신자 추가</a>&nbsp;
-                        <a @click="fnDel" class="btnStyle2 borderGray" style="min-width:auto" activity="SAVE" title="그룹 수신자 삭제">그룹 수신자 삭제</a>
+                        <a @click="fnAdd" class="btnStyle2 backBlack" style="min-width:auto" activity="SAVE" title="수신자  추가">수신자 추가</a>&nbsp;
+                        <a @click="fnDel" class="btnStyle2 borderGray" style="min-width:auto" activity="SAVE" title="수신자 삭제">수신자 삭제</a>
                     </div>
         <!-- 15개씩 보기 -->
         <div class="of_h inline">

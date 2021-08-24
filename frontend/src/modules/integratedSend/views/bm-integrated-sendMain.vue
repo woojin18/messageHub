@@ -1026,7 +1026,7 @@ export default {
           } else {
             if(idx === layoutInfo.length - 1){
               ne = layoutInfo[idx+1];
-              if(ne.widget && ne.widget === 'LinearLayout'){
+              if(ne && ne.widget && ne.widget === 'LinearLayout'){
                 hrStyleArr.push(false);
               }
             }

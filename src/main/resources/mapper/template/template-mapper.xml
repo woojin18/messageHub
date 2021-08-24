@@ -594,7 +594,7 @@
                 , CKT.TMPLT_REQ_DT
                 , CKT.TMPLT_INFO
                 , '' AS REASON
-                , DATE_FORMAT(CKT.UPD_DT, '%Y.%m.%d') AS UPD_DT
+                , DATE_FORMAT(CKT.UPD_DT, '%Y-%m-%d %H:%i:%S') AS UPD_DT
                 , CKT.APPROVAL_DT
                 , 'N' AS EXISTS_REJ_RESN_YN
             FROM cm.CM_KKO_TMPLT CKT

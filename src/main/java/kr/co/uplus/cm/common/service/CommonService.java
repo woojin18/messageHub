@@ -190,8 +190,14 @@ public class CommonService {
         // 이미지 업로드 확장자 유효성 체크
         if (Stream.of(imgPermitExten.split(",")).map(String::trim)
                 .noneMatch(s -> s.toLowerCase().contains(fileExten.toLowerCase()))) {
-            rtn.setSuccess(false);
-            rtn.setMessage("허용되지 않는 확장자입니다.");
+            rtn.setFail("허용되지 않는 확장자입니다.");
+            return rtn;
+        }
+        //채널별 허용 확장자 체크로 설계되어 있지 않는데 테스트기간 이후 공유없이 채널별 허용 확장자가 다르게 설정되어 추가함
+        //기본 jpg, jpeg, png 지원, MMS는 png 미지원
+        if (useCh.contains(Const.Ch.MMS)
+                && StringUtils.equalsIgnoreCase(fileExten.toLowerCase(), "png")) {
+            rtn.setFail("허용되지 않는 확장자입니다.");
             return rtn;
         }
 
