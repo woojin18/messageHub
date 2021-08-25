@@ -340,7 +340,6 @@ public class AuthService implements UserDetailsService {
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
 			String password = CommonUtils.getString(params.get("password"));
-			params.put("userId", params.get("loginId"));
 
 			// 비밀번호 유효성 검사
 			boolean pwdChk = commonService.pwdResularExpressionChk(password);
@@ -349,6 +348,7 @@ public class AuthService implements UserDetailsService {
 				rtn.setMessage("비밀번호는 8~20자리이어야 하며,\n숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
 				return rtn;
 			}
+
 			// 사용자 비밀번호 암호화
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 			byte[] bytes = new byte[16];
@@ -356,25 +356,42 @@ public class AuthService implements UserDetailsService {
 			String salt = new String(Base64.getEncoder().encode(bytes));
 			params.put("salt", salt);
 
-			SHA sha256 = new SHA(256);
+			SHA sha512 = new SHA(512);
+			
 			// 기존 비밀번호 비교
-			String exSalt = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO, params));
-			String rtnPwd = "";
-			if (exSalt != null && !"".equals(exSalt)) {
-				rtnPwd = sha256.encryptToBase64(exSalt + password);
+			Map<String, Object> saltMap =  (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params);
+			String exSalt = CommonUtils.getString(saltMap.get("salt"));				// 현재 salt 문자열
+			String bfExSalt = CommonUtils.getString(saltMap.get("beforeSalt"));		// 이전 salt 문자열
+			
+			String rtnPwd = "";				// 현재 salt + 새로 입력한 비밀번호
+			String rtnPwd2 = "";			// 기존 salt + 새로 입력한 비밀번호
+			
+			// 현재 이전의 비밀번호와 비교
+			if(bfExSalt != null && !"".equals(bfExSalt)) {
+				rtnPwd2 = sha512.encryptToBase64(bfExSalt + password);
 			} else {
-				rtnPwd = sha256.encryptToBase64(password);
+				rtnPwd2 = sha512.encryptToBase64(password);
 			}
-			params.remove("userId");
+			
+			// 현재 비밀번호와 비교
+			if (exSalt != null && !"".equals(exSalt)) {
+				rtnPwd = sha512.encryptToBase64(exSalt + password);
+			} else {
+				rtnPwd = sha512.encryptToBase64(password);
+			}
 
-			String exPwd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, params));
-			if (exPwd.equals(rtnPwd)) {
+			Map<String, Object> pwdMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, params);
+			String exPwd = CommonUtils.getString(pwdMap.get("loginPwd"));			// 현재 비밀번호
+			String bfExPwd = CommonUtils.getString(pwdMap.get("beforeLoginPwd"));	// 직전 비밀번호
+			
+			// 비밀번호 비교
+			if(exPwd.equals(rtnPwd) || bfExPwd.equals(rtnPwd2)) {
 				rtn.setSuccess(false);
 				rtn.setMessage("기존과 동일한 비밀번호는 사용할 수 없습니다.");
 				return rtn;
+				
 			}
-
-			String encPwd = sha256.encryptToBase64(salt + password);
+			String encPwd = sha512.encryptToBase64(salt + password);
 			params.put("pwd", encPwd);
 			// 비밀번호 update
 			generalDao.updateGernal(DB.QRY_UPDATE_USER_PASSWORD, params);

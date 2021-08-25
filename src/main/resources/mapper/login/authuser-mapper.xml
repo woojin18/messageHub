@@ -66,12 +66,18 @@
 		LIMIT 1
 	</select>
 	
-	<select id="qrySelectSaltInfoByUserId" parameterType="string" resultType="string">
+	<select id="qrySelectSaltInfoByUserId" parameterType="string" resultType="camel">
 		/* login.qrySelectSaltInfoByUserId */
-		SELECT
-			USER.SALT
-		FROM cm_console.CM_USER USER
-		WHERE USER_ID = #{userId}
+		SELECT	USER.SALT
+		,		USER.BEFORE_SALT
+		FROM	cm_console.CM_USER USER
+		WHERE	1=1
+		<if test="loginId != null and loginId != ''">
+		AND		LOGIN_ID = #{loginId}
+		</if>
+		<if test="userId != null and userId != ''">
+		AND		USER_ID = #{userId}
+		</if>
 		LIMIT 1
 	</select>
 
@@ -155,7 +161,9 @@
 	<update id="updatePassword">
 		/* login.updatePassword */
 		UPDATE	cm_console.CM_USER
-		SET		LOGIN_PWD = #{pwd}
+		SET		BEFORE_LOGIN_PWD = LOGIN_PWD
+		,		BEFORE_SALT = SALT
+		,		LOGIN_PWD = #{pwd}
 		,		PWD_UPD_DT = NOW()
 		,		APPROVAL_STATUS = 'Y'
 		,		SALT = #{salt}
@@ -189,16 +197,17 @@
 		WHERE	LOGIN_ID = #{userId}
 	</update>
 	
-	<select id="selectExLoginPwd" resultType="string">
+	<select id="selectExLoginPwd" resultType="camel">
 		/* login.selectExPwdChk */
 		SELECT	LOGIN_PWD
+		,		BEFORE_LOGIN_PWD
 		FROM	cm_console.CM_USER
 		WHERE	1=1
 		<if test="loginId != null and loginId != ''">
 		AND		LOGIN_ID = #{loginId}
 		</if>
 		<if test="userId != null and userId != ''">
-		AND	USER_ID = #{userId}
+		AND		USER_ID = #{userId}
 		</if>
 	</select>
 </mapper>

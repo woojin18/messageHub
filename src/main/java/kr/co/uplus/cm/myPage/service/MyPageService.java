@@ -45,6 +45,7 @@ public class MyPageService {
 		return rtn;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public RestResult<Object> saveMemberInfo(Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -84,26 +85,43 @@ public class MyPageService {
 				SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 				byte[] bytes = new byte[16];
 				random.nextBytes(bytes);
-				String salt = new String(Base64.getEncoder().encode(bytes));
+				String salt = new String(Base64.getEncoder().encode(bytes));			// 신규 salt 문자열
 				paramMap.put("salt", salt);
 
 				SHA sha512 = new SHA(512);
+				
 				// 기존 비밀번호 비교
-				String exSalt = CommonUtils
-						.getString(generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params));
-				String rtnPwd = "";
+				Map<String, Object> saltMap =  (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params);
+				String exSalt = CommonUtils.getString(saltMap.get("salt"));				// 현재 salt 문자열
+				String bfExSalt = CommonUtils.getString(saltMap.get("beforeSalt"));		// 이전 salt 문자열
+				
+				String rtnPwd = "";				// 현재 salt + 새로 입력한 비밀번호
+				String rtnPwd2 = "";			// 기존 salt + 새로 입력한 비밀번호
+				
+				// 현재 이전의 비밀번호와 비교
+				if(bfExSalt != null && !"".equals(bfExSalt)) {
+					rtnPwd2 = sha512.encryptToBase64(bfExSalt + loginPwd);
+				} else {
+					rtnPwd2 = sha512.encryptToBase64(loginPwd);
+				}
+				
+				// 현재 비밀번호와 비교
 				if (exSalt != null && !"".equals(exSalt)) {
 					rtnPwd = sha512.encryptToBase64(exSalt + loginPwd);
 				} else {
 					rtnPwd = sha512.encryptToBase64(loginPwd);
 				}
 
-				String exPwd = CommonUtils
-						.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, paramMap));
-				if (exPwd.equals(rtnPwd)) {
+				Map<String, Object> pwdMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, paramMap);
+				String exPwd = CommonUtils.getString(pwdMap.get("loginPwd"));			// 현재 비밀번호
+				String bfExPwd = CommonUtils.getString(pwdMap.get("beforeLoginPwd"));	// 직전 비밀번호
+				
+				// 비밀번호 비교
+				if(exPwd.equals(rtnPwd) || bfExPwd.equals(rtnPwd2)) {
 					rtn.setSuccess(false);
 					rtn.setMessage("기존과 동일한 비밀번호는 사용할 수 없습니다.");
 					return rtn;
+					
 				}
 
 				String encPwd = sha512.encryptToBase64(salt + loginPwd);
@@ -154,14 +172,16 @@ public class MyPageService {
 		return rtn;
 	}
 
+	@SuppressWarnings("unchecked")
 	public RestResult<Object> checkPassword(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.putAll(params);
 
 		// salt
-		String salt = "";
-		salt = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params));
+		Map<String, Object> saltMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params);
+		String salt = CommonUtils.getString(saltMap.get("salt"));
+		
 		if (salt != null && !"".equals(salt)) {
 			String password = CommonUtils.getString(salt + paramMap.get("password"));
 			paramMap.put("password", sha512.encode(password));

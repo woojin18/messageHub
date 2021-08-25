@@ -124,6 +124,8 @@ public class SignUpService {
 		String corpId = CommonUtils.getCommonId("COM", 7);
 		paramMap.put("corpId", corpId);
 
+		// 기존 삭제처리된 사용자 LOGIN 아이디 변경
+		generalDao.updateGernal(DB.QRY_UPDATE_DEL_USER_LOGINID, params);
 		generalDao.insertGernal(DB.QRY_INSERT_CM_USER, paramMap);
 
 		// 고객 번호

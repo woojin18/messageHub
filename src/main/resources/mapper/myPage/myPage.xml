@@ -20,6 +20,8 @@
 		SET		UPD_DT			= NOW()
 		,		REP_PROJECT_ID	= #{repProjectId}
 		<if test="loginPwd != null and loginPwd != ''">
+		,		BEFORE_LOGIN_PWD = LOGIN_PWD
+		,		BEFORE_SALT	= SALT
 		,		LOGIN_PWD	= #{loginPwd}
 		,		PWD_UPD_DT	= NOW()
 		,		SALT		= #{salt}
