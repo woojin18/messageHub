@@ -15,13 +15,13 @@ import yoyozo.security.SHA;
  * @Date : 2020. 12. 18.
  * @Version : 1.0 Copyright 2020 LG Uplus Corp. All Rights Reserved.
  */
-public final class Sha256PasswordEncoder implements PasswordEncoder {
+public final class Sha512PasswordEncoder implements PasswordEncoder {
 
-	private final SHA sha256 = new SHA(256);
+	private final SHA sha512 = new SHA(512);
 
 	@Override
 	public String encode(CharSequence rawPassword) {
-		return sha256.encryptToBase64(rawPassword.toString());
+		return sha512.encryptToBase64(rawPassword.toString());
 	}
 
 	@Override

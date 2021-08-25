@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsUtils;
 
 import kr.co.uplus.cm.common.crypto.AesEncryptor;
-import kr.co.uplus.cm.common.crypto.Sha256PasswordEncoder;
+import kr.co.uplus.cm.common.crypto.Sha512PasswordEncoder;
 import kr.co.uplus.cm.common.filter.VueStaticFilter;
 import kr.co.uplus.cm.common.handler.LoginFailureHandler;
 import kr.co.uplus.cm.common.handler.LoginSuccessHandler;
@@ -66,16 +66,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-    @Autowired
-    private AuthService authService;
+	@Autowired
+	private AuthService authService;
 
 	@Autowired
 	private JwtProperties jwtProps;
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring()
-			.antMatchers("/se2/**","/assets/**");
+		web.ignoring().antMatchers("/se2/**", "/assets/**");
 	}
 
 	@Bean
@@ -90,29 +89,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new JwtAuthHeaderFilter(jwtProps), UsernamePasswordAuthenticationFilter.class);
 
-		http
-			.cors().and()
-			// csrf 사용하지 않음
-			.csrf().disable()
-			// Spring Security가 HttpSession 객체를 생성하지 않도록 설정
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
-			.headers().contentTypeOptions().disable()
-			.and()
-			.headers().frameOptions().disable()
-			.and()
-			.exceptionHandling()
-				.authenticationEntryPoint(new MixedAuthenticationEntryPoint(LOGIN_FORM_URL, REST_API_URLS))
-			.and()
-				.authorizeRequests()
-				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // CORS preflight 요청은 인증처리를 하지 않도록 설정
+		http.cors().and()
+				// csrf 사용하지 않음
+				.csrf().disable()
+				// Spring Security가 HttpSession 객체를 생성하지 않도록 설정
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().headers()
+				.contentTypeOptions().disable().and().headers().frameOptions().disable().and().exceptionHandling()
+				.authenticationEntryPoint(new MixedAuthenticationEntryPoint(LOGIN_FORM_URL, REST_API_URLS)).and()
+				.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // CORS preflight 요청은 인증처리를 하지 않도록 설정
 				.antMatchers(PUBLIC_API_URL, PUBLIC_PAGE_URL).permitAll()
 				.antMatchers("/", PUBLIC_API_URL, LOGIN_FORM_URL, LOGIN_API_URL, LOGOUT_URL, LIST_API_URL,
 						PROJECT_API_URL, MENUBAR_URL, MESSAGESTATUS_API_URL, INTEGRATEDTEMPLATE_API_URL,
-						INTEGRATEDSEND_API_URL, SMARTTEMPLATE_API_URL,SMARTSEND_API_URL, COMMON_API_URL,
-						USER_CONSOLE_URL, ADMIN_CONSOLE_URL, ADMIN_SIGN, ADMIN_SIGN_NICE_SUCCESS, ADMIN_SIGN_NICE_FAIL).permitAll()
-				.antMatchers(API_URL).authenticated()
-				.anyRequest().authenticated();
+						INTEGRATEDSEND_API_URL, SMARTTEMPLATE_API_URL, SMARTSEND_API_URL, COMMON_API_URL,
+						USER_CONSOLE_URL, ADMIN_CONSOLE_URL, ADMIN_SIGN, ADMIN_SIGN_NICE_SUCCESS, ADMIN_SIGN_NICE_FAIL)
+				.permitAll().antMatchers(API_URL).authenticated().anyRequest().authenticated();
 	}
 
 	@Override
@@ -121,8 +111,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public Sha256PasswordEncoder passwordEncoder() {
-		return new Sha256PasswordEncoder();
+	public Sha512PasswordEncoder passwordEncoder() {
+		return new Sha512PasswordEncoder();
 	}
 
 	@Bean

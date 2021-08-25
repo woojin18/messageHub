@@ -33,7 +33,7 @@ import kr.co.uplus.cm.common.config.SecurityConfig;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.consts.ResultCode;
-import kr.co.uplus.cm.common.crypto.Sha256PasswordEncoder;
+import kr.co.uplus.cm.common.crypto.Sha512PasswordEncoder;
 import kr.co.uplus.cm.common.dao.AuthUserDao;
 import kr.co.uplus.cm.common.dto.Menu;
 import kr.co.uplus.cm.common.dto.RestResult;
@@ -66,14 +66,14 @@ public class AuthService implements UserDetailsService {
 	private LoginFailureHandler loginFailureHandler;
 
 	@Autowired
-	private Sha256PasswordEncoder sha256;
+	private Sha512PasswordEncoder sha512;
 
 	@Autowired
 	private AuthUserDao dao;
 
 	@Autowired
 	private GeneralDao generalDao;
-	
+
 	@Autowired
 	private CommonService commonService;
 
@@ -112,7 +112,7 @@ public class AuthService implements UserDetailsService {
 		}
 
 		try {
-			params.put("userPwd", sha256.encode(salt+userPwd));
+			params.put("userPwd", sha512.encode(salt + userPwd));
 			userPwd = (String) params.get("userPwd");
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userId, userPwd);
 			authentication = authManager.authenticate(token);
@@ -168,9 +168,17 @@ public class AuthService implements UserDetailsService {
 
 		String userId = (String) params.get("userId");
 		String userPwd = (String) params.get("userPwd");
+		String salt = "";
 
 		try {
-			params.put("userPwd", sha256.encode(userPwd));
+			// userId에 해당되는 salt 문자열 취득
+			salt = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO, params));
+		} catch (Exception e) {
+			return new RestResult<String>(false).setCode(ResultCode.SE_INTERNAL);
+		}
+
+		try {
+			params.put("userPwd", sha512.encode(salt + userPwd));
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userId, userPwd);
 			authentication = authManager.authenticate(token);
 		} catch (AuthenticationException e) {
@@ -231,7 +239,7 @@ public class AuthService implements UserDetailsService {
 	public RestResult<?> getMenuForRole(Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-		
+
 		if ("AC".equals(params.get("svc_type_cd"))) {
 			rtn.setData(tACMenuByRole.get(params.get("role_cd")));
 		} else {
@@ -260,7 +268,7 @@ public class AuthService implements UserDetailsService {
 
 		return rtn;
 	}
-	
+
 	private Map<String, Menu> tACMenuByRole = new HashMap<String, Menu>();
 	private Map<String, Map<String, Menu>> tACMenusByRole = new HashMap<String, Map<String, Menu>>();
 	private Map<String, Menu> tUCMenuByRole = new HashMap<String, Menu>();
@@ -271,6 +279,7 @@ public class AuthService implements UserDetailsService {
 		initMenu("AC");
 		initMenu("UC");
 	}
+
 	private void initMenu(String svcTypeCd) {
 		Map<String, Menu> menuByRole = new HashMap<String, Menu>();
 		Map<String, Map<String, Menu>> menusByRole = new HashMap<String, Map<String, Menu>>();
@@ -278,7 +287,7 @@ public class AuthService implements UserDetailsService {
 		Map params = new HashMap();
 		params.put("svc_type_cd", svcTypeCd);
 		List<Menu> list = dao.getMenuForRole(params);
-		
+
 		for (Menu data : list) {
 			Menu rootMenu = menuByRole.get(data.getRoleCd());
 			if (rootMenu == null) {
@@ -287,12 +296,12 @@ public class AuthService implements UserDetailsService {
 				menus = new HashMap<String, Menu>();
 				menusByRole.put(data.getRoleCd(), menus);
 			}
-			
+
 			Menu menu = menus.get(data.getMenusCd());
 			if (menu == null) {
 				menu = data;
 				menus.put(data.getMenusCd(), menu);
-				
+
 				Menu parMenu = menus.get(menu.getParMenusCd());
 				if (parMenu == null && "1".equals(menu.getMenusLevel())) {
 					parMenu = rootMenu;
@@ -307,7 +316,7 @@ public class AuthService implements UserDetailsService {
 			if ("SAVE".equals(data.getActivityCd())) {
 				menu.setSave(true);
 			}
-			
+
 		}
 
 		if ("AC".equals(svcTypeCd)) {
@@ -318,7 +327,7 @@ public class AuthService implements UserDetailsService {
 			tUCMenusByRole = menusByRole;
 		}
 	}
-	
+
 	public Map<String, Menu> getMenusByRole(String svcTypeCd, String roleCd) {
 		if ("AC".equals(svcTypeCd)) {
 			return tACMenusByRole.get(roleCd);
@@ -335,7 +344,7 @@ public class AuthService implements UserDetailsService {
 
 			// 비밀번호 유효성 검사
 			boolean pwdChk = commonService.pwdResularExpressionChk(password);
-			if(!pwdChk) {
+			if (!pwdChk) {
 				rtn.setSuccess(false);
 				rtn.setMessage("비밀번호는 8~20자리이어야 하며,\n숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
 				return rtn;
@@ -346,26 +355,26 @@ public class AuthService implements UserDetailsService {
 			random.nextBytes(bytes);
 			String salt = new String(Base64.getEncoder().encode(bytes));
 			params.put("salt", salt);
-			
+
 			SHA sha256 = new SHA(256);
 			// 기존 비밀번호 비교
 			String exSalt = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO, params));
 			String rtnPwd = "";
-			if(exSalt != null && !"".equals(exSalt)) {
+			if (exSalt != null && !"".equals(exSalt)) {
 				rtnPwd = sha256.encryptToBase64(exSalt + password);
 			} else {
 				rtnPwd = sha256.encryptToBase64(password);
 			}
 			params.remove("userId");
-			
+
 			String exPwd = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, params));
-			if(exPwd.equals(rtnPwd)) {
+			if (exPwd.equals(rtnPwd)) {
 				rtn.setSuccess(false);
 				rtn.setMessage("기존과 동일한 비밀번호는 사용할 수 없습니다.");
 				return rtn;
 			}
-			
-			String encPwd = sha256.encryptToBase64(salt+ password);
+
+			String encPwd = sha256.encryptToBase64(salt + password);
 			params.put("pwd", encPwd);
 			// 비밀번호 update
 			generalDao.updateGernal(DB.QRY_UPDATE_USER_PASSWORD, params);
@@ -376,31 +385,30 @@ public class AuthService implements UserDetailsService {
 		}
 		return rtn;
 	}
-	
 
 	public RestResult<Object> findLoginId(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
-		
+
 		List<Object> findedLoginIdList = generalDao.selectGernalList("login.findLoginId", params);
 		String findedLoginId = "";
-		if( findedLoginIdList.size() > 0 ) {
-			for(int i = 0; i < findedLoginIdList.size(); i++) {
+		if (findedLoginIdList.size() > 0) {
+			for (int i = 0; i < findedLoginIdList.size(); i++) {
 				Map<String, Object> findedLoginIdMap = (Map<String, Object>) findedLoginIdList.get(i);
 				findedLoginId += CommonUtils.setMaskingLoginId(CommonUtils.getString(findedLoginIdMap.get("loginId")));
-				if( (i+1) != findedLoginIdList.size() ) {
+				if ((i + 1) != findedLoginIdList.size()) {
 					findedLoginId += ", ";
 				}
 			}
 		}
-		
-		if( "".equals(findedLoginId) ) {
+
+		if ("".equals(findedLoginId)) {
 			rtn.setSuccess(false);
 			rtn.setMessage("검색된 아이디가 없습니다.");
 		} else {
 			rtn.setSuccess(true);
 			rtn.setData(findedLoginId);
 		}
-		
+
 		return rtn;
 	}
 }
