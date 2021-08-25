@@ -258,7 +258,6 @@
 		<!-- RCS -->
 		<div class="of_h mt20" v-show="channelTab === 1">
 			<div class="templateBox">
-				<!-- templateList -->
 				<ul class="templateList">
 					<li>
 						<img src="../../../common/images/pushTemplate1.svg" alt="프리 템플릿"><h6>프리 템플릿</h6>
@@ -324,7 +323,7 @@
 						</div>
 					</li>
 				</ul>
-				<!-- //templateList -->
+				<span id="rcsPrdNoti" class="txtCaption vertical-middle colorRed" style="display:none;">* RCS상품은 수정 할 수 없습니다.</span>
 			</div>
 
 			<!-- 프리 템플릿 -->
@@ -2347,18 +2346,18 @@
 				<div class="phoneWrap">
 					<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 					<div class="phoneTextWrap scroll-y">
-						<div v-if="smsTemplateTable === 1" class="phoneText2 mb10">
+						<div v-if="rowData.smsSendType == 'M'" class="phoneText2 mb10">
 							<p v-if="$gfnCommonUtils.isEmpty(rowData.smsTitle)">템플릿 제목</p>
-							<p v-else>{{rowData.smsTitle}}</p>
+							<p v-else><span v-if="rowData.msgKind == 'A'">(광고)</span>{{rowData.smsTitle}}</p>
 						</div>
-						<div v-if="smsTemplateTable === 1">
+						<div v-if="rowData.smsSendType == 'M'">
 							<div v-for="(imgInfo, idx) in rowData.smsImgInfoList" :key="idx" class="phoneText2 mt10 text-center" :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+imgInfo.imgUrl+');'">
 							</div>
 						</div>
 						<div class="phoneText1">
 							<p v-if="$gfnCommonUtils.isEmpty(rowData.smsContent) && (rowData.msgKind != 'A' || $gfnCommonUtils.isEmpty(rowData.smsRcvblcNumber))" class="font-size14 color4 mt10">템플릿 내용</p>
 							<p v-else class="font-size14 color4 mt10">
-								<span><pre>{{rowData.smsContent}}</pre></span>
+								<span><pre><span v-if="rowData.smsSendType == 'S' && rowData.msgKind == 'A'">(광고)</span>{{rowData.smsContent}}</pre></span>
 								<br v-if="!$gfnCommonUtils.isEmpty(rowData.smsContent)"/>
 								<span v-if="rowData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(rowData.smsRcvblcNumber)">{{rowData.smsRcvblcNumber}}</span>
 							</p>
@@ -2379,42 +2378,41 @@
 					<div class="of_h" >
 						<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 						<div class="float-left" style="width:57%">
-							<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" id="smsContent" @keyup="fnByteLength('내용', '#smsContent', '#smsTextLength', '90')"  key="smsContent0"></textarea>
-							<strong class="letter" id="smsTextLength" key="smsTextLength0">00 / 90 Byte</strong>
+							<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" @input="fnSetSmsCurrByte"></textarea>
+							<strong class="letter">({{msgSmsCurrByte}} / {{msgSmsLimitByte}})</strong>
 						</div>
 					</div>
 					<div class="of_h" v-if="rowData.msgKind == 'A'">
 						<div class="float-left" style="width:13%">
-							<h4>광고성메시지<br/>수신거부번호</h4>
+							<h4>광고성메시지<br/>수신거부번호*</h4>
 							<a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</a>
 						</div>
 						<div class="float-left mt10" style="width:57%">
-							<input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rowData.smsRcvblcNumber" maxlength="20">
+							<input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rowData.smsRcvblcNumber" maxlength="20" @input="fnSetSmsCurrByte">
 						</div>
 					</div>
 				</div>
 				<div v-else-if="smsTemplateTable === 1">
 					<div class="of_h" >
-						<div class="float-left" style="width:13%"><h4>제목</h4></div>
+						<div class="float-left" style="width:13%"><h4>제목*</h4></div>
 						<div class="float-left" style="width:57%">
-							<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.smsTitle" id="smsTitle" @keyup="fnByteLength('제목', '#smsTitle', '#smsTitleLength', '40')">
-							<strong class="letter" id="smsTitleLength" key="smsTitleLength1">00 / 40 Byte</strong>
+							<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.smsTitle" @input="fnSetSmsCurrByte">
 						</div>
 					</div>
 					<div class="of_h" >
 						<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 						<div class="float-left" style="width:57%">
-							<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" id="smsContent" @keyup="fnByteLength('내용', '#smsContent', '#smsTextLength', '2000')" key="smsContent1"></textarea>
-							<strong class="letter" id="smsTextLength" key="smsTextLength1">00 / 2000 Byte</strong>
+							<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" @input="fnSetSmsCurrByte"></textarea>
+							<strong class="letter">({{msgSmsCurrByte}} / {{msgSmsLimitByte}})</strong>
 						</div>
 					</div>
 					<div class="of_h" v-if="rowData.msgKind == 'A'">
 						<div class="float-left" style="width:13%">
-							<h4>광고성메시지<br/>수신거부번호</h4>
+							<h4>광고성메시지<br/>수신거부번호*</h4>
 							<a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</a>
 						</div>
 						<div class="float-left mt10" style="width:57%">
-							<input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rowData.smsRcvblcNumber" maxlength="20">
+							<input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rowData.smsRcvblcNumber" maxlength="20" @input="fnSetSmsCurrByte">
 						</div>
 					</div>
 					<div class="of_h consolMarginTop"  v-if="rowData.msgType == 'IMAGE'">
@@ -2656,6 +2654,10 @@ export default {
 			rcsCallbackList: [],					//RCS 발신번호 리스트
 			smsCallbackList: [],				//smslms 발신번호 리스트
 			rcvblcNumOpen: false,
+			beforeSenderType: 'S',
+			beforeMsgKind: 'I',
+			msgSmsCurrByte: 0,
+			msgSmsLimitByte: 0,
 
 			rcsDesMessagebaseId: '',		//서술형 MessagebaseId
 			rcsDesMessagebaseformId: '',	//서술형 유형
@@ -2868,6 +2870,19 @@ export default {
 				jQuery("#slide-counter .current").text(1);
 				jQuery("#slide-counter .total").text(this.rcs10CardCount);
 			}
+		},
+		rowData: {
+			deep: true,
+			handler(nData) {
+				if (nData.smsSendType != this.beforeSenderType) {
+					this.beforeSenderType = nData.smsSendType;
+					this.fnGetSmsLimitByte();
+				}
+				if (nData.msgKind != this.beforeMsgKind) {
+					this.beforeMsgKind = nData.msgKind;
+					this.fnSetSmsCurrByte();
+				}
+			}
 		}
 	},
 	mounted() {
@@ -2877,6 +2892,10 @@ export default {
 		this.fnSelectFriendTalkSenderKeyList();
 		this.fnSMSSelectCallbackList();
 		this.fnSetMultiSendTemplateInfo();
+		if (jQuery("#SMSMMS").prop("checked") == true) {
+			this.fnGetSmsLimitByte();
+			this.fnSetSmsCurrByte();
+		}
 	},
 	methods: {
 		init() {
@@ -3027,6 +3046,7 @@ export default {
 			} else {
 				this.checkedSmsMms = true;
 				this.channelTab = 3;
+				this.fnGetSmsLimitByte();
 			}
 		},
 		// 빈값확인
@@ -3730,6 +3750,12 @@ export default {
 							confirm.fnAlert(this.detailTitle, 'sms 내용을 입력해주세요.');
 							return false;
 						}
+						if (this.rowData.msgKind == 'A') {
+							if (!this.rowData.smsRcvblcNumber) {
+								confirm.fnAlert(this.detailTitle, '광고성메시지 수선거부번호를 입력해주세요.');
+								return false;
+							}
+						}
 					}
 
 					if (this.smsTemplateTable === 1) { //MMS
@@ -3740,6 +3766,12 @@ export default {
 						if (!this.rowData.smsContent) {
 							confirm.fnAlert(this.detailTitle, 'MMS 내용을 입력해주세요.');
 							return false;
+						}
+						if (this.rowData.msgKind == 'A') {
+							if (!this.rowData.smsRcvblcNumber) {
+								confirm.fnAlert(this.detailTitle, '광고성메시지 수선거부번호를 입력해주세요.');
+								return false;
+							}
 						}
 					}
 				}
@@ -3911,6 +3943,7 @@ export default {
 							this.rcsTemplateTableChecked = 10;
 						}
 						jQuery('input:radio[name=rcsTemplate1]').attr('disabled', true);
+						jQuery("#rcsPrdNoti").attr("style", "display:block;");
 
 						if (rtnData.rcsPrdType == 'FREE') {
 							this.rowData.brandNm				= rtnData.rcsBrandNm;
@@ -5206,6 +5239,23 @@ export default {
 			var text = ""+nBytes+" / "+len+"Byte";
 			if(tid) jQuery(tid).html(text);
 		},
+		fnSetSmsCurrByte() {
+			let title = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.smsTitle, '');
+			let body = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.smsContent, '');
+			let rcvblcNum = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.smsRcvblcNumber, '');
+			let totalMsg = title + body ;
+			if (this.rowData.msgKind == 'A') {
+				totalMsg += '\n' + rcvblcNum + '(광고)';
+			}
+			this.msgSmsCurrByte = this.getByte(totalMsg);
+		},
+		fnGetSmsLimitByte() {
+			if (jQuery("input[name=smsSendType]:checked").val() == 'S') {
+				this.msgSmsLimitByte = 80;
+			} else if (jQuery("input[name=smsSendType]:checked").val() == 'M') {
+				this.msgSmsLimitByte = 2000;
+			}
+		},
 		checkSmsSend(flag) {
 			if (flag === "S") {
 				this.smsTemplateTable = 0;
@@ -5214,6 +5264,10 @@ export default {
 			}
 			this.rowData.smsTitle = "";
 			this.rowData.smsContent = "";
+			if (this.rowData.msgKind == 'A') {
+				this.rowData.smsRcvblcNumber = "";
+			}
+			this.fnSetSmsCurrByte();
 		},
 		// 메시지 구분 선택 시 EVENT
 		checkMsgKind(flag) {
