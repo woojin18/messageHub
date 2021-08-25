@@ -77,7 +77,7 @@ export default {
   data() {
     return {
       limitByte: 30,
-      rejectPreText: '수신거부방법 : ',
+      rejectPreText: '무료수신거부 ',
       rejectNumber: '',
       rejectId: '',
       contants: [],
