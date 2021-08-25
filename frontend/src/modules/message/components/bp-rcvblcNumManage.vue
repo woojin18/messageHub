@@ -33,7 +33,7 @@
               </colgroup>
               <tbody>
                 <tr v-for="(contant, idx) in contants" :key="idx">
-                  <td class="text-left end">{{contant.phone}}</td>
+                  <td class="text-left end">{{contant.phone | unescapeXss}}</td>
                   <td class="text-center end"><a href="#" @click.prevent="fnSelectRejectNum(contant.phone)" class="btnStyle1 small backLightGray" title="선택" activity="READ">선택</a></td>
                   <td class="text-center end"><a href="#" @click.prevent="fnDeleteRejectNum(contant.rejectId)" class="btnStyle1 small backLightGray" title="삭제" activity="SAVE">삭제</a></td>
                 </tr>
@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     fnSelectRejectNum(rcvblcNum){
-      this.$emit('callback-func', rcvblcNum);
+      this.$emit('callback-func', this.$gfnCommonUtils.unescapeXss(rcvblcNum));
       this.fnClose();
     },
     fnPreventPhoneNumInput($event){
