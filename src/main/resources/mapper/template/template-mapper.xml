@@ -247,6 +247,7 @@
             , CST.TMPLT_NAME
             , CST.TMPLT_DESC
             , CST.SENDER_TYPE
+            , IF(CST.SENDER_TYPE = 'MMS', 'LMS/MMS', CST.SENDER_TYPE) AS SENDER_TYPE_NAME
             , CST.PROJECT_ID
             , IF(CST.PROJECT_ID = 'ALL', '공용', '전용') AS PROJECT_ID_NM
             , CST.MSG_KIND
