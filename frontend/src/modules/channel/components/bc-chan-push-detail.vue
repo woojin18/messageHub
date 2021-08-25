@@ -61,7 +61,7 @@
 						<div class="of_h">
 							<h4 class="font-normal inline-block" style="width:20%">P8인증서</h4>
 							<input type="text" class="inputStyle vertical-top" style="width:72%" v-model="apnsFileName" disabled>
-							<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:8%; height: 40px;" @change="fnFileNameChange" ref="apnsCetificationFile"/>
+							<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:6.5%; height: 25px; padding : 0 0 0 0;" @change="fnFileNameChange" ref="apnsCetificationFile"/>
 						</div>
 						<div class="mt10">
 							<h4 class="font-normal inline-block" style="width:20%">Bundle ID</h4>
@@ -83,7 +83,7 @@
 			
 			<div class="mt50 text-center">
 				<a @click="fnSave" class="btnStyle5 red width120" activity="SAVE">저장</a>
-				<a @click="fnBack" ref="backBtn" class="btnStyle5 white width120">목록</a>
+				<a @click="fnBack" ref="backBtn" class="btnStyle5 white width120 ml10">목록</a>
 			</div>
 			<!-- //본문 -->
 		</article>

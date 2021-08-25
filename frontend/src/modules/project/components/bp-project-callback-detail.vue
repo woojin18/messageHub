@@ -30,7 +30,7 @@
             </div>						
             <div class="text-center mt20">
               <a @click="fnApproval" class="btnStyle1 backBlack" activity="SAVE">수정요청</a>
-              <a @click="fnCloseLayer" class="btnStyle1 backWhite">닫기</a>						
+              <a @click="fnCloseLayer" class="btnStyle1 backWhite ml10">닫기</a>						
             </div>
           </div>
         </div>

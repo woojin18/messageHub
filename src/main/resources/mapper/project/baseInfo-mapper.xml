@@ -20,7 +20,7 @@
 				END AS PAY_TYPE_NAME
 		,		A.BILL_ID
 		,		A.SMART_CH_CODE
-		,		date_format(A.REG_DT, '%Y-%m-%d') AS REG_DT
+		,		DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
 		,		A.UPD_DT
 		,		A.USE_YN
 		,		A.USE_CH_GRP_INFO
@@ -61,7 +61,7 @@
 		,		DUP_CHK_YN
 		,		WEB_SENDER_YN
 		,		IF(WEB_SENDER_YN = 'Y', '예', '아니오') AS WEB_SENDER_YN_NAME
-		,		DATE_FORMAT(REG_DT, '%Y-%m-%d') AS REG_DT
+		,		DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
 		,		DAY_SENDER_LIMIT_AMOUNT
 		,		MON_SENDER_LIMIT_AMOUNT
 		,		IP_LIST

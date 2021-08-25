@@ -238,7 +238,7 @@
 						,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "")  AS RCS_REPLY
 						,		IFNULL(crcr.APPROVAL_STATUS, '삭제') AS APPROVAL_STATUS
 						,		'Y' AS USE_YN
-						,		date_format(crcr.REG_DT, '%Y-%m-%d') AS REG_DT
+						,		DATE_FORMAT(crcr.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
 						,		'' AS APPROVAL_DT
 						,		crcr.REG_DT AS RANKING_DT
 						from cm.CM_RCS_CHATBOT_REQ crcr 
@@ -262,8 +262,8 @@
 						,		REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.rcsReply[0]'), "\"", "")  AS RCS_REPLY
 						,		crc.APPROVAL_STATUS
 						,		crc.USE_YN
-						,		date_format(crc.REG_DT, '%Y-%m-%d') AS REG_DT
-						,		date_format(crc.APPROVAL_DT, '%Y-%m-%d') AS APPROVAL_DT
+						,		DATE_FORMAT(crc.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
+						,		DATE_FORMAT(crc.APPROVAL_DT, '%Y-%m-%d %H:%i:%s') AS APPROVAL_DT
 						<![CDATA[
 						,		CASE
 									WHEN crc.APPROVAL_DT > crc.REG_DT	THEN crc.APPROVAL_DT

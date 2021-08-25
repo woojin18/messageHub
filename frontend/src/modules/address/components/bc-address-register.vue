@@ -1,7 +1,8 @@
 <template>
 	<!-- Making Modal -->
 	<!--div class="modal fade modalStyle" id="Making" tabindex="-1" role="dialog" aria-hidden="true"-->
-	<div v-if="layerView" class="layerPopup">
+	
+	<div class="modal fade modalStyle" id="layerPop" tabindex="-1" role="dialog" aria-hidden="true" >
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -121,7 +122,7 @@ export default {
 		},
 		// 닫기
 		fnCloseLayer(){
-			this.$emit('update:layerView', false);
+			jQuery("#layerPop").modal("hide");
 		},
 		//주소록 카테고리 그룹 등록
 		fnRegisterAddr() {

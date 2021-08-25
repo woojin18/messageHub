@@ -94,7 +94,7 @@
 			SELECT	CASH_CHARG_AMOUNT	AS AMOUNT
 			,		'충전캐시'				AS CASH_TYPE
 			,		PAY_MTD
-			,		DATE_FORMAT(REG_DT, '%Y-%m-%d')	AS REG_DT
+			,		DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
 			,		'-'					AS EVENT_DT
 			FROM	cm_console.CM_WEB_CASH_HIST
 			WHERE	STATUS = '1'
@@ -105,8 +105,8 @@
 			SELECT	cch.AMOUNT
 			,		'이벤트캐시'
 			,		'이벤트캐시'
-			,		DATE_FORMAT(cc.REG_DT, '%Y-%m-%d')
-			,		DATE_FORMAT(cc.START_DT, '%Y-%m-%d') + '~' + DATE_FORMAT(cc.EXP_DT, '%Y-%m-%d')
+			,		DATE_FORMAT(cc.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
+			,		DATE_FORMAT(cc.START_DT, '%Y-%m-%d %H:%i:%s') + '~' + DATE_FORMAT(cc.EXP_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
 			FROM	cm.CM_CASH cc
 			INNER JOIN (
 				SELECT	MAX(AMOUNT)	AS AMOUNT
@@ -130,7 +130,7 @@
 		/* cash.selectUcubeInfo */
 		SELECT	DISTINCT cp.SERVICE_ID AS A
 		,		cu.BILL_ID
-		,		DATE_FORMAT(cu.REG_DT, '%Y-%m-%d')	AS REG_DT
+		,		DATE_FORMAT(cu.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
 		FROM cm_console.CM_PROJECT cp 
 		INNER JOIN cm_console.CM_UCUBE cu 
 			ON cp.BILL_ID = cu.BILL_ID 
@@ -153,7 +153,7 @@
 		SELECT	cp.PROJECT_NAME
 		,		cp.PROJECT_ID
 		,		cp.BILL_ID
-		,		DATE_FORMAT(cp.REG_DT, '%Y-%m-%d')	AS REG_DT
+		,		DATE_FORMAT(cp.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
 		,		cp.USE_YN
 		,		JSON_EXTRACT(cu.UCUBE_INFO, '$.b')	AS B
 		,		JSON_EXTRACT(cu.UCUBE_INFO, '$.a')	AS A
@@ -179,7 +179,7 @@
 		/* cash.selectProjectSubBillCode */
 		SELECT	cpsc.DEPT_CODE
 		,		cpsc.DEPT_NAME
-		,		DATE_FORMAT(cpsc.UPD_DT, '%Y-%m-%d')	AS UPD_DT
+		,		DATE_FORMAT(cpsc.UPD_DT, '%Y-%m-%d %H:%i:%s') AS UPD_DT
 		,		cpsc.USE_YN
 		,		JSON_EXTRACT(cu.UCUBE_INFO, '$.a')		AS A
 		,		cpsc.BILL_ID

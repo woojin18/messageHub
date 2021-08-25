@@ -489,6 +489,7 @@ export default {
 		fnRegAddrPop() {
 			this.addrRegisterLayerView = true;
 			this.addrRegisterOpen = !this.addrRegisterOpen;
+			jQuery("#layerPop").modal("show");
 		},
 		// 주소록 카테고리 그룹 수정
 		fnModAddrPop() {
