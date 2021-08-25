@@ -3756,6 +3756,10 @@ export default {
 								return false;
 							}
 						}
+						if (this.msgSmsCurrByte > this.msgSmsLimitByte) {
+							confirm.fnAlert(this.detailTitle, '허용 된 메시지 길이를 초과하였습니다.');
+							return false;
+						}
 					}
 
 					if (this.smsTemplateTable === 1) { //MMS
@@ -3772,6 +3776,10 @@ export default {
 								confirm.fnAlert(this.detailTitle, '광고성메시지 수선거부번호를 입력해주세요.');
 								return false;
 							}
+						}
+						if (this.msgSmsCurrByte > this.msgSmsLimitByte) {
+							confirm.fnAlert(this.detailTitle, '허용 된 메시지 길이를 초과하였습니다.');
+							return false;
 						}
 					}
 				}
@@ -4285,7 +4293,8 @@ export default {
 							}
 	
 							this.rowData.callback = rtnData.smsCallback;
-							this.rowData.smsRcvblcNumber = rtnData.smsRcvblcNumber;
+							this.rowData.smsRcvblcNumber = this.$gfnCommonUtils.unescapeXss(rtnData.smsRcvblcNumber);
+							this.fnGetSmsLimitByte();
 						}
 					}
 				} else {
@@ -5250,9 +5259,9 @@ export default {
 			this.msgSmsCurrByte = this.getByte(totalMsg);
 		},
 		fnGetSmsLimitByte() {
-			if (jQuery("input[name=smsSendType]:checked").val() == 'S') {
+			if (this.rowData.smsSendType == 'S') {
 				this.msgSmsLimitByte = 80;
-			} else if (jQuery("input[name=smsSendType]:checked").val() == 'M') {
+			} else if (this.rowData.smsSendType == 'M') {
 				this.msgSmsLimitByte = 2000;
 			}
 		},
