@@ -81,6 +81,7 @@
 		   , (SELECT @rownum:=0) TMP
 		WHERE 1=1
   		AND A.PROJECT_ID = #{projectId}
+  		GROUP BY A.MO_NUMBER
     </select>
 
 </mapper>

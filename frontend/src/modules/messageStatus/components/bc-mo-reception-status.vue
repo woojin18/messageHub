@@ -37,8 +37,8 @@
           <br />
           <h4 class="inline-block" style="width:8%; vertical-align: middle;">수신번호 : </h4>
           <div v-for="(data, idx) in receptionDatas" :key="idx" style="display:inline-block; margin-left:10px;" class="mt20">
-            <input type="checkbox" id="searchReceptionNumber" name="searchReceptionNumber" class="checkStyle2" :value="data.moNumber" v-model="searchData.searchReceptionNumber" >
-            <label for="searchReceptionNumber">{{ data.moNumber }}</label>
+            <input type="checkbox" :id="data.moNumber" name="searchReceptionNumber" class="checkStyle2" :value="data.moNumber" v-model="searchData.searchReceptionNumber" >
+            <label :for="data.moNumber">{{ data.moNumber }}</label>
           </div>
           <a @click="fnSearch()" class="btnStyle2 float-right mt20" title="검색" activity="READ">검색</a>
         </div>
@@ -274,7 +274,6 @@ export default {
       await messageStatusApi.selectReceptionNumberList(params).then(response =>{
         var result = response.data;
         if(result.success) {
-          console.log(result);
           this.receptionDatas = result.data;
           this.receptionNumber = result.data[0].receptionNumber;
           for( var i = 0; i < result.data.length; i++ ){
