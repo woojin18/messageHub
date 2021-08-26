@@ -143,6 +143,7 @@ export default {
     },
     fnCallbackRcvblcNum(rcvblcNum){
       this.fbInfo.rcvblcNumber = rcvblcNum;
+      this.fnSetCurrByte();
     },
     fnDelImg(){
       this.shortImgUrl = '';

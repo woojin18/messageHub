@@ -311,7 +311,7 @@ export default {
       }
       
       if(this.msgLimitByte < this.msgCurrByte){
-        const alertMsg = (this.tmpltData.senderType == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+this.msgLimitByte+'를 넘지 않아야됩니다.\n(현재 : '+this.msgCurrByte+'byte)';
+        const alertMsg = (this.tmpltData.senderType == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+this.msgLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+this.msgCurrByte+'byte)';
         confirm.fnAlert(this.componentsTitle, alertMsg);
         return false;
       }
