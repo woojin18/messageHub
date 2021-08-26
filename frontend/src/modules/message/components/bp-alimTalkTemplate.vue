@@ -99,7 +99,7 @@
               </div>
             </div>  
             <div class="text-center">
-              <a href="#" @click.prevent="fnSelectTemplate" class="btnStyle2 backBlack" title="템플릿 선택">템플릿 선택</a>
+              <a href="#" @click.prevent="fnSelectTemplate" class="btnStyle2 backBlack mr5" title="템플릿 선택">템플릿 선택</a>
               <a href="#" @click.prevent="fnClose" class="btnStyle2 backWhite" title="취소">취소</a>
             </div>
           </div>
