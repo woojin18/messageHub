@@ -84,7 +84,7 @@
             </div>
           </div>
           <div class="text-center mt20">
-            <a @click="fnSelectTemplate" class="btnStyle1 backBlack" data-toggle="modal" title="템플릿 선택" activity="READ">템플릿 선택</a>
+            <a @click="fnSelectTemplate" class="btnStyle1 backBlack mr5" data-toggle="modal" title="템플릿 선택" activity="READ">템플릿 선택</a>
             <a @click="fnClose" class="btnStyle1 backWhite" data-dismiss="modal" title="취소">취소</a>
           </div>
         </div>
