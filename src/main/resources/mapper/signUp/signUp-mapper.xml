@@ -88,6 +88,7 @@
 <!-- 		,		DOMAIN_NAME -->
 		,		UPD_DT
 		,		SALES_ID
+		,		SELF_TOKEN
 		) VALUES (
 				#{corpId}
 		,		#{custNo}
@@ -107,6 +108,7 @@
 <!-- 		,		#{domainName} -->
 		,		NOW()
 		,		#{salesMan}
+		,		#{coInfo1}
 		)
 	</insert>
 	
