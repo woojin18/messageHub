@@ -179,13 +179,33 @@ export default {
       },
       // 저장
       fnSave(){
+        // var num = pwd.search(/[0-9]/g);
+        // var eng  = pwd.search(/[a-z]/ig);
+        // var engUpper  = pwd.search(/[A-Z]/ig);
+        // var spe = pwd.search(/[!@#$%^*+=-]/g);
+        
         if(jQuery.trim(this.loginPwd).length > 0){
-          var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/;
+          var numReg = /^(?=.*?[a-z])(?=.*?[0-9]).{10,}$/;
+          var engReg = /^(?=.*?[a-z])(?=.*?[A-Z]).{10,}$/;
+          var speReg = /^(?=.*?[a-z])(?=.*?[!@#$%^*+=-]).{10,}$/;
 
-          if(!reg.test(this.loginPwd)){
-            confirm.fnAlert("", "비밀번호는 8~20자리이어야 하며,\n숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
+          var numReg2 = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[!@#$%^*+=-]).{8,}$/;
+          var engReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^*+=-]).{8,}$/;
+          var speReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,}$/;
+
+          // var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^*+=-]).{8,}$/;
+
+          // if(!reg.test(this.loginPwd)){
+          //   confirm.fnAlert("", "비밀번호는 8~20자리이어야 하며,\n숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
+          //   return;
+          // }
+          if(!numReg.test(this.loginPwd) && !engReg.test(this.loginPwd)&& !speReg.test(this.loginPwd)
+            && !numReg2.test(this.loginPwd) && !engReg2.test(this.loginPwd) && !speReg2.test(this.loginPwd)){
+            confirm.fnAlert("", "비밀번호는 대/소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 10자리 이상\n또는 3가지 이상을 조합하여 8자리 이상의 길이로 구성해주세요.");
             return;
           }
+
+
           if(this.loginPwd != this.chkLoginPwd){
             confirm.fnAlert("", "변경하려는 비밀번호가 일치하지 않습니다.");
             return;

@@ -84,9 +84,22 @@ export default {
 				return;
 			}
 
-			var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/;
-			if (!reg.test(this.pwd)){
-				confirm.fnAlert("", "비밀번호는 8~20자리이어야 하며,\n숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
+			// var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/;
+			// if (!reg.test(this.pwd)){
+			// 	confirm.fnAlert("", "비밀번호는 8~20자리이어야 하며,\n숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
+			// 	return;
+			// }
+			var numReg = /^(?=.*?[a-z])(?=.*?[0-9]).{10,}$/;
+			var engReg = /^(?=.*?[a-z])(?=.*?[A-Z]).{10,}$/;
+			var speReg = /^(?=.*?[a-z])(?=.*?[!@#$%^*+=-]).{10,}$/;
+
+			var numReg2 = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[!@#$%^*+=-]).{8,}$/;
+			var engReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^*+=-]).{8,}$/;
+			var speReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,}$/;
+
+			if(!numReg.test(this.pwd) && !engReg.test(this.pwd)&& !speReg.test(this.pwd)
+			&& !numReg2.test(this.pwd) && !engReg2.test(this.pwd) && !speReg2.test(this.pwd)){
+				confirm.fnAlert("", "비밀번호는 대/소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 10자리 이상\n또는 3가지 이상을 조합하여 8자리 이상의 길이로 구성해주세요.\n(소문자 필수 입력)");
 				return;
 			}
 

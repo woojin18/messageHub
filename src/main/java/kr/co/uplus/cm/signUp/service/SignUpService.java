@@ -93,15 +93,12 @@ public class SignUpService {
 		
 		if(cnt > 0) {
 			throw new Exception("이미 등록된 아이디입니다.");
-//				rtn.setSuccess(false);
-//				rtn.setMessage("이미 등록된 아이디입니다.");
-//				return rtn;
 		}
 		
 		// 비밀번호 유효성 검사
 		boolean pwdChk = commonService.pwdResularExpressionChk(CommonUtils.getString(paramMap.get("password")));
 		if(!pwdChk) {
-			throw new Exception("비밀번호는 8~20자리이어야 하며,\n숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
+			throw new Exception("비밀번호는 대/소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 10자리 이상\n또는 3가지 이상을 조합하여 8자리 이상의 길이로 구성해주세요.\n(소문자 필수 입력)");
 		}
 		
 		// 사용자 비밀번호 암호화

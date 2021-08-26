@@ -6,8 +6,10 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -57,6 +59,7 @@ import kr.co.uplus.cm.utils.DateUtil;
 import kr.co.uplus.cm.utils.GeneralDao;
 import kr.co.uplus.cm.utils.ImageUtil;
 import lombok.extern.log4j.Log4j2;
+import yoyozo.security.SHA;
 
 @Log4j2
 @Service
@@ -894,13 +897,83 @@ public class CommonService {
     
     // 비밀번호 유효성검사
 	public boolean pwdResularExpressionChk(String pwd) {
-		boolean chk = false;
+		boolean chk = true;
+		// 영문 대/소문자, 숫자, 특수문자 2가지 이상 10자리 이상
+		String numReg = "^(?=.*?[a-z])(?=.*?[0-9]).{10,}$";			// 소문자+숫자
+		String engReg = "^(?=.*?[a-z])(?=.*?[A-Z]).{10,}$";			// 소문자+대문자
+		String speReg = "^(?=.*?[a-z])(?=.*?[!@#$%^*+=-]).{10,}$";	// 소문자+특수문자
+
+		// 영문 대/소문자, 숫자, 특수문자 3가지 이상 8자리 이상
+		String numReg2 = "^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[!@#$%^*+=-]).{8,}$";	// 숫자 제외 3가지 조합
+		String engReg2 = "^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^*+=-]).{8,}$";	// 대문자 제외 3가지 조합
+		String speReg2 = "^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,}$";			// 특수문자 제외 3가지 조합
 		
-		String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$";
-		Matcher match = Pattern.compile(pattern).matcher(pwd);
-		if(match.find()) {
-			chk = true;
+//		String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$";
+//		Matcher match = Pattern.compile(pattern).matcher(pwd);
+		Matcher match1 = Pattern.compile(numReg).matcher(pwd);
+		Matcher match2 = Pattern.compile(engReg).matcher(pwd);
+		Matcher match3 = Pattern.compile(speReg).matcher(pwd);
+		Matcher match4 = Pattern.compile(numReg2).matcher(pwd);
+		Matcher match5 = Pattern.compile(engReg2).matcher(pwd);
+		Matcher match6 = Pattern.compile(speReg2).matcher(pwd);
+		if(!match1.find() && !match2.find() && !match3.find()
+				&& !match4.find() && !match5.find() && !match6.find()) {
+			chk = false;
 		}
 		return chk;
+	}
+	
+	/**
+	 * 사용자 비밀번호 암호화 및 기존 비밀번호 사용 check
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public String encryptionUserPwd(Map<String, Object> params) throws Exception {
+
+		String password = CommonUtils.getString(params.get("password"));
+		
+		// 사용자 비밀번호 암호화
+		SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+		byte[] bytes = new byte[16];
+		random.nextBytes(bytes);
+		String salt = new String(Base64.getEncoder().encode(bytes));
+		params.put("salt", salt);
+
+		SHA sha512 = new SHA(512);
+		
+		// 기존 비밀번호 비교
+		Map<String, Object> saltMap =  (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params);
+		String exSalt = CommonUtils.getString(saltMap.get("salt"));				// 현재 salt 문자열
+		String bfExSalt = CommonUtils.getString(saltMap.get("beforeSalt"));		// 이전 salt 문자열
+		
+		String rtnPwd = "";				// 현재 salt + 새로 입력한 비밀번호
+		String rtnPwd2 = "";			// 기존 salt + 새로 입력한 비밀번호
+		
+		// 현재 이전의 비밀번호와 비교
+		if(bfExSalt != null && !"".equals(bfExSalt)) {
+			rtnPwd2 = sha512.encryptToBase64(bfExSalt + password);
+		} else {
+			rtnPwd2 = sha512.encryptToBase64(password);
+		}
+		
+		// 현재 비밀번호와 비교
+		if (exSalt != null && !"".equals(exSalt)) {
+			rtnPwd = sha512.encryptToBase64(exSalt + password);
+		} else {
+			rtnPwd = sha512.encryptToBase64(password);
+		}
+
+		Map<String, Object> pwdMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, params);
+		String exPwd = CommonUtils.getString(pwdMap.get("loginPwd"));			// 현재 비밀번호
+		String bfExPwd = CommonUtils.getString(pwdMap.get("beforeLoginPwd"));	// 직전 비밀번호
+		
+		// 비밀번호 비교
+		if(exPwd.equals(rtnPwd) || bfExPwd.equals(rtnPwd2)) {
+			throw new Exception("기존과 동일한 비밀번호는 사용할 수 업습니다.");
+		}
+
+		String encPwd = sha512.encryptToBase64(salt + password);
+		return encPwd;
 	}
 }
