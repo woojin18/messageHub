@@ -19,6 +19,19 @@
             <input type="text" class="inputStyle vertical-top ml10" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="" @keypress.enter="fnPageNoResetSearch">
           </div>
         </div>
+        <div class="of_h">
+        <div class="inline-block" style="width:8%"><h4 class="font-normal mt15">검색조건</h4></div>
+          <div class="inline-block" style="width:91%">
+            <div class="consolCheck consolMarginTop">
+              <input type="checkbox" id="otherUse_all" class="checkStyle2" @change="fnSearchMsgKindCdChkAll" v-model="msgKindCdAllSelected">
+              <label for="otherUse_all" class="mr30">전체</label>
+              <input type="checkbox" id="searchMsgKindCd_A" class="checkStyle2" value="A" v-model="searchData.searchMsgKindCd">
+              <label for="searchMsgKindCd_A" class="mr30">광고성</label>
+              <input type="checkbox" id="searchMsgKindCd_I" class="checkStyle2" value="I" v-model="searchData.searchMsgKindCd">
+              <label for="searchMsgKindCd_I" class="mr30">정보성</label>
+            </div>
+          </div>
+        </div>
         <div class="of_h consolMarginTop">
           <div class="inline-block" style="width:8%"><h4 class="font-normal mt15">등록일자</h4></div>
           <div class="inline-block" style="width:91%">
@@ -146,6 +159,7 @@ export default {
         return {
           'searchCondi' : 'templateName',
           'searchText' : '',
+          'searchMsgKindCd' : [],
           'searchStartDate' : this.$gfnCommonUtils.getCurretDate(),
           'searchEndDate' : this.$gfnCommonUtils.getCurretDate()
         }
@@ -177,17 +191,25 @@ export default {
       offset : 0, //페이지 시작점
       searchDateInterval: 7,
       datas: [],
+      msgKindCdAllSelected: true,
       chkBox: ''
     }
-    
-        
   },
   mounted() {
     this.fnExistApiKey();
     this.fnSetIntervalSearchDate(this.searchDateInterval);
+    this.fnSearchMsgKindCdChkAll();
     this.fnPageNoResetSearch();
   },
   methods: {
+    //메시지구분 전체 선택시
+    fnSearchMsgKindCdChkAll(){
+      if(this.msgKindCdAllSelected){
+        this.searchData.searchMsgKindCd = ['A', 'I'];
+      } else {
+        this.searchData.searchMsgKindCd = [];
+      }
+    },
     async fnExistApiKey(){
       let params = {};
       await messageApi.selectApiKey(params).then(response =>{

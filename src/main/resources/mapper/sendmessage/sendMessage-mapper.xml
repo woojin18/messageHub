@@ -381,11 +381,13 @@
             AND A.TMPLT_TITLE LIKE CONCAT('%', #{searchText}, '%')
             </if>
         </if>
-
         <if test="searchStartDate != '' and searchStartDate != null ">
             <if test="searchEndDate != '' and searchEndDate != null ">
             AND A.REG_DT BETWEEN CONCAT(#{searchStartDate}, ' 00:00:00') AND CONCAT(#{searchEndDate}, ' 23:59:59')
             </if>
+        </if>
+        <if test="searchMsgKindCd != null and searchMsgKindCd.size != 0 ">
+            AND A.MSG_KIND IN <foreach collection="searchMsgKindCd" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
         </if>
     </sql>
 
