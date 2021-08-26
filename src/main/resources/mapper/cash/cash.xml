@@ -128,13 +128,20 @@
 	
 	<select id="selectUcubeInfo" resultType="camel">
 		/* cash.selectUcubeInfo */
-		SELECT	DISTINCT cp.SERVICE_ID AS A
-		,		cu.BILL_ID
+<!-- 		SELECT	DISTINCT cp.SERVICE_ID AS A -->
+<!-- 		,		cu.BILL_ID -->
+<!-- 		,		DATE_FORMAT(cu.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT -->
+<!-- 		FROM cm_console.CM_PROJECT cp  -->
+<!-- 		INNER JOIN cm_console.CM_UCUBE cu  -->
+<!-- 			ON cp.BILL_ID = cu.BILL_ID  -->
+<!-- 		WHERE	cp.CORP_ID = #{corpId} -->
+		SELECT	cu.BILL_ID
 		,		DATE_FORMAT(cu.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
-		FROM cm_console.CM_PROJECT cp 
-		INNER JOIN cm_console.CM_UCUBE cu 
-			ON cp.BILL_ID = cu.BILL_ID 
-		WHERE	cp.CORP_ID = #{corpId}
+		FROM cm_console.CM_UCUBE cu
+		LEFT OUTER JOIN cm_console.CM_PROJECT cp
+			ON cu.BILL_ID = cp.BILL_ID 
+		WHERE	cp.BILL_ID is null
+		AND		cp.CORP_ID = #{corpId}
 	</select>
 	
 	<select id="selectProjectInfoCnt" resultType="int">
@@ -153,6 +160,7 @@
 		SELECT	cp.PROJECT_NAME
 		,		cp.PROJECT_ID
 		,		cp.BILL_ID
+		,		cp.SERVICE_ID
 		,		DATE_FORMAT(cp.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
 		,		cp.USE_YN
 		,		JSON_EXTRACT(cu.UCUBE_INFO, '$.b')	AS B

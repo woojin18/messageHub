@@ -2,10 +2,10 @@
   <div>
     <!-- 본문 -->
     <div class="of_h h4Minus">
-      <h4 class="inline-block">청구ID 조회(후불)</h4>
-      <div class="float-right h4Button">
+      <h4 class="inline-block">미사용 청구ID 조회(후불)</h4>
+      <!-- <div class="float-right h4Button">
         <a @click="fnCreateClaimId" class="btnStyle2 borderGray">청구ID 등록</a>
-      </div>
+      </div> -->
     </div>
 
     <div class="row consolMarginTop">
@@ -14,14 +14,14 @@
         <table class="table_skin1 bt-000 tbl-striped">
           <thead>
           <tr>
-            <th class="text-center lc-1">가입번호</th>
+            <!-- <th class="text-center lc-1">가입번호</th> -->
             <th class="text-center lc-1">청구ID</th>
             <th class="text-center lc-1 end">청구ID 생성일</th>
           </tr>
           </thead>
           <tbody>
             <tr v-for="(data, index) in ucubeData" :key="index">
-              <td class="text-center">{{data.a}}</td>
+              <!-- <td class="text-center">{{data.a}}</td> -->
               <td class="text-center">{{data.billId}}</td>
               <td class="text-center end">{{data.regDt}}</td>
             </tr>	
@@ -68,8 +68,8 @@
               <td class="text-center">{{data.regDt}}</td>
               <td class="text-center" v-if="data.useYn=='Y'">예</td>
               <td class="text-center" v-else>아니오</td>
-              <td class="text-center">{{data.b}}</td>
-              <td @click="fnModClaimId(data)" class="text-center end" style="text-decoration: underline; cursor: pointer;">{{data.a}}</td>
+              <td class="text-center">{{data.serviceId}}</td>
+              <td @click="fnModClaimId(data)" class="text-center end" style="text-decoration: underline; cursor: pointer;">{{data.billId}}</td>
             </tr>
           </tbody>
         </table>
@@ -192,6 +192,7 @@ export default {
 
       cashApi.selectProjectInfo(params).then(response => {
         var result = response.data;
+        console.log(result);
         if(result.success) {
           this.projectCnt = result.data.count;
           this.projectData = result.data.list;
