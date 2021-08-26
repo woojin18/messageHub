@@ -263,63 +263,63 @@
 						<img src="../../../common/images/pushTemplate1.svg" alt="프리 템플릿"><h6>프리 템플릿</h6>
 						<div class="consolMarginTop">
 							<input type="radio" name="rcsTemplate1" value="0" id="rcsTemplate1-1" class="radioStyle" checked="" v-on:click="rcsTemplateTable=0" v-model="rcsTemplateTableChecked">
-							<label for="rcsTemplate1-1"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+							<label for="rcsTemplate1-1"></label>
 						</div>
 					</li>
 					<li v-if="rowData.msgKind == 'I'"><!-- 정보성인경우만 사용가능 -->
 						<img src="../../../common/images/pushTemplate2.svg" alt="템플릿 승인(서술)"><h6>템플릿 승인<br>(서술)</h6>
 						<div class="consolMarginTop">
 							<input type="radio" name="rcsTemplate1" value="1" id="rcsTemplate1-2" class="radioStyle" v-on:click="rcsTemplateTable=1" v-model="rcsTemplateTableChecked">
-							<label for="rcsTemplate1-2"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+							<label for="rcsTemplate1-2"></label>
 						</div>
 					</li>
 					<li v-if="rowData.msgKind == 'I'"><!-- 정보성인경우만 사용가능 -->
 						<img src="../../../common/images/pushTemplate3.svg" alt="템플릿 승인(스타일)"><h6>템플릿 승인<br>(스타일)</h6>
 						<div class="consolMarginTop">
 							<input type="radio" name="rcsTemplate1" value="2" id="rcsTemplate1-3" class="radioStyle" v-on:click="rcsTemplateTable=2" v-model="rcsTemplateTableChecked">
-							<label for="rcsTemplate1-3"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+							<label for="rcsTemplate1-3"></label>
 						</div>
 					</li>
 					<li>
 						<img src="../../../common/images/pushTemplate4.svg" alt="SMS"><h6>SMS</h6>
 						<div class="consolMarginTop">
 							<input type="radio" name="rcsTemplate1" value="3" id="rcsTemplate1-4" class="radioStyle" v-on:click="rcsTemplateTable=3" v-model="rcsTemplateTableChecked">
-							<label for="rcsTemplate1-4"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+							<label for="rcsTemplate1-4"></label>
 						</div>
 					</li>
 					<li>
 						<img src="../../../common/images/pushTemplate5.svg" alt="LMS"><h6>LMS</h6>
 						<div class="consolMarginTop">
 							<input type="radio" name="rcsTemplate1" value="4" id="rcsTemplate1-5" class="radioStyle" v-on:click="rcsTemplateTable=4" v-model="rcsTemplateTableChecked">
-							<label for="rcsTemplate1-5"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+							<label for="rcsTemplate1-5"></label>
 						</div>
 					</li>
 					<li v-if="rowData.msgType == 'IMAGE'"><!-- 메시지타입이 이미지인 경우만 사용가능 -->
 						<img src="../../../common/images/pushTemplate6.svg" alt="세로형(SHORT)"><h6>세로형<br>(SHORT)</h6>
 						<div class="consolMarginTop">
 							<input type="radio" name="rcsTemplate1" value="5" id="rcsTemplate1-6" class="radioStyle" v-on:click="rcsTemplateTable=5" v-model="rcsTemplateTableChecked">
-							<label for="rcsTemplate1-6"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+							<label for="rcsTemplate1-6"></label>
 						</div>
 					</li>
 					<li v-if="rowData.msgType == 'IMAGE'"><!-- 메시지타입이 이미지인 경우만 사용가능 -->
 						<img src="../../../common/images/pushTemplate7.svg" alt="세로형(Tall)"><h6>세로형<br>(Tall)</h6>
 						<div class="consolMarginTop">
 							<input type="radio" name="rcsTemplate1" value="6" id="rcsTemplate1-7" class="radioStyle" v-on:click="rcsTemplateTable=6" v-model="rcsTemplateTableChecked">
-							<label for="rcsTemplate1-7"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+							<label for="rcsTemplate1-7"></label>
 						</div>
 					</li>
 					<li>
 						<img src="../../../common/images/pushTemplate10.svg" alt="캐러셀(SHORT)"><h6>캐러셀<br>(SHORT)</h6>
 						<div class="consolMarginTop">
 							<input type="radio" name="rcsTemplate1" value="9" id="rcsTemplate1-10" class="radioStyle" v-on:click="rcsTemplateTable=9" v-model="rcsTemplateTableChecked">
-							<label for="rcsTemplate1-10"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+							<label for="rcsTemplate1-10"></label>
 						</div>
 					</li>
 					<li>
 						<img src="../../../common/images/pushTemplate11.svg" alt="캐러셀(Tall)"><h6>캐러셀<br>(Tall)</h6>
 						<div class="consolMarginTop">
 							<input type="radio" name="rcsTemplate1" value="10" id="rcsTemplate1-11" class="radioStyle" v-on:click="rcsTemplateTable=10" v-model="rcsTemplateTableChecked">
-							<label for="rcsTemplate1-11"></label><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px">메시지를 발송할 수 있습니다.</span></i>
+							<label for="rcsTemplate1-11"></label>
 						</div>
 					</li>
 				</ul>
