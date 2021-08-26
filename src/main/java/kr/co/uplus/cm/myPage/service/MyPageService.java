@@ -91,7 +91,7 @@ public class MyPageService {
 				SHA sha512 = new SHA(512);
 				
 				// 기존 비밀번호 비교
-				Map<String, Object> saltMap =  (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params);
+				Map<String, Object> saltMap =  (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, paramMap);
 				String exSalt = CommonUtils.getString(saltMap.get("salt"));				// 현재 salt 문자열
 				String bfExSalt = CommonUtils.getString(saltMap.get("beforeSalt"));		// 이전 salt 문자열
 				
@@ -179,7 +179,7 @@ public class MyPageService {
 		paramMap.putAll(params);
 
 		// salt
-		Map<String, Object> saltMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params);
+		Map<String, Object> saltMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, paramMap);
 		String salt = CommonUtils.getString(saltMap.get("salt"));
 		
 		if (salt != null && !"".equals(salt)) {
