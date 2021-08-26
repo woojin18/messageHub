@@ -3249,7 +3249,7 @@ export default {
 		// 저가 우선정렬
 		prioritySort:function() {
 			if (this.rowData.checkedChannel.length < 2) {
-				alert("채널을 2개 이상 선택하세요.");
+				confirm.fnAlert(this.componentsTitle, "채널을 2개 이상 선택하세요.");
 			} else {
 				var pushFlag = false;
 				var kakaoFlag = false;
@@ -4333,112 +4333,112 @@ export default {
 
 			if (rcsType == 'SMS') {
 				if (this.rowData.rcsSMSButtons.length >= 1) {
-					alert("button은 1개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 1개까지 추가가능합니다.");
 				} else {
 					this.buttonSMSFlag = true;
 					this.rowData.rcsSMSButtons.push(temp);
 				}
 			} else if (rcsType == 'LMS') {
 				if (this.rowData.rcsLMSButtons.length >= 3) {
-					alert("button은 3개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 3개까지 추가가능합니다.");
 				} else {
 					this.buttonLMSFlag = true;
 					this.rowData.rcsLMSButtons.push(temp);
 				}
 			} else if (rcsType == 'SHORT') {
 				if (this.rowData.rcsShortButtons.length >= 2) {
-					alert("button은 2개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.buttonShortFlag = true;
 					this.rowData.rcsShortButtons.push(temp);
 				}
 			} else if (rcsType == 'TALL') {
 				if (this.rowData.rcsTallButtons.length >= 2) {
-					alert("button은 2개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.buttonTallFlag = true;
 					this.rowData.rcsTallButtons.push(temp);
 				}
 			} else if (rcsType == 'CSHORT_TAB1') {
 				if (this.rowData.rcs90Buttons.length >= 2) {
-					alert("button은 2개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button90Flag = true;
 					this.rowData.rcs90Buttons.push(temp);
 				}
 			} else if (rcsType == 'CSHORT_TAB2') {
 				if (this.rowData.rcs91Buttons.length >= 2) {
-					alert("button은 2개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button91Flag = true;
 					this.rowData.rcs91Buttons.push(temp);
 				}
 			} else if (rcsType == 'CSHORT_TAB3') {
 				if (this.rowData.rcs92Buttons.length >= 2) {
-					alert("button은 2개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button92Flag = true;
 					this.rowData.rcs92Buttons.push(temp);
 				}
 			} else if (rcsType == 'CSHORT_TAB4') {
 				if (this.rowData.rcs93Buttons.length >= 2) {
-					alert("button은 2개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button93Flag = true;
 					this.rowData.rcs93Buttons.push(temp);
 				}
 			} else if (rcsType == 'CSHORT_TAB5') {
 				if (this.rowData.rcs94Buttons.length >= 2) {
-					alert("button은 2개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button94Flag = true;
 					this.rowData.rcs94Buttons.push(temp);
 				}
 			} else if (rcsType == 'CSHORT_TAB6') {
 				if (this.rowData.rcs95Buttons.length >= 2) {
-					alert("button은 2개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button95Flag = true;
 					this.rowData.rcs95Buttons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB1') {
 				if (this.rowData.rcsCTallImgInfoList[0].rcsButtons.length >= 2) {
-					alert("button은 2개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button100Flag = true;
 					this.rowData.rcsCTallImgInfoList[0].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB2') {
 				if (this.rowData.rcsCTallImgInfoList[1].rcsButtons.length >= 2) {
-					alert("button은 2개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button101Flag = true;
 					this.rowData.rcsCTallImgInfoList[1].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB3') {
 				if (this.rowData.rcsCTallImgInfoList[2].rcsButtons.length >= 2) {
-					alert("button은 2개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button102Flag = true;
 					this.rowData.rcsCTallImgInfoList[2].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB4') {
 				if (this.rowData.rcsCTallImgInfoList[3].rcsButtons.length >= 2) {
-					alert("button은 2개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button103Flag = true;
 					this.rowData.rcsCTallImgInfoList[3].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB5') {
 				if (this.rowData.rcsCTallImgInfoList[4].rcsButtons.length >= 2) {
-					alert("button은 2개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button104Flag = true;
 					this.rowData.rcsCTallImgInfoList[4].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB6') {
 				if (this.rowData.rcsCTallImgInfoList[5].rcsButtons.length >= 2) {
-					alert("button은 2개까지 추가가능합니다.");
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button105Flag = true;
 					this.rowData.rcsCTallImgInfoList[5].rcsButtons.push(temp);
@@ -4483,7 +4483,7 @@ export default {
 		},
 		addRowFriendTalk: function(){
 			if (this.rowData.friendTalkButtons.length >= 5) {
-				alert("button은 5개까지 추가가능합니다.");
+				confirm.fnAlert(this.componentsTitle, "button은 5개까지 추가가능합니다.");
 			} else {
 				this.buttonFriendTalkFlag = true;
 				this.friendTalkButtonsMaxLen = this.friendTalkButtonsMaxLen + 1;
@@ -4700,126 +4700,6 @@ export default {
 		},
 		fnRcs95DelImg(idx){
 			this.rowData.rcs95ImgInfoList.splice(idx, 1);
-		},
-		addRow100: function(){
-			if (this.rowData.rcsCTallImgInfoList[0].rcsButtons.length >= 2) {
-				alert("button은 2개까지 추가가능합니다.");
-			} else {
-				this.button100Flag = true;
-				this.rcs100ButtonsMaxLen = this.rcs100ButtonsMaxLen + 1;
-				var startDateId = 'rcs100StartDateId'	+ this.rcs100ButtonsMaxLen;
-				var endDateId 	= 'rcs100EndDateId'	+ this.rcs100ButtonsMaxLen;
-
-				this.rowData.rcsCTallImgInfoList[0].rcsButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-			}
-		},
-		removeRow100: function(row){
-			if (this.rowData.rcsCTallImgInfoList[0].rcsButtons.length <= 1){
-				this.rowData.rcsCTallImgInfoList[0].rcsButtons.splice(row,1);
-				this.rowData.rcsCTallImgInfoList[0].rcsButtons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-			} else {
-				this.rowData.rcsCTallImgInfoList[0].rcsButtons.splice(row,1);
-			}
-		},
-		addRow101: function(){
-			if (this.rowData.rcs101Buttons.length >= 2) {
-				alert("button은 2개까지 추가가능합니다.");
-			} else {
-				this.button101Flag = true;
-				this.rcs101ButtonsMaxLen = this.rcs101ButtonsMaxLen + 1;
-				var startDateId = 'rcs101StartDateId'	+ this.rcs101ButtonsMaxLen;
-				var endDateId 	= 'rcs101EndDateId'	+ this.rcs101ButtonsMaxLen;
-
-				this.rowData.rcs101Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-			}
-		},
-		removeRow101: function(row){
-			if (this.rowData.rcs101Buttons.length <= 1) {
-				this.rowData.rcs101Buttons.splice(row,1);
-				this.rowData.rcs101Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-			} else {
-				this.rowData.rcs101Buttons.splice(row,1);
-			}
-		},
-		addRow102: function(){
-			if (this.rowData.rcs102Buttons.length >= 2) {
-				alert("button은 2개까지 추가가능합니다.");
-			} else {
-				this.button102Flag = true;
-				this.rcs102ButtonsMaxLen = this.rcs102ButtonsMaxLen + 1;
-				var startDateId = 'rcs102StartDateId'	+ this.rcs102ButtonsMaxLen;
-				var endDateId 	= 'rcs102EndDateId'	+ this.rcs102ButtonsMaxLen;
-
-				this.rowData.rcs102Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-			}
-		},
-		removeRow102: function(row){
-			if (this.rowData.rcs102Buttons.length <= 1) {
-				this.rowData.rcs102Buttons.splice(row,1);
-				this.rowData.rcs102Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-			} else {
-				this.rowData.rcs102Buttons.splice(row,1);
-			}
-		},
-		addRow103: function(){
-			if (this.rowData.rcs103Buttons.length >= 2) {
-				alert("button은 2개까지 추가가능합니다.");
-			} else {
-				this.button103Flag = true;
-				this.rcs103ButtonsMaxLen = this.rcs103ButtonsMaxLen + 1;
-				var startDateId = 'rcs103StartDateId'	+ this.rcs103ButtonsMaxLen;
-				var endDateId 	= 'rcs103EndDateId'	+ this.rcs103ButtonsMaxLen;
-
-				this.rowData.rcs103Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-			}
-		},
-		removeRow103: function(row){
-			if (this.rowData.rcs103Buttons.length <= 1) {
-				this.rowData.rcs103Buttons.splice(row,1);
-				this.rowData.rcs103Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-			} else {
-				this.rowData.rcs103Buttons.splice(row,1);
-			}
-		},
-		addRow104: function(){
-			if (this.rowData.rcs104Buttons.length >= 2) {
-				alert("button은 2개까지 추가가능합니다.");
-			} else {
-				this.button104Flag = true;
-				this.rcs104ButtonsMaxLen = this.rcs104ButtonsMaxLen + 1;
-				var startDateId = 'rcs104StartDateId'	+ this.rcs104ButtonsMaxLen;
-				var endDateId 	= 'rcs104EndDateId'	+ this.rcs104ButtonsMaxLen;
-
-				this.rowData.rcs104Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-			}
-		},
-		removeRow104: function(row){
-			if (this.rowData.rcs104Buttons.length <= 1) {
-				this.rowData.rcs104Buttons.splice(row,1);
-				this.rowData.rcs104Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-			} else {
-				this.rowData.rcs104Buttons.splice(row,1);
-			}
-		},
-		addRow105: function(){
-			if (this.rowData.rcs105Buttons.length >= 2) {
-				alert("button은 2개까지 추가가능합니다.");
-			} else {
-				this.button105Flag = true;
-				this.rcs105ButtonsMaxLen = this.rcs105ButtonsMaxLen + 1;
-				var startDateId = 'rcs105StartDateId'	+ this.rcs105ButtonsMaxLen;
-				var endDateId 	= 'rcs105EndDateId'	+ this.rcs105ButtonsMaxLen;
-
-				this.rowData.rcs105Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':'', 'startDate':'', 'endDate':'', 'startDateId':startDateId, 'endDateId':endDateId, 'buttonLink1':''});
-			}
-		},
-		removeRow105: function(row){
-			if (this.rowData.rcs105Buttons.length <= 1) {
-				this.rowData.rcs105Buttons.splice(row,1);
-				this.rowData.rcs105Buttons.push({'buttonType':'', 'buttonName':'', 'buttonLink':''});//입력할수 있도록 빈공백의 한칸은 남겨둔다.
-			} else {
-				this.rowData.rcs105Buttons.splice(row,1);
-			}
 		},
 		fnRcsCarouselTallOpenImageManagePopUp(idx){
 			if (idx == 0) {
