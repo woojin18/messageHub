@@ -148,8 +148,6 @@ public class ProjectController {
 		params.put("certiFile",			certiFile);
 		params.put("chatbots",			chatbots);
 		
-		System.out.println("-------------------------------------@@ saveRcsChatbotReqForApi params : " + params);
-		
 		try {
 			projectService.saveRcsChatbotReqForApi(params);
 			rtn.setSuccess(true);
