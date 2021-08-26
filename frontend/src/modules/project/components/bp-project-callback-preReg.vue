@@ -102,13 +102,17 @@ export default {
     }
   },
   mounted() {
-    this.fnBrandList();
   },
   props: {
-    projectId : {
+    srcProjectId : {
       type: String,
       require: true
     }
+  },
+  watch: {
+    srcProjectId(){
+      this.fnBrandList();
+    },
   },
   methods: {
     // 닫기
@@ -116,7 +120,7 @@ export default {
       jQuery("#regPop").modal("hide");
     },
     fnBrandList(){
-      var params = { "projectId" : this.projectId }
+      var params = { "srcProjectId" : this.srcProjectId }
 
       projectApi.selectApprovalBrandList(params).then(response =>{
         this.brandList = response.data.data;
@@ -149,7 +153,7 @@ export default {
       var fd = new FormData();
       fd.append('sts'			    , "C");
       fd.append('saveCorpId'	, tokenSvc.getToken().principal.corpId);
-      fd.append('projectId'		, this.projectId);
+      fd.append('projectId'		, this.srcProjectId);
       fd.append('brandId'			, this.brandId);
       fd.append('chatbotId'		, '');
       fd.append('mainMdn'			, this.mainMdn);

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <layerPopup  :projectId = "projectId" />
     <article>
       <h4 class="mt40">발신번호 사전 등록</h4>
       <p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i> 발신번호 미등록 시 메시지가 정상적으로 전송되지 않을 수 있습니다.<br><i class="far fa-info-circle"></i> 발신번호는 문자발송장비 사용자의 최대 3배까지만 등록할 수 있습니다.</p>
@@ -65,6 +64,7 @@
 
       <footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
     </article>
+    <layerPopup  :srcProjectId = "srcProjectId" />
   </div>
 </template>
 
@@ -80,23 +80,23 @@ export default {
     return {
       // 프로젝트 정보
       projectId : '',
-      projectName : ''
+      projectName : '',
+      srcProjectId : '',
     }
   },
   mounted() {
-    var vm = this;
-
     this.projectId = this.$route.params.projectId;
     this.projectName = this.$route.params.projectName;
   },
   methods: {
     fnMoveMainTab(moveTabName){
-      this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
+      this.$router.push( {name:moveTabName, params:{"projectId" : this.$route.params.projectId, "projectName" : this.projectName }} );
     },
     fnMovePjtTab(){
-      this.$router.push( {name:'projectMain', params:{"projectId" : this.projectId, "projectName" : this.projectName, "selMainTab" : 5  }} );
+      this.$router.push( {name:'projectMain', params:{"projectId" : this.$route.params.projectId, "projectName" : this.projectName, "selMainTab" : 5  }} );
     },
     fnCallbackReg(){
+      this.srcProjectId = this.$route.params.projectId;
       jQuery("#regPop").modal("show");
     }
   }

@@ -337,7 +337,7 @@
 		FROM cm.CM_RCS_BRAND CRB
 		WHERE 1=1
 		AND		CRB.CORP_ID  = #{corpId}
-		AND		(CRB.PROJECT_ID = #{projectId} OR CRB.PROJECT_ID = 'ALL')
+		AND		(CRB.PROJECT_ID = #{srcProjectId} OR CRB.PROJECT_ID = 'ALL')
 		ORDER BY CRB.REG_DT DESC
 	</select>
 	
