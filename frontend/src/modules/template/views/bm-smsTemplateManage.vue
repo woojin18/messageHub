@@ -225,6 +225,7 @@ export default {
     },
     fnCallbackRcvblcNum(rcvblcNum){
       this.tmpltData.rcvblcNumber = rcvblcNum;
+      this.fnSetCurrByte();
     },
     async fnValidUseChGrp(){
       let params = {chGrp: 'SMS/MMS'};
