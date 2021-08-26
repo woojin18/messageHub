@@ -14,13 +14,13 @@
           <div class="inline-block" style="width:91%">
             <select v-model="searchData.searchCondi" class="selectStyle2" style="width:15%" title="검색조건">
                 <option value="templateName">템플릿명</option>
-                <option value="templateChannel">템플릿채널</option>
+                <!-- <option value="templateChannel">템플릿채널</option> -->
             </select>
             <input type="text" class="inputStyle vertical-top ml10" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="" @keypress.enter="fnPageNoResetSearch">
           </div>
         </div>
         <div class="of_h">
-        <div class="inline-block" style="width:8%"><h4 class="font-normal mt15">검색조건</h4></div>
+          <div class="inline-block" style="width:8%"><h4 class="font-normal mt15">메시지구분</h4></div>
           <div class="inline-block" style="width:91%">
             <div class="consolCheck consolMarginTop">
               <input type="checkbox" id="otherUse_all" class="checkStyle2" @change="fnSearchMsgKindCdChkAll" v-model="msgKindCdAllSelected">
@@ -32,6 +32,29 @@
             </div>
           </div>
         </div>
+
+        <div class="of_h">
+          <div class="inline-block" style="width:8%"><h4 class="font-normal mt20">템플릿채널</h4></div>
+          <div class="inline-block" style="width:91%">
+            <div class="consolCheck consolMarginTop">
+              <input type="checkbox" id="searchMsgCh_all" class="checkStyle2" @change="fnSearchMsgChChkAll" v-model="msgChAllSelected">
+              <label for="searchMsgCh_all" class="mr30">전체</label>
+              <input type="checkbox" id="searchMsgCh_PUSH" class="checkStyle2" value="PUSH" v-model="searchData.searchMsgCh">
+              <label for="searchMsgCh_PUSH" class="mr30">푸시</label>
+              <input type="checkbox" id="searchMsgCh_SMS" class="checkStyle2" value="SMS" v-model="searchData.searchMsgCh">
+              <label for="searchMsgCh_SMS" class="mr30">SMS</label>
+              <input type="checkbox" id="searchMsgCh_MMS" class="checkStyle2" value="MMS" v-model="searchData.searchMsgCh">
+              <label for="searchMsgCh_MMS" class="mr30">MMS</label>
+              <input type="checkbox" id="searchMsgCh_FRIENDTALK" class="checkStyle2" value="FRIENDTALK" v-model="searchData.searchMsgCh">
+              <label for="searchMsgCh_FRIENDTALK" class="mr30">친구톡</label>
+              <input type="checkbox" id="searchMsgCh_ALIMTALK" class="checkStyle2" value="ALIMTALK" v-model="searchData.searchMsgCh">
+              <label for="searchMsgCh_ALIMTALK" class="mr30">알림톡</label>
+              <input type="checkbox" id="searchMsgCh_RCS" class="checkStyle2" value="RCS" v-model="searchData.searchMsgCh">
+              <label for="searchMsgCh_RCS" class="mr30">RCS</label>
+            </div>
+          </div>
+        </div>
+
         <div class="of_h consolMarginTop">
           <div class="inline-block" style="width:8%"><h4 class="font-normal mt15">등록일자</h4></div>
           <div class="inline-block" style="width:91%">
@@ -160,6 +183,7 @@ export default {
           'searchCondi' : 'templateName',
           'searchText' : '',
           'searchMsgKindCd' : [],
+          'searchMsgCh' : [],
           'searchStartDate' : this.$gfnCommonUtils.getCurretDate(),
           'searchEndDate' : this.$gfnCommonUtils.getCurretDate()
         }
@@ -192,6 +216,7 @@ export default {
       searchDateInterval: 7,
       datas: [],
       msgKindCdAllSelected: true,
+      msgChAllSelected: true,
       chkBox: ''
     }
   },
@@ -199,10 +224,17 @@ export default {
     this.fnExistApiKey();
     this.fnSetIntervalSearchDate(this.searchDateInterval);
     this.fnSearchMsgKindCdChkAll();
+    this.fnSearchMsgChChkAll();
     this.fnPageNoResetSearch();
   },
   methods: {
-    //메시지구분 전체 선택시
+    fnSearchMsgChChkAll(){
+      if(this.msgChAllSelected){
+        this.searchData.searchMsgCh = ['PUSH', 'SMS', 'MMS', 'FRIENDTALK', 'ALIMTALK', 'RCS'];
+      } else {
+        this.searchData.searchMsgCh = [];
+      }
+    },
     fnSearchMsgKindCdChkAll(){
       if(this.msgKindCdAllSelected){
         this.searchData.searchMsgKindCd = ['A', 'I'];

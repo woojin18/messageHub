@@ -374,9 +374,11 @@
         AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
         AND JSON_CONTAINS(JSON_ARRAY(<foreach collection="useChGrps" item="item" separator=",">#{item}</foreach>), JSON_EXTRACT(A.TMPLT_INFO, '$[*].ch'), '$') > 0
         <if test="searchText != '' and searchText != null ">
+            <!--
             <if test="searchCondi == 'templateChannel' ">
             AND UPPER(JSON_EXTRACT(A.TMPLT_INFO, '$[*].ch')) LIKE CONCAT('%', UPPER(#{searchText}), '%')
             </if>
+            -->
             <if test="searchCondi == 'templateName' ">
             AND A.TMPLT_TITLE LIKE CONCAT('%', #{searchText}, '%')
             </if>
@@ -388,6 +390,14 @@
         </if>
         <if test="searchMsgKindCd != null and searchMsgKindCd.size != 0 ">
             AND A.MSG_KIND IN <foreach collection="searchMsgKindCd" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
+        </if>
+        <if test="searchMsgCh != null and searchMsgCh.size != 0 ">
+            AND (
+                1=2
+                <foreach collection="searchMsgCh" item="item">
+                OR UPPER(JSON_EXTRACT(A.TMPLT_INFO, '$[*].ch')) LIKE CONCAT('%', UPPER(#{item}), '%')
+                </foreach>
+            )
         </if>
     </sql>
 
