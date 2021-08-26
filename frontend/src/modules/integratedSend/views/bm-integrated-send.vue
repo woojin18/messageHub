@@ -93,7 +93,7 @@
               <th class="text-center lc-1">템플릿 ID</th>
               <th class="text-center lc-1">템플릿명</th>
               <th class="text-center lc-1">템플릿 채널</th>
-              <th class="text-center lc-1">템플릿유형</th>
+              <th class="text-center lc-1">메시지구분</th>
               <th class="text-center lc-1">메시지 타입</th>
               <th class="text-center lc-1">템플릿 구분</th>
               <th class="text-center lc-1">등록자</th>
