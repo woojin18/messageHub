@@ -25,77 +25,91 @@
 			</div>
 			<div v-if="loaded" class="mt20">
 				<ul class="tab_s4_2 of-h" style="width:100%">
-					<li @click="fnSetStatisData('PUSH')" id="setPush" style="width:16.6%" class="active">
+					<li @click="fnSetStatisData('ALL')" id="setAll" style="width:12.5%" class="active">
+						<a class="inline-block text-center active">
+							<h5>전체</h5>
+							<p>총 {{allInfo.totCnt}}건</p>
+							<p class="inline-block color1 pr10 border-right consolMarginTop">
+								<span class="number">{{allInfo.succRatio}}%<br></span>
+								<span class="text">성공</span>
+							</p>
+							<p class="inline-block pl10">
+								<span class="number">{{allInfo.failRatio}}%<br></span>
+								<span class="text">실패</span>
+							</p>
+						</a>
+					</li>
+					<li @click="fnSetStatisData('PUSH')" id="setPush" style="width:12.5%">
 						<a class="inline-block text-center active">
 							<h5>Push</h5>
 							<p>총 {{pushInfo.totCnt}}건</p>
 							<p class="inline-block color1 pr10 border-right consolMarginTop">
-								<span class="number">{{pushInfo.succRatio}}<br></span>
+								<span class="number">{{pushInfo.succRatio}}%<br></span>
 								<span class="text">성공</span>
 							</p>
 							<p class="inline-block pl10">
-								<span class="number">{{pushInfo.failRatio}}<br></span>
+								<span class="number">{{pushInfo.failRatio}}%<br></span>
 								<span class="text">실패</span>
 							</p>
 						</a>
 					</li>
-					<li @click="fnSetStatisData('RCS')" id="setRcs" style="width:16.6%">
+					<li @click="fnSetStatisData('RCS')" id="setRcs" style="width:12.5%">
 						<a class="inline-block text-center">
 							<h5>RCS</h5>
 							<p>총 {{rcsInfo.totCnt}}건</p>
 							<p class="inline-block color1 pr10 border-right consolMarginTop">
-								<span class="number">{{rcsInfo.succRatio}}<br></span>
+								<span class="number">{{rcsInfo.succRatio}}%<br></span>
 								<span class="text">성공</span>
 							</p>
 							<p class="inline-block pl10">
-								<span class="number">{{rcsInfo.failRatio}}<br></span>
+								<span class="number">{{rcsInfo.failRatio}}%<br></span>
 								<span class="text">실패</span>
 							</p>
 						</a>
 					</li>
-					<li @click="fnSetStatisData('ALIMTALK')" id="setKakaotalk" style="width:16.6%">
+					<li @click="fnSetStatisData('ALIMTALK')" id="setKakaotalk" style="width:12.5%">
 						<a class="inline-block text-center">
 							<h5>알림톡</h5>
 							<p>총 {{alimtalkInfo.totCnt}}건</p>
 							<p class="inline-block color1 pr10 border-right consolMarginTop">
-								<span class="number">{{alimtalkInfo.succRatio}}<br></span>
+								<span class="number">{{alimtalkInfo.succRatio}}%<br></span>
 								<span class="text">성공</span>
 							</p>
 							<p class="inline-block pl10">
-								<span class="number">{{alimtalkInfo.failRatio}}<br></span>
+								<span class="number">{{alimtalkInfo.failRatio}}%<br></span>
 								<span class="text">실패</span>
 							</p>
 						</a>
 					</li>
-					<li @click="fnSetStatisData('FRIENDTALK')" id="setFriendtalk" style="width:16.6%">
+					<li @click="fnSetStatisData('FRIENDTALK')" id="setFriendtalk" style="width:12.5%">
 						<a class="inline-block text-center">
 							<h5>친구톡</h5>
 							<p>총 {{friendtalkInfo.totCnt}}건</p>
 							<p class="inline-block color1 pr10 border-right consolMarginTop">
-								<span class="number">{{friendtalkInfo.succRatio}}<br></span>
+								<span class="number">{{friendtalkInfo.succRatio}}%<br></span>
 								<span class="text">성공</span>
 							</p>
 							<p class="inline-block pl10">
-								<span class="number">{{friendtalkInfo.failRatio}}<br></span>
+								<span class="number">{{friendtalkInfo.failRatio}}%<br></span>
 								<span class="text">실패</span>
 							</p>
 						</a>
 					</li>
-					<li @click="fnSetStatisData('SMS')" id="setSms" style="width:16.6%">
+					<li @click="fnSetStatisData('SMS')" id="setSms" style="width:12.5%">
 						<a class="inline-block text-center">
 							<h5>SMS</h5>
 							<p>총 {{smsInfo.totCnt}}건</p>
 							<p class="inline-block color1 pr10 border-right consolMarginTop">
-								<span class="number">{{smsInfo.succRatio}}<br></span>
+								<span class="number">{{smsInfo.succRatio}}%<br></span>
 								<span class="text">성공</span>
 							</p>
 							<p class="inline-block pl10">
-								<span class="number">{{smsInfo.failRatio}}<br></span>
+								<span class="number">{{smsInfo.failRatio}}%<br></span>
 								<span class="text">실패</span>
 							</p>
 						</a>
 					</li>
-					<li @click="fnSetStatisData('MMS')" id="setMms" style="width:16.6%">
+					<li @click="fnSetStatisData('MMS')" id="setMms" style="width:12.5%">
 						<a class="inline-block text-center">
 							<h5>MMS</h5>
 							<p>총 {{mmsInfo.totCnt}}건</p>
@@ -104,7 +118,21 @@
 								<span class="text">성공</span>
 							</p>
 							<p class="inline-block pl10">
-								<span class="number">{{mmsInfo.failRatio}}<br></span>
+								<span class="number">{{mmsInfo.failRatio}}%<br></span>
+								<span class="text">실패</span>
+							</p>
+						</a>
+					</li>
+					<li @click="fnSetStatisData('LMS')" id="setLms" style="width:12.5%">
+						<a class="inline-block text-center">
+							<h5>LMS</h5>
+							<p>총 {{lmsInfo.totCnt}}건</p>
+							<p class="inline-block color1 pr10 border-right consolMarginTop">
+								<span class="number">{{lmsInfo.succRatio}}%<br></span>
+								<span class="text">성공</span>
+							</p>
+							<p class="inline-block pl10">
+								<span class="number">{{lmsInfo.failRatio}}%<br></span>
 								<span class="text">실패</span>
 							</p>
 						</a>
@@ -112,6 +140,9 @@
 				</ul>
 			</div>
 			<div v-if="loaded" class="Dashboard01 border-line3 pd20" style="margin-top:-1px">
+				<div v-show="selectedChannel == 'ALL'">
+					<bar-chart :chart-data="allSuccFailRsltData" :height="150"></bar-chart>
+				</div>
 				<div v-show="selectedChannel == 'PUSH'">
 					<bar-chart :chart-data="pushSuccFailRsltData" :height="150"></bar-chart>
 				</div>
@@ -120,6 +151,9 @@
 				</div>
 				<div v-show="selectedChannel == 'MMS'">
 					<bar-chart :chart-data="mmsSuccFailRsltData" :height="150"></bar-chart>
+				</div>
+				<div v-show="selectedChannel == 'LMS'">
+					<bar-chart :chart-data="lmsSuccFailRsltData" :height="150"></bar-chart>
 				</div>
 				<div v-show="selectedChannel == 'SMS'">
 					<bar-chart :chart-data="smsSuccFailRsltData" :height="150"></bar-chart>
@@ -164,14 +198,21 @@ components: {
 			searchDateInterval: 7,
 			componentsTitle: '발송 통계',
 			statisDataList: [],
+			allInfo: {},
 			pushInfo: {},
 			rcsInfo: {},
 			alimtalkInfo: {},
 			friendtalkInfo: {},
 			smsInfo: {},
 			mmsInfo: {},
+			lmsInfo: {},
 			loaded: false,
 			allChanSuccFailRsltData: [], // 전체채널
+			// All
+			allSuccFailRsltData: [],
+			allSuccFailRsltDataLabels: [],
+			allSuccRsltDatasets: [],
+			allFailRsltDatasets: [],
 			// Push
 			pushSuccFailRsltData: [],
 			pushSuccFailRsltDataLabels: [],
@@ -187,6 +228,11 @@ components: {
 			mmsSuccFailRsltDataLabels: [],
 			mmsSuccRsltDatasets: [],
 			mmsFailRsltDatasets: [],
+			// LMS
+			lmsSuccFailRsltData: [],
+			lmsSuccFailRsltDataLabels: [],
+			lmsSuccRsltDatasets: [],
+			lmsFailRsltDatasets: [],
 			// SMS
 			smsSuccFailRsltData: [],
 			smsSuccFailRsltDataLabels: [],
@@ -203,7 +249,7 @@ components: {
 			friendtalkSuccRsltDatasets: [],
 			friendtalkFailRsltDatasets: [],
 			// 선택한 차트
-			selectedChannel: 'PUSH',
+			selectedChannel: 'ALL',
 		}
 	},
 	mounted() {
@@ -215,7 +261,7 @@ components: {
 	methods: {
 		fnSearch() {
 			if(!this.fnChkValidation()) return false;
-			this.selectedChannel = 'PUSH';
+			this.selectedChannel = 'ALL';
 			this.loaded = false;
 			this.fnInitChart();
 			this.fnStatisList();
@@ -244,6 +290,7 @@ components: {
 			let params = Object.assign({}, this.searchData);
 			params.corpId = tokenSvc.getToken().principal.corpId;
 			params.dateStatus = 'DAY';
+			params.chType = 'ALL';
 
 			statisticsUserApi.selectSendByCntList(params).then(response =>{
 				let result = response.data;
@@ -277,7 +324,9 @@ components: {
 			this.selectedChannel = channel;
 
 			jQuery('.mt20 > ul > li').removeClass('active');
-			if (channel == 'PUSH') {
+			if (channel == 'ALL') {
+				jQuery("#setAll").addClass('active');
+			} else if (channel == 'PUSH') {
 				jQuery("#setPush").addClass('active');
 			} else if (channel == 'RCS') {
 				jQuery("#setRcs").addClass('active');
@@ -289,19 +338,31 @@ components: {
 				jQuery("#setSms").addClass('active');
 			} else if (channel == 'MMS') {
 				jQuery("#setMms").addClass('active');
+			} else if (channel == 'LMS') {
+				jQuery("#setLms").addClass('active');
 			}
 		},
 		// 상당 타이틀 데이터
 		fnAssignTitleData() {
 			let dataList		= this.statisDataList;
+			let allInfo			= this.allInfo;
 			let pushInfo		= this.pushInfo;
 			let rcsInfo			= this.rcsInfo;
 			let alimtalkInfo	= this.alimtalkInfo;
 			let friendtalkInfo	= this.friendtalkInfo;
 			let smsInfo			= this.smsInfo;
 			let mmsInfo			= this.mmsInfo;
+			let lmsInfo			= this.lmsInfo;
+
+			let ch = 'ALL';
+			let allTotCnt = 0;
+			let allSuccCnt = 0;
+			let allFailCnt = 0;
 
 			for(var i in dataList) {
+				allTotCnt		+= dataList[i].totCnt * 1;
+				allSuccCnt		+= dataList[i].succCnt * 1;
+				allFailCnt		+= dataList[i].failCnt * 1;
 				if(dataList[i].ch == 'PUSH') {
 					pushInfo.ch			= dataList[i].ch;
 					pushInfo.totCnt		= dataList[i].totCnt;
@@ -332,17 +393,52 @@ components: {
 					mmsInfo.totCnt		= dataList[i].totCnt;
 					mmsInfo.succRatio	= dataList[i].succRatio;
 					mmsInfo.failRatio	= dataList[i].failRatio;
+				} else if(dataList[i].ch == 'LMS') {
+					lmsInfo.ch			= dataList[i].ch;
+					lmsInfo.totCnt		= dataList[i].totCnt;
+					lmsInfo.succRatio	= dataList[i].succRatio;
+					lmsInfo.failRatio	= dataList[i].failRatio;
 				}
 			}
+
+			allInfo.ch			= ch;
+			allInfo.totCnt		= allTotCnt;
+			allInfo.succRatio	= Math.round((allSuccCnt/allTotCnt) * 100);
+			allInfo.failRatio	= Math.round((allFailCnt/allTotCnt) * 100);
+
+			this.allInfo		= allInfo;
 			this.pushInfo		= pushInfo;
 			this.rcsInfo		= rcsInfo;
 			this.alimtalkInfo	= alimtalkInfo;
 			this.friendtalkInfo	= friendtalkInfo;
 			this.smsInfo		= smsInfo;
 			this.mmsInfo		= mmsInfo;
+			this.lmsInfo		= lmsInfo;
 		},
 		// 차트생성
 		fillData() {
+			this.allSuccFailRsltData = {
+				labels: this.allSuccFailRsltDataLabels,
+				datasets: [
+					{
+						label: '발송성공',
+						backgroundColor: '#f87979',
+						pointBackgroundColor: 'white',
+						borderWidth: 1,
+						pointBorderColor: '#249EBF',
+						data: this.allSuccRsltDatasets,
+					},
+					{
+						label: '발송실패',
+						backgroundColor: '#8C8C8C',
+						pointBackgroundColor: 'white',
+						borderWidth: 1,
+						pointBorderColor: '#249EBF',
+						data: this.allFailRsltDatasets,
+					}
+				]
+			};
+
 			this.pushSuccFailRsltData = {
 				labels: this.pushSuccFailRsltDataLabels,
 				datasets: [
@@ -383,6 +479,28 @@ components: {
 						borderWidth: 1,
 						pointBorderColor: '#249EBF',
 						data: this.rcsFailRsltDatasets,
+					}
+				]
+			};
+
+			this.lmsSuccFailRsltData = {
+				labels: this.lmsSuccFailRsltDataLabels,
+				datasets: [
+					{
+						label: '발송성공',
+						backgroundColor: '#f87979',
+						pointBackgroundColor: 'white',
+						borderWidth: 1,
+						pointBorderColor: '#249EBF',
+						data: this.lmsSuccRsltDatasets,
+					},
+					{
+						label: '발송실패',
+						backgroundColor: '#8C8C8C',
+						pointBackgroundColor: 'white',
+						borderWidth: 1,
+						pointBorderColor: '#249EBF',
+						data: this.lmsFailRsltDatasets,
 					}
 				]
 			};
@@ -478,8 +596,13 @@ components: {
 		// 차트 데이터
 		fnAssignChartData() {
 			let allDataList = this.allChanSuccFailRsltData;
+
 			for(var i in allDataList) {
-				if(allDataList[i].ch == 'PUSH') {
+				if(allDataList[i].ch == 'ALL') {
+					this.allSuccFailRsltDataLabels.push(allDataList[i].ymd);
+				this.allSuccRsltDatasets.push(allDataList[i].succCnt);
+				this.allFailRsltDatasets.push(allDataList[i].failCnt);
+				} else if(allDataList[i].ch == 'PUSH') {
 					this.pushSuccFailRsltDataLabels.push(allDataList[i].ymd);
 					this.pushSuccRsltDatasets.push(allDataList[i].succCnt);
 					this.pushFailRsltDatasets.push(allDataList[i].failCnt);
@@ -503,12 +626,21 @@ components: {
 					this.mmsSuccFailRsltDataLabels.push(allDataList[i].ymd);
 					this.mmsSuccRsltDatasets.push(allDataList[i].succCnt);
 					this.mmsFailRsltDatasets.push(allDataList[i].failCnt);
+				} else if(allDataList[i].ch == 'LMS') {
+					this.lmsSuccFailRsltDataLabels.push(allDataList[i].ymd);
+					this.lmsSuccRsltDatasets.push(allDataList[i].succCnt);
+					this.lmsFailRsltDatasets.push(allDataList[i].failCnt);
 				}
 			}
 		},
 		// 차트 초기화
 		fnInitChart() {
 			this.allChanSuccFailRsltData = []; // 전체채널
+			// All
+			this.allSuccFailRsltData = [];
+			this.allSuccFailRsltDataLabels = [];
+			this.allSuccRsltDatasets = [];
+			this.allFailRsltDatasets = [];
 			// Push
 			this.pushSuccFailRsltData = [];
 			this.pushSuccFailRsltDataLabels = [];
@@ -519,6 +651,11 @@ components: {
 			this.rcsSuccFailRsltDataLabels = [];
 			this.rcsSuccRsltDatasets = [];
 			this.rcsFailRsltDatasets = [];
+			// LMS
+			this.lmsSuccFailRsltData = [];
+			this.lmsSuccFailRsltDataLabels = [];
+			this.lmsSuccRsltDatasets = [];
+			this.lmsFailRsltDatasets = [];
 			// MMS
 			this.mmsSuccFailRsltData = [];
 			this.mmsSuccFailRsltDataLabels = [];
