@@ -84,6 +84,13 @@
 						</div>
 						<div class="mt10">
 							<ul class="tab_s4_2 of-h" style="width:100%">
+								<li @click="fnSetChartData('ALL')" id="setAll" style="width:12.5%" class="active">
+									<a class="inline-block text-center active">
+										<h5>총계</h5>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.totalSuccCnt }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.totalFailCnt }}<br></span><span class="text">실패</span></p>
+									</a>
+								</li>
 								<li @click="fnSetChartData('PUSH')" id="setPush" style="width:16.7%" class="active">
 									<a class="inline-block text-center active">
 										<h5>PUSH 전체</h5>
@@ -117,6 +124,13 @@
 										<h5>SMS 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.smsSuccCnt }}<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.smsFailCnt }}<br></span><span class="text">실패</span></p>
+									</a>
+								</li>
+								<li @click="fnSetChartData('LMS')" id="setLms" style="width:12.5%">
+									<a class="inline-block text-center">
+										<h5>LMS 전체</h5>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.lmsSuccCnt }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.lmsFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('MMS')" id="setMms" style="width:16.6%">
@@ -313,7 +327,10 @@ export default {
 			});
 
 			jQuery('.mt10 > ul > li').removeClass('active');
-			if (channel == 'PUSH') {
+			if (channel == 'ALL') {
+				jQuery("#setAll").addClass('active');
+				this.chName = '전체';
+			} else if (channel == 'PUSH') {
 				jQuery("#setPush").addClass('active');
 				this.chName = 'Push';
 			} else if (channel == 'RCS') {
@@ -328,6 +345,9 @@ export default {
 			} else if (channel == 'SMS') {
 				jQuery("#setSms").addClass('active');
 				this.chName = 'SMS';
+			} else if (channel == 'LMS') {
+				jQuery("#setLms").addClass('active');
+				this.chName = 'LMS';
 			} else if (channel == 'MMS') {
 				jQuery("#setMms").addClass('active');
 				this.chName = 'MMS';
@@ -376,7 +396,7 @@ export default {
 				}
 
 				this.failCodeResultDataset[i] = {
-					label: result[i].resultCode,
+					label: result[i].resultMessage,
 					backgroundColor: this.defaultBackgroundColor[i],
 					pointBackgroundColor: 'white',
 					borderWidth: 1,
@@ -413,6 +433,7 @@ export default {
 			this.fnGetRtUsedDataList('FRIENDTALK');
 			this.fnGetRtUsedDataList('ALIMTALK');
 			this.fnGetRtUsedDataList('SMS');
+			this.fnGetRtUsedDataList('LMS');
 			this.fnGetRtUsedDataList('MMS');
 		},
 		// 당일 이용현황 채널별 데이터 조회
@@ -437,6 +458,8 @@ export default {
 							this.rtUsedAlimtalkList.push(result.data[i].totCnt);
 						} else if (channel == 'SMS') {
 							this.rtUsedSmsList.push(result.data[i].totCnt);
+						} else if (channel == 'LMS') {
+							this.rtUsedLmsList.push(result.data[i].totCnt);
 						} else if (channel == 'MMS') {
 							this.rtUsedMmsList.push(result.data[i].totCnt);
 						}
@@ -484,6 +507,14 @@ export default {
 								borderWidth: 1,
 								pointBorderColor: '#249EBF',
 								data: this.rtUsedSmsList
+							},
+							{
+								label: 'LMS',
+								backgroundColor: '#0054FF',
+								pointBackgroundColor: 'white',
+								borderWidth: 1,
+								pointBorderColor: '#249EBF',
+								data: this.rtUsedLmsList
 							},
 							{
 								label: 'MMS',
@@ -537,7 +568,9 @@ export default {
 		fnGetChInfo() {
 			var chInfo = '';
 
-			if (jQuery("#setPush").prop("class") == "active") {
+			if (jQuery("#setAll").prop("class") == "active") {
+				chInfo = 'ALL';
+			} else if (jQuery("#setPush").prop("class") == "active") {
 				chInfo = 'PUSH';
 			} else if (jQuery("#setRcs").prop("class") == "active") {
 				chInfo = 'RCS';
@@ -547,6 +580,8 @@ export default {
 				chInfo = 'FRIENDTALK';
 			} else if (jQuery("#setSms").prop("class") == "active") {
 				chInfo = 'SMS';
+			} else if (jQuery("#setLms").prop("class") == "active") {
+				chInfo = 'LMS';
 			} else if (jQuery("#setMms").prop("class") == "active") {
 				chInfo = 'MMS';
 			}

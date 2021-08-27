@@ -90,42 +90,56 @@
 						</div>
 						<div class="mt10">
 							<ul class="tab_s4_2 of-h" style="width:100%">
-								<li @click="fnSetChartData('PUSH')" id="setPush" style="width:16.7%" class="active">
+								<li @click="fnSetChartData('ALL')" id="setAll" style="width:12.5%" class="active">
+									<a class="inline-block text-center active">
+										<h5>총계</h5>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.totalSuccCnt }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.totalFailCnt }}<br></span><span class="text">실패</span></p>					
+									</a>
+								</li>
+								<li @click="fnSetChartData('PUSH')" id="setPush" style="width:12.5%">
 									<a class="inline-block text-center active">
 										<h5>PUSH 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.pushSuccCnt }}<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.pushFailCnt }}<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
-								<li @click="fnSetChartData('RCS')" id="setRcs" style="width:16.7%">
+								<li @click="fnSetChartData('RCS')" id="setRcs" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>RCS 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.rcsSuccCnt }}<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.rcsFailCnt }}<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
-								<li @click="fnSetChartData('ALIMTALK')" id="setKakaotalk" style="width:16.6%">
+								<li @click="fnSetChartData('ALIMTALK')" id="setKakaotalk" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>알림톡 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.alimSuccCnt }}<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.alimFailCnt }}<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
-								<li @click="fnSetChartData('FRIENDTALK')" id="setFriendtalk" style="width:16.7%">
+								<li @click="fnSetChartData('FRIENDTALK')" id="setFriendtalk" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>친구톡 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.friendSuccCnt }}<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.friendFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
-								<li @click="fnSetChartData('SMS')" id="setSms" style="width:16.7%">
+								<li @click="fnSetChartData('SMS')" id="setSms" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>SMS 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.smsSuccCnt }}<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.smsFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
-								<li @click="fnSetChartData('MMS')" id="setMms" style="width:16.6%">
+								<li @click="fnSetChartData('LMS')" id="setLms" style="width:12.5%">
+									<a class="inline-block text-center">
+										<h5>LMS 전체</h5>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.lmsSuccCnt }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.lmsFailCnt }}<br></span><span class="text">실패</span></p>
+									</a>
+								</li>
+								<li @click="fnSetChartData('MMS')" id="setMms" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>MMS 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.mmsSuccCnt }}<br></span><span class="text">성공</span></p>
@@ -335,7 +349,10 @@ export default {
 			});
 
 			jQuery('.mt10 > ul > li').removeClass('active');
-			if (channel == 'PUSH') {
+			if (channel == 'ALL') {
+				jQuery("#setAll").addClass('active');
+				this.chName = '전체';
+			} else if (channel == 'PUSH') {
 				jQuery("#setPush").addClass('active');
 				this.chName = 'Push';
 			} else if (channel == 'RCS') {
@@ -350,6 +367,9 @@ export default {
 			} else if (channel == 'SMS') {
 				jQuery("#setSms").addClass('active');
 				this.chName = 'SMS';
+			} else if (channel == 'LMS') {
+				jQuery("#setLms").addClass('active');
+				this.chName = 'LMS';
 			} else if (channel == 'MMS') {
 				jQuery("#setMms").addClass('active');
 				this.chName = 'MMS';
@@ -398,7 +418,7 @@ export default {
 				}
 
 				this.failCodeResultDataset[i] = {
-					label: result[i].resultCode,
+					label: result[i].resultMessage,
 					backgroundColor: this.defaultBackgroundColor[i],
 					pointBackgroundColor: 'white',
 					borderWidth: 1,
@@ -434,6 +454,7 @@ export default {
 			this.fnGetMonthUsedDataList('FRIENDTALK');
 			this.fnGetMonthUsedDataList('ALIMTALK');
 			this.fnGetMonthUsedDataList('SMS');
+			this.fnGetMonthUsedDataList('LMS');
 			this.fnGetMonthUsedDataList('MMS');
 		},
 		// 당월 이용현황 채널별 데이터 조회
@@ -457,6 +478,8 @@ export default {
 							this.monthUsedAlimtalkList.push(result.data[i].totCnt);
 						} else if (channel == 'SMS') {
 							this.monthUsedSmsList.push(result.data[i].totCnt);
+						} else if (channel == 'LMS') {
+							this.monthUsedLmsList.push(result.data[i].totCnt);
 						} else if (channel == 'MMS') {
 							this.monthUsedMmsList.push(result.data[i].totCnt);
 						}
@@ -506,6 +529,14 @@ export default {
 								data: this.monthUsedSmsList
 							},
 							{
+								label: 'LMS',
+								backgroundColor: '#0054FF',
+								pointBackgroundColor: 'white',
+								borderWidth: 1,
+								pointBorderColor: '#249EBF',
+								data: this.monthUsedLmsList
+							},
+							{
 								label: 'MMS',
 								backgroundColor: '#1DDB16',
 								pointBackgroundColor: 'white',
@@ -542,6 +573,7 @@ export default {
 			this.fnGetSixMonthUsedDataList('FRIENDTALK');
 			this.fnGetSixMonthUsedDataList('ALIMTALK');
 			this.fnGetSixMonthUsedDataList('SMS');
+			this.fnGetSixMonthUsedDataList('LMS');
 			this.fnGetSixMonthUsedDataList('MMS');
 		},
 		// 최근 6개월간 이용현황 데이터 조회
@@ -565,6 +597,8 @@ export default {
 							this.sixMonthUsedAlimtalkList.push(result.data[i].totCnt);
 						} else if (channel == 'SMS') {
 							this.sixMonthUsedSmsList.push(result.data[i].totCnt);
+						} else if (channel == 'LMS') {
+							this.sixMonthUsedLmsList.push(result.data[i].totCnt);
 						} else if (channel == 'MMS') {
 							this.sixMonthUsedMmsList.push(result.data[i].totCnt);
 						}
@@ -612,6 +646,14 @@ export default {
 								borderWidth: 1,
 								pointBorderColor: '#249EBF',
 								data: this.sixMonthUsedSmsList
+							},
+							{
+								label: 'LMS',
+								backgroundColor: '#0054FF',
+								pointBackgroundColor: 'white',
+								borderWidth: 1,
+								pointBorderColor: '#249EBF',
+								data: this.sixMonthUsedLmsList
 							},
 							{
 								label: 'MMS',
@@ -665,7 +707,9 @@ export default {
 		fnGetChInfo() {
 			var chInfo = '';
 
-			if (jQuery("#setPush").prop("class") == "active") {
+			if (jQuery("#setAll").prop("class") == "active") {
+				chInfo = 'ALL';
+			} else if (jQuery("#setPush").prop("class") == "active") {
 				chInfo = 'PUSH';
 			} else if (jQuery("#setRcs").prop("class") == "active") {
 				chInfo = 'RCS';
@@ -675,6 +719,8 @@ export default {
 				chInfo = 'FRIENDTALK';
 			} else if (jQuery("#setSms").prop("class") == "active") {
 				chInfo = 'SMS';
+			} else if (jQuery("#setLms").prop("class") == "active") {
+				chInfo = 'LMS';
 			} else if (jQuery("#setMms").prop("class") == "active") {
 				chInfo = 'MMS';
 			}

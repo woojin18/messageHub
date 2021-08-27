@@ -58,6 +58,8 @@
 	<select id="selectChTotCnt" resultType="camel">
 		/* dashboard.selectChTotCnt */
 		SELECT
+			SUM(TOTAL_SUCC_CNT) AS TOTAL_SUCC_CNT,
+			SUM(TOTAL_FAIL_CNT) AS TOTAL_FAIL_CNT,
 			SUM(PUSH_SUCC_CNT) AS PUSH_SUCC_CNT,
 			SUM(PUSH_FAIL_CNT) AS PUSH_FAIL_CNT,
 			SUM(RCS_SUCC_CNT) AS RCS_SUCC_CNT,
@@ -68,10 +70,39 @@
 			SUM(FRIEND_FAIL_CNT) AS FRIEND_FAIL_CNT,
 			SUM(SMS_SUCC_CNT) AS SMS_SUCC_CNT,
 			SUM(SMS_FAIL_CNT) AS SMS_FAIL_CNT,
+			SUM(LMS_SUCC_CNT) AS LMS_SUCC_CNT,
+			SUM(LMS_FAIL_CNT) AS LMS_FAIL_CNT,
 			SUM(MMS_SUCC_CNT) AS MMS_SUCC_CNT,
 			SUM(MMS_FAIL_CNT) AS MMS_FAIL_CNT
 		FROM (
+			SELECT 
+				SUM(SUCC_CNT) AS TOTAL_SUCC_CNT,
+				SUM(FAIL_CNT) AS TOTAL_FAIL_CNT,
+				0 AS PUSH_SUCC_CNT,
+				0 AS PUSH_FAIL_CNT,
+				0 AS RCS_SUCC_CNT,
+				0 AS RCS_FAIL_CNT,
+				0 AS ALIM_SUCC_CNT,
+				0 AS ALIM_FAIL_CNT,
+				0 AS FRIEND_SUCC_CNT,
+				0 AS FRIEND_FAIL_CNT,
+				0 AS SMS_SUCC_CNT,
+				0 AS SMS_FAIL_CNT,
+				0 AS LMS_SUCC_CNT,
+				0 AS LMS_FAIL_CNT,
+				0 AS MMS_SUCC_CNT,
+				0 AS MMS_FAIL_CNT
+			FROM 
+				cm.CM_STAT_CH_DAY
+			WHERE CORP_ID = #{corpId}
+			<if test="serviceType == 'UC'">
+			AND PROJECT_ID = #{projectId}
+			</if>
+			AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+			UNION ALL
 			SELECT
+				0 AS TOTAL_SUCC_CNT,
+				0 AS TOTAL_FAIL_CNT,
 				IFNULL(B.SUCC_CNT, 0) AS PUSH_SUCC_CNT,
 				IFNULL(B.FAIL_CNT, 0) AS PUSH_FAIL_CNT,
 				0 AS RCS_SUCC_CNT,
@@ -82,6 +113,8 @@
 				0 AS FRIEND_FAIL_CNT,
 				0 AS SMS_SUCC_CNT,
 				0 AS SMS_FAIL_CNT,
+				0 AS LMS_SUCC_CNT,
+				0 AS LMS_FAIL_CNT,
 				0 AS MMS_SUCC_CNT,
 				0 AS MMS_FAIL_CNT
 			FROM (
@@ -104,6 +137,8 @@
 			) B ON A.CH = B.CH
 			UNION ALL
 			SELECT
+				0 AS TOTAL_SUCC_CNT,
+				0 AS TOTAL_FAIL_CNT,
 				0 AS PUSH_SUCC_CNT,
 				0 AS PUSH_FAIL_CNT,
 				IFNULL(B.SUCC_CNT, 0) AS RCS_SUCC_CNT,
@@ -114,6 +149,8 @@
 				0 AS FRIEND_FAIL_CNT,
 				0 AS SMS_SUCC_CNT,
 				0 AS SMS_FAIL_CNT,
+				0 AS LMS_SUCC_CNT,
+				0 AS LMS_FAIL_CNT,
 				0 AS MMS_SUCC_CNT,
 				0 AS MMS_FAIL_CNT
 			FROM (
@@ -136,6 +173,8 @@
 			) B ON A.CH = B.CH
 			UNION ALL
 			SELECT
+				0 AS TOTAL_SUCC_CNT,
+				0 AS TOTAL_FAIL_CNT,
 				0 AS PUSH_SUCC_CNT,
 				0 AS PUSH_FAIL_CNT,
 				0 AS RCS_SUCC_CNT,
@@ -146,6 +185,8 @@
 				0 AS FRIEND_FAIL_CNT,
 				0 AS SMS_SUCC_CNT,
 				0 AS SMS_FAIL_CNT,
+				0 AS LMS_SUCC_CNT,
+				0 AS LMS_FAIL_CNT,
 				0 AS MMS_SUCC_CNT,
 				0 AS MMS_FAIL_CNT
 			FROM (
@@ -168,6 +209,8 @@
 			) B ON A.CH = B.CH
 			UNION ALL
 			SELECT
+				0 AS TOTAL_SUCC_CNT,
+				0 AS TOTAL_FAIL_CNT,
 				0 AS PUSH_SUCC_CNT,
 				0 AS PUSH_FAIL_CNT,
 				0 AS RCS_SUCC_CNT,
@@ -178,6 +221,8 @@
 				IFNULL(B.FAIL_CNT, 0) AS FRIEND_FAIL_CNT,
 				0 AS SMS_SUCC_CNT,
 				0 AS SMS_FAIL_CNT,
+				0 AS LMS_SUCC_CNT,
+				0 AS LMS_FAIL_CNT,
 				0 AS MMS_SUCC_CNT,
 				0 AS MMS_FAIL_CNT
 			FROM (
@@ -200,6 +245,8 @@
 			) B ON A.CH = B.CH
 			UNION ALL
 			SELECT
+				0 AS TOTAL_SUCC_CNT,
+				0 AS TOTAL_FAIL_CNT,
 				0 AS PUSH_SUCC_CNT,
 				0 AS PUSH_FAIL_CNT,
 				0 AS RCS_SUCC_CNT,
@@ -210,6 +257,8 @@
 				0 AS FRIEND_FAIL_CNT,
 				IFNULL(B.SUCC_CNT, 0) AS SMS_SUCC_CNT,
 				IFNULL(B.FAIL_CNT, 0) AS SMS_FAIL_CNT,
+				0 AS LMS_SUCC_CNT,
+				0 AS LMS_FAIL_CNT,
 				0 AS MMS_SUCC_CNT,
 				0 AS MMS_FAIL_CNT
 			FROM (
@@ -232,6 +281,8 @@
 			) B ON A.CH = B.CH
 			UNION ALL
 			SELECT
+				0 AS TOTAL_SUCC_CNT,
+				0 AS TOTAL_FAIL_CNT,
 				0 AS PUSH_SUCC_CNT,
 				0 AS PUSH_FAIL_CNT,
 				0 AS RCS_SUCC_CNT,
@@ -242,15 +293,18 @@
 				0 AS FRIEND_FAIL_CNT,
 				0 AS SMS_SUCC_CNT,
 				0 AS SMS_FAIL_CNT,
-				IFNULL(B.SUCC_CNT, 0) AS MMS_SUCC_CNT,
-				IFNULL(B.FAIL_CNT, 0) AS MMS_FAIL_CNT
+				IFNULL(B.SUCC_CNT, 0) AS LMS_SUCC_CNT,
+				IFNULL(B.FAIL_CNT, 0) AS LMS_FAIL_CNT,
+				0 AS MMS_SUCC_CNT,
+				0 AS MMS_FAIL_CNT
 			FROM (
-				SELECT 'MMS' AS CH
+				SELECT 'MMS' AS CH, 'LMS' AS PRODUCT_CODE
 				FROM DUAL
 			) A
 			LEFT OUTER JOIN (
 				SELECT 
 					CH,
+					PRODUCT_CODE,
 					SUM(SUCC_CNT) AS SUCC_CNT,
 					SUM(FAIL_CNT) AS FAIL_CNT
 				FROM 
@@ -260,8 +314,45 @@
 				AND PROJECT_ID = #{projectId}
 				</if>
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
-				GROUP BY CH
-			) B ON A.CH = B.CH
+				GROUP BY CH, PRODUCT_CODE
+			) B ON A.CH = B.CH AND A.PRODUCT_CODE = B.PRODUCT_CODE
+			UNION ALL
+			SELECT
+				0 AS TOTAL_SUCC_CNT,
+				0 AS TOTAL_FAIL_CNT,
+				0 AS PUSH_SUCC_CNT,
+				0 AS PUSH_FAIL_CNT,
+				0 AS RCS_SUCC_CNT,
+				0 AS RCS_FAIL_CNT,
+				0 AS ALIM_SUCC_CNT,
+				0 AS ALIM_FAIL_CNT,
+				0 AS FRIEND_SUCC_CNT,
+				0 AS FRIEND_FAIL_CNT,
+				0 AS SMS_SUCC_CNT,
+				0 AS SMS_FAIL_CNT,
+				0 AS LMS_SUCC_CNT,
+				0 AS LMS_FAIL_CNT,
+				IFNULL(B.SUCC_CNT, 0) AS MMS_SUCC_CNT,
+				IFNULL(B.FAIL_CNT, 0) AS MMS_FAIL_CNT
+			FROM (
+				SELECT 'MMS' AS CH, 'MMS' AS PRODUCT_CODE
+				FROM DUAL
+			) A
+			LEFT OUTER JOIN (
+				SELECT 
+					CH,
+					PRODUCT_CODE,
+					SUM(SUCC_CNT) AS SUCC_CNT,
+					SUM(FAIL_CNT) AS FAIL_CNT
+				FROM 
+					cm.CM_STAT_CH_DAY
+				WHERE CORP_ID = #{corpId}
+				<if test="serviceType == 'UC'">
+				AND PROJECT_ID = #{projectId}
+				</if>
+				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				GROUP BY CH, PRODUCT_CODE
+			) B ON A.CH = B.CH AND A.PRODUCT_CODE = B.PRODUCT_CODE
 		) TOT
 	</select>
 
@@ -295,7 +386,21 @@
 			AND PROJECT_ID = #{projectId}
 			</if>
 			AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
-			AND CH = #{channel}
+			<if test="channel != 'ALL'">
+				<choose>
+					<when test="channel == 'LMS'">
+						AND CH = 'MMS'
+						AND PRODUCT_CODE = #{channel}
+					</when>
+					<when test="channel == 'MMS'">
+						AND CH = #{channel}
+						AND PRODUCT_CODE = #{channel}
+					</when>
+					<otherwise>
+						AND CH = #{channel}
+					</otherwise>
+				</choose>
+			</if>
 			GROUP BY YMD
 		) CSCD ON AD.DATE = CSCD.YMD
 		ORDER BY AD.DATE
@@ -304,17 +409,29 @@
 	<select id="selectChFailCodeList" resultType="camel">
 		/* dashboard.selectChFailCodeList */
 		SELECT 
-			CH,
-			RESULT_CODE
+			CSRD.CH,
+			CSRD.RESULT_CODE,
+			IFNULL(CCG.GW_MESSAGE, '미등록코드') AS RESULT_MESSAGE
 		FROM 
-			cm.CM_STAT_RSLT_DAY
+			cm.CM_STAT_RSLT_DAY CSRD
+		LEFT OUTER JOIN cm.CM_CODE_GW CCG
+			ON CSRD.RESULT_CODE = CCG.GW_CODE
 		WHERE CORP_ID = #{corpId}
 		<if test="serviceType == 'UC'">
-		AND PROJECT_ID = #{projectId}
+		AND CSRD.PROJECT_ID = #{projectId}
 		</if>
-		AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
-		AND CH = #{channel}
-		GROUP BY RESULT_CODE
+		AND CSRD.YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+		<if test="channel != 'ALL'">
+			<choose>
+				<when test="channel == 'LMS'">
+					AND CSRD.CH = 'MMS'
+				</when>
+				<otherwise>
+					AND CSRD.CH = #{channel}
+				</otherwise>
+			</choose>
+		</if>
+		GROUP BY CSRD.RESULT_CODE
 	</select>
 
 	<select id="selectChFailCodeCntList" resultType="camel">
@@ -351,7 +468,16 @@
 				</if>
 				AND RESULT_CODE = #{resultCode}
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
-				AND CH = #{channel}
+				<if test="channel != 'ALL'">
+					<choose>
+						<when test="channel == 'LMS'">
+							AND CH = 'MMS'
+						</when>
+						<otherwise>
+							AND CH = #{channel}
+						</otherwise>
+					</choose>
+				</if>
 				GROUP BY CH, YMD
 			) CSRD ON AD.DATE = CSRD.YMD
 			ORDER BY AD.DATE
@@ -427,7 +553,21 @@
 					cm.CM_STAT_CH_MIN
 				WHERE CORP_ID = #{corpId}
 				AND PROJECT_ID = #{projectId}
-				AND CH = #{channel}
+				<if test="channel != 'ALL'">
+					<choose>
+						<when test="channel == 'LMS'">
+							AND CH = 'MMS'
+							AND PRODUCT_CODE = #{channel}
+						</when>
+						<when test="channel == 'MMS'">
+							AND CH = #{channel}
+							AND PRODUCT_CODE = #{channel}
+						</when>
+						<otherwise>
+							AND CH = #{channel}
+						</otherwise>
+					</choose>
+				</if>
 				AND YMDHM BETWEEN CONCAT(DATE_FORMAT(SYSDATE(), '%Y%m%d'), '0000') and CONCAT(DATE_FORMAT(SYSDATE(), '%Y%m%d%H%i'), '2359')
 				GROUP BY YMDHM
 			) A
@@ -489,7 +629,21 @@
 				cm.CM_STAT_CH_DAY
 			WHERE CORP_ID = #{corpId}
 			AND YMD BETWEEN DATE_FORMAT(LAST_DAY(CURDATE() - INTERVAL 1 MONTH) + INTERVAL 1 DAY , '%Y-%m-%d') AND DATE_FORMAT(LAST_DAY(CURDATE()), '%Y-%m-%d')
-			AND CH = #{channel}
+			<if test="channel != 'ALL'">
+				<choose>
+					<when test="channel == 'LMS'">
+						AND CH = 'MMS'
+						AND PRODUCT_CODE = #{channel}
+					</when>
+					<when test="channel == 'MMS'">
+						AND CH = #{channel}
+						AND PRODUCT_CODE = #{channel}
+					</when>
+					<otherwise>
+						AND CH = #{channel}
+					</otherwise>
+				</choose>
+			</if>
 			GROUP BY YMD
 		) CSCD ON AD.DATE = CSCD.YMD
 		ORDER BY AD.DATE
@@ -548,7 +702,21 @@
 				cm.CM_STAT_CH_MONTH
 			WHERE CORP_ID = #{corpId}
 			AND YM BETWEEN DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL-5 MONTH), '%Y-%m-%d') AND DATE_FORMAT(CURDATE(), '%Y-%m-%d')
-			AND CH = #{channel}
+			<if test="channel != 'ALL'">
+				<choose>
+					<when test="channel == 'LMS'">
+						AND CH = 'MMS'
+						AND PRODUCT_CODE = #{channel}
+					</when>
+					<when test="channel == 'MMS'">
+						AND CH = #{channel}
+						AND PRODUCT_CODE = #{channel}
+					</when>
+					<otherwise>
+						AND CH = #{channel}
+					</otherwise>
+				</choose>
+			</if>
 			GROUP BY CH, YM
 		) CSCM ON AD.DATE = CSCM.YM
 		ORDER BY AD.DATE

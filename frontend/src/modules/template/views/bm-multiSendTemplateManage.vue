@@ -237,7 +237,7 @@
 								<a @click="fnPushOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
 							</div>
 							<ul class="float-right attachList" style="width:74%; padding:5px 15px; height:30px;">
-								<li><a @click="fnPushDelImg">{{fnSubString(rowData.pushImgInfo.imgUrl, 0, 35)}}  <i v-if="!isEmpty(rowData.pushImgInfo.imgUrl)" class="fal fa-times"></i></a></li>
+								<li><a @click="fnPushDelImg">{{fnSubString(rowData.pushImgInfo.imgUrl, 0, 35)}}  <i v-if="!$gfnCommonUtils.isEmpty(rowData.pushImgInfo.imgUrl)" class="fal fa-times"></i></a></li>
 							</ul>
 						</div>
 					</div>
@@ -2143,7 +2143,7 @@
 								<a @click="fnFriendTalkOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
 							</div>
 							<ul class="float-right attachList" style="width:74%; padding:5px 15px; height:30px;">
-								<li><a @click="fnFriendTalkDelImg">{{fnSubString(rowData.friendTalkImgInfo.imgUrl, 0, 35)}}  <i v-if="!isEmpty(rowData.friendTalkImgInfo.imgUrl)" class="fal fa-times"></i></a></li>
+								<li><a @click="fnFriendTalkDelImg">{{fnSubString(rowData.friendTalkImgInfo.imgUrl, 0, 35)}}  <i v-if="!$gfnCommonUtils.isEmpty(rowData.friendTalkImgInfo.imgUrl)" class="fal fa-times"></i></a></li>
 							</ul>
 						</div>
 					</div>
