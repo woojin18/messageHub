@@ -118,6 +118,7 @@
 							<div v-show="pushTab!='push'" class="phoneCardWrap">
 								<div class="phoneText1">
 									<div class="scroll-y">
+										<div v-if="sendData.callbackImgUrl != ''" :style="'background-image: url('+sendData.callbackImgUrl+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
 										<p class="mt15 font-size13"><span v-if="sendData.adYn=='yes' && sendData.senderType=='LMS'">(광고)</span>{{sendData.callbackTitle}}</p>
 										<p class="mt15"><span v-if="sendData.adYn=='yes' && sendData.senderType=='SMS'">(광고)</span><pre>{{sendData.callbackContents}}</pre></p>
 										<p calss="mt15" v-if="sendData.freeReceiveNum != ''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
@@ -131,6 +132,7 @@
 						<a @click.prevent="fnclickPushBtn('push')" href="#self" class="btnStyle1 backBlack" title="RCS">RCS</a>
 						<a @click.prevent="fnclickPushBtn('SMS')" v-if="sendData.senderType=='SMS'" href="#self" class="btnStyle1 backWhite" title="Push">SMS</a>
 						<a @click.prevent="fnclickPushBtn('LMS')" v-if="sendData.senderType=='LMS'" href="#self" class="btnStyle1 backWhite" title="Push">LMS</a>								
+						<a @click.prevent="fnclickPushBtn('MMS')" v-if="sendData.senderType=='MMS'" href="#self" class="btnStyle1 backWhite" title="Push">MMS</a>								
 					</div>
 				</div>
 				<div v-if="!carouSelType" class="phone3 inline-block" style="width:30%">
@@ -196,6 +198,7 @@
 						<div  v-if="pushTab!='push'" class="phoneTextWrap">
 							<div class="phoneText1">
 								<div class="scroll-y">
+									<div v-if="sendData.callbackImgUrl != ''" :style="'background-image: url('+sendData.callbackImgUrl+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
 									<p class="mt15 font-size13"><span v-if="sendData.adYn=='yes' && sendData.senderType=='LMS'">(광고)</span>{{sendData.callbackTitle}}</p>
 									<p class="mt15"><span v-if="sendData.adYn=='yes' && sendData.senderType=='SMS'">(광고)</span><pre>{{sendData.callbackContents}}</pre></p>
 									<p calss="mt15" v-if="sendData.freeReceiveNum != ''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
@@ -206,6 +209,7 @@
 							<a @click.prevent="fnclickPushBtn('push')" href="#self" class="btnStyle1 backBlack" title="RCS">RCS</a>
 							<a @click.prevent="fnclickPushBtn('SMS')" v-if="sendData.senderType=='SMS'" href="#self" class="btnStyle1 backWhite" title="Push">SMS</a>
 							<a @click.prevent="fnclickPushBtn('LMS')" v-if="sendData.senderType=='LMS'" href="#self" class="btnStyle1 backWhite" title="Push">LMS</a>								
+							<a @click.prevent="fnclickPushBtn('MMS')" v-if="sendData.senderType=='MMS'" href="#self" class="btnStyle1 backWhite" title="Push">MMS</a>								
 						</div>
 					</div>
 					<!-- //phoneWrap -->
@@ -300,6 +304,7 @@
 									<input @change="fnChangeDataSet" v-model="sendData.senderType" type="radio" name="substitution" value="UNUSED" id="UNUSED" checked="" activity="READ"> <label for="UNUSED" class="mr30">미사용</label>
 									<input @change="fnChangeDataSet" v-model="sendData.senderType" type="radio" name="substitution" value="SMS" id="SMS" activity="READ"> <label for="SMS" class="mr30" data-toggle="modal" data-target="#sender">SMS</label>
 									<input @change="fnChangeDataSet" v-model="sendData.senderType" type="radio" name="substitution" value="LMS" id="LMS" activity="READ"> <label for="LMS" class="mr30" data-toggle="modal" data-target="#sender">LMS</label>
+									<input v-if="templateRadioBtn == 'SMwThM00' || templateRadioBtn == 'SMwThT00' || templateRadioBtn == 'carouselSmall' || templateRadioBtn == 'carouselMedium'" @change="fnChangeDataSet" v-model="sendData.senderType" type="radio" name="substitution" value="MMS" id="MMS" activity="READ"> <label v-if="templateRadioBtn == 'SMwThM00' || templateRadioBtn == 'SMwThT00' || templateRadioBtn == 'carouselSmall' || templateRadioBtn == 'carouselMedium'" for="MMS" class="mr30" data-toggle="modal" data-target="#sender">MMS</label>
 								</div>
 							</div>	
 						</div>	
@@ -492,6 +497,8 @@ export default {
 			senderType : 'UNUSED',						// 대체발송
 			callbackTitle : "",							// 대체발송 TITLE
 			callbackContents : "",						// 대체발송 CONTENTS
+			callbackImgUrl : "",						// 대체발송 IMG			
+			callbackFileId : "",						// 대체발송 fileId
 			saveContent : "",							// 저장 메시지명
 			carouselObj : {
 				textTitle : ['','','','','',''],
@@ -625,6 +632,8 @@ export default {
 		this.sendData.senderType = "UNUSED";
 		this.sendData.callbackTitle = "";
 		this.sendData.callbackContents = "";
+		this.sendData.callbackImgUrl = "";
+		this.sendData.callbackFileId = "";
 		this.sendData.saveContent = "";
 		this.sendData.cuInputType = "DICT";
 		this.sendData.cuInfo = "";
@@ -833,6 +842,8 @@ export default {
 	fnSenderTypeSet(data) {
 		this.sendData.callbackTitle = data.senderTitle;
 		this.sendData.callbackContents = data.senderContents;
+		this.sendData.callbackImgUrl = data.senderImgUrl;
+		this.sendData.callbackFileId = data.senderFileId;
 	},
 
 	fnClickCuInputType(e){
@@ -940,8 +951,8 @@ export default {
         varNms.push($1);
       });
 
-	  var adYn = vm.sendData.adYn;
-	  if(adYn == "yes") {
+	  var senderType = vm.sendData.senderType;
+	  if(senderType != "UNUSED") {
 		    var callbackContents = vm.sendData.callbackContents;
 		  	callbackContents.replace(/\#\{(\w+)\}/g, function($0, $1) {
 			if(rsvNmSet.has($1)){
@@ -974,7 +985,7 @@ export default {
     	const params = {
         	contsVarNms : this.sendData.contsVarNms
       	};
-      	await messageApi.excelDownSendSmsRecvTmplt(params);
+      	await rcsTemplateSendApi.excelDownSendRcsRecvTmplt(params);
     },
 
 	// 저장 버튼 처리
@@ -1047,6 +1058,8 @@ export default {
 				vm.sendData.senderType = data.senderType;				// 대체발송 radio
 				vm.sendData.callbackTitle = data.callbackTitle;			// 대체발송 title
 				vm.sendData.callbackContents = data.callbackContents;	// 대체발송 contents
+				vm.sendData.callbackFileId = data.fileId;				// 대체발송 fileId
+				vm.sendData.callbackImgUrl = data.imgUrl;				// 대체발송 imgUrl
 				vm.sendData.imgUrl = data.imgUrl;						// 이미지
 				vm.sendData.fileId = data.fileId;						// 이미지
 				vm.sendData.btnCnt = data.btnCnt;                   	// 버튼 갯수
@@ -1070,6 +1083,8 @@ export default {
 				vm.sendData.senderType = data.senderType;					// 대체발송 radio
 				vm.sendData.callbackTitle = data.callbackTitle;				// 대체발송 title
 				vm.sendData.callbackContents = data.callbackContents;		// 대체발송 contents
+				vm.sendData.callbackFileId = data.fileId;				// 대체발송 fileId
+				vm.sendData.callbackImgUrl = data.imgUrl;				// 대체발송 imgUrl
 				vm.sendData.carouselObj.textTitle = data.textTitle;			// 텍스트 제목
 				vm.sendData.carouselObj.textContents = data.textContents;	// 텍스트 내용
 				vm.sendData.carouselObj.imgUrl = data.imgUrl;				// 이미지
@@ -1231,6 +1246,8 @@ export default {
     },
 
 	validation(sendFlag) {
+		var excelFile = this.$refs.excelFile.files[0];
+		console.log(excelFile);
 		var vm = this;
 		var templateRadioBtn = this.templateRadioBtn;
 		if(templateRadioBtn == "des" || templateRadioBtn == "cell") {

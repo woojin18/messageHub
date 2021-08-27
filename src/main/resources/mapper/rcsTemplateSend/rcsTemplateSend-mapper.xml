@@ -53,6 +53,8 @@
 		,		REPLC_SENDER_CODE
 		,		CALLBACK_TITLE
 		,		CALLBACK_CONTENTS
+		,		FILE_ID
+		,		IMG_URL
 		,		REG_ID
 		,		REG_DT
 		) values (
@@ -69,6 +71,8 @@
 		,		#{replcSenderCode}
 		,		#{callbackTitle}
 		,		#{callbackContents}
+		,		#{callbackFileId}
+		,		#{callbackImgUrl}
 		,		#{userId}
 		,		SYSDATE()
 		)
@@ -141,6 +145,8 @@
 		,		REPLC_SENDER_CODE
 		,		CALLBACK_TITLE
 		,		CALLBACK_CONTENTS
+		,		FILE_ID
+		,		IMG_URL
 		,		MESSAGEBASE_INFO
 		FROM	cm_console.CM_RCS_TMP_MSGBASE
 		WHERE	SAVE_BOX_ID = #{saveBoxId}

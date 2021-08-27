@@ -327,14 +327,26 @@ public class RcsTemplateSendService {
 				paramMap.put("replcSenderCode", null);
 				paramMap.put("callbackTitle", null);
 				paramMap.put("callbackContents", null);
+				paramMap.put("callbackImgUrl", null);
+				paramMap.put("callbackFileId", null);
 			} else if("SMS".equals(senderType)) {
 				paramMap.put("replcSenderCode", "SMS");
 				paramMap.put("callbackTitle", null);
 				paramMap.put("callbackContents", CommonUtils.getString(paramsData.get("callbackContents")));
+				paramMap.put("callbackImgUrl", null);
+				paramMap.put("callbackFileId", null);
 			} else if("LMS".equals(senderType)) {
 				paramMap.put("replcSenderCode", "LMS");
 				paramMap.put("callbackTitle", CommonUtils.getString(paramsData.get("callbackTitle")));
 				paramMap.put("callbackContents", CommonUtils.getString(paramsData.get("callbackContents")));
+				paramMap.put("callbackImgUrl", null);
+				paramMap.put("callbackFileId", null);
+			} else if("MMS".equals(senderType)) {
+				paramMap.put("replcSenderCode", "MMS");
+				paramMap.put("callbackTitle", CommonUtils.getString(paramsData.get("callbackTitle")));
+				paramMap.put("callbackContents", CommonUtils.getString(paramsData.get("callbackContents")));
+				paramMap.put("callbackImgUrl", CommonUtils.getString(paramsData.get("callbackImgUrl")));
+				paramMap.put("callbackFileId", CommonUtils.getString(paramsData.get("callbackFileId")));
 			}
 			paramMap.put("userId", CommonUtils.getString(params.get("userId")));
 			
@@ -804,6 +816,8 @@ public class RcsTemplateSendService {
 				rtnMap.put("senderType", "SMS");
 			} else if("LMS".equals(replcSenderCode)) {
 				rtnMap.put("senderType", "LMS");
+			} else if("MMS".equals(replcSenderCode)) {
+				rtnMap.put("senderType", "MMS");
 			} else {
 				rtnMap.put("senderType", "UNUSED");
 			}
@@ -1350,28 +1364,6 @@ public class RcsTemplateSendService {
 		return returnMap;
 	}
 	
-	// 대체발송 MAP 세팅
-	public Map<String, Object> setFbInfoMap(Map<String, Object> data) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		String senderType = CommonUtils.getString(data.get("senderType"));
-		String callbackTitle = CommonUtils.getString(data.get("callbackTitle"));
-		String callbackContents = CommonUtils.getString(data.get("callbackContents"));
-		
-		if("SMS".equals(senderType)) {
-			resultMap.put("ch", "SMS");
-			resultMap.put("title", "");
-			resultMap.put("msg", callbackContents);
-			resultMap.put("fileId", "");
-		} else if("LMS".equals(senderType)) {
-			resultMap.put("ch", "MMS");						// G/W에 보낼때 MMS로 발송
-			resultMap.put("title", callbackTitle);
-			resultMap.put("msg", callbackContents);
-			resultMap.put("fileId", "");
-		}
-	
-		return resultMap;
-	}
-	
 	public ArrayList<Map<String, Object>> setFbInfoLst(Map<String, Object> data) {
 		ArrayList<Map<String, Object>> resultLst = new ArrayList<Map<String, Object>>();
 		String senderType = CommonUtils.getString(data.get("senderType"));
@@ -1420,10 +1412,35 @@ public class RcsTemplateSendService {
 				StringSubstitutor sub = new StringSubstitutor(mergeMap, ApiConfig.RCS_REPLACE_VAR_START, ApiConfig.RCS_REPLACE_VAR_END);
 				String replaceStr = sub.replace(callbackContents);
 				
-				resultMap.put("ch", "SMS");
+				resultMap.put("ch", "MMS");
 				resultMap.put("title", callbackTitle);
 				resultMap.put("msg", replaceStr);
 				resultMap.put("fileId", "");
+				
+				resultLst.add(resultListCnt, resultMap);
+				resultListCnt++;
+			}
+		} else if("MMS".equals(senderType)) {
+			for(Map<String, Object> dataMap : dataList) {
+				Map<String, Object> resultMap = new HashMap<String, Object>();
+				Map<String, Object> mergeMap = (Map<String, Object>) dataMap.get("mergeData");
+				String callbackTitle = CommonUtils.getString(data.get("callbackTitle"));
+				String callbackContents = CommonUtils.getString(data.get("callbackContents"));
+				String fileId = CommonUtils.getString(data.get("callbackFileId"));
+				if("yes".equals(adYn)) {
+					callbackTitle = "(광고)"+callbackTitle;
+				}
+				if(!"".equals(freeReceiveNum)) {
+					callbackContents = callbackContents + "무료수신거부 : " + freeReceiveNum;
+				}
+				
+				StringSubstitutor sub = new StringSubstitutor(mergeMap, ApiConfig.RCS_REPLACE_VAR_START, ApiConfig.RCS_REPLACE_VAR_END);
+				String replaceStr = sub.replace(callbackContents);
+				
+				resultMap.put("ch", "MMS");
+				resultMap.put("title", callbackTitle);
+				resultMap.put("msg", replaceStr);
+				resultMap.put("fileId", fileId);
 				
 				resultLst.add(resultListCnt, resultMap);
 				resultListCnt++;

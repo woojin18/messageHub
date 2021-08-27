@@ -16,7 +16,7 @@
 					<div class="menuBox">
 						<div>
 							<h4 style="width:10%" class="inline-block">템플릿 명</h4>
-							<input v-model="templateNm" type="text" class="inputStyle" style="width:24%" title="템플릿 명 입력란"><p class="color3 inline-block ml10" style="width:10%">0/30자</p>
+							<input v-model="templateNm" type="text" class="inputStyle" style="width:24%" title="템플릿 명 입력란" maxlength="30"><p class="color3 inline-block ml10" style="width:10%">{{titleCnt}}/30자</p>
 							<h4 class="inline-block" style="width:10%">템플릿코드</h4>
 							<input v-model="templateCode" type="text" class="inputStyle" style="width:24%" title="템플릿 명 입력란" disabled>
 						</div>
@@ -344,6 +344,7 @@ export default {
   },
   data() {
     return {
+		titleCnt : 0,
 		desImgSrc : require("@/assets/images/common/delivery.png"),
 		styleImgSrc : require("@/assets/images/common/delivery.png"),
 		deleteBtn: false,
@@ -400,6 +401,9 @@ export default {
 	  desContents: function(newVal, oldVal) {
 		  this.desContentsExam = newVal;
 		  this.desContentsCnt = newVal.length;
+	  },
+	  templateNm: function(newVal, oldVal) {
+		  this.titleCnt = newVal.length;
 	  }
   },
 
@@ -457,6 +461,7 @@ export default {
 			}
 
 			vm.templateNm = resultData.templateNm;
+			vm.titleCnt = resultData.templateNm.length;
 			if(vm.status=="UPT") vm.templateCode = resultData.templateCode;
 			vm.brandNm = resultData.brandNm;
 			var cardType = resultData.cardType;

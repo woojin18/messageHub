@@ -1,10 +1,15 @@
 package kr.co.uplus.cm.rcsTemplateSend.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -12,11 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.rcsTemplateSend.Service.RcsTemplateSendService;
 import kr.co.uplus.cm.utils.CommonUtils;
+import kr.co.uplus.cm.utils.DateUtil;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -210,5 +217,44 @@ public class RcsTemplateSendController {
 		}
 
 		return rtn;
+	}
+	
+	/**
+	 * 푸시 발송 수신자 엑셀업로드 템플릿 다운로드
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	@PostMapping(path = "/excelDownSendRcsRecvTmplt")
+	public ModelAndView excelDownSendRcsRecvTmplt(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) throws Exception {
+
+		List<String> colLabels = new ArrayList<String>();
+		colLabels.add("휴대폰 번호");
+		if(params.containsKey("contsVarNms")) {
+			List<String> contsVarNms = (ArrayList<String>)params.get("contsVarNms");
+			for(String varNm : contsVarNms) {
+				colLabels.add(varNm);
+			}
+		}
+
+		List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sheetTitle", "Template");
+		map.put("colLabels", colLabels.toArray(new String[0]));
+		map.put("colIds", new String[] {});
+		map.put("numColIds", new String[] {});
+		map.put("figureColIds", new String[] {});
+		map.put("colDataList", new ArrayList<T>());
+		sheetList.add(map);
+		
+		ModelAndView model = new ModelAndView("commonXlsxView");
+		model.addObject("excelFileName", "rcsTemplate_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
+		model.addObject("sheetList", sheetList);
+		
+		return model;
 	}
 }
