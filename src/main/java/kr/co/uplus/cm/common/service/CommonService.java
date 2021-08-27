@@ -15,8 +15,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
@@ -896,25 +894,24 @@ public class CommonService {
     }
     
     // 비밀번호 유효성검사
-	public boolean pwdResularExpressionChk(String pwd) {
-		boolean chk = true;
+	public void pwdResularExpressionChk(String pwd) throws Exception {
+//		boolean chk = true;
 		// 영문 대/소문자, 숫자, 특수문자 2가지 이상 10자리 이상
-		String numReg = "^(?=.*?[a-z])(?=.*?[0-9]).{10,}$";			// 소문자+숫자
-		String engReg = "^(?=.*?[a-z])(?=.*?[A-Z]).{10,}$";			// 소문자+대문자
-		String speReg = "^(?=.*?[a-z])(?=.*?[?!@#$%^&*+=-]).{10,}$";	// 소문자+특수문자
+		String numReg = "^(?=.*?[a-z])(?=.*?[0-9]).{10,16}$";			// 소문자+숫자
+		String engReg = "^(?=.*?[a-z])(?=.*?[A-Z]).{10,16}$";			// 소문자+대문자
+		String speReg = "^(?=.*?[a-z])(?=.*?[?!@#$%^&*+=-_|,.]).{10,16}$";	// 소문자+특수문자
 //		String speReg = "^(?=.*?[a-z])(?=.*?[\\\\{\\}\\[\\]\\/?.,;:|\\)*~`!^\\-_+<>@\\#$%&\\\\\\=\\(\\'\\\"]).{10,}$";	// 소문자+특수문자
 
 		// 영문 대/소문자, 숫자, 특수문자 3가지 이상 8자리 이상
-		String numReg2 = "^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[?!@#$%^&*+=-]).{8,}$";	// 숫자 제외 3가지 조합
-		String engReg2 = "^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[?!@#$%^&*+=-]).{8,}$";	// 대문자 제외 3가지 조합
-		String speReg2 = "^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,}$";			// 특수문자 제외 3가지 조합
+		String numReg2 = "^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[?!@#$%^&*+=-_|,.]).{8,16}$";	// 숫자 제외 3가지 조합
+		String engReg2 = "^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[?!@#$%^&*+=-_|,.]).{8,16}$";	// 대문자 제외 3가지 조합
+		String speReg2 = "^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,16}$";			// 특수문자 제외 3가지 조합
 		
 //		String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$";
 		if(!pwd.matches(numReg) && !pwd.matches(engReg) && !pwd.matches(speReg)
 			&& !pwd.matches(numReg2) && !pwd.matches(engReg2) && !pwd.matches(speReg2)) {
-			chk = false;
+			throw new Exception("비밀번호는 대/소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 10~16자리\n또는 3가지 이상을 조합하여 8~16자리로 구성해주세요.\n(소문자 필수 입력)");
 		}
-		return chk;
 	}
 	
 	/**

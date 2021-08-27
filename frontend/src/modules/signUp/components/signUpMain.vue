@@ -22,14 +22,14 @@
 				<div class="of_h mt10">
 					<div class="float-left" style="width:22%"><h5>비밀번호*</h5></div>
 					<div class="float-left" style="width:78%">
-						<input type="password" class="inputStyle" placeholder="비밀번호(8~16자리)" v-model="password">
+						<input type="password" class="inputStyle" placeholder="비밀번호 [대/소문자,숫자,특수문자 조합(길이8~16자리)]" maxlength="16" v-model="password">
 					</div>
 				</div>
 				
 				<div class="of_h mt10">
 					<div class="float-left" style="width:22%"><h5>비밀번호 확인 *</h5></div>
 					<div class="float-left" style="width:78%">
-						<input type="password" class="inputStyle" placeholder="비밀번호 확인" v-model="passwordChk">
+						<input type="password" class="inputStyle" placeholder="비밀번호 확인" v-model="passwordChk" maxlength="16">
 					</div>
 				</div>
 
@@ -351,13 +351,13 @@ export default {
 		defaultVali() {
 			// 비밀번호 정책 validation
 			// var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/;
-			var numReg = /^(?=.*?[a-z])(?=.*?[0-9]).{10,}$/;
-			var engReg = /^(?=.*?[a-z])(?=.*?[A-Z]).{10,}$/;
-			var speReg = /^(?=.*?[a-z])(?=.*?[?!@#$%^&*+=-]).{10,}$/;
+			var numReg = /^(?=.*?[a-z])(?=.*?[0-9]).{10,16}$/;
+			var engReg = /^(?=.*?[a-z])(?=.*?[A-Z]).{10,16}$/;
+			var speReg = /^(?=.*?[a-z])(?=.*?[?!@#$%^&*+=-_|,.]).{10,16}$/;
 
-			var numReg2 = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[?!@#$%^&*+=-]).{8,}$/;
-			var engReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[?!@#$%^&*+=-]).{8,}$/;
-			var speReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,}$/;
+			var numReg2 = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[?!@#$%^&*+=-_|,.]).{8,16}$/;
+			var engReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[?!@#$%^&*+=-_|,.]).{8,16}$/;
+			var speReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,16}$/;
 
 			if(this.userNm == ""){
 				confirm.fnAlert("", "이름을 입력해주세요.");
@@ -367,7 +367,7 @@ export default {
 				return false;
 			} else if (!numReg.test(this.password) && !engReg.test(this.password)&& !speReg.test(this.password)
 						&& !numReg2.test(this.password) && !engReg2.test(this.password) && !speReg2.test(this.password)){
-				confirm.fnAlert("", "비밀번호는 대/소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 10자리 이상\n또는 3가지 이상을 조합하여 8자리 이상의 길이로 구성해주세요.\n(소문자 필수 입력)");
+				confirm.fnAlert("", "비밀번호는 대/소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 10~16자리\n또는 3가지 이상을 조합하여 8~16자리로 구성해주세요.\n(소문자 필수 입력)");
 				return;
 			} else if (this.password != this.passwordChk) {
 				confirm.fnAlert("", "비밀번호가 일치하지 않습니다.");

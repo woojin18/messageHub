@@ -31,8 +31,8 @@
               <div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:20%">비밀번호 변경</h5>
                 <div class="float-right" style="width:80%">
-                  <input type="password" class="inputStyle" title="비밀번호 변경 입력란" v-model="loginPwd" placeholder="새 비밀번호" maxlength="100">
-                  <input type="password" class="inputStyle consolMarginTop" title="비밀번호 변경 확인 입력란" v-model="chkLoginPwd" placeholder="새 비밀번호 확인" maxlength="100">
+                  <input type="password" class="inputStyle" title="비밀번호 변경 입력란" v-model="loginPwd" placeholder="비밀번호 [대/소문자,숫자,특수문자 조합(길이8~16자리)]" maxlength="16">
+                  <input type="password" class="inputStyle consolMarginTop" title="비밀번호 변경 확인 입력란" v-model="chkLoginPwd" placeholder="비밀번호 확인" maxlength="16">
                 </div>
               </div>
             </div>
@@ -180,13 +180,14 @@ export default {
       // 저장
       fnSave(){
         if(jQuery.trim(this.loginPwd).length > 0){
-          var numReg = /^(?=.*?[a-z])(?=.*?[0-9]).{10,}$/;
-          var engReg = /^(?=.*?[a-z])(?=.*?[A-Z]).{10,}$/;
-          var speReg = /^(?=.*?[a-z])(?=.*?[?!@#$%^&*+=-]).{10,}$/;
+          var numReg = /^(?=.*?[a-z])(?=.*?[0-9]).{10,16}$/;
+          var engReg = /^(?=.*?[a-z])(?=.*?[A-Z]).{10,16}$/;
+          var speReg = /^(?=.*?[a-z])(?=.*?[?!@#$%^&*+=-_|,.]).{10,16}$/;
+          // var speReg = /^(?=.*?[a-z])(?=.*?[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]).{10,}$/;
 
-          var numReg2 = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[?!@#$%^&*+=-]).{8,}$/;
-          var engReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[?!@#$%^&*+=-]).{8,}$/;
-          var speReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,}$/;
+          var numReg2 = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[?!@#$%^&*+=-_|,.]).{8,16}$/;
+          var engReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[?!@#$%^&*+=-_|,.]).{8,16}$/;
+          var speReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,16}$/;
 
           if(!numReg.test(this.loginPwd) && !engReg.test(this.loginPwd)&& !speReg.test(this.loginPwd)
             && !numReg2.test(this.loginPwd) && !engReg2.test(this.loginPwd) && !speReg2.test(this.loginPwd)){

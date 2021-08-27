@@ -96,9 +96,10 @@ public class SignUpService {
 		}
 		
 		// 비밀번호 유효성 검사
-		boolean pwdChk = commonService.pwdResularExpressionChk(CommonUtils.getString(paramMap.get("password")));
-		if(!pwdChk) {
-			throw new Exception("비밀번호는 대/소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 10자리 이상\n또는 3가지 이상을 조합하여 8자리 이상의 길이로 구성해주세요.\n(소문자 필수 입력)");
+		try {
+			commonService.pwdResularExpressionChk(CommonUtils.getString(paramMap.get("password")));
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
 		}
 		
 		// 사용자 비밀번호 암호화
@@ -136,9 +137,6 @@ public class SignUpService {
 			
 			if(existCustNo > 0) {
 				throw new Exception("이미 등록된 고객사입니다. 신규 고객사를 등록해주세요.");
-//					rtn.setSuccess(false);
-//					rtn.setMessage("이미 등록된 고객사입니다. 신규 고객사를 등록해주세요.");
-//					return rtn;
 			}
 		}
 		
@@ -178,9 +176,6 @@ public class SignUpService {
 				paramMap.put("custNo", custNo);
 			} else {
 				throw new Exception(CommonUtils.getString(((Map<String, Object>) result.get("data")).get("resultMsg")+"\n회원가입에 실패하였습니다."));
-//					rtn.setSuccess(false);
-//					rtn.setMessage(CommonUtils.getString(((Map<String, Object>) result.get("data")).get("resultMsg")+"\n회원가입에 실패하였습니다."));
-//					return rtn;
 			}
 		}
 		

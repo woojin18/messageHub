@@ -66,9 +66,10 @@ public class MyPageService {
 			String loginPwd = CommonUtils.getString(params.get("loginPwd"));
 			paramMap.put("password", loginPwd);
 			// 비밀번호 유효성 검사
-			boolean pwdChk = commonService.pwdResularExpressionChk(loginPwd);
-			if (!pwdChk) {
-				throw new Exception("비밀번호는 대/소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 10자리 이상\n또는 3가지 이상을 조합하여 8자리 이상의 길이로 구성해주세요.\n(소문자 필수 입력)");
+			try {
+				commonService.pwdResularExpressionChk(loginPwd);
+			} catch (Exception e) {
+				throw new Exception(e.getMessage());
 			}
 			
 			// 사용자 비밀번호 암호화 및 기존 비밀번호 check
@@ -76,9 +77,7 @@ public class MyPageService {
 			try {
 				encPwd = commonService.encryptionUserPwd(paramMap);
 			} catch (Exception e) {
-				rtn.setSuccess(false);
-				rtn.setMessage(e.getMessage());
-				return rtn;
+				throw new Exception(e.getMessage());
 			}
 			paramMap.put("loginPwd", encPwd);
 		}

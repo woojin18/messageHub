@@ -6,8 +6,8 @@
 			<div class="row mt40">
 				<div class="col-xs-12">		
 					<div class="of_h width420 auto">
-						<input type="password" v-model="pwd" class="inputStyle" placeholder="새비밀번호 (8~16자)">
-						<input type="password" v-model="pwdChk" class="inputStyle mt10" placeholder="새비밀번호 확인">
+						<input type="password" v-model="pwd" class="inputStyle" maxlength="16" placeholder="비밀번호 [대/소문자,숫자,특수문자 조합(길이8~16자리)]">
+						<input type="password" v-model="pwdChk" class="inputStyle mt10" maxlength="16" placeholder="비밀번호 확인">
 					</div>
 					<div class="mt30">
 						<p class="font-size12 color3 width420 auto">*사용자의 패스워드는 8자리 이상의 영문 대/소문자, 숫자, 특수 문자의 조합을 사용하여 생성해 주세요.<br>
@@ -66,18 +66,18 @@ export default {
 				return;
 			}
 			// 비밀번호 정책 validation
-			var numReg = /^(?=.*?[a-z])(?=.*?[0-9]).{10,}$/;
-			var engReg = /^(?=.*?[a-z])(?=.*?[A-Z]).{10,}$/;
-			var speReg = /^(?=.*?[a-z])(?=.*?[?!@#$%^&*+=-]).{10,}$/;
+			var numReg = /^(?=.*?[a-z])(?=.*?[0-9]).{10,16}$/;
+			var engReg = /^(?=.*?[a-z])(?=.*?[A-Z]).{10,16}$/;
+			var speReg = /^(?=.*?[a-z])(?=.*?[?!@#$%^&*+=-_|,.]).{10,16}$/;
 			// var speReg = /^(?=.*?[a-z])(?=.*?[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]).{10,}$/;
 
-			var numReg2 = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[?!@#$%^&*+=-]).{8,}$/;
-			var engReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[?!@#$%^&*+=-]).{8,}$/;
-			var speReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,}$/;
+			var numReg2 = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[?!@#$%^&*+=-_|,.]).{8,16}$/;
+			var engReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[?!@#$%^&*+=-_|,.]).{8,16}$/;
+			var speReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,16}$/;
 
 			if(!numReg.test(this.pwd) && !engReg.test(this.pwd)&& !speReg.test(this.pwd)
 			&& !numReg2.test(this.pwd) && !engReg2.test(this.pwd) && !speReg2.test(this.pwd)){
-				confirm.fnAlert("", "비밀번호는 대/소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 10자리 이상\n또는 3가지 이상을 조합하여 8자리 이상의 길이로 구성해주세요.\n(소문자 필수 입력)");
+				confirm.fnAlert("", "비밀번호는 대/소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 10~16자리\n또는 3가지 이상을 조합하여 8~16자리로 구성해주세요.\n(소문자 필수 입력)");
 				return;
 			}
 
