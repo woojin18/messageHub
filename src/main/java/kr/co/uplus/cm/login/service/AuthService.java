@@ -27,6 +27,8 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import kr.co.uplus.cm.common.config.SecurityConfig;
@@ -47,7 +49,6 @@ import kr.co.uplus.cm.common.utils.SpringUtils;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
-import yoyozo.security.SHA;
 
 @Log4j2
 @Service
@@ -335,11 +336,11 @@ public class AuthService implements UserDetailsService {
 			return tUCMenusByRole.get(roleCd);
 		}
 	}
-
+	
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public RestResult<Object> updatePassword(Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
-		try {
-			String password = CommonUtils.getString(params.get("password"));
+		String password = CommonUtils.getString(params.get("password"));
 
 		// 비밀번호 유효성 검사
 		boolean pwdChk = commonService.pwdResularExpressionChk(password);
@@ -349,52 +350,19 @@ public class AuthService implements UserDetailsService {
 //			rtn.setMessage("비밀번호는 8~20자리이어야 하며,\n숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
 			return rtn;
 		}
-
-			// 사용자 비밀번호 암호화
-			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-			byte[] bytes = new byte[16];
-			random.nextBytes(bytes);
-			String salt = new String(Base64.getEncoder().encode(bytes));
-			params.put("salt", salt);
-
-			SHA sha512 = new SHA(512);
-			
-			// 기존 비밀번호 비교
-			Map<String, Object> saltMap =  (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params);
-			String exSalt = CommonUtils.getString(saltMap.get("salt"));				// 현재 salt 문자열
-			String bfExSalt = CommonUtils.getString(saltMap.get("beforeSalt"));		// 이전 salt 문자열
-			
-			String rtnPwd = "";				// 현재 salt + 새로 입력한 비밀번호
-			String rtnPwd2 = "";			// 기존 salt + 새로 입력한 비밀번호
-			
-			// 현재 이전의 비밀번호와 비교
-			if(bfExSalt != null && !"".equals(bfExSalt)) {
-				rtnPwd2 = sha512.encryptToBase64(bfExSalt + password);
-			} else {
-				rtnPwd2 = sha512.encryptToBase64(password);
-			}
-			
-			// 현재 비밀번호와 비교
-			if (exSalt != null && !"".equals(exSalt)) {
-				rtnPwd = sha512.encryptToBase64(exSalt + password);
-			} else {
-				rtnPwd = sha512.encryptToBase64(password);
-			}
-
-			Map<String, Object> pwdMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, params);
-			String exPwd = CommonUtils.getString(pwdMap.get("loginPwd"));			// 현재 비밀번호
-			String bfExPwd = CommonUtils.getString(pwdMap.get("beforeLoginPwd"));	// 직전 비밀번호
-			
-			// 비밀번호 비교
-			if(exPwd.equals(rtnPwd) || bfExPwd.equals(rtnPwd2)) {
-				rtn.setSuccess(false);
-				rtn.setMessage("기존과 동일한 비밀번호는 사용할 수 없습니다.");
-				return rtn;
 				
-			}
-			String encPwd = sha512.encryptToBase64(salt + password);
-			params.put("pwd", encPwd);
-			// 비밀번호 update
+		// 사용자 비밀번호 암호화 및 기존 비밀번호 check
+		String encPwd = "";
+		try {
+			encPwd = commonService.encryptionUserPwd(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+			return rtn;
+		}
+		params.put("pwd", encPwd);
+		// 비밀번호 update
+		try {
 			generalDao.updateGernal(DB.QRY_UPDATE_USER_PASSWORD, params);
 			rtn.setSuccess(true);
 		} catch (Exception e) {

@@ -66,17 +66,13 @@ export default {
 				return;
 			}
 			// 비밀번호 정책 validation
-			// var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/;
-			// if(!reg.test(this.pwd)){
-			// 	confirm.fnAlert("", "비밀번호는 8~20자리이어야 하며,\n숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
-			// 	return;
-			// }
 			var numReg = /^(?=.*?[a-z])(?=.*?[0-9]).{10,}$/;
 			var engReg = /^(?=.*?[a-z])(?=.*?[A-Z]).{10,}$/;
-			var speReg = /^(?=.*?[a-z])(?=.*?[!@#$%^*+=-]).{10,}$/;
+			var speReg = /^(?=.*?[a-z])(?=.*?[?!@#$%^&*+=-]).{10,}$/;
+			// var speReg = /^(?=.*?[a-z])(?=.*?[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]).{10,}$/;
 
-			var numReg2 = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[!@#$%^*+=-]).{8,}$/;
-			var engReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^*+=-]).{8,}$/;
+			var numReg2 = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[?!@#$%^&*+=-]).{8,}$/;
+			var engReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[?!@#$%^&*+=-]).{8,}$/;
 			var speReg2 = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,}$/;
 
 			if(!numReg.test(this.pwd) && !engReg.test(this.pwd)&& !speReg.test(this.pwd)
@@ -101,19 +97,16 @@ export default {
 			loginApi.updatePassword(params).then(response => {
 				var result = response.data;
 				if (result.success) {
-					alert("비밀번호 재설정이 완료되었습니다.");
-					if (this.svcTypeCd == 'AC') {
-						this.$router.push("/ac/home");
-					} else {
-						this.$router.push("/uc/home");
-					}
+					eventBus.$on('callbackEventBus', this.fnLogin);
+					confirm.fnConfirm("", "비밀번호 재설정이 완료되었습니다.","로그인");
+					// if (this.svcTypeCd == 'AC') {
+						// this.$router.push("/ac/home");
+					// } else {
+						// this.$router.push("/uc/home");
+					// }
 				} else {
-					alert(result.message);
-					if (this.svcTypeCd == 'AC') {
-						this.$router.push("/ac/home");
-					} else {
-						this.$router.push("/uc/home");
-					}
+					confirm.fnAlert("", result.message);
+					return;
 				}
 			});
 		},
@@ -123,6 +116,9 @@ export default {
 			} else {
 				this.$router.push("/uc/home");
 			}
+		},
+		fnLogin(){
+			this.$router.push("/login");
 		}
 	}
 };

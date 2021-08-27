@@ -901,23 +901,17 @@ public class CommonService {
 		// 영문 대/소문자, 숫자, 특수문자 2가지 이상 10자리 이상
 		String numReg = "^(?=.*?[a-z])(?=.*?[0-9]).{10,}$";			// 소문자+숫자
 		String engReg = "^(?=.*?[a-z])(?=.*?[A-Z]).{10,}$";			// 소문자+대문자
-		String speReg = "^(?=.*?[a-z])(?=.*?[!@#$%^*+=-]).{10,}$";	// 소문자+특수문자
+		String speReg = "^(?=.*?[a-z])(?=.*?[?!@#$%^&*+=-]).{10,}$";	// 소문자+특수문자
+//		String speReg = "^(?=.*?[a-z])(?=.*?[\\\\{\\}\\[\\]\\/?.,;:|\\)*~`!^\\-_+<>@\\#$%&\\\\\\=\\(\\'\\\"]).{10,}$";	// 소문자+특수문자
 
 		// 영문 대/소문자, 숫자, 특수문자 3가지 이상 8자리 이상
-		String numReg2 = "^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[!@#$%^*+=-]).{8,}$";	// 숫자 제외 3가지 조합
-		String engReg2 = "^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^*+=-]).{8,}$";	// 대문자 제외 3가지 조합
+		String numReg2 = "^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[?!@#$%^&*+=-]).{8,}$";	// 숫자 제외 3가지 조합
+		String engReg2 = "^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[?!@#$%^&*+=-]).{8,}$";	// 대문자 제외 3가지 조합
 		String speReg2 = "^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,}$";			// 특수문자 제외 3가지 조합
 		
 //		String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$";
-//		Matcher match = Pattern.compile(pattern).matcher(pwd);
-		Matcher match1 = Pattern.compile(numReg).matcher(pwd);
-		Matcher match2 = Pattern.compile(engReg).matcher(pwd);
-		Matcher match3 = Pattern.compile(speReg).matcher(pwd);
-		Matcher match4 = Pattern.compile(numReg2).matcher(pwd);
-		Matcher match5 = Pattern.compile(engReg2).matcher(pwd);
-		Matcher match6 = Pattern.compile(speReg2).matcher(pwd);
-		if(!match1.find() && !match2.find() && !match3.find()
-				&& !match4.find() && !match5.find() && !match6.find()) {
+		if(!pwd.matches(numReg) && !pwd.matches(engReg) && !pwd.matches(speReg)
+			&& !pwd.matches(numReg2) && !pwd.matches(engReg2) && !pwd.matches(speReg2)) {
 			chk = false;
 		}
 		return chk;
@@ -929,6 +923,7 @@ public class CommonService {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	public String encryptionUserPwd(Map<String, Object> params) throws Exception {
 
 		String password = CommonUtils.getString(params.get("password"));

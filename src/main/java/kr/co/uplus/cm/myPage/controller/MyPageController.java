@@ -108,7 +108,7 @@ public class MyPageController {
 			rtn = myPageSvc.saveMemberInfo(params);
 		} catch(Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
+			rtn.setMessage(e.getMessage());
 		}
 		
 		return rtn;

@@ -1,7 +1,5 @@
 package kr.co.uplus.cm.myPage.service;
 
-import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +17,6 @@ import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
-import yoyozo.security.SHA;
 
 @Service
 public class MyPageService {
@@ -47,93 +44,50 @@ public class MyPageService {
 
 	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-	public RestResult<Object> saveMemberInfo(Map<String, Object> params) {
+	public RestResult<Object> saveMemberInfo(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.putAll(params);
 
+		// 인증번호 check
+		if (!"".equals(params.get("certifyNumber")) && params.get("certifyNumber") != null) {
+			String certifyNumb = CommonUtils.getString(params.get("certifyNumber"));
+			String chkCertifyNumb = (String) generalDao.selectGernalObject(DB.QRY_SELECT_SMS_CERTIFY_NUMBER,
+					paramMap);
+
+			if (!chkCertifyNumb.equals(certifyNumb)) {
+				throw new Exception("인증번호를 정확히 입력해주세요.");
+			}
+		}
+
+		// 비밀번호 암호화
+		if (!"".equals(params.get("loginPwd")) && params.get("loginPwd") != null) {
+			String loginPwd = CommonUtils.getString(params.get("loginPwd"));
+			paramMap.put("password", loginPwd);
+			// 비밀번호 유효성 검사
+			boolean pwdChk = commonService.pwdResularExpressionChk(loginPwd);
+			if (!pwdChk) {
+				throw new Exception("비밀번호는 대/소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 10자리 이상\n또는 3가지 이상을 조합하여 8자리 이상의 길이로 구성해주세요.\n(소문자 필수 입력)");
+			}
+			
+			// 사용자 비밀번호 암호화 및 기존 비밀번호 check
+			String encPwd = "";
+			try {
+				encPwd = commonService.encryptionUserPwd(paramMap);
+			} catch (Exception e) {
+				rtn.setSuccess(false);
+				rtn.setMessage(e.getMessage());
+				return rtn;
+			}
+			paramMap.put("loginPwd", encPwd);
+		}
+
+		// 회원정보 update
 		try {
-			// 인증번호 check
-			if (!"".equals(params.get("certifyNumber")) && params.get("certifyNumber") != null) {
-				String certifyNumb = CommonUtils.getString(params.get("certifyNumber"));
-				String chkCertifyNumb = (String) generalDao.selectGernalObject(DB.QRY_SELECT_SMS_CERTIFY_NUMBER,
-						paramMap);
-
-				if (!chkCertifyNumb.equals(certifyNumb)) {
-					rtn.setSuccess(false);
-					rtn.setMessage("인증번호를 정확히 입력해주세요.");
-
-					return rtn;
-				}
-			}
-
-			// 비밀번호 암호화
-			if (!"".equals(params.get("loginPwd")) && params.get("loginPwd") != null) {
-				String loginPwd = CommonUtils.getString(params.get("loginPwd"));
-
-				// 비밀번호 유효성 검사
-				boolean pwdChk = commonService.pwdResularExpressionChk(loginPwd);
-				if (!pwdChk) {
-					rtn.setSuccess(false);
-//					rtn.setMessage("비밀번호는 8~20자리이어야 하며,\n숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.");
-					rtn.setMessage("비밀번호는 대/소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 10자리 이상\n또는 3가지 이상을 조합하여 8자리 이상의 길이로 구성해주세요.\n(소문자 필수 입력)");
-
-					return rtn;
-				}
-
-				// 사용자 비밀번호 암호화
-				SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-				byte[] bytes = new byte[16];
-				random.nextBytes(bytes);
-				String salt = new String(Base64.getEncoder().encode(bytes));			// 신규 salt 문자열
-				paramMap.put("salt", salt);
-
-				SHA sha512 = new SHA(512);
-				
-				// 기존 비밀번호 비교
-				Map<String, Object> saltMap =  (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, paramMap);
-				String exSalt = CommonUtils.getString(saltMap.get("salt"));				// 현재 salt 문자열
-				String bfExSalt = CommonUtils.getString(saltMap.get("beforeSalt"));		// 이전 salt 문자열
-				
-				String rtnPwd = "";				// 현재 salt + 새로 입력한 비밀번호
-				String rtnPwd2 = "";			// 기존 salt + 새로 입력한 비밀번호
-				
-				// 현재 이전의 비밀번호와 비교
-				if(bfExSalt != null && !"".equals(bfExSalt)) {
-					rtnPwd2 = sha512.encryptToBase64(bfExSalt + loginPwd);
-				} else {
-					rtnPwd2 = sha512.encryptToBase64(loginPwd);
-				}
-				
-				// 현재 비밀번호와 비교
-				if (exSalt != null && !"".equals(exSalt)) {
-					rtnPwd = sha512.encryptToBase64(exSalt + loginPwd);
-				} else {
-					rtnPwd = sha512.encryptToBase64(loginPwd);
-				}
-
-				Map<String, Object> pwdMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, paramMap);
-				String exPwd = CommonUtils.getString(pwdMap.get("loginPwd"));			// 현재 비밀번호
-				String bfExPwd = CommonUtils.getString(pwdMap.get("beforeLoginPwd"));	// 직전 비밀번호
-				
-				// 비밀번호 비교
-				if(exPwd.equals(rtnPwd) || bfExPwd.equals(rtnPwd2)) {
-					rtn.setSuccess(false);
-					rtn.setMessage("기존과 동일한 비밀번호는 사용할 수 없습니다.");
-					return rtn;
-					
-				}
-
-				String encPwd = sha512.encryptToBase64(salt + loginPwd);
-				paramMap.put("loginPwd", encPwd);
-			}
-
-			// 회원정보 update
 			generalDao.updateGernal(DB.QRY_UPDATE_MEMBER_INFO, paramMap);
 		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("저장에 실패하였습니다.");
+			throw new Exception("저장에 실패하였습니다.");
 		}
 
 		return rtn;
