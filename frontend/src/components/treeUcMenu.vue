@@ -12,7 +12,7 @@
 			<!-- consoleMenu -->
 			<dl>
 				<dt>
-					<a :title="projectName"><i class="fal fa-folder navIcon"></i><span>{{projectName}}<i class="fas fa-cog cog"></i> <i class="far fa-chevron-right navArrow"></i></span>(이동)</a>
+					<a :title="projectName"><i class="fal fa-folder navIcon"></i><span>{{projectName}}<i class="far fa-chevron-right navArrow"></i></span></a>
 					<div class="consoleMenu">
 						<ul class="box-shadow">
 							<li v-for="(item, i) in prdData" :key="i" :class="{active : repPrdState(item.projectId,item.projectName)}"><a @click="chgProject(item.projectId)">{{item.projectName}}</a></li>
