@@ -2112,9 +2112,9 @@
 							<p v-if="rowData.msgKind == 'A'">[광고]</p>
 							<div class="mt5">
 								<div class="text-sub-wrap">
-									<div v-if="!$gfnCommonUtils.isEmpty(rowData.friendTalkImgInfo.imgUrl)" class="phoneText2 mt10 text-center" :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.friendTalkImgInfo.imgUrl+');'">
+									<div v-if="rowData.msgType == 'IMAGE' && !$gfnCommonUtils.isEmpty(rowData.friendTalkImgInfo.imgUrl)" class="phoneText2 mt10 text-center" :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.friendTalkImgInfo.imgUrl+');'">
 									</div>
-									<br v-if="$gfnCommonUtils.isEmpty(rowData.friendTalkImgInfo.imgUrl)"/>
+									<br v-if="rowData.msgType == 'IMAGE' && $gfnCommonUtils.isEmpty(rowData.friendTalkImgInfo.imgUrl)"/>
 									<span><pre>{{rowData.friendTalkContent}}</pre></span>
 									<div v-for="(buttonInfo, idx) in rowData.friendTalkButtons" :key="idx">
 										<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
@@ -2150,7 +2150,7 @@
 					<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
 						<div class="float-left" style="width:13%"><h4>이미지 링크</h4></div>
 						<div class="float-left" style="width:59%">
-							<input type="text" class="inputStyle" placeholder="http://..." id="friendTalkImageLinkId" v-model="rowData.friendTalkImageLink">
+							<input type="text" class="inputStyle" placeholder="https://..." v-model="rowData.friendTalkImageLink">
 						</div>
 					</div>
 					<div class="of_h consolMarginTop">
@@ -4222,9 +4222,11 @@ export default {
 						this.rowData.friendTalkSenderKey 		= rtnData.friendTalkSenderKey;
 						this.rowData.friendTalkImageLink 		= rtnData.friendTalkImageLink;
 						this.rowData.friendTalkContent 			= this.$gfnCommonUtils.unescapeXss(rtnData.friendTalkContent);
-						this.rowData.friendTalkImgInfo.fileId 	= rtnData.friendTalkFileId;
-						this.rowData.friendTalkImgInfo.imgUrl	= rtnData.friendTalkImgUrl;
-						this.rowData.friendTalkImgInfo.wideImgYn = rtnData.friendTalkWideImageYn;
+						if (this.rowData.msgType == 'IMAGE') {
+							this.rowData.friendTalkImgInfo.fileId 	= rtnData.friendTalkFileId;
+							this.rowData.friendTalkImgInfo.imgUrl	= rtnData.friendTalkImgUrl;
+							this.rowData.friendTalkImgInfo.wideImgYn = rtnData.friendTalkWideImageYn;
+						}
 	
 						if (rtnData.friendTalkPrdType == 'FRIENDTALK') {//카카오톡 친구톡은 5개 버튼까지 추가 가능
 							if (rtnData.friendTalkButton0Type) {
@@ -5175,6 +5177,12 @@ export default {
 				// 메시지 타입 텍스트 선택 시, RCS상품이 세로형(short, tall)인 경우 프리템플릿으로 초기화
 				if (jQuery("input:radio[name=rcsTemplate1]:checked").val() == 5 || jQuery("input:radio[name=rcsTemplate1]:checked").val() == 6) {
 					jQuery("input:radio[id=rcsTemplate1-1]").click();
+				}
+			} else {
+				if (this.kakaoTemplateTable == 0) {
+					if (this.isEmpty(this.rowData.friendTalkImageLink) || this.rowData.friendTalkImageLink == 'https://') {
+						this.rowData.friendTalkImageLink = 'https://';
+					}
 				}
 			}
 		},
