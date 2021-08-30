@@ -236,6 +236,7 @@ export default {
 			rtUsedFriendtalkList: [],
 			rtUsedAlimtalkList: [],
 			rtUsedSmsList: [],
+			rtUsedLmsList: [],
 			rtUsedMmsList: [],
 			successFailResultData: {},
 			failCodeResultData: {},
