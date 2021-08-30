@@ -18,17 +18,54 @@
 							<input type="text" class="inputStyle vertical-top ml10" style="width:37.5%" title="검색조건 입력란" id="searchText" name="searchText" v-model="searchData.searchText" @keypress.enter="fnSearch">
 						</div>
 					</div>
-					<div class="of_h consolMarginTop">
-						<div class="inline-block" style="width:8%"><h4 class="font-normal mt15">템플릿 상태</h4></div>
+					<div class="of_h">
+						<div class="inline-block" style="width:8%"><h4 class="font-normal mt15">메시지구분</h4></div>
 						<div class="inline-block" style="width:91%">
-							<select v-model="searchData.searchTmpltStatus" class="selectStyle2" style="width:15%" title="템플릿 상태">
-								<option value="">전체</option>
-								<option value="COMPLETE">완료</option>
-								<option value="SAVE">저장</option>
-							</select>
+							<div class="consolCheck consolMarginTop">
+								<input type="checkbox" id="otherUse_all" class="checkStyle2" @change="fnSearchMsgKindCdChkAll" v-model="msgKindCdAllSelected">
+								<label for="otherUse_all" class="mr30">전체</label>
+								<input type="checkbox" id="searchMsgKindCd_A" class="checkStyle2" value="A" v-model="searchData.searchMsgKindCd">
+								<label for="searchMsgKindCd_A" class="mr30">광고성</label>
+								<input type="checkbox" id="searchMsgKindCd_I" class="checkStyle2" value="I" v-model="searchData.searchMsgKindCd">
+								<label for="searchMsgKindCd_I" class="mr30">정보성</label>
+							</div>
 						</div>
 					</div>
-					<div class="of_h consolMarginTop">
+					<div class="of_h">
+						<div class="inline-block" style="width:8%"><h4 class="font-normal mt15">템플릿채널</h4></div>
+						<div class="inline-block" style="width:91%">
+							<div class="consolCheck consolMarginTop">
+								<input type="checkbox" id="searchMsgCh_all" class="checkStyle2" @change="fnSearchMsgChChkAll" v-model="msgChAllSelected">
+								<label for="searchMsgCh_all" class="mr30">전체</label>
+								<input type="checkbox" id="searchMsgCh_PUSH" class="checkStyle2" value="PUSH" v-model="searchData.searchMsgCh">
+								<label for="searchMsgCh_PUSH" class="mr30">푸시</label>
+								<input type="checkbox" id="searchMsgCh_SMS" class="checkStyle2" value="SMS" v-model="searchData.searchMsgCh">
+								<label for="searchMsgCh_SMS" class="mr30">SMS</label>
+								<input type="checkbox" id="searchMsgCh_MMS" class="checkStyle2" value="MMS" v-model="searchData.searchMsgCh">
+								<label for="searchMsgCh_MMS" class="mr30">MMS</label>
+								<input type="checkbox" id="searchMsgCh_FRIENDTALK" class="checkStyle2" value="FRIENDTALK" v-model="searchData.searchMsgCh">
+								<label for="searchMsgCh_FRIENDTALK" class="mr30">친구톡</label>
+								<input type="checkbox" id="searchMsgCh_ALIMTALK" class="checkStyle2" value="ALIMTALK" v-model="searchData.searchMsgCh">
+								<label for="searchMsgCh_ALIMTALK" class="mr30">알림톡</label>
+								<input type="checkbox" id="searchMsgCh_RCS" class="checkStyle2" value="RCS" v-model="searchData.searchMsgCh">
+								<label for="searchMsgCh_RCS" class="mr30">RCS</label>
+							</div>
+						</div>
+					</div>
+					<div class="of_h">
+						<div class="inline-block" style="width:8%"><h4 class="font-normal mt15">템플릿 상태</h4></div>
+						<div class="inline-block" style="width:91%">
+							<div class="consolCheck consolMarginTop">
+								<input type="checkbox" id="searchTmpltStatus_all" class="checkStyle2" @change="fnSearchTmpltStatusCdChkAll" v-model="tmpltStatusCdAllSelected">
+								<label for="searchTmpltStatus_all" class="mr30">전체</label>
+								<input type="checkbox" id="searchTmpltStatus_C" class="checkStyle2" value="COMPLETE" v-model="searchData.searchTmpltStatus">
+								<label for="searchTmpltStatus_C" class="mr30">완료</label>
+								<input type="checkbox" id="searchTmpltStatus_S" class="checkStyle2" value="SAVE" v-model="searchData.searchTmpltStatus">
+								<label for="searchTmpltStatus_S" class="mr30">저장</label>
+							</div>
+						</div>
+					</div>
+					<div class="of_h">
 						<div class="inline-block" style="width:8%"><h4 class="font-normal mt15">등록일자</h4></div>
 						<div class="inline-block" style="width:91%">
 							<Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" ></Calendar>
@@ -86,7 +123,7 @@
 									<th class="text-center lc-1">No.</th>
 									<th class="text-center lc-1">템플릿 ID</th>
 									<th class="text-center lc-1">템플릿명</th>
-									<th class="text-center lc-1">템플릿 채널</th>
+									<th class="text-center lc-1">템플릿 채널(발송순)</th>
 									<th class="text-center lc-1">메시지 구분</th>
 									<th class="text-center lc-1">메시지 타입</th>
 									<th class="text-center lc-1">타 프로젝트 사용여부</th>
@@ -101,9 +138,9 @@
 									<td>{{totCnt-offset-data.rownum+1}}</td>
 									<td class="text-center"><router-link :to="{ name: 'multiSendTemplateManage', params: {'tmpltCodeP': data.tmpltCode }}"><u>{{data.tmpltCode}}</u></router-link></td>
 									<td class="text-center">{{$gfnCommonUtils.unescapeXss(data.tmpltTitle)}}</td>
-									<td class="text-center">{{data.tmpltChannel}}</td>
+									<td class="text-center">{{fnJsonArrayToChannelLit(data.checkedChannel)}}</td>
 									<td class="text-center">{{data.msgKindName}}</td>
-									<td class="text-center">{{data.msgType}}</td>
+									<td class="text-center">{{data.msgTypeName}}</td>
 									<td class="text-center">{{data.otherProjectUseYnName}}</td>
 									<td class="text-center">{{data.tmpltStatusName}}</td>
 									<td class="text-center">{{data.regNm}}</td>
@@ -172,14 +209,41 @@ export default {
 			totCnt : 0,  //전체 리스트 수
 			offset : 0, //페이지 시작점
 			searchDateInterval: 7,
-			datas: []
+			datas: [],
+			msgKindCdAllSelected: true,
+			msgChAllSelected: true,
+			tmpltStatusCdAllSelected: true
 		}
 	},
 	mounted() {
 		this.fnSetIntervalSearchDate(this.searchDateInterval);
+		this.fnSearchMsgKindCdChkAll();
+		this.fnSearchMsgChChkAll();
+		this.fnSearchTmpltStatusCdChkAll();
 		this.fnSearch();
 	},
 	methods: {
+		fnSearchMsgKindCdChkAll(){
+			if (this.msgKindCdAllSelected) {
+				this.searchData.searchMsgKindCd = ['A', 'I'];
+			} else {
+				this.searchData.searchMsgKindCd = [];
+			}
+		},
+		fnSearchMsgChChkAll(){
+			if (this.msgChAllSelected) {
+				this.searchData.searchMsgCh = ['PUSH', 'SMS', 'MMS', 'FRIENDTALK', 'ALIMTALK', 'RCS'];
+			} else {
+				this.searchData.searchMsgCh = [];
+			}
+		},
+		fnSearchTmpltStatusCdChkAll(){
+			if (this.tmpltStatusCdAllSelected) {
+				this.searchData.searchTmpltStatus = ['COMPLETE', 'SAVE'];
+			} else {
+				this.searchData.searchTmpltStatus = [];
+			}
+		},
 		//검색일자변경
 		fnSetIntervalSearchDate(interval){
 			this.searchDateInterval = interval;
@@ -248,6 +312,17 @@ export default {
 					alert(result.message);
 				}
 			});
+		},
+		// 채널 jsonArray -> 채널명
+		fnJsonArrayToChannelLit(json){
+			const vm = this;
+			let chList = JSON.parse(json);
+			let chStr = '';
+
+			chList.forEach(element => {
+				chStr += (vm.$gfnCommonUtils.isEmpty(chStr) ? '' : ', ') + element;
+			});
+			return chStr;
 		},
 		// 리스트 전체 체크박스
 		fnListChkAll(){

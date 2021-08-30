@@ -14,8 +14,19 @@
 			AND A.TMPLT_INFO ->> '$[0].chTypeList' LIKE CONCAT('%', #{searchText}, '%')
 			</if>
 		</if>
-		<if test="searchTmpltStatus != '' and searchTmpltStatus != null ">
-			AND A.TMPLT_STATUS = #{searchTmpltStatus}
+		<if test="searchMsgKindCd != null and searchMsgKindCd.size != 0 ">
+			AND A.MSG_KIND IN <foreach collection="searchMsgKindCd" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
+		</if>
+		<if test="searchMsgCh != null and searchMsgCh.size != 0 ">
+			AND (
+				1=2
+				<foreach collection="searchMsgCh" item="item">
+				OR UPPER(JSON_EXTRACT(A.TMPLT_INFO, '$[*].ch')) LIKE CONCAT('%', UPPER(#{item}), '%')
+				</foreach>
+			)
+		</if>
+		<if test="searchTmpltStatus != null and searchTmpltStatus.size != 0 ">
+			AND A.TMPLT_STATUS IN <foreach collection="searchTmpltStatus" item="item" index="index"  open="(" close=")" separator=",">#{item}</foreach>
 		</if>
 		<if test="searchStartDate != '' and searchStartDate != null ">
 			<if test="searchEndDate != '' and searchEndDate != null ">
@@ -59,7 +70,7 @@
 				A.TMPLT_TYPE,
 				E.CODE_NAME_1 AS TMPLT_STATUS_NAME,
 				A.TMPLT_INFO ->> '$[0].chTypeList' AS TMPLT_CHANNEL,
-				JSON_EXTRACT(A.TMPLT_INFO, '$[*].chType') CHECKED_CHANNEL,
+				JSON_EXTRACT(A.TMPLT_INFO, '$[*].ch') CHECKED_CHANNEL,
 				A.REG_ID,
 				cm_console.fnc_get_user_name(A.REG_ID)  AS REG_NM,
 				DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%S') AS REG_DT
