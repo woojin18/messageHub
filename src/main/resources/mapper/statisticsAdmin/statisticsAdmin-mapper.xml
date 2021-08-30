@@ -49,8 +49,16 @@
 			</when>
 			<when test="searchChanType == 'SMSMMS'.toString()">
 				<choose>
-					<when test="searchSmsmmsType != '' and searchSmsmmsType != null ">
-		AND		CH = #{searchSmsmmsType}
+					<when test="searchSmsmmsType == 'SMS'.toString ">
+		AND		CH = 'SMS'
+					</when>
+					<when test="searchSmsmmsType == 'LMS'.toString ">
+		AND		CH = 'MMS'
+		AND		PRODUCT_CODE = 'LMS'
+					</when>
+					<when test="searchSmsmmsType == 'MMS'.toString ">
+		AND		CH = 'MMS'
+		AND		PRODUCT_CODE = 'MMS'
 					</when>
 					<otherwise>
 		AND		CH IN ('SMS', 'MMS')
