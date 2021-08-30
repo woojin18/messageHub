@@ -91,35 +91,35 @@
 										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.totalFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
-								<li @click="fnSetChartData('PUSH')" id="setPush" style="width:16.7%" class="active">
+								<li @click="fnSetChartData('PUSH')" id="setPush" style="width:12.5%" class="active">
 									<a class="inline-block text-center active">
 										<h5>PUSH 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.pushSuccCnt }}<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.pushFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
-								<li @click="fnSetChartData('RCS')" id="setRcs" style="width:16.7%">
+								<li @click="fnSetChartData('RCS')" id="setRcs" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>RCS 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.rcsSuccCnt }}<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.rcsFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
-								<li @click="fnSetChartData('ALIMTALK')" id="setKakaotalk" style="width:16.6%">
+								<li @click="fnSetChartData('ALIMTALK')" id="setKakaotalk" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>알림톡 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.alimSuccCnt }}<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.alimFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
-								<li @click="fnSetChartData('FRIENDTALK')" id="setFriendtalk" style="width:16.7%">
+								<li @click="fnSetChartData('FRIENDTALK')" id="setFriendtalk" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>친구톡 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.friendSuccCnt }}<br></span><span class="text">성공</span></p>
 										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.friendFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
-								<li @click="fnSetChartData('SMS')" id="setSms" style="width:16.7%">
+								<li @click="fnSetChartData('SMS')" id="setSms" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>SMS 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.smsSuccCnt }}<br></span><span class="text">성공</span></p>
@@ -133,7 +133,7 @@
 										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.lmsFailCnt }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
-								<li @click="fnSetChartData('MMS')" id="setMms" style="width:16.6%">
+								<li @click="fnSetChartData('MMS')" id="setMms" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>MMS 전체</h5>
 										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.mmsSuccCnt }}<br></span><span class="text">성공</span></p>
@@ -231,6 +231,7 @@ export default {
 			rtUsedFriendtalkList: [],
 			rtUsedAlimtalkList: [],
 			rtUsedSmsList: [],
+			rtUsedLmsList: [],
 			rtUsedMmsList: [],
 			successFailResultData: {},
 			failCodeResultData: {},
