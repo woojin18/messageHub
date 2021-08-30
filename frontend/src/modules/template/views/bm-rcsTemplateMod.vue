@@ -383,8 +383,8 @@ export default {
 		desEndDate: ["desFirstEndDate","desSecondEndDate"],			// 서술형 달력 id
 		desInitStartDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
 		desInitEndDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
-		styleStartDate: ["desFirstStartDate","desSecondStartDate"],	// 서술형 달력 id
-		styleEndDate: ["desFirstEndDate","desSecondEndDate"],			// 서술형 달력 id
+		styleStartDate: ["styleFirstStartDate","styleSecondStartDate"],	// 서술형 달력 id
+		styleEndDate: ["styleFirstEndDate","styleSecondEndDate"],			// 서술형 달력 id
 		styleInitStartDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
 		styleInitEndDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
 		flag : '',

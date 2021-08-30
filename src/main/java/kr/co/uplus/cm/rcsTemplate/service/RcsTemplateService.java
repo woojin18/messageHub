@@ -319,8 +319,8 @@ public class RcsTemplateService {
 				contents[i] = "";
 				calenderTitle[i] = CommonUtils.getString(calendarObj.get("title"));
 				calenderDes[i] = CommonUtils.getString(calendarObj.get("description"));
-				startDate[i] = CommonUtils.getString(calendarObj.get("startTime"));
-				endDate[i] = CommonUtils.getString(calendarObj.get("endTime"));
+				startDate[i] = CommonUtils.getString(calendarObj.get("startTime")).substring(0,10);
+				endDate[i] = CommonUtils.getString(calendarObj.get("endTime")).substring(0,10);
 			} else if(jsonArrObj.get("mapAction") != null) {
 				mapActionObj = (JSONObject) jsonArrObj.get("mapAction");
 				mapActionObj = (JSONObject) mapActionObj.get("dialPhoneNumber");
