@@ -696,13 +696,13 @@
 												<div class="consolMarginTop of_h">
 													<span class="float-left mt5" style="width:20%">시작일</span>
 													<div class="float-right" style="width:80%">
-														<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+														<Calendar @update-date="fnRcsSmsButtonSD" :calendarId="fnCalendarStartDateId(index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
 													</div>
 												</div>
 												<div class="consolMarginTop of_h">
 													<span class="float-left mt5" style="width:20%">종료일</span>
 													<div class="float-right" style="width:80%">
-														<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+														<Calendar @update-date="fnRcsSmsButtonED" :calendarId="fnCalendarEndDateId(index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
 													</div>
 												</div>
 											</td>
@@ -819,13 +819,13 @@
 												<div class="consolMarginTop of_h">
 													<span class="float-left mt5" style="width:20%">시작일</span>
 													<div class="float-right" style="width:80%">
-														<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+														<Calendar @update-date="fnRcsLmsButtonSD" :calendarId="fnCalendarStartDateId(index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
 													</div>
 												</div>
 												<div class="consolMarginTop of_h">
 													<span class="float-left mt5" style="width:20%">종료일</span>
 													<div class="float-right" style="width:80%">
-														<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+														<Calendar @update-date="fnRcsLmsButtonED" :calendarId="fnCalendarEndDateId(index)"classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
 													</div>
 												</div>
 											</td>
@@ -966,13 +966,13 @@
 												<div class="consolMarginTop of_h">
 													<span class="float-left mt5" style="width:20%">시작일</span>
 													<div class="float-right" style="width:80%">
-														<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+														<Calendar @update-date="fnRcsShortButtonSD" :calendarId="fnCalendarStartDateId(index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
 													</div>
 												</div>
 												<div class="consolMarginTop of_h">
 													<span class="float-left mt5" style="width:20%">종료일</span>
 													<div class="float-right" style="width:80%">
-														<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+														<Calendar @update-date="fnRcsShortButtonED" :calendarId="fnCalendarEndDateId(index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
 													</div>
 												</div>
 											</td>
@@ -1113,13 +1113,13 @@
 												<div class="consolMarginTop of_h">
 													<span class="float-left mt5" style="width:20%">시작일</span>
 													<div class="float-right" style="width:80%">
-														<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+														<Calendar @update-date="fnRcsTallButtonSD" :calendarId="fnCalendarStartDateId(index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
 													</div>
 												</div>
 												<div class="consolMarginTop of_h">
 													<span class="float-left mt5" style="width:20%">종료일</span>
 													<div class="float-right" style="width:80%">
-														<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+														<Calendar @update-date="fnRcsTallButtonED" :calendarId="fnCalendarEndDateId(index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
 													</div>
 												</div>
 											</td>
@@ -2806,6 +2806,7 @@ export default {
 			buttonFriendTalkFlag: false,
 			buttonAlimTalkFlag: false,
 
+			rcsSmsStartDate:["rcsSmsFirstStartDate","rcsSmsSecondStartDate"],
 			smsButtonsMaxLen: 0, 		//start, endDate의 ID값을 유일하게 잡기위해 설정
 			lmsButtonsMaxLen: 0, 		//start, endDate의 ID값을 유일하게 잡기위해 설정
 			rcs90ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
@@ -4318,7 +4319,6 @@ export default {
 		},
 		// RCS 버튼 추가
 		addRowRcsButton: function(rcsType) {
-			console.log(rcsType);
 			var action = {
 				linkType : 'urlAction',
 				displayText : '',
@@ -4326,7 +4326,7 @@ export default {
 				urlAction : {openUrl : {url : ''}},
 				clipboardAction : {copyToClipboard : {text : ''}},
 				dialerAction : {dialPhoneNumber : {phoneNumber : ''}},
-				calendarAction : {createCalendarEvent : {title : '', description : '', startTime : '', endTime : ''}},
+				calendarAction : {createCalendarEvent : {title : '', description : '', startTime : this.$gfnCommonUtils.getCurretDate(), endTime : this.$gfnCommonUtils.getCurretDate()}},
 				mapAction : {}
 			};
 			let temp = {
@@ -5031,42 +5031,6 @@ export default {
 		fnSmsDelImg(idx){
 			this.rowData.smsImgInfoList.splice(idx, 1);
 		},
-		fnRcs100ButtonSD(sltDate, params){
-			this.rowData.rcs100Buttons[params.idx].startDate = sltDate;
-		},
-		fnRcs100ButtonED(sltDate, params){
-			this.rowData.rcs100Buttons[params.idx].endDate = sltDate;
-		},
-		fnRcs101ButtonSD(sltDate, params){
-			this.rowData.rcs101Buttons[params.idx].startDate = sltDate;
-		},
-		fnRcs101ButtonED(sltDate, params){
-			this.rowData.rcs101Buttons[params.idx].endDate = sltDate;
-		},
-		fnRcs102ButtonSD(sltDate, params){
-			this.rowData.rcs102Buttons[params.idx].startDate = sltDate;
-		},
-		fnRcs102ButtonED(sltDate, params){
-			this.rowData.rcs102Buttons[params.idx].endDate = sltDate;
-		},
-		fnRcs103ButtonSD(sltDate, params){
-			this.rowData.rcs103Buttons[params.idx].startDate = sltDate;
-		},
-		fnRcs103ButtonED(sltDate, params){
-			this.rowData.rcs103Buttons[params.idx].endDate = sltDate;
-		},
-		fnRcs104ButtonSD(sltDate, params){
-			this.rowData.rcs104Buttons[params.idx].startDate = sltDate;
-		},
-		fnRcs104ButtonED(sltDate, params){
-			this.rowData.rcs104Buttons[params.idx].endDate = sltDate;
-		},
-		fnRcs105ButtonSD(sltDate, params){
-			this.rowData.rcs105Buttons[params.idx].startDate = sltDate;
-		},
-		fnRcs105ButtonED(sltDate, params){
-			this.rowData.rcs105Buttons[params.idx].endDate = sltDate;
-		},
 		//get 문자열 byte
 		getByte(str) {
 			return str
@@ -5093,6 +5057,12 @@ export default {
 				str = str1 + sIdx + str2;
 			}
 			return str;
+		},
+		fnCalendarStartDateId(index) {
+			return 'searchStartDate' + index;
+		},
+		fnCalendarEndDateId(index) {
+			return 'searchEndDate' + index;
 		},
 		fnTextLength(title, sid, tid, len){
 			var val = jQuery(sid).val();
@@ -5188,6 +5158,30 @@ export default {
 		},
 		fnCallbackRcvblcNum(rcvblcNum){
 			this.rowData.smsRcvblcNumber = rcvblcNum;
+		},
+		fnRcsSmsButtonSD(sltDate, index){
+			this.rowData.rcsSMSButtons[index].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsSmsButtonED(sltDate, index){
+			this.rowData.rcsSMSButtons[index].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		},
+		fnRcsLmsButtonSD(sltDate, index){
+			this.rowData.rcsLMSButtons[index].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsLmsButtonED(sltDate, index){
+			this.rowData.rcsLMSButtons[index].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		},
+		fnRcsShortButtonSD(sltDate, index){
+			this.rowData.rcsShortButtons[index].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsShortButtonED(sltDate, index){
+			this.rowData.rcsShortButtons[index].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		},
+		fnRcsTallButtonSD(sltDate, index){
+			this.rowData.rcsTallButtons[index].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsTallButtonED(sltDate, index){
+			this.rowData.rcsTallButtons[index].action.calendarAction.createCalendarEvent.endTime = sltDate;
 		},
 		fnImgReset(){
 			this.rowData.rcsShortImgInfoList.push({'fileId':'', 'imgUrl':''});
