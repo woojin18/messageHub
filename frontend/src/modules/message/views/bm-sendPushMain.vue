@@ -87,9 +87,9 @@
                 <input type="radio" name="send" value="ALL" id="serviceCode_ALL" v-model="sendData.serviceCode">
                 <label for="serviceCode_ALL" class="mr30">ALL</label>
                 <input type="radio" name="send" value="FCM" id="serviceCode_FCM" v-model="sendData.serviceCode">
-                <label for="serviceCode_FCM" class="mr30">FCM</label>
+                <label for="serviceCode_FCM" class="mr30">FCM(안드로이드)</label>
                 <input type="radio" name="send" value="APNS" id="serviceCode_APNS" v-model="sendData.serviceCode">
-                <label for="serviceCode_APNS">APNS</label>
+                <label for="serviceCode_APNS">APNS(IOS)</label>
               </div>
             </div>
 

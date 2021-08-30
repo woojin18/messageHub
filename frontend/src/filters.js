@@ -30,6 +30,14 @@ Vue.filter('lmsmms', (value) => {
   else return value;
 });
 
+//FCM(안드로이드), APNS(IOS)
+Vue.filter('pushSvcCd', (value) => {
+  if(!value) return '';
+  else if(value == 'APNS') return 'APNS(IOS)';
+  else if(value == 'FCM') return 'FCM(안드로이드)';
+  else return value;
+});
+
 //RCS 아이콘 URL
 Vue.filter('getIconURlByFormNm', (value) => {
   if(!value) return '';

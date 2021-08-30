@@ -424,7 +424,7 @@
                 <h5>{{tmpltData.msgTypeName}}, {{tmpltData.msgKindName}}</h5>
               </div>
               <div v-if="fnContainsChannel('PUSH')" style="width:78%">
-                <h5>발송정책 : {{tmpltData.PUSH.serviceCode}}</h5>
+                <h5>발송정책 : {{tmpltData.PUSH.serviceCode | pushSvcCd}}</h5>
                 <!-- 
                 <input type="radio" name="serviceCode" value="ALL" id="serviceCode_ALL" v-model="tmpltData.PUSH.serviceCode" disabled>
                 <label for="serviceCode_ALL" class="mr30">ALL</label>

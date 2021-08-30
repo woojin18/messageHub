@@ -194,8 +194,8 @@
 					<div class="float-left" style="width:13%"><h4>발송 정책 *</h4></div>
 					<div class="float-left" style="width:57%">
 						<input type="radio" name="sendP" value="ALL" id="sendP1" checked="" v-model="rowData.pushSend"> <label for="sendP1" class="mr30">ALL</label>
-						<input type="radio" name="sendP" value="FCM" id="sendP2" v-model="rowData.pushSend"> <label for="sendP2" class="mr30">FCM</label>
-						<input type="radio" name="sendP" value="APNS" id="sendP3" v-model="rowData.pushSend"> <label for="sendP3">APNS</label>
+						<input type="radio" name="sendP" value="FCM" id="sendP2" v-model="rowData.pushSend"> <label for="sendP2" class="mr30">FCM(안드로이드)</label>
+						<input type="radio" name="sendP" value="APNS" id="sendP3" v-model="rowData.pushSend"> <label for="sendP3">APNS(IOS)</label>
 					</div>
 				</div>
 				<div class="of_h">
