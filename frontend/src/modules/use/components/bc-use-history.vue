@@ -14,6 +14,7 @@
 						<h4 class="mt20">{{searchData.searchYear}}년 {{searchData.searchMonth}}월 이용금액 <input type="hidden" id="monthcalendar" :value="searchData.searchStartDate" /> </h4>
 						<p class="color4">{{searchData.searchYear}}년 {{searchData.searchMonth}}월 01일 ~ {{searchData.searchYear}}년 {{searchData.searchMonth}}월 {{monthLastDate}}일</p>
 						<h4 class="color000 mt10"><span class="color1">{{totalSumAmount | comma}} </span>원(부가세 포함)</h4>
+						<p class="color1 mt5">(당일 이용내역은 포함되지 않습니다.)</p>
 					</div>
 					<div class="col-xs-6 text-center">
 						<table class="table_skin1">
@@ -45,10 +46,10 @@
 							<a @click="fnExcelDownLoad" class="btnStyle2 borderGray" activity="READ"> 다운로드</a>
 						</div>
 					</div>
-					<div class="of_h inline">
+					<!-- <div class="of_h inline">
 						<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
 						</div>
-					</div>
+					</div> -->
 					<div class="row">
 						<div class="col-xs-12 consolMarginTop">
 							<table class="table_skin1 bt-000 tbl-striped">
@@ -76,11 +77,12 @@
 										<td class="text-left">{{ data.useCh }}</td>
 										<td class="text-center">{{ data.payTypeName }}</td>
 										<td class="text-center">{{ data.regDt }}</td>
-										<td class="text-right">{{ data.succCnt | comma}}</td>
+										<td class="text-right">{{ data.cnt | comma}}</td>
 										<td class="text-right end">{{ data.sumChGrpAmount | comma}}원</td>
 									</tr>
 									<tr class="of_h">
-									<th class="text-left end bgColor_sky" colspan="6">합계<span class="float-right">{{sumAmount | comma}}원</span></th>
+									<th class="text-left end bgColor_sky" colspan="5">합계<span class="float-right">{{totSuccCnt | comma}}</span></th>
+									<th class="text-left end bgColor_sky" ><span class="float-right">{{sumAmount | comma}}원</span></th>
 									</tr>
 								</tbody>
 							</table>
@@ -89,9 +91,9 @@
 				</div>
 			</div>
 			<!-- pagination Start -->
-			<div id="pageContent">
+			<!-- <div id="pageContent">
 				<PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
-			</div>
+			</div> -->
 			<!-- pagination End-->
 			<!-- //본문 -->
 		</article>
@@ -132,6 +134,7 @@ export default {
 			searchMon: '',
 			useHistoryList: [],
 			sumAmount : '',
+			totSuccCnt : 0,
 			totalSumAmount: '',
 			prepaidAmount: '',
 			postpaidAmount: '',
@@ -197,6 +200,7 @@ export default {
 				if(result.success) {
 					this.useHistoryList = result.data.useHistoryList;
 					this.sumAmount = result.data.sumAmount;
+					this.totSuccCnt = result.data.totSuccCnt;
 					this.totalSumAmount = result.data.totalSumAmount;
 					this.prepaidAmount = result.data.prepaidAmount;
 					this.postpaidAmount = result.data.postpaidAmount;
@@ -214,7 +218,7 @@ export default {
 			let params = {
 				role: tokenSvc.getToken().principal.role,
 				corpId: tokenSvc.getToken().principal.corpId,
-				searchMonth: this.searchMonth,
+				searchMonth: jQuery('#monthcalendar').val(),
 				userId: tokenSvc.getToken().principal.userId,
 			};
 			useApi.excelDownloadUseHistory(params);

@@ -35,7 +35,7 @@ public class UseHistoryService {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public RestResult<Object> selectUseHistory(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		Map<String, Object> rtnObj = new HashMap<String, Object>();
@@ -50,6 +50,7 @@ public class UseHistoryService {
 		BigDecimal postpaidAmount = new BigDecimal(0);
 		BigDecimal prepaidTaxAmount = new BigDecimal(0);
 		BigDecimal postpaidTaxAmount = new BigDecimal(0);
+		int totSuccCnt = 0;
 
 		Map<String, Object> rtnMap = null;
 		JSONParser parser = new JSONParser();
@@ -70,16 +71,17 @@ public class UseHistoryService {
 			rtn.setPageProps(params);
 			if(rtn.getPageInfo() != null) {
 				//카운트 쿼리 실행
-				//int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_USE_HISTORY_LIST_CNT, params);
-				int listCnt = 0;
+				int listCnt = generalDao.selectGernalCount("use.selectUseHistFromCmStatChDayCnt", params);
 				rtn.getPageInfo().put("totCnt", listCnt);
 			}
 		}
 
-		//List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_USE_HISTORY_LIST, params);
-		
 		// 통계 정보
-		List<Object> rtnList = generalDao.selectGernalList("use.selectUseHistFromCmStatChMin", params);
+		List<Object> rtnList = generalDao.selectGernalList("use.selectUseHistFromCmStatChDay", params);
+		
+		// 상품 가격 정보
+		List<Object> productList = generalDao.selectGernalList("use.selectUseHistProductUnit", params);
+		
 
 		for (int i = 0; i < rtnList.size(); i++) {
 			// 사용 채널 그룹 한라인으로 처리
@@ -106,13 +108,11 @@ public class UseHistoryService {
 			rtnMap.put("useCh", useChStr);
 			payType = CommonUtils.getString(rtnMap.get("payType"));
 
-			// 상품 가격 정보
-			List<Object> productList = generalDao.selectGernalList("use.selectUseHistProductUnit", params);
-			
 			// 결제유형별 금액처리
 			String productCode = CommonUtils.getString(rtnMap.get("productCode")); 
-			//BigDecimal succCnt = new BigDecimal(CommonUtils.getString(rtnMap.get("succCnt")));
 			int succCnt = Integer.parseInt(CommonUtils.getString(rtnMap.get("succCnt")));
+			// 총 건수
+			totSuccCnt += succCnt;
 			
 			for(int j = 0; j < productList.size(); j++ ) {
 				Map<String, Object> productMap = (Map<String, Object>) productList.get(j);
@@ -123,8 +123,6 @@ public class UseHistoryService {
 						BigDecimal preFeeBd = new BigDecimal(CommonUtils.getString(productMap.get("preFee")));
 						addAmount = preFeeBd.multiply(succCntBD);
 
-						System.out.println("-------------------------------------------@@@ succCntBD : " + succCntBD + " / preFeeBd : " + preFeeBd);
-						
 						sumAmount = sumAmount.add(addAmount); // 프로젝트 합계금액
 					} else if ( "POST".equals(payType) ) {
 						BigDecimal postFee = new BigDecimal(0);
@@ -143,7 +141,6 @@ public class UseHistoryService {
 							
 							if( feeStartCnt < succCnt && feeEndCnt > succCnt ) {
 								postFee = new BigDecimal(CommonUtils.getString(postFeeMap.get("POST_FEE")));
-								System.out.println("------------------------------------------!!! : " + k + " / " + feeStartCnt + " / " + feeEndCnt + " / " + postFee);
 							}
 						}
 						
@@ -153,12 +150,6 @@ public class UseHistoryService {
 				}
 			}
 			
-			// 요금 총합계
-			//addAmount = new BigDecimal(CommonUtils.getString(rtnMap.get("sumChGrpAmount"))); //프로젝트 개별 금액
-			//sumAmount = sumAmount.add(addAmount); // 프로젝트 합계금액
-			
-			
-
 			// 선불,후불요금 합계
 			if(payType.equalsIgnoreCase("PRE")) {
 				prepaidAmount = prepaidAmount.add(addAmount); // 선불요금
@@ -168,20 +159,54 @@ public class UseHistoryService {
 			
 			rtnMap.put("sumChGrpAmount", addAmount);
 		}
+		
+		List<Map<String, Object>> rtnList2 = new ArrayList();
+		
+		for( int l = 0; l < rtnList.size(); l++ ) {
+			
+			Map<String, Object> mainMap = new HashMap<>();
+			
+			Map<String, Object> rtnMap2 = (Map<String, Object>) rtnList.get(l);
+			
+			boolean projectYn = false;
+			for( int m = 0; m < rtnList2.size(); m++ ) {
+				// 해당 프로젝트로 등록되어있는지 확인
+				if( CommonUtils.getString(rtnMap2.get("projectName")).equals(rtnList2.get(m).get("projectName")) ) {
+					projectYn = true;
 
+					rtnList2.get(m).put("cnt"				, Integer.parseInt(CommonUtils.getString(rtnList2.get(m).get("cnt"))) 
+																+ Integer.parseInt(CommonUtils.getString(rtnMap2.get("succCnt"))));
+					rtnList2.get(m).put("sumChGrpAmount"	, new BigDecimal(CommonUtils.getString(rtnList2.get(m).get("sumChGrpAmount"))).add(new BigDecimal(CommonUtils.getString(rtnMap2.get("sumChGrpAmount")))));
+				}
+			}
+			
+			if( projectYn ) {
+			} else {
+				mainMap.put("projectName"		, rtnMap2.get("projectName"));
+				mainMap.put("useCh"				, rtnMap2.get("useCh"));
+				mainMap.put("payTypeName"		, rtnMap2.get("payTypeName"));
+				mainMap.put("cnt"				, rtnMap2.get("succCnt"));
+				mainMap.put("regDt"				, rtnMap2.get("regDt"));
+				mainMap.put("sumChGrpAmount"	, rtnMap2.get("sumChGrpAmount"));
+				
+				rtnList2.add(mainMap);
+			}
+			
+		}
+		
 		prepaidTaxAmount = prepaidAmount.multiply(new BigDecimal("0.10"));
 		postpaidTaxAmount = postpaidAmount.multiply(new BigDecimal("0.10"));
 		totalTax = sumAmount.multiply(new BigDecimal("0.10")); // 부가세 10%
 		totalSumAmount = sumAmount.add(totalTax); // 합계금액 + 부가세
 
 		rtnObj.put("totalSumAmount"		, totalSumAmount.setScale(0, RoundingMode.FLOOR).toString());
-		rtnObj.put("sumAmount"			, sumAmount.setScale(0, RoundingMode.FLOOR).toString());
+		rtnObj.put("sumAmount"			, (prepaidAmount.add(postpaidAmount)).setScale(0, RoundingMode.FLOOR).toString());
 		rtnObj.put("prepaidAmount"		, prepaidAmount.setScale(0, RoundingMode.FLOOR).toString());
 		rtnObj.put("postpaidAmount"		, postpaidAmount.setScale(0, RoundingMode.FLOOR).toString());
 		rtnObj.put("prepaidTaxAmount"	, prepaidTaxAmount.setScale(0, RoundingMode.FLOOR).toString());
 		rtnObj.put("postpaidTaxAmount"	, postpaidTaxAmount.setScale(0, RoundingMode.FLOOR).toString());
-		rtnObj.put("useHistoryList"		, rtnList);
-		
+		rtnObj.put("useHistoryList"		, rtnList2);
+		rtnObj.put("totSuccCnt"			, totSuccCnt);
 		
 		rtn.setData(rtnObj);
 		return rtn;

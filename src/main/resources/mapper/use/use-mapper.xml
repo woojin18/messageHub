@@ -225,8 +225,8 @@
 			ON A.PRODUCT_CODE = B.PRODUCT_CODE 
 	</select>
 	
-	<select id="selectUseHistFromCmStatChMin" resultType="camel">
-	/* use.selectUseHistFromCmStatChMin */
+	<select id="selectUseHistFromCmStatChDay" resultType="camel">
+	/* use.selectUseHistFromCmStatChDay */
 		select	B.PROJECT_NAME 
 		,		B.USE_CH_GRP_INFO 
 		,		CASE WHEN B.PAY_TYPE = 'PRE' THEN '선불' WHEN B.PAY_TYPE = 'POST' THEN '후불' END AS PAY_TYPE_NAME
@@ -237,16 +237,40 @@
 		,		A.SUCC_CNT
 		from (
 			SELECT	PROJECT_ID
-			,		CH 
-			,		SUCC_CNT 
+			,		CH
+			,		SUM(SUCC_CNT) AS SUCC_CNT 
 			,		PRODUCT_CODE 
-			FROM cm.CM_STAT_CH_MIN cscm 
+			FROM cm.CM_STAT_CH_DAY cscm 
 			WHERE cscm.CORP_ID  = #{corpId}
-			AND cscm.YMDHM BETWEEN	concat(#{searchMonth}, '010000') 
-								AND	CONCAT(REPLACE(last_day(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01')), '-', ''), '1159')
+			AND cscm.YMD BETWEEN	concat(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6)), '-01') 
+								AND	CONCAT(last_day(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01')))
+			AND SUCC_CNT != 0
+			GROUP BY cscm.PROJECT_ID, cscm.CH, cscm.PRODUCT_CODE 
+		) A
+		INNER JOIN cm_console.CM_PROJECT B 
+			ON A.PROJECT_ID = B.PROJECT_ID 
+<!-- 		<if test='pagingYn == "Y" '> -->
+<!-- 		LIMIT #{offset}, #{listSize} -->
+<!-- 		</if> -->
+	</select>
+	
+	<select id="selectUseHistFromCmStatChDayCnt" resultType="int">
+	/* use.selectUseHistFromCmStatChDayCnt */
+		select	COUNT(1) as CNT
+		from (
+			SELECT	PROJECT_ID
+			,		CH 
+			,		SUM(SUCC_CNT) AS SUCC_CNT
+			,		PRODUCT_CODE 
+			FROM cm.CM_STAT_CH_DAY cscm 
+			WHERE cscm.CORP_ID  = #{corpId}
+			AND cscm.YMD BETWEEN	concat(#{searchMonth}, '-01') 
+								AND	CONCAT(last_day(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01')))
+			AND SUCC_CNT != 0
 			GROUP BY cscm.PROJECT_ID, cscm.CH, cscm.PRODUCT_CODE 
 		) A
 		INNER JOIN cm_console.CM_PROJECT B 
 			ON A.PROJECT_ID = B.PROJECT_ID 
 	</select>
+	
 </mapper>

@@ -876,8 +876,8 @@
         </if>
 	</select>
 	
-	<select id="selectApikeyForMoApi" resultType="String">
-		/* channel.selectApikeyForMoApi */
+	<select id="selectApikeyForApi" resultType="String">
+		/* channel.selectApikeyForApi */
 		SELECT API_KEY
 		FROM cm.CM_APIKEY ca 
 		WHERE	ca.WEB_SENDER_YN = 'Y'
