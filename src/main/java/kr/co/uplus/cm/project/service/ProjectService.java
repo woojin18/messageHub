@@ -393,11 +393,14 @@ public class ProjectService {
 			
 			// 등록요청
 			Map<String, Object> headerMap = new HashMap<String, Object>();
+			String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
+			if( "".equals(apiKey) ) { throw new Exception("API Key를 등록 후, 진행 가능합니다. 프로젝트 기본정보 탭에서 API Key를 등록해주세요."); }
+			headerMap.put("apiKey",		apiKey);
 			headerMap.put("brandId",	brandId);
 			headerMap.put("Content-Type",	"application/json");
 			
 			// API 통신 처리
-			Map<String, Object> result =  apiInterface.post("/console/v1/brand/" + brandId + "/chatbot", map, headerMap);
+			Map<String, Object> result =  apiInterface.post("/console/v1/rcs/brand/" + brandId + "/chatbot", map, headerMap);
 			
 			//System.out.println("-----------------------------------------@@@ result : " + result);
 			
@@ -425,12 +428,15 @@ public class ProjectService {
 			
 			// 수정요청
 			Map<String, Object> headerMap = new HashMap<String, Object>();
+			String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
+			if( "".equals(apiKey) ) { throw new Exception("API Key를 등록 후, 진행 가능합니다. 프로젝트 기본정보 탭에서 API Key를 등록해주세요."); }
+			headerMap.put("apiKey",		apiKey);
 			headerMap.put("brandId",	brandId);
 			headerMap.put("chatbotId",	params.get("chatbotId"));
 			headerMap.put("Content-Type",	"application/json");
 			
 			// API 통신 처리
-			Map<String, Object> result =  apiInterface.put("/console/v1/brand/" + brandId + "/chatbot/" + params.get("chatbotId"), null, map, headerMap);
+			Map<String, Object> result =  apiInterface.put("/console/v1/rcs/brand/" + brandId + "/chatbot/" + params.get("chatbotId"), null, map, headerMap);
 			
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
@@ -486,11 +492,14 @@ public class ProjectService {
 		apiMap.put("corpId", CommonUtils.getString(params.get("corpId")));
 		
 		Map<String, Object> headerMap = new HashMap<String, Object>();
+		String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
+		if( "".equals(apiKey) ) { throw new Exception("API Key를 등록 후, 진행 가능합니다. 프로젝트 기본정보 탭에서 API Key를 등록해주세요."); }
+		headerMap.put("apiKey",		apiKey);
 		headerMap.put("brandId",	brandId);
 		headerMap.put("chatbotId",	chatbotId);
 		
 		// API 통신 처리
-		Map<String, Object> result =  apiInterface.delete("/console/v1/brand/" + brandId + "/chatbot/" + chatbotId, null, apiMap, headerMap);
+		Map<String, Object> result =  apiInterface.delete("/console/v1/rcs/brand/" + brandId + "/chatbot/" + chatbotId, null, apiMap, headerMap);
 		
 		// 성공인지 실패인지 체크
 		if( "10000".equals(result.get("code")) ) {

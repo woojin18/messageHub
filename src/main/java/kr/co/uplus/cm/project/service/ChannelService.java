@@ -239,7 +239,7 @@ public class ChannelService {
 		getHeaderMap.put("apiSecret", CommonUtils.getString(params.get("apiSecret")));
 		
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("cateData", apiInterface.get("/console/v1/brand/categories", getHeaderMap));
+		result.put("cateData", apiInterface.get("/console/v1/rcs/brand/categories", getHeaderMap));
 		
 		String brandId = CommonUtils.getString(params.get("brandId"));
 		String tmpBrandYn = CommonUtils.getString(params.get("tmpBrandYn"));
@@ -279,7 +279,7 @@ public class ChannelService {
 				inputVal.put("mainTitle",		CommonUtils.getString(brandInfo.get("mainTitle")));
 				inputVal.put("chatbotsStr",	CommonUtils.getString(brandInfo.get("chatbots")).replace("[", "").replace("]", ""));
 			} else {
-				resultLists = (List<Object>) apiInterface.get("/console/v1/brand/" + brandId, getHeaderMap2).get("data");
+				resultLists = (List<Object>) apiInterface.get("/console/v1/rcs/brand/" + brandId, getHeaderMap2).get("data");
 				rtnMap = (Map<String, Object>) resultLists.get(0);
 				// 프로젝트 아이디
 				inputVal.put("projectId",	rtnMap.get("projectId"));
@@ -680,6 +680,9 @@ public class ChannelService {
 		} else if( "approval".equals(sts) ) {
 			// 등록요청
 			Map<String, Object> headerMap = new HashMap<String, Object>();
+			String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
+			if( "".equals(apiKey) ) { throw new Exception("API Key를 등록 후, 진행 가능합니다. 프로젝트 기본정보 탭에서 API Key를 등록해주세요."); }
+			headerMap.put("apiKey",		apiKey);
 			headerMap.put("apiId",		params.get("apiKey"));
 			headerMap.put("apiSecret",	params.get("apiSecret"));
 			
@@ -696,7 +699,7 @@ public class ChannelService {
 			}
 			
 			// API 통신 처리
-			Map<String, Object> result =  apiInterface.listPost("/console/v1/brand/", list, headerMap);
+			Map<String, Object> result =  apiInterface.listPost("/console/v1/rcs/brand/", list, headerMap);
 			
 //			System.out.println("-------------------------------------------@@@ result : " + result);
 //			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
@@ -714,6 +717,9 @@ public class ChannelService {
 		} if( "update".equals(sts) ) {
 			// 수정요청
 			Map<String, Object> headerMap = new HashMap<String, Object>();
+			String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
+			if( "".equals(apiKey) ) { throw new Exception("API Key를 등록 후, 진행 가능합니다. 프로젝트 기본정보 탭에서 API Key를 등록해주세요."); }
+			headerMap.put("apiKey",		apiKey);
 			headerMap.put("apiId",		params.get("apiKey"));
 			headerMap.put("apiSecret",	params.get("apiSecret"));
 			headerMap.put("brandId",	brandId);
@@ -723,7 +729,7 @@ public class ChannelService {
 			Map<String, Object> bodyMap = new HashMap<String, Object>();
 			bodyMap.put("list", json);
 			
-			Map<String, Object> result =  apiInterface.put("/console/v1/brand/" + brandId, null, map, headerMap);
+			Map<String, Object> result =  apiInterface.put("/console/v1/rcs/brand/" + brandId, null, map, headerMap);
 			
 
 //			System.out.println("-------------------------------------------@@@ result : " + result);
@@ -742,11 +748,14 @@ public class ChannelService {
 		} else if ( "delete".equals(sts) ) {
 			// 삭제요청
 			Map<String, Object> headerMap = new HashMap<String, Object>();
+			String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
+			if( "".equals(apiKey) ) { throw new Exception("API Key를 등록 후, 진행 가능합니다. 프로젝트 기본정보 탭에서 API Key를 등록해주세요."); }
+			headerMap.put("apiKey",		apiKey);
 			headerMap.put("apiId",		params.get("apiKey"));
 			headerMap.put("apiSecret",	params.get("apiSecret"));
 			headerMap.put("brandId",	brandId);
 			
-			Map<String, Object> result =  apiInterface.listDelete("/console/v1/brand/" + brandId, list, headerMap);
+			Map<String, Object> result =  apiInterface.listDelete("/console/v1/rcs/brand/" + brandId, list, headerMap);
 			
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
@@ -760,7 +769,7 @@ public class ChannelService {
 		}
 	}
 	
-	// 발신번호관리 삭제 요청
+	// RCS 브랜드 삭제 요청
 	@SuppressWarnings("unchecked")
 	public void deleteRcsBrandForApi(Map<String, Object> params) throws Exception {
 
@@ -774,7 +783,7 @@ public class ChannelService {
 		headerMap.put("brandId",	CommonUtils.getString(params.get("brandId")));
 		
 		// API 통신 처리
-		Map<String, Object> result =  apiInterface.delete("/console/v1/brand/" + CommonUtils.getString(params.get("brandId")), null, apiBodyMap, headerMap);
+		Map<String, Object> result =  apiInterface.delete("/console/v1/rcs/brand/" + CommonUtils.getString(params.get("brandId")), null, apiBodyMap, headerMap);
 		
 		//System.out.println("------------------------------------------------- deleteRcsBrandForApi result : " + result);
 		
@@ -951,7 +960,7 @@ public class ChannelService {
 		String sts = CommonUtils.getString(params.get("sts"));
 		
 		if( "C".equals(sts) ) {
-			String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForMoApi",params)); 
+			String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params)); 
 			params.put("apiKey", apiKey);
 			
 			// 중복 체크
@@ -1127,7 +1136,7 @@ public class ChannelService {
 		Map<String, Object> apiBodyMap = new HashMap<>();
 		
 		Map<String, Object> headerMap = new HashMap<String, Object>();
-		String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForMoApi",params));
+		String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
 		headerMap.put("apiKey",		apiKey);
 		
 		
