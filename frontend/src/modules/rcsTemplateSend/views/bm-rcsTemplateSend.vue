@@ -1190,8 +1190,24 @@ export default {
 			"real" : true
 		}
 
-		rcsTemplateSendApi.sendRcsData(params).then(response => {
-			confirm.fnAlert("RCS 발송", "메시지 발송처리를 완료하였습니다. 메시지 발송 성공/실패는 발송/수신현황에서 확인이 가능합니다.");
+		let fd = new FormData();
+		fd.append('paramString', JSON.stringify(params));
+		if(this.sendData.cuInputType == 'EXCEL'){
+			fd.append('file', this.$refs.excelFile.files[0]);
+			this.$refs.excelFile.value = '';
+		}
+		rcsTemplateSendApi.sendRcsData(fd).then(response => {
+			var result = response.data;
+			var success = result.success;
+			if(success) {
+				confirm.fnAlert("RCS 발송", "메시지 발송처리를 완료하였습니다. 메시지 발송 성공/실패는 발송/수신현황에서 확인이 가능합니다.");
+			} else {
+				if("" != result.message) {
+					confirm.fnAlert("RCS 발송", result.message);
+				} else {
+					confirm.fnAlert("RCS 발송", "메시지 발송처리를 완료하였습니다. 메시지 발송 성공/실패는 발송/수신현황에서 확인이 가능합니다.");
+				}
+			}
 		});
 
 	},
@@ -1246,8 +1262,6 @@ export default {
     },
 
 	validation(sendFlag) {
-		var excelFile = this.$refs.excelFile.files[0];
-		console.log(excelFile);
 		var vm = this;
 		var templateRadioBtn = this.templateRadioBtn;
 		if(templateRadioBtn == "des" || templateRadioBtn == "cell") {
@@ -1344,10 +1358,21 @@ export default {
 		// 수신자 목록 validation 실제 발송일 경우에만 체크
 		if(sendFlag == "real") {
 			var recvInfoLst = vm.sendData.recvInfoLst;
-			if(recvInfoLst.length==0) {
-				confirm.fnAlert("RCS 발송", "수신자를 입력해 주세요.");
-				return false;
+			var cuInputType = vm.sendData.cuInputType;
+
+			if(cuInputType != "EXCEL") {
+				if(recvInfoLst.length==0) {
+					confirm.fnAlert("RCS 발송", "수신자를 입력해 주세요.");
+					return false;
+				}
+			} else {
+				var excelFile = this.$refs.excelFile.files[0];
+				if(excelFile == null) {
+					confirm.fnAlert("RCS 발송", "수신자를 입력해 주세요.");
+					return false;
+				}
 			}
+
 		}
 
 		return true;

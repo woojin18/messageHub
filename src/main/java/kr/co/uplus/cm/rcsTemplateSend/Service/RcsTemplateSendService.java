@@ -20,6 +20,7 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -28,7 +29,9 @@ import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
+import kr.co.uplus.cm.common.dto.MultipartFileDTO;
 import kr.co.uplus.cm.config.ApiConfig;
+import kr.co.uplus.cm.exception.CMException;
 import kr.co.uplus.cm.rcsTemplate.service.RcsTemplateService;
 import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
 import kr.co.uplus.cm.sendMessage.service.SendMessageService;
@@ -993,7 +996,7 @@ public class RcsTemplateSendService {
 	}
 	
 	// RCS 상품 템플릿 승인(서술형, 스타일형) 발송
-	public RestResult<Object> sendRcsDataTemplate(Map<String, Object> params) throws Exception {
+	public RestResult<Object> sendRcsDataTemplate(Map<String, Object> params, MultipartFile excelFile) throws Exception {
 		RestResult<Object> resultObj = new RestResult<>(true);
 		Map<String, Object> data = (Map<String, Object>) params.get("data");
 		
@@ -1031,6 +1034,13 @@ public class RcsTemplateSendService {
 		
 		// recvInfoLst 세팅
 		data.put("webReqId", apiMap.get("webReqId"));
+		String cuInputType = CommonUtils.getString(data.get("cuInputType"));
+		
+		// 엑셀인경우 recvInfoLst 세팅
+		if("EXCEL".equals(cuInputType)) {
+			List<Map<String, Object>> excelRecvInfoLst = this.setExcelRecvInfoLst(data, excelFile);
+			data.put("recvInfoLst", excelRecvInfoLst);
+		}
 		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListTemplate(data);
 		
 		// 예약발송일경우 웹 발송 내역을 등록하고 통신은 하지 않도록 처리
@@ -1055,7 +1065,7 @@ public class RcsTemplateSendService {
 	}
 	
 	// RCS 텍스트 미승인형 발송
-	public RestResult<Object> sendRcsDataNonTemplate(Map<String, Object> params) throws Exception {
+	public RestResult<Object> sendRcsDataNonTemplate(Map<String, Object> params, MultipartFile excelFile) throws Exception {
 		RestResult<Object> resultObj = new RestResult<>(true);
 		Map<String, Object> data = (Map<String, Object>) params.get("data");
 		
@@ -1074,6 +1084,13 @@ public class RcsTemplateSendService {
 		
 		// recvInfoLst 세팅
 		data.put("webReqId", apiMap.get("webReqId"));
+		String cuInputType = CommonUtils.getString(data.get("cuInputType"));
+		
+		// 엑셀인경우 recvInfoLst 세팅
+		if("EXCEL".equals(cuInputType)) {
+			List<Map<String, Object>> excelRecvInfoLst = this.setExcelRecvInfoLst(data, excelFile);
+			data.put("recvInfoLst", excelRecvInfoLst);
+		}
 		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListNonTemplate(data);
 		
 		// 예약발송일경우 웹 발송 내역을 등록하고 통신은 하지 않도록 처리
@@ -1099,7 +1116,7 @@ public class RcsTemplateSendService {
 	}
 	
 	// RCS 포멧형 발송
-	public RestResult<Object> sendRcsDataFormat(Map<String, Object> params) throws Exception {
+	public RestResult<Object> sendRcsDataFormat(Map<String, Object> params, MultipartFile excelFile) throws Exception {
 		RestResult<Object> resultObj = new RestResult<>(true);
 		Map<String, Object> data = (Map<String, Object>) params.get("data");
 		
@@ -1123,6 +1140,13 @@ public class RcsTemplateSendService {
 		// recvInfoLst 세팅
 		data.put("webReqId", apiMap.get("webReqId"));
 		String radioBtn = CommonUtils.getString(params.get("templateRadioBtn"));
+		String cuInputType = CommonUtils.getString(data.get("cuInputType"));
+		
+		// 엑셀인경우 recvInfoLst 세팅
+		if("EXCEL".equals(cuInputType)) {
+			List<Map<String, Object>> excelRecvInfoLst = this.setExcelRecvInfoLst(data, excelFile);
+			data.put("recvInfoLst", excelRecvInfoLst);
+		}
 		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListFormat(data, radioBtn);
 		
 		String rsrvSendYn = CommonUtils.getString(data.get("rsrvSendYn"));
@@ -1145,7 +1169,7 @@ public class RcsTemplateSendService {
 	}
 	
 	// RCS 포멧형 발송
-	public RestResult<Object> sendRcsDataCarousel(Map<String, Object> params) throws Exception {
+	public RestResult<Object> sendRcsDataCarousel(Map<String, Object> params, MultipartFile excelFile) throws Exception {
 		RestResult<Object> resultObj = new RestResult<>(true);
 		Map<String, Object> data = (Map<String, Object>) params.get("data");
 		
@@ -1174,6 +1198,13 @@ public class RcsTemplateSendService {
 		// recvInfoLst 세팅
 		data.put("webReqId", apiMap.get("webReqId"));
 		int carouselCnt = CommonUtils.getInt(params.get("carouselSelect"));
+		String cuInputType = CommonUtils.getString(data.get("cuInputType"));
+		
+		// 엑셀인경우 recvInfoLst 세팅
+		if("EXCEL".equals(cuInputType)) {
+			List<Map<String, Object>> excelRecvInfoLst = this.setExcelRecvInfoLst(data, excelFile);
+			data.put("recvInfoLst", excelRecvInfoLst);
+		}
 		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListCarousel(data, carouselCnt);
 		
 		String rsrvSendYn = CommonUtils.getString(data.get("rsrvSendYn"));
@@ -1818,4 +1849,40 @@ public class RcsTemplateSendService {
         }
         return isSuccess;
     }
+
+	
+	public List<Map<String, Object>> setExcelRecvInfoLst(Map<String, Object> data, MultipartFile excelFile) throws Exception {
+		List<Map<String, Object>> excelList = null;
+		List<Map<String, Object>> returnList = new ArrayList<Map<String,Object>>();
+		List<String> colKeys = new ArrayList<String>();
+		List<String> contsVarNms = null;
+
+		colKeys.add("phone");
+		if(data.containsKey("contsVarNms")) {
+			contsVarNms = (ArrayList<String>)data.get("contsVarNms");
+			for(String varNm : contsVarNms) {
+				colKeys.add(varNm);
+			}
+		}
+		
+		excelList = commonService.getExcelDataList(excelFile, 2, colKeys);
+		
+		for(Map<String, Object> excelInfo : excelList) {
+			Map<String, Object> returnMap = new HashMap<String, Object>();
+			if(excelInfo.containsKey("phone")) {
+				returnMap.put("phone", excelInfo.get("phone"));
+			}
+
+			Map<String, Object> mergeData = new HashMap<String, Object>();
+			for(String key : excelInfo.keySet()) {
+				if(!StringUtils.equals(key, "phone")) {
+					mergeData.put(key, (String) excelInfo.get(key));
+				}
+			}
+			returnMap.put("mergeData", mergeData);
+			returnList.add(returnMap);
+		}
+		
+		return returnList;
+	}
 }
