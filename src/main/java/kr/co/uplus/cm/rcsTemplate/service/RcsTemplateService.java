@@ -15,6 +15,7 @@ import org.springframework.util.ObjectUtils;
 
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.rcsTemplateSend.Service.RcsTemplateSendService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
@@ -26,7 +27,10 @@ public class RcsTemplateService {
 	private GeneralDao generalDao;
 	
 	@Autowired
-	private ApiInterface apiInterface; 
+	private ApiInterface apiInterface;
+	
+	@Autowired
+	private RcsTemplateSendService rcsTemplateSendSvc;
 
 	public RestResult<Object> selectRcsTemplateList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -350,11 +354,11 @@ public class RcsTemplateService {
 		String brandId		= CommonUtils.getString(params.get("brandId"));
 		String messagebaseId	= CommonUtils.getString(params.get("messagebaseId"));
 
-		Map<String, Object> apiMap = new HashMap<>();
-		apiMap.put("corpId", CommonUtils.getString(params.get("corpId")));
+		Map<String, Object> headerMap = new HashMap<>();
+		headerMap = rcsTemplateSendSvc.setHeader(params);
 		
 		// API 통신 처리
-		Map<String, Object> result = apiInterface.delete("/console/v1/brand/" + brandId + "/messagebase/" + messagebaseId, null, apiMap, null);
+		Map<String, Object> result = apiInterface.delete("/console/v1/rcs/brand/" + brandId + "/messagebase/" + messagebaseId, null, null, headerMap);
 		
 		// 성공인지 실패인지 체크
 		if(!"10000".equals(result.get("code")) ) {
@@ -365,9 +369,11 @@ public class RcsTemplateService {
 	public void rcsTemplateCancelApi(Map<String, Object> params) throws Exception {
 		String brandId		= CommonUtils.getString(params.get("brandId"));
 		String messagebaseId	= CommonUtils.getString(params.get("messagebaseId"));
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		headerMap = rcsTemplateSendSvc.setHeader(params);
 		
 		// API 통신 처리
-		Map<String, Object> result = apiInterface.put("/console/v1/brand/" + brandId + "/messagebase/" + messagebaseId + "/cancel", null, null, null);
+		Map<String, Object> result = apiInterface.put("/console/v1/rcs/brand/" + brandId + "/messagebase/" + messagebaseId + "/cancel", null, null, headerMap);
 		
 		// 성공인지 실패인지 체크
 		if(!"10000".equals(result.get("code")) ) {
@@ -380,7 +386,9 @@ public class RcsTemplateService {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		Map<String, Object> headerMap = new HashMap<String, Object>();
 		
-		String corpId				= CommonUtils.getString(params.get("corpId"));
+		// headerMap 세팅 (apiKey)
+		headerMap = rcsTemplateSendSvc.setHeader(params);
+		
 		String messagebaseformId	= CommonUtils.getString(params.get("messagebaseformId"));
 		String messagebaseId		= CommonUtils.getString(params.get("messagebaseId"));
 		String custTmpltId			= CommonUtils.getString(params.get("custTmpltId"));
@@ -427,7 +435,6 @@ public class RcsTemplateService {
 		layoutMap.put("children", layoutChildren);
 		
 		List<Object> suggestionsList = new ArrayList<Object>();
-		Map<String, Object> suggestionsListMap = new HashMap<String, Object>();
 		
 		// 버튼 세팅
 		int btnCnt = CommonUtils.getInt(params.get("btnCnt"));
@@ -444,7 +451,9 @@ public class RcsTemplateService {
 			ArrayList<String> desInitEndDate = (ArrayList<String>) params.get("desInitEndDate");
 			ArrayList<String> styleInitStartDate = (ArrayList<String>) params.get("styleInitStartDate");
 			ArrayList<String> styleInitEndDate = (ArrayList<String>) params.get("styleInitEndDate");
+			
 			for(int i=0; i<btnCnt; i++) {
+				Map<String, Object> suggestionsListMap = new HashMap<String, Object>();
 				String selectBtnStr = selectBtn.get(i);
 				if("urlAction".equals(selectBtnStr)) {
 					Map<String, Object> urlActionMap = new HashMap<String, Object>();
@@ -536,7 +545,7 @@ public class RcsTemplateService {
 				suggestionsList.add(i, suggestionsListMap);
 			}
 		} else {
-			suggestionsList.add(suggestionsListMap);
+			suggestionsList.add(new HashMap<String, Object>());
 		}
 		openrichcardMessageMap.put("layout", layoutMap);
 		openrichcardMessageMap.put("suggestions", suggestionsList);
@@ -547,7 +556,6 @@ public class RcsTemplateService {
 		RCSMessageMap.put("openrichcardMessage", openrichcardMessageMap);
 		
 		formattedStringMap.put("RCSMessage", RCSMessageMap);
-		paramMap.put("corpId", corpId);
 		paramMap.put("messagebaseformId", messagebaseformId);
 		paramMap.put("custTmpltId", custTmpltId);
 		paramMap.put("tmpltName", tmpltName);
@@ -562,9 +570,9 @@ public class RcsTemplateService {
 		Map<String, Object> result = new HashMap<String, Object>();
 		
 		if("INS".equals(flag)) {
-			result = apiInterface.listPost("/console/v1/brand/" + brandId + "/messagebase", paramList, headerMap);
+			result = apiInterface.listPost("/console/v1/rcs/brand/" + brandId + "/messagebase", paramList, headerMap);
 		} else {
-			result = apiInterface.put("/console/v1/brand/" + brandId + "/messagebase/" + messagebaseId, paramMap, paramMap, headerMap);
+			result = apiInterface.put("/console/v1/rcs/brand/" + brandId + "/messagebase/" + messagebaseId, paramMap, paramMap, headerMap);
 		}
 		
 		// 성공인지 실패인지 체크
