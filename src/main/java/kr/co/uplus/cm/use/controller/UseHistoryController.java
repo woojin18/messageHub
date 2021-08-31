@@ -47,20 +47,21 @@ public class UseHistoryController {
 	 * @param response
 	 * @param params
 	 * @return
+	 * @throws Exception 
 	 */
 	@PostMapping("/selectUseHistory")
 	public RestResult<?> selectUseHistory(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody Map<String, Object> params) {
+			@RequestBody Map<String, Object> params) throws Exception {
 
 		RestResult<Object> rtn = new RestResult<Object>();
-		try {
+//		try {
 			rtn = useHistorySvc.selectUseHistory(params);
-		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
-			log.error("{} Error : {}", this.getClass(), e);
-		}
-		return rtn;
+//		} catch (Exception e) {
+//			rtn.setSuccess(false);
+//			rtn.setMessage("실패하였습니다.");
+//			log.error("{} Error : {}", this.getClass(), e);
+//		}
+		return rtn; 
 	}
 	
 	/**
