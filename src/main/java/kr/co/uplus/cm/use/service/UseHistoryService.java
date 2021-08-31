@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,12 +70,16 @@ public class UseHistoryService {
 			rtn.setPageProps(params);
 			if(rtn.getPageInfo() != null) {
 				//카운트 쿼리 실행
-				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_USE_HISTORY_LIST_CNT, params);
+				//int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_USE_HISTORY_LIST_CNT, params);
+				int listCnt = 0;
 				rtn.getPageInfo().put("totCnt", listCnt);
 			}
 		}
 
-		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_USE_HISTORY_LIST, params);
+		//List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_USE_HISTORY_LIST, params);
+		
+		// 통계 정보
+		List<Object> rtnList = generalDao.selectGernalList("use.selectUseHistFromCmStatChMin", params);
 
 		for (int i = 0; i < rtnList.size(); i++) {
 			// 사용 채널 그룹 한라인으로 처리
@@ -101,9 +106,58 @@ public class UseHistoryService {
 			rtnMap.put("useCh", useChStr);
 			payType = CommonUtils.getString(rtnMap.get("payType"));
 
+			// 상품 가격 정보
+			List<Object> productList = generalDao.selectGernalList("use.selectUseHistProductUnit", params);
+			
+			// 결제유형별 금액처리
+			String productCode = CommonUtils.getString(rtnMap.get("productCode")); 
+			//BigDecimal succCnt = new BigDecimal(CommonUtils.getString(rtnMap.get("succCnt")));
+			int succCnt = Integer.parseInt(CommonUtils.getString(rtnMap.get("succCnt")));
+			
+			for(int j = 0; j < productList.size(); j++ ) {
+				Map<String, Object> productMap = (Map<String, Object>) productList.get(j);
+				
+				if( productCode.equals(productMap.get("productCode")) ) {
+					if( "PRE".equals(payType) ) {
+						BigDecimal succCntBD = new BigDecimal(succCnt);
+						BigDecimal preFeeBd = new BigDecimal(CommonUtils.getString(productMap.get("preFee")));
+						addAmount = preFeeBd.multiply(succCntBD);
+
+						System.out.println("-------------------------------------------@@@ succCntBD : " + succCntBD + " / preFeeBd : " + preFeeBd);
+						
+						sumAmount = sumAmount.add(addAmount); // 프로젝트 합계금액
+					} else if ( "POST".equals(payType) ) {
+						BigDecimal postFee = new BigDecimal(0);
+						JSONArray postFeeInfoArr = new JSONArray(CommonUtils.getString(productMap.get("postFeeInfo")));
+
+						for( int k = 0; k < postFeeInfoArr.length(); k++ ) {
+							kong.unirest.json.JSONObject postFeeMap = postFeeInfoArr.getJSONObject(k);
+							
+							String feeStartCntStr = CommonUtils.getString(postFeeMap.get("FEE_START_CNT"));
+							if( "".equals(feeStartCntStr) ) { feeStartCntStr = "0"; }
+							String feeEndCntStr = CommonUtils.getString(postFeeMap.get("FEE_END_CNT"));
+							if( "".equals(feeEndCntStr) ) { feeEndCntStr = "0"; }
+							
+							int feeStartCnt = Integer.parseInt(feeStartCntStr);
+							int feeEndCnt = Integer.parseInt(feeEndCntStr);
+							
+							if( feeStartCnt < succCnt && feeEndCnt > succCnt ) {
+								postFee = new BigDecimal(CommonUtils.getString(postFeeMap.get("POST_FEE")));
+								System.out.println("------------------------------------------!!! : " + k + " / " + feeStartCnt + " / " + feeEndCnt + " / " + postFee);
+							}
+						}
+						
+						addAmount = postFee.multiply(new BigDecimal(succCnt));
+						sumAmount = sumAmount.add(addAmount); // 프로젝트 합계금액
+					}
+				}
+			}
+			
 			// 요금 총합계
-			addAmount = new BigDecimal(CommonUtils.getString(rtnMap.get("sumChGrpAmount"))); //프로젝트 개별 금액
-			sumAmount = sumAmount.add(addAmount); // 프로젝트 합계금액
+			//addAmount = new BigDecimal(CommonUtils.getString(rtnMap.get("sumChGrpAmount"))); //프로젝트 개별 금액
+			//sumAmount = sumAmount.add(addAmount); // 프로젝트 합계금액
+			
+			
 
 			// 선불,후불요금 합계
 			if(payType.equalsIgnoreCase("PRE")) {
@@ -111,6 +165,8 @@ public class UseHistoryService {
 			} else if(payType.equalsIgnoreCase("POST")) {
 				postpaidAmount = postpaidAmount.add(addAmount); // 후불요금
 			}
+			
+			rtnMap.put("sumChGrpAmount", addAmount);
 		}
 
 		prepaidTaxAmount = prepaidAmount.multiply(new BigDecimal("0.10"));

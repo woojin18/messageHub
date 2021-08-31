@@ -76,7 +76,7 @@
 										<td class="text-left">{{ data.useCh }}</td>
 										<td class="text-center">{{ data.payTypeName }}</td>
 										<td class="text-center">{{ data.regDt }}</td>
-										<td class="text-right">{{ data.cnt | comma}}</td>
+										<td class="text-right">{{ data.succCnt | comma}}</td>
 										<td class="text-right end">{{ data.sumChGrpAmount | comma}}원</td>
 									</tr>
 									<tr class="of_h">

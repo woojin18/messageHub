@@ -208,4 +208,45 @@
 		) B
 		WHERE A.YM = B.PAY_MONTH
 	</select>
+	
+	<select id="selectUseHistProductUnit" resultType="camel">
+	/* use.selectUseHistProductUnit */
+		SELECT	A.PRODUCT_CODE
+		,		IFNULL(B.PRE_FEE, A.PRE_FEE)  AS PRE_FEE 
+		,		IFNULL(B.POST_FEE_INFO, A.POST_FEE_INFO)  AS POST_FEE_INFO
+		FROM cm_bo.CM_PRODUCT_UNIT A
+		LEFT OUTER JOIN ( 
+			SELECT	ccpu.PRODUCT_CODE
+			,		ccpu.PRE_FEE
+			,		ccpu.POST_FEE_INFO
+			FROM CM_CORP_PRODUCT_UNIT ccpu
+			WHERE ccpu.CORP_ID  = #{corpId}
+		) B
+			ON A.PRODUCT_CODE = B.PRODUCT_CODE 
+	</select>
+	
+	<select id="selectUseHistFromCmStatChMin" resultType="camel">
+	/* use.selectUseHistFromCmStatChMin */
+		select	B.PROJECT_NAME 
+		,		B.USE_CH_GRP_INFO 
+		,		CASE WHEN B.PAY_TYPE = 'PRE' THEN '선불' WHEN B.PAY_TYPE = 'POST' THEN '후불' END AS PAY_TYPE_NAME
+		,		B.PAY_TYPE
+		,		A.CH
+		,		A.PRODUCT_CODE 
+		,		DATE_FORMAT(B.REG_DT, '%Y-%m-%d') AS REG_DT
+		,		A.SUCC_CNT
+		from (
+			SELECT	PROJECT_ID
+			,		CH 
+			,		SUCC_CNT 
+			,		PRODUCT_CODE 
+			FROM cm.CM_STAT_CH_MIN cscm 
+			WHERE cscm.CORP_ID  = #{corpId}
+			AND cscm.YMDHM BETWEEN	concat(#{searchMonth}, '010000') 
+								AND	CONCAT(REPLACE(last_day(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01')), '-', ''), '1159')
+			GROUP BY cscm.PROJECT_ID, cscm.CH, cscm.PRODUCT_CODE 
+		) A
+		INNER JOIN cm_console.CM_PROJECT B 
+			ON A.PROJECT_ID = B.PROJECT_ID 
+	</select>
 </mapper>
