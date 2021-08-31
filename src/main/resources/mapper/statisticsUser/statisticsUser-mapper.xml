@@ -42,6 +42,7 @@
 				</otherwise>
 			</choose>
 				AND		CORP_ID = #{corpId}
+				AND		PROJECT_ID = #{projectId}
 			) AA
 			GROUP BY CH
 		) A
@@ -121,6 +122,7 @@
 					</otherwise>
 				</choose>
 					AND		CORP_ID = #{corpId}
+					AND		PROJECT_ID = #{projectId}
 				) AA
 				GROUP BY CH, YMD
 			) A
@@ -207,6 +209,7 @@
 					</otherwise>
 				</choose>
 					AND		CORP_ID = #{corpId}
+					AND		PROJECT_ID = #{projectId}
 				) AA
 				GROUP BY CH, YMD
 			) A
@@ -277,6 +280,7 @@
 				</otherwise>
 			</choose>
 				AND		CORP_ID = #{corpId}
+				AND		PROJECT_ID = #{projectId}
 			) AA
 			GROUP BY CH, YMD
 		) A
@@ -322,6 +326,7 @@
 				</otherwise>
 			</choose>
 				AND		CORP_ID = #{corpId}
+				AND		PROJECT_ID = #{projectId}
 			) AA
 			GROUP BY CH, YMD
 		) A
