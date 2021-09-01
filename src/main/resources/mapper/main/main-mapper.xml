@@ -21,6 +21,7 @@
             , CPU.POST_FEE_INFO
         FROM cm_bo.CM_PRODUCT_UNIT CPU
         WHERE CPU.USE_YN = 'Y'
+            AND CPU.SMART_CH_PRODUCT_YN = 'N'
             AND CPU.PRODUCT_CODE IN <foreach collection="productCodes" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
         ORDER BY FIELD(CPU.PRODUCT_CODE, <foreach collection="productCodes" item="item" index="index" separator=",">#{item}</foreach>)
     </select>

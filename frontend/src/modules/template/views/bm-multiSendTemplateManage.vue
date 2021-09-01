@@ -1158,157 +1158,23 @@
 										<span v-if="rowData.msgKind == 'A'"> (광고)</span>
 									</p>
 									<ul class="cardBxslider mt10">
-										<li class="slide cardBox">
-											<div v-for="imgIdx in rcs90ImgLimitSize" :key="imgIdx">
-												<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs90ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-													:style="'padding:25%;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs90ImgInfoList[imgIdx-1].imgUrl+');'">  
-												</div>
-												<div v-else-if="rowData.msgType == 'IMAGE' && rowData.rcs90ImgInfoList.length == 0">
-													<img src="@/assets/images/common/cardThumImg2.png" alt="카드 썸네일">
-												</div>
-											</div>
-											<div class="relative">
-												<h5>{{rowData.rcs0Title}}</h5>
-												<div class="scroll-y" style="min-height:150px">
-													<pre class="color6">{{rowData.rcs0Content}}</pre>
-												</div>
-												<p v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)" class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcsBlockNumber}}</p>
-												<div v-for="(buttonInfo, idx) in rowData.rcs90Buttons" :key="idx">
-													<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
-														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
-													</p>
-													<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
-														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
-													</p>
+										<li v-for="(rcsCShortImgInfo, cardIdx) in rowData.rcsCShortImgInfoList" :key="cardIdx" class="slide cardBox scroll-yc">
+											<img v-if="rowData.msgType == 'IMAGE' && rcsCShortImgInfo.imgUrl" :src="rcsCShortImgInfo.imgUrl" style="width: 204px;height: 255px;" alt="캐러셀(short) 템플릿">
+											<div>
+												<div>
+													<p class="color000 font-size13">{{rcsCShortImgInfo.rcsTitle}}</p>
+													<p class="mt15"><pre>{{rcsCShortImgInfo.rcsContent}}</pre></p>
 												</div>
 											</div>
-										</li>
-										<li class="slide cardBox">
-											<div v-for="imgIdx in rcs91ImgLimitSize" :key="imgIdx">
-												<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs91ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-													:style="'padding:25%;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs91ImgInfoList[imgIdx-1].imgUrl+');'">  
-												</div>
-												<div v-else-if="rowData.msgType == 'IMAGE' && rowData.rcs91ImgInfoList.length == 0">
-													<img src="@/assets/images/common/cardThumImg2.png" alt="카드 썸네일">
-												</div>
+											<div v-if="rcsCShortImgInfo.rcsButtons.length > 0">
+												<p v-for="(buttonInfo, idx) in rcsCShortImgInfo.rcsButtons" :key="idx" class="text-center mt10" style="color:#69C8FF">
+													<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
+												</p>
 											</div>
-											<div class="relative">
-												<h5>{{rowData.rcs1Title}}</h5>
-												<div class="scroll-y" style="min-height:150px">
-													<pre class="color6">{{rowData.rcs1Content}}</pre>
-												</div>
-												<p v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)" class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcsBlockNumber}}</p>
-												<div v-for="(buttonInfo, idx) in rowData.rcs91Buttons" :key="idx">
-													<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
-														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
-													</p>
-													<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
-														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
-													</p>
-												</div>
-											</div>
-										</li>
-										<li class="slide cardBox">
-											<div v-for="imgIdx in rcs92ImgLimitSize" :key="imgIdx">
-												<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs92ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-													:style="'padding:25%;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs92ImgInfoList[imgIdx-1].imgUrl+');'">  
-												</div>
-												<div v-else-if="rowData.msgType == 'IMAGE' && rowData.rcs92ImgInfoList.length == 0">
-													<img src="@/assets/images/common/cardThumImg2.png" alt="카드 썸네일">
-												</div>
-											</div>
-											<div class="relative">
-												<h5>{{rowData.rcs2Title}}</h5>
-												<div class="scroll-y" style="min-height:150px">
-													<pre class="color6">{{rowData.rcs2Content}}</pre>
-												</div>
-												<p v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)" class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcsBlockNumber}}</p>
-												<div v-for="(buttonInfo, idx) in rowData.rcs92Buttons" :key="idx">
-													<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
-														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
-													</p>
-													<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
-														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
-													</p>
-												</div>
-											</div>
-										</li>
-										<li class="slide cardBox" v-show="cShortTab === 3">
-											<div v-for="imgIdx in rcs93ImgLimitSize" :key="imgIdx">
-												<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs93ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-													:style="'padding:25%;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs93ImgInfoList[imgIdx-1].imgUrl+');'">  
-												</div>
-												<div v-else-if="rowData.msgType == 'IMAGE' && rowData.rcs93ImgInfoList.length == 0">
-													<img src="@/assets/images/common/cardThumImg2.png" alt="카드 썸네일">
-												</div>
-											</div>
-											<div class="relative">
-												<h5>{{rowData.rcs3Title}}</h5>
-												<div class="scroll-y" style="min-height:150px">
-													<pre class="color6">{{rowData.rcs3Content}}</pre>
-												</div>
-												<p v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)" class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcsBlockNumber}}</p>
-												<div v-for="(buttonInfo, idx) in rowData.rcs93Buttons" :key="idx">
-													<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
-														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
-													</p>
-													<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
-														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
-													</p>
-												</div>
-											</div>
-										</li>
-										<li class="slide cardBox" v-show="cShortTab === 4">
-											<div v-for="imgIdx in rcs94ImgLimitSize" :key="imgIdx">
-												<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs94ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-													:style="'padding:25%;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs94ImgInfoList[imgIdx-1].imgUrl+');'">  
-												</div>
-												<div v-else-if="rowData.msgType == 'IMAGE' && rowData.rcs94ImgInfoList.length == 0">
-													<img src="@/assets/images/common/cardThumImg2.png" alt="카드 썸네일">
-												</div>
-											</div>
-											<div class="relative">
-												<h5>{{rowData.rcs4Title}}</h5>
-												<div class="scroll-y" style="min-height:150px">
-													<pre class="color6">{{rowData.rcs4Content}}</pre>
-												</div>
-												<p v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)" class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcsBlockNumber}}</p>
-												<div v-for="(buttonInfo, idx) in rowData.rcs94Buttons" :key="idx">
-													<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
-														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
-													</p>
-													<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
-														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
-													</p>
-												</div>
-											</div>
-										</li>
-										<li class="slide cardBox" v-show="cShortTab === 5">
-											<div v-for="imgIdx in rcs95ImgLimitSize" :key="imgIdx">
-												<div v-if="rowData.msgType == 'IMAGE' && rowData.rcs95ImgInfoList.length > imgIdx -1" class="phoneText2 mt10 text-center"
-													:style="'padding:25%;background-repeat: no-repeat;background-size: cover;background-image: url('+rowData.rcs95ImgInfoList[imgIdx-1].imgUrl+');'">  
-												</div>
-												<div v-else-if="rowData.msgType == 'IMAGE' && rowData.rcs95ImgInfoList.length == 0">
-													<img src="@/assets/images/common/cardThumImg2.png" alt="카드 썸네일">
-												</div>
-											</div>
-											<div class="relative">
-												<h5>{{rowData.rcs5Title}}</h5>
-												<div class="scroll-y" style="min-height:150px">
-													<pre class="color6">{{rowData.rcs5Content}}</pre>
-												</div>
-												<p v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.rcsBlockNumber)" class="color4 font-size10 absolute" style="bottom:-20px">무료수신거부:{{rowData.rcsBlockNumber}}</p>
-												<div v-for="(buttonInfo, idx) in rowData.rcs95Buttons" :key="idx">
-													<p v-if="idx == 0" class="text-center mt30" style="color:#69C8FF">
-														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
-													</p>
-													<p v-if="idx != 0" class="text-center mt10" style="color:#69C8FF">
-														<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
-													</p>
-												</div>
-											</div>
+											<p v-if="rowData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(rowData.rcsBlockNumber)" class="color3 font-size10 mt5">수신거부번호: {{rowData.rcsBlockNumber}}</p>
 										</li>
 									</ul>
+									<div id="slide-counter"><span class="current"></span> / <span class="total"></span></div>
 								</div>
 							</div>
 							<!-- //phoneWrap -->
@@ -1325,7 +1191,7 @@
 						<div class="of_h">
 							<div class="float-left" style="width:13%"><h4>카드개수</h4></div>
 							<div class="float-left" style="width:57%">
-								<select class="selectStyle2" style="width:70px" v-model="rcs9CardCount">
+								<select class="selectStyle2" style="width:70px" v-model="rcs9CardCount" @change="fnChgCShortCardCount(rcs9CardCount)">
 									<option value="3">3</option>
 									<option value="4">4</option>
 									<option value="5">5</option>
@@ -1346,30 +1212,30 @@
 							</div>
 						</div>
 						<div class="tab-content">
-							<!--  tab1 -->
-							<div role="tabpanel" class="tab-pane active" id="card91">
+							<!--  testTab -->
+							<div v-for="(rcsCShortImgInfo, tabIdx) in rowData.rcsCShortImgInfoList" :key="tabIdx" class="tab-pane" role="tabpanel" :id="fnCarouselString('card9', tabIdx, '')">
 								<div class="of_h consolMarginTop">
 									<div class="float-left" style="width:13%"><h4>제목</h4></div>
 									<div class="float-left" style="width:57%">
-										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs0Title">
+										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcsCShortImgInfoList[tabIdx].rcsTitle">
 									</div>
 								</div>
 								<div class="of_h">
 									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 									<div class="float-left" style="width:57%">
-										<textarea class="textareaStyle height190" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsCarouselTab1" @keyup="fnTextLength('내용', '#rcsCarouselTab1', '#rcsCarouselTab1TextLength', '1300')"></textarea>
-										<strong class="letter" id="rcsCarouselTab1TextLength">(00 / 1300)</strong>
+										<textarea class="textareaStyle height190" v-model="rowData.rcsCShortImgInfoList[tabIdx].rcsContent" :placeholder="rcsPlaceHoder" :id="fnCarouselString('rcsCarouselTab', tabIdx, '')" @keyup="fnTextLength('내용', fnCarouselString('#rcsCarouselTab', tabIdx, ''), fnCarouselString('#rcsCarouselTab', tabIdx, 'TextLength'), '1300')"></textarea>
+										<strong class="letter" :id="fnCarouselString('rcsCarouselTab', tabIdx, 'TextLength')">(00 / 1300)</strong>
 									</div>
 								</div>
 								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
 									<div class="float-left" style="width:13%"><h4>이미지</h4></div>
 									<div class="float-left" style="width:57%">
 										<div class="float-left" style="width:25%">
-											<a @click="fnRcs90OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
+											<a @click="fnRcsCarouselShortOpenImageManagePopUp(tabIdx)" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
 										</div>
-										<ul v-for="imgIdx in rcs90ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
-											<li v-if="rowData.rcs90ImgInfoList.length > imgIdx -1">
-												<a @click="fnRcs90DelImg(imgIdx-1)">{{fnSubString(rowData.rcs90ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
+										<ul class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
+											<li v-if="rowData.rcsCShortImgInfoList[tabIdx].fileId.length > 0 && rowData.rcsCShortImgInfoList[tabIdx].imgUrl.length > 0">
+												<a @click="fnRcsCarouselShortDelImg(tabIdx)">{{fnSubString(rowData.rcsCShortImgInfoList[tabIdx].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
 											</li>
 											<li v-else>
 												<a></a>
@@ -1378,9 +1244,9 @@
 									</div>
 								</div>
 								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('CSHORT_TAB1')" class="btnStyle1 backBlack">추가 +</a></div>
+									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton(fnCarouselString('CSHORT_TAB', tabIdx, ''))" class="btnStyle1 backBlack">추가 +</a></div>
 									<div class="float-left" style="width:57%">
-										<table class="table_skin1 mt0" style="width:100%" v-if="button90Flag">
+										<table class="table_skin1 mt0" style="width:100%" v-if="fnCarouselString('button9', tabIdx, 'Flag')">
 											<colgroup>
 												<col style="width:22%">
 												<col style="width:20%">
@@ -1396,7 +1262,7 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr v-for="(buttonInfo, index) in rowData.rcs90Buttons" v-bind:key="index">
+												<tr v-for="(buttonInfo, index) in rowData.rcsCShortImgInfoList[tabIdx].rcsButtons" v-bind:key="index">
 													<td class="text-center">
 														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
 															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
@@ -1412,20 +1278,20 @@
 														<div class="consolMarginTop of_h">
 															<span class="float-left mt5" style="width:20%">시작일</span>
 															<div class="float-right" style="width:80%">
-																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar @update-date="fnCarouselString('fnRcsCShortButtonSD', tabIdx, '')" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
 															</div>
 														</div>
 														<div class="consolMarginTop of_h">
 															<span class="float-left mt5" style="width:20%">종료일</span>
 															<div class="float-right" style="width:80%">
-																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar @update-date="fnCarouselString('fnRcsCShortButtonED', tabIdx, '')" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
 															</div>
 														</div>
 													</td>
 													<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
 													<td class="text-center end">
-														<a @click="addRowRcsButton('CSHORT_TAB1')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
-														<a @click="removeRowRcsButton('CSHORT_TAB1', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
+														<a @click="addRowRcsButton(fnCarouselString('CSHORT_TAB', tabIdx, ''))" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
+														<a @click="removeRowRcsButton(fnCarouselString('CSHORT_TAB', tabIdx, ''), index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
 													</td>
 												</tr>
 											</tbody>
@@ -1433,453 +1299,7 @@
 									</div>
 								</div>
 							</div>
-							<!--  //tab1 -->
-
-							<!--  tab2 -->
-							<div role="tabpanel" class="tab-pane" id="card92">
-								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>제목</h4></div>
-									<div class="float-left" style="width:57%">
-										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs1Title">
-									</div>
-								</div>
-								<div class="of_h">
-									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
-									<div class="float-left" style="width:57%">
-										<textarea class="textareaStyle height190" v-model="rowData.rcs1Content" :placeholder="rcsPlaceHoder" id="rcsCarouselTab2" @keyup="fnTextLength('내용', '#rcsCarouselTab2', '#rcsCarouselTab2TextLength', '1300')"></textarea>
-										<strong class="letter" id="rcsCarouselTab2TextLength">(00 / 1300)</strong>
-									</div>
-								</div>
-								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-									<div class="float-left" style="width:13%"><h4>이미지</h4></div>
-									<div class="float-left" style="width:57%">
-										<div class="float-left" style="width:25%">
-											<a @click="fnRcs91OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
-										</div>
-										<ul v-for="imgIdx in rcs91ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
-											<li v-if="rowData.rcs91ImgInfoList.length > imgIdx -1">
-												<a @click="fnRcs91DelImg(imgIdx-1)">{{fnSubString(rowData.rcs91ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
-											</li>
-											<li v-else>
-												<a></a>
-											</li>
-										</ul>
-									</div>
-								</div>
-								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('CSHORT_TAB2')" class="btnStyle1 backBlack">추가 +</a></div>
-									<div class="float-left" style="width:57%">
-										<table class="table_skin1 mt0" style="width:100%" v-if="button91Flag">
-											<colgroup>
-												<col style="width:22%">
-												<col style="width:20%">
-												<col>
-												<col style="width:15%">
-											</colgroup>
-											<thead>
-												<tr>
-													<th class="text-center">타입</th>
-													<th class="text-center">버튼이름</th>
-													<th class="text-center">버튼링크</th>
-													<th class="text-center end">구분</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr v-for="(buttonInfo, index) in rowData.rcs91Buttons" v-bind:key="index">
-													<td class="text-center">
-														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
-															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
-														</select>
-													</td>
-													<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
-														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
-														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
-														<div class="consolMarginTop of_h">
-															<span class="float-left mt5" style="width:20%">시작일</span>
-															<div class="float-right" style="width:80%">
-																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-															</div>
-														</div>
-														<div class="consolMarginTop of_h">
-															<span class="float-left mt5" style="width:20%">종료일</span>
-															<div class="float-right" style="width:80%">
-																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-															</div>
-														</div>
-													</td>
-													<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
-													<td class="text-center end">
-														<a @click="addRowRcsButton('CSHORT_TAB2')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
-														<a @click="removeRowRcsButton('CSHORT_TAB2', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-							<!--  //tab2 -->
-
-							<!--  tab3 -->
-							<div role="tabpanel" class="tab-pane" id="card93">
-								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>제목</h4></div>
-									<div class="float-left" style="width:57%">
-										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs2Title">
-									</div>
-								</div>
-								<div class="of_h">
-									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
-									<div class="float-left" style="width:57%">
-										<textarea class="textareaStyle height190" v-model="rowData.rcs2Content" :placeholder="rcsPlaceHoder" id="rcsCarouselTab3" @keyup="fnTextLength('내용', '#rcsCarouselTab3', '#rcsCarouselTab3TextLength', '1300')"></textarea>
-										<strong class="letter" id="rcsCarouselTab3TextLength">(00 / 1300)</strong>
-									</div>
-								</div>
-								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-									<div class="float-left" style="width:13%"><h4>이미지</h4></div>
-									<div class="float-left" style="width:57%">
-										<div class="float-left" style="width:25%">
-											<a @click="fnRcs92OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
-										</div>
-										<ul v-for="imgIdx in rcs92ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
-											<li v-if="rowData.rcs92ImgInfoList.length > imgIdx -1">
-												<a @click="fnRcs92DelImg(imgIdx-1)">{{fnSubString(rowData.rcs92ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
-											</li>
-											<li v-else>
-												<a></a>
-											</li>
-										</ul>
-									</div>
-								</div>
-								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('CSHORT_TAB3')" class="btnStyle1 backBlack">추가 +</a></div>
-									<div class="float-left" style="width:57%">
-										<table class="table_skin1 mt0" style="width:100%" v-if="button92Flag">
-											<colgroup>
-												<col style="width:22%">
-												<col style="width:20%">
-												<col>
-												<col style="width:15%">
-											</colgroup>
-											<thead>
-												<tr>
-													<th class="text-center">타입</th>
-													<th class="text-center">버튼이름</th>
-													<th class="text-center">버튼링크</th>
-													<th class="text-center end">구분</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr v-for="(buttonInfo, index) in rowData.rcs92Buttons" v-bind:key="index">
-													<td class="text-center">
-														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
-															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
-														</select>
-													</td>
-													<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
-														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
-														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
-														<div class="consolMarginTop of_h">
-															<span class="float-left mt5" style="width:20%">시작일</span>
-															<div class="float-right" style="width:80%">
-																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-															</div>
-														</div>
-														<div class="consolMarginTop of_h">
-															<span class="float-left mt5" style="width:20%">종료일</span>
-															<div class="float-right" style="width:80%">
-																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-															</div>
-														</div>
-													</td>
-													<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
-													<td class="text-center end">
-														<a @click="addRowRcsButton('CSHORT_TAB3')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
-														<a @click="removeRowRcsButton('CSHORT_TAB3', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-							<!--  //tab3 -->
-
-							<!--  tab4 -->
-							<div role="tabpanel" class="tab-pane" id="card94">
-								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>제목</h4></div>
-									<div class="float-left" style="width:57%">
-										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs3Title">
-									</div>
-								</div>
-								<div class="of_h">
-									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
-									<div class="float-left" style="width:57%">
-										<textarea class="textareaStyle height190" v-model="rowData.rcs3Content" :placeholder="rcsPlaceHoder" id="rcsCarouselTab4" @keyup="fnTextLength('내용', '#rcsCarouselTab4', '#rcsCarouselTab4TextLength', '1300')"></textarea>
-										<strong class="letter" id="rcsCarouselTab4TextLength">(00 / 1300)</strong>
-									</div>
-								</div>
-								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-									<div class="float-left" style="width:13%"><h4>이미지</h4></div>
-									<div class="float-left" style="width:57%">
-										<div class="float-left" style="width:25%">
-											<a @click="fnRcs93OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
-										</div>
-										<ul v-for="imgIdx in rcs93ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
-											<li v-if="rowData.rcs93ImgInfoList.length > imgIdx -1">
-												<a @click="fnRcs93DelImg(imgIdx-1)">{{fnSubString(rowData.rcs93ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
-											</li>
-											<li v-else>
-												<a></a>
-											</li>
-										</ul>
-									</div>
-								</div>
-								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('CSHORT_TAB4')" class="btnStyle1 backBlack">추가 +</a></div>
-									<div class="float-left" style="width:57%">
-										<table class="table_skin1 mt0" style="width:100%" v-if="button93Flag">
-											<colgroup>
-												<col style="width:22%">
-												<col style="width:20%">
-												<col>
-												<col style="width:15%">
-											</colgroup>
-											<thead>
-												<tr>
-													<th class="text-center">타입</th>
-													<th class="text-center">버튼이름</th>
-													<th class="text-center">버튼링크</th>
-													<th class="text-center end">구분</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr v-for="(buttonInfo, index) in rowData.rcs93Buttons" v-bind:key="index">
-													<td class="text-center">
-														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
-															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
-														</select>
-													</td>
-													<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
-														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
-														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
-														<div class="consolMarginTop of_h">
-															<span class="float-left mt5" style="width:20%">시작일</span>
-															<div class="float-right" style="width:80%">
-																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-															</div>
-														</div>
-														<div class="consolMarginTop of_h">
-															<span class="float-left mt5" style="width:20%">종료일</span>
-															<div class="float-right" style="width:80%">
-																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-															</div>
-														</div>
-													</td>
-													<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
-													<td class="text-center end">
-														<a @click="addRowRcsButton('CSHORT_TAB4')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
-														<a @click="removeRowRcsButton('CSHORT_TAB4', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-							<!--  //tab4 -->
-
-							<!--  tab5 -->
-							<div role="tabpanel" class="tab-pane" id="card95">
-								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>제목</h4></div>
-									<div class="float-left" style="width:57%">
-										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs4Title">
-									</div>
-								</div>
-								<div class="of_h">
-									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
-									<div class="float-left" style="width:57%">
-										<textarea class="textareaStyle height190" v-model="rowData.rcs4Content" :placeholder="rcsPlaceHoder" id="rcsCarouselTab5" @keyup="fnTextLength('내용', '#rcsCarouselTab5', '#rcsCarouselTab5TextLength', '1300')"></textarea>
-										<strong class="letter" id="rcsCarouselTab5TextLength">(00 / 1300)</strong>
-									</div>
-								</div>
-								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-									<div class="float-left" style="width:13%"><h4>이미지</h4></div>
-									<div class="float-left" style="width:57%">
-										<div class="float-left" style="width:25%">
-											<a @click="fnRcs94OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
-										</div>
-										<ul v-for="imgIdx in rcs94ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
-											<li v-if="rowData.rcs94ImgInfoList.length > imgIdx -1">
-												<a @click="fnRcs94DelImg(imgIdx-1)">{{fnSubString(rowData.rcs94ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
-											</li>
-											<li v-else>
-												<a></a>
-											</li>
-										</ul>
-									</div>
-								</div>
-								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('CSHORT_TAB5')" class="btnStyle1 backBlack">추가 +</a></div>
-									<div class="float-left" style="width:57%">
-										<table class="table_skin1 mt0" style="width:100%" v-if="button94Flag">
-											<colgroup>
-												<col style="width:22%">
-												<col style="width:20%">
-												<col>
-												<col style="width:15%">
-											</colgroup>
-											<thead>
-												<tr>
-													<th class="text-center">타입</th>
-													<th class="text-center">버튼이름</th>
-													<th class="text-center">버튼링크</th>
-													<th class="text-center end">구분</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr v-for="(buttonInfo, index) in rowData.rcs94Buttons" v-bind:key="index">
-													<td class="text-center">
-														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
-															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
-														</select>
-													</td>
-													<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
-														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
-														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
-														<div class="consolMarginTop of_h">
-															<span class="float-left mt5" style="width:20%">시작일</span>
-															<div class="float-right" style="width:80%">
-																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-															</div>
-														</div>
-														<div class="consolMarginTop of_h">
-															<span class="float-left mt5" style="width:20%">종료일</span>
-															<div class="float-right" style="width:80%">
-																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-															</div>
-														</div>
-													</td>
-													<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
-													<td class="text-center end">
-														<a @click="addRowRcsButton('CSHORT_TAB5')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
-														<a @click="removeRowRcsButton('CSHORT_TAB5', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-							<!--  //tab5 -->
-
-							<!--  tab6 -->
-							<div role="tabpanel" class="tab-pane" id="card96">
-								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>제목</h4></div>
-									<div class="float-left" style="width:57%">
-										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs5Title">
-									</div>
-								</div>
-								<div class="of_h">
-									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
-									<div class="float-left" style="width:57%">
-										<textarea class="textareaStyle height190" v-model="rowData.rcs5Content" :placeholder="rcsPlaceHoder" id="rcsCarouselTab6" @keyup="fnTextLength('내용', '#rcsCarouselTab6', '#rcsCarouselTab6TextLength', '1300')"></textarea>
-										<strong class="letter" id="rcsCarouselTab6TextLength">(00 / 1300)</strong>
-									</div>
-								</div>
-								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-									<div class="float-left" style="width:13%"><h4>이미지</h4></div>
-									<div class="float-left" style="width:57%">
-										<div class="float-left" style="width:25%">
-											<a @click="fnRcs95OpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
-										</div>
-										<ul v-for="imgIdx in rcs95ImgLimitSize" :key="imgIdx" class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
-											<li v-if="rowData.rcs95ImgInfoList.length > imgIdx -1">
-												<a @click="fnRcs95DelImg(imgIdx-1)">{{fnSubString(rowData.rcs95ImgInfoList[imgIdx-1].imgUrl, 0, 55)}} <i class="fal fa-times"></i></a>
-											</li>
-											<li v-else>
-												<a></a>
-											</li>
-										</ul>
-									</div>
-								</div>
-								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('CSHORT_TAB6')" class="btnStyle1 backBlack">추가 +</a></div>
-									<div class="float-left" style="width:57%">
-										<table class="table_skin1 mt0" style="width:100%" v-if="button95Flag">
-											<colgroup>
-												<col style="width:22%">
-												<col style="width:20%">
-												<col>
-												<col style="width:15%">
-											</colgroup>
-											<thead>
-												<tr>
-													<th class="text-center">타입</th>
-													<th class="text-center">버튼이름</th>
-													<th class="text-center">버튼링크</th>
-													<th class="text-center end">구분</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr v-for="(buttonInfo, index) in rowData.rcs95Buttons" v-bind:key="index">
-													<td class="text-center">
-														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
-															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
-														</select>
-													</td>
-													<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
-														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
-														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
-														<div class="consolMarginTop of_h">
-															<span class="float-left mt5" style="width:20%">시작일</span>
-															<div class="float-right" style="width:80%">
-																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-															</div>
-														</div>
-														<div class="consolMarginTop of_h">
-															<span class="float-left mt5" style="width:20%">종료일</span>
-															<div class="float-right" style="width:80%">
-																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-															</div>
-														</div>
-													</td>
-													<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
-													<td class="text-center end">
-														<a @click="addRowRcsButton('CSHORT_TAB6')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
-														<a @click="removeRowRcsButton('CSHORT_TAB6', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-							<!--  //tab6 -->
-
+							<!--  //testTab -->
 							<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">
 								<div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
 								<div class="float-left" style="width:57%">
@@ -2003,7 +1423,7 @@
 								<div class="of_h consolMarginTop">
 									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton(fnCarouselString('CTALL_TAB', tabIdx, ''))" class="btnStyle1 backBlack">추가 +</a></div>
 									<div class="float-left" style="width:57%">
-										<table class="table_skin1 mt0" style="width:100%" v-if="button100Flag">
+										<table class="table_skin1 mt0" style="width:100%" v-if="fnCarouselString('button10', tabIdx, 'Flag')">
 											<colgroup>
 												<col style="width:22%">
 												<col style="width:20%">
@@ -2035,13 +1455,13 @@
 														<div class="consolMarginTop of_h">
 															<span class="float-left mt5" style="width:20%">시작일</span>
 															<div class="float-right" style="width:80%">
-																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar @update-date="fnCarouselString('fnRcsCTallButtonSD', tabIdx, '')" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
 															</div>
 														</div>
 														<div class="consolMarginTop of_h">
 															<span class="float-left mt5" style="width:20%">종료일</span>
 															<div class="float-right" style="width:80%">
-																<Calendar classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar @update-date="fnCarouselString('fnRcsCTallButtonED', tabIdx, '')" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
 															</div>
 														</div>
 													</td>
@@ -2581,35 +2001,8 @@ export default {
 
 					'rcsShortImgInfoList':[], //RCS 세로형 SHORT 이미지정보
 					'rcsTallImgInfoList':[], //RCS 세로형 TALL 이미지정보
-
-					'rcs90ImgInfoList':[], //RCS 캐러셀 카드1 이미지정보
-					'rcs91ImgInfoList':[], //RCS 캐러셀 카드2 이미지정보
-					'rcs92ImgInfoList':[], //RCS 캐러셀 카드3 이미지정보
-					'rcs93ImgInfoList':[], //RCS 캐러셀 카드4 이미지정보
-					'rcs94ImgInfoList':[], //RCS 캐러셀 카드5 이미지정보
-					'rcs95ImgInfoList':[], //RCS 캐러셀 카드6 이미지정보
-
-					'rcs100ImgInfoList':[], //RCS 캐러셀 카드1 이미지정보
-					'rcs101ImgInfoList':[], //RCS 캐러셀 카드2 이미지정보
-					'rcs102ImgInfoList':[], //RCS 캐러셀 카드3 이미지정보
-					'rcs103ImgInfoList':[], //RCS 캐러셀 카드4 이미지정보
-					'rcs104ImgInfoList':[], //RCS 캐러셀 카드5 이미지정보
-					'rcs105ImgInfoList':[], //RCS 캐러셀 카드6 이미지정보
+					'rcsCShortImgInfoList':[], //RCS 캐러셀 카드전체 이미지정보
 					'rcsCTallImgInfoList':[], //RCS 캐러셀 카드전체 이미지정보
-
-					'rcs90Buttons':[], //button 은 초기에 숨겨져있고, 입력부분없이 제목만 출력
-					'rcs91Buttons':[],
-					'rcs92Buttons':[],
-					'rcs93Buttons':[],
-					'rcs94Buttons':[],
-					'rcs95Buttons':[],
-
-					'rcs100Buttons':[], //button 은 초기에 숨겨져있고, 입력부분없이 제목만 출력
-					'rcs101Buttons':[],
-					'rcs102Buttons':[],
-					'rcs103Buttons':[],
-					'rcs104Buttons':[],
-					'rcs105Buttons':[],
 
 					'rcsDesButtons':[], // RCS 서술형 버튼리스트
 					'rcsStyleButtons':[], // RCS 스타일형 버튼리스트
@@ -2629,7 +2022,6 @@ export default {
 					'smsImgInfoList':[], //sms/mms이미지정보
 
 					'smsSendType': 'S'  //sms/mms 발송유형
-					//, 'buttonType': ''  //RCS 버튼 타입 (U: url입력, C:복사값입력, T:전화번호입력, S:날짜입력)
 				}
 			}
 		}
@@ -2706,13 +2098,6 @@ export default {
 			rcs95ImgLimitSize : 1,
 			rcs9CardCount: 3,					// rcs탭 캐러셀 Short 카드탭 갯수  //카드탭은 갯수만큼 service단에서 배열로 저장되어야 한다.
 
-			button90Flag: false,				//버튼 추가 여부
-			button91Flag: false,
-			button92Flag: false,
-			button93Flag: false,
-			button94Flag: false,
-			button95Flag: false,
-
 			rcs100ImgMngOpen : false,	/* RCS 캐러셀 TALL 카드1 이미지 */
 			rcs100ImgUploadOpen : false,
 			rcs100UseCh : 'RCS',
@@ -2738,13 +2123,6 @@ export default {
 			rcs105UseCh : 'RCS',
 			rcs105ImgLimitSize : 1,
 			rcs10CardCount: 3,				// RCS탭 캐러셀 TALL 카드탭 갯수  //카드탭은 갯수만큼 service단에서 배열로 저장되어야 한다.
-
-			button100Flag: false,				//버튼 추가 여부
-			button101Flag: false,
-			button102Flag: false,
-			button103Flag: false,
-			button104Flag: false,
-			button105Flag: false,
 
 			rcsShortImgMngOpen : false,	/* RCS 세로형 SHORT 이미지 */
 			rcsShortImgUploadOpen : false,
@@ -2803,26 +2181,22 @@ export default {
 			buttonLMSFlag: false,
 			buttonShortFlag: false,
 			buttonTallFlag: false,
+			button91Flag: false,				//버튼 추가 여부
+			button92Flag: false,
+			button93Flag: false,
+			button94Flag: false,
+			button95Flag: false,
+			button96Flag: false,
+			button101Flag: false,				//버튼 추가 여부
+			button102Flag: false,
+			button103Flag: false,
+			button104Flag: false,
+			button105Flag: false,
+			button106Flag: false,
+
 			buttonFriendTalkFlag: false,
 			buttonAlimTalkFlag: false,
 
-			rcsSmsStartDate:["rcsSmsFirstStartDate","rcsSmsSecondStartDate"],
-			smsButtonsMaxLen: 0, 		//start, endDate의 ID값을 유일하게 잡기위해 설정
-			lmsButtonsMaxLen: 0, 		//start, endDate의 ID값을 유일하게 잡기위해 설정
-			rcs90ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-			rcs91ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-			rcs92ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-			rcs93ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-			rcs94ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-			rcs95ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-			rcs100ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-			rcs101ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-			rcs102ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-			rcs103ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-			rcs104ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-			rcs105ButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
-			rcsShortButtonsMaxLen: 0, //start, endDate의 ID값을 유일하게 잡기위해 설정
-			rcsTallButtonsMaxLen: 0, 	//start, endDate의 ID값을 유일하게 잡기위해 설정
 			friendTalkButtonsMaxLen: 0, //start, endDate의 ID값을 유일하게 잡기위해 설정
 
 			useYn : 'Y',
@@ -2855,9 +2229,17 @@ export default {
 			} else if(val === 6) {//rcsTemplateTable === 6 TALL
 
 			} else if(val === 9) {//rcsTemplateTable === 9 캐러셀 SHORT
+				if (this.rowData.rcsCShortImgInfoList.length == 0) {
+					this.rowData.rcsCShortImgInfoList.push({'fileId':'', 'imgUrl':'', 'rcsTitle':'', 'rcsContent':'', 'rcsButtons':[]});
+					this.rowData.rcsCShortImgInfoList.push({'fileId':'', 'imgUrl':'', 'rcsTitle':'', 'rcsContent':'', 'rcsButtons':[]});
+					this.rowData.rcsCShortImgInfoList.push({'fileId':'', 'imgUrl':'', 'rcsTitle':'', 'rcsContent':'', 'rcsButtons':[]});
+				}
 				setTimeout(function() {
 					vm.fnSetSlider();
+					jQuery("#card91").attr("class", "tab-pane active");
 				}, 100);
+				jQuery("#slide-counter .current").text(1);
+				jQuery("#slide-counter .total").text(this.rcs9CardCount);
 			} else if(val === 10) {//rcsTemplateTable === 10 캐러셀 TALL
 				if (this.rowData.rcsCTallImgInfoList.length == 0) {
 					this.rowData.rcsCTallImgInfoList.push({'fileId':'', 'imgUrl':'', 'rcsTitle':'', 'rcsContent':'', 'rcsButtons':[]});
@@ -2870,6 +2252,25 @@ export default {
 				}, 100);
 				jQuery("#slide-counter .current").text(1);
 				jQuery("#slide-counter .total").text(this.rcs10CardCount);
+			}
+		},
+		channelTab(val){
+			var vm = this;
+			if (val === 0) {//channelTab === 0 PUSH
+			} else if(val === 1) {//channelTab === 1 RCS
+				if (this.rcsTemplateTable == 9) {
+					setTimeout(function() {
+						slider.reloadSlider();
+					}, 100);
+					jQuery("#slide-counter .total").text(this.rcs9CardCount);
+				} else if (this.rcsTemplateTable == 10) {
+					setTimeout(function() {
+						slider.reloadSlider();
+					}, 100);
+					jQuery("#slide-counter .total").text(this.rcs10CardCount);
+				}
+			} else if(val === 2) {//channelTab === 2 KAKAO
+			} else if(val === 3) {//channelTab === 3 SMS/MMS
 			}
 		},
 		rowData: {
@@ -3081,6 +2482,54 @@ export default {
 				this.rcsCallbackList = [];
 			}
 		},
+		// RCS 캐러셀(short) 카드개수 변경 이벤트
+		fnChgCShortCardCount(rcs9CardCount) {
+			if (rcs9CardCount == 3) {
+				if (this.rowData.rcsCShortImgInfoList.length == 4) {
+					this.rowData.rcsCShortImgInfoList.splice(3, 1);
+				} else if (this.rowData.rcsCShortImgInfoList.length == 5) {
+					this.rowData.rcsCShortImgInfoList.splice(4, 1);
+					this.rowData.rcsCShortImgInfoList.splice(3, 1);
+				} else if (this.rowData.rcsCShortImgInfoList.length == 6) {
+					this.rowData.rcsCShortImgInfoList.splice(5, 1);
+					this.rowData.rcsCShortImgInfoList.splice(4, 1);
+					this.rowData.rcsCShortImgInfoList.splice(3, 1);
+				}
+			} else if (rcs9CardCount == 4) {
+				if (this.rowData.rcsCShortImgInfoList.length == 3) {
+					this.rowData.rcsCShortImgInfoList.push({'fileId':'', 'imgUrl':'', 'rcsTitle':'', 'rcsContent':'', 'rcsButtons':[]});
+				} else if (this.rowData.rcsCShortImgInfoList.length == 5) {
+					this.rowData.rcsCShortImgInfoList.splice(4, 1);
+				} else if (this.rowData.rcsCShortImgInfoList.length == 6) {
+					this.rowData.rcsCShortImgInfoList.splice(5, 1);
+					this.rowData.rcsCShortImgInfoList.splice(4, 1);
+				}
+			} else if (rcs9CardCount == 5) {
+				if (this.rowData.rcsCShortImgInfoList.length == 3) {
+					this.rowData.rcsCShortImgInfoList.push({'fileId':'', 'imgUrl':'', 'rcsTitle':'', 'rcsContent':'', 'rcsButtons':[]});
+					this.rowData.rcsCShortImgInfoList.push({'fileId':'', 'imgUrl':'', 'rcsTitle':'', 'rcsContent':'', 'rcsButtons':[]});
+				} else if (this.rowData.rcsCShortImgInfoList.length == 4) {
+					this.rowData.rcsCShortImgInfoList.push({'fileId':'', 'imgUrl':'', 'rcsTitle':'', 'rcsContent':'', 'rcsButtons':[]});
+				} else if (this.rowData.rcsCShortImgInfoList.length == 6) {
+					this.rowData.rcsCShortImgInfoList.splice(5, 1);
+				}
+			} else if (rcs9CardCount == 6) {
+				if (this.rowData.rcsCShortImgInfoList.length == 3) {
+					this.rowData.rcsCShortImgInfoList.push({'fileId':'', 'imgUrl':'', 'rcsTitle':'', 'rcsContent':'', 'rcsButtons':[]});
+					this.rowData.rcsCShortImgInfoList.push({'fileId':'', 'imgUrl':'', 'rcsTitle':'', 'rcsContent':'', 'rcsButtons':[]});
+					this.rowData.rcsCShortImgInfoList.push({'fileId':'', 'imgUrl':'', 'rcsTitle':'', 'rcsContent':'', 'rcsButtons':[]});
+				} else if (this.rowData.rcsCShortImgInfoList.length == 4) {
+					this.rowData.rcsCShortImgInfoList.push({'fileId':'', 'imgUrl':'', 'rcsTitle':'', 'rcsContent':'', 'rcsButtons':[]});
+					this.rowData.rcsCShortImgInfoList.push({'fileId':'', 'imgUrl':'', 'rcsTitle':'', 'rcsContent':'', 'rcsButtons':[]});
+				} else if (this.rowData.rcsCShortImgInfoList.length == 5) {
+					this.rowData.rcsCShortImgInfoList.push({'fileId':'', 'imgUrl':'', 'rcsTitle':'', 'rcsContent':'', 'rcsButtons':[]});
+				}
+			}
+			setTimeout(function() {
+				slider.reloadSlider();
+			}, 100);
+			jQuery("#slide-counter .total").text(this.rcs9CardCount);
+		},
 		// RCS 캐러셀(Tall) 카드개수 변경 이벤트
 		fnChgCTallCardCount(rcs10CardCount) {
 			if (rcs10CardCount == 3) {
@@ -3127,7 +2576,7 @@ export default {
 			setTimeout(function() {
 				slider.reloadSlider();
 			}, 100);
-			jQuery("#slide-counter .total").text(rcs10CardCount);
+			jQuery("#slide-counter .total").text(this.rcs10CardCount);
 		},
 		fnPushGetAppId(){
 			var params = {};
@@ -3586,68 +3035,64 @@ export default {
 							return false;
 						}
 						if (!this.rowData.callback) { 
-							confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 템플릿 발신번호를 선택해주세요.');
+							confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 발신번호를 선택해주세요.');
 							return false;
 						}
 						if (this.rcs9CardCount >= 3) {
-							if (!this.rowData.rcs0Title) { 
+							if (!this.rowData.rcsCShortImgInfoList[0].rcsTitle) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드1의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcs0Content) { 
+							if (!this.rowData.rcsCShortImgInfoList[0].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드1의 내용을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.callback) { 
-								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 발신번호를 선택해주세요.');
-								return false;
-							}
-							if (!this.rowData.rcs1Title) { 
+							if (!this.rowData.rcsCShortImgInfoList[1].rcsTitle) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드2의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcs1Content) { 
+							if (!this.rowData.rcsCShortImgInfoList[1].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드2의 내용을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcs2Title) { 
+							if (!this.rowData.rcsCShortImgInfoList[2].rcsTitle) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드3의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcs2Content) { 
+							if (!this.rowData.rcsCShortImgInfoList[2].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드3의 내용을 입력해주세요.');
 								return false;
 							}
 						}
 
 						if (this.rcs9CardCount >= 4) {
-							if (!this.rowData.rcs3Title) { 
+							if (!this.rowData.rcsCShortImgInfoList[3].rcsTitle) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드4의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcs3Content) { 
+							if (!this.rowData.rcsCShortImgInfoList[3].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드4의 내용을 입력해주세요.');
 								return false;
 							}
 						}
 
 						if (this.rcs9CardCount >= 5) {
-							if (!this.rowData.rcs4Title) {
+							if (!this.rowData.rcsCShortImgInfoList[4].rcsTitle) {
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드5의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcs4Content) { 
+							if (!this.rowData.rcsCShortImgInfoList[4].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드5의 내용을 입력해주세요.');
 								return false;
 							}
 						}
 
 						if (this.rcs9CardCount >= 6) {
-							if (!this.rowData.rcs5Title) {
+							if (!this.rowData.rcsCShortImgInfoList[5].rcsTitle) {
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드6의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcs5Content) { 
+							if (!this.rowData.rcsCShortImgInfoList[5].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드6의 내용을 입력해주세요.');
 								return false;
 							}
@@ -4076,60 +3521,48 @@ export default {
 							this.rowData.rcs5Title					= this.$gfnCommonUtils.unescapeXss(rtnData.rcs5Title);
 							this.rowData.rcs5Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs5Content);
 
-							if (rtnData.rcs0Media != '' && rtnData.rcs0MediaUrl != '') {
-								this.rowData.rcs90ImgInfoList.push({'fileId':rtnData.rcs0Media, 'imgUrl':rtnData.rcs0MediaUrl});
-							}
-							if (rtnData.rcs1Media != '' && rtnData.rcs1MediaUrl != '') {
-								this.rowData.rcs91ImgInfoList.push({'fileId':rtnData.rcs1Media, 'imgUrl':rtnData.rcs1MediaUrl});
-							}
-							if (rtnData.rcs2Media != '' && rtnData.rcs2MediaUrl != '') {
-								this.rowData.rcs92ImgInfoList.push({'fileId':rtnData.rcs2Media, 'imgUrl':rtnData.rcs2MediaUrl});
-							}
-							if (rtnData.rcs3Media != '' && rtnData.rcs3MediaUrl != '') {
-								this.rowData.rcs93ImgInfoList.push({'fileId':rtnData.rcs3Media, 'imgUrl':rtnData.rcs3MediaUrl});
-							}
-							if (rtnData.rcs4Media != '' && rtnData.rcs4MediaUrl != '') {
-								this.rowData.rcs94ImgInfoList.push({'fileId':rtnData.rcs4Media, 'imgUrl':rtnData.rcs4MediaUrl});
-							}
-							if (rtnData.rcs5Media != '' && rtnData.rcs5MediaUrl != '') {
-								this.rowData.rcs95ImgInfoList.push({'fileId':rtnData.rcs5Media, 'imgUrl':rtnData.rcs5MediaUrl});
-							}
-
 							if (!this.isEmpty(rtnData.rcsButton0Data)) {
 								if (rtnData.rcsButton0Data.length > 0) {
-									this.button90Flag = true;
-									this.rowData.rcs90Buttons	= rtnData.rcsButton0Data;
+									this.button91Flag = true;
 								}
 							}
 							if (!this.isEmpty(rtnData.rcsButton1Data)) {
 								if (rtnData.rcsButton1Data.length > 0) {
-									this.button91Flag = true;
-									this.rowData.rcs91Buttons	= rtnData.rcsButton1Data;
+									this.button92Flag = true;
 								}
 							}
 							if (!this.isEmpty(rtnData.rcsButton2Data)) {
 								if (rtnData.rcsButton2Data.length > 0) {
-									this.button92Flag = true;
-									this.rowData.rcs92Buttons	= rtnData.rcsButton2Data;
+									this.button93Flag = true;
 								}
 							}
 							if (!this.isEmpty(rtnData.rcsButton3Data)) {
 								if (rtnData.rcsButton3Data.length > 0) {
-									this.button93Flag = true;
-									this.rowData.rcs93Buttons	= rtnData.rcsButton3Data;
+									this.button94Flag = true;
 								}
 							}
 							if (!this.isEmpty(rtnData.rcsButton4Data)) {
 								if (rtnData.rcsButton4Data.length > 0) {
-									this.button94Flag = true;
-									this.rowData.rcs94Buttons	= rtnData.rcsButton4Data;
+									this.button95Flag = true;
 								}
 							}
 							if (!this.isEmpty(rtnData.rcsButton5Data)) {
 								if (rtnData.rcsButton5Data.length > 0) {
-									this.button95Flag = true;
-									this.rowData.rcs95Buttons	= rtnData.rcsButton5Data;
+									this.button96Flag = true;
 								}
+							}
+
+							this.rowData.rcsCShortImgInfoList.push({'fileId':rtnData.rcs0Media, 'imgUrl':rtnData.rcs0MediaUrl, 'rcsTitle':this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Title), 'rcsContent':this.$gfnCommonUtils.unescapeXss(rtnData.rcs0Content),  'rcsButtons':rtnData.rcsButton0Data});
+							this.rowData.rcsCShortImgInfoList.push({'fileId':rtnData.rcs1Media, 'imgUrl':rtnData.rcs1MediaUrl, 'rcsTitle':this.$gfnCommonUtils.unescapeXss(rtnData.rcs1Title), 'rcsContent':this.$gfnCommonUtils.unescapeXss(rtnData.rcs1Content),  'rcsButtons':rtnData.rcsButton1Data});
+							this.rowData.rcsCShortImgInfoList.push({'fileId':rtnData.rcs2Media, 'imgUrl':rtnData.rcs2MediaUrl, 'rcsTitle':this.$gfnCommonUtils.unescapeXss(rtnData.rcs2Title), 'rcsContent':this.$gfnCommonUtils.unescapeXss(rtnData.rcs2Content),  'rcsButtons':rtnData.rcsButton2Data});
+							if (rtnData.rcsCardCount == 4 || rtnData.rcsCardCount == 5 || rtnData.rcsCardCount == 6) {
+								this.rowData.rcsCShortImgInfoList.push({'fileId':rtnData.rcs3Media, 'imgUrl':rtnData.rcs3MediaUrl, 'rcsTitle':this.$gfnCommonUtils.unescapeXss(rtnData.rcs3Title), 'rcsContent':this.$gfnCommonUtils.unescapeXss(rtnData.rcs3Content),  'rcsButtons':rtnData.rcsButton3Data});
+							}
+							if (rtnData.rcsCardCount == 5 || rtnData.rcsCardCount == 6) {
+								this.rowData.rcsCShortImgInfoList.push({'fileId':rtnData.rcs4Media, 'imgUrl':rtnData.rcs4MediaUrl, 'rcsTitle':this.$gfnCommonUtils.unescapeXss(rtnData.rcs4Title), 'rcsContent':this.$gfnCommonUtils.unescapeXss(rtnData.rcs4Content),  'rcsButtons':rtnData.rcsButton4Data});
+							}
+							if (rtnData.rcsCardCount == 6) {
+								this.rowData.rcsCShortImgInfoList.push({'fileId':rtnData.rcs5Media, 'imgUrl':rtnData.rcs5MediaUrl, 'rcsTitle':this.$gfnCommonUtils.unescapeXss(rtnData.rcs5Title), 'rcsContent':this.$gfnCommonUtils.unescapeXss(rtnData.rcs5Content),  'rcsButtons':rtnData.rcsButton5Data});
 							}
 						}
 	
@@ -4153,53 +3586,34 @@ export default {
 							this.rowData.rcs5Title					= this.$gfnCommonUtils.unescapeXss(rtnData.rcs5Title);
 							this.rowData.rcs5Content			= this.$gfnCommonUtils.unescapeXss(rtnData.rcs5Content);
 
-							if (rtnData.rcs0Media != '' && rtnData.rcs0MediaUrl != '') {
-								this.rowData.rcs100ImgInfoList.push({'fileId':rtnData.rcs0Media, 'imgUrl':rtnData.rcs0MediaUrl});
-							}
-							if (rtnData.rcs1Media != '' && rtnData.rcs1MediaUrl != '') {
-								this.rowData.rcs101ImgInfoList.push({'fileId':rtnData.rcs1Media, 'imgUrl':rtnData.rcs1MediaUrl});
-							}
-							if (rtnData.rcs2Media != '' && rtnData.rcs2MediaUrl != '') {
-								this.rowData.rcs102ImgInfoList.push({'fileId':rtnData.rcs2Media, 'imgUrl':rtnData.rcs2MediaUrl});
-							}
-							if (rtnData.rcs3Media != '' && rtnData.rcs3MediaUrl != '') {
-								this.rowData.rcs103ImgInfoList.push({'fileId':rtnData.rcs3Media, 'imgUrl':rtnData.rcs3MediaUrl});
-							}
-							if (rtnData.rcs4Media != '' && rtnData.rcs4MediaUrl != '') {
-								this.rowData.rcs104ImgInfoList.push({'fileId':rtnData.rcs4Media, 'imgUrl':rtnData.rcs4MediaUrl});
-							}
-							if (rtnData.rcs5Media != '' && rtnData.rcs5MediaUrl != '') {
-								this.rowData.rcs105ImgInfoList.push({'fileId':rtnData.rcs5Media, 'imgUrl':rtnData.rcs5MediaUrl});
-							}
-
 							if (!this.isEmpty(rtnData.rcsButton0Data)) {
 								if (rtnData.rcsButton0Data.length > 0) {
-									this.button100Flag = true;
+									this.button101Flag = true;
 								}
 							}
 							if (!this.isEmpty(rtnData.rcsButton1Data)) {
 								if (rtnData.rcsButton1Data.length > 0) {
-									this.button101Flag = true;
+									this.button102Flag = true;
 								}
 							}
 							if (!this.isEmpty(rtnData.rcsButton2Data)) {
 								if (rtnData.rcsButton2Data.length > 0) {
-									this.button102Flag = true;
+									this.button103Flag = true;
 								}
 							}
 							if (!this.isEmpty(rtnData.rcsButton3Data)) {
 								if (rtnData.rcsButton3Data.length > 0) {
-									this.button103Flag = true;
+									this.button104Flag = true;
 								}
 							}
 							if (!this.isEmpty(rtnData.rcsButton4Data)) {
 								if (rtnData.rcsButton4Data.length > 0) {
-									this.button104Flag = true;
+									this.button105Flag = true;
 								}
 							}
 							if (!this.isEmpty(rtnData.rcsButton5Data)) {
 								if (rtnData.rcsButton5Data.length > 0) {
-									this.button105Flag = true;
+									this.button106Flag = true;
 								}
 							}
 
@@ -4215,7 +3629,6 @@ export default {
 							if (rtnData.rcsCardCount == 6) {
 								this.rowData.rcsCTallImgInfoList.push({'fileId':rtnData.rcs5Media, 'imgUrl':rtnData.rcs5MediaUrl, 'rcsTitle':this.$gfnCommonUtils.unescapeXss(rtnData.rcs5Title), 'rcsContent':this.$gfnCommonUtils.unescapeXss(rtnData.rcs5Content),  'rcsButtons':rtnData.rcsButton5Data});
 							}
-							console.log(this.rowData.rcsCTallImgInfoList);
 						}
 	
 						// FRIENDTALK DATA SET
@@ -4362,87 +3775,87 @@ export default {
 					this.rowData.rcsTallButtons.push(temp);
 				}
 			} else if (rcsType == 'CSHORT_TAB1') {
-				if (this.rowData.rcs90Buttons.length >= 2) {
-					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
-				} else {
-					this.button90Flag = true;
-					this.rowData.rcs90Buttons.push(temp);
-				}
-			} else if (rcsType == 'CSHORT_TAB2') {
-				if (this.rowData.rcs91Buttons.length >= 2) {
+				if (this.rowData.rcsCShortImgInfoList[0].rcsButtons.length >= 2) {
 					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button91Flag = true;
-					this.rowData.rcs91Buttons.push(temp);
+					this.rowData.rcsCShortImgInfoList[0].rcsButtons.push(temp);
 				}
-			} else if (rcsType == 'CSHORT_TAB3') {
-				if (this.rowData.rcs92Buttons.length >= 2) {
+			} else if (rcsType == 'CSHORT_TAB2') {
+				if (this.rowData.rcsCShortImgInfoList[1].rcsButtons.length >= 2) {
 					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button92Flag = true;
-					this.rowData.rcs92Buttons.push(temp);
+					this.rowData.rcsCShortImgInfoList[1].rcsButtons.push(temp);
 				}
-			} else if (rcsType == 'CSHORT_TAB4') {
-				if (this.rowData.rcs93Buttons.length >= 2) {
+			} else if (rcsType == 'CSHORT_TAB3') {
+				if (this.rowData.rcsCShortImgInfoList[2].rcsButtons.length >= 2) {
 					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button93Flag = true;
-					this.rowData.rcs93Buttons.push(temp);
+					this.rowData.rcsCShortImgInfoList[2].rcsButtons.push(temp);
 				}
-			} else if (rcsType == 'CSHORT_TAB5') {
-				if (this.rowData.rcs94Buttons.length >= 2) {
+			} else if (rcsType == 'CSHORT_TAB4') {
+				if (this.rowData.rcsCShortImgInfoList[3].rcsButtons.length >= 2) {
 					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button94Flag = true;
-					this.rowData.rcs94Buttons.push(temp);
+					this.rowData.rcsCShortImgInfoList[3].rcsButtons.push(temp);
 				}
-			} else if (rcsType == 'CSHORT_TAB6') {
-				if (this.rowData.rcs95Buttons.length >= 2) {
+			} else if (rcsType == 'CSHORT_TAB5') {
+				if (this.rowData.rcsCShortImgInfoList[4].rcsButtons.length >= 2) {
 					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
 					this.button95Flag = true;
-					this.rowData.rcs95Buttons.push(temp);
+					this.rowData.rcsCShortImgInfoList[4].rcsButtons.push(temp);
+				}
+			} else if (rcsType == 'CSHORT_TAB6') {
+				if (this.rowData.rcsCShortImgInfoList[5].rcsButtons.length >= 2) {
+					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+				} else {
+					this.button96Flag = true;
+					this.rowData.rcsCShortImgInfoList[5].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB1') {
 				if (this.rowData.rcsCTallImgInfoList[0].rcsButtons.length >= 2) {
 					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
-					this.button100Flag = true;
+					this.button101Flag = true;
 					this.rowData.rcsCTallImgInfoList[0].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB2') {
 				if (this.rowData.rcsCTallImgInfoList[1].rcsButtons.length >= 2) {
 					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
-					this.button101Flag = true;
+					this.button102Flag = true;
 					this.rowData.rcsCTallImgInfoList[1].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB3') {
 				if (this.rowData.rcsCTallImgInfoList[2].rcsButtons.length >= 2) {
 					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
-					this.button102Flag = true;
+					this.button103Flag = true;
 					this.rowData.rcsCTallImgInfoList[2].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB4') {
 				if (this.rowData.rcsCTallImgInfoList[3].rcsButtons.length >= 2) {
 					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
-					this.button103Flag = true;
+					this.button104Flag = true;
 					this.rowData.rcsCTallImgInfoList[3].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB5') {
 				if (this.rowData.rcsCTallImgInfoList[4].rcsButtons.length >= 2) {
 					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
-					this.button104Flag = true;
+					this.button105Flag = true;
 					this.rowData.rcsCTallImgInfoList[4].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB6') {
 				if (this.rowData.rcsCTallImgInfoList[5].rcsButtons.length >= 2) {
 					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
 				} else {
-					this.button105Flag = true;
+					this.button106Flag = true;
 					this.rowData.rcsCTallImgInfoList[5].rcsButtons.push(temp);
 				}
 			}
@@ -4458,17 +3871,17 @@ export default {
 			} else if (rcsType == 'TALL') {
 				this.rowData.rcsTallButtons.splice(row,1);
 			} else if (rcsType == 'CSHORT_TAB1') {
-				this.rowData.rcs90Buttons.splice(row,1);
+				this.rowData.rcsCShortImgInfoList[0].rcsButtons.splice(row,1);
 			} else if (rcsType == 'CSHORT_TAB2') {
-				this.rowData.rcs91Buttons.splice(row,1);
+				this.rowData.rcsCShortImgInfoList[1].rcsButtons.splice(row,1);
 			} else if (rcsType == 'CSHORT_TAB3') {
-				this.rowData.rcs92Buttons.splice(row,1);
+				this.rowData.rcsCShortImgInfoList[2].rcsButtons.splice(row,1);
 			} else if (rcsType == 'CSHORT_TAB4') {
-				this.rowData.rcs93Buttons.splice(row,1);
+				this.rowData.rcsCShortImgInfoList[3].rcsButtons.splice(row,1);
 			} else if (rcsType == 'CSHORT_TAB5') {
-				this.rowData.rcs94Buttons.splice(row,1);
+				this.rowData.rcsCShortImgInfoList[4].rcsButtons.splice(row,1);
 			} else if (rcsType == 'CSHORT_TAB6') {
-				this.rowData.rcs95Buttons.splice(row,1);
+				this.rowData.rcsCShortImgInfoList[5].rcsButtons.splice(row,1);
 			} else if (rcsType == 'CTALL_TAB1') {
 				this.rowData.rcsCTallImgInfoList[0].rcsButtons.splice(row,1);
 			} else if (rcsType == 'CTALL_TAB2') {
@@ -4503,11 +3916,53 @@ export default {
 				this.rowData.friendTalkButtons.splice(row,1);
 			}
 		},
-		// 통합발송 캐러셀형(카드1) 이미지 추가 팝업 호출
-		fnRcs90OpenImageManagePopUp(){
-			if (this.fnRcs90ImgLimitSize() == false) return;
-			this.$refs.rcs90ImgMng.fnSearch();
-			this.rcs90ImgMngOpen = !this.rcs90ImgMngOpen;
+		fnRcsCarouselShortOpenImageManagePopUp(idx){
+			if (idx == 0) {
+				if (this.fnRcs90ImgLimitSize() == false) return;
+				this.$refs.rcs90ImgMng.fnSearch();
+				this.rcs90ImgMngOpen = !this.rcs90ImgMngOpen;
+			} else if (idx == 1) {
+				if (this.fnRcs91ImgLimitSize() == false) return;
+				this.$refs.rcs91ImgMng.fnSearch();
+				this.rcs91ImgMngOpen = !this.rcs91ImgMngOpen;
+			} else if (idx == 2) {
+				if (this.fnRcs92ImgLimitSize() == false) return;
+				this.$refs.rcs92ImgMng.fnSearch();
+				this.rcs92ImgMngOpen = !this.rcs92ImgMngOpen;
+			} else if (idx == 3) {
+				if (this.fnRcs93ImgLimitSize() == false) return;
+				this.$refs.rcs93ImgMng.fnSearch();
+				this.rcs93ImgMngOpen = !this.rcs93ImgMngOpen;
+			} else if (idx == 4) {
+				if (this.fnRcs94ImgLimitSize() == false) return;
+				this.$refs.rcs94ImgMng.fnSearch();
+				this.rcs94ImgMngOpen = !this.rcs94ImgMngOpen;
+			} else if (idx == 5) {
+				if (this.fnRcs95ImgLimitSize() == false) return;
+				this.$refs.rcs95ImgMng.fnSearch();
+				this.rcs95ImgMngOpen = !this.rcs95ImgMngOpen;
+			}
+		},
+		fnRcsCarouselShortDelImg(idx){
+			if (idx == 0) {
+				this.rowData.rcsCShortImgInfoList[0].fileId = '';
+				this.rowData.rcsCShortImgInfoList[0].imgUrl = '';
+			} else if (idx == 1) {
+				this.rowData.rcsCShortImgInfoList[1].fileId = '';
+				this.rowData.rcsCShortImgInfoList[1].imgUrl = '';
+			} else if (idx == 2) {
+				this.rowData.rcsCShortImgInfoList[2].fileId = '';
+				this.rowData.rcsCShortImgInfoList[2].imgUrl = '';
+			} else if (idx == 3) {
+				this.rowData.rcsCShortImgInfoList[3].fileId = '';
+				this.rowData.rcsCShortImgInfoList[3].imgUrl = '';
+			} else if (idx == 4) {
+				this.rowData.rcsCShortImgInfoList[4].fileId = '';
+				this.rowData.rcsCShortImgInfoList[4].imgUrl = '';
+			} else if (idx == 5) {
+				this.rowData.rcsCShortImgInfoList[5].fileId = '';
+				this.rowData.rcsCShortImgInfoList[5].imgUrl = '';
+			}
 		},
 		fnRcs90CallbackImgInfo(imgInfo){
 			if (this.fnRcs90ImgLimitSize() == false) return;
@@ -4515,33 +3970,14 @@ export default {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
-
-			this.rowData.rcs90ImgInfoList.push(temp);
-			this.fnRcs90DelDuplImgInfo();
-		},
-		fnRcs90DelDuplImgInfo(){
-			const vm = this;
-			this.rowData.rcs90ImgInfoList = this.rowData.rcs90ImgInfoList.filter(function(item, i) {
-				return (
-					vm.rowData.rcs90ImgInfoList.findIndex((item2) => {
-						return item.fileId === item2.fileId;
-					}) === i
-				);
-			});
+			this.rowData.rcsCShortImgInfoList[0].fileId = temp.fileId;
+			this.rowData.rcsCShortImgInfoList[0].imgUrl = temp.imgUrl;
 		},
 		fnRcs90ImgLimitSize(){
-			if (this.rowData.rcs90ImgInfoList != null && this.rowData.rcs90ImgInfoList.length >= this.rcs90ImgLimitSize) {
-				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs90ImgLimitSize +' 개까지 등록 가능합니다.');
+			if (this.rowData.rcsCShortImgInfoList[0].fileId.length > 0 && this.rowData.rcsCShortImgInfoList[0].imgUrl.length > 0) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 1개까지 등록 가능합니다.');
 				return false;
 			}
-		},
-		fnRcs90DelImg(idx){
-			this.rowData.rcs90ImgInfoList.splice(idx, 1);
-		},
-		fnRcs91OpenImageManagePopUp(){
-			if (this.fnRcs91ImgLimitSize() == false) return;
-			this.$refs.rcs91ImgMng.fnSearch();
-			this.rcs91ImgMngOpen = !this.rcs91ImgMngOpen;
 		},
 		fnRcs91CallbackImgInfo(imgInfo){
 			if (this.fnRcs91ImgLimitSize() == false) return;
@@ -4549,32 +3985,14 @@ export default {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
-			this.rowData.rcs91ImgInfoList.push(temp);
-			this.fnRcs91DelDuplImgInfo();
-		},
-		fnRcs91DelDuplImgInfo(){
-			const vm = this;
-			this.rowData.rcs91ImgInfoList = this.rowData.rcs91ImgInfoList.filter(function(item, i) {
-				return (
-					vm.rowData.rcs91ImgInfoList.findIndex((item2) => {
-						return item.fileId === item2.fileId;
-					}) === i
-				);
-			});
+			this.rowData.rcsCShortImgInfoList[1].fileId = temp.fileId;
+			this.rowData.rcsCShortImgInfoList[1].imgUrl = temp.imgUrl;
 		},
 		fnRcs91ImgLimitSize(){
-			if (this.rowData.rcs91ImgInfoList != null && this.rowData.rcs91ImgInfoList.length >= this.rcs91ImgLimitSize) {
-				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs91ImgLimitSize +' 개까지 등록 가능합니다.');
+			if (this.rowData.rcsCShortImgInfoList[1].fileId.length > 0 && this.rowData.rcsCShortImgInfoList[1].imgUrl.length > 0) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 1개까지 등록 가능합니다.');
 				return false;
 			}
-		},
-		fnRcs91DelImg(idx){
-			this.rowData.rcs91ImgInfoList.splice(idx, 1);
-		},
-		fnRcs92OpenImageManagePopUp(){
-			if (this.fnRcs92ImgLimitSize() == false) return;
-			this.$refs.rcs92ImgMng.fnSearch();
-			this.rcs92ImgMngOpen = !this.rcs92ImgMngOpen;
 		},
 		fnRcs92CallbackImgInfo(imgInfo){
 			if (this.fnRcs92ImgLimitSize() == false) return;
@@ -4582,32 +4000,14 @@ export default {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
-			this.rowData.rcs92ImgInfoList.push(temp);
-			this.fnRcs92DelDuplImgInfo();
-		},
-		fnRcs92DelDuplImgInfo(){
-			const vm = this;
-			this.rowData.rcs92ImgInfoList = this.rowData.rcs92ImgInfoList.filter(function(item, i) {
-				return (
-					vm.rowData.rcs92ImgInfoList.findIndex((item2) => {
-						return item.fileId === item2.fileId;
-					}) === i
-				);
-			});
+			this.rowData.rcsCShortImgInfoList[2].fileId = temp.fileId;
+			this.rowData.rcsCShortImgInfoList[2].imgUrl = temp.imgUrl;
 		},
 		fnRcs92ImgLimitSize(){
-			if (this.rowData.rcs92ImgInfoList != null && this.rowData.rcs92ImgInfoList.length >= this.rcs92ImgLimitSize) {
-				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs92ImgLimitSize +' 개까지 등록 가능합니다.');
+			if (this.rowData.rcsCShortImgInfoList[2].fileId.length > 0 && this.rowData.rcsCShortImgInfoList[2].imgUrl.length > 0) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 1개까지 등록 가능합니다.');
 				return false;
 			}
-		},
-		fnRcs92DelImg(idx){
-			this.rowData.rcs92ImgInfoList.splice(idx, 1);
-		},
-		fnRcs93OpenImageManagePopUp(){
-			if (this.fnRcs93ImgLimitSize() == false) return;
-			this.$refs.rcs93ImgMng.fnSearch();
-			this.rcs93ImgMngOpen = !this.rcs93ImgMngOpen;
 		},
 		fnRcs93CallbackImgInfo(imgInfo){
 			if (this.fnRcs93ImgLimitSize() == false) return;
@@ -4615,32 +4015,14 @@ export default {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
-			this.rowData.rcs93ImgInfoList.push(temp);
-			this.fnRcs93DelDuplImgInfo();
-		},
-		fnRcs93DelDuplImgInfo(){
-			const vm = this;
-			this.rowData.rcs93ImgInfoList = this.rowData.rcs93ImgInfoList.filter(function(item, i) {
-				return (
-					vm.rowData.rcs93ImgInfoList.findIndex((item2) => {
-						return item.fileId === item2.fileId;
-					}) === i
-				);
-			});
+			this.rowData.rcsCShortImgInfoList[3].fileId = temp.fileId;
+			this.rowData.rcsCShortImgInfoList[3].imgUrl = temp.imgUrl;
 		},
 		fnRcs93ImgLimitSize(){
-			if (this.rowData.rcs93ImgInfoList != null && this.rowData.rcs93ImgInfoList.length >= this.rcs93ImgLimitSize) {
-				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs93ImgLimitSize +' 개까지 등록 가능합니다.');
+			if (this.rowData.rcsCShortImgInfoList[3].fileId.length > 0 && this.rowData.rcsCShortImgInfoList[3].imgUrl.length > 0) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 1개까지 등록 가능합니다.');
 				return false;
 			}
-		},
-		fnRcs93DelImg(idx){
-			this.rowData.rcs93ImgInfoList.splice(idx, 1);
-		},
-		fnRcs94OpenImageManagePopUp(){
-			if (this.fnRcs94ImgLimitSize() == false) return;
-			this.$refs.rcs94ImgMng.fnSearch();
-			this.rcs94ImgMngOpen = !this.rcs94ImgMngOpen;
 		},
 		fnRcs94CallbackImgInfo(imgInfo){
 			if (this.fnRcs94ImgLimitSize() == false) return;
@@ -4648,32 +4030,14 @@ export default {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
-			this.rowData.rcs94ImgInfoList.push(temp);
-			this.fnRcs94DelDuplImgInfo();
-		},
-		fnRcs94DelDuplImgInfo(){
-			const vm = this;
-			this.rowData.rcs94ImgInfoList = this.rowData.rcs94ImgInfoList.filter(function(item, i) {
-				return (
-					vm.rowData.rcs94ImgInfoList.findIndex((item2) => {
-						return item.fileId === item2.fileId;
-					}) === i
-				);
-			});
+			this.rowData.rcsCShortImgInfoList[4].fileId = temp.fileId;
+			this.rowData.rcsCShortImgInfoList[4].imgUrl = temp.imgUrl;
 		},
 		fnRcs94ImgLimitSize(){
-			if (this.rowData.rcs94ImgInfoList != null && this.rowData.rcs94ImgInfoList.length >= this.rcs94ImgLimitSize) {
-				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs94ImgLimitSize +' 개까지 등록 가능합니다.');
+			if (this.rowData.rcsCShortImgInfoList[4].fileId.length > 0 && this.rowData.rcsCShortImgInfoList[4].imgUrl.length > 0) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 1개까지 등록 가능합니다.');
 				return false;
 			}
-		},
-		fnRcs94DelImg(idx){
-			this.rowData.rcs94ImgInfoList.splice(idx, 1);
-		},
-		fnRcs95OpenImageManagePopUp(){
-			if (this.fnRcs95ImgLimitSize() == false) return;
-			this.$refs.rcs95ImgMng.fnSearch();
-			this.rcs95ImgMngOpen = !this.rcs95ImgMngOpen;
 		},
 		fnRcs95CallbackImgInfo(imgInfo){
 			if (this.fnRcs95ImgLimitSize() == false) return;
@@ -4681,27 +4045,14 @@ export default {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
-			this.rowData.rcs95ImgInfoList.push(temp);
-			this.fnRcs95DelDuplImgInfo();
-		},
-		fnRcs95DelDuplImgInfo(){
-			const vm = this;
-			this.rowData.rcs95ImgInfoList = this.rowData.rcs95ImgInfoList.filter(function(item, i) {
-				return (
-					vm.rowData.rcs95ImgInfoList.findIndex((item2) => {
-						return item.fileId === item2.fileId;
-					}) === i
-				);
-			});
+			this.rowData.rcsCShortImgInfoList[5].fileId = temp.fileId;
+			this.rowData.rcsCShortImgInfoList[5].imgUrl = temp.imgUrl;
 		},
 		fnRcs95ImgLimitSize(){
-			if (this.rowData.rcs95ImgInfoList != null && this.rowData.rcs95ImgInfoList.length >= this.rcs95ImgLimitSize) {
-				confirm.fnAlert(this.componentsTitle, '이미지는 최대 ' + this.rcs95ImgLimitSize +' 개까지 등록 가능합니다.');
+			if (this.rowData.rcsCShortImgInfoList[5].fileId.length > 0 && this.rowData.rcsCShortImgInfoList[5].imgUrl.length > 0) {
+				confirm.fnAlert(this.componentsTitle, '이미지는 최대 1개까지 등록 가능합니다.');
 				return false;
 			}
-		},
-		fnRcs95DelImg(idx){
-			this.rowData.rcs95ImgInfoList.splice(idx, 1);
 		},
 		fnRcsCarouselTallOpenImageManagePopUp(idx){
 			if (idx == 0) {
@@ -4732,27 +4083,21 @@ export default {
 		},
 		fnRcsCarouselTallDelImg(idx){
 			if (idx == 0) {
-				this.rowData.rcs100ImgInfoList.splice(idx, 1);
 				this.rowData.rcsCTallImgInfoList[0].fileId = '';
 				this.rowData.rcsCTallImgInfoList[0].imgUrl = '';
 			} else if (idx == 1) {
-				this.rowData.rcs101ImgInfoList.splice(idx, 1);
 				this.rowData.rcsCTallImgInfoList[1].fileId = '';
 				this.rowData.rcsCTallImgInfoList[1].imgUrl = '';
 			} else if (idx == 2) {
-				this.rowData.rcs102ImgInfoList.splice(idx, 1);
 				this.rowData.rcsCTallImgInfoList[2].fileId = '';
 				this.rowData.rcsCTallImgInfoList[2].imgUrl = '';
 			} else if (idx == 3) {
-				this.rowData.rcs103ImgInfoList.splice(idx, 1);
 				this.rowData.rcsCTallImgInfoList[3].fileId = '';
 				this.rowData.rcsCTallImgInfoList[3].imgUrl = '';
 			} else if (idx == 4) {
-				this.rowData.rcs104ImgInfoList.splice(idx, 1);
 				this.rowData.rcsCTallImgInfoList[4].fileId = '';
 				this.rowData.rcsCTallImgInfoList[4].imgUrl = '';
 			} else if (idx == 5) {
-				this.rowData.rcs105ImgInfoList.splice(idx, 1);
 				this.rowData.rcsCTallImgInfoList[5].fileId = '';
 				this.rowData.rcsCTallImgInfoList[5].imgUrl = '';
 			}
@@ -4763,20 +4108,8 @@ export default {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
-			this.rowData.rcs100ImgInfoList.push(temp);
 			this.rowData.rcsCTallImgInfoList[0].fileId = temp.fileId;
 			this.rowData.rcsCTallImgInfoList[0].imgUrl = temp.imgUrl;
-			this.fnRcs100DelDuplImgInfo();
-		},
-		fnRcs100DelDuplImgInfo(){
-			const vm = this;
-			this.rowData.rcs100ImgInfoList = this.rowData.rcs100ImgInfoList.filter(function(item, i) {
-				return (
-					vm.rowData.rcs100ImgInfoList.findIndex((item2) => {
-						return item.fileId === item2.fileId;
-					}) === i
-				);
-			});
 		},
 		fnRcs100ImgLimitSize(){
 			if (this.rowData.rcsCTallImgInfoList[0].fileId.length > 0 && this.rowData.rcsCTallImgInfoList[0].imgUrl.length > 0) {
@@ -4790,20 +4123,8 @@ export default {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
-			this.rowData.rcs101ImgInfoList.push(temp);
 			this.rowData.rcsCTallImgInfoList[1].fileId = temp.fileId;
 			this.rowData.rcsCTallImgInfoList[1].imgUrl = temp.imgUrl;
-			this.fnRcs101DelDuplImgInfo();
-		},
-		fnRcs101DelDuplImgInfo(){
-			const vm = this;
-			this.rowData.rcs101ImgInfoList = this.rowData.rcs101ImgInfoList.filter(function(item, i) {
-				return (
-					vm.rowData.rcs101ImgInfoList.findIndex((item2) => {
-						return item.fileId === item2.fileId;
-					}) === i
-				);
-			});
 		},
 		fnRcs101ImgLimitSize(){
 			if (this.rowData.rcsCTallImgInfoList[1].fileId.length > 0 && this.rowData.rcsCTallImgInfoList[1].imgUrl.length > 0) {
@@ -4817,20 +4138,8 @@ export default {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
-			this.rowData.rcs102ImgInfoList.push(temp);
 			this.rowData.rcsCTallImgInfoList[2].fileId = temp.fileId;
 			this.rowData.rcsCTallImgInfoList[2].imgUrl = temp.imgUrl;
-			this.fnRcs102DelDuplImgInfo();
-		},
-		fnRcs102DelDuplImgInfo(){
-			const vm = this;
-			this.rowData.rcs102ImgInfoList = this.rowData.rcs102ImgInfoList.filter(function(item, i) {
-				return (
-					vm.rowData.rcs102ImgInfoList.findIndex((item2) => {
-						return item.fileId === item2.fileId;
-					}) === i
-				);
-			});
 		},
 		fnRcs102ImgLimitSize(){
 			if (this.rowData.rcsCTallImgInfoList[2].fileId.length > 0 && this.rowData.rcsCTallImgInfoList[2].imgUrl.length > 0) {
@@ -4844,20 +4153,8 @@ export default {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
-			this.rowData.rcs103ImgInfoList.push(temp);
 			this.rowData.rcsCTallImgInfoList[3].fileId = temp.fileId;
 			this.rowData.rcsCTallImgInfoList[3].imgUrl = temp.imgUrl;
-			this.fnRcs103DelDuplImgInfo();
-		},
-		fnRcs103DelDuplImgInfo(){
-			const vm = this;
-			this.rowData.rcs103ImgInfoList = this.rowData.rcs103ImgInfoList.filter(function(item, i) {
-				return (
-					vm.rowData.rcs103ImgInfoList.findIndex((item2) => {
-						return item.fileId === item2.fileId;
-					}) === i
-				);
-			});
 		},
 		fnRcs103ImgLimitSize(){
 			if (this.rowData.rcsCTallImgInfoList[3].fileId.length > 0 && this.rowData.rcsCTallImgInfoList[3].imgUrl.length > 0) {
@@ -4871,20 +4168,8 @@ export default {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
-			this.rowData.rcs104ImgInfoList.push(temp);
 			this.rowData.rcsCTallImgInfoList[4].fileId = temp.fileId;
 			this.rowData.rcsCTallImgInfoList[4].imgUrl = temp.imgUrl;
-			this.fnRcs104DelDuplImgInfo();
-		},
-		fnRcs104DelDuplImgInfo(){
-			const vm = this;
-			this.rowData.rcs104ImgInfoList = this.rowData.rcs104ImgInfoList.filter(function(item, i) {
-				return (
-					vm.rowData.rcs104ImgInfoList.findIndex((item2) => {
-						return item.fileId === item2.fileId;
-					}) === i
-				);
-			});
 		},
 		fnRcs104ImgLimitSize(){
 			if (this.rowData.rcsCTallImgInfoList[4].fileId.length > 0 && this.rowData.rcsCTallImgInfoList[4].imgUrl.length > 0) {
@@ -4898,20 +4183,8 @@ export default {
 				imgUrl: imgInfo.chImgUrl,
 				fileId: imgInfo.fileId
 			};
-			this.rowData.rcs105ImgInfoList.push(temp);
 			this.rowData.rcsCTallImgInfoList[5].fileId = temp.fileId;
 			this.rowData.rcsCTallImgInfoList[5].imgUrl = temp.imgUrl;
-			this.fnRcs105DelDuplImgInfo();
-		},
-		fnRcs105DelDuplImgInfo(){
-			const vm = this;
-			this.rowData.rcs105ImgInfoList = this.rowData.rcs105ImgInfoList.filter(function(item, i) {
-				return (
-					vm.rowData.rcs105ImgInfoList.findIndex((item2) => {
-						return item.fileId === item2.fileId;
-					}) === i
-				);
-			});
 		},
 		fnRcs105ImgLimitSize(){
 			if (this.rowData.rcsCTallImgInfoList[5].fileId.length > 0 && this.rowData.rcsCTallImgInfoList[5].imgUrl.length > 0) {
@@ -5064,6 +4337,12 @@ export default {
 		fnCalendarEndDateId(index) {
 			return 'searchEndDate' + index;
 		},
+		fnCarouselCalendarStartDateId(tabIdx, index) {
+			return 'searchStartDate' + tabIdx + '_' + index;
+		},
+		fnCarouselCalendarEndDateId(tabIdx, index) {
+			return 'searchEndDate' + tabIdx + '_' + index;
+		},
 		fnTextLength(title, sid, tid, len){
 			var val = jQuery(sid).val();
 			if (val.length > len) {
@@ -5159,11 +4438,11 @@ export default {
 		fnCallbackRcvblcNum(rcvblcNum){
 			this.rowData.smsRcvblcNumber = rcvblcNum;
 		},
-		fnRcsSmsButtonSD(sltDate, index){
-			this.rowData.rcsSMSButtons[index].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		fnRcsSmsButtonSD(sltDate){
+			this.rowData.rcsSMSButtons[0].action.calendarAction.createCalendarEvent.startTime = sltDate;
 		},
-		fnRcsSmsButtonED(sltDate, index){
-			this.rowData.rcsSMSButtons[index].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		fnRcsSmsButtonED(sltDate){
+			this.rowData.rcsSMSButtons[0].action.calendarAction.createCalendarEvent.endTime = sltDate;
 		},
 		fnRcsLmsButtonSD(sltDate, index){
 			this.rowData.rcsLMSButtons[index].action.calendarAction.createCalendarEvent.startTime = sltDate;
@@ -5183,22 +4462,77 @@ export default {
 		fnRcsTallButtonED(sltDate, index){
 			this.rowData.rcsTallButtons[index].action.calendarAction.createCalendarEvent.endTime = sltDate;
 		},
-		fnImgReset(){
-			this.rowData.rcsShortImgInfoList.push({'fileId':'', 'imgUrl':''});
-			this.rowData.rcsTallImgInfoList.push({'fileId':'', 'imgUrl':''});
-			this.rowData.rcs90ImgInfoList.push({'fileId':'', 'imgUrl':''});
-			this.rowData.rcs91ImgInfoList.push({'fileId':'', 'imgUrl':''});
-			this.rowData.rcs92ImgInfoList.push({'fileId':'', 'imgUrl':''});
-			this.rowData.rcs93ImgInfoList.push({'fileId':'', 'imgUrl':''});
-			this.rowData.rcs94ImgInfoList.push({'fileId':'', 'imgUrl':''});
-			this.rowData.rcs95ImgInfoList.push({'fileId':'', 'imgUrl':''});
-			this.rowData.rcs100ImgInfoList.push({'fileId':'', 'imgUrl':''});
-			this.rowData.rcs101ImgInfoList.push({'fileId':'', 'imgUrl':''});
-			this.rowData.rcs102ImgInfoList.push({'fileId':'', 'imgUrl':''});
-			this.rowData.rcs103ImgInfoList.push({'fileId':'', 'imgUrl':''});
-			this.rowData.rcs104ImgInfoList.push({'fileId':'', 'imgUrl':''});
-			this.rowData.rcs105ImgInfoList.push({'fileId':'', 'imgUrl':''});
-			this.rowData.smsImgInfoList.push({'fileId':'', 'imgUrl':''});    
+		fnRcsCShortButtonSD1(sltDate, index){
+			this.rowData.rcsCShortImgInfoList[0].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsCShortButtonSD2(sltDate, index){
+			this.rowData.rcsCShortImgInfoList[1].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsCShortButtonSD3(sltDate, index){
+			this.rowData.rcsCShortImgInfoList[2].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsCShortButtonSD4(sltDate, index){
+			this.rowData.rcsCShortImgInfoList[3].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsCShortButtonSD5(sltDate, index){
+			this.rowData.rcsCShortImgInfoList[4].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsCShortButtonSD6(sltDate, index){
+			this.rowData.rcsCShortImgInfoList[5].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsCShortButtonED1(sltDate, index){
+			this.rowData.rcsCShortImgInfoList[0].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		},
+		fnRcsCShortButtonED2(sltDate, index){
+			this.rowData.rcsCShortImgInfoList[1].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		},
+		fnRcsCShortButtonED3(sltDate, index){
+			this.rowData.rcsCShortImgInfoList[2].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		},
+		fnRcsCShortButtonED4(sltDate, index){
+			this.rowData.rcsCShortImgInfoList[3].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		},
+		fnRcsCShortButtonED5(sltDate, index){
+			this.rowData.rcsCShortImgInfoList[4].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		},
+		fnRcsCShortButtonED6(sltDate, index){
+			this.rowData.rcsCShortImgInfoList[5].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		},
+		fnRcsCTallButtonSD1(sltDate, index){
+			this.rowData.rcsCTallImgInfoList[0].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsCTallButtonSD2(sltDate, index){
+			this.rowData.rcsCTallImgInfoList[1].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsCTallButtonSD3(sltDate, index){
+			this.rowData.rcsCTallImgInfoList[2].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsCTallButtonSD4(sltDate, index){
+			this.rowData.rcsCTallImgInfoList[3].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsCTallButtonSD5(sltDate, index){
+			this.rowData.rcsCTallImgInfoList[4].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsCTallButtonSD6(sltDate, index){
+			this.rowData.rcsCTallImgInfoList[5].action.calendarAction.createCalendarEvent.startTime = sltDate;
+		},
+		fnRcsCTallButtonED1(sltDate, index){
+			this.rowData.rcsCTallImgInfoList[0].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		},
+		fnRcsCTallButtonED2(sltDate, index){
+			this.rowData.rcsCTallImgInfoList[1].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		},
+		fnRcsCTallButtonED3(sltDate, index){
+			this.rowData.rcsCTallImgInfoList[2].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		},
+		fnRcsCTallButtonED4(sltDate, index){
+			this.rowData.rcsCTallImgInfoList[3].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		},
+		fnRcsCTallButtonED5(sltDate, index){
+			this.rowData.rcsCTallImgInfoList[4].action.calendarAction.createCalendarEvent.endTime = sltDate;
+		},
+		fnRcsCTallButtonED6(sltDate, index){
+			this.rowData.rcsCTallImgInfoList[5].action.calendarAction.createCalendarEvent.endTime = sltDate;
 		},
 		isEmpty(str){
 			if (typeof str == "undefined" || str == null || str == "")

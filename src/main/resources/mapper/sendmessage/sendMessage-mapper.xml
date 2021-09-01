@@ -200,6 +200,7 @@
             AND CCPU.CORP_ID = #{corpId}
             AND CCPU.USE_YN = 'Y'
         WHERE CPU.USE_YN = 'Y'
+            AND CPU.SMART_CH_PRODUCT_YN = 'N'
             AND CPU.PRODUCT_CODE IN <foreach collection="productCodes" item="item" index="index" open="(" close=")" separator=",">#{item}</foreach>
     </select>
 
