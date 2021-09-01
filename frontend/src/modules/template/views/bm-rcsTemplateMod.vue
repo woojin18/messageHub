@@ -451,7 +451,7 @@ export default {
 			if("UPT" == status) {
 				if("승인" == approvalStatus) {
 					vm.updateBtn = true;
-				}
+				} 
 				if("승인" == approvalStatus || "반려" == approvalStatus || "반려(수정)" == approvalStatus || "저장" == approvalStatus) {
 					vm.deleteBtn = true;
 				}
