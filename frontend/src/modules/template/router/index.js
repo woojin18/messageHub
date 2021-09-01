@@ -57,11 +57,13 @@ export default [
     {
         path: '/uc/template/rcsTemplateList',
         name: 'rcsTemplateList',
+        meta: { menu: 'UC_RCS_TPL' },
         component: RcsTemplateList
     },
     {
         path: '/uc/template/rcsTemplateMod',
         name: 'rcsTemplateMod',
+        meta: { menu: 'UC_RCS_TPL' },
         component: RcsTemplateMod,
         props: true
     },

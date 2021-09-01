@@ -449,8 +449,10 @@ export default {
 			// 상태값에 따라서 버튼 표시 처리해야됨. (승인, 반려, 반려(수정), 저장 상태 -> 수정요청, 삭제요청) (승인대기, 승인대기(수정), 반려(수정) -> 취소 요청)
 			var approvalStatus = resultData.approvalStatus;
 			if("UPT" == status) {
-				if("승인" == approvalStatus || "반려" == approvalStatus || "반려(수정)" == approvalStatus || "저장" == approvalStatus) {
+				if("승인" == approvalStatus) {
 					vm.updateBtn = true;
+				}
+				if("승인" == approvalStatus || "반려" == approvalStatus || "반려(수정)" == approvalStatus || "저장" == approvalStatus) {
 					vm.deleteBtn = true;
 				}
 				if("승인대기" == approvalStatus || "승인대기(수정)" == approvalStatus || "반려(수정)" == approvalStatus) {
