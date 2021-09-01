@@ -306,6 +306,7 @@ public class SendMessageController {
             sendMsgService.sendPushMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.error("{}.sendPushMessage aSync API send Error : {}", this.getClass(), e);
+            sendMsgService.sendMsgErrorNoti(Const.ApiWatchNotiMsg.SEND_PUSH_FAIL);
         }
         rtn.setMessage("푸시 "+ApiConfig.MSG_SEND_REQUET_TEXT);
 
@@ -455,6 +456,7 @@ public class SendMessageController {
             sendMsgService.sendSmsMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.error("{}.sendSmsMessage aSync API send Error : {}", this.getClass(), e);
+            sendMsgService.sendMsgErrorNoti(Const.ApiWatchNotiMsg.SEND_SMS_FAIL);
         }
 
         rtn.setMessage("SMS "+ApiConfig.MSG_SEND_REQUET_TEXT);
@@ -565,6 +567,7 @@ public class SendMessageController {
             sendMsgService.sendMmsMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.error("{}.sendMmsMessage aSync API send Error : {}", this.getClass(), e);
+            sendMsgService.sendMsgErrorNoti(Const.ApiWatchNotiMsg.SEND_MMS_FAIL);
         }
 
         rtn.setMessage("MMS "+ApiConfig.MSG_SEND_REQUET_TEXT);
@@ -729,6 +732,7 @@ public class SendMessageController {
             sendMsgService.sendFrndTalkMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.error("{}.sendFrndTalkMessage aSync API send Error : {}", this.getClass(), e);
+            sendMsgService.sendMsgErrorNoti(Const.ApiWatchNotiMsg.SEND_FRIENDTALK_FAIL);
         }
         rtn.setMessage("친구톡 "+ApiConfig.MSG_SEND_REQUET_TEXT);
 
@@ -887,6 +891,7 @@ public class SendMessageController {
             sendMsgService.sendAlimTalkMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.error("{}.sendAlimTalkMessage aSync API send Error : {}", this.getClass(), e);
+            sendMsgService.sendMsgErrorNoti(Const.ApiWatchNotiMsg.SEND_ALIMTALK_FAIL);
         }
         rtn.setMessage("알림톡 "+ApiConfig.MSG_SEND_REQUET_TEXT);
 
@@ -1028,6 +1033,7 @@ public class SendMessageController {
             sendMsgService.sendSmartMsgAsync(rtn, 0, params, requestData, recvInfoLst, reSendCdList);
         } catch (Exception e) {
             log.error("{}.sendSmartMessage aSync API send Error : {}", this.getClass(), e);
+            sendMsgService.sendMsgErrorNoti(Const.ApiWatchNotiMsg.SEND_MULTY_FAIL);
         }
         String senderType = CommonUtils.getStrValue(params, "senderType");
         String msg = (StringUtils.equals(senderType, Const.SenderType.SMART) ? "스마트" : "통합");

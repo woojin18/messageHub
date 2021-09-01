@@ -35,6 +35,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import kr.co.uplus.cm.common.consts.Const;
+import kr.co.uplus.cm.common.consts.Const.ApiWatchNotiMsg;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
@@ -2614,6 +2615,85 @@ public class SendMessageService {
         }
 
         return rtn;
+    }
+
+    /**
+     * 알림서비스
+     */
+    @SuppressWarnings("unchecked")
+    public void sendNoti(Map<String,Object> params) {
+
+        try {
+            /** header */
+            Map<String, Object> headerMap = new HashMap<String, Object>();
+            headerMap.put("X-API-KEY", ApiConfig.API_WATCH_NOTI_KEY);
+
+            /** body */
+            Map<String, Object> bodyMap = new HashMap<String, Object>();
+            bodyMap.put("notiCode", ApiConfig.API_WATCH_NOTI_CODE);
+            bodyMap.put("recvInfoLst", params.get("recvInfoLst"));
+            bodyMap.put("sendChLst", params.get("sendChLst"));
+
+            log.info("{}.sendNoti api request ==>> header : {}, body : {}", this.getClass(), headerMap, bodyMap);
+            Map<String, Object> result = apiInterface.etcPost(ApiConfig.NOTI_SERVER_DOMAIN+ApiConfig.SEND_NOTI_URI, bodyMap, headerMap);
+            log.info("{}.sendNoti api response : {}", this.getClass(), result);
+
+            if(isSendSuccess(result) == false) {
+                String failMsg = CommonUtils.getString(result.get(ApiConfig.GW_RESULT_MESSAGE_FIELD_NM));
+                throw new Exception("batch sendNoti fail ===> " + failMsg);
+            }
+
+        } catch (Exception e) {
+            log.error("{}.sendNoti : {}, Error : {}", this.getClass(), e);
+        }
+    }
+
+    /**
+     * 발송 오류 감시항목 메시지 전송
+     * @param notiMsg
+     */
+    @SuppressWarnings({ "unchecked", "static-access" })
+    public void sendMsgErrorNoti(ApiWatchNotiMsg notiMsg) {
+
+        log.info("{}.sendMsgErrorNoti Start ====>>>  : {}", this.getClass(), notiMsg);
+
+        try {
+
+            Map<String,Object> params = new HashMap<String, Object>();
+            Map<String,Object> sParams = new HashMap<String, Object>();
+
+            String callback = ApiConfig.API_WATCH_CALLBACK;
+            String msg = notiMsg.getMsg();
+
+            sParams.put("notiCode", ApiConfig.API_WATCH_NOTI_CODE);
+            List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_NOTI_RECIPIENT, sParams);
+
+            /** 수신자 설정 */
+            ArrayList<Map<String, Object>> recvInfoLst = new ArrayList<Map<String,Object>>();
+            Map<String, Object> rcvMap = new HashMap<String, Object>();
+
+            for(Object o : rtnList) {
+                rcvMap = (Map<String, Object>) o;
+                recvInfoLst.add(rcvMap);
+            }
+
+            /** 발송 내용 설정 */
+            ArrayList<Map<String, Object>> sendChLst = new ArrayList<Map<String,Object>>();
+            Map<String, Object> sendChMap = new HashMap<String, Object>();
+            sendChMap.put("ch", Const.NotiCh.SMS);
+            sendChMap.put("contents", msg);
+            sendChMap.put("callback", callback);
+            sendChLst.add(sendChMap);
+
+            params.put("recvInfoLst", recvInfoLst);
+            params.put("sendChLst", sendChLst);
+            sendNoti(params);
+
+        } catch (Exception e) {
+            log.error("{}.sendMsgErrorNoti : {}, Error : {}", this.getClass(), e);
+        }
+
+        log.info("{}.sendMsgErrorNoti End ====>>>  : {}", this.getClass(), notiMsg);
     }
 
 }

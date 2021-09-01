@@ -515,4 +515,31 @@
             AND CORP_ID = #{corpId}
     </delete>
 
+    <select id="selectNotiRecipient" parameterType="hashmap" resultType="camel">
+    /* sendMessage.selectNotiRecipient - 노티 수신자 리스트 조회 */
+        SELECT
+            CR.RECIPIENT_ID
+            , CR.RECIPIENT_NAME
+            , CR.HP_NUMBER AS PHONE
+            , CR.EMAIL
+        FROM (
+            SELECT CGR.RECIPIENT_ID
+            FROM cm_noti.CM_NOTI_RECEPT_GROUP CNRG
+            INNER JOIN cm_noti.CM_RECEPT_GROUP CRG
+                ON CNRG.RECEPT_GROUP_ID = CRG.RECEPT_GROUP_ID
+                AND CRG.USE_YN = 'Y'
+            INNER JOIN cm_noti.CM_GROUP_RECIPIENT CGR
+                ON CRG.RECEPT_GROUP_ID = CGR.RECEPT_GROUP_ID
+            WHERE CNRG.NOTI_CODE = #{notiCode}
+
+            UNION
+
+            SELECT CMR.RECIPIENT_ID
+            FROM cm_noti.CM_NOTI_RECIPIENT CMR
+            WHERE CMR.NOTI_CODE = #{notiCode}
+        ) A
+        INNER JOIN cm_noti.CM_RECIPIENT CR
+                ON A.RECIPIENT_ID = CR.RECIPIENT_ID
+    </select>
+
 </mapper>

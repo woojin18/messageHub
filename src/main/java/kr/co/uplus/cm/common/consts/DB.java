@@ -106,6 +106,7 @@ public class DB {
 	public final static String QRY_SELECT_DUPL_REJECT_PHONE = "sendMessage.selectDuplRejectPhone";
 	public final static String QRY_SELECT_REJECT_PHONE_LIST = "sendMessage.selectRejectPhoneList";
 	public final static String QRY_DELETE_REJECT_PHONE_LIST = "sendMessage.deleteRejectPhoneList";
+	public final static String QRY_SELECT_NOTI_RECIPIENT = "sendMessage.selectNotiRecipient";
 
 	// RCS 채널 브랜드 정보
 	public final static String QRY_SELECT_RCS_BRANDLIST_CNT = "channel.selectRcsBrandListCnt";
