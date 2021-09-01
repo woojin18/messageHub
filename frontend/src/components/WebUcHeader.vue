@@ -97,7 +97,75 @@ export default {
 	},
 	methods: {
 		fnGoUserGuide(){
-		window.open(this.userGuideUrl)
+		
+			var url = this.userGuideUrl
+			var menusCd = jQuery('#M_menusCd').val()
+			switch (menusCd) {
+			  case 'UC_SND_SMS_MSG' :
+				url = url + '/user/send-message.html'
+				break
+			  case 'UC_SND_ALIM_MSG' :
+				url = url + '/user/send-message.html#id6'
+				break
+			  case 'UC_SND_FRND_MSG' :
+				url = url + '/user/send-message.html#id12'
+				break
+			  case 'UC_SND_RCS_MSG' :
+				url = url + '/user/send-message.html#rcs'
+				break
+			  case 'UC_SND_PUSH_MSG' :
+				url = url + '/user/send-message.html#id20'
+				break
+			  case 'UC_SND_INTG_MSG' :
+				url = url + '/user/send-message.html#id26'
+				break
+			  case 'UC_SND_SMRT_MSG' :
+				url = url + '/user/send-message.html#id26'
+				break
+			  case 'UC_MEST_RCV' :
+				url = url + '/user/send-state.html'
+				break
+			  case 'UC_WBSN_RCV' :
+				url = url + '/user/send-state.html#id4'
+				break
+			  case 'UC_BKSN_RCV' :
+				url = url + '/user/send-state.html#id5'
+				break
+			  case 'UC_MORE_RCV' :
+				url = url + '/user/send-state.html#mo'
+				break
+			  case 'UC_SMS_TPL' :
+				url = url + '/user/template.html'
+				break
+			  case 'UC_ALIM_TPL' :
+				url = url + '/user/template.html#id4'
+				break
+			  case 'UC_FRND_TPL' :
+				url = url + '/user/template.html#id9'
+				break
+			  case 'UC_RCS_TPL' :
+				url = url + '/user/template.html#rcs'
+				break
+			  case 'UC_PUSH_TPL' :
+				url = url + '/user/template.html#id20'
+				break
+			  case 'UC_INTG_TPL' :
+				url = url + '/user/template.html#id24'
+				break
+			  case 'UC_SMRT_TPL' :
+				url = url + '/user/template.html#id24'
+				break
+			  case 'UC_DAY_CH_STATIS' :
+				url = url + '/user/statistics.html'
+				break
+			  case 'UC_MONTH_CH_STATIS' :
+				url = url + '/user/statistics.html#id4'
+				break
+			  default : 
+			  	url = url + '/user/summary.html'
+				break
+			}
+			window.open(url)
 		},
 		clickMenu(link, useYn) {
 			if (useYn == "Y") {

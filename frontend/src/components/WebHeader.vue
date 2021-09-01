@@ -103,7 +103,44 @@ export default {
 	},
 	methods: {
 		fnGoUserGuide(){
-		window.open(this.userGuideUrl)
+			var url = this.userGuideUrl
+			var menusCd = jQuery('#M_menusCd').val()
+			switch (menusCd) {
+			  case 'AC_USER' :
+				url = url + '/admin/user.html'
+				break
+			  case 'AC_PROJECT' :
+				url = url + '/admin/project.html'
+				break
+			  case 'AC_USE_STATE' :
+				url = url + '/admin/use-state.html'
+				break
+			  case 'AC_SETTLE_MNG' :
+				url = url + '/admin/account.html'
+				break
+			  case 'AC_ADDR_LIST' :
+				url = url + '/admin/address.html'
+				break
+			  case 'AC_RCVR_LIST' :
+				url = url + '/admin/address.html#id7'
+				break
+			  case 'AC_STATIS_MON' :
+				url = url + '/admin/statistics.html'
+				break
+			  case 'AC_AL_ALARM' :
+				url = url + '/admin/alarm.html'
+				break
+			  case 'AC_AL_RECEPT_GRP' :
+				url = url + '/admin/alarm.html#id9'
+				break
+			  case 'AC_AL_RECIPIENT' :
+				url = url + '/admin/alarm.html#id12'
+				break
+			  default : 
+			  	url = url + '/admin/summary.html'
+				break
+			}
+			window.open(url)
 		},
 		clickMenu(link, useYn) {
 			if (useYn == "Y") {

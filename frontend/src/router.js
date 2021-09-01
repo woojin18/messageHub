@@ -210,6 +210,7 @@ router.beforeEach((to, from, next) => {
 var timeout = 1500;
 router.afterEach((to, from) => {
 	if (!to.meta.menu) {
+		jQuery('#M_menusCd').val('');
 		timeout = 0;
 		return;
 	}
@@ -227,9 +228,8 @@ router.afterEach((to, from) => {
 			var isSave = menu.attr('w');
 			isRead = isRead == 'true';
 			isSave = isSave == 'true';
-      to.meta.isRead = isRead;
-      to.meta.isSave = isSave;
-			console.log('MENU CODE : ' + to.meta.menu + ', READ:' + isRead + ', SAVE:' + isSave);
+      		to.meta.isRead = isRead;
+      		to.meta.isSave = isSave;
 			if (isRead) {
 				jQuery("[activity='READ']").removeAttr('activity');
 			} else {
