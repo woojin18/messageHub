@@ -753,6 +753,7 @@ public class SendMessageService {
             } catch (Exception e) {
                 log.error("{}.sendPushMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
+                if(retryCnt == ApiConfig.GW_RETRY_CNT) sendMsgErrorNoti(Const.ApiWatchNotiMsg.API_CONNECTION_FAIL);
             }
 
             if(isDone) {
@@ -964,6 +965,7 @@ public class SendMessageService {
             } catch (Exception e) {
                 log.error("{}.sendSmsMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
+                if(retryCnt == ApiConfig.GW_RETRY_CNT) sendMsgErrorNoti(Const.ApiWatchNotiMsg.API_CONNECTION_FAIL);
             }
 
             if(isDone) {
@@ -1191,6 +1193,7 @@ public class SendMessageService {
             } catch (Exception e) {
                 log.error("{}.sendMmsMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
+                if(retryCnt == ApiConfig.GW_RETRY_CNT) sendMsgErrorNoti(Const.ApiWatchNotiMsg.API_CONNECTION_FAIL);
             }
 
             if(isDone) {
@@ -1623,6 +1626,7 @@ public class SendMessageService {
             } catch (Exception e) {
                 log.error("{}.sendFrndTalkMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
+                if(retryCnt == ApiConfig.GW_RETRY_CNT) sendMsgErrorNoti(Const.ApiWatchNotiMsg.API_CONNECTION_FAIL);
             }
 
             if(isDone) {
@@ -1977,6 +1981,7 @@ public class SendMessageService {
             } catch (Exception e) {
                 log.error("{}.sendAlimTalkMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
+                if(retryCnt == ApiConfig.GW_RETRY_CNT) sendMsgErrorNoti(Const.ApiWatchNotiMsg.API_CONNECTION_FAIL);
             }
 
             if(isDone) {
@@ -2329,6 +2334,7 @@ public class SendMessageService {
             } catch (Exception e) {
                 log.error("{}.sendSmartMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
+                if(retryCnt == ApiConfig.GW_RETRY_CNT) sendMsgErrorNoti(Const.ApiWatchNotiMsg.API_CONNECTION_FAIL);
             }
 
             if(isDone) {
