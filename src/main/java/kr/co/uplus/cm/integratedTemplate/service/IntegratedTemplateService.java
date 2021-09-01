@@ -465,8 +465,8 @@ public class IntegratedTemplateService {
 
 					sb.append(",\"buttons\": [ ");
 					for (int k = 0; k < rcsCShortImgInfoList.size(); k++) {
-						Map<String, Object> rcsCTallImgInfo = rcsCShortImgInfoList.get(k);
-						List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) rcsCTallImgInfo.get("rcsButtons");
+						Map<String, Object> rcsCShortImgInfo = rcsCShortImgInfoList.get(k);
+						List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) rcsCShortImgInfo.get("rcsButtons");
 
 						sb.append(" { ");
 						sb.append("\"suggestions\": [ ");
