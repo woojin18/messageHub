@@ -422,13 +422,10 @@ public class IntegratedTemplateService {
 					sb.append("\"rcsPrdType\" : \"CSHORT\","); // RCS상품타입(캐러셀[SHORT]템플릿) rcsTemplateTable => 9
 
 					int rcs9CardCount;
-					int rcs9ButtonCardCount;
 					if (params.get("rcs9CardCount").getClass().getName().equalsIgnoreCase("java.lang.Integer")) {
 						rcs9CardCount = (int) params.get("rcs9CardCount");
-						rcs9ButtonCardCount = (int) params.get("rcs9CardCount");
 					} else {
 						rcs9CardCount = Integer.parseInt((String) params.get("rcs9CardCount"));
-						rcs9ButtonCardCount = Integer.parseInt((String) params.get("rcs9CardCount"));
 					}
 
 					String messagebaseId = "";
@@ -441,37 +438,24 @@ public class IntegratedTemplateService {
 					} else if (rcs9CardCount == 6) {
 						messagebaseId = "CMwShS0600"; // 슬라이드형(Small,6장)
 					}
-					sb.append("\"messagebaseId\": \"" + messagebaseId + "\","); /// 캐러셀형(SHORT) 템플릿의 RCS MESSAGEBASE_ID
-																				/// 를 설정
+					sb.append("\"messagebaseId\": \"" + messagebaseId + "\","); /// 캐러셀형(SHORT) 템플릿의 RCS MESSAGEBASE_ID 를 설정
 					sb.append("\"cardCount\": \"" + rcs9CardCount + "\","); /// 캐러셀형(SHORT) 템플릿의 페이지 카운트
 
 					sb.append("\"mergeData\": [ ");
-					for (int k = 0; k < rcs9CardCount; k++) {
-						String rcsTitle = "rcs" + k + "Title";
-						String rcsContent = "rcs" + k + "Content";
-						String rcsImgInfoList = "rcs9" + k + "ImgInfoList";
-
+					List<Map<String, Object>> rcsCShortImgInfoList = (List<Map<String, Object>>) params.get("rcsCShortImgInfoList");
+					for (int k = 0; k < rcsCShortImgInfoList.size(); k++) {
 						sb.append(" { ");
-						sb.append("	\"title\" : \"" + JSONObject.escape((String) params.get(rcsTitle)) + "\", "); // 제목
-						sb.append("	\"description\" : \"" + JSONObject.escape((String) params.get(rcsContent)) + "\" "); // 메시지
+						Map<String, Object> rcsCShortImgInfo = rcsCShortImgInfoList.get(k);
+						sb.append("	\"title\" : \"" + CommonUtils.getStrValue(rcsCShortImgInfo, "rcsTitle") + "\", "); // 제목
+						sb.append("	\"description\" : \"" + CommonUtils.getStrValue(rcsCShortImgInfo, "rcsContent") + "\" "); // 메시지
 
 						// image List
-						List<Map<String, Object>> rcsCarouselImgInfoList = null;
-						if (params.containsKey(rcsImgInfoList)) {
-							rcsCarouselImgInfoList = (List<Map<String, Object>>) params.get(rcsImgInfoList);
-							if (rcsCarouselImgInfoList.size() > 0) {
-								Map<String, Object> imgInfo = rcsCarouselImgInfoList.get(0);// rcs에서 SHORT, TALL,
-																							// CSHORT, CTALL에는 이미지가 1개만
-																							// 들어온다
-								if (imgInfo.containsKey("fileId")) {
-									sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(imgInfo, "imgUrl")
-											+ "\", ");
-									sb.append("	\"media\" : \"" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" ");
-								}
-							} else {
-								sb.append("	,\"mediaUrl\" : \"{}\", ");
-								sb.append("	\"media\" : \"\" ");
-							}
+						if (!"".equals(CommonUtils.getStrValue(rcsCShortImgInfo, "imgUrl")) && !"".equals(CommonUtils.getStrValue(rcsCShortImgInfo, "fileId"))) {
+							sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(rcsCShortImgInfo, "imgUrl") + "\", ");
+							sb.append("	\"media\" : \"" + CommonUtils.getStrValue(rcsCShortImgInfo, "fileId") + "\" ");
+						} else {
+							sb.append("	,\"mediaUrl\" : \"{}\", ");
+							sb.append("	\"media\" : \"\" ");
 						}
 						sb.append("	} ");
 						if (k < rcs9CardCount - 1)
@@ -480,11 +464,12 @@ public class IntegratedTemplateService {
 					sb.append("	] ");
 
 					sb.append(",\"buttons\": [ ");
-					for (int k = 0; k < rcs9ButtonCardCount; k++) {
+					for (int k = 0; k < rcsCShortImgInfoList.size(); k++) {
+						Map<String, Object> rcsCTallImgInfo = rcsCShortImgInfoList.get(k);
+						List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) rcsCTallImgInfo.get("rcsButtons");
+
 						sb.append(" { ");
 						sb.append("\"suggestions\": [ ");
-						String rcsButton = "rcs9" + k + "Buttons";
-						List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) params.get(rcsButton);
 
 						if (buttonInfoList.size() > 0) {
 							sb.append(newCarouselButtonAddStr(buttonInfoList));
@@ -493,8 +478,9 @@ public class IntegratedTemplateService {
 						sb.append("	]");
 						sb.append("	} ");
 
-						if (k < rcs9ButtonCardCount - 1)
+						if (k < rcsCShortImgInfoList.size() - 1) {
 							sb.append(", ");
+						}
 					}
 					sb.append("	] ");
 
@@ -504,13 +490,10 @@ public class IntegratedTemplateService {
 					sb.append("\"rcsPrdType\" : \"CTALL\","); // RCS상품타입(캐러셀[TALL]템플릿) rcsTemplateTable => 10
 
 					int rcs10CardCount;
-					int rcs10ButtonCardCount;
 					if (params.get("rcs10CardCount").getClass().getName().equalsIgnoreCase("java.lang.Integer")) {
 						rcs10CardCount = (int) params.get("rcs10CardCount");
-						rcs10ButtonCardCount = (int) params.get("rcs10CardCount");
 					} else {
 						rcs10CardCount = Integer.parseInt((String) params.get("rcs10CardCount"));
-						rcs10ButtonCardCount = Integer.parseInt((String) params.get("rcs10CardCount"));
 					}
 
 					String messagebaseId = "";
@@ -754,6 +737,11 @@ public class IntegratedTemplateService {
 					sb.append("\"ch\" : \"SMS\","); // 발송채널
 					sb.append("\"data\" : { ");
 					sb.append("\"callback\" : \"" + params.get("callback") + "\",");
+//					if ("A".equals(params.get("msgKind"))) {
+//						sb.append("\"msg\" : \"(광고)" + JSONObject.escape((String) params.get("smsContent")) + "\" "); // 메시지
+//					} else {
+//						sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + "\" "); // 메시지
+//					}
 					sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + "\" "); // 메시지
 					if (params.containsKey("smsRcvblcNumber")) {
 						sb.append(",\"rcvblcInput\" : \"" + params.get("smsRcvblcNumber") + "\""); // 수신거부방법
@@ -764,6 +752,11 @@ public class IntegratedTemplateService {
 					sb.append("\"ch\" : \"MMS\",");// 발송채널
 					sb.append("\"data\" : { ");
 					sb.append("\"callback\" : \"" + params.get("callback") + "\",");
+//					if ("A".equals(params.get("msgKind"))) {
+//						sb.append("\"title\" : \"(광고)" + params.get("smsTitle") + "\",");
+//					} else {
+//						sb.append("\"title\" : \"" + params.get("smsTitle") + "\",");
+//					}
 					sb.append("\"title\" : \"" + params.get("smsTitle") + "\",");
 					sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + "\" ");
 					if (params.containsKey("smsRcvblcNumber")) {
