@@ -517,6 +517,12 @@ public class ChannelService {
 		List<Object> list = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
 		String brandId = CommonUtils.getString(params.get("brandId"));
+		String projectAllYn = "N";
+		if( "ALL".equals(projectAllYn) ) {
+			projectAllYn = "Y";
+		} else {
+			projectAllYn = "N";
+		}
 		
 		map.put("corpId",		params.get("corpId"));
 		map.put("projectId",	params.get("projectId"));
@@ -682,9 +688,10 @@ public class ChannelService {
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
 			if( "".equals(apiKey) ) { throw new Exception("API Key를 등록 후, 진행 가능합니다. 프로젝트 기본정보 탭에서 API Key를 등록해주세요."); }
-			headerMap.put("apiKey",		apiKey);
-			headerMap.put("apiId",		params.get("apiKey"));
-			headerMap.put("apiSecret",	params.get("apiSecret"));
+			headerMap.put("apiKey",			apiKey);
+			headerMap.put("projectAllYn",	projectAllYn);
+			headerMap.put("apiId",			params.get("apiKey"));
+			headerMap.put("apiSecret",		params.get("apiSecret"));
 			
 			ObjectMapper mapper = new ObjectMapper();
 			String json = mapper.writeValueAsString(map);
@@ -719,10 +726,11 @@ public class ChannelService {
 			Map<String, Object> headerMap = new HashMap<String, Object>();
 			String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
 			if( "".equals(apiKey) ) { throw new Exception("API Key를 등록 후, 진행 가능합니다. 프로젝트 기본정보 탭에서 API Key를 등록해주세요."); }
-			headerMap.put("apiKey",		apiKey);
-			headerMap.put("apiId",		params.get("apiKey"));
-			headerMap.put("apiSecret",	params.get("apiSecret"));
-			headerMap.put("brandId",	brandId);
+			headerMap.put("apiKey",			apiKey);
+			headerMap.put("projectAllYn",	projectAllYn);
+			headerMap.put("apiId",			params.get("apiKey"));
+			headerMap.put("apiSecret",		params.get("apiSecret"));
+			headerMap.put("brandId",		brandId);
 			
 			ObjectMapper mapper = new ObjectMapper();
 			String json = mapper.writeValueAsString(map);
@@ -1154,5 +1162,16 @@ public class ChannelService {
 				}
 			}
 		}
+	}
+	
+	// rcs 브랜드 리스트에서 apikey 있는지 확인
+	public RestResult<?> findApiKeyFromProject(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi", params));
+		
+		rtn.setData(apiKey);
+		
+		return rtn;
 	}
 }

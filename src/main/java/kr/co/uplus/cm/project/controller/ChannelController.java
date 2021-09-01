@@ -457,4 +457,13 @@ public class ChannelController {
 		}
 		return rtn;
 	}
+	
+	// rcs 브랜드 리스트에서 apikey 있는지 확인
+	@PostMapping("/findApiKeyFromProject")
+	public RestResult<?> findApiKeyFromProject(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		return channelService.findApiKeyFromProject(params);
+	}
+	
 }

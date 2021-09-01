@@ -73,6 +73,9 @@ const saveKkoChGroupForApi = (params) => {
     return httpClient.post('/projectApi/channel/saveKkoChGroupForApi', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
 };
 
+const findApiKeyFromProject = (params) => {
+    return httpClient.post('/projectApi/channel/findApiKeyFromProject', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
 
 
 export default {
@@ -94,5 +97,6 @@ export default {
     saveKkoChForApi,
     getSenderKeyToken,
     getApiKeyListForKko,
-    saveKkoChGroupForApi
+    saveKkoChGroupForApi,
+    findApiKeyFromProject,
 };

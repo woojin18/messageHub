@@ -129,6 +129,7 @@ import modalCallback from "./bp-chan-rcs-callback-cnt.vue";
 
 import SelectLayer from '@/components/SelectLayer.vue';
 import PageLayer from '@/components/PageLayer.vue';
+import confirm from "@/modules/commonUtil/service/confirm";
 
 export default {
   components: {
@@ -155,7 +156,8 @@ export default {
       projectName : '',
       visibleTmplt : false,  // 레이어 팝업 
       visibleCallback : false,  // 레이어 팝업
-      row_data : {}
+      row_data : {},
+      projectApiKey : "",
     }
   },
   mounted() {
@@ -163,8 +165,21 @@ export default {
     this.projectName = this.$parent.projectName;
 
     this.fnSearch(1);
+    this.fnFindApiKeyFromProject();
   },
   methods: {
+    fnFindApiKeyFromProject(){
+      var params = {
+        "projectId"     : this.projectId,
+      }
+
+      Api.findApiKeyFromProject(params).then(response =>{
+        var result = response.data;
+				if(result.success) {
+          this.projectApiKey = result.data;
+				}
+      });
+    },
 		// select 박스 선택시 리스트 재출력
 		fnSelected(listSize) {
 			this.listSize = Number(listSize);
@@ -192,6 +207,12 @@ export default {
     },
     // 등록창
     fnRcsBrandReg : function(){
+      if( this.projectApiKey === "" || this.projectApiKey === undefined ){
+					confirm.fnAlert("", "API Key를 등록 후, 진행 가능합니다. 프로젝트 기본정보 탭에서 API Key를 등록해주세요.");
+          return;
+      }
+
+
       // 브랜드 등록 데이터 초기화
       var inputVal = {
         corpId 		  	: "",
