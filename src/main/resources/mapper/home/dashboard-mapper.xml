@@ -98,7 +98,14 @@
 			<if test="serviceType == 'UC'">
 			AND PROJECT_ID = #{projectId}
 			</if>
+			<choose>
+				<when test="startMonthStr != null and startMonthStr != ''">
+			AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+				</when>
+				<otherwise>
 			AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				</otherwise>
+			</choose>
 			UNION ALL
 			SELECT
 				0 AS TOTAL_SUCC_CNT,
@@ -132,7 +139,14 @@
 				<if test="serviceType == 'UC'">
 				AND PROJECT_ID = #{projectId}
 				</if>
+				<choose>
+				<when test="startMonthStr != null and startMonthStr != ''">
+				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+					</when>
+					<otherwise>
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+					</otherwise>
+				</choose>
 				GROUP BY CH
 			) B ON A.CH = B.CH
 			UNION ALL
@@ -168,7 +182,14 @@
 				<if test="serviceType == 'UC'">
 				AND PROJECT_ID = #{projectId}
 				</if>
+				<choose>
+				<when test="startMonthStr != null and startMonthStr != ''">
+				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+					</when>
+					<otherwise>
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+					</otherwise>
+				</choose>
 				GROUP BY CH
 			) B ON A.CH = B.CH
 			UNION ALL
@@ -204,7 +225,14 @@
 				<if test="serviceType == 'UC'">
 				AND PROJECT_ID = #{projectId}
 				</if>
+				<choose>
+					<when test="startMonthStr != null and startMonthStr != ''">
+				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+					</when>
+					<otherwise>
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+					</otherwise>
+				</choose>
 				GROUP BY CH
 			) B ON A.CH = B.CH
 			UNION ALL
@@ -240,7 +268,14 @@
 				<if test="serviceType == 'UC'">
 				AND PROJECT_ID = #{projectId}
 				</if>
+				<choose>
+					<when test="startMonthStr != null and startMonthStr != ''">
+				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+					</when>
+					<otherwise>
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+					</otherwise>
+				</choose>
 				GROUP BY CH
 			) B ON A.CH = B.CH
 			UNION ALL
@@ -276,7 +311,14 @@
 				<if test="serviceType == 'UC'">
 				AND PROJECT_ID = #{projectId}
 				</if>
+				<choose>
+					<when test="startMonthStr != null and startMonthStr != ''">
+				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+					</when>
+					<otherwise>
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+					</otherwise>
+				</choose>
 				GROUP BY CH
 			) B ON A.CH = B.CH
 			UNION ALL
@@ -313,7 +355,14 @@
 				<if test="serviceType == 'UC'">
 				AND PROJECT_ID = #{projectId}
 				</if>
+				<choose>
+					<when test="startMonthStr != null and startMonthStr != ''">
+				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+					</when>
+					<otherwise>
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+					</otherwise>
+				</choose>
 				GROUP BY CH, PRODUCT_CODE
 			) B ON A.CH = B.CH AND A.PRODUCT_CODE = B.PRODUCT_CODE
 			UNION ALL
@@ -350,7 +399,14 @@
 				<if test="serviceType == 'UC'">
 				AND PROJECT_ID = #{projectId}
 				</if>
+				<choose>
+					<when test="startMonthStr != null and startMonthStr != ''">
+				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+					</when>
+					<otherwise>
 				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+					</otherwise>
+				</choose>
 				GROUP BY CH, PRODUCT_CODE
 			) B ON A.CH = B.CH AND A.PRODUCT_CODE = B.PRODUCT_CODE
 		) TOT
@@ -363,7 +419,14 @@
 			IFNULL(CSCD.SUCC_CNT, 0) AS SUCC_CNT,
 			IFNULL(CSCD.FAIL_CNT, 0) AS FAIL_CNT
 		FROM (
-			SELECT A.DATE 
+			<choose>
+				<when test="startMonthStr != null and startMonthStr != ''">
+			SELECT DATE_FORMAT(A.DATE, '%y-%m')	AS DATE
+				</when>
+				<otherwise>
+			SELECT A.DATE
+				</otherwise>
+			</choose>
 			FROM (
 			    SELECT CURDATE() - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY AS DATE
 			    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
@@ -371,12 +434,21 @@
 			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
 			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
 			) A
+			<choose>
+				<when test="startMonthStr != null and startMonthStr != ''">
+			WHERE A.DATE BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+			GROUP BY DATE_FORMAT(A.DATE, '%y-%m')
+				</when>
+				<otherwise>
 			WHERE A.DATE BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				</otherwise>
+			</choose>
 		) AD
 		LEFT OUTER JOIN (
 			SELECT 
 				CH,
 				YMD,
+				DATE_FORMAT(YMD, '%y-%m') AS YM,
 				SUM(SUCC_CNT) AS SUCC_CNT,
 				SUM(FAIL_CNT) AS FAIL_CNT
 			FROM 
@@ -385,7 +457,6 @@
 			<if test="serviceType == 'UC'">
 			AND PROJECT_ID = #{projectId}
 			</if>
-			AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 			<if test="channel != 'ALL'">
 				<choose>
 					<when test="channel == 'LMS'">
@@ -401,8 +472,25 @@
 					</otherwise>
 				</choose>
 			</if>
+			<choose>
+				<when test="startMonthStr != null and startMonthStr != ''">
+			AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+			GROUP BY DATE_FORMAT(YMD, '%y-%m')
+				</when>
+				<otherwise>
+			AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 			GROUP BY YMD
-		) CSCD ON AD.DATE = CSCD.YMD
+				</otherwise>
+			</choose>
+		) CSCD
+		<choose>
+			<when test="startMonthStr != null and startMonthStr != ''">
+		ON AD.DATE = CSCD.YM
+			</when>
+			<otherwise>
+		ON AD.DATE = CSCD.YMD
+			</otherwise>
+		</choose>
 		ORDER BY AD.DATE
 	</select>
 
@@ -420,7 +508,14 @@
 		<if test="serviceType == 'UC'">
 		AND CSRD.PROJECT_ID = #{projectId}
 		</if>
+		<choose>
+			<when test="startMonthStr != null and startMonthStr != ''">
+		AND CSRD.YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+			</when>
+			<otherwise>
 		AND CSRD.YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+			</otherwise>
+		</choose>
 		<if test="channel != 'ALL'">
 			<choose>
 				<when test="channel == 'LMS'">
@@ -444,7 +539,14 @@
 				AD.DATE,
 				IFNULL(CSRD.CNT, 0) AS CNT
 			FROM (
-				SELECT A.DATE 
+				<choose>
+					<when test="startMonthStr != null and startMonthStr != ''">
+				SELECT DATE_FORMAT(A.DATE, '%y-%m')	AS DATE
+					</when>
+					<otherwise>
+				SELECT A.DATE
+					</otherwise>
+				</choose>
 				FROM (
 				    SELECT CURDATE() - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY AS DATE
 				    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
@@ -452,12 +554,21 @@
 				    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
 				    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
 				) A
+				<choose>
+					<when test="startMonthStr != null and startMonthStr != ''">
+				WHERE A.DATE BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+				GROUP BY DATE_FORMAT(A.DATE, '%y-%m')
+					</when>
+					<otherwise>
 				WHERE A.DATE BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+					</otherwise>
+				</choose>
 			) AD
 			LEFT OUTER JOIN (
 				SELECT 
 					CH,
 					YMD,
+					DATE_FORMAT(YMD, '%y-%m') AS YM,
 					RESULT_CODE,
 					SUM(CNT) AS CNT
 				FROM 
@@ -467,7 +578,6 @@
 				AND PROJECT_ID = #{projectId}
 				</if>
 				AND RESULT_CODE = #{resultCode}
-				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
 				<if test="channel != 'ALL'">
 					<choose>
 						<when test="channel == 'LMS'">
@@ -478,8 +588,25 @@
 						</otherwise>
 					</choose>
 				</if>
-				GROUP BY CH, YMD
-			) CSRD ON AD.DATE = CSRD.YMD
+				<choose>
+					<when test="startMonthStr != null and startMonthStr != ''">
+				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+				GROUP BY DATE_FORMAT(YMD, '%y-%m')
+					</when>
+					<otherwise>
+				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				GROUP BY YMD
+					</otherwise>
+				</choose>
+			) CSRD
+			<choose>
+				<when test="startMonthStr != null and startMonthStr != ''">
+			ON AD.DATE = CSRD.YM
+				</when>
+				<otherwise>
+			ON AD.DATE = CSRD.YMD
+				</otherwise>
+			</choose>
 			ORDER BY AD.DATE
 		) A
 	</select>
