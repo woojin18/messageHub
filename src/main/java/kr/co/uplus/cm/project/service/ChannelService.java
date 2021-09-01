@@ -757,6 +757,9 @@ public class ChannelService {
 		apiBodyMap.put("projectId", CommonUtils.getString(params.get("projectId")));
 		
 		Map<String, Object> headerMap = new HashMap<String, Object>();
+		String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
+		if( "".equals(apiKey) ) { throw new Exception("API Key를 등록 후, 진행 가능합니다. 프로젝트 기본정보 탭에서 API Key를 등록해주세요."); }
+		headerMap.put("apiKey",		apiKey);
 		headerMap.put("apiId",		CommonUtils.getString(params.get("apiKey")));
 		headerMap.put("apiSecret",	CommonUtils.getString(params.get("apiSecret")));
 		headerMap.put("brandId",	CommonUtils.getString(params.get("brandId")));

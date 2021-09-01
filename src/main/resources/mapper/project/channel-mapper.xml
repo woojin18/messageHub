@@ -881,7 +881,14 @@
 		SELECT API_KEY
 		FROM cm.CM_APIKEY ca 
 		WHERE	ca.WEB_SENDER_YN = 'Y'
-		AND		ca.PROJECT_ID = #{projectId}
+		<choose>
+			<when test="projectId == 'ALL'.toString()">
+			AND		ca.CORP_ID = #{corpId}
+			</when>
+			<otherwise>
+			AND		ca.PROJECT_ID = #{projectId}
+			</otherwise>
+		</choose>
 		ORDER BY ca.REG_DT  DESC
 		LIMIT 1
 	</select>
