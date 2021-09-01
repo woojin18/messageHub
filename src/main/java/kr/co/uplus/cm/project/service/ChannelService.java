@@ -592,7 +592,7 @@ public class ChannelService {
 		String chatbotStr = CommonUtils.getString(params.get("chatbots"));
 		JSONParser parser = new JSONParser();
 		JSONArray chatbotJson = new JSONArray();
-		if( !"".equals(chatbotStr) ) {
+		if( !"".equals(chatbotStr) && !"undefined".equals(chatbotStr) ) {
 			chatbotStr = "[" + chatbotStr + "]";
 			parser = new JSONParser();
 			chatbotJson = (JSONArray) parser.parse(chatbotStr);
@@ -735,27 +735,6 @@ public class ChannelService {
 //			System.out.println("-------------------------------------------@@@ result : " + result);
 //			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
 //			System.out.println("-------------------------------------------@@@ list : " + list);
-			
-			// 성공인지 실패인지 체크
-			if( "10000".equals(result.get("code")) ) {
-			} else if ( "500100".equals(result.get("code")) ) {
-				String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
-				throw new Exception(errMsg);
-			} else {
-				String errMsg = CommonUtils.getString(result.get("message"));
-				throw new Exception(errMsg);
-			}
-		} else if ( "delete".equals(sts) ) {
-			// 삭제요청
-			Map<String, Object> headerMap = new HashMap<String, Object>();
-			String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
-			if( "".equals(apiKey) ) { throw new Exception("API Key를 등록 후, 진행 가능합니다. 프로젝트 기본정보 탭에서 API Key를 등록해주세요."); }
-			headerMap.put("apiKey",		apiKey);
-			headerMap.put("apiId",		params.get("apiKey"));
-			headerMap.put("apiSecret",	params.get("apiSecret"));
-			headerMap.put("brandId",	brandId);
-			
-			Map<String, Object> result =  apiInterface.listDelete("/console/v1/rcs/brand/" + brandId, list, headerMap);
 			
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
