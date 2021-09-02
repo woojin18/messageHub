@@ -150,9 +150,9 @@
 						</div>
 						<div class="Dashboard01 border-line3 pd20" style="margin-top:-1px">
 							<h4 class="lc-1 text-left mt20">{{ this.chName }} 성공/실패 현황</h4>
-							<bar-chart :chart-data="successFailResultData" :height="100"></bar-chart>
+							<bar-chart :chart-data="successFailResultData" :options="successFailResultOption" :height="100"></bar-chart>
 							<h4 class="lc-1 text-left mt20">{{ this.chName }} 실패코드 현황</h4>
-							<bar-chart :chart-data="failCodeResultData" :height="100"></bar-chart>
+							<bar-chart :chart-data="failCodeResultData" :options="failCodeResultOption" :height="100"></bar-chart>
 						</div>
 					</div>
 				</div>
@@ -163,7 +163,7 @@
 					<div class="">
 						<h4 class="lc-1">당월 이용현황</h4>
 						<div class="Dashboard01 border-line2 pd20">
-							<bar-chart :chart-data="monthUsedResultData" :height="100"></bar-chart>
+							<bar-chart :chart-data="monthUsedResultData" :options="monthUsedResultOption" :height="100"></bar-chart>
 						</div>
 					</div>
 				</div>
@@ -175,7 +175,7 @@
 						<h4 class="lc-1">최근 6개월간 이용현황</h4>
 						<div class="mt20"></div>
 						<div class="Dashboard01 border-line2 pd20">
-							<bar-chart :chart-data="sixMonthUsedResultData" :height="100"></bar-chart>
+							<bar-chart :chart-data="sixMonthUsedResultData" :options="sixMonthUsedResultOption" :height="100"></bar-chart>
 						</div>
 					</div>
 				</div>
@@ -258,9 +258,13 @@ export default {
 			sixMonthUsedLmsList: [],
 			sixMonthUsedMmsList: [],
 			successFailResultData: {},
+			successFailResultOption: {},
 			failCodeResultData: {},
+			failCodeResultOption: {},
 			monthUsedResultData: {},
-			sixMonthUsedResultData: {}
+			monthUsedResultOption: {},
+			sixMonthUsedResultData: {},
+			sixMonthUsedResultOption: {}
 		}
 	},
 	created: function() {
@@ -408,6 +412,19 @@ export default {
 					}
 				]
 			}
+			this.successFailResultOption = {
+				responsive: true,
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero: true,
+							callback: function(value, index, values) {
+								return value + '건';
+							}
+						},
+					}]
+				}
+			}
 		},
 		fnGetChFailCodeList(result) {
 			this.failCodeResultDataset = [];
@@ -432,6 +449,19 @@ export default {
 			this.failCodeResultData = {
 				labels: this.dateLine,
 				datasets: this.failCodeResultDataset
+			}
+			this.failCodeResultOption = {
+				responsive: true,
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero: true,
+							callback: function(value, index, values) {
+								return value + '건';
+							}
+						},
+					}]
+				}
 			}
 		},
 		// 당월 이용현황 시간대 조회
@@ -547,6 +577,19 @@ export default {
 								data: this.monthUsedMmsList
 							}
 						]
+					}
+					this.monthUsedResultOption = {
+						responsive: true,
+						scales: {
+							yAxes: [{
+								ticks: {
+									beginAtZero: true,
+									callback: function(value, index, values) {
+										return value + '건';
+									}
+								},
+							}]
+						}
 					}
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
@@ -666,6 +709,19 @@ export default {
 								data: this.sixMonthUsedMmsList
 							}
 						]
+					}
+					this.sixMonthUsedResultOption = {
+						responsive: true,
+						scales: {
+							yAxes: [{
+								ticks: {
+									beginAtZero: true,
+									callback: function(value, index, values) {
+										return value + '건';
+									}
+								},
+							}]
+						}
 					}
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
