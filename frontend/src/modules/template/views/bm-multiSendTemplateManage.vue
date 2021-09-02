@@ -4477,6 +4477,7 @@ export default {
 		},
 		fnCallbackRcvblcNum(rcvblcNum){
 			this.rowData.smsRcvblcNumber = rcvblcNum;
+			this.fnSetSmsCurrByte();
 		},
 		fnRcsSmsButtonSD(sltDate){
 			this.rowData.rcsSMSButtons[0].action.calendarAction.createCalendarEvent.startTime = sltDate;

@@ -88,76 +88,98 @@ public class IntegratedTemplateService {
 
 		for (int i = 0; i < rtnList.size(); i++) {
 			Map<String, Object> rtnMap = (Map<String, Object>) rtnList.get(i);
-			String rcsButton0Data = (String) rtnMap.get("rcsButton0Data");
-			if (!"".equals(rcsButton0Data) && rcsButton0Data != null) {
-				JSONParser parser = new JSONParser();
-				JSONObject obj = (JSONObject) parser.parse(rcsButton0Data);
-				JSONArray jsonArr = null;
-				jsonArr = (JSONArray) obj.get("suggestions");
-				rtnMap.put("rcsButton0Data", jsonArr);
-			}
-			String rcsButton1Data = (String) rtnMap.get("rcsButton1Data");
-			if (!"".equals(rcsButton1Data) && rcsButton1Data != null) {
-				JSONParser parser = new JSONParser();
-				JSONObject obj = (JSONObject) parser.parse(rcsButton1Data);
-				JSONArray jsonArr = null;
-				jsonArr = (JSONArray) obj.get("suggestions");
-				rtnMap.put("rcsButton1Data", jsonArr);
-			}
-			String rcsButton2Data = (String) rtnMap.get("rcsButton2Data");
-			if (!"".equals(rcsButton2Data) && rcsButton2Data != null) {
-				JSONParser parser = new JSONParser();
-				JSONObject obj = (JSONObject) parser.parse(rcsButton2Data);
-				JSONArray jsonArr = null;
-				jsonArr = (JSONArray) obj.get("suggestions");
-				rtnMap.put("rcsButton2Data", jsonArr);
-			}
-			String rcsButton3Data = (String) rtnMap.get("rcsButton3Data");
-			if (!"".equals(rcsButton3Data) && rcsButton3Data != null) {
-				JSONParser parser = new JSONParser();
-				JSONObject obj = (JSONObject) parser.parse(rcsButton3Data);
-				JSONArray jsonArr = null;
-				jsonArr = (JSONArray) obj.get("suggestions");
-				rtnMap.put("rcsButton3Data", jsonArr);
-			}
-			String rcsButton4Data = (String) rtnMap.get("rcsButton4Data");
-			if (!"".equals(rcsButton4Data) && rcsButton4Data != null) {
-				JSONParser parser = new JSONParser();
-				JSONObject obj = (JSONObject) parser.parse(rcsButton4Data);
-				JSONArray jsonArr = null;
-				jsonArr = (JSONArray) obj.get("suggestions");
-				rtnMap.put("rcsButton4Data", jsonArr);
-			}
-			String rcsButton5Data = (String) rtnMap.get("rcsButton5Data");
-			if (!"".equals(rcsButton5Data) && rcsButton5Data != null) {
-				JSONParser parser = new JSONParser();
-				JSONObject obj = (JSONObject) parser.parse(rcsButton5Data);
-				JSONArray jsonArr = null;
-				jsonArr = (JSONArray) obj.get("suggestions");
-				rtnMap.put("rcsButton5Data", jsonArr);
-			}
-			if ("CELL".equals(rtnMap.get("rcsPrdType"))) {
-				String content = (String) rtnMap.get("rcsStyleContent");
-				JSONParser parser = new JSONParser();
-				JSONObject obj = (JSONObject) parser.parse(content);
-				JSONArray jsonArr = null;
-				jsonArr = (JSONArray) obj.get("content");
-				String[] styleInput = new String[jsonArr.size()];
-				String[] styleInputSec = new String[jsonArr.size()];
-				Boolean[] rcsStyleChk = new Boolean[jsonArr.size()];
-				for (int j = 0; j < jsonArr.size(); j++) {
-					JSONObject styleInputObj = (JSONObject) jsonArr.get(j);
-					styleInput[j] = CommonUtils.getString(styleInputObj.get("description0"));
-					styleInputSec[j] = CommonUtils.getString(styleInputObj.get("description1"));
-					if ("".equals(CommonUtils.getString(styleInputObj.get("description1")))) {
-						rcsStyleChk[j] = true;
-					} else {
-						rcsStyleChk[j] = false;
+			String chTypeList = (String) rtnMap.get("chTypeList");
+
+			if (chTypeList.contains("RCS")) {
+				String rcsButton0Data = (String) rtnMap.get("rcsButton0Data");
+				if (!"".equals(rcsButton0Data) && rcsButton0Data != null) {
+					JSONParser parser = new JSONParser();
+					JSONObject obj = (JSONObject) parser.parse(rcsButton0Data);
+					JSONArray jsonArr = null;
+					jsonArr = (JSONArray) obj.get("suggestions");
+					rtnMap.put("rcsButton0Data", jsonArr);
+				}
+				String rcsButton1Data = (String) rtnMap.get("rcsButton1Data");
+				if (!"".equals(rcsButton1Data) && rcsButton1Data != null) {
+					JSONParser parser = new JSONParser();
+					JSONObject obj = (JSONObject) parser.parse(rcsButton1Data);
+					JSONArray jsonArr = null;
+					jsonArr = (JSONArray) obj.get("suggestions");
+					rtnMap.put("rcsButton1Data", jsonArr);
+				}
+				String rcsButton2Data = (String) rtnMap.get("rcsButton2Data");
+				if (!"".equals(rcsButton2Data) && rcsButton2Data != null) {
+					JSONParser parser = new JSONParser();
+					JSONObject obj = (JSONObject) parser.parse(rcsButton2Data);
+					JSONArray jsonArr = null;
+					jsonArr = (JSONArray) obj.get("suggestions");
+					rtnMap.put("rcsButton2Data", jsonArr);
+				}
+				String rcsButton3Data = (String) rtnMap.get("rcsButton3Data");
+				if (!"".equals(rcsButton3Data) && rcsButton3Data != null) {
+					JSONParser parser = new JSONParser();
+					JSONObject obj = (JSONObject) parser.parse(rcsButton3Data);
+					JSONArray jsonArr = null;
+					jsonArr = (JSONArray) obj.get("suggestions");
+					rtnMap.put("rcsButton3Data", jsonArr);
+				}
+				String rcsButton4Data = (String) rtnMap.get("rcsButton4Data");
+				if (!"".equals(rcsButton4Data) && rcsButton4Data != null) {
+					JSONParser parser = new JSONParser();
+					JSONObject obj = (JSONObject) parser.parse(rcsButton4Data);
+					JSONArray jsonArr = null;
+					jsonArr = (JSONArray) obj.get("suggestions");
+					rtnMap.put("rcsButton4Data", jsonArr);
+				}
+				String rcsButton5Data = (String) rtnMap.get("rcsButton5Data");
+				if (!"".equals(rcsButton5Data) && rcsButton5Data != null) {
+					JSONParser parser = new JSONParser();
+					JSONObject obj = (JSONObject) parser.parse(rcsButton5Data);
+					JSONArray jsonArr = null;
+					jsonArr = (JSONArray) obj.get("suggestions");
+					rtnMap.put("rcsButton5Data", jsonArr);
+				}
+				if ("CELL".equals(rtnMap.get("rcsPrdType"))) {
+					String content = (String) rtnMap.get("rcsStyleContent");
+					JSONParser parser = new JSONParser();
+					JSONObject obj = (JSONObject) parser.parse(content);
+					JSONArray jsonArr = null;
+					jsonArr = (JSONArray) obj.get("content");
+					String[] styleInput = new String[jsonArr.size()];
+					String[] styleInputSec = new String[jsonArr.size()];
+					Boolean[] rcsStyleChk = new Boolean[jsonArr.size()];
+					for (int j = 0; j < jsonArr.size(); j++) {
+						JSONObject styleInputObj = (JSONObject) jsonArr.get(j);
+						styleInput[j] = CommonUtils.getString(styleInputObj.get("description0"));
+						styleInputSec[j] = CommonUtils.getString(styleInputObj.get("description1"));
+						if ("".equals(CommonUtils.getString(styleInputObj.get("description1")))) {
+							rcsStyleChk[j] = true;
+						} else {
+							rcsStyleChk[j] = false;
+						}
+					}
+					rtnMap.put("rcsStyleInput", styleInput);
+					rtnMap.put("rcsStyleInputSec", styleInputSec);
+					rtnMap.put("rcsStyleChk", rcsStyleChk);
+				}
+			} else if (chTypeList.contains("SMSMMS")) {
+				String msgKind = (String) rtnMap.get("msgKind");
+				String smsSendType = (String) rtnMap.get("smsSendType");
+				if ("A".equals(msgKind)) {
+					String smsTitle = (String) rtnMap.get("smsTitle");
+					String smsContent = (String) rtnMap.get("smsContent");
+					String smsRcvblcNumber = (String) rtnMap.get("smsRcvblcNumber");
+					if ("S".equals(smsSendType)) {
+						smsContent = smsContent.replace("(광고)", "");
+						smsContent = smsContent.replace(smsRcvblcNumber, "");
+						rtnMap.put("smsContent", smsContent);
+					} else if ("M".equals(smsSendType)) {
+						smsTitle = smsTitle.replace("(광고)", "");
+						smsContent = smsContent.replace(smsRcvblcNumber, "");
+						rtnMap.put("smsTitle", smsTitle);
+						rtnMap.put("smsContent", smsContent);
 					}
 				}
-				rtnMap.put("rcsStyleInput", styleInput);
-				rtnMap.put("rcsStyleInputSec", styleInputSec);
-				rtnMap.put("rcsStyleChk", rcsStyleChk);
 			}
 		}
 
@@ -737,12 +759,11 @@ public class IntegratedTemplateService {
 					sb.append("\"ch\" : \"SMS\","); // 발송채널
 					sb.append("\"data\" : { ");
 					sb.append("\"callback\" : \"" + params.get("callback") + "\",");
-//					if ("A".equals(params.get("msgKind"))) {
-//						sb.append("\"msg\" : \"(광고)" + JSONObject.escape((String) params.get("smsContent")) + "\" "); // 메시지
-//					} else {
-//						sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + "\" "); // 메시지
-//					}
-					sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + "\" "); // 메시지
+					if ("A".equals(params.get("msgKind"))) {
+						sb.append("\"msg\" : \"(광고)" + JSONObject.escape((String) params.get("smsContent")) + params.get("smsRcvblcNumber") + "\" "); // 메시지
+					} else {
+						sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + "\" "); // 메시지
+					}
 					if (params.containsKey("smsRcvblcNumber")) {
 						sb.append(",\"rcvblcInput\" : \"" + params.get("smsRcvblcNumber") + "\""); // 수신거부방법
 					}
@@ -752,13 +773,13 @@ public class IntegratedTemplateService {
 					sb.append("\"ch\" : \"MMS\",");// 발송채널
 					sb.append("\"data\" : { ");
 					sb.append("\"callback\" : \"" + params.get("callback") + "\",");
-//					if ("A".equals(params.get("msgKind"))) {
-//						sb.append("\"title\" : \"(광고)" + params.get("smsTitle") + "\",");
-//					} else {
-//						sb.append("\"title\" : \"" + params.get("smsTitle") + "\",");
-//					}
-					sb.append("\"title\" : \"" + params.get("smsTitle") + "\",");
-					sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + "\" ");
+					if ("A".equals(params.get("msgKind"))) {
+						sb.append("\"title\" : \"(광고)" + params.get("smsTitle") + "\",");
+						sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + params.get("smsRcvblcNumber") + "\" ");
+					} else {
+						sb.append("\"title\" : \"" + params.get("smsTitle") + "\",");
+						sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + "\" ");
+					}
 					if (params.containsKey("smsRcvblcNumber")) {
 						sb.append(",\"rcvblcInput\" : \"" + params.get("smsRcvblcNumber") + "\" "); // 수신거부방법
 					}
