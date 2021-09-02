@@ -361,7 +361,6 @@
                 AND CST.PROJECT_ID IN ('ALL', #{projectId})
                 AND CST.USE_YN = 'Y'
                 AND CST.TMPLT_STATUS = 'COMPLETE'
-                AND CST.TMPLT_TYPE = 'M'
         ) SMT
         LEFT OUTER JOIN cm.CM_RCS_MSGBASE RCS
             ON SMT.MESSAGEBASE_ID = RCS.MESSAGEBASE_ID
@@ -399,6 +398,9 @@
                 OR UPPER(JSON_EXTRACT(A.TMPLT_INFO, '$[*].ch')) LIKE CONCAT('%', UPPER(#{item}), '%')
                 </foreach>
             )
+        </if>
+        <if test="searchProductCode != '' and searchProductCode != null ">
+            AND A.PRODUCT_CODE = #{searchProductCode}
         </if>
     </sql>
 

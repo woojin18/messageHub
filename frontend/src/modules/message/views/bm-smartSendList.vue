@@ -75,100 +75,20 @@
     <div>
       <h4>스마트발송 상품</h4>
       <ul class="of_h">
-        <li class="border-line2 of_h float-left pd20" style="width:252px">
+        <li v-for="(info, idx) in prdDatas" :key="idx" class="border-line2 of_h float-left pd20" style="width:252px">
           <ul class="color6 float-left mr10" style="font-weight:700">
             <li><h5>상품명</h5></li>
             <li><h5>채널구성</h5></li>
             <li><h5>채널타입</h5></li>
           </ul>
           <ul class="color6">
-            <li><h5>스마트 정보형</h5></li>
-            <li><h5>푸시,알림톡</h5></li>
-            <li><h5>정보성</h5></li>
+            <li><h5>{{info.productName}}</h5></li>
+            <li><h5>{{info.smartChProduct | getChNm}}</h5></li>
+            <li><h5>{{info.smartChProduct | getMsgKind}}</h5></li>
           </ul>
           <div class="mt10">
-            <input type="radio" name="smart" value="smart1" id="smart1" class="radioStyle" checked=""><label for="smart1"></label>
-            <i class="fas fa-question-circle toolTip"></i>
-          </div>
-        </li>
-        <li class="border-line2 of_h float-left pd20" style="width:251px">
-          <ul class="color6 float-left mr10" style="font-weight:700">
-            <li><h5>상품명</h5></li>
-            <li><h5>채널구성</h5></li>
-            <li><h5>채널타입</h5></li>
-          </ul>
-          <ul class="color6 font-size15 line-height2em">
-            <li><h5>스마트 광고형</h5></li>
-            <li><h5>푸시,친구톡</h5></li>
-            <li><h5>광고성</h5></li>
-          </ul>
-          <div class="mt10">
-            <input type="radio" name="smart" value="smart2" id="smart2" class="radioStyle"><label for="smart2"></label>
-            <i class="fas fa-question-circle toolTip"></i>
-          </div>
-        </li>
-        <li class="border-line2 of_h float-left pd20" style="width:251px">
-          <ul class="color6 float-left mr10" style="font-weight:700">
-            <li><h5>상품명</h5></li>
-            <li><h5>채널구성</h5></li>
-            <li><h5>채널타입</h5></li>
-          </ul>
-          <ul class="color6 font-size15 line-height2em">
-            <li><h5>스마트 1번</h5></li>
-            <li><h5>친구톡,MMS</h5></li>
-            <li><h5>광고성</h5></li>
-          </ul>
-          <div class="mt10">
-            <input type="radio" name="smart" value="smart3" id="smart3" class="radioStyle"><label for="smart3"></label>
-            <i class="fas fa-question-circle toolTip"></i>
-          </div>
-        </li>
-        <li class="border-line2 of_h float-left pd20" style="width:251px">
-          <ul class="color6 float-left mr10" style="font-weight:700">
-            <li><h5>상품명</h5></li>
-            <li><h5>채널구성</h5></li>
-            <li><h5>채널타입</h5></li>
-          </ul>
-          <ul class="color6 font-size15 line-height2em">
-            <li><h5>스마트 2번</h5></li>
-            <li><h5>RCS,MMS</h5></li>
-            <li><h5>광고성</h5></li>
-          </ul>
-          <div class="mt10">
-            <input type="radio" name="smart" value="smart4" id="smart4" class="radioStyle"><label for="smart4"></label>
-            <i class="fas fa-question-circle toolTip"></i>
-          </div>
-        </li>
-        <li class="border-line2 of_h float-left pd20" style="width:251px">
-          <ul class="color6 float-left mr10" style="font-weight:700">
-            <li><h5>상품명</h5></li>
-            <li><h5>채널구성</h5></li>
-            <li><h5>채널타입</h5></li>
-          </ul>
-          <ul class="color6 font-size15 line-height2em">
-            <li><h5>스마트 3번</h5></li>
-            <li><h5>푸시, 알림톡, RCS</h5></li>
-            <li><h5>정보성</h5></li>
-          </ul>
-          <div class="mt10">
-            <input type="radio" name="smart" value="smart5" id="smart5" class="radioStyle"><label for="smart5"></label>
-            <i class="fas fa-question-circle toolTip"></i>
-          </div>
-        </li>
-        <li class="border-line2 of_h float-left pd20" style="width:251px">
-          <ul class="color6 float-left mr10" style="font-weight:700">
-            <li><h5>상품명</h5></li>
-            <li><h5>채널구성</h5></li>
-            <li><h5>채널타입</h5></li>
-          </ul>
-          <ul class="color6 font-size15 line-height2em">
-            <li><h5>스마트 4번</h5></li>
-            <li><h5>알림톡, RCS, MMS</h5></li>
-            <li><h5>광고성</h5></li>
-          </ul>
-          <div class="mt10">
-            <input type="radio" name="smart" value="smart6" id="smart6" class="radioStyle"><label for="smart6"></label>
-            <i class="fas fa-question-circle toolTip"></i>
+            <input :id="info.productCode" name="searchProductCode" type="radio" :value="info.productCode" class="radioStyle" v-model="searchData.searchProductCode">
+            <label :for="info.productCode"></label>
           </div>
         </li>
       </ul>
@@ -186,11 +106,8 @@
 
         <!-- 15개씩 보기 -->
         <div class="of_h inline">
-          <div class="float-left">전체 : <span class="color1"><strong>20</strong></span>건
-            <select name="userConsole_sub020701_2" class="selectStyle2 width120 ml20">
-              <option value="">15개씩 보기</option>
-              <option value="">30개씩 보기</option>
-            </select>
+          <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+            <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
           </div>
         </div>
         <!-- //15개씩 보기 -->
@@ -222,62 +139,32 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td class="text-center"><div class="boardCheck"><input type="checkbox" id="check2" class="boardCheckStyle" value="미사용"><label for="check2"></label></div></td>
-                  <td class="text-center">5</td>
-                  <td class="text-center">TP202102010001</td>
-                  <td class="text-center">푸시 템플릿1</td>
-                  <td class="text-center">스마트상품 광고형</td>
-                  <td class="text-center">공용</td>
-                  <td class="text-center">siga77</td>
-                  <td class="text-center end">2021.02.08 00:00:00</td>
+                <tr v-for="(data, idx) in datas" :key="idx">
+                  <td class="text-center">
+                    <div class="boardCheck">
+                      <input type="checkbox" id="check2" class="boardCheckStyle" value="미사용">
+                      <label for="check2"></label>
+                    </div>
+                  </td>
+                  <td class="text-center">{{totCnt-offset-data.rowNum+1}}</td>
+                  <td class="text-center">
+                    <u><router-link :to="{ name: 'sendIntegMessage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u>
+                  </td>
+                  <td class="text-center">{{data.tmpltTitle | unescapeXss}}</td>
+                  <td class="text-center">{{data.msgKindName}}</td>
+                  <td class="text-center">{{data.otherProjectUseYn}}</td>
+                  <td class="text-center">{{data.regNm}}</td>
+                  <td class="text-center end">{{data.regDt}}</td>
                 </tr>
-                <tr>
-                  <td class="text-center"><div class="boardCheck"><input type="checkbox" id="check3" class="boardCheckStyle" value="미사용"><label for="check3"></label></div></td>
-                  <td class="text-center">4</td>
-                  <td class="text-center">TP202102010001</td>
-                  <td class="text-center">푸시 이미지 템플릿1</td>
-                  <td class="text-center">스마트상품 광고형</td>
-                  <td class="text-center">공용</td>
-                  <td class="text-center">james</td>
-                  <td class="text-center end">2021.02.08 00:00:00</td>
-                </tr>
-                <tr>
-                  <td class="text-center"><div class="boardCheck"><input type="checkbox" id="check4" class="boardCheckStyle" value="미사용"><label for="check4"></label></div></td>
-                  <td class="text-center">3</td>
-                  <td class="text-center">TP202102010001</td>
-                  <td class="text-center">푸시 템플릿1</td>
-                  <td class="text-center">스마트 1번</td>
-                  <td class="text-center">공용</td>
-                  <td class="text-center">siga77</td>
-                  <td class="text-center end">2021.02.08 00:00:00</td>
-                </tr>
-                <tr>
-                  <td class="text-center"><div class="boardCheck"><input type="checkbox" id="check5" class="boardCheckStyle" value="미사용"><label for="check5"></label></div></td>
-                  <td class="text-center">2</td>
-                  <td class="text-center">TP202102010001</td>
-                  <td class="text-center">푸시 이미지 템플릿1</td>
-                  <td class="text-center">스마트 1번</td>
-                  <td class="text-center">공용</td>
-                  <td class="text-center">james</td>
-                  <td class="text-center end">2021.02.08 00:00:00</td>
-                </tr>
-                <tr>
-                  <td class="text-center"><div class="boardCheck"><input type="checkbox" id="check6" class="boardCheckStyle" value="미사용"><label for="check6"></label></div></td>
-                  <td class="text-center">1</td>
-                  <td class="text-center">TP202102010001</td>
-                  <td class="text-center">푸시 템플릿1</td>
-                  <td class="text-center">스마트상품 광고형</td>
-                  <td class="text-center">공용</td>
-                  <td class="text-center">siga77</td>
-                  <td class="text-center end">2021.02.08 00:00:00</td>
+                <tr v-if="datas.length == 0">
+                  <td class="text-center" colspan="8">검색된 내용이 없습니다.</td>
                 </tr>
               </tbody>
             </table>
             <!-- //table -->
-          </div>      
+          </div>
         </div>
-      </div>      
+      </div>
     </div>
 
     <!-- pagination -->
@@ -292,12 +179,15 @@
 <script>
 import Calendar from "@/components/Calendar.vue";
 import PageLayer from '@/components/PageLayer.vue';
+import SelectLayer from '@/components/SelectLayer.vue';
 
 import messageApi from "@/modules/message/service/messageApi.js";
+import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
   name: "smartSendList",
   components: {
+    SelectLayer,
     Calendar,
     PageLayer
   },
@@ -312,6 +202,7 @@ export default {
           'searchText' : '',
           'searchMsgKindCd' : [],
           'searchMsgCh' : [],
+          'searchProductCode' : '',
           'searchStartDate' : this.$gfnCommonUtils.getCurretDate(),
           'searchEndDate' : this.$gfnCommonUtils.getCurretDate()
         }
@@ -357,12 +248,58 @@ export default {
     this.fnSelectSmartChProductList();
     this.fnPageNoResetSearch();
   },
+  filters:{
+    getMsgKind(val){
+      if(!val) return val;
+      val = val.toString();
+
+      let rtn = '';
+      const map = JSON.parse(val);
+      
+      if(map['msg_kind']){
+        rtn = (map['msg_kind'] == 'A' ? '광고성' : '정보성');
+      }
+      return rtn;
+    },
+    getChNm(val){
+      if(!val) return val;
+      val = val.toString();
+
+      let rtn = '';
+      const map = JSON.parse(val);
+
+      if(map['msg_ch']){
+        const msgChList = map['msg_ch'];
+        msgChList.forEach(e => {
+          if(e.chType == 'PUSH'){
+            rtn += ',푸시';
+          } else if(e.chType == 'SMS/MMS'){
+            if(e.spec == 'mms'){
+              rtn += ',MMS';
+            } else {
+              rtn += ',SMS';
+            }
+          } else if(e.chType == 'KKO'){
+            if(e.spec == 'alimtalk'){
+              rtn += ',알림톡';
+            } else {
+              rtn += ',친구톡';
+            }
+          } else if(e.chType == 'RCS'){
+            rtn += ',RCS';
+          }
+        });
+      }
+      return (rtn.indexOf(',') == 0 ? rtn.substring(1) : rtn);
+    }
+  },
   methods: {
     async fnSelectSmartChProductList(){
       var params = {};
       await messageApi.selectSmartChProductList(params).then(response =>{
         const result = response.data;
         if(result.success) {
+          console.log('selectSmartChProductList ====>>> ', result);
           this.prdDatas = Object.assign([], result.data);
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
@@ -420,20 +357,26 @@ export default {
       var params = Object.assign({}, this.searchData);
       params.pageNo = this.pageNo;
       params.listSize = this.listSize;
-
       await messageApi.selectSmartTmpltList(params).then(response =>{
         const result = response.data;
         if(result.success) {
 
           console.log('selectSmartTmpltList ====>>> ', result);
 
+          this.chkBox = ''
+          this.datas = result.data;
+          this.totCnt = result.pageInfo.totCnt;
+          this.offset = result.pageInfo.offset;
+          this.datas = Object.assign([], result.data);
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
     },
-
-
+    fnSelected(listSize) {
+      this.listSize = Number(listSize);
+      this.$refs.updatePaging.fnAllDecrease();
+    },
     fnPageNoResetSearch(){
       this.$refs.updatePaging.fnAllDecrease();
     },
