@@ -1202,11 +1202,7 @@ export default {
 			if(success) {
 				confirm.fnAlert("RCS 발송", "메시지 발송처리를 완료하였습니다. 메시지 발송 성공/실패는 발송/수신현황에서 확인이 가능합니다.");
 			} else {
-				if("" != result.message) {
-					confirm.fnAlert("RCS 발송", result.message);
-				} else {
-					confirm.fnAlert("RCS 발송", "메시지 발송처리를 완료하였습니다. 메시지 발송 성공/실패는 발송/수신현황에서 확인이 가능합니다.");
-				}
+				confirm.fnAlert("RCS 발송", result.message);
 			}
 		});
 

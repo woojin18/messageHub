@@ -1777,6 +1777,7 @@ public class RcsTemplateSendService {
 				if(isAllFail) failMsg = CommonUtils.getString(responseBody.get("message"));
 			} catch (Exception e) {
 				isServerError = true;
+				if(retryCnt == ApiConfig.GW_RETRY_CNT) sendMsgService.sendMsgErrorNoti(Const.ApiWatchNotiMsg.API_CONNECTION_FAIL);
 			}
 
 			if(isDone) {
@@ -1795,7 +1796,6 @@ public class RcsTemplateSendService {
 		//웹 발송 내역 등록
 		if(isAllFail) {
 			this.insertPushCmWebMsg(headerMap, apiMap, params, "FAIL");
-			throw new Exception(failMsg);
 		} else {
 			this.insertPushCmWebMsg(headerMap, apiMap, params, "COMPLETED");
 		}
