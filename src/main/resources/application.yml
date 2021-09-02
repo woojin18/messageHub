@@ -256,7 +256,7 @@ app.props:
     prefix: "Bearer "
 
 logging:
-  config: classpath:log4j2-spring.prod.xml
+  config: classpath:log4j2-spring.prd.xml
 
 cash.pg:
   clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw
