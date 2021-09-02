@@ -358,13 +358,13 @@ public class SignUpController implements Serializable{
 				sGender = "2";
 			}
 			
-			Object session_sRequestNumber = request.getSession(true).getAttribute("REQ_SEQ");
+//			Object session_sRequestNumber = request.getSession(true).getAttribute("REQ_SEQ");
 //			String session_sRequestNumber = (String)session.getAttribute("REQ_SEQ");
-			if(!sRequestNumber.equals(session_sRequestNumber)) {
-				sMessage = "세션값 불일치 오류입니다.";
-				sResponseNumber = "";
-				sAuthType = "";
-			} else { 
+//			if(!sRequestNumber.equals(session_sRequestNumber)) {
+//				sMessage = "세션값 불일치 오류입니다.";
+//				sResponseNumber = "";
+//				sAuthType = "";
+//			} else { 
 				niceCheckMap.put("sCipherTime", sCipherTime);
 				niceCheckMap.put("sRequestNumber", sRequestNumber);
 				niceCheckMap.put("sResponseNumber", sResponseNumber);
@@ -379,7 +379,7 @@ public class SignUpController implements Serializable{
 				niceCheckMap.put("sMobileCo", sMobileCo);
 				
 				rtn.setData(niceCheckMap);
-			}
+//			}
 		} else if( iReturn == -1) {
 			sMessage = "복호화 시스템 오류입니다.";
 		} else if( iReturn == -4) {
