@@ -371,7 +371,7 @@
         AND A.CORP_ID = #{corpId}
         AND A.TMPLT_STATUS = 'COMPLETE'
         AND A.USE_YN = 'Y'
-        AND A.TMPLT_TYPE = 'M'
+        AND A.TMPLT_TYPE = #{searchTmpltType}
         AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
         AND JSON_CONTAINS(JSON_ARRAY(<foreach collection="useChGrps" item="item" separator=",">#{item}</foreach>), JSON_EXTRACT(A.TMPLT_INFO, '$[*].ch'), '$') > 0
         <if test="searchText != '' and searchText != null ">
@@ -540,6 +540,30 @@
         ) A
         INNER JOIN cm_noti.CM_RECIPIENT CR
                 ON A.RECIPIENT_ID = CR.RECIPIENT_ID
+    </select>
+
+    <select id="selectSmartChProduct" parameterType="hashmap" resultType="camel">
+    /* sendMessage.selectSmartChProduct - 스마트 채널 상품 조회 */
+        SELECT
+            CPU.PRODUCT_CODE
+            , CPU.PRODUCT_NAME
+            , CPU.CH_GRP
+            , CPU.CH
+            , CPU.SMART_CH_PRODUCT_YN
+            , CPU.SMART_CH_PRODUCT
+            , CPU.PRE_FEE
+            , CPU.USE_YN
+            , CPU.REG_ID
+            , CPU.REG_DT
+            , CPU.UPD_ID
+            , CPU.UPD_DT
+            , CPU.POST_FEE_INFO
+        FROM cm_bo.CM_PRODUCT_UNIT CPU
+        WHERE CPU.SMART_CH_PRODUCT_YN = 'Y'
+            AND CPU.USE_YN = 'Y'
+        <if test="productCode != '' and productCode != null ">
+            AND CPU.PRODUCT_CODE = #{productCode}
+        </if>
     </select>
 
 </mapper>

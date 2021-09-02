@@ -180,6 +180,7 @@ export default {
       require: false,
       default: function() {
         return {
+          'searchTmpltType' : 'M',
           'searchCondi' : 'templateName',
           'searchText' : '',
           'searchMsgKindCd' : [],

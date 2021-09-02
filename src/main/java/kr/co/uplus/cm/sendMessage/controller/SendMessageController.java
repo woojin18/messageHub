@@ -1204,5 +1204,18 @@ public class SendMessageController {
         return rtn;
     }
 
+    @PostMapping("/selectSmartChProductList")
+    public RestResult<?> selectSmartChProductList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = sendMsgService.selectSmartChProductList(params);
+        } catch (Exception e) {
+            rtn.setFail("실패하였습니다.");
+            log.error("{}.selectSmartChProductList Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
+
 }
 

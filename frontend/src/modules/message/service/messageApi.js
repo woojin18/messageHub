@@ -81,6 +81,10 @@ const deleteRejectPhoneList = (params) => {
   return httpClient.post('/uc/sendMessage/deleteRejectPhoneList', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 
+const selectSmartChProductList = (params) => {
+  return httpClient.post('/uc/sendMessage/selectSmartChProductList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
 export default {
   selectAppIdList,
   selectCallbackList,
@@ -104,7 +108,8 @@ export default {
   selectApiKey,
   insertRejectPhone,
   selectRejectPhoneList,
-  deleteRejectPhoneList
+  deleteRejectPhoneList,
+  selectSmartChProductList
 };
 
 function fnExcelDownCallback(response){

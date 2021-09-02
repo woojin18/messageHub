@@ -2,6 +2,7 @@ import SendPushMain from '../views/bm-sendPushMain.vue'
 import SendSmsMain from '../views/bm-sendSmsMain.vue'
 import SendFrndTalkMain from '../views/bm-sendFrndTalkMain.vue'
 import SendAlimTalkMain from '../views/bm-sendAlimTalkMain.vue'
+import SmartSendList from '../views/bm-smartSendList.vue'
 
 export default [
     {
@@ -27,5 +28,11 @@ export default [
         name: 'sendAlimTalk',
         meta: { menu: 'UC_SND_ALIM_MSG' },
         component: SendAlimTalkMain
+    },
+    {
+        path: '/uc/message/smartSendList',
+        name: 'smartSendList',
+        meta: { menu: 'UC_SND_SMRT_MSG' },
+        component: SmartSendList
     }
 ]

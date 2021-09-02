@@ -2658,7 +2658,7 @@ public class SendMessageService {
      * 발송 오류 감시항목 메시지 전송
      * @param notiMsg
      */
-    @SuppressWarnings({ "unchecked", "static-access" })
+    @SuppressWarnings({ "unchecked" })
     public void sendMsgErrorNoti(ApiWatchNotiMsg notiMsg) {
 
         log.info("{}.sendMsgErrorNoti Start ====>>>  : {}", this.getClass(), notiMsg);
@@ -2700,6 +2700,19 @@ public class SendMessageService {
         }
 
         log.info("{}.sendMsgErrorNoti End ====>>>  : {}", this.getClass(), notiMsg);
+    }
+
+    /**
+     * 스마트 채널 상품 리스트 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectSmartChProductList(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_SMART_CH_PRODUCT, params);
+        rtn.setData(rtnList);
+        return rtn;
     }
 
 }
