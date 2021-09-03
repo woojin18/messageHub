@@ -89,8 +89,25 @@ public class IntegratedTemplateService {
 		for (int i = 0; i < rtnList.size(); i++) {
 			Map<String, Object> rtnMap = (Map<String, Object>) rtnList.get(i);
 			String chTypeList = (String) rtnMap.get("chTypeList");
+			String msgKind = (String) rtnMap.get("msgKind");
 
-			if (chTypeList.contains("RCS")) {
+			if (chTypeList.contains("PUSH")) {
+				if ("A".equals(msgKind)) {
+					String pushTitle = (String) rtnMap.get("pushTitle");
+					String pushMsg = (String) rtnMap.get("pushMsg");
+					String pushRcvblcInput = (String) rtnMap.get("pushRcvblcInput");
+
+					if (!"".equals(pushTitle)) {
+						pushTitle = pushTitle.replace("(광고)", "");
+						pushMsg = pushMsg.replace("\n"+pushRcvblcInput, "");
+						rtnMap.put("pushTitle", pushTitle);
+					} else {
+						pushMsg = pushMsg.replace("(광고)", "");
+						pushMsg = pushMsg.replace("\n"+pushRcvblcInput, "");
+					}
+					rtnMap.put("pushMsg", pushMsg);
+				}
+			} else if (chTypeList.contains("RCS")) {
 				String rcsButton0Data = (String) rtnMap.get("rcsButton0Data");
 				if (!"".equals(rcsButton0Data) && rcsButton0Data != null) {
 					JSONParser parser = new JSONParser();
@@ -163,7 +180,6 @@ public class IntegratedTemplateService {
 					rtnMap.put("rcsStyleChk", rcsStyleChk);
 				}
 			} else if (chTypeList.contains("SMSMMS")) {
-				String msgKind = (String) rtnMap.get("msgKind");
 				String smsSendType = (String) rtnMap.get("smsSendType");
 				if ("A".equals(msgKind)) {
 					String smsTitle = (String) rtnMap.get("smsTitle");
@@ -171,11 +187,11 @@ public class IntegratedTemplateService {
 					String smsRcvblcNumber = (String) rtnMap.get("smsRcvblcNumber");
 					if ("S".equals(smsSendType)) {
 						smsContent = smsContent.replace("(광고)", "");
-						smsContent = smsContent.replace(smsRcvblcNumber, "");
+						smsContent = smsContent.replace("\n"+smsRcvblcNumber, "");
 						rtnMap.put("smsContent", smsContent);
 					} else if ("M".equals(smsSendType)) {
 						smsTitle = smsTitle.replace("(광고)", "");
-						smsContent = smsContent.replace(smsRcvblcNumber, "");
+						smsContent = smsContent.replace("\n"+smsRcvblcNumber, "");
 						rtnMap.put("smsTitle", smsTitle);
 						rtnMap.put("smsContent", smsContent);
 					}
@@ -230,8 +246,18 @@ public class IntegratedTemplateService {
 
 				sb.append("\"data\" : { ");
 
-				sb.append("\"title\" : \"" + params.get("pushTitle") + "\","); // 제목
-				sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("pushContent")) + "\","); // 메시지
+				if ("A".equals(params.get("msgKind"))) {
+					if (!"".equals(params.get("pushTitle"))) {
+						sb.append("\"title\" : \"(광고)" + params.get("pushTitle") + "\","); // 제목
+						sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("pushContent")) + JSONObject.escape("\n" + (String) params.get("pushHowToDenyReceipt")) + "\",");
+					} else {
+						sb.append("\"title\" : \"" + params.get("pushTitle") + "\","); // 제목
+						sb.append("\"msg\" : \"(광고)" + JSONObject.escape((String) params.get("pushContent")) + JSONObject.escape("\n" + (String) params.get("pushHowToDenyReceipt")) + "\",");
+					}
+				} else {
+					sb.append("\"title\" : \"" + params.get("pushTitle") + "\","); // 제목
+					sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("pushContent")) + "\","); // 메시지
+				}
 				sb.append("\"appId\" : \"" + params.get("pushAppId") + "\","); // APP ID
 				sb.append("\"serviceCode\" : \"" + params.get("pushSend") + "\","); // 발송타입(ALL, FCM, APNS)
 				sb.append("\"rcvblcInput\" : \"" + params.get("pushHowToDenyReceipt") + "\""); // 수신거부방법
@@ -775,7 +801,7 @@ public class IntegratedTemplateService {
 					sb.append("\"callback\" : \"" + params.get("callback") + "\",");
 					if ("A".equals(params.get("msgKind"))) {
 						sb.append("\"title\" : \"(광고)" + params.get("smsTitle") + "\",");
-						sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + params.get("smsRcvblcNumber") + "\" ");
+						sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + JSONObject.escape("\n" + (String) params.get("smsRcvblcNumber")) + "\" ");
 					} else {
 						sb.append("\"title\" : \"" + params.get("smsTitle") + "\",");
 						sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + "\" ");

@@ -166,7 +166,7 @@
 					<div class="phoneTextWrap scroll-y">
 						<div class="phoneText2">
 							<p v-if="fnIsEmpty(rowData.pushTitle)">템플릿 제목</p>
-							<p v-else>{{rowData.pushTitle}}</p>
+							<p v-else><span v-if="rowData.msgKind == 'A'">(광고)</span>{{rowData.pushTitle}}</p>
 						</div>
 						<div v-if="rowData.msgType == 'IMAGE' && fnIsEmpty(rowData.pushImgInfo.imgUrl)" class="phoneText2 mt10 text-center" style="padding:65px">
 							<i class="fas fa-image-polaroid" style="font-size:38px; color:#D5D5D5"></i>
@@ -178,7 +178,7 @@
 						<div>
 							<p v-if="fnIsEmpty(rowData.pushContent) && (rowData.msgKind != 'A' || fnIsEmpty(rowData.pushHowToDenyReceipt))" class="font-size14 color4 mt10">템플릿 내용</p>
 							<p v-else class="font-size14 color4 mt10">
-								<span><pre>{{rowData.pushContent}}</pre></span>
+								<span><pre><span v-if="fnIsEmpty(rowData.pushTitle) && rowData.msgKind == 'A'">(광고)</span>{{rowData.pushContent}}</pre></span>
 								<br v-if="!fnIsEmpty(rowData.pushContent)"/>
 								<span v-if="rowData.msgKind == 'A' && !fnIsEmpty(rowData.pushHowToDenyReceipt)">
 									{{rowData.pushHowToDenyReceipt}}
@@ -201,14 +201,14 @@
 				<div class="of_h">
 					<div class="float-left" style="width:13%"><h4>제목</h4></div>
 					<div class="float-left" style="width:57%">
-						<input type="text" class="inputStyle" name="pushTitle" v-model="rowData.pushTitle" id="pushTitleId" placeholder="최대 50자 입력 가능합니다." @keyup="fnTextLength('제목', '#pushTitleId', '', '50')">
+						<input type="text" class="inputStyle" name="pushTitle" v-model="rowData.pushTitle" placeholder="최대 50자 입력 가능합니다." @input="fnSetPushCurrByte">
 					</div>
 				</div>
 				<div class="of_h">
 					<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 					<div class="float-left" style="width:57%">
-						<textarea class="textareaStyle height190" :placeholder="pushPlaceHoder" v-model="rowData.pushContent" id="pushContentId" @keyup="fnTextLength('내용', '#pushContentId', '#pushTextLength', '512')"></textarea>
-						<strong class="letter" id="pushTextLength">(00 / 512)</strong>
+						<textarea class="textareaStyle height190" :placeholder="pushPlaceHoder" v-model="rowData.pushContent" @input="fnSetPushCurrByte"></textarea>
+						<strong class="letter">({{msgPushCurrByte}} / 512)</strong>
 						<p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
 					</div>
 				</div>
@@ -2100,6 +2100,7 @@ export default {
 			rcvblcNumOpen: false,
 			beforeSenderType: 'S',
 			beforeMsgKind: 'I',
+			msgPushCurrByte: 0,
 			msgSmsCurrByte: 0,
 			msgSmsLimitByte: 0,
 
@@ -2324,6 +2325,9 @@ export default {
 					this.beforeMsgKind = nData.msgKind;
 					this.fnSetSmsCurrByte();
 				}
+				if (nData.pushContent != null) {
+					this.fnSetPushCurrByte();
+				}
 			}
 		}
 	},
@@ -2334,10 +2338,6 @@ export default {
 		this.fnSelectFriendTalkSenderKeyList();
 		this.fnSMSSelectCallbackList();
 		this.fnSetMultiSendTemplateInfo();
-		if (jQuery("#SMSMMS").prop("checked") == true) {
-			this.fnGetSmsLimitByte();
-			this.fnSetSmsCurrByte();
-		}
 	},
 	methods: {
 		init() {
@@ -3400,7 +3400,7 @@ export default {
 						this.rowData.pushImgInfo.fileId = rtnData.pushFileId;
 						this.rowData.pushImgInfo.imgUrl = rtnData.pushChImgUrl;
 						this.rowData.pushSend = rtnData.pushSendType;
-						this.rowData.pushHowToDenyReceipt = rtnData.pushRcvblcInput; // 수신거부방법
+						this.rowData.pushHowToDenyReceipt = this.$gfnCommonUtils.unescapeXss(rtnData.pushRcvblcInput); // 수신거부방법
 						this.rowData.adtnInfo = this.$gfnCommonUtils.unescapeXss(rtnData.adtnInfo); // 부가정보
 
 						// RCS DATA SET
@@ -3730,12 +3730,12 @@ export default {
 						}
 
 						//SMS/MMS DATA SET
-						if (rtnData.smsSendType == 'S') {
-							this.smsTemplateTable = 0;
-						} else if(rtnData.smsSendType == 'M') {
-							this.smsTemplateTable = 1;
-						}
 						if (rtnData.smsSendType == 'S' || rtnData.smsSendType == 'M') {
+							if (rtnData.smsSendType == 'S') {
+								this.smsTemplateTable = 0;
+							} else if(rtnData.smsSendType == 'M') {
+								this.smsTemplateTable = 1;
+							}
 							this.rowData.smsSendType = rtnData.smsSendType;
 							this.rowData.smsTitle = this.$gfnCommonUtils.unescapeXss(rtnData.smsTitle);
 							this.rowData.smsContent = this.$gfnCommonUtils.unescapeXss(rtnData.smsContent);
@@ -4418,6 +4418,16 @@ export default {
 			}
 			var text = ""+nBytes+" / "+len+"Byte";
 			if(tid) jQuery(tid).html(text);
+		},
+		fnSetPushCurrByte() {
+			let title = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.pushTitle, '');
+			let body = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.pushContent, '');
+			let rcvblcNum = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.pushHowToDenyReceipt, '');
+			let totalMsg = title + body ;
+			if (this.rowData.msgKind == 'A') {
+				totalMsg += '\n' + rcvblcNum + '(광고)';
+			}
+			this.msgPushCurrByte = this.getByte(totalMsg);
 		},
 		fnSetSmsCurrByte() {
 			let title = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.smsTitle, '');
