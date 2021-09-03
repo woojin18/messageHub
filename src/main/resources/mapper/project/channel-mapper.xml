@@ -978,4 +978,12 @@
 		)
 	</insert>
 	
+	<select id="selectPriceInfoForSaveMoCallback" resultType="camel">
+	/* channel.selectPriceInfoForSaveMoCallback */
+		SELECT	REPLACE(REPLACE(cpu.POST_FEE_INFO, '[', ''), ']', '') AS POST_FEE_INFO
+		,		cpu.PRE_FEE
+		FROM	cm_bo.CM_PRODUCT_UNIT cpu 
+		WHERE	PRODUCT_CODE = #{moType}
+	</select>
+	
 </mapper>

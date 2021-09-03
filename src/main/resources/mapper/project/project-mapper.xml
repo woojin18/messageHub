@@ -482,6 +482,26 @@
 		WHERE	CORP_ID = #{corpId}
 	</select>
 	
+	
+	<select id="selectSalesIdForSaveProject" resultType="String">
+		/* project.selectSalesIdForSaveProject */
+		SELECT	SALES_ID
+		FROM	cm_console.CM_CORP
+		WHERE	CORP_ID = #{corpId}
+	</select>
+	
+	<select id="selectEmailForSaveProject" resultType="String">
+		/* project.selectEmailForSaveProject */
+		SELECT cu.LOGIN_ID 
+		FROM cm_console.CM_CORP cc 
+		INNER JOIN cm_console.CM_USER cu 
+			ON cc.CORP_ID  = cu.CORP_ID 
+		WHERE cu.ROLE_CD = 'OWNER'
+		AND cc.CORP_ID  = #{corpId}
+		LIMIT 1
+	</select>
+	
+	
 	<select id="selectDistDetail" resultType="camel">
 		/* project.selectDistDetail */
 		SELECT	B.DIST_ID 

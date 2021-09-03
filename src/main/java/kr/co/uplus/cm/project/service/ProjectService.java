@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.project.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -112,93 +113,163 @@ public class ProjectService {
 
 		if ("C".equals(sts)) {
 			// 프로젝트 ID
-			params.put("projectId", CommonUtils.getCommonId("PJT", 4));
+			String projectIdStr = CommonUtils.getCommonId("PJT", 4);
+			params.put("projectId", projectIdStr);
 			// 후불의 경우 청구ID 관리
-			if ("N".equals(CommonUtils.getString(params.get("payType")))) {
+			if ("POST".equals(CommonUtils.getString(params.get("payType")))) {
 				// 고객번호 가져오기
 				String custNo	= CommonUtils.getString(generalDao.selectGernalObject("project.selectCustNoForSaveProject", params));
 				String regNo	= CommonUtils.getString(generalDao.selectGernalObject("project.selectRegNoForSaveProject", params));
+				String salesId	= CommonUtils.getString(generalDao.selectGernalObject("project.selectSalesIdForSaveProject", params));
 				String billId	= CommonUtils.getString(params.get("billId"));
 				
-				// 청구아이디 신규 등록해야할 때
-				if( "".equals(billId) ) {
-					// 아무튼 api
-				}
+				Map<String, Object> apiCustomerInfo = (Map<String, Object>) apiInterface.get("/console/v1/ucube/customer/" + custNo, null).get("data");
 				
-				// 리스트 재조회해서 가져오기
-				Map<String, Object> getHeaderMap = new HashMap<String, Object>();
+//				System.out.println("------------------------------------------@@ apiCustomerInfo : " + apiCustomerInfo);
 				
-				List<Map<String, Object>> resultLists = (List<Map<String, Object>>) ((Map<String, Object>) apiInterface.get("/console/v1/ucube/bill/custList?mode=C&custNo=" + custNo, getHeaderMap).get("data")).get("resultList");
 				
-				Map<String, Object> billDataMap = new HashMap<>();
-				for( int i = 0; i < resultLists.size(); i++ ) {
-					if( billId.equals(resultLists.get(i).get("billAcntNo")) ) {
-						billDataMap = resultLists.get(i);
-					}
-				}
+				Map<String, Object> joinMap = new HashMap<>();
 				
-				// CM_UCUBE 조회해서 없으면 인서트 처리
+				joinMap.put("custNo",		custNo);
+				joinMap.put("logid",		projectIdStr);
+				joinMap.put("indcId",		salesId);
+				joinMap.put("mngrId",		salesId);
+				
+				// 유큐브 서비스 등록 
 				Map<String, Object> ucubeBillInfoVo = new HashMap<>();
+				String billEmail = CommonUtils.getString(apiCustomerInfo.get("emailAddr"));
+				if( "".equals(billEmail) ) {
+					billEmail = CommonUtils.getString(generalDao.selectGernalObject("project.selectEmailForSaveProject", params));
+				}
 				
-				ucubeBillInfoVo.put("billAcntNo",	billDataMap.get("billAcntNo"));
-				ucubeBillInfoVo.put("billEmail",	billDataMap.get("billEmailAddr"));
-				ucubeBillInfoVo.put("billKind",		"N");	// Y 이메일 N 우편
-				ucubeBillInfoVo.put("billRegNo",	regNo);
-				ucubeBillInfoVo.put("billZip",		billDataMap.get("custAddrZip"));
-				ucubeBillInfoVo.put("billJuso",		billDataMap.get("custVilgAddr"));
-				ucubeBillInfoVo.put("billJuso2",	billDataMap.get("custVilgAddr"));
+				ucubeBillInfoVo.put("billAcntNo",	null);										// 청구계정 번호 (등록시엔 공백으로 입력)
+				ucubeBillInfoVo.put("billEmail",	billEmail);									// 청구이메일주소 ?
+				ucubeBillInfoVo.put("billKind",		"N");										// 청구서유형코드 Y 이메일 N 우편
+				ucubeBillInfoVo.put("billRegNo",	regNo);										// 청구사업자번호
+				ucubeBillInfoVo.put("billZip",		apiCustomerInfo.get("custAddrZip"));		// 청구우편번호
+				ucubeBillInfoVo.put("billJuso",		apiCustomerInfo.get("custVilgAbvAddr"));	// 청구주소
+				ucubeBillInfoVo.put("billJuso2",	apiCustomerInfo.get("custVilgBlwAddr"));	// 청구주소상세
 				
 				Map<String, Object> ucubePymInfoVO = new HashMap<>();
-				// 납부자고객구분코드(II:개인, GC:일반법인, GD:상장법인, EX:개인사업자, GG:LG그룺 관계사, GH:유한회사, GJ:합자회사, GL:LGT사업자용, 
-				// GM:장애인_국가유공단체, GN:LGT 인정법인, GO:합명회사, GP:공공기관, GR:로밍용, GS:주주사, GU:특수학교, GV:아동복지시설)
-				ucubePymInfoVO.put("napCustKdCd",	"GC");
-				ucubePymInfoVO.put("napCmpNm",		billDataMap.get("custNm"));
-				ucubePymInfoVO.put("napJumin",		regNo);
 				
-				// UCUBE 서비스 등록 API
-				Map<String, Object> ucubeServiceMap = new HashMap<>();
+				ucubePymInfoVO.put("napCustKdCd",	apiCustomerInfo.get("custKdCd"));			// 납부자고객구분코드
+				ucubePymInfoVO.put("napCmpNm",		apiCustomerInfo.get("custNm"));				// 납부자명 ???
+				ucubePymInfoVO.put("napJumin",		regNo);										// 생년월일/사업자번호 ????
 				
-				ucubeServiceMap.put("ucubeBillInfoVo",	ucubeBillInfoVo);
-				ucubeServiceMap.put("ucubePymInfoVO",	ucubePymInfoVO);
+				// 서비스 정보
+				Map<String, Object> serviceInfo = new HashMap<>();
 				
-				ucubeServiceMap.put("custNo",		billDataMap.get("custNo"));
-				ucubeServiceMap.put("logid",		billDataMap.get("logid"));
-				ucubeServiceMap.put("indcId",		billDataMap.get("indcId"));
-				ucubeServiceMap.put("mngrId",		billDataMap.get("mngrId"));
-				ucubeServiceMap.put("rcsCode",		billDataMap.get("rcsCode"));
-				ucubeServiceMap.put("rcsMeta",		billDataMap.get("rcsMeta"));
-				ucubeServiceMap.put("rcsAdd1Meta",	billDataMap.get("napCustKdCd"));
-				ucubeServiceMap.put("rcsAdd2Meta",	billDataMap.get("napCustKdCd"));
-				ucubeServiceMap.put("rcsAdd3Meta",	billDataMap.get("napCustKdCd"));
-				ucubeServiceMap.put("rcsAdd4Meta",	billDataMap.get("napCustKdCd"));
+				serviceInfo.put("cmpNm",			apiCustomerInfo.get("bizCompNm"));					// 가입자(상호)명 
+				serviceInfo.put("ceoNm",			apiCustomerInfo.get("custNm"));						// 대표자 성명 (필수)
+//				ucubePymInfoVO.put("damNm",			apiCustomerInfo.get("custKdCd"));		// 담당자명
+//				ucubePymInfoVO.put("deptNm",		apiCustomerInfo.get("custKdCd"));	// 담당자부서명
+//				ucubePymInfoVO.put("phoneNum",		apiCustomerInfo.get("custKdCd"));	// 담당자 전화번호
+//				ucubePymInfoVO.put("cellNum",		apiCustomerInfo.get("custKdCd"));	// 담당자 핸드폰번호
+//				ucubePymInfoVO.put("faxNum",		apiCustomerInfo.get("custKdCd"));	// 담당자FAX번호
+//				ucubePymInfoVO.put("damEmail",		apiCustomerInfo.get("custKdCd"));	// 담당자 Email
+				
+				// 채널별 단가객체
+				Map<String, Object> cmPriceInfoMap = new HashMap<>();
+				
+				List<Object> priceList = generalDao.selectGernalList("use.selectUseHistProductUnit", params);
+				
+				for( int j = 0; j < priceList.size(); j++ ) {
+					Map<String, Object> priceMap = (Map<String, Object>) priceList.get(j);
+					String productCode = CommonUtils.getString(priceMap.get("productCode"));
+					
+					// 가격정보
+					Map<String, Object> priceInfoMap = new HashMap<>();
+					
+					// 후불제 가격 정보
+					kong.unirest.json.JSONArray postFeeInfoArr = new kong.unirest.json.JSONArray(CommonUtils.getString(priceMap.get("postFeeInfo")));
+					
+					if( postFeeInfoArr.length() == 1 ) {
+						priceInfoMap.put("unitPrice", postFeeInfoArr.getJSONObject(0).get("POST_FEE"));
+						priceInfoMap.put("slideInfo", null);
+					} else if ( postFeeInfoArr.length() == 3 ) {
+						Map<String, Object> slideInfoMap = new HashMap<>();
+						
+						slideInfoMap.put("cntMore",			postFeeInfoArr.getJSONObject(2).get("FEE_START_CNT"));
+						slideInfoMap.put("cntBeLow",		postFeeInfoArr.getJSONObject(0).get("FEE_END_CNT"));
+						slideInfoMap.put("priceMore",		postFeeInfoArr.getJSONObject(0).get("POST_FEE"));
+						slideInfoMap.put("priceBetween",	postFeeInfoArr.getJSONObject(1).get("POST_FEE"));
+						slideInfoMap.put("priceBeLow",		postFeeInfoArr.getJSONObject(2).get("POST_FEE"));
+						
+						priceInfoMap.put("unitPrice", null);
+						priceInfoMap.put("slideInfo", slideInfoMap);
+					}
+					
+					// 채널
+					if( "PUSH".equals(productCode) ) {
+						// 푸시
+						cmPriceInfoMap.put("push", priceInfoMap);
+					} else if ( "KALT1".equals(productCode) ) {
+						// 알림톡
+						cmPriceInfoMap.put("alimtalk", priceInfoMap);
+					} else if ( "KFRT1".equals(productCode) ) {
+						// 친구톡 TEXT
+						cmPriceInfoMap.put("friendtalkTxt", priceInfoMap);
+					} else if ( "KFRM2".equals(productCode) ) {
+						// 친구톡 이미지
+						cmPriceInfoMap.put("friendtalkImg", priceInfoMap);
+					} else if ( "KFRM3".equals(productCode) ) {
+						// 친구톡 와이드
+						cmPriceInfoMap.put("friendtalkWide", priceInfoMap);
+					} else if ( "RTPL".equals(productCode) ) {
+						// RCS 템플릿
+						cmPriceInfoMap.put("rcsTmplt", priceInfoMap);
+					} else if ( "RSMS".equals(productCode) ) {
+						// RCS SMS
+						cmPriceInfoMap.put("rcsSms", priceInfoMap);
+					} else if ( "RLMS".equals(productCode) ) {
+						// RCS LMS
+						cmPriceInfoMap.put("rcsLms", priceInfoMap);
+					} else if ( "RMMS".equals(productCode) ) {
+						// RCS MMS
+						cmPriceInfoMap.put("rcsMms", priceInfoMap);
+					} else if ( "SMS".equals(productCode) ) {
+						// SMS
+						cmPriceInfoMap.put("sms", priceInfoMap);
+					} else if ( "LMS".equals(productCode) ) {
+						// LMS
+						cmPriceInfoMap.put("lms", priceInfoMap);
+					} else if ( "MMS".equals(productCode) ) {
+						// MMS
+						cmPriceInfoMap.put("mms", priceInfoMap);
+					}
+					
+//					for( int k = 0; k < postFeeInfoArr.length(); k++ ) {
+//						kong.unirest.json.JSONObject postFeeMap = postFeeInfoArr.getJSONObject(k);
+//						double POST_FEE = Double.parseDouble(CommonUtils.getString(postFeeMap.get("POST_FEE")));
+//						int FEE_START_CNT = Integer.parseInt(CommonUtils.getString(postFeeMap.get("FEE_START_CNT")));
+//						int FEE_END_CNT = Integer.parseInt(CommonUtils.getString(postFeeMap.get("FEE_END_CNT")));
+//						
+//						
+//					}
+				}
+
+				joinMap.put("billInfoVo",		ucubeBillInfoVo);
+				joinMap.put("pymInfoVO",		ucubePymInfoVO);
+				joinMap.put("serviceInfo",		serviceInfo);
+				joinMap.put("cmPriceInfo",	cmPriceInfoMap);
+				
+				kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(joinMap);
+				
+				System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
 				
 				// API 통신처리
-				Map<String, Object> result =  apiInterface.post("/console/v1/ucube/service/join", ucubeServiceMap, null);
+				Map<String, Object> result =  apiInterface.post("/console/v1/ucube/service/join/cm", joinMap, null);
 				String serviceId = "";
 				
 				if( "10000".equals(result.get("code")) ) {
 					serviceId = CommonUtils.getString((Map<String, Object>)((Map<String, Object>)result.get("data")).get("serviceId"));
 				} else if ( "500100".equals(result.get("code")) ) {
-					String errMsg = CommonUtils.getString(((Map<String, Object>)((Map<String, Object>)result.get("data")).get("error")).get("message"));
+					String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
 					throw new Exception(errMsg);
 				} else {
 					String errMsg = CommonUtils.getString(result.get("message"));
 					throw new Exception(errMsg);
 				}
-				
-				params.put("serviceId", serviceId);
-				
-				// 존재하는지 조회
-				int cmUcubeDupllicate = generalDao.selectGernalCount("project.selectCmUcubeDupllicate", params);
-				if( cmUcubeDupllicate == 0 ) {
-					Map<String, Object> insertProjectCmUcubeSaveMap = new HashMap<>();
-					insertProjectCmUcubeSaveMap.put("corpId", corpId);
-					insertProjectCmUcubeSaveMap.put("billId", billId);
-					insertProjectCmUcubeSaveMap.put("ucubeInfo", ucubeServiceMap);
-					
-					generalDao.insertGernal("project.insertProjectCmUcube", insertProjectCmUcubeSaveMap);
-				}
-				
 			}
 
 			// 사용체널 JSON 값 처리
@@ -220,8 +291,6 @@ public class ProjectService {
 			// -------------------------------------------------------------------------------------------------------------------------------------
 			// 프로젝트 멤버 추가 처리
 			// 사용자 세션의 권한을 체크해서 OWNER가 아닐 경우 OWNER 사용자는 추가되도록 처리 
-			
-			System.out.println("jameskang ROLE_CD : "+ request.getHeader("roleCd"));
 			
 			if( !"OWNER".equals(request.getHeader("roleCd"))) {
 				// OWNER 사용자 기본 멤버로 추가

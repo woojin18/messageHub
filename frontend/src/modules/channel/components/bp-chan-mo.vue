@@ -21,7 +21,8 @@
 								<h5 class="inline-block" style="width:20%">MO 유형</h5>
 								<div class="inline-block">
 									<input type="radio" id="SMS" value="SMSMO" class="cBox" v-model="moType"> <label for="SMS" class="payment mr30 font-size12">SMS MO</label>
-									<input type="radio" id="MMS" value="MMSMO" class="cBox" v-model="moType"> <label for="MMS" class="payment font-size12">MMS MO</label>		
+									<input type="radio" id="MMS" value="MMSMO" class="cBox" v-model="moType"> <label for="MMS" class="payment mr30 font-size12">MMS MO</label>		
+                  <input type="radio" id="LMS" value="LMSMO" class="cBox" v-model="moType"> <label for="LMS" class="payment font-size12">LMS MO</label>		
 								</div>
 							</div>
 							<!-- <p class="mt30 lc-1 Modaltext font-size12" style="margin:0">
