@@ -325,6 +325,8 @@ public class IntegratedTemplateService {
 
 					if (buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
+					} else {
+						sb.append(",\"buttons\": []");
 					}
 				} else if ((int) params.get("rcsTemplateTable") == 2) {
 					// RCS CELL(STYLE) TYPE
@@ -356,6 +358,8 @@ public class IntegratedTemplateService {
 
 					if (buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
+					} else {
+						sb.append(",\"buttons\": []");
 					}
 
 				} else if ((int) params.get("rcsTemplateTable") == 3) {
@@ -375,7 +379,10 @@ public class IntegratedTemplateService {
 
 					if (buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
+					} else {
+						sb.append(",\"buttons\": []");
 					}
+
 				} else if ((int) params.get("rcsTemplateTable") == 4) {
 					// RCS LMS TYPE
 					// ====================================================================
@@ -394,7 +401,10 @@ public class IntegratedTemplateService {
 
 					if (buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
+					} else {
+						sb.append(",\"buttons\": []");
 					}
+
 				} else if ((int) params.get("rcsTemplateTable") == 5) {
 					// RCS SHORT TYPE
 					// ====================================================================
@@ -429,7 +439,10 @@ public class IntegratedTemplateService {
 
 					if (buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
+					} else {
+						sb.append(",\"buttons\": []");
 					}
+
 				} else if ((int) params.get("rcsTemplateTable") == 6) {
 					// RCS TALL TYPE
 					// ====================================================================
@@ -463,7 +476,10 @@ public class IntegratedTemplateService {
 
 					if (buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
+					} else {
+						sb.append(",\"buttons\": []");
 					}
+
 				} else if ((int) params.get("rcsTemplateTable") == 9) {
 					// RCS CSHORT TYPE
 					// ====================================================================
