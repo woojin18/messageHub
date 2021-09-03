@@ -24,10 +24,8 @@ import messageStatusRoutes from './modules/messageStatus/router';
 import addressRoutes from './modules/address/router';
 import acMyPageRoutes from './modules/myPage/router';
 import ucMyPageRoutes from './modules/ucMyPage/router';
-import integratedSendRoutes from './modules/integratedSend/router';
 import smartTemplateRoutes from './modules/smartTemplate/router';
 import useRoutes from './modules/use/router';
-import smartSendRoutes from './modules/smartSend/router';
 import customerRoutes from './modules/customer/router';
 import rcsTemplateSendRoutes from './modules/rcsTemplateSend/router';
 import statisticsUserRoutes from './modules/statisticsUser/router';
@@ -173,9 +171,7 @@ const router = new Router({
 				...templateRoutes,
 				...messageStatusRoutes,
 				...ucMyPageRoutes,
-				...integratedSendRoutes,
 				...smartTemplateRoutes,
-				...smartSendRoutes,
 				...rcsTemplateSendRoutes,
 				...statisticsUserRoutes
 			]

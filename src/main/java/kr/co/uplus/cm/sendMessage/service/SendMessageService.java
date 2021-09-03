@@ -2103,6 +2103,7 @@ public class SendMessageService {
         }
 
         String senderType = CommonUtils.getStrValue(tmpltInfo, "tmpltType");
+        String smartPrdFee = CommonUtils.getStrValue(tmpltInfo, "smartPrdFee");
 
         //tmpltCode
         requestData.setTmpltCode(CommonUtils.getStrValue(params, "tmpltCode"));
@@ -2123,6 +2124,7 @@ public class SendMessageService {
         params.put("chTypeList", chTypeList);
         params.put("chString", chString);
         params.put("senderType", senderType);
+        params.put("smartPrdFee", smartPrdFee);
 
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();

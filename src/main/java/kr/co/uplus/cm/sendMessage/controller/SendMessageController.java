@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
@@ -958,46 +959,59 @@ public class SendMessageController {
             if(StringUtils.equals(payType, Const.PayType.PRE_FEE)) {
                 //남은 금액 조회
                 BigDecimal rmAmount = sendMsgService.getRmAmount(params);
-                //개당 가격 조회
-                List<String> productCodes = new ArrayList<String>(chTypeList);
+                BigDecimal feePerOne = new BigDecimal(NumberUtils.INTEGER_ZERO);
 
-                //Friend Talk
-                if(CollectionUtils.isNotEmpty(productCodes) && productCodes.stream().anyMatch(Const.Ch.FRIENDTALK::equals)) {
-                    Map<String, Object> frndPrdtInfo = sendMsgService.selectSmartTmpltFrndPrdtInfo(params);
-                    String msgType = CommonUtils.getStrValue(frndPrdtInfo, "msgType");
-                    String wideImageYn = CommonUtils.getStrValue(frndPrdtInfo, "wideImageYn");
-                    String productType = "";
+                //통합발송시
+                if(StringUtils.equals(CommonUtils.getStrValue(params, "senderType"), Const.SenderType.MERGER)) {
+                  //개당 가격 조회
+                    List<String> productCodes = new ArrayList<String>(chTypeList);
 
-                    if(StringUtils.equals(msgType, Const.MsgType.BASE)) {
-                        productType = Const.MsgProductCode.FRENDTALK_TEXT.getCode();
-                    }else if(StringUtils.equals(wideImageYn, Const.COMM_YES)) {
-                        productType = Const.MsgProductCode.FRENDTALK_WIDE.getCode();
-                    } else {
-                        productType = Const.MsgProductCode.FRENDTALK_IMAGE.getCode();
+                    //Friend Talk
+                    if(CollectionUtils.isNotEmpty(productCodes) && productCodes.stream().anyMatch(Const.Ch.FRIENDTALK::equals)) {
+                        Map<String, Object> frndPrdtInfo = sendMsgService.selectSmartTmpltFrndPrdtInfo(params);
+                        String msgType = CommonUtils.getStrValue(frndPrdtInfo, "msgType");
+                        String wideImageYn = CommonUtils.getStrValue(frndPrdtInfo, "wideImageYn");
+                        String productType = "";
+
+                        if(StringUtils.equals(msgType, Const.MsgType.BASE)) {
+                            productType = Const.MsgProductCode.FRENDTALK_TEXT.getCode();
+                        }else if(StringUtils.equals(wideImageYn, Const.COMM_YES)) {
+                            productType = Const.MsgProductCode.FRENDTALK_WIDE.getCode();
+                        } else {
+                            productType = Const.MsgProductCode.FRENDTALK_IMAGE.getCode();
+                        }
+                        Collections.replaceAll(productCodes, Const.Ch.FRIENDTALK, productType);
                     }
-                    Collections.replaceAll(productCodes, Const.Ch.FRIENDTALK, productType);
-                }
-                //RCS
-                if(CollectionUtils.isNotEmpty(productCodes) && productCodes.stream().anyMatch(Const.Ch.RCS::equals)) {
-                    Map<String, Object> rcsInfo = sendMsgService.selectSmartTmpltRcsInfo(params);
-                    String rcsPrdType = CommonUtils.getStrValue(rcsInfo, "rcsPrdType");
-                    String productType = "";
+                    //RCS
+                    if(CollectionUtils.isNotEmpty(productCodes) && productCodes.stream().anyMatch(Const.Ch.RCS::equals)) {
+                        Map<String, Object> rcsInfo = sendMsgService.selectSmartTmpltRcsInfo(params);
+                        String rcsPrdType = CommonUtils.getStrValue(rcsInfo, "rcsPrdType");
+                        String productType = "";
 
-                    for(String key : Const.rcsPrdGrp.keySet()) {
-                        if(Const.rcsPrdGrp.get(key).stream().anyMatch(rcsPrdType::equals)) {
-                            productType = Const.MsgProductCode.getCodeByName(key);
-                            break;
+                        for(String key : Const.rcsPrdGrp.keySet()) {
+                            if(Const.rcsPrdGrp.get(key).stream().anyMatch(rcsPrdType::equals)) {
+                                productType = Const.MsgProductCode.getCodeByName(key);
+                                break;
+                            }
+                        }
+                        if(StringUtils.isNotBlank(productType)) {
+                            Collections.replaceAll(productCodes, Const.Ch.RCS, productType);
                         }
                     }
-                    if(StringUtils.isNotBlank(productType)) {
-                        Collections.replaceAll(productCodes, Const.Ch.RCS, productType);
-                    }
+
+                    sParam = new HashMap<>();
+                    sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
+                    sParam.put("productCodes", productCodes);
+                    feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
+
+                //스마트 발송
+                } else if(StringUtils.equals(CommonUtils.getStrValue(params, "senderType"), Const.SenderType.SMART)) {
+                    feePerOne = new BigDecimal(CommonUtils.getStrValue(params, "smartPrdFee"));
+                } else {
+                    rtn.setFail("유효하지 않은 템플릿 타입입니다.");
+                    return rtn;
                 }
 
-                sParam = new HashMap<>();
-                sParam.put("corpId", CommonUtils.getStrValue(params, "corpId"));
-                sParam.put("productCodes", productCodes);
-                BigDecimal feePerOne = sendMsgService.selectMsgFeePerOne(sParam);
                 if(rmAmount.compareTo(feePerOne) < 0) {
                     rtn.setFail("잔액 부족으로 메시지를 발송할 수 없습니다.");
                     return rtn;

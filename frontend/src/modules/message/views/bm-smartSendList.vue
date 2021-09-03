@@ -148,7 +148,7 @@
                   </td>
                   <td class="text-center">{{totCnt-offset-data.rowNum+1}}</td>
                   <td class="text-center">
-                    <u><router-link :to="{ name: 'sendIntegMessage', params: {'tmpltCodeP': data.tmpltCode }}">{{data.tmpltCode}}</router-link></u>
+                    <u><router-link :to="{ name: 'smartSendMain', params: {'tmpltCodeP': data.tmpltCode, tmpltType: 'S', componentsTitle: '스마트발송'}}">{{data.tmpltCode}}</router-link></u>
                   </td>
                   <td class="text-center">{{data.tmpltTitle | unescapeXss}}</td>
                   <td class="text-center">{{data.msgKindName}}</td>

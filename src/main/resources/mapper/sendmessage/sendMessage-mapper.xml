@@ -331,6 +331,7 @@
         SELECT
             SMT.*
             , RCS.MESSAGEBASE_INFO AS RCS_TMPLT_INFO
+            , IFNULL(CPU.PRE_FEE, '0') AS SMART_PRD_FEE
         FROM (
             SELECT
                 CST.TMPLT_CODE
@@ -364,6 +365,10 @@
         ) SMT
         LEFT OUTER JOIN cm.CM_RCS_MSGBASE RCS
             ON SMT.MESSAGEBASE_ID = RCS.MESSAGEBASE_ID
+        LEFT OUTER JOIN cm_bo.CM_PRODUCT_UNIT CPU
+            ON SMT.PRODUCT_CODE = CPU.PRODUCT_CODE
+            AND CPU.USE_YN = 'Y'
+            AND CPU.SMART_CH_PRODUCT_YN = 'Y'
     </select>
 
     <sql id ="whereSelectSmartTmpltList">
