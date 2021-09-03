@@ -755,7 +755,7 @@ export default {
     //통합 메시지 발송 처리
     fnSendSmartMessage(testSendYn){
       if(this.inProgress){
-        confirm.fnAlert(this.componentsTitle, '통합 메시지 발송 처리중입니다.');
+        confirm.fnAlert(this.componentsTitle, '메시지 발송 처리중입니다.');
         return;
       }
 

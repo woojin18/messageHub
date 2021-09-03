@@ -99,8 +99,8 @@
 
         <div class="of_h inline">
           <div class="float-right">
-            <a href="#self" class="btnStyle2 borderGray" title="스마트 발송 템플릿 관리">스마트 발송 템플릿 관리</a>
-            <a href="#self" class="btnStyle2 backBlack ml10" title="스마트 메시지 발송">스마트 메시지 발송</a>
+            <router-link :to="{ path: '/uc/smartTemplate' }" tag="a" class="btnStyle2 borderGray"  activity="READ">스마트 발송 템플릿 관리</router-link>
+            <a href="#" @click.prevent="fnMoveSmartSend" class="btnStyle2 backBlack ml10" title="스마트 메시지 발송">스마트 메시지 발송</a>
           </div>
         </div>
 
@@ -128,7 +128,7 @@
               </colgroup>
               <thead>
                 <tr>
-                  <th class="text-center lc-1"><input type="checkbox" id="listCheck_all" class="boardCheckStyle" value="listCheck_all"><label for="listCheck_all"></label></th>
+                  <th class="text-center lc-1"></th>
                   <th class="text-center lc-1">No.</th>
                   <th class="text-center lc-1">템플릿 ID</th>
                   <th class="text-center lc-1">템플릿명</th>
@@ -142,8 +142,8 @@
                 <tr v-for="(data, idx) in datas" :key="idx">
                   <td class="text-center">
                     <div class="boardCheck">
-                      <input type="checkbox" id="check2" class="boardCheckStyle" value="미사용">
-                      <label for="check2"></label>
+                      <input type="radio" :id="'listCheck_'+idx" class="radioStyle" :value="data.tmpltCode" v-model="chkBox"> 
+                      <label :for="'listCheck_'+idx"></label>
                     </div>
                   </td>
                   <td class="text-center">{{totCnt-offset-data.rowNum+1}}</td>
@@ -294,12 +294,18 @@ export default {
     }
   },
   methods: {
+    fnMoveSmartSend(){
+      if(this.chkBox == null || this.chkBox == ''){
+        confirm.fnAlert(this.componentsTitle, '전송할 항목을 선택해주세요.');
+        return;
+      }
+      this.$router.push({name: 'smartSendMain', params: {'tmpltCodeP': this.chkBox, tmpltType: 'S', componentsTitle: '스마트발송'}});
+    },
     async fnSelectSmartChProductList(){
       var params = {};
       await messageApi.selectSmartChProductList(params).then(response =>{
         const result = response.data;
         if(result.success) {
-          console.log('selectSmartChProductList ====>>> ', result);
           this.prdDatas = Object.assign([], result.data);
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
@@ -360,9 +366,6 @@ export default {
       await messageApi.selectSmartTmpltList(params).then(response =>{
         const result = response.data;
         if(result.success) {
-
-          console.log('selectSmartTmpltList ====>>> ', result);
-
           this.chkBox = ''
           this.datas = result.data;
           this.totCnt = result.pageInfo.totCnt;
