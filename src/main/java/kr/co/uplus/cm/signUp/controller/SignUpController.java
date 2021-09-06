@@ -261,6 +261,7 @@ public class SignUpController implements Serializable{
 		if(sMessage.length() > 0) {
 			rtn.setMessage(sMessage);
 			rtn.setSuccess(false);
+			return rtn;
 		}
 		
 		rtn.setData(niceCheckMap);
