@@ -226,7 +226,7 @@ export default {
       let params = {
         addressCategoryId: this.searchCategoryId,
         searchTextType: this.searchTextType,
-        searchText: this.searchText,
+        searchText: (this.searchTextType == 'hpNumber' ? this.searchText.replace(/[^0-9]/gi, '') : this.searchText),
         pageNo: this.pageNo,
         listSize: this.listSize
       };
@@ -266,7 +266,7 @@ export default {
     async fnGetAddrList(){
       let params = {
         searchTextType: this.searchTextType,
-        searchText: this.searchText
+        searchText: (this.searchTextType == 'hpNumber' ? this.searchText.replace(/[^0-9]/gi, '') : this.searchText)
       };
       await MessageApi.selectAddressList(params).then(response =>{
         const result = response.data;
