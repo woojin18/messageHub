@@ -183,10 +183,12 @@ public class ProjectService {
 					// 후불제 가격 정보
 					kong.unirest.json.JSONArray postFeeInfoArr = new kong.unirest.json.JSONArray(CommonUtils.getString(priceMap.get("postFeeInfo")));
 					
-					if( postFeeInfoArr.length() == 1 ) {
-						priceInfoMap.put("unitPrice", postFeeInfoArr.getJSONObject(0).get("POST_FEE"));
-						priceInfoMap.put("slideInfo", null);
-					} else if ( postFeeInfoArr.length() == 3 ) {
+//					if( postFeeInfoArr.length() == 1 ) {
+					priceInfoMap.put("unitPrice", postFeeInfoArr.getJSONObject(0).get("POST_FEE"));
+					priceInfoMap.put("slideInfo", null);
+//					} else 
+					// 스라이딩인 경우
+					if ( postFeeInfoArr.length() == 3 ) {
 						Map<String, Object> slideInfoMap = new HashMap<>();
 						
 						slideInfoMap.put("cntMore",			postFeeInfoArr.getJSONObject(2).get("FEE_START_CNT"));
@@ -195,7 +197,7 @@ public class ProjectService {
 						slideInfoMap.put("priceBetween",	postFeeInfoArr.getJSONObject(1).get("POST_FEE"));
 						slideInfoMap.put("priceBeLow",		postFeeInfoArr.getJSONObject(2).get("POST_FEE"));
 						
-						priceInfoMap.put("unitPrice", null);
+						priceInfoMap.put("unitPrice", postFeeInfoArr.getJSONObject(0).get("POST_FEE"));
 						priceInfoMap.put("slideInfo", slideInfoMap);
 					}
 					
