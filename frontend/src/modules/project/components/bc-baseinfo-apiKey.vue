@@ -407,7 +407,6 @@ export default {
 				'apiKeyName'			: jQuery('#apiKeyName').val(),
 				'status'				: jQuery('#selectStatus option:selected').val(),
 				'rptYn'					: jQuery('input[name="rptYn"]:checked').val(),
-				'lineType'				: 'NORMAL',
 				'dupChkYn'				: jQuery('input[name="dupChkYn"]:checked').val(),
 				'webSenderYn'			: jQuery('input[name="webSenderYn"]:checked').val(),
 				'daySenderLimitAmount'	: jQuery('#daySenderLimitAmount').val(),

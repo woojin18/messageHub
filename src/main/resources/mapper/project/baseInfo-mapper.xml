@@ -109,7 +109,7 @@
 		,		#{apiKeyName}
 		,		#{status}
 		,		#{rptYn}
-		,		#{lineType}
+		,		'BATCH'
 		,		#{dupChkYn}
 		,		#{webSenderYn}
 		,		NOW()
@@ -133,7 +133,7 @@
 		,	IP_CHK_YN				= #{ipChkYn}
 		,	IP_LIST					= #{jsonInfo}
 		,	STATUS					= #{status}
-		,	LINE_TYPE				= #{lineType}
+		,	LINE_TYPE				= 'BATCH'
 		,	RPT_YN					= #{rptYn}
 		,	DUP_CHK_YN				= #{dupChkYn}
 		,	DAY_SENDER_CHK_YN		= #{daySenderChkYn}
