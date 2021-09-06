@@ -2860,7 +2860,7 @@ export default {
 			});
 		},
 
-		async fnCompleteIntegratedTemplate(){
+		async fnCompleteMultiSendTemplate(){
 			var params = this.rowData;
 
 			// 유효성 검사
@@ -3286,7 +3286,7 @@ export default {
 			//유효성 검사
 			if (this.fnIsValid() == false) return;
 
-			eventBus.$on('callbackEventBus', this.fnCompleteIntegratedTemplate);
+			eventBus.$on('callbackEventBus', this.fnCompleteMultiSendTemplate);
 			confirm.fnConfirm(this.detailTitle, "템플릿을 등록 하시겠습니까?", "확인");
 		},
 		// RCS 템플릿 정보 Set
@@ -3341,7 +3341,7 @@ export default {
 		// 템플릿 정보 조회
 		fnSelectMultiSendTemplateInfo() {
 			const params = {multiSendTmpltCode: this.tmpltCodeP};
-			templateApi.integratedTemplateInfo(params).then(response => {
+			templateApi.multiSendTemplateInfo(params).then(response => {
 				const result = response.data;
 				if (result.success) {
 					if (result.data != null && result.data.length > 0) {

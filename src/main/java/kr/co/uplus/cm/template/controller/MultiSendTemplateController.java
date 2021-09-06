@@ -1,4 +1,4 @@
-package kr.co.uplus.cm.integratedTemplate.controller;
+package kr.co.uplus.cm.template.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
-import kr.co.uplus.cm.integratedTemplate.service.IntegratedTemplateService;
+import kr.co.uplus.cm.template.service.MultiSendTemplateService;
 import kr.co.uplus.cm.utils.DateUtil;
 import lombok.extern.log4j.Log4j2;
 
@@ -35,11 +35,11 @@ import lombok.extern.log4j.Log4j2;
  */
 @Log4j2
 @RestController
-@RequestMapping("/integratedTemplateApi")
-public class IntegratedTemplateController {
+@RequestMapping("/multiSendTemplateApi")
+public class MultiSendTemplateController {
 
 	@Autowired
-	private IntegratedTemplateService integratedTemplateService;
+	private MultiSendTemplateService multiSendTemplateService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -54,12 +54,12 @@ public class IntegratedTemplateController {
 	 * @param params
 	 * @return
 	 */
-	@PostMapping("/selectIntegratedTemplateList")
-	public RestResult<?> selectIntegratedTemplateList(HttpServletRequest request, HttpServletResponse response,
+	@PostMapping("/selectMultiSendTemplateList")
+	public RestResult<?> selectMultiSendTemplateList(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
-			rtn = integratedTemplateService.selectIntegratedTemplateList(params);
+			rtn = multiSendTemplateService.selectMultiSendTemplateList(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
@@ -77,12 +77,12 @@ public class IntegratedTemplateController {
 	 * @param params
 	 * @return
 	 */
-	@PostMapping("/selectIntegratedTemplateInfo")
-	public RestResult<?> selectIntegratedTemplateInfo(HttpServletRequest request, HttpServletResponse response,
+	@PostMapping("/selectMultiSendTemplateInfo")
+	public RestResult<?> selectMultiSendTemplateInfo(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
-			rtn = integratedTemplateService.selectIntegratedTemplateInfo(params);
+			rtn = multiSendTemplateService.selectMultiSendTemplateInfo(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
@@ -106,7 +106,7 @@ public class IntegratedTemplateController {
 		RestResult<Object> rtn = new RestResult<Object>();
 
 		try {
-			rtn = integratedTemplateService.insertMultiSendTemplate(params);
+			rtn = multiSendTemplateService.insertMultiSendTemplate(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			if (!"".equals(e.getMessage())) {
@@ -127,12 +127,12 @@ public class IntegratedTemplateController {
 	 * @param params
 	 * @return
 	 */
-	@PostMapping("/deleteIntegratedTemplate")
-	public RestResult<?> deleteIntegratedTemplate(HttpServletRequest request, HttpServletResponse response,
+	@PostMapping("/deleteMultiSendTemplate")
+	public RestResult<?> deleteMultiSendTemplate(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
-			rtn = integratedTemplateService.deleteIntegratedTemplate(params);
+			rtn = multiSendTemplateService.deleteMultiSendTemplate(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
@@ -151,8 +151,8 @@ public class IntegratedTemplateController {
 	 * @return
 	 * @throws Exception
 	 */
-	@PostMapping(path = "/excelDownloadIntegratedTemplate")
-	public ModelAndView excelDownloadIntegratedTemplate(HttpServletRequest request, HttpServletResponse response,
+	@PostMapping(path = "/excelDownloadMultiSendTemplate")
+	public ModelAndView excelDownloadMultiSendTemplate(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) throws Exception {
 		List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -163,7 +163,7 @@ public class IntegratedTemplateController {
 				"otherProjectUseYnName", "tmpltStatusName", "regNm", "regDt" });
 		map.put("numColIds", new String[] {});
 		map.put("figureColIds", new String[] {});
-		map.put("colDataList", integratedTemplateService.selectIntegratedTemplateList(params).getData());
+		map.put("colDataList", multiSendTemplateService.selectMultiSendTemplateList(params).getData());
 		sheetList.add(map);
 
 		ModelAndView model = new ModelAndView("commonXlsxView");
@@ -186,7 +186,7 @@ public class IntegratedTemplateController {
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
-			rtn = integratedTemplateService.selectBrandList(params);
+			rtn = multiSendTemplateService.selectBrandList(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");

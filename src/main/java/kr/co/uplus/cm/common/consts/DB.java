@@ -71,12 +71,11 @@ public class DB {
 	public final static String QRY_UPDATE_SMS_TMPLT = "template.updateSmsTmplt";
 	public final static String QRY_DELETE_SMS_TMPLT = "template.deleteSmsTmplt";
 	// 통합발송 템플릿
-	public final static String QRY_SELECT_MULTISEND_TMPLT_LIST_CNT = "template.selectMultiSendTemplateListCnt";
-	public final static String QRY_SELECT_MULTISEND_TMPLT_LIST = "template.selectMultiSendTemplateList";
-	public final static String QRY_SELECT_MULTISEND_TMPLT_DETAIL = "template.selectMultiSendTemplateDetail";
-	public final static String QRY_INSERT_MULTISEND_TMPLT = "template.insertMultiSendTemplate";
-	public final static String QRY_UPDATE_MULTISEND_TMPLT = "template.updateMultiSendTemplate";
-	public final static String QRY_DELETE_MULTISEND_TMPLT = "template.deleteMultiSendTemplate";
+	public final static String QRY_SELECT_MULTISEND_TMPLT_LIST_CNT = "multiSendTemplate.selectMultiSendTemplateListCnt";
+	public final static String QRY_SELECT_MULTISEND_TMPLT_LIST = "multiSendTemplate.selectMultiSendTemplateList";
+	public final static String QRY_SELECT_MULTISEND_TMPLT_DETAIL = "multiSendTemplate.selectMultiSendTemplateDetail";
+	public final static String QRY_INSERT_MULTISEND_TMPLT = "multiSendTemplate.insertMultiSendTemplate";
+	public final static String QRY_DELETE_MULTISEND_TMPLT = "multiSendTemplate.deleteMultiSendTemplate";
 	// 스마트발송 템플릿
 	public final static String QRY_SELECT_SMART_TMPLT = "template.selectSmartTemplate";
 	public final static String QRY_INSERT_SMART_TMPLT = "template.insertSmartTemplate";

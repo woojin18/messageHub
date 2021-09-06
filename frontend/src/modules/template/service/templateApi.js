@@ -128,32 +128,32 @@ const rcsTemplateApi = (params) => {
 };
 
 /* 통합발송 */
-const selectIntegratedTemplateList = (params) => {
-    return httpClient.post('/integratedTemplateApi/selectIntegratedTemplateList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+const selectMultiSendTemplateList = (params) => {
+    return httpClient.post('/multiSendTemplateApi/selectMultiSendTemplateList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
-const integratedTemplateInfo = (params) => {
-    return httpClient.post('/integratedTemplateApi/selectIntegratedTemplateInfo', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+const multiSendTemplateInfo = (params) => {
+    return httpClient.post('/multiSendTemplateApi/selectMultiSendTemplateInfo', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
 const insertMultiSendTemplate = (params) => {
-    return httpClient.post('/integratedTemplateApi/insertMultiSendTemplate', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+    return httpClient.post('/multiSendTemplateApi/insertMultiSendTemplate', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 
-const updateIntegratedTemplate = (params) => {
-    return httpClient.post('/integratedTemplateApi/updateIntegratedTemplate', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+const updateMultiSendTemplate = (params) => {
+    return httpClient.post('/multiSendTemplateApi/updateMultiSendTemplate', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 
 const deleteMultiSendTemplate = (params) => {
-    return httpClient.post('/integratedTemplateApi/deleteIntegratedTemplate', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+    return httpClient.post('/multiSendTemplateApi/deleteMultiSendTemplate', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 
 const selectBrandList = (params) => {
-    return httpClient.post('/integratedTemplateApi/selectBrandList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+    return httpClient.post('/multiSendTemplateApi/selectBrandList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
 const excelDownloadMultiSendTemplate = (params) => {
-    return httpClient.post('/integratedTemplateApi/excelDownloadIntegratedTemplate', params, { headers: {"show-layer": "No", "activity":"READ"}, responseType: 'arraybuffer' }).then(function(response) {
+    return httpClient.post('/multiSendTemplateApi/excelDownloadMultiSendTemplate', params, { headers: {"show-layer": "No", "activity":"READ"}, responseType: 'arraybuffer' }).then(function(response) {
         try {
           let blob = new Blob([response.data], { type: response.headers['content-type'] })
           let fileName = getFileName(response.headers['content-disposition'])
@@ -210,11 +210,11 @@ export default {
   rcsTemplateDeleteApi,
   rcsTemplateCancelApi,
   rcsTemplateApi,
-  selectIntegratedTemplateList,
-  integratedTemplateInfo,
+  selectMultiSendTemplateList,
+  multiSendTemplateInfo,
   excelDownloadMultiSendTemplate,
   insertMultiSendTemplate,
-  updateIntegratedTemplate,
+  updateMultiSendTemplate,
   deleteMultiSendTemplate,
   selectBrandList
 };

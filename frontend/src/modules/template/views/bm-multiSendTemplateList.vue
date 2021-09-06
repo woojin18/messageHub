@@ -286,7 +286,7 @@ export default {
 			templateApi.excelDownloadMultiSendTemplate(params);
 		},
 		// 검색
-		async fnSelectIntegratedTemplateList() {
+		async fnSelectMultiSendTemplateList() {
 			//유효성 검사
 			if (this.searchData.searchStartDate && this.searchData.searchEndDate) {
 				if (this.searchData.searchStartDate.replace(/[^0-9]/g, '') > this.searchData.searchEndDate.replace(/[^0-9]/g, '')) {
@@ -302,7 +302,7 @@ export default {
 			params.loginId = tokenSvc.getToken().principal.userId;
 			params.roleCd = tokenSvc.getToken().principal.roleCd
 
-			await templateApi.selectIntegratedTemplateList(params).then(response =>{
+			await templateApi.selectMultiSendTemplateList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.datas = result.data;
@@ -342,7 +342,7 @@ export default {
 		},
 		fnSearch(pageNum) {
 			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
-			this.fnSelectIntegratedTemplateList();
+			this.fnSelectMultiSendTemplateList();
 		}
 	}
 }

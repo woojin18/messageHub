@@ -1,4 +1,4 @@
-package kr.co.uplus.cm.integratedTemplate.service;
+package kr.co.uplus.cm.template.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ import lombok.extern.log4j.Log4j2;
  */
 @Log4j2
 @Service
-public class IntegratedTemplateService {
+public class MultiSendTemplateService {
 
 	@Autowired
 	private CommonService commonService;
@@ -52,7 +52,7 @@ public class IntegratedTemplateService {
 	 * @return
 	 * @throws Exception
 	 */
-	public RestResult<Object> selectIntegratedTemplateList(Map<String, Object> params) throws Exception {
+	public RestResult<Object> selectMultiSendTemplateList(Map<String, Object> params) throws Exception {
 
 		RestResult<Object> rtn = new RestResult<Object>();
 
@@ -61,13 +61,12 @@ public class IntegratedTemplateService {
 			rtn.setPageProps(params);
 			if (rtn.getPageInfo() != null) {
 				// 카운트 쿼리 실행
-				int listCnt = generalDao.selectGernalCount("integratedTemplate.selectIntegratedTemplateListCnt",
-						params);
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_MULTISEND_TMPLT_LIST_CNT, params);
 				rtn.getPageInfo().put("totCnt", listCnt);
 			}
 		}
 
-		List<Object> rtnList = generalDao.selectGernalList("integratedTemplate.selectIntegratedTemplateList", params);
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_MULTISEND_TMPLT_LIST, params);
 		rtn.setData(rtnList);
 
 		return rtn;
@@ -80,11 +79,11 @@ public class IntegratedTemplateService {
 	 * @return
 	 * @throws Exception
 	 */
-	public RestResult<Object> selectIntegratedTemplateInfo(Map<String, Object> params) throws Exception {
+	public RestResult<Object> selectMultiSendTemplateInfo(Map<String, Object> params) throws Exception {
 
 		RestResult<Object> rtn = new RestResult<Object>();
 
-		List<Object> rtnList = generalDao.selectGernalList("integratedTemplate.selectIntegratedTemplateDetail", params);
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_MULTISEND_TMPLT_DETAIL, params);
 
 		for (int i = 0; i < rtnList.size(); i++) {
 			Map<String, Object> rtnMap = (Map<String, Object>) rtnList.get(i);
@@ -871,7 +870,7 @@ public class IntegratedTemplateService {
 			sParams.put("projectId", "ALL");
 		}
 
-		resultCnt = generalDao.insertGernal("integratedTemplate.insertIntegratedTemplate", sParams);
+		resultCnt = generalDao.insertGernal(DB.QRY_INSERT_MULTISEND_TMPLT, sParams);
 
 		// redis 테이블 처리
 		commonService.updateCmCmdForRedis(CmdTgt.SMART_TMPLT);
@@ -895,10 +894,10 @@ public class IntegratedTemplateService {
 	 * @throws Exception
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-	public RestResult<Object> deleteIntegratedTemplate(Map<String, Object> params) throws Exception {
+	public RestResult<Object> deleteMultiSendTemplate(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 
-		int resultCnt = generalDao.deleteGernal("integratedTemplate.deleteIntegratedTemplate", params);
+		int resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_MULTISEND_TMPLT, params);
 		if (resultCnt <= 0) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");

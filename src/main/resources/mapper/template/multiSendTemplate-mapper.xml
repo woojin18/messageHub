@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="integratedTemplate">
+<mapper namespace="multiSendTemplate">
 
-	<sql id ="whereSelectIntegratedTemplateList">
+	<sql id ="whereSelectMultiSendTemplateList">
 		AND A.TMPLT_TYPE = 'M'
 		AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
 		<if test="searchText != '' and searchText != null ">
@@ -35,16 +35,16 @@
 		</if>
 	</sql>
 
-    <select id="selectIntegratedTemplateListCnt" parameterType="hashmap" resultType="int">
+    <select id="selectMultiSendTemplateListCnt" parameterType="hashmap" resultType="int">
 		/* 통합발송 템플릿 카운트 조회 */
 		SELECT
 			COUNT(PROJECT_ID) AS CNT
 		FROM cm.CM_SMART_TMPLT A
 		WHERE 1=1
-		<include refid="whereSelectIntegratedTemplateList"/>
+		<include refid="whereSelectMultiSendTemplateList"/>
 	</select>
 
-	<select id="selectIntegratedTemplateList" parameterType="hashmap" resultType="camel">
+	<select id="selectMultiSendTemplateList" parameterType="hashmap" resultType="camel">
 		/* 통합발송 템플릿 리스트 조회 */
 		SELECT
 			@ROWNUM := @ROWNUM + 1 AS ROWNUM,
@@ -83,7 +83,7 @@
 					ON A.TMPLT_STATUS = E.CODE_VAL_1 AND E.CODE_TYPE_CD = 'MULTISEND_TMPLT_STATUS'
 				, (SELECT @ROWNUM:=0) TMP
 			WHERE 1=1
-			<include refid="whereSelectIntegratedTemplateList"/>
+			<include refid="whereSelectMultiSendTemplateList"/>
 			ORDER BY A.REG_DT DESC
 		) B
 		<if test='pagingYn == "Y" '>
@@ -92,8 +92,8 @@
     </select>
 
 
-    <select id="selectIntegratedTemplateDetail" parameterType="hashmap" resultType="camel">
-		/* integratedTemplate.selectIntegratedTemplateDetail - 통합발송 템플릿 상세 조회 */
+    <select id="selectMultiSendTemplateDetail" parameterType="hashmap" resultType="camel">
+		/* integratedTemplate.selectMultiSendTemplateDetail - 통합발송 템플릿 상세 조회 */
 		SELECT
 			M.PROJECT_ID, M.TMPLT_CODE, M.MSG_KIND, M.MSG_KIND_NAME, M.MSG_TYPE,
 			M.MSG_TYPE_NAME, M.TMPLT_TITLE, M.TMPLT_TYPE, M.otherProjectUseYn,
@@ -984,8 +984,8 @@
 		) M
 	</select>
 
-	<insert id="insertIntegratedTemplate" parameterType="hashmap">
-		/* integraedtemplate.insertIntegratedTemplate - 통합 템플릿 등록 */
+	<insert id="insertMultiSendTemplate" parameterType="hashmap">
+		/* integraedtemplate.insertMultiSendTemplate - 통합 템플릿 등록 */
 		INSERT
 			INTO cm.CM_SMART_TMPLT
 		(
@@ -1031,8 +1031,8 @@
 					            , CORP_ID = #{corpId}
     </insert>
 
-	<update id="updateIntegratedTemplate" parameterType="hashmap">
-		/* integraedtemplate.updateIntegratedTemplate - 통합 템플릿 수정 */
+	<update id="updateMultiSendTemplate" parameterType="hashmap">
+		/* integraedtemplate.updateMultiSendTemplate - 통합 템플릿 수정 */
 		UPDATE cm.CM_SMART_TMPLT
 		SET
 			MSG_KIND = #{msgKind},
@@ -1049,8 +1049,8 @@
 	</update>
 
 
-	<delete id="deleteIntegratedTemplate" parameterType="hashmap">
-		/* integraedtemplate.deleteIntegratedTemplate - 통합 템플릿 삭제 */
+	<delete id="deleteMultiSendTemplate" parameterType="hashmap">
+		/* integraedtemplate.deleteMultiSendTemplate - 통합 템플릿 삭제 */
 		DELETE
 		FROM cm.CM_SMART_TMPLT
 		WHERE 1=1
