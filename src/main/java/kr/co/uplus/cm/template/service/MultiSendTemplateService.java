@@ -1121,6 +1121,40 @@ public class MultiSendTemplateService {
 	}
 
 	/**
+	 * 프로젝트 사용가능 채널 조회
+	 * 
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public RestResult<Object> selectProjectUseChannelInfo(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> rtnObj = new HashMap<String, Object>();
+
+		Map<String, Object> projectUseChannelInfo = (Map<String, Object>) generalDao
+				.selectGernalObject(DB.QRY_SELECT_DASH_PROJECT_INFO, params);
+
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(CommonUtils.getString(projectUseChannelInfo.get("useChGrpInfo")));
+		JSONObject jsonObj = (JSONObject) obj;
+
+		String rcsYn = CommonUtils.getString(jsonObj.get("RCS"));
+		String smsmmsYn = CommonUtils.getString(jsonObj.get("SMS/MMS"));
+		String pushYn = CommonUtils.getString(jsonObj.get("PUSH"));
+		String kakaoYn = CommonUtils.getString(jsonObj.get("KKO"));
+
+		projectUseChannelInfo.put("pushYn", pushYn);
+		projectUseChannelInfo.put("rcsYn", rcsYn);
+		projectUseChannelInfo.put("kakaoYn", kakaoYn);
+		projectUseChannelInfo.put("smsmmsYn", smsmmsYn);
+
+		rtnObj.put("projectUseChannelInfo", projectUseChannelInfo);
+		rtn.setData(rtnObj);
+		return rtn;
+	}
+
+	/**
 	 * Message base id 조회
 	 * 
 	 * @param Param

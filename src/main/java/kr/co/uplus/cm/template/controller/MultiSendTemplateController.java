@@ -195,4 +195,27 @@ public class MultiSendTemplateController {
 		return rtn;
 	}
 
+	/**
+	 * 프로젝트 사용가능 채널 조회
+	 * 
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectProjectUseChannelInfo")
+	public RestResult<?> selectProjectUseChannelInfo(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = multiSendTemplateService.selectProjectUseChannelInfo(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectProjectUseChannelInfo Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
+
 }

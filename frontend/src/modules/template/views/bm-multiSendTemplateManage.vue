@@ -100,28 +100,32 @@
 						<div class="of_h consolMarginTop">
 							<div class="float-left" style="width:60%"><h5>PUSH</h5></div>
 							<div class="float-left mt5" style="width:40%">
-								<input type="checkbox" id="PUSH" class="checkStyle2" value="PUSH" v-model="rowData.checkedChannel" @click="toggleOnOffPush">
+								<input v-if="projectUseChannelInfoData.pushYn == 'Y'" type="checkbox" id="PUSH" class="checkStyle2" value="PUSH" v-model="rowData.checkedChannel" @click="toggleOnOffPush">
+								<input v-if="projectUseChannelInfoData.pushYn != 'Y'" type="checkbox" id="PUSH" class="checkStyle2" value="PUSH" v-model="rowData.checkedChannel" @click="toggleOnOffPush" disabled>
 								<label for="PUSH"></label>
 							</div>
 						</div>
 						<div class="of_h mt15">
 							<div class="float-left" style="width:60%"><h5>RCS</h5></div>
 							<div class="float-left mt5" style="width:40%">
-								<input type="checkbox" id="RCS" class="checkStyle2" value="RCS" v-model="rowData.checkedChannel" @click="toggleOnOffRCS">
+								<input v-if="projectUseChannelInfoData.rcsYn == 'Y'" type="checkbox" id="RCS" class="checkStyle2" value="RCS" v-model="rowData.checkedChannel" @click="toggleOnOffRCS">
+								<input v-if="projectUseChannelInfoData.rcsYn != 'Y'" type="checkbox" id="RCS" class="checkStyle2" value="RCS" v-model="rowData.checkedChannel" @click="toggleOnOffRCS" disabled>
 								<label for="RCS"></label>
 							</div>
 						</div>
 						<div class="of_h mt15">
 							<div class="float-left" style="width:60%"><h5>카카오톡</h5></div>
 							<div class="float-left mt5" style="width:40%">
-								<input type="checkbox" id="KAKAO" class="checkStyle2" value="KAKAO" v-model="rowData.checkedChannel" @click="toggleOnOffKakao">
+								<input v-if="projectUseChannelInfoData.kakaoYn == 'Y'" type="checkbox" id="KAKAO" class="checkStyle2" value="KAKAO" v-model="rowData.checkedChannel" @click="toggleOnOffKakao">
+								<input v-if="projectUseChannelInfoData.kakaoYn != 'Y'" type="checkbox" id="KAKAO" class="checkStyle2" value="KAKAO" v-model="rowData.checkedChannel" @click="toggleOnOffKakao" disabled>
 								<label for="KAKAO"></label>
 							</div>
 						</div>
 						<div class="of_h mt15">
 							<div class="float-left" style="width:60%"><h5>SMS/MMS</h5></div>
 							<div class="float-left mt5" style="width:40%">
-								<input type="checkbox" id="SMSMMS" class="checkStyle2" value="SMSMMS" v-model="rowData.checkedChannel" @click="toggleOnOffSmsMms">
+								<input v-if="projectUseChannelInfoData.smsmmsYn == 'Y'" type="checkbox" id="SMSMMS" class="checkStyle2" value="SMSMMS" v-model="rowData.checkedChannel" @click="toggleOnOffSmsMms">
+								<input v-if="projectUseChannelInfoData.smsmmsYn != 'Y'" type="checkbox" id="SMSMMS" class="checkStyle2" value="SMSMMS" v-model="rowData.checkedChannel" @click="toggleOnOffSmsMms" disabled>
 								<label for="SMSMMS"></label>
 							</div>
 						</div>
@@ -1974,8 +1978,10 @@ import ImageFriendTalkUploadPopUp from "@/modules/commonUtil/components/bp-image
 import ImageSmsManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
 import ImageSmsUploadPopUp from "@/modules/commonUtil/components/bp-imageUpload.vue";
 
-import TokenSvc from '@/common/token-service';
+import tokenSvc from '@/common/token-service';
 import confirm from "@/modules/commonUtil/service/confirm";
+import * as utils from '@/common/utils';
+import { consts } from '@/common/config';
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import Calendar from "@/components/Calendar.vue";
 
@@ -2242,6 +2248,7 @@ export default {
 
 			useYn : 'Y',
 			brandNmList: [],		// 브랜드 명 selectBox
+			projectUseChannelInfoData: {},
 
 			pushPlaceHoder: 	"변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) #{고객}님 #{YYMMDD} 출금 예정입니다.",
 			rcsPlaceHoder: 	"변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",
@@ -2352,6 +2359,21 @@ export default {
 				vm.rcsDesFormNmList = resultData.desFormList;
 				vm.rcsStyleMessagebaseformId = resultData.styleFormList[0].MESSAGEBASEFORM_ID;
 				vm.rcsStyleFormNmList = resultData.styleFormList;
+			});
+
+			params = {
+				projectId: utils.getCookie(consts.projectId),
+				corpId: tokenSvc.getToken().principal.corpId
+			};
+
+			templateApi.selectProjectUseChannelInfo(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.projectUseChannelInfoData = result.data.projectUseChannelInfo;
+					consoel.log(this.projectUseChannelInfoData);
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
 			});
 		},
 		fnSetSlider(){
@@ -2683,31 +2705,6 @@ export default {
 				}
 			});
 		},
-    // showRcsTemplateTable(num){
-    //   if(num == 0){
-
-    //   }else if(num == 1){
-
-    //   }else if(num == 2){
-
-    //   }else if(num == 3){
-
-    //   }else if(num == 4){
-
-    //   }else if(num == 5){
-
-    //   }else if(num == 6){
-
-    //   }else if(num == 7){
-
-    //   }else if(num == 8){
-
-    //   }else if(num == 9){
-
-    //   }else if(num == 10){
-
-    //   }
-    // },
 		// 채널 발송순서 변경시 클릭한 채널 인덱스를 가져온다
 		putData:function(idx){
 			this.idxData = idx;

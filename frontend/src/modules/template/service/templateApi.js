@@ -152,6 +152,10 @@ const selectBrandList = (params) => {
     return httpClient.post('/multiSendTemplateApi/selectBrandList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
+const selectProjectUseChannelInfo = (params) => {
+	return httpClient.post('/multiSendTemplateApi/selectProjectUseChannelInfo', params, { headers: { "show-layer": "Yes", "activity":"READ" } });
+};
+
 const excelDownloadMultiSendTemplate = (params) => {
     return httpClient.post('/multiSendTemplateApi/excelDownloadMultiSendTemplate', params, { headers: {"show-layer": "No", "activity":"READ"}, responseType: 'arraybuffer' }).then(function(response) {
         try {
@@ -175,48 +179,49 @@ const excelDownloadMultiSendTemplate = (params) => {
 }
 
 export default {
-  selectValidUseChGrp,
-  selectApiKey,
-  savePushTmplt,
-  selectPushTmpltInfo,
-  selectPushTmpltList,
-  deletePushTmplt,
-  excelDownloadPushTmplt,
-  saveSmsTmplt,
-  selectSmsTmpltList,
-  selectSmsTmpltInfo,
-  deleteSmsTmplt,
-  excelDownloadSmsTmplt,
-  saveFrndTalkTmplt,
-  selectFrndTalkList,
-  selectFrndTalkInfo,
-  excelDownloadFrndTalkTmplt,
-  deleteFrndTalkTmplt,
-  selectSenderKeyList,
-  selectKkoTmpltCatGrpList,
-  selectKkoTmpltCatList,
-  selectAlimTalkTmpltList,
-  procApprvRequestKkoTmplt,
-  procUpdateRequestKkoTmplt,
-  procDeleteRequestKkoTmplt,
-  excelDownloadAlimTalkTmplt,
-  procInspectRequestKkoTmplt,
-  selectAlimTalkInfo,
-  selectKkoTmpltRejResn,
-  corpBrandCnt,
-  selectRcsTemplateList,
-  rcsTemplateInit,
-  rcsTemplateUpdateInit,
-  rcsTemplateDeleteApi,
-  rcsTemplateCancelApi,
-  rcsTemplateApi,
-  selectMultiSendTemplateList,
-  multiSendTemplateInfo,
-  excelDownloadMultiSendTemplate,
-  insertMultiSendTemplate,
-  updateMultiSendTemplate,
-  deleteMultiSendTemplate,
-  selectBrandList
+	selectValidUseChGrp,
+	selectApiKey,
+	savePushTmplt,
+	selectPushTmpltInfo,
+	selectPushTmpltList,
+	deletePushTmplt,
+	excelDownloadPushTmplt,
+	saveSmsTmplt,
+	selectSmsTmpltList,
+	selectSmsTmpltInfo,
+	deleteSmsTmplt,
+	excelDownloadSmsTmplt,
+	saveFrndTalkTmplt,
+	selectFrndTalkList,
+	selectFrndTalkInfo,
+	excelDownloadFrndTalkTmplt,
+	deleteFrndTalkTmplt,
+	selectSenderKeyList,
+	selectKkoTmpltCatGrpList,
+	selectKkoTmpltCatList,
+	selectAlimTalkTmpltList,
+	procApprvRequestKkoTmplt,
+	procUpdateRequestKkoTmplt,
+	procDeleteRequestKkoTmplt,
+	excelDownloadAlimTalkTmplt,
+	procInspectRequestKkoTmplt,
+	selectAlimTalkInfo,
+	selectKkoTmpltRejResn,
+	corpBrandCnt,
+	selectRcsTemplateList,
+	rcsTemplateInit,
+	rcsTemplateUpdateInit,
+	rcsTemplateDeleteApi,
+	rcsTemplateCancelApi,
+	rcsTemplateApi,
+	selectMultiSendTemplateList,
+	multiSendTemplateInfo,
+	excelDownloadMultiSendTemplate,
+	insertMultiSendTemplate,
+	updateMultiSendTemplate,
+	deleteMultiSendTemplate,
+	selectBrandList,
+	selectProjectUseChannelInfo
 };
 
 function fnExcelDownCallback(response){
