@@ -81,7 +81,7 @@
       <div class="of_h inline">
         <div class="float-right">
           <router-link :to="{ path: '/uc/template/multiSendTemplateList' }" tag="a" class="btnStyle2 borderGray"  activity="READ">통합발송 템플릿 관리<i class="fal fa-arrow-to-bottom"></i></router-link>
-          <a @click="fnProcSmartSend()" class="btnStyle2 backBlack ml10" title="통합 메시지 발송" activity="READ">통합 메시지 발송</a>
+          <a @click="fnMoveSmartSend()" class="btnStyle2 backBlack ml10" title="통합 메시지 발송" activity="READ">통합 메시지 발송</a>
         </div>
       </div>
 
@@ -279,7 +279,7 @@ export default {
     },
 
     //통합 전송 화면으로 이동  
-    async fnProcSmartSend(){
+    fnMoveSmartSend(){
       //console.log("this.chkBox : "+this.chkBox);
       if(this.chkBox == null || this.chkBox == ''){
         confirm.fnAlert(this.componentsTitle, '전송할 항목을 선택해주세요.');

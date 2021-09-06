@@ -67,7 +67,7 @@
               <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
               <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
             </ul>
-            <a href="#" @click.prevent="fnPageNoResetSearch()" class="btnStyle1 float-right" title="통합발송 검색">검색</a>
+            <a href="#" @click.prevent="fnPageNoResetSearch()" class="btnStyle1 float-right" title="스마트발송 검색" activity="READ">검색</a>
           </div>
         </div>
       </div>
@@ -100,7 +100,7 @@
         <div class="of_h inline">
           <div class="float-right">
             <router-link :to="{ path: '/uc/smartTemplate' }" tag="a" class="btnStyle2 borderGray"  activity="READ">스마트 발송 템플릿 관리</router-link>
-            <a href="#" @click.prevent="fnMoveSmartSend" class="btnStyle2 backBlack ml10" title="스마트 메시지 발송">스마트 메시지 발송</a>
+            <a href="#" @click.prevent="fnMoveSmartSend" class="btnStyle2 backBlack ml10" title="스마트 메시지 발송" activity="READ">스마트 메시지 발송</a>
           </div>
         </div>
 
