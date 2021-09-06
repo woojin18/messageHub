@@ -96,11 +96,11 @@ export default {
 			if(!emailVali) return false;
 
 			// 이메일 정규식 체크
-			let isEmail = this.isEmail(this.email);
-			if(!isEmail) {
-				confirm.fnAlert("", "입력한 이메일 형식이 올바르지 않습니다.");
-				return false;
-			}
+			// let isEmail = this.isEmail(this.email);
+			// if(!isEmail) {
+			// 	confirm.fnAlert("", "입력한 이메일 형식이 올바르지 않습니다.");
+			// 	return false;
+			// }
 			// 이메일 인증 메일 발송
 
 			// 메일 발송 정상 처리 후 CM_USER 회원 INSERT -> 이후 페이지 이동
@@ -130,17 +130,17 @@ export default {
 			} else {
 				var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 				if(!regExp.test(this.email)) {
-					confirm.fnAlert(this.componentsTitle, '입력한 이메일 형식이 올바르지 않습니다.');
+					confirm.fnAlert("", '입력한 이메일 형식이 올바르지 않습니다.');
 					return false;
 				}
 				return true;
 			}
 		},
-		isEmail(asValue) {
-			var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+		// isEmail(asValue) {
+		// 	var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
-			return regExp.test(asValue); // 형식에 맞는 경우 true 리턴	
-		},
+		// 	return regExp.test(asValue); // 형식에 맞는 경우 true 리턴	
+		// },
 
 		// 전체 약관 동의 체크
 		checkAll(check) {

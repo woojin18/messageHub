@@ -268,13 +268,16 @@ public class SignUpService {
 		
 		// API 통신 처리
 		Map<String, Object> result = apiInterface.get("/console/v1/ucube/customer/"+regno+"/mode/BS", headerMap);
-		
-		if("10000".equals(result.get("code"))) {
-			Map<String, Object> dataMap = (Map<String, Object>) result.get("data");
-			List<Map<String, Object>> list =  (List<Map<String, Object>>) dataMap.get("resultList");
-			rtn.setData(list);
+		if(result == null) {
+			throw new Exception("고객사 목록 조회 중 오류가 발생하였습니다.");
 		} else {
-			throw new Exception(CommonUtils.getString(result.get("message")));
+			if("10000".equals(result.get("code"))) {
+				Map<String, Object> dataMap = (Map<String, Object>) result.get("data");
+				List<Map<String, Object>> list =  (List<Map<String, Object>>) dataMap.get("resultList");
+				rtn.setData(list);
+			} else {
+				throw new Exception(CommonUtils.getString(result.get("message")));
+			}
 		}
 		
 		return rtn;
@@ -289,13 +292,16 @@ public class SignUpService {
 		
 		// API 통신 처리
 		Map<String, Object> result = apiInterface.get("/console/v1/ucube/customer/"+custNo, headerMap);
-		
-		if("10000".equals(result.get("code"))) {
-			Map<String, Object> data = (Map<String, Object>) result.get("data");
-			data.put("rtnCustNm", CommonUtils.setMaskingUserNm(CommonUtils.getString(data.get("custNm"))));
-			rtn.setData(data);
+		if(result == null) {
+			throw new Exception("고객사 조회 중 오류가 발생하였습니다.");
 		} else {
-			throw new Exception(CommonUtils.getString(result.get("message")));
+			if("10000".equals(result.get("code"))) {
+				Map<String, Object> data = (Map<String, Object>) result.get("data");
+				data.put("rtnCustNm", CommonUtils.setMaskingUserNm(CommonUtils.getString(data.get("custNm"))));
+				rtn.setData(data);
+			} else {
+				throw new Exception(CommonUtils.getString(result.get("message")));
+			}
 		}
 		
 		return rtn;
@@ -313,16 +319,19 @@ public class SignUpService {
 		
 		// API 통신 처리
 		Map<String, Object> result = apiInterface.get("/console/v1/ucube/juso", paramMap, null);
-		
-		if("10000".equals(result.get("code"))) {
-			if(CommonUtils.isEmptyObject(result.get("data"))) {
-				throw new Exception("조회된 주소가 없습니다.");
-			} else {
-				List<Map<String, Object>> list = (List<Map<String, Object>>) result.get("data");
-				rtn.setData(list);
-			}
+		if(result == null) {
+			throw new Exception("주소 목록 중 오류가 발생하였습니다.");
 		} else {
-			throw new Exception(CommonUtils.getString(result.get("message")));
+			if("10000".equals(result.get("code"))) {
+				if(CommonUtils.isEmptyObject(result.get("data"))) {
+					throw new Exception("조회된 주소가 없습니다.");
+				} else {
+					List<Map<String, Object>> list = (List<Map<String, Object>>) result.get("data");
+					rtn.setData(list);
+				}
+			} else {
+				throw new Exception(CommonUtils.getString(result.get("message")));
+			}
 		}
 		
 		return rtn;

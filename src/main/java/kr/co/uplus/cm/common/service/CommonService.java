@@ -858,11 +858,17 @@ public class CommonService {
 
         Map<String, Object> headerMap = new HashMap<String, Object>();
         headerMap.put("X-API-KEY", noticeApiKey);
+        
+        log.info("{}.sendNoti api request ==>> header : {}, body : {}", this.getClass(), headerMap, apiMap);
         Map<String, Object> result = apiInterface.etcPost(ApiConfig.NOTI_SERVER_DOMAIN+"/noti/v1/msg", apiMap, headerMap);
-        if(!"10000".equals(result.get("code"))) {
-            throw new Exception(CommonUtils.getString(result.get("message")+"\n전송에 실패하였습니다."));
+        log.info("{}.sendNoti api response : {}", this.getClass(), result);
+        if(result == null) {
+        	throw new Exception("발송 중 오류가 발생하였습니다.");
+        } else {
+        	if(!"10000".equals(result.get("code"))) {
+                throw new Exception(CommonUtils.getString(result.get("message")+"\n발송에 실패하였습니다."));
+            }
         }
-
     }
 
     private String setContents(Map<String, Object> params) {
@@ -907,7 +913,6 @@ public class CommonService {
 		String engReg2 = "^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[?!@#$%^&*+=-_|,.]).{8,16}$";	// 대문자 제외 3가지 조합
 		String speReg2 = "^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,16}$";			// 특수문자 제외 3가지 조합
 		
-//		String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$";
 		if(!pwd.matches(numReg) && !pwd.matches(engReg) && !pwd.matches(speReg)
 			&& !pwd.matches(numReg2) && !pwd.matches(engReg2) && !pwd.matches(speReg2)) {
 			throw new Exception("비밀번호는 대/소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 10~16자리\n또는 3가지 이상을 조합하여 8~16자리로 구성해주세요.\n(소문자 필수 입력)");
@@ -962,7 +967,7 @@ public class CommonService {
 		
 		// 비밀번호 비교
 		if(exPwd.equals(rtnPwd) || bfExPwd.equals(rtnPwd2)) {
-			throw new Exception("기존과 동일한 비밀번호는 사용할 수 업습니다.");
+			throw new Exception("기존과 동일한 비밀번호는 사용할 수 없습니다.");
 		}
 
 		String encPwd = sha512.encryptToBase64(salt + password);
