@@ -195,7 +195,7 @@ export default {
         jQuery('input:radio[name=radioRcs]:input[value="' + this.row_data.radioYn + '"]').prop("checked", true);
         jQuery('input:radio[name=radioMms]:input[value="' + this.row_data.smsmmsYn + '"]').prop("checked", true);
         jQuery('input:radio[name=radioPush]:input[value="' + this.row_data.pushYn + '"]').prop("checked", true);
-        jQuery('input:radio[name=radioKakao]:input[value="' + this.row_data.kakaoYn + '"]').prop("checked", true);
+        jQuery('input:radio[name=radioKko]:input[value="' + this.row_data.kakaoYn + '"]').prop("checked", true);
         jQuery('input:radio[name=radioMo]:input[value="' + this.row_data.moYn + '"]').prop("checked", true);
       }
     }
