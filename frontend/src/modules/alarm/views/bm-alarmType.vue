@@ -30,7 +30,7 @@
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~</span>
+                    <span> 시 ~ </span>
                     <select name="admin_sub13_1_2" class="selectStyle2" style="width:44%" v-model="endAll">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
@@ -46,7 +46,7 @@
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~</span>
+                    <span> 시 ~ </span>
                     <select name="admin_sub13_1_4" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltMonEnd">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
@@ -61,7 +61,7 @@
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~</span>
+                    <span> 시 ~ </span>
                     <select name="admin_sub13_1_6" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltTueEnd">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
@@ -76,7 +76,7 @@
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~</span>
+                    <span> 시 ~ </span>
                     <select name="admin_sub13_1_8" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltWedEnd">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
@@ -91,7 +91,7 @@
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~</span>
+                    <span> 시 ~ </span>
                     <select name="admin_sub13_1_10" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltThuEnd">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
@@ -106,7 +106,7 @@
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~</span>
+                    <span> 시 ~ </span>
                     <select name="admin_sub13_1_12" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltFriEnd">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
@@ -121,7 +121,7 @@
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~</span>
+                    <span> 시 ~ </span>
                     <select name="admin_sub13_1_14" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltSatEnd">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
@@ -136,7 +136,7 @@
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~</span>
+                    <span> 시 ~ </span>
                     <select name="admin_sub13_1_16" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltSunEnd">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
