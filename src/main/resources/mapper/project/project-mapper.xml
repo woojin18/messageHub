@@ -45,7 +45,7 @@
 		<if test="detailProjectId != '' and detailProjectId != null ">
 		AND A.PROJECT_ID = #{detailProjectId}
 		</if>
-		ORDER BY A.PROJECT_ID DESC
+		ORDER BY A.REG_DT DESC
 	</select>
 	
 	<select id="checkProjectNameDuplicate" resultType="int">
