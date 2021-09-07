@@ -119,6 +119,10 @@ export default {
         return 'SMS 템플릿 검색';
       }
     },
+    senderType: {
+      type: String,
+      require: true
+    },
   },
   data() {
     return {
@@ -174,8 +178,8 @@ export default {
       this.templateData = Object.assign({}, tempData);
     },
     //템플릿 리스트 검색
-    async fnSearch(senderType){
-      let params = {...this.searchData, searchSenderType: senderType};
+    async fnSearch(){
+      let params = {...this.searchData, searchSenderType: this.senderType};
       await templateApi.selectSmsTmpltList(params).then(response =>{
         var result = response.data;
         if(result.success) {

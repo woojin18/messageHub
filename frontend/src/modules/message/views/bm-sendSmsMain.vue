@@ -174,7 +174,7 @@
       </div>
     </div>
 
-    <SmsTemplatePopup :smsTemplateOpen.sync="smsTemplateOpen" ref="smsTmplPopup"></SmsTemplatePopup>
+    <SmsTemplatePopup :smsTemplateOpen.sync="smsTemplateOpen" :senderType="this.sendData.senderType" ref="smsTmplPopup"></SmsTemplatePopup>
     <SmsContentsPopup :smsContsOpen.sync="smsContsOpen" :sendData="sendData" :isSpecialBusi="isSpecialBusi"></SmsContentsPopup>
     <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="sendData.senderType" ref="imgMngPopup"></ImageManagePopUp>
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
@@ -599,7 +599,7 @@ export default {
       }
     },
     fnOpenSmsTemplatePopup(){
-      this.$refs.smsTmplPopup.fnSearch(this.sendData.senderType);
+      this.$refs.smsTmplPopup.fnSearch();
       this.smsTemplateOpen = !this.smsTemplateOpen;
     },
     fnOpenSmsContentsPopup(){
