@@ -112,13 +112,14 @@ export default {
   },
   watch: {
     visibleTmplt: function(newVal, oldVal) {
-      if(newVal) {
+      /* if(newVal) {
         jQuery("#confirmTmplt").modal("show");
       } else {
         jQuery("#confirmTmplt").modal("hide");
-      }
+      } */
     },
     row_data: function(newVal, oldVal) {
+      this.tmpltItems = [];
       this.fnSearchRegTmplt(1);
     }
   },
@@ -132,7 +133,7 @@ export default {
 		},
     // 닫기
     fnClose(){
-      this.$emit('update:visibleTmplt', false);
+      jQuery("#confirmTmplt").modal("hide");
     },
     // 조회
     fnSearchRegTmplt(pageNo){

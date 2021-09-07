@@ -7,7 +7,7 @@
     </modalTmplt>
     <modalCallback 
       :visibleCallback.sync="visibleCallback"
-      :row_data="row_data"
+      :callback_row_data="callback_row_data"
     >
     </modalCallback>
     
@@ -157,6 +157,7 @@ export default {
       visibleTmplt : false,  // 레이어 팝업 
       visibleCallback : false,  // 레이어 팝업
       row_data : {},
+      callback_row_data : {},
       projectApiKey : "",
     }
   },
@@ -298,13 +299,15 @@ export default {
     },
     // 등록 템플릿 상세 
     fnRcsTmpltDetail(row){
-      this.visibleTmplt = !this.visibleTmplt;
+      //this.visibleTmplt = !this.visibleTmplt;
       this.row_data = row;
+      jQuery("#confirmTmplt").modal("show");
     },
     // 등록 발신번호 상세 
     fnRcsCallbackDetail(row){
-      this.visibleCallback = !this.visibleCallback;
-      this.row_data = row;
+      //this.visibleCallback = !this.visibleCallback;
+      this.callback_row_data = row;
+      jQuery("#confirmCallback").modal("show");
     },
   }
 }

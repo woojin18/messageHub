@@ -8,10 +8,10 @@
 						<hr>
 						<div class="mt20 of_h">
 							<div class="float-left" style="width:49%">
-                브랜드명 : {{this.row_data.brandName}}
+                브랜드명 : {{this.callback_row_data.brandName}}
 							</div>
 							<div class="of_h float-right" style="width:49%">
-								브랜드ID : {{this.row_data.brandId}}
+								브랜드ID : {{this.callback_row_data.brandId}}
 							</div>
 						</div>
             
@@ -58,7 +58,7 @@
             </table>
 					</div>
           <!-- 페이징 -->
-          <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
+          <PageLayer @fnClick="fnSearchCallback" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
           <!-- 페이징 -->
 					<div class="text-center mt40">
 						<a @click="fnClose" class="btnStyle3 black font14" data-toggle="modal">닫기</a>
@@ -97,25 +97,26 @@ export default {
       require: true,
       default: false
     },
-    row_data : {
+    callback_row_data : {
       type: Object,
       require: false,
     }
   },
   watch: {
     visibleCallback: function(newVal, oldVal) {
-      if(newVal) {
+      /* if(newVal) {
         jQuery("#confirmCallback").modal("show");
       } else {
         jQuery("#confirmCallback").modal("hide");
-      }
+      } */
     },
-    row_data: function(newVal, oldVal) {
-      this.fnSearch(1);
+    callback_row_data: function(newVal, oldVal) {
+      this.callbackItems = [];
+      this.fnSearchCallback(1);
     }
   },
   mounted() {
-    this.fnSearch(1);
+    //this.fnSearchCallback(1);
   },
   methods: {
 		// select 박스 선택시 리스트 재출력
@@ -125,13 +126,13 @@ export default {
 		},
     // 닫기
     fnClose(){
-      this.$emit('update:visibleCallback', false);
+      jQuery("#confirmCallback").modal("hide");
     },
     // 조회
-    fnSearch(pageNo){
+    fnSearchCallback(pageNo){
       var params = {
-          "brandId"    : this.row_data.brandId,
-          "projectId"  : this.row_data.projectId,
+          "brandId"    : this.callback_row_data.brandId,
+          "projectId"  : this.callback_row_data.projectId,
           "pageNo"		: (this.$gfnCommonUtils.defaultIfEmpty(pageNo, '1'))*1,
 				  "listSize"		: this.listSize
       };

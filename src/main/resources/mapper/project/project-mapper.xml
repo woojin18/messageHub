@@ -250,7 +250,7 @@
 							and REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.isMainNum[0]'), "\"", "") = 'true'
 						)
 						
-						UNION 
+						UNION ALL 
 						
 						select	crc.CHATBOT_ID
 						,		crc.BRAND_ID

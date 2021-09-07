@@ -123,7 +123,7 @@
 								from cm.CM_RCS_CHATBOT crc 
 							)
 							and crcr.CORP_ID = #{corpId}
-							UNION 
+							UNION ALL
 							
 							select	crc.CHATBOT_ID
 							,		crc.CHATBOT_ID AS MAIN_MDN
@@ -192,7 +192,7 @@
 						and REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.isMainNum[0]'), "\"", "") = 'true'
 					)
 					
-					UNION 
+					UNION ALL
 					
 					select	crc.CHATBOT_ID
 					,		crc.CHATBOT_ID AS MAIN_MDN
@@ -688,7 +688,7 @@
 								)
 								and crcr.CORP_ID = #{corpId}
 			
-								UNION 
+								UNION ALL 
 			
 								select	crc.CHATBOT_ID
 								,		crc.CHATBOT_ID AS MAIN_MDN
@@ -835,8 +835,9 @@
 									select	crc.CHATBOT_ID
 									from cm.CM_RCS_CHATBOT crc 
 								)
+								AND		crcr.CORP_ID = #{corpId}
 			
-								UNION 
+								UNION ALL 
 			
 								select	crc.CHATBOT_ID
 								,		crc.CHATBOT_ID AS MAIN_MDN
@@ -859,6 +860,7 @@
 										END AS RANKING_DT 
 								]]>
 								from cm.CM_RCS_CHATBOT crc 
+								WHERE	crc.CORP_ID = #{corpId}
 							) CHATBOT, (SELECT @vRank:=0, @vData:='') as r
 							ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.RANKING_DT DESC
 					) A
