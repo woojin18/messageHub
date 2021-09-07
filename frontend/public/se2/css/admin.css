@@ -483,8 +483,8 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .moreBtn {}
 .moreBtn:hover img {animation-name:moreBtn; animation-duration:1s; animation-fill-mode:both}
 @keyframes moreBtn {
-    from {transform:rotate(90deg)}
-    to {transform:rotate(180deg)}
+	from {transform:rotate(90deg)}
+	to {transform:rotate(180deg)}
 }
 
 
@@ -1000,13 +1000,19 @@ footer {font-size:12px; color:#B2B2B2; font-weight:400; position:absolute; botto
 
 .trBg {background:#f7f7f7}
 
+/* Alarm btn*/
+.Alarm .menuBox {position:relative}
+.Alarm .menuBox .btnStyle2 {position:absolute; bottom:20px; left:20px}
+.Alarm .menuBox p {max-height:50px; overflow-y:auto}
+
+
 #slide-counter {position:absolute; bottom:-27px; width:100%; text-align:center; font-size:10px}
 
 @media screen and (max-width:1850px) {
-    .Menu02 {width:60%}
-    .Menu03 {width:40%}
+	.Menu02 {width:60%}
+	.Menu03 {width:40%}
 }
 @media screen and (max-width:1620px) {
-    .Menu02 {width:50%}
-    .Menu03 {width:50%}
+	.Menu02 {width:50%}
+	.Menu03 {width:50%}
 }

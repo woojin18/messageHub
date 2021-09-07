@@ -6,7 +6,7 @@
 			</div>
 
 			<!-- 본문 -->
-			<div class="row">
+			<div class="row mt10 Alarm">
                 <div class="col-xs-6 mt10" v-for="(alarmType, idx1) in alarmTypeList">			
                     <div class="mt20">
                         <div class="row">
