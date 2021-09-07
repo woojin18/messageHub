@@ -880,7 +880,7 @@
 		/* channel.selectApikeyForApi */
 		SELECT API_KEY
 		FROM cm.CM_APIKEY ca 
-		WHERE	ca.WEB_SENDER_YN = 'Y'
+		WHERE	1=1
 		<choose>
 			<when test="projectId == 'ALL'.toString()">
 			AND		ca.CORP_ID = #{corpId}
