@@ -179,7 +179,7 @@ export default {
       let recvInfoLst = [];
       let recvInfo = {};
       let sltCuInfo = {};
-      let isValid = true;
+      //let isValid = true;
       let inValidVarNm = '';
 
       this.listChkBox.forEach(function(v){
@@ -250,6 +250,21 @@ export default {
       });
     },
     fnSearchAddrMem(){
+      let limitLength = 0;
+
+      if(this.$gfnCommonUtils.isEmpty(this.searchText) == false){
+        if(this.searchTextType == 'hpNumber'){
+          limitLength = 4;
+        } else {
+          limitLength = 2;
+        }
+
+        if(this.searchText.length < limitLength){
+          confirm.fnAlert(this.componentsTitle, '검색어를 '+limitLength+'자리 이상 입력해주세요.');
+          return;
+        }
+      }
+
       this.fnGetAddrList();
       this.fnAddrCatgMem(this.searchCategoryId);
     },
