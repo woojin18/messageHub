@@ -545,6 +545,7 @@ export default {
 	  },
 	  carouselBrandId (newval, oldval){
 		var vm = this;
+		vm.sendData.brandId = newval;
 		var params = {
 			"approvalStatus" : "승인",
 			"brandId" : oldval
@@ -1001,9 +1002,20 @@ export default {
 	fnSave() {
 		var vali = this.fnSaveVali();
 		if(!vali) return false;
+
+		var carouselType = this.carouSelType;
+		var templateRadioBtn = this.templateRadioBtn
+		if(carouselType) {
+			if(templateRadioBtn == "carouselSmall") {
+				templateRadioBtn = this.carouselSmall;
+			} else if(templateRadioBtn == "carouselMedium") {
+				templateRadioBtn = this.carouselMedium;
+			}
+		}
+
 		var params = {
 			"data" : this.sendData,
-			"templateRadioBtn" : this.templateRadioBtn,
+			"templateRadioBtn" : templateRadioBtn,
 			"carouSelType" : this.carouSelType
 		}
 
@@ -1076,6 +1088,7 @@ export default {
 				}
 			} else {
 				vm.sendData.brandId = data.brandId;							// brandId
+				vm.carouselBrandId = data.brandId;							// carouselBrnadId
 				vm.sendData.saveContent = data.saveContent;					// 저장 메시지 명
 				vm.sendData.copy = data.copy;								// 복사 가능여부
 				vm.sendData.adYn = data.adYn;								// 광고여부
@@ -1083,8 +1096,8 @@ export default {
 				vm.sendData.senderType = data.senderType;					// 대체발송 radio
 				vm.sendData.callbackTitle = data.callbackTitle;				// 대체발송 title
 				vm.sendData.callbackContents = data.callbackContents;		// 대체발송 contents
-				vm.sendData.callbackFileId = data.fileId;				// 대체발송 fileId
-				vm.sendData.callbackImgUrl = data.imgUrl;				// 대체발송 imgUrl
+				vm.sendData.callbackFileId = data.fileId;					// 대체발송 fileId
+				vm.sendData.callbackImgUrl = data.imgUrl;					// 대체발송 imgUrl
 				vm.sendData.carouselObj.textTitle = data.textTitle;			// 텍스트 제목
 				vm.sendData.carouselObj.textContents = data.textContents;	// 텍스트 내용
 				vm.sendData.carouselObj.imgUrl = data.imgUrl;				// 이미지

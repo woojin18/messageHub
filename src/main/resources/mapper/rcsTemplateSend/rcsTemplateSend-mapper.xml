@@ -109,6 +109,7 @@
 	
 	<sql id="rcsTepMsgbaseSql">
 		AND		A.CORP_ID = #{corpId}
+		AND		B.APPROVAL_STATUS = '승인'
 		<if test="msgIdArr != null and msgIdArr != ''">
 		AND		A.MESSAGEBASE_ID NOT IN 
 			<foreach collection="msgIdArr" item="type" open="(" close=")" separator=",">
