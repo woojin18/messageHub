@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ucubeCorp">
+	<select id="selectCorpListByRegNoCnt" resultType="int">
+		/* ucubeCorp.selectCorpListByRegNoCnt */
+		SELECT	COUNT(1)
+		FROM	cm_console.CM_CORP
+		WHERE	REGNO = #{regNo}
+		AND		STATUS != 'DEL'
+	</select>
+	
+	<select id="selectCorpListByRegNo" resultType="camel">
+		/* ucubeCorp.selectCorpListByRegNo */
+		SELECT	CORP_ID
+		FROM	cm_console.CM_CORP
+		WHERE	REGNO = #{regNo}
+	</select>
+	
+	<update id="updateTerminateByRegNo">
+		/* ucubeCorp.updateTerminateByRegNo */
+		UPDATE	cm_console.CM_CORP
+		SET		STATUS = #{status}
+		,		DEL_REASON = #{delReason}
+		,		UPD_DT = NOW()
+		WHERE	REGNO = #{regNo}
+	</update>
+	
+	<update id="updateTerminateApikey">
+		/* ucubeCorp.updateTerminateApikey */
+		UPDATE	cm.CM_APIKEY
+		SET		STATUS = 'CANCEL'
+		,		UPD_DT = NOW()
+		WHERE	CORP_ID = #{corpId}
+	</update>
+	
+	<update id="updateCmCmdForRedis">
+		/* ucubeCorp.updateCmCmdForRedis */
+		UPDATE cm.CM_CMD
+		SET UPD_DT = NOW()
+		WHERE CMD_TGT = #{cmdTgt}
+	</update>
+</mapper>
