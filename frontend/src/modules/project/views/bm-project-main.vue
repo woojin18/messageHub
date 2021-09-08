@@ -120,9 +120,9 @@ export default {
       kakaoYn : this.$route.params.kakaoYn,
       moYn : this.$route.params.moYn,
 	
-      selMainTab  : 1,
-      selMidTab   : 1,
-      selSubTab   : 1
+      selMainTab  : this.$route.params.selMainTab,
+      selMidTab   : this.$route.params.selMidTab,
+      selSubTab   : this.$route.params.selSubTab,
     }
   },
   mounted() {

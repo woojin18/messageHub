@@ -174,7 +174,9 @@ export default {
       this.$router.push( {name:moveTabName, params:{"projectId" : this.projectId, "projectName" : this.projectName }} );
     },
 	fnMovePjtTab(){
-		this.$router.push( {name:'projectMain', params:{"projectId" : this.projectId, "projectName" : this.projectName, "selMainTab" : 5  }} );
+		this.$router.push( {name:'projectMain'
+			, params:{"projectId" : this.projectId, "projectName" : this.projectName, "selMainTab" : 5, "selMidTab" : 1, "selSubTab" : 1  }} 
+		);
 	},
     // 등록팝업창
     fnReg(reqType) {

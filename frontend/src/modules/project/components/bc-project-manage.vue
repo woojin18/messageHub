@@ -251,6 +251,9 @@ export default {
       this.$router.push( {name:"projectMain",params:{
           "projectId" : data.projectId
         , "projectName" : data.projectName
+        , "selMainTab" : 1
+        , "selMidTab" : 1
+        , "selSubTab" : 1
        /*  , "rcsYn" : data.rcsYn
         , "smsmmsYn" : data.smsmmsYn
         , "pushYn" : data.pushYn
