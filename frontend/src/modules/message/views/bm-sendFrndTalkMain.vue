@@ -82,7 +82,7 @@
               <div style="width:80%">
                 <select name="userConsole_sub0203_1" class="selectStyle2" style="width:42%" v-model="sendData.senderKey">
                   <option value="" selected>선택해주세요.</option>
-                  <option v-for="senderKeyInfo in senderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.senderKey}}</option>
+                  <option v-for="senderKeyInfo in senderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.kkoChId}}</option>
                 </select>
               </div>
             </div>

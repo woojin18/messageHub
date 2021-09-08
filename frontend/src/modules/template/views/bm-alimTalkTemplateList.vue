@@ -91,7 +91,7 @@
                   <col>
                   <col style="width:8%">
                   <col style="width:10%">
-                  <col style="width:25%">
+                  <col style="width:15%">
                   <col style="width:12%">
                 </colgroup>
                 <thead>
@@ -150,7 +150,7 @@
                       {{contant.tmpltStatCodeName}}
                     </td>
                     <td class="text-center">{{contant.senderKeyTypeName}}</td>
-                    <td class="text-left">{{contant.senderKey}}</td>
+                    <td class="text-left">{{contant.kkoChId}}</td>
                     <td class="text-center">{{contant.updDt}}</td>
                   </tr>
                   <tr v-if="contants.length == 0">

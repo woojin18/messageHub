@@ -54,11 +54,11 @@
                 <option value="">선택해주세요.</option>
                 <option v-for="senderKeyInfo in senderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">
                   <!-- {{tmpltData.senderKeyType == 'S' ? senderKeyInfo.kkoChId : senderKeyInfo.senderKey}} -->
-                  {{senderKeyInfo.senderKey}}
+                  {{senderKeyInfo.kkoChId}}
                 </option>
               </select>
               <select v-else class="float-left selectStyle2" style="width:100%" disabled>
-                <option value="">{{tmpltData.senderKey}}</option>
+                <option value="">{{tmpltData.kkoChId}}</option>
               </select>
             </div>
           </div>
