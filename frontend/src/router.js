@@ -39,14 +39,13 @@ Vue.use(Router)
 
 const requireAuth = () => (to, from, next) => {
 	if (tokenSvc.getToken().principal.svcTypeCd == 'BO' && tokenSvc.getToken().principal.role !== 'GUEST') {
-		alert("Back Ofiice 계정으로는 Console 로그인이 불가합니다.");
-		//confirm.fnAlert("", "Back Ofiice 계정으로는 Console 로그인이 불가합니다.");
+		confirm.fnAlert("", "Back Ofiice 계정으로는 Console 로그인이 불가합니다.");
 		return next('/login');
 	}
 	next();
 
 	if (tokenSvc.getToken().principal.svcTypeCd == 'UC') {
-		alert("User 권한 사용자는 Admin Console 사용이 불가합니다.");
+		confirm.fnAlert("", "User 권한 사용자는 Admin Console 사용이 불가합니다.");
 		return next('/uc');
 	}
 	next();
@@ -218,7 +217,7 @@ router.afterEach((to, from) => {
 			var menu = jQuery('#M_' + to.meta.menu);
 			if (menu.length == 0) {
 				if (jQuery('#M_menusCd').val() != 'AC_PROJECT') {
-					confirm.fnAlert(jQuery('#M_menusCd').val(), '권한이 없습니다.');
+					confirm.fnAlert("", "권한이 없습니다.");
 				}
 				window.history.back();
 				return;
