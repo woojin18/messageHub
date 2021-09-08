@@ -110,8 +110,8 @@ public class SignUpService {
 			String salt = new String(Base64.getEncoder().encode(bytes));
 			paramMap.put("salt", salt);
 			
-			SHA sha256 = new SHA(256);
-			String encPwd = sha256.encryptToBase64(salt+ CommonUtils.getString(paramMap.get("password")));
+			SHA sha512 = new SHA(512);
+			String encPwd = sha512.encryptToBase64(salt+ CommonUtils.getString(paramMap.get("password")));
 			paramMap.put("password", encPwd);
 		} catch (NoSuchAlgorithmException e) {
 			throw new Exception("회원 가입에 실패하였습니다.");
