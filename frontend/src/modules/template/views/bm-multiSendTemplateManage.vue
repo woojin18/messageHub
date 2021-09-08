@@ -1608,7 +1608,7 @@
 						<div class="float-left" style="width:59%">
 							<select class="float-left selectStyle2" style="width:100%" v-model="rowData.friendTalkSenderKey">
 								<option value="">선택해주세요.</option>
-								<option v-for="senderKeyInfo in friendTalkSenderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.senderKey}}</option>
+								<option v-for="senderKeyInfo in friendTalkSenderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.kkoChId}}</option>
 							</select>
 						</div>
 					</div>
@@ -1734,7 +1734,7 @@
 							<div class="float-left" style="width:57%">
 								<select class="float-left selectStyle2" style="width:100%" v-model="rowData.senderKey" disabled>
 									<option value="">선택해주세요.</option>
-									<option v-for="senderKeyInfo in friendTalkSenderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.senderKey}}</option>
+									<option v-for="senderKeyInfo in friendTalkSenderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.kkoChId}}</option>
 								</select>
 							</div>
 						</div>
