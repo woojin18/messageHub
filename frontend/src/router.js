@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import searchcondition from './store'
 import tokenSvc from '@/common/token-service';
+import confirm from '@/modules/commonUtil/service/confirm';
 
 import WebUcNaviLayout from './views/WebUcNaviLayout.vue';
 import WebNaviLayout from './views/WebNaviLayout.vue';
@@ -216,7 +217,9 @@ router.afterEach((to, from) => {
 			jQuery('#M_menusCd').val(to.meta.menu);
 			var menu = jQuery('#M_' + to.meta.menu);
 			if (menu.length == 0) {
-				alert('권한이 없습니다.');
+				if (jQuery('#M_menusCd').val() != 'AC_PROJECT') {
+					confirm.fnAlert(jQuery('#M_menusCd').val(), '권한이 없습니다.');
+				}
 				window.history.back();
 				return;
 			}
