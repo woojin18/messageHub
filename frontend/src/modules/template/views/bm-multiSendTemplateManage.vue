@@ -1632,7 +1632,8 @@
 					<div class="of_h consolMarginTop">
 						<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 						<div class="float-left" style="width:59%">
-							<textarea class="textareaStyle height190" v-model="rowData.friendTalkContent" :placeholder="kakaoPlaceHoder"></textarea>
+							<textarea class="textareaStyle height190" v-model="rowData.friendTalkContent" :placeholder="kakaoPlaceHoder" @input="fnSetFrndTalkCurrByte" :maxlength="msgFrndTalkLimitByte"></textarea>
+							<strong class="letter">({{msgFrndTalkCurrByte}} / {{msgFrndTalkLimitByte}})</strong>
 						</div>
 					</div>					
 					<div class="of_h consolMarginTop">
@@ -2185,6 +2186,8 @@ export default {
 			friendTalkImgUploadOpen : false,
 			friendTalkUseCh : 'FRIENDTALK',
 			friendTalkImgLimitSize : 1,
+			msgFrndTalkCurrByte: 0,
+			msgFrndTalkLimitByte: 0,
 
 			friendTalkSenderKeyType: 'NOMAL',	//NOMAL, GROUP //friendTalk 발신프로필 그룹
 			friendTalkSenderKeyList: [],
@@ -2345,6 +2348,7 @@ export default {
 		this.fnSelectFriendTalkSenderKeyList();
 		this.fnSMSSelectCallbackList();
 		this.fnSetMultiSendTemplateInfo();
+		this.fnGetFrndTalkLimitByte();
 	},
 	methods: {
 		init() {
@@ -2370,7 +2374,6 @@ export default {
 				var result = response.data;
 				if (result.success) {
 					this.projectUseChannelInfoData = result.data.projectUseChannelInfo;
-					consoel.log(this.projectUseChannelInfoData);
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
@@ -3217,6 +3220,11 @@ export default {
 							confirm.fnAlert(this.detailTitle, '친구톡 내용을 입력해주세요.');
 							return false;
 						}
+						if(this.msgFrndTalkLimitByte < this.msgFrndTalkCurrByte){
+							const alertMsg = '친구톡 내용은 '+this.msgFrndTalkLimitByte+'자를 넘지 않아야됩니다.\n친구톡 최대 1000자, 이미지 사용시 400자, 와이드이미지 76자 입력가능합니다.\n(현재 : '+this.msgFrndTalkCurrByte+'자)';
+							confirm.fnAlert(this.componentsTitle, alertMsg);
+							return false;
+						}
 					}
 
 					if (this.kakaoTemplateTable === 1) { //ALIMTALK
@@ -3749,6 +3757,8 @@ export default {
 							this.rowData.smsRcvblcNumber = this.$gfnCommonUtils.unescapeXss(rtnData.smsRcvblcNumber);
 							this.fnGetSmsLimitByte();
 						}
+						this.fnGetFrndTalkLimitByte();
+						this.fnSetFrndTalkCurrByte();
 					}
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
@@ -4303,9 +4313,11 @@ export default {
 			this.rowData.friendTalkImgInfo.imgUrl = imgInfo.chImgUrl;
 			this.rowData.friendTalkImgInfo.fileId = imgInfo.fileId;
 			this.rowData.friendTalkImgInfo.wideImgYn = imgInfo.wideImgYn;
+			this.fnGetFrndTalkLimitByte();
 		},
 		fnFriendTalkDelImg(){
 			this.rowData.friendTalkImgInfo = {};
+			this.fnGetFrndTalkLimitByte();
 		},
 		fnSmsOpenImageManagePopUp(){
 			if (this.fnSmsImgLimitSize() == false) return;
@@ -4435,6 +4447,21 @@ export default {
 				totalMsg += '\n' + rcvblcNum + '(광고)';
 			}
 			this.msgSmsCurrByte = this.getByte(totalMsg);
+		},
+		fnGetFrndTalkLimitByte() {
+			if(this.rowData && this.rowData.friendTalkImgInfo && this.$gfnCommonUtils.isEmpty(this.rowData.friendTalkImgInfo.imgUrl) == false){
+				if(this.rowData.friendTalkImgInfo.wideImgYn == 'Y'){
+					this.msgFrndTalkLimitByte = 76;
+				} else {
+					this.msgFrndTalkLimitByte = 400;
+				}
+			} else {
+				this.msgFrndTalkLimitByte = 1000;
+			}
+		},
+		fnSetFrndTalkCurrByte() {
+			let body = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.friendTalkContent, '');
+			this.msgFrndTalkCurrByte = body.length;
 		},
 		fnGetSmsLimitByte() {
 			if (this.rowData.smsSendType == 'S') {
