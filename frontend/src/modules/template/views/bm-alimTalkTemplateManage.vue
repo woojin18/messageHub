@@ -93,7 +93,8 @@
             <div class="float-left" style="width:22%"><h4>내용 *</h4></div>
             <div class="float-left" style="width:78%">
               <!-- 템플릿 내용/부가 정보/광고성 메시지 합 최대 1,000자 -->
-              <textarea class="textareaStyle height190" v-model="tmpltData.tmpltContent" :placeholder="contentAreaPlaceholder" maxlength="1000"></textarea>
+              <textarea class="textareaStyle height190" v-model="tmpltData.tmpltContent" :placeholder="contentAreaPlaceholder" :maxlength="msgLimitLength" @input="fnSetCurrLength"></textarea>
+              <strong class="letter">({{msgCurrLength}} / {{msgLimitLength}})</strong>
             </div>
           </div>
           <div class="of_h consolMarginTop">
@@ -246,6 +247,8 @@ export default {
       useCh : 'ALIMTALK',
       contentAreaPlaceholder: '변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정\n:예) #{name}님 #{yyyymmdd} 출금 예정입니다.',
       reflectionMsg: '반영까지 최대 5분의 시간이 소요될 수 있습니다.',
+      msgCurrLength: 0,
+      msgLimitLength: 1000,
       buttonLimitSize : 5,
       buttonACName : '채널 추가',
       buttonDSDescription : '카카오 메세지에 택배사 명과 송장번호를 기재한 후, 배송 조회 버튼을 추가하시면 메세지에서 택배사 명과 송장번호를 추출하여 배송 조회 카카오 검색페이지 링크가 자동으로 생성됩니다. 카카오에서 지원하는 택배사명과 운송장번호가 알림톡 메시지 내에 포함된 경우에만 배송조회 버튼이 표시됩니다. 배송 조회가 가능한 택배사는 <span style="color:#e11d21"><strong>카카오와 해당 택배사와의 계약 관계에 의해 변동될 수 있음을 유의해주시기 바랍니다.</strong></span>',
@@ -284,6 +287,10 @@ export default {
     }
   },
   methods: {
+    fnSetCurrLength(){
+      let body = this.$gfnCommonUtils.defaultIfEmpty(this.tmpltData.tmpltContent, '');
+      this.msgCurrLength = body.length;
+    },
     async fnExistApiKey(){
       let params = {};
       await templateApi.selectApiKey(params).then(response =>{
@@ -338,6 +345,7 @@ export default {
 
             this.tmpltData = Object.assign({}, rtnData);
             this.tmpltData.tmpltInfo = '';
+            this.fnSetCurrLength();
 
             //set categoryInfo
             this.categoryGrpName = this.tmpltData.categoryGrpName;
@@ -392,6 +400,11 @@ export default {
       }
       if(!this.tmpltData.tmpltContent){
         confirm.fnAlert(this.componentsTitle, '템플릿내용을 입력해주세요.');
+        return false;
+      }
+      if(this.msgLimitLength < this.msgCurrLength){
+        const alertMsg = '메시지 내용은 '+this.msgLimitLength+'자를 넘지 않아야됩니다.\n(현재 : '+this.msgCurrLength+'자)';
+        confirm.fnAlert(this.componentsTitle, alertMsg);
         return false;
       }
       if(!this.tmpltData.categoryCode){
