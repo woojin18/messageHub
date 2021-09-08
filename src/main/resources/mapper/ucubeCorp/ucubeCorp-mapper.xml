@@ -21,7 +21,9 @@
 		/* ucubeCorp.updateTerminateByRegNo */
 		UPDATE	cm_console.CM_CORP
 		SET		STATUS = #{status}
+		<if test="status != null and status != '' and status eq 'DEL'.toString()">
 		,		DEL_REASON = #{delReason}
+		</if>
 		,		UPD_DT = NOW()
 		WHERE	REGNO = #{regNo}
 	</update>

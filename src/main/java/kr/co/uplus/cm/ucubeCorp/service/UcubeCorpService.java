@@ -23,6 +23,7 @@ public class UcubeCorpService {
 	public Map<String, Object> ucubeTerminateCorp(Map<String, Object> params) throws Exception {
 		Map<String, Object> rtn = new HashMap<String, Object>();
 		String status = (CommonUtils.getString(params.get("status"))).toUpperCase();
+		params.put("status", status);
 		
 		int cnt = generalDao.selectGernalCount("ucubeCorp.selectCorpListByRegNoCnt", params);
 		if(cnt == 0) {
