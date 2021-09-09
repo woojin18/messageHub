@@ -92,6 +92,7 @@
 			AND	A.API_KEY = B.API_KEY
 		,		(SELECT @rownum:=0) TMP
 		WHERE	1=1
+		AND		B.GW_RESULT_CODE IS NOT NULL
 		AND		IFNULL(B.GW_RESULT_CODE, '0') != '10000'
 		<include refid="whereSelectWebSendFailList"/>
 		ORDER BY A.REG_DT DESC
