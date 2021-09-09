@@ -82,7 +82,7 @@
               <div style="width:80%">
                 <select name="userConsole_sub0203_1" class="selectStyle2" style="width:42%" v-model="sendData.senderKey">
                   <option value="" selected>선택해주세요.</option>
-                  <option v-for="senderKeyInfo in senderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.senderKey}}</option>
+                  <option v-for="senderKeyInfo in senderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.kkoChId}}</option>
                 </select>
               </div>
             </div>
@@ -316,7 +316,7 @@
     </div>
 
     <FrndTalkTemplatePopup :frndTalkTemplateOpen.sync="frndTalkTemplateOpen" ref="frndTalkTmplPopup"></FrndTalkTemplatePopup>
-    <FrndTalkContentsPopup :frndTalkContsOpen.sync="frndTalkContsOpen" :sendData="sendData"></FrndTalkContentsPopup>
+    <FrndTalkContentsPopup :frndTalkContsOpen.sync="frndTalkContsOpen" :sendData="sendData" ref="frndTalkContPopup"></FrndTalkContentsPopup>
     <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="sendData.ch" ref="imgMngPopup"></ImageManagePopUp>
     <ReplacedSenderPopup :rplcSendOpen.sync="rplcSendOpen" ref="rplcSendPopup"></ReplacedSenderPopup>
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
@@ -474,6 +474,16 @@ export default {
       }
       if(!this.sendData.frndTalkContent){
         confirm.fnAlert(this.componentsTitle, '메시지 내용을 입력해주세요.');
+        return false;
+      }
+
+      if(!this.sendData.frndTalkContent){
+        confirm.fnAlert(this.componentsTitle, '메시지 내용을 입력해주세요.');
+        return false;
+      }
+      if(this.fnGetLimitLength() < this.sendData.frndTalkContent.length){
+        const alertMsg = '메시지 내용은 '+this.fnGetLimitLength()+'자를 넘지 않아야됩니다.\n(현재 : '+this.sendData.frndTalkContent.length+'자)';
+        confirm.fnAlert(this.componentsTitle, alertMsg);
         return false;
       }
       if(!this.$gfnCommonUtils.isEmpty(this.sendData.fileId)){
@@ -789,7 +799,19 @@ export default {
         this.sendData.testRecvInfoLst = [];
       }
     },
+    fnGetLimitLength(){
+      if(this.$gfnCommonUtils.isEmpty(this.sendData.imgUrl)){
+        return 1000;
+      } else {
+        if(this.sendData.wideImgYn == 'Y'){
+          return 76;
+        } else {
+          return 400;
+        }
+      }
+    },
     fnOpenFrndTalkContentsPopup(){
+      this.$refs.frndTalkContPopup.fnGetLimitLength(this.fnGetLimitLength());
       this.frndTalkContsOpen = !this.frndTalkContsOpen;
     },
     //내용입력 callback

@@ -23,7 +23,7 @@
                     v-for="(senderKeyInfo, idx) in senderKeyList"
                     :key="idx"
                     :value="senderKeyInfo.senderKey"
-                  >{{senderKeyInfo.senderKey}}</option>
+                  >{{senderKeyInfo.kkoChId}}</option>
                 </select>
               </div>
             </div>
@@ -54,7 +54,7 @@
               <div class="col-xs-4 of_h">
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30">발신프로필</h5>
-                  <h5 style="width:40%" class="float-right ml30 color4 word-break-all">{{templateData.senderKey}}</h5>
+                  <h5 style="width:40%" class="float-right ml30 color4 word-break-all">{{templateData.kkoChId}}</h5>
                 </div>
                 <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30">템플릿명</h5>

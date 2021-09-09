@@ -562,7 +562,7 @@ public class TemplateController {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("sheetTitle", "알림톡 템플릿 리스트");
         map.put("colLabels", new String[] { "템플릿 코드", "템플릿명", "상태", "발신프로필 타입", "발신 프로필", "최종수정일자" });
-        map.put("colIds", new String[] {"tmpltCode", "tmpltName", "tmpltStatCodeName", "senderKeyTypeName", "senderKey", "updDt"});
+        map.put("colIds", new String[] {"tmpltCode", "tmpltName", "tmpltStatCodeName", "senderKeyTypeName", "kkoChId", "updDt"});
         map.put("numColIds", new String[] {});
         map.put("figureColIds", new String[] {});
         map.put("colDataList", tmpltSvc.selectAlimTalkTmpltList(params).getData());

@@ -37,7 +37,7 @@
 					<div class="of_h pd20">
 						<h5>대리인으로 등록</h5>
 						<p class="color4 inline-block"><i class="far fa-info-circle"></i> RCS Biz Center 에서 발급받은 API Key를 사용하여 브랜드와 발신번호를 등록 신청할 수 있습니다.</p>	
-						<a @click="fnMoveMainTab('chan-rcs')" class="btnStyle4 white font13 width276 mt10 float-right">브랜드 등록 요청</a>
+						<a @click="fnMoveRcsTab()" class="btnStyle4 white font13 width276 mt10 float-right">브랜드 등록 요청</a>
 					</div>
 				</div>				
 			</div>
@@ -90,10 +90,19 @@ export default {
   },
   methods: {
     fnMoveMainTab(moveTabName){
-      this.$router.push( {name:moveTabName, params:{"projectId" : this.$route.params.projectId, "projectName" : this.projectName }} );
+      this.$router.push( {name:moveTabName
+        , params:{"projectId" : this.$route.params.projectId, "projectName" : this.projectName, "selMainTab" : 5, "selMidTab" : 1, "selSubTab" : 1  }} 
+      );
     },
     fnMovePjtTab(){
-      this.$router.push( {name:'projectMain', params:{"projectId" : this.$route.params.projectId, "projectName" : this.projectName, "selMainTab" : 5  }} );
+      this.$router.push( {name:'projectMain'
+        , params:{"projectId" : this.$route.params.projectId, "projectName" : this.projectName, "selMainTab" : 5, "selMidTab" : 1, "selSubTab" : 1  }} 
+      );
+    },
+    fnMoveRcsTab(){
+      this.$router.push( {name:'projectMain'
+        , params:{"projectId" : this.$route.params.projectId, "projectName" : this.projectName, "selMainTab" : 4, "selMidTab" : 1, "selSubTab" : 1  }} 
+      );
     },
     fnCallbackReg(){
       this.srcProjectId = this.$route.params.projectId;

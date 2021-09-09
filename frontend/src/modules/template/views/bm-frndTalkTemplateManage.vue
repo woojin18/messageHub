@@ -72,7 +72,9 @@
             <h4>내용 *</h4>
           </div>
           <div class="float-left" style="width:73%">
-            <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="tmpltData.tmpltContent" maxlength="2000"></textarea>
+            <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="tmpltData.tmpltContent" :maxlength="msgLimitLength" @input="fnSetCurrLength"></textarea>
+            <strong class="letter">({{msgCurrLength}} / {{msgLimitLength}})</strong>
+            <span class="ml10">(친구톡 최대 1000자, 이미지 사용시 400자, 와이드이미지 76자 입력가능합니다.)</span>
           </div>
         </div>
 
@@ -214,6 +216,8 @@ export default {
       useCh : 'FRIENDTALK',
       contentAreaPlaceholder: '변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정\n:예) #{name}님 #{yyyymmdd} 출금 예정입니다.',
       isInsert : true,
+      msgCurrLength: 0,
+      msgLimitLength: 1000,
       bottonTypeList : [
         {linkType:'WL', name:'웹 링크'},
         {linkType:'AL', name:'앱 링크'},
@@ -223,11 +227,28 @@ export default {
       tmpltData : {imgUrl:'', imgLink: 'http://', buttonList:[]}
     }
   },
-  mounted() {
-    this.fnValidUseChGrp();
-    this.fnSetTemplateInfo();
+  async mounted() {
+    await this.fnValidUseChGrp();
+    await this.fnSetTemplateInfo();
+    await this.fnGetLimitLength();
+    await this.fnSetCurrLength();
   },
   methods: {
+    fnGetLimitLength(){
+      if(this.$gfnCommonUtils.isEmpty(this.tmpltData.imgUrl)){
+        this.msgLimitLength = 1000;
+      } else {
+        if(this.tmpltData.wideImgYn == 'Y'){
+          this.msgLimitLength = 76;
+        } else {
+          this.msgLimitLength = 400;
+        }
+      }
+    },
+    fnSetCurrLength(){
+      let body = this.$gfnCommonUtils.defaultIfEmpty(this.tmpltData.tmpltContent, '');
+      this.msgCurrLength = body.length;
+    },
     async fnValidUseChGrp(){
       let params = {chGrp: 'KKO'};
       await templateApi.selectValidUseChGrp(params).then(response =>{
@@ -268,6 +289,7 @@ export default {
             tempData.buttonList = JSON.parse(tempData.tmpltButtons);
           }
           this.tmpltData = Object.assign({}, tempData);
+          this.fnSetCurrLength();
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
           this.tmpltData = {imgUrl:'', buttonList:[]};
@@ -299,6 +321,11 @@ export default {
       }
       if(!this.tmpltData.tmpltContent){
         confirm.fnAlert(this.componentsTitle, '메시지 내용을 입력해주세요.');
+        return false;
+      }
+      if(this.msgLimitLength < this.msgCurrLength){
+        const alertMsg = '메시지 내용은 '+this.msgLimitLength+'자를 넘지 않아야됩니다.\n(현재 : '+this.msgCurrLength+'자)';
+        confirm.fnAlert(this.componentsTitle, alertMsg);
         return false;
       }
       if(this.tmpltData.imgUrl && !this.tmpltData.fileId){
@@ -406,6 +433,7 @@ export default {
       this.tmpltData.fileId = '';
       this.tmpltData.wideImgYn = 'N';
       this.tmpltData.imgLink = '';
+      this.fnGetLimitLength();
     },
     fnSubString(str, sIdx, length){
       let shortStr = ''
@@ -427,6 +455,7 @@ export default {
       this.tmpltData.imgUrl = imgInfo.chImgUrl;
       this.tmpltData.fileId = imgInfo.fileId;
       this.tmpltData.wideImgYn = imgInfo.wideImgYn;
+      this.fnGetLimitLength();
     },
   }
 }
