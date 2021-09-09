@@ -686,7 +686,7 @@
 									<tbody>
 										<tr v-for="(buttonInfo, index) in rowData.rcsSMSButtons" v-bind:key="index">
 											<td class="text-center">
-												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
+												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType" @change="fnChgRcsButtonType('SMS', index, buttonInfo.action.linkType)">
 													<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
 												</select>
 											</td>
@@ -809,7 +809,7 @@
 									<tbody>
 										<tr v-for="(buttonInfo, index) in rowData.rcsLMSButtons" v-bind:key="index">
 											<td class="text-center">
-												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
+												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType" @change="fnChgRcsButtonType('LMS', index, buttonInfo.action.linkType)">
 													<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
 												</select>
 											</td>
@@ -960,7 +960,7 @@
 									<tbody>
 										<tr v-for="(buttonInfo, index) in rowData.rcsShortButtons" v-bind:key="index">
 											<td class="text-center">
-												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
+												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType" @change="fnChgRcsButtonType('SHORT', index, buttonInfo.action.linkType)">
 													<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
 												</select>
 											</td>
@@ -1109,7 +1109,7 @@
 									<tbody>
 										<tr v-for="(buttonInfo, index) in rowData.rcsTallButtons" v-bind:key="index">
 											<td class="text-center">
-												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
+												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType" @change="fnChgRcsButtonType('TALL', index, buttonInfo.action.linkType)">
 													<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
 												</select>
 											</td>
@@ -1276,7 +1276,7 @@
 											<tbody>
 												<tr v-for="(buttonInfo, index) in rowData.rcsCShortImgInfoList[tabIdx].rcsButtons" v-bind:key="index">
 													<td class="text-center">
-														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
+														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType" @change="fnChgRcsButtonType(fnCarouselString('CSHORT_TAB', tabIdx, ''), index, buttonInfo.action.linkType)">
 															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
 														</select>
 													</td>
@@ -1475,7 +1475,7 @@
 											<tbody>
 												<tr v-for="(buttonInfo, index) in rowData.rcsCTallImgInfoList[tabIdx].rcsButtons" v-bind:key="index">
 													<td class="text-center">
-														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType">
+														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType" @change="fnChgRcsButtonType(fnCarouselString('CTALL_TAB', tabIdx, ''), index, buttonInfo.action.linkType)">
 															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
 														</select>
 													</td>
@@ -3220,7 +3220,7 @@ export default {
 							confirm.fnAlert(this.detailTitle, '친구톡 내용을 입력해주세요.');
 							return false;
 						}
-						if(this.msgFrndTalkLimitByte < this.msgFrndTalkCurrByte){
+						if (this.msgFrndTalkLimitByte < this.msgFrndTalkCurrByte) {
 							const alertMsg = '친구톡 내용은 '+this.msgFrndTalkLimitByte+'자를 넘지 않아야됩니다.\n친구톡 최대 1000자, 이미지 사용시 400자, 와이드이미지 76자 입력가능합니다.\n(현재 : '+this.msgFrndTalkCurrByte+'자)';
 							confirm.fnAlert(this.componentsTitle, alertMsg);
 							return false;
@@ -3776,6 +3776,71 @@ export default {
 		// 푸시 이미지 삭제
 		fnPushDelImg(){
 			this.rowData.pushImgInfo = {};
+		},
+		fnChgRcsButtonType(rcsType, index, linkType) {
+			var action = {
+				linkType : linkType,
+				displayText : '',
+				postback : {data : ''},
+				urlAction : {openUrl : {url : ''}},
+				clipboardAction : {copyToClipboard : {text : ''}},
+				dialerAction : {dialPhoneNumber : {phoneNumber : ''}},
+				calendarAction : {createCalendarEvent : {title : '', description : '', startTime : this.$gfnCommonUtils.getCurretDate(), endTime : this.$gfnCommonUtils.getCurretDate()}},
+				mapAction : {}
+			};
+			let temp = {
+				'action': action
+			};
+
+			if (rcsType == 'SMS') {
+				this.rowData.rcsSMSButtons.splice(index, 1);
+				this.rowData.rcsSMSButtons.splice(index, 0, temp);
+			} else if (rcsType == 'LMS') {
+				this.rowData.rcsLMSButtons.splice(index, 1);
+				this.rowData.rcsLMSButtons.splice(index, 0, temp);
+			} else if (rcsType == 'SHORT') {
+				this.rowData.rcsShortButtons.splice(index, 1);
+				this.rowData.rcsShortButtons.splice(index, 0, temp);
+			} else if (rcsType == 'TALL') {
+				this.rowData.rcsTallButtons.splice(index, 1);
+				this.rowData.rcsTallButtons.splice(index, 0, temp);
+			} else if (rcsType == 'CSHORT_TAB1') {
+				this.rowData.rcsCShortImgInfoList[0].rcsButtons.splice(index, 1);
+				this.rowData.rcsCShortImgInfoList[0].rcsButtons.splice(index, 0, temp);
+			} else if (rcsType == 'CSHORT_TAB2') {
+				this.rowData.rcsCShortImgInfoList[1].rcsButtons.splice(index, 1);
+				this.rowData.rcsCShortImgInfoList[1].rcsButtons.splice(index, 0, temp);
+			} else if (rcsType == 'CSHORT_TAB3') {
+				this.rowData.rcsCShortImgInfoList[2].rcsButtons.splice(index, 1);
+				this.rowData.rcsCShortImgInfoList[2].rcsButtons.splice(index, 0, temp);
+			} else if (rcsType == 'CSHORT_TAB4') {
+				this.rowData.rcsCShortImgInfoList[3].rcsButtons.splice(index, 1);
+				this.rowData.rcsCShortImgInfoList[3].rcsButtons.splice(index, 0, temp);
+			} else if (rcsType == 'CSHORT_TAB5') {
+				this.rowData.rcsCShortImgInfoList[4].rcsButtons.splice(index, 1);
+				this.rowData.rcsCShortImgInfoList[4].rcsButtons.splice(index, 0, temp);
+			} else if (rcsType == 'CSHORT_TAB6') {
+				this.rowData.rcsCShortImgInfoList[5].rcsButtons.splice(index, 1);
+				this.rowData.rcsCShortImgInfoList[5].rcsButtons.splice(index, 0, temp);
+			} else if (rcsType == 'CTALL_TAB1') {
+				this.rowData.rcsCTallImgInfoList[0].rcsButtons.splice(index, 1);
+				this.rowData.rcsCTallImgInfoList[0].rcsButtons.splice(index, 0, temp);
+			} else if (rcsType == 'CTALL_TAB2') {
+				this.rowData.rcsCTallImgInfoList[1].rcsButtons.splice(index, 1);
+				this.rowData.rcsCTallImgInfoList[1].rcsButtons.splice(index, 0, temp);
+			} else if (rcsType == 'CTALL_TAB3') {
+				this.rowData.rcsCTallImgInfoList[2].rcsButtons.splice(index, 1);
+				this.rowData.rcsCTallImgInfoList[2].rcsButtons.splice(index, 0, temp);
+			} else if (rcsType == 'CTALL_TAB4') {
+				this.rowData.rcsCTallImgInfoList[3].rcsButtons.splice(index, 1);
+				this.rowData.rcsCTallImgInfoList[3].rcsButtons.splice(index, 0, temp);
+			} else if (rcsType == 'CTALL_TAB5') {
+				this.rowData.rcsCTallImgInfoList[4].rcsButtons.splice(index, 1);
+				this.rowData.rcsCTallImgInfoList[4].rcsButtons.splice(index, 0, temp);
+			} else if (rcsType == 'CTALL_TAB6') {
+				this.rowData.rcsCTallImgInfoList[5].rcsButtons.splice(index, 1);
+				this.rowData.rcsCTallImgInfoList[5].rcsButtons.splice(index, 0, temp);
+			}
 		},
 		// RCS 버튼 추가
 		addRowRcsButton: function(rcsType) {
