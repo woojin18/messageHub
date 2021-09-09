@@ -478,23 +478,38 @@ export default {
 		};
 		api.checkApiKey(params).then(response =>{
 			var result = response.data.data;
-			this.category = result.cateData.data;
-			if( this.save_status != 'C' ){
-				this.inputVal = result.inputVal;
-			}
-			if( result.cateData.data != null && result.cateData.data != undefined ){
-				this.duplCheckYn = 'Y';
-				if(this.save_status === 'U'){
-					this.fnChangeCate2();
+			console.log(response);
+			if( response.data.success ){
+				if( result.cateData.data != null && result.cateData.data != undefined ){
+					if( this.save_status != 'C' ){
+						this.inputVal = result.inputVal;
+					}
+					this.category = result.cateData.data;
+					this.duplCheckYn = 'Y';
+					if(this.save_status === 'U'){
+						this.fnChangeCate2();
+					}
+					
+					if(this.save_status === 'C'){
+						confirm.fnAlert("", "정상적으로 확인되었습니다.");
+					}
+					
+				} else {
+					this.duplCheckYn = 'N';
+					console.log(response);
+					if( response.data.message === "" || response.data.message === undefined ){
+						confirm.fnAlert("", "확인에 실패했습니다.");
+					} else {
+						confirm.fnAlert("", response.data.message);
+					}
 				}
-				
-				if(this.save_status === 'C'){
-					confirm.fnAlert("", "정상적으로 확인되었습니다.");
-				}
-				
 			} else {
 				this.duplCheckYn = 'N';
-				confirm.fnAlert("", "확인에 실패했습니다.");
+				if( response.data.message === "" || response.data.message === undefined ){
+					confirm.fnAlert("", "확인에 실패했습니다.");
+				} else {
+					confirm.fnAlert("", response.data.message);
+				}
 			}
 		});
 	},
@@ -741,7 +756,7 @@ export default {
 			"apiSecret"		: this.inputVal.apiSecret,
 			"brandId"		: this.brandId,
 			"corpId"		: tokenSvc.getToken().principal.corpId,
-			"projectId"		: this.projectId,
+			"projectId"		: this.mainProjectId,
 		};
 
 		api.deleteCallbackForApi(params).then(response =>{

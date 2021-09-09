@@ -86,7 +86,7 @@ public class ChannelController {
 	}
 
 	/**
-	 * API KEY 중복 조회
+	 * API KEY 중복 조회 및 상세조회
 	 * 
 	 * @param params
 	 * @param request
@@ -94,10 +94,21 @@ public class ChannelController {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	@PostMapping("/checkApiKey")
 	public RestResult<?> checkApiKey(@RequestBody Map<String, Object> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		return channelService.checkApiKey(params);
+
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		try {
+			rtn = (RestResult<Object>) channelService.checkApiKey(params);
+			rtn.setSuccess(true);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
 	}
 
 	/**

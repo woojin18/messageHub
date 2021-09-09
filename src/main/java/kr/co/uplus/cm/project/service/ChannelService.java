@@ -239,7 +239,14 @@ public class ChannelService {
 		getHeaderMap.put("apiSecret", CommonUtils.getString(params.get("apiSecret")));
 		
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("cateData", apiInterface.get("/console/v1/rcs/brand/categories", getHeaderMap));
+		Map<String, Object> resultApiCate = apiInterface.get("/console/v1/rcs/brand/categories", getHeaderMap);
+		result.put("cateData", resultApiCate);
+		
+		if( "10000".equals(resultApiCate.get("code")) ) {
+		} else {
+			String errMsg = CommonUtils.getString(resultApiCate.get("message"));
+			throw new Exception(errMsg);
+		}
 		
 		String brandId = CommonUtils.getString(params.get("brandId"));
 		String tmpBrandYn = CommonUtils.getString(params.get("tmpBrandYn"));
@@ -279,8 +286,18 @@ public class ChannelService {
 				inputVal.put("mainTitle",		CommonUtils.getString(brandInfo.get("mainTitle")));
 				inputVal.put("chatbotsStr",	CommonUtils.getString(brandInfo.get("chatbots")).replace("[", "").replace("]", ""));
 			} else {
-				resultLists = (List<Object>) apiInterface.get("/console/v1/rcs/brand/" + brandId, getHeaderMap2).get("data");
-				rtnMap = (Map<String, Object>) resultLists.get(0);
+				Map<String, Object> resultApi = apiInterface.get("/console/v1/rcs/brand/" + brandId, getHeaderMap2);
+				resultLists = (List<Object>) resultApi.get("data");
+				
+				if( "10000".equals(resultApi.get("code")) ) {
+					rtnMap = (Map<String, Object>) resultLists.get(0);
+				} else {
+					String errMsg = CommonUtils.getString(resultApi.get("message"));
+					//rtn.setMessage(errMsg);
+					throw new Exception(errMsg);
+				}
+				
+				
 				// 프로젝트 아이디
 				inputVal.put("projectId",	rtnMap.get("projectId"));
 
