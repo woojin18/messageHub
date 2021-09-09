@@ -96,7 +96,7 @@
 						<h4 style="width:28%" class="inline-block">프로필 이미지 *</h4>
 						<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:72%" ref="profileImgFile" @change="fnPreviewImg('profile')" :disabled="this.duplCheckYn == 'N'"/>
 					</div>
-					<p class="font-size12 color3 mt10 ml_28"><i class="far fa-info-circle"></i>최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : jpg, png (최대 1MB)</p>
+					<p class="font-size12 color3 mt10 ml_28"><i class="far fa-info-circle"></i>최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : png (최대 1MB)</p>
 
 					<div class="of_h consolMarginTop">
 						<h4 style="width:28%" class="inline-block">전화번호 *</h4>
