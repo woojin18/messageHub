@@ -7,6 +7,13 @@
 		SELECT	@ROWNUM := @ROWNUM + 1 AS ROWNUM
 		,		AA.*
 		,		BB.BRAND_NAME
+		,		CASE 
+					WHEN CC.CARD_TYPE = 'description' 
+					THEN '서술형'
+					WHEN CC.CARD_TYPE = 'cell'
+					THEN '스타일형'
+					ELSE ''
+				END AS CARD_TYPE
 		FROM 	(
 				SELECT	A.*
 				FROM 	(
@@ -48,6 +55,8 @@
 		) AA
 		INNER JOIN cm.CM_RCS_BRAND BB
 			ON	AA.BRAND_ID = BB.BRAND_ID
+		INNER JOIN cm.CM_RCS_MSGBASEFORM CC
+			ON AA.MESSAGEBASEFORM_ID = CC.MESSAGEBASEFORM_ID 
 		WHERE	(@ROWNUM:=0)=0
 		<include refid="selectRcsTemplateSql"/>
 		ORDER BY AA.REG_DT DESC
@@ -96,6 +105,8 @@
 		) AA
 		INNER JOIN cm.CM_RCS_BRAND BB
 			ON	AA.BRAND_ID = BB.BRAND_ID
+		INNER JOIN cm.CM_RCS_MSGBASEFORM CC
+			ON AA.MESSAGEBASEFORM_ID = CC.MESSAGEBASEFORM_ID 
 		WHERE	1=1
 		<include refid="selectRcsTemplateSql"/>
 	</select>

@@ -555,6 +555,8 @@ export default {
 			vm.sendData.callbackArr = result.data;
 			if(vm.sendData.callbackArr.length > 0) {
 				vm.sendData.callback = result.data[0].callback;
+			} else {
+				vm.sendData.callback = "";
 			}
 			
 		});
@@ -665,7 +667,11 @@ export default {
 		rcsTemplateSendApi.selectCallbackList(params).then(response => {
 			var result = response.data;
 			vm.sendData.callbackArr = result.data;
-			vm.sendData.callback = result.data[0].callback;
+			if(vm.sendData.callbackArr.length>0) {
+				vm.sendData.callback = result.data[0].callback;
+			} else {
+				vm.sendData.callback = "";
+			}		
 		});
 	},
 
@@ -1341,6 +1347,13 @@ export default {
 				confirm.fnAlert("RCS 발송", "무료수신거부 번호를 입력해 주세요.");
 				return false;
 			}
+		}
+
+		// 발신번호 validation
+		var callback = vm.sendData.callback;
+		if(callback == "") {
+			confirm.fnAlert("RCS 발송", "발신번호를 선택해 주세요.");
+			return false;
 		}
 
 		// 대체 발송 validation

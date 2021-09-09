@@ -90,7 +90,7 @@
 							<td class="text-center"><a href="#" @click.prevent="templateUpdate(contant.MESSAGEBASE_ID)"><u>{{contant.MESSAGEBASE_ID}}</u></a></td>
 							<td class="text-center">{{contant.TMPLT_NAME}}</td>
 							<td class="text-center">{{contant.BRAND_NAME}}</td>
-							<td class="text-center">{{contant.BRAND_NAME}}</td>
+							<td class="text-center">{{contant.CARD_TYPE}}</td>
 							<td class="text-center">{{contant.APPROVAL_STATUS}}</td>
 							<td class="text-center">{{contant.APPROVAL_DT}}</td>
 							<td class="text-center">{{contant.REG_ID}}</td>
