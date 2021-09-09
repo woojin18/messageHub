@@ -1,6 +1,6 @@
 <template>
   <div v-if="directInputOpen" class="modalStyle" id="Direct-input" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" style="width:821px">
+    <div class="modal-dialog" style="width:922px">
       <div class="modal-content">
         <div class="modal-body">
           <h2>수신자 직접입력</h2>
@@ -13,9 +13,9 @@
           </div>
 
           <div class="of_h mt10">
-            <div class="overflow-x-auto white-space-nowrap">
+            <div class="overflow-x-auto scroll-y8 white-space-nowrap">
 
-              <div class="inline-block mr20 WidthAuto" v-for="header in headerList" :key="header">
+              <div class="inline-block mr20 WidthAuto vertical-top" v-for="header in headerList" :key="header">
                 <div class="text-center background-color6 colorfff consolLineheight">* {{header=='cuid' ? 'APP 로그인ID' : (header=='phone' ? '휴대폰번호' : header)}}</div>
 
                 <div class="consolMarginTop" v-for="rowIdx in loopCnt" :key="rowIdx">
