@@ -29,7 +29,7 @@
 								<tbody>
 									<tr v-for="(pjt, idx) in projects" :key="pjt.projectId">
 										<td class="text-left">
-											<router-link :to="{name: 'projectMain', params: { projectId: pjt.projectId, projectName: pjt.projectName }}"><u>{{pjt.projectName}}</u></router-link>
+											<router-link :to="{name: 'projectMain', params: { projectId: pjt.projectId, projectName: pjt.projectName, selMainTab : 1, selMidTab : 1, selSubTab : 1 }}"><u>{{pjt.projectName}}</u></router-link>
 										</td>
 										<td class="text-center">{{pjt.payTypeCdName}}</td>
 										<td class="text-left">{{pjt.useService}}</td>
