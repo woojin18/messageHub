@@ -428,7 +428,7 @@ public class ChannelService {
 	}
 	
 	@SuppressWarnings("static-access")
-	public String checkFileSizeExtension(MultipartFile file) {
+	public String checkFileSizeExtension(MultipartFile file, String fileType) {
 		boolean rtnboolean = true;
 		// 이미지 업로드 용량 유효성 체크
 		if (file.getSize() > 1000000) {
@@ -437,14 +437,25 @@ public class ChannelService {
 		
 		// 확장자
 		String fileExtension = commonService.getFileNameExt(file.getOriginalFilename(),1);
-		if( "jpg".equals(fileExtension) ) {
-		} else if ( "png".equals(fileExtension) ) {
+		
+		if( "profile".equals(fileType) ) {
+			if ( !"png".equals(fileExtension) ) {
+				rtnboolean =  false;
+			}
 		} else {
-			rtnboolean =  false;
+			if( "jpg".equals(fileExtension) ) {
+			} else if ( "png".equals(fileExtension) ) {
+			} else {
+				rtnboolean =  false;
+			}
 		}
 		
 		if( !rtnboolean ) {
-			return "최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : jpg, png (최대 1MB)에 맞지않습니다.";
+			if( "profile".equals(fileType) ) {
+				return "최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : png (최대 1MB)에 맞지않습니다.";
+			} else {
+				return "최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : jpg, png (최대 1MB)에 맞지않습니다.";
+			}
 		} else {
 			return "";
 		}
@@ -472,7 +483,7 @@ public class ChannelService {
 				("approval".equals(sts) && profileImgFile != null) ||
 				("update".equals(sts) && profileImgFile != null)	) {
 				
-				String profileImgFileCheckStr = checkFileSizeExtension(profileImgFile);
+				String profileImgFileCheckStr = checkFileSizeExtension(profileImgFile, "profile");
 				if( !"".equals(profileImgFileCheckStr) ) {
 					throw new Exception("프로필 이미지의 형식이 "+profileImgFileCheckStr);
 				}
@@ -494,7 +505,7 @@ public class ChannelService {
 				("approval".equals(sts) && bgImgFile != null)  ||
 				("update".equals(sts) && bgImgFile != null)	) {
 				
-				String bgImgFileCheckStr = checkFileSizeExtension(bgImgFile);
+				String bgImgFileCheckStr = checkFileSizeExtension(bgImgFile, "bg");
 				if( !"".equals(bgImgFileCheckStr) ) {
 					throw new Exception("백그라운드 이미지의 형식이 "+bgImgFileCheckStr);
 				}
