@@ -469,6 +469,21 @@ public class ChannelController {
 		return rtn;
 	}
 	
+	// 카카오톡 발신 프로필 채널 휴면해제
+	@PostMapping("/saveKkoChRecover")
+	public RestResult<?> saveKkoChRecover(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			channelService.saveKkoChRecover(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
+	}
+	
 	// rcs 브랜드 리스트에서 apikey 있는지 확인
 	@PostMapping("/findApiKeyFromProject")
 	public RestResult<?> findApiKeyFromProject(@RequestBody Map<String, Object> params, HttpServletRequest request,

@@ -77,6 +77,9 @@ const findApiKeyFromProject = (params) => {
     return httpClient.post('/projectApi/channel/findApiKeyFromProject', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
 };
 
+const saveKkoChRecover = (params) => {
+    return httpClient.post('/projectApi/channel/saveKkoChRecover', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
 
 export default {
     selectRcsBrandList,
@@ -99,4 +102,5 @@ export default {
     getApiKeyListForKko,
     saveKkoChGroupForApi,
     findApiKeyFromProject,
+    saveKkoChRecover,
 };

@@ -1282,6 +1282,30 @@ public class ChannelService {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public void saveKkoChRecover(Map<String, Object> params) throws Exception {
+		
+		String senderKey	= CommonUtils.getString(params.get("senderKey"));
+		
+		Map<String, Object> apiBodyMap = new HashMap<>();
+		apiBodyMap.put("senderKey", senderKey);
+		
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
+		headerMap.put("apiKey",		apiKey);
+		
+		
+		Map<String, Object> result =  apiInterface.post("/console/v1/kko/senderkey/channel/recover", null, apiBodyMap, headerMap);
+		
+		// 성공인지 실패인지 체크
+		if( "10000".equals(result.get("code")) ) {
+		} else {
+			String errMsg = CommonUtils.getString(result.get("message"));
+			throw new Exception(errMsg);
+		}
+		
+	}
+	
 	// rcs 브랜드 리스트에서 apikey 있는지 확인
 	public RestResult<?> findApiKeyFromProject(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();

@@ -49,7 +49,8 @@
 										<th class="text-center lc-1">발신프로필</th>
 										<th class="text-center lc-1">발신키</th>
 										<th class="text-center lc-1">프로젝트 공용 여부</th>
-										<th class="text-center lc-1 end">등록일시</th>
+										<th class="text-center lc-1">등록일시</th>
+										<th class="text-center lc-1 end">비고</th>
 									</thead>
 									<tbody>
 										<tr v-for="(row, index) in data" :key="index">
@@ -62,8 +63,11 @@
 											<td>
 												{{row.otherProjectYn}}
 											</td>
-											<td class="text-center lc-1 end">
+											<td>
 												{{row.regDt}}
+											</td>
+											<td class="text-center lc-1 end">
+												<button class="btnStyle1 borderLightGray small mr5" @click="fnKakaoRecover(row)" activity="SAVE"><a>휴먼상태해제</a></button>
 											</td>
 										</tr>
 										<tr v-if="data.length == 0">
@@ -147,6 +151,7 @@ import grpAddPopup from "./bp-chan-kakao-groupAdd.vue";
 import SelectLayer from '@/components/SelectLayer.vue';
 import PageLayer from '@/components/PageLayer.vue';
 
+import confirm from "@/modules/commonUtil/service/confirm"
 
 export default {
   components: {
@@ -183,7 +188,6 @@ export default {
     this.projectName = this.$parent.projectName;
 
     this.fnSearch(1);
-	//this.fnSearch2();
   },
   methods: {
 	// select 박스 선택시 리스트 재출력
@@ -207,27 +211,6 @@ export default {
 				this.data = result.data; 
 				this.totCnt = result.pageInfo.totCnt;
 				this.offset = result.pageInfo.offset;
-			}
-		});
-    },
-	// 검색
-    fnSearch2() {
-		var params = {
-			"projectId"     : this.projectId,
-			/* "srcSenderKey"  : this.srcSenderKey,
-			"srcUseYn"  	: this.srcUseYn,
-			"pageNo"		: (this.$gfnCommonUtils.defaultIfEmpty(pageNo, '1'))*1,
-			"listSize"		: this.listSize */
-		}
-		
-		Api.selectKkoChGroup(params).then(response =>{
-			/* console.log(response); */
-			/* this.data2 = response.data.data; */
-			var result = response.data;
-			if(result.success) {
-				this.data2 = result.data; 
-				/* this.totCnt2 = result.pageInfo.totCnt;
-				this.offset2 = result.pageInfo.offset; */
 			}
 		});
     },
@@ -256,6 +239,23 @@ export default {
 		this.row_data = data;
 		jQuery("#grpMngPopup").modal('show');
 	},
+	fnKakaoRecover(row){
+		var params = {
+			"senderKey"   : row.senderKey
+		}
+
+		Api.saveKkoChRecover(params).then(response =>{
+			var result = response.data;
+
+			if(result.success) {
+				confirm.fnAlert("", "처리되었습니다.");
+				// 재조회
+				this.fnSearch(1);
+			} else {
+				confirm.fnAlert("", result.message);
+			}
+		});
+	}
   }
 }
 </script>
