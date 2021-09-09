@@ -127,7 +127,9 @@
 				EMAIL
 		,		MAIL_CERTIFY_KEY
 		,		MAIL_CERTIFY_DT
+		<if test="promotionYn != '' and promotionYn != null">
 		,		PROMOTION_YN
+		</if>
 		,		REG_DT
 		) VALUES (
 				#{email}
@@ -140,7 +142,9 @@
 		,		DATE_ADD(NOW(), INTERVAL 1 HOUR)
 			</otherwise>
 		</choose>
+		<if test="promotionYn != '' and promotionYn != null">
 		,		#{promotionYn}
+		</if>
 		,		NOW()
 		)
 	</insert>
