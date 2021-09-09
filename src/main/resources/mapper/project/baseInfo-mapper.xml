@@ -103,7 +103,7 @@
 		,		#{newProjectId}
 		,		#{apiPwd}
 		,		#{ipChkYn}
-		,		#{cps}
+		,		30
 		,		#{daySenderChkYn}
 		,		#{monSenderChkYn}
 		,		#{apiKeyName}
