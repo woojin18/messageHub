@@ -164,7 +164,7 @@ public class UserService {
 	 * @throws Exception
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-	public RestResult<Object> registerUser(Map<String, Object> params) {
+	public RestResult<Object> registerUser(Map<String, Object> params) throws Exception {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -175,38 +175,30 @@ public class UserService {
 		map.put("userId", userId);
 		map.put("email", params.get("loginId"));
 
-		try {
-			// 기존 삭제처리된 사용자 LOGIN 아이디 변경
-			generalDao.updateGernal(DB.QRY_UPDATE_DEL_USER_LOGINID, params);
-			
-			generalDao.insertGernal(DB.QRY_INSERT_USER, map);
-			// 난수 생성
-			String randomNum = CommonUtils.randomGeneration(10);
-			map.put("authKey", randomNum);
+		// 기존 삭제처리된 사용자 LOGIN 아이디 변경
+		generalDao.updateGernal(DB.QRY_UPDATE_DEL_USER_LOGINID, params);
+		
+		generalDao.insertGernal(DB.QRY_INSERT_USER, map);
+		// 난수 생성
+		String randomNum = CommonUtils.randomGeneration(10);
+		map.put("authKey", randomNum);
 
-			// 위치 설정
-			map.put("location",  "/login/setUserPwd");
-			
-			// 시간 설정
-			SimpleDateFormat	sdformat	= new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-			Calendar			cal			= Calendar.getInstance();
-			cal.add(Calendar.HOUR, 1);
-			String				time		= sdformat.format(cal.getTime());
-			map.put("time", time);
-			
-			// 메일 인증 table insert
-			generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, map);
-			
-			// 메일 전송
+		// 위치 설정
+		map.put("location",  "/login/setUserPwd");
+		
+		// 시간 설정
+		SimpleDateFormat	sdformat	= new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+		Calendar			cal			= Calendar.getInstance();
+		cal.add(Calendar.HOUR, 1);
+		String				time		= sdformat.format(cal.getTime());
+		map.put("time", time);
+		
+		// 메일 인증 table insert
+		generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, map);
+		
+		// 메일 전송
 //			signUpSvc.sendMail(map, "/login/setUserPwd");
-			commonService.sendNoti("mail", map);
-			
-			rtn.setSuccess(true);
-			rtn.setData(params);
-		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage(e.getMessage());
-		}
+		commonService.sendNoti("mail", map);
 		
 		return rtn;
 	}
