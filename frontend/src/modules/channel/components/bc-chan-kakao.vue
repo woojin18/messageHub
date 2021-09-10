@@ -218,9 +218,9 @@ export default {
     fnReg(){
 		this.save_status = "C";
 		this.row_data = { 
+			"kkoChId"			: "",
 			"phoneNumber" 	    : "",
 			"categoryId"  		: "",
-			"kkoChId"    		: "",
 			"otherProjectYn" 	: "Y" 
 		}
 		jQuery("#regPopup").modal('show');

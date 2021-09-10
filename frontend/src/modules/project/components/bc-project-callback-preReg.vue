@@ -64,7 +64,7 @@
 
       <footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
     </article>
-    <layerPopup  :srcProjectId = "srcProjectId" />
+    <layerPopup  :srcProjectId = "srcProjectId" :detailCnt="detailCnt"/>
   </div>
 </template>
 
@@ -82,6 +82,7 @@ export default {
       projectId : '',
       projectName : '',
       srcProjectId : '',
+      detailCnt : 0,
     }
   },
   mounted() {
@@ -105,7 +106,9 @@ export default {
       );
     },
     fnCallbackReg(){
+      this.detailCnt = this.detailCnt + 1;
       this.srcProjectId = this.$route.params.projectId;
+      console.log(this.detailCnt);
       jQuery("#regPop").modal("show");
     }
   }

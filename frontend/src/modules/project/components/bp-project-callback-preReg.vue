@@ -58,7 +58,7 @@
 								<div class="of_h consolMarginTop">
 									<h5 class="inline-block vertical-middle" style="width:22%">통신서비스<br>가입증명원 *</h5>
 									<div class="float-right" style="width:76%">
-										<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:100%" ref="certiImgFile"/>
+										<input id="certiImgFile" type="file" class="btnStyle7 minWidthAuto float float-right" style="width:100%" ref="certiImgFile"/>
 									</div>
 								</div>
 							</div>
@@ -98,7 +98,7 @@ export default {
       mainMdn   : "",
       mainTitle : "",
       rcsReply  : "",
-      rcsReplyYn : ""
+      rcsReplyYn : "",
     }
   },
   mounted() {
@@ -107,12 +107,22 @@ export default {
     srcProjectId : {
       type: String,
       require: true
+    },
+    detailCnt : {
+      type : Number,
+      require : true
     }
   },
   watch: {
     srcProjectId(){
       this.fnBrandList();
     },
+    detailCnt (){
+      this.fnBrandList();
+      this.chatbotCnt = 0;
+      this.chatbots = [];
+      jQuery("#certiImgFile").val("");
+    }
   },
   methods: {
     // 닫기

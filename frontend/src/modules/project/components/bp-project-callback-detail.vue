@@ -11,13 +11,13 @@
                   <div class="of_h">
                     <h5 class="inline-block" style="width:22%">발신번호 *</h5>
                     <div class="float-right" style="width:76%">
-                      <input type="text" class="inputStyle" style="width:55%" v-model="row_data.chatbotId" readonly>
+                      <input type="text" class="inputStyle" style="width:55%" v-model="chatbotId" readonly>
                       <p class="color3 inline-block ml10">휴대폰번호 등록 불가</p>
                     </div>
                   </div>
                   <div class="of_h consolMarginTop">
                     <h5 class="inline-block" style="width:22%">발신 번호명 *</h5>
-                    <input type="text" class="inputStyle float-right" style="width:76%" v-model="row_data.subTitle">
+                    <input type="text" class="inputStyle float-right" style="width:76%" v-model="subTitle">
                   </div>
                   <div class="of_h consolMarginTop">
                     <h5 class="inline-block vertical-middle" style="width:22%">통신서비스<br>가입증명원 *</h5>
@@ -41,13 +41,14 @@
 <script>
 import axios from 'axios'
 import confirm from "@/modules/commonUtil/service/confirm"
-import tokenSvc from '@/common/token-service';
-import projectApi from '../service/projectApi'
 
 export default {
   name: 'callbackDetail',
   data() {
     return {
+      chatbotId : "",
+      subTitle : "",
+      certiImgFile : "",
     }
   },
   props: {
@@ -58,6 +59,17 @@ export default {
     row_data : {
       type : Object,
       require: false
+    },
+    detailCnt : {
+      type : Number, 
+      require : true
+    }
+  },
+  watch: {
+    detailCnt: function(newVal, oldVal) {
+      this.chatbotId = this.row_data.chatbotId;
+      this.subTitle = this.row_data.subTitle;
+      this.certiImgFile = "";
     }
   },
   mounted() {
@@ -78,7 +90,7 @@ export default {
       fd.append('saveCorpId'	, this.row_data.corpId);
       fd.append('projectId'		, this.projectId);
       fd.append('brandId'			, this.row_data.brandId);
-      fd.append('chatbotId'		, this.row_data.chatbotId);
+      fd.append('chatbotId'		, this.chatbotId);
       fd.append('mainMdn'			, this.mainMdn);
       fd.append('mainTitle'		, this.mainTitle);
 
@@ -88,9 +100,9 @@ export default {
       // 챗봇(발신번호) 정리
       var list = [];
       var obj = JSON.stringify({
-        "mdn"       : this.row_data.chatbotId,
+        "mdn"       : this.chatbotId,
         "rcsReply"  : this.row_data.rcsReply,
-        "subTitle"  : this.row_data.subTitle,
+        "subTitle"  : this.subTitle,
         "service"   : "a2p",
         "display"   : "01"
       });

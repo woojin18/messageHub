@@ -97,7 +97,11 @@ export default {
     }
   },
   watch: {
-    save_status: function(newVal, oldVal) {
+    row_data: function(newVal, oldVal) {
+		this.kkoChId = newVal.kkoChId;
+		this.phoneNumber = newVal.phoneNumber;
+		this.token = newVal.token;
+
 		this.fnGetApiKeyListForKko();
     }
   },

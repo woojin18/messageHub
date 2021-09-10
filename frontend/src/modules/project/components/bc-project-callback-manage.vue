@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<layerPopup :row_data="row_data" :projectId="projectId" />
+		<layerPopup :row_data="row_data" :projectId="projectId" :detailCnt="detailCnt"/>
 		<article>
 			<div class="row mt15">
 				<div class="col-xs-12">
@@ -165,6 +165,7 @@ export default {
 			pageNo : 1,  // 현재 페이징 위치
 			totCnt : 0,  //전체 리스트 수
 			offset : 0, //페이지 시작점
+			detailCnt : 0,
 		}
 	},
 	mounted() {
@@ -202,11 +203,12 @@ export default {
 				if(result.success) {
 					this.data = result.data; 
 					this.totCnt = result.pageInfo.totCnt;
-          			this.offset = result.pageInfo.offset;
+					this.offset = result.pageInfo.offset;
 				}
 			});
 		},
 		fnCallbackDetail(row_data){
+			this.detailCnt = this.detailCnt + 1;
 			this.row_data = row_data;
 			jQuery("#detailPop").modal("show");
 		},
