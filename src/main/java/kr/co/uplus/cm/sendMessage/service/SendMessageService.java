@@ -618,6 +618,7 @@ public class SendMessageService {
      * @param reSendCdList
      * @return
      */
+    @SuppressWarnings("unchecked")
     private boolean isApiRequestAgain(Map<String, Object> responseBody, List<Object> reSendCdList) {
         boolean isDone = true;
         if(responseBody != null) {
@@ -626,8 +627,25 @@ public class SendMessageService {
                 for(Object reSendCd : reSendCdList) {
                     if(StringUtils.equals(resultCode, CommonUtils.getString(reSendCd))) {
                         isDone = false;
-                        break;
                     }
+
+                    //재요청(CPS)일 경우 마스터 code를 재요청 코드를 줘야 되는데 성공으로 주고 세부데이터를 재요청 코드로 넘겨준다...
+                    if(responseBody.containsKey(ApiConfig.COMMON_DATA_FIELD_NM)) {
+                        try {
+                            List<Map<String, Object>> data = (List<Map<String, Object>>) responseBody.get(ApiConfig.COMMON_DATA_FIELD_NM);
+                            for(Map<String, Object> ind : data) {
+                                if(!CommonUtils.isEmptyValue(ind, ApiConfig.GW_RESULT_CODE_FIELD_NM)
+                                        && StringUtils.equals(CommonUtils.getString(ind.get(ApiConfig.GW_RESULT_CODE_FIELD_NM)), CommonUtils.getString(reSendCd))) {
+                                    isDone = false;
+                                    break;
+                                }
+                            }
+                        } catch (Exception e) {
+                            log.warn("{}.isApiRequestAgain casting error => responseBody : {}", this.getClass(), responseBody);
+                        }
+                    }
+
+                    if(isDone == false) break;
                 }
             }
         }
