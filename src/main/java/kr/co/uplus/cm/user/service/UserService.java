@@ -225,7 +225,7 @@ public class UserService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-	public RestResult<Object> sendCertifyMail(Map<String, Object> params) throws Exception {
+	public void sendCertifyMail(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
 		String randomNum = CommonUtils.randomGeneration(10);
@@ -237,23 +237,10 @@ public class UserService {
 		String				time		= sdformat.format(cal.getTime());
 		params.put("time", time);
 		
-		try {
-			// 메일 인증 table insert
-			generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, params);
-			
-			// 메일 전송
-//			signUpSvc.sendMail(params, location);
-			commonService.sendNoti("mail", params);
-			
-			rtn.setSuccess(true);
-		} catch (MessagingException e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("메일 전송 중 오류가 발생했습니다.");
-		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("오류가 발생했습니다.");
-		}
-			
-		return rtn;
+		// 메일 인증 table insert
+		generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, params);
+		
+		// 메일 전송
+		commonService.sendNoti("mail", params);
 	}
 }

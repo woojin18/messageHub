@@ -189,8 +189,16 @@ public class UserController {
 	}
 	
 	@PostMapping("/sendCertifyMail")
-	public RestResult<?> sendCertifyMail(@RequestBody Map<String, Object> params) throws Exception{
+	public RestResult<?> sendCertifyMail(@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
-		return userSvc.sendCertifyMail(params);
+		try {
+			 userSvc.sendCertifyMail(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
 	}
 }
