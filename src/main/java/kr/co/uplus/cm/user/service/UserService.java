@@ -227,20 +227,28 @@ public class UserService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void sendCertifyMail(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
+		if(params.containsKey("email")) {
+			params.put("loginId", params.get("email"));
+		}
+		int cnt = generalDao.selectGernalCount(DB.QRY_SELECT_USER_DUPC_CNT, params);
 		
-		String randomNum = CommonUtils.randomGeneration(10);
-		params.put("authKey", randomNum);
-		
-		SimpleDateFormat	sdformat	= new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-		Calendar			cal			= Calendar.getInstance();
-		cal.add(Calendar.HOUR, 1);
-		String				time		= sdformat.format(cal.getTime());
-		params.put("time", time);
-		
-		// 메일 인증 table insert
-		generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, params);
-		
-		// 메일 전송
-		commonService.sendNoti("mail", params);
+		if(cnt > 0) {
+			String randomNum = CommonUtils.randomGeneration(10);
+			params.put("authKey", randomNum);
+			
+			SimpleDateFormat	sdformat	= new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+			Calendar			cal			= Calendar.getInstance();
+			cal.add(Calendar.HOUR, 1);
+			String				time		= sdformat.format(cal.getTime());
+			params.put("time", time);
+			
+			// 메일 인증 table insert
+			generalDao.insertGernal(DB.QRY_INSERT_MAIL_CERTIFY, params);
+			
+			// 메일 전송
+			commonService.sendNoti("mail", params);
+		} else {
+			throw new Exception("등록된 사용자가 없습니다. 이메일 주소를 확인해주세요.");
+		}
 	}
 }

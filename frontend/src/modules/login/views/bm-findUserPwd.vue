@@ -26,6 +26,7 @@
 <script>
 import loginApi from '@/modules/login/service/api';
 import * as utils from '@/common/utils';
+import confirm from "@/modules/commonUtil/service/confirm";
 
 export default {
 	data: function() {
