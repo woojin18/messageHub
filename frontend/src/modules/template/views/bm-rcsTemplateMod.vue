@@ -544,8 +544,8 @@ export default {
 			this.$set(vm.contents, n, "");
 			this.$set(vm.btnInputHolder, n, "전화번호 입력");
 		} else if(vm.selectBtn[n]=="mapAction") {
-			this.$set(contents, n, "현재위치 공유");
-			this.$set(btnInputHolder, n, "현재위치 공유");
+			this.$set(vm.contents, n, "현재위치 공유");
+			this.$set(vm.btnInputHolder, n, "현재위치 공유");
 		}
 	  },
 	  // 버튼 삭제
