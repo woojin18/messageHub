@@ -472,7 +472,7 @@
                   <input type="radio" id="cuInputType_EXCEL" name="cuInputType" value="EXCEL" v-model="sendData.cuInputType" @change="fnChgCuInputType()" @click="fnClickCuInputType" activity="READ">
                   <label for="cuInputType_EXCEL" class="mr10">엑셀 업로드</label>
                   <a href="#" @click.prevent="fnExcelTmplteDownLoad" class="btnStyle1 backLightGray" title="샘플">샘플 <i class="far fa-arrow-to-bottom"></i></a>
-                  <input ref="excelFile" type="file" style="display:none;">
+                  <input ref="excelFile" type="file" style="display:none;" @change="fnReadFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
                 </div>
               </div>
             </div>
@@ -566,6 +566,7 @@ import DirectInputPopup from "@/modules/message/components/bp-directInput.vue";
 import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue";
 import Calendar from "@/components/Calendar.vue";
 import TestSendInputPopup from "@/modules/message/components/bc-testSendInput.vue";
+import XLSX from 'xlsx';
 
 import messageApi from "@/modules/message/service/messageApi.js";
 import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi.js";
@@ -645,14 +646,34 @@ export default {
     }
   },
   mounted() {
-
-    console.log(this.$route);
-
-
     this.fnExistApiKey();
     this.fnGetTmpltInfo();
   },
   methods: {
+    fnReadFile(){
+      const file = this.$refs.excelFile.files[0];
+      if(file){
+        let reader = new FileReader();
+
+        reader.onload = (e) => {
+          let data = reader.result;
+          let workbook = XLSX.read(data, {type: 'binary'});
+          let sheetName = '';
+          let excelArray = [];
+          
+          if(workbook.SheetNames && workbook.SheetNames.length > 0){
+            sheetName = workbook.SheetNames[0];
+          }
+          if(this.$gfnCommonUtils.isEmpty(sheetName) == false){
+            excelArray = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+          }
+          this.recvCnt = (excelArray && excelArray.length > 0) ? excelArray.length-1 : 0;
+        };
+        reader.readAsBinaryString(file);
+      } else {
+        this.recvCnt = 0;
+      }
+    },
     fnReset(){
       Object.assign(this.$data, this.$options.data.apply(this));
       this.fnGetTmpltInfo();
