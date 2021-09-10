@@ -32,6 +32,8 @@
 import loginApi from '@/modules/login/service/api';
 import customerApi from '@/modules/customer/service/customerApi';
 import tokenSvc from '@/common/token-service';
+import confirm from "@/modules/commonUtil/service/confirm";
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import { mapGetters } from 'vuex';
 import myPagePopup from '@/modules/myPage/components/bp-myPagePopup.vue';
 import corpInfoPopup from '@/modules/myPage/components/bp-corpInfoPopup.vue';
@@ -166,17 +168,18 @@ export default {
 			}
 		},
 		clickLogout() {
-			let result = confirm("로그아웃 하시겠습니까?");
-			if (result) {
-				loginApi.logout().then(response => {
-					if (response.data.success) {
-						//this.navClose();
-						this.$router.push({
-							path: "/login"
-						});
-					}
-				});
-			}
+			eventBus.$on('callbackEventBus', this.logoutPrc);
+			confirm.fnConfirm("", "로그아웃 하시겠습니까?", "확인");
+		},
+		logoutPrc() {
+			loginApi.logout().then(response => {
+				if (response.data.success) {
+					//this.navClose();
+					this.$router.push({
+						path: "/login"
+					});
+				}
+			});
 		},
 		navOpen: function() {
 			this.navActive = true;
