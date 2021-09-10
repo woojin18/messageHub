@@ -106,7 +106,8 @@ public class MultiSendTemplateService {
 					}
 					rtnMap.put("pushMsg", pushMsg);
 				}
-			} else if (chTypeList.contains("RCS")) {
+			}
+			if (chTypeList.contains("RCS")) {
 				String rcsButton0Data = (String) rtnMap.get("rcsButton0Data");
 				if (!"".equals(rcsButton0Data) && rcsButton0Data != null) {
 					JSONParser parser = new JSONParser();
@@ -178,7 +179,8 @@ public class MultiSendTemplateService {
 					rtnMap.put("rcsStyleInputSec", styleInputSec);
 					rtnMap.put("rcsStyleChk", rcsStyleChk);
 				}
-			} else if (chTypeList.contains("SMSMMS")) {
+			}
+			if (chTypeList.contains("SMSMMS")) {
 				String smsSendType = (String) rtnMap.get("smsSendType");
 				if ("A".equals(msgKind)) {
 					String smsTitle = (String) rtnMap.get("smsTitle");
