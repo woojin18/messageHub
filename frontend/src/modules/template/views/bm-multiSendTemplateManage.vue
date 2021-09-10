@@ -2050,12 +2050,6 @@ export default {
 					'pushAppId': '',
 					'brandNm': '', //브랜드
 
-					'rcsSMSsHowToDenyReceipt':'',
-					'rcsShortHowToDenyReceipt':'',
-					'rcsTallHowToDenyReceipt':'',
-					'rcs9HowToDenyReceipt':'',
-					'rcs10HowToDenyReceipt':'',
-
 					'pushImgInfo':{}, //Push이미지정보  //하나의 이미지만 들어감..그래서 {}
 
 					'rcsShortImgInfoList':[], //RCS 세로형 SHORT 이미지정보

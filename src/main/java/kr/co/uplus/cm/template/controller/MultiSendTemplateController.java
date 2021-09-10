@@ -58,7 +58,17 @@ public class MultiSendTemplateController {
 	public RestResult<?> selectMultiSendTemplateList(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> rtnObj = new HashMap<String, Object>();
+		Map<String, Object> projectUseChannelInfo = new HashMap<String, Object>();
 		try {
+			rtn = multiSendTemplateService.selectProjectUseChannelInfo(params);
+			rtnObj = (Map<String, Object>) rtn.getData();
+			projectUseChannelInfo = (Map<String, Object>) rtnObj.get("projectUseChannelInfo");
+			params.put("pushYn", (String) projectUseChannelInfo.get("pushYn"));
+			params.put("rcsYn", (String) projectUseChannelInfo.get("rcsYn"));
+			params.put("kakaoYn", (String) projectUseChannelInfo.get("kakaoYn"));
+			params.put("smsmmsYn", (String) projectUseChannelInfo.get("smsmmsYn"));
+
 			rtn = multiSendTemplateService.selectMultiSendTemplateList(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);

@@ -37,6 +37,7 @@ import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
 import kr.co.uplus.cm.sendMessage.dto.SmartRequestData;
 import kr.co.uplus.cm.sendMessage.dto.SmsRequestData;
 import kr.co.uplus.cm.sendMessage.service.SendMessageService;
+import kr.co.uplus.cm.template.service.MultiSendTemplateService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.DateUtil;
@@ -62,6 +63,9 @@ public class SendMessageController {
 
     @Autowired
     private SendMessageService sendMsgService;
+
+	@Autowired
+	private MultiSendTemplateService multiSendTemplateService;
 
     @Autowired
     ApiInterface apiInterface;
@@ -1070,7 +1074,17 @@ public class SendMessageController {
     public RestResult<?> selectSmartTmpltList(HttpServletRequest request, HttpServletResponse response,
             @RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> rtnObj = new HashMap<String, Object>();
+		Map<String, Object> projectUseChannelInfo = new HashMap<String, Object>();
         try {
+        	rtn = multiSendTemplateService.selectProjectUseChannelInfo(params);
+			rtnObj = (Map<String, Object>) rtn.getData();
+			projectUseChannelInfo = (Map<String, Object>) rtnObj.get("projectUseChannelInfo");
+			params.put("pushYn", (String) projectUseChannelInfo.get("pushYn"));
+			params.put("rcsYn", (String) projectUseChannelInfo.get("rcsYn"));
+			params.put("kakaoYn", (String) projectUseChannelInfo.get("kakaoYn"));
+			params.put("smsmmsYn", (String) projectUseChannelInfo.get("smsmmsYn"));
+
             rtn = sendMsgService.selectSmartTmpltList(params);
         } catch (Exception e) {
             rtn.setFail("실패하였습니다");
