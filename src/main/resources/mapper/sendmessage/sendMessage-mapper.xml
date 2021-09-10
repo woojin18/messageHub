@@ -379,18 +379,6 @@
         AND A.TMPLT_TYPE = #{searchTmpltType}
         AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
         AND JSON_CONTAINS(JSON_ARRAY(<foreach collection="useChGrps" item="item" separator=",">#{item}</foreach>), JSON_EXTRACT(A.TMPLT_INFO, '$[*].ch'), '$') > 0
-		<if test='pushYn == "N"'>
-		AND A.TMPLT_INFO ->> '$[0].chTypeList' NOT LIKE CONCAT('%', UPPER('PUSH'), '%')
-		</if>
-		<if test='rcsYn == "N"'>
-		AND A.TMPLT_INFO ->> '$[0].chTypeList' NOT LIKE CONCAT('%', UPPER('RCS'), '%')
-		</if>
-		<if test='kakaoYn == "N"'>
-		AND A.TMPLT_INFO ->> '$[0].chTypeList' NOT LIKE CONCAT('%', UPPER('KAKAO'), '%')
-		</if>
-		<if test='smsmmsYn == "N"'>
-		AND A.TMPLT_INFO ->> '$[0].chTypeList' NOT LIKE CONCAT('%', UPPER('SMSMMS'), '%')
-		</if>
         <if test="searchText != '' and searchText != null ">
             <!--
             <if test="searchCondi == 'templateChannel' ">
