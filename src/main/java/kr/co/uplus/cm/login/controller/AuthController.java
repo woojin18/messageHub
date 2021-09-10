@@ -18,6 +18,7 @@ import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.login.service.AuthService;
 import kr.co.uplus.cm.user.service.UserService;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * <pre>
@@ -29,6 +30,7 @@ import kr.co.uplus.cm.user.service.UserService;
  * @Date : 2020. 12. 18.
  * @Version : 1.0 Copyright 2020 LG Uplus Corp. All Rights Reserved.
  */
+@Log4j2
 @RestController
 @RequestMapping("/api")
 public class AuthController {
@@ -111,9 +113,17 @@ public class AuthController {
 	}
 	
 	@PostMapping("/public/sendCertifyMail")
-	public RestResult<?> sendCertifyMail(@RequestBody Map<String, Object> params) throws Exception{
+	public RestResult<?> sendCertifyMail(@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
-		return userSvc.sendCertifyMail(params);
+		try {
+			userSvc.sendCertifyMail(params);
+			rtn.setSuccess(true);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+		return rtn;
 	}
 
 }
