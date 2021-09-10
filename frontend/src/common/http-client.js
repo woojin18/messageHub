@@ -110,6 +110,9 @@ httpClient.interceptors.response.use(
 			} else {
 				window.top.location.href = '/view/error/500';
 			}
+		} else if (error.response.status == 504) {
+			alert('서비스가 지연되고 있습니다. 잠시 후 확인하시고 다시 시도해주세요.');
+			return Promise.reject(error);
 		} else if (error.response.status == 511) {
 			alert('웹템플릿 IP가 브랜드포털에 등록이 필요합니다. 기술지원에 문의해주세요.');
 			return Promise.reject(error);
