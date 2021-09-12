@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade modalStyle" id="projectPop"
+  <div class="modal modalStyle" id="projectPop"
     tabindex="-1" role="dialog" aria-hidden="true"
   >
     <!-- @click="fnClose" -->

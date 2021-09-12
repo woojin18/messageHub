@@ -1,5 +1,5 @@
 <template>
-	<div id="confirmCallback" class="modal fade modalStyle" tabindex="-1" role="dialog" aria-hidden="true">
+	<div id="confirmCallback" class="modal modalStyle" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog" style="width:1200px">
 			<div class="modal-content">
 				<div class="modal-body">

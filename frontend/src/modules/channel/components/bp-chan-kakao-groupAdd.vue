@@ -1,5 +1,5 @@
 <template>
-	<div id="grpMngPopup" class="modal fade modalStyle" tabindex="-1" role="dialog" aria-hidden="true" >
+	<div id="grpMngPopup" class="modal modalStyle" tabindex="-1" role="dialog" aria-hidden="true" >
 		<div class="modal-dialog"  style="width:800px; ">
 			<div class="modal-content">
 				<div class="modal-body">

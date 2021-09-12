@@ -1,6 +1,6 @@
 <template>
-    <div id="templatePop" class="modal fade modalStyle" tabindex="-1" role="dialog" aria-hidden="true">
-        <!--<div class="modal fade modalStyle" id="Tamplet" tabindex="-1" role="dialog" aria-hidden="true">-->
+    <div id="templatePop" class="modal modalStyle" tabindex="-1" role="dialog" aria-hidden="true">
+        <!--<div class="modal modalStyle" id="Tamplet" tabindex="-1" role="dialog" aria-hidden="true">-->
             <div class="modal-dialog" style="width:1120px">
                 <div class="modal-content">
                     <div class="modal-body">

@@ -1,6 +1,6 @@
 <template>
 	<!-- member Modal -->
-	<div class="modal fade modalStyle" id="MemberRegisterLayer" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal modalStyle" id="MemberRegisterLayer" tabindex="-1" role="dialog" aria-hidden="true">
 	<!--div v-if="layerView" class="layerPopup"-->
 		<div class="modal-dialog">
 			<div class="modal-content">

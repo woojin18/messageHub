@@ -1,6 +1,6 @@
 <template>
 	<!-- Register Modal -->
-	<div class="modal fade modalStyle" id="regMembmerPop" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal modalStyle" id="regMembmerPop" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">

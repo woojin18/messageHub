@@ -1,5 +1,5 @@
 <template>
-	<div class="modal fade modalStyle" id="recipientListPopup" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal modalStyle" id="recipientListPopup" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">

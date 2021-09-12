@@ -1,5 +1,5 @@
 <template>
-	<div class="modal modalStyle fade" id="disRatioPopNew" @click.self="PopClose" tabindex="-1" aria-labelledby="myModalLabel" role="dialog" aria-hidden="true">
+	<div class="modal modalStyle" id="disRatioPopNew" @click.self="PopClose" tabindex="-1" aria-labelledby="myModalLabel" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">

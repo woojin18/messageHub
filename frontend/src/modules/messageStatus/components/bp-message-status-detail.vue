@@ -3,7 +3,7 @@
 <!-- <div v-if="layerView" class="layerPopup" @click.self="fnCloseLayer"> -->
   <!-- content -->
  <!-- Message Modal -->
-	<!-- <div class="modal fade modalStyle" id="Message" tabindex="-1" role="dialog" aria-hidden="true"> -->
+	<!-- <div class="modal modalStyle" id="Message" tabindex="-1" role="dialog" aria-hidden="true"> -->
 		<div class="modal-dialog" style="width:740px">
 			<div class="modal-content">
 				<div class="modal-body">

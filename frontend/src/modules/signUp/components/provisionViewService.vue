@@ -1,7 +1,7 @@
 <!-- provisionView1 Modal -->
 <template>
     <div>
-	<div class="modal fade modalStyle" data-backdrop="static" id="provisionView1" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal modalStyle" data-backdrop="static" id="provisionView1" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog width640">
 			<div class="modal-content">
 				<div class="modal-body pd60">
