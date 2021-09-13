@@ -917,6 +917,7 @@
 		,		A.KKO_CH_ID
 		,		A.CATEGORY_CODE
 		,		A.USE_YN
+		,		CASE WHEN A.USE_YN = 'Y' THEN '정상' ELSE '휴면' END AS USE_YN_NM
 		,		date_format(A.REG_DT, '%Y-%m-%d') AS REG_DT
 		,		date_format(A.UPD_DT, '%Y-%m-%d') AS UPD_DT
 		,		A.KKO_CH_STAT

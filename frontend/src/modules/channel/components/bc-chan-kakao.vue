@@ -49,6 +49,7 @@
 										<th class="text-center lc-1">발신프로필</th>
 										<th class="text-center lc-1">발신키</th>
 										<th class="text-center lc-1">프로젝트 공용 여부</th>
+										<th class="text-center lc-1">휴면 여부</th>
 										<th class="text-center lc-1">등록일시</th>
 										<th class="text-center lc-1 end">비고</th>
 									</thead>
@@ -62,6 +63,9 @@
 											</td>
 											<td>
 												{{row.otherProjectYn}}
+											</td>
+											<td>
+												{{row.useYnNm}}
 											</td>
 											<td>
 												{{row.regDt}}
@@ -80,60 +84,6 @@
 						<div id="pageContent">
 							<PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
 						</div>
-					</div>
-				</div>
-
-				<!--  tab2 -->
-				<div role="tabpanel" v-if="this.$parent.selSubTab === 2"> 
-					<div class="mt20">
-						<!-- templateList -->
-						<p class="color3">
-							<i class="far fa-info-circle"></i> 그룹으로 심사 승인된 알림톡 템플릿은 그룹에 속한 발신 프로필에서 사용할 수 있습니다.<br>
-							<i class="far fa-info-circle"></i> 동일한 템플릿을 여러 발신 프로필에서 사용할 때 유용합니다.<br>
-							<i class="far fa-info-circle"></i> 그룹간 동일 템플릿 코드, 템플릿 이름을 사용 할 수 없습니다.
-						</p>						
-						<div class="consolMarginTop">
-							<div class="of_h inline">
-								<div class="float-right">
-									<a @click="fnGrpAdd" class="btnStyle2 borderGray" data-toggle="modal" data-target="#Group">발신 프로필 그룹 추가</a>
-								</div>
-							</div>						
-						</div>
-						<!-- 리스트 -->
-						<div class="row mt20">
-							<div class="col-xs-12">
-								<!-- 본문 -->
-								<table id="list" class="table_skin1 bt-000 tbl-striped">
-									<thead>
-										<th class="text-center lc-1">발신 프로필 그룹 ID</th>
-										<th class="text-center lc-1">발신키</th>
-										<th class="text-center lc-1">사용여부</th>
-										<th class="text-center lc-1">등록일시</th>
-										<th class="text-center lc-1 end">관리</th>
-									</thead>
-									<tbody>
-										<tr v-for="(row, index) in data2" :key="index">
-											<td>
-												{{ row.grpKey }}
-											</td>
-											<td>
-												{{ row.senderKey }}
-											</td>
-											<td>
-												{{ row.useYn }}
-											</td>
-											<td>
-												{{ row.regDt }}
-											</td>
-											<td>
-												<button class="btnStyle1 borderLightGray small mr5" @click="fnGrpMng(row)" activity="SAVE"><a>발신 프로필 그룹 관리</a></button>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>			
-						</div>
-						<!-- 본문 -->
 					</div>
 				</div>
 			</div>
@@ -239,7 +189,13 @@ export default {
 		this.row_data = data;
 		jQuery("#grpMngPopup").modal('show');
 	},
+	// 휴면상태 해제
 	fnKakaoRecover(row){
+		if(row.useYn === 'Y'){
+			confirm.fnAlert("", "휴면상태만 해제 가능합니다.");
+			return;
+		}
+
 		var params = {
 			"senderKey"   : row.senderKey
 		}
