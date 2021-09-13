@@ -303,7 +303,7 @@ export default {
 			let cps						= jQuery('#cps').val();
 			let lineType				= jQuery('#selectLineType').val();
 			let daySenderChkYn			= jQuery('input:radio[name=daySenderChkYn]:checked').val();
-			let monSenderChkYn			= jQuery('input:radio[name=daySenderChkYn]:checked').val();
+			let monSenderChkYn			= jQuery('input:radio[name=monSenderChkYn]:checked').val();
 			let daySenderLimitAmount	= jQuery('#daySenderLimitAmount').val();
 			let monSenderLimitAmount	= jQuery('#monSenderLimitAmount').val();
 			
@@ -385,6 +385,14 @@ export default {
 				confirm.fnAlert(this.title, '월 제한금액을 입력하세요');
 				return false;
 			}
+
+			
+			if(monSenderChkYn == 'Y' && daySenderChkYn == 'Y'
+					&& ( parseInt(monSenderLimitAmount) < parseInt(daySenderLimitAmount))) {
+				confirm.fnAlert(this.title, '월 제한금액은 일 제한금액보다 적을 수 없습니다.');
+				return false;
+			}
+
 			return true;
 		},
 		fnApiKeySave() {
