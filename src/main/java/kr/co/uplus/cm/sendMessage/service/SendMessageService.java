@@ -784,7 +784,7 @@ public class SendMessageService {
             } else {
                 retryCnt++;
                 toIndex = fromIndex;
-                if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
+                if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
         }
 
@@ -996,7 +996,7 @@ public class SendMessageService {
             } else {
                 retryCnt++;
                 toIndex = fromIndex;
-                if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
+                if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
         }
 
@@ -1224,7 +1224,7 @@ public class SendMessageService {
             } else {
                 retryCnt++;
                 toIndex = fromIndex;
-                if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
+                if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
         }
 
@@ -1657,7 +1657,7 @@ public class SendMessageService {
             } else {
                 retryCnt++;
                 toIndex = fromIndex;
-                if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
+                if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
         }
 
@@ -2012,7 +2012,7 @@ public class SendMessageService {
             } else {
                 retryCnt++;
                 toIndex = fromIndex;
-                if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
+                if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
         }
 
@@ -2367,7 +2367,7 @@ public class SendMessageService {
             } else {
                 retryCnt++;
                 toIndex = fromIndex;
-                if(!isServerError) TimeUnit.MICROSECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MICROSECONDS);
+                if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
         }
 
