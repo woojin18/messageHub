@@ -73,11 +73,12 @@
 				,		DATE_FORMAT(cc.START_DT, '%Y-%m-%d') + '~' + DATE_FORMAT(cc.EXP_DT, '%Y-%m-%d')
 				FROM	cm.CM_CASH cc
 				INNER JOIN (
-				SELECT	MAX(AMOUNT)	AS AMOUNT
-				,		CORP_ID
-				,		CASH_ID
-				FROM	cm.CM_CASH_HIST
-				GROUP BY CORP_ID, CASH_ID
+					SELECT	MAX(AMOUNT)	AS AMOUNT
+					,		CORP_ID
+					,		CASH_ID
+					FROM	cm.CM_CASH_HIST
+					WHERE	CORP_ID = #{corpId}
+					GROUP BY CORP_ID, CASH_ID
 				) cch
 					ON	cc.CORP_ID = cch.CORP_ID
 					AND	cc.CASH_ID = cch.CASH_ID
@@ -106,13 +107,14 @@
 			,		'이벤트캐시'
 			,		'이벤트캐시'
 			,		DATE_FORMAT(cc.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
-			,		DATE_FORMAT(cc.START_DT, '%Y-%m-%d %H:%i:%s') + '~' + DATE_FORMAT(cc.EXP_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
+			,		DATE_FORMAT(cc.START_DT, '%Y-%m-%d %H:%i:%s') + '~' + DATE_FORMAT(cc.EXP_DT, '%Y-%m-%d %H:%i:%s') AS EVENT_DT
 			FROM	cm.CM_CASH cc
 			INNER JOIN (
 				SELECT	MAX(AMOUNT)	AS AMOUNT
 				,		CORP_ID
 				,		CASH_ID
 				FROM	cm.CM_CASH_HIST
+				WHERE	CORP_ID = #{corpId}
 				GROUP BY CORP_ID, CASH_ID
 			) cch
 				ON	cc.CORP_ID = cch.CORP_ID
