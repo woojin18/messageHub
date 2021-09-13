@@ -10,88 +10,102 @@ import AlimTalkTemplateManage from '../views/bm-alimTalkTemplateManage.vue'
 import AlimTalkTemplateList from '../views/bm-alimTalkTemplateList.vue'
 import multiSendTemplateList from '../views/bm-multiSendTemplateList'
 import multiSendTemplateManage from '../views/bm-multiSendTemplateManage'
+import smartTemplateList from '../views/bm-smartTemplateList'
+import smartTemplateManage from '../views/bm-smartTemplateManage'
 
 export default [
-    {
-        path: '/uc/template/pushTemplateManage',
-        name: 'pushTemplateManage',
-        meta: { menu: 'UC_PUSH_TPL' },
-        component: PushTemplateManage,
-        props: true
-    },
-    {
-        path: '/uc/template/pushTemplateList',
-        name: 'pushTemplateList',
-        meta: { menu: 'UC_PUSH_TPL' },
-        component: PushTemplateList,
-        props: true
-    },
-    {
-        path: '/uc/template/smsTemplateManage',
-        name: 'smsTemplateManage',
-        meta: { menu: 'UC_SMS_TPL' },
-        component: SmsTemplateManage,
-        props: true
-    },
-    {
-        path: '/uc/template/smsTemplateList',
-        name: 'smsTemplateList',
-        meta: { menu: 'UC_SMS_TPL' },
-        component: SmsTemplateList,
-        props: true
-    },
-    {
-        path: '/uc/template/frndTalkTemplateManage',
-        name: 'frndTalkTemplateManage',
-        meta: { menu: 'UC_FRND_TPL' },
-        component: FrndTalkTemplateManage,
-        props: true
-    },
-    {
-        path: '/uc/template/frndTalkTemplateList',
-        name: 'frndTalkTemplateList',
-        meta: { menu: 'UC_FRND_TPL' },
-        component: FrndTalkTemplateList,
-        props: true
-    },
-    {
-        path: '/uc/template/rcsTemplateList',
-        name: 'rcsTemplateList',
-        meta: { menu: 'UC_RCS_TPL' },
-        component: RcsTemplateList
-    },
-    {
-        path: '/uc/template/rcsTemplateMod',
-        name: 'rcsTemplateMod',
-        meta: { menu: 'UC_RCS_TPL' },
-        component: RcsTemplateMod,
-        props: true
-    },
-    {
-        path: '/uc/template/alimTalkTemplateList',
-        name: 'alimTalkTemplateList',
-        meta: { menu: 'UC_ALIM_TPL' },
-        component: AlimTalkTemplateList,
-        props: true
-    },
-    {
-        path: '/uc/template/alimTalkTemplateManage',
-        name: 'alimTalkTemplateManage',
-        meta: { menu: 'UC_ALIM_TPL' },
-        component: AlimTalkTemplateManage,
-        props: true
-    },
-    {
-        path: '/uc/template/multiSendTemplateList',
-        name: 'multiSendTemplateList',
-        meta: {menu: 'UC_INTG_TPL'},
-        component: multiSendTemplateList
-    },
-    {
-        path: '/uc/template/multiSendTemplateManage',
-        name: 'multiSendTemplateManage',
-        meta: {menu: 'UC_INTG_TPL'},
-        component: multiSendTemplateManage,
-        props: true
-    }
+	{
+		path: '/uc/template/pushTemplateManage',
+		name: 'pushTemplateManage',
+		meta: { menu: 'UC_PUSH_TPL' },
+		component: PushTemplateManage,
+		props: true
+	},
+	{
+		path: '/uc/template/pushTemplateList',
+		name: 'pushTemplateList',
+		meta: { menu: 'UC_PUSH_TPL' },
+		component: PushTemplateList,
+		props: true
+	},
+	{
+		path: '/uc/template/smsTemplateManage',
+		name: 'smsTemplateManage',
+		meta: { menu: 'UC_SMS_TPL' },
+		component: SmsTemplateManage,
+		props: true
+	},
+	{
+		path: '/uc/template/smsTemplateList',
+		name: 'smsTemplateList',
+		meta: { menu: 'UC_SMS_TPL' },
+		component: SmsTemplateList,
+		props: true
+	},
+	{
+		path: '/uc/template/frndTalkTemplateManage',
+		name: 'frndTalkTemplateManage',
+		meta: { menu: 'UC_FRND_TPL' },
+		component: FrndTalkTemplateManage,
+		props: true
+	},
+	{
+		path: '/uc/template/frndTalkTemplateList',
+		name: 'frndTalkTemplateList',
+		meta: { menu: 'UC_FRND_TPL' },
+		component: FrndTalkTemplateList,
+		props: true
+	},
+	{
+		path: '/uc/template/rcsTemplateList',
+		name: 'rcsTemplateList',
+		meta: { menu: 'UC_RCS_TPL' },
+		component: RcsTemplateList
+	},
+	{
+		path: '/uc/template/rcsTemplateMod',
+		name: 'rcsTemplateMod',
+		meta: { menu: 'UC_RCS_TPL' },
+		component: RcsTemplateMod,
+		props: true
+	},
+	{
+		path: '/uc/template/alimTalkTemplateList',
+		name: 'alimTalkTemplateList',
+		meta: { menu: 'UC_ALIM_TPL' },
+		component: AlimTalkTemplateList,
+		props: true
+	},
+	{
+		path: '/uc/template/alimTalkTemplateManage',
+		name: 'alimTalkTemplateManage',
+		meta: { menu: 'UC_ALIM_TPL' },
+		component: AlimTalkTemplateManage,
+		props: true
+	},
+	{
+		path: '/uc/template/multiSendTemplateList',
+		name: 'multiSendTemplateList',
+		meta: {menu: 'UC_INTG_TPL'},
+		component: multiSendTemplateList
+	},
+	{
+		path: '/uc/template/multiSendTemplateManage',
+		name: 'multiSendTemplateManage',
+		meta: {menu: 'UC_INTG_TPL'},
+		component: multiSendTemplateManage,
+		props: true
+	},
+	{
+		path: '/uc/template/smartTemplateList',
+		name: 'smartTemplateList',
+		meta: {menu: 'UC_SMRT_TPL'},
+		component: smartTemplateList
+	},
+	{
+		path: '/uc/template/smartTemplateManage',
+		name: 'smartTemplateManage',
+		component: smartTemplateManage,
+		props: true
+	}
 ]

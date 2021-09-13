@@ -164,7 +164,7 @@
 </template>
 
 <script>
-import templateApi from '../service/templateApi'
+import templateApi from "@/modules/template/service/templateApi.js";
 import PageLayer from '@/components/PageLayer.vue';
 import SelectLayer from '@/components/SelectLayer.vue';
 import Calendar from "@/components/Calendar.vue";

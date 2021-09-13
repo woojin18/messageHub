@@ -2927,7 +2927,6 @@
 </template>
 
 <script>
-import smartTemplateApi from "@/modules/smartTemplate/service/smartTemplateApi.js";
 import templateApi from "@/modules/template/service/templateApi.js";
 import messageApi from "@/modules/message/service/messageApi.js";
 
@@ -3313,7 +3312,7 @@ export default {
     //템플릿 정보 조회
     fnSelectSmartBaseInfo(){
       const params = {productCode: this.productCodeP};
-      smartTemplateApi.selectSmartProductInfo(params).then(response => {
+      templateApi.selectSmartProductInfo(params).then(response => {
         const result = response.data;
         if(result.success) {
         	if(result.data != null && result.data.length > 0){
@@ -3517,7 +3516,7 @@ export default {
 
     fnSelectBrandList(){
       var params = {};
-      smartTemplateApi.selectBrandList(params).then(response =>{
+      templateApi.selectBrandList(params).then(response =>{
         var result = response.data;
         if(result.success) {
           this.brandNmList = result.data;
@@ -3549,7 +3548,7 @@ export default {
       params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
       params.useYn = this.useYn; //사용여부
 
-      await smartTemplateApi.insertSmartTemplate(params).then(response =>{
+      await templateApi.insertSmartTemplate(params).then(response =>{
         var result = response.data;
         if(result.success) {
           confirm.fnAlert(this.detailTitle, '저장 되었습니다.');
@@ -3575,7 +3574,7 @@ export default {
       params.kakaoTemplateTable = this.kakaoTemplateTable;//kakao일 경우 friendTalk, alimTalk 구분값을 가져간다
       params.useYn = this.useYn; //사용여부
 
-      await smartTemplateApi.insertSmartTemplate(params).then(response =>{
+      await templateApi.insertSmartTemplate(params).then(response =>{
         var result = response.data;
         if(result.success) {
           confirm.fnAlert(this.detailTitle, '등록 되었습니다.');
@@ -3997,7 +3996,7 @@ export default {
     //템플릿 정보 조회
     fnSelectIntegratedTemplateInfo(){
       const params = {tmpltCode: this.tmpltCodeP};
-      smartTemplateApi.smartTemplateInfo(params).then(response => {
+      templateApi.smartTemplateInfo(params).then(response => {
         const result = response.data;
         if(result.success) {
           if(result.data != null && result.data.length > 0){

@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import smartTemplateApi from '../service/smartTemplateApi'
+import templateApi from "@/modules/template/service/templateApi.js";
 import PageLayer from '@/components/PageLayer.vue';
 import SelectLayer from '@/components/SelectLayer.vue';
 import Calendar from "@/components/Calendar.vue";
@@ -212,7 +212,7 @@ export default {
 		//통합 템플릿 삭제 처리
 		async fnProcDeleteSmartTemplate(){
 			var params = {'tmpltCodes' : this.listChkBox};
-			await smartTemplateApi.deleteSmartTemplate(params).then(response =>{
+			await templateApi.deleteSmartTemplate(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					confirm.fnAlert(this.componentsTitle, '삭제되었습니다.');
@@ -239,12 +239,12 @@ export default {
 			params.loginId = tokenSvc.getToken().principal.userId;
 			params.roleCd = tokenSvc.getToken().principal.roleCd
 
-			smartTemplateApi.excelDownloadSmartTemplate(params);
+			templateApi.excelDownloadSmartTemplate(params);
 		},
 		// 검색
 		async fnSmartProductList() {
 			var params = Object.assign({}, this.searchData);
-			await smartTemplateApi.selectSmartProductList(params).then(response =>{
+			await templateApi.selectSmartProductList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.products = result.data;
@@ -282,7 +282,7 @@ export default {
 			params.tmpltStatus = "SAVE";
 			params.loginId = tokenSvc.getToken().principal.userId;
 			params.roleCd = tokenSvc.getToken().principal.roleCd
-			await smartTemplateApi.selectSmartTemplateList(params).then(response =>{
+			await templateApi.selectSmartTemplateList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.datas = result.data;
