@@ -346,7 +346,10 @@ export default {
       var vm = this;
       if(this.listAllChecked){
         this.cmCuList.forEach(function(cmCuInfo){
-          vm.listChkBox.push(cmCuInfo.cuInfoId);
+          if((vm.requiredCuid && vm.$gfnCommonUtils.isEmpty(cmCuInfo.cuid) == false)
+            || (vm.requiredCuPhone && vm.$gfnCommonUtils.isEmpty(cmCuInfo.hpNumber) == false)){
+            vm.listChkBox.push(cmCuInfo.cuInfoId);
+          }
         });
       } else {
         this.listChkBox = [];
