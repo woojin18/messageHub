@@ -334,7 +334,7 @@
 							</div>
 							<div class="of_h">
 								<div class="of_h float-right" style="width:82%">
-									<p>수신자 : {{recvCnt}}명</p>
+									<p>수신자 : {{recvCnt}}명<a @click="fnCallbackRecvInfoLst(null);" class="btnStyle1 small backWhite ml10" title="수신자 삭제">수신자 삭제</a></p>
 									<div class="float-right consolMarginTop" style="width:100%">
 										<textarea class="textareaStyle height120" v-model="sendData.cuInfo" disabled></textarea>
 									</div>
@@ -862,7 +862,9 @@ export default {
 	//수신자 입력 타입 변경시
     fnChgCuInputType(chgYn){
       if(this.$gfnCommonUtils.defaultIfEmpty(chgYn, 'Y') == 'Y'){
-        this.fnCallbackRecvInfoLst(null);  //수신자 입력 타입 변경시 수신자 정보 초기화
+        if(this.sendData.cuInputType != 'DICT' && this.sendData.cuInputType != 'ADDR'){
+          this.fnCallbackRecvInfoLst(null);  //수신자 입력 타입 변경시 수신자 정보 초기화
+        }
       }
       if(this.fnSetContsVarNms() == false){
         return;

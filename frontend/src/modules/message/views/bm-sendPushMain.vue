@@ -192,7 +192,7 @@
                   <option v-for="aplnId in aplnIdList" :key="aplnId.aplnId" :value="aplnId.aplnId">{{aplnId.aplnId}}</option>
                 </select>
                 <input type="text" class="inputStyle float-right" style="width:68%" :placeholder="sltAppId != '' ? '' : 'APP ID를 입력하세요'" v-model="sendData.appId" :disabled="sltAppId != ''">
-                <h6><strong>수신자 : {{recvCnt}}명</strong></h6>
+                <h6><strong>수신자 : {{recvCnt}}명</strong><a @click="fnCallbackRecvInfoLst(null);" class="btnStyle1 small backWhite ml10" title="수신자 삭제">수신자 삭제</a></h6>
                 <div class="float-right" style="width:100%">
                   <textarea class="textareaStyle height120" v-model="sendData.cuInfo" disabled></textarea>
                 </div>
@@ -592,7 +592,9 @@ export default {
     //수신자 입력 타입 변경시
     fnChgCuInputType(chgYn){
       if(this.$gfnCommonUtils.defaultIfEmpty(chgYn, 'Y') == 'Y'){
-        this.fnCallbackRecvInfoLst(null);  //수신자 입력 타입 변경시 수신자 정보 초기화
+        if(this.sendData.cuInputType != 'DICT' && this.sendData.cuInputType != 'ADDR'){
+          this.fnCallbackRecvInfoLst(null);  //수신자 입력 타입 변경시 수신자 정보 초기화
+        }
       }
       if(this.sendData.cuInputType == 'ALL'){  //전체발송
         return;
