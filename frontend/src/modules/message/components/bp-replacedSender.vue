@@ -24,7 +24,7 @@
           <div v-if="fbInfo.ch != 'SMS'" class="of_h consolMarginTop">
             <div class="float-left" style="width:32%"><h5>제목</h5></div>
             <div class="float-right" style="width:66%">
-              <input type="text" class="inputStyle" title="제목 입력란" v-model="fbInfo.title" maxlength="30" @input="fnSetCurrByte">
+              <input type="text" class="inputStyle" title="제목 입력란" v-model="fbInfo.title" maxlength="40" @input="fnSetCurrByte">
             </div>
           </div>
 
@@ -96,6 +96,7 @@ export default {
       msgKind : 'A',
       msgCurrByte: 0,
       msgLimitByte: 0,
+      titleLimitByte: 40,
       fbInfo: {
         callback:'',
         ch:'',
@@ -120,12 +121,11 @@ export default {
   },
   methods: {
     fnSetCurrByte(){
-      let title = this.$gfnCommonUtils.defaultIfEmpty(this.fbInfo.title, '');
       let body = this.$gfnCommonUtils.defaultIfEmpty(this.fbInfo.msg, '');
       let rcvblcNum = this.$gfnCommonUtils.defaultIfEmpty(this.fbInfo.rcvblcNumber, '');
-      let totalMsg = title + body ;
+      let totalMsg = body ;
       if(this.msgKind == 'A'){
-        totalMsg += '\n' + rcvblcNum + '(광고)';
+        totalMsg += '\n' + rcvblcNum + (this.fbInfo.ch == 'SMS' ? '(광고)' : '');
       }
       this.msgCurrByte = this.getByte(totalMsg);
     },
@@ -134,7 +134,7 @@ export default {
       this.msgLimitByte = 0;
 
       if(this.fbInfo.ch == 'SMS'){
-        this.msgLimitByte = 80;
+        this.msgLimitByte = 90;
       } else if(this.fbInfo.ch == 'LMS'){
         this.msgLimitByte = 1000;
       } else if(this.fbInfo.ch == 'MMS'){
@@ -165,9 +165,19 @@ export default {
         confirm.fnAlert(this.componentsTitle, '광고성메시지 수신거부번호를 입력해주세요.');
         return false;
       }
-      if(this.fbInfo.ch != 'SMS' && !this.fbInfo.title){
-        confirm.fnAlert(this.componentsTitle, '제목을 입력해주세요.');
-        return false;
+      if(this.fbInfo.ch != 'SMS'){
+        if(this.fbInfo.title == false){
+          confirm.fnAlert(this.componentsTitle, '제목을 입력해주세요.');
+          return false;
+        }
+        let title = this.$gfnCommonUtils.defaultIfEmpty(this.fbInfo.title, '');
+        let totalTitle =  (this.msgKind == 'A' ? '(광고)' : '') + title;
+        let titleCurrByte = this.getByte(totalTitle);
+        if(this.titleLimitByte < titleCurrByte){
+          const alertMsg = (this.msgKind != 'A' ? '' : '(광고) + ') + '제목이 '+this.titleLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+titleCurrByte+'byte)';
+          confirm.fnAlert(this.componentsTitle, alertMsg);
+          return false;
+        }
       }
       if(!this.fbInfo.msg){
         confirm.fnAlert(this.componentsTitle, '내용을 입력해주세요.');
@@ -175,7 +185,7 @@ export default {
       }
       
       if(this.msgLimitByte < this.msgCurrByte){
-        const alertMsg = (this.fbInfo.ch == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+this.msgLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+this.msgCurrByte+'byte)';
+        const alertMsg = '내용 + 광고성메시지 수신거부번호가 '+this.msgLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+this.msgCurrByte+'byte)';
         confirm.fnAlert(this.componentsTitle, alertMsg);
         return;
       }

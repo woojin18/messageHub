@@ -90,7 +90,7 @@
             <h4>제목</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <input type="text" class="inputStyle float-right" title="제목 입력란" id="tmpltTitle" name="tmpltTitle" v-model="tmpltData.tmpltTitle" maxlength="30">
+            <input type="text" class="inputStyle float-right" title="제목 입력란" id="tmpltTitle" name="tmpltTitle" v-model="tmpltData.tmpltTitle" maxlength="40">
           </div>
         </div>
         <div class="of_h user-phone">
@@ -98,7 +98,7 @@
             <h4>내용 *</h4>
           </div>
           <div class="float-left" style="width:72%">
-            <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="tmpltData.tmpltContent" maxlength="500"></textarea>
+            <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="tmpltData.tmpltContent" maxlength="2000"></textarea>
             <div v-if="tmpltData.msgKind == 'A'">
               <p class="color5">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
               <input type="text" id="rcvblcNumber" name="rcvblcNumber" class="inputStyle float-right mt10" title="내용 입력란" v-model="tmpltData.rcvblcNumber" placeholder="설정 > 푸시 알림 설정 변경" maxlength="45">

@@ -174,6 +174,7 @@ export default {
       imgLimitSize : 3,
       msgCurrByte: 0,
       msgLimitByte: 0,
+      titleLimitByte: 40,
       useCh : 'MMS',
       beforeSenderTyep: 'SMS',
       beforemsgKind: 'I',
@@ -205,18 +206,17 @@ export default {
   },
   methods: {
     fnSetCurrByte(){
-      let title = this.$gfnCommonUtils.defaultIfEmpty(this.tmpltData.tmpltTitle, '');
       let body = this.$gfnCommonUtils.defaultIfEmpty(this.tmpltData.tmpltContent, '');
       let rcvblcNum = this.$gfnCommonUtils.defaultIfEmpty(this.tmpltData.rcvblcNumber, '');
-      let totalMsg = title + body ;
+      let totalMsg = body ;
       if(this.tmpltData.msgKind == 'A'){
-        totalMsg += '\n' + rcvblcNum + '(광고)';
+        totalMsg += '\n' + rcvblcNum + (this.tmpltData.senderType == 'SMS' ? '(광고)' : '');
       }
       this.msgCurrByte = this.getByte(totalMsg);
     },
     fnGetLimitByte(){
       if(this.tmpltData.senderType == 'SMS'){
-        this.msgLimitByte = 80;
+        this.msgLimitByte = 90;
       } else if(this.tmpltData.senderType == 'LMS'){
         this.msgLimitByte = 1000;
       } else if(this.tmpltData.senderType == 'MMS'){
@@ -297,6 +297,20 @@ export default {
         confirm.fnAlert(this.componentsTitle, '메시지구분을 선택해주세요.');
         return false;
       }
+      if(this.tmpltData.senderType == 'MMS'){
+        if(this.tmpltData.tmpltTitle == false){
+          confirm.fnAlert(this.componentsTitle, '메시지 제목을 입력해주세요.');
+          return false;
+        }
+        let title = this.$gfnCommonUtils.defaultIfEmpty(this.tmpltData.tmpltTitle, '');
+        let totalTitle =  (this.tmpltData.msgKind == 'A' ? '(광고)' : '') + title;
+        let titleCurrByte = this.getByte(totalTitle);
+        if(this.titleLimitByte < titleCurrByte){
+          const alertMsg = (this.tmpltData.msgKind != 'A' ? '' : '(광고) + ') + '제목이 '+this.titleLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+titleCurrByte+'byte)';
+          confirm.fnAlert(this.componentsTitle, alertMsg);
+          return false;
+        }
+      }
       if(this.tmpltData.senderType == 'MMS' && !this.tmpltData.tmpltTitle){
         confirm.fnAlert(this.componentsTitle, '메시지 제목을 입력해주세요.');
         return false;
@@ -309,9 +323,8 @@ export default {
         confirm.fnAlert(this.componentsTitle, '광고성메시지 수신거부번호를 입력해주세요.');
         return false;
       }
-      
       if(this.msgLimitByte < this.msgCurrByte){
-        const alertMsg = (this.tmpltData.senderType == 'SMS' ? '' : '제목 + ') + '내용 + 광고성메시지 수신거부번호가 '+this.msgLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+this.msgCurrByte+'byte)';
+        const alertMsg = '내용 + 광고성메시지 수신거부번호가 '+this.msgLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+this.msgCurrByte+'byte)';
         confirm.fnAlert(this.componentsTitle, alertMsg);
         return false;
       }
