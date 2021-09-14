@@ -49,3 +49,15 @@ $(document).ready(function() {
       };
   }
 })(window)
+
+
+//팝업 크기 조절
+jQuery(document).ready(function() {
+	setInterval(function(){
+		var height = jQuery(window).height() -50;
+		jQuery('.modal-content').css('max-height', height);
+		jQuery('.modal-body').css('max-height', height-10);
+		jQuery('.modal-body').css('overflow-y', 'auto');
+		jQuery('.modal-open .modal').css('overflow-y', 'hidden');
+	}, 100);
+});
