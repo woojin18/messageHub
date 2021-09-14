@@ -140,7 +140,10 @@ export default {
         cashApi.deleteProjectSubBillCode(params).then(response => {
           var result = response.data;
           if(result.success) {
+            confirm.fnAlert("", "등록되었습니다.");
             this.$parent.fnSelectDeptInfo();
+            this.$parent.fnSelectUcubeInfo();
+            this.fnSelectUcubePopInfo();
             this.fnCloseDelDeptPop();
           } else {
             confirm.fnAlert("", result.message);

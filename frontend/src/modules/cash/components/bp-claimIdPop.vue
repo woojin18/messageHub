@@ -112,6 +112,7 @@ export default {
         if(result.success) {
           this.$parent.fnSelectProjectInfo();
           this.$parent.fnSelectUcubeInfo();
+          this.fnSelectUcubePopInfo();
           this.fnCloseModClaimIdPop();
         } else {
           confirm.fnAlert("", result.message);
