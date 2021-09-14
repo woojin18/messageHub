@@ -491,33 +491,21 @@ public class CommonService {
 
     // 파일 업로드 및 테이블 인서트
     @Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackFor={Exception.class})
-    public String uploadFile2(MultipartFile files, String userId) throws Exception {
-        String fileName = "";   //원본 파일명
-        File destinationFile = null;    //업로드된 파일정보
+    public Map<String, Object> uploadFile2(MultipartFile files, String userId, String uploadDirPath) throws Exception {
+    	String fileName = ""; // 원본 파일명
+        File destinationFile = null; // 업로드된 파일정보
 
-        String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
-        String month = String.valueOf(Calendar.getInstance().get(Calendar.MONTH) + 1);
-        if(month.length() == 1) month = "0" + month;
-        String date = String.valueOf(Calendar.getInstance().get(Calendar.DATE));
-        if(date.length() == 1) date = "0" + date;
-        String hour = String.valueOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
-        if(hour.length() == 1) hour = "0" + hour;
-
-        String uploadPath = "";
-//          String uploadDirPath = this.uploadPath + year + "/" + month + "/" + date + "/" + hour;
-        String uploadDirPath = uploadPath + year + "/" + month + "/" + date + "/" + hour;
         File uploadDir = new File(uploadDirPath);
         String filePath = "";
         String pattern = "[\"!@#$%^&'.*]";
 
-        if(!uploadDir.exists()) {
+        if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
 
-        String preFileName = getFileNameExt(files.getOriginalFilename(),0).replaceAll(pattern, "");
-        String ext = getFileNameExt(files.getOriginalFilename(),1);
-//          fileName = files.getOriginalFilename().replaceAll(pattern, "");
-        fileName = preFileName+"."+ext;
+        String preFileName = getFileNameExt(files.getOriginalFilename(), 0).replaceAll(pattern, "");
+        String ext = getFileNameExt(files.getOriginalFilename(), 1);
+        fileName = preFileName + "." + ext;
         destinationFile = File.createTempFile("upload", fileName, uploadDir);
         FileCopyUtils.copy(files.getInputStream(), new FileOutputStream(destinationFile));
 
@@ -528,9 +516,11 @@ public class CommonService {
         saveMap.put("attach_file_name", fileName);
         saveMap.put("attach_file_path", filePath);
         saveMap.put("userId", userId);
-        String rtnSeqString = this.insertFileInfo(saveMap);
-
-        return rtnSeqString;
+        String rtnSeq = this.insertFileInfo(saveMap);
+        
+        saveMap.put("rtnSeq", rtnSeq);
+        
+        return saveMap;
     }
 
     // 파일 업로드 후 인서트

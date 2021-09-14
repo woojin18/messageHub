@@ -746,7 +746,7 @@ public class ChannelService {
 				String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
 				throw new Exception(errMsg);
 			} else {
-				String errMsg = CommonUtils.getString(result.get("message"));
+				String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
 				throw new Exception(errMsg);
 			}
 		} if( "update".equals(sts) ) {

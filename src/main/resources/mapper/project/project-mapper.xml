@@ -193,6 +193,7 @@
 		SELECT	CASE WHEN COUNT(CORP_ID) > 0 THEN 'Y' ELSE 'N' END AS PRE_REG_YN
 		FROM	cm_console.CM_SPECIAL_BUSI CSB 
 		WHERE	CORP_ID  = #{corpId}
+		AND		APPROVAL_STATUS != 'RTN'
 	</select>
 	
 	<insert id="insertSpecualBusi">

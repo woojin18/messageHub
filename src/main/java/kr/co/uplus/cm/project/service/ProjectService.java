@@ -396,6 +396,7 @@ public class ProjectService {
 		} else {
 			// 첨부파일 JSON 값 처리
 			String jsonInfoStr = "{";
+			String uploadDirPath = FileConfig.getFilePath(FileConfig.FileSvcType.LIBRARY);
 			
 			for (int i = 0; i < uploadFiles.size(); i++) {
 				
@@ -406,9 +407,8 @@ public class ProjectService {
 				String ext = commonService.getFileNameExt(uploadFile.getOriginalFilename(),1);
 				fileName = preFileName+"."+ext;
 				
-				String fileId = commonService.uploadFile2(uploadFile, CommonUtils.getString(params.get("loginId")));
-				Map<String, Object> fileMap = new HashMap<>();
-				fileMap.put("fileId", fileId);
+				Map<String, Object> fileMap = commonService.uploadFile2(uploadFile, CommonUtils.getString(params.get("loginId")), uploadDirPath);
+				fileMap.put("fileId", fileMap.get("rtnSeq"));
 				
 				String attachFilePath = CommonUtils.getString(generalDao.selectGernalObject("common.selectFilePathByFileId", fileMap));
 				
