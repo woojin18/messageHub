@@ -83,6 +83,15 @@ export default {
 	},
 	methods: {
 		init() {
+			// 로그인 여부 체크해서 다른 곳에서 로그아웃시 로그인 화면으로 이동
+			var checkToken = setInterval(function() {
+        	  var token = tokenSvc.getToken();
+			  if (token == null) {
+      			window.top.location.href = '/login';
+				clearInterval(checkToken);
+			  }
+			}, 2000);
+			
 			//외부 영역 클릭시 닫기
 			jQuery(document).click(function (e){
 				var sidebar = jQuery("#sidebar");
