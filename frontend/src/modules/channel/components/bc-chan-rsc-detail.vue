@@ -310,14 +310,12 @@
 								{{this.inputVal.mainTitle}}
 							</div>
 						</div>
-						<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:72%; visibility : hidden;" ref="certiImgFile" />
+						<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width: 100%; visibility: hidden;" ref="certiImgFile" />
 					</div>
 					<div class="float-right">
-						<a v-if="this.save_status == 'C'" @click="fnSave('approval')" class="btnStyle5 red float-left ml10 width120" activity="SAVE">승인요청</a>
-
-						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N' && this.approvalStatus != '반려'" @click="fnSave('update')" class="btnStyle5 red float-left ml10 width120" activity="SAVE">수정요청</a>
-						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N' && this.approvalStatus != '반려'" @click="fnDeleteConfirm()" class="btnStyle5 red float-left ml10 width120" activity="SAVE">삭제요청</a>
-						<a @click="fnBack" ref="backBtn" class="btnStyle5 white float-left ml10 width120">목록</a>
+						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N' && this.approvalStatus == '승인'" @click="fnSave('update')" class="btnStyle5 red ml10 width120" activity="SAVE">수정요청</a>
+						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N' && this.approvalStatus == '승인'" @click="fnDeleteConfirm()" class="btnStyle5 red ml10 width120" activity="SAVE">삭제요청</a>
+						<a @click="fnBack" ref="backBtn" class="btnStyle5 white ml10 width120">목록</a>
 					</div>
 				</div>		
 			</div>
@@ -435,7 +433,7 @@ export default {
 	this.projectIdStr	= this.$route.params.projectIdStr;
 	this.brandId		= this.$route.params.brandId;
 	//this.inputVal		= this.$route.params.inputVal;
-	
+
 	// 임시저장인지 확인
 	if( this.brandId.substring(0,1) === 'T' ){
 		this.tmpBrandYn = "Y";
@@ -747,7 +745,11 @@ export default {
 			return;
 		} else {
 			eventBus.$on('callbackEventBus', this.fnDelete);
-			confirm.fnConfirm("", "삭제처리된 브랜드는 복구할 수 없습니다. 계속 진행하시겠습니까?", "확인");
+			confirm.fnConfirm("", 	"==========브랜드를 삭제하기위한 조건==========\n" +
+									"1. RBC 에서 선택된 브랜드의 대행사권한을 삭제처리 해야 합니다.\n" +
+									"2. 선택된 브랜드의 등록된 템플릿이 없어야 합니다.\n" +
+									"3. 선택된 브랜드의 등록된 발신번호가 없어야 합니다.\n" +
+									"삭제처리된 브랜드는 복구할 수 없습니다. 계속 진행하시겠습니까?", "확인");
 		}
 	},
 	fnDelete(){

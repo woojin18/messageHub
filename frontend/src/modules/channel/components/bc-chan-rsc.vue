@@ -292,7 +292,7 @@ export default {
           "save_status" : 'U',
           "projectIdStr" : data.projectId,
           /* "inputVal" : data.inputVal, */
-          "approvalStatus" : this.approvalStatus,
+          "approvalStatus" : data.approvalStatus,
           "otherProjectYn" : data.otherProjectUseYn 
         }
       });
