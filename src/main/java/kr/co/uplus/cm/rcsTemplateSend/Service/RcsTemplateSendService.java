@@ -1552,7 +1552,8 @@ public class RcsTemplateSendService {
 	public ArrayList<Map<String ,Object>> setRecvInfoListFormat(Map<String, Object> data, String radioBtn) {
 		String textTitle = CommonUtils.getString(data.get("textTitle"));				// 제목
 		String textContents = CommonUtils.getString(data.get("textContents"));			// 내용
-		String imgUrl = CommonUtils.getString(data.get("imgUrl"));						// 이미지 URL
+		String fileId = "maapfile://" + CommonUtils.getString(data.get("fileId"));		// 이미지 fileId
+		
 		ArrayList<Map<String, Object>> dataList = (ArrayList<Map<String, Object>>) data.get("recvInfoLst");
 		ArrayList<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 		String webReqId = CommonUtils.getString(data.get("webReqId"));
@@ -1570,10 +1571,13 @@ public class RcsTemplateSendService {
 			// mergeData 세팅
 			if("SL000000".equals(radioBtn)) {
 				returnMergeMap.put("title", replaceTextTitle);
-				if("SMwThM00".equals(radioBtn) || "SMwThT00".equals(radioBtn)) {
-					returnMergeMap.put("media", imgUrl);
-				}
 			}
+			
+			if("SMwThM00".equals(radioBtn) || "SMwThT00".equals(radioBtn)) {
+				returnMergeMap.put("title", replaceTextTitle);
+				returnMergeMap.put("media", fileId);
+			}
+			
 			returnMergeMap.put("description", replaceTextContents);
 			
 			String clikeyStr = webReqId + "_" + cliKey;
@@ -1595,7 +1599,7 @@ public class RcsTemplateSendService {
 		
 		ArrayList<Object> textTitleArr = (ArrayList<Object>) carouselMap.get("textTitle");
 		ArrayList<Object> textContentsArr = (ArrayList<Object>) carouselMap.get("textContents");
-		ArrayList<Object> imgUrlArr = (ArrayList<Object>) carouselMap.get("imgUrl");
+		ArrayList<Object> fileIdArr = (ArrayList<Object>) carouselMap.get("fileId");
 		String webReqId = CommonUtils.getString(data.get("webReqId"));
 		long cliKey = NumberUtils.LONG_ONE;
 		int resultListCnt = 0;
@@ -1609,7 +1613,14 @@ public class RcsTemplateSendService {
 			for(int i=0; i<carouselCnt; i++) {
 				returnMergeMap.put("title"+(i+1), sub.replace(textTitleArr.get(i)));
 				returnMergeMap.put("description"+(i+1), sub.replace(textContentsArr.get(i)));
-				returnMergeMap.put("media"+(i+1), imgUrlArr.get(i));
+				String fileId = CommonUtils.getString(fileIdArr.get(i));
+				if("".equals(fileId)) {
+					fileId = "";
+				} else {
+					fileId = "maapfile://" + fileId;
+				}
+				
+				returnMergeMap.put("media"+(i+1), fileId);
 			}
 
 			String clikeyStr = webReqId + "_" + cliKey;
