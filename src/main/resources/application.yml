@@ -14,18 +14,7 @@ spring:
     multipart:
       max-file-size: 15MB 
       max-request-size: 15MB
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: test@test
-    password: test
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-      
+
 app.props:
   jwt:
     key-string: LcDVU5pmcXIakjK6yw/TJw==
@@ -95,17 +84,6 @@ spring:
     multipart:
       max-file-size: 15MB 
       max-request-size: 15MB
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: test@test
-    password: test
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
       
 app.props:
   jwt:
@@ -170,17 +148,6 @@ spring:
       max-request-size: 15MB
     cookie:
       path: /
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: test@test
-    password: test
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
       
 app.props:
   jwt:

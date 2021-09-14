@@ -12,7 +12,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +24,6 @@ import kr.co.uplus.cm.config.FileConfig;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
-import kr.co.uplus.cm.utils.MailHandler;
 import kr.co.uplus.cm.xss.XssPreventer;
 import lombok.extern.log4j.Log4j2;
 import yoyozo.security.SHA;
@@ -43,13 +41,7 @@ public class SignUpService {
 	@Autowired
 	private CommonService commonService;
 	
-	@Value("${spring.mail.username}")
-	String mailHost;
-	
 	@Value("${console.domain.baseUrl}") String baseUrl;
-	
-	@Autowired
-	private JavaMailSender mailSender;
 
 	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
@@ -231,7 +223,6 @@ public class SignUpService {
 			
 			params.put("location", "/sign/signUpMain");
 			
-//			this.sendMail(params, "/sign/signUpMain");
 			commonService.sendNoti("mail", params);
 
 		}
@@ -335,44 +326,6 @@ public class SignUpService {
 		}
 		
 		return rtn;
-	}
-
-	@Deprecated
-	public void sendMail(Map<String, Object> params, String location) throws Exception {
-		String time = CommonUtils.getString(params.get("time"));
-		String[] timeArr = time.split(" ");
-		
-		MailHandler mailHandler = new MailHandler(mailSender);
-		
-		// 받는 사람
-		mailHandler.setTo(CommonUtils.getString(params.get("email")));
-		// 보내는 사람
-		mailHandler.setFrom(mailHost);
-		// 제목
-		mailHandler.setSubject("이메일 본인인증");
-		
-		String html = "";
-		
-		html += "<div style='width:640px; min-height:600px; margin:0 auto; background:#fff; padding:38px 64px 87px 64px; box-sizing:border-box; position:relative; font-family:\"Noto Sans KR\", sans-serif'>";
-		html += "<div style='border-bottom:1px solid #9F9F9F; padding-bottom:30px; margin-bottom:30px'>";
-		html += "<img src='" + this.baseUrl + "/se2/images/" + "userLogo.svg' alt='유플러스 통합메시징 클라우드' />";
-		html += "</div>";
-		html += "<div style='font-size:14px; line-height:24px'>이메일 인증을 진행해주세요.<br/>";
-		html += "안녕하세요. NHN Cloud를 이용해주셔서 감사합니다.<br/>";
-		html += "본인 이메일이 맞는지 확인하고 있습니다.<br/>";
-		html += "아래 [인증] 버튼을 클릭하면 다음 단계로 진행할 수 있습니다.<br/><br/>";
-		html += "인증 링크 유효시간 : " + timeArr[0];
-		html += "<span style='color:#FD004E'>" + timeArr[1];
-		html += "</span> (UTC+09:00)</div>";
-		html += "<a href='"+this.baseUrl+location+"?authKey="+params.get("authKey")+"' target='_blank' title='인증' style='display:inline-block; width:120px; text-align:center; background:#E93978; color:#fff; border-radius:4px; line-height:40px; text-decoration:none; font-size:16px; margin:40px 0;'>인증</a>";
-		html += "<div style='position:absolute; left:0; bottom:0; width:100%; box-sizing:border-box; padding:0 64px'>";
-		html += "<div style='border-top:1px solid #E6E6E6; color:#858585; font-size:11px; padding:20px 0;'>Copyright©LG Plus Corp. All Rights Reserved.</div>";
-		html += "</div>";
-		html += "</div>";
-		
-		mailHandler.setText(html, true);
-		
-		mailHandler.send();
 	}
 
 	public RestResult<Object> certifyMailByAuthKey(Map<String, Object> params) throws Exception {
