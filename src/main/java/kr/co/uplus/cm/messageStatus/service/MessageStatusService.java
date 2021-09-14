@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.type.MongoConf;
+import kr.co.uplus.cm.common.utils.CmKeyMaker;
 import kr.co.uplus.cm.gw.model.mongo.CmMsgInfoDto;
 import kr.co.uplus.cm.gw.model.mongo.msgInfo.AlimtalkMsg;
 import kr.co.uplus.cm.gw.model.mongo.msgInfo.FriendtalkMsg;
@@ -63,7 +64,7 @@ public class MessageStatusService {
 		String			reqCh		= CommonUtils.getString(rtnMap.get("reqCh"));
 		String			msgKey		= params.get("msgKey").toString();
 		Query			query		= new Query(Criteria.where("msgKey").is(msgKey));
-		CmMsgInfoDto	msgInfo		= mongoCmd.findOne(query, CmMsgInfoDto.class, MongoConf.CM_MSG_INFO.key);
+		CmMsgInfoDto	msgInfo		= mongoCmd.findOne(query, CmMsgInfoDto.class, MongoConf.CM_MSG_INFO.key + "_"+CmKeyMaker.getTime14(msgKey).substring(0,10));
 		String			msg			= "";//메시지 내용
 		
 		if(msgInfo != null) {
