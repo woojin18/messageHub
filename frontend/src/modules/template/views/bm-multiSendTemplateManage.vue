@@ -3746,6 +3746,10 @@ export default {
 							if (rtnData.smsFileId1) {
 								this.rowData.smsImgInfoList.push({'fileId':rtnData.smsFileId1, 'imgUrl':rtnData.mmsChImgUrl1});
 							}
+
+							if (rtnData.smsFileId2) {
+								this.rowData.smsImgInfoList.push({'fileId':rtnData.smsFileId2, 'imgUrl':rtnData.mmsChImgUrl2});
+							}
 	
 							this.rowData.callback = rtnData.smsCallback;
 							this.rowData.smsRcvblcNumber = this.$gfnCommonUtils.unescapeXss(rtnData.smsRcvblcNumber);
