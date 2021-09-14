@@ -143,7 +143,16 @@
 		LEFT OUTER JOIN cm_console.CM_PROJECT cp
 			ON cu.BILL_ID = cp.BILL_ID 
 		WHERE	cp.BILL_ID is null
-		AND		cp.CORP_ID = #{corpId}
+		AND		cu.CORP_ID = #{corpId}
+	</select>
+	
+	
+	<select id="selectUcubePopInfo" resultType="camel">
+		/* cash.selectUcubePopInfo */
+		SELECT	cu.BILL_ID
+		,		DATE_FORMAT(cu.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
+		FROM cm_console.CM_UCUBE cu
+		WHERE	cu.CORP_ID = #{corpId}
 	</select>
 	
 	<select id="selectProjectInfoCnt" resultType="int">
@@ -191,8 +200,8 @@
 		,		cpsc.DEPT_NAME
 		,		DATE_FORMAT(cpsc.UPD_DT, '%Y-%m-%d %H:%i:%s') AS UPD_DT
 		,		cpsc.USE_YN
-		,		JSON_EXTRACT(cu.UCUBE_INFO, '$.a')		AS A
 		,		cpsc.BILL_ID
+		,		cpsc.SERVICE_ID
 		FROM	cm_console.CM_PROJECT_SUBBILL_CODE cpsc
 		INNER JOIN cm_console.CM_UCUBE cu
 			ON	cpsc.CORP_ID = cu.CORP_ID
@@ -222,7 +231,7 @@
 		/* cash.insertUcubeInfo */
 		UPDATE	cm_console.CM_PROJECT
 		SET		BILL_ID = #{billId}
-		WHERE	PROJECT_ID = #{projectId}
+		WHERE	PROJECT_ID = #{chgProjectId}
 		AND		CORP_ID = #{corpId}
 	</update>
 	
@@ -235,6 +244,7 @@
 		,		USE_YN
 		,		DEPT_NAME
 		,		REG_DT
+		,		SERVICE_ID
 		,		UPD_DT
 		) VALUES (
 				#{deptCode}
@@ -243,6 +253,7 @@
 		,		#{useYn}
 		,		#{deptName}
 		,		NOW()
+		,		#{serviceId}
 		,		NOW()
 		)
 	</insert>

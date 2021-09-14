@@ -92,7 +92,7 @@
 		,	#{projectName}
 		,	#{projectDesc}
 		,	#{payType}
-		,	'BILL_ID'
+		,	#{billId}
 		,	''
 		,	#{jsonInfo}
 		,	#{resendTitle}
@@ -519,4 +519,45 @@
 		FROM	cm_console.CM_CORP
 		WHERE	CORP_ID = #{corpId}
 	</select>
+	
+	<insert id="insertCmUcube">
+		/* project.insertCmUcube */
+		INSERT cm_console.CM_UCUBE
+		(
+			CORP_ID
+		,	BILL_ID
+		,	UCUBE_INFO
+		,	REG_DT
+		,	UPD_DT
+		)
+		VALUES
+		(
+			#{corpId}
+		,	#{billId}
+		,	#{ucubeInfo}
+		,	NOW()
+		,	NOW()
+		)
+	</insert>
+	
+	<select id="selectOwnerForApi" resultType="camel">
+		/* project.selectOwnerForApi */
+		SELECT	B.USER_NAME AS DAM_NM
+		,		A.CORP_NAME AS DEPT_NM
+		,		IFNULL(A.WIRE_TEL, B.HP_NUMBER) AS PHONE_NUM
+		,		B.HP_NUMBER AS CELL_NUM
+		,		IFNULL(A.WIRE_TEL, B.HP_NUMBER) AS FAX_NUM
+		,		B.LOGIN_ID AS DAM_EMAIL
+		FROM cm_console.CM_CORP A 
+		INNER JOIN (
+			SELECT *
+			FROM cm_console.CM_USER cu 
+			WHERE ROLE_CD  = 'OWNER'
+			AND cu.CORP_ID = #{corpId}
+		) B
+		on A.CORP_ID  = B.CORP_ID
+		WHERE A.CORP_ID = #{corpId}
+		LIMIT 1
+	</select>
+	
 </mapper>

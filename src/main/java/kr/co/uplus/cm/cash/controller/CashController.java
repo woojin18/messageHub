@@ -127,7 +127,7 @@ public class CashController {
 		return rtn;
 	}
 	
-	
+
 	@PostMapping("/selectUcubeInfo")
 	public RestResult<?> selectUcubeInfo(
 			HttpServletRequest request,
@@ -136,6 +136,22 @@ public class CashController {
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
 			rtn = cashService.selectUcubeInfo(params);
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+		
+		return rtn;
+	}
+	
+	@PostMapping("/selectUcubePopInfo")
+	public RestResult<?> selectUcubePopInfo(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = cashService.selectUcubePopInfo(params);
 		} catch(Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
@@ -208,6 +224,7 @@ public class CashController {
 		return rtn;
 	}
 	
+	// 부서별 정산 저장
 	@PostMapping("/saveProjectSubBillCode")
 	public RestResult<?> saveProjectSubBillCode(
 			HttpServletRequest request,
@@ -218,7 +235,7 @@ public class CashController {
 			rtn = cashService.saveProjectSubBillCode(params);
 		} catch(Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
+			rtn.setMessage(e.getMessage());
 		}
 		
 		return rtn;

@@ -28,13 +28,13 @@
               <div class="of_h">
                 <h5 class="inline-block" style="width:18%">청구ID</h5>
                 <select v-model="billId" class="selectStyle2 float-right" style="width:80%">
-                  <option value="">청구ID를 선택해 주세요</option>
-                  <option v-for="(data, index) in ucubeData" :key="index" :value="data.billId">{{data.a}}</option>
+                  <!-- <option value="" selected>청구ID를 선택해 주세요</option> -->
+                  <option v-for="(data, index) in ucubePopData" :key="index" :value="data.billId">{{data.billId}}</option>
                 </select>
               </div>
             </div>
             <div class="text-center mt20">
-              <a @click="fnUpdateProjectBillId" class="btnStyle1 backBlack mr5">등록</a>
+              <a @click="fnUpdateProjectBillId" class="btnStyle1 backBlack mr5">저장</a>
               <a @click="fnCloseModClaimIdPop" class="btnStyle1 backWhite">취소</a>						
             </div>
           </div>
@@ -57,7 +57,7 @@ export default {
     }
   },
   props: {
-    ucubeData: {
+    ucubePopData: {
       type: Array
     },
     selProjectInfo: {
@@ -94,19 +94,24 @@ export default {
         }
       });
     },
-
+ 
     fnUpdateProjectBillId: function() {
+      if( this.selProjectInfo.billId === this.billId ){
+          confirm.fnAlert("", "동일한 청구ID로 수정하실 수 없습니다.");
+          return;
+      }
+
       var params = {
         "corpId" : tokenSvc.getToken().principal.corpId,
-        "projectId": this.selProjectInfo.selProjectId,
+        "chgProjectId": this.selProjectInfo.projectId,
         "billId": this.billId
       };
 
-      console.log(params);
       cashApi.updateProjectBillId(params).then(response => {
         var result = response.data;
         if(result.success) {
           this.$parent.fnSelectProjectInfo();
+          this.$parent.fnSelectUcubeInfo();
           this.fnCloseModClaimIdPop();
         } else {
           confirm.fnAlert("", result.message);

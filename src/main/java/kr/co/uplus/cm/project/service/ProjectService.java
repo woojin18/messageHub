@@ -121,12 +121,8 @@ public class ProjectService {
 				String custNo	= CommonUtils.getString(generalDao.selectGernalObject("project.selectCustNoForSaveProject", params));
 				String regNo	= CommonUtils.getString(generalDao.selectGernalObject("project.selectRegNoForSaveProject", params));
 				String salesId	= CommonUtils.getString(generalDao.selectGernalObject("project.selectSalesIdForSaveProject", params));
-				String billId	= CommonUtils.getString(params.get("billId"));
 				
 				Map<String, Object> apiCustomerInfo = (Map<String, Object>) apiInterface.get("/console/v1/ucube/customer/" + custNo, null).get("data");
-				
-//				System.out.println("------------------------------------------@@ apiCustomerInfo : " + apiCustomerInfo);
-				
 				
 				Map<String, Object> joinMap = new HashMap<>();
 				
@@ -158,15 +154,16 @@ public class ProjectService {
 				
 				// 서비스 정보
 				Map<String, Object> serviceInfo = new HashMap<>();
+				Map<String, Object> ownerMap	= (Map<String, Object>) generalDao.selectGernalObject("project.selectOwnerForApi", params);
 				
-				serviceInfo.put("cmpNm",			apiCustomerInfo.get("bizCompNm"));					// 가입자(상호)명 
-				serviceInfo.put("ceoNm",			apiCustomerInfo.get("custNm"));						// 대표자 성명 (필수)
-//				ucubePymInfoVO.put("damNm",			apiCustomerInfo.get("custKdCd"));		// 담당자명
-//				ucubePymInfoVO.put("deptNm",		apiCustomerInfo.get("custKdCd"));	// 담당자부서명
-//				ucubePymInfoVO.put("phoneNum",		apiCustomerInfo.get("custKdCd"));	// 담당자 전화번호
-//				ucubePymInfoVO.put("cellNum",		apiCustomerInfo.get("custKdCd"));	// 담당자 핸드폰번호
-//				ucubePymInfoVO.put("faxNum",		apiCustomerInfo.get("custKdCd"));	// 담당자FAX번호
-//				ucubePymInfoVO.put("damEmail",		apiCustomerInfo.get("custKdCd"));	// 담당자 Email
+				serviceInfo.put("cmpNm",			apiCustomerInfo.get("bizCompNm"));			// 가입자(상호)명 
+				serviceInfo.put("ceoNm",			apiCustomerInfo.get("custNm"));				// 대표자 성명 (필수)
+				serviceInfo.put("damNm",			ownerMap.get("damNm"));						// 담당자명
+				serviceInfo.put("deptNm",			ownerMap.get("deptNm"));					// 담당자부서명
+				serviceInfo.put("phoneNum",			ownerMap.get("phoneNum"));					// 담당자 전화번호
+				serviceInfo.put("cellNum",			ownerMap.get("cellNum"));					// 담당자 핸드폰번호
+				serviceInfo.put("faxNum",			ownerMap.get("faxNum"));					// 담당자FAX번호
+				serviceInfo.put("damEmail",			ownerMap.get("damEmail"));					// 담당자 Email
 				
 				// 채널별 단가객체
 				Map<String, Object> cmPriceInfoMap = new HashMap<>();
@@ -239,15 +236,6 @@ public class ProjectService {
 						// MMS
 						cmPriceInfoMap.put("mms", priceInfoMap);
 					}
-					
-//					for( int k = 0; k < postFeeInfoArr.length(); k++ ) {
-//						kong.unirest.json.JSONObject postFeeMap = postFeeInfoArr.getJSONObject(k);
-//						double POST_FEE = Double.parseDouble(CommonUtils.getString(postFeeMap.get("POST_FEE")));
-//						int FEE_START_CNT = Integer.parseInt(CommonUtils.getString(postFeeMap.get("FEE_START_CNT")));
-//						int FEE_END_CNT = Integer.parseInt(CommonUtils.getString(postFeeMap.get("FEE_END_CNT")));
-//						
-//						
-//					}
 				}
 
 				joinMap.put("billInfoVo",		ucubeBillInfoVo);
@@ -261,16 +249,53 @@ public class ProjectService {
 				
 				// API 통신처리
 				Map<String, Object> result =  apiInterface.post("/console/v1/ucube/service/join/cm", joinMap, null);
+				
+//				성공 시
+//				{
+//					"code": "10000",
+//					"message": "성공",
+//					"data": {
+//						"serviceId": "SB1099",
+//						"resultCode": "N0000",
+//						"resultMsg": "Success",
+//						"resultList": [{
+//							"entrNo": "500232358675", (가입번호)
+//							"billAcntNo": "532109196140" (청구계정번호)
+//						}]
+//					}
+//				 }
+				
 				String serviceId = "";
+				String billId = "";
+				
+				Map<String, Object> resultData = (Map<String, Object>) result.get("data");
+				List<Map<String, Object>> resultList = (List<Map<String, Object>>) resultData.get("resultList");
 				
 				if( "10000".equals(result.get("code")) ) {
-					serviceId = CommonUtils.getString((Map<String, Object>)((Map<String, Object>)result.get("data")).get("serviceId"));
+					serviceId = CommonUtils.getString(resultList.get(0).get("entrNo"));
+					billId = CommonUtils.getString(resultList.get(0).get("billAcntNo"));
+					kong.unirest.json.JSONObject ucubeInfo =  new kong.unirest.json.JSONObject(resultData);
+					
+					params.put("serviceId", serviceId);
+					params.put("billId", billId);
+					params.put("ucubeInfo", ucubeInfo.toString());
+					
+					// 유큐브 정보 인서트
+					generalDao.insertGernal("project.insertCmUcube", params);
+					
 				} else if ( "500100".equals(result.get("code")) ) {
 					String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
 					throw new Exception(errMsg);
 				} else {
+//					 {code=21400, message=유큐브 연동 오류, data={serviceId=SB1099, resultCode=icm.err.074
+//							, resultMsg=입력한 유치자( juoh )에 해당하는 대리점 정보가 존재하지 않습니다., resultList=null}}
 					String errMsg = CommonUtils.getString(result.get("message"));
-					throw new Exception(errMsg);
+					String msg = CommonUtils.getString(((Map<String, Object>) result.get("data")).get("resultMsg"));
+					if( !"".equals(msg) ) {
+						throw new Exception(errMsg + " : " + msg);
+					} else {
+						throw new Exception(errMsg);
+					}
 				}
 			}
 
@@ -286,7 +311,7 @@ public class ProjectService {
 			jsonInfo += "}";
 
 			params.put("jsonInfo", jsonInfo);
-
+			
 			// 프로젝트 insert
 			generalDao.insertGernal("project.insertProject", params);
 

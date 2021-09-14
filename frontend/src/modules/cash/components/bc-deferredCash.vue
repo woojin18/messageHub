@@ -122,7 +122,7 @@
                   <td class="text-center">{{data.updDt}}</td>
                   <td class="text-center" v-if="data.useYn=='Y'">예</td>
                   <td class="text-center" v-else>아니오</td>
-                  <td class="text-center">{{data.a}}</td>
+                  <td class="text-center">{{data.billId}}</td>
                   <td class="text-center end">
                     <a @click="fnModDept(data)" class="btnStyle1 borderLightGray small mr5">수정</a>
                     <a @click="fnDelDept(data)" class="btnStyle1 borderLightGray small mr5">삭제</a>
@@ -136,7 +136,7 @@
       </div>			
     </div>
     <deptPop :popReset="popReset" :state="popState" :deptInfo="selDeptInfo" :ucubeData="ucubeData"></deptPop>
-    <claimIdPop :popReset="popReset" :ucubeData="ucubeData" :selProjectInfo="selProjectInfo"></claimIdPop>
+    <claimIdPop :popReset="popReset" :ucubePopData="ucubePopData" :selProjectInfo="selProjectInfo"></claimIdPop>
   </div>
 </template>
 
@@ -152,6 +152,7 @@ export default {
   data() {
     return {
       ucubeData: [],
+      ucubePopData : [],
       projectCnt: 0,
       projectData: [],
       deptCnt: 0,
@@ -168,6 +169,7 @@ export default {
   },
   mounted() {
     this.fnSelectUcubeInfo();
+    this.fnSelectUcubePopInfo();
     this.fnSelectProjectInfo();
     this.fnSelectDeptInfo();
   },
@@ -185,6 +187,20 @@ export default {
       });
     },
 
+    
+    fnSelectUcubePopInfo: function() {
+      var params = {
+        "corpId" : tokenSvc.getToken().principal.corpId
+      };
+
+      cashApi.selectUcubePopInfo(params).then(response => {
+        var result = response.data;
+        if(result.success) {
+          this.ucubePopData = result.data;
+        }
+      });
+    },
+
     fnSelectProjectInfo: function() {
       var params = {
         "corpId" : tokenSvc.getToken().principal.corpId
@@ -192,7 +208,6 @@ export default {
 
       cashApi.selectProjectInfo(params).then(response => {
         var result = response.data;
-        console.log(result);
         if(result.success) {
           this.projectCnt = result.data.count;
           this.projectData = result.data.list;

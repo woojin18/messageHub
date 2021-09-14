@@ -25,13 +25,6 @@
                   <label for="no">미사용</label>
                 </div>
               </div>
-              <div class="of_h consolMarginTop">
-                <h5 class="inline-block" style="width:18%">청구ID</h5>
-                <select v-model="billId" class="selectStyle2 float-right" style="width:80%">
-                  <option value="">청구ID를 선택해 주세요</option>
-                  <option v-for="(data, index) in ucubeData" :key="index" :value="data.billId">{{data.a}}</option>
-                </select>
-              </div>
             </div>
               
             <div class="text-center mt20">
@@ -73,7 +66,6 @@ export default {
       deptCode: "",
       deptName: "",
       useYn: "",
-      billId: ""
     }
   },
   props: {
@@ -102,7 +94,6 @@ export default {
       this.deptCode = this.deptInfo.deptCode;
       this.deptName = this.deptInfo.deptName;
       this.useYn = this.deptInfo.useYn;
-      this.billId = this.deptInfo.billId;
     },
 
     fnSaveDept: function() {
@@ -110,8 +101,6 @@ export default {
         confirm.fnAlert("", "부서코드를 입력해주세요.");
       } else if(!this.deptName) {
         confirm.fnAlert("", "부서명를 입력해주세요.");
-      } else if(!this.billId) {
-        confirm.fnAlert("", "청구ID를 선택해주세요.");
       }
 
       var params = {
