@@ -171,7 +171,7 @@ export default {
       rcvblcNumOpen: false,
       imgMngOpen : false,
       imgUploadOpen : false,
-      imgLimitSize : 2,
+      imgLimitSize : 3,
       msgCurrByte: 0,
       msgLimitByte: 0,
       useCh : 'MMS',
@@ -409,7 +409,7 @@ export default {
     },
     fnImgLimitSize(){
       if(this.tmpltData.imgInfoList != null && this.tmpltData.imgInfoList.length >= this.imgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 2개까지 등록 가능합니다.');
+        confirm.fnAlert(this.componentsTitle, '이미지는 최대 '+this.imgLimitSize+'개까지 등록 가능합니다.');
         return false;
       }
     },

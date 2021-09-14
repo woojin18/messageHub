@@ -2219,7 +2219,7 @@ export default {
 			smsImgMngOpen : false, /* MMS 이미지 */
 			smsImgUploadOpen : false,
 			smsUseCh : 'MMS',
-			smsImgLimitSize : 2, /* 2개까지 가능 */
+			smsImgLimitSize : 3, /* 3개까지 가능 */
 
 			buttonSMSFlag: false,
 			buttonLMSFlag: false,

@@ -226,7 +226,7 @@ export default {
       directInputOpen : false,
       addressInputOpen : false,
       testSendInputOpen : false,
-      imgLimitSize : 2,
+      imgLimitSize : 3,
       recvCnt : 0,  //수신자명수
       isSpecialBusi : !this.$gfnCommonUtils.isEmpty(tokenSvc.getToken().principal.bizType),
       inProgress: false,
@@ -518,7 +518,7 @@ export default {
     },
     fnImgLimitSize(){
       if(this.sendData.imgInfoList != null && this.sendData.imgInfoList.length >= this.imgLimitSize){
-        confirm.fnAlert(this.componentsTitle, '이미지는 최대 2개까지 등록 가능합니다.');
+        confirm.fnAlert(this.componentsTitle, '이미지는 최대 '+this.imgLimitSize+'개까지 등록 가능합니다.');
         return false;
       }
     },
