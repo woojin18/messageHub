@@ -2104,6 +2104,7 @@ export default {
 			msgPushCurrByte: 0,
 			msgSmsCurrByte: 0,
 			msgSmsLimitByte: 0,
+			titleSmsLimitByte: 40,
 
 			rcsDesMessagebaseId: '',		//서술형 MessagebaseId
 			rcsDesMessagebaseformId: '',	//서술형 유형
@@ -3250,6 +3251,14 @@ export default {
 					if (this.smsTemplateTable === 1) { //MMS
 						if (!this.rowData.smsTitle) {
 							confirm.fnAlert(this.detailTitle, 'MMS 제목을 입력해주세요.');
+							return false;
+						}
+						let title = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.smsTitle, '');
+						let totalTitle =  (this.rowData.msgKind == 'A' ? '(광고)' : '') + title;
+						let titleCurrByte = this.getByte(totalTitle);
+						if(this.titleSmsLimitByte < titleCurrByte){
+							const alertMsg = (this.rowData.msgKind != 'A' ? '' : '\'(광고)\' + ') + '제목이 '+this.titleSmsLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+titleCurrByte+'byte)';
+							confirm.fnAlert(this.detailTitle, alertMsg);
 							return false;
 						}
 						if (!this.rowData.smsContent) {
@@ -4502,12 +4511,11 @@ export default {
 			this.msgPushCurrByte = this.getByte(totalMsg);
 		},
 		fnSetSmsCurrByte() {
-			let title = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.smsTitle, '');
 			let body = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.smsContent, '');
 			let rcvblcNum = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.smsRcvblcNumber, '');
-			let totalMsg = title + body ;
+			let totalMsg = body ;
 			if (this.rowData.msgKind == 'A') {
-				totalMsg += '\n' + rcvblcNum + '(광고)';
+				totalMsg += '\n' + rcvblcNum + (this.smsTemplateTable === 0 ? '(광고)' : '');
 			}
 			this.msgSmsCurrByte = this.getByte(totalMsg);
 		},
@@ -4528,7 +4536,7 @@ export default {
 		},
 		fnGetSmsLimitByte() {
 			if (this.rowData.smsSendType == 'S') {
-				this.msgSmsLimitByte = 80;
+				this.msgSmsLimitByte = 90;
 			} else if (this.rowData.smsSendType == 'M') {
 				this.msgSmsLimitByte = 2000;
 			}
