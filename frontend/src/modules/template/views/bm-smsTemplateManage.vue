@@ -306,7 +306,7 @@ export default {
         let totalTitle =  (this.tmpltData.msgKind == 'A' ? '(광고)' : '') + title;
         let titleCurrByte = this.getByte(totalTitle);
         if(this.titleLimitByte < titleCurrByte){
-          const alertMsg = (this.tmpltData.msgKind != 'A' ? '' : '(광고) + ') + '제목이 '+this.titleLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+titleCurrByte+'byte)';
+          const alertMsg = (this.tmpltData.msgKind != 'A' ? '' : '\'(광고)\' + ') + '제목이 '+this.titleLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+titleCurrByte+'byte)';
           confirm.fnAlert(this.componentsTitle, alertMsg);
           return false;
         }
