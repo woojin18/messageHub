@@ -186,34 +186,27 @@
 
 	<select id="selectSixMonthDefPayAmt" resultType="camel">
 		/* use.selectSixMonthDefPayAmt 최근 6개월간 후불청구금액 조회 */
-		SELECT	A.YM
-			,	A.BILL_AMOUNT
-			,	B.PREPAYMENT_AMOUNT
-			,	A.VAT
-		FROM (
-			/* 청구금액 */
-			SELECT	CONCAT_WS('-', SUBSTR(YM, 1, 4) , SUBSTR(YM, 5, 2)) AS YM
-				,	SUM(CALC_AMOUNT) AS BILL_AMOUNT
-				,	SUM(CALC_AMOUNT) * 0.1 AS VAT
-			FROM	cm_console.CM_CAL_HIST
-			WHERE	CORP_ID = #{corpId}
-			AND		YM BETWEEN	DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -6 MONTH), '%Y%m')
-					AND		DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y%m')
-			GROUP BY YM
-		) A,
-		(
-			/* 이용금액 (선물결제금액) */
-			SELECT	DATE_FORMAT(REG_DT, '%Y-%m') AS PAY_MONTH
-				,	SUM(CASH_CHARG_AMOUNT) AS PREPAYMENT_AMOUNT
-			FROM	cm_console.CM_WEB_CASH_HIST
-			WHERE	CORP_ID = #{corpId}
-			AND		DATE_FORMAT(REG_DT, '%Y%m') /* 최근 6개월 */
-					BETWEEN	DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -6 MONTH), '%Y%m')
-					AND		DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y%m')
-			AND		STATUS = '1'
-			GROUP BY PAY_MONTH
-		) B
-		WHERE A.YM = B.PAY_MONTH
+		SELECT		CONCAT(SUBSTRING(A.YM, 1, 4), '-', SUBSTRING(A.YM, 5, 6)) AS YM
+		,			A.BILL_ID
+		,			SUM(A.CALC_CNT) AS CALC_AMOUNT
+		FROM		cm_console.CM_CAL_HIST AS A
+		,			cm_console.CM_CORP AS B
+		,			(
+						SELECT NOPAY_YN,CORP_ID,BILL_ID
+						FROM cm_console.CM_PROJECT
+						GROUP BY NOPAY_YN,CORP_ID,BILL_ID
+					) AS C
+		,			(SELECT @ROWNUM:=0) CNT
+		WHERE 	1=1
+		AND		A.CORP_ID = #{corpId}
+		AND		A.CORP_ID=B.CORP_ID
+		AND		C.NOPAY_YN = 'N'
+		AND	CONCAT(SUBSTRING(A.YM, 1, 4), '-', SUBSTRING(A.YM, 5, 6), '-01') 
+				BETWEEN	NOW() - INTERVAL 6 MONTH	 
+				AND		NOW()
+		
+						GROUP BY A.YM,A.CORP_ID,A.BILL_ID
+		ORDER BY A.YM DESC
 	</select>
 	
 	<select id="selectUseHistProductUnit" resultType="camel">

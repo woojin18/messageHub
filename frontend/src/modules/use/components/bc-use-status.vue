@@ -47,26 +47,23 @@
 					<div class="Dashboard01 fl border-line">
 							<table class="table_skin1 bt-000 tbl-striped consolMarginTop">
 								<colgroup>
-									<col style="width:25%">
-									<col style="width:25%">
-									<col style="width:25%">
-									<col style="width:25%">
+									<col style="width:33.3%">
+									<col style="width:33.3%">
+									<col style="width:33.3%">
 									<col>
 								</colgroup>
 								<thead>
 									<tr>
-									<th class="text-center lc-1">청구 월</th>
-									<th class="text-center lc-1">청구금액</th>
-									<th class="text-center lc-1">이용금액</th>
-									<th class="text-center lc-1 end">부가세</th>
+									<th class="text-center lc-1">청구월</th>
+									<th class="text-center lc-1">청구ID</th>
+									<th class="text-center lc-1 end">청구수량</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr v-for="(data, index) in defPayItems" :key="index">
 										<td class="text-center">{{ data.ym }}</td>
-										<td class="text-right">{{ data.billAmount | comma}}</td>
-										<td class="text-right">{{ data.prepaymentAmount | comma}}</td>
-										<td class="text-right end">{{ data.vat | comma}}</td>
+										<td class="text-right">{{ data.billId }}</td>
+										<td class="text-right end">{{ data.calcAmount | comma}}</td>
 									</tr>
 								</tbody>
 							</table>
