@@ -1,12 +1,12 @@
 package kr.co.uplus.cm.customer.controller;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import kr.co.uplus.cm.utils.FileDownUtil;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
@@ -30,6 +29,7 @@ import kr.co.uplus.cm.config.FileConfig;
 import kr.co.uplus.cm.customer.service.CustomerService;
 import kr.co.uplus.cm.myPage.service.MyPageService;
 import kr.co.uplus.cm.utils.CommonUtils;
+import kr.co.uplus.cm.utils.FileDownUtil;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -172,6 +172,12 @@ public class CustomerController {
         headers.add(HttpHeaders.CONTENT_TYPE, contentType);
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
 
+        File f = new File(filePath);
+        if(f.exists() == false) {
+            log.warn("{}.procDownloadLibraryFile FILE NOT EXISTS ==> filePath : {}", this.getClass(), filePath);
+            return ResponseEntity.notFound().build();
+        }
+
         Resource resource = new InputStreamResource(Files.newInputStream(path));
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
@@ -215,7 +221,7 @@ public class CustomerController {
 
 	/**
 	 * 이용가이드 URL 정보 조회
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param params
@@ -224,7 +230,7 @@ public class CustomerController {
 	@PostMapping("/api/public/selectUserGuideUrl")
     public RestResult<?> selectUserGuideUrl(@RequestBody Map<String, Object> params) {
         RestResult<Object> rtn = new RestResult<Object>();
-		
+
 		rtn.setData(userGuideUrl);
 
 		return rtn;
