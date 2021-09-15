@@ -136,7 +136,14 @@
 		<if test="isExists == '1'.toString()">
 		AND		B.CORP_ID = #{corpId}
 		</if>
-		ORDER BY PRODUCT_CODE
+		ORDER BY (
+			CASE
+				WHEN A.PRODUCT_CODE LIKE '%SMS%' THEN 1
+				WHEN A.PRODUCT_CODE LIKE '%LMS%' THEN 2
+				WHEN A.PRODUCT_CODE LIKE '%MMS%' THEN 3
+				ELSE 4
+			END
+		), A.PRODUCT_CODE ASC
 	</select>
 
 	<select id="selectSixMonthUseCnt" resultType="camel">
