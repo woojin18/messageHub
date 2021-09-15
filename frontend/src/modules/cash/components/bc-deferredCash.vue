@@ -25,13 +25,16 @@
               <td class="text-center">{{data.billId}}</td>
               <td class="text-center end">{{data.regDt}}</td>
             </tr>	
+            <tr v-if="ucubeData.length == 0">
+              <td class="text-center" colspan="2">검색된 내용이 없습니다.</td>
+            </tr>
           </tbody>
         </table>
         <!-- //table -->
       </div>			
     </div>
 
-    <h4>프로젝트별 정산</h4>
+    <h4>프로젝트별 청구</h4>
     <div class="row">
       <div class="col-xs-12">
         <!-- 15개씩 보기 -->
@@ -71,13 +74,16 @@
               <td class="text-center">{{data.serviceId}}</td>
               <td @click="fnModClaimId(data)" class="text-center end" style="text-decoration: underline; cursor: pointer;">{{data.billId}}</td>
             </tr>
+            <tr v-if="projectData.length == 0">
+              <td class="text-center" colspan="6">검색된 내용이 없습니다.</td>
+            </tr>
           </tbody>
         </table>
         <!-- //table -->
       </div>			
     </div>
 
-    <h4>부서별 정산</h4>
+    <h4>부서별 청구</h4>
     <div class="row">
       <div class="col-xs-12">
         <div class="of_h inline">
@@ -128,6 +134,9 @@
                     <a @click="fnDelDept(data)" class="btnStyle1 borderLightGray small mr5">삭제</a>
                   </td>
                 </tr>	
+                <tr v-if="deptData.length == 0">
+                  <td class="text-center" colspan="6">검색된 내용이 없습니다.</td>
+                </tr>
               </tbody>
             </table>
             <!-- //table -->

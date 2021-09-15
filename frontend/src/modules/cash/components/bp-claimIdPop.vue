@@ -110,9 +110,10 @@ export default {
       cashApi.updateProjectBillId(params).then(response => {
         var result = response.data;
         if(result.success) {
+          confirm.fnAlert("", "저장되었습니다.");
           this.$parent.fnSelectProjectInfo();
           this.$parent.fnSelectUcubeInfo();
-          this.fnSelectUcubePopInfo();
+          this.$parent.fnSelectUcubePopInfo();
           this.fnCloseModClaimIdPop();
         } else {
           confirm.fnAlert("", result.message);

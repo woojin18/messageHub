@@ -1,6 +1,6 @@
 <template>
   <div>
-    	<div class="modal modalStyle" id="deptInfoPop" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modalStyle" id="deptInfoPop" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body">
@@ -28,7 +28,7 @@
             </div>
               
             <div class="text-center mt20">
-              <a @click="fnSaveDept" class="btnStyle1 backBlack mr5">등록</a>
+              <a @click="fnSaveDept" class="btnStyle1 backBlack mr5">저장</a>
               <a @click="fnCloseDept" class="btnStyle1 backWhite">취소</a>						
             </div>
           </div>
@@ -108,14 +108,16 @@ export default {
         "deptCode" : this.deptCode,
         "deptName": this.deptName,
         "useYn" : this.useYn,
-        "billId" : this.billId,
         "state" : this.state
       };
 
       cashApi.saveProjectSubBillCode(params).then(response => {
         var result = response.data;
         if(result.success) {
+          confirm.fnAlert("", "저장되었습니다.");
           this.$parent.fnSelectDeptInfo();
+          this.$parent.fnSelectUcubeInfo();
+          this.$parent.fnSelectUcubePopInfo();
           this.fnCloseDept();
         } else {
           confirm.fnAlert("", result.message);
@@ -140,10 +142,10 @@ export default {
         cashApi.deleteProjectSubBillCode(params).then(response => {
           var result = response.data;
           if(result.success) {
-            confirm.fnAlert("", "등록되었습니다.");
+            confirm.fnAlert("", "삭제되었습니다.");
             this.$parent.fnSelectDeptInfo();
             this.$parent.fnSelectUcubeInfo();
-            this.fnSelectUcubePopInfo();
+            this.$parent.fnSelectUcubePopInfo();
             this.fnCloseDelDeptPop();
           } else {
             confirm.fnAlert("", result.message);

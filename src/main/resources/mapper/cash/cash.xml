@@ -130,19 +130,15 @@
 	
 	<select id="selectUcubeInfo" resultType="camel">
 		/* cash.selectUcubeInfo */
-<!-- 		SELECT	DISTINCT cp.SERVICE_ID AS A -->
-<!-- 		,		cu.BILL_ID -->
-<!-- 		,		DATE_FORMAT(cu.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT -->
-<!-- 		FROM cm_console.CM_PROJECT cp  -->
-<!-- 		INNER JOIN cm_console.CM_UCUBE cu  -->
-<!-- 			ON cp.BILL_ID = cu.BILL_ID  -->
-<!-- 		WHERE	cp.CORP_ID = #{corpId} -->
 		SELECT	cu.BILL_ID
 		,		DATE_FORMAT(cu.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
 		FROM cm_console.CM_UCUBE cu
 		LEFT OUTER JOIN cm_console.CM_PROJECT cp
 			ON cu.BILL_ID = cp.BILL_ID 
+		LEFT OUTER JOIN cm_console.CM_PROJECT_SUBBILL_CODE cpsc
+			ON cu.BILL_ID = cpsc.BILL_ID 
 		WHERE	cp.BILL_ID is null
+		AND		cpsc.BILL_ID is null
 		AND		cu.CORP_ID = #{corpId}
 	</select>
 	
@@ -261,8 +257,7 @@
 	<update id="updateProjectSubBillCode">
 		/* cash.updateProjectSubBillCode */
 		UPDATE	cm_console.CM_PROJECT_SUBBILL_CODE
-		SET		BILL_ID = #{billId}
-		,		DEPT_NAME = #{deptName}
+		SET		DEPT_NAME = #{deptName}
 		,		USE_YN = #{useYn}
 		,		UPD_DT = NOW()
 		WHERE	DEPT_CODE = #{deptCode}
