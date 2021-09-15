@@ -104,7 +104,13 @@ export default {
         const params = {
           fileId: fileId
         };
-        customereApi.procDownloadLibraryFile(params);
+        customereApi.procDownloadLibraryFile(params).catch((error) => {
+          if(error && error.response && error.response.status == 404){
+            confirm.fnAlert(this.componentsTitle, '해당 파일이 존재하지 않습니다.')
+          } else {
+            confirm.fnAlert(this.componentsTitle, '파일다운로드에 실패하였습니다.')
+          }
+        });
       }
     }
   }
