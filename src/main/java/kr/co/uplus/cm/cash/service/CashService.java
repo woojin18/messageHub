@@ -43,7 +43,7 @@ public class CashService {
 		String orderId	= CommonUtils.getCommonId("pg", 6);
 		String corpId	= CommonUtils.getString(map.get("corpId"));
 		map.put("order_id"		, orderId);
-		map.put("payMtd"		, "card");
+		map.put("payMtd"		, "카드");
 		map.put("orderName"		, map.get("corpName") + " 선불충전");
 		map.put("customerName"	, map.get("corpName"));
 		
