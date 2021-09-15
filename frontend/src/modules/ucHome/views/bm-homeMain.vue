@@ -256,12 +256,14 @@ export default {
 	},
 	mounted() {
 		var vm = this;
-		vm.fnGetProjectInfo();
+		vm.fnInit();
 		setTimeout(function() {
-			vm.fnInit();
-			vm.fnGetNoticeList();
-			vm.fnSetIntervalSearchDate(vm.searchDateInterval);
-			vm.fnGetRtUsedTimeLineList();
+			if (tokenSvc.getToken()) {
+				vm.fnGetProjectInfo();
+				vm.fnGetNoticeList();
+				vm.fnSetIntervalSearchDate(vm.searchDateInterval);
+				vm.fnGetRtUsedTimeLineList();
+			}
 		}, 100);
 	},
 	methods: {
