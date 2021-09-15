@@ -55,8 +55,8 @@
 								<input type="text" class="inputStyle float-right" style="width:80%" title="유선전화번호 입력란" v-model="wireTel" placeholder="-없이 입력" disabled>
 							</div> -->
 							<div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:20%">사업자등록증</h5>
-								<input type="text" class="inputStyle" style="width:58%" title="사업자등록증 입력란" v-model="attachFileName" disabled>
+								<h5 class="inline-block" style="width:20%">첨부파일</h5>
+								<input type="text" class="inputStyle" style="width:58%" title="첨부파일" v-model="attachFileName" disabled>
 								<input type="hidden" v-model="attachFilePath">
 								<input type="hidden" v-model="fileId">
 								<!-- <input type="file" ref="imageInput" style="display:none"> -->

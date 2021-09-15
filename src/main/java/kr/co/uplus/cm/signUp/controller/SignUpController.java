@@ -104,7 +104,7 @@ public class SignUpController implements Serializable{
 			@RequestParam(required=true) String woplaceAddress,			// 주소
 			@RequestParam(required=true) String woplaceAddressDetail,	// 상세주소
 			@RequestParam(required=false) String wireTel,				// 유선전화번호
-			@RequestParam(required=true) MultipartFile attachFile,		// 사업자 등록증
+			@RequestParam(required=true) MultipartFile attachFile,		// 첨부파일
 //			@RequestParam(required=true) String domainName,				// 도메인
 			@RequestParam(required=true) String custKdCd,				// 고객유형
 			@RequestParam(required=false) String custrnmNo,				// 고객식별번호
