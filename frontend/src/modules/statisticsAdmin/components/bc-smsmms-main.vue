@@ -37,10 +37,10 @@
 							<label for="all" class="ml20">전체</label>
 							<input type="radio" name="smsmmsType" id="sms" value="SMS" v-model="searchData.searchSmsmmsType">
 							<label for="sms">SMS</label>
-							<input type="radio" name="smsmmsType" id="mms" value="MMS" v-model="searchData.searchSmsmmsType">
-							<label for="mms">MMS</label>
 							<input type="radio" name="smsmmsType" id="lms" value="LMS" v-model="searchData.searchSmsmmsType">
 							<label for="lms">LMS</label>
+							<input type="radio" name="smsmmsType" id="mms" value="MMS" v-model="searchData.searchSmsmmsType">
+							<label for="mms">MMS</label>
 						</div>
 						<a @click="fnSearch" class="btnStyle1 float-right" activity="READ">조회</a>
 					</div>
