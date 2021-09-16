@@ -3,7 +3,7 @@
 	<header class="head_type_user">
 		<div class="wrap_head">
 			<div class="box_gnb">
-				<h1 class="tit_logo"><a href="/login" class="userLogo"><img src="../../public/se2/images/userLogo.svg" alt="LGU+ 메시지허브 로고"></a></h1>
+				<h1 class="tit_logo"><a href="/login" class="userLogo"><img src="/se2/images/userLogo.svg" alt="LGU+ 메시지허브 로고"></a></h1>
 				<nav id="userGnb">
 					<ul class="list_gnb" role="menu">
 						<li><a href="#self" title="서비스 소개 페이지로 이동">서비스 소개</a></li>
