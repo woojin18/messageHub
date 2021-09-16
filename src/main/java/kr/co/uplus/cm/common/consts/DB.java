@@ -32,8 +32,8 @@ public class DB {
 	public final static String QRY_SELECT_LIBRARY_LIST_CNT = "customer.selectLibraryListCnt";
 	public final static String QRY_SELECT_LIBRARY_LIST = "customer.selectLibraryList";
 	public final static String QRY_SELECT_ATTACH_FILE_INFO = "customer.selectAttachFileInfo";
-	public final static String qry_SELECT_CM_USE_TERMS_HIST_LIST = "customer.selectCmUseTermsHistList";
-	public final static String qry_SELECT_CM_USE_TERMS_INFO = "customer.selectCmUseTermsInfo";
+	public final static String QRY_SELECT_CM_USE_TERMS_HIST_LIST = "customer.selectCmUseTermsHistList";
+	public final static String QRY_SELECT_CM_USE_TERMS_INFO = "customer.selectCmUseTermsInfo";
 
 	// 로그인
 	public final static String QRY_SELECT_USERNAME = "login.qrySelectUserName";

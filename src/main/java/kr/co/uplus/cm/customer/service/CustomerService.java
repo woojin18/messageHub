@@ -120,7 +120,7 @@ public class CustomerService {
      */
     public RestResult<Object> selectCmUseTermsHistList(Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
-        List<Object> rtnList = generalDao.selectGernalList(DB.qry_SELECT_CM_USE_TERMS_HIST_LIST, params);
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CM_USE_TERMS_HIST_LIST, params);
         rtn.setData(rtnList);
         return rtn;
     }
@@ -133,7 +133,7 @@ public class CustomerService {
      */
     public RestResult<Object> selectCmUseTermsInfo(Map<String, Object> params) throws Exception {
         RestResult<Object> rtn = new RestResult<Object>();
-        Object rtnInfo = generalDao.selectGernalObject(DB.qry_SELECT_CM_USE_TERMS_INFO, params);
+        Object rtnInfo = generalDao.selectGernalObject(DB.QRY_SELECT_CM_USE_TERMS_INFO, params);
         rtn.setData(rtnInfo);
         return rtn;
     }
