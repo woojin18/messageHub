@@ -989,9 +989,10 @@
 		WHERE	PRODUCT_CODE = #{moType}
 	</select>
 	
-	<select id="selectProjectBillIdForSaveMoCallback" resultType="String">
-	/* channel.selectProjectBillIdForSaveMoCallback */
+	<select id="selectProjectDataForSaveMoCallback" resultType="camel">
+	/* channel.selectProjectDataForSaveMoCallback */
 		SELECT	A.BILL_ID
+		,		A.SERVICE_ID
 		FROM	cm_console.CM_PROJECT A 
 		WHERE	A.PROJECT_ID = #{projectId}
 	</select>

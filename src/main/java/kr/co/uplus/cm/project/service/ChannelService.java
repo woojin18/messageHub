@@ -996,18 +996,18 @@ public class ChannelService {
 			
 			// 기본정보 가져오기
 			String custNo	= CommonUtils.getString(generalDao.selectGernalObject("project.selectCustNoForSaveProject", params));
-			String billId	= CommonUtils.getString(generalDao.selectGernalObject("channel.selectProjectBillIdForSaveMoCallback", params));
 			String salesId	= CommonUtils.getString(generalDao.selectGernalObject("project.selectSalesIdForSaveProject", params));
 			String moType	= CommonUtils.getString(params.get("moType"));
+			Map<String, Object> projectMap = (Map<String, Object>) generalDao.selectGernalObject("channel.selectProjectDataForSaveMoCallback", params);
 			
 			Map<String, Object> joinMap = new HashMap<>();
 			
-			joinMap.put("entrNo",			custNo);					// 가입번호
-			joinMap.put("billAcntNo",		billId);					// 청구계정 번호
-			joinMap.put("logid",			params.get("projectId"));	// 가입인식번호1(본인 서비스의 유니크 아이디)
-			joinMap.put("indcId",			salesId);					// 유치자아이디
-			joinMap.put("mngrId",			salesId);					// 관리자아이디
-			joinMap.put("serviceType",		moType);					// MO 서비스정보 타입 (SMS, LMS, MMS)
+			joinMap.put("entrNo",			projectMap.get("serviceId"));	// 가입번호
+			joinMap.put("billAcntNo",		projectMap.get("billId"));		// 청구계정 번호
+			joinMap.put("logid",			params.get("projectId"));		// 가입인식번호1(본인 서비스의 유니크 아이디)
+			joinMap.put("indcId",			salesId);						// 유치자아이디
+			joinMap.put("mngrId",			salesId);						// 관리자아이디
+			joinMap.put("serviceType",		moType);						// MO 서비스정보 타입 (SMS, LMS, MMS)
 			
 			Map<String, Object> priceInfo = (Map<String, Object>) generalDao.selectGernalObject("channel.selectPriceInfoForSaveMoCallback", params);
 			
