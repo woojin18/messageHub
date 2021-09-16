@@ -8,7 +8,7 @@
 
             <div class="boardTitle">
               <p class="titleText">FAQ</p>
-              <p class="subText">U+ 통합 메시징 클라우드를 이용하시는 회원님들의 자주 묻는 질문을 모았습니다.</p>
+              <p class="subText">U+ 메시지허브를 이용하시는 회원님들의 자주 묻는 질문을 모았습니다.</p>
             </div>
             <ul class="tab5">
               <li :class="(faqTypeCd == '' ? 'active' : '')"><a href="#" @click.prevent="fnSetFaqTypeCd('')">전체</a></li>

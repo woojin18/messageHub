@@ -7,7 +7,7 @@
           <li>
             <div class="mainVisualTitle">
               <div class="wow animated fadeInUp" data-wow-duration="1s">
-                <h2>성공하는 기업들이 일하는<br>스마트한 방식<br>U+ 통합메시징 Cloud</h2>
+                <h2>성공하는 기업들이 일하는<br>스마트한 방식<br>U+ 메시지허브</h2>
                 <router-link :to="{ name: 'intro' }" tag="a" class="mvBtn" title="서비스 소개">서비스 소개</router-link>
               </div>
             </div>
@@ -16,7 +16,7 @@
           <li>
             <div class="mainVisualTitle">
               <div class="wow animated fadeInUp" data-wow-duration="1s">
-                <h2 class="colorWhite">U+ 통합 메시징 클라우드<br>통합 메시지 발송, 대체발송 등<br>강력한 기능을<br>지금 사용해보세요.</h2>
+                <h2 class="colorWhite">U+ 메시지허브<br>통합 메시지 발송, 대체발송 등<br>강력한 기능을<br>지금 사용해보세요.</h2>
                 <router-link :to="{ name: 'signUp' }" tag="a" class="mvBtn" title="서비스 가입">서비스 가입</router-link>
               </div>
             </div>
@@ -76,7 +76,7 @@
       <!-- mainConWrap1 -->
       <article id="mainConWrap1">
         <section>
-          <h3 class="subTitle subTitle_h3 wow animated fadeInUp">쉽고 안전하고 스마트한 U+ 통합 메시징 클라우드를 소개합니다.</h3>
+          <h3 class="subTitle subTitle_h3 wow animated fadeInUp">쉽고 안전하고 스마트한 U+ 메시지허브를 소개합니다.</h3>
           <ul class="CloudIcon">
             <li class="wow animated fadeInLeft" data-wow-duration="1s">
               <img src="@/assets/images/main/mainCloud_icon01.png" alt="아이콘1">
@@ -107,7 +107,7 @@
       <article id="quiryWrap" class="wow animated fadeInUp">
         <section>
           <div class="quiryList">
-            <h3>U+ 통합 메시징 클라우드 문의</h3>
+            <h3>U+ 메시지허브 문의</h3>
             <div class="of_h">
               <h5 class="inline-block  text-left float-left font-size16" style="width:20%">문의유형</h5>
               <div class="inline-block float-left">

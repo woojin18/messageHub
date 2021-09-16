@@ -1,7 +1,7 @@
 <template>
 	<section v-if="isLogin == true && isErrPage == false">
 		<header id="headerTop" class="bgColor_adminConsole">
-			<h1><router-link to="/public/main"><img src="../../public/se2/images/logo.png" alt="LGU+ 통합메시징클라우드 로고"></router-link></h1>
+			<h1><router-link to="/public/main"><img src="../../public/se2/images/logo.png" alt="LGU+ 메시지허브 로고"></router-link></h1>
 			<p class="adminName">사용자 콘솔</p>
 			<ul class="adminUtil">
 				<li><router-link to="/ac/home" class="btnGuideBlack">관리자콘솔</router-link></li>

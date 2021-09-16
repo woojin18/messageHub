@@ -4,7 +4,7 @@
     <article id="subVisualWrap01">
       <section>
         <div class="text-center">
-          <h2 class="user_sub_h2">U+ 통합 메시징 클라우드</h2>
+          <h2 class="user_sub_h2">U+ 메시지허브</h2>
           <p>엘지유플러스가 만든 모든 메시지 발송 채널 통합 플랫폼</p>
           <div>
             <!-- 
@@ -21,7 +21,7 @@
     <div id="contentWrap">
       <div class="serviceCon01 wow animated fadeInUp">
         <section>
-          <h3 class="subTitle">쉽고 안전하고 스마트한 U+ 통합 메시징 클라우드를 소개합니다.</h3>
+          <h3 class="subTitle">쉽고 안전하고 스마트한 U+ 메시지허브를 소개합니다.</h3>
           <ul class="CloudIcon">
             <li>
               <img src="@/assets/images/common/user_sub01_icon01.png" alt="아이콘1">
@@ -94,7 +94,7 @@
           <div class="textBox">
             <h3 class="subTitle">종단간 암호화기반<br>데이터 보안관리</h3>
             <p class="subTitle2">Amazon AWS</p>
-            <p class="subText">U+ 통합 메시징 클라우드는 기업용 종단간 암호화 기반 데이터 보호체계인<br>E3(Enterprise Endpoint Encryption) 시스템을 기반으로 고객 데이터를<br>보호하고 관리합니다. 누구도 고객 데이터를 확인할 수 없어 안심하고 쓸 수 있는<br>안전한 클라우드 환경에서 U+ 통합 메시징 클라우드를 사용할 수 있습니다.</p>
+            <p class="subText">U+ 메시지허브는 기업용 종단간 암호화 기반 데이터 보호체계인<br>E3(Enterprise Endpoint Encryption) 시스템을 기반으로 고객 데이터를<br>보호하고 관리합니다. 누구도 고객 데이터를 확인할 수 없어 안심하고 쓸 수 있는<br>안전한 클라우드 환경에서 U+ 메시지허브를 사용할 수 있습니다.</p>
           </div>
           <ul>
             <li>
@@ -105,7 +105,7 @@
             <li>
               <img src="@/assets/images/common/AWS_icon02.png" alt="데이터 보안관리 아이콘2">
               <p class="AWS_MainText">국내외 보안 인증 획득</p>
-              <p class="AWS_SubText">U+ 통합 메시징 클라우드는 정보보호 관리체계에 있어 공인을 통한 신뢰 확보를 위해<br>다양한 국내외 인증을 획득하고 있습니다. ISO 27001, 27017, 27018,<br>27701, 27799 인증 및 CSA Star 인증을 통과하였습니다.</p>
+              <p class="AWS_SubText">U+ 메시지허브는 정보보호 관리체계에 있어 공인을 통한 신뢰 확보를 위해<br>다양한 국내외 인증을 획득하고 있습니다. ISO 27001, 27017, 27018,<br>27701, 27799 인증 및 CSA Star 인증을 통과하였습니다.</p>
             </li>
           </ul>
         </section>
@@ -113,8 +113,8 @@
 
       <div class="serviceCon05 wow animated fadeInUp">
         <section>
-          <h3 class="subTitle">U+ 통합메시징 Cloud를 지금 바로 사용해보세요!</h3>
-          <p class="subText">하나로 이용할 수 있는 통합 메시징 시스템 U+ 통합 메시징 클라우드 서비스로<br>다양한 발송 메시지를 저렴하게 이용해보세요.</p>
+          <h3 class="subTitle">U+ 메시지허브를 지금 바로 사용해보세요!</h3>
+          <p class="subText">하나로 이용할 수 있는 통합 메시징 시스템 U+ 메시지허브 서비스로<br>다양한 발송 메시지를 저렴하게 이용해보세요.</p>
           <div class="btn">
             <router-link :to="{ name: 'signUp' }" tag="a" class="btnBcackRed" title="서비스가입">서비스가입</router-link>
           </div>

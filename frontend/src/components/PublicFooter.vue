@@ -2,7 +2,7 @@
     <!-- foot_type_user -->
   <div class="foot_type_user">
     <div>
-      <img src="../../public/se2/images/userLogo_foot.svg" alt="LGU+ 통합메시징클라우드 로고" class="foot_logo">
+      <img src="../../public/se2/images/userLogo_foot.svg" alt="LGU+ 메시지허브 로고" class="foot_logo">
       <div class="foot_info_wrap">
         <ul class="foot_info">
           <li><a href="#" @click.prevent="fnOpenTermsServiceLayer" title="서비스 이용약관 페이지로 이동">서비스 이용약관</a></li>
