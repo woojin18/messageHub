@@ -226,8 +226,8 @@ logging:
   config: classpath:log4j2-spring.prd.xml
 
 cash.pg:
-  clientKey: test_ck_ZORzdMaqN3wXJPGmEADV5AkYXQGw
-  secretKey: test_sk_YyZqmkKeP8gGA7R464j8bQRxB9lG
+  clientKey: live_ck_d26DlbXAaV0eJJNjz6drqY50Q9RB
+  secretKey: live_sk_XLkKEypNArWNmm5gmdXVlmeaxYG5
 
 datasource: 
   rcs:
