@@ -152,7 +152,7 @@
 							<h4 class="lc-1 text-left mt20">{{ this.chName }} 성공/실패 현황</h4>
 							<bar-chart :chart-data="successFailResultData" :options="successFailResultOption" :height="100"></bar-chart>
 							<h4 class="lc-1 text-left mt20">{{ this.chName }} 실패코드 현황</h4>
-							<bar-chart :chart-data="failCodeResultData" :options="failCodeResultOption" :height="100"></bar-chart>
+							<bar-chart :chart-data="failCodeResultData" :options="failCodeResultOption" :height="200"></bar-chart>
 						</div>
 					</div>
 				</div>

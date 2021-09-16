@@ -1873,7 +1873,8 @@
 					<div class="of_h" >
 						<div class="float-left" style="width:13%"><h4>제목*</h4></div>
 						<div class="float-left" style="width:57%">
-							<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.smsTitle" @input="fnSetSmsCurrByte">
+							<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.smsTitle" @input="fnSetTitleSmsCurrByte">
+							<strong class="letter">({{titleSmsCurrByte}} / {{titleSmsLimitByte}})</strong>
 						</div>
 					</div>
 					<div class="of_h" >
@@ -2104,6 +2105,7 @@ export default {
 			msgPushCurrByte: 0,
 			msgSmsCurrByte: 0,
 			msgSmsLimitByte: 0,
+			titleSmsCurrByte: 0,
 			titleSmsLimitByte: 40,
 
 			rcsDesMessagebaseId: '',		//서술형 MessagebaseId
@@ -3716,6 +3718,8 @@ export default {
 								this.rowData.friendTalkButtons.push(JSON.parse(rtnData.friendTalkButtonArr4));
 							}
 						}
+						this.fnSetFrndTalkCurrByte();
+						this.fnGetFrndTalkLimitByte();
 	
 						//ALIMTALK DATA SET
 						if (rtnData.alimTalkPrdType == 'ALIMTALK') {//카카오톡 알림톡은 5개 버튼까지 추가 가능
@@ -3762,10 +3766,14 @@ export default {
 	
 							this.rowData.callback = rtnData.smsCallback;
 							this.rowData.smsRcvblcNumber = this.$gfnCommonUtils.unescapeXss(rtnData.smsRcvblcNumber);
-							this.fnGetSmsLimitByte();
+							if (rtnData.smsSendType == 'S') {
+								this.fnSetSmsCurrByte();
+								this.fnGetSmsLimitByte();
+							} else if (rtnData.smsSendType == 'M') {
+								this.fnSetTitleSmsCurrByte();
+								this.fnSetSmsCurrByte();
+							}
 						}
-						this.fnGetFrndTalkLimitByte();
-						this.fnSetFrndTalkCurrByte();
 					}
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
@@ -4509,6 +4517,11 @@ export default {
 				totalMsg += '\n' + rcvblcNum + '(광고)';
 			}
 			this.msgPushCurrByte = this.getByte(totalMsg);
+		},
+		fnSetTitleSmsCurrByte() {
+			let title = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.smsTitle, '');
+			let totalMsg = title ;
+			this.titleSmsCurrByte = this.getByte(totalMsg);
 		},
 		fnSetSmsCurrByte() {
 			let body = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.smsContent, '');
