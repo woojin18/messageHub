@@ -517,9 +517,9 @@ public class CommonService {
         saveMap.put("attach_file_path", filePath);
         saveMap.put("userId", userId);
         String rtnSeq = this.insertFileInfo(saveMap);
-        
+
         saveMap.put("rtnSeq", rtnSeq);
-        
+
         return saveMap;
     }
 
@@ -848,7 +848,7 @@ public class CommonService {
 
         Map<String, Object> headerMap = new HashMap<String, Object>();
         headerMap.put("X-API-KEY", noticeApiKey);
-        
+
         log.info("{}.sendNoti api request ==>> header : {}, body : {}", this.getClass(), headerMap, apiMap);
         Map<String, Object> result = apiInterface.etcPost(ApiConfig.NOTI_SERVER_DOMAIN+"/noti/v1/msg", apiMap, headerMap);
         log.info("{}.sendNoti api response : {}", this.getClass(), result);
@@ -871,10 +871,10 @@ public class CommonService {
 
         html += "<div style='width:640px; min-height:600px; margin:0 auto; background:#fff; padding:38px 64px 87px 64px; box-sizing:border-box; position:relative; font-family:\"Noto Sans KR\", sans-serif'>";
         html += "<div style='border-bottom:1px solid #9F9F9F; padding-bottom:30px; margin-bottom:30px'>";
-        html += "<img src='" + this.baseUrl + "/se2/images/" + "userLogo.svg' alt='유플러스 통합메시징 클라우드' />";
+        html += "<img src='" + this.baseUrl + "/se2/images/" + "userLogo.svg' alt='유플러스 메시지허브' />";
         html += "</div>";
         html += "<div style='font-size:14px; line-height:24px'>";
-        html += "안녕하세요. 유플러스 통합메시징 클라우드를 이용해주셔서 감사합니다.<br/>";
+        html += "안녕하세요. 유플러스 메시지허브를 이용해주셔서 감사합니다.<br/>";
         html += "본인 이메일이 맞는지 확인하고 있습니다.<br/>";
         html += "아래 [인증] 버튼을 클릭하면 다음 단계로 진행할 수 있습니다.<br/><br/>";
         html += "인증 링크 유효시간 : " + timeArr[0];
@@ -888,7 +888,7 @@ public class CommonService {
 
         return html;
     }
-    
+
     // 비밀번호 유효성검사
 	public void pwdResularExpressionChk(String pwd) throws Exception {
 //		boolean chk = true;
@@ -902,13 +902,13 @@ public class CommonService {
 		String numReg2 = "^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[?!@#$%^&*+=-_|,.]).{8,16}$";	// 숫자 제외 3가지 조합
 		String engReg2 = "^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[?!@#$%^&*+=-_|,.]).{8,16}$";	// 대문자 제외 3가지 조합
 		String speReg2 = "^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[A-Z]).{8,16}$";			// 특수문자 제외 3가지 조합
-		
+
 		if(!pwd.matches(numReg) && !pwd.matches(engReg) && !pwd.matches(speReg)
 			&& !pwd.matches(numReg2) && !pwd.matches(engReg2) && !pwd.matches(speReg2)) {
 			throw new Exception("비밀번호는 대/소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 10~16자리\n또는 3가지 이상을 조합하여 8~16자리로 구성해주세요.\n(소문자 필수 입력)");
 		}
 	}
-	
+
 	/**
 	 * 사용자 비밀번호 암호화 및 기존 비밀번호 사용 check
 	 * @param params
@@ -919,7 +919,7 @@ public class CommonService {
 	public String encryptionUserPwd(Map<String, Object> params) throws Exception {
 
 		String password = CommonUtils.getString(params.get("password"));
-		
+
 		// 사용자 비밀번호 암호화
 		SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 		byte[] bytes = new byte[16];
@@ -928,22 +928,22 @@ public class CommonService {
 		params.put("salt", salt);
 
 		SHA sha512 = new SHA(512);
-		
+
 		// 기존 비밀번호 비교
 		Map<String, Object> saltMap =  (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params);
 		String exSalt = CommonUtils.getString(saltMap.get("salt"));				// 현재 salt 문자열
 		String bfExSalt = CommonUtils.getString(saltMap.get("beforeSalt"));		// 이전 salt 문자열
-		
+
 		String rtnPwd = "";				// 현재 salt + 새로 입력한 비밀번호
 		String rtnPwd2 = "";			// 기존 salt + 새로 입력한 비밀번호
-		
+
 		// 현재 이전의 비밀번호와 비교
 		if(bfExSalt != null && !"".equals(bfExSalt)) {
 			rtnPwd2 = sha512.encryptToBase64(bfExSalt + password);
 		} else {
 			rtnPwd2 = sha512.encryptToBase64(password);
 		}
-		
+
 		// 현재 비밀번호와 비교
 		if (exSalt != null && !"".equals(exSalt)) {
 			rtnPwd = sha512.encryptToBase64(exSalt + password);
@@ -954,7 +954,7 @@ public class CommonService {
 		Map<String, Object> pwdMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, params);
 		String exPwd = CommonUtils.getString(pwdMap.get("loginPwd"));			// 현재 비밀번호
 		String bfExPwd = CommonUtils.getString(pwdMap.get("beforeLoginPwd"));	// 직전 비밀번호
-		
+
 		// 비밀번호 비교
 		if(exPwd.equals(rtnPwd) || bfExPwd.equals(rtnPwd2)) {
 			throw new Exception("기존과 동일한 비밀번호는 사용할 수 없습니다.");
