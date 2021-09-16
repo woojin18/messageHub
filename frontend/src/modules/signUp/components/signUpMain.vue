@@ -195,7 +195,7 @@ import signUpApi from "@/modules/signUp/service/api"
 import chkCorpPopup from "@/modules/signUp/components/bp-selectCorpPopup"
 import addrPopup from "@/modules/signUp/components/bp-addrPopup"
 
-import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi";
+import customereApi from "@/modules/customer/service/customerApi.js";
 import axios from 'axios'
 
 export default {
@@ -302,7 +302,7 @@ export default {
 				codeTypeCd	: "CORP_CUST_TYPE",
 				useYN		: "Y"
 			};
-			commonUtilApi.selectCodeList(params).then(response =>{
+			customereApi.selectCodeList(params).then(response =>{
 				var result = response.data;
 				if(result.success){
 					if(result.data.length > 0){
@@ -316,7 +316,7 @@ export default {
 				codeTypeCd	: "SALES_MAN",
 				useYN		: "Y"
 			};
-			commonUtilApi.selectCodeList(params).then(response =>{
+			customereApi.selectCodeList(params).then(response =>{
 				var result = response.data;
 				if(result.success){
 					if(result.data.length > 0){
