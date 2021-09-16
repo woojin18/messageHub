@@ -991,98 +991,52 @@ public class ChannelService {
 			if( duplCnt > 0 ) {
 				throw new Exception("이미 해당 MO 수신번호, 서비스 유형으로 등록된 번호가 있습니다.");
 			}
+
+			// 유큐브 서비스 등록 
 			
-			// 고객번호 가져오기
+			// 기본정보 가져오기
 			String custNo	= CommonUtils.getString(generalDao.selectGernalObject("project.selectCustNoForSaveProject", params));
-			String regNo	= CommonUtils.getString(generalDao.selectGernalObject("project.selectRegNoForSaveProject", params));
+			String billId	= CommonUtils.getString(generalDao.selectGernalObject("channel.selectProjectBillIdForSaveMoCallback", params));
 			String salesId	= CommonUtils.getString(generalDao.selectGernalObject("project.selectSalesIdForSaveProject", params));
-			
-			Map<String, Object> apiCustomerInfo = (Map<String, Object>) apiInterface.get("/console/v1/ucube/customer/" + custNo, null).get("data");
+			String moType	= CommonUtils.getString(params.get("moType"));
 			
 			Map<String, Object> joinMap = new HashMap<>();
 			
-			joinMap.put("custNo",		custNo);
-			joinMap.put("logid",		params.get("projectId"));
-			joinMap.put("indcId",		salesId);
-			joinMap.put("mngrId",		salesId);
-			
-			// 유큐브 서비스 등록 
-			Map<String, Object> ucubeBillInfoVo = new HashMap<>();
-			String billEmail = CommonUtils.getString(apiCustomerInfo.get("emailAddr"));
-			if( "".equals(billEmail) ) {
-				billEmail = CommonUtils.getString(generalDao.selectGernalObject("project.selectEmailForSaveProject", params));
-			}
-			
-			ucubeBillInfoVo.put("billAcntNo",	null);										// 청구계정 번호 (등록시엔 공백으로 입력)
-			ucubeBillInfoVo.put("billEmail",	billEmail);									// 청구이메일주소 ?
-			ucubeBillInfoVo.put("billKind",		"N");										// 청구서유형코드 Y 이메일 N 우편
-			ucubeBillInfoVo.put("billRegNo",	regNo);										// 청구사업자번호
-			ucubeBillInfoVo.put("billZip",		apiCustomerInfo.get("custAddrZip"));		// 청구우편번호
-			ucubeBillInfoVo.put("billJuso",		apiCustomerInfo.get("custVilgAbvAddr"));	// 청구주소
-			ucubeBillInfoVo.put("billJuso2",	apiCustomerInfo.get("custVilgBlwAddr"));	// 청구주소상세
-			
-			Map<String, Object> ucubePymInfoVO = new HashMap<>();
-			
-			ucubePymInfoVO.put("napCustKdCd",	apiCustomerInfo.get("custKdCd"));			// 납부자고객구분코드
-			ucubePymInfoVO.put("napCmpNm",		apiCustomerInfo.get("custNm"));				// 납부자명 ???
-			ucubePymInfoVO.put("napJumin",		regNo);										// 생년월일/사업자번호 ????
-			
-			String moType = CommonUtils.getString(params.get("moType"));
+			joinMap.put("entrNo",			custNo);					// 가입번호
+			joinMap.put("billAcntNo",		billId);					// 청구계정 번호
+			joinMap.put("logid",			params.get("projectId"));	// 가입인식번호1(본인 서비스의 유니크 아이디)
+			joinMap.put("indcId",			salesId);					// 유치자아이디
+			joinMap.put("mngrId",			salesId);					// 관리자아이디
+			joinMap.put("serviceType",		moType);					// MO 서비스정보 타입 (SMS, LMS, MMS)
 			
 			Map<String, Object> priceInfo = (Map<String, Object>) generalDao.selectGernalObject("channel.selectPriceInfoForSaveMoCallback", params);
 			
 			JSONParser jParser = new JSONParser();
 			JSONObject postFeeInfo = (JSONObject) jParser.parse(CommonUtils.getString(priceInfo.get("postFeeInfo")));
 			
-			if( "SMSMO".equals(moType) ) {
-				Map<String, Object> smsMoServiceInfo = new HashMap<>();
-				smsMoServiceInfo.put("callback",	params.get("moNumber"));
-				smsMoServiceInfo.put("monBasicYn",	"Y");
-				smsMoServiceInfo.put("monBasicFee",	priceInfo.get("preFee"));
-				smsMoServiceInfo.put("unitPrice",	postFeeInfo.get("POST_FEE"));
-				
-				joinMap.put("smsMoServiceInfo", smsMoServiceInfo);
-			} else if( "MMSMO".equals(moType) ) {
-				Map<String, Object> mmsMoServiceInfo = new HashMap<>();
-				mmsMoServiceInfo.put("callback",	params.get("moNumber"));
-				mmsMoServiceInfo.put("monBasicYn",	"Y");
-				mmsMoServiceInfo.put("monBasicFee",	priceInfo.get("preFee"));
-				mmsMoServiceInfo.put("unitPrice",	postFeeInfo.get("POST_FEE"));
-				 
-				joinMap.put("mmsMoServiceInfo", mmsMoServiceInfo);
-			} else if( "LMSMO".equals(moType) ) {
-				Map<String, Object> lmsMoServiceInfo = new HashMap<>();
-				lmsMoServiceInfo.put("callback",	params.get("moNumber"));
-				lmsMoServiceInfo.put("monBasicYn",	"Y");
-				lmsMoServiceInfo.put("monBasicFee",	priceInfo.get("preFee"));
-				lmsMoServiceInfo.put("unitPrice",	postFeeInfo.get("POST_FEE"));
-				
-				joinMap.put("lmsMoServiceInfo", lmsMoServiceInfo);
-			}
+			Map<String, Object> serviceInfo = new HashMap<>();
+			serviceInfo.put("callback",	params.get("moNumber"));
+			serviceInfo.put("monBasicYn",	"Y");
+			serviceInfo.put("monBasicFee",	priceInfo.get("preFee"));
+			serviceInfo.put("unitPrice",	postFeeInfo.get("POST_FEE"));
 			
-			joinMap.put("billInfoVo",		ucubeBillInfoVo);
-			joinMap.put("pymInfoVO",		ucubePymInfoVO);
+			joinMap.put("serviceInfo",		serviceInfo);
 			
-
 			kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(joinMap);
 			
-			System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
+			//System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
 			
 			// API 통신처리
 			Map<String, Object> result =  apiInterface.post("/console/v1/ucube/service/join/mo", joinMap, null);
 			
 			if( "10000".equals(result.get("code")) ) {
-				
-			} else if ( "500100".equals(result.get("code")) ) {
+				generalDao.insertGernal(DB.QRY_INSERT_MO_CALLBACK, params);
+				// redis 테이블 처리
+				commonService.updateCmCmdForRedis("CM_MO_CALLBACK");
+			} else {
 				String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
 				throw new Exception(errMsg);
-			} else {
-				String errMsg = CommonUtils.getString(result.get("message"));
-				throw new Exception(errMsg);
 			}
-			
-			generalDao.insertGernal(DB.QRY_INSERT_MO_CALLBACK, params);
-						
 		}
 //		else if( "U".equals(sts) ) {
 //			String apiKey = CommonUtils.getString(params.get("apiKey")); 
@@ -1096,8 +1050,6 @@ public class ChannelService {
 //			generalDao.deleteGernal(DB.QRY_DELETE_MO_CALLBACK, params);
 //		}
 		
-		// redis 테이블 처리
-		commonService.updateCmCmdForRedis("CM_MO_CALLBACK");
 	}
 
 	public RestResult<?> getApiKeyListForKko(Map<String, Object> params) throws Exception {

@@ -123,8 +123,8 @@
 								<tr>
 								<td class="text-left">MO</td>
 									<td class="end">
-										<input type="radio" name="radioMo" value="Y" id="yes7" checked=""> <label for="yes7" class="mr30">사용</label>
-										<input type="radio" name="radioMo" value="N" id="no7"> <label for="no7">미사용</label>
+										<input type="radio" name="radioMo" value="Y" id="yes7" :disabled="this.baseInfoData.payType === 'PRE'" checked=""> <label for="yes7" class="mr30">사용</label>
+										<input type="radio" name="radioMo" value="N" id="no7" :disabled="this.baseInfoData.payType === 'PRE'"> <label for="no7">미사용</label>
 									</td>
 								</tr>
 							</tbody>

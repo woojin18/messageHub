@@ -102,8 +102,8 @@
                     <tr>
                       <td class="text-left end">MO</td>
                       <td class="text-right end">
-                        <input type="radio" name="radioMo" value="Y" class="cBox" id="yes6" checked=""> <label for="yes6" class="payment mr30 font-size12">사용</label>
-                        <input type="radio" name="radioMo" value="N" class="cBox" id="no6"> <label for="no6" class="payment font-size12">미사용</label>	
+                        <input type="radio" name="radioMo" value="Y" class="cBox" id="yes6" checked="" :disabled="this.moDisable"> <label for="yes6" class="payment mr30 font-size12">사용</label>
+                        <input type="radio" name="radioMo" value="N" class="cBox" id="no6" :disabled="this.moDisable"> <label for="no6" class="payment font-size12">미사용</label>	
                       </td>							
                     </tr>
 									</tbody>
@@ -137,7 +137,8 @@ export default {
       resultList : [],
       billId : '',
       payTypeForDIv : 'Y',
-      subbillStartDayForDiv : 'Y'
+      subbillStartDayForDiv : 'Y',
+      moDisable : true,
     }
   },
   components: {
@@ -171,7 +172,7 @@ export default {
         jQuery('input:radio[name=radioMms]:input[value="Y"]').prop("checked", true);
         jQuery('input:radio[name=radioPush]:input[value="Y"]').prop("checked", true);
         jQuery('input:radio[name=radioKakao]:input[value="Y"]').prop("checked", true);
-        jQuery('input:radio[name=radioMo]:input[value="Y"]').prop("checked", true);
+        jQuery('input:radio[name=radioMo]:input[value="N"]').prop("checked", true);
         
       } else if(this.save_status === 'R' || this.save_status === 'U'){
         jQuery("#projectName").val(this.row_data.projectName);
@@ -223,30 +224,14 @@ export default {
 
       this.payTypeForDIv = payType;
       if( payType === 'PRE' ){
+        this.moDisable = true;
         jQuery('input:radio[name=subbillYn]:input[value="N"]').prop("checked", true);
+        jQuery('input:radio[name=radioMo]:input[value="N"]').prop("checked", true);
       } else {
+        this.moDisable = false;
         jQuery('input:radio[name=subbillYn]:input[value="Y"]').prop("checked", true);
       }
 
-      if( payType === 'POST' ){
-        var params = {
-        };
-
-        /* projectApi.selectBillIdForApi(params).then(response =>{
-          var result = response.data;
-          
-          if(result.success) {
-            this.resultList = response.data.data.resultList;
-
-            if(this.save_status === 'C'){
-              this.billId = response.data.data.resultList[0].billAcntNo;
-            } else {
-              this.billId = this.row_data.billId;
-            }
-          }
-        }); */
-      }
-      
     },
     // 등록, 수정
     fnSave(){
