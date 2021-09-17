@@ -51,16 +51,19 @@
 
 						<table class="table_skin1 mt10" style="width:100%">
 							<colgroup>
-								<col style="width:30%">
+								<col style="width:25%">
+								<col style="width:25%">
+								<col style="width:10%">
+								<col style="width:10%">
 								<col style="width:20%">
-								<col style="width:30%">
-								<col>
+								<col style="width:10%">
 							</colgroup>
 							<thead>
 								<tr>
 									<th class="text-center">API Key 명</th>
 									<th class="text-center">API Key</th>
 									<th class="text-center">웹 사용</th>
+									<th class="text-center">상태</th>
 									<th class="text-center">생성일</th>
 									<th class="text-center end">관리</th>
 								</tr>
@@ -70,6 +73,7 @@
 									<td class="text-center">{{ data.apiKeyName }}</td>
 									<td class="text-center">{{ data.apiKey }}</td>
 									<td class="text-center">{{ data.webSenderYnName }}</td>
+									<td class="text-center">{{ data.statusName }}</td>
 									<td class="text-center">{{ data.regDt }}</td>
 									<td class="text-center end"><a @click="fnUpdateApiKeyPop(data)" class="btnStyle1 borderLightGray small mr5">수정</a></td>
 								</tr>

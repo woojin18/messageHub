@@ -66,6 +66,9 @@
 		,		MON_SENDER_LIMIT_AMOUNT
 		,		IP_LIST
 		,		DATE_FORMAT(UPD_DT, '%Y-%m-%d') AS UPD_DT
+		,		CASE STATUS
+				WHEN 'USE' THEN '사용' ELSE '미사용'
+				END			STATUS_NAME
 		FROM cm.CM_APIKEY
 		WHERE CORP_ID = #{corpId}
 		AND PROJECT_ID = #{projectId}
