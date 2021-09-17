@@ -203,6 +203,8 @@ public class SendMessageService {
                 List<Map<String, Object>> excelList = null;
                 List<String> colKeys = new ArrayList<String>();
                 List<String> contsVarNms = null;
+                int excelHeader = 2;
+                int limitRow = 0;
 
                 if(params.containsKey("requiredCuid") && (Boolean) params.get("requiredCuid")) {
                     colKeys.add("cuid");
@@ -216,7 +218,20 @@ public class SendMessageService {
                         colKeys.add(varNm);
                     }
                 }
-                excelList = commonService.getExcelDataList(excelFile, 2, colKeys);
+                if(params.containsKey("excelLimitRow")) {
+                    try {
+                        limitRow = (Integer) params.get("excelLimitRow");
+                    } catch (Exception e) {
+                        limitRow = 0;
+                        log.error("{}.getRecvInfoLst get excelLimitRow Exception : {}", this.getClass(), e);
+                    }
+                }
+
+                if(limitRow > 0) {
+                    excelList = commonService.getExcelDataList(excelFile, excelHeader, limitRow+excelHeader, colKeys);
+                } else {
+                    excelList = commonService.getExcelDataList(excelFile, excelHeader, colKeys);
+                }
 
                 RecvInfo recvInfo = null;
                 Map<String, Object> mergeData = null;

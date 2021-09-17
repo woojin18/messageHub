@@ -138,6 +138,50 @@ public class CommonService {
         return excelList;
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Map<String, Object>> getExcelDataList(MultipartFile excelFile, int offset, int limitRow, List<String> colKeys)
+            throws Exception {
+        List<Map<String, Object>> excelList = new ArrayList<>();
+        Map<String, Object> excelInfo = new HashMap<String, Object>();
+
+        String fileName = excelFile.getOriginalFilename();
+        String fileExten = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+        // get Excel Set Value
+        Map<String, Object> excelUploadSet = (Map<String, Object>) selectFileUploadSet(Const.FileUploadSet.EXCEL);
+        String excelPermitExten = CommonUtils.getStrValue(excelUploadSet, Const.FileUploadSetKey.PERMIT_EXTEN);
+
+        // 엑셀 업로드 확장자 유효성 체크
+        if (Stream.of(excelPermitExten.split(",")).map(String::trim)
+                .noneMatch(s -> s.toLowerCase().contains(fileExten.toLowerCase()))) {
+            log.error("{} 허용되지 않은 엑셀 업로드 확장자======>", this.getClass());
+            log.error("원본 파일명 : {}", fileName);
+            log.error("파일 확장자 : {}", fileExten);
+            throw new Exception("허용되지 않은 엑셀 업로드 확장자");
+        }
+
+        Workbook workbook = null;
+        if (fileExten.equals("xlsx")) {
+            workbook = new XSSFWorkbook(excelFile.getInputStream());
+        } else if (fileExten.equals("xls")) {
+            workbook = new HSSFWorkbook(excelFile.getInputStream());
+        }
+
+        Sheet worksheet = workbook.getSheetAt(0);
+        Row row = null;
+        for (int i = offset; i < limitRow; i++) {
+            row = worksheet.getRow(i);
+            excelInfo = new HashMap<String, Object>();
+
+            for (int j = 0; j < colKeys.size(); j++) {
+                excelInfo.put(colKeys.get(j), getExcelCellValue(row.getCell(j)));
+            }
+            excelList.add(excelInfo);
+        }
+
+        return excelList;
+    }
+
     /**
      * 파일업로드
      *

@@ -334,7 +334,7 @@
 							</div>
 							<div class="of_h">
 								<div class="of_h float-right" style="width:82%">
-									<p>수신자 : {{recvCnt}}명<a @click="fnCallbackRecvInfoLst(null);" class="btnStyle1 small backWhite ml10" title="수신자 삭제">수신자 삭제</a></p>
+									<p>수신자 : {{recvCnt}}명<a @click="fnRemoveRecvInfo();" class="btnStyle1 small backWhite ml10" title="수신자 삭제">수신자 삭제</a></p>
 									<div class="float-right consolMarginTop" style="width:100%">
 										<textarea class="textareaStyle height120" v-model="sendData.cuInfo" disabled></textarea>
 									</div>
@@ -472,6 +472,8 @@ export default {
 		carouselMedium : 'CMwMhM0300',	// 캐러셀형 msgId
 		contentPopCnt : 0,				// 내용입력 폼 갯수
 		btnPopCnt : 0,					// 버튼입력 폼 갯수
+		tempFile: [],
+		beforeCuInputType: 'DICT',
 		sendData : {
 			messagebaseId : "",							// MSG ID
 			brandId : "",								// 브랜드 ID
@@ -524,6 +526,7 @@ export default {
 			recvInfoLst: [],  //수신자정보
 			contsVarNms: [], //메세지 내용 변수명
 			testRecvInfoLst: [],  //테스트 수신자정보
+			excelLimitRow: 0
 		}
 
     }
@@ -577,6 +580,11 @@ export default {
             vm.carouselBrandId = result.data[0].BRAND_ID;
             vm.carouselBrandArr = result.data;
         });
+	},
+	fnRemoveRecvInfo(){
+		this.fnCallbackRecvInfoLst(null);
+		this.$refs.excelFile.value = '';
+		this.tempFile = [];
 	},
 
 	fnResetData() {
@@ -856,15 +864,21 @@ export default {
 	},
 
 	fnClickCuInputType(e){
-      if(this.sendData.cuInputType == e.target.value){
-        this.fnChgCuInputType('N');
-      }
-    },
+		this.tempFile = [];
+		this.tempFile.push.apply(this.tempFile, this.$refs.excelFile.files);
+		this.$refs.excelFile.value = '';
+
+		if(this.sendData.cuInputType == e.target.value){
+			this.fnChgCuInputType('N');
+		}
+		this.beforeCuInputType = this.sendData.cuInputType;
+	},
 
 	//수신자 입력 타입 변경시
     fnChgCuInputType(chgYn){
       if(this.$gfnCommonUtils.defaultIfEmpty(chgYn, 'Y') == 'Y'){
-        if(this.sendData.cuInputType != 'DICT' && this.sendData.cuInputType != 'ADDR'){
+        if((this.beforeCuInputType != 'DICT' && this.beforeCuInputType != 'ADDR')
+          || (this.sendData.cuInputType != 'DICT' && this.sendData.cuInputType != 'ADDR')){
           this.fnCallbackRecvInfoLst(null);  //수신자 입력 타입 변경시 수신자 정보 초기화
         }
       }
@@ -1214,11 +1228,13 @@ export default {
 		}
 
 		let fd = new FormData();
-		fd.append('paramString', JSON.stringify(params));
 		if(this.sendData.cuInputType == 'EXCEL'){
-			fd.append('file', this.$refs.excelFile.files[0]);
+			fd.append('file', this.tempFile[0]);
+			params.excelLimitRow = this.recvCnt;
 			this.$refs.excelFile.value = '';
+			this.tempFile = [];
 		}
+		fd.append('paramString', JSON.stringify(params));
 		rcsTemplateSendApi.sendRcsData(fd).then(response => {
 			var result = response.data;
 			var success = result.success;
@@ -1392,7 +1408,11 @@ export default {
 					return false;
 				}
 			} else {
-				var excelFile = this.$refs.excelFile.files[0];
+				if(this.$refs.excelFile.value != 0){
+					this.tempFile = [];
+					this.tempFile.push.apply(this.tempFile, this.$refs.excelFile.files);
+				}
+				var excelFile = this.tempFile[0];
 				if(excelFile == null) {
 					confirm.fnAlert("RCS 발송", "수신자를 입력해 주세요.");
 					return false;
@@ -1410,8 +1430,8 @@ export default {
 	},
 
 	fnReadFile() {
-		const file = this.$refs.excelFile.files[0];
-		if(file){
+		if(this.$refs.excelFile.files && this.$refs.excelFile.files.length > 0){
+			const file = this.$refs.excelFile.files[0];
 			let reader = new FileReader();
 
 			reader.onload = (e) => {

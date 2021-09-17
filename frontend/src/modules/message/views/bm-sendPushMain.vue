@@ -192,7 +192,7 @@
                   <option v-for="aplnId in aplnIdList" :key="aplnId.aplnId" :value="aplnId.aplnId">{{aplnId.aplnId}}</option>
                 </select>
                 <input type="text" class="inputStyle float-right" style="width:68%" :placeholder="sltAppId != '' ? '' : 'APP ID를 입력하세요'" v-model="sendData.appId" :disabled="sltAppId != ''">
-                <h6><strong>수신자 : {{recvCnt}}명</strong><a @click="fnCallbackRecvInfoLst(null);" class="btnStyle1 small backWhite ml10" title="수신자 삭제">수신자 삭제</a></h6>
+                <h6><strong>수신자 : {{recvCnt}}명</strong><a @click="fnRemoveRecvInfo();" class="btnStyle1 small backWhite ml10" title="수신자 삭제">수신자 삭제</a></h6>
                 <div class="float-right" style="width:100%">
                   <textarea class="textareaStyle height120" v-model="sendData.cuInfo" disabled></textarea>
                 </div>
@@ -309,6 +309,8 @@ export default {
       recvCnt : 0,  //수신자명수
       previewMessageType : 'PUSH',  //메세지미리보기 타입(PUSH, RPLC)
       inProgress: false,
+      tempFile: [],
+      beforeCuInputType: 'ALL',
       sendData : {
         chGrp: 'PUSH',
         ch: 'PUSH',
@@ -336,6 +338,7 @@ export default {
         fbInfo: {},  //대체발송정보
         contsVarNms: [], //메세지 내용 변수명
         testRecvInfoLst: [],  //테스트 수신자정보
+        excelLimitRow: 0
       }
     }
   },
@@ -346,9 +349,14 @@ export default {
 
   },
   methods: {
+    fnRemoveRecvInfo(){
+      this.fnCallbackRecvInfoLst(null);
+      this.$refs.excelFile.value = '';
+      this.tempFile = [];
+    },
     fnReadFile(){
-      const file = this.$refs.excelFile.files[0];
-      if(file){
+      if(this.$refs.excelFile.files && this.$refs.excelFile.files.length > 0){
+        const file = this.$refs.excelFile.files[0];
         let reader = new FileReader();
 
         reader.onload = (e) => {
@@ -426,14 +434,18 @@ export default {
           }
         }
         if(this.sendData.cuInputType == 'EXCEL'){
-          const uploadFile = this.$refs.excelFile;
-          if(uploadFile.value == 0){
+          if(this.$refs.excelFile.value != 0){
+            this.tempFile = [];
+            this.tempFile.push.apply(this.tempFile, this.$refs.excelFile.files);
+          }
+          const uploadFile = this.tempFile[0];
+          if(!uploadFile){
             confirm.fnAlert(this.componentsTitle, '엑셀파일을 등록해주세요.');
             return false;
           }
           const permitExten = 'xls,xlsx'.split(',');
-          const extnIdx = uploadFile.value.lastIndexOf('.');
-          const extn = uploadFile.value.substring(extnIdx+1);
+          const extnIdx = uploadFile.name.lastIndexOf('.');
+          const extn = uploadFile.name.substring(extnIdx+1);
           if((permitExten.indexOf(extn) < 0)){
             confirm.fnAlert(this.componentsTitle, '허용되지 않는 확장자입니다.');
             return false;
@@ -485,11 +497,13 @@ export default {
       }
 
       let fd = new FormData();
-      fd.append('paramString', JSON.stringify(params));
       if(this.sendData.cuInputType == 'EXCEL'){
-        fd.append('file', this.$refs.excelFile.files[0]);
+        fd.append('file', this.tempFile[0]);
+        params.excelLimitRow = this.recvCnt;
         this.$refs.excelFile.value = '';
+        this.tempFile = [];
       }
+      fd.append('paramString', JSON.stringify(params));
 
       this.inProgress = true;
       const vm = this;
@@ -585,14 +599,20 @@ export default {
       this.pushTemplateOpen = !this.pushTemplateOpen;
     },
     fnClickCuInputType(e){
+      this.tempFile = [];
+      this.tempFile.push.apply(this.tempFile, this.$refs.excelFile.files);
+      this.$refs.excelFile.value = '';
+
       if(this.sendData.cuInputType == e.target.value){
         this.fnChgCuInputType('N');
       }
+      this.beforeCuInputType = this.sendData.cuInputType;
     },
     //수신자 입력 타입 변경시
     fnChgCuInputType(chgYn){
       if(this.$gfnCommonUtils.defaultIfEmpty(chgYn, 'Y') == 'Y'){
-        if(this.sendData.cuInputType != 'DICT' && this.sendData.cuInputType != 'ADDR'){
+        if((this.beforeCuInputType != 'DICT' && this.beforeCuInputType != 'ADDR')
+          || (this.sendData.cuInputType != 'DICT' && this.sendData.cuInputType != 'ADDR')){
           this.fnCallbackRecvInfoLst(null);  //수신자 입력 타입 변경시 수신자 정보 초기화
         }
       }
