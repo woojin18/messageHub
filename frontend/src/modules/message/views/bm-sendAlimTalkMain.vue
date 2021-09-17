@@ -58,7 +58,7 @@
           <!--// XMS -->
           <!-- //phoneWrap -->
           <div class="phone_04_btn">
-            <!-- 
+            <!--
             <a href="#self" class="btnStyle1 backBlack" title="알림톡">알림톡</a>
             <a href="#self" class="btnStyle1 backWhite" title="Push">SMS</a>
             -->
@@ -73,15 +73,15 @@
             <h4>01  발송정보</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a 
-              href="#" 
-              @click.prevent="fnOpenAlimTalkTemplatePopup" 
-              class="btnStyle1 backLightGray" 
+            <a
+              href="#"
+              @click.prevent="fnOpenAlimTalkTemplatePopup"
+              class="btnStyle1 backLightGray"
               title="템플릿 불러오기"
               activity="READ"
             >템플릿 불러오기</a>
           </div>
-          
+
         </div>
         <hr>
 
@@ -90,18 +90,18 @@
             <h4>02  메시지 내용</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a 
-              href="#" 
-              @click.prevent="fnOpenAlimTalkContentsPopup" 
-              :class="fnIsEmptyObj(sendData.tmpltContent) ? 'btnStyle1 backLightGray mr5' : 'btnStyle1 backWhite mr5'" 
+            <a
+              href="#"
+              @click.prevent="fnOpenAlimTalkContentsPopup"
+              :class="fnIsEmptyObj(sendData.tmpltContent) ? 'btnStyle1 backLightGray mr5' : 'btnStyle1 backWhite mr5'"
               title="메시지 내용입력"
               activity="READ"
             >내용보기</a>
-            <a 
-              v-if="sendData.rplcSendType!='NONE'" 
-              @click="fnOpenReplacedSenderPopup" 
-              :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" 
-              title="대체발송 내용입력" 
+            <a
+              v-if="sendData.rplcSendType!='NONE'"
+              @click="fnOpenReplacedSenderPopup"
+              :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'"
+              title="대체발송 내용입력"
               activity="READ"
             >대체발송 내용입력</a>
             <div class="of_h consolMarginTop">
@@ -178,7 +178,7 @@
               </div>
             </div>
           </div>
-          
+
         </div>
         <hr>
 
@@ -215,7 +215,7 @@
               </div>
             </div>
           </div>
-          
+
         </div>
         <hr>
 
@@ -375,7 +375,7 @@ export default {
           let workbook = XLSX.read(data, {type: 'binary'});
           let sheetName = '';
           let excelArray = [];
-          
+
           if(workbook.SheetNames && workbook.SheetNames.length > 0){
             sheetName = workbook.SheetNames[0];
           }
@@ -398,7 +398,7 @@ export default {
         const result = response.data;
         if(result.success) {
           if(this.$gfnCommonUtils.isEmpty(result.data)){
-            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 API 키가 존재하지 않습니다.\n메시지 발송하실 수 없습니다.');
+            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 사용가능한 API 키가 존재하지 않습니다.\n메시지 발송하실 수 없습니다.');
           }
         }
       });
@@ -524,7 +524,7 @@ export default {
       await messageApi.sendAlimTalkMessage(fd).then(response =>{
         this.inProgress = false;
         const result = response.data;
-        
+
         if(result.success) {
           if(testSendYn == 'Y'){
             if(!this.$gfnCommonUtils.isEmpty(result.message)){

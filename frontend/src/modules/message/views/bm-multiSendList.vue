@@ -125,7 +125,7 @@
             </thead>
             <tbody>
               <tr v-for="(data, idx) in datas" :key="idx">
-                <td class="text-center"><input type="radio" :id="'listCheck_'+idx" class="radioStyle" :value="data.tmpltCode" v-model="chkBox"> 
+                <td class="text-center"><input type="radio" :id="'listCheck_'+idx" class="radioStyle" :value="data.tmpltCode" v-model="chkBox">
                 <label :for="'listCheck_'+idx"></label></td>
                 <td>{{totCnt-offset-data.rowNum+1}}</td>
                 <td class="text-center">
@@ -247,7 +247,7 @@ export default {
         const result = response.data;
         if(result.success) {
           if(this.$gfnCommonUtils.isEmpty(result.data)){
-            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 API 키가 존재하지 않습니다.\n메시지 발송하실 수 없습니다.');
+            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 사용가능한 API 키가 존재하지 않습니다.\n메시지 발송하실 수 없습니다.');
           }
         }
       });
@@ -262,7 +262,7 @@ export default {
         //chStr += (vm.$gfnCommonUtils.isEmpty(chStr) ? '' : ', ') + vm.chInfo[element];
         chStr += (vm.$gfnCommonUtils.isEmpty(chStr) ? '' : ', ') + element;
       });
-      
+
       return chStr;
     },
     //검색일자변경
@@ -278,14 +278,14 @@ export default {
       this.searchData.searchEndDate = sltDate;
     },
 
-    //통합 전송 화면으로 이동  
+    //통합 전송 화면으로 이동
     fnMoveSmartSend(){
       //console.log("this.chkBox : "+this.chkBox);
       if(this.chkBox == null || this.chkBox == ''){
         confirm.fnAlert(this.componentsTitle, '전송할 항목을 선택해주세요.');
         return;
       }
-      
+
       this.$router.push({name: 'multiSendMain', params: {'tmpltCodeP': this.chkBox, tmpltType: 'M', componentsTitle: '통합 발송'}});
     },
 
@@ -299,7 +299,7 @@ export default {
           return false;
         }
       }
-          
+
       var params = Object.assign({}, this.searchData);
       params.pageNo = this.pageNo;
       params.listSize = this.listSize;
@@ -319,7 +319,7 @@ export default {
         }
       });
     },
- 
+
 
     // select 박스 선택시 리스트 재출력
     fnSelected(listSize) {

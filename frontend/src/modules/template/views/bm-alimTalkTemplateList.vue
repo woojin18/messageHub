@@ -44,12 +44,12 @@
               </div>
               <div class="consolCheck vertical-top">
                 <template v-for="(tmpltStatCodeInfo, idx) in tmpltStatCodeList">
-                  <input 
-                    :key="idx" 
-                    type="checkbox" 
-                    :id="'tmpltStatCode_'+tmpltStatCodeInfo.codeVal1" 
-                    name="tmpltStatCode" 
-                    class="checkStyle2" 
+                  <input
+                    :key="idx"
+                    type="checkbox"
+                    :id="'tmpltStatCode_'+tmpltStatCodeInfo.codeVal1"
+                    name="tmpltStatCode"
+                    class="checkStyle2"
                     :value="tmpltStatCodeInfo.codeVal1"
                     v-model="searchData.searchTmpltStatCodes"
                   >
@@ -79,7 +79,7 @@
             </div>
           </div>
           <!-- //15개씩 보기 -->
-          
+
           <div class="row">
             <div class="col-xs-12 consolMarginTop">
               <!-- table -->
@@ -110,27 +110,27 @@
                   <th class="text-center lc-1">발신 프로필</th>
                   <th class="text-center lc-1">최종수정일자</th>
                   </tr>
-                </thead> 
+                </thead>
                 <tbody>
                   <tr v-for="(contant, idx) in contants" :key="idx">
                     <td class="text-center">
-                      <input 
+                      <input
                         v-if="contant.tmpltStatCode == 'T'"
-                        type="checkbox" 
-                        :id="'listCheck_'+idx" 
-                        name="listCheck_" 
-                        class="boardCheckStyle" 
-                        :value="contant.tmpltKey" 
+                        type="checkbox"
+                        :id="'listCheck_'+idx"
+                        name="listCheck_"
+                        class="boardCheckStyle"
+                        :value="contant.tmpltKey"
                         v-model="listChkBox"
                       >
-                      <input 
+                      <input
                         v-else
-                        type="checkbox" 
-                        :id="'listCheck_'+idx" 
-                        name="listCheck_" 
-                        class="boardCheckStyle" 
-                        :value="contant.tmpltKey" 
-                        v-model="listChkBox" 
+                        type="checkbox"
+                        :id="'listCheck_'+idx"
+                        name="listCheck_"
+                        class="boardCheckStyle"
+                        :value="contant.tmpltKey"
+                        v-model="listChkBox"
                         disabled="disabled"
                       >
                       <label :for="'listCheck_'+idx"></label>
@@ -142,7 +142,7 @@
                     <td class="text-left">{{contant.tmpltName}}</td>
                     <td v-if="contant.tmpltStatCode == 'S' && contant.existsRejResnYn == 'Y'" class="text-center">
                       <u><a
-                        href="#" 
+                        href="#"
                         @click.prevent="fnOpenAlimTalkRejectReasonLayer(contant.tmpltKey)"
                       >{{contant.tmpltStatCodeName}}</a></u>
                     </td>
@@ -171,7 +171,7 @@
       <!-- pagination -->
       <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
       <!-- //pagination -->
-      <AlimTalkRejectReasonLayer 
+      <AlimTalkRejectReasonLayer
         :alimTalkRejectReasonOpen.sync="alimTalkRejectReasonOpen"
         :tmpltKey="rejectTmpltKey"
       ></AlimTalkRejectReasonLayer>
@@ -249,7 +249,7 @@ export default {
         const result = response.data;
         if(result.success) {
           if(this.$gfnCommonUtils.isEmpty(result.data)){
-            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 API 키가 존재하지 않습니다.\n템플릿을 등록/수정/검수요청 하실 수 없습니다.');
+            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 사용가능한 API 키가 존재하지 않습니다.\n템플릿을 등록/수정/검수요청 하실 수 없습니다.');
           }
         }
       });
@@ -355,7 +355,7 @@ export default {
           return false;
         }
       }
-      
+
       this.contants = [];
       let params = Object.assign({}, this.searchData);
       params.pageNo = this.pageNo;

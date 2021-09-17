@@ -93,7 +93,7 @@
         </li>
       </ul>
     </div>
-    
+
     <div class="row">
       <div class="col-xs-12 consolMarginTop">
 
@@ -111,7 +111,7 @@
           </div>
         </div>
         <!-- //15개씩 보기 -->
-        
+
         <div class="row">
           <div class="col-xs-12 consolMarginTop">
             <!-- table -->
@@ -142,7 +142,7 @@
                 <tr v-for="(data, idx) in datas" :key="idx">
                   <td class="text-center">
                     <div class="boardCheck">
-                      <input type="radio" :id="'listCheck_'+idx" class="radioStyle" :value="data.tmpltCode" v-model="chkBox"> 
+                      <input type="radio" :id="'listCheck_'+idx" class="radioStyle" :value="data.tmpltCode" v-model="chkBox">
                       <label :for="'listCheck_'+idx"></label>
                     </div>
                   </td>
@@ -255,7 +255,7 @@ export default {
 
       let rtn = '';
       const map = JSON.parse(val);
-      
+
       if(map['msg_kind']){
         rtn = (map['msg_kind'] == 'A' ? '광고성' : '정보성');
       }
@@ -318,7 +318,7 @@ export default {
         const result = response.data;
         if(result.success) {
           if(this.$gfnCommonUtils.isEmpty(result.data)){
-            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 API 키가 존재하지 않습니다.\n메시지 발송하실 수 없습니다.');
+            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 사용가능한 API 키가 존재하지 않습니다.\n메시지 발송하실 수 없습니다.');
           }
         }
       });
@@ -359,7 +359,7 @@ export default {
           return false;
         }
       }
-      
+
       var params = Object.assign({}, this.searchData);
       params.pageNo = this.pageNo;
       params.listSize = this.listSize;

@@ -19,8 +19,8 @@
                   <div v-if="!$gfnCommonUtils.isEmpty(tmpltData.PUSH.title)" class="phoneText1">
                     <p>{{tmpltData.PUSH.title}}</p>
                   </div>
-                  <div 
-                    v-if="tmpltData.msgType == 'IMAGE' && tmpltData.PUSH.ext && tmpltData.PUSH.ext.imageUrl" 
+                  <div
+                    v-if="tmpltData.msgType == 'IMAGE' && tmpltData.PUSH.ext && tmpltData.PUSH.ext.imageUrl"
                     class="phoneText2 mt10 text-center simulatorImg"
                     :style="'padding:65px;background-image: url('+tmpltData.PUSH.ext.imageUrl+');'"
                   >
@@ -43,8 +43,8 @@
                 <div class="phoneTextWrap4 scroll-yc">
                   <p v-if="tmpltData.msgKind == 'A'">[광고]</p>
                   <div class="mt5">
-                    <div 
-                      v-if="tmpltData.msgType == 'IMAGE' && tmpltData.FRIENDTALK.image && tmpltData.FRIENDTALK.image.imageUrl" 
+                    <div
+                      v-if="tmpltData.msgType == 'IMAGE' && tmpltData.FRIENDTALK.image && tmpltData.FRIENDTALK.image.imageUrl"
                       class="phoneText2 text-center simulatorImg"
                       :style="'padding:65px;background-image: url('+tmpltData.FRIENDTALK.image.imageUrl+');'"
                     >
@@ -123,7 +123,7 @@
                       <a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.name)" class="btnStyle1 backLightGray">{{buttonInfo.name}}</a>
                     </div>
                   </div>
-                  
+
                 </div>
               </div>
             </div>
@@ -157,10 +157,10 @@
                     <img :src="tmpltData.RCS.rcsDesFormNm | getIconURlByFormNm" style="width:70px;">
                     <p v-if="tmpltData.RCS.mergeData && tmpltData.RCS.mergeData.length > 0" class="mt15"><pre>{{tmpltData.RCS.mergeData[0].description}}</pre></p>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
-                      <p 
-                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
-                        :key="idx" 
-                        class="text-center mt20" 
+                      <p
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions"
+                        :key="idx"
+                        class="text-center mt20"
                         style="color:#69C8FF"
                       >{{btn.action.displayText}}</p>
                     </div>
@@ -185,10 +185,10 @@
                       </div>
                     </div>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
-                      <p 
-                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
-                        :key="idx" 
-                        class="text-center mt20" 
+                      <p
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions"
+                        :key="idx"
+                        class="text-center mt20"
                         style="color:#69C8FF"
                       >{{btn.action.displayText}}</p>
                     </div>
@@ -210,10 +210,10 @@
                       수신거부번호 : {{tmpltData.RCS.footer}}
                     </span>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
-                      <p 
-                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
-                        :key="idx" 
-                        class="text-center mt20" 
+                      <p
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions"
+                        :key="idx"
+                        class="text-center mt20"
                         style="color:#69C8FF"
                       >{{btn.action.displayText}}</p>
                     </div>
@@ -236,10 +236,10 @@
                       수신거부번호 : {{tmpltData.RCS.footer}}
                     </span>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
-                      <p 
-                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
-                        :key="idx" 
-                        class="text-center mt20" 
+                      <p
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions"
+                        :key="idx"
+                        class="text-center mt20"
                         style="color:#69C8FF"
                       >{{btn.action.displayText}}</p>
                     </div>
@@ -255,12 +255,12 @@
                   <p class="color000">
                     <span>[WEB발신]</span>
                   </p>
-                  <img 
-                    v-if="tmpltData.msgType == 'IMAGE' 
+                  <img
+                    v-if="tmpltData.msgType == 'IMAGE'
                       && tmpltData.RCS.mergeData
                       && tmpltData.RCS.mergeData.length > 0
-                      && tmpltData.RCS.mergeData[0].mediaUrl" 
-                    :src="tmpltData.RCS.mergeData[0].mediaUrl" 
+                      && tmpltData.RCS.mergeData[0].mediaUrl"
+                    :src="tmpltData.RCS.mergeData[0].mediaUrl"
                     style="width: 240px;height: 120px;"
                     alt="프리 템플릿"
                   >
@@ -274,10 +274,10 @@
                       </span>
                     </div>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
-                      <p 
-                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
-                        :key="idx" 
-                        class="text-center mt20" 
+                      <p
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions"
+                        :key="idx"
+                        class="text-center mt20"
                         style="color:#69C8FF"
                       >{{btn.action.displayText}}</p>
                     </div>
@@ -293,12 +293,12 @@
                   <p class="color000">
                     <span>[WEB발신]</span>
                   </p>
-                  <img 
-                    v-if="tmpltData.msgType == 'IMAGE' 
+                  <img
+                    v-if="tmpltData.msgType == 'IMAGE'
                       && tmpltData.RCS.mergeData
                       && tmpltData.RCS.mergeData.length > 0
-                      && tmpltData.RCS.mergeData[0].mediaUrl" 
-                    :src="tmpltData.RCS.mergeData[0].mediaUrl" 
+                      && tmpltData.RCS.mergeData[0].mediaUrl"
+                    :src="tmpltData.RCS.mergeData[0].mediaUrl"
                     style="width: 240px;height: 300px;"
                     alt="프리 템플릿"
                   >
@@ -312,10 +312,10 @@
                       </span>
                     </div>
                     <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > 0">
-                      <p 
-                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions" 
-                        :key="idx" 
-                        class="text-center mt20" 
+                      <p
+                        v-for="(btn, idx) in tmpltData.RCS.buttons[0].suggestions"
+                        :key="idx"
+                        class="text-center mt20"
                         style="color:#69C8FF"
                       >{{btn.action.displayText}}</p>
                     </div>
@@ -333,9 +333,9 @@
                     </p>
                     <ul class="cardBxslider mt10" style="list-style-type:none;display:none">
                       <li v-for="(msgData, idx) in tmpltData.RCS.mergeData" :key="idx" class="slide cardBox">
-                        <img 
-                          v-if="tmpltData.msgType == 'IMAGE' && msgData.mediaUrl" 
-                          :src="msgData.mediaUrl" 
+                        <img
+                          v-if="tmpltData.msgType == 'IMAGE' && msgData.mediaUrl"
+                          :src="msgData.mediaUrl"
                           style="width: 204px;height: 172px;"
                           alt="프리 템플릿"
                         >
@@ -346,10 +346,10 @@
                           </div>
                         </div>
                         <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > idx">
-                          <p 
-                            v-for="(btn, sIdx) in tmpltData.RCS.buttons[idx].suggestions" 
-                            :key="sIdx" 
-                            class="text-center mt20" 
+                          <p
+                            v-for="(btn, sIdx) in tmpltData.RCS.buttons[idx].suggestions"
+                            :key="sIdx"
+                            class="text-center mt20"
                             style="color:#69C8FF"
                           >{{btn.action.displayText}}</p>
                         </div>
@@ -370,9 +370,9 @@
                     </p>
                     <ul class="cardBxslider mt10" style="list-style-type:none;display:none">
                       <li v-for="(msgData, idx) in tmpltData.RCS.mergeData" :key="idx" class="slide cardBox scroll-yc">
-                        <img 
-                          v-if="tmpltData.msgType == 'IMAGE' && msgData.mediaUrl" 
-                          :src="msgData.mediaUrl" 
+                        <img
+                          v-if="tmpltData.msgType == 'IMAGE' && msgData.mediaUrl"
+                          :src="msgData.mediaUrl"
                           style="width: 204px;height: 255px;"
                           alt="프리 템플릿"
                         >
@@ -383,10 +383,10 @@
                           </div>
                         </div>
                         <div v-if="tmpltData.RCS.buttons && tmpltData.RCS.buttons.length > idx">
-                          <p 
-                            v-for="(btn, sIdx) in tmpltData.RCS.buttons[idx].suggestions" 
-                            :key="sIdx" 
-                            class="text-center mt20" 
+                          <p
+                            v-for="(btn, sIdx) in tmpltData.RCS.buttons[idx].suggestions"
+                            :key="sIdx"
+                            class="text-center mt20"
                             style="color:#69C8FF"
                           >{{btn.action.displayText}}</p>
                         </div>
@@ -401,7 +401,7 @@
             </div>
             <!--// RCS -->
           </div>
-          
+
           <div :class="'phone_04_btn7' + (showBxPage ? ' mt20' : '')">
             <ul>
               <li v-for="(chTypeInfo, idx) in tmpltData.chTypeList.slice(0, 3)" :key="idx" :class="(previewMessageType == chTypeInfo ? 'active' : '')">
@@ -414,8 +414,8 @@
               </li>
             </ul>
           </div>
-          
-          
+
+
         </div>
       </div>
       <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
@@ -431,7 +431,7 @@
               </div>
               <div v-if="fnContainsChannel('PUSH')" style="width:78%">
                 <h5>발송정책 : {{tmpltData.PUSH.serviceCode | pushSvcCd}}</h5>
-                <!-- 
+                <!--
                 <input type="radio" name="serviceCode" value="ALL" id="serviceCode_ALL" v-model="tmpltData.PUSH.serviceCode" disabled>
                 <label for="serviceCode_ALL" class="mr30">ALL</label>
                 <input type="radio" name="serviceCode" value="FCM" id="serviceCode_FCM" v-model="tmpltData.PUSH.serviceCode" disabled>
@@ -446,7 +446,7 @@
             </div>
           </div>
         </div>
-        
+
         <hr>
 
         <div class="of_h user-phone">
@@ -460,7 +460,7 @@
               </div>
               <div style="width:100%">
                 <div>
-                  <!-- 
+                  <!--
                   <input type="radio" name="Recipient" value="Directly" id="Directly" checked=""> <label for="Directly" class="mr30">수신자 직접입력</label>
                   <input type="radio" name="Recipient" value="search" id="search"> <label for="search" class="mr30">주소록 검색</label>
                   <input type="radio" name="Recipient" value="excel" id="excel"> <label for="excel" class="mr10">엑셀 업로드</label>
@@ -546,7 +546,7 @@
             <p>모든 채널에 메시지를 보냅니다.</p>
             <a href="#" @click.prevent="fnOpenTestSendInputPopup" class="btnStyle1 backLightGray consolMarginTop" title="테스트 발송" activity="SAVE">테스트 발송</a>
           </div>
-          
+
         </div>
         <div class="mt20 float-right">
           <a href="#" @click.prevent="fnSendSmartMessage('N')" class="btnStyle2 backRed float-left mr10" title="발송" activity="SAVE">발송</a>
@@ -636,7 +636,7 @@ export default {
     }
   },
   updated() {
-    if(this.previewMessageType == 'RCS' && this.tmpltData.RCS 
+    if(this.previewMessageType == 'RCS' && this.tmpltData.RCS
       && (this.tmpltData.RCS.rcsPrdType == 'CSHORT' || this.tmpltData.RCS.rcsPrdType == 'CTALL')) {
       this.fnSetBxslider();
       this.showBxPage = true;
@@ -660,7 +660,7 @@ export default {
           let workbook = XLSX.read(data, {type: 'binary'});
           let sheetName = '';
           let excelArray = [];
-          
+
           if(workbook.SheetNames && workbook.SheetNames.length > 0){
             sheetName = workbook.SheetNames[0];
           }
@@ -684,7 +684,7 @@ export default {
         const result = response.data;
         if(result.success) {
           if(this.$gfnCommonUtils.isEmpty(result.data)){
-            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 API 키가 존재하지 않습니다.\n메시지 발송하실 수 없습니다.');
+            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 사용가능한 API 키가 존재하지 않습니다.\n메시지 발송하실 수 없습니다.');
           }
         }
       });
@@ -822,7 +822,7 @@ export default {
       await messageApi.sendSmartMessage(fd).then(response =>{
         this.inProgress = false;
         const result = response.data;
-        
+
         if(result.success) {
           if(testSendYn == 'Y'){
             if(!this.$gfnCommonUtils.isEmpty(result.message)){
@@ -956,7 +956,7 @@ export default {
             }
           }
         }
-        
+
         if(ch == 'RCS'){
           conts.replace(/\{\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}\}/g, function($0, $1) {
             tempVarNms.push($1);
@@ -974,7 +974,7 @@ export default {
         varNms = varNms.concat(tempVarNms);
         tempVarNms = [];
       });
-      
+
       if(containRsvNm){
         confirm.fnAlert(this.componentsTitle, '발송 내용 변수 cuid, phone 은 예약어로 사용하실 수 없습니다.');
         return false;
@@ -1002,9 +1002,9 @@ export default {
           this.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
           tempData.chTypeList = JSON.parse(tempData.chTypeList);
           tempData.tmpltInfo = JSON.parse(tempData.tmpltInfo);
-          
+
           this.fnSetTmpltInfoByChannel(tempData);
-          if(tempData.msgType == 'IMAGE' 
+          if(tempData.msgType == 'IMAGE'
             && this.fnContainsChannel('MMS', tempData.chTypeList)
             && tempData.MMS.fileIdLst){
             tempData.MMS.fileUrlLst = [];
@@ -1014,7 +1014,7 @@ export default {
           }
 
           //RCS 스타일형 스타일 정보 Set
-          if(tempData.rcsTmpltInfo 
+          if(tempData.rcsTmpltInfo
             && tempData.RCS
             && tempData.RCS.rcsPrdType == 'CELL'){
             this.fnSetRcsStyle(tempData);
@@ -1041,7 +1041,7 @@ export default {
     },
     fnSetRcsStyle(tempData){
       const rcsTmpltInfo = JSON.parse(tempData.rcsTmpltInfo);
-      
+
       let rcsLayout;
       try {
         rcsLayout = rcsTmpltInfo.formattedString.RCSMessage.openrichcardMessage.layout;
@@ -1075,7 +1075,7 @@ export default {
     fnSetTmpltInfoByChannel(tempData){
       let chTypeList = tempData.chTypeList;
       let tmpltInfo = tempData.tmpltInfo;
-      
+
       if(chTypeList != null && chTypeList.length > 0){
         chTypeList.forEach((chType, idx) => {
           tempData[chType] = tmpltInfo[idx]['data'];

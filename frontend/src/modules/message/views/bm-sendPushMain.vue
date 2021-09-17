@@ -343,7 +343,7 @@ export default {
     await this.fnExistApiKey();
     await this.fnValidUseChGrp();
     await this.fnGetAppId();
-    
+
   },
   methods: {
     fnReadFile(){
@@ -356,7 +356,7 @@ export default {
           let workbook = XLSX.read(data, {type: 'binary'});
           let sheetName = '';
           let excelArray = [];
-          
+
           if(workbook.SheetNames && workbook.SheetNames.length > 0){
             sheetName = workbook.SheetNames[0];
           }
@@ -380,7 +380,7 @@ export default {
         const result = response.data;
         if(result.success) {
           if(this.$gfnCommonUtils.isEmpty(result.data)){
-            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 API 키가 존재하지 않습니다.\n메시지 발송하실 수 없습니다.');
+            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 사용가능한 API 키가 존재하지 않습니다.\n메시지 발송하실 수 없습니다.');
           }
         }
       });
@@ -466,7 +466,7 @@ export default {
         confirm.fnAlert(this.componentsTitle, '푸시 메시지 발송 처리중입니다.');
         return;
       }
-      
+
       if(this.fnValidSendMsgData(testSendYn) == false) return;
 
       //발송처리
@@ -496,7 +496,7 @@ export default {
       await MessageApi.sendPushMessage(fd).then(response =>{
         this.inProgress = false;
         const result = response.data;
-        
+
         if(result.success) {
           if(testSendYn == 'Y'){
             if(!this.fnIsEmpty(result.message)){

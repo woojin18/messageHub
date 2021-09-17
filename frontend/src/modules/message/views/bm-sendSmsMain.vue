@@ -65,7 +65,7 @@
               </div>
             </div>
           </div>
-          
+
         </div>
         <hr>
         <div class="of_h user-phone">
@@ -91,7 +91,7 @@
               </div>
             </div>
           </div>
-            
+
         </div>
         <hr>
         <div class="of_h user-phone">
@@ -125,7 +125,7 @@
               </div>
             </div>
           </div>
-          
+
         </div>
         <hr>
         <div class="of_h user-phone">
@@ -269,7 +269,7 @@ export default {
           let workbook = XLSX.read(data, {type: 'binary'});
           let sheetName = '';
           let excelArray = [];
-          
+
           if(workbook.SheetNames && workbook.SheetNames.length > 0){
             sheetName = workbook.SheetNames[0];
           }
@@ -292,7 +292,7 @@ export default {
         const result = response.data;
         if(result.success) {
           if(this.$gfnCommonUtils.isEmpty(result.data)){
-            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 API 키가 존재하지 않습니다.\n메시지 발송하실 수 없습니다.');
+            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 사용가능한 API 키가 존재하지 않습니다.\n메시지 발송하실 수 없습니다.');
           }
         }
       });
@@ -539,7 +539,7 @@ export default {
       } else {
         this.sendData.smsTitle = '';  //메시지제목
       }
-      
+
       //수신거부
       if(this.sendData.msgKind == 'A'){
         this.sendData.rcvblcNumber = templateInfo.rcvblcNumber;

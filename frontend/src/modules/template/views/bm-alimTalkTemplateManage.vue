@@ -39,10 +39,10 @@
             <div class="float-left" style="width:22%"><h4>발신 프로필 *</h4></div>
             <div class="float-left" style="width:78%">
               <!-- 발신프로필그룹관리 기능 제외
-              <select 
-                class="float-left selectStyle2" 
-                style="width:20%" 
-                v-model="tmpltData.senderKeyType" 
+              <select
+                class="float-left selectStyle2"
+                style="width:20%"
+                v-model="tmpltData.senderKeyType"
                 @change="fnSelectSenderKeyList"
                 :disabled="!isInsert"
               >
@@ -181,27 +181,27 @@
           </div>
 
           <div class="mt20 float-right">
-            <a 
-              v-if="isInsert" 
-              href="#" 
-              @click.prevent="fnApprvReqTmplt" 
-              class="btnStyle2 backRed float-left ml10" 
+            <a
+              v-if="isInsert"
+              href="#"
+              @click.prevent="fnApprvReqTmplt"
+              class="btnStyle2 backRed float-left ml10"
               title="등록요청"
               activity="SAVE"
             >등록요청</a>
-            <a 
-              v-if="tmpltData.tmpltStatCode == 'T'" 
-              href="#" 
-              @click.prevent="fnInspectReqTmplt" 
-              class="btnStyle2 backRed float-left ml10" 
+            <a
+              v-if="tmpltData.tmpltStatCode == 'T'"
+              href="#"
+              @click.prevent="fnInspectReqTmplt"
+              class="btnStyle2 backRed float-left ml10"
               title="검수요청"
               activity="SAVE"
             >검수요청</a>
-            <a 
-              v-if="tmpltData.tmpltStatCode == 'T' || tmpltData.tmpltStatCode == 'S'" 
-              href="#" 
-              @click.prevent="fnUpdateReqTmplt" 
-              class="btnStyle2 backWhite float-left ml10" 
+            <a
+              v-if="tmpltData.tmpltStatCode == 'T' || tmpltData.tmpltStatCode == 'S'"
+              href="#"
+              @click.prevent="fnUpdateReqTmplt"
+              class="btnStyle2 backWhite float-left ml10"
               title="수정요청"
               activity="SAVE"
             >수정요청</a>
@@ -297,7 +297,7 @@ export default {
         const result = response.data;
         if(result.success) {
           if(this.$gfnCommonUtils.isEmpty(result.data)){
-            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 API 키가 존재하지 않습니다.\n템플릿을 등록/수정/검수요청 하실 수 없습니다.');
+            confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 사용가능한 API 키가 존재하지 않습니다.\n템플릿을 등록/수정/검수요청 하실 수 없습니다.');
           }
         }
       });
@@ -471,7 +471,7 @@ export default {
         confirm.fnAlert(this.componentsTitle, validContainRsvNm.message);
         return false;
       }
-      
+
       return true;
     },
     fnUpdateReqTmplt(){
