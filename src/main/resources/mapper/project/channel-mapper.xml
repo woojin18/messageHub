@@ -94,6 +94,7 @@
 							,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") as MAIN_TITLE
 							FROM cm.CM_RCS_CHATBOT_REQ crcr 
 							where JSON_EXTRACT(crcr.CHATBOT_INFO , '$.isMainNum[0]') = true
+							AND crcr.CORP_ID = #{corpId}
 						) B
 							ON A.BRAND_ID = B.BRAND_ID
 						WHERE 	A.CORP_ID = #{corpId}
@@ -124,7 +125,7 @@
 							)
 							and crcr.CORP_ID = #{corpId}
 							UNION ALL
-							
+
 							select	crc.CHATBOT_ID
 							,		crc.CHATBOT_ID AS MAIN_MDN
 							,		REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS MAIN_TITLE
