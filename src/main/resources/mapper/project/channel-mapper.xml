@@ -12,10 +12,23 @@
 	<select id="selectRcsBrandList" resultType="camel">
 		/* channel.selectRcsBrandList */
 		SELECT	*
+        ,       IFNULL(CALLBACK.CNT, 0) AS CALLBACK_CNT
 		,		@ROWNUM := @ROWNUM + 1 AS ROWNUM
 		FROM	(
 			<include refid="rcsBrandList"/>
-		) AA, (SELECT @ROWNUM:=0) TMP
+		) AA
+    LEFT JOIN (
+      SELECT BRAND_ID, COUNT(1) AS CNT
+        FROM (
+       SELECT X.BRAND_ID, X.CHATBOT_ID 
+         FROM cm.CM_RCS_CHATBOT X 
+        WHERE X.CORP_ID = #{corpId}
+        UNION
+       SELECT Y.BRAND_ID, Y.CHATBOT_ID 
+         FROM cm.CM_RCS_CHATBOT_REQ Y 
+        WHERE Y.CORP_ID = #{corpId}) AS A GROUP BY BRAND_ID) AS CALLBACK
+      ON CALLBACK.BRAND_ID = AA.BRAND_ID
+		, (SELECT @ROWNUM:=0) TMP
 		ORDER BY AA.REG_DT DESC
         <if test='pagingYn == "Y" '>
         LIMIT #{offset}, #{listSize}
@@ -24,7 +37,6 @@
 	
 	<sql id="rcsBrandList">
 		SELECT	A.*
-		,		IFNULL(CALLBACK_CNT.CNT, 0) AS CALLBACK_CNT
 		FROM 	(
 				SELECT	BRAND.*
 				,		case @vData when BRAND_ID then @vRank := @vRank + 1 else @vRank := 1 end AS RANKING
@@ -41,9 +53,10 @@
 									WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
 									ELSE 'N'
 								END AS OTHER_PROJECT_USE_YN
-						,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
+						,		( 	SELECT	COUNT(1) 
 									FROM	cm.CM_RCS_MSGBASE
-									WHERE	BRAND_ID  = A.BRAND_ID 
+									WHERE	BRAND_ID  = A.BRAND_ID
+									  AND   CORP_ID   = A.CORP_ID
 								) AS TMPL_CNT
 						,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인' ELSE '' END	AS APPROVAL_STATUS		
 						,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
@@ -61,7 +74,7 @@
 						]]>
 						from 	cm.CM_RCS_BRAND A
 						WHERE 	A.CORP_ID = #{corpId}
-						and		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+						and		A.PROJECT_ID IN (#{projectId}, 'ALL')
 						
 						UNION ALL
 						
@@ -76,80 +89,28 @@
 									WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
 									ELSE 'N'
 								END AS OTHER_PROJECT_USE_YN
-						,		( 	SELECT	COUNT(MESSAGEBASE_ID) 
+						,		( 	SELECT	COUNT(1) 
 									FROM	cm.CM_RCS_MSGBASE
 									WHERE	BRAND_ID  = A.BRAND_ID 
+                                      AND   CORP_ID   = A.CORP_ID
 								) AS TMPL_CNT
 						,		A.APPROVAL_STATUS
 						,		A.REG_DT
 						,		'' AS REQ_DT
 						,		'' AS APPROVAL_DT
-						,		B.MAIN_MDN
-						,		B.MAIN_TITLE
+						,		REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.mdn[0]'), "\"", "") AS MAIN_MDN
+						,		REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS MAIN_TITLE
 						,		A.REG_DT AS RANKING_DT
 						from 	cm.CM_RCS_BRAND_REQ A
-						left outer join (
-							SELECT	crcr.BRAND_ID 
-							,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.mdn[0]'), "\"", "") as MAIN_MDN
-							,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") as MAIN_TITLE
-							FROM cm.CM_RCS_CHATBOT_REQ crcr 
-							where JSON_EXTRACT(crcr.CHATBOT_INFO , '$.isMainNum[0]') = true
-							AND crcr.CORP_ID = #{corpId}
-						) B
-							ON A.BRAND_ID = B.BRAND_ID
+						left join cm.CM_RCS_CHATBOT_REQ B
+                           on B.CORP_ID = A.CORP_ID 
+                          AND B.BRAND_ID = A.BRAND_ID
+                          AND JSON_EXTRACT(B.CHATBOT_INFO , '$.isMainNum[0]') = true
 						WHERE 	A.CORP_ID = #{corpId}
-						and		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+						and		A.PROJECT_ID IN (#{projectId}, 'ALL')
 				) BRAND, (SELECT @vRank:=0, @vData:='') as r
 				ORDER BY BRAND.BRAND_ID, BRAND.RANKING_DT DESC
 		) A
-		LEFT OUTER JOIN (
-			select BRAND_ID 
-			,		COUNT(1) AS CNT
-			from (
-				SELECT	*
-				FROM 	(
-						SELECT	CHATBOT.*
-						,		case @vData when CHATBOT_ID then @vRank := @vRank + 1 else @vRank := 1 end AS RANKING
-						,		(@vData:=CHATBOT_ID) AS vData
-						FROM	(
-							select	crcr.CHATBOT_ID
-							,		crcr.CHATBOT_ID AS MAIN_MDN
-							,		REPLACE(JSON_EXTRACT(crcr.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS MAIN_TITLE
-							,		crcr.REG_DT
-							,		crcr.BRAND_ID 
-							,		crcr.REG_DT AS RANKING_DT
-							from cm.CM_RCS_CHATBOT_REQ crcr
-							where crcr.CHATBOT_ID not in (
-								select	crc.CHATBOT_ID
-								from cm.CM_RCS_CHATBOT crc 
-							)
-							and crcr.CORP_ID = #{corpId}
-							UNION ALL
-
-							select	crc.CHATBOT_ID
-							,		crc.CHATBOT_ID AS MAIN_MDN
-							,		REPLACE(JSON_EXTRACT(crc.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS MAIN_TITLE
-							,		crc.REG_DT
-							,		crc.BRAND_ID 
-							<![CDATA[
-							,		CASE
-										WHEN crc.APPROVAL_DT > crc.REG_DT	THEN crc.APPROVAL_DT
-										WHEN crc.APPROVAL_DT > crc.UPD_DT	THEN crc.APPROVAL_DT
-										WHEN crc.UPD_DT > crc.REG_DT		THEN crc.UPD_DT
-										ELSE crc.REG_DT
-									END AS RANKING_DT 
-							]]>
-							from cm.CM_RCS_CHATBOT crc
-							where 1=1
-							and crc.CORP_ID = #{corpId} 
-						) CHATBOT, (SELECT @vRank:=0, @vData:='') as r
-						ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.RANKING_DT DESC
-				) A
-				WHERE	RANKING = 1  
-			) CHATBOT_RANK
-			GROUP BY CHATBOT_RANK.BRAND_ID
-		) CALLBACK_CNT
-			ON A.BRAND_ID = CALLBACK_CNT.BRAND_ID
 		WHERE	RANKING = 1
 		<if test=" srcBrandText != null and srcBrandText != '' ">
 			<choose>
