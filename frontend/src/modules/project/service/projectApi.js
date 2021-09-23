@@ -25,19 +25,19 @@ const savePreRegEx = (params) => {
 };
 
 const selectCallbackManageList = (params) => {
-    return httpClient.post('/projectApi/manage/selectCallbackManageList', params, { headers: { "show-layer": "No", "activity": "READ"}});
+    return httpClient.post('/projectApi/manage/selectCallbackManageList', params, { headers: { "show-layer": "Yes", "activity": "READ"}});
 };
 
 const updateCallbackForApi = (params) => {
-    return httpClient.post('/projectApi/manage/updateCallbackForApi', params, { headers: { "show-layer": "No", "activity": "SAVE"}});
+    return httpClient.post('/projectApi/manage/updateCallbackForApi', params, { headers: { "show-layer": "Yes", "activity": "SAVE"}});
 };
 
 const deleteCallbackForApi = (params) => {
-    return httpClient.post('/projectApi/manage/deleteCallbackForApi', params, { headers: { "show-layer": "No", "activity": "SAVE"}});
+    return httpClient.post('/projectApi/manage/deleteCallbackForApi', params, { headers: { "show-layer": "Yes", "activity": "SAVE"}});
 };
 
 const selectApprovalBrandList = (params) => {
-    return httpClient.post('/projectApi/manage/selectApprovalBrandList', params, { headers: { "show-layer": "No", "activity": "READ"}});
+    return httpClient.post('/projectApi/manage/selectApprovalBrandList', params, { headers: { "show-layer": "Yes", "activity": "READ"}});
 };
 
 const saveDisRatio= (params) => {
