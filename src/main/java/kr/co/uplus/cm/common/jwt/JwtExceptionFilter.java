@@ -37,7 +37,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 		String roleCd = request.getHeader("roleCd");
 		String menusCd = request.getHeader("menuCd");
 		String activityCd = request.getHeader("activity");
-		log.info("권한 체크 : connUrl:" + connUrl + ",svcTypeCd:" + svcTypeCd + ",roleCd:"+roleCd + ",menusCd:" + menusCd + ",activityCd:" + activityCd);
+//		log.info("권한 체크 : connUrl:" + connUrl + ",svcTypeCd:" + svcTypeCd + ",roleCd:"+roleCd + ",menusCd:" + menusCd + ",activityCd:" + activityCd);
 		if (!StringUtils.isEmpty(svcTypeCd) && !StringUtils.isEmpty(roleCd) && !StringUtils.isEmpty(menusCd) && !StringUtils.isEmpty(activityCd)) {
 			Map<String, Menu> menus = authService.getMenusByRole(svcTypeCd, roleCd);
 			if (menus == null) {
