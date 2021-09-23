@@ -26,7 +26,6 @@
 					<!-- 본문 -->
 					<table class="table_skin1 bt-000 tbl-striped">
 						<colgroup>
-							<col style="width:15%">
 							<col style="width:10%">
 							<col>
 							<col style="width:10%">
@@ -35,7 +34,6 @@
 						</colgroup>
 						<thead>
 							<tr>
-								<th class="text-center lc-1">API KEY</th>
 								<th class="text-center lc-1">서비스 유형</th>
 								<th class="text-center lc-1">수신번호</th>
 								<th class="text-center lc-1">사용여부</th>
@@ -45,7 +43,6 @@
 						</thead>
 						<tbody>
 							<tr v-for="(item, i) in data" :key="i">
-								<td class="text-center">{{item.apiKey}}</td>
 								<td class="text-center">{{item.moType}}</td>
 								<!-- <td class="text-center"><a @click="fnMod(item)">{{item.moNumber}}</a></td> -->
 								<td class="text-center">{{item.moNumber}}</td>
@@ -54,7 +51,7 @@
 								<!-- <td class="end">{{item.updDt}}</td> -->
 							</tr>
 							<tr v-if="data.length == 0">
-								<td class="text-center" colspan="5">검색된 내용이 없습니다.</td>
+								<td class="text-center" colspan="4">검색된 내용이 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>

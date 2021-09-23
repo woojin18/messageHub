@@ -7,10 +7,10 @@
 						<h2>MO 수신번호 등록</h2>
 						<hr>
 						<div class="of_h">
-								<h5 class="inline-block" style="width:20%">API KEY</h5>
-                <div style="width:80%" class="float-right">
-                  <input type="text" class="inputStyle float-left" v-model="apiKey" placeholder="자동 채번됩니다." disabled>
-                </div>
+        <!--       <h5 class="inline-block" style="width:20%">API KEY</h5>
+              <div style="width:80%" class="float-right">
+                <input type="text" class="inputStyle float-left" v-model="apiKey" placeholder="자동 채번됩니다." disabled>
+              </div> -->
 							<div class="of_h mt10">
 								<h5 class="inline-block" style="width:20%">MO 수신번호</h5>
                 <div style="width:80%" class="float-right">

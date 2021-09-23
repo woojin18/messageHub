@@ -1007,7 +1007,16 @@ public class ChannelService {
 			joinMap.put("logid",			params.get("projectId"));		// 가입인식번호1(본인 서비스의 유니크 아이디)
 			joinMap.put("indcId",			salesId);						// 유치자아이디
 			joinMap.put("mngrId",			salesId);						// 관리자아이디
-			joinMap.put("serviceType",		moType);						// MO 서비스정보 타입 (SMS, LMS, MMS)
+			
+			
+			// MO 서비스정보 타입 (SMS, LMS, MMS)
+			if( "SMSMO".equals(moType) ) {
+				joinMap.put("serviceType",		"SMS");
+			} else if( "LMSMO".equals(moType) ) {
+				joinMap.put("serviceType",		"LMS");
+			} else if( "MMSMO".equals(moType) ) {
+				joinMap.put("serviceType",		"MMS");
+			}
 			
 			Map<String, Object> priceInfo = (Map<String, Object>) generalDao.selectGernalObject("channel.selectPriceInfoForSaveMoCallback", params);
 			
@@ -1024,7 +1033,7 @@ public class ChannelService {
 			
 			kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(joinMap);
 			
-			//System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
+			System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
 			
 			// API 통신처리
 			Map<String, Object> result =  apiInterface.post("/console/v1/ucube/service/join/mo", joinMap, null);
