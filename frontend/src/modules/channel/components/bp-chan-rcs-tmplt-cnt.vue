@@ -24,7 +24,6 @@
                 <th class="text-center lc-1">포멧ID</th>
                 <th class="text-center lc-1">템플릿명</th>
                 <th class="text-center lc-1">속성</th>
-                <th class="text-center lc-1">등록채널</th>
                 <th class="text-center lc-1">등록일</th>
                 <th class="text-center lc-1">승인상태</th>
                 <th class="text-center lc-1">승인요청일</th>
@@ -44,9 +43,6 @@
                   </td>
                   <td class="text-center">
                     {{ data.cardType }}
-                  </td>
-                  <td class="text-center">
-                    {{ data.ch }}
                   </td>
                   <td class="text-center">
                     {{ data.regDt }} 

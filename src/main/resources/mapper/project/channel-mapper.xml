@@ -240,7 +240,6 @@
 					WHEN REPLACE(JSON_EXTRACT(MESSAGEBASE_INFO , '$.cardType[0]'), "\"", "") = 'description' THEN '서술형'
 					ELSE '스타일'
 				END CARD_TYPE
-		,		REPLACE(REPLACE(REPLACE(JSON_EXTRACT(MESSAGEBASE_INFO , '$.attribute'), "\"", ""), '[', ''), ']', '') AS CH
 		,		case when USE_YN = 'Y' then '예' else '아니오' end as USE_YN
 		,		date_format(REG_DT, '%Y-%m-%d') AS REG_DT
 		,		date_format(UPD_DT, '%Y-%m-%d') AS UPD_DT
