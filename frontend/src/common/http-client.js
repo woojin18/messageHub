@@ -58,7 +58,7 @@ const loadingLayer = (type, config) => {
     loadingOverlay.classList.add('hidden');
 
     if(loadingOverlay != null){
-      if (config.headers['show-layer'] == 'Yes') {
+      if (config.headers['show-layer'] && config.headers['show-layer'].toLowerCase() == 'yes') {
         if (type) {
           loadOverlap.push('add');
         } else {
