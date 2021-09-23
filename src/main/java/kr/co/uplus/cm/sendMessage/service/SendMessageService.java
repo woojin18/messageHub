@@ -2681,7 +2681,7 @@ public class SendMessageService {
 
             if(isSendSuccess(result) == false) {
                 String failMsg = CommonUtils.getString(result.get(ApiConfig.GW_RESULT_MESSAGE_FIELD_NM));
-                throw new Exception("batch sendNoti fail ===> " + failMsg);
+                throw new Exception("sendNoti fail ===> " + failMsg);
             }
 
         } catch (Exception e) {
