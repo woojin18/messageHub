@@ -1,5 +1,5 @@
 <template>
-	<div id="confirmTmplt" class="modal modalStyle" tabindex="-1" role="dialog" aria-hidden="true" @click="fnClose">
+	<div id="confirmTmplt" class="modal modalStyle" tabindex="-1" role="dialog" aria-hidden="true" >
 		<div class="modal-dialog" style="width:1200px">
 			<div class="modal-content">
 				<div class="modal-body">
