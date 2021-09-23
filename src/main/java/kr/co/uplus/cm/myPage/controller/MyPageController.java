@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.myPage.controller;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -284,7 +285,7 @@ public class MyPageController {
 		
 		if(StringUtils.indexOf(filePath, FileConfig.FileSvcType.BIZ_REG_CARD.getPath()) < 0) {
 			String errorMsg = "unauthorized path access";
-			log.error("{}.procDownloadLibraryFile Error : {}", this.getClass(), errorMsg);
+			log.error("{}.downloadRegCardImage Error : {}", this.getClass(), errorMsg);
 			throw new Exception(errorMsg);
 		}
 		
