@@ -100,31 +100,31 @@ const selectKkoTmpltRejResn = (params) => {
 
 /* RCS */
 const corpBrandCnt = (params) => {
-  return httpClient.post('/uc/rcsTemplate/corpBrandCnt', params, { headers: {"show-layer": "Yes"} });
+  return httpClient.post('/uc/rcsTemplate/corpBrandCnt', params, { headers: {"show-layer": "Yes", "activity" : "READ"} });
 };
 
 const selectRcsTemplateList = (params) => {
-  return httpClient.post('/uc/rcsTemplate/selectRcsTemplateList', params, {headers: {"show-layer":"yes"}});
+  return httpClient.post('/uc/rcsTemplate/selectRcsTemplateList', params, {headers: {"show-layer":"Yes", "activity" : "READ"}});
 };
 
 const rcsTemplateInit = (params) => {
-  return httpClient.post('/uc/rcsTemplate/rcsTemplateInit', params, {headers: {"show-layer":"yes"}});
+  return httpClient.post('/uc/rcsTemplate/rcsTemplateInit', params, {headers: {"show-layer":"Yes", "activity" : "READ"}});
 };
 
 const rcsTemplateUpdateInit = (params) => {
-  return httpClient.post('/uc/rcsTemplate/rcsTemplateUpdateInit', params, {headers: {"show-layer":"yes"}});
+  return httpClient.post('/uc/rcsTemplate/rcsTemplateUpdateInit', params, {headers: {"show-layer":"Yes", "activity" : "READ"}});
 };
 
 const rcsTemplateDeleteApi = (params) => {
-  return httpClient.post('/uc/rcsTemplate/rcsTemplateDeleteApi', params, {headers: {"show-layer":"yes"}});
+  return httpClient.post('/uc/rcsTemplate/rcsTemplateDeleteApi', params, {headers: {"show-layer":"Yes", "activity" : "SAVE"}});
 };
 
 const rcsTemplateCancelApi = (params) => {
-  return httpClient.post('/uc/rcsTemplate/rcsTemplateCancelApi', params, {headers: {"show-layer":"yes"}});
+  return httpClient.post('/uc/rcsTemplate/rcsTemplateCancelApi', params, {headers: {"show-layer":"Yes", "activity" : "SAVE"}});
 };
 
 const rcsTemplateApi = (params) => {
-  return httpClient.post('/uc/rcsTemplate/rcsTemplateApi', params, {headers: {"show-layer":"yes"}});
+  return httpClient.post('/uc/rcsTemplate/rcsTemplateApi', params, {headers: {"show-layer":"Yes", "activity" : "READ"}});
 };
 
 /* 통합발송 */
