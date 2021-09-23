@@ -313,6 +313,7 @@
 						<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width: 100%; visibility: hidden;" ref="certiImgFile" />
 					</div>
 					<div class="float-right">
+						<a v-if="this.save_status == 'C'" @click="fnSave('approval')" class="btnStyle5 red ml10 width120" activity="SAVE">승인요청</a>
 						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N' && this.approvalStatus == '승인'" @click="fnSave('update')" class="btnStyle5 red ml10 width120" activity="SAVE">수정요청</a>
 						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N' && this.approvalStatus == '승인'" @click="fnDeleteConfirm()" class="btnStyle5 red ml10 width120" activity="SAVE">삭제요청</a>
 						<a @click="fnBack" ref="backBtn" class="btnStyle5 white ml10 width120">목록</a>
