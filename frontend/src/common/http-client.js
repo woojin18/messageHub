@@ -10,7 +10,7 @@ const config = {
 		'X-Requested-With': 'XMLHttpRequest',
 		'show-layer': 'Yes'
 	},
-	timeout: 120000 // timeout은 120초로 설정
+	timeout: 15000 // timeout은 15초로 설정
 };
 
 const httpClient = axios.create(config);
