@@ -64,17 +64,17 @@ public class UseHistoryService {
 		String moYn		= "";
 		String useChStr = "";
 
-		if(params.containsKey("pageNo")
-				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
-				&& params.containsKey("listSize")
-				&& CommonUtils.isNotEmptyObject(params.get("listSize"))) {
-			rtn.setPageProps(params);
-			if(rtn.getPageInfo() != null) {
-				//카운트 쿼리 실행
-				int listCnt = generalDao.selectGernalCount("use.selectUseHistFromCmStatChDayCnt", params);
-				rtn.getPageInfo().put("totCnt", listCnt);
-			}
-		}
+//		if(params.containsKey("pageNo")
+//				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
+//				&& params.containsKey("listSize")
+//				&& CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+//			rtn.setPageProps(params);
+//			if(rtn.getPageInfo() != null) {
+//				//카운트 쿼리 실행
+//				int listCnt = generalDao.selectGernalCount("use.selectUseHistFromCmStatChDayCnt", params);
+//				rtn.getPageInfo().put("totCnt", listCnt);
+//			}
+//		}
 
 		// 통계 정보
 		List<Object> rtnList = generalDao.selectGernalList("use.selectUseHistFromCmStatChDay", params);
