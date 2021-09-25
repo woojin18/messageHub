@@ -55,36 +55,14 @@
 	
 	<select	id ="selectCashHist_count" resultType="int">
 		/* cash.selectCashHist_count */
-		SELECT	COUNT(*)
-		FROM	(
-				SELECT	CASH_CHARG_AMOUNT	AS AMOUNT
-				,		'충전캐시'				AS CASH_TYPE
-				,		PAY_MTD
-				,		DATE_FORMAT(REG_DT, '%Y-%m-%d')	AS REG_DT
-				,		'-'					AS EVENT_DT
-				FROM	cm_console.CM_WEB_CASH_HIST
-				WHERE	STATUS = '1'
-				AND		CORP_ID = #{corpId}
-				UNION ALL
-				SELECT	cch.AMOUNT
-				,		'이벤트캐시'
-				,		'이벤트캐시'
-				,		DATE_FORMAT(cc.REG_DT, '%Y-%m-%d')
-				,		CONCAT(DATE_FORMAT(cc.START_DT, '%Y-%m-%d %H:%i:%s'), '~', DATE_FORMAT(cc.EXP_DT, '%Y-%m-%d %H:%i:%s'))
-				FROM	cm.CM_CASH cc
-				INNER JOIN (
-					SELECT	MAX(AMOUNT)	AS AMOUNT
-					,		CORP_ID
-					,		CASH_ID
-					FROM	cm.CM_CASH_HIST
-					WHERE	CORP_ID = #{corpId}
-					GROUP BY CORP_ID, CASH_ID
-				) cch
-					ON	cc.CORP_ID = cch.CORP_ID
-					AND	cc.CASH_ID = cch.CASH_ID
-				WHERE	cc.CORP_ID = #{corpId}
-				AND		cc.CASH_TYPE = 'E'
-		) AA
+		SELECT	(SELECT COUNT(1)
+                FROM    cm_console.CM_WEB_CASH_HIST
+                WHERE   STATUS = '1'
+                AND     CORP_ID = #{corpId}) + 
+                (SELECT  COUNT(1)
+                FROM    cm.CM_CASH cc
+                WHERE   cc.CORP_ID = #{corpId}
+                AND     cc.CASH_TYPE = 'E')
 	</select>
 	
 	<select	id ="selectCashHist" resultType="camel">
@@ -100,25 +78,13 @@
 			FROM	cm_console.CM_WEB_CASH_HIST
 			WHERE	STATUS = '1'
 			AND		CORP_ID = #{corpId}
-			
 			UNION ALL
-			
-			SELECT	cch.AMOUNT
+			SELECT	(SELECT MAX(AMOUNT) FROM cm.CM_CASH_HIST X WHERE X.CASH_ID = cc.CASH_ID) AS AMOUNT
 			,		'이벤트캐시'
 			,		'이벤트캐시'
 			,		DATE_FORMAT(cc.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
 			,		CONCAT(DATE_FORMAT(cc.START_DT, '%Y-%m-%d %H:%i:%s'), '~', DATE_FORMAT(cc.EXP_DT, '%Y-%m-%d %H:%i:%s')) AS EVENT_DT
 			FROM	cm.CM_CASH cc
-			INNER JOIN (
-				SELECT	MAX(AMOUNT)	AS AMOUNT
-				,		CORP_ID
-				,		CASH_ID
-				FROM	cm.CM_CASH_HIST
-				WHERE	CORP_ID = #{corpId}
-				GROUP BY CORP_ID, CASH_ID
-			) cch
-				ON	cc.CORP_ID = cch.CORP_ID
-				AND	cc.CASH_ID = cch.CASH_ID
 			WHERE	cc.CORP_ID = #{corpId}
 			AND		cc.CASH_TYPE = 'E'
 			ORDER BY REG_DT DESC

@@ -56,360 +56,43 @@
 	</select>
 
 	<select id="selectChTotCnt" resultType="camel">
-		/* dashboard.selectChTotCnt */
-		SELECT
-			SUM(TOTAL_SUCC_CNT) AS TOTAL_SUCC_CNT,
-			SUM(TOTAL_FAIL_CNT) AS TOTAL_FAIL_CNT,
-			SUM(PUSH_SUCC_CNT) AS PUSH_SUCC_CNT,
-			SUM(PUSH_FAIL_CNT) AS PUSH_FAIL_CNT,
-			SUM(RCS_SUCC_CNT) AS RCS_SUCC_CNT,
-			SUM(RCS_FAIL_CNT) AS RCS_FAIL_CNT,
-			SUM(ALIM_SUCC_CNT) AS ALIM_SUCC_CNT,
-			SUM(ALIM_FAIL_CNT) AS ALIM_FAIL_CNT,
-			SUM(FRIEND_SUCC_CNT) AS FRIEND_SUCC_CNT,
-			SUM(FRIEND_FAIL_CNT) AS FRIEND_FAIL_CNT,
-			SUM(SMS_SUCC_CNT) AS SMS_SUCC_CNT,
-			SUM(SMS_FAIL_CNT) AS SMS_FAIL_CNT,
-			SUM(LMS_SUCC_CNT) AS LMS_SUCC_CNT,
-			SUM(LMS_FAIL_CNT) AS LMS_FAIL_CNT,
-			SUM(MMS_SUCC_CNT) AS MMS_SUCC_CNT,
-			SUM(MMS_FAIL_CNT) AS MMS_FAIL_CNT
-		FROM (
-			SELECT 
-				SUM(SUCC_CNT) AS TOTAL_SUCC_CNT,
-				SUM(FAIL_CNT) AS TOTAL_FAIL_CNT,
-				0 AS PUSH_SUCC_CNT,
-				0 AS PUSH_FAIL_CNT,
-				0 AS RCS_SUCC_CNT,
-				0 AS RCS_FAIL_CNT,
-				0 AS ALIM_SUCC_CNT,
-				0 AS ALIM_FAIL_CNT,
-				0 AS FRIEND_SUCC_CNT,
-				0 AS FRIEND_FAIL_CNT,
-				0 AS SMS_SUCC_CNT,
-				0 AS SMS_FAIL_CNT,
-				0 AS LMS_SUCC_CNT,
-				0 AS LMS_FAIL_CNT,
-				0 AS MMS_SUCC_CNT,
-				0 AS MMS_FAIL_CNT
-			FROM 
-				cm.CM_STAT_CH_DAY
-			WHERE CORP_ID = #{corpId}
-			<if test="serviceType == 'UC'">
-			AND PROJECT_ID = #{projectId}
-			</if>
-			<choose>
-				<when test="startMonthStr != null and startMonthStr != ''">
-			AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
-				</when>
-				<otherwise>
-			AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
-				</otherwise>
-			</choose>
-			UNION ALL
-			SELECT
-				0 AS TOTAL_SUCC_CNT,
-				0 AS TOTAL_FAIL_CNT,
-				IFNULL(B.SUCC_CNT, 0) AS PUSH_SUCC_CNT,
-				IFNULL(B.FAIL_CNT, 0) AS PUSH_FAIL_CNT,
-				0 AS RCS_SUCC_CNT,
-				0 AS RCS_FAIL_CNT,
-				0 AS ALIM_SUCC_CNT,
-				0 AS ALIM_FAIL_CNT,
-				0 AS FRIEND_SUCC_CNT,
-				0 AS FRIEND_FAIL_CNT,
-				0 AS SMS_SUCC_CNT,
-				0 AS SMS_FAIL_CNT,
-				0 AS LMS_SUCC_CNT,
-				0 AS LMS_FAIL_CNT,
-				0 AS MMS_SUCC_CNT,
-				0 AS MMS_FAIL_CNT
-			FROM (
-				SELECT 'PUSH' AS CH
-				FROM DUAL
-			) A
-			LEFT OUTER JOIN (
-				SELECT 
-					CH,
-					SUM(SUCC_CNT) AS SUCC_CNT,
-					SUM(FAIL_CNT) AS FAIL_CNT
-				FROM 
-					cm.CM_STAT_CH_DAY
-				WHERE CORP_ID = #{corpId}
-				<if test="serviceType == 'UC'">
-				AND PROJECT_ID = #{projectId}
-				</if>
-				<choose>
-				<when test="startMonthStr != null and startMonthStr != ''">
-				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
-					</when>
-					<otherwise>
-				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
-					</otherwise>
-				</choose>
-				GROUP BY CH
-			) B ON A.CH = B.CH
-			UNION ALL
-			SELECT
-				0 AS TOTAL_SUCC_CNT,
-				0 AS TOTAL_FAIL_CNT,
-				0 AS PUSH_SUCC_CNT,
-				0 AS PUSH_FAIL_CNT,
-				IFNULL(B.SUCC_CNT, 0) AS RCS_SUCC_CNT,
-				IFNULL(B.FAIL_CNT, 0) AS RCS_FAIL_CNT,
-				0 AS ALIM_SUCC_CNT,
-				0 AS ALIM_FAIL_CNT,
-				0 AS FRIEND_SUCC_CNT,
-				0 AS FRIEND_FAIL_CNT,
-				0 AS SMS_SUCC_CNT,
-				0 AS SMS_FAIL_CNT,
-				0 AS LMS_SUCC_CNT,
-				0 AS LMS_FAIL_CNT,
-				0 AS MMS_SUCC_CNT,
-				0 AS MMS_FAIL_CNT
-			FROM (
-				SELECT 'RCS' AS CH
-				FROM DUAL
-			) A
-			LEFT OUTER JOIN (
-				SELECT 
-					CH,
-					SUM(SUCC_CNT) AS SUCC_CNT,
-					SUM(FAIL_CNT) AS FAIL_CNT
-				FROM 
-					cm.CM_STAT_CH_DAY
-				WHERE CORP_ID = #{corpId}
-				<if test="serviceType == 'UC'">
-				AND PROJECT_ID = #{projectId}
-				</if>
-				<choose>
-				<when test="startMonthStr != null and startMonthStr != ''">
-				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
-					</when>
-					<otherwise>
-				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
-					</otherwise>
-				</choose>
-				GROUP BY CH
-			) B ON A.CH = B.CH
-			UNION ALL
-			SELECT
-				0 AS TOTAL_SUCC_CNT,
-				0 AS TOTAL_FAIL_CNT,
-				0 AS PUSH_SUCC_CNT,
-				0 AS PUSH_FAIL_CNT,
-				0 AS RCS_SUCC_CNT,
-				0 AS RCS_FAIL_CNT,
-				IFNULL(B.SUCC_CNT, 0) AS ALIM_SUCC_CNT,
-				IFNULL(B.FAIL_CNT, 0) AS ALIM_FAIL_CNT,
-				0 AS FRIEND_SUCC_CNT,
-				0 AS FRIEND_FAIL_CNT,
-				0 AS SMS_SUCC_CNT,
-				0 AS SMS_FAIL_CNT,
-				0 AS LMS_SUCC_CNT,
-				0 AS LMS_FAIL_CNT,
-				0 AS MMS_SUCC_CNT,
-				0 AS MMS_FAIL_CNT
-			FROM (
-				SELECT 'ALIMTALK' AS CH
-				FROM DUAL
-			) A
-			LEFT OUTER JOIN (
-				SELECT 
-					CH,
-					SUM(SUCC_CNT) AS SUCC_CNT,
-					SUM(FAIL_CNT) AS FAIL_CNT
-				FROM 
-					cm.CM_STAT_CH_DAY
-				WHERE CORP_ID = #{corpId}
-				<if test="serviceType == 'UC'">
-				AND PROJECT_ID = #{projectId}
-				</if>
-				<choose>
-					<when test="startMonthStr != null and startMonthStr != ''">
-				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
-					</when>
-					<otherwise>
-				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
-					</otherwise>
-				</choose>
-				GROUP BY CH
-			) B ON A.CH = B.CH
-			UNION ALL
-			SELECT
-				0 AS TOTAL_SUCC_CNT,
-				0 AS TOTAL_FAIL_CNT,
-				0 AS PUSH_SUCC_CNT,
-				0 AS PUSH_FAIL_CNT,
-				0 AS RCS_SUCC_CNT,
-				0 AS RCS_FAIL_CNT,
-				0 AS ALIM_SUCC_CNT,
-				0 AS ALIM_FAIL_CNT,
-				IFNULL(B.SUCC_CNT, 0) AS FRIEND_SUCC_CNT,
-				IFNULL(B.FAIL_CNT, 0) AS FRIEND_FAIL_CNT,
-				0 AS SMS_SUCC_CNT,
-				0 AS SMS_FAIL_CNT,
-				0 AS LMS_SUCC_CNT,
-				0 AS LMS_FAIL_CNT,
-				0 AS MMS_SUCC_CNT,
-				0 AS MMS_FAIL_CNT
-			FROM (
-				SELECT 'FRIENDTALK' AS CH
-				FROM DUAL
-			) A
-			LEFT OUTER JOIN (
-				SELECT 
-					CH,
-					SUM(SUCC_CNT) AS SUCC_CNT,
-					SUM(FAIL_CNT) AS FAIL_CNT
-				FROM 
-					cm.CM_STAT_CH_DAY
-				WHERE CORP_ID = #{corpId}
-				<if test="serviceType == 'UC'">
-				AND PROJECT_ID = #{projectId}
-				</if>
-				<choose>
-					<when test="startMonthStr != null and startMonthStr != ''">
-				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
-					</when>
-					<otherwise>
-				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
-					</otherwise>
-				</choose>
-				GROUP BY CH
-			) B ON A.CH = B.CH
-			UNION ALL
-			SELECT
-				0 AS TOTAL_SUCC_CNT,
-				0 AS TOTAL_FAIL_CNT,
-				0 AS PUSH_SUCC_CNT,
-				0 AS PUSH_FAIL_CNT,
-				0 AS RCS_SUCC_CNT,
-				0 AS RCS_FAIL_CNT,
-				0 AS ALIM_SUCC_CNT,
-				0 AS ALIM_FAIL_CNT,
-				0 AS FRIEND_SUCC_CNT,
-				0 AS FRIEND_FAIL_CNT,
-				IFNULL(B.SUCC_CNT, 0) AS SMS_SUCC_CNT,
-				IFNULL(B.FAIL_CNT, 0) AS SMS_FAIL_CNT,
-				0 AS LMS_SUCC_CNT,
-				0 AS LMS_FAIL_CNT,
-				0 AS MMS_SUCC_CNT,
-				0 AS MMS_FAIL_CNT
-			FROM (
-				SELECT 'SMS' AS CH
-				FROM DUAL
-			) A
-			LEFT OUTER JOIN (
-				SELECT 
-					CH,
-					SUM(SUCC_CNT) AS SUCC_CNT,
-					SUM(FAIL_CNT) AS FAIL_CNT
-				FROM 
-					cm.CM_STAT_CH_DAY
-				WHERE CORP_ID = #{corpId}
-				<if test="serviceType == 'UC'">
-				AND PROJECT_ID = #{projectId}
-				</if>
-				<choose>
-					<when test="startMonthStr != null and startMonthStr != ''">
-				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
-					</when>
-					<otherwise>
-				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
-					</otherwise>
-				</choose>
-				GROUP BY CH
-			) B ON A.CH = B.CH
-			UNION ALL
-			SELECT
-				0 AS TOTAL_SUCC_CNT,
-				0 AS TOTAL_FAIL_CNT,
-				0 AS PUSH_SUCC_CNT,
-				0 AS PUSH_FAIL_CNT,
-				0 AS RCS_SUCC_CNT,
-				0 AS RCS_FAIL_CNT,
-				0 AS ALIM_SUCC_CNT,
-				0 AS ALIM_FAIL_CNT,
-				0 AS FRIEND_SUCC_CNT,
-				0 AS FRIEND_FAIL_CNT,
-				0 AS SMS_SUCC_CNT,
-				0 AS SMS_FAIL_CNT,
-				IFNULL(B.SUCC_CNT, 0) AS LMS_SUCC_CNT,
-				IFNULL(B.FAIL_CNT, 0) AS LMS_FAIL_CNT,
-				0 AS MMS_SUCC_CNT,
-				0 AS MMS_FAIL_CNT
-			FROM (
-				SELECT 'MMS' AS CH, 'LMS' AS PRODUCT_CODE
-				FROM DUAL
-			) A
-			LEFT OUTER JOIN (
-				SELECT 
-					CH,
-					PRODUCT_CODE,
-					SUM(SUCC_CNT) AS SUCC_CNT,
-					SUM(FAIL_CNT) AS FAIL_CNT
-				FROM 
-					cm.CM_STAT_CH_DAY
-				WHERE CORP_ID = #{corpId}
-				<if test="serviceType == 'UC'">
-				AND PROJECT_ID = #{projectId}
-				</if>
-				<choose>
-					<when test="startMonthStr != null and startMonthStr != ''">
-				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
-					</when>
-					<otherwise>
-				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
-					</otherwise>
-				</choose>
-				GROUP BY CH, PRODUCT_CODE
-			) B ON A.CH = B.CH AND A.PRODUCT_CODE = B.PRODUCT_CODE
-			UNION ALL
-			SELECT
-				0 AS TOTAL_SUCC_CNT,
-				0 AS TOTAL_FAIL_CNT,
-				0 AS PUSH_SUCC_CNT,
-				0 AS PUSH_FAIL_CNT,
-				0 AS RCS_SUCC_CNT,
-				0 AS RCS_FAIL_CNT,
-				0 AS ALIM_SUCC_CNT,
-				0 AS ALIM_FAIL_CNT,
-				0 AS FRIEND_SUCC_CNT,
-				0 AS FRIEND_FAIL_CNT,
-				0 AS SMS_SUCC_CNT,
-				0 AS SMS_FAIL_CNT,
-				0 AS LMS_SUCC_CNT,
-				0 AS LMS_FAIL_CNT,
-				IFNULL(B.SUCC_CNT, 0) AS MMS_SUCC_CNT,
-				IFNULL(B.FAIL_CNT, 0) AS MMS_FAIL_CNT
-			FROM (
-				SELECT 'MMS' AS CH, 'MMS' AS PRODUCT_CODE
-				FROM DUAL
-			) A
-			LEFT OUTER JOIN (
-				SELECT 
-					CH,
-					PRODUCT_CODE,
-					SUM(SUCC_CNT) AS SUCC_CNT,
-					SUM(FAIL_CNT) AS FAIL_CNT
-				FROM 
-					cm.CM_STAT_CH_DAY
-				WHERE CORP_ID = #{corpId}
-				<if test="serviceType == 'UC'">
-				AND PROJECT_ID = #{projectId}
-				</if>
-				<choose>
-					<when test="startMonthStr != null and startMonthStr != ''">
-				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
-					</when>
-					<otherwise>
-				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
-					</otherwise>
-				</choose>
-				GROUP BY CH, PRODUCT_CODE
-			) B ON A.CH = B.CH AND A.PRODUCT_CODE = B.PRODUCT_CODE
-		) TOT
+        /* dashboard.selectChTotCnt */
+		SELECT IFNULL(SUM(SUCC_CNT), 0) AS TOTAL_SUCC_CNT
+	     , IFNULL(SUM(FAIL_CNT), 0) AS TOTAL_FAIL_CNT
+	     , IFNULL(SUM((CASE CH WHEN 'PUSH' THEN SUCC_CNT ELSE 0 END)), 0) AS PUSH_SUCC_CNT
+	     , IFNULL(SUM((CASE CH WHEN 'PUSH' THEN FAIL_CNT ELSE 0 END)), 0) AS PUSH_FAIL_CNT
+	     , IFNULL(SUM((CASE CH WHEN 'RCS' THEN SUCC_CNT ELSE 0 END)), 0) AS RCS_SUCC_CNT
+	     , IFNULL(SUM((CASE CH WHEN 'RCS' THEN FAIL_CNT ELSE 0 END)), 0) AS RCS_FAIL_CNT
+	     , IFNULL(SUM((CASE CH WHEN 'ALIMTALK' THEN SUCC_CNT ELSE 0 END)), 0) AS ALIM_SUCC_CNT
+	     , IFNULL(SUM((CASE CH WHEN 'ALIMTALK' THEN FAIL_CNT ELSE 0 END)), 0) AS ALIM_FAIL_CNT
+	     , IFNULL(SUM((CASE CH WHEN 'FRIENDTALK' THEN SUCC_CNT ELSE 0 END)), 0) AS FRIEND_SUCC_CNT
+	     , IFNULL(SUM((CASE CH WHEN 'FRIENDTALK' THEN FAIL_CNT ELSE 0 END)), 0) AS FRIEND_FAIL_CNT
+	     , IFNULL(SUM((CASE CH WHEN 'SMS' THEN SUCC_CNT ELSE 0 END)), 0) AS SMS_SUCC_CNT
+	     , IFNULL(SUM((CASE CH WHEN 'SMS' THEN FAIL_CNT ELSE 0 END)), 0) AS SMS_FAIL_CNT
+	     , IFNULL(SUM((CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'LMS' THEN SUCC_CNT ELSE 0 END)), 0) AS LMS_SUCC_CNT
+	     , IFNULL(SUM((CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'LMS' THEN FAIL_CNT ELSE 0 END)), 0) AS LMS_FAIL_CNT
+	     , IFNULL(SUM((CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'MMS' THEN SUCC_CNT ELSE 0 END)), 0) AS MMS_SUCC_CNT
+	     , IFNULL(SUM((CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'MMS' THEN FAIL_CNT ELSE 0 END)), 0) AS MMS_FAIL_CNT
+    <choose>
+        <when test="startMonthStr != null and startMonthStr != ''">
+      FROM cm.CM_STAT_CH_MONTH
+        </when>
+        <otherwise>
+      FROM cm.CM_STAT_CH_DAY
+        </otherwise>
+    </choose>
+     WHERE CORP_ID = #{corpId}
+	<if test="serviceType == 'UC'">
+	   AND PROJECT_ID = #{projectId}
+	</if>
+    <choose>
+        <when test="startMonthStr != null and startMonthStr != ''">
+       AND YM BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-31'), '%Y-%m-%d')
+        </when>
+        <otherwise>
+       AND YMD BETWEEN STR_TO_DATE(#{startDateStr}, '%Y-%m-%d') AND STR_TO_DATE(#{endDateStr}, '%Y-%m-%d')
+        </otherwise>
+    </choose>
 	</select>
 
 	<select id="selectChSuccFailCntList" resultType="camel">
@@ -436,23 +119,37 @@
 			) A
 			<choose>
 				<when test="startMonthStr != null and startMonthStr != ''">
-			WHERE A.DATE BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+			WHERE A.DATE BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-31'), '%Y-%m-%d')
 			GROUP BY DATE_FORMAT(A.DATE, '%y-%m')
 				</when>
 				<otherwise>
-			WHERE A.DATE BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+			WHERE A.DATE BETWEEN STR_TO_DATE(#{startDateStr}, '%Y-%m-%d') AND STR_TO_DATE(#{endDateStr}, '%Y-%m-%d')
 				</otherwise>
 			</choose>
 		) AD
 		LEFT OUTER JOIN (
 			SELECT 
 				CH,
-				YMD,
-				DATE_FORMAT(YMD, '%y-%m') AS YM,
+            <choose>
+                <when test="startMonthStr != null and startMonthStr != ''">
+                YM AS YMD,
+                DATE_FORMAT(YM, '%y-%m') AS YM,
+                </when>
+                <otherwise>
+                YMD,
+                DATE_FORMAT(YMD, '%y-%m') AS YM,
+                </otherwise>
+            </choose>
 				SUM(SUCC_CNT) AS SUCC_CNT,
 				SUM(FAIL_CNT) AS FAIL_CNT
-			FROM 
-				cm.CM_STAT_CH_DAY
+            <choose>
+                <when test="startMonthStr != null and startMonthStr != ''">
+            FROM cm.CM_STAT_CH_MONTH
+                </when>
+                <otherwise>
+            FROM cm.CM_STAT_CH_DAY
+                </otherwise>
+            </choose>
 			WHERE CORP_ID = #{corpId}
 			<if test="serviceType == 'UC'">
 			AND PROJECT_ID = #{projectId}
@@ -474,11 +171,11 @@
 			</if>
 			<choose>
 				<when test="startMonthStr != null and startMonthStr != ''">
-			AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+			AND YM BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-31'), '%Y-%m-%d')
 			GROUP BY DATE_FORMAT(YMD, '%y-%m')
 				</when>
 				<otherwise>
-			AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+			AND YMD BETWEEN STR_TO_DATE(#{startDateStr}, '%Y-%m-%d') AND STR_TO_DATE(#{endDateStr}, '%Y-%m-%d')
 			GROUP BY YMD
 				</otherwise>
 			</choose>
@@ -500,8 +197,16 @@
 			CSRD.CH,
 			CSRD.RESULT_CODE,
 			IFNULL(CCG.GW_MESSAGE, '미등록코드') AS RESULT_MESSAGE
-		FROM 
-			cm.CM_STAT_RSLT_DAY CSRD
+        <choose>
+            <when test="startMonthStr != null and startMonthStr != ''">
+        FROM 
+            cm.CM_STAT_RSLT_MONTH CSRD
+            </when>
+            <otherwise>
+        FROM 
+            cm.CM_STAT_RSLT_DAY CSRD
+            </otherwise>
+        </choose>
 		LEFT OUTER JOIN cm.CM_CODE_GW CCG
 			ON CSRD.RESULT_CODE = CCG.GW_CODE
 		WHERE CORP_ID = #{corpId}
@@ -510,10 +215,10 @@
 		</if>
 		<choose>
 			<when test="startMonthStr != null and startMonthStr != ''">
-		AND CSRD.YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+		AND CSRD.YM BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-31'), '%Y-%m-%d')
 			</when>
 			<otherwise>
-		AND CSRD.YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+		AND CSRD.YMD BETWEEN STR_TO_DATE(#{startDateStr}, '%Y-%m-%d') AND STR_TO_DATE(#{endDateStr}, '%Y-%m-%d')
 			</otherwise>
 		</choose>
 		<if test="channel != 'ALL'">
@@ -556,11 +261,11 @@
 				) A
 				<choose>
 					<when test="startMonthStr != null and startMonthStr != ''">
-				WHERE A.DATE BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+				WHERE A.DATE BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d')
 				GROUP BY DATE_FORMAT(A.DATE, '%y-%m')
 					</when>
 					<otherwise>
-				WHERE A.DATE BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				WHERE A.DATE BETWEEN STR_TO_DATE(#{startDateStr}, '%Y-%m-%d') AND STR_TO_DATE(#{endDateStr}, '%Y-%m-%d')
 					</otherwise>
 				</choose>
 			) AD
@@ -590,11 +295,11 @@
 				</if>
 				<choose>
 					<when test="startMonthStr != null and startMonthStr != ''">
-				AND YMD BETWEEN DATE_FORMAT(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d'))
+				AND YMD BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d')
 				GROUP BY DATE_FORMAT(YMD, '%y-%m')
 					</when>
 					<otherwise>
-				AND YMD BETWEEN DATE_FORMAT(#{startDateStr}, '%Y-%m-%d') AND DATE_FORMAT(#{endDateStr}, '%Y-%m-%d')
+				AND YMD BETWEEN STR_TO_DATE(#{startDateStr}, '%Y-%m-%d') AND STR_TO_DATE(#{endDateStr}, '%Y-%m-%d')
 				GROUP BY YMD
 					</otherwise>
 				</choose>

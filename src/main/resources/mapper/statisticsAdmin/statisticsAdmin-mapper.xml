@@ -9,7 +9,7 @@
 				DATE_FORMAT(YMD, '%Y.%m.%d')	AS SEND_DATE
 			</when>
 			<otherwise>
-				DATE_FORMAT(YMD, '%Y.%m')		AS SEND_DATE
+				DATE_FORMAT(YM, '%Y.%m')		AS SEND_DATE
 			</otherwise>
 		</choose>
 			,	PROJECT_ID
@@ -23,17 +23,24 @@
 			,	SUM(SUCC_CNT) AS SUCC_CNT
 			,	SUM(FAIL_CNT) AS FAIL_CNT
 			,	IFNULL(CONCAT(ROUND(SUM(SUCC_CNT)/SUM(TOT_CNT) * 100), '%'), '0%')	AS SUCC_RATIO
-		FROM	cm.CM_STAT_CH_DAY A
+        <choose>
+            <when test="searchDateType == 'DAY'.toString()">
+        FROM    cm.CM_STAT_CH_DAY A
+            </when>
+            <otherwise>
+        FROM    cm.CM_STAT_CH_MONTH A
+            </otherwise>
+        </choose>
 		WHERE	CORP_ID = #{corpId}
 		<if test="searchProjectId != '' and searchProjectId != null ">
 		AND		PROJECT_ID = #{searchProjectId}
 		</if>
 		<choose>
 			<when test="searchDateType == 'DAY'.toString()">
-		AND		DATE_FORMAT(YMD, '%Y%m%d') BETWEEN REPLACE(#{searchStartDate}, '-', '') AND REPLACE(#{searchEndDate}, '-', '')
+		AND		YMD BETWEEN #{searchStartDate} AND #{searchEndDate}
 			</when>
 			<otherwise>
-		AND		DATE_FORMAT(YMD, '%Y%m') BETWEEN REPLACE(#{searchStartMonth}, '-', '') AND REPLACE(#{searchEndMonth}, '-', '')
+		AND		YM BETWEEN CONCAT(#{searchStartMonth},'-01') AND CONCAT(#{searchEndMonth}, '-31')
 			</otherwise>
 		</choose>
 		<choose>
