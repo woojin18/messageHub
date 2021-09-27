@@ -7,14 +7,14 @@
 						<h4 class="inline-block" style="width:6%">발송일</h4>
 						<div class="inline-block" style="width:25%">
 							<div v-show="searchData.searchDateType == 'DAY'">
-								<Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle" styleProps="width:40%" :initDate="searchData.searchStartDate"></Calendar>
+								<Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle" styleProps="width:40%" :initDate="searchData.searchStartDate" :maxDate="searchData.maxDate"></Calendar>
 								<span style="padding:0 11px">~</span>
-								<Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle" styleProps="width:40%" :initDate="searchData.searchEndDate"></Calendar>
+								<Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle" styleProps="width:40%" :initDate="searchData.searchEndDate" :maxDate="searchData.maxDate"></Calendar>
 							</div>
 							<div v-show="searchData.searchDateType == 'MONTH'">
-								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchStartMonth">
+								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchStartMonth" @change="fnSearch" readonly>
 								<span style="padding:0 11px">~</span>
-								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchEndMonth">
+								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchEndMonth" @change="fnSearch" readonly>
 							</div>
 						</div>
 						<div class="inline-block" style="width:30%">
@@ -119,8 +119,9 @@ export default {
 			require: false,
 			default: function() {
 				return {
-					'searchStartDate' : this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -7),
-					'searchEndDate' : this.$gfnCommonUtils.getCurretDate(),
+					'searchStartDate' : this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -8),
+					'searchEndDate' : this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -1),
+					'maxDate' : this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -1),
 					'searchProjectId' : '',
 					'searchDateType' : 'DAY',
 					'searchChanType' : 'KAKAO',
@@ -142,8 +143,8 @@ export default {
 			sumTotCnt: 0,
 			sumSuccCnt: 0,
 			totalSuccRatio: 0,
-			searchStartMonth : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -6+1),
-			searchEndMonth : this.$gfnCommonUtils.getCurretDate('yyyy-mm'),
+			searchStartMonth : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -3),
+			searchEndMonth : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -1),
 		}
 	},
 	mounted() {
@@ -210,7 +211,7 @@ export default {
 				buttonImage:'../../se2/images/datepicker.png',
 				buttonImageOnly: true,
 				showOn: 'button',
-				maxDate:0,
+				maxDate: this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -1)
 			});
 			jQuery("#endDate").monthpicker({
 				monthNames:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
@@ -220,7 +221,7 @@ export default {
 				buttonImage:'../../se2/images/datepicker.png',
 				buttonImageOnly: true,
 				showOn: 'button',
-				maxDate:0,
+				maxDate: this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -1)
 			});
 		},
 		// 합계
