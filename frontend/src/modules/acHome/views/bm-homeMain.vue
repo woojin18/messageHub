@@ -82,7 +82,6 @@
 							<span style="padding:0 11px">~</span>
 							<Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle" styleProps="width:15%" :initDate="searchData.searchEndDate" disabled></Calendar>
 							<ul class="tab_s2 ml20">
-								<li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 서비스 검색">오늘</a></li>
 								<li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 서비스 검색">1주일</a></li>
 								<li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 서비스 검색">15일</a></li>
 								<li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 서비스 검색">1개월</a></li>
@@ -731,7 +730,7 @@ export default {
 		// 검색일자변경
 		fnSetIntervalSearchDate(interval){
 			this.searchDateInterval = interval;
-			this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
+			this.searchData.searchEndDate = this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -1);
 			this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
 			this.fnGetChTotCntInfo();
 			this.fnSetChartData(this.fnGetChInfo());

@@ -577,7 +577,7 @@ export default {
 		//검색일자변경
 		fnSetIntervalSearchDate(interval){
 			this.searchDateInterval = interval;
-			this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
+			this.searchData.searchEndDate = this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -1);
 			this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
 			this.fnGetChTotCntInfo();
 			this.fnSetChartData(this.fnGetChInfo());
