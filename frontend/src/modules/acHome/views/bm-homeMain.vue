@@ -234,7 +234,7 @@ export default {
 			projects: [],
 			notices: [],
 			chName: 'Push',
-			channelTotalCountInfo: {},
+			channelTotalCountInfo: {totalSuccCnt:0, totalFailCnt:0, pushSuccCnt:0, pushFailCnt:0, rcsSuccCnt:0, rcsFailCnt:0, alimSuccCnt:0, alimFailCnt:0, friendSuccCnt:0, friendFailCnt:0, smsSuccCnt:0, smsFailCnt:0, lmsSuccCnt:0, lmsFailCnt:0, mmsSuccCnt:0, mmsFailCnt:0},
 			searchDateInterval: 7,
 			dateLine: [],
 			successCnt: [],
