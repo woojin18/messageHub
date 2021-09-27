@@ -149,12 +149,9 @@
 
 	<select id="selectSixMonthUseCnt" resultType="camel">
 		/* use.selectSixMonthUseCnt 6개월간 이용건수 조회 */
-		SELECT	DATE_FORMAT(YM, '%Y%m')	AS YM
-			,	SUM(SUCC_CNT) AS CNT
-		FROM	cm.CM_STAT_CH_MONTH
-		WHERE	CORP_ID = #{corpId}
-        AND     YM BETWEEN    DATE_FORMAT(NOW()-INTERVAL 6 MONTH, '%Y-%m-01') AND NOW()
-		GROUP BY DATE_FORMAT(YM, '%Y%m')
+        SELECT DATE_FORMAT(DATE_ADD(NOW(), INTERVAL A.a-5 MONTH), '%Y-%m') AS YM
+             , (SELECT SUM(SUCC_CNT) FROM cm.CM_STAT_CH_MONTH WHERE YM = DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL A.a-5 MONTH), '%Y-%m-01') AND CORP_ID = #{corpId}) AS CNT
+          FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) AS A
 	</select>
 
 	<select id="selectSixMonthChanUseCnt" resultType="camel">
@@ -164,13 +161,15 @@
 		FROM	cm.CM_STAT_CH_MONTH
 		WHERE	CORP_ID = #{corpId}
         AND     YM BETWEEN    DATE_FORMAT(NOW()-INTERVAL 6 MONTH, '%Y-%m-01') AND NOW()
+        AND     CH > ''
 		GROUP BY CH
+		ORDER BY 2 DESC, 1
 	</select>
 
 	<select id="selectSixMonthPrePayAmt" resultType="camel">
 		/* use.selectSixMonthPrePayAmt 최근 6개월간 선불결제금액 조회 */
 		SELECT	DATE_FORMAT(REG_DT, '%Y-%m') AS PAY_MONTH
-			,	COUNT(*) AS PAY_CNT
+			,	COUNT(1) AS PAY_CNT
 			,	SUM(CASH_CHARG_AMOUNT) AS PREPAYMENT_AMOUNT
 		FROM	cm_console.CM_WEB_CASH_HIST
 		WHERE	CORP_ID = #{corpId}
