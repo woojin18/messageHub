@@ -148,9 +148,9 @@
 	</select>
 
 	<select id="selectSixMonthUseCnt" resultType="camel">
-		/* use.selectSixMonthUseCnt 6개월간 이용건수 조회 */
+		 /* use.selectSixMonthUseCnt 6개월간 이용건수 조회 */
         SELECT DATE_FORMAT(DATE_ADD(NOW(), INTERVAL A.a-5 MONTH), '%Y-%m') AS YM
-             , (SELECT SUM(SUCC_CNT) FROM cm.CM_STAT_CH_MONTH WHERE YM = DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL A.a-5 MONTH), '%Y-%m-01') AND CORP_ID = #{corpId}) AS CNT
+             , (SELECT SUM(SUCC_CNT) FROM cm.CM_STAT_CH_DAY WHERE YMD = DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL A.a-5 MONTH), '%Y-%m-01') AND CORP_ID = #{corpId}) AS CNT
           FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) AS A
 	</select>
 
@@ -158,9 +158,9 @@
 		/* use.selectSixMonthChanUseCnt 6개월간 채널별 이용건수 조회 */
 		SELECT	CH
 			,	SUM(SUCC_CNT) AS CNT
-		FROM	cm.CM_STAT_CH_MONTH
+		FROM	cm.CM_STAT_CH_DAY
 		WHERE	CORP_ID = #{corpId}
-        AND     YM BETWEEN    DATE_FORMAT(NOW()-INTERVAL 6 MONTH, '%Y-%m-01') AND NOW()
+        AND     YMD BETWEEN    DATE_FORMAT(NOW()-INTERVAL 6 MONTH, '%Y-%m-01') AND NOW()
         AND     CH > ''
 		GROUP BY CH
 		ORDER BY 2 DESC, 1
@@ -173,13 +173,13 @@
 			,	SUM(CASH_CHARG_AMOUNT) AS PREPAYMENT_AMOUNT
 		FROM	cm_console.CM_WEB_CASH_HIST
 		WHERE	CORP_ID = #{corpId}
-        AND     REG_DT BETWEEN    DATE_FORMAT(NOW()-INTERVAL 6 MONTH, '%Y-%m-01') AND NOW()
+        AND     REG_DT BETWEEN    DATE_FORMAT(NOW()-INTERVAL 6 MONTH, '%Y-%m-01') AND LAST_DAY(DATE_FORMAT(NOW()-INTERVAL 1 MONTH, '%Y%m'))
 		AND		STATUS = '1'
 		GROUP BY PAY_MONTH DESC
 	</select>
 
 	<select id="selectSixMonthDefPayAmt" resultType="camel">
-		/* use.selectSixMonthDefPayAmt 최근 6개월간 후불청구금액 조회 */
+		/* use.selectSixMonthDefPayAmt 전월부터 6개월간 후불청구금액 조회 */
 		SELECT		CONCAT(SUBSTRING(A.YM, 1, 4), '-', SUBSTRING(A.YM, 5, 6)) AS YM
 		,			A.BILL_ID
 		,			SUM(A.CALC_CNT) AS CALC_AMOUNT
@@ -195,7 +195,7 @@
 		AND		A.CORP_ID = #{corpId}
 		AND		A.CORP_ID=B.CORP_ID
 		AND		C.NOPAY_YN = 'N'
-		AND	A.YM BETWEEN    DATE_FORMAT(NOW()-INTERVAL 6 MONTH, '%Y%m') AND DATE_FORMAT(NOW(), '%Y%m')
+		AND	A.YM BETWEEN    DATE_FORMAT(NOW()-INTERVAL 6 MONTH, '%Y%m') AND DATE_FORMAT(NOW()-INTERVAL 1 MONTH, '%Y%m')
         GROUP BY A.YM,A.CORP_ID,A.BILL_ID
 		ORDER BY A.YM DESC
 	</select>

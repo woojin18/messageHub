@@ -3,13 +3,13 @@
 		<article>
 			<div class="row">
 				<div class="col-xs-6">
-					<h4 class="topH4">이용건수추이 (최근 6개월)</h4>
+					<h4 class="topH4">이용건수추이 (최근 6개월, 당일 제외)</h4>
 					<div class="Dashboard01 fl border-line">
 						<bar-chart v-if="loaded" :chartData="sixMonthUsedCntData" :height="200"></bar-chart>
 					</div>
 				</div>
 				<div class="col-xs-6">
-					<h4 class="topH4">이용서비스별추이 (최근 6개월)</h4>
+					<h4 class="topH4">이용서비스별추이 (최근 6개월, 당일 제외)</h4>
 					<div class="Dashboard01 fl border-line">
 						<DoughnutChart v-if="loaded" :chartData="doughnutChartData" :chartOptions="doughnutOptions" :height="200"></DoughnutChart>
 					</div>
@@ -17,7 +17,7 @@
 			</div>
 			<div class="row mt10">
 				<div class="col-xs-6">
-					<h4>선불 결제내역청구내역 (최근 6개월)</h4>
+					<h4>선불 결제내역청구내역 (최근 6개월, 당일 제외)</h4>
 					<div class="Dashboard01 fl border-line">
 						<table class="table_skin1 bt-000 tbl-striped consolMarginTop">
 							<colgroup>
@@ -43,7 +43,7 @@
 					</div>
 				</div>
 				<div class="col-xs-6">
-					<h4>후불 청구내역 (최근 6개월)</h4>
+					<h4>후불 청구내역 (전월부터 6개월)</h4>
 					<div class="Dashboard01 fl border-line">
 							<table class="table_skin1 bt-000 tbl-striped consolMarginTop">
 								<colgroup>
