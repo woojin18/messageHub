@@ -1,5 +1,5 @@
 <template>
-  <input type="text" :id="calendarId" :class="classProps" :style="styleProps" :value="initDate" readonly>
+  <input type="text" :id="calendarId" :class="classProps" :style="styleProps" :value="initDate" autocomplete="off" readonly>
 </template>
 
 <script>
