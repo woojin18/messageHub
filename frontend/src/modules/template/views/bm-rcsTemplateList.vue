@@ -139,15 +139,27 @@ export default {
       contants: []
     }
   },
-  mounted() {
-    this.fnSearch();
+  async mounted() {
+	await this.fnExistApiKey();
+    await this.fnSearch();
   },
 
   methods: {
-	fnSearch(pageNum) {
+	async fnSearch(pageNum) {
 		this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
 		this.fnSelectRcsList();
 	},
+	async fnExistApiKey(){
+      let params = {};
+      await templateApi.selectApiKey(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          if(this.$gfnCommonUtils.isEmpty(result.data)){
+            confirm.fnAlert('RCS 템플릿', '해당 프로젝트의 사용가능한 API 키가 존재하지 않습니다.\n템플릿을 등록/수정/검수요청 하실 수 없습니다.');
+          }
+        }
+      });
+    },
     // 검색
     async fnSelectRcsList() {
 		var params = {

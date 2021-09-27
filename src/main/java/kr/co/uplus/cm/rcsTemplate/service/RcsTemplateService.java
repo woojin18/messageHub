@@ -16,6 +16,7 @@ import org.springframework.util.ObjectUtils;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.rcsTemplateSend.Service.RcsTemplateSendService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -361,6 +362,20 @@ public class RcsTemplateService {
 		// API 통신 처리
 		Map<String, Object> result = apiInterface.delete("/console/v1/rcs/brand/" + brandId + "/messagebase/" + messagebaseId, null, null, headerMap);
 		
+		// status가 502, 504인 경우 에러처리
+		int statusCode = CommonUtils.getInt(result.get("status"));
+		boolean status = false;
+		for(int rtnCode : ApiConfig.RETRY_HTTP_CODE) {
+			if(rtnCode == statusCode) {
+				status = true;
+				break;
+			}
+		}
+		
+		if(status) {
+			throw new Exception("RCS 연동시 오류가 발생하였습니다. 다시 한번 시도해 주십시요!");
+		}
+		
 		// 성공인지 실패인지 체크
 		if(!"10000".equals(result.get("code")) ) {
 			throw new Exception(CommonUtils.getString(result.get("message")));
@@ -375,6 +390,20 @@ public class RcsTemplateService {
 		
 		// API 통신 처리
 		Map<String, Object> result = apiInterface.put("/console/v1/rcs/brand/" + brandId + "/messagebase/" + messagebaseId + "/cancel", null, null, headerMap);
+		
+		// status가 502, 504인 경우 에러처리
+		int statusCode = CommonUtils.getInt(result.get("status"));
+		boolean status = false;
+		for(int rtnCode : ApiConfig.RETRY_HTTP_CODE) {
+			if(rtnCode == statusCode) {
+				status = true;
+				break;
+			}
+		}
+		
+		if(status) {
+			throw new Exception("RCS 연동시 오류가 발생하였습니다. 다시 한번 시도해 주십시요!");
+		}
 		
 		// 성공인지 실패인지 체크
 		if(!"10000".equals(result.get("code")) ) {
@@ -574,6 +603,20 @@ public class RcsTemplateService {
 			result = apiInterface.listPost("/console/v1/rcs/brand/" + brandId + "/messagebase", paramList, headerMap);
 		} else {
 			result = apiInterface.put("/console/v1/rcs/brand/" + brandId + "/messagebase/" + messagebaseId, paramMap, paramMap, headerMap);
+		}
+		
+		// status가 502, 504인 경우 에러처리
+		int statusCode = CommonUtils.getInt(result.get("status"));
+		boolean status = false;
+		for(int rtnCode : ApiConfig.RETRY_HTTP_CODE) {
+			if(rtnCode == statusCode) {
+				status = true;
+				break;
+			}
+		}
+		
+		if(status) {
+			throw new Exception("RCS 연동시 오류가 발생하였습니다. 다시 한번 시도해 주십시요!");
 		}
 		
 		// 성공인지 실패인지 체크

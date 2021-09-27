@@ -401,6 +401,25 @@ export default {
 	  desContents: function(newVal, oldVal) {
 		  this.desContentsExam = newVal;
 		  this.desContentsCnt = newVal.length;
+		  if(newVal.length==91) {
+			  confirm.fnAlert("RCS 템플릿", "템플릿 내용이 90자를 넘으면 템플릿 등록이 실패 될 수 있습니다.");
+		  }
+	  },
+	  styleInput: function(newVal, oldVal) {
+		  var styleText = newVal.join('');
+		  var styleTextSec = this.styleInputSec.join('');
+		  var confirmText = styleText + styleTextSec;
+		  if(confirmText.length==91) {
+			  confirm.fnAlert("RCS 템플릿", "템플릿 내용이 90자를 넘으면 템플릿 등록이 실패 될 수 있습니다.");
+		  }
+	  },
+	  styleInputSec: function(newVal, oldVal) {
+		  var styleText = this.styleInput.join('');
+		  var styleTextSec = newVal.join('');
+		  var confirmText = styleText + styleTextSec;
+		  if(confirmText.length==91) {
+			  confirm.fnAlert("RCS 템플릿", "템플릿 내용이 90자를 넘으면 템플릿 등록이 실패 될 수 있습니다.");
+		  }
 	  },
 	  templateNm: function(newVal, oldVal) {
 		  this.titleCnt = newVal.length;

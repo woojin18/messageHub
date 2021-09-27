@@ -37,7 +37,6 @@
 								,		A.APPROVAL_DT			AS APPROVAL_DT
 								FROM	cm.CM_RCS_MSGBASE A
 								WHERE	A.MESSAGEBASEFORM_ID != 'GG000F'
-								AND		A.APPROVAL_STATUS IS NOT NULL
 								<if test="corpId != '' and corpId != null">
 									AND		A.CORP_ID = #{corpId}
 								</if>
@@ -63,7 +62,6 @@
 								,		DATE_FORMAT(A.APPROVAL_DT, '%Y-%m-%d %H:%i:%s')	AS APPROVAL_DT
 								FROM	cm.CM_RCS_MSGBASE_REQ A
 								WHERE	A.MESSAGEBASEFORM_ID != 'GG000F'
-								AND		A.APPROVAL_STATUS IS NOT NULL
 								<if test="corpId != '' and corpId != null">
 									AND		A.CORP_ID = #{corpId}
 								</if>
@@ -103,19 +101,18 @@
 						,		case @vData when MESSAGEBASE_ID then @vRank := @vRank + 1 else @vRank := 1 end AS RANKING
 						,		(@vData:=MESSAGEBASE_ID) AS vData
 						FROM	(
-								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID
-								,		A.BRAND_ID			AS BRAND_ID
-								,		A.CORP_ID			AS CORP_ID
-								,		A.TMPLT_NAME		AS TMPLT_NAME
-								,		A.PRODUCT_CODE		AS PRODUCT_CODE
-								,		A.REG_ID			AS REG_ID
+								SELECT	A.MESSAGEBASE_ID		AS MESSAGEBASE_ID
+								,		A.BRAND_ID				AS BRAND_ID
+								,		A.CORP_ID				AS CORP_ID
+								,		A.TMPLT_NAME			AS TMPLT_NAME
+								,		A.PRODUCT_CODE			AS PRODUCT_CODE
+								,		A.REG_ID				AS REG_ID
 								,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
-								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS
-								,		A.APPROVAL_DT		AS APPROVAL_DT
+								,		A.APPROVAL_STATUS		AS APPROVAL_STATUS
+								,		A.APPROVAL_DT			AS APPROVAL_DT
 								,		A.MESSAGEBASEFORM_ID	AS MESSAGEBASEFORM_ID
 								FROM	cm.CM_RCS_MSGBASE A
 								WHERE	A.MESSAGEBASEFORM_ID != 'GG000F'
-								AND		A.APPROVAL_STATUS IS NOT NULL
 								<if test="corpId != '' and corpId != null">
 									AND		A.CORP_ID = #{corpId}
 								</if>
@@ -129,19 +126,18 @@
 									AND		A.MESSAGEBASE_ID LIKE CONCAT('%', #{temId}, '%')
 								</if>
 								UNION ALL
-								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID
-								,		A.BRAND_ID			AS BRAND_ID
-								,		A.CORP_ID			AS CORP_ID
-								,		A.TMPLT_NAME		AS TMPLT_NAME
-								,		A.PRODUCT_CODE		AS PRODUCT_CODE
-								,		A.REG_ID			AS REG_ID
-								,		A.REG_DT			AS REG_DT
-								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS
-								,		A.APPROVAL_DT		AS APPROVAL_DT
+								SELECT	A.MESSAGEBASE_ID		AS MESSAGEBASE_ID
+								,		A.BRAND_ID				AS BRAND_ID
+								,		A.CORP_ID				AS CORP_ID
+								,		A.TMPLT_NAME			AS TMPLT_NAME
+								,		A.PRODUCT_CODE			AS PRODUCT_CODE
+								,		A.REG_ID				AS REG_ID
+								,		A.REG_DT				AS REG_DT
+								,		A.APPROVAL_STATUS		AS APPROVAL_STATUS
+								,		A.APPROVAL_DT			AS APPROVAL_DT
 								,		A.MESSAGEBASEFORM_ID	AS MESSAGEBASEFORM_ID
 								FROM	cm.CM_RCS_MSGBASE_REQ A
 								WHERE	A.MESSAGEBASEFORM_ID != 'GG000F'
-								AND		A.APPROVAL_STATUS IS NOT NULL
 								<if test="corpId != '' and corpId != null">
 									AND		A.CORP_ID = #{corpId}
 								</if>
@@ -168,6 +164,7 @@
 	</select>
 
 	<sql id="selectRcsTemplateSql">
+			AND		AA.APPROVAL_STATUS IS NOT NULL
 			AND		BB.PROJECT_ID IN ('ALL' , #{projectId})
 		<if test="brandNm != '' and brandNm != null">
 			AND		BB.BRAND_NAME LIKE CONCAT('%', #{brandNm}, '%')
