@@ -116,8 +116,8 @@ components: {
 			require: false,
 			default: function() {
 				return {
-					'searchStartDate' : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -3+1),
-					'searchEndDate' : this.$gfnCommonUtils.getCurretDate('yyyy-mm'),
+					'searchStartDate' : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -3),
+					'searchEndDate' : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -1),
 				}
 			}
 		}
@@ -155,7 +155,7 @@ components: {
 				buttonImage:'../../se2/images/datepicker.png',
 				buttonImageOnly: true,
 				showOn: 'button',
-				maxDate:0,
+				maxDate: this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -1)
 			});
 			jQuery("#endDate").monthpicker({
 				monthNames:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
@@ -165,7 +165,7 @@ components: {
 				buttonImage:'../../se2/images/datepicker.png',
 				buttonImageOnly: true,
 				showOn: 'button',
-				maxDate:0,
+				maxDate: this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -1)
 			});
 		},
 		fnSearch() {
@@ -335,8 +335,8 @@ components: {
 		//검색일자변경
 		fnSetIntervalSearchDate(interval){
 			this.searchDateInterval = interval;
-			this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate('yyyy-mm');
-			this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -this.searchDateInterval +1);
+			this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -this.searchDateInterval);
+			this.searchData.searchEndDate = this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -1);
 		},
 		// 유효성 검사
 		fnChkValidation() {

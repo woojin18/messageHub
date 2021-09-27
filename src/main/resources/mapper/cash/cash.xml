@@ -101,6 +101,7 @@
 		FROM cm_console.CM_UCUBE cu
 		LEFT OUTER JOIN cm_console.CM_PROJECT cp
 			ON cu.BILL_ID = cp.BILL_ID 
+			AND		cp.DEL_YN = 'N'
 		LEFT OUTER JOIN cm_console.CM_PROJECT_SUBBILL_CODE cpsc
 			ON cu.BILL_ID = cpsc.BILL_ID 
 		WHERE	cp.BILL_ID is null
@@ -126,6 +127,7 @@
 			AND	cp.BILL_ID = cu.BILL_ID
 		WHERE	cp.CORP_ID = #{corpId}
 		AND		cp.PAY_TYPE = 'POST'
+		AND		cp.DEL_YN = 'N'
 	</select>
 	
 	<select id="selectProjectInfo" resultType="camel">
@@ -144,6 +146,7 @@
 			AND	cp.BILL_ID = cu.BILL_ID
 		WHERE	cp.CORP_ID = #{corpId}
 		AND		cp.PAY_TYPE = 'POST'
+		AND		cp.DEL_YN = 'N'
 	</select>
 	
 	<select id="selectProjectSubBillCodeCnt" resultType="int">

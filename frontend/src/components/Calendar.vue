@@ -1,5 +1,5 @@
 <template>
-  <input type="text" :id="calendarId" :class="classProps" :style="styleProps" :value="initDate" autocomplete="off" readonly>
+  <input type="text" :id="calendarId" :class="classProps" :style="styleProps" :value="initDate" autocomplete="off" readonly :maxDate="maxDate">
 </template>
 
 <script>
@@ -46,6 +46,10 @@ export default {
       default: function() {
         return {};
       }
+    },
+    maxDate: {
+      type: String,
+      require: false
     }
   },
   template: '<input/>',
@@ -64,6 +68,7 @@ export default {
       ,showOtherMonths: true // 다른 월 달력에 보이기
       ,selectOtherMonths: true // 다른 월 달력에 보이는거 클릭 가능하게 하기
       ,onSelect: function(d){vm.$emit('update-date',d, vm.params)}
+      ,maxDate: vm.maxDate
     }
 
     jq('#'+this.calendarId).datepicker({...this.customOption, ...defaultOption});
