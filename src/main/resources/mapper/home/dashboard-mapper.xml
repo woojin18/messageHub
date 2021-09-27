@@ -192,46 +192,46 @@
 	</select>
 
 	<select id="selectChFailCodeList" resultType="camel">
-		/* dashboard.selectChFailCodeList */
-		SELECT 
-			CSRD.CH,
-			CSRD.RESULT_CODE,
-			IFNULL(CCG.GW_MESSAGE, '미등록코드') AS RESULT_MESSAGE
-        <choose>
-            <when test="startMonthStr != null and startMonthStr != ''">
-        FROM 
-            cm.CM_STAT_RSLT_MONTH CSRD
-            </when>
-            <otherwise>
-        FROM 
-            cm.CM_STAT_RSLT_DAY CSRD
-            </otherwise>
-        </choose>
-		LEFT OUTER JOIN cm.CM_CODE_GW CCG
-			ON CSRD.RESULT_CODE = CCG.GW_CODE
-		WHERE CORP_ID = #{corpId}
-		<if test="serviceType == 'UC'">
-		AND CSRD.PROJECT_ID = #{projectId}
-		</if>
-		<choose>
-			<when test="startMonthStr != null and startMonthStr != ''">
-		AND CSRD.YM BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-31'), '%Y-%m-%d')
-			</when>
-			<otherwise>
-		AND CSRD.YMD BETWEEN STR_TO_DATE(#{startDateStr}, '%Y-%m-%d') AND STR_TO_DATE(#{endDateStr}, '%Y-%m-%d')
-			</otherwise>
-		</choose>
-		<if test="channel != 'ALL'">
-			<choose>
-				<when test="channel == 'LMS'">
-					AND CSRD.CH = 'MMS'
-				</when>
-				<otherwise>
-					AND CSRD.CH = #{channel}
-				</otherwise>
-			</choose>
-		</if>
-		GROUP BY CSRD.RESULT_CODE
+        /* dashboard.selectChFailCodeList */
+        SELECT RESULT_CODE
+             , IFNULL(CCG.GW_MESSAGE, '미등록코드') AS RESULT_MESSAGE
+             , SUM(CNT) AS CNT
+          FROM cm.CM_CODE_GW       CCG
+    <choose>
+        <when test="startMonthStr != null and startMonthStr != ''">
+             , cm.CM_STAT_RSLT_MONTH CSRD
+        </when>
+        <otherwise>
+             , cm.CM_STAT_RSLT_DAY CSRD
+        </otherwise>
+    </choose>
+    <choose>
+        <when test="startMonthStr != null and startMonthStr != ''">
+         WHERE CSRD.YM BETWEEN CONCAT(#{startMonthStr}, '-01') AND CONCAT(#{endMonthStr}, '-31')
+        </when>
+        <otherwise>
+         WHERE CSRD.YMD BETWEEN #{startDateStr} AND #{endDateStr}
+        </otherwise>
+    </choose>
+           AND CSRD.RESULT_CODE = CCG.GW_CODE
+           AND CSRD.RESULT_CODE > '10000'
+           AND CORP_ID = #{corpId}
+        <if test="serviceType == 'UC'">
+           AND CSRD.PROJECT_ID = #{projectId}
+        </if>
+        <if test="channel != 'ALL'">
+            <choose>
+                <when test="channel == 'LMS'">
+                    AND CSRD.CH = 'MMS'
+                </when>
+                <otherwise>
+                    AND CSRD.CH = #{channel}
+                </otherwise>
+            </choose>
+        </if>
+        GROUP BY CSRD.RESULT_CODE
+        ORDER BY SUM(CNT) DESC
+        LIMIT 10
 	</select>
 
 	<select id="selectChFailCodeCntList" resultType="camel">
@@ -410,29 +410,10 @@
 
 	<select id="selectMonthUsedTimeLineList" resultType="camel">
 		/* dashboard.selectMonthUsedTimeLineList */
-		SELECT
-			AD.DATE
-		FROM (
-			SELECT A.DATE 
-			FROM (
-			    SELECT DATE_ADD(CURDATE(), INTERVAL 1 MONTH) - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY AS DATE
-			    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
-			) A
-			WHERE A.DATE BETWEEN DATE_FORMAT(LAST_DAY(CURDATE() - INTERVAL 1 MONTH) + INTERVAL 1 DAY , '%Y-%m-%d') AND DATE_FORMAT(LAST_DAY(CURDATE()), '%Y-%m-%d')
-		) AD
-		LEFT OUTER JOIN (
-			SELECT 
-				YMD
-			FROM 
-				cm.CM_STAT_CH_DAY
-			WHERE CORP_ID = #{corpId}
-			AND YMD BETWEEN DATE_FORMAT(LAST_DAY(CURDATE() - INTERVAL 1 MONTH) + INTERVAL 1 DAY , '%Y-%m-%d') AND DATE_FORMAT(LAST_DAY(CURDATE()), '%Y-%m-%d')
-			GROUP BY YMD
-		) CSCD ON AD.DATE = CSCD.YMD
-		ORDER BY AD.DATE
+		SELECT CONCAT(DATE_FORMAT(NOW(), '%Y-%m'),'-',LPAD(a.a+(b.a)*6+1,2,'0')) AS DATE
+	      FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) a
+	         , (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) b
+		 WHERE CONCAT(DATE_FORMAT(NOW(), '%Y-%m'),'-',LPAD(a.a+(b.a)*6+1,2,'0')) BETWEEN LAST_DAY(CURDATE() - INTERVAL 1 MONTH) + INTERVAL 1 DAY AND LAST_DAY(CURDATE())
 	</select>
 
 	<select id="selectMonthUsedDataList" resultType="camel">
