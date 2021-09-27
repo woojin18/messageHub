@@ -88,6 +88,8 @@ export default {
 		},
 		ajaxlogin: function() {
 			var vm = this;
+			
+			vm.$refs.chkSaveId.focus();
 			vm.errmsg = null;
 
 			if (!vm.formCheck()) return false;
