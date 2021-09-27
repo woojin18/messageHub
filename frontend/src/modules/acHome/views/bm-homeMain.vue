@@ -721,6 +721,8 @@ export default {
 							}]
 						}
 					}
+
+					this.$forceUpdate() // 간헐적으로 챠트가 안나오는 현상 처리
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
