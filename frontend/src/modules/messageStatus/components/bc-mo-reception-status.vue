@@ -34,13 +34,13 @@
           </select>
           <h4 class="inline-block ml30" style="width:8%; vertical-align: middle;">발신번호</h4>
           <input type="text" class="inputStyle ml10" id="searchSendNumber" name="searchSendNumber" v-model="searchData.searchSendNumber" style="width:25%" title="발신번호"  @keypress.enter="fnSearch(1)">
+          <a @click="fnSearch()" class="btnStyle2 float-right mt20" title="검색" activity="READ">검색</a>
           <br />
           <h4 class="inline-block" style="width:8%; vertical-align: middle;">수신번호 : </h4>
           <div v-for="(data, idx) in receptionDatas" :key="idx" style="display:inline-block; margin-left:10px;" class="mt20">
             <input type="checkbox" :id="data.moNumber" name="searchReceptionNumber" class="checkStyle2" :value="data.moNumber" v-model="searchData.searchReceptionNumber" >
             <label :for="data.moNumber">{{ data.moNumber }}</label>
           </div>
-          <a @click="fnSearch()" class="btnStyle2 float-right mt20" title="검색" activity="READ">검색</a>
         </div>
         <div class="consolMarginTop">
           
