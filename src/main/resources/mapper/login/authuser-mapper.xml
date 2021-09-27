@@ -193,7 +193,14 @@
 		/* login.updateLoginFailCnt */
 		UPDATE cm_console.CM_USER
 		SET
-			LOGIN_FAIL_CNT = IFNULL(LOGIN_FAIL_CNT, 0)+1
+			LOGIN_FAIL_CNT = IFNULL(LOGIN_FAIL_CNT, 0)+1,
+			APPROVAL_STATUS = (
+				SELECT tmp.status FROM (
+					SELECT IF(LOGIN_FAIL_CNT >= 4, 'N', 'Y') AS STATUS
+					FROM cm_console.CM_USER
+					WHERE LOGIN_ID = #{userId}
+				) tmp
+			)
 		WHERE	LOGIN_ID = #{userId}
 	</update>
 	
