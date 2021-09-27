@@ -485,57 +485,26 @@ export default {
 		},
 		// 당일 이용현황 시간대 조회
 		fnGetRtUsedTimeLineList() {
+			for (var i = 0; i < 24; i++) {
+				this.timeLine.push(i);
+			}
+
 			let params = {
 				projectId: utils.getCookie(consts.projectId),
 				corpId: tokenSvc.getToken().principal.corpId
-			};
-
-			homeApi.selectRtUsedTimeLineList(params).then(response =>{
-				var result = response.data;
-				if (result.success) {
-					for (var i = 0; i < result.data.length; i++) {
-						this.timeLine.push(result.data[i].date);
-					}
-				} else {
-					confirm.fnAlert(this.componentsTitle, result.message);
-				}
-			});
-
-			this.fnGetRtUsedDataList('PUSH');
-			this.fnGetRtUsedDataList('RCS');
-			this.fnGetRtUsedDataList('FRIENDTALK');
-			this.fnGetRtUsedDataList('ALIMTALK');
-			this.fnGetRtUsedDataList('SMS');
-			this.fnGetRtUsedDataList('LMS');
-			this.fnGetRtUsedDataList('MMS');
-		},
-		// 당일 이용현황 채널별 데이터 조회
-		fnGetRtUsedDataList(channel) {
-			let params = {
-				projectId: utils.getCookie(consts.projectId),
-				corpId: tokenSvc.getToken().principal.corpId,
-				channel: channel
 			};
 
 			homeApi.selectRtUsedDataList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					for (var i = 0; i < result.data.length; i++) {
-						if (channel == 'PUSH') {
-							this.rtUsedPushList.push(result.data[i].totCnt);
-						} else if (channel == 'RCS') {
-							this.rtUsedRcsList.push(result.data[i].totCnt);
-						} else if (channel == 'FRIENDTALK') {
-							this.rtUsedFriendtalkList.push(result.data[i].totCnt);
-						} else if (channel == 'ALIMTALK') {
-							this.rtUsedAlimtalkList.push(result.data[i].totCnt);
-						} else if (channel == 'SMS') {
-							this.rtUsedSmsList.push(result.data[i].totCnt);
-						} else if (channel == 'LMS') {
-							this.rtUsedLmsList.push(result.data[i].totCnt);
-						} else if (channel == 'MMS') {
-							this.rtUsedMmsList.push(result.data[i].totCnt);
-						}
+						this.rtUsedPushList.push(result.data[i].pushCnt);
+						this.rtUsedRcsList.push(result.data[i].rcsCnt);
+						this.rtUsedFriendtalkList.push(result.data[i].friendtalkCnt);
+						this.rtUsedAlimtalkList.push(result.data[i].alimtalkCnt);
+						this.rtUsedSmsList.push(result.data[i].smsCnt);
+						this.rtUsedLmsList.push(result.data[i].lmsCnt);
+						this.rtUsedMmsList.push(result.data[i].mmsCnt);
 					}
 
 					this.rtUsedResultData = {

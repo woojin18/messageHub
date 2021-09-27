@@ -355,57 +355,26 @@
 	</select>
 
 	<select id="selectRtUsedDataList" resultType="camel">
-		/* dashboard.selectRtUsedDataList */
-		SELECT
-			DATE_FORMAT(STR_TO_DATE(AD.DATE, '%Y%m%d%H'), '%H') AS DATE,
-			CSCD.CH,
-			IFNULL(CSCD.TOT_CNT, 0) AS TOT_CNT
-		FROM (
-			SELECT DATE_FORMAT(A.DATE, '%Y%m%d%H') AS DATE 
-			FROM (
-			    SELECT DATE_ADD(CURDATE(), INTERVAL 1 DAY) - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY_HOUR AS DATE
-			    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
-			) A
-			WHERE A.DATE BETWEEN CONCAT(DATE_FORMAT(SYSDATE(), '%Y-%m-%d'), ' 00:00:00') and CONCAT(DATE_FORMAT(SYSDATE()+1, '%Y-%m-%d'), ' 23:00:00')
-		) AD
-		LEFT OUTER JOIN (
-			SELECT
-				CH,
-				YMDHM,
-				SUM(TOT_CNT) AS TOT_CNT
-			FROM (
-				SELECT 
-					CH,
-					DATE_FORMAT(STR_TO_DATE(YMDHM, '%Y%m%d%H%i'), '%Y%m%d%H') AS YMDHM,
-					SUM(TOT_CNT) AS TOT_CNT
-				FROM 
-					cm.CM_STAT_CH_MIN
-				WHERE CORP_ID = #{corpId}
-				AND PROJECT_ID = #{projectId}
-				<if test="channel != 'ALL'">
-					<choose>
-						<when test="channel == 'LMS'">
-							AND CH = 'MMS'
-							AND PRODUCT_CODE = #{channel}
-						</when>
-						<when test="channel == 'MMS'">
-							AND CH = #{channel}
-							AND PRODUCT_CODE = #{channel}
-						</when>
-						<otherwise>
-							AND CH = #{channel}
-						</otherwise>
-					</choose>
-				</if>
-				AND YMDHM BETWEEN CONCAT(DATE_FORMAT(SYSDATE(), '%Y%m%d'), '0000') and CONCAT(DATE_FORMAT(SYSDATE(), '%Y%m%d%H%i'), '2359')
-				GROUP BY YMDHM
-			) A
-			GROUP BY YMDHM
-		) CSCD ON AD.DATE = CSCD.YMDHM
-		ORDER BY AD.DATE
+        /* dashboard.selectRtUsedDataList */
+        SELECT SUBSTR(YMDH,9,12) AS DATE
+             , IFNULL(SUM(TOT_CNT),0) AS TOT_CNT
+             , IFNULL(SUM(CASE CH WHEN 'PUSH' THEN TOT_CNT ELSE 0 END),0) AS PUSH_CNT
+             , IFNULL(SUM(CASE CH WHEN 'RCS' THEN TOT_CNT ELSE 0 END),0) AS RCS_CNT
+             , IFNULL(SUM(CASE CH WHEN 'FRIENDTALK' THEN TOT_CNT ELSE 0 END),0) AS FRIENDTALK_CNT
+             , IFNULL(SUM(CASE CH WHEN 'ALIMTALK' THEN TOT_CNT ELSE 0 END),0) AS ALIMTALK_CNT
+             , IFNULL(SUM(CASE CH WHEN 'SMS' THEN TOT_CNT ELSE 0 END),0) AS SMS_CNT
+             , IFNULL(SUM(CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'LMS' THEN TOT_CNT ELSE 0 END),0) AS LMS_CNT
+             , IFNULL(SUM(CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'MMS' THEN TOT_CNT ELSE 0 END),0) AS MMS_CNT
+          FROM (
+            SELECT CONCAT(DATE_FORMAT(NOW(), '%Y%m%d'),LPAD(a.a+(b.a-1)*4-1,2,'0')) AS YMDH
+                FROM (SELECT 1 AS a UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4) a
+                 , (SELECT 1 AS a UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) b) AS A
+          LEFT JOIN cm.CM_STAT_CH_MIN b
+            ON YMDHM BETWEEN DATE_FORMAT(NOW(), '%Y%m%d0000') and DATE_FORMAT(NOW(), '%Y%m%d2359')
+           AND A.YMDH = SUBSTR(YMDHM, 1, 10)
+           AND CORP_ID = #{corpId}
+           AND PROJECT_ID = #{projectId}
+          GROUP BY YMDH
 	</select>
 
 	<select id="selectMonthUsedTimeLineList" resultType="camel">
