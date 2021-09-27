@@ -630,40 +630,17 @@ export default {
 				}
 			});
 
-			this.fnGetSixMonthUsedDataList('PUSH');
-			this.fnGetSixMonthUsedDataList('RCS');
-			this.fnGetSixMonthUsedDataList('FRIENDTALK');
-			this.fnGetSixMonthUsedDataList('ALIMTALK');
-			this.fnGetSixMonthUsedDataList('SMS');
-			this.fnGetSixMonthUsedDataList('LMS');
-			this.fnGetSixMonthUsedDataList('MMS');
-		},
-		// 최근 6개월간 이용현황 데이터 조회
-		fnGetSixMonthUsedDataList(channel) {
-			let params = {
-				corpId: tokenSvc.getToken().principal.corpId,
-				channel: channel
-			};
-
 			homeApi.selectSixMonthUsedDataList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					for (var i = 0; i < result.data.length; i++) {
-						if (channel == 'PUSH') {
-							this.sixMonthUsedPushList.push(result.data[i].totCnt);
-						} else if (channel == 'RCS') {
-							this.sixMonthUsedRcsList.push(result.data[i].totCnt);
-						} else if (channel == 'FRIENDTALK') {
-							this.sixMonthUsedFriendtalkList.push(result.data[i].totCnt);
-						} else if (channel == 'ALIMTALK') {
-							this.sixMonthUsedAlimtalkList.push(result.data[i].totCnt);
-						} else if (channel == 'SMS') {
-							this.sixMonthUsedSmsList.push(result.data[i].totCnt);
-						} else if (channel == 'LMS') {
-							this.sixMonthUsedLmsList.push(result.data[i].totCnt);
-						} else if (channel == 'MMS') {
-							this.sixMonthUsedMmsList.push(result.data[i].totCnt);
-						}
+						this.sixMonthUsedPushList.push(result.data[i].pushCnt);
+						this.sixMonthUsedRcsList.push(result.data[i].rcsCnt);
+						this.sixMonthUsedFriendtalkList.push(result.data[i].friendtalkCnt);
+						this.sixMonthUsedAlimtalkList.push(result.data[i].alimtalkCnt);
+						this.sixMonthUsedSmsList.push(result.data[i].smsCnt);
+						this.sixMonthUsedLmsList.push(result.data[i].lmsCnt);
+						this.sixMonthUsedMmsList.push(result.data[i].mmsCnt);
 					}
 
 					this.sixMonthUsedResultData = {

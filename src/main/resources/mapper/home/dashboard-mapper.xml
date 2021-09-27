@@ -464,75 +464,28 @@
 
 	<select id="selectSixMonthUsedTimeLineList" resultType="camel">
 		/* dashboard.selectSixMonthUsedTimeLineList */
-		SELECT
-			AD.DATE
-		FROM (
-			SELECT DATE_FORMAT(A.DATE, '%Y-%m') AS DATE 
-			FROM (
-			    SELECT CURDATE() - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) MONTH AS DATE
-			    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
-			) A
-			WHERE A.DATE BETWEEN DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL-5 MONTH), '%Y-%m-%d') AND DATE_FORMAT(CURDATE(), '%Y-%m-%d')
-		) AD
-		LEFT OUTER JOIN (
-			SELECT 
-				YM
-			FROM 
-				cm.CM_STAT_CH_MONTH
-			WHERE CORP_ID = #{corpId}
-			AND YM BETWEEN DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL-5 MONTH), '%Y-%m-%d') AND DATE_FORMAT(CURDATE(), '%Y-%m-%d')
-			GROUP BY YM
-		) CSCM ON AD.DATE = CSCM.YM
-		ORDER BY AD.DATE
+        SELECT DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -A.a MONTH), '%Y-%m') AS DATE
+          FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) AS A
+         ORDER BY 1
 	</select>
 
 	<select id="selectSixMonthUsedDataList" resultType="camel">
 		/* dashboard.selectSixMonthUsedDataList */
-		SELECT
-			AD.DATE,
-			CH,
-			IFNULL(CSCM.TOT_CNT, 0) AS TOT_CNT
-		FROM (
-			SELECT DATE_FORMAT(A.DATE, '%Y-%m') AS DATE 
-			FROM (
-			    SELECT curdate() - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) MONTH AS DATE
-			    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
-			) A
-			WHERE A.DATE BETWEEN DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL-5 MONTH), '%Y-%m-%d') AND DATE_FORMAT(CURDATE(), '%Y-%m-%d')
-		) AD
-		LEFT OUTER JOIN (
-			SELECT 
-				CH,
-				DATE_FORMAT(YM, '%Y-%m') AS YM,
-				SUM(TOT_CNT) AS TOT_CNT
-			FROM 
-				cm.CM_STAT_CH_MONTH
-			WHERE CORP_ID = #{corpId}
-			AND YM BETWEEN DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL-5 MONTH), '%Y-%m-%d') AND DATE_FORMAT(CURDATE(), '%Y-%m-%d')
-			<if test="channel != 'ALL'">
-				<choose>
-					<when test="channel == 'LMS'">
-						AND CH = 'MMS'
-						AND PRODUCT_CODE = #{channel}
-					</when>
-					<when test="channel == 'MMS'">
-						AND CH = #{channel}
-						AND PRODUCT_CODE = #{channel}
-					</when>
-					<otherwise>
-						AND CH = #{channel}
-					</otherwise>
-				</choose>
-			</if>
-			GROUP BY CH, YM
-		) CSCM ON AD.DATE = CSCM.YM
-		ORDER BY AD.DATE
+        SELECT DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -A.a MONTH), '%Y-%m-01') AS DATE
+             , IFNULL(SUM(TOT_CNT),0) AS TOT_CNT
+             , IFNULL(SUM(CASE CH WHEN 'PUSH' THEN TOT_CNT ELSE 0 END),0) AS PUSH_CNT
+             , IFNULL(SUM(CASE CH WHEN 'RCS' THEN TOT_CNT ELSE 0 END),0) AS RCS_CNT
+             , IFNULL(SUM(CASE CH WHEN 'FRIENDTALK' THEN TOT_CNT ELSE 0 END),0) AS FRIENDTALK_CNT
+             , IFNULL(SUM(CASE CH WHEN 'ALIMTALK' THEN TOT_CNT ELSE 0 END),0) AS ALIMTALK_CNT
+             , IFNULL(SUM(CASE CH WHEN 'SMS' THEN TOT_CNT ELSE 0 END),0) AS SMS_CNT
+             , IFNULL(SUM(CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'LMS' THEN TOT_CNT ELSE 0 END),0) AS LMS_CNT
+             , IFNULL(SUM(CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'MMS' THEN TOT_CNT ELSE 0 END),0) AS MMS_CNT
+          FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) AS A
+          LEFT JOIN cm.CM_STAT_CH_MONTH B
+            ON YM BETWEEN DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL-5 MONTH), '%Y-%m-01') AND DATE_FORMAT(CURDATE(), '%Y-%m-31')
+           AND CORP_ID = #{corpId}
+           AND B.YM = DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -A.a MONTH), '%Y-%m-01')
+          GROUP BY DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -A.a MONTH), '%Y-%m-01')
 	</select>
 
 </mapper>
