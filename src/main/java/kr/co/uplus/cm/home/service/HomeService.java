@@ -190,17 +190,37 @@ public class HomeService {
 		RestResult<Object> rtn = new RestResult<Object>();
 
 		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CH_FAIL_CODE_LIST, params);
-
-		for (int i = 0; i < rtnList.size(); i++) {
-			Map<String, Object> rtnMap = (Map<String, Object>) rtnList.get(i);
-			params.put("resultCode", rtnMap.get("resultCode"));
-
-			// 대시보드 일자별 실패코드 카운트 조회
-			List<Object> subRtnList = generalDao.selectGernalList(DB.QRY_SELECT_CH_FAIL_CODE_COUNT_LIST, params);
-
-			rtnMap.put("failCodeCnt", subRtnList);
-		}
 		rtn.setData(rtnList);
+		int rcnt = rtnList.size();
+		
+		if (rcnt == 0) return rtn; // 코드값이 없으면 끝낸다. 
+		
+		params.put("rtnList", rtnList);
+		List<Object> subRtnList = generalDao.selectGernalList(DB.QRY_SELECT_CH_FAIL_CODE_COUNT_LIST, params);
+
+		int idx = 0;
+		int scnt = subRtnList.size();
+		for (int i = 0; i < rcnt; i++) {
+			Map<String, Object> rtnMap = (Map<String, Object>) rtnList.get(i);
+
+			for (int j = idx; j < scnt; j++) {
+				Map<String, Object> subMap = (Map<String, Object>) subRtnList.get(j);
+//				log.info("Sub"+j+":"+rtnMap.get("resultCode")+":"+subMap.get("resultCode"));
+				if (!rtnMap.get("resultCode").equals(subMap.get("resultCode"))) {
+//					log.info("===================>"+rtnMap.get("resultCode"));
+//					log.info(subRtnList.subList(idx, j));
+					rtnMap.put("failCodeCnt", subRtnList.subList(idx, j));
+					idx = j;
+					break;
+				}
+			}
+			
+			if (i == rcnt-1) {
+//				log.info("===================>"+rtnMap.get("resultCode"));
+//				log.info(subRtnList.subList(idx, scnt));
+				rtnMap.put("failCodeCnt", subRtnList.subList(idx, scnt));
+			}
+		}
 
 		return rtn;
 	}

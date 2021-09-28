@@ -263,6 +263,7 @@ export default {
 				vm.fnGetNoticeList();
 				vm.fnSetIntervalSearchDate(vm.searchDateInterval);
 				vm.fnGetRtUsedTimeLineList();
+				vm.$forceUpdate()
 			}
 		}, 100);
 	},

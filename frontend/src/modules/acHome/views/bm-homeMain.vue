@@ -282,6 +282,7 @@ export default {
 			vm.fnSetIntervalSearchDate(vm.searchDateInterval);
 			vm.fnGetMonthUsedTimeLineList();
 			vm.fnGetSixMonthUsedTimeLineList();
+			vm.$forceUpdate()
 		}, 100);
 	},
 	methods: {

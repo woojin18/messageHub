@@ -110,13 +110,9 @@
 			SELECT A.DATE
 				</otherwise>
 			</choose>
-			FROM (
-			    SELECT CURDATE() - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY AS DATE
-			    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
-			) A
+          FROM (SELECT CURDATE() - INTERVAL (a.a + (6 * b.a) ) DAY AS DATE
+                  FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5) AS a
+                     , (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5) AS b) AS A
 			<choose>
 				<when test="startMonthStr != null and startMonthStr != ''">
 			WHERE A.DATE BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-31'), '%Y-%m-%d')
@@ -236,122 +232,35 @@
 
 	<select id="selectChFailCodeCntList" resultType="camel">
 		/* dashboard.selectChFailCodeCntList */
-		SELECT
-			A.DATE,
-			A.CNT
-		FROM (
-			SELECT
-				AD.DATE,
-				IFNULL(CSRD.CNT, 0) AS CNT
-			FROM (
-				<choose>
-					<when test="startMonthStr != null and startMonthStr != ''">
-				SELECT DATE_FORMAT(A.DATE, '%y-%m')	AS DATE
-					</when>
-					<otherwise>
-				SELECT A.DATE
-					</otherwise>
-				</choose>
-				FROM (
-				    SELECT CURDATE() - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY AS DATE
-				    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
-				    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
-				    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
-				    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
-				) A
-				<choose>
-					<when test="startMonthStr != null and startMonthStr != ''">
-				WHERE A.DATE BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d')
-				GROUP BY DATE_FORMAT(A.DATE, '%y-%m')
-					</when>
-					<otherwise>
-				WHERE A.DATE BETWEEN STR_TO_DATE(#{startDateStr}, '%Y-%m-%d') AND STR_TO_DATE(#{endDateStr}, '%Y-%m-%d')
-					</otherwise>
-				</choose>
-			) AD
-			LEFT OUTER JOIN (
-				SELECT 
-					CH,
-					YMD,
-					DATE_FORMAT(YMD, '%y-%m') AS YM,
-					RESULT_CODE,
-					SUM(CNT) AS CNT
-				FROM 
-					cm.CM_STAT_RSLT_DAY
-				WHERE CORP_ID = #{corpId}
-				<if test="serviceType == 'UC'">
-				AND PROJECT_ID = #{projectId}
-				</if>
-				AND RESULT_CODE = #{resultCode}
-				<if test="channel != 'ALL'">
-					<choose>
-						<when test="channel == 'LMS'">
-							AND CH = 'MMS'
-						</when>
-						<otherwise>
-							AND CH = #{channel}
-						</otherwise>
-					</choose>
-				</if>
-				<choose>
-					<when test="startMonthStr != null and startMonthStr != ''">
-				AND YMD BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-01'), '%Y-%m-%d')
-				GROUP BY DATE_FORMAT(YMD, '%y-%m')
-					</when>
-					<otherwise>
-				AND YMD BETWEEN STR_TO_DATE(#{startDateStr}, '%Y-%m-%d') AND STR_TO_DATE(#{endDateStr}, '%Y-%m-%d')
-				GROUP BY YMD
-					</otherwise>
-				</choose>
-			) CSRD
-			<choose>
-				<when test="startMonthStr != null and startMonthStr != ''">
-			ON AD.DATE = CSRD.YM
-				</when>
-				<otherwise>
-			ON AD.DATE = CSRD.YMD
-				</otherwise>
-			</choose>
-			ORDER BY AD.DATE
-		) A
+        SELECT B.RESULT_CODE
+             , A.DATE
+             , (SELECT SUM(CNT) FROM cm.CM_STAT_RSLT_DAY X WHERE X.YMD = A.DATE AND X.RESULT_CODE = B.RESULT_CODE AND CORP_ID = #{corpId}
+        <if test="serviceType == 'UC'">
+        AND PROJECT_ID = #{projectId}
+        </if>
+        <if test="channel != 'ALL'">
+            <choose>
+                <when test="channel == 'LMS'">
+                    AND X.CH = 'MMS'
+                </when>
+                <otherwise>
+                    AND X.CH = #{channel}
+                </otherwise>
+            </choose>
+        </if>) AS CNT
+              FROM (SELECT CURDATE() - INTERVAL (a.a + (6 * b.a) ) DAY AS DATE
+                      FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5) AS a
+                         , (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5) AS b) AS A
+                         , (<foreach collection="rtnList" index="index" item="data" separator=" UNION ALL">SELECT #{data.resultCode} AS RESULT_CODE, #{index} AS OD</foreach>) AS B
+         WHERE DATE BETWEEN #{startDateStr} AND #{endDateStr}
+         ORDER BY B.OD, A.DATE
 	</select>
 
 	<select id="selectRtUsedTimeLineList" resultType="camel">
 		/* dashboard.selectRtUsedTimeLineList */
-		SELECT
-			DATE_FORMAT(STR_TO_DATE(AD.DATE, '%Y%m%d%H'), '%H') AS DATE
-		FROM (
-			SELECT DATE_FORMAT(A.DATE, '%Y%m%d%H') AS DATE 
-			FROM (
-			    SELECT DATE_ADD(CURDATE(), INTERVAL 1 DAY) - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY_HOUR AS DATE
-			    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
-			) A
-			WHERE A.DATE BETWEEN CONCAT(DATE_FORMAT(SYSDATE(), '%Y-%m-%d'), ' 00:00:00') and CONCAT(DATE_FORMAT(SYSDATE()+1, '%Y-%m-%d'), ' 23:00:00')
-		) AD
-		LEFT OUTER JOIN (
-			SELECT
-				CH,
-				YMDHM,
-				SUM(TOT_CNT) AS TOT_CNT
-			FROM (
-				SELECT 
-					CH,
-					DATE_FORMAT(STR_TO_DATE(YMDHM, '%Y%m%d%H%i'), '%Y%m%d%H') AS YMDHM,
-					SUM(TOT_CNT) AS TOT_CNT
-				FROM 
-					cm.CM_STAT_CH_MIN
-				WHERE CORP_ID = #{corpId}
-				AND PROJECT_ID = #{projectId}
-				AND YMDHM BETWEEN CONCAT(DATE_FORMAT(SYSDATE(), '%Y%m%d'), '0000') and CONCAT(DATE_FORMAT(SYSDATE(), '%Y%m%d%H%i'), '2359')
-				GROUP BY YMDHM
-			) A
-			GROUP BY YMDHM
-		) CSCD ON AD.DATE = CSCD.YMDHM
-		GROUP BY AD.DATE
-		ORDER BY AD.DATE
+		SELECT CURDATE() - INTERVAL (a.a + (6 * b.a) ) DAY AS DATE
+          FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5) AS a
+             , (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5) AS b
 	</select>
 
 	<select id="selectRtUsedDataList" resultType="camel">
