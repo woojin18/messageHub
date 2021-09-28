@@ -479,54 +479,21 @@ export default {
 		// 당월 이용현황 시간대 조회
 		fnGetMonthUsedTimeLineList() {
 			let params = {
-				corpId: tokenSvc.getToken().principal.corpId
-			};
-
-			homeApi.selectMonthUsedTimeLineList(params).then(response =>{
-				var result = response.data;
-				if (result.success) {
-					for (var i = 0; i < result.data.length; i++) {
-						this.timeLine.push(result.data[i].date);
-					}
-				} else {
-					confirm.fnAlert(this.componentsTitle, result.message);
-				}
-			});
-
-			this.fnGetMonthUsedDataList('PUSH');
-			this.fnGetMonthUsedDataList('RCS');
-			this.fnGetMonthUsedDataList('FRIENDTALK');
-			this.fnGetMonthUsedDataList('ALIMTALK');
-			this.fnGetMonthUsedDataList('SMS');
-			this.fnGetMonthUsedDataList('LMS');
-			this.fnGetMonthUsedDataList('MMS');
-		},
-		// 당월 이용현황 채널별 데이터 조회
-		fnGetMonthUsedDataList(channel) {
-			let params = {
 				corpId: tokenSvc.getToken().principal.corpId,
-				channel: channel
 			};
 
 			homeApi.selectMonthUsedDataList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					for (var i = 0; i < result.data.length; i++) {
-						if (channel == 'PUSH') {
-							this.monthUsedPushList.push(result.data[i].totCnt);
-						} else if (channel == 'RCS') {
-							this.monthUsedRcsList.push(result.data[i].totCnt);
-						} else if (channel == 'FRIENDTALK') {
-							this.monthUsedFriendtalkList.push(result.data[i].totCnt);
-						} else if (channel == 'ALIMTALK') {
-							this.monthUsedAlimtalkList.push(result.data[i].totCnt);
-						} else if (channel == 'SMS') {
-							this.monthUsedSmsList.push(result.data[i].totCnt);
-						} else if (channel == 'LMS') {
-							this.monthUsedLmsList.push(result.data[i].totCnt);
-						} else if (channel == 'MMS') {
-							this.monthUsedMmsList.push(result.data[i].totCnt);
-						}
+						this.timeLine.push(result.data[i].date);
+						this.monthUsedPushList.push(result.data[i].pushCnt);
+						this.monthUsedRcsList.push(result.data[i].rcsCnt);
+						this.monthUsedFriendtalkList.push(result.data[i].friendtalkCnt);
+						this.monthUsedAlimtalkList.push(result.data[i].alimtalkCnt);
+						this.monthUsedSmsList.push(result.data[i].smsCnt);
+						this.monthUsedLmsList.push(result.data[i].lmsCnt);
+						this.monthUsedMmsList.push(result.data[i].mmsCnt);
 					}
 
 					this.monthUsedResultData = {
@@ -618,21 +585,11 @@ export default {
 				corpId: tokenSvc.getToken().principal.corpId
 			};
 
-			homeApi.selectSixMonthUsedTimeLineList(params).then(response =>{
-				var result = response.data;
-				if (result.success) {
-					for (var i = 0; i < result.data.length; i++) {
-						this.sixMonthTimeLine.push(result.data[i].date);
-					}
-				} else {
-					confirm.fnAlert(this.componentsTitle, result.message);
-				}
-			});
-
 			homeApi.selectSixMonthUsedDataList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					for (var i = 0; i < result.data.length; i++) {
+						this.sixMonthTimeLine.push(result.data[i].date);
 						this.sixMonthUsedPushList.push(result.data[i].pushCnt);
 						this.sixMonthUsedRcsList.push(result.data[i].rcsCnt);
 						this.sixMonthUsedFriendtalkList.push(result.data[i].friendtalkCnt);
@@ -720,8 +677,6 @@ export default {
 							}]
 						}
 					}
-
-					this.$forceUpdate() // 간헐적으로 챠트가 안나오는 현상 처리
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}

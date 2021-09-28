@@ -387,48 +387,24 @@
 
 	<select id="selectMonthUsedDataList" resultType="camel">
 		/* dashboard.selectMonthUsedDataList */
-		SELECT
-			AD.DATE,
-			CH,
-			IFNULL(CSCD.TOT_CNT, 0) AS TOT_CNT
-		FROM (
-			SELECT A.DATE 
-			FROM (
-			    SELECT DATE_ADD(CURDATE(), INTERVAL 1 MONTH) - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a) ) DAY AS DATE
-			    FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) AS a
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS b
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS c
-			    CROSS JOIN (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5 union all SELECT 6 union all SELECT 7 union all SELECT 8 union all SELECT 9) AS d
-			) A
-			WHERE A.DATE BETWEEN DATE_FORMAT(LAST_DAY(CURDATE() - INTERVAL 1 MONTH) + INTERVAL 1 DAY , '%Y-%m-%d') AND DATE_FORMAT(LAST_DAY(CURDATE()), '%Y-%m-%d')
-		) AD
-		LEFT OUTER JOIN (
-			SELECT 
-				CH,
-				YMD,
-				SUM(TOT_CNT) AS TOT_CNT
-			FROM 
-				cm.CM_STAT_CH_DAY
-			WHERE CORP_ID = #{corpId}
-			AND YMD BETWEEN DATE_FORMAT(LAST_DAY(CURDATE() - INTERVAL 1 MONTH) + INTERVAL 1 DAY , '%Y-%m-%d') AND DATE_FORMAT(LAST_DAY(CURDATE()), '%Y-%m-%d')
-			<if test="channel != 'ALL'">
-				<choose>
-					<when test="channel == 'LMS'">
-						AND CH = 'MMS'
-						AND PRODUCT_CODE = #{channel}
-					</when>
-					<when test="channel == 'MMS'">
-						AND CH = #{channel}
-						AND PRODUCT_CODE = #{channel}
-					</when>
-					<otherwise>
-						AND CH = #{channel}
-					</otherwise>
-				</choose>
-			</if>
-			GROUP BY YMD
-		) CSCD ON AD.DATE = CSCD.YMD
-		ORDER BY AD.DATE
+		SELECT A.DATE
+		         , IFNULL(SUM(CASE CH WHEN 'PUSH' THEN TOT_CNT ELSE 0 END),0) AS PUSH_CNT
+		         , IFNULL(SUM(CASE CH WHEN 'RCS' THEN TOT_CNT ELSE 0 END),0) AS RCS_CNT
+		         , IFNULL(SUM(CASE CH WHEN 'FRIENDTALK' THEN TOT_CNT ELSE 0 END),0) AS FRIENDTALK_CNT
+		         , IFNULL(SUM(CASE CH WHEN 'ALIMTALK' THEN TOT_CNT ELSE 0 END),0) AS ALIMTALK_CNT
+		         , IFNULL(SUM(CASE CH WHEN 'SMS' THEN TOT_CNT ELSE 0 END),0) AS SMS_CNT
+		         , IFNULL(SUM(CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'LMS' THEN TOT_CNT ELSE 0 END),0) AS LMS_CNT
+		         , IFNULL(SUM(CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'MMS' THEN TOT_CNT ELSE 0 END),0) AS MMS_CNT
+		  FROM (
+		        SELECT CONCAT(DATE_FORMAT(NOW(), '%Y-%m'),'-',LPAD(a.a+(b.a)*6+1,2,'0')) AS DATE
+		          FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) a
+		             , (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) b
+		         WHERE CONCAT(DATE_FORMAT(NOW(), '%Y-%m'),'-',LPAD(a.a+(b.a)*6+1,2,'0')) BETWEEN LAST_DAY(CURDATE() - INTERVAL 1 MONTH) + INTERVAL 1 DAY AND LAST_DAY(CURDATE())) A
+		  LEFT JOIN cm.CM_STAT_CH_DAY B
+		    ON CORP_ID = #{corpId}
+		   AND YMD BETWEEN LAST_DAY(CURDATE() - INTERVAL 1 MONTH) + INTERVAL 1 DAY AND LAST_DAY(CURDATE())
+		   AND B.YMD = A.DATE
+		 GROUP BY A.DATE
 	</select>
 
 	<select id="selectSixMonthUsedTimeLineList" resultType="camel">
