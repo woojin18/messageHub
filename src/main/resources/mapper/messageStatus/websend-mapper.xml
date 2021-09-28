@@ -83,21 +83,25 @@
 	<select id="selectWebSendFailList" parameterType="hashmap" resultType="camel">
 	/* 웹발송 현황 발송실패 리스트 조회 */
 		SELECT	@rownum:=@rownum+1 AS ROW_NUM
-		,		B.PHONE
-		,		B.PUSH_CUID
-		,		B.GW_RESULT_CODE
-		,		B.GW_RESULT_DESC
-		FROM	cm_console.CM_WEB_MSG A
-		INNER JOIN	cm.CM_MSG B
-			ON	A.WEB_REQ_ID = B.WEB_REQ_ID
-			AND	DATE_FORMAT(A.REG_DT, '%Y-%m-%d') = B.YMD
-			AND	A.API_KEY = B.API_KEY
-		,		(SELECT @rownum:=0) TMP
-		WHERE	1=1
-		AND		B.GW_RESULT_CODE IS NOT NULL
-		AND		IFNULL(B.GW_RESULT_CODE, '0') != '10000'
-		<include refid="whereSelectWebSendFailList"/>
-		ORDER BY A.REG_DT DESC
+		,		AA.*
+		FROM	(
+			SELECT	B.PHONE
+			,		B.PUSH_CUID
+			,		B.GW_RESULT_CODE
+			,		B.GW_RESULT_DESC
+			FROM	cm_console.CM_WEB_MSG A
+			INNER JOIN	cm.CM_MSG B
+				ON	A.WEB_REQ_ID = B.WEB_REQ_ID
+				AND	DATE_FORMAT(A.REG_DT, '%Y-%m-%d') = B.YMD
+				AND	A.API_KEY = B.API_KEY
+			WHERE	1=1
+			AND		B.GW_RESULT_CODE IS NOT NULL
+			AND		IFNULL(B.GW_RESULT_CODE, '0') != '10000'
+			<include refid="whereSelectWebSendFailList"/>
+			ORDER BY A.REG_DT DESC
+		) AA
+		,	(SELECT @rownum:=0) TMP
+		ORDER BY ROW_NUM
 		<if test='pagingYn == "Y" '>
 		LIMIT #{offset}, #{listSize}
 		</if>

@@ -142,7 +142,7 @@ export default {
             //console.log("this.detailWebReqId : "+this.detailWebReqId);
             var params = {
 				"webReqId": this.detailWebReqId,
-				"pageNo": this.pageNo,
+				"pageNo": 1,
 				"listSize": this.listSize
             }
 
