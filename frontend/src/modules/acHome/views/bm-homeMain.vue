@@ -277,13 +277,10 @@ export default {
 	mounted() {
 		var vm = this;
 		vm.fnGetProjectList();
-		setTimeout(function() {
-			vm.fnGetNoticeList();
-			vm.fnSetIntervalSearchDate(vm.searchDateInterval);
-			vm.fnGetMonthUsedTimeLineList();
-			vm.fnGetSixMonthUsedTimeLineList();
-			vm.$forceUpdate()
-		}, 100);
+		vm.fnGetNoticeList();
+		vm.fnSetIntervalSearchDate(vm.searchDateInterval);
+		vm.fnGetMonthUsedTimeLineList();
+		vm.fnGetSixMonthUsedTimeLineList();
 	},
 	methods: {
 		fnGetProjectList() {
@@ -434,6 +431,7 @@ export default {
 					}]
 				}
 			}
+			this.$forceUpdate()
 		},
 		fnGetChFailCodeList(result) {
 			this.failCodeResultDataset = [];
@@ -575,6 +573,7 @@ export default {
 							}]
 						}
 					}
+					this.$forceUpdate()
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
@@ -678,6 +677,7 @@ export default {
 							}]
 						}
 					}
+					this.$forceUpdate()
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}

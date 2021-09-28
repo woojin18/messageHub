@@ -257,15 +257,12 @@ export default {
 	mounted() {
 		var vm = this;
 		vm.fnInit();
-		setTimeout(function() {
-			if (tokenSvc.getToken()) {
-				vm.fnGetProjectInfo();
-				vm.fnGetNoticeList();
-				vm.fnSetIntervalSearchDate(vm.searchDateInterval);
-				vm.fnGetRtUsedTimeLineList();
-				vm.$forceUpdate()
-			}
-		}, 100);
+		if (tokenSvc.getToken()) {
+			vm.fnGetProjectInfo();
+			vm.fnGetNoticeList();
+			vm.fnSetIntervalSearchDate(vm.searchDateInterval);
+			vm.fnGetRtUsedTimeLineList();
+		}
 	},
 	methods: {
 		fnInit() {
@@ -441,6 +438,7 @@ export default {
 					}]
 				}
 			}
+			this.$forceUpdate()
 		},
 		fnGetChFailCodeList(result) {
 			this.failCodeResultDataset = [];
@@ -483,6 +481,7 @@ export default {
 					}]
 				}
 			}
+			this.$forceUpdate()
 		},
 		// 당일 이용현황 시간대 조회
 		fnGetRtUsedTimeLineList() {
@@ -586,6 +585,7 @@ export default {
 							}]
 						}
 					}
+					this.$forceUpdate()
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
