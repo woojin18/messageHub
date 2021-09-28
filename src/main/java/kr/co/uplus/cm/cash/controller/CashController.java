@@ -73,8 +73,7 @@ public class CashController {
 				message = URLEncoder.encode(rtn.getMessage(), "UTF-8");
 			}
 		} catch(Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("0");
+			message = "0";
 		}
 		
 		if(!message.equals("")) {
