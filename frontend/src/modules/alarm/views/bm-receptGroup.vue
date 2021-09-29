@@ -2,7 +2,7 @@
     <div>
         <article>
 			<div class="contentHeader">
-				<h2>알람 수신그룹 관리</h2>				
+				<h2>수신그룹</h2>				
 			</div>
 
 			<!-- 본문 -->
@@ -195,7 +195,7 @@ export default {
     },
 	fnDel1() {
 		if (this.params2.srcReceptGroupId == null) {
-			confirm.fnAlert( "알람 수신그룹 관리", "삭제하실 수신그룹을 선택해주세요.");
+			confirm.fnAlert( "수신그룹", "삭제하실 수신그룹을 선택해주세요.");
 			return;
 		}
 		var vm = this
@@ -204,7 +204,7 @@ export default {
 		receptGroupApi.delReceptGroup(params).then(response =>{
 			var result = response.data;
 			if(result.success) {
-			confirm.fnAlert( "알람 수신그룹 관리", "삭제되었습니다.");
+			confirm.fnAlert( "수신그룹", "삭제되었습니다.");
 			// 리스트 조회
 			this.fnSearch1();
 			} else {
@@ -227,7 +227,7 @@ export default {
     },
     fnAdd2() {
 		if (this.params2.srcReceptGroupId == null) {
-			confirm.fnAlert( "알람 수신그룹 관리", "수신그룹을 먼저 선택해주세요.");
+			confirm.fnAlert( "수신그룹", "수신그룹을 먼저 선택해주세요.");
 			return;
 		}
         this.rowData2 = Object.assign({}, this.params2)
@@ -237,7 +237,7 @@ export default {
 	fnDel2() {
 		var checked = jQuery(":checkbox[name='chk']:checked");
 		if( checked.length == 0 ){
-			confirm.fnAlert( "알람 수신그룹 관리", "삭제하실 수신자를 선택해주세요.");
+			confirm.fnAlert( "수신그룹", "삭제하실 수신자를 선택해주세요.");
 			return;
 		} else {
 			var vm = this
@@ -250,7 +250,7 @@ export default {
 			groupRecipientApi.delGroupRecipient(params).then(response =>{
 				var result = response.data;
 			  if(result.success) {
-				confirm.fnAlert( "알람 수신그룹 관리", "삭제되었습니다.");
+				confirm.fnAlert( "수신그룹", "삭제되었습니다.");
 				// 리스트 조회
 				this.fnSearch2();
 			  } else {

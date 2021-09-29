@@ -2,7 +2,7 @@
     <div>
         <article>
 			<div class="contentHeader mb10">
-				<h2>알람관리</h2>
+				<h2>알람</h2>
 			</div>
 
 			<!-- 본문 -->

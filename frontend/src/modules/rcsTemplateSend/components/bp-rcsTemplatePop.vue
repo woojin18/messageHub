@@ -5,7 +5,7 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <div>
-                            <h2>RCS 템플릿</h2>
+                            <h2>RCS</h2>
                             <hr>
                             <div class="of_h">
                                 <div style="width:11%" class="float-left">

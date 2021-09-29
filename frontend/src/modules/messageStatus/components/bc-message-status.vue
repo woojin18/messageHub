@@ -1,7 +1,7 @@
 <template>
 <div class="row row-no-margin">
   <div class="contentHeader">
-      <h2>메시지 상세조회</h2><span>발송일자와 검색조건(수신자 전화번호, 앱아이디)는 검색 시 필수 입니다.</span>
+      <h2>전체</h2><span>발송일자와 검색조건(수신자 전화번호, 앱아이디)는 검색 시 필수 입니다.</span>
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="메시지 상세조회 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
   </div>
   <!-- 본문 -->
@@ -215,17 +215,17 @@ export default {
       var searchText = searchData.searchText;
 
       if(searchSendCloud == false && searchSendAPI == false) {
-        confirm.fnAlert("메시지 상세조회", "발송 구분을 선택해주세요.");
+        confirm.fnAlert("", "발송 구분을 선택해주세요.");
         return false;
       }
 
       if(searchResultY == false && searchResultN == false) {
-        confirm.fnAlert("메시지 상세조회", "결과를 선택해주세요.");
+        confirm.fnAlert("", "결과를 선택해주세요.");
         return false;
       }
 
       if(searchText == "") {
-        confirm.fnAlert("메시지 상세조회", "검색조건을 입력해주세요.");
+        confirm.fnAlert("", "검색조건을 입력해주세요.");
         return false;
       }
 
@@ -236,7 +236,7 @@ export default {
           this.totCnt = result.pageInfo.totCnt;
           this.offset = result.pageInfo.offset;
         } else { 
-          confirm.fnAlert("메시지 상세조회", result.message);
+          confirm.fnAlert("", result.message);
         }
       });
     },

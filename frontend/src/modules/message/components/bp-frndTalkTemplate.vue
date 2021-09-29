@@ -99,7 +99,7 @@ export default {
       type: String,
       require: false,
       default: function() {
-        return '친구톡 템플릿 검색';
+        return '템플릿 선택';
       }
     },
   },

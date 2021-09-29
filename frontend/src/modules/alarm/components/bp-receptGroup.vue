@@ -4,7 +4,7 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div>
-						<h2>알람수신그룹 {{popupTitle}}</h2>
+						<h2>수신그룹 {{popupTitle}}</h2>
 						<hr>
 						<div class="of_h">
 							<h5 class="inline-block" style="width:20%">수신그룹 명 *</span></h5>

@@ -2,7 +2,7 @@
     <div>	
         <article>
             <div class="contentHeader">
-                <h2>수신자 관리</h2>				
+                <h2>수신자</h2>				
             </div>
 
             <!-- 본문 -->
