@@ -236,6 +236,7 @@
 												<div class="consolCheck ml10"><input v-model="styleChk[n-1]" type="checkbox" :id="n-1" class="checkStyle2" value="line2"><label :for="n-1" class="color4">라인</label></div>
 											</div>
 										</div>	
+										<p class="float-right">{{styleContentsCnt}}/90자</p>
 										<div class="consolMarginTop float-right" style="width:54%; margin-bottom:15px;">
 											<a href="#self" @click.prevent="fnCellAdd()" class="btnStyle1 backBlack">Cell 추가 &nbsp;&nbsp;&nbsp; +</a>
 										</div>
@@ -361,7 +362,10 @@ export default {
 		desContentsExam: "{{name}}입니다.{{date}} 할인/특가 상품을 안내해 드립니다. 본 알림은 {{name}} 회원전용 서비스 입니다.",	// 서술형 sampleView
 		desContents: "",	// 서술형 내용
 		desContentsPlaceHoder: "변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오. 예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",	// 서술형 내용 holder
-		desContentsCnt: 0,	// 글자 수
+		desContentsCnt: 0,			// 글자 수 (서술형)
+		styleContentsCnt: 0,		// 글자 수 (스타일형)
+		desTextChk: false,
+		styleTextChk: false,
 		// 스타일형 Data 세팅
 		styleFormNm: "",			// 스타일형 유형
 		styleFormNmList: [],		// 스타일형 유형 selectBox
@@ -370,7 +374,7 @@ export default {
 		styleInput: [],				// 스타일형 첫 input
 		styleInputSec: [],			// 스타일형 두번째 input
 		styleChk: [true, false],	// 스타일형 lineChk
-		styleContentText: "변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.<br>예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",	// 스타일형 내용 Text
+		styleContentText: "변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오. 예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",	// 스타일형 내용 Text
 		// 버튼 세팅
 		btnCnt: 0,			// 버튼 개수
 		selectBtn: [],		// selectBox
@@ -401,24 +405,35 @@ export default {
 	  desContents: function(newVal, oldVal) {
 		  this.desContentsExam = newVal;
 		  this.desContentsCnt = newVal.length;
-		  if(newVal.length==91) {
+		  if(!this.desTextChk) {
+			if(newVal.length > 90) {
 			  confirm.fnAlert("RCS 템플릿", "템플릿 내용이 90자를 넘으면 템플릿 등록이 실패 될 수 있습니다.");
-		  }
+			  this.desTextChk = true;
+		    }
+		  } 
 	  },
 	  styleInput: function(newVal, oldVal) {
 		  var styleText = newVal.join('');
 		  var styleTextSec = this.styleInputSec.join('');
 		  var confirmText = styleText + styleTextSec;
-		  if(confirmText.length==91) {
+		  this.styleContentsCnt = confirmText.length;
+		  if(!this.styleTextChk) {
+			if(confirmText.length > 90) {
 			  confirm.fnAlert("RCS 템플릿", "템플릿 내용이 90자를 넘으면 템플릿 등록이 실패 될 수 있습니다.");
+			  this.styleTextChk = true;
+		    }
 		  }
 	  },
 	  styleInputSec: function(newVal, oldVal) {
 		  var styleText = this.styleInput.join('');
 		  var styleTextSec = newVal.join('');
 		  var confirmText = styleText + styleTextSec;
-		  if(confirmText.length==91) {
+		  this.styleContentsCnt = confirmText.length;
+		  if(!this.styleTextChk) {
+			if(confirmText.length > 90) {
 			  confirm.fnAlert("RCS 템플릿", "템플릿 내용이 90자를 넘으면 템플릿 등록이 실패 될 수 있습니다.");
+			  this.styleTextChk = true;
+		    }
 		  }
 	  },
 	  templateNm: function(newVal, oldVal) {
