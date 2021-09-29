@@ -218,7 +218,7 @@ export default {
 			projectInfoData: {},
 			notices: [],
 			chName: 'Push',
-			channelTotalCountInfo: {},
+			channelTotalCountInfo: {totalSuccCnt:0, totalFailCnt:0, pushSuccCnt:0, pushFailCnt:0, rcsSuccCnt:0, rcsFailCnt:0, alimSuccCnt:0, alimFailCnt:0, friendSuccCnt:0, friendFailCnt:0, smsSuccCnt:0, smsFailCnt:0, lmsSuccCnt:0, lmsFailCnt:0, mmsSuccCnt:0, mmsFailCnt:0},
 			searchDateInterval: 7,
 			dateLine: [],
 			successCnt: [],
@@ -247,23 +247,23 @@ export default {
 		}
 	},
 	created: function() {
-		console.log('created HomeMain');
+		// console.log('created HomeMain');
 	},
 	mounted() {
 		this.fnSetIntervalSearchDate(this.searchDateInterval);
 		this.fnGetProjectInfo();
 		this.fnGetNoticeList();
-		this.fnGetChTotCntInfo();
+		//this.fnGetChTotCntInfo();
 		this.fnGetRtUsedTimeLineList();
 	},
 	methods: {
-		fnGetProjectInfo() {
+		async fnGetProjectInfo() {
 			let params = {
 				projectId: this.$parent.projectId,
 				corpId: tokenSvc.getToken().principal.corpId
 			};
 
-			homeApi.selectProjectInfo(params).then(response =>{
+			await homeApi.selectProjectInfo(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.projectInfoData = result.data.projectInfo;
@@ -272,11 +272,11 @@ export default {
 				}
 			});
 		},
-		fnGetNoticeList() {
+		async fnGetNoticeList() {
 			let params = {
 			};
 
-			homeApi.selectNoticeList(params).then(response =>{
+			await homeApi.selectNoticeList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.notices = result.data;
@@ -289,7 +289,7 @@ export default {
 			this.$refs.noticeLayer.fnSetNoticeInfo(noticeId);
 			jQuery("#noticeDetailLayer").modal("show");
 		},
-		fnGetChTotCntInfo() {
+		async fnGetChTotCntInfo() {
 			let params = {
 				projectId: this.$parent.projectId,
 				corpId: tokenSvc.getToken().principal.corpId,
@@ -298,7 +298,7 @@ export default {
 				endDateStr: this.searchData.searchEndDate
 			};
 
-			homeApi.selectChTotCntInfo(params).then(response =>{
+			await homeApi.selectChTotCntInfo(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.channelTotalCountInfo = result.data.chTotCntInfo;
@@ -307,7 +307,7 @@ export default {
 				}
 			});
 		},
-		fnSetChartData(channel) {
+		async fnSetChartData(channel) {
 			let params = {
 				projectId: this.$parent.projectId,
 				corpId: tokenSvc.getToken().principal.corpId,
@@ -317,7 +317,7 @@ export default {
 				channel: channel
 			};
 
-			homeApi.selectChSuccFailCntList(params).then(response =>{
+			await homeApi.selectChSuccFailCntList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.fnGetChSuccFailCntList(result.data);
@@ -326,7 +326,7 @@ export default {
 				}
 			});
 
-			homeApi.selectChFailCodeList(params).then(response =>{
+			await homeApi.selectChFailCodeList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.fnGetChFailCodeList(result.data);
@@ -410,6 +410,7 @@ export default {
 					}]
 				}
 			}
+			this.$forceUpdate()
 		},
 		fnGetChFailCodeList(result) {
 			this.failCodeResultDataset = [];
@@ -452,60 +453,29 @@ export default {
 					}]
 				}
 			}
+			this.$forceUpdate()
 		},
 		// 당일 이용현황 시간대 조회
-		fnGetRtUsedTimeLineList() {
+		async fnGetRtUsedTimeLineList() {
+			for (var i = 0; i < 24; i++) {
+				this.timeLine.push(i);
+			}
 			let params = {
 				projectId: this.$parent.projectId,
 				corpId: tokenSvc.getToken().principal.corpId
 			};
 
-			homeApi.selectRtUsedTimeLineList(params).then(response =>{
+			await homeApi.selectRtUsedDataList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					for (var i = 0; i < result.data.length; i++) {
-						this.timeLine.push(result.data[i].date);
-					}
-				} else {
-					confirm.fnAlert(this.componentsTitle, result.message);
-				}
-			});
-
-			this.fnGetRtUsedDataList('PUSH');
-			this.fnGetRtUsedDataList('RCS');
-			this.fnGetRtUsedDataList('FRIENDTALK');
-			this.fnGetRtUsedDataList('ALIMTALK');
-			this.fnGetRtUsedDataList('SMS');
-			this.fnGetRtUsedDataList('LMS');
-			this.fnGetRtUsedDataList('MMS');
-		},
-		// 당일 이용현황 채널별 데이터 조회
-		fnGetRtUsedDataList(channel) {
-			let params = {
-				projectId: this.$parent.projectId,
-				corpId: tokenSvc.getToken().principal.corpId,
-				channel: channel
-			};
-
-			homeApi.selectRtUsedDataList(params).then(response =>{
-				var result = response.data;
-				if (result.success) {
-					for (var i = 0; i < result.data.length; i++) {
-						if (channel == 'PUSH') {
-							this.rtUsedPushList.push(result.data[i].totCnt);
-						} else if (channel == 'RCS') {
-							this.rtUsedRcsList.push(result.data[i].totCnt);
-						} else if (channel == 'FRIENDTALK') {
-							this.rtUsedFriendtalkList.push(result.data[i].totCnt);
-						} else if (channel == 'ALIMTALK') {
-							this.rtUsedAlimtalkList.push(result.data[i].totCnt);
-						} else if (channel == 'SMS') {
-							this.rtUsedSmsList.push(result.data[i].totCnt);
-						} else if (channel == 'LMS') {
-							this.rtUsedLmsList.push(result.data[i].totCnt);
-						} else if (channel == 'MMS') {
-							this.rtUsedMmsList.push(result.data[i].totCnt);
-						}
+						this.rtUsedPushList.push(result.data[i].pushCnt);
+						this.rtUsedRcsList.push(result.data[i].rcsCnt);
+						this.rtUsedFriendtalkList.push(result.data[i].friendtalkCnt);
+						this.rtUsedAlimtalkList.push(result.data[i].alimtalkCnt);
+						this.rtUsedSmsList.push(result.data[i].smsCnt);
+						this.rtUsedLmsList.push(result.data[i].lmsCnt);
+						this.rtUsedMmsList.push(result.data[i].mmsCnt);
 					}
 
 					this.rtUsedResultData = {
@@ -586,13 +556,14 @@ export default {
 							}]
 						}
 					}
+					this.$forceUpdate()
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
 			});
 		},
 		//검색일자변경
-		fnSetIntervalSearchDate(interval){
+		async fnSetIntervalSearchDate(interval){
 			this.searchDateInterval = interval;
 			this.searchData.searchEndDate = this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -1);
 			this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);

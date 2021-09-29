@@ -105,21 +105,21 @@
 			<choose>
 				<when test="startMonthStr != null and startMonthStr != ''">
 			SELECT DATE_FORMAT(A.DATE, '%y-%m')	AS DATE
+          FROM (SELECT CONCAT(#{startMonthStr}, '-01') + INTERVAL (a.a + (6 * b.a) ) MONTH AS DATE
 				</when>
 				<otherwise>
 			SELECT A.DATE
+          FROM (SELECT #{startDateStr} + INTERVAL (a.a + (6 * b.a) ) DAY AS DATE
 				</otherwise>
 			</choose>
-          FROM (SELECT CURDATE() - INTERVAL (a.a + (6 * b.a) ) DAY AS DATE
                   FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5) AS a
                      , (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5) AS b) AS A
 			<choose>
 				<when test="startMonthStr != null and startMonthStr != ''">
-			WHERE A.DATE BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-31'), '%Y-%m-%d')
-			GROUP BY DATE_FORMAT(A.DATE, '%y-%m')
+			WHERE A.DATE BETWEEN CONCAT(#{startMonthStr}, '-01') AND CONCAT(#{endMonthStr}, '-31')
 				</when>
 				<otherwise>
-			WHERE A.DATE BETWEEN STR_TO_DATE(#{startDateStr}, '%Y-%m-%d') AND STR_TO_DATE(#{endDateStr}, '%Y-%m-%d')
+			WHERE A.DATE BETWEEN #{startDateStr} AND #{endDateStr}
 				</otherwise>
 			</choose>
 		) AD
@@ -196,16 +196,10 @@
     <choose>
         <when test="startMonthStr != null and startMonthStr != ''">
              , cm.CM_STAT_RSLT_MONTH CSRD
-        </when>
-        <otherwise>
-             , cm.CM_STAT_RSLT_DAY CSRD
-        </otherwise>
-    </choose>
-    <choose>
-        <when test="startMonthStr != null and startMonthStr != ''">
          WHERE CSRD.YM BETWEEN CONCAT(#{startMonthStr}, '-01') AND CONCAT(#{endMonthStr}, '-31')
         </when>
         <otherwise>
+             , cm.CM_STAT_RSLT_DAY CSRD
          WHERE CSRD.YMD BETWEEN #{startDateStr} AND #{endDateStr}
         </otherwise>
     </choose>
@@ -234,7 +228,18 @@
 		/* dashboard.selectChFailCodeCntList */
         SELECT B.RESULT_CODE
              , A.DATE
-             , (SELECT SUM(CNT) FROM cm.CM_STAT_RSLT_DAY X WHERE X.YMD = A.DATE AND X.RESULT_CODE = B.RESULT_CODE AND CORP_ID = #{corpId}
+             , (SELECT SUM(CNT) 
+		    <choose>
+		        <when test="startMonthStr != null and startMonthStr != ''">
+                  FROM cm.CM_STAT_RSLT_MONTH X
+                  WHERE X.YM = A.DATE 
+		        </when>
+		        <otherwise>
+                  FROM cm.CM_STAT_RSLT_DAY X
+                  WHERE X.YMD = A.DATE  
+		        </otherwise>
+		    </choose>
+                  AND X.RESULT_CODE = B.RESULT_CODE AND CORP_ID = #{corpId}
         <if test="serviceType == 'UC'">
         AND PROJECT_ID = #{projectId}
         </if>
@@ -248,11 +253,25 @@
                 </otherwise>
             </choose>
         </if>) AS CNT
-              FROM (SELECT CURDATE() - INTERVAL (a.a + (6 * b.a) ) DAY AS DATE
+            <choose>
+                <when test="startMonthStr != null and startMonthStr != ''">
+          FROM (SELECT CONCAT(#{startMonthStr}, '-01') + INTERVAL (a.a + (6 * b.a) ) MONTH AS DATE
+                </when>
+                <otherwise>
+          FROM (SELECT #{startDateStr} + INTERVAL (a.a + (6 * b.a) ) DAY AS DATE
+                </otherwise>
+            </choose>
                       FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5) AS a
                          , (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5) AS b) AS A
                          , (<foreach collection="rtnList" index="index" item="data" separator=" UNION ALL">SELECT #{data.resultCode} AS RESULT_CODE, #{index} AS OD</foreach>) AS B
+        <choose>
+            <when test="startMonthStr != null and startMonthStr != ''">
+         WHERE DATE BETWEEN CONCAT(#{startMonthStr}, '-01') AND CONCAT(#{endMonthStr}, '-31')
+            </when>
+            <otherwise>
          WHERE DATE BETWEEN #{startDateStr} AND #{endDateStr}
+            </otherwise>
+        </choose>
          ORDER BY B.OD, A.DATE
 	</select>
 
