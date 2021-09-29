@@ -8,12 +8,12 @@
 				<div class="col-xs-12">
 					<div class="menuBox">
 						<div>
-							<select class="selectStyle2 vertical-middle" style="width:15%" v-model="searchData.searchTextType">
+							<select class="selectStyle2 vertical-middle" style="width:10%" v-model="searchData.searchTextType">
 								<option value="cuName">수신자명</option>
 								<option value="cuid">아이디</option>
 								<option value="hpNumber">휴대폰번호</option>
 							</select>
-							<input type="text" class="inputStyle ml10" style="width:44%" v-model="searchData.searchText" @keyup.enter="fnPageNoResetSearch()">
+							<input type="text" class="inputStyle ml10" style="width:15%" v-model="searchData.searchText" @keyup.enter="fnPageNoResetSearch()">
 							<h4 class="inline-block ml50" style="width:7%">사용여부</h4>
 							<select class="selectStyle2" style="width:15%" v-model="searchData.useYn">
 								<option value="">전체</option>

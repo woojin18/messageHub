@@ -44,7 +44,7 @@
 						<div class="of_h pd20">
 							<div class="of_h text-right">
 								<div class="of_h" style="width:100%">
-									<a @click="fnSaveMemberPop('I')" class="btnStyle1 borderGray mr10">하위 카테고리 추가</a>
+									<a @click="fnSaveMemberPop('I')" class="btnStyle1 borderGray mr10">그룹 추가</a>
 									<a @click="fnSaveMemberPop('U')" class="btnStyle1 borderGray mr10">수정</a>
 									<a @click="fndelAddrCate" class="btnStyle1 borderGray" activity="SAVE">삭제</a>
 								</div>
@@ -92,8 +92,8 @@
 									</div>
 								</div>
 								<div class="float-right">
-									<a @click="fnRegisterMemberPop" class="btnStyle1 borderGray ml10">구성원 추가</a>
-									<a @click="fnDeletemember" class="btnStyle1 backWhite ml10" activity="SAVE">구성원 삭제</a>
+									<a @click="fnRegisterMemberPop" class="btnStyle1 borderGray ml10">추가</a>
+									<a @click="fnDeletemember" class="btnStyle1 backWhite ml10" activity="SAVE">삭제</a>
 								</div>
 							</div>
 						</div>
