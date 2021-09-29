@@ -87,57 +87,57 @@
 								<li @click="fnSetChartData('ALL')" id="setAll" style="width:12.5%" class="active">
 									<a class="inline-block text-center active">
 										<h5>총계</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.totalSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.totalFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.totalSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.totalFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('PUSH')" id="setPush" style="width:12.5%" class="active">
 									<a class="inline-block text-center active">
 										<h5>PUSH 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.pushSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.pushFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.pushSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.pushFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('RCS')" id="setRcs" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>RCS 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.rcsSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.rcsFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.rcsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.rcsFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('ALIMTALK')" id="setKakaotalk" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>알림톡 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.alimSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.alimFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.alimSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.alimFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('FRIENDTALK')" id="setFriendtalk" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>친구톡 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.friendSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.friendFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.friendSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.friendFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('SMS')" id="setSms" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>SMS 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.smsSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.smsFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.smsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.smsFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('LMS')" id="setLms" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>LMS 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.lmsSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.lmsFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.lmsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.lmsFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('MMS')" id="setMms" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>MMS 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.mmsSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.mmsFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.mmsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.mmsFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 							</ul>
@@ -206,6 +206,11 @@ export default {
 		require: false,
 		default: function() {
 			return 'User Console DashBoard';
+		}
+	},
+	filters: {
+		comma (val) {
+			return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 		}
 	},
 	data () {
@@ -395,7 +400,11 @@ export default {
 						ticks: {
 							beginAtZero: true,
 							callback: function(value, index, values) {
-								return value + '건';
+								if (parseInt(value) >= 1000) {
+									return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '건';
+								} else {
+									return value + '건';
+								}
 							}
 						},
 					}]
@@ -433,7 +442,11 @@ export default {
 						ticks: {
 							beginAtZero: true,
 							callback: function(value, index, values) {
-								return value + '건';
+								if (parseInt(value) >= 1000) {
+									return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '건';
+								} else {
+									return value + '건';
+								}
 							}
 						},
 					}]
@@ -563,7 +576,11 @@ export default {
 								ticks: {
 									beginAtZero: true,
 									callback: function(value, index, values) {
-										return value + '건';
+										if (parseInt(value) >= 1000) {
+											return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '건';
+										} else {
+											return value + '건';
+										}
 									}
 								},
 							}]
