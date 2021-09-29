@@ -859,7 +859,7 @@ public class CommonService {
             ArrayList<Map<String, Object>> emailCh = new ArrayList<Map<String,Object>>();
 
             String contents = this.setContents(params);
-            mailMap.put("title", "메시지클라우드 인증");
+            mailMap.put("title", "U+메시지 허브 인증");
             mailMap.put("contents", contents);
             mailMap.put("fromEmail", this.mailHost);
 
