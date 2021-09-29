@@ -8,7 +8,7 @@
           <p class="font-size14 color3 auto text-center">잠시 후 다시 이용 부탁드리며 이용에 불편을 드려 사과드립니다.</p>
         </div>
       </div>
-      <div class="text-center mt40"><a href="user_login.html" class="btnStyle3 white font-size16 minWidth120">이전</a><a href="user_login.html" class="btnStyle3 black font-size16 minWidth120 ml20">메인</a></div>
+      <div class="text-center mt40"><a @click="backGo" class="btnStyle3 white font-size16 minWidth120">이전</a><router-link to="/public/main"><a class="btnStyle3 black font-size16 minWidth120 ml20">메인</a></router-link></div>
     </section>
   </div>
 </template>
