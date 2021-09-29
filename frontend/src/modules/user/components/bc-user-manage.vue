@@ -18,6 +18,11 @@
 							<select id="selectApprovalStatus" @fnSelected="fnSelected" v-model="searchData.approvalStatus" class="selectStyle2" style="width:14%" title="상태 선택란">
 								<option value="">전체</option>
 							</select>
+							<h4 class="inline-block ml30" style="width:6%">이용권한</h4>
+							<select @fnSelected="fnSelected" v-model="searchData.roleCd" class="selectStyle2" style="width:14%" title="이용권한 선택란">
+								<option value="">전체</option>
+								<option  v-for="(row, index) in roleCdArr" :key="index" :value="row.roleCd"> {{ row.roleName }} </option>
+							</select>
 							<a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" activity="READ" title="검색">검색</a>
 						</div>
 					</div>
@@ -165,7 +170,8 @@ export default {
 					'userId'			: '',
 					'approvalStatus'	: '',
 					'corpId'			: tokenSvc.getToken().principal.corpId,
-					'loginId'			: ''
+					'loginId'			: '',
+					'roleCd'			: ''
 				}
 			}
 		},
@@ -213,11 +219,14 @@ export default {
 			curRoleCd: tokenSvc.getToken().principal.role,
 			modifyApprovalStatus: '',
 
-			disabledArr : []
+			disabledArr : [],
+
+			roleCdArr : []
 		}
 	},
 	mounted() {
 		this.fnStatusInit();
+		this.fnRoleInit();
 		this.fnPageNoResetSearch();
 	},
 	methods: {
@@ -230,6 +239,19 @@ export default {
 				var result = response.data.data;
 				for(var i = 0; i < result.length; i++){
 					jQuery('#selectApprovalStatus').append('<option value="'+result[i].codeVal1+'">'+result[i].codeName1+'</option>');
+				}
+			});
+		},
+		fnRoleInit() {
+			var params = {
+			};
+			userApi.selectRoleList(params).then(response =>{
+				var result = response.data;
+				if(result.success){
+					for(var i = 0; i < result.data.length; i++){
+						this.roleCdArr = result.data;
+						// jQuery('#selectApprovalStatus').append('<option value="'+result[i].codeVal1+'">'+result[i].codeName1+'</option>');
+					}
 				}
 			});
 		},

@@ -67,6 +67,9 @@
 				<if test="approvalStatus != '' and approvalStatus != null ">
 				AND		A.APPROVAL_STATUS = #{approvalStatus}
 				</if>
+				<if test="roleCd != '' and roleCd != null ">
+				AND		A.ROLE_CD = #{roleCd}
+				</if>
 				GROUP BY A.USER_NAME, A.USER_ID, A.ROLE_NAME, A.APPROVAL_STATUS
 				ORDER BY A.USER_ID DESC
 			) A
@@ -132,6 +135,9 @@
 				</if>
 				<if test="approvalStatus != '' and approvalStatus != null ">
 				AND		A.APPROVAL_STATUS = #{approvalStatus}
+				</if>
+				<if test="roleCd != '' and roleCd != null ">
+				AND		A.ROLE_CD = #{roleCd}
 				</if>
 				GROUP BY A.USER_NAME, A.USER_ID, A.ROLE_NAME, A.APPROVAL_STATUS
 				ORDER BY A.REG_DT DESC
@@ -233,5 +239,17 @@
 		FROM	cm_console.CM_USER
 		WHERE	LOGIN_PWD = #{password}
 		AND		USER_ID = #{userId}
+	</select>
+	
+	<select id="selectRoleList" resultType="camel">
+		/* user.selectRoleList */
+		SELECT	ROLE_CD
+		,		ROLE_NAME
+		FROM	cm_bo.CM_ROLE
+		WHERE	SVC_TYPE_CD IN ('AC','UC')
+		<if test="exceptOwner != null and exceptOwner != '' and exceptOwner eq 'Y'.toString()">
+		AND		ROLE_CD NOT IN ('OWNER')
+		</if>
+		AND		USE_YN = 'Y'
 	</select>
 </mapper>

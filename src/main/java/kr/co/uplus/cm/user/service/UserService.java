@@ -249,4 +249,11 @@ public class UserService {
 			throw new Exception("등록된 사용자가 없습니다. 이메일 주소를 확인해주세요.");
 		}
 	}
+
+	public RestResult<Object> selectRoleList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_ROLE_LIST, params);
+		rtn.setData(rtnList);
+		return rtn;
+	}
 }

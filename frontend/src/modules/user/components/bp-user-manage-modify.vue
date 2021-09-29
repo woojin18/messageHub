@@ -22,20 +22,22 @@
 							<h5 class="inline-block">이용권한</h5>
 							<span v-if="curRoleCd == 'OWNER' && modifyRoleCd == 'OWNER'"> <!-- OWNER가 OWNER를 변경시 이용권한은 변경 막음-->
 								<select ref="roleCd" :value="modifyRoleCd" class="selectStyle2 float-right inline-block" title="이용권한 선택란" style="width:80%">
-									<option value="OWNER">OWNER</option>
+									<option value="OWNER">오너</option>
 								</select>
 							</span>
 							<span v-else-if="curRoleCd == 'OWNER' && modifyRoleCd != 'OWNER' &&  approvalStatus != 'ING'">
 								<select ref="roleCd" :value="modifyRoleCd" class="selectStyle2 float-right inline-block" title="이용권한 선택란" style="width:80%">
-									<option value="USER">USER</option>
-									<option value="ADMIN">ADMIN</option>
-									<option value="OWNER">OWNER</option>
+									<!-- <option value="USER">사용자</option>
+									<option value="ADMIN">관리자</option> -->
+									<option value="OWNER">오너</option>
+									<option  v-for="(row, index) in roleCdArr" :key="index" :value="row.roleCd"> {{ row.roleName }} </option>
 								</select>
 							</span>
 							<span v-else>
 								<select ref="roleCd" :value="modifyRoleCd" class="selectStyle2 float-right inline-block" title="이용권한 선택란" style="width:80%">
-									<option value="USER">USER</option>
-									<option value="ADMIN">ADMIN</option>
+									<!-- <option value="USER">USER</option>
+									<option value="ADMIN">ADMIN</option> -->
+									<option  v-for="(row, index) in roleCdArr" :key="index" :value="row.roleCd"> {{ row.roleName }} </option>
 								</select>
 							</span>
 						</div>
@@ -110,7 +112,11 @@ export default {
 			userName	: '',
 			hpNumber	: '',
 			roleCd		: '',
+			roleCdArr	: []
 		}
+	},
+	mounted() {
+		this.fnRoleInit();
 	},
 	methods: {
 		// 닫기
@@ -202,6 +208,20 @@ export default {
 		fnCorrectNumberInput(event) {
 			event.target.value = event.target.value.replace(/[^0-9]/g, '');
 		},
+		fnRoleInit() {
+			var params = {
+				exceptOwner : "Y"
+			};
+			userApi.selectRoleList(params).then(response =>{
+				var result = response.data;
+				if(result.success){
+					for(var i = 0; i < result.data.length; i++){
+						this.roleCdArr = result.data;
+						// jQuery('#selectApprovalStatus').append('<option value="'+result[i].codeVal1+'">'+result[i].codeName1+'</option>');
+					}
+				}
+			});
+		}
 	}
 }
 </script>
