@@ -520,7 +520,7 @@ export default {
 				this.fnSetStyleformImg();
 
 				// Tab 이벤트 처리
-				jQuery("#styleTab").tab("show");	
+				jQuery("#styleTab").tab("show");
 				jQuery("#desTab").remove();
 				jQuery("#productCate1").removeClass("active");
 				jQuery("#productCate2").addClass("active");
