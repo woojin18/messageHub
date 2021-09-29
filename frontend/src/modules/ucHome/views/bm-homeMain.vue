@@ -252,7 +252,7 @@ export default {
 		}
 	},
 	created: function() {
-		console.log('created HomeMain');
+		// console.log('created HomeMain');
 	},
 	mounted() {
 		var vm = this;
@@ -285,13 +285,13 @@ export default {
 				});
 			}
 		},
-		fnGetProjectInfo() {
+		async fnGetProjectInfo() {
 			let params = {
 				projectId: utils.getCookie(consts.projectId),
 				corpId: tokenSvc.getToken().principal.corpId
 			};
 
-			homeApi.selectProjectInfo(params).then(response =>{
+			await homeApi.selectProjectInfo(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.projectInfoData = result.data.projectInfo;
@@ -300,11 +300,11 @@ export default {
 				}
 			});
 		},
-		fnGetNoticeList() {
+		async fnGetNoticeList() {
 			let params = {
 			};
 
-			homeApi.selectNoticeList(params).then(response =>{
+			await homeApi.selectNoticeList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.notices = result.data;
@@ -317,7 +317,7 @@ export default {
 			this.$refs.noticeLayer.fnSetNoticeInfo(noticeId);
 			jQuery("#noticeDetailLayer").modal("show");
 		},
-		fnGetChTotCntInfo() {
+		async fnGetChTotCntInfo() {
 			let params = {
 				projectId: utils.getCookie(consts.projectId),
 				corpId: tokenSvc.getToken().principal.corpId,
@@ -326,7 +326,7 @@ export default {
 				endDateStr: this.searchData.searchEndDate
 			};
 
-			homeApi.selectChTotCntInfo(params).then(response =>{
+			await homeApi.selectChTotCntInfo(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.channelTotalCountInfo = result.data.chTotCntInfo;
@@ -335,7 +335,7 @@ export default {
 				}
 			});
 		},
-		fnSetChartData(channel) {
+		async fnSetChartData(channel) {
 			let params = {
 				projectId: utils.getCookie(consts.projectId),
 				corpId: tokenSvc.getToken().principal.corpId,
@@ -345,7 +345,7 @@ export default {
 				channel: channel
 			};
 
-			homeApi.selectChSuccFailCntList(params).then(response =>{
+			await homeApi.selectChSuccFailCntList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.fnGetChSuccFailCntList(result.data);
@@ -354,7 +354,7 @@ export default {
 				}
 			});
 
-			homeApi.selectChFailCodeList(params).then(response =>{
+			await homeApi.selectChFailCodeList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.fnGetChFailCodeList(result.data);
@@ -484,7 +484,7 @@ export default {
 			this.$forceUpdate()
 		},
 		// 당일 이용현황 시간대 조회
-		fnGetRtUsedTimeLineList() {
+		async fnGetRtUsedTimeLineList() {
 			for (var i = 0; i < 24; i++) {
 				this.timeLine.push(i);
 			}
@@ -494,7 +494,7 @@ export default {
 				corpId: tokenSvc.getToken().principal.corpId
 			};
 
-			homeApi.selectRtUsedDataList(params).then(response =>{
+			await homeApi.selectRtUsedDataList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					for (var i = 0; i < result.data.length; i++) {
@@ -592,7 +592,7 @@ export default {
 			});
 		},
 		//검색일자변경
-		fnSetIntervalSearchDate(interval){
+		async fnSetIntervalSearchDate(interval){
 			this.searchDateInterval = interval;
 			this.searchData.searchEndDate = this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -1);
 			this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);

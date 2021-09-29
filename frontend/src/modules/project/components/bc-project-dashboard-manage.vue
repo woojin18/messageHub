@@ -87,57 +87,57 @@
 								<li @click="fnSetChartData('ALL')" id="setAll" style="width:12.5%" class="active">
 									<a class="inline-block text-center active">
 										<h5>총계</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.totalSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.totalFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.totalSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.totalFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('PUSH')" id="setPush" style="width:12.5%" class="active">
 									<a class="inline-block text-center active">
 										<h5>PUSH 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.pushSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.pushFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.pushSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.pushFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('RCS')" id="setRcs" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>RCS 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.rcsSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.rcsFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.rcsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.rcsFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('ALIMTALK')" id="setKakaotalk" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>알림톡 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.alimSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.alimFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.alimSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.alimFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('FRIENDTALK')" id="setFriendtalk" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>친구톡 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.friendSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.friendFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.friendSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.friendFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('SMS')" id="setSms" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>SMS 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.smsSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.smsFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.smsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.smsFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('LMS')" id="setLms" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>LMS 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.lmsSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.lmsFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.lmsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.lmsFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('MMS')" id="setMms" style="width:12.5%">
 									<a class="inline-block text-center">
 										<h5>MMS 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.mmsSuccCnt }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.mmsFailCnt }}<br></span><span class="text">실패</span></p>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.mmsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.mmsFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 							</ul>
@@ -208,12 +208,17 @@ export default {
 			return 'User Console DashBoard';
 		}
 	},
+	filters: {
+		comma (val) {
+			return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+		}
+	},
 	data () {
 		return {
 			projectInfoData: {},
 			notices: [],
 			chName: 'Push',
-			channelTotalCountInfo: {},
+			channelTotalCountInfo: {totalSuccCnt:0, totalFailCnt:0, pushSuccCnt:0, pushFailCnt:0, rcsSuccCnt:0, rcsFailCnt:0, alimSuccCnt:0, alimFailCnt:0, friendSuccCnt:0, friendFailCnt:0, smsSuccCnt:0, smsFailCnt:0, lmsSuccCnt:0, lmsFailCnt:0, mmsSuccCnt:0, mmsFailCnt:0},
 			searchDateInterval: 7,
 			dateLine: [],
 			successCnt: [],
@@ -242,23 +247,23 @@ export default {
 		}
 	},
 	created: function() {
-		console.log('created HomeMain');
+		// console.log('created HomeMain');
 	},
 	mounted() {
 		this.fnSetIntervalSearchDate(this.searchDateInterval);
 		this.fnGetProjectInfo();
 		this.fnGetNoticeList();
-		this.fnGetChTotCntInfo();
+		//this.fnGetChTotCntInfo();
 		this.fnGetRtUsedTimeLineList();
 	},
 	methods: {
-		fnGetProjectInfo() {
+		async fnGetProjectInfo() {
 			let params = {
 				projectId: this.$parent.projectId,
 				corpId: tokenSvc.getToken().principal.corpId
 			};
 
-			homeApi.selectProjectInfo(params).then(response =>{
+			await homeApi.selectProjectInfo(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.projectInfoData = result.data.projectInfo;
@@ -267,11 +272,11 @@ export default {
 				}
 			});
 		},
-		fnGetNoticeList() {
+		async fnGetNoticeList() {
 			let params = {
 			};
 
-			homeApi.selectNoticeList(params).then(response =>{
+			await homeApi.selectNoticeList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.notices = result.data;
@@ -284,7 +289,7 @@ export default {
 			this.$refs.noticeLayer.fnSetNoticeInfo(noticeId);
 			jQuery("#noticeDetailLayer").modal("show");
 		},
-		fnGetChTotCntInfo() {
+		async fnGetChTotCntInfo() {
 			let params = {
 				projectId: this.$parent.projectId,
 				corpId: tokenSvc.getToken().principal.corpId,
@@ -293,7 +298,7 @@ export default {
 				endDateStr: this.searchData.searchEndDate
 			};
 
-			homeApi.selectChTotCntInfo(params).then(response =>{
+			await homeApi.selectChTotCntInfo(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.channelTotalCountInfo = result.data.chTotCntInfo;
@@ -302,7 +307,7 @@ export default {
 				}
 			});
 		},
-		fnSetChartData(channel) {
+		async fnSetChartData(channel) {
 			let params = {
 				projectId: this.$parent.projectId,
 				corpId: tokenSvc.getToken().principal.corpId,
@@ -312,7 +317,7 @@ export default {
 				channel: channel
 			};
 
-			homeApi.selectChSuccFailCntList(params).then(response =>{
+			await homeApi.selectChSuccFailCntList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.fnGetChSuccFailCntList(result.data);
@@ -321,7 +326,7 @@ export default {
 				}
 			});
 
-			homeApi.selectChFailCodeList(params).then(response =>{
+			await homeApi.selectChFailCodeList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					this.fnGetChFailCodeList(result.data);
@@ -401,6 +406,7 @@ export default {
 					}]
 				}
 			}
+			this.$forceUpdate()
 		},
 		fnGetChFailCodeList(result) {
 			this.failCodeResultDataset = [];
@@ -439,60 +445,29 @@ export default {
 					}]
 				}
 			}
+			this.$forceUpdate()
 		},
 		// 당일 이용현황 시간대 조회
-		fnGetRtUsedTimeLineList() {
+		async fnGetRtUsedTimeLineList() {
+			for (var i = 0; i < 24; i++) {
+				this.timeLine.push(i);
+			}
 			let params = {
 				projectId: this.$parent.projectId,
 				corpId: tokenSvc.getToken().principal.corpId
 			};
 
-			homeApi.selectRtUsedTimeLineList(params).then(response =>{
+			await homeApi.selectRtUsedDataList(params).then(response =>{
 				var result = response.data;
 				if (result.success) {
 					for (var i = 0; i < result.data.length; i++) {
-						this.timeLine.push(result.data[i].date);
-					}
-				} else {
-					confirm.fnAlert(this.componentsTitle, result.message);
-				}
-			});
-
-			this.fnGetRtUsedDataList('PUSH');
-			this.fnGetRtUsedDataList('RCS');
-			this.fnGetRtUsedDataList('FRIENDTALK');
-			this.fnGetRtUsedDataList('ALIMTALK');
-			this.fnGetRtUsedDataList('SMS');
-			this.fnGetRtUsedDataList('LMS');
-			this.fnGetRtUsedDataList('MMS');
-		},
-		// 당일 이용현황 채널별 데이터 조회
-		fnGetRtUsedDataList(channel) {
-			let params = {
-				projectId: this.$parent.projectId,
-				corpId: tokenSvc.getToken().principal.corpId,
-				channel: channel
-			};
-
-			homeApi.selectRtUsedDataList(params).then(response =>{
-				var result = response.data;
-				if (result.success) {
-					for (var i = 0; i < result.data.length; i++) {
-						if (channel == 'PUSH') {
-							this.rtUsedPushList.push(result.data[i].totCnt);
-						} else if (channel == 'RCS') {
-							this.rtUsedRcsList.push(result.data[i].totCnt);
-						} else if (channel == 'FRIENDTALK') {
-							this.rtUsedFriendtalkList.push(result.data[i].totCnt);
-						} else if (channel == 'ALIMTALK') {
-							this.rtUsedAlimtalkList.push(result.data[i].totCnt);
-						} else if (channel == 'SMS') {
-							this.rtUsedSmsList.push(result.data[i].totCnt);
-						} else if (channel == 'LMS') {
-							this.rtUsedLmsList.push(result.data[i].totCnt);
-						} else if (channel == 'MMS') {
-							this.rtUsedMmsList.push(result.data[i].totCnt);
-						}
+						this.rtUsedPushList.push(result.data[i].pushCnt);
+						this.rtUsedRcsList.push(result.data[i].rcsCnt);
+						this.rtUsedFriendtalkList.push(result.data[i].friendtalkCnt);
+						this.rtUsedAlimtalkList.push(result.data[i].alimtalkCnt);
+						this.rtUsedSmsList.push(result.data[i].smsCnt);
+						this.rtUsedLmsList.push(result.data[i].lmsCnt);
+						this.rtUsedMmsList.push(result.data[i].mmsCnt);
 					}
 
 					this.rtUsedResultData = {
@@ -569,13 +544,14 @@ export default {
 							}]
 						}
 					}
+					this.$forceUpdate()
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
 			});
 		},
 		//검색일자변경
-		fnSetIntervalSearchDate(interval){
+		async fnSetIntervalSearchDate(interval){
 			this.searchDateInterval = interval;
 			this.searchData.searchEndDate = this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -1);
 			this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
