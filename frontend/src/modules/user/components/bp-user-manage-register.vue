@@ -24,8 +24,9 @@
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:20%">이용권한</h5>
 							<select v-model="roleCd" class="selectStyle2 float-right" style="width:80%" title="이용권한 선택란">
-								<option value="USER">USER</option>
-								<option value="ADMIN">ADMIN</option>
+								<!-- <option value="USER">USER</option>
+								<option value="ADMIN">ADMIN</option> -->
+								<option  v-for="(row, index) in roleCdArr" :key="index" :value="row.roleCd"> {{ row.roleName }} </option>
 							</select>
 						</div>
 						<p class="color3 consolMarginTop"><i class="far fa-info-circle"></i> 이메일인증을 통해 등록이 완료됩니다.</p>
@@ -73,6 +74,9 @@ export default {
 			this.roleCd = 'USER';
 		}
 	},
+	mounted() {
+		this.fnRoleInit();
+	},
 	data() {
 		return {
 			isDupcUser	: false,
@@ -81,6 +85,7 @@ export default {
 			hpNumber	: '',
 			roleCd		: 'USER',
 			componentsTitle : '사용자 등록',
+			roleCdArr	: []
 		}
 	},
 	methods: {
@@ -196,6 +201,20 @@ export default {
 		fnCorrectNumberInput(event) {
 			event.target.value = event.target.value.replace(/[^0-9]/g, '');
 		},
+		fnRoleInit() {
+			var params = {
+				exceptOwner : "Y"
+			};
+			userApi.selectRoleList(params).then(response =>{
+				var result = response.data;
+				if(result.success){
+					for(var i = 0; i < result.data.length; i++){
+						this.roleCdArr = result.data;
+						// jQuery('#selectApprovalStatus').append('<option value="'+result[i].codeVal1+'">'+result[i].codeName1+'</option>');
+					}
+				}
+			});
+		}
 	}
 }
 </script>

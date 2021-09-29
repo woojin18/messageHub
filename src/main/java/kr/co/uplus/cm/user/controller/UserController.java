@@ -201,4 +201,23 @@ public class UserController {
 
 		return rtn;
 	}
+	
+	/**
+	 * 사용자 권한 목록
+	 */
+	@PostMapping("/selectRoleList")
+	public RestResult<?> selectRoleList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+
+
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = userSvc.selectRoleList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
 }

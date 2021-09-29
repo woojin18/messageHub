@@ -42,9 +42,15 @@
 			<div role="tabpanel" class="tab-pane active" id="productCate3">
 				<div v-if="searchData.searchDateType == 'DAY'">
 					<p class="mt10">* 발송일 기준 최근 12개월까지 조회가 가능합니다.(최대 조회 가능 범위 : 1개월)</p>
+					<div class="float-right">
+						<a @click="fnExcelDownLoad" class="btnStyle2 borderGray" activity="READ"> 다운로드</a>
+					</div>
 				</div>
 				<div v-else>
 					<p class="mt10">* 발송일 기준 최근 5년까지 조회가 가능합니다.(최대 조회 가능 범위 : 12개월)</p>
+					<div class="float-right">
+						<a @click="fnExcelDownLoad" class="btnStyle2 borderGray" activity="READ"> 다운로드</a>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-12 consolMarginTop">
@@ -291,6 +297,18 @@ export default {
 				}
 			}
 			return true;
+		},
+		
+		//엑셀 다운로드
+		fnExcelDownLoad() {			
+			let params = Object.assign({}, this.searchData);
+			params.corpId = tokenSvc.getToken().principal.corpId;
+			params.searchStartMonth = jQuery("#startDate").val();
+			params.searchEndMonth = jQuery("#endDate").val();
+			this.searchStartMonth = jQuery("#startDate").val();
+			this.searchEndMonth = jQuery("#endDate").val();
+
+			statisticsAdminApi.excelDownloadStatisList(params);
 		},
 	},
 

@@ -1,18 +1,19 @@
 <template>
-
-  <article id="content" class="content error_page">
-    <div class="error_wrap center">
-      <div class="title_area rcs_icon icon_error500">
-        <h2 class="h2_title">죄송합니다.<br>서비스가 일시적으로 중단되었습니다. (500 Error)</h2><span class="h2_desc mar_t20">일시적으로 페이지 접근이 불가능합니다.<br>잠시 후 다시 이용 부탁드리며 이용에 불편을 드려 사과드립니다.</span>
+  <div>
+    <section class="userSection width540 mt70">
+      <div style="font-size:100px; color:#FFB612" class="text-center"><i class="far fa-exclamation-triangle"></i></div>
+      <h3 class="consolLineheight font-size18 text-center">죄송합니다.<br>서비스가 일시적으로 중단되었습니다. (500 Error)</h3>
+      <div class="mt40">							
+        <div class="mt30">
+          <p class="font-size14 color3 auto text-center">잠시 후 다시 이용 부탁드리며 이용에 불편을 드려 사과드립니다.</p>
+        </div>
       </div>
-      <div class="btn_wrap center mar_t60"><a href="javascript:void(0);" class="btn big cd_black" @click="backGo"><span>이전</span></a><a href="/" class="btn big point"><span>메인</span></a></div>
-    </div>
-  </article>
-
+      <div class="text-center mt40"><a href="user_login.html" class="btnStyle3 white font-size16 minWidth120">이전</a><a href="user_login.html" class="btnStyle3 black font-size16 minWidth120 ml20">메인</a></div>
+    </section>
+  </div>
 </template>
 
 <script>
-  
   export default {
     data: function() {
       return {

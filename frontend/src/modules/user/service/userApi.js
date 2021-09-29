@@ -32,6 +32,10 @@ const sendCertifyMail = (params) => {
 	return httpClient.post('/userApi/manage/sendCertifyMail', params, { headers: {"show-layer": "Yes"} });
 };
 
+const selectRoleList = (params) => {
+	return httpClient.post('/userApi/manage/selectRoleList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
 export default {
 	selectUserList,
 	stopUser,
@@ -40,5 +44,6 @@ export default {
 	modifyUser,
 	registerUser,
 	checkDupcUser,
-    sendCertifyMail
+    sendCertifyMail,
+	selectRoleList
 };

@@ -17,7 +17,7 @@
 			</div>
 			<div class="row mt10">
 				<div class="col-xs-6">
-					<h4>선불 결제내역청구내역 (최근 6개월, 당일 제외)</h4>
+					<h4>선불 결제내역 (최근 6개월, 당일 제외)</h4>
 					<div class="Dashboard01 fl border-line">
 						<table class="table_skin1 bt-000 tbl-striped consolMarginTop">
 							<colgroup>
