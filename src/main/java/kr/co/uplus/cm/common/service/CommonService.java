@@ -199,7 +199,7 @@ public class CommonService {
         String projectId = CommonUtils.getStrValue(params, "projectId");
         ArrayList<String> useCh = (ArrayList<String>) params.get("useCh");
         String wideYn = StringUtils.defaultString(CommonUtils.getStrValue(params, "wideYn"), Const.COMM_NO);
-        String loginId = CommonUtils.getStrValue(params, "userId");
+        String userId = CommonUtils.getStrValue(params, "userId");
 
         // 빈값 확인
         if (StringUtils.isBlank(corpId)) {
@@ -208,7 +208,7 @@ public class CommonService {
         if (StringUtils.isBlank(projectId)) {
             throw new Exception("유효하지 않은 projectId");
         }
-        if (StringUtils.isBlank(loginId)) {
+        if (StringUtils.isBlank(userId)) {
             throw new Exception("유효하지 않은 loginId");
         }
         if (useCh == null || useCh.size() == 0) {
@@ -348,7 +348,7 @@ public class CommonService {
             sParams.put("useChInfo", jsonArray.toJSONString());
             sParams.put("wideImgYn", wideImgYn);
             sParams.put("originFileName", originFileName);
-            sParams.put("loginId", loginId);
+            sParams.put("userId", userId);
             generalDao.insertGernal(DB.QRY_INSERT_IMAGE_FILE, sParams);
 
         } catch (Exception e) {
