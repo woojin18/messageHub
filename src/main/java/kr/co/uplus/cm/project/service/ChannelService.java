@@ -27,6 +27,7 @@ import kr.co.uplus.cm.config.FileConfig;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
+import kr.co.uplus.cm.xss.XssPreventer;
 
 @Service
 public class ChannelService {
@@ -610,8 +611,8 @@ public class ChannelService {
 		regBrandMap.put("subCategoryId",	params.get("subCategoryId"));
 		regBrandMap.put("categoryOpt",		params.get("categoryOpt"));
 		regBrandMap.put("zipCode",			params.get("zipCode"));
-		regBrandMap.put("roadAddress",		params.get("roadAddress"));
-		regBrandMap.put("detailAddress",	params.get("detailAddress"));
+		regBrandMap.put("roadAddress",		XssPreventer.unescape(CommonUtils.getString(params.get("roadAddress"))));
+		regBrandMap.put("detailAddress",	XssPreventer.unescape(CommonUtils.getString(params.get("detailAddress"))));
 		regBrandMap.put("email",			params.get("email")+ "@" + params.get("email2"));
 		regBrandMap.put("webSiteUrl",		params.get("webSiteUrl"));
 		
