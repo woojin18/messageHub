@@ -82,7 +82,7 @@ public class ProjectController {
 	@PostMapping("/savePreRegExWithUploadFiles")
 	public RestResult<?> savePreRegExWithUploadFiles(
 			@RequestParam List<MultipartFile> uploadFiles,
-			@RequestParam String loginId,
+			@RequestParam String userId,
 			@RequestParam String corpId,
 			@RequestParam String reqType,
 			HttpServletRequest request,
@@ -93,7 +93,7 @@ public class ProjectController {
 		
 		Map<String, Object> params = new HashedMap<String, Object>();
 		
-		params.put("loginId", loginId);
+		params.put("userId", userId);
 		params.put("corpId", corpId);
 		params.put("reqType", reqType);
 		

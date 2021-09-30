@@ -96,7 +96,7 @@ export default {
         fd.append('uploadFiles', this.$refs.fileRef4.files[0]);
       }
       
-      fd.append('loginId', tokenSvc.getToken().principal.userId);
+      fd.append('userId', tokenSvc.getToken().principal.userId);
       fd.append('corpId', tokenSvc.getToken().principal.corpId);
       fd.append('reqType', this.reqType);
 
