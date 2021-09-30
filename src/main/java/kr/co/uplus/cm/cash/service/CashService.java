@@ -205,21 +205,41 @@ public class CashService {
 		double eventCashBalance = 0;
 		
 		Map<String, Object> cashInfo = (Map<String, Object>) generalDao.selectGernalObject("cash.selectCashInfoForCorpIdCashType", params);
-		String corpId = CommonUtils.getString(cashInfo.get("corpId"));
-		String cashId = CommonUtils.getString(cashInfo.get("cashId"));
 		
+		String corpId = CommonUtils.getString(params.get("corpId"));
+		String cashId = "";
+		
+		if(cashInfo == null || cashInfo.size() == 0) {
+			Map<String, Object> apiBodyMap = new HashMap<>();
+			apiBodyMap.put("cashType",		"C");	// C 일반 캐시  E 이벤트 캐시
+			apiBodyMap.put("cashBalance",	0);
+			apiBodyMap.put("memo",			"캐시 생성");
+			
+			// API 통신 처리
+			Map<String, Object> result =  apiInterface.etcPost(ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/cashInfo/" + corpId, apiBodyMap, null);
+			
+			cashId = CommonUtils.getString(((Map<String, Object>)result.get("data")).get("cashId"));
+			
+			// 성공인지 실패인지 체크
+			if( "10000".equals(result.get("code")) ) {
+			} else {
+				rtn.setMessage(CommonUtils.getString(result.get("message")));
+				return rtn;
+			}
+		} else {
+			cashId = CommonUtils.getString(cashInfo.get("cashId"));
+		}
 		
 		// API 통신 처리
-//		Map<String, Object> result =  apiInterface.get(ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/cashInfo/" + corpId + "?cashId=" + cashId, null);
 		Map<String, Object> result =  apiInterface.request("GET", ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/cashInfo/" + corpId + "?cashId=" + cashId, null, null, null);
-				String cashBalanceStr = "";
+		String cashBalanceStr = "";
+		
 		// 성공인지 실패인지 체크
 		if( "10000".equals(result.get("code")) ) {
 			List cashInfoList = (List) ((Map<String, Object>)result.get("data")).get("cashInfo");
 			Map<String, Object> cashInfoListMap = (Map<String, Object>) cashInfoList.get(0);
 			
 			cashBalance = Double.parseDouble( CommonUtils.getString(cashInfoListMap.get("cashBalance")) );
-			//cashBalanceStr = CommonUtils.getString(cashInfoListMap.get("cashBalance"));
 		} else {
 			cashBalance = 0;
 		}
@@ -227,7 +247,7 @@ public class CashService {
 		eventCashBalance = Double.parseDouble(CommonUtils.getString(generalDao.selectGernalObject("cash.selectEventCashBalance", params)));
 		
 		Map<String, Object> cashMap = new HashMap<>();
-		 
+		
 		cashMap.put("cashBalance", cashBalance);
 		cashMap.put("eventCashBalance", eventCashBalance);
 		cashMap.put("balance", cashBalance + eventCashBalance);
