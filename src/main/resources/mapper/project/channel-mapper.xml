@@ -408,7 +408,7 @@
 		,	#{iosAppId}
 		,	#{teamKey}
 		,	#{keyId}
-		,	#{loginId}
+		,	#{userId}
 		,	NOW()
 		)
 	</insert>

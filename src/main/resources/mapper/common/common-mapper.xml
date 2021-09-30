@@ -27,8 +27,8 @@
             , #{originFileName}
             , NOW()
             , NOW()
-            , #{loginId}
-            , #{loginId}
+            , #{userId}
+            , #{userId}
         )
     </insert>
 
@@ -168,8 +168,8 @@
             , #{attachFilePath}
             , NOW()
             , NOW()
-            , #{loginId}
-            , #{loginId}
+            , #{userId}
+            , #{userId}
         )
     </insert>
 

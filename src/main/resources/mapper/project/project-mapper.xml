@@ -213,7 +213,7 @@
 		,	#{reqType}
 		,	'REQ'
 		,	#{attachFileList}
-		,	#{loginId}
+		,	#{userId}
 		,	now()
 		)
 	</insert>

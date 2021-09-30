@@ -90,7 +90,7 @@
 					#{projectId}
 			,		#{corpId}
 			,		#{userId}
-			,		#{loginId}
+			,		#{userId}
 			,		NOW()
 		)
 	</insert>

@@ -323,9 +323,9 @@
 		,		#{cuid}
 		,		#{hpNumber}
 		,		#{useYn}
-		,		#{loginId}
+		,		#{userId}
 		,		NOW()
-		,		#{loginId}
+		,		#{userId}
 		,		NOW()
 		,		#{corpId}
 		)
