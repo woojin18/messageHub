@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -20,6 +21,8 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +42,9 @@ import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.DateUtil;
 import kr.co.uplus.cm.utils.GeneralDao;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Service
 public class RcsTemplateSendService {
 	
@@ -1778,6 +1783,9 @@ public class RcsTemplateSendService {
 		boolean isDone = false;
 		boolean isServerError = false;
 		boolean isAllFail = true;
+		List<Map<String, Object>> errorRecvInfoLst = new ArrayList<Map<String, Object>>();
+		Map<String, Object> data = (Map<String, Object>) params.get("data");
+		Map<String, Object> sParams = new HashMap<String, Object>(data);
 
 		Gson gson = new Gson();
 
@@ -1809,11 +1817,12 @@ public class RcsTemplateSendService {
 				isServerError = true;
 				if(retryCnt == ApiConfig.GW_RETRY_CNT) sendMsgService.sendMsgErrorNoti(Const.ApiWatchNotiMsg.API_CONNECTION_FAIL);
 			}
-
+			
 			if(isDone) {
 				retryCnt = NumberUtils.INTEGER_ZERO;
 				fromIndex = toIndex;
 			} else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
+				errorRecvInfoLst.addAll(recvInfoLst.subList(fromIndex, toIndex));
 				retryCnt = NumberUtils.INTEGER_ZERO;
 				fromIndex = toIndex;
 			} else {
@@ -1822,7 +1831,23 @@ public class RcsTemplateSendService {
 				if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
 			}
 		}
-
+		
+		if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
+			try {
+				//CM_MSG Insert
+				sParams.put("corpId", params.get("corpId"));
+				sParams.put("projectId", params.get("projectId"));
+				sParams.put("reqCh", Const.Ch.RCS);
+				sParams.put("productCode", Const.Ch.RCS.toLowerCase());
+				sParams.put("finalCh", Const.Ch.RCS);
+				sParams.put("callback", data.get("callback"));
+				sParams.put("webReqId", data.get("webReqId"));
+				insertCmMsg(sParams, errorRecvInfoLst);
+			} catch (Exception e) {
+				log.error("{}.sendRCSMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
+			}
+		}
+		
 		//웹 발송 내역 등록
 		if(isAllFail) {
 			this.insertPushCmWebMsg(headerMap, apiMap, params, "FAIL");
@@ -1914,5 +1939,36 @@ public class RcsTemplateSendService {
 		}
 		
 		return returnList;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void insertCmMsg(Map<String, Object> data, List<Map<String, Object>> recvInfoLst) throws Exception {
+		Map<String, Object> params = null;
+		String corpId = CommonUtils.getStrValue(data, "corpId");
+		String projectId = CommonUtils.getStrValue(data, "projectId");
+		String apiKey = commonService.getApiKey(corpId, projectId);
+		String productCode = CommonUtils.getStrValue(data, "productCode");
+		String callback = CommonUtils.getStrValue(data, "callback");
+		String webReqId = CommonUtils.getStrValue(data, "webReqId");
+		String senderType = Const.SenderType.CHANNEL;
+
+		for(Map recvInfo : recvInfoLst) {
+			params = new HashMap<String, Object>();
+			params.put("msgKey", CommonUtils.getCommonId(Const.SendMsgErrorSet.ERROR_PREFIX, 5));
+			params.put("corpId", corpId);
+			params.put("projectId", projectId);
+			params.put("apiKey", apiKey);
+			params.put("cliKey", recvInfo.get("cliKey"));
+			params.put("senderType", senderType);
+			params.put("reqCh", "RCS");
+			params.put("productCode", productCode);
+			params.put("finalCh", "RCS");
+			params.put("phone", recvInfo.get("phone"));
+			params.put("callback", callback);
+			params.put("webReqId", webReqId);
+			params.put("gwResultCode", Const.SendMsgErrorSet.GW_RESULT_CODE);
+			params.put("gwResultDesc", Const.SendMsgErrorSet.GW_RESULT_DESC);
+			generalDao.insertGernal(DB.QRY_INSERT_CM_MSG, params);
+		}
 	}
 }
