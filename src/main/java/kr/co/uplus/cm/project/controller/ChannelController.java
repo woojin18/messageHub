@@ -281,7 +281,7 @@ public class ChannelController {
 	@PostMapping("/savePushManage")
 	public RestResult<?> savePushManage(
 			@RequestParam String sts,
-			@RequestParam String loginId,
+			@RequestParam String userId,
 			@RequestParam String corpId,
 			@RequestParam String projectId,
 			@RequestParam String saveProjectId,
@@ -303,7 +303,7 @@ public class ChannelController {
 		
 		// 파라미터 정리
 		params.put("sts",				sts);
-		params.put("loginId",			loginId);
+		params.put("userId",			userId);
 		params.put("corpId",			corpId);
 		params.put("projectId",			projectId);
 		params.put("saveProjectId",		saveProjectId);

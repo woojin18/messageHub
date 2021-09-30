@@ -200,7 +200,7 @@ export default {
 			}
 
 			var fd = new FormData();
-			fd.append('loginId'			, tokenSvc.getToken().principal.loginId);
+			fd.append('userId'			, tokenSvc.getToken().principal.userId);
 			fd.append('corpId'			, tokenSvc.getToken().principal.corpId);
 			fd.append('sts'				, this.save_status);
 			if( this.otherProjectYn === 'Y' ){
