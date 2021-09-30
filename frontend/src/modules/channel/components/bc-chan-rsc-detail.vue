@@ -193,7 +193,7 @@
 					</div>
 					<div class="of_h">
 						<h4 style="width:28%" class="inline-block">홈페이지 주소</h4>
-						<input id="homepageAddr" type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.webSiteUrl" :disabled="this.duplCheckYn == 'N'">
+						<input id="homepageAddr" type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.webSiteUrl" :disabled="this.duplCheckYn == 'N'" placeholder="예) https://uplus.co.kr">
 					</div>
 					<div class="of_h">
 						<h4 style="width:28%" class="inline-block">이메일 *</h4>
