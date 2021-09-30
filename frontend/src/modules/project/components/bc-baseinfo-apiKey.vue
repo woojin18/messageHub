@@ -55,8 +55,8 @@
 						<div class="of_h consolMarginTop">
 							<div class="float-left" style="width:24%"><h5>웹 사용</h5></div>
 							<div class="float-left" style="width:76%">
-								<input type="radio" name="webSenderYn" value="Y" id="agree3-1" checked=""> <label for="agree3-1" class="mr30">예</label>
-								<input type="radio" name="webSenderYn" value="N" id="agree3-2"> <label for="agree3-2">아니오</label>
+								<input type="radio" name="webSenderYn" value="Y" id="agree3-1" @click="fnChgWebSender('Y')" checked=""> <label for="agree3-1" class="mr30">예</label>
+								<input type="radio" name="webSenderYn" value="N" id="agree3-2" @click="fnChgWebSender('N')"> <label for="agree3-2">아니오</label>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
@@ -212,7 +212,11 @@ export default {
 				jQuery('#apiPwd').val('');
 				jQuery('#apiPwdConfirm').val('');
 				jQuery('input:radio[name=webSenderYn]:input[value="Y"]').prop('checked', true);
-				jQuery('input:radio[name=ipChkYn]:input[value="Y"]').prop('checked', true);
+
+				jQuery('input:radio[name=ipChkYn]:input[value="N"]').prop('checked', true);
+				jQuery('input:radio[name=ipChkYn]:input[value="Y"]').prop('disabled', true);
+				jQuery('input:radio[name=ipChkYn]:input[value="N"]').prop('disabled', true);
+
 				jQuery('#ipListSpan').show();
 				// 고객사 접속 IP 입력칸 기본 생성
 				this.ipList = [];
@@ -455,6 +459,18 @@ export default {
 					jQuery('#selectLineType').append('<option value="'+result[i].codeVal1+'">'+result[i].codeName1+'</option>');
 				}
 			});
+		},
+		fnChgWebSender(val) {
+			// 웹사용 예일 경우 ip 체크 아니오 고정
+			if(val === 'Y') {
+				jQuery('input:radio[name=ipChkYn]:input[value="N"]').prop('checked', true);
+				jQuery('input:radio[name=ipChkYn]:input[value="Y"]').prop('disabled', true);
+				jQuery('input:radio[name=ipChkYn]:input[value="N"]').prop('disabled', true);
+			} else {
+				jQuery('input:radio[name=ipChkYn]:input[value="Y"]').prop('checked', true);
+				jQuery('input:radio[name=ipChkYn]:input[value="Y"]').prop('disabled', false);
+				jQuery('input:radio[name=ipChkYn]:input[value="N"]').prop('disabled', false);
+			}
 		},
 		fnIpListView(isView) {
 			if(isView) {
