@@ -27,6 +27,7 @@ public class AuthUser implements UserDetails {
 	private String bizType;				// 특수사업자 유형
 	private String delYn;					// 삭제여부
 	private int diffDate;					// 현재날짜 - 패스워드 변경일시
+	private String corpStatus;			// 고객사상태(사용:USE,삭제:DEL)
 
 	public String getPassword() {
 		return userPwd;

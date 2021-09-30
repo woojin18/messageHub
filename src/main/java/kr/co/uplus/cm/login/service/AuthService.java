@@ -134,6 +134,7 @@ public class AuthService implements UserDetailsService {
 
 		AuthUser user = (AuthUser) authentication.getPrincipal();
 		String delYn = user.getDelYn();
+		String corpStatus = user.getCorpStatus();
 		int diffDate = user.getDiffDate();
 		if ("UC".equals(user.getSvcTypeCd())) {
 			if ("".equals(user.getRepProjectId()) || user.getRepProjectId() == null) {
@@ -142,6 +143,9 @@ public class AuthService implements UserDetailsService {
 		}
 		if ("Y".equals(delYn)) {
 			return new RestResult<String>(false).setCode(ResultCode.SS_DEL_USE);
+		}
+		if (!"USE".equals(corpStatus)) {
+			return new RestResult<String>(false).setCode(ResultCode.SS_NOT_EXIST_CORP);
 		}
 
 		ResultCode rcode = loginSuccessHandler.process(request, response, authentication);
