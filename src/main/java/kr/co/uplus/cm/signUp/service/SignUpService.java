@@ -187,9 +187,9 @@ public class SignUpService {
 			throw new Exception("회원 가입에 실패하였습니다.");
 		}
 		String salesMan = CommonUtils.getString(paramMap.get("salesMan"));
-		// 영업사원 미선택인 경우 오진욱 default
+		// 영업사원 미선택인 경우 박진표 default
 		if("".equals(salesMan) || salesMan == null) {
-			salesMan = "juoh";
+			salesMan = "pjp1440";
 		}
 		paramMap.put("salesMan", salesMan);
 		

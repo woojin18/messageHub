@@ -159,6 +159,7 @@
 							<option  v-for="(row, index) in salesManArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
 						</select>
 					</div>
+					<div class="float-right color3 mt5" style="width:78%">영업사원 미선택시 자동으로 '박진표'로 선택됩니다.</div>
 				</div>
 			</div>
 
