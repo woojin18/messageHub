@@ -973,13 +973,20 @@ public class CommonService {
 
 		SHA sha512 = new SHA(512);
 
-		// 기존 비밀번호 비교
-		Map<String, Object> saltMap =  (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params);
-		String exSalt = CommonUtils.getString(saltMap.get("salt"));				// 현재 salt 문자열
-		String bfExSalt = CommonUtils.getString(saltMap.get("beforeSalt"));		// 이전 salt 문자열
-
+		String exSalt = "";				// 기존 salt
+		String bfExSalt = "";			// 현재 salt
 		String rtnPwd = "";				// 현재 salt + 새로 입력한 비밀번호
 		String rtnPwd2 = "";			// 기존 salt + 새로 입력한 비밀번호
+		String exPwd = "";				// 현재 비밀번호 
+		String bfExPwd = "";			// 기존 비밀번호
+
+		// 기존 비밀번호 비교
+		Map<String, Object> saltMap =  (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO_BY_USERID, params);
+		
+		if(saltMap != null && saltMap.size() > 0) {
+			exSalt = CommonUtils.getString(saltMap.get("salt"));				// 현재 salt 문자열
+			bfExSalt = CommonUtils.getString(saltMap.get("beforeSalt"));		// 이전 salt 문자열
+		}
 
 		// 현재 이전의 비밀번호와 비교
 		if(bfExSalt != null && !"".equals(bfExSalt)) {
@@ -996,9 +1003,11 @@ public class CommonService {
 		}
 
 		Map<String, Object> pwdMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_EX_LOGIN_PWD, params);
-		String exPwd = CommonUtils.getString(pwdMap.get("loginPwd"));			// 현재 비밀번호
-		String bfExPwd = CommonUtils.getString(pwdMap.get("beforeLoginPwd"));	// 직전 비밀번호
 
+		if(pwdMap != null && pwdMap.size() > 0) {
+			exPwd = CommonUtils.getString(pwdMap.get("loginPwd"));			// 현재 비밀번호
+			bfExPwd = CommonUtils.getString(pwdMap.get("beforeLoginPwd"));	// 직전 비밀번호
+		}
 		// 비밀번호 비교
 		if(exPwd.equals(rtnPwd) || bfExPwd.equals(rtnPwd2)) {
 			throw new Exception("기존과 동일한 비밀번호는 사용할 수 없습니다.");
