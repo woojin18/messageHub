@@ -25,10 +25,10 @@
             <div class="consolCheck consolMarginTop">
               <input type="checkbox" id="otherUse_all" class="checkStyle2" @change="fnSearchMsgKindCdChkAll" v-model="msgKindCdAllSelected">
               <label for="otherUse_all" class="mr30">전체</label>
-              <input type="checkbox" id="searchMsgKindCd_A" class="checkStyle2" value="A" v-model="searchData.searchMsgKindCd">
-              <label for="searchMsgKindCd_A" class="mr30">광고성</label>
               <input type="checkbox" id="searchMsgKindCd_I" class="checkStyle2" value="I" v-model="searchData.searchMsgKindCd">
               <label for="searchMsgKindCd_I" class="mr30">정보성</label>
+              <input type="checkbox" id="searchMsgKindCd_A" class="checkStyle2" value="A" v-model="searchData.searchMsgKindCd">
+              <label for="searchMsgKindCd_A" class="mr30">광고성</label>
             </div>
           </div>
         </div>
@@ -39,18 +39,18 @@
             <div class="consolCheck consolMarginTop">
               <input type="checkbox" id="searchMsgCh_all" class="checkStyle2" @change="fnSearchMsgChChkAll" v-model="msgChAllSelected">
               <label for="searchMsgCh_all" class="mr30">전체</label>
-              <input type="checkbox" id="searchMsgCh_PUSH" class="checkStyle2" value="PUSH" v-model="searchData.searchMsgCh">
-              <label for="searchMsgCh_PUSH" class="mr30">푸시</label>
               <input type="checkbox" id="searchMsgCh_SMS" class="checkStyle2" value="SMS" v-model="searchData.searchMsgCh">
               <label for="searchMsgCh_SMS" class="mr30">SMS</label>
               <input type="checkbox" id="searchMsgCh_MMS" class="checkStyle2" value="MMS" v-model="searchData.searchMsgCh">
               <label for="searchMsgCh_MMS" class="mr30">MMS</label>
-              <input type="checkbox" id="searchMsgCh_FRIENDTALK" class="checkStyle2" value="FRIENDTALK" v-model="searchData.searchMsgCh">
-              <label for="searchMsgCh_FRIENDTALK" class="mr30">친구톡</label>
-              <input type="checkbox" id="searchMsgCh_ALIMTALK" class="checkStyle2" value="ALIMTALK" v-model="searchData.searchMsgCh">
-              <label for="searchMsgCh_ALIMTALK" class="mr30">알림톡</label>
               <input type="checkbox" id="searchMsgCh_RCS" class="checkStyle2" value="RCS" v-model="searchData.searchMsgCh">
               <label for="searchMsgCh_RCS" class="mr30">RCS</label>
+              <input type="checkbox" id="searchMsgCh_ALIMTALK" class="checkStyle2" value="ALIMTALK" v-model="searchData.searchMsgCh">
+              <label for="searchMsgCh_ALIMTALK" class="mr30">알림톡</label>
+              <input type="checkbox" id="searchMsgCh_FRIENDTALK" class="checkStyle2" value="FRIENDTALK" v-model="searchData.searchMsgCh">
+              <label for="searchMsgCh_FRIENDTALK" class="mr30">친구톡</label>
+              <input type="checkbox" id="searchMsgCh_PUSH" class="checkStyle2" value="PUSH" v-model="searchData.searchMsgCh">
+              <label for="searchMsgCh_PUSH" class="mr30">푸시</label>
             </div>
           </div>
         </div>

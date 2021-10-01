@@ -47,14 +47,14 @@ public class HomeService {
 
 		StringBuffer sb = new StringBuffer();
 
-		if ("Y".equals(pushYn))
-			sb.append("PUSH,");
-		if ("Y".equals(kakaoYn))
-			sb.append("카카오톡,");
-		if ("Y".equals(rcsYn))
-			sb.append("RCS,");
 		if ("Y".equals(smsmmsYn))
 			sb.append("SMS/MMS,");
+		if ("Y".equals(rcsYn))
+			sb.append("RCS,");
+		if ("Y".equals(kakaoYn))
+			sb.append("카카오톡,");
+		if ("Y".equals(pushYn))
+			sb.append("PUSH,");
 		if ("Y".equals(moYn))
 			sb.append("MO,");
 
@@ -98,14 +98,14 @@ public class HomeService {
 
 			StringBuffer sb = new StringBuffer();
 
-			if ("Y".equals(pushYn))
-				sb.append("PUSH,");
-			if ("Y".equals(kakaoYn))
-				sb.append("카카오톡,");
-			if ("Y".equals(rcsYn))
-				sb.append("RCS,");
 			if ("Y".equals(smsmmsYn))
 				sb.append("SMS/MMS,");
+			if ("Y".equals(rcsYn))
+				sb.append("RCS,");
+			if ("Y".equals(kakaoYn))
+				sb.append("카카오톡,");
+			if ("Y".equals(pushYn))
+				sb.append("PUSH,");
 			if ("Y".equals(moYn))
 				sb.append("MO,");
 

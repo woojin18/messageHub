@@ -41,10 +41,10 @@
           <colgroup>
             <col style="width:10%">
             <col>
-            <col style="width:15%">
-            <col style="width:15%">
-            <col style="width:15%">
-            <col style="width:15%">
+            <col style="width:17%">
+            <col style="width:17%">
+            <col style="width:17%">
+            <col style="width:25%">
             <col>
           </colgroup>
           <thead>

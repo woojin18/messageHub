@@ -96,11 +96,25 @@
 										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.totalFailCnt | comma }}<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
-								<li @click="fnSetChartData('PUSH')" id="setPush" style="width:12.5%">
-									<a class="inline-block text-center active">
-										<h5>PUSH 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.pushSuccCnt | comma }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.pushFailCnt | comma }}<br></span><span class="text">실패</span></p>					
+								<li @click="fnSetChartData('SMS')" id="setSms" style="width:12.5%">
+									<a class="inline-block text-center">
+										<h5>SMS 전체</h5>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.smsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.smsFailCnt | comma }}<br></span><span class="text">실패</span></p>
+									</a>
+								</li>
+								<li @click="fnSetChartData('LMS')" id="setLms" style="width:12.5%">
+									<a class="inline-block text-center">
+										<h5>LMS 전체</h5>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.lmsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.lmsFailCnt | comma }}<br></span><span class="text">실패</span></p>
+									</a>
+								</li>
+								<li @click="fnSetChartData('MMS')" id="setMms" style="width:12.5%">
+									<a class="inline-block text-center">
+										<h5>MMS 전체</h5>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.mmsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.mmsFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
 								<li @click="fnSetChartData('RCS')" id="setRcs" style="width:12.5%">
@@ -124,25 +138,11 @@
 										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.friendFailCnt | comma }}<br></span><span class="text">실패</span></p>
 									</a>
 								</li>
-								<li @click="fnSetChartData('SMS')" id="setSms" style="width:12.5%">
-									<a class="inline-block text-center">
-										<h5>SMS 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.smsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.smsFailCnt | comma }}<br></span><span class="text">실패</span></p>
-									</a>
-								</li>
-								<li @click="fnSetChartData('LMS')" id="setLms" style="width:12.5%">
-									<a class="inline-block text-center">
-										<h5>LMS 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.lmsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.lmsFailCnt | comma }}<br></span><span class="text">실패</span></p>
-									</a>
-								</li>
-								<li @click="fnSetChartData('MMS')" id="setMms" style="width:12.5%">
-									<a class="inline-block text-center">
-										<h5>MMS 전체</h5>
-										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.mmsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
-										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.mmsFailCnt | comma }}<br></span><span class="text">실패</span></p>
+								<li @click="fnSetChartData('PUSH')" id="setPush" style="width:12.5%">
+									<a class="inline-block text-center active">
+										<h5>PUSH 전체</h5>
+										<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.pushSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+										<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.pushFailCnt | comma }}<br></span><span class="text">실패</span></p>					
 									</a>
 								</li>
 							</ul>
@@ -500,12 +500,28 @@ export default {
 						labels: this.timeLine,
 						datasets: [
 							{
-								label: 'Push',
-								backgroundColor: '#f87979',
+								label: 'SMS',
+								backgroundColor: '#8041D9',
 								pointBackgroundColor: 'white',
 								borderWidth: 1,
 								pointBorderColor: '#249EBF',
-								data: this.monthUsedPushList
+								data: this.monthUsedSmsList
+							},
+							{
+								label: 'LMS',
+								backgroundColor: '#0054FF',
+								pointBackgroundColor: 'white',
+								borderWidth: 1,
+								pointBorderColor: '#249EBF',
+								data: this.monthUsedLmsList
+							},
+							{
+								label: 'MMS',
+								backgroundColor: '#1DDB16',
+								pointBackgroundColor: 'white',
+								borderWidth: 1,
+								pointBorderColor: '#249EBF',
+								data: this.monthUsedMmsList
 							},
 							{
 								label: 'RCS',
@@ -532,28 +548,12 @@ export default {
 								data: this.monthUsedAlimtalkList
 							},
 							{
-								label: 'SMS',
-								backgroundColor: '#8041D9',
+								label: 'Push',
+								backgroundColor: '#f87979',
 								pointBackgroundColor: 'white',
 								borderWidth: 1,
 								pointBorderColor: '#249EBF',
-								data: this.monthUsedSmsList
-							},
-							{
-								label: 'LMS',
-								backgroundColor: '#0054FF',
-								pointBackgroundColor: 'white',
-								borderWidth: 1,
-								pointBorderColor: '#249EBF',
-								data: this.monthUsedLmsList
-							},
-							{
-								label: 'MMS',
-								backgroundColor: '#1DDB16',
-								pointBackgroundColor: 'white',
-								borderWidth: 1,
-								pointBorderColor: '#249EBF',
-								data: this.monthUsedMmsList
+								data: this.monthUsedPushList
 							}
 						]
 					}
@@ -604,12 +604,28 @@ export default {
 						labels: this.sixMonthTimeLine,
 						datasets: [
 							{
-								label: 'Push',
-								backgroundColor: '#f87979',
+								label: 'SMS',
+								backgroundColor: '#8041D9',
 								pointBackgroundColor: 'white',
 								borderWidth: 1,
 								pointBorderColor: '#249EBF',
-								data: this.sixMonthUsedPushList
+								data: this.sixMonthUsedSmsList
+							},
+							{
+								label: 'LMS',
+								backgroundColor: '#0054FF',
+								pointBackgroundColor: 'white',
+								borderWidth: 1,
+								pointBorderColor: '#249EBF',
+								data: this.sixMonthUsedLmsList
+							},
+							{
+								label: 'MMS',
+								backgroundColor: '#1DDB16',
+								pointBackgroundColor: 'white',
+								borderWidth: 1,
+								pointBorderColor: '#249EBF',
+								data: this.sixMonthUsedMmsList
 							},
 							{
 								label: 'RCS',
@@ -636,28 +652,12 @@ export default {
 								data: this.sixMonthUsedAlimtalkList
 							},
 							{
-								label: 'SMS',
-								backgroundColor: '#8041D9',
+								label: 'Push',
+								backgroundColor: '#f87979',
 								pointBackgroundColor: 'white',
 								borderWidth: 1,
 								pointBorderColor: '#249EBF',
-								data: this.sixMonthUsedSmsList
-							},
-							{
-								label: 'LMS',
-								backgroundColor: '#0054FF',
-								pointBackgroundColor: 'white',
-								borderWidth: 1,
-								pointBorderColor: '#249EBF',
-								data: this.sixMonthUsedLmsList
-							},
-							{
-								label: 'MMS',
-								backgroundColor: '#1DDB16',
-								pointBackgroundColor: 'white',
-								borderWidth: 1,
-								pointBorderColor: '#249EBF',
-								data: this.sixMonthUsedMmsList
+								data: this.sixMonthUsedPushList
 							}
 						]
 					}
