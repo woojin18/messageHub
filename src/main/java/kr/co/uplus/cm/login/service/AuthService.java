@@ -145,7 +145,12 @@ public class AuthService implements UserDetailsService {
 			return new RestResult<String>(false).setCode(ResultCode.SS_DEL_USE);
 		}
 		if (!"USE".equals(corpStatus)) {
-			return new RestResult<String>(false).setCode(ResultCode.SS_NOT_EXIST_CORP);
+			if ("STOP".equals(corpStatus)) {
+				return new RestResult<String>(false).setCode(ResultCode.SS_NOT_USE_CORP);
+			}
+			if ("DEL".equals(corpStatus)) {
+				return new RestResult<String>(false).setCode(ResultCode.SS_NOT_EXIST_CORP);
+			}
 		}
 
 		ResultCode rcode = loginSuccessHandler.process(request, response, authentication);

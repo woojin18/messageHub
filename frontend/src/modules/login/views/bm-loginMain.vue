@@ -149,8 +149,11 @@ export default {
 						case 'SS_NOT_PROJECT': // 참여 프로젝트 없음
 							msg = '참여되어 있는 프로젝트가 존재하지 않습니다.';
 							break;
+						case 'SS_NOT_USE_CORP': // 사용정지된 고객사
+							msg = '사용정지 된 고객사의 사용자입니다.';
+							break;
 						case 'SS_NOT_EXIST_CORP': // 삭제된 고객사
-							msg = '삭제된 고객사의 사용자입니다.';
+							msg = '삭제 된 고객사의 사용자입니다.';
 							break;
 						default:
 							vm.errmsg = '인증에 실패했습니다.';
