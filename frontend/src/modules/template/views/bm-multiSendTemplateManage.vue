@@ -1568,7 +1568,7 @@
 							</div>
 						</div>
 					</li>
-					<li class="float-left" style="width:11%" v-if="rowData.msgKind == 'I'"><!-- 메시지 구분이 광고성일 경우 사용불가 -->
+					<li class="float-left" style="width:11%" v-if="rowData.msgKind == 'I' && rowData.msgType == 'BASE'"><!-- 메시지 구분이 광고성이거나 메시지 타입이 이미지일 경우 사용불가 -->
 						<div class="talk_Yellow"><h5>알림톡</h5></div>
 						<div style="width:78px">
 							<div class="consolMarginTop text-center">
@@ -4586,6 +4586,8 @@ export default {
 					jQuery("input:radio[id=rcsTemplate1-1]").click();
 				}
 			} else {
+				// 메시지 타입 이미지 선택 시, 카카오톡 상품 친구톡 클릭
+				jQuery('input:radio[name=kakao]:input[value="friend"]').click();
 				if (this.kakaoTemplateTable == 0) {
 					if (this.isEmpty(this.rowData.friendTalkImageLink) || this.rowData.friendTalkImageLink == 'https://') {
 						this.rowData.friendTalkImageLink = 'https://';
