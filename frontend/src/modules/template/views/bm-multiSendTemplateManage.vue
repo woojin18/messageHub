@@ -1638,7 +1638,7 @@
 					</div>					
 					<div class="of_h consolMarginTop">
 						<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowFriendTalk" class="btnStyle1 backBlack">추가 +</a></div>
-						<div class="float-left" style="width:57%">
+						<div class="float-left" style="width:59%">
 							<table class="table_skin1 mt0" style="width:100%" v-if="buttonFriendTalkFlag">
 								<colgroup>
 									<col style="width:22%">
@@ -4533,7 +4533,7 @@ export default {
 			this.msgSmsCurrByte = this.getByte(totalMsg);
 		},
 		fnGetFrndTalkLimitByte() {
-			if(this.rowData && this.rowData.friendTalkImgInfo && this.$gfnCommonUtils.isEmpty(this.rowData.friendTalkImgInfo.imgUrl) == false){
+			if (this.rowData && this.rowData.friendTalkImgInfo && this.$gfnCommonUtils.isEmpty(this.rowData.friendTalkImgInfo.imgUrl) == false) {
 				if(this.rowData.friendTalkImgInfo.wideImgYn == 'Y'){
 					this.msgFrndTalkLimitByte = 76;
 				} else {
