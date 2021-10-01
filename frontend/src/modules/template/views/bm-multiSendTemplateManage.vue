@@ -4532,6 +4532,13 @@ export default {
 			}
 			this.msgSmsCurrByte = this.getByte(totalMsg);
 		},
+		fnGetSmsLimitByte() {
+			if (this.rowData.smsSendType == 'S') {
+				this.msgSmsLimitByte = 90;
+			} else if (this.rowData.smsSendType == 'M') {
+				this.msgSmsLimitByte = 2000;
+			}
+		},
 		fnGetFrndTalkLimitByte() {
 			if (this.rowData && this.rowData.friendTalkImgInfo && this.$gfnCommonUtils.isEmpty(this.rowData.friendTalkImgInfo.imgUrl) == false) {
 				if(this.rowData.friendTalkImgInfo.wideImgYn == 'Y'){
@@ -4546,13 +4553,6 @@ export default {
 		fnSetFrndTalkCurrByte() {
 			let body = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.friendTalkContent, '');
 			this.msgFrndTalkCurrByte = body.length;
-		},
-		fnGetSmsLimitByte() {
-			if (this.rowData.smsSendType == 'S') {
-				this.msgSmsLimitByte = 90;
-			} else if (this.rowData.smsSendType == 'M') {
-				this.msgSmsLimitByte = 2000;
-			}
 		},
 		checkSmsSend(flag) {
 			if (flag === "S") {
