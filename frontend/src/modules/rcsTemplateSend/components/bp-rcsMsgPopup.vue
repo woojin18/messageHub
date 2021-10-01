@@ -50,7 +50,6 @@
 									</tbody>
 								</table>
 								<!-- //table -->
-
 								<!-- pagination -->
 								<div id="pageContent">
 									<PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
