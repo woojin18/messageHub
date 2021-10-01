@@ -292,6 +292,7 @@ public class MultiSendTemplateService {
 				}
 				sb.append("\"copyAllowed\" : \"false\","); // 복사/공유 허용여부
 				sb.append("\"expiryOption\" : \"2\","); // expire 옵션(1:72시간, 2:30초)
+				sb.append("\"agencyId\" : \"lguplus\","); // 대행사 아이디
 				sb.append("\"brandNm\" : \"" + params.get("brandNm") + "\", "); //
 
 				if ((int) params.get("rcsTemplateTable") == 0) {//
