@@ -2558,7 +2558,7 @@ public class SendMessageService {
         String tmpltMergeDataStr = CommonUtils.getStrValue(rcsltInfo, "mergeData");
 
         //미승인형
-        if((StringUtils.equals(Const.RcsPrd.NARRATIVE, rcsPrdType) || StringUtils.equals(Const.RcsPrd.STYEL, rcsPrdType)) == false) {
+        if (StringUtils.equals(Const.RcsPrd.STYEL, rcsPrdType) == false) {
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             List<Map<String, Object>> tmpltMergeDataList = gson.fromJson(tmpltMergeDataStr, new TypeToken<List<Map<String, Object>>>(){}.getType());
 
@@ -2586,11 +2586,17 @@ public class SendMessageService {
                                 rcsMergeData.put("description"+carouselCnt, ss.replace(CommonUtils.getStrValue(tmpltMergeData, "description")));
                                 carouselCnt++;
                             }
+                            sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                         } else {
-                            rcsMergeData.put("title", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "title")));
-                            rcsMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
+                        	if (StringUtils.equals(Const.RcsPrd.NARRATIVE, rcsPrdType)) {
+                        		sendMergeData.remove(Const.Ch.RCS);
+                        		sendMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
+                        	} else {
+                                rcsMergeData.put("title", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "title")));
+                                rcsMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
+                                sendMergeData.put(Const.Ch.RCS, rcsMergeData);
+                        	}
                         }
-                        sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                     }
                 }
             }
