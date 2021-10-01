@@ -12,13 +12,13 @@
 					<!-- table -->
 					<table  class="table_skin1 bt-000 tbl-striped">
 						<colgroup>
-              <col style="width:15%">
+              <col style="width:10%">
 							<col>
-							<col style="width:15%">
-							<col style="width:15%">
-              <col style="width:15%">
-							<col style="width:10%">
-							<col style="width:10%">
+							<col style="width:12%">
+							<col style="width:12%">
+              <col style="width:12%">
+							<col style="width:12%">
+							<col style="width:12%">
 						</colgroup>
 						<thead>
 							<tr>
