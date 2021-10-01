@@ -13,7 +13,7 @@
                             <div class="col-xs-6 pr0">
                                 <div class="menuBox pd20 height170">
                                     <h4>{{alarmType.alarmTypeName}}</h4>		
-                                    <p class="color4 mt10">{{alarmType.alarmDesc}}</p>
+                                    <p class="color4 mt10" style="overflow-y: visible;">{{alarmType.alarmDesc}}</p>
                                     <div class="mt40">
                                         <router-link activity="SAVE" v-if="((alarmType.alarmTypeCode == 'IP' || alarmType.alarmTypeCode == 'PRE') && alarmType.list.length == 0) || !(alarmType.alarmTypeCode == 'IP' || alarmType.alarmTypeCode == 'PRE')" :to="{name:'alarmType', params:{typeCode:alarmType.alarmTypeCode}}" class="btnStyle2 backRed">등록</router-link>
                                     </div>			
