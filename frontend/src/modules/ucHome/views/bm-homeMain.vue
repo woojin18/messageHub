@@ -77,9 +77,9 @@
 					<div class="">
 						<h4 class="lc-1 text-left">채널별 성공/실패율</h4>
 						<div class="mt20">
-							<Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="inputStyle" styleProps="width:15%" :initDate="searchData.searchStartDate" disabled></Calendar>
+							<Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="inputStyle" styleProps="width:130px" :initDate="searchData.searchStartDate" disabled></Calendar>
 							<span style="padding:0 11px">~</span>
-							<Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="inputStyle" styleProps="width:15%" :initDate="searchData.searchEndDate" disabled></Calendar>
+							<Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="inputStyle" styleProps="width:130px" :initDate="searchData.searchEndDate" disabled></Calendar>
 							<ul class="tab_s2 ml20">
 								<li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 서비스 검색">1주일</a></li>
 								<li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 서비스 검색">15일</a></li>

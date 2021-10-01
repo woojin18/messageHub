@@ -10,9 +10,9 @@
 						<div>
 							<h4 class="inline-block" style="width:6%">조회기간</h4>
 							<div class="inline-block" style="width:30%">
-								<Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle" styleProps="width:40%" :initDate="searchData.searchStartDate" :maxDate="searchData.maxDate"></Calendar>
+								<Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle" styleProps="width:130px" :initDate="searchData.searchStartDate" :maxDate="searchData.maxDate"></Calendar>
 								<span style="padding:0 11px">~</span>
-								<Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle" styleProps="width:40%" :initDate="searchData.searchEndDate" :maxDate="searchData.maxDate"></Calendar>
+								<Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle" styleProps="width:130px" :initDate="searchData.searchEndDate" :maxDate="searchData.maxDate"></Calendar>
 							</div>
 							<ul class="tab_s2 ml20">
 								<li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 서비스 검색">1주일</a></li>
