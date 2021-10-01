@@ -2107,6 +2107,8 @@ export default {
 			msgSmsLimitByte: 0,
 			titleSmsCurrByte: 0,
 			titleSmsLimitByte: 40,
+			msgFrndTalkCurrByte: 0,
+			msgFrndTalkLimitByte: 0,
 
 			rcsDesMessagebaseId: '',		//서술형 MessagebaseId
 			rcsDesMessagebaseformId: '',	//서술형 유형
@@ -2183,8 +2185,6 @@ export default {
 			friendTalkImgUploadOpen : false,
 			friendTalkUseCh : 'FRIENDTALK',
 			friendTalkImgLimitSize : 1,
-			msgFrndTalkCurrByte: 0,
-			msgFrndTalkLimitByte: 0,
 
 			friendTalkSenderKeyType: 'NOMAL',	//NOMAL, GROUP //friendTalk 발신프로필 그룹
 			friendTalkSenderKeyList: [],
