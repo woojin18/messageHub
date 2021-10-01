@@ -5,6 +5,7 @@
 
 	<sql id ="whereSelectMultiSendTemplateList">
 		AND A.TMPLT_TYPE = 'M'
+		AND A.CORP_ID = #{corpId}
 		AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
 		<if test='pushYn == "N"'>
 		AND A.TMPLT_INFO ->> '$[0].chTypeList' NOT LIKE CONCAT('%', UPPER('PUSH'), '%')
@@ -87,8 +88,6 @@
 				cm_console.fnc_get_user_name(A.REG_ID)  AS REG_NM,
 				DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%S') AS REG_DT
 			FROM cm.CM_SMART_TMPLT A
-				INNER JOIN cm_console.CM_CORP CC
-					ON A.CORP_ID = CC.CORP_ID
 				LEFT OUTER JOIN cm_bo.CM_CODE C
 					ON A.MSG_KIND = C.CODE_VAL_1 AND C.CODE_TYPE_CD = 'MSG_KIND'
 				LEFT OUTER JOIN cm_bo.CM_CODE D
