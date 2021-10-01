@@ -83,7 +83,7 @@
 			,		'이벤트캐시'
 			,		'이벤트캐시'
 			,		DATE_FORMAT(cc.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
-			,		CONCAT(DATE_FORMAT(cc.START_DT, '%Y-%m-%d %H:%i:%s'), '~', DATE_FORMAT(cc.EXP_DT, '%Y-%m-%d %H:%i:%s')) AS EVENT_DT
+			,		CONCAT(DATE_FORMAT(cc.START_DT, '%Y-%m-%d %H:%i'), '~', DATE_FORMAT(cc.EXP_DT, '%Y-%m-%d %H:%i')) AS EVENT_DT
 			FROM	cm.CM_CASH cc
 			WHERE	cc.CORP_ID = #{corpId}
 			AND		cc.CASH_TYPE = 'E'
