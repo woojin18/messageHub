@@ -32,7 +32,7 @@
 								  </colgroup>
 								  <thead>
 									<tr>
-									  <th class="text-center lc-1"><input v-model="checkboxAll" @click="checkedAll($event.target.checked)" type="checkbox" id="listCheck_all" class="boardCheckStyle" value="listCheck_all"><label for="listCheck_all"></label></th>
+									  <th class="text-center lc-1"><input v-model="checkboxAll" @click="checkedAll($event.target.checked)" type="checkbox" id="all_listCheck" class="boardCheckStyle"><label for="all_listCheck"></label></th>
 									  <th class="text-center lc-1">브랜드</th>
 									  <th class="text-center lc-1">메시지명</th>
 									  <th class="text-center lc-1">작성자명</th>
