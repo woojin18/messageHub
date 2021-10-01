@@ -217,7 +217,7 @@ export default {
 				jQuery('input:radio[name=ipChkYn]:input[value="Y"]').prop('disabled', true);
 				jQuery('input:radio[name=ipChkYn]:input[value="N"]').prop('disabled', true);
 
-				jQuery('#ipListSpan').show();
+				jQuery('#ipListSpan').hide();
 				// 고객사 접속 IP 입력칸 기본 생성
 				this.ipList = [];
 				this.ipList.push('');
