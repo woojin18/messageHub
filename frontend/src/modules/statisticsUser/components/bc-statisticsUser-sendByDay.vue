@@ -33,11 +33,25 @@
 							<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.totalFailCnt | comma }}<br></span><span class="text">실패</span></p>
 						</a>
 					</li>
-					<li @click="fnSetChartData('PUSH')" id="setPush" style="width:12.5%">
+					<li @click="fnSetChartData('SMS')" id="setSms" style="width:12.5%">
 						<a class="inline-block text-center">
-							<h5>PUSH 전체</h5>
-							<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.pushSuccCnt | comma }}<br></span><span class="text">성공</span></p>
-							<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.pushFailCnt | comma }}<br></span><span class="text">실패</span></p>
+							<h5>SMS 전체</h5>
+							<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.smsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+							<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.smsFailCnt | comma }}<br></span><span class="text">실패</span></p>
+						</a>
+					</li>
+					<li @click="fnSetChartData('LMS')" id="setLms" style="width:12.5%">
+						<a class="inline-block text-center">
+							<h5>LMS 전체</h5>
+							<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.lmsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+							<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.lmsFailCnt | comma }}<br></span><span class="text">실패</span></p>
+						</a>
+					</li>
+					<li @click="fnSetChartData('MMS')" id="setMms" style="width:12.5%">
+						<a class="inline-block text-center">
+							<h5>MMS 전체</h5>
+							<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.mmsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+							<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.mmsFailCnt | comma }}<br></span><span class="text">실패</span></p>
 						</a>
 					</li>
 					<li @click="fnSetChartData('RCS')" id="setRcs" style="width:12.5%">
@@ -61,25 +75,11 @@
 							<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.friendFailCnt | comma }}<br></span><span class="text">실패</span></p>
 						</a>
 					</li>
-					<li @click="fnSetChartData('SMS')" id="setSms" style="width:12.5%">
+					<li @click="fnSetChartData('PUSH')" id="setPush" style="width:12.5%">
 						<a class="inline-block text-center">
-							<h5>SMS 전체</h5>
-							<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.smsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
-							<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.smsFailCnt | comma }}<br></span><span class="text">실패</span></p>
-						</a>
-					</li>
-					<li @click="fnSetChartData('LMS')" id="setLms" style="width:12.5%">
-						<a class="inline-block text-center">
-							<h5>LMS 전체</h5>
-							<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.lmsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
-							<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.lmsFailCnt | comma }}<br></span><span class="text">실패</span></p>
-						</a>
-					</li>
-					<li @click="fnSetChartData('MMS')" id="setMms" style="width:12.5%">
-						<a class="inline-block text-center">
-							<h5>MMS 전체</h5>
-							<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.mmsSuccCnt | comma }}<br></span><span class="text">성공</span></p>
-							<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.mmsFailCnt | comma }}<br></span><span class="text">실패</span></p>
+							<h5>PUSH 전체</h5>
+							<p class="inline-block color1 pr10 border-right consolMarginTop"><span class="number">{{ channelTotalCountInfo.pushSuccCnt | comma }}<br></span><span class="text">성공</span></p>
+							<p class="inline-block pl10"><span class="number">{{ channelTotalCountInfo.pushFailCnt | comma }}<br></span><span class="text">실패</span></p>
 						</a>
 					</li>
 				</ul>

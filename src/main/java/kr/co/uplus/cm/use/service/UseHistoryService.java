@@ -95,10 +95,10 @@ public class UseHistoryService {
 			moYn		= CommonUtils.getString(jsonObj.get("MO"));
 			useChStr	= "";
 
-			if( "Y".equals(rcsYn) )		useChStr += "RCS,";
 			if( "Y".equals(smsmmsYn) )	useChStr += "SMS/MMS,";
-			if( "Y".equals(pushYn) )	useChStr += "PUSH,";
+			if( "Y".equals(rcsYn) )		useChStr += "RCS,";
 			if( "Y".equals(kakaoYn) )	useChStr += "KAKAO,";
+			if( "Y".equals(pushYn) )	useChStr += "PUSH,";
 			if( "Y".equals(moYn) )		useChStr += "MO,";
 			
 			if( useChStr.length() > 0 ) {

@@ -85,11 +85,11 @@
                   <th class="text-center lc-1 end" rowspan="2">예약취소</th>
                 </tr>
                 <tr>		
-                  <th class="text-center lc-1">Push</th>
+                  <th class="text-center lc-1">SMS</th>
                   <th class="text-center lc-1">RCS</th>
                   <th class="text-center lc-1">알림톡</th>
                   <th class="text-center lc-1">친구톡</th>
-                  <th class="text-center lc-1">SMS</th>
+                  <th class="text-center lc-1">Push</th>
                 </tr>
               </thead>
               <tbody>
@@ -99,11 +99,13 @@
                     <td class="text-center">{{data.senderTypeNm}}</td>
                     <td class="text-center">{{data.status}}</td>
                     <td class="text-center">{{data.campaignId}}</td>
-                    <td class="text-center">{{data.push}}</td>
+
+                    <td class="text-center">{{data.sms}}</td>
                     <td class="text-center">{{data.rcs}}</td>
                     <td class="text-center">{{data.alimTalk}}</td>
                     <td class="text-center">{{data.friendTalk}}</td>
-                    <td class="text-center">{{data.sms}}</td>
+                    <td class="text-center">{{data.push}}</td>
+
                     <td class="text-center">{{data.replcSend}}</td><!-- 대체발송 -->
                     <td class="text-center">{{data.regDt}}</td><!-- 등록일시 -->
                     <td class="text-center">{{data.reqDt}}</td><!-- 예약발송일자 -->

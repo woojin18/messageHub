@@ -73,11 +73,11 @@
                   <th class="text-center lc-1 end" rowspan="2">발송일자</th>
                 </tr>
                 <tr>		
-                  <th class="text-center lc-1">Push</th>
+                  <th class="text-center lc-1">SMS</th>
                   <th class="text-center lc-1">RCS</th>
                   <th class="text-center lc-1">알림톡</th>
                   <th class="text-center lc-1">친구톡</th>
-                  <th class="text-center lc-1">SMS</th>
+                  <th class="text-center lc-1">Push</th>
                 </tr>
               </thead>
               <tbody>
@@ -87,11 +87,11 @@
                     <td class="text-center">{{data.senderCnt}}</td>
                     <td class="text-center">{{data.senderTypeNm}}</td>
 
-                    <td class="text-center">{{data.push}}</td>
+                    <td class="text-center">{{data.sms}}</td>
                     <td class="text-center">{{data.rcs}}</td>
                     <td class="text-center">{{data.alimTalk}}</td>
                     <td class="text-center">{{data.friendTalk}}</td>
-                    <td class="text-center">{{data.sms}}</td>
+                    <td class="text-center">{{data.push}}</td>
 
                     <td class="text-center"><a class="btnStyle3 gray" @click="fnDetailPop(idx)"> 발송실패확인 </a></td>
                     <td class="text-center end">{{data.regDt}}</td>
