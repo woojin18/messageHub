@@ -207,7 +207,6 @@ public class CashService {
 		Map<String, Object> cashInfo = (Map<String, Object>) generalDao.selectGernalObject("cash.selectCashInfoForCorpIdCashType", params);
 		
 		String corpId = CommonUtils.getString(params.get("corpId"));
-		String cashId = "";
 		
 		if(cashInfo == null || cashInfo.size() == 0) {
 			Map<String, Object> apiBodyMap = new HashMap<>();
@@ -218,33 +217,29 @@ public class CashService {
 			// API 통신 처리
 			Map<String, Object> result =  apiInterface.etcPost(ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/cashInfo/" + corpId, apiBodyMap, null);
 			
-			cashId = CommonUtils.getString(((Map<String, Object>)result.get("data")).get("cashId"));
-			
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
 			} else {
 				rtn.setMessage(CommonUtils.getString(result.get("message")));
 				return rtn;
 			}
-		} else {
-			cashId = CommonUtils.getString(cashInfo.get("cashId"));
 		}
 		
 		// API 통신 처리
-		Map<String, Object> result =  apiInterface.request("GET", ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/cashInfo/" + corpId + "?cashId=" + cashId, null, null, null);
-		String cashBalanceStr = "";
+		Map<String, Object> result =  apiInterface.request("GET", ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/cashInfo/" + corpId, null, null, null);
 		
 		// 성공인지 실패인지 체크
 		if( "10000".equals(result.get("code")) ) {
-			List cashInfoList = (List) ((Map<String, Object>)result.get("data")).get("cashInfo");
-			Map<String, Object> cashInfoListMap = (Map<String, Object>) cashInfoList.get(0);
+			List<Map<String, Object>> cashInfoList = (List) ((Map<String, Object>)result.get("data")).get("cashInfo");
 			
-			cashBalance = Double.parseDouble( CommonUtils.getString(cashInfoListMap.get("cashBalance")) );
-		} else {
-			cashBalance = 0;
+			for (Map<String, Object> map : cashInfoList) {
+				if(map.get("cashType").equals("C")) {
+					cashBalance = Double.parseDouble( CommonUtils.getString(map.get("cashBalance")) );
+				} else {
+					eventCashBalance += Double.parseDouble( CommonUtils.getString(map.get("cashBalance")) );
+				}
+			}
 		}
-		
-		eventCashBalance = Double.parseDouble(CommonUtils.getString(generalDao.selectGernalObject("cash.selectEventCashBalance", params)));
 		
 		Map<String, Object> cashMap = new HashMap<>();
 		
