@@ -245,7 +245,7 @@ public class ProjectService {
 				
 				kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(joinMap);
 				
-				System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
+				//System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
 				
 				// API 통신처리
 				Map<String, Object> result =  apiInterface.post("/console/v1/ucube/service/join/cm", joinMap, null);
