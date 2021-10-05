@@ -1240,7 +1240,7 @@ export default {
 			var result = response.data;
 			var success = result.success;
 			if(success) {
-				confirm.fnAlert("RCS 발송", "메시지 발송처리를 완료하였습니다. 메시지 발송 성공/실패는 발송/수신현황에서 확인이 가능합니다.");
+				confirm.fnAlert("RCS 발송", "메시지 발송처리를 완료하였습니다. 메시지 발송 성공/실패는 조회의 '전체' 메뉴에서 확인이 가능합니다.");
 			} else {
 				confirm.fnAlert("RCS 발송", result.message);
 			}

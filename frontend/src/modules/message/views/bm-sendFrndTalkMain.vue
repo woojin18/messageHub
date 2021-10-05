@@ -657,7 +657,7 @@ export default {
     },
     fnAlertFeeMsgCallBack(result){
       if(this.$gfnCommonUtils.isEmpty(result.message)){
-        confirm.fnAlert(this.componentsTitle, '발송 요청 처리 되었습니다.\n[메시지발송 성공/실패는 발송/수신현황에서 확인이 가능합니다.]');
+        confirm.fnAlert(this.componentsTitle, '발송 요청 처리 되었습니다.\n[메시지발송 성공/실패는 조회의 "전체" 메뉴에서 에서 확인이 가능합니다.]');
       } else {
         confirm.fnAlert(this.componentsTitle, result.message);
       }
