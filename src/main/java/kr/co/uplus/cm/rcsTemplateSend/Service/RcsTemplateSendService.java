@@ -1050,7 +1050,16 @@ public class RcsTemplateSendService {
 			List<Map<String, Object>> excelRecvInfoLst = this.setExcelRecvInfoLst(data, excelFile);
 			data.put("recvInfoLst", excelRecvInfoLst);
 		}
-		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListTemplate(data);
+		
+		// 서술형의경우 description으로 묶어서 보내는 방식으로 변경 -> 미승인형 모듈로 처리
+		String templateRadioBtn = CommonUtils.getString(params.get("templateRadioBtn"));
+		
+		ArrayList<Map<String, Object>> recvInfoLst;
+		if("des".equals(templateRadioBtn)) {
+			recvInfoLst = this.setRecvInfoListNonTemplate(data);
+		} else {
+			recvInfoLst = this.setRecvInfoListTemplate(data);
+		}
 		
 		// 예약발송일경우 웹 발송 내역을 등록하고 통신은 하지 않도록 처리
 		

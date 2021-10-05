@@ -473,7 +473,7 @@ export default {
 		contentPopCnt : 0,				// 내용입력 폼 갯수
 		btnPopCnt : 0,					// 버튼입력 폼 갯수
 		tempFile: [],
-		beforeCuInputType: 'DICT',
+		beforeCuInputType: '',
 		sendData : {
 			messagebaseId : "",							// MSG ID
 			brandId : "",								// 브랜드 ID
@@ -515,7 +515,7 @@ export default {
 
 			requiredCuid : false,  //app 로그인 ID 필수여부
 			requiredCuPhone : true,  //수신자 폰번호 필수여부
-			cuInputType:'DICT',  //DICT, ADDR, EXCEL
+			cuInputType:'',  //DICT, ADDR, EXCEL
 			cuInfo:'',
 			rsrvSendYn:'N',  //예약발송여부
 			rsrvDate:this.$gfnCommonUtils.getCurretDate(),
@@ -774,6 +774,7 @@ export default {
 			vm.sendData.messagebaseId = data.messagebaseId;
 			vm.sendData.brandId = data.brandId;
 			vm.text = data.desContent;
+			vm.sendData.textContents = data.desContent;
 			vm.btnCnt = data.btnCnt;
 			vm.btnNm = data.btnNm;
 		} else {

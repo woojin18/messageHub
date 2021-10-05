@@ -40,15 +40,6 @@
 								<if test="corpId != '' and corpId != null">
 									AND		A.CORP_ID = #{corpId}
 								</if>
-								<if test="status != '' and status != null">
-									AND		A.APPROVAL_STATUS = #{status}
-								</if>
-								<if test="temNm != '' and temNm != null">
-									AND		A.TMPLT_NAME LIKE CONCAT('%', #{temNm}, '%')
-								</if>
-								<if test="temId != '' and temId != null">
-									AND		A.MESSAGEBASE_ID LIKE CONCAT('%', #{temId}, '%')
-								</if>
 								UNION ALL
 								SELECT	A.MESSAGEBASE_ID	AS MESSAGEBASE_ID
 								,		A.MESSAGEBASEFORM_ID	AS MESSAGEBASEFORM_ID
@@ -64,15 +55,6 @@
 								WHERE	A.MESSAGEBASEFORM_ID != 'GG000F'
 								<if test="corpId != '' and corpId != null">
 									AND		A.CORP_ID = #{corpId}
-								</if>
-								<if test="status != '' and status != null">
-									AND		A.APPROVAL_STATUS = #{status}
-								</if>
-								<if test="temNm != '' and temNm != null">
-									AND		A.TMPLT_NAME LIKE CONCAT('%', #{temNm}, '%')
-								</if>
-								<if test="temId != '' and temId != null">
-									AND		A.MESSAGEBASE_ID LIKE CONCAT('%', #{temId}, '%')
 								</if>
 						) MSGBASE, (SELECT @vRank:=0, @vData:='') as r
 						ORDER BY MSGBASE.MESSAGEBASE_ID, MSGBASE.REG_DT DESC
@@ -116,15 +98,6 @@
 								<if test="corpId != '' and corpId != null">
 									AND		A.CORP_ID = #{corpId}
 								</if>
-								<if test="status != '' and status != null">
-									AND		A.APPROVAL_STATUS = #{status}
-								</if>
-								<if test="temNm != '' and temNm != null">
-									AND		A.TMPLT_NAME LIKE CONCAT('%', #{temNm}, '%')
-								</if>
-								<if test="temId != '' and temId != null">
-									AND		A.MESSAGEBASE_ID LIKE CONCAT('%', #{temId}, '%')
-								</if>
 								UNION ALL
 								SELECT	A.MESSAGEBASE_ID		AS MESSAGEBASE_ID
 								,		A.BRAND_ID				AS BRAND_ID
@@ -140,15 +113,6 @@
 								WHERE	A.MESSAGEBASEFORM_ID != 'GG000F'
 								<if test="corpId != '' and corpId != null">
 									AND		A.CORP_ID = #{corpId}
-								</if>
-								<if test="status != '' and status != null">
-									AND		A.APPROVAL_STATUS = #{status}
-								</if>
-								<if test="temNm != '' and temNm != null">
-									AND		A.TMPLT_NAME LIKE CONCAT('%', #{temNm}, '%')
-								</if>
-								<if test="temId != '' and temId != null">
-									AND		A.MESSAGEBASE_ID LIKE CONCAT('%', #{temId}, '%')
 								</if>
 						) MSGBASE, (SELECT @vRank:=0, @vData:='') as r
 						ORDER BY MSGBASE.MESSAGEBASE_ID, MSGBASE.REG_DT DESC
@@ -168,6 +132,15 @@
 			AND		BB.PROJECT_ID IN ('ALL' , #{projectId})
 		<if test="brandNm != '' and brandNm != null">
 			AND		BB.BRAND_NAME LIKE CONCAT('%', #{brandNm}, '%')
+		</if>
+		<if test="status != '' and status != null">
+			AND		A.APPROVAL_STATUS = #{status}
+		</if>
+		<if test="temNm != '' and temNm != null">
+			AND		A.TMPLT_NAME LIKE CONCAT('%', #{temNm}, '%')
+		</if>
+		<if test="temId != '' and temId != null">
+			AND		A.MESSAGEBASE_ID LIKE CONCAT('%', #{temId}, '%')
 		</if>
 	</sql>
 

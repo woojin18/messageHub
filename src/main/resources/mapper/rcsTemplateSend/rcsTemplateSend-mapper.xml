@@ -11,6 +11,7 @@
 		AND		USE_YN = 'Y'
 		AND		JSON_EXTRACT(MESSAGEBASE_INFO , '$.cardType') = #{cardType}
 		AND		BRAND_ID = #{brandId}
+		AND		CORP_ID = #{corpId}
 		<if test="tmpltNm !='' and tmpltNm != null">
 		AND		TMPLT_NAME = #{tmpltNm}
 		</if>
