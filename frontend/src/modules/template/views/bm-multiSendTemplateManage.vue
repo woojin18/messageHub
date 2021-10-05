@@ -449,15 +449,15 @@
 										<tbody>
 											<tr v-for="(buttonInfo, index) in rowData.rcsDesButtons" v-bind:key="index">
 												<td class="text-center">
-													<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType" disabled>
+													<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" disabled>
 														<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
 													</select>
 												</td>
 												<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle" disabled></td>
-												<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle" disabled></td>
-												<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle" disabled></td>
-												<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle" disabled></td>
-												<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+												<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_open_url'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle" disabled></td>
+												<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_copy_to_clipboard'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle" disabled></td>
+												<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_dial_phone_number'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle" disabled></td>
+												<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_create_calendar_event'" class="text-center">
 													<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력" disabled>
 													<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력" disabled>
 													<div class="consolMarginTop of_h">
@@ -473,7 +473,7 @@
 														</div>
 													</div>
 												</td>
-												<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
+												<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
 											</tr>
 										</tbody>
 									</table>
@@ -569,15 +569,15 @@
 										<tbody>
 											<tr v-for="(buttonInfo, index) in rowData.rcsStyleButtons" v-bind:key="index">
 												<td class="text-center">
-													<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType" disabled>
+													<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" disabled>
 														<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
 													</select>
 												</td>
 												<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle" disabled></td>
-												<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle" disabled></td>
-												<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle" disabled></td>
-												<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle" disabled></td>
-												<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+												<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_open_url'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle" disabled></td>
+												<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_copy_to_clipboard'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle" disabled></td>
+												<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_dial_phone_number'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle" disabled></td>
+												<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_create_calendar_event'" class="text-center">
 													<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력" disabled>
 													<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력" disabled>
 													<div class="consolMarginTop of_h">
@@ -593,7 +593,7 @@
 														</div>
 													</div>
 												</td>
-												<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
+												<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
 											</tr>
 										</tbody>
 									</table>
@@ -686,15 +686,15 @@
 									<tbody>
 										<tr v-for="(buttonInfo, index) in rowData.rcsSMSButtons" v-bind:key="index">
 											<td class="text-center">
-												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType" @change="fnChgRcsButtonType('SMS', index, buttonInfo.action.linkType)">
+												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" @change="fnChgRcsButtonType('SMS', index, buttonInfo.action.postback.data)">
 													<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
 												</select>
 											</td>
 											<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_open_url'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_copy_to_clipboard'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_dial_phone_number'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_create_calendar_event'" class="text-center">
 												<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
 												<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
 												<div class="consolMarginTop of_h">
@@ -710,7 +710,7 @@
 													</div>
 												</div>
 											</td>
-											<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
 											<td class="text-center end"><a @click="addRowRcsButton('SMS')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('SMS', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
 										</tr>
 									</tbody>
@@ -809,15 +809,15 @@
 									<tbody>
 										<tr v-for="(buttonInfo, index) in rowData.rcsLMSButtons" v-bind:key="index">
 											<td class="text-center">
-												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType" @change="fnChgRcsButtonType('LMS', index, buttonInfo.action.linkType)">
+												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" @change="fnChgRcsButtonType('LMS', index, buttonInfo.action.postback.data)">
 													<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
 												</select>
 											</td>
 											<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_open_url'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_copy_to_clipboard'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_dial_phone_number'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_create_calendar_event'" class="text-center">
 												<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
 												<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
 												<div class="consolMarginTop of_h">
@@ -837,7 +837,7 @@
 													</div>
 												</div>
 											</td>
-											<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
 											<td class="text-center end"><a @click="addRowRcsButton('LMS')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('LMS', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
 										</tr>
 									</tbody>
@@ -960,15 +960,15 @@
 									<tbody>
 										<tr v-for="(buttonInfo, index) in rowData.rcsShortButtons" v-bind:key="index">
 											<td class="text-center">
-												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType" @change="fnChgRcsButtonType('SHORT', index, buttonInfo.action.linkType)">
+												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" @change="fnChgRcsButtonType('SHORT', index, buttonInfo.action.postback.data)">
 													<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
 												</select>
 											</td>
 											<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_open_url'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_copy_to_clipboard'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_dial_phone_number'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_create_calendar_event'" class="text-center">
 												<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
 												<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
 												<div class="consolMarginTop of_h">
@@ -986,7 +986,7 @@
 													</div>
 												</div>
 											</td>
-											<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
 											<td class="text-center end"><a @click="addRowRcsButton('SHORT')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('SHORT', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
 										</tr>
 									</tbody>
@@ -1109,15 +1109,15 @@
 									<tbody>
 										<tr v-for="(buttonInfo, index) in rowData.rcsTallButtons" v-bind:key="index">
 											<td class="text-center">
-												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType" @change="fnChgRcsButtonType('TALL', index, buttonInfo.action.linkType)">
+												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" @change="fnChgRcsButtonType('TALL', index, buttonInfo.action.postback.data)">
 													<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
 												</select>
 											</td>
 											<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
-											<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_open_url'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_copy_to_clipboard'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_dial_phone_number'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_create_calendar_event'" class="text-center">
 												<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
 												<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
 												<div class="consolMarginTop of_h">
@@ -1135,7 +1135,7 @@
 													</div>
 												</div>
 											</td>
-											<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
+											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
 											<td class="text-center end"><a @click="addRowRcsButton('TALL')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('TALL', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
 										</tr>
 									</tbody>
@@ -1276,15 +1276,15 @@
 											<tbody>
 												<tr v-for="(buttonInfo, index) in rowData.rcsCShortImgInfoList[tabIdx].rcsButtons" v-bind:key="index">
 													<td class="text-center">
-														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType" @change="fnChgRcsButtonType(fnCarouselString('CSHORT_TAB', tabIdx, ''), index, buttonInfo.action.linkType)">
+														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" @change="fnChgRcsButtonType(fnCarouselString('CSHORT_TAB', tabIdx, ''), index, buttonInfo.action.postback.data)">
 															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
 														</select>
 													</td>
 													<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_open_url'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_copy_to_clipboard'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_dial_phone_number'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_create_calendar_event'" class="text-center">
 														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
 														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
 														<div class="consolMarginTop of_h">
@@ -1322,7 +1322,7 @@
 															</div>
 														</div>
 													</td>
-													<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
 													<td class="text-center end">
 														<a @click="addRowRcsButton(fnCarouselString('CSHORT_TAB', tabIdx, ''))" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
 														<a @click="removeRowRcsButton(fnCarouselString('CSHORT_TAB', tabIdx, ''), index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
@@ -1475,15 +1475,15 @@
 											<tbody>
 												<tr v-for="(buttonInfo, index) in rowData.rcsCTallImgInfoList[tabIdx].rcsButtons" v-bind:key="index">
 													<td class="text-center">
-														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.linkType" @change="fnChgRcsButtonType(fnCarouselString('CTALL_TAB', tabIdx, ''), index, buttonInfo.action.linkType)">
+														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" @change="fnChgRcsButtonType(fnCarouselString('CTALL_TAB', tabIdx, ''), index, buttonInfo.action.postback.data)">
 															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
 														</select>
 													</td>
 													<td class="text-left"><input v-model="buttonInfo.action.displayText" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='urlAction'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='clipboardAction'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='dialerAction'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
-													<td v-if="buttonInfo.action.linkType=='calendarAction'" class="text-center">
+													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_open_url'" class="text-center"><input v-model="buttonInfo.action.urlAction.openUrl.url" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_copy_to_clipboard'" class="text-center"><input v-model="buttonInfo.action.clipboardAction.copyToClipboard.text" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_dial_phone_number'" class="text-center"><input v-model="buttonInfo.action.dialerAction.dialPhoneNumber.phoneNumber" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_create_calendar_event'" class="text-center">
 														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.title" type="text" class="inputStyle" placeholder="제목입력">
 														<input v-model="buttonInfo.action.calendarAction.createCalendarEvent.description" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
 														<div class="consolMarginTop of_h">
@@ -1521,7 +1521,7 @@
 															</div>
 														</div>
 													</td>
-													<td v-if="buttonInfo.action.linkType=='mapAction'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
+													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle"></td>
 													<td class="text-center end">
 														<a @click="addRowRcsButton(fnCarouselString('CTALL_TAB', tabIdx, ''))" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
 														<a @click="removeRowRcsButton(fnCarouselString('CTALL_TAB', tabIdx, ''), index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
@@ -2190,11 +2190,11 @@ export default {
 			friendTalkSenderKeyList: [],
 
 			rcsButtonTypeList : [
-				{type:'urlAction', name:'URL 링크'},
-				{type:'clipboardAction', name:'복사하기'},
-				{type:'dialerAction', name:'전화걸기'},
-				{type:'calendarAction', name:'일정추가'},
-				{type:'mapAction', name:'지도맵'}
+				{type:'set_by_chatbot_open_url', name:'URL 링크'},
+				{type:'set_by_chatbot_copy_to_clipboard', name:'복사하기'},
+				{type:'set_by_chatbot_dial_phone_number', name:'전화걸기'},
+				{type:'set_by_chatbot_create_calendar_event', name:'일정추가'},
+				{type:'set_by_chatbot_request_location_push', name:'지도맵'}
 			],
 			friendTalkButtonTypeList : [
 				{type:'WL', name:'웹 링크'},
@@ -3794,9 +3794,8 @@ export default {
 		},
 		fnChgRcsButtonType(rcsType, index, linkType) {
 			var action = {
-				linkType : linkType,
 				displayText : '',
-				postback : {data : ''},
+				postback : {data : linkType},
 				urlAction : {openUrl : {url : ''}},
 				clipboardAction : {copyToClipboard : {text : ''}},
 				dialerAction : {dialPhoneNumber : {phoneNumber : ''}},
@@ -3860,9 +3859,8 @@ export default {
 		// RCS 버튼 추가
 		addRowRcsButton: function(rcsType) {
 			var action = {
-				linkType : 'urlAction',
 				displayText : '',
-				postback : {data : ''},
+				postback : {data : 'set_by_chatbot_open_url'},
 				urlAction : {openUrl : {url : ''}},
 				clipboardAction : {copyToClipboard : {text : ''}},
 				dialerAction : {dialPhoneNumber : {phoneNumber : ''}},

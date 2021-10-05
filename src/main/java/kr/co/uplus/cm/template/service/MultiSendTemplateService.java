@@ -932,48 +932,44 @@ public class MultiSendTemplateService {
 		for (Map<String, Object> buttonInfo : buttonInfoList) {
 
 			btnInfo = (Map<String, Object>) buttonInfo.get("action");
-			linkType = (String) btnInfo.get("linkType");
+			Map<String, Object> postback = (Map<String, Object>) btnInfo.get("postback");
+			linkType = (String) postback.get("data");
 			displayText = (String) btnInfo.get("displayText");
 			sb.append("{\"action\": { "); // action 열기
 			sb.append("	\"displayText\": \"" + displayText + "\","); // 버튼이름
+			sb.append("	\"postback\": {\"data\": \""+ linkType + "\"},");
 
-			if (linkType.equalsIgnoreCase("urlAction")) { // URL 링크
+			if (linkType.equalsIgnoreCase("set_by_chatbot_open_url")) { // URL 링크
 				Map<String, Object> urlAction = (Map<String, Object>) btnInfo.get("urlAction");
 				Map<String, Object> openUrl = (Map<String, Object>) urlAction.get("openUrl");
 				url = (String) openUrl.get("url");
-				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
-				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_open_url\"},");
 				sb.append("	\"urlAction\": { "); // urlAction
 				sb.append("	\"openUrl\": { "); // openUrl
 				sb.append("	\"url\": \"" + url + "\" "); // 내용
 				sb.append("	} ");
 				sb.append("	} ");
 			}
-			if (linkType.equalsIgnoreCase("clipboardAction")) { // 복사하기
+			if (linkType.equalsIgnoreCase("set_by_chatbot_copy_to_clipboard")) { // 복사하기
 				Map<String, Object> clipboardAction = (Map<String, Object>) btnInfo.get("clipboardAction");
 				Map<String, Object> copyToClipboard = (Map<String, Object>) clipboardAction.get("copyToClipboard");
 				text = (String) copyToClipboard.get("text");
-				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
-				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_copy_to_clipboard\"},");
 				sb.append("	\"clipboardAction\": { "); // clipboardAction
 				sb.append("	\"copyToClipboard\": { "); // copyToClipboard
 				sb.append("	\"text\": \"" + text + "\" "); // 내용
 				sb.append("	} ");
 				sb.append("	} ");
 			}
-			if (linkType.equalsIgnoreCase("dialerAction")) { // 전화걸기
+			if (linkType.equalsIgnoreCase("set_by_chatbot_dial_phone_number")) { // 전화걸기
 				Map<String, Object> dialerAction = (Map<String, Object>) btnInfo.get("dialerAction");
 				Map<String, Object> dialPhoneNumber = (Map<String, Object>) dialerAction.get("dialPhoneNumber");
 				phoneNumber = (String) dialPhoneNumber.get("phoneNumber");
-				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
-				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_dial_phone_number\"},");
 				sb.append("	\"dialerAction\": { "); // dialerAction
 				sb.append("	\"dialPhoneNumber\": { "); // dialPhoneNumber
 				sb.append("	\"phoneNumber\": \"" + phoneNumber + "\" "); // 내용
 				sb.append("	} ");
 				sb.append("	} ");
 			}
-			if (linkType.equalsIgnoreCase("calendarAction")) { // 일정추가
+			if (linkType.equalsIgnoreCase("set_by_chatbot_create_calendar_event")) { // 일정추가
 				Map<String, Object> calendarAction = (Map<String, Object>) btnInfo.get("calendarAction");
 				Map<String, Object> createCalendarEvent = (Map<String, Object>) calendarAction
 						.get("createCalendarEvent");
@@ -981,8 +977,6 @@ public class MultiSendTemplateService {
 				description = (String) createCalendarEvent.get("description");
 				startTime = (String) createCalendarEvent.get("startTime");
 				endTime = (String) createCalendarEvent.get("endTime");
-				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
-				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_create_calendar_event\"},");
 				sb.append("	\"calendarAction\": { "); // calendarAction
 				sb.append("	\"createCalendarEvent\": { "); // createCalendarEvent
 				sb.append("	\"title\": \"" + title + "\", "); // 제목
@@ -992,9 +986,7 @@ public class MultiSendTemplateService {
 				sb.append("	} ");
 				sb.append("	} ");
 			}
-			if (linkType.equalsIgnoreCase("mapAction")) { // 지도맵
-				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
-				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_request_location_push\"},");
+			if (linkType.equalsIgnoreCase("set_by_chatbot_request_location_push")) { // 지도맵
 				sb.append("	\"mapAction\": { "); // mapAction
 				sb.append("	\"requestLocationPush\": { "); // requestLocationPush
 				sb.append("	} ");
@@ -1029,48 +1021,44 @@ public class MultiSendTemplateService {
 		for (Map<String, Object> buttonInfo : buttonInfoList) {
 
 			btnInfo = (Map<String, Object>) buttonInfo.get("action");
-			linkType = (String) btnInfo.get("linkType");
+			Map<String, Object> postback = (Map<String, Object>) btnInfo.get("postback");
+			linkType = (String) postback.get("data");
 			displayText = (String) btnInfo.get("displayText");
 			sb.append("{\"action\": { "); // action 열기
 			sb.append("	\"displayText\": \"" + displayText + "\","); // 버튼이름
+			sb.append("	\"postback\": {\"data\": \""+ linkType + "\"},");
 
-			if (linkType.equalsIgnoreCase("urlAction")) { // URL 링크
+			if (linkType.equalsIgnoreCase("set_by_chatbot_open_url")) { // URL 링크
 				Map<String, Object> urlAction = (Map<String, Object>) btnInfo.get("urlAction");
 				Map<String, Object> openUrl = (Map<String, Object>) urlAction.get("openUrl");
 				url = (String) openUrl.get("url");
-				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
-				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_open_url\"},");
 				sb.append("	\"urlAction\": { "); // urlAction
 				sb.append("	\"openUrl\": { "); // openUrl
 				sb.append("	\"url\": \"" + url + "\" "); // 내용
 				sb.append("	} ");
 				sb.append("	} ");
 			}
-			if (linkType.equalsIgnoreCase("clipboardAction")) { // 복사하기
+			if (linkType.equalsIgnoreCase("set_by_chatbot_copy_to_clipboard")) { // 복사하기
 				Map<String, Object> clipboardAction = (Map<String, Object>) btnInfo.get("clipboardAction");
 				Map<String, Object> copyToClipboard = (Map<String, Object>) clipboardAction.get("copyToClipboard");
 				text = (String) copyToClipboard.get("text");
-				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
-				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_copy_to_clipboard\"},");
 				sb.append("	\"clipboardAction\": { "); // clipboardAction
 				sb.append("	\"copyToClipboard\": { "); // copyToClipboard
 				sb.append("	\"text\": \"" + text + "\" "); // 내용
 				sb.append("	} ");
 				sb.append("	} ");
 			}
-			if (linkType.equalsIgnoreCase("dialerAction")) { // 전화걸기
+			if (linkType.equalsIgnoreCase("set_by_chatbot_dial_phone_number")) { // 전화걸기
 				Map<String, Object> dialerAction = (Map<String, Object>) btnInfo.get("dialerAction");
 				Map<String, Object> dialPhoneNumber = (Map<String, Object>) dialerAction.get("dialPhoneNumber");
 				phoneNumber = (String) dialPhoneNumber.get("phoneNumber");
-				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
-				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_dial_phone_number\"},");
 				sb.append("	\"dialerAction\": { "); // dialerAction
 				sb.append("	\"dialPhoneNumber\": { "); // dialPhoneNumber
 				sb.append("	\"phoneNumber\": \"" + phoneNumber + "\" "); // 내용
 				sb.append("	} ");
 				sb.append("	} ");
 			}
-			if (linkType.equalsIgnoreCase("calendarAction")) { // 일정추가
+			if (linkType.equalsIgnoreCase("set_by_chatbot_create_calendar_event")) { // 일정추가
 				Map<String, Object> calendarAction = (Map<String, Object>) btnInfo.get("calendarAction");
 				Map<String, Object> createCalendarEvent = (Map<String, Object>) calendarAction
 						.get("createCalendarEvent");
@@ -1078,8 +1066,6 @@ public class MultiSendTemplateService {
 				description = (String) createCalendarEvent.get("description");
 				startTime = (String) createCalendarEvent.get("startTime");
 				endTime = (String) createCalendarEvent.get("endTime");
-				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
-				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_create_calendar_event\"},");
 				sb.append("	\"calendarAction\": { "); // calendarAction
 				sb.append("	\"createCalendarEvent\": { "); // createCalendarEvent
 				sb.append("	\"title\": \"" + title + "\", "); // 제목
@@ -1089,9 +1075,7 @@ public class MultiSendTemplateService {
 				sb.append("	} ");
 				sb.append("	} ");
 			}
-			if (linkType.equalsIgnoreCase("mapAction")) { // 지도맵
-				sb.append("	\"linkType\": \"" + linkType + "\","); // 버튼타입
-				sb.append("	\"postback\": {\"data\": \"set_by_chatbot_request_location_push\"},");
+			if (linkType.equalsIgnoreCase("set_by_chatbot_request_location_push")) { // 지도맵
 				sb.append("	\"mapAction\": { "); // mapAction
 				sb.append("	\"requestLocationPush\": { "); // requestLocationPush
 				sb.append("	} ");
