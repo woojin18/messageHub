@@ -320,7 +320,7 @@ export default {
         msgKind:'A',  //A, I
         msgType:'BASE',  //BASE, IMAGE
         rplcSendType:'NONE',  //NONE, SMS, LMS, MMS
-        cuInputType:'ALL',  //DICT, ADDR, ALL, EXCEL
+        cuInputType:'',  //DICT, ADDR, ALL, EXCEL
         fileId : '',
         imgUrl : '',
         appId:'',

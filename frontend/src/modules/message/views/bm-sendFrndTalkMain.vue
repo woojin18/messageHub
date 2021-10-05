@@ -398,7 +398,7 @@ export default {
         wideImgYn: 'N',
         imgLink: 'http://',
         rplcSendType: 'NONE',  //NONE, SMS, LMS, MMS
-        cuInputType:'DICT',  //DICT, ADDR, EXCEL
+        cuInputType:'',  //DICT, ADDR, EXCEL
         cuInfo: '',
         rsrvSendYn: 'N',  //예약발송여부
         rsrvDate: this.$gfnCommonUtils.getCurretDate(),

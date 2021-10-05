@@ -239,7 +239,7 @@ export default {
         requiredCuPhone : true,  //수신자 폰번호 필수여부
         senderType: 'SMS',  //SMS, MMS
         msgKind: 'A',
-        cuInputType:'DICT',  //DICT, ADDR, EXCEL
+        cuInputType:'',  //DICT, ADDR, EXCEL
         smsTitle:'',  //제목
         smsContent:'',  //내용
         rcvblcNumber:'',  //수신거부

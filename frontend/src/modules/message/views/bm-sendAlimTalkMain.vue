@@ -339,7 +339,7 @@ export default {
         requiredCuPhone : true,
         msgKind: 'I',  //알림톡은 광고성을 보내지 않는다.
         rplcSendType: 'NONE',  //NONE, SMS, LMS, MMS
-        cuInputType:'DICT',  //DICT, ADDR, EXCEL
+        cuInputType:'',  //DICT, ADDR, EXCEL
         rsrvSendYn: 'N',  //예약발송여부
         rsrvDate: this.$gfnCommonUtils.getCurretDate(),
         rsrvHH: '00',

@@ -623,7 +623,7 @@ export default {
       sendData: {
         requiredCuid: false,  //app 로그인 ID 필수여부
         requiredCuPhone: false,  //수신자 폰번호 필수여부
-        cuInputType:'DICT',  //DICT, ADDR, EXCEL
+        cuInputType:'',  //DICT, ADDR, EXCEL
         cuInfo:'',
         rsrvSendYn:'N',  //예약발송여부
         rsrvDate:this.$gfnCommonUtils.getCurretDate(),
