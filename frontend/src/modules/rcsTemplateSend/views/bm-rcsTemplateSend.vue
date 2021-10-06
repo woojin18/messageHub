@@ -969,7 +969,7 @@ export default {
 
       let varNms = [];
       let containRsvNm = false;
-	  conts.replace(/#\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}/g, function($0, $1) {
+      conts.replace(/\{\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}\}/g, function($0, $1) {
         if(rsvNmSet.has($1)){
           containRsvNm = true;
           return false;

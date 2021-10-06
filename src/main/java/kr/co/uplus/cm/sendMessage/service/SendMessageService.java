@@ -42,6 +42,7 @@ import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.exception.CMException;
+import kr.co.uplus.cm.rcsTemplateSend.Service.RcsTemplateSendService;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkRequestData;
 import kr.co.uplus.cm.sendMessage.dto.FbInfo;
 import kr.co.uplus.cm.sendMessage.dto.FrndTalkRequestData;
@@ -82,6 +83,9 @@ public class SendMessageService {
 
     @Autowired
     ApiInterface apiInterface;
+    
+    @Autowired
+    private RcsTemplateSendService rcsTemplateSendSvc;
     
     private long second = 1000;
 
@@ -2892,6 +2896,122 @@ public class SendMessageService {
         rtn.setData(rtnList);
         return rtn;
     }
+    
+    /**
+     * RCS 비동기 발송
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @Async
+	public void sendRcs(Map<String, Object> params, int fromIndex, Map<String, Object> apiMap, Map<String, Object> headerMap,
+			ArrayList<Map<String, Object>> recvInfoLst, ArrayList<Map<String, Object>> fbInfoLst, List<Object> reSendCdList) throws Exception {
+		Map<String, Object> responseBody = null;
+		String jsonString = "";
+		String failMsg = "";
+		boolean isDone = false;
+		boolean isServerError = false;
+		boolean isAllFail = true;
+		List<Map<String, Object>> errorRecvInfoLst = new ArrayList<Map<String, Object>>();
+		Map<String, Object> data = (Map<String, Object>) params.get("data");
+		Map<String, Object> sParams = new HashMap<String, Object>(data);
+
+		Gson gson = new Gson();
+
+		int retryCnt = NumberUtils.INTEGER_ZERO;
+		int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
+		int listSize = recvInfoLst.size();
+		int toIndex = fromIndex;
+		
+        String corpId = CommonUtils.getStrValue(params, "corpId");
+        String projectId = CommonUtils.getStrValue(params, "projectId");
+        Map apiData = commonService.getApiKey2(corpId, projectId);
+        String apiKey = CommonUtils.getString(apiData.get("apiKey"));
+        String strCps = CommonUtils.getString(apiData.get("cps"),"30");
+        int cps = NumberUtils.toInt(strCps, 30);
+        if (cps <= 0) cps = 30;
+        int sendCnt = 0;
+        long start = System.currentTimeMillis();
+        long end = 0;
+        long second = 1000;
+		
+		params.put("recvInfoLstCnt", listSize);
+		apiMap.put("msgRecvInfoLst", recvInfoLst);
+		apiMap.put("msgFbInfoLst", fbInfoLst);
+		
+		while (toIndex < listSize) {
+			isDone = false;
+			isServerError = false;
+			toIndex = fromIndex + cutSize;
+			try {
+				if(toIndex > listSize) toIndex = listSize;
+				apiMap.put("recvInfoLst", recvInfoLst.subList(fromIndex, toIndex));
+				if(fbInfoLst.size() > 0) {
+					apiMap.put("fbInfoLst", fbInfoLst.subList(fromIndex, toIndex));
+				}
+				jsonString = gson.toJson(apiMap);
+				responseBody = apiInterface.sendMsg(ApiConfig.SEND_RCS_API_URI, headerMap, jsonString);
+				isDone = isApiRequestAgain(responseBody, reSendCdList);
+				isAllFail = !isSendSuccess(responseBody);
+				if(isAllFail) failMsg = CommonUtils.getString(responseBody.get("message"));
+//                isDone = true;
+//                isAllFail = false;
+			} catch (Exception e) {
+				isServerError = true;
+				if(retryCnt == ApiConfig.GW_RETRY_CNT) sendMsgErrorNoti(Const.ApiWatchNotiMsg.API_CONNECTION_FAIL);
+			}
+			
+			if(isDone) {
+            	sendCnt++;
+				retryCnt = NumberUtils.INTEGER_ZERO;
+				fromIndex = toIndex;
+			} else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
+				errorRecvInfoLst.addAll(recvInfoLst.subList(fromIndex, toIndex));
+				retryCnt = NumberUtils.INTEGER_ZERO;
+				fromIndex = toIndex;
+			} else {
+            	sendCnt++;
+				retryCnt++;
+				toIndex = fromIndex;
+				if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
+			}
+	        
+	        if (sendCnt >= cps || toIndex >= listSize) {
+	        	end = System.currentTimeMillis();
+	        	long diff  = end - start;
+	            log.info("API sendMsg apiKey : {}, cps : {}, sendCnt : {}", apiKey, cps, sendCnt);
+	        	if (second > diff && sendCnt >= cps) {
+	        		TimeUnit.MILLISECONDS.sleep(second-diff);
+	        	}
+	        	sendCnt = 0;
+	        	start = System.currentTimeMillis();
+	        }
+		}
+		
+		if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
+			try {
+				//CM_MSG Insert
+				sParams.put("corpId", params.get("corpId"));
+				sParams.put("projectId", params.get("projectId"));
+				sParams.put("reqCh", Const.Ch.RCS);
+				sParams.put("productCode", Const.Ch.RCS.toLowerCase());
+				sParams.put("finalCh", Const.Ch.RCS);
+				sParams.put("callback", data.get("callback"));
+				sParams.put("webReqId", data.get("webReqId"));
+				rcsTemplateSendSvc.insertCmMsg(sParams, errorRecvInfoLst);
+			} catch (Exception e) {
+				log.error("{}.sendRCSMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
+			}
+		}
+		
+		//웹 발송 내역 등록
+		if(isAllFail) {
+			rcsTemplateSendSvc.insertPushCmWebMsg(headerMap, apiMap, params, "FAIL");
+		} else {
+			rcsTemplateSendSvc.insertPushCmWebMsg(headerMap, apiMap, params, "COMPLETED");
+		}
+		
+	}
 
 }
 

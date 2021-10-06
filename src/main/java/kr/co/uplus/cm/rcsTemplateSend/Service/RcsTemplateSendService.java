@@ -1020,18 +1020,19 @@ public class RcsTemplateSendService {
 		JSONArray jsonArr = null;
 		jsonArr = (JSONArray) obj.get("suggestions");
 		
-		// 버튼 json데이터 List 변환 후 apiMap에 추가
-		List<Map<String, Object>> btnList = this.convertJsonArrToList(jsonArr);
-		Map<String, Object> btnMap = new HashMap<>();
-		
-		// button이 있는경우 버튼 세팅
-		if(btnList.size() > 0) {
-			btnMap.put("suggestions", btnList);
-		}
-		
-		ArrayList<Map<String, Object>> btnArr = new ArrayList<>();
-		btnArr.add(0, btnMap);
-		apiMap.put("buttons", btnArr);
+		// 승인형은 버튼을 따로 처리하지 않고 빈 Array객체만 보내도록 처리
+//		List<Map<String, Object>> btnList = this.convertJsonArrToList(jsonArr);
+//		Map<String, Object> btnMap = new HashMap<>();
+//		
+//		// button이 있는경우 버튼 세팅
+//		if(btnList.size() > 0) {
+//			btnMap.put("suggestions", btnList);
+//		}
+//		
+//		ArrayList<Map<String, Object>> btnArr = new ArrayList<>();
+//		btnArr.add(0, btnMap);
+//		apiMap.put("buttons", btnArr);
+		apiMap.put("buttons", new ArrayList<>());
 		
 		// 대체발송 세팅
 		ArrayList<Map<String, Object>> fbInfoLst = this.setFbInfoLst(data);
@@ -1069,7 +1070,7 @@ public class RcsTemplateSendService {
 			boolean real = (boolean) params.get("real");
 			if(real) {
 				List<Object> reSendCdList = sendMsgService.reSendCdList(null);
-				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, fbInfoLst, reSendCdList);
+				sendMsgService.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, fbInfoLst, reSendCdList);
 			} else {
 				this.sendTestRcs(apiMap, headerMap);
 			}
@@ -1090,11 +1091,7 @@ public class RcsTemplateSendService {
 		Map<String, Object> apiMap = this.setRcsData(params);
 		
 		// button 세팅 (텍스트 미승인형의 경우 버튼이 없음)
-		ArrayList<Map<String, Object>> btnArr = new ArrayList<>();
-		Map<String, Object> btnMap = new HashMap<>();
-		btnArr.add(btnMap);
-		
-		apiMap.put("buttons", btnArr);
+		apiMap.put("buttons", new ArrayList<>());
 		
 		// 대체발송 세팅
 		ArrayList<Map<String, Object>> fbInfoLst = this.setFbInfoLst(data);
@@ -1123,7 +1120,7 @@ public class RcsTemplateSendService {
 			boolean real = (boolean) params.get("real");
 			if(real) {
 				List<Object> reSendCdList = sendMsgService.reSendCdList(null);
-				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, fbInfoLst, reSendCdList);
+				sendMsgService.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, fbInfoLst, reSendCdList);
 			} else {
 				this.sendTestRcs(apiMap, headerMap);
 			}
@@ -1177,7 +1174,7 @@ public class RcsTemplateSendService {
 			boolean real = (boolean) params.get("real");
 			if(real) {
 				List<Object> reSendCdList = sendMsgService.reSendCdList(null);
-				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, fbInfoLst, reSendCdList);
+				sendMsgService.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, fbInfoLst, reSendCdList);
 			} else {
 				this.sendTestRcs(apiMap, headerMap);
 			}
@@ -1238,7 +1235,7 @@ public class RcsTemplateSendService {
 			boolean real = (boolean) params.get("real");
 			if(real) {
 				List<Object> reSendCdList = sendMsgService.reSendCdList(null);
-				this.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, fbInfoLst, reSendCdList);
+				sendMsgService.sendRcs(params, 0, apiMap, headerMap, recvInfoLst, fbInfoLst, reSendCdList);
 			} else {
 				this.sendTestRcs(apiMap, headerMap);
 			}
@@ -1774,115 +1771,6 @@ public class RcsTemplateSendService {
 		return "";
 	}
 	
-	@Async
-	public void sendRcs(Map<String, Object> params, int fromIndex, Map<String, Object> apiMap, Map<String, Object> headerMap,
-			ArrayList<Map<String, Object>> recvInfoLst, ArrayList<Map<String, Object>> fbInfoLst, List<Object> reSendCdList) throws Exception {
-		Map<String, Object> responseBody = null;
-		String jsonString = "";
-		String failMsg = "";
-		boolean isDone = false;
-		boolean isServerError = false;
-		boolean isAllFail = true;
-		List<Map<String, Object>> errorRecvInfoLst = new ArrayList<Map<String, Object>>();
-		Map<String, Object> data = (Map<String, Object>) params.get("data");
-		Map<String, Object> sParams = new HashMap<String, Object>(data);
-
-		Gson gson = new Gson();
-
-		int retryCnt = NumberUtils.INTEGER_ZERO;
-		int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
-		int listSize = recvInfoLst.size();
-		int toIndex = fromIndex;
-		
-        String corpId = CommonUtils.getStrValue(params, "corpId");
-        String projectId = CommonUtils.getStrValue(params, "projectId");
-        Map apiData = commonService.getApiKey2(corpId, projectId);
-        String apiKey = CommonUtils.getString(apiData.get("apiKey"));
-        String strCps = CommonUtils.getString(apiData.get("cps"),"30");
-        int cps = NumberUtils.toInt(strCps, 30);
-        if (cps <= 0) cps = 30;
-        int sendCnt = 0;
-        long start = System.currentTimeMillis();
-        long end = 0;
-        long second = 1000;
-		
-		params.put("recvInfoLstCnt", listSize);
-		apiMap.put("msgRecvInfoLst", recvInfoLst);
-		apiMap.put("msgFbInfoLst", fbInfoLst);
-		
-		while (toIndex < listSize) {
-			isDone = false;
-			isServerError = false;
-			toIndex = fromIndex + cutSize;
-			try {
-				if(toIndex > listSize) toIndex = listSize;
-				apiMap.put("recvInfoLst", recvInfoLst.subList(fromIndex, toIndex));
-				if(fbInfoLst.size() > 0) {
-					apiMap.put("fbInfoLst", fbInfoLst.subList(fromIndex, toIndex));
-				}
-				jsonString = gson.toJson(apiMap);
-				responseBody = apiInterface.sendMsg(ApiConfig.SEND_RCS_API_URI, headerMap, jsonString);
-				isDone = isApiRequestAgain(responseBody, reSendCdList);
-				isAllFail = !isSendSuccess(responseBody);
-				if(isAllFail) failMsg = CommonUtils.getString(responseBody.get("message"));
-//                isDone = true;
-//                isAllFail = false;
-			} catch (Exception e) {
-				isServerError = true;
-				if(retryCnt == ApiConfig.GW_RETRY_CNT) sendMsgService.sendMsgErrorNoti(Const.ApiWatchNotiMsg.API_CONNECTION_FAIL);
-			}
-			
-			if(isDone) {
-            	sendCnt++;
-				retryCnt = NumberUtils.INTEGER_ZERO;
-				fromIndex = toIndex;
-			} else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
-				errorRecvInfoLst.addAll(recvInfoLst.subList(fromIndex, toIndex));
-				retryCnt = NumberUtils.INTEGER_ZERO;
-				fromIndex = toIndex;
-			} else {
-            	sendCnt++;
-				retryCnt++;
-				toIndex = fromIndex;
-				if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
-			}
-	        
-	        if (sendCnt >= cps || toIndex >= listSize) {
-	        	end = System.currentTimeMillis();
-	        	long diff  = end - start;
-	            log.info("API sendMsg apiKey : {}, cps : {}, sendCnt : {}", apiKey, cps, sendCnt);
-	        	if (second > diff && sendCnt >= cps) {
-	        		TimeUnit.MILLISECONDS.sleep(second-diff);
-	        	}
-	        	sendCnt = 0;
-	        	start = System.currentTimeMillis();
-	        }
-		}
-		
-		if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
-			try {
-				//CM_MSG Insert
-				sParams.put("corpId", params.get("corpId"));
-				sParams.put("projectId", params.get("projectId"));
-				sParams.put("reqCh", Const.Ch.RCS);
-				sParams.put("productCode", Const.Ch.RCS.toLowerCase());
-				sParams.put("finalCh", Const.Ch.RCS);
-				sParams.put("callback", data.get("callback"));
-				sParams.put("webReqId", data.get("webReqId"));
-				insertCmMsg(sParams, errorRecvInfoLst);
-			} catch (Exception e) {
-				log.error("{}.sendRCSMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
-			}
-		}
-		
-		//웹 발송 내역 등록
-		if(isAllFail) {
-			this.insertPushCmWebMsg(headerMap, apiMap, params, "FAIL");
-		} else {
-			this.insertPushCmWebMsg(headerMap, apiMap, params, "COMPLETED");
-		}
-		
-	}
 	
 	public void sendTestRcs(Map<String, Object> apiMap, Map<String, Object> headerMap) throws Exception {
 		Map<String, Object> result = apiInterface.post("/console/v1/rcs", apiMap, headerMap);
