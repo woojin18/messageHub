@@ -787,6 +787,38 @@ export default {
 		this.paramCardType = paramCardType;
 		var agreeChk = this.agreeChk;
 
+
+		// 승인, 수정시 validation 처리
+		if("des" == paramCardType) {
+			var title = this.templateNm;
+			var contents = this.desContents;
+
+			if("" == title) {
+				confirm.fnAlert("RCS 템플릿", "템플릿 명을 입력해 주세요.");
+				return false;
+			}
+
+			if("" == contents) {
+				confirm.fnAlert("RCS 템플릿", "내용을 입력해 주세요.");
+				return false;
+			}
+		} else {
+			var title = this.templateNm;
+			var styleText = this.styleInput.join('');
+			var styleTextSec = this.styleInputSec.join('');
+			var contents = styleText + styleTextSec;
+
+			if("" == title) {
+				confirm.fnAlert("RCS 템플릿", "템플릿 명을 입력해 주세요.");
+				return false;
+			}
+
+			if("" == contents) {
+				confirm.fnAlert("RCS 템플릿", "내용을 입력해 주세요.");
+				return false;
+			}
+		}
+
 		if(!agreeChk) {
 			confirm.fnAlert("RCS 템플릿", "정보성 메시지 동의 버튼을 눌러주세요.");
 			return false;
