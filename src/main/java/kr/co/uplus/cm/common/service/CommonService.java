@@ -849,6 +849,48 @@ public class CommonService {
 
         generalDao.updateGernal(DB.QRY_UPDATE_CM_CMD, saveMap);
     }
+    
+	/**
+	 * 삭제 시 REDIS 테이블 동기화처리 API
+	 *
+	 * @param apiType : api url ex) noti , else....
+	 * @param cmdTgt : 업데이트할 테이블 명
+	 * @param cmdMap : 삭제할 테이블의 키 맵
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public RestResult<?> updateCmCmdForRedisAPI(String apiType, String cmdTgt, Map<String,Object> cmdMap) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		HashMap<String, Object> apiMap = new HashMap<>();
+
+		apiMap.put("tableNm", cmdTgt);
+		apiMap.put("jsonData", cmdMap);
+		
+		if( "noti".equals(apiType.toLowerCase()) ) {
+
+			Map<String, Object> result = apiInterface.etcPost(ApiConfig.NOTI_SERVER_DOMAIN+"/event/v1/db/delete", apiMap, null);
+				
+			if( "10000".equals(result.get("code")) ) {
+				
+			} else {
+				String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
+				throw new Exception(errMsg);
+			}
+		} else {
+			// API 통신처리
+			Map<String, Object> result =  apiInterface.post("/event/v1/db/delete", apiMap, null);
+			
+			if( "10000".equals(result.get("code")) ) {
+				
+			} else {
+				String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
+				throw new Exception(errMsg);
+			}
+		}
+
+		return rtn;
+	}
+
 
     /**
      * noti api 통신
