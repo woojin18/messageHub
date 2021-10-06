@@ -799,7 +799,9 @@ public class CommonService {
         } else if (cell.getCellTypeEnum() == CellType.FORMULA) {
             return cell.getCellFormula();
         } else if (cell.getCellTypeEnum() == CellType.NUMERIC) {
-            return cell.getNumericCellValue();
+        	// 숫자로 입력된 데이터 String 처리
+        	cell.setCellType(CellType.STRING);
+        	return cell.getStringCellValue();
         } else if (cell.getCellTypeEnum() == CellType.BOOLEAN) {
             return cell.getBooleanCellValue();
         } else if (cell.getCellTypeEnum() == CellType.BLANK) {
