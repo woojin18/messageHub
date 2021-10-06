@@ -328,7 +328,7 @@ public class MultiSendTemplateService {
 					if (buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
-						sb.append(",\"buttons\": []");
+						sb.append(",\"buttons\": [{}]");
 					}
 				} else if ((int) params.get("rcsTemplateTable") == 2) {
 					// RCS CELL(STYLE) TYPE
@@ -361,7 +361,7 @@ public class MultiSendTemplateService {
 					if (buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
-						sb.append(",\"buttons\": []");
+						sb.append(",\"buttons\": [{}]");
 					}
 
 				} else if ((int) params.get("rcsTemplateTable") == 3) {
@@ -382,7 +382,7 @@ public class MultiSendTemplateService {
 					if (buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
-						sb.append(",\"buttons\": []");
+						sb.append(",\"buttons\": [{}]");
 					}
 
 				} else if ((int) params.get("rcsTemplateTable") == 4) {
@@ -404,7 +404,7 @@ public class MultiSendTemplateService {
 					if (buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
-						sb.append(",\"buttons\": []");
+						sb.append(",\"buttons\": [{}]");
 					}
 
 				} else if ((int) params.get("rcsTemplateTable") == 5) {
@@ -442,7 +442,7 @@ public class MultiSendTemplateService {
 					if (buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
-						sb.append(",\"buttons\": []");
+						sb.append(",\"buttons\": [{}]");
 					}
 
 				} else if ((int) params.get("rcsTemplateTable") == 6) {
@@ -479,7 +479,7 @@ public class MultiSendTemplateService {
 					if (buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
-						sb.append(",\"buttons\": []");
+						sb.append(",\"buttons\": [{}]");
 					}
 
 				} else if ((int) params.get("rcsTemplateTable") == 9) {
@@ -529,26 +529,30 @@ public class MultiSendTemplateService {
 					}
 					sb.append("	] ");
 
-					sb.append(",\"buttons\": [ ");
-					for (int k = 0; k < rcsCShortImgInfoList.size(); k++) {
-						Map<String, Object> rcsCShortImgInfo = rcsCShortImgInfoList.get(k);
-						List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) rcsCShortImgInfo.get("rcsButtons");
+					if (rcsCShortImgInfoList.size() == 0) {
+						sb.append(",\"buttons\": [{}]");
+					} else {
+						sb.append(",\"buttons\": [ ");
+						for (int k = 0; k < rcsCShortImgInfoList.size(); k++) {
+							Map<String, Object> rcsCShortImgInfo = rcsCShortImgInfoList.get(k);
+							List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) rcsCShortImgInfo.get("rcsButtons");
 
-						sb.append(" { ");
-						sb.append("\"suggestions\": [ ");
+							sb.append(" { ");
 
-						if (buttonInfoList.size() > 0) {
-							sb.append(newCarouselButtonAddStr(buttonInfoList));
+							if (buttonInfoList != null && buttonInfoList.size() > 0) {
+								sb.append("\"suggestions\": [ ");
+								sb.append(newCarouselButtonAddStr(buttonInfoList));
+								sb.append("	]");
+							}
+
+							sb.append("	} ");
+
+							if (k < rcsCShortImgInfoList.size() - 1) {
+								sb.append(", ");
+							}
 						}
-
-						sb.append("	]");
-						sb.append("	} ");
-
-						if (k < rcsCShortImgInfoList.size() - 1) {
-							sb.append(", ");
-						}
+						sb.append("	] ");
 					}
-					sb.append("	] ");
 
 				} else if ((int) params.get("rcsTemplateTable") == 10) {
 					// RCS CTALL TYPE
@@ -598,26 +602,30 @@ public class MultiSendTemplateService {
 					}
 					sb.append("	] ");
 
-					sb.append(",\"buttons\": [ ");
-					for (int k = 0; k < rcsCTallImgInfoList.size(); k++) {
-						Map<String, Object> rcsCTallImgInfo = rcsCTallImgInfoList.get(k);
-						List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) rcsCTallImgInfo.get("rcsButtons");
+					if (rcsCTallImgInfoList.size() == 0) {
+						sb.append(",\"buttons\": [{}]");
+					} else {
+						sb.append(",\"buttons\": [ ");
+						for (int k = 0; k < rcsCTallImgInfoList.size(); k++) {
+							Map<String, Object> rcsCTallImgInfo = rcsCTallImgInfoList.get(k);
+							List<Map<String, Object>> buttonInfoList = (List<Map<String, Object>>) rcsCTallImgInfo.get("rcsButtons");
 
-						sb.append(" { ");
-						sb.append("\"suggestions\": [ ");
+							sb.append(" { ");
 
-						if (buttonInfoList.size() > 0) {
-							sb.append(newCarouselButtonAddStr(buttonInfoList));
+							if (buttonInfoList != null && buttonInfoList.size() > 0) {
+								sb.append("\"suggestions\": [ ");
+								sb.append(newCarouselButtonAddStr(buttonInfoList));
+								sb.append("	]");
+							}
+
+							sb.append("	} ");
+
+							if (k < rcsCTallImgInfoList.size() - 1) {
+								sb.append(", ");
+							}
 						}
-
-						sb.append("	]");
-						sb.append("	} ");
-
-						if (k < rcsCTallImgInfoList.size() - 1) {
-							sb.append(", ");
-						}
+						sb.append("	] ");
 					}
-					sb.append("	] ");
 				}
 				sb.append("} ");
 

@@ -1178,7 +1178,7 @@
 													<p class="mt15"><pre>{{rcsCShortImgInfo.rcsContent}}</pre></p>
 												</div>
 											</div>
-											<div v-if="rcsCShortImgInfo.rcsButtons.length > 0">
+											<div v-if="rcsCShortImgInfo.rcsButtons != null">
 												<p v-for="(buttonInfo, idx) in rcsCShortImgInfo.rcsButtons" :key="idx" class="text-center mt10" style="color:#69C8FF">
 													<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
 												</p>
@@ -3900,86 +3900,158 @@ export default {
 					this.rowData.rcsTallButtons.push(temp);
 				}
 			} else if (rcsType == 'CSHORT_TAB1') {
-				if (this.rowData.rcsCShortImgInfoList[0].rcsButtons.length >= 2) {
-					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+				if (this.rowData.rcsCShortImgInfoList[0].rcsButtons != null) {
+					if (this.rowData.rcsCShortImgInfoList[0].rcsButtons.length >= 2) {
+						confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+					} else {
+						this.button91Flag = true;
+						this.rowData.rcsCShortImgInfoList[0].rcsButtons.push(temp);
+					}
 				} else {
+					this.rowData.rcsCShortImgInfoList[0].rcsButtons = [];
 					this.button91Flag = true;
 					this.rowData.rcsCShortImgInfoList[0].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CSHORT_TAB2') {
-				if (this.rowData.rcsCShortImgInfoList[1].rcsButtons.length >= 2) {
-					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+				if (this.rowData.rcsCShortImgInfoList[1].rcsButtons != null) {
+					if (this.rowData.rcsCShortImgInfoList[1].rcsButtons.length >= 2) {
+						confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+					} else {
+						this.button92Flag = true;
+						this.rowData.rcsCShortImgInfoList[1].rcsButtons.push(temp);
+					}
 				} else {
+					this.rowData.rcsCShortImgInfoList[1].rcsButtons = [];
 					this.button92Flag = true;
 					this.rowData.rcsCShortImgInfoList[1].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CSHORT_TAB3') {
-				if (this.rowData.rcsCShortImgInfoList[2].rcsButtons.length >= 2) {
-					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+				if (this.rowData.rcsCShortImgInfoList[2].rcsButtons != null) {
+					if (this.rowData.rcsCShortImgInfoList[2].rcsButtons.length >= 2) {
+						confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+					} else {
+						this.button93Flag = true;
+						this.rowData.rcsCShortImgInfoList[2].rcsButtons.push(temp);
+					}
 				} else {
+					this.rowData.rcsCShortImgInfoList[2].rcsButtons = [];
 					this.button93Flag = true;
 					this.rowData.rcsCShortImgInfoList[2].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CSHORT_TAB4') {
-				if (this.rowData.rcsCShortImgInfoList[3].rcsButtons.length >= 2) {
-					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+				if (this.rowData.rcsCShortImgInfoList[3].rcsButtons != null) {
+					if (this.rowData.rcsCShortImgInfoList[3].rcsButtons.length >= 2) {
+						confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+					} else {
+						this.button94Flag = true;
+						this.rowData.rcsCShortImgInfoList[3].rcsButtons.push(temp);
+					}
 				} else {
+					this.rowData.rcsCShortImgInfoList[3].rcsButtons = [];
 					this.button94Flag = true;
 					this.rowData.rcsCShortImgInfoList[3].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CSHORT_TAB5') {
-				if (this.rowData.rcsCShortImgInfoList[4].rcsButtons.length >= 2) {
-					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+				if (this.rowData.rcsCShortImgInfoList[4].rcsButtons != null) {
+					if (this.rowData.rcsCShortImgInfoList[4].rcsButtons.length >= 2) {
+						confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+					} else {
+						this.button95Flag = true;
+						this.rowData.rcsCShortImgInfoList[4].rcsButtons.push(temp);
+					}
 				} else {
+					this.rowData.rcsCShortImgInfoList[4].rcsButtons = [];
 					this.button95Flag = true;
 					this.rowData.rcsCShortImgInfoList[4].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CSHORT_TAB6') {
-				if (this.rowData.rcsCShortImgInfoList[5].rcsButtons.length >= 2) {
-					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+				if (this.rowData.rcsCShortImgInfoList[5].rcsButtons != null) {
+					if (this.rowData.rcsCShortImgInfoList[5].rcsButtons.length >= 2) {
+						confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+					} else {
+						this.button96Flag = true;
+						this.rowData.rcsCShortImgInfoList[5].rcsButtons.push(temp);
+					}
 				} else {
+					this.rowData.rcsCShortImgInfoList[5].rcsButtons = [];
 					this.button96Flag = true;
 					this.rowData.rcsCShortImgInfoList[5].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB1') {
-				if (this.rowData.rcsCTallImgInfoList[0].rcsButtons.length >= 2) {
-					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+				if (this.rowData.rcsCTallImgInfoList[0].rcsButtons != null) {
+					if (this.rowData.rcsCTallImgInfoList[0].rcsButtons.length >= 2) {
+						confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+					} else {
+						this.button101Flag = true;
+						this.rowData.rcsCTallImgInfoList[0].rcsButtons.push(temp);
+					}
 				} else {
+					this.rowData.rcsCTallImgInfoList[0].rcsButtons = [];
 					this.button101Flag = true;
 					this.rowData.rcsCTallImgInfoList[0].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB2') {
-				if (this.rowData.rcsCTallImgInfoList[1].rcsButtons.length >= 2) {
-					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+				if (this.rowData.rcsCTallImgInfoList[1].rcsButtons != null) {
+					if (this.rowData.rcsCTallImgInfoList[1].rcsButtons.length >= 2) {
+						confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+					} else {
+						this.button102Flag = true;
+						this.rowData.rcsCTallImgInfoList[1].rcsButtons.push(temp);
+					}
 				} else {
+					this.rowData.rcsCTallImgInfoList[1].rcsButtons = [];
 					this.button102Flag = true;
 					this.rowData.rcsCTallImgInfoList[1].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB3') {
-				if (this.rowData.rcsCTallImgInfoList[2].rcsButtons.length >= 2) {
-					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+				if (this.rowData.rcsCTallImgInfoList[2].rcsButtons != null) {
+					if (this.rowData.rcsCTallImgInfoList[2].rcsButtons.length >= 2) {
+						confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+					} else {
+						this.button103Flag = true;
+						this.rowData.rcsCTallImgInfoList[2].rcsButtons.push(temp);
+					}
 				} else {
+					this.rowData.rcsCTallImgInfoList[2].rcsButtons = [];
 					this.button103Flag = true;
 					this.rowData.rcsCTallImgInfoList[2].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB4') {
-				if (this.rowData.rcsCTallImgInfoList[3].rcsButtons.length >= 2) {
-					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+				if (this.rowData.rcsCTallImgInfoList[3].rcsButtons != null) {
+					if (this.rowData.rcsCTallImgInfoList[3].rcsButtons.length >= 2) {
+						confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+					} else {
+						this.button104Flag = true;
+						this.rowData.rcsCTallImgInfoList[3].rcsButtons.push(temp);
+					}
 				} else {
+					this.rowData.rcsCTallImgInfoList[3].rcsButtons = [];
 					this.button104Flag = true;
 					this.rowData.rcsCTallImgInfoList[3].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB5') {
-				if (this.rowData.rcsCTallImgInfoList[4].rcsButtons.length >= 2) {
-					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+				if (this.rowData.rcsCTallImgInfoList[4].rcsButtons != null) {
+					if (this.rowData.rcsCTallImgInfoList[4].rcsButtons.length >= 2) {
+						confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+					} else {
+						this.button105Flag = true;
+						this.rowData.rcsCTallImgInfoList[4].rcsButtons.push(temp);
+					}
 				} else {
+					this.rowData.rcsCTallImgInfoList[4].rcsButtons = [];
 					this.button105Flag = true;
 					this.rowData.rcsCTallImgInfoList[4].rcsButtons.push(temp);
 				}
 			} else if (rcsType == 'CTALL_TAB6') {
-				if (this.rowData.rcsCTallImgInfoList[5].rcsButtons.length >= 2) {
-					confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+				if (this.rowData.rcsCTallImgInfoList[5].rcsButtons != null) {
+					if (this.rowData.rcsCTallImgInfoList[5].rcsButtons.length >= 2) {
+						confirm.fnAlert(this.componentsTitle, "button은 2개까지 추가가능합니다.");
+					} else {
+						this.button106Flag = true;
+						this.rowData.rcsCTallImgInfoList[5].rcsButtons.push(temp);
+					}
 				} else {
+					this.rowData.rcsCTallImgInfoList[5].rcsButtons = [];
 					this.button106Flag = true;
 					this.rowData.rcsCTallImgInfoList[5].rcsButtons.push(temp);
 				}
