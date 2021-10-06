@@ -294,6 +294,9 @@ public class ChannelService {
 					rtnMap = (Map<String, Object>) resultLists.get(0);
 				} else {
 					String errMsg = CommonUtils.getString(resultApi.get("message"));
+					if("".equals(errMsg)) {
+						errMsg = "실패했습니다.";
+					}
 					//rtn.setMessage(errMsg);
 					throw new Exception(errMsg);
 				}
@@ -1034,7 +1037,7 @@ public class ChannelService {
 			
 			kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(joinMap);
 			
-			System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
+			//System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
 			
 			// API 통신처리
 			Map<String, Object> result =  apiInterface.post("/console/v1/ucube/service/join/mo", joinMap, null);
