@@ -421,15 +421,12 @@ public class MultiSendTemplateService {
 					if (params.containsKey("rcsShortImgInfoList")) {
 						rcsShortImgInfoList = (List<Map<String, Object>>) params.get("rcsShortImgInfoList");
 						if (rcsShortImgInfoList.size() > 0) {
-							Map<String, Object> imgInfo = rcsShortImgInfoList.get(0);// rcs에서 SHORT, TALL에는 이미지가 1개만
-																						// 들어온다
+							Map<String, Object> imgInfo = rcsShortImgInfoList.get(0);// rcs에서 SHORT, TALL에는 이미지가 1개만 들어온다
 							if (imgInfo.containsKey("fileId")) {
-								sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(imgInfo, "imgUrl") + "\", "); //
-								sb.append("	\"media\" : \"maapfile://" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" "); //
+								sb.append("	,\"media\" : \"maapfile://" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" "); //
 							}
 						} else {
-							sb.append("	\"mediaUrl\" : \"{}\", "); //
-							sb.append("	\"media\" : \"\", "); //
+							sb.append("	,\"media\" : \"\", "); //
 						}
 					}
 					sb.append("	}]");
@@ -461,12 +458,10 @@ public class MultiSendTemplateService {
 						if (rcsTallImgInfoList.size() > 0) {
 							Map<String, Object> imgInfo = rcsTallImgInfoList.get(0);// rcs에서 SHORT, TALL에는 이미지가 1개만 들어온다
 							if (imgInfo.containsKey("fileId")) {
-								sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(imgInfo, "imgUrl") + "\", ");
-								sb.append("	\"media\" : \"maapfile://" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" ");
+								sb.append("	,\"media\" : \"maapfile://" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" ");
 							}
 						} else {
-							sb.append("	,\"mediaUrl\" : \"{}\", ");
-							sb.append("	\"media\" : \"\" ");
+							sb.append("	,\"media\" : \"\" ");
 						}
 					}
 					sb.append("	}]");
@@ -517,11 +512,9 @@ public class MultiSendTemplateService {
 
 						// image List
 						if (!"".equals(CommonUtils.getStrValue(rcsCShortImgInfo, "imgUrl")) && !"".equals(CommonUtils.getStrValue(rcsCShortImgInfo, "fileId"))) {
-							sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(rcsCShortImgInfo, "imgUrl") + "\", ");
-							sb.append("	\"media\" : \"maapfile://" + CommonUtils.getStrValue(rcsCShortImgInfo, "fileId") + "\" ");
+							sb.append("	,\"media\" : \"maapfile://" + CommonUtils.getStrValue(rcsCShortImgInfo, "fileId") + "\" ");
 						} else {
-							sb.append("	,\"mediaUrl\" : \"{}\", ");
-							sb.append("	\"media\" : \"\" ");
+							sb.append("	,\"media\" : \"\" ");
 						}
 						sb.append("	} ");
 						if (k < rcs9CardCount - 1)
@@ -590,11 +583,9 @@ public class MultiSendTemplateService {
 
 						// image List
 						if (!"".equals(CommonUtils.getStrValue(rcsCTallImgInfo, "imgUrl")) && !"".equals(CommonUtils.getStrValue(rcsCTallImgInfo, "fileId"))) {
-							sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(rcsCTallImgInfo, "imgUrl") + "\", ");
-							sb.append("	\"media\" : \"maapfile://" + CommonUtils.getStrValue(rcsCTallImgInfo, "fileId") + "\" ");
+							sb.append("	,\"media\" : \"maapfile://" + CommonUtils.getStrValue(rcsCTallImgInfo, "fileId") + "\" ");
 						} else {
-							sb.append("	,\"mediaUrl\" : \"{}\", ");
-							sb.append("	\"media\" : \"\" ");
+							sb.append("	,\"media\" : \"\" ");
 						}
 						sb.append("	} ");
 						if (k < rcs10CardCount - 1)
