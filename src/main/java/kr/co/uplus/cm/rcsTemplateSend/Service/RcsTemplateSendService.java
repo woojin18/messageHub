@@ -1046,7 +1046,16 @@ public class RcsTemplateSendService {
 			List<Map<String, Object>> excelRecvInfoLst = this.setExcelRecvInfoLst(data, excelFile);
 			data.put("recvInfoLst", excelRecvInfoLst);
 		}
-		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListTemplate(data);
+		
+		// 서술형의경우 description으로 묶어서 보내는 방식으로 변경 -> 미승인형 모듈로 처리
+		String templateRadioBtn = CommonUtils.getString(params.get("templateRadioBtn"));
+		
+		ArrayList<Map<String, Object>> recvInfoLst;
+		if("des".equals(templateRadioBtn)) {
+			recvInfoLst = this.setRecvInfoListNonTemplate(data);
+		} else {
+			recvInfoLst = this.setRecvInfoListTemplate(data);
+		}
 		
 		// 예약발송일경우 웹 발송 내역을 등록하고 통신은 하지 않도록 처리
 		
@@ -1177,7 +1186,7 @@ public class RcsTemplateSendService {
 		return resultObj;
 	}
 	
-	// RCS 포멧형 발송
+	// RCS 케러셀형 발송
 	public RestResult<Object> sendRcsDataCarousel(Map<String, Object> params, MultipartFile excelFile) throws Exception {
 		RestResult<Object> resultObj = new RestResult<>(true);
 		Map<String, Object> data = (Map<String, Object>) params.get("data");
@@ -1506,7 +1515,6 @@ public class RcsTemplateSendService {
 		ArrayList<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 		String webReqId = CommonUtils.getString(data.get("webReqId"));
 		long cliKey = NumberUtils.LONG_ONE;
-		int resultListCnt = 0;
 		
 		for(Map<String, Object>dataMap : dataList) {
 			Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -1514,9 +1522,8 @@ public class RcsTemplateSendService {
 				resultMap.put("cliKey", clikeyStr);
 				resultMap.put("phone", dataMap.get("phone"));
 				resultMap.put("mergeData", dataMap.get("mergeData"));
-				resultList.add(resultListCnt, resultMap);
+				resultList.add(resultMap);
 				cliKey++;
-				resultListCnt++;
 		}
 		
 		return resultList;
@@ -1528,7 +1535,6 @@ public class RcsTemplateSendService {
 		ArrayList<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 		String webReqId = CommonUtils.getString(data.get("webReqId"));
 		long cliKey = NumberUtils.LONG_ONE;
-		int resultListCnt = 0;
 		
 		for(Map<String, Object> dataMap : dataList) {
 			Map<String, Object> mergeMap = (Map<String, Object>) dataMap.get("mergeData");
@@ -1543,8 +1549,8 @@ public class RcsTemplateSendService {
 			returnMap.put("phone", dataMap.get("phone"));
 			returnMap.put("mergeData", returnMergeMap);
 			
-			resultList.add(resultListCnt, returnMap);
-			resultListCnt++;
+			resultList.add(returnMap);
+			cliKey++;
 		}
 		
 		return resultList;
@@ -1559,7 +1565,6 @@ public class RcsTemplateSendService {
 		ArrayList<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 		String webReqId = CommonUtils.getString(data.get("webReqId"));
 		long cliKey = NumberUtils.LONG_ONE;
-		int resultListCnt = 0;
 		
 		for(Map<String, Object> dataMap : dataList) {
 			Map<String, Object> mergeMap = (Map<String, Object>) dataMap.get("mergeData");
@@ -1586,8 +1591,8 @@ public class RcsTemplateSendService {
 			returnMap.put("phone", dataMap.get("phone"));
 			returnMap.put("mergeData", returnMergeMap);
 			
-			resultList.add(resultListCnt, returnMap);
-			resultListCnt++;
+			resultList.add(returnMap);
+			cliKey++;
 		}
 		
 		return resultList;
@@ -1603,7 +1608,6 @@ public class RcsTemplateSendService {
 		ArrayList<Object> fileIdArr = (ArrayList<Object>) carouselMap.get("fileId");
 		String webReqId = CommonUtils.getString(data.get("webReqId"));
 		long cliKey = NumberUtils.LONG_ONE;
-		int resultListCnt = 0;
 		
 		for(Map<String, Object> dataMap : dataList) {
 			Map<String, Object> mergeMap = (Map<String, Object>) dataMap.get("mergeData");
@@ -1629,8 +1633,8 @@ public class RcsTemplateSendService {
 			returnMap.put("phone", dataMap.get("phone"));
 			returnMap.put("mergeData", returnMergeMap);
 			
-			resultList.add(resultListCnt, returnMap);
-			resultListCnt++;
+			resultList.add(returnMap);
+			cliKey++;
 		}
 		
 		return resultList;
