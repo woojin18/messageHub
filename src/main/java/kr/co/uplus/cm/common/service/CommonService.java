@@ -626,6 +626,28 @@ public class CommonService {
     }
 
     /**
+     * get API Key
+     *
+     * @return
+     * @throws Exception
+     */
+    public Map getApiKey2(String corpId, String projectId) throws Exception {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corpId", corpId);
+        params.put("projectId", projectId);
+        Map data = (Map) generalDao.selectGernalObject(DB.QRY_SELECT_API_KEY2, params);
+        String apiKey = CommonUtils.getString(data.get("apiKey"));
+
+        if (StringUtils.isBlank(apiKey)) {
+            log.error("{}.getApiKey no result search for api key. corpID : {}, projectId : {}", this.getClass(), corpId,
+                    projectId);
+            throw new CMException("API 키가 존재하지 않습니다.");
+        }
+
+        return data;
+    }
+
+    /**
      * 등록자(reg_id) 설정
      *
      * @return

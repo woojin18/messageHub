@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -81,6 +82,8 @@ public class SendMessageService {
 
     @Autowired
     ApiInterface apiInterface;
+    
+    private long second = 1000;
 
     /**
      * APP ID 리스트 조회
@@ -757,7 +760,9 @@ public class SendMessageService {
 
         String corpId = CommonUtils.getStrValue(sParams, "corpId");
         String projectId = CommonUtils.getStrValue(sParams, "projectId");
-        String apiKey = commonService.getApiKey(corpId, projectId);
+        Map apiData = commonService.getApiKey2(corpId, projectId);
+        String apiKey = CommonUtils.getString(apiData.get("apiKey"));
+        String strCps = CommonUtils.getString(apiData.get("cps"),"30");
         String jsonString = "";
         boolean isDone = false;
         boolean isServerError = false;
@@ -771,6 +776,12 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
+        
+        int cps = NumberUtils.toInt(strCps, 30);
+        if (cps <= 0) cps = 30;
+        int sendCnt = 0;
+        long start = System.currentTimeMillis();
+        long end = 0;
 
         while (toIndex < listSize) {
             isDone = false;
@@ -783,6 +794,8 @@ public class SendMessageService {
                 responseBody = apiInterface.sendMsg(ApiConfig.SEND_PUSH_API_URI, headerMap, jsonString);
                 isDone = isApiRequestAgain(responseBody, reSendCdList);
                 isAllFail = !isSendSuccess(responseBody);
+//                isDone = true;
+//                isAllFail = false;
             } catch (Exception e) {
                 log.error("{}.sendPushMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
@@ -790,6 +803,7 @@ public class SendMessageService {
             }
 
             if(isDone) {
+            	sendCnt++;
                 retryCnt = NumberUtils.INTEGER_ZERO;
                 fromIndex = toIndex;
             } else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
@@ -797,9 +811,21 @@ public class SendMessageService {
                 retryCnt = NumberUtils.INTEGER_ZERO;
                 fromIndex = toIndex;
             } else {
+            	sendCnt++;
                 retryCnt++;
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
+            }
+            
+            if (sendCnt >= cps || toIndex >= listSize) {
+            	end = System.currentTimeMillis();
+            	long diff  = end - start;
+                log.info("API sendMsg apiKey : {}, cps : {}, sendCnt : {}", apiKey, cps, sendCnt);
+            	if (second > diff && sendCnt >= cps) {
+            		TimeUnit.MILLISECONDS.sleep(second-diff);
+            	}
+            	sendCnt = 0;
+            	start = System.currentTimeMillis();
             }
         }
 
@@ -945,6 +971,8 @@ public class SendMessageService {
 
         return rtn;
     }
+    
+    private Vector sms = new Vector();
 
     /**
      * SMS 메시지 발송 비동기 처리
@@ -969,7 +997,9 @@ public class SendMessageService {
 
         String corpId = CommonUtils.getStrValue(sParams, "corpId");
         String projectId = CommonUtils.getStrValue(sParams, "projectId");
-        String apiKey = commonService.getApiKey(corpId, projectId);
+        Map apiData = commonService.getApiKey2(corpId, projectId);
+        String apiKey = CommonUtils.getString(apiData.get("apiKey"));
+        String strCps = CommonUtils.getString(apiData.get("cps"),"30");
         String jsonString = "";
         boolean isDone = false;
         boolean isServerError = false;
@@ -983,6 +1013,12 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
+        
+        int cps = NumberUtils.toInt(strCps, 30);
+        if (cps <= 0) cps = 30;
+        int sendCnt = 0;
+        long start = System.currentTimeMillis();
+        long end = 0;
 
         while (toIndex < listSize) {
             isDone = false;
@@ -995,6 +1031,8 @@ public class SendMessageService {
                 responseBody = apiInterface.sendMsg(ApiConfig.SEND_SMS_API_URI, headerMap, jsonString);
                 isDone = isApiRequestAgain(responseBody, reSendCdList);
                 isAllFail = !isSendSuccess(responseBody);
+//                isDone = true;
+//                isAllFail = false;
             } catch (Exception e) {
                 log.error("{}.sendSmsMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
@@ -1002,6 +1040,7 @@ public class SendMessageService {
             }
 
             if(isDone) {
+            	sendCnt++;
                 retryCnt = NumberUtils.INTEGER_ZERO;
                 fromIndex = toIndex;
             } else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
@@ -1009,9 +1048,21 @@ public class SendMessageService {
                 retryCnt = NumberUtils.INTEGER_ZERO;
                 fromIndex = toIndex;
             } else {
+            	sendCnt++;
                 retryCnt++;
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
+            }
+            
+            if (sendCnt >= cps || toIndex >= listSize) {
+            	end = System.currentTimeMillis();
+            	long diff  = end - start;
+                log.info("API sendMsg apiKey : {}, cps : {}, sendCnt : {}", apiKey, cps, sendCnt);
+            	if (second > diff && sendCnt >= cps) {
+            		TimeUnit.MILLISECONDS.sleep(second-diff);
+            	}
+            	sendCnt = 0;
+            	start = System.currentTimeMillis();
             }
         }
 
@@ -1197,7 +1248,9 @@ public class SendMessageService {
 
         String corpId = CommonUtils.getStrValue(sParams, "corpId");
         String projectId = CommonUtils.getStrValue(sParams, "projectId");
-        String apiKey = commonService.getApiKey(corpId, projectId);
+        Map apiData = commonService.getApiKey2(corpId, projectId);
+        String apiKey = CommonUtils.getString(apiData.get("apiKey"));
+        String strCps = CommonUtils.getString(apiData.get("cps"),"30");
         String jsonString = "";
         boolean isDone = false;
         boolean isServerError = false;
@@ -1212,6 +1265,12 @@ public class SendMessageService {
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
 
+        int cps = NumberUtils.toInt(strCps, 30);
+        if (cps <= 0) cps = 30;
+        int sendCnt = 0;
+        long start = System.currentTimeMillis();
+        long end = 0;
+
         while (toIndex < listSize) {
             isDone = false;
             isServerError = false;
@@ -1223,6 +1282,8 @@ public class SendMessageService {
                 responseBody = apiInterface.sendMsg(ApiConfig.SEND_MMS_API_URI, headerMap, jsonString);
                 isDone = isApiRequestAgain(responseBody, reSendCdList);
                 isAllFail = !isSendSuccess(responseBody);
+//                isDone = true;
+//                isAllFail = false;
             } catch (Exception e) {
                 log.error("{}.sendMmsMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
@@ -1230,6 +1291,7 @@ public class SendMessageService {
             }
 
             if(isDone) {
+            	sendCnt++;
                 retryCnt = NumberUtils.INTEGER_ZERO;
                 fromIndex = toIndex;
             } else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
@@ -1237,9 +1299,21 @@ public class SendMessageService {
                 retryCnt = NumberUtils.INTEGER_ZERO;
                 fromIndex = toIndex;
             } else {
+            	sendCnt++;
                 retryCnt++;
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
+            }
+            
+            if (sendCnt >= cps || toIndex >= listSize) {
+            	end = System.currentTimeMillis();
+            	long diff  = end - start;
+                log.info("API sendMsg apiKey : {}, cps : {}, sendCnt : {}", apiKey, cps, sendCnt);
+            	if (second > diff && sendCnt >= cps) {
+            		TimeUnit.MILLISECONDS.sleep(second-diff);
+            	}
+            	sendCnt = 0;
+            	start = System.currentTimeMillis();
             }
         }
 
@@ -1630,7 +1704,9 @@ public class SendMessageService {
 
         String corpId = CommonUtils.getStrValue(sParams, "corpId");
         String projectId = CommonUtils.getStrValue(sParams, "projectId");
-        String apiKey = commonService.getApiKey(corpId, projectId);
+        Map apiData = commonService.getApiKey2(corpId, projectId);
+        String apiKey = CommonUtils.getString(apiData.get("apiKey"));
+        String strCps = CommonUtils.getString(apiData.get("cps"),"30");
         String jsonString = "";
         boolean isDone = false;
         boolean isServerError = false;
@@ -1644,6 +1720,12 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
+        
+        int cps = NumberUtils.toInt(strCps, 30);
+        if (cps <= 0) cps = 30;
+        int sendCnt = 0;
+        long start = System.currentTimeMillis();
+        long end = 0;
 
         while (toIndex < listSize) {
             isDone = false;
@@ -1656,6 +1738,8 @@ public class SendMessageService {
                 responseBody = apiInterface.sendMsg(ApiConfig.SEND_FRND_TALK_API_URI, headerMap, jsonString);
                 isDone = isApiRequestAgain(responseBody, reSendCdList);
                 isAllFail = !isSendSuccess(responseBody);
+//                isDone = true;
+//                isAllFail = false;
             } catch (Exception e) {
                 log.error("{}.sendFrndTalkMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
@@ -1663,6 +1747,7 @@ public class SendMessageService {
             }
 
             if(isDone) {
+            	sendCnt++;
                 retryCnt = NumberUtils.INTEGER_ZERO;
                 fromIndex = toIndex;
             } else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
@@ -1670,9 +1755,21 @@ public class SendMessageService {
                 retryCnt = NumberUtils.INTEGER_ZERO;
                 fromIndex = toIndex;
             } else {
+            	sendCnt++;
                 retryCnt++;
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
+            }
+            
+            if (sendCnt >= cps || toIndex >= listSize) {
+            	end = System.currentTimeMillis();
+            	long diff  = end - start;
+                log.info("API sendMsg apiKey : {}, cps : {}, sendCnt : {}", apiKey, cps, sendCnt);
+            	if (second > diff && sendCnt >= cps) {
+            		TimeUnit.MILLISECONDS.sleep(second-diff);
+            	}
+            	sendCnt = 0;
+            	start = System.currentTimeMillis();
             }
         }
 
@@ -1985,7 +2082,9 @@ public class SendMessageService {
 
         String corpId = CommonUtils.getStrValue(sParams, "corpId");
         String projectId = CommonUtils.getStrValue(sParams, "projectId");
-        String apiKey = commonService.getApiKey(corpId, projectId);
+        Map apiData = commonService.getApiKey2(corpId, projectId);
+        String apiKey = CommonUtils.getString(apiData.get("apiKey"));
+        String strCps = CommonUtils.getString(apiData.get("cps"),"30");
         String jsonString = "";
         boolean isDone = false;
         boolean isServerError = false;
@@ -1999,6 +2098,12 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
+        
+        int cps = NumberUtils.toInt(strCps, 30);
+        if (cps <= 0) cps = 30;
+        int sendCnt = 0;
+        long start = System.currentTimeMillis();
+        long end = 0;
 
         while (toIndex < listSize) {
             isDone = false;
@@ -2011,6 +2116,8 @@ public class SendMessageService {
                 responseBody = apiInterface.sendMsg(ApiConfig.SEND_ALIM_TALK_API_URI, headerMap, jsonString);
                 isDone = isApiRequestAgain(responseBody, reSendCdList);
                 isAllFail = !isSendSuccess(responseBody);
+//                isDone = true;
+//                isAllFail = false;
             } catch (Exception e) {
                 log.error("{}.sendAlimTalkMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
@@ -2018,6 +2125,7 @@ public class SendMessageService {
             }
 
             if(isDone) {
+            	sendCnt++;
                 retryCnt = NumberUtils.INTEGER_ZERO;
                 fromIndex = toIndex;
             } else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
@@ -2025,9 +2133,21 @@ public class SendMessageService {
                 retryCnt = NumberUtils.INTEGER_ZERO;
                 fromIndex = toIndex;
             } else {
+            	sendCnt++;
                 retryCnt++;
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
+            }
+            
+            if (sendCnt >= cps || toIndex >= listSize) {
+            	end = System.currentTimeMillis();
+            	long diff  = end - start;
+                log.info("API sendMsg apiKey : {}, cps : {}, sendCnt : {}", apiKey, cps, sendCnt);
+            	if (second > diff && sendCnt >= cps) {
+            		TimeUnit.MILLISECONDS.sleep(second-diff);
+            	}
+            	sendCnt = 0;
+            	start = System.currentTimeMillis();
             }
         }
 
@@ -2340,7 +2460,9 @@ public class SendMessageService {
 
         String corpId = CommonUtils.getStrValue(sParams, "corpId");
         String projectId = CommonUtils.getStrValue(sParams, "projectId");
-        String apiKey = commonService.getApiKey(corpId, projectId);
+        Map apiData = commonService.getApiKey2(corpId, projectId);
+        String apiKey = CommonUtils.getString(apiData.get("apiKey"));
+        String strCps = CommonUtils.getString(apiData.get("cps"),"30");
         String jsonString = "";
         boolean isDone = false;
         boolean isServerError = false;
@@ -2354,6 +2476,12 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
+        
+        int cps = NumberUtils.toInt(strCps, 30);
+        if (cps <= 0) cps = 30;
+        int sendCnt = 0;
+        long start = System.currentTimeMillis();
+        long end = 0;
 
         while (toIndex < listSize) {
             isDone = false;
@@ -2366,6 +2494,8 @@ public class SendMessageService {
                 responseBody = apiInterface.sendMsg(ApiConfig.SEND_SMART_API_URI, headerMap, jsonString);
                 isDone = isApiRequestAgain(responseBody, reSendCdList);
                 isAllFail = !isSendSuccess(responseBody);
+//                isDone = true;
+//                isAllFail = false;
             } catch (Exception e) {
                 log.error("{}.sendSmartMsgAsync API Request Error ==> {}", this.getClass(), e);
                 isServerError = true;
@@ -2373,6 +2503,7 @@ public class SendMessageService {
             }
 
             if(isDone) {
+            	sendCnt++;
                 retryCnt = NumberUtils.INTEGER_ZERO;
                 fromIndex = toIndex;
             } else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
@@ -2380,9 +2511,21 @@ public class SendMessageService {
                 retryCnt = NumberUtils.INTEGER_ZERO;
                 fromIndex = toIndex;
             } else {
+            	sendCnt++;
                 retryCnt++;
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
+            }
+            
+            if (sendCnt >= cps || toIndex >= listSize) {
+            	end = System.currentTimeMillis();
+            	long diff  = end - start;
+                log.info("API sendMsg apiKey : {}, cps : {}, sendCnt : {}", apiKey, cps, sendCnt);
+            	if (second > diff && sendCnt >= cps) {
+            		TimeUnit.MILLISECONDS.sleep(second-diff);
+            	}
+            	sendCnt = 0;
+            	start = System.currentTimeMillis();
             }
         }
 
@@ -2558,7 +2701,7 @@ public class SendMessageService {
         String tmpltMergeDataStr = CommonUtils.getStrValue(rcsltInfo, "mergeData");
 
         //미승인형
-        if (StringUtils.equals(Const.RcsPrd.STYEL, rcsPrdType) == false) {
+        if((StringUtils.equals(Const.RcsPrd.NARRATIVE, rcsPrdType) || StringUtils.equals(Const.RcsPrd.STYEL, rcsPrdType)) == false) {
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             List<Map<String, Object>> tmpltMergeDataList = gson.fromJson(tmpltMergeDataStr, new TypeToken<List<Map<String, Object>>>(){}.getType());
 
@@ -2586,17 +2729,11 @@ public class SendMessageService {
                                 rcsMergeData.put("description"+carouselCnt, ss.replace(CommonUtils.getStrValue(tmpltMergeData, "description")));
                                 carouselCnt++;
                             }
-                            sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                         } else {
-                        	if (StringUtils.equals(Const.RcsPrd.NARRATIVE, rcsPrdType)) {
-                        		sendMergeData.remove(Const.Ch.RCS);
-                        		sendMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
-                        	} else {
-                                rcsMergeData.put("title", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "title")));
-                                rcsMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
-                                sendMergeData.put(Const.Ch.RCS, rcsMergeData);
-                        	}
+                            rcsMergeData.put("title", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "title")));
+                            rcsMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
                         }
+                        sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                     }
                 }
             }

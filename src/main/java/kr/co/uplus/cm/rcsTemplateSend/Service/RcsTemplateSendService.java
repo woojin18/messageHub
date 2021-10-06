@@ -1,7 +1,6 @@
 package kr.co.uplus.cm.rcsTemplateSend.Service;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,11 +31,8 @@ import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
-import kr.co.uplus.cm.common.dto.MultipartFileDTO;
 import kr.co.uplus.cm.config.ApiConfig;
-import kr.co.uplus.cm.exception.CMException;
 import kr.co.uplus.cm.rcsTemplate.service.RcsTemplateService;
-import kr.co.uplus.cm.sendMessage.dto.RecvInfo;
 import kr.co.uplus.cm.sendMessage.service.SendMessageService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
@@ -1050,16 +1046,7 @@ public class RcsTemplateSendService {
 			List<Map<String, Object>> excelRecvInfoLst = this.setExcelRecvInfoLst(data, excelFile);
 			data.put("recvInfoLst", excelRecvInfoLst);
 		}
-		
-		// 서술형의경우 description으로 묶어서 보내는 방식으로 변경 -> 미승인형 모듈로 처리
-		String templateRadioBtn = CommonUtils.getString(params.get("templateRadioBtn"));
-		
-		ArrayList<Map<String, Object>> recvInfoLst;
-		if("des".equals(templateRadioBtn)) {
-			recvInfoLst = this.setRecvInfoListNonTemplate(data);
-		} else {
-			recvInfoLst = this.setRecvInfoListTemplate(data);
-		}
+		ArrayList<Map<String, Object>> recvInfoLst = this.setRecvInfoListTemplate(data);
 		
 		// 예약발송일경우 웹 발송 내역을 등록하고 통신은 하지 않도록 처리
 		
@@ -1190,7 +1177,7 @@ public class RcsTemplateSendService {
 		return resultObj;
 	}
 	
-	// RCS 케러셀형 발송
+	// RCS 포멧형 발송
 	public RestResult<Object> sendRcsDataCarousel(Map<String, Object> params, MultipartFile excelFile) throws Exception {
 		RestResult<Object> resultObj = new RestResult<>(true);
 		Map<String, Object> data = (Map<String, Object>) params.get("data");
@@ -1519,6 +1506,7 @@ public class RcsTemplateSendService {
 		ArrayList<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 		String webReqId = CommonUtils.getString(data.get("webReqId"));
 		long cliKey = NumberUtils.LONG_ONE;
+		int resultListCnt = 0;
 		
 		for(Map<String, Object>dataMap : dataList) {
 			Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -1526,8 +1514,9 @@ public class RcsTemplateSendService {
 				resultMap.put("cliKey", clikeyStr);
 				resultMap.put("phone", dataMap.get("phone"));
 				resultMap.put("mergeData", dataMap.get("mergeData"));
-				resultList.add(resultMap);
+				resultList.add(resultListCnt, resultMap);
 				cliKey++;
+				resultListCnt++;
 		}
 		
 		return resultList;
@@ -1539,6 +1528,7 @@ public class RcsTemplateSendService {
 		ArrayList<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 		String webReqId = CommonUtils.getString(data.get("webReqId"));
 		long cliKey = NumberUtils.LONG_ONE;
+		int resultListCnt = 0;
 		
 		for(Map<String, Object> dataMap : dataList) {
 			Map<String, Object> mergeMap = (Map<String, Object>) dataMap.get("mergeData");
@@ -1553,8 +1543,8 @@ public class RcsTemplateSendService {
 			returnMap.put("phone", dataMap.get("phone"));
 			returnMap.put("mergeData", returnMergeMap);
 			
-			resultList.add(returnMap);
-			cliKey++;
+			resultList.add(resultListCnt, returnMap);
+			resultListCnt++;
 		}
 		
 		return resultList;
@@ -1569,6 +1559,7 @@ public class RcsTemplateSendService {
 		ArrayList<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 		String webReqId = CommonUtils.getString(data.get("webReqId"));
 		long cliKey = NumberUtils.LONG_ONE;
+		int resultListCnt = 0;
 		
 		for(Map<String, Object> dataMap : dataList) {
 			Map<String, Object> mergeMap = (Map<String, Object>) dataMap.get("mergeData");
@@ -1595,8 +1586,8 @@ public class RcsTemplateSendService {
 			returnMap.put("phone", dataMap.get("phone"));
 			returnMap.put("mergeData", returnMergeMap);
 			
-			resultList.add(returnMap);
-			cliKey++;
+			resultList.add(resultListCnt, returnMap);
+			resultListCnt++;
 		}
 		
 		return resultList;
@@ -1612,6 +1603,7 @@ public class RcsTemplateSendService {
 		ArrayList<Object> fileIdArr = (ArrayList<Object>) carouselMap.get("fileId");
 		String webReqId = CommonUtils.getString(data.get("webReqId"));
 		long cliKey = NumberUtils.LONG_ONE;
+		int resultListCnt = 0;
 		
 		for(Map<String, Object> dataMap : dataList) {
 			Map<String, Object> mergeMap = (Map<String, Object>) dataMap.get("mergeData");
@@ -1637,8 +1629,8 @@ public class RcsTemplateSendService {
 			returnMap.put("phone", dataMap.get("phone"));
 			returnMap.put("mergeData", returnMergeMap);
 			
-			resultList.add(returnMap);
-			cliKey++;
+			resultList.add(resultListCnt, returnMap);
+			resultListCnt++;
 		}
 		
 		return resultList;
@@ -1798,6 +1790,18 @@ public class RcsTemplateSendService {
 		int listSize = recvInfoLst.size();
 		int toIndex = fromIndex;
 		
+        String corpId = CommonUtils.getStrValue(params, "corpId");
+        String projectId = CommonUtils.getStrValue(params, "projectId");
+        Map apiData = commonService.getApiKey2(corpId, projectId);
+        String apiKey = CommonUtils.getString(apiData.get("apiKey"));
+        String strCps = CommonUtils.getString(apiData.get("cps"),"30");
+        int cps = NumberUtils.toInt(strCps, 30);
+        if (cps <= 0) cps = 30;
+        int sendCnt = 0;
+        long start = System.currentTimeMillis();
+        long end = 0;
+        long second = 1000;
+		
 		params.put("recvInfoLstCnt", listSize);
 		apiMap.put("msgRecvInfoLst", recvInfoLst);
 		apiMap.put("msgFbInfoLst", fbInfoLst);
@@ -1817,12 +1821,15 @@ public class RcsTemplateSendService {
 				isDone = isApiRequestAgain(responseBody, reSendCdList);
 				isAllFail = !isSendSuccess(responseBody);
 				if(isAllFail) failMsg = CommonUtils.getString(responseBody.get("message"));
+//                isDone = true;
+//                isAllFail = false;
 			} catch (Exception e) {
 				isServerError = true;
 				if(retryCnt == ApiConfig.GW_RETRY_CNT) sendMsgService.sendMsgErrorNoti(Const.ApiWatchNotiMsg.API_CONNECTION_FAIL);
 			}
 			
 			if(isDone) {
+            	sendCnt++;
 				retryCnt = NumberUtils.INTEGER_ZERO;
 				fromIndex = toIndex;
 			} else if(retryCnt == ApiConfig.GW_RETRY_CNT) {
@@ -1830,10 +1837,22 @@ public class RcsTemplateSendService {
 				retryCnt = NumberUtils.INTEGER_ZERO;
 				fromIndex = toIndex;
 			} else {
+            	sendCnt++;
 				retryCnt++;
 				toIndex = fromIndex;
 				if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
 			}
+	        
+	        if (sendCnt >= cps || toIndex >= listSize) {
+	        	end = System.currentTimeMillis();
+	        	long diff  = end - start;
+	            log.info("API sendMsg apiKey : {}, cps : {}, sendCnt : {}", apiKey, cps, sendCnt);
+	        	if (second > diff && sendCnt >= cps) {
+	        		TimeUnit.MILLISECONDS.sleep(second-diff);
+	        	}
+	        	sendCnt = 0;
+	        	start = System.currentTimeMillis();
+	        }
 		}
 		
 		if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
