@@ -686,7 +686,7 @@ public class RcsTemplateService {
 				inputArrMap.put("widget", "TextView");
 				inputArrMap.put("textSize", "14dp");
 				inputArrMap.put("textColor", "#404040");
-				inputArrMap.put("textAlignment", "textEnd");
+				inputArrMap.put("textAlignment", "textStart");
 				inputArr.add(0, inputArrMap);
 				
 				inputSecArrMap.put("text", styleInputSec.get(i));
@@ -696,7 +696,7 @@ public class RcsTemplateService {
 				inputSecArrMap.put("widget", "TextView");
 				inputSecArrMap.put("textSize", "14dp");
 				inputSecArrMap.put("textColor", "#404040");
-				inputSecArrMap.put("textAlignment", "textStart");
+				inputSecArrMap.put("textAlignment", "textEnd");
 				inputArr.add(1, inputSecArrMap);
 			}
 			
