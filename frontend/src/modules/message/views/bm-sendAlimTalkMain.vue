@@ -363,6 +363,14 @@ export default {
       }
     }
   },
+  watch : {
+	  recvCnt (newval, oldval) {
+		  if(newval>30000) {
+			  confirm.fnAlert(this.componentsTitle, "발송 최대 수신자 수는 30000명을 넘길 수 없습니다.");
+			  this.fnRemoveRecvInfo();
+		  }
+	  }
+  },
   async mounted() {
     await this.fnExistApiKey();
     await this.fnValidUseChGrp();

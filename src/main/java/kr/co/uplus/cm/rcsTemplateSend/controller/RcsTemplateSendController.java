@@ -239,6 +239,7 @@ public class RcsTemplateSendController {
 			}
 		} catch (Exception e) {
 			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
 			e.printStackTrace();
 			log.error("{}.sendRcsData Error : {}", this.getClass(), e);
 			sendMsgService.sendMsgErrorNoti(Const.ApiWatchNotiMsg.SEND_RCS_FAIL);
