@@ -170,32 +170,32 @@
 				@PUSH_CH_OBJECT := JSON_EXTRACT(B.USE_CH_INFO, @PUSH_PATH_TO_PARENT) AS PUSH_CH_OBJECT,
 				@PUSH_CH_IMG_URL := JSON_UNQUOTE(JSON_EXTRACT(@PUSH_CH_OBJECT, '$.URL')) AS PUSH_CH_IMG_URL,
 				T.rcsCardCount, T.rcsStyleCount, T.rcsStyleContent, T.rcsPrdType, T.rcsDesFormNm, T.rcsStyleFormNm, T.rcsCallback, T.rcsMessagebaseId, T.rcsMessagebaseformId, T.rcsBlockNumber, T.rcsBrandNm,
-				T.rcs0Media, T.rcs0Title, T.rcs0Content,
+				SUBSTRING(T.rcs0Media, 12) AS rcs0Media, T.rcs0Title, T.rcs0Content,
 				CASE
 					WHEN rcs0MediaUrl = '{}' then ''
 					ELSE replace(replace(T.rcs0MediaUrl,'{',''),'}','')
 				END AS rcs0MediaUrl,
-				T.rcs1Media, T.rcs1Title, T.rcs1Content,
+				SUBSTRING(T.rcs1Media, 12) AS rcs1Media, T.rcs1Title, T.rcs1Content,
 				CASE
 					WHEN rcs1MediaUrl = '{}' then ''
 					ELSE replace(replace(T.rcs1MediaUrl,'{',''),'}','')
 				END AS rcs1MediaUrl,
-				T.rcs2Media, T.rcs2Title, T.rcs2Content,
+				SUBSTRING(T.rcs2Media, 12) AS rcs2Media, T.rcs2Title, T.rcs2Content,
 				CASE
 					WHEN rcs2MediaUrl = '{}' then ''
 					ELSE replace(replace(T.rcs2MediaUrl,'{',''),'}','')
 				END AS rcs2MediaUrl,
-				T.rcs3Media, T.rcs3Title, T.rcs3Content,
+				SUBSTRING(T.rcs3Media, 12) AS rcs3Media, T.rcs3Title, T.rcs3Content,
 				CASE
 					WHEN rcs3MediaUrl = '{}' then ''
 					ELSE replace(replace(T.rcs3MediaUrl,'{',''),'}','')
 				END AS rcs3MediaUrl,
-				T.rcs4Media, T.rcs4Title, T.rcs4Content,
+				SUBSTRING(T.rcs4Media, 12) AS rcs4Media, T.rcs4Title, T.rcs4Content,
 				CASE
 					WHEN rcs4MediaUrl = '{}' then ''
 					ELSE replace(replace(T.rcs4MediaUrl,'{',''),'}','')
 				END AS rcs4MediaUrl,
-				T.rcs5Media, T.rcs5Title, T.rcs5Content,
+				SUBSTRING(T.rcs5Media, 12) AS rcs5Media, T.rcs5Title, T.rcs5Content,
 				CASE
 					WHEN rcs5MediaUrl = '{}' then ''
 					ELSE replace(replace(T.rcs5MediaUrl,'{',''),'}','')

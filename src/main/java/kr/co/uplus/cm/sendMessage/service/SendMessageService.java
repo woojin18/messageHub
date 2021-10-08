@@ -2704,8 +2704,8 @@ public class SendMessageService {
         String rcsPrdType = CommonUtils.getStrValue(rcsltInfo, "rcsPrdType");
         String tmpltMergeDataStr = CommonUtils.getStrValue(rcsltInfo, "mergeData");
 
-        //미승인형
-        if((StringUtils.equals(Const.RcsPrd.NARRATIVE, rcsPrdType) || StringUtils.equals(Const.RcsPrd.STYEL, rcsPrdType)) == false) {
+        // 미승인형 및 서술형(승인)
+        if (StringUtils.equals(Const.RcsPrd.STYEL, rcsPrdType) == false) {
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             List<Map<String, Object>> tmpltMergeDataList = gson.fromJson(tmpltMergeDataStr, new TypeToken<List<Map<String, Object>>>(){}.getType());
 
@@ -2731,13 +2731,25 @@ public class SendMessageService {
                             for(Map<String, Object> tmpltMergeData : tmpltMergeDataList) {
                                 rcsMergeData.put("title"+carouselCnt, ss.replace(CommonUtils.getStrValue(tmpltMergeData, "title")));
                                 rcsMergeData.put("description"+carouselCnt, ss.replace(CommonUtils.getStrValue(tmpltMergeData, "description")));
+                                if (ss.replace(CommonUtils.getStrValue(tmpltMergeData, "media")) != null && !"".equals(ss.replace(CommonUtils.getStrValue(tmpltMergeData, "media"))) ) {
+                                	rcsMergeData.put("media"+carouselCnt, ss.replace(CommonUtils.getStrValue(tmpltMergeData, "media")));
+                                }
                                 carouselCnt++;
                             }
+                            sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                         } else {
-                            rcsMergeData.put("title", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "title")));
-                            rcsMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
+                        	if (StringUtils.equals(Const.RcsPrd.NARRATIVE, rcsPrdType)) {
+                        		sendMergeData.remove(Const.Ch.RCS);
+                        		sendMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
+                        	} else {
+                                rcsMergeData.put("title", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "title")));
+                                rcsMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
+                                if (ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "media")) != null && !"".equals(ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "media"))) ) {
+                                	rcsMergeData.put("media", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "media")));
+                                }
+                                sendMergeData.put(Const.Ch.RCS, rcsMergeData);
+                        	}
                         }
-                        sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                     }
                 }
             }
