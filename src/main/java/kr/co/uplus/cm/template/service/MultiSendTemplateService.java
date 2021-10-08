@@ -325,7 +325,7 @@ public class MultiSendTemplateService {
 						buttonInfoList = (List<Map<String, Object>>) params.get("rcsDesButtons");
 					}
 
-					if (buttonInfoList.size() > 0) {
+					if (buttonInfoList != null && buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
 						sb.append(",\"buttons\": []");
@@ -358,7 +358,7 @@ public class MultiSendTemplateService {
 						buttonInfoList = (List<Map<String, Object>>) params.get("rcsStyleButtons");
 					}
 
-					if (buttonInfoList.size() > 0) {
+					if (buttonInfoList != null && buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
 						sb.append(",\"buttons\": []");
@@ -379,7 +379,7 @@ public class MultiSendTemplateService {
 						buttonInfoList = (List<Map<String, Object>>) params.get("rcsSMSButtons");
 					}
 
-					if (buttonInfoList.size() > 0) {
+					if (buttonInfoList != null && buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
 						sb.append(",\"buttons\": [{}]");
@@ -401,7 +401,7 @@ public class MultiSendTemplateService {
 						buttonInfoList = (List<Map<String, Object>>) params.get("rcsLMSButtons");
 					}
 
-					if (buttonInfoList.size() > 0) {
+					if (buttonInfoList != null && buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
 						sb.append(",\"buttons\": [{}]");
@@ -439,7 +439,7 @@ public class MultiSendTemplateService {
 						buttonInfoList = (List<Map<String, Object>>) params.get("rcsShortButtons");
 					}
 
-					if (buttonInfoList.size() > 0) {
+					if (buttonInfoList != null && buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
 						sb.append(",\"buttons\": [{}]");
@@ -476,7 +476,7 @@ public class MultiSendTemplateService {
 						buttonInfoList = (List<Map<String, Object>>) params.get("rcsTallButtons");
 					}
 
-					if (buttonInfoList.size() > 0) {
+					if (buttonInfoList != null && buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
 						sb.append(",\"buttons\": [{}]");
