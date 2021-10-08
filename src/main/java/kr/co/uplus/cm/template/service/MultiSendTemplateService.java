@@ -908,6 +908,14 @@ public class MultiSendTemplateService {
 	public RestResult<Object> deleteMultiSendTemplate(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 
+		ArrayList<?> tmpltCodes = (ArrayList<?>) params.get("tmpltCodes");
+		for (int i=0; i<tmpltCodes.size(); i++) {
+			Map<String, Object> delParams = new HashMap<>();
+			delParams.put("tmpltCode", tmpltCodes.get(i));
+			// redis 테이블 처리
+			commonService.updateCmCmdForRedisAPI("else", "CM_SMART_TMPLT", delParams);
+		}
+
 		int resultCnt = generalDao.deleteGernal(DB.QRY_DELETE_MULTISEND_TMPLT, params);
 		if (resultCnt <= 0) {
 			rtn.setSuccess(false);

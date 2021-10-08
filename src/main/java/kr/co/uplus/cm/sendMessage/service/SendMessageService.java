@@ -2731,9 +2731,7 @@ public class SendMessageService {
                             for(Map<String, Object> tmpltMergeData : tmpltMergeDataList) {
                                 rcsMergeData.put("title"+carouselCnt, ss.replace(CommonUtils.getStrValue(tmpltMergeData, "title")));
                                 rcsMergeData.put("description"+carouselCnt, ss.replace(CommonUtils.getStrValue(tmpltMergeData, "description")));
-                                if (ss.replace(CommonUtils.getStrValue(tmpltMergeData, "media")) != null && !"".equals(ss.replace(CommonUtils.getStrValue(tmpltMergeData, "media"))) ) {
-                                	rcsMergeData.put("media"+carouselCnt, ss.replace(CommonUtils.getStrValue(tmpltMergeData, "media")));
-                                }
+                               	rcsMergeData.put("media"+carouselCnt, ss.replace(CommonUtils.getStrValue(tmpltMergeData, "media")));
                                 carouselCnt++;
                             }
                             sendMergeData.put(Const.Ch.RCS, rcsMergeData);
@@ -2741,12 +2739,14 @@ public class SendMessageService {
                         	if (StringUtils.equals(Const.RcsPrd.NARRATIVE, rcsPrdType)) {
                         		sendMergeData.remove(Const.Ch.RCS);
                         		sendMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
+                        	} else if (StringUtils.equals(Const.RcsPrd.NARRATIVE_MEDIUM, rcsPrdType) || StringUtils.equals(Const.RcsPrd.NARRATIVE_TALL, rcsPrdType)) {
+                                rcsMergeData.put("title", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "title")));
+                                rcsMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
+                               	rcsMergeData.put("media", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "media")));
+                               	sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                         	} else {
                                 rcsMergeData.put("title", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "title")));
                                 rcsMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
-                                if (ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "media")) != null && !"".equals(ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "media"))) ) {
-                                	rcsMergeData.put("media", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "media")));
-                                }
                                 sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                         	}
                         }
