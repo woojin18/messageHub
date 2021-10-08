@@ -683,7 +683,7 @@ public class SendMessageController {
                 String productType = Const.MsgProductCode.FRENDTALK_TEXT.getCode();
                 if(StringUtils.equals(requestData.getWideImageYn(), Const.COMM_YES)) {
                     productType = Const.MsgProductCode.FRENDTALK_WIDE.getCode();
-                } else if(requestData.getImage() != null && StringUtils.isNotBlank(requestData.getImage().getImageUrl())) {
+                } else if(requestData.getImage() != null && StringUtils.isNotBlank(requestData.getImage().getImgUrl())) {
                     productType = Const.MsgProductCode.FRENDTALK_IMAGE.getCode();
                 }
                 List<String> productCodes = new ArrayList<String>();
