@@ -37,13 +37,13 @@
 									<div class="consolMarginTop of_h">
 										<span class="float-left mt5" style="width:20%">시작일</span>
 										<div class="float-right" style="width:80%">
-											<Calendar :calendarId="startDate[n-1]" classProps="datepicker inputStyle" :initDate="initStartDate[n-1]"></Calendar>
+											<Calendar @update-date="fnUpdateStartDate" :params="n-1" :calendarId="startDate[n-1]" classProps="datepicker inputStyle" :initDate="initStartDate[n-1]"></Calendar>
 										</div>
 									</div>
 									<div class="consolMarginTop of_h">
 										<span class="float-left mt5" style="width:20%">종료일</span>
 										<div class="float-right" style="width:80%">
-											<Calendar :calendarId="endDate[n-1]" classProps="datepicker inputStyle" :initDate="initEndDate[n-1]"></Calendar>
+											<Calendar @update-date="fnUpdateEndDate" :params="n-1" :calendarId="endDate[n-1]" classProps="datepicker inputStyle" :initDate="initEndDate[n-1]"></Calendar>
 										</div>
 									</div>
 								</td>
@@ -140,8 +140,8 @@ export default {
 			this.$set(vm.contents, n, "");
 			this.$set(vm.btnInputHolder, n, "전화번호 입력");
 		} else if(vm.selectBtn[n]=="mapAction") {
-			this.$set(contents, n, "현재위치 공유");
-			this.$set(btnInputHolder, n, "현재위치 공유");
+			this.$set(vm.contents, n, "현재위치 공유");
+			this.$set(vm.btnInputHolder, n, "현재위치 공유");
 		}
 	  },
 	  // 버튼 삭제
@@ -267,7 +267,7 @@ export default {
         this.calendarTitle = [""];	     
         this.calendarDes = [""];	    
         this.startDate = ["firstStartDate","secondStartDate","thirdStartDate"];
-        this.endDate = ["firstEndDate","secondEndDate","thirdStartDate"];
+        this.endDate = ["firstEndDate","secondEndDate","thirdEndDate"];
         this.initStartDate = [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()];
         this.initEndDate = [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()];
       },
@@ -286,7 +286,17 @@ export default {
 
         vm.$emit('fnAddBtnResult', params);
         vm.fnClose();
-      }
+      },
+
+	  // 날자 세팅
+	  fnUpdateStartDate(date, n) {
+		var vm = this;
+		this.$set(vm.initStartDate, n, date);
+	  },
+	  fnUpdateEndDate(date, n) {
+		var vm = this;
+		this.$set(vm.initEndDate, n, date);
+	  },
   }
 }
 </script>

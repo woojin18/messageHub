@@ -631,17 +631,17 @@
 						ELSE ''
 					END AS friendTalkFileId,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].data.image.imageUrl'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].data.image.imageUrl'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].data.image.imageUrl'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].data.image.imageUrl'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].data.image.imgUrl'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].data.image.imgUrl'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].data.image.imgUrl'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].data.image.imgUrl'
 						ELSE ''
 					END AS friendTalkImgUrl,
 					CASE
-						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].data.image.imageLink'
-						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].data.image.imageLink'
-						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].data.image.imageLink'
-						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].data.image.imageLink'
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[0].data.image.imgLink'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[1].data.image.imgLink'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[2].data.image.imgLink'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'FRIENDTALK' then A.TMPLT_INFO ->> '$[3].data.image.imgLink'
 						ELSE ''
 					END AS friendTalkImageLink,
 					@friendTalkButton0Type :=

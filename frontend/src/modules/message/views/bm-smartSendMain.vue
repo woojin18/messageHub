@@ -44,9 +44,9 @@
                   <p v-if="tmpltData.msgKind == 'A'">[광고]</p>
                   <div class="mt5">
                     <div
-                      v-if="tmpltData.msgType == 'IMAGE' && tmpltData.FRIENDTALK.image && tmpltData.FRIENDTALK.image.imageUrl"
+                      v-if="tmpltData.msgType == 'IMAGE' && tmpltData.FRIENDTALK.image && tmpltData.FRIENDTALK.image.imgUrl"
                       class="phoneText2 text-center simulatorImg"
-                      :style="'padding:65px;background-image: url('+tmpltData.FRIENDTALK.image.imageUrl+');'"
+                      :style="'padding:65px;background-image: url('+tmpltData.FRIENDTALK.image.imgUrl+');'"
                     >
                     </div>
                     <div class="text-sub-wrap">
