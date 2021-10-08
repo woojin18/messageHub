@@ -670,8 +670,8 @@ public class MultiSendTemplateService {
 						}
 						sb.append("	\"image\" : { "); // 이미지
 						if (imgInfo.containsKey("fileId")) {
-							sb.append("	\"imageUrl\" : \"" + CommonUtils.getStrValue(imgInfo, "imgUrl") + "\", "); // 이미지
-							sb.append("	\"imageLink\" : \"" + params.get("friendTalkImageLink") + "\" "); // 이미지
+							sb.append("	\"imgUrl\" : \"" + CommonUtils.getStrValue(imgInfo, "imgUrl") + "\", "); // 이미지
+							sb.append("	\"imgLink\" : \"" + params.get("friendTalkImageLink") + "\" "); // 이미지
 						}
 						sb.append("	}, "); // 이미지
 					}
