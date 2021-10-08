@@ -328,7 +328,7 @@ public class MultiSendTemplateService {
 					if (buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
-						sb.append(",\"buttons\": [{}]");
+						sb.append(",\"buttons\": []");
 					}
 				} else if ((int) params.get("rcsTemplateTable") == 2) {
 					// RCS CELL(STYLE) TYPE
@@ -361,7 +361,7 @@ public class MultiSendTemplateService {
 					if (buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
-						sb.append(",\"buttons\": [{}]");
+						sb.append(",\"buttons\": []");
 					}
 
 				} else if ((int) params.get("rcsTemplateTable") == 3) {
