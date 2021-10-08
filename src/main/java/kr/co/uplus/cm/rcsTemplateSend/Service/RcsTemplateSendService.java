@@ -1360,14 +1360,14 @@ public class RcsTemplateSendService {
 				Map<String, Object> actionMap = new HashMap<String, Object>();
 				Map<String, Object> btnMap = new HashMap<String, Object>();
 				
-				Map<String, Object> dialarActionMap = new HashMap<String, Object>();
+				Map<String, Object> dialerActionMap = new HashMap<String, Object>();
 				Map<String, Object> dialPhoneNumberMap = new HashMap<String, Object>();
 				Map<String, Object> postbackMap = new HashMap<String, Object>();
 				
 				dialPhoneNumberMap.put("phoneNumber", contents.get(i));
-				dialarActionMap.put("dialPhoneNumber", dialPhoneNumberMap);
+				dialerActionMap.put("dialPhoneNumber", dialPhoneNumberMap);
 				postbackMap.put("data", "set_by_chatbot_dial_phone_number");
-				btnMap.put("dialarAction", dialarActionMap);
+				btnMap.put("dialerAction", dialerActionMap);
 				btnMap.put("displayText", btnNm.get(i));
 				btnMap.put("postback", postbackMap);
 				
