@@ -371,6 +371,7 @@ export default {
 		styleInput: [],				// 스타일형 첫 input
 		styleInputSec: [],			// 스타일형 두번째 input
 		styleChk: [true, false],	// 스타일형 lineChk
+		styleContentsCnt: 0,		// 글자 수
 		styleContentText: "변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.<br>예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",	// 스타일형 내용 Text
 		// 버튼 세팅
 		btnCnt: 0,			// 버튼 개수
