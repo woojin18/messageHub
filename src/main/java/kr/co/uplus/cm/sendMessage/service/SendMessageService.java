@@ -1598,9 +1598,9 @@ public class SendMessageService {
             if(requestData.getImage() == null || StringUtils.isBlank(requestData.getImage().getImageUrl())) {
                 errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + "이미지 정보 입력 시 이미지 URL은 필수입니다.";
             }
-            if(requestData.getImage() == null || StringUtils.isBlank(requestData.getImage().getImageLink())) {
-                errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + "이미지 정보 입력 시 이미지 링크는 필수입니다.";
-            }
+//            if(requestData.getImage() == null || StringUtils.isBlank(requestData.getImage().getImageLink())) {
+//                errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + "이미지 정보 입력 시 이미지 링크는 필수입니다.";
+//            }
         }
 
         if(StringUtils.isNotBlank(errorMsg)) {
@@ -3026,5 +3026,3 @@ public class SendMessageService {
 	}
 
 }
-
-

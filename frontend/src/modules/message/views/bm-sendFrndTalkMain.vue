@@ -144,7 +144,7 @@
               <div class="of_h" style="width:80%">
                 <!-- #10478 - 사용자콘솔 내 친구톡 발송(이미지링크) -->
                 <!-- <input type="text" class="inputStyle" style="width:100%" placeholder="http://" v-model="sendData.imgLink" maxlength="200"> -->
-                <input type="text" class="inputStyle" style="width:100%" v-model="sendData.imgLink" maxlength="200">
+                <input type="text" class="inputStyle" style="width:100%" v-model="sendData.imgLink" maxlength="200" placeholder="[http://, https://]를 포함한 URL" :disabled="this.$gfnCommonUtils.isEmpty(sendData.fileId)">
               </div>
             </div>
 
@@ -396,7 +396,7 @@ export default {
         imgUrl: '',
         fileId: '',
         wideImgYn: 'N',
-        imgLink: 'http://',
+        imgLink: '',
         rplcSendType: 'NONE',  //NONE, SMS, LMS, MMS
         cuInputType:'',  //DICT, ADDR, EXCEL
         cuInfo: '',
@@ -532,11 +532,11 @@ export default {
           confirm.fnAlert(this.componentsTitle, '잘못된 이미지 정보입니다.');
           return false;
         }
-        if(!this.sendData.imgLink){
-          confirm.fnAlert(this.componentsTitle, '이미지 파일 선택시 이미지 링크 URL은 필수입니다.');
-          return false;
-        }
-        if(this.$gfnCommonUtils.isUrl(this.sendData.imgLink) == false){
+        // if(!this.sendData.imgLink){
+        //   confirm.fnAlert(this.componentsTitle, '이미지 파일 선택시 이미지 링크 URL은 필수입니다.');
+        //   return false;
+        // }
+        if(!this.$gfnCommonUtils.isEmpty(this.sendData.imgLink) && (this.$gfnCommonUtils.isUrl(this.sendData.imgLink) == false)){
           confirm.fnAlert(this.componentsTitle, '유효하지 않은 이미지 링크 URL 입니다.');
           return false;
         }
