@@ -564,7 +564,7 @@ public class RcsTemplateService {
 					Map<String, Object> postbackMap = new HashMap<String, Object>();
 					
 					requestLocationPushMap.put("requestLocationPush", new HashMap<String, Object>());
-					postbackMap.put("data", "set_by_cahtbot_request_location_push");
+					postbackMap.put("data", "set_by_chatbot_request_location_push");
 					
 					mapActionMap.put("mapAction", requestLocationPushMap);
 					mapActionMap.put("displayText", btnNm.get(i));
