@@ -183,11 +183,11 @@
                       <td v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" class="text-left of_h">
                         <div v-if="buttonInfo.linkType == 'WL'">
                           <h6 class="font-normal float-left" style="width:30%">Mobile</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkMo']" maxlength="200">
+                          <input type="text" class="inputStyle float-right" style="width:68%;padding:0px;" v-model="buttonInfo['linkMo']" maxlength="200"  placeholder="[http://, https://]포함한 URL">
                         </div>
                         <div v-if="buttonInfo.linkType == 'AL'">
                           <h6 class="font-normal float-left" style="width:30%">Android</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkAnd']" maxlength="200">
+                          <input type="text" class="inputStyle float-right" style="width:70%;padding:0px;" v-model="buttonInfo['linkAnd']" maxlength="200" placeholder="[http://, https://]포함한 URL">
                         </div>
                       </td>
                       <td v-else>
@@ -200,11 +200,11 @@
                       <td class="text-left of_h">
                         <div v-if="buttonInfo.linkType == 'WL'">
                           <h6 class="font-normal float-left" style="width:30%">PC</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkPc']" maxlength="200">
+                          <input type="text" class="inputStyle float-right" style="width:68%;padding:0px;" v-model="buttonInfo['linkPc']" maxlength="200" placeholder="[http://, https://]포함한 URL">
                         </div>
                         <div v-if="buttonInfo.linkType == 'AL'">
                           <h6 class="font-normal float-left" style="width:30%">IOS</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkIos']" maxlength="200">
+                          <input type="text" class="inputStyle float-right" style="width:68%;padding:0px;" v-model="buttonInfo['linkIos']" maxlength="200" placeholder="[http://, https://]포함한 URL">
                         </div>
                       </td>
                     </tr>
@@ -426,7 +426,7 @@ export default {
     await this.fnExistApiKey();
     await this.fnValidUseChGrp();
     await this.fnGetSenderKeyList();
-    await this.fnAddButton();
+    // await this.fnAddButton();
   },
   methods: {
     fnRemoveRecvInfo(){
@@ -541,6 +541,47 @@ export default {
           return false;
         }
       }
+      if(this.sendData.buttonList.length > 0){
+        var buttonList = this.sendData.buttonList;
+        var btnLength = buttonList.length;
+        for(var i = 0; i < btnLength; i++){
+          if(this.$gfnCommonUtils.isEmpty(buttonList[i].name)){
+            confirm.fnAlert(this.componentsTitle, '버튼이름을 입력해주세요.');
+            return false;
+          }
+          // 웹링크
+          if(buttonList[i].linkType == "WL") {
+            // 모바일 버튼링크만 있어도 전송 가능 (PC링크만 입력하면 전송 실패)
+            if(this.$gfnCommonUtils.isEmpty(buttonList[i].linkMo)){
+              confirm.fnAlert(this.componentsTitle, '버튼링크를 입력해주세요.');
+              return false;
+            }
+            
+            if(!this.$gfnCommonUtils.isEmpty(buttonList[i].linkMo) && !this.$gfnCommonUtils.isUrl(buttonList[i].linkMo)){
+              confirm.fnAlert(this.componentsTitle, '유효하지 않은 버튼 링크 URL 입니다.\n[http://, https://]를 포함한 URL을 입력해주세요.');
+              return false;
+            }
+
+            if(!this.$gfnCommonUtils.isEmpty(buttonList[i].linkPc) && !this.$gfnCommonUtils.isUrl(buttonList[i].linkPc)){
+              confirm.fnAlert(this.componentsTitle, '유효하지 않은 버튼 링크 URL 입니다.\n[http://, https://]를 포함한 URL을 입력해주세요.');
+              return false;
+            }
+          }
+          // 앱링크
+          if(buttonList[i].linkType == "AL") {
+            if(this.$gfnCommonUtils.isEmpty(buttonList[i].linkAnd) || (this.$gfnCommonUtils.isEmpty(buttonList[i].linkIos))){
+              confirm.fnAlert(this.componentsTitle, '버튼링크를 입력해주세요.');
+              return false;
+            }
+            if(this.$gfnCommonUtils.isUrl(buttonList[i].linkAnd) && this.$gfnCommonUtils.isUrl(buttonList[i].linkIos)) {
+            } else {
+              confirm.fnAlert(this.componentsTitle, '유효하지 않은 버튼 링크 URL 입니다.\n[http://, https://]를 포함한 URL을 입력해주세요.');
+              return false;
+            }
+          }
+        }
+      }
+
       if(testSendYn == 'Y'){
         if(!this.sendData.testRecvInfoLst == null || this.sendData.testRecvInfoLst.length == 0){
           confirm.fnAlert(this.componentsTitle, '테스트 수신자 정보를 입력해주세요.');
