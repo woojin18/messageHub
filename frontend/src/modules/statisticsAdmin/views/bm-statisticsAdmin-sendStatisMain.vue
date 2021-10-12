@@ -2,7 +2,7 @@
 	<div >
 		<article>
 			<div class="contentHeader">
-				<h2>발송일별통계</h2>
+				<h2>통계 > 발송일별통계</h2>
 			</div>
 			<!-- 본문 -->
 			<div class="contentBody">

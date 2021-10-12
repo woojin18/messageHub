@@ -325,10 +325,10 @@ public class MultiSendTemplateService {
 						buttonInfoList = (List<Map<String, Object>>) params.get("rcsDesButtons");
 					}
 
-					if (buttonInfoList.size() > 0) {
+					if (buttonInfoList != null && buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
-						sb.append(",\"buttons\": [{}]");
+						sb.append(",\"buttons\": []");
 					}
 				} else if ((int) params.get("rcsTemplateTable") == 2) {
 					// RCS CELL(STYLE) TYPE
@@ -358,10 +358,10 @@ public class MultiSendTemplateService {
 						buttonInfoList = (List<Map<String, Object>>) params.get("rcsStyleButtons");
 					}
 
-					if (buttonInfoList.size() > 0) {
+					if (buttonInfoList != null && buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
-						sb.append(",\"buttons\": [{}]");
+						sb.append(",\"buttons\": []");
 					}
 
 				} else if ((int) params.get("rcsTemplateTable") == 3) {
@@ -379,7 +379,7 @@ public class MultiSendTemplateService {
 						buttonInfoList = (List<Map<String, Object>>) params.get("rcsSMSButtons");
 					}
 
-					if (buttonInfoList.size() > 0) {
+					if (buttonInfoList != null && buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
 						sb.append(",\"buttons\": [{}]");
@@ -401,7 +401,7 @@ public class MultiSendTemplateService {
 						buttonInfoList = (List<Map<String, Object>>) params.get("rcsLMSButtons");
 					}
 
-					if (buttonInfoList.size() > 0) {
+					if (buttonInfoList != null && buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
 						sb.append(",\"buttons\": [{}]");
@@ -428,7 +428,7 @@ public class MultiSendTemplateService {
 								sb.append("	\"media\" : \"maapfile://" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" "); //
 							}
 						} else {
-							sb.append("	,\"mediaUrl\" : \"{}\", "); //
+							sb.append("	,\"mediaUrl\" : \"\", "); //
 							sb.append("	\"media\" : \"\", "); //
 						}
 					}
@@ -439,7 +439,7 @@ public class MultiSendTemplateService {
 						buttonInfoList = (List<Map<String, Object>>) params.get("rcsShortButtons");
 					}
 
-					if (buttonInfoList.size() > 0) {
+					if (buttonInfoList != null && buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
 						sb.append(",\"buttons\": [{}]");
@@ -465,7 +465,7 @@ public class MultiSendTemplateService {
 								sb.append("	\"media\" : \"maapfile://" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" ");
 							}
 						} else {
-							sb.append("	,\"mediaUrl\" : \"{}\", ");
+							sb.append("	,\"mediaUrl\" : \"\", ");
 							sb.append("	\"media\" : \"\" ");
 						}
 					}
@@ -476,7 +476,7 @@ public class MultiSendTemplateService {
 						buttonInfoList = (List<Map<String, Object>>) params.get("rcsTallButtons");
 					}
 
-					if (buttonInfoList.size() > 0) {
+					if (buttonInfoList != null && buttonInfoList.size() > 0) {
 						sb.append(newButtonAddStr(buttonInfoList));
 					} else {
 						sb.append(",\"buttons\": [{}]");
@@ -520,7 +520,7 @@ public class MultiSendTemplateService {
 							sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(rcsCShortImgInfo, "imgUrl") + "\", ");
 							sb.append("	\"media\" : \"maapfile://" + CommonUtils.getStrValue(rcsCShortImgInfo, "fileId") + "\" ");
 						} else {
-							sb.append("	,\"mediaUrl\" : \"{}\", ");
+							sb.append("	,\"mediaUrl\" : \"\", ");
 							sb.append("	\"media\" : \"\" ");
 						}
 						sb.append("	} ");
@@ -593,7 +593,7 @@ public class MultiSendTemplateService {
 							sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(rcsCTallImgInfo, "imgUrl") + "\", ");
 							sb.append("	\"media\" : \"maapfile://" + CommonUtils.getStrValue(rcsCTallImgInfo, "fileId") + "\" ");
 						} else {
-							sb.append("	,\"mediaUrl\" : \"{}\", ");
+							sb.append("	,\"mediaUrl\" : \"\", ");
 							sb.append("	\"media\" : \"\" ");
 						}
 						sb.append("	} ");
@@ -670,8 +670,8 @@ public class MultiSendTemplateService {
 						}
 						sb.append("	\"image\" : { "); // 이미지
 						if (imgInfo.containsKey("fileId")) {
-							sb.append("	\"imageUrl\" : \"" + CommonUtils.getStrValue(imgInfo, "imgUrl") + "\", "); // 이미지
-							sb.append("	\"imageLink\" : \"" + params.get("friendTalkImageLink") + "\" "); // 이미지
+							sb.append("	\"imgUrl\" : \"" + CommonUtils.getStrValue(imgInfo, "imgUrl") + "\", "); // 이미지
+							sb.append("	\"imgLink\" : \"" + params.get("friendTalkImageLink") + "\" "); // 이미지
 						}
 						sb.append("	}, "); // 이미지
 					}

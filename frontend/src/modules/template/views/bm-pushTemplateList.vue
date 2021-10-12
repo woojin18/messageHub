@@ -2,7 +2,7 @@
   <!-- content -->
   <div class="row row-no-margin">
     <div class="contentHeader">
-      <h2>푸시</h2>
+      <h2>템플릿 > 푸시</h2>
       <!-- <a href="#self" class="btnStyle1 absolute top0 right0" onClick="window.location.reload()" title="푸시 템플릿 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
     </div>
 

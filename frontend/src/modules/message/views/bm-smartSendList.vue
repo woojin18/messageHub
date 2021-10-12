@@ -2,7 +2,7 @@
 
   <div>
     <div class="contentHeader">
-      <h2>스마트발송</h2>
+      <h2>발송 > 스마트</h2>
     </div>
 
     <!-- 본문 -->

@@ -2,7 +2,7 @@
   <div>
 
     <div class="contentHeader">
-      <h2>알림톡</h2>
+      <h2>템플릿 > 알림톡</h2>
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="알림톡 템플릿 관리 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
     </div>
 

@@ -2,7 +2,7 @@
 	<div>
 		<article>
 			<div class="contentHeader">
-				<h2>사용자 목록</h2>
+				<h2>사용자 > 사용자 목록</h2>
 			</div>
 
 			<!-- 검색창 Start -->
@@ -74,11 +74,11 @@
 								<tbody>
 									<tr v-for="(data, index) in items" :key="index">
 										<td class="text-center vertical-middle">{{ totCnt-offset-data.rownum+1 }}</td>
-										<td class="text-center vertical-middle">{{ data.userName }}</td>
+										<td class="text-center vertical-middle">{{ data.userName | unescapeXss }}</td>
 										<td class="text-center vertical-middle">
 											<div v-html="data.projectName" />
 										</td>
-										<td class="text-center lc-1 vertical-middle">{{ data.loginId }}</td>
+										<td class="text-center lc-1 vertical-middle">{{ data.loginId | unescapeXss }}</td>
 										<td class="text-center lc-1 vertical-middle">{{ data.roleName }}</td>
 										<td class="text-center lc-1 vertical-middle">{{ data.approvalStatusName }}</td>
 										<td class="text-center end vertical-middle">
@@ -324,8 +324,8 @@ export default {
 		// 사용자정보 수정
 		fnModifyUserPop(index) {
 			this.modifyLayerRoleCd = this.items[index].roleCd;
-			this.modifyLayerUserId = this.items[index].userId;
-			this.modifyLayerUserName = this.items[index].userName;
+			this.modifyLayerUserId = this.$gfnCommonUtils.unescapeXss(this.items[index].userId);
+			this.modifyLayerUserName = this.$gfnCommonUtils.unescapeXss(this.items[index].userName);
 			this.modifyLayerHpNumber = this.items[index].hpNumber;
 			this.modifyLayerLoginId = this.items[index].loginId;
 			this.modifyApprovalStatus = this.items[index].approvalStatus;

@@ -24,7 +24,7 @@
 
     <article>
       <div class="contentHeader">
-        <h2>프로젝트 목록</h2>
+        <h2>프로젝트 > 프로젝트 목록</h2>
       </div>
 
       <!-- 검색창 -->

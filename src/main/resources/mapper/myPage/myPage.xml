@@ -160,5 +160,6 @@
 		INNER JOIN	cm_console.CM_PROJECT_USER B
 			ON	A.PROJECT_ID = B.PROJECT_ID
 		WHERE	B.USER_ID = #{userId}
+		AND		A.DEL_YN = 'N'
 	</select>
 </mapper>

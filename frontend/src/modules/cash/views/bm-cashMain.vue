@@ -1,7 +1,7 @@
 <template>
   <article>
     <div class="contentHeader mb20">
-      <h2>정산</h2>
+      <h2>정산 > 정산</h2>
     </div>
     <div class="contentBody mb20">
       <ul class="tab_s3">

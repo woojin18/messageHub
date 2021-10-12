@@ -50,16 +50,16 @@
               <div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:20%">재발송 제목</h5>
 								<div style="width:80%" class="float-right">
-									<input id="resendTitle" type="text" class="inputStyle float-left" maxlength="4" placeholder="최대 4글자까지 가능합니다.">
+									<input id="resendTitle" type="text" class="inputStyle float-left" maxlength="4" placeholder="최대 4글자까지 가능합니다. 예: re), 재)" style="width:240px;">
 								</div>
 							</div>
-              <div class="of_h consolMarginTop" v-if="this.payTypeForDIv === 'POST'">
+              <p class="mt10 lc-1 font-size12 color3" style="margin-left:20%">RCS 발송 실패 시 문자로 보낼 때 중복 가능성이 있으면<br>문자 내용 앞에 자동 추가되는 문구입니다.</p>
+              <div class="of_h consolMarginTop" v-show="this.payTypeForDIv === 'POST'">
                 <h5 class="inline-block" style="width:20%">개별빌링 여부</h5>
 								<input :disabled="this.payTypeForDIv =='PRE'" type="radio" name="subbillYn" value="Y" class="cBox" id="subbillYnY" @click="fnCheckSubblillYn()" checked=""> <label for="subbillYnY" class="payment mr30 font-size12">예</label>
 								<input :disabled="this.payTypeForDIv =='PRE'" type="radio" name="subbillYn" value="N" class="cBox" id="subbillYnN" @click="fnCheckSubblillYn()"> <label for="subbillYnN" class="payment font-size12">아니요</label>							
 							</div>
-              <!-- <div class="of_h consolMarginTop" v-if="this.subbillStartDayForDiv === 'Y'"> -->
-              <div class="of_h consolMarginTop" v-if="this.payTypeForDIv === 'POST'">
+              <div class="of_h consolMarginTop" v-show="this.subbillStartDayForDiv === 'Y'">
                 <h5 class="inline-block" style="width:20%">개별빌링 시작일</h5>
 								<Calendar calendarId="subbillStartDay" classProps="datepicker inputStyle maxWidth200"></Calendar>
 							</div>
@@ -115,7 +115,7 @@
 					
 					</div>
 					<div class="text-center mt40">
-						<a @click="fnSave" class="btnStyle3 black font14" activity="SAVE">저장</a>
+						<a @click="fnSave" class="btnStyle3 black font14 mr5" activity="SAVE">저장</a>
             <a @click="fnClose" ref="closeBtn" class="btnStyle3 white font14">닫기</a>						
 					</div>
 				</div>
@@ -137,7 +137,7 @@ export default {
       resultList : [],
       billId : '',
       payTypeForDIv : 'Y',
-      subbillStartDayForDiv : 'Y',
+      subbillStartDayForDiv : 'N',
       moDisable : true,
     }
   },
@@ -164,7 +164,7 @@ export default {
         jQuery('input:radio[name=useYn]:input[value="Y"]').prop("checked", true);
 
         jQuery("#resendTitle").val('');
-        jQuery('input:radio[name=subbillYn]:input[value="Y"]').prop("checked", true);
+        jQuery('input:radio[name=subbillYn]:input[value="N"]').prop("checked", true);
         jQuery("#subbillStartDay").val('');
         this.fnSelectBillIdForApi('PRE');
 
@@ -226,10 +226,12 @@ export default {
       if( payType === 'PRE' ){
         this.moDisable = true;
         jQuery('input:radio[name=subbillYn]:input[value="N"]').prop("checked", true);
+        this.subbillStartDayForDiv = "N";
         jQuery('input:radio[name=radioMo]:input[value="N"]').prop("checked", true);
       } else {
         this.moDisable = false;
-        jQuery('input:radio[name=subbillYn]:input[value="Y"]').prop("checked", true);
+        jQuery('input:radio[name=subbillYn]:input[value="N"]').prop("checked", true);
+        this.subbillStartDayForDiv = "N";
       }
 
     },

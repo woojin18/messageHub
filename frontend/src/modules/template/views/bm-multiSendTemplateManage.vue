@@ -1,7 +1,7 @@
 <template autocomplete="off">
 	<div class="row row-no-margin">
 		<div class="contentHeader">
-			<h2>통합</h2>
+			<h2>템플릿 > 통합발송</h2>
 			<a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="이용안내">이용안내 <i class="fal fa-book-open"></i></a>
 		</div>
 
@@ -1377,7 +1377,7 @@
 													<p class="mt15"><pre>{{rcsCTallImgInfo.rcsContent}}</pre></p>
 												</div>
 											</div>
-											<div v-if="rcsCTallImgInfo.rcsButtons.length > 0">
+											<div v-if="rcsCTallImgInfo.rcsButtons != null">
 												<p v-for="(buttonInfo, idx) in rcsCTallImgInfo.rcsButtons" :key="idx" class="text-center mt10" style="color:#69C8FF">
 													<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
 												</p>

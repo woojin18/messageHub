@@ -1,7 +1,7 @@
 <template>
 <div class="row row-no-margin">
   <div class="contentHeader">
-      <h2>통합</h2>
+      <h2>발송 > 통합</h2>
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="메시지 상세조회 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
   </div>
   <!-- 본문 -->
@@ -80,7 +80,7 @@
     <div class="col-xs-12 consolMarginTop">
       <div class="of_h inline">
         <div class="float-right">
-          <router-link :to="{ path: '/uc/template/multiSendTemplateList' }" tag="a" class="btnStyle2 borderGray"  activity="READ">통합발송 템플릿 관리<i class="fal fa-arrow-to-bottom"></i></router-link>
+          <router-link :to="{ path: '/uc/template/multiSendTemplateList' }" tag="a" class="btnStyle2 borderGray"  activity="READ">통합발송 템플릿 관리</router-link>
           <a @click="fnMoveSmartSend()" class="btnStyle2 backBlack ml10" title="통합 메시지 발송" activity="READ">통합 메시지 발송</a>
         </div>
       </div>
