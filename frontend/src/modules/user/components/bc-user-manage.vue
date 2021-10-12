@@ -2,7 +2,7 @@
 	<div>
 		<article>
 			<div class="contentHeader">
-				<h2>사용자 목록</h2>
+				<h2>사용자 > 사용자 목록</h2>
 			</div>
 
 			<!-- 검색창 Start -->

@@ -2,7 +2,7 @@
 	<div>
 		<article>
 			<div class="contentHeader mb20">
-				<h2>수신자 관리</h2>
+				<h2>주소록 > 수신자 관리</h2>
 			</div>
 			<div class="row">
 				<div class="col-xs-12">

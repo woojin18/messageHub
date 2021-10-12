@@ -2,7 +2,7 @@
 	<div>
 		<article>
 			<div class="contentHeader">
-				<h2>주소록</h2>
+				<h2>주소록 > 주소록</h2>
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
