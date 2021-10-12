@@ -167,6 +167,38 @@
             </div>
           </div>
         </div>
+        <!-- <hr>
+        <div class="of_h user-phone">
+          <div style="width:24%" class="float-left">
+            <h4>발송제한 금액</h4>
+          </div>
+          <div style="width:76%" class="float-left">
+            <div class="of_h consolMarginTop">
+              <div style="width:30%" class="float-left">
+                <h5 style="margin: 5px 0;">API KEY명(API KEY)</h5>
+              </div>
+              <div class="of_h" style="width:70%;">
+                <p style="font-size: 14px; margin-top: 3px;">test api (2343w23434334)</p>
+              </div>
+            </div>
+            <div class="of_h">
+              <div style="width:30%" class="float-left">
+                <h5 style="margin: 5px 0;">일 발송금액 / 일 발송제한금액</h5>
+              </div>
+              <div class="of_h" style="width:70%;">
+                <p style="font-size: 14px; margin-top: 3px;">542.12원 / 100,000원</p>
+              </div>
+            </div>
+            <div class="of_h">
+              <div style="width:30%" class="float-left">
+                <h5 style="margin: 5px 0;">월 발송금액 / 월 발송제한금액</h5>
+              </div>
+              <div class="of_h" style="width:70%;">
+                <p style="font-size: 14px; margin-top: 3px;">5,856,251.85원 / 없음</p>
+              </div>
+            </div>
+          </div>
+        </div> -->
         <div class="mt20 float-right">
           <a @click="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송" activity="SAVE">테스트 발송</a>
           <a @click="fnSendSmsMessage('N')" class="btnStyle2 backRed float-left ml10" title="발송" activity="SAVE">발송</a>
