@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="contentHeader">
-      <h2>푸시 발송</h2>
+      <h2>발송 > 푸시</h2>
     </div>
 
     <!-- 본문 -->

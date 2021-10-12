@@ -1,7 +1,7 @@
 <template>
 <div class="row row-no-margin">
   <div class="contentHeader">
-      <h2 class="inline-block mr10">웹 발송</h2><span>발송 실패 내용은 '발송실패확인' 버튼을 누르면 확인하실 수 있습니다.</span>
+      <h2 class="inline-block mr10">조회 > 웹 발송</h2><span>발송 실패 내용은 '발송실패확인' 버튼을 누르면 확인하실 수 있습니다.</span>
   </div>
   <!-- 본문 -->
   <div class="row">
