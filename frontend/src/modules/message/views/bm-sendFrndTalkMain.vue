@@ -157,9 +157,9 @@
                 <a @click="fnAddButton" class="btnStyle1 backBlack">추가 +</a>
               </div>
               <div  class="of_h consolMarginTop">
-                <table class="table_skin1">
+                <table class="table_skin1" style="border-top: 1px solid #D5D5D5; border-bottom: 1px solid #D5D5D5;">
                   <colgroup>
-                    <col style="width:20%">
+                    <col style="width:21%">
                     <col style="width:17%">
                     <col style="width:*%">
                     <col style="width:15%">
@@ -185,29 +185,29 @@
                       </td>
                       <td v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" class="text-left of_h">
                         <div v-if="buttonInfo.linkType == 'WL'">
-                          <h6 class="font-normal float-left" style="width:28%">Mobile</h6>
-                          <input type="text" class="inputStyle float-right" style="width:70%;" v-model="buttonInfo['linkMo']" maxlength="200"  placeholder="[http://, https://]포함한 URL">
+                          <h6 class="font-normal float-left" style="width:20%">Mobile</h6>
+                          <input type="text" class="inputStyle float-right" style="width:78%;" v-model="buttonInfo['linkMo']" maxlength="200"  placeholder="[http://, https://]포함한 URL">
                         </div>
                         <div v-if="buttonInfo.linkType == 'AL'">
-                          <h6 class="font-normal float-left" style="width:28%">Android</h6>
-                          <input type="text" class="inputStyle float-right" style="width:70%;" v-model="buttonInfo['linkAnd']" maxlength="200" placeholder="[http://, https://]포함한 URL">
+                          <h6 class="font-normal float-left" style="width:20%">Android</h6>
+                          <input type="text" class="inputStyle float-right" style="width:78%;" v-model="buttonInfo['linkAnd']" maxlength="200" placeholder="[http://, https://]포함한 URL">
                         </div>
                       </td>
                       <td v-else>
                       </td>
                       <td class="text-center end" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
-                        <a @click="fnDelButton(idx)" class="btnStyle1 backLightGray">삭제</a>
+                        <a @click="fnDelButton(idx)" class="btnStyle1 backLightGray" style="padding:0px 15px;">삭제</a>
                       </td>
                     </tr>
                     <tr v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" :key="idx+'_sub'">
                       <td class="text-left of_h">
                         <div v-if="buttonInfo.linkType == 'WL'">
-                          <h6 class="font-normal float-left" style="width:28%">PC</h6>
-                          <input type="text" class="inputStyle float-right" style="width:70%;" v-model="buttonInfo['linkPc']" maxlength="200" placeholder="[http://, https://]포함한 URL">
+                          <h6 class="font-normal float-left" style="width:20%">PC</h6>
+                          <input type="text" class="inputStyle float-right" style="width:78%;" v-model="buttonInfo['linkPc']" maxlength="200" placeholder="[http://, https://]포함한 URL">
                         </div>
                         <div v-if="buttonInfo.linkType == 'AL'">
-                          <h6 class="font-normal float-left" style="width:28%">IOS</h6>
-                          <input type="text" class="inputStyle float-right" style="width:70%;" v-model="buttonInfo['linkIos']" maxlength="200" placeholder="[http://, https://]포함한 URL">
+                          <h6 class="font-normal float-left" style="width:20%">IOS</h6>
+                          <input type="text" class="inputStyle float-right" style="width:78%;" v-model="buttonInfo['linkIos']" maxlength="200" placeholder="[http://, https://]포함한 URL">
                         </div>
                       </td>
                     </tr>
