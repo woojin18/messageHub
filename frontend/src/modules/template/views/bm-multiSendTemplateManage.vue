@@ -1377,7 +1377,7 @@
 													<p class="mt15"><pre>{{rcsCTallImgInfo.rcsContent}}</pre></p>
 												</div>
 											</div>
-											<div v-if="rcsCTallImgInfo.rcsButtons.length > 0">
+											<div v-if="rcsCTallImgInfo.rcsButtons != null">
 												<p v-for="(buttonInfo, idx) in rcsCTallImgInfo.rcsButtons" :key="idx" class="text-center mt10" style="color:#69C8FF">
 													<a v-if="!$gfnCommonUtils.isEmpty(buttonInfo.action.displayText)">{{buttonInfo.action.displayText}}</a>
 												</p>

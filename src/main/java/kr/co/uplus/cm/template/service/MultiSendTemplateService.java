@@ -428,7 +428,7 @@ public class MultiSendTemplateService {
 								sb.append("	\"media\" : \"maapfile://" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" "); //
 							}
 						} else {
-							sb.append("	,\"mediaUrl\" : \"{}\", "); //
+							sb.append("	,\"mediaUrl\" : \"\", "); //
 							sb.append("	\"media\" : \"\", "); //
 						}
 					}
@@ -465,7 +465,7 @@ public class MultiSendTemplateService {
 								sb.append("	\"media\" : \"maapfile://" + CommonUtils.getStrValue(imgInfo, "fileId") + "\" ");
 							}
 						} else {
-							sb.append("	,\"mediaUrl\" : \"{}\", ");
+							sb.append("	,\"mediaUrl\" : \"\", ");
 							sb.append("	\"media\" : \"\" ");
 						}
 					}
@@ -520,7 +520,7 @@ public class MultiSendTemplateService {
 							sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(rcsCShortImgInfo, "imgUrl") + "\", ");
 							sb.append("	\"media\" : \"maapfile://" + CommonUtils.getStrValue(rcsCShortImgInfo, "fileId") + "\" ");
 						} else {
-							sb.append("	,\"mediaUrl\" : \"{}\", ");
+							sb.append("	,\"mediaUrl\" : \"\", ");
 							sb.append("	\"media\" : \"\" ");
 						}
 						sb.append("	} ");
@@ -593,7 +593,7 @@ public class MultiSendTemplateService {
 							sb.append("	,\"mediaUrl\" : \"" + CommonUtils.getStrValue(rcsCTallImgInfo, "imgUrl") + "\", ");
 							sb.append("	\"media\" : \"maapfile://" + CommonUtils.getStrValue(rcsCTallImgInfo, "fileId") + "\" ");
 						} else {
-							sb.append("	,\"mediaUrl\" : \"{}\", ");
+							sb.append("	,\"mediaUrl\" : \"\", ");
 							sb.append("	\"media\" : \"\" ");
 						}
 						sb.append("	} ");
