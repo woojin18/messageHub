@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="contentHeader">
-      <h2>SMS</h2>
+      <h2>발송 > SMS</h2>
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="SMS 발송 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
     </div>
     <!-- 본문 -->
@@ -292,7 +292,16 @@ export default {
           if(this.$gfnCommonUtils.isEmpty(sheetName) == false){
             excelArray = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
           }
-          this.recvCnt = (excelArray && excelArray.length > 0) ? excelArray.length-1 : 0;
+
+          let recvArr = [];
+
+          for(var i=0; i<excelArray.length; i++) {
+            if(i!=(excelArray.length-1)) recvArr[i] = excelArray[i+1].Template;
+          }
+
+          recvArr = new Set(recvArr);
+
+          this.recvCnt = recvArr.size;
         };
         reader.readAsBinaryString(file);
       } else {

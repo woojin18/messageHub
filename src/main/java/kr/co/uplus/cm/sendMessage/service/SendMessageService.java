@@ -239,6 +239,14 @@ public class SendMessageService {
                 } else {
                     excelList = commonService.getExcelDataList(excelFile, excelHeader, colKeys);
                 }
+                
+                // excel업로드 중복 데이터 제거 (전화번호, 앱ID가 중복인 경우 해당 번호의 중복 데이터를 지움)
+                if(params.containsKey("requiredCuid") && (Boolean) params.get("requiredCuid")) {
+                    excelList = CommonUtils.distinctArray(excelList, "cuid");
+                }
+                if(params.containsKey("requiredCuPhone") && (Boolean) params.get("requiredCuPhone")) {
+                    excelList = CommonUtils.distinctArray(excelList, "phone");
+                }
 
                 RecvInfo recvInfo = null;
                 Map<String, Object> mergeData = null;
@@ -264,6 +272,7 @@ public class SendMessageService {
                     recvInfo.setMergeData(mergeData);
                     recvInfoLst.add(recvInfo);
                 }
+                
 
             //전체발송
             } else if(StringUtils.equals("ALL", (String)params.get("cuInputType"))) {
@@ -1533,8 +1542,8 @@ public class SendMessageService {
         requestData.setFileId(CommonUtils.getStrValue(params, "fileId"));
         requestData.setWideImageYn(CommonUtils.getStrValue(params, "wideImgYn"));
         if(StringUtils.isNotBlank(requestData.getFileId())) {
-            requestData.getImage().setImageUrl(CommonUtils.getStrValue(params, "imgUrl"));
-            requestData.getImage().setImageLink(CommonUtils.getStrValue(params, "imgLink"));
+            requestData.getImage().setImgUrl(CommonUtils.getStrValue(params, "imgUrl"));
+            requestData.getImage().setImgLink(CommonUtils.getStrValue(params, "imgLink"));
         }
 
         //버튼정보
@@ -1595,7 +1604,7 @@ public class SendMessageService {
 
         //연관유효성 체크
         if(StringUtils.isNotBlank(requestData.getFileId())) {
-            if(requestData.getImage() == null || StringUtils.isBlank(requestData.getImage().getImageUrl())) {
+            if(requestData.getImage() == null || StringUtils.isBlank(requestData.getImage().getImgUrl())) {
                 errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + "이미지 정보 입력 시 이미지 URL은 필수입니다.";
             }
 //            if(requestData.getImage() == null || StringUtils.isBlank(requestData.getImage().getImageLink())) {
