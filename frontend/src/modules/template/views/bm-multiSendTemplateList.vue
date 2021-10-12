@@ -1,7 +1,7 @@
 <template>
 	<div class="row row-no-margin">
 		<div class="contentHeader">
-			<h2>통합</h2>
+			<h2>통합발송</h2>
 			<!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="메시지 상세조회 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
 		</div>
 		<!-- 본문 -->
@@ -88,8 +88,8 @@
 			<div class="col-xs-12 consolMarginTop">
 				<div class="of_h inline">
 					<div class="float-right">
-						<router-link :to="{ name: 'multiSendTemplateManage' }" tag="a" class="btnStyle2 backBlack"  activity="SAVE">템플릿 등록<i class="fal fa-arrow-to-bottom"></i></router-link>
-						<a @click="fnDelete" class="btnStyle2 borderGray ml10" title="삭제" activity="SAVE">삭제 <i class="fal fa-arrow-to-bottom"></i></a>
+						<router-link :to="{ name: 'multiSendTemplateManage' }" tag="a" class="btnStyle2 backBlack"  activity="SAVE">템플릿 등록</router-link>
+						<a @click="fnDelete" class="btnStyle2 borderGray ml10" title="삭제" activity="SAVE">삭제</a>
 						<a @click="fnExcelDownLoad" class="btnStyle2 borderGray ml10" title="엑셀 다운로드" activity="READ">엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
 					</div>
 				</div>
