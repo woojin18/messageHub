@@ -153,7 +153,6 @@
                 <h5 class="inline-block mr10">버튼</h5>
               </div>
               <div class="of_h" style="width:80%">
-                
                 <a @click="fnAddButton" class="btnStyle1 backBlack">추가 +</a>
               </div>
               <div  class="of_h consolMarginTop">
@@ -462,7 +461,7 @@ export default {
           }
 
           recvArr = new Set(recvArr);
-
+          this.sendData.excelLimitRow = (excelArray.length-1);
           this.recvCnt = recvArr.size;
         };
         reader.readAsBinaryString(file);
@@ -680,7 +679,6 @@ export default {
       let fd = new FormData();
       if(this.sendData.cuInputType == 'EXCEL'){
         fd.append('file', this.tempFile[0]);
-        params.excelLimitRow = this.recvCnt;
         this.$refs.excelFile.value = '';
         this.tempFile = [];
       }

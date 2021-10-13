@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -233,7 +234,7 @@ public class SendMessageService {
                         log.error("{}.getRecvInfoLst get excelLimitRow Exception : {}", this.getClass(), e);
                     }
                 }
-
+                
                 if(limitRow > 0) {
                     excelList = commonService.getExcelDataList(excelFile, excelHeader, limitRow+excelHeader, colKeys);
                 } else {
@@ -241,11 +242,40 @@ public class SendMessageService {
                 }
                 
                 // excel업로드 중복 데이터 제거 (전화번호, 앱ID가 중복인 경우 해당 번호의 중복 데이터를 지움)
-                if(params.containsKey("requiredCuid") && (Boolean) params.get("requiredCuid")) {
-                    excelList = CommonUtils.distinctArray(excelList, "cuid");
-                }
-                if(params.containsKey("requiredCuPhone") && (Boolean) params.get("requiredCuPhone")) {
-                    excelList = CommonUtils.distinctArray(excelList, "phone");
+                // 전화번호, 앱 아이디가 전부 들어가는경우만 case 처리
+                if(params.containsKey("requiredCuid") && (Boolean) params.get("requiredCuid")
+                	&& params.containsKey("requiredCuPhone") && (Boolean) params.get("requiredCuPhone")) {
+                	
+                	// tempList -> 중복 키가 들어가는 list 생성
+                	// resultTemplist -> 중복 데이터 제거된 실제 excel 데이터
+                	List<Map<String, Object>> tempList = new ArrayList<Map<String, Object>>();
+                	List<Map<String, Object>> resultTemplist = new ArrayList<Map<String, Object>>();
+                	for(Map<String, Object> map : excelList) {
+                		Map<String, Object> tempMap = new HashMap<String, Object>();
+                		tempMap.put("cuid", map.get("cuid"));
+                		tempMap.put("phone", map.get("phone"));
+                		tempList.add(tempMap);
+                	}
+                	Set<Map<String, Object>> excelSet = new HashSet<>(tempList);
+                	List<Map<String, Object>> overlapList = new ArrayList<Map<String, Object>>(excelSet);
+            		for(Map<String, Object> overlapMap : overlapList) {
+                    	for(Map<String, Object> map : excelList) {
+                    		if(CommonUtils.getString(overlapMap.get("cuid")).equals(CommonUtils.getString(map.get("cuid")))
+                    			&& CommonUtils.getString(overlapMap.get("phone")).equals(CommonUtils.getString(map.get("phone")))) {
+                    			resultTemplist.add(map);
+                    			break;
+                    		}
+                    	}
+            		}
+                	excelList.clear();
+                	excelList = resultTemplist;
+                } else {
+                	if(params.containsKey("requiredCuid") && (Boolean) params.get("requiredCuid")) {
+                        excelList = CommonUtils.distinctArray(excelList, "cuid");
+                    }
+                    if(params.containsKey("requiredCuPhone") && (Boolean) params.get("requiredCuPhone")) {
+                        excelList = CommonUtils.distinctArray(excelList, "phone");
+                    }
                 }
 
                 RecvInfo recvInfo = null;
@@ -524,7 +554,7 @@ public class SendMessageService {
             Date rsrvDate = dateFormat.parse(rsrvDateStr);
             Date currentDate = new Date();
 
-            currentDate = DateUtils.addMinutes(currentDate, 10);
+            currentDate = DateUtils.addMinutes(currentDate, 9);
             if(currentDate.compareTo(rsrvDate) > 0) {
                 rtn.setSuccess(false);
                 rtn.setMessage("잘못된 예약시간입니다. 현재시간 10분 이후로 설정해주세요.");
@@ -2746,8 +2776,8 @@ public class SendMessageService {
                             sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                         } else {
                         	if (StringUtils.equals(Const.RcsPrd.NARRATIVE, rcsPrdType)) {
-                        		sendMergeData.remove(Const.Ch.RCS);
-                        		sendMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
+                        		rcsMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
+                        		sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                         	} else if (StringUtils.equals(Const.RcsPrd.NARRATIVE_MEDIUM, rcsPrdType) || StringUtils.equals(Const.RcsPrd.NARRATIVE_TALL, rcsPrdType)) {
                                 rcsMergeData.put("title", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "title")));
                                 rcsMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
