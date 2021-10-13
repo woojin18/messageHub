@@ -943,7 +943,7 @@ public class CommonService {
             smsMap.put("ch", "SMS");
 
             smsMap.put("contents", "인증번호는 ["+params.get("certifyNumb")+"] 입니다.");
-            smsMap.put("callback", "07052227696");
+            smsMap.put("callback", ApiConfig.API_WATCH_CALLBACK);
 
             sendChLst.add(smsMap);
 
