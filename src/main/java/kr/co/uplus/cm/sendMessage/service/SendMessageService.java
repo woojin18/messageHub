@@ -2746,8 +2746,8 @@ public class SendMessageService {
                             sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                         } else {
                         	if (StringUtils.equals(Const.RcsPrd.NARRATIVE, rcsPrdType)) {
-                        		sendMergeData.remove(Const.Ch.RCS);
-                        		sendMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
+                        		rcsMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
+                        		sendMergeData.put(Const.Ch.RCS, rcsMergeData);
                         	} else if (StringUtils.equals(Const.RcsPrd.NARRATIVE_MEDIUM, rcsPrdType) || StringUtils.equals(Const.RcsPrd.NARRATIVE_TALL, rcsPrdType)) {
                                 rcsMergeData.put("title", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "title")));
                                 rcsMergeData.put("description", ss.replace(CommonUtils.getStrValue(tmpltMergeDataList.get(0), "description")));
