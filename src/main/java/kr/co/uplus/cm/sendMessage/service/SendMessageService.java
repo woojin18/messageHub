@@ -524,7 +524,7 @@ public class SendMessageService {
             Date rsrvDate = dateFormat.parse(rsrvDateStr);
             Date currentDate = new Date();
 
-            currentDate = DateUtils.addMinutes(currentDate, 10);
+            currentDate = DateUtils.addMinutes(currentDate, 9);
             if(currentDate.compareTo(rsrvDate) > 0) {
                 rtn.setSuccess(false);
                 rtn.setMessage("잘못된 예약시간입니다. 현재시간 10분 이후로 설정해주세요.");
