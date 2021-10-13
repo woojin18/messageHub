@@ -4658,11 +4658,6 @@ export default {
 			} else {
 				// 메시지 타입 이미지 선택 시, 카카오톡 상품 친구톡 클릭
 				jQuery('input:radio[name=kakao]:input[value="friend"]').click();
-				if (this.kakaoTemplateTable == 0) {
-					if (this.isEmpty(this.rowData.friendTalkImageLink) || this.rowData.friendTalkImageLink == 'https://') {
-						this.rowData.friendTalkImageLink = 'https://';
-					}
-				}
 			}
 		},
 		fnCallbackRcvblcNum(rcvblcNum){
