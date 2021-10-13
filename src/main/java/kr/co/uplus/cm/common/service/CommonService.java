@@ -83,8 +83,6 @@ public class CommonService {
 
     @Value("${console.domain.baseUrl}") String baseUrl;
 
-    @Value("${send.noti.mail}") String mailHost;
-
     /**
      * 엑셀파일에서 엑셀데이터 가져오기
      *
@@ -904,11 +902,8 @@ public class CommonService {
     public void sendNoti(String type, Map<String,Object> params) throws Exception {
         Map<String, Object> rtn = new HashMap<String, Object>();
 
-        String noticeApiKey = "NAP13izIa1";
-        String notiCode = "NTI1f4pDIj";
-
         LinkedHashMap<String, Object> apiMap = new LinkedHashMap<String, Object>();
-        apiMap.put("notiCode", notiCode);
+        apiMap.put("notiCode", ApiConfig.API_NOTI_CODE);
 
         ArrayList<Map<String, Object>> recvInfoLst = new ArrayList<Map<String,Object>>();
 
@@ -927,7 +922,7 @@ public class CommonService {
             String contents = this.setContents(params);
             mailMap.put("title", "U+메시지 허브 인증");
             mailMap.put("contents", contents);
-            mailMap.put("fromEmail", this.mailHost);
+            mailMap.put("fromEmail", ApiConfig.MAIL_ADDRESS);
 
 //          emailCh.add(mailMap);
 
@@ -957,7 +952,7 @@ public class CommonService {
         }
 
         Map<String, Object> headerMap = new HashMap<String, Object>();
-        headerMap.put("X-API-KEY", noticeApiKey);
+        headerMap.put("X-API-KEY", ApiConfig.API_WATCH_NOTI_KEY);
 
         log.info("{}.sendNoti api request ==>> header : {}, body : {}", this.getClass(), headerMap, apiMap);
         Map<String, Object> result = apiInterface.etcPost(ApiConfig.NOTI_SERVER_DOMAIN+"/noti/v1/msg", apiMap, headerMap);
