@@ -406,7 +406,7 @@ export default {
           }
 
           recvArr = new Set(recvArr);
-
+          this.sendData.excelLimitRow = (excelArray.length-1);
           this.recvCnt = recvArr.size;
         };
         reader.readAsBinaryString(file);
@@ -543,7 +543,6 @@ export default {
       let fd = new FormData();
       if(this.sendData.cuInputType == 'EXCEL'){
         fd.append('file', this.tempFile[0]);
-        params.excelLimitRow = this.recvCnt;
         this.$refs.excelFile.value = '';
         this.tempFile = [];
       }

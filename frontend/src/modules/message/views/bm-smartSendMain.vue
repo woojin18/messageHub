@@ -681,9 +681,27 @@ export default {
             sheetName = workbook.SheetNames[0];
           }
           if(this.$gfnCommonUtils.isEmpty(sheetName) == false){
-            excelArray = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+            excelArray = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {header : 1});
           }
-          this.recvCnt = (excelArray && excelArray.length > 0) ? excelArray.length-1 : 0;
+
+          let requiredCuid = this.sendData.requiredCuid;
+          let requiredCuPhone = this.sendData.requiredCuPhone;
+          let recvArr = [];
+
+          // 엑셀 구조에 따라 배열의 2번째 값부터 실 data이므로 해당 데이터부터 for문 처리
+          // PUSH && etc 인 경우 Cuid, Phone 을 합쳐서 하나의 배열로 처리
+          for(var i=2; i<excelArray.length; i++) {
+            if(requiredCuid && requiredCuPhone) {
+              recvArr.push(excelArray[i][0] + excelArray[i][1]);
+            } else {
+              recvArr.push(excelArray[i][0]);
+            }
+          }
+
+			    recvArr = new Set(recvArr);
+
+          this.recvCnt = recvArr.size;
+          this.sendData.excelLimitRow = (excelArray.length-2);
         };
         reader.readAsBinaryString(file);
       } else {
@@ -833,7 +851,6 @@ export default {
       let fd = new FormData();
       if(this.sendData.cuInputType == 'EXCEL'){
         fd.append('file', this.tempFile[0]);
-        params.excelLimitRow = this.recvCnt;
         this.$refs.excelFile.value = '';
         this.tempFile = [];
       }
