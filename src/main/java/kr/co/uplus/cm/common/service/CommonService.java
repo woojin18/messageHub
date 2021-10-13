@@ -952,7 +952,7 @@ public class CommonService {
         }
 
         Map<String, Object> headerMap = new HashMap<String, Object>();
-        headerMap.put("X-API-KEY", ApiConfig.API_NOTI_API_KEY);
+        headerMap.put("X-API-KEY", ApiConfig.API_WATCH_NOTI_KEY);
 
         log.info("{}.sendNoti api request ==>> header : {}, body : {}", this.getClass(), headerMap, apiMap);
         Map<String, Object> result = apiInterface.etcPost(ApiConfig.NOTI_SERVER_DOMAIN+"/noti/v1/msg", apiMap, headerMap);
