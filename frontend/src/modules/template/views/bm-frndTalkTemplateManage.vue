@@ -93,12 +93,12 @@
         </div>
         <div v-if="!$gfnCommonUtils.isEmpty(tmpltData.imgUrl)" class="of_h user-phone">
           <div class="float-left" style="width:27%">
-            <h4>이미지 링크 *</h4>
+            <h4>이미지 링크</h4>
           </div>
           <div class="float-left" style="width:73%">
             <!-- #10478 - 사용자콘솔 내 친구톡 발송(이미지링크) -->
             <!-- <input type="text" class="inputStyle float-right" title="이미지 링크 입력란" placeholder="http://" v-model="tmpltData.imgLink" maxlength="200"> -->
-            <input type="text" class="inputStyle float-right" title="이미지 링크 입력란" v-model="tmpltData.imgLink" maxlength="200">
+            <input type="text" class="inputStyle float-right" title="이미지 링크 입력란" v-model="tmpltData.imgLink" maxlength="200" placeholder="[http://, https://]를 포함한 URL">
           </div>
         </div>
         <div class="of_h user-phone consolMarginTop">
@@ -108,7 +108,7 @@
           </div>
           <div class="float-left" style="width:73%">
             <div class="of_h">
-              <table class="table_skin1" style="width:100%">
+              <table class="table_skin1" style="border-top: 1px solid #D5D5D5; border-bottom: 1px solid #D5D5D5;">
                 <colgroup>
                   <col style="width:20%">
                   <col style="width:20%">
@@ -136,12 +136,12 @@
                       </td>
                       <td v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" class="text-left of_h">
                         <div v-if="buttonInfo.linkType == 'WL'">
-                          <h6 class="font-normal float-left" style="width:30%">Mobile</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkMo']" maxlength="200">
+                          <h6 class="font-normal float-left" style="width:20%">Mobile</h6>
+                          <input type="text" class="inputStyle float-right" style="width:78%" v-model="buttonInfo['linkMo']" maxlength="200"  placeholder="[http://, https://]포함한 URL">
                         </div>
                         <div v-if="buttonInfo.linkType == 'AL'">
-                          <h6 class="font-normal float-left" style="width:30%">Android</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkAnd']" maxlength="200">
+                          <h6 class="font-normal float-left" style="width:20%">Android</h6>
+                          <input type="text" class="inputStyle float-right" style="width:78%" v-model="buttonInfo['linkAnd']" maxlength="200"  placeholder="[http://, https://]포함한 URL">
                         </div>
                       </td>
                       <td v-else>
@@ -153,12 +153,12 @@
                     <tr v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" :key="idx+'_sub'">
                       <td class="text-left of_h">
                         <div v-if="buttonInfo.linkType == 'WL'">
-                          <h6 class="font-normal float-left" style="width:30%">PC</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkPc']" maxlength="200">
+                          <h6 class="font-normal float-left" style="width:20%">PC</h6>
+                          <input type="text" class="inputStyle float-right" style="width:78%" v-model="buttonInfo['linkPc']" maxlength="200"  placeholder="[http://, https://]포함한 URL">
                         </div>
                         <div v-if="buttonInfo.linkType == 'AL'">
-                          <h6 class="font-normal float-left" style="width:30%">IOS</h6>
-                          <input type="text" class="inputStyle float-right" style="width:68%" v-model="buttonInfo['linkIos']" maxlength="200">
+                          <h6 class="font-normal float-left" style="width:20%">IOS</h6>
+                          <input type="text" class="inputStyle float-right" style="width:78%" v-model="buttonInfo['linkIos']" maxlength="200"  placeholder="[http://, https://]포함한 URL">
                         </div>
                       </td>
                     </tr>
@@ -224,7 +224,7 @@ export default {
         {linkType:'BK', name:'봇 키워드'},
         {linkType:'MD', name:'메시지전달'}
       ],
-      tmpltData : {imgUrl:'', imgLink: 'http://', buttonList:[]}
+      tmpltData : {imgUrl:'', imgLink: '', buttonList:[]}
     }
   },
   async mounted() {
@@ -332,10 +332,10 @@ export default {
         confirm.fnAlert(this.componentsTitle, '이미지 정보가 잘못되었습니다. 다시 이미지를 선택해주세요.');
         return false;
       }
-      if(this.tmpltData.imgUrl && !this.tmpltData.imgLink){
-        confirm.fnAlert(this.componentsTitle, '이미지 입력시 이미지 링크 URL은 필수입니다.');
-        return false;
-      }
+      // if(this.tmpltData.imgUrl && !this.tmpltData.imgLink){
+      //   confirm.fnAlert(this.componentsTitle, '이미지 입력시 이미지 링크 URL은 필수입니다.');
+      //   return false;
+      // }
       if(this.tmpltData.imgUrl && this.tmpltData.imgLink && !this.$gfnCommonUtils.isUrl(this.tmpltData.imgLink)){
         confirm.fnAlert(this.componentsTitle, '유효하지 않은 이미지 링크 URL 입니다.');
         return false;
@@ -358,8 +358,18 @@ export default {
           buttonValid = false;
           return false;
         }
+        if(buttonInfo.linkType == 'WL' && !vm.$gfnCommonUtils.isEmpty(buttonInfo['linkMo']) && !vm.$gfnCommonUtils.isUrl(buttonInfo['linkMo'])){
+          confirm.fnAlert(vm.componentsTitle, '유효하지 않은 Mobile 버튼링크 입니다.');
+          buttonValid = false;
+          return false;
+        }
         if(buttonInfo.linkType == 'WL' && vm.$gfnCommonUtils.isEmpty(buttonInfo['linkPc'])){
           confirm.fnAlert(vm.componentsTitle, 'PC 버튼링크를 입력해주세요.');
+          buttonValid = false;
+          return false;
+        }
+        if(buttonInfo.linkType == 'WL' && !vm.$gfnCommonUtils.isEmpty(buttonInfo['linkPc']) && !vm.$gfnCommonUtils.isUrl(buttonInfo['linkPc'])){
+          confirm.fnAlert(vm.componentsTitle, '유효하지 않은 PC 버튼링크 입니다.');
           buttonValid = false;
           return false;
         }
@@ -368,8 +378,18 @@ export default {
           buttonValid = false;
           return false;
         }
+        if(buttonInfo.linkType == 'AL' && !vm.$gfnCommonUtils.isEmpty(buttonInfo['linkAnd']) && !vm.$gfnCommonUtils.isUrl(buttonInfo['linkAnd'])){
+          confirm.fnAlert(vm.componentsTitle, '유효하지 않은 Android 버튼링크 입니다.');
+          buttonValid = false;
+          return false;
+        }
         if(buttonInfo.linkType == 'AL' && vm.$gfnCommonUtils.isEmpty(buttonInfo['linkIos'])){
           confirm.fnAlert(vm.componentsTitle, 'IOS 버튼링크를 입력해주세요.');
+          buttonValid = false;
+          return false;
+        }
+        if(buttonInfo.linkType == 'AL' && !vm.$gfnCommonUtils.isEmpty(buttonInfo['linkIos']) && !vm.$gfnCommonUtils.isUrl(buttonInfo['linkIos'])){
+          confirm.fnAlert(vm.componentsTitle, '유효하지 않은 IOS 버튼링크 입니다.');
           buttonValid = false;
           return false;
         }

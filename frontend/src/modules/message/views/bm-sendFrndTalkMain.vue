@@ -153,7 +153,6 @@
                 <h5 class="inline-block mr10">버튼</h5>
               </div>
               <div class="of_h" style="width:80%">
-                
                 <a @click="fnAddButton" class="btnStyle1 backBlack">추가 +</a>
               </div>
               <div  class="of_h consolMarginTop">
