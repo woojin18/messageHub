@@ -64,7 +64,7 @@
 								<Calendar calendarId="subbillStartDay" classProps="datepicker inputStyle maxWidth200"></Calendar>
 							</div>
 							<div class="of_h consolMarginTop">
-                <h5 class="inline-block" style="width:20%">사용채널선택</h5>
+                <h5 class="inline-block" style="width:20%">사용채널</h5>
 								<table  id="admin_sub03_1_project1" class="table_skin1 tbl-striped-odd mt0 float-right" style="width:80%">
                   <colgroup>
                     <col style="width:50%">
