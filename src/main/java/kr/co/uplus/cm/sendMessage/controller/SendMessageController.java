@@ -1230,6 +1230,5 @@ public class SendMessageController {
         }
         return rtn;
     }
-
 }
 

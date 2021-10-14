@@ -11,6 +11,7 @@ public class DB {
 	public final static String QRY_SELECT_FILE_ID_USE_CNT = "common.selectFileIdUseCnt";
 	public final static String QRY_SELECT_API_KEY = "common.selectApiKey";
 	public final static String QRY_SELECT_API_KEY2 = "common.selectApiKey2";
+	public final static String QRY_SELECT_API_KEY3 = "common.selectApiKey3";
 	public final static String QRY_SELECT_IMG_UPLOAD_CH_SET = "common.selectImgUploadChSet";
 	public final static String QRY_SELECT_FILE_UPLOAD_SET = "common.selectFileUploadSet";
 	public final static String QRY_SELECT_CODE = "common.selectCodeList";

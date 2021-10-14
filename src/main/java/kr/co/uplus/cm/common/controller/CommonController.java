@@ -218,4 +218,18 @@ public class CommonController {
 
         return rtn;
     }
+    
+    // 발송 제한 금액 조회
+    @PostMapping("/setSentAmout")
+    public RestResult<?> setSentAmout(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = commonService.setSentAmout(params);
+        } catch (Exception e) {
+            rtn.setFail("실패하였습니다.");
+            log.error("{}.setSentAmout Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
 }

@@ -310,6 +310,38 @@
             </div>
           </div>
         </div>
+      <hr>
+        <div class="of_h user-phone">
+          <div style="width:24%" class="float-left">
+            <h4>발송제한 금액</h4>
+          </div>
+          <div style="width:76%" class="float-left">
+            <div class="of_h consolMarginTop">
+              <div style="width:30%" class="float-left">
+                <h5 style="margin: 5px 0;">API KEY명(API KEY)</h5>
+              </div>
+              <div class="of_h" style="width:70%;">
+                <p style="font-size: 14px; margin-top: 3px;">{{apiKeyName}}</p>
+              </div>
+            </div>
+            <div class="of_h">
+              <div style="width:30%" class="float-left">
+                <h5 style="margin: 5px 0;">일 발송금액 / 일 발송제한금액</h5>
+              </div>
+              <div class="of_h" style="width:70%;">
+                <p style="font-size: 14px; margin-top: 3px;">{{dayAmount}} / {{daySenderLimitAmout}}</p>
+              </div>
+            </div>
+            <div class="of_h">
+              <div style="width:30%" class="float-left">
+                <h5 style="margin: 5px 0;">월 발송금액 / 월 발송제한금액</h5>
+              </div>
+              <div class="of_h" style="width:70%;">
+                <p style="font-size: 14px; margin-top: 3px;">{{monthAmount}} / {{monSenderLimitAmout}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="mt30 float-right">
           <a @click="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송" activity="SAVE">테스트 발송</a>
           <a @click="fnSendFrndTalkMessage('N')" class="btnStyle2 backRed float-left ml10" title="발송" activity="SAVE">발송</a>
@@ -387,6 +419,11 @@ export default {
       senderKeyList: [],
       tempFile: [],
       beforeCuInputType: 'DICT',
+      monthAmount : 0,
+      dayAmount : 0,
+      apiKeyName : '',
+      monSenderLimitAmout : '없음',
+      daySenderLimitAmout : '없음',
       sendData : {
         chGrp: 'KKO',
         ch: 'FRIENDTALK',
@@ -481,6 +518,9 @@ export default {
         if(result.success) {
           if(this.$gfnCommonUtils.isEmpty(result.data)){
             confirm.fnAlert(this.componentsTitle, '해당 프로젝트의 사용가능한 API 키가 존재하지 않습니다.\n메시지 발송하실 수 없습니다.');
+          } else {
+            // 사용가능한 api 키가 존재하면 발송제한 금액 세팅
+            this.fnSetSentAmount();
           }
         }
       });
@@ -497,6 +537,20 @@ export default {
         } else {
           confirm.fnAlert(this.componentsTitle, '시스템 오류입니다. 잠시 후 다시 시도하세요.');
           this.$router.back();
+        }
+      });
+    },
+    fnSetSentAmount() {
+      let params = {};
+      messageApi.setSentAmout(params).then(response =>{
+        const result = response.data;
+        if(result.success) {
+          let resultData = result.data;
+          this.monthAmount = resultData.amountMap.month + "원";
+          this.dayAmount = resultData.amountMap.day + "원";
+          this.apiKeyName = resultData.returnApiKeyMap.apiKey;
+          this.monSenderLimitAmout = resultData.returnApiKeyMap.monSenderLimitAmount=="없음" ? resultData.returnApiKeyMap.monSenderLimitAmount : resultData.returnApiKeyMap.monSenderLimitAmount+"원";
+          this.daySenderLimitAmout = resultData.returnApiKeyMap.daySenderLimitAmount=="없음" ? resultData.returnApiKeyMap.daySenderLimitAmount : resultData.returnApiKeyMap.daySenderLimitAmount+"원";
         }
       });
     },
@@ -713,6 +767,9 @@ export default {
       .catch(function () {
         vm.inProgress = false;
       });
+
+      // 발송제한 금액 세팅
+      this.fnSetSentAmount();
     },
     fnAlertFeeMsgCallBack(result){
       if(this.$gfnCommonUtils.isEmpty(result.message)){

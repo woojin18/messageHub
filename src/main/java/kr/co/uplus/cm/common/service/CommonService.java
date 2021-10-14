@@ -1077,4 +1077,34 @@ public class CommonService {
 		String encPwd = sha512.encryptToBase64(salt + password);
 		return encPwd;
 	}
+	
+	public RestResult<Object> setSentAmout(Map<String, Object> params) throws Exception {
+		RestResult<Object> restResult = new RestResult<>(true);
+		String corpId = CommonUtils.getString(params.get("corpId"));
+		String projectId = CommonUtils.getString(params.get("projectId"));
+		String apiKey = this.getApiKey(corpId, projectId);
+		
+		// API 통신처리 (발송금액 API)
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		headerMap.put("apiKey", apiKey);
+		Map<String, Object> result =  apiInterface.post("/console/v1/toSentAmout", null, headerMap);
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		
+		if("10000".equals(result.get("code"))) {
+			returnData = (Map<String, Object>) result.get("data");
+		}
+		
+		// 일,월 발송금액 
+		Map<String, Object> amountMap = (Map<String, Object>) returnData.get("amount");
+		// 일,월 발송제한금액, apikey
+		Map<String, Object> returnApiKeyMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_API_KEY3, params);
+		
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		returnMap.put("amountMap", amountMap);
+		returnMap.put("returnApiKeyMap", returnApiKeyMap);
+		
+		restResult.setData(returnMap);
+		
+		return restResult;
+	}
 }
