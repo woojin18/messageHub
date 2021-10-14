@@ -338,7 +338,7 @@ public class ProjectService {
 			// -------------------------------------------------------------------------------------------------------------------------------------
 			
 			
-			// 프로젝트 신규 등록시 '웹 APIKEY 기본' API 키를 자동생성한다. 2021-10-14
+			// 프로젝트 신규 등록시 '웹 APIKEY 기본' APIKEY 키를 자동생성한다. 2021-10-14
 			Map<String, Object> apikey = new HashMap<String, Object>();
 			apikey.put("newProjectId", projectIdStr);
 //			apikey.put("apiKey", "");
