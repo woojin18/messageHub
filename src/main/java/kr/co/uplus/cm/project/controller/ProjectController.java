@@ -61,7 +61,7 @@ public class ProjectController {
 		RestResult<Object> rtn = new RestResult<Object>(true);
 		
 		try {
-			projectService.saveProject(request, params);
+			projectService.saveProject(request, response, params);
 		} catch (Exception e) { 
 			rtn.setSuccess(false);
 			rtn.setMessage(e.getMessage());

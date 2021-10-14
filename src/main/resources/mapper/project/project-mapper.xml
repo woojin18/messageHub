@@ -168,6 +168,29 @@
 		SELECT	IFNULL(MAX(API_KEY),0) + 1 AS api_max_id
 		FROM	cm.CM_APIKEY
 	</select>
+
+	<select id="selectProjectForUser" resultType="String">
+		/* project.selectProjectForUser */
+		SELECT
+			CASE
+				WHEN CU.REP_PROJECT_ID IS NULL THEN PJT.PROJECT_ID
+				WHEN CU.REP_PROJECT_ID = '' THEN PJT.PROJECT_ID
+				ELSE CU.REP_PROJECT_ID
+			END AS PROJECT_ID
+		FROM cm_console.CM_USER CU
+			INNER JOIN (
+				SELECT
+					PROJECT_ID,
+					CORP_ID,
+					USER_ID,
+					REG_DT
+				FROM cm_console.CM_PROJECT_USER
+				WHERE USER_ID = #{userId}
+				ORDER BY REG_DT DESC
+				LIMIT 1
+			) PJT
+				ON PJT.USER_ID = CU.USER_ID
+	</select>
 	
 	<delete id="deleteProject">
 		/* project.deleteProject */
