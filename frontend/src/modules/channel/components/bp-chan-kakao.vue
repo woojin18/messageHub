@@ -4,12 +4,12 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div>
-						<h2>발신 프로필 추가</h2>
+						<h2>카카오 채널 추가</h2>
 						<hr>
 						<div class="consoleCon">
 							<div class="of_h">
-								<h5 class="inline-block float-left" style="width:25%">플러스 친구 ID *</h5>
-								<input type="text" class="inputStyle float-right" style="width:72%" v-model="kkoChId">
+								<h5 class="inline-block float-left" style="width:25%">카카오 채널ID *</h5>
+								<input type="text" class="inputStyle float-right" style="width:72%" v-model="kkoChId" placeholder="카카오에 등록된 검색용아이디를 넣어주세요. 예) @servicename">
 							</div>
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block float-left" style="width:25%">관리자 연락처 *</h5>
