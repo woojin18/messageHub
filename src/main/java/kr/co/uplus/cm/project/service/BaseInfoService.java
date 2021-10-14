@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,7 +144,9 @@ public class BaseInfoService {
 		String ipChkYn = CommonUtils.getString(params.get("ipChkYn"));
 
 		map.putAll(params);
-		map.put("apiPwd", sha512.encryptToBase64(CommonUtils.getString(params.get("apiPwd"))));
+		if (CommonUtils.isNotEmptyObject(params.get("apiPwd"))) {
+			map.put("apiPwd", sha512.encryptToBase64(CommonUtils.getString(params.get("apiPwd"))));
+		}
 
 		// Update API Password 확인
 		if (saveStatus.equals("U")) {

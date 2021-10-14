@@ -1,6 +1,5 @@
 package kr.co.uplus.cm.project.service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,6 +37,10 @@ public class ProjectService {
 
 	@Autowired
 	private ApiInterface apiInterface; 
+
+
+	@Autowired
+	private BaseInfoService baseInfoService; 
 
 	// 프로젝트 리스트 조회
 	@SuppressWarnings("unchecked")
@@ -333,6 +336,27 @@ public class ProjectService {
 			} 
 			generalDao.insertGernal("project.insertProjectUser", params);
 			// -------------------------------------------------------------------------------------------------------------------------------------
+			
+			
+			// 프로젝트 신규 등록시 '웹 APIKEY 기본' API 키를 자동생성한다. 2021-10-14
+			Map<String, Object> apikey = new HashMap<String, Object>();
+			apikey.put("newProjectId", projectIdStr);
+//			apikey.put("apiKey", "");
+//			apikey.put("apiPwdConfirm", "");
+			apikey.put("corpId", params.get("corpId"));
+			apikey.put("apiPwd", "");
+			apikey.put("ipChkYn", "N");
+			apikey.put("daySenderChkYn", "N");
+			apikey.put("monSenderChkYn", "N");
+			apikey.put("apiKeyName", "웹 APIKEY 기본");
+			apikey.put("status", "USE");
+			apikey.put("rptYn", "Y");
+			apikey.put("dupChkYn", "Y");
+			apikey.put("webSenderYn", "Y");
+//			apikey.put("daySenderLimitAmount", "");
+//			apikey.put("monSenderLimitAmount", "");
+			apikey.put("saveStatus", "R");
+			baseInfoService.saveApiKey(apikey);
 			
 		} else if ("U".equals(sts)) {
 			// 사용체널 JSON 값 처리
