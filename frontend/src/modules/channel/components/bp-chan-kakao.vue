@@ -154,7 +154,7 @@ export default {
 				this.tokenYn = 'Y';
 				confirm.fnAlert("", "토큰이 발급되었습니다. 토큰을 입력해주세요. ");
 			} else {
-				confirm.fnAlert("", "토큰 발급에 실패했습니다.");
+				confirm.fnAlert("", result.message);
 			}
 		});
 	},
