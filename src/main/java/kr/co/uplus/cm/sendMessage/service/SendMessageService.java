@@ -107,7 +107,7 @@ public class SendMessageService {
     }
 
     /**
-     * 발신번호 조회
+     * 발신 번호 조회
      * @param params
      * @return
      * @throws Exception
