@@ -1027,17 +1027,6 @@ public class RcsTemplateSendService {
 		jsonArr = (JSONArray) obj.get("suggestions");
 		
 		// 승인형은 버튼을 따로 처리하지 않고 빈 Array객체만 보내도록 처리
-//		List<Map<String, Object>> btnList = this.convertJsonArrToList(jsonArr);
-//		Map<String, Object> btnMap = new HashMap<>();
-//		
-//		// button이 있는경우 버튼 세팅
-//		if(btnList.size() > 0) {
-//			btnMap.put("suggestions", btnList);
-//		}
-//		
-//		ArrayList<Map<String, Object>> btnArr = new ArrayList<>();
-//		btnArr.add(0, btnMap);
-//		apiMap.put("buttons", btnArr);
 		apiMap.put("buttons", new ArrayList<>());
 		
 		// 대체발송 세팅
@@ -1071,7 +1060,7 @@ public class RcsTemplateSendService {
 		msgMap = apiMap;
 		msgMap.put("recvInfoLst", recvInfoLst);
 		if("Y".equals(rsrvSendYn)) {
-			this.insertPushCmWebMsg(headerMap, msgMap, params, "SEND");
+			this.insertPushCmWebMsg(headerMap, msgMap, params, "SEND_WAIT");
 		} else {
 			boolean real = (boolean) params.get("real");
 			if(real) {
@@ -1121,7 +1110,7 @@ public class RcsTemplateSendService {
 		msgMap = apiMap;
 		msgMap.put("recvInfoLst", recvInfoLst);
 		if("Y".equals(rsrvSendYn)) {
-			this.insertPushCmWebMsg(headerMap, msgMap, params, "SEND");
+			this.insertPushCmWebMsg(headerMap, msgMap, params, "SEND_WAIT");
 		} else {
 			boolean real = (boolean) params.get("real");
 			if(real) {
@@ -1236,7 +1225,7 @@ public class RcsTemplateSendService {
 		msgMap = apiMap;
 		msgMap.put("recvInfoLst", recvInfoLst);
 		if("Y".equals(rsrvSendYn)) {
-			this.insertPushCmWebMsg(headerMap, msgMap, params, "SEND");
+			this.insertPushCmWebMsg(headerMap, msgMap, params, "SEND_WAIT");
 		} else {
 			boolean real = (boolean) params.get("real");
 			if(real) {
