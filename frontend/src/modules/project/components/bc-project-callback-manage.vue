@@ -79,7 +79,7 @@
 							<tr>
 								<th class="text-center lc-1">No.</th>
 								<th class="text-center lc-1">브랜드명</th>
-								<th class="text-center lc-1">발송번호 명</th>
+								<th class="text-center lc-1">발신번호명</th>
 								<th class="text-center lc-1">발신번호</th>
 								<th class="text-center lc-1">SMSMO<br>사용여부</th>
 								<th class="text-center lc-1">승인상태</th>

@@ -15,7 +15,7 @@
 								<h5 class="inline-block float-left" style="width:25%">관리자 연락처 *</h5>
 								<input type="text" class="inputStyle float-right" style="width:72%" v-model="phoneNumber">
 							</div>
-							<div class="of_h consolMarginTop">
+							<div class="of_h consolMarginTop" style="display:none">
 								<h5 class="inline-block float-left" style="width:25%">API KEY *</h5>
 								<div class="float-right" style="width:72%">
 									<select class="selectStyle2" style="width:100%" v-model="apiKey">
@@ -163,7 +163,7 @@ export default {
 			confirm.fnAlert("", "토큰 발급 후, 진행해주세요.");
 			return;
 		} else if( this.kkoChId === '' ){
-			confirm.fnAlert("", "플러스 친구 ID를 입력해주세요.");
+			confirm.fnAlert("", "카카오 채널ID를 입력해주세요.");
 			return;
 		} else if( this.phoneNumber === '' ){
 			confirm.fnAlert("", "관리자 연락처를 입력해주세요.");
@@ -173,6 +173,9 @@ export default {
 			return;
 		} else if( this.token === '' ){
 			confirm.fnAlert("", "발급된 토큰을 입력해주세요.");
+			return;
+		} else if( this.apiKey === ''){
+			confirm.fnAlert("", "API Key가 존재하지 않습니다. API Key를 등록해주세요.");
 			return;
 		}
 

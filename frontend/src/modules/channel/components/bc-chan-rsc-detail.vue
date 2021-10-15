@@ -59,14 +59,20 @@
 				<!-- 인풋 -->
 				<div class="col-xs-6 of_h consoleCon">
 					<div class="of_h">
-						<h4 style="width:28%" class="inline-block">API Key</h4>
-						<input id="apiKey" type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.apiKey" placeholder="등록 및 상세내용 확인을 위해서 API Key와 Secret Key을 입력 후 확인 버튼을 누르십시오.">
+						<h4 style="width:28%" class="inline-block">RBC 로그인 ID *</h4>
+						<input id="apiKey" type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.apiKey" placeholder="등록 및 상세내용 확인을 위해서 RBC 로그인 ID와 RBC API Key을 입력 후 확인 버튼을 누르십시오.">
 					</div>
 					<div class="of_h">
-						<h4 style="width:28%" class="inline-block">API Secret Key *</h4>
+						<h4 style="width:28%" class="inline-block">RBC API Key *</h4>
 						<div class="inline-block float-right" style="width:72%">
 							<input id="apiSecret" type="text" class="inputStyle float-left" style="width:70%" v-model="inputVal.apiSecret">
 							<a @click="fnCheckApiKey" class="btnStyle1 borderLightGray backWhite minWidthAuto float-right" style="width:27%">확인</a>
+							<br><br>
+							<p class="font-size12 color3 mt5">
+								RBC(RCS Biz Cetner)와 작업을 위해 RBC 로그인 ID와 RBC API Key 정보가 필요합니다.<br>
+								RBC 로그인 후 "내 정보관리"에서 API Key를 확인 할 수 있습니다.<br>
+								연동이 원활하지 않은 경우 <router-link to="/ac/project/callbackPreReg">[여기]</router-link>를 참고하세요.
+							</p>
 						</div>
 					</div>
 					<div class="of_h">

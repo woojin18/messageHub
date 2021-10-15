@@ -4,9 +4,9 @@
     <article v-if="!preRegYn">
 		<h4 class="mt40">발신번호 사전 등록</h4>
 		<p class="font-size12 color3 mt30 inline-block">
-			<i class="far fa-info-circle"></i> 발신번호 미등록 시 메시지가 정상적으로 전송되지 않을 수 있습니다.
+			<i class="far fa-info-circle"></i> 발신번호 사전등록제의 시행으로 인하여, 2015년 10월 16일부로 사전에 등록하지 않은 발신번호는 SMS/LMS/MMS/RCS 발송이 제한됩니다.
 			<br>
-			<i class="far fa-info-circle"></i> 발신번호는 문자발송장비 사용자의 최대 3배까지만 등록할 수 있습니다.
+			<i class="far fa-info-circle"></i> 발신번호 등록을 위해서는 RCS Biz Center 가입 후, 브랜드를 생성해야 합니다. 발신번호는 브랜드 1개당 N개 추가할 수 있습니다.
 		</p>
 
 		<ul class="tabStyle tab6 bgColor_tapGray mt30">

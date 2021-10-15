@@ -2,7 +2,10 @@
   <div>
     <article>
       <h4 class="mt40">발신번호 사전 등록</h4>
-      <p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i> 발신번호 미등록 시 메시지가 정상적으로 전송되지 않을 수 있습니다.<br><i class="far fa-info-circle"></i> 발신번호는 문자발송장비 사용자의 최대 3배까지만 등록할 수 있습니다.</p>
+      <p class="font-size12 color3 mt30 inline-block">
+        <i class="far fa-info-circle"></i> 발신번호 사전등록제의 시행으로 인하여, 2015년 10월 16일부로 사전에 등록하지 않은 발신번호는 SMS/LMS/MMS/RCS 발송이 제한됩니다.<br>
+        <i class="far fa-info-circle"></i> 발신번호 등록을 위해서는 RCS Biz Center 가입 후, 브랜드를 생성해야 합니다. 발신번호는 브랜드 1개당 N개 추가할 수 있습니다.
+      </p>
 
 
 
@@ -20,7 +23,16 @@
 				</div>
 				<div class="col-xs-9">					
 					<div class="of_h pd20">
-						<p class="color4"><i class="far fa-info-circle"></i> 발신번호 등록은 다음의 절차로 진행됩니다.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1) RCS Biz Center에 서비스 신청을 합니다. (https://www.rcsbizcenter.com)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2) 통합 클라우드 메시징 센터에서 브랜드 등록 및 발신번호 등록 신청을 합니다.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3) 승인 완료 된 발신번호는 사용 가능합니다.</p>
+						<p class="color4">
+							<i class="far fa-info-circle"></i> 발신번호 등록은 다음의 절차로 진행됩니다.<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1) RCS Biz Center(이하 RBC)에 서비스 신청을 합니다. (https://www.rcsbizcenter.com)<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2) RBC 로그인 후 "내 정보관리"에서 API Client IP에 3.36.221.48, 3.38.76.80를 추가 후 저장합니다.<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3) "내 정보관리"의 API Key*를 적어 둡니다.<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4) 메시지허브에서 브랜드 등록 및 발신번호 등록 신청을 할수 있습니다. (RBC ID, RBC API Key 필요)<br><br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RBC에 이미 등록된 브랜드를 등록하는 경우)<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 브랜드를 선택 후 "운영 관리" > "권한관리" 기능에서 "엘지유플러스"를 대행사로 추가합니다.<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 자동으로 메시지허브에 등록됩니다. (최대 24시간 소요)
+						</p>
 						<p class="color4 consolMarginTop"><i class="far fa-info-circle"></i> 이미 등록된 브랜드가 있는 경우 추가 발신번호만 등록하실 수 있습니다.</p>	
 						<p class="color4 consolMarginTop"><i class="far fa-info-circle"></i> 통신서비스 이용 증명원 등록 후, RCS Biz Center(RBC) 에서 서류 심사 후 발신번호로 등록<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[통신서버스 이용증명원 발급방법안내]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 등록할 <span class="color1">휴대폰 번호 또는 유선번호의 해당 통신사 고객센터를 통해 발급</span> 받을 수 있습니다.</p>	
 						<p class="color4 consolMarginTop"><i class="far fa-info-circle"></i> 발신번호별 검수로 서류심사가 늦어질 수 있는 점 양해 부탁드립니다.</p>	
