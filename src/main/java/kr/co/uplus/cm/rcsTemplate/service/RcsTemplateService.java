@@ -593,14 +593,12 @@ public class RcsTemplateService {
 		paramMap.put("agencyId", agencyId);
 		paramMap.put("formattedString", formattedStringMap);
 		
-		paramList.add(paramMap);
-		
 		String flag = CommonUtils.getString(params.get("flag"));
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		
 		if("INS".equals(flag)) {
-			result = apiInterface.listPost("/console/v1/rcs/brand/" + brandId + "/messagebase", paramList, headerMap);
+			result = apiInterface.post("/console/v1/rcs/brand/" + brandId + "/messagebase", paramMap, headerMap);
 		} else {
 			result = apiInterface.put("/console/v1/rcs/brand/" + brandId + "/messagebase/" + messagebaseId, paramMap, paramMap, headerMap);
 		}
