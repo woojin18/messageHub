@@ -1087,7 +1087,7 @@ public class CommonService {
 		// API 통신처리 (발송금액 API)
 		Map<String, Object> headerMap = new HashMap<String, Object>();
 		headerMap.put("apiKey", apiKey);
-		Map<String, Object> result =  apiInterface.post("/console/v1/toSentAmout", null, headerMap);
+		Map<String, Object> result =  apiInterface.post("/console/v1/totSentAmount", null, headerMap);
 		Map<String, Object> returnData = new HashMap<String, Object>();
 		
 		if("10000".equals(result.get("code"))) {
