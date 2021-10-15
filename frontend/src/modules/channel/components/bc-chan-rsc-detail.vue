@@ -75,256 +75,258 @@
 							</p>
 						</div>
 					</div>
-					<div class="of_h">
-						<h4 style="width:28%" class="inline-block">브랜드명 *</h4>
-						<input id="brandName" type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.name" :disabled="this.duplCheckYn == 'N'">
-					</div>								
-					<div class="of_h">
-						<h4 style="width:28%" class="inline-block">브랜드 설명 *</h4>
-						<input id="brandDesc" type="text" class="inputStyle float-right" style="width:72%;" v-model="inputVal.description" :disabled="this.duplCheckYn == 'N'" >
-					</div>				
-									
-					<div class="of_h consolMarginTop">
-						<h4 style="width:28%" class="inline-block topH4">타 프로젝트<br>사용여부</h4>
-						<div class="inline-block float-right" style="width:72%">
-							<input type="radio" v-model="otherProjectYn" value="Y" class="cBox" id="yes" checked="" :disabled="this.duplCheckYn == 'N'"> <label for="yes" class="payment mt10 mr30">공용</label>
-							<input type="radio" v-model="otherProjectYn" value="N" class="cBox" id="no" :disabled="this.duplCheckYn == 'N'"> <label for="no" class="payment mt10">전용</label>		
-						</div>
-					</div>
-
-					<div class="of_h">
-						<h4 style="width:28%" class="inline-block">백그라운드 이미지</h4>
-						<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:72%" ref="bgImgFile" @change="fnPreviewImg('bg')" :disabled="this.duplCheckYn == 'N'"/>
-					</div>
-					<p class="font-size12 color3 mt10 ml_28"><i class="far fa-info-circle"></i>최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : jpg, png (최대 1MB)</p>
-
-					<div class="of_h consolMarginTop">
-						<h4 style="width:28%" class="inline-block">프로필 이미지 *</h4>
-						<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:72%" ref="profileImgFile" @change="fnPreviewImg('profile')" :disabled="this.duplCheckYn == 'N'"/>
-					</div>
-					<p class="font-size12 color3 mt10 ml_28"><i class="far fa-info-circle"></i>최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : png (최대 1MB)</p>
-
-					<div class="of_h consolMarginTop">
-						<h4 style="width:28%" class="inline-block">전화번호 *</h4>
-						<input id="phoneNum" type="text" class="inputStyle float-right" style="width: 72%" v-model="inputVal.tel" :disabled="this.duplCheckYn == 'N'">
-					</div>
-					<div class="of_h">
-						<h4 style="width:28%" class="inline-block">메뉴버튼설정 *</h4>
-						<div class="float-right" style="width:72%">
-							<div class="consolCheck" style="width:19%">
-								<input type="checkbox" id="Chat" class="checkStyle2" checked="checked" disabled>
-								<label for="Chat">Chat</label>
-							</div>
-							<div class="consolCheck" style="width:19%">
-								<input @change="fnClickMenu('call', $event.target.checked)" type="checkbox" id="Call" class="checkStyle2" v-model="inputVal.call" :disabled="this.duplCheckYn == 'N'">
-								<label for="Call">Call</label>
-							</div>
-							<div class="consolCheck" style="width:19%">
-								<input @change="fnClickMenu('web', $event.target.checked)" type="checkbox" id="Web" class="checkStyle2" v-model="inputVal.web" :disabled="this.duplCheckYn == 'N'">
-								<label for="Web">Web</label>
-							</div>
-							<div class="consolCheck" style="width:19%">
-								<input @change="fnClickMenu('store', $event.target.checked)" type="checkbox" id="Store" class="checkStyle2" v-model="inputVal.store" :disabled="this.duplCheckYn == 'N'">
-								<label for="Store">Store</label>
-							</div>
-							<div class="consolCheck" style="width:19%">
-								<input @change="fnClickMenu('order', $event.target.checked)" type="checkbox" id="Order" class="checkStyle2" v-model="inputVal.order" :disabled="this.duplCheckYn == 'N'">
-								<label for="Order">Order</label>
+					<div v-if="isSuccess == true" >
+						<div class="of_h">
+							<h4 style="width:28%" class="inline-block">브랜드명 *</h4>
+							<input id="brandName" type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.name" :disabled="this.duplCheckYn == 'N'">
+						</div>								
+						<div class="of_h">
+							<h4 style="width:28%" class="inline-block">브랜드 설명 *</h4>
+							<input id="brandDesc" type="text" class="inputStyle float-right" style="width:72%;" v-model="inputVal.description" :disabled="this.duplCheckYn == 'N'" >
+						</div>				
+										
+						<div class="of_h consolMarginTop">
+							<h4 style="width:28%" class="inline-block topH4">타 프로젝트<br>사용여부</h4>
+							<div class="inline-block float-right" style="width:72%">
+								<input type="radio" v-model="otherProjectYn" value="Y" class="cBox" id="yes" checked="" :disabled="this.duplCheckYn == 'N'"> <label for="yes" class="payment mt10 mr30">공용</label>
+								<input type="radio" v-model="otherProjectYn" value="N" class="cBox" id="no" :disabled="this.duplCheckYn == 'N'"> <label for="no" class="payment mt10">전용</label>		
 							</div>
 						</div>
-						<div class="ml_28 float-left mt10" style="width:72%">
-							<div class="consolCheck" style="width:19%">
-								<input @change="fnClickMenu('buy', $event.target.checked)" type="checkbox" id="Buy" class="checkStyle2" v-model="inputVal.buy" :disabled="this.duplCheckYn == 'N'">
-								<label for="Buy">Buy</label>
+
+						<div class="of_h">
+							<h4 style="width:28%" class="inline-block">백그라운드 이미지</h4>
+							<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:72%" ref="bgImgFile" @change="fnPreviewImg('bg')" :disabled="this.duplCheckYn == 'N'"/>
+						</div>
+						<p class="font-size12 color3 mt10 ml_28"><i class="far fa-info-circle"></i>최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : jpg, png (최대 1MB)</p>
+
+						<div class="of_h consolMarginTop">
+							<h4 style="width:28%" class="inline-block">프로필 이미지 *</h4>
+							<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:72%" ref="profileImgFile" @change="fnPreviewImg('profile')" :disabled="this.duplCheckYn == 'N'"/>
+						</div>
+						<p class="font-size12 color3 mt10 ml_28"><i class="far fa-info-circle"></i>최대사이즈 : 1080X1080px / 1:1 비율 권장 / 파일형식 : png (최대 1MB)</p>
+
+						<div class="of_h consolMarginTop">
+							<h4 style="width:28%" class="inline-block">전화번호 *</h4>
+							<input id="phoneNum" type="text" class="inputStyle float-right" style="width: 72%" v-model="inputVal.tel" :disabled="this.duplCheckYn == 'N'">
+						</div>
+						<div class="of_h">
+							<h4 style="width:28%" class="inline-block">메뉴버튼설정 *</h4>
+							<div class="float-right" style="width:72%">
+								<div class="consolCheck" style="width:19%">
+									<input type="checkbox" id="Chat" class="checkStyle2" checked="checked" disabled>
+									<label for="Chat">Chat</label>
+								</div>
+								<div class="consolCheck" style="width:19%">
+									<input @change="fnClickMenu('call', $event.target.checked)" type="checkbox" id="Call" class="checkStyle2" v-model="inputVal.call" :disabled="this.duplCheckYn == 'N'">
+									<label for="Call">Call</label>
+								</div>
+								<div class="consolCheck" style="width:19%">
+									<input @change="fnClickMenu('web', $event.target.checked)" type="checkbox" id="Web" class="checkStyle2" v-model="inputVal.web" :disabled="this.duplCheckYn == 'N'">
+									<label for="Web">Web</label>
+								</div>
+								<div class="consolCheck" style="width:19%">
+									<input @change="fnClickMenu('store', $event.target.checked)" type="checkbox" id="Store" class="checkStyle2" v-model="inputVal.store" :disabled="this.duplCheckYn == 'N'">
+									<label for="Store">Store</label>
+								</div>
+								<div class="consolCheck" style="width:19%">
+									<input @change="fnClickMenu('order', $event.target.checked)" type="checkbox" id="Order" class="checkStyle2" v-model="inputVal.order" :disabled="this.duplCheckYn == 'N'">
+									<label for="Order">Order</label>
+								</div>
 							</div>
-							<div class="consolCheck" style="width:19%">
-								<input @change="fnClickMenu('tickets', $event.target.checked)" type="checkbox" id="Ticket" class="checkStyle2" v-model="inputVal.tickets" :disabled="this.duplCheckYn == 'N'">
-								<label for="Ticket">Ticket</label>
-							</div>
-							<div class="consolCheck" style="width:25%">
-								<input @change="fnClickMenu('moreinfo', $event.target.checked)" type="checkbox" id="MoreInfo" class="checkStyle2" v-model="inputVal.moreinfo" :disabled="this.duplCheckYn == 'N'">
-								<label for="MoreInfo">More Info</label>
+							<div class="ml_28 float-left mt10" style="width:72%">
+								<div class="consolCheck" style="width:19%">
+									<input @change="fnClickMenu('buy', $event.target.checked)" type="checkbox" id="Buy" class="checkStyle2" v-model="inputVal.buy" :disabled="this.duplCheckYn == 'N'">
+									<label for="Buy">Buy</label>
+								</div>
+								<div class="consolCheck" style="width:19%">
+									<input @change="fnClickMenu('tickets', $event.target.checked)" type="checkbox" id="Ticket" class="checkStyle2" v-model="inputVal.tickets" :disabled="this.duplCheckYn == 'N'">
+									<label for="Ticket">Ticket</label>
+								</div>
+								<div class="consolCheck" style="width:25%">
+									<input @change="fnClickMenu('moreinfo', $event.target.checked)" type="checkbox" id="MoreInfo" class="checkStyle2" v-model="inputVal.moreinfo" :disabled="this.duplCheckYn == 'N'">
+									<label for="MoreInfo">More Info</label>
+								</div>
 							</div>
 						</div>
-					</div>
 
-					<!-- <div v-if="inputVal.call != ''" class="ml_28 of_h consolMarginTop">
-						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Call *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.callWeblink" :disabled="this.duplCheckYn == 'N'">
-					</div> -->
-					<div v-if="inputVal.web != ''" class="ml_28 of_h consolMarginTop">
-						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Web *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.webWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
-					</div>
-					<div v-if="inputVal.store != ''" class="ml_28 of_h consolMarginTop">
-						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Store *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.storeWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
-					</div>
-					<div v-if="inputVal.order != ''" class="ml_28 of_h consolMarginTop">
-						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Order *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.orderWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
-					</div>
-					<div v-if="inputVal.buy != ''" class="ml_28 of_h consolMarginTop">
-						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Buy *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.buyWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
-					</div>
-					<div v-if="inputVal.tickets != ''" class="ml_28 of_h consolMarginTop">
-						<p class="inline-block font-size16 float-left mt10" style="width:15%">-Ticket *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.ticketsWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
-					</div>
-					<div v-if="inputVal.moreinfo != ''" class="ml_28 of_h consolMarginTop">
-						<p class="inline-block font-size16 float-left mt10" style="width:15%">-More Info *</p>
-						<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.moreinfoWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
-					</div>
+						<!-- <div v-if="inputVal.call != ''" class="ml_28 of_h consolMarginTop">
+							<p class="inline-block font-size16 float-left mt10" style="width:15%">-Call *</p>
+							<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.callWeblink" :disabled="this.duplCheckYn == 'N'">
+						</div> -->
+						<div v-if="inputVal.web != ''" class="ml_28 of_h consolMarginTop">
+							<p class="inline-block font-size16 float-left mt10" style="width:15%">-Web *</p>
+							<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.webWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
+						</div>
+						<div v-if="inputVal.store != ''" class="ml_28 of_h consolMarginTop">
+							<p class="inline-block font-size16 float-left mt10" style="width:15%">-Store *</p>
+							<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.storeWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
+						</div>
+						<div v-if="inputVal.order != ''" class="ml_28 of_h consolMarginTop">
+							<p class="inline-block font-size16 float-left mt10" style="width:15%">-Order *</p>
+							<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.orderWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
+						</div>
+						<div v-if="inputVal.buy != ''" class="ml_28 of_h consolMarginTop">
+							<p class="inline-block font-size16 float-left mt10" style="width:15%">-Buy *</p>
+							<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.buyWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
+						</div>
+						<div v-if="inputVal.tickets != ''" class="ml_28 of_h consolMarginTop">
+							<p class="inline-block font-size16 float-left mt10" style="width:15%">-Ticket *</p>
+							<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.ticketsWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
+						</div>
+						<div v-if="inputVal.moreinfo != ''" class="ml_28 of_h consolMarginTop">
+							<p class="inline-block font-size16 float-left mt10" style="width:15%">-More Info *</p>
+							<input type="text" class="inputStyle float-right" style="width:85%" v-model="inputVal.moreinfoWeblink" placeholder="예) http://lg@lg.co.kr" :disabled="this.duplCheckYn == 'N'">
+						</div>
 
-					<div class="of_h consolMarginTop">
-						<h4 style="width:28%" class="inline-block">카테고리 1 *</h4>
-						<select id="cate1" class="float-right selectStyle2" style="width:72%" v-model="inputVal.categoryId" @change="fnChangeCate2" :disabled="this.duplCheckYn == 'N'">
-							<option v-for="(option, i) in category" v-bind:value="option.categoryId" v-bind:key="i">
-								{{ option.categoryName }}
-							</option>
-						</select>
-					</div>
-					<div class="of_h">
-						<h4 style="width:28%" class="inline-block">카테고리 2 *</h4>
-						<select id="cate2" class="float-right selectStyle2" style="width:72%" v-model="inputVal.subCategoryId" :disabled="this.duplCheckYn == 'N'">
-							<option v-for="(option, i) in subCategory" v-bind:value="option.subCategoryId" v-bind:key="i">
-								{{ option.subCategoryName }}
-							</option>
-						</select>
-					</div>
-					<div class="of_h">
-						<h4 style="width:28%" class="inline-block">카테고리 3 *</h4>
-						<input id="cate3" type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.categoryOpt" :disabled="this.duplCheckYn == 'N'">
-					</div>
-					<div class="of_h">
-						<h4 style="width:28%" class="inline-block">홈페이지 주소</h4>
-						<input id="homepageAddr" type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.webSiteUrl" :disabled="this.duplCheckYn == 'N'" placeholder="예) https://uplus.co.kr">
-					</div>
-					<div class="of_h">
-						<h4 style="width:28%" class="inline-block">이메일 *</h4>
-						<div style="width:72%" class="float-right">
-							<input id="email1" type="text" class="inputStyle mr20" style="width:30%" v-model="inputVal.email" :disabled="this.duplCheckYn == 'N'">
-							@
-							<input id="email2" type="text" class="inputStyle ml20" style="width:30%; margin-right: 10px !important;" v-model="inputVal.email2" 
-									:disabled="this.duplCheckYn == 'N' && ( inputVal.email2 == 'naver.com' || inputVal.email2 == 'daum.com' || inputVal.email2 == 'gmail.com' || inputVal.email2 == 'nate.com' )">
-							<select id="emailSelect" class="selectStyle2 consolMarginTop" style="width:100%"  v-model="inputVal.email2">
-								<option value="naver.com">naver.com</option>
-								<option value="daum.com">daum.com</option>
-								<option value="gmail.com">gmail.com</option>
-								<option value="nate.com">nate.com</option>
-								<option :value="inputVal.email2">직접입력</option>
+						<div class="of_h consolMarginTop">
+							<h4 style="width:28%" class="inline-block">카테고리 1 *</h4>
+							<select id="cate1" class="float-right selectStyle2" style="width:72%" v-model="inputVal.categoryId" @change="fnChangeCate2" :disabled="this.duplCheckYn == 'N'">
+								<option v-for="(option, i) in category" v-bind:value="option.categoryId" v-bind:key="i">
+									{{ option.categoryName }}
+								</option>
 							</select>
 						</div>
-					</div>
-					<div class="of_h consolMarginTop">
-						<h4 style="width:28%" class="inline-block">주소 *</h4>
-						<div style="width:72%" class="float-right">
-							<input id="postAddr" type="text" class="inputStyle vertical-top" style="width:47%" v-model="inputVal.zipCode" :disabled="this.duplCheckYn == 'N'">
-							<div style="width:25%; display:inline-block;margin-left:10px;"><a class="btnStyle1 backLightGray" style="min-width:auto; width:100%" @click="fnAddrPopup">주소 조회</a></div>
+						<div class="of_h">
+							<h4 style="width:28%" class="inline-block">카테고리 2 *</h4>
+							<select id="cate2" class="float-right selectStyle2" style="width:72%" v-model="inputVal.subCategoryId" :disabled="this.duplCheckYn == 'N'">
+								<option v-for="(option, i) in subCategory" v-bind:value="option.subCategoryId" v-bind:key="i">
+									{{ option.subCategoryName }}
+								</option>
+							</select>
 						</div>
-						
-					</div>
-					<div class="ml_28">
-						<input id="addr1" type="text" class="inputStyle mr10" style="width:47%" v-model="inputVal.roadAddress" :disabled="this.duplCheckYn == 'N'">
-						<input id="addr2" type="text" class="inputStyle" style="width:50%" v-model="inputVal.detailAddress" :disabled="this.duplCheckYn == 'N'">						
-					</div>
-
-					<hr>
-					<div v-if="this.save_status == 'C'">
-						<h2>발신번호 등록</h2>
-						<p class="txtCaption color3">발신번호 등록은 브랜드가 먼저 등록되어야 하며, 승인완료 된 브랜드만 보여집니다.</p>
-
-						<div class="of_h consolMarginTop">
-							<h4 style="width:28%" class="inline-block">대표발신번호 *</h4>
-							<div class="consolCheck" style="width:25%">
-								<input type="checkbox" id="same" class="checkStyle2" @change="fnChangeSameTel($event.target.checked)" :disabled="this.duplCheckYn == 'N'">
-								<label for="same">전화번호와 동일</label>
+						<div class="of_h">
+							<h4 style="width:28%" class="inline-block">카테고리 3 *</h4>
+							<input id="cate3" type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.categoryOpt" :disabled="this.duplCheckYn == 'N'">
+						</div>
+						<div class="of_h">
+							<h4 style="width:28%" class="inline-block">홈페이지 주소</h4>
+							<input id="homepageAddr" type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.webSiteUrl" :disabled="this.duplCheckYn == 'N'" placeholder="예) https://uplus.co.kr">
+						</div>
+						<div class="of_h">
+							<h4 style="width:28%" class="inline-block">이메일 *</h4>
+							<div style="width:72%" class="float-right">
+								<input id="email1" type="text" class="inputStyle mr20" style="width:30%" v-model="inputVal.email" :disabled="this.duplCheckYn == 'N'">
+								@
+								<input id="email2" type="text" class="inputStyle ml20" style="width:30%; margin-right: 10px !important;" v-model="inputVal.email2" 
+										:disabled="this.duplCheckYn == 'N' && ( inputVal.email2 == 'naver.com' || inputVal.email2 == 'daum.com' || inputVal.email2 == 'gmail.com' || inputVal.email2 == 'nate.com' )">
+								<select id="emailSelect" class="selectStyle2 consolMarginTop" style="width:100%"  v-model="inputVal.email2">
+									<option value="naver.com">naver.com</option>
+									<option value="daum.com">daum.com</option>
+									<option value="gmail.com">gmail.com</option>
+									<option value="nate.com">nate.com</option>
+									<option :value="inputVal.email2">직접입력</option>
+								</select>
 							</div>
-							<input type="text" class="inputStyle" style="width:26%" v-model="inputVal.mainMdn" :disabled="this.duplCheckYn == 'N'">
-							<p class="font-size12 color3 inline-block ml10" style="width:17%">*휴대폰 등록 불가</p>
-						</div>
-						<div class="of_h">
-							<h4 class="inline-block" style="width:22%">발신 번호명 *</h4>
-							<input type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.mainTitle" :disabled="this.duplCheckYn == 'N'">
-						</div>
-						<div class="of_h">
-							<h4 class="inline-block" style="width:22%">대표번호<br>문자수신 서비스</h4>
-							<div class="consolCheck vertical-top float-right" style="width:72%">
-								<input id="use" type="checkbox" class="checkStyle2" v-model="inputVal.rcsReply" :disabled="this.duplCheckYn == 'N'"><label for="use">사용중</label>
-								<p class="font-size12 color3 mt5">대표번호 문자수신(MO)서비스를 현재 사용하고 계실 경우 반드시 해당정보를 체크해 주셔야 합니다.</p>
-							</div>						
 						</div>
 						<div class="of_h consolMarginTop">
-							<h4 class="inline-block" style="width:22%">추가발신번호</h4>
-							<div class="float-right" style="width:72%">
-								<p class="txtCaption color3">대표번호문자수신서비스(MO)를 사용하실 경우 MO체크박스에 체크해주세요.</p>
-								<table class="table_skin1 consolMarginTop" style="width:100%">
-									<colgroup>
-										<col style="width:40%">
-										<col style="width:40%">
-										<col style="width:10%">
-										<col style="width:10%">
-									</colgroup>
-									<thead>
-									<tr>
-										<th class="text-center end">발신번호</th>
-										<th class="text-center end">발신번호명</th>
-										<th class="text-center end">MO</th>
-										<th class="text-center end"></th>
-									</tr>
-									</thead>
-									<tbody class="of_h">
-										<tr v-for="(item, i) in inputVal.chatbots" :key="i">	
-											<td class="end"><input v-model="inputVal.chatbots[i].mdn" :id="'mdn' + i"  type="text" class="inputStyle" style="width:100%"></td>
-											<td class="end"><input v-model="inputVal.chatbots[i].subTitle" :id="'subTitle' + i" type="text" class="inputStyle" style="width:100%"></td>
-											<td class="end"><div class="text-center"><input type="checkbox" id="MO01" class="checkStyle2" value="1" v-model="inputVal.chatbots[i].rcsReply"><label for="1"></label></div></td>
-											<td class="end"><a @click="fnDeleteChatbotTr" class="btnStyle1 borderGray ml10" style="padding: 0 10px"><i class="far fa-minus"></i></a></td>
-										</tr>
+							<h4 style="width:28%" class="inline-block">주소 *</h4>
+							<div style="width:72%" class="float-right">
+								<input id="postAddr" type="text" class="inputStyle vertical-top" style="width:47%" v-model="inputVal.zipCode" :disabled="this.duplCheckYn == 'N'">
+								<div style="width:25%; display:inline-block;margin-left:10px;"><a class="btnStyle1 backLightGray" style="min-width:auto; width:100%" @click="fnAddrPopup">주소 조회</a></div>
+							</div>
+							
+						</div>
+						<div class="ml_28">
+							<input id="addr1" type="text" class="inputStyle mr10" style="width:47%" v-model="inputVal.roadAddress" :disabled="this.duplCheckYn == 'N'">
+							<input id="addr2" type="text" class="inputStyle" style="width:50%" v-model="inputVal.detailAddress" :disabled="this.duplCheckYn == 'N'">						
+						</div>
+
+						<hr>
+						<div v-if="this.save_status == 'C'">
+							<h2>발신번호 등록</h2>
+							<p class="txtCaption color3">발신번호 등록은 브랜드가 먼저 등록되어야 하며, 승인완료 된 브랜드만 보여집니다.</p>
+
+							<div class="of_h consolMarginTop">
+								<h4 style="width:28%" class="inline-block">대표발신번호 *</h4>
+								<div class="consolCheck" style="width:25%">
+									<input type="checkbox" id="same" class="checkStyle2" @change="fnChangeSameTel($event.target.checked)" :disabled="this.duplCheckYn == 'N'">
+									<label for="same">전화번호와 동일</label>
+								</div>
+								<input type="text" class="inputStyle" style="width:26%" v-model="inputVal.mainMdn" :disabled="this.duplCheckYn == 'N'">
+								<p class="font-size12 color3 inline-block ml10" style="width:17%">*휴대폰 등록 불가</p>
+							</div>
+							<div class="of_h">
+								<h4 class="inline-block" style="width:22%">발신 번호명 *</h4>
+								<input type="text" class="inputStyle float-right" style="width:72%" v-model="inputVal.mainTitle" :disabled="this.duplCheckYn == 'N'">
+							</div>
+							<div class="of_h">
+								<h4 class="inline-block" style="width:22%">대표번호<br>문자수신 서비스</h4>
+								<div class="consolCheck vertical-top float-right" style="width:72%">
+									<input id="use" type="checkbox" class="checkStyle2" v-model="inputVal.rcsReply" :disabled="this.duplCheckYn == 'N'"><label for="use">사용중</label>
+									<p class="font-size12 color3 mt5">대표번호 문자수신(MO)서비스를 현재 사용하고 계실 경우 반드시 해당정보를 체크해 주셔야 합니다.</p>
+								</div>						
+							</div>
+							<div class="of_h consolMarginTop">
+								<h4 class="inline-block" style="width:22%">추가발신번호</h4>
+								<div class="float-right" style="width:72%">
+									<p class="txtCaption color3">대표번호문자수신서비스(MO)를 사용하실 경우 MO체크박스에 체크해주세요.</p>
+									<table class="table_skin1 consolMarginTop" style="width:100%">
+										<colgroup>
+											<col style="width:40%">
+											<col style="width:40%">
+											<col style="width:10%">
+											<col style="width:10%">
+										</colgroup>
+										<thead>
 										<tr>
-											<td class="end"></td>															
-											<td class="end"></td>															
-											<td class="end"></td>															
-											<td class="end"><a @click="fnAddChatbotTr" class="btnStyle1 borderGray ml10" style="padding: 0 10px"><i class="far fa-plus"></i></a></td>															
-										</tr>								  
-									</tbody>
-								</table>
-							</div>	
-						</div>
-						<div class="of_h consolMarginTop">
-							<h4 class="inline-block vertical-middle" style="width:22%">통신서비스<br>가입증명원 *</h4>
-							<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:72%" ref="certiImgFile"/>
-							<div class="font-size12 color3 mt10 ml_28 float-left" style="width:73%">
-								<div class="consolCheck float-left mb40"><input type="checkbox" id="Lmit" class="checkStyle2" value="Lmit"><label for="Lmit">
-									<p>메시지 발송 시 기본템플릿(구.Free템플릿)은 정보성에 한하여 이용 가능합니다.<br>규정위반 시 서비스 이용이 제한될 수 있습니다.</p>
-								</label></div>
-							</div>						
-						</div>
-					</div>
-					<div  v-if="this.save_status == 'U'">
-						<!-- 인풋 -->
-						<p></p>
-						<div class="of_h consolMarginTop">
-							<h4 style="width:28%" class="inline-block">대표발신번호</h4>
-							<div class="consolCheck" style="width:25%">
-								{{this.inputVal.mainMdn}}
+											<th class="text-center end">발신번호</th>
+											<th class="text-center end">발신번호명</th>
+											<th class="text-center end">MO</th>
+											<th class="text-center end"></th>
+										</tr>
+										</thead>
+										<tbody class="of_h">
+											<tr v-for="(item, i) in inputVal.chatbots" :key="i">	
+												<td class="end"><input v-model="inputVal.chatbots[i].mdn" :id="'mdn' + i"  type="text" class="inputStyle" style="width:100%"></td>
+												<td class="end"><input v-model="inputVal.chatbots[i].subTitle" :id="'subTitle' + i" type="text" class="inputStyle" style="width:100%"></td>
+												<td class="end"><div class="text-center"><input type="checkbox" id="MO01" class="checkStyle2" value="1" v-model="inputVal.chatbots[i].rcsReply"><label for="1"></label></div></td>
+												<td class="end"><a @click="fnDeleteChatbotTr" class="btnStyle1 borderGray ml10" style="padding: 0 10px"><i class="far fa-minus"></i></a></td>
+											</tr>
+											<tr>
+												<td class="end"></td>															
+												<td class="end"></td>															
+												<td class="end"></td>															
+												<td class="end"><a @click="fnAddChatbotTr" class="btnStyle1 borderGray ml10" style="padding: 0 10px"><i class="far fa-plus"></i></a></td>															
+											</tr>								  
+										</tbody>
+									</table>
+								</div>	
+							</div>
+							<div class="of_h consolMarginTop">
+								<h4 class="inline-block vertical-middle" style="width:22%">통신서비스<br>가입증명원 *</h4>
+								<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width:72%" ref="certiImgFile"/>
+								<div class="font-size12 color3 mt10 ml_28 float-left" style="width:73%">
+									<div class="consolCheck float-left mb40"><input type="checkbox" id="Lmit" class="checkStyle2" value="Lmit"><label for="Lmit">
+										<p>메시지 발송 시 기본템플릿(구.Free템플릿)은 정보성에 한하여 이용 가능합니다.<br>규정위반 시 서비스 이용이 제한될 수 있습니다.</p>
+									</label></div>
+								</div>						
 							</div>
 						</div>
-						<div class="of_h">
-							<h4 class="inline-block" style="width:28%">발신 번호명</h4>
-							<div class="consolCheck" style="width:25%">
-								{{this.inputVal.mainTitle}}
+						<div  v-if="this.save_status == 'U'">
+							<!-- 인풋 -->
+							<p></p>
+							<div class="of_h consolMarginTop">
+								<h4 style="width:28%" class="inline-block">대표발신번호</h4>
+								<div class="consolCheck" style="width:25%">
+									{{this.inputVal.mainMdn}}
+								</div>
 							</div>
+							<div class="of_h">
+								<h4 class="inline-block" style="width:28%">발신 번호명</h4>
+								<div class="consolCheck" style="width:25%">
+									{{this.inputVal.mainTitle}}
+								</div>
+							</div>
+							<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width: 100%; visibility: hidden;" ref="certiImgFile" />
 						</div>
-						<input type="file" class="btnStyle7 minWidthAuto float float-right" style="width: 100%; visibility: hidden;" ref="certiImgFile" />
-					</div>
-					<div class="float-right">
+					</div>		
+					<div class="float-right of_h consolMarginTop">
 						<a v-if="this.save_status == 'C'" @click="fnSave('approval')" class="btnStyle5 red ml10 width120" activity="SAVE">승인요청</a>
 						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N' && this.approvalStatus == '승인'" @click="fnSave('update')" class="btnStyle5 red ml10 width120" activity="SAVE">수정요청</a>
 						<a v-if="this.save_status == 'U' && this.tmpBrandYn == 'N' && this.approvalStatus == '승인'" @click="fnDeleteConfirm()" class="btnStyle5 red ml10 width120" activity="SAVE">삭제요청</a>
 						<a @click="fnBack" ref="backBtn" class="btnStyle5 white ml10 width120">목록</a>
 					</div>
-				</div>		
+				</div>
 			</div>
 
 			<addrPopup :popReset="popReset"  :selAddr.sync="selAddr"></addrPopup>
@@ -361,6 +363,7 @@ export default {
 		tmpBrandYn : "N",
 		duplCheckYn : "N",
 		otherProjectYn : "Y",
+		isSuccess : false,	// api 조회 성공 여부
 		inputVal : {
 			corpId 			: "",
 			projectId 		: "",
@@ -498,7 +501,7 @@ export default {
 					if(this.save_status === 'C'){
 						confirm.fnAlert("", "정상적으로 확인되었습니다.");
 					}
-					
+					this.isSuccess = true;
 				} else {
 					this.duplCheckYn = 'N';
 					console.log(response);

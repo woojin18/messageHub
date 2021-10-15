@@ -26,122 +26,130 @@
                 <div class="of_h">
                   <div class="consolCheck" style="width:30%"><input type="checkbox" id="chk_all" v-model="chkAll" class="checkStyle2"><label for="chk_all" class="vertical-sub color000">전체</label></div>
                   <div class="inline-block float-right" style="width:70%">
-                    <select name="admin_sub13_1_1" class="selectStyle2" style="width:44%" v-model="sttAll">
+                    <select name="admin_sub13_1_1" class="selectStyle2" style="width:32%" v-model="sttAll">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~ </span>
-                    <select name="admin_sub13_1_2" class="selectStyle2" style="width:44%" v-model="endAll">
+                    <span style="padding-right:4px"> 시 </span>
+                    <span style="padding:0 7px;"> ~ </span>
+                    <select name="admin_sub13_1_2" class="selectStyle2" style="width:32%" v-model="endAll">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시</span>
+                    <span style="padding-left:4px"> 시</span>
                   </div>
                 </div>
                 <hr class="mt15 mb15">
                 <div class="of_h">
                   <div class="consolCheck" style="width:30%"><input type="checkbox" id="coltMonYn" v-model="alarm.coltDayWeek.coltMonYn" class="checkStyle2"><label for="coltMonYn" class="vertical-sub color000">월요일</label></div>
                   <div class="inline-block float-right" style="width:70%">
-                    <select name="admin_sub13_1_3" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltMonStt">
+                    <select name="admin_sub13_1_3" class="selectStyle2" style="width:32%" v-model="alarm.coltDayWeek.coltMonStt">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~ </span>
-                    <select name="admin_sub13_1_4" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltMonEnd">
+                    <span style="padding-right:4px"> 시 </span>
+                    <span style="padding:0 7px;"> ~ </span>
+                    <select name="admin_sub13_1_4" class="selectStyle2" style="width:32%" v-model="alarm.coltDayWeek.coltMonEnd">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시</span>
+                    <span style="padding-left:4px"> 시</span>
                   </div>
                 </div>
                 <div class="of_h consolMarginTop">
                   <div class="consolCheck" style="width:30%"><input type="checkbox" id="coltTueYn" v-model="alarm.coltDayWeek.coltTueYn" class="checkStyle2"><label for="coltTueYn" class="vertical-sub color000">화요일</label></div>
                   <div class="inline-block float-right" style="width:70%">
-                    <select name="admin_sub13_1_5" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltTueStt">
+                    <select name="admin_sub13_1_5" class="selectStyle2" style="width:32%" v-model="alarm.coltDayWeek.coltTueStt">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~ </span>
-                    <select name="admin_sub13_1_6" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltTueEnd">
+                    <span style="padding-right:4px"> 시 </span>
+                    <span style="padding:0 7px;"> ~ </span>
+                    <select name="admin_sub13_1_6" class="selectStyle2" style="width:32%" v-model="alarm.coltDayWeek.coltTueEnd">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시</span>
+                    <span style="padding-left:4px"> 시</span>
                   </div>
                 </div>
                 <div class="of_h consolMarginTop">
                   <div class="consolCheck" style="width:30%"><input type="checkbox" id="coltWedYn" v-model="alarm.coltDayWeek.coltWedYn" class="checkStyle2"><label for="coltWedYn" class="vertical-sub color000">수요일</label></div>
                   <div class="inline-block float-right" style="width:70%">
-                    <select name="admin_sub13_1_7" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltWedStt">
+                    <select name="admin_sub13_1_7" class="selectStyle2" style="width:32%" v-model="alarm.coltDayWeek.coltWedStt">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~ </span>
-                    <select name="admin_sub13_1_8" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltWedEnd">
+                    <span style="padding-right:4px"> 시 </span>
+                    <span style="padding:0 7px;"> ~ </span>
+                    <select name="admin_sub13_1_8" class="selectStyle2" style="width:32%" v-model="alarm.coltDayWeek.coltWedEnd">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시</span>
+                    <span style="padding-left:4px"> 시</span>
                   </div>
                 </div>
                 <div class="of_h consolMarginTop">
                   <div class="consolCheck" style="width:30%"><input type="checkbox" id="coltThuYn" v-model="alarm.coltDayWeek.coltThuYn" class="checkStyle2"><label for="coltThuYn" class="vertical-sub color000">목요일</label></div>
                   <div class="inline-block float-right" style="width:70%">
-                    <select name="admin_sub13_1_9" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltThuStt">
+                    <select name="admin_sub13_1_9" class="selectStyle2" style="width:32%" v-model="alarm.coltDayWeek.coltThuStt">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~ </span>
-                    <select name="admin_sub13_1_10" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltThuEnd">
+                    <span style="padding-right:4px"> 시 </span>
+                    <span style="padding:0 7px;"> ~ </span>
+                    <select name="admin_sub13_1_10" class="selectStyle2" style="width:32%" v-model="alarm.coltDayWeek.coltThuEnd">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시</span>
+                    <span style="padding-left:4px"> 시</span>
                   </div>
                 </div>
                 <div class="of_h consolMarginTop">
                   <div class="consolCheck" style="width:30%"><input type="checkbox" id="coltFriYn" v-model="alarm.coltDayWeek.coltFriYn" class="checkStyle2"><label for="coltFriYn" class="vertical-sub color000">금요일</label></div>
                   <div class="inline-block float-right" style="width:70%">
-                    <select name="admin_sub13_1_11" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltFriStt">
+                    <select name="admin_sub13_1_11" class="selectStyle2" style="width:32%" v-model="alarm.coltDayWeek.coltFriStt">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~ </span>
-                    <select name="admin_sub13_1_12" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltFriEnd">
+                    <span style="padding-right:4px"> 시 </span>
+                    <span style="padding:0 7px;"> ~ </span>
+                    <select name="admin_sub13_1_12" class="selectStyle2" style="width:32%" v-model="alarm.coltDayWeek.coltFriEnd">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시</span>
+                    <span style="padding-left:4px"> 시</span>
                   </div>
                 </div>
                 <div class="of_h consolMarginTop">
                   <div class="consolCheck" style="width:30%"><input type="checkbox" id="coltSatYn" v-model="alarm.coltDayWeek.coltSatYn" class="checkStyle2"><label for="coltSatYn" class="vertical-sub color000">토요일</label></div>
                   <div class="inline-block float-right" style="width:70%">
-                    <select name="admin_sub13_1_13" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltSatStt">
+                    <select name="admin_sub13_1_13" class="selectStyle2" style="width:32%" v-model="alarm.coltDayWeek.coltSatStt">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~ </span>
-                    <select name="admin_sub13_1_14" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltSatEnd">
+                    <span style="padding-right:4px"> 시 </span>
+                    <span style="padding:0 7px;"> ~ </span>
+                    <select name="admin_sub13_1_14" class="selectStyle2" style="width:32%" v-model="alarm.coltDayWeek.coltSatEnd">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시</span>
+                    <span style="padding-left:4px"> 시</span>
                   </div>
                 </div>
                 <div class="of_h consolMarginTop">
                   <div class="consolCheck" style="width:30%"><input type="checkbox" id="coltSunYn" v-model="alarm.coltDayWeek.coltSunYn" class="checkStyle2"><label for="coltSunYn" class="vertical-sub color000">일요일</label></div>
                   <div class="inline-block float-right" style="width:70%">
-                    <select name="admin_sub13_1_15" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltSunStt">
+                    <select name="admin_sub13_1_15" class="selectStyle2" style="width:32%" v-model="alarm.coltDayWeek.coltSunStt">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시 ~ </span>
-                    <select name="admin_sub13_1_16" class="selectStyle2" style="width:44%" v-model="alarm.coltDayWeek.coltSunEnd">
+                    <span style="padding-right:4px"> 시 </span>
+                    <span style="padding:0 7px;"> ~ </span>
+                    <select name="admin_sub13_1_16" class="selectStyle2" style="width:32%" v-model="alarm.coltDayWeek.coltSunEnd">
                       <option value="">선택</option>
                       <option v-for="n in 24" v-bind:value="n-1">{{n-1}}</option>
                     </select>
-                    <span> 시</span>
+                    <span style="padding-left:4px"> 시</span>
                   </div>
                 </div>
               </div>
