@@ -216,129 +216,97 @@ FROM(
 
 
     <select id="selectSmartProductInfo" parameterType="hashmap" resultType="camel">
-    /* 스마트발송 상품 상세 조회 */
-SELECT R.ROW_NUM, R.PRODUCT_CODE, R.PRODUCT_NAME, R.CH_GRP, R.MSG_KIND
-     , R.MSG_KIND_NAME
-     , CONCAT(R.CH_ORDER_TYPE0,IF(IFNULL(R.CH_ORDER_TYPE1,'') = '','' ,','), IFNULL(R.CH_ORDER_TYPE1,'')
-		                        ,IF(IFNULL(R.CH_ORDER_TYPE2,'') = '','' ,','), IFNULL(R.CH_ORDER_TYPE2,'')
-		                        ,IF(IFNULL(R.CH_ORDER_TYPE3,'') = '','' ,','), IFNULL(R.CH_ORDER_TYPE3,'')
-             ) AS CH_TYPE_LIST
-     , CONCAT(R.CH_ORDER_GRP0,IF(IFNULL(R.CH_ORDER_GRP1,'') = '','' ,','), IFNULL(R.CH_ORDER_GRP1,'')
-		                        ,IF(IFNULL(R.CH_ORDER_GRP2,'') = '','' ,','), IFNULL(R.CH_ORDER_GRP2,'')
-		                        ,IF(IFNULL(R.CH_ORDER_GRP3,'') = '','' ,','), IFNULL(R.CH_ORDER_GRP3,'')
-             ) AS CH_GRP_LIST
-
-     , R.CH_ORDER_TYPE0 AS CH_TYPE0	, R.CH_ORDER_TYPE1 AS CH_TYPE1	, R.CH_ORDER_TYPE2 AS CH_TYPE2	, R.CH_ORDER_TYPE3 AS CH_TYPE3
-     , R.CH_ORDER_SPEC0 AS SPEC0	, R.CH_ORDER_SPEC1 AS SPEC1		, R.CH_ORDER_SPEC2 AS SPEC2		, R.CH_ORDER_SPEC3 AS SPEC3
-FROM(
-		SELECT T.ROW_NUM, T.PRODUCT_CODE, T.PRODUCT_NAME, T.CH_GRP, T.MSG_KIND
-		     , C.CODE_NAME_1 AS MSG_KIND_NAME
-		     , CASE WHEN IFNULL(T.ORDER0,'') = '1' THEN T.CH_GRP0
-		            WHEN IFNULL(T.ORDER1,'') = '1' THEN T.CH_GRP1
-		            WHEN IFNULL(T.ORDER2,'') = '1' THEN T.CH_GRP2
-		            WHEN IFNULL(T.ORDER3,'') = '1' THEN T.CH_GRP3
-		            END AS CH_ORDER_GRP0
-		     , CASE WHEN IFNULL(T.ORDER0,'') = '2' THEN T.CH_GRP0
-		            WHEN IFNULL(T.ORDER1,'') = '2' THEN T.CH_GRP1
-		            WHEN IFNULL(T.ORDER2,'') = '2' THEN T.CH_GRP2
-		            WHEN IFNULL(T.ORDER3,'') = '2' THEN T.CH_GRP3
-		            END AS CH_ORDER_GRP1
-		     , CASE WHEN IFNULL(T.ORDER0,'') = '3' THEN T.CH_GRP0
-		            WHEN IFNULL(T.ORDER1,'') = '3' THEN T.CH_GRP1
-		            WHEN IFNULL(T.ORDER2,'') = '3' THEN T.CH_GRP2
-		            WHEN IFNULL(T.ORDER3,'') = '3' THEN T.CH_GRP3
-		            END AS CH_ORDER_GRP2
-		     , CASE WHEN IFNULL(T.ORDER0,'') = '4' THEN T.CH_GRP0
-		            WHEN IFNULL(T.ORDER1,'') = '4' THEN T.CH_GRP1
-		            WHEN IFNULL(T.ORDER2,'') = '4' THEN T.CH_GRP2
-		            WHEN IFNULL(T.ORDER3,'') = '4' THEN T.CH_GRP3
-		            END AS CH_ORDER_GRP3
-
-		     , CASE WHEN IFNULL(T.ORDER0,'') = '1' THEN T.CH_TYPE0
-		            WHEN IFNULL(T.ORDER1,'') = '1' THEN T.CH_TYPE1
-		            WHEN IFNULL(T.ORDER2,'') = '1' THEN T.CH_TYPE2
-		            WHEN IFNULL(T.ORDER3,'') = '1' THEN T.CH_TYPE3
-		            END AS CH_ORDER_TYPE0
-		     , CASE WHEN IFNULL(T.ORDER0,'') = '2' THEN T.CH_TYPE0
-		            WHEN IFNULL(T.ORDER1,'') = '2' THEN T.CH_TYPE1
-		            WHEN IFNULL(T.ORDER2,'') = '2' THEN T.CH_TYPE2
-		            WHEN IFNULL(T.ORDER3,'') = '2' THEN T.CH_TYPE3
-		            END AS CH_ORDER_TYPE1
-		     , CASE WHEN IFNULL(T.ORDER0,'') = '3' THEN T.CH_TYPE0
-		            WHEN IFNULL(T.ORDER1,'') = '3' THEN T.CH_TYPE1
-		            WHEN IFNULL(T.ORDER2,'') = '3' THEN T.CH_TYPE2
-		            WHEN IFNULL(T.ORDER3,'') = '3' THEN T.CH_TYPE3
-		            END AS CH_ORDER_TYPE2
-		     , CASE WHEN IFNULL(T.ORDER0,'') = '4' THEN T.CH_TYPE0
-		            WHEN IFNULL(T.ORDER1,'') = '4' THEN T.CH_TYPE1
-		            WHEN IFNULL(T.ORDER2,'') = '4' THEN T.CH_TYPE2
-		            WHEN IFNULL(T.ORDER3,'') = '4' THEN T.CH_TYPE3
-		            END AS CH_ORDER_TYPE3
-		     , CASE WHEN IFNULL(T.ORDER0,'') = '1' THEN T.SPEC0
-		            WHEN IFNULL(T.ORDER1,'') = '1' THEN T.SPEC1
-		            WHEN IFNULL(T.ORDER2,'') = '1' THEN T.SPEC2
-		            WHEN IFNULL(T.ORDER3,'') = '1' THEN T.SPEC3
-		            END AS CH_ORDER_SPEC0
-		     , CASE WHEN IFNULL(T.ORDER0,'') = '2' THEN T.SPEC0
-		            WHEN IFNULL(T.ORDER1,'') = '2' THEN T.SPEC1
-		            WHEN IFNULL(T.ORDER2,'') = '2' THEN T.SPEC2
-		            WHEN IFNULL(T.ORDER3,'') = '2' THEN T.SPEC3
-		            END AS CH_ORDER_SPEC1
-		     , CASE WHEN IFNULL(T.ORDER0,'') = '3' THEN T.SPEC0
-		            WHEN IFNULL(T.ORDER1,'') = '3' THEN T.SPEC1
-		            WHEN IFNULL(T.ORDER2,'') = '3' THEN T.SPEC2
-		            WHEN IFNULL(T.ORDER3,'') = '3' THEN T.SPEC3
-		            END AS CH_ORDER_SPEC2
-		     , CASE WHEN IFNULL(T.ORDER0,'') = '4' THEN T.SPEC0
-		            WHEN IFNULL(T.ORDER1,'') = '4' THEN T.SPEC1
-		            WHEN IFNULL(T.ORDER2,'') = '4' THEN T.SPEC2
-		            WHEN IFNULL(T.ORDER3,'') = '4' THEN T.SPEC3
-		            END AS CH_ORDER_SPEC3
-
-		FROM(
-				SELECT  @rownum:=@rownum+1 AS ROW_NUM
-				      , A.PRODUCT_CODE, A.PRODUCT_NAME, A.CH_GRP
-				 	  , A.SMART_CH_PRODUCT ->> '$.msg_kind' AS MSG_KIND
-
-				      , A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' AS CH_TYPE0
-					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' AS CH_TYPE1
-					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' AS CH_TYPE2
-					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' AS CH_TYPE3
-
-					  , CASE WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' = 'MMS' 		 OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' = 'SMS' THEN 'SMSMMS'
-		                  WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' = 'FRIENDTAKL' OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' = 'ALIMTALK' THEN 'KAKAO'
-		                  ELSE A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType'
-		                  END AS CH_GRP0
-					  , CASE WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' = 'MMS'			 OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' = 'SMS' THEN 'SMSMMS'
-		                  WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' = 'FRIENDTAKL' OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' = 'ALIMTALK' THEN 'KAKAO'
-		                  ELSE A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType'
-		                  END AS CH_GRP1
-					  , CASE WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' = 'MMS' 		 OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' = 'SMS' THEN 'SMSMMS'
-		                  WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' = 'FRIENDTAKL' OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' = 'ALIMTALK' THEN 'KAKAO'
-		                  ELSE A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType'
-		                  END AS CH_GRP2
-					  , CASE WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' = 'MMS' 		 OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' = 'SMS' THEN 'SMSMMS'
-		                  WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' = 'FRIENDTAKL' OR  A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' = 'ALIMTALK' THEN 'KAKAO'
-		                  ELSE A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType'
-		                  END AS CH_GRP3
-
-				      , A.SMART_CH_PRODUCT ->> '$.msg_ch[0].spec' AS SPEC0
-					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[1].spec' AS SPEC1
-					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[2].spec' AS SPEC2
-					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[3].spec' AS SPEC3
-
-				      , A.SMART_CH_PRODUCT ->> '$.msg_ch[0].order' AS ORDER0
-					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[1].order' AS ORDER1
-					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[2].order' AS ORDER2
-					  , A.SMART_CH_PRODUCT ->> '$.msg_ch[3].order' AS ORDER3
+		/* 스마트발송 상품 상세 조회 */
+		SELECT
+			R.ROW_NUM, R.PRODUCT_CODE, R.PRODUCT_NAME, R.CH_GRP, R.MSG_KIND, R.MSG_KIND_NAME,
+			CONCAT(R.CH_ORDER_TYPE0, IF(IFNULL(R.CH_ORDER_TYPE1,'') = '','' ,','), IFNULL(R.CH_ORDER_TYPE1,'')
+													   , IF(IFNULL(R.CH_ORDER_TYPE2,'') = '','' ,','), IFNULL(R.CH_ORDER_TYPE2,'')
+													   , IF(IFNULL(R.CH_ORDER_TYPE3,'') = '','' ,','), IFNULL(R.CH_ORDER_TYPE3,'')
+			) AS CH_TYPE_LIST,
+			R.CH_ORDER_TYPE0 AS CH_TYPE0,
+			R.CH_ORDER_TYPE1 AS CH_TYPE1,
+			R.CH_ORDER_TYPE2 AS CH_TYPE2,
+			R.CH_ORDER_TYPE3 AS CH_TYPE3,
+			R.PUSH_SPEC, R.RCS_SPEC, R.KKO_SPEC, R.XMS_SPEC
+		FROM (
+			SELECT
+				T.ROW_NUM, T.PRODUCT_CODE, T.PRODUCT_NAME, T.CH_GRP, T.MSG_KIND,
+				C.CODE_NAME_1 AS MSG_KIND_NAME,
+				CASE
+					WHEN IFNULL(T.ORDER0,'') = '1' THEN T.CH_TYPE0
+					WHEN IFNULL(T.ORDER1,'') = '1' THEN T.CH_TYPE1
+					WHEN IFNULL(T.ORDER2,'') = '1' THEN T.CH_TYPE2
+					WHEN IFNULL(T.ORDER3,'') = '1' THEN T.CH_TYPE3
+				END AS CH_ORDER_TYPE0,
+				CASE
+					WHEN IFNULL(T.ORDER0,'') = '2' THEN T.CH_TYPE0
+					WHEN IFNULL(T.ORDER1,'') = '2' THEN T.CH_TYPE1
+					WHEN IFNULL(T.ORDER2,'') = '2' THEN T.CH_TYPE2
+					WHEN IFNULL(T.ORDER3,'') = '2' THEN T.CH_TYPE3
+				END AS CH_ORDER_TYPE1,
+				CASE
+					WHEN IFNULL(T.ORDER0,'') = '3' THEN T.CH_TYPE0
+					WHEN IFNULL(T.ORDER1,'') = '3' THEN T.CH_TYPE1
+					WHEN IFNULL(T.ORDER2,'') = '3' THEN T.CH_TYPE2
+					WHEN IFNULL(T.ORDER3,'') = '3' THEN T.CH_TYPE3
+				END AS CH_ORDER_TYPE2,
+				CASE
+					WHEN IFNULL(T.ORDER0,'') = '4' THEN T.CH_TYPE0
+					WHEN IFNULL(T.ORDER1,'') = '4' THEN T.CH_TYPE1
+					WHEN IFNULL(T.ORDER2,'') = '4' THEN T.CH_TYPE2
+					WHEN IFNULL(T.ORDER3,'') = '4' THEN T.CH_TYPE3
+				END AS CH_ORDER_TYPE3,
+				T.PUSH_SPEC, T.RCS_SPEC, T.KKO_SPEC, T.XMS_SPEC
+			FROM (
+				SELECT
+					@rownum:=@rownum+1 AS ROW_NUM,
+					A.PRODUCT_CODE, A.PRODUCT_NAME, A.CH_GRP,
+					A.SMART_CH_PRODUCT ->> '$.msg_kind' AS MSG_KIND,
+					A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' AS CH_TYPE0,
+					A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' AS CH_TYPE1,
+					A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' AS CH_TYPE2,
+					A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' AS CH_TYPE3,
+					A.SMART_CH_PRODUCT ->> '$.msg_ch[0].order' AS ORDER0,
+					A.SMART_CH_PRODUCT ->> '$.msg_ch[1].order' AS ORDER1,
+					A.SMART_CH_PRODUCT ->> '$.msg_ch[2].order' AS ORDER2,
+					A.SMART_CH_PRODUCT ->> '$.msg_ch[3].order' AS ORDER3,
+					CASE
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' = 'PUSH' then A.SMART_CH_PRODUCT ->> '$.msg_ch[0].spec'
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' = 'PUSH' then A.SMART_CH_PRODUCT ->> '$.msg_ch[1].spec'
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' = 'PUSH' then A.SMART_CH_PRODUCT ->> '$.msg_ch[2].spec'
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' = 'PUSH' then A.SMART_CH_PRODUCT ->> '$.msg_ch[3].spec'
+						ELSE ''
+					END AS PUSH_SPEC,
+					CASE
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' = 'RCS' then A.SMART_CH_PRODUCT ->> '$.msg_ch[0].spec'
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' = 'RCS' then A.SMART_CH_PRODUCT ->> '$.msg_ch[1].spec'
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' = 'RCS' then A.SMART_CH_PRODUCT ->> '$.msg_ch[2].spec'
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' = 'RCS' then A.SMART_CH_PRODUCT ->> '$.msg_ch[3].spec'
+						ELSE ''
+					END AS RCS_SPEC,
+					CASE
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' = 'KKO' then A.SMART_CH_PRODUCT ->> '$.msg_ch[0].spec'
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' = 'KKO' then A.SMART_CH_PRODUCT ->> '$.msg_ch[1].spec'
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' = 'KKO' then A.SMART_CH_PRODUCT ->> '$.msg_ch[2].spec'
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' = 'KKO' then A.SMART_CH_PRODUCT ->> '$.msg_ch[3].spec'
+						ELSE ''
+					END AS KKO_SPEC,
+					CASE
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[0].chType' = 'SMS/MMS' then A.SMART_CH_PRODUCT ->> '$.msg_ch[0].spec'
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[1].chType' = 'SMS/MMS' then A.SMART_CH_PRODUCT ->> '$.msg_ch[1].spec'
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[2].chType' = 'SMS/MMS' then A.SMART_CH_PRODUCT ->> '$.msg_ch[2].spec'
+						WHEN A.SMART_CH_PRODUCT ->> '$.msg_ch[3].chType' = 'SMS/MMS' then A.SMART_CH_PRODUCT ->> '$.msg_ch[3].spec'
+						ELSE ''
+					END AS XMS_SPEC
 				FROM cm_bo.CM_PRODUCT_UNIT A
-				   , (SELECT @rownum:=0) TMP
+					, (SELECT @rownum:=0) TMP
 				WHERE A.SMART_CH_PRODUCT_YN = 'Y'
-		          AND A.USE_YN = 'Y'
-		          AND A.PRODUCT_CODE  = #{productCode}
+				AND A.USE_YN = 'Y'
+				AND A.PRODUCT_CODE  = #{productCode}
 				ORDER BY A.REG_DT DESC
-		) T LEFT OUTER JOIN cm_bo.CM_CODE C ON T.MSG_KIND = C.CODE_VAL_1 AND C.CODE_TYPE_CD = 'MSG_KIND'
-) R
+			) T LEFT OUTER JOIN cm_bo.CM_CODE C
+				ON T.MSG_KIND = C.CODE_VAL_1 AND C.CODE_TYPE_CD = 'MSG_KIND'
+		) R
     </select>
 
 
