@@ -546,7 +546,6 @@ public class ChannelService {
 		}
 		
 		// 데이터 처리
-		List<Object> list = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
 		String brandId = CommonUtils.getString(params.get("brandId"));
 		String projectAllYn = "N";
@@ -636,13 +635,6 @@ public class ChannelService {
 			chatbotJson = (JSONArray) parser.parse(chatbotStr);
 			map.put("chatbots",		chatbotJson);
 		}
-		
-		// map to json
-		kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(map);
-		
-		//System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
-//		list.add(json2222);
-		list.add(map);
 		
 		// 임시저장
 		if( "save".equals(sts) ) {
@@ -738,11 +730,8 @@ public class ChannelService {
 			}
 			
 			// API 통신 처리
-			Map<String, Object> result =  apiInterface.listPost("/console/v1/rcs/brand/", list, headerMap);
+			Map<String, Object> result =  apiInterface.post("/console/v1/rcs/brand/", map, headerMap);
 			
-//			System.out.println("-------------------------------------------@@@ result : " + result);
-//			System.out.println("-------------------------------------------@@@ headerMap : " + headerMap);
-//			System.out.println("-------------------------------------------@@@ list : " + list);
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
 			} else if ( "500100".equals(result.get("code")) ) {
