@@ -312,7 +312,7 @@ export default {
 			let monSenderLimitAmount	= jQuery('#monSenderLimitAmount').val();
 			
 			let ipList					= this.ipList;
-			if(this.$gfnCommonUtils.isEmpty(apiPwd)) {
+			if(!(saveStatus =='U' && this.$gfnCommonUtils.isEmpty(this.apiKeyData.apiPwd)) && this.$gfnCommonUtils.isEmpty(apiPwd)) {
 				confirm.fnAlert(this.title, 'API 암호를 입력하세요');
 				return false;
 			}
