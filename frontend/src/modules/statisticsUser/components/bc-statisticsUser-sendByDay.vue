@@ -116,9 +116,9 @@ components: {
 			require: false,
 			default: function() {
 				return {
-					'searchStartDate' : this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -8),
-					'searchEndDate' : this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -1),
-					'maxDate' : this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -1),
+					'searchStartDate' : this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -7),
+					'searchEndDate' : this.$gfnCommonUtils.getCurretDate(),
+					'maxDate' : this.$gfnCommonUtils.getCurretDate(),
 				}
 			}
 		}
@@ -314,7 +314,7 @@ components: {
 		//검색일자변경
 		fnSetIntervalSearchDate(interval){
 			this.searchDateInterval = interval;
-			this.searchData.searchEndDate = this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -1);
+			this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
 			this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
 		},
 		fnUpdateStartDate(sltDate) {

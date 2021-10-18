@@ -117,7 +117,7 @@ components: {
 			default: function() {
 				return {
 					'searchStartDate' : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -3),
-					'searchEndDate' : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -1),
+					'searchEndDate' : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), 0),
 				}
 			}
 		}
@@ -343,7 +343,7 @@ components: {
 		fnSetIntervalSearchDate(interval){
 			this.searchDateInterval = interval;
 			this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -this.searchDateInterval);
-			this.searchData.searchEndDate = this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -1);
+			this.searchData.searchEndDate = this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), 0);
 		},
 		// 유효성 검사
 		fnChkValidation() {
