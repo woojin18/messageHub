@@ -117,9 +117,9 @@ export default {
 			require: false,
 			default: function() {
 				return {
-					'searchStartDate' : this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -8),
-					'searchEndDate' : this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -1),
-					'maxDate' : this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -1),
+					'searchStartDate' : this.$gfnCommonUtils.strDateAddDay(this.$gfnCommonUtils.getCurretDate(), -7),
+					'searchEndDate' : this.$gfnCommonUtils.getCurretDate(),
+					'maxDate' : this.$gfnCommonUtils.getCurretDate(),
 					'searchProjectId' : '',
 					'searchDateType' : 'DAY',
 					'searchChanType' : 'RCS',
@@ -141,7 +141,7 @@ export default {
 			sumSuccCnt: 0,
 			totalSuccRatio: 0,
 			searchStartMonth : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -3),
-			searchEndMonth : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -1),
+			searchEndMonth : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), 0)
 		}
 	},
 	mounted() {
@@ -208,7 +208,7 @@ export default {
 				buttonImage:'../../se2/images/datepicker.png',
 				buttonImageOnly: true,
 				showOn: 'button',
-				maxDate: this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -1)
+				maxDate: this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), 0)
 			});
 			jQuery("#endDate").monthpicker({
 				monthNames:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
@@ -218,7 +218,7 @@ export default {
 				buttonImage:'../../se2/images/datepicker.png',
 				buttonImageOnly: true,
 				showOn: 'button',
-				maxDate: this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -1)
+				maxDate: this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), 0)
 			});
 		},
 		// 합계
