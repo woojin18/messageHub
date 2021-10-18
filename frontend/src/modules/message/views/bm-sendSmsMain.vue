@@ -186,7 +186,7 @@
                 <h5 style="margin: 5px 0;">일 발송금액 / 일 발송제한금액</h5>
               </div>
               <div class="of_h" style="width:60%;">
-                <p style="font-size: 14px; margin-top: 3px;">{{dayAmount}} / {{daySenderLimitAmout}}</p>
+                <p style="font-size: 14px; margin-top: 3px;">{{dayAmount | comma}} / {{daySenderLimitAmout | comma}}</p>
               </div>
             </div>
             <div class="of_h">
@@ -194,7 +194,7 @@
                 <h5 style="margin: 5px 0;">월 발송금액 / 월 발송제한금액</h5>
               </div>
               <div class="of_h" style="width:60%;">
-                <p style="font-size: 14px; margin-top: 3px;">{{monthAmount}} / {{monSenderLimitAmout}}</p>
+                <p style="font-size: 14px; margin-top: 3px;">{{monthAmount | comma}} / {{monSenderLimitAmout | comma}}</p>
               </div>
             </div>
           </div>
@@ -249,6 +249,11 @@ export default {
         return 'SMS 발송';
       }
     },
+  },
+  filters: {
+    comma (val) {
+      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    }
   },
   data() {
     return {
