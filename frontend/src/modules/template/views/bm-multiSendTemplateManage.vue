@@ -122,7 +122,7 @@
 							</div>
 						</div>
 						<div class="of_h mt15">
-							<div class="float-left" style="width:60%"><h5>SMS/MMS</h5></div>
+							<div class="float-left" style="width:60%"><h5>문자</h5></div>
 							<div class="float-left mt5" style="width:40%">
 								<input v-if="projectUseChannelInfoData.smsmmsYn == 'Y'" type="checkbox" id="SMSMMS" class="checkStyle2" value="SMSMMS" v-model="rowData.checkedChannel" @click="toggleOnOffSmsMms">
 								<input v-if="projectUseChannelInfoData.smsmmsYn != 'Y'" type="checkbox" id="SMSMMS" class="checkStyle2" value="SMSMMS" v-model="rowData.checkedChannel" @click="toggleOnOffSmsMms" disabled>
@@ -157,7 +157,7 @@
 				<li v-bind:class="[ channelTab === 0 ? 'active' : '']"><a title="Push 페이지로 이동"           v-on:click="channelTab=0" v-bind:class="[ channelTab === 0 ? 'active' : '']" v-if="checkedPush">Push</a></li>
 				<li v-bind:class="[ channelTab === 1 ? 'active' : '']"><a title="RCS 페이지로 이동"            v-on:click="channelTab=1" v-bind:class="[ channelTab === 1 ? 'active' : '']" v-if="checkedRCS">RCS</a></li>
 				<li v-bind:class="[ channelTab === 2 ? 'active' : '']"><a title="카카오톡 페이지로 이동"         v-on:click="channelTab=2" v-bind:class="[ channelTab === 2 ? 'active' : '']" v-if="checkedKakao">카카오톡</a></li>
-				<li v-bind:class="[ channelTab === 3 ? 'active' : '']"><a title="SMS/MMS 페이지로 이동"        v-on:click="channelTab=3" v-bind:class="[ channelTab === 3 ? 'active' : '']" v-if="checkedSmsMms">SMS/MMS</a></li>
+				<li v-bind:class="[ channelTab === 3 ? 'active' : '']"><a title="문자 페이지로 이동"        v-on:click="channelTab=3" v-bind:class="[ channelTab === 3 ? 'active' : '']" v-if="checkedSmsMms">문자</a></li>
 			</ul>
 		</div>
 

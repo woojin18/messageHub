@@ -19,7 +19,7 @@
 						</div>
 					</div>
 					<div class="of_h">
-						<div class="inline-block" style="width:8%"><h4 class="font-normal mt15">메시지구분</h4></div>
+						<div class="inline-block" style="width:8%"><h4 class="font-normal mt15">메시지 구분</h4></div>
 						<div class="inline-block" style="width:91%">
 							<div class="consolCheck consolMarginTop">
 								<input type="checkbox" id="otherUse_all" class="checkStyle2" @change="fnSearchMsgKindCdChkAll" v-model="msgKindCdAllSelected">
@@ -32,7 +32,7 @@
 						</div>
 					</div>
 					<div class="of_h">
-						<div class="inline-block" style="width:8%"><h4 class="font-normal mt15">템플릿채널</h4></div>
+						<div class="inline-block" style="width:8%"><h4 class="font-normal mt15">템플릿 유형</h4></div>
 						<div class="inline-block" style="width:91%">
 							<div class="consolCheck consolMarginTop">
 								<input type="checkbox" id="searchMsgCh_all" class="checkStyle2" @change="fnSearchMsgChChkAll" v-model="msgChAllSelected">
@@ -322,6 +322,11 @@ export default {
 			chList.forEach(element => {
 				chStr += (vm.$gfnCommonUtils.isEmpty(chStr) ? '' : ', ') + element;
 			});
+
+			// SMS, MMS 문자열 출력 치환
+			chStr = chStr.replace('SMS' , '문자');
+			chStr = chStr.replace('MMS' , '문자');
+
 			return chStr;
 		},
 		// 리스트 전체 체크박스

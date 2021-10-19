@@ -73,7 +73,7 @@
                   <th class="text-center lc-1 end" rowspan="2">발송일자</th>
                 </tr>
                 <tr>		
-                  <th class="text-center lc-1">SMS</th>
+                  <th class="text-center lc-1">문자</th>
                   <th class="text-center lc-1">RCS</th>
                   <th class="text-center lc-1">알림톡</th>
                   <th class="text-center lc-1">친구톡</th>
