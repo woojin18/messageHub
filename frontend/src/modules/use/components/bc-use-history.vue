@@ -13,8 +13,7 @@
 						-->
 						<h4 class="mt20">{{searchData.searchYear}}년 {{searchData.searchMonth}}월 이용금액 <input type="hidden" id="monthcalendar" :value="searchData.searchStartDate" /> </h4>
 						<p class="color4">{{searchData.searchYear}}년 {{searchData.searchMonth}}월 01일 ~ {{searchData.searchYear}}년 {{searchData.searchMonth}}월 {{monthLastDate}}일</p>
-						<h4 class="color000 mt10"><span class="color1">{{totalSumAmount | comma}} </span>원(부가세 포함)</h4>
-						<p class="color1 mt5">(당일 이용내역은 포함되지 않습니다.)</p>
+						<h4 class="color000 mt10"><span class="color1">{{totalSumAmount | comma}} </span>원(부가세 포함)</h4> 
 					</div>
 					<div class="col-xs-6 text-center">
 						<table class="table_skin1">

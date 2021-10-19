@@ -60,14 +60,17 @@
                                     </div>
                                     <div v-if="templateRadioBtn=='cell'" class="of_h">
                                         <h5 style="width:22%" class="float-left ml30 font-size14 color000">내용</h5>
-										<div v-for="n in styleContentCnt" class="of_h consolMarginTop">
+										<div v-for="n in styleContentCnt" class="of_h consolMarginTop" v-if="n==1">
+											<a class="color4 ml30">{{styleInput[n-1]}}</a>
+											<a class="color4 float-right">{{styleInputSec[n-1]}}</a>
+										</div>
+                                        <div v-for="n in styleContentCnt" class="of_h consolMarginTop" v-if="n!=1" style="margin-left:32%;">
 											<a class="color4 ml30">{{styleInput[n-1]}}</a>
 											<a class="color4 float-right">{{styleInputSec[n-1]}}</a>
 										</div>
                                     </div>
                                     <div v-for="n in btnCnt" class="of_h">
-                                        <h5 style="width:22%" class="float-left ml30 font-size14 color000">버튼{{n}}</h5>
-                                        <h5 style="width:59%" class="float-right color4 word-break-all">{{selectBtn[n-1]}}</h5>
+                                        <h5 style="width:22%" class="float-left ml30 font-size14 color000">버튼</h5>
                                         <h5 style="width:59%" class="float-right color4 word-break-all">{{btnNm[n-1]}}</h5>
                                     </div>					
                                 </div>
@@ -77,7 +80,10 @@
                                         <div class="phoneTextWrap">
                                             <div v-if="templateRadioBtn=='des'" class="phoneText1 scroll-y2">
                                                 <p><pre>{{desContent}}</pre></p>
-                                                <p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
+                                                <div v-for="n in btnCnt">
+                                                    <p class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
+                                                </div>
+                                                
                                             </div>
                                             <div v-if="templateRadioBtn=='cell'" class="phoneText1 scroll-y2">
                                                 <div v-for="n in styleContentCnt" class="of_h consolMarginTop">
@@ -85,7 +91,9 @@
 											        <p class="lc-1 inline-block float-right">{{styleInputSec[n-1]}}</p>
                                                     <hr v-if="styleChk[n-1]">
                                                 </div>
-                                                <p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
+                                                <div v-for="n in btnCnt">
+                                                    <p class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
