@@ -7,7 +7,7 @@
 			<!-- 본문 -->
 			<div class="contentBody">
 				<ul class="tab_s6" style="position: relative; top: -2px;">
-					<li :class="{active:(selMainTab == 4)}" @click="selMainTab=4; selMidTab=1; selSubTab==1"><a>SMS/LMS/MMS</a></li>
+					<li :class="{active:(selMainTab == 4)}" @click="selMainTab=4; selMidTab=1; selSubTab==1"><a>문자</a></li>
 					<li :class="{active:(selMainTab == 2)}" @click="selMainTab=2; selMidTab=1; selSubTab==1"><a>RCS</a></li>
 					<li :class="{active:(selMainTab == 3)}" @click="selMainTab=3; selMidTab=1; selSubTab==1"><a>카카오톡</a></li>
 					<li :class="{active:(selMainTab == 1)}" @click="selMainTab=1; selMidTab=1; selSubTab==1"><a>Push</a></li>

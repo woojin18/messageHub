@@ -263,6 +263,10 @@ export default {
         chStr += (vm.$gfnCommonUtils.isEmpty(chStr) ? '' : ', ') + element;
       });
 
+      // SMS, MMS 문자열 출력 치환
+			chStr = chStr.replace('SMS' , '문자');
+			chStr = chStr.replace('MMS' , '문자');
+
       return chStr;
     },
     //검색일자변경

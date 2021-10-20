@@ -124,9 +124,9 @@
 						<div class="of_h mt15">
 							<div class="float-left" style="width:60%"><h5>문자</h5></div>
 							<div class="float-left mt5" style="width:40%">
-								<input v-if="projectUseChannelInfoData.smsmmsYn == 'Y'" type="checkbox" id="SMSMMS" class="checkStyle2" value="SMSMMS" v-model="rowData.checkedChannel" @click="toggleOnOffSmsMms">
-								<input v-if="projectUseChannelInfoData.smsmmsYn != 'Y'" type="checkbox" id="SMSMMS" class="checkStyle2" value="SMSMMS" v-model="rowData.checkedChannel" @click="toggleOnOffSmsMms" disabled>
-								<label for="SMSMMS"></label>
+								<input v-if="projectUseChannelInfoData.smsmmsYn == 'Y'" type="checkbox" id="문자" class="checkStyle2" value="문자" v-model="rowData.checkedChannel" @click="toggleOnOffSmsMms">
+								<input v-if="projectUseChannelInfoData.smsmmsYn != 'Y'" type="checkbox" id="문자" class="checkStyle2" value="문자" v-model="rowData.checkedChannel" @click="toggleOnOffSmsMms" disabled>
+								<label for="문자"></label>
 							</div>
 						</div>
 					</div>
@@ -2421,7 +2421,7 @@ export default {
 						this.channelTab = 1;
 					} else if (this.rowData.checkedChannel[0] === 'KAKAO') {
 						this.channelTab = 2;
-					} else if (this.rowData.checkedChannel[0] === 'SMSMMS') {
+					} else if (this.rowData.checkedChannel[0] === '문자') {
 						this.channelTab = 3;
 					}
 				}
@@ -2448,7 +2448,7 @@ export default {
 						this.channelTab = 0;
 					} else if (this.rowData.checkedChannel[0] === 'KAKAO') {
 						this.channelTab = 2;
-					} else if (this.rowData.checkedChannel[0] === 'SMSMMS') {
+					} else if (this.rowData.checkedChannel[0] === '문자') {
 						this.channelTab = 3;
 					}
 				}
@@ -2476,7 +2476,7 @@ export default {
 						this.channelTab = 0;
 					} else if (this.rowData.checkedChannel[0] === 'RCS') {
 						this.channelTab = 1;
-					} else if (this.rowData.checkedChannel[0] === 'SMSMMS') {
+					} else if (this.rowData.checkedChannel[0] === '문자') {
 						this.channelTab = 3;
 					}
 				}
@@ -2490,7 +2490,7 @@ export default {
 				this.checkedSmsMms = false;
 
 				for (let i = 0; i < this.rowData.checkedChannel.length; i++) {
-					if (this.rowData.checkedChannel[i] === 'SMSMMS') {
+					if (this.rowData.checkedChannel[i] === '문자') {
 						this.rowData.checkedChannel.splice(i, 1);
 						i--;
 					}
@@ -2749,7 +2749,7 @@ export default {
 					this.rowData.checkedChannel[0] = 'PUSH';
 					this.rowData.checkedChannel[1] = 'KAKAO'
 					this.rowData.checkedChannel[2] = 'RCS';
-					this.rowData.checkedChannel[3] = 'SMSMMS';
+					this.rowData.checkedChannel[3] = '문자';
 					jQuery(".borderLightGray").removeClass("active");
 				} else if (this.rowData.checkedChannel.length == 3) {
 					for (var i=0; i < this.rowData.checkedChannel.length; i++) {
@@ -2759,7 +2759,7 @@ export default {
 							rcsFlag = true;
 						} else if(this.rowData.checkedChannel[i] == 'KAKAO') {
 							kakaoFlag = true;
-						} else if(this.rowData.checkedChannel[i] == 'SMSMMS') {
+						} else if(this.rowData.checkedChannel[i] == '문자') {
 							smsFlag = true;
 						}
 					}
@@ -2769,17 +2769,17 @@ export default {
 					if (pushFlag == false) {
 						this.rowData.checkedChannel[0] = 'KAKAO';
 						this.rowData.checkedChannel[1] = 'RCS'
-						this.rowData.checkedChannel[2] = 'SMSMMS';
+						this.rowData.checkedChannel[2] = '문자';
 					}
 					if (kakaoFlag == false) {
 						this.rowData.checkedChannel[0] = 'PUSH';
 						this.rowData.checkedChannel[1] = 'RCS'
-						this.rowData.checkedChannel[2] = 'SMSMMS';
+						this.rowData.checkedChannel[2] = '문자';
 					}
 					if (rcsFlag == false) {
 						this.rowData.checkedChannel[0] = 'PUSH';
 						this.rowData.checkedChannel[1] = 'KAKAO'
-						this.rowData.checkedChannel[2] = 'SMSMMS';
+						this.rowData.checkedChannel[2] = '문자';
 					}
 					if (smsFlag == false) {
 						this.rowData.checkedChannel[0] = 'PUSH';
@@ -2795,7 +2795,7 @@ export default {
 							rcsFlag = true;
 						} else if(this.rowData.checkedChannel[i] == 'KAKAO') {
 							kakaoFlag = true;
-						} else if(this.rowData.checkedChannel[i] == 'SMSMMS') {
+						} else if(this.rowData.checkedChannel[i] == '문자') {
 							smsFlag = true;
 						}
 					}
@@ -2813,7 +2813,7 @@ export default {
 						}
 						if (smsFlag == true) {
 							this.rowData.checkedChannel[0] = 'PUSH';
-							this.rowData.checkedChannel[1] = 'SMSMMS'
+							this.rowData.checkedChannel[1] = '문자'
 						}
 					}
 					if (kakaoFlag == true) {
@@ -2823,13 +2823,13 @@ export default {
 						}
 						if (smsFlag == true) {
 							this.rowData.checkedChannel[0] = 'KAKAO';
-							this.rowData.checkedChannel[1] = 'SMSMMS'
+							this.rowData.checkedChannel[1] = '문자'
 						}
 					}
 					if (rcsFlag == true) {
 						if (smsFlag == true) {
 							this.rowData.checkedChannel[0] = 'RCS';
-							this.rowData.checkedChannel[1] = 'SMSMMS'
+							this.rowData.checkedChannel[1] = '문자'
 						}
 					}
 					jQuery(".borderLightGray").removeClass("active");
@@ -3232,7 +3232,7 @@ export default {
 					}
 				}
 
-				if (this.rowData.checkedChannel.includes('SMSMMS')) {
+				if (this.rowData.checkedChannel.includes('문자')) {
 					if (this.smsTemplateTable === 0) { //SMS
 						if (!this.rowData.smsContent) {
 							confirm.fnAlert(this.detailTitle, 'sms 내용을 입력해주세요.');
@@ -3377,7 +3377,7 @@ export default {
 							} else if(this.rowData.checkedChannel[i] == 'KAKAO') {
 								this.channelTab = 2;
 								this.checkedKakao = true;
-							} else if(this.rowData.checkedChannel[i] == 'SMSMMS') {
+							} else if(this.rowData.checkedChannel[i] == '문자') {
 								this.channelTab = 3;
 								this.checkedSmsMms = true;
 							}
@@ -3392,7 +3392,7 @@ export default {
 						} else if (firstChannel == 'KAKAO') {
 							this.channelTab = 2;
 							this.checkedKakao = true;
-						} else if (firstChannel == 'SMSMMS') {
+						} else if (firstChannel == '문자') {
 							this.channelTab = 3;
 							this.checkedSmsMms = true;
 						}
