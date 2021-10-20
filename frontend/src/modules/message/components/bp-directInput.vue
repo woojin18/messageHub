@@ -105,7 +105,7 @@ export default {
         headerList = headerList.concat(this.contsVarNms);
         this.headerList = headerList.filter((item, pos) => headerList.indexOf(item) === pos);
       }
-    },
+    }, 
   },
   methods: {
     //수신자 추가
