@@ -73,21 +73,14 @@
 	     , IFNULL(SUM((CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'LMS' THEN FAIL_CNT ELSE 0 END)), 0) AS LMS_FAIL_CNT
 	     , IFNULL(SUM((CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'MMS' THEN SUCC_CNT ELSE 0 END)), 0) AS MMS_SUCC_CNT
 	     , IFNULL(SUM((CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'MMS' THEN FAIL_CNT ELSE 0 END)), 0) AS MMS_FAIL_CNT
-    <choose>
-        <when test="startMonthStr != null and startMonthStr != ''">
-      FROM cm.CM_STAT_CH_MONTH
-        </when>
-        <otherwise>
       FROM cm.CM_STAT_CH_DAY
-        </otherwise>
-    </choose>
      WHERE CORP_ID = #{corpId}
 	<if test="serviceType == 'UC'">
 	   AND PROJECT_ID = #{projectId}
 	</if>
     <choose>
         <when test="startMonthStr != null and startMonthStr != ''">
-       AND YM BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-31'), '%Y-%m-%d')
+       AND YMD BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-31'), '%Y-%m-%d')
         </when>
         <otherwise>
        AND YMD BETWEEN STR_TO_DATE(#{startDateStr}, '%Y-%m-%d') AND STR_TO_DATE(#{endDateStr}, '%Y-%m-%d')
@@ -126,26 +119,11 @@
 		LEFT OUTER JOIN (
 			SELECT 
 				CH,
-            <choose>
-                <when test="startMonthStr != null and startMonthStr != ''">
-                YM AS YMD,
-                DATE_FORMAT(YM, '%y-%m') AS YM,
-                </when>
-                <otherwise>
                 YMD,
                 DATE_FORMAT(YMD, '%y-%m') AS YM,
-                </otherwise>
-            </choose>
 				SUM(SUCC_CNT) AS SUCC_CNT,
 				SUM(FAIL_CNT) AS FAIL_CNT
-            <choose>
-                <when test="startMonthStr != null and startMonthStr != ''">
-            FROM cm.CM_STAT_CH_MONTH
-                </when>
-                <otherwise>
             FROM cm.CM_STAT_CH_DAY
-                </otherwise>
-            </choose>
 			WHERE CORP_ID = #{corpId}
 			<if test="serviceType == 'UC'">
 			AND PROJECT_ID = #{projectId}
@@ -167,7 +145,7 @@
 			</if>
 			<choose>
 				<when test="startMonthStr != null and startMonthStr != ''">
-			AND YM BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-31'), '%Y-%m-%d')
+			AND YMD BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-31'), '%Y-%m-%d')
 			GROUP BY DATE_FORMAT(YMD, '%y-%m')
 				</when>
 				<otherwise>
@@ -192,14 +170,13 @@
         SELECT RESULT_CODE
              , IFNULL(CCG.GW_MESSAGE, '미등록코드') AS RESULT_MESSAGE
              , SUM(CNT) AS CNT
-          FROM cm.CM_CODE_GW       CCG
+          FROM 	cm.CM_CODE_GW       CCG
+          , 	cm.CM_STAT_RSLT_DAY CSRD
     <choose>
         <when test="startMonthStr != null and startMonthStr != ''">
-             , cm.CM_STAT_RSLT_MONTH CSRD
-         WHERE CSRD.YM BETWEEN CONCAT(#{startMonthStr}, '-01') AND CONCAT(#{endMonthStr}, '-31')
+         WHERE CSRD.YMD BETWEEN CONCAT(#{startMonthStr}, '-01') AND CONCAT(#{endMonthStr}, '-31')
         </when>
         <otherwise>
-             , cm.CM_STAT_RSLT_DAY CSRD
          WHERE CSRD.YMD BETWEEN #{startDateStr} AND #{endDateStr}
         </otherwise>
     </choose>
@@ -226,53 +203,61 @@
 
 	<select id="selectChFailCodeCntList" resultType="camel">
 		/* dashboard.selectChFailCodeCntList */
-        SELECT B.RESULT_CODE
-             , A.DATE
-             , (SELECT SUM(CNT) 
-		    <choose>
-		        <when test="startMonthStr != null and startMonthStr != ''">
-                  FROM cm.CM_STAT_RSLT_MONTH X
-                  WHERE X.YM = A.DATE 
-		        </when>
-		        <otherwise>
-                  FROM cm.CM_STAT_RSLT_DAY X
-                  WHERE X.YMD = A.DATE  
-		        </otherwise>
-		    </choose>
-                  AND X.RESULT_CODE = B.RESULT_CODE AND CORP_ID = #{corpId}
+		SELECT	B.RESULT_CODE
+		<choose>
+			<when test="startMonthStr != null and startMonthStr != ''">
+		,		DATE_FORMAT(A.DATE, '%Y-%m') AS DATE
+			</when>
+			<otherwise>
+		,		A.DATE
+			</otherwise>
+		</choose>
+		,		(
+						SELECT	SUM(CNT)
+                  		FROM	cm.CM_STAT_RSLT_DAY X
+                  		WHERE	X.YMD = A.DATE  
+                  		AND		X.RESULT_CODE = B.RESULT_CODE AND CORP_ID = #{corpId}
         <if test="serviceType == 'UC'">
-        AND PROJECT_ID = #{projectId}
+        				AND		PROJECT_ID = #{projectId}
         </if>
         <if test="channel != 'ALL'">
             <choose>
                 <when test="channel == 'LMS'">
-                    AND X.CH = 'MMS'
+						AND		X.CH = 'MMS'
                 </when>
                 <otherwise>
-                    AND X.CH = #{channel}
+						AND		X.CH = #{channel}
                 </otherwise>
             </choose>
-        </if>) AS CNT
-            <choose>
-                <when test="startMonthStr != null and startMonthStr != ''">
-          FROM (SELECT CONCAT(#{startMonthStr}, '-01') + INTERVAL (a.a + (6 * b.a) ) MONTH AS DATE
-                </when>
-                <otherwise>
-          FROM (SELECT #{startDateStr} + INTERVAL (a.a + (6 * b.a) ) DAY AS DATE
-                </otherwise>
-            </choose>
-                      FROM (SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5) AS a
-                         , (SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5) AS b) AS A
-                         , (<foreach collection="rtnList" index="index" item="data" separator=" UNION ALL">SELECT #{data.resultCode} AS RESULT_CODE, #{index} AS OD</foreach>) AS B
-        <choose>
-            <when test="startMonthStr != null and startMonthStr != ''">
-         WHERE DATE BETWEEN CONCAT(#{startMonthStr}, '-01') AND CONCAT(#{endMonthStr}, '-31')
-            </when>
-            <otherwise>
-         WHERE DATE BETWEEN #{startDateStr} AND #{endDateStr}
-            </otherwise>
-        </choose>
-         ORDER BY B.OD, A.DATE
+        </if>
+				) AS CNT
+		<choose>
+			<when test="startMonthStr != null and startMonthStr != ''">
+		FROM	(SELECT 
+						CONCAT(#{startMonthStr}, '-01') + INTERVAL (a.a + (6 * b.a) ) MONTH AS DATE
+			</when>
+			<otherwise>
+		FROM	(SELECT 
+						#{startDateStr} + INTERVAL (a.a + (6 * b.a) ) DAY AS DATE
+			</otherwise>
+		</choose>
+				FROM 	(SELECT 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5) AS a
+				,		(SELECT 0 as a union all SELECT 1 union all SELECT 2 union all SELECT 3 union all SELECT 4 union all SELECT 5) AS b
+		) AS A
+		,		(
+		<foreach collection="rtnList" index="index" item="data" separator=" UNION ALL">
+				SELECT #{data.resultCode} AS RESULT_CODE, #{index} AS OD
+		</foreach>
+		) AS B
+		<choose>
+			<when test="startMonthStr != null and startMonthStr != ''">
+		WHERE	DATE BETWEEN CONCAT(#{startMonthStr}, '-01') AND CONCAT(#{endMonthStr}, '-31')
+			</when>
+			<otherwise>
+		WHERE	DATE BETWEEN #{startDateStr} AND #{endDateStr}
+			</otherwise>
+		</choose>
+		ORDER BY B.OD, A.DATE
 	</select>
 
 	<select id="selectRtUsedTimeLineList" resultType="camel">
@@ -353,12 +338,25 @@
              , IFNULL(SUM(CASE CH WHEN 'SMS' THEN TOT_CNT ELSE 0 END),0) AS SMS_CNT
              , IFNULL(SUM(CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'LMS' THEN TOT_CNT ELSE 0 END),0) AS LMS_CNT
              , IFNULL(SUM(CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'MMS' THEN TOT_CNT ELSE 0 END),0) AS MMS_CNT
-          FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) AS A
+          FROM (SELECT 1 AS a UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) AS A
           LEFT JOIN cm.CM_STAT_CH_MONTH B
             ON YM BETWEEN DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL-5 MONTH), '%Y-%m-01') AND DATE_FORMAT(CURDATE(), '%Y-%m-31')
            AND CORP_ID = #{corpId}
            AND B.YM = DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -A.a MONTH), '%Y-%m-01')
           GROUP BY DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -A.a MONTH), '%Y-%m-01')
+          UNION ALL
+          SELECT DATE_FORMAT(B.YMD, '%Y-%m') AS DATE
+             ,	IFNULL(SUM(B.TOT_CNT),0) AS TOT_CNT
+             , IFNULL(SUM(CASE CH WHEN 'PUSH' THEN TOT_CNT ELSE 0 END),0) AS PUSH_CNT
+             , IFNULL(SUM(CASE CH WHEN 'RCS' THEN TOT_CNT ELSE 0 END),0) AS RCS_CNT
+             , IFNULL(SUM(CASE CH WHEN 'FRIENDTALK' THEN TOT_CNT ELSE 0 END),0) AS FRIENDTALK_CNT
+             , IFNULL(SUM(CASE CH WHEN 'ALIMTALK' THEN TOT_CNT ELSE 0 END),0) AS ALIMTALK_CNT
+             , IFNULL(SUM(CASE CH WHEN 'SMS' THEN TOT_CNT ELSE 0 END),0) AS SMS_CNT
+             , IFNULL(SUM(CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'LMS' THEN TOT_CNT ELSE 0 END),0) AS LMS_CNT
+             , IFNULL(SUM(CASE WHEN CH = 'MMS' AND PRODUCT_CODE = 'MMS' THEN TOT_CNT ELSE 0 END),0) AS MMS_CNT
+          FROM 	cm.CM_STAT_CH_DAY B
+          WHERE	B.CORP_ID = #{corpId}
+          AND	B.YMD BETWEEN DATE_FORMAT(CURDATE(), '%Y-%m-01') AND DATE_FORMAT(CURDATE(), '%Y-%m-31')
 	</select>
 
 </mapper>

@@ -9,7 +9,7 @@
 				DATE_FORMAT(YMD, '%Y.%m.%d')	AS SEND_DATE
 			</when>
 			<otherwise>
-				DATE_FORMAT(YM, '%Y.%m')		AS SEND_DATE
+				DATE_FORMAT(YMD, '%Y.%m')		AS SEND_DATE
 			</otherwise>
 		</choose>
 			,	PROJECT_ID
@@ -23,14 +23,7 @@
 			,	SUM(SUCC_CNT) AS SUCC_CNT
 			,	SUM(FAIL_CNT) AS FAIL_CNT
 			,	IFNULL(CONCAT(ROUND(SUM(SUCC_CNT)/SUM(TOT_CNT) * 100), '%'), '0%')	AS SUCC_RATIO
-        <choose>
-            <when test="searchDateType == 'DAY'.toString()">
         FROM    cm.CM_STAT_CH_DAY A
-            </when>
-            <otherwise>
-        FROM    cm.CM_STAT_CH_MONTH A
-            </otherwise>
-        </choose>
 		WHERE	CORP_ID = #{corpId}
 		<if test="searchProjectId != '' and searchProjectId != null ">
 		AND		PROJECT_ID = #{searchProjectId}
@@ -40,7 +33,7 @@
 		AND		YMD BETWEEN #{searchStartDate} AND #{searchEndDate}
 			</when>
 			<otherwise>
-		AND		YM BETWEEN CONCAT(#{searchStartMonth},'-01') AND CONCAT(#{searchEndMonth}, '-31')
+		AND		YMD BETWEEN CONCAT(#{searchStartMonth},'-01') AND CONCAT(#{searchEndMonth}, '-31')
 			</otherwise>
 		</choose>
 		<choose>
@@ -77,7 +70,6 @@
 			</otherwise>
 		</choose>
 		GROUP BY SEND_DATE, PROJECT_ID, API_KEY
-		ORDER BY SEND_DATE, PROJECT_NAME, API_KEY
 	</select>
 	
 	<select id="selectStatisProjectList" parameterType="hashmap" resultType="camel">
