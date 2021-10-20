@@ -12,7 +12,7 @@
                                     <h4 class="consolMarginTop">브랜드</h4>
                                 </div>
                                 <div style="width:42%">
-                                    <select @change="fnSearch" v-model="brandId" name="userConsole_sub020201_2" class="selectStyle2" style="width:53%">
+                                    <select @change="fnSearch" v-model="brandId" name="userConsole_sub020201_2" class="selectStyle2" style="width:53%" :disabled="propBrandId!=''">
                                         <option v-for="option in brandArr" v-bind:value="option.BRAND_ID">
                                             {{option.BRAND_NAME}}
                                         </option>
@@ -129,6 +129,10 @@ export default {
             type: String,
             require: true,
             dafault: ""
+        },
+        propBrandId: {
+            type: String,
+            default: ""
         }
   },
   data() {
@@ -162,13 +166,16 @@ export default {
         var params = {
 
         }
-
         rcsTemplateSendApi.rcsTemplatePopInit(params).then(response => {
             var result = response.data;
-            vm.brandId = result.data[0].BRAND_ID;
+            if(vm.propBrandId == "") {
+                vm.brandId = result.data[0].BRAND_ID;
+            } else {
+                vm.brandId = vm.propBrandId;
+            }
             vm.brandArr = result.data;
             vm.fnSearch();
-        })
+        });
     },
 
     fnSearch(){

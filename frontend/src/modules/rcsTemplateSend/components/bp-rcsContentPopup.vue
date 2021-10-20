@@ -3,18 +3,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
-					<div>
-						<div v-if="contentPopCnt==0" class="of_h">
-							<div class="float-left" style="width:15%"><h5>브랜드</h5></div>
-							<div class="float-left" style="width:80%">
-                <select v-model="brandId" name="userConsole_sub020202_3" class="selectStyle2" style="width:100%">
-                  <option v-for="option in brandArr" v-bind:value="option.BRAND_ID">
-                    {{option.BRAND_NAME}}
-                  </option>
-                </select>
-
-							</div>							
-						</div>
+					<div>						
             <div v-if="templateRadioBtn!='text' && templateRadioBtn!='SS000000' && templateRadioBtn!='SL000000'" class="of_h consolMarginTop">
 							<div class="float-left" style="width:15%"><h5>이미지선택</h5></div>
 							<div class="float-left" style="width:85%">
@@ -86,8 +75,6 @@ export default {
       textCnt : 0,    // 글자 수 체크
       title: "",      // 제목
       contents : "",  // 내용
-      brandId : "",   // 브랜드
-      brandArr : [],  // 브랜드 select
       imgMngOpen : false, // 이미지 팝업
       imgUrl : "",      // 이미지 URL
       fileId : "",      // FILE ID
@@ -103,19 +90,10 @@ export default {
   methods: {
     // 팝업 기초 세팅 
     fnInit() {
-        var vm = this;
-        var params = {};
-
-        rcsTemplateSendApi.rcsTemplatePopInit(params).then(response => {
-            var result = response.data;
-            vm.brandId = result.data[0].BRAND_ID;
-            vm.brandArr = result.data;
-            
-            // 기존 입력 값이 있으면 data를 세팅
-            if(vm.dataSet) {
-              vm.fnSetData();
-            }
-        });
+      let vm = this;
+      if(vm.dataSet) {
+        vm.fnSetData();
+      }
     },
 
     fnSetData() {
@@ -130,14 +108,10 @@ export default {
         this.fileId = sendData.carouselObj.fileId[contentPopCnt-1];
 
       } else {
-        var brandId = sendData.brandId;
-        if(brandId != "" && brandId != null) {
-          this.title = sendData.textTitle;
-          this.contents = sendData.textContents;
-          this.brandId = sendData.brandId;
-          this.imgUrl = sendData.imgUrl;
-          this.fileId = sendData.fileId;
-        }
+        this.title = sendData.textTitle;
+        this.contents = sendData.textContents;
+        this.imgUrl = sendData.imgUrl;
+        this.fileId = sendData.fileId;
       }
 
     },
@@ -148,8 +122,6 @@ export default {
       this.textCnt = 0;
       this.title = "";
       this.contents = "";
-      this.brandId = "";
-      this.brandArr = [];
       this.imgUrl = "";
       this.fileId = "";
       this.wideImgYn = "N"; 
@@ -166,7 +138,6 @@ export default {
       var title = vm.title;
       var fileId = vm.fileId;
       var params = {
-        "brandId" : vm.brandId,
         "title" : vm.title,
         "contents" : vm.contents,
         "imgUrl" : vm.imgUrl,

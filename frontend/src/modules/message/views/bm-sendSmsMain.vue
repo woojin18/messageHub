@@ -173,14 +173,6 @@
             <h4>발송제한 금액</h4>
           </div>
           <div style="width:76%" class="float-left">
-            <div class="of_h consolMarginTop">
-              <div style="width:40%" class="float-left">
-                <h5 style="margin: 5px 0;">API KEY명(API KEY)</h5>
-              </div>
-              <div class="of_h" style="width:60%;">
-                <p style="font-size: 14px; margin-top: 3px;">{{apiKeyName}}</p>
-              </div>
-            </div>
             <div class="of_h">
               <div style="width:40%" class="float-left">
                 <h5 style="margin: 5px 0;">일 발송금액 / 일 발송제한금액</h5>

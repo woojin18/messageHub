@@ -215,9 +215,29 @@
 					<!-- //phoneWrap -->
 				</div>
 				<div class="of_h inline-block vertical-top consoleCon" style="width:60%">
+				<div class="user-phone of_h">
+						<div class="float-left" style="width:24%">
+							<h4>01  브랜드 선택</h4>
+						</div>
+						<div class="float-left" style="width:76%">
+							<div class="of_h consolMarginTop">
+								<div style="width:18%" class="float-left">
+									<h5>브랜드</h5>
+								</div>
+								<div style="width:82%">
+									<select v-model="sendData.brandId" name="userConsole_sub020201_1" class="selectStyle2" style="width:70%" :disabled="templateSet">
+										<option v-for="option in sendData.brandArr" v-bind:value="option.BRAND_ID">
+											{{option.BRAND_NAME}}
+										</option>
+									</select>
+								</div>
+							</div>
+						</div>	
+					</div>
+					<hr>
 					<div class="user-phone of_h">
 						<div class="float-left" style="width:24%">
-							<h4>01  메시지 내용</h4>
+							<h4>02  메시지 내용</h4>
 						</div>
 						<div class="float-left" style="width:76%">
 							<a v-if="templateRadioBtn=='des' || templateRadioBtn=='cell'" @click.prevent="fnOpenRcsTemplatePopup" activity="READ" href="#self" class="btnStyle1 backLightGray mr10" data-toggle="modal" data-target="#templatePop" title="RCS 템플릿 선택">RCS 템플릿 선택</a>
@@ -232,18 +252,6 @@
 									<option value=5>5</option>
 									<option value=6>6</option>
 								</select>
-							</div>
-							<div v-if="carouSelType==true" class="of_h consolMarginTop">
-								<div style="width:18%" class="float-left">
-									<h5>브랜드</h5>
-								</div>
-								<div style="width:82%">
-									<select v-model="carouselBrandId" name="userConsole_sub020201_1" class="selectStyle2" style="width:70%">
-										<option v-for="option in carouselBrandArr" v-bind:value="option.BRAND_ID">
-											{{option.BRAND_NAME}}
-										</option>
-									</select>
-								</div>
 							</div>
 							<div v-if="carouSelType==true" class="consolMarginTop">
 								<ul class="tab_s7" role="tablist">
@@ -312,7 +320,7 @@
 					<hr>
 					<div class="of_h user-phone">
 						<div class="float-left" style="width:24%">
-							<h4>02  수신자 선택</h4>
+							<h4>03  수신자 선택</h4>
 						</div>
 						<div class="float-left" style="width:76%">
 							<div class="of_h">
@@ -345,7 +353,7 @@
 					<hr>
 					<div class="of_h user-phone">
 						<div style="width:24%" class="float-left">
-							<h4>03  발송옵션 선택</h4>
+							<h4>04  발송옵션 선택</h4>
 						</div>
 						<div style="width:76%" class="float-left">
 							<div class="of_h">
@@ -389,29 +397,21 @@
 						<h4>발송제한 금액</h4>
 					</div>
 					<div style="width:76%" class="float-left">
-						<div class="of_h consolMarginTop">
-						<div style="width:40%" class="float-left">
-							<h5 style="margin: 5px 0;">API KEY명(API KEY)</h5>
-						</div>
-						<div class="of_h" style="width:60%;">
-							<p style="font-size: 14px; margin-top: 3px;">{{apiKeyName}}</p>
-						</div>
+						<div class="of_h">
+							<div style="width:40%" class="float-left">
+								<h5 style="margin: 5px 0;">일 발송금액 / 일 발송제한금액</h5>
+							</div>
+							<div class="of_h" style="width:60%;">
+								<p style="font-size: 14px; margin-top: 3px;">{{dayAmount | comma}} / {{daySenderLimitAmout | comma}}</p>
+							</div>
 						</div>
 						<div class="of_h">
-						<div style="width:40%" class="float-left">
-							<h5 style="margin: 5px 0;">일 발송금액 / 일 발송제한금액</h5>
-						</div>
-						<div class="of_h" style="width:60%;">
-							<p style="font-size: 14px; margin-top: 3px;">{{dayAmount | comma}} / {{daySenderLimitAmout | comma}}</p>
-						</div>
-						</div>
-						<div class="of_h">
-						<div style="width:40%" class="float-left">
-							<h5 style="margin: 5px 0;">월 발송금액 / 월 발송제한금액</h5>
-						</div>
-						<div class="of_h" style="width:60%;">
-							<p style="font-size: 14px; margin-top: 3px;">{{monthAmount | comma}} / {{monSenderLimitAmout | comma}}</p>
-						</div>
+							<div style="width:40%" class="float-left">
+								<h5 style="margin: 5px 0;">월 발송금액 / 월 발송제한금액</h5>
+							</div>
+							<div class="of_h" style="width:60%;">
+								<p style="font-size: 14px; margin-top: 3px;">{{monthAmount | comma}} / {{monSenderLimitAmout | comma}}</p>
+							</div>
 						</div>
 					</div>
 					</div>
@@ -423,7 +423,7 @@
 				</div>
 			</div>	
 
-			<RcsTemplatePopup :templateRadioBtn.sync="templateRadioBtn" ref="rcsTemplatePop" @fnResult="fnSetTemplate"></RcsTemplatePopup>
+			<RcsTemplatePopup :propBrandId.sync="sendData.brandId" :templateRadioBtn.sync="templateRadioBtn" ref="rcsTemplatePop" @fnResult="fnSetTemplate"></RcsTemplatePopup>
 			<RcsMsgPopup :templateRadioBtn.sync="templateRadioBtn" :carouselSmall.sync="carouselSmall" :carouselMedium.sync="carouselMedium" ref="rcsMsgPop" @fnTmpMsgSet="fnTmpMsgSet" ></RcsMsgPopup>
 			<RcsContentPopup :templateRadioBtn.sync="templateRadioBtn" :contentPopCnt.sync="contentPopCnt" :dataSet.sync="dataSet" :sendData.sync="sendData" ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
 			<RcsBtnPopup :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
@@ -483,9 +483,8 @@ export default {
 		newval : '',
 		oldval : '',
 		dataSet : false,				// dataSet (데이터가 입력될시 true로 변환 radio버튼으로 발송 스타일 변경시 true인 경우 경고)
+		templateSet : false,			// template 형 선택시 brand disabled처리를 위한 flag
 		pushTab : "push",				// push 버튼
-		carouselBrandId : "",			// carousel형 brandid
-		carouselBrandArr : [],			// carousel형 brandArr
 		imgsrc : require("@/assets/images/common/approve.png"),			// 이미지
 		text : "테스트입니다.[한글]",    //	미리보기 text (des형)
 		styleContentCnt: 0,				// 스타일형 inputLine count
@@ -520,6 +519,7 @@ export default {
 		sendData : {
 			messagebaseId : "",							// MSG ID
 			brandId : "",								// 브랜드 ID
+			brandArr : [],								// 브랜드 Arr
 			textTitle : "",								// 텍스트 제목
 			textContents : "",							// 텍스트 내용
 			btnCnt : 0,                     			// 버튼 갯수
@@ -579,9 +579,6 @@ export default {
 		  // type 변경
 		  this.carouselSelect = newval*1;
 	  },
-	  'sendData.brandId'(newval, oldval) {
-		  this.callbackList();
-	  },
 	  'sendData.campaignId'(newval, oldval) {
 		  return this.sendData.campaignId = this.sendData.campaignId.replace(/[^a-zA-Z0-9]/g, '');
 	  },
@@ -591,12 +588,11 @@ export default {
 
 		  this.fnConfirmChangeRadioBtn(newval, oldval);
 	  },
-	  carouselBrandId (newval, oldval){
+	  'sendData.brandId' (newval, oldval){
 		var vm = this;
-		vm.sendData.brandId = newval;
 		var params = {
 			"approvalStatus" : "승인",
-			"brandId" : oldval
+			"brandId" : newval
 		}
 		rcsTemplateSendApi.selectCallbackList(params).then(response => {
 			var result = response.data;
@@ -618,6 +614,7 @@ export default {
   },
   mounted() {
 	  this.fnExistApiKey();
+	  this.fnInit();
   },
   methods: {
 	async fnExistApiKey(){
@@ -640,8 +637,8 @@ export default {
 		var params = {};
 		rcsTemplateSendApi.rcsTemplatePopInit(params).then(response => {
             var result = response.data;
-            vm.carouselBrandId = result.data[0].BRAND_ID;
-            vm.carouselBrandArr = result.data;
+			vm.sendData.brandId = result.data[0].BRAND_ID;
+			vm.sendData.brandArr = result.data;
         });
 	},
 	fnSetSentAmount() {
@@ -678,6 +675,7 @@ export default {
 
 		// 데이터 초기화
 		this.dataSet = false;
+		this.templateSet = false;
 		this.pushTab = "push";
 		this.imgsrc = require("@/assets/images/common/approve.png");
 		this.text = "테스트입니다.[한글]";
@@ -698,7 +696,6 @@ export default {
 		this.contentPopCnt = 0;
 		this.btnPopCnt = 0;
 		this.sendData.messagebaseId = "";
-		this.sendData.brandId = "";
 		this.sendData.textTitle = "";
 		this.sendData.textContents = "";
 		this.sendData.btnCnt = 0;
@@ -809,6 +806,7 @@ export default {
 	fnSetTemplate(data) {
 		var vm = this;
 		vm.dataSet = true;
+		vm.templateSet = true;
 		var formNm = data.formNm;
 		if(formNm.indexOf("승인") != -1) {
 			this.imgsrc = require("@/assets/images/common/approve.png");
@@ -849,14 +847,12 @@ export default {
 
 		if(data.radioBtn == 'des') {
 			vm.sendData.messagebaseId = data.messagebaseId;
-			vm.sendData.brandId = data.brandId;
 			vm.text = data.desContent;
 			vm.sendData.textContents = data.desContent;
 			vm.btnCnt = data.btnCnt;
 			vm.btnNm = data.btnNm;
 		} else {
 			vm.sendData.messagebaseId = data.messagebaseId;
-			vm.sendData.brandId = data.brandId;
 			vm.styleContentCnt = data.styleContentCnt;
 			vm.styleInput  = data.styleInput ;
 			vm.styleInputSec = data.styleInputSec;
@@ -871,7 +867,6 @@ export default {
 		var vm = this;
 		vm.dataSet = true;
 		if(!vm.carouSelType) {
-			vm.sendData.brandId = params.brandId;
 			vm.sendData.textTitle = params.title;
 			vm.sendData.textContents = params.contents;
 			vm.sendData.imgUrl = params.imgUrl;
@@ -880,7 +875,6 @@ export default {
 			
 		} else {
 			var carouSelTabCnt = vm.carouSelTabCnt;
-			vm.sendData.brandId = vm.carouselBrandId;
 
 			vm.$set(vm.sendData.carouselObj.textTitle, carouSelTabCnt-1, params.title);
 			vm.$set(vm.sendData.carouselObj.textContents, carouSelTabCnt-1, params.contents);
@@ -1190,7 +1184,6 @@ export default {
 				}
 			} else {
 				vm.sendData.brandId = data.brandId;							// brandId
-				vm.carouselBrandId = data.brandId;							// carouselBrnadId
 				vm.sendData.saveContent = data.saveContent;					// 저장 메시지 명
 				vm.sendData.copy = data.copy;								// 복사 가능여부
 				vm.sendData.adYn = data.adYn;								// 광고여부
@@ -1300,7 +1293,7 @@ export default {
 		var params = {
 			"data" : this.sendData,
 			"templateRadioBtn" : templateRadioBtn,
-			"brandId" : this.carouselBrandId,
+			"brandId" : this.sendData.brandId,
 			"carouselSelect" : this.carouselSelect,
 			"real" : true
 		}
@@ -1345,7 +1338,7 @@ export default {
 		var params = {
 			"data" : this.sendData,
 			"templateRadioBtn" : this.templateRadioBtn,
-			"brandId" : this.carouselBrandId,
+			"brandId" : this.sendData.brandId,
 			"carouselSelect" : this.carouselSelect,
 			"real" : false
 		}
