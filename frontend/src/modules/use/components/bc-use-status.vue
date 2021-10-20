@@ -3,7 +3,7 @@
 		<article>
 			<div class="row">
 				<div class="col-xs-6">
-					<h4 class="topH4">이용건수추이 (최근 6개월)</h4>
+					<h4 class="topH4">이용(발송성공)건수 추이 (최근 6개월)</h4>
 					<div class="Dashboard01 fl border-line">
 						<bar-chart v-if="loaded" :chartData="sixMonthUsedCntData" :height="200"></bar-chart>
 					</div>
