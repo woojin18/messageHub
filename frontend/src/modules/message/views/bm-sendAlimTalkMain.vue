@@ -288,7 +288,7 @@
         </div>
       </div>
     </div>
-
+	
     <AlimTalkTemplatePopup :alimTalkTemplateOpen.sync="alimTalkTemplateOpen" ref="alimTalkTmplPopup"></AlimTalkTemplatePopup>
     <AlimTalkContentsPopup :alimTalkContsOpen.sync="alimTalkContsOpen" :sendData="sendData"></AlimTalkContentsPopup>
     <ReplacedSenderPopup :rplcSendOpen.sync="rplcSendOpen" ref="rplcSendPopup"></ReplacedSenderPopup>
