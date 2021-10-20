@@ -12,7 +12,7 @@
           <div class="phoneWrap">
             <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
             <div class="phoneTextWrap scroll-yc">
-              <div v-if="sendData.senderType == 'MMS'" class="phoneText2 mb10">
+              <div v-if="sendData.senderType == 'MMS' || sendData.senderType == 'LMS'" class="phoneText2 mb10">
                 <p v-if="$gfnCommonUtils.isEmpty(sendData.smsTitle)">메시지 제목</p>
                 <p v-else><span v-if="sendData.senderType == 'MMS' && sendData.msgKind == 'A'">(광고)</span>{{sendData.smsTitle}}</p>
               </div>
@@ -41,7 +41,6 @@
             <h4>01  발송정보</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a @click="fnOpenSmsTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기" activity="READ">템플릿 불러오기</a>
             <div class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
                 <h5>발송유형</h5>
@@ -49,8 +48,10 @@
               <div>
                 <input type="radio" name="senderType" value="SMS" id="senderType_SMS" v-model="sendData.senderType">
                 <label for="senderType_SMS" class="mr30">SMS</label>
+                <input type="radio" name="senderType" value="LMS" id="senderType_LMS" v-model="sendData.senderType">
+                <label for="senderType_LMS" class="mr30">LMS</label>
                 <input type="radio" name="senderType" value="MMS" id="senderType_MMS" v-model="sendData.senderType">
-                <label for="senderType_MMS">LMS/MMS</label>
+                <label for="senderType_MMS">MMS</label>
               </div>
             </div>
             <div class="of_h">
@@ -73,6 +74,7 @@
             <h4>02  메시지 내용</h4>
           </div>
           <div class="float-left" style="width:76%">
+            <a @click="fnOpenSmsTemplatePopup" class="btnStyle1 backLightGray mr30" title="템플릿 불러오기" activity="READ">템플릿 불러오기</a>
             <a @click="fnOpenSmsContentsPopup" :class="$gfnCommonUtils.isEmpty(sendData.smsContent) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="메시지 내용입력" activity="READ">내용입력</a>
             <div v-if="sendData.senderType == 'MMS'" class="of_h consolMarginTop">
               <div style="width:18%" class="float-left">
@@ -130,7 +132,26 @@
         <hr>
         <div class="of_h user-phone">
           <div style="width:24%" class="float-left">
-            <h4>04  발송옵션 선택</h4>
+            <h4>04  발신자 선택</h4>
+          </div>
+          <div style="width:76%" class="float-left">
+            <div class="of_h">
+              <div class="float-left" style="width:18%">
+                <h5>발신번호 *</h5>
+              </div>
+              <div class="float-right" style="width:66%">
+                <select v-model="sendData.callback" class="selectStyle2 float-right" style="width:100%">
+                  <option value="">선택</option>
+                  <option v-for="info in sendData.callbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+                </select>
+              </div>        
+            </div>
+          </div>
+        </div>
+      <hr>
+        <div class="of_h user-phone">
+          <div style="width:24%" class="float-left">
+            <h4>05  발송옵션 선택</h4>
           </div>
           <div style="width:76%" class="float-left">
             <div class="of_h">
@@ -269,6 +290,7 @@ export default {
       sendData : {
         chGrp: 'SMS/MMS',
         callback: '',  //발신번호
+        callbackList : [],
         requiredCuid : false,  //app 로그인 ID 필수여부
         requiredCuPhone : true,  //수신자 폰번호 필수여부
         senderType: 'SMS',  //SMS, MMS
@@ -302,6 +324,7 @@ export default {
   async mounted() {
     await this.fnExistApiKey();
     await this.fnValidUseChGrp();
+    await this.fnSelectCallbackList();
   },
   methods: {
     fnRemoveRecvInfo(){
@@ -476,7 +499,7 @@ export default {
       if(this.sendData.senderType == 'SMS'){
         await messageApi.sendSmsMessage(fd).then(response => this.fnSendCallBack(response, testSendYn))
         .catch(function () { vm.inProgress = false; });
-      } else if(this.sendData.senderType == 'MMS'){
+      } else if(this.sendData.senderType == 'MMS' || this.sendData.senderType == 'LMS'){
         await messageApi.sendMmsMessage(fd).then(response => this.fnSendCallBack(response, testSendYn))
         .catch(function () { vm.inProgress = false; });
       }
@@ -644,7 +667,6 @@ export default {
       if(this.sendData.smsContent != data.smsContent){
         this.fnCallbackRecvInfoLst(null);  //수신자 정보 초기화
       }
-      this.sendData.callback = data.callback;
       this.sendData.smsTitle = data.smsTitle;
       this.sendData.smsContent = data.smsContent;
       this.sendData.rcvblcNumber = data.rcvblcNumber;
@@ -731,6 +753,18 @@ export default {
         contsVarNms : this.sendData.contsVarNms
       };
       await messageApi.excelDownSendSmsRecvTmplt(params);
+    },
+    //발신번호 리스트 조회
+    async fnSelectCallbackList(){
+      var params = {};
+      await messageApi.selectCallbackList(params).then(response =>{
+        var result = response.data;
+        if(result.success) {
+          this.sendData.callbackList = result.data;
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
     },
   }
 }
