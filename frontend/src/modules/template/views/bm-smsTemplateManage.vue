@@ -2,7 +2,7 @@
 
   <div class="row row-no-margin">
     <div class="contentHeader">
-      <h2>템플릿 > SMS</h2>
+      <h2>템플릿 > 문자</h2>
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="SMS/MMS 템플릿 관리 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
     </div>
 
@@ -14,11 +14,11 @@
           <div class="phoneWrap">
             <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
             <div class="phoneTextWrap scroll-yc">
-              <div v-if="tmpltData.senderType == 'MMS'" class="phoneText2 mb10">
+              <div v-if="tmpltData.senderType == 'MMS' || tmpltData.senderType == 'LMS'" class="phoneText2 mb10">
                 <p v-if="$gfnCommonUtils.isEmpty(tmpltData.tmpltTitle)">템플릿 제목</p>
-                <p v-else><span v-if="tmpltData.senderType == 'MMS' && tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.tmpltTitle}}</p>
+                <p v-else><span v-if="(tmpltData.senderType == 'MMS' || tmpltData.senderType == 'LMS') && tmpltData.msgKind == 'A'">(광고)</span>{{tmpltData.tmpltTitle}}</p>
               </div>
-              <div v-if="tmpltData.senderType == 'MMS'">
+              <div v-if="tmpltData.senderType == 'MMS' || tmpltData.sendetType == 'LMS'">
                 <div v-for="(imgInfo, idx) in tmpltData.imgInfoList" :key="idx" class="phoneText2 mt10 text-center simulatorImg"
                   :style="'padding:65px;background-image: url('+imgInfo.imgUrl+');'">
                 </div>
@@ -56,8 +56,10 @@
           <div class="float-left" style="width:69%">
             <input type="radio" id="senderType_SMS" name="senderType" value="SMS" v-model="tmpltData.senderType">
             <label for="senderType_SMS" class="mr30">SMS</label>
+            <input type="radio" id="senderType_LMS" name="senderType" value="LMS" v-model="tmpltData.senderType">
+            <label for="senderType_LMS" class="mr30">LMS</label>
             <input type="radio" id="senderType_MMS" name="senderType" value="MMS" v-model="tmpltData.senderType">
-            <label for="senderType_MMS">LMS/MMS</label>
+            <label for="senderType_MMS">MMS</label>
           </div>
         </div>
         <div class="of_h">
@@ -78,7 +80,7 @@
             <label for="msgKind_I">정보성</label>
           </div>
         </div>
-        <div v-if="tmpltData.senderType == 'MMS'" class="of_h">
+        <div v-if="tmpltData.senderType == 'MMS' || tmpltData.senderType == 'LMS'" class="of_h">
           <div class="float-left" style="width:31%"><h4>제목 *</h4></div>
           <div class="float-left" style="width:69%">
             <input type="text" class="inputStyle" v-model="tmpltData.tmpltTitle" maxlength="45" @input="fnSetCurrByte">
@@ -162,7 +164,7 @@ export default {
       type: String,
       require: false,
       default: function() {
-        return 'SMS/MMS';
+        return '문자';
       }
     },
   },
@@ -343,7 +345,7 @@ export default {
     async fnProcSaveSmsTemplate(){
       //DATA Set
       let params = Object.assign({}, this.tmpltData);
-      if(this.tmpltData.senderType != 'MMS') {
+      if(this.tmpltData.senderType == 'SMS') {
         params.tmpltTitle = '';
       }
       if(this.tmpltData.msgKind != 'A') {

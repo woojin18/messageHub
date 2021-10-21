@@ -45,7 +45,7 @@
                   <h5 style="width:41%" class="float-left ml30">템플릿명</h5>
                   <h5 style="width:40%" class="float-right ml30 color4 word-break-all scroll-y_modal">{{templateData.tmpltName}}</h5>
                 </div>
-                <div v-if="templateData.senderType == 'MMS'" class="of_h">
+                <div v-if="templateData.senderType == 'MMS' || templateData.senderType == 'LMS'" class="of_h">
                   <h5 style="width:41%" class="float-left ml30">제목</h5>
                   <h5 style="width:40%" class="float-right ml30 color4 word-break-all scroll-y_modal">{{templateData.tmpltTitle}}</h5>
                 </div>
@@ -64,9 +64,9 @@
                 <div class="phoneWrap">
                   <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
                   <div class="phoneTextWrap scroll-yc">
-                    <div v-if="templateData.senderType == 'MMS'" class="phoneText2 mb10">
+                    <div v-if="templateData.senderType == 'MMS'  || templateData.senderType == 'LMS'" class="phoneText2 mb10">
                       <p v-if="$gfnCommonUtils.isEmpty(templateData.tmpltTitle)">템플릿 제목</p>
-                      <p v-else><span v-if="templateData.senderType == 'MMS' && templateData.msgKind == 'A'">(광고)</span>{{templateData.tmpltTitle}}</p>
+                      <p v-else><span v-if="(templateData.senderType == 'MMS' || templateData.senderType == 'LMS') && templateData.msgKind == 'A'">(광고)</span>{{templateData.tmpltTitle}}</p>
                     </div>
                     <div v-if="templateData.senderType == 'MMS'">
                       <div v-for="(imgInfo, idx) in templateData.imgInfoList" :key="idx" class="phoneText2 mt10 text-center simulatorImg"
