@@ -369,6 +369,8 @@ export default {
     },
     fnReset(){
       Object.assign(this.$data, this.$options.data.apply(this));
+      // 발송 처리 후 발신자 세팅
+      this.fnSelectCallbackList();
     },
     async fnExistApiKey(){
       let params = {};

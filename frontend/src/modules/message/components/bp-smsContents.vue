@@ -3,7 +3,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
-          <div v-if="sendData.senderType == 'MMS'" class="of_h consolMarginTop">
+          <div v-if="sendData.senderType == 'MMS' || sendData.senderType == 'LMS'" class="of_h consolMarginTop">
             <div class="float-left" style="width:34%"><h5>제목 *</h5></div>
             <div class="float-right" style="width:66%">
               <input type="text" class="inputStyle" title="제목 입력란" v-model="smsTitle" maxlength="30" @input="fnSetCurrByte">

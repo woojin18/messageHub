@@ -711,8 +711,8 @@ export default {
 		this.sendData.wideImgYn = "";
 		this.sendData.SMwThM00Img = require("@/assets/images/common/cardThumImg2_2.png");
 		this.sendData.SMwThT00Img = require("@/assets/images/common/cardThumImg2_1.png");
-		this.sendData.callback = "";
-		this.sendData.callbackArr = [];
+		//this.sendData.callback = "";
+		//this.sendData.callbackArr = [];
 		this.sendData.copy = "no";
 		this.sendData.adYn = "no";
 		this.sendData.freeReceiveNum = "";
