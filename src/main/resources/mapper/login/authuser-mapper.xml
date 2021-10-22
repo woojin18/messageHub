@@ -75,12 +75,14 @@
 		,		USER.BEFORE_SALT
 		FROM	cm_console.CM_USER USER
 		WHERE	1=1
-		<if test="loginId != null and loginId != ''">
+		<choose>
+		<when test="loginId != null and loginId != ''">
 		AND		LOGIN_ID = #{loginId}
-		</if>
-		<if test="userId != null and userId != ''">
+		</when>
+		<otherwise>
 		AND		USER_ID = #{userId}
-		</if>
+		</otherwise>
+		</choose>
 		LIMIT 1
 	</select>
 
@@ -213,11 +215,13 @@
 		,		BEFORE_LOGIN_PWD
 		FROM	cm_console.CM_USER
 		WHERE	1=1
-		<if test="loginId != null and loginId != ''">
+		<choose>
+		<when test="loginId != null and loginId != ''">
 		AND		LOGIN_ID = #{loginId}
-		</if>
-		<if test="userId != null and userId != ''">
+		</when>
+		<otherwise>
 		AND		USER_ID = #{userId}
-		</if>
+		</otherwise>
+		</choose>
 	</select>
 </mapper>
