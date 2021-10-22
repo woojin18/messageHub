@@ -35,23 +35,9 @@
             <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
             <div class="phoneTextWrap">
               <div class="phoneText1">
-                <p v-if="$gfnCommonUtils.isEmpty(sendData.fbInfo.callback)">발신번호</p>
-                <p v-else>{{sendData.fbInfo.callback}}</p>
-              </div>
-              <div v-if="sendData.rplcSendType != 'SMS'" class="phoneText2" style="margin-top: 5px;">
-                <p v-if="$gfnCommonUtils.isEmpty(sendData.fbInfo.title)">제목</p>
-                <p v-else>{{sendData.fbInfo.title}}</p>
-              </div>
-              <div v-if="!$gfnCommonUtils.isEmpty(sendData.fbInfo.imgUrl)" class="phoneText2 mt10 text-center"
-                :style="'padding:65px;background-repeat: no-repeat;background-size: cover;background-image: url('+sendData.fbInfo.imgUrl+');'">
-              </div>
-              <div class="scroll-y">
-                <p v-if="($gfnCommonUtils.isEmpty(sendData.fbInfo.msg) && $gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber))" class="font-size14 color4 mt10">내용</p>
-                <p v-else class="font-size14 color4 mt10">
-                  <span><pre>{{sendData.fbInfo.msg}}</pre></span>
-                  <br v-if="!$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)"/>
-                  {{sendData.fbInfo.rcvblcNumber}}
-                </p>
+                <div v-if="sendData.rplcSendType == 'MMS'" :style="'background-image: url('+sendData.fbInfo.imgUrl+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
+                <p v-if="sendData.rplcSendType != 'SMS'" class="mt15 font-size13">{{sendData.fbInfo.title}}</p>
+                <p class="mt15"><pre>{{sendData.fbInfo.msg}}</pre></p>
               </div>
             </div>
           </div>
@@ -175,6 +161,14 @@
                 <label for="rplcSendType_LMS" class="mr30">LMS</label>
                 <input type="radio" id="rplcSendType_MMS" name="rplcSendType" value="MMS" v-model="sendData.rplcSendType" @change="fnChgRplcSendType">
                 <label for="rplcSendType_MMS">MMS</label>
+              </div>
+            </div>
+            <div v-if="!$gfnCommonUtils.isEmpty(sendData.fbInfo.callback)" class="of_h consolMarginTop">
+              <div style="width:20%" class="float-left">
+                <h5>발신번호</h5>
+              </div>
+              <div style="width:80%" class="float-left">
+                <h5>{{sendData.fbInfo.callback}}</h5>
               </div>
             </div>
           </div>
