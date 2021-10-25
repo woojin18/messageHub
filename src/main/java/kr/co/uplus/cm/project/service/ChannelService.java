@@ -1188,6 +1188,31 @@ public class ChannelService {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public void chkEqualKakaoChannel(Map<String, Object> params) throws Exception {
+		String otherProjectYn = CommonUtils.getString(params.get("otherProjectYn"));
+		String projectId = CommonUtils.getString(params.get("projectId"));
+		String kkoChId = CommonUtils.getString(params.get("kkoChId"));
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		// 등록하려는 카카오 채널이 공용인 경우 projectId에 상관 없이 채널 ID가 중복되는 데이터가 있는경우 exception처리
+		// 등록하려는 카카오 채널이 전용인 경우 해당 projectId, 공용으로 검색된 채널 ID가 있는경우 exception처리
+		if("Y".equals(otherProjectYn)) {
+			paramMap.put("kkoChId", kkoChId);
+		} else {
+			paramMap.put("kkoChId", kkoChId);
+			paramMap.put("projectId", projectId);
+		}
+		
+		int equalCnt = generalDao.selectGernalCount(DB.QRY_SELECT_EQUAL_KKOCHANNEL_CNT, paramMap);
+		
+		if(equalCnt > 0) {
+			throw new Exception("발신 프로필이 등록되어 있습니다.");
+		}
+		
+	}
+	
+	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void saveKkoChGroupForApi(Map<String, Object> params) throws Exception {
 		// 이미 등록된 정보와 맞는지 매칭

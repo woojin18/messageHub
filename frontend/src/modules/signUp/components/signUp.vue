@@ -27,7 +27,7 @@
 			<h4 class="font-normal float-left font-size14 mt15" style="width:20%">이메일 *</h4>
 			<div class="float-left" style="width:80%">
 				<input type="text" id="email" class="inputStyle" placeholder="이메일 입력" v-model="email" maxlength="100">
-				<p class="font-size12 color3 mt10">이메일 인증 유효시간은 <span class="color1">1시간</span>입니다.</p>
+				<p class="font-size12 color3 mt10">이메일 인증 유효시간은 <span class="color1">24시간</span>입니다.</p>
 			</div>
 		</div>
 

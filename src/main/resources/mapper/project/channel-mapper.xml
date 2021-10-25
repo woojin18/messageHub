@@ -972,4 +972,13 @@
 		WHERE	A.PROJECT_ID = #{projectId}
 	</select>
 	
+	<select id="selectEqualKkochannelCnt" resultType = "int">
+		/* channel.selectEqualKkochannelCnt */
+		SELECT	COUNT(*)
+		FROM	cm.CM_KKO_CH
+		WHERE	KKO_CH_ID = #{kkoChId}
+		<if test="projectId != null and projectId != ''">
+		AND		PROJECT_ID IN ('ALL' , #{projectId})
+		</if>
+	</select>
 </mapper>

@@ -158,7 +158,7 @@ export default {
 			}
 		});
 	},
-	fnSave(){
+	async fnSave(){
 		if( this.tokenYn != 'Y' ){
 			confirm.fnAlert("", "토큰 발급 후, 진행해주세요.");
 			return;
@@ -179,6 +179,10 @@ export default {
 			return;
 		}
 
+		// 채널 중복여부 체크
+		var chkKkoChannel = await this.chkEqualKakaoChannel();
+		if(!chkKkoChannel) return;
+
 		var params = {
 			"sts"			: this.save_status,
 			"apiKey"		: this.apiKey,
@@ -198,6 +202,28 @@ export default {
 				this.tokenYn = 'N';
 			} else {
 				confirm.fnAlert("", result.message);
+			}
+		});
+	},
+	async chkEqualKakaoChannel() {
+		var params = {
+			"sts"			: this.save_status,
+			"apiKey"		: this.apiKey,
+			"kkoChId"		: this.kkoChId,
+			"phoneNumber"	: this.phoneNumber,
+			"token"			: this.token,
+			"categoryCode"	: this.categoryCode,
+			"projectId"		: this.projectId,
+			"otherProjectYn": this.otherProjectYn
+		};
+
+		api.chkEqualKakaoChannel(params).then(response => {
+			var result = response.data;
+			if(result.success) {
+				return true;
+			} else {
+				confirm.fnAlert("", result.message);
+				return false;
 			}
 		});
 	}

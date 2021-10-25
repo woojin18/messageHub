@@ -1848,7 +1848,7 @@
 					<div class="float-left" style="width:13%"><h4>발송 유형 *</h4></div>
 					<div class="float-left" style="width:57%">
 						<input type="radio" name="smsSendType" value="S" id="smsSendType1"  v-on:click="checkSmsSend('S')" v-model="rowData.smsSendType"> <label for="smsSendType1" class="mr30">SMS</label>
-						<input type="radio" name="smsSendType" value="M" id="smsSendType2"  v-on:click="checkSmsSend('M')" v-model="rowData.smsSendType"> <label for="smsSendType2"><p v-if="rowData.msgType=='BASE'">MMS</P><p v-else>LMS</P></label>
+						<input type="radio" name="smsSendType" value="M" id="smsSendType2"  v-on:click="checkSmsSend('M')" v-model="rowData.smsSendType"> <label for="smsSendType2"><p v-if="rowData.msgType=='IMAGE'">MMS</P><p v-else>LMS</P></label>
 					</div>
 				</div>
 				<div v-if="smsTemplateTable === 0">
@@ -1910,7 +1910,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="of_h consolMarginTop">
+				<div class="of_h consolMarginTop" v-if="!checkedRCS">
 					<div class="float-left" style="width:13%"><h4>발신번호 *</h4></div>
 					<div class="float-left" style="width:57%">
 						<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
@@ -3204,6 +3204,11 @@ export default {
 								return false;
 							}
 						}
+					}
+
+					if(!this.rcsCallbackList.includes(this.rowData.callback)) {
+						confirm.fnAlert(this.detailTitle, '발신번호를 선택해주세요.');
+						return false;
 					}
 				}
 

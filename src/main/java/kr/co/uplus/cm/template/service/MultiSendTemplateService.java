@@ -804,8 +804,9 @@ public class MultiSendTemplateService {
 					sb.append("}");
 				}
 
-			} else if (checkChannelArr[i].equalsIgnoreCase("SMSMMS")) {
+			} else if (checkChannelArr[i].equalsIgnoreCase("문자")) {
 				// SMSMMS ====================================================================
+				chTypeList = "SMSMMS";
 				if (params.get("smsSendType").equals("S")) {// SMS
 					sb.append("\"chTypeList\" : \"" + chTypeList + "\",");
 					sb.append("\"ch\" : \"SMS\","); // 발송채널

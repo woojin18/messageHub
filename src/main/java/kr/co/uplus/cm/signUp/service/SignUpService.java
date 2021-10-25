@@ -215,7 +215,7 @@ public class SignUpService {
 			
 			SimpleDateFormat	sdformat	= new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 			Calendar			cal			= Calendar.getInstance();
-			cal.add(Calendar.HOUR, 1);
+			cal.add(Calendar.HOUR, 24);
 			String				time		= sdformat.format(cal.getTime());
 			params.put("time", time);
 			

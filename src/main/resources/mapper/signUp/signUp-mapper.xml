@@ -139,7 +139,7 @@
 		,		#{time}
 			</when>
 			<otherwise>
-		,		DATE_ADD(NOW(), INTERVAL 1 HOUR)
+		,		DATE_ADD(NOW(), INTERVAL 24 HOUR)
 			</otherwise>
 		</choose>
 		<if test="promotionYn != '' and promotionYn != null">

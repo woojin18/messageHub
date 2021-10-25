@@ -454,6 +454,20 @@ public class ChannelController {
 		}
 		return rtn;
 	}
+	
+	@PostMapping("/chkEqualKakaoChannel")
+	public RestResult<?> chkEqualKakaoChannel(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			channelService.chkEqualKakaoChannel(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
+	}
 
 	@PostMapping("/saveKkoChGroupForApi")
 	public RestResult<?> saveKkoChGroupForApi(@RequestBody Map<String, Object> params, HttpServletRequest request,
