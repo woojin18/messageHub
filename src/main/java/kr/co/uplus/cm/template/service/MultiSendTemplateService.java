@@ -88,6 +88,9 @@ public class MultiSendTemplateService {
 		for (int i = 0; i < rtnList.size(); i++) {
 			Map<String, Object> rtnMap = (Map<String, Object>) rtnList.get(i);
 			String chTypeList = (String) rtnMap.get("chTypeList");
+			// SMSMMS로 저정된 문자 치환
+			chTypeList = chTypeList.replace("SMSMMS", "문자");
+			rtnMap.put("chTypeList", chTypeList);
 			String msgKind = (String) rtnMap.get("msgKind");
 
 			if (chTypeList.contains("PUSH")) {
@@ -180,7 +183,7 @@ public class MultiSendTemplateService {
 					rtnMap.put("rcsStyleChk", rcsStyleChk);
 				}
 			}
-			if (chTypeList.contains("SMSMMS")) {
+			if (chTypeList.contains("문자")) {
 				String smsSendType = (String) rtnMap.get("smsSendType");
 				if ("A".equals(msgKind)) {
 					String smsTitle = (String) rtnMap.get("smsTitle");
@@ -228,8 +231,13 @@ public class MultiSendTemplateService {
 		sb.append("[");
 		StringBuffer sbChannel = new StringBuffer();
 		String chTypeList = "";
+		// 문자 -> SMSMMS로 치환처리
 		for (int i = 0; i < checkChannelArr.length; i++) {
-			chTypeList = chTypeList + (checkChannelArr[i]);
+			if("문자".equals(checkChannelArr[i])) {
+				chTypeList = chTypeList + "SMSMMS";
+			} else {
+				chTypeList = chTypeList + (checkChannelArr[i]);
+			}
 			if (i < checkChannelArr.length - 1)
 				chTypeList = chTypeList + ",";
 		}
@@ -806,7 +814,6 @@ public class MultiSendTemplateService {
 
 			} else if (checkChannelArr[i].equalsIgnoreCase("문자")) {
 				// SMSMMS ====================================================================
-				chTypeList = "SMSMMS";
 				if (params.get("smsSendType").equals("S")) {// SMS
 					sb.append("\"chTypeList\" : \"" + chTypeList + "\",");
 					sb.append("\"ch\" : \"SMS\","); // 발송채널
