@@ -53,7 +53,7 @@
 					
 					</div>
 					<div class="text-center mt20">
-						<a @click="fnSave" class="btnStyle1 backBlack ml10" data-toggle="modal">저장</a>
+						<a @click="fnSaveVali" class="btnStyle1 backBlack ml10" data-toggle="modal">저장</a>
 						<a @click="fnClose" class="btnStyle1 backWhite" data-dismiss="modal">닫기</a>						
 					</div>
 				</div>
@@ -158,31 +158,7 @@ export default {
 			}
 		});
 	},
-	async fnSave(){
-		if( this.tokenYn != 'Y' ){
-			confirm.fnAlert("", "토큰 발급 후, 진행해주세요.");
-			return;
-		} else if( this.kkoChId === '' ){
-			confirm.fnAlert("", "카카오 채널ID를 입력해주세요.");
-			return;
-		} else if( this.phoneNumber === '' ){
-			confirm.fnAlert("", "관리자 연락처를 입력해주세요.");
-			return;
-		} else if( this.categoryCode === '' ){
-			confirm.fnAlert("", "사업자 카테고리를 선택해주세요.");
-			return;
-		} else if( this.token === '' ){
-			confirm.fnAlert("", "발급된 토큰을 입력해주세요.");
-			return;
-		} else if( this.apiKey === ''){
-			confirm.fnAlert("", "API Key가 존재하지 않습니다. API Key를 등록해주세요.");
-			return;
-		}
-
-		// 채널 중복여부 체크
-		var chkKkoChannel = await this.chkEqualKakaoChannel();
-		if(!chkKkoChannel) return;
-
+	fnSave(){
 		var params = {
 			"sts"			: this.save_status,
 			"apiKey"		: this.apiKey,
@@ -205,14 +181,31 @@ export default {
 			}
 		});
 	},
-	async chkEqualKakaoChannel() {
+	fnSaveVali() {
+		// 기본 validation
+		if( this.tokenYn != 'Y' ){
+			confirm.fnAlert("", "토큰 발급 후, 진행해주세요.");
+			return;
+		} else if( this.kkoChId === '' ){
+			confirm.fnAlert("", "카카오 채널ID를 입력해주세요.");
+			return;
+		} else if( this.phoneNumber === '' ){
+			confirm.fnAlert("", "관리자 연락처를 입력해주세요.");
+			return;
+		} else if( this.categoryCode === '' ){
+			confirm.fnAlert("", "사업자 카테고리를 선택해주세요.");
+			return;
+		} else if( this.token === '' ){
+			confirm.fnAlert("", "발급된 토큰을 입력해주세요.");
+			return;
+		} else if( this.apiKey === ''){
+			confirm.fnAlert("", "API Key가 존재하지 않습니다. API Key를 등록해주세요.");
+			return;
+		}
+
+		// 중복 여부 확인 후 저장 
 		var params = {
-			"sts"			: this.save_status,
-			"apiKey"		: this.apiKey,
 			"kkoChId"		: this.kkoChId,
-			"phoneNumber"	: this.phoneNumber,
-			"token"			: this.token,
-			"categoryCode"	: this.categoryCode,
 			"projectId"		: this.projectId,
 			"otherProjectYn": this.otherProjectYn
 		};
@@ -220,10 +213,9 @@ export default {
 		api.chkEqualKakaoChannel(params).then(response => {
 			var result = response.data;
 			if(result.success) {
-				return true;
+				this.fnSave();
 			} else {
 				confirm.fnAlert("", result.message);
-				return false;
 			}
 		});
 	}
