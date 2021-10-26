@@ -3206,10 +3206,18 @@ export default {
 						}
 					}
 
-					if(!this.rcsCallbackList.includes(this.rowData.callback)) {
+					var callbackChk = false;
+					for(var i=0; i<this.rcsCallbackList.length; i++) {
+						if(this.rcsCallbackList[i].callback == this.rowData.callback) {
+							callbackChk = true;
+							break;
+						}
+					}
+					if(!callbackChk) {
 						confirm.fnAlert(this.detailTitle, '발신번호를 선택해주세요.');
 						return false;
 					}
+
 				}
 
 				if (this.rowData.checkedChannel.includes('KAKAO')) {
