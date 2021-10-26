@@ -154,7 +154,9 @@
              	FROM cm.CM_STAT_CH_DAY 
              	WHERE YMD BETWEEN DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL A.a-6 MONTH), '%Y-%m-01') 
              				AND DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL A.a-6 MONTH), '%Y-%m-31') 
-             	AND CORP_ID = #{corpId}) AS CNT
+             	AND CORP_ID = #{corpId}
+             	AND CH != 'MO'
+             	) AS CNT
           FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) AS A
 	</select>
 
@@ -166,6 +168,7 @@
 		WHERE	CORP_ID = #{corpId}
         AND     YMD BETWEEN    DATE_FORMAT(NOW()-INTERVAL 6 MONTH, '%Y-%m-01') AND NOW()
         AND     CH > ''
+        AND		CH != 'MO'
 		GROUP BY CH
 		ORDER BY 2 DESC, 1
 	</select>

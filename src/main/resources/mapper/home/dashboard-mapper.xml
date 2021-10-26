@@ -57,7 +57,8 @@
 
 	<select id="selectChTotCnt" resultType="camel">
         /* dashboard.selectChTotCnt */
-		SELECT IFNULL(SUM(SUCC_CNT), 0) AS TOTAL_SUCC_CNT
+		SELECT 
+		   IFNULL(SUM(SUCC_CNT), 0) AS TOTAL_SUCC_CNT
 	     , IFNULL(SUM(FAIL_CNT), 0) AS TOTAL_FAIL_CNT
 	     , IFNULL(SUM((CASE CH WHEN 'PUSH' THEN SUCC_CNT ELSE 0 END)), 0) AS PUSH_SUCC_CNT
 	     , IFNULL(SUM((CASE CH WHEN 'PUSH' THEN FAIL_CNT ELSE 0 END)), 0) AS PUSH_FAIL_CNT
@@ -86,6 +87,7 @@
        AND YMD BETWEEN STR_TO_DATE(#{startDateStr}, '%Y-%m-%d') AND STR_TO_DATE(#{endDateStr}, '%Y-%m-%d')
         </otherwise>
     </choose>
+       AND CH != 'MO'
 	</select>
 
 	<select id="selectChSuccFailCntList" resultType="camel">
@@ -146,10 +148,12 @@
 			<choose>
 				<when test="startMonthStr != null and startMonthStr != ''">
 			AND YMD BETWEEN STR_TO_DATE(CONCAT(#{startMonthStr}, '-01'), '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{endMonthStr}, '-31'), '%Y-%m-%d')
+			AND CH != 'MO'
 			GROUP BY DATE_FORMAT(YMD, '%y-%m')
 				</when>
 				<otherwise>
 			AND YMD BETWEEN STR_TO_DATE(#{startDateStr}, '%Y-%m-%d') AND STR_TO_DATE(#{endDateStr}, '%Y-%m-%d')
+			AND CH != 'MO'
 			GROUP BY YMD
 				</otherwise>
 			</choose>
@@ -287,6 +291,7 @@
            AND A.YMDH = SUBSTR(YMDHM, 1, 10)
            AND CORP_ID = #{corpId}
            AND PROJECT_ID = #{projectId}
+           AND b.CH != 'MO'
           GROUP BY YMDH
 	</select>
 
@@ -317,6 +322,7 @@
 		    ON CORP_ID = #{corpId}
 		   AND YMD BETWEEN LAST_DAY(CURDATE() - INTERVAL 1 MONTH) + INTERVAL 1 DAY AND LAST_DAY(CURDATE())
 		   AND B.YMD = A.DATE
+		   AND B.CH != 'MO'
 		 GROUP BY A.DATE
 	</select>
 
@@ -330,7 +336,7 @@
 	<select id="selectSixMonthUsedDataList" resultType="camel">
 		/* dashboard.selectSixMonthUsedDataList */
         SELECT DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -A.a MONTH), '%Y-%m') AS DATE
-             , IFNULL(SUM(TOT_CNT),0) AS TOT_CNT
+			 , IFNULL(SUM(TOT_CNT),0) AS TOT_CNT
              , IFNULL(SUM(CASE CH WHEN 'PUSH' THEN TOT_CNT ELSE 0 END),0) AS PUSH_CNT
              , IFNULL(SUM(CASE CH WHEN 'RCS' THEN TOT_CNT ELSE 0 END),0) AS RCS_CNT
              , IFNULL(SUM(CASE CH WHEN 'FRIENDTALK' THEN TOT_CNT ELSE 0 END),0) AS FRIENDTALK_CNT
@@ -343,6 +349,7 @@
             ON YM BETWEEN DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL-5 MONTH), '%Y-%m-01') AND DATE_FORMAT(CURDATE(), '%Y-%m-31')
            AND CORP_ID = #{corpId}
            AND B.YM = DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -A.a MONTH), '%Y-%m-01')
+           AND B.CH != 'MO'
           GROUP BY DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -A.a MONTH), '%Y-%m-01')
           UNION ALL
           SELECT DATE_FORMAT(B.YMD, '%Y-%m') AS DATE
@@ -357,6 +364,7 @@
           FROM 	cm.CM_STAT_CH_DAY B
           WHERE	B.CORP_ID = #{corpId}
           AND	B.YMD BETWEEN DATE_FORMAT(CURDATE(), '%Y-%m-01') AND DATE_FORMAT(CURDATE(), '%Y-%m-31')
+          AND   B.CH != 'MO'
 	</select>
 
 </mapper>
