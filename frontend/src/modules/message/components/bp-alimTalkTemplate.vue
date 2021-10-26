@@ -17,7 +17,7 @@
                   <option value="G">그룹</option>
                 </select>
                 -->
-                <select class="selectStyle2" style="width:53%" v-model="searchData.senderKey" @change="fnChgSenderKey">
+                <select class="selectStyle2" style="width:53%" v-model="searchData.senderKey" @change="fnChgSenderKey" :disabled="propSenderKey!=''">
                   <option value="">선택하세요</option>
                   <option 
                     v-for="(senderKeyInfo, idx) in senderKeyList"
@@ -128,6 +128,11 @@ export default {
         return '템플릿 선택';
       }
     },
+    propSenderKey : {
+      type: String,
+      require: false,
+      default: ""
+    }
   },
   data() {
     return {
@@ -201,7 +206,15 @@ export default {
       }
     },
     //템플릿 리스트 검색
+    fnAlimTalkPopOpen() {
+      let propSenderKey = this.propSenderKey;
+      if(propSenderKey!="") {
+        this.searchData.senderKey = propSenderKey;
+        this.fnSearch();
+      }
+    },
     async fnSearch(){
+      
       if(this.$gfnCommonUtils.isEmpty(this.searchData.senderKey)){
         confirm.fnAlert(this.componentsTitle, '발신프로필키를 선택해주세요.');
         return;

@@ -59,15 +59,19 @@
             <h4>01  발송정보</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a
-              href="#"
-              @click.prevent="fnOpenAlimTalkTemplatePopup"
-              class="btnStyle1 backLightGray"
-              title="템플릿 불러오기"
-              activity="READ"
-            >템플릿 불러오기</a>
+            <a href="#" @click.prevent="fnOpenAlimTalkTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기" activity="READ">템플릿 불러오기</a>
+            <div class="of_h consolMarginTop">
+              <div style="width:20%" class="float-left">
+                <h5>발신프로필 *</h5>
+              </div>
+              <div style="width:80%">
+                <select name="userConsole_sub0203_1" class="selectStyle2" style="width:42%" v-model="sendData.senderKey" :disabled="templateSet">
+                  <option value="" selected>선택해주세요.</option>
+                  <option v-for="senderKeyInfo in senderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.kkoChId}}</option>
+                </select>
+              </div>
+            </div>
           </div>
-
         </div>
         <hr>
 
@@ -76,20 +80,8 @@
             <h4>02  메시지 내용</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a
-              href="#"
-              @click.prevent="fnOpenAlimTalkContentsPopup"
-              :class="fnIsEmptyObj(sendData.tmpltContent) ? 'btnStyle1 backLightGray mr5' : 'btnStyle1 backWhite mr5'"
-              title="메시지 내용입력"
-              activity="READ"
-            >내용보기</a>
-            <a
-              v-if="sendData.rplcSendType!='NONE'"
-              @click="fnOpenReplacedSenderPopup"
-              :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'"
-              title="대체발송 내용입력"
-              activity="READ"
-            >대체발송 내용입력</a>
+            <a href="#" @click.prevent="fnOpenAlimTalkContentsPopup" :class="fnIsEmptyObj(sendData.tmpltContent) ? 'btnStyle1 backLightGray mr5' : 'btnStyle1 backWhite mr5'" title="메시지 내용입력" activity="READ">내용보기</a>
+            <a v-if="sendData.rplcSendType!='NONE'" @click="fnOpenReplacedSenderPopup" :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="대체발송 내용입력" activity="READ">대체발송 내용입력</a>
             <div class="of_h consolMarginTop">
               <div style="width:20%" class="float-left">
                 <h5 class="inline-block mr10">버튼</h5>
@@ -283,7 +275,7 @@
       </div>
     </div>
 	
-    <AlimTalkTemplatePopup :alimTalkTemplateOpen.sync="alimTalkTemplateOpen" ref="alimTalkTmplPopup"></AlimTalkTemplatePopup>
+    <AlimTalkTemplatePopup :propSenderKey.sync="sendData.senderKey" :alimTalkTemplateOpen.sync="alimTalkTemplateOpen" ref="alimTalkTmplPopup"></AlimTalkTemplatePopup>
     <AlimTalkContentsPopup :alimTalkContsOpen.sync="alimTalkContsOpen" :sendData="sendData"></AlimTalkContentsPopup>
     <ReplacedSenderPopup :rplcSendOpen.sync="rplcSendOpen" ref="rplcSendPopup"></ReplacedSenderPopup>
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
@@ -304,6 +296,7 @@ import XLSX from 'xlsx';
 
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import messageApi from "@/modules/message/service/messageApi.js";
+import templateApi from "@/modules/template/service/templateApi.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
@@ -333,6 +326,7 @@ export default {
   },
   data() {
     return {
+      templateSet: false,
       alimTalkTemplateOpen: false,
       alimTalkContsOpen: false,
       rplcSendOpen: false,
@@ -360,6 +354,8 @@ export default {
       apiKeyName : '',
       monSenderLimitAmout : '없음',
       daySenderLimitAmout : '없음',
+      senderKeyType: 'S', 
+      senderKeyList: [],
       sendData : {
         chGrp: 'KKO',
         ch: 'ALIMTALK',
@@ -402,6 +398,7 @@ export default {
   async mounted() {
     await this.fnExistApiKey();
     await this.fnValidUseChGrp();
+    await this.fnGetSenderKeyList();
   },
   methods: {
     fnRemoveRecvInfo(){
@@ -732,13 +729,20 @@ export default {
     },
     //템플릿 정보 Set
     fnSetTemplateInfo(templateInfo){
+      this.templateSet = true;
       Object.assign(this.sendData, templateInfo);
     },
     fnOpenAlimTalkContentsPopup(){
       this.alimTalkContsOpen = true;
     },
     fnOpenAlimTalkTemplatePopup(){
+      let senderKey = this.sendData.senderKey;
+      if(senderKey == "") {
+        confirm.fnAlert(this.componentsTitle, "발신프로필을 선택해 주세요.");
+        return;
+      }
       this.$refs.alimTalkTmplPopup.fnSelectSenderKeyList();
+      this.$refs.alimTalkTmplPopup.fnAlimTalkPopOpen();
       this.alimTalkTemplateOpen = true;
     },
     //빈오브젝트확인
@@ -785,6 +789,17 @@ export default {
         requiredCuPhone: this.sendData.requiredCuPhone
       };
       await messageApi.excelDownSendAlimTalkRecvTmplt(params);
+    },
+    fnGetSenderKeyList(){
+      const params = {kkoSvc: this.sendData.ch, senderKeyType: this.senderKeyType};
+      templateApi.selectSenderKeyList(params).then(response => {
+        var result = response.data;
+        if(result.success) {
+          this.senderKeyList = result.data;
+        } else {
+          confirm.fnAlert(this.componentsTitle, result.message);
+        }
+      });
     },
   }
 }
