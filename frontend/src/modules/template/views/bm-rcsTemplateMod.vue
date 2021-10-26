@@ -121,7 +121,7 @@
 																<option value="mapAction">지도맵</option>
 															</select>
 														</td>
-														<td class="text-left"><input v-model="btnNm[n-1]" type="text" class="inputStyle"></td>
+														<td class="text-left"><input placeholder="17자 이내" v-model="btnNm[n-1]" type="text" class="inputStyle" maxlength="17"></td>
 														<td v-if="selectBtn[n-1]!='calendarAction'" class="text-center"><input v-model="contents[n-1]" type="text" class="inputStyle" :placeholder="btnInputHolder[n-1]" :disabled="selectBtn[n-1]=='mapAction'"></td>
 														<td v-if="selectBtn[n-1]=='calendarAction'" class="text-center">
 															<input v-model="calendarTitle[n-1]" type="text" class="inputStyle" placeholder="제목입력">
@@ -275,7 +275,7 @@
 																<option value="mapAction">지도맵</option>
 															</select>
 														</td>
-														<td class="text-left"><input v-model="btnNm[n-1]" type="text" class="inputStyle"></td>
+														<td class="text-left"><input placeholder="17자 이내" v-model="btnNm[n-1]" type="text" class="inputStyle" maxlength="17"></td>
 														<td v-if="selectBtn[n-1]!='calendarAction'" class="text-center"><input v-model="contents[n-1]" type="text" class="inputStyle" :placeholder="btnInputHolder[n-1]" :disabled="selectBtn[n-1]=='mapAction'"></td>
 														<td v-if="selectBtn[n-1]=='calendarAction'" class="text-center">
 															<input v-model="calendarTitle[n-1]" type="text" class="inputStyle" placeholder="제목입력">
@@ -913,7 +913,6 @@ export default {
 				this.$router.push({name : "rcsTemplateList"});
 			} else {
 				confirm.fnAlert(message,"");
-				this.$router.push({name : "rcsTemplateList"});
 			}
 		});	  
 	  }
