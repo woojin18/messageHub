@@ -178,8 +178,11 @@ public class MessageStatusService {
 			String chString = "";
 			for(int j=0; j < stringArray.length; j++) {
 				//발송채널구분 : PUSH, RCS, SMS, MMS, ALIMTALK, FRIENDTALK, SMARTMSG
-				
-				chString = chString + "<h5 style=\"width:18%\" class=\"float-left ml color000\">"+stringArray[j];
+				if(stringArray[j].equals("PUSH") || stringArray[j].equals("RCS") || stringArray[j].equals("SMS") || stringArray[j].equals("MMS") || stringArray[j].equals("LMS")) {
+					chString = chString + "<h5 style=\"width:12%\" class=\"float-left ml color000\">"+stringArray[j];
+				} else {
+					chString = chString + "<h5 style=\"width:20%\" class=\"float-left ml color000\">"+stringArray[j];
+				}
 				if(j < stringArray.length -1) chString = chString+"<i class=\"far fa-chevron-right ml40\" style=\"font-size: 10px; color: #a3a3a3; font-weight: 700;\"></i>";
 				chString = chString + "</h5>";
 			}
