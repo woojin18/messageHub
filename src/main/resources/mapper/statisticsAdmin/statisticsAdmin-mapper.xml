@@ -65,6 +65,12 @@
 					</otherwise>
 				</choose>
 			</when>
+            <when test="searchChanType == 'MO'.toString()">
+        AND     CH = 'MO'
+        <if test="searchSmsmmsType != null and searchSmsmmsType != ''">
+        AND     PRODUCT_CODE = #{searchSmsmmsType}
+        </if>
+            </when>
 			<otherwise>
 		AND		CH = #{searchChanType} <!-- PUSH, RCS -->
 			</otherwise>
