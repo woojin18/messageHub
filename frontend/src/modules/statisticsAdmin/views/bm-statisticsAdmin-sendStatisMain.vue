@@ -11,8 +11,11 @@
 					<li :class="{active:(selMainTab == 2)}" @click="selMainTab=2; selMidTab=1; selSubTab==1"><a>RCS</a></li>
 					<li :class="{active:(selMainTab == 3)}" @click="selMainTab=3; selMidTab=1; selSubTab==1"><a>카카오톡</a></li>
 					<li :class="{active:(selMainTab == 1)}" @click="selMainTab=1; selMidTab=1; selSubTab==1"><a>Push</a></li>
+					<li :class="{active:(selMainTab == 0)}" @click="selMainTab=0; selMidTab=1; selSubTab==1"><a>MO</a></li>
 				</ul>
 			</div>
+			<!-- Mo 탭 -->
+			<mo v-if="selMainTab==0"></mo>
 			<!-- Push 탭 -->
 			<push v-if="selMainTab==1"></push>
 			<!-- RCS 탭 -->
@@ -27,6 +30,7 @@
 
 
 <script>
+import mo from "@/modules/statisticsAdmin/components/bc-mo-main.vue";
 import push from "@/modules/statisticsAdmin/components/bc-push-main.vue";
 import rcs from "@/modules/statisticsAdmin/components/bc-rcs-main.vue";
 import kakaotalk from "@/modules/statisticsAdmin/components/bc-kakaotalk-main.vue";
@@ -34,6 +38,7 @@ import smsmms from "@/modules/statisticsAdmin/components/bc-smsmms-main.vue";
 
 export default {
 	components: {
+		mo,
 		push,
 		rcs,
 		kakaotalk,
