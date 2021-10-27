@@ -63,9 +63,10 @@
 								<input type="checkbox" id="searchTmpltStatus_S" class="checkStyle2" value="SAVE" v-model="searchData.searchTmpltStatus">
 								<label for="searchTmpltStatus_S" class="mr30">저장</label>
 							</div>
+							<a @click="fnSearch()" class="btnStyle2 float-right" title="검색" activity="READ">검색</a>
 						</div>
 					</div>
-					<div class="of_h">
+					<!--<div class="of_h">
 						<div class="inline-block" style="width:8%"><h4 class="font-normal mt15">등록일자</h4></div>
 						<div class="inline-block" style="width:91%">
 							<Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" ></Calendar>
@@ -79,7 +80,7 @@
 							</ul>
 							<a @click="fnSearch()" class="btnStyle2 float-right" title="검색" activity="READ">검색</a>
 						</div>
-					</div>
+					</div>-->
 				</div>
 			</div>
 		</div>
@@ -187,8 +188,8 @@ export default {
 					'searchCondi'				: 'templateTitle',
 					'searchText'				: '',
 					'searchTmpltStatus'	: '',
-					'searchStartDate'		: this.$gfnCommonUtils.getCurretDate(),
-					'searchEndDate'			: this.$gfnCommonUtils.getCurretDate()
+					//'searchStartDate'		: this.$gfnCommonUtils.getCurretDate(),
+					//'searchEndDate'			: this.$gfnCommonUtils.getCurretDate()
 				}
 			}
 		},
@@ -216,7 +217,7 @@ export default {
 		}
 	},
 	mounted() {
-		this.fnSetIntervalSearchDate(this.searchDateInterval);
+		//this.fnSetIntervalSearchDate(this.searchDateInterval);
 		this.fnSearchMsgKindCdChkAll();
 		this.fnSearchMsgChChkAll();
 		this.fnSearchTmpltStatusCdChkAll();

@@ -19,7 +19,7 @@
             <input type="text" class="inputStyle ml10" v-model="searchData.searchText" style="width:31%" title="검색조건 입력란" @keypress.enter="fnPageNoResetSearch">
           </div>
 
-          <div class="of_h consolMarginTop">
+          <!--<div class="of_h consolMarginTop">
             <div class="inline-block" style="width:8%"><h4>등록일자</h4></div>
             <div class="inline-block" style="width:90%">
               <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle" styleProps="width:15%" :initDate="searchData.searchStartDate"></Calendar>
@@ -32,7 +32,7 @@
                 <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
               </ul>
             </div>
-          </div>
+          </div>-->
 
           <div class="of_h consolMarginTop">
             <div class="inline-block" style="width:15%"><h4>타 프로젝트 사용여부</h4></div>
@@ -164,8 +164,8 @@ export default {
         return {
           'searchCondi' : 'tmpltName',
           'searchText' : '',
-          'searchStartDate' : this.$gfnCommonUtils.getCurretDate(),
-          'searchEndDate' : this.$gfnCommonUtils.getCurretDate(),
+          //'searchStartDate' : this.$gfnCommonUtils.getCurretDate(),
+          //'searchEndDate' : this.$gfnCommonUtils.getCurretDate(),
           'searchOthPrjUseYn' : []
         }
       }
@@ -194,7 +194,7 @@ export default {
   mounted() {
     this.fnValidUseChGrp();
     this.fnSearchOthPrjUseYnChkAll();
-    this.fnSetIntervalSearchDate(this.searchDateInterval);
+    //this.fnSetIntervalSearchDate(this.searchDateInterval);
     this.fnPageNoResetSearch();
   },
   methods: {

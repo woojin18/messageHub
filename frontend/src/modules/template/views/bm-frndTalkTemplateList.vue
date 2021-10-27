@@ -21,7 +21,7 @@
               </div>
             </div>
 
-            <div class="of_h consolMarginTop">
+            <!--<div class="of_h consolMarginTop">
               <div class="inline-block" style="width:8%"><h4>등록일자</h4></div>
               <div class="inline-block" style="width:91%">
                 <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate"></Calendar>
@@ -34,7 +34,7 @@
                   <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
                 </ul>
               </div>
-            </div>
+            </div>-->
             
             <div class="of_h">
             <div class="inline-block" style="width:8%"><h4>메시지구분</h4></div>
@@ -161,8 +161,8 @@ export default {
         return {
           'searchCondi' : 'tmpltName',
           'searchText' : '',
-          'searchStartDate' : this.$gfnCommonUtils.getCurretDate(),
-          'searchEndDate' : this.$gfnCommonUtils.getCurretDate(),
+          //'searchStartDate' : this.$gfnCommonUtils.getCurretDate(),
+          //'searchEndDate' : this.$gfnCommonUtils.getCurretDate(),
           'searchMsgKindCd' : []
         }
       }
@@ -190,7 +190,7 @@ export default {
   },
   async mounted() {
     this.fnValidUseChGrp();
-    this.fnSetIntervalSearchDate(this.searchDateInterval);
+    //this.fnSetIntervalSearchDate(this.searchDateInterval);
     this.fnSearchMsgKindCdChkAll();
     this.fnPageNoResetSearch();
   },
