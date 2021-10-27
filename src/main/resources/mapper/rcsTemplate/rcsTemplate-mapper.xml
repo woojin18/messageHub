@@ -134,13 +134,13 @@
 			AND		BB.BRAND_NAME LIKE CONCAT('%', #{brandNm}, '%')
 		</if>
 		<if test="status != '' and status != null">
-			AND		A.APPROVAL_STATUS = #{status}
+			AND		AA.APPROVAL_STATUS = #{status}
 		</if>
 		<if test="temNm != '' and temNm != null">
-			AND		A.TMPLT_NAME LIKE CONCAT('%', #{temNm}, '%')
+			AND		AA.TMPLT_NAME LIKE CONCAT('%', #{temNm}, '%')
 		</if>
 		<if test="temId != '' and temId != null">
-			AND		A.MESSAGEBASE_ID LIKE CONCAT('%', #{temId}, '%')
+			AND		AA.MESSAGEBASE_ID LIKE CONCAT('%', #{temId}, '%')
 		</if>
 	</sql>
 

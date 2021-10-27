@@ -734,9 +734,9 @@ export default {
 			vm.desImgSrc = require("@/assets/images/common/receipts.png");
 		  } else if("FF003D" == desFormNm) { // 출금
 			vm.desImgSrc = require("@/assets/images/common/payment.png");
-		  } else if("FF004D" == desFormNm) { // 취소
+		  } else if("FF005D" == desFormNm) { // 취소
 			vm.desImgSrc = require("@/assets/images/common/cancel.png");
-		  } else if("FF005D" == desFormNm) { // 명세서
+		  } else if("FF006D" == desFormNm) { // 명세서
 			vm.desImgSrc = require("@/assets/images/common/specifications.png");
 		  } else if("GG001D" == desFormNm) { // 회원가입
 			vm.desImgSrc = require("@/assets/images/common/join.png");
@@ -764,9 +764,9 @@ export default {
 			vm.styleImgSrc = require("@/assets/images/common/receipts.png");
 		  } else if("FF003C" == styleFormNm) { // 출금
 			vm.styleImgSrc = require("@/assets/images/common/payment.png");
-		  } else if("FF004C" == styleFormNm) { // 취소
+		  } else if("FF005C" == styleFormNm) { // 취소
 			vm.styleImgSrc = require("@/assets/images/common/cancel.png");
-		  } else if("FF005C" == styleFormNm) { // 명세서
+		  } else if("FF006C" == styleFormNm) { // 명세서
 			vm.styleImgSrc = require("@/assets/images/common/specifications.png");
 		  } else if("GG001C" == styleFormNm) { // 회원가입
 			vm.styleImgSrc = require("@/assets/images/common/join.png");
