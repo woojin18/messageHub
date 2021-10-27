@@ -20,13 +20,16 @@
 
                 <div class="consolMarginTop" v-for="rowIdx in loopCnt" :key="rowIdx">
                   <div v-if="recvInfoLst.length >= rowIdx">
-                    <input v-if="header == 'cuid' || header == 'phone'" type="text" class="inputStyle" 
+                    <input v-if="header == 'phone'" type="text" class="inputStyle" 
+                      :ref="header+'_'+rowIdx" v-model="recvInfoLst[rowIdx-1][header]" @keypress="fnOnlyNumber" @keydown="fnOnlyNumber" autocomplete="off">
+                    <input v-else-if="header == 'cuid'" type="text" class="inputStyle" 
                       :ref="header+'_'+rowIdx" v-model="recvInfoLst[rowIdx-1][header]">
                     <input v-else type="text" class="inputStyle" 
                       :ref="header+'_'+rowIdx" v-model="recvInfoLst[rowIdx-1].mergeData[header]">
                   </div>
                   <div v-else>
-                    <input type="text" class="inputStyle" :ref="header+'_'+rowIdx">
+                    <input v-if="header == 'phone'" type="text" class="inputStyle" :ref="header+'_'+rowIdx" @keypress="fnOnlyNumber" @keydown="fnOnlyNumber" autocomplete="off">
+                    <input v-else type="text" class="inputStyle" :ref="header+'_'+rowIdx">
                   </div>
                 </div>
               </div>
@@ -122,6 +125,9 @@ export default {
       if(typeof obj === 'undefined') return true;
       if(Object.keys(obj).length === 0) return true;
       return false;
+    },
+    fnOnlyNumber($event) {
+      if (!/\d/.test($event.key)) return $event.preventDefault();
     },
     //직접입력 선택 버튼 클릭시
     fnCallbackInputData(){

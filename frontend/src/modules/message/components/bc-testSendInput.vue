@@ -16,13 +16,16 @@
                 <div class="text-center background-color6 colorfff consolLineheight">* {{header=='cuid' ? 'APP 로그인ID' : (header=='phone' ? '휴대폰번호' : header)}}</div>
                 <div class="consolMarginTop" v-for="rowIdx in loopCnt" :key="rowIdx">
                   <div v-if="testRecvInfoLst.length >= rowIdx">
-                    <input v-if="header == 'cuid' || header == 'phone'" type="text" class="inputStyle" 
+                    <input v-if="header == 'phone'" type="text" class="inputStyle" 
+                      :ref="header+'_'+rowIdx" v-model="testRecvInfoLst[rowIdx-1][header]" @keypress="fnOnlyNumber" @keydown="fnOnlyNumber" autocomplete="off">
+                    <input v-else-if="header == 'cuid'" type="text" class="inputStyle" 
                       :ref="header+'_'+rowIdx" v-model="testRecvInfoLst[rowIdx-1][header]">
                     <input v-else type="text" class="inputStyle" 
                       :ref="header+'_'+rowIdx" v-model="testRecvInfoLst[rowIdx-1].mergeData[header]">
                   </div>
                   <div v-else>
-                    <input type="text" class="inputStyle" :ref="header+'_'+rowIdx">
+                    <input v-if="header == 'phone'" type="text" class="inputStyle" :ref="header+'_'+rowIdx" @keypress="fnOnlyNumber" @keydown="fnOnlyNumber" autocomplete="off">
+                    <input v-else type="text" class="inputStyle" :ref="header+'_'+rowIdx">
                   </div>
                 </div>
               </div>
@@ -201,6 +204,9 @@ export default {
 
       this.$parent.fnCallbackTestRecvInfoLst(recvInfoLst);
       this.fnClose();
+    },
+    fnOnlyNumber($event) {
+      if (!/\d/.test($event.key)) return $event.preventDefault();
     },
     //빈값확인
     fnIsEmpty(str){
