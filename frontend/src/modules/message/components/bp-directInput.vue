@@ -127,7 +127,10 @@ export default {
       return false;
     },
     fnOnlyNumber($event) {
-      if (!/\d/.test($event.key)) return $event.preventDefault();
+      var keyCode = $event.which;
+      if(keyCode != "8" && keyCode != "46") {
+        if (!/\d/.test($event.key)) return $event.preventDefault();
+      }
     },
     //직접입력 선택 버튼 클릭시
     fnCallbackInputData(){
