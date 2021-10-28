@@ -66,7 +66,6 @@
 							<col style="width:10%">
 							<col style="width:10%">
 							<col style="width:10%">
-							<col style="width:8%">
 							<col style="width:10%">
               				<col style="width:12%">
 						</colgroup>
@@ -79,7 +78,6 @@
 								<th class="text-center lc-1">속성</th>
 								<th class="text-center lc-1">승인상태</th>
 								<th class="text-center lc-1">승인일</th>
-								<th class="text-center lc-1">등록자</th>
                 				<th class="text-center lc-1">등록일자</th>
 								<th class="text-center lc-1 end">템플릿 복사</th>
 							</tr>
@@ -93,7 +91,6 @@
 							<td class="text-center">{{contant.CARD_TYPE}}</td>
 							<td class="text-center">{{contant.APPROVAL_STATUS}}</td>
 							<td class="text-center">{{contant.APPROVAL_DT}}</td>
-							<td class="text-center">{{contant.REG_ID}}</td>
 							<td class="text-center">{{contant.REG_DT}}</td>
 							<td class="text-center end"><a href="#" @click="templateCopy(contant.MESSAGEBASE_ID)" class="btnStyle6 minWidthAuto" style="width: 65%;">템플릿 복사</a></td>
 							</tr>

@@ -206,7 +206,10 @@ export default {
       this.fnClose();
     },
     fnOnlyNumber($event) {
-      if (!/\d/.test($event.key)) return $event.preventDefault();
+      var keyCode = $event.which;
+      if(keyCode != "8" && keyCode != "46") {
+        if (!/\d/.test($event.key)) return $event.preventDefault();
+      }
     },
     //빈값확인
     fnIsEmpty(str){

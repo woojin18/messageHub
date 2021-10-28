@@ -29,9 +29,11 @@
 								,		A.PRODUCT_CODE			AS PRODUCT_CODE
 								,		A.REG_ID				AS REG_ID
 								,		CASE
-											WHEN A.UPD_DT IS NULL OR A.UPD_DT=''
-											THEN DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%s')
-											ELSE DATE_FORMAT(A.UPD_DT, '%Y-%m-%d %H:%i:%s')
+											WHEN A.REG_DT > A.APPROVAL_DT AND A.REG_DT > A.UPD_DT
+											THEN A.REG_DT
+											WHEN A.APPROVAL_DT > A.REG_DT AND A.APPROVAL_DT > A.UPD_DT
+											THEN A.APPROVAL_DT
+											ELSE A.UPD_DT
 										END AS REG_DT
 								,		A.APPROVAL_STATUS		AS APPROVAL_STATUS
 								,		A.APPROVAL_DT			AS APPROVAL_DT
@@ -48,7 +50,13 @@
 								,		A.TMPLT_NAME		AS TMPLT_NAME
 								,		A.PRODUCT_CODE		AS PRODUCT_CODE
 								,		A.REG_ID			AS REG_ID
-								,		DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%s')		AS REG_DT
+								,		CASE
+											WHEN A.REG_DT > A.APPROVAL_DT AND A.REG_DT > A.UPD_DT
+											THEN A.REG_DT
+											WHEN A.APPROVAL_DT > A.REG_DT AND A.APPROVAL_DT > A.UPD_DT
+											THEN A.APPROVAL_DT
+											ELSE A.UPD_DT
+										END AS REG_DT
 								,		A.APPROVAL_STATUS	AS APPROVAL_STATUS
 								,		DATE_FORMAT(A.APPROVAL_DT, '%Y-%m-%d %H:%i:%s')	AS APPROVAL_DT
 								FROM	cm.CM_RCS_MSGBASE_REQ A
@@ -89,7 +97,13 @@
 								,		A.TMPLT_NAME			AS TMPLT_NAME
 								,		A.PRODUCT_CODE			AS PRODUCT_CODE
 								,		A.REG_ID				AS REG_ID
-								,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
+								,		CASE
+											WHEN A.REG_DT > A.APPROVAL_DT AND A.REG_DT > A.UPD_DT
+											THEN A.REG_DT
+											WHEN A.APPROVAL_DT > A.REG_DT AND A.APPROVAL_DT > A.UPD_DT
+											THEN A.APPROVAL_DT
+											ELSE A.UPD_DT
+										END AS REG_DT
 								,		A.APPROVAL_STATUS		AS APPROVAL_STATUS
 								,		A.APPROVAL_DT			AS APPROVAL_DT
 								,		A.MESSAGEBASEFORM_ID	AS MESSAGEBASEFORM_ID
@@ -105,7 +119,13 @@
 								,		A.TMPLT_NAME			AS TMPLT_NAME
 								,		A.PRODUCT_CODE			AS PRODUCT_CODE
 								,		A.REG_ID				AS REG_ID
-								,		A.REG_DT				AS REG_DT
+								,		CASE
+											WHEN A.REG_DT > A.APPROVAL_DT AND A.REG_DT > A.UPD_DT
+											THEN A.REG_DT
+											WHEN A.APPROVAL_DT > A.REG_DT AND A.APPROVAL_DT > A.UPD_DT
+											THEN A.APPROVAL_DT
+											ELSE A.UPD_DT
+										END AS REG_DT
 								,		A.APPROVAL_STATUS		AS APPROVAL_STATUS
 								,		A.APPROVAL_DT			AS APPROVAL_DT
 								,		A.MESSAGEBASEFORM_ID	AS MESSAGEBASEFORM_ID
