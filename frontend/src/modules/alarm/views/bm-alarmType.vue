@@ -209,7 +209,7 @@
         <hr>
 
         <div class="row">
-          <div class="col-xs-6 consolMarginTop" v-if="alarmType.alarmTypeCode == 'MSG' || alarmType.alarmTypeCode == 'SEND' || alarmType.alarmTypeCode == 'QTY'">
+          <div class="col-xs-6 consolMarginTop" v-if="alarmType.alarmTypeCode == 'MSG' || alarmType.alarmTypeCode == 'IP' || alarmType.alarmTypeCode == 'SEND' || alarmType.alarmTypeCode == 'QTY'">
             <div class="of_h consoleCon">
               <h4 class="inline-block">수집 대상 API</h4>
               <a @click="fnAdd1" activity="SAVE" class="btnStyle1 backBlack float-right" style="min-width:auto" title="등록">등록</a>
