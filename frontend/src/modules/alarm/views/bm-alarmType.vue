@@ -172,6 +172,14 @@
                 <input type="number" class="inputStyle" style="width:20%" title="알람 금액 입력란" v-model="alarm.coltMinQty"> 원 이하
               </div>
             </div>
+            <div class="of_h consolMarginTop" v-if="alarmType.alarmTypeCode == 'QTY'">
+              <h4 style="width:28%" class="inline-block">알람 최소 건수 *</h4>
+              <div class="float-right" style="width:72%">
+                <input type="number" class="inputStyle" style="width:20%" title="알람 최소 건수 입력란" v-model="alarm.coltMinQty"> 건
+                <p>당일 메시지 발송 건수가 알람 최소 건수와 전달 일 평균 건수보다 클 경우 알람을 보냅니다.</p>
+                <p>ex) 알람 최소 건수가 1,1000 건이고 전달 일 평균 건수가 1,000 건 이라 했을 때 당월 메시지가 1,100건을 넘을 경우 메시지 발송</p>
+              </div>
+            </div>
             <div class="of_h consolMarginTop" v-if="alarmType.alarmTypeCode == 'MSG'">
               <h4 style="width:28%" class="inline-block">발송 성공율 *</h4>
               <div class="float-right" style="width:72%">
@@ -209,7 +217,7 @@
         <hr>
 
         <div class="row">
-          <div class="col-xs-6 consolMarginTop" v-if="alarmType.alarmTypeCode == 'MSG' || alarmType.alarmTypeCode == 'IP' || alarmType.alarmTypeCode == 'SEND' || alarmType.alarmTypeCode == 'QTY'">
+          <div class="col-xs-6 consolMarginTop" v-if="alarmType.alarmTypeCode != 'PRE'">
             <div class="of_h consoleCon">
               <h4 class="inline-block">수집 대상 API</h4>
               <a @click="fnAdd1" activity="SAVE" class="btnStyle1 backBlack float-right" style="min-width:auto" title="등록">등록</a>
@@ -542,6 +550,13 @@ export default {
         //필수항목 check
         if(jQuery.trim(this.alarm.coltMinQty).length == 0){
           confirm.fnAlert("", "알람 금액은 필수사항입니다.");
+          return;
+        }
+      }
+      if (this.alarmType.alarmTypeCode == 'QTY') {
+        //필수항목 check
+        if(jQuery.trim(this.alarm.coltMinQty).length == 0){
+          confirm.fnAlert("", "알람 최소 건수는 필수사항입니다.");
           return;
         }
       }
