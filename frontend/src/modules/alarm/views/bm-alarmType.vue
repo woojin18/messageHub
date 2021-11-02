@@ -177,7 +177,7 @@
               <div class="float-right" style="width:72%">
                 <input type="number" class="inputStyle" style="width:20%" title="알람 최소 건수 입력란" v-model="alarm.coltMinQty"> 건
                 <p>당일 메시지 발송 건수가 알람 최소 건수와 전달 일 평균 건수보다 클 경우 알람을 보냅니다.</p>
-                <p>ex) 알람 최소 건수가 1,1000 건이고 전달 일 평균 건수가 1,000 건 이라 했을 때 당월 메시지가 1,100건을 넘을 경우 메시지 발송</p>
+                <p>ex) 입력한 알람 최소 건수가 1,100 건이고 전달 일 평균 건수가 1,000 건 이라 했을 때 당일 메시지가 1,100건을 넘길 경우 알람 전송</p>
               </div>
             </div>
             <div class="of_h consolMarginTop" v-if="alarmType.alarmTypeCode == 'MSG'">
