@@ -191,10 +191,10 @@
               <div class="float-right" style="width:72%">
                 <input type="number" class="inputStyle" style="width:20%" title="일 한도 금액 입력란" v-model="alarm.coltMinQty"> <span> 원 이하</span>							
                 <span>&nbsp;( </span>
-                  <div class="consolCheck" style="width:10%"><input type="checkbox" id="day70" v-model="alarm.dayLimit.rate70" class="checkStyle2"><label for="day70" class=" color000">70%</label></div>
-                  <div class="consolCheck" style="width:10%"><input type="checkbox" id="day80" v-model="alarm.dayLimit.rate80" class="checkStyle2"><label for="day80" class=" color000">80%</label></div>
-                  <div class="consolCheck" style="width:10%"><input type="checkbox" id="day90" v-model="alarm.dayLimit.rate90" class="checkStyle2"><label for="day90" class=" color000">90%</label></div>
-                  <div class="consolCheck" style="width:10%"><input type="checkbox" id="day100" v-model="alarm.dayLimit.rate100" class="checkStyle2"><label for="day100" class=" color000">100%</label></div>
+                  <div class="consolCheck" style="width:13%"><input type="checkbox" id="day70" v-model="alarm.dayLimit.rate70" class="checkStyle2"><label for="day70" class=" color000">70%</label></div>
+                  <div class="consolCheck" style="width:13%"><input type="checkbox" id="day80" v-model="alarm.dayLimit.rate80" class="checkStyle2"><label for="day80" class=" color000">80%</label></div>
+                  <div class="consolCheck" style="width:13%"><input type="checkbox" id="day90" v-model="alarm.dayLimit.rate90" class="checkStyle2"><label for="day90" class=" color000">90%</label></div>
+                  <div class="consolCheck" style="width:15%"><input type="checkbox" id="day100" v-model="alarm.dayLimit.rate100" class="checkStyle2"><label for="day100" class=" color000">100%</label></div>
                 <span> 초과 시)</span>
               </div>
             </div>
@@ -203,10 +203,10 @@
               <div class="float-right" style="width:72%">
                 <input type="number" class="inputStyle" style="width:20%" title="발송 성공율 입력란" v-model="alarm.mthLimitAmt"> <span> 원 이하</span>			
                 <span>&nbsp;( </span>
-                  <div class="consolCheck" style="width:10%"><input type="checkbox" id="mth70" v-model="alarm.mthLimit.rate70" class="checkStyle2"><label for="mth70" class=" color000">70%</label></div>
-                  <div class="consolCheck" style="width:10%"><input type="checkbox" id="mth80" v-model="alarm.mthLimit.rate80" class="checkStyle2"><label for="mth80" class=" color000">80%</label></div>
-                  <div class="consolCheck" style="width:10%"><input type="checkbox" id="mth90" v-model="alarm.mthLimit.rate90" class="checkStyle2"><label for="mth90" class=" color000">90%</label></div>
-                  <div class="consolCheck" style="width:10%"><input type="checkbox" id="mth100" v-model="alarm.mthLimit.rate100" class="checkStyle2"><label for="mth100" class=" color000">100%</label></div>
+                  <div class="consolCheck" style="width:13%"><input type="checkbox" id="mth70" v-model="alarm.mthLimit.rate70" class="checkStyle2"><label for="mth70" class=" color000">70%</label></div>
+                  <div class="consolCheck" style="width:13%"><input type="checkbox" id="mth80" v-model="alarm.mthLimit.rate80" class="checkStyle2"><label for="mth80" class=" color000">80%</label></div>
+                  <div class="consolCheck" style="width:13%"><input type="checkbox" id="mth90" v-model="alarm.mthLimit.rate90" class="checkStyle2"><label for="mth90" class=" color000">90%</label></div>
+                  <div class="consolCheck" style="width:15%"><input type="checkbox" id="mth100" v-model="alarm.mthLimit.rate100" class="checkStyle2"><label for="mth100" class=" color000">100%</label></div>
                 <span> 초과 시)</span>
               </div>						
             </div>	
