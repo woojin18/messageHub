@@ -157,9 +157,16 @@
 						<div class="float-left" style="width:72%">
 							<input type="text" class="inputStyle" title="영업사원" placeholder="영업사원명" v-model="salesMan" @keypress.enter="fnSalesManPopup" @change="salesManId=''">
 						</div>
-						<div class="float-right" style="width:25%"><a class="btnStyle1 backLightGray" style="min-width:auto; width:100%" @click="fnSalesManPopup">검색</a></div>
+						<div class="float-right" style="width:25%"><a class="btnStyle1 backLightGray" style="min-width:auto; width:100%" @click="fnSalesManPopup">조회</a></div>
+						<!-- <select class="selectStyle2" title="영업사원 선택란" v-model="salesMan" style="width:50%">
+							<option value="">선택하세요</option>
+							<option  v-for="(row, index) in  " :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
+						</select> -->
 					</div>
-					<div class="float-right color3 mt5" style="width:78%">영업사원 미입력시 자동으로 '박진표'로 선택됩니다.</div>
+					<div class="float-right color3 mt5" style="width:78%">
+						영업사원 조회 버튼을 통해 영업사원 팝업 창에서 영업사원을 선택해주세요.<br>
+						영업사원 미입력시 자동으로 '박진표'로 선택됩니다.
+					</div>
 				</div>
 			</div>
 
@@ -387,7 +394,7 @@ export default {
 			// 	confirm.fnAlert("", "도메인 이름 충복체크를 진행해주세요.");
 			// 	return false;
 			} else if (this.salesManId == "" && this.salesMan != "") {
-				confirm.fnAlert("", "선택하실 영업사원이 없는 경우, 빈칸으로 입력해주세요.");
+				confirm.fnAlert("", "영업사원명을 수정하신 경우, 영업사원 조회 팝업에서 다시 선택해주세요.\n영업사원을 기본값으로 등록하시려면 빈칸으로 입력해주세요.");
 				return false;
 			} else {
 				return true;
