@@ -247,9 +247,11 @@
 		,		CODE_VAL_1
 		,		CODE_VAL_2
 		,		CODE_VAL_3
+		,		CODE_VAL_4
 		,		CODE_NAME_1
 		,		CODE_NAME_2
 		,		CODE_NAME_3
+		,		CODE_NAME_4
 		,		DIS_ORDER
 		,		CASE
 					WHEN USE_YN = 'Y' THEN '사용'
@@ -260,6 +262,9 @@
 		WHERE	CODE_TYPE_CD = #{codeTypeCd}
 		<if test="useYn != null and useYn != ''">
 		AND		USE_YN = #{useYn}
+		</if>
+		<if test="srcSalesManNm != null and srcSalesManNm != ''">
+		AND		CODE_NAME_1 LIKE CONCAT('%', #{srcSalesManNm} ,'%')
 		</if>
 		ORDER BY DIS_ORDER
 	</select>

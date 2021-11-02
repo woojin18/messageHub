@@ -154,12 +154,12 @@
 				<div class="of_h mt10">
 					<div class="float-left" style="width:22%"><h5>영업사원</h5></div>
 					<div class="float-right" style="width:78%">
-						<select class="selectStyle2" title="영업사원 선택란" v-model="salesMan" style="width:50%">
-							<option value="">선택하세요</option>
-							<option  v-for="(row, index) in salesManArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
-						</select>
+						<div class="float-left" style="width:72%">
+							<input type="text" class="inputStyle" title="영업사원" placeholder="영업사원명" v-model="salesMan" @keypress.enter="fnSalesManPopup" @change="salesManId=''">
+						</div>
+						<div class="float-right" style="width:25%"><a class="btnStyle1 backLightGray" style="min-width:auto; width:100%" @click="fnSalesManPopup">검색</a></div>
 					</div>
-					<div class="float-right color3 mt5" style="width:78%">영업사원 미선택시 자동으로 '박진표'로 선택됩니다.</div>
+					<div class="float-right color3 mt5" style="width:78%">영업사원 미입력시 자동으로 '박진표'로 선택됩니다.</div>
 				</div>
 			</div>
 
@@ -181,6 +181,7 @@
 		</section>
 		<chkCorpPopup :popReset="popReset" :dataList="dataList" :selCorp.sync="selCorp"></chkCorpPopup>
 		<addrPopup :popReset="popReset"  :selAddr.sync="selAddr"></addrPopup>
+		<selSalesManPopup :popReset="popReset" :salesMan="salesMan" :selSalesMan.sync="selSalesMan"></selSalesManPopup>
 		<!-- 본인인증 서비스 팝업을 호출하기 위해서는 다음과 같은 form이 필요합니다. -->
 		<form name="form_chk" method="post">
 			<input type="hidden" name="m" value="checkplusService">						<!-- 필수 데이타로, 누락하시면 안됩니다. -->
@@ -194,6 +195,7 @@ import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import signUpApi from "@/modules/signUp/service/api"
 import chkCorpPopup from "@/modules/signUp/components/bp-selectCorpPopup"
+import selSalesManPopup from "@/modules/signUp/components/bp-selectSaleMan"
 import addrPopup from "@/modules/signUp/components/bp-addrPopup"
 
 import customereApi from "@/modules/customer/service/customerApi.js";
@@ -203,7 +205,8 @@ export default {
 	components: {
 		//modal
 		chkCorpPopup,
-		addrPopup
+		addrPopup,
+		selSalesManPopup
 	},
 	props: {
     	authKey : String,
@@ -235,7 +238,6 @@ export default {
 			gender : "",				// 성별
 			coInfo : "",				// ci 값
 			promotionYn : "",			// 홍보성 정보 동의 여부
-			salesMan : "",
 
 			selCorp : {},				// 선택한 고객사 정보
 			selAddr : {},				// 선택한 주소 정보
@@ -250,7 +252,10 @@ export default {
 			dataList : [],
 			
 			custTypeArr : [],			// 고객 유형 select box
-			salesManArr : []			// 영업사원 selectbox
+			
+			selSalesMan : {},			// 선택한 영업사원
+			salesMan : "",
+			salesManId : ""
 		}
 	},
 	// 도메인 이름 영어(소문자), 숫자만 입력 가능하도록 처리
@@ -273,6 +278,9 @@ export default {
 		},
 		selAddr(){
 			this.fnSetCorpAddr();
+		},
+		selSalesMan(){
+			this.fnSetSalesMan();
 		}
 	},
 	mounted() {
@@ -291,8 +299,7 @@ export default {
 					this.loginId = result.data.email;
 					this.promotionYn = result.data.promotionYn;
 					this.fnGetNiceCheck();		// nice 본인인증 인증키 조회
-					this.fnGetCustType();		// 고객사 고객 유형 코드 값 조회		
-					this.fnGetSalesMan();		// 영업사원 목록
+					this.fnGetCustType();		// 고객사 고객 유형 코드 값 조회
 				} else {
 					vm.$router.push({name : "chkCertifyFail"});
 				}
@@ -308,20 +315,6 @@ export default {
 				if(result.success){
 					if(result.data.length > 0){
 						this.custTypeArr = result.data;
-					}
-				}
-			});
-		},
-		fnGetSalesMan(){
-			var params = {
-				codeTypeCd	: "SALES_MAN",
-				useYN		: "Y"
-			};
-			customereApi.selectCodeList(params).then(response =>{
-				var result = response.data;
-				if(result.success){
-					if(result.data.length > 0){
-						this.salesManArr = result.data;
 					}
 				}
 			});
@@ -393,6 +386,9 @@ export default {
 			// } else if (this.domainNameChk == false) {
 			// 	confirm.fnAlert("", "도메인 이름 충복체크를 진행해주세요.");
 			// 	return false;
+			} else if (this.salesManId == "" && this.salesMan != "") {
+				confirm.fnAlert("", "선택하실 영업사원이 없는 경우, 빈칸으로 입력해주세요.");
+				return false;
 			} else {
 				return true;
 			}
@@ -521,7 +517,7 @@ export default {
 			fd.append('coInfo', this.coInfo);								// 본인인증 토큰 (개인사업자 필수)
 			fd.append('genderCode', this.gender);							// 성별 (1: 남성 / 2: 여성)
 			fd.append('promotionYn', this.promotionYn);						// 홍보성 정보 수신 동의
-			fd.append('salesMan', this.salesMan);							// 영업사원
+			fd.append('salesMan', this.salesManId);							// 영업사원
 
 			await axios.post('/api/public/signUp/insertSignUp',
 				fd,
@@ -655,6 +651,15 @@ export default {
 			}
 			this.attachFileNm = attachFileNm;
 		},
+		// 영업사원 조회 팝업
+		fnSalesManPopup(){
+			this.popReset += 1;
+			jQuery("#saleManPopup").modal("show");
+		},
+		fnSetSalesMan(){
+			this.salesManId = this.selSalesMan.codeVal1;
+			this.salesMan = this.selSalesMan.codeName1;
+		}
 	}
 }
 </script>
