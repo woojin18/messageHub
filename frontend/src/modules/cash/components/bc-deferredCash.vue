@@ -47,7 +47,6 @@
         <!-- table -->
         <table  class="table_skin1 bt-000 tbl-striped">
           <colgroup>
-            <col style="width:20%">
             <col>
             <col style="width:15%">
             <col style="width:15%">
@@ -60,7 +59,6 @@
             <th class="text-center lc-1">프로젝트 ID</th>
             <th class="text-center lc-1">프로젝트 생성일</th>
             <th class="text-center lc-1">사용여부</th>
-            <th class="text-center lc-1">가입ID</th>
             <th class="text-center lc-1 end">청구ID</th>
           </tr>
           </thead>
@@ -71,7 +69,6 @@
               <td class="text-center">{{data.regDt}}</td>
               <td class="text-center" v-if="data.useYn=='Y'">예</td>
               <td class="text-center" v-else>아니오</td>
-              <td class="text-center">{{data.serviceId}}</td>
               <td @click="fnModClaimId(data)" class="text-center end" style="text-decoration: underline; cursor: pointer;">{{data.billId}}</td>
             </tr>
             <tr v-if="projectData.length == 0">

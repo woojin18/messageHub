@@ -364,11 +364,10 @@ public class ProjectService {
 			apikey.put("monSenderChkYn", "N");
 			apikey.put("apiKeyName", "웹 APIKEY 기본");
 			apikey.put("status", "USE");
-			apikey.put("rptYn", "Y");
+			// CM_MSG의 DONE_DT insert를 위해 웹 APIKEY는 결과수신여부를 아니오로 세팅함
+			apikey.put("rptYn", "N");
 			apikey.put("dupChkYn", "Y");
 			apikey.put("webSenderYn", "Y");
-//			apikey.put("daySenderLimitAmount", "");
-//			apikey.put("monSenderLimitAmount", "");
 			apikey.put("saveStatus", "R");
 			baseInfoService.saveApiKey(apikey);
 

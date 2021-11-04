@@ -10,7 +10,7 @@
 						<div class="of_h">
 							<div class="float-left" style="width:24%"><h5>API KEY 명</h5></div>
 							<div class="float-left" style="width:76%">
-								<input type="text" id="apiKeyName" class="inputStyle" maxlength="25">
+								<input type="text" id="apiKeyName" class="inputStyle" maxlength="25" name="checkWebYn">
 							</div>
 						</div>
 						<div id="apiKeyDiv" class="of_h consolMarginTop">
@@ -25,7 +25,7 @@
 								<input type="password" id="apiPwd" class="inputStyle">
 							</div>
 						</div>
-						<div class="of_h consolMarginTop" v-if="this.saveStatus == 'U'">
+						<div class="of_h consolMarginTop" v-if="this.saveStatus == 'U' && this.apiKeyData.webSenderYn == 'N'">
 							<div class="float-left" style="width:24%"><h5>API 암호</h5></div>
 							<div class="float-left" style="width:61%">
 								<input type="password" id="apiPwd" class="inputStyle">
@@ -206,18 +206,25 @@ export default {
 			this.changeApiPwdConfirm = '';
 			if(this.saveStatus === 'R') {
 				this.apiKeyData.apiKey = '';
+
+				jQuery('[name=checkWebYn]').prop('disabled', false);
+				jQuery('[name=ipChkYn]').prop('disabled', false);
+				jQuery('[name=rptYn]').prop('disabled', false);
+				jQuery('[name=dupChkYn]').prop('disabled', false);
+				jQuery("#selectStatus").prop('disabled', false);	
+
 				jQuery('#apiKeyDiv').hide();
 				jQuery('#apiPwdConfirmDiv').show();
 				jQuery('#apiKey').val('');
 				jQuery('#apiPwd').val('');
 				jQuery('#apiPwdConfirm').val('');
-				jQuery('input:radio[name=webSenderYn]:input[value="Y"]').prop('checked', true);
+				jQuery('input:radio[name=webSenderYn]:input[value="N"]').prop('checked', true);
+				jQuery('input:radio[name=webSenderYn]:input[value="Y"]').prop('disabled', true);
+				jQuery('input:radio[name=webSenderYn]:input[value="N"]').prop('disabled', true);
 
-				jQuery('input:radio[name=ipChkYn]:input[value="N"]').prop('checked', true);
-				jQuery('input:radio[name=ipChkYn]:input[value="Y"]').prop('disabled', true);
-				jQuery('input:radio[name=ipChkYn]:input[value="N"]').prop('disabled', true);
+				jQuery('input:radio[name=ipChkYn]:input[value="Y"]').prop('checked', true);
 
-				jQuery('#ipListSpan').hide();
+				jQuery('#ipListSpan').show();
 				// 고객사 접속 IP 입력칸 기본 생성
 				this.ipList = [];
 				this.ipList.push('');
@@ -281,6 +288,23 @@ export default {
 
 				jQuery('#monSenderLimitAmount').val(this.apiKeyData.monSenderLimitAmount);
 				jQuery('#apiKeyName').val(this.apiKeyData.apiKeyName);
+
+				var saveSenderYn = this.apiKeyData.webSenderYn;
+				if(saveSenderYn == "Y") {
+					jQuery('[name=checkWebYn]').prop('disabled', true);
+					jQuery('[name=webSenderYn]').prop('disabled', true);
+					jQuery('[name=ipChkYn]').prop('disabled', true);
+					jQuery('[name=rptYn]').prop('disabled', true);
+					jQuery('[name=dupChkYn]').prop('disabled', true);
+					jQuery("#selectStatus").prop('disabled', true);	
+				} else {
+					jQuery('[name=checkWebYn]').prop('disabled', false);
+					jQuery('[name=webSenderYn]').prop('disabled', true);
+					jQuery('[name=ipChkYn]').prop('disabled', false);
+					jQuery('[name=rptYn]').prop('disabled', false);
+					jQuery('[name=dupChkYn]').prop('disabled', false);
+					jQuery("#selectStatus").prop('disabled', false);	
+				}
 			}
 		},
 	},
