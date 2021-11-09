@@ -164,4 +164,13 @@
 		FROM	cm_bo.CM_CODE_TYPE
 		WHERE	CODE_TYPE_CD = 'CUST_NO_DULICATE'
 	</select>
+	
+	<select id="selectDefaultSalesManId" resultType="string">
+		/* signUp.selectDefaultSalesManId */
+		SELECT	CODE_VAL_1
+		FROM	cm_bo.CM_CODE cc 
+		WHERE	CODE_TYPE_CD = 'SALES_MAN'
+		AND		CODE_VAL_3  = 'Y'
+		LIMIT 1
+	</select>
 </mapper>

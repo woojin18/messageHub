@@ -189,7 +189,9 @@ public class SignUpService {
 		String salesMan = CommonUtils.getString(paramMap.get("salesMan"));
 		// 영업사원 미선택인 경우 박진표 default
 		if("".equals(salesMan) || salesMan == null) {
-			salesMan = "pjp1440";
+//			salesMan = "pjp1440";
+//			default : 코드타입이 'SALES_MAN'인 코드 val 3이 'Y' 값인 영업사원
+			salesMan = CommonUtils.getString(generalDao.selectGernalObject("signUp.selectDefaultSalesManId", paramMap));
 		}
 		paramMap.put("salesMan", salesMan);
 		
