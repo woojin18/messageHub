@@ -262,6 +262,7 @@ public class DB {
 	public final static String QRY_SELECT_APIKEY_LIST = "baseInfo.selectApiKeyList";
 	public final static String QRY_INSERT_APIKEY = "baseInfo.insertApiKey";
 	public final static String QRY_UPDATE_APIKEY = "baseInfo.updateApiKey";
+	public final static String QRY_UPDATE_APIKEY_WEBSENDER = "baseInfo.updateApiKeyWebSender";
 	public final static String QRY_SELECT_APIKEY_PASSWORD = "baseInfo.selectApiKeyPassword";
 
 	// 프로젝트 멤버

@@ -142,14 +142,16 @@ public class BaseInfoService {
 
 		String saveStatus = CommonUtils.getString(params.get("saveStatus"));
 		String ipChkYn = CommonUtils.getString(params.get("ipChkYn"));
-
+		String webSenderYn = CommonUtils.getString(params.get("webSenderYn"));
+		
 		map.putAll(params);
 		if (CommonUtils.isNotEmptyObject(params.get("apiPwd"))) {
 			map.put("apiPwd", sha512.encryptToBase64(CommonUtils.getString(params.get("apiPwd"))));
 		}
 
 		// Update API Password 확인
-		if (saveStatus.equals("U")) {
+		// 웹 사용일 경우 발송 체크만 수정이 가능하도록 처리
+		if (saveStatus.equals("U") && webSenderYn.equals("N")) {
 			int cnt = generalDao.selectGernalCount(DB.QRY_SELECT_APIKEY_PASSWORD, map);
 
 			if (cnt == 0) {
@@ -198,7 +200,13 @@ public class BaseInfoService {
 			if( !"".equals(changeApiPwd) ) {
 				map.put("apiPwd", sha512.encryptToBase64(changeApiPwd));
 			}
-			resultCnt = generalDao.insertGernal(DB.QRY_UPDATE_APIKEY, map);
+			
+			// 웹 사용 여부가 Y인 경우 수정은 발송체크만 가능하도록 처리
+			if(webSenderYn.equals("N")) {
+				resultCnt = generalDao.insertGernal(DB.QRY_UPDATE_APIKEY, map);
+			} else {
+				resultCnt = generalDao.insertGernal(DB.QRY_UPDATE_APIKEY_WEBSENDER, map);
+			}
 		}
 
 		// redis 테이블 처리

@@ -152,6 +152,21 @@
 			API_KEY					= #{apiKey}
 	</update>
 	
+	<update id="updateApiKeyWebSender" parameterType="hashmap">
+		/* baseInfo.updateApiKey APIKEY 수정(웹 사용 Y) */
+		UPDATE	cm.CM_APIKEY
+		SET		DAY_SENDER_CHK_YN		= #{daySenderChkYn}
+		<if test="daySenderLimitAmount != null and daySenderLimitAmount != ''">
+		,		DAY_SENDER_LIMIT_AMOUNT	= #{daySenderLimitAmount}
+		</if>
+		,		MON_SENDER_CHK_YN		= #{monSenderChkYn}
+		<if test="monSenderLimitAmount != null and monSenderLimitAmount != ''">
+		,		MON_SENDER_LIMIT_AMOUNT	= #{monSenderLimitAmount}
+		</if>
+		,		UPD_DT					= NOW()
+		WHERE	API_KEY					= #{apiKey}
+	</update>
+	
 	<select id="selectApiKeyPassword" resultType="int">
 	/* baseInfo.selectApiKeyPassword APIKEY 암호 검증*/
 		SELECT	COUNT(1)
