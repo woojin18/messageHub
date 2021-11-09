@@ -327,6 +327,7 @@ export default {
 			let saveStatus				= this.saveStatus;
 			let apiPwd					= jQuery('#apiPwd').val();
 			let apiPwdConfirm			= jQuery('#apiPwdConfirm').val();
+			let webSenderYn				= jQuery('input:radio[name=webSenderYn]:checked').val();
 			let ipChkYn					= jQuery('input:radio[name=ipChkYn]:checked').val();
 			let cps						= jQuery('#cps').val();
 			let lineType				= jQuery('#selectLineType').val();
@@ -336,9 +337,11 @@ export default {
 			let monSenderLimitAmount	= jQuery('#monSenderLimitAmount').val();
 			
 			let ipList					= this.ipList;
-			if(!(saveStatus =='U' && this.$gfnCommonUtils.isEmpty(this.apiKeyData.apiPwd)) && this.$gfnCommonUtils.isEmpty(apiPwd)) {
-				confirm.fnAlert(this.title, 'API 암호를 입력하세요');
-				return false;
+			if(webSenderYn == 'N') {
+				if(!(saveStatus =='U' && this.$gfnCommonUtils.isEmpty(this.apiKeyData.apiPwd)) && this.$gfnCommonUtils.isEmpty(apiPwd)) {
+					confirm.fnAlert(this.title, 'API 암호를 입력하세요');
+					return false;
+				}
 			}
 
 			if(saveStatus =='R' && this.$gfnCommonUtils.isEmpty(apiPwdConfirm)) {
