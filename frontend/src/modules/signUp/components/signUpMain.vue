@@ -149,9 +149,17 @@
 							<button @click="fnAttachCorpImg" class="btnStyle1 backLightGray" style="min-width:auto; width:100%">파일첨부</button>
 						</div>					
 					</div>
-					<div class="float-right color3 mt5" style="width:78%">필수 첨부서류 <br>1. 사업자등록증 사본 1부<br>2. 통신사실 증명원(첨부된 사업자등록증과 같은 명의)<br>3. 대리인 위임장 1부<br>4. 대리인 재직증명서 or 신분증 1부<br>* 필수 첨부 서류들을 zip 파일로 압축하여 첨부해주세요.</div>
+					<div class="float-right color3 mt5" style="width:78%">
+						필수 첨부서류
+						<br>1. 사업자등록증 사본 1부
+						<br>2. 통신사실 증명원(첨부된 사업자등록증과 같은 명의)
+						<br>3. 대리인 위임장 1부
+						<br>4. 대리인 재직증명서 or 신분증 1부
+						<br><br>* 필수 첨부 서류들을 압축하여 첨부해주세요.
+						<br>(가능 확장자 : zip, zipx, exe, tar, tgz, lzh, iso, 7z, gz, xz)
+					</div>
 				</div>
-				<div class="of_h mt10">
+				<div class="of_h mt20">
 					<div class="float-left" style="width:22%"><h5>영업사원</h5></div>
 					<div class="float-right" style="width:78%">
 						<div class="float-left" style="width:72%">
@@ -652,8 +660,8 @@ export default {
 			var attachFileNm = this.$refs.attachFile.files[0].name;
 			// 확장자 valid
 			var ext = attachFileNm.slice(attachFileNm.lastIndexOf(".") + 1).toLowerCase();
-			if(!(ext && /^(zip)$/.test(ext))) {
-				confirm.fnAlert("", "필수 첨부서류들을 zip으로 압축하여 등록해주세요.");
+			if(!(ext && /^(zip|zipx|exe|tar|tgz|lzh|iso|7z|gz|xz)$/.test(ext))) {
+				confirm.fnAlert("", "필수 첨부서류들을 압축하여 등록해주세요.\n(가능 확장자 : zip, zipx, exe, tar, tgz, lzh, iso, 7z, gz, xz)");
 				return false;
 			}
 			this.attachFileNm = attachFileNm;
