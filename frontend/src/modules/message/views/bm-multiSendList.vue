@@ -62,7 +62,7 @@
             <span style="padding:0 11px">~</span>
             <Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchEndDate"></Calendar>
             <ul class="tab_s2 ml20">
-                <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 등록일자 검색">오늘</a></li>
+                <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="전체 날짜 등록일자 검색">전체</a></li>
                 <li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 등록일자 검색">1주일</a></li>
                 <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
                 <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
@@ -272,8 +272,13 @@ export default {
     //검색일자변경
     fnSetIntervalSearchDate(interval){
       this.searchDateInterval = interval;
-      this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
-      this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
+      if(interval == 0) {
+        this.searchData.searchEndDate = "";
+        this.searchData.searchStartDate = "";
+      } else {
+        this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
+        this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
+      }
     },
     fnUpdateStartDate(sltDate) {
       this.searchData.searchStartDate = sltDate;
@@ -297,6 +302,17 @@ export default {
     async fnSelectMultiSendList() {
 
       //유효성 검사
+      // 전체 검색조건 추가에 따른 validation 처리 (등록일자 검색조건을 하나만 입력하는 경우)
+      if(this.searchData.searchStartDate=="" && this.searchData.searchEndDate!="") {
+        confirm.fnAlert(this.componentsTitle, "등록일자를 올바르게 입력해 주세요.");
+        return false;
+      }
+
+      if(this.searchData.searchStartDate!="" && this.searchData.searchEndDate=="") {
+        confirm.fnAlert(this.componentsTitle, "등록일자를 올바르게 입력해 주세요.");
+        return false;
+      }
+
       if(this.searchData.searchStartDate && this.searchData.searchEndDate){
         if(this.searchData.searchStartDate.replace(/[^0-9]/g, '') > this.searchData.searchEndDate.replace(/[^0-9]/g, '')){
           confirm.fnAlert(this.componentsTitle, '시작일은 종료일보다 클 수 없습니다.');
