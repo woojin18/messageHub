@@ -620,5 +620,15 @@
         FROM cm.CM_KKO_TMPLT_REQ
         WHERE TMPLT_KEY = #{tmpltKey}
     </select>
+    
+	<select id="selectRcsTemplateRejectReason" resultType="String">
+		/* template.selectRcsTemplateRejectReason RCS 템플릿 반려사유 조회 */
+		SELECT	REASON
+		FROM	cm.CM_RCS_MSGBASE_REQ
+		WHERE	MESSAGEBASE_ID = #{msgId}
+		AND		APPROVAL_STATUS = '반려'
+		ORDER BY RPT_DT DESC
+		LIMIT 1
+	</select>
 
 </mapper>

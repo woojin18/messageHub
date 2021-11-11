@@ -89,7 +89,10 @@
 							<td class="text-center">{{contant.TMPLT_NAME}}</td>
 							<td class="text-center">{{contant.BRAND_NAME}}</td>
 							<td class="text-center">{{contant.CARD_TYPE}}</td>
-							<td class="text-center">{{contant.APPROVAL_STATUS}}</td>
+							<td v-if="contant.APPROVAL_STATUS == '반려'" class="text-center">
+								<u><a href="#" @click.prevent="fnOpenRejectPop(contant.MESSAGEBASE_ID)">{{contant.APPROVAL_STATUS}}</a></u>
+							</td>
+							<td v-else class="text-center">{{contant.APPROVAL_STATUS}}</td>
 							<td class="text-center">{{contant.APPROVAL_DT}}</td>
 							<td class="text-center">{{contant.REG_DT}}</td>
 							<td class="text-center end"><a href="#" @click="templateCopy(contant.MESSAGEBASE_ID)" class="btnStyle6 minWidthAuto" style="width: 65%;">템플릿 복사</a></td>
@@ -108,6 +111,8 @@
 				<PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
 			</div>
 			<!-- //pagination -->
+
+			<rcsTemplateRejectPop :rcsTemplateRejectPopOpen.sync="rcsTemplateRejectPopOpen" :msgId="msgId"></rcsTemplateRejectPop>
 		</article>
 	</div>
 </template>
@@ -117,12 +122,14 @@ import confirm from "@/modules/commonUtil/service/confirm";
 import templateApi from "@/modules/template/service/templateApi.js";
 import PageLayer from '@/components/PageLayer.vue';
 import SelectLayer from '@/components/SelectLayer.vue';
+import rcsTemplateRejectPop from "@/modules/template/components/bp-rcsTemplateRejectPop.vue";
 
 
 export default {
   components: {
     PageLayer,
-	SelectLayer
+	SelectLayer,
+	rcsTemplateRejectPop
   },
   data() {
     return {
@@ -133,7 +140,9 @@ export default {
 	  pageNo : 1,  // 현재 페이징 위치
 	  totCnt : 0,  //전체 리스트 수
 	  offset : 0, //페이지 시작점
-      contants: []
+      contants: [],
+	  rcsTemplateRejectPopOpen : false,
+	  msgId : ""
     }
   },
   async mounted() {
@@ -198,6 +207,10 @@ export default {
     templateCopy (msgId) {
 		this.$router.push({name:"rcsTemplateMod", params: {status:"CPY", msgId:msgId}})
     },
+	fnOpenRejectPop (msgId) {
+		this.msgId = msgId
+		this.rcsTemplateRejectPopOpen = true;
+	},
 
 	fnSelected(listSize) {
 		this.listSize = Number(listSize);

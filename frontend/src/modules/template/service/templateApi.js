@@ -127,6 +127,10 @@ const rcsTemplateApi = (params) => {
   return httpClient.post('/uc/rcsTemplate/rcsTemplateApi', params, {headers: {"show-layer":"Yes", "activity" : "READ"}});
 };
 
+const selectRcsTemplateRejectReason = (params) => {
+  return httpClient.post('/uc/rcsTemplate/selectRcsTemplateRejectReason', params, {headers: {"show-layer":"Yes", "activity" : "READ"}});
+};
+
 /* 통합발송 */
 const selectMultiSendTemplateList = (params) => {
     return httpClient.post('/multiSendTemplateApi/selectMultiSendTemplateList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
@@ -265,6 +269,7 @@ export default {
 	rcsTemplateDeleteApi,
 	rcsTemplateCancelApi,
 	rcsTemplateApi,
+  selectRcsTemplateRejectReason,
 	selectMultiSendTemplateList,
 	multiSendTemplateInfo,
 	excelDownloadMultiSendTemplate,

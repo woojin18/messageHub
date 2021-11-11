@@ -150,5 +150,21 @@ public class RcsTemplateController {
 
 		return rtn;
 	}
+	
+	@PostMapping("/selectRcsTemplateRejectReason")
+	public RestResult<?> selectRcsTemplateRejectReason(@RequestBody Map<String, Object> params, HttpServletRequest request) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		
+		try {
+			rtn = rcsTemplateSvc.selectRcsTemplateRejectReason(params); 
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+	}
 
 }

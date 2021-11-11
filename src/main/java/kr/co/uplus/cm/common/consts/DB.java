@@ -54,6 +54,7 @@ public class DB {
 	public final static String QRY_DELETE_PUSH_TMPLT = "template.deletePushTemplate";
 	// RCS 템플릿
 	public final static String QRY_SELECT_RCS_TMPLT = "template.selectRcsTemplate";
+	public final static String QRY_SELECT_RCS_TMPLT_REJECT_REASON = "template.selectRcsTemplateRejectReason";
 	// 알림톡 템플릿
 	public final static String QRY_SELECT_KKO_TMPLT_CAT_GRP_LIST = "template.selectKkoTmpltCatGrpList";
 	public final static String QRY_SELECT_KKO_TMPLT_CAT_LIST = "template.selectKkoTmpltCatList";

@@ -781,4 +781,13 @@ public class RcsTemplateService {
 		return resultStr;
 	}
 
+	public RestResult<Object> selectRcsTemplateRejectReason(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<>(true);
+		
+		String reason = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_RCS_TMPLT_REJECT_REASON, params));
+		
+		rtn.setData(reason);
+		return rtn;
+	}
+
 }
