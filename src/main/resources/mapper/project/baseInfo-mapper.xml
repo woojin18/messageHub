@@ -174,4 +174,11 @@
 		WHERE	API_PWD = #{apiPwd}
 		AND		API_KEY = #{apiKey}
 	</select>
+	
+	<select id="selectProjectUseCnt" resultType="int">
+		/* baseInfo.selectProjectUseCnt 프로젝트 사용 여부 체크*/
+		SELECT	COUNT(*)
+		FROM	cm_console.CM_WEB_MSG
+		WHERE	PROJECT_ID = #{projectId}
+	</select>
 </mapper>

@@ -265,6 +265,7 @@ public class DB {
 	public final static String QRY_UPDATE_APIKEY = "baseInfo.updateApiKey";
 	public final static String QRY_UPDATE_APIKEY_WEBSENDER = "baseInfo.updateApiKeyWebSender";
 	public final static String QRY_SELECT_APIKEY_PASSWORD = "baseInfo.selectApiKeyPassword";
+	public final static String QRY_SELECT_PROJECT_USE_CNT = "baseInfo.selectProjectUseCnt";
 
 	// 프로젝트 멤버
 	public final static String QRY_SELECT_PROJECT_MEMBER_LIST_CNT = "member.selectProjectMemberListCnt";

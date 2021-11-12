@@ -387,8 +387,8 @@ public class ProjectService {
 
 			generalDao.updateGernal("project.updateProject", params);
 		} else if ("D".equals(sts)) {
-			// 테이블 이력조회 ->> CM_MSG, CM_WEB_MSG에서 API KEY 숫자로 변경
-			int projectUseCnt = generalDao.selectGernalList("baseInfo.selectApiKeyList", params).size();
+			// 테이블 이력조회 ->> CM_WEB_MSG에 해당 프로젝트 ID로 insert된 발송 데이터가 있으면 삭제 불가
+			int projectUseCnt = generalDao.selectGernalCount(DB.QRY_SELECT_PROJECT_USE_CNT, params);
 
 			if (projectUseCnt == 0) {
 				generalDao.deleteGernal("project.deleteProject", params);
