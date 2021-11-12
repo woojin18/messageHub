@@ -500,6 +500,9 @@
             <if test="searchCondi == 'tmpltName' ">
             AND TMPLT_NAME LIKE CONCAT('%', #{searchText}, '%')
             </if>
+            <if test="searchCondi == 'tmpltKey' ">
+            AND TMPLT_KEY LIKE CONCAT('%', #{searchText}, '%')
+            </if>
         </if>
        <if test="searchStartDate != '' and searchStartDate != null ">
             <if test="searchEndDate != '' and searchEndDate != null ">

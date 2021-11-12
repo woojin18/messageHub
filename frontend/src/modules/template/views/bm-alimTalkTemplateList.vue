@@ -14,7 +14,7 @@
             <div class="inline-block" style="width:91%">
               <select class="selectStyle2" style="width:15%" title="검색조건 선택란" v-model="searchData.searchCondi">
                 <option value="tmpltName">템플릿명</option>
-                <option value="tmpltCode">템플릿코드</option>
+                <option value="tmpltKey">템플릿키</option>
               </select>
               <input type="text" class="inputStyle vertical-top ml10" style="width:37.5%" title="검색조건 입력란" v-model="searchData.searchText" @keypress.enter="fnPageNoResetSearch">
             </div>
@@ -101,7 +101,7 @@
                     <label for="listCheck_all"></label>
                   </th>
                   <th class="text-center lc-1">No.</th>
-                  <th class="text-center lc-1">템플릿 코드</th>
+                  <th class="text-center lc-1">템플릿 키</th>
                   <th class="text-center lc-1">템플릿명</th>
                   <th class="text-center lc-1">상태</th>
                   <th class="text-center lc-1">발신프로필 타입</th>
@@ -114,30 +114,13 @@
                 <tbody>
                   <tr v-for="(contant, idx) in contants" :key="idx">
                     <td class="text-center">
-                      <input
-                        v-if="contant.tmpltStatCode == 'T'"
-                        type="checkbox"
-                        :id="'listCheck_'+idx"
-                        name="listCheck_"
-                        class="boardCheckStyle"
-                        :value="contant.tmpltKey"
-                        v-model="listChkBox"
-                      >
-                      <input
-                        v-else
-                        type="checkbox"
-                        :id="'listCheck_'+idx"
-                        name="listCheck_"
-                        class="boardCheckStyle"
-                        :value="contant.tmpltKey"
-                        v-model="listChkBox"
-                        disabled="disabled"
-                      >
+                      <input v-if="contant.tmpltStatCode == 'T'" type="checkbox" :id="'listCheck_'+idx" name="listCheck_" class="boardCheckStyle" :value="contant.tmpltKey" v-model="listChkBox">
+                      <input v-else type="checkbox" :id="'listCheck_'+idx" name="listCheck_" class="boardCheckStyle" :value="contant.tmpltKey" v-model="listChkBox" disabled="disabled" >
                       <label :for="'listCheck_'+idx"></label>
                     </td>
                     <td class="text-center">{{totCnt-offset-contant.rownum+1}}</td>
                     <td class="text-center">
-                      <u><router-link :to="{ name: 'alimTalkTemplateManage', params: { tmpltKey: contant.tmpltKey }}">{{contant.tmpltCode}}</router-link></u>
+                      <u><router-link :to="{ name: 'alimTalkTemplateManage', params: { tmpltKey: contant.tmpltKey }}">{{contant.tmpltKey}}</router-link></u>
                     </td>
                     <td class="text-left">{{contant.tmpltName}}</td>
                     <td v-if="contant.tmpltStatCode == 'S' && contant.existsRejResnYn == 'Y'" class="text-center">
