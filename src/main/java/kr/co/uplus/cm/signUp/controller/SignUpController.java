@@ -104,7 +104,10 @@ public class SignUpController implements Serializable{
 			@RequestParam(required=true) String woplaceAddress,			// 주소
 			@RequestParam(required=true) String woplaceAddressDetail,	// 상세주소
 			@RequestParam(required=false) String wireTel,				// 유선전화번호
-			@RequestParam(required=true) MultipartFile attachFile,		// 첨부파일
+			@RequestParam(required=true) MultipartFile attachFile,		// 사업자등록증
+			@RequestParam(required=true) MultipartFile attachFile1,		// 통신사실 증명원
+			@RequestParam(required=true) MultipartFile attachFile2,		// 대리인 재직증명서 또는 신분증
+			@RequestParam(required=false) MultipartFile attachFile3,	// 대리인 위임장
 //			@RequestParam(required=true) String domainName,				// 도메인
 			@RequestParam(required=true) String custKdCd,				// 고객유형
 			@RequestParam(required=false) String custrnmNo,				// 고객식별번호
@@ -132,6 +135,9 @@ public class SignUpController implements Serializable{
 		paramMap.put("woplaceAddressDetail", woplaceAddressDetail);
 		paramMap.put("wireTel", wireTel);
 		paramMap.put("attachFile", attachFile);
+		paramMap.put("attachFile1", attachFile1);
+		paramMap.put("attachFile2", attachFile2);
+		paramMap.put("attachFile3", attachFile3);
 //		paramMap.put("domainName", domainName);
 		paramMap.put("promotionYn", promotionYn);
 		paramMap.put("salesMan", salesMan);

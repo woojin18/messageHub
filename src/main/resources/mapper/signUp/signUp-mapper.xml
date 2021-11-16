@@ -85,6 +85,11 @@
 <!-- 		,		SMS_CERTIFY_YN -->
 		,		WIRE_TEL
 		,		FILE_ID
+		,		FILE_ID1
+		,		FILE_ID2
+		<if test="fileId3 != null and fileId3 != ''">
+		,		FILE_ID3
+		</if>
 <!-- 		,		DOMAIN_NAME -->
 		,		UPD_DT
 		,		SALES_ID
@@ -105,6 +110,11 @@
 <!-- 		,		#{smsCertifyYn} -->
 		,		#{wireTel}
 		,		#{fileId}
+		,		#{fileId1}
+		,		#{fileId2}
+		<if test="fileId3 != null and fileId3 != ''">
+		,		#{fileId3}
+		</if>
 <!-- 		,		#{domainName} -->
 		,		NOW()
 		,		#{salesMan}

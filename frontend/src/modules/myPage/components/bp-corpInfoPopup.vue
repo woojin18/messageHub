@@ -8,79 +8,62 @@
 						<hr>
 						<h4>사업자 정보</h4>
 						<div class="border-line mt20 Dashboard06">
-							<!-- <div class="of_h">
-								<h5 class="inline-block" style="width:20%">고객번호</h5>
-								<input type="text" class="inputStyle float-right" style="width:80%" title="고객번호 입력란" v-model="custNo" disabled>
-							</div> -->
 							<div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:20%">사업자번호</h5>
-								<input type="text" class="inputStyle float-right" style="width:80%" title="사업자번호 입력란" v-model="regno" disabled>
-							</div>
-							<!-- <div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:20%">고객유형</h5>
-								<select class="selectStyle2" style="width:80%" title="고객유형선택란" v-model="custKdCd" disabled>
-									<option value="">선택하세요</option>
-									<option  v-for="(row, index) in custTypeArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
-								</select>
-							</div> -->
-							<!-- <div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:20%">생년월일/<br>법인번호</h5>
-								<input type="text" class="inputStyle float-right" style="width:80%" title="생년월일/법인번호 입력란" v-model="custrnmNo" disabled>
-							</div> -->
-							<div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:20%">사업자명</h5>
-								<input type="text" class="inputStyle float-right" style="width:80%" title="사업자명 입력란" v-model="corpName" disabled>
+								<h5 class="inline-block" style="width:25%">사업자번호</h5>
+								<input type="text" class="inputStyle float-right" style="width:75%" title="사업자번호 입력란" v-model="regno" disabled>
 							</div>
 							<div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:20%">대표자명</h5>
-								<input type="text" class="inputStyle float-right" style="width:80%" title="대표자명 입력란" v-model="ceoName" disabled>
-							</div>
-							<!-- <div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:20%">업태</h5>
-								<input type="text" class="inputStyle" placeholder="업태" style="width:80%"  v-model="busitype" disabled>
+								<h5 class="inline-block" style="width:25%">사업자명</h5>
+								<input type="text" class="inputStyle float-right" style="width:75%" title="사업자명 입력란" v-model="corpName" disabled>
 							</div>
 							<div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:20%">종목</h5>
-								<input type="text" class="inputStyle" placeholder="종목" style="width:80%"  v-model="busiclass" disabled>
-							</div> -->
+								<h5 class="inline-block" style="width:25%">대표자명</h5>
+								<input type="text" class="inputStyle float-right" style="width:75%" title="대표자명 입력란" v-model="ceoName" disabled>
+							</div>
 							<div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:20%">사업장주소</h5>
+								<h5 class="inline-block" style="width:25%">사업장주소</h5>
 								<input type="text" class="inputStyle" style="width:20%" title="우편번호 입력란" placeholder="우편번호" disabled v-model="zipcode">
 								<!-- <a href="#self" class="btnStyle1 backLightGray float-right" title="주소조회">주소조회</a> -->
-								<input type="text" class="inputStyle float-right" style="width:57%" title="사업장 주소 입력란" v-model="woplaceAddress" placeholder="주소" disabled>
-								<input type="text" class="inputStyle consolMarginTop float-right" style="width:80%" title="사업장 상세주소 입력란" v-model="woplaceAddressDetail" placeholder="상세주소" disabled>
+								<input type="text" class="inputStyle float-right" style="width:52%" title="사업장 주소 입력란" v-model="woplaceAddress" placeholder="주소" disabled>
+								<input type="text" class="inputStyle consolMarginTop float-right" style="width:75%" title="사업장 상세주소 입력란" v-model="woplaceAddressDetail" placeholder="상세주소" disabled>
 							</div>
-							<!-- <div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:20%">유선전화번호</h5>
-								<input type="text" class="inputStyle float-right" style="width:80%" title="유선전화번호 입력란" v-model="wireTel" placeholder="-없이 입력" disabled>
-							</div> -->
 							<div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:20%">첨부파일</h5>
-								<input type="text" class="inputStyle" style="width:58%" title="첨부파일" v-model="attachFileName" disabled>
+								<h5 class="inline-block" style="width:25%">사업자등록증</h5>
+								<input type="text" class="inputStyle" style="width:53%" title="첨부파일" v-model="attachFileName" disabled>
 								<input type="hidden" v-model="attachFilePath">
 								<input type="hidden" v-model="fileId">
-								<!-- <input type="file" ref="imageInput" style="display:none"> -->
-								<!-- <a class="btnStyle1 backLightGray ml15" title="파일첨부">파일첨부</a> -->
 								<a href="#self" @click.prevent="fnFileDown(fileId)" class="btnStyle1 backLightGray float-right" title="다운로드">다운로드</a>
-								<!-- <p class="mt10 lc-1 Modaltext2" style="margin-left:20%"><i class="far fa-info-circle"></i>PDF, JPG, JPEG, PNG 형식으로 등록해주세요. (최대용량: 5MB)</p> -->
+							</div>
+              <div class="of_h consolMarginTop">
+								<h5 class="inline-block" style="width:25%">통신사실 증명원</h5>
+								<input type="text" class="inputStyle" style="width:53%" title="첨부파일" v-model="attachFileName1" disabled>
+								<input type="hidden" v-model="attachFilePath1">
+								<input type="hidden" v-model="fileId1">
+								<a href="#self" @click.prevent="fnFileDown(fileId1)" class="btnStyle1 backLightGray float-right" title="다운로드">다운로드</a>
+							</div>
+              <div class="of_h consolMarginTop">
+								<h5 class="inline-block" style="width:25%">대리인 재직증명서</h5>
+								<input type="text" class="inputStyle" style="width:53%" title="첨부파일" v-model="attachFileName2" disabled>
+								<input type="hidden" v-model="attachFilePath2">
+								<input type="hidden" v-model="fileId2">
+								<a href="#self" @click.prevent="fnFileDown(fileId2)" class="btnStyle1 backLightGray float-right" title="다운로드">다운로드</a>
+							</div>
+              <div v-show="attachFileName3 != ''" class="of_h consolMarginTop">
+								<h5 class="inline-block" style="width:25%">대리인 위임장</h5>
+								<input type="text" class="inputStyle" style="width:53%" title="첨부파일" v-model="attachFileName3" disabled>
+								<input type="hidden" v-model="attachFilePath3">
+								<input type="hidden" v-model="fileId3">
+								<a href="#self" @click.prevent="fnFileDown(fileId3)" class="btnStyle1 backLightGray float-right" title="다운로드">다운로드</a>
 							</div>
 
 							<div class="of_h consolMarginTop">
-								<h5 class="inline-block" style="width:20%">영업사원</h5>
-								<select class="selectStyle2" style="width:80%" title="영업사원 선택란" v-model="salesMan" disabled>
+								<h5 class="inline-block" style="width:25%">영업사원</h5>
+								<select class="selectStyle2" style="width:75%" title="영업사원 선택란" v-model="salesMan" disabled>
 									<option value="">선택하세요</option>
 									<option  v-for="(row, index) in salesManArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
 								</select>
 							</div>
 						</div>
-
-						<!-- <h4>도메인 설정</h4>
-						<div class="border-line mt20 Dashboard06">
-							<div class="of_h">
-								<h5 class="inline-block" style="width:20%">도메인 이름</h5>
-								<h5 class="inline-block" style="width:80%">{{ domainName }}</h5>
-							</div>	
-						</div>						 -->
 					</div>
 					<div class="text-center mt40">
 						<a href="#self" @click.prevent="fnCloseLayer" class="btnStyle2 backWhite ml10" title="닫기">닫기</a>
@@ -114,6 +97,18 @@ export default {
       fileId : "",
       attachFileName : '',          // 사업자등록증 이미지명
       attachFilePath : '',          // 사업자등록증 이미지경로
+
+      fileId1 : "",
+      attachFileName1 : '',          // 통신사실 증명원 이미지명
+      attachFilePath1 : '',          // 통신사실 증명원 이미지경로
+
+      fileId2 : "",
+      attachFileName2 : '',          // 대리인 재직증명서 or 신분증 이미지명
+      attachFilePath2 : '',          // 대리인 재직증명서 or 신분증 이미지경로
+
+      fileId3 : "",
+      attachFileName3 : '',          // 대리인 위임장 이미지명
+      attachFilePath3 : '',          // 대리인 위임장 이미지경로
 
       custNo : "",                  // 고객사 번호
       // custKdCd : "",                // 고객 유형
@@ -192,6 +187,19 @@ export default {
       this.fileId = this.corpInfo.fileId;
       this.attachFileName = this.corpInfo.attachFileName;
       this.attachFilePath = this.corpInfo.attachFilePath;
+
+      this.fileId1 = this.corpInfo.fileId1;
+      this.attachFileName1 = this.corpInfo.attachFileName1;
+      this.attachFilePath1 = this.corpInfo.attachFilePath1;
+
+      this.fileId2 = this.corpInfo.fileId2;
+      this.attachFileName2 = this.corpInfo.attachFileName2;
+      this.attachFilePath2 = this.corpInfo.attachFilePath2;
+
+      this.fileId3 = this.corpInfo.fileId3;
+      this.attachFileName3 = this.corpInfo.attachFileName3;
+      this.attachFilePath3 = this.corpInfo.attachFilePath3;
+
       // this.custKdCd = this.corpInfo.custKdCd;
       // this.custrnmNo = this.corpInfo.custrnmNo;
       this.custNo = this.corpInfo.custNo;

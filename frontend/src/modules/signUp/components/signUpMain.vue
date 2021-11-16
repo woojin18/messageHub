@@ -139,26 +139,59 @@
 				</div>
 
 				<div class="of_h mt10">
-					<div class="float-left" style="width:22%"><h5>첨부파일 *</h5></div>
+					<div class="float-left" style="width:22%"><h5>사업자등록증 *</h5></div>
 					<div class="float-left" style="width:78%">
 						<div class="float-left" style="width:72%">
 							<input type="text" class="inputStyle" placeholder="파일첨부" v-model="attachFileNm" disabled>
-							<input type="file" id="attachCorpImg" @change="fnFileChange" ref="attachFile" style="display:none;">
+							<input type="file" id="attachCorpImg" @change="fnFileChange(0)" ref="attachFile" style="display:none;">
 						</div>
 						<div class="float-right" style="width:25%">
-							<button @click="fnAttachCorpImg" class="btnStyle1 backLightGray" style="min-width:auto; width:100%">파일첨부</button>
+							<button @click="fnAttachCorpImg(0)" class="btnStyle1 backLightGray" style="min-width:auto; width:100%">파일첨부</button>
+						</div>					
+					</div>
+				</div>
+				<div class="of_h mt10">
+					<div class="float-left" style="width:22%"><h5>통신사실 증명원 *</h5></div>
+					<div class="float-left" style="width:78%">
+						<div class="float-left" style="width:72%">
+							<input type="text" class="inputStyle" placeholder="파일첨부" v-model="attachFileNm1" disabled>
+							<input type="file" id="attachCorpImg1" @change="fnFileChange(1)" ref="attachFile1" style="display:none;">
+						</div>
+						<div class="float-right" style="width:25%">
+							<button @click="fnAttachCorpImg(1)" class="btnStyle1 backLightGray" style="min-width:auto; width:100%">파일첨부</button>
+						</div>					
+					</div>
+				</div>
+				<div class="of_h mt10">
+					<div class="float-left" style="width:22%"><h5>대리인 재직증명서 또는 신분증 *</h5></div>
+					<div class="float-left" style="width:78%">
+						<div class="float-left" style="width:72%">
+							<input type="text" class="inputStyle" placeholder="파일첨부" v-model="attachFileNm2" disabled>
+							<input type="file" id="attachCorpImg2" @change="fnFileChange(2)" ref="attachFile2" style="display:none;">
+						</div>
+						<div class="float-right" style="width:25%">
+							<button @click="fnAttachCorpImg(2)" class="btnStyle1 backLightGray" style="min-width:auto; width:100%">파일첨부</button>
+						</div>					
+					</div>
+				</div>
+				<div class="of_h mt10">
+					<div class="float-left" style="width:22%"><h5>대리인 위임장</h5></div>
+					<div class="float-left" style="width:78%">
+						<div class="float-left" style="width:72%">
+							<input type="text" class="inputStyle" placeholder="파일첨부" v-model="attachFileNm3" disabled>
+							<input type="file" id="attachCorpImg3" @change="fnFileChange(3)" ref="attachFile3" style="display:none;">
+						</div>
+						<div class="float-right" style="width:25%">
+							<button @click="fnAttachCorpImg(3)" class="btnStyle1 backLightGray" style="min-width:auto; width:100%">파일첨부</button>
 						</div>					
 					</div>
 					<div class="float-right color3 mt5" style="width:78%">
-						필수 첨부서류
-						<br>1. 사업자등록증 사본 1부
-						<br>2. 통신사실 증명원(첨부된 사업자등록증과 같은 명의)
-						<br>3. 대리인 위임장 1부
-						<br>4. 대리인 재직증명서 or 신분증 1부
-						<br><br>* 필수 첨부 서류들을 압축하여 첨부해주세요.
-						<br>(가능 확장자 : zip, zipx, exe, tar, tgz, lzh, iso, 7z, gz, xz)
+						<br>* 필수 첨부 서류들을 이미지로 첨부해주세요.
+						<br>(가능 확장자 : jpg, jpeg, pdf, gif, png, tiff)
 					</div>
 				</div>
+				
+
 				<div class="of_h mt20">
 					<div class="float-left" style="width:22%"><h5>영업사원</h5></div>
 					<div class="float-right" style="width:78%">
@@ -245,7 +278,10 @@ export default {
 			woplaceAddress : "",		// 주소
 			woplaceAddressDetail : "",	// 상세주소
 			wireTel : "",				// 유선 전화번호
-			attachFileNm : "",			// 첨부파일명
+			attachFileNm : "",			// 사업자등록증
+			attachFileNm1 : "",			// 통신사실 증명원
+			attachFileNm2 : "",			// 대리인 재직증명서 or 신분증
+			attachFileNm3 : "",			// 대리인 위임장
 			// domainName : "",			// 도메인 이름
 			// domainNameChk : "N",		// 도메인 이름 TF
 			custAddrZip : "",			// 우편번호
@@ -383,9 +419,6 @@ export default {
 				this.password = "";
 				this.passwordChk = "";
 				return false;
-			// } else if (this.smsCertifyYn == "") {
-			// 	confirm.fnAlert("", "SMS 인증여부 선택은 필수 사항입니다.");
-			// 	return false;
 			} else if (this.phoneCert == "" || this.phoneCertiChk == false) {
 				confirm.fnAlert("", "담당자 휴대폰 인증을 진행해 주세요.");
 				return false;
@@ -395,12 +428,12 @@ export default {
 			} else if (this.attachFileNm == "") {
 				confirm.fnAlert("", "사업자등록증 파일을 첨부해주세요.");
 				return false;
-			// } else if (this.domainName == "") {
-			// 	confirm.fnAlert("", "도메인 이름을 입력해주세요.");
-			// 	return false;
-			// } else if (this.domainNameChk == false) {
-			// 	confirm.fnAlert("", "도메인 이름 충복체크를 진행해주세요.");
-			// 	return false;
+			} else if (this.attachFileNm1 == "") {
+				confirm.fnAlert("", "통신사실 증명원 파일을 첨부해주세요.");
+				return false;
+			} else if (this.attachFileNm2 == "") {
+				confirm.fnAlert("", "대리인 재직증명서 또는 신분증 파일을 첨부해주세요.");
+				return false;
 			} else if (this.salesManId == "" && this.salesMan != "") {
 				confirm.fnAlert("", "영업사원명을 수정하신 경우, 영업사원 조회 팝업에서 다시 선택해주세요.\n영업사원을 기본값으로 등록하시려면 빈칸으로 입력해주세요.");
 				return false;
@@ -527,6 +560,9 @@ export default {
 			fd.append('woplaceAddressDetail', this.woplaceAddressDetail);	// 상세주소
 			fd.append('wireTel', this.wireTel);								// 유선 전화
 			fd.append('attachFile', this.$refs.attachFile.files[0]);		// 사업자 등록증
+			fd.append('attachFile1', this.$refs.attachFile1.files[0]);		// 통신사실 증명원
+			fd.append('attachFile2', this.$refs.attachFile2.files[0]);		// 대리인 재직증명서 또는 신분증
+			fd.append('attachFile3', this.$refs.attachFile3.files[0]);		// 대리인 위임장
 			// fd.append('domainName', this.domainName);						// 도메인 주소
 			fd.append('custrnmNo', this.custrnmNo);							// 고객 식별번호
 			fd.append('coInfo', this.coInfo);								// 본인인증 토큰 (개인사업자 필수)
@@ -653,18 +689,56 @@ export default {
 			this.woplaceAddress = this.selAddr.roadMailFullAddr + " " + this.selAddr.roadMailFullAddr2;
 		},
 		// 사업자 등록증 입력
-		fnAttachCorpImg(){
-			jQuery("#attachCorpImg").click();
-		},
-		fnFileChange() {
-			var attachFileNm = this.$refs.attachFile.files[0].name;
-			// 확장자 valid
-			var ext = attachFileNm.slice(attachFileNm.lastIndexOf(".") + 1).toLowerCase();
-			if(!(ext && /^(zip|zipx|exe|tar|tgz|lzh|iso|7z|gz|xz)$/.test(ext))) {
-				confirm.fnAlert("", "필수 첨부서류들을 압축하여 등록해주세요.\n(가능 확장자 : zip, zipx, exe, tar, tgz, lzh, iso, 7z, gz, xz)");
-				return false;
+		fnAttachCorpImg(num){
+			if(num == 0) {
+				jQuery("#attachCorpImg").click();
+			} else if(num == 1) {
+				jQuery("#attachCorpImg1").click();
+			} else if(num == 2) {
+				jQuery("#attachCorpImg2").click();
+			} else if(num == 3) {
+				jQuery("#attachCorpImg3").click();
 			}
-			this.attachFileNm = attachFileNm;
+		},
+		fnFileChange(num) {
+
+			if(num == 0) {
+				var attachFileNm = this.$refs.attachFile.files[0].name;
+				// 확장자 valid
+				var ext = attachFileNm.slice(attachFileNm.lastIndexOf(".") + 1).toLowerCase();
+				if(!(ext && /^(jpg|jpeg|pdf|gif|png|tiff)$/.test(ext))) {
+					confirm.fnAlert("", "필수 첨부서류들을 압축하여 등록해주세요.\n(가능 확장자 : jpg, jpeg, pdf, gif, png, tiff)");
+					return false;
+				}
+				this.attachFileNm = attachFileNm;
+			} else if(num == 1) {
+				var attachFileNm1 = this.$refs.attachFile1.files[0].name;
+				// 확장자 valid
+				var ext = attachFileNm1.slice(attachFileNm1.lastIndexOf(".") + 1).toLowerCase();
+				if(!(ext && /^(jpg|jpeg|pdf|gif|png|tiff)$/.test(ext))) {
+					confirm.fnAlert("", "필수 첨부서류들을 압축하여 등록해주세요.\n(가능 확장자 : jpg, jpeg, pdf, gif, png, tiff)");
+					return false;
+				}
+				this.attachFileNm1 = attachFileNm1;
+			} else if(num == 2) {
+				var attachFileNm2 = this.$refs.attachFile2.files[0].name;
+				// 확장자 valid
+				var ext = attachFileNm2.slice(attachFileNm2.lastIndexOf(".") + 1).toLowerCase();
+				if(!(ext && /^(jpg|jpeg|pdf|gif|png|tiff)$/.test(ext))) {
+					confirm.fnAlert("", "필수 첨부서류들을 압축하여 등록해주세요.\n(가능 확장자 : jpg, jpeg, pdf, gif, png, tiff)");
+					return false;
+				}
+				this.attachFileNm2 = attachFileNm2;
+			} else if(num == 3) {
+				var attachFileNm3 = this.$refs.attachFile3.files[0].name;
+				// 확장자 valid
+				var ext = attachFileNm3.slice(attachFileNm3.lastIndexOf(".") + 1).toLowerCase();
+				if(!(ext && /^(jpg|jpeg|pdf|gif|png|tiff)$/.test(ext))) {
+					confirm.fnAlert("", "필수 첨부서류들을 압축하여 등록해주세요.\n(가능 확장자 : jpg, jpeg, pdf, gif, png, tiff)");
+					return false;
+				}
+				this.attachFileNm3 = attachFileNm3;
+			}
 		},
 		// 영업사원 조회 팝업
 		fnSalesManPopup(){

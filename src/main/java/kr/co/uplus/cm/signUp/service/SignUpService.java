@@ -173,15 +173,31 @@ public class SignUpService {
 		
 		// 사업자 등록증 첨부파일
 		MultipartFile file = (MultipartFile) paramMap.get("attachFile");
+		MultipartFile file1 = (MultipartFile) paramMap.get("attachFile1");
+		MultipartFile file2 = (MultipartFile) paramMap.get("attachFile2");
+		MultipartFile file3 = (MultipartFile) paramMap.get("attachFile3");
 		
 		String fileSeq = "";
+		String fileSeq1 = "";
+		String fileSeq2 = "";
+		String fileSeq3 = "";
 		
 		String uploadDirPath = FileConfig.getFilePath(FileConfig.FileSvcType.BIZ_REG_CARD);
 
 		try {
 			if(file != null) {
 				fileSeq = commonService.uploadFile(file, userId, uploadDirPath);
+				fileSeq1 = commonService.uploadFile(file1, userId, uploadDirPath);
+				fileSeq2 = commonService.uploadFile(file2, userId, uploadDirPath);
 				paramMap.put("fileId", fileSeq);
+				paramMap.put("fileId1", fileSeq1);
+				paramMap.put("fileId2", fileSeq2);
+				// 대리인 위임장은 필수값이 아니므로 case 처리
+				
+				if(file3 != null) {
+					fileSeq3 = commonService.uploadFile(file3, userId, uploadDirPath);
+					paramMap.put("fileId3", fileSeq3);
+				}
 			}
 		} catch (Exception e) {
 			throw new Exception("회원 가입에 실패하였습니다.");

@@ -169,23 +169,9 @@ public class MyPageService {
 		RestResult<Object> rtn = new RestResult<Object>();
 		Map<String, Object> headerMap = new HashMap<String, Object>();
 
-		Map<String, Object> rtnObj = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_CORP_INFO,
-				params);
+		Map<String, Object> rtnObj = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_CORP_INFO, params);
 
-//		String custNo = CommonUtils.getString(rtnObj.get("custNo"));
-
-		// API 통신 처리
-//		headerMap.put("custNo", custNo);
-//		Map<String, Object> result = apiInterface.get("/console/v1/ucube/customer/"+custNo, headerMap);
-//		
-//		if("10000".equals(result.get("code"))) {
-//			Map<String, Object> data = (Map<String, Object>) result.get("data");
-//			rtnObj.putAll(data);
-//			rtnObj.put("custNm", CommonUtils.setMaskingUserNm(CommonUtils.getString(rtnObj.get("custNm"))));
 		rtn.setData(rtnObj);
-//		} else {
-//			throw new Exception(CommonUtils.getString(result.get("message")));
-//		}
 
 		return rtn;
 	}
