@@ -11,6 +11,13 @@
             </select>
           </div>
 
+          <div v-if="fbInfo.ch != 'SMS'" class="of_h consolMarginTop">
+            <div class="float-left" style="width:32%"><h5>제목</h5></div>
+            <div class="float-right" style="width:66%">
+              <input type="text" class="inputStyle" title="제목 입력란" v-model="fbInfo.title" maxlength="40" @input="fnSetCurrByte" :placeholder="msgKind == 'A' && fbInfo.ch != 'SMS' ? '(광고) 문구가 제목 앞에 붙습니다.' : ''">
+            </div>
+          </div>
+
           <div v-if="msgKind == 'A'" class="of_h consolMarginTop">
             <div class="float-left" style="width:32%"><h5>광고성메시지 수신거부번호</h5></div>
             <div class="float-right" style="width:51%">
@@ -21,15 +28,16 @@
             </div>
           </div>
 
-          <div v-if="fbInfo.ch != 'SMS'" class="of_h consolMarginTop">
-            <div class="float-left" style="width:32%"><h5>제목</h5></div>
-            <div class="float-right" style="width:66%">
-              <input type="text" class="inputStyle" title="제목 입력란" v-model="fbInfo.title" maxlength="40" @input="fnSetCurrByte">
-            </div>
-          </div>
-
           <div class="of_h consolMarginTop">
-            <div class="float-left" style="width:32%"><h5>내용</h5></div>
+            <div class="float-left" style="width:32%">
+              <h5>내용</h5>
+              <span class="float-left color3 mt5"  v-if="msgKind == 'A' && fbInfo.ch != 'SMS'">
+                광고성메시지 수신거부번호는<br>내용 밑에 포함됩니다.
+              </span>
+              <span class="float-left color3 mt5"  v-else-if="msgKind == 'A' && fbInfo.ch == 'SMS'">
+                (광고) 문구가 내용 앞에 붙고<br>광고성메시지 수신거부번호는<br>내용 밑에 포함됩니다.
+              </span>
+            </div>
             <div class="float-right" style="width:66%">
               <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="fbInfo.msg" @input="fnSetCurrByte"></textarea>
               <strong class="letter">({{msgCurrByte}} / {{msgLimitByte}})</strong>
@@ -125,7 +133,7 @@ export default {
       let rcvblcNum = this.$gfnCommonUtils.defaultIfEmpty(this.fbInfo.rcvblcNumber, '');
       let totalMsg = body ;
       if(this.msgKind == 'A'){
-        totalMsg += '\n' + rcvblcNum + (this.fbInfo.ch == 'SMS' ? '(광고)' : '');
+        totalMsg += rcvblcNum + (this.fbInfo.ch == 'SMS' ? '(광고)' : '');
       }
       this.msgCurrByte = this.getByte(totalMsg);
     },
