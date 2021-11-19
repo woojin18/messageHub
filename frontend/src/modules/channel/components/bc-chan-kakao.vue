@@ -34,7 +34,7 @@
 						<div class="consolMarginTop">
 							<div class="of_h inline">
 								<div class="float-right">
-									<a @click="fnReg" class="btnStyle2 borderGray" data-toggle="modal" data-target="#Register">카카오 채널 추가</a>
+									<a @click="fnReg" class="btnStyle2 borderGray" data-toggle="modal" data-target="#Register">발신 프로필 추가</a>
 									<a href="https://center-pf.kakao.com/" target="_blank" class="btnStyle2 borderGray ml10">카카오톡 채널 생성</a>
 								</div>
 							</div>

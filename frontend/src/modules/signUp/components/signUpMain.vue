@@ -139,10 +139,10 @@
 				</div>
 
 				<div class="of_h mt10">
-					<div class="float-left" style="width:22%"><h5>사업자등록증 *</h5></div>
+					<div class="float-left" style="width:22%"><h5>첨부파일 *</h5></div>
 					<div class="float-left" style="width:78%">
 						<div class="float-left" style="width:72%">
-							<input type="text" class="inputStyle" placeholder="파일첨부" v-model="attachFileNm" disabled>
+							<input type="text" class="inputStyle" placeholder="사업자등록 사본 1부*" v-model="attachFileNm" disabled>
 							<input type="file" id="attachCorpImg" @change="fnFileChange(0)" ref="attachFile" style="display:none;">
 						</div>
 						<div class="float-right" style="width:25%">
@@ -151,10 +151,10 @@
 					</div>
 				</div>
 				<div class="of_h mt10">
-					<div class="float-left" style="width:22%"><h5>통신사실 증명원 *</h5></div>
+					<div class="float-left" style="width:22%"><h5></h5></div>
 					<div class="float-left" style="width:78%">
 						<div class="float-left" style="width:72%">
-							<input type="text" class="inputStyle" placeholder="파일첨부" v-model="attachFileNm1" disabled>
+							<input type="text" class="inputStyle" placeholder="통신사실 증명원*(첨부된 사업자등록증과 같은 명의)" v-model="attachFileNm1" disabled>
 							<input type="file" id="attachCorpImg1" @change="fnFileChange(1)" ref="attachFile1" style="display:none;">
 						</div>
 						<div class="float-right" style="width:25%">
@@ -163,10 +163,10 @@
 					</div>
 				</div>
 				<div class="of_h mt10">
-					<div class="float-left" style="width:22%"><h5>대리인 재직증명서 또는 신분증 *</h5></div>
+					<div class="float-left" style="width:22%"><h5></h5></div>
 					<div class="float-left" style="width:78%">
 						<div class="float-left" style="width:72%">
-							<input type="text" class="inputStyle" placeholder="파일첨부" v-model="attachFileNm2" disabled>
+							<input type="text" class="inputStyle" placeholder="대리인 재직증명서 or 신분증 1부*" v-model="attachFileNm2" disabled>
 							<input type="file" id="attachCorpImg2" @change="fnFileChange(2)" ref="attachFile2" style="display:none;">
 						</div>
 						<div class="float-right" style="width:25%">
@@ -175,10 +175,10 @@
 					</div>
 				</div>
 				<div class="of_h mt10">
-					<div class="float-left" style="width:22%"><h5>대리인 위임장</h5></div>
+					<div class="float-left" style="width:22%"><h5></h5></div>
 					<div class="float-left" style="width:78%">
 						<div class="float-left" style="width:72%">
-							<input type="text" class="inputStyle" placeholder="파일첨부" v-model="attachFileNm3" disabled>
+							<input type="text" class="inputStyle" placeholder="대리인 위임장 1부" v-model="attachFileNm3" disabled>
 							<input type="file" id="attachCorpImg3" @change="fnFileChange(3)" ref="attachFile3" style="display:none;">
 						</div>
 						<div class="float-right" style="width:25%">
@@ -186,8 +186,7 @@
 						</div>					
 					</div>
 					<div class="float-right color3 mt5" style="width:78%">
-						<br>* 필수 첨부 서류들을 이미지로 첨부해주세요.
-						<br>(가능 확장자 : jpg, jpeg, pdf, gif, png, tiff)
+						(가능 확장자 : jpg, jpeg, pdf, gif, png, tiff)
 					</div>
 				</div>
 				
@@ -205,8 +204,7 @@
 						</select> -->
 					</div>
 					<div class="float-right color3 mt5" style="width:78%">
-						영업사원 조회 버튼을 통해 영업사원 팝업 창에서 영업사원을 선택해주세요.<br>
-						영업사원 미입력시 자동으로 '박진표'로 선택됩니다.
+						영업사원 조회 버튼을 통해 영업사원 팝업 창에서 영업사원을 선택해주세요.
 					</div>
 				</div>
 			</div>
