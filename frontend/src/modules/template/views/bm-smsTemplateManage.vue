@@ -212,7 +212,7 @@ export default {
       let rcvblcNum = this.$gfnCommonUtils.defaultIfEmpty(this.tmpltData.rcvblcNumber, '');
       let totalMsg = body ;
       if(this.tmpltData.msgKind == 'A'){
-        totalMsg += '\n' + rcvblcNum + (this.tmpltData.senderType == 'SMS' ? '(광고)' : '');
+        totalMsg += rcvblcNum + (this.tmpltData.senderType == 'SMS' ? '(광고)' : '');
       }
       this.msgCurrByte = this.getByte(totalMsg);
     },

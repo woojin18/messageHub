@@ -41,7 +41,7 @@
             <div class="phoneTextWrap scroll-yc">
               <div class="phoneText1">
                 <div v-if="sendData.rplcSendType == 'MMS'" :style="'background-image: url('+sendData.fbInfo.imgUrl+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
-                <p v-if="sendData.rplcSendType != 'SMS'" class="mt15 font-size13"><span v-if="sendData.msgKind == 'A'">(광고)</span>{{sendData.fbInfo.title}}</p>
+                <p v-if="sendData.rplcSendType != 'SMS'" class="mt15 font-size13">{{sendData.fbInfo.title}}</p>
                 <p class="mt15"><span><pre><span v-if="sendData.rplcSendType == 'SMS' && sendData.msgKind == 'A'">(광고)</span>{{sendData.fbInfo.msg}}</pre></span></p>
                 <span v-if="sendData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(sendData.fbInfo.rcvblcNumber)">
                   {{sendData.fbInfo.rcvblcNumber}}
@@ -654,6 +654,9 @@ export default {
     },
     fnOpenReplacedSenderPopup(){
       this.sendData.fbInfo.ch = this.sendData.rplcSendType;
+      if(this.sendData.fbInfo.ch != 'SMS' && this.$gfnCommonUtils.isEmpty(this.sendData.fbInfo.title)){
+        this.sendData.fbInfo.title = '(광고)';
+      }
       this.$refs.rplcSendPopup.fnSetfbInfo(this.sendData);
       this.rplcSendOpen = !this.rplcSendOpen;
     },

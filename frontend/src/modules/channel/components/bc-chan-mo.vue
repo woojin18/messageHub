@@ -27,6 +27,7 @@
 					<table class="table_skin1 bt-000 tbl-striped">
 						<colgroup>
 							<col style="width:10%">
+							<col style="width:15%">
 							<col>
 							<col style="width:10%">
 							<col style="width:10%">
@@ -36,6 +37,7 @@
 							<tr>
 								<th class="text-center lc-1">서비스 유형</th>
 								<th class="text-center lc-1">수신번호</th>
+								<th class="text-center lc-1">웹훅 URL</th>
 								<th class="text-center lc-1">사용여부</th>
 								<th class="text-center lc-1 end">등록일시</th>
 								<!-- <th class="text-center lc-1 end">수정일시</th> -->
@@ -46,6 +48,7 @@
 								<td class="text-center">{{item.moType}}</td>
 								<!-- <td class="text-center"><a @click="fnMod(item)">{{item.moNumber}}</a></td> -->
 								<td class="text-center">{{item.moNumber}}</td>
+								<td class="text-left">{{item.webhookUrl}}</td>
 								<td class="text-center">{{item.useYn}}</td>
 								<td class="end">{{item.regDt}}</td>
 								<!-- <td class="end">{{item.updDt}}</td> -->

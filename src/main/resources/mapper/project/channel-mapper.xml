@@ -521,6 +521,7 @@
 		,	PROJECT_ID
 		,	USE_YN
 		,	REG_DT
+		,	WEBHOOK_URL
 		)
 		VALUES
 		(
@@ -531,6 +532,7 @@
 		,	#{projectId}
 		,	'Y'
 		,	NOW()
+		,	#{webhookUrl}
 		)
 	</insert>
 	
