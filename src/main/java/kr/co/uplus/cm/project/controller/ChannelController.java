@@ -1,5 +1,8 @@
 package kr.co.uplus.cm.project.controller;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -506,4 +509,26 @@ public class ChannelController {
 		return channelService.findApiKeyFromProject(params);
 	}
 	
+	@PostMapping("/checkWebhookUrl")
+	public RestResult<?> checkWebhookUrl(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		try {
+			URL url = new URL(CommonUtils.getString(params.get("webhookUrl")));
+			URLConnection con = url.openConnection();
+			HttpURLConnection exitCode = (HttpURLConnection) con;
+			
+			if(exitCode.getResponseCode() == 200) {
+				// url 존재
+			} else {
+				//exitCode.getResponseCode() == 404
+				rtn.setSuccess(false);
+				rtn.setMessage("해당 페이지를 찾을 수 없습니다.");
+			}
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
+	}
 }
