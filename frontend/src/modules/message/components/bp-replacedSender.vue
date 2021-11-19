@@ -14,7 +14,7 @@
           <div v-if="fbInfo.ch != 'SMS'" class="of_h consolMarginTop">
             <div class="float-left" style="width:32%"><h5>제목</h5></div>
             <div class="float-right" style="width:66%">
-              <input type="text" class="inputStyle" title="제목 입력란" v-model="fbInfo.title" maxlength="40" @input="fnSetCurrByte" :placeholder="msgKind == 'A' && fbInfo.ch != 'SMS' ? '(광고) 문구가 제목 앞에 붙습니다.' : ''">
+              <input type="text" class="inputStyle" title="제목 입력란" v-model="fbInfo.title" maxlength="40" @input="fnSetCurrByte">
             </div>
           </div>
 
@@ -32,7 +32,7 @@
             <div class="float-left" style="width:32%">
               <h5>내용</h5>
               <span class="float-left color3 mt5"  v-if="msgKind == 'A' && fbInfo.ch != 'SMS'">
-                광고성메시지 수신거부번호는<br>내용 밑에 포함됩니다.
+                광고성메시지 수신거부번호는<br>내용 하단에 포함됩니다.<br>또한 광고 표기는 제목 또는<br>내용에 포함되어 있어야 합니다.<br>
               </span>
               <span class="float-left color3 mt5"  v-else-if="msgKind == 'A' && fbInfo.ch == 'SMS'">
                 (광고) 문구가 내용 앞에 붙고<br>광고성메시지 수신거부번호는<br>내용 밑에 포함됩니다.
@@ -179,10 +179,9 @@ export default {
           return false;
         }
         let title = this.$gfnCommonUtils.defaultIfEmpty(this.fbInfo.title, '');
-        let totalTitle =  (this.msgKind == 'A' ? '(광고)' : '') + title;
-        let titleCurrByte = this.getByte(totalTitle);
+        let titleCurrByte = this.getByte(title);
         if(this.titleLimitByte < titleCurrByte){
-          const alertMsg = (this.msgKind != 'A' ? '' : '(광고) + ') + '제목이 '+this.titleLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+titleCurrByte+'byte)';
+          const alertMsg = '제목이 '+this.titleLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+titleCurrByte+'byte)';
           confirm.fnAlert(this.componentsTitle, alertMsg);
           return false;
         }
@@ -197,6 +196,14 @@ export default {
         confirm.fnAlert(this.componentsTitle, alertMsg);
         return;
       }
+      // mms, lms의 경우 제목 혹은 내용에 '광고' 단어 필수
+      if(this.msgKind == 'A' && this.fbInfo.ch != 'SMS'){
+        if(this.fbInfo.title.indexOf("광고") == -1 && this.fbInfo.msg.indexOf("광고") == -1 ){
+          confirm.fnAlert(this.componentsTitle, "광고성 메시지는 제목 또는 내용에 광고문구를 표기해야 합니다.");
+          return false;
+        }
+      }
+
       this.$parent.fnCallbackFbInfo(this.fbInfo);
       this.fnClose();
     },

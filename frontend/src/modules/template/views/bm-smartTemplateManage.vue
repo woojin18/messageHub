@@ -5646,7 +5646,7 @@ export default {
 			let rcvblcNum = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.smsRcvblcNumber, '');
 			let totalMsg = body ;
 			if (this.rowData.msgKind == 'A') {
-				totalMsg += '\n' + rcvblcNum + (this.smsTemplateTable === 0 ? '(광고)' : '');
+				totalMsg += rcvblcNum + (this.smsTemplateTable === 0 ? '(광고)' : '');
 			}
 			this.msgSmsCurrByte = this.getByte(totalMsg);
 		},
