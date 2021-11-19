@@ -9,14 +9,6 @@
               <input type="text" class="inputStyle" title="제목 입력란" v-model="smsTitle" maxlength="30" @input="fnSetCurrByte">
             </div>
           </div>
-
-          <div class="of_h consolMarginTop">
-            <div class="float-left" style="width:34%"><h5>내용 *</h5></div>
-            <div class="float-right" style="width:66%">
-              <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="smsContent" maxlength="2000" @input="fnSetCurrByte"></textarea>
-              <strong class="letter">({{msgCurrByte}} / {{msgLimitByte}})</strong>
-            </div>
-          </div>
           <div v-if="sendData.msgKind == 'A'" class="of_h consolMarginTop">
             <div class="float-left" style="width:34%">
               <h5>광고성메시지 수신거부번호 *</h5>
@@ -24,6 +16,13 @@
             </div>
             <div class="float-right" style="width:66%">
               <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rcvblcNumber" placeholder="ex) 수신거부번호 : 080-0000-0000" @input="fnSetCurrByte">
+            </div>
+          </div>
+          <div class="of_h consolMarginTop">
+            <div class="float-left" style="width:34%"><h5>내용 *</h5><p class="color4 pd10">광고성메시지 수신거부번호는 내용 하단에 포함됩니다. 또한 광고 표기는 제목 또는 내용에 포함되어 있어야 합니다.</p></div>
+            <div class="float-right" style="width:66%">
+              <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="smsContent" maxlength="2000" @input="fnSetCurrByte"></textarea>
+              <strong class="letter">({{msgCurrByte}} / {{msgLimitByte}})</strong>
             </div>
           </div>
           <div class="text-center mt20">
@@ -100,7 +99,7 @@ export default {
       let rcvblcNum = this.$gfnCommonUtils.defaultIfEmpty(this.rcvblcNumber, '');
       let totalMsg = body ;
       if(this.sendData.msgKind == 'A'){
-        totalMsg += '\n' + rcvblcNum + (this.sendData.senderType == 'SMS' ? '(광고)' : '');
+        totalMsg += rcvblcNum;
       }
       this.msgCurrByte = this.getByte(totalMsg);
     },
@@ -126,10 +125,10 @@ export default {
           return false;
         }
         let title = this.$gfnCommonUtils.defaultIfEmpty(this.smsTitle, '');
-        let totalTitle =  (this.sendData.msgKind == 'A' ? '(광고)' : '') + title;
+        let totalTitle =  title;
         let titleCurrByte = this.getByte(totalTitle);
         if(this.titleLimitByte < titleCurrByte){
-          const alertMsg = (this.sendData.msgKind != 'A' ? '' : '\'(광고)\' + ') + '제목이 '+this.titleLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+titleCurrByte+'byte)';
+          const alertMsg = '제목이 '+this.titleLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+titleCurrByte+'byte)';
           confirm.fnAlert(this.componentsTitle, alertMsg);
           return false;
         }
@@ -141,6 +140,22 @@ export default {
       if(this.sendData.msgKind == 'A' && !this.rcvblcNumber){
         confirm.fnAlert(this.componentsTitle, '광고성메시지 수신거부번호를 입력해주세요.');
         return false;
+      }
+
+      if(this.sendData.msgKind == 'A') {
+        if(this.sendData.senderType = "SMS") {
+          var chkContent = this.smsContent;
+          if(chkContent.indexOf("광고")== -1) {
+            confirm.fnAlert(this.componentsTitle, '광고성메시지는 제목 또는 내용에 광고문구를 표기해야 합니다.');
+             return false;
+          }
+        } else {
+          var chkContent = this.smsContent + this.smsTitle;
+          if(chkContent.indexOf("광고")== -1) {
+            confirm.fnAlert(this.componentsTitle, '광고성메시지는 제목 또는 내용에 광고문구를 표기해야 합니다.');
+             return false;
+          }
+        }
       }
 
       if(this.msgLimitByte < this.msgCurrByte){
@@ -160,8 +175,26 @@ export default {
     },
     //초기 정보 Set
     fnSetInitInfo(){
-      this.smsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsTitle, '');
-      this.smsContent = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsContent, '');
+      var senderType = this.sendData.senderType;
+      var msgKind = this.sendData.msgKind;
+      if(senderType == "SMS") {
+        if(msgKind == "A") {
+          this.smsContent = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsContent, '(광고)');
+          this.smsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsTitle, '');
+        } else {
+          this.smsContent = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsContent, '');
+          this.smsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsTitle, '');
+        }
+      } else {
+        if(msgKind == "A") {
+          this.smsContent = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsContent, '');
+          this.smsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsTitle, '(광고)');
+        } else {
+          this.smsContent = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsContent, '');
+          this.smsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsTitle, '');
+        }
+      }
+      
       this.rcvblcNumber = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.rcvblcNumber, '');
       this.msgCurrByte = 0;
       this.msgLimitByte = 0;

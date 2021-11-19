@@ -23,7 +23,7 @@
               </div>
               <div class="phoneText1">
                 <p class="font-size14 color4 mt10">
-                  <span><pre><span v-if="sendData.senderType == 'SMS' && sendData.msgKind == 'A'">(광고)</span>{{sendData.smsContent}}</pre></span>
+                  <span><pre>{{sendData.smsContent}}</pre></span>
                   <br v-if="!$gfnCommonUtils.isEmpty(sendData.smsContent)"/>
                   <span v-if="sendData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(sendData.rcvblcNumber)">
                     {{sendData.rcvblcNumber}}
