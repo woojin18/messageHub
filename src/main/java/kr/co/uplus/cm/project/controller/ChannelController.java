@@ -523,11 +523,11 @@ public class ChannelController {
 			} else {
 				//exitCode.getResponseCode() == 404
 				rtn.setSuccess(false);
-				rtn.setMessage("해당 페이지를 찾을 수 없습니다.");
+				rtn.setMessage("해당 URL를 찾을 수 없습니다.");
 			}
 		} catch (Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage(e.getMessage());
+			rtn.setMessage("해당 URL를 찾을 수 없습니다.\n"+e.getMessage());
 		}
 		return rtn;
 	}
