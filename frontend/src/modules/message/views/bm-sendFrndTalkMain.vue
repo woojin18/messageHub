@@ -980,6 +980,8 @@ export default {
       this.sendData.fbInfo.ch = this.sendData.rplcSendType;
       if(this.sendData.fbInfo.ch != 'SMS' && this.$gfnCommonUtils.isEmpty(this.sendData.fbInfo.title) && this.sendData.msgKind == 'A'){
         this.sendData.fbInfo.title = '(광고)';
+      } else if (this.sendData.msgKind == "I" && (this.$gfnCommonUtils.isEmpty(this.sendData.fbInfo.title) || this.sendData.fbInfo.title == "(광고)")){
+        this.sendData.fbInfo.title = '';
       }
       this.$refs.rplcSendPopup.fnSetfbInfo(this.sendData);
       this.rplcSendOpen = !this.rplcSendOpen;
