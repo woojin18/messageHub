@@ -69,7 +69,8 @@
               <td class="text-center">{{data.regDt}}</td>
               <td class="text-center" v-if="data.useYn=='Y'">예</td>
               <td class="text-center" v-else>아니오</td>
-              <td @click="fnModClaimId(data)" class="text-center end" style="text-decoration: underline; cursor: pointer;">{{data.billId}}</td>
+              <!-- <td @click="fnModClaimId(data)" class="text-center end" style="text-decoration: underline; cursor: pointer;">{{data.billId}}</td> -->
+              <td class="text-center end">{{data.billId}}</td>
             </tr>
             <tr v-if="projectData.length == 0">
               <td class="text-center" colspan="6">검색된 내용이 없습니다.</td>
@@ -239,11 +240,11 @@ export default {
       jQuery("#createClaimIdPop").modal("show");
     },
 
-    fnModClaimId: function(projectInfo) {
-      this.selProjectInfo = projectInfo;
-      this.popReset = this.popReset +1;
-      jQuery("#modClaimIdPop").modal("show");
-    },
+    // fnModClaimId: function(projectInfo) {
+    //   this.selProjectInfo = projectInfo;
+    //   this.popReset = this.popReset +1;
+    //   jQuery("#modClaimIdPop").modal("show");
+    // },
 
     fnCreateDept: function() {
       this.selDeptInfo = {"deptCode":"", "deptName":"", "useYn":"Y", "billId":""};
