@@ -654,7 +654,7 @@ export default {
     },
     fnOpenReplacedSenderPopup(){
       this.sendData.fbInfo.ch = this.sendData.rplcSendType;
-      if(this.sendData.fbInfo.ch != 'SMS' && this.$gfnCommonUtils.isEmpty(this.sendData.fbInfo.title)){
+      if(this.sendData.fbInfo.ch != 'SMS' && this.$gfnCommonUtils.isEmpty(this.sendData.fbInfo.title) && this.sendData.msgKind == 'A'){
         this.sendData.fbInfo.title = '(광고)';
       }
       this.$refs.rplcSendPopup.fnSetfbInfo(this.sendData);
