@@ -1,26 +1,33 @@
 <template>
-	<div class="modal modalStyle" id="sender" tabindex="-1" role="dialog" aria-hidden="true">
+  <div v-if="rcsTemplateSenderPopOpen" @click.self="fnClose" class="modalStyle" tabindex="-1" role="dialog" aria-hidden="true">
+
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">								
 					
 					<div v-if="senderType=='LMS' || senderType=='MMS'"class="of_h">
-						<div class="float-left" style="width:15%"><h5>제목</h5></div>
-						<div class="float-right" style="width:85%">
+						<div class="float-left" style="width:25%"><h5>제목</h5></div>
+						<div class="float-right" style="width:75%">
 							<input v-model="senderPopData.senderTitle" type="text" class="inputStyle" placeholder="LMS 문자로 대체발송 될 제목입력" title="제목 입력란">
 						</div>
 					</div>
 
 					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:15%"><h5>내용</h5></div>
-						<div class="float-right" style="width:85%">
-							<textarea v-model="senderPopData.senderContents" class="textareaStyle height120" :placeholder="preText" >{{senderType}}</textarea>
+						<div class="float-left" style="width:25%">
+              <h5>내용</h5>
+              <span class="float-left color3 mt5">
+                광고성 메시지 및 <br>무료수신거부의 내용이 <br>내용제한에 포함됩니다.
+              </span>
+            </div>
+						<div class="float-right" style="width:75%">
+							<textarea @input="fnInit" v-model="senderPopData.senderContents" class="textareaStyle height120" :placeholder="preText" >{{senderType}}</textarea>
+              <strong class="letter">({{msgCurrByte}} / {{msgLimitByte}})</strong>
 						</div>
 					</div>
 
           <div v-if="senderType=='MMS'"class="of_h">
-						<div class="float-left" style="width:15%"><h5>이미지</h5></div>
-            <div class="of_h float-right" style="width:85%">
+						<div class="float-left" style="width:25%"><h5>이미지</h5></div>
+            <div class="of_h float-right" style="width:75%">
               <a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray" title="메시지 내용 이미지선택">이미지선택</a>
               <ul class="float-right attachList" style="width:68%; padding:5px 15px; height:30px;">
                 <li><a @click="fnDelImg">{{shortImgUrl}} <i v-if="!fnIsEmpty(senderPopData.senderImgUrl)" class="fal fa-times"></i></a></li>
@@ -55,6 +62,28 @@ export default {
             require: true,
             default: "",
         },
+        freeReceiveNum: {
+          type: String,
+          require: true,
+          default: "",
+        },
+        adYn: {
+          type: String,
+          require: true,
+          default: "",
+        },
+        rcsTemplateSenderPopOpen: {
+          type: Boolean,
+          require: true,
+          default: false,
+        }
+  },
+  watch: {
+    rcsTemplateSenderPopOpen(val){
+      if(val){
+        this.fnInit();
+      }
+    }
   },
   data() {
     return {
@@ -62,6 +91,8 @@ export default {
         imgMngOpen : false,
         shortImgUrl : "",
         useCh : "MMS",
+        msgCurrByte : 0,
+        msgLimitByte : 0,
         senderPopData : {
             senderTitle : "",
             senderContents : "",
@@ -71,19 +102,53 @@ export default {
     }
   },
   methods: {
+    // 초기세팅
+    fnInit() {
+      var senderType = this.senderType;
+      var adYn = this.adYn;
+      var freeReceiveNum = this.freeReceiveNum;
+      if(senderType == "SMS") {
+        this.msgLimitByte = 90;
+      } else if(senderType == "LMS") {
+        this.msgLimitByte = 1000;
+      } else if(senderType == "MMS") {
+        this.msgLimitByte = 2000;
+      }
+
+      if(adYn == "no") {
+        if(freeReceiveNum == "") {
+          this.msgCurrByte = this.getByte(this.senderPopData.senderContents);
+        } else {
+          this.msgCurrByte = this.getByte("무료수신거부:" + freeReceiveNum + this.senderPopData.senderContents);
+        }
+      } else {
+        if(senderType == "SMS") {
+          this.msgCurrByte = this.getByte("(광고)" + "무료수신거부:" + freeReceiveNum + this.senderPopData.senderContents);
+        } else {
+          this.senderPopData.senderTitle = "(광고)";
+          this.msgCurrByte = this.getByte("무료수신거부:" + freeReceiveNum + this.senderPopData.senderContents);
+        }
+      }
+    },
     // 저장
     fnSaveAdd(){
-       this.$parent.fnSenderTypeSet(this.senderPopData);
-       this.fnClose();
+      if(this.msgCurrByte > this.msgLimitByte) {
+        const alertMsg = '내용이 '+this.msgLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+this.msgCurrByte+'byte)';
+        confirm.fnAlert("RCS 템플릿", alertMsg);
+        return false;
+      }
+
+      this.$parent.fnSenderTypeSet(this.senderPopData);
+      this.fnClose();
     },
 
     // 팝업 닫기
     fnClose(){
-        this.senderPopData.senderTitle = "";
-        this.senderPopData.senderContents = "";
-        this.senderPopData.senderImgUrl = "";
-        this.senderPopData.senderFileId = "";
-        jQuery("#sender").modal("hide");
+      this.senderPopData.senderTitle = "";
+      this.senderPopData.senderContents = "";
+      this.senderPopData.senderImgUrl = "";
+      this.senderPopData.senderFileId = "";
+      this.$emit('update:rcsTemplateSenderPopOpen', false);
     },
 
     fnOpenImageManagePopUp(){
@@ -121,6 +186,13 @@ export default {
     fnIsEmpty(str){
       if(str) return false;
       else return true
+    },
+
+    getByte(str) {
+      return str
+        .split('')
+        .map(s => s.charCodeAt(0))
+        .reduce((prev, c) => (prev + ((c === 10) ? 2 : ((c >> 7) ? 2 : 1))), 0);
     }
 
   }

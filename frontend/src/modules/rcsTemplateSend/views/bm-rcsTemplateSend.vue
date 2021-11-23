@@ -199,8 +199,8 @@
 							<div class="phoneText1">
 								<div class="scroll-y">
 									<div v-if="sendData.callbackImgUrl != ''" :style="'background-image: url('+sendData.callbackImgUrl+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
-									<p class="mt15 font-size13"><span v-if="sendData.adYn=='yes' && sendData.senderType=='LMS'">(광고)</span>{{sendData.callbackTitle}}</p>
-									<p class="mt15"><span v-if="sendData.adYn=='yes' && sendData.senderType=='SMS'">(광고)</span><pre>{{sendData.callbackContents}}</pre></p>
+									<p class="mt15 font-size13">{{sendData.callbackTitle}}</p>
+									<p class="mt15"><pre>{{sendData.callbackContents}}</pre></p>
 									<p calss="mt15" v-if="sendData.freeReceiveNum != ''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 								</div>
 							</div>
@@ -309,10 +309,10 @@
 									<h5>대체발송</h5>
 								</div>
 								<div style="width:82%">
-									<input @change="fnChangeDataSet" v-model="sendData.senderType" type="radio" name="substitution" value="UNUSED" id="UNUSED" checked="" activity="READ"> <label for="UNUSED" class="mr30">미사용</label>
-									<input @change="fnChangeDataSet" v-model="sendData.senderType" type="radio" name="substitution" value="SMS" id="SMS" activity="READ"> <label for="SMS" class="mr30" data-toggle="modal" data-target="#sender">SMS</label>
-									<input @change="fnChangeDataSet" v-model="sendData.senderType" type="radio" name="substitution" value="LMS" id="LMS" activity="READ"> <label for="LMS" class="mr30" data-toggle="modal" data-target="#sender">LMS</label>
-									<input v-if="templateRadioBtn == 'SMwThM00' || templateRadioBtn == 'SMwThT00' || templateRadioBtn == 'carouselSmall' || templateRadioBtn == 'carouselMedium'" @change="fnChangeDataSet" v-model="sendData.senderType" type="radio" name="substitution" value="MMS" id="MMS" activity="READ"> <label v-if="templateRadioBtn == 'SMwThM00' || templateRadioBtn == 'SMwThT00' || templateRadioBtn == 'carouselSmall' || templateRadioBtn == 'carouselMedium'" for="MMS" class="mr30" data-toggle="modal" data-target="#sender">MMS</label>
+									<input v-model="sendData.senderType" type="radio" name="substitution" value="UNUSED" id="UNUSED" checked="" activity="READ"> <label for="UNUSED" class="mr30">미사용</label>
+									<input v-model="sendData.senderType" type="radio" name="substitution" value="SMS" id="SMS" activity="READ"> <label for="SMS" class="mr30" data-toggle="modal" data-target="#sender">SMS</label>
+									<input v-model="sendData.senderType" type="radio" name="substitution" value="LMS" id="LMS" activity="READ"> <label for="LMS" class="mr30" data-toggle="modal" data-target="#sender">LMS</label>
+									<input v-if="templateRadioBtn == 'SMwThM00' || templateRadioBtn == 'SMwThT00' || templateRadioBtn == 'carouselSmall' || templateRadioBtn == 'carouselMedium'" v-model="sendData.senderType" type="radio" name="substitution" value="MMS" id="MMS" activity="READ"> <label v-if="templateRadioBtn == 'SMwThM00' || templateRadioBtn == 'SMwThT00' || templateRadioBtn == 'carouselSmall' || templateRadioBtn == 'carouselMedium'" for="MMS" class="mr30" data-toggle="modal" data-target="#sender">MMS</label>
 								</div>
 							</div>	
 						</div>	
@@ -427,7 +427,7 @@
 			<RcsMsgPopup :templateRadioBtn.sync="templateRadioBtn" :carouselSmall.sync="carouselSmall" :carouselMedium.sync="carouselMedium" ref="rcsMsgPop" @fnTmpMsgSet="fnTmpMsgSet" ></RcsMsgPopup>
 			<RcsContentPopup :templateRadioBtn.sync="templateRadioBtn" :contentPopCnt.sync="contentPopCnt" :dataSet.sync="dataSet" :sendData.sync="sendData" ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
 			<RcsBtnPopup :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
-			<RcsSenderPopup :senderType.sync="sendData.senderType" ref="rcsSenderPop"></RcsSenderPopup>
+			<RcsSenderPopup :senderType.sync="sendData.senderType" :freeReceiveNum.sync="sendData.freeReceiveNum" :adYn.sync="sendData.adYn" :rcsTemplateSenderPopOpen.sync="rcsTemplateSenderPopOpen" ref="rcsSenderPop"></RcsSenderPopup>
 			<RcsSavePopup ref="rcsSavePop"></RcsSavePopup>
 			<ConfirmPopup :newval.sync="newval" :oldval.sync="oldval" ref="confirmPop"></ConfirmPopup>
 			<DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
@@ -503,6 +503,7 @@ export default {
 		directInputOpen : false,		// 수신자 직접입력 버튼
 		addressInputOpen : false,		// 주소록 검색 버튼
 		testSendInputOpen : false,		// 테스트 발송 팝업 버튼
+		rcsTemplateSenderPopOpen : false, // 대체발송 팝업 버튼
         templateRadioBtn : "des",       // 템플릿형 라디오 버튼
 		recvCnt : 0,  					// 수신자명수
 		carouselSmall : 'CMwShS0300',	// 캐러셀형 msgId
@@ -605,11 +606,50 @@ export default {
 			
 		});
 	  },
+	  'sendData.senderType' (newval, oldval) {
+		var senderType = this.sendData.senderType;
+		if(newval != "UNUSED") {
+			this.rcsTemplateSenderPopOpen = !this.rcsTemplateSenderPopOpen;
+			this.dataSet = true;
+		}
+	  },
 	  recvCnt (newval, oldval) {
 		  if(newval>30000) {
 			  confirm.fnAlert("RCS 발송", "발송 최대 수신자 수는 30000명을 넘길 수 없습니다.");
 			  this.fnRemoveRecvInfo();
 		  }
+	  },
+	  'sendData.freeReceiveNum' (newval, oldval) {
+		  var senderType = this.sendData.senderType;
+		  var adYn = this.sendData.adYn;
+		  var callbackContents = this.sendData.callbackContents;
+		  if(adYn == "no") {
+			  if(newval != "") {
+				  callbackContents += "무료수신거부:" + newval;
+			  }
+		  } else {
+			  callbackContents += "무료수신거부:" + newval;
+		  }
+		  if(senderType == "SMS") {
+			  var byte = this.getByte(callbackContents);
+			  if(byte>90) {
+				  confirm.fnAlert("RCS 발송", '대체발송 내용이 90byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
+				  this.sendData.freeReceiveNum = oldval;
+			  }
+		  } else if(senderType == "LMS") {
+			  var byte = this.getByte(callbackContents);
+			  if(byte>1000) {
+				  confirm.fnAlert("RCS 발송", '대체발송 내용이 1000byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
+				  this.sendData.freeReceiveNum = oldval;
+			  }
+		  } else if(senderType == "MMS") {
+			  var byte = this.getByte(callbackContents);
+			  if(byte>2000) {
+				  confirm.fnAlert("RCS 발송", '대체발송 내용이 2000byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
+				  this.sendData.freeReceiveNum = oldval;
+			  }
+		  }
+
 	  }
   },
   mounted() {
@@ -803,6 +843,12 @@ export default {
 		jQuery("#recipient").modal("show");
 	},
 	
+	fnOpenRcsTemplateSenderPop() {
+		var senderType = this.sendData.senderType;
+		this.rcsTemplateSenderPopOpen = !this.rcsTemplateSenderPopOpen;
+		this.dataSet = true;
+	},
+	
 	fnSetTemplate(data) {
 		var vm = this;
 		vm.dataSet = true;
@@ -929,8 +975,12 @@ export default {
 
 	// 대체발송 팝업 callback
 	fnSenderTypeSet(data) {
+		if(this.sendData.adYn == "yes" && this.sendData.senderType == "SMS") {
+			this.sendData.callbackContents = "(광고)" + data.senderContents;
+		} else {
+			this.sendData.callbackContents = data.senderContents;
+		}
 		this.sendData.callbackTitle = data.senderTitle;
-		this.sendData.callbackContents = data.senderContents;
 		this.sendData.callbackImgUrl = data.senderImgUrl;
 		this.sendData.callbackFileId = data.senderFileId;
 	},
@@ -1537,7 +1587,14 @@ export default {
 		} else {
 			this.recvCnt = 0;
 		}
-	}
+	},
+
+	getByte(str) {
+      return str
+        .split('')
+        .map(s => s.charCodeAt(0))
+        .reduce((prev, c) => (prev + ((c === 10) ? 2 : ((c >> 7) ? 2 : 1))), 0);
+    }
   }
 }
 </script>

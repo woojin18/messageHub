@@ -4,22 +4,32 @@
       <div class="modal-content">
         <div class="modal-body">
           <div v-if="sendData.senderType == 'MMS' || sendData.senderType == 'LMS'" class="of_h consolMarginTop">
-            <div class="float-left" style="width:34%"><h5>제목 *</h5></div>
+            <div class="float-left" style="width:31%"><h5>제목</h5></div>
             <div class="float-right" style="width:66%">
               <input type="text" class="inputStyle" title="제목 입력란" v-model="smsTitle" maxlength="30" @input="fnSetCurrByte">
             </div>
           </div>
+
           <div v-if="sendData.msgKind == 'A'" class="of_h consolMarginTop">
-            <div class="float-left" style="width:34%">
-              <h5>광고성메시지 수신거부번호 *</h5>
+            <div class="float-left" style="width:32%"><h5>광고성메시지 수신거부번호</h5></div>
+            <div class="float-right" style="width:51%">
+              <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rcvblcNumber" maxlength="20" placeholder="ex) 수신거부번호 : 080-0000-0000" @input="fnSetCurrByte">
+            </div>
+            <div class="float-right" style="width:15%">
               <a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</a>
             </div>
-            <div class="float-right" style="width:66%">
-              <input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rcvblcNumber" placeholder="ex) 수신거부번호 : 080-0000-0000" @input="fnSetCurrByte">
-            </div>
           </div>
+
           <div class="of_h consolMarginTop">
-            <div class="float-left" style="width:34%"><h5>내용 *</h5><p class="color4 pd10">광고성메시지 수신거부번호는 내용 하단에 포함됩니다. 또한 광고 표기는 제목 또는 내용에 포함되어 있어야 합니다.</p></div>
+            <div class="float-left" style="width:34%">
+              <h5>내용</h5>
+              <span class="float-left color3 mt5"  v-if="sendData.msgKind == 'A' && sendData.senderType != 'SMS'">
+                광고성메시지 수신거부번호는<br>내용 하단에 포함됩니다.<br>또한 광고 표기는 제목 또는<br>내용에 포함되어 있어야 합니다.<br>
+              </span>
+              <span class="float-left color3 mt5"  v-else-if="sendData.msgKind == 'A' && sendData.senderType == 'SMS'">
+                (광고) 문구가 내용 앞에 붙고<br>광고성메시지 수신거부번호는<br>내용 밑에 포함됩니다.
+              </span>
+            </div>
             <div class="float-right" style="width:66%">
               <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="smsContent" maxlength="2000" @input="fnSetCurrByte"></textarea>
               <strong class="letter">({{msgCurrByte}} / {{msgLimitByte}})</strong>
@@ -99,7 +109,7 @@ export default {
       let rcvblcNum = this.$gfnCommonUtils.defaultIfEmpty(this.rcvblcNumber, '');
       let totalMsg = body ;
       if(this.sendData.msgKind == 'A'){
-        totalMsg += rcvblcNum;
+        totalMsg += rcvblcNum + (this.sendData.senderType == 'SMS' ? '(광고)' : '');
       }
       this.msgCurrByte = this.getByte(totalMsg);
     },
@@ -143,13 +153,7 @@ export default {
       }
 
       if(this.sendData.msgKind == 'A') {
-        if(this.sendData.senderType = "SMS") {
-          var chkContent = this.smsContent;
-          if(chkContent.indexOf("광고")== -1) {
-            confirm.fnAlert(this.componentsTitle, '광고성메시지는 제목 또는 내용에 광고문구를 표기해야 합니다.');
-             return false;
-          }
-        } else {
+        if(this.sendData.senderType != "SMS") {
           var chkContent = this.smsContent + this.smsTitle;
           if(chkContent.indexOf("광고")== -1) {
             confirm.fnAlert(this.componentsTitle, '광고성메시지는 제목 또는 내용에 광고문구를 표기해야 합니다.');
@@ -178,17 +182,16 @@ export default {
       var senderType = this.sendData.senderType;
       var msgKind = this.sendData.msgKind;
       if(senderType == "SMS") {
-        if(msgKind == "A") {
-          this.smsContent = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsContent, '(광고)');
-          this.smsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsTitle, '');
-        } else {
-          this.smsContent = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsContent, '');
-          this.smsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsTitle, '');
-        }
+        this.smsContent = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsContent.replace("(광고)" , ""), '');
+        this.smsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsTitle, '');
       } else {
         if(msgKind == "A") {
           this.smsContent = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsContent, '');
-          this.smsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsTitle, '(광고)');
+          if(this.sendData.smsContent.indexOf("광고") != -1 || this.sendData.smsTitle.indexOf("광고") != -1) {
+            this.smsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsTitle.replace("(광고)" , ""), '');
+          } else {
+            this.smsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsTitle, '(광고)');
+          }
         } else {
           this.smsContent = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsContent, '');
           this.smsTitle = this.$gfnCommonUtils.defaultIfEmpty(this.sendData.smsTitle, '');

@@ -14,7 +14,7 @@
             <div class="phoneTextWrap scroll-yc">
               <div v-if="sendData.senderType == 'MMS' || sendData.senderType == 'LMS'" class="phoneText2 mb10">
                 <p v-if="$gfnCommonUtils.isEmpty(sendData.smsTitle)">메시지 제목</p>
-                <p v-else><span v-if="sendData.senderType == 'MMS' && sendData.msgKind == 'A'">(광고)</span>{{sendData.smsTitle}}</p>
+                <p v-else>{{sendData.smsTitle}}</p>
               </div>
               <div v-if="sendData.senderType == 'MMS'">
                 <div v-for="(imgInfo, idx) in sendData.imgInfoList" :key="idx" class="phoneText2 mt10 text-center simulatorImg"
@@ -666,11 +666,21 @@ export default {
     },
     //내용입력 callback
     fnSetSmsInfo(data){
+      var msgKind = this.sendData.msgKind;
       if(this.sendData.smsContent != data.smsContent){
         this.fnCallbackRecvInfoLst(null);  //수신자 정보 초기화
       }
       this.sendData.smsTitle = data.smsTitle;
-      this.sendData.smsContent = data.smsContent;
+      if(msgKind == "A" && this.sendData.senderType == "SMS") {
+
+          if(this.sendData.smsContent.indexOf("광고")== -1) {
+            this.sendData.smsContent = "(광고)" + data.smsContent;
+          } else {
+            this.sendData.smsContent = data.smsContent;
+          }
+      } else {
+        this.sendData.smsContent = data.smsContent;
+      }
       this.sendData.rcvblcNumber = data.rcvblcNumber;
     },
     fnUpdateImg(idx){
