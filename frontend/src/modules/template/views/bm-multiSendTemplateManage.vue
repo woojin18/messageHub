@@ -3300,8 +3300,8 @@ export default {
 						//제목 혹은 내용에 '광고' 단어 필수
 						if(this.rowData.msgKind == 'A'){
 							if(this.rowData.smsTitle.indexOf("광고") == -1 && this.rowData.smsContent.indexOf("광고") == -1 ){
-							confirm.fnAlert(this.detailTitle, "광고성 메시지는 제목 또는 내용에 광고문구를 표기해야 합니다.");
-							return false;
+								confirm.fnAlert(this.detailTitle, "광고성 메시지는 제목 또는 내용에 광고문구를 표기해야 합니다.");
+								return false;
 							}
 						}
 					}
@@ -4662,6 +4662,8 @@ export default {
 			if (this.rowData.msgKind == 'A') {
 				this.rowData.smsRcvblcNumber = "";
 				this.rowData.smsTitle = "(광고)";
+			} else if (this.rowData.msgKind == 'I' && (this.$gfnCommonUtils.isEmpty(this.rowData.smsTitle) || this.rowData.smsTitle == "(광고)")){
+				this.rowData.smsTitle = "";
 			}
 			this.fnSetSmsCurrByte();
 			this.fnSetTitleSmsCurrByte();
@@ -4675,6 +4677,11 @@ export default {
 				if (jQuery("input:radio[name=rcsTemplate1]:checked").val() == 0 || jQuery("input:radio[name=rcsTemplate1]:checked").val() == 1) {
 					jQuery("input:radio[id=rcsTemplate1-1]").click();
 				}
+			}
+			
+			if(this.checkedSmsMms){
+				this.rowData.msgKind = flag;
+				this.checkSmsSend(this.rowData.smsSendType);
 			}
 		},
 		// 메시지 타입 선택 시 EVENT

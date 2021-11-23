@@ -194,7 +194,7 @@ public class MultiSendTemplateService {
 						smsContent = smsContent.replace("\n"+smsRcvblcNumber, "");
 						rtnMap.put("smsContent", smsContent);
 					} else if ("M".equals(smsSendType)) {
-						smsTitle = smsTitle.replace("(광고)", "");
+//						smsTitle = smsTitle.replace("(광고)", "");
 						smsContent = smsContent.replace("\n"+smsRcvblcNumber, "");
 						rtnMap.put("smsTitle", smsTitle);
 						rtnMap.put("smsContent", smsContent);
@@ -834,7 +834,7 @@ public class MultiSendTemplateService {
 					sb.append("\"data\" : { ");
 					sb.append("\"callback\" : \"" + params.get("callback") + "\",");
 					if ("A".equals(params.get("msgKind"))) {
-						sb.append("\"title\" : \"(광고)" + params.get("smsTitle") + "\",");
+						sb.append("\"title\" : \"" + params.get("smsTitle") + "\",");
 						sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + JSONObject.escape("\n" + (String) params.get("smsRcvblcNumber")) + "\" ");
 					} else {
 						sb.append("\"title\" : \"" + params.get("smsTitle") + "\",");
