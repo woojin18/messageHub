@@ -1863,10 +1863,14 @@
 					<div class="of_h" v-if="rowData.msgKind == 'A'">
 						<div class="float-left" style="width:13%">
 							<h4>광고성메시지<br/>수신거부번호*</h4>
-							<a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</a>
 						</div>
 						<div class="float-left mt10" style="width:57%">
-							<input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rowData.smsRcvblcNumber" maxlength="20" @input="fnSetSmsCurrByte">
+							<div class="float-left" style="width:15%">
+								<button class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</button>
+							</div>
+							<div  class="float-left" style="width:85%">
+								<input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rowData.smsRcvblcNumber" maxlength="20" @input="fnSetSmsCurrByte">
+							</div>
 						</div>
 					</div>
 					<div class="of_h" >
@@ -1892,10 +1896,14 @@
 					<div class="of_h" v-if="rowData.msgKind == 'A'">
 						<div class="float-left" style="width:13%">
 							<h4>광고성메시지<br/>수신거부번호*</h4>
-							<a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</a>
 						</div>
 						<div class="float-left mt10" style="width:57%">
-							<input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rowData.smsRcvblcNumber" maxlength="20" @input="fnSetSmsCurrByte">
+							<div class="float-left" style="width:15%">
+								<button class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</button>
+							</div>
+							<div class="float-left" style="width:85%">
+								<input type="text" class="inputStyle" title="광고성메시지 수신거부번호 입력란" v-model="rowData.smsRcvblcNumber" maxlength="20" @input="fnSetSmsCurrByte">
+							</div>
 						</div>
 					</div>
 					<div class="of_h" >
