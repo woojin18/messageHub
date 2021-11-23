@@ -1845,14 +1845,14 @@
 			</div>
 			<div class="float-left consoleCon" style="width:72%">
 				<div class="of_h">
-					<div class="float-left" style="width:13%"><h4>발송 유형 *</h4></div>
+					<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>발송 유형 *</h4></div>
 					<div class="float-left" style="width:57%">
 						<input type="radio" name="smsSendType" value="S" id="smsSendType1"  v-on:click="checkSmsSend('S')" v-model="rowData.smsSendType"> <label for="smsSendType1" class="mr30">SMS</label>
 						<input type="radio" name="smsSendType" value="M" id="smsSendType2"  v-on:click="checkSmsSend('M')" v-model="rowData.smsSendType"> <label for="smsSendType2"><p v-if="rowData.msgType=='IMAGE'">MMS</P><p v-else>LMS</P></label>
 					</div>
 				</div>				
 				<div class="of_h consolMarginTop" v-if="!checkedRCS">
-					<div class="float-left" style="width:13%"><h4>발신번호 *</h4></div>
+					<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>발신번호 *</h4></div>
 					<div class="float-left" style="width:57%">
 						<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 							<option v-for="info in smsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
@@ -1861,8 +1861,8 @@
 				</div>
 				<div v-if="smsTemplateTable === 0">
 					<div class="of_h" v-if="rowData.msgKind == 'A'">
-						<div class="float-left" style="width:13%">
-							<h4>광고성메시지<br/>수신거부번호*</h4>
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'">
+							<h4>광고성메시지 수신거부번호*</h4>
 						</div>
 						<div class="float-left mt10" style="width:57%">
 							<div class="float-left" style="width:15%">
@@ -1873,10 +1873,10 @@
 							</div>
 						</div>
 					</div>
-					<div class="of_h" >
-						<div class="float-left" style="width:13%"><h4>내용*</h4>						
-						    <span class="float-left color3 mt5"  v-if="rowData.msgKind == 'A'">
-								(광고) 문구가 내용 앞에 붙고 광고성메시지 수신거부번호는 내용 밑에 포함됩니다.
+					<div class="of_h consolMarginTop">
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>내용*</h4>						
+						    <span class="float-left color3"  v-if="rowData.msgKind == 'A'">
+								(광고) 문구가 내용 앞에 붙고<br>광고성메시지 수신거부번호는<br>내용 밑에 포함됩니다.
 							</span>
 						</div>
 						<div class="float-left" style="width:57%">
@@ -1887,15 +1887,15 @@
 				</div>
 				<div v-else-if="smsTemplateTable === 1">
 					<div class="of_h" >
-						<div class="float-left" style="width:13%"><h4>제목*</h4></div>
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>제목*</h4></div>
 						<div class="float-left" style="width:57%">
 							<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.smsTitle" @input="fnSetTitleSmsCurrByte">
 							<strong class="letter">({{titleSmsCurrByte}} / {{titleSmsLimitByte}})</strong>
 						</div>
 					</div>
 					<div class="of_h" v-if="rowData.msgKind == 'A'">
-						<div class="float-left" style="width:13%">
-							<h4>광고성메시지<br/>수신거부번호*</h4>
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'">
+							<h4>광고성메시지 수신거부번호*</h4>
 						</div>
 						<div class="float-left mt10" style="width:57%">
 							<div class="float-left" style="width:15%">
@@ -1906,10 +1906,10 @@
 							</div>
 						</div>
 					</div>
-					<div class="of_h" >
-						<div class="float-left" style="width:13%"><h4>내용*</h4>
-							<span class="float-left color3 mt5"  v-if="rowData.msgKind == 'A'">
-								광고성메시지 수신거부번호는 내용 하단에 포함됩니다. 또한 광고 표기는 제목 또는 내용에 포함되어 있어야 합니다.
+					<div class="of_h consolMarginTop" >
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>내용*</h4>
+							<span class="float-left color3"  v-if="rowData.msgKind == 'A'">
+								광고성메시지 수신거부번호는<br>내용 하단에 포함됩니다.<br>또한 광고 표기는 제목 또는 내용에<br>포함되어 있어야 합니다.
 							</span>
 						</div>
 						<div class="float-left" style="width:57%">
@@ -1918,7 +1918,7 @@
 						</div>
 					</div>
 					<div class="of_h consolMarginTop"  v-if="rowData.msgType == 'IMAGE'">
-						<div class="float-left" style="width:13%"><h4>이미지</h4></div>
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>이미지</h4></div>
 						<div class="float-left" style="width:57%">
 							<div class="float-left" style="width:25%">
 								<a @click="fnSmsOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>

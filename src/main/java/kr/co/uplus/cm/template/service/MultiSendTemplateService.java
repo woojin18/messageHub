@@ -820,7 +820,7 @@ public class MultiSendTemplateService {
 					sb.append("\"data\" : { ");
 					sb.append("\"callback\" : \"" + params.get("callback") + "\",");
 					if ("A".equals(params.get("msgKind"))) {
-						sb.append("\"msg\" : \"(광고)" + JSONObject.escape((String) params.get("smsContent")) + params.get("smsRcvblcNumber") + "\" "); // 메시지
+						sb.append("\"msg\" : \"(광고)" + JSONObject.escape((String) params.get("smsContent")) + JSONObject.escape("\n" + (String) params.get("smsRcvblcNumber")) + "\" "); // 메시지
 					} else {
 						sb.append("\"msg\" : \"" + JSONObject.escape((String) params.get("smsContent")) + "\" "); // 메시지
 					}
