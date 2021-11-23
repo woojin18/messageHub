@@ -38,8 +38,8 @@
 								<th class="text-center lc-1">서비스 유형</th>
 								<th class="text-center lc-1">수신번호</th>
 								<th class="text-center lc-1">웹훅 URL</th>
-								<th class="text-center lc-1">사용여부</th>
-								<th class="text-center lc-1 end">등록일시</th>
+								<th class="text-center lc-1">등록일시</th>
+								<th class="text-center lc-1 end">삭제</th>
 								<!-- <th class="text-center lc-1 end">수정일시</th> -->
 							</tr>
 						</thead>
@@ -49,8 +49,8 @@
 								<!-- <td class="text-center"><a @click="fnMod(item)">{{item.moNumber}}</a></td> -->
 								<td class="text-center">{{item.moNumber}}</td>
 								<td class="text-left">{{item.webhookUrl}}</td>
-								<td class="text-center">{{item.useYn}}</td>
-								<td class="end">{{item.regDt}}</td>
+								<td class="text-center">{{item.regDt}}</td>
+								<td class="text-center end"><button class="btnStyle6 font13" @click="fnMod(item)">삭제</button></td>
 								<!-- <td class="end">{{item.updDt}}</td> -->
 							</tr>
 							<tr v-if="data.length == 0">
@@ -77,6 +77,7 @@ import Api from '../service/api'
 import SelectLayer from '@/components/SelectLayer.vue';
 import PageLayer from '@/components/PageLayer.vue';
 
+import confirm from "@/modules/commonUtil/service/confirm"
 import layerPopup from "./bp-chan-mo.vue";
 
 export default {
@@ -151,10 +152,24 @@ export default {
 			}
 			jQuery("#layerPopup").modal("show");
 		},
+		// mo 삭제 처리(useYn 수정)
 		fnMod(row_data){
-			/* this.save_status = "U";
-			this.row_data = row_data;
-			jQuery("#layerPopup").modal("show"); */
+			var params = {
+				sts : "D",
+				apiKey : row_data.apiKey,
+				moNumber : row_data.moNumber,
+				moType : row_data.moType
+			};
+
+			Api.saveMoCallback(params).then(response =>{
+				var result = response.data;
+				if(result.success){
+					confirm.fnAlert("", "삭제되었습니다.");
+					this.fnSearch();
+				} else {
+					confirm.fnAlert("", result.message);
+				}
+			});
 		}
 	}
 }

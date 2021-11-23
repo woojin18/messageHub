@@ -1039,18 +1039,16 @@ public class ChannelService {
 				String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
 				throw new Exception(errMsg);
 			}
-		}
-//		else if( "U".equals(sts) ) {
+//		} else if( "U".equals(sts) ) {
 //			String apiKey = CommonUtils.getString(params.get("apiKey")); 
 //			params.put("apiKey", apiKey);
 //			
 //			generalDao.updateGernal(DB.QRY_UPDATE_MO_CALLBACK, params);
-//		} else if( "D".equals(sts) ) {
-//			String apiKey = CommonUtils.getString(params.get("apiKey")); 
-//			params.put("apiKey", apiKey);
-//			
-//			generalDao.deleteGernal(DB.QRY_DELETE_MO_CALLBACK, params);
-//		}
+		} else if( "D".equals(sts) ) {
+			generalDao.updateGernal("channel.updateMoCallBackUseYn", params);
+			// redis 테이블 처리
+			commonService.updateCmCmdForRedis("CM_MO_CALLBACK");
+		}
 		
 	}
 

@@ -481,6 +481,7 @@
 		AND		A.CORP_ID = #{corpId}
 		AND		A.MO_NUMBER = #{detailMoNumber}
 		AND		A.MO_TYPE = #{moType}
+		AND		A.USE_YN = 'Y'
 	</select>
 	
 	<select id="selectMoCallbackListCnt" resultType="int">
@@ -489,6 +490,7 @@
 		FROM	cm.CM_MO_CALLBACK A
 		WHERE	PROJECT_ID = #{projectId}
 		AND		A.CORP_ID = #{corpId}
+		AND		A.USE_YN = 'Y'
 	</select>
 	
 	<select id="selectMoCallbackList" resultType="camel">
@@ -508,6 +510,7 @@
 		FROM	cm.CM_MO_CALLBACK A
 		WHERE	PROJECT_ID = #{projectId}
 		AND		A.CORP_ID = #{corpId}
+		AND		A.USE_YN = 'Y'
 	</select>
 	
 	<insert id="insertMoCallback">
@@ -982,5 +985,15 @@
 		<if test="projectId != null and projectId != ''">
 		AND		PROJECT_ID IN ('ALL' , #{projectId})
 		</if>
+	</select>
+	
+	<select id="updateMoCallBackUseYn">
+		/* channel.updateMoCallBackUseYn */
+		UPDATE	cm.CM_MO_CALLBACK
+		SET		USE_YN = 'N'
+		,		UPD_DT = NOW()
+		WHERE	API_KEY = #{apiKey}
+		AND		MO_NUMBER = #{moNumber}
+		AND		MO_TYPE = #{moType}
 	</select>
 </mapper>
