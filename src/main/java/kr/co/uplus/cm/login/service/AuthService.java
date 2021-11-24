@@ -1,8 +1,6 @@
 package kr.co.uplus.cm.login.service;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,6 +29,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import kr.co.uplus.cm.common.config.SecurityConfig;
 import kr.co.uplus.cm.common.consts.Const;
@@ -78,9 +79,12 @@ public class AuthService implements UserDetailsService {
 	@Autowired
 	private CommonService commonService;
 
+	@Value("${bo.domain.baseUrl}") String boBaseUrl;
+
+	@Value("${sso.secret.key}") String authKey;
+
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		log.debug("username = [{}]", username);
-
 		AuthUser user = dao.getByUsername(username);
 		log.debug("user = [{}]", user);
 		if (user == null) {
@@ -88,6 +92,7 @@ public class AuthService implements UserDetailsService {
 		}
 
 		HttpServletRequest request = SpringUtils.getCurrentRequest();
+		user.setBoUserId((String) request.getAttribute("boUserId"));
 		request.setAttribute(Const.KEY_LOAD_USER, user);
 
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
@@ -169,6 +174,100 @@ public class AuthService implements UserDetailsService {
 				return new RestResult<String>(false).setCode(ResultCode.SE_INTERNAL);
 			}
 		}
+
+		return new RestResult<String>().setData(nextUrl);
+	}
+
+	public RestResult<?> sso(Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
+		Authentication authentication = null;
+
+		String referrer = (String) params.get("referrer");
+		// referrer 체크로 보안 강화 
+		if (referrer == null || referrer.startsWith(boBaseUrl) == false) {
+			return new RestResult<String>(false);
+		}
+		
+		String boUserId = (String) params.get("userId");
+		request.setAttribute("boUserId", boUserId);
+		String[] auth = ((String) params.get("token")).split("\\|");
+		String authKey2 = auth[0]; 
+		String userId = auth[1];
+		String salt = "";
+		String userPwd = "";
+		
+		// authKey 체크로 보안 강화 
+		if (authKey.equals(authKey2) == false) {
+			return new RestResult<String>(false);
+		}
+		
+		params.put("userId", userId);
+
+		try {
+			// userId에 해당되는 salt 문자열 취득
+			salt = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_SALT_INFO, params));
+			userPwd = CommonUtils.getString(generalDao.selectGernalObject("login.qrySelectPwd", params));
+		} catch (Exception e) {
+			return new RestResult<String>(false).setCode(ResultCode.SE_INTERNAL);
+		}
+
+		try {
+			params.put("userPwd", userPwd);
+			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userId, userPwd);
+			authentication = authManager.authenticate(token);
+		} catch (AuthenticationException ae) {
+			request.setAttribute(SecurityConfig.LOGIN_ID_PARAM, userId);
+			ResultCode resultCode = loginFailureHandler.process(request, response, ae);
+
+//			if (ResultCode.CE_ID_PWD.equals(resultCode)) {
+//				try {
+//					// 로그인 실패 카운트 update
+//					generalDao.updateGernal(DB.QRY_UPDATE_LOGIN_FAIL_CNT, params);
+//				} catch (Exception e) {
+//					return new RestResult<String>(false).setCode(ResultCode.SE_INTERNAL);
+//				}
+//			}
+			return new RestResult<String>(false).setCode(resultCode);
+		}
+
+		AuthUser user = (AuthUser) authentication.getPrincipal();
+		String delYn = user.getDelYn();
+		String corpStatus = user.getCorpStatus();
+		int diffDate = user.getDiffDate();
+		if ("UC".equals(user.getSvcTypeCd())) {
+			if ("".equals(user.getRepProjectId()) || user.getRepProjectId() == null) {
+				return new RestResult<String>(false).setCode(ResultCode.SS_NOT_PROJECT);
+			}
+		}
+		if ("Y".equals(delYn)) {
+			return new RestResult<String>(false).setCode(ResultCode.SS_DEL_USE);
+		}
+		if (!"USE".equals(corpStatus)) {
+			if ("STOP".equals(corpStatus)) {
+				return new RestResult<String>(false).setCode(ResultCode.SS_NOT_USE_CORP);
+			}
+			if ("DEL".equals(corpStatus)) {
+				return new RestResult<String>(false).setCode(ResultCode.SS_NOT_EXIST_CORP);
+			}
+		}
+
+		ResultCode rcode = loginSuccessHandler.process(request, response, authentication);
+		jwtSvc.generatePrivateToken(response, authentication);
+
+		String nextUrl = getReturnUrl(request, response, diffDate);
+		log.debug("login success - nextUrl = [{}]", nextUrl);
+
+		// BO 사용자라사 최근 접속일시 업데이트 하지 않음. 
+//		if (rcode != ResultCode.SUCCESS) {
+//			return new RestResult<String>(false).setCode(rcode);
+//		} else {
+//			try {
+//				// 최근 접속일시 update
+//				generalDao.updateGernal(DB.QRY_UPDATE_RECENT_CONN_DT, params);
+//			} catch (Exception e) {
+//				return new RestResult<String>(false).setCode(ResultCode.SE_INTERNAL);
+//			}
+//		}
 
 		return new RestResult<String>().setData(nextUrl);
 	}
@@ -405,5 +504,13 @@ public class AuthService implements UserDetailsService {
 		}
 
 		return rtn;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void insertConsoleProcLog(Map params) {
+		try {
+			generalDao.insertGernal("login.insertConsoleProcLog", params);
+		} catch (Exception e) {
+		}
 	}
 }

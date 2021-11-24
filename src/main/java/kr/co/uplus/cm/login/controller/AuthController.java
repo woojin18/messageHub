@@ -55,6 +55,12 @@ public class AuthController {
 		return authSvc.chkLogin(params, request, response);
 	}
 
+	@PostMapping("/auth/sso")
+	public RestResult<?> sso(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
+		return authSvc.sso(params, request, response);
+	}
+
 	@GetMapping("/auth/logout")
 	public RestResult<?> logoutTest(HttpServletRequest request, HttpServletResponse response) {
 

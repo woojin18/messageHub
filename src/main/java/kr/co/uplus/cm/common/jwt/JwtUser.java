@@ -29,6 +29,7 @@ public class JwtUser extends AuthUser {
 		u.setSvcTypeCd(user.getSvcTypeCd());
 		u.setRepProjectId(user.getRepProjectId());
 		u.setBizType(user.getBizType());
+		u.setBoUserId(user.getBoUserId());
 		return u;
 	}
 
@@ -37,6 +38,7 @@ public class JwtUser extends AuthUser {
 		u.setUserId((String) principal.get("userId"));
 		u.setLoginId((String) principal.get("loginId"));
 		u.setUserName((String) principal.get("userNm"));
+		u.setBoUserId((String) principal.get("boUserId"));
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		Collection<? extends GrantedAuthority> authorities = ((List<Map>) principal.get("authorities")).stream()

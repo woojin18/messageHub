@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <title>LGU+ 메시지허브</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript" src="/se2/js/jquery/core/jquery-3.5.1.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      var params = new window.URLSearchParams(window.location.search);
+      var userId = atob(params.get('userId'));
+      var token = atob(params.get('token'));
+      $.ajax({
+        url:'/api/auth/sso',
+        type:"POST",
+        data:JSON.stringify({referrer:document.referrer,userId:userId,token:token}),
+        contentType:"application/json; charset=utf-8",
+        dataType:"json",
+        success: function(rsp){
+          if (rsp.success) {
+            location.replace(rsp.data);
+          } else {  
+            var msg = '';
+            switch (rsp.code) {
+						case 'SS_NOT_AUTH': // 미인증 계정
+							msg = 'Email 인증 후 이용할 수 있는 사용자입니다.';
+							break;
+						case 'SS_NOT_USE': // 중지 계정
+							msg = '관리자 승인 후 이용할 수 있는 사용자입니다.';
+							break;
+						case 'SS_LOCK': // 잠김 계정
+							msg = '관리자 승인 후 이용할 수 있는 사용자입니다.';
+							break;
+						case 'SS_DEL_USE': // 삭제 계정
+							msg = '삭제 된 계정입니다.';
+							break;
+						case 'SS_PWD_EXPIRE': // 비밀번호 만료
+							msg = '비밀번호를 변경하신지 90일이 지났는 사용자입니다.\n비밀번호 변경 화면으로 이동합니다.';
+							break;
+						case 'SS_INIT_PWD': // 최초 비밀번호 변경 필요
+							msg = '새로운 비밀번호로 변경이 필요합니다.\n비밀번호 변경 화면으로 이동합니다.';
+							break;
+						case 'CE_TO_LOCK': // ID/PWD 불일치 횟수초과로 계정 잠김
+							msg = '5회 이상 로그인 실패하여 해당 아이디에 대한 계정이 잠금처리되었는 사용자입니다.\n관리자에게 문의하세요.';
+							break;
+						case 'SE_INTERNAL': // 최근 접속일시 업데이트 실패
+							msg = '데이터베이스와 통신에 실패하였는 사용자입니다.';
+							break;
+						case 'SS_NOT_PROJECT': // 참여 프로젝트 없음
+							msg = '참여되어 있는 프로젝트가 존재하지 않는 사용자입니다.';
+							break;
+						case 'SS_NOT_USE_CORP': // 사용정지된 고객사
+							msg = '사용정지 된 고객사의 사용자입니다.';
+							break;
+						case 'SS_NOT_EXIST_CORP': // 삭제된 고객사
+							msg = '삭제 된 고객사의 사용자입니다.';
+							break;
+						default:
+							msg = '잘못된 접근입니다.';
+					}
+          alert(msg);
+          window.open('','_self').close();  
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

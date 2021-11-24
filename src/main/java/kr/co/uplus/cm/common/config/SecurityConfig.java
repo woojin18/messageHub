@@ -32,6 +32,7 @@ import kr.co.uplus.cm.login.service.AuthService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public static final String LOGIN_FORM_URL = "/login/**";
 	public static final String LOGIN_API_URL = "/api/auth/login";
+	public static final String SSO_API_URL = "/api/auth/sso";
 	public static final String LOGIN_FAIL_URL = "/login?error=true";
 	public static final String LOGIN_SUCC_AC_URL = "/ac/home";
 	public static final String LOGIN_SUCC_UC_URL = "/uc/home";
@@ -98,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.authenticationEntryPoint(new MixedAuthenticationEntryPoint(LOGIN_FORM_URL, REST_API_URLS)).and()
 				.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // CORS preflight 요청은 인증처리를 하지 않도록 설정
 				.antMatchers(PUBLIC_API_URL, PUBLIC_PAGE_URL).permitAll()
-				.antMatchers("/", PUBLIC_API_URL, LOGIN_FORM_URL, LOGIN_API_URL, LOGOUT_URL, LIST_API_URL,
+				.antMatchers("/", PUBLIC_API_URL, LOGIN_FORM_URL, LOGIN_API_URL, SSO_API_URL, LOGOUT_URL, LIST_API_URL,
 						PROJECT_API_URL, MENUBAR_URL, MESSAGESTATUS_API_URL, INTEGRATEDTEMPLATE_API_URL,
 						INTEGRATEDSEND_API_URL, SMARTTEMPLATE_API_URL, SMARTSEND_API_URL, COMMON_API_URL,
 						USER_CONSOLE_URL, ADMIN_CONSOLE_URL, ADMIN_SIGN, ADMIN_SIGN_NICE_SUCCESS, ADMIN_SIGN_NICE_FAIL)

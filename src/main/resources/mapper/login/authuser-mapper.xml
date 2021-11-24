@@ -68,6 +68,15 @@
 		WHERE LOGIN_ID = #{userId}
 		LIMIT 1
 	</select>
+
+    <select id="qrySelectPwd" parameterType="string" resultType="string">
+        /* login.qrySelectPwd */
+        SELECT
+            USER.LOGIN_PWD
+        FROM cm_console.CM_USER USER
+        WHERE LOGIN_ID = #{userId}
+        LIMIT 1
+    </select>
 	
 	<select id="qrySelectSaltInfoByUserId" parameterType="string" resultType="camel">
 		/* login.qrySelectSaltInfoByUserId */
@@ -224,4 +233,29 @@
 		</otherwise>
 		</choose>
 	</select>
+
+    <insert id="insertConsoleProcLog">
+    /* login.insertConsoleProcLog */
+    INSERT INTO cm_console.CM_CONSOLE_PROC_LOG (
+           USER_ID
+         , BO_USER_ID
+         , CONN_URL
+         , MENUS_CD
+         , ACTIVITY_CD
+         , REG_ID
+         , REG_DT
+         , UPD_ID
+         , UPD_DT
+    ) VALUES (
+           #{userId}
+         , #{boUserId}
+         , #{connUrl}
+         , #{menusCd}
+         , #{activityCd}
+         , #{userId}
+         , NOW()
+         , #{userId}
+         , NOW()
+    )
+    </insert>
 </mapper>

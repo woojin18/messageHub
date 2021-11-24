@@ -19,6 +19,10 @@ const setLoginInterceptor = config => {
 	if (tokenSvc.getToken()) {
 		if (config.url !== '/api/auth/logout' && !config.url.includes('/api/public/')) {
 			config.headers.loginId = tokenSvc.getToken().principal.loginId;
+			config.headers.uUserId = tokenSvc.getToken().principal.userId;
+			if (tokenSvc.getToken().principal.boUserId != null) {
+				config.headers.boUserId = tokenSvc.getToken().principal.boUserId;
+		    }
 			config.headers.svcType = jQuery('#M_svcTypeCd').val();
 			config.headers.roleCd = jQuery('#M_roleCd').val();
 			config.headers.menuCd = jQuery('#M_menusCd').val();
