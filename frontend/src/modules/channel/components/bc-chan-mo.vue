@@ -78,6 +78,7 @@ import SelectLayer from '@/components/SelectLayer.vue';
 import PageLayer from '@/components/PageLayer.vue';
 
 import confirm from "@/modules/commonUtil/service/confirm"
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import layerPopup from "./bp-chan-mo.vue";
 
 export default {
@@ -95,8 +96,8 @@ export default {
 			pageInfo: {},
 			save_status : "",
 			row_data : {},
+			del_data : {},
 
-			
 			listSize : 10,  // select 박스 value (출력 갯수 이벤트)
 			pageNo : 1,  // 현재 페이징 위치
 			totCnt : 0,  //전체 리스트 수
@@ -154,6 +155,12 @@ export default {
 		},
 		// mo 삭제 처리(useYn 수정)
 		fnMod(row_data){
+			this.del_data = row_data;
+			eventBus.$on('callbackEventBus', this.fnModCallBack);
+     		confirm.fnConfirm( "", "삭제하시겠습니까?", "삭제");
+		},
+		fnModCallBack(){
+			var row_data = this.del_data;
 			var params = {
 				sts : "D",
 				apiKey : row_data.apiKey,
@@ -170,7 +177,9 @@ export default {
 					confirm.fnAlert("", result.message);
 				}
 			});
-		}
+			
+			this.del_data = {};
+		},
 	}
 }
 </script>
