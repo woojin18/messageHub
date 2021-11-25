@@ -119,8 +119,8 @@
 								<div class="phoneText1">
 									<div class="scroll-y">
 										<div v-if="sendData.callbackImgUrl != ''" :style="'background-image: url('+sendData.callbackImgUrl+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
-										<p class="mt15 font-size13"><span v-if="sendData.adYn=='yes' && sendData.senderType=='LMS'">(광고)</span>{{sendData.callbackTitle}}</p>
-										<p class="mt15"><span v-if="sendData.adYn=='yes' && sendData.senderType=='SMS'">(광고)</span><pre>{{sendData.callbackContents}}</pre></p>
+										<p class="mt15 font-size13">{{sendData.callbackTitle}}</p>
+										<p class="mt15"><pre>{{sendData.callbackContents}}</pre></p>
 										<p calss="mt15" v-if="sendData.freeReceiveNum != ''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 									</div>
 								</div>
@@ -244,6 +244,7 @@
 							<a v-if="formatCard==true" @click.prevent="fnOpenMsgPop" activity="READ" href="#self" class="btnStyle1 backLightGray mr10" data-toggle="modal" data-target="#message" title="메세지보관함">메세지보관함</a>
 							<a v-if="formatCard==true && carouSelType==false" @click.prevent="fnOpenRcsContentPop(0)" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" title="내용입력">내용입력</a>
 							<a v-if="formatCard==true && carouSelType==false && templateRadioBtn!='text'" @click.prevent="fnOpenRcsBtnPop(0)" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" data-toggle="modal" data-target="#Recipient" title="버튼입력">버튼입력</a>
+							<a v-if="sendData.senderType != 'UNUSED'" href="#self" @click.prevent="fnOpenSenderPop" activity="SAVE" class="btnStyle1 borderLightGray mr10" data-toggle="modal" title="대체발송 내용입력">대체발송 내용입력</a>
 							<div v-if="carouSelType==true" class="inline-block ml20">
 								<p class="inline-block mr10">카드개수</p>
 								<select v-model="carouselSelect" name="userConsole_sub020204_1" class="selectStyle2" @change="changeCarousel">
@@ -427,7 +428,7 @@
 			<RcsMsgPopup :templateRadioBtn.sync="templateRadioBtn" :carouselSmall.sync="carouselSmall" :carouselMedium.sync="carouselMedium" ref="rcsMsgPop" @fnTmpMsgSet="fnTmpMsgSet" ></RcsMsgPopup>
 			<RcsContentPopup :templateRadioBtn.sync="templateRadioBtn" :contentPopCnt.sync="contentPopCnt" :dataSet.sync="dataSet" :sendData.sync="sendData" ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
 			<RcsBtnPopup :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
-			<RcsSenderPopup :senderType.sync="sendData.senderType" :freeReceiveNum.sync="sendData.freeReceiveNum" :adYn.sync="sendData.adYn" :rcsTemplateSenderPopOpen.sync="rcsTemplateSenderPopOpen" ref="rcsSenderPop"></RcsSenderPopup>
+			<RcsSenderPopup :sendData.sync="sendData" :rcsTemplateSenderPopOpen.sync="rcsTemplateSenderPopOpen" ref="rcsSenderPop"></RcsSenderPopup>
 			<RcsSavePopup ref="rcsSavePop"></RcsSavePopup>
 			<ConfirmPopup :newval.sync="newval" :oldval.sync="oldval" ref="confirmPop"></ConfirmPopup>
 			<DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
@@ -600,18 +601,18 @@ export default {
 			vm.sendData.callbackArr = result.data;
 			if(vm.sendData.callbackArr.length > 0) {
 				vm.sendData.callback = result.data[0].callback;
-			} else {
+			} else { 
 				vm.sendData.callback = "";
 			}
 			
 		});
 	  },
 	  'sendData.senderType' (newval, oldval) {
-		var senderType = this.sendData.senderType;
-		if(newval != "UNUSED") {
-			this.rcsTemplateSenderPopOpen = !this.rcsTemplateSenderPopOpen;
-			this.dataSet = true;
-		}
+		// 대체발송 버튼 변경시 기존 내용 삭제
+		this.sendData.callbackTitle = "";
+		this.sendData.callbackContents = "";
+		this.sendData.callbackImgUrl = "";
+		this.sendData.callbackFileId = "";
 	  },
 	  recvCnt (newval, oldval) {
 		  if(newval>30000) {
@@ -843,8 +844,7 @@ export default {
 		jQuery("#recipient").modal("show");
 	},
 	
-	fnOpenRcsTemplateSenderPop() {
-		var senderType = this.sendData.senderType;
+	fnOpenSenderPop() {
 		this.rcsTemplateSenderPopOpen = !this.rcsTemplateSenderPopOpen;
 		this.dataSet = true;
 	},
