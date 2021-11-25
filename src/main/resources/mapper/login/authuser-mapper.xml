@@ -244,8 +244,6 @@
          , ACTIVITY_CD
          , REG_ID
          , REG_DT
-         , UPD_ID
-         , UPD_DT
     ) VALUES (
            #{userId}
          , #{boUserId}
