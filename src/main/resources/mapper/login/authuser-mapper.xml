@@ -254,8 +254,6 @@
          , #{activityCd}
          , #{userId}
          , NOW()
-         , #{userId}
-         , NOW()
     )
     </insert>
 </mapper>
