@@ -75,7 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/se2/**", "/assets/**");
+		web.ignoring().antMatchers("/se2/**", "/assets/**","/sso.html");
 	}
 
 	@Bean
