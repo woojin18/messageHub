@@ -16,25 +16,19 @@
                         <div  class="of_h mt10" style="height:450px; overflow:auto;">
                             <table class="table_skin1 bt-000" id="selCorpTbl">
                                 <colgroup>
-									<col style="width:16%">
-									<col style="width:28%">
-                                    <col style="width:28%">
-                                    <col style="width:28%">
+									<col style="width:30%">
+									<col style="width:70%">
 								</colgroup>
 								<thead>
 									<tr>
                                         <th class="text-center lc-1">사원명</th>
-                                        <th class="text-center lc-1">사업부/그룹</th>
-                                        <th class="text-center lc-1">담당</th>
-                                        <th class="text-center lc-1">팀/지점</th>
+                                        <th class="text-center lc-1">전화번호</th>
 									</tr>
 								</thead>
 								<tbody>
                                     <tr v-for="(row, idx) in data" :key="idx" @click="fnSelectSaleManInfo(row,idx)" :class="index == idx ? 'selected' : ''" @dblclick="fnSelRow(row)">
                                         <td>{{ row.codeName1 }}</td>
-                                        <td>{{ row.codeName2 }}</td>
-                                        <td>{{ row.codeName3 }}</td>
-                                        <td>{{ row.codeName4 }}</td>
+                                        <td>{{ row.codeVal4 }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -82,6 +76,7 @@ export default {
     watch : {
         popReset(){
             this.index = -1;
+            
             this.srcSalesManNm = this.salesMan;
             this.selRowData = {};
 
