@@ -98,6 +98,7 @@
 						<div class="phoneWrap" style="height:660px">
 							<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 							<div v-show="pushTab=='push'" class="phoneCardWrap">
+							<span v-if="sendData.adYn == 'yes'">[WEB발신](광고)</span>
 								<ul class="cardBxslider mt10">
 									<li v-for="n in carouselSelect" class="slide cardBox">
 										<img v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]==''" src="@/assets/images/common/cardThumImg.png" alt="프리 템플릿">
@@ -106,13 +107,14 @@
 										<div v-if="templateRadioBtn == 'carouselMedium' && sendData.carouselObj.imgUrl[n-1]!=''" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:123px;'" class="mt10 text-center simulatorImg"> </div>
 										<div class="relative">
 											<div class="scroll-y" style="min-height:150px">
-												<p class="color000 font-size13"><span v-if="sendData.adYn == 'yes'">(광고)</span>{{sendData.carouselObj.textTitle[n-1]}}</p>
+												<p class="color000 font-size13">{{sendData.carouselObj.textTitle[n-1]}}</p>
 												<p class="color3 mt5"><pre>{{sendData.carouselObj.textContents[n-1]}}</pre></p>
-												<p v-if="sendData.freeReceiveNum != ''" class="color3">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 											</div>
 										</div>
 									</li>
+									
 								</ul>
+								<p v-if="sendData.freeReceiveNum != ''" class="float-right color3" style="margin-top:-150px;">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 								<div id="slide-counter"><span class="current"></span> / <span class="total"></span></div>
 							</div>
 							<div v-show="pushTab!='push'" class="phoneCardWrap">
@@ -140,6 +142,7 @@
 					<div class="phoneWrap">
 						<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div  v-if="pushTab=='push'" class="phoneTextWrap">
+							<span v-if="sendData.adYn == 'yes'" class="pd10">[WEB발신](광고)</span>
 							<div v-if="templateRadioBtn =='des'" class="phoneText1">
 								<img :src="imgsrc" style="width:70px;">
 								<div class="scroll-y">
@@ -163,9 +166,9 @@
 							</div>
 							<div v-if="templateRadioBtn =='text' || templateRadioBtn == 'SS000000' || templateRadioBtn == 'SL000000'" class="phoneText1">
 								<div class="scroll-y">
-									<h5 v-if="sendData.textTitle!=''"><span v-if="sendData.adYn=='yes' && templateRadioBtn == 'SL000000'">(광고)</span>{{sendData.textTitle}}</h5>
-									<p class="mt15"><pre><span v-if="sendData.adYn=='yes' && templateRadioBtn == 'SS000000'">(광고)</span>{{sendData.textContents}}</pre></p>
-									<p class="mt15" v-if="sendData.freeReceiveNum!=''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
+									<h5 v-if="sendData.textTitle!=''">{{sendData.textTitle}}</h5>
+									<p class="mt15"><pre>{{sendData.textContents}}</pre></p>
+									
 								</div>
 								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
@@ -173,10 +176,10 @@
 								<img v-if="sendData.imgUrl == ''" :src="sendData.SMwThM00Img" alt="프리 템플릿">
 								<div v-if="sendData.imgUrl != ''" :style="'background-image: url('+sendData.imgUrl+');padding:65px;'" class="mt10 text-center simulatorImg"> </div>
 								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
-									<h5><span v-if="sendData.adYn=='yes'">(광고)</span>{{sendData.textTitle}}</h5>
+									<h5>{{sendData.textTitle}}</h5>
 									<div class="scroll-y3">
 										<p class="color6"><pre>{{sendData.textContents}}</pre></p>
-										<p class="mt15" v-if="sendData.freeReceiveNum!=''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
+										
 									</div>								
 								</div>
 								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
@@ -185,15 +188,16 @@
 								<img v-if="sendData.imgUrl == ''" :src="sendData.SMwThM00Img" alt="프리 템플릿">
 								<div v-if="sendData.imgUrl != ''" :style="'background-image: url('+sendData.imgUrl+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
 								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20">
-									<h5><span v-if="sendData.adYn=='yes'">(광고)</span>{{sendData.textTitle}}</h5>
+									<h5>{{sendData.textTitle}}</h5>
 									<div class="scroll-y6">
 										<p class="color6"><pre>{{sendData.textContents}}</pre></p>
-										<p class="mt15" v-if="sendData.freeReceiveNum!=''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
+										
 									</div>		
 									<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>						
 								</div>
 								
 							</div>
+							<p class="mt15 float-right color3" v-if="sendData.freeReceiveNum!=''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 						</div>
 						<div  v-if="pushTab!='push'" class="phoneTextWrap">
 							<div class="phoneText1">
