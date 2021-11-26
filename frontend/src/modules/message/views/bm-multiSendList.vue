@@ -212,7 +212,7 @@ export default {
       pageNo : 1,  // 현재 페이징 위치
       totCnt : 0,  //전체 리스트 수
       offset : 0, //페이지 시작점
-      searchDateInterval: 7,
+      searchDateInterval: 0,
       datas: [],
       msgKindCdAllSelected: true,
       msgChAllSelected: true,
