@@ -59,8 +59,8 @@
 
 			<h4 class="mt40">사업자정보</h4>
 			<div class="of_h">
-				<div class="float-left" style="width:20%"><h5>사업자번호*</h5></div>
-				<div class="float-left" style="width:80%">
+				<div class="float-left" style="width:18%"><h5>사업자번호*</h5></div>
+				<div class="float-left" style="width:82%">
 					<input type="text" class="inputStyle" placeholder="사업자번호 ( - 없이 입력 )" style="width:72%" v-model="regno" @keypress.enter="fnSelCorp">
 					<input type="hidden" v-model="selRegno" disabled>
 					<div class="float-right" style="width:25%">
@@ -71,15 +71,15 @@
 
 			<div class="joinBox mt10">
 				<div class="of_h mt10" v-if="selCorpCnt == 0">
-					<div class="float-left" style="width:20%"><h5>고객번호*</h5></div>
-					<div class="float-left" style="width:80%">
+					<div class="float-left" style="width:15%"><h5>고객번호*</h5></div>
+					<div class="float-left" style="width:85%">
 						<input type="text" class="inputStyle" placeholder="고객사 신규 등록의 경우 자동 생성됩니다."  v-model="custNo" disabled>
 					</div>
 				</div>
 
 				<div class="of_h mt10" v-if="selCorpCnt == 0">
-					<div class="float-left" style="width:20%"><h5>고객유형*</h5></div>
-					<div class="float-right" style="width:80%">
+					<div class="float-left" style="width:15%"><h5>고객유형*</h5></div>
+					<div class="float-right" style="width:85%">
 						<select class="selectStyle2" title="고객유형선택란" v-model="custKdCd" :disabled="selCorpCnt > 0" style="width:50%">
 							<option value="">선택하세요</option>
 							<option  v-for="(row, index) in custTypeArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
@@ -90,58 +90,58 @@
 
 
 				<div class="of_h mt10" v-if="selCorpCnt == 0">
-					<div class="float-left" style="width:20%"><h5>생년월일/<br>법인번호</h5></div>
-					<div class="float-left" style="width:80%">
+					<div class="float-left" style="width:15%"><h5>생년월일/<br>법인번호</h5></div>
+					<div class="float-left" style="width:85%">
 						<input type="text" class="inputStyle" placeholder="개인사업자의 생년월일(YYYYMMDD) 또는 법인번호"  v-model="custrnmNo" :disabled="selCorpCnt > 0">
 					</div>
 				</div>
 				<div class="of_h mt10">
-					<div class="float-left" style="width:20%"><h5>사업자명*</h5></div>
-					<div class="float-left" style="width:80%">
+					<div class="float-left" style="width:15%"><h5>사업자명*</h5></div>
+					<div class="float-left" style="width:85%">
 						<input type="text" class="inputStyle" placeholder="사업자명"  v-model="corpNm" :disabled="selCorpCnt > 0">
 					</div>
 				</div>
 
 				<div class="of_h mt10">
-					<div class="float-left" style="width:20%"><h5> 대표자명*</h5></div>
-					<div class="float-left" style="width:80%">
+					<div class="float-left" style="width:15%"><h5> 대표자명*</h5></div>
+					<div class="float-left" style="width:85%">
 						<input type="text" class="inputStyle" placeholder="대표자명"  v-model="rtnCustNm" :disabled="selCorpCnt > 0">
 						<input type="hidden" class="inputStyle" placeholder="대표자명"  v-model="ceoNm">
 					</div>
 				</div>
 				<div class="of_h mt10" v-if="selCorpCnt == 0">
-					<div class="float-left" style="width:20%"><h5>업태*</h5></div>
-					<div class="float-right" style="width:80%">
+					<div class="float-left" style="width:15%"><h5>업태*</h5></div>
+					<div class="float-right" style="width:85%">
 						<input type="text" class="inputStyle" placeholder="업태"  v-model="busiType" :disabled="selCorpCnt > 0">
 					</div>
 				</div>
 				<div class="of_h mt10" v-if="selCorpCnt == 0">
-					<div class="float-left" style="width:20%"><h5>종목*</h5></div>
-					<div class="float-right" style="width:80%">
+					<div class="float-left" style="width:15%"><h5>종목*</h5></div>
+					<div class="float-right" style="width:85%">
 						<input type="text" class="inputStyle" placeholder="종목"  v-model="busiClass" :disabled="selCorpCnt > 0">
 					</div>
 				</div>
 				<div class="of_h mt10">
-					<div class="float-left" style="width:20%"><h5>사업장주소*</h5></div>
-					<div class="float-left" style="width:80%">
+					<div class="float-left" style="width:15%"><h5>사업장주소*</h5></div>
+					<div class="float-left" style="width:85%">
 						<div class="float-left" style="width:72%"><input type="text" class="inputStyle" placeholder="우편번호" v-model="custAddrZip" disabled ></div>
 						<div class="float-right" style="width:25%"><a class="btnStyle1 backLightGray" style="min-width:auto; width:100%" @click="fnAddrPopup">주소 조회</a></div>					
 					</div>
-					<div class="float-right mt5" style="width:80%"><input type="text" class="inputStyle" placeholder="주소입력" v-model="woplaceAddress" disabled></div>
-					<div class="float-right mt5" style="width:80%"><input type="text" class="inputStyle" placeholder="상세주소 입력" v-model="woplaceAddressDetail"  :disabled="selCorpCnt > 0"></div>
+					<div class="float-right mt5" style="width:85%"><input type="text" class="inputStyle" placeholder="주소입력" v-model="woplaceAddress" disabled></div>
+					<div class="float-right mt5" style="width:85%"><input type="text" class="inputStyle" placeholder="상세주소 입력" v-model="woplaceAddressDetail"  :disabled="selCorpCnt > 0"></div>
 				</div>
 
 				<div class="of_h mt10" v-if="selCorpCnt == 0">
-					<div class="float-left" style="width:20%"><h5>유선전화번호*</h5></div>
-					<div class="float-left" style="width:80%">
+					<div class="float-left" style="width:15%"><h5>유선전화번호*</h5></div>
+					<div class="float-left" style="width:85%">
 						<input type="text" class="inputStyle" placeholder="전화번호 ( - 없이 입력 )" v-model="wireTel" :disabled="selCorpCnt > 0">
 					</div>
 				</div>
 
 				<div class="of_h mt10">
-					<div class="float-left" style="width:20%"><h5>첨부파일 *</h5></div>
-					<div class="float-left" style="width:80%">
-						<div class="float-left" style="width:67%">
+					<div class="float-left" style="width:15%"><h5>첨부파일 *</h5></div>
+					<div class="float-left" style="width:85%">
+						<div class="float-left" style="width:68%">
 							<input type="text" class="inputStyle" placeholder="사업자등록 사본 1부" v-model="attachFileNm" disabled>
 							<input type="file" id="attachCorpImg" @change="fnFileChange(0)" ref="attachFile" style="display:none;">
 						</div>
@@ -151,9 +151,9 @@
 					</div>
 				</div>
 				<div class="of_h mt10">
-					<div class="float-left" style="width:20%"><h5></h5></div>
-					<div class="float-left" style="width:80%">
-						<div class="float-left" style="width:67%">
+					<div class="float-left" style="width:15%"><h5></h5></div>
+					<div class="float-left" style="width:85%">
+						<div class="float-left" style="width:68%">
 							<input type="text" class="inputStyle" placeholder="통신사실 증명원(첨부된 사업자등록증과 같은 명의)" v-model="attachFileNm1" disabled>
 							<input type="file" id="attachCorpImg1" @change="fnFileChange(1)" ref="attachFile1" style="display:none;">
 						</div>
@@ -163,9 +163,9 @@
 					</div>
 				</div>
 				<div class="of_h mt10">
-					<div class="float-left" style="width:20%"><h5></h5></div>
-					<div class="float-left" style="width:80%">
-						<div class="float-left" style="width:67%">
+					<div class="float-left" style="width:15%"><h5></h5></div>
+					<div class="float-left" style="width:85%">
+						<div class="float-left" style="width:68%">
 							<input type="text" class="inputStyle" placeholder="대리인 재직증명서 or 신분증 1부" v-model="attachFileNm2" disabled>
 							<input type="file" id="attachCorpImg2" @change="fnFileChange(2)" ref="attachFile2" style="display:none;">
 						</div>
@@ -175,25 +175,25 @@
 					</div>
 				</div>
 				<div class="of_h mt10">
-					<div class="float-left" style="width:20%"><h5></h5></div>
-					<div class="float-left" style="width:80%">
-						<div class="float-left" style="width:67%">
+					<div class="float-left" style="width:15%"><h5></h5></div>
+					<div class="float-left" style="width:85%">
+						<div class="float-left" style="width:68%">
 							<input type="text" class="inputStyle" placeholder="대리인 위임장 1부" v-model="attachFileNm3" disabled>
 							<input type="file" id="attachCorpImg3" @change="fnFileChange(3)" ref="attachFile3" style="display:none;">
 						</div>
-						<div class="float-right" style="width:60%">
+						<div class="float-right" style="width:30%">
 							<button @click="fnAttachCorpImg(3)" class="btnStyle1 backLightGray" style="min-width:auto; width:100%">파일첨부</button>
 						</div>					
 					</div>
-					<div class="float-right color3 mt5" style="width:80%">
+					<div class="float-right color3 mt5" style="width:85%">
 						(가능 확장자 : jpg, jpeg, pdf, gif, png, tiff)
 					</div>
 				</div>
 				
 
 				<div class="of_h mt20">
-					<div class="float-left" style="width:20%"><h5>영업사원</h5></div>
-					<div class="float-right" style="width:80%">
+					<div class="float-left" style="width:15%"><h5>영업사원</h5></div>
+					<div class="float-right" style="width:85%">
 						<div class="float-left" style="width:72%">
 							<input type="text" class="inputStyle" title="영업사원" placeholder="영업사원명" v-model="salesMan" @keypress.enter="fnSalesManPopup" @change="salesManId=''">
 						</div>
@@ -203,7 +203,7 @@
 							<option  v-for="(row, index) in  " :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
 						</select> -->
 					</div>
-					<div class="float-right color3 mt5" style="width:80%">
+					<div class="float-right color3 mt5" style="width:85%">
 						영업사원 조회 버튼을 통해 영업사원 팝업 창에서 영업사원을 선택해주세요.
 					</div>
 				</div>
@@ -225,9 +225,9 @@
 			</div> -->
 			<div class="text-center mt70"><a href="#" class="btn btn-login" @click.prevent="signUp">가입완료</a></div>
 		</section>
-		<chkCorpPopup :popReset="popReset" :dataList="dataList" :selCorp.sync="selCorp"></chkCorpPopup>
-		<addrPopup :popReset="popReset"  :selAddr.sync="selAddr"></addrPopup>
-		<selSalesManPopup :popReset="popReset" :salesMan="salesMan" :selSalesMan.sync="selSalesMan"></selSalesManPopup>
+		<chkCorpPopup :popReset="popReset1" :dataList="dataList" :selCorp.sync="selCorp"></chkCorpPopup>
+		<addrPopup :popReset="popReset2"  :selAddr.sync="selAddr"></addrPopup>
+		<selSalesManPopup :popReset="popReset3" :salesMan="salesMan" :selSalesMan.sync="selSalesMan"></selSalesManPopup>
 		<!-- 본인인증 서비스 팝업을 호출하기 위해서는 다음과 같은 form이 필요합니다. -->
 		<form name="form_chk" method="post">
 			<input type="hidden" name="m" value="checkplusService">						<!-- 필수 데이타로, 누락하시면 안됩니다. -->
@@ -291,7 +291,9 @@ export default {
 			selCorp : {},				// 선택한 고객사 정보
 			selAddr : {},				// 선택한 주소 정보
 
-			popReset : 0,				// 팝업 초기화할 num
+			popReset1 : 0,				// 팝업 초기화할 num
+			popReset2 : 0,				// 팝업 초기화할 num
+			popReset3 : 0,				// 팝업 초기화할 num
 			custNo : '',				// 고객번호
 			custrnmNo : '',				// 고객식별번호
 			selRegno : '',				// 사업자 등록 번호(input hidden)
@@ -610,7 +612,7 @@ export default {
 				if(result.success){
 					var cnt = result.data.length;
 					if(cnt > 0){
-						vm.popReset += 1;
+						vm.popReset1 += 1;
 						vm.selCorpCnt = cnt;
 						vm.selCorp = {};
 						vm.dataList = result.data;
@@ -678,7 +680,7 @@ export default {
 				confirm.fnAlert("", "고객사를 신규로 입력하실 경우에만 사용 가능합니다.");
 				return false;
 			};
-			this.popReset += 1;
+			this.popReset2 += 1;
 			jQuery("#addrPopup").modal("show");
 		},
 		// 선택한 주소 set
@@ -745,7 +747,7 @@ export default {
                 return false;
             }
 
-			this.popReset += 1;
+			this.popReset3 += 1;
 			jQuery("#saleManPopup").modal("show");
 		},
 		fnSetSalesMan(){

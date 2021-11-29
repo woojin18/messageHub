@@ -373,5 +373,55 @@ public class SignUpService {
 		}
 		return rtn;
 	}
+
+	public RestResult<Object> selectSalesManList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CODE, params);
+		
+		// 영업사원 핸드폰 번호 마스킹 처리
+		if("SALES_MAN".equals(params.get("codeTypeCd"))) {
+			for(Object rtnObj : rtnList) {
+				Map<String, Object> rtnMap = (Map<String, Object>) rtnObj;
+				String maskPNum = "";
+				String pNum = CommonUtils.getString(rtnMap.get("codeVal4"));
+				if(pNum.contains("-")) {
+					// 010-0000-0000
+					String maskMid = "";
+					String maskLast = "";
+					String[] pNumArr = pNum.split("-");
+					for(int i = 0; i < pNumArr[1].length(); i++) {
+						maskMid += "*";
+					}
+					maskLast += "**"+pNumArr[2].substring(pNumArr[2].length()-2, pNumArr[2].length());
+					maskPNum = pNumArr[0]+"-"+maskMid+"-"+maskLast;
+					
+					rtnMap.put("codeVal4", maskPNum);
+				} else {
+					// 01000000000
+					String firstPNum = "";
+					String midPNum = "";
+					String lastPNum = "";
+					
+					firstPNum = pNum.substring(0, 3);
+					midPNum = pNum.substring(3, pNum.length()-4);
+					lastPNum = pNum.substring(pNum.length()-4, pNum.length());
+					
+					String maskMid = "";
+					String maskLast = "";
+					for(int i = 0; i < midPNum.length(); i++) {
+						maskMid += "*";
+					}
+					maskLast += "**"+lastPNum.substring(lastPNum.length()-2, lastPNum.length());
+					maskPNum = firstPNum +"-"+ maskMid +"-"+ maskLast;
+					
+					rtnMap.put("codeVal4", maskPNum);
+				}
+			}
+		}
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
 	
 }

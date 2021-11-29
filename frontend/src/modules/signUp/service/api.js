@@ -61,6 +61,10 @@ const certifyMailByAuthKey = (params) => {
     return httpClient.post("/api/public/signUp/certifyMailByAuthKey", params, { headers: {"show-layer": "Yes"}});
 }
 
+const selectSalesManList = (params) => {
+    return httpClient.post("/api/public/signUp/selectSalesManList", params, { headers: {"show-layer": "Yes"}});
+}
+
 export default {
     signUpRedirect,
     domainChk,
@@ -76,5 +80,6 @@ export default {
     selectSelCorpCustInfo,
     getNiceCheckInfo,
     selectCustAddr,
-    certifyMailByAuthKey
+    certifyMailByAuthKey,
+    selectSalesManList
 };

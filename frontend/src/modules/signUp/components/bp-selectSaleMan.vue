@@ -47,8 +47,8 @@
 </template>
 <script>
 import confirm from "@/modules/commonUtil/service/confirm.js";
+import signUpApi from "@/modules/signUp/service/api";
 
-import customereApi from "@/modules/customer/service/customerApi.js";
 export default {
     name : 'selSalesManPopup',
     props : {
@@ -88,12 +88,16 @@ export default {
             jQuery("#saleManPopup").modal("hide");
         },
         fnGetSalesMan(){
+            if(this.$gfnCommonUtils.isEmpty(this.srcSalesManNm)){
+                confirm.fnAlert("","영업사원의 이름을 입력해주세요.");
+                return false;
+            }
 			var params = {
 				codeTypeCd	: "SALES_MAN",
 				useYN		: "Y",
 				srcSalesManNm : this.srcSalesManNm
 			};
-			customereApi.selectCodeList(params).then(response =>{
+			signUpApi.selectSalesManList(params).then(response =>{
 				var result = response.data;
 				if(result.success){
 					if(result.data.length > 0){
