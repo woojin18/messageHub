@@ -98,6 +98,7 @@
 						<div class="phoneWrap" style="height:660px">
 							<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 							<div v-show="pushTab=='push'" class="phoneCardWrap">
+							<span v-if="sendData.adYn == 'yes'">[WEB발신](광고)</span>
 								<ul class="cardBxslider mt10">
 									<li v-for="n in carouselSelect" class="slide cardBox">
 										<img v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]==''" src="@/assets/images/common/cardThumImg.png" alt="프리 템플릿">
@@ -106,21 +107,22 @@
 										<div v-if="templateRadioBtn == 'carouselMedium' && sendData.carouselObj.imgUrl[n-1]!=''" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:123px;'" class="mt10 text-center simulatorImg"> </div>
 										<div class="relative">
 											<div class="scroll-y" style="min-height:150px">
-												<p class="color000 font-size13"><span v-if="sendData.adYn == 'yes'">(광고)</span>{{sendData.carouselObj.textTitle[n-1]}}</p>
+												<p class="color000 font-size13">{{sendData.carouselObj.textTitle[n-1]}}</p>
 												<p class="color3 mt5"><pre>{{sendData.carouselObj.textContents[n-1]}}</pre></p>
-												<p v-if="sendData.freeReceiveNum != ''" class="color3">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 											</div>
 										</div>
 									</li>
+									
 								</ul>
+								<p v-if="sendData.freeReceiveNum != ''" class="float-right color3" style="margin-top:-150px;">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 								<div id="slide-counter"><span class="current"></span> / <span class="total"></span></div>
 							</div>
 							<div v-show="pushTab!='push'" class="phoneCardWrap">
 								<div class="phoneText1">
 									<div class="scroll-y">
 										<div v-if="sendData.callbackImgUrl != ''" :style="'background-image: url('+sendData.callbackImgUrl+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
-										<p class="mt15 font-size13"><span v-if="sendData.adYn=='yes' && sendData.senderType=='LMS'">(광고)</span>{{sendData.callbackTitle}}</p>
-										<p class="mt15"><span v-if="sendData.adYn=='yes' && sendData.senderType=='SMS'">(광고)</span><pre>{{sendData.callbackContents}}</pre></p>
+										<p class="mt15 font-size13">{{sendData.callbackTitle}}</p>
+										<p class="mt15"><pre>{{sendData.callbackContents}}</pre></p>
 										<p calss="mt15" v-if="sendData.freeReceiveNum != ''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 									</div>
 								</div>
@@ -140,6 +142,7 @@
 					<div class="phoneWrap">
 						<img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
 						<div  v-if="pushTab=='push'" class="phoneTextWrap">
+							<span v-if="sendData.adYn == 'yes'" class="pd10">[WEB발신](광고)</span>
 							<div v-if="templateRadioBtn =='des'" class="phoneText1">
 								<img :src="imgsrc" style="width:70px;">
 								<div class="scroll-y">
@@ -163,9 +166,9 @@
 							</div>
 							<div v-if="templateRadioBtn =='text' || templateRadioBtn == 'SS000000' || templateRadioBtn == 'SL000000'" class="phoneText1">
 								<div class="scroll-y">
-									<h5 v-if="sendData.textTitle!=''"><span v-if="sendData.adYn=='yes' && templateRadioBtn == 'SL000000'">(광고)</span>{{sendData.textTitle}}</h5>
-									<p class="mt15"><pre><span v-if="sendData.adYn=='yes' && templateRadioBtn == 'SS000000'">(광고)</span>{{sendData.textContents}}</pre></p>
-									<p class="mt15" v-if="sendData.freeReceiveNum!=''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
+									<h5 v-if="sendData.textTitle!=''">{{sendData.textTitle}}</h5>
+									<p class="mt15"><pre>{{sendData.textContents}}</pre></p>
+									
 								</div>
 								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
@@ -173,10 +176,10 @@
 								<img v-if="sendData.imgUrl == ''" :src="sendData.SMwThM00Img" alt="프리 템플릿">
 								<div v-if="sendData.imgUrl != ''" :style="'background-image: url('+sendData.imgUrl+');padding:65px;'" class="mt10 text-center simulatorImg"> </div>
 								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
-									<h5><span v-if="sendData.adYn=='yes'">(광고)</span>{{sendData.textTitle}}</h5>
+									<h5>{{sendData.textTitle}}</h5>
 									<div class="scroll-y3">
 										<p class="color6"><pre>{{sendData.textContents}}</pre></p>
-										<p class="mt15" v-if="sendData.freeReceiveNum!=''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
+										
 									</div>								
 								</div>
 								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
@@ -185,15 +188,16 @@
 								<img v-if="sendData.imgUrl == ''" :src="sendData.SMwThM00Img" alt="프리 템플릿">
 								<div v-if="sendData.imgUrl != ''" :style="'background-image: url('+sendData.imgUrl+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
 								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20">
-									<h5><span v-if="sendData.adYn=='yes'">(광고)</span>{{sendData.textTitle}}</h5>
+									<h5>{{sendData.textTitle}}</h5>
 									<div class="scroll-y6">
 										<p class="color6"><pre>{{sendData.textContents}}</pre></p>
-										<p class="mt15" v-if="sendData.freeReceiveNum!=''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
+										
 									</div>		
 									<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>						
 								</div>
 								
 							</div>
+							<p class="mt15 float-right color3" v-if="sendData.freeReceiveNum!=''">무료수신거부 : {{sendData.freeReceiveNum}}</p>
 						</div>
 						<div  v-if="pushTab!='push'" class="phoneTextWrap">
 							<div class="phoneText1">
@@ -244,6 +248,7 @@
 							<a v-if="formatCard==true" @click.prevent="fnOpenMsgPop" activity="READ" href="#self" class="btnStyle1 backLightGray mr10" data-toggle="modal" data-target="#message" title="메세지보관함">메세지보관함</a>
 							<a v-if="formatCard==true && carouSelType==false" @click.prevent="fnOpenRcsContentPop(0)" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" title="내용입력">내용입력</a>
 							<a v-if="formatCard==true && carouSelType==false && templateRadioBtn!='text'" @click.prevent="fnOpenRcsBtnPop(0)" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" data-toggle="modal" data-target="#Recipient" title="버튼입력">버튼입력</a>
+							<a v-if="sendData.senderType != 'UNUSED'" href="#self" @click.prevent="fnOpenSenderPop" activity="SAVE" class="btnStyle1 borderLightGray mr10" data-toggle="modal" title="대체발송 내용입력">대체발송 내용입력</a>
 							<div v-if="carouSelType==true" class="inline-block ml20">
 								<p class="inline-block mr10">카드개수</p>
 								<select v-model="carouselSelect" name="userConsole_sub020204_1" class="selectStyle2" @change="changeCarousel">
@@ -427,7 +432,7 @@
 			<RcsMsgPopup :templateRadioBtn.sync="templateRadioBtn" :carouselSmall.sync="carouselSmall" :carouselMedium.sync="carouselMedium" ref="rcsMsgPop" @fnTmpMsgSet="fnTmpMsgSet" ></RcsMsgPopup>
 			<RcsContentPopup :templateRadioBtn.sync="templateRadioBtn" :contentPopCnt.sync="contentPopCnt" :dataSet.sync="dataSet" :sendData.sync="sendData" ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
 			<RcsBtnPopup :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
-			<RcsSenderPopup :senderType.sync="sendData.senderType" :freeReceiveNum.sync="sendData.freeReceiveNum" :adYn.sync="sendData.adYn" :rcsTemplateSenderPopOpen.sync="rcsTemplateSenderPopOpen" ref="rcsSenderPop"></RcsSenderPopup>
+			<RcsSenderPopup :sendData.sync="sendData" :rcsTemplateSenderPopOpen.sync="rcsTemplateSenderPopOpen" ref="rcsSenderPop"></RcsSenderPopup>
 			<RcsSavePopup ref="rcsSavePop"></RcsSavePopup>
 			<ConfirmPopup :newval.sync="newval" :oldval.sync="oldval" ref="confirmPop"></ConfirmPopup>
 			<DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
@@ -600,18 +605,18 @@ export default {
 			vm.sendData.callbackArr = result.data;
 			if(vm.sendData.callbackArr.length > 0) {
 				vm.sendData.callback = result.data[0].callback;
-			} else {
+			} else { 
 				vm.sendData.callback = "";
 			}
 			
 		});
 	  },
 	  'sendData.senderType' (newval, oldval) {
-		var senderType = this.sendData.senderType;
-		if(newval != "UNUSED") {
-			this.rcsTemplateSenderPopOpen = !this.rcsTemplateSenderPopOpen;
-			this.dataSet = true;
-		}
+		// 대체발송 버튼 변경시 기존 내용 삭제
+		this.sendData.callbackTitle = "";
+		this.sendData.callbackContents = "";
+		this.sendData.callbackImgUrl = "";
+		this.sendData.callbackFileId = "";
 	  },
 	  recvCnt (newval, oldval) {
 		  if(newval>30000) {
@@ -843,8 +848,7 @@ export default {
 		jQuery("#recipient").modal("show");
 	},
 	
-	fnOpenRcsTemplateSenderPop() {
-		var senderType = this.sendData.senderType;
+	fnOpenSenderPop() {
 		this.rcsTemplateSenderPopOpen = !this.rcsTemplateSenderPopOpen;
 		this.dataSet = true;
 	},

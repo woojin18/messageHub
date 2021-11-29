@@ -5,7 +5,7 @@
 			<div class="modal-content">
 				<div class="modal-body">								
 					
-					<div v-if="senderType=='LMS' || senderType=='MMS'"class="of_h">
+					<div v-if="sendData.senderType=='LMS' || sendData.senderType=='MMS'"class="of_h">
 						<div class="float-left" style="width:25%"><h5>제목</h5></div>
 						<div class="float-right" style="width:75%">
 							<input v-model="senderPopData.senderTitle" type="text" class="inputStyle" placeholder="LMS 문자로 대체발송 될 제목입력" title="제목 입력란">
@@ -20,12 +20,12 @@
               </span>
             </div>
 						<div class="float-right" style="width:75%">
-							<textarea @input="fnInit" v-model="senderPopData.senderContents" class="textareaStyle height120" :placeholder="preText" >{{senderType}}</textarea>
+							<textarea @input="fnSetCheckTextCnt" v-model="senderPopData.senderContents" class="textareaStyle height120" :placeholder="preText" ></textarea>
               <strong class="letter">({{msgCurrByte}} / {{msgLimitByte}})</strong>
 						</div>
 					</div>
 
-          <div v-if="senderType=='MMS'"class="of_h">
+          <div v-if="sendData.senderType=='MMS'"class="of_h">
 						<div class="float-left" style="width:25%"><h5>이미지</h5></div>
             <div class="of_h float-right" style="width:75%">
               <a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray" title="메시지 내용 이미지선택">이미지선택</a>
@@ -57,20 +57,9 @@ export default {
       ImageManagePopUp
   },
   props : {
-        senderType: {
-            type: String,
-            require: true,
-            default: "",
-        },
-        freeReceiveNum: {
-          type: String,
-          require: true,
-          default: "",
-        },
-        adYn: {
-          type: String,
-          require: true,
-          default: "",
+        sendData: {
+            type: Object,
+            require: true
         },
         rcsTemplateSenderPopOpen: {
           type: Boolean,
@@ -82,6 +71,7 @@ export default {
     rcsTemplateSenderPopOpen(val){
       if(val){
         this.fnInit();
+        //this.fnSetCheckTextCnt();
       }
     }
   },
@@ -104,9 +94,11 @@ export default {
   methods: {
     // 초기세팅
     fnInit() {
-      var senderType = this.senderType;
-      var adYn = this.adYn;
-      var freeReceiveNum = this.freeReceiveNum;
+      var senderType = this.sendData.senderType;
+      var adYn = this.sendData.adYn;
+      var freeReceiveNum = this.sendData.freeReceiveNum;
+
+      // 최대 글자수 세팅
       if(senderType == "SMS") {
         this.msgLimitByte = 90;
       } else if(senderType == "LMS") {
@@ -114,19 +106,69 @@ export default {
       } else if(senderType == "MMS") {
         this.msgLimitByte = 2000;
       }
+      
+      // 데이터 세팅
+      if(adYn == "no") {
+        this.senderPopData.senderTitle = this.sendData.callbackTitle;
+      } else {
+        if(this.sendData.callbackTitle == "" || this.sendData.callbackTitle == null) {
+          if(this.sendData.callbackContents == "" || this.sendData.callbackConents == null) {
+            this.senderPopData.senderTitle = "(광고)";
+          } else {
+            this.senderPopData.senderTitle = "";
+          }
+        } else {
+          this.senderPopData.senderTitle = this.sendData.callbackTitle;
+        }
+      }
+      if(senderType == "SMS") {
+        if(this.sendData.callbackContents == "" || this.sendData.callbackTitle == null) {
+          this.senderPopData.senderContents = this.sendData.callbackContents;
+        } else {
+          if("광고".indexOf(this.sendData.callbackContents) != -1) {
+            this.senderPopData.senderContents = this.sendData.callbackContents;
+          } else {
+            this.senderPopData.senderContents = this.sendData.callbackContents.replace("(광고)", "");
+          }
+        }
+      } else {
+        this.senderPopData.senderContents = this.sendData.callbackContents;
+      }
+      
+      this.senderPopData.senderImgUrl = this.sendData.callbackImgUrl;
+      this.senderPopData.senderFileId = this.sendData.callbackFileId;
 
+      // 현재 글자수 세팅
       if(adYn == "no") {
         if(freeReceiveNum == "") {
           this.msgCurrByte = this.getByte(this.senderPopData.senderContents);
         } else {
-          this.msgCurrByte = this.getByte("무료수신거부:" + freeReceiveNum + this.senderPopData.senderContents);
+          this.msgCurrByte = this.getByte("무료수신거부 : " + freeReceiveNum + this.senderPopData.senderContents);
         }
       } else {
         if(senderType == "SMS") {
-          this.msgCurrByte = this.getByte("(광고)" + "무료수신거부:" + freeReceiveNum + this.senderPopData.senderContents);
+          this.msgCurrByte = this.getByte("(광고)" + "무료수신거부 : " + freeReceiveNum + this.senderPopData.senderContents);
         } else {
-          this.senderPopData.senderTitle = "(광고)";
-          this.msgCurrByte = this.getByte("무료수신거부:" + freeReceiveNum + this.senderPopData.senderContents);
+          this.msgCurrByte = this.getByte("무료수신거부 : " + freeReceiveNum + this.senderPopData.senderContents);
+        }
+      }
+    },
+    fnSetCheckTextCnt() {
+      var senderType = this.sendData.senderType;
+      var freeReceiveNum = this.sendData.freeReceiveNum;
+      var adYn = this.sendData.adYn;
+      // 현재 글자수 세팅
+      if(adYn == "no") {
+        if(freeReceiveNum == "") {
+          this.msgCurrByte = this.getByte(this.senderPopData.senderContents);
+        } else {
+          this.msgCurrByte = this.getByte("무료수신거부 : " + freeReceiveNum + this.senderPopData.senderContents);
+        }
+      } else {
+        if(senderType == "SMS") {
+          this.msgCurrByte = this.getByte("(광고)" + "무료수신거부 : " + freeReceiveNum + this.senderPopData.senderContents);
+        } else {
+          this.msgCurrByte = this.getByte("무료수신거부 : " + freeReceiveNum + this.senderPopData.senderContents);
         }
       }
     },
@@ -136,6 +178,25 @@ export default {
         const alertMsg = '내용이 '+this.msgLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+this.msgCurrByte+'byte)';
         confirm.fnAlert("RCS 템플릿", alertMsg);
         return false;
+      }
+
+      var senderType = this.sendData.senderType;
+      var adYn = this.sendData.adYn;
+      if(senderType == "SMS") {
+        if(this.senderPopData.senderContents == "") {
+          confirm.fnAlert("RCS 템플릿", "내용을 입력해 주세요.");
+          return false;
+        }
+      } else { 
+        if(this.senderPopData.senderTitle == "") {
+          confirm.fnAlert("RCS 템플릿", "제목을 입력해 주세요.");
+          return false;
+        }
+        if(this.senderPopData.senderContents == "") {
+          confirm.fnAlert("RCS 템플릿", "내용을 입력해 주세요.");
+          return false;
+        }
+
       }
 
       this.$parent.fnSenderTypeSet(this.senderPopData);

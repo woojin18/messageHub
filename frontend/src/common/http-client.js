@@ -96,7 +96,6 @@ httpClient.interceptors.response.use(
 		return response;
 	},
 	error => {
-    console.log(error);
 		if (error.response != undefined && error.response != null) loadingLayer(false, error.response.config);
 		else loadingLayer(false, error.config);
 

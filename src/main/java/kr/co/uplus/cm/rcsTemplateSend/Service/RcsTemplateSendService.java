@@ -1430,9 +1430,6 @@ public class RcsTemplateSendService {
 				Map<String, Object> resultMap = new HashMap<String, Object>();
 				Map<String, Object> mergeMap = (Map<String, Object>) dataMap.get("mergeData");
 				String callbackContents = CommonUtils.getString(data.get("callbackContents"));
-				if("yes".equals(adYn)) {
-					callbackContents = "(광고)"+callbackContents;
-				}
 				if(!"".equals(freeReceiveNum)) {
 					callbackContents = callbackContents + "무료수신거부 : " + freeReceiveNum;
 				}
@@ -1454,9 +1451,6 @@ public class RcsTemplateSendService {
 				Map<String, Object> mergeMap = (Map<String, Object>) dataMap.get("mergeData");
 				String callbackTitle = CommonUtils.getString(data.get("callbackTitle"));
 				String callbackContents = CommonUtils.getString(data.get("callbackContents"));
-				if("yes".equals(adYn)) {
-					callbackTitle = "(광고)"+callbackTitle;
-				}
 				if(!"".equals(freeReceiveNum)) {
 					callbackContents = callbackContents + "무료수신거부 : " + freeReceiveNum;
 				}
@@ -1479,9 +1473,6 @@ public class RcsTemplateSendService {
 				String callbackTitle = CommonUtils.getString(data.get("callbackTitle"));
 				String callbackContents = CommonUtils.getString(data.get("callbackContents"));
 				String fileId = CommonUtils.getString(data.get("callbackFileId"));
-				if("yes".equals(adYn)) {
-					callbackTitle = "(광고)"+callbackTitle;
-				}
 				if(!"".equals(freeReceiveNum)) {
 					callbackContents = callbackContents + "무료수신거부 : " + freeReceiveNum;
 				}

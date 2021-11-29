@@ -547,5 +547,22 @@ public class SignUpController implements Serializable{
 		}
 		return rtn;
 	}
+
+	/** 
+	 * 영업사원 리스트 조회
+	 */
+	@PostMapping("/selectSalesManList")
+	public RestResult<?> selectSalesManList(
+			@RequestBody Map<String, Object> params){
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		try {
+			rtn = (RestResult<Object>) signUpSvc.selectSalesManList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
+		return rtn;
+	}
 }
  
