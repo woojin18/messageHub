@@ -1,6 +1,6 @@
 <template>
   <div>
-    <regPopup :save_status="save_status" :row_data="row_data" :projectId="projectId" />
+    <regPopup :save_status="save_status" :row_data="row_data" :projectId="projectId"  />
     <grpMngPopup :projectId="projectId" />
     <grpAddPopup :row_data="row_data" :projectId="projectId" />
 		<article>
@@ -12,13 +12,12 @@
 						<p class="color3"><i class="far fa-info-circle"></i> 카카오톡 비즈메시지를 발송하려면 카카오톡 채널을 먼저 등록해야 합니다.<br>
 							<i class="far fa-info-circle"></i> 카카오톡 채널은 카카오톡 비즈니스 ID로, 카카오톡 홈페이지(https://center-pf.kakao.com)에서 무료로 만들 수 있습니다.<br>
 							<i class="far fa-info-circle"></i> 담당자는 등록한 카카오톡 채널과 서류를 확인하고 본인 여부 등의 심사를 진행합니다.<br>
-							<i class="far fa-info-circle"></i> 카카오톡 채널 등록 시, 관리자 연락처로 받은 인증 토큰 6자리를 입력하셔야 등록할 수 있습니다.<br>
-							<i class="far fa-info-circle"></i> 카카오톡 채널 상태에 대한 자세한 설명은 플러스친구 개요 문서를 참고하시기 바랍니다.
+							<i class="far fa-info-circle"></i> 카카오톡 채널 추가시, 관리자 연락처로 받은 인증 토큰 6자리를 입력하셔야 등록할 수 있습니다.<br>
 						</p>
 
 						<div class="menuBox mt10">						
 							<div class="of_h">
-								<h4 class="inline-block" style="width:10%">발신 프로필</h4>
+								<h4 class="inline-block" style="width:10%">카카오채널</h4>
 								<input type="text" class="inputStyle" style="width:15%" v-model="srcKkoChId" @keypress.enter="fnSearch(1)">
 
 								<!-- <h4 class="inline-block vertical-middle ml100" style="width:11%">프로필 상태</h4>
@@ -34,8 +33,8 @@
 						<div class="consolMarginTop">
 							<div class="of_h inline">
 								<div class="float-right">
-									<a @click="fnReg" class="btnStyle2 borderGray" data-toggle="modal" data-target="#Register">발신 프로필 추가</a>
-									<a href="https://center-pf.kakao.com/" target="_blank" class="btnStyle2 borderGray ml10">카카오톡 채널 생성</a>
+									<a @click="fnReg" class="btnStyle2 borderGray" data-toggle="modal" data-target="#Register">카카오 채널 추가</a>
+									<a href="https://center-pf.kakao.com/" target="_blank" class="btnStyle2 borderGray ml10">카카오 채널 생성</a>
 								</div>
 							</div>
 							<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
@@ -46,7 +45,7 @@
 							<div class="col-xs-12 mt10">
 								<table id="list" class="table_skin1 bt-000 tbl-striped">
 									<thead>
-										<th class="text-center lc-1">발신프로필</th>
+										<th class="text-center lc-1">카카오채널</th>
 										<th class="text-center lc-1">발신키</th>
 										<th class="text-center lc-1">프로젝트 공용 여부</th>
 										<th class="text-center lc-1">휴면 여부</th>

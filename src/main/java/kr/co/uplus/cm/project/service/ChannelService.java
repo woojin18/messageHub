@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.uplus.cm.common.consts.DB;
+import kr.co.uplus.cm.common.dto.KakaoCategory;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.FileConfig;
@@ -28,7 +29,9 @@ import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 import kr.co.uplus.cm.xss.XssPreventer;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Service
 public class ChannelService {
 
@@ -1077,7 +1080,33 @@ public class ChannelService {
 		
 		// 성공인지 실패인지 체크
 		if( "10000".equals(result.get("code")) ) {
-			rtn.setData(result);
+			List<Map> list = (List) result.get("data");
+			Map<String, KakaoCategory> cate = new HashMap<String, KakaoCategory>();
+			KakaoCategory root = new KakaoCategory("root", "root");
+			cate.put("root", root);
+			for (Map data : list) {
+				String code = (String) data.get("code");
+				String name = (String) data.get("name");
+				String c1 = code.substring(0,3);
+				String c2 = code.substring(0,7);
+				String [] name2 = name.split(",");
+				KakaoCategory k1 = cate.get(c1);
+				if (k1 == null) {
+					k1 = new KakaoCategory(c1, name2[0]);
+					cate.put(c1, k1);
+					root.addChild(k1);
+				}
+				KakaoCategory k2 = cate.get(c2);
+				if (k2 == null) {
+					k2 = new KakaoCategory(c2, name2[1]);
+					cate.put(c2, k2);
+					k1.addChild(k2);
+				}
+				KakaoCategory k3 = new KakaoCategory(code, name2[2]);
+				cate.put(code, k3);
+				k2.addChild(k3);
+			}
+			rtn.setData(cate);
 		} else if ( "500100".equals(result.get("code")) ) {
 			String errMsg = CommonUtils.getString(result.get("message"));
 			throw new Exception(errMsg);
@@ -1175,8 +1204,9 @@ public class ChannelService {
 			
 			// 성공인지 실패인지 체크
 			if( "10000".equals(result.get("code")) ) {
-			} else if ( "500100".equals(result.get("code")) ) {
+			} else if ( "32002".equals(result.get("code")) ) {
 				String errMsg = CommonUtils.getString(result.get("message"));
+				params.put("errData", result);
 				throw new Exception(errMsg);
 			} else {
 				String errMsg = CommonUtils.getString(result.get("message"));

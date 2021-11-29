@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.uplus.cm.common.consts.Const;
+import kr.co.uplus.cm.common.consts.ResultCode;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.model.AuthUser;
 import kr.co.uplus.cm.common.service.CommonService;
@@ -452,8 +453,14 @@ public class ChannelController {
 		try {
 			channelService.saveKkoChForApi(params);
 		} catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage(e.getMessage());
+			if (params.get("errData") != null) {
+				rtn.setSuccess(true);
+				rtn.setCode(ResultCode.SS_LOCK);
+				rtn.setData(params.get("errData"));
+			} else {
+				rtn.setSuccess(false);
+				rtn.setMessage(e.getMessage());
+			}
 		}
 		return rtn;
 	}

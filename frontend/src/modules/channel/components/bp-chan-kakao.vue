@@ -35,18 +35,21 @@
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block float-left" style="width:25%">사업자 카테고리 *</h5>
 								<div class="float-right" style="width:72%">
-									<select class="selectStyle2" style="width:100%" v-model="categoryCode">
-										<option v-for="(option, i) in category" v-bind:value="option.code" v-bind:key="i">
+									<select class="selectStyle2" style="width:33%" @change="fnCate1Code" v-model="cate1Code">
+										<option v-for="(option, i) in cate1" v-bind:value="option.code" v-bind:key="i">
 											{{ option.name }}
 										</option>
 									</select>
-								</div>
-							</div>
-							<div class="of_h consolMarginTop">
-								<h5 class="inline-block float-left" style="width:25%">프로젝트 공용 여부 *</h5>
-								<div class="float-right" style="width:72%">
-									<input type="radio" v-model="otherProjectYn" name="otherProjectYn" value="Y" class="cBox" id="Y"> <label for="Y" class="payment mr30 font-size12">공용</label>
-									<input type="radio" v-model="otherProjectYn" name="otherProjectYn" value="N" class="cBox" id="N"> <label for="N" class="payment font-size12">전용</label>
+									<select class="selectStyle2" style="width:33%" @change="fnCate2Code" v-model="cate2Code">
+										<option v-for="(option, i) in cate2" v-bind:value="option.code" v-bind:key="i">
+											{{ option.name }}
+										</option>
+									</select>
+									<select class="selectStyle2" style="width:34%" v-model="categoryCode">
+										<option v-for="(option, i) in cate3" v-bind:value="option.code" v-bind:key="i">
+											{{ option.name }}
+										</option>
+									</select>
 								</div>
 							</div>
 						</div>
@@ -65,6 +68,7 @@
 <script>
 import api from '../service/api'
 import confirm from "@/modules/commonUtil/service/confirm"
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
   name: 'bpChanKakao',
@@ -77,8 +81,13 @@ export default {
 		apiKeyList : [],
 		apiKey : '',
 		category : [],
+		cate1 : [],
+		cate2 : [],
+		cate3 : [],
+		cate1Code : '',
+		cate2Code : '',
 		categoryCode : '',
-		otherProjectYn : 'Y'
+		otherProjectYn : 'N'
     }
   },
   props: {
@@ -101,6 +110,9 @@ export default {
 		this.kkoChId = newVal.kkoChId;
 		this.phoneNumber = newVal.phoneNumber;
 		this.token = newVal.token;
+		this.cate1Code = '';
+		this.cate2Code = '';
+		this.categoryCode = '';
 
 		this.fnGetApiKeyListForKko();
     }
@@ -135,8 +147,9 @@ export default {
 		api.getKkoCategory(params).then(response =>{
 			var result = response.data;
 			if( result.success ){
-				this.category = result.data.data;
-				this.categoryCode = result.data.data[0].code
+				this.category = result.data;
+				this.cate1 = this.category.root.childs;
+				//this.cate1Code = this.cate1[0].code;
 			} else {
 				confirm.fnAlert("", "카테고리 불러오기에 실패했습니다.");
 			}
@@ -159,6 +172,10 @@ export default {
 		});
 	},
 	fnSave(){
+		eventBus.$on('callbackEventBus', this.fnSaveObj);
+		confirm.fnConfirm("", "선택한 카테고리 정보가 최초 등록된 카테고리 정보와 다를 경우 자동 변경됩니다. 저장하시겠습니까?", "확인");
+	},
+	fnSaveObj() {
 		var params = {
 			"sts"			: this.save_status,
 			"apiKey"		: this.apiKey,
@@ -174,8 +191,20 @@ export default {
 			var result = response.data;
 
 			if( result.success ){
-				confirm.fnAlert("", "저장에 성공했습니다.");
-				this.tokenYn = 'N';
+				if (result.code = 'SS_LOCK') {
+					var categoryCode = result.data.data.categoryCode
+					//var categoryCode = '01300010001'
+					this.cate2 = this.category[categoryCode.substr(0,3)].childs;	
+					this.cate3 = this.category[categoryCode.substr(0,7)].childs;	
+					this.cate1Code = categoryCode.substr(0,3);
+					this.cate2Code = categoryCode.substr(0,7);
+					this.categoryCode = categoryCode;
+					confirm.fnAlert("", "기존에 등록된 카카오 채널의 카테고리 코드와 일치하지 않습니다.\n최초 등록한 카테고리로 자동세팅합니다.\n다시 한번 저장버튼을 클릭해 주십시오");
+					
+				} else {
+					confirm.fnAlert("", "저장에 성공했습니다.");
+					this.tokenYn = 'N';
+				}
 			} else {
 				confirm.fnAlert("", result.message);
 			}
@@ -218,6 +247,24 @@ export default {
 				confirm.fnAlert("", result.message);
 			}
 		});
+	},
+	fnCate1Code: function (event) {
+		this.cate2Code = '';
+		this.categoryCode = '';
+		this.cate2 = [];
+		this.cate3 = [];
+		if (event.target.value != null && event.target.value != '') {
+			this.cate2 = this.category[event.target.value].childs;
+			//this.cate2Code = this.cate2[0].code;
+		}
+	},
+	fnCate2Code: function (event) {
+		this.categoryCode = '';
+		this.cate3 = [];
+		if (event.target.value != null && event.target.value != '') {
+			this.cate3 = this.category[event.target.value].childs;
+			//this.categoryCode = this.cate3[0].code;
+		}
 	}
   }
 }
