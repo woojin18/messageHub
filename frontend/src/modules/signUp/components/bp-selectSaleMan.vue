@@ -98,6 +98,7 @@ export default {
 				srcSalesManNm : this.srcSalesManNm
 			};
 			signUpApi.selectSalesManList(params).then(response =>{
+                this.data = [];
 				var result = response.data;
 				if(result.success){
 					if(result.data.length > 0){
