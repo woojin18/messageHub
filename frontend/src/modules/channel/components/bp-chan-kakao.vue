@@ -35,17 +35,20 @@
 							<div class="of_h consolMarginTop">
 								<h5 class="inline-block float-left" style="width:25%">사업자 카테고리 *</h5>
 								<div class="float-right" style="width:72%">
-									<select class="selectStyle2" style="width:33%" @change="fnCate1Code" v-model="cate1Code">
+									<select class="selectStyle2" style="width:32%" @change="fnCate1Code" v-model="cate1Code">
+										<option value="">선택</option>
 										<option v-for="(option, i) in cate1" v-bind:value="option.code" v-bind:key="i">
 											{{ option.name }}
 										</option>
-									</select>
-									<select class="selectStyle2" style="width:33%" @change="fnCate2Code" v-model="cate2Code">
+									</select>&nbsp;
+									<select class="selectStyle2" style="width:32%" @change="fnCate2Code" v-model="cate2Code">
+										<option value="">선택</option>
 										<option v-for="(option, i) in cate2" v-bind:value="option.code" v-bind:key="i">
 											{{ option.name }}
 										</option>
-									</select>
-									<select class="selectStyle2" style="width:34%" v-model="categoryCode">
+									</select>&nbsp;
+									<select class="selectStyle2" style="width:33%" v-model="categoryCode">
+										<option value="">선택</option>
 										<option v-for="(option, i) in cate3" v-bind:value="option.code" v-bind:key="i">
 											{{ option.name }}
 										</option>
