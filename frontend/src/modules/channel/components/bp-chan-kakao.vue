@@ -11,8 +11,8 @@
 								<h5 class="inline-block float-left" style="width:25%">카카오 채널ID *</h5>
 								<input type="text" class="inputStyle float-right" style="width:72%" v-model="kkoChId" placeholder="카카오에 등록된 검색용아이디를 넣어주세요. 예) @servicename">
 							</div>
-							<div class="of_h consolMarginTop">
-								<h5 class="inline-block float-left" style="width:25%">관리자 연락처 *</h5>
+							<div class="clear consolMarginTop">
+								<h5 class="inline-block float-left" style="width:25%">관리자 연락처 * <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:320px">카카오 비즈니스 관리자 센터에서 입력한 카카오채널ID에<br>관리자로 등록되어 있는 사용자 연락처입니다.</span></i></h5>
 								<input type="text" class="inputStyle float-right" style="width:72%" v-model="phoneNumber">
 							</div>
 							<div class="of_h consolMarginTop" style="display:none">
@@ -25,8 +25,8 @@
 									</select>
 								</div>
 							</div>
-							<div class="of_h consolMarginTop">
-								<h5 class="inline-block float-left" style="width:25%">발신토큰 *</h5>
+							<div class="clear consolMarginTop">
+								<h5 class="inline-block float-left" style="width:25%">발신토큰 * <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:290px">관리자연락처 입력 후 토큰요청을 하시면<br>카카오톡으로 토큰정보를 수신받을 수 있습니다.<br>받은 토큰정보를 입력해 주십시오.</span></i></h5>
 								<div class="inline-block float-right" style="width:72%">
 									<input id="token" type="text" class="inputStyle float-left" style="width:70%" v-model="token">
 									<a @click="fnGetSenderKeyToken" class="btnStyle1 borderLightGray backWhite minWidthAuto float-right" style="width:27%">토큰요청</a>

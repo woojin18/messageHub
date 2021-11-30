@@ -265,6 +265,7 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .bb-ddd {border-bottom:1px solid #ddd}
 .box-shadow {box-shadow:0 2px 4px rgba(0,0,0,0.16)}
 .of_h {overflow:hidden}
+.clear:after{content:"";display:block;clear:both}
 .overflow-x-auto {overflow-x:auto}
 .white-space-nowrap {white-space:nowrap}
 .absolute {position:absolute}
