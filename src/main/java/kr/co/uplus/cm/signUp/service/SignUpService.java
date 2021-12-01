@@ -80,9 +80,11 @@ public class SignUpService {
 		uptaeNm = XssPreventer.unescape(uptaeNm);
 		paramMap.put("uptaeNm", uptaeNm);
 
+		if(CommonUtils.getString(paramMap.get("loginId")).length() > 100) {
+			throw new Exception("아이디는 100자 이상 등록하실 수 없습니다.");
+		}
 		// 아이디 중복 check
 		int cnt = generalDao.selectGernalCount(DB.QRY_SELECT_USER_DUPC_CNT, paramMap);
-		
 		if(cnt > 0) {
 			throw new Exception("이미 등록된 아이디입니다.");
 		}

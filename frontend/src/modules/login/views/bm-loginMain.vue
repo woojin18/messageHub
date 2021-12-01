@@ -5,7 +5,7 @@
 			<div class="userLogin-form">
 				<h2 class="text-center">U+ 메시지허브 로그인</h2>
 				<input type="email" class="form-control" id="inputEmail" placeholder="이메일 주소를 입력하세요"
-					name="userId" v-model="userId" :maxlength="30" v-focus @keyup.enter="ajaxlogin">
+					name="userId" v-model="userId" :maxlength="100" v-focus @keyup.enter="ajaxlogin">
 				<input type="password" class="form-control mt20" id="inputPassword" placeholder="비밀번호를 입력하세요"
 					name="loginPwd" v-model="loginPwd" :maxlength="30" @keyup.enter="ajaxlogin"> 
 				<!-- 에러메세지 출력 -->
