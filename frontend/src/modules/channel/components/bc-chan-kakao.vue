@@ -12,12 +12,12 @@
 						<p class="color3"><i class="far fa-info-circle"></i> 카카오톡 비즈메시지를 발송하려면 카카오톡 채널을 먼저 등록해야 합니다.<br>
 							<i class="far fa-info-circle"></i> 카카오톡 채널은 카카오톡 비즈니스 ID로, 카카오톡 홈페이지(https://center-pf.kakao.com)에서 무료로 만들 수 있습니다.<br>
 							<i class="far fa-info-circle"></i> 담당자는 등록한 카카오톡 채널과 서류를 확인하고 본인 여부 등의 심사를 진행합니다.<br>
-							<i class="far fa-info-circle"></i> 카카오톡 채널 추가시, 관리자 연락처로 받은 인증 토큰 6자리를 입력하셔야 등록할 수 있습니다.<br>
+							<i class="far fa-info-circle"></i> 카카오 채널 추가 시, 카카오 채널에 등록된 관리자 연락처로 받은 인증번호 6자리를 입력하셔야 등록할 수 있습니다.<br>
 						</p>
 
 						<div class="menuBox mt10">						
 							<div class="of_h">
-								<h4 class="inline-block" style="width:10%">카카오채널</h4>
+								<h4 class="inline-block" style="width:10%">채널 검색용 아이디</h4>
 								<input type="text" class="inputStyle" style="width:15%" v-model="srcKkoChId" @keypress.enter="fnSearch(1)">
 
 								<!-- <h4 class="inline-block vertical-middle ml100" style="width:11%">프로필 상태</h4>
@@ -45,7 +45,7 @@
 							<div class="col-xs-12 mt10">
 								<table id="list" class="table_skin1 bt-000 tbl-striped">
 									<thead>
-										<th class="text-center lc-1">카카오채널</th>
+										<th class="text-center lc-1">채널 검색용 아이디</th>
 										<th class="text-center lc-1">발신키</th>
 										<th class="text-center lc-1">프로젝트 공용 여부</th>
 										<th class="text-center lc-1">휴면 여부</th>
