@@ -11,22 +11,22 @@
               <div style="width:80%" class="float-right">
                 <input type="text" class="inputStyle float-left" v-model="apiKey" placeholder="자동 채번됩니다." disabled>
               </div> -->
-							<div class="of_h mt10">
-								<h5 class="inline-block" style="width:20%">MO 수신번호</h5>
+							<div class="consolMarginTop">
+								<h5 class="inline-block" style="width:20%">MO 수신번호 *</h5>
                 <div style="width:80%" class="float-right">
-                  <input type="text" class="inputStyle float-left" v-model="moNumber">
+                  <input type="text" class="inputStyle float-left" v-model.trim="moNumber">
                 </div>
 							</div>
-							<div class="of_h mt10">
-								<h5 class="inline-block" style="width:20%">MO 유형</h5>
+							<div class="consolMarginTop">
+								<h5 class="inline-block" style="width:20%">MO 유형 *</h5>
 								<div class="inline-block">
 									<input type="radio" id="SMS" value="SMSMO" class="cBox" v-model="moType"> <label for="SMS" class="payment mr30 font-size12">SMS MO</label>
 									<input type="radio" id="MMS" value="MMSMO" class="cBox" v-model="moType"> <label for="MMS" class="payment mr30 font-size12">MMS MO</label>		
 									<input type="radio" id="LMS" value="LMSMO" class="cBox" v-model="moType"> <label for="LMS" class="payment font-size12">LMS MO</label>		
 								</div>
 							</div>
-							<div class="of_h mt10">
-								<h5 class="inline-block" style="width:20%">웹훅 URL</h5>
+							<div class="consolMarginTop clear">
+								<h5 class="inline-block" style="width:20%">웹훅 URL <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:430px">웹훅 URL은 사용자가 메세지를 전송할 때 수신 받을 수 있는 서버의 URL입니다.<br>필수 입력사항은 아닙니다.</span></i></h5>
 								<div style="width:80%" class="float-right">
 									<div style="width:70%" class="float-left">
 										<input type="text" class="inputStyle float-left" v-model="webhookUrl" placeholder="[http:// 혹은 https://]를 포함한 URL" @change="fnChgConnStatus()">
@@ -115,6 +115,15 @@ export default {
     // 저장
     fnSave(sts){
       this.sts = sts;
+      
+      if(this.$gfnCommonUtils.isEmpty(this.moNumber)){
+        confirm.fnAlert("", "MO 수신번호는 필수 입력사항입니다.");
+        return false;
+      }
+      if(this.$gfnCommonUtils.isEmpty(this.moType)){
+        confirm.fnAlert("", "MO 유형은 필수 입력사항입니다.");
+        return false;
+      }
 
       if(!this.$gfnCommonUtils.isEmpty(this.webhookUrl) && this.isConnWebhookUrl == false){
         confirm.fnAlert("", "웹훅URL 사용하시려면 '연결 확인' 버튼을 통해 해당 URL이 사용가능한지 확인하셔야합니다.\n연결이 확인된 웹훅URL만 사용 가능합니다.");

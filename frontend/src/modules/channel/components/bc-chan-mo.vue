@@ -3,7 +3,10 @@
 		<layerPopup :save_status="save_status" :row_data="row_data" :projectId="projectId" />
 		<article>
 			<h4 class="mt40">MO 수신번호 현황</h4>
-			
+			<p class="color3">
+				<i class="far fa-info-circle"></i> MO 서비스는 휴대폰에서 PC나 서버로 메시지를 받을 수 있는 서비스입니다. <br>
+				<i class="far fa-info-circle"></i> MO 서비스를 도입하면 휴대폰 사용자가 특정 번호가 부여된 서버나 PC로 메시지를 보낼 수 있습니다. <br>
+			</p>
 			<div class="row mt20 mb10">
 				<div class="col-xs-12">		
 					<div class="of_h">
