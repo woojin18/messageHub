@@ -26,10 +26,10 @@
 								</div>
 							</div>
 							<div class="clear consolMarginTop">
-								<h5 class="inline-block float-left" style="width:25%">인증번호 * <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:290px">관리자연락처 입력 후 토큰요청을 하시면<br>카카오톡으로 토큰정보를 수신받을 수 있습니다.<br>받은 토큰정보를 입력해 주십시오.</span></i></h5>
+								<h5 class="inline-block float-left" style="width:25%">인증번호 * <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:290px">관리자연락처 입력 후 인증번호 받기를 클릭하시면<br>카카오톡으로 인증번호를 수신받을 수 있습니다.<br>받은 인증번호를 입력해 주십시오.</span></i></h5>
 								<div class="inline-block float-right" style="width:72%">
 									<input id="token" type="text" class="inputStyle float-left" style="width:70%" v-model="token">
-									<a @click="fnGetSenderKeyToken" class="btnStyle1 borderLightGray backWhite minWidthAuto float-right" style="width:27%">토큰요청</a>
+									<a @click="fnGetSenderKeyToken" class="btnStyle1 borderLightGray backWhite minWidthAuto float-right" style="width:27%">인증번호 받기</a>
 								</div>
 							</div>
 							<div class="of_h consolMarginTop">
