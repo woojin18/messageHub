@@ -74,7 +74,7 @@
 				<div class="of_h pd20">
 					<p class="color4">국가, 지방자치단체 또는 [공공기관의 운영에 관한 법룔]에 따른 공공기관등에서 공익 목적으로 문자메시지를 발송하는 경우</p>	
 					<p class="color4 consolMarginTop">[공공기관의 운영에 관한 법률]에 따른 공공기관 316개에 해당되는 사업자
-						<br>(<a href="http://www.alio.go.kr/management.do?p=public02" target="blank">http://www.alio.go.kr/management.do?p=public02</a> 에서 확인 가능)
+						<br>(<a href="http://www.alio.go.kr/alioPblinstt.do" target="blank">http://www.alio.go.kr/alioPblinstt.do</a> 에서 확인 가능)
 					</p>	
 					<p class="color4 consolMarginTop">[제출서류]<br>&nbsp;&nbsp;- 고유번호증(고유번호증이 없는 공공기관의 경우 사업자등록증)
 						<a @click="fnFileDown('FLEBMfrTJi', '고유번호증 샘플.jpg')" class="btnStyle1 borderLightGray small mr5 ml10" download>다운로드 </a>
@@ -93,7 +93,7 @@
 			<div class="col-xs-6">					
 				<div class="of_h pd20">
 					<p class="color4">- 중앙전파관리소에서 지정한 부가통신사업 등록서류<br>&nbsp;&nbsp; (서류 종류 및 제출 방법에 대해서는 중앙전파관리소
-						<br>&nbsp;&nbsp;&nbsp; 홈페이지 <a href="http://www.crmo.go.kr/administ/brdcstadm/specialaddedSMS.do" target="blank">http://www.crmo.go.kr/administ/brdcstadm/specialaddedSMS.do</a> 참고)
+						<br>&nbsp;&nbsp;&nbsp; 홈페이지 <a href="https://www.emsit.go.kr/cp/cv/CpEkcc000_0071_01Reg.do" target="blank">https://www.emsit.go.kr/cp/cv/CpEkcc000_0071_01Reg.do</a> 참고)
 					</p>
 					<p class="color4 consolMarginTop">
 						- 중앙전파관리소로부터 특수부가통신사업자로 등록 완료된 리스트를 전달받아 등록 처리됨.<br>
