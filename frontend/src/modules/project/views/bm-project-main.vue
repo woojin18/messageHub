@@ -26,7 +26,7 @@
 			<ul v-if="selMainTab==4&&selMidTab==1" class="tab_s6 mt10">
 				<!-- 체널관리 - RCS 탭 -->
 				<li :class="{active:(selMainTab==4&&selMidTab==1&&selSubTab==1)}" @click="selSubTab=1"><a>브랜드 관리정보</a></li>
-				<li :class="{active:(selMainTab==4&&selMidTab==1&&selSubTab==2)}" @click="selSubTab=2"><a>메시지 포맷정보</a></li>
+				<!-- <li :class="{active:(selMainTab==4&&selMidTab==1&&selSubTab==2)}" @click="selSubTab=2"><a>메시지 포맷정보</a></li> -->
 				<!-- 체널관리 - RCS 탭 -->
 			</ul>
 

@@ -26,7 +26,7 @@
 							<div class="float-left" style="width:15%"><h5>내용</h5></div>
 							<div class="float-left" style="width:80%">
 								<textarea v-model="contents" class="textareaStyle height120" :placeholder="holder"></textarea>
-								<p class="color3"><i class="far fa-info-circle"></i> {{textCnt}}자 입력 / 변수 포함 최대 90글자 <i class="fas fa-question-circle toolTip"></i></p>
+								<p class="color3"><i class="far fa-info-circle"></i> {{textCnt}}자 입력 / 변수 포함 최대 {{txtMaxLength}}글자 <i class="fas fa-question-circle toolTip"></i></p>
 							</div>							
 						</div>
 					</div>	
@@ -78,12 +78,22 @@ export default {
       imgMngOpen : false, // 이미지 팝업
       imgUrl : "",      // 이미지 URL
       fileId : "",      // FILE ID
-      wideImgYn : "N",   
+      wideImgYn : "N",
+      txtMaxLength : 0     // 내용 입력시 최대 글자수
     }
   },
   watch : {
       contents : function(newVal, oldVal) {
         this.textCnt = newVal.length;
+      },
+      templateRadioBtn(){
+        if(this.templateRadioBtn == 'text'){    // 텍스트 미승인형
+          this.txtMaxLength = 90;
+        } else if(this.templateRadioBtn == 'SS000000'){    // sms
+          this.txtMaxLength = 100;
+        } else {    // lms, 세로형(medium, tall), 캐러셀(medium, tall)
+          this.txtMaxLength = 1300;
+        }
       }
   },
 
@@ -135,6 +145,7 @@ export default {
       var templateRadioBtn = vm.templateRadioBtn;
       var contents = vm.contents;
       var textCnt = vm.textCnt;
+      var txtMaxLength = vm.txtMaxLength;
       var title = vm.title;
       var fileId = vm.fileId;
       var params = {
@@ -160,8 +171,8 @@ export default {
 
       if(contents == "") {
         confirm.fnAlert("내용을 입력해주세요.","");
-      } else if (textCnt > 90) {
-        confirm.fnAlert("내용을 90자 이내로 입력해주세요.","");
+      } else if (textCnt > txtMaxLength) {
+        confirm.fnAlert("내용을 "+txtMaxLength+"자 이내로 입력해주세요.","");
       } else if(titleTf) {
         if(title == "") {
           confirm.fnAlert("제목을 입력해주세요.", "");
