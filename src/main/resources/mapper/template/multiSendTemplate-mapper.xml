@@ -147,7 +147,7 @@
 							,',\"name\":\"'	, IFNULL(M.friendTalkButton4Name,'')	,'\"'
 							,',\"linkUrl1\":\"'	, IFNULL(M.friendTalkButton4LinkUrl1,'')			,'\"'
 							,',\"linkUrl2\":\"'	, IFNULL(M.friendTalkButton4LinkUrl2,'')	,'\"}') AS friendTalkButtonArr4,
-			M.alimTalkSenderKey, M.alimTalkTmpltName, M.alimTalkEmphasizeType, M.alimTalkTmpltEmpsTitle, M.alimTalkTmpltEmpsSubTitle, M.alimTalkTmpltContent, M.alimTalkPrdType,
+			M.alimTalkSenderKey, M.templateKey, M.alimTalkTmpltName, M.alimTalkEmphasizeType, M.alimTalkTmpltEmpsTitle, M.alimTalkTmpltEmpsSubTitle, M.alimTalkTmpltContent, M.alimTalkPrdType,
 			M.alimTalkButton0Type,
 			CONCAT('{','\"linkType\":\"'	, IFNULL(M.alimTalkButton0Type,'')		,'\"'
 							,',\"name\":\"'	, IFNULL(M.alimTalkButton0Name,'')	,'\"'
@@ -212,7 +212,7 @@
 				T.friendTalkButton2Type, T.friendTalkButton2Name, T.friendTalkButton2LinkUrl1, T.friendTalkButton2LinkUrl2,
 				T.friendTalkButton3Type, T.friendTalkButton3Name, T.friendTalkButton3LinkUrl1, T.friendTalkButton3LinkUrl2,
 				T.friendTalkButton4Type, T.friendTalkButton4Name, T.friendTalkButton4LinkUrl1, T.friendTalkButton4LinkUrl2,
-				T.alimTalkSenderKey, T.alimTalkTmpltName, T.alimTalkEmphasizeType, T.alimTalkTmpltEmpsTitle, T.alimTalkTmpltEmpsSubTitle, T.alimTalkTmpltContent, T.alimTalkPrdType,
+				T.alimTalkSenderKey, T.templateKey, T.alimTalkTmpltName, T.alimTalkEmphasizeType, T.alimTalkTmpltEmpsTitle, T.alimTalkTmpltEmpsSubTitle, T.alimTalkTmpltContent, T.alimTalkPrdType,
 				T.alimTalkButton0Type, T.alimTalkButton0Name, T.alimTalkButton0LinkMo, T.alimTalkButton0LinkPc, T.alimTalkButton0LinkAnd, T.alimTalkButton0LinkIos,
 				T.smsSendType, T.smsCallback, T.smsContent, T.smsRcvblcNumber, T.smsTitle, T.smsFileId0, T.smsFileId1, T.smsFileId2,
 				@MMS_PATH_TO_NAME0 := JSON_UNQUOTE(JSON_SEARCH(sms0.USE_CH_INFO, "one", 'MMS', NULL, '$[*].CH')) AS MMS_PATH_TO_NAME0,
@@ -843,6 +843,13 @@
 						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[3].data.senderKey'
 						ELSE ''
 					END AS alimTalkSenderKey,
+					CASE
+						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[0].data.tmpltKey'
+						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[1].data.tmpltKey'
+						WHEN A.TMPLT_INFO ->> '$[2].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[2].data.tmpltKey'
+						WHEN A.TMPLT_INFO ->> '$[3].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[3].data.tmpltKey'
+						ELSE ''
+					END AS templateKey,
 					CASE
 						WHEN A.TMPLT_INFO ->> '$[0].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[0].data.subData.tmpltName'
 						WHEN A.TMPLT_INFO ->> '$[1].ch' = 'ALIMTALK' then A.TMPLT_INFO ->> '$[1].data.subData.tmpltName'

@@ -3764,6 +3764,7 @@ export default {
 
 						this.rowData.senderKey = rtnData.alimTalkSenderKey;
 						this.rowData.tmpltName = this.$gfnCommonUtils.unescapeXss(rtnData.alimTalkTmpltName);
+						this.rowData.tmpltKey = rtnData.templateKey;
 						this.rowData.emphasizeType = rtnData.alimTalkEmphasizeType;
 						this.rowData.tmpltEmpsTitle = rtnData.alimTalkTmpltEmpsTitle;
 						this.rowData.tmpltEmpsSubTitle = rtnData.alimTalkTmpltEmpsSubTitle;
