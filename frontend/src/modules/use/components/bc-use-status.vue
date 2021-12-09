@@ -55,14 +55,14 @@
 								<thead>
 									<tr>
 									<th class="text-center lc-1">청구월</th>
-									<th class="text-center lc-1">청구ID</th>
-									<th class="text-center lc-1 end">청구수량</th>
+									<th class="text-center lc-1">가입번호</th>
+									<th class="text-center lc-1 end">성공건수</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr v-for="(data, index) in defPayItems" :key="index">
 										<td class="text-center">{{ data.ym }}</td>
-										<td class="text-right">{{ data.billId }}</td>
+										<td class="text-right">{{ data.serviceId }}</td>
 										<td class="text-right end">{{ data.calcAmount | comma}}</td>
 									</tr>
 								</tbody>

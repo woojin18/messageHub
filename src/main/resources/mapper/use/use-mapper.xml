@@ -188,14 +188,14 @@
 	<select id="selectSixMonthDefPayAmt" resultType="camel">
 		/* use.selectSixMonthDefPayAmt 전월부터 6개월간 후불청구금액 조회 */
 		SELECT		CONCAT(SUBSTRING(A.YM, 1, 4), '-', SUBSTRING(A.YM, 5, 6)) AS YM
-		,			A.BILL_ID
-		,			SUM(A.CALC_CNT) AS CALC_AMOUNT
+		,			A.SERVICE_ID
+		,			SUM(A.SUCC_CNT) AS CALC_AMOUNT
 		FROM		cm_console.CM_CAL_HIST AS A
 		,			cm_console.CM_CORP AS B
 		,			(
-						SELECT NOPAY_YN,CORP_ID,BILL_ID
+						SELECT NOPAY_YN,CORP_ID,SERVICE_ID
 						FROM cm_console.CM_PROJECT
-						GROUP BY NOPAY_YN,CORP_ID,BILL_ID
+						GROUP BY NOPAY_YN,CORP_ID,SERVICE_ID
 					) AS C
 		,			(SELECT @ROWNUM:=0) CNT
 		WHERE 	1=1
@@ -203,7 +203,7 @@
 		AND		A.CORP_ID=B.CORP_ID
 		AND		C.NOPAY_YN = 'N'
 		AND	A.YM BETWEEN    DATE_FORMAT(NOW()-INTERVAL 6 MONTH, '%Y%m') AND NOW()
-        GROUP BY A.YM,A.CORP_ID,A.BILL_ID
+        GROUP BY A.YM,A.CORP_ID,A.SERVICE_ID
 		ORDER BY A.YM DESC
 	</select>
 	
