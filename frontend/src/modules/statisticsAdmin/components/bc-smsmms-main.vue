@@ -32,15 +32,34 @@
 								{{ content.projectName }}
 							</option>
 						</select>
-						<div class="inline-block" style="width:30%">
-							<input type="radio" name="smsmmsType" id="all" value="" v-model="searchData.searchSmsmmsType">
-							<label for="all" class="ml20">전체</label>
-							<input type="radio" name="smsmmsType" id="sms" value="SMS" v-model="searchData.searchSmsmmsType">
-							<label for="sms">SMS</label>
-							<input type="radio" name="smsmmsType" id="lms" value="LMS" v-model="searchData.searchSmsmmsType">
-							<label for="lms">LMS</label>
-							<input type="radio" name="smsmmsType" id="mms" value="MMS" v-model="searchData.searchSmsmmsType">
-							<label for="mms">MMS</label>
+						<div class="inline-block ml30" style="width:30%">
+							<h4 class="inline-block" style="width:20%">서비스</h4>
+							<input type="checkbox" id="chTypeAll" class="checkStyle2" @change="fnChTypeAllCheck" v-model="chTypeAll">
+							<label for="chTypeAll" class="mr30">전체</label>
+							<input type="checkbox" id="sms" class="checkStyle2" v-model="searchData.sms">
+							<label for="sms" class="mr30">SMS</label>
+							<input type="checkbox" id="lms" class="checkStyle2" v-model="searchData.lms">
+							<label for="lms" class="mr30">LMS</label>
+							<input type="checkbox" id="mms" class="checkStyle2" v-model="searchData.mms">
+							<label for="mms" class="mr30">MMS</label>
+						</div>
+					</div>
+					<div class="consolMarginTop">
+						<h4 class="inline-block" style="width:6%">발송구분</h4>
+							<input type="checkbox" id="sendAll" class="checkStyle2" @change="fnSendAllCheck" v-model="sendAll">
+							<label for="sendAll" class="mr30">전체</label>
+							<input type="checkbox" id="webSend" class="checkStyle2" v-model="searchData.webSend">
+							<label for="webSend" class="mr30">웹 발송</label>
+							<input type="checkbox" id="apiSend" class="checkStyle2" v-model="searchData.apiSend">
+							<label for="apiSend" class="mr30">API 발송</label>
+						<div class="inline-block" style="width:30%; padding-left:130px;">
+							<h4 class="inline-block" style="width:24%">전환발송</h4>
+							<input type="radio" name="fnSend" value="ALL" id="ALL" checked="" v-model="searchData.fbSend">
+							<label for="ALL" class="ml20">전체</label>
+							<input type="radio" name="fnSend" value="yes" id="Y" v-model="searchData.fbSend">
+							<label for="Y">예</label>
+							<input type="radio" name="fnSend" value="no" id="N" v-model="searchData.fbSend">
+							<label for="N">아니요</label>
 						</div>
 						<a @click="fnSearch" class="btnStyle1 float-right" activity="READ">조회</a>
 					</div>
@@ -64,11 +83,12 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-12 consolMarginTop">
-						<table class="table_skin1 bt-000 tbl-striped">
+						<table class="table_skin1 bt-000">
 							<colgroup>
 								<col style="width:10%">
-								<col style="width:25%">
-								<col style="width:25%">
+								<col style="width:27%">
+								<col style="width:23%">
+								<col style="width:10%">
 								<col style="width:10%">
 								<col style="width:10%">
 								<col style="width:10%">
@@ -76,26 +96,29 @@
 							<thead>
 								<tr>
 								<th class="text-center lc-1">날짜</th>
-								<th class="text-center lc-1">프로젝트명</th>
-								<th class="text-center lc-1">API KEY</th>
+								<th class="text-center lc-1">프로젝트 명</th>
+								<th class="text-center lc-1">서비스</th>
 								<th class="text-center lc-1">발송</th>
 								<th class="text-center lc-1">성공</th>
+								<th class="text-center lc-1">실패</th>
 								<th class="text-center lc-1 end">성공율</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr v-for="(data, index) in statisItem" :key="index">
-									<td class="text-center">{{data.sendDate}}</td>
-									<td class="text-left">{{data.projectName}}</td>
-									<td class="text-left">{{data.apiKey}}</td>
+									<td :rowspan="data.dayCount" class="text-center" v-if="data.dayCount!=null" >{{data.sendDate}}</td>
+									<td :rowspan="data.projectCount" class="text-left" v-if="data.projectCount!=null" >{{data.projectName}}</td>
+									<td class="text-left">{{data.productName}}</td>
 									<td class="text-right">{{data.totCnt | comma}}</td>
 									<td class="text-right">{{data.succCnt | comma}}</td>
+									<td class="text-right">{{data.failCnt | comma}}</td>
 									<td class="text-right end">{{data.succRatio}}</td>
 								</tr>
 								<tr v-if="statisItem.length > 0" class="of_h">
 									<th class="text-left end bgColor_sky" colspan="3">합계</th>
 									<th class="text-right">{{sumTotCnt | comma}}</th>
 									<th class="text-right">{{sumSuccCnt | comma}}</th>
+									<th class="text-right">{{sumFailCnt | comma}}</th>
 									<th class="text-right end">{{totalSuccRatio}}</th>
 								</tr>
 								<tr v-if="statisItem.length == 0">
@@ -134,6 +157,12 @@ export default {
 					'searchDateType' : 'DAY',
 					'searchChanType' : 'SMSMMS',
 					'searchSmsmmsType' : '',
+					'sms' : true,
+					'lms' : true,
+					'mms' : true,
+					'webSend' : true,
+					'apiSend' : true,
+					'fbSend' : 'ALL',
 				}
 			}
 		},
@@ -150,9 +179,12 @@ export default {
 			statisItem: [],
 			sumTotCnt: 0,
 			sumSuccCnt: 0,
+			sumFailCnt: 0,
 			totalSuccRatio: 0,
 			searchStartMonth : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -3),
-			searchEndMonth : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), 0)
+			searchEndMonth : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), 0),
+			chTypeAll : true,
+			sendAll : true
 		}
 	},
 	mounted() {
@@ -236,12 +268,14 @@ export default {
 		fnSumCalc() {
 			this.sumTotCnt = 0;
 			this.sumSuccCnt = 0;
+			this.sumFailCnt = 0;
 			this.totalSuccRatio = '';
 
 			let item = this.statisItem;
 			for(var i in item) {
 				this.sumTotCnt += item[i].totCnt;
 				this.sumSuccCnt += item[i].succCnt;
+				this.sumFailCnt += item[i].failCnt;
 			}
 			this.totalSuccRatio = Math.floor(((this.sumSuccCnt/this.sumTotCnt) * 100)+0.5);
 			this.totalSuccRatio = this.totalSuccRatio + '%';
@@ -308,6 +342,16 @@ export default {
 					return false;
 				}
 			}
+
+			if(!this.searchData.webSend && !this.searchData.apiSend) {
+				confirm.fnAlert(this.title, '발송구분 조건을 선택해 주세요.');
+				return false;
+			}
+
+			if(!this.searchData.sms && !this.searchData.lms && !this.searchData.mms) {
+				confirm.fnAlert(this.title, '서비스 조건을 선택해 주세요.');
+				return false;
+			}
 			return true;
 		},
 		
@@ -322,6 +366,22 @@ export default {
 
 			statisticsAdminApi.excelDownloadStatisList(params);
 		},
+
+		// 서비스 전체 선택
+		fnChTypeAllCheck() {
+			let chTypeAll = this.chTypeAll;
+			this.searchData.sms = chTypeAll;
+			this.searchData.lms = chTypeAll;
+			this.searchData.mms = chTypeAll;
+		},
+
+		// 발송구분 전체 선택
+		fnSendAllCheck() {
+			let sendAll = this.sendAll;
+			this.searchData.webSend = sendAll;
+			this.searchData.apiSend = sendAll;
+		}
+
 	},
 
 }

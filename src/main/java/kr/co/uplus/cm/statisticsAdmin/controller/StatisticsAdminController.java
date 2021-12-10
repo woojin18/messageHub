@@ -102,8 +102,8 @@ public class StatisticsAdminController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("sheetTitle", "발송일별통계");
-		map.put("colLabels", new String[] { "날짜", "프로젝트명", "API KEY", "발송", "성공", "성공률"});
-		map.put("colIds", new String[] {"sendDate", "projectName", "apiKey", "totCnt", "succCnt", "succRatio"});
+		map.put("colLabels", new String[] { "날짜", "프로젝트명", "서비스", "발송", "성공", "실패", "성공률"});
+		map.put("colIds", new String[] {"sendDate", "projectName", "productName", "totCnt", "succCnt", "failCnt", "succRatio"});
 		map.put("numColIds", new String[] {});
 		map.put("figureColIds", new String[] {});
 		map.put("colDataList", statisticsAdminSvc.selectStatisList(params).getData());

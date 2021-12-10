@@ -1,82 +1,732 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="statisticsAdmin">
-	<select id="selectStatisList" resultType="camel" >
-		/* statisticsAdmin.selectStatisList 일별/월별 전송건수 조회 */
-		SELECT
-		<choose>
-			<when test="searchDateType == 'DAY'.toString()">
-				DATE_FORMAT(YMD, '%Y.%m.%d')	AS SEND_DATE
-			</when>
-			<otherwise>
-				DATE_FORMAT(YMD, '%Y.%m')		AS SEND_DATE
-			</otherwise>
-		</choose>
-			,	PROJECT_ID
-			,	(	SELECT	PROJECT_NAME
-					FROM		cm_console.CM_PROJECT
-					WHERE		DEL_YN = 'N'
-					AND		CORP_ID = #{corpId}
-					AND		PROJECT_ID = A.PROJECT_ID)	AS PROJECT_NAME
-			,	API_KEY
-			,	SUM(TOT_CNT) AS TOT_CNT
-			,	SUM(SUCC_CNT) AS SUCC_CNT
-			,	SUM(FAIL_CNT) AS FAIL_CNT
-			,	IFNULL(CONCAT(ROUND(SUM(SUCC_CNT)/SUM(TOT_CNT) * 100), '%'), '0%')	AS SUCC_RATIO
-        FROM    cm.CM_STAT_CH_DAY A
-		WHERE	CORP_ID = #{corpId}
+
+	<select id="selectStatisListDay" resultType = "camel">
+		SELECT	AAA.SEND_DATE
+		,		AAA.PROJECT_ID
+		,		(SELECT PRODUCT_NAME FROM cm_bo.CM_PRODUCT_UNIT WHERE PRODUCT_CODE = AAA.PRODUCT_CODE) AS PRODUCT_NAME
+		,		AAA.CH_SEQ
+		,		AAA.PROJECT_NAME
+		,		AAA.TOT_CNT
+		,		AAA.SUCC_CNT
+		,		AAA.FAIL_CNT
+		,		AAA.SUCC_RATIO
+		,		BBB.DAY_COUNT
+		,		CCC.PROJECT_COUNT
+		FROM	(
+				SELECT	AA.SEND_DATE
+				,		AA.PROJECT_ID
+				,		AA.PRODUCT_CODE
+				,		AA.CH_SEQ
+				,		(	
+						SELECT	PROJECT_NAME
+						FROM	cm_console.CM_PROJECT
+						WHERE	DEL_YN = 'N'
+						AND		CORP_ID = #{corpId}
+						AND		PROJECT_ID = AA.PROJECT_ID
+						)	AS PROJECT_NAME
+				,		SUM(AA.TOT_CNT) AS TOT_CNT
+				,		SUM(AA.SUCC_CNT) AS SUCC_CNT
+				,		SUM(AA.FAIL_CNT) AS FAIL_CNT
+				,		IFNULL(CONCAT(ROUND(SUM(AA.SUCC_CNT)/SUM(AA.TOT_CNT) * 100), '%'), '0%')	AS SUCC_RATIO
+				FROM 	(
+						SELECT	DATE_FORMAT(YMD, '%Y.%m.%d')	AS SEND_DATE
+						,		PROJECT_ID
+						,		PRODUCT_CODE
+						,		TOT_CNT
+						,		SUCC_CNT
+						,		FAIL_CNT
+						,		CH_DAY_SEQ AS CH_SEQ
+						FROM	cm.CM_STAT_CH_DAY
+						WHERE	1=1
+						<include refid="selectStatisListDaySql"/>
+						<if test="chMin == 'chMin'">
+						UNION ALL
+						SELECT	CONCAT(SUBSTRING(YMDHM, 1,4) , '.' , SUBSTRING(YMDHM, 5,2) , '.' , SUBSTRING(YMDHM, 7,2))AS SEND_DATE
+						,		PROJECT_ID
+						,		PRODUCT_CODE
+						,		TOT_CNT
+						,		SUCC_CNT
+						,		FAIL_CNT
+						,		CH_MIN_SEQ AS CH_SEQ
+						FROM	cm.CM_STAT_CH_MIN
+						WHERE	1=1
+						<include refid="selectStatisListDayMinSql"/>
+						</if>
+						) AA
+						GROUP BY SEND_DATE, PROJECT_ID, PRODUCT_CODE
+						ORDER BY SEND_DATE DESC
+				) AAA
+		LEFT OUTER JOIN (
+				SELECT	COUNT(*) AS DAY_COUNT
+				,		BB.CH_SEQ
+				FROM	(
+						SELECT	AA.CH_SEQ
+						,		SEND_DATE
+						FROM	(
+								SELECT	DATE_FORMAT(YMD, '%Y.%m.%d')	AS SEND_DATE
+								,		PROJECT_ID
+								,		PRODUCT_CODE
+								,		CH_DAY_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_DAY
+								WHERE	1=1
+								<include refid="selectStatisListDaySql"/>
+								<if test="chMin == 'chMin'">
+								UNION ALL
+								SELECT	CONCAT(SUBSTRING(YMDHM, 1,4) , '.' , SUBSTRING(YMDHM, 5,2) , '.' , SUBSTRING(YMDHM, 7,2))AS SEND_DATE
+								,		PROJECT_ID
+								,		PRODUCT_CODE
+								,		CH_MIN_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_MIN
+								WHERE	1=1
+								<include refid="selectStatisListDayMinSql"/>
+								</if>
+								) AA
+								GROUP BY SEND_DATE, PROJECT_ID, PRODUCT_CODE
+								ORDER BY SEND_DATE DESC
+						) BB
+						GROUP BY BB.SEND_DATE
+				) BBB
+					ON AAA.CH_SEQ = BBB.CH_SEQ
+		LEFT OUTER JOIN (
+				SELECT	COUNT(*) AS PROJECT_COUNT
+				,		BB.CH_SEQ
+				,		BB.PROJECT_ID
+				FROM	(
+						SELECT	AA.CH_SEQ
+						,		SEND_DATE
+						,		PROJECT_ID
+						FROM 	(
+								SELECT	DATE_FORMAT(YMD, '%Y.%m.%d')	AS SEND_DATE
+								,		PROJECT_ID
+								,		PRODUCT_CODE
+								,		CH_DAY_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_DAY
+								WHERE	1=1
+								<include refid="selectStatisListDaySql"/>
+								<if test="chMin == 'chMin'">
+								UNION ALL
+								SELECT	CONCAT(SUBSTRING(YMDHM, 1,4) , '.' , SUBSTRING(YMDHM, 5,2) , '.' , SUBSTRING(YMDHM, 7,2))AS SEND_DATE
+								,		PROJECT_ID
+								,		PRODUCT_CODE
+								,		CH_MIN_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_MIN
+								WHERE	1=1
+								<include refid="selectStatisListDayMinSql"/>
+								</if>
+								) AA
+								GROUP BY SEND_DATE, PROJECT_ID, PRODUCT_CODE
+								ORDER BY SEND_DATE DESC
+						) BB
+						GROUP BY BB.SEND_DATE, PROJECT_ID
+				
+				) CCC
+					ON AAA.CH_SEQ = CCC.CH_SEQ
+		WHERE 1=1
+		ORDER BY SEND_DATE DESC, PROJECT_ID, DAY_COUNT DESC, PROJECT_COUNT DESC
+	</select>
+
+	<sql id="selectStatisListDaySql">
+		AND 	CORP_ID = #{corpId}
+		AND		YMD BETWEEN #{searchStartDate} AND #{searchEndDate}
 		<if test="searchProjectId != '' and searchProjectId != null ">
 		AND		PROJECT_ID = #{searchProjectId}
 		</if>
-		<choose>
-			<when test="searchDateType == 'DAY'.toString()">
-		AND		YMD BETWEEN #{searchStartDate} AND #{searchEndDate}
-			</when>
-			<otherwise>
-		AND		YMD BETWEEN CONCAT(#{searchStartMonth},'-01') AND CONCAT(#{searchEndMonth}, '-31')
-			</otherwise>
-		</choose>
-		<choose>
-			<when test="searchChanType == 'KAKAO'.toString()">
-				<choose>
-					<when test="searchKakaoType != '' and searchKakaoType != null ">
-		AND		CH = #{searchKakaoType}
-					</when>
-					<otherwise>
-		AND		CH IN ('ALIMTALK', 'FRIENDTALK')
-					</otherwise>
-				</choose>
-			</when>
-			<when test="searchChanType == 'SMSMMS'.toString()">
-				<choose>
-					<when test="searchSmsmmsType == 'SMS'.toString ">
-		AND		CH = 'SMS'
-					</when>
-					<when test="searchSmsmmsType == 'LMS'.toString ">
-		AND		CH = 'MMS'
-		AND		PRODUCT_CODE = 'LMS'
-					</when>
-					<when test="searchSmsmmsType == 'MMS'.toString ">
-		AND		CH = 'MMS'
-		AND		PRODUCT_CODE = 'MMS'
-					</when>
-					<otherwise>
-		AND		CH IN ('SMS', 'MMS')
-					</otherwise>
-				</choose>
-			</when>
-            <when test="searchChanType == 'MO'.toString()">
-        AND     CH = 'MO'
-        <if test="searchSmsmmsType != null and searchSmsmmsType != ''">
-        AND     PRODUCT_CODE = #{searchSmsmmsType}
-        </if>
-            </when>
-			<otherwise>
-		AND		CH = #{searchChanType} <!-- PUSH, RCS -->
-			</otherwise>
-		</choose>
-		GROUP BY SEND_DATE, PROJECT_ID, API_KEY
+		AND		PRODUCT_CODE IN
+		<foreach item="item" index="index" collection="chArr" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="webSend == true and apiSend == false">
+		AND		WEB_SENDER_YN = 'Y'
+		</if>
+		<if test="webSend == false and apiSend == true">
+		AND		WEB_SENDER_YN = 'N'
+		</if>
+		<if test="fbSend == 'yes'">
+		AND		FB_YN = 'Y'
+		</if>
+		<if test="fbSend == 'no'">
+		AND		FB_YN = 'N'
+		</if>
+		<if test="projectId != '' and projectId != null ">
+		AND		PROJECT_ID = #{projectId}
+		</if>
+	</sql>
+	
+	<sql id="selectStatisListDayMinSql">
+		AND		CORP_ID = #{corpId}
+		AND		CONCAT(SUBSTRING(YMDHM, 1,4) , '-' , SUBSTRING(YMDHM, 5,2) , '-' , SUBSTRING(YMDHM, 7,2)) = #{searchMin}
+		<if test="searchProjectId != '' and searchProjectId != null ">
+		AND		PROJECT_ID = #{searchProjectId}
+		</if>
+		AND		PRODUCT_CODE IN
+		<foreach item="item" index="index" collection="chArr" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="webSend == true and apiSend == false">
+		AND		WEB_SENDER_YN = 'Y'
+		</if>
+		<if test="webSend == false and apiSend == true">
+		AND		WEB_SENDER_YN = 'N'
+		</if>
+		<if test="fbSend == 'yes'">
+		AND		FB_YN = 'Y'
+		</if>
+		<if test="fbSend == 'no'">
+		AND		FB_YN = 'N'
+		</if>
+		<if test="projectId != '' and projectId != null ">
+		AND		PROJECT_ID = #{projectId}
+		</if>
+	</sql>
+	
+	<select id="selectStatisListMonth" resultType = "camel">
+		SELECT	AAA.SEND_DATE
+		,		AAA.PROJECT_ID
+		,		(SELECT PRODUCT_NAME FROM cm_bo.CM_PRODUCT_UNIT WHERE PRODUCT_CODE = AAA.PRODUCT_CODE) AS PRODUCT_NAME
+		,		AAA.CH_SEQ
+		,		AAA.PROJECT_NAME
+		,		AAA.TOT_CNT
+		,		AAA.SUCC_CNT
+		,		AAA.FAIL_CNT
+		,		AAA.SUCC_RATIO
+		,		BBB.DAY_COUNT
+		,		CCC.PROJECT_COUNT
+		FROM	(
+				SELECT	AA.SEND_DATE
+				,		AA.PROJECT_ID
+				,		AA.PRODUCT_CODE
+				,		AA.CH_SEQ
+				,		(	
+						SELECT	PROJECT_NAME
+						FROM	cm_console.CM_PROJECT
+						WHERE	DEL_YN = 'N'
+						AND		CORP_ID = #{corpId}
+						AND		PROJECT_ID = AA.PROJECT_ID
+						)	AS PROJECT_NAME
+				,		SUM(AA.TOT_CNT) AS TOT_CNT
+				,		SUM(AA.SUCC_CNT) AS SUCC_CNT
+				,		SUM(AA.FAIL_CNT) AS FAIL_CNT
+				,		IFNULL(CONCAT(ROUND(SUM(AA.SUCC_CNT)/SUM(AA.TOT_CNT) * 100), '%'), '0%')	AS SUCC_RATIO
+				FROM 	(
+						SELECT	DATE_FORMAT(YMD, '%Y.%m')	AS SEND_DATE
+						,		PROJECT_ID
+						,		PRODUCT_CODE
+						,		TOT_CNT
+						,		SUCC_CNT
+						,		FAIL_CNT
+						,		CH_DAY_SEQ AS CH_SEQ
+						FROM	cm.CM_STAT_CH_DAY
+						WHERE	1=1
+						<include refid="selectStatisListMonthSql"/>
+						<if test="chMin == 'chMin'">
+						UNION ALL
+						SELECT	CONCAT(SUBSTRING(YMDHM, 1,4) , '.' , SUBSTRING(YMDHM, 5,2))AS SEND_DATE
+						,		PROJECT_ID
+						,		PRODUCT_CODE
+						,		TOT_CNT
+						,		SUCC_CNT
+						,		FAIL_CNT
+						,		CH_MIN_SEQ AS CH_SEQ
+						FROM	cm.CM_STAT_CH_MIN
+						WHERE	1=1
+						<include refid="selectStatisListMonthMinSql"/>
+						</if>
+						) AA
+						GROUP BY SEND_DATE, PROJECT_ID, PRODUCT_CODE
+						ORDER BY SEND_DATE DESC
+				) AAA
+		LEFT OUTER JOIN (
+				SELECT	COUNT(*) AS DAY_COUNT
+				,		BB.CH_SEQ
+				FROM	(
+						SELECT	AA.CH_SEQ
+						,		SEND_DATE
+						FROM	(
+								SELECT	DATE_FORMAT(YMD, '%Y.%m')	AS SEND_DATE
+								,		PROJECT_ID
+								,		PRODUCT_CODE
+								,		CH_DAY_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_DAY
+								WHERE	1=1
+								<include refid="selectStatisListMonthSql"/>
+								<if test="chMin == 'chMin'">
+								UNION ALL
+								SELECT	CONCAT(SUBSTRING(YMDHM, 1,4) , '.' , SUBSTRING(YMDHM, 5,2))AS SEND_DATE
+								,		PROJECT_ID
+								,		PRODUCT_CODE
+								,		CH_MIN_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_MIN
+								WHERE	1=1
+								<include refid="selectStatisListMonthMinSql"/>
+								</if>
+								) AA
+								GROUP BY SEND_DATE, PROJECT_ID, PRODUCT_CODE
+								ORDER BY SEND_DATE DESC
+						) BB
+						GROUP BY BB.SEND_DATE
+				) BBB
+					ON AAA.CH_SEQ = BBB.CH_SEQ
+		LEFT OUTER JOIN (
+				SELECT	COUNT(*) AS PROJECT_COUNT
+				,		BB.CH_SEQ
+				,		BB.PROJECT_ID
+				FROM	(
+						SELECT	AA.CH_SEQ
+						,		SEND_DATE
+						,		PROJECT_ID
+						FROM 	(
+								SELECT	DATE_FORMAT(YMD, '%Y.%m')	AS SEND_DATE
+								,		PROJECT_ID
+								,		PRODUCT_CODE
+								,		CH_DAY_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_DAY
+								WHERE	1=1
+								<include refid="selectStatisListMonthSql"/>
+								<if test="chMin == 'chMin'">
+								UNION ALL
+								SELECT	CONCAT(SUBSTRING(YMDHM, 1,4) , '.' , SUBSTRING(YMDHM, 5,2))AS SEND_DATE
+								,		PROJECT_ID
+								,		PRODUCT_CODE
+								,		CH_MIN_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_MIN
+								WHERE	1=1
+								<include refid="selectStatisListMonthMinSql"/>
+								</if>
+								) AA
+								GROUP BY SEND_DATE, PROJECT_ID, PRODUCT_CODE
+								ORDER BY SEND_DATE DESC
+						) BB
+						GROUP BY BB.SEND_DATE, PROJECT_ID
+				
+				) CCC
+					ON AAA.CH_SEQ = CCC.CH_SEQ
+		WHERE 1=1
+		ORDER BY SEND_DATE DESC, PROJECT_ID, DAY_COUNT DESC, PROJECT_COUNT DESC
 	</select>
+	
+	<sql id="selectStatisListMonthSql">
+		AND 	CORP_ID = #{corpId}
+		AND		YMD BETWEEN CONCAT(#{searchStartMonth},'-01') AND CONCAT(#{searchEndMonth}, '-31')
+		<if test="searchProjectId != '' and searchProjectId != null ">
+		AND		PROJECT_ID = #{searchProjectId}
+		</if>
+		AND		PRODUCT_CODE IN
+		<foreach item="item" index="index" collection="chArr" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="webSend == true and apiSend == false">
+		AND		WEB_SENDER_YN = 'Y'
+		</if>
+		<if test="webSend == false and apiSend == true">
+		AND		WEB_SENDER_YN = 'N'
+		</if>
+		<if test="fbSend == 'yes'">
+		AND		FB_YN = 'Y'
+		</if>
+		<if test="fbSend == 'no'">
+		AND		FB_YN = 'N'
+		</if>
+		<if test="projectId != '' and projectId != null ">
+		AND		PROJECT_ID = #{projectId}
+		</if>
+	</sql>
+	
+	<sql id="selectStatisListMonthMinSql">
+		AND		CORP_ID = #{corpId}
+		AND		CONCAT(SUBSTRING(YMDHM, 1,4) , '-' , SUBSTRING(YMDHM, 5,2)) = #{searchMin}
+		<if test="searchProjectId != '' and searchProjectId != null ">
+		AND		PROJECT_ID = #{searchProjectId}
+		</if>
+		AND		PRODUCT_CODE IN
+		<foreach item="item" index="index" collection="chArr" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="webSend == true and apiSend == false">
+		AND		WEB_SENDER_YN = 'Y'
+		</if>
+		<if test="webSend == false and apiSend == true">
+		AND		WEB_SENDER_YN = 'N'
+		</if>
+		<if test="fbSend == 'yes'">
+		AND		FB_YN = 'Y'
+		</if>
+		<if test="fbSend == 'no'">
+		AND		FB_YN = 'N'
+		</if>
+		<if test="projectId != '' and projectId != null ">
+		AND		PROJECT_ID = #{projectId}
+		</if>
+	</sql>
+	
+	<select id="selectStatisListDayKko" resultType = "camel">
+		SELECT	AAA.SEND_DATE
+		,		AAA.PROJECT_ID
+		,		CASE
+					WHEN AAA.CH = 'FRIENDTALK'
+					THEN '친구톡'
+					WHEN AAA.CH = 'ALIMTALK'
+					THEN '알림톡'
+				END	AS PRODUCT_NAME
+		,		AAA.CH_SEQ
+		,		AAA.PROJECT_NAME
+		,		AAA.TOT_CNT
+		,		AAA.SUCC_CNT
+		,		AAA.FAIL_CNT
+		,		AAA.SUCC_RATIO
+		,		BBB.DAY_COUNT
+		,		CCC.PROJECT_COUNT
+		FROM	(
+				SELECT	AA.SEND_DATE
+				,		AA.PROJECT_ID
+				,		AA.CH
+				,		AA.CH_SEQ
+				,		(	
+						SELECT	PROJECT_NAME
+						FROM	cm_console.CM_PROJECT
+						WHERE	DEL_YN = 'N'
+						AND		CORP_ID = #{corpId}
+						AND		PROJECT_ID = AA.PROJECT_ID
+						)	AS PROJECT_NAME
+				,		SUM(AA.TOT_CNT) AS TOT_CNT
+				,		SUM(AA.SUCC_CNT) AS SUCC_CNT
+				,		SUM(AA.FAIL_CNT) AS FAIL_CNT
+				,		IFNULL(CONCAT(ROUND(SUM(AA.SUCC_CNT)/SUM(AA.TOT_CNT) * 100), '%'), '0%')	AS SUCC_RATIO
+				FROM 	(
+						SELECT	DATE_FORMAT(YMD, '%Y.%m.%d')	AS SEND_DATE
+						,		PROJECT_ID
+						,		CH
+						,		TOT_CNT
+						,		SUCC_CNT
+						,		FAIL_CNT
+						,		CH_DAY_SEQ AS CH_SEQ
+						FROM	cm.CM_STAT_CH_DAY
+						WHERE	1=1
+						<include refid="selectStatisListDayKkoSql"/>
+						<if test="chMin == 'chMin'">
+						UNION ALL
+						SELECT	CONCAT(SUBSTRING(YMDHM, 1,4) , '.' , SUBSTRING(YMDHM, 5,2) , '.' , SUBSTRING(YMDHM, 7,2))AS SEND_DATE
+						,		PROJECT_ID
+						,		CH
+						,		TOT_CNT
+						,		SUCC_CNT
+						,		FAIL_CNT
+						,		CH_MIN_SEQ AS CH_SEQ
+						FROM	cm.CM_STAT_CH_MIN
+						WHERE	1=1
+						<include refid="selectStatisListDayMinKkoSql"/>
+						</if>
+						) AA
+						GROUP BY SEND_DATE, PROJECT_ID, CH
+						ORDER BY SEND_DATE DESC
+				) AAA
+		LEFT OUTER JOIN (
+				SELECT	COUNT(*) AS DAY_COUNT
+				,		BB.CH_SEQ
+				FROM	(
+						SELECT	AA.CH_SEQ
+						,		SEND_DATE
+						FROM	(
+								SELECT	DATE_FORMAT(YMD, '%Y.%m.%d')	AS SEND_DATE
+								,		PROJECT_ID
+								,		CH
+								,		CH_DAY_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_DAY
+								WHERE	1=1
+								<include refid="selectStatisListDayKkoSql"/>
+								<if test="chMin == 'chMin'">
+								UNION ALL
+								SELECT	CONCAT(SUBSTRING(YMDHM, 1,4) , '.' , SUBSTRING(YMDHM, 5,2) , '.' , SUBSTRING(YMDHM, 7,2))AS SEND_DATE
+								,		PROJECT_ID
+								,		CH
+								,		CH_MIN_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_MIN
+								WHERE	1=1
+								<include refid="selectStatisListDayMinKkoSql"/>
+								</if>
+								) AA
+								GROUP BY SEND_DATE, PROJECT_ID, CH
+								ORDER BY SEND_DATE DESC
+						) BB
+						GROUP BY BB.SEND_DATE
+				) BBB
+					ON AAA.CH_SEQ = BBB.CH_SEQ
+		LEFT OUTER JOIN (
+				SELECT	COUNT(*) AS PROJECT_COUNT
+				,		BB.CH_SEQ
+				,		BB.PROJECT_ID
+				FROM	(
+						SELECT	AA.CH_SEQ
+						,		SEND_DATE
+						,		PROJECT_ID
+						FROM 	(
+								SELECT	DATE_FORMAT(YMD, '%Y.%m.%d')	AS SEND_DATE
+								,		PROJECT_ID
+								,		CH
+								,		CH_DAY_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_DAY
+								WHERE	1=1
+								<include refid="selectStatisListDayKkoSql"/>
+								<if test="chMin == 'chMin'">
+								UNION ALL
+								SELECT	CONCAT(SUBSTRING(YMDHM, 1,4) , '.' , SUBSTRING(YMDHM, 5,2) , '.' , SUBSTRING(YMDHM, 7,2))AS SEND_DATE
+								,		PROJECT_ID
+								,		CH
+								,		CH_MIN_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_MIN
+								WHERE	1=1
+								<include refid="selectStatisListDayMinKkoSql"/>
+								</if>
+								) AA
+								GROUP BY SEND_DATE, PROJECT_ID, CH
+								ORDER BY SEND_DATE DESC
+						) BB
+						GROUP BY BB.SEND_DATE, PROJECT_ID
+				
+				) CCC
+					ON AAA.CH_SEQ = CCC.CH_SEQ
+		WHERE 1=1
+		ORDER BY SEND_DATE DESC, PROJECT_ID, DAY_COUNT DESC, PROJECT_COUNT DESC
+	</select>
+
+	<sql id="selectStatisListDayKkoSql">
+		AND 	CORP_ID = #{corpId}
+		AND		YMD BETWEEN #{searchStartDate} AND #{searchEndDate}
+		<if test="searchProjectId != '' and searchProjectId != null ">
+		AND		PROJECT_ID = #{searchProjectId}
+		</if>
+		AND		CH IN
+		<foreach item="item" index="index" collection="chArr" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="webSend == true and apiSend == false">
+		AND		WEB_SENDER_YN = 'Y'
+		</if>
+		<if test="webSend == false and apiSend == true">
+		AND		WEB_SENDER_YN = 'N'
+		</if>
+		<if test="fbSend == 'yes'">
+		AND		FB_YN = 'Y'
+		</if>
+		<if test="fbSend == 'no'">
+		AND		FB_YN = 'N'
+		</if>
+		<if test="projectId != '' and projectId != null ">
+		AND		PROJECT_ID = #{projectId}
+		</if>
+	</sql>
+	
+	<sql id="selectStatisListDayMinKkoSql">
+		AND		CORP_ID = #{corpId}
+		AND		CONCAT(SUBSTRING(YMDHM, 1,4) , '-' , SUBSTRING(YMDHM, 5,2) , '-' , SUBSTRING(YMDHM, 7,2)) = #{searchMin}
+		<if test="searchProjectId != '' and searchProjectId != null ">
+		AND		PROJECT_ID = #{searchProjectId}
+		</if>
+		AND		CH IN
+		<foreach item="item" index="index" collection="chArr" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="webSend == true and apiSend == false">
+		AND		WEB_SENDER_YN = 'Y'
+		</if>
+		<if test="webSend == false and apiSend == true">
+		AND		WEB_SENDER_YN = 'N'
+		</if>
+		<if test="fbSend == 'yes'">
+		AND		FB_YN = 'Y'
+		</if>
+		<if test="fbSend == 'no'">
+		AND		FB_YN = 'N'
+		</if>
+		<if test="projectId != '' and projectId != null ">
+		AND		PROJECT_ID = #{projectId}
+		</if>
+	</sql>
+	
+	<select id="selectStatisListMonthKko" resultType = "camel">
+		SELECT	AAA.SEND_DATE
+		,		AAA.PROJECT_ID
+		,		CASE
+					WHEN AAA.CH = 'FRIENDTALK'
+					THEN '친구톡'
+					WHEN AAA.CH = 'ALIMTALK'
+					THEN '알림톡'
+				END	AS PRODUCT_NAME
+		,		AAA.CH_SEQ
+		,		AAA.PROJECT_NAME
+		,		AAA.TOT_CNT
+		,		AAA.SUCC_CNT
+		,		AAA.FAIL_CNT
+		,		AAA.SUCC_RATIO
+		,		BBB.DAY_COUNT
+		,		CCC.PROJECT_COUNT
+		FROM	(
+				SELECT	AA.SEND_DATE
+				,		AA.PROJECT_ID
+				,		AA.CH
+				,		AA.CH_SEQ
+				,		(	
+						SELECT	PROJECT_NAME
+						FROM	cm_console.CM_PROJECT
+						WHERE	DEL_YN = 'N'
+						AND		CORP_ID = #{corpId}
+						AND		PROJECT_ID = AA.PROJECT_ID
+						)	AS PROJECT_NAME
+				,		SUM(AA.TOT_CNT) AS TOT_CNT
+				,		SUM(AA.SUCC_CNT) AS SUCC_CNT
+				,		SUM(AA.FAIL_CNT) AS FAIL_CNT
+				,		IFNULL(CONCAT(ROUND(SUM(AA.SUCC_CNT)/SUM(AA.TOT_CNT) * 100), '%'), '0%')	AS SUCC_RATIO
+				FROM 	(
+						SELECT	DATE_FORMAT(YMD, '%Y.%m')	AS SEND_DATE
+						,		PROJECT_ID
+						,		CH
+						,		TOT_CNT
+						,		SUCC_CNT
+						,		FAIL_CNT
+						,		CH_DAY_SEQ AS CH_SEQ
+						FROM	cm.CM_STAT_CH_DAY
+						WHERE	1=1
+						<include refid="selectStatisListMonthKkoSql"/>
+						<if test="chMin == 'chMin'">
+						UNION ALL
+						SELECT	CONCAT(SUBSTRING(YMDHM, 1,4) , '.' , SUBSTRING(YMDHM, 5,2))AS SEND_DATE
+						,		PROJECT_ID
+						,		CH
+						,		TOT_CNT
+						,		SUCC_CNT
+						,		FAIL_CNT
+						,		CH_MIN_SEQ AS CH_SEQ
+						FROM	cm.CM_STAT_CH_MIN
+						WHERE	1=1
+						<include refid="selectStatisListMonthMinKkoSql"/>
+						</if>
+						) AA
+						GROUP BY SEND_DATE, PROJECT_ID, CH
+						ORDER BY SEND_DATE DESC
+				) AAA
+		LEFT OUTER JOIN (
+				SELECT	COUNT(*) AS DAY_COUNT
+				,		BB.CH_SEQ
+				FROM	(
+						SELECT	AA.CH_SEQ
+						,		SEND_DATE
+						FROM	(
+								SELECT	DATE_FORMAT(YMD, '%Y.%m')	AS SEND_DATE
+								,		PROJECT_ID
+								,		CH
+								,		CH_DAY_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_DAY
+								WHERE	1=1
+								<include refid="selectStatisListMonthKkoSql"/>
+								<if test="chMin == 'chMin'">
+								UNION ALL
+								SELECT	CONCAT(SUBSTRING(YMDHM, 1,4) , '.' , SUBSTRING(YMDHM, 5,2))AS SEND_DATE
+								,		PROJECT_ID
+								,		CH
+								,		CH_MIN_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_MIN
+								WHERE	1=1
+								<include refid="selectStatisListMonthMinKkoSql"/>
+								</if>
+								) AA
+								GROUP BY SEND_DATE, PROJECT_ID, CH
+								ORDER BY SEND_DATE DESC
+						) BB
+						GROUP BY BB.SEND_DATE
+				) BBB
+					ON AAA.CH_SEQ = BBB.CH_SEQ
+		LEFT OUTER JOIN (
+				SELECT	COUNT(*) AS PROJECT_COUNT
+				,		BB.CH_SEQ
+				,		BB.PROJECT_ID
+				FROM	(
+						SELECT	AA.CH_SEQ
+						,		SEND_DATE
+						,		PROJECT_ID
+						FROM 	(
+								SELECT	DATE_FORMAT(YMD, '%Y.%m')	AS SEND_DATE
+								,		PROJECT_ID
+								,		CH
+								,		CH_DAY_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_DAY
+								WHERE	1=1
+								<include refid="selectStatisListMonthKkoSql"/>
+								<if test="chMin == 'chMin'">
+								UNION ALL
+								SELECT	CONCAT(SUBSTRING(YMDHM, 1,4) , '.' , SUBSTRING(YMDHM, 5,2))AS SEND_DATE
+								,		PROJECT_ID
+								,		CH
+								,		CH_MIN_SEQ AS CH_SEQ
+								FROM	cm.CM_STAT_CH_MIN
+								WHERE	1=1
+								<include refid="selectStatisListMonthMinKkoSql"/>
+								</if>
+								) AA
+								GROUP BY SEND_DATE, PROJECT_ID, CH
+								ORDER BY SEND_DATE DESC
+						) BB
+						GROUP BY BB.SEND_DATE, PROJECT_ID
+				
+				) CCC
+					ON AAA.CH_SEQ = CCC.CH_SEQ
+		WHERE 1=1
+		ORDER BY SEND_DATE DESC, PROJECT_ID, DAY_COUNT DESC, PROJECT_COUNT DESC
+	</select>
+	
+	<sql id="selectStatisListMonthKkoSql">
+		AND 	CORP_ID = #{corpId}
+		AND		YMD BETWEEN CONCAT(#{searchStartMonth},'-01') AND CONCAT(#{searchEndMonth}, '-31')
+		<if test="searchProjectId != '' and searchProjectId != null ">
+		AND		PROJECT_ID = #{searchProjectId}
+		</if>
+		AND		CH IN
+		<foreach item="item" index="index" collection="chArr" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="webSend == true and apiSend == false">
+		AND		WEB_SENDER_YN = 'Y'
+		</if>
+		<if test="webSend == false and apiSend == true">
+		AND		WEB_SENDER_YN = 'N'
+		</if>
+		<if test="fbSend == 'yes'">
+		AND		FB_YN = 'Y'
+		</if>
+		<if test="fbSend == 'no'">
+		AND		FB_YN = 'N'
+		</if>
+		<if test="projectId != '' and projectId != null ">
+		AND		PROJECT_ID = #{projectId}
+		</if>
+	</sql>
+	
+	<sql id="selectStatisListMonthMinKkoSql">
+		AND		CORP_ID = #{corpId}
+		AND		CONCAT(SUBSTRING(YMDHM, 1,4) , '-' , SUBSTRING(YMDHM, 5,2)) = #{searchMin}
+		<if test="searchProjectId != '' and searchProjectId != null ">
+		AND		PROJECT_ID = #{searchProjectId}
+		</if>
+		AND		CH IN
+		<foreach item="item" index="index" collection="chArr" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="webSend == true and apiSend == false">
+		AND		WEB_SENDER_YN = 'Y'
+		</if>
+		<if test="webSend == false and apiSend == true">
+		AND		WEB_SENDER_YN = 'N'
+		</if>
+		<if test="fbSend == 'yes'">
+		AND		FB_YN = 'Y'
+		</if>
+		<if test="fbSend == 'no'">
+		AND		FB_YN = 'N'
+		</if>
+		<if test="projectId != '' and projectId != null ">
+		AND		PROJECT_ID = #{projectId}
+		</if>
+	</sql>
 	
 	<select id="selectStatisProjectList" parameterType="hashmap" resultType="camel">
 		/* statisticsAdmin.selectStatisProjectList 프로젝트 목록 조회 */

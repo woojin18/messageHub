@@ -32,15 +32,16 @@
 								{{ content.projectName }}
 							</option>
 						</select>
-						<div class="inline-block" style="width:30%">
-							<input type="radio" name="smsmmsType" id="all" value="" v-model="searchData.searchSmsmmsType">
-							<label for="all" class="ml20">전체</label>
-							<input type="radio" name="smsmmsType" id="sms" value="SMSMO" v-model="searchData.searchSmsmmsType">
-							<label for="sms">SMSMO</label>
-							<input type="radio" name="smsmmsType" id="lms" value="LMSMO" v-model="searchData.searchSmsmmsType">
-							<label for="lms">LMSMO</label>
-							<input type="radio" name="smsmmsType" id="mms" value="MMSMO" v-model="searchData.searchSmsmmsType">
-							<label for="mms">MMSMO</label>
+						<div class="inline-block ml30" style="width:50%">
+							<h4 class="inline-block" style="width:13%">서비스</h4>
+							<input type="checkbox" id="chTypeAll" class="checkStyle2" @change="fnChTypeAllCheck" v-model="chTypeAll">
+							<label for="chTypeAll" class="mr30">전체</label>
+							<input type="checkbox" id="smsMo" class="checkStyle2" v-model="searchData.smsMo">
+							<label for="smsMo" class="mr30">SMS MO</label>
+							<input type="checkbox" id="lmsMo" class="checkStyle2" v-model="searchData.lmsMo">
+							<label for="lmsMo" class="mr30">LMS MO</label>
+							<input type="checkbox" id="mmsMo" class="checkStyle2" v-model="searchData.mmsMo">
+							<label for="mmsMo" class="mr30">MMS MO</label>
 						</div>
 						<a @click="fnSearch" class="btnStyle1 float-right" activity="READ">조회</a>
 					</div>
@@ -75,15 +76,15 @@
 								<tr>
 								<th class="text-center lc-1">날짜</th>
 								<th class="text-center lc-1">프로젝트명</th>
-								<th class="text-center lc-1">API KEY</th>
+								<th class="text-center lc-1">서비스</th>
 								<th class="text-center lc-1">수신</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr v-for="(data, index) in statisItem" :key="index">
-									<td class="text-center">{{data.sendDate}}</td>
-									<td class="text-left">{{data.projectName}}</td>
-									<td class="text-left">{{data.apiKey}}</td>
+									<td :rowspan="data.dayCount" class="text-center" v-if="data.dayCount!=null" >{{data.sendDate}}</td>
+									<td :rowspan="data.projectCount" class="text-left" v-if="data.projectCount!=null" >{{data.projectName}}</td>
+									<td class="text-left">{{data.productName}}</td>
 									<td class="text-right">{{data.totCnt | comma}}</td>
 								</tr>
 								<tr v-if="statisItem.length > 0" class="of_h">
@@ -126,6 +127,9 @@ export default {
 					'searchDateType' : 'DAY',
 					'searchChanType' : 'MO',
 					'searchSmsmmsType' : '',
+					'smsMo' : true,
+					'lmsMo' : true,
+					'mmsMo' : true,
 				}
 			}
 		},
@@ -142,7 +146,8 @@ export default {
 			statisItem: [],
 			sumTotCnt: 0,
 			searchStartMonth : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), -3),
-			searchEndMonth : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), 0)
+			searchEndMonth : this.$gfnCommonUtils.strDateAddMonth(this.$gfnCommonUtils.getCurretDate(), 0),
+			chTypeAll : true
 		}
 	},
 	mounted() {
@@ -293,6 +298,12 @@ export default {
 					return false;
 				}
 			}
+
+			if(!this.searchData.smsMo && !this.searchData.lmsMo && !this.searchData.mmsMo) {
+				confirm.fnAlert(this.title, '서비스 조건을 선택해 주세요.');
+				return false;
+			}
+
 			return true;
 		},
 		
@@ -307,6 +318,13 @@ export default {
 
 			statisticsAdminApi.excelDownloadStatisList(params);
 		},
+
+		fnChTypeAllCheck() {
+			let chTypeAll = this.chTypeAll;
+			this.searchData.smsMo = chTypeAll;
+			this.searchData.lmsMo = chTypeAll;
+			this.searchData.mmsMo = chTypeAll;
+		}
 	},
 
 }

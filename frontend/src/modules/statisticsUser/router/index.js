@@ -1,5 +1,6 @@
 import statisticsUserSendByDay from '../views/bm-statisticsUser-sendByDay'
 import statisticsUserSendByMonth from '../views/bm-statisticsUser-sendByMonth'
+import statisticsUserSendByMain from '../views/bm-statisticsUser-sendStatisMain'
 
 export default [
 	{
@@ -13,5 +14,11 @@ export default [
 		name: 'sendByMonth',
 		meta: { menu: 'UC_MONTH_CH_STATIS' },
 		component: statisticsUserSendByMonth
+	},
+	{
+		path: '/uc/statisticsUser/sendStatisMain',
+		name: 'sendByMonth',
+		meta: { menu: 'UC_MAIN_CH_STATIS' },
+		component: statisticsUserSendByMain
 	},
 ]

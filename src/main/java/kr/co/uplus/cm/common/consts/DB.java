@@ -314,7 +314,10 @@ public class DB {
 	public final static String QRY_SELECT_STATIS_SND_LIST = "statisticsUser.selectStatisSndList";
 	public final static String QRY_SELECT_STATIS_SND_CNT_LIST = "statisticsUser.selectStatisSndCntList";
 	public final static String QRY_SELECT_STATIS_SND_MONTH_CNT_LIST = "statisticsUser.selectStatisSndMonthCntList";
-	public final static String QRY_SELECT_STATIS_LIST = "statisticsAdmin.selectStatisList";
+	public final static String QRY_SELECT_STATIS_LIST_DAY = "statisticsAdmin.selectStatisListDay";
+	public final static String QRY_SELECT_STATIS_LIST_MONTH = "statisticsAdmin.selectStatisListMonth";
+	public final static String QRY_SELECT_STATIS_LIST_DAY_KKO = "statisticsAdmin.selectStatisListDayKko";
+	public final static String QRY_SELECT_STATIS_LIST_MONTH_KKO = "statisticsAdmin.selectStatisListMonthKko";
 	public final static String QRY_SELECT_STATIS_PROJECT_LIST = "statisticsAdmin.selectStatisProjectList";
 
 }
