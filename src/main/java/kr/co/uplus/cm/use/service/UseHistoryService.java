@@ -351,4 +351,18 @@ public class UseHistoryService {
 		rtn.setData(rtnList);
 		return rtn;
 	}
+	
+	/**
+	 * 이용상세 목록
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> selectUseDetailList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		List<Object> rtnList = generalDao.selectGernalList("use.selectUseDetailList", params);
+		rtn.setData(rtnList);
+		return rtn;
+	}
 }

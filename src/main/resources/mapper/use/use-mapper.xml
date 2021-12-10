@@ -1,274 +1,397 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="use">
-	<select id="selectUseHistoryListCnt" resultType="int">
-		/* use.selectUseHistoryListCnt */
-		SELECT	COUNT(*) CNT
-		FROM	cm_console.CM_PROJECT A
-		INNER JOIN (SELECT	A.CORP_ID
-						,	A.PROJECT_ID
-						,	ROUND(SUM(IFNULL(A.AMOUNT, 0))) SUM_CH_GRP_AMOUNT
-						,	COUNT(B.CH_GRP) CNT
-						FROM	(
-								SELECT	IFNULL(msg.AMOUNT, 0) AS AMOUNT
-								,		msg.CORP_ID
-								,		msg.PROJECT_ID
-								,		msg.FINAL_CH						
-								FROM 	cm.CM_MSG msg
-								WHERE	msg.YMD BETWEEN CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') 
-													AND LAST_DAY(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') )
-								AND		msg.CORP_ID =  #{corpId}
-								AND		msg.GW_RESULT_CODE = '10000'
-								AND		msg.CLI_RESULT_CODE = '10000'
-						) A
-						INNER JOIN cm_console.CM_CH_INFO B
-						ON		A.FINAL_CH = B.CH_NAME
-						WHERE	A.CORP_ID =  #{corpId}
-						<if test="role == 'ADMIN'.toString()">
-						AND		A.PROJECT_ID IN (	SELECT	A.PROJECT_ID
-													FROM	cm_console.CM_PROJECT_USER A
-													INNER JOIN cm_console.CM_USER B
-													WHERE A.USER_ID = B.USER_ID
-													AND B.DEL_YN = 'N'
-													AND B.USER_ID = #{userId} )
-						</if>
-						GROUP BY A.CORP_ID, A.PROJECT_ID) B
-		USING(PROJECT_ID, CORP_ID)
-		WHERE	A.USE_YN = 'Y'
-		AND		A.DEL_YN = 'N'
-		AND		A.CORP_ID = #{corpId}
-	</select>
-	<select id="selectUseHistoryList" resultType="camel">
-		/* use.selectUseHistoryList */
-		SELECT	@ROWNUM := @ROWNUM + 1 AS ROWNUM
-			,	A.CORP_ID
-			,	A.PROJECT_ID
-			,	A.PROJECT_NAME
-			,	A.NOPAY_YN
-			,	CASE
-					WHEN A.NOPAY_YN = 'Y' THEN '무과금'
-					ELSE
-						CASE
-							WHEN A.PAY_TYPE = 'Y' THEN '선불'
-							WHEN A.PAY_TYPE = 'N' THEN '후불'
-							ELSE ''
-						END
-				END AS PAY_TYPE_NAME
-			,	CASE
-					WHEN A.NOPAY_YN = 'Y' THEN 'F'
-					ELSE A.PAY_TYPE
-				END AS PAY_TYPE
-			,	DATE_FORMAT(A.REG_DT, '%Y-%m-%d') AS REG_DT
-			,	A.USE_CH_GRP_INFO
-			,	B.CNT
-			,	B.SUM_CH_GRP_AMOUNT
-		FROM	cm_console.CM_PROJECT A
-		INNER JOIN (SELECT @rownum:=0) T2
-		INNER JOIN (SELECT	A.CORP_ID
-						,	A.PROJECT_ID
-						,	ROUND(SUM(IFNULL(A.AMOUNT, 0))) SUM_CH_GRP_AMOUNT
-						,	COUNT(B.CH_GRP) CNT
-						FROM	(
-								SELECT	IFNULL(msg.AMOUNT, 0) AS AMOUNT
-								,		msg.CORP_ID
-								,		msg.PROJECT_ID
-								,		msg.FINAL_CH						
-								FROM 	cm.CM_MSG msg
-								WHERE	msg.YMD BETWEEN CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') 
-													AND LAST_DAY(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') )
-								AND		msg.CORP_ID =  #{corpId}
-								AND		msg.GW_RESULT_CODE = '10000'
-								AND		msg.CLI_RESULT_CODE = '10000'
-						) A
-						INNER JOIN cm_console.CM_CH_INFO B
-						ON		A.FINAL_CH = B.CH_NAME
-						WHERE	A.CORP_ID =  #{corpId}
-						<if test="role == 'ADMIN'.toString()">
-						AND		A.PROJECT_ID IN (	SELECT	A.PROJECT_ID
-													FROM	cm_console.CM_PROJECT_USER A
-													INNER JOIN cm_console.CM_USER B
-													WHERE A.USER_ID = B.USER_ID
-													AND B.DEL_YN = 'N'
-													AND B.USER_ID = #{userId} )
-						</if>
-						GROUP BY A.CORP_ID, A.PROJECT_ID) B
-		USING(PROJECT_ID, CORP_ID)
-		WHERE	A.USE_YN = 'Y'
-		AND		A.DEL_YN = 'N'
-		AND		A.CORP_ID = #{corpId}
-		<if test='pagingYn == "Y" '>
-		LIMIT #{offset}, #{listSize}
-		</if>
-	</select>
+    <select id="selectUseHistoryListCnt" resultType="int">
+        /* use.selectUseHistoryListCnt */
+        SELECT  COUNT(*) CNT
+        FROM    cm_console.CM_PROJECT A
+        INNER JOIN (SELECT  A.CORP_ID
+                        ,   A.PROJECT_ID
+                        ,   ROUND(SUM(IFNULL(A.AMOUNT, 0))) SUM_CH_GRP_AMOUNT
+                        ,   COUNT(B.CH_GRP) CNT
+                        FROM    (
+                                SELECT  IFNULL(msg.AMOUNT, 0) AS AMOUNT
+                                ,       msg.CORP_ID
+                                ,       msg.PROJECT_ID
+                                ,       msg.FINAL_CH                        
+                                FROM    cm.CM_MSG msg
+                                WHERE   msg.YMD BETWEEN CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') 
+                                                    AND LAST_DAY(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') )
+                                AND     msg.CORP_ID =  #{corpId}
+                                AND     msg.GW_RESULT_CODE = '10000'
+                                AND     msg.CLI_RESULT_CODE = '10000'
+                        ) A
+                        INNER JOIN cm_console.CM_CH_INFO B
+                        ON      A.FINAL_CH = B.CH_NAME
+                        WHERE   A.CORP_ID =  #{corpId}
+                        <if test="role == 'ADMIN'.toString()">
+                        AND     A.PROJECT_ID IN (   SELECT  A.PROJECT_ID
+                                                    FROM    cm_console.CM_PROJECT_USER A
+                                                    INNER JOIN cm_console.CM_USER B
+                                                    WHERE A.USER_ID = B.USER_ID
+                                                    AND B.DEL_YN = 'N'
+                                                    AND B.USER_ID = #{userId} )
+                        </if>
+                        GROUP BY A.CORP_ID, A.PROJECT_ID) B
+        USING(PROJECT_ID, CORP_ID)
+        WHERE   A.USE_YN = 'Y'
+        AND     A.DEL_YN = 'N'
+        AND     A.CORP_ID = #{corpId}
+    </select>
+    <select id="selectUseHistoryList" resultType="camel">
+        /* use.selectUseHistoryList */
+        SELECT  @ROWNUM := @ROWNUM + 1 AS ROWNUM
+            ,   A.CORP_ID
+            ,   A.PROJECT_ID
+            ,   A.PROJECT_NAME
+            ,   A.NOPAY_YN
+            ,   CASE
+                    WHEN A.NOPAY_YN = 'Y' THEN '무과금'
+                    ELSE
+                        CASE
+                            WHEN A.PAY_TYPE = 'Y' THEN '선불'
+                            WHEN A.PAY_TYPE = 'N' THEN '후불'
+                            ELSE ''
+                        END
+                END AS PAY_TYPE_NAME
+            ,   CASE
+                    WHEN A.NOPAY_YN = 'Y' THEN 'F'
+                    ELSE A.PAY_TYPE
+                END AS PAY_TYPE
+            ,   DATE_FORMAT(A.REG_DT, '%Y-%m-%d') AS REG_DT
+            ,   A.USE_CH_GRP_INFO
+            ,   B.CNT
+            ,   B.SUM_CH_GRP_AMOUNT
+        FROM    cm_console.CM_PROJECT A
+        INNER JOIN (SELECT @rownum:=0) T2
+        INNER JOIN (SELECT  A.CORP_ID
+                        ,   A.PROJECT_ID
+                        ,   ROUND(SUM(IFNULL(A.AMOUNT, 0))) SUM_CH_GRP_AMOUNT
+                        ,   COUNT(B.CH_GRP) CNT
+                        FROM    (
+                                SELECT  IFNULL(msg.AMOUNT, 0) AS AMOUNT
+                                ,       msg.CORP_ID
+                                ,       msg.PROJECT_ID
+                                ,       msg.FINAL_CH                        
+                                FROM    cm.CM_MSG msg
+                                WHERE   msg.YMD BETWEEN CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') 
+                                                    AND LAST_DAY(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01') )
+                                AND     msg.CORP_ID =  #{corpId}
+                                AND     msg.GW_RESULT_CODE = '10000'
+                                AND     msg.CLI_RESULT_CODE = '10000'
+                        ) A
+                        INNER JOIN cm_console.CM_CH_INFO B
+                        ON      A.FINAL_CH = B.CH_NAME
+                        WHERE   A.CORP_ID =  #{corpId}
+                        <if test="role == 'ADMIN'.toString()">
+                        AND     A.PROJECT_ID IN (   SELECT  A.PROJECT_ID
+                                                    FROM    cm_console.CM_PROJECT_USER A
+                                                    INNER JOIN cm_console.CM_USER B
+                                                    WHERE A.USER_ID = B.USER_ID
+                                                    AND B.DEL_YN = 'N'
+                                                    AND B.USER_ID = #{userId} )
+                        </if>
+                        GROUP BY A.CORP_ID, A.PROJECT_ID) B
+        USING(PROJECT_ID, CORP_ID)
+        WHERE   A.USE_YN = 'Y'
+        AND     A.DEL_YN = 'N'
+        AND     A.CORP_ID = #{corpId}
+        <if test='pagingYn == "Y" '>
+        LIMIT #{offset}, #{listSize}
+        </if>
+    </select>
 
-	<select id="selectIsExistsCorpProductUnit" parameterType="string" resultType="int">
-		/* use.selectIsExistsCorpProductUnit */
-		SELECT EXISTS (
-			SELECT	1
-			FROM	cm_console.CM_CORP_PRODUCT_UNIT
-			WHERE CORP_ID = #{corpId}
-			LIMIT 1
-		)	AS ISEXISTS
-	</select>
+    <select id="selectIsExistsCorpProductUnit" parameterType="string" resultType="int">
+        /* use.selectIsExistsCorpProductUnit */
+        SELECT EXISTS (
+            SELECT  1
+            FROM    cm_console.CM_CORP_PRODUCT_UNIT
+            WHERE CORP_ID = #{corpId}
+            LIMIT 1
+        )   AS ISEXISTS
+    </select>
 
-	<select id="selectCorpProductUnit" parameterType="string" resultType="camel">
-		/* use.selectCorpProductUnit */
-		SELECT	A.SMART_CH_PRODUCT_YN
-		,		(SELECT CH_NAME FROM cm_console.CM_CH_INFO WHERE A.CH = CH) AS CH_NAME
-		,		A.CH
-		,		A.PRODUCT_CODE
-		,		A.PRODUCT_NAME
-		<choose>
-		<when test="isExists == '1'.toString()">
-		,		B.PRE_FEE AS PREE_FEE
-		,		B.POST_FEE_INFO AS TOBE_FEE_INFO
-		</when>
-		<otherwise>
-		,		A.PRE_FEE AS PREE_FEE
-		,		A.POST_FEE_INFO AS TOBE_FEE_INFO
-		</otherwise>
-		</choose>
-		FROM cm_bo.CM_PRODUCT_UNIT A
-		<if test="isExists == '1'.toString()">
-		INNER JOIN cm_console.CM_CORP_PRODUCT_UNIT B
-			ON A.PRODUCT_CODE = B.PRODUCT_CODE
-		</if>
-		WHERE	1=1
-		<if test="isExists == '1'.toString()">
-		AND		B.CORP_ID = #{corpId}
-		</if>
-		ORDER BY (
-			CASE
-				WHEN A.PRODUCT_CODE LIKE '%SMS%' THEN 1
-				WHEN A.PRODUCT_CODE LIKE '%LMS%' THEN 2
-				WHEN A.PRODUCT_CODE LIKE '%MMS%' THEN 3
-				ELSE 4
-			END
-		), A.PRODUCT_CODE ASC
-	</select>
+    <select id="selectCorpProductUnit" parameterType="string" resultType="camel">
+        /* use.selectCorpProductUnit */
+        SELECT  A.SMART_CH_PRODUCT_YN
+        ,       (SELECT CH_NAME FROM cm_console.CM_CH_INFO WHERE A.CH = CH) AS CH_NAME
+        ,       A.CH
+        ,       A.PRODUCT_CODE
+        ,       A.PRODUCT_NAME
+        <choose>
+        <when test="isExists == '1'.toString()">
+        ,       B.PRE_FEE AS PREE_FEE
+        ,       B.POST_FEE_INFO AS TOBE_FEE_INFO
+        </when>
+        <otherwise>
+        ,       A.PRE_FEE AS PREE_FEE
+        ,       A.POST_FEE_INFO AS TOBE_FEE_INFO
+        </otherwise>
+        </choose>
+        FROM cm_bo.CM_PRODUCT_UNIT A
+        <if test="isExists == '1'.toString()">
+        INNER JOIN cm_console.CM_CORP_PRODUCT_UNIT B
+            ON A.PRODUCT_CODE = B.PRODUCT_CODE
+        </if>
+        WHERE   1=1
+        <if test="isExists == '1'.toString()">
+        AND     B.CORP_ID = #{corpId}
+        </if>
+        ORDER BY (
+            CASE
+                WHEN A.PRODUCT_CODE LIKE '%SMS%' THEN 1
+                WHEN A.PRODUCT_CODE LIKE '%LMS%' THEN 2
+                WHEN A.PRODUCT_CODE LIKE '%MMS%' THEN 3
+                ELSE 4
+            END
+        ), A.PRODUCT_CODE ASC
+    </select>
 
-	<select id="selectSixMonthUseCnt" resultType="camel">
-		 /* use.selectSixMonthUseCnt 6개월간 이용건수 조회 */
-        SELECT DATE_FORMAT(DATE_ADD(NOW(), INTERVAL A.a-6 MONTH), '%Y-%m') AS YM
+    <select id="selectSixMonthUseCnt" resultType="camel">
+         /* use.selectSixMonthUseCnt 6개월간 이용건수 조회 */
+        SELECT DATE_FORMAT(DATE_ADD(CONCAT(#{searchStartDate},'-01'), INTERVAL A.a+(4*B.a) MONTH), '%Y-%m') AS YM
              , (SELECT SUM(SUCC_CNT) 
-             	FROM cm.CM_STAT_CH_DAY 
-             	WHERE YMD BETWEEN DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL A.a-6 MONTH), '%Y-%m-01') 
-             				AND DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL A.a-6 MONTH), '%Y-%m-31') 
-             	AND CORP_ID = #{corpId}
-             	AND CH != 'MO'
-             	) AS CNT
-          FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) AS A
-	</select>
+                FROM cm.CM_STAT_CH_DAY 
+                WHERE YMD BETWEEN DATE_FORMAT(DATE_ADD(CONCAT(#{searchStartDate},'-01'), INTERVAL A.a+(4*B.a) MONTH), '%Y-%m-01') 
+                            AND DATE_FORMAT(DATE_ADD(CONCAT(#{searchStartDate},'-01'), INTERVAL A.a+(4*B.a) MONTH), '%Y-%m-31') 
+                AND CORP_ID = #{corpId}
+                <if test="checkedChannel.isEmpty()">
+                AND PRODUCT_CODE = ''
+                </if>
+                <foreach item="item" index="index" collection="checkedChannel" open="AND PRODUCT_CODE IN (" separator="," close=")">
+                    <if test="item == 'SMS'.toString()">
+                    'SMS','LMS','MMS'
+                    </if>
+                    <if test="item == 'RCS'.toString()">
+                    'RTPL','RSMS','RLMS','RMMS'
+                    </if>
+                    <if test="item == 'KAKAO'.toString()">
+                    'KALT1','KFRT1','KFRM2','KFRM3'
+                    </if>
+                    <if test="item == 'PUSH'.toString()">
+                    'PUSH'
+                    </if>
+                </foreach>
+                <if test="searchType == 'PROJECT'.toString()">
+                    <if test="projectItems.isEmpty()">
+                    AND PROJECT_ID = ''
+                    </if>
+                    <foreach item="item" collection="projectItems" open="AND PROJECT_ID IN (" separator="," close=")">
+                    #{item.projectId}
+                    </foreach>
+                </if>
+                ) AS CNT 
+          FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS A
+             , (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2) AS B
+         WHERE DATE_ADD(CONCAT(#{searchStartDate},'-01'), INTERVAL A.a+(4*B.a) MONTH) BETWEEN CONCAT(#{searchStartDate},'-01') AND CONCAT(#{searchEndDate},'-31')
+         ORDER BY 1
+    </select>
 
-	<select id="selectSixMonthChanUseCnt" resultType="camel">
-		/* use.selectSixMonthChanUseCnt 6개월간 채널별 이용건수 조회 */
-		SELECT	CH
-			,	SUM(SUCC_CNT) AS CNT
-		FROM	cm.CM_STAT_CH_DAY
-		WHERE	CORP_ID = #{corpId}
-        AND     YMD BETWEEN    DATE_FORMAT(NOW()-INTERVAL 6 MONTH, '%Y-%m-01') AND NOW()
-        AND     CH > ''
-        AND		CH != 'MO'
-		GROUP BY CH
-		ORDER BY 2 DESC, 1
-	</select>
+    <select id="selectSixMonthChanUseCnt" resultType="camel">
+        /* use.selectSixMonthChanUseCnt 6개월간 채널별 이용건수 조회 */
+        SELECT  CH
+            ,   SUM(SUCC_CNT) AS CNT
+        FROM    cm.CM_STAT_CH_DAY
+        WHERE   CORP_ID = #{corpId}
+        AND     YMD BETWEEN    CONCAT(#{searchStartDate},'-01') AND CONCAT(#{searchEndDate},'-31')
+        <if test="checkedChannel.isEmpty()">
+        AND PRODUCT_CODE = ''
+        </if>
+        <foreach item="item" index="index" collection="checkedChannel" open="AND PRODUCT_CODE IN (" separator="," close=")">
+            <if test="item == 'SMS'.toString()">
+            'SMS','LMS','MMS'
+            </if>
+            <if test="item == 'RCS'.toString()">
+            'RTPL','RSMS','RLMS','RMMS'
+            </if>
+            <if test="item == 'KAKAO'.toString()">
+            'KALT1','KFRT1','KFRM2','KFRM3'
+            </if>
+            <if test="item == 'PUSH'.toString()">
+            'PUSH'
+            </if>
+        </foreach>
+        <if test="searchType == 'PROJECT'.toString()">
+            <if test="projectItems.isEmpty()">
+            AND PROJECT_ID = ''
+            </if>
+            <foreach item="item" collection="projectItems" open="AND PROJECT_ID IN (" separator="," close=")">
+            #{item.projectId}
+            </foreach>
+        </if>
+        GROUP BY CH
+        ORDER BY 2 DESC, 1
+    </select>
 
-	<select id="selectSixMonthPrePayAmt" resultType="camel">
-		/* use.selectSixMonthPrePayAmt 최근 6개월간 선불결제금액 조회 */
-		SELECT	DATE_FORMAT(REG_DT, '%Y-%m') AS PAY_MONTH
-			,	COUNT(1) AS PAY_CNT
-			,	SUM(CASH_CHARG_AMOUNT) AS PREPAYMENT_AMOUNT
-		FROM	cm_console.CM_WEB_CASH_HIST
-		WHERE	CORP_ID = #{corpId}
+    <select id="selectSixMonthPrePayAmt" resultType="camel">
+        /* use.selectSixMonthPrePayAmt 최근 6개월간 선불결제금액 조회 */
+        SELECT  DATE_FORMAT(REG_DT, '%Y-%m') AS PAY_MONTH
+            ,   COUNT(1) AS PAY_CNT
+            ,   SUM(CASH_CHARG_AMOUNT) AS PREPAYMENT_AMOUNT
+        FROM    cm_console.CM_WEB_CASH_HIST
+        WHERE   CORP_ID = #{corpId}
         AND     REG_DT BETWEEN    DATE_FORMAT(NOW()-INTERVAL 6 MONTH, '%Y-%m-01') AND NOW()
-		AND		STATUS = '1'
-		GROUP BY PAY_MONTH DESC
-	</select>
+        AND     STATUS = '1'
+        GROUP BY PAY_MONTH DESC
+    </select>
 
-	<select id="selectSixMonthDefPayAmt" resultType="camel">
-		/* use.selectSixMonthDefPayAmt 전월부터 6개월간 후불청구금액 조회 */
-		SELECT		CONCAT(SUBSTRING(A.YM, 1, 4), '-', SUBSTRING(A.YM, 5, 6)) AS YM
-		,			A.SERVICE_ID
-		,			SUM(A.SUCC_CNT) AS CALC_AMOUNT
-		FROM		cm_console.CM_CAL_HIST AS A
-		,			cm_console.CM_CORP AS B
-		,			(
-						SELECT NOPAY_YN,CORP_ID,SERVICE_ID
-						FROM cm_console.CM_PROJECT
-						GROUP BY NOPAY_YN,CORP_ID,SERVICE_ID
-					) AS C
-		,			(SELECT @ROWNUM:=0) CNT
-		WHERE 	1=1
-		AND		A.CORP_ID = #{corpId}
-		AND		A.CORP_ID=B.CORP_ID
-		AND		C.NOPAY_YN = 'N'
-		AND	A.YM BETWEEN    DATE_FORMAT(NOW()-INTERVAL 6 MONTH, '%Y%m') AND NOW()
-        GROUP BY A.YM,A.CORP_ID,A.SERVICE_ID
-		ORDER BY A.YM DESC
-	</select>
-	
-	<select id="selectUseHistProductUnit" resultType="camel">
-	/* use.selectUseHistProductUnit */
-		SELECT	A.PRODUCT_CODE
-		,		IFNULL(B.PRE_FEE, A.PRE_FEE)  AS PRE_FEE 
-		,		IFNULL(B.POST_FEE_INFO, A.POST_FEE_INFO)  AS POST_FEE_INFO
-		FROM cm_bo.CM_PRODUCT_UNIT A
-		LEFT OUTER JOIN ( 
-			SELECT	ccpu.PRODUCT_CODE
-			,		ccpu.PRE_FEE
-			,		ccpu.POST_FEE_INFO
-			FROM CM_CORP_PRODUCT_UNIT ccpu
-			WHERE ccpu.CORP_ID  = #{corpId}
-		) B
-			ON A.PRODUCT_CODE = B.PRODUCT_CODE 
-	</select>
-	
-	<select id="selectUseHistFromCmStatChDay" resultType="camel">
-	/* use.selectUseHistFromCmStatChDay */
-		select	B.PROJECT_NAME 
-		,		B.USE_CH_GRP_INFO 
-		,		CASE WHEN B.PAY_TYPE = 'PRE' THEN '선불' WHEN B.PAY_TYPE = 'POST' THEN '후불' END AS PAY_TYPE_NAME
-		,		B.PAY_TYPE
-		,		A.CH
-		,		A.PRODUCT_CODE 
-		,		DATE_FORMAT(B.REG_DT, '%Y-%m-%d') AS REG_DT
-		,		A.SUCC_CNT
-		from (
-			SELECT	PROJECT_ID
-			,		CH
-			,		SUM(SUCC_CNT) AS SUCC_CNT 
-			,		PRODUCT_CODE 
-			FROM cm.CM_STAT_CH_DAY cscm 
-			WHERE cscm.CORP_ID  = #{corpId}
-			AND cscm.YMD BETWEEN	concat(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6)), '-01') 
-								AND	CONCAT(last_day(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01')))
-			AND SUCC_CNT != 0
-			GROUP BY cscm.PROJECT_ID, cscm.CH, cscm.PRODUCT_CODE 
-		) A
-		INNER JOIN cm_console.CM_PROJECT B 
-			ON A.PROJECT_ID = B.PROJECT_ID 
-<!-- 		<if test='pagingYn == "Y" '> -->
-<!-- 		LIMIT #{offset}, #{listSize} -->
-<!-- 		</if> -->
-	</select>
-	
-	<select id="selectUseHistFromCmStatChDayCnt" resultType="int">
-	/* use.selectUseHistFromCmStatChDayCnt */
-		select	COUNT(1) as CNT
-		from (
-			SELECT	PROJECT_ID
-			,		CH 
-			,		SUM(SUCC_CNT) AS SUCC_CNT
-			,		PRODUCT_CODE 
-			FROM cm.CM_STAT_CH_DAY cscm 
-			WHERE cscm.CORP_ID  = #{corpId}
-			AND cscm.YMD BETWEEN	concat(#{searchMonth}, '-01') 
-								AND	CONCAT(last_day(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01')))
-			AND SUCC_CNT != 0
-			GROUP BY cscm.PROJECT_ID, cscm.CH, cscm.PRODUCT_CODE 
-		) A
-		INNER JOIN cm_console.CM_PROJECT B 
-			ON A.PROJECT_ID = B.PROJECT_ID 
-	</select>
-	
+    <select id="selectSixMonthDefPayAmt" resultType="camel">
+        /* use.selectSixMonthDefPayAmt 전월부터 6개월간 후불청구금액 조회 */
+        SELECT      CONCAT(SUBSTRING(A.YM, 1, 4), '-', SUBSTRING(A.YM, 5, 6)) AS YM
+        ,           A.BILL_ID
+        ,           SUM(A.CALC_CNT) AS CALC_AMOUNT
+        FROM        cm_console.CM_CAL_HIST AS A
+        ,           cm_console.CM_CORP AS B
+        ,           (
+                        SELECT NOPAY_YN,CORP_ID,BILL_ID
+                        FROM cm_console.CM_PROJECT
+                        GROUP BY NOPAY_YN,CORP_ID,BILL_ID
+                    ) AS C
+        ,           (SELECT @ROWNUM:=0) CNT
+        WHERE   1=1
+        AND     A.CORP_ID = #{corpId}
+        AND     A.CORP_ID=B.CORP_ID
+        AND     C.NOPAY_YN = 'N'
+        AND A.YM BETWEEN    DATE_FORMAT(NOW()-INTERVAL 6 MONTH, '%Y%m') AND NOW()
+        GROUP BY A.YM,A.CORP_ID,A.BILL_ID
+        ORDER BY A.YM DESC
+    </select>
+    
+    <select id="selectUseHistProductUnit" resultType="camel">
+    /* use.selectUseHistProductUnit */
+        SELECT  A.PRODUCT_CODE
+        ,       IFNULL(B.PRE_FEE, A.PRE_FEE)  AS PRE_FEE 
+        ,       IFNULL(B.POST_FEE_INFO, A.POST_FEE_INFO)  AS POST_FEE_INFO
+        FROM cm_bo.CM_PRODUCT_UNIT A
+        LEFT OUTER JOIN ( 
+            SELECT  ccpu.PRODUCT_CODE
+            ,       ccpu.PRE_FEE
+            ,       ccpu.POST_FEE_INFO
+            FROM CM_CORP_PRODUCT_UNIT ccpu
+            WHERE ccpu.CORP_ID  = #{corpId}
+        ) B
+            ON A.PRODUCT_CODE = B.PRODUCT_CODE 
+    </select>
+    
+    <select id="selectUseHistFromCmStatChDay" resultType="camel">
+    /* use.selectUseHistFromCmStatChDay */
+        select  B.PROJECT_NAME 
+        ,       B.USE_CH_GRP_INFO 
+        ,       CASE WHEN B.PAY_TYPE = 'PRE' THEN '선불' WHEN B.PAY_TYPE = 'POST' THEN '후불' END AS PAY_TYPE_NAME
+        ,       B.PAY_TYPE
+        ,       A.CH
+        ,       A.PRODUCT_CODE 
+        ,       DATE_FORMAT(B.REG_DT, '%Y-%m-%d') AS REG_DT
+        ,       A.SUCC_CNT
+        from (
+            SELECT  PROJECT_ID
+            ,       CH
+            ,       SUM(SUCC_CNT) AS SUCC_CNT 
+            ,       PRODUCT_CODE 
+            FROM cm.CM_STAT_CH_DAY cscm 
+            WHERE cscm.CORP_ID  = #{corpId}
+            AND cscm.YMD BETWEEN    concat(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6)), '-01') 
+                                AND CONCAT(last_day(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01')))
+            AND SUCC_CNT != 0
+            GROUP BY cscm.PROJECT_ID, cscm.CH, cscm.PRODUCT_CODE 
+        ) A
+        INNER JOIN cm_console.CM_PROJECT B 
+            ON A.PROJECT_ID = B.PROJECT_ID 
+<!--        <if test='pagingYn == "Y" '> -->
+<!--        LIMIT #{offset}, #{listSize} -->
+<!--        </if> -->
+    </select>
+    
+    <select id="selectUseHistFromCmStatChDayCnt" resultType="int">
+    /* use.selectUseHistFromCmStatChDayCnt */
+        select  COUNT(1) as CNT
+        from (
+            SELECT  PROJECT_ID
+            ,       CH 
+            ,       SUM(SUCC_CNT) AS SUCC_CNT
+            ,       PRODUCT_CODE 
+            FROM cm.CM_STAT_CH_DAY cscm 
+            WHERE cscm.CORP_ID  = #{corpId}
+            AND cscm.YMD BETWEEN    concat(#{searchMonth}, '-01') 
+                                AND CONCAT(last_day(CONCAT(SUBSTRING(#{searchMonth}, 1, 4), '-', SUBSTRING(#{searchMonth}, 5, 6), '-01')))
+            AND SUCC_CNT != 0
+            GROUP BY cscm.PROJECT_ID, cscm.CH, cscm.PRODUCT_CODE 
+        ) A
+        INNER JOIN cm_console.CM_PROJECT B 
+            ON A.PROJECT_ID = B.PROJECT_ID 
+    </select>
+    
+    <select id="selectUseDetailList" resultType="camel">
+        /* use.selectUseDetailList */
+        <if test="searchDateType == 'DAY'">
+        SELECT DATE_FORMAT(A.YMD, '%Y.%m.%d') AS YMD 
+        </if>
+        <if test="searchDateType == 'MONTH'">
+        SELECT DATE_FORMAT(A.YMD, '%Y.%m') AS YMD 
+        </if>
+        <if test="searchType == 'corp'">
+             , B.CORP_NAME  AS PROJECT_NAME 
+        </if>
+        <if test="searchType == 'project'">
+             , B.PROJECT_NAME 
+        </if>
+             , SUM(SUCC_CNT)                                  AS SUCC_CNT
+             , SUM(IF(A.PRODUCT_CODE = 'SMS', SUCC_CNT, 0))   AS SMS_CNT
+             , SUM(IF(A.PRODUCT_CODE = 'LMS', SUCC_CNT, 0))   AS LMS_CNT
+             , SUM(IF(A.PRODUCT_CODE = 'MMS', SUCC_CNT, 0))   AS MMS_CNT
+             , SUM(IF(A.PRODUCT_CODE = 'RTPL', SUCC_CNT, 0))  AS RTPL_CNT
+             , SUM(IF(A.PRODUCT_CODE = 'RSMS', SUCC_CNT, 0))  AS RSMS_CNT
+             , SUM(IF(A.PRODUCT_CODE = 'RLMS', SUCC_CNT, 0))  AS RLMS_CNT
+             , SUM(IF(A.PRODUCT_CODE = 'RMMS', SUCC_CNT, 0))  AS RMMS_CNT
+             , SUM(IF(A.PRODUCT_CODE = 'KALT1', SUCC_CNT, 0)) AS KALT1_CNT
+             , SUM(IF(A.PRODUCT_CODE = 'KFRT1', SUCC_CNT, 0)) AS KFRT1_CNT
+             , SUM(IF(A.PRODUCT_CODE = 'KFRM2', SUCC_CNT, 0)) AS KFRM2_CNT
+             , SUM(IF(A.PRODUCT_CODE = 'KFRM3', SUCC_CNT, 0)) AS KFRM3_CNT
+             , SUM(IF(A.PRODUCT_CODE = 'PUSH', SUCC_CNT, 0))  AS PUSH_CNT
+             , SUM(SUCC_CNT * PRE_FEE)                                  AS SUCC_AMT
+             , SUM(IF(A.PRODUCT_CODE = 'SMS', SUCC_CNT * PRE_FEE, 0))   AS SMS_AMT
+             , SUM(IF(A.PRODUCT_CODE = 'LMS', SUCC_CNT * PRE_FEE, 0))   AS LMS_AMT
+             , SUM(IF(A.PRODUCT_CODE = 'MMS', SUCC_CNT * PRE_FEE, 0))   AS MMS_AMT
+             , SUM(IF(A.PRODUCT_CODE = 'RTPL', SUCC_CNT * PRE_FEE, 0))  AS RTPL_AMT
+             , SUM(IF(A.PRODUCT_CODE = 'RSMS', SUCC_CNT * PRE_FEE, 0))  AS RSMS_AMT
+             , SUM(IF(A.PRODUCT_CODE = 'RLMS', SUCC_CNT * PRE_FEE, 0))  AS RLMS_AMT
+             , SUM(IF(A.PRODUCT_CODE = 'RMMS', SUCC_CNT * PRE_FEE, 0))  AS RMMS_AMT
+             , SUM(IF(A.PRODUCT_CODE = 'KALT1', SUCC_CNT * PRE_FEE, 0)) AS KALT1_AMT
+             , SUM(IF(A.PRODUCT_CODE = 'KFRT1', SUCC_CNT * PRE_FEE, 0)) AS KFRT1_AMT
+             , SUM(IF(A.PRODUCT_CODE = 'KFRM2', SUCC_CNT * PRE_FEE, 0)) AS KFRM2_AMT
+             , SUM(IF(A.PRODUCT_CODE = 'KFRM3', SUCC_CNT * PRE_FEE, 0)) AS KFRM3_AMT
+             , SUM(IF(A.PRODUCT_CODE = 'PUSH', SUCC_CNT * PRE_FEE, 0))  AS PUSH_AMT
+          FROM cm.CM_STAT_CH_DAY     A
+        <if test="searchType == 'corp'">
+             , (SELECT corp_name FROM cm_console.CM_CORP WHERE CORP_ID = #{corpId}) AS B
+        </if>
+        <if test="searchType == 'project'">
+             , cm_console.CM_PROJECT B
+        </if>
+             , (SELECT A.PRODUCT_CODE
+                     , TRUNCATE(IFNULL(B.PRE_FEE, A.PRE_FEE),2)  AS PRE_FEE 
+                  FROM cm_bo.CM_PRODUCT_UNIT A
+                  LEFT JOIN cm_console.CM_CORP_PRODUCT_UNIT B
+                    ON B.CORP_ID  = #{corpId} 
+                   AND A.PRODUCT_CODE = B.PRODUCT_CODE) C
+         WHERE A.PRODUCT_CODE = C.PRODUCT_CODE 
+           AND A.PRODUCT_CODE IN ('SMS','LMS','MMS','RTPL','RSMS','RLMS','RMMS','KALT1','KFRT1','KFRM2','KFRM3','PUSH')
+           AND A.CORP_ID      = #{corpId} 
+        <if test="searchType == 'project'">
+           AND B.CORP_ID      = #{corpId}
+           AND A.PROJECT_ID   = B.PROJECT_ID
+        </if>
+        <if test="searchDateType == 'DAY'">
+           AND A.YMD BETWEEN #{searchStartDate} AND #{searchEndDate}
+         GROUP BY DATE_FORMAT(A.YMD, '%Y.%m.%d')
+        </if>
+        <if test="searchDateType == 'MONTH'">
+           AND A.YMD BETWEEN CONCAT(#{searchStartMonth},'-01') AND CONCAT(#{searchEndMonth}, '-31')
+         GROUP BY DATE_FORMAT(A.YMD, '%Y.%m')
+        </if>
+        <if test="searchType == 'project'"> 
+             , B.PROJECT_NAME 
+        </if>
+    </select>
+    
 </mapper>

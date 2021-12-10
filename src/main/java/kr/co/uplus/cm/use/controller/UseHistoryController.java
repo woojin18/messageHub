@@ -181,5 +181,57 @@ public class UseHistoryController {
 		return rtn;
 	}
 	
+	/**
+	 * 이용상세 목록
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/selectUseDetailList")
+	public RestResult<?> selectUseDetailList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = useHistorySvc.selectUseDetailList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{} Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
+
+	/**
+	 * 이용상세 목록 엑셀다운로드
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	@PostMapping(path = "/excelDownloadUseDetailList")
+	public ModelAndView excelDownloadStatisList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) throws Exception {
+		List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("sheetTitle", "이용상세");
+		map.put("colLabels", new String[] { "날짜", "사업자/프로젝트", "합계 건수", "SMS 건수", "LMS 건수", "MMS 건수", "RCS 템플릿 건수", "RCS SMS 건수", "RCS LMS 건수", "RCS MMS 건수", "알림톡 건수", "친구톡 Text 건수", "친구톡 이미지 건수", "친구톡 와이드 건수", "PUSH 건수", "합계 금액", "SMS 금액", "LMS 금액", "MMS 금액", "RCS 템플릿 금액", "RCS SMS 금액", "RCS LMS 금액", "RCS MMS 금액", "알림톡 금액", "친구톡 Text 금액", "친구톡 이미지 금액", "친구톡 와이드 금액", "PUSH 금액"});
+		map.put("colIds", new String[] {"ymd", "projectName", "succCnt", "smsCnt", "lmsCnt", "mmsCnt", "rtplCnt", "rsmsCnt", "rlmsCnt", "rmmsCnt", "kalt1Cnt", "kfrt1Cnt", "kfrm2Cnt", "kfrm3Cnt", "pushCnt", "succAmt", "smsAmt", "lmsAmt", "mmsAmt", "rtplAmt", "rsmsAmt", "rlmsAmt", "rmmsAmt", "kalt1Amt", "kfrt1Amt", "kfrm2Amt", "kfrm3Amt", "pushAmt"});
+		map.put("numColIds", new String[] {});
+		map.put("figureColIds", new String[] {});
+		map.put("colDataList", useHistorySvc.selectUseDetailList(params).getData());
+		sheetList.add(map);
+
+		ModelAndView model = new ModelAndView("commonXlsxView");
+		model.addObject("excelFileName", "useDetailList"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
+		model.addObject("sheetList", sheetList);
+
+		return model;
+	}
+	
 }
 
