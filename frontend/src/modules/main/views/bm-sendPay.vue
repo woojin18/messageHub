@@ -36,8 +36,8 @@
               <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
                 <template v-for="smsPayInfo in prdUnitInfo.sms">
                   <tr v-for="(feeData, idx) in smsPayInfo.postFeeData" :key="smsPayInfo.productCode+idx">
-                    <td v-if="idx == 0" rowspan="3">{{smsPayInfo.productName}}</td>
-                    <td v-if="idx == 0" rowspan="3">{{smsPayInfo.preFee | formatPrice}} 원</td>
+                    <td v-if="idx == 0" :rowspan="smsPayInfo.postFeeData.length">{{smsPayInfo.productName}}</td>
+                    <td v-if="idx == 0" :rowspan="smsPayInfo.postFeeData.length">{{smsPayInfo.preFee | formatPrice}} 원</td>
                     <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
                     <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td>
                   </tr>
@@ -73,8 +73,8 @@
               <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
                 <template v-for="rcsPayInfo in prdUnitInfo.rcs">
                   <tr v-for="(feeData, idx) in rcsPayInfo.postFeeData" :key="rcsPayInfo.productCode+idx">
-                    <td v-if="idx == 0" rowspan="3">{{rcsPayInfo.productName}}</td>
-                    <td v-if="idx == 0" rowspan="3">{{rcsPayInfo.preFee | formatPrice}} 원</td>
+                    <td v-if="idx == 0" :rowspan="rcsPayInfo.postFeeData.length">{{rcsPayInfo.productName}}</td>
+                    <td v-if="idx == 0" :rowspan="rcsPayInfo.postFeeData.length">{{rcsPayInfo.preFee | formatPrice}} 원</td>
                     <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
                     <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td>
                   </tr>
@@ -110,8 +110,8 @@
               <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
                 <template v-for="kkoPayInfo in prdUnitInfo.kko">
                   <tr v-for="(feeData, idx) in kkoPayInfo.postFeeData" :key="kkoPayInfo.productCode+idx">
-                    <td v-if="idx == 0" rowspan="3">{{kkoPayInfo.productName}}</td>
-                    <td v-if="idx == 0" rowspan="3">{{kkoPayInfo.preFee | formatPrice}} 원</td>
+                    <td v-if="idx == 0" :rowspan="kkoPayInfo.postFeeData.length">{{kkoPayInfo.productName}}</td>
+                    <td v-if="idx == 0" :rowspan="kkoPayInfo.postFeeData.length">{{kkoPayInfo.preFee | formatPrice}} 원</td>
                     <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
                     <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td>
                   </tr>
@@ -146,8 +146,8 @@
               <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
                 <template v-for="pushPayInfo in prdUnitInfo.push">
                   <tr v-for="(feeData, idx) in pushPayInfo.postFeeData" :key="pushPayInfo.productCode + idx">
-                    <td v-if="idx == 0" rowspan="3">{{pushPayInfo.productName}}</td>
-                    <td v-if="idx == 0" rowspan="3">{{pushPayInfo.preFee | formatPrice}} 원</td>
+                    <td v-if="idx == 0" :rowspan="pushPayInfo.postFeeData.length">{{pushPayInfo.productName}}</td>
+                    <td v-if="idx == 0" :rowspan="pushPayInfo.postFeeData.length">{{pushPayInfo.preFee | formatPrice}} 원</td>
                     <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
                     <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td>
                   </tr>
