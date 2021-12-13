@@ -49,6 +49,15 @@
             </Policies>
         </RollingFile>
 
+        <RollingFile name="trace_file" fileName="${log-path}/trace/${hostName}-trace.log" filePattern="${log-path}/trace/%d{yyyyMMdd}/${hostName}-trace-%i.log">
+            <JsonLayout complete="false" compact="true" eventEol="true" stacktraceAsString="false" objectMessageAsJsonObject="true" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500MB" /> <!-- 이 용량이 초과되면 아래 DefaultRolloverStrategy 정책만큼 넘버링 -->
+                <TimeBasedTriggeringPolicy /><!-- Rotated everyday -->
+            </Policies>
+            <DefaultRolloverStrategy max="500" fileIndex="min" />
+        </RollingFile>
+
     </appenders>
 
     <loggers>
@@ -59,6 +68,10 @@
 
         <logger name="kr.co.uplus.rcs.common.cmd.HealthCheckCmd" >
             <appender-ref ref="alive_file" />
+        </logger>
+        
+        <logger name="kr.co.uplus.cm.common.jwt.JwtExceptionFilter" level="info">
+            <appender-ref ref="trace_file" />
         </logger>
 
         <logger name="org.apache" level="info" />

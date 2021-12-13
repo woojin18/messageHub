@@ -40,7 +40,6 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 		String activityCd = request.getHeader("activity");
 		String userId = request.getHeader("uUserId");
 		String boUserId = request.getHeader("boUserId");
-//		log.info("권한 체크 : connUrl:" + connUrl + ",svcTypeCd:" + svcTypeCd + ",roleCd:"+roleCd + ",menusCd:" + menusCd + ",activityCd:" + activityCd);
 		if (!StringUtils.isEmpty(svcTypeCd) && !StringUtils.isEmpty(roleCd) && !StringUtils.isEmpty(menusCd) && !StringUtils.isEmpty(activityCd)) {
 			Map<String, Menu> menus = authService.getMenusByRole(svcTypeCd, roleCd);
 			if (menus == null) {
@@ -59,14 +58,14 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 				WebUtils.responseJson(response, Const.NO_ROLE);
 				return;
 			}
-			log.info("로그 저장 : connUrl:" + connUrl + ",svcTypeCd:" + svcTypeCd + ",roleCd:"+roleCd + ",menusCd:" + menusCd + ",activityCd:" + activityCd + ",uUserId:" + userId+ ",boUserId:" + boUserId);
-			Map params = new HashMap();
-			params.put("userId", userId);
-			params.put("boUserId", boUserId);
-			params.put("connUrl", connUrl);
-			params.put("menusCd", menusCd);
-			params.put("activityCd", activityCd);
-			authService.insertConsoleProcLog(params);
+			log.info("USER_ID : " + userId + ", BO_USER_ID : " + boUserId + ", CONN_URL : " + connUrl + ", MENUS_CD : " + menusCd + ", ACTIVITY_CD : " + activityCd);
+//			Map params = new HashMap();
+//			params.put("userId", userId);
+//			params.put("boUserId", boUserId);
+//			params.put("connUrl", connUrl);
+//			params.put("menusCd", menusCd);
+//			params.put("activityCd", activityCd);
+//			authService.insertConsoleProcLog(params);
 		}
 		try {
 			filterChain.doFilter(request, response);
