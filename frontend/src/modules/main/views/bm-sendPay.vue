@@ -17,29 +17,29 @@
             <p class="tableText">VAT 별도</p>
             <table class="user_table_skin1">
               <colgroup>
-                <col style="width:25%">
-                <col style="width:25%">
-                <col style="width:25%">
+                <col style="width:50%">
+                <col style="width:50%">
+                <!-- <col style="width:25%"> -->
                 <col>
               </colgroup>
               <thead>
                 <tr>
-                  <th rowspan="2">상품명</th>
-                  <th rowspan="2">선불 수신 건별 요금<br>(VAT별도)</th>
-                  <th colspan="2" class="end">후불요금</th>
+                  <th>상품명</th>
+                  <th class="end">건별 요금<br>(VAT별도)</th>
+                  <!-- <th colspan="2" class="end">후불요금</th> -->
                 </tr>
-                <tr style="border-top: 1px solid #D5D5D5;">
+                <!-- <tr style="border-top: 1px solid #D5D5D5;">
                   <th>월 수신건</th>
                   <th class="end">후불 수신 건별 요금<br>(VAT별도)</th>
-                </tr>
+                </tr> -->
               </thead>
               <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
                 <template v-for="smsPayInfo in prdUnitInfo.sms">
                   <tr v-for="(feeData, idx) in smsPayInfo.postFeeData" :key="smsPayInfo.productCode+idx">
                     <td v-if="idx == 0" :rowspan="smsPayInfo.postFeeData.length">{{smsPayInfo.productName}}</td>
-                    <td v-if="idx == 0" :rowspan="smsPayInfo.postFeeData.length">{{smsPayInfo.preFee | formatPrice}} 원</td>
-                    <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
-                    <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td>
+                    <td v-if="idx == 0" :rowspan="smsPayInfo.postFeeData.length" class="end">{{smsPayInfo.preFee | formatPrice}} 원</td>
+                    <!-- <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
+                    <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td> -->
                   </tr>
                 </template>
               </tbody>
@@ -54,29 +54,29 @@
             <p class="tableText">VAT 별도</p>
             <table class="user_table_skin1">
               <colgroup>
-                <col style="width:25%">
-                <col style="width:25%">
-                <col style="width:25%">
+                <col style="width:50%">
+                <col style="width:50%">
+                <!-- <col style="width:25%"> -->
                 <col>
               </colgroup>
               <thead>
                 <tr>
-                  <th rowspan="2">상품명</th>
-                  <th rowspan="2">선불 수신 건별 요금<br>(VAT별도)</th>
-                  <th colspan="2" class="end">후불요금</th>
+                  <th>상품명</th>
+                  <th class="end">건별 요금<br>(VAT별도)</th>
+                  <!-- <th colspan="2" class="end">후불요금</th> -->
                 </tr>
-                <tr style="border-top: 1px solid #D5D5D5;">
+                <!-- <tr style="border-top: 1px solid #D5D5D5;">
                   <th>월 수신건</th>
                   <th class="end">후불 수신 건별 요금<br>(VAT별도)</th>
-                </tr>
+                </tr> -->
               </thead>
               <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
                 <template v-for="rcsPayInfo in prdUnitInfo.rcs">
                   <tr v-for="(feeData, idx) in rcsPayInfo.postFeeData" :key="rcsPayInfo.productCode+idx">
                     <td v-if="idx == 0" :rowspan="rcsPayInfo.postFeeData.length">{{rcsPayInfo.productName}}</td>
-                    <td v-if="idx == 0" :rowspan="rcsPayInfo.postFeeData.length">{{rcsPayInfo.preFee | formatPrice}} 원</td>
-                    <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
-                    <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td>
+                    <td v-if="idx == 0" :rowspan="rcsPayInfo.postFeeData.length" class="end">{{rcsPayInfo.preFee | formatPrice}} 원</td>
+                    <!-- <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
+                    <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td> -->
                   </tr>
                 </template>
               </tbody>
@@ -91,29 +91,29 @@
             <p class="tableText">VAT 별도</p>
             <table class="user_table_skin1">
               <colgroup>
-                <col style="width:25%">
-                <col style="width:25%">
-                <col style="width:25%">
+                <col style="width:50%">
+                <col style="width:50%">
+                <!-- <col style="width:25%"> -->
                 <col>
               </colgroup>
               <thead>
                 <tr>
-                  <th rowspan="2">상품명</th>
-                  <th rowspan="2">선불 수신 건별 요금<br>(VAT별도)</th>
-                  <th colspan="2" class="end">후불요금</th>
+                  <th >상품명</th>
+                  <th class="end">건별 요금<br>(VAT별도)</th>
+                  <!-- <th colspan="2">후불요금</th> -->
                 </tr>
-                <tr style="border-top: 1px solid #D5D5D5;">
+                <!-- <tr style="border-top: 1px solid #D5D5D5;">
                   <th>월 수신건</th>
                   <th class="end">후불 수신 건별 요금<br>(VAT별도)</th>
-                </tr>
+                </tr> -->
               </thead>
               <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
                 <template v-for="kkoPayInfo in prdUnitInfo.kko">
                   <tr v-for="(feeData, idx) in kkoPayInfo.postFeeData" :key="kkoPayInfo.productCode+idx">
                     <td v-if="idx == 0" :rowspan="kkoPayInfo.postFeeData.length">{{kkoPayInfo.productName}}</td>
-                    <td v-if="idx == 0" :rowspan="kkoPayInfo.postFeeData.length">{{kkoPayInfo.preFee | formatPrice}} 원</td>
-                    <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
-                    <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td>
+                    <td v-if="idx == 0" :rowspan="kkoPayInfo.postFeeData.length" class="end">{{kkoPayInfo.preFee | formatPrice}} 원</td>
+                    <!-- <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
+                    <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td> -->
                   </tr>
                 </template>
               </tbody>
@@ -127,29 +127,29 @@
             <p class="tableText">VAT 별도</p>
             <table class="user_table_skin1">
               <colgroup>
-                <col style="width:25%">
-                <col style="width:25%">
-                <col style="width:25%">
+                <col style="width:50%">
+                <col style="width:50%">
+                <!-- <col style="width:25%"> -->
                 <col>
               </colgroup>
               <thead>
                 <tr>
-                  <th rowspan="2">상품명</th>
-                  <th rowspan="2">선불 수신 건별 요금<br>(VAT별도)</th>
-                  <th colspan="2" class="end">후불요금</th>
+                  <th>상품명</th>
+                  <th class="end">건별 요금<br>(VAT별도)</th>
+                  <!-- <th colspan="2" class="end">후불요금</th> -->
                 </tr>
-                <tr style="border-top: 1px solid #D5D5D5;">
+                <!-- <tr style="border-top: 1px solid #D5D5D5;">
                   <th>월 수신건</th>
                   <th class="end">후불 수신 건별 요금<br>(VAT별도)</th>
-                </tr>
+                </tr> -->
               </thead>
               <tbody v-if="!fnIsEmptyObj(prdUnitInfo)">
                 <template v-for="pushPayInfo in prdUnitInfo.push">
                   <tr v-for="(feeData, idx) in pushPayInfo.postFeeData" :key="pushPayInfo.productCode + idx">
                     <td v-if="idx == 0" :rowspan="pushPayInfo.postFeeData.length">{{pushPayInfo.productName}}</td>
-                    <td v-if="idx == 0" :rowspan="pushPayInfo.postFeeData.length">{{pushPayInfo.preFee | formatPrice}} 원</td>
-                    <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
-                    <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td>
+                    <td v-if="idx == 0" :rowspan="pushPayInfo.postFeeData.length"  class="end">{{pushPayInfo.preFee | formatPrice}} 원</td>
+                    <!-- <td>{{feeData.FEE_START_CNT | formatPrice}} ~ {{feeData.FEE_END_CNT | formatPrice}}</td>
+                    <td class="end">{{feeData.POST_FEE | formatPrice}} 원</td> -->
                   </tr>
                 </template>
               </tbody>
