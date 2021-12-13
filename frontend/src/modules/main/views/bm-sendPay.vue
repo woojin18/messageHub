@@ -25,7 +25,7 @@
               <thead>
                 <tr>
                   <th>상품명</th>
-                  <th class="end">수신 건별 요금<br>(VAT별도)</th>
+                  <th class="end">건별 요금<br>(VAT별도)</th>
                   <!-- <th colspan="2" class="end">후불요금</th> -->
                 </tr>
                 <!-- <tr style="border-top: 1px solid #D5D5D5;">
@@ -62,7 +62,7 @@
               <thead>
                 <tr>
                   <th>상품명</th>
-                  <th class="end">수신 건별 요금<br>(VAT별도)</th>
+                  <th class="end">건별 요금<br>(VAT별도)</th>
                   <!-- <th colspan="2" class="end">후불요금</th> -->
                 </tr>
                 <!-- <tr style="border-top: 1px solid #D5D5D5;">
@@ -99,7 +99,7 @@
               <thead>
                 <tr>
                   <th >상품명</th>
-                  <th class="end">수신 건별 요금<br>(VAT별도)</th>
+                  <th class="end">건별 요금<br>(VAT별도)</th>
                   <!-- <th colspan="2">후불요금</th> -->
                 </tr>
                 <!-- <tr style="border-top: 1px solid #D5D5D5;">
@@ -135,7 +135,7 @@
               <thead>
                 <tr>
                   <th>상품명</th>
-                  <th class="end">수신 건별 요금<br>(VAT별도)</th>
+                  <th class="end">건별 요금<br>(VAT별도)</th>
                   <!-- <th colspan="2" class="end">후불요금</th> -->
                 </tr>
                 <!-- <tr style="border-top: 1px solid #D5D5D5;">
