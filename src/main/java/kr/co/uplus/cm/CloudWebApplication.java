@@ -38,6 +38,9 @@ public class CloudWebApplication {
 			System.setProperty(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME, "local");
 		}
 
+		// Log4j2 취약점 개선 (조치방법)
+		System.setProperty("log4j2.formatMsgNoLookups", "true");
+
 		SpringApplication.run(CloudWebApplication.class, args);
 	}
 
