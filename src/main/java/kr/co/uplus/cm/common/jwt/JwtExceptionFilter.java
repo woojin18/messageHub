@@ -1,7 +1,6 @@
 package kr.co.uplus.cm.common.jwt;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.FilterChain;
@@ -19,6 +18,7 @@ import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.Menu;
 import kr.co.uplus.cm.common.utils.WebUtils;
 import kr.co.uplus.cm.login.service.AuthService;
+import kr.co.uplus.cm.utils.DateUtil;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -58,7 +58,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 				WebUtils.responseJson(response, Const.NO_ROLE);
 				return;
 			}
-			log.info("USER_ID : " + userId + ", BO_USER_ID : " + boUserId + ", CONN_URL : " + connUrl + ", MENUS_CD : " + menusCd + ", ACTIVITY_CD : " + activityCd);
+			log.info("REG_DT : " + DateUtil.getCurrentDateTime() + ", USER_ID : " + userId + ", BO_USER_ID : " + boUserId + ", CONN_URL : " + connUrl + ", MENUS_CD : " + menusCd + ", ACTIVITY_CD : " + activityCd);
 //			Map params = new HashMap();
 //			params.put("userId", userId);
 //			params.put("boUserId", boUserId);
