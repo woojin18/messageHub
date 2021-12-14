@@ -1,6 +1,7 @@
 package kr.co.uplus.cm.common.jwt;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.FilterChain;
@@ -58,13 +59,15 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 				WebUtils.responseJson(response, Const.NO_ROLE);
 				return;
 			}
-			log.info("REG_DT : " + DateUtil.getCurrentDateTime() + ", USER_ID : " + userId + ", BO_USER_ID : " + boUserId + ", CONN_URL : " + connUrl + ", MENUS_CD : " + menusCd + ", ACTIVITY_CD : " + activityCd);
-//			Map params = new HashMap();
-//			params.put("userId", userId);
-//			params.put("boUserId", boUserId);
-//			params.put("connUrl", connUrl);
-//			params.put("menusCd", menusCd);
-//			params.put("activityCd", activityCd);
+//			log.info("REG_DT : " + DateUtil.getCurrentDateTime() + ", USER_ID : " + userId + ", BO_USER_ID : " + boUserId + ", CONN_URL : " + connUrl + ", MENUS_CD : " + menusCd + ", ACTIVITY_CD : " + activityCd);
+			Map params = new HashMap();
+			params.put("REG_DT", DateUtil.getCurrentDateTime());
+			params.put("USER_ID", userId);
+			params.put("BO_USER_ID", boUserId);
+			params.put("CONN_URL", connUrl);
+			params.put("MENUS_CD", menusCd);
+			params.put("ACTIVITY_CD", activityCd);
+			log.info(params);
 //			authService.insertConsoleProcLog(params);
 		}
 		try {
