@@ -149,7 +149,7 @@
 		<if test="fbSend == 'no'">
 		AND		FB_YN = 'N'
 		</if>
-		<if test="projectId != '' and projectId != null ">
+		<if test="svcType=='UC'">
 		AND		PROJECT_ID = #{projectId}
 		</if>
 	</sql>
@@ -176,7 +176,7 @@
 		<if test="fbSend == 'no'">
 		AND		FB_YN = 'N'
 		</if>
-		<if test="projectId != '' and projectId != null ">
+		<if test="svcType=='UC'">
 		AND		PROJECT_ID = #{projectId}
 		</if>
 	</sql>
@@ -328,7 +328,7 @@
 		<if test="fbSend == 'no'">
 		AND		FB_YN = 'N'
 		</if>
-		<if test="projectId != '' and projectId != null ">
+		<if test="svcType=='UC'">
 		AND		PROJECT_ID = #{projectId}
 		</if>
 	</sql>
@@ -355,7 +355,7 @@
 		<if test="fbSend == 'no'">
 		AND		FB_YN = 'N'
 		</if>
-		<if test="projectId != '' and projectId != null ">
+		<if test="svcType=='UC'">
 		AND		PROJECT_ID = #{projectId}
 		</if>
 	</sql>
@@ -512,7 +512,7 @@
 		<if test="fbSend == 'no'">
 		AND		FB_YN = 'N'
 		</if>
-		<if test="projectId != '' and projectId != null ">
+		<if test="svcType=='UC'">
 		AND		PROJECT_ID = #{projectId}
 		</if>
 	</sql>
@@ -539,7 +539,7 @@
 		<if test="fbSend == 'no'">
 		AND		FB_YN = 'N'
 		</if>
-		<if test="projectId != '' and projectId != null ">
+		<if test="svcType=='UC'">
 		AND		PROJECT_ID = #{projectId}
 		</if>
 	</sql>
@@ -696,7 +696,7 @@
 		<if test="fbSend == 'no'">
 		AND		FB_YN = 'N'
 		</if>
-		<if test="projectId != '' and projectId != null ">
+		<if test="svcType=='UC'">
 		AND		PROJECT_ID = #{projectId}
 		</if>
 	</sql>
@@ -723,7 +723,7 @@
 		<if test="fbSend == 'no'">
 		AND		FB_YN = 'N'
 		</if>
-		<if test="projectId != '' and projectId != null ">
+		<if test="svcType=='UC'">
 		AND		PROJECT_ID = #{projectId}
 		</if>
 	</sql>

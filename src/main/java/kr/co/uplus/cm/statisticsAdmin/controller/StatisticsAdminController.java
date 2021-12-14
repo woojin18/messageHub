@@ -53,6 +53,9 @@ public class StatisticsAdminController {
 			@RequestBody Map<String, Object> params) {
 
 		RestResult<Object> rtn = new RestResult<Object>();
+		
+		params.put("svcType", request.getHeader("svcType"));
+		
 		try {
 			rtn = statisticsAdminSvc.selectStatisList(params);
 		} catch (Exception e) {
@@ -100,6 +103,8 @@ public class StatisticsAdminController {
 			@RequestBody Map<String, Object> params) throws Exception {
 		List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
+		
+		params.put("svcType", request.getHeader("svcType"));
 		
 		map.put("sheetTitle", "발송일별통계");
 		map.put("colLabels", new String[] { "날짜", "프로젝트명", "서비스", "발송", "성공", "실패", "성공률"});

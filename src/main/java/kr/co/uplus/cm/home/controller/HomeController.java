@@ -1,5 +1,6 @@
 package kr.co.uplus.cm.home.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -300,4 +301,26 @@ public class HomeController {
 		return rtn;
 	}
 
+	@PostMapping("/selectChMinList")
+	public RestResult<?> selectChMinList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		String svcType = request.getHeader("svcType");
+		
+		paramMap.put("projectId", params.get("projectId"));
+		paramMap.put("svcType", svcType);
+		
+		try {
+			rtn = homeSvc.selectChMinList(paramMap);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectSixMonthUsedDataList Error : {}", this.getClass(), e);
+		}
+
+		return rtn;
+		
+	}
 }

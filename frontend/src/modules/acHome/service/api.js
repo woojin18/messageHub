@@ -40,6 +40,10 @@ const selectSixMonthUsedDataList = (params) => {
 	return httpClient.post('/api/home/selectSixMonthUsedDataList', params, { headers: { "show-layer": "Yes" } });
 };
 
+const selectChMinList = (params) => {
+	return httpClient.post('/api/home/selectChMinList', params, { headers: { "show-layer": "Yes" } });
+};
+
 export default {
 	logout,
 	selectProjectList,
@@ -50,5 +54,6 @@ export default {
 	selectMonthUsedTimeLineList,
 	selectMonthUsedDataList,
 	selectSixMonthUsedTimeLineList,
-	selectSixMonthUsedDataList
+	selectSixMonthUsedDataList,
+	selectChMinList
 };

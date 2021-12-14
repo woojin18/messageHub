@@ -117,6 +117,8 @@ h6 {font-size:12px; margin:7px 0; font-weight:normal}
 .table_skin1 tr:hover td{background-color:#f7f7f7}
 .table_skin1 .end {border-right:0}
 .table_skin1 tr:last-child td {border-bottom:none}
+.bb {border-bottom:1px solid #D5D5D5 !important}
+.bb2 {border-bottom:1px solid #222 !important}
 /*.tableScrollxy {min-height:.01%; overflow:scroll; margin-bottom:15px; -ms-overflow-style:-ms-autohiding-scrollbar}*/
 .tableScrollxy {position:relative; width:100%; z-index:1; margin:auto; overflow:auto; height:260px}
 .tableScrollxy table {width:100%; min-width:600px; min-width:max-content; margin:auto; border-collapse:separate; border-spacing:0}
@@ -281,6 +283,8 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .color6 {color:#505050 !important}
 .color7 {color:#666666 !important}
 .colorRed {color:red !important}
+.color-red {color:red !important}
+.color-blue {color:blue !important}
 .background-color6 {background:#505050 !important}
 .color000 {color:#000 !important}
 .colorfff {color:#fff !important}
@@ -388,7 +392,7 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .bgColor_f1 {background:#f1f1f1}
 .bgColor_f7 {background:#f7f7f7}
 .bgColor_sky {background:#F8FAFB !important}
-
+.cellActive {background:#f2dede !important}
 
 
 

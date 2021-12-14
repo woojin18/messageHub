@@ -326,5 +326,131 @@ public class HomeService {
 
 		return rtn;
 	}
+	
+	public RestResult<Object> selectChMinList(Map<String, Object> params) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CH_MIN_LIST, params);
+		
+		int smsCnt = 0;
+		int lmsCnt = 0;
+		int mmsCnt = 0;
+		int pushCnt = 0;
+		int alimTalkCnt = 0;
+		int friendTalkCnt = 0;
+		int rcsCnt = 0;
+		
+		// Map 형태로 통계 데이터 파싱
+		for(Object rtnMap : rtnList) {
+			Map<String, Object> objMap = (Map<String, Object>) rtnMap;
+			String productCode = CommonUtils.getString(objMap.get("productCode"));
+			if("SMS".equals(productCode)) {
+				returnMap.put("smsTotCnt", objMap.get("totCnt"));
+				returnMap.put("smsSendingCnt", objMap.get("sendingCnt"));
+				returnMap.put("smsWaitRptCnt", objMap.get("waitRptCnt"));
+				returnMap.put("smsSuccCnt", objMap.get("succCnt"));
+				returnMap.put("smsFailCnt", objMap.get("failCnt"));
+				smsCnt++;
+			} else if("LMS".equals(productCode)) {
+				returnMap.put("lmsTotCnt", objMap.get("totCnt"));
+				returnMap.put("lmsSendingCnt", objMap.get("sendingCnt"));
+				returnMap.put("lmsWaitRptCnt", objMap.get("waitRptCnt"));
+				returnMap.put("lmsSuccCnt", objMap.get("succCnt"));
+				returnMap.put("lmsFailCnt", objMap.get("failCnt"));
+				lmsCnt++;
+			} else if("MMS".equals(productCode)) {
+				returnMap.put("mmsTotCnt", objMap.get("totCnt"));
+				returnMap.put("mmsSendingCnt", objMap.get("sendingCnt"));
+				returnMap.put("mmsWaitRptCnt", objMap.get("waitRptCnt"));
+				returnMap.put("mmsSuccCnt", objMap.get("succCnt"));
+				returnMap.put("mmsFailCnt", objMap.get("failCnt"));
+				mmsCnt++;
+			} else if("PUSH".equals(productCode)) {
+				returnMap.put("pushTotCnt", objMap.get("totCnt"));
+				returnMap.put("pushSendingCnt", objMap.get("sendingCnt"));
+				returnMap.put("pushWaitRptCnt", objMap.get("waitRptCnt"));
+				returnMap.put("pushSuccCnt", objMap.get("succCnt"));
+				returnMap.put("pushFailCnt", objMap.get("failCnt"));
+				pushCnt++;
+			} else if("ALIMTALK".equals(productCode)) {
+				returnMap.put("alimTotCnt", objMap.get("totCnt"));
+				returnMap.put("alimSendingCnt", objMap.get("sendingCnt"));
+				returnMap.put("alimWaitRptCnt", objMap.get("waitRptCnt"));
+				returnMap.put("alimSuccCnt", objMap.get("succCnt"));
+				returnMap.put("alimFailCnt", objMap.get("failCnt"));
+				alimTalkCnt++;
+			} else if("FRIENDTALK".equals(productCode)) {
+				returnMap.put("friendTotCnt", objMap.get("totCnt"));
+				returnMap.put("friendSendingCnt", objMap.get("sendingCnt"));
+				returnMap.put("friendWaitRptCnt", objMap.get("waitRptCnt"));
+				returnMap.put("friendSuccCnt", objMap.get("succCnt"));
+				returnMap.put("friendFailCnt", objMap.get("failCnt"));
+				friendTalkCnt++;
+			} else if("RCS".equals(productCode)) {
+				returnMap.put("rcsTotCnt", objMap.get("totCnt"));
+				returnMap.put("rcsSendingCnt", objMap.get("sendingCnt"));
+				returnMap.put("rcsWaitRptCnt", objMap.get("waitRptCnt"));
+				returnMap.put("rcsSuccCnt", objMap.get("succCnt"));
+				returnMap.put("rcsFailCnt", objMap.get("failCnt"));
+				rcsCnt++;
+			}
+		}
+		
+		if(smsCnt==0) {
+			returnMap.put("smsTotCnt", 0);
+			returnMap.put("smsSendingCnt", 0);
+			returnMap.put("smsWaitRptCnt", 0);
+			returnMap.put("smsSuccCnt", 0);
+			returnMap.put("smsFailCnt", 0);
+		} 
+		if(lmsCnt==0) {
+			returnMap.put("lmsTotCnt", 0);
+			returnMap.put("lmsSendingCnt", 0);
+			returnMap.put("lmsWaitRptCnt", 0);
+			returnMap.put("lmsSuccCnt", 0);
+			returnMap.put("lmsFailCnt", 0);
+		} 
+		if(mmsCnt==0) {
+			returnMap.put("mmsTotCnt", 0);
+			returnMap.put("mmsSendingCnt", 0);
+			returnMap.put("mmsWaitRptCnt", 0);
+			returnMap.put("mmsSuccCnt", 0);
+			returnMap.put("mmsFailCnt", 0);
+		} 
+		if(pushCnt==0) {
+			returnMap.put("pushTotCnt", 0);
+			returnMap.put("pushSendingCnt", 0);
+			returnMap.put("pushWaitRptCnt", 0);
+			returnMap.put("pushSuccCnt", 0);
+			returnMap.put("pushFailCnt", 0);
+		}
+		if(alimTalkCnt==0) {
+			returnMap.put("alimTotCnt", 0);
+			returnMap.put("alimSendingCnt", 0);
+			returnMap.put("alimWaitRptCnt", 0);
+			returnMap.put("alimSuccCnt", 0);
+			returnMap.put("alimFailCnt", 0);
+		} 
+		if(friendTalkCnt==0){
+			returnMap.put("friendTotCnt", 0);
+			returnMap.put("friendSendingCnt", 0);
+			returnMap.put("friendWaitRptCnt", 0);
+			returnMap.put("friendSuccCnt", 0);
+			returnMap.put("friendFailCnt", 0);
+		} 
+		if(rcsCnt==0){
+			returnMap.put("rcsTotCnt", 0);
+			returnMap.put("rcsSendingCnt", 0);
+			returnMap.put("rcsWaitRptCnt", 0);
+			returnMap.put("rcsSuccCnt", 0);
+			returnMap.put("rcsFailCnt", 0);
+		}
+		
+		rtn.setData(returnMap);
+		
+		return rtn;
+	}
 
 }

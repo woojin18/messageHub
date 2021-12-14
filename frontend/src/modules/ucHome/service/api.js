@@ -36,6 +36,10 @@ const selectRtUsedDataList = (params) => {
 	return httpClient.post('/api/home/selectRtUsedDataList', params, { headers: { "show-layer": "Yes" } });
 };
 
+const selectChMinList = (params) => {
+	return httpClient.post('/api/home/selectChMinList', params, { headers: { "show-layer": "Yes" } });
+};
+
 export default {
 	logout,
 	selectProjectInfo,
@@ -45,5 +49,6 @@ export default {
 	selectChSuccFailCntList,
 	selectChFailCodeList,
 	selectRtUsedTimeLineList,
-	selectRtUsedDataList
+	selectRtUsedDataList,
+	selectChMinList
 };

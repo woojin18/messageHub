@@ -309,6 +309,7 @@ public class DB {
 	public final static String QRY_SELECT_MONTH_USED_DATA_LIST = "selectMonthUsedDataList";
 	public final static String QRY_SELECT_SIX_MONTH_USED_TIME_LINE_LIST = "selectSixMonthUsedTimeLineList";
 	public final static String QRY_SELECT_SIX_MONTH_USED_DATA_LIST = "selectSixMonthUsedDataList";
+	public final static String QRY_SELECT_CH_MIN_LIST = "dashboard.selectChMinList";
 
 	// 통계
 	public final static String QRY_SELECT_STATIS_SND_LIST = "statisticsUser.selectStatisSndList";

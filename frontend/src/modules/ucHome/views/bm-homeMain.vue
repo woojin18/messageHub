@@ -74,6 +74,88 @@
 
 			<div class="row">
 				<div class="col-xs-12">
+					<h4 class="inline-block topH4">당일 실시간 발송 현황 <span class="font-size14 color4 ml30">{{chMinCount}}초 후 <a href="#" class="color-blue" @click.prevent="fnGetChMinList" title="새로고침">[갱신]</a></span></h4>
+					<p class="color3 float-right">단위 : 건수</p>					
+					<table class="table_skin1" style="width:100%">
+						<colgroup>
+							<col style="">
+						</colgroup>
+						<thead>
+							<tr class="bb">
+								<th class="text-center cellActive">발송 상태</th>
+								<th class="text-center cellActive">전체</th>
+								<th class="text-center">SMS</th>
+								<th class="text-center">LMS</th>
+								<th class="text-center">MMS</th>
+								<th class="text-center">RCS</th>
+								<th class="text-center">알림톡</th>
+								<th class="text-center">친구톡</th>
+								<th class="text-center end">PUSH</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-center cellActive"><strong>발송 요청</strong></td>
+								<td class="text-center cellActive"><strong>{{channelMinInfo.totalTotCnt | comma}}</strong></td>
+								<td class="text-center"><strong>{{channelMinInfo.smsTotCnt | comma}}</strong></td>
+								<td class="text-center"><strong>{{channelMinInfo.lmsTotCnt | comma}}</strong></td>
+								<td class="text-center"><strong>{{channelMinInfo.mmsTotCnt | comma}}</strong></td>
+								<td class="text-center"><strong>{{channelMinInfo.rcsTotCnt | comma}}</strong></td>
+								<td class="text-center"><strong>{{channelMinInfo.alimTotCnt | comma}}</strong></td>
+								<td class="text-center"><strong>{{channelMinInfo.friendTotCnt | comma}}</strong></td>
+								<td class="text-center end"><strong>{{channelMinInfo.pushTotCnt | comma}}</strong></td>
+							</tr>
+							<tr>
+								<td class="text-center cellActive">발송 중</td>
+								<td class="text-center cellActive">{{channelMinInfo.totalSendingCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.smsSendingCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.lmsSendingCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.mmsSendingCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.rcsSendingCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.alimSendingCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.friendSendingCnt | comma}}</td>
+								<td class="text-center end">{{channelMinInfo.pushSendingCnt | comma}}</td>
+							</tr>
+							<tr>
+								<td class="text-center cellActive">발송 결과대기</td>
+								<td class="text-center cellActive">{{channelMinInfo.totalWaitRptCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.smsWaitRptCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.lmsWaitRptCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.mmsWaitRptCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.rcsWaitRptCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.alimWaitRptCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.friendWaitRptCnt | comma}}</td>
+								<td class="text-center end">{{channelMinInfo.pushWaitRptCnt | comma}}</td>
+							</tr>
+							<tr>
+								<td class="text-center cellActive color-blue">발송 성공</td>
+								<td class="text-center cellActive color-blue">{{channelMinInfo.totalSuccCnt | comma}}</td>
+								<td class="text-center color-blue">{{channelMinInfo.smsSuccCnt | comma}}</td>
+								<td class="text-center color-blue">{{channelMinInfo.lmsSuccCnt | comma}}</td>
+								<td class="text-center color-blue">{{channelMinInfo.mmsSuccCnt | comma}}</td>
+								<td class="text-center color-blue">{{channelMinInfo.rcsSuccCnt | comma}}</td>
+								<td class="text-center color-blue">{{channelMinInfo.alimSuccCnt | comma}}</td>
+								<td class="text-center color-blue">{{channelMinInfo.friendSuccCnt | comma}}</td>
+								<td class="text-center end color-blue">{{channelMinInfo.pushSuccCnt | comma}}</td>
+							</tr>
+							<tr>
+								<td class="text-center cellActive color-red">발송 실패</td>
+								<td class="text-center cellActive color-red">{{channelMinInfo.totalFailCnt | comma}}</td>
+								<td class="text-center color-red">{{channelMinInfo.smsFailCnt | comma}}</td>
+								<td class="text-center color-red">{{channelMinInfo.lmsFailCnt | comma}}</td>
+								<td class="text-center color-red">{{channelMinInfo.mmsFailCnt | comma}}</td>
+								<td class="text-center color-red">{{channelMinInfo.rcsFailCnt | comma}}</td>
+								<td class="text-center color-red">{{channelMinInfo.alimFailCnt | comma}}</td>
+								<td class="text-center color-red">{{channelMinInfo.friendFailCnt | comma}}</td>
+								<td class="text-center end color-red">{{channelMinInfo.pushFailCnt | comma}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12">
 					<div class="">
 						<h4 class="lc-1 text-left">채널별 성공/실패율</h4>
 						<div class="mt20">
@@ -224,6 +306,17 @@ export default {
 			notices: [],
 			chName: '전체',
 			channelTotalCountInfo: {totalSuccCnt:0, totalFailCnt:0, pushSuccCnt:0, pushFailCnt:0, rcsSuccCnt:0, rcsFailCnt:0, alimSuccCnt:0, alimFailCnt:0, friendSuccCnt:0, friendFailCnt:0, smsSuccCnt:0, smsFailCnt:0, lmsSuccCnt:0, lmsFailCnt:0, mmsSuccCnt:0, mmsFailCnt:0},
+			channelMinInfo: {
+				totalTotCnt:0, totalSendingCnt:0, totalWaitRptCnt:0, totalSuccCnt:0, totalFailCnt:0,
+				smsTotCnt:0, smsSendingCnt:0, smsWaitRptCnt:0, smsSuccCnt:0, smsFailCnt:0,
+				lmsTotCnt:0, lmsSendingCnt:0, lmsWaitRptCnt:0, lmsSuccCnt:0, lmsFailCnt:0,
+				mmsTotCnt:0, mmsSendingCnt:0, mmsWaitRptCnt:0, mmsSuccCnt:0, mmsFailCnt:0,
+				pushTotCnt:0, pushSendingCnt:0, pushWaitRptCnt:0, pushSuccCnt:0, pushFailCnt:0,
+				alimTotCnt:0, alimSendingCnt:0, alimWaitRptCnt:0, alimSuccCnt:0, alimFailCnt:0,
+				friendTotCnt:0, friendSendingCnt:0, friendWaitRptCnt:0, friendSuccCnt:0, friendFailCnt:0,
+				rcsTotCnt:0, rcsSendingCnt:0, rcsWaitRptCnt:0, rcsSuccCnt:0, rcsFailCnt:0,
+			},
+			chMinCount: 90,
 			searchDateInterval: 7,
 			dateLine: [],
 			successCnt: [],
@@ -254,6 +347,13 @@ export default {
 	created: function() {
 		// console.log('created HomeMain');
 	},
+	watch: {
+		chMinCount(val) {
+			if(val == 0) {
+				this.fnGetChMinList();
+			}
+		}
+	},
 	mounted() {
 		var vm = this;
 		vm.fnInit();
@@ -262,9 +362,19 @@ export default {
 			vm.fnGetNoticeList();
 			vm.fnSetIntervalSearchDate(vm.searchDateInterval);
 			vm.fnGetRtUsedTimeLineList();
+			vm.fnGetChMinList();
+			vm.fnSetChMinInterval();
 		}
 	},
+	destroyed() {
+		clearInterval(this.setCh);
+	},
 	methods: {
+		fnSetChMinInterval(){
+			this.setCh = setInterval(() => {
+				this.chMinCount--;
+			}, 1000);	
+		},
 		fnInit() {
 			var svcTypeCd = tokenSvc.getToken().principal.svcTypeCd;
 			if (svcTypeCd == 'AC') {
@@ -389,6 +499,71 @@ export default {
 				jQuery("#setMms").addClass('active');
 				this.chName = 'MMS';
 			}
+		},
+		async fnGetChMinList () {
+			let params = {};
+
+			await homeApi.selectChMinList(params).then(response =>{
+				let result = response.data;
+				let success = result.success;
+				if(success) {
+					let data = result.data;
+					this.channelMinInfo.smsTotCnt = data.smsTotCnt;
+					this.channelMinInfo.smsSendingCnt = data.smsSendingCnt;
+					this.channelMinInfo.smsWaitRptCnt = data.smsWaitRptCnt;
+					this.channelMinInfo.smsSuccCnt = data.smsSuccCnt;
+					this.channelMinInfo.smsFailCnt = data.smsFailCnt;
+
+					this.channelMinInfo.lmsTotCnt = data.lmsTotCnt;
+					this.channelMinInfo.lmsSendingCnt = data.lmsSendingCnt;
+					this.channelMinInfo.lmsWaitRptCnt = data.lmsWaitRptCnt;
+					this.channelMinInfo.lmsSuccCnt = data.lmsSuccCnt;
+					this.channelMinInfo.lmsFailCnt = data.lmsFailCnt;
+
+					this.channelMinInfo.mmsTotCnt = data.mmsTotCnt;
+					this.channelMinInfo.mmsSendingCnt = data.mmsSendingCnt;
+					this.channelMinInfo.mmsWaitRptCnt = data.mmsWaitRptCnt;
+					this.channelMinInfo.mmsSuccCnt = data.mmsSuccCnt;
+					this.channelMinInfo.mmsFailCnt = data.mmsFailCnt;
+
+					this.channelMinInfo.rcsTotCnt = data.rcsTotCnt;
+					this.channelMinInfo.rcsSendingCnt = data.rcsSendingCnt;
+					this.channelMinInfo.rcsWaitRptCnt = data.rcsWaitRptCnt;
+					this.channelMinInfo.rcsSuccCnt = data.rcsSuccCnt;
+					this.channelMinInfo.rcsFailCnt = data.rcsFailCnt;
+
+					this.channelMinInfo.alimTotCnt = data.alimTotCnt;
+					this.channelMinInfo.alimSendingCnt = data.alimSendingCnt;
+					this.channelMinInfo.alimWaitRptCnt = data.alimWaitRptCnt;
+					this.channelMinInfo.alimSuccCnt = data.alimSuccCnt;
+					this.channelMinInfo.alimFailCnt = data.alimFailCnt;
+
+					this.channelMinInfo.friendTotCnt = data.friendTotCnt;
+					this.channelMinInfo.friendSendingCnt = data.friendSendingCnt;
+					this.channelMinInfo.friendWaitRptCnt = data.friendWaitRptCnt;
+					this.channelMinInfo.friendSuccCnt = data.friendSuccCnt;
+					this.channelMinInfo.friendFailCnt = data.friendFailCnt;
+
+					this.channelMinInfo.pushTotCnt = data.pushTotCnt;
+					this.channelMinInfo.pushSendingCnt = data.pushSendingCnt;
+					this.channelMinInfo.pushWaitRptCnt = data.pushWaitRptCnt;
+					this.channelMinInfo.pushSuccCnt = data.pushSuccCnt;
+					this.channelMinInfo.pushFailCnt = data.pushFailCnt;
+
+					this.channelMinInfo.totalTotCnt = data.smsTotCnt + data.lmsTotCnt + data.mmsTotCnt + data.rcsTotCnt + data.alimTotCnt + data.friendTotCnt + data.pushTotCnt;
+					this.channelMinInfo.totalSendingCnt = data.smsSendingCnt + data.lmsSendingCnt + data.mmsSendingCnt + data.rcsSendingCnt + data.alimSendingCnt + data.friendSendingCnt + data.pushSendingCnt;
+					this.channelMinInfo.totalWaitRptCnt = data.smsWaitRptCnt + data.lmsWaitRptCnt + data.mmsWaitRptCnt + data.rcsWaitRptCnt + data.alimWaitRptCnt + data.friendWaitRptCnt + data.pushWaitRptCnt;
+					this.channelMinInfo.totalSuccCnt = data.smsSuccCnt + data.lmsSuccCnt + data.mmsSuccCnt + data.rcsSuccCnt + data.alimSuccCnt + data.friendSuccCnt + data.pushSuccCnt;
+					this.channelMinInfo.totalFailCnt = data.smsFailCnt + data.lmsFailCnt + data.mmsFailCnt + data.rcsFailCnt + data.alimFailCnt + data.friendFailCnt + data.pushFailCnt;
+					
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+
+				// 시간 초기화
+				this.chMinCount = 90;
+				
+			});
 		},
 		fnGetChSuccFailCntList(result) {
 			this.dateLine = [];
