@@ -10,6 +10,7 @@ header.head_type_user {border-bottom:1px solid #E6E6E6}
 .wrap_head {width:100%; min-width:1400px; padding:0 50px; height:80px; margin:0 auto; text-align:center}
 .wrap_head .tit_logo {float:left}
 .wrap_head .tit_logo .userLogo {display:block; margin-top:15px}
+.wrap_head .tit_logo .userLogo > img {height:25px}
 #userGnb {display:inline-block; vertical-align:top}
 #userGnb .list_gnb {margin-top:20px; height:61px}
 #userGnb .list_gnb > li {float:left; margin:0 15px; position:relative}
