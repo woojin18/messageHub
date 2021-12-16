@@ -12,21 +12,16 @@
           <div class="inline-block" style="width:8%"><h4 class="font-normal mt15">발송일자</h4></div>
           <div class="inline-block" style="width:91%">
             <Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchStartDate" ></Calendar>
+            <span style="padding:0 11px">~</span>
+            <Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle maxWidth200" :initDate="searchData.searchEndDate"></Calendar>
             <ul class="tab_s2 ml20">
-                <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate();" title="오늘 날짜 발송일자 검색">오늘</a></li>
+                <li :class="this.searchDateInterval==0 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(0);" title="오늘 날짜 발송일자 검색">전체</a></li>
+                <li :class="this.searchDateInterval==7 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(7);" title="1주일 등록일자 검색">1주일</a></li>
+                <li :class="this.searchDateInterval==15 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(15);" title="15일 등록일자 검색">15일</a></li>
+                <li :class="this.searchDateInterval==30 ? 'active' : ''"><a @click="fnSetIntervalSearchDate(30);" title="1개월 등록일자 검색">1개월</a></li>
             </ul>
           <!-- </div> -->
 
-            <!-- <div class="inline-block " style="width:8%"><h4 class="font-normal mt3">발송구분</h4></div> -->
-            <h4 class="inline-block vertical-middle ml30 mr20">발송구분 :</h4>
-            <div class="inline-block" style="width:27%">
-                <!-- <div class="consolCheck vertical-middle"> -->
-                    <input type="checkbox" id="searchSendFlag_CLOUD" class="checkStyle2" v-model="searchData.searchSendCloud">
-                    <label for="searchSendFlag_CLOUD" class="mr30">클라우드발송</label>
-                    <input type="checkbox" id="searchSendFlag_API" class="checkStyle2" v-model="searchData.searchSendAPI">
-                    <label for="searchSendFlag_API">API발송</label>
-                <!-- </div> -->
-            </div>
           </div>
         </div>
 
@@ -49,6 +44,17 @@
               <input type="checkbox" id="searchResultYn_FAIL" class="checkStyle2" v-model="searchData.searchResultN">
               <label for="searchResultYn_FAIL">실패</label>
             </div>
+
+            <h4 class="inline-block vertical-middle ml30 mr20">발송구분 :</h4>
+            <div class="inline-block" style="width:27%">
+                <!-- <div class="consolCheck vertical-middle"> -->
+                    <input type="checkbox" id="searchSendFlag_CLOUD" class="checkStyle2" v-model="searchData.searchSendCloud">
+                    <label for="searchSendFlag_CLOUD" class="mr30">웹 발송</label>
+                    <input type="checkbox" id="searchSendFlag_API" class="checkStyle2" v-model="searchData.searchSendAPI">
+                    <label for="searchSendFlag_API">API발송</label>
+                <!-- </div> -->
+            </div>
+
             <a @click="fnSearch()" class="btnStyle2 float-right" title="검색" activity="READ">검색</a>
           </div>
         </div>
@@ -156,6 +162,7 @@ export default {
           'searchCondi' : 'receiverPhone',
           'searchText' : '',
           'searchStartDate' : this.$gfnCommonUtils.getCurretDate(),
+          'searchEndDate' : this.$gfnCommonUtils.getCurretDate(),
           'searchSendCloud' : true,
           'searchSendAPI' : true,
           'searchResultY' : true,
@@ -170,7 +177,7 @@ export default {
       pageNo : 1,  // 현재 페이징 위치
       totCnt : 0,  //전체 리스트 수
       offset : 0, //페이지 시작점
-      searchDateInterval: 7,
+      searchDateInterval: 0,
       datas: [],
       // 팝업
       detailLayerView: false,
@@ -181,16 +188,26 @@ export default {
         
   },
   mounted() {
-    this.fnSetIntervalSearchDate();
+    this.fnSetIntervalSearchDate(this.searchDateInterval);
     //this.fnSearch();
   },
   methods: {
     //검색일자변경
-    fnSetIntervalSearchDate(){
-      this.searchData.searchStartDate = this.$gfnCommonUtils.getCurretDate();
+    fnSetIntervalSearchDate(interval){
+      this.searchDateInterval = interval;
+      if(interval == 0) {
+        this.searchData.searchEndDate = "";
+        this.searchData.searchStartDate = "";
+      } else {
+        this.searchData.searchEndDate = this.$gfnCommonUtils.getCurretDate();
+        this.searchData.searchStartDate = this.$gfnCommonUtils.strDateAddDay(this.searchData.searchEndDate, -this.searchDateInterval);
+      }
     },
     fnUpdateStartDate(sltDate) {
       this.searchData.searchStartDate = sltDate;
+    },
+    fnUpdateEndDate(sltDate) {
+      this.searchData.searchEndDate = sltDate;
     },
 
     //엑셀 다운로드
@@ -228,6 +245,18 @@ export default {
         confirm.fnAlert("", "검색조건을 입력해주세요.");
         return false;
       }
+
+      // 전체 검색조건 추가에 따른 validation 처리 (등록일자 검색조건을 하나만 입력하는 경우)
+      if(this.searchData.searchStartDate=="" && this.searchData.searchEndDate!="") {
+        confirm.fnAlert("", "발송일자를 올바르게 입력해 주세요.");
+        return false;
+      }
+
+      if(this.searchData.searchStartDate!="" && this.searchData.searchEndDate=="") {
+        confirm.fnAlert("", "발송일자를 올바르게 입력해 주세요.");
+        return false;
+      }
+
 
       await messageStatusApi.selectMessageStatusList(params).then(response =>{
         var result = response.data;

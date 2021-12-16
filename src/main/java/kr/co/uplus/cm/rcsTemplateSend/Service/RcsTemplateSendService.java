@@ -1850,8 +1850,9 @@ public class RcsTemplateSendService {
 		Map<String, Object> params = null;
 		String corpId = CommonUtils.getStrValue(data, "corpId");
 		String projectId = CommonUtils.getStrValue(data, "projectId");
+		String reqCh = CommonUtils.getStrValue(data, "reqCh");
+		String finalCh = CommonUtils.getStrValue(data, "finalCh");
 		String apiKey = commonService.getApiKey(corpId, projectId);
-		String productCode = CommonUtils.getStrValue(data, "productCode");
 		String callback = CommonUtils.getStrValue(data, "callback");
 		String webReqId = CommonUtils.getStrValue(data, "webReqId");
 		String senderType = Const.SenderType.CHANNEL;
@@ -1864,14 +1865,11 @@ public class RcsTemplateSendService {
 			params.put("apiKey", apiKey);
 			params.put("cliKey", recvInfo.get("cliKey"));
 			params.put("senderType", senderType);
-			params.put("reqCh", "RCS");
-			params.put("productCode", productCode);
-			params.put("finalCh", "RCS");
+			params.put("reqCh", reqCh);
+			params.put("finalCh", finalCh);
 			params.put("phone", recvInfo.get("phone"));
 			params.put("callback", callback);
 			params.put("webReqId", webReqId);
-			params.put("gwResultCode", Const.SendMsgErrorSet.GW_RESULT_CODE);
-			params.put("gwResultDesc", Const.SendMsgErrorSet.GW_RESULT_DESC);
 			generalDao.insertGernal(DB.QRY_INSERT_CM_MSG, params);
 		}
 	}

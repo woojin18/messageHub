@@ -266,6 +266,7 @@
             INTO cm.CM_MSG
         (
             YMD
+            , HM
             , MSG_KEY
             , CORP_ID
             , PROJECT_ID
@@ -284,10 +285,12 @@
             , CALLBACK
             , WEB_REQ_ID
             , GW_RESULT_CODE
+            , CLI_RESULT_CODE
             , GW_RESULT_DESC
             , FB_REQ_CNT
         ) VALUES (
             DATE_FORMAT(NOW(), '%Y-%m-%d')
+            , DATE_FORMAT(NOW(), '%H%i')
             , #{msgKey}
             , #{corpId}
             , #{projectId}
@@ -296,8 +299,8 @@
             , #{cliKey}
             , #{senderType}
             , #{reqCh}
-            , #{productCode}
-            , '9999'
+            , '-'
+            , '5000'
             , NOW()
             , #{finalCh}
             , #{phone}
@@ -305,8 +308,9 @@
             , #{pushCuid}
             , #{callback}
             , #{webReqId}
-            , #{gwResultCode}
-            , #{gwResultDesc}
+            , '29015'
+            , '29015'
+            , '발송타임아웃'
             , '0'
         )
     </insert>

@@ -741,7 +741,6 @@ public class SendMessageService {
         String projectId = CommonUtils.getStrValue(data, "projectId");
         String apiKey = CommonUtils.getStrValue(data, "apiKey");
         String reqCh = CommonUtils.getStrValue(data, "reqCh");
-        String productCode = CommonUtils.getStrValue(data, "productCode");
         String finalCh = CommonUtils.getStrValue(data, "finalCh");
         String pushAppId = CommonUtils.getStrValue(data, "pushAppId");
         String callback = CommonUtils.getStrValue(data, "callback");
@@ -757,15 +756,12 @@ public class SendMessageService {
             params.put("cliKey", recvInfo.getCliKey());
             params.put("senderType", senderType);
             params.put("reqCh", reqCh);
-            params.put("productCode", productCode);
             params.put("finalCh", finalCh);
             params.put("phone", recvInfo.getPhone());
             params.put("pushAppId", pushAppId);
             params.put("pushCuid", recvInfo.getCuid());
             params.put("callback", callback);
             params.put("webReqId", webReqId);
-            params.put("gwResultCode", Const.SendMsgErrorSet.GW_RESULT_CODE);
-            params.put("gwResultDesc", Const.SendMsgErrorSet.GW_RESULT_DESC);
             generalDao.insertGernal(DB.QRY_INSERT_CM_MSG, params);
         }
     }
@@ -878,7 +874,6 @@ public class SendMessageService {
                 //CM_MSG Insert
                 sParams.put("apiKey", apiKey);
                 sParams.put("reqCh", Const.Ch.PUSH);
-                sParams.put("productCode", Const.Ch.PUSH.toLowerCase());
                 sParams.put("finalCh", Const.Ch.PUSH);
                 sParams.put("pushAppId", pushRequestData.getAppId());
                 sParams.put("callback", pushRequestData.getCallback());
@@ -1063,7 +1058,7 @@ public class SendMessageService {
         int sendCnt = 0;
         long start = System.currentTimeMillis();
         long end = 0;
-
+        
         while (toIndex < listSize) {
             isDone = false;
             isServerError = false;
@@ -1109,13 +1104,13 @@ public class SendMessageService {
             	start = System.currentTimeMillis();
             }
         }
+        
 
         if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
             try {
                 //CM_MSG Insert
                 sParams.put("apiKey", apiKey);
                 sParams.put("reqCh", Const.Ch.SMS);
-                sParams.put("productCode", Const.Ch.SMS.toLowerCase());
                 sParams.put("finalCh", Const.Ch.SMS);
                 sParams.put("callback", requestData.getCallback());
                 sParams.put("webReqId", requestData.getWebReqId());
@@ -1124,7 +1119,7 @@ public class SendMessageService {
                 log.error("{}.sendSmsMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
             }
         }
-
+        
         //웹 발송 내역 등록
         if(isAllFail) sParams.put("allFailYn", Const.COMM_YES);
         insertSmsCmWebMsg(rtn, sParams, requestData, recvInfoLst);
@@ -1366,7 +1361,6 @@ public class SendMessageService {
                 //CM_MSG Insert
                 sParams.put("apiKey", apiKey);
                 sParams.put("reqCh", Const.Ch.MMS);
-                sParams.put("productCode", Const.Ch.MMS.toLowerCase());
                 sParams.put("finalCh", Const.Ch.MMS);
                 sParams.put("callback", requestData.getCallback());
                 sParams.put("webReqId", requestData.getWebReqId());
@@ -1375,7 +1369,7 @@ public class SendMessageService {
                 log.error("{}.sendMmsMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
             }
         }
-
+        
         //웹 발송 내역 등록
         if(isAllFail) sParams.put("allFailYn", Const.COMM_YES);
         insertMmsCmWebMsg(rtn, sParams, requestData, recvInfoLst);
@@ -1822,7 +1816,6 @@ public class SendMessageService {
                 //CM_MSG Insert
                 sParams.put("apiKey", apiKey);
                 sParams.put("reqCh", Const.Ch.FRIENDTALK);
-                sParams.put("productCode", Const.Ch.FRIENDTALK.toLowerCase());
                 sParams.put("finalCh", Const.Ch.FRIENDTALK);
                 sParams.put("callback", requestData.getCallback());
                 sParams.put("webReqId", requestData.getWebReqId());
@@ -2200,7 +2193,6 @@ public class SendMessageService {
                 //CM_MSG Insert
                 sParams.put("apiKey", apiKey);
                 sParams.put("reqCh", Const.Ch.ALIMTALK);
-                sParams.put("productCode", Const.Ch.ALIMTALK.toLowerCase());
                 sParams.put("finalCh", Const.Ch.ALIMTALK);
                 sParams.put("callback", requestData.getCallback());
                 sParams.put("webReqId", requestData.getWebReqId());
@@ -2572,14 +2564,14 @@ public class SendMessageService {
             	start = System.currentTimeMillis();
             }
         }
-
+        
         if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
             try {
                 //CM_MSG Insert
+            	ArrayList<Object> chTypeList = (ArrayList<Object>) data.get("chTypeList");
                 sParams.put("apiKey", apiKey);
-                sParams.put("reqCh", Const.Ch.SMART);
-                sParams.put("productCode", CommonUtils.getStrValue(sParams, "chString").toLowerCase());
-                //sParams.put("finalCh", Const.Ch.ALIMTALK);
+                sParams.put("reqCh", chTypeList.get(0));
+                sParams.put("finalCh", chTypeList.get(0));
                 //sParams.put("callback", requestData.getCallback());
                 sParams.put("webReqId", requestData.getWebReqId());
                 insertCmMsg(sParams, errorRecvInfoLst);
@@ -3046,7 +3038,6 @@ public class SendMessageService {
 				sParams.put("corpId", params.get("corpId"));
 				sParams.put("projectId", params.get("projectId"));
 				sParams.put("reqCh", Const.Ch.RCS);
-				sParams.put("productCode", Const.Ch.RCS.toLowerCase());
 				sParams.put("finalCh", Const.Ch.RCS);
 				sParams.put("callback", data.get("callback"));
 				sParams.put("webReqId", data.get("webReqId"));
