@@ -45,11 +45,12 @@
               <div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:20%">휴대폰 번호 변경</h5>
                 <input type="text" class="inputStyle" style="width:55%" title="휴대폰 번호 변경 입력란" v-model="chgHpNumber" placeholder="-없이 입력" @change="fnHpNumInit" maxlength="20">
-                <button @click="fnSetCertifyNumber" id="certifyBtn" class="btnStyle1 backLightGray float-right width120" title="인증번호 받기" >{{ certifyMsg }}</button>
+                <button @click="fnSetCertifyNumber" id="certifyBtn" class="btnStyle1 backLightGray float-right width120" title="인증번호 받기" :disabled="timeCounter != 0">인증요청</button>
               </div>
               <div class="of_h consolMarginTop">
                 <h5 class="inline-block" style="width:20%">인증번호</h5>
                 <input type="text" class="inputStyle float-right" style="width:80%" title="인증번호 입력란" placeholder="인증번호 입력" v-model="certifyNumber" maxlength="6">
+                <p v-if="countSpan" class="mt10 lc-1 Modaltext2 font-size12"><i class="far fa-info-circle"></i> {{ timeCounter }} 초 후에 [인증요청] 버튼이 활성화 됩니다.</p>
               </div>
             </div>
 						<div class="of_h mt30">
@@ -83,9 +84,10 @@ export default {
       chkLoginPwd : '',
       chgHpNumber : '',
       certifyNumber  : '',
-      certifyMsg : '인증번호 받기',
       repProjectId : "",
-      repProjectArr : []
+      repProjectArr : [],
+      timeCounter : 0,
+      countSpan : false       // 인증요청 버튼 활성화 문구
     }
   },
   props: {
@@ -125,7 +127,6 @@ export default {
         this.hpNumber = this.memberInfo.hpNumber;
         this.pwdUpdDt = this.memberInfo.pwdUpdDt;
         this.userName = this.memberInfo.userName;
-        this.certifyMsg = "인증번호 받기";
         this.repProjectId = this.memberInfo.repProjectId != "" && this.memberInfo.repProjectId != null ? this.memberInfo.repProjectId : "";
         
         // 변경할 비밀번호, 전화번호 초기화
@@ -133,6 +134,11 @@ export default {
         this.certifyNumber   = '';
         this.loginPwd     = '';
         this.chkLoginPwd  = '';
+        if(this.timeCounter != 0 && this.timeCounter > 0) {
+          this.countSpan = true;
+        } else {
+          this.countSpan = false;
+        }
       },
       // 번호 변경 버튼 선택시
       fnChgHpNumDiv(){
@@ -161,7 +167,11 @@ export default {
             return;
         }
 
-        this.certifyMsg = "전송 중";
+        if(this.timeCounter != 0){
+          confirm.fnAlert("", this.timeCounter+"초 후에 [인증요청]버튼이 활성화됩니다.");
+          return;
+        }
+
         var params = {
           chgHpNumber : this.chgHpNumber
         };
@@ -169,8 +179,10 @@ export default {
         myPageApi.setCertifyNumber(params).then(response => {
           var result = response.data;
           if(result.success){
-            this.certifyMsg = "인증 요청";
-
+            clearInterval(this.polling);
+            this.timeCounter = 30;
+            this.countSpan = true;
+            this.start();
           } else {
             confirm.fnAlert("", result.message);
             return;
@@ -254,6 +266,15 @@ export default {
             this.$router.push({path: "/login"});
           }
         });
+      },
+      start(){ // 1초에 한번씩 start 호출 
+        this.polling = setInterval( () =>{
+          this.timeCounter--; // 1초씩 감소
+          if (this.timeCounter == 0) this.timeStop();
+        },1000)
+      },
+      timeStop() { 
+        clearInterval(this.polling);
       }
     }
   }
