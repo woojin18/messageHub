@@ -75,7 +75,11 @@
 
 			<div class="row">
 				<div class="col-xs-12">
-					<h4 class="inline-block topH4">당일 실시간 발송 현황 <span class="font-size14 color4 ml30">{{chMinCount}}초 후 <a href="#" class="color-blue" @click.prevent="fnGetChMinList" title="새로고침">[갱신]</a></span></h4>
+					<h4 class="inline-block topH4">당일 실시간 발송 현황 
+						<span class="font-size14 color4 ml30">{{chMinCount}}초 후 
+						<!--<a href="#" class="color-blue" @click.prevent="fnGetChMinList" title="새로고침">[갱신]</a>-->
+						</span>
+					</h4>
 					<p class="color3 float-right">단위 : 건수</p>					
 					<table class="table_skin1" style="width:100%">
 						<colgroup>
@@ -96,15 +100,15 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td class="text-center cellActive"><strong>발송 요청</strong></td>
-								<td class="text-center cellActive"><strong>{{channelMinInfo.totalTotCnt | comma}}</strong></td>
-								<td class="text-center"><strong>{{channelMinInfo.smsTotCnt | comma}}</strong></td>
-								<td class="text-center"><strong>{{channelMinInfo.lmsTotCnt | comma}}</strong></td>
-								<td class="text-center"><strong>{{channelMinInfo.mmsTotCnt | comma}}</strong></td>
-								<td class="text-center"><strong>{{channelMinInfo.rcsTotCnt | comma}}</strong></td>
-								<td class="text-center"><strong>{{channelMinInfo.alimTotCnt | comma}}</strong></td>
-								<td class="text-center"><strong>{{channelMinInfo.friendTotCnt | comma}}</strong></td>
-								<td class="text-center end"><strong>{{channelMinInfo.pushTotCnt | comma}}</strong></td>
+								<td class="text-center cellActive">발송 요청</td>
+								<td class="text-center cellActive">{{channelMinInfo.totalTotCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.smsTotCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.lmsTotCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.mmsTotCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.rcsTotCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.alimTotCnt | comma}}</td>
+								<td class="text-center">{{channelMinInfo.friendTotCnt | comma}}</td>
+								<td class="text-center end">{{channelMinInfo.pushTotCnt | comma}}</td>
 							</tr>
 							<tr>
 								<td class="text-center cellActive">발송 중</td>
