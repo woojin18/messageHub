@@ -308,7 +308,8 @@ public class HomeController {
 		RestResult<Object> rtn = new RestResult<Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		String svcType = request.getHeader("svcType");
-		
+
+		paramMap.put("corpId", params.get("corpId"));
 		paramMap.put("projectId", params.get("projectId"));
 		paramMap.put("svcType", svcType);
 		

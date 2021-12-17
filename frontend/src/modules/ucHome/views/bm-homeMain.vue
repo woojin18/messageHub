@@ -105,7 +105,7 @@
 								<td class="text-center">{{channelMinInfo.lmsTotCnt | comma}}</td>
 								<td class="text-center">{{channelMinInfo.mmsTotCnt | comma}}</td>
 								<td class="text-center">{{channelMinInfo.rcsTotCnt | comma}}</td>
-								<td class="text-center">{{channelMinInfo.alimTotCnt | comma}}></td>
+								<td class="text-center">{{channelMinInfo.alimTotCnt | comma}}</td>
 								<td class="text-center">{{channelMinInfo.friendTotCnt | comma}}</td>
 								<td class="text-center end">{{channelMinInfo.pushTotCnt | comma}}</td>
 							</tr>

@@ -390,6 +390,7 @@
 				,		SUM(FAIL_CNT) AS FAIL_CNT
 				FROM 	cm.CM_STAT_CH_MIN
 				WHERE	1=1
+				AND		CORP_ID = #{corpId}
 				<if test="svcType=='UC'">
 				AND		PROJECT_ID = #{projectId}
 				</if>

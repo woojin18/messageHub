@@ -17,7 +17,7 @@ export default [
 	},
 	{
 		path: '/uc/statisticsUser/sendStatisMain',
-		name: 'sendByMonth',
+		name: 'sendByStatisMain',
 		meta: { menu: 'UC_MAIN_CH_STATIS' },
 		component: statisticsUserSendByMain
 	},
