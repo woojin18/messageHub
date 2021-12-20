@@ -14,7 +14,7 @@ header.head_type_user {border-bottom:1px solid #E6E6E6}
 #userGnb {display:inline-block; vertical-align:top}
 #userGnb .list_gnb {margin-top:20px; height:61px}
 #userGnb .list_gnb > li {float:left; margin:0 15px; position:relative}
-#userGnb .list_gnb > li > a {display:block; position:relative; padding:0 25px 0 25px; font-size:17px; line-height:40px; color:#1e1e1e; font-weight:300}
+#userGnb .list_gnb > li > a {display:block; position:relative; padding:0 25px 0 25px; font-size:17px; line-height:40px; color:#1e1e1e; font-weight:400}
 #userGnb .list_gnb > li > a:hover, #userGnb .list_gnb > li > a:focus {color:#CB1871}
 #userGnb .list_gnb > li > ul.dep2 {display:none; position:absolute; top:60px; background:#fff; z-index:999; width:100%; border:1px solid #F1F1F1; padding:0 25px; min-width:140px}
 #userGnb .list_gnb > li > ul.dep2 > li {}
@@ -78,6 +78,7 @@ header.head_type_user {border-bottom:1px solid #E6E6E6}
 .quickRight {position:fixed; bottom:40px; right:40px; z-index:999}
 .quickRight.fix {position:fixed}
 .quickRight .quick_inquiry {display:block; border-radius:30px; width:60px; height:60px; background:#000; text-align:center; padding:10px; box-shadow:0 3px 6px rgb(0,0,0,0.3); transition:.3s; line-height:40px}
+.quickRight .quick_inquiry img {margin-left:-2px}
 .quickRight .quick_inquiry:hover, .quickRight .quick_inquiry:focus {background:#CB1871}
 .quickRight .quick_top {display:block; border-radius:30px; width:60px; height:60px; background:#fff; text-align:center; padding:10px; box-shadow:0 3px 6px rgb(0,0,0,0.3); transition:.3s; margin-top:10px; line-height:35px}
 .quickRight .quick_top:hover, .quickRight .quick_top:focus {background:#CB1871}
