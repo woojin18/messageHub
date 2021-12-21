@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.type.MongoConf;
 import kr.co.uplus.cm.common.utils.CmKeyMaker;
@@ -19,10 +20,13 @@ import kr.co.uplus.cm.gw.model.mongo.msgInfo.MmsMsg;
 import kr.co.uplus.cm.gw.model.mongo.msgInfo.PushMsg;
 import kr.co.uplus.cm.gw.model.mongo.msgInfo.RcsMsg;
 import kr.co.uplus.cm.gw.model.mongo.msgInfo.SmsMsg;
+import kr.co.uplus.cm.messageStatus.controller.MessageStatusController;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 import kr.co.uplus.config.mongo.cmd.MongoCmd;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Service
 public class MessageStatusService {
 
@@ -66,7 +70,7 @@ public class MessageStatusService {
 		Query			query		= new Query(Criteria.where("msgKey").is(msgKey));
 		CmMsgInfoDto	msgInfo		= mongoCmd.findOne(query, CmMsgInfoDto.class, MongoConf.CM_MSG_INFO.key + "_"+CmKeyMaker.getTime14(msgKey).substring(0,10));
 		String			msg			= "";//메시지 내용
-		
+		 
 		if(msgInfo != null) {
 			switch (reqCh) {
 			case "SMS":
@@ -84,15 +88,22 @@ public class MessageStatusService {
 			case "RCS":
 				RcsMsg rcs = msgInfo.getRcsMsg();
 				msg = CommonUtils.getString(rcs.getBody());
+				
+				log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), rcs.getButtons());
+				
 				//rcs는 body에서 가져오는데 메세지 풀 내용을 가지고 있지않기 때문에 body의 내용을 뿌리기로 하였습니다.(손왕구 차장)
 				break;
 			case "ALIMTALK":
 				AlimtalkMsg alim = msgInfo.getAlimtalkMsg();
 				msg = alim.getMsg();
+				
+				log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), alim.getButtons());
 				break;
 			case "FRIENDTALK":
 				FriendtalkMsg fri = msgInfo.getFriendtalkMsg();
 				msg = fri.getMsg();
+				
+				log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), fri.getButtons());
 				break;
 			case "SMART":
 				break;
