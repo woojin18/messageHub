@@ -70,7 +70,9 @@ public class MessageStatusService {
 		Query			query		= new Query(Criteria.where("msgKey").is(msgKey));
 		CmMsgInfoDto	msgInfo		= mongoCmd.findOne(query, CmMsgInfoDto.class, MongoConf.CM_MSG_INFO.key + "_"+CmKeyMaker.getTime14(msgKey).substring(0,10));
 		String			msg			= "";//메시지 내용
-		 
+		
+		log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), msgInfo);
+		
 		if(msgInfo != null) {
 			switch (reqCh) {
 			case "SMS":
