@@ -23,7 +23,7 @@
 
             <div class="of_h consolMarginTop">
               <h5 class="inline-block" style="width:20%">이름 *</h5>
-              <input type="text" class="inputStyle float-right" style="width:80%" title="이름 입력란" maxlength="20" v-model="inputData.inputName" :disabled="!$gfnCommonUtils.isEmpty(loginUserInfo)">
+              <input type="text" class="inputStyle float-right" style="width:80%" title="이름 입력란" maxlength="20" v-model="inputData.inputName">
             </div>
             <div class="of_h consolMarginTop">
               <h5 class="inline-block" style="width:20%">휴대폰 번호 *</h5>
@@ -35,7 +35,6 @@
                 placeholder="-를 제외하고 입력해주세요."
                 v-model="inputData.hpNumber" 
                 maxlength="20"
-                 :disabled="!$gfnCommonUtils.isEmpty(loginUserInfo)"
               >
             </div>
             <div class="of_h consolMarginTop">
@@ -48,18 +47,17 @@
                   title="이메일 입력란" 
                   v-model="inputData.emailId" 
                   maxlength="20"
-                   :disabled="!$gfnCommonUtils.isEmpty(loginUserInfo)"
                 >
                 <span class="ml10 mr10">@</span>
                 <input type="text" 
                   class="inputStyle" 
                   style="width:24%" 
                   title="직접입력"
-                  :disabled="!$gfnCommonUtils.isEmpty(sltDomain) || !$gfnCommonUtils.isEmpty(loginUserInfo)"
+                  :disabled="!$gfnCommonUtils.isEmpty(sltDomain)"
                   v-model="inputData.emailDomain" 
                   maxlength="20"
                 >
-                <select class="selectStyle2 float-right" style="width:40%" title="메일 선택란" id="sltDomain" v-model="sltDomain" @change="fnChgMailDomain" :disabled="!$gfnCommonUtils.isEmpty(loginUserInfo)">
+                <select class="selectStyle2 float-right" style="width:40%" title="메일 선택란" id="sltDomain" v-model="sltDomain" @change="fnChgMailDomain">
                   <option value="">직접입력</option>
                   <option value="gmail.com">gmail.com</option>
                   <option value="naver.com">naver.com</option>
@@ -145,7 +143,7 @@ export default {
       sltDomain : '',
       agree : false,
       inputData: {
-        inputName: 'dd',
+        inputName: '',
         hpNumber :'',
         emailId :  '',
         emailDomain : '',
@@ -208,7 +206,6 @@ export default {
       return true;
     },
     fnRegisterInquiry(){
-      console.log(this.inputData);
       if(this.fnIsValid() == false) return;
       eventBus.$on('callbackEventBus', this.fnProcRegisterInquiry);
       confirm.fnConfirm(this.componentsTitle, "문의 하시겠습니까?", "확인");
