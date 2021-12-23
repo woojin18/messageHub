@@ -112,35 +112,21 @@
               <h5 class="inline-block  text-left float-left font-size16" style="width:20%">문의유형</h5>
               <div class="inline-block float-left">
                 <template v-for="(inqueiryType, idx) in inqueiryTypeList">
-                  <input :key="idx"
-                    type="radio"
-                    name="inqueiryType"
-                    :value="inqueiryType.codeVal1"
-                    :id="'inqueiryType_'+inqueiryType.codeVal1"
-                    v-model="inqueiryInputData.questType"
-                  >
-                  <label :key="idx+'_sub'"
-                    :for="'inqueiryType_'+inqueiryType.codeVal1"
-                    class="mr20 font-size14"
-                  >{{inqueiryType.codeName1}}</label>
+                  <input :key="idx" type="radio" name="inqueiryType" :value="inqueiryType.codeVal1" :id="'inqueiryType_'+inqueiryType.codeVal1" v-model="inqueiryInputData.questType">
+                  <label :key="idx+'_sub'" :for="'inqueiryType_'+inqueiryType.codeVal1" class="mr20 font-size14">{{inqueiryType.codeName1}}</label>
                 </template>
               </div>
             </div>
-            <input type="text" class="form-control mt15" placeholder="이름" v-model="inqueiryInputData.inputName" maxlength="20">
-            <input type="text" class="form-control mt15" placeholder="휴대폰 번호 ( - 없이 입력)" v-model="inqueiryInputData.hpNumber" maxlength="20">
-            <input type="text" class="form-control mt15" placeholder="E-mail" v-model="inqueiryInputData.email" maxlength="40">
+            <input type="text" class="form-control mt25" placeholder="고객사명" v-model="inqueiryInputData.corpName" maxlength="50" :disabled="tokenChk">
+            <input type="text" class="form-control mt15" placeholder="이름" v-model="inqueiryInputData.inputName" maxlength="20" :disabled="tokenChk">
+            <input type="text" class="form-control mt15" placeholder="휴대폰 번호 ( - 없이 입력)" v-model="inqueiryInputData.hpNumber" maxlength="20" :disabled="tokenChk">
+            <input type="text" class="form-control mt15" placeholder="E-mail" v-model="inqueiryInputData.email" maxlength="40" :disabled="tokenChk">
             <input type="text" class="form-control mt15" placeholder="제목" v-model="inqueiryInputData.title" maxlength="100">
-            <textarea
-              class="form-textarea height180 mt15"
-              placeholder="궁금하신 내용을 적어주세요."
-              v-model="inqueiryInputData.content"
-              maxlength="4000"
-            ></textarea>
+            <textarea class="form-textarea height180 mt15" placeholder="궁금하신 내용을 적어주세요." v-model="inqueiryInputData.content" maxlength="4000"></textarea>
             <div class="quiryAgree">
               <input type="checkbox" id="agree1" class="checkStyle2" value="서비스 이용약관 동의" v-model="inqueiryInputData.agree">
               <label for="agree1">[필수] 개인정보 수집 및 이용 동의에 동의합니다.</label>
               <!-- <a href="#self" class="provisionMore">내용보기</a> -->
-
             </div>
             <a href="#self" @click.prevent="fnRegisterInquiry" class="btnStyle2 backRed" title="상담신청">상담신청</a>
           </div>
@@ -148,7 +134,7 @@
       </article>
       <!-- //quiryWrap -->
     </div>
-    <QuickRight></QuickRight>
+    <QuickRight :loginUserInfo="loginUserInfo"></QuickRight>
     <NoticeLayer ref="noticeLayer"></NoticeLayer>
   </div>
 </template>
@@ -160,6 +146,8 @@ import NoticeLayer from "@/modules/customer/components/bp-noticeLayer.vue";
 import customereApi from "@/modules/customer/service/customerApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import tokenSvc from '@/common/token-service';
+import myPageApi from '@/modules/myPage/service/myPageApi';
 
 export default {
   name: 'consoleMain',
@@ -167,12 +155,22 @@ export default {
     QuickRight,
     NoticeLayer
   },
+  props: {
+    tokenChk : {
+      type : Boolean,
+      require : false,
+      default(){
+        return tokenSvc.getToken() != undefined && tokenSvc.getToken() != null;
+      }
+    }
+  },
   data() {
     return {
       componentsTitle: '메인',
       inqueiryTypeList: [],
       noticeInfoList: [],
       libraryInfoList: [],
+      loginUserInfo : {},
       inqueiryInputData: {
         agree: false,
         inputName: '',
@@ -183,6 +181,7 @@ export default {
         email : '',
         title : '',
         content :'',
+        corpName : ''
       }
     }
   },
@@ -197,6 +196,9 @@ export default {
     this.fnSelectNoticeList();
     this.fnSelectLibraryList();
     this.fnSelectFaqType();
+    if(this.tokenChk){
+      this.fnSetUserInfo();
+    }
   },
   methods: {
     fnSetSlider(){
@@ -212,6 +214,10 @@ export default {
       jQuery("#noticeDetailLayer").modal("show");
     },
     fnIsValid(){
+      if(!this.inqueiryInputData.corpName){
+        confirm.fnAlert(this.componentsTitle, '고객사명을 입력해주세요.');
+        return false;
+      }
       if(!this.inqueiryInputData.inputName){
         confirm.fnAlert(this.componentsTitle, '이름을 입력해주세요.');
         return false;
@@ -340,6 +346,25 @@ export default {
         }
       });
     },
+    fnSetUserInfo(){
+      var params = {
+        userId : tokenSvc.getToken().principal.userId
+      };
+      myPageApi.selectMemberInfo(params).then(response => {
+        var result = response.data;
+        if(result.success){
+          this.inqueiryInputData.inputName  = result.data.userName;
+          this.inqueiryInputData.hpNumber   = result.data.hpNumber;
+          this.inqueiryInputData.email      = result.data.loginId;
+          this.inqueiryInputData.corpName   = result.data.corpName;
+
+          this.loginUserInfo.inputName  = result.data.userName;
+          this.loginUserInfo.hpNumber   = result.data.hpNumber;
+          this.loginUserInfo.email      = result.data.loginId;
+          this.loginUserInfo.corpName   = result.data.corpName;
+        }
+      });
+    }
   }
 }
 </script>

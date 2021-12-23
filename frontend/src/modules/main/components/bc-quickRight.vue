@@ -10,7 +10,7 @@
         <li><a href="#" class="quick_top"><img src="@/assets/images/main/quickIcon_top.png" alt=""></a></li>
       </ul>
     </div>
-    <InquiryPopup ref="inquiryPopup"></InquiryPopup>
+    <InquiryPopup ref="inquiryPopup" :loginUserInfo="loginUserInfo"></InquiryPopup>
   </div>
 </template>
 
@@ -21,6 +21,12 @@ export default {
   name: 'quickRight',
   components : {
     InquiryPopup
+  },
+  props : {
+    loginUserInfo : {
+      type : Object,
+      require : false
+    }
   },
   mounted() {
     this.fnSetQuickRight();

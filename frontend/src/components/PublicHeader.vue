@@ -37,7 +37,7 @@
         </ul>
       </div>
     </div>
-    <InquiryPopup ref="inquiryPopup"></InquiryPopup>
+    <InquiryPopup ref="inquiryPopup" :loginUserInfo="loginUserInfo"></InquiryPopup>
   </header>
   <!-- //head_type_user -->
 </template>
@@ -48,16 +48,27 @@ import InquiryPopup from "@/modules/customer/components/bp-inquiry.vue";
 import loginApi from '@/modules/login/service/api';
 import customerApi from '@/modules/customer/service/customerApi';
 import tokenSvc from '@/common/token-service';
+import myPageApi from '@/modules/myPage/service/myPageApi';
 
 export default {
   name: "PublicHeader",
   components : {
     InquiryPopup
   },
+  props: {
+    tokenChk : {
+      type : Boolean,
+      require : false,
+      default(){
+        return tokenSvc.getToken() != undefined && tokenSvc.getToken() != null;
+      }
+    }
+  },
   data() {
     return {
       isLogin: false,
-      userGuideUrl : "www.naver.com"
+      userGuideUrl : "www.naver.com",
+      loginUserInfo : {}
     }
   },
   created() {
@@ -68,8 +79,12 @@ export default {
     } else {
       this.$store.commit("login/isLogin", false);
       this.isLogin = false;
+      
     }
-    this.fnInit()
+    this.fnInit();
+    if(this.tokenChk){
+      this.fnSetUserInfo();
+    }
   },
   methods: {
     fnInit() {
@@ -103,6 +118,22 @@ export default {
         });
       }
     },
+    fnSetUserInfo(){
+      var params = {
+        userId : tokenSvc.getToken().principal.userId
+      };
+      myPageApi.selectMemberInfo(params).then(response => {
+        var result = response.data;
+        if(result.success){
+          this.loginUserInfo.inputName  = result.data.userName;
+          this.loginUserInfo.hpNumber   = result.data.hpNumber;
+          this.loginUserInfo.email      = result.data.loginId;
+          this.loginUserInfo.corpName   = result.data.corpName;
+        } else {
+          this.loginUserInfo = {};
+        }
+      });
+    }
   }
 };
 </script>

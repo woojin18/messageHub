@@ -4,14 +4,18 @@
 <mapper namespace="myPage">
 	<select id="selectMemberInfo" parameterType="string" resultType="camel">
 	/* myPage.selectMemberInfo */
-		SELECT	USER_ID
-		,		LOGIN_ID
-		,		USER_NAME
-		,		DATE_FORMAT(PWD_UPD_DT, '%Y-%m-%d')	AS PWD_UPD_DT
-		,		HP_NUMBER
-		,		REP_PROJECT_ID
-		FROM	cm_console.CM_USER
-		WHERE	USER_ID = #{userId}
+		SELECT	cu.USER_ID
+		,		cu.LOGIN_ID
+		,		cu.USER_NAME
+		,		DATE_FORMAT(cu.PWD_UPD_DT, '%Y-%m-%d')	AS PWD_UPD_DT
+		,		cu.HP_NUMBER
+		,		cu.REP_PROJECT_ID
+		,		cc.CORP_ID 
+		,		cc.CORP_NAME 
+		FROM	cm_console.CM_USER cu 
+		LEFT OUTER JOIN cm_console.CM_CORP cc 
+			ON cu.CORP_ID = cc.CORP_ID
+		WHERE	cu.USER_ID = #{userId}
 	</select>
 	
 	<update id="updateMemberInfo">
@@ -104,6 +108,7 @@
 		,	QUEST_STATUS
 		,	HP_NUMBER
 		,	EMAIL
+		,	CORP_NAME
 		,	REG_ID
 		,	REG_DT
 		) VALUES (
@@ -114,6 +119,7 @@
 		,	'01'
 		,	#{hpNumber}
 		,	#{email}
+		,	#{corpName}
 		,	#{userId}
 		,	NOW()
 		)

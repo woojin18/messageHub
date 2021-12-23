@@ -9,23 +9,39 @@
 						<div class="of_h">
 							<h5 class="inline-block" style="width:18%">문의유형 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
 							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ qnaTypeStr }}</h5>
-							<select v-else v-model="qnaType" class="selectStyle2 float-right" style="width:80%">
-								<option value="">선택</option>
-								<option  v-for="(row, index) in qnaTypeArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
-							</select>
-						</div>	
+                <div v-else  class="inline-block float-right" style="width:80%">
+                  <template v-for="(row, idx) in qnaTypeArr">
+                    <input :key="idx" type="radio" name="inqueiryType" :value="row.codeVal1" :id="'inqueiryType_'+row.codeVal1" v-model="qnaType">
+                    <label :key="idx+'_sub'" :for="'inqueiryType_'+row.codeVal1" class="mr20 font-size14">{{row.codeName1}}</label>
+                  </template>
+                </div>
+						</div>
+						<div class="of_h consolMarginTop">
+							<h5 class="inline-block" style="width:18%">회사명 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
+							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ corpName }}</h5>
+							<div v-else class="float-right" style="width:80%">
+							  <input type="text" class="inputStyle" v-model="corpName" disabled>
+							</div>
+						</div>
+						<div class="of_h consolMarginTop">
+							<h5 class="inline-block" style="width:18%">이름 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
+							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ name }}</h5>
+							<div v-else class="float-right" style="width:80%">
+							  <input type="text" class="inputStyle" v-model="name" disabled>
+							</div>
+						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">이메일 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
 							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ email }}</h5>
 							<div v-else class="float-right" style="width:80%">
-							  <input type="text" class="inputStyle" v-model="email">
+							  <input type="text" class="inputStyle" v-model="email" disabled>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">전화번호 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
 							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ hpNumber }}</h5>
 							<div v-else class="float-right" style="width:80%">
-								<input type="text" class="inputStyle" v-model="hpNumber" placeholder="-없이 입력하세요">
+								<input type="text" class="inputStyle" v-model="hpNumber" placeholder="-없이 입력하세요" disabled>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
@@ -90,8 +106,9 @@ export default {
       reply : '',         // 답변
       replyUser : "",     // 답변자
       replyDt : "",       // 답변 일자
+      name : "",          // 이름
       qnaTypeArr : [],
-
+      corpName : "",
       memberInfo : {},
     }
   },
@@ -157,12 +174,14 @@ export default {
         this.title = this.selectRow.title;
         this.hpNumber = this.status == "add" ? this.memberInfo.hpNumber : this.selectRow.hpNumber;    // 신규 문의 사항인 경우 로그인 회원의 전화번호
         this.email = this.status == "add" ? this.memberInfo.loginId : this.selectRow.email;           // 신규 문의 사항인 경우 로그인 회원의 이메일
+        this.name = this.memberInfo.userName;
         this.content = this.selectRow.content;
         this.qnaStatus = this.selectRow.questStatus;
         this.qnaStatusStr = this.selectRow.questStatusStr;
         this.reply = this.selectRow.reply;
         this.replyUser = this.selectRow.replyUser;
         this.replyDt = this.selectRow.replyDt;
+        this.corpName = this.memberInfo.corpName;
       },
       fnSave(){
         if(this.qnaType == undefined || this.qnaType == ''){
@@ -205,6 +224,7 @@ export default {
           hpNumber      : this.hpNumber,                    // 전화번호
           title         : this.title,                       // 제목
           content       : this.content,                     // 내용
+          corpName      : this.corpName,
           userId        : tokenSvc.getToken().principal.userId
         }
         myPageApi.saveQnaInfo(params).then(response => {

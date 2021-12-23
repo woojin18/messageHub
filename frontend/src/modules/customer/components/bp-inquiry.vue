@@ -4,11 +4,26 @@
       <div class="modal-content">
         <div class="modal-body">
           <div>
-            <h2 class="color000 font-size18">1:1 문의</h2>
+            <h2 class="color000 font-size18">U+ 메시지허브 문의</h2>
             <hr>
-            <div class="of_h">
-              <h5 class="inline-block" style="width:20%">이름입력 *</h5>
-              <input type="text" class="inputStyle float-right" style="width:80%" title="이름 입력란" v-model="inputData.inputName" maxlength="20">
+              <div class="of_h">
+                <h5 class="inline-block" style="width:20%">문의유형 *</h5>
+                <div class="inline-block float-right" style="width:80%">
+                  <template v-for="(inqueiryType, idx) in qnaTypeList">
+                    <input :key="idx" type="radio" name="inqueiryType" :value="inqueiryType.codeVal1" :id="'inqueiryType_'+inqueiryType.codeVal1" v-model="inputData.questType">
+                    <label :key="idx+'_sub'" :for="'inqueiryType_'+inqueiryType.codeVal1" class="mr20 font-size14">{{inqueiryType.codeName1}}</label>
+                  </template>
+                </div>
+              </div>
+
+              <div class="of_h consolMarginTop">
+                <h5 class="inline-block" style="width:20%">고객사명 *</h5>
+                <input type="text" class="inputStyle float-right" style="width:80%" title="회사명 입력란" maxlength="50" v-model="inputData.corpName" :disabled="!$gfnCommonUtils.isEmpty(loginUserInfo)">
+              </div>
+
+            <div class="of_h consolMarginTop">
+              <h5 class="inline-block" style="width:20%">이름 *</h5>
+              <input type="text" class="inputStyle float-right" style="width:80%" title="이름 입력란" maxlength="20" v-model="inputData.inputName" :disabled="!$gfnCommonUtils.isEmpty(loginUserInfo)">
             </div>
             <div class="of_h consolMarginTop">
               <h5 class="inline-block" style="width:20%">휴대폰 번호 *</h5>
@@ -20,6 +35,7 @@
                 placeholder="-를 제외하고 입력해주세요."
                 v-model="inputData.hpNumber" 
                 maxlength="20"
+                 :disabled="!$gfnCommonUtils.isEmpty(loginUserInfo)"
               >
             </div>
             <div class="of_h consolMarginTop">
@@ -32,17 +48,18 @@
                   title="이메일 입력란" 
                   v-model="inputData.emailId" 
                   maxlength="20"
+                   :disabled="!$gfnCommonUtils.isEmpty(loginUserInfo)"
                 >
                 <span class="ml10 mr10">@</span>
                 <input type="text" 
                   class="inputStyle" 
                   style="width:24%" 
                   title="직접입력"
-                  :disabled="!$gfnCommonUtils.isEmpty(sltDomain)"
+                  :disabled="!$gfnCommonUtils.isEmpty(sltDomain) || !$gfnCommonUtils.isEmpty(loginUserInfo)"
                   v-model="inputData.emailDomain" 
                   maxlength="20"
                 >
-                <select class="selectStyle2 float-right" style="width:40%" title="메일 선택란" v-model="sltDomain" @change="fnChgMailDomain">
+                <select class="selectStyle2 float-right" style="width:40%" title="메일 선택란" id="sltDomain" v-model="sltDomain" @change="fnChgMailDomain" :disabled="!$gfnCommonUtils.isEmpty(loginUserInfo)">
                   <option value="">직접입력</option>
                   <option value="gmail.com">gmail.com</option>
                   <option value="naver.com">naver.com</option>
@@ -52,13 +69,7 @@
               </select>
               </div>
             </div>
-            <div class="of_h consolMarginTop">
-              <h5 class="inline-block" style="width:20%">문의종류 *</h5>
-              <select class="selectStyle2 float-right" style="width:80%" title="문의종류 선택란" v-model="inputData.questType">
-                <option value="">선택</option>
-                <option v-for="(inqueiryType, idx) in inqueiryTypeList" :key="idx" :value="inqueiryType.codeVal1">{{inqueiryType.codeName1}}</option>
-              </select>
-            </div>
+
             <div class="of_h consolMarginTop">
               <h5 class="inline-block" style="width:20%">제목 *</h5>
               <input 
@@ -104,7 +115,6 @@
         </a>
       </div>
     </div>
-    
   </div>
 </template>
 
@@ -112,6 +122,7 @@
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import customereApi from "@/modules/customer/service/customerApi.js";
+import tokenSvc from '@/common/token-service';
 
 export default {
   name: "inquiryPopup",
@@ -123,21 +134,26 @@ export default {
         return '1:1 문의';
       }
     },
+    loginUserInfo : {
+      type : Object,
+      require : false
+    }
   },
   data() {
     return {
-      inqueiryTypeList: [],
+      qnaTypeList: [],
       sltDomain : '',
       agree : false,
       inputData: {
-        inputName: '',
-        hpNumber : '',
-        emailId : '',
+        inputName: 'dd',
+        hpNumber :'',
+        emailId :  '',
         emailDomain : '',
         questType : '',
-        email : '',
+        email :'',
         title : '',
         content :'',
+        corpName : ''
       }
     }
   },
@@ -151,6 +167,10 @@ export default {
   },
   methods: {
     fnIsValid(){
+      if(!this.inputData.corpName){
+        confirm.fnAlert(this.componentsTitle, '고객사명을 입력해주세요.');
+        return false;
+      }
       if(!this.inputData.inputName){
         confirm.fnAlert(this.componentsTitle, '이름을 입력해주세요.');
         return false;
@@ -188,6 +208,7 @@ export default {
       return true;
     },
     fnRegisterInquiry(){
+      console.log(this.inputData);
       if(this.fnIsValid() == false) return;
       eventBus.$on('callbackEventBus', this.fnProcRegisterInquiry);
       confirm.fnConfirm(this.componentsTitle, "문의 하시겠습니까?", "확인");
@@ -214,7 +235,7 @@ export default {
       customereApi.selectCodeList(params).then(response =>{
         const result = response.data;
         if(result.success) {
-          this.inqueiryTypeList = Object.assign({}, result.data);
+          this.qnaTypeList = Object.assign({}, result.data);
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
@@ -224,7 +245,35 @@ export default {
       this.inputData.emailDomain = this.sltDomain;
     },
     fnRestData(){
-      Object.assign(this.$data, this.$options.data());
+      // 로그인 된 경우 로그인 사용자 정보 입력
+      var vm = this;
+      if(!vm.$gfnCommonUtils.isEmpty(vm.loginUserInfo)){
+        vm.inputData.inputName = vm.loginUserInfo.inputName;
+        vm.inputData.hpNumber = vm.loginUserInfo.hpNumber;
+        vm.inputData.corpName = vm.loginUserInfo.corpName;
+        vm.inputData.emailId = vm.loginUserInfo.email.split("@")[0];
+
+        // 이메일 도메인 select box에 해당 도메인 있는지 확인
+        var emailDomain = vm.$gfnCommonUtils.isEmpty(vm.loginUserInfo.email.split("@")[1]) ? "" : vm.loginUserInfo.email.split("@")[1];
+        var exist = false;      
+        jQuery("#sltDomain option").each(function(){ 
+          if(this.value == emailDomain){
+            exist = true;
+            vm.sltDomain = emailDomain;
+          } else {
+            vm.sltDomain = "";
+          }
+        });
+
+        if(exist){
+          vm.sltDomain = emailDomain;
+        } else {
+          vm.sltDomain = "";
+        }
+        vm.inputData.emailDomain = emailDomain;
+      } else {
+        Object.assign(this.$data, this.$options.data());
+      }
     }
   }
 }
