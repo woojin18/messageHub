@@ -112,12 +112,12 @@
               <h5 class="inline-block  text-left float-left font-size16" style="width:20%">문의유형</h5>
               <div class="inline-block float-left">
                 <template v-for="(inqueiryType, idx) in inqueiryTypeList">
-                  <input :key="idx" type="radio" name="inqueiryType" :value="inqueiryType.codeVal1" :id="'inqueiryType_'+inqueiryType.codeVal1" v-model="inqueiryInputData.questType">
-                  <label :key="idx+'_sub'" :for="'inqueiryType_'+inqueiryType.codeVal1" class="mr20 font-size14">{{inqueiryType.codeName1}}</label>
+                  <input :key="idx" type="radio" name="inqueiryTypeC" :value="inqueiryType.codeVal1" :id="'inqueiryTypeC_'+inqueiryType.codeVal1" v-model="inqueiryInputData.questType">
+                  <label :key="idx+'_sub'" :for="'inqueiryTypeC_'+inqueiryType.codeVal1" class="mr20 font-size14">{{inqueiryType.codeName1}}</label>
                 </template>
               </div>
             </div>
-            <input type="text" class="form-control mt25" placeholder="고객사명" v-model="inqueiryInputData.corpName" maxlength="50" :disabled="tokenChk">
+            <input type="text" class="form-control mt25" placeholder="고객사명" v-model="inqueiryInputData.corpName" maxlength="50" :disabled="isLogin">
             <input type="text" class="form-control mt15" placeholder="이름" v-model="inqueiryInputData.inputName" maxlength="20">
             <input type="text" class="form-control mt15" placeholder="휴대폰 번호 ( - 없이 입력)" v-model="inqueiryInputData.hpNumber" maxlength="20">
             <input type="text" class="form-control mt15" placeholder="E-mail" v-model="inqueiryInputData.email" maxlength="40">
@@ -134,7 +134,7 @@
       </article>
       <!-- //quiryWrap -->
     </div>
-    <QuickRight :loginUserInfo="loginUserInfo"></QuickRight>
+    <QuickRight></QuickRight>
     <NoticeLayer ref="noticeLayer"></NoticeLayer>
   </div>
 </template>
@@ -155,22 +155,13 @@ export default {
     QuickRight,
     NoticeLayer
   },
-  props: {
-    tokenChk : {
-      type : Boolean,
-      require : false,
-      default(){
-        return tokenSvc.getToken() != undefined && tokenSvc.getToken() != null;
-      }
-    }
-  },
   data() {
     return {
+      isLogin : false,
       componentsTitle: '메인',
       inqueiryTypeList: [],
       noticeInfoList: [],
       libraryInfoList: [],
-      loginUserInfo : {},
       inqueiryInputData: {
         agree: false,
         inputName: '',
@@ -190,13 +181,16 @@ export default {
       return this.inqueiryInputData.hpNumber = this.inqueiryInputData.hpNumber.replace(/[^0-9]/g, '');
     }
   },
+  created(){
+    this.isLogin = !!tokenSvc.getToken();
+  },
   mounted() {
     this.fnSetSlider();
     this.fnOpenNoticePopup();
     this.fnSelectNoticeList();
     this.fnSelectLibraryList();
     this.fnSelectFaqType();
-    if(this.tokenChk){
+    if(this.isLogin){
       this.fnSetUserInfo();
     }
   },
@@ -357,11 +351,6 @@ export default {
           this.inqueiryInputData.hpNumber   = result.data.hpNumber;
           this.inqueiryInputData.email      = result.data.loginId;
           this.inqueiryInputData.corpName   = result.data.corpName;
-
-          this.loginUserInfo.inputName  = result.data.userName;
-          this.loginUserInfo.hpNumber   = result.data.hpNumber;
-          this.loginUserInfo.email      = result.data.loginId;
-          this.loginUserInfo.corpName   = result.data.corpName;
         }
       });
     }

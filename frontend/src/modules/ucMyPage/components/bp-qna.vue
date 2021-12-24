@@ -9,10 +9,12 @@
 						<div class="of_h">
 							<h5 class="inline-block" style="width:18%">문의유형 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
 							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ qnaTypeStr }}</h5>
-							<select v-else id="qnaType" name="qnaType" v-model="qnaType" class="selectStyle2 float-right" style="width:80%">
-								<option value="">선택</option>
-                <option  v-for="(row, index) in qnaTypeArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
-							</select>
+                <div v-else  class="inline-block float-right" style="width:80%">
+                  <template v-for="(row, idx) in qnaTypeArr">
+                    <input :key="idx" type="radio" name="inqueiryTypeUQ" :value="row.codeVal1" :id="'inqueiryTypeUQ_'+row.codeVal1" v-model="qnaType">
+                    <label :key="idx+'_sub'" :for="'inqueiryTypeUQ_'+row.codeVal1" class="mr20 font-size14">{{row.codeName1}}</label>
+                  </template>
+                </div>
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">고객사명 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
@@ -25,21 +27,21 @@
 							<h5 class="inline-block" style="width:18%">이름 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
 							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ name }}</h5>
 							<div v-else class="float-right" style="width:80%">
-							  <input type="text" class="inputStyle" v-model="name"  disabled>
+							  <input type="text" class="inputStyle" v-model="name" >
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">이메일 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
 							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ email }}</h5>
 							<div v-else class="float-right" style="width:80%">
-							  <input type="text" class="inputStyle" v-model="email"  disabled>
+							  <input type="text" class="inputStyle" v-model="email">
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">전화번호 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
 							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ hpNumber }}</h5>
 							<div v-else class="float-right" style="width:80%">
-								<input type="text" class="inputStyle" v-model="hpNumber" disabled>
+								<input type="text" class="inputStyle" v-model="hpNumber">
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">

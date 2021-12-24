@@ -55,15 +55,6 @@ export default {
   components : {
     InquiryPopup
   },
-  props: {
-    tokenChk : {
-      type : Boolean,
-      require : false,
-      default(){
-        return tokenSvc.getToken() != undefined && tokenSvc.getToken() != null;
-      }
-    }
-  },
   data() {
     return {
       isLogin: false,
@@ -82,7 +73,7 @@ export default {
       
     }
     this.fnInit();
-    if(this.tokenChk){
+    if(this.isLogin){
       this.fnSetUserInfo();
     }
   },

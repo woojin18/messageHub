@@ -10,32 +10,37 @@
         <li><a href="#" class="quick_top"><img src="@/assets/images/main/quickIcon_top.png" alt=""></a></li>
       </ul>
     </div>
-    <InquiryPopup ref="inquiryPopup" :loginUserInfo="loginUserInfo"></InquiryPopup>
+    <InquiryPopup2 ref="inquiryPopup2" :loginUserInfo="loginUserInfo"></InquiryPopup2>
   </div>
 </template>
 
 <script>
-import InquiryPopup from "@/modules/customer/components/bp-inquiry.vue";
+import InquiryPopup2 from "@/modules/customer/components/bp-inquiry2.vue";
+import tokenSvc from '@/common/token-service';
+import myPageApi from '@/modules/myPage/service/myPageApi';
 
 export default {
   name: 'quickRight',
   components : {
-    InquiryPopup
+    InquiryPopup2
   },
-  props : {
-    loginUserInfo : {
-      type : Object,
-      require : false
-    }
+  created(){
+    this.isLogin = !!tokenSvc.getToken();
   },
   mounted() {
     this.fnSetQuickRight();
   },
+  data(){
+    return {
+      isLogin : false,
+      loginUserInfo : {}
+    }
+  },
   methods: {
     fnOpenInquiryModal(){
-      this.$refs.inquiryPopup.fnRestData();
-      jQuery("#Inquiry").modal("show");
-      this.$refs.inquiryPopup.fnSelectFaqType();
+      this.$refs.inquiryPopup2.fnRestData();
+      jQuery("#Inquiry2").modal("show");
+      this.$refs.inquiryPopup2.fnSelectFaqType();
     },
     fnSetQuickRight(){
       jQuery(window).scroll(function(){
@@ -45,6 +50,26 @@ export default {
         }
         else {
           jQuery('.quickRight').removeClass('fix');
+        }
+      });
+      
+      if(this.isLogin){
+        this.fnSetUserInfo();
+      }
+    },
+    fnSetUserInfo(){
+      var params = {
+        userId : tokenSvc.getToken().principal.userId
+      };
+      myPageApi.selectMemberInfo(params).then(response => {
+        var result = response.data;
+        if(result.success){
+          this.loginUserInfo.inputName  = result.data.userName;
+          this.loginUserInfo.hpNumber   = result.data.hpNumber;
+          this.loginUserInfo.email      = result.data.loginId;
+          this.loginUserInfo.corpName   = result.data.corpName;
+        } else {
+          this.loginUserInfo = {};
         }
       });
     }

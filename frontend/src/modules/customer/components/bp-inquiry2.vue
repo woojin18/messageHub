@@ -1,5 +1,5 @@
 <template>
-  <div class="modal modalStyle" id="Inquiry" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal modalStyle" id="Inquiry2" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
@@ -10,8 +10,8 @@
                 <h5 class="inline-block" style="width:20%">문의유형 *</h5>
                 <div class="inline-block float-right" style="width:80%">
                   <template v-for="(inqueiryType, idx) in inqueiryTypeList">
-                    <input :key="idx" type="radio" name="inqueiryType1" :value="inqueiryType.codeVal1" :id="'inqueiryType1_'+inqueiryType.codeVal1" v-model="inputData.questType">
-                    <label :key="idx+'_sub'" :for="'inqueiryType1_'+inqueiryType.codeVal1" class="mr20 font-size14">{{inqueiryType.codeName1}}</label>
+                    <input :key="idx" type="radio" name="inqueiryType2" :value="inqueiryType.codeVal1" :id="'inqueiryType2_'+inqueiryType.codeVal1" v-model="inputData.questType">
+                    <label :key="idx+'_sub'" :for="'inqueiryType2_'+inqueiryType.codeVal1" class="mr20 font-size14">{{inqueiryType.codeName1}}</label>
                   </template>
                 </div>
               </div>
@@ -64,6 +64,7 @@
                   <option value="daum.net">daum.net</option>
                   <option value="hotmail.com">hotmail.com</option>
                   <option value="nate.com">nate.com</option>
+                  <option value="bitcube.co.kr">bitcube.co.kr</option>
               </select>
               </div>
             </div>
@@ -122,7 +123,7 @@ import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import customereApi from "@/modules/customer/service/customerApi.js";
 
 export default {
-  name: "inquiryPopup",
+  name: "inquiryPopup2",
   props: {
     componentsTitle: {
       type: String,
