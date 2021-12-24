@@ -90,6 +90,21 @@ public class MessageStatusService {
 			case "RCS":
 				RcsMsg rcs = msgInfo.getRcsMsg();
 				msg = CommonUtils.getString(rcs.getBody());
+				List<Object> rcsButtonList = rcs.getButtons();
+				List<String> returnRcsBtnNmList = new ArrayList<String>();
+				
+				// 버튼이 있는 경우 버튼 세팅
+				if(rcsButtonList.size() > 0) {
+					Map<String, Object> buttonMap = (Map<String, Object>) rcsButtonList.get(0);
+					List<Map<String, Object>> subButtonList = (List<Map<String, Object>>) buttonMap.get("suggestions");
+					for(Map<String, Object> subButtonMap : subButtonList) {
+						Map<String, Object> action = (Map<String, Object>) subButtonMap.get("action");
+						String displayText = CommonUtils.getString(action.get("displayText"));
+						returnRcsBtnNmList.add(displayText);
+					}
+					
+					rtnMap.put("btnNmArr", returnRcsBtnNmList);
+				}
 				
 				log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), rcs.getButtons());
 				
@@ -99,11 +114,35 @@ public class MessageStatusService {
 				AlimtalkMsg alim = msgInfo.getAlimtalkMsg();
 				msg = alim.getMsg();
 				
+				// 버튼 세팅
+				List<Object> alimButtonList = alim.getButtons();
+				List<String> returnAlimBtnNmList = new ArrayList<String>();
+				if(alimButtonList.size() >0) {
+					List<Map<String, Object>> alimSubBtnList = (List<Map<String, Object>>) alimButtonList.get(0);
+					for(Map<String, Object> map : alimSubBtnList) {
+						returnAlimBtnNmList.add(CommonUtils.getString(map.get("name")));
+					}
+					
+					rtnMap.put("btnNmArr", returnAlimBtnNmList);
+				}
+				
 				log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), alim.getButtons());
 				break;
 			case "FRIENDTALK":
 				FriendtalkMsg fri = msgInfo.getFriendtalkMsg();
 				msg = fri.getMsg();
+				
+				// 버튼 세팅
+				List<Object> friButtonList = fri.getButtons();
+				List<String> returnFriBtnNmList = new ArrayList<String>();
+				if(friButtonList.size() >0) {
+					List<Map<String, Object>> friSubBtnList = (List<Map<String, Object>>) friButtonList.get(0);
+					for(Map<String, Object> map : friSubBtnList) {
+						returnFriBtnNmList.add(CommonUtils.getString(map.get("name")));
+					}
+					
+					rtnMap.put("btnNmArr", returnFriBtnNmList);
+				}
 				
 				log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), fri.getButtons());
 				break;
@@ -115,6 +154,9 @@ public class MessageStatusService {
 		}
 		
 		rtnMap.put("msg", msg);
+		
+		log.info("{} MessageStatusService Mongo rtmMap : {}", this.getClass(), rtnMap);
+		
 		rtn.setData(rtnMap);
 		
 		return rtn;

@@ -136,7 +136,7 @@ public class ProjectService {
 
 				Map<String, Object> apiCustomerInfo = (Map<String, Object>) apiInterface
 						.get("/console/v1/ucube/customer/" + custNo, null).get("data");
-
+				
 				Map<String, Object> joinMap = new HashMap<>();
 
 				joinMap.put("custNo", custNo);
@@ -170,7 +170,7 @@ public class ProjectService {
 				Map<String, Object> serviceInfo = new HashMap<>();
 				Map<String, Object> ownerMap = (Map<String, Object>) generalDao
 						.selectGernalObject("project.selectOwnerForApi", params);
-
+				
 				serviceInfo.put("cmpNm", apiCustomerInfo.get("bizCompNm")); // 가입자(상호)명
 				serviceInfo.put("ceoNm", apiCustomerInfo.get("custNm")); // 대표자 성명 (필수)
 				serviceInfo.put("damNm", ownerMap.get("damNm")); // 담당자명
@@ -266,7 +266,6 @@ public class ProjectService {
 
 				// API 통신처리
 				Map<String, Object> result = apiInterface.post("/console/v1/ucube/service/join/cm", joinMap, null);
-
 //				성공 시
 //				{
 //					"code": "10000",
@@ -285,10 +284,11 @@ public class ProjectService {
 				String serviceId = "";
 				String billId = "";
 
-				Map<String, Object> resultData = (Map<String, Object>) result.get("data");
-				List<Map<String, Object>> resultList = (List<Map<String, Object>>) resultData.get("resultList");
 
 				if ("10000".equals(result.get("code"))) {
+					Map<String, Object> resultData = (Map<String, Object>) result.get("data");
+					List<Map<String, Object>> resultList = (List<Map<String, Object>>) resultData.get("resultList");
+					
 					serviceId = CommonUtils.getString(resultList.get(0).get("entrNo"));
 					billId = CommonUtils.getString(resultList.get(0).get("billAcntNo"));
 					kong.unirest.json.JSONObject ucubeInfo = new kong.unirest.json.JSONObject(resultData);
@@ -308,11 +308,12 @@ public class ProjectService {
 //					 {code=21400, message=유큐브 연동 오류, data={serviceId=SB1099, resultCode=icm.err.074
 //							, resultMsg=입력한 유치자( juoh )에 해당하는 대리점 정보가 존재하지 않습니다., resultList=null}}
 					String errMsg = CommonUtils.getString(result.get("message"));
-					String msg = CommonUtils.getString(((Map<String, Object>) result.get("data")).get("resultMsg"));
-					if (!"".equals(msg)) {
-						throw new Exception(errMsg + " : " + msg);
-					} else {
+					Map<String, Object> data = (Map<String, Object>) result.get("data");
+					if (data == null) {
 						throw new Exception(errMsg);
+					} else {
+						String msg = CommonUtils.getString(data.get("resultMsg"));
+						throw new Exception(errMsg + " : " + msg);
 					}
 				}
 			}
