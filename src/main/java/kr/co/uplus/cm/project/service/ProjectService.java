@@ -390,7 +390,7 @@ public class ProjectService {
 		} else if ("D".equals(sts)) {
 			// 테이블 이력조회 ->> CM_WEB_MSG에 해당 프로젝트 ID로 insert된 발송 데이터가 있으면 삭제 불가
 			int projectUseCnt = generalDao.selectGernalCount(DB.QRY_SELECT_PROJECT_USE_CNT, params);
-
+ 
 			if (projectUseCnt == 0) {
 				generalDao.deleteGernal("project.deleteProject", params);
 				generalDao.deleteGernal("project.deleteProjectUser", params);
