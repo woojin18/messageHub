@@ -259,7 +259,7 @@ export default {
         const result = response.data;
         if(result.success) {
           confirm.fnAlert(this.componentsTitle, '문의 되었습니다.');
-          Object.assign(this.$data.inqueiryInputData, this.$options.data().inqueiryInputData);
+          this.fnSetUserInfo();
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
@@ -341,18 +341,21 @@ export default {
       });
     },
     fnSetUserInfo(){
-      var params = {
-        userId : tokenSvc.getToken().principal.userId
-      };
-      myPageApi.selectMemberInfo(params).then(response => {
-        var result = response.data;
-        if(result.success){
-          this.inqueiryInputData.inputName  = result.data.userName;
-          this.inqueiryInputData.hpNumber   = result.data.hpNumber;
-          this.inqueiryInputData.email      = result.data.loginId;
-          this.inqueiryInputData.corpName   = result.data.corpName;
-        }
-      });
+      Object.assign(this.$data.inqueiryInputData, this.$options.data().inqueiryInputData);
+      if(this.isLogin){
+        var params = {
+          userId : tokenSvc.getToken().principal.userId
+        };
+        myPageApi.selectMemberInfo(params).then(response => {
+          var result = response.data;
+          if(result.success){
+            this.inqueiryInputData.inputName  = result.data.userName;
+            this.inqueiryInputData.hpNumber   = result.data.hpNumber;
+            this.inqueiryInputData.email      = result.data.loginId;
+            this.inqueiryInputData.corpName   = result.data.corpName;
+          }
+        });
+      }
     }
   }
 }
