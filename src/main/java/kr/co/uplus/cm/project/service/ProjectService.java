@@ -1197,7 +1197,7 @@ public class ProjectService {
 			generalDao.deleteGernal("callnum.deleteCallNum", params);
 			
 			Map<String, Object> delParams = new HashMap<>();
-			delParams.put("corpId", params.get("corpId"));
+			delParams.put("corpId", params.get("corpId")); 
 			delParams.put("callNum", params.get("callNum"));
 			// redis 테이블 처리
 			commonService.updateCmCmdForRedisAPI("else", "cm_console.CM_CALL_NUM", delParams);
