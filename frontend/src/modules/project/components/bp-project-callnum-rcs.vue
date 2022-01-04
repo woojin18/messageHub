@@ -174,7 +174,7 @@ export default {
 				barndId: this.brandId
 			};
 
-			await projectApi.getSmsCallNumList(params).then(response =>{
+			await projectApi.getRcsCallNumList(params).then(response =>{
 				const result = response.data;
 				this.fnResetChkbox();
 
