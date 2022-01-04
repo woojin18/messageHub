@@ -30,6 +30,18 @@
            AND CRB.BRAND_ID = #{brandId}
            </if>
     </select>
+    
+	<select id="selectMmsCallbackList" resultType="camel">
+		/* sendMessage.selectMmsCallbackList */
+		SELECT	B.CALL_NUM AS CALLBACK
+		FROM	cm_console.CM_PROJECT_CALL_NUM A
+		INNER JOIN cm_console.CM_CALL_NUM B
+			ON	A.CORP_ID = B.CORP_ID 
+			AND A.CALL_NUM = B.CALL_NUM 
+		WHERE	B.STATE = '80'
+		AND		A.PROJECT_ID = #{projectId}
+		AND		A.CORP_ID = #{corpId}
+	</select>
 
     <select id="selectAddrGrpList" parameterType="hashmap" resultType="camel">
     /* sendMessage.selectAddrGrpList 주소록 그룹 목록 조회 */

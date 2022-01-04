@@ -86,6 +86,7 @@ public class DB {
 	// 메시지 발송
 	public final static String QRY_SELECT_APP_ID_LIST = "sendMessage.selectAppIdList";
 	public final static String QRY_SELECT_CALLBACK_LIST = "sendMessage.selectCallbackList";
+	public final static String QRY_SELECT_MMS_CALLBACK_LIST = "sendMessage.selectMmsCallbackList";
 	public final static String QRY_SELECT_ADDR_GRP_LIST = "sendMessage.selectAddrGrpList";
 	public final static String QRY_SELECT_ADDR_CTGY_LIST = "sendMessage.selectAddrCtgyList";
 	public final static String QRY_SELECT_CM_CU_LIST = "sendMessage.selectCmCuList";

@@ -107,7 +107,7 @@ public class SendMessageService {
     }
 
     /**
-     * 발신 번호 조회
+     * 문자 발신 번호 조회
      * @param params
      * @return
      * @throws Exception
@@ -117,7 +117,24 @@ public class SendMessageService {
         Map<String, Object> sParams = new HashMap<String, Object>(params);
 
         sParams.put("approvalStatus", Const.ApprovalStatus.APPROVE);
-        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CALLBACK_LIST, sParams);
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_MMS_CALLBACK_LIST, sParams);
+        rtn.setData(rtnList);
+
+        return rtn;
+    }
+    
+    /**
+     * RCS 발신 번호 조회
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public RestResult<Object> selectRcsCallbackList(Map<String, Object> params) throws Exception {
+        RestResult<Object> rtn = new RestResult<Object>();
+        Map<String, Object> sParams = new HashMap<String, Object>(params);
+
+        sParams.put("approvalStatus", Const.ApprovalStatus.APPROVE);
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_CALLBACK_LIST, sParams);
         rtn.setData(rtnList);
 
         return rtn;

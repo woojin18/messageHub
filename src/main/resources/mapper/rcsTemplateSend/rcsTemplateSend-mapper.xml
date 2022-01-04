@@ -154,12 +154,18 @@
 		WHERE	SAVE_BOX_ID = #{saveBoxId}
 	</select>
 	
+	
 	<select id="selectRcsCallbackList" resultType="camel">
-		/* rcsTemplateSend.selectCallbackList */
-		SELECT	CHATBOT_ID AS CALLBACK
-		FROM	cm.CM_RCS_CHATBOT
-		WHERE	APPROVAL_STATUS = #{approvalStatus}
-		AND		BRAND_ID = #{brandId}
+		/* sendMessage.selectRcsCallbackList */
+		SELECT	B.CHATBOT_ID AS CALLBACK
+		FROM	cm_console.CM_PROJECT_CHATBOT A
+		INNER JOIN cm.CM_RCS_CHATBOT B 
+			ON	A.CHATBOT_ID  = B.CHATBOT_ID 
+		WHERE	B.BRAND_ID = #{brandId}
+		AND		B.CORP_ID = #{corpId}
+		AND		A.PROJECT_ID  = #{projectId}
+		AND		B.USE_YN = 'Y'
+		AND		B.APPROVAL_STATUS = #{approvalStatus}
 	</select>
 	
 </mapper>

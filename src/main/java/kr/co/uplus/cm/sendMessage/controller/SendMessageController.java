@@ -112,6 +112,27 @@ public class SendMessageController {
         }
         return rtn;
     }
+    
+    /**
+     * 발신번호 조회(RCS)
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     */
+    @PostMapping("/selectRcsCallbackList")
+    public RestResult<?> selectRcsCallbackList(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = sendMsgService.selectRcsCallbackList(params);
+        } catch (Exception e) {
+            rtn.setSuccess(false);
+            rtn.setMessage("실패하였습니다.");
+            log.error("{}.selectCallbackList Error : {}", this.getClass(), e);
+        }
+        return rtn;
+    }
 
     /**
      * 주소록 리스트 조회

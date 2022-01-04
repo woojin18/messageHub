@@ -2548,7 +2548,7 @@ export default {
 			if (brandNm != null && brandNm != '') {
 				var params = {brandId: brandNm};
 				// rcs 템플릿 발신번호 리스트 조회
-				messageApi.selectCallbackList(params).then(response =>{
+				messageApi.selectRcsCallbackList(params).then(response =>{
 					var result = response.data;
 					if (result.success) {
 						this.rcsCallbackList = result.data;

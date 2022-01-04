@@ -6,6 +6,9 @@ const selectAppIdList = (params) => {
 const selectCallbackList = (params) => {
   return httpClient.post('/uc/sendMessage/selectCallbackList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
+const selectRcsCallbackList = (params) => {
+  return httpClient.post('/uc/sendMessage/selectRcsCallbackList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
 const selectAddressList = (params) => {
   return httpClient.post('/uc/sendMessage/selectAddressList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
@@ -92,6 +95,7 @@ const setSentAmout = (params) => {
 export default {
   selectAppIdList,
   selectCallbackList,
+  selectRcsCallbackList,
   selectAddressList,
   selectCmCuList,
   excelDownSendPushRecvTmplt,
