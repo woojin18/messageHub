@@ -1,7 +1,7 @@
 @charset "utf-8";
 /* reset css*/
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {margin:0; padding:0; border:0; /*vertical-align:baseline;*/ background:transparent; font-family:'Noto Sans KR', sans-serif}
-body {line-height:normal !important; /*overflow:scroll;*/ width:auto; font-size:12px; word-break:break-all}
+body {line-height:normal !important; /*overflow:scroll;*/ width:auto; font-size:12px}
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display:block}
 dl,ul,ol,menu,li {list-style:none}
 caption, legend {overflow:hidden; text-indent:-9999px; height:1px}
@@ -53,27 +53,27 @@ h6 {font-size:12px; margin:7px 0; font-weight:normal}
 .datepicker_gray {background:url('../images/datepicker_gray.png') #fff no-repeat 90% 50%}
 
 /* button1 */
-.btnStyle1 {border:1px solid #FD004E; color:#FD004E; border-radius:2px; height:30px; line-height:28px; padding:0 20px; font-weight:500; display:inline-block; transition:0.3s; text-align:center}
+.btnStyle1 {border:1px solid #FD004E !important; color:#FD004E !important; border-radius:2px; height:30px; line-height:28px; padding:0 20px; font-weight:500; display:inline-block; transition:0.3s; text-align:center}
 .btnStyle1.small {font-size:10px; padding:4px 10px; height:25px; line-height:16px}
-.btnStyle1.backPink {background:#FFF4FB; color:#FD004E}
-.btnStyle1.backRed {background:#FD004E; color:#fff}
-.btnStyle1.backBlack {background:#000; border-color:#000; color:#fff}
-.btnStyle1.backWhite {background:#fff; border-color:#000; color:#000}
-.btnStyle1.backGray {background:#D5D5D5; border-color:#D5D5D5; color:#000}
-.btnStyle1.backLightGray {background:#F1F1F1; border-color:#ddd; color:#000}
-.btnStyle1.borderGray {background:#F1F1F1; border-color:#999; color:#000}
-.btnStyle1.borderLightGray {background:#fff; border-color:#D5D5D5; color:#000}
+.btnStyle1.backPink {background:#FFF4FB !important; color:#FD004E !important}
+.btnStyle1.backRed {background:#FD004E !important; color:#fff !important}
+.btnStyle1.backBlack {background:#000 !important; border-color:#000 !important; color:#fff !important}
+.btnStyle1.backWhite {background:#fff !important; border-color:#000 !important; color:#000 !important}
+.btnStyle1.backGray {background:#D5D5D5 !important; border-color:#D5D5D5 !important; color:#000 !important}
+.btnStyle1.backLightGray {background:#F1F1F1 !important; border-color:#ddd !important; color:#000 !important}
+.btnStyle1.borderGray {background:#F1F1F1 !important; border-color:#999 !important; color:#000 !important}
+.btnStyle1.borderLightGray {background:#fff !important; border-color:#D5D5D5 !important; color:#000 !important}
 .btnStyle1 i {vertical-align:baseline}
-.btnStyle1:hover {background:#FD004E; color:#fff}
-.btnStyle1.backPink:hover {background:#FD004E; color:#fff}
-.btnStyle1.backRed:hover {background:#fff; color:#FD004E}
-.btnStyle1.backBlack:hover {background:#fff; border-color:#000; color:#000}
-.btnStyle1.backWhite:hover {background:#000; border-color:#000; color:#fff}
-.btnStyle1.backGray:hover {background:#D5D5D5; border-color:#D5D5D5; color:#000}
-.btnStyle1.backLightGray:hover {background:#000; border-color:#000; color:#fff}
-.btnStyle1.borderGray:hover {background:#fff; border-color:#D5D5D5; color:#000}
-.btnStyle1.borderLightGray:hover {background:#F1F1F1; border-color:#999; color:#000}
-.btnStyle1.borderLightGray.active {background:#F1F1F1; border-color:#999; color:#000}
+.btnStyle1:hover {background:#FD004E !important; color:#fff !important}
+.btnStyle1.backPink:hover {background:#FD004E !important; color:#fff !important}
+.btnStyle1.backRed:hover {background:#fff !important; color:#FD004E !important}
+.btnStyle1.backBlack:hover {background:#fff !important; border-color:#000 !important; color:#000 !important}
+.btnStyle1.backWhite:hover {background:#000 !important; border-color:#000 !important; color:#fff !important}
+.btnStyle1.backGray:hover {background:#D5D5D5 !important; border-color:#D5D5D5 !important; color:#000 !important}
+.btnStyle1.backLightGray:hover {background:#000 !important; border-color:#000 !important; color:#fff !important}
+.btnStyle1.borderGray:hover {background:#fff !important; border-color:#D5D5D5 !important; color:#000 !important}
+.btnStyle1.borderLightGray:hover {background:#F1F1F1 !important; border-color:#999 !important; color:#000 !important}
+.btnStyle1.borderLightGray.active {background:#F1F1F1 !important; border-color:#999 !important; color:#000 !important}
 
 /* button2 */
 .btnStyle2 {border:1px solid #FD004E; color:#FD004E; border-radius:2px; padding:6px 20px; font-weight:500; display:inline-block; transition:0.3s; text-align:center}
@@ -111,8 +111,10 @@ h6 {font-size:12px; margin:7px 0; font-weight:normal}
 
 /* table */
 .table_skin1 {width:100%; background:#fff; text-align:center; border-top: 1px solid #222; border-bottom: 1px solid #222}
-.table_skin1 th {border-bottom:none !important; background-color:#F1F1F1; color:#000 !important; padding:7px !important; border-right:1px solid #D5D5D5; border-bottom:1px solid #d5d5d5; border-top:#222; vertical-align:middle}
+.table_skin1 th {border-bottom:none; background-color:#F1F1F1; color:#000 !important; padding:7px !important; border-right:1px solid #D5D5D5; border-top:#222; vertical-align:middle}
 .table_skin1 td {color:#707070; padding:7px; border-right:1px solid #D5D5D5;  border-bottom:1px solid #D5D5D5}
+.table_skin1.pdWide th {padding:15px 7px !important}
+.table_skin1.pdWide td {padding:7px !important}
 .table_skin1 a {color:#707070}
 .table_skin1 tr:hover td{background-color:#f7f7f7}
 .table_skin1 .end {border-right:0}
@@ -135,8 +137,8 @@ h6 {font-size:12px; margin:7px 0; font-weight:normal}
 
 /* 라디오 버튼 */
 input[type='radio'] {display:none}
-input[type='radio'] + label {display:inline-block; vertical-align:middle; line-height:15px; margin-top:7px; margin-right:5px; margin-bottom:7px; padding-left:22px; background:url('../images/consolRadio_off.png') 0 center no-repeat; cursor:pointer; font-weight:normal}
-input[type='radio']:checked + label, input[type='radio']:focus {appearance:none; padding-left:22px; margin-right:5px; background:url('../images/consolRadio_on.png') 0 center no-repeat; outline:none; outline-offset:0}
+input[type='radio'] + label {display:inline-block; vertical-align:middle; line-height:15px; margin-top:7px; margin-right:5px; margin-bottom:7px; padding-left:22px; background:url('../images/consolRadio_off.png') left 1px no-repeat; cursor:pointer; font-weight:normal}
+input[type='radio']:checked + label, input[type='radio']:focus {appearance:none; padding-left:22px; margin-right:5px; background:url('../images/consolRadio_on.png') left 1px no-repeat; outline:none; outline-offset:0}
 input[type='radio'][class="radioStyle"] {display:none}
 input[type='radio'][class="radioStyle"] + label {display:inline-block; vertical-align:text-bottom; margin:0; padding:0; width:14px; height:14px; background:url('../images/consolRadio_off.png') 0 center no-repeat; cursor:pointer}
 input[type='radio'][class="radioStyle"]:checked + label, input[type='radio'][class="radioStyle"]:focus {appearance:none; margin:0; padding:0; background:url('../images/consolRadio_on.png') 0 center no-repeat; outline:none; outline-offset:0}
@@ -150,17 +152,17 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .checkbox span {color:#707070; vertical-align:top; margin-left:8px}
 
 /* addList */
-.addList {/*background:url('../images/treeLine.svg') 25px 0 repeat-y*/}
+.addList {background:url('../images/treeLine.svg') 25px 0 repeat-y}
 .addList a {color:#505050;display: block;line-height:20px; background:#fff}
 .addList a i {vertical-align:baseline; color:#D5D5D5; margin-right:10px; background-color:#fff}
 .addList a.active {color:#FD004E}
 .addList ul {margin-left:25px}
 .addList > li li {padding-left:16px; background:url('../images/addressList_line.png') 0 -23px no-repeat; line-height:40px; padding-top:10px}
-.addList > li li.last {background-position: 0px -67px; background-color:#fff}
+.addList > li li.last {background-position: 0px -67px;}
 .addList_minus {background-position:0 -68px !important; margin-left:-21px; background-image:none !important}
 .addList_plus {background-position:0 -68px !important; margin-left:-21px; background-image:none !important}
 .addList_plus > ul {display:none}
-.addList_minus > ul {display:block; background:url('../images/treeLine.svg') 0 0 repeat-y}
+.addList_minus > ul {display:show}
 .addList > li {margin-left:0}
 
 .addList2 {background:url('../images/treeLine.svg') 25px 0 repeat-y}
@@ -176,6 +178,8 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .toolTip {color:#B2B2B2; vertical-align:baseline; position:relative; cursor:pointer}
 .toolTip .toolTipText {visibility:hidden; width:210px; line-height:20px; box-sizing:border-box; background-color:#fff; border:1px solid #D5D5D5; color:#707070; font-weight:500; text-align:left; padding:15px; position:absolute; z-index:1; bottom:125%; left:50%; margin-left:-20px; opacity:0; transition:opacity 0.3s; box-shadow:0 0 5px #eee}
 .toolTip .toolTipText::after {content:""; position:absolute; top:100%; left:15px; border-width:5px; border-style:solid; border-color:#D5D5D5 transparent transparent transparent}
+.toolTip.toolRight .toolTipText {left:inherit; right:0}
+.toolTip.toolRight .toolTipText::after {left:calc(100% - 10px)}
 .toolTip:hover .toolTipText {visibility:visible; opacity:1}
 
 
@@ -191,7 +195,7 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 
 
 /* common */
-.row-no-margin {margin-left:0px; margin-right:0px}
+.row-no-margin {margin-left:0px; margin-right:0px} 
 .lc-1 {letter-spacing:-1px}
 .fr, .float-right {float:right}
 .fl, .float-left {float:left}
@@ -203,7 +207,6 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .mt8 {margin-top:8px !important}
 .mt10 {margin-top:10px !important}
 .mt12 {margin-top:12px !important}
-.mt13 {margin-top:13px !important}
 .mt15 {margin-top:15px !important}
 .mt20 {margin-top:20px !important}
 .mt25 {margin-top:25px !important}
@@ -282,7 +285,6 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .color5 {color:#727272 !important}
 .color6 {color:#505050 !important}
 .color7 {color:#666666 !important}
-.colorRed {color:red !important}
 .color-red {color:red !important}
 .color-blue {color:blue !important}
 .background-color6 {background:#505050 !important}
@@ -347,13 +349,11 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .font-size20 {font-size:20px !important}
 .font-size22 {font-size:22px !important}
 .font-size26 {font-size:26px !important}
-.text-underline {text-decoration:underline}
 .vertical-middle {vertical-align:middle !important}
 .vertical-bottom {vertical-align:bottom !important}
 .vertical-baseline {vertical-align:baseline !important}
 .vertical-top {vertical-align:top !important}
 .vertical-unset {vertical-align:unset !important}
-.vertical-sub {vertical-align:sub !important}
 .bt-000 {border-top:1px solid #000}
 .draggable {cursor:pointer}
 .form01 {display:inline; margin-left:40px}
@@ -364,10 +364,9 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .height45 {height: 45px !important}
 .height90 {height: 90px !important}
 .height120 {height: 120px !important}
-.height170 {height: 170px !important}
 .height190 {height: 190px !important}
 .form01 input {border: 1px solid #d5d5d5; border-radius: 0; width: 432px !important; height: 45px;}
-.modalStyle .modal-body {padding:60px 40px; overflow:hidden}
+.modalStyle .modal-body {padding:40px 40px; overflow:hidden}
 .modalStyle .modal-body h5 {color:#000}
 .modalStyle .modal-body p {color:#000}
 .modalStyle .modal-body h4 {color:#000; vertical-align:top}
@@ -392,8 +391,8 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .bgColor_f1 {background:#f1f1f1}
 .bgColor_f7 {background:#f7f7f7}
 .bgColor_sky {background:#F8FAFB !important}
-.cellActive {background:#f2dede !important}
 
+.cellActive {background:#fff5f5 !important}
 
 
 
@@ -475,8 +474,8 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .btnStyle9 {background:#F1F1F1; color:#222; border:1px solid #ddd; font-size:11px; border-radius:2px; padding:7px 20px; font-weight:500; display:inline-block; transition:0.3s; min-width:120px; text-align:center}
 .btnStyle9:hover {background:#222; color:#fff !important; border-color:#222}
 
-.btnStyle10 {background:#50504D; color:#fff; padding:5px 10px; border-radius:3px}
-.btnStyle10:hover {background:#40403d; color:#fff}
+.btnStyle10 {background:#50504D; color:#fff; padding:5px 10px; border-radius:3px} 
+.btnStyle10:hover {background:#40403d; color:#fff} 
 
 .btn.btn-login {background:#FD004E; border-color:#FD004E; color:#fff; font-size:17px; width:100%; height:60px; line-height:60px; padding:0; transition:0.3s; text-shadow:none}
 .btn.btn-login:hover, .btn.btn-login:focus {background:#000; border-color:#000}
@@ -526,7 +525,7 @@ input[class="boardCheckStyle"] + label:before {content:''; position:absolute; le
 input[class="boardCheckStyle"]:checked + label:before {border-color:#FD004E; background:url('../images/consolCheck.svg') #FD004E no-repeat}
 .checkbox span {color:#707070; font-size:12px; vertical-align:top; margin-left:8px}
 
-/* 라디오 버튼
+/* 라디오 버튼 
 input[type='radio'] {appearance:none; width:14px; height:14px; border-radius:100%; margin-right:5px; background:#fff; border:1px solid #B2B2B2; cursor:pointer}
 input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:14px; height:14px; border-radius:100%; margin-right:5px; background:#fff; border:5px solid #FD004E; outline:none; outline-offset:0}
 */
@@ -591,7 +590,7 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 .tab_s5 li:nth-child(2) a {border-left:none}
 .tab_s5 > li.active > a, .tab_s5 > li > a:hover {background-color:#fff}
 .tab_s5 > li.active > a {border-bottom-color:#fff}
-
+ 
 
 .tab_s7 {display:inline-block; vertical-align:middle; margin-bottom:-1px}
 .tab_s7 > li {display:inline-block; float:left; margin-left:-1px}
@@ -614,13 +613,13 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 /* pagination */
 .pagination1 .number {border: 1px solid #D5D5D5; background-color: #fff; color: #A3A3A5; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px}
 .pagination1 .number.active, .pagination1 .number:hover {border: 1px solid #FD004E; color: #FD004E}
-.pagination1 .fa-chevron-left {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom; margin-right: 17px}
+.pagination1 .fa-chevron-left {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom; margin-right: 17px}	
 .pagination1 .fa-chevron-left:hover {border: 1px solid #9a9a9a; color:#9a9a9a}
-.pagination1 .fa-chevron-right {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom; ; margin-left: 17px}
+.pagination1 .fa-chevron-right {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom; ; margin-left: 17px}	
 .pagination1 .fa-chevron-right:hover {border: 1px solid #9a9a9a; color:#9a9a9a}
-.pagination1 .fa-chevron-double-left {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom}
+.pagination1 .fa-chevron-double-left {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom}	
 .pagination1 .fa-chevron-double-left:hover {border: 1px solid #9a9a9a; color:#9a9a9a}
-.pagination1 .fa-chevron-double-right {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom}
+.pagination1 .fa-chevron-double-right {border: 1px solid #D5D5D5; background-color: #FBFBFB; color: #B2B2B2; font-size: 12px; padding: 0; border-radius: 2px; margin-right: 1px; width: 30px; height: 30px; display: inline-block; line-height: 27px; vertical-align: bottom}	
 .pagination1 .fa-chevron-double-right:hover {border: 1px solid #9a9a9a; color:#9a9a9a}
 
 .pagination2 .number {border: 1px solid #E8ECEF; background-color:#fff; color: #727272; font-size: 10px; padding: 3px 8px; border-radius: 5px}
@@ -635,7 +634,7 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 .menuBox {background-color:#F1F1F1; padding:15px 30px}
 .menuBox > ul.consolLsit {overflow:hidden}
 .menuBox > ul > li {float:left; width:90px}
-
+.menuBox input[type='radio'] + label {font-size:13px} /* 2021-12-02 추가 */
 
 /* 로그인 */
 .loginBg1 {background:url(../images/bg_1.png) #f7f7f7 top right no-repeat; background-size:cover}
@@ -712,8 +711,8 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 #sidebar > ul > li .depth2Lnb {display:none}
 #sidebar > ul > li .depth2Lnb > ul {background:#F7F7F7; padding:0 10px 0 52px}
 #sidebar > ul > li .depth2Lnb > ul > li {}
-#sidebar > ul > li .depth2Lnb > ul > li a {display:block; font-size:14px; color:#707070; padding:7px 0; transition:0.3s}
-#sidebar > ul > li .depth2Lnb > ul > li.active a, #sidebar > ul > li .depth2Lnb > ul > li a:hover {color:#FD004E; font-weight:500}
+#sidebar > ul > li .depth2Lnb > ul > li > a {display:block; font-size:14px; color:#707070; padding:7px 0; transition:0.3s}
+#sidebar > ul > li .depth2Lnb > ul > li.active > a, #sidebar > ul > li .depth2Lnb > ul >  li > a:hover {color:#FD004E; font-weight:500}
 #sidebar > ul > li.active .depth2Lnb {display:block}
 
 .depth2Lnb > ul > li .depth3Lnb {display:none}
@@ -727,8 +726,8 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 #sidebar > ul > li .depth2Lnb.thum {background:url('../images/consoleMenuArr.png') 0 15px no-repeat; display:none; position:absolute; top:10px; right:-212px; width:220px; z-index:999; padding-left:8px}
 #sidebar > ul > li .depth2Lnb.thum > ul {border:1px solid #999; background:#fff; padding:0}
 #sidebar > ul > li .depth2Lnb.thum > ul > li {}
-#sidebar > ul > li .depth2Lnb.thum > ul > li a {display:block; font-size:14px; color:#707070; transition:0.3s; line-height:45px; padding:0 0 0 40px; font-weight:400; border-bottom:1px solid #d5d5d5}
-#sidebar > ul > li .depth2Lnb.thum > ul > li.active a, #sidebar > ul > li .depth2Lnb.thum > ul > li a:hover {color:#FD004E; font-weight:500}
+#sidebar > ul > li .depth2Lnb.thum > ul > li > a {display:block; font-size:14px; color:#707070; transition:0.3s; line-height:45px; padding:0 0 0 40px; font-weight:400; border-bottom:1px solid #d5d5d5}
+#sidebar > ul > li .depth2Lnb.thum > ul > li.active > a, #sidebar > ul > li .depth2Lnb.thum > ul > li > a:hover {color:#FD004E; font-weight:500}
 #sidebar > ul > li.active .depth2Lnb.thum {display:block}
 
 
@@ -758,6 +757,7 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 .table_skin1_1 tr:hover td{background-color:#f7f7f7}
 .table_skin1_1 .end {border-right:0}
 .table_skin1_1 tr:last-child td {border-bottom:none}
+
 
 .boardTitle {white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:inline-block; vertical-align:sub; letter-spacing:-1px}
 
@@ -978,8 +978,6 @@ footer {font-size:12px; color:#B2B2B2; font-weight:400; position:absolute; botto
 .scroll-y4 {height:450px; overflow-y:auto}
 .scroll-y5 {max-height:354px; overflow-y:auto}
 .scroll-y6 {max-height:100px; overflow-y:auto}
-.scroll-y7 {max-height:130px; overflow-y:auto}
-.scroll-y8 {max-height:150px; overflow-y:auto}
 
 
 /* phoneCardWrap */
@@ -990,7 +988,7 @@ footer {font-size:12px; color:#B2B2B2; font-weight:400; position:absolute; botto
 .cardBxsliderWrap .bx-wrapper .bx-next {background:url('../images/cardSliderRight.png') no-repeat; right:50px}
 .cardBxsliderWrap .bx-wrapper .bx-prev:hover, .cardBxsliderWrap .bx-wrapper .bx-prev:focus, .cardBxsliderWrap .bx-wrapper .bx-next:hover, .cardBxsliderWrap .bx-wrapper .bx-next:focus {opacity:0.6}
 .phoneCardWrap {position:absolute; top:70px; left:45px; width:240px}
-.cardBox {background:#fff; border-radius:10px; overflow:hidden}
+.cardBox {background:#fff; border-radius:10px}
 .cardBox > div {padding:15px}
 
 /* phone */
@@ -1005,15 +1003,15 @@ footer {font-size:12px; color:#B2B2B2; font-weight:400; position:absolute; botto
 /* admin_sub03_4_1_1 */
 .admin_sub03_4_1_1 .underLine:hover {text-decoration:underline}
 
-.trBg {background:#f7f7f7}
+/* toolTipStyle */
+.toolTipOver {vertical-align:top}
+.toolTipStyle {display:none}
 
-/* Alarm btn*/
-.Alarm .menuBox {position:relative}
-.Alarm .menuBox .btnStyle2 {position:absolute; bottom:20px; left:20px}
-.Alarm .menuBox p {max-height:50px; overflow-y:auto}
+.numList {margin-left:15px}
+.numList > li {list-style:decimal}
+.dotList {margin-left:15px}
+.dotList > li {list-style:disc}
 
-
-#slide-counter {position:absolute; bottom:-27px; width:100%; text-align:center; font-size:10px}
 
 @media screen and (max-width:1850px) {
 	.Menu02 {width:60%}

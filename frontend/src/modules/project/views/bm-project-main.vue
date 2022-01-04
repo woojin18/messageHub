@@ -59,16 +59,16 @@
 			<!-- 체널관리 탭 -->
 
 			<!-- 발신번호관리 탭 -->
-			<!-- <div v-if="selMainTab==5">
-			<h4 class="mt40">발신번호 사전 등록</h4>
-			<p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i> 발신번호 미등록 시 메시지가 정상적으로 전송되지 않을 수 있습니다.<br><i class="far fa-info-circle"></i> 발신번호는 문자발송장비 사용자의 최대 3배까지만 등록할 수 있습니다.</p>
-
-			<ul class="tabStyle tab6 bgColor_tapGray mt30">
-				<li @click="fnMoveMainTab('callbackPreReg')" class="active"><a style="width:23%">발신번호 인증 등록</a></li>
-				<li @click="fnMoveMainTab('callbackPreRegEx')"><a style="width:23%">사전 등록 예외 대상 사업자로 등록</a></li>
+			<ul v-if="selMainTab==5" class="tabStyle tab6 bgColor_tapGray">
+				<li :class="{active:(selMidTab == 1)}" @click="selMidTab=1; selSubTab=1"><a style="width:25%">발신번호 사전등록 안내</a></li>
+				<li :class="{active:(selMidTab == 2)}" @click="selMidTab=2; selSubTab=1"><a style="width:25%">발신번호 등록</a></li>
+				<li :class="{active:(selMidTab == 3)}" @click="selMidTab=3; selSubTab=1"><a style="width:25%">발신번호 조회</a></li>
+				<li :class="{active:(selMidTab == 4)}" @click="selMidTab=4; selSubTab=1"><a style="width:25%">문자 사전등록 예외 대상</a></li>
 			</ul>
-			</div> -->
-			<callbackManage v-if="selMainTab==5"></callbackManage>
+			<callnum1 v-if="selMainTab==5&&selMidTab==1&&selSubTab==1" @fnMoveTab="fnMoveTab"></callnum1>
+			<callnum2 v-if="selMainTab==5&&selMidTab==2&&selSubTab==1" @fnMoveMain="fnMoveMain"></callnum2>
+			<callnum3 v-if="selMainTab==5&&selMidTab==3&&selSubTab==1"></callnum3>
+			<callnum4 v-if="selMainTab==5&&selMidTab==4&&selSubTab==1"></callnum4>
 			<!-- 발신번호관리 탭 -->
 		</article>
 	</div>
@@ -85,12 +85,16 @@ import kakao  from "@/modules/channel/components/bc-chan-kakao.vue";
 import mo     from "@/modules/channel/components/bc-chan-mo.vue";
 // 대시보드
 import dashboardManage     from "@/modules/project/components/bc-project-dashboard-manage.vue";
-// 발신번호관리
-import callbackManage     from "@/modules/project/components/bc-project-callback-manage.vue";
 // 기본정보
 import baseInfoManage     from "@/modules/project/components/bc-project-baseInfo-manage.vue";
 // 멤버관리
 import memberManage     from "@/modules/project/components/bc-project-member-manage.vue";
+// 발신번호관리
+//import callbackManage     from "@/modules/project/components/bc-project-callback-manage.vue";
+import callnum1     from "@/modules/project/components/bc-project-callnum1.vue";
+import callnum2     from "@/modules/project/components/bc-project-callnum2.vue";
+import callnum3     from "@/modules/project/components/bc-project-callnum3.vue";
+import callnum4     from "@/modules/project/components/bc-project-callnum4.vue";
 
 import projectApi from '../service/projectApi'
 import tokenSvc from '@/common/token-service';
@@ -104,7 +108,10 @@ export default {
     , kakao
     , mo
 
-    , callbackManage
+    , callnum1
+    , callnum2
+    , callnum3
+    , callnum4
     , dashboardManage
     , baseInfoManage
 	, memberManage
@@ -160,6 +167,13 @@ export default {
 			this.kakaoYn  = items.kakaoYn;
 			this.moYn  = items.moYn;
 		});
+	},
+	fnMoveMain(mainTab, midTab) {
+		this.selMainTab = mainTab
+		this.selMidTab = midTab
+	},
+	fnMoveTab(tab) {
+		this.selMidTab = tab
 	}
   }
 }

@@ -1,13 +1,18 @@
 <template>
   <div>
     <article>
-      <h4 class="mt40">발신번호 사전 등록</h4>
+      <h4 class="mt40">발신번호 사전 등록<button @click="fnPopup">test</button><input type="hidden" id="message"><button id="nice" style="display:none;" @click="fnMessage"></button></h4>
       <p class="font-size12 color3 mt30 inline-block">
         <i class="far fa-info-circle"></i> 발신번호 사전등록제의 시행으로 인하여, 2015년 10월 16일부로 사전에 등록하지 않은 발신번호는 SMS/LMS/MMS/RCS 발송이 제한됩니다.<br>
         <i class="far fa-info-circle"></i> 발신번호 등록을 위해서는 RCS Biz Center 가입 후, 브랜드를 생성해야 합니다. 발신번호는 브랜드 1개당 N개 추가할 수 있습니다.
       </p>
 
 
+		<!-- 본인인증 서비스 팝업을 호출하기 위해서는 다음과 같은 form이 필요합니다. -->
+		<form name="form_chk" method="post">
+			<input type="hidden" name="m" value="checkplusService">						<!-- 필수 데이타로, 누락하시면 안됩니다. -->
+			<input type="hidden" name="EncodeData" v-model="sEncData">		<!-- 위에서 업체정보를 암호화 한 데이타입니다. -->
+		</form>
 
 
       <ul class="tabStyle tab6 bgColor_tapGray mt30">
@@ -83,6 +88,8 @@
 
 <script>
 import layerPopup from "./bp-project-callback-preReg.vue";
+import confirm from '@/modules/commonUtil/service/confirm';
+import projectApi from '../service/projectApi';
 
 export default {
   components: {
@@ -95,11 +102,13 @@ export default {
       projectName : '',
       srcProjectId : '',
       detailCnt : 0,
+			sEncData : '', 				// 나이스본인인증 암호화 정보
     }
   },
   mounted() {
     this.projectId = this.$route.params.projectId;
     this.projectName = this.$route.params.projectName;
+    this.fnGetNiceCheck();
   },
   methods: {
     fnMoveMainTab(moveTabName){
@@ -117,12 +126,36 @@ export default {
         , params:{"projectId" : this.$route.params.projectId, "projectName" : this.projectName, "selMainTab" : 4, "selMidTab" : 1, "selSubTab" : 1  }} 
       );
     },
+		// 본인인증시 사용될 데이터 조회
+		fnGetNiceCheck(){
+			let sEcnDataVal = '';
+
+			projectApi.getNiceCheck().then((response) => {
+				var result = response.data;
+				if(result.success){
+					sEcnDataVal = result.data.sEncData;
+					this.sEncData = sEcnDataVal;
+				} else {
+					confirm.fnAlert("", result.message);
+				}
+			});
+		},
+		// 본인인증 팝업
+		fnPopup(){
+				window.open('', 'popupChk', 'width=400, height=705, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+				document.form_chk.action = "https://nice.checkplus.co.kr/CheckPlusSafeModel/checkplus.cb";
+				document.form_chk.target = "popupChk";
+				document.form_chk.submit();
+		},
+		fnMessage() {
+			confirm.fnAlert("", jQuery("#message").val());
+		},
     fnCallbackReg(){
       this.detailCnt = this.detailCnt + 1;
       this.srcProjectId = this.$route.params.projectId;
       console.log(this.detailCnt);
       jQuery("#regPop").modal("show");
-    }
+    },
   }
 }
 </script>

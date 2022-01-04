@@ -118,7 +118,6 @@ export default {
       this.fnBrandList();
     },
     detailCnt (){
-      this.fnBrandList();
       this.chatbotCnt = 0;
       this.chatbots = [];
       jQuery("#certiImgFile").val("");

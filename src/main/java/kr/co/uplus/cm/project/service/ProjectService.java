@@ -10,10 +10,18 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +35,9 @@ import kr.co.uplus.cm.config.FileConfig;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Service
 public class ProjectService {
 
@@ -136,7 +146,7 @@ public class ProjectService {
 
 				Map<String, Object> apiCustomerInfo = (Map<String, Object>) apiInterface
 						.get("/console/v1/ucube/customer/" + custNo, null).get("data");
-				
+
 				Map<String, Object> joinMap = new HashMap<>();
 
 				joinMap.put("custNo", custNo);
@@ -170,7 +180,7 @@ public class ProjectService {
 				Map<String, Object> serviceInfo = new HashMap<>();
 				Map<String, Object> ownerMap = (Map<String, Object>) generalDao
 						.selectGernalObject("project.selectOwnerForApi", params);
-				
+
 				serviceInfo.put("cmpNm", apiCustomerInfo.get("bizCompNm")); // 가입자(상호)명
 				serviceInfo.put("ceoNm", apiCustomerInfo.get("custNm")); // 대표자 성명 (필수)
 				serviceInfo.put("damNm", ownerMap.get("damNm")); // 담당자명
@@ -390,7 +400,7 @@ public class ProjectService {
 		} else if ("D".equals(sts)) {
 			// 테이블 이력조회 ->> CM_WEB_MSG에 해당 프로젝트 ID로 insert된 발송 데이터가 있으면 삭제 불가
 			int projectUseCnt = generalDao.selectGernalCount(DB.QRY_SELECT_PROJECT_USE_CNT, params);
- 
+
 			if (projectUseCnt == 0) {
 				generalDao.deleteGernal("project.deleteProject", params);
 				generalDao.deleteGernal("project.deleteProjectUser", params);
@@ -941,6 +951,257 @@ public class ProjectService {
 		String distId = CommonUtils.getString(generalDao.selectGernalObject("project.selectCorpDistId", params));
 		rtn.setData(distId);
 		return rtn;
+	} 
+
+	// 문자발신번호 등록
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void saveCallNumByPhone(Map<String, Object> params) throws Exception {
+		params.put("state", "80");
+		params.put("regWay", "PHONE");
+		try {
+			generalDao.insertGernal("callnum.insertCallNum", params);
+			generalDao.insertGernal("callnum.insertProjectCallNum", params);
+		} catch (DataIntegrityViolationException e) {
+			throw new Exception("이미 등록되어 있는 발신번호입니다.");
+		}
+		
+		// redis 테이블 처리
+		commonService.updateCmCmdForRedis("CM_CALL_NUM");
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void saveCallNumDoc(Map<String, Object> params) throws Exception {
+		String uploadDirPath = FileConfig.getFilePath(FileConfig.FileSvcType.LIBRARY);
+
+		MultipartFile joinFile = (MultipartFile) params.get("joinFile");
+		String joinFileId = commonService.uploadFile(joinFile, CommonUtils.getString(params.get("userId")), uploadDirPath);
+		params.put("joinFileId", joinFileId);
+		
+		params.put("state", "10");
+		params.put("regWay", "DOC");
+		try {
+			generalDao.insertGernal("callnum.insertCallNum", params);
+			generalDao.insertGernal("callnum.insertProjectCallNum", params);
+		} catch (DataIntegrityViolationException e) {
+			throw new Exception("이미 등록되어 있는 발신번호입니다.");
+		}
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void saveCallNumAll(Map<String, Object> params) throws Exception {
+
+		MultipartFile allFile = (MultipartFile) params.get("allFile");
+		String ext = commonService.getFileNameExt(allFile.getOriginalFilename(),1);
+		
+		if (!(ext.equals("xlsx") || ext.equals("xls"))) {
+			throw new Exception("엑셀파일이 아닙니다.");
+		}
+
+		Workbook workbook = null;
+		try {
+	        if (ext.equals("xlsx")) {
+	            workbook = new XSSFWorkbook(allFile.getInputStream());
+	        } else if (ext.equals("xls")) {
+	            workbook = new HSSFWorkbook(allFile.getInputStream());
+	        }
+		} catch (Exception e) {
+			throw new Exception("엑셀파일이 아닙니다.");
+		}
+
+        Sheet worksheet = workbook.getSheetAt(0);
+        Row row = null;
+        List<Object> excelList = new ArrayList<Object>();
+		
+		params.put("state", "80");
+		params.put("regWay", "PROXY");
+		try {
+	        for (int i = 1; i < worksheet.getLastRowNum()+1; i++) {
+	            row = worksheet.getRow(i);
+	            params.put("callNum", getExcelCellValue(row.getCell(0)));
+				generalDao.insertGernal("callnum.insertCallNum", params);
+				generalDao.insertGernal("callnum.insertProjectCallNum", params);
+	        }
+		} catch (DataIntegrityViolationException e) {
+			throw new Exception("이미 등록되어 있는 발신번호입니다.");
+		}
+		
+		// redis 테이블 처리
+		commonService.updateCmCmdForRedis("CM_CALL_NUM");
+	}
+
+    /**
+     * get excel cell value
+     *
+     * @param cell
+     * @return
+     */
+    private Object getExcelCellValue(Cell cell) {
+        if (cell == null) {
+            return "";
+        } else if (cell.getCellTypeEnum() == CellType.STRING) {
+            return cell.getStringCellValue();
+        } else if (cell.getCellTypeEnum() == CellType.FORMULA) {
+            return cell.getCellFormula();
+        } else if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+        	// 숫자로 입력된 데이터 String 처리
+        	cell.setCellType(CellType.STRING);
+        	return cell.getStringCellValue();
+        } else if (cell.getCellTypeEnum() == CellType.BOOLEAN) {
+            return cell.getBooleanCellValue();
+        } else if (cell.getCellTypeEnum() == CellType.BLANK) {
+            return "";
+        } else {
+            return "";
+        }
+    }
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void saveCallNumPro(Map<String, Object> params) throws Exception {
+		params.put("state", "80");
+		params.put("regWay", "PROXY");
+		try {
+			generalDao.insertGernal("callnum.insertCallNum", params);
+			generalDao.insertGernal("callnum.insertProjectCallNum", params);
+		} catch (DataIntegrityViolationException e) {
+			throw new Exception("이미 등록되어 있는 발신번호입니다.");
+		}
+		
+		// redis 테이블 처리
+		commonService.updateCmCmdForRedis("CM_CALL_NUM");
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void saveCallNumProxy(Map<String, Object> params) throws Exception {
+		String uploadDirPath = FileConfig.getFilePath(FileConfig.FileSvcType.LIBRARY);
+		
+		MultipartFile agreeFile = (MultipartFile) params.get("agreeFile");
+		String agreeFileId = commonService.uploadFile(agreeFile, CommonUtils.getString(params.get("userId")), uploadDirPath);
+		params.put("agreeFileId", agreeFileId);
+		MultipartFile reqFile = (MultipartFile) params.get("reqFile");
+		String reqFileId = commonService.uploadFile(reqFile, CommonUtils.getString(params.get("userId")), uploadDirPath);
+		params.put("reqFileId", reqFileId);
+		MultipartFile sealFile = (MultipartFile) params.get("sealFile");
+		String sealFileId = commonService.uploadFile(sealFile, CommonUtils.getString(params.get("userId")), uploadDirPath);
+		params.put("sealFileId", sealFileId);
+		MultipartFile authFile = (MultipartFile) params.get("authFile");
+		String authFileId = commonService.uploadFile(authFile, CommonUtils.getString(params.get("userId")), uploadDirPath);
+		params.put("authFileId", authFileId);
+		MultipartFile workFile = (MultipartFile) params.get("workFile");
+		String workFileId = commonService.uploadFile(workFile, CommonUtils.getString(params.get("userId")), uploadDirPath);
+		params.put("workFileId", workFileId);
+		
+		params.put("state", "10");
+		int upd = generalDao.updateGernal("callnum.updateCallNumProxy", params);
+		if (upd == 0) {
+			generalDao.insertGernal("callnum.insertCallNumProxy", params);
+		}
+	}
+
+	public RestResult<?> selectCallNumProxy(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		rtn.setData(generalDao.selectGernalObject("callnum.selectCallNumProxy", params));
+		return rtn;
+	}
+
+	// 발신번호목록 조회
+	public RestResult<?> selectCallNumList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		if (params.containsKey("pageNo") && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize") && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if (rtn.getPageInfo() != null) {
+				// 카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount("callnum.selectCallNumCnt", params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
+		}
+
+		List<Object> rtnList = generalDao.selectGernalList("callnum.selectCallNumList", params);
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+
+	// RCS발신번호목록 조회
+	public RestResult<?> selectRcsCallNumList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		if (params.containsKey("pageNo") && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize") && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if (rtn.getPageInfo() != null) {
+				// 카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount("callnum.selectRcsCallNumCnt", params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
+		}
+
+		List<Object> rtnList = generalDao.selectGernalList("callnum.selectRcsCallNumList", params);
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+
+	// 문자발신번호목록 조회
+	public RestResult<?> selectSmsCallNumList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		if (params.containsKey("pageNo") && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize") && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if (rtn.getPageInfo() != null) {
+				// 카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount("callnum.selectSmsCallNumCnt", params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
+		}
+
+		List<Object> rtnList = generalDao.selectGernalList("callnum.selectSmsCallNumList", params);
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+	
+	// 프로젝트 발신번호 등록
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<Object> saveProjectCallNum(Map<String, Object> params) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+		int resultCnt = 0;
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.putAll(params);
+		
+		ArrayList<String> callNumList = (ArrayList<String>)map.get("callNumList");
+		
+		for (String callNum : callNumList) {
+			HashMap<String, Object> saveMap = new HashMap<String, Object>();
+			saveMap.putAll(map);
+			saveMap.put("callNum", callNum);
+			resultCnt = generalDao.insertGernal("callnum.insertProjectCallNum", saveMap);
+		}
+		
+		if (resultCnt <= 0) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		} else {
+			rtn.setSuccess(true);
+			rtn.setData(params);
+		}
+			return rtn;
+	}
+	
+	// 발신번호  연결해제
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void delCallNum(Map<String, Object> params) throws Exception {
+		generalDao.deleteGernal("callnum.deleteProjectCallNum", params);
+		int cnt = generalDao.selectGernalCount("callnum.selectProjectCallNumCnt", params);
+		if (cnt == 0) {
+			generalDao.deleteGernal("callnum.deleteCallNum", params);
+			
+			Map<String, Object> delParams = new HashMap<>();
+			delParams.put("corpId", params.get("corpId"));
+			delParams.put("callNum", params.get("callNum"));
+			// redis 테이블 처리
+			commonService.updateCmCmdForRedisAPI("else", "cm_console.CM_CALL_NUM", delParams);
+		}
 	}
 
 }

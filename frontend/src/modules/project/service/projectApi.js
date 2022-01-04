@@ -62,7 +62,36 @@ const selectDistDetail = (params) => {
 const selectCorpDistId = (params) => {
     return httpClient.post('/projectApi/manage/selectCorpDistId', params, { headers: { "show-layer": "Yes", "activity": "READ" } });
 };
-
+const getNiceCheck = () => {
+    return httpClient.post('/projectApi/manage/getNiceCheck', { headers: {"show-layer": "Yes", "activity": "READ" } });
+}
+const getNiceCheckSuccess = (params) => {
+    return httpClient.post('/projectApi/manage/getNiceCheckSuccess', params, { headers: {"show-layer": "Yes", "activity": "READ" } });
+}
+const getNiceCheckFail = (params) => {
+    return httpClient.post('/projectApi/manage/getNiceCheckFail', params, { headers: {"show-layer": "Yes", "activity": "READ" } });
+}
+const getCallNumProxy = (params) => {
+    return httpClient.post('/projectApi/manage/getCallNumProxy', params, { headers: {"show-layer": "Yes", "activity": "READ" } });
+}
+const getCallNumList = (params) => {
+    return httpClient.post('/projectApi/manage/getCallNumList', params, { headers: {"show-layer": "Yes", "activity": "READ" } });
+}
+const getRcsCallNumList = (params) => {
+    return httpClient.post('/projectApi/manage/getRcsCallNumList', params, { headers: {"show-layer": "Yes", "activity": "READ" } });
+}
+const getSmsCallNumList = (params) => {
+    return httpClient.post('/projectApi/manage/getSmsCallNumList', params, { headers: {"show-layer": "Yes", "activity": "READ" } });
+}
+const saveCallNumPro = (params) => {
+    return httpClient.post('/projectApi/manage/saveCallNumPro', params, { headers: {"show-layer": "Yes", "activity": "SAVE" } });
+}
+const saveProjectCallNum = (params) => {
+    return httpClient.post('/projectApi/manage/saveProjectCallNum', params, { headers: {"show-layer": "Yes", "activity": "SAVE" } });
+}
+const delCallNum = (params) => {
+    return httpClient.post('/projectApi/manage/delCallNum', params, { headers: {"show-layer": "Yes", "activity": "SAVE" } });
+}
 
 export default {
     selectProjectList,
@@ -80,5 +109,15 @@ export default {
     selectDisRatio,
     selectBillIdForApi,
     selectDistDetail,
-    selectCorpDistId
+    selectCorpDistId,
+    getNiceCheck,
+    getNiceCheckSuccess,
+    getNiceCheckFail,
+    getCallNumProxy,
+    getCallNumList,
+    getRcsCallNumList,
+    getSmsCallNumList,
+    saveCallNumPro,
+    saveProjectCallNum,
+    delCallNum
 };

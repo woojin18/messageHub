@@ -10,6 +10,9 @@ import callbackPreRegEx from '../views/bm-project-callback-preRegEx'
 
 import baseInfoManage from '../views/bm-project-baseInfo-manage'
 import memberManage from '../views/bm-project-member-manage'
+import checkPlusSuccess from '../views/bm-checkPlus-success'
+import checkPlusFail from '../views/bm-checkPlus-fail'
+
 
 export default [
     {
@@ -59,5 +62,17 @@ export default [
         name: 'memberManage',
         meta: { menu: 'AC_PROJECT' },
         component: memberManage
+    },
+    {
+        path: '/ac/project/checkPlusSuccess',
+        name: 'checkPlusSuccess',
+        meta: { menu: 'AC_PROJECT' },
+        component: checkPlusSuccess
+    },
+    {
+        path: '/ac/project/checkPlusFail',
+        name: 'checkPlusFail',
+        meta: { menu: 'AC_PROJECT' },
+        component: checkPlusFail
     },
 ]
