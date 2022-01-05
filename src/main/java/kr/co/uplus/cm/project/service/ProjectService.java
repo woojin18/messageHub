@@ -1176,6 +1176,7 @@ public class ProjectService {
 			saveMap.putAll(map);
 			saveMap.put("callNum", callNum);
 			resultCnt = generalDao.insertGernal("callnum.insertProjectCallNum", saveMap);
+			generalDao.insertGernal("callnum.insertProjectChatbot", saveMap);
 		}
 		
 		if (resultCnt <= 0) {
@@ -1192,6 +1193,7 @@ public class ProjectService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void delCallNum(Map<String, Object> params) throws Exception {
 		generalDao.deleteGernal("callnum.deleteProjectCallNum", params);
+		generalDao.deleteGernal("callnum.deleteProjectChatbot", params);
 		int cnt = generalDao.selectGernalCount("callnum.selectProjectCallNumCnt", params);
 		if (cnt == 0) {
 			generalDao.deleteGernal("callnum.deleteCallNum", params);

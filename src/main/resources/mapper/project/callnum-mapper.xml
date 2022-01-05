@@ -75,6 +75,7 @@
              , DATE_FORMAT(REQ_DT, '%Y-%m-%d')    AS REQ_DT 
              , DATE_FORMAT(HANDLE_DT, '%Y-%m-%d') AS HANDLE_DT 
              , HANDLE_REASON
+             , b.CHATBOT_ID
           FROM cm_console.CM_CALL_NUM a 
           LEFT JOIN cm.CM_RCS_CHATBOT b
             ON b.CHATBOT_ID = a.CHATBOT_ID
@@ -129,6 +130,31 @@
          WHERE CORP_ID       = #{corpId}
            AND PROJECT_ID    = #{projectId}
            AND CALL_NUM      = #{callNum}
+    </delete>
+ 
+    <insert id="insertProjectChatbot">
+        /* callnum.insertProjectChatbot - 프로젝트별 RCS챗봇 등록 */
+        INSERT INTO cm_console.CM_PROJECT_CHATBOT (
+               PROJECT_ID
+             , CHATBOT_ID
+             , REG_ID
+             , REG_DT
+        )
+        SELECT PROJECT_ID
+             , CHATBOT_ID
+             , #{userId}
+             , NOW()
+          FROM cm_console.CM_CALL_NUM
+         WHERE CORP_ID       = #{corpId}
+           AND CALL_NUM      = #{callNum}
+           AND CHATBOT_ID    > ''
+    </insert>
+    
+    <delete id="deleteProjectChatbot">
+        /* callnum.deleteProjectChatbot - 프로젝트별 RCS챗봇 삭제 */
+        DELETE FROM cm_console.CM_PROJECT_CHATBOT
+         WHERE PROJECT_ID    = #{projectId}
+           AND CHATBOT_ID    = #{chatbotId}
     </delete>
 
     <insert id="insertCallNumProxy">
@@ -196,7 +222,7 @@
         SELECT COUNT(1) AS CNT 
           FROM cm_console.CM_CALL_NUM a
              , cm.CM_RCS_CHATBOT      b
-         WHERE a.CHATBOT_ID = b.CHATBOT_ID
+         WHERE a.CHATBOT_ID    = b.CHATBOT_ID
            AND a.CORP_ID       = #{corpId}
            AND b.BRAND_ID      = #{brandId}
            AND NOT EXISTS (SELECT 1 
@@ -211,6 +237,7 @@
         SELECT a.CALL_NUM
              , DATE_FORMAT(a.REG_DT, '%Y-%m-%d')    AS REG_DT 
              , (SELECT USER_NAME FROM cm_console.CM_USER x WHERE a.REG_ID = x.USER_ID) AS USER_NAME
+             , b.CHATBOT_ID
           FROM cm_console.CM_CALL_NUM a
              , cm.CM_RCS_CHATBOT      b
          WHERE a.CHATBOT_ID = b.CHATBOT_ID

@@ -98,11 +98,11 @@ export default {
     methods : {
         fnGetNiceCheckSuccess(){
             var params = {
+                projectId : window.opener.document.getElementById('projectId').value,
                 EncodeData : this.EncodeData 
             };
 
             projectApi.getNiceCheckSuccess(params).then((response) => {
-                console.log(response);
                 window.opener.document.getElementById('message').value=response.data.message;
                 window.opener.document.getElementById('nice').click();
                 self.close();

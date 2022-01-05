@@ -60,7 +60,7 @@
 								<p class="color4 mt0">안심본인인증을 통한 등록 (즉시 등록)</p>
 							</td>
 							<td class="text-center vertical-middle end">
-								<a @click="fnPopup" class="btnStyle1 font13 width180">휴대폰 인증</a>
+								<a @click="fnPopup" class="btnStyle1 font13 width180">휴대폰 인증</a><input type="hidden" id="projectId" v-model="projectId">
 								<input type="hidden" id="message"><button id="nice" style="display:none;" @click="fnMessage"></button>
 								<!-- 본인인증 서비스 팝업을 호출하기 위해서는 다음과 같은 form이 필요합니다. -->
 								<form name="form_chk" method="post">

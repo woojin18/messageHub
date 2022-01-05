@@ -99,8 +99,8 @@
 								<td class="text-center">{{row.rcsSend}}</td>
 								<td class="text-center">{{row.rcsState}}</td>
 								<td class="text-center">{{row.smsSend}}</td>
-								<td v-if="row.smsState != '차단'" class="text-center">{{row.smsState}}</td>
-								<td v-if="row.smsState == '차단'" class="text-center"><a @click="fnStop(index)" class="color1">차단</a></td>
+								<td v-if="!(row.smsState == '차단' || row.smsState == '반려')" class="text-center">{{row.smsState}}</td>
+								<td v-if="row.smsState == '차단' || row.smsState == '반려'" class="text-center"><a @click="fnStop(index)" class="color1">{{row.smsState}}</a></td>
 								<td class="text-center">{{row.regWay}}</td>
 								<td class="text-center">{{row.brand}}</td>
 								<td class="text-center" v-html="row.project"></td>
@@ -239,7 +239,8 @@ export default {
 		fnClear() {
 			var params = {
 				'projectId': this.projectId,
-				'callNum'  : this.data[this.idx].callNum
+				'callNum'  : this.data[this.idx].callNum,
+				'chatbotId'  : this.data[this.idx].chatbotId
 			};
 
 			projectApi.delCallNum(params).then(response =>{
