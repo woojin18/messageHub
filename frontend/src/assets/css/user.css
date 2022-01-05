@@ -34,7 +34,7 @@ header.head_type_user {border-bottom:1px solid #E6E6E6}
 
 /* userLogin-form */
 .userLogin-form {width:460px; margin:0 auto}
-.userLogin-form > h2 {font-size:28px; margin-bottom:70px}
+.userLogin-form > h2 {font-size:28px !important; margin-bottom:70px; color:#000}
 .userLogin-form h3 {font-size:20px; color:#707070; font-weight:400}
 .userLogin-form .form-control {border:1px solid #E8ECEF; border-radius:5px; font-size:15px; height:60px; line-height:60px; box-shadow:none}
 .userLogin-form .checkbox {margin:0}
@@ -43,7 +43,6 @@ header.head_type_user {border-bottom:1px solid #E6E6E6}
 .userLogin-form .forgot a {font-size:15px}
 .userLogin-form .forgot a i {color:#D5D5D5; vertical-align:baseline}
 .userLogin-form .forgot span {vertical-align:sub; padding:0 10px}
-.modalStyle .modal-body h4 {margin-top:13px}
 .loginThum {background:#B2B2B2; border-radius:28px; width:58px; height:58px; font-size:26px; color:#fff; line-height:58px}
 
 /* join */
@@ -141,13 +140,15 @@ header.head_type_user {border-bottom:1px solid #E6E6E6}
 .quiryAgree .provisionMore {border-bottom:1px solid #000}
 .quiryList .btnStyle2 {padding:15px 50px; font-size:16px; margin-top:45px}
 
-/* user_sub_common*/
+/*
 h2 {margin:0; color:#fff; font-size:28px !important; font-weight:500}
 h3 {font-size:30px; color:000}
 .image-center {text-align:center}
 p {letter-spacing:-0.5px}
 .color333 {color:#333}
+*/
 
+.image-center {text-align:center}
 
 /* subVisualWrap01 */
 #subVisualWrap01 section {background:url(../images/subVisual01.png); height:370px; padding-top:110px}
@@ -157,18 +158,19 @@ p {letter-spacing:-0.5px}
 #subVisualWrap01 section div div a:hover {background-color:#570792; color:#fff}
 
 /* .serviceCon01 */
-.serviceCon01 section {max-width:1088px; margin:110px auto}
-.serviceCon01 section .subTitle {text-align:center}
+.serviceCon01 section {max-width:1000px; margin:110px auto}
+.serviceCon01 section .subTitle {text-align:center; font-size:24px !important}
 .serviceCon01 section .CloudIcon {padding:70px 70px 0 70px; overflow:hidden}
-.serviceCon01 section .CloudIcon li {float:left; text-align:center; width:25%}
+.serviceCon01 section .CloudIcon li {float:left; text-align:center; width:33.3%}
 .serviceCon01 section .CloudIcon .IconMainText {font-size:20px; color:#000; margin-top:25px}
 .serviceCon01 section .CloudIcon .IconSubText {font-size:14px; color:#676767; margin-top:15px}
 
 /* .serviceCon02 */
+.serviceCon02 section .subTitle {text-align: left; font-size: 24px !important}
 .serviceCon02 {background-color:#F4F2FC; padding-top:133px}
-.serviceCon02 section {max-width:1000px; margin:0 auto}
+.serviceCon02 section {max-width:1100px; margin:0 auto}
 .serviceCon02 section .subText {font-size:16px; color:#676767; margin-top:34px}
-.serviceCon02 section > ul {overflow:hidden}
+.serviceCon02 section > ul {overflow:hidden; background:url('../images/send.png') top right no-repeat; height:630px}
 .serviceCon02 section > ul > li {overflow:hidden; float:left; width:50%}
 .serviceCon02 section > ul > li .people01 {float:right}
 
@@ -185,11 +187,14 @@ p {letter-spacing:-0.5px}
 #bx-pager > li > a.active {color:#FC6D26}
 #bx-pager > li > a.active:before {background:#FC6D26}
 
+.serviceCon02_list {color:#000; font-size:18px; font-weight:400; margin-top:20px; line-height:1px}
+.serviceCon02_list li {line-height:2em}
+
 /* faqList */
 .faqList {}
 .faqList > li {border-bottom:1px solid #B2B2B2; padding:10px 0}
 .faqTitle {overflow:hidden; cursor:pointer}
-.faqTitle .faqBg {color:#9941FF; font-size:15px; background-color:rgba(153,65,255,0.15); font-weight:700; padding:6px 10px; border-radius:5px; display:inline-block; width:4.5%}
+.faqTitle .faqBg {color:#9941FF; font-size:14px; background-color:rgba(153,65,255,0.15); font-weight:700; padding:6px 10px; border-radius:5px; display:inline-block; width:4.5%}
 .faqTitle p {display:inline-block; font-size:14px; color:#707070; padding:0 15px 0 20px; width:95.5%}
 .faqTitle p .faqIcon {float:right; width:13px; height:13px; background:url('../images/icon_plus.png') no-repeat; text-indent:-9999px; margin-top:5px}
 .faqAn {font-size:14px; color:#000; margin:15px 0 0 68px; min-height:100px; display:none}
@@ -198,7 +203,7 @@ p {letter-spacing:-0.5px}
 
 /* .serviceCon03 */
 .serviceCon03 section {max-width:1088px; margin:110px auto}
-.serviceCon03 section .subTitle {text-align:center}
+.serviceCon03 section .subTitle {text-align:center; font-size:24px !important}
 .serviceCon03 section .subText {text-align:center; font-size:16px; color:#676767; margin-top:34px; margin-bottom:50px}
 .serviceCon03 section .chartWrap {position:relative}
 .serviceCon03 section .people02 {position:absolute; left:0; bottom:0}
@@ -214,12 +219,12 @@ p {letter-spacing:-0.5px}
 .serviceCon04 section ul {overflow:hidden; margin-top:40px}
 .serviceCon04 section ul li {width:50%; float:left}
 .serviceCon04 section ul li .AWS_MainText {margin-top:20px; font-size:22px; color:#000}
-.serviceCon04 section ul li .AWS_SubText {margin-top:23px; font-size:16px; color:#000}
+.serviceCon04 section ul li .AWS_SubText {margin-top:23px; font-size:15px; color:#000}
 
 /* serviceCon05 */
 .serviceCon05 {background-color:#FFE13B; padding:110px 0}
 .serviceCon05 section {max-width:1088px; margin:0 auto}
-.serviceCon05 section .subTitle {text-align:center}
+.serviceCon05 section .subTitle {text-align:center; font-size:24px !important}
 .serviceCon05 section .subText {font-size:16px; color:#000; margin-top:32px; text-align:center}
 .serviceCon05 section .btn {margin-top:65px; text-align:center; display:block}
 .serviceCon05 section .btn .btnBcackRed {font-size:15px; color:#fff; font-weight:700; padding:20px 43px; background-color:#E0007A; border-radius:5px; margin-right:15px}
@@ -231,18 +236,31 @@ p {letter-spacing:-0.5px}
 /* subVisualWrap02 */
 #subVisualWrap02 section {background:url(../images/subVisual02.png); height:370px; padding-top:150px}
 #subVisualWrap02 section div > p {margin-top:22px; color:#fff; font-size:18px}
-.sub02_conWrap {padding:50px 0}
+.sub02_conWrap {padding:50px 0; max-width:1088px; margin:0 auto}
 .subVisualWrap02 {margin-top:57px}
-.subVisualWrap02 section {max-width:1088px; margin:0 auto; overflow:hidden}
-.subVisualWrap02 section .tableTitle {font-size:20px; color:000; font-weight:700}
-.subVisualWrap02 section .tableTitle i {color:#CB1871}
-.subVisualWrap02 section .tableText {float:right; font-size:14px; color:#707070; margin-bottom:20px}
+.subVisualWrap02 .tableTitle {font-size:20px; color:000; font-weight:700}
+.subVisualWrap02 .tableTitle i {color:#CB1871}
+.subVisualWrap02 .tableTitle2 {position:relative; font-size:20px; color:#fff; font-weight:500; padding:4px 15px; background-image: linear-gradient(to right, rgb(90 5 206), rgba(73,66,253,1))}
+.subVisualWrap02 .tableTitle2 img{position:absolute; right:0; top:0}
+.subVisualWrap02 .tableText {float:right; font-size:14px; color:#707070; margin-bottom:20px}
 .user_table_skin1 {width:100%; border-top:1px solid #000}
 .user_table_skin1 td {background-color:#fff; color:#505050; font-size:14px; text-align:center; border-right:1px solid #D5D5D5; padding:17px 0; border-bottom:1px solid #D5D5D5}
 .user_table_skin1 th {background-color:#F2E6FF; color:#000; font-size:14px; font-weight:500; border-right:1px solid #D5D5D5; text-align:center; padding:17px 0}
 .user_table_skin1 tr .end {border-right:0}
 .infoText {font-size:13px; color:#505050; font-weight:100; margin-top:20px}
 .infoText i {color:#b2b2b2}
+.sub02_conWrap .tab2 {width:100%; overflow:hidden}
+.sub02_conWrap .tab2 li {float:left; width:50%}
+.sub02_conWrap .tab2 li a {font-size:15px; color:#676767; text-align:center; background-color:#F2F2F2; border:1px solid #D1D1D1; display:block; padding:14px; border-right:0}
+.sub02_conWrap .tab2 li:last-child {border-right:1px solid #D1D1D1}
+.sub02_conWrap .tab2 li a:hover {font-weight:700; color:#fff; background-color:#9941FF}
+.sub02_conWrap .tab2 li.active a{font-weight:700; color:#fff; background-color:#9941FF}
+.sub02_conWrap .tab3 {width:100%; overflow:hidden; border-radius:30px 30px 0 0 / 30px 30px 0 0}
+.sub02_conWrap .tab3 li {float:left; width:50%}
+.sub02_conWrap .tab3 li a {font-size:18px; color:#676767; text-align:center; background-color:#F2F2F2;  display:block; padding:17px; box-shadow:0px -10px 5px -5px #0000001f inset}
+.sub02_conWrap .tab3 li:last-child {}
+.sub02_conWrap .tab3 li a:hover {font-weight:500; color:#fff; background-color:#601fff}
+.sub02_conWrap .tab3 li.active a{font-weight:500; color:#fff; background-color:#601fff}
 
 /* table */
 .user_table_skin2 {width:100%; background:#fff; text-align:center; border-top: 1px solid #222; border-bottom: 1px solid #222}
@@ -252,6 +270,13 @@ p {letter-spacing:-0.5px}
 .user_table_skin2 tr:hover td{background-color:#f7f7f7}
 .user_table_skin2 .end {border-right:0}
 .user_table_skin2 tr:last-child td {border-bottom:none}
+
+.user_table_skin3 {width:100%}
+.user_table_skin3 td {color:#505050; font-size:17px; text-align:center; border-right:3px solid #fff; padding:13px 0}
+.user_table_skin3 th {color: #fff; font-size:20px; font-weight:500; border-right:3px solid #fff; text-align:center; padding:13px 0}
+.user_table_skin3 tr .end {border-right:0}
+.user_table_skin3 thead .lg{background-image: linear-gradient(to right, rgb(90 5 206), rgba(73,66,253,1))}
+.user_table_skin3 tbody tr:nth-child(even) {background-color:#e3edff}
 
 /* subVisualWrap03 */
 #subVisualWrap03 section {background:url(../images/subVisual03.png); height:370px; padding-top:140px}
@@ -316,6 +341,7 @@ p {letter-spacing:-0.5px}
 
 .sub03_conWrap .new2 {color:#fff; background-color:#E93978; border-radius:5px; padding:3px 6px; margin-right:8px; font-size:10px}
 
+
 .sub03_conWrap .boardWrite .title {border-top: 1px solid #000; background-color:#F1F1F1; padding:22px 18px}
 .sub03_conWrap .boardWrite .title p {display:inline-block; font-size:14px; color:#000}
 .sub03_conWrap .boardWrite .title .date {float:right; font-size:14px; font-weight:300}
@@ -328,8 +354,44 @@ p {letter-spacing:-0.5px}
 .sub03_conWrap .btn {text-align:center}
 .sub03_conWrap .btnList {font-size:16px; color:#222; border-radius:3px; border:1px solid #222; padding:17px 50px}
 
-/* PopupClose */
 
+.modal-body .boardTitle {border-left:4px solid #9941FF; padding-left:20px; margin-bottom:72px}
+.modal-body .boardTitle .titleText {font-size:28px; color:#000; font-weight:700}
+.modal-body .boardTitle .subText {margin-top:15px; font-size:16px; color:#707070}
+
+.modal-body .new2 {color:#fff; background-color:#E93978; border-radius:5px; padding:3px 6px; margin-right:8px; font-size:10px}
+.modal-body .boardWrite .title {border-top: 1px solid #000; background-color:#F1F1F1; padding:22px 18px}
+.modal-body .boardWrite .title p {display:inline-block; font-size:14px; color:#000}
+.modal-body .boardWrite .title .date {float:right; font-size:14px; font-weight:300}
+.modal-body .boardWrite .content {border-bottom: 1px solid #000; padding:22px 18px; min-height:370px; font-size:13px; color:#000; font-weight:300}
+.modal-body .boardWrite .content p {font-size:14px}
+.modal-body .boardWrite .content2 {border-bottom: 1px solid #d5d5d5; padding:22px 18px; min-height:370px; font-size:13px; color:#000; font-weight:300}
+.modal-body .boardWrite .content2 p {font-size:14px}
+.modal-body .boardWrite .content-file {border-bottom: 1px solid #000; padding:30px 18px}
+.modal-body .boardWrite .content-file a {font-size:12px; color:#000; font-weight:300; display:block}
+
+/* PopupClose */
+/*
 .PopupBtn_Wrap {position:absolute; top:-20px; right:-25px}
 #Inquiry > .modal-dialog {margin-top:100px}
 .modal-body h2 {font-size:18px !important; color:#333}
+*/
+
+
+/* user_index */
+.subTitle_h3 {font-size:24px}
+
+
+/* user_join */
+.user_join_h2 {font-size:30px !important; margin-top:20px !important; margin-bottom:30px !important;}
+.user_sub_h2 {font-size:30px !important; color:#fff}
+
+
+/* user > PopupBtn_Wrap */
+.PopupBtn_Wrap {position:absolute; top:-20px; right:-20px}
+
+/* phoneWrap > phoneTextWrap btn*/
+
+.phoneWrap .btnStyle1.backLightGray {background:#F1F1F1; border-color:#ddd; color:#000; width:100%; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient: vertical; margin:5px 0}
+.phoneWrap .btnStyle1.backLightGray:hover {background:#000; border-color:#000; color:#fff}
+.modal-body .scroll-y_modal {max-height:140px; overflow-y:auto; line-height:1.4em}
