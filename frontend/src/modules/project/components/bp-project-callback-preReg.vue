@@ -121,7 +121,15 @@ export default {
       this.chatbotCnt = 0;
       this.chatbots = [];
       jQuery("#certiImgFile").val("");
-    }
+    },
+    chatbots: {
+      handler(val, oldVal) {
+        val.map(function(value, key) {
+          value.mdn = value.mdn.replace(/[^0-9]/g, '')
+        });
+      },
+      deep: true
+    },
   },
   methods: {
     // 닫기
