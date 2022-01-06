@@ -43,7 +43,6 @@ header.head_type_user {border-bottom:1px solid #E6E6E6}
 .userLogin-form .forgot a {font-size:15px}
 .userLogin-form .forgot a i {color:#D5D5D5; vertical-align:baseline}
 .userLogin-form .forgot span {vertical-align:sub; padding:0 10px}
-.modalStyle .modal-body h4 {margin-top:13px}
 .loginThum {background:#B2B2B2; border-radius:28px; width:58px; height:58px; font-size:26px; color:#fff; line-height:58px}
 
 /* join */
@@ -237,18 +236,31 @@ p {letter-spacing:-0.5px}
 /* subVisualWrap02 */
 #subVisualWrap02 section {background:url(../images/subVisual02.png); height:370px; padding-top:150px}
 #subVisualWrap02 section div > p {margin-top:22px; color:#fff; font-size:18px}
-.sub02_conWrap {padding:50px 0}
+.sub02_conWrap {padding:50px 0; max-width:1088px; margin:0 auto}
 .subVisualWrap02 {margin-top:57px}
-.subVisualWrap02 section {max-width:1088px; margin:0 auto; overflow:hidden}
-.subVisualWrap02 section .tableTitle {font-size:20px; color:000; font-weight:700}
-.subVisualWrap02 section .tableTitle i {color:#CB1871}
-.subVisualWrap02 section .tableText {float:right; font-size:14px; color:#707070; margin-bottom:20px}
+.subVisualWrap02 .tableTitle {font-size:20px; color:000; font-weight:700}
+.subVisualWrap02 .tableTitle i {color:#CB1871}
+.subVisualWrap02 .tableTitle2 {position:relative; font-size:20px; color:#fff; font-weight:500; padding:4px 15px; background-image: linear-gradient(to right, rgb(90 5 206), rgba(73,66,253,1))}
+.subVisualWrap02 .tableTitle2 img{position:absolute; right:0; top:0}
+.subVisualWrap02 .tableText {float:right; font-size:14px; color:#707070; margin-bottom:20px}
 .user_table_skin1 {width:100%; border-top:1px solid #000}
 .user_table_skin1 td {background-color:#fff; color:#505050; font-size:14px; text-align:center; border-right:1px solid #D5D5D5; padding:17px 0; border-bottom:1px solid #D5D5D5}
 .user_table_skin1 th {background-color:#F2E6FF; color:#000; font-size:14px; font-weight:500; border-right:1px solid #D5D5D5; text-align:center; padding:17px 0}
 .user_table_skin1 tr .end {border-right:0}
 .infoText {font-size:13px; color:#505050; font-weight:100; margin-top:20px}
 .infoText i {color:#b2b2b2}
+.sub02_conWrap .tab2 {width:100%; overflow:hidden}
+.sub02_conWrap .tab2 li {float:left; width:50%}
+.sub02_conWrap .tab2 li a {font-size:15px; color:#676767; text-align:center; background-color:#F2F2F2; border:1px solid #D1D1D1; display:block; padding:14px; border-right:0}
+.sub02_conWrap .tab2 li:last-child {border-right:1px solid #D1D1D1}
+.sub02_conWrap .tab2 li a:hover {font-weight:700; color:#fff; background-color:#9941FF}
+.sub02_conWrap .tab2 li.active a{font-weight:700; color:#fff; background-color:#9941FF}
+.sub02_conWrap .tab3 {width:100%; overflow:hidden; border-radius:30px 30px 0 0 / 30px 30px 0 0}
+.sub02_conWrap .tab3 li {float:left; width:50%}
+.sub02_conWrap .tab3 li a {font-size:18px; color:#676767; text-align:center; background-color:#F2F2F2;  display:block; padding:17px; box-shadow:0px -10px 5px -5px #0000001f inset}
+.sub02_conWrap .tab3 li:last-child {}
+.sub02_conWrap .tab3 li a:hover {font-weight:500; color:#fff; background-color:#601fff}
+.sub02_conWrap .tab3 li.active a{font-weight:500; color:#fff; background-color:#601fff}
 
 /* table */
 .user_table_skin2 {width:100%; background:#fff; text-align:center; border-top: 1px solid #222; border-bottom: 1px solid #222}
@@ -258,6 +270,13 @@ p {letter-spacing:-0.5px}
 .user_table_skin2 tr:hover td{background-color:#f7f7f7}
 .user_table_skin2 .end {border-right:0}
 .user_table_skin2 tr:last-child td {border-bottom:none}
+
+.user_table_skin3 {width:100%}
+.user_table_skin3 td {color:#505050; font-size:17px; text-align:center; border-right:3px solid #fff; padding:13px 0}
+.user_table_skin3 th {color: #fff; font-size:20px; font-weight:500; border-right:3px solid #fff; text-align:center; padding:13px 0}
+.user_table_skin3 tr .end {border-right:0}
+.user_table_skin3 thead .lg{background-image: linear-gradient(to right, rgb(90 5 206), rgba(73,66,253,1))}
+.user_table_skin3 tbody tr:nth-child(even) {background-color:#e3edff}
 
 /* subVisualWrap03 */
 #subVisualWrap03 section {background:url(../images/subVisual03.png); height:370px; padding-top:140px}
