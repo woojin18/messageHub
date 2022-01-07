@@ -23,14 +23,14 @@
 								<h4 class="inline-block" style="width:6%">발신번호</h4>
 								<input type="text" class="inputStyle" style="width:16%" v-model="srcCallNum">
 								<h4 class="inline-block ml60" style="width:6%">RCS 상태</h4>
-								<select class="selectStyle2" style="width:16%" v-model="srcRcsState" @change="fnSearch">
+								<select class="selectStyle2" style="width:16%" v-model="srcRcsState" @change="fnSearch(1)">
 									<option value="">전체</option>
 									<option value="승인대기">승인대기</option>
 									<option value="승인">승인</option>
 									<option value="반려">반려</option>
 								</select>
 								<h4 class="inline-block ml60" style="width:6%">문자상태</h4>
-								<select class="selectStyle2" style="width:16%" v-model="srcSmsState" @change="fnSearch">
+								<select class="selectStyle2" style="width:16%" v-model="srcSmsState" @change="fnSearch(1)">
 									<option value="">전체</option>
 									<option value="10">요청</option>
 									<option value="20">접수</option>
@@ -72,11 +72,12 @@
 							<col style="width:7%">
 							<col style="width:5%">
 							<col style="width:7%">
-							<col style="width:10%">
-							<col style="width:13%">
-							<col style="width:10%">
-							<col style="width:10%">
-							<col style="width:10%">
+							<col style="width:7%">
+							<col>
+							<col>
+							<col style="width:7%">
+							<col style="width:7%">
+							<col style="width:7%">
 						</colgroup>
 						<thead>
 							<tr>
@@ -97,16 +98,18 @@
 							<tr v-for="(row, index) in data" :key="index">
 								<td class="text-center">{{row.callNum}}</td>
 								<td class="text-center">{{row.rcsSend}}</td>
-								<td class="text-center">{{row.rcsState}}</td>
+								<td v-if="row.rcsState != '반려'" class="text-center">{{row.rcsState}}</td>
+								<td v-if="row.rcsState == '반려'" class="text-center"><a @click="fnStop2(index)" class="color1">{{row.rcsState}}</a></td>
 								<td class="text-center">{{row.smsSend}}</td>
-								<td v-if="!(row.smsState == '차단' || row.smsState == '반려')" class="text-center">{{row.smsState}}</td>
-								<td v-if="row.smsState == '차단' || row.smsState == '반려'" class="text-center"><a @click="fnStop(index)" class="color1">{{row.smsState}}</a></td>
+								<td v-if="!(row.smsState == '90' || row.smsState == '91')" class="text-center">{{row.smsStateNm}}</td>
+								<td v-if="row.smsState == '90' || row.smsState == '91'" class="text-center"><a @click="fnStop(index)" class="color1">{{row.smsStateNm}}</a></td>
 								<td class="text-center">{{row.regWay}}</td>
 								<td class="text-center">{{row.brand}}</td>
 								<td class="text-center" v-html="row.project"></td>
 								<td class="text-center">{{row.reqDt}}</td>
 								<td class="text-center">{{row.handleDt}}</td>
-								<td class="end"><a @click="fnClearConfirm(index)" class="btnStyle1 borderLightGray small">연결해제</a></td>
+								<td v-if="row.smsState == '' || row.smsState == '10' || row.smsState == '20'" class="end"></td>
+								<td v-if="!(row.smsState == '' || row.smsState == '10' || row.smsState == '20')" class="end"><a @click="fnClearConfirm(index)" class="btnStyle1 borderLightGray small">연결해제</a></td>
 							</tr>
 							<tr v-if="data.length == 0"> 
 								<td class="text-center" colspan="10">검색된 내용이 없습니다.</td>
@@ -228,13 +231,17 @@ export default {
 		fnStop(idx) {
 			confirm.fnAlert("", this.data[idx].handleReason);
 		},
-		fnClear(idx) {
-			
+		fnStop2(idx) {
+			confirm.fnAlert("", this.data[idx].approvalReason == 'null' ? '' : this.data[idx].approvalReason);
 		},
 		fnClearConfirm(idx){
 			this.idx = idx;
 			eventBus.$on('callbackEventBus', this.fnClear);
-			confirm.fnConfirm("", "연결해제를 진행하시겠습니까?", "확인");
+			if (this.data[this.idx].project.indexOf('<br/>') > 0) {
+				confirm.fnConfirm("", "프로젝트와 마지막으로 연결된 발신번호라서 삭제 처리됩니다.\n삭제 후 다시 연결이 불가능합니다.\n연결해제 하시겠습니까?", "확인");
+			} else {
+				confirm.fnConfirm("", "프로젝트와의 연결을 해제합니다.\n해제 후 다시 연결이 가능합니다.\n해제하시겠습니까?", "확인");
+			}
 		},
 		fnClear() {
 			var params = {
