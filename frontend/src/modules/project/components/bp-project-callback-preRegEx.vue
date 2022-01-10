@@ -112,8 +112,7 @@ export default {
           confirm.fnAlert("", "저장에 성공했습니다.");
           // 닫기 버튼
           this.$refs.closeBtn.click();
-          // 발신번호관리 화면으로 이동
-          this.$parent.fnMoveMainTab('callbackManage');
+          this.$parent.fnCheckPreRegYn();
         } else {
   				confirm.fnAlert("", "저장에 실패했습니다.");
         }
