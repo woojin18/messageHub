@@ -238,9 +238,9 @@ export default {
 			this.idx = idx;
 			eventBus.$on('callbackEventBus', this.fnClear);
 			if (this.data[this.idx].project.indexOf('<br/>') > 0) {
-				confirm.fnConfirm("", "프로젝트와 마지막으로 연결된 발신번호라서 삭제 처리됩니다.\n삭제 후 다시 연결이 불가능합니다.\n연결해제 하시겠습니까?", "확인");
-			} else {
 				confirm.fnConfirm("", "프로젝트와의 연결을 해제합니다.\n해제 후 다시 연결이 가능합니다.\n해제하시겠습니까?", "확인");
+			} else {
+				confirm.fnConfirm("", "프로젝트와 마지막으로 연결된 발신번호라서 삭제 처리됩니다.\n삭제 후 다시 연결이 불가능합니다.\n연결해제 하시겠습니까?", "확인");
 			}
 		},
 		fnClear() {
