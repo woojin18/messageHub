@@ -14,7 +14,7 @@
 								</colgroup>
 								<thead>
 									<tr>
-                                        <th class="text-center lc-1">고객명</th>
+                                        <th class="text-center lc-1">고객사/대표자 명</th>
                                         <th class="text-center lc-1">사업회사명</th>
 									</tr>
 								</thead>
