@@ -1,7 +1,17 @@
 <template>
 	<div>
 		<h4 class="inline-block">발신번호 사전등록제 시행 안내</h4>
-		<p class="color5">전기통신사업법 제84조에 따라 2015년 10월 16일부로 <strong>'발신번호 사전등록제'</strong>가 시행되었습니다. '발신번호 사전 등록제'란, 거짓으로 표시된 전화번호로 인한 이용자 피해 예방을 위한 것으로, <strong>문자 메시지 발송 시 사전 인증된 발신 번호로만 사용할 수 있도록 등록하는 제도</strong> 입니다. 이에 따라, 전기통신사업법 제 84조 2항(전화번호의 거짓 표시 금지 및 이용자 보호)에 위반되지 않도록 자신의 발신번호를 사전에 등록하고, 등록된 번호로만 문자 메시지를 발송해야 합니다. 또한, 발신 번호는 기업, 기관 혹은 본인이 소유한 번호 여야 하며, 등록된 발신 번호로 전송한 메시지가 발신 번호 변조로 의심되어 KISA(한국인터넷진흥원)로부터 소명 요청을 받을 경우, 해당 고객의 발신 번호 소유를 증명할 수 있어야 합니다.</p>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="menuBox">						
+					<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> 전기통신사업법 제84조에 따라 2015년 10월 16일부로 <strong>'발신번호 사전등록제'</strong>가 시행되었습니다.</p>
+					<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> '발신번호 사전 등록제'란, 거짓으로 표시된 전화번호로 인한 이용자 피해 예방을 위한 것으로, <strong>문자 메시지 발송 시 사전 인증된 발신 번호로만 사용할 수 있도록 등록하는 제도</strong> 입니다.</p>
+					<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> 이에 따라, 전기통신사업법 제 84조 2항(전화번호의 거짓 표시 금지 및 이용자 보호)에 위반되지 않도록 자신의 발신번호를 사전에 등록하고, 등록된 번호로만 문자 메시지를 발송해야 합니다.</p>
+					<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> 또한, 발신 번호는 기업, 기관 혹은 본인이 소유한 번호 여야 하며, 등록된 발신 번호로 전송한 메시지가 발신 번호 변조로 의심되어 KISA(한국인터넷진흥원)로부터 소명 요청을 받을 경우, 해당 고객의 발신 번호 소유를 증명할 수 있어야 합니다.</p>
+				</div>
+			</div>
+		</div>
 
 		<div class="clear">
 			<h4 class="inline-block">발신번호 등록 방식</h4>
