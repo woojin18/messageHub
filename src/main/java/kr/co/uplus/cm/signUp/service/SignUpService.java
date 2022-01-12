@@ -216,6 +216,14 @@ public class SignUpService {
 		// 고객사 등록
 		generalDao.insertGernal(DB.QRY_INSERT_CM_CORP, paramMap);
 		
+		// 청구정보 등록 2022-01-10
+		String billId =  CommonUtils.getCommonId("BIL", 7);
+		paramMap.put("billId", billId);
+		paramMap.put("billType", "PROJECT");
+		paramMap.put("billName", paramMap.get("corpNm")); //청구유형이PROJECT면 고객사명
+		paramMap.put("billStatus", "REQ");
+		generalDao.insertGernal("signUp.insertBill", paramMap);
+		
 		// redis update
 		commonService.updateCmCmdForRedis("CM_CORP");
 	}

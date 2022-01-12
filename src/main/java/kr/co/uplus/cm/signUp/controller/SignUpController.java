@@ -104,9 +104,9 @@ public class SignUpController implements Serializable{
 			@RequestParam(required=true) String woplaceAddress,			// 주소
 			@RequestParam(required=true) String woplaceAddressDetail,	// 상세주소
 			@RequestParam(required=false) String wireTel,				// 유선전화번호
-			@RequestParam(required=true) MultipartFile attachFile,		// 사업자등록증
-			@RequestParam(required=true) MultipartFile attachFile1,		// 통신사실 증명원
-			@RequestParam(required=true) MultipartFile attachFile2,		// 대리인 재직증명서 또는 신분증
+			@RequestParam(required=false) MultipartFile attachFile,		// 사업자등록증
+			@RequestParam(required=false) MultipartFile attachFile1,		// 통신사실 증명원
+			@RequestParam(required=false) MultipartFile attachFile2,		// 대리인 재직증명서 또는 신분증
 			@RequestParam(required=false) MultipartFile attachFile3,	// 대리인 위임장
 //			@RequestParam(required=true) String domainName,				// 도메인
 			@RequestParam(required=true) String custKdCd,				// 고객유형
@@ -114,7 +114,42 @@ public class SignUpController implements Serializable{
 			@RequestParam(required=false) String coInfo,				// 본인인증 토큰 (개인사업자 필수)
 			@RequestParam(required=false) String genderCode,			// 성별 (1: 남성,2: 여성)
 			@RequestParam(required=false) String promotionYn,			// 홍보 정보 수신 동의
-			@RequestParam(required=false) String salesMan				// 영업사원
+			@RequestParam(required=false) String salesMan,				// 영업사원
+			@RequestParam(required=false) String feeType,
+			
+			@RequestParam(required=false) String billRegNo,
+			@RequestParam(required=false) String billType,
+			@RequestParam(required=false) String billName,
+			@RequestParam(required=false) String billStatus,
+			@RequestParam(required=false) String napCustKdCd,
+			@RequestParam(required=false) String billKind,
+			@RequestParam(required=false) String billEmail,
+			@RequestParam(required=false) String billPhone,
+			@RequestParam(required=false) String billZip,
+			@RequestParam(required=false) String billJuso,
+			@RequestParam(required=false) String billJuso2,
+			@RequestParam(required=false) String payMthdCd,
+			@RequestParam(required=false) String payDt,
+			@RequestParam(required=false) String napCmpNm,
+			@RequestParam(required=false) String napJumin,
+			@RequestParam(required=false) String bankCd,
+			@RequestParam(required=false) String bankNo,
+			@RequestParam(required=false) String cardCd,
+			@RequestParam(required=false) String cardNo1,
+			@RequestParam(required=false) String cardNo2,
+			@RequestParam(required=false) String cardNo3,
+			@RequestParam(required=false) String cardNo4,
+			@RequestParam(required=false) String cardValdEndYymm1,
+			@RequestParam(required=false) String cardValdEndYymm2,
+			@RequestParam(required=false) String serviceId,
+			@RequestParam(required=false) String smsExpCnt,
+			@RequestParam(required=false) String rcsExpCnt,
+			@RequestParam(required=false) String kkoExpCnt,
+			@RequestParam(required=false) String pushExpCnt,
+			@RequestParam(required=false) String monthExpAmount,
+			@RequestParam(required=false) String handleReason,
+			@RequestParam(required=false) String handleId,
+			@RequestParam(required=false) String handleDt
 			) throws Exception {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -141,6 +176,37 @@ public class SignUpController implements Serializable{
 //		paramMap.put("domainName", domainName);
 		paramMap.put("promotionYn", promotionYn);
 		paramMap.put("salesMan", salesMan);
+		paramMap.put("feeType", feeType);
+
+		paramMap.put("billRegNo", billRegNo);
+		paramMap.put("billType", billType);        
+		paramMap.put("billName", billName);        
+		paramMap.put("billStatus", billStatus);      
+		paramMap.put("napCustKdCd", napCustKdCd);     
+		paramMap.put("billKind", billKind);        
+		paramMap.put("billEmail", billEmail);       
+		paramMap.put("billPhone", billPhone);       
+		paramMap.put("billZip", billZip);         
+		paramMap.put("billJuso", billJuso);        
+		paramMap.put("billJuso2", billJuso2);       
+		paramMap.put("payMthdCd", payMthdCd);       
+		paramMap.put("payDt", payDt);           
+		paramMap.put("napCmpNm", napCmpNm);        
+		paramMap.put("napJumin", napJumin);        
+		paramMap.put("bankCd", bankCd);          
+		paramMap.put("bankNo", bankNo);          
+		paramMap.put("cardCd", cardCd);          
+		paramMap.put("cardNo", cardNo1+cardNo2+cardNo3+cardNo4);          
+		paramMap.put("cardValdEndYymm", cardValdEndYymm1+cardValdEndYymm2); 
+		paramMap.put("serviceId", serviceId);       
+		paramMap.put("smsExpCnt", smsExpCnt);       
+		paramMap.put("rcsExpCnt", rcsExpCnt);       
+		paramMap.put("kkoExpCnt", kkoExpCnt);       
+		paramMap.put("pushExpCnt", pushExpCnt);      
+		paramMap.put("monthExpAmount", monthExpAmount);  
+		paramMap.put("handleReason", handleReason);    
+		paramMap.put("handleId", handleId);        
+		paramMap.put("handleDt", handleDt);     
 		
 		// 유큐브 파라미터
 		paramMap.put("custKdCd", custKdCd);
