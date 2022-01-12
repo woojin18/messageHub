@@ -10,7 +10,7 @@
             <div class="of_h">
 							<div class="menuBox">						
 								<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> 다른 프로젝트에서 등록한 문자 발신번호를 연결할 수 있습니다.</p>
-								<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> 연결 하실 문자 발신번호를 선택하고 [프로젝트 연결] 버튼을 누르면 프로젝트와 연결됩니다.</p>
+								<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> 연결 하실 문자 발신번호를 선택하고 [발신번호 연결] 버튼을 누르면 프로젝트와 연결됩니다.</p>
 							</div>
 						</div>
             
@@ -46,8 +46,8 @@
                             </div>
                           </th>
                           <th class="text-center lc-1">발신번호</th>
-                          <th class="text-center lc-1">등록일자</th>
-                          <th class="text-center lc-1 end">등록자</th>
+                          <th class="text-center lc-1">등록 방법</th>
+                          <th class="text-center lc-1 end">등록일자</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -59,8 +59,8 @@
                             </div>
                           </td>
                           <td class="text-center">{{ data.callNum }}</td>
-                          <td class="text-center lc-1">{{ data.regDt }}</td>
-                          <td class="text-center lc-1 end">{{ data.userName }}</td>
+                          <td class="text-center lc-1">{{ data.regWay }}</td>
+                          <td class="text-center lc-1 end">{{ data.regDt }}</td>
                         </tr>
                         <tr v-if="callNumList.length == 0">
                           <td class="text-center"></td>

@@ -90,7 +90,7 @@
              , (CASE STATE WHEN '10' THEN '요청' WHEN '20' THEN '접수' WHEN '80' THEN '승인' WHEN '90' THEN '반려' WHEN '91' THEN '차단' END) AS SMS_STATE_NM
              , (CASE REG_WAY WHEN 'PHONE' THEN '휴대폰 인증' WHEN 'RCS' THEN 'RCS Biz' WHEN 'DOC' THEN '서류 심사' WHEN 'PROXY' THEN '대리인' WHEN 'ETC' THEN '기타' END) AS REG_WAY
              , (SELECT BRAND_NAME FROM cm.CM_RCS_BRAND x WHERE x.BRAND_ID = b.BRAND_ID) AS BRAND
-             , (SELECT GROUP_CONCAT(PROJECT_NAME separator '&lt;br/&gt;') FROM cm_console.CM_PROJECT x, cm_console.CM_PROJECT_CALL_NUM y WHERE y.CORP_ID = a.CORP_ID AND y.CALL_NUM = a.CALL_NUM AND x.PROJECT_ID = y.PROJECT_ID AND x.CORP_ID = y.CORP_ID)  AS PROJECT 
+             , (SELECT GROUP_CONCAT(PROJECT_NAME separator '\n') FROM cm_console.CM_PROJECT x, cm_console.CM_PROJECT_CALL_NUM y WHERE y.CORP_ID = a.CORP_ID AND y.CALL_NUM = a.CALL_NUM AND x.PROJECT_ID = y.PROJECT_ID AND x.CORP_ID = y.CORP_ID)  AS PROJECT 
              , DATE_FORMAT(REQ_DT, '%Y-%m-%d')    AS REQ_DT 
              , DATE_FORMAT(HANDLE_DT, '%Y-%m-%d') AS HANDLE_DT 
              , HANDLE_REASON
@@ -187,7 +187,7 @@
              , REG_ID
              , REG_DT
         )
-        SELECT PROJECT_ID
+        SELECT #{projectId}
              , CHATBOT_ID
              , #{userId}
              , NOW()
@@ -269,9 +269,9 @@
         SELECT COUNT(1) AS CNT 
           FROM cm_console.CM_CALL_NUM a
              , cm.CM_RCS_CHATBOT      b
-         WHERE a.CHATBOT_ID    = b.CHATBOT_ID
+         WHERE a.CHATBOT_ID = b.CHATBOT_ID
            AND a.CORP_ID       = #{corpId}
-           AND b.BRAND_ID      = #{brandId}
+           AND REG_WAY         = 'RCS'
            AND NOT EXISTS (SELECT 1 
                FROM cm_console.CM_PROJECT_CALL_NUM c
               WHERE a.CORP_ID    = c.CORP_ID
@@ -282,14 +282,14 @@
     <select id="selectRcsCallNumList" resultType="camel">
         /* callnum.selectRcsCallNumList - RCS발신번호 목록 조회 */
         SELECT a.CALL_NUM
+             , (SELECT BRAND_NAME FROM cm.CM_RCS_BRAND x WHERE x.BRAND_ID = b.BRAND_ID) AS BRAND
              , DATE_FORMAT(a.REG_DT, '%Y-%m-%d')    AS REG_DT 
-             , (SELECT USER_NAME FROM cm_console.CM_USER x WHERE a.REG_ID = x.USER_ID) AS USER_NAME
              , b.CHATBOT_ID
           FROM cm_console.CM_CALL_NUM a
              , cm.CM_RCS_CHATBOT      b
          WHERE a.CHATBOT_ID = b.CHATBOT_ID
            AND a.CORP_ID       = #{corpId}
-           AND b.BRAND_ID      = #{brandId}
+           AND REG_WAY         = 'RCS'
            AND NOT EXISTS (SELECT 1 
                FROM cm_console.CM_PROJECT_CALL_NUM c
               WHERE a.CORP_ID    = c.CORP_ID
@@ -306,6 +306,7 @@
         SELECT COUNT(1) AS CNT 
           FROM cm_console.CM_CALL_NUM a
          WHERE a.CORP_ID       = #{corpId}
+           AND REG_WAY         IN ('PHONE','DOC','PROXY','ETC')
            AND NOT EXISTS (SELECT 1 
                FROM cm_console.CM_PROJECT_CALL_NUM c
               WHERE a.CORP_ID    = c.CORP_ID
@@ -316,10 +317,11 @@
     <select id="selectSmsCallNumList" resultType="camel">
         /* callnum.selectSmsCallNumList - 문자발신번호 목록 조회 */
         SELECT a.CALL_NUM
+             , (CASE REG_WAY WHEN 'PHONE' THEN '휴대폰 인증' WHEN 'DOC' THEN '서류 심사' WHEN 'PROXY' THEN '대리인' WHEN 'ETC' THEN '기타' END) AS REG_WAY
              , DATE_FORMAT(a.REG_DT, '%Y-%m-%d')    AS REG_DT 
-             , (SELECT USER_NAME FROM cm_console.CM_USER x WHERE a.REG_ID = x.USER_ID) AS USER_NAME
           FROM cm_console.CM_CALL_NUM a
          WHERE a.CORP_ID       = #{corpId}
+           AND REG_WAY         IN ('PHONE','DOC','PROXY','ETC')
            AND NOT EXISTS (SELECT 1 
                FROM cm_console.CM_PROJECT_CALL_NUM c
               WHERE a.CORP_ID    = c.CORP_ID

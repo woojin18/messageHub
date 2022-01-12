@@ -10,28 +10,13 @@
             <div class="of_h">
 							<div class="menuBox">						
 								<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> 다른 프로젝트에서 등록한 RCS 발신번호를 연결할 수 있습니다.(문자발신번호도 연결됩니다.)</p>
-								<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> 브랜드를 선택하시면 연결 가능한 RCS 발신번호가 조회됩니다.</p>
-								<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> 연결 하실 RCS 발신번호를 선택하고 [프로젝트 연결] 버튼을 누르면 프로젝트와 연결됩니다.</p>
+								<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> 연결 하실 RCS 발신번호를 선택하고 [발신번호 연결] 버튼을 누르면 프로젝트와 연결됩니다.</p>
 							</div>
 						</div>
             
 						<div class="row consolMarginTop">
 							<div class="col-xs-12">		
                 <!-- 리스트 Start -->
-				<div class="row mb10">
-					<div class="col-xs-12 consoleCon">		
-						<div class="of_h">
-							<h5 class="inline-block" style="width:22%">브랜드명</h5>
-							<div class="float-right" style="width:76%">
-							<select id="cate1" class="selectStyle2" style="width:100%" v-model="brandId" @change="fnSearch(1)">
-							<option v-for="(option, i) in brandList" v-bind:value="option.brandId" v-bind:key="i">
-								{{ option.brandName }}
-							</option>
-							</select>
-							</div>
-						</div>
-					</div>
-				</div>
                 <div class="of_h inline">
                   <div class="float-right">
                     <a @click="fnRegister" class="btnStyle2 borderGray">발신번호 연결</a>
@@ -61,8 +46,8 @@
                             </div>
                           </th>
                           <th class="text-center lc-1">발신번호</th>
-                          <th class="text-center lc-1">등록일자</th>
-                          <th class="text-center lc-1 end">등록자</th>
+                          <th class="text-center lc-1">브랜드</th>
+                          <th class="text-center lc-1 end">등록일자</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -74,8 +59,8 @@
                             </div>
                           </td>
                           <td class="text-center">{{ data.callNum }}</td>
-                          <td class="text-center lc-1">{{ data.regDt }}</td>
-                          <td class="text-center lc-1 end">{{ data.userName }}</td>
+                          <td class="text-center lc-1">{{ data.brand }}</td>
+                          <td class="text-center lc-1 end">{{ data.regDt }}</td>
                         </tr>
                         <tr v-if="callNumList.length == 0">
                           <td class="text-center"></td>
@@ -171,7 +156,7 @@ export default {
 				pageNo: this.pageNo,
 				listSize: this.listSize,
 				projectId: this.$parent.projectId,
-				barndId: this.brandId
+				brandId: this.brandId
 			};
 
 			await projectApi.getRcsCallNumList(params).then(response =>{

@@ -8,8 +8,8 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="menuBox">						
-						<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> [등록된 RCS 발신번호 연결] 버튼을 이용하여 다른 프로젝트에서 등록한 RCS 발신번호를 연결 할 수 있습니다.</p>
-						<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> [등록된 문자 발신번호 연결] 버튼을 이용하여 다른 프로젝트에서 등록한 문자 발신번호를 연결 할 수 있습니다.</p>
+						<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> [RCS 발신번호 연결] 버튼을 이용하여 다른 프로젝트에서 등록한 RCS 발신번호를 연결 할 수 있습니다.</p>
+						<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> [문자 발신번호 연결] 버튼을 이용하여 다른 프로젝트에서 등록한 문자 발신번호를 연결 할 수 있습니다.</p>
 						<p class="colo4"><i class="far fa-info-circle vertical-baseline"></i> [연결해제]버튼은 현재 프로젝트와 발신번호를 연결해제 합니다. (RCS 발신번호 연결해제는 문자 발신번호도 연결해제 됩니다.)</p>
 					</div>
 				</div>
@@ -105,7 +105,8 @@
 								<td v-if="row.smsState == '90' || row.smsState == '91'" class="text-center"><a @click="fnStop(index)" class="color1">{{row.smsStateNm}}</a></td>
 								<td class="text-center">{{row.regWay}}</td>
 								<td class="text-center">{{row.brand}}</td>
-								<td class="text-center" v-html="row.project"></td>
+								<td v-if="row.project.indexOf('\n') < 0" class="text-center">{{row.project}}</td>
+								<td v-if="row.project.indexOf('\n') > 0" class="text-center"><a @click="fnProject(index)" style="text-decoration:underline">{{row.project.split('\n')[0]}} 외 {{row.project.split('\n').length-1}}건</a></td>
 								<td class="text-center">{{row.reqDt}}</td>
 								<td class="text-center">{{row.handleDt}}</td>
 								<td v-if="row.smsState == '' || row.smsState == '10' || row.smsState == '20'" class="end"></td>
@@ -228,6 +229,9 @@ export default {
 			this.row_data = row_data;
 			jQuery("#detailPop").modal("show");
 		},
+		fnProject(idx) {
+			confirm.fnAlert("", this.data[idx].project);
+		},
 		fnStop(idx) {
 			confirm.fnAlert("", this.data[idx].handleReason);
 		},
@@ -237,7 +241,7 @@ export default {
 		fnClearConfirm(idx){
 			this.idx = idx;
 			eventBus.$on('callbackEventBus', this.fnClear);
-			if (this.data[this.idx].project.indexOf('<br/>') > 0) {
+			if (this.data[this.idx].project.indexOf('\n') > 0) {
 				confirm.fnConfirm("", "프로젝트와의 연결을 해제합니다.\n해제 후 다시 연결이 가능합니다.\n해제하시겠습니까?", "확인");
 			} else {
 				confirm.fnConfirm("", "프로젝트와 마지막으로 연결된 발신번호라서 삭제 처리됩니다.\n삭제 후 다시 연결이 불가능합니다.\n연결해제 하시겠습니까?", "확인");
