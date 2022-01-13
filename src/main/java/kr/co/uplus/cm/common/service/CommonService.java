@@ -983,7 +983,7 @@ public class CommonService {
         html += "본인 이메일이 맞는지 확인하고 있습니다.<br/>";
         html += "아래 [인증] 버튼을 클릭하면 다음 단계로 진행할 수 있습니다.<br/><br/>";
         html += "인증 링크 유효시간 : " + timeArr[0];
-        html += "<span style='color:#FD004E'>" + timeArr[1];
+        html += "<span style='color:#FD004E;margin-left:8px;'>" + timeArr[1];
         html += "</span> (UTC+09:00)</div>";
         html += "<a href='"+this.baseUrl+location+"?authKey="+params.get("authKey")+"' target='_blank' title='인증' style='display:inline-block; width:120px; text-align:center; background:#E93978; color:#fff; border-radius:4px; line-height:40px; text-decoration:none; font-size:16px; margin:40px 0;'>인증</a>";
         html += "<div style='position:absolute; left:0; bottom:0; width:100%; box-sizing:border-box; padding:0 64px'>";

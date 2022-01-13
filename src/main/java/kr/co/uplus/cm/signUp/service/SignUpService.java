@@ -278,7 +278,7 @@ public class SignUpService {
 		headerMap.put("searchNo",	regno);
 		
 		// API 통신 처리
-		Map<String, Object> result = apiInterface.get("/console/v1/ucube/customer/"+regno+"/mode/BS", headerMap);
+		Map<String, Object> result = apiInterface.get("/console/v1/ucube/customer2/"+regno+"/mode/BS", headerMap);
 		if(result == null) {
 			throw new Exception("고객사 목록 조회 중 오류가 발생하였습니다.");
 		} else {
@@ -364,7 +364,7 @@ public class SignUpService {
 			Date certifyDt = format.parse(CommonUtils.getString(certifyMap.get("mailCertifyDt")));
 			if(certifyDt.getTime() < nowDt.getTime()) {
 				rtn.setSuccess(false);
-				rtn.setMessage("이메일 인증 유효시간은 1시간 입니다.");
+				rtn.setMessage("이메일 인증 유효시간은 24시간 입니다.");
 				return rtn;
 			}
 			rtn.setSuccess(true);
