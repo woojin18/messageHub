@@ -85,13 +85,13 @@
 							<input id="brandDesc" type="text" class="inputStyle float-right" style="width:72%;" v-model="inputVal.description" :disabled="this.duplCheckYn == 'N'" >
 						</div>				
 										
-						<div class="of_h consolMarginTop">
+						<!--<div class="of_h consolMarginTop">
 							<h4 style="width:28%" class="inline-block topH4">타 프로젝트<br>사용여부</h4>
 							<div class="inline-block float-right" style="width:72%">
 								<input type="radio" v-model="otherProjectYn" value="Y" class="cBox" id="yes" checked="" :disabled="this.duplCheckYn == 'N'"> <label for="yes" class="payment mt10 mr30">공용</label>
 								<input type="radio" v-model="otherProjectYn" value="N" class="cBox" id="no" :disabled="this.duplCheckYn == 'N'"> <label for="no" class="payment mt10">전용</label>		
 							</div>
-						</div>
+						</div>-->
 
 						<div class="of_h">
 							<h4 style="width:28%" class="inline-block">백그라운드 이미지</h4>
