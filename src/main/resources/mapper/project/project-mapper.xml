@@ -355,14 +355,17 @@
 	
 	<select id="selectCallbackManageApprovalBrandList" resultType="camel">
 		/* project.selectCallbackManageApprovalBrandList */
-		SELECT	CRB.BRAND_NAME
-		,		CRB.CORP_ID 
-		,		CRB.BRAND_ID
-		FROM cm.CM_RCS_BRAND CRB
-		WHERE 1=1
-		AND		CRB.CORP_ID  = #{corpId}
-		AND		(CRB.PROJECT_ID = #{srcProjectId} OR CRB.PROJECT_ID = 'ALL')
-		ORDER BY CRB.REG_DT DESC
+		SELECT	crb.BRAND_NAME
+		,		crb.CORP_ID 
+		,		crb.BRAND_ID
+		FROM    cm.CM_RCS_BRAND crb
+		INNER JOIN cm_console.CM_PROJECT_BRAND cpb
+		   ON   cpb.BRAND_ID  = crb.BRAND_ID 
+		WHERE   crb.CORP_ID = #{corpId}
+		AND    crb.USE_YN ='Y' 
+		AND    crb.APPROVAL_STATUS ='승인'
+		AND      cpb.PROJECT_ID = #{srcProjectId}
+		ORDER BY crb.BRAND_NAME 
 	</select>
 	
 	<select id="selectCallbackManageDetail" resultType="camel">
