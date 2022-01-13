@@ -1202,7 +1202,7 @@ public class ProjectService {
 			delParams.put("corpId", params.get("corpId")); 
 			delParams.put("callNum", params.get("callNum"));
 			// redis 테이블 처리
-			commonService.updateCmCmdForRedisAPI("else", "cm_console.CM_CALL_NUM", delParams);
+			commonService.updateCmCmdForRedisAPI("else", "CM_CALL_NUM", delParams);
 		}
 	}
 

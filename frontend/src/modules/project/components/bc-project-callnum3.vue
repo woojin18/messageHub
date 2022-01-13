@@ -99,18 +99,18 @@
 								<td class="text-center">{{row.callNum}}</td>
 								<td class="text-center">{{row.rcsSend}}</td>
 								<td v-if="row.rcsState != '반려'" class="text-center">{{row.rcsState}}</td>
-								<td v-if="row.rcsState == '반려'" class="text-center"><a @click="fnStop2(index)" class="color1">{{row.rcsState}}</a></td>
+								<td v-if="row.rcsState == '반려'" class="text-center"><a @click="fnStop2(index)" class="color1" style="text-decoration:underline">{{row.rcsState}}</a></td>
 								<td class="text-center">{{row.smsSend}}</td>
 								<td v-if="!(row.smsState == '90' || row.smsState == '91')" class="text-center">{{row.smsStateNm}}</td>
-								<td v-if="row.smsState == '90' || row.smsState == '91'" class="text-center"><a @click="fnStop(index)" class="color1">{{row.smsStateNm}}</a></td>
+								<td v-if="row.smsState == '90' || row.smsState == '91'" class="text-center"><a @click="fnStop(index)" class="color1" style="text-decoration:underline">{{row.smsStateNm}}</a></td>
 								<td class="text-center">{{row.regWay}}</td>
 								<td class="text-center">{{row.brand}}</td>
 								<td v-if="row.project.indexOf('\n') < 0" class="text-center">{{row.project}}</td>
 								<td v-if="row.project.indexOf('\n') > 0" class="text-center"><a @click="fnProject(index)" style="text-decoration:underline">{{row.project.split('\n')[0]}} 외 {{row.project.split('\n').length-1}}건</a></td>
 								<td class="text-center">{{row.reqDt}}</td>
 								<td class="text-center">{{row.handleDt}}</td>
-								<td v-if="row.smsState == '' || row.smsState == '10' || row.smsState == '20'" class="end"></td>
-								<td v-if="!(row.smsState == '' || row.smsState == '10' || row.smsState == '20')" class="end"><a @click="fnClearConfirm(index)" class="btnStyle1 borderLightGray small">연결해제</a></td>
+								<td v-if="row.smsState == '' || row.smsState == '10' || row.smsState == '20' || row.smsState == '90' || row.smsState == '91'" class="end"></td>
+								<td v-if="!(row.smsState == '' || row.smsState == '10' || row.smsState == '20' || row.smsState == '90' || row.smsState == '91')" class="end"><a @click="fnClearConfirm(index)" class="btnStyle1 borderLightGray small">연결해제</a></td>
 							</tr>
 							<tr v-if="data.length == 0"> 
 								<td class="text-center" colspan="10">검색된 내용이 없습니다.</td>
