@@ -712,7 +712,7 @@ public class ProjectController {
 		RestResult<Object> rtn = new RestResult<Object>();
 
 		try {
-			if ("Y".equals(params.get("delYn").toString())) {
+			if ("Y".equals(params.get("delYn").toString()) && params.get("chatbotId") != null) {
 				projectService.deleteCallbackForApi(params);
 			} else {
 				projectService.delCallNum(params);
