@@ -1192,17 +1192,45 @@ public class ProjectService {
 	// 발신번호  연결해제
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void delCallNum(Map<String, Object> params) throws Exception {
-		generalDao.deleteGernal("callnum.deleteProjectCallNum", params);
-		generalDao.deleteGernal("callnum.deleteProjectChatbot", params);
-		int cnt = generalDao.selectGernalCount("callnum.selectProjectCallNumCnt", params);
-		if (cnt == 0) {
-			generalDao.deleteGernal("callnum.deleteCallNum", params);
-			
-			Map<String, Object> delParams = new HashMap<>();
-			delParams.put("corpId", params.get("corpId")); 
-			delParams.put("callNum", params.get("callNum"));
-			// redis 테이블 처리
-			commonService.updateCmCmdForRedisAPI("else", "CM_CALL_NUM", delParams);
+		String brandId = CommonUtils.getString(params.get("brandId"));
+		String chatbotId = CommonUtils.getString(params.get("chatbotId"));
+
+		Map<String, Object> apiMap = new HashMap<>();
+		apiMap.put("corpId", CommonUtils.getString(params.get("corpId")));
+
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi", params));
+		if ("".equals(apiKey)) {
+			throw new Exception("API Key를 등록 후, 진행 가능합니다. 프로젝트 기본정보 탭에서 API Key를 등록해주세요.");
+		}
+		headerMap.put("apiKey", apiKey);
+		headerMap.put("brandId", brandId);
+		headerMap.put("chatbotId", chatbotId);
+
+		// API 통신 처리
+		Map<String, Object> result = apiInterface.delete("/console/v1/rcs/brand/" + brandId + "/chatbot/" + chatbotId,
+				null, apiMap, headerMap);
+
+		// 성공인지 실패인지 체크
+		if ("10000".equals(result.get("code"))) {
+			generalDao.deleteGernal("callnum.deleteProjectCallNum", params);
+			generalDao.deleteGernal("callnum.deleteProjectChatbot", params);
+			int cnt = generalDao.selectGernalCount("callnum.selectProjectCallNumCnt", params);
+			if (cnt == 0) {
+				generalDao.deleteGernal("callnum.deleteCallNum", params);
+				
+				Map<String, Object> delParams = new HashMap<>();
+				delParams.put("corpId", params.get("corpId")); 
+				delParams.put("callNum", params.get("callNum"));
+				// redis 테이블 처리
+				commonService.updateCmCmdForRedisAPI("else", "CM_CALL_NUM", delParams);
+			}
+		} else if ("500100".equals(result.get("code"))) {
+			String errMsg = CommonUtils.getString(result.get("message"));
+			throw new Exception(errMsg);
+		} else {
+			String errMsg = CommonUtils.getString(result.get("message"));
+			throw new Exception(errMsg);
 		}
 	}
 

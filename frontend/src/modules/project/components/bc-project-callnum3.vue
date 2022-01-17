@@ -251,6 +251,7 @@ export default {
 			var params = {
 				'projectId': this.projectId,
 				'callNum'  : this.data[this.idx].callNum,
+				'brandId'  : this.data[this.idx].brandId,
 				'chatbotId'  : this.data[this.idx].chatbotId
 			};
 

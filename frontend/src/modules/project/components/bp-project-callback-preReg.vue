@@ -198,7 +198,6 @@ export default {
           confirm.fnAlert("", "저장에 성공했습니다.");
           // 목록 버튼
           jQuery("#regPop").modal("hide");
-          this.$parent.fnMovePjtTab();
         } else {
           confirm.fnAlert("", result.message);
         }

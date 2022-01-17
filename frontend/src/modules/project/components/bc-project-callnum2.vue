@@ -220,8 +220,10 @@ export default {
 		projectApi.getCallNumProxy(params).then((response) => {
 			var result = response.data;
 			if(result.success){
-				this.proxyState = result.data.state;
-				this.proxyReason = result.data.handleReason;
+				if (result.data != null) {
+					this.proxyState = result.data.state;
+					this.proxyReason = result.data.handleReason;
+				}
 			} else {
 				confirm.fnAlert("", result.message);
 			}
