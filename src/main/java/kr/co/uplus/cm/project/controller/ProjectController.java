@@ -712,7 +712,11 @@ public class ProjectController {
 		RestResult<Object> rtn = new RestResult<Object>();
 
 		try {
-			projectService.delCallNum(params);
+			if ("Y".equals(params.get("delYn").toString())) {
+				projectService.deleteCallbackForApi(params);
+			} else {
+				projectService.delCallNum(params);
+			}
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");

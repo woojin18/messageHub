@@ -84,7 +84,8 @@
         SELECT a.CALL_NUM
              , (CASE WHEN b.CHATBOT_ID IS NULL THEN '' ELSE 'O' END) AS RCS_SEND
              , b.APPROVAL_STATUS                                  AS RCS_STATE
-             , ''                                                 AS APPROVAL_REASON
+             , REPLACE(JSON_EXTRACT(b.CHATBOT_INFO , '$.isMainNum[0]'), "\"", "") AS IS_MAIN_NUM
+             , ''                                                 AS APPROVAL_REASON 
              , 'O'                                                AS SMS_SEND
              , STATE AS SMS_STATE
              , (CASE STATE WHEN '10' THEN '요청' WHEN '20' THEN '접수' WHEN '80' THEN '승인' WHEN '90' THEN '반려' WHEN '91' THEN '차단' END) AS SMS_STATE_NM
@@ -117,6 +118,7 @@
 		SELECT CHATBOT_ID AS CALLNUM
 		     , 'O' AS RCS_SEND
 		     , APPROVAL_STATUS AS RCS_STATE
+             , REPLACE(JSON_EXTRACT(a.CHATBOT_INFO , '$.isMainNum[0]'), "\"", "") AS IS_MAIN_NUM
              , REPLACE(JSON_EXTRACT(a.CHATBOT_INFO , '$.approvalReason[0]'), "\"", "") AS APPROVAL_REASON
 		     , '' AS SMS_SEND
 		     , '' AS SMS_STATE
@@ -142,7 +144,7 @@
            AND NOT EXISTS (SELECT 1
                 FROM cm_console.CM_CALL_NUM b
                WHERE a.CHATBOT_ID = b.CALL_NUM)
-         ORDER BY 11 DESC
+         ORDER BY 13 DESC
         <if test='pagingYn == "Y" '>
          LIMIT #{offset}, #{listSize}
         </if>
