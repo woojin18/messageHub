@@ -107,7 +107,7 @@
 
 						<div class="of_h consolMarginTop">
 							<h4 style="width:28%" class="inline-block">전화번호 *</h4>
-							<input id="phoneNum" type="text" class="inputStyle float-right" style="width: 72%" v-model="inputVal.tel" :disabled="this.duplCheckYn == 'N'">
+							<input id="phoneNum" type="text" class="inputStyle float-right" style="width: 72%" v-model="inputVal.tel" :disabled="this.duplCheckYn == 'N'" oninput="this.value = this.value.replaceAll(/\D/g, '')" placeholder="숫자만 입력">
 						</div>
 						<div class="of_h">
 							<h4 style="width:28%" class="inline-block">메뉴버튼설정 *</h4>
@@ -239,10 +239,10 @@
 							<div class="of_h consolMarginTop">
 								<h4 style="width:28%" class="inline-block">대표발신번호 *</h4>
 								<div class="consolCheck" style="width:25%">
-									<input type="checkbox" id="same" class="checkStyle2" @change="fnChangeSameTel($event.target.checked)" :disabled="this.duplCheckYn == 'N'">
+									<input type="checkbox" id="same" class="checkStyle2" @change="fnChangeSameTel($event.target.checked)" :disabled="this.duplCheckYn == 'N'" >
 									<label for="same">전화번호와 동일</label>
 								</div>
-								<input type="text" class="inputStyle" style="width:26%" v-model="inputVal.mainMdn" :disabled="this.duplCheckYn == 'N'">
+								<input type="text" class="inputStyle" style="width:26%" v-model="inputVal.mainMdn" :disabled="this.duplCheckYn == 'N'" oninput="this.value = this.value.replaceAll(/\D/g, '')" placeholder="숫자만 입력">
 								<p class="font-size12 color3 inline-block ml10" style="width:17%">*휴대폰 등록 불가</p>
 							</div>
 							<div class="of_h">
@@ -277,7 +277,7 @@
 										</thead>
 										<tbody class="of_h">
 											<tr v-for="(item, i) in inputVal.chatbots" :key="i">	
-												<td class="end"><input v-model="inputVal.chatbots[i].mdn" :id="'mdn' + i"  type="text" class="inputStyle" style="width:100%"></td>
+												<td class="end"><input v-model="inputVal.chatbots[i].mdn" :id="'mdn' + i"  type="text" class="inputStyle" style="width:100%" oninput="this.value = this.value.replaceAll(/\D/g, '')" placeholder="숫자만 입력"></td>
 												<td class="end"><input v-model="inputVal.chatbots[i].subTitle" :id="'subTitle' + i" type="text" class="inputStyle" style="width:100%"></td>
 												<td class="end"><div class="text-center"><input type="checkbox" id="MO01" class="checkStyle2" value="1" v-model="inputVal.chatbots[i].rcsReply"><label for="1"></label></div></td>
 												<td class="end"><a @click="fnDeleteChatbotTr" class="btnStyle1 borderGray ml10" style="padding: 0 10px"><i class="far fa-minus"></i></a></td>
@@ -789,7 +789,7 @@ export default {
 	// 주소 조회 팝업
 	fnAddrPopup(){
 		jQuery("#addrPopup").modal("show");
-	},
+	}
   }
 }
 </script>
