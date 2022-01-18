@@ -214,7 +214,7 @@
 							<input type="radio" name="calling_plan" value="PRE"  v-model="feeType" id="sms_agree03"> <label for="sms_agree03" class="mr30">선불</label>
 							<input type="radio" name="calling_plan" value="POST" v-model="feeType" id="sms_agree04"> <label for="sms_agree04">후불</label>
 						</div>
-						<div class="float-left ml10" v-if="feeType == 'POST'" style="width:25%"><a class="btnStyle1 backLightGray" style="min-width:auto; width:100%" data-toggle="modal" data-target="#information">청구 정보</a></div>	
+						<div class="float-left ml10" v-if="feeType == 'POST'" style="width:25%"><a class="btnStyle1 backLightGray" style="min-width:auto; width:100%" @click="fnBill">청구 정보</a></div>	
 					</div>					
 					<div class="float-right color3 mt5" style="width:78%">메시지 사용료에 대한 요금제를 선택 해 주십시오.<br>
 					선불 선택 시 선불 충전 후 메시지 발송이 가능합니다.<br>
@@ -246,7 +246,7 @@
 			<input type="hidden" name="m" value="checkplusService">						<!-- 필수 데이타로, 누락하시면 안됩니다. -->
 			<input type="hidden" name="EncodeData" v-model="sEncData">		<!-- 위에서 업체정보를 암호화 한 데이타입니다. -->
 		</form>
-		<billPopup :popReset="popReset4" :bill.sync="bill"></billPopup>
+		<billPopup :popReset="popReset4" :bill="bill"></billPopup>
 	</div>
 </template>
 
@@ -306,7 +306,6 @@ export default {
 
 			selCorp : {},				// 선택한 고객사 정보
 			selAddr : {},				// 선택한 주소 정보
-			selAddr1 : {},				// 선택한 주소 정보
 
 			popReset1 : 0,				// 팝업 초기화할 num
 			popReset2 : 0,				// 팝업 초기화할 num
@@ -326,10 +325,41 @@ export default {
 			salesMan : "",
 			salesManId : "",
 			feeType : 'PRE',
-			bill : {},
-			napCustKdCdArr : [],
-			bankCdArr : [],
-			cardCdArr : []
+			bill : {
+				  billRegNo : ''
+				, billType : ''
+				, billName : ''
+				, billStatus : ''
+				, napCustKdCd : ''
+				, billKind : 'Y'
+				, billEmail : ''
+				, billPhone : ''
+				, billZip : ''
+				, billJuso : ''
+				, billJuso2 : ''
+				, payMthdCd : 'CM'
+				, payDt : ''
+				, napCmpNm : ''
+				, napJumin : ''
+				, bankCd : ''
+				, bankNo : ''
+				, cardCd : ''
+				, cardNo1 : ''
+				, cardNo2 : ''
+				, cardNo3 : ''
+				, cardNo4 : ''
+				, cardValdEndYymm1 : ''
+				, cardValdEndYymm2 : ''
+				, serviceId : ''
+				, smsExpCnt : null
+				, rcsExpCnt : null
+				, kkoExpCnt : null
+				, pushExpCnt : null
+				, monthExpAmount : 0
+				, handleReason : ''
+				, handleId : ''
+				, handleDt : ''
+			}
 		}
 	},
 	// 도메인 이름 영어(소문자), 숫자만 입력 가능하도록 처리
@@ -389,42 +419,6 @@ export default {
 				if(result.success){
 					if(result.data.length > 0){
 						this.custTypeArr = result.data;
-					}
-				}
-			});
-			var params2 = {
-				codeTypeCd	: "NAP_CUST_KD",
-				useYN		: "Y"
-			};
-			customereApi.selectCodeList(params2).then(response =>{
-				var result = response.data;
-				if(result.success){
-					if(result.data.length > 0){
-						this.napCustKdCdArr = result.data;
-					}
-				}
-			});
-			var params3 = {
-				codeTypeCd	: "BANK",
-				useYN		: "Y"
-			};
-			customereApi.selectCodeList(params3).then(response =>{
-				var result = response.data;
-				if(result.success){
-					if(result.data.length > 0){
-						this.bankCdArr = result.data;
-					}
-				}
-			});
-			var params4 = {
-				codeTypeCd	: "CARD",
-				useYN		: "Y"
-			};
-			customereApi.selectCodeList(params4).then(response =>{
-				var result = response.data;
-				if(result.success){
-					if(result.data.length > 0){
-						this.cardCdArr = result.data;
 					}
 				}
 			});
@@ -779,11 +773,6 @@ export default {
 			this.popReset2 += 1;
 			jQuery("#addrPopup").modal("show");
 		},
-		// 주소 조회 팝업
-		fnAddrPopup1(){
-			this.popReset4 += 1;
-			jQuery("#addrPopup1").modal("show");
-		},
 		// 선택한 주소 set
 		fnSetCorpAddr(){
 			this.custAddrZip = this.selAddr.mailNo;
@@ -854,7 +843,12 @@ export default {
 		fnSetSalesMan(){
 			this.salesManId = this.selSalesMan.codeVal1;
 			this.salesMan = this.selSalesMan.codeName1;
-		}
+		},
+		// 청구정보 팝업
+		fnBill(){
+			this.popReset4 += 1;
+			jQuery("#billPopup").modal("show");
+		},
 	}
 }
 </script>
