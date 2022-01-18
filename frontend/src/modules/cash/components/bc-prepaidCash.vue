@@ -39,12 +39,13 @@
         <!-- table -->
         <table class="table_skin1 bt-000 tbl-striped">
           <colgroup>
-            <col style="width:10%">
-            <col>
-            <col style="width:17%">
-            <col style="width:17%">
-            <col style="width:17%">
-            <col style="width:25%">
+            <col style="width:5%">
+            <col style="width:19%">
+            <col style="width:14%">
+            <col style="width:14%">
+            <col style="width:14%">
+            <col style="width:14%">
+            <col style="width:20%">
             <col>
           </colgroup>
           <thead>
@@ -53,6 +54,7 @@
             <th class="text-center lc-1">충전캐시</th>
             <th class="text-center lc-1">충전유형</th>
             <th class="text-center lc-1">결제유형</th>
+            <th class="text-center lc-1">결제상태</th>
             <th class="text-center lc-1">발생일자</th>
             <th class="text-center lc-1 end">유효기간</th>
             </tr>
@@ -62,19 +64,23 @@
               <td class="text-center">{{totCnt-offset-data.rownum+1}}</td>
               <td class="text-center">{{data.amount | formatPrice}}</td>
               <td class="text-center">{{data.cashType}}</td>
-              <td class="text-center">{{data.payMtd}}</td>
+              <td v-if="data.payMtd=='가상계좌' && data.status=='2'" class="text-center"><a href="#" @click.prevent="fnOpenVirAccPop(data.paymentId)"><u>{{data.payMtd}}</u></a></td>
+              <td v-else>{{data.payMtd}}</td>
+              <td class="text-center">{{data.statusName}}</td>
               <td class="text-center">{{data.regDt}}</td>
               <td class="text-center end">{{data.eventDt}}</td>
             </tr>
           </tbody>
         </table>
-        <!-- //table -->
+        <!-- //table --> 
 
 				<PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
 			
       </div>			
     </div>
     <layerPopup />
+    <virAccPop :popOrderId.sync="popOrderId" ref="virAccPop"></virAccPop>
+
   </div>
 </template>
 
@@ -83,6 +89,8 @@ import cashApi from "@/modules/cash/service/api"
 import tokenSvc from '@/common/token-service';
 
 import layerPopup from "@/modules/cash/components/bp-prePaidCash"
+import virAccPop from "@/modules/cash/components/bp-virAccPop"
+import confirm from "@/modules/commonUtil/service/confirm"
 
 import SelectLayer from '@/components/SelectLayer.vue';
 import PageLayer from '@/components/PageLayer.vue';
@@ -95,6 +103,8 @@ export default {
       cashBalance : 0,
       eventCashBalance : 0,
       balance : 0,
+      popOrderId : "",
+      virAccPopOpen : false,
 			listSize : 10,  // select 박스 value (출력 갯수 이벤트)
 			pageNo : 1,  // 현재 페이징 위치
 			totCnt : 0,  //전체 리스트 수
@@ -103,6 +113,7 @@ export default {
   },
   components: {
     layerPopup,
+    virAccPop,
 		PageLayer,
 		SelectLayer
   },
@@ -120,6 +131,7 @@ export default {
   mounted() {
 		this.fnSearch(1);
     this.fnSearchCash();
+    this.fnVirAccInit();
   },
   methods: {
 		// select 박스 선택시 리스트 재출력
@@ -157,6 +169,31 @@ export default {
           this.cashBalance = result.data.cashBalance;
           this.eventCashBalance = result.data.eventCashBalance;
           this.balance = result.data.balance;
+        }
+      });
+    },
+
+    // 가상계좌 입금후 페이지 접근시 팝업 처리
+    fnVirAccInit() {
+      var orderId = this.$route.query.orderId;
+      if(orderId != undefined) {
+        this.fnOpenVirAccPop(orderId);
+      }
+    },
+
+    // 가상계좌 결제 정보 팝업
+    fnOpenVirAccPop(orderId) {
+      var vm = this;
+      vm.popOrderId = orderId;
+      var params = {
+        "orderId" : orderId
+      }
+      cashApi.selectVirAccStatus(params).then(response => {
+        var result = response.data;
+        if(result.success) {
+          // 팝업 오픈  
+          vm.$refs.virAccPop.fnInit();
+          jQuery("#virAccPop").modal("show");
         }
       });
     }

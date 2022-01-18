@@ -1,12 +1,19 @@
 package kr.co.uplus.cm.cash.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Base64.Encoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,6 +26,7 @@ import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
+import kr.co.uplus.cm.utils.DateUtil;
 import kr.co.uplus.cm.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
 
@@ -39,11 +47,12 @@ public class CashService {
 		
 		Map<String, Object> map = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_CORP_INFO, params);
 		
-		//결제번호 등
+		//결제번호 등록
 		String orderId	= CommonUtils.getCommonId("pg", 6);
 		String corpId	= CommonUtils.getString(map.get("corpId"));
+		String payMtd	= CommonUtils.getString(params.get("cashType"));
 		map.put("order_id"		, orderId);
-		map.put("payMtd"		, "카드");
+		map.put("payMtd"		, payMtd);
 		map.put("orderName"		, map.get("corpName") + " 선불충전");
 		map.put("customerName"	, map.get("corpName"));
 		
@@ -176,6 +185,196 @@ public class CashService {
 	}
 	
 	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<Object> accTransSuccess(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		String				paymentKey	= CommonUtils.getString(params.get("paymentKey"));
+		String				orderId		= CommonUtils.getString(params.get("orderId"));
+		int					amount		= CommonUtils.getInt(params.get("amount"));
+		
+		Map<String, Object>	dbInfo		= (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_WEB_CASH_INFO, params);
+		int					dbAmount	= CommonUtils.getInt(dbInfo.get("amount"));
+		
+		if(amount != dbAmount) {
+			rtn.setSuccess(false);
+			rtn.setMessage("결제에 실패하였습니다." + amount);
+			
+			return rtn;
+		}
+		
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		
+		String text = ApiConfig.CASH_SECRET_KEY + ":";
+		byte[] targetBytes = text.getBytes();
+		Encoder encoder = Base64.getEncoder();
+		byte[] encodedBytes = encoder.encode(targetBytes);
+		
+		headerMap.put("Authorization", "Basic " + new String(encodedBytes));
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("orderId", orderId);
+		dataMap.put("amount", amount);
+		
+		Map<String, Object> postResult	= apiInterface.etcPost("https://api.tosspayments.com/v1/payments/" + paymentKey, dataMap, headerMap);
+		Map<String, Object> transfer	= (Map<String, Object>) postResult.get("transfer");
+		
+		Map<String, Object> updateMap = new HashMap<>();
+		updateMap.put("orderId"			, CommonUtils.getString(postResult.get("orderId")));
+		updateMap.put("approvalNumber"	, CommonUtils.getString(postResult.get("paymentKey")));			// 승인번호
+		updateMap.put("cardCompany"		, CommonUtils.getString(transfer.get("bank")));					// 은행
+		updateMap.put("settlementStatus", CommonUtils.getString(transfer.get("settlementStatus")));		// 정산 상태
+		updateMap.put("status"			, "1");															// 상태
+		
+		generalDao.updateGernal(DB.QRY_UPDATE_WEB_CASH_INFO, updateMap);
+		
+		// 결제정보 api 필요
+		// cm_web_cash_hist 테이블에서 payment_id = orderId 로 검색해서 corpId, cashId 조회
+		Map<String, Object> cashHistInfo = (Map<String, Object>) generalDao.selectGernalObject("cash.selectCashHistInfoForPaymentId", params);
+		String corpId = CommonUtils.getString(cashHistInfo.get("corpId"));
+		String cashId = CommonUtils.getString(cashHistInfo.get("cashId"));
+		
+		Map<String, Object> headerMap2 = new HashMap<String, Object>();
+		headerMap2.put("corpId",		corpId);
+		headerMap2.put("cashId",		cashId);
+		
+		Map<String, Object> apiBodyMap2 = new HashMap<>();
+		apiBodyMap2.put("inOut",	"I");
+		apiBodyMap2.put("amount",	params.get("amount"));
+		apiBodyMap2.put("reason",	"캐시 충전");
+		
+		// API 통신 처리
+		Map<String, Object> result =  apiInterface.etcPost(ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/amount/" + corpId + "/" + cashId, apiBodyMap2, headerMap2);
+		
+		//System.out.println("------------------------------------------------- cashInfo C U result : " + result);
+		
+		// 성공인지 실패인지 체크
+		if( "10000".equals(result.get("code")) ) {
+		} else if ( "500100".equals(result.get("code")) ) {
+			String errMsg = CommonUtils.getString(result.get("message"));
+			throw new Exception(errMsg);
+		} else {
+			String errMsg = CommonUtils.getString(result.get("message"));
+			throw new Exception(errMsg);
+		}
+		
+		return rtn;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<Object> virAccSuccess(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		String				paymentKey	= CommonUtils.getString(params.get("paymentKey"));
+		String				orderId		= CommonUtils.getString(params.get("orderId"));
+		int					amount		= CommonUtils.getInt(params.get("amount"));
+		
+		Map<String, Object>	dbInfo		= (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_WEB_CASH_INFO, params);
+		int					dbAmount	= CommonUtils.getInt(dbInfo.get("amount"));
+		
+		if(amount != dbAmount) {
+			rtn.setSuccess(false);
+			rtn.setMessage("결제에 실패하였습니다." + amount);
+			
+			return rtn;
+		}
+		
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		
+		String text = ApiConfig.CASH_SECRET_KEY + ":";
+		byte[] targetBytes = text.getBytes();
+		Encoder encoder = Base64.getEncoder();
+		byte[] encodedBytes = encoder.encode(targetBytes);
+		
+		headerMap.put("Authorization", "Basic " + new String(encodedBytes));
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("orderId", orderId);
+		dataMap.put("amount", amount);
+		
+		Map<String, Object> postResult	= apiInterface.etcPost("https://api.tosspayments.com/v1/payments/" + paymentKey, dataMap, headerMap);
+		Map<String, Object> virtualAccount = (Map<String, Object>) postResult.get("virtualAccount");
+		
+		Map<String, Object> updateMap = new HashMap<>();
+		updateMap.put("orderId"			, CommonUtils.getString(postResult.get("orderId")));
+		updateMap.put("approvalNumber"	, CommonUtils.getString(postResult.get("paymentKey")));				// 승인번호
+		updateMap.put("status"			, "2");																// 상태 (무통장입금은 입금이 완료되면 상태를 1로 변경처리) (2는 승인대기)
+		updateMap.put("accountNumber"	, CommonUtils.getString(virtualAccount.get("accountNumber")));		// 계좌번호
+		updateMap.put("bank"			, CommonUtils.getString(virtualAccount.get("bank")));				// 발급 은행
+		updateMap.put("customerName"	, CommonUtils.getString(virtualAccount.get("customerName")));		// 가상계좌 발급 고객 이름
+		updateMap.put("dueDate"			, CommonUtils.getString(virtualAccount.get("dueDate")));			// 입금 기한 날짜
+		updateMap.put("refundStatus"	, CommonUtils.getString(virtualAccount.get("refundStatus")));		// 환불처리 상태
+		updateMap.put("settlementStatus", CommonUtils.getString(virtualAccount.get("settlementStatus")));	// 정산 상태
+		updateMap.put("secret"			, CommonUtils.getString(postResult.get("secret")));					// secret키
+		
+		generalDao.updateGernal(DB.QRY_UPDATE_WEB_CASH_INFO, updateMap);
+		
+		return rtn;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void virAccResult(Map<String, Object> paramMap) throws Exception {
+		String status = CommonUtils.getString(paramMap.get("status"));
+		
+		// orderId, secret키로 검색
+		// 해당하는 데이터가 없다면 로직 종료
+		int virAccCnt = generalDao.selectGernalCount(DB.QRY_SELECT_VIRACC_CASH_HIST_COUNT, paramMap);
+		if(virAccCnt == 0) {
+			throw new Exception("올바르지 않은 가상계좌 요청입니다.");
+		}
+		
+		Map<String, Object> virAccMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_VIRACC_CASH_HIST, paramMap);
+		
+		// 데이터 있을시 결제정보 가져와서 API 통신처리
+		// status : DONE -> 입금 완료, CANCELED -> 입금 취소, PARTIAL_CANCELED -> 가상계좌 입금 부분 취소
+		if("DONE".equals(status)) {
+			// 입금 완료
+			String corpId = CommonUtils.getString(virAccMap.get("corpId"));
+			String cashId = CommonUtils.getString(virAccMap.get("cashId"));
+			String amount = CommonUtils.getString(virAccMap.get("cashChargAmount"));
+			
+			Map<String, Object> headerMap = new HashMap<String, Object>();
+			headerMap.put("corpId"	, corpId);
+			headerMap.put("cashId"	, cashId);
+			
+			Map<String, Object> apiBodyMap = new HashMap<>();
+			apiBodyMap.put("inOut"	, "I");
+			apiBodyMap.put("amount"	, amount);
+			apiBodyMap.put("reason"	, "캐시 충전");
+			
+			// API 통신 처리
+			Map<String, Object> result = apiInterface.etcPost(ApiConfig.CASH_SERVER_DOMAIN + "/console/v1/cash/amount/" + corpId + "/" + cashId, apiBodyMap, headerMap);
+			
+			// 성공인지 실패인지 체크
+			if( "10000".equals(result.get("code")) ) {
+			} else if ( "500100".equals(result.get("code")) ) {
+				String errMsg = CommonUtils.getString(result.get("message"));
+				throw new Exception(errMsg);
+			} else {
+				String errMsg = CommonUtils.getString(result.get("message"));
+				throw new Exception(errMsg);
+			}
+			
+			paramMap.put("virAccStatus", "1");
+			this.updateVirAccCashHist(paramMap);
+		} else if("CANCELED".equals(status)) {
+			// 입금 취소
+			
+			paramMap.put("virAccStatus", "9");
+			this.updateVirAccCashHist(paramMap);
+		} else if("PARTIAL_CANCELED".equals(status)) {
+			// 부분취소
+			// 아직 취소없음
+		}
+	}
+	
+	// 가상계좌 상태 업데이트
+	public void updateVirAccCashHist(Map<String, Object> paramMap) throws Exception {
+		generalDao.updateGernal(DB.QRY_UPDATE_VIRACC_CASH_HIST, paramMap);
+	}
+	
+	@SuppressWarnings("unchecked")
 	public RestResult<Object> selectCashHist(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
@@ -194,6 +393,32 @@ public class CashService {
 		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CASH_HIST, params);
 		rtn.setData(rtnList);
 		
+		return rtn;
+	}
+	
+	// 상태값이 2(입금대기인 데이터만 팝업 출력이 되도록 리턴)
+	public RestResult<Object> selectVirAccStatus(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		Map<String, Object> virAccMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_VIRACC_CASH_HIST, params);
+		String status = CommonUtils.getString(virAccMap.get("status"));
+		
+		if("2".equals(status)) {
+			rtn.setSuccess(true);
+		} else {
+			rtn.setSuccess(false);
+		}
+		
+		return rtn;
+	}
+	
+	// 가상계좌 Detail
+	public RestResult<Object> selectVirAccDetail(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		Map<String, Object> rtnMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_VIRACC_CASH_HIST_DETAIL, params);
+		
+		rtn.setData(rtnMap);
 		return rtn;
 	}
 	

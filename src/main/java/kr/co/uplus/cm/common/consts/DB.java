@@ -164,6 +164,10 @@ public class DB {
 	public final static String QRY_INSERT_PROJECT_SUB_BILL_CODE = "cash.insertProjectSubBillCode";
 	public final static String QRY_UPDATE_PROJECT_SUB_BILL_CODE = "cash.updateProjectSubBillCode";
 	public final static String QRY_DELETE_PROJECT_SUB_BILL_CODE = "cash.deleteProjectSubBillCode";
+	public final static String QRY_SELECT_VIRACC_CASH_HIST = "cash.selectViraccCashHist";
+	public final static String QRY_SELECT_VIRACC_CASH_HIST_COUNT = "cash.selectViraccCashHistCnt";
+	public final static String QRY_UPDATE_VIRACC_CASH_HIST = "cash.updateVirAccCashHist";
+	public final static String QRY_SELECT_VIRACC_CASH_HIST_DETAIL = "cash.selectViraccCashHistDetail";
 	// 회원 가입
 	public final static String QRY_SELECT_DOMAIN_CHK_COUNT = "signUp.selectDomainChkCount";
 	public final static String QRY_INSERT_CM_CORP = "signUp.insertCmCorp";

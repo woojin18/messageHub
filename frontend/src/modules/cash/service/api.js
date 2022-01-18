@@ -45,6 +45,18 @@ const deleteProjectSubBillCode = (params) => {
     return httpClient.post('/projectApi/cash/deleteProjectSubBillCode', params, { headers: {"show-layer": "Yes"} });
 };
 
+const selectVirAccStatus = (params) => {
+    return httpClient.post('/projectApi/cash/selectVirAccStatus', params, { headers: {"show-layer": "Yes"} });
+};
+
+const selectVirAccDetail = (params) => {
+    return httpClient.post('/projectApi/cash/selectVirAccDetail', params, { headers: {"show-layer": "Yes"} });
+};
+
+const selectVirAccUrl = () => {
+    return httpClient.post('/projectApi/cash/selectVirAccUrl', { headers: {"show-layer": "Yes"} });
+}
+
 export default {
     insertWebCashInfo,
     selectCashHist,
@@ -56,5 +68,8 @@ export default {
     insertUbubeInfo,
     updateProjectBillId,
     saveProjectSubBillCode,
-    deleteProjectSubBillCode
+    deleteProjectSubBillCode,
+    selectVirAccStatus,
+    selectVirAccDetail,
+    selectVirAccUrl
 };
