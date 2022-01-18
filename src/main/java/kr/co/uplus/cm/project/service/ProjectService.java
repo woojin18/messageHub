@@ -683,6 +683,7 @@ public class ProjectService {
 
 		// 성공인지 실패인지 체크
 		if ("10000".equals(result.get("code"))) {
+			delCallNum(params);
 		} else if ("500100".equals(result.get("code"))) {
 			String errMsg = CommonUtils.getString(result.get("message"));
 			throw new Exception(errMsg);

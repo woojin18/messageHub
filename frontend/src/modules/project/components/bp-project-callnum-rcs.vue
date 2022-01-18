@@ -108,14 +108,6 @@ export default {
 	},
 	data() {
 		return {
-			brandId   : "",
-			brandList : [
-				{
-				// 임시용
-				"brandId" : "BR.xphojy",
-				"brandName" : "brandName2"
-				}
-			],
 			callNumList: [],
 			listSize : 10,	// select 박스 value (출력 갯수 이벤트)
 			pageNo : 1,		// 현재 페이징 위치
@@ -126,7 +118,6 @@ export default {
 		}
 	},
 	mounted() {
-		this.fnBrandList();
 		this.fnPageNoResetSearch();
 	},
 	watch: {
@@ -135,14 +126,6 @@ export default {
 		}
 	},
 	methods: {
-		fnBrandList(){
-			var params = { "srcProjectId" : this.srcProjectId }
-
-			projectApi.selectApprovalBrandList(params).then(response =>{
-				this.brandList = response.data.data;
-				this.brandId = this.brandList[0].brandId;
-			});
-		},
 		fnSearch(pageNum) {
 			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
 			this.fnSearchCallNumList();
@@ -155,8 +138,7 @@ export default {
 			let params = {
 				pageNo: this.pageNo,
 				listSize: this.listSize,
-				projectId: this.$parent.projectId,
-				brandId: this.brandId
+				projectId: this.$parent.projectId
 			};
 
 			await projectApi.getRcsCallNumList(params).then(response =>{

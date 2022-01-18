@@ -84,11 +84,13 @@
         SELECT a.CALL_NUM
              , (CASE WHEN b.CHATBOT_ID IS NULL THEN '' ELSE 'O' END) AS RCS_SEND
              , b.APPROVAL_STATUS                                  AS RCS_STATE
-             , ''                                                 AS APPROVAL_REASON
+             , REPLACE(JSON_EXTRACT(b.CHATBOT_INFO , '$.isMainNum[0]'), "\"", "") AS IS_MAIN_NUM
+             , REPLACE(JSON_EXTRACT(b.CHATBOT_INFO , '$.approvalReason[0]'), "\"", "") AS APPROVAL_REASON
              , 'O'                                                AS SMS_SEND
              , STATE AS SMS_STATE
              , (CASE STATE WHEN '10' THEN '요청' WHEN '20' THEN '접수' WHEN '80' THEN '승인' WHEN '90' THEN '반려' WHEN '91' THEN '차단' END) AS SMS_STATE_NM
              , (CASE REG_WAY WHEN 'PHONE' THEN '휴대폰 인증' WHEN 'RCS' THEN 'RCS Biz' WHEN 'DOC' THEN '서류 심사' WHEN 'PROXY' THEN '대리인' WHEN 'ETC' THEN '기타' END) AS REG_WAY
+             , b.BRAND_ID
              , (SELECT BRAND_NAME FROM cm.CM_RCS_BRAND x WHERE x.BRAND_ID = b.BRAND_ID) AS BRAND
              , (SELECT GROUP_CONCAT(PROJECT_NAME separator '\n') FROM cm_console.CM_PROJECT x, cm_console.CM_PROJECT_CALL_NUM y WHERE y.CORP_ID = a.CORP_ID AND y.CALL_NUM = a.CALL_NUM AND x.PROJECT_ID = y.PROJECT_ID AND x.CORP_ID = y.CORP_ID)  AS PROJECT 
              , DATE_FORMAT(REQ_DT, '%Y-%m-%d')    AS REQ_DT 
@@ -116,11 +118,13 @@
 		SELECT CHATBOT_ID AS CALLNUM
 		     , 'O' AS RCS_SEND
 		     , APPROVAL_STATUS AS RCS_STATE
+             , REPLACE(JSON_EXTRACT(a.CHATBOT_INFO , '$.isMainNum[0]'), "\"", "") AS IS_MAIN_NUM
              , REPLACE(JSON_EXTRACT(a.CHATBOT_INFO , '$.approvalReason[0]'), "\"", "") AS APPROVAL_REASON
 		     , '' AS SMS_SEND
 		     , '' AS SMS_STATE
 		     , '' AS SMS_STATE_NM
 		     , 'RCS Biz' AS REG_WAY
+		     , a.BRAND_ID
 		     , (SELECT BRAND_NAME FROM cm.CM_RCS_BRAND x WHERE x.BRAND_ID = a.BRAND_ID)
 		     , '' AS PROJECT_NAME 
 		     , DATE_FORMAT(a.REG_DT, '%Y-%m-%d')
@@ -140,7 +144,7 @@
            AND NOT EXISTS (SELECT 1
                 FROM cm_console.CM_CALL_NUM b
                WHERE a.CHATBOT_ID = b.CALL_NUM)
-         ORDER BY 11 DESC
+         ORDER BY 13 DESC
         <if test='pagingYn == "Y" '>
          LIMIT #{offset}, #{listSize}
         </if>
