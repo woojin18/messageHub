@@ -1,27 +1,65 @@
 <template>
   <div class="modal modalStyle" id="cashPop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 500px;">
+    <div class="modal-dialog" style="width: 600px;">
       <div class="modal-content">
         <div class="modal-body">
           <div>
 						<h2 class="lc-1">캐시 충전</h2>
 						<hr>
-					  <div class="mt15">
-              <h4 class="font-normal inline-block width90 mr10">결제유형</h4>
-              <select v-model="cashType" class="inputStyle width291">
-                <option value="card">카드</option>
-                <option value="acc_trans">계좌이체</option>
-                <option value="vir_acc">무통장입금</option>
-              </select>
-            </div> 
-            <div class="mt15">
-              <h5 class="font-normal inline-block width90 mr10">충전금액</h5>
-              <input v-model="amount" class="inputStyle width291">
-            </div>
-            <div class="mt15">
-              * 충전금액은 1,000원 단위로 가능합니다.
-            </div>
 					</div>
+
+          <div class="of_h">
+            <h5 class="inline-block" style="width:20%">충전금액 </h5>
+            <div style="width:80%" class="of_h inline-block float-right">
+              <input v-model="amount" class="inputStyle width291">
+              <p class="txtCaption mt5">* 충전금액은 1,000원 단위로 가능합니다.</p>
+            </div>
+          </div>
+          <div class="of_h consolMarginTop">
+            <h5 class="inline-block" style="width:20%%">결제수단 선택</h5>
+            <div style="width:80%" class="of_h inline-block float-right">
+              <div class="row ml0 mr0">
+                <div class="col-xs-4 text-center pd5">
+                  <label for="pushTemplate1-1">
+                    <div class="bgColor_f1 pd30">
+                      <i class="far fa-credit-card inline-block font-size30 color1"></i>
+                      <h6 class="mt10">신용카드</h6>
+                    </div>
+                  </label>
+                  <div class="consolMarginTop">
+                    <input v-model="cashType" value="card" type="radio" name="radio1" id="pushTemplate1-1" class="radioStyle" checked=""><label for="pushTemplate1-1"></label>
+                  </div>
+                </div>	
+
+                <div class="col-xs-4 text-center pd5">
+                  <label for="pushTemplate1-2">
+                    <div class="bgColor_f1 pd30">
+                      <i class="far fa-money-check-alt inline-block font-size30 color1"></i>
+                      <h6 class="mt10">계좌이체</h6>
+                    </div>
+                  </label>
+                  <div class="consolMarginTop">
+                    <input v-model="cashType" value="acc_trans" type="radio" name="radio1" id="pushTemplate1-2" class="radioStyle" checked=""><label for="pushTemplate1-2"></label>											
+                  </div>
+                </div>	
+
+                <div class="col-xs-4 text-center pd5">
+                  <label for="pushTemplate1-3">
+                    <div class="bgColor_f1 pd30">
+                      <i class="far fa-desktop inline-block font-size30 color1"></i>
+                      <h6 class="mt10">가상계좌</h6>
+                    </div>
+                  </label>
+                  <div class="consolMarginTop">
+                    <input v-model="cashType" value="vir_acc" type="radio" name="radio1" id="pushTemplate1-3" class="radioStyle" checked=""><label for="pushTemplate1-3"></label>											
+                  </div>
+                </div>	
+
+              </div>
+            </div>
+          </div>
+
+          
           <div class="text-center mt30">
             <button @click="fnConfirm" class="btnStyle4 red mr10">결제</button>
             <button @click="fnCloseLayer" class="btnStyle3 grey">닫기</button>
@@ -46,7 +84,7 @@ export default {
   name: 'prePaidCashPop',
   data() {
     return {
-      amount : 0,
+      amount : "0",
       cashType : "card",
       virAccUrl : ''
     }
