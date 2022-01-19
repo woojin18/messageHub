@@ -133,7 +133,7 @@
 								<input type="radio" name="dupChkYn" value="N" id="agree3-8"> <label for="agree3-8">아니오</label>
 							</div>
 						</div>
-						<div class="of_h consolMarginTop">
+						<div class="of_h consolMarginTop" style="display: none;">
 							<div class="float-left" style="width:24%"><h5>일 최대 발송 체크</h5></div>
 							<div class="float-left" style="width:76%">
 								<input type="radio" name="daySenderChkYn" value="Y" id="limited1-1"  @click="fnDayAmountView(true)" checked=""> <label for="limited1-1" class="mr30">예</label>
@@ -141,7 +141,7 @@
 							</div>
 						</div>
 						<span id="daySenderLimitAmountSpan">
-							<div class="of_h consolMarginTop">
+							<div class="of_h consolMarginTop" style="display: none;">
 								<div class="float-left" style="width:24%"><h5>일 제한금액</h5></div>
 								<div class="float-left" style="width:20%">
 									<input type="text" id="daySenderLimitAmount" class="inputStyle" @input="fnCorrectNumberInput">
@@ -149,7 +149,7 @@
 								<div class="float-left ml5" style="width:20%">원</div>
 							</div>
 						</span>
-						<div class="of_h consolMarginTop">
+						<div class="of_h consolMarginTop" style="display: none;">
 							<div class="float-left" style="width:24%"><h5>월 최대 발송 체크</h5></div>
 							<div class="float-left" style="width:76%">
 								<input type="radio" name="monSenderChkYn" value="Y" id="limited2-1" @click="fnMonAmountView(true)" checked=""> <label for="limited2-1" class="mr30">예</label>
@@ -157,7 +157,7 @@
 							</div>
 						</div>
 						<span id="monSenderLimitAmountSpan">
-							<div class="of_h consolMarginTop">
+							<div class="of_h consolMarginTop" style="display: none;">
 								<div class="float-left" style="width:24%"><h5>월 제한금액</h5></div>
 								<div class="float-left" style="width:20%">
 									<input type="text" id="monSenderLimitAmount" class="inputStyle" @input="fnCorrectNumberInput">
@@ -454,7 +454,6 @@ export default {
 				'saveStatus'			: this.saveStatus,
 
 			};
-
 			baseInfoApi.saveApiKey(params).then(response =>{
 				var result = response.data;
 
