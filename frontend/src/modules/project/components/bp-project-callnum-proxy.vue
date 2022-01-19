@@ -105,7 +105,7 @@ export default {
           jQuery("#proxyPop").modal("hide");
           parent.proxyState = '10'
         } else {
-  				confirm.fnAlert("", "저장에 실패했습니다.");
+          confirm.fnAlert("", result.message);
         }
       })
       .catch(function (e) {

@@ -61,6 +61,8 @@
 										<input id="certiImgFile" type="file" class="btnStyle7 minWidthAuto float float-right" style="width:100%" ref="certiImgFile"/>
 									</div>
 								</div>
+								<p class="txtCaption mt20">첨부 파일 확장자는 <strong>png, jpg, pdf, zip, tif, tiff</strong>만 허용됩니다.</p>
+								<p class="txtCaption color3">(5M 이하 파일 가능)</p>
 							</div>
 						</div>
 					</div>						
@@ -162,10 +164,37 @@ export default {
     },
     // 승인요청
     async fnApproval(){
-      // 벨리데이션 처리
-     /*  if( !this.fnValidate() ){
+
+      if(this.chatbots.length == 0) {
+                confirm.fnAlert("", "추가 발신번호를 하나 이상 입력해주세요.");
         return;
-      } */
+      }
+      var isMdn = true;
+      var isSubTitle = true;
+      this.chatbots.map(function(value) {
+        if(value.mdn == '') {
+          isMdn = false;
+          return;
+        }
+        if(value.subTitle == '') {
+          isSubTitle = false;
+          return;
+        }
+      })
+
+      if (isMdn == false) {
+        confirm.fnAlert("", "등록할 발신번호를 입력해주세요.");
+        return;
+      }
+      if (isSubTitle == false) {
+        confirm.fnAlert("", "등록할 발신번호명을 입력해주세요.");
+        return;
+      }
+      
+      if(this.$refs.certiImgFile.files[0] === null || this.$refs.certiImgFile.files[0] === undefined ){
+                confirm.fnAlert("", "통신서비스 가입증명원 파일을 등록해주세요.");
+        return;
+      }
 
       var fd = new FormData();
       fd.append('sts'			    , "C");
