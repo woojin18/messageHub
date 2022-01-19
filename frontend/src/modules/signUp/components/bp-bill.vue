@@ -1,5 +1,5 @@
 <template>
-<div class="modal modalStyle" id="information" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal modalStyle" id="billPopup" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
@@ -176,8 +176,8 @@
                     </div>
 
                     <div class="text-center mt40">
-                        <a class="btnStyle3 black font14">확인</a>
-                        <a class="btnStyle3 white font14" data-dismiss="modal">닫기</a>						
+                        <a @click="fnConfirm" class="btnStyle3 black font14">확인</a>
+                        <a @click="fnClose"   class="btnStyle3 white font14">닫기</a>						
                     </div>
                     <addrPopup :popReset="popReset1"  :selAddr.sync="selAddr"></addrPopup>
                 </div>
@@ -253,8 +253,7 @@ export default {
     },
     watch : {
         popReset() {
-            this.set = bill
-            console.log(this.set)
+            this.set = Object.assign({}, this.bill)
         },
 		selAddr() {
 			this.fnSetCorpAddr();
@@ -264,9 +263,6 @@ export default {
         this.fnGetCode();
     },
     methods : {
-        fnCloseLayer(){
-            jQuery("#billPopup").modal("hide");
-        },
 		fnGetCode(){
 			var params2 = {
 				codeTypeCd	: "NAP_CUST_KD",
@@ -315,6 +311,13 @@ export default {
 			this.set.billZip = this.selAddr.mailNo;
 			this.set.billJuso = this.selAddr.roadMailFullAddr + " " + this.selAddr.roadMailFullAddr2;
 		},
+        fnConfirm(){
+			this.$emit("update:bill", this.set);
+            jQuery("#billPopup").modal("hide")
+        },
+        fnClose() {
+            jQuery("#billPopup").modal("hide")
+        }
     }
 }
 </script>
