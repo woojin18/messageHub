@@ -56,7 +56,7 @@
 			,		DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%s') AS REG_DT /*발송일시*/
 			,		A.SENDER_TYPE /*발송타입*/
 			,		CASE
-						WHEN A.SENDER_TYPE = 'C' THEN '개별방송'
+						WHEN A.SENDER_TYPE = 'C' THEN '개별발송'
 						WHEN A.SENDER_TYPE = 'M' THEN '통합발송'
 						WHEN A.SENDER_TYPE = 'S' THEN '스마트발송'
 					END AS SENDER_TYPE_NM /*발송타입명*/
@@ -92,7 +92,7 @@
 		,		A.REQ_CH  /*채널구분*/
 		,	DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%s') AS REG_DT /*발송일시*/
 		,	A.SENDER_TYPE /*발송타입*/
-		,	CASE WHEN A.SENDER_TYPE = 'C' THEN '개별방송'
+		,	CASE WHEN A.SENDER_TYPE = 'C' THEN '개별발송'
 				WHEN A.SENDER_TYPE = 'M' THEN '통합발송'
 				WHEN A.SENDER_TYPE = 'S' THEN '스마트발송'
 			END AS SENDER_TYPE_NM /*발송타입명*/
