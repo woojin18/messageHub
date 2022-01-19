@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.WebDataBinder;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.consts.DB;
+import kr.co.uplus.cm.common.crypto.AesEncryptor;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.signUp.service.SignUpService;
 import kr.co.uplus.cm.utils.ApiInterface;
@@ -124,7 +126,7 @@ public class SignUpController implements Serializable{
 			@RequestParam(required=false) String napCustKdCd,
 			@RequestParam(required=false) String billKind,
 			@RequestParam(required=false) String billEmail,
-			@RequestParam(required=false) String billPhone,
+			@RequestParam(required=false) String billTelNo,
 			@RequestParam(required=false) String billZip,
 			@RequestParam(required=false) String billJuso,
 			@RequestParam(required=false) String billJuso2,
@@ -185,19 +187,22 @@ public class SignUpController implements Serializable{
 		paramMap.put("napCustKdCd", napCustKdCd);     
 		paramMap.put("billKind", billKind);        
 		paramMap.put("billEmail", billEmail);       
-		paramMap.put("billPhone", billPhone);       
+		paramMap.put("billTelNo", billTelNo);       
 		paramMap.put("billZip", billZip);         
 		paramMap.put("billJuso", billJuso);        
 		paramMap.put("billJuso2", billJuso2);       
 		paramMap.put("payMthdCd", payMthdCd);       
 		paramMap.put("payDt", payDt);           
-		paramMap.put("napCmpNm", napCmpNm);        
-		paramMap.put("napJumin", napJumin);        
+		paramMap.put("napCmpNm", napCmpNm);       
+		AesEncryptor encrypt = new AesEncryptor(); // 암호화
+		paramMap.put("napJumin", encrypt.encrypt(napJumin));        
 		paramMap.put("bankCd", bankCd);          
 		paramMap.put("bankNo", bankNo);          
 		paramMap.put("cardCd", cardCd);          
-		paramMap.put("cardNo", cardNo1+cardNo2+cardNo3+cardNo4);          
-		paramMap.put("cardValdEndYymm", cardValdEndYymm1+cardValdEndYymm2); 
+		paramMap.put("cardNo", cardNo1+cardNo2+cardNo3+cardNo4);
+		if (StringUtils.isNotEmpty(cardValdEndYymm1)) {
+			paramMap.put("cardValdEndYymm", encrypt.encrypt(cardValdEndYymm1+cardValdEndYymm2));
+		}
 		paramMap.put("serviceId", serviceId);       
 		paramMap.put("smsExpCnt", smsExpCnt);       
 		paramMap.put("rcsExpCnt", rcsExpCnt);       
@@ -235,6 +240,32 @@ public class SignUpController implements Serializable{
 	@PostMapping("/selectUseTerms")
 	public RestResult<?> selectUseTerms(@RequestBody Map<String, Object> params) throws Exception {
 		return signUpSvc.selectUseTerms(params);
+	}
+	
+	// 계좌인증
+	@PostMapping("/chkBank")
+	public RestResult<?> chkBank(@RequestBody Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> result = apiInterface.post("/console/v1/ucube/certify/bank", params, null);
+		if("10000".equals(result.get("code"))) {
+		} else {
+			rtn.setSuccess(false);
+			rtn.setMessage((String) result.get("message"));
+		}
+		return rtn;
+	}
+	
+	// 카드인증
+	@PostMapping("/chkCard")
+	public RestResult<?> chkCard(@RequestBody Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> result = apiInterface.post("/console/v1/ucube/certify/card", params, null);
+		if("10000".equals(result.get("code"))) {
+		} else {
+			rtn.setSuccess(false);
+			rtn.setMessage((String) result.get("message"));
+		}
+		return rtn;
 	}
 	
 	// api 통신 테스트

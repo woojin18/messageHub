@@ -200,7 +200,7 @@
           , NAP_CUST_KD_CD
           , BILL_KIND
           , BILL_EMAIL
-          , BILL_PHONE
+          , BILL_TEL_NO
           , BILL_ZIP
           , BILL_JUSO
           , BILL_JUSO2
@@ -231,7 +231,7 @@
           , #{napCustKdCd}
           , #{billKind}
           , #{billEmail}
-          , #{billPhone}
+          , #{billTelNo}
           , #{billZip}
           , #{billJuso}
           , #{billJuso2}
