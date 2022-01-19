@@ -26,8 +26,7 @@
               <h5 class="inline-block" style="width:27%">재직증명서 *</h5>
               <input id="file5" ref="workFile" type="file" class="btnStyle7 minWidthAuto float" style="display : inline; width : 72%;">
 						</div>
-            <p class="txtCaption color1 mt20">등록할 발신 번호에 해당하는 통신서비스 이용 증명원을 첨부하시기 바랍니다.</p>
-            <p>담당자가 등록한 서류 심사 후 영업일 기준 1~2일 내 승인이 완료됩니다. (반려 후 재 신청 가능)</p>
+            <p class="txtCaption mt20">담당자가 등록한 서류 심사 후 영업일 기준 1~2일 내 승인이 완료됩니다. (반려 후 재 신청 가능)</p>
             <p class="mt5">첨부 파일 확장자는 <strong>png, jpg, pdf, zip, tif, tiff</strong>만 허용됩니다.</p>
             <p class="txtCaption color3">(5M 이하 파일 가능)</p>
 					</div>

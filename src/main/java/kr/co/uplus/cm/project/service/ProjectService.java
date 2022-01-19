@@ -521,6 +521,13 @@ public class ProjectService {
 			String uploadDirPath = FileConfig.getFilePath(FileConfig.FileSvcType.LIBRARY);
 
 			MultipartFile certiFile = (MultipartFile) params.get("certiFile");
+			String ext = commonService.getFileNameExt(certiFile.getOriginalFilename(),1);
+			if (!(ext.equals("png") || ext.equals("jpg") || ext.equals("pdf") || ext.equals("zip") || ext.equals("tif") || ext.equals("tiff"))) {
+				throw new Exception("파일은 png, jpg, pdf, zip, tif, tiff만 허용됩니다.");
+			}
+			if (certiFile.getSize() > 5 * 1024 * 1024) {
+				throw new Exception("파일은 5M 이하 파일만 허용됩니다.");
+			}
 
 			String certiFileSeq = commonService.uploadFile(certiFile, CommonUtils.getString(params.get("loginId")),
 					uploadDirPath);
@@ -975,6 +982,14 @@ public class ProjectService {
 		String uploadDirPath = FileConfig.getFilePath(FileConfig.FileSvcType.LIBRARY);
 
 		MultipartFile joinFile = (MultipartFile) params.get("joinFile");
+		String ext = commonService.getFileNameExt(joinFile.getOriginalFilename(),1);
+		
+		if (!(ext.equals("png") || ext.equals("jpg") || ext.equals("pdf") || ext.equals("zip") || ext.equals("tif") || ext.equals("tiff"))) {
+			throw new Exception("파일은 png, jpg, pdf, zip, tif, tiff만 허용됩니다.");
+		}
+		if (joinFile.getSize() > 5 * 1024 * 1024) {
+			throw new Exception("파일은 5M 이하 파일만 허용됩니다.");
+		}
 		String joinFileId = commonService.uploadFile(joinFile, CommonUtils.getString(params.get("userId")), uploadDirPath);
 		params.put("joinFileId", joinFileId);
 		
@@ -1076,18 +1091,53 @@ public class ProjectService {
 		String uploadDirPath = FileConfig.getFilePath(FileConfig.FileSvcType.LIBRARY);
 		
 		MultipartFile agreeFile = (MultipartFile) params.get("agreeFile");
+		String ext = commonService.getFileNameExt(agreeFile.getOriginalFilename(),1);
+		if (!(ext.equals("png") || ext.equals("jpg") || ext.equals("pdf") || ext.equals("zip") || ext.equals("tif") || ext.equals("tiff"))) {
+			throw new Exception("파일은 png, jpg, pdf, zip, tif, tiff만 허용됩니다.");
+		}
+		if (agreeFile.getSize() > 5 * 1024 * 1024) {
+			throw new Exception("파일은 5M 이하 파일만 허용됩니다.");
+		}
 		String agreeFileId = commonService.uploadFile(agreeFile, CommonUtils.getString(params.get("userId")), uploadDirPath);
 		params.put("agreeFileId", agreeFileId);
 		MultipartFile reqFile = (MultipartFile) params.get("reqFile");
+		ext = commonService.getFileNameExt(reqFile.getOriginalFilename(),1);
+		if (!(ext.equals("png") || ext.equals("jpg") || ext.equals("pdf") || ext.equals("zip") || ext.equals("tif") || ext.equals("tiff"))) {
+			throw new Exception("파일은 png, jpg, pdf, zip, tif, tiff만 허용됩니다.");
+		}
+		if (reqFile.getSize() > 5 * 1024 * 1024) {
+			throw new Exception("파일은 5M 이하 파일만 허용됩니다.");
+		}
 		String reqFileId = commonService.uploadFile(reqFile, CommonUtils.getString(params.get("userId")), uploadDirPath);
 		params.put("reqFileId", reqFileId);
 		MultipartFile sealFile = (MultipartFile) params.get("sealFile");
+		ext = commonService.getFileNameExt(sealFile.getOriginalFilename(),1);
+		if (!(ext.equals("png") || ext.equals("jpg") || ext.equals("pdf") || ext.equals("zip") || ext.equals("tif") || ext.equals("tiff"))) {
+			throw new Exception("파일은 png, jpg, pdf, zip, tif, tiff만 허용됩니다.");
+		}
+		if (sealFile.getSize() > 5 * 1024 * 1024) {
+			throw new Exception("파일은 5M 이하 파일만 허용됩니다.");
+		}
 		String sealFileId = commonService.uploadFile(sealFile, CommonUtils.getString(params.get("userId")), uploadDirPath);
 		params.put("sealFileId", sealFileId);
 		MultipartFile authFile = (MultipartFile) params.get("authFile");
+		ext = commonService.getFileNameExt(authFile.getOriginalFilename(),1);
+		if (!(ext.equals("png") || ext.equals("jpg") || ext.equals("pdf") || ext.equals("zip") || ext.equals("tif") || ext.equals("tiff"))) {
+			throw new Exception("파일은 png, jpg, pdf, zip, tif, tiff만 허용됩니다.");
+		}
+		if (authFile.getSize() > 5 * 1024 * 1024) {
+			throw new Exception("파일은 5M 이하 파일만 허용됩니다.");
+		}
 		String authFileId = commonService.uploadFile(authFile, CommonUtils.getString(params.get("userId")), uploadDirPath);
 		params.put("authFileId", authFileId);
 		MultipartFile workFile = (MultipartFile) params.get("workFile");
+		ext = commonService.getFileNameExt(workFile.getOriginalFilename(),1);
+		if (!(ext.equals("png") || ext.equals("jpg") || ext.equals("pdf") || ext.equals("zip") || ext.equals("tif") || ext.equals("tiff"))) {
+			throw new Exception("파일은 png, jpg, pdf, zip, tif, tiff만 허용됩니다.");
+		}
+		if (workFile.getSize() > 5 * 1024 * 1024) {
+			throw new Exception("파일은 5M 이하 파일만 허용됩니다.");
+		}
 		String workFileId = commonService.uploadFile(workFile, CommonUtils.getString(params.get("userId")), uploadDirPath);
 		params.put("workFileId", workFileId);
 		

@@ -21,7 +21,7 @@
 						<div class="of_h">
 							<div>
 								<h4 class="inline-block" style="width:6%">발신번호</h4>
-								<input type="text" class="inputStyle" style="width:16%" v-model="srcCallNum">
+								<input type="text" class="inputStyle" style="width:16%" v-model="srcCallNum" @keyup.enter="fnSearch(1)">
 								<h4 class="inline-block ml60" style="width:6%">RCS 상태</h4>
 								<select class="selectStyle2" style="width:16%" v-model="srcRcsState" @change="fnSearch(1)">
 									<option value="">전체</option>
