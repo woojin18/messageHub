@@ -6,6 +6,11 @@
 				<a @click="fnPageReload()" class="btnStyle2 backPink absolute top0 right0" title="새로고침">새로고침 <i class="fal fa-redo"></i></a>
 			</div>
 			<!-- 본문 -->
+			<div>
+				<div class="float-left mr30"><a class="btnStyle1 backLightGray" style="min-width:auto; width:150px" data-toggle="modal" data-target="#deferred_pay">후불 사용 승인</a></div>	
+				<span class="float-left font-size14 color4 mr30 line-height30">고객 월 한도금액 : 1,000,000원</span>
+				<div><a class="btnStyle1 backPink" style="min-width:auto; width:150px" data-toggle="modal" data-target="#limit_amountnt">한도금액 상향 요청</a></div>	
+			</div>
 			<div class="row">
 				<div class="col-xs-6">
 					<div class="fl" style="width:100%">

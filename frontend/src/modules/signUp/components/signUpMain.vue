@@ -333,7 +333,7 @@ export default {
 				, napCustKdCd : ''
 				, billKind : 'Y'
 				, billEmail : ''
-				, billPhone : ''
+				, billTelNo : ''
 				, billZip : ''
 				, billJuso : ''
 				, billJuso2 : ''
@@ -359,6 +359,8 @@ export default {
 				, handleReason : ''
 				, handleId : ''
 				, handleDt : ''
+                , isCert : false
+                , isAgree : false
 			}
 		}
 	},
@@ -442,6 +444,12 @@ export default {
 			// // 사업자 번호 유효성 검사
 			// var regnoVali = this.regnoVali(regno);
 			// if(!regnoVali) return false;
+
+			// 청구정보 유효성 검사
+			if (this.feeType == 'POST') {
+				var billVali = this.billVali();
+				if (!billVali) return false;
+			}
 
 			eventBus.$on('callbackEventBus', this.signUpSubmit);
      		confirm.fnConfirm( "", "가입하시겠습니까?", "확인");
@@ -570,6 +578,86 @@ export default {
 			return true;
 		},
 
+		billVali() {
+            if(this.bill.smsExpCnt == null || this.bill.smsExpCnt == ""){
+                confirm.fnAlert("", "월 발송 예상 건수(문자)를 입력해주세요.");
+                return false;
+            }
+            if(this.bill.rcsExpCnt == null || this.bill.rcsExpCnt == ""){
+                confirm.fnAlert("", "월 발송 예상 건수(RCS)를 입력해주세요.");
+                return false;
+            }
+            if(this.bill.kkoExpCnt == null || this.bill.kkoExpCnt == ""){
+                confirm.fnAlert("", "월 발송 예상 건수(카카오)를 입력해주세요.");
+                return false;
+            }
+            if(this.bill.pushExpCnt == null || this.bill.pushExpCnt == ""){
+                confirm.fnAlert("", "월 발송 예상 건수(Push)를 입력해주세요.");
+                return false;
+            }
+            if(this.bill.billRegNo == ""){
+                confirm.fnAlert("", "청구 사업자번호를 입력해주세요.");
+                return false;
+            }
+            if (this.bill.billTelNo == "" && this.bill.billKind == "C") {
+                confirm.fnAlert("", "청구서 수신 휴대폰를 입력해주세요.");
+                return false;
+            }
+            if (this.bill.billEmail == "" && this.bill.billKind == "Y") {
+                confirm.fnAlert("", "청구 이메일을 입력해주세요.");
+                return false;
+            }
+            if(this.bill.billZip == "" && this.bill.billKind == "N"){
+                confirm.fnAlert("", "청구 주소를 선택해주세요.");
+                return false;
+            }
+            if(this.bill.billJuso2 == "" && this.bill.billKind == "N"){
+                confirm.fnAlert("", "청구 상세주소를 입력해주세요.");
+                return false;
+            }
+            if(this.bill.napCustKdCd == ""){
+                confirm.fnAlert("", "납부고객구분을 선택해주세요.");
+                return false;
+            }
+            if(this.bill.payDt == ""){
+                confirm.fnAlert("", "납부일을 선택해주세요.");
+                return false;
+            }
+            if(this.bill.payDt == ""){
+                confirm.fnAlert("", "납부자명을 입력해주세요.");
+                return false;
+            }
+            if(this.bill.napJumin == ""){
+                confirm.fnAlert("", "생년월일/사업자번호를 입력해주세요.");
+                return false;
+            }
+            if(this.bill.bankCd == "" && this.bill.payMthdCd == "CM"){
+                confirm.fnAlert("", "은행을 선택해주세요.");
+                return false;
+            }
+            if(this.bill.bankNo == "" && this.bill.payMthdCd == "CM"){
+                confirm.fnAlert("", "계좌번호를 선택해주세요.");
+                return false;
+            }
+            if(this.bill.cardCd == "" && this.bill.payMthdCd == "CC"){
+                confirm.fnAlert("", "카드종류를 선택해주세요.");
+                return false;
+            }
+            if((this.bill.cardNo1 == "" || this.bill.cardNo2 == "" || this.bill.cardNo3 == "" || this.bill.cardNo4 == "") && this.bill.payMthdCd == "CC"){
+                confirm.fnAlert("", "카드번호를 입력해주세요.");
+                return false;
+            }
+            if((this.bill.cardValdEndYymm1 == "" || this.bill.cardValdEndYymm2 == "") && this.bill.payMthdCd == "CC"){
+                confirm.fnAlert("", "카드유효기간를 입력해주세요.");
+                return false;
+            }
+            if(this.bill.isAgree == false && (this.bill.payMthdCd == "CM" || this.bill.payMthdCd == "CC")){
+                confirm.fnAlert("", "이용동의안에 동의해야 합니다.");
+                return false;
+            }
+			return true;
+		},
+
 		// 도메인 중복 체크 function
 		domainNameChkBtn() {
 			var vm = this;
@@ -632,7 +720,7 @@ export default {
 			fd.append('napCustKdCd', this.bill.napCustKdCd);     
 			fd.append('billKind', this.bill.billKind);        
 			fd.append('billEmail', this.bill.billEmail);       
-			fd.append('billPhone', this.bill.billPhone);       
+			fd.append('billTelNo', this.bill.billTelNo);       
 			fd.append('billZip', this.bill.billZip);         
 			fd.append('billJuso', this.bill.billJuso);        
 			fd.append('billJuso2', this.bill.billJuso2);       

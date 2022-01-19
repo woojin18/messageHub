@@ -23,27 +23,30 @@
     </disRatioPopNew>
 
     <article>
-      <div class="contentHeader">
+      <div class="contentHeader mb20">
         <h2>프로젝트 > 프로젝트 목록</h2>
       </div>
-
+      <div class="color4 bgColor_f1 pd20">
+				<ul class="text-left dotList">
+					<li>프로젝트 생성을 통해 메시지를 보내기 위한 채널을 설정 할 수 있습니다.</li>
+					<li>후불 요금제 고객은 후불 사용 승인을 받아야 프로젝트를 생성할 수 있습니다. (승인 처리는 요청 후 1~ 3일 소요됩니다.)</li>
+				</ul>
+			</div>
       <!-- 검색창 -->
       <div class="row">
         <div class="col-xs-12">
-          <div class="menuBox">
-            <div class="mt20">
-              <div class="of_h">
-                <h4 class="font-normal inline-block" style="width:10%">프로젝트 명</h4>
-                <input id="srcProjectName" type="text" class="inputStyle inline-block" style="width:30%" v-model="srcProjectName"  @keypress.enter="fnSearch()">
-                <h4 class="font-normal inline-block ml40" style="width:10%">사용여부</h4>
-                <select id="srcUseYn" class="selectStyle2 inline-block" style="width:30%" v-model="srcUseYn" @change="fnSearch">
-                  <option value="">전체</option>
-                  <option value="Y">Y</option>
-                  <option value="N">N</option>
-                </select>
-                <a @click="fnSearch" class="btnStyle2 float-right" activity="READ">검색</a>
-              </div>	
-            </div>
+          <div class="menuBox mt50">
+            <div class="of_h">
+              <h4 class="inline-block" style="width:10%">프로젝트 명</h4>
+              <input id="srcProjectName" type="text" class="inputStyle inline-block" style="width:30%" v-model="srcProjectName"  @keypress.enter="fnSearch()">
+              <h4 class="inline-block ml40" style="width:10%">사용여부</h4>
+              <select id="srcUseYn" class="selectStyle2 inline-block" style="width:30%" v-model="srcUseYn" @change="fnSearch">
+                <option value="">전체</option>
+                <option value="Y">Y</option>
+                <option value="N">N</option>
+              </select>
+              <a @click="fnSearch" class="btnStyle2 float-right" activity="READ">검색</a>
+            </div>	
           </div>
         </div>
       </div>
