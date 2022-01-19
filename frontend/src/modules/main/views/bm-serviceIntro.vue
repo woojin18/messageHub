@@ -84,7 +84,7 @@
           <h3 class="subTitle">U+ 메시지 허브를 지금 바로 사용해보세요!</h3>
           <p class="subText">하나로 이용할 수 있는 통합 메시징 시스템 U+ 메시지 허브 서비스로<br>다양한 발송 메시지를 저렴하게 이용해보세요.</p>
           <div class="btn">
-            <a href="#self" class="btnBcackRed">서비스가입</a>					
+            <a href="#" class="btnBcackRed" @click.prevent="signUp">서비스가입</a>					
           </div>
         </section>	
       </div>
@@ -112,7 +112,10 @@ export default {
         touchEnabled : (navigator.maxTouchPoints > 0),
         pause: 6000
       });
-    }
+    },
+    signUp: function() {
+			this.$router.push({name : "signUp"})
+		}
   }
 }
 </script>
