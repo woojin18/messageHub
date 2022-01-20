@@ -265,5 +265,112 @@
 		WHERE	cc.CORP_ID = #{corpId}
 		AND		cc.CASH_TYPE = 'C'
 	</select>
-	
+
+    <select id="selectCalListCnt" resultType="int">
+        /* cash.selectCalListCnt */
+        SELECT COUNT(1) AS CNT
+          FROM cm_console.CM_CORP_RECIPIENT a
+         WHERE a.CORP_ID        = #{corpId}
+        <if test="srcAlarmGroup != null and srcAlarmGroup != ''">
+           AND EXISTS(SELECT 1 FROM cm_console.CM_CORP_RECEPT_GROUP x, cm_console.CM_CORP_GROUP_RECIPIENT y WHERE x.RECEPT_GROUP_ID = y.RECEPT_GROUP_ID AND y.RECIPIENT_ID = a.RECIPIENT_ID AND x.RECEPT_GROUP_NAME LIKE CONCAT('%',#{srcAlarmGroup},'%'))
+        </if>
+        <if test="srcRecipientName != null and srcRecipientName != ''">
+           AND RECIPIENT_NAME LIKE CONCAT('%',#{srcRecipientName},'%')
+        </if>
+        <if test="srcHpNumber != null and srcHpNumber != ''">
+           AND HP_NUMBER  LIKE CONCAT('%',#{srcHpNumber},'%')
+        </if>
+    </select>
+    
+    <select id="selectCalList" resultType="camel">
+        /* cash.selectCalList */
+        SELECT @ROWNUM := @ROWNUM + 1 AS ROWNUM
+             , RECIPIENT_ID 
+             , RECIPIENT_NAME 
+             , (SELECT GROUP_CONCAT(RECEPT_GROUP_NAME ORDER BY RECEPT_GROUP_NAME) FROM cm_console.CM_CORP_RECEPT_GROUP x, cm_console.CM_CORP_GROUP_RECIPIENT y WHERE x.RECEPT_GROUP_ID = y.RECEPT_GROUP_ID AND y.RECIPIENT_ID = a.RECIPIENT_ID) AS RECEPT_GROUP
+             , HP_NUMBER 
+          FROM cm_console.CM_CORP_RECIPIENT a, (SELECT @ROWNUM:=0) TMP
+         WHERE a.CORP_ID        = #{corpId}
+        <if test="srcAlarmGroup != null and srcAlarmGroup != ''">
+           AND EXISTS(SELECT 1 FROM cm_console.CM_CORP_RECEPT_GROUP x, cm_console.CM_CORP_GROUP_RECIPIENT y WHERE x.RECEPT_GROUP_ID = y.RECEPT_GROUP_ID AND y.RECIPIENT_ID = a.RECIPIENT_ID AND x.RECEPT_GROUP_NAME LIKE CONCAT('%',#{srcAlarmGroup},'%'))
+        </if>
+        <if test="srcRecipientName != null and srcRecipientName != ''">
+           AND RECIPIENT_NAME LIKE CONCAT('%',#{srcRecipientName},'%')
+        </if>
+        <if test="srcHpNumber != null and srcHpNumber != ''">
+           AND HP_NUMBER  LIKE CONCAT('%',#{srcHpNumber},'%')
+        </if>
+         ORDER BY REG_DT DESC 
+         LIMIT #{offset}, #{listSize}
+    </select>
+    
+    <select id="selectDeptList" resultType="camel">
+        /* cash.selectDeptList */
+		SELECT DEPT_NAME
+		     , DEPT_CODE
+		     , USE_YN
+		     , (CASE USE_YN WHEN 'Y' THEN '예' ELSE '아니오' END) AS USE_YN_NM
+		     , a.BILL_ID 
+		     , b.BILL_NAME
+		     , DATE_FORMAT(a.REG_DT, '%Y-%m-%d') AS REG_DT
+		  FROM cm_console.CM_PROJECT_SUBBILL_CODE a
+		     , cm_console.CM_BILL                 b
+		 WHERE a.CORP_ID = #{corpId}
+           AND a.CORP_ID = b.CORP_ID
+		   AND a.BILL_ID = b.BILL_ID
+		 ORDER BY a.REG_DT DESC 
+    </select>
+    
+    <select id="selectBillList" resultType="camel">
+        /* cash.selectBillList */
+        SELECT BILL_ID
+             , BILL_NAME
+          FROM cm_console.CM_BILL a
+         WHERE a.CORP_ID = #{corpId}
+         ORDER BY BILL_NAME 
+    </select>
+    
+    <insert id="insertDept">
+        /* cash.insertDept */
+        INSERT INTO cm_console.CM_PROJECT_SUBBILL_CODE (
+               DEPT_CODE
+             , BILL_ID
+             , CORP_ID
+             , USE_YN
+             , DEPT_NAME
+             , REG_DT
+             , SERVICE_ID
+             , UPD_DT
+        ) VALUES (
+               #{deptCode}
+             , #{billId}
+             , #{corpId}
+             , #{useYn}
+             , #{deptName}
+             , now()
+             , #{serviceId}
+             , now()
+        )
+    </insert>
+    
+    <update id="updateDept">
+        /* cash.updateDept */
+        UPDATE cm_console.CM_PROJECT_SUBBILL_CODE
+          SET  USE_YN    = #{useYn}
+             , DEPT_NAME = #{deptName}
+             , UPD_DT    = now()
+         WHERE DEPT_CODE = #{deptCode}
+           AND BILL_ID   = #{billId}
+           AND CORP_ID   = #{corpId}
+	</update>
+    
+    <update id="deleteDept">
+        /* cash.deleteDept */
+        DELETE 
+          FROM cm_console.CM_PROJECT_SUBBILL_CODE
+         WHERE DEPT_CODE = #{deptCode}
+           AND BILL_ID   = #{billId}
+           AND CORP_ID   = #{corpId}
+         LIMIT 1
+    </update>
 </mapper>

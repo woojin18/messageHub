@@ -45,6 +45,26 @@ const deleteProjectSubBillCode = (params) => {
     return httpClient.post('/projectApi/cash/deleteProjectSubBillCode', params, { headers: {"show-layer": "Yes"} });
 };
 
+const selectCalList = (params) => {
+    return httpClient.post('/projectApi/cash/selectCalList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
+const selectDeptList = (params) => {
+    return httpClient.post('/projectApi/cash/selectDeptList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
+const selectBillList = (params) => {
+    return httpClient.post('/projectApi/cash/selectBillList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
+const saveDept = (params) => {
+    return httpClient.post('/projectApi/cash/saveDept', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+};
+
+const delDept = (params) => {
+    return httpClient.post('/projectApi/cash/delDept', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+};
+
 export default {
     insertWebCashInfo,
     selectCashHist,
@@ -56,5 +76,10 @@ export default {
     insertUbubeInfo,
     updateProjectBillId,
     saveProjectSubBillCode,
-    deleteProjectSubBillCode
+    deleteProjectSubBillCode,
+    selectCalList,
+    selectDeptList,
+    selectBillList,
+    saveDept,
+    delDept
 };

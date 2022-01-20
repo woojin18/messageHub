@@ -2,6 +2,7 @@ package kr.co.uplus.cm.cash.controller;
 
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,11 +22,16 @@ import org.springframework.web.servlet.view.RedirectView;
 import kr.co.uplus.cm.cash.service.CashService;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
+import kr.co.uplus.cm.utils.CommonUtils;
+import kr.co.uplus.cm.utils.GeneralDao;
 
 @RestController
 @RequestMapping("/projectApi/cash")
 
 public class CashController {
+
+	@Autowired
+	private GeneralDao generalDao;
 	@Autowired
 	private CashService cashService ;
 	
@@ -253,6 +259,65 @@ public class CashController {
 			rtn.setMessage("실패하였습니다.");
 		}
 		
+		return rtn;
+	}
+
+	// 정산 조회
+	@PostMapping("/selectCalList")
+	public RestResult<?> selectCalList(@RequestBody Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+        if(params.containsKey("pageNo")
+                && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+                && params.containsKey("listSize")
+                && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+            rtn.setPageProps(params);
+            if(rtn.getPageInfo() != null) {
+                //카운트 쿼리 실행
+                int listCnt = generalDao.selectGernalCount("cash.selectCalListCnt", params);
+                rtn.getPageInfo().put("totCnt", listCnt);
+            }
+        }
+
+        List<Object> rtnList = generalDao.selectGernalList("cash.selectCalList", params);
+        rtn.setData(rtnList);
+
+		return rtn;
+	}
+
+	// 부서 조회
+	@PostMapping("/selectDeptList")
+	public RestResult<?> selectDeptList(@RequestBody Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+        List<Object> rtnList = generalDao.selectGernalList("cash.selectDeptList", params);
+        rtn.setData(rtnList);
+
+		return rtn;
+	}
+
+	// 청구계정 조회
+	@PostMapping("/selectBillList")
+	public RestResult<?> selectBillList(@RequestBody Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+        List<Object> rtnList = generalDao.selectGernalList("cash.selectBillList", params);
+        rtn.setData(rtnList);
+
+		return rtn;
+	}
+	
+	// 부서 저장
+	@PostMapping("/saveDept")
+	public RestResult<?> saveDept(@RequestBody Map<String, Object> params, HttpServletRequest request) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		cashService.saveDept(params);
+		return rtn;
+	}
+	
+	// 부서 삭제
+	@PostMapping("/delDept")
+	public RestResult<?> delDept(@RequestBody Map<String, Object> params, HttpServletRequest request) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+		cashService.delDept(params);
 		return rtn;
 	}
 }

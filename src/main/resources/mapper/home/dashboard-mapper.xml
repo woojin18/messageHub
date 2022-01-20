@@ -411,6 +411,7 @@
 		     , c.REQ_AMOUNT
              , c.REQ_REASON
              , c.HANDLE_REASON AS SENDER_UP_REASON
+             , (SELECT COUNT(1) FROM cm_console.CM_PROJECT x WHERE SUBBILL_YN = 'Y' AND a.CORP_ID = x.CORP_ID AND x.USE_YN = 'Y') AS SUB_CNT
 		  FROM cm_console.CM_CORP a
 		  LEFT JOIN cm_console.CM_BILL b
 		    ON b.CORP_ID   = a.CORP_ID

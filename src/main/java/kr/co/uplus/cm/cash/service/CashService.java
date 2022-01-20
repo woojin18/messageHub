@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -538,6 +539,21 @@ public class CashService {
 		generalDao.deleteGernal(DB.QRY_DELETE_PROJECT_SUB_BILL_CODE, params);
 		
 		return rtn;
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackFor={Exception.class})
+	public void saveDept(Map<String, Object> params) throws Exception {
+		Boolean isNew = (Boolean) params.get("isNew");
+		if (isNew) {
+			generalDao.insertGernal("cash.insertDept", params);
+		} else {
+			generalDao.updateGernal("cash.updateDept", params);
+		}
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackFor={Exception.class})
+	public void delDept(Map<String, Object> params) throws Exception {
+		generalDao.deleteGernal("cash.deleteDept", params);
 	}
 	
 }

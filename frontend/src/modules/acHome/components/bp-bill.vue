@@ -414,7 +414,7 @@ export default {
                             this.bill.cardValdEndYymm2 = result.data.cardValdEndYymm.substring(4,6)
                         }
                     } else {
-                        confirm.fnAlert(this.componentsTitle, result.message);
+                        confirm.fnAlert("", result.message);
                     }
                 });
             }
