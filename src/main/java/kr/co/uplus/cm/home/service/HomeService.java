@@ -1,15 +1,21 @@
 package kr.co.uplus.cm.home.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.uplus.cm.common.consts.DB;
+import kr.co.uplus.cm.common.crypto.AesEncryptor;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
@@ -451,6 +457,64 @@ public class HomeService {
 		rtn.setData(returnMap);
 		
 		return rtn;
+	}
+	
+	public RestResult<Object> selectCorpInfo(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		Object data = generalDao.selectGernalObject("dashboard.selectCorpInfo", params);
+		rtn.setData(data);
+		return rtn;
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void saveBill(Map<String, Object> params) throws Exception{
+		params.put("billStatus", "REQ");
+		AesEncryptor encrypt = new AesEncryptor(); // 암호화
+		if (StringUtils.isNotEmpty((String) params.get("napJumin"))) {
+			params.put("napJumin", encrypt.encrypt((String) params.get("napJumin")));
+		}
+		if (StringUtils.isNotEmpty((String) params.get("cardValdEndYymm"))) {
+			params.put("cardValdEndYymm", encrypt.encrypt((String) params.get("cardValdEndYymm")));
+		}
+		if (StringUtils.isEmpty((String) params.get("billId"))) {
+			params.put("billId", "0");
+			generalDao.insertGernal("signUp.insertBill", params);
+		} else {
+			generalDao.updateGernal("signUp.updateBill", params);	
+		}
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void delBill(Map<String, Object> params) throws Exception{
+		int cnt = generalDao.deleteGernal("dashboard.deleteBill", params);
+	}
+	
+	public RestResult<Object> selectBill(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		Map data = (Map) generalDao.selectGernalObject("dashboard.selectBill", params);
+		if (data != null) {
+			AesEncryptor encrypt = new AesEncryptor(); // 암호화
+			if (StringUtils.isNotEmpty((String) data.get("napJumin"))) {
+				data.put("napJumin", encrypt.decrypt((String) data.get("napJumin")));
+			}
+			if (StringUtils.isNotEmpty((String) data.get("cardValdEndYymm"))) {
+				data.put("cardValdEndYymm", encrypt.decrypt((String) data.get("cardValdEndYymm")));
+			}
+		}
+		rtn.setData(data);
+		return rtn;
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void saveSenderUp(Map<String, Object> params) throws Exception{
+		params.put("status", "REQ");
+		generalDao.deleteGernal("dashboard.deleteSenderUpSeq", params);
+		generalDao.insertGernal("dashboard.insertSenderUpSeq", params);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void delSenderUp(Map<String, Object> params) throws Exception{
+		int cnt = generalDao.deleteGernal("dashboard.deleteSenderUpSeq", params);
 	}
 
 }

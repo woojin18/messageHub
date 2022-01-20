@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.uplus.cm.common.consts.DB;
+import kr.co.uplus.cm.common.crypto.AesEncryptor;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.FileConfig;
@@ -218,11 +220,17 @@ public class SignUpService {
 		
 		if ("POST".equals(params.get("feeType"))) {
 			// 청구정보 등록 2022-01-10
-			String billId =  CommonUtils.getCommonId("BIL", 7);
-			paramMap.put("billId", billId);
+			paramMap.put("billId", "0");
 			paramMap.put("billType", "PROJECT");
 			paramMap.put("billName", paramMap.get("corpNm")); //청구유형이PROJECT면 고객사명
 			paramMap.put("billStatus", "REQ");
+			AesEncryptor encrypt = new AesEncryptor(); // 암호화
+			if (StringUtils.isNotEmpty((String) paramMap.get("napJumin"))) {
+				paramMap.put("napJumin", encrypt.encrypt((String) paramMap.get("napJumin")));
+			}
+			if (StringUtils.isNotEmpty((String) paramMap.get("cardValdEndYymm"))) {
+				paramMap.put("cardValdEndYymm", encrypt.encrypt((String) paramMap.get("cardValdEndYymm")));
+			}
 			generalDao.insertGernal("signUp.insertBill", paramMap);
 		}
 		

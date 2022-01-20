@@ -522,6 +522,30 @@ export default {
                 confirm.fnAlert("", "이용동의안에 동의해야 합니다.");
                 return false;
             }
+            if (this.set.billKind != "Y") {
+                this.set.billEmail = "";
+            }
+            if (this.set.billKind != "C") {
+                this.set.billTelNo = "";
+            }
+            if (this.set.billKind != "N") {
+                this.set.billZip = "";
+                this.set.billJuso = "";
+                this.set.billJuso2 = "";
+            }
+            if (this.set.payMthdCd != "CM") {
+                this.set.bankCd = "";
+                this.set.bankNo = "";
+            }
+            if (this.set.payMthdCd != "CC") {
+                this.set.cardCd = "";
+                this.set.cardNo1 = "";
+                this.set.cardNo2 = "";
+                this.set.cardNo3 = "";
+                this.set.cardNo4 = "";
+                this.set.cardValdEndYymm1 = "";
+                this.set.cardValdEndYymm2 = "";
+            }
 			this.$emit("update:bill", this.set);
             jQuery("#billPopup").modal("hide")
         },

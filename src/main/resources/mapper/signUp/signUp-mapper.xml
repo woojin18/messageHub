@@ -265,7 +265,7 @@
              , NAP_CUST_KD_CD     = #{napCustKdCd}    
              , BILL_KIND          = #{billKind}       
              , BILL_EMAIL         = #{billEmail}      
-             , BILL_PHONE         = #{billPhone}      
+             , BILL_TEL_NO        = #{billTelNo}      
              , BILL_ZIP           = #{billZip}        
              , BILL_JUSO          = #{billJuso}       
              , BILL_JUSO2         = #{billJuso2}      
@@ -283,50 +283,13 @@
              , RCS_EXP_CNT        = #{rcsExpCnt}      
              , KKO_EXP_CNT        = #{kkoExpCnt}      
              , PUSH_EXP_CNT       = #{pushExpCnt}     
-             , MONTH_EXP_AMOUNT   = #{monthExpAmount}       
+             , MONTH_EXP_AMOUNT   = #{monthExpAmount}
+             , HANDLE_REASON      = null
+             , HANDLE_ID          = null
+             , HANDLE_DT          = null
+             , REG_ID             = #{userId}
+             , REG_DT             = now()
          WHERE CORP_ID            = #{corpId}
            AND BILL_ID            = #{billId}  
 	</update>
-    
-    <insert id="insertSenderUpSeq">
-        /* signUp.insertSenderUpSeq - 한도상향요청 등록 */
-		INSERT INTO CM_SENDER_UP_REQ (
-		      CORP_ID
-		    , REQ_AMOUT
-		    , REQ_REASON
-		    , STATUS
-		    , REQ_ID
-		    , REQ_DT
-		    , APP_AMOUNT
-		    , HANDLE_REASON
-		    , HANDLE_ID
-		    , HANDLE_DT
-		) VALUES (
-		      #{corpId}
-		    , #{reqAmout}
-		    , #{reqReason}
-		    , #{status}
-		    , #{reqId}
-		    , #{reqDt}
-		    , #{appAmount}
-		    , #{handleReason}
-		    , #{handleId}
-		    , #{handleDt}
-		)
-    </insert>
-    
-    <update id="updateSenderUpSeq">
-        /* signUp.updateSenderUpSeq - 한도상향요청 수정 */
-		UPDATE CM_SENDER_UP_REQ
-		   SET REQ_AMOUT     = #{reqAmout}    
-		     , REQ_REASON    = #{reqReason}   
-		     , STATUS        = #{status}      
-		     , REQ_ID        = #{reqId}       
-		     , REQ_DT        = #{reqDt}       
-		     , APP_AMOUNT    = #{appAmount}   
-		     , HANDLE_REASON = #{handleReason}
-		     , HANDLE_ID     = #{handleId}       
-		     , HANDLE_DT     = #{handleDt}            
-        WHERE CORP_ID        = #{corpId}
-    </update>
 </mapper>

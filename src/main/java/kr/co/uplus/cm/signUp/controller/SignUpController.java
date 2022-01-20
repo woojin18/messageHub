@@ -194,15 +194,12 @@ public class SignUpController implements Serializable{
 		paramMap.put("payMthdCd", payMthdCd);       
 		paramMap.put("payDt", payDt);           
 		paramMap.put("napCmpNm", napCmpNm);       
-		AesEncryptor encrypt = new AesEncryptor(); // 암호화
-		paramMap.put("napJumin", encrypt.encrypt(napJumin));        
+		paramMap.put("napJumin", napJumin);        
 		paramMap.put("bankCd", bankCd);          
 		paramMap.put("bankNo", bankNo);          
 		paramMap.put("cardCd", cardCd);          
 		paramMap.put("cardNo", cardNo1+cardNo2+cardNo3+cardNo4);
-		if (StringUtils.isNotEmpty(cardValdEndYymm1)) {
-			paramMap.put("cardValdEndYymm", encrypt.encrypt(cardValdEndYymm1+cardValdEndYymm2));
-		}
+		paramMap.put("cardValdEndYymm", cardValdEndYymm1+cardValdEndYymm2);
 		paramMap.put("serviceId", serviceId);       
 		paramMap.put("smsExpCnt", smsExpCnt);       
 		paramMap.put("rcsExpCnt", rcsExpCnt);       
