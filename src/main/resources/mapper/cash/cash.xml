@@ -268,40 +268,35 @@
 
     <select id="selectCalListCnt" resultType="int">
         /* cash.selectCalListCnt */
-        SELECT COUNT(1) AS CNT
-          FROM cm_console.CM_CORP_RECIPIENT a
-         WHERE a.CORP_ID        = #{corpId}
-        <if test="srcAlarmGroup != null and srcAlarmGroup != ''">
-           AND EXISTS(SELECT 1 FROM cm_console.CM_CORP_RECEPT_GROUP x, cm_console.CM_CORP_GROUP_RECIPIENT y WHERE x.RECEPT_GROUP_ID = y.RECEPT_GROUP_ID AND y.RECIPIENT_ID = a.RECIPIENT_ID AND x.RECEPT_GROUP_NAME LIKE CONCAT('%',#{srcAlarmGroup},'%'))
-        </if>
-        <if test="srcRecipientName != null and srcRecipientName != ''">
-           AND RECIPIENT_NAME LIKE CONCAT('%',#{srcRecipientName},'%')
-        </if>
-        <if test="srcHpNumber != null and srcHpNumber != ''">
-           AND HP_NUMBER  LIKE CONCAT('%',#{srcHpNumber},'%')
-        </if>
+        SELECT COUNT(1)
+          FROM (
+	        SELECT 1
+	          FROM cm_console.CM_CAL_HIST  a
+	             , cm_bo.CM_PRODUCT_UNIT   b
+	         WHERE a.PRODUCT_CODE      = b.PRODUCT_CODE
+	           AND YM      LIKE CONCAT(#{srcMonth},'%')
+	           AND CORP_ID = 'COMBB4XfyI'
+	         GROUP BY SUBSTR(YM, 1,7), BILL_TYPE, b.PRODUCT_NAME ) AS a
     </select>
     
     <select id="selectCalList" resultType="camel">
         /* cash.selectCalList */
-        SELECT @ROWNUM := @ROWNUM + 1 AS ROWNUM
-             , RECIPIENT_ID 
-             , RECIPIENT_NAME 
-             , (SELECT GROUP_CONCAT(RECEPT_GROUP_NAME ORDER BY RECEPT_GROUP_NAME) FROM cm_console.CM_CORP_RECEPT_GROUP x, cm_console.CM_CORP_GROUP_RECIPIENT y WHERE x.RECEPT_GROUP_ID = y.RECEPT_GROUP_ID AND y.RECIPIENT_ID = a.RECIPIENT_ID) AS RECEPT_GROUP
-             , HP_NUMBER 
-          FROM cm_console.CM_CORP_RECIPIENT a, (SELECT @ROWNUM:=0) TMP
-         WHERE a.CORP_ID        = #{corpId}
-        <if test="srcAlarmGroup != null and srcAlarmGroup != ''">
-           AND EXISTS(SELECT 1 FROM cm_console.CM_CORP_RECEPT_GROUP x, cm_console.CM_CORP_GROUP_RECIPIENT y WHERE x.RECEPT_GROUP_ID = y.RECEPT_GROUP_ID AND y.RECIPIENT_ID = a.RECIPIENT_ID AND x.RECEPT_GROUP_NAME LIKE CONCAT('%',#{srcAlarmGroup},'%'))
-        </if>
-        <if test="srcRecipientName != null and srcRecipientName != ''">
-           AND RECIPIENT_NAME LIKE CONCAT('%',#{srcRecipientName},'%')
-        </if>
-        <if test="srcHpNumber != null and srcHpNumber != ''">
-           AND HP_NUMBER  LIKE CONCAT('%',#{srcHpNumber},'%')
-        </if>
-         ORDER BY REG_DT DESC 
+		SELECT SUBSTR(YM, 1,7) AS YM
+		     , (CASE BILL_TYPE WHEN 'P' THEN '프로젝트' WHEN 'D' THEN '부서빌링' END) AS BILL_TYPE
+		     , (CASE BILL_TYPE WHEN 'P' THEN (SELECT PROJECT_NAME FROM cm_console.CM_PROJECT x WHERE x.CORP_ID = a.CORP_ID AND x.PROJECT_ID = a.PROJECT_ID LIMIT 1)
+		                       WHEN 'D' THEN (SELECT DEPT_NAME FROM cm_console.CM_PROJECT_SUBBILL_CODE x WHERE x.CORP_ID = a.CORP_ID AND x.DEPT_CODE = a.PROJECT_ID LIMIT 1) END) AS PROJECT_NAME
+		     , b.PRODUCT_NAME
+		     , SUM(a.SUCC_CNT) AS CNT 
+		     , SUM(a.SUCC_CNT) * b.PRE_FEE AS AMT
+		  FROM cm_console.CM_CAL_HIST  a
+		     , cm_bo.CM_PRODUCT_UNIT   b
+		 WHERE a.PRODUCT_CODE      = b.PRODUCT_CODE
+           AND YM      LIKE CONCAT(#{srcMonth},'%')
+		   AND CORP_ID = 'COMBB4XfyI'
+		 GROUP BY SUBSTR(YM, 1,7), BILL_TYPE, b.PRODUCT_NAME
+        <if test='pagingYn == "Y" '>
          LIMIT #{offset}, #{listSize}
+        </if>
     </select>
     
     <select id="selectDeptList" resultType="camel">
@@ -310,6 +305,7 @@
 		     , DEPT_CODE
 		     , USE_YN
 		     , (CASE USE_YN WHEN 'Y' THEN '예' ELSE '아니오' END) AS USE_YN_NM
+             , a.BILL_ID AS ORG_BILL_ID
 		     , a.BILL_ID 
 		     , b.BILL_NAME
 		     , DATE_FORMAT(a.REG_DT, '%Y-%m-%d') AS REG_DT
@@ -327,6 +323,7 @@
              , BILL_NAME
           FROM cm_console.CM_BILL a
          WHERE a.CORP_ID = #{corpId}
+           AND BILL_TYPE = 'DEPART'
          ORDER BY BILL_NAME 
     </select>
     
@@ -356,11 +353,12 @@
     <update id="updateDept">
         /* cash.updateDept */
         UPDATE cm_console.CM_PROJECT_SUBBILL_CODE
-          SET  USE_YN    = #{useYn}
+          SET  BILL_ID   = #{billId}
+             , USE_YN    = #{useYn}
              , DEPT_NAME = #{deptName}
              , UPD_DT    = now()
          WHERE DEPT_CODE = #{deptCode}
-           AND BILL_ID   = #{billId}
+           AND BILL_ID   = #{orgBillId}
            AND CORP_ID   = #{corpId}
 	</update>
     

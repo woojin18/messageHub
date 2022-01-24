@@ -1,6 +1,5 @@
 package kr.co.uplus.cm.cash.service;
 
-import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.Base64.Encoder;
 import java.util.HashMap;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.uplus.cm.common.consts.DB;
+import kr.co.uplus.cm.common.crypto.AesEncryptor;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.config.ApiConfig;
 import kr.co.uplus.cm.utils.ApiInterface;
@@ -545,6 +545,18 @@ public class CashService {
 	public void saveDept(Map<String, Object> params) throws Exception {
 		Boolean isNew = (Boolean) params.get("isNew");
 		if (isNew) {
+			if (StringUtils.isEmpty((String)  params.get("billId"))) {
+				params.put("billId", CommonUtils.getCommonId("BIL", 7));
+				params.put("billStatus", "REQ");
+				AesEncryptor encrypt = new AesEncryptor(); // 암호화
+				if (StringUtils.isNotEmpty((String) params.get("napJumin"))) {
+					params.put("napJumin", encrypt.encrypt((String) params.get("napJumin")));
+				}
+				if (StringUtils.isNotEmpty((String) params.get("cardValdEndYymm"))) {
+					params.put("cardValdEndYymm", encrypt.encrypt((String) params.get("cardValdEndYymm")));
+				}
+				generalDao.insertGernal("signUp.insertBill", params);
+			}
 			generalDao.insertGernal("cash.insertDept", params);
 		} else {
 			generalDao.updateGernal("cash.updateDept", params);

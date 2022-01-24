@@ -89,7 +89,7 @@ export default {
     watch : {
         popReset() {
             if (this.isRead) {
-                this.info.reqAmount = this.corpInfo.reqAmount;
+                this.info.reqAmount = this.corpInfo.toString().reqAmount;
                 this.info.reqReason = this.corpInfo.reqReason;
             } else {
                 this.info.reqAmount = "";
@@ -122,7 +122,8 @@ export default {
 				if(result.success) {
 					confirm.fnAlert('한도금액 상향 요청', '한도금액 상향 요청이 정상적으로 되었습니다.');
                     this.corpInfo.senderUpStatus = 'REQ';
-                    this.corpInfo.senderUpStatusNm = '한도금액 상향 요청 중';
+                    this.corpInfo.reqAmount = this.info.reqAmount ;
+                    this.corpInfo.reqReason = this.info.reqReason ;
                     jQuery("#senderUpPopup").modal("hide")
 				} else {
 					confirm.fnAlert('한도금액 상향 요청', result.message);

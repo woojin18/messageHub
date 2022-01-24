@@ -15,7 +15,7 @@
 				<div class="col-xs-12">		
 					<div class="of_h inline">
 						<div class="float-right mb15">
-							<a class="btnStyle2 borderGray" title="다운로드">다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
+							<a @click="fnExcelDownLoad" class="btnStyle2 borderGray" title="다운로드">다운로드 <i class="fal fa-arrow-to-bottom"></i></a>
 						</div>
 					</div>
 					<!-- 15개씩 보기 -->
@@ -42,19 +42,19 @@
 							<th class="text-center lc-1 end">정산금액</th>
 							</tr>
 						</thead>
-                        <tbody>
-                            <tr v-for="(data, idx) in list">
-								<td class="text-center">2021-11</td>
-								<td class="text-center">부서빌링</td>
-								<td class="text-center">천안 영업부</td>
-								<td class="text-center">SMS</td>
-								<td class="text-right">784</td>
-								<td class="text-right end">251,000</td>
-                            </tr>	
-                            <tr v-if="list.length == 0">
-                              <td class="text-center" colspan="6">검색된 내용이 없습니다.</td>
-                            </tr>
-                        </tbody>
+            <tbody>
+              <tr v-for="(data, idx) in list">
+								<td class="text-center">{{ data.ym }}</td>
+								<td class="text-center">{{ data.billType }}</td>
+								<td class="text-center">{{ data.projectName }}</td>
+								<td class="text-center">{{ data.productName }}</td>
+								<td class="text-right">{{ data.cnt | comma }}</td>
+								<td class="text-right end">{{ data.amt | comma }}</td>
+              </tr>	
+              <tr v-if="list.length == 0">
+                <td class="text-center" colspan="6">검색된 내용이 없습니다.</td>
+              </tr>
+          </tbody>
 					</table>
 					<!-- //table -->
 
@@ -95,6 +95,11 @@ export default {
     SelectLayer,
     PageLayer
   },
+	filters: {
+		comma (val) {
+			return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+		}
+	},
   mounted() {
 	this.fnCalendarInit();
     this.fnPageNoResetSearch();
@@ -122,6 +127,7 @@ export default {
     async fnSearch(pageNo) {
       this.rowData = {}
       this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNo, '1'))*1;
+			this.params.srcMonth = jQuery("#startDate").val();
       var params = Object.assign({}, this.params)
       params.pageNo = this.pageNo;
       params.listSize = this.listSize;
@@ -136,43 +142,13 @@ export default {
         }
       });
     },
-    fnSelect(event, data) {
-      this.rowData = data
-      jQuery('tbody td').removeClass('bgColor_sky')
-      jQuery(event.currentTarget).find('td').addClass('bgColor_sky')
-    },
-    fnAdd() {
-        this.popupTitle = '등록'
-        this.rowData = {}
-        this.popReset = this.popReset + 1
-        jQuery("#recipientPopup").modal("show")
-    },
-    fnEdit(idx) {
-        this.popupTitle = '수정'
-        this.rowData = this.list[idx]
-        this.popReset = this.popReset + 1
-        jQuery("#recipientPopup").modal("show")
-    },
-    fnDel() {
-      if(this.rowData.recipientId == null) {
-        confirm.fnAlert("삭제할 항목을 선택해주세요.", "")
-        return false
-      }
-      eventBus.$on('callbackEventBus', this.fnDelete)
-      confirm.fnConfirm( "삭제 하시겠습니까?", "", "삭제")
-    },
-    fnDelete() {
-      var params = Object.assign({}, this.rowData)
-      recipientApi.delRecipient(params).then(response =>{
-				var result = response.data;
-      	if(result.success) {
-					confirm.fnAlert("삭제 되었습니다.", "");
-					this.fnPageNoResetSearch();
-				}else{
-					confirm.fnAlert(result.message, "");
-				}
-      });
-    }
+		//엑셀 다운로드
+		fnExcelDownLoad() {			
+			this.params.srcMonth = jQuery("#startDate").val();
+      var params = Object.assign({}, this.params)
+
+			cashApi.excelDownloadCalList(params);
+		}
   }
 }
 </script>

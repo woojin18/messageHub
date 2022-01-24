@@ -246,7 +246,7 @@
 			<input type="hidden" name="m" value="checkplusService">						<!-- 필수 데이타로, 누락하시면 안됩니다. -->
 			<input type="hidden" name="EncodeData" v-model="sEncData">		<!-- 위에서 업체정보를 암호화 한 데이타입니다. -->
 		</form>
-		<billPopup :popReset="popReset4" :bill.sync="bill"></billPopup>
+		<billRegPopup :popReset="popReset4" :bill.sync="bill"></billRegPopup>
 	</div>
 </template>
 
@@ -257,7 +257,7 @@ import signUpApi from "@/modules/signUp/service/api"
 import chkCorpPopup from "@/modules/signUp/components/bp-selectCorpPopup"
 import selSalesManPopup from "@/modules/signUp/components/bp-selectSaleMan"
 import addrPopup from "@/modules/signUp/components/bp-addrPopup"
-import billPopup from "@/modules/signUp/components/bp-bill"
+import billRegPopup from "@/modules/signUp/components/bp-bill"
 
 import customereApi from "@/modules/customer/service/customerApi.js";
 import axios from 'axios'
@@ -268,7 +268,7 @@ export default {
 		chkCorpPopup,
 		addrPopup,
 		selSalesManPopup,
-		billPopup
+		billRegPopup
 	},
 	props: {
     	authKey : String,
@@ -327,7 +327,7 @@ export default {
 			feeType : 'PRE',
 			bill : {
 				  billRegNo : ''
-				, billType : ''
+				, billType : 'PROJECT'
 				, billName : ''
 				, billStatus : ''
 				, napCustKdCd : ''
@@ -426,24 +426,23 @@ export default {
 			});
 		},
 		signUp () {
-			// TODO : 개발 이후 Validation 처리
 			// 기초 validation 처리
-			// var defaultVali = true;
-			// defaultVali = this.defaultVali();
-			// if(!defaultVali) return false;
+			var defaultVali = true;
+			defaultVali = this.defaultVali();
+			if(!defaultVali) return false;
 
 			// 신규 고객사 validation
-			// if (this.selRegno == ""){
-			// 	var custVali = true;
-			// 	custVali = this.custVali();
-			// 	if(!custVali) return false;
-			// } 
+			if (this.selRegno == ""){
+				var custVali = true;
+				custVali = this.custVali();
+				if(!custVali) return false;
+			} 
 
-			// var regno =  this.$gfnCommonUtils.isEmpty(this.selRegno) ? this.regno : this.selRegno;
+			var regno =  this.$gfnCommonUtils.isEmpty(this.selRegno) ? this.regno : this.selRegno;
 			
-			// // 사업자 번호 유효성 검사
-			// var regnoVali = this.regnoVali(regno);
-			// if(!regnoVali) return false;
+			// 사업자 번호 유효성 검사
+			var regnoVali = this.regnoVali(regno);
+			if(!regnoVali) return false;
 
 			// 청구정보 유효성 검사
 			if (this.feeType == 'POST') {
@@ -769,11 +768,10 @@ export default {
 			this.$router.push({name : "login"});
 		},
 		fnSelCorp(){
-			// TODO : 개발 이후 Validation 처리
-			// if(!this.phoneCertiChk){
-			// 	confirm.fnAlert("","휴대폰 본인인증을 완료해주세요.");
-			// 	return false;
-			// }
+			if(!this.phoneCertiChk){
+				confirm.fnAlert("","휴대폰 본인인증을 완료해주세요.");
+				return false;
+			}
 
 			if(this.regno == ""){
 				confirm.fnAlert("","사업자번호는 필수 입력입니다.");
@@ -935,7 +933,7 @@ export default {
 		// 청구정보 팝업
 		fnBill(){
 			this.popReset4 += 1;
-			jQuery("#billPopup").modal("show");
+			jQuery("#billRegPopup").modal("show");
 		},
 	}
 }

@@ -275,6 +275,15 @@
             ON A.PRODUCT_CODE = B.PRODUCT_CODE 
     </select>
     
+    <select id="selectProductUnit" resultType="camel">
+        /* use.selectProductUnit */
+        SELECT  A.CH_GRP
+        ,       SUM(A.PRE_FEE) / COUNT(A.PRODUCT_CODE) AS AVG_FEE
+        FROM cm_bo.CM_PRODUCT_UNIT A
+       WHERE A.USE_YN = 'Y'
+       GROUP BY A.CH_GRP
+    </select>
+    
     <select id="selectUseHistFromCmStatChDay" resultType="camel">
     /* use.selectUseHistFromCmStatChDay */
         select  B.PROJECT_NAME 

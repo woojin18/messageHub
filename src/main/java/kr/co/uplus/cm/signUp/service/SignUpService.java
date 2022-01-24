@@ -221,9 +221,28 @@ public class SignUpService {
 		if ("POST".equals(params.get("feeType"))) {
 			// 청구정보 등록 2022-01-10
 			paramMap.put("billId", "0");
-			paramMap.put("billType", "PROJECT");
 			paramMap.put("billName", paramMap.get("corpNm")); //청구유형이PROJECT면 고객사명
 			paramMap.put("billStatus", "REQ");
+			// 월 예상금액 계산
+			List productList = generalDao.selectGernalList("use.selectProductUnit", null);
+			double smsPrice = 0;
+			double rcsPrice = 0;
+			double kkoPrice = 0;
+			double pushPrice = 0;
+			for (Object obj : productList) {
+				Map data = (Map) obj;
+				if ("SMS/MMS".equals(data.get("chGrp"))) {
+					smsPrice = (double) data.get("avgFee");
+				} else if ("RCS".equals(data.get("chGrp"))) {
+					rcsPrice = (double) data.get("avgFee");
+				} else if ("KKO".equals(data.get("chGrp"))) {
+					rcsPrice = (double) data.get("avgFee");
+				} else if ("PUSH".equals(data.get("chGrp"))) {
+					rcsPrice = (double) data.get("avgFee");
+				}
+			}
+			paramMap.put("monthExpAmount", Integer.parseInt(paramMap.get("smsExpCnt").toString()) * smsPrice + Integer.parseInt(paramMap.get("rcsExpCnt").toString()) * rcsPrice + Integer.parseInt(paramMap.get("kkoExpCnt").toString()) * kkoPrice + Integer.parseInt(paramMap.get("pushExpCnt").toString()) * pushPrice);
+			
 			AesEncryptor encrypt = new AesEncryptor(); // 암호화
 			if (StringUtils.isNotEmpty((String) paramMap.get("napJumin"))) {
 				paramMap.put("napJumin", encrypt.encrypt((String) paramMap.get("napJumin")));

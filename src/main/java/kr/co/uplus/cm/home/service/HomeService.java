@@ -469,6 +469,28 @@ public class HomeService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void saveBill(Map<String, Object> params) throws Exception{
 		params.put("billStatus", "REQ");
+		params.put("cardNo", (String)params.get("cardNo1")+params.get("cardNo2")+params.get("cardNo3")+params.get("cardNo4"));
+		params.put("cardValdEndYymm", (String)params.get("cardValdEndYymm1")+params.get("cardValdEndYymm2"));
+		// 월 예상금액 계산
+		List productList = generalDao.selectGernalList("use.selectProductUnit", null);
+		double smsPrice = 0;
+		double rcsPrice = 0;
+		double kkoPrice = 0;
+		double pushPrice = 0;
+		for (Object obj : productList) {
+			Map data = (Map) obj;
+			if ("SMS/MMS".equals(data.get("chGrp"))) {
+				smsPrice = (double) data.get("avgFee");
+			} else if ("RCS".equals(data.get("chGrp"))) {
+				rcsPrice = (double) data.get("avgFee");
+			} else if ("KKO".equals(data.get("chGrp"))) {
+				rcsPrice = (double) data.get("avgFee");
+			} else if ("PUSH".equals(data.get("chGrp"))) {
+				rcsPrice = (double) data.get("avgFee");
+			}
+		}
+		params.put("monthExpAmount", Integer.parseInt(params.get("smsExpCnt").toString()) * smsPrice + Integer.parseInt(params.get("rcsExpCnt").toString()) * rcsPrice + Integer.parseInt(params.get("kkoExpCnt").toString()) * kkoPrice + Integer.parseInt(params.get("pushExpCnt").toString()) * pushPrice);
+		
 		AesEncryptor encrypt = new AesEncryptor(); // 암호화
 		if (StringUtils.isNotEmpty((String) params.get("napJumin"))) {
 			params.put("napJumin", encrypt.encrypt((String) params.get("napJumin")));

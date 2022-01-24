@@ -1,13 +1,13 @@
 <template>
-<div class="modal modalStyle" id="billPopup" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal modalStyle" id="billRegPopup" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
                 <div>
                     <h2>청구정보</h2>
                     <hr>
-                    <h4 class="mt10">월 발송 예상 건수</h4>
-                    <div class="joinBox mt10">							
+                    <h4 v-if="set.billType == 'PROJECT'" class="mt10">월 발송 예상 건수</h4>
+                    <div v-if="set.billType == 'PROJECT'" class="joinBox mt10">							
                         <div class="of_h">
                             <div class="float-left" style="width:45%">
                                 <div class="float-left" style="width:30%"><h5>문자</h5></div>
@@ -37,7 +37,12 @@
                             </div>
                         </div>
                     </div>
-
+                    <div v-if="set.billType == 'DEPART'" class="of_h mt10">
+                        <div class="float-left" style="width:22%"><h5>청구계정 명*</h5></div>
+                        <div class="float-left" style="width:78%">
+                            <input type="text" class="inputStyle" placeholder="청구계정 명" v-model="set.billName">
+                        </div>
+                    </div>
                     <div class="of_h mt10">
                         <div class="float-left" style="width:22%"><h5>청구서 수신</h5></div>
                         <div class="float-left" style="width:78%">
@@ -193,7 +198,7 @@ import confirm from "@/modules/commonUtil/service/confirm.js";
 import signUpApi from "@/modules/signUp/service/api";
 
 export default {
-    name : 'billPopup',
+    name : 'billRegPopup',
 	components: {
 		addrPopup
 	},
@@ -446,20 +451,26 @@ export default {
 			})
         },
         fnConfirm(){
-            if(this.set.smsExpCnt == null || this.set.smsExpCnt == ""){
-                confirm.fnAlert("", "월 발송 예상 건수(문자)를 입력해주세요.");
-                return false;
+            if (this.set.billType == 'PROJECT') {
+                if(this.set.smsExpCnt == null || this.set.smsExpCnt == ""){
+                    confirm.fnAlert("", "월 발송 예상 건수(문자)를 입력해주세요.");
+                    return false;
+                }
+                if(this.set.rcsExpCnt == null || this.set.rcsExpCnt == ""){
+                    confirm.fnAlert("", "월 발송 예상 건수(RCS)를 입력해주세요.");
+                    return false;
+                }
+                if(this.set.kkoExpCnt == null || this.set.kkoExpCnt == ""){
+                    confirm.fnAlert("", "월 발송 예상 건수(카카오)를 입력해주세요.");
+                    return false;
+                }
+                if(this.set.pushExpCnt == null || this.set.pushExpCnt == ""){
+                    confirm.fnAlert("", "월 발송 예상 건수(Push)를 입력해주세요.");
+                    return false;
+                }
             }
-            if(this.set.rcsExpCnt == null || this.set.rcsExpCnt == ""){
-                confirm.fnAlert("", "월 발송 예상 건수(RCS)를 입력해주세요.");
-                return false;
-            }
-            if(this.set.kkoExpCnt == null || this.set.kkoExpCnt == ""){
-                confirm.fnAlert("", "월 발송 예상 건수(카카오)를 입력해주세요.");
-                return false;
-            }
-            if(this.set.pushExpCnt == null || this.set.pushExpCnt == ""){
-                confirm.fnAlert("", "월 발송 예상 건수(Push)를 입력해주세요.");
+            if(this.set.billType == 'DEPART' && this.set.billName == ""){
+                confirm.fnAlert("", "청구계정명을 입력해주세요.");
                 return false;
             }
             if(this.set.billRegNo == ""){
@@ -547,10 +558,10 @@ export default {
                 this.set.cardValdEndYymm2 = "";
             }
 			this.$emit("update:bill", this.set);
-            jQuery("#billPopup").modal("hide")
+            jQuery("#billRegPopup").modal("hide")
         },
         fnClose() {
-            jQuery("#billPopup").modal("hide")
+            jQuery("#billRegPopup").modal("hide")
         }
     }
 }

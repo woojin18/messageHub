@@ -50,7 +50,7 @@
 									<td class="text-center">{{ data.deptCode }}</td>
 									<td class="text-center">{{ data.useYnNm }}</td>
 									<td class="text-center">
-										<a title="청구정보 보기" class="color1">{{ data.billName }}</a>
+										<a @click="fnView(idx)" title="청구정보 보기" class="color1">{{ data.billName }}</a>
 									</td>
 									<td class="text-center">{{ data.regDt }}</td>
 									<td class="text-center end"><a @click="fnEdit(idx)" class="btnStyle1 borderLightGray small mr5" >수정</a><a @click="fnDel(idx)" class="btnStyle1 borderLightGray small mr5">삭제</a></td>
@@ -67,6 +67,7 @@
 			</div>
     </article>  
     <deptPop :popupTitle="popupTitle" :rowData="rowData" :popReset="popReset"/>
+	<billPopup :popReset="popReset1" :isRead="isRead" :corpInfo="rowData"></billPopup>
     </div>
 </template>
 
@@ -77,29 +78,34 @@ import SelectLayer from '@/components/SelectLayer.vue';
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import cashApi from "@/modules/cash/service/api"
+import billPopup from "@/modules/acHome/components/bp-bill"
+import tokenSvc from '@/common/token-service';
 
 export default {
   data() {
     return {
-      params: {
-      },
+	  roleCd : '',
       popupTitle: '등록',
       list: [],
       rowData: {},
       popReset: 0,
+	  popReset1 : 0,				// 팝업 초기화할 num
+	  isRead : true,
       popState: ""
     }
   },
   components: {
     deptPop,
     SelectLayer,
-    PageLayer
+    PageLayer,
+    billPopup
   },
   mounted() {
     this.fnSearch();
   },
   methods: {
     async fnSearch() {
+	  this.roleCd = tokenSvc.getToken().principal.role;
       this.rowData = {}
       var params = Object.assign({}, this.params)
       await cashApi.selectDeptList(params).then(response =>{
@@ -112,12 +118,30 @@ export default {
       });
     },
     fnAdd() {
+		if (this.roleCd != 'OWNER') {
+			confirm.fnAlert("", "Owner 권한 사용자만 가능합니다");
+			return
+		}
         this.popupTitle = '등록'
         this.rowData = {}
         this.popReset = this.popReset + 1
         jQuery("#deptPop").modal("show")
     },
+	fnView(idx){
+		if (this.roleCd != 'OWNER') {
+			confirm.fnAlert("", "Owner 권한 사용자만 가능합니다");
+			return
+		}
+      	this.rowData = this.list[idx]
+		this.isRead = true;
+		this.popReset1 += 1;
+		jQuery("#billPopup").modal("show");
+	},
     fnEdit(idx) {
+		if (this.roleCd != 'OWNER') {
+			confirm.fnAlert("", "Owner 권한 사용자만 가능합니다");
+			return
+		}
         this.popupTitle = '수정'
         this.rowData = this.list[idx]
         this.rowData.isNew = false
@@ -125,6 +149,10 @@ export default {
         jQuery("#deptPop").modal("show")
     },
     fnDel(idx) {
+		if (this.roleCd != 'OWNER') {
+			confirm.fnAlert("", "Owner 권한 사용자만 가능합니다");
+			return
+		}
       this.rowData = this.list[idx]
       eventBus.$on('callbackEventBus', this.fnDelete)
       confirm.fnConfirm( "삭제 하시겠습니까?", "", "삭제")

@@ -1,6 +1,7 @@
 package kr.co.uplus.cm.cash.controller;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import kr.co.uplus.cm.cash.service.CashService;
 import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.utils.CommonUtils;
+import kr.co.uplus.cm.utils.DateUtil;
 import kr.co.uplus.cm.utils.GeneralDao;
 
 @RestController
@@ -319,5 +322,38 @@ public class CashController {
 		RestResult<Object> rtn = new RestResult<Object>(true);
 		cashService.delDept(params);
 		return rtn;
+	}
+	
+
+	/**
+	 * 정산금액 엑셀다운로드
+	 * @param request
+	 * @param response
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	@PostMapping(path = "/excelDownloadCalList")
+	public ModelAndView excelDownloadCalList(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) throws Exception {
+		List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		params.put("svcType", request.getHeader("svcType"));
+		
+		map.put("sheetTitle", "정산금액");
+		map.put("colLabels", new String[] {"정산년월", "청구유형", "프로젝트/부서명", "상품명", "건수", "정산금액"});
+		map.put("colIds", new String[] {"ym", "billType", "projectName", "productName", "cnt", "amt"});
+		map.put("numColIds", new String[] {});
+		map.put("figureColIds", new String[] {});
+		map.put("colDataList", generalDao.selectGernalList("cash.selectCalList", params));
+		sheetList.add(map);
+
+		ModelAndView model = new ModelAndView("commonXlsxView");
+		model.addObject("excelFileName", "calList"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
+		model.addObject("sheetList", sheetList);
+
+		return model;
 	}
 }

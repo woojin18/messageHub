@@ -6,8 +6,8 @@
                 <div>
                     <h2>청구정보</h2>
                     <hr>
-                    <h4 class="mt10">월 발송 예상 건수</h4>
-                    <div class="joinBox mt10">							
+                    <h4 v-if="bill.billType == 'PROJECT'" class="mt10">월 발송 예상 건수</h4>
+                    <div v-if="bill.billType == 'PROJECT'" class="joinBox mt10">							
                         <div class="of_h">
                             <div class="float-left" style="width:45%">
                                 <div class="float-left" style="width:30%"><h5>문자</h5></div>
@@ -37,6 +37,12 @@
                             </div>
                         </div>
                         <div class="color4 mt15" style="width:100%">월 한도금액 제한 기준을 위해 메시지 발송 예상 건수를 받습니다.<br>기본 월 한도 금액은 100만원으로 제한합니다. <br>만약 100만원 초과 한도를 설정하시려면 고객센터로 문의 바랍니다.<br>(신용정보, 담보 등에 따라 초고 가능)</div>
+                    </div>
+                    <div v-if="bill.billType == 'DEPART'" class="of_h mt10">
+                        <div class="float-left" style="width:22%"><h5>청구계정 명*</h5></div>
+                        <div class="float-left" style="width:78%">
+                            <input type="text" class="inputStyle" placeholder="청구계정 명" :disabled="isRead" v-model="bill.billName">
+                        </div>
                     </div>
                     <div class="of_h mt10">
                         <div class="float-left" style="width:22%"><h5>청구서 수신</h5></div>
@@ -288,30 +294,38 @@ export default {
 			return this.bill.billRegNo = this.bill.billRegNo.replace(/[^0-9]/g, '');
 		},
 		'bill.billTelNo'() {
+            if (this.bill.billTelNo == null) return;
 			return this.bill.billTelNo = this.bill.billTelNo.replace(/[^0-9]/g, '');
 		},
 		'bill.napJumin'() {
 			return this.bill.napJumin = this.bill.napJumin.replace(/[^0-9]/g, '');
 		},
 		'bill.bankNo'() {
+            if (this.bill.bankNo == null) return;
 			return this.bill.bankNo = this.bill.bankNo.replace(/[^0-9]/g, '');
 		},
 		'bill.cardNo1'() {
+            if (this.bill.cardNo1 == null) return;
 			return this.bill.cardNo1 = this.bill.cardNo1.replace(/[^0-9]/g, '');
 		},
 		'bill.cardNo2'() {
+            if (this.bill.cardNo2 == null) return;
 			return this.bill.cardNo2 = this.bill.cardNo2.replace(/[^0-9]/g, '');
 		},
 		'bill.cardNo3'() {
+            if (this.bill.cardNo3 == null) return;
 			return this.bill.cardNo3 = this.bill.cardNo3.replace(/[^0-9]/g, '');
 		},
 		'bill.cardNo4'() {
+            if (this.bill.cardNo4 == null) return;
 			return this.bill.cardNo4 = this.bill.cardNo4.replace(/[^0-9]/g, '');
 		},
 		'bill.cardValdEndYymm1'() {
+            if (this.bill.cardValdEndYymm1 == null) return;
 			return this.bill.cardValdEndYymm1 = this.bill.cardValdEndYymm1.replace(/[^0-9]/g, '');
 		},
 		'bill.cardValdEndYymm2'() {
+            if (this.bill.cardValdEndYymm2 == null) return;
 			return this.bill.cardValdEndYymm2 = this.bill.cardValdEndYymm2.replace(/[^0-9]/g, '');
 		}
     },
