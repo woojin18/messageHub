@@ -99,8 +99,10 @@ export default {
 			, napCmpNm : ''
 			, napJumin : ''
 			, bankCd : ''
+			, bankNm : ''
 			, bankNo : ''
 			, cardCd : ''
+			, cardCmpName : ''
 			, cardNo1 : ''
 			, cardNo2 : ''
 			, cardNo3 : ''
@@ -123,11 +125,11 @@ export default {
   },
   watch : {
     popReset(){
+	this.load();
       this.init();
     }
   },
   mounted() {
-	this.load();
   },
   methods: {
 	load() {
@@ -148,6 +150,45 @@ export default {
 		    useYn : 'Y',
 		    billId : ''
 	  }, this.rowData)
+	  this.bill = {
+			  billRegNo : ''
+			, billType : 'DEPART'
+			, billName : ''
+			, billStatus : ''
+			, napCustKdCd : ''
+			, billKind : 'Y'
+			, billEmail : ''
+			, billTelNo : ''
+			, billZip : ''
+			, billJuso : ''
+			, billJuso2 : ''
+			, payMthdCd : 'CM'
+			, payDt : ''
+			, napCmpNm : ''
+			, napJumin : ''
+			, bankCd : ''
+			, bankNm : ''
+			, bankNo : ''
+			, cardCd : ''
+			, cardCmpName : ''
+			, cardNo1 : ''
+			, cardNo2 : ''
+			, cardNo3 : ''
+			, cardNo4 : ''
+			, cardValdEndYymm1 : ''
+			, cardValdEndYymm2 : ''
+			, serviceId : ''
+			, smsExpCnt : null
+			, rcsExpCnt : null
+			, kkoExpCnt : null
+			, pushExpCnt : null
+			, monthExpAmount : 0
+			, handleReason : ''
+			, handleId : ''
+			, handleDt : ''
+			, isCert : false
+			, isAgree : false
+		}
   },
 	fnSave() {
       //필수항목 check
@@ -212,11 +253,11 @@ export default {
 			confirm.fnAlert("", "납부고객구분을 선택해주세요.");
 			return false;
 		}
-		if(this.bill.payDt == ""){
+		if(this.bill.payDt == "" && this.bill.payMthdCd != "GR"){
 			confirm.fnAlert("", "납부일을 선택해주세요.");
 			return false;
 		}
-		if(this.bill.payDt == ""){
+		if(this.bill.napCmpNm == ""){
 			confirm.fnAlert("", "납부자명을 입력해주세요.");
 			return false;
 		}

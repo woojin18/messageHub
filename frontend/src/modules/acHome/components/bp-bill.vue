@@ -126,7 +126,7 @@
                         <div class="float-left" style="width:78%">
                             <select class="selectStyle2" style="width:50%" title="은행 선택란" :disabled="isRead" v-model="bill.bankCd" @change="fnCngCertInfo">
                                 <option value="">선택하세요</option>
-                                <option  v-for="(row, index) in bankCdArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
+                                <option  v-for="(row, index) in bankCdArr" :key="index" :value="row.codeVal1">{{ row.codeName1 }}</option>
                             </select>
                         </div>
                     </div>
@@ -143,7 +143,7 @@
                         <div class="float-left" style="width:78%">
                             <select class="selectStyle2" style="width:50%" title="카드종류 선택란" :disabled="isRead" v-model="bill.cardCd" @change="fnCngCertInfo">
                                 <option value="">선택하세요</option>
-                                <option  v-for="(row, index) in cardCdArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
+                                <option  v-for="(row, index) in cardCdArr" :key="index" :value="row.codeVal1">{{ row.codeName1 }}</option>
                             </select>
                         </div>
                     </div>
@@ -574,11 +574,11 @@ export default {
                 confirm.fnAlert("", "납부고객구분을 선택해주세요.");
                 return false;
             }
-            if(this.bill.payDt == ""){
+            if(this.bill.payDt == "" && this.bill.payMthdCd != "GR"){
                 confirm.fnAlert("", "납부일을 선택해주세요.");
                 return false;
             }
-            if(this.bill.payDt == ""){
+            if(this.bill.napCmpNm == ""){
                 confirm.fnAlert("", "납부자명을 입력해주세요.");
                 return false;
             }
@@ -633,6 +633,9 @@ export default {
                 this.bill.cardNo4 = "";
                 this.bill.cardValdEndYymm1 = "";
                 this.bill.cardValdEndYymm2 = "";
+            }
+            if (this.bill.payMthdCd != "GR") {
+                this.bill.payDt = "";
             }
 			eventBus.$on('callbackEventBus', this.fnConfirmCallback);
 			confirm.fnConfirm('청구정보', '정말로 요청하시겠습니까?', '확인');

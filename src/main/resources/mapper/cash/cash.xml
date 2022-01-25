@@ -275,7 +275,7 @@
 	             , cm_bo.CM_PRODUCT_UNIT   b
 	         WHERE a.PRODUCT_CODE      = b.PRODUCT_CODE
 	           AND YM      LIKE CONCAT(#{srcMonth},'%')
-	           AND CORP_ID = 'COMBB4XfyI'
+	           AND CORP_ID = #{corpId}
 	         GROUP BY SUBSTR(YM, 1,7), BILL_TYPE, b.PRODUCT_NAME ) AS a
     </select>
     
@@ -292,7 +292,7 @@
 		     , cm_bo.CM_PRODUCT_UNIT   b
 		 WHERE a.PRODUCT_CODE      = b.PRODUCT_CODE
            AND YM      LIKE CONCAT(#{srcMonth},'%')
-		   AND CORP_ID = 'COMBB4XfyI'
+		   AND CORP_ID = #{corpId}
 		 GROUP BY SUBSTR(YM, 1,7), BILL_TYPE, b.PRODUCT_NAME
         <if test='pagingYn == "Y" '>
          LIMIT #{offset}, #{listSize}

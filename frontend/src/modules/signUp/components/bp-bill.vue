@@ -123,9 +123,9 @@
                     <div class="of_h mt10" v-show="set.payMthdCd == 'CM'">
                         <div class="float-left" style="width:22%"><h5>은행*</h5></div>
                         <div class="float-left" style="width:78%">
-                            <select class="selectStyle2" style="width:50%" title="은행 선택란" v-model="set.bankCd" @change="fnCngCertInfo">
+                            <select class="selectStyle2" style="width:50%" id="bankCd" title="은행 선택란" v-model="set.bankCd" @change="fnCngCertInfo">
                                 <option value="">선택하세요</option>
-                                <option  v-for="(row, index) in bankCdArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
+                                <option  v-for="(row, index) in bankCdArr" :key="index" :value="row.codeVal1">{{ row.codeName1 }}</option>
                             </select>
                         </div>
                     </div>
@@ -140,9 +140,9 @@
                     <div class="of_h mt10" v-show="set.payMthdCd == 'CC'">
                         <div class="float-left" style="width:22%"><h5>카드종류*</h5></div>
                         <div class="float-left" style="width:78%">
-                            <select class="selectStyle2" style="width:50%" title="카드종류 선택란" v-model="set.cardCd" @change="fnCngCertInfo">
+                            <select class="selectStyle2" style="width:50%" id="cardCd" title="카드종류 선택란" v-model="set.cardCd" @change="fnCngCertInfo">
                                 <option value="">선택하세요</option>
-                                <option  v-for="(row, index) in cardCdArr" :key="index" :value="row.codeVal1"> {{ row.codeName1 }} </option>
+                                <option  v-for="(row, index) in cardCdArr" :key="index" :value="row.codeVal1">{{ row.codeName1 }}</option>
                             </select>
                         </div>
                     </div>
@@ -232,7 +232,9 @@ export default {
 				, napJumin : ''
 				, bankCd : ''
 				, bankNo : ''
+                , bankNm : ''
 				, cardCd : ''
+                , cardCmpName : ''
 				, cardNo1 : ''
 				, cardNo2 : ''
 				, cardNo3 : ''
@@ -261,6 +263,7 @@ export default {
     watch : {
         popReset() {
             this.set = Object.assign({}, this.bill)
+            this.$forceUpdate()
         },
 		selAddr() {
 			this.fnSetCorpAddr();
@@ -497,11 +500,11 @@ export default {
                 confirm.fnAlert("", "납부고객구분을 선택해주세요.");
                 return false;
             }
-            if(this.set.payDt == ""){
+            if(this.set.payDt == "" && this.set.payMthdCd != "GR"){
                 confirm.fnAlert("", "납부일을 선택해주세요.");
                 return false;
             }
-            if(this.set.payDt == ""){
+            if(this.set.napCmpNm == ""){
                 confirm.fnAlert("", "납부자명을 입력해주세요.");
                 return false;
             }
@@ -547,15 +550,21 @@ export default {
             if (this.set.payMthdCd != "CM") {
                 this.set.bankCd = "";
                 this.set.bankNo = "";
+                this.set.bankNm = "";
+            } else {
+                this.set.bankNm = jQuery("#bankCd option:selected").text();
             }
             if (this.set.payMthdCd != "CC") {
                 this.set.cardCd = "";
+                this.set.cardCmpName = "";
                 this.set.cardNo1 = "";
                 this.set.cardNo2 = "";
                 this.set.cardNo3 = "";
                 this.set.cardNo4 = "";
                 this.set.cardValdEndYymm1 = "";
                 this.set.cardValdEndYymm2 = "";
+            } else {
+                this.set.cardCmpName = jQuery("#cardCd option:selected").text();
             }
 			this.$emit("update:bill", this.set);
             jQuery("#billRegPopup").modal("hide")

@@ -58,7 +58,7 @@ const selectBillList = (params) => {
 };
 
 const saveDept = (params) => {
-    return httpClient.post('/projectApi/cash/saveDept', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+    return httpClient.post('/projectApi/cash/saveDept', params, { headers: {"show-layer": "Yes", "activity":"SAVE"}, timeout: 150000 });
 };
 
 const delDept = (params) => {

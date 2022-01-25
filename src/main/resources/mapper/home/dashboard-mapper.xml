@@ -441,8 +441,10 @@
 	         , NAP_CMP_NM
 	         , NAP_JUMIN
 	         , BANK_CD
-	         , BANK_NO
-	         , CARD_CD
+             , (SELECT x.CODE_NAME_1 FROM cm_bo.CM_CODE x WHERE x.CODE_VAL_1 = BANK_CD AND x.CODE_TYPE_CD = 'BANK') AS BANK_NM
+             , BANK_NO
+             , CARD_CD
+             , (SELECT x.CODE_NAME_1 FROM cm_bo.CM_CODE x WHERE x.CODE_VAL_1 = CARD_CD AND x.CODE_TYPE_CD = 'CARD') AS CARD_CMP_NAME
 	         , CARD_NO
 	         , CARD_VALD_END_YYMM
 	         , SERVICE_ID

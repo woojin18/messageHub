@@ -312,7 +312,12 @@ public class CashController {
 	@PostMapping("/saveDept")
 	public RestResult<?> saveDept(@RequestBody Map<String, Object> params, HttpServletRequest request) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>(true);
-		cashService.saveDept(params);
+		try {
+			cashService.saveDept(params);
+		} catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+		}
 		return rtn;
 	}
 	
