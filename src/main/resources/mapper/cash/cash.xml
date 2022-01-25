@@ -63,7 +63,10 @@
 	<select	id ="selectCashHist_count" resultType="int">
 		/* cash.selectCashHist_count */
 		SELECT	(SELECT COUNT(1)
-                FROM    cm_console.CM_WEB_CASH_HIST
+                FROM    cm_console.CM_WEB_CASH_HIST A
+                INNER JOIN cm_bo.CM_CODE B
+					ON	B.CODE_TYPE_CD = 'PAY_TYPE'
+					AND	A.PAY_MTD = B.CODE_VAL_1
                 WHERE   STATUS != '0'
                 AND     CORP_ID = #{corpId}) + 
                 (SELECT  COUNT(1)
