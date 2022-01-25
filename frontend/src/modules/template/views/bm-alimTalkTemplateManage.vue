@@ -1,9 +1,18 @@
 <template>
   <div>
 
-    <div class="contentHeader">
+    <div class="contentHeader" style="margin-bottom:10px;">
       <h2>템플릿 > 알림톡</h2>
-      <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="알림톡 템플릿 등록/상세 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
+      <a href="#self" class="btnStyle2 backPink absolute top0 right0" @click="fnFileDown('FLET3TJ5Zz', 'alimtalk_template_guide.pdf')">알림톡 템플릿 검수 가이드 다운로드</a>
+    </div>
+
+    <!-- 본문 -->
+    <div class="border-line2 pd10 mb10">
+      <p class="color4">템플릿내용은 한/영 구분없이 1,000자까지 입력 가능합니다. 변수에 들어갈 내용의 최대 길이를 감안하여 작성해 주세요.<br>
+                        버튼 등록 시 버튼명은 변수 입력이 불가하며, 버튼 url에는 변수 입력이 가능합니다. (예. http://lguplus.com/#{변수})<br>
+                        버튼 url 등록 시 url_mobile, url_pc 링크에는 'http://', 'https://'가 포함 되어야 합니다.<br>
+                        버튼명은 최대 14자리까지 입력이 가능합니다.<br>
+                        알림톡 템플릿은 등록완료 -> 검수중 -> 승인의 단계를 가집니다. 우측 알림톡 템플릿 검수 가이드를 참고 하십시오.</p>
     </div>
 
     <div class="row">
@@ -143,17 +152,26 @@
                         <select class="float-left selectStyle2" style="width:100%" v-model="buttonInfo.linkType" @change="fnChgBtnLinkType(idx)">
                           <option v-for="buttonLinkType in buttonLinkTypeList" :key="buttonLinkType.linkType" :value="buttonLinkType.linkType">{{buttonLinkType.name}}</option>
                         </select>
+                        <center v-if="buttonInfo.linkType == 'DS'">
+                          <i class="fas fa-question-circle toolTip">
+                            <span class="toolTipText" style="width:380px">'배송조회' 버튼은 메시지 내용에 '택배사' 명과 '송장번호 패턴'을<br>
+                                                                          인식하여 자동으로 각 택배사의 배송조회 페이지로 이동하게끔 되어<br>
+                                                                          있습니다. 택배사 명과 송장번호 패턴 인식 불가능 시 패송조회 버튼은<br>
+                                                                          비활성화 됩니다.
+                            </span>
+                          </i>
+                        </center>
                       </td>
                       <td class="text-center" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
-                        <input v-if="buttonInfo.linkType == 'AC'" type="text" class="inputStyle float-left" v-model="buttonInfo.name" disabled maxlength="14">
-                        <input v-else type="text" class="inputStyle float-left" v-model="buttonInfo.name" maxlength="14">
+                        <input v-if="buttonInfo.linkType == 'AC'" type="text" class="inputStyle float-left" v-model="buttonInfo.name" disabled maxlength="14" placeholder="공백 포함 최대 14자">
+                        <input v-else type="text" class="inputStyle float-left" v-model="buttonInfo.name" maxlength="14" placeholder="공백 포함 최대 14자">
                       </td>
                       <td :class="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? 'text-left' : 'text-left of_h'">
                         <h6 v-if="buttonInfo.linkType == 'DS'" class="float-left" v-html="buttonDSDescription"></h6>
                         <h6 v-if="buttonInfo.linkType == 'WL'" class="float-left" style="width:30%">Mobile*</h6>
                         <h6 v-if="buttonInfo.linkType == 'AL'" class="float-left" style="width:30%">Android*</h6>
                         <!-- <input v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" type="text" class="inputStyle float-left" style="width:80%"> -->
-                        <input v-if="buttonInfo.linkType == 'WL'" type="text" class="inputStyle float-left" style="width:70%" v-model="buttonInfo.linkMo" maxlength="200">
+                        <input v-if="buttonInfo.linkType == 'WL'" type="text" class="inputStyle float-left" style="width:70%" v-model="buttonInfo.linkMo" maxlength="200" placeholder="[http://, https://]를 포함한 URL">
                         <input v-if="buttonInfo.linkType == 'AL'" type="text" class="inputStyle float-left" style="width:70%" v-model="buttonInfo.linkAnd" maxlength="200">
 
                       </td>
@@ -165,7 +183,7 @@
                       <td class="text-left">
                         <div v-if="buttonInfo.linkType == 'WL'">
                           <h6 class="float-left" style="width:30%">PC*</h6>
-                          <input type="text" class="inputStyle float-left" style="width:70%" v-model="buttonInfo.linkPc" maxlength="200">
+                          <input type="text" class="inputStyle float-left" style="width:70%" v-model="buttonInfo.linkPc" maxlength="200" placeholder="[http://, https://]를 포함한 URL">
                         </div>
                         <div v-if="buttonInfo.linkType == 'AL'">
                           <h6 class="float-left" style="width:30%">IOS*</h6>
@@ -217,6 +235,8 @@
 import templateApi from "@/modules/template/service/templateApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
+
+import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi";
 
 export default {
   name: 'alimTalkTemplateManage',
@@ -583,6 +603,26 @@ export default {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
+    },
+
+    fnFileDown: function(fileId, name) {
+      if(fileId != "") {
+        var params = {
+              fileId    : fileId,
+              fileNm      : name
+          };
+
+        commonUtilApi.downloadFile(params).then(response =>{
+            var result = response;
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", name); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+        });
+      }
     },
   }
 }
