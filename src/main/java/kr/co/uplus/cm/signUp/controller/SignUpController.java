@@ -244,6 +244,7 @@ public class SignUpController implements Serializable{
 	public RestResult<?> chkBank(@RequestBody Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		Map<String, Object> result = apiInterface.post("/console/v1/ucube/certify/bank", params, null);
+		rtn.setData(result.get("data"));
 		if("10000".equals(result.get("code"))) {
 		} else {
 			rtn.setSuccess(false);
@@ -257,6 +258,7 @@ public class SignUpController implements Serializable{
 	public RestResult<?> chkCard(@RequestBody Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		Map<String, Object> result = apiInterface.post("/console/v1/ucube/certify/card", params, null);
+		rtn.setData(result.get("data"));
 		if("10000".equals(result.get("code"))) {
 		} else {
 			rtn.setSuccess(false);

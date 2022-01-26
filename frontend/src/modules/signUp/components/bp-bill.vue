@@ -46,9 +46,9 @@
                     <div class="of_h mt10">
                         <div class="float-left" style="width:22%"><h5>청구서 수신</h5></div>
                         <div class="float-left" style="width:78%">
-                            <input type="radio" name="sms_agree" value="Y" v-model="set.billKind" id="sms_agree05"> <label for="sms_agree05" class="mr30">이메일</label>
-                            <input type="radio" name="sms_agree" value="C" v-model="set.billKind" id="sms_agree06"> <label for="sms_agree06" class="mr30">문자</label>
-                            <input type="radio" name="sms_agree" value="N" v-model="set.billKind" id="sms_agree07"> <label for="sms_agree07">우편</label>
+                            <input type="radio" name="set.billKind" value="Y" v-model="set.billKind" id="sms_agree05"> <label for="sms_agree05" class="mr30">이메일</label>
+                            <input type="radio" name="set.billKind" value="C" v-model="set.billKind" id="sms_agree06"> <label for="sms_agree06" class="mr30">문자</label>
+                            <input type="radio" name="set.billKind" value="N" v-model="set.billKind" id="sms_agree07"> <label for="sms_agree07">우편</label>
                         </div>
                     </div>
                     <div class="of_h mt10">
@@ -91,9 +91,9 @@
                     <div class="of_h mt10">
                         <div class="float-left" style="width:22%"><h5>납부방법*</h5></div>
                         <div class="float-left" style="width:78%">
-                            <input type="radio" name="pay02" value="CM" v-model="set.payMthdCd" id="pay04" @change="fnCngCertInfo"> <label for="pay04" class="mr30">자동이체</label>
-                            <input type="radio" name="pay02" value="CC" v-model="set.payMthdCd" id="pay05" @change="fnCngCertInfo"> <label for="pay05" class="mr30">신용카드</label>
-                            <input type="radio" name="pay02" value="GR" v-model="set.payMthdCd" id="pay06" @change="fnCngCertInfo"> <label for="pay06">지로</label>
+                            <input type="radio" name="set.payMthdCd" value="CM" v-model="set.payMthdCd" id="pay04" @change="fnCngCertInfo"> <label for="pay04" class="mr30">자동이체</label>
+                            <input type="radio" name="set.payMthdCd" value="CC" v-model="set.payMthdCd" id="pay05" @change="fnCngCertInfo"> <label for="pay05" class="mr30">신용카드</label>
+                            <input type="radio" name="set.payMthdCd" value="GR" v-model="set.payMthdCd" id="pay06" @change="fnCngCertInfo"> <label for="pay06">지로</label>
                         </div>
                     </div>
                     <div class="of_h mt10" v-show="set.payMthdCd != 'GR'">
@@ -399,11 +399,11 @@ export default {
 			signUpApi.chkBank(params).then(response => {
 				var result = response.data;
 				var vm = this;
-				if(result.success){
+				if(result.success && result.data != null && result.data.cmsResultCode == '00'){
                     confirm.fnAlert("", "인증되었습니다.");
                     vm.set.isCert = true;
 				} else {
-				    confirm.fnAlert("", result.message + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
+				    confirm.fnAlert("", result.data.resultMsg + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
 				}
 			})
         },
@@ -445,11 +445,11 @@ export default {
 			signUpApi.chkCard(params).then(response => {
 				var result = response.data;
 				var vm = this;
-				if(result.success){
+				if(result.success && result.data != null && result.data.cmsResultCode == '00'){
                     confirm.fnAlert("", "인증되었습니다.");
                     vm.set.isCert = true;
 				} else {
-				    confirm.fnAlert("", result.message + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
+				    confirm.fnAlert("", result.data.resultMsg + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
 				}
 			})
         },

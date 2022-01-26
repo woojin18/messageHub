@@ -47,9 +47,9 @@
                     <div class="of_h mt10">
                         <div class="float-left" style="width:22%"><h5>청구서 수신</h5></div>
                         <div class="float-left" style="width:78%">
-                            <input type="radio" name="sms_agree" value="Y" :disabled="isRead" v-model="bill.billKind" id="sms_agree05"> <label for="sms_agree05" class="mr30">이메일</label>
-                            <input type="radio" name="sms_agree" value="C" :disabled="isRead" v-model="bill.billKind" id="sms_agree06"> <label for="sms_agree06" class="mr30">문자</label>
-                            <input type="radio" name="sms_agree" value="N" :disabled="isRead" v-model="bill.billKind" id="sms_agree07"> <label for="sms_agree07">우편</label>
+                            <input type="radio" name="bill.billKind" value="Y" :disabled="isRead" v-model="bill.billKind" id="sms_agree05"> <label for="sms_agree05" class="mr30">이메일</label>
+                            <input type="radio" name="bill.billKind" value="C" :disabled="isRead" v-model="bill.billKind" id="sms_agree06"> <label for="sms_agree06" class="mr30">문자</label>
+                            <input type="radio" name="bill.billKind" value="N" :disabled="isRead" v-model="bill.billKind" id="sms_agree07"> <label for="sms_agree07">우편</label>
                         </div>
                     </div>
                     <div class="of_h mt10">
@@ -92,9 +92,9 @@
                     <div class="of_h mt10">
                         <div class="float-left" style="width:22%"><h5>납부방법*</h5></div>
                         <div class="float-left" style="width:78%">
-                            <input type="radio" name="pay02" value="CM" :disabled="isRead" v-model="bill.payMthdCd" id="pay04" @change="fnCngCertInfo"> <label for="pay04" class="mr30">자동이체</label>
-                            <input type="radio" name="pay02" value="CC" :disabled="isRead" v-model="bill.payMthdCd" id="pay05" @change="fnCngCertInfo"> <label for="pay05" class="mr30">신용카드</label>
-                            <input type="radio" name="pay02" value="GR" :disabled="isRead" v-model="bill.payMthdCd" id="pay06" @change="fnCngCertInfo"> <label for="pay06">지로</label>
+                            <input type="radio" name="bill.payMthdCd" value="CM" :disabled="isRead" v-model="bill.payMthdCd" id="pay04" @change="fnCngCertInfo"> <label for="pay04" class="mr30">자동이체</label>
+                            <input type="radio" name="bill.payMthdCd" value="CC" :disabled="isRead" v-model="bill.payMthdCd" id="pay05" @change="fnCngCertInfo"> <label for="pay05" class="mr30">신용카드</label>
+                            <input type="radio" name="bill.payMthdCd" value="GR" :disabled="isRead" v-model="bill.payMthdCd" id="pay06" @change="fnCngCertInfo"> <label for="pay06">지로</label>
                         </div>
                     </div>
                     <div class="of_h mt10" v-show="bill.payMthdCd != 'GR'">
@@ -479,11 +479,11 @@ export default {
 			signUpApi.chkBank(params).then(response => {
 				var result = response.data;
 				var vm = this;
-				if(result.success){
+				if(result.success && result.data != null && result.data.cmsResultCode == '00'){
                     confirm.fnAlert("", "인증되었습니다.");
                     vm.bill.isCert = true;
 				} else {
-				    confirm.fnAlert("", result.message + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
+				    confirm.fnAlert("", result.data.resultMsg+ '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
 				}
 			})
         },
@@ -525,11 +525,11 @@ export default {
 			signUpApi.chkCard(params).then(response => {
 				var result = response.data;
 				var vm = this;
-				if(result.success){
+				if(result.success && result.data != null && result.data.cmsResultCode == '00'){
                     confirm.fnAlert("", "인증되었습니다.");
                     vm.bill.isCert = true;
 				} else {
-				    confirm.fnAlert("", result.message + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
+				    confirm.fnAlert("", result.data.resultMsg + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
 				}
 			})
         },
