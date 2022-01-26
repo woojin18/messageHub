@@ -1019,6 +1019,8 @@ public class ProjectService {
 	            workbook = new XSSFWorkbook(allFile.getInputStream());
 	        } else if (ext.equals("xls")) {
 	            workbook = new HSSFWorkbook(allFile.getInputStream());
+	        } else {
+	        	throw new Exception("엑셀파일이 아닙니다.");
 	        }
 		} catch (Exception e) {
 			throw new Exception("엑셀파일이 아닙니다.");

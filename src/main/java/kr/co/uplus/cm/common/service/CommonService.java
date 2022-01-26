@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -92,7 +93,7 @@ public class CommonService {
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "resource" })
     public List<Map<String, Object>> getExcelDataList(MultipartFile excelFile, int offset, List<String> colKeys)
             throws Exception {
         List<Map<String, Object>> excelList = new ArrayList<>();
@@ -119,6 +120,8 @@ public class CommonService {
             workbook = new XSSFWorkbook(excelFile.getInputStream());
         } else if (fileExten.equals("xls")) {
             workbook = new HSSFWorkbook(excelFile.getInputStream());
+        } else {
+        	throw new Exception("엑셀파일이 아닙니다.");
         }
 
         Sheet worksheet = workbook.getSheetAt(0);
@@ -163,6 +166,8 @@ public class CommonService {
             workbook = new XSSFWorkbook(excelFile.getInputStream());
         } else if (fileExten.equals("xls")) {
             workbook = new HSSFWorkbook(excelFile.getInputStream());
+        } else {
+        	throw new Exception("엑셀파일이 아닙니다.");
         }
 
         Sheet worksheet = workbook.getSheetAt(0);
@@ -866,7 +871,7 @@ public class CommonService {
 		apiMap.put("tableNm", cmdTgt);
 		apiMap.put("jsonData", cmdMap);
 		
-		if( "noti".equals(apiType.toLowerCase()) ) {
+		if( "noti".equals(apiType.toLowerCase(Locale.ENGLISH)) ) {
 
 			Map<String, Object> result = apiInterface.etcPost(ApiConfig.NOTI_SERVER_DOMAIN+"/event/v1/db/delete", apiMap, null);
 				

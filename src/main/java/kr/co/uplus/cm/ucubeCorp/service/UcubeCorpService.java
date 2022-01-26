@@ -2,6 +2,7 @@ package kr.co.uplus.cm.ucubeCorp.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class UcubeCorpService {
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackFor={Exception.class})
 	public Map<String, Object> ucubeTerminateCorp(Map<String, Object> params) throws Exception {
 		Map<String, Object> rtn = new HashMap<String, Object>();
-		String status = (CommonUtils.getString(params.get("status"))).toUpperCase();
+		String status = (CommonUtils.getString(params.get("status"))).toUpperCase(Locale.ENGLISH);
 		params.put("status", status);
 		
 		int cnt = generalDao.selectGernalCount("ucubeCorp.selectCorpListByRegNoCnt", params);

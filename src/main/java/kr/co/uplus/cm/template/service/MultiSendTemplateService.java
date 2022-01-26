@@ -647,7 +647,7 @@ public class MultiSendTemplateService {
 				String linkIos = null;
 				String linkUrl1 = null;
 				String linkUrl2 = null;
-				List<Map<String, Object>> buttonInfoList = null;
+				List<Map<String, Object>> buttonInfoList = new ArrayList<Map<String, Object>>();
 
 				if ((int) params.get("kakaoTemplateTable") == 0) { // FRIENDTALK
 					if (params.containsKey("friendTalkButtons")) {

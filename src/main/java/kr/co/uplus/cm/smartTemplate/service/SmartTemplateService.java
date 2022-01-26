@@ -1024,7 +1024,7 @@ sb.append("\"rcsPrdType\" : \"CTALL\",");	// RCS상품타입(캐러셀[TALL]템�
     			String buttonLink1 = null;
     			String startDate = null;
     			String endDate = null;
-        		List<Map<String, Object>> buttonInfoList = null;
+        		List<Map<String, Object>> buttonInfoList = new ArrayList<Map<String, Object>>();
         		
 
         			//System.out.println(">>>>service 003  RCS 002 FRIENDTALK");

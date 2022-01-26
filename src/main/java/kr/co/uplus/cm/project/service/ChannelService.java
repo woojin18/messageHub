@@ -893,10 +893,20 @@ public class ChannelService {
 	public File convert(MultipartFile mfile) throws IOException {
 		File file = new File(mfile.getOriginalFilename());
 		file.createNewFile();
-		FileOutputStream fos = new FileOutputStream(file);
-		fos.write(mfile.getBytes());
-		fos.close();
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(file);
+			fos.write(mfile.getBytes());
+		} catch(IOException ioe) {
+			throw ioe;
+		} finally {
+			if(fos!=null) fos.close();
+		}
 		return file;
+//		FileOutputStream fos = new FileOutputStream(file);
+//		fos.write(mfile.getBytes());
+//		fos.close();
+//		return file;
 	}
 
 	// push 삭제

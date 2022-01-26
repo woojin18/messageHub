@@ -395,7 +395,14 @@ public class AuthService implements UserDetailsService {
 		Map<String, Menu> menus = new HashMap<String, Menu>();
 		Map params = new HashMap();
 		params.put("svc_type_cd", svcTypeCd);
-		List<Menu> list = dao.getMenuForRole(params);
+//		List<Menu> list = dao.getMenuForRole(params);
+		
+		List<Menu> list = new ArrayList<Menu>();
+		try {
+			list = dao.getMenuForRole(params);
+		} catch(Exception e) {
+			log.error("init Error : "+e);
+		}
 
 		for (Menu data : list) {
 			Menu rootMenu = menuByRole.get(data.getRoleCd());
