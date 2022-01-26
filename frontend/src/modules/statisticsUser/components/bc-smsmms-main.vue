@@ -25,9 +25,8 @@
 						</div>
 					</div>
 					<div class="consolMarginTop">
-					
+						<h4 class="inline-block" style="width:6%">서비스</h4>
 						<div class="inline-block" style="width:30%">
-							<h4 class="inline-block" style="width:20%">서비스</h4>
 							<input type="checkbox" id="chTypeAll" class="checkStyle2" @change="fnChTypeAllCheck" v-model="chTypeAll">
 							<label for="chTypeAll" class="mr30">전체</label>
 							<input type="checkbox" id="sms" class="checkStyle2" v-model="searchData.sms">
@@ -40,16 +39,18 @@
 					</div>
 					<div class="consolMarginTop">
 						<h4 class="inline-block" style="width:6%">발송구분</h4>
+						<div class="inline-block" style="width:30%">
 							<input type="checkbox" id="sendAll" class="checkStyle2" @change="fnSendAllCheck" v-model="sendAll">
 							<label for="sendAll" class="mr30">전체</label>
 							<input type="checkbox" id="webSend" class="checkStyle2" v-model="searchData.webSend">
 							<label for="webSend" class="mr30">웹 발송</label>
 							<input type="checkbox" id="apiSend" class="checkStyle2" v-model="searchData.apiSend">
 							<label for="apiSend" class="mr30">API 발송</label>
-						<div class="inline-block" style="width:30%; padding-left:130px;">
-							<h4 class="inline-block" style="width:24%">전환발송</h4>
+						</div>
+						<h4 class="inline-block" style="width:7%">전환발송</h4>
+						<div class="inline-block" style="width:30%;">
 							<input type="radio" name="fnSend" value="ALL" id="ALL" checked="" v-model="searchData.fbSend">
-							<label for="ALL" class="ml20">전체</label>
+							<label for="ALL">전체</label>
 							<input type="radio" name="fnSend" value="yes" id="Y" v-model="searchData.fbSend">
 							<label for="Y">예</label>
 							<input type="radio" name="fnSend" value="no" id="N" v-model="searchData.fbSend">
