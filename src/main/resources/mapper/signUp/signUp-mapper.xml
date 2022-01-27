@@ -94,6 +94,8 @@
 		,		UPD_DT
 		,		SALES_ID
 		,		SELF_TOKEN
+        ,       FEE_TYPE
+        ,       MON_SENDER_LIMIT_AMOUNT
 		) VALUES (
 				#{corpId}
 		,		#{custNo}
@@ -119,6 +121,8 @@
 		,		NOW()
 		,		#{salesMan}
 		,		#{coInfo1}
+        ,       #{feeType}
+        ,       1000000
 		)
 	</insert>
 	
@@ -183,4 +187,109 @@
 		AND		CODE_VAL_3  = 'Y'
 		LIMIT 1
 	</select>
+	
+	<insert id="insertBill">
+        /* signUp.insertBill - 청구정보 등록 */
+        INSERT INTO CM_BILL (
+            CORP_ID
+          , BILL_ID
+          , BILL_REG_NO
+          , BILL_TYPE
+          , BILL_NAME
+          , BILL_STATUS
+          , NAP_CUST_KD_CD
+          , BILL_KIND
+          , BILL_EMAIL
+          , BILL_TEL_NO
+          , BILL_ZIP
+          , BILL_JUSO
+          , BILL_JUSO2
+          , PAY_MTHD_CD
+          , PAY_DT
+          , NAP_CMP_NM
+          , NAP_JUMIN
+          , BANK_CD
+          , BANK_NO
+          , CARD_CD
+          , CARD_NO
+          , CARD_VALD_END_YYMM
+          , SERVICE_ID
+          , SMS_EXP_CNT
+          , RCS_EXP_CNT
+          , KKO_EXP_CNT
+          , PUSH_EXP_CNT
+          , MONTH_EXP_AMOUNT
+          , REG_ID
+          , REG_DT
+        ) VALUES (
+            #{corpId}
+          , #{billId}
+          , #{billRegNo}
+          , #{billType}
+          , #{billName}
+          , #{billStatus}
+          , #{napCustKdCd}
+          , #{billKind}
+          , #{billEmail}
+          , #{billTelNo}
+          , #{billZip}
+          , #{billJuso}
+          , #{billJuso2}
+          , #{payMthdCd}
+          , #{payDt}
+          , #{napCmpNm}
+          , #{napJumin}
+          , #{bankCd}
+          , #{bankNo}
+          , #{cardCd}
+          , #{cardNo}
+          , #{cardValdEndYymm}
+          , #{serviceId}
+          , #{smsExpCnt}
+          , #{rcsExpCnt}
+          , #{kkoExpCnt}
+          , #{pushExpCnt}
+          , #{monthExpAmount}
+          , #{userId}   
+          , now()
+        )
+	</insert>
+	
+	<update id="updateBill">
+        /* signUp.updateBill - 청구정보 수정 */
+        UPDATE CM_BILL
+           SET BILL_REG_NO        = #{billRegNo}        
+             , BILL_TYPE          = #{billType}            
+             , BILL_NAME          = #{billName}       
+             , BILL_STATUS        = #{billStatus}     
+             , NAP_CUST_KD_CD     = #{napCustKdCd}    
+             , BILL_KIND          = #{billKind}       
+             , BILL_EMAIL         = #{billEmail}      
+             , BILL_TEL_NO        = #{billTelNo}      
+             , BILL_ZIP           = #{billZip}        
+             , BILL_JUSO          = #{billJuso}       
+             , BILL_JUSO2         = #{billJuso2}      
+             , PAY_MTHD_CD        = #{payMthdCd}      
+             , PAY_DT             = #{payDt}          
+             , NAP_CMP_NM         = #{napCmpNm}       
+             , NAP_JUMIN          = #{napJumin}       
+             , BANK_CD            = #{bankCd}         
+             , BANK_NO            = #{bankNo}         
+             , CARD_CD            = #{cardCd}         
+             , CARD_NO            = #{cardNo}         
+             , CARD_VALD_END_YYMM = #{cardValdEndYymm}
+             , SERVICE_ID         = #{serviceId}      
+             , SMS_EXP_CNT        = #{smsExpCnt}      
+             , RCS_EXP_CNT        = #{rcsExpCnt}      
+             , KKO_EXP_CNT        = #{kkoExpCnt}      
+             , PUSH_EXP_CNT       = #{pushExpCnt}     
+             , MONTH_EXP_AMOUNT   = #{monthExpAmount}
+             , HANDLE_REASON      = null
+             , HANDLE_ID          = null
+             , HANDLE_DT          = null
+             , REG_ID             = #{userId}
+             , REG_DT             = now()
+         WHERE CORP_ID            = #{corpId}
+           AND BILL_ID            = #{billId}  
+	</update>
 </mapper>

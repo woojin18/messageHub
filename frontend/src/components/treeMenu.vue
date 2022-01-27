@@ -21,7 +21,7 @@
 					<div class="depth2Lnb" :id="'depth2_' + i" :style="showOption">
 						<ul>
 							<li v-for="(item2, j) in item.children" :key="j" >
-								<router-link v-if="item2.webUrl != ''" @click.native="fnOpenDepth3($event)" v-bind:to="{path:item2.webUrl}" v-bind:id="'M_'+item2.menusCd" v-bind:r="item2.read" v-bind:w="item2.save">{{item2.menusName}}</router-link>		<!-- url 주소 있으면 페이지 이동 -->
+								<router-link v-if="item2.webUrl != '' && !(corpInfo.feeType=='PRE' && item2.menusCd == 'AC_SETTLE_MNG3')" @click.native="fnOpenDepth3($event, item2.menusCd)" v-bind:to="{path:corpInfo.feeType=='POST' && item2.menusCd == 'AC_SETTLE_MNG1'?'/ac/cash2':item2.webUrl}" v-bind:id="'M_'+item2.menusCd" v-bind:r="item2.read" v-bind:w="item2.save">{{corpInfo.feeType=='POST' && item2.menusCd == 'AC_SETTLE_MNG1'?'정산금액':item2.menusName}}</router-link>		<!-- url 주소 있으면 페이지 이동 -->
 								<a v-if="item2.webUrl == ''" @click="fnOpenDepth3($event)">
 									<i v-bind:class="item2.imgTag"></i><span>{{item2.menusName}}</span><i class="far fa-chevron-down navArrow" style="font-size: 10px;position: absolute;right: 20px"></i>
 								</a>
@@ -51,6 +51,8 @@ import * as utils from '@/common/utils';
 import { consts } from '@/common/config';
 import tokenSvc from '@/common/token-service';
 import VueCookies from 'vue-cookies'
+import homeApi from '@/modules/acHome/service/api';
+import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
 	name: 'treeMenu',
@@ -70,6 +72,7 @@ export default {
 					]
 				}
 			],
+			corpInfo : {},
 			prdData : [],
 			projectId : utils.getCookie(consts.projectId),
 			showOption: {
@@ -78,10 +81,22 @@ export default {
 		}
 	},
 	mounted(){
+		this.fnGetCorpInfo()
 		this.init();
 		this.fnMenuList();
 	},
 	methods: {
+		async fnGetCorpInfo() {
+			this.roleCd = tokenSvc.getToken().principal.role;
+			await homeApi.selectCorpInfo({}).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.corpInfo = result.data
+				} else {
+					confirm.fnAlert("", result.message);
+				}
+			});
+		},
 		init() {
 			// 로그인 여부 체크해서 다른 곳에서 로그아웃시 로그인 화면으로 이동
 			var checkToken = setInterval(function() {
@@ -174,7 +189,10 @@ export default {
 				jQuery($this).next('.depth2Lnb').show()
 			}
 		},
-		fnOpenDepth3(event) {
+		fnOpenDepth3(event, menuCd) {
+			if (menuCd == 'AC_SETTLE_MNG3' && this.corpInfo.feeType == 'POST' && this.corpInfo.subCnt == 0) {
+        		confirm.fnAlert("", "부서별 빌링을 설정한 프로젝트가 없습니다.\n부서별 청구는 프로젝트에 부서별 빌링이 되어 있어야 합니다.")
+			}
 			var $this = event.currentTarget
 			
 			jQuery('#sidebar > ul > li .depth2Lnb > ul > li.active').removeClass('active').children("a").find(".navArrow").removeClass("fa-chevron-up").addClass("fa-chevron-down")

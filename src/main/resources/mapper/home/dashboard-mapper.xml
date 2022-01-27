@@ -398,5 +398,101 @@
 				)AA
 		GROUP BY PRODUCT_CODE
 	</select>
+    
+    <select id="selectCorpInfo" resultType="camel">
+        /* dashboard.selectCorpInfo */
+		SELECT a.FEE_TYPE
+		     , a.MON_SENDER_LIMIT_AMOUNT
+		     , a.CORP_NAME
+		     , b.BILL_ID
+		     , b.BILL_STATUS
+		     , b.HANDLE_REASON AS BILL_REASON
+		     , c.STATUS AS SENDER_UP_STATUS
+		     , c.REQ_AMOUNT
+             , c.REQ_REASON
+             , c.HANDLE_REASON AS SENDER_UP_REASON
+             , (SELECT COUNT(1) FROM cm_console.CM_PROJECT x WHERE SUBBILL_YN = 'Y' AND a.CORP_ID = x.CORP_ID AND x.USE_YN = 'Y') AS SUB_CNT
+		  FROM cm_console.CM_CORP a
+		  LEFT JOIN cm_console.CM_BILL b
+		    ON b.CORP_ID   = a.CORP_ID
+		   AND b.BILL_TYPE = 'PROJECT'
+		  LEFT JOIN cm_console.CM_SENDER_UP_REQ c
+		    ON c.CORP_ID   = a.CORP_ID
+		 WHERE a.CORP_ID   = #{corpId}
+		 LIMIT 1
+    </select>
+    
+    <select id="selectBill" resultType="camel">
+        /* dashboard.selectBill */
+	    SELECT BILL_ID
+	         , BILL_REG_NO
+	         , BILL_TYPE
+	         , BILL_NAME
+	         , BILL_STATUS
+	         , NAP_CUST_KD_CD
+	         , BILL_KIND
+	         , BILL_EMAIL
+	         , BILL_TEL_NO
+	         , BILL_ZIP
+	         , BILL_JUSO
+	         , BILL_JUSO2
+	         , PAY_MTHD_CD
+	         , PAY_DT
+	         , NAP_CMP_NM
+	         , NAP_JUMIN
+	         , BANK_CD
+             , (SELECT x.CODE_NAME_1 FROM cm_bo.CM_CODE x WHERE x.CODE_VAL_1 = BANK_CD AND x.CODE_TYPE_CD = 'BANK') AS BANK_NM
+             , BANK_NO
+             , CARD_CD
+             , (SELECT x.CODE_NAME_1 FROM cm_bo.CM_CODE x WHERE x.CODE_VAL_1 = CARD_CD AND x.CODE_TYPE_CD = 'CARD') AS CARD_CMP_NAME
+	         , CARD_NO
+	         , CARD_VALD_END_YYMM
+	         , SERVICE_ID
+	         , SMS_EXP_CNT
+	         , RCS_EXP_CNT
+	         , KKO_EXP_CNT
+	         , PUSH_EXP_CNT
+	         , HANDLE_REASON
+          FROM cm_console.CM_BILL a
+         WHERE a.CORP_ID   = #{corpId}
+           AND a.BILL_ID   = #{billId}
+         LIMIT 1
+    </select>
+    
+    <delete id="deleteBill">
+        /* dashboard.deleteBill - 청구정보 삭제 */
+        DELETE 
+          FROM cm_console.CM_BILL    
+        WHERE CORP_ID        = #{corpId}
+          AND BILL_ID        = #{billId}
+        LIMIT 1
+    </delete>
+    
+    <insert id="insertSenderUpSeq">
+        /* dashboard.insertSenderUpSeq - 한도상향요청 등록 */
+        INSERT INTO cm_console.CM_SENDER_UP_REQ (
+              CORP_ID
+            , REQ_AMOUNT
+            , REQ_REASON
+            , STATUS
+            , REQ_ID
+            , REQ_DT
+        ) VALUES (
+              #{corpId}
+            , #{reqAmount}
+            , #{reqReason}
+            , #{status}
+            , #{userId}
+            , now()
+        )
+    </insert>
+    
+    <delete id="deleteSenderUpSeq">
+        /* dashboard.deleteSenderUpSeq - 한도상향요청 삭제 */
+        DELETE 
+          FROM cm_console.CM_SENDER_UP_REQ            
+        WHERE CORP_ID        = #{corpId}
+        LIMIT 1
+    </delete>
 
 </mapper>

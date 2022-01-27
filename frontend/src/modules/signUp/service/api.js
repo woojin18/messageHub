@@ -65,6 +65,14 @@ const selectSalesManList = (params) => {
     return httpClient.post("/api/public/signUp/selectSalesManList", params, { headers: {"show-layer": "Yes"}});
 }
 
+const chkBank = (params) => {
+    return httpClient.post("/api/public/signUp/chkBank", params, { headers: {"show-layer": "Yes"}});
+}
+
+const chkCard = (params) => {
+    return httpClient.post("/api/public/signUp/chkCard", params, { headers: {"show-layer": "Yes"}});
+}
+
 export default {
     signUpRedirect,
     domainChk,
@@ -81,5 +89,7 @@ export default {
     getNiceCheckInfo,
     selectCustAddr,
     certifyMailByAuthKey,
-    selectSalesManList
+    selectSalesManList,
+    chkBank,
+    chkCard
 };
