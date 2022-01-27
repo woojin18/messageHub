@@ -18,7 +18,7 @@ spring:
 app.props:
   jwt:
     key-string: LcDVU5pmcXIakjK6yw/TJw==
-    private-token-expiration: 1800
+    private-token-expiration: 43200
     part1: JwtPart1
     part2: JwtPart2
     access-token-expiration: 180
