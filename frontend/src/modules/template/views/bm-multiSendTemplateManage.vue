@@ -357,7 +357,8 @@
 						<div class="of_h consolMarginTop">
 							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 							<div class="float-left" style="width:57%">
-								<textarea class="textareaStyle height190" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder"></textarea>
+								<textarea class="textareaStyle height190" maxlength="90" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsFreeContentId" @keyup="fnTextLength('내용', '#rcsFreeContentId', '#rcsFreeTextLength', '90')"></textarea>
+								<strong class="letter" id="rcsFreeTextLength">(00 / 90)</strong>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">
@@ -655,8 +656,8 @@
 						<div class="of_h">
 							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 							<div class="float-left" style="width:57%">
-								<textarea class="textareaStyle height190" maxlength="100" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsSMSContentId" @keyup="fnTextLength('내용', '#rcsSMSContentId', '#rcsSMSTextLength', '1300')"></textarea>
-								<strong class="letter" id="rcsSMSTextLength">(00 / 1300)</strong>
+								<textarea class="textareaStyle height190" maxlength="100" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsSMSContentId" @keyup="fnTextLength('내용', '#rcsSMSContentId', '#rcsSMSTextLength', '100')"></textarea>
+								<strong class="letter" id="rcsSMSTextLength">(00 / 100)</strong>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">

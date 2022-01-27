@@ -854,6 +854,9 @@ export default {
 	},
 	
 	fnSetTemplate(data) {
+		// 수신자 초기화
+		this.fnCallbackRecvInfoLst(null);
+
 		var vm = this;
 		vm.dataSet = true;
 		vm.templateSet = true;
@@ -914,6 +917,9 @@ export default {
 
 	// 메시지 내용 입력 return
 	fnSetAddContents(params) {
+		// 수신자 초기화
+		this.fnCallbackRecvInfoLst(null);
+
 		var vm = this;
 		vm.dataSet = true;
 		if(!vm.carouSelType) {
@@ -1194,6 +1200,9 @@ export default {
 
 	// 메시지 보관함 세팅
 	fnTmpMsgSet(data) {
+		// 수신자 초기화
+		this.fnCallbackRecvInfoLst(null);
+
 		var vm = this;
 		vm.dataSet = true;
 		var returnRadioBtn = data.templateRadioBtn;
