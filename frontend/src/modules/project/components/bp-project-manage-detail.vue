@@ -10,62 +10,54 @@
 						<h2 v-if="this.save_status === 'C'">프로젝트 등록</h2>
             <h2 v-if="this.save_status != 'C'">프로젝트 상세</h2>
 						<hr>
-						<div class="of_h">
-							<h5 class="inline-block" style="width:20%">프로젝트명 *</h5>
-							<div style="width:80%" class="float-right">
+            <div v-if="corpInfo.feeType == 'POST'" class="color4 bgColor_f1 pd20">
+							<ul class="text-left dotList">
+								<li>부서별 청구를 하기 위해서는 부서별 빌링 여부를 [예]로 선택해 주시고 프로젝트를<br>생성해 주십시오. <br>(이후 정산의 부서별 청구 메뉴를 통해 부서별로 청구서를 생성 할 수 있습니다.)</li>
+							</ul>
+						</div>
+						<div class="clear mt20">
+							<h5 class="inline-block" style="width:25%">프로젝트명 *</h5>
+							<div style="width:75%" class="float-right">
 									<input id="projectName" type="text" class="inputStyle float-left" title="프로젝트명 입력란" maxlength="25">
 							</div>
 							<div class="of_h consolMarginTop">
-                <h5 class="inline-block" style="width:20%">프로젝트 설명</h5>
-								<div style="width:80%" class="float-right">
+                <h5 class="inline-block" style="width:25%">프로젝트 설명</h5>
+								<div style="width:75%" class="float-right">
 									<input id="projectDesc" type="text" class="inputStyle float-left" style="width:100%" title="프로젝트 설명 입력란" maxlength="100">
 								</div>
 							</div>
-							<div class="of_h consolMarginTop" v-if="this.save_status === 'C'">
-                <h5 class="inline-block" style="width:20%">결재조건 *</h5>
-								<input @click="fnSelectBillIdForApi('PRE')" type="radio" name="payType" value="PRE" class="cBox" id="payment01" :disabled="this.save_status != 'C'" checked> <label for="payment01" class="payment mr30 font-size12">선불</label>
-								<input @click="fnSelectBillIdForApi('POST')" type="radio" name="payType" value="POST" class="cBox" id="payment02" :disabled="this.save_status != 'C'"> <label for="payment02" class="payment font-size12">후불</label>								
-							</div>
-							<div class="of_h consolMarginTop" v-if="this.save_status != 'C'">
-                <h5 class="inline-block" style="width:20%">결재조건 *</h5>
-                <div style="width:80%" class="float-right" v-if="this.row_data.payType === 'PRE' && this.row_data.nopayYn != 'Y'">선불</div>
-                <div style="width:80%" class="float-right" v-if="this.row_data.payType === 'POST' && this.row_data.nopayYn != 'Y'">후불</div>
-                <div style="width:80%" class="float-right" v-if="this.row_data.nopayYn === 'Y'">무과금</div>
-							</div>
-              <!-- <div class="of_h consolMarginTop" v-if=" this.payTypeForDIv === 'POST' ">
-                <h5 class="inline-block" style="width:20%">청구번호 *</h5>
-                <select class="selectStyle2" style="width:72%" v-model="this.billId">
-                  <option v-for="(option, i) in resultList" v-bind:value="option.billAcntNo" v-bind:key="i">
-                    {{ option.custNm }}({{ option.billAcntNo }})
-                  </option>
-                </select>
-							</div> -->
-							<p class="mt10 lc-1 font-size12 color3" style="margin-left:20%">프로젝트별 결제조건(선/후불)을 선택할 수 있으며, 프로젝트 등록 후 선택된 <br>결제조건은 변경이 불가합니다.</p>
 							<div class="of_h consolMarginTop">
-                <h5 class="inline-block" style="width:20%">사용여부</h5>
+                <h5 class="inline-block" style="width:25%">사용여부</h5>
 								<input type="radio" name="useYn" value="Y" class="cBox" id="yes" checked=""> <label for="yes" class="payment mr30 font-size12">예</label>
 								<input type="radio" name="useYn" value="N" class="cBox" id="no"> <label for="no" class="payment font-size12">아니요</label>							
 							</div>
 
-              <div class="of_h consolMarginTop">
-                <h5 class="inline-block" style="width:20%">재발송 제목</h5>
-								<div style="width:80%" class="float-right">
+              <div class="clear consolMarginTop">
+                <h5 class="inline-block" style="width:25%">재발송 제목 <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:340px">RCS 발송 실패 시 문자로 보낼 때 중복 가능성이 있으면 문자 내용 앞에 자동 추가되는 문구입니다.<br>(RCS의 문자 처리 응답이 늦는 경우가 가끔 있는데, 응답이 늦을 경우 실패로 보고 문자로 전송 시 재 전송의 가능성이 있으므로 재발송 제목을 추가하여 보냅니다.)</span></i></h5>
+								<div style="width:75%" class="float-right">
 									<input id="resendTitle" type="text" class="inputStyle float-left" maxlength="4" placeholder="최대 4글자까지 가능합니다. 예: re), 재)" style="width:240px;">
 								</div>
 							</div>
-              <p class="mt10 lc-1 font-size12 color3" style="margin-left:20%">RCS 발송 실패 시 문자로 보낼 때 중복 가능성이 있으면<br>문자 내용 앞에 자동 추가되는 문구입니다.</p>
-              <div class="of_h consolMarginTop" v-show="this.payTypeForDIv === 'POST'">
-                <h5 class="inline-block" style="width:20%">개별빌링 여부</h5>
-								<input :disabled="this.payTypeForDIv =='PRE'" type="radio" name="subbillYn" value="Y" class="cBox" id="subbillYnY" @click="fnCheckSubblillYn()" checked=""> <label for="subbillYnY" class="payment mr30 font-size12">예</label>
-								<input :disabled="this.payTypeForDIv =='PRE'" type="radio" name="subbillYn" value="N" class="cBox" id="subbillYnN" @click="fnCheckSubblillYn()"> <label for="subbillYnN" class="payment font-size12">아니요</label>							
+              <div v-if="corpInfo.feeType == 'POST'" class="clear consolMarginTop" >
+                <h5 class="inline-block" style="width:25%">부서별 빌링 여부 <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:340px">말풍선 내용 없음</span></i></h5>
+								<input type="radio" name="subbillYn" v-model="subbillStartDayForDiv" value="Y" class="cBox" id="subbillYnY"> <label for="subbillYnY" class="payment mr30 font-size12">예</label>
+								<input type="radio" name="subbillYn" v-model="subbillStartDayForDiv" value="N" class="cBox" id="subbillYnN"> <label for="subbillYnN" class="payment font-size12">아니요</label>							
 							</div>
-              <div class="of_h consolMarginTop" v-show="this.subbillStartDayForDiv === 'Y'">
-                <h5 class="inline-block" style="width:20%">개별빌링 시작일</h5>
+              <div v-show="corpInfo.feeType == 'POST' && subbillStartDayForDiv == 'Y'" class="of_h consolMarginTop">
+                <h5 class="inline-block" style="width:25%">부서별 빌링 시작일</h5>
 								<Calendar calendarId="subbillStartDay" classProps="datepicker inputStyle maxWidth200"></Calendar>
 							</div>
-							<div class="of_h consolMarginTop">
-                <h5 class="inline-block" style="width:20%">사용채널</h5>
-								<table  id="admin_sub03_1_project1" class="table_skin1 tbl-striped-odd mt0 float-right" style="width:80%">
+							<div class="clear consolMarginTop">
+                <h5 class="inline-block" style="width:25%">사용채널
+                  <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:340px"> 
+                    <ul class="text-left dotList">
+                      <li>문자 채널은 기본 사용 채널입니다.</li>
+                      <li>RCS, PUSH, 카카오 채널은 필요에 따라 미사용으로 설정 가능합니다.</li>
+                      <li>MO는 선불일 경우 사용이 불가 합니다.</li>
+                    </ul>
+                  </span></i>
+                </h5>
+								<table  id="admin_sub03_1_project1" class="table_skin1 tbl-striped-odd mt0 float-right" style="width:75%">
                   <colgroup>
                     <col style="width:50%">
                     <col>
@@ -74,36 +66,35 @@
                     <tr>
                       <td class="text-left end">RCS</td>
                       <td class="text-right end">
-                        <input type="radio" name="radioRcs" value="Y" class="cBox" id="yes1" checked="" disabled> <label for="yes1" class="payment mr30 font-size12">사용</label>
-                        <input type="radio" name="radioRcs" value="N" class="cBox" id="no1" disabled> <label for="no1" class="payment font-size12">미사용</label>	
+                        <input type="radio" name="radioRcs" value="Y" class="cBox" id="yes1" checked="" disabled> <label for="yes1" class="mr30">사용</label>
+                        <input type="radio" name="radioRcs" value="N" class="cBox" id="no1" disabled> <label for="no1" class=" mr30">미사용</label>	
                       </td>							
                     </tr>
                     <tr>
-                      <td class="text-left end">SMS/MMS</td>
+                      <td class="text-left end">문자</td>
                       <td class="text-right end">
-                        <input type="radio" name="radioMms" value="Y" class="cBox" id="yes2" checked="" disabled> <label for="yes2" class="payment mr30 font-size12">사용</label>
-                        <input type="radio" name="radioMms" value="N" class="cBox" id="no2" disabled> <label for="no2" class="payment font-size12">미사용</label>	
+                        <input type="radio" name="radioMms" value="Y" class="cBox" id="yes2" checked="" disabled> <label for="yes2" style="margin-right:115px !important">사용</label>
                       </td>							
                     </tr>
                     <tr>
                       <td class="text-left end">PUSH</td>
                       <td class="text-right end">
-                        <input type="radio" name="radioPush" value="Y" class="cBox" id="yes3" checked=""> <label for="yes3" class="payment mr30 font-size12">사용</label>
-                        <input type="radio" name="radioPush" value="N" class="cBox" id="no3"> <label for="no3" class="payment font-size12">미사용</label>	
+                        <input type="radio" name="radioPush" value="Y" class="cBox" id="yes3" checked=""> <label for="yes3" class="mr30">사용</label>
+                        <input type="radio" name="radioPush" value="N" class="cBox" id="no3"> <label for="no3" class=" mr30">미사용</label>	
                       </td>							
                     </tr>
                     <tr>
                       <td class="text-left end">카카오</td>
                       <td class="text-right end">
-                        <input type="radio" name="radioKko" value="Y" class="cBox" id="yes4" checked=""> <label for="yes4" class="payment mr30 font-size12">사용</label>
-                        <input type="radio" name="radioKko" value="N" class="cBox" id="no4"> <label for="no4" class="payment font-size12">미사용</label>	
+                        <input type="radio" name="radioKko" value="Y" class="cBox" id="yes4" checked=""> <label for="yes4" class="mr30">사용</label>
+                        <input type="radio" name="radioKko" value="N" class="cBox" id="no4"> <label for="no4" class=" mr30">미사용</label>	
                       </td>							
                     </tr>
                     <tr>
                       <td class="text-left end">MO</td>
                       <td class="text-right end">
-                        <input type="radio" name="radioMo" value="Y" class="cBox" id="yes6" checked="" :disabled="this.moDisable"> <label for="yes6" class="payment mr30 font-size12">사용</label>
-                        <input type="radio" name="radioMo" value="N" class="cBox" id="no6" :disabled="this.moDisable"> <label for="no6" class="payment font-size12">미사용</label>	
+                        <input v-if="corpInfo.feeType == 'POST'" type="radio" name="radioMo" value="Y" class="cBox" id="yes6"> <label v-if="corpInfo.feeType == 'POST'" for="yes6" class="mr30">사용</label>
+                        <input type="radio" name="radioMo" value="N" class="cBox" id="no6"> <label for="no6" class=" mr30">미사용</label>	
                       </td>							
                     </tr>
 									</tbody>
@@ -149,6 +140,10 @@ export default {
       type: String,
       require: false,
     },
+    corpInfo : {
+        type : Object,
+        require : false
+    },
     row_data : {
       type: Object,
       require: false,
@@ -164,6 +159,7 @@ export default {
         jQuery('input:radio[name=useYn]:input[value="Y"]').prop("checked", true);
 
         jQuery("#resendTitle").val('');
+        this.subbillStartDayForDiv = 'N'
         jQuery('input:radio[name=subbillYn]:input[value="N"]').prop("checked", true);
         jQuery("#subbillStartDay").val('');
         this.fnSelectBillIdForApi('PRE');
@@ -191,8 +187,6 @@ export default {
           this.subbillStartDayForDiv = 'N';
           jQuery("#subbillStartDay").val("");
         }
-        //jQuery("#subbillStartDay").val(this.row_data.subbillStartDay);
-
         jQuery('input:radio[name=radioRcs]:input[value="' + this.row_data.radioYn + '"]').prop("checked", true);
         jQuery('input:radio[name=radioMms]:input[value="' + this.row_data.smsmmsYn + '"]').prop("checked", true);
         jQuery('input:radio[name=radioPush]:input[value="' + this.row_data.pushYn + '"]').prop("checked", true);
@@ -208,7 +202,7 @@ export default {
     fnClose(){
       jQuery("#projectPop").modal("hide");
     },
-    // 개별빌링 체크
+    // 부서별 별링 체크
     fnCheckSubblillYn(){
       var value = jQuery("input[name='subbillYn']:checked").val();
       if( value === 'N' ){
@@ -242,7 +236,7 @@ export default {
           confirm.fnAlert("", "프로젝트명을 입력해주세요."); return false;
       }
       if( jQuery("input[name='subbillYn']:checked").val() === 'Y' && (jQuery("#subbillStartDay").val() === ''		|| jQuery("#subbillStartDay").val() === undefined ) ){
-          confirm.fnAlert("", "개별빌링 시작일을 입력해주세요.."); return false;
+          confirm.fnAlert("", "부서별 별링 시작일을 입력해주세요.."); return false;
       }
 
       var subbillYn = jQuery("input[name='subbillYn']:checked").val();
@@ -260,8 +254,8 @@ export default {
           "projectId"      : this.row_data.projectId,
           "projectName"    : jQuery("#projectName").val(),
           "projectDesc"    : jQuery("#projectDesc").val(),
-          "payType"        : payTypeVal,
-          "billId"         : this.billId,
+          "payType"        : this.corpInfo.feeType,
+          "billId"         : this.corpInfo.billId,
           "useYn"          : jQuery("input[name='useYn']:checked").val(),
           "resendTitle"    : jQuery("#resendTitle").val(),
           "subbillYn"      : subbillYn,

@@ -3,6 +3,7 @@
     <modal
       :save_status.sync="save_status"
       :row_data="row_data"
+      :corpInfo = "corpInfo"
     >
     </modal>
     
@@ -23,27 +24,30 @@
     </disRatioPopNew>
 
     <article>
-      <div class="contentHeader">
+      <div class="contentHeader mb20">
         <h2>프로젝트 > 프로젝트 목록</h2>
       </div>
-
+      <div class="color4 bgColor_f1 pd20">
+				<ul class="text-left dotList">
+					<li>프로젝트 생성을 통해 메시지를 보내기 위한 채널을 설정 할 수 있습니다.</li>
+					<li>후불 요금제 고객은 후불 사용 승인을 받아야 프로젝트를 생성할 수 있습니다. (승인 처리는 요청 후 1~ 3일 소요됩니다.)</li>
+				</ul>
+			</div>
       <!-- 검색창 -->
       <div class="row">
         <div class="col-xs-12">
-          <div class="menuBox">
-            <div class="mt20">
-              <div class="of_h">
-                <h4 class="font-normal inline-block" style="width:10%">프로젝트 명</h4>
-                <input id="srcProjectName" type="text" class="inputStyle inline-block" style="width:30%" v-model="srcProjectName"  @keypress.enter="fnSearch()">
-                <h4 class="font-normal inline-block ml40" style="width:10%">사용여부</h4>
-                <select id="srcUseYn" class="selectStyle2 inline-block" style="width:30%" v-model="srcUseYn" @change="fnSearch">
-                  <option value="">전체</option>
-                  <option value="Y">Y</option>
-                  <option value="N">N</option>
-                </select>
-                <a @click="fnSearch" class="btnStyle2 float-right" activity="READ">검색</a>
-              </div>	
-            </div>
+          <div class="menuBox mt50">
+            <div class="of_h">
+              <h4 class="inline-block" style="width:10%">프로젝트 명</h4>
+              <input id="srcProjectName" type="text" class="inputStyle inline-block" style="width:30%" v-model="srcProjectName"  @keypress.enter="fnSearch()">
+              <h4 class="inline-block ml40" style="width:10%">사용여부</h4>
+              <select id="srcUseYn" class="selectStyle2 inline-block" style="width:30%" v-model="srcUseYn" @change="fnSearch">
+                <option value="">전체</option>
+                <option value="Y">Y</option>
+                <option value="N">N</option>
+              </select>
+              <a @click="fnSearch" class="btnStyle2 float-right" activity="READ">검색</a>
+            </div>	
           </div>
         </div>
       </div>
@@ -55,13 +59,14 @@
           <div class="of_h">
             <div class="float-right">
               <a v-if="distId != 'default'" @click="fnDistDetail" class="btnStyle2 borderGray">메시지 발송 분배율 확인</a>
-              <a @click="fnProjectReg" class="btnStyle2 borderGray  ml20">추가</a>
+              <a @click="fnProjectReg" class="btnStyle2 borderGray  ml20">프로젝트 생성</a>
             </div>
           </div>
           <table cellspacing="0" id="list" class="table_skin1 bt-000 tbl-striped" style="width:100%; margin-top : 10px;">
             <thead>
               <th class="text-center lc-1">프로젝트</th>
               <th class="text-center lc-1">프로젝트ID</th>
+              <th class="text-center lc-1">사용여부</th>
               <th class="text-center lc-1">이용 서비스</th>
               <th class="text-center lc-1">생성일</th>
               <th class="text-center lc-1">결재유형</th>
@@ -76,6 +81,9 @@
                 </td>
                 <td>
                   {{ data.projectId }}
+                </td>
+                <td>
+                  {{ data.useYn == 'Y' ? '예' : '아니오' }}
                 </td>
                 <td>
                   {{ data.useCh }}
@@ -99,7 +107,7 @@
                 </td>
               </tr>
               <tr v-if="items.length == 0">
-                <td class="text-center" colspan="8">검색된 내용이 없습니다.</td>
+                <td class="text-center" colspan="9">검색된 내용이 없습니다.</td>
               </tr>
             </tbody>
           </table>
@@ -113,6 +121,7 @@
 
 <script>
 import projectApi from '../service/projectApi'
+import homeApi from '@/modules/acHome/service/api';
 import tokenSvc from '@/common/token-service';
 
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
@@ -144,10 +153,12 @@ export default {
       distName : "기본분배정책",
       distNameArr : {},
       distInfo : {},
+			corpInfo : {},
     }
   },
   mounted() {
     this.fnSelectCorpDistId();
+    this.fnGetCorpInfo();
     this.fnSearch();
   },
   methods: {
@@ -161,6 +172,17 @@ export default {
         this.fnDistDetailInit();
       });
     },
+		async fnGetCorpInfo() {
+			this.roleCd = tokenSvc.getToken().principal.role;
+			await homeApi.selectCorpInfo({}).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					this.corpInfo = result.data
+				} else {
+					confirm.fnAlert("", result.message);
+				}
+			});
+		},
     // 검색
     fnSearch() {
       var vm = this;
@@ -242,9 +264,13 @@ export default {
     },
     // 등록창
     fnProjectReg : function(){
+      if (this.corpInfo.feeType == 'PRE' || (this.corpInfo.feeType == 'POST' && this.corpInfo.billStatus == 'APP')) {
         this.save_status = 'C';
         this.row_data = {};
         jQuery("#projectPop").modal("show");
+      } else {
+        confirm.fnAlert("", "프로젝트 생성을 위해서는 후불 사용승인을 받아야 합니다.");
+      }
       },
     // 상세창
     fnProjectDetail(data) {

@@ -44,6 +44,30 @@ const selectChMinList = (params) => {
 	return httpClient.post('/api/home/selectChMinList', params, { headers: { "show-layer": "Yes" } });
 };
 
+const selectCorpInfo = (params) => {
+	return httpClient.post('/api/home/selectCorpInfo', params, { headers: { "show-layer": "Yes" } });
+};
+
+const saveSenderUp = (params) => {
+	return httpClient.post('/api/home/saveSenderUp', params, { headers: { "show-layer": "Yes" } });
+};
+
+const delSenderUp = (params) => {
+	return httpClient.post('/api/home/delSenderUp', params, { headers: { "show-layer": "Yes" } });
+};
+
+const selectBill = (params) => {
+	return httpClient.post('/api/home/selectBill', params, { headers: { "show-layer": "Yes" } });
+};
+
+const saveBill = (params) => {
+	return httpClient.post('/api/home/saveBill', params, { headers: { "show-layer": "Yes" } });
+};
+
+const delBill = (params) => {
+	return httpClient.post('/api/home/delBill', params, { headers: { "show-layer": "Yes" } });
+};
+
 export default {
 	logout,
 	selectProjectList,
@@ -55,5 +79,11 @@ export default {
 	selectMonthUsedDataList,
 	selectSixMonthUsedTimeLineList,
 	selectSixMonthUsedDataList,
-	selectChMinList
+	selectChMinList,
+	selectCorpInfo,
+	saveSenderUp,
+	delSenderUp,
+	selectBill,
+	saveBill,
+	delBill
 };

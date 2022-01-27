@@ -323,4 +323,88 @@ public class HomeController {
 		return rtn;
 		
 	}
+
+	@PostMapping("/selectCorpInfo")
+	public RestResult<?> selectCorpInfo(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = homeSvc.selectCorpInfo(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectCorpInfo Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
+
+	@PostMapping("/saveSenderUp")
+	public RestResult<?> saveSenderUp(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			homeSvc.saveSenderUp(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("요청에 실패하였습니다.");
+			log.error("{}.saveSenderUp Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
+
+	@PostMapping("/delSenderUp")
+	public RestResult<?> delSenderUp(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			homeSvc.delSenderUp(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("삭제에 실패하였습니다.");
+			log.error("{}.delSenderUp Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
+
+	@PostMapping("/selectBill")
+	public RestResult<?> selectBill(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			rtn = homeSvc.selectBill(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+			log.error("{}.selectBill Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
+
+	@PostMapping("/saveBill")
+	public RestResult<?> saveBill(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			homeSvc.saveBill(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("요청에 실패하였습니다.");
+			log.error("{}.saveBill Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
+
+	@PostMapping("/delBill")
+	public RestResult<?> delBill(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			homeSvc.delBill(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("삭제에 실패하였습니다.");
+			log.error("{}.delBill Error : {}", this.getClass(), e);
+		}
+		return rtn;
+	}
 }

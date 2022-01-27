@@ -57,6 +57,48 @@ const selectVirAccUrl = () => {
     return httpClient.post('/projectApi/cash/selectVirAccUrl', { headers: {"show-layer": "Yes"} });
 }
 
+const selectCalList = (params) => {
+    return httpClient.post('/projectApi/cash/selectCalList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
+const selectDeptList = (params) => {
+    return httpClient.post('/projectApi/cash/selectDeptList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
+const selectBillList = (params) => {
+    return httpClient.post('/projectApi/cash/selectBillList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
+const saveDept = (params) => {
+    return httpClient.post('/projectApi/cash/saveDept', params, { headers: {"show-layer": "Yes", "activity":"SAVE"}, timeout: 150000 });
+};
+
+const delDept = (params) => {
+    return httpClient.post('/projectApi/cash/delDept', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+};
+
+const excelDownloadCalList = (params) => {
+	return httpClient.post('/projectApi/cash/excelDownloadCalList', params, { headers: {"show-layer": "No", "activity":"READ"}, responseType: 'arraybuffer' }).then(function(response) {
+		try {
+			let blob = new Blob([response.data], { type: response.headers['content-type'] })
+			let fileName = getFileName(response.headers['content-disposition'])
+			fileName = decodeURI(fileName)
+
+		if (window.navigator.msSaveOrOpenBlob) { // IE 10+
+			window.navigator.msSaveOrOpenBlob(blob, fileName)
+		} else { // not IE
+				let link = document.createElement('a')
+				link.href = window.URL.createObjectURL(blob)
+				link.target = '_self'
+				if (fileName) link.download = fileName
+				link.click()
+			}
+		} catch (e) {
+			console.error(e)
+		}
+	});
+};
+
 export default {
     insertWebCashInfo,
     selectCashHist,
@@ -71,5 +113,26 @@ export default {
     deleteProjectSubBillCode,
     selectVirAccStatus,
     selectVirAccDetail,
-    selectVirAccUrl
+    selectVirAccUrl,
+    selectCalList,
+    selectDeptList,
+    selectBillList,
+    saveDept,
+    delDept,
+    excelDownloadCalList
 };
+
+
+function getFileName (contentDisposition) {
+	let fileName = contentDisposition
+		.split(';')
+		.filter((ele) => {
+		return ele.indexOf('filename') > -1
+	})
+	.map((ele) => {
+		return ele
+			.replace(/"/g, '')
+			.split('=')[1]
+	})
+	return fileName[0] ? fileName[0] : null
+}

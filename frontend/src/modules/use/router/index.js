@@ -5,7 +5,7 @@ export default [
 	{
 		path: '/ac/use/history',
 		name: 'useHistory',
-		meta: { menu: 'AC_SETTLE_MNG3'},
+		meta: { menu: 'AC_SETTLE_MNG2'},
 		component: useHistory
 	},
 	{

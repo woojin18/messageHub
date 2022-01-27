@@ -64,7 +64,7 @@
 					<input type="text" class="inputStyle" placeholder="사업자번호 ( - 없이 입력 )" style="width:72%" v-model="regno" @keypress.enter="fnSelCorp">
 					<input type="hidden" v-model="selRegno" disabled>
 					<div class="float-right" style="width:25%">
-						<a href="#self" @click.prevent="fnSelCorp" class="btnStyle1 backLightGray" style="min-width:auto; width:100%">확인</a>
+						<a @click.prevent="fnSelCorp" class="btnStyle1 backLightGray" style="min-width:auto; width:100%">확인</a>
 					</div>
 				</div>
 			</div>
@@ -207,6 +207,19 @@
 						영업사원 조회 버튼을 통해 영업사원 팝업 창에서 영업사원을 선택해주세요.
 					</div>
 				</div>
+				<div class="of_h mt10">
+					<div class="float-left" style="width:22%"><h5>요금제*</h5></div>
+					<div class="float-left" style="width:78%">
+						<div class="float-left">
+							<input type="radio" name="calling_plan" value="PRE"  v-model="feeType" id="sms_agree03"> <label for="sms_agree03" class="mr30">선불</label>
+							<input type="radio" name="calling_plan" value="POST" v-model="feeType" id="sms_agree04"> <label for="sms_agree04">후불</label>
+						</div>
+						<div class="float-left ml10" v-if="feeType == 'POST'" style="width:25%"><a class="btnStyle1 backLightGray" style="min-width:auto; width:100%" @click="fnBill">청구 정보</a></div>	
+					</div>					
+					<div class="float-right color3 mt5" style="width:78%">메시지 사용료에 대한 요금제를 선택 해 주십시오.<br>
+					선불 선택 시 선불 충전 후 메시지 발송이 가능합니다.<br>
+					후불 선택 시 청구/납부 정보를 입력하셔야 가입완료 처리 할 수 있습니다.<br>이후 승인과정을 통해 사용이 가능합니다. (1~3일 소요)</div>
+				</div>
 			</div>
 
 			<!-- <h4 class="mt40">도메인설정</h4>
@@ -218,7 +231,7 @@
 							<input type="text" class="inputStyle" placeholder="영어, 숫자 3자 이상 30자 이내" v-model="domainName" :disabled="this.domainNameChk==true" maxlength="30">
 						</div>
 						<div class="float-right" style="width:25%">
-							<a href="#self" class="btnStyle1 backLightGray" style="min-width:auto; width:100%" data-toggle="modal" data-target="#save" @click.prevent="domainNameChkBtn">중복체크</a>
+							<a class="btnStyle1 backLightGray" style="min-width:auto; width:100%" data-toggle="modal" data-target="#save" @click.prevent="domainNameChkBtn">중복체크</a>
 						</div>					
 					</div>
 				</div>
@@ -233,6 +246,7 @@
 			<input type="hidden" name="m" value="checkplusService">						<!-- 필수 데이타로, 누락하시면 안됩니다. -->
 			<input type="hidden" name="EncodeData" v-model="sEncData">		<!-- 위에서 업체정보를 암호화 한 데이타입니다. -->
 		</form>
+		<billRegPopup :popReset="popReset4" :bill.sync="bill"></billRegPopup>
 	</div>
 </template>
 
@@ -243,6 +257,7 @@ import signUpApi from "@/modules/signUp/service/api"
 import chkCorpPopup from "@/modules/signUp/components/bp-selectCorpPopup"
 import selSalesManPopup from "@/modules/signUp/components/bp-selectSaleMan"
 import addrPopup from "@/modules/signUp/components/bp-addrPopup"
+import billRegPopup from "@/modules/signUp/components/bp-bill"
 
 import customereApi from "@/modules/customer/service/customerApi.js";
 import axios from 'axios'
@@ -252,7 +267,8 @@ export default {
 		//modal
 		chkCorpPopup,
 		addrPopup,
-		selSalesManPopup
+		selSalesManPopup,
+		billRegPopup
 	},
 	props: {
     	authKey : String,
@@ -294,6 +310,7 @@ export default {
 			popReset1 : 0,				// 팝업 초기화할 num
 			popReset2 : 0,				// 팝업 초기화할 num
 			popReset3 : 0,				// 팝업 초기화할 num
+			popReset4 : 0,				// 팝업 초기화할 num
 			custNo : '',				// 고객번호
 			custrnmNo : '',				// 고객식별번호
 			selRegno : '',				// 사업자 등록 번호(input hidden)
@@ -306,7 +323,45 @@ export default {
 			
 			selSalesMan : {},			// 선택한 영업사원
 			salesMan : "",
-			salesManId : ""
+			salesManId : "",
+			feeType : 'PRE',
+			bill : {
+				  billRegNo : ''
+				, billType : 'PROJECT'
+				, billName : ''
+				, billStatus : ''
+				, napCustKdCd : ''
+				, billKind : 'Y'
+				, billEmail : ''
+				, billTelNo : ''
+				, billZip : ''
+				, billJuso : ''
+				, billJuso2 : ''
+				, payMthdCd : 'CM'
+				, payDt : ''
+				, napCmpNm : ''
+				, napJumin : ''
+				, bankCd : ''
+				, bankNo : ''
+				, cardCd : ''
+				, cardNo1 : ''
+				, cardNo2 : ''
+				, cardNo3 : ''
+				, cardNo4 : ''
+				, cardValdEndYymm1 : ''
+				, cardValdEndYymm2 : ''
+				, serviceId : ''
+				, smsExpCnt : null
+				, rcsExpCnt : null
+				, kkoExpCnt : null
+				, pushExpCnt : null
+				, monthExpAmount : 0
+				, handleReason : ''
+				, handleId : ''
+				, handleDt : ''
+                , isCert : false
+                , isAgree : false
+			}
 		}
 	},
 	// 도메인 이름 영어(소문자), 숫자만 입력 가능하도록 처리
@@ -350,18 +405,18 @@ export default {
 					this.loginId = result.data.email;
 					this.promotionYn = result.data.promotionYn;
 					this.fnGetNiceCheck();		// nice 본인인증 인증키 조회
-					this.fnGetCustType();		// 고객사 고객 유형 코드 값 조회
+					this.fnGetCode();		// 고객사 코드 값 조회
 				} else {
 					vm.$router.push({name : "chkCertifyFail"});
 				}
 			})
 		},
-		fnGetCustType(){
-			var params = {
+		fnGetCode(){
+			var params1 = {
 				codeTypeCd	: "CORP_CUST_TYPE",
 				useYN		: "Y"
 			};
-			customereApi.selectCodeList(params).then(response =>{
+			customereApi.selectCodeList(params1).then(response =>{
 				var result = response.data;
 				if(result.success){
 					if(result.data.length > 0){
@@ -388,6 +443,12 @@ export default {
 			// 사업자 번호 유효성 검사
 			var regnoVali = this.regnoVali(regno);
 			if(!regnoVali) return false;
+
+			// 청구정보 유효성 검사
+			if (this.feeType == 'POST') {
+				var billVali = this.billVali();
+				if (!billVali) return false;
+			}
 
 			eventBus.$on('callbackEventBus', this.signUpSubmit);
      		confirm.fnConfirm( "", "가입하시겠습니까?", "확인");
@@ -516,6 +577,86 @@ export default {
 			return true;
 		},
 
+		billVali() {
+            if(this.bill.smsExpCnt == null || this.bill.smsExpCnt == ""){
+                confirm.fnAlert("", "월 발송 예상 건수(문자)를 입력해주세요.");
+                return false;
+            }
+            if(this.bill.rcsExpCnt == null || this.bill.rcsExpCnt == ""){
+                confirm.fnAlert("", "월 발송 예상 건수(RCS)를 입력해주세요.");
+                return false;
+            }
+            if(this.bill.kkoExpCnt == null || this.bill.kkoExpCnt == ""){
+                confirm.fnAlert("", "월 발송 예상 건수(카카오)를 입력해주세요.");
+                return false;
+            }
+            if(this.bill.pushExpCnt == null || this.bill.pushExpCnt == ""){
+                confirm.fnAlert("", "월 발송 예상 건수(Push)를 입력해주세요.");
+                return false;
+            }
+            if(this.bill.billRegNo == ""){
+                confirm.fnAlert("", "청구 사업자번호를 입력해주세요.");
+                return false;
+            }
+            if (this.bill.billTelNo == "" && this.bill.billKind == "C") {
+                confirm.fnAlert("", "청구서 수신 휴대폰를 입력해주세요.");
+                return false;
+            }
+            if (this.bill.billEmail == "" && this.bill.billKind == "Y") {
+                confirm.fnAlert("", "청구 이메일을 입력해주세요.");
+                return false;
+            }
+            if(this.bill.billZip == "" && this.bill.billKind == "N"){
+                confirm.fnAlert("", "청구 주소를 선택해주세요.");
+                return false;
+            }
+            if(this.bill.billJuso2 == "" && this.bill.billKind == "N"){
+                confirm.fnAlert("", "청구 상세주소를 입력해주세요.");
+                return false;
+            }
+            if(this.bill.napCustKdCd == ""){
+                confirm.fnAlert("", "납부고객구분을 선택해주세요.");
+                return false;
+            }
+            if(this.bill.payDt == ""){
+                confirm.fnAlert("", "납부일을 선택해주세요.");
+                return false;
+            }
+            if(this.bill.payDt == ""){
+                confirm.fnAlert("", "납부자명을 입력해주세요.");
+                return false;
+            }
+            if(this.bill.napJumin == ""){
+                confirm.fnAlert("", "생년월일/사업자번호를 입력해주세요.");
+                return false;
+            }
+            if(this.bill.bankCd == "" && this.bill.payMthdCd == "CM"){
+                confirm.fnAlert("", "은행을 선택해주세요.");
+                return false;
+            }
+            if(this.bill.bankNo == "" && this.bill.payMthdCd == "CM"){
+                confirm.fnAlert("", "계좌번호를 선택해주세요.");
+                return false;
+            }
+            if(this.bill.cardCd == "" && this.bill.payMthdCd == "CC"){
+                confirm.fnAlert("", "카드종류를 선택해주세요.");
+                return false;
+            }
+            if((this.bill.cardNo1 == "" || this.bill.cardNo2 == "" || this.bill.cardNo3 == "" || this.bill.cardNo4 == "") && this.bill.payMthdCd == "CC"){
+                confirm.fnAlert("", "카드번호를 입력해주세요.");
+                return false;
+            }
+            if((this.bill.cardValdEndYymm1 == "" || this.bill.cardValdEndYymm2 == "") && this.bill.payMthdCd == "CC"){
+                confirm.fnAlert("", "카드유효기간를 입력해주세요.");
+                return false;
+            }
+            if(this.bill.isAgree == false && (this.bill.payMthdCd == "CM" || this.bill.payMthdCd == "CC")){
+                confirm.fnAlert("", "이용동의안에 동의해야 합니다.");
+                return false;
+            }
+			return true;
+		},
+
 		// 도메인 중복 체크 function
 		domainNameChkBtn() {
 			var vm = this;
@@ -569,6 +710,41 @@ export default {
 			fd.append('genderCode', this.gender);							// 성별 (1: 남성 / 2: 여성)
 			fd.append('promotionYn', this.promotionYn);						// 홍보성 정보 수신 동의
 			fd.append('salesMan', this.salesManId);							// 영업사원
+			fd.append('feeType', this.feeType);
+
+			fd.append('billRegNo', this.bill.billRegNo);
+			fd.append('billType', this.bill.billType);        
+			fd.append('billName', this.bill.billName);        
+			fd.append('billStatus', this.bill.billStatus);      
+			fd.append('napCustKdCd', this.bill.napCustKdCd);     
+			fd.append('billKind', this.bill.billKind);        
+			fd.append('billEmail', this.bill.billEmail);       
+			fd.append('billTelNo', this.bill.billTelNo);       
+			fd.append('billZip', this.bill.billZip);         
+			fd.append('billJuso', this.bill.billJuso);        
+			fd.append('billJuso2', this.bill.billJuso2);       
+			fd.append('payMthdCd', this.bill.payMthdCd);       
+			fd.append('payDt', this.bill.payDt);           
+			fd.append('napCmpNm', this.bill.napCmpNm);        
+			fd.append('napJumin', this.bill.napJumin);        
+			fd.append('bankCd', this.bill.bankCd);          
+			fd.append('bankNo', this.bill.bankNo);          
+			fd.append('cardCd', this.bill.cardCd);          
+			fd.append('cardNo1', this.bill.cardNo1);
+			fd.append('cardNo2', this.bill.cardNo2);
+			fd.append('cardNo3', this.bill.cardNo3);
+			fd.append('cardNo4', this.bill.cardNo4);
+			fd.append('cardValdEndYymm1', this.bill.cardValdEndYymm1);
+			fd.append('cardValdEndYymm2', this.bill.cardValdEndYymm2); 
+			fd.append('serviceId', this.bill.serviceId);       
+			fd.append('smsExpCnt', this.bill.smsExpCnt);       
+			fd.append('rcsExpCnt', this.bill.rcsExpCnt);       
+			fd.append('kkoExpCnt', this.bill.kkoExpCnt);       
+			fd.append('pushExpCnt', this.bill.pushExpCnt);      
+			fd.append('monthExpAmount', this.bill.monthExpAmount);  
+			fd.append('handleReason', this.bill.handleReason);    
+			fd.append('handleId', this.bill.handleId);        
+			fd.append('handleDt', this.bill.handleDt);     
 
 			await axios.post('/api/public/signUp/insertSignUp',
 				fd,
@@ -753,7 +929,12 @@ export default {
 		fnSetSalesMan(){
 			this.salesManId = this.selSalesMan.codeVal1;
 			this.salesMan = this.selSalesMan.codeName1;
-		}
+		},
+		// 청구정보 팝업
+		fnBill(){
+			this.popReset4 += 1;
+			jQuery("#billRegPopup").modal("show");
+		},
 	}
 }
 </script>
