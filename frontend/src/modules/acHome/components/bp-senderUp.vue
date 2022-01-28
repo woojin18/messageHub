@@ -89,7 +89,7 @@ export default {
     watch : {
         popReset() {
             if (this.isRead) {
-                this.info.reqAmount = this.corpInfo.toString().reqAmount;
+                this.info.reqAmount = this.corpInfo.reqAmount;
                 this.info.reqReason = this.corpInfo.reqReason;
             } else {
                 this.info.reqAmount = "";
@@ -97,7 +97,8 @@ export default {
             }
         },
 		'info.reqAmount'() {
-			return this.info.reqAmount = this.info.reqAmount.replace(/[^0-9]/g, '');
+            if (this.info.reqAmount == null) return;
+			return this.info.reqAmount = this.info.reqAmount.toString().replace(/[^0-9]/g, '');
 		},
     },
 	mounted() {
@@ -121,6 +122,7 @@ export default {
 				var result = response.data;
 				if(result.success) {
 					confirm.fnAlert('한도금액 상향 요청', '한도금액 상향 요청이 정상적으로 되었습니다.');
+                    this.corpInfo.senderUpStatusNm = "한도금액 상향 요청 중"
                     this.corpInfo.senderUpStatus = 'REQ';
                     this.corpInfo.reqAmount = this.info.reqAmount ;
                     this.corpInfo.reqReason = this.info.reqReason ;

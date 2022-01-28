@@ -495,6 +495,12 @@ public class HomeService {
 		if (StringUtils.isNotEmpty((String) params.get("napJumin"))) {
 			params.put("napJumin", encrypt.encrypt((String) params.get("napJumin")));
 		}
+		if (StringUtils.isNotEmpty((String) params.get("bankNo"))) {
+			params.put("bankNo", encrypt.encrypt((String) params.get("bankNo")));
+		}
+		if (StringUtils.isNotEmpty((String) params.get("cardNo"))) {
+			params.put("cardNo", encrypt.encrypt((String) params.get("cardNo")));
+		}
 		if (StringUtils.isNotEmpty((String) params.get("cardValdEndYymm"))) {
 			params.put("cardValdEndYymm", encrypt.encrypt((String) params.get("cardValdEndYymm")));
 		}
@@ -518,6 +524,12 @@ public class HomeService {
 			AesEncryptor encrypt = new AesEncryptor(); // 암호화
 			if (StringUtils.isNotEmpty((String) data.get("napJumin"))) {
 				data.put("napJumin", encrypt.decrypt((String) data.get("napJumin")));
+			}
+			if (StringUtils.isNotEmpty((String) data.get("bankNo"))) {
+				data.put("bankNo", encrypt.decrypt((String) data.get("bankNo")));
+			}
+			if (StringUtils.isNotEmpty((String) data.get("cardNo"))) {
+				data.put("cardNo", encrypt.decrypt((String) data.get("cardNo")));
 			}
 			if (StringUtils.isNotEmpty((String) data.get("cardValdEndYymm"))) {
 				data.put("cardValdEndYymm", encrypt.decrypt((String) data.get("cardValdEndYymm")));

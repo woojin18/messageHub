@@ -247,6 +247,12 @@ public class SignUpService {
 			if (StringUtils.isNotEmpty((String) paramMap.get("napJumin"))) {
 				paramMap.put("napJumin", encrypt.encrypt((String) paramMap.get("napJumin")));
 			}
+			if (StringUtils.isNotEmpty((String) paramMap.get("bankNo"))) {
+				paramMap.put("bankNo", encrypt.encrypt((String) paramMap.get("bankNo")));
+			}
+			if (StringUtils.isNotEmpty((String) paramMap.get("cardNo"))) {
+				paramMap.put("cardNo", encrypt.encrypt((String) paramMap.get("cardNo")));
+			}
 			if (StringUtils.isNotEmpty((String) paramMap.get("cardValdEndYymm"))) {
 				paramMap.put("cardValdEndYymm", encrypt.encrypt((String) paramMap.get("cardValdEndYymm")));
 			}

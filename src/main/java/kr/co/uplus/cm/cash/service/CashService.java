@@ -776,6 +776,12 @@ public class CashService {
 				if (StringUtils.isNotEmpty((String) params.get("napJumin"))) {
 					params.put("napJumin", encrypt.encrypt((String) params.get("napJumin")));
 				}
+				if (StringUtils.isNotEmpty((String) params.get("bankNo"))) {
+					params.put("bankNo", encrypt.encrypt((String) params.get("bankNo")));
+				}
+				if (StringUtils.isNotEmpty((String) params.get("cardNo"))) {
+					params.put("cardNo", encrypt.encrypt((String) params.get("cardNo")));
+				}
 				if (StringUtils.isNotEmpty((String) params.get("cardValdEndYymm"))) {
 					params.put("cardValdEndYymm", encrypt.encrypt((String) params.get("cardValdEndYymm")));
 				}
