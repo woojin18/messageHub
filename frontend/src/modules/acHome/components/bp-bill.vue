@@ -479,7 +479,7 @@ export default {
 			signUpApi.chkBank(params).then(response => {
 				var result = response.data;
 				var vm = this;
-				if(result.success && result.data != null && (result.data.serviceId == 'CM061' && result.data.resultCode == 'Y' && (result.data.cmsResultCode == '00' || result.data.cmsResultCode == '0000'))){
+				if(result.success && result.data != null && (result.data.cmsResultCode == '00' || result.data.cmsResultCode == '0000')){
                     confirm.fnAlert("", "인증되었습니다.");
                     vm.bill.isCert = true;
 				} else {
@@ -525,7 +525,7 @@ export default {
 			signUpApi.chkCard(params).then(response => {
 				var result = response.data;
 				var vm = this;
-				if(result.success && result.data != null && (result.data.serviceId == 'CM061' && result.data.resultCode == 'Y' && (result.data.cmsResultCode == '00' || result.data.cmsResultCode == '0000'))){
+				if(result.success && result.data != null && (result.data.cmsResultCode == '00' || result.data.cmsResultCode == '0000')){
                     confirm.fnAlert("", "인증되었습니다.");
                     vm.bill.isCert = true;
 				} else {
