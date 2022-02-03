@@ -118,7 +118,7 @@
                     <div class="of_h mt10">
                         <div class="float-left" style="width:22%"><h5>생년월일/<br>사업자번호*</h5></div>
                         <div class="float-left" style="width:78%">
-                            <input type="text" class="inputStyle" placeholder="생년월일(YYYYMMDD)/사업자번호" :disabled="isRead" v-model="bill.napJumin" @change="fnCngCertInfo" maxlength="12">
+                            <input type="text" class="inputStyle" placeholder="생년월일(YYMMDD)/사업자번호" :disabled="isRead" v-model="bill.napJumin" @change="fnCngCertInfo" maxlength="12">
                         </div>
                     </div>
                     <div class="of_h mt10" v-show="bill.payMthdCd == 'CM'">
