@@ -267,6 +267,7 @@ import HomeMain from '../components/bc-homeMain.vue';
 import tokenSvc from '@/common/token-service';
 import confirm from "@/modules/commonUtil/service/confirm";
 import homeApi from '@/modules/ucHome/service/api';
+import customereApi from "@/modules/customer/service/customerApi.js";
 import NoticeLayer from "@/modules/customer/components/bp-noticeLayer.vue";
 import Calendar from "@/components/Calendar.vue";
 import BarChart from '@/components/Chart.vue';
@@ -362,6 +363,7 @@ export default {
 		var vm = this;
 		vm.fnInit();
 		if (tokenSvc.getToken()) {
+			vm.fnOpenNoticePopup();
 			vm.fnGetProjectInfo();
 			vm.fnGetNoticeList();
 			vm.fnSetIntervalSearchDate(vm.searchDateInterval);
@@ -399,6 +401,48 @@ export default {
 				});
 			}
 		},
+
+		async fnOpenNoticePopup() {
+			var roleCd = tokenSvc.getToken().principal.role;
+			// USER가 아닐경우 팝업 오픈 하지않음.
+			if(roleCd != "USER") {
+				return false;
+			}
+
+			let noticePopupList = [];
+			let noticeIdArr = [];
+			let exceptNoticeIds = this.$cookies.get('exceptNoticeIds');
+			if(!this.$gfnCommonUtils.isEmpty(exceptNoticeIds)){
+				noticeIdArr = exceptNoticeIds.split(',');
+			}
+
+			const params = {
+				sltPopupYn: 'Y',
+				exceptNoticeIds: noticeIdArr
+			};
+			await customereApi.selectNoticeList(params).then(response =>{
+				const result = response.data;
+				if(result.success) {
+				noticePopupList = result.data;
+				} else {
+				confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+
+			const vm = this;
+			let routeData = '';
+			const noticePopupNm = 'noticePopup';
+			const popupOtion = 'width=820,height=640,left=20,top=20,scrollbars=yes';
+			noticePopupList.forEach(function(info){
+				routeData = vm.$router.resolve({name: noticePopupNm, query: {noticeId: info.noticeId}});
+				vm.fnOpenWindowPop(routeData.href, noticePopupNm+info.noticeId, popupOtion);
+			});
+		},
+
+		fnOpenWindowPop(url, name, specs){
+			window.open(url, name, specs);
+		},
+		
 		async fnGetProjectInfo() {
 			let params = {
 				projectId: utils.getCookie(consts.projectId),
