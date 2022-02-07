@@ -10,6 +10,9 @@
               <router-link :to="{name: 'intro'}" tag="a" title="서비스 소개 페이지로 이동">서비스 소개</router-link>
             </li>
             <li>
+              <router-link :to="{name: 'channelIntro'}" tag="a" title="채널 소개 페이지로 이동">채널 소개</router-link>
+            </li>
+            <li>
               <router-link :to="{name: 'sendPay'}" tag="a" title="요금제 페이지로 이동">요금제</router-link>
             </li>
             <li><a title="고객센터 페이지로 이동">고객센터</a>

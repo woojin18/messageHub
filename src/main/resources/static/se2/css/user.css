@@ -7,6 +7,7 @@ body {min-width:1470px; overflow-x:auto}
 
 /* head_type_user */
 header.head_type_user {border-bottom:1px solid #E6E6E6}
+header.head_type_user.fixed {position:fixed; width:100%; top:0; left:0; z-index:999999; background:#fff}
 .wrap_head {width:100%; min-width:1400px; padding:0 50px; height:80px; margin:0 auto; text-align:center}
 .wrap_head .tit_logo {float:left}
 .wrap_head .tit_logo .userLogo {display:block; margin-top:15px}
@@ -86,11 +87,12 @@ header.head_type_user {border-bottom:1px solid #E6E6E6}
 /* mainVisualWrap */
 #mainVisualWrap {overflow:hidden; height:760px}
 #mainVisualWrap section {}
-.mainBxslider > li > .mainVisualTitle {position:absolute; top:230px; left:0px; width:100%}
+.mainBxslider > li > .mainVisualTitle {position:absolute; top:110px; left:0px; width:100%}
 .mainBxslider > li > .mainVisualTitle > div {max-width:1088px; margin:0 auto; position:relative}
-.mainBxslider > li > .mainVisualTitle > div > h2 {font-family: 'NanumSquare', sans-serif; font-weight:400; font-size:40px !important; color:#000; line-height:55px}
+.mainBxslider > li > .mainVisualTitle > div > h2 {font-weight:400; font-size:40px !important; color:#000; line-height:70px}
+.mainBxslider > li > .mainVisualTitle > div > h2 strong {font-weight:500; font-size:60px !important}
 .mainBxslider > li > .mainVisualTitle > div > h2.colorWhite {color:#fff}
-.mvBtn {padding:13px 30px; color:#fff; background:#E93978; font-size:17px; border-radius:5px; display:inline-block; margin-top:30px; transition:.3s}
+.mvBtn {padding:18px 38px; color:#fff; background:#E93978; font-size:17px; border-radius:5px; display:inline-block; margin-top:40px; transition:.3s}
 .mvBtn:hover, .mvBtn:focus {background:#000; color:#fff}
 #mainVisualWrap .bx-wrapper img {max-width:inherit; width:100%}
 #mainVisualWrap .bx-wrapper .bx-controls-direction a {position:absolute; top:50%; margin-top:-18px; outline:0; width:19px; height:37px; text-indent:-9999px; z-index:99; transition:.3s}
@@ -395,3 +397,32 @@ p {letter-spacing:-0.5px}
 .phoneWrap .btnStyle1.backLightGray {background:#F1F1F1; border-color:#ddd; color:#000; width:100%; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient: vertical; margin:5px 0}
 .phoneWrap .btnStyle1.backLightGray:hover {background:#000; border-color:#000; color:#fff}
 .modal-body .scroll-y_modal {max-height:140px; overflow-y:auto; line-height:1.4em}
+
+
+
+/* 2022-01-13 */
+#subVisualWrap02a section {background:url(../images/subVisual01.png); height:370px; display:flex; align-items:center; justify-content:center}
+#subVisualWrap02a section div > p {margin-top:22px; color:#fff; font-size:18px}
+#subVisualWrap02a section div > div {margin-top:44px}
+#subVisualWrap02a section div > div > a {color:#A142D3; font-size:17px; background-color:#fff; border-radius:5px; padding:15px 40px; font-weight:500}
+#subVisualWrap02a section div div a:hover {background-color:#570792; color:#fff}
+.inner1088 {width:1088px; margin:0 auto}
+.userChannelList {display:flex; justify-content:space-between}
+.userChannelList > li {width:249px; text-align:center; border-radius:32px 32px 0 0; overflow:hidden}
+.userChannelList_box {display:flex; align-items:flex-end; border:1px solid #CECECE; box-sizing:border-box; height:180px; padding-bottom:40px}
+.userChannelList_box > div {width:100%}
+.userChannelList_box p {font-size:20px; font-weight:500; color:#000; line-height:29px}
+.userChannelList_box a {display:inline-block; width:140px; height:40px; text-align:center; line-height:40px; font-size:16px; font-weight:400; color:#fff; background:#000; border-radius:20px; box-sizing:border-box; transition:.3s}
+.userChannelList_box a:hover, .userChannelList_box a:focus {background:#a142d3}
+#userChannel1-1, #userChannel1-3 {background:#F6F6FC; padding:80px 0}
+#userChannel1-2, #userChannel1-4 {padding:80px 0}
+.userChannelTitle {font-size:30px; font-weight:700; color:#333}
+.userSmsList {display:flex; justify-content:space-between; margin-top:60px}
+.userSmsList > li {width:340px; text-align:center; font-size:16px; font-weight:500}
+.userBtn {display:inline-block; min-width:137px; height:42px; line-height:42px; text-align:center; border-radius:21px; box-sizing:border-box; color:#fff; font-size:16px; font-weight:700}
+.userRcsList {display:flex; justify-content:space-between; margin-top:40px}
+.userRcsList > li {width:527px; text-align:center; font-size:20px; font-weight:500}
+.userRcsList > li span {vertical-align:middle}
+.userArrow {font-size:18px; margin:0 10px; vertical-align:middle}
+.userKakaoList {display:flex; justify-content:space-between; margin-top:60px}
+.userKakaoList > li {width:340px; text-align:center; font-size:16px; font-weight:500}

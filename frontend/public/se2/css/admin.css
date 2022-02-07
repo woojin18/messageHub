@@ -237,10 +237,7 @@ input[class="checkStyle2"]:checked + label:before {border-color:#FD004E; backgro
 .mb40 {margin-bottom:40px !important}
 .mb50 {margin-bottom:50px !important}
 .ml0{margin-left:0 !important}
-<<<<<<< HEAD
-=======
 .ml2{margin-left:2px !important}
->>>>>>> refs/heads/post_charge
 .ml5{margin-left:5px !important}
 .ml10{margin-left:10px !important}
 .ml15{margin-left:15px !important}
