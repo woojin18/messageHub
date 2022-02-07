@@ -508,7 +508,7 @@ export default {
 					if( response.data.message === "" || response.data.message === undefined ){
 						confirm.fnAlert("", "확인에 실패했습니다.");
 					} else {
-						confirm.fnAlert("", response.data.message);
+						confirm.fnAlert("", response.data.message + '\n\n발급 받은 RBC API Key는 RBC 로그인 -> 내 정보관리 -> API KEY에서 확인할 수 있습니다');
 					}
 				}
 			} else {
@@ -516,7 +516,7 @@ export default {
 				if( response.data.message === "" || response.data.message === undefined ){
 					confirm.fnAlert("", "확인에 실패했습니다.");
 				} else {
-					confirm.fnAlert("", response.data.message);
+					confirm.fnAlert("", response.data.message + '\n\n발급 받은 RBC API Key는 RBC 로그인 -> 내 정보관리 -> API KEY에서 확인할 수 있습니다');
 				}
 			}
 		});
