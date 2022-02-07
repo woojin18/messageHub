@@ -26,7 +26,7 @@
 			<section>			
 				<ul class="CloudIcon CloudIconlList">
 					<li class="wow animated fadeInLeft" data-wow-duration="1s">
-						<img src="/se2/images//CloudIconlList1.png" alt="아이콘1">
+						<img src="/se2/images/CloudIconlList1.png" alt="아이콘1">
 						<div class="IconMainBox">
 							<p class="IconMainText">통합 채널 관리</p>
 							<div class="btn2">
@@ -35,7 +35,7 @@
 						</div>
 					</li>
 					<li class="wow animated fadeInLeft" data-wow-delay=".3s" data-wow-duration="1s">
-						<img src="/se2/images//CloudIconlList2.png" alt="아이콘2">
+						<img src="/se2/images/CloudIconlList2.png" alt="아이콘2">
 						<div class="IconMainBox">
 							<p class="IconMainText">비용 절감</p>
 							<div class="btn2">
@@ -44,7 +44,7 @@
 						</div>
 					</li>
 					<li class="wow animated fadeInLeft" data-wow-delay=".6s" data-wow-duration="1s">
-						<img src="/se2/images//CloudIconlList3.png" alt="아이콘3">
+						<img src="/se2/images/CloudIconlList3.png" alt="아이콘3">
 						<div class="IconMainBox">
 							<p class="IconMainText">쉬운 서비스 연동</p>
 							<div class="btn2">
