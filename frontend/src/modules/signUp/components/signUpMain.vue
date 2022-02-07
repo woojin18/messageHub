@@ -166,7 +166,7 @@
 					<div class="float-left" style="width:15%"><h5></h5></div>
 					<div class="float-left" style="width:85%">
 						<div class="float-left" style="width:68%">
-							<input type="text" class="inputStyle" placeholder="대리인 재직증명서 or 신분증 1부" v-model="attachFileNm2" disabled>
+							<input type="text" class="inputStyle" placeholder="대리인 재직증명서 or 대리인 신분증 1부" v-model="attachFileNm2" disabled>
 							<input type="file" id="attachCorpImg2" @change="fnFileChange(2)" ref="attachFile2" style="display:none;">
 						</div>
 						<div class="float-right" style="width:30%">
@@ -186,7 +186,7 @@
 						</div>					
 					</div>
 					<div class="float-right color3 mt5" style="width:85%">
-						(가능 확장자 : jpg, jpeg, pdf, gif, png, tiff)
+						(가능 확장자 : jpg, jpeg, pdf, gif, png, tiff 5M이하)
 					</div>
 				</div>
 				
@@ -493,7 +493,10 @@ export default {
 				confirm.fnAlert("", "통신사실 증명원 파일을 첨부해주세요.");
 				return false;
 			} else if (this.attachFileNm2 == "") {
-				confirm.fnAlert("", "대리인 재직증명서 또는 신분증 파일을 첨부해주세요.");
+				confirm.fnAlert("", "대리인 재직증명서 또는 대리인 신분증 파일을 첨부해주세요.");
+				return false;
+			} else if (this.userNm != (this.$gfnCommonUtils.isEmpty(this.ceoNm) ? this.rtnCustNm : this.ceoNm) && this.attachFileNm3 == "") {
+				confirm.fnAlert("", "대리인 위임장을 첨부해주세요.");
 				return false;
 			} else if (this.salesManId == "" && this.salesMan != "") {
 				confirm.fnAlert("", "영업사원명을 수정하신 경우, 영업사원 조회 팝업에서 다시 선택해주세요.\n영업사원을 기본값으로 등록하시려면 빈칸으로 입력해주세요.");
@@ -579,7 +582,7 @@ export default {
 
 		billVali() {
             if(this.bill.smsExpCnt == null || this.bill.smsExpCnt == ""){
-                confirm.fnAlert("", "월 발송 예상 건수(문자)를 입력해주세요.");
+                confirm.fnAlert("", "청구정보 버튼을 클릭하여 추가 내용을 입력해주세요.");
                 return false;
             }
             if(this.bill.rcsExpCnt == null || this.bill.rcsExpCnt == ""){

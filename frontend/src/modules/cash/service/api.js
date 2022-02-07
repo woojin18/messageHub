@@ -69,6 +69,10 @@ const selectBillList = (params) => {
     return httpClient.post('/projectApi/cash/selectBillList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
+const selectProjectList = (params) => {
+    return httpClient.post('/projectApi/cash/selectProjectList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
 const saveDept = (params) => {
     return httpClient.post('/projectApi/cash/saveDept', params, { headers: {"show-layer": "Yes", "activity":"SAVE"}, timeout: 150000 });
 };
@@ -117,6 +121,7 @@ export default {
     selectCalList,
     selectDeptList,
     selectBillList,
+    selectProjectList,
     saveDept,
     delDept,
     excelDownloadCalList

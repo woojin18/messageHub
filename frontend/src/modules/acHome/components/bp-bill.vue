@@ -181,7 +181,7 @@
                     <div v-if="isRead == false" class="joinBox mt10" v-show="bill.payMthdCd != 'GR'">	
                         <div class="checks">
                             <input type="checkbox" id="chkID" class="checkStyle2" v-model="bill.isAgree"><label for="chkID">본인은 서비스 이용요금을 매월 본인 또는 법인의 계좌나 카드에서 지정된 출금일 또는<br>결제일에 인출 하는 것에 동의합니다.<br>
-                            본인은 LG유플러스가 이용요금 청구 및 수납을 위해 뒷면에 기재된 개인정보 활용동의서의 내용에 따라 위의 정보를 수집 후 이용 또는 정보 위탁하는 것에 동의한다.</label>	
+                            본인은 LG유플러스가 이용요금 청구 및 수납을 위해 뒷면에 기재된 개인정보 활용동의서의 내용에 따라 위의 정보를 수집 후 이용 또는 정보 위탁하는 것에 동의합니다.</label>	
                         </div>
                     </div>
 

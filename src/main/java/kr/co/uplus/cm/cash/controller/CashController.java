@@ -452,6 +452,16 @@ public class CashController {
 
 		return rtn;
 	}
+
+	// 청구계정 조회
+	@PostMapping("/selectProjectList")
+	public RestResult<?> selectProjectList(@RequestBody Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+        List<Object> rtnList = generalDao.selectGernalList("cash.selectProjectList", params);
+        rtn.setData(rtnList);
+
+		return rtn;
+	}
 	
 	// 부서 저장
 	@PostMapping("/saveDept")

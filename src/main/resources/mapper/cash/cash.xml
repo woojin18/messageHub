@@ -376,6 +376,7 @@
         /* cash.selectDeptList */
 		SELECT DEPT_NAME
 		     , DEPT_CODE
+		     , a.PROJECT_ID
 		     , USE_YN
 		     , (CASE USE_YN WHEN 'Y' THEN '예' ELSE '아니오' END) AS USE_YN_NM
              , a.BILL_ID AS ORG_BILL_ID
@@ -400,6 +401,18 @@
          ORDER BY BILL_NAME 
     </select>
     
+    <select id="selectProjectList" resultType="camel">
+        /* cash.selectProjectList */
+        SELECT PROJECT_ID
+             , PROJECT_NAME
+          FROM cm_console.CM_PROJECT a
+         WHERE a.CORP_ID = #{corpId}
+           AND SUBBILL_YN = 'Y'
+           AND USE_YN     = 'Y'
+           AND DEL_YN     = 'N'
+         ORDER BY PROJECT_NAME 
+    </select>
+    
     <insert id="insertDept">
         /* cash.insertDept */
         INSERT INTO cm_console.CM_PROJECT_SUBBILL_CODE (
@@ -408,6 +421,7 @@
              , CORP_ID
              , USE_YN
              , DEPT_NAME
+             , PROJECT_ID
              , REG_DT
              , SERVICE_ID
              , UPD_DT
@@ -417,6 +431,7 @@
              , #{corpId}
              , #{useYn}
              , #{deptName}
+             , #{projectId}
              , now()
              , #{serviceId}
              , now()
@@ -426,13 +441,14 @@
     <update id="updateDept">
         /* cash.updateDept */
         UPDATE cm_console.CM_PROJECT_SUBBILL_CODE
-          SET  BILL_ID   = #{billId}
-             , USE_YN    = #{useYn}
-             , DEPT_NAME = #{deptName}
-             , UPD_DT    = now()
-         WHERE DEPT_CODE = #{deptCode}
-           AND BILL_ID   = #{orgBillId}
-           AND CORP_ID   = #{corpId}
+          SET  BILL_ID    = #{billId}
+             , USE_YN     = #{useYn}
+             , DEPT_NAME  = #{deptName}
+             , PROJECT_ID = #{projectId}
+             , UPD_DT     = now()
+         WHERE DEPT_CODE  = #{deptCode}
+           AND BILL_ID    = #{orgBillId}
+           AND CORP_ID    = #{corpId}
 	</update>
     
     <update id="deleteDept">

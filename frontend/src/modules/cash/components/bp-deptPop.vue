@@ -19,6 +19,13 @@
 							<input type="text" class="inputStyle float-right" style="width:80%" v-model="dept.deptName">
 						</div>
 						<div class="of_h consolMarginTop">
+							<h5 class="inline-block" style="width:18%">프로젝트 *</h5>
+							<select v-model="dept.projectId" class="selectStyle2 float-right" style="width:80%">
+								<option value="">선택해 주세요</option>
+								<option v-for="(data, idx) in projectList" :value="data.projectId">{{ data.projectName }}</option>
+							</select>
+						</div>
+						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">사용여부 *</h5>
 							<div class="float-right" style="width:80%">
 								<input type="radio" name="use2" value="Y" v-model="dept.useYn" id="yes2"> <label for="yes2" class="mr30">예</label>
@@ -80,6 +87,7 @@ export default {
     return {
 		dept: {},
 		isNew : 'Y',
+		projectList: [],
 		billList: [],
 		popReset1 : 0,				// 팝업 초기화할 num
 		bill : {
@@ -140,6 +148,12 @@ export default {
           vm.billList = result.data
         }
       })
+      cashApi.selectProjectList({}).then(response => {
+        var result = response.data
+        if(result.success) {
+          vm.projectList = result.data
+        }
+      })
 	},
   init() {
 	  this.isNew = this.rowData.billId == null ? 'Y' : 'N'
@@ -147,6 +161,7 @@ export default {
             isNew : true,
 		    deptCode : '',
 		    depttName : '',
+			projectId : '',
 		    useYn : 'Y',
 		    billId : ''
 	  }, this.rowData)
@@ -198,6 +213,10 @@ export default {
       }
       if(jQuery.trim(this.dept.deptName).length == 0){
         confirm.fnAlert("", "부서명을 입력해주세요.");
+        return;
+      }
+      if(jQuery.trim(this.dept.projectId).length == 0){
+        confirm.fnAlert("", "프로젝트를 선택해주세요.");
         return;
       }
       if(this.isNew == 'N' && jQuery.trim(this.dept.billId).length == 0){

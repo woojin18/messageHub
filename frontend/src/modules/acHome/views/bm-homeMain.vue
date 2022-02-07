@@ -11,7 +11,7 @@
 				<div v-if="corpInfo.billStatus == null || corpInfo.billStatus == 'RET'" class="float-left mr30"><a @click="fnBill2" class="btnStyle1 backPink" style="min-width:auto; width:160px">후불 사용 요청</a></div>	
 				<span v-if="corpInfo.billStatus == 'APP'" class="float-left font-size14 color4 mr30 line-height30">고객 월 한도금액 : {{corpInfo.monSenderLimitAmount | comma}}원</span>
 				<div v-if="corpInfo.billStatus == 'APP' && corpInfo.senderUpStatus != null" class="float-left mr30"><a @click="fnSenderUp1" class="btnStyle1 backLightGray" style="min-width:auto; width:160px">{{corpInfo.senderUpStatusNm}}</a></div>
-				<div v-if="corpInfo.billStatus == 'APP' && (corpInfo.senderUpStatus == null || corpInfo.senderUpStatus == 'RET')" class="float-left mr30"><a @click="fnSenderUp2" class="btnStyle1 backPink" style="min-width:auto; width:160px">한도금액 상향 요청</a></div>	
+				<div v-if="corpInfo.billStatus == 'APP' && (corpInfo.senderUpStatus == null || corpInfo.senderUpStatus == 'APP' || corpInfo.senderUpStatus == 'RET')" class="float-left mr30"><a @click="fnSenderUp2" class="btnStyle1 backPink" style="min-width:auto; width:160px">한도금액 상향 요청</a></div>	
 			</div>
 			<div class="row">
 				<div class="col-xs-6">

@@ -52,6 +52,42 @@ public class SignUpService {
 		RestResult<Object> rtn = new RestResult<Object>(true);
 		paramMap.putAll(params);
 		
+		// 사업자 등록증 첨부파일
+		MultipartFile file = (MultipartFile) paramMap.get("attachFile");
+		String ext = commonService.getFileNameExt(file.getOriginalFilename(),1);
+		if (!(ext.equals("jpg") || ext.equals("jpeg") || ext.equals("pdf") || ext.equals("gif") || ext.equals("png") || ext.equals("tiff"))) {
+			throw new Exception("파일은 jpg, jpeg, pdf, gif, png, tiff만 허용됩니다.");
+		}
+		if (file.getSize() > 5 * 1024 * 1024) {
+			throw new Exception("파일은 5M 이하 파일만 허용됩니다.");
+		}
+		MultipartFile file1 = (MultipartFile) paramMap.get("attachFile1");
+		ext = commonService.getFileNameExt(file1.getOriginalFilename(),1);
+		if (!(ext.equals("jpg") || ext.equals("jpeg") || ext.equals("pdf") || ext.equals("gif") || ext.equals("png") || ext.equals("tiff"))) {
+			throw new Exception("파일은 jpg, jpeg, pdf, gif, png, tiff만 허용됩니다.");
+		}
+		if (file1.getSize() > 5 * 1024 * 1024) {
+			throw new Exception("파일은 5M 이하 파일만 허용됩니다.");
+		}
+		MultipartFile file2 = (MultipartFile) paramMap.get("attachFile2");
+		ext = commonService.getFileNameExt(file2.getOriginalFilename(),1);
+		if (!(ext.equals("jpg") || ext.equals("jpeg") || ext.equals("pdf") || ext.equals("gif") || ext.equals("png") || ext.equals("tiff"))) {
+			throw new Exception("파일은 jpg, jpeg, pdf, gif, png, tiff만 허용됩니다.");
+		}
+		if (file2.getSize() > 5 * 1024 * 1024) {
+			throw new Exception("파일은 5M 이하 파일만 허용됩니다.");
+		}
+		MultipartFile file3 = (MultipartFile) paramMap.get("attachFile3");
+		if (file3 != null) {
+			ext = commonService.getFileNameExt(file3.getOriginalFilename(),1);
+			if (!(ext.equals("jpg") || ext.equals("jpeg") || ext.equals("pdf") || ext.equals("gif") || ext.equals("png") || ext.equals("tiff"))) {
+				throw new Exception("파일은 jpg, jpeg, pdf, gif, png, tiff만 허용됩니다.");
+			}
+			if (file3.getSize() > 5 * 1024 * 1024) {
+				throw new Exception("파일은 5M 이하 파일만 허용됩니다.");
+			}
+		}
+		
 		// userid
 		String userId =  CommonUtils.getCommonId("MBR", 7);
 		paramMap.put("userId", userId);
@@ -174,12 +210,6 @@ public class SignUpService {
 				throw new Exception(CommonUtils.getString(((Map<String, Object>) result.get("data")).get("resultMsg")+"\n회원가입에 실패하였습니다."));
 			}
 		}
-		
-		// 사업자 등록증 첨부파일
-		MultipartFile file = (MultipartFile) paramMap.get("attachFile");
-		MultipartFile file1 = (MultipartFile) paramMap.get("attachFile1");
-		MultipartFile file2 = (MultipartFile) paramMap.get("attachFile2");
-		MultipartFile file3 = (MultipartFile) paramMap.get("attachFile3");
 		
 		String fileSeq = "";
 		String fileSeq1 = "";
