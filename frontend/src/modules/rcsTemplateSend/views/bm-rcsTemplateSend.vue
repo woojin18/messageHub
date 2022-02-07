@@ -395,21 +395,13 @@
 							</div>
 						</div>
 					</div>
-
+				<div v-if="feeType">
 					<hr>
 					<div class="of_h user-phone">
 					<div style="width:24%" class="float-left">
 						<h4>발송제한 금액</h4>
 					</div>
 					<div style="width:76%" class="float-left">
-						<div class="of_h">
-							<div style="width:40%" class="float-left">
-								<h5 style="margin: 5px 0;">일 발송금액 / 일 발송제한금액</h5>
-							</div>
-							<div class="of_h" style="width:60%;">
-								<p style="font-size: 14px; margin-top: 3px;">{{dayAmount | comma}} / {{daySenderLimitAmout | comma}}</p>
-							</div>
-						</div>
 						<div class="of_h">
 							<div style="width:40%" class="float-left">
 								<h5 style="margin: 5px 0;">월 발송금액 / 월 발송제한금액</h5>
@@ -420,6 +412,7 @@
 						</div>
 					</div>
 					</div>
+				</div>
 					<div class="float-right mt20">
 						<a v-if="templateRadioBtn!='des' && templateRadioBtn !='cell'" activity="SAVE" data-toggle="modal" data-target="#save" href="#self" class="btnStyle2 backWhite float-left" title="저장">저장</a>
 						<a @click.prevent="fnOpenTestSendInputPopup" activity="SAVE" href="#self" class="btnStyle2 float-left ml10" title="테스트 발송">테스트 발송</a>
@@ -518,10 +511,8 @@ export default {
 		tempFile: [],
 		beforeCuInputType: '',
 		monthAmount : 0,
-		dayAmount : 0,
-		apiKeyName : '',
 		monSenderLimitAmout : '없음',
-		daySenderLimitAmout : '없음',
+		feeType : false,
 		sendData : {
 			messagebaseId : "",							// MSG ID
 			brandId : "",								// 브랜드 ID
@@ -687,19 +678,23 @@ export default {
         });
 	},
 	fnSetSentAmount() {
-		let params = {};
-      	messageApi.setSentAmout(params).then(response =>{
+      let params = {};
+      var vm = this;
+      messageApi.setSentAmout(params).then(response =>{
         const result = response.data;
         if(result.success) {
           let resultData = result.data;
-          this.monthAmount = resultData.amountMap.month + "원";
-          this.dayAmount = resultData.amountMap.day + "원";
-          this.apiKeyName = resultData.returnApiKeyMap.apiKey;
-          this.monSenderLimitAmout = resultData.returnApiKeyMap.monSenderLimitAmount=="없음" ? resultData.returnApiKeyMap.monSenderLimitAmount : resultData.returnApiKeyMap.monSenderLimitAmount+"원";
-          this.daySenderLimitAmout = resultData.returnApiKeyMap.daySenderLimitAmount=="없음" ? resultData.returnApiKeyMap.daySenderLimitAmount : resultData.returnApiKeyMap.daySenderLimitAmount+"원";
+          vm.monthAmount = resultData.amountMap.month + "원";
+          vm.monSenderLimitAmout = resultData.returnApiKeyMap.monSenderLimitAmount+"원";
+          
+          if(resultData.returnApiKeyMap.feeType == "PRE") {
+            vm.feeType = false;
+          } else {
+            vm.feeType = true;
+          }
         }
       });
-	},
+    },
 	fnRemoveRecvInfo(){
 		this.fnCallbackRecvInfoLst(null);
 		this.$refs.excelFile.value = '';

@@ -138,22 +138,10 @@
     
 	<select id="selectApiKey3" parameterType="hashmap" resultType="camel">
 	/* common.selectApiKey3 API KEY 조회(발송제한 금액 세팅) */
-		SELECT	CONCAT(API_KEY_NAME, '(' , API_KEY , ')') AS API_KEY
-		,		CASE
-					WHEN	DAY_SENDER_CHK_YN = 'Y'
-					THEN	IFNULL(DAY_SENDER_LIMIT_AMOUNT, 0)
-					ELSE	'없음'
-				END	AS DAY_SENDER_LIMIT_AMOUNT
-		,		CASE
-					WHEN	MON_SENDER_CHK_YN = 'Y'
-					THEN	IFNULL(MON_SENDER_LIMIT_AMOUNT, 0)
-					ELSE	'없음'
-				END	AS MON_SENDER_LIMIT_AMOUNT
-		FROM	cm.CM_APIKEY
+		SELECT	FEE_TYPE
+		,		MON_SENDER_LIMIT_AMOUNT
+		FROM	cm_console.CM_CORP
 		WHERE	CORP_ID = #{corpId}
-		AND		PROJECT_ID = #{projectId}
-		AND		STATUS = 'USE'
-		AND		WEB_SENDER_YN = 'Y'
 		LIMIT 1
 	</select>
 
