@@ -244,20 +244,13 @@
             </div>
           </div>
         </div>
+      <div v-if="feeType">
       <hr>
         <div class="of_h user-phone">
           <div style="width:24%" class="float-left">
             <h4>발송제한 금액</h4>
           </div>
           <div style="width:76%" class="float-left">
-            <div class="of_h">
-              <div style="width:40%" class="float-left">
-                <h5 style="margin: 5px 0;">일 발송금액 / 일 발송제한금액</h5>
-              </div>
-              <div class="of_h" style="width:60%;">
-                <p style="font-size: 14px; margin-top: 3px;">{{dayAmount | comma}} / {{daySenderLimitAmout | comma}}</p>
-              </div>
-            </div>
             <div class="of_h">
               <div style="width:40%" class="float-left">
                 <h5 style="margin: 5px 0;">월 발송금액 / 월 발송제한금액</h5>
@@ -268,6 +261,7 @@
             </div>
           </div>
         </div>
+      </div>
         <div class="mt20 float-right">
           <a href="#" @click.prevent="fnOpenTestSendInputPopup" class="btnStyle2 float-left" title="테스트 발송" activity="SAVE">테스트 발송</a>
           <a href="#" @click.prevent="fnSendAlimTalkMessage('N')" class="btnStyle2 backRed float-left ml10" title="발송" activity="SAVE">발송</a>
@@ -350,10 +344,8 @@ export default {
       tempFile: [],
       beforeCuInputType: 'DICT',
       monthAmount : 0,
-      dayAmount : 0,
-      apiKeyName : '',
       monSenderLimitAmout : '없음',
-      daySenderLimitAmout : '없음',
+      feeType : false,
       senderKeyType: 'S', 
       senderKeyList: [],
       sendData : {
@@ -473,15 +465,19 @@ export default {
     },
     fnSetSentAmount() {
       let params = {};
+      var vm = this;
       messageApi.setSentAmout(params).then(response =>{
         const result = response.data;
         if(result.success) {
           let resultData = result.data;
-          this.monthAmount = resultData.amountMap.month + "원";
-          this.dayAmount = resultData.amountMap.day + "원";
-          this.apiKeyName = resultData.returnApiKeyMap.apiKey;
-          this.monSenderLimitAmout = resultData.returnApiKeyMap.monSenderLimitAmount=="없음" ? resultData.returnApiKeyMap.monSenderLimitAmount : resultData.returnApiKeyMap.monSenderLimitAmount+"원";
-          this.daySenderLimitAmout = resultData.returnApiKeyMap.daySenderLimitAmount=="없음" ? resultData.returnApiKeyMap.daySenderLimitAmount : resultData.returnApiKeyMap.daySenderLimitAmount+"원";
+          vm.monthAmount = resultData.amountMap.month + "원";
+          vm.monSenderLimitAmout = resultData.returnApiKeyMap.monSenderLimitAmount+"원";
+          
+          if(resultData.returnApiKeyMap.feeType == "PRE") {
+            vm.feeType = false;
+          } else {
+            vm.feeType = true;
+          }
         }
       });
     },

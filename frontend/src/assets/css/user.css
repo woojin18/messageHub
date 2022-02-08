@@ -426,3 +426,63 @@ p {letter-spacing:-0.5px}
 .userArrow {font-size:18px; margin:0 10px; vertical-align:middle}
 .userKakaoList {display:flex; justify-content:space-between; margin-top:60px}
 .userKakaoList > li {width:340px; text-align:center; font-size:16px; font-weight:500}
+
+/* 2022-02-04 */
+#mainConWrap2 {border-bottom: 1px solid #D5D5D5}
+#mainConWrap2 section {max-width:1088px; margin:0 auto; text-align:center}
+#mainConWrap2 section h3 {margin-bottom:0}
+#mainConWrap2 .CloudIcon {padding:80px 0}
+#mainConWrap2 .CloudIcon:after {content:''; display:block; clear:both}
+#mainConWrap2 .CloudIcon li {float:left; overflow:hidden; text-align:center; width:340px; margin-right:34px; border: 1px solid #EAEAEA; border-radius:16px; box-shadow:5px 5px 10px rgb(0 0 0 / 7%)}
+#mainConWrap2 .CloudIcon li:last-child {margin-right:0}
+#mainConWrap2 .CloudIcon .IconMainBox {padding:23px 0 40px 0}
+#mainConWrap2 .CloudIcon .IconMainText {font-size:20px; color:#000}
+#mainConWrap2 section .btn2 {margin-top:25px; text-align:center; display:block}
+#mainConWrap2 section .btn2 .btnBcackWhite {font-size:15px; color:#000; font-weight:700; padding:13px 25px; background-color:#fff; border:1px solid #000; border-radius:8px}
+#mainConWrap2 section .btn2 .btnBcackWhite:hover {background-color:#000; color:#fff}
+
+.serviceCon02_2 {background-color:#F4F2FC;}
+.serviceCon02_2 section {max-width:1088px; margin:0 auto; padding:80px 0}
+.serviceCon02_2 section .subTitle {text-align:left; font-size:30px !important; line-height:40px; letter-spacing:-2px; font-weight:400}
+.serviceCon02_2 section .subText {font-size:16px; color:#676767; margin:26px 0 45px 0}
+.serviceCon02_2 section > ul {overflow:hidden; background:url('../images/send2.png') top right no-repeat; height:630px}
+.serviceCon02_2 section > ul > li {overflow:hidden; float:left; width:50%}
+.serviceCon02_2 section .chartWrap_sub {color:#B2B2B2; font-size:14px; margin-bottom:-20px}
+
+.serviceCon03_2 section {max-width:1088px; margin:0 auto; padding:80px 0}
+.serviceCon03_2 section .subTitle {text-align:left; font-size:30px !important; line-height:40px; letter-spacing:-2px}
+.serviceCon03_2 section .subText {text-align:left; font-size:16px; color:#676767; margin:26px 0 45px 0; letter-spacing:-0.3px}
+.serviceCon03_2 section .chartWrap {position:relative; padding:0 120px}
+.serviceCon03_2 section .chartWrap .chartWrap_sub {color:#B2B2B2; font-size:14px; margin-bottom:10px}
+
+.serviceCon04_2 section {max-width:1088px; margin:0 auto; padding:80px 0}
+.serviceCon04_2 section .subTitle {text-align:left; font-size:30px !important; line-height:40px; letter-spacing:-2px; font-weight:400}
+.serviceCon04_2 section .subText {text-align:left; font-size:16px; color:#676767; margin:26px 0 45px 0}
+
+.serviceCon05_2 {background-color:#FECE02}
+.serviceCon05_2 section {max-width:840px; margin:0 auto; padding:80px 0}
+.serviceCon05_2 section .subTitle {text-align:center; font-size:30px !important; line-height:40px; letter-spacing:-2px; font-weight:400; margin:15px 0 40px 0}
+.serviceCon05_2 section .quiryList {background:#fff;  padding:40px; border: 1px solid #EAEAEA; border-radius:16px; box-shadow:5px 5px 10px rgb(0 0 0 / 7%)}
+.serviceCon05_2 section .quiryList > h3 {font-size:30px; font-weight:400; margin:0 0 45px 0}
+.serviceCon05_2 section .quiryList .form-control {border:1px solid #c2c2c2; border-radius:5px; font-size:15px; height:60px; line-height:60px; box-shadow:none}
+.serviceCon05_2 section .quiryList .form-textarea {border:1px solid #c2c2c2; border-radius:5px; font-size:15px; box-shadow:none; width:100%; padding:10px}
+.serviceCon05_2 section .quiryAgree {text-align:left; font-size:15px; color:#c2c2c2; margin-top:30px}
+.serviceCon05_2 section .quiryAgree input[class="checkStyle2"] + label:before {top:4px}
+.serviceCon05_2 section .quiryAgree .provisionMore {border-bottom:1px solid #000}
+.serviceCon05_2 section .quiryList .btnStyle2 {padding:9px 45px; font-size:16px; margin-top:20px; border-radius:8px}
+
+#NotFoundWrap section {max-width:650px; margin:0 auto; padding:290px 0; overflow:hidden}
+#NotFoundWrap section > h2 {color:#323232; font-size:20px !important; font-weight:700; margin-top:48px}
+#NotFoundWrap section > p {color:#B2B2B2; font-size:14px; margin-top:10px}
+#NotFoundWrap section > .rightimg {float:right; margin-top:-25px}
+
+/* 반응형 */
+@media screen and (max-width:768px) {
+	#NotFoundWrap section {max-width:100%; padding:100px 0; text-align:center}
+	#NotFoundWrap section img {display:block; margin:0 auto}
+	#NotFoundWrap section > .logoimg {width:120px}
+	#NotFoundWrap section > .rightimg {float:none; margin:40px auto; width:100px}
+	#NotFoundWrap section > h2 {color:#323232; font-size:14px !important; font-weight:700; margin-top:40px}
+	#NotFoundWrap section > p {color:#B2B2B2; font-size:10px; margin-top:10px}
+	#NotFoundWrap section > p > span {display: block}
+}

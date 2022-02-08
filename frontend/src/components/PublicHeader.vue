@@ -3,11 +3,11 @@
   <header class="head_type_user">
     <div class="wrap_head">
       <div class="box_gnb">
-        <h1 class="tit_logo"><a href="/public/main" class="userLogo"><img src="/se2/images/userLogo.svg" alt="LGU+ 메시지허브 로고"></a></h1>
+        <h1 class="tit_logo"><router-link :to="{name: 'main'}" tag="a" class="userLogo"><img src="/se2/images/userLogo.svg" alt="LGU+ 메시지허브 로고"></router-link></h1>
         <nav id="userGnb">
           <ul class="list_gnb" role="menu">
             <li>
-              <router-link :to="{name: 'intro'}" tag="a" title="서비스 소개 페이지로 이동">서비스 소개</router-link>
+              <router-link :to="{name: 'main'}" tag="a" title="서비스 소개 페이지로 이동">메시지허브 소개</router-link>
             </li>
             <li>
               <router-link :to="{name: 'channelIntro'}" tag="a" title="채널 소개 페이지로 이동">채널 소개</router-link>

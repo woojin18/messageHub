@@ -1,5 +1,4 @@
 import consoleMain from '../views/bm-consoleMain.vue'
-import serviceIntro from '../views/bm-serviceIntro.vue'
 import sendPay from '../views/bm-sendPay.vue'
 import channelIntro from '../views/bm-channelIntro.vue'
 
@@ -8,12 +7,6 @@ export default [
     path: '/public/main',
     name: 'main',
     component: consoleMain, 
-    meta: { public: true }
-  },
-  {
-    path: '/public/intro',
-    name: 'intro',
-    component: serviceIntro,
     meta: { public: true }
   },
   {

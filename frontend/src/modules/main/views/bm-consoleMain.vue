@@ -1,141 +1,131 @@
 <template>
   <div>
 
-    <article id="mainVisualWrap">
-      <section>
-        <ul class="mainBxslider">
-          <li>
-            <div class="mainVisualTitle">
-              <div class="wow animated fadeInUp" data-wow-duration="1s">
-                <h2>성공하는 기업들이 일하는<br>스마트한 방식<br>U+ 메시지허브</h2>
-                <router-link :to="{ name: 'intro' }" tag="a" class="mvBtn" title="서비스 소개">서비스 소개</router-link>
-              </div>
-            </div>
-            <img src="@/assets/images/main/mainVisual1.jpg" alt="">
-          </li>
-          <li>
-            <div class="mainVisualTitle">
-              <div class="wow animated fadeInUp" data-wow-duration="1s">
-                <h2 class="colorWhite">U+ 메시지허브<br>통합 메시지 발송, 대체발송 등<br>강력한 기능을<br>지금 사용해보세요.</h2>
-                <router-link :to="{ name: 'signUp' }" tag="a" class="mvBtn" title="서비스 가입">서비스 가입</router-link>
-              </div>
-            </div>
-            <img src="@/assets/images/main/mainVisual2.jpg" alt="">
-          </li>
-        </ul>
-      </section>
-    </article>
-    <!-- //mainVisualWrap -->
+	<article id="mainVisualWrap">
+		<section>
+			<ul class="mainBxslider">
+				<li>
+					<div class="mainVisualTitle CloudIconlList">
+						<div>
+							<h2 class="wow animated fadeInUp" data-wow-duration="1s">모든 메시지를 한번에<br><strong>U+ 메시지허브</strong></h2>
+							<div class="wow animated fadeInUp" data-wow-delay=".3s" data-wow-duration="1s">
+                <router-link :to="{ name: 'signUp' }" tag="a" class="mvBtn" title="서비스 가입">가입하기</router-link>
+								<a href="#self" class="mvBtn ml20" title="serviceCon05_2">도입문의</a>
+							</div>
+							<p class="font-size20 font-normal mt40 wow animated fadeInUp" data-wow-delay=".6s" data-wow-duration="1s">메시지허브는 다양한 메시지 채널을 수용하여<br>발송부터 결과까지 한 번에 관리하는 기업 메시지 플랫폼입니다.</p>
+							<p class="font-size20 font-600 mt20 wow animated fadeInUp" data-wow-delay=".6s" data-wow-duration="1s">#문자<span class="ml20">#알림톡</span><span class="ml20">#친구톡</span><span class="ml20">#앱푸시</span></p>
+						</div>
+					</div>
+					<img src="/se2/images/mainVisual1.jpg" alt="">
+				</li>
+			</ul>
+		</section>
+	</article>
 
-    <div id="contentWrap">
-      <!-- noticeWrap -->
-      <article id="noticeWrap">
-        <section>
-          <div class="noticeList">
-            <h3>공지사항
-              <router-link :to="{name: 'notice'}" tag="a" class="more">
-                <img src="@/assets/images/main/noticeMore.png" alt="더보기 아이콘"><span></span>
-              </router-link>
-            </h3>
-            <ul class="listSt">
-              <li v-for="(noticeInfo, idx) in noticeInfoList" :key="idx">
-                <!-- 2021-06-22 : 해당 게시글로 이동에서 페이어 팝업으로 변경 -->
-                <!-- <router-link :to="{ name: 'noticeDetail', params: { noticeId: noticeInfo.noticeId }}" title="해당 게시글로 이동"> -->
-                <a href="#" @click.prevent="fnOpenNoticePopupModal(noticeInfo.noticeId)" title="해당 게시글이 열립니다">
-                  <span class="noti_tt">
-                    <span v-if="!$gfnCommonUtils.isEmpty(noticeInfo.noticeTypeCdName)" :class="noticeInfo.noticeType | getNotiTypeClass">{{noticeInfo.noticeTypeCdName}}</span>
-                    {{noticeInfo.title | unescapeXss}}
-                  </span>
-                  <span class="noti_day">{{noticeInfo.regDt}}</span>
-                </a>
-                <!-- </router-link> -->
-              </li>
-            </ul>
-          </div>
-          <div class="archivesList">
-            <h3>자료실
-              <router-link :to="{name: 'library'}" tag="a" class="more">
-                <img src="@/assets/images/main/noticeMore.png" alt="더보기 아이콘">
-              </router-link>
-            </h3>
-            <ul class="listSt">
-              <li v-for="(libraryInfo, idx) in libraryInfoList" :key="idx">
-                <router-link :to="{ name: 'libraryDetail', params: { libraryId: libraryInfo.libraryId }}" title="해당 게시글로 이동">
-                  <span class="noti_tt">{{libraryInfo.title | unescapeXss}}
-                    <img v-if="libraryInfo.existsFileYn == 'Y'" src="@/assets/images/main/user_sub03_1_fileicon.png" alt="파일 아이콘" class="fileIcon">
-                  </span>
-                  <span class="noti_day">{{libraryInfo.regDt}}</span>
-                </router-link>
-              </li>
-            </ul>
-          </div>
-        </section>
-      </article>
-      <!-- //noticeWrap -->
+		<article id="mainConWrap2">
+			<section>			
+				<ul class="CloudIcon CloudIconlList">
+					<li class="wow animated fadeInLeft" data-wow-duration="1s">
+						<img src="/se2/images/CloudIconlList1.png" alt="아이콘1">
+						<div class="IconMainBox">
+							<p class="IconMainText">통합 채널 관리</p>
+							<div class="btn2">
+								<a  class="btnBcackWhite" title="userIndex1-1">자세히 보기</a>					
+							</div>
+						</div>
+					</li>
+					<li class="wow animated fadeInLeft" data-wow-delay=".3s" data-wow-duration="1s">
+						<img src="/se2/images/CloudIconlList2.png" alt="아이콘2">
+						<div class="IconMainBox">
+							<p class="IconMainText">비용 절감</p>
+							<div class="btn2">
+								<a class="btnBcackWhite" title="userIndex1-2">자세히 보기</a>					
+							</div>
+						</div>
+					</li>
+					<li class="wow animated fadeInLeft" data-wow-delay=".6s" data-wow-duration="1s">
+						<img src="/se2/images/CloudIconlList3.png" alt="아이콘3">
+						<div class="IconMainBox">
+							<p class="IconMainText">쉬운 서비스 연동</p>
+							<div class="btn2">
+								<a class="btnBcackWhite" title="userIndex1-3">자세히 보기</a>					
+							</div>
+						</div>
+					</li>
+				</ul>
+			</section>
+		</article>
 
-      <!-- mainConWrap1 -->
-      <article id="mainConWrap1">
-        <section>
-          <h3 class="subTitle subTitle_h3 wow animated fadeInUp">쉽고 안전하고 스마트한 U+ 메시지허브를 소개합니다.</h3>
-          <ul class="CloudIcon">
-            <li class="wow animated fadeInLeft" data-wow-duration="1s">
-              <img src="@/assets/images/main/mainCloud_icon01.png" alt="아이콘1">
-              <p class="IconMainText">메시지 통합 플랫폼</p>
-              <p class="IconSubText">푸시, 카카오톡, 문자 등<br>발송 채널 별로 분산된 시스템을<br>하나의 플랫폼으로 관리</p>
-            </li>
-            <li class="wow animated fadeInLeft" data-wow-delay=".3s" data-wow-duration="1s">
-              <img src="@/assets/images/main/mainCloud_icon02.png" alt="아이콘2">
-              <p class="IconMainText">비용 절감</p>
-              <p class="IconSubText">정확한 타게팅 발송, 중복 발송 방지,<br>발송채널 우선순위 설정 등<br>누수되는 비용 지출 절감</p>
-            </li>
-            <li class="wow animated fadeInLeft" data-wow-delay=".6s" data-wow-duration="1s">
-              <img src="@/assets/images/main/mainCloud_icon03.png" alt="아이콘3">
-              <p class="IconMainText">메시지 발송 통계</p>
-              <p class="IconSubText">도달률, 성공률, 수신확인여부 등<br>정확한 메시지 발송 성과 관리</p>
-            </li>
-            <li class="wow animated fadeInLeft" data-wow-delay=".9s" data-wow-duration="1s">
-              <img src="@/assets/images/main/mainCloud_icon04.png" alt="아이콘4">
-              <p class="IconMainText">통합 채널 관리</p>
-              <p class="IconSubText">메시징 통합 채널 사용으로<br>모든 메시지 전송 및 발송 성공률 Up</p>
-            </li>
-          </ul>
-        </section>
-      </article>
-      <!-- //mainConWrap1 -->
 
-      <!-- quiryWrap -->
-      <article id="quiryWrap" class="wow animated fadeInUp">
-        <section>
-          <div class="quiryList">
-            <h3>U+ 메시지허브 문의</h3>
-            <div class="of_h">
-              <h5 class="inline-block  text-left float-left font-size16" style="width:20%">문의유형</h5>
+
+  		<div class="serviceCon03_2 wow animated fadeInUp">
+			<section id="userIndex1-1">	
+				<img src="/se2/images/Message_icon_or2.png" alt="메세지아이콘 파란색">
+				<h3 class="subTitle">메시지 도입하고 운영하는데<br>소중한 리소스를 낭비하지 마세요.</h3>
+				<p class="subText">메시지허브만 통하면 다양한 메시징 채널을 모두 활용할 수 있습니다.<br>계약, 운영, 정산 뿐만 아니라 장애 대응, 발송 모니터링, 통계까지 일원화 하여 한번에 관리하고 서비스 받으세요.</p>
+				<div class="chartWrap">					
+					<p class="chartWrap_sub">*실제 웹 발송 화면 이미지입니다</p>
+					<img src="/se2/images/Message_Platform02.png" alt="메세지 플랫폼1">
+				</div>
+			</section>	
+		</div>
+		<!-- //serviceCon03_2 -->
+		
+		<!-- serviceCon02_2 -->
+		<div class="serviceCon02_2 wow animated fadeInUp">
+			<section id="userIndex1-2">	
+				<img src="/se2/images/Message_icon_blue2.png" alt="메세지아이콘 주황색">
+				<h3 class="subTitle">저가채널 우선 발송 기능으로<br>메시지 발송 비용을 절감하세요.</h3>
+				<p class="subText">다양한 채널에 발송 순서를 정하면 순차 발송이 가능하여 100% 커버리지를 지원하고, <br>저가 우선 발송을 통해 비용을 절감할 수 있습니다.</p>
+				<p class="chartWrap_sub">*실제 웹 발송 화면 이미지입니다</p>
+				<img src="/se2/images/send2.png" alt="메세지 플랫폼1">
+     </section> 
+		</div>
+		<!-- //serviceCon02_2 -->
+		
+		<!-- serviceCon04_2 -->
+		<div class="serviceCon04_2 wow animated fadeInUp">
+			<section id="userIndex1-3">	
+				<div><img src="/se2/images/Message_icon_purple.png" alt="메세지아이콘 보라색"></div>
+				<h3 class="subTitle">더 이상 메시지 발송을 위해<br>클라이언트 설치 운영하지 않아도 됩니다.</h3>
+				<p class="subText">메시지 허브 Rest API를 통해 쉽게 도입하고,<br>메시지 발송에 불필요한 업무를 줄이세요.</p>
+				<img src="/se2/images/purple_chart.png" alt="차트1">
+			</section>	
+		</div>
+
+    <div class="serviceCon05_2 wow animated fadeInUp">
+			<section id="serviceCon05_2">	
+				<div class="text-center"><img src="/se2/images/Message_icon_pink.png" alt="메세지아이콘 핑크색"></div>
+				<h3 class="subTitle">U+ 메시지 허브를 지금 바로 사용해보세요!</h3>
+				<div class="quiryList of_h">	
+          <div class="of_h">
+              <h5 class="inline-block  text-left float-left font-size16" style="width:13%">문의유형</h5>
               <div class="inline-block float-left">
                 <template v-for="(inqueiryType, idx) in inqueiryTypeList">
                   <input :key="idx" type="radio" name="inqueiryTypeC" :value="inqueiryType.codeVal1" :id="'inqueiryTypeC_'+inqueiryType.codeVal1" v-model="inqueiryInputData.questType">
                   <label :key="idx+'_sub'" :for="'inqueiryTypeC_'+inqueiryType.codeVal1" class="mr20 font-size14">{{inqueiryType.codeName1}}</label>
                 </template>
               </div>
-            </div>
-            <input type="text" class="form-control mt25" placeholder="고객사명" v-model="inqueiryInputData.corpName" maxlength="50" :disabled="isLogin">
-            <input type="text" class="form-control mt15" placeholder="이름" v-model="inqueiryInputData.inputName" maxlength="20">
-            <input type="text" class="form-control mt15" placeholder="휴대폰 번호 ( - 없이 입력)" v-model="inqueiryInputData.hpNumber" maxlength="20">
-            <input type="text" class="form-control mt15" placeholder="E-mail" v-model="inqueiryInputData.email" maxlength="40">
-            <input type="text" class="form-control mt15" placeholder="제목" v-model="inqueiryInputData.title" maxlength="100">
-            <textarea class="form-textarea height180 mt15" placeholder="궁금하신 내용을 적어주세요." v-model="inqueiryInputData.content" maxlength="4000"></textarea>
-            <div class="quiryAgree">
-              <input type="checkbox" id="agree1" class="checkStyle2" value="서비스 이용약관 동의" v-model="inqueiryInputData.agree">
-              <label for="agree1">[필수] 개인정보 수집 및 이용 동의에 동의합니다.</label>
-              <!-- <a href="#self" class="provisionMore">내용보기</a> -->
-            </div>
-            <a href="#self" @click.prevent="fnRegisterInquiry" class="btnStyle2 backRed" title="상담신청">상담신청</a>
-          </div>
-        </section>
-      </article>
-      <!-- //quiryWrap -->
-    </div>
-    <QuickRight></QuickRight>
-    <NoticeLayer ref="noticeLayer"></NoticeLayer>
+          </div>		
+					<input type="text" class="form-control mt15 float-left" style="width:48%" placeholder="고객사명" v-model="inqueiryInputData.corpName" maxlength="50" :disabled="isLogin">
+					<input type="text" class="form-control mt15 float-right" style="width:48%" placeholder="이름" v-model="inqueiryInputData.inputName" maxlength="20">
+					<input type="text" class="form-control mt15 float-left" style="width:48%" placeholder="휴대폰 번호 ( - 없이 입력)" v-model="inqueiryInputData.hpNumber" maxlength="20">
+					<input type="text" class="form-control mt15 float-right" style="width:48%" placeholder="E-mail" v-model="inqueiryInputData.email" maxlength="40">
+          <input type="text" class="form-control mt15 float-left" placeholder="제목" v-model="inqueiryInputData.title" maxlength="100">
+					<textarea class="form-textarea height180  mt15" placeholder="궁금하신 내용을 적어주세요." v-model="inqueiryInputData.content" maxlength="4000"></textarea>
+					<div class="quiryAgree float-left">
+						<input type="checkbox" id="agree1" class="checkStyle2" value="서비스 이용약관 동의" v-model="inqueiryInputData.agree">
+            <label for="agree1">[필수] 개인정보 수집 및 이용 동의에 동의합니다.</label> 
+					</div>
+					<a class="btnStyle2 backRed float-right" @click.prevent="fnRegisterInquiry" title="도입문의">도입문의</a>
+				</div>
+			</section>	
+		</div>
+
+
+    
+  <QuickRight></QuickRight>
+   <NoticeLayer ref="noticeLayer"></NoticeLayer>
   </div>
 </template>
 
@@ -155,13 +145,11 @@ export default {
     QuickRight,
     NoticeLayer
   },
-  data() {
-    return {
+  data(){
+    return{
       isLogin : false,
       componentsTitle: '메인',
-      inqueiryTypeList: [],
-      noticeInfoList: [],
-      libraryInfoList: [],
+      inqueiryTypeList : [],
       inqueiryInputData: {
         agree: false,
         inputName: '',
@@ -184,30 +172,37 @@ export default {
   created(){
     this.isLogin = !!tokenSvc.getToken();
   },
-  mounted() {
-    this.fnSetSlider();
-    this.fnOpenNoticePopup();
-    this.fnSelectNoticeList();
-    this.fnSelectLibraryList();
-    this.fnSelectFaqType();
+  mounted(){
+    this.fnSetSlider()
+
+		jQuery(".CloudIconlList a").click(function(event){
+			var obj=jQuery(this).attr('title')
+			var offset =jQuery("#"+obj).offset()
+			jQuery('html, body').animate({scrollTop:offset.top}, 'slow')
+		})
+    this.fnSelectFaqType()
     if(this.isLogin){
-      this.fnSetUserInfo();
+      this.fnSetUserInfo()
     }
+    this.fnOpenNoticePopup()
   },
   methods: {
     fnSetSlider(){
-      jQuery('.mainBxslider').bxSlider({
-        mode: 'fade',
+      jQuery('.serviceBxslider').bxSlider({
         pager: true,
+        pagerCustom: '#bx-pager',
         touchEnabled : (navigator.maxTouchPoints > 0),
         pause: 6000
       });
     },
-    fnOpenNoticePopupModal(noticeId){
-      this.$refs.noticeLayer.fnSetNoticeInfo(noticeId);
-      jQuery("#noticeDetailLayer").modal("show");
-    },
+    signUp: function() {
+			this.$router.push({name : "signUp"})
+		},
     fnIsValid(){
+       if(!this.inqueiryInputData.questType){
+        confirm.fnAlert(this.componentsTitle, '문의유형를 선택해주세요.');
+        return false;
+      }
       if(!this.inqueiryInputData.corpName){
         confirm.fnAlert(this.componentsTitle, '고객사명을 입력해주세요.');
         return false;
@@ -226,10 +221,6 @@ export default {
       }
       if(!this.inqueiryInputData.email){
         confirm.fnAlert(this.componentsTitle, 'E-mail 을 입력해주세요.');
-        return false;
-      }
-      if(!this.inqueiryInputData.questType){
-        confirm.fnAlert(this.componentsTitle, '문의종류를 선택해주세요.');
         return false;
       }
       if(!this.inqueiryInputData.title){
@@ -269,7 +260,7 @@ export default {
       const params = {
         codeTypeCd : "QNA_TYPE",
         useYN : "Y"
-      };
+      }
       await customereApi.selectCodeList(params).then(response =>{
         const result = response.data;
         if(result.success) {
@@ -279,7 +270,25 @@ export default {
         }
       });
     },
-    async fnOpenNoticePopup(){
+    fnSetUserInfo(){
+      Object.assign(this.$data.inqueiryInputData, this.$options.data().inqueiryInputData);
+      if(this.isLogin){
+        var params = {
+          userId : tokenSvc.getToken().principal.userId
+        };
+        myPageApi.selectMemberInfo(params).then(response => {
+          var result = response.data;
+          if(result.success){
+            console.log('result' + result.data)
+            this.inqueiryInputData.inputName  = result.data.userName;
+            this.inqueiryInputData.hpNumber   = result.data.hpNumber;
+            this.inqueiryInputData.email      = result.data.loginId;
+            this.inqueiryInputData.corpName   = result.data.corpName;
+          }
+        });
+      }
+    },
+        async fnOpenNoticePopup(){
       let noticePopupList = [];
       let noticeIdArr = [];
       let exceptNoticeIds = this.$cookies.get('exceptNoticeIds');
@@ -312,51 +321,10 @@ export default {
     fnOpenWindowPop(url, name, specs){
       window.open(url, name, specs);
     },
-    async fnSelectNoticeList(){
-      const params = {
-        pageNo: 1,
-        listSize: 4
-      };
-      await customereApi.selectNoticeList(params).then(response =>{
-        const result = response.data;
-        if(result.success) {
-          this.noticeInfoList = result.data;
-        } else {
-          confirm.fnAlert(this.componentsTitle, result.message);
-        }
-      });
-    },
-    async fnSelectLibraryList(){
-      const params = {
-        pageNo: 1,
-        listSize: 4
-      };
-      await customereApi.selectLibraryList(params).then(response =>{
-        const result = response.data;
-        if(result.success) {
-          this.libraryInfoList = result.data;
-        } else {
-          confirm.fnAlert(this.componentsTitle, result.message);
-        }
-      });
-    },
-    fnSetUserInfo(){
-      Object.assign(this.$data.inqueiryInputData, this.$options.data().inqueiryInputData);
-      if(this.isLogin){
-        var params = {
-          userId : tokenSvc.getToken().principal.userId
-        };
-        myPageApi.selectMemberInfo(params).then(response => {
-          var result = response.data;
-          if(result.success){
-            this.inqueiryInputData.inputName  = result.data.userName;
-            this.inqueiryInputData.hpNumber   = result.data.hpNumber;
-            this.inqueiryInputData.email      = result.data.loginId;
-            this.inqueiryInputData.corpName   = result.data.corpName;
-          }
-        });
-      }
-    }
   }
 }
 </script>
+
+	<style>
+		.foot_type_user {margin:20px 0}
+	</style>
