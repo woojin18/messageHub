@@ -1333,4 +1333,30 @@ public class ChannelService {
 		
 		return rtn;
 	}
+	
+	
+	//후불정산전송 조회.
+	public RestResult<?> getRcsBrandConList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
+		
+		if (params.containsKey("pageNo") && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize") && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if (rtn.getPageInfo() != null) {
+				// 카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_BRAND_CON_LIST_CNT, params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
+		}		
+		
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_BRAND_CON_LIST, params);
+		
+		rtn.setData(rtnList);
+		System.out.println(rtn.getData());
+		System.out.println(rtn.getPageInfo());
+		return rtn;
+	}
+	
 }

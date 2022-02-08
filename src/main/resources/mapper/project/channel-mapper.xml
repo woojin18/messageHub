@@ -996,4 +996,43 @@
 		AND		MO_NUMBER = #{moNumber}
 		AND		MO_TYPE = #{moType}
 	</select>
+	
+	<select id="selectRcsBrandConList" resultType="camel">
+		/* channel.selectRcsBrandConList */
+		SELECT	A.BRAND_ID AS BRAND_ID
+		,		A.BRAND_NAME AS BRAND_NAME
+		,		(
+			SELECT  COUNT(*)
+			FROM 	cm.CM_RCS_CHATBOT 
+			WHERE 	BRAND_ID = A.BRAND_ID 
+			AND 	USE_YN='Y'
+			AND 	APPROVAL_STATUS = '승인'
+			) AS MDN_CNT
+		,	DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
+		FROM	cm.CM_RCS_BRAND A
+		WHERE	A.CORP_ID = #{corpId} 
+		AND 	A.USE_YN = 'Y'
+		AND		A.BRAND_ID NOT IN (
+			SELECT 	BRAND_ID 
+			FROM 	cm_console.CM_PROJECT_BRAND 
+			WHERE 	PROJECT_ID= #{projectId}
+			)
+		ORDER BY REG_DT DESC
+	</select>
+	
+	<select id="selectRcsBrandConListCnt" resultType="int">
+		/* channel.selectRcsBrandConListCnt */
+		SELECT	COUNT(*)
+		FROM	cm.CM_RCS_BRAND A
+		WHERE	A.CORP_ID = #{corpId} 
+		AND 	A.USE_YN = 'Y'
+		AND		A.BRAND_ID NOT IN (
+			SELECT 	BRAND_ID 
+			FROM 	cm_console.CM_PROJECT_BRAND 
+			WHERE 	PROJECT_ID= #{projectId}
+			)
+		ORDER BY REG_DT DESC
+	</select>
+	
+	
 </mapper>

@@ -83,6 +83,11 @@ const router = new Router({
 					component: () => import('./views/ErrorPage500.vue'),
 					meta: { public: true }
 				},
+				{
+					path: '/view/error/fail',
+					component: () => import('./views/notFound.vue'),
+					meta: { public: true }
+				},
 				...mainRoutes,
 				...customerRoutes,
 			]
@@ -99,6 +104,11 @@ const router = new Router({
 				{
 					path: '/view/error/500',
 					component: () => import('./views/ErrorPage500.vue'),
+					meta: { public: true }
+				},
+				{
+					path: '/view/error/fail',
+					component: () => import('./views/notFound.vue'),
 					meta: { public: true }
 				},
 				...signUpRoutes
@@ -119,6 +129,11 @@ const router = new Router({
 					component: () => import('./views/ErrorPage500.vue'),
 					meta: { public: true }
 				},
+				{
+					path: '/view/error/fail',
+					component: () => import('./views/notFound.vue'),
+					meta: { public: true }
+				},
 				...loginRoutes
 			]
 		},
@@ -135,6 +150,11 @@ const router = new Router({
 				{
 					path: '/view/error/500',
 					component: () => import('./views/ErrorPage500.vue'),
+					meta: { public: true }
+				},
+				{
+					path: '/view/error/fail',
+					component: () => import('./views/notFound.vue'),
 					meta: { public: true }
 				},
 				...acHomeRoutes,
@@ -163,6 +183,11 @@ const router = new Router({
 				{
 					path: '/view/error/500',
 					component: () => import('./views/ErrorPage500.vue'),
+					meta: { public: true }
+				},
+				{
+					path: '/view/error/fail',
+					component: () => import('./views/notFound.vue'),
 					meta: { public: true }
 				},
 				...ucHomeRoutes,

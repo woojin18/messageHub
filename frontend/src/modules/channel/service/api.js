@@ -90,6 +90,10 @@ const checkWebhookUrl = (params) => {
     return httpClient.post('/projectApi/channel/checkWebhookUrl', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
 };
 
+const getRcsBrandConList = (params) => {
+    return httpClient.post('/projectApi/channel/getRcsBrandConList', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
 export default {
     selectRcsBrandList,
     selectRcsRegTmpltList,
@@ -113,5 +117,6 @@ export default {
     saveKkoChGroupForApi,
     findApiKeyFromProject,
     saveKkoChRecover,
-    checkWebhookUrl
+    checkWebhookUrl,
+    getRcsBrandConList
 };

@@ -119,6 +119,9 @@ public class DB {
 	public final static String QRY_SELECT_RCS_BRAND_CHATBOT = "channel.selectRcsBrandChatbotList";
 	public final static String QRY_SELECT_RCS_BRAND_LIST_CALLBACK_LIST = "channel.selectRcsBrandListCallbackList";
 	public final static String QRY_SELECT_RCS_BRAND_LIST_CALLBACK_LIST_CNT = "channel.selectRcsBrandListCallbackListCount";
+	public final static String QRY_SELECT_RCS_BRAND_CON_LIST = "channel.selectRcsBrandConList";
+	public final static String QRY_SELECT_RCS_BRAND_CON_LIST_CNT = "channel.selectRcsBrandConListCnt";
+
 	// RCS 등록 템플릿 조회
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST_CNT = "channel.selectRcsRegTmpltListCount";

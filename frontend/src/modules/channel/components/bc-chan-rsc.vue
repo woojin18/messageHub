@@ -20,7 +20,9 @@
               <i class="far fa-info-circle"></i> 브랜드를 등록하기 위해서는 RCS Biz Center(RBC)에 등록이 되어 있어야 합니다.<br>
 							<i class="far fa-info-circle"></i> RBC 홈페이지(https://www.rcsbizcenter.com)에서 무료로 만들 수 있습니다.<br>
 							<i class="far fa-info-circle"></i> RBC에 로그인 후 우측 상단 [내 정보관리]에서 API Key를 확인하십시오<br>
-							&nbsp;&nbsp;&nbsp;&nbsp;(브랜드 등록 및 수정 시 API Key[RBC 로그인 ID]와 API Secret Key[RBC API Key]를 사용합니다.)
+							&nbsp;&nbsp;&nbsp;&nbsp;(브랜드 등록 및 수정 시 API Key[RBC 로그인 ID]와 API Secret Key[RBC API Key]를 사용합니다.)<br>
+              <i class="far fa-info-circle"></i> 브랜드 연결은 타 프로젝트에서 등록한 브랜드를 연결합니다.<br>
+              <i class="far fa-info-circle"></i> 브랜드 연결을 하시면 브랜드에 연결된 발신 번호도 자동 연결됩니다.<br><br>
 						</p>
 
 						<div class="menuBox mt10">						
@@ -58,6 +60,7 @@
               </div>
             </div>
             <div class="float-right mb10">
+              	<a @click="fnRcsBrandCon" class="btnStyle3 gray font13 minWidth120 mr10" activity="SAVE">브랜드 연결</a>
 								<a @click="fnRcsBrandReg" class="btnStyle3 gray font13 minWidth120" activity="SAVE">브랜드 등록</a>
 							</div>
             <!-- 페이징 카운트 -->
@@ -118,6 +121,7 @@
 				<!-- 페이징 -->
 				<div id="pageContent">
           <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
+          <rcsPop :projectId="projectId" :popCnt="popCnt"></rcsPop>
         </div>
 				<!-- 페이징 -->
 
@@ -140,13 +144,15 @@ import modalCallback from "./bp-chan-rcs-callback-cnt.vue";
 import SelectLayer from '@/components/SelectLayer.vue';
 import PageLayer from '@/components/PageLayer.vue';
 import confirm from "@/modules/commonUtil/service/confirm";
+import rcsPop from "./bp-chan-rscBranCon-detail.vue"
 
 export default {
   components: {
     PageLayer,
     SelectLayer,
     modalTmplt,
-    modalCallback
+    modalCallback,
+    rcsPop
   },
   data() {
     return {
@@ -169,10 +175,14 @@ export default {
       row_data : {},
       callback_row_data : {},
       projectApiKey : "",
+      popCnt : 0
     }
   },
+  created(){
+  this.projectId = this.$parent.projectId;  
+  },
   mounted() {
-    this.projectId = this.$parent.projectId;
+    
     this.projectName = this.$parent.projectName;
 
     this.fnSearch(1);
@@ -289,6 +299,11 @@ export default {
         }
       } );
     },
+    fnRcsBrandCon(){
+      this.popCnt = this.popCnt + 1
+      this.projectId = this.projectId
+			jQuery('#rcsPop').modal('show');     
+      },
     fnRcsBrandDetail(data){
       this.$router.push( {name:"chan-rcs-detail",params:{
           "mainProjectId" : this.projectId,

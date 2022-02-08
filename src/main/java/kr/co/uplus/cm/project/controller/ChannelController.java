@@ -538,4 +538,22 @@ public class ChannelController {
 		}
 		return rtn;
 	}
+	
+	// RCS 브랜드 연결 리스트
+	@PostMapping("/getRcsBrandConList")
+	public RestResult<?> getRcsBrandConList(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
+		RestResult<Object> rtn = new RestResult<Object>(true);
+			
+		try {
+			rtn = (RestResult<Object>) channelService.getRcsBrandConList(params);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(rtn.getData());
+		return rtn;
+	}           
+	
+	      
 }
