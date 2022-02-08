@@ -36,7 +36,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="color4 mt15" style="width:100%">월 한도금액 제한 기준을 위해 메시지 발송 예상 건수를 받습니다.<br>기본 월 한도 금액은 100만원으로 제한합니다. <br>만약 100만원 초과 한도를 설정하시려면 고객센터로 문의 바랍니다.<br>(신용정보, 담보 등에 따라 초고 가능)</div>
+                        <div class="color4 mt15" style="width:100%">월 한도금액 제한 기준을 위해 메시지 발송 예상 건수를 받습니다.<br>기본 월 한도 금액은 300만원으로 제한합니다. <br>만약 300만원 초과 한도를 설정하시려면 고객센터로 문의 바랍니다.<br>(신용정보, 담보 등에 따라 초고 가능)</div>
                     </div>
                     <div v-if="bill.billType == 'DEPART'" class="of_h mt10">
                         <div class="float-left" style="width:22%"><h5>청구계정 명*</h5></div>
