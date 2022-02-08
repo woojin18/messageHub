@@ -109,7 +109,7 @@
             </thead>
             <tbody>
               <tr v-for="(data, idx) in datas" :key="data.rowNum">
-                  <td>{{data.rowNum}}</td>
+                  <td>{{totCnt - ((pageNo-1) * listSize) - data.rowNum + 1 }}</td>
                   <td class="text-center"><a @click="fnDetailPop(idx)"><u>{{data.phoneNumber}}</u></a></td>
                   <td class="text-center"><a @click="fnDetailPop(idx)"><u>{{data.pushCuid}}</u></a></td>
                   <td class="text-center">{{data.cliKey}}</td>
