@@ -483,6 +483,9 @@ export default {
 					} else if (this.corpInfo.senderUpStatus == 'RET') {
 						this.corpInfo.senderUpStatusNm = '한도금액 상향 반려'
 					}
+					if (this.corpInfo.billStatus == null) {
+						confirm.fnAlert(this.componentsTitle, "후불사용업체로서 청구정보를 작성해야 합니다.\n대시보드 상단의 [후불사용요청]버튼을 이용하십시오\n1~2일후 후불사용 승인 처리가 되면 프로젝트를 생성할 수 있습니다.");
+					}
 				} else {
 					confirm.fnAlert(this.componentsTitle, result.message);
 				}
