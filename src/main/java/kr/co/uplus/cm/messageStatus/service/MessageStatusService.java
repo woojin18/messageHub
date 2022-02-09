@@ -148,15 +148,15 @@ public class MessageStatusService {
 				List<Object> friButtonList = fri.getButtons();
 				List<String> returnFriBtnNmList = new ArrayList<String>();
 				if(friButtonList.size() >0) {
-					List<Map<String, Object>> friSubBtnList = (List<Map<String, Object>>) friButtonList.get(0);
-					for(Map<String, Object> map : friSubBtnList) {
-						returnFriBtnNmList.add(CommonUtils.getString(map.get("name")));
+					for(Object obj : friButtonList) {
+						Map<String ,Object> btnMap = (Map<String, Object>) obj;
+						returnFriBtnNmList.add(CommonUtils.getString(btnMap.get("name")));
 					}
 					
 					rtnMap.put("btnNmArr", returnFriBtnNmList);
 				}
 				
-				log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), rtnMap);
+				log.info("{} MessageStatusService Mongo Buttons rtnMap : {}", this.getClass(), rtnMap);
 				break;
 			case "SMART":
 				break;
