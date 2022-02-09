@@ -121,6 +121,7 @@ public class MessageStatusService {
 				break;
 			case "ALIMTALK":
 				AlimtalkMsg alim = msgInfo.getAlimtalkMsg();
+				title = alim.getTitle();
 				msg = alim.getMsg();
 				
 				// 버튼 세팅
@@ -141,6 +142,8 @@ public class MessageStatusService {
 				FriendtalkMsg fri = msgInfo.getFriendtalkMsg();
 				msg = fri.getMsg();
 				
+				rtnMap.put("msg", msg);
+				
 				// 버튼 세팅
 				List<Object> friButtonList = fri.getButtons();
 				List<String> returnFriBtnNmList = new ArrayList<String>();
@@ -153,7 +156,7 @@ public class MessageStatusService {
 					rtnMap.put("btnNmArr", returnFriBtnNmList);
 				}
 				
-				log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), fri.getButtons());
+				log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), rtnMap);
 				break;
 			case "SMART":
 				break;
