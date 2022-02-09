@@ -96,7 +96,7 @@
                   <td v-else>
                     {{ row.approvalStatus }}
                   </td>
-                  <td v-if="row.projectCnt > 0">
+                  <td v-if="row.projectCnt > 1">
                        {{ row.projectName + ' 외 ' + (row.projectCnt-1) + '건'}} 
                   </td>
                   <td v-else>
