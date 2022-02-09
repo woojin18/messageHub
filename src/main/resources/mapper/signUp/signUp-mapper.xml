@@ -166,9 +166,10 @@
 	<select id="selectIsExistCustNo" resultType="int">
 		/* signUp.selectIsExistCustNo */
 		SELECT EXISTS (
-			SELECT CUST_NO
-			FROM cm_console.CM_CORP
-			WHERE CUST_NO = #{custNo}
+			SELECT	CUST_NO
+			FROM	cm_console.CM_CORP
+			WHERE	CUST_NO = #{custNo}
+			AND		STATUS IN ('USE', 'STOP')
 		)
 	</select>
 	
