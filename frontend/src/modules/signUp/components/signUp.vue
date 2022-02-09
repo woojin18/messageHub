@@ -3,22 +3,22 @@
 	<provisionViewService :popReset="popReset" />
 	<provisionViewPri :popReset="popReset" />
 	<section class="userSection width540 mt70">
-		<h2 class="text-center">회원가입</h2>
+		<h2 class="text-center user_join_h2">회원가입</h2>
 
-		<input type="checkbox" id="agree0" class="checkStyle3 mainCheck" value="전체 동의" v-model="agree0" @change="checkAll(agree0)"><label for="agree0">전체 이용약관에 동의합니다.</label>	
+		<input type="checkbox" id="agree0" class="checkStyle3" value="전체 동의" v-model="agree0" @change="checkAll(agree0)"><label for="agree0">전체 이용약관에 동의합니다.</label>	
 
 		<hr>
 
 		<div class="of_h">
-			<input type="checkbox" id="agree1" class="checkStyle3 subCheck" value="서비스 이용약관 동의" v-model="agree1"><label for="agree1"><span class="color1">[필수]</span> 서비스 이용약관 동의</label>
+			<input type="checkbox" id="agree1" class="checkStyle3" value="서비스 이용약관 동의" v-model="agree1"><label for="agree1"><span class="color1">[필수]</span> 서비스 이용약관 동의</label>
 			<a href="#self" class="float-right provisionMore" data-toggle="modal" @click.prevent="svcPopView">약관보기 <i class="far fa-chevron-right"></i></a>
 		</div>
 		<div class="of_h mt10">
-			<input type="checkbox" id="agree2" class="checkStyle3 subCheck" value="개인정보수집 및 이용동의" v-model="agree2"><label for="agree2"><span class="color1">[필수]</span> 개인정보수집 및 이용동의</label>
+			<input type="checkbox" id="agree2" class="checkStyle3" value="개인정보수집 및 이용동의" v-model="agree2"><label for="agree2"><span class="color1">[필수]</span> 개인정보수집 및 이용동의</label>
 			<a href="#self" class="float-right provisionMore" data-toggle="modal" @click.prevent="priPopView">약관보기 <i class="far fa-chevron-right"></i></a>
 		</div>
 		<div class="of_h mt10">
-			<input type="checkbox" id="agree3" class="checkStyle3 subCheck" value="홍보성 정보 수신 동의" v-model="agree3"><label for="agree3">[선택] 홍보성 정보 수신 동의</label>
+			<input type="checkbox" id="agree3" class="checkStyle3" value="홍보성 정보 수신 동의" v-model="agree3"><label for="agree3">[선택] 홍보성 정보 수신 동의</label>
 		</div>
 
 		<hr>
@@ -32,6 +32,9 @@
 		</div>
 
 		<button type="submit" class="btn btn-login mt45" @click.prevent="emailSend">인증메일 발송</button>
+		<p class="Chrome">메시지허브 사이트는 
+		<a href="https://www.google.co.kr/chrome/?brand=JJTC&gclid=Cj0KCQiAxoiQBhCRARIsAPsvo-w8lxcP8wrkcx8XzwSni9i6TId7VD5Qb8vq2CqfrwtT7HdE2um18HsaAk-nEALw_wcB&gclsrc=aw.ds" target="_blank">
+		<img src="/se2/images/chrome-logo.png" alt="크롬 로고"><span>Google Chrome</span></a>에 최적화되어 있습니다.</p>
 	</section>
 
 	</div>

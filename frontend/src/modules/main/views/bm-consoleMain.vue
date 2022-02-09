@@ -10,7 +10,7 @@
 							<h2 class="wow animated fadeInUp" data-wow-duration="1s">모든 메시지를 한번에<br><strong>U+ 메시지허브</strong></h2>
 							<div class="wow animated fadeInUp" data-wow-delay=".3s" data-wow-duration="1s">
                 <router-link :to="{ name: 'signUp' }" tag="a" class="mvBtn" title="서비스 가입">가입하기</router-link>
-								<a href="#self" class="mvBtn ml20" title="serviceCon05_2">도입문의</a>
+								<a class="mvBtn ml20" title="serviceCon05_2">도입문의</a>
 							</div>
 							<p class="font-size20 font-normal mt40 wow animated fadeInUp" data-wow-delay=".6s" data-wow-duration="1s">메시지허브는 다양한 메시지 채널을 수용하여<br>발송부터 결과까지 한 번에 관리하는 기업 메시지 플랫폼입니다.</p>
 							<p class="font-size20 font-600 mt20 wow animated fadeInUp" data-wow-delay=".6s" data-wow-duration="1s">#문자<span class="ml20">#알림톡</span><span class="ml20">#친구톡</span><span class="ml20">#앱푸시</span></p>
@@ -279,7 +279,6 @@ export default {
         myPageApi.selectMemberInfo(params).then(response => {
           var result = response.data;
           if(result.success){
-            console.log('result' + result.data)
             this.inqueiryInputData.inputName  = result.data.userName;
             this.inqueiryInputData.hpNumber   = result.data.hpNumber;
             this.inqueiryInputData.email      = result.data.loginId;

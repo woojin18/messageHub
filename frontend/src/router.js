@@ -8,6 +8,7 @@ import WebUcNaviLayout from './views/WebUcNaviLayout.vue';
 import WebNaviLayout from './views/WebNaviLayout.vue';
 //import LoginLayout from './views/LoginLayout.vue';
 import PublicLayout from './views/publicLayout.vue';
+import failLayout from './views/notFound.vue';
 
 import mainRoutes from './modules/main/router';
 import acHomeRoutes from './modules/acHome/router';
@@ -83,11 +84,6 @@ const router = new Router({
 					component: () => import('./views/ErrorPage500.vue'),
 					meta: { public: true }
 				},
-				{
-					path: '/view/error/fail',
-					component: () => import('./views/notFound.vue'),
-					meta: { public: true }
-				},
 				...mainRoutes,
 				...customerRoutes,
 			]
@@ -104,11 +100,6 @@ const router = new Router({
 				{
 					path: '/view/error/500',
 					component: () => import('./views/ErrorPage500.vue'),
-					meta: { public: true }
-				},
-				{
-					path: '/view/error/fail',
-					component: () => import('./views/notFound.vue'),
 					meta: { public: true }
 				},
 				...signUpRoutes
@@ -129,11 +120,6 @@ const router = new Router({
 					component: () => import('./views/ErrorPage500.vue'),
 					meta: { public: true }
 				},
-				{
-					path: '/view/error/fail',
-					component: () => import('./views/notFound.vue'),
-					meta: { public: true }
-				},
 				...loginRoutes
 			]
 		},
@@ -150,11 +136,6 @@ const router = new Router({
 				{
 					path: '/view/error/500',
 					component: () => import('./views/ErrorPage500.vue'),
-					meta: { public: true }
-				},
-				{
-					path: '/view/error/fail',
-					component: () => import('./views/notFound.vue'),
 					meta: { public: true }
 				},
 				...acHomeRoutes,
@@ -185,11 +166,6 @@ const router = new Router({
 					component: () => import('./views/ErrorPage500.vue'),
 					meta: { public: true }
 				},
-				{
-					path: '/view/error/fail',
-					component: () => import('./views/notFound.vue'),
-					meta: { public: true }
-				},
 				...ucHomeRoutes,
 				...messageRoutes,
 				...templateRoutes,
@@ -198,6 +174,17 @@ const router = new Router({
 				...rcsTemplateSendRoutes,
 				...statisticsUserRoutes
 			]
+		},
+		{
+			path:'/fail',
+			component: failLayout,
+			children:[
+				{
+					path : '/view/error/fail',
+					component : () => import('./views/notFound.vue'),
+					meta:{public: true}
+				}
+			]	
 		},
 		{ path: '*', redirect: '/view/error/404' }
 	]

@@ -129,10 +129,7 @@ export default {
 	watch: {
 		popCnt() {
 			this.fnSearch(1);
-		},
-        listMemChkBox(){
-            console.log(this.listMemChkBox)
-        }
+		}
 	},
 	methods: {
 		fnSearch(pageNum) {

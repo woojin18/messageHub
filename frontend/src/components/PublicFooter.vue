@@ -11,7 +11,7 @@
         <div class="foot_copy">
           <p>(주)엘지유플러스<span>|</span>주소  서울특별시 용산구 한강대로 32</p>
           <p>대표이사 황현식<span>|</span>사업자번호  220-81-39938<span>|</span>통신판매신고 제 2010-서울중구-0968호<span>|</span>고객센터 1544-5992<span>|</span>email smshelp@lguplus.co.kr</p>
-          <p>Copyright©LG Plus Corp. All Rights Reserved.</p>
+          <p>Copyright©LG UPlus Corp. All Rights Reserved.</p>
         </div>
       </div>
     </div>

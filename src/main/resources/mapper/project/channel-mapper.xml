@@ -14,7 +14,6 @@
 		SELECT	*
         ,       IFNULL(CALLBACK.CNT, 0) AS CALLBACK_CNT
         ,		REASON.REASON
-		,		@ROWNUM := @ROWNUM + 1 AS ROWNUM
 		FROM	(
 			<include refid="rcsBrandList"/>
 		) AA
@@ -42,7 +41,6 @@
 			GROUP BY BRAND_ID
 		) REASON
 			ON	AA.BRAND_ID = REASON.BRAND_ID
-		, (SELECT @ROWNUM:=0) TMP
 		ORDER BY AA.REG_DT DESC
         <if test='pagingYn == "Y" '>
         LIMIT #{offset}, #{listSize}
@@ -86,7 +84,23 @@
 									ELSE A.REG_DT
 								END AS RANKING_DT 
 						]]>
+						,      IFNULL((
+							        SELECT   MIN(CP.PROJECT_NAME)
+						         	FROM    cm_console.CM_PROJECT_BRAND CPB
+						         	LEFT OUTER JOIN cm_console.CM_PROJECT CP
+						         		ON	CP.PROJECT_ID = CPB.PROJECT_ID 
+						         		AND	CP.DEL_YN = 'N'
+						         	WHERE	CPB.BRAND_ID = A.BRAND_ID
+						      ),'') AS PROJECT_NAME
+						,		(	
+									SELECT   COUNT(1)
+						         	FROM    cm_console.CM_PROJECT_BRAND CPB
+						         	WHERE   CPB.BRAND_ID = A.BRAND_ID
+						         	AND	 EXISTS(SELECT 1 FROM cm_console.CM_PROJECT WHERE PROJECT_ID=CPB.PROJECT_ID AND DEL_YN = 'N')
+						      ) AS PROJECT_CNT
 						from 	cm.CM_RCS_BRAND A
+						LEFT OUTER JOIN cm_console.CM_PROJECT_BRAND B 
+							ON	B.BRAND_ID = A.BRAND_ID 
 						WHERE 	A.CORP_ID = #{corpId}
 						and		A.PROJECT_ID IN (#{projectId}, 'ALL')
 						
@@ -115,6 +129,8 @@
 						,		REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.mdn[0]'), "\"", "") AS MAIN_MDN
 						,		REPLACE(JSON_EXTRACT(B.CHATBOT_INFO , '$.subTitle[0]'), "\"", "") AS MAIN_TITLE
 						,		A.REG_DT AS RANKING_DT
+						,		'' AS PROJECT_NAME
+						,		0 AS PROJECT_CNT
 						from 	cm.CM_RCS_BRAND_REQ A
 						left join cm.CM_RCS_CHATBOT_REQ B
                            on B.CORP_ID = A.CORP_ID 

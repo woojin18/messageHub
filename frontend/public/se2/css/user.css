@@ -471,14 +471,14 @@ p {letter-spacing:-0.5px}
 .serviceCon05_2 section .quiryAgree .provisionMore {border-bottom:1px solid #000}
 .serviceCon05_2 section .quiryList .btnStyle2 {padding:9px 45px; font-size:16px; margin-top:20px; border-radius:8px}
 
-#NotFoundWrap section {max-width:650px; margin:0 auto; padding:290px 0; overflow:hidden}
+#NotFoundWrap section {max-width:650px; margin:0 auto; padding:290px 0; overflow:hidden; min-width: auto;}
 #NotFoundWrap section > h2 {color:#323232; font-size:20px !important; font-weight:700; margin-top:48px}
 #NotFoundWrap section > p {color:#B2B2B2; font-size:14px; margin-top:10px}
 #NotFoundWrap section > .rightimg {float:right; margin-top:-25px}
 
 /* 반응형 */
-@media screen and (max-width:768px) {
-	#NotFoundWrap section {max-width:100%; padding:100px 0; text-align:center}
+@media screen and (max-width:1080px) {
+	#NotFoundWrap section {max-width:100%; padding:100px 0; text-align:center; float: none;}
 	#NotFoundWrap section img {display:block; margin:0 auto}
 	#NotFoundWrap section > .logoimg {width:120px}
 	#NotFoundWrap section > .rightimg {float:none; margin:40px auto; width:100px}
@@ -486,3 +486,8 @@ p {letter-spacing:-0.5px}
 	#NotFoundWrap section > p {color:#B2B2B2; font-size:10px; margin-top:10px}
 	#NotFoundWrap section > p > span {display: block}
 }
+
+/* 2022-02-09 */
+.userLogin-form > .Chrome, .userSection > .Chrome {margin-top:40px; text-align:right}
+.userLogin-form > .Chrome > span, .userSection > .Chrome > span {padding-left:2px; color:#3467CB; height:30px}
+.userLogin-form > .Chrome > img, .userSection > .Chrome > img {vertical-align:top}

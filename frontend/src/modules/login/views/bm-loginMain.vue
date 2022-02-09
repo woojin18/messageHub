@@ -3,7 +3,7 @@
 		<section class="userSection width540 mt150">
 			<!-- userLogin-form -->
 			<div class="userLogin-form">
-				<h2 class="text-center">U+ 메시지허브 로그인</h2>
+				<h2 class="text-center">U+ 통합메시징 클라우드 로그인</h2>
 				<input type="email" class="form-control" id="inputEmail" placeholder="이메일 주소를 입력하세요"
 					name="userId" v-model="userId" :maxlength="100" v-focus @keyup.enter="ajaxlogin">
 				<input type="password" class="form-control mt20" id="inputPassword" placeholder="비밀번호를 입력하세요"
@@ -26,6 +26,9 @@
 				</div>	
 				<button type="submit" class="btn btn-login mt45" data-toggle="modal" data-target="#smsAcc" @click.prevent="ajaxlogin">로그인</button>
 				<a @click="signUp" class="btn btn-join mt15">회원가입</a>
+				<p class="Chrome">메시지허브 사이트는 
+				<a href="https://www.google.co.kr/chrome/?brand=JJTC&gclid=Cj0KCQiAxoiQBhCRARIsAPsvo-w8lxcP8wrkcx8XzwSni9i6TId7VD5Qb8vq2CqfrwtT7HdE2um18HsaAk-nEALw_wcB&gclsrc=aw.ds" target="_blank">
+				<img src="/se2/images/chrome-logo.png" alt="크롬 로고"><span>Google Chrome</span></a>에 최적화되어 있습니다.</p>
 			</div>
 			<!-- //userLogin-form -->
 		</section>

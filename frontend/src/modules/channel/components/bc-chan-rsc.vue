@@ -21,8 +21,8 @@
 							<i class="far fa-info-circle"></i> RBC 홈페이지(https://www.rcsbizcenter.com)에서 무료로 만들 수 있습니다.<br>
 							<i class="far fa-info-circle"></i> RBC에 로그인 후 우측 상단 [내 정보관리]에서 API Key를 확인하십시오<br>
 							&nbsp;&nbsp;&nbsp;&nbsp;(브랜드 등록 및 수정 시 API Key[RBC 로그인 ID]와 API Secret Key[RBC API Key]를 사용합니다.)<br>
-              <i class="far fa-info-circle"></i> 브랜드 연결은 타 프로젝트에서 등록한 브랜드를 연결합니다.<br>
-              <i class="far fa-info-circle"></i> 브랜드 연결을 하시면 브랜드에 연결된 발신 번호도 자동 연결됩니다.<br><br>
+            <!--  <i class="far fa-info-circle"></i> 브랜드 연결은 타 프로젝트에서 등록한 브랜드를 연결합니다.<br>
+              <i class="far fa-info-circle"></i> 브랜드 연결을 하시면 브랜드에 연결된 발신 번호도 자동 연결됩니다.<br><br>-->
 						</p>
 
 						<div class="menuBox mt10">						
@@ -60,36 +60,29 @@
               </div>
             </div>
             <div class="float-right mb10">
-              	<a @click="fnRcsBrandCon" class="btnStyle3 gray font13 minWidth120 mr10" activity="SAVE">브랜드 연결</a>
+            <!--<a @click="fnRcsBrandCon" class="btnStyle3 gray font13 minWidth120 mr10" activity="SAVE">브랜드 연결</a>-->
 								<a @click="fnRcsBrandReg" class="btnStyle3 gray font13 minWidth120" activity="SAVE">브랜드 등록</a>
 							</div>
             <!-- 페이징 카운트 -->
             <!-- 본문 -->
             <table id="list" class="table_skin1 bt-000 tbl-striped">
               <thead>
-                <th class="text-center lc-1">No.</th>
                 <th class="text-center lc-1">브랜드명</th>
                 <th class="text-center lc-1">브랜드ID</th>
-                <th class="text-center lc-1">타 프로젝트<br>사용여부</th>
                 <th class="text-center lc-1">등록템플릿<br>개수</th>
                 <th class="text-center lc-1">등록발신번호<br>개수</th>
                 <th class="text-center lc-1">브랜드<br>승인상태</th>
+                <th class="text-center lc-1">연결 프로젝트</th>
                 <th class="text-center lc-1">승인요청일</th>
                 <th class="text-center lc-1 end">승인완료일</th>
               </thead>
               <tbody>
                 <tr v-for="(row, index) in data" :key="index">
-                  <td>
-                    {{totCnt-offset-row.rownum+1}}
-                  </td>
                   <td style="text-decoration: underline; cursor: pointer;">
                     <a @click="fnRcsBrandDetail(row)">{{ row.brandName }}</a>
                   </td>
                   <td>
                     {{ row.brandId }}
-                  </td>
-                  <td>
-                    {{ row.otherProjectUseYn }}
                   </td>
                   <td style="text-decoration: underline; cursor: pointer;">
                     <a @click="fnRcsTmpltDetail(row)">{{ row.tmplCnt }}</a>
@@ -103,6 +96,12 @@
                   <td v-else>
                     {{ row.approvalStatus }}
                   </td>
+                  <td v-if="row.projectCnt > 0">
+                       {{ row.projectName + ' 외 ' + (row.projectCnt-1) + '건'}} 
+                  </td>
+                  <td v-else>
+                       {{ row.projectName }} 
+                   </td>
                   <td>
                     {{ row.reqDt }}
                   </td>
@@ -220,6 +219,7 @@ export default {
       Api.selectRcsBrandList(params).then(response =>{
         var result = response.data;
 				if(result.success) {
+          console.log()
           this.data = result.data; 
 					this.totCnt = result.pageInfo.totCnt;
           this.offset = result.pageInfo.offset;
