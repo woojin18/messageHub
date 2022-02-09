@@ -69,6 +69,7 @@ public class MessageStatusService {
 		String			msgKey		= params.get("msgKey").toString();
 		Query			query		= new Query(Criteria.where("msgKey").is(msgKey));
 		CmMsgInfoDto	msgInfo		= mongoCmd.findOne(query, CmMsgInfoDto.class, MongoConf.CM_MSG_INFO.key + "_"+CmKeyMaker.getTime14(msgKey).substring(0,10));
+		String			title		= "";//메시지 제목
 		String			msg			= "";//메시지 내용
 		
 		log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), msgInfo);
@@ -89,9 +90,17 @@ public class MessageStatusService {
 				break;
 			case "RCS":
 				RcsMsg rcs = msgInfo.getRcsMsg();
-				msg = CommonUtils.getString(rcs.getBody());
+				Map<String, String> rcsBody = rcs.getBody();
+				
+				title = CommonUtils.getString(rcsBody.get("title"));
+				msg = CommonUtils.getString(rcsBody.get("description"));
+				
+				
 				List<Object> rcsButtonList = rcs.getButtons();
 				List<String> returnRcsBtnNmList = new ArrayList<String>();
+				
+				rtnMap.put("title", title);
+				rtnMap.put("msg", msg);
 				
 				// 버튼이 있는 경우 버튼 세팅
 				if(rcsButtonList.size() > 0) {
@@ -106,7 +115,7 @@ public class MessageStatusService {
 					rtnMap.put("btnNmArr", returnRcsBtnNmList);
 				}
 				
-				log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), rcs.getButtons());
+				log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), rtnMap);
 				
 				//rcs는 body에서 가져오는데 메세지 풀 내용을 가지고 있지않기 때문에 body의 내용을 뿌리기로 하였습니다.(손왕구 차장)
 				break;

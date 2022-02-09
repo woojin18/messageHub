@@ -543,7 +543,7 @@
             <h4>04  테스트 발송</h4>
           </div>
           <div class="float-left" style="width:78%">
-            <p>모든 채널에 메시지를 보냅니다.</p>
+            <!--<p>모든 채널에 메시지를 보냅니다.</p>-->
             <a href="#" @click.prevent="fnOpenTestSendInputPopup" class="btnStyle1 backLightGray consolMarginTop" title="테스트 발송" activity="SAVE">테스트 발송</a>
           </div>
         </div>
