@@ -40,7 +40,9 @@
     /* selectMessageStatusListCnt 메시지 현황 리스트 카운트 조회 */
         SELECT
             COUNT(*) AS CNT
-        FROM cm.CM_MSG A LEFT OUTER JOIN cm_console.CM_WEB_MSG B
+        FROM cm.CM_MSG A
+        USE INDEX (IDX_CM_MSG_03)
+        LEFT OUTER JOIN cm_console.CM_WEB_MSG B
 		                 ON A.WEB_REQ_ID = B.WEB_REQ_ID
         WHERE 1=1
         <include refid="whereSelectMessageStatusList"/>

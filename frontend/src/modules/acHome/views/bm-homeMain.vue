@@ -21,14 +21,14 @@
 							<table class="table_skin1" style="width:100%">
 								<colgroup>
 									<col style="width:29%">
-									<col style="width:17%">
+									<!--<col style="width:17%">-->
 									<col style="width:39%">
 									<col style="width:15%">
 								</colgroup>
 								<thead>
 									<tr>
 									<th class="text-center">프로젝트 명</th>
-									<th class="text-center">프로젝트 타입</th>
+									<!--<th class="text-center">프로젝트 타입</th>-->
 									<th class="text-center">이용서비스</th>
 									<th class="text-center end">생성일</th>
 									</tr>
@@ -38,7 +38,7 @@
 										<td class="text-left">
 											<router-link :to="{name: 'projectMain', params: { projectId: pjt.projectId, projectName: pjt.projectName, selMainTab : 1, selMidTab : 1, selSubTab : 1 }}"><u>{{pjt.projectName}}</u></router-link>
 										</td>
-										<td class="text-center">{{pjt.payTypeCdName}}</td>
+										<!--<td class="text-center">{{pjt.payTypeCdName}}</td>-->
 										<td class="text-left">{{pjt.useService}}</td>
 										<td class="text-center end">{{pjt.regDtYmd}}</td>
 									</tr>
