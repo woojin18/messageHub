@@ -17,8 +17,8 @@
         <if test="searchStartDate != '' and searchStartDate != null ">
             <if test="searchEndDate != '' and searchEndDate != null ">
             <![CDATA[
-            AND A.YMD  >= DATE_FORMAT(${searchStartDate}, '%Y-%m-%d')
-            AND A.YMD <= DATE_FORMAT(${searchEndDate}, '%Y-%m-%d')
+            AND A.YMD  >= DATE_FORMAT('${searchStartDate}', '%Y-%m-%d')
+            AND A.YMD <= DATE_FORMAT('${searchEndDate}', '%Y-%m-%d')
              ]]>
             </if>
         </if>
