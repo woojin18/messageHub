@@ -17,7 +17,9 @@
 									<img src="/se2/images/phoneMockup1.svg" alt="프리 템플릿">
 									<div class="phoneTextWrap">
 										<div class="phoneText1">
+                      <p>{{title}}</p>
 											<p class="color3">{{msg}}</p>
+                      <p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNmArr[n-1]}}</p>
 										</div>
 									</div>
 								</div>
@@ -85,7 +87,10 @@ export default {
       phoneNumber : '',
       gwResultNm : '',
       regDt : '',
-      msg : ''
+      title : '',
+      msg : '',
+      btnCnt : 0,
+      btnNmArr : []
     }
   },
  // mounted() {
@@ -104,16 +109,20 @@ export default {
              messageStatusApi.selectMessageStatusDetail(params).then(response=> {
                 var result = response.data.data;
                 
-                //var title         = result.title;
+                var title         = result.title;
                 var msg           = result.msg;
+                var btnCnt        = result.btnCnt;
+                var btnNmArr      = result.btnNmArr;
                 var senderTypeNm  = result.senderTypeNm;
                 var campaignId    = result.campaignId;
                 var phoneNumber   = result.phoneNumber;
                 var gwResultNm    = result.gwResultNm;
                 var regDt         = result.regDt;
 
-                //this.title        = title;
+                this.title        = title;
                 this.msg          = msg;
+                this.btnCnt       = btnCnt;
+                this.btnNmArr     = btnNmArr;
                 this.senderTypeNm = senderTypeNm;
                 this.campaignId   = campaignId;
                 this.phoneNumber  = phoneNumber;

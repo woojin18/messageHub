@@ -79,14 +79,23 @@ public class MessageStatusService {
 			case "SMS":
 				SmsMsg sms = msgInfo.getSmsMsg();
 				msg = sms.getMsg();
+				
+				rtnMap.put("msg", msg);
+				
 				break;
 			case "MMS":
 				MmsMsg mms = msgInfo.getMmsMsg();
 				msg = mms.getMsg();
+				
+				rtnMap.put("msg", msg);
+				
 				break;
 			case "PUSH":
 				PushMsg push = msgInfo.getPushMsg();
 				msg = CommonUtils.getString(push.getMsg());
+				
+				rtnMap.put("msg", msg);
+				
 				break;
 			case "RCS":
 				RcsMsg rcs = msgInfo.getRcsMsg();
@@ -112,6 +121,7 @@ public class MessageStatusService {
 						returnRcsBtnNmList.add(displayText);
 					}
 					
+					rtnMap.put("btnCnt", returnRcsBtnNmList.size());
 					rtnMap.put("btnNmArr", returnRcsBtnNmList);
 				}
 				
@@ -124,15 +134,20 @@ public class MessageStatusService {
 				title = alim.getTitle();
 				msg = alim.getMsg();
 				
+				rtnMap.put("title", title);
+				rtnMap.put("msg", msg);
 				// 버튼 세팅
+				
+				// 버튼 세팅alim
 				List<Object> alimButtonList = alim.getButtons();
 				List<String> returnAlimBtnNmList = new ArrayList<String>();
 				if(alimButtonList.size() >0) {
-					List<Map<String, Object>> alimSubBtnList = (List<Map<String, Object>>) alimButtonList.get(0);
-					for(Map<String, Object> map : alimSubBtnList) {
-						returnAlimBtnNmList.add(CommonUtils.getString(map.get("name")));
+					for(Object obj : alimButtonList) {
+						Map<String ,Object> btnMap = (Map<String, Object>) obj;
+						returnAlimBtnNmList.add(CommonUtils.getString(btnMap.get("name")));
 					}
 					
+					rtnMap.put("btnCnt", returnAlimBtnNmList.size());
 					rtnMap.put("btnNmArr", returnAlimBtnNmList);
 				}
 				
@@ -153,6 +168,7 @@ public class MessageStatusService {
 						returnFriBtnNmList.add(CommonUtils.getString(btnMap.get("name")));
 					}
 					
+					rtnMap.put("btnCnt", returnFriBtnNmList.size());
 					rtnMap.put("btnNmArr", returnFriBtnNmList);
 				}
 				
@@ -164,8 +180,6 @@ public class MessageStatusService {
 				break;
 			}
 		}
-		
-		rtnMap.put("msg", msg);
 		
 		log.info("{} MessageStatusService Mongo rtmMap : {}", this.getClass(), rtnMap);
 		
