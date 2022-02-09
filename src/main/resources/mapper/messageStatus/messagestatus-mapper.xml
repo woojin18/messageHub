@@ -4,21 +4,21 @@
 <mapper namespace="messageStatus">
 
     <sql id ="whereSelectMessageStatusList">
-        AND A.CORP_ID = #{corpId}
-		AND A.PROJECT_ID = #{projectId}
+        AND A.CORP_ID = '${corpId}'
+		AND A.PROJECT_ID = '${projectId}'
          <if test="searchText != '' and searchText != null ">
             <if test="searchCondi == 'receiverId' ">
-            AND A.PUSH_CUID = #{searchText}
+            AND A.PUSH_CUID = '${searchText}'
             </if>
             <if test="searchCondi == 'receiverPhone' ">
-            AND A.PHONE = #{searchText}
+            AND A.PHONE = '${searchText}'
             </if>
         </if>
         <if test="searchStartDate != '' and searchStartDate != null ">
             <if test="searchEndDate != '' and searchEndDate != null ">
             <![CDATA[
-            AND A.YMD  >= DATE_FORMAT(#{searchStartDate}, '%Y-%m-%d')
-            AND A.YMD <= DATE_FORMAT(#{searchEndDate}, '%Y-%m-%d')
+            AND A.YMD  >= DATE_FORMAT(${searchStartDate}, '%Y-%m-%d')
+            AND A.YMD <= DATE_FORMAT(${searchEndDate}, '%Y-%m-%d')
              ]]>
             </if>
         </if>
