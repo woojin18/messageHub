@@ -69,7 +69,7 @@
               <th class="text-center lc-1">사용여부</th>
               <th class="text-center lc-1">이용 서비스</th>
               <th class="text-center lc-1">생성일</th>
-              <th class="text-center lc-1">결재유형</th>
+              <!--<th class="text-center lc-1">결제유형</th>-->
               <th class="text-center lc-1">멤버</th>
               <th class="text-center lc-1">최종접속일</th>
               <th class="text-center lc-1 end">관리</th>
@@ -91,9 +91,9 @@
                 <td>
                   {{ data.regDt }}
                 </td>
-                <td>
+                <!--<td>
                   {{ data.payTypeName }}
-                </td>
+                </td>-->
                 <td>
                   {{ data.projectMemberCnt }}
                 </td>
