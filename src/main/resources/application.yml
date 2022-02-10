@@ -21,8 +21,8 @@ app.props:
     private-token-expiration: 43200
     part1: JwtPart1
     part2: JwtPart2
-    access-token-expiration: 180
-    refresh-token-expiration: 1800
+    access-token-expiration: 43200
+    refresh-token-expiration: 43200
     header: Authorization
     prefix: "Bearer "
 
