@@ -66,7 +66,7 @@
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
-                  <div class="phoneText1">
+                  <div class="phoneText1 mb10">
                     <p>{{tmpltData.MMS.title}}</p>
                   </div>
                   <div v-if="tmpltData.msgType == 'IMAGE'">
@@ -74,7 +74,12 @@
                       :style="'padding:65px;background-image: url('+fileUrl+');'">
                     </div>
                   </div>
-                  <p class="consolMarginTop"><pre>{{tmpltData.MMS.msg}}</pre></p>
+
+                  <div class="phoneText1">
+                    <p class="font-size14 color4 mt10">{{tmpltData.MMS.msg}}</p>
+                  </div>
+
+                  <!--<p class="consolMarginTop"><pre>{{tmpltData.MMS.msg}}</pre></p>-->
                   <!-- 템플릿에서 메시지 내용에 넣어줌
                   <br v-if="tmpltData.msgKind == 'A'"/>
                   <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.MMS.rcvblcInput)">
@@ -90,10 +95,14 @@
               <div class="phoneWrap">
                 <img src="@/assets/images/common/phoneMockup1.svg" alt="프리 템플릿">
                 <div class="phoneTextWrap scroll-yc">
-                  <div class="phoneText1">
+                  <div class="phoneText1 mb10">
                     <p>{{tmpltData.SMS.callback}}</p>
                   </div>
-                  <p class="consolMarginTop"><pre>{{tmpltData.SMS.msg}}</pre></p>
+                  <div class="phoneText1">
+                    <p class="font-size14 color4 mt10">{{tmpltData.SMS.msg}}</p>
+                  </div>
+
+                  
                   <!-- 템플릿에서 메시지 내용에 넣어줌
                   <br v-if="tmpltData.msgKind == 'A'"/>
                   <span v-if="tmpltData.msgKind == 'A' && !$gfnCommonUtils.isEmpty(tmpltData.SMS.rcvblcInput)">
