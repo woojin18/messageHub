@@ -740,9 +740,9 @@
 						<div class="phoneWrap">
 							<img src="@/assets/images/common/phoneMockup1.svg" alt="LMS 템플릿">
 							<div class="phoneTextWrap">
-								<div class="phoneText1">
+								<div class="phoneText1 scroll-y">
 									<h5>{{rowData.rcs0Title}}</h5>
-									<div class="scroll-y">
+									<div>
 										<pre class="color6">{{rowData.rcs0Content}}</pre>
 									</div>
 									<br v-if="!fnIsEmpty(rowData.rcs0Content)"/>
@@ -875,9 +875,9 @@
 										<img src="@/assets/images/common/cardThumImg2_2.png" alt="카드 썸네일">
 									</div>
 								</div>
-								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
+								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20 scroll-y3">
 									<h5>{{rowData.rcs0Title}}</h5>
-									<div class="scroll-y3">
+									<div>
 										<pre class="color6">{{rowData.rcs0Content}}</pre>
 									</div>
 									<br v-if="!fnIsEmpty(rowData.rcs0Content)"/>
@@ -1024,9 +1024,9 @@
 										<img src="@/assets/images/common/cardThumImg2_1.png" alt="카드 썸네일">
 									</div>
 								</div>
-								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20">
+								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20 scroll-y6">
 									<h5>{{rowData.rcs0Title}}</h5>
-									<div class="scroll-y6">
+									<div>
 										<pre class="color6">{{rowData.rcs0Content}}</pre>
 									</div>
 									<br v-if="!fnIsEmpty(rowData.rcs0Content)"/>
