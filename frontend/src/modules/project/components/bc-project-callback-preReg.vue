@@ -79,7 +79,7 @@
       </div>
       <!-- //본문 -->
 
-      <footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+      <footer>Copyright©LG Uplus Corp. All Rights Reserved.</footer>
     </article>
     <layerPopup  :srcProjectId = "srcProjectId" :detailCnt="detailCnt"/>
   </div>

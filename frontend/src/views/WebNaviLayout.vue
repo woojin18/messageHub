@@ -5,7 +5,7 @@
 		<section id="content">
 			<article>
 				<router-view :key="$route.fullPath"></router-view>
-				<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+				<footer>Copyright©LG Uplus Corp. All Rights Reserved.</footer>
 				<confirm></confirm>
 			</article>
 		</section>

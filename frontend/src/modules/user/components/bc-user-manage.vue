@@ -112,7 +112,7 @@
 			<!-- pagination End-->
 
 			<!-- 본문 End -->
-			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+			<footer>Copyright©LG Uplus Corp. All Rights Reserved.</footer>
 		</article>
 
 		<!-- stop Modal -->

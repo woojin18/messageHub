@@ -137,7 +137,7 @@
 		<p class="font-size12 color3 mt30 inline-block"><i class="far fa-info-circle"></i>U+ Biz SMS 고객센터 : 이메일 smshelp@lguplus.co.kr, 팩스 02) 6919-1000<br><i class="far fa-info-circle"></i>사전 등록 예외 사업자는 서버 전송 시에만 적용됩니다. 웹 전송 시에는 등록된 발신번호가 없으면 전송이 실패되오니 유의하시기 바랍니다.</p>
 		<!-- //본문 -->
 
-		<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+		<footer>Copyright©LG Uplus Corp. All Rights Reserved.</footer>
 	</article>
   </div>
 </template>

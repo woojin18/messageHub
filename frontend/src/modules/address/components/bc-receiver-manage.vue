@@ -95,7 +95,7 @@
 				<PageLayer @fnClick="fnPageClick" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
 			</div>
 			<!-- pagination End-->
-			<footer>Copyright©LG Plus Corp. All Rights Reserved.</footer>
+			<footer>Copyright©LG Uplus Corp. All Rights Reserved.</footer>
 		</article>
 
 		<!--  Modal -->
