@@ -1,6 +1,10 @@
 package kr.co.uplus.cm.messageStatus.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +43,12 @@ public class MessageStatusService {
 	// 메시지 현황 리스트 조회
 	public RestResult<Object> selectMessageStatusList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
+		
+		// 날짜 검색을 IN 조건으로 변경처리하기 위해 배열로 변환
+		String searchStartDate = CommonUtils.getString(params.get("searchStartDate"));
+		String searchEndDate = CommonUtils.getString(params.get("searchEndDate"));
+		String[] dateArr = CommonUtils.dateArrReturn(searchStartDate, searchEndDate);
+		params.put("dateArr", dateArr);
 		
         if(params.containsKey("pageNo")
                 && CommonUtils.isNotEmptyObject(params.get("pageNo"))

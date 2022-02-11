@@ -6,19 +6,14 @@
     <sql id ="whereSelectMessageStatusList">
         AND A.CORP_ID = #{corpId}
 		AND A.PROJECT_ID = #{projectId}
+		
+		AND A.YMD IN (<foreach collection="dateArr" item="item" separator="," >#{item}</foreach>)
          <if test="searchText != '' and searchText != null ">
             <if test="searchCondi == 'receiverId' ">
             AND A.PUSH_CUID = #{searchText}
             </if>
             <if test="searchCondi == 'receiverPhone' ">
             AND A.PHONE = #{searchText}
-            </if>
-        </if>
-        <if test="searchStartDate != '' and searchStartDate != null ">
-            <if test="searchEndDate != '' and searchEndDate != null ">
-            <![CDATA[
-            AND A.YMD  BETWEEN STR_TO_DATE(#{searchStartDate}, '%Y-%m-%d') AND STR_TO_DATE(#{searchEndDate}, '%Y-%m-%d')
-             ]]>
             </if>
         </if>
         <if test='searchResultY and !searchResultN'>
@@ -39,7 +34,6 @@
     /* selectMessageStatusListCnt 메시지 현황 리스트 카운트 조회 */
         SELECT COUNT(1) AS CNT
         FROM cm.CM_MSG A
-        USE INDEX (IDX_CM_MSG_03)
         WHERE 1=1
         <include refid="whereSelectMessageStatusList"/>
     </select>
@@ -74,7 +68,6 @@
 		,			A.FINAL_CH
 		,			A.CLI_KEY
 		FROM	cm.CM_MSG A
-        USE INDEX (IDX_CM_MSG_03)
 		WHERE	1=1
 		<include refid="whereSelectMessageStatusList"/>
 		ORDER BY YMD DESC
