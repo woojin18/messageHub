@@ -46,12 +46,12 @@
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">문의제목 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
-							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ title }}</h5>
+							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ title | unescapeXss}}</h5>
 							<input v-else type="text" class="inputStyle float-right" style="width:80%" placeholder="제목을 입력하세요(100자)" v-model="title">
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">문의내용 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
-							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%"><pre>{{ content }}</pre></h5>
+							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%"><pre>{{ content | unescapeXss}}</pre></h5>
 							<textarea v-else class="textareaStyle height120 float-right" style="width:80%" placeholder="문의내용을 입력하세요(500자)" v-model="content"></textarea>
 						</div>
 					</div>
@@ -67,7 +67,7 @@
 						</div>
 						<div class="of_h consolMarginTop" v-if="this.qnaStatus == '03'">
 							<h5 class="inline-block" style="width:18%">답변 내용</h5>
-							<h5 class="font-normal inline-block float-right" style="width:80%"><pre>{{ reply }}</pre></h5>
+							<h5 class="font-normal inline-block float-right" style="width:80%"><pre>{{ reply | unescapeXss}}</pre></h5>
 						</div>
 						<div class="of_h consolMarginTop" v-if="this.qnaStatus == '03'">
 							<h5 class="inline-block" style="width:18%">답변 일자</h5>
