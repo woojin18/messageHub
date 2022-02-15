@@ -67,7 +67,7 @@
 									<tr v-for="(row, index) in data" :key="index">
 									<td class="text-center">{{ index + 1 }}</td>
 									<td class="text-left clickClass">
-										<span class="clickClass"  @click="fnDetailQna(row)">{{ row.title}}</span>
+										<span class="clickClass"  @click="fnDetailQna(row)">{{ row.title | unescapeXss}}</span>
 									</td>
 									<td class="text-center">{{ row.questTypeStr }}</td>
 									<td class="text-center">{{ row.email }}</td>
