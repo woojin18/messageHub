@@ -1,6 +1,6 @@
 <template>
 	<div id="treeMenu"><input id="M_svcTypeCd" type="hidden" value="AC"><input id="M_roleCd" type="hidden"><input id="M_menusCd" type="hidden"><input id="M_roleCd" type="hidden">
-	<input class="ml100" id="M_subCnt" type="text" value="0">
+	<input class="ml100" id="M_subCnt" type="hidden" value="0">
 		<nav id="sidebar">
 			<!-- 메뉴바 접기 -->
 			<a href="#" class="sideMenu" title="사이드메뉴 축소/확대">
