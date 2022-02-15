@@ -268,6 +268,7 @@ export default {
 
         if(result.success) {
           confirm.fnAlert("", "저장되었습니다.");
+          jQuery('#M_subCnt').val(parseInt(jQuery('#M_subCnt').val(),10)+1);
           // 닫기 버튼
           this.$refs.closeBtn.click();
           // 부모창 리스트 조회

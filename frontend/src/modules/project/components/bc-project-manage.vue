@@ -312,6 +312,7 @@ export default {
 
         if(result.success) {
           confirm.fnAlert("", "삭제되었습니다");
+          jQuery('#M_subCnt').val(parseInt(jQuery('#M_subCnt').val(),10)-1);
           // 리스트 조회
           this.fnSearch();
         } else {

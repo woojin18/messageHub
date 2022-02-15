@@ -1,5 +1,6 @@
 <template>
-	<div id="treeMenu"><input id="M_svcTypeCd" type="hidden" value="AC"><input id="M_roleCd" type="hidden"><input id="M_menusCd" type="hidden">
+	<div id="treeMenu"><input id="M_svcTypeCd" type="hidden" value="AC"><input id="M_roleCd" type="hidden"><input id="M_menusCd" type="hidden"><input id="M_roleCd" type="hidden">
+	<input class="ml100" id="M_subCnt" type="text" value="0">
 		<nav id="sidebar">
 			<!-- 메뉴바 접기 -->
 			<a href="#" class="sideMenu" title="사이드메뉴 축소/확대">
@@ -91,7 +92,8 @@ export default {
 			await homeApi.selectCorpInfo({}).then(response =>{
 				var result = response.data;
 				if (result.success) {
-					this.corpInfo = result.data
+					this.corpInfo = result.data;
+					jQuery('#M_subCnt').val(this.corpInfo.subCnt);
 				} else {
 					confirm.fnAlert("", result.message);
 				}
@@ -190,7 +192,7 @@ export default {
 			}
 		},
 		fnOpenDepth3(event, menuCd) {
-			if (menuCd == 'AC_SETTLE_MNG3' && this.corpInfo.feeType == 'POST' && this.corpInfo.subCnt == 0) {
+			if (menuCd == 'AC_SETTLE_MNG3' && this.corpInfo.feeType == 'POST' && jQuery('#M_subCnt').val() == '0') {
         		confirm.fnAlert("", "부서별 빌링을 설정한 프로젝트가 없습니다.\n부서별 청구는 프로젝트에 부서별 빌링이 되어 있어야 합니다.")
 			}
 			var $this = event.currentTarget

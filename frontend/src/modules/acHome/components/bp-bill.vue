@@ -484,7 +484,7 @@ export default {
                     vm.bill.isCert = true;
 				} else {
                     if (result.data != null) {
-				        confirm.fnAlert("", result.data.resultMsg + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
+				        confirm.fnAlert("", result.data.msgText + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
                     } else {
                         confirm.fnAlert("", '인증에 실패했습니다.정확한 정보를 입력바랍니다.');
                     }
@@ -534,7 +534,7 @@ export default {
                     vm.bill.isCert = true;
 				} else {
                     if (result.data != null) {
-				        confirm.fnAlert("", result.data.resultMsg + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
+				        confirm.fnAlert("", result.data.msgText + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
                     } else {
                         confirm.fnAlert("", '인증에 실패했습니다.정확한 정보를 입력바랍니다.');
                     }
