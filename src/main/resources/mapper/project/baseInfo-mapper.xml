@@ -106,13 +106,13 @@
 		,		#{newProjectId}
 		,		#{apiPwd}
 		,		#{ipChkYn}
-		,		30
+		,		100
 		,		#{daySenderChkYn}
 		,		#{monSenderChkYn}
 		,		#{apiKeyName}
 		,		#{status}
 		,		#{rptYn}
-		,		'BATCH'
+		,		'NORMAL'
 		,		#{dupChkYn}
 		,		#{webSenderYn}
 		,		NOW()
