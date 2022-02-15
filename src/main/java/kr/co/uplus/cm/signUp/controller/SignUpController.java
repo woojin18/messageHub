@@ -30,6 +30,7 @@ import kr.co.uplus.cm.signUp.service.SignUpService;
 import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
+import kr.co.uplus.cm.xss.XssPreventer;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -242,6 +243,9 @@ public class SignUpController implements Serializable{
 	// 계좌인증
 	@PostMapping("/chkBank")
 	public RestResult<?> chkBank(@RequestBody Map<String, Object> params) throws Exception {
+		String ownerName = CommonUtils.getString(params.get("ownerName"));
+		ownerName = XssPreventer.unescape(ownerName); // escape
+		params.put("ownerName", ownerName);
 		RestResult<Object> rtn = new RestResult<Object>();
 		Map<String, Object> result = apiInterface.post("/console/v1/ucube/certify/bank", params, null);
 		rtn.setData(result.get("data"));
@@ -256,6 +260,9 @@ public class SignUpController implements Serializable{
 	// 카드인증
 	@PostMapping("/chkCard")
 	public RestResult<?> chkCard(@RequestBody Map<String, Object> params) throws Exception {
+		String ownerName = CommonUtils.getString(params.get("ownerName"));
+		ownerName = XssPreventer.unescape(ownerName); // escape
+		params.put("ownerName", ownerName);
 		RestResult<Object> rtn = new RestResult<Object>();
 		Map<String, Object> result = apiInterface.post("/console/v1/ucube/certify/card", params, null);
 		rtn.setData(result.get("data"));

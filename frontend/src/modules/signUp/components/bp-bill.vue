@@ -404,7 +404,7 @@ export default {
                     vm.set.isCert = true;
 				} else {
                     if (result.data != null) {
-				        confirm.fnAlert("", result.data.resultMsg + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
+				        confirm.fnAlert("", result.data.msgText + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
                     } else {
                         confirm.fnAlert("", '인증에 실패했습니다.정확한 정보를 입력바랍니다.');
                     }
@@ -454,7 +454,7 @@ export default {
                     vm.set.isCert = true;
 				} else {
                     if (result.data != null) {
-				        confirm.fnAlert("", result.data.resultMsg + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
+				        confirm.fnAlert("", result.data.msgText + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
                     } else {
                         confirm.fnAlert("", '인증에 실패했습니다.정확한 정보를 입력바랍니다.');
                     }
@@ -573,6 +573,9 @@ export default {
                 this.set.cardValdEndYymm2 = "";
             } else {
                 this.set.cardCmpName = jQuery("#cardCd option:selected").text();
+            }
+            if (this.set.payMthdCd != "GR") {
+                this.set.payDt = "";
             }
 			this.$emit("update:bill", this.set);
             jQuery("#billRegPopup").modal("hide")

@@ -10,6 +10,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -27,8 +28,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.uplus.cm.cash.service.CashService;
 import kr.co.uplus.cm.common.consts.Const.CmdTgt;
 import kr.co.uplus.cm.common.consts.DB;
+import kr.co.uplus.cm.common.crypto.AesEncryptor;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.config.FileConfig;
@@ -52,6 +55,9 @@ public class ProjectService {
 
 	@Autowired
 	private BaseInfoService baseInfoService;
+
+	@Autowired
+	private CashService cashService;
 
 	// 프로젝트 리스트 조회
 	@SuppressWarnings("unchecked")
@@ -136,196 +142,20 @@ public class ProjectService {
 			params.put("projectId", projectIdStr);
 			// 후불의 경우 청구ID 관리
 			if ("POST".equals(CommonUtils.getString(params.get("payType")))) {
-				// 고객번호 가져오기
-				String custNo = CommonUtils
-						.getString(generalDao.selectGernalObject("project.selectCustNoForSaveProject", params));
-				String regNo = CommonUtils
-						.getString(generalDao.selectGernalObject("project.selectRegNoForSaveProject", params));
-				String salesId = CommonUtils
-						.getString(generalDao.selectGernalObject("project.selectSalesIdForSaveProject", params));
-
-				Map<String, Object> apiCustomerInfo = (Map<String, Object>) apiInterface
-						.get("/console/v1/ucube/customer/" + custNo, null).get("data");
-
-				Map<String, Object> joinMap = new HashMap<>();
-
-				joinMap.put("custNo", custNo);
-				joinMap.put("logid", projectIdStr);
-				joinMap.put("indcId", salesId);
-				joinMap.put("mngrId", salesId);
-
-				// 유큐브 서비스 등록
-				Map<String, Object> ucubeBillInfoVo = new HashMap<>();
-				String billEmail = CommonUtils.getString(apiCustomerInfo.get("emailAddr"));
-				if ("".equals(billEmail)) {
-					billEmail = CommonUtils
-							.getString(generalDao.selectGernalObject("project.selectEmailForSaveProject", params));
-				}
-
-				ucubeBillInfoVo.put("billAcntNo", null); // 청구계정 번호 (등록시엔 공백으로 입력)
-				ucubeBillInfoVo.put("billEmail", billEmail); // 청구이메일주소 ?
-				ucubeBillInfoVo.put("billKind", "N"); // 청구서유형코드 Y 이메일 N 우편
-				ucubeBillInfoVo.put("billRegNo", regNo); // 청구사업자번호
-				ucubeBillInfoVo.put("billZip", apiCustomerInfo.get("custAddrZip")); // 청구우편번호
-				ucubeBillInfoVo.put("billJuso", apiCustomerInfo.get("custVilgAbvAddr")); // 청구주소
-				ucubeBillInfoVo.put("billJuso2", apiCustomerInfo.get("custVilgBlwAddr")); // 청구주소상세
-
-				Map<String, Object> ucubePymInfoVO = new HashMap<>();
-
-				ucubePymInfoVO.put("napCustKdCd", apiCustomerInfo.get("custKdCd")); // 납부자고객구분코드
-				ucubePymInfoVO.put("napCmpNm", apiCustomerInfo.get("custNm")); // 납부자명 ???
-				ucubePymInfoVO.put("napJumin", regNo); // 생년월일/사업자번호 ????
-
-				// 서비스 정보
-				Map<String, Object> serviceInfo = new HashMap<>();
-				Map<String, Object> ownerMap = (Map<String, Object>) generalDao
-						.selectGernalObject("project.selectOwnerForApi", params);
-
-				serviceInfo.put("cmpNm", apiCustomerInfo.get("bizCompNm")); // 가입자(상호)명
-				serviceInfo.put("ceoNm", apiCustomerInfo.get("custNm")); // 대표자 성명 (필수)
-				serviceInfo.put("damNm", ownerMap.get("damNm")); // 담당자명
-				serviceInfo.put("deptNm", ownerMap.get("deptNm")); // 담당자부서명
-				serviceInfo.put("phoneNum", ownerMap.get("phoneNum")); // 담당자 전화번호
-				serviceInfo.put("cellNum", ownerMap.get("cellNum")); // 담당자 핸드폰번호
-				serviceInfo.put("faxNum", ownerMap.get("faxNum")); // 담당자FAX번호
-				serviceInfo.put("damEmail", ownerMap.get("damEmail")); // 담당자 Email
-
-				// 채널별 단가객체
-				Map<String, Object> cmPriceInfoMap = new HashMap<>();
-
-				List<Object> priceList = generalDao.selectGernalList("use.selectUseHistProductUnit", params);
-
-				for (int j = 0; j < priceList.size(); j++) {
-					Map<String, Object> priceMap = (Map<String, Object>) priceList.get(j);
-					String productCode = CommonUtils.getString(priceMap.get("productCode"));
-
-					// 가격정보
-					Map<String, Object> priceInfoMap = new HashMap<>();
-
-					// 후불제 가격 정보
-					kong.unirest.json.JSONArray postFeeInfoArr = new kong.unirest.json.JSONArray(
-							CommonUtils.getString(priceMap.get("postFeeInfo")));
-
-//					if( postFeeInfoArr.length() == 1 ) {
-					priceInfoMap.put("unitPrice", postFeeInfoArr.getJSONObject(0).get("POST_FEE"));
-					priceInfoMap.put("slideInfo", null);
-//					} else 
-					// 스라이딩인 경우
-					if (postFeeInfoArr.length() == 3) {
-						Map<String, Object> slideInfoMap = new HashMap<>();
-
-						slideInfoMap.put("cntMore", postFeeInfoArr.getJSONObject(2).get("FEE_START_CNT"));
-						slideInfoMap.put("cntBeLow", postFeeInfoArr.getJSONObject(0).get("FEE_END_CNT"));
-						slideInfoMap.put("priceMore", postFeeInfoArr.getJSONObject(0).get("POST_FEE"));
-						slideInfoMap.put("priceBetween", postFeeInfoArr.getJSONObject(1).get("POST_FEE"));
-						slideInfoMap.put("priceBeLow", postFeeInfoArr.getJSONObject(2).get("POST_FEE"));
-
-						priceInfoMap.put("unitPrice", postFeeInfoArr.getJSONObject(0).get("POST_FEE"));
-						priceInfoMap.put("slideInfo", slideInfoMap);
+				Map bill = (Map) generalDao.selectGernalObject("dashboard.selectBill", params);
+				if (bill != null) {
+					AesEncryptor encrypt = new AesEncryptor(); // 암호화
+					if (StringUtils.isNotEmpty((String) bill.get("napJumin"))) {
+						bill.put("napJumin", encrypt.decrypt((String) bill.get("napJumin")));
 					}
-
-					// 채널
-					if ("PUSH".equals(productCode)) {
-						// 푸시
-						cmPriceInfoMap.put("push", priceInfoMap);
-					} else if ("KALT1".equals(productCode)) {
-						// 알림톡
-						cmPriceInfoMap.put("alimtalk", priceInfoMap);
-					} else if ("KFRT1".equals(productCode)) {
-						// 친구톡 TEXT
-						cmPriceInfoMap.put("friendtalkTxt", priceInfoMap);
-					} else if ("KFRM2".equals(productCode)) {
-						// 친구톡 이미지
-						cmPriceInfoMap.put("friendtalkImg", priceInfoMap);
-					} else if ("KFRM3".equals(productCode)) {
-						// 친구톡 와이드
-						cmPriceInfoMap.put("friendtalkWide", priceInfoMap);
-					} else if ("RTPL".equals(productCode)) {
-						// RCS 템플릿
-						cmPriceInfoMap.put("rcsTmplt", priceInfoMap);
-					} else if ("RSMS".equals(productCode)) {
-						// RCS SMS
-						cmPriceInfoMap.put("rcsSms", priceInfoMap);
-					} else if ("RLMS".equals(productCode)) {
-						// RCS LMS
-						cmPriceInfoMap.put("rcsLms", priceInfoMap);
-					} else if ("RMMS".equals(productCode)) {
-						// RCS MMS
-						cmPriceInfoMap.put("rcsMms", priceInfoMap);
-					} else if ("SMS".equals(productCode)) {
-						// SMS
-						cmPriceInfoMap.put("sms", priceInfoMap);
-					} else if ("LMS".equals(productCode)) {
-						// LMS
-						cmPriceInfoMap.put("lms", priceInfoMap);
-					} else if ("MMS".equals(productCode)) {
-						// MMS
-						cmPriceInfoMap.put("mms", priceInfoMap);
+					if (StringUtils.isNotEmpty((String) bill.get("cardValdEndYymm"))) {
+						bill.put("cardValdEndYymm", encrypt.decrypt((String) bill.get("cardValdEndYymm")));
 					}
 				}
-
-				joinMap.put("billInfoVo", ucubeBillInfoVo);
-				joinMap.put("pymInfoVO", ucubePymInfoVO);
-				joinMap.put("serviceInfo", serviceInfo);
-				joinMap.put("cmPriceInfo", cmPriceInfoMap);
-
-				kong.unirest.json.JSONObject json2222 = new kong.unirest.json.JSONObject(joinMap);
-
-				// System.out.println("-------------------------------------------!!!!!!!!!
-				// requset body json : " + json2222);
-
-				// API 통신처리
-				Map<String, Object> result = apiInterface.post("/console/v1/ucube/service/join/cm", joinMap, null);
-//				성공 시
-//				{
-//					"code": "10000",
-//					"message": "성공",
-//					"data": {
-//						"serviceId": "SB1099",
-//						"resultCode": "N0000",
-//						"resultMsg": "Success",
-//						"resultList": [{
-//							"entrNo": "500232358675", (가입번호)
-//							"billAcntNo": "532109196140" (청구계정번호)
-//						}]
-//					}
-//				 }
-
-				String serviceId = "";
-				String billId = "";
-
-
-				if ("10000".equals(result.get("code"))) {
-					Map<String, Object> resultData = (Map<String, Object>) result.get("data");
-					List<Map<String, Object>> resultList = (List<Map<String, Object>>) resultData.get("resultList");
-					
-					serviceId = CommonUtils.getString(resultList.get(0).get("entrNo"));
-					billId = CommonUtils.getString(resultList.get(0).get("billAcntNo"));
-					kong.unirest.json.JSONObject ucubeInfo = new kong.unirest.json.JSONObject(resultData);
-
-					params.put("serviceId", serviceId);
-					params.put("billId", billId);
-					params.put("ucubeInfo", ucubeInfo.toString());
-
-					// 유큐브 정보 인서트
-					generalDao.insertGernal("project.insertCmUcube", params);
-
-				} else if ("500100".equals(result.get("code"))) {
-					String errMsg = CommonUtils.getString(result.get("message")) + " : "
-							+ CommonUtils.getString(result.get("data"));
-					throw new Exception(errMsg);
-				} else {
-//					 {code=21400, message=유큐브 연동 오류, data={serviceId=SB1099, resultCode=icm.err.074
-//							, resultMsg=입력한 유치자( juoh )에 해당하는 대리점 정보가 존재하지 않습니다., resultList=null}}
-					String errMsg = CommonUtils.getString(result.get("message"));
-					Map<String, Object> data = (Map<String, Object>) result.get("data");
-					if (data == null) {
-						throw new Exception(errMsg);
-					} else {
-						String msg = CommonUtils.getString(data.get("resultMsg"));
-						throw new Exception(errMsg + " : " + msg);
-					}
-				}
+				params.putAll(bill);
+				
+				// 청구정보 연동 처리 
+				cashService.saveBill(params);
 			}
 
 			// 사용체널 JSON 값 처리

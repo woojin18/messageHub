@@ -240,14 +240,8 @@ export default {
       }
 
       var subbillYn = jQuery("input[name='subbillYn']:checked").val();
-      if( this.payTypeForDIv === 'PRE' ){
+      if( this.corpInfo.feeType === 'PRE' ){
           subbillYn = 'N';
-      }
-
-      var payTypeVal = jQuery("input[name='payType']:checked").val();
-
-      if( this.save_status != "C" ){
-        payTypeVal = this.row_data.payType;
       }
 
       var params = {
@@ -274,6 +268,7 @@ export default {
 
         if(result.success) {
           confirm.fnAlert("", "저장되었습니다.");
+          jQuery('#M_subCnt').val(parseInt(jQuery('#M_subCnt').val(),10)+1);
           // 닫기 버튼
           this.$refs.closeBtn.click();
           // 부모창 리스트 조회

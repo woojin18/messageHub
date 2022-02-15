@@ -622,7 +622,7 @@ export default {
                 confirm.fnAlert("", "납부고객구분을 선택해주세요.");
                 return false;
             }
-            if(this.bill.payDt == ""){
+            if(this.bill.payDt == "" && this.bill.payMthdCd != "GR"){
                 confirm.fnAlert("", "납부일을 선택해주세요.");
                 return false;
             }
