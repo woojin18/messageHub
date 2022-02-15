@@ -833,8 +833,8 @@ export default {
 	},
 
 	fnOpenRcsContentPop(cnt) {
-		this.$refs.rcsContentPop.fnInit();
 		this.contentPopCnt = cnt;
+		this.$refs.rcsContentPop.fnInit(cnt);
 		jQuery("#contentPop").modal("show");
 	},
 

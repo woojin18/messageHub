@@ -99,8 +99,9 @@ export default {
 
   methods: {
     // 팝업 기초 세팅 
-    fnInit() {
+    fnInit(cnt) {
       let vm = this;
+      vm.contentPopCnt = cnt;
       if(vm.dataSet) {
         vm.fnSetData();
       }
