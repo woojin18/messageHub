@@ -832,7 +832,7 @@ public class CashService {
 		generalDao.deleteGernal("cash.deleteDept", params);
 	}
 	
-	private void saveBill(Map<String, Object> params) throws Exception {
+	public void saveBill(Map<String, Object> params) throws Exception {
 		// 고객번호 가져오기
 		String custNo	= CommonUtils.getString(generalDao.selectGernalObject("project.selectCustNoForSaveProject", params));
 //		String regNo	= CommonUtils.getString(generalDao.selectGernalObject("project.selectRegNoForSaveProject", params));

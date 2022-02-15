@@ -240,14 +240,8 @@ export default {
       }
 
       var subbillYn = jQuery("input[name='subbillYn']:checked").val();
-      if( this.payTypeForDIv === 'PRE' ){
+      if( this.corpInfo.feeType === 'PRE' ){
           subbillYn = 'N';
-      }
-
-      var payTypeVal = jQuery("input[name='payType']:checked").val();
-
-      if( this.save_status != "C" ){
-        payTypeVal = this.row_data.payType;
       }
 
       var params = {
