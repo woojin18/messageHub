@@ -41,8 +41,8 @@
                         <tr>
                           <th class="text-center lc-1">
                             <div class="consolCheck ml10">
-                              <input type="checkbox" id="listMemCheck" class="checkStyle2" @change="fnListMemChkAll" v-model="listMemAllChecked">
-                              <label for="listMemCheck"></label>
+                              <input type="checkbox" id="listMemCheckSms" class="checkStyle2" @change="fnListMemChkAll" v-model="listMemAllChecked">
+                              <label for="listMemCheckSms"></label>
                             </div>
                           </th>
                           <th class="text-center lc-1">발신번호</th>
@@ -54,8 +54,8 @@
                         <tr v-for="(data, index) in callNumList" :key="index">
                           <td class="text-cneter">
                             <div class="consolCheck ml10">
-                              <input type="checkbox" :id="'listMemCheck_'+index" class="checkStyle2" :value="data.callNum" v-model="listMemChkBox">
-                              <label :for="'listMemCheck_'+index"></label>
+                              <input type="checkbox" :id="'listMemCheckSms_'+index" class="checkStyle2" :value="data.callNum" v-model="listMemChkBox">
+                              <label :for="'listMemCheckSms_'+index"></label>
                             </div>
                           </td>
                           <td class="text-center">{{ data.callNum }}</td>
