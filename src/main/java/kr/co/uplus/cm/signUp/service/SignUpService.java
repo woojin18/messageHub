@@ -291,7 +291,7 @@ public class SignUpService {
 		
 		// redis update
 		// 2020-02-09 스킵 처리 
-//		commonService.updateCmCmdForRedis("CM_CORP");
+		commonService.updateCmCmdForRedis("CM_CORP");
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
