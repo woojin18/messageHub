@@ -161,13 +161,15 @@
 
 	<select id="selectBrandList" resultType="hashMap">
 		/* rcsTemplate.selectBrandList */
-		SELECT	BRAND_ID
-		,		BRAND_NAME
-		FROM	cm.CM_RCS_BRAND
-		WHERE	(PROJECT_ID = #{projectId} OR PROJECT_ID = 'ALL')
-		AND		CORP_ID = #{corpId}
-		AND		USE_YN = 'Y'
-		AND		APPROVAL_STATUS IN ('승인', '반려(수정)')
+		SELECT	B.BRAND_ID
+		,		B.BRAND_NAME
+		FROM	cm_console.CM_PROJECT_BRAND A
+		INNER JOIN cm.CM_RCS_BRAND B 
+			ON	A.BRAND_ID  = B.BRAND_ID 
+		WHERE	A.PROJECT_ID = #{projectId}
+		AND		B.CORP_ID = #{corpId}
+		AND		B.USE_YN = 'Y'
+		AND		B.APPROVAL_STATUS IN ('승인', '반려(수정)')
 	</select>
 
 	<select id="selectRcsMsgbaseformList" resultType="hashMap">

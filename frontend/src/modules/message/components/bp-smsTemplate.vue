@@ -38,10 +38,6 @@
                   <h5 style="width:40%" class="float-right ml30 color4 word-break-all">{{templateData.msgKindName}}</h5>
                 </div>
                 <div class="of_h">
-                  <h5 style="width:41%" class="float-left ml30">공용/전용</h5>
-                  <h5 style="width:40%" class="float-right ml30 color4 word-break-all">{{templateData.projectIdNm}}</h5>
-                </div>
-                <div class="of_h">
                   <h5 style="width:41%" class="float-left ml30">템플릿명</h5>
                   <h5 style="width:40%" class="float-right ml30 color4 word-break-all scroll-y_modal">{{templateData.tmpltName}}</h5>
                 </div>

@@ -105,7 +105,6 @@
               <col style="width:15%">
               <col style="width:8%">
               <col style="width:8%">
-              <col style="width:10%">
               <col style="width:12%">
               <col style="width:12%">
             </colgroup>
@@ -118,7 +117,6 @@
               <th class="text-center lc-1">템플릿 채널</th>
               <th class="text-center lc-1">메시지구분</th>
               <th class="text-center lc-1">메시지 타입</th>
-              <th class="text-center lc-1">템플릿 구분</th>
               <th class="text-center lc-1">등록자</th>
               <th class="text-center lc-1 end">등록일자</th>
               </tr>
@@ -135,7 +133,6 @@
                 <td class="text-left">{{fnJsonArrayToChannelLit(data.checkedChannel)}}</td>
                 <td class="text-center">{{data.msgKindName}}</td>
                 <td class="text-center">{{data.msgTypeName}}</td>
-                <td class="text-center">{{data.otherProjectUseYn}}</td>
                 <td class="text-center">{{data.regNm}}</td>
                 <td class="text-center end">{{data.regDt}}</td>
               </tr>

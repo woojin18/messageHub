@@ -8,7 +8,7 @@
             <hr>
             <div class="of_h consoleCon">
               <div style="width:11%" class="float-left">
-                <h4>*발신프로필</h4>
+                <h4>*카카오 채널</h4>
               </div>
               <div style="width:42%">
                 <!-- 발신프로필그룹관리 기능 제외
@@ -53,7 +53,7 @@
             
               <div class="col-xs-4 of_h">
                 <div class="of_h">
-                  <h5 style="width:41%" class="float-left ml30">발신프로필</h5>
+                  <h5 style="width:41%" class="float-left ml30">카카오 채널</h5>
                   <h5 style="width:40%" class="float-right ml30 color4 word-break-all">{{templateData.kkoChId}}</h5>
                 </div>
                 <div class="of_h">
@@ -216,7 +216,7 @@ export default {
     async fnSearch(){
       
       if(this.$gfnCommonUtils.isEmpty(this.searchData.senderKey)){
-        confirm.fnAlert(this.componentsTitle, '발신프로필키를 선택해주세요.');
+        confirm.fnAlert(this.componentsTitle, '카카오 채널 키를 선택해주세요.');
         return;
       }
 

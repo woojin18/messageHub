@@ -64,7 +64,7 @@
             <a @click="fnOpenFrndTalkTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기" activity="READ">템플릿 불러오기</a>
             <div class="of_h consolMarginTop">
               <div style="width:20%" class="float-left">
-                <h5>발신프로필 *</h5>
+                <h5>카카오 채널 *</h5>
               </div>
               <div style="width:80%">
                 <select name="userConsole_sub0203_1" class="selectStyle2" style="width:42%" v-model="sendData.senderKey">
@@ -559,7 +559,7 @@ export default {
         return false;
       }
       if(!this.sendData.senderKey){
-        confirm.fnAlert(this.componentsTitle, '발신프로필을 선택해주세요.');
+        confirm.fnAlert(this.componentsTitle, '카카오 채널을 선택해주세요.');
         return false;
       }
       if(!this.sendData.msgKind){
