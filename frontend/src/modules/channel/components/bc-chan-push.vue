@@ -18,7 +18,6 @@
 							<col style="width:12%">
               <col style="width:12%">
 							<col style="width:12%">
-							<col style="width:12%">
 						</colgroup>
 						<thead>
 							<tr>
@@ -26,7 +25,6 @@
                 <th class="text-center lc-1">APP ID</th>
                 <th class="text-center lc-1">FCM 인증서 등록여부</th>
                 <th class="text-center lc-1">APNS 인증서 등록여부</th>
-                <th class="text-center lc-1">타 프로젝트 사용여부</th>
                 <th class="text-center lc-1">생성일</th>
                 <th class="text-center lc-1 end">관리</th>
 							</tr>
@@ -37,7 +35,6 @@
                 <td class="text-center">{{row.appId}}</td>
                 <td class="text-center">{{row.fcmYn}}</td>
                 <td class="text-center">{{row.apnsYn}}</td>
-                <td class="text-center">{{row.otherProjectYn}}</td>
                 <td class="text-center">{{row.regDt}}</td>
                 <td class="end">
                   <a @click="fnMod(row)" class="btnStyle1 borderLightGray small mr5" activity="SAVE">수정</a>
@@ -45,7 +42,7 @@
                 </td>
 							</tr>
               <tr v-if="data.length == 0">
-                <td class="text-center" colspan="7">검색된 내용이 없습니다.</td>
+                <td class="text-center" colspan="6">검색된 내용이 없습니다.</td>
               </tr>
 						</tbody>
 					</table>

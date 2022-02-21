@@ -47,7 +47,6 @@
 									<thead>
 										<th class="text-center lc-1">채널 검색용 아이디</th>
 										<th class="text-center lc-1">발신키</th>
-										<th class="text-center lc-1">프로젝트 공용 여부</th>
 										<th class="text-center lc-1">휴면 여부</th>
 										<th class="text-center lc-1">등록일시</th>
 										<th class="text-center lc-1 end">비고</th>
@@ -61,9 +60,6 @@
 												{{row.senderKey}}
 											</td>
 											<td>
-												{{row.otherProjectYn}}
-											</td>
-											<td>
 												{{row.useYnNm}}
 											</td>
 											<td>
@@ -74,7 +70,7 @@
 											</td>
 										</tr>
 										<tr v-if="data.length == 0">
-											<td class="text-center" colspan="4">검색된 내용이 없습니다.</td>
+											<td class="text-center" colspan="5">검색된 내용이 없습니다.</td>
 										</tr>
 									</tbody>
 								</table>

@@ -13,15 +13,6 @@
 							<h4 class="font-normal inline-block vertical-middle" style="width:20%">APP ID*</h4>
 							<input type="text" class="inputStyle" style="width:72%" v-model="appId" placeholder="자동채번됩니다." disabled>
 						</div>	
-						<div class="of_h mt10">
-							<h4 class="font-normal inline-block vertical-middle" style="width:20%">타 프로젝트 사용여부*</h4>
-							<div class="inline-block" style="width:72%">
-								<input type="radio" name="otherProjectYn" value="Y" class="cBox" id="yes" v-model="otherProjectYn">
-								<label for="yes" class="payment mt10 mr30">공용</label>
-								<input type="radio" name="otherProjectYn" value="N" class="cBox" id="no" v-model="otherProjectYn">
-								<label for="no" class="payment mt10">전용</label>		
-							</div>
-						</div>				
 					</div>
 				</div>
 			</div>
@@ -142,7 +133,7 @@ export default {
 			this.corpId				= '';
 			this.appId				= '';
 			this.appNm				= '';
-			this.otherProjectYn		= 'Y';
+			this.otherProjectYn		= 'N';
 			this.fcmPackageName		= '';
 			this.fcmServerKey		= '';
 			this.senderId			= '';

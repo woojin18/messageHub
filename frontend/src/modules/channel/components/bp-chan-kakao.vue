@@ -122,7 +122,7 @@ export default {
   },
   mounted() {
     this.fnGetKkoCategory();
-	this.otherProjectYn = 'Y';
+	this.otherProjectYn = 'N';
   },
   methods: {
     // 닫기
