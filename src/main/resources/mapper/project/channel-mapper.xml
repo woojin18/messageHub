@@ -143,6 +143,7 @@
                           AND JSON_EXTRACT(B.CHATBOT_INFO , '$.isMainNum[0]') = true
 						WHERE 	A.CORP_ID = #{corpId}
 						AND  	A.PROJECT_ID = #{projectId}
+						AND		A.APPROVAL_STATUS != '승인'
 				) BRAND, (SELECT @vRank:=0, @vData:='') as r
 				ORDER BY BRAND.BRAND_ID, BRAND.RANKING_DT DESC
 		) A
