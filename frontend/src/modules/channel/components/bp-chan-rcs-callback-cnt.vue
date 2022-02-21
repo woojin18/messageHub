@@ -4,7 +4,7 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div>
-						<h5 class="lc-1">등록 발신번호 상세</h5>
+						<h2 class="lc-1">등록 발신번호 상세</h2>
 						<hr>
 						<div class="mt20 of_h">
 							<div class="float-left" style="width:49%">
