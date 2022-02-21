@@ -154,7 +154,7 @@ export default {
 			var params = {
 				'userId'	:this.modifyUserId,
 				'userName'	:this.userName,
-				'hpNumber'	:this.hpNumber,
+				'hpNumber'	:this.$gfnCommonUtils.hpNumberRemoveDash(this.hpNumber),
 				'roleCd'	:this.roleCd,
 				'curUserId'	:tokenSvc.getToken().principal.userId,
 				'isOwnerSelf' :isOwnerSelf,
@@ -204,9 +204,9 @@ export default {
 			}
 			return true;
 		},
-		// 숫자만 입력
+		// 숫자만 입력, 포맷적용
 		fnCorrectNumberInput(event) {
-			event.target.value = event.target.value.replace(/[^0-9]/g, '');
+			event.target.value = this.$gfnCommonUtils.hpNumberAddDash(event.target.value);
 		},
 		fnRoleInit() {
 			var params = {

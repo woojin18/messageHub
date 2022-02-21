@@ -34,7 +34,7 @@
 										<tr v-for="(data, idx) in list1" @click="fnSelect(idx)">
 											<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" name="chk1" v-bind:id="'chk1'+idx" v-bind:value="idx" v-if="data.receptGroupId != null" class="checkStyle2"><label v-bind:for="'chk1'+idx"></label></div></td>
 											<td v-bind:class="{'bgColor_sky':idx==0}">{{data.receptGroupName}}</td>
-											<td v-bind:class="{'bgColor_sky':idx==0}" class="text-center end">{{data.recipientCnt}}</td>
+											<td v-bind:class="{'bgColor_sky':idx==0}" class="text-center end">{{data.recipientCnt | formatPrice}}</td>
 										</tr>
 										<tr v-if="list1.length == 0">
 										<td class="text-center" colspan="3">검색된 내용이 없습니다.</td>
@@ -70,7 +70,7 @@
 										<tr v-for="(data, idx) in list2">
 											<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" name="chk2" v-bind:id="'chk2'+idx" v-bind:value="idx" class="checkStyle2"><label v-bind:for="'chk2'+idx"></label></div></td>
 											<td class="text-left">{{data.recipientName}}</td>
-											<td class="end">{{data.hpNumber}}</td>
+											<td class="end">{{data.hpNumber | hpNumberAddDash}}</td>
 										</tr>
 										<tr v-if="list2.length == 0">
 										<td class="text-center" colspan="3">검색된 내용이 없습니다.</td>

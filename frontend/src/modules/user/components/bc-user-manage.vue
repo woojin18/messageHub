@@ -42,7 +42,7 @@
 
 					<!-- 페이지당 리스트 개수 -->
 					<div class="of_h inline">
-						<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+						<div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
 							<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
 						</div>
 					</div>
@@ -73,7 +73,7 @@
 								</thead>
 								<tbody>
 									<tr v-for="(data, index) in items" :key="index">
-										<td class="text-center vertical-middle">{{ totCnt-offset-data.rownum+1 }}</td>
+										<td class="text-center vertical-middle">{{ totCnt-offset-data.rownum+1 | formatComma }}</td>
 										<td class="text-center vertical-middle">{{ data.userName | unescapeXss }}</td>
 										<td class="text-center vertical-middle">
 											<div v-html="data.projectName" />
@@ -326,7 +326,7 @@ export default {
 			this.modifyLayerRoleCd = this.items[index].roleCd;
 			this.modifyLayerUserId = this.$gfnCommonUtils.unescapeXss(this.items[index].userId);
 			this.modifyLayerUserName = this.$gfnCommonUtils.unescapeXss(this.items[index].userName);
-			this.modifyLayerHpNumber = this.items[index].hpNumber;
+			this.modifyLayerHpNumber = this.$gfnCommonUtils.hpNumberAddDash(this.items[index].hpNumber);
 			this.modifyLayerLoginId = this.items[index].loginId;
 			this.modifyApprovalStatus = this.items[index].approvalStatus;
 

@@ -865,7 +865,8 @@ public class ProjectService {
 		try {
 	        for (int i = 1; i < worksheet.getLastRowNum()+1; i++) {
 	            row = worksheet.getRow(i);
-	            params.put("callNum", getExcelCellValue(row.getCell(0)));
+	            String callNum = CommonUtils.getString(getExcelCellValue(row.getCell(0)));
+	            params.put("callNum", callNum.replaceAll("-", ""));
 				generalDao.insertGernal("callnum.insertCallNum", params);
 				generalDao.insertGernal("callnum.insertProjectCallNum", params);
 	        }

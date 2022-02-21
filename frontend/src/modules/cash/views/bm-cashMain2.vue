@@ -20,7 +20,7 @@
 					</div>
 					<!-- 15개씩 보기 -->
 					<div style="display:none">
-						<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+						<div class="float-left">전체 : <span class="color1"><strong>{{totCnt | comma}}</strong></span>건
 							<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
 						</div>
 					</div>

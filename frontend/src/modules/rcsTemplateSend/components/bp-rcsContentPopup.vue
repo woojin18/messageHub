@@ -26,7 +26,7 @@
 							<div class="float-left" style="width:15%"><h5>내용</h5></div>
 							<div class="float-left" style="width:80%">
 								<textarea v-model="contents" class="textareaStyle height120" :placeholder="holder"></textarea>
-								<p class="color3"><i class="far fa-info-circle"></i> {{textCnt}}자 입력 / 변수 포함 최대 {{txtMaxLength}}글자 <i class="fas fa-question-circle toolTip"></i></p>
+								<p class="color3"><i class="far fa-info-circle"></i> {{textCnt | formatComma}}자 입력 / 변수 포함 최대 {{txtMaxLength | formatComma}}글자 <i class="fas fa-question-circle toolTip"></i></p>
 							</div>							
 						</div>
 					</div>	

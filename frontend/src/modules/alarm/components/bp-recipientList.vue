@@ -32,7 +32,7 @@
 								<tr v-for="(data, idx) in list">
 									<td class="text-center"><div class="consolCheck ml10"><input type="checkbox" name="recChk" :checked="false" v-bind:id="'recChk'+idx" v-bind:value="data.recipientId" class="checkStyle2"><label v-bind:for="'recChk'+idx"></label></div></td>
 									<td class="text-left">{{data.recipientName}}</td>
-									<td class="end">{{data.hpNumber}}</td>
+									<td class="end">{{data.hpNumber | hpNumberAddDash}}</td>
 								</tr>
 								<tr v-if="list.length == 0">
 								  <td class="text-center" colspan="3">검색된 내용이 없습니다.</td>

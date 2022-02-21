@@ -102,6 +102,9 @@ export default {
         this.pjtAllNo = newVal.pjtAllNo;
       } */
       
+    },
+    moNumber(){
+      this.moNumber = this.$gfnCommonUtils.hpNumberAddDash(this.moNumber);
     }
   },
   mounted() {
@@ -142,6 +145,7 @@ export default {
         "projectId"   : this.projectId,
         webhookUrl    : this.webhookUrl
       }
+      params.moNumber = this.$gfnCommonUtils.hpNumberRemoveDash(params.moNumber);
 
       api.saveMoCallback(params).then(response =>{
         var result = response.data;

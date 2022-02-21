@@ -66,7 +66,7 @@ export default {
       recipient: {
 		recipientId : null,
 		recipientName : null,
-		hpNumber : null,
+		hpNumber : "",
 		receptGroupId : "",
 		receptGroups : []
 	  },
@@ -76,6 +76,9 @@ export default {
   watch : {
     popReset(){
       this.init();
+    },
+    "recipient.hpNumber"(){
+      this.recipient.hpNumber = this.$gfnCommonUtils.hpNumberAddDash(this.recipient.hpNumber);
     }
   },
   mounted() {
@@ -92,7 +95,7 @@ export default {
       })
 	},
     init() {
-      this.recipient = Object.assign({receptGroupId:"", receptGroups:[]}, this.rowData)
+      this.recipient = Object.assign({receptGroupId:"", hpNumber:"", receptGroups:[]}, this.rowData)
 	  if (this.recipient.recipientId > 0) {
 		var vm = this
 		receptGroupApi.selectReceptGroupList3(vm.recipient).then(response => {
@@ -131,6 +134,7 @@ export default {
         return;
       }
       var params = Object.assign({}, this.recipient)
+      params.hpNumber = this.$gfnCommonUtils.hpNumberRemoveDash(params.hpNumber);
 	  recipientApi.saveRecipient(params).then(response =>{
        	var result = response.data;
        	if(result.success) {

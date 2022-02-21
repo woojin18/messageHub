@@ -46,7 +46,7 @@
 			<div class="of_h mt20 mb20">
 			 <!-- 15개씩 보기 -->
 				<div class="of_h inline">
-					<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+					<div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
 						<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
 					</div>
 				</div>
@@ -84,7 +84,7 @@
 						</thead>
 						<tbody>
 							<tr v-for="(contant, idx) in contants">
-							<td>{{totCnt-offset-contant.ROWNUM+1}}</td>
+							<td>{{totCnt-offset-contant.ROWNUM+1 | formatComma}}</td>
 							<td class="text-center"><a href="#" @click.prevent="templateUpdate(contant.MESSAGEBASE_ID)"><u>{{contant.MESSAGEBASE_ID}}</u></a></td>
 							<td class="text-center">{{contant.TMPLT_NAME}}</td>
 							<td class="text-center">{{contant.BRAND_NAME}}</td>

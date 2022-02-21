@@ -157,25 +157,25 @@
             <div class="of_h consolMarginTop" v-if="alarmType.alarmTypeCode == 'MSG'">
               <h4 style="width:28%" class="inline-block">수집 최소 건수 *</h4>
               <div class="float-right" style="width:72%">
-                <input type="number" class="inputStyle" style="width:20%" title="수집 최소 건수 입력란" v-model="alarm.coltMinQty"> 건 이상
+                <input type="text" class="inputStyle" style="width:20%" title="수집 최소 건수 입력란" v-model="alarm.coltMinQty"> 건 이상
               </div>
             </div>
             <div class="of_h consolMarginTop" v-if="alarmType.alarmTypeCode == 'IN'">
               <h4 style="width:28%" class="inline-block">인입 건수 *</h4>
               <div class="float-right" style="width:72%">
-                <input type="number" class="inputStyle" style="width:20%" title="인입 건수 입력란" v-model="alarm.coltMinQty"> 건 이하
+                <input type="text" class="inputStyle" style="width:20%" title="인입 건수 입력란" v-model="alarm.coltMinQty"> 건 이하
               </div>
             </div>
             <div class="of_h consolMarginTop" v-if="alarmType.alarmTypeCode == 'PRE'">
               <h4 style="width:28%" class="inline-block">알람 금액 *</h4>
               <div class="float-right" style="width:72%">
-                <input type="number" class="inputStyle" style="width:20%" title="알람 금액 입력란" v-model="alarm.coltMinQty"> 원 이하
+                <input type="text" class="inputStyle" style="width:20%" title="알람 금액 입력란" v-model="alarm.coltMinQty"> 원 이하
               </div>
             </div>
             <div class="of_h consolMarginTop" v-if="alarmType.alarmTypeCode == 'QTY'">
               <h4 style="width:28%" class="inline-block">알람 최소 건수 *</h4>
               <div class="float-right" style="width:72%">
-                <input type="number" class="inputStyle" style="width:20%" title="알람 최소 건수 입력란" v-model="alarm.coltMinQty"> 건
+                <input type="text" class="inputStyle" style="width:20%" title="알람 최소 건수 입력란" v-model="alarm.coltMinQty"> 건
                 <p>당일 메시지 발송 건수가 알람 최소 건수와 전달 일 평균 건수보다 클 경우 알람을 보냅니다.</p>
                 <p>ex) 입력한 알람 최소 건수가 1,100 건이고 전달 일 평균 건수가 1,000 건 이라 했을 때 당일 메시지가 1,100건을 넘길 경우 알람 전송</p>
               </div>
@@ -183,13 +183,13 @@
             <div class="of_h consolMarginTop" v-if="alarmType.alarmTypeCode == 'MSG'">
               <h4 style="width:28%" class="inline-block">발송 성공율 *</h4>
               <div class="float-right" style="width:72%">
-                <input type="number" class="inputStyle" style="width:20%" title="발송 성공율 입력란" v-model="alarm.sendSuccRate"> % 이하
+                <input type="text" class="inputStyle" style="width:20%" title="발송 성공율 입력란" v-model="alarm.sendSuccRate"> % 이하
               </div>
             </div>
             <div class="of_h consolMarginTop" v-if="alarmType.alarmTypeCode == 'SEND'">
               <h4 style="width:28%" class="inline-block">일 한도 금액 *</h4>
               <div class="float-right" style="width:72%">
-                <input type="number" class="inputStyle" style="width:20%" title="일 한도 금액 입력란" v-model="alarm.coltMinQty"> <span> 원 이하</span>							
+                <input type="text" class="inputStyle" style="width:20%" title="일 한도 금액 입력란" v-model="alarm.coltMinQty"> <span> 원 이하</span>							
                 <span>&nbsp;( </span>
                   <div class="consolCheck" style="width:13%"><input type="checkbox" id="day70" v-model="alarm.dayLimit.rate70" class="checkStyle2"><label for="day70" class=" color000">70%</label></div>
                   <div class="consolCheck" style="width:13%"><input type="checkbox" id="day80" v-model="alarm.dayLimit.rate80" class="checkStyle2"><label for="day80" class=" color000">80%</label></div>
@@ -201,7 +201,7 @@
             <div class="of_h consolMarginTop" v-if="alarmType.alarmTypeCode == 'SEND'">
               <h4 style="width:28%" class="inline-block">월 한도 금액 *</h4>
               <div class="float-right" style="width:72%">
-                <input type="number" class="inputStyle" style="width:20%" title="발송 성공율 입력란" v-model="alarm.mthLimitAmt"> <span> 원 이하</span>			
+                <input type="text" class="inputStyle" style="width:20%" title="발송 성공율 입력란" v-model="alarm.mthLimitAmt"> <span> 원 이하</span>			
                 <span>&nbsp;( </span>
                   <div class="consolCheck" style="width:13%"><input type="checkbox" id="mth70" v-model="alarm.mthLimit.rate70" class="checkStyle2"><label for="mth70" class=" color000">70%</label></div>
                   <div class="consolCheck" style="width:13%"><input type="checkbox" id="mth80" v-model="alarm.mthLimit.rate80" class="checkStyle2"><label for="mth80" class=" color000">80%</label></div>
@@ -271,13 +271,13 @@
                 <tbody>
                   <tr v-for="(data, idx) in alarm.list2">
                     <td class="end of_h text-left">
-                      <p class="inline-block vertical-sub">{{data.receptGroupName}} ({{data.recipientCnt}}명)</p>
+                      <p class="inline-block vertical-sub">{{data.receptGroupName}} ({{data.recipientCnt | formatComma }}명)</p>
                       <a class="btnStyle1 backLightGray float-right" title="삭제" activity="SAVE" @click="fnDel2(idx)">삭제</a>
                     </td>
                   </tr>	
                   <tr v-for="(data, idx) in alarm.list3">					
                     <td class="end of_h text-left">
-                      <p class="inline-block vertical-sub">{{data.recipientName}} ({{data.hpNumber}})</p>
+                      <p class="inline-block vertical-sub">{{data.recipientName}} ({{data.hpNumber | hpNumberAddDash}})</p>
                       <a class="btnStyle1 backLightGray float-right" title="삭제" activity="SAVE" @click="fnDel3(idx)">삭제</a>
                     </td>
                   </tr>		

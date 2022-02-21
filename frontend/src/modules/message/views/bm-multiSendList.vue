@@ -87,7 +87,7 @@
 
       <!-- 15개씩 보기 -->
       <div class="of_h inline">
-        <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+        <div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
           <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
         </div>
       </div>
@@ -125,7 +125,7 @@
               <tr v-for="(data, idx) in datas" :key="idx">
                 <td class="text-center"><input type="radio" :id="'listCheck_'+idx" class="radioStyle" :value="data.tmpltCode" v-model="chkBox">
                 <label :for="'listCheck_'+idx"></label></td>
-                <td>{{totCnt-offset-data.rowNum+1}}</td>
+                <td>{{totCnt-offset-data.rowNum+1 | formatComma}}</td>
                 <td class="text-center">
                   <u><router-link :to="{ name: 'multiSendMain', params: {'tmpltCodeP': data.tmpltCode, tmpltType: 'M', componentsTitle: '통합 발송'}}">{{data.tmpltCode}}</router-link></u>
                 </td>

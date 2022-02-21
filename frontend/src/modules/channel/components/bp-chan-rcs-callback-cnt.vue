@@ -16,7 +16,7 @@
 						</div>
             
             <!-- 페이징 카운트 -->
-            <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+            <div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
               <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
             </div>
             <!-- 페이징 카운트 -->
@@ -33,13 +33,13 @@
               <tbody>
                 <tr v-for="(data, index) in callbackItems" :key="index">
                   <td class="text-center">
-                    {{totCnt-offset-data.rownum+1}}
+                    {{totCnt-offset-data.rownum+1 | formatComma}}
                   </td>
                   <td class="text-center">
                     {{ data.mainTitle }}
                   </td>
                   <td class="text-center">
-                    {{ data.chatbotId }}
+                    {{ data.chatbotId | phoneNumAddDash}}
                   </td>
                   <td class="text-center">
                     {{ data.rcsReplyText }}

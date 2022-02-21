@@ -33,13 +33,13 @@
             <option v-for="data in condiDatas" :key="data.codeVal" :value="data.codeVal">{{data.codeName}}</option>
           </select>
           <h4 class="inline-block ml30" style="width:8%; vertical-align: middle;">발신번호</h4>
-          <input type="text" class="inputStyle ml10" id="searchSendNumber" name="searchSendNumber" v-model="searchData.searchSendNumber" style="width:25%" title="발신번호"  @keypress.enter="fnSearch(1)">
+          <input type="text" class="inputStyle ml10" id="searchSendNumber" name="searchSendNumber" v-model="searchData.searchSendNumber" style="width:25%" title="발신번호"  @keypress.enter="fnSearch(1)" placeholder="-를 제외하고 입력해주세요.">
           <a @click="fnSearch()" class="btnStyle2 float-right mt20" title="검색" activity="READ">검색</a>
           <br />
           <h4 v-if="receptionCount != 0" class="inline-block" style="width:8%; vertical-align: middle;">수신번호 : </h4>
           <div v-for="(data, idx) in receptionDatas" :key="idx" style="display:inline-block; margin-left:10px;" class="mt20">
             <input type="checkbox" :id="data.moNumber" name="searchReceptionNumber" class="checkStyle2" :value="data.moNumber" v-model="searchData.searchReceptionNumber" >
-            <label :for="data.moNumber">{{ data.moNumber }}</label>
+            <label :for="data.moNumber">{{ data.moNumber | hpNumberAddDash }}</label>
           </div>
         </div>
         <div class="consolMarginTop">
@@ -62,7 +62,7 @@
 
       <!-- 15개씩 보기 -->
       <div class="of_h inline">
-        <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+        <div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
           <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
         </div>
       </div>
@@ -98,10 +98,10 @@
             </thead>
             <tbody>
               <tr v-for="(data, idx) in datas" :key="data.row_num">
-                  <td>{{totCnt-offset-data.rowNum+1}}</td>
+                  <td>{{totCnt-offset-data.rowNum+1 | formatComma}}</td>
                   <td class="text-center">{{data.moType}}</td>
-                  <td class="text-center">{{data.moNumber}}</td>
-                  <td class="text-center">{{data.moCallback}}</td>
+                  <td class="text-center">{{data.moNumber | hpNumberAddDash}}</td>
+                  <td class="text-center">{{data.moCallback | hpNumberAddDash}}</td>
                   <td class="text-center">{{data.productCode}}</td>
                   <td class="text-center">{{data.moTitle}}</td>
                   <td class="text-center">{{data.telco}}</td>

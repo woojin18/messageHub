@@ -17,14 +17,14 @@
                 <div class="consolMarginTop" v-for="rowIdx in loopCnt" :key="rowIdx">
                   <div v-if="testRecvInfoLst.length >= rowIdx">
                     <input v-if="header == 'phone'" type="text" class="inputStyle" 
-                      :ref="header+'_'+rowIdx" v-model="testRecvInfoLst[rowIdx-1][header]" @keypress="fnOnlyNumber" @keydown="fnOnlyNumber" autocomplete="off">
+                      :ref="header+'_'+rowIdx" v-model="testRecvInfoLst[rowIdx-1][header]" @input="fnOnlyNumber($event)" autocomplete="off">
                     <input v-else-if="header == 'cuid'" type="text" class="inputStyle" 
                       :ref="header+'_'+rowIdx" v-model="testRecvInfoLst[rowIdx-1][header]">
                     <input v-else type="text" class="inputStyle" 
                       :ref="header+'_'+rowIdx" v-model="testRecvInfoLst[rowIdx-1].mergeData[header]">
                   </div>
                   <div v-else>
-                    <input v-if="header == 'phone'" type="text" class="inputStyle" :ref="header+'_'+rowIdx" @keypress="fnOnlyNumber" @keydown="fnOnlyNumber" autocomplete="off">
+                    <input v-if="header == 'phone'" type="text" class="inputStyle" :ref="header+'_'+rowIdx" @input="fnOnlyNumber($event)" autocomplete="off">
                     <input v-else type="text" class="inputStyle" :ref="header+'_'+rowIdx">
                   </div>
                 </div>
@@ -116,6 +116,7 @@ export default {
       }
     },
     testRecvInfoLst: {
+      deep:true,
       handler: function(){
         const vm = this;
         let testRecvInfo = {};
@@ -128,8 +129,56 @@ export default {
             mergeData[varNm] = '';
           });
           testRecvInfo.cuid = '';
+          testRecvInfo.phone = '';
           testRecvInfo.mergeData = mergeData;
           vm.testRecvInfoLst.push(testRecvInfo);
+        }
+
+        if(this.testRecvInfoLst.length == 3){
+            this.testRecvInfoLst.map(function(value, key) {
+              if(value.phone != ''){
+                var val = value.phone.replace(/[^0-9]/g, '');
+                let tmp = ''
+                if( val.length < 4){
+                  tmp = val;
+                } else if(val.length <= 7) {
+                  tmp += val.substr(0, 3);
+                  tmp += '-';
+                  tmp += val.substr(3);
+                } else if(val.length == 8) {
+                  tmp += val.substr(0, 4);
+                  tmp += '-';
+                  tmp += val.substr(4);
+                } else if(val.length < 10) {
+                    tmp += val.substr(0, 2);
+                    tmp += '-';
+                    tmp += val.substr(2, 3);
+                    tmp += '-';
+                    tmp += val.substr(5);
+                } else if(val.length < 11) {
+                  if(val.substr(0, 2) =='02') { //02-1234-5678
+                    tmp += val.substr(0, 2);
+                    tmp += '-';
+                    tmp += val.substr(2, 4);
+                    tmp += '-';
+                    tmp += val.substr(6);
+                  } else { //010-123-4567
+                    tmp += val.substr(0, 3);
+                    tmp += '-';
+                    tmp += val.substr(3, 3);
+                    tmp += '-';
+                    tmp += val.substr(6);
+                  }
+                } else { //010-1234-5678
+                  tmp += val.substr(0, 3);
+                  tmp += '-';
+                  tmp += val.substr(3, 4);
+                  tmp += '-';
+                  tmp += val.substr(7);
+                }
+                value.phone = tmp;
+              }
+            });
         }
       }
     }
@@ -171,7 +220,7 @@ export default {
             hasEmptyKey = true;
             break;
           } else {
-            recvInfo.phone = vm.$refs['phone_'+idx][0].value;
+            recvInfo.phone = this.$gfnCommonUtils.hpNumberRemoveDash(vm.$refs['phone_'+idx][0].value);
           }
         } else {
           delete recvInfo.phone;
@@ -205,11 +254,13 @@ export default {
       this.$parent.fnCallbackTestRecvInfoLst(recvInfoLst);
       this.fnClose();
     },
-    fnOnlyNumber($event) {
-      var keyCode = $event.which;
-      if(keyCode != "8" && keyCode != "46") {
-        if (!/\d/.test($event.key)) return $event.preventDefault();
-      }
+    fnOnlyNumber(event) {
+      // var keyCode = $event.which;
+      // if(keyCode != "8" && keyCode != "46") {
+      //   if (!/\d/.test($event.key)) return $event.preventDefault();
+      // }
+      var val = this.$gfnCommonUtils.hpNumberAddDash(event.target.value);
+      event.target.value = val;
     },
     //빈값확인
     fnIsEmpty(str){

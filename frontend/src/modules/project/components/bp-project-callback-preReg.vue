@@ -40,7 +40,7 @@
                       </thead>
                       <tbody class="of_h">
                         <tr v-for="(item, i) in chatbots" :key="i">	
-                          <td class="end"><input v-model="chatbots[i].mdn" :id="'mdn' + i"  type="text" class="inputStyle" style="width:100%"></td>
+                          <td class="end"><input v-model="chatbots[i].mdn" :id="'mdn' + i"  type="text" class="inputStyle" style="width:100%" @input="fnHpNumberAddDash($event)"></td>
                           <td class="end"><input v-model="chatbots[i].subTitle" :id="'subTitle' + i" type="text" class="inputStyle" style="width:100%"></td>
                           <td class="end"><div class="text-center"><input type="checkbox" id="MO01" class="checkStyle2" value="MO01"><label for="MO01"></label></div></td>
                           <td class="end"><a @click="fnDeleteChatbotTr" class="btnStyle1 borderGray ml10" style="padding: 0 10px"><i class="far fa-minus"></i></a></td>
@@ -123,15 +123,7 @@ export default {
       this.chatbotCnt = 0;
       this.chatbots = [];
       jQuery("#certiImgFile").val("");
-    },
-    chatbots: {
-      handler(val, oldVal) {
-        val.map(function(value, key) {
-          value.mdn = value.mdn.replace(/[^0-9]/g, '')
-        });
-      },
-      deep: true
-    },
+    }
   },
   methods: {
     // 닫기
@@ -161,6 +153,11 @@ export default {
     fnDeleteChatbotTr(){
       this.chatbotCnt--;
       this.chatbots.splice(-1);
+    },
+    //전화번호 포맷
+    fnHpNumberAddDash(event){
+      var arrId = event.target.id.substr(3);
+	  	this.chatbots[arrId].mdn = this.$gfnCommonUtils.hpNumberAddDash(event.target.value.replace(/[^0-9]/g, ''));  
     },
     // 승인요청
     async fnApproval(){
@@ -212,7 +209,10 @@ export default {
       var list = [];
 
       for( var i = 0; i < this.chatbots.length; i++ ){
-        var obj = JSON.stringify(this.chatbots[i]);
+        var chatbot = Object.assign({}, this.chatbots[i]);
+				chatbot.mdn = this.$gfnCommonUtils.hpNumberRemoveDash(chatbot.mdn);
+        var obj = JSON.stringify(chatbot);
+        // var obj = JSON.stringify(this.chatbots[i]);    //원본
         list.push(obj);
       }
       var listString = list.join(", ");

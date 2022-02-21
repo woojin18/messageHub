@@ -21,7 +21,7 @@
 						<div class="of_h">
 							<div>
 								<h4 class="inline-block" style="width:6%">발신번호</h4>
-								<input type="text" class="inputStyle" style="width:16%" v-model="srcCallNum" @keyup.enter="fnSearch(1)">
+								<input type="text" class="inputStyle" style="width:16%" v-model="srcCallNum" @keyup.enter="fnSearch(1)" placeholder="숫자만 입력">
 								<h4 class="inline-block ml60" style="width:6%">RCS 상태</h4>
 								<select class="selectStyle2" style="width:16%" v-model="srcRcsState" @change="fnSearch(1)">
 									<option value="">전체</option>
@@ -49,7 +49,7 @@
 					<div class="of_h">
 						<!-- 15개씩 보기 -->
 						<div class="of_h inline">
-							<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+							<div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
 								<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
 							</div>
 						</div>
@@ -67,7 +67,7 @@
 					<!-- table -->
 					<table class="table_skin1 bt-000 tbl-striped mt10">
 						<colgroup>
-							<col style="width:8%">
+							<col style="width:12%">
 							<col style="width:5%">
 							<col style="width:7%">
 							<col style="width:5%">
@@ -96,7 +96,7 @@
 						</thead>
 						<tbody>
 							<tr v-for="(row, index) in data" :key="index">
-								<td class="text-center">{{row.callNum}}</td>
+								<td class="text-center">{{row.callNum | hpNumberAddDash}}</td>
 								<td class="text-center">{{row.rcsSend}}</td>
 								<td v-if="row.rcsState != '반려'" class="text-center">{{row.rcsState}}</td>
 								<td v-if="row.rcsState == '반려'" class="text-center"><a @click="fnStop2(index)" class="color1" style="text-decoration:underline">{{row.rcsState}}</a></td>

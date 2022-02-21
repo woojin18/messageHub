@@ -255,7 +255,7 @@ export default {
           }
           make_tr2 += '</td>';
           make_tr2 += '<td class="text-center"><input type="text" name="relay" value="'+keyArr[k]+'" class="inputStyle input3 float-left" style="width:100%" readonly></td>';
-          make_tr2 += '<td class="text-center"><input type="text" name="ratio" value="'+ratioArr[k]+'" class="inputStyle input3 float-left" style="width:100%" readonly></td>';
+          make_tr2 += '<td class="text-center"><input type="text" name="ratio" value="'+this.$gfnCommonUtils.formatPrice(ratioArr[k])+'" class="inputStyle input3 float-left" style="width:100%" readonly></td>';
           make_tr2 += '</tr>';
           jQuery('#'+params[i]+':last').append(make_tr2);
           make_tr2 = "";

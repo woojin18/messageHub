@@ -96,7 +96,7 @@
 				</div>
 				<!-- 15개씩 보기 -->
 				<div class="of_h inline">
-					<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+					<div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
 						<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
 					</div>
 				</div>
@@ -136,7 +136,7 @@
 							<tbody>
 								<tr v-for="(data, idx) in datas" :key="data.rownum">
 									<td class="text-center"><input type="checkbox" :id="'listCheck_'+idx" class="boardCheckStyle" :value="data.tmpltCode" v-model="listChkBox"><label :for="'listCheck_'+idx"></label></td>
-									<td>{{totCnt-offset-data.rownum+1}}</td>
+									<td>{{totCnt-offset-data.rownum+1 | formatComma}}</td>
 									<td class="text-center"><router-link :to="{ name: 'multiSendTemplateManage', params: {'tmpltCodeP': data.tmpltCode }}"><u>{{data.tmpltCode}}</u></router-link></td>
 									<td class="text-center">{{$gfnCommonUtils.unescapeXss(data.tmpltTitle)}}</td>
 									<td class="text-center">{{fnJsonArrayToChannelLit(data.checkedChannel)}}</td>

@@ -9,7 +9,7 @@
 						<hr>
 						<div class="of_h">
 							<h5 style="width:18%" class="float-left color000">총 발송건수 :</h5>
-							<h5 style="width:47%" class="ml20 color4 word-break-all">{{senderCnt}}</h5>
+							<h5 style="width:47%" class="ml20 color4 word-break-all">{{senderCnt | formatComma}}</h5>
 						</div>
 						<div class="of_h">
 							<h5 style="width:18%" class="float-left color000">발송타입 :</h5>
@@ -34,7 +34,7 @@
 						<div class="row">
 							<div class="col-xs-12">
 							<div class="of_h mb20">
-								<p class="float-left">발송실패 건수 : <span class="color1"><strong>{{failCnt}}</strong></span>건</p>
+								<p class="float-left">발송실패 건수 : <span class="color1"><strong>{{failCnt | formatComma}}</strong></span>건</p>
 							</div>
 								<div style="height:337px; overflow-y:auto; overflow-x: hidden;">
 									<!-- table -->
@@ -61,8 +61,8 @@
 										</thead>
 										<tbody>
                       						<tr v-for="(data, idx) in resultList" :key="idx">
-												<td class="text-center">{{data.rowNum}}</td>
-												<td class="text-center">{{data.phone}}</td>
+												<td class="text-center">{{data.rowNum | formatComma}}</td>
+												<td class="text-center">{{data.phone | hpNumberAddDash}}</td>
 												<td class="text-center">{{data.pushCuid}}</td>
 												<td class="text-center">{{data.gwResultCode}}</td>
 												<td class="text-center end">{{data.gwResultDesc}}</td>

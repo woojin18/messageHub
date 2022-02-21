@@ -107,7 +107,7 @@
 
 						<div class="of_h consolMarginTop">
 							<h4 style="width:28%" class="inline-block">전화번호 *</h4>
-							<input id="phoneNum" type="text" class="inputStyle float-right" style="width: 72%" v-model="inputVal.tel" :disabled="this.duplCheckYn == 'N'" oninput="this.value = this.value.replaceAll(/\D/g, '')" placeholder="숫자만 입력">
+							<input id="phoneNum" type="text" class="inputStyle float-right" style="width: 72%" v-model="inputVal.tel" :disabled="this.duplCheckYn == 'N'" placeholder="숫자만 입력">
 						</div>
 						<div class="of_h">
 							<h4 style="width:28%" class="inline-block">메뉴버튼설정 *</h4>
@@ -242,7 +242,7 @@
 									<input type="checkbox" id="same" class="checkStyle2" @change="fnChangeSameTel($event.target.checked)" :disabled="this.duplCheckYn == 'N'" >
 									<label for="same">전화번호와 동일</label>
 								</div>
-								<input type="text" class="inputStyle" style="width:26%" v-model="inputVal.mainMdn" :disabled="this.duplCheckYn == 'N'" oninput="this.value = this.value.replaceAll(/\D/g, '')" placeholder="숫자만 입력">
+								<input type="text" class="inputStyle" style="width:26%" v-model="inputVal.mainMdn" :disabled="this.duplCheckYn == 'N'" placeholder="숫자만 입력">
 								<p class="font-size12 color3 inline-block ml10" style="width:17%">*휴대폰 등록 불가</p>
 							</div>
 							<div class="of_h">
@@ -277,7 +277,7 @@
 										</thead>
 										<tbody class="of_h">
 											<tr v-for="(item, i) in inputVal.chatbots" :key="i">	
-												<td class="end"><input v-model="inputVal.chatbots[i].mdn" :id="'mdn' + i"  type="text" class="inputStyle" style="width:100%" oninput="this.value = this.value.replaceAll(/\D/g, '')" placeholder="숫자만 입력"></td>
+												<td class="end"><input v-model="inputVal.chatbots[i].mdn" :id="'mdn' + i" type="text" class="inputStyle" style="width:100%" @input="fnHpNumberAddDash($event)" placeholder="숫자만 입력"></td>
 												<td class="end"><input v-model="inputVal.chatbots[i].subTitle" :id="'subTitle' + i" type="text" class="inputStyle" style="width:100%"></td>
 												<td class="end"><div class="text-center"><input type="checkbox" id="MO01" class="checkStyle2" value="1" v-model="inputVal.chatbots[i].rcsReply"><label for="1"></label></div></td>
 												<td class="end"><a @click="fnDeleteChatbotTr" class="btnStyle1 borderGray ml10" style="padding: 0 10px"><i class="far fa-minus"></i></a></td>
@@ -431,6 +431,12 @@ export default {
   watch: {
 	selAddr(){
 		this.fnSetCorpAddr();
+	},
+	'inputVal.tel'(){
+		return this.inputVal.tel = this.$gfnCommonUtils.hpNumberAddDash(this.inputVal.tel);
+	},
+	'inputVal.mainMdn'(){
+		return this.inputVal.mainMdn = this.$gfnCommonUtils.hpNumberAddDash(this.inputVal.mainMdn);
 	}
   },
   mounted() {
@@ -648,7 +654,7 @@ export default {
 		fd.append('apiSecret'		, this.inputVal.apiSecret);
 		fd.append('name'			, this.inputVal.name);
 		fd.append('description'		, this.inputVal.description);
-		fd.append('tel'				, this.inputVal.tel);
+		fd.append('tel'				, this.$gfnCommonUtils.hpNumberRemoveDash(this.inputVal.tel));
 		fd.append('categoryId'		, this.inputVal.categoryId);
 		fd.append('subCategoryId'	, this.inputVal.subCategoryId);
 		fd.append('categoryOpt'		, this.inputVal.categoryOpt);
@@ -658,7 +664,7 @@ export default {
 		fd.append('email'			, this.inputVal.email);
 		fd.append('email2'			, this.inputVal.email2);
 		fd.append('webSiteUrl'		, this.inputVal.webSiteUrl);
-		fd.append('mainMdn'			, this.inputVal.mainMdn);
+		fd.append('mainMdn'			, this.$gfnCommonUtils.hpNumberRemoveDash(this.inputVal.mainMdn));
 		fd.append('mainTitle'		, this.inputVal.mainTitle);
 
 		fd.append('call'			, this.inputVal.call);
@@ -707,7 +713,7 @@ export default {
 			if( mainRcsReplyYn ){ this.inputVal.rcsReply = 1 } else { this.inputVal.rcsReply = 0 }
 			// 메인 발신번호 세팅
 			this.inputVal.chatbots.push({
-				"mdn"		: this.inputVal.mainMdn,		// 발신번호
+				"mdn"		: this.$gfnCommonUtils.hpNumberRemoveDash(this.inputVal.mainMdn),		// 발신번호
 				"rcsReply"	: this.inputVal.rcsReply,		// 대표번호문자 수신서비스 0 = x / 1 = o
 				"subTitle"	: this.inputVal.mainTitle,		// 발신번호명
 				"service"	: "a2p",	// a2p 고정값
@@ -716,7 +722,9 @@ export default {
 			var list = [];
 
 			for( var i = 0; i < this.inputVal.chatbots.length; i++ ){
-				var obj = JSON.stringify(this.inputVal.chatbots[i]);
+				var chatbot = Object.assign({}, this.inputVal.chatbots[i]);
+				chatbot.mdn = this.$gfnCommonUtils.hpNumberRemoveDash(chatbot.mdn);
+				var obj = JSON.stringify(chatbot);
 				//if( obj.rcsReplyYn ){ obj.rcsReply = '1' } else { obj.rcsReply = '0' }
 				list.push(obj);
 			}
@@ -789,6 +797,10 @@ export default {
 	// 주소 조회 팝업
 	fnAddrPopup(){
 		jQuery("#addrPopup").modal("show");
+	},
+	fnHpNumberAddDash(event){
+		var arrId = event.target.id.substr(3);
+		this.inputVal.chatbots[arrId].mdn = this.$gfnCommonUtils.hpNumberAddDash(event.target.value.replace(/[^0-9]/g, ''));
 	}
   }
 }

@@ -22,7 +22,7 @@
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">휴대폰 번호 *</h5>
-							<input @input="fnCorrectNumberInput" type="text" id="hpNumber" class="inputStyle float-right" style="width:80%" maxlength="11" placeholder="- 없이 입력해 주세요">
+							<input @input="fnCorrectNumberInput" type="text" id="hpNumber" class="inputStyle float-right" style="width:80%" maxlength="13" placeholder="- 없이 입력해 주세요">
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">사용여부</h5>
@@ -77,7 +77,7 @@ export default {
 			} else if(this.status == 'U') {
 				jQuery('#cuName').val(this.rowData.cuName);
 				jQuery('#cuid').val(this.rowData.cuid);
-				jQuery('#hpNumber').val(this.rowData.hpNumber);
+				jQuery('#hpNumber').val(this.$gfnCommonUtils.hpNumberAddDash(this.rowData.hpNumber));
 				jQuery('input:radio[name=useYn]:input[value="' + this.rowData.useYn + '"]').prop('checked', true);
 			}
 		}
@@ -105,6 +105,8 @@ export default {
 				'loginId'	: tokenSvc.getToken().principal.loginId,
 				'cuInfoId'	: this.rowData.cuInfoId,
 			};
+
+			params.hpNumber = this.$gfnCommonUtils.hpNumberRemoveDash(params.hpNumber);
 			
 			addressApi.saveReceiver(params).then(response =>{
 				var result = response.data;
@@ -149,7 +151,7 @@ export default {
 		},
 		// 숫자만 입력
 		fnCorrectNumberInput(event) {
-			event.target.value = event.target.value.replace(/[^0-9]/g, '');
+			event.target.value = this.$gfnCommonUtils.hpNumberAddDash(event.target.value);
 		},
 	},
 }

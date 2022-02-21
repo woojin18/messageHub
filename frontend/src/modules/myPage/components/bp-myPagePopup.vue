@@ -114,7 +114,7 @@ export default {
       this.fnReset();
     },
     chgHpNumber(){
-      return this.chgHpNumber = this.chgHpNumber.replace(/[^0-9]/g, '');
+      return this.chgHpNumber = this.$gfnCommonUtils.hpNumberAddDash(this.chgHpNumber);
     }
   },
   methods: {
@@ -124,7 +124,7 @@ export default {
       // 데이터 초기화
       fnReset(){
         this.loginId  = this.memberInfo.loginId;
-        this.hpNumber = this.memberInfo.hpNumber;
+        this.hpNumber = this.$gfnCommonUtils.hpNumberAddDash(this.memberInfo.hpNumber);
         this.pwdUpdDt = this.memberInfo.pwdUpdDt;
         this.userName = this.memberInfo.userName;
         this.repProjectId = this.memberInfo.repProjectId != "" && this.memberInfo.repProjectId != null ? this.memberInfo.repProjectId : "";
@@ -173,7 +173,7 @@ export default {
         }
 
         var params = {
-          chgHpNumber : this.chgHpNumber
+          chgHpNumber : this.$gfnCommonUtils.hpNumberRemoveDash(this.chgHpNumber)
         };
 
         myPageApi.setCertifyNumber(params).then(response => {
@@ -231,7 +231,7 @@ export default {
       fnSaveCallBack(){
         var params = {
           loginPwd : this.loginPwd,
-          hpNumber : jQuery.trim(this.chgHpNumber),
+          hpNumber : jQuery.trim(this.$gfnCommonUtils.hpNumberRemoveDash(this.chgHpNumber)),
           certifyNumber : jQuery.trim(this.certifyNumber),
           repProjectId : this.repProjectId
         }

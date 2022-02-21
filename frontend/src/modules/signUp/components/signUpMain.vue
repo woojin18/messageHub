@@ -372,7 +372,7 @@ export default {
 		// 	return this.domainName = this.domainName.replace(/[^a-z0-9]/g, '');
 		// },
 		phoneCerti : function() {
-			return this.phoneCerti = this.phoneCerti.replace(/[^0-9]/g, '');
+			return this.phoneCerti = this.$gfnCommonUtils.hpNumberAddDash(this.phoneCerti);
 		},
 		regno : function() {
 			return this.regno = this.regno.replace(/[^0-9]/g, '');
@@ -692,7 +692,7 @@ export default {
 			fd.append('userNm', this.userNm);								// 이름
 			fd.append('password', this.password);							// 비밀번호
 			// fd.append('smsCertifyYn', this.smsCertifyYn);					// sms 인증 여부
-			fd.append('phoneCerti', this.phoneCerti);						// 휴대폰 번호
+			fd.append('phoneCerti', this.$gfnCommonUtils.hpNumberRemoveDash(this.phoneCerti));						// 휴대폰 번호
 			fd.append('regno', this.$gfnCommonUtils.isEmpty(this.selRegno) ? this.regno : this.selRegno);								// 사업자번호
 			fd.append('custKdCd', this.custKdCd)							// 고객유형
 			fd.append('custNo', this.custNo);								// 고객번호
@@ -848,7 +848,7 @@ export default {
 		// 본인인증 성공시 본인인증시 사용한 핸드폰 번호 입력
 		fnGetNiceCheckInfo(){
 			confirm.fnAlert("본인인증 성공", "본인인증에 성공하였습니다.");
-			this.phoneCerti = jQuery("#phoneCerti").val();
+			this.phoneCerti = this.$gfnCommonUtils.hpNumberAddDash(jQuery("#phoneCerti").val());
 			this.gender = jQuery("#gender").val();
 			this.coInfo = jQuery("#coInfo").val();
 			this.userNm = jQuery("#userNm").val();

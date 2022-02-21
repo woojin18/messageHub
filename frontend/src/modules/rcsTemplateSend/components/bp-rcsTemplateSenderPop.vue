@@ -21,7 +21,7 @@
             </div>
 						<div class="float-right" style="width:75%">
 							<textarea @input="fnSetCheckTextCnt" v-model="senderPopData.senderContents" class="textareaStyle height120" :placeholder="preText" ></textarea>
-              <strong class="letter">({{msgCurrByte}} / {{msgLimitByte}})</strong>
+              <strong class="letter">({{msgCurrByte | formatComma}} / {{msgLimitByte | formatComma}})</strong>
 						</div>
 					</div>
 

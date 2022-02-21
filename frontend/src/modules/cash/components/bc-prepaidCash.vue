@@ -32,7 +32,7 @@
     <h4>충전 이력조회</h4>
     <div class="row">
       <div class="col-xs-12 mb10">
-        <div class="float-left mb10">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+        <div class="float-left mb10">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
           <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
         </div>
         
@@ -61,7 +61,7 @@
           </thead>
           <tbody>
             <tr v-for="(data, index) in data" :key="index">
-              <td class="text-center">{{totCnt-offset-data.rownum+1}}</td>
+              <td class="text-center">{{totCnt-offset-data.rownum+1 | formatComma}}</td>
               <td class="text-center">{{data.amount | formatPrice}}</td>
               <td class="text-center">{{data.cashType}}</td>
               <td v-if="data.payMtd=='가상계좌' && data.status=='2'" class="text-center"><a href="#" @click.prevent="fnOpenVirAccPop(data.paymentId)"><u>{{data.payMtd}}</u></a></td>

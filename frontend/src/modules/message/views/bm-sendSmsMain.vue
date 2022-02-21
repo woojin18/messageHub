@@ -120,7 +120,7 @@
             </div>
             <div class="of_h">
               <div class="of_h float-right" style="width:82%">
-                <p>수신자 : {{recvCnt}}명<a @click="fnRemoveRecvInfo();" class="btnStyle1 small backWhite ml10" title="수신자 삭제">수신자 삭제</a></p>
+                <p>수신자 : {{recvCnt | formatComma}}명<a @click="fnRemoveRecvInfo();" class="btnStyle1 small backWhite ml10" title="수신자 삭제">수신자 삭제</a></p>
                 <div class="float-right consolMarginTop" style="width:100%">
                   <textarea class="textareaStyle height120" v-model="sendData.cuInfo" disabled></textarea>
                 </div>
@@ -142,7 +142,7 @@
               <div class="float-right" style="width:66%">
                 <select v-model="sendData.callback" class="selectStyle2 float-right" style="width:100%">
                   <option value="">선택</option>
-                  <option v-for="info in sendData.callbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+                  <option v-for="info in sendData.callbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
                 </select>
               </div>        
             </div>

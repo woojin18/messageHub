@@ -108,7 +108,7 @@
 							<td class="text-center vertical-middle end" v-if="proxyState == '80'">
 								<h5 class="color000">등록할 발신번호</h5>
 								<div class="of_h">
-									<input type="text" class="inputStyle" style="width:65%" title="발신번호 입력란" placeholder="-를 생략하고 입력하세요" maxlength="11" v-model="callNum">
+									<input type="text" class="inputStyle" style="width:65%" title="발신번호 입력란" placeholder="-를 생략하고 입력하세요" maxlength="13" v-model="callNum">
 									<a @click="fnSaveProxy" class="btnStyle1 backLightGray float-right" style="width:32%" title="등록">등록</a>
 								</div>
 								<div class="of_h text-center mt10"><a @click="fnCallNumAll" class="btnStyle1 backLightGray" style="width:40%" title="일괄등록">일괄등록</a></div>
@@ -167,7 +167,7 @@ export default {
   },
   watch: {
     callNum () {
-      this.callNum = this.callNum.replace(/[^0-9]/g, '')
+      this.callNum = this.$gfnCommonUtils.hpNumberAddDash(this.callNum);
     }
   },
   data() {
@@ -280,7 +280,7 @@ export default {
  
 		let params = {
 			'projectId': this.projectId,
-			'callNum': this.callNum
+			'callNum': this.$gfnCommonUtils.hpNumberRemoveDash(this.callNum)
 		};
 
 		projectApi.saveCallNumPro(params).then(response =>{

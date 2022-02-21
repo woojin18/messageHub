@@ -50,10 +50,10 @@
 							</thead>
 							<tbody>
                             	<tr v-for="(data, idx) in list1" @click="fnSelect(idx)">
-									<td v-bind:class="{'bgColor_sky':idx==0}" class="text-center">{{list1.length-data.rownum+1}}</td>
+									<td v-bind:class="{'bgColor_sky':idx==0}" class="text-center">{{list1.length-data.rownum+1 | formatComma}}</td>
 									<td v-bind:class="{'bgColor_sky':idx==0}"><a @click="fnEdit1(data)" class="linkStyle">{{data.receptGroupName}}</a></td>
 									<td v-bind:class="{'bgColor_sky':idx==0}" class="text-center">{{data.useYn}}</td>
-									<td v-bind:class="{'bgColor_sky':idx==0}" class="text-center end">{{data.recipientCnt}}</td>
+									<td v-bind:class="{'bgColor_sky':idx==0}" class="text-center end">{{data.recipientCnt | formatComma}}</td>
 								</tr>	
 								<tr v-if="list1.length == 0">
 								  <td class="text-center" colspan="4">검색된 내용이 없습니다.</td>
@@ -90,7 +90,7 @@
 									<td><div class="consolCheck ml10"><input type="checkbox" name="chk" v-bind:id="'chk'+idx" class="checkStyle2" v-bind:value="data.recipientId"><label v-bind:for="'chk'+idx" class="trSelect"></label></div></td>
 									<td class="text-left">{{data.recipientName}}</td>
 									<td class="text-left">{{data.receptGroup}}</td>
-									<td class="end">{{data.hpNumber}}</td>
+									<td class="end">{{data.hpNumber | hpNumberAddDash}}</td>
 								</tr>
 								<tr v-if="list2.length == 0">
 								  <td class="text-center" colspan="4">검색된 내용이 없습니다.</td>

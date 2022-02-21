@@ -25,7 +25,7 @@
               
                 <!-- 15개씩 보기 -->
                 <div class="of_h inline">
-                  <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건</div>
+                  <div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건</div>
                 </div>
                 <!-- //15개씩 보기 -->
                 <div class="row">
@@ -58,7 +58,7 @@
                               <label :for="'listMemCheckSms_'+index"></label>
                             </div>
                           </td>
-                          <td class="text-center">{{ data.callNum }}</td>
+                          <td class="text-center">{{ data.callNum | hpNumberAddDash }}</td>
                           <td class="text-center lc-1">{{ data.regWay }}</td>
                           <td class="text-center lc-1 end">{{ data.regDt }}</td>
                         </tr>

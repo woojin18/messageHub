@@ -48,7 +48,7 @@
       <div class="of_h inline">
         <!-- 15개씩 보기 -->
         <div class="of_h">
-          <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+          <div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
             <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
           </div>
         </div>
@@ -94,7 +94,7 @@
               </thead>
               <tbody>
                 <tr v-for="(data, idx) in datas" :key="data.row_num">
-                    <td>{{totCnt-offset-data.rowNum+1}}</td>
+                    <td>{{totCnt-offset-data.rowNum+1 | formatComma}}</td>
                     <!-- <td class="text-center">{{data.corpName}}</td> -->
                     <td class="text-center">{{data.senderTypeNm}}</td>
                     <td class="text-center">{{data.status}}</td>

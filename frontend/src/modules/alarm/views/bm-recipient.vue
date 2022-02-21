@@ -30,7 +30,7 @@
                     </div>
         <!-- 15개씩 보기 -->
         <div class="of_h inline">
-          <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+          <div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
             <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
           </div>
         </div>
@@ -54,10 +54,10 @@
                         </thead>
                         <tbody>
                             <tr v-for="(data, idx) in list" @click="fnSelect($event, data)">
-                                <td class="text-center">{{totCnt-offset-data.rownum+1}}</td>
+                                <td class="text-center">{{totCnt-offset-data.rownum+1 | formatComma}}</td>
                                 <td class="text-left"><a @click="fnEdit(idx)" class="linkStyle">{{data.recipientName}}</a></td>
                                 <td class="text-left">{{data.receptGroup}}</td>
-                                <td class="text-center end">{{data.hpNumber}}</td>
+                                <td class="text-center end">{{data.hpNumber | hpNumberAddDash}}</td>
                             </tr>	
                             <tr v-if="list.length == 0">
                               <td class="text-center" colspan="4">검색된 내용이 없습니다.</td>

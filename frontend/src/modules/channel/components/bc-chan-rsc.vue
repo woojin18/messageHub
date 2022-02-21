@@ -55,7 +55,7 @@
 					<div class="col-xs-12">
             <!-- 페이징 카운트 -->
 						<div class="of_h inline">
-              <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+              <div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
                 <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
               </div>
             </div>
@@ -86,10 +86,10 @@
                     {{ row.brandId }}
                   </td>
                   <td style="text-decoration: underline; cursor: pointer;">
-                    <a @click="fnRcsTmpltDetail(row)">{{ row.tmplCnt }}</a>
+                    <a @click="fnRcsTmpltDetail(row)">{{ row.tmplCnt | formatComma }}</a>
                   </td>
                   <td style="text-decoration: underline; cursor: pointer;">
-                    <a @click="fnRcsCallbackDetail(row)">{{ row.callbackCnt }}</a>
+                    <a @click="fnRcsCallbackDetail(row)">{{ row.callbackCnt | formatComma }}</a>
                   </td>
                   <td v-if="row.approvalStatus == '반려'" style="text-decoration: underline; cursor: pointer;">
                     <a @click="fnAlertReason(row.reason)">{{ row.approvalStatus }}</a>

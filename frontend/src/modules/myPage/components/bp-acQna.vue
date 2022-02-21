@@ -39,7 +39,7 @@
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:18%">전화번호 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
-							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ hpNumber }}</h5>
+							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ hpNumber | hpNumberAddDash }}</h5>
 							<div v-else class="float-right" style="width:80%">
 								<input type="text" class="inputStyle" v-model="hpNumber" placeholder="-없이 입력하세요">
 							</div>
@@ -134,7 +134,7 @@ export default {
       this.fnDataReset();
     },
     hpNumber(){
-      return this.hpNumber = this.hpNumber.replace(/[^0-9]/g, '');
+      this.hpNumber = this.$gfnCommonUtils.hpNumberAddDash(this.hpNumber);
     }
   },
   methods: {
@@ -221,7 +221,7 @@ export default {
           questBoardId  : this.selectRow.questBoardId,      // 문의내역id
           questType     : this.qnaType,                     // 문의내역 유형
           email         : this.email,                       // 이메일
-          hpNumber      : this.hpNumber,                    // 전화번호
+          hpNumber      : this.$gfnCommonUtils.hpNumberRemoveDash(this.hpNumber),                    // 전화번호
           title         : this.title,                       // 제목
           content       : this.content,                     // 내용
           corpName      : this.corpName,

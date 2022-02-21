@@ -38,6 +38,18 @@ export default {
         }
         return val.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
+      formatComma(val){
+        if(!val) return '0';
+        val = val.toString();
+
+        return val.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
+      formatUncomma(val){
+        if(!val) return '0';
+        val = val.toString();
+        
+        return val.replace(/[^0-9]/g, '');
+      },
       phoneNumAddDash(val){
         if (!val) return '';
         val = val.toString();
@@ -89,6 +101,64 @@ export default {
           tmp += val.substr(7);
           return tmp;
         }
+      },
+      //전화번호 입력 시 대시 입력(상단 함수가 오류날 경우 대체사용)
+      hpNumberAddDash(val){
+        if (!val) return '';
+        val = val.toString();
+        val = val.replace(/[^0-9]/g, '')
+        
+        let tmp = ''
+        if( val.length < 4){
+          return val;
+        } else if(val.length <= 7) {
+          tmp += val.substr(0, 3);
+          tmp += '-';
+          tmp += val.substr(3);
+          return tmp;
+        } else if(val.length == 8) {
+          tmp += val.substr(0, 4);
+          tmp += '-';
+          tmp += val.substr(4);
+          return tmp;
+        } else if(val.length < 10) {
+            tmp += val.substr(0, 2);
+            tmp += '-';
+            tmp += val.substr(2, 3);
+            tmp += '-';
+            tmp += val.substr(5);
+            return tmp;
+        } else if(val.length < 11) {
+          if(val.substr(0, 2) =='02') { //02-1234-5678
+            tmp += val.substr(0, 2);
+            tmp += '-';
+            tmp += val.substr(2, 4);
+            tmp += '-';
+            tmp += val.substr(6);
+            return tmp;
+          } else { //010-123-4567
+            tmp += val.substr(0, 3);
+            tmp += '-';
+            tmp += val.substr(3, 3);
+            tmp += '-';
+            tmp += val.substr(6);
+            return tmp;
+          }
+        } else { //010-1234-5678
+          tmp += val.substr(0, 3);
+          tmp += '-';
+          tmp += val.substr(3, 4);
+          tmp += '-';
+          tmp += val.substr(7);
+          return tmp;
+        }
+      },
+      hpNumberRemoveDash(val){
+        if (!val) return '';
+        val = val.toString();
+        val = val.replace(/[^0-9]/g, '');
+
+        return val;
       },
       getByte(str) {
         return str

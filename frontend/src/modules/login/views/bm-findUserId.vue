@@ -41,6 +41,11 @@ export default {
 			loginUrl : "/login"
 		};
 	},
+	watch:{
+		findHpNumber(){
+			this.findHpNumber = this.$gfnCommonUtils.hpNumberAddDash(this.findHpNumber);
+		}
+	},
 	mounted() {
 	},
 	methods: {
@@ -55,7 +60,7 @@ export default {
 
 			var params = {
 				"findUserName"		: this.findUserName,
-				"findHpNumber"    	: this.findHpNumber
+				"findHpNumber"    	: this.$gfnCommonUtils.hpNumberRemoveDash(this.findHpNumber)
 			}
 			
 			loginApi.findLoginId(params).then(response =>{

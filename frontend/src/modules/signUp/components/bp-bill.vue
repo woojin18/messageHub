@@ -269,22 +269,22 @@ export default {
 			this.fnSetCorpAddr();
 		},
 		'set.smsExpCnt'() {
-			return this.set.smsExpCnt = this.set.smsExpCnt.replace(/[^0-9]/g, '');
+			return this.set.smsExpCnt = this.$gfnCommonUtils.formatPrice(this.set.smsExpCnt.replace(/[^0-9]/g, ''));
 		},
 		'set.rcsExpCnt'() {
-			return this.set.rcsExpCnt = this.set.rcsExpCnt.replace(/[^0-9]/g, '');
+			return this.set.rcsExpCnt = this.$gfnCommonUtils.formatPrice(this.set.rcsExpCnt.replace(/[^0-9]/g, ''));
 		},
 		'set.kkoExpCnt'() {
-			return this.set.kkoExpCnt = this.set.kkoExpCnt.replace(/[^0-9]/g, '');
+			return this.set.kkoExpCnt = this.$gfnCommonUtils.formatPrice(this.set.kkoExpCnt.replace(/[^0-9]/g, ''));
 		},
 		'set.pushExpCnt'() {
-			return this.set.pushExpCnt = this.set.pushExpCnt.replace(/[^0-9]/g, '');
+			return this.set.pushExpCnt = this.$gfnCommonUtils.formatPrice(this.set.pushExpCnt.replace(/[^0-9]/g, ''));
 		},
 		'set.billRegNo'() {
 			return this.set.billRegNo = this.set.billRegNo.replace(/[^0-9]/g, '');
 		},
 		'set.billTelNo'() {
-			return this.set.billTelNo = this.set.billTelNo.replace(/[^0-9]/g, '');
+			return this.set.billTelNo = this.$gfnCommonUtils.hpNumberAddDash(this.set.billTelNo);
 		},
 		'set.napJumin'() {
 			return this.set.napJumin = this.set.napJumin.replace(/[^0-9]/g, '');
@@ -577,7 +577,15 @@ export default {
             if (this.set.payMthdCd != "GR") {
                 this.set.payDt = "";
             }
-			this.$emit("update:bill", this.set);
+            var param = Object.assign({}, this.set);
+            param.billTelNo = this.$gfnCommonUtils.hpNumberRemoveDash(param.billTelNo);
+            if (this.set.billType == 'PROJECT') {
+                param.smsExpCnt = param.smsExpCnt == null ? null : param.smsExpCnt.replace(/[^0-9]/g, '');
+                param.rcsExpCnt = param.rcsExpCnt == null ? null : param.rcsExpCnt.replace(/[^0-9]/g, '');
+                param.kkoExpCnt = param.kkoExpCnt == null ? null : param.kkoExpCnt.replace(/[^0-9]/g, '');
+                param.pushExpCnt = param.pushExpCnt == null ? null : param.pushExpCnt.replace(/[^0-9]/g, '');
+            }
+			this.$emit("update:bill", param);
             jQuery("#billRegPopup").modal("hide")
         },
         fnClose() {

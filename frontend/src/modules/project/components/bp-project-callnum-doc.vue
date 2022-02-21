@@ -51,7 +51,7 @@ export default {
   name: 'docPop',
   watch: {
     callNum () {
-      this.callNum = this.callNum.replace(/[^0-9]/g, '')
+      this.callNum = this.$gfnCommonUtils.hpNumberAddDash(this.callNum);
     }
   },
   data() {
@@ -69,11 +69,6 @@ export default {
     detailCnt : {
       type : Number,
       require : true
-    }
-  },
-  watch: {
-    detailCnt (){
-      jQuery("#certiImgFile").val("");
     }
   },
   methods: {
@@ -97,7 +92,7 @@ export default {
       var fd = new FormData();
       fd.append('corpId', tokenSvc.getToken().principal.corpId);
       fd.append('projectId', this.srcProjectId);
-      fd.append('callNum', this.callNum);
+      fd.append('callNum', this.$gfnCommonUtils.hpNumberRemoveDash(this.callNum));
       fd.append('userId', tokenSvc.getToken().principal.userId);
 
       // 첨부파일 정리

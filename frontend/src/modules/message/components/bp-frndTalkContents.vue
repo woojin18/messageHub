@@ -8,8 +8,8 @@
             <div class="float-left" style="width:20%"><h5>내용 *</h5></div>
             <div class="float-right" style="width:79%">
               <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="frndTalkContent" :maxlength="msgLimitLength" @input="fnSetCurrLength"></textarea>
-              <strong class="letter">({{msgCurrLength}} / {{msgLimitLength}})</strong><br/>
-              <span>(친구톡 최대 1000자, 이미지 사용시 400자, 와이드이미지 76자 입력가능)</span>
+              <strong class="letter">({{msgCurrLength | formatComma}} / {{msgLimitLength | formatComma}})</strong><br/>
+              <span>(친구톡 최대 1,000자, 이미지 사용시 400자, 와이드이미지 76자 입력가능)</span>
             </div>
             <!-- #10476 : 친구톡은 enduser가 별도 수신차단 가능하여, 해당 문구 필요없음 -->
             <!-- <p class="txtCaption color5" style="margin-left:21%">광고 메시지 대체 발송 시, 080수신 거부번호가 설정되어 있지 않으면 대체 발송 실패할 수 있습니다.</p> -->

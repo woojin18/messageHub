@@ -103,7 +103,7 @@
             <div class="float-left" style="width:78%">
               <!-- 템플릿 내용/부가 정보/광고성 메시지 합 최대 1,000자 -->
               <textarea class="textareaStyle height190" v-model="tmpltData.tmpltContent" :placeholder="contentAreaPlaceholder" :maxlength="msgLimitLength" @input="fnSetCurrLength"></textarea>
-              <strong class="letter">({{msgCurrLength}} / {{msgLimitLength}})</strong>
+              <strong class="letter">({{msgCurrLength | formatComma}} / {{msgLimitLength | formatComma}})</strong>
             </div>
           </div>
           <div class="of_h consolMarginTop">

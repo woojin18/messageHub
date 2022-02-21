@@ -65,13 +65,13 @@
 								</thead>
 								<tbody v-if="this.data.length > 0">
 									<tr v-for="(row, index) in data" :key="index">
-									<td class="text-center">{{ index + 1 }}</td>
+									<td class="text-center">{{ index + 1 | formatComma }}</td>
 									<td class="text-left clickClass">
 										<span class="clickClass"  @click="fnDetailQna(row)">{{ row.title | unescapeXss}}</span>
 									</td>
 									<td class="text-center">{{ row.questTypeStr }}</td>
 									<td class="text-center">{{ row.email }}</td>
-									<td class="text-center">{{ row.hpNumber }}</td>
+									<td class="text-center">{{ row.hpNumber | hpNumberAddDash }}</td>
 									<td class="text-center">{{ row.questStatusStr }}</td>
 									<td class="text-center">{{ row.replyUser }}</td>
 									<td class="text-center">{{ row.replyDt }}</td>

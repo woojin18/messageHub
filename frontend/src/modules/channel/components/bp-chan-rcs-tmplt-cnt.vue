@@ -15,7 +15,7 @@
 							</div>
 						</div>
             
-            <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+            <div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
               <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
             </div>
             <table cellspacing="0" id="list" class="table_skin1 tbl-striped" style="width:100%">
@@ -33,7 +33,7 @@
               <tbody>
                 <tr v-for="(data, index) in tmpltItems" :key="index">
                   <td class="text-center">
-                    {{totCnt-offset-data.rownum+1}}
+                    {{totCnt-offset-data.rownum+1 | formatComma}}
                   </td>
                   <td class="text-center">
                     {{ data.messagebaseId }}

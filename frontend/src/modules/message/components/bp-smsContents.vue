@@ -32,7 +32,7 @@
             </div>
             <div class="float-right" style="width:66%">
               <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="smsContent" maxlength="2000" @input="fnSetCurrByte"></textarea>
-              <strong class="letter">({{msgCurrByte}} / {{msgLimitByte}})</strong>
+              <strong class="letter">({{msgCurrByte | formatComma}} / {{msgLimitByte | formatComma}})</strong>
             </div>
           </div>
           <div class="text-center mt20">

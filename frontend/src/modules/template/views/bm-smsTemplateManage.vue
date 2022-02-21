@@ -90,7 +90,7 @@
           <div class="float-left" style="width:31%"><h4>내용 *</h4></div>
           <div class="float-left" style="width:69%">
             <textarea class="textareaStyle height190" :placeholder="contentAreaPlaceholder" v-model="tmpltData.tmpltContent" maxlength="2000" @input="fnSetCurrByte"></textarea>
-            <strong class="letter">({{msgCurrByte}} / {{msgLimitByte}})</strong>
+            <strong class="letter">({{msgCurrByte | formatComma}} / {{msgLimitByte | formatComma}})</strong>
           </div>
         </div>
         <div v-if="tmpltData.msgKind == 'A'" class="of_h consolMarginTop">

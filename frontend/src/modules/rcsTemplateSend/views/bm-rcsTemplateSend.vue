@@ -304,7 +304,7 @@
 								<div style="width:82%">
 									<select @change="fnChangeDataSet" v-model="sendData.callback" name="userConsole_sub020201_1" class="selectStyle2" style="width:30%">
 										<option v-for="options in sendData.callbackArr">
-											{{options.callback}}
+											{{options.callback | hpNumberAddDash}}
 										</option>
 									</select>
 								</div>

@@ -19,7 +19,7 @@
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:20%">휴대폰 번호*</h5>
-							<input oninput="javascript: this.value = this.value.replace(/[^0-9]/g, '');" type="text" v-model="hpNumber" class="inputStyle float-right" style="width:80%" maxlength="20" title="휴대폰 번호 입력란" placeholder="- 없이 입력해 주세요">
+							<input type="text" v-model="hpNumber" class="inputStyle float-right" style="width:80%" maxlength="20" title="휴대폰 번호 입력란" placeholder="- 없이 입력해 주세요">
 						</div>
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:20%">이용권한</h5>
@@ -72,6 +72,9 @@ export default {
 			this.userName = '';
 			this.hpNumber = '';
 			this.roleCd = 'USER';
+		},
+		hpNumber(){
+			return this.hpNumber = this.$gfnCommonUtils.hpNumberAddDash(this.hpNumber);
 		}
 	},
 	mounted() {
@@ -137,7 +140,7 @@ export default {
 			var params = {
 				'loginId'	: this.loginId,
 				'userName'	: this.userName,
-				'hpNumber'	: this.hpNumber,
+				'hpNumber'	: this.$gfnCommonUtils.hpNumberRemoveDash(this.hpNumber),
 				'roleCd'	: this.roleCd,
 				'regId'		: tokenSvc.getToken().principal.userId,
 				'corpId'	: tokenSvc.getToken().principal.corpId,

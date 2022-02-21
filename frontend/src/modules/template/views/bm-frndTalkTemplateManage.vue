@@ -73,8 +73,8 @@
           </div>
           <div class="float-left" style="width:73%">
             <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="tmpltData.tmpltContent" :maxlength="msgLimitLength" @input="fnSetCurrLength"></textarea>
-            <strong class="letter">({{msgCurrLength}} / {{msgLimitLength}})</strong>
-            <span class="ml10">(친구톡 최대 1000자, 이미지 사용시 400자, 와이드이미지 76자 입력가능합니다.)</span>
+            <strong class="letter">({{msgCurrLength | formatComma}} / {{msgLimitLength | formatComma}})</strong>
+            <span class="ml10">(친구톡 최대 1,000자, 이미지 사용시 400자, 와이드이미지 76자 입력가능합니다.)</span>
           </div>
         </div>
 

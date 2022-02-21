@@ -67,7 +67,7 @@
       
         <!-- 15개씩 보기 -->
         <div class="of_h inline">
-          <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+          <div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
             <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
           </div>
         </div>
@@ -108,7 +108,7 @@
                     <input type="checkbox" :id="'listCheck_'+idx" name="listCheck_" class="boardCheckStyle" :value="contant.tmpltId" v-model="listChkBox">
                     <label :for="'listCheck_'+idx"></label>
                   </td>
-                  <td class="text-center">{{totCnt-offset-contant.rownum+1}}</td>
+                  <td class="text-center">{{totCnt-offset-contant.rownum+1 | formatComma}}</td>
                   <td class="text-center">
                     <u><router-link :to="{ name: 'smsTemplateManage', params: { tmpltId: contant.tmpltId }}">{{contant.tmpltId}}</router-link></u>
                   </td>

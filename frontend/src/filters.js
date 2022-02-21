@@ -5,11 +5,19 @@ Vue.filter('phoneNumAddDash', (value) => {
   return Vue.prototype.$gfnCommonUtils.phoneNumAddDash(value);
 });
 
+//핸도폰 번호 '-' 적용 필터2
+Vue.filter('hpNumberAddDash', (value) => {
+  return Vue.prototype.$gfnCommonUtils.hpNumberAddDash(value);
+});
+
 //가격 콤마 처리
 Vue.filter('formatPrice', (value) => {
   return Vue.prototype.$gfnCommonUtils.formatPrice(value);
 });
-
+//숫자 콤마 처리(아무 값 입력 안되어있는 경우 리턴 0)
+Vue.filter('formatComma', (value) => {
+  return Vue.prototype.$gfnCommonUtils.formatComma(value);
+});
 //xss unescape
 Vue.filter('unescapeXss', (value) => {
   return Vue.prototype.$gfnCommonUtils.unescapeXss(value);

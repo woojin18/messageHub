@@ -40,7 +40,7 @@
 				
 					<!-- 페이지당 리스트 개수 -->
 					<div class="of_h inline">
-						<div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+						<div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
 							<SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
 						</div>
 					</div>
@@ -69,7 +69,7 @@
 								</thead>
 								<tbody>
 									<tr v-for="(data) in items" :key="data.cuInfoId">
-										<td class="text-center"> {{ totCnt-offset-data.rownum+1 }} </td>
+										<td class="text-center"> {{ totCnt-offset-data.rownum+1 | formatComma }} </td>
 										<td class="text-left"> {{ data.cuName }} </td>
 										<td class="text-left"> {{ data.cuid }} </td>
 										<td class="text-center"> {{ data.hpNumber | phoneNumber }} </td>

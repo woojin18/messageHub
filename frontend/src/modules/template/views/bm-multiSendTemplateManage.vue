@@ -372,7 +372,7 @@
 							<div class="float-left" style="width:57%">
 								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 									<option value="">선택해주세요.</option>
-									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
 								</select>
 							</div>
 						</div>
@@ -485,7 +485,7 @@
 								<div class="float-left" style="width:57%">
 									<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 										<option value="">선택해주세요.</option>
-										<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+										<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
 									</select>
 								</div>
 							</div>
@@ -605,7 +605,7 @@
 								<div class="float-left" style="width:57%">
 									<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 										<option value="">선택해주세요.</option>
-										<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+										<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
 									</select>
 								</div>
 							</div>
@@ -723,7 +723,7 @@
 							<div class="float-left" style="width:57%">
 								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 									<option value="">선택해주세요.</option>
-									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
 								</select>
 							</div>
 						</div>
@@ -780,7 +780,7 @@
 							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 							<div class="float-left" style="width:57%">
 								<textarea class="textareaStyle height190" maxlength="1300" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsLMSContentId" @keyup="fnTextLength('내용', '#rcsLMSContentId', '#rcsLMSTextLength', '1300')"></textarea>
-								<strong class="letter" id="rcsLMSTextLength">(00 / 1300)</strong>
+								<strong class="letter" id="rcsLMSTextLength">(00 / 1,300)</strong>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">
@@ -850,7 +850,7 @@
 							<div class="float-left" style="width:57%">
 								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 									<option value="">선택해주세요.</option>
-									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
 								</select>
 							</div>
 						</div>
@@ -915,7 +915,7 @@
 							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 							<div class="float-left" style="width:57%">
 								<textarea class="textareaStyle height190" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsShortContentId" @keyup="fnTextLength('내용', '#rcsShortContentId', '#rcsShortTextLength', '1300')"></textarea>
-								<strong class="letter" id="rcsShortTextLength">(00 / 1300)</strong>
+								<strong class="letter" id="rcsShortTextLength">(00 / 1,300)</strong>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
@@ -999,7 +999,7 @@
 							<div class="float-left" style="width:57%">
 								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 									<option value="">선택해주세요.</option>
-									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
 								</select>
 							</div>
 						</div>
@@ -1064,7 +1064,7 @@
 							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 							<div class="float-left" style="width:57%">
 								<textarea class="textareaStyle height190" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsTallContentId" @keyup="fnTextLength('내용', '#rcsTallContentId', '#rcsTallTextLength', '1300')"></textarea>
-								<strong class="letter" id="rcsTallTextLength">(00 / 1300)</strong>
+								<strong class="letter" id="rcsTallTextLength">(00 / 1,300)</strong>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
@@ -1148,7 +1148,7 @@
 							<div class="float-left" style="width:57%">
 								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 									<option value="">선택해주세요.</option>
-									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
 								</select>
 							</div>
 						</div>
@@ -1237,7 +1237,7 @@
 									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 									<div class="float-left" style="width:57%">
 										<textarea class="textareaStyle height190" v-model="rowData.rcsCShortImgInfoList[tabIdx].rcsContent" :placeholder="rcsPlaceHoder" :id="fnCarouselString('rcsCarouselTab', tabIdx, '')" @keyup="fnTextLength('내용', fnCarouselString('#rcsCarouselTab', tabIdx, ''), fnCarouselString('#rcsCarouselTab', tabIdx, 'TextLength'), '1300')"></textarea>
-										<strong class="letter" :id="fnCarouselString('rcsCarouselTab', tabIdx, 'TextLength')">(00 / 1300)</strong>
+										<strong class="letter" :id="fnCarouselString('rcsCarouselTab', tabIdx, 'TextLength')">(00 / 1,300)</strong>
 									</div>
 								</div>
 								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
@@ -1346,7 +1346,7 @@
 								<div class="float-left" style="width:57%">
 									<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 										<option value="">선택해주세요.</option>
-										<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+										<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
 									</select>
 								</div>
 							</div>
@@ -1436,7 +1436,7 @@
 									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 									<div class="float-left" style="width:57%">
 										<textarea class="textareaStyle height190" v-model="rowData.rcsCTallImgInfoList[tabIdx].rcsContent" :placeholder="rcsPlaceHoder" :id="fnCarouselString('rcsCarouselTab', tabIdx, '')" @keyup="fnTextLength('내용', fnCarouselString('#rcsCarouselTab', tabIdx, ''), fnCarouselString('#rcsCarouselTab', tabIdx, 'TextLength'), '1300')"></textarea>
-										<strong class="letter" :id="fnCarouselString('rcsCarouselTab', tabIdx, 'TextLength')">(00 / 1300)</strong>
+										<strong class="letter" :id="fnCarouselString('rcsCarouselTab', tabIdx, 'TextLength')">(00 / 1,300)</strong>
 									</div>
 								</div>
 								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
@@ -1546,7 +1546,7 @@
 								<div class="float-left" style="width:57%">
 									<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 										<option value="">선택해주세요.</option>
-										<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+										<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
 									</select>
 								</div>
 							</div>         
@@ -1634,7 +1634,7 @@
 						<div class="float-left" style="width:13%"><h4>내용*</h4></div>
 						<div class="float-left" style="width:59%">
 							<textarea class="textareaStyle height190" v-model="rowData.friendTalkContent" :placeholder="kakaoPlaceHoder" @input="fnSetFrndTalkCurrByte" :maxlength="msgFrndTalkLimitByte"></textarea>
-							<strong class="letter">({{msgFrndTalkCurrByte}} / {{msgFrndTalkLimitByte}})</strong>
+							<strong class="letter">({{msgFrndTalkCurrByte | formatComma}} / {{msgFrndTalkLimitByte | formatComma}})</strong>
 						</div>
 					</div>					
 					<div class="of_h consolMarginTop">
@@ -1856,7 +1856,7 @@
 					<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>발신번호 *</h4></div>
 					<div class="float-left" style="width:57%">
 						<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
-							<option v-for="info in smsCallbackList" :key="info.callback" :value="info.callback">{{info.callback}}</option>
+							<option v-for="info in smsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
 						</select>
 					</div>
 				</div>
@@ -1882,7 +1882,7 @@
 						</div>
 						<div class="float-left" style="width:57%">
 							<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" @input="fnSetSmsCurrByte"></textarea>
-							<strong class="letter">({{msgSmsCurrByte}} / {{msgSmsLimitByte}})</strong>
+							<strong class="letter">({{msgSmsCurrByte | formatComma}} / {{msgSmsLimitByte | formatComma}})</strong>
 						</div>
 					</div>
 				</div>
@@ -1891,7 +1891,7 @@
 						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>제목*</h4></div>
 						<div class="float-left" style="width:57%">
 							<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.smsTitle" @input="fnSetTitleSmsCurrByte">
-							<strong class="letter">({{titleSmsCurrByte}} / {{titleSmsLimitByte}})</strong>
+							<strong class="letter">({{titleSmsCurrByte | formatComma}} / {{titleSmsLimitByte | formatComma}})</strong>
 						</div>
 					</div>
 					<div class="of_h" v-if="rowData.msgKind == 'A'">
@@ -1915,7 +1915,7 @@
 						</div>
 						<div class="float-left" style="width:57%">
 							<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" @input="fnSetSmsCurrByte"></textarea>
-							<strong class="letter">({{msgSmsCurrByte}} / {{msgSmsLimitByte}})</strong>
+							<strong class="letter">({{msgSmsCurrByte | formatComma}} / {{msgSmsLimitByte | formatComma}})</strong>
 						</div>
 					</div>
 					<div class="of_h consolMarginTop"  v-if="rowData.msgType == 'IMAGE'">
@@ -4588,7 +4588,7 @@ export default {
 				jQuery(sid).val(temp);
 				val = jQuery(sid).val();
 			}
-			var text = "("+val.length+" / "+len+")";
+			var text = "("+this.$gfnCommonUtils.formatComma(val.length)+" / "+this.$gfnCommonUtils.formatComma(len)+")";
 			if(tid) jQuery(tid).html(text);
 		},
 		fnByteLength(title, sid, tid, len){
@@ -4612,7 +4612,7 @@ export default {
 					nBytes -= term;
 				}
 			}
-			var text = ""+nBytes+" / "+len+"Byte";
+			var text = ""+this.$gfnCommonUtils.formatComma(nBytes)+" / "+this.$gfnCommonUtils.formatComma(len)+"Byte";
 			if(tid) jQuery(tid).html(text);
 		},
 		fnSetPushCurrByte() {

@@ -118,7 +118,10 @@ export default {
 		this.categoryCode = '';
 
 		this.fnGetApiKeyListForKko();
-    }
+    },
+	phoneNumber(){
+		this.phoneNumber = this.$gfnCommonUtils.hpNumberAddDash(this.phoneNumber);
+	}
   },
   mounted() {
     this.fnGetKkoCategory();
@@ -164,6 +167,8 @@ export default {
 			"kkoChId"		: this.kkoChId,
 			"phoneNumber"	: this.phoneNumber,
 		};
+		params.phoneNumber = this.$gfnCommonUtils.hpNumberRemoveDash(params.phoneNumber);
+
 		api.getSenderKeyToken(params).then(response =>{
 			var result = response.data;
 			if( result.success ){
@@ -189,6 +194,8 @@ export default {
 			"projectId"		: this.projectId,
 			"otherProjectYn": this.otherProjectYn
 		};
+
+		params.phoneNumber = this.$gfnCommonUtils.hpNumberRemoveDash(params.phoneNumber);
 
 		api.saveKkoChForApi(params).then(response =>{
 			var result = response.data;
