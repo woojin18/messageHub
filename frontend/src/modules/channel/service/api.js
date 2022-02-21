@@ -94,6 +94,18 @@ const getRcsBrandConList = (params) => {
     return httpClient.post('/projectApi/channel/getRcsBrandConList', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
 };
 
+const saveBrandCon = (params) => {
+    return httpClient.post('/projectApi/channel/saveBrandCon', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
+const deleteBrandDiscon = (params) => {
+    return httpClient.post('/projectApi/channel/deleteBrandDiscon', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
+const selectConProjectList = (params) => {
+    return httpClient.post('/projectApi/channel/selectConProjectList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
 export default {
     selectRcsBrandList,
     selectRcsRegTmpltList,
@@ -118,5 +130,8 @@ export default {
     findApiKeyFromProject,
     saveKkoChRecover,
     checkWebhookUrl,
-    getRcsBrandConList
+    getRcsBrandConList,
+    saveBrandCon,
+    deleteBrandDiscon,
+    selectConProjectList
 };

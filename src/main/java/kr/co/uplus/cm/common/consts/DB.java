@@ -121,7 +121,19 @@ public class DB {
 	public final static String QRY_SELECT_RCS_BRAND_LIST_CALLBACK_LIST_CNT = "channel.selectRcsBrandListCallbackListCount";
 	public final static String QRY_SELECT_RCS_BRAND_CON_LIST = "channel.selectRcsBrandConList";
 	public final static String QRY_SELECT_RCS_BRAND_CON_LIST_CNT = "channel.selectRcsBrandConListCnt";
-
+	public final static String QRY_INSERT_RCS_PROJECT_BRAND = "channel.insertRcsProjectBrand";
+	public final static String QRY_SELECT_RCS_CAHTBOTID = "channel.selectRcsChatbotId";
+	public final static String QRY_INSERT_PROJECTCHATBOT = "channel.insertProjectChatbot";	
+	public final static String QRY_SELECT_CALLNUMCHECK = "channel.selectCallNumCheck";
+	public final static String QRY_INSERT_PROJECTCALLNUM = "channel.insertProjectCallNum";	
+	public final static String QRY_INSERT_CALLNUM = "channel.insertCallNum";	
+	public final static String QRY_UPDATE_CALLNUMFORCMD = "channel.updateCallnumForCmd";		
+	public final static String QRY_DELETE_PROJECTBRAND = "channel.deleteProjectbrand";
+	public final static String QRY_DELETE_PROJECTCHATBOT= "channel.deleteProjectchatbot";
+	public final static String QRY_DELETE_PROJECTCALLNUM= "channel.deleteProjectCallum";
+	public final static String QRY_SELECT_CONPROJECTLIST = "channel.selectConProjectList";
+	public final static String QRY_SELECT_CONPROJECTLISTCNT = "channel.selectConProjectListCnt";
+	
 	// RCS 등록 템플릿 조회
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST_CNT = "channel.selectRcsRegTmpltListCount";

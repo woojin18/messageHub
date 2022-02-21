@@ -19,7 +19,7 @@
                 <!-- 리스트 Start -->
                 <div class="of_h inline">
                   <div class="float-right">
-                    <a  class="btnStyle2 borderGray">브랜드 연결</a>
+                    <a  @click="fmBramdConConfirm" class="btnStyle2 borderGray">브랜드 연결</a>
                   </div>
                 </div>
               
@@ -91,8 +91,9 @@
 
 <script>
 import api from '../service/api'
-import PageLayer from '@/components/PageLayer.vue';
-import confirm from '@/modules/commonUtil/service/confirm';
+import PageLayer from '@/components/PageLayer.vue'
+import confirm from '@/modules/commonUtil/service/confirm'
+import {eventBus} from "@/modules/commonUtil/service/eventBus"
 
 export default {
 	name: 'rcsPop',
@@ -124,20 +125,20 @@ export default {
 		}
 	},
 	mounted() {
-		this.fnPageNoResetSearch();
+		this.fnPageNoResetSearch()
 	},
 	watch: {
 		popCnt() {
-			this.fnSearch(1);
+			this.fnSearch(1)
 		}
 	},
 	methods: {
 		fnSearch(pageNum) {
-			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
-			this.fnSearchCallNumList();
+			this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1
+			this.fnSearchCallNumList()
 		},
 		fnPageNoResetSearch(){
-			this.$refs.updatePaging.fnAllDecrease();
+			this.$refs.updatePaging.fnAllDecrease()
 		},
 		//사용자 조회
 		async fnSearchCallNumList() {
@@ -145,77 +146,81 @@ export default {
 				pageNo: this.pageNo,
 				listSize: this.listSize,
 				projectId: this.projectId 
-			};
+			}
 
 			await api.getRcsBrandConList(params).then(response =>{
-				const result = response.data;
-				this.fnResetChkbox();
+				const result = response.data
+				this.fnResetChkbox()
 				if(result.success) {
-					this.callNumList = Object.assign([], result.data);
-					this.totCnt = result.pageInfo.totCnt;
-					this.offset = result.pageInfo.offset;
+					this.callNumList = Object.assign([], result.data)
+					this.totCnt = result.pageInfo.totCnt
+					this.offset = result.pageInfo.offset
 				} else {
-					confirm.fnAlert('', result.message);
+					confirm.fnAlert('', result.message)
 				}
-			});
+			})
 		},
 		fnPageClick(pageNo) {
-			this.pageNo = pageNo;
-			this.fnSearchCallNumList();
-			this.fnResetChkbox();
+			this.pageNo = pageNo
+			this.fnSearchCallNumList()
+			this.fnResetChkbox()
 		},
 		// 닫기
 		fnClose(){
-			this.fnInit();
-			jQuery('#rcsPop').modal('hide');
+			this.fnInit()
+			jQuery('#rcsPop').modal('hide')
 		},
 		// 입력값 초기화
 		fnInit() {
-			this.callNumList = [];
-			this.pageNo = 1;
-			this.offset = 0;
-			this.totCnt = 0;
+			this.callNumList = []
+			this.pageNo = 1
+			this.offset = 0
+			this.totCnt = 0
 		},
 		//리스트 전체 체크박스
 		fnListMemChkAll() { 
-			var vm = this;
+			var vm = this
 			if(this.listMemAllChecked) {
 				this.callNumList.forEach(function(data) {
-					vm.listMemChkBox.push(data.brandId);
-				});
+					vm.listMemChkBox.push(data.brandId)
+				})
 			} else {
-				this.listMemChkBox = [];
+				this.listMemChkBox = []
 			}
 		},
-		// 발신번호 추가
-		fnRegister() {
+		fmBramdConConfirm(){
 			//유효성 검사
 			if(this.listMemChkBox == null || this.listMemChkBox.length == 0) {
-				confirm.fnAlert('', '발신번호를 선택해주세요.');
-				return false;
+				confirm.fnAlert('', '연결할 브랜드를 선택해 주세요.')
+				return false
 			}
-
+			eventBus.$on('callbackEventBus', this.fnBrandCon)
+			confirm.fnConfirm("", "선택하신 브랜드를 연결합니다.\n연결 후 다시 해제가 가능합니다.\n연결하시겠습니까?", "확인")
+			
+			
+		},
+		// 브랜드 연결
+		fnBrandCon() {
 			let params = {
 				'projectId': this.projectId,
-				'callNumList': this.listMemChkBox,
-			};
-
-			api.saveProjectCallNum(params).then(response =>{
-				var result = response.data;
+				'brandIdList': this.listMemChkBox,
+			}
+			api.saveBrandCon(params).then(response =>{
+				var result = response.data
 				if(result.success) {
-					this.$parent.fnSearch(1);
-					confirm.fnAlert('', '등록을 성공했습니다.');
+					this.$parent.fnSearch(1)
+					confirm.fnAlert('', '브랜드 연결을 성공했습니다.')
 				} else {
-					confirm.fnAlert('', result.message);
+					confirm.fnAlert('', result.message)
 				}
-			});
-			this.fnInit();
-			this.fnResetChkbox();
-			this.fnClose();
+			})
+			this.fnInit()
+			this.fnResetChkbox()
+			this.fnClose()
 		},
 		fnResetChkbox() {
-			this.listMemAllChecked = false;
-			this.listMemChkBox = [];
+			this.listMemAllChecked = false
+			this.listMemChkBox = []
 		},
 	}
 }

@@ -555,5 +555,44 @@ public class ChannelController {
 		return rtn;
 	}           
 	
+	// RCS 브랜드 연결 
+	@PostMapping("/saveBrandCon")
+	public RestResult<?> saveBrandCon(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
+		RestResult<?> rtn = new RestResult<Object>(true);
+			
+		try {
+			rtn = channelService.saveProjectCallNum(params);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return rtn;
+	}  
 	      
+	// RCS 브랜드 연결 해제 
+	@PostMapping("/deleteBrandDiscon")
+	public RestResult<?> deleteBrandDiscon(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
+		RestResult<?> rtn = new RestResult<Object>(true);
+		try {
+			rtn = channelService.deleteBrandDiscon(params);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return rtn;
+	}  
+	
+	
+	//연결 프로젝트 리스트
+	@PostMapping("/selectConProjectList")
+	public RestResult<?> selectConProjectList(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		return channelService.selectConProjectList(params);
+	}
+	
 }

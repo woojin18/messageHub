@@ -14,6 +14,11 @@
 		SELECT	*
         ,       IFNULL(CALLBACK.CNT, 0) AS CALLBACK_CNT
         ,		REASON.REASON
+        ,		(
+        		SELECT  count(*) 
+        		FROM cm_console.CM_PROJECT_BRAND
+				WHERE PROJECT_ID =#{projectId} 
+				AND BRAND_ID =AA.BRAND_ID) AS CON_CNT
 		FROM	(
 			<include refid="rcsBrandList"/>
 		) AA
@@ -102,7 +107,7 @@
 						LEFT OUTER JOIN cm_console.CM_PROJECT_BRAND B 
 							ON	B.BRAND_ID = A.BRAND_ID 
 						WHERE 	A.CORP_ID = #{corpId}
-						and		A.PROJECT_ID IN (#{projectId}, 'ALL')
+						AND  B.PROJECT_ID = #{projectId}
 						
 						UNION ALL
 						
@@ -137,7 +142,7 @@
                           AND B.BRAND_ID = A.BRAND_ID
                           AND JSON_EXTRACT(B.CHATBOT_INFO , '$.isMainNum[0]') = true
 						WHERE 	A.CORP_ID = #{corpId}
-						and		A.PROJECT_ID IN (#{projectId}, 'ALL')
+						AND  	A.PROJECT_ID = #{projectId}
 				) BRAND, (SELECT @vRank:=0, @vData:='') as r
 				ORDER BY BRAND.BRAND_ID, BRAND.RANKING_DT DESC
 		) A
@@ -1028,12 +1033,14 @@
 		FROM	cm.CM_RCS_BRAND A
 		WHERE	A.CORP_ID = #{corpId} 
 		AND 	A.USE_YN = 'Y'
+		AND 	A.APPROVAL_STATUS ='승인'
 		AND		A.BRAND_ID NOT IN (
 			SELECT 	BRAND_ID 
 			FROM 	cm_console.CM_PROJECT_BRAND 
 			WHERE 	PROJECT_ID= #{projectId}
 			)
 		ORDER BY REG_DT DESC
+		LIMIT #{offset}, #{listSize}
 	</select>
 	
 	<select id="selectRcsBrandConListCnt" resultType="int">
@@ -1042,6 +1049,7 @@
 		FROM	cm.CM_RCS_BRAND A
 		WHERE	A.CORP_ID = #{corpId} 
 		AND 	A.USE_YN = 'Y'
+		AND 	A.APPROVAL_STATUS ='승인'
 		AND		A.BRAND_ID NOT IN (
 			SELECT 	BRAND_ID 
 			FROM 	cm_console.CM_PROJECT_BRAND 
@@ -1051,4 +1059,155 @@
 	</select>
 	
 	
+		<insert id="insertRcsProjectBrand">
+		/* channel.insertRcsProjectBrand */
+		INSERT INTO cm_console.CM_PROJECT_BRAND (
+			PROJECT_ID
+		, 	BRAND_ID
+		, 	REG_ID
+		, 	REG_DT
+		) VALUES
+		(
+			#{projectId}
+		,	#{brandId}
+		,	#{userId}
+		,	NOW()
+		)
+		</insert>
+	
+		<select id="selectRcsChatbotId" resultType="string">
+		/* channel.selectRcsChatbotId*/
+		SELECT CHATBOT_ID 
+		FROM cm.CM_RCS_CHATBOT 
+		WHERE BRAND_ID = #{brandId}
+		AND CORP_ID = #{corpId}
+		AND APPROVAL_STATUS ='승인'
+		</select>
+		
+		<insert id="insertProjectChatbot">
+		/* channel.insertProjectChatbot */
+		INSERT INTO cm_console.CM_PROJECT_CHATBOT(
+			PROJECT_ID
+		,	CHATBOT_ID
+		,	REG_ID
+		,	REG_DT
+		)value(
+			#{projectId}
+		,	#{chatbotId}
+		,	#{userId}
+		,	NOW()
+		)
+		</insert>
+	
+		<select id="selectCallNumCheck" resultType="int">
+		/* channel.selectCallNumCheck */
+		SELECT count(*)
+		FROM cm_console.CM_CALL_NUM ccn 
+		INNER JOIN cm.CM_RCS_CHATBOT crc
+		ON ccn.CALL_NUM = crc.CHATBOT_ID 
+		where crc.CHATBOT_ID = #{chatbotId}
+		</select>
+		
+		<insert id="insertCallNum">
+		INSERT INTO cm_console.CM_CALL_NUM(	
+				CORP_ID
+			, 	CALL_NUM
+			,	STATE
+			,	REG_WAY
+			,	CHATBOT_ID 
+			,	REQ_ID
+			,	REG_ID
+			,	REQ_DT
+			,	REG_DT
+			)VALUES
+			(
+				#{corpId}
+			,	#{chatbotId}
+			,	'10'
+			,	'RCS'
+			,	#{chatbotId}
+			,	#{userId}
+			,	#{userId}
+			,	NOW()
+			,	NOW()
+			)
+		</insert>
+		
+		<insert id="insertProjectCallNum">
+		/* channel.insertProjectCallNum */
+		INSERT INTO cm_console.CM_PROJECT_CALL_NUM(
+			PROJECT_ID
+		, 	CORP_ID 
+		,	CALL_NUM 
+		,	REG_ID 
+		,	REG_DT 
+		)
+		VALUES(
+			#{projectId}
+		,	#{corpId}
+		,	#{chatbotId}
+		,	#{userId}
+		,	NOW()
+		)
+		</insert>
+		
+		<update id="updateCallnumForCmd">
+		/* channel.updateCallnumForCmd */
+		UPDATE	cm.CM_CMD 
+		SET 	UPD_DT = NOW()
+		WHERE 	CMD_TGT = 'CM_CALL_NUM'
+		
+		</update>
+		
+		<delete id="deleteProjectbrand">
+		/* channel.deleteProjectbrand */
+		DELETE FROM cm_console.CM_PROJECT_BRAND 
+		WHERE PROJECT_ID = #{projectId} 
+		AND BRAND_ID = #{brandId}
+		</delete>
+		
+		<delete id="deleteProjectchatbot">
+		/* channel.deleteProjectchatbot */
+		DELETE from cm_console.CM_PROJECT_CHATBOT
+		WHERE CHATBOT_ID = #{chatbotId} 
+		AND PROJECT_ID = #{projectId}
+		</delete>
+		
+		<delete id="deleteProjectCallum">
+		/* channel.deleteProjectCallum */
+		DELETE FROM cm_console.CM_PROJECT_CALL_NUM 
+		WHERE PROJECT_ID =#{projectId} 
+		AND CORP_ID = #{corpId} 
+		AND CALL_NUM =#{chatbotId}
+		</delete>
+		
+		<select id="selectConProjectList" resultType="camel">
+		/* channel.selectConProjectList */
+		SELECT	cp.PROJECT_NAME
+		,		cp.PROJECT_ID
+		FROM    cm_console.CM_PROJECT_BRAND cpb
+		INNER JOIN cm_console.CM_PROJECT cp
+		ON cpb.PROJECT_ID = cp.PROJECT_ID 
+		WHERE   cpb.BRAND_ID = #{brandId}
+		AND	 EXISTS(SELECT 1 
+		FROM cm_console.CM_PROJECT 
+		WHERE PROJECT_ID=cpb.PROJECT_ID 
+		AND DEL_YN = 'N')
+		LIMIT #{offset}, #{listSize}
+		</select>
+		
+		<select id="selectConProjectListCnt" resultType="int">
+		/* channel.selectConProjectListCnt */
+		SELECT	count(*)
+		FROM    cm_console.CM_PROJECT_BRAND cpb
+		INNER JOIN cm_console.CM_PROJECT cp
+		ON cpb.PROJECT_ID = cp.PROJECT_ID 
+		WHERE   cpb.BRAND_ID = #{brandId}
+		AND	 EXISTS(SELECT 1 
+		FROM cm_console.CM_PROJECT 
+		WHERE PROJECT_ID=cpb.PROJECT_ID 
+		AND DEL_YN = 'N')
+		</select>
+		
+		
 </mapper>

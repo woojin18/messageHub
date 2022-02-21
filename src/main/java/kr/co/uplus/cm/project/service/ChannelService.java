@@ -1335,7 +1335,7 @@ public class ChannelService {
 	}
 	
 	
-	//후불정산전송 조회.
+	//브랜드 연결 리스트 조회
 	public RestResult<?> getRcsBrandConList(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
 		
@@ -1354,8 +1354,93 @@ public class ChannelService {
 		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_BRAND_CON_LIST, params);
 		
 		rtn.setData(rtnList);
-		System.out.println(rtn.getData());
-		System.out.println(rtn.getPageInfo());
+
+		return rtn;
+	}
+	
+	
+	//브랜드 연결
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<?> saveProjectCallNum(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		ArrayList<String> brandIdList = (ArrayList<String>)params.get("brandIdList");
+
+		try {
+			for (String brandId : brandIdList) {
+				
+				params.put("brandId", brandId);
+				generalDao.insertGernal(DB.QRY_INSERT_RCS_PROJECT_BRAND, params);
+				
+				List<Object> chatbotIdList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_CAHTBOTID, params);
+				
+				for(Object chatbotId : chatbotIdList) {
+					params.put("chatbotId", chatbotId);
+					generalDao.insertGernal(DB.QRY_INSERT_PROJECTCHATBOT, params);
+					
+ 					int callNumCheck = generalDao.selectGernalCount(DB.QRY_SELECT_CALLNUMCHECK, params); //문자 발신번호에 챗봇 ID 있는지 체크
+					
+ 					if(callNumCheck == 0) {
+						generalDao.insertGernal(DB.QRY_INSERT_CALLNUM, params);
+						//generalDao.insertGernal(DB.QRY_INSERT_PROJECTCALLNUM, params);
+						generalDao.updateGernal(DB.QRY_UPDATE_CALLNUMFORCMD, params);
+					}
+					
+				}
+			}
+		}catch(Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("브랜드 연결에 실패하였습니다.");
+		}
+
+		return rtn;
+	}
+	
+	//브랜드 연결 해제
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<?> deleteBrandDiscon(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+				try {
+					generalDao.deleteGernal(DB.QRY_DELETE_PROJECTBRAND, params);
+					
+
+					List<Object> chatbotIdList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_CAHTBOTID, params);
+					
+					for(Object chatbotId : chatbotIdList) {
+						params.put("chatbotId", chatbotId);
+						generalDao.deleteGernal(DB.QRY_DELETE_PROJECTCHATBOT, params);			
+						generalDao.deleteGernal(DB.QRY_DELETE_PROJECTCALLNUM, params);	
+					}
+					
+				}
+				catch (Exception e) {
+					rtn.setSuccess(false);
+					rtn.setMessage("브랜드 연결 해제를 실패하였습니다.");
+				}
+		return rtn;
+	}
+	
+	
+	//연결 프로젝트 리스트
+	public RestResult<?> selectConProjectList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		if(params.containsKey("pageNo")
+				&& CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize")
+				&& CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if(rtn.getPageInfo() != null) {
+				//카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_CONPROJECTLISTCNT, params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
+		}
+
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_CONPROJECTLIST, params);
+		rtn.setData(rtnList);
+
 		return rtn;
 	}
 	

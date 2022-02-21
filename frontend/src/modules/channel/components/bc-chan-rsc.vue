@@ -21,8 +21,8 @@
 							<i class="far fa-info-circle"></i> RBC 홈페이지(https://www.rcsbizcenter.com)에서 무료로 만들 수 있습니다.<br>
 							<i class="far fa-info-circle"></i> RBC에 로그인 후 우측 상단 [내 정보관리]에서 API Key를 확인하십시오<br>
 							&nbsp;&nbsp;&nbsp;&nbsp;(브랜드 등록 및 수정 시 API Key[RBC 로그인 ID]와 API Secret Key[RBC API Key]를 사용합니다.)<br>
-             <!-- <i class="far fa-info-circle"></i> 브랜드 연결은 타 프로젝트에서 등록한 브랜드를 연결합니다.<br>
-              <i class="far fa-info-circle"></i> 브랜드 연결을 하시면 브랜드에 연결된 발신 번호도 자동 연결됩니다.<br><br>-->
+              <i class="far fa-info-circle"></i> 브랜드 연결은 타 프로젝트에서 등록한 브랜드를 연결합니다.<br>
+              <i class="far fa-info-circle"></i> 브랜드 연결을 하시면 브랜드에 연결된 발신 번호도 자동 연결됩니다.<br><br>
 						</p>
 
 						<div class="menuBox mt10">						
@@ -60,7 +60,7 @@
               </div>
             </div>
             <div class="float-right mb10">
-               <!--<a @click="fnRcsBrandCon" class="btnStyle3 gray font13 minWidth120 mr10" activity="SAVE">브랜드 연결</a>-->
+                <a @click="fnRcsBrandCon" class="btnStyle3 gray font13 minWidth120 mr10" activity="SAVE">브랜드 연결</a>
 								<a @click="fnRcsBrandReg" class="btnStyle3 gray font13 minWidth120" activity="SAVE">브랜드 등록</a>
 							</div>
             <!-- 페이징 카운트 -->
@@ -74,7 +74,8 @@
                 <th class="text-center lc-1">브랜드<br>승인상태</th>
                 <th class="text-center lc-1">연결 프로젝트</th>
                 <th class="text-center lc-1">승인요청일</th>
-                <th class="text-center lc-1 end">승인완료일</th>
+                <th class="text-center lc-1">승인완료일</th>
+                <th class="text-center lc-1 end">관리</th>
               </thead>
               <tbody>
                 <tr v-for="(row, index) in data" :key="index">
@@ -96,17 +97,20 @@
                   <td v-else>
                     {{ row.approvalStatus }}
                   </td>
-                  <td v-if="row.projectCnt > 1">
-                       {{ row.projectName + ' 외 ' + (row.projectCnt-1) + '건'}} 
+                  <td v-if="row.projectCnt > 1" style="text-decoration: underline; cursor: pointer;">
+                     <a @click="fnConProjectDetail(row.brandId)">  {{ row.projectName + ' 외 ' + (row.projectCnt-1) + '건'}} </a>
                   </td>
-                  <td v-else>
-                       {{ row.projectName }} 
+                  <td v-else style="text-decoration: underline; cursor: pointer;">
+                     <a @click="fnConProjectDetail(row.brandId)">   {{ row.projectName }} </a>
                    </td>
                   <td>
                     {{ row.reqDt }}
                   </td>
                   <td>
                     {{ row.approvalDt }}
+                  </td>
+                   <td style="width: 95px;height: 40px;">
+                    <a v-if="row.approvalStatus == '승인' && row.conCnt>0" @click="fnBrandDisConConfirm(row)" href="#" class="btnStyle1 borderLightGray small">연결해제</a>
                   </td>
                 </tr>
                 <tr v-if="data.length == 0">
@@ -121,6 +125,7 @@
 				<div id="pageContent">
           <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
           <rcsPop :projectId="projectId" :popCnt="popCnt"></rcsPop>
+          <modalConProject :brandId="brandId" :popCnt="popCnt"></modalConProject>
         </div>
 				<!-- 페이징 -->
 
@@ -139,11 +144,13 @@ import Api from '../service/api'
 
 import modalTmplt from "./bp-chan-rcs-tmplt-cnt.vue";
 import modalCallback from "./bp-chan-rcs-callback-cnt.vue";
+import modalConProject from "./bp-chan-rcs-conprojectList.vue";
 
 import SelectLayer from '@/components/SelectLayer.vue';
 import PageLayer from '@/components/PageLayer.vue';
 import confirm from "@/modules/commonUtil/service/confirm";
 import rcsPop from "./bp-chan-rscBranCon-detail.vue"
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
   components: {
@@ -151,7 +158,8 @@ export default {
     SelectLayer,
     modalTmplt,
     modalCallback,
-    rcsPop
+    rcsPop,
+    modalConProject
   },
   data() {
     return {
@@ -174,7 +182,9 @@ export default {
       row_data : {},
       callback_row_data : {},
       projectApiKey : "",
-      popCnt : 0
+      popCnt : 0,
+      row_brandId : {},
+      brandId : ''
     }
   },
   created(){
@@ -219,7 +229,6 @@ export default {
       Api.selectRcsBrandList(params).then(response =>{
         var result = response.data;
 				if(result.success) {
-          console.log()
           this.data = result.data; 
 					this.totCnt = result.pageInfo.totCnt;
           this.offset = result.pageInfo.offset;
@@ -337,6 +346,37 @@ export default {
 
     fnAlertReason(reason) {
       confirm.fnAlert("", reason);
+    },
+       fnBrandDisConConfirm(row){
+        this.row_brandId = row.brandId
+        eventBus.$on('callbackEventBus', this.fnBrandDisCon);
+        confirm.fnConfirm("", "브랜드와 연결을 해제합니다.\n해제 후 다시 연결이 가능합니다.\n해제하시겠습니까?", "확인");
+    },
+
+    fnBrandDisCon(){
+      let params = {
+        brandId : this.row_brandId,
+        projectId : this.projectId 
+      }
+
+     	Api.deleteBrandDiscon(params).then(response =>{
+				  var result = response.data
+				  if(result.success) {
+					this.fnSearch(1)
+					confirm.fnAlert('', '브랜드 해제를 성공하였습니다.')
+				} else {
+					confirm.fnAlert('', result.message)
+				}
+			})
+
+     
+    },
+
+    fnConProjectDetail(brandId){
+      this.popCnt = this.popCnt + 1
+      this.brandId = brandId
+
+       jQuery("#conProject").modal("show");
     }
   }
 }
