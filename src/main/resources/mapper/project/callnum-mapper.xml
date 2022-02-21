@@ -92,7 +92,7 @@
              , (CASE REG_WAY WHEN 'PHONE' THEN '휴대폰 인증' WHEN 'RCS' THEN 'RCS Biz' WHEN 'DOC' THEN '서류 심사' WHEN 'PROXY' THEN '대리인' WHEN 'ETC' THEN '기타' END) AS REG_WAY
              , b.BRAND_ID
              , (SELECT BRAND_NAME FROM cm.CM_RCS_BRAND x WHERE x.BRAND_ID = b.BRAND_ID) AS BRAND
-             , (SELECT GROUP_CONCAT(PROJECT_NAME separator '\n') FROM cm_console.CM_PROJECT x, cm_console.CM_PROJECT_CALL_NUM y WHERE y.CORP_ID = a.CORP_ID AND y.CALL_NUM = a.CALL_NUM AND x.PROJECT_ID = y.PROJECT_ID AND x.CORP_ID = y.CORP_ID)  AS PROJECT 
+             , (SELECT GROUP_CONCAT(CONCAT(PROJECT_NAME, '|!|', x.PROJECT_ID) separator '|@|') FROM cm_console.CM_PROJECT x, cm_console.CM_PROJECT_CALL_NUM y WHERE y.CORP_ID = a.CORP_ID AND y.CALL_NUM = a.CALL_NUM AND x.PROJECT_ID = y.PROJECT_ID AND x.CORP_ID = y.CORP_ID)  AS PROJECT 
              , DATE_FORMAT(REQ_DT, '%Y-%m-%d')    AS REQ_DT 
              , DATE_FORMAT(HANDLE_DT, '%Y-%m-%d') AS HANDLE_DT 
              , HANDLE_REASON

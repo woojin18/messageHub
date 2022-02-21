@@ -105,8 +105,8 @@
 								<td v-if="row.smsState == '90' || row.smsState == '91'" class="text-center"><a @click="fnStop(index)" class="color1" style="text-decoration:underline">{{row.smsStateNm}}</a></td>
 								<td class="text-center">{{row.regWay}}</td>
 								<td class="text-center">{{row.brand}}</td>
-								<td v-if="row.project.indexOf('\n') < 0" class="text-center">{{row.project}}</td>
-								<td v-if="row.project.indexOf('\n') > 0" class="text-center"><a @click="fnProject(index)" style="text-decoration:underline">{{row.project.split('\n')[0]}} 외 {{row.project.split('\n').length-1}}건</a></td>
+								<td v-if="row.project.indexOf('|@|') < 0" class="text-center">{{row.project}}</td>
+								<td v-if="row.project.indexOf('|@|') > 0" class="text-center"><a @click="fnProject(index)" style="text-decoration:underline">{{row.project.split('|!|')[0]}} 외 {{row.project.split('|@|').length-1}}건</a></td>
 								<td class="text-center">{{row.reqDt}}</td>
 								<td class="text-center">{{row.handleDt}}</td>
 								<td v-if="row.smsState == '' || row.smsState == '10' || row.smsState == '20' || row.smsState == '90' || row.smsState == '91'" class="end"></td>
@@ -133,6 +133,7 @@
 		<!-- rcs register Modal -->
 		<rcsPop :srcProjectId="projectId" :rcsOpen="rcsOpen"></rcsPop>
 		<smsPop :smsOpen="smsOpen"></smsPop>
+		<projectPop :projects="projects"></projectPop>
 	</div>
 </template>
 
@@ -148,13 +149,15 @@ import confirm from "@/modules/commonUtil/service/confirm";
 
 import rcsPop from '../components/bp-project-callnum-rcs.vue';
 import smsPop from '../components/bp-project-callnum-sms.vue';
+import projectPop from '../components/bp-project-callnum-project.vue';
 
 export default {
 	components: {
 		PageLayer,
 		SelectLayer,
 		rcsPop,
-		smsPop
+		smsPop,
+		projectPop
 	},
 	data() {
 		return {
@@ -178,6 +181,7 @@ export default {
 			detailCnt : 0,
 			rcsOpen: false,
 			smsOpen: false,
+			projects : [],
 			idx : 0
 		}
 	},
@@ -230,7 +234,14 @@ export default {
 			jQuery("#detailPop").modal("show");
 		},
 		fnProject(idx) {
-			confirm.fnAlert("", this.data[idx].project);
+			let list = [];
+			let projects = this.data[idx].project.split('|@|');
+			projects.forEach(function(p){
+			  var l = p.split('|!|');
+			  list.push({projectId : l[1], projectName : l[0]});
+			})
+			this.projects = list;
+			jQuery("#projectPop").modal("show");
 		},
 		fnStop(idx) {
 			confirm.fnAlert("", this.data[idx].handleReason);
