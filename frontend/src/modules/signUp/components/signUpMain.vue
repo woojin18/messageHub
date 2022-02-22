@@ -626,10 +626,6 @@ export default {
                 confirm.fnAlert("", "납부일을 선택해주세요.");
                 return false;
             }
-            if(this.bill.payDt == ""){
-                confirm.fnAlert("", "납부자명을 입력해주세요.");
-                return false;
-            }
             if(this.bill.napJumin == ""){
                 confirm.fnAlert("", "생년월일/사업자번호를 입력해주세요.");
                 return false;
