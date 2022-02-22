@@ -25,11 +25,19 @@
 									<input type="radio" id="LMS" value="LMSMO" class="cBox" v-model="moType"> <label for="LMS" class="payment font-size12">LMS MO</label>		
 								</div>
 							</div>
+              				<div class="consolMarginTop">
+								<h5 class="inline-block" style="width:20%">API KEY *</h5>
+                  				<select class="selectStyle2" @change="fnApiKeyCode" v-model='apiKeyCode'>
+                    				<option value="">선택하세요</option>
+                    				<option  v-for="(row, index) in ApiKeyArr" :key="index" :value="row.apiKey">{{ row.apiKeyName }}({{ row.apiKey }})</option>
+                    				<option value="-">미사용</option>
+                  				</select>
+							</div>
 							<div class="consolMarginTop clear">
-								<h5 class="inline-block" style="width:20%">웹훅 URL <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:430px">웹훅 URL은 사용자가 메세지를 전송할 때 수신 받을 수 있는 서버의 URL입니다.<br>필수 입력사항은 아닙니다.</span></i></h5>
+								<h5 class="inline-block" style="width:20%">웹훅 URL <span v-show="!visible">*</span><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:430px">웹훅 URL은 사용자가 메세지를 전송할 때 수신 받을 수 있는 서버의 URL입니다.</span></i></h5>
 								<div style="width:80%" class="float-right">
 									<div style="width:70%" class="float-left">
-										<input type="text" class="inputStyle float-left" v-model="webhookUrl" placeholder="[http:// 혹은 https://]를 포함한 URL" @change="fnChgConnStatus()">
+										<input type="text" class="inputStyle float-left" :disabled="visible" v-model="webhookUrl" placeholder="[http:// 혹은 https://]를 포함한 URL" @change="fnChgConnStatus()">
 									</div>
 									<div style="width:30%" class="float-right">
 										<button class="btnStyle1 backLightGray float-right width120" @click="fnCheckWebhookUrl">연결 확인</button>
@@ -60,6 +68,7 @@
 import api from '../service/api'
 import confirm from "@/modules/commonUtil/service/confirm"
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
+import tokenSvc from '@/common/token-service';
 
 export default {
   name: 'bpChanMo',
@@ -71,7 +80,10 @@ export default {
       pjtAllNo  : "",
       webhookUrl : "",
       sts : "",
-      isConnWebhookUrl : false    // 웹훅url connection 여부
+      isConnWebhookUrl : false,    // 웹훅url connection 여부
+      ApiKeyArr : [],
+      apiKeyCode : "",
+      visible : true
     }
   },
   props: {
@@ -108,7 +120,7 @@ export default {
     }
   },
   mounted() {
-    
+    this.fnInitApiKeyCode();
   },
   methods: {
     // 닫기
@@ -128,6 +140,16 @@ export default {
         return false;
       }
 
+      if(this.apiKeyCode == ''){
+        confirm.fnAlert("", "API KEY를 선택해주세요.");
+        return false;
+      }
+
+      if(this.apiKeyCode != '' && this.apiKeyCode != '-' && this.$gfnCommonUtils.isEmpty(this.webhookUrl)){
+        confirm.fnAlert("", "API KEY가 미설정이 아닌 경우 웹훅URL은 필수 입력사항입니다.");
+        return false;
+      }
+
       if(!this.$gfnCommonUtils.isEmpty(this.webhookUrl) && this.isConnWebhookUrl == false){
         confirm.fnAlert("", "웹훅URL 사용하시려면 '연결 확인' 버튼을 통해 해당 URL이 사용가능한지 확인하셔야합니다.\n연결이 확인된 웹훅URL만 사용 가능합니다.");
         return false;
@@ -139,7 +161,7 @@ export default {
     fnSaveCallBack(){
       var params = {
         "sts"         : this.sts,
-        "apiKey"      : this.apiKey,
+        "apiKey"      : this.apiKeyCode,
         "moNumber"    : this.moNumber,
         "moType"      : this.moType,
         "projectId"   : this.projectId,
@@ -184,7 +206,30 @@ export default {
     },
     fnChgConnStatus(){
       this.isConnWebhookUrl = false;
-    }
+    },
+    fnApiKeyCode(event) {
+      if (event.target.value == "" || event.target.value == '-') {
+        this.visible = true;
+        this.webhookUrl = '';
+      }else{
+        this.visible = false;
+      }
+	  },
+    fnInitApiKeyCode(){
+      var params = {
+        projectId: this.$route.params.projectId,
+				corpId: tokenSvc.getToken().principal.corpId,
+      };
+
+      api.selectApiKeyCode(params).then(response =>{
+        var result = response.data;
+        if( result.success ){
+          this.ApiKeyArr = result.data.apiKeyList;
+        } else {
+          confirm.fnAlert("", "API key 리스트를 불러오기에 실패했습니다.");
+        }
+      });
+    },
   }
 }
 </script>

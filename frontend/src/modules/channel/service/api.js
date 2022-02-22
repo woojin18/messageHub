@@ -110,6 +110,10 @@ const selectConProjectList = (params) => {
     return httpClient.post('/projectApi/channel/selectConProjectList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
+const selectApiKeyCode = (params) => {
+    return httpClient.post('/projectApi/channel/selectApiKeyCode', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
 export default {
     selectRcsBrandList,
     selectRcsRegTmpltList,
@@ -138,5 +142,6 @@ export default {
     saveBrandCon,
     deleteBrandDiscon,
     delKkoCh,
-    selectConProjectList
+    selectConProjectList,
+    selectApiKeyCode
 };

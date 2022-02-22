@@ -985,8 +985,9 @@ public class ChannelService {
 		String sts = CommonUtils.getString(params.get("sts"));
 		
 		if( "C".equals(sts) ) {
-			String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params)); 
-			params.put("apiKey", apiKey);
+			//#13338 params로 받아오도록 수정
+			//String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params)); 
+			//params.put("apiKey", apiKey);
 			
 			// 중복 체크
 			Map<String, Object> checkParams = new HashMap<>();
@@ -995,7 +996,7 @@ public class ChannelService {
 			int duplCnt = generalDao.selectGernalCount(DB.QRY_SELECT_MO_CALLBACK_DUPL, checkParams);
 			
 			if( duplCnt > 0 ) {
-				throw new Exception("이미 해당 MO 수신번호, 서비스 유형으로 등록된 번호가 있습니다.");
+				throw new Exception("이미 해당 MO 수신번호와 MO 유형이 등록되어 있습니다. \n리스트에 보이지 않을 경우, 타 프로젝트 또는 타 업체에서 해당 수신번호와 유형으로 사용 중 입니다.\n");
 			}
 
 			// 유큐브 서비스 등록 
@@ -1005,6 +1006,7 @@ public class ChannelService {
 			String salesId	= CommonUtils.getString(generalDao.selectGernalObject("project.selectSalesIdForSaveProject", params));
 			String moType	= CommonUtils.getString(params.get("moType"));
 			Map<String, Object> projectMap = (Map<String, Object>) generalDao.selectGernalObject("channel.selectProjectDataForSaveMoCallback", params);
+			params.put("serviceId", projectMap.get("serviceId"));
 			
 			Map<String, Object> joinMap = new HashMap<>();
 			
@@ -1459,4 +1461,15 @@ public class ChannelService {
 		return rtn;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public RestResult<?> selectApiKeyCode(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		List<Object> apiKeyList = generalDao.selectGernalList(DB.QRY_SELECT_APIKEY_LIST_MO, params);
+		
+		Map<String, Object> rtnObj = new HashMap<String, Object>();
+		rtnObj.put("apiKeyList", apiKeyList);
+		rtn.setData(rtnObj);
+		return rtn;
+	}
 }

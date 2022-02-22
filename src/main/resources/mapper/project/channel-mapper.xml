@@ -499,9 +499,7 @@
 	/* channel.selectMoCallbackDupl */
 		SELECT	COUNT(1) AS CNT
 		FROM	cm.CM_MO_CALLBACK A
-		WHERE	PROJECT_ID = #{projectId}
-		AND		A.CORP_ID = #{corpId}
-		AND		A.MO_NUMBER = #{detailMoNumber}
+		WHERE	A.MO_NUMBER = #{detailMoNumber}
 		AND		A.MO_TYPE = #{moType}
 		AND		A.USE_YN = 'Y'
 	</select>
@@ -547,6 +545,7 @@
 		,	USE_YN
 		,	REG_DT
 		,	WEBHOOK_URL
+		,	SERVICE_ID
 		)
 		VALUES
 		(
@@ -558,7 +557,15 @@
 		,	'Y'
 		,	NOW()
 		,	#{webhookUrl}
-		)
+		,	#{serviceId}
+		)ON DUPLICATE KEY UPDATE
+			API_KEY = #{apiKey}
+		,	CORP_ID = #{corpId}
+		,	PROJECT_ID = #{projectId}
+		,	USE_YN = 'Y'
+		,	UPD_DT = NOW()
+		,	WEBHOOK_URL = #{webhookUrl}
+		,	SERVICE_ID = #{serviceId}
 	</insert>
 	
 	<update id="updateMoCallback">
@@ -1219,5 +1226,13 @@
 		AND DEL_YN = 'N')
 		</select>
 		
+		<select id="selectApiKeyList" resultType="camel">
+		/* channel.selectApiKeyList */
+		SELECT	API_KEY
+		,		API_KEY_NAME
+		FROM cm.CM_APIKEY
+		WHERE CORP_ID = #{corpId}
+		AND PROJECT_ID = #{projectId}
+		</select>
 		
 </mapper>

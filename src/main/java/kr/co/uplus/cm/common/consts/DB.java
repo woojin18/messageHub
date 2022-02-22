@@ -160,6 +160,8 @@ public class DB {
 	public final static String QRY_UPDATE_MO_CALLBACK = "channel.updateMoCallback";
 	public final static String QRY_DELETE_MO_CALLBACK = "channel.deleteMoCallback";
 	
+	public final static String QRY_SELECT_APIKEY_LIST_MO = "channel.selectApiKeyList";
+	
 	// 카카오 채널 
 	public final static String QRY_SELECT_EQUAL_KKOCHANNEL_CNT = "channel.selectEqualKkochannelCnt";
 	// 웹캐시

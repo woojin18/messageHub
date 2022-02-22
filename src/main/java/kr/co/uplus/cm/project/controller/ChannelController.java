@@ -609,4 +609,10 @@ public class ChannelController {
 		return channelService.selectConProjectList(params);
 	}
 	
+	// MO 수신번호 등록 API 리스트
+	@PostMapping("/selectApiKeyCode")
+	public RestResult<?> selectApiKeyCode(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		return channelService.selectApiKeyCode(params);
+	}
 }
