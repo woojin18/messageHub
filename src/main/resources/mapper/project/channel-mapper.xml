@@ -1233,6 +1233,7 @@
 		FROM cm.CM_APIKEY
 		WHERE CORP_ID = #{corpId}
 		AND PROJECT_ID = #{projectId}
+		AND	WEB_SENDER_YN != 'Y'
 		</select>
 		
 </mapper>
