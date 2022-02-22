@@ -67,7 +67,6 @@
 											</td>
 											<td class="text-center lc-1 end">
 												<button class="btnStyle1 borderLightGray small mr5" @click="fnKakaoRecover(row)" activity="SAVE"><a>휴먼상태해제</a></button>
-												<button class="btnStyle1 borderLightGray small mr5" @click="fnDel(row)" activity="SAVE"><a>삭제</a></button>
 											</td>
 										</tr>
 										<tr v-if="data.length == 0">
@@ -197,26 +196,6 @@ export default {
 		}
 
 		Api.saveKkoChRecover(params).then(response =>{
-			var result = response.data;
-
-			if(result.success) {
-				confirm.fnAlert("", "처리되었습니다.");
-				// 재조회
-				this.fnSearch(1);
-			} else {
-				confirm.fnAlert("", result.message);
-			}
-		});
-	},
-	// 삭제
-	fnDel(row){
-		var params = {
-			"senderKey"   : row.senderKey
-		  , "relay"       : row.relay
-		  , "projectId"   : row.projectId
-		}
-
-		Api.delKkoCh(params).then(response =>{
 			var result = response.data;
 
 			if(result.success) {
