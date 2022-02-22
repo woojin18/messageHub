@@ -64,7 +64,7 @@
 import api from '../service/api'
 import PageLayer from '@/components/PageLayer.vue'
 import confirm from '@/modules/commonUtil/service/confirm'
-import {eventBus} from "@/modules/commonUtil/service/eventBus"
+
 
 export default {
 	name: 'conProject',
@@ -100,6 +100,7 @@ export default {
 	},
 	watch: {
 		popCnt() {
+		this.$refs.updatePaging.fnAllDecrease();	
 		this.fnConProjectList()
 		}
 	},

@@ -477,7 +477,7 @@ p {letter-spacing:-0.5px}
 #NotFoundWrap section > .rightimg {float:right; margin-top:-25px}
 
 /* 반응형 */
-@media screen and (max-width:768px) {
+@media screen and (max-width:1080px) {
 	#NotFoundWrap section {max-width:100%; padding:100px 0; text-align:center}
 	#NotFoundWrap section img {display:block; margin:0 auto}
 	#NotFoundWrap section > .logoimg {width:120px}
@@ -486,3 +486,8 @@ p {letter-spacing:-0.5px}
 	#NotFoundWrap section > p {color:#B2B2B2; font-size:10px; margin-top:10px}
 	#NotFoundWrap section > p > span {display: block}
 }
+
+/* 2022-02-09 */
+.userLogin-form > .Chrome, .userSection > .Chrome {margin-top:40px; text-align:right}
+.userLogin-form > .Chrome > span, .userSection > .Chrome > span {padding-left:2px; color:#3467CB; height:30px}
+.userLogin-form > .Chrome > img, .userSection > .Chrome > img {vertical-align:top}

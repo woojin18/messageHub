@@ -18,7 +18,7 @@
 					<div class="userChannelList_box">
 						<div>
 							<p>SMS/LMS/MMS</p>
-							<a title="userChannel1-1" class="mt30">자세히 보기</a>
+							<a title="userChannel1-1" class="mt30 btnBcackWhite">자세히 보기</a>
 						</div>
 					</div>
 				</li>
@@ -27,7 +27,7 @@
 					<div class="userChannelList_box">
 						<div>
 							<p>RCS</p>
-							<a title="userChannel1-2" class="mt30">자세히 보기</a>
+							<a title="userChannel1-2" class="mt30 btnBcackWhite">자세히 보기</a>
 						</div>
 					</div>
 				</li>
@@ -36,7 +36,7 @@
 					<div class="userChannelList_box">
 						<div>
 							<p>KakaoTalk<br>Bizmessage</p>
-							<a  title="userChannel1-3" class="mt10">자세히 보기</a>
+							<a  title="userChannel1-3" class="mt10 btnBcackWhite">자세히 보기</a>
 						</div>
 					</div>
 				</li>
@@ -45,7 +45,7 @@
 					<div class="userChannelList_box">
 						<div>
 							<p>Push</p>
-							<a  title="userChannel1-4" class="mt30">자세히 보기</a>
+							<a  title="userChannel1-4" class="mt30 btnBcackWhite">자세히 보기</a>
 						</div>
 					</div>
 				</li>

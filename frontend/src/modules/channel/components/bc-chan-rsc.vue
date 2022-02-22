@@ -32,7 +32,7 @@
                   <option value="brandName">브랜드 명</option>
                 </select>
 								<input id="srcBrandText" type="text" class="inputStyle ml20 vertical-baseline" style="width:65%" v-model="srcBrandText" @keypress.enter="fnSearch(1)">
-								<a @click="fnSearch(1)" class="btnStyle2 float-right" activity="READ">검색</a>
+								<a @click="fnPageNoResetSearch" class="btnStyle2 float-right" activity="READ">검색</a>
 							</div>						
 						</div>
 					</div>
@@ -377,6 +377,9 @@ export default {
       this.brandId = brandId
 
        jQuery("#conProject").modal("show");
+    },
+    fnPageNoResetSearch(){
+      this.$refs.updatePaging.fnAllDecrease();
     }
   }
 }

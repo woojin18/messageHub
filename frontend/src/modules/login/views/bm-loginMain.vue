@@ -3,7 +3,7 @@
 		<section class="userSection width540 mt150">
 			<!-- userLogin-form -->
 			<div class="userLogin-form">
-				<h2 class="text-center">U+ 통합메시징 클라우드 로그인</h2>
+				<h2 class="text-center">U+ 메시지허브 로그인</h2>
 				<input type="email" class="form-control" id="inputEmail" placeholder="이메일 주소를 입력하세요"
 					name="userId" v-model="userId" :maxlength="100" v-focus @keyup.enter="ajaxlogin">
 				<input type="password" class="form-control mt20" id="inputPassword" placeholder="비밀번호를 입력하세요"

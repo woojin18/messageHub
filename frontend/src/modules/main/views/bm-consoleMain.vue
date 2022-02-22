@@ -9,12 +9,12 @@
 						<div>
 							<h2 class="wow animated fadeInUp" data-wow-duration="1s">모든 메시지를 한번에<br><strong>U+ 메시지허브</strong></h2>
 							<div class="wow animated fadeInUp" data-wow-delay=".3s" data-wow-duration="1s">
-                <router-link :to="{ name: 'signUp' }" class="mvBtn" title="서비스 가입">가입하기</router-link>
+                <router-link :to="{ name: 'signUp' }" class="mvBtn" title="서비스 가입" style="margin-right: 3px;">가입하기</router-link>
 								<a class="mvBtn ml20" title="serviceCon05_2">도입문의</a>
 							</div>
 							<p class="font-size20 font-normal mt40 wow animated fadeInUp" data-wow-delay=".6s" data-wow-duration="1s">메시지허브는 다양한 메시지 채널을 수용하여<br>발송부터 결과까지 한 번에 관리하는 기업 메시지 플랫폼입니다.</p>
-							<p class="font-size20 font-600 mt20 wow animated fadeInUp" data-wow-delay=".6s" data-wow-duration="1s">#문자<span class="ml20">#알림톡</span><span class="ml20">#친구톡</span><span class="ml20">#앱푸시</span></p>
-						</div>
+							<p class="font-size20 font-600 mt20 wow animated fadeInUp" data-wow-delay=".6s" data-wow-duration="1s">#문자<span class="ml20">#RCS</span><span class="ml20">#알림톡</span><span class="ml20">#친구톡</span><span class="ml20">#앱푸시</span></p>
+					  </div>
 					</div>
 					<img src="/se2/images/mainVisual1.jpg" alt="">
 				</li>
@@ -61,9 +61,11 @@
   		<div class="serviceCon03_2 wow animated fadeInUp">
 			<section id="userIndex1-1">	
 				<img src="/se2/images/Message_icon_or2.png" alt="메세지아이콘 파란색">
-				<h3 class="subTitle">메시지 도입하고 운영하는데<br>소중한 리소스를 낭비하지 마세요.</h3>
-				<p class="subText">메시지허브만 통하면 다양한 메시징 채널을 모두 활용할 수 있습니다.<br>계약, 운영, 정산 뿐만 아니라 장애 대응, 발송 모니터링, 통계까지 일원화 하여 한번에 관리하고 서비스 받으세요.</p>
-				<div class="chartWrap">					
+	      <h3 class="subTitle">메시지 도입하고 운영하는데<br>소중한 리소스를 낭비하지 마세요.</h3>
+				<p class="subText">메시지허브만 통하면 다양한 메시징 채널을 모두 활용할 수 있습니다.<br>
+        계약, 운영, 정산 뿐만 아니라 장애 대응, 발송 모니터링, 통계까지<br>
+        일원화하여 한 번에 관리하고 서비스 받으세요.</p>			
+        <div class="chartWrap">					
 					<p class="chartWrap_sub">*실제 웹 발송 화면 이미지입니다</p>
 					<img src="/se2/images/Message_Platform02.png" alt="메세지 플랫폼1">
 				</div>
@@ -87,15 +89,15 @@
 		<div class="serviceCon04_2 wow animated fadeInUp">
 			<section id="userIndex1-3">	
 				<div><img src="/se2/images/Message_icon_purple.png" alt="메세지아이콘 보라색"></div>
-				<h3 class="subTitle">더 이상 메시지 발송을 위해<br>클라이언트 설치 운영하지 않아도 됩니다.</h3>
-				<p class="subText">메시지 허브 Rest API를 통해 쉽게 도입하고,<br>메시지 발송에 불필요한 업무를 줄이세요.</p>
+			  <h3 class="subTitle">더 이상 메시지 발송을 위해<br>클라이언트를 설치 운영하지 않아도 됩니다.</h3>
+				<p class="subText">메시지허브의 REST API를 통해 쉽게 도입하고,<br>메시지 발송에 불필요한 업무를 줄이세요.</p>
 				<img src="/se2/images/purple_chart.png" alt="차트1">
 			</section>	
 		</div>
 
     <div class="serviceCon05_2 wow animated fadeInUp">
 			<section id="serviceCon05_2">	
-				<div class="text-center"><img src="/se2/images/Message_icon_pink.png" alt="메세지아이콘 핑크색"></div>
+				<div><img src="/se2/images/Message_icon_pink.png" alt="메세지아이콘 핑크색"></div>
 				<h3 class="subTitle">U+ 메시지 허브를 지금 바로 사용해보세요!</h3>
 				<div class="quiryList of_h">	
           <div class="of_h">
@@ -107,7 +109,7 @@
                 </template>
               </div>
           </div>		
-					<input type="text" class="form-control mt15 float-left" style="width:48%" placeholder="고객사명" v-model="inqueiryInputData.corpName" maxlength="50" :disabled="isLogin">
+					<input type="text" class="form-control mt15 float-left" style="width:48%" placeholder="회사명" v-model="inqueiryInputData.corpName" maxlength="50" :disabled="isLogin">
 					<input type="text" class="form-control mt15 float-right" style="width:48%" placeholder="이름" v-model="inqueiryInputData.inputName" maxlength="20">
 					<input type="text" class="form-control mt15 float-left" style="width:48%" placeholder="휴대폰 번호 ( - 없이 입력)" v-model="inqueiryInputData.hpNumber" maxlength="20">
 					<input type="text" class="form-control mt15 float-right" style="width:48%" placeholder="E-mail" v-model="inqueiryInputData.email" maxlength="40">
@@ -180,6 +182,14 @@ export default {
 			var offset =jQuery("#"+obj).offset()
 			jQuery('html, body').animate({scrollTop:offset.top}, 'slow')
 		})
+
+    	var slider = jQuery('.mainBxslider').bxSlider({
+			mode: 'fade',
+			pager: true,
+			touchEnabled : (navigator.maxTouchPoints > 0),
+			pause: 6000
+		});
+
     this.fnSelectFaqType()
     if(this.isLogin){
       this.fnSetUserInfo()

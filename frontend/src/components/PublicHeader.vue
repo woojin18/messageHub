@@ -7,7 +7,7 @@
         <nav id="userGnb">
           <ul class="list_gnb" role="menu">
             <li>
-              <router-link :to="{name: 'main'}" tag="a" title="서비스 소개 페이지로 이동">메시지허브 소개</router-link>
+              <router-link :to="{name: 'main'}" tag="a" title="서비스 소개 페이지로 이동">서비스 소개</router-link>
             </li>
             <li>
               <router-link :to="{name: 'channelIntro'}" tag="a" title="채널 소개 페이지로 이동">채널 소개</router-link>
