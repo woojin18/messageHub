@@ -941,6 +941,15 @@
         LIMIT #{offset}, #{listSize}
         </if>
 	</select>
+        
+    <delete id="delKkoCh">
+	    /* channel.delKkoCh */
+	    DELETE FROM cm.CM_KKO_CH
+	    WHERE SENDER_KEY = #{senderKey}
+	      AND RELAY      = #{relay}
+	      AND PROJECT_ID = #{projectId}
+	    LIMIT 1
+    </delete>
 	
 	
 	<select id="selectKkoChGroup" resultType="camel">

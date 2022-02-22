@@ -86,6 +86,10 @@ const saveKkoChRecover = (params) => {
     return httpClient.post('/projectApi/channel/saveKkoChRecover', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
 };
 
+const delKkoCh = (params) => {
+    return httpClient.post('/projectApi/channel/delKkoCh', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
 const checkWebhookUrl = (params) => {
     return httpClient.post('/projectApi/channel/checkWebhookUrl', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
 };
@@ -133,5 +137,6 @@ export default {
     getRcsBrandConList,
     saveBrandCon,
     deleteBrandDiscon,
+    delKkoCh,
     selectConProjectList
 };
