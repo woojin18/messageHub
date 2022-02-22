@@ -8,8 +8,8 @@
 						<hr>
 						<div class="consoleCon">
 							<div class="of_h">
-								<h5 class="inline-block float-left" style="width:25%">채널 검색용 아이디 *</h5>
-								<input type="text" class="inputStyle float-right" style="width:72%" v-model="kkoChId" placeholder="카카오에 등록된 검색용아이디를 넣어주세요. 예) @servicename">
+								<h5 class="inline-block float-left" style="width:30%">채널 검색용 아이디 *<span style="float:right;">@</span></h5>
+								<input type="text" class="inputStyle float-right" style="width:69%" v-model="kkoChId" placeholder="카카오에 등록된 검색용 아이디를 넣어주세요 (@을 제외하고 입력해 주세요)">
 							</div>
 							<div class="clear consolMarginTop">
 								<h5 class="inline-block float-left" style="width:25%">관리자 연락처 * <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:320px">카카오 비즈니스 관리자 센터에서 입력한 카카오채널ID에<br>관리자로 등록되어 있는 사용자 연락처입니다.</span></i></h5>
@@ -164,7 +164,7 @@ export default {
 	fnGetSenderKeyToken(){
 		var params = {
 			"apiKey"		: this.apiKey,
-			"kkoChId"		: this.kkoChId,
+			"kkoChId"		: '@' + this.kkoChId,
 			"phoneNumber"	: this.phoneNumber,
 		};
 		params.phoneNumber = this.$gfnCommonUtils.hpNumberRemoveDash(params.phoneNumber);
@@ -187,7 +187,7 @@ export default {
 		var params = {
 			"sts"			: this.save_status,
 			"apiKey"		: this.apiKey,
-			"kkoChId"		: this.kkoChId,
+			"kkoChId"		: '@' + this.kkoChId,
 			"phoneNumber"	: this.phoneNumber,
 			"token"			: this.token,
 			"categoryCode"	: this.categoryCode,
@@ -244,7 +244,7 @@ export default {
 
 		// 중복 여부 확인 후 저장 
 		var params = {
-			"kkoChId"		: this.kkoChId,
+			"kkoChId"		: '@' + this.kkoChId,
 			"projectId"		: this.projectId,
 			"otherProjectYn": this.otherProjectYn
 		};
