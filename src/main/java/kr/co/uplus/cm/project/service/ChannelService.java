@@ -1323,6 +1323,21 @@ public class ChannelService {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public RestResult<?> delKkoCh(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		try {
+			generalDao.deleteGernal("channel.delKkoCh", params);
+		}
+		catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("카카오 채널 삭제를 실패하였습니다.");
+		}
+		return rtn;
+		
+	}
+	
 	// rcs 브랜드 리스트에서 apikey 있는지 확인
 	public RestResult<?> findApiKeyFromProject(Map<String, Object> params) throws Exception {
 		RestResult<Object> rtn = new RestResult<Object>();
