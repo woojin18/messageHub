@@ -400,6 +400,15 @@ export default {
       if (this.alarm.coltDayWeek.coltFriYn) this.alarm.coltDayWeek.coltFriEnd = val
       if (this.alarm.coltDayWeek.coltSatYn) this.alarm.coltDayWeek.coltSatEnd = val
       if (this.alarm.coltDayWeek.coltSunYn) this.alarm.coltDayWeek.coltSunEnd = val
+    },
+    "alarm.coltMinQty"(){
+      this.alarm.coltMinQty = this.$gfnCommonUtils.formatPrice(this.alarm.coltMinQty.replace(/[^0-9]/g, ''));
+    },
+    "alarm.sendSuccRate"(){
+      this.alarm.sendSuccRate = this.$gfnCommonUtils.formatPrice(this.alarm.sendSuccRate.replace(/[^0-9]/g, ''));
+    },
+    "alarm.mthLimitAmt"(){
+      this.alarm.mthLimitAmt = this.$gfnCommonUtils.formatPrice(this.alarm.mthLimitAmt.replace(/[^0-9]/g, ''));
     }
   },
   mounted() {
@@ -588,6 +597,10 @@ export default {
         }
       }
       var params = Object.assign({}, this.alarm)
+      params.coltMinQty = this.$gfnCommonUtils.formatUncomma(params.coltMinQty);
+      params.sendSuccRate = this.$gfnCommonUtils.formatUncomma(params.sendSuccRate);
+      params.mthLimitAmt = this.$gfnCommonUtils.formatUncomma(params.mthLimitAmt);
+      
 	    alarmApi.saveAlarm(params).then(response =>{
        	var result = response.data;
        	if(result.success) {

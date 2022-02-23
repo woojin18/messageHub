@@ -37,17 +37,17 @@
           </div>-->
 
           <div class="of_h">
-            <div class="inline-block" style="width:16%"><h4>타 프로젝트 사용여부</h4></div>
-            <div class="inline-block" style="width:83%">
-              <div class="consolCheck consolMarginTop">
+            <!--<div class="inline-block" style="width:16%"><h4>타 프로젝트 사용여부</h4></div>-->
+            <div class="inline-block" style="width:100%">
+              <!--<div class="consolCheck consolMarginTop">
                 <input type="checkbox" id="otherUse_all" class="checkStyle2" @change="fnSearchOthPrjUseYnChkAll" v-model="othPrjUseYnAllSelected">
                 <label for="otherUse_all" class="mr30">전체</label>
                 <input type="checkbox" id="searchOthPrjUseYn_Y" class="checkStyle2" value="Y" v-model="searchData.searchOthPrjUseYn">
                 <label for="searchOthPrjUseYn_Y" class="mr30">공용</label>
                 <input type="checkbox" id="searchOthPrjUseYn_N" class="checkStyle2" value="N" v-model="searchData.searchOthPrjUseYn">
                 <label for="searchOthPrjUseYn_N" class="mr30">전용</label>
-              </div>
-              <!-- <a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" title="통합발송 검색">검색</a> -->
+              </div>-->
+              <!--<a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" title="통합발송 검색">검색</a> -->
               <a @click="fnPageNoResetSearch" class="btnStyle1 float-right" title="검색" activity="READ">검색</a>
             </div>
           </div>
@@ -82,7 +82,6 @@
                 <col style="width:5%">
                 <col>
                 <col style="width:17%">
-                <col style="width:17%">
                 <col style="width:10%">
                 <col style="width:10%">
                 <col style="width:17%">
@@ -96,7 +95,7 @@
                   <th class="text-center lc-1">No.</th>
                   <th class="text-center lc-1">템플릿 ID</th>
                   <th class="text-center lc-1">템플릿명</th>
-                  <th class="text-center lc-1">타 프로젝트 사용여부</th>
+                  <!--<th class="text-center lc-1">타 프로젝트 사용여부</th>-->
                   <th class="text-center lc-1">발송유형</th>
                   <th class="text-center lc-1">등록자</th>
                   <th class="text-center lc-1 end">등록일자</th>
@@ -113,7 +112,7 @@
                     <u><router-link :to="{ name: 'smsTemplateManage', params: { tmpltId: contant.tmpltId }}">{{contant.tmpltId}}</router-link></u>
                   </td>
                   <td class="text-left">{{contant.tmpltName | unescapeXss}}</td>
-                  <td class="text-center">{{contant.projectIdNm}}</td>
+                 <!-- <td class="text-center">{{contant.projectIdNm}}</td>-->
                   <td class="text-center">{{contant.senderTypeName}}</td>
                   <td class="text-center">{{contant.regNm}}</td>
                   <td class="text-center end">{{contant.regDt}}</td>
@@ -123,7 +122,7 @@
                     <input type="checkbox" id="listCheck_0" class="boardCheckStyle">
                     <label for="listCheck_0"></label>
                   </td>
-                  <td class="text-center" colspan="7">검색된 내용이 없습니다.</td>
+                  <td class="text-center" colspan="6">검색된 내용이 없습니다.</td>
                 </tr>
               </tbody>
             </table>
@@ -195,7 +194,6 @@ export default {
   },
   mounted() {
     this.fnValidUseChGrp();
-    this.fnSearchOthPrjUseYnChkAll();
     // this.fnSetIntervalSearchDate(this.searchDateInterval);
     this.fnPageNoResetSearch();
   },
@@ -258,14 +256,7 @@ export default {
     fnUpdateEndDate(sltDate) {
       this.searchData.searchEndDate = sltDate;
     },
-    //타 프로젝트 사용여부 전체 선택시
-    fnSearchOthPrjUseYnChkAll(){
-      if(this.othPrjUseYnAllSelected){
-        this.searchData.searchOthPrjUseYn = ['Y', 'N'];
-      } else {
-        this.searchData.searchOthPrjUseYn = [];
-      }
-    },
+
     //템플릿 리스트 검색
     async fnSelectSmsTmpltList(){
       //유효성 검사

@@ -112,7 +112,7 @@ export default {
     },
     callback_row_data: function(newVal, oldVal) {
       this.callbackItems = [];
-      this.fnSearchCallback(1);
+      this.$refs.updatePaging.fnAllDecrease();
     }
   },
   mounted() {

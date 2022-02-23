@@ -2650,7 +2650,7 @@
 					</div>
 					<div v-if="selectedAlimTalkTemplate">
 						<div class="of_h mt20">
-							<div class="float-left" style="width:15%"><h4>발신프로필</h4></div>
+							<div class="float-left" style="width:15%"><h4>카카오 채널</h4></div>
 							<div class="float-left" style="width:57%">
 								<select class="float-left selectStyle2" style="width:100%" v-model="rowData.senderKey" disabled>
 									<option value="">선택해주세요.</option>
@@ -3161,7 +3161,7 @@ export default {
 			friendTalkUseCh : 'FRIENDTALK',
 			friendTalkImgLimitSize : 1,
 
-			friendTalkSenderKeyType: 'NOMAL',  //NOMAL, GROUP //friendTalk 발신프로필 그룹
+			friendTalkSenderKeyType: 'NOMAL',  //NOMAL, GROUP //friendTalk 카카오 채널 그룹
 			friendTalkSenderKeyList: [],
 
 			friendTalkButtonTypeList : [
@@ -3879,7 +3879,7 @@ export default {
         if(this.rowData.checkedChannel.includes('KAKAO')){
 			if(this.kakaoTemplateTable === 0){ //FRIENDTALK
 				  if(!this.rowData.friendTalkSenderKey){
-		            confirm.fnAlert(this.detailTitle, '친구톡 발신프로필을 선택해주세요.');
+		            confirm.fnAlert(this.detailTitle, '친구톡 카카오 채널을 선택해주세요.');
 		            return false;
 		          }
 		          
@@ -3891,7 +3891,7 @@ export default {
 			
 			if(this.kakaoTemplateTable === 1){ //ALIMTALK
 				  if(!this.rowData.alimTalkSendProfile){
-		            confirm.fnAlert(this.detailTitle, '알림톡 발신프로필을 선택해주세요.');
+		            confirm.fnAlert(this.detailTitle, '알림톡 카카오 채널을 선택해주세요.');
 		            return false;
 		          }
 

@@ -118,12 +118,12 @@
 			<div class="inner1088">
 				<h3 class="userChannelTitle">KakaoTalk Bizmessage</h3>
 				<span class="userBtn mt60 mb20" style="background-color:#FC6D26">알림톡</span>
-				<p class="font-size16">SMS/LMS의 규격은 커지고, 필수 정보를 위한 별도의 공간이 생겨 메시지 내용을 더 많이 보낼 수 있습니다.</p>
+				<p class="font-size16">친구를 맺지 않은 이용자에게 스팸 스트레스 없는 정보성 메시지를 보낼 수 있습니다.</p>
 				<div class="mt20"><img src="/se2/images/user_Kakao1.png" alt=""></div>
 
 
 				<span class="userBtn mt60 mb20" style="background-color:#4B67FF">친구톡</span>
-				<p class="font-size16">SMS/LMS의 규격은 커지고, 필수 정보를 위한 별도의 공간이 생겨 메시지 내용을 더 많이 보낼 수 있습니다.</p>
+				<p class="font-size16">친구를 맺은 이용자 대상으로 기업 마케팅을 위한 광고성의 타겟팅 메시지를 보낼 수 있습니다.</p>
 				<div class="mt20"><img src="/se2/images/user_Kakao2.png" alt=""></div>
 			</div>
 		</section>

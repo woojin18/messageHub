@@ -45,6 +45,8 @@ public class JwtService {
 		// 로그인 시 대표프로젝트 정보 쿠키에 세팅
 		Cookie project = new Cookie("project", user.getRepProjectId());
 		project.setPath("/");
+		project.setSecure(true);
+		project.setMaxAge(jwtProps.getPrivateTokenExpiration());
 		response.addCookie(project);
 	}
 
@@ -100,6 +102,7 @@ public class JwtService {
 		Cookie part1 = new Cookie(jwtProps.getPart1(), payload);
 		part1.setPath("/");
 		part1.setSecure(true);
+		part1.setMaxAge(jwtProps.getPrivateTokenExpiration());
 		response.addCookie(part1);
 
 		// signature 부분만 httpOnly 쿠키에 저장 - JS로 읽기 불가능
@@ -107,6 +110,7 @@ public class JwtService {
 		csrfToken.setHttpOnly(true);
 		csrfToken.setPath("/");
 		csrfToken.setSecure(true);
+		csrfToken.setMaxAge(jwtProps.getPrivateTokenExpiration());
 		response.addCookie(csrfToken);
 	}
 

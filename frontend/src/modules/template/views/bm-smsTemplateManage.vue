@@ -62,7 +62,7 @@
             <label for="senderType_MMS">MMS</label>
           </div>
         </div>
-        <div class="of_h">
+        <!-- <div class="of_h">
           <div class="float-left" style="width:31%"><h4>타 프로젝트 사용여부 *</h4></div>
           <div class="float-left" style="width:69%">
             <input type="radio" id="otherProjectUseYn_Y" name="otherProjectUseYn" value="Y" v-model="tmpltData.otherProjectUseYn">
@@ -70,7 +70,7 @@
             <input type="radio" id="otherProjectUseYn_N" name="otherProjectUseYn" value="N" v-model="tmpltData.otherProjectUseYn">
             <label for="otherProjectUseYn_N">전용</label>
           </div>
-        </div>
+        </div> -->
         <div class="of_h">
           <div class="float-left" style="width:31%"><h4>메시지구분 *</h4></div>
           <div class="float-left" style="width:69%">
@@ -269,7 +269,7 @@ export default {
             } else {
               tempData.imgInfoList = [];
             }
-            tempData.otherProjectUseYn = (obj.projectId == 'ALL' ? 'Y' : 'N');
+            tempData.otherProjectUseYn = 'N';
             vm.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
           });
           this.tmpltData = Object.assign({}, tempData);
@@ -291,10 +291,10 @@ export default {
         confirm.fnAlert(this.componentsTitle, '발송유형을 선택해주세요.');
         return false;
       }
-      if(!this.tmpltData.otherProjectUseYn){
-        confirm.fnAlert(this.componentsTitle, '타 프로젝트 사용여부를 선택해주세요.');
-        return false;
-      }
+      // if(!this.tmpltData.otherProjectUseYn){
+      //   confirm.fnAlert(this.componentsTitle, '타 프로젝트 사용여부를 선택해주세요.');
+      //   return false;
+      // }
       if(!this.tmpltData.msgKind){
         confirm.fnAlert(this.componentsTitle, '메시지구분을 선택해주세요.');
         return false;
