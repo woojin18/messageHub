@@ -104,10 +104,10 @@
                   <th class="text-center lc-1">템플릿 키</th>
                   <th class="text-center lc-1">템플릿명</th>
                   <th class="text-center lc-1">상태</th>
-                  <th class="text-center lc-1">발신프로필 타입</th>
+                  <th class="text-center lc-1">카카오 채널 타입</th>
                   <!-- 발신프로필그룹관리 기능 제외 -->
                   <!-- <th class="text-center lc-1">발신 프로필/그룹</th> -->
-                  <th class="text-center lc-1">발신 프로필</th>
+                  <th class="text-center lc-1">카카오 채널</th>
                   <th class="text-center lc-1">최종수정일자</th>
                   </tr>
                 </thead>

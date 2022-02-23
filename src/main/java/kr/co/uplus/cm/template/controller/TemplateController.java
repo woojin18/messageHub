@@ -154,8 +154,8 @@ public class TemplateController {
         List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("sheetTitle", "푸시 템플릿 리스트");
-        map.put("colLabels", new String[] { "템플릿 ID", "템플릿명", "타 프로젝트 사용여부", "메시지타입", "메시지구분", "등록자", "등록일자" });
-        map.put("colIds", new String[] {"tmpltId", "tmpltName", "projectIdNm", "msgTypeName", "msgKindName", "regNm", "regDt"});
+		map.put("colLabels", new String[] { "템플릿 ID", "템플릿명", /* "타 프로젝트 사용여부", */ "메시지타입", "메시지구분", "등록자", "등록일자" });
+		map.put("colIds", new String[] { "tmpltId", "tmpltName", /* "projectIdNm", */ "msgTypeName", "msgKindName", "regNm", "regDt"});
         map.put("numColIds", new String[] {});
         map.put("figureColIds", new String[] {});
         map.put("colDataList", tmpltSvc.selectPushTemplateList(params).getData());
@@ -561,7 +561,7 @@ public class TemplateController {
         List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("sheetTitle", "알림톡 템플릿 리스트");
-        map.put("colLabels", new String[] { "템플릿 코드", "템플릿명", "상태", "발신프로필 타입", "발신 프로필", "최종수정일자" });
+        map.put("colLabels", new String[] { "템플릿 코드", "템플릿명", "상태", "카카오 채널 타입", "카카오 채널", "최종수정일자" });
         map.put("colIds", new String[] {"tmpltCode", "tmpltName", "tmpltStatCodeName", "senderKeyTypeName", "kkoChId", "updDt"});
         map.put("numColIds", new String[] {});
         map.put("figureColIds", new String[] {});

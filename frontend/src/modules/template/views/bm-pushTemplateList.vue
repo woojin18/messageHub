@@ -17,6 +17,8 @@
               <option value="tmpltId">템플릿ID</option>
             </select>
             <input type="text" class="inputStyle ml10" v-model="searchData.searchText" style="width:31%" title="검색조건 입력란" @keypress.enter="fnPageNoResetSearch">
+
+            <a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" title="통합발송 검색" activity="READ">검색</a>
           </div>
 
           <!--<div class="of_h consolMarginTop">
@@ -34,7 +36,7 @@
             </div>
           </div>-->
 
-          <div class="of_h consolMarginTop">
+          <div class="of_h consolMarginTop" style="display:none;">
             <div class="inline-block" style="width:15%"><h4>타 프로젝트 사용여부</h4></div>
             <div class="inline-block" style="width:80%">
               <div class="consolCheck">
@@ -46,7 +48,7 @@
                 <label for="searchOthPrjUseYn_N">전용</label>
               </div>
             </div>
-            <a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" title="통합발송 검색" activity="READ">검색</a>
+            <!-- <a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" title="통합발송 검색" activity="READ">검색</a> -->
           </div>
         </div>
       </div>
@@ -79,7 +81,7 @@
                 <col style="width:7%">
                 <col style="width:10%">
                 <col>
-                <col style="width:15%">
+                <!-- <col style="width:15%"> -->
                 <col style="width:10%">
                 <col style="width:10%">
                 <col style="width:8%">
@@ -94,7 +96,7 @@
                   <th class="text-center lc-1">No.</th>
                   <th class="text-center lc-1">템플릿 ID</th>
                   <th class="text-center lc-1">템플릿명</th>
-                  <th class="text-center lc-1">타 프로젝트 사용여부</th>
+                  <!-- <th class="text-center lc-1">타 프로젝트 사용여부</th> -->
                   <th class="text-center lc-1">메시지타입</th>
                   <th class="text-center lc-1">메시지구분</th>
                   <th class="text-center lc-1">등록자</th>
@@ -112,7 +114,7 @@
                     <u><router-link :to="{ name: 'pushTemplateManage', params: { 'tmpltId' : contant.tmpltId }}">{{contant.tmpltId}}</router-link></u>
                   </td>
                   <td class="text-left">{{contant.tmpltName | unescapeXss}}</td>
-                  <td class="text-center">{{contant.projectIdNm}}</td>
+                  <!-- <td class="text-center">{{contant.projectIdNm}}</td> -->
                   <td class="text-center">{{contant.msgTypeName}}</td>
                   <td class="text-center">{{contant.msgKindName}}</td>
                   <td class="text-center">{{contant.regNm}}</td>

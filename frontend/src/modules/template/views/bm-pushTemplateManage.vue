@@ -74,7 +74,7 @@
             <label for="msgKind_I">정보성</label>
           </div>
         </div>
-        <div class="of_h user-phone">
+        <div class="of_h user-phone" style="display:none;">
           <div class="float-left" style="width:28%">
             <h4>타 프로젝트 사용여부  *</h4>
           </div>
@@ -175,7 +175,7 @@ export default {
       useCh : 'PUSH',
       isInsert : true,
       contentAreaPlaceholder: '변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정\n:예) #{name}님 #{yyyymmdd} 출금 예정입니다.',
-      tmpltData : {imgUrl:''}
+      tmpltData : {imgUrl:'', otherProjectUseYn:'N'}
     }
   },
   mounted() {

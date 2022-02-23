@@ -45,7 +45,7 @@
           <div class="of_h">
             <!-- 발신프로필그룹관리 기능 제외 -->
             <!-- <div class="float-left" style="width:22%"><h4>발신 프로필/그룹 *</h4></div> -->
-            <div class="float-left" style="width:22%"><h4>발신 프로필 *</h4></div>
+            <div class="float-left" style="width:22%"><h4>카카오 채널 *</h4></div>
             <div class="float-left" style="width:78%">
               <!-- 발신프로필그룹관리 기능 제외
               <select
