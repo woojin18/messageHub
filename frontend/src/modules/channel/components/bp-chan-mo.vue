@@ -20,9 +20,9 @@
 							<div class="consolMarginTop">
 								<h5 class="inline-block" style="width:20%">MO 유형 *</h5>
 								<div class="inline-block">
-									<input type="radio" id="SMS" value="SMSMO" class="cBox" v-model="moType"> <label for="SMS" class="payment mr30 font-size12">SMS MO</label>
-									<input type="radio" id="MMS" value="MMSMO" class="cBox" v-model="moType"> <label for="MMS" class="payment mr30 font-size12">MMS MO</label>		
-									<input type="radio" id="LMS" value="LMSMO" class="cBox" v-model="moType"> <label for="LMS" class="payment font-size12">LMS MO</label>		
+									<input type="checkbox" id="SMS" class="checkStyle2" value='SMSMO' v-model="moTypes"> <label for="SMS" class="payment mr30 font-size12">SMS MO</label>
+									<input type="checkbox" id="MMS" class="checkStyle2" value='MMSMO' v-model="moTypes"> <label for="MMS" class="payment mr30 font-size12">MMS MO</label>		
+									<input type="checkbox" id="LMS" class="checkStyle2" value='LMSMO' v-model="moTypes"> <label for="LMS" class="payment font-size12">LMS MO</label>		
 								</div>
 							</div>
               				<div class="consolMarginTop">
@@ -76,7 +76,7 @@ export default {
     return {
       apiKey    : "",
       moNumber  : "",
-      moType    : "",
+	  moTypes	: [],
       pjtAllNo  : "",
       webhookUrl : "",
       sts : "",
@@ -105,7 +105,7 @@ export default {
     row_data: function(newVal, oldVal) {
       this.apiKey = newVal.apiKey;
       this.moNumber = newVal.moNumber;
-      this.moType = newVal.moType;
+      //this.moType = newVal.moType;
       this.webhookUrl = newVal.webhookUrl;
       this.isConnWebhookUrl = "";
       /* if( newVal.pjtAllNo != 'ALL' ){
@@ -135,7 +135,7 @@ export default {
         confirm.fnAlert("", "MO 수신번호는 필수 입력사항입니다.");
         return false;
       }
-      if(this.$gfnCommonUtils.isEmpty(this.moType)){
+      if(this.$gfnCommonUtils.isEmpty(this.moTypes)){
         confirm.fnAlert("", "MO 유형은 필수 입력사항입니다.");
         return false;
       }
@@ -163,7 +163,7 @@ export default {
         "sts"         : this.sts,
         "apiKey"      : this.apiKeyCode,
         "moNumber"    : this.moNumber,
-        "moType"      : this.moType,
+        "moTypes"     : this.moTypes,
         "projectId"   : this.projectId,
         webhookUrl    : this.webhookUrl
       }
