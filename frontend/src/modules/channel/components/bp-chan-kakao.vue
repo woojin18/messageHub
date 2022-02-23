@@ -12,7 +12,7 @@
 								<input type="text" class="inputStyle float-right" style="width:69%" v-model="kkoChId" placeholder="카카오에 등록된 검색용 아이디를 넣어주세요 (@을 제외하고 입력해 주세요)">
 							</div>
 							<div class="clear consolMarginTop">
-								<h5 class="inline-block float-left" style="width:25%">관리자 연락처 * <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:320px">카카오 비즈니스 관리자 센터에서 입력한 카카오채널ID에<br>관리자로 등록되어 있는 사용자 연락처입니다.</span></i></h5>
+								<h5 class="inline-block float-left" style="width:25%">관리자 연락처 * <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:320px">카카오 비즈니스 관리자 센터에서 입력한 카카오 채널ID에<br>관리자로 등록되어 있는 사용자 연락처입니다.</span></i></h5>
 								<input type="text" class="inputStyle float-right" style="width:72%" placeholder="카카오 채널에 등록된 관리자 연락처" v-model="phoneNumber">
 							</div>
 							<div class="of_h consolMarginTop" style="display:none">

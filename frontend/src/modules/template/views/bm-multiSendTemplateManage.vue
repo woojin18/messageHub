@@ -61,7 +61,7 @@
 			<div class="col-xs-7" style="padding-right:100px">
 				<h4 class="topH4">01 발송정보</h4>
 				<div class="of_h">
-					<div class="float-left" style="width:34%"><h5>메시지 구분*</h5></div>
+					<div class="float-left" style="width:34%"><h5>메시지 구분 *</h5></div>
 					<div class="float-left" style="width:66%">
 						<input type="radio" name="mSort" value="I" id="mSort1" checked="" v-model="rowData.msgKind" v-on:click="checkMsgKind('I')"><label for="mSort1" class="mr20">정보성</label>
 						<input type="radio" name="mSort" value="A" id="mSort2" v-model="rowData.msgKind" v-on:click="checkMsgKind('A')"><label for="mSort2">광고용</label>
@@ -69,19 +69,19 @@
 					</div>
 				</div>
 				<div class="of_h mt15">
-					<div class="float-left" style="width:34%"><h5>메시지 타입*</h5></div>
+					<div class="float-left" style="width:34%"><h5>메시지 타입 *</h5></div>
 					<div class="float-left" style="width:66%">
 						<input type="radio" name="mType" value="BASE" id="mType_text" checked="" v-model="rowData.msgType" v-on:click="checkMsgType('BASE')"><label for="mType_text" class="mr20">텍스트</label>
 						<input type="radio" name="mType" value="IMAGE" id="mType_image" v-model="rowData.msgType" v-on:click="checkMsgType('IMAGE')"><label for="mType_image">이미지</label>
 					</div>
 				</div>
-				<div class="of_h mt15">
+				<!-- <div class="of_h mt15">
 					<div class="float-left" style="width:34%"><h5>타 프로젝트 사용여부*</h5></div>
 					<div class="float-left" style="width:66%">
 						<input type="radio" name="otherUse" value="Y" id="otherUse1" checked="" v-model="rowData.otherProjectUseYn"> <label for="otherUse1" class="mr20">공용</label>
 						<input type="radio" name="otherUse" value="N" id="otherUse2" v-model="rowData.otherProjectUseYn"> <label for="otherUse2">전용</label>
 					</div>
-				</div>
+				</div> -->
 				<div class="of_h mt15">
 					<div class="float-left" style="width:34%"><h5>템플릿 명</h5></div>
 					<div class="float-left" style="width:66%">
@@ -209,7 +209,7 @@
 					</div>
 				</div>
 				<div class="of_h">
-					<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+					<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
 					<div class="float-left" style="width:57%">
 						<textarea class="textareaStyle height190" :placeholder="pushPlaceHoder" v-model="rowData.pushContent" @input="fnSetPushCurrByte"></textarea>
 						<strong class="letter">({{msgPushCurrByte}} / 512)</strong>
@@ -348,21 +348,21 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>브랜드명*</h4></div>
+							<div class="float-left" style="width:13%"><h4>브랜드명 *</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
 								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 							</select>
 						</div>
 						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+							<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
 							<div class="float-left" style="width:57%">
 								<textarea class="textareaStyle height190" maxlength="90" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsFreeContentId" @keyup="fnTextLength('내용', '#rcsFreeContentId', '#rcsFreeTextLength', '90')"></textarea>
 								<strong class="letter" id="rcsFreeTextLength">(00 / 90)</strong>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">
-							<div class="float-left" style="width:13%"><h4>무료수신거부*</h4></div>
+							<div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
 							<div class="float-left" style="width:57%">
 								<input type="text" class="inputStyle" v-model="rowData.rcsBlockNumber" placeholder="수신거부번호 설정" maxlength="15">
 							</div>
@@ -425,7 +425,7 @@
 								</select>
 							</div>
 							<div class="of_h">
-								<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+								<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
 								<div class="float-left" style="width:57%">
 									<textarea class="textareaStyle height190"  v-model="rowData.rcs0Content" disabled></textarea>
 									<strong class="letter" id="rcs1TextLength">(00 / 90)</strong>
@@ -647,14 +647,14 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>브랜드명*</h4></div>
+							<div class="float-left" style="width:13%"><h4>브랜드명 *</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
 								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 							</select>
 						</div>
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+							<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
 							<div class="float-left" style="width:57%">
 								<textarea class="textareaStyle height190" maxlength="100" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsSMSContentId" @keyup="fnTextLength('내용', '#rcsSMSContentId', '#rcsSMSTextLength', '100')"></textarea>
 								<strong class="letter" id="rcsSMSTextLength">(00 / 100)</strong>
@@ -764,20 +764,20 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>브랜드명*</h4></div>
+							<div class="float-left" style="width:13%"><h4>브랜드명 *</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
 								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 							</select>
 						</div>
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>제목*</h4></div>
+							<div class="float-left" style="width:13%"><h4>제목 *</h4></div>
 							<div class="float-left" style="width:57%">
 								<input type="text" class="inputStyle" v-model="rowData.rcs0Title" placeholder="최대 30자 입력 가능니다." maxlength="30">
 							</div>
 						</div>
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+							<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
 							<div class="float-left" style="width:57%">
 								<textarea class="textareaStyle height190" maxlength="1300" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsLMSContentId" @keyup="fnTextLength('내용', '#rcsLMSContentId', '#rcsLMSTextLength', '1300')"></textarea>
 								<strong class="letter" id="rcsLMSTextLength">(00 / 1,300)</strong>
@@ -899,7 +899,7 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>브랜드명*</h4></div>
+							<div class="float-left" style="width:13%"><h4>브랜드명 *</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
 								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
@@ -912,7 +912,7 @@
 							</div>
 						</div>
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+							<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
 							<div class="float-left" style="width:57%">
 								<textarea class="textareaStyle height190" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsShortContentId" @keyup="fnTextLength('내용', '#rcsShortContentId', '#rcsShortTextLength', '1300')"></textarea>
 								<strong class="letter" id="rcsShortTextLength">(00 / 1,300)</strong>
@@ -1048,7 +1048,7 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>브랜드명*</h4></div>
+							<div class="float-left" style="width:13%"><h4>브랜드명 *</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
 								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
@@ -1061,7 +1061,7 @@
 							</div>
 						</div>
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+							<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
 							<div class="float-left" style="width:57%">
 								<textarea class="textareaStyle height190" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsTallContentId" @keyup="fnTextLength('내용', '#rcsTallContentId', '#rcsTallTextLength', '1300')"></textarea>
 								<strong class="letter" id="rcsTallTextLength">(00 / 1,300)</strong>
@@ -1195,7 +1195,7 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>브랜드명*</h4></div>
+							<div class="float-left" style="width:13%"><h4>브랜드명 *</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
 								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
@@ -1234,7 +1234,7 @@
 									</div>
 								</div>
 								<div class="of_h">
-									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+									<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
 									<div class="float-left" style="width:57%">
 										<textarea class="textareaStyle height190" v-model="rowData.rcsCShortImgInfoList[tabIdx].rcsContent" :placeholder="rcsPlaceHoder" :id="fnCarouselString('rcsCarouselTab', tabIdx, '')" @keyup="fnTextLength('내용', fnCarouselString('#rcsCarouselTab', tabIdx, ''), fnCarouselString('#rcsCarouselTab', tabIdx, 'TextLength'), '1300')"></textarea>
 										<strong class="letter" :id="fnCarouselString('rcsCarouselTab', tabIdx, 'TextLength')">(00 / 1,300)</strong>
@@ -1394,7 +1394,7 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>브랜드명*</h4></div>
+							<div class="float-left" style="width:13%"><h4>브랜드명 *</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
 								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
@@ -1433,7 +1433,7 @@
 									</div>
 								</div>
 								<div class="of_h">
-									<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+									<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
 									<div class="float-left" style="width:57%">
 										<textarea class="textareaStyle height190" v-model="rowData.rcsCTallImgInfoList[tabIdx].rcsContent" :placeholder="rcsPlaceHoder" :id="fnCarouselString('rcsCarouselTab', tabIdx, '')" @keyup="fnTextLength('내용', fnCarouselString('#rcsCarouselTab', tabIdx, ''), fnCarouselString('#rcsCarouselTab', tabIdx, 'TextLength'), '1300')"></textarea>
 										<strong class="letter" :id="fnCarouselString('rcsCarouselTab', tabIdx, 'TextLength')">(00 / 1,300)</strong>
@@ -1605,7 +1605,7 @@
 				</div>
 				<div class="float-left consoleCon" style="width:72%">
 					<div class="of_h">
-						<div class="float-left" style="width:13%"><h4>발신 프로필 *</h4></div>
+						<div class="float-left" style="width:13%"><h4>카카오 채널 *</h4></div>
 						<div class="float-left" style="width:59%">
 							<select class="float-left selectStyle2" style="width:100%" v-model="rowData.friendTalkSenderKey">
 								<option value="">선택해주세요.</option>
@@ -1631,7 +1631,7 @@
 						</div>
 					</div>
 					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:13%"><h4>내용*</h4></div>
+						<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
 						<div class="float-left" style="width:59%">
 							<textarea class="textareaStyle height190" v-model="rowData.friendTalkContent" :placeholder="kakaoPlaceHoder" @input="fnSetFrndTalkCurrByte" :maxlength="msgFrndTalkLimitByte"></textarea>
 							<strong class="letter">({{msgFrndTalkCurrByte | formatComma}} / {{msgFrndTalkLimitByte | formatComma}})</strong>
@@ -1732,7 +1732,7 @@
 					</div>
 					<div v-if="selectedAlimTalkTemplate">
 						<div class="of_h mt20">
-							<div class="float-left" style="width:15%"><h4>발신프로필</h4></div>
+							<div class="float-left" style="width:15%"><h4>카카오 채널</h4></div>
 							<div class="float-left" style="width:57%">
 								<select class="float-left selectStyle2" style="width:100%" v-model="rowData.senderKey" disabled>
 									<option value="">선택해주세요.</option>
@@ -1786,8 +1786,8 @@
 												</td>
 												<td :class="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? 'text-left' : 'text-left of_h'">
 													<h6 v-if="buttonInfo.linkType == 'DS'" class="float-left" v-html="buttonDSDescription"></h6>
-													<h6 v-if="buttonInfo.linkType == 'WL'" class="float-left" style="width:25%">Mobile*</h6>
-													<h6 v-if="buttonInfo.linkType == 'AL'" class="float-left" style="width:25%">Android*</h6>
+													<h6 v-if="buttonInfo.linkType == 'WL'" class="float-left" style="width:25%">Mobile *</h6>
+													<h6 v-if="buttonInfo.linkType == 'AL'" class="float-left" style="width:25%">Android *</h6>
 													<input v-if="buttonInfo.linkType == 'WL'" type="text" class="inputStyle float-left" style="width:75%" v-model="buttonInfo.linkMo" disabled>
 													<input v-if="buttonInfo.linkType == 'AL'" type="text" class="inputStyle float-left" style="width:75%" v-model="buttonInfo.linkAnd" disabled>
 												</td>
@@ -1795,11 +1795,11 @@
 											<tr v-if="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL'" :key="idx+'_sub'">
 												<td class="text-left">
 													<div v-if="buttonInfo.linkType == 'WL'">
-														<h6 class="float-left" style="width:25%">PC*</h6>
+														<h6 class="float-left" style="width:25%">PC *</h6>
 														<input type="text" class="inputStyle float-left" style="width:75%" v-model="buttonInfo.linkPc" disabled>
 													</div>
 													<div v-if="buttonInfo.linkType == 'AL'">
-														<h6 class="float-left" style="width:25%">IOS*</h6>
+														<h6 class="float-left" style="width:25%">IOS *</h6>
 														<input type="text" class="inputStyle float-left" style="width:75%" v-model="buttonInfo.linkIos" disabled>
 													</div>
 												</td>
@@ -1856,6 +1856,7 @@
 					<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>발신번호 *</h4></div>
 					<div class="float-left" style="width:57%">
 						<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
+							<option value="">선택해주세요.</option>
 							<option v-for="info in smsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
 						</select>
 					</div>
@@ -1863,7 +1864,7 @@
 				<div v-if="smsTemplateTable === 0">
 					<div class="of_h" v-if="rowData.msgKind == 'A'">
 						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'">
-							<h4>광고성메시지 수신거부번호*</h4>
+							<h4>광고성메시지 수신거부번호 *</h4>
 						</div>
 						<div class="float-left mt10" style="width:57%">
 							<div class="float-left" style="width:15%">
@@ -1875,7 +1876,7 @@
 						</div>
 					</div>
 					<div class="of_h consolMarginTop">
-						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>내용*</h4>						
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>내용 *</h4>						
 						    <span class="float-left color3"  v-if="rowData.msgKind == 'A'">
 								(광고) 문구가 내용 앞에 붙고<br>광고성메시지 수신거부번호는<br>내용 밑에 포함됩니다.
 							</span>
@@ -1888,7 +1889,7 @@
 				</div>
 				<div v-else-if="smsTemplateTable === 1">
 					<div class="of_h" >
-						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>제목*</h4></div>
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>제목 *</h4></div>
 						<div class="float-left" style="width:57%">
 							<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.smsTitle" @input="fnSetTitleSmsCurrByte">
 							<strong class="letter">({{titleSmsCurrByte | formatComma}} / {{titleSmsLimitByte | formatComma}})</strong>
@@ -1896,7 +1897,7 @@
 					</div>
 					<div class="of_h" v-if="rowData.msgKind == 'A'">
 						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'">
-							<h4>광고성메시지 수신거부번호*</h4>
+							<h4>광고성메시지 수신거부번호 *</h4>
 						</div>
 						<div class="float-left mt10" style="width:57%">
 							<div class="float-left" style="width:15%">
@@ -1908,7 +1909,7 @@
 						</div>
 					</div>
 					<div class="of_h consolMarginTop" >
-						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>내용*</h4>
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>내용 *</h4>
 							<span class="float-left color3"  v-if="rowData.msgKind == 'A'">
 								광고성메시지 수신거부번호는<br>내용 하단에 포함됩니다.<br>또한 광고 표기는 제목 또는 내용에<br>포함되어 있어야 합니다.
 							</span>
@@ -2060,7 +2061,7 @@ export default {
 					'multiSendTmpltCode':'',
 					'msgType':'BASE', //BASE: 텍스트, IMAGE:이미지
 					'msgKind':'I', //정보성 I, 광고용: A
-					'otherProjectUseYn':'Y', //Y:공용, N:전용
+					'otherProjectUseYn':'N', //Y:공용, N:전용
 					'tmpltType':'M',  //tmpltType:통합발송 M, 스마트발송:S
 					'tmpltTitle':'', //템플릿 명
 					'pushHowToDenyReceipt':'',
@@ -2092,7 +2093,8 @@ export default {
 					'callback':'',
 					'smsImgInfoList':[], //sms/mms이미지정보
 
-					'smsSendType': 'S'  //sms/mms 발송유형
+					'smsSendType': 'S',  //sms/mms 발송유형
+					'projectId' : ''
 				}
 			}
 		}
@@ -2203,7 +2205,7 @@ export default {
 			friendTalkUseCh : 'FRIENDTALK',
 			friendTalkImgLimitSize : 1,
 
-			friendTalkSenderKeyType: 'NOMAL',	//NOMAL, GROUP //friendTalk 발신프로필 그룹
+			friendTalkSenderKeyType: 'NOMAL',	//NOMAL, GROUP //friendTalk 카카오 채널 그룹
 			friendTalkSenderKeyList: [],
 
 			rcsButtonTypeList : [
@@ -2378,11 +2380,6 @@ export default {
 				vm.rcsStyleMessagebaseformId = resultData.styleFormList[0].MESSAGEBASEFORM_ID;
 				vm.rcsStyleFormNmList = resultData.styleFormList;
 			});
-
-			params = {
-				projectId: utils.getCookie(consts.projectId),
-				corpId: tokenSvc.getToken().principal.corpId
-			};
 
 			templateApi.selectProjectUseChannelInfo(params).then(response =>{
 				var result = response.data;
@@ -2876,7 +2873,11 @@ export default {
 
 		async fnCompleteMultiSendTemplate(){
 			var params = this.rowData;
-
+			if(params.projectId == ''){
+				params.projectId = this.projectUseChannelInfoData.projectId
+				console.log(params.projectId)
+			}
+		
 			// 유효성 검사
 			//if(this.fnIsValid() == false) return;
 			params.tmpltStatus = 'COMPLETE';//템플릿 상태값 저장:SAVE, 완료:COMPLETE
@@ -2911,10 +2912,10 @@ export default {
 				confirm.fnAlert(this.detailTitle, '메시지구분을 선택해주세요.');
 				return false;
 			}
-			if (!this.rowData.otherProjectUseYn) {
-				confirm.fnAlert(this.detailTitle, '타 프로젝트 사용여부를 선택해주세요.');
-				return false;
-			}
+			// if (!this.rowData.otherProjectUseYn) {
+			// 	confirm.fnAlert(this.detailTitle, '타 프로젝트 사용여부를 선택해주세요.');
+			// 	return false;
+			// }
 
 			if (this.rowData.checkedChannel.length == 0) {
 				confirm.fnAlert(this.detailTitle, '채널을 선택해주세요.');
@@ -3240,7 +3241,7 @@ export default {
 				if (this.rowData.checkedChannel.includes('KAKAO')) {
 					if (this.kakaoTemplateTable === 0) { //FRIENDTALK
 						if (!this.rowData.friendTalkSenderKey) {
-							confirm.fnAlert(this.detailTitle, '친구톡 발신프로필을 선택해주세요.');
+							confirm.fnAlert(this.detailTitle, '친구톡 카카오 채널을 선택해주세요.');
 							return false;
 						}
 						if (!this.rowData.friendTalkContent) {
@@ -3400,7 +3401,8 @@ export default {
 						//               1-2) 해당 내용 적용
 						//        3) 카카오톡인 경우
 						//        4) SMS/MMS인 경우
-
+						
+						this.rowData.projectId = rtnData.projectId
 						this.rowData.checkedChannel = rtnData.chTypeList.split(',');
 						for (var i=0; i < this.rowData.checkedChannel.length; i++) {
 							if (this.rowData.checkedChannel[i] == 'PUSH') {

@@ -169,7 +169,7 @@
 		WHERE	A.PROJECT_ID = #{projectId}
 		AND		B.CORP_ID = #{corpId}
 		AND		B.USE_YN = 'Y'
-		AND		B.APPROVAL_STATUS IN ('승인', '반려(수정)')
+		AND		B.APPROVAL_STATUS = '승인'
 	</select>
 
 	<select id="selectRcsMsgbaseformList" resultType="hashMap">

@@ -168,9 +168,9 @@ public class MultiSendTemplateController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sheetTitle", "통합발송 템플릿 리스트");
 		map.put("colLabels",
-				new String[] { "템플릿 ID", "템플릿명", "템플릿 채널", "메시지 구분", "메시지 타입", "타 프로젝트 사용여부", "상태", "등록자", "등록일자" });
-		map.put("colIds", new String[] { "tmpltCode", "tmpltTitle", "tmpltChannel", "msgKindName", "msgTypeName",
-				"otherProjectUseYnName", "tmpltStatusName", "regNm", "regDt" });
+				new String[] { "템플릿 ID", "템플릿명", "템플릿 채널", "메시지 구분", "메시지 타입","상태", "등록자", "등록일자" });
+		map.put("colIds", new String[] { "tmpltCode", "tmpltTitle", "tmpltChannel", "msgKindName", "msgTypeName"
+				,"tmpltStatusName", "regNm", "regDt" });
 		map.put("numColIds", new String[] {});
 		map.put("figureColIds", new String[] {});
 		map.put("colDataList", multiSendTemplateService.selectMultiSendTemplateList(params).getData());
