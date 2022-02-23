@@ -11,7 +11,7 @@
                     <div class="mt20">
                         <div class="row">
                             <div class="col-xs-6 pr0">
-                                <div class="menuBox pd20 height170">
+                                <div class="menuBox pd20" style="height:190px">
                                     <h4>{{alarmType.alarmTypeName}}</h4>		
                                     <p class="color4 mt10" style="overflow-y: visible;">{{alarmType.alarmDesc}}</p>
                                     <div class="mt40">
@@ -20,7 +20,7 @@
                                 </div>
                             </div>
                             <div class="col-xs-6 pl0">
-                                <div class="pl0 border-line2 pd20 height170">
+                                <div class="pl0 border-line2 pd20" style="overflow-y:auto; height:190px">
                                     <div class="scroll-y7">
                                         <div class="of_h" v-for="(data,idx2) in alarmType.list" v-bind:class="{'mt10':idx2>0}">
                                             <router-link :to="{name:'updAlarmType', params:{typeCode:alarmType.alarmTypeCode, alarmId:data.alarmId}}" class="inline-block float-left text-underline mt5" style="width:60%">{{data.alarmName}}</router-link>
