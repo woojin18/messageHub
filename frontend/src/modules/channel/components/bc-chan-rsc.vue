@@ -189,7 +189,6 @@ export default {
   },
   created(){
   this.projectId = this.$parent.projectId;  
-  console.log(this.$parent.projectId)
   },
   mounted() {
     
