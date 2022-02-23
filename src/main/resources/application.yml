@@ -18,11 +18,11 @@ spring:
 app.props:
   jwt:
     key-string: LcDVU5pmcXIakjK6yw/TJw==
-    private-token-expiration: 43200
+    private-token-expiration: 86400
     part1: JwtPart1
     part2: JwtPart2
-    access-token-expiration: 43200
-    refresh-token-expiration: 43200
+    access-token-expiration: 86400
+    refresh-token-expiration: 86400
     header: Authorization
     prefix: "Bearer "
 
@@ -38,7 +38,7 @@ datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     #jdbc-url: jdbc:log4jdbc:mariadb://sandbox.ums-dev.uplus.co.kr:43306/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     jdbc-url: jdbc:log4jdbc:mysql://mysql.ums-dev.uplus.co.kr:43306/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
-    username: cm_console
+    username: cm_bo
     password: ENC(YrccTPRMqk+u5utdFupqFIM3y2Nx+THl)
     pool-name: hikari-cp
     maximum-pool-size: 30
