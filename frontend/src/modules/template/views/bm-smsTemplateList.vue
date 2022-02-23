@@ -19,6 +19,7 @@
                 <option value="tmpltId">템플릿ID</option>
               </select>
               <input type="text" class="inputStyle vertical-top ml10" style="width:37.5%" title="검색조건 입력란" v-model="searchData.searchText" @keypress.enter="fnPageNoResetSearch">
+            <a @click="fnPageNoResetSearch" class="btnStyle1 float-right" title="검색" activity="READ">검색</a>
             </div>
           </div>
           <!--<div class="of_h consolMarginTop">
@@ -36,21 +37,20 @@
             </div>
           </div>-->
 
-          <div class="of_h">
-            <!--<div class="inline-block" style="width:16%"><h4>타 프로젝트 사용여부</h4></div>-->
+          <!-- <div class="of_h">
+            <div class="inline-block" style="width:16%"><h4>타 프로젝트 사용여부</h4></div>
             <div class="inline-block" style="width:100%">
-              <!--<div class="consolCheck consolMarginTop">
+              <div class="consolCheck consolMarginTop">
                 <input type="checkbox" id="otherUse_all" class="checkStyle2" @change="fnSearchOthPrjUseYnChkAll" v-model="othPrjUseYnAllSelected">
                 <label for="otherUse_all" class="mr30">전체</label>
                 <input type="checkbox" id="searchOthPrjUseYn_Y" class="checkStyle2" value="Y" v-model="searchData.searchOthPrjUseYn">
                 <label for="searchOthPrjUseYn_Y" class="mr30">공용</label>
                 <input type="checkbox" id="searchOthPrjUseYn_N" class="checkStyle2" value="N" v-model="searchData.searchOthPrjUseYn">
                 <label for="searchOthPrjUseYn_N" class="mr30">전용</label>
-              </div>-->
-              <!--<a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" title="통합발송 검색">검색</a> -->
-              <a @click="fnPageNoResetSearch" class="btnStyle1 float-right" title="검색" activity="READ">검색</a>
+              </div>
+              <a @click="fnPageNoResetSearch()" class="btnStyle1 float-right" title="통합발송 검색">검색</a>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
                 <col style="width:5%">
                 <col style="width:5%">
                 <col>
-                <col style="width:17%">
+                <col style="width:%">
                 <col style="width:10%">
                 <col style="width:10%">
                 <col style="width:17%">
