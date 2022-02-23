@@ -20,13 +20,13 @@
 							<div class="consolMarginTop">
 								<h5 class="inline-block" style="width:20%">MO 유형 *</h5>
 								<div class="inline-block">
-									<input type="radio" id="SMS" value="SMSMO" class="cBox" v-model="moType"> <label for="SMS" class="payment mr30 font-size12">SMS MO</label>
-									<input type="radio" id="MMS" value="MMSMO" class="cBox" v-model="moType"> <label for="MMS" class="payment mr30 font-size12">MMS MO</label>		
-									<input type="radio" id="LMS" value="LMSMO" class="cBox" v-model="moType"> <label for="LMS" class="payment font-size12">LMS MO</label>		
+									<input type="checkbox" id="SMS" class="checkStyle2" value='SMSMO' v-model="moTypes"> <label for="SMS" class="payment mr30 font-size12">SMS MO</label>
+									<input type="checkbox" id="MMS" class="checkStyle2" value='MMSMO' v-model="moTypes"> <label for="MMS" class="payment mr30 font-size12">MMS MO</label>		
+									<input type="checkbox" id="LMS" class="checkStyle2" value='LMSMO' v-model="moTypes"> <label for="LMS" class="payment font-size12">LMS MO</label>		
 								</div>
 							</div>
               				<div class="consolMarginTop">
-								<h5 class="inline-block" style="width:20%">API KEY *</h5>
+								<h5 class="inline-block" style="width:20%">API KEY *<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:430px">고객사가 MO 메시지를 요청할 때 필요합니다.</span></i></h5>
                   				<select class="selectStyle2" @change="fnApiKeyCode" v-model='apiKeyCode'>
                     				<option value="">선택하세요</option>
                     				<option  v-for="(row, index) in ApiKeyArr" :key="index" :value="row.apiKey">{{ row.apiKeyName }}({{ row.apiKey }})</option>
@@ -34,7 +34,7 @@
                   				</select>
 							</div>
 							<div class="consolMarginTop clear">
-								<h5 class="inline-block" style="width:20%">웹훅 URL <span v-show="!visible">*</span><i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:430px">웹훅 URL은 사용자가 메세지를 전송할 때 수신 받을 수 있는 서버의 URL입니다.</span></i></h5>
+								<h5 class="inline-block" style="width:20%">웹훅 URL<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:430px">웹훅 URL은 사용자가 메세지를 전송할 때 수신 받을 수 있는 서버의 URL입니다.(api key 필수 선택)</span></i></h5>
 								<div style="width:80%" class="float-right">
 									<div style="width:70%" class="float-left">
 										<input type="text" class="inputStyle float-left" :disabled="visible" v-model="webhookUrl" placeholder="[http:// 혹은 https://]를 포함한 URL" @change="fnChgConnStatus()">
@@ -76,7 +76,7 @@ export default {
     return {
       apiKey    : "",
       moNumber  : "",
-      moType    : "",
+	  moTypes	: [],
       pjtAllNo  : "",
       webhookUrl : "",
       sts : "",
@@ -105,7 +105,7 @@ export default {
     row_data: function(newVal, oldVal) {
       this.apiKey = newVal.apiKey;
       this.moNumber = newVal.moNumber;
-      this.moType = newVal.moType;
+      //this.moType = newVal.moType;
       this.webhookUrl = newVal.webhookUrl;
       this.isConnWebhookUrl = "";
       /* if( newVal.pjtAllNo != 'ALL' ){
@@ -135,7 +135,7 @@ export default {
         confirm.fnAlert("", "MO 수신번호는 필수 입력사항입니다.");
         return false;
       }
-      if(this.$gfnCommonUtils.isEmpty(this.moType)){
+      if(this.$gfnCommonUtils.isEmpty(this.moTypes)){
         confirm.fnAlert("", "MO 유형은 필수 입력사항입니다.");
         return false;
       }
@@ -145,10 +145,10 @@ export default {
         return false;
       }
 
-      if(this.apiKeyCode != '' && this.apiKeyCode != '-' && this.$gfnCommonUtils.isEmpty(this.webhookUrl)){
-        confirm.fnAlert("", "API KEY가 미설정이 아닌 경우 웹훅URL은 필수 입력사항입니다.");
-        return false;
-      }
+      // if(this.apiKeyCode != '' && this.apiKeyCode != '-' && this.$gfnCommonUtils.isEmpty(this.webhookUrl)){
+      //   confirm.fnAlert("", "API KEY가 미설정이 아닌 경우 웹훅URL은 필수 입력사항입니다.");
+      //   return false;
+      // }
 
       if(!this.$gfnCommonUtils.isEmpty(this.webhookUrl) && this.isConnWebhookUrl == false){
         confirm.fnAlert("", "웹훅URL 사용하시려면 '연결 확인' 버튼을 통해 해당 URL이 사용가능한지 확인하셔야합니다.\n연결이 확인된 웹훅URL만 사용 가능합니다.");
@@ -163,7 +163,7 @@ export default {
         "sts"         : this.sts,
         "apiKey"      : this.apiKeyCode,
         "moNumber"    : this.moNumber,
-        "moType"      : this.moType,
+        "moTypes"     : this.moTypes,
         "projectId"   : this.projectId,
         webhookUrl    : this.webhookUrl
       }

@@ -980,7 +980,6 @@ public class ChannelService {
 	
 	// MO 수신번호 저장
 	@SuppressWarnings("unchecked")
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void saveMoCallback(Map<String, Object> params) throws Exception {
 		String sts = CommonUtils.getString(params.get("sts"));
 		
@@ -989,70 +988,86 @@ public class ChannelService {
 			//String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params)); 
 			//params.put("apiKey", apiKey);
 			
-			// 중복 체크
-			Map<String, Object> checkParams = new HashMap<>();
-			checkParams.putAll(params);
-			checkParams.put("detailMoNumber", params.get("moNumber"));
-			int duplCnt = generalDao.selectGernalCount(DB.QRY_SELECT_MO_CALLBACK_DUPL, checkParams);
+			ArrayList<String> moTypes =  (ArrayList<String>) params.get("moTypes");
+			if(moTypes.size() < 1) {
+				throw new Exception("MO 유형을 선택해주세요.");
+			}
 			
-			if( duplCnt > 0 ) {
-				throw new Exception("이미 해당 MO 수신번호와 MO 유형이 등록되어 있습니다. \n리스트에 보이지 않을 경우, 타 프로젝트 또는 타 업체에서 해당 수신번호와 유형으로 사용 중 입니다.\n");
+			String valiChkMsg = "";
+			for(int i = 0 ; i < moTypes.size() ; i++) {
+				// 중복 체크
+				Map<String, Object> checkParams = new HashMap<>();
+				checkParams.putAll(params);
+				checkParams.put("detailMoNumber", params.get("moNumber"));
+				checkParams.put("moType", moTypes.get(i));
+				
+				int duplCnt = generalDao.selectGernalCount(DB.QRY_SELECT_MO_CALLBACK_DUPL, checkParams);
+				if( duplCnt > 0 ) {
+					valiChkMsg += valiChkMsg.equals("") ? moTypes.get(i) : ", " + moTypes.get(i);
+				}
+			}
+		
+			if(!valiChkMsg.equals("")) {
+				throw new Exception("이미 해당 MO 수신번호와 MO 유형(" + valiChkMsg + ")이 등록되어 있습니다. \n리스트에 보이지 않을 경우, 타 프로젝트 또는 타 업체에서 해당 수신번호와 유형으로 사용 중 입니다.\n");
 			}
 
 			// 유큐브 서비스 등록 
 			
 			// 기본정보 가져오기
-			String custNo	= CommonUtils.getString(generalDao.selectGernalObject("project.selectCustNoForSaveProject", params));
-			String salesId	= CommonUtils.getString(generalDao.selectGernalObject("project.selectSalesIdForSaveProject", params));
-			String moType	= CommonUtils.getString(params.get("moType"));
-			Map<String, Object> projectMap = (Map<String, Object>) generalDao.selectGernalObject("channel.selectProjectDataForSaveMoCallback", params);
-			params.put("serviceId", projectMap.get("serviceId"));
-			
-			Map<String, Object> joinMap = new HashMap<>();
-			
-			joinMap.put("entrNo",			projectMap.get("serviceId"));	// 가입번호
-			joinMap.put("billAcntNo",		projectMap.get("billId"));		// 청구계정 번호
-			joinMap.put("logid",			params.get("projectId"));		// 가입인식번호1(본인 서비스의 유니크 아이디)
-			joinMap.put("indcId",			salesId);						// 유치자아이디
-			joinMap.put("mngrId",			salesId);						// 관리자아이디
-			
-			
-			// MO 서비스정보 타입 (SMS, LMS, MMS)
-			if( "SMSMO".equals(moType) ) {
-				joinMap.put("serviceType",		"SMS");
-			} else if( "LMSMO".equals(moType) ) {
-				joinMap.put("serviceType",		"LMS");
-			} else if( "MMSMO".equals(moType) ) {
-				joinMap.put("serviceType",		"MMS");
-			}
-			
-			Map<String, Object> priceInfo = (Map<String, Object>) generalDao.selectGernalObject("channel.selectPriceInfoForSaveMoCallback", params);
-			
-			JSONParser jParser = new JSONParser();
-			JSONObject postFeeInfo = (JSONObject) jParser.parse(CommonUtils.getString(priceInfo.get("postFeeInfo")));
-			
-			Map<String, Object> serviceInfo = new HashMap<>();
-			serviceInfo.put("callback",	params.get("moNumber"));
-			serviceInfo.put("monBasicYn",	"Y");
-			serviceInfo.put("monBasicFee",	priceInfo.get("preFee"));
-			serviceInfo.put("unitPrice",	postFeeInfo.get("POST_FEE"));
-			
-			joinMap.put("serviceInfo",		serviceInfo);
-			
-			kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(joinMap);
-			
-			//System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
-			
-			// API 통신처리
-			Map<String, Object> result =  apiInterface.post("/console/v1/ucube/service/join/mo", joinMap, null);
-			
-			if( "10000".equals(result.get("code")) ) {
-				generalDao.insertGernal(DB.QRY_INSERT_MO_CALLBACK, params);
-				// redis 테이블 처리
-				commonService.updateCmCmdForRedis("CM_MO_CALLBACK");
-			} else {
-				String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
-				throw new Exception(errMsg);
+			for(int i = 0 ; i < moTypes.size() ; i++) {
+				String moType	= moTypes.get(i);
+				params.put("moType", moType);
+				String custNo	= CommonUtils.getString(generalDao.selectGernalObject("project.selectCustNoForSaveProject", params));
+				String salesId	= CommonUtils.getString(generalDao.selectGernalObject("project.selectSalesIdForSaveProject", params));
+				Map<String, Object> projectMap = (Map<String, Object>) generalDao.selectGernalObject("channel.selectProjectDataForSaveMoCallback", params);
+				params.put("serviceId", projectMap.get("serviceId"));
+				
+				Map<String, Object> joinMap = new HashMap<>();
+				
+				joinMap.put("entrNo",			projectMap.get("serviceId"));	// 가입번호
+				joinMap.put("billAcntNo",		projectMap.get("billId"));		// 청구계정 번호
+				joinMap.put("logid",			params.get("projectId"));		// 가입인식번호1(본인 서비스의 유니크 아이디)
+				joinMap.put("indcId",			salesId);						// 유치자아이디
+				joinMap.put("mngrId",			salesId);						// 관리자아이디
+				
+				
+				// MO 서비스정보 타입 (SMS, LMS, MMS)
+				if( "SMSMO".equals(moType) ) {
+					joinMap.put("serviceType",		"SMS");
+				} else if( "LMSMO".equals(moType) ) {
+					joinMap.put("serviceType",		"LMS");
+				} else if( "MMSMO".equals(moType) ) {
+					joinMap.put("serviceType",		"MMS");
+				}
+				
+				Map<String, Object> priceInfo = (Map<String, Object>) generalDao.selectGernalObject("channel.selectPriceInfoForSaveMoCallback", params);
+				
+				JSONParser jParser = new JSONParser();
+				JSONObject postFeeInfo = (JSONObject) jParser.parse(CommonUtils.getString(priceInfo.get("postFeeInfo")));
+				
+				Map<String, Object> serviceInfo = new HashMap<>();
+				serviceInfo.put("callback",	params.get("moNumber"));
+				serviceInfo.put("monBasicYn",	"Y");
+				serviceInfo.put("monBasicFee",	priceInfo.get("preFee"));
+				serviceInfo.put("unitPrice",	postFeeInfo.get("POST_FEE"));
+				
+				joinMap.put("serviceInfo",		serviceInfo);
+				
+				kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(joinMap);
+				
+				//System.out.println("-------------------------------------------!!!!!!!!! requset body json : " + json2222);
+				
+				// API 통신처리
+				Map<String, Object> result =  apiInterface.post("/console/v1/ucube/service/join/mo", joinMap, null);
+				
+				if( "10000".equals(result.get("code")) ) {
+					generalDao.insertGernal(DB.QRY_INSERT_MO_CALLBACK, params);
+					// redis 테이블 처리
+					commonService.updateCmCmdForRedis("CM_MO_CALLBACK");
+				} else {
+					String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
+					throw new Exception(errMsg);
+				}
 			}
 //		} else if( "U".equals(sts) ) {
 //			String apiKey = CommonUtils.getString(params.get("apiKey")); 

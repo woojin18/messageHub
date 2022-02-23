@@ -56,7 +56,7 @@
             <label for="msgKind_I">정보성</label>
           </div>
         </div>
-        <div class="of_h user-phone">
+        <div class="of_h user-phone" style="display:none;">
           <div class="float-left" style="width:27%">
             <h4>타 프로젝트 사용여부  *</h4>
           </div>
@@ -224,7 +224,7 @@ export default {
         {linkType:'BK', name:'봇 키워드'},
         {linkType:'MD', name:'메시지전달'}
       ],
-      tmpltData : {imgUrl:'', imgLink: '', buttonList:[]}
+      tmpltData : {imgUrl:'', imgLink: '', buttonList:[], otherProjectUseYn: 'N'}
     }
   },
   async mounted() {

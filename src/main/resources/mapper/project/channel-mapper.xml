@@ -1026,7 +1026,7 @@
 		FROM	cm.CM_KKO_CH
 		WHERE	KKO_CH_ID = #{kkoChId}
 		<if test="projectId != null and projectId != ''">
-		AND		PROJECT_ID IN ('ALL' , #{projectId})
+		AND		PROJECT_ID = #{projectId}
 		</if>
 	</select>
 	

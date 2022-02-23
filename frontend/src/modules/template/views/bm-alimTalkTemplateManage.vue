@@ -41,7 +41,7 @@
             <!-- //phoneWrap -->
           </div>
         </div>
-        <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
+     <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
           <div class="of_h">
             <!-- 카카오채널그룹관리 기능 제외 -->
             <!-- <div class="float-left" style="width:22%"><h4>카카오채널/그룹 *</h4></div> -->

@@ -223,7 +223,7 @@
                 <h5>발신번호</h5>
               </div>
               <div style="width:80%" class="float-left">
-                <h5>{{sendData.fbInfo.callback}}</h5>
+                <h5>{{sendData.fbInfo.callback | hpNumberAddDash}}</h5>
               </div>
             </div>
           </div>
