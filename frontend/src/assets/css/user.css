@@ -7,7 +7,7 @@ body {min-width:1470px; overflow-x:auto}
 
 /* head_type_user */
 header.head_type_user {border-bottom:1px solid #E6E6E6}
-header.head_type_user.fixed {position:fixed; width:100%; top:0; left:0; z-index:999999; background:#fff}
+header.head_type_user.fixed {position:fixed; width:100%; top:0; left:0; z-index:1000; background:#fff}
 .wrap_head {width:100%; min-width:1400px; padding:0 50px; height:80px; margin:0 auto; text-align:center}
 .wrap_head .tit_logo {float:left}
 .wrap_head .tit_logo .userLogo {display:block; margin-top:15px}
