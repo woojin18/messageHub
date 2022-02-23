@@ -11,7 +11,7 @@
                 <h4>*카카오 채널</h4>
               </div>
               <div style="width:42%">
-                <!-- 발신프로필그룹관리 기능 제외
+                <!-- 카카오채널그룹관리 기능 제외
                 <select class="selectStyle2" style="width:18%" v-model="searchData.senderKeyType" @change="fnSelectSenderKeyList">
                   <option value="S">일반</option>
                   <option value="G">그룹</option>
