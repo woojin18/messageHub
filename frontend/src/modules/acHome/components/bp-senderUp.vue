@@ -98,7 +98,7 @@ export default {
         },
 		'info.reqAmount'() {
             if (this.info.reqAmount == null) return;
-			return this.info.reqAmount = this.info.reqAmount.toString().replace(/[^0-9]/g, '');
+			return this.info.reqAmount = this.$gfnCommonUtils.formatComma(this.info.reqAmount.replace(/[^0-9]/g, ''));
 		},
     },
 	mounted() {
@@ -118,6 +118,7 @@ export default {
         },
         fnConfirmCallback(){
             let params = Object.assign({}, this.info)
+            params.reqAmount = this.$gfnCommonUtils.formatUncomma(params.reqAmount);
 			homeApi.saveSenderUp(params).then(response =>{
 				var result = response.data;
 				if(result.success) {

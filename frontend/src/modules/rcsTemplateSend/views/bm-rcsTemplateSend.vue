@@ -1401,7 +1401,9 @@ export default {
 			"real" : false
 		}
 
-		rcsTemplateSendApi.sendRcsData(params).then(response => {
+		let fd = new FormData();
+		fd.append('paramString', JSON.stringify(params));
+		rcsTemplateSendApi.sendRcsData(fd).then(response => {
 			var result = response.data;
 			var success = result.success;
 			if(success) {
