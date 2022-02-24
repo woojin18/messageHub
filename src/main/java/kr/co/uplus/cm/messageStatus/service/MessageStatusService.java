@@ -417,9 +417,9 @@ public class MessageStatusService {
         	}
         }
         //System.out.println(">>>>receptionNumberStr ["+receptionNumberStr+"]");
-        HashMap<String,Object> hMap = (HashMap<String, Object>) rtnList.get(0);
-    	hMap.put("receptionNumber", receptionNumberStr);
-    	rtnList.set(0, hMap);
+//        HashMap<String,Object> hMap = (HashMap<String, Object>) rtnList.get(0);
+//    	hMap.put("receptionNumber", receptionNumberStr);
+//    	rtnList.set(0, hMap);
     	
         rtn.setData(rtnList);
 
