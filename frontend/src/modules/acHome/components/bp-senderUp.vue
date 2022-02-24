@@ -97,13 +97,19 @@ export default {
             }
         },
 		'info.reqAmount'() {
-            if (this.info.reqAmount == null) return;
-			return this.info.reqAmount = this.$gfnCommonUtils.formatComma(this.info.reqAmount.replace(/[^0-9]/g, ''));
-		},
+            if (this.info.reqAmount == null || this.info.reqAmount == '') return;
+			else this.info.reqAmount = this.fnComma(this.info.reqAmount);
+        },
     },
 	mounted() {
     },
     methods : {
+        fnComma(val){
+            if(!val) return '0';
+            val = val.toString();
+            val = val.replace(/[^0-9]/g, '');
+            return val.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
         fnConfirm(){
             if(this.info.reqAmount == ""){
                 confirm.fnAlert("", "월 상향 요청 금액을 입력해주세요.");
