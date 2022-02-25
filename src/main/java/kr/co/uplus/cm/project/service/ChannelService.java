@@ -1008,7 +1008,7 @@ public class ChannelService {
 			}
 		
 			if(!valiChkMsg.equals("")) {
-				throw new Exception("이미 해당 MO 수신번호와 MO 유형(" + valiChkMsg + ")이 등록되어 있습니다. \n리스트에 보이지 않을 경우, 타 프로젝트 또는 타 업체에서 해당 수신번호와 유형으로 사용 중 입니다.\n");
+				throw new Exception("이미 해당 MO 수신번호와 MO 유형( " + valiChkMsg + " )이 등록되어 있습니다. \n리스트에 보이지 않을 경우, 타 프로젝트 또는 타 업체에서 해당 수신번호와 유형으로 사용 중 입니다.\n");
 			}
 
 			// 유큐브 서비스 등록 
@@ -1020,7 +1020,6 @@ public class ChannelService {
 				String custNo	= CommonUtils.getString(generalDao.selectGernalObject("project.selectCustNoForSaveProject", params));
 				String salesId	= CommonUtils.getString(generalDao.selectGernalObject("project.selectSalesIdForSaveProject", params));
 				Map<String, Object> projectMap = (Map<String, Object>) generalDao.selectGernalObject("channel.selectProjectDataForSaveMoCallback", params);
-				params.put("serviceId", projectMap.get("serviceId"));
 				
 				Map<String, Object> joinMap = new HashMap<>();
 				
@@ -1059,8 +1058,11 @@ public class ChannelService {
 				
 				// API 통신처리
 				Map<String, Object> result =  apiInterface.post("/console/v1/ucube/service/join/mo", joinMap, null);
-				
+				//{code=10000, message=성공, data={serviceId=SB1099, resultCode=N0000, resultMsg=Success, resultList=[{billAcntNo=552202204785, entrNo=500244228985}]}, status=200}
 				if( "10000".equals(result.get("code")) ) {
+					Map<String, Object> data = (Map<String, Object>)result.get("data");
+					ArrayList<Map<String, Object>> arr = (ArrayList<Map<String, Object>>) data.get("resultList");
+					params.put("serviceId",arr.get(0).get("entrNo"));
 					generalDao.insertGernal(DB.QRY_INSERT_MO_CALLBACK, params);
 					// redis 테이블 처리
 					commonService.updateCmCmdForRedis("CM_MO_CALLBACK");
