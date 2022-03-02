@@ -165,8 +165,7 @@ export default {
       datas: [],
       condiDatas: [],
       receptionDatas: [],
-      receptionCount: 0,
-      receptionNumber: '',
+      receptionCount: 0
       //testProjectId: '313431323336706A74' //test용 projectId 관리방법이 정해지면 변경필요 (세션이 좋을듯)
     }
     

@@ -253,7 +253,7 @@ public class CommonService {
 
         try {
             InputStream resizeImgStream = null;
-            BufferedImage image = ImageIO.read(files.getInputStream());
+//            BufferedImage image = ImageIO.read(files.getInputStream());
             JSONArray jsonArray = new JSONArray();
             JSONObject jsonObject = null;
 
@@ -290,8 +290,9 @@ public class CommonService {
                         || !resizeInfo.containsKey(Const.IMG_RESIZE_HEIGHT)) {
                     throw new Exception("유효하지 않은 이미지 리사이즈 정보 : 채널(" + chNm + ")");
                 }
-                resizeImgStream = ImageUtil.imageResize(image, fileExten, resizeInfo.get(Const.IMG_RESIZE_WIDTH),
-                        resizeInfo.get(Const.IMG_RESIZE_HEIGHT));
+//                resizeImgStream = ImageUtil.imageResize(image, fileExten, resizeInfo.get(Const.IMG_RESIZE_WIDTH),
+//                        resizeInfo.get(Const.IMG_RESIZE_HEIGHT));
+                resizeImgStream = files.getInputStream();
                 if (resizeImgStream == null) {
                     throw new Exception("유효하지 않은 리사이즈 이미지");
                 }

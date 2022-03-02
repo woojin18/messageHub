@@ -18,11 +18,11 @@ spring:
 app.props:
   jwt:
     key-string: LcDVU5pmcXIakjK6yw/TJw==
-    private-token-expiration: 43200
+    private-token-expiration: 86400
     part1: JwtPart1
     part2: JwtPart2
-    access-token-expiration: 180
-    refresh-token-expiration: 1800
+    access-token-expiration: 86400
+    refresh-token-expiration: 86400
     header: Authorization
     prefix: "Bearer "
 
@@ -92,11 +92,11 @@ spring:
 app.props:
   jwt:
     key-string: LcDVU5pmcXIakjK6yw/TJw==
-    private-token-expiration: 1800
+    private-token-expiration: 86400
     part1: JwtPart1
     part2: JwtPart2
-    access-token-expiration: 180
-    refresh-token-expiration: 1800
+    access-token-expiration: 86400
+    refresh-token-expiration: 86400
     header: Authorization
     prefix: "Bearer "
 
@@ -156,11 +156,11 @@ spring:
 app.props:
   jwt:
     key-string: LcDVU5pmcXIakjK6yw/TJw==
-    private-token-expiration: 1800
+    private-token-expiration: 86400
     part1: JwtPart1
     part2: JwtPart2
-    access-token-expiration: 180
-    refresh-token-expiration: 1800
+    access-token-expiration: 86400
+    refresh-token-expiration: 86400
     header: Authorization
     prefix: "Bearer "
 
@@ -218,11 +218,11 @@ spring:
 app.props:
   jwt:
     key-string: LcDVU5pmcXIakjK6yw/TJw==
-    private-token-expiration: 1800
+    private-token-expiration: 86400
     part1: JwtPart1
     part2: JwtPart2
-    access-token-expiration: 180
-    refresh-token-expiration: 1800
+    access-token-expiration: 86400
+    refresh-token-expiration: 86400
     header: Authorization
     prefix: "Bearer "
 

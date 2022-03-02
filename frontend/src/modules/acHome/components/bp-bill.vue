@@ -279,16 +279,16 @@ export default {
 			this.fnSetCorpAddr();
 		},
 		'bill.smsExpCnt'() {
-			return this.bill.smsExpCnt = this.bill.smsExpCnt.toString().replace(/[^0-9]/g, '');
+			return this.bill.smsExpCnt = this.$gfnCommonUtils.formatComma(this.bill.smsExpCnt);
 		},
 		'bill.rcsExpCnt'() {
-			return this.bill.rcsExpCnt = this.bill.rcsExpCnt.toString().replace(/[^0-9]/g, '');
+			return this.bill.rcsExpCnt = this.$gfnCommonUtils.formatComma(this.bill.rcsExpCnt);
 		},
 		'bill.kkoExpCnt'() {
-			return this.bill.kkoExpCnt = this.bill.kkoExpCnt.toString().replace(/[^0-9]/g, '');
+			return this.bill.kkoExpCnt = this.$gfnCommonUtils.formatComma(this.bill.kkoExpCnt);
 		},
 		'bill.pushExpCnt'() {
-			return this.bill.pushExpCnt = this.bill.pushExpCnt.toString().replace(/[^0-9]/g, '');
+			return this.bill.pushExpCnt = this.$gfnCommonUtils.formatComma(this.bill.pushExpCnt);
 		},
 		'bill.billRegNo'() {
 			return this.bill.billRegNo = this.bill.billRegNo.replace(/[^0-9]/g, '');
