@@ -17,7 +17,7 @@
               </div>
 
               <div class="of_h consolMarginTop">
-                <h5 class="inline-block" style="width:20%">고객사명 *</h5>
+                <h5 class="inline-block" style="width:20%">회사명 *</h5>
                 <input type="text" class="inputStyle float-right" style="width:80%" title="회사명 입력란" maxlength="50" v-model="inputData.corpName" :disabled="!$gfnCommonUtils.isEmpty(loginUserInfo)">
               </div>
 
@@ -92,7 +92,7 @@
             </div>
             <div class="quiryAgree">
               <input type="checkbox" id="agree2" value="서비스 이용약관 동의" v-model="agree">
-              <label for="agree2">[필수] 개인정보 수집 및 이용 동의에 동의합니다.</label>
+              <label for="agree2">[필수] 개인정보 수집 및 이용에 동의합니다.</label>
             </div>
             <div class="of_h mt20">
               <div class="inline-block">* 서비스 문의 작성 시 답변 내용은 개인 메일로 회신됩니다.</div>
@@ -169,7 +169,7 @@ export default {
         return false;
       }
       if(!this.inputData.corpName){
-        confirm.fnAlert(this.componentsTitle, '고객사명을 입력해주세요.');
+        confirm.fnAlert(this.componentsTitle, '회사명을 입력해주세요.');
         return false;
       }
       if(!this.inputData.inputName){
@@ -199,7 +199,7 @@ export default {
         return false;
       }
       if(!this.agree){
-        confirm.fnAlert(this.componentsTitle, '개인정보 수집 및 이용 동의에 동의해주세요.');
+        confirm.fnAlert(this.componentsTitle, '개인정보 수집 및 이용에 동의해주세요.');
         return false;
       }
       
