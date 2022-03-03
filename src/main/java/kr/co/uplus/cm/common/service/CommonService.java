@@ -1113,4 +1113,25 @@ public class CommonService {
 		
 		return restResult;
 	}
+	
+	/**
+	 * RBC 연동오류시 해당 코드의 리턴 Message 가져오는 메소드
+	 * @param code
+	 * @return returnMessage String
+	 * @throws Exception
+	 */
+	public String returnRBCErrMsg(Map<String, Object> params) throws Exception {
+		Map<String, Object> resultMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_CM_CODE_EXT, params);
+		// DB에 저장되어있지 않은 code인 경우 case 처리
+		if(resultMap == null) {
+			return "RCS Biz Center 연동 오류";
+		} else {
+			String extCode = CommonUtils.getString(resultMap.get("extCode"));
+			String extMessage = CommonUtils.getString(resultMap.get("extMessage"));
+			
+			String returnStr = extMessage + " (" + extCode + ")";
+			
+			return returnStr;
+		}
+	}
 }

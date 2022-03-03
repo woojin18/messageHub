@@ -408,18 +408,23 @@ public class ProjectService {
 			headerMap.put("apiKey", apiKey);
 			headerMap.put("brandId", brandId);
 			headerMap.put("Content-Type", "application/json");
-
+			
 			// API 통신 처리
-			Map<String, Object> result = apiInterface.post("/console/v1/rcs/brand/" + brandId + "/chatbot", map,
-					headerMap);
-
-			// System.out.println("-----------------------------------------@@@ result : " +
-			// result);
-
+			Map<String, Object> result = apiInterface.post("/console/v1/rcs/brand/" + brandId + "/chatbot", map, headerMap);
+			
 			// 성공인지 실패인지 체크
 			if ("10000".equals(result.get("code"))) {
 			} else if ("500100".equals(result.get("code"))) {
 				String errMsg = CommonUtils.getString(result.get("message"));
+				throw new Exception(errMsg);
+			} else if ("21300".equals(result.get("code"))){
+				// RBC 연동 오류시 상세 메시지를 출력할수 있도록 처리
+				Map<String, Object> data = (Map<String, Object>) result.get("data");
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				String code = CommonUtils.getString(data.get("code"));
+				paramMap.put("code", code);
+				
+				String errMsg = commonService.returnRBCErrMsg(paramMap);
 				throw new Exception(errMsg);
 			} else {
 				String errMsg = CommonUtils.getString(result.get("message"));
@@ -458,6 +463,15 @@ public class ProjectService {
 			if ("10000".equals(result.get("code"))) {
 			} else if ("500100".equals(result.get("code"))) {
 				String errMsg = CommonUtils.getString(result.get("message"));
+				throw new Exception(errMsg);
+			} else if ("21300".equals(result.get("code"))){
+				// RBC 연동 오류시 상세 메시지를 출력할수 있도록 처리
+				Map<String, Object> data = (Map<String, Object>) result.get("data");
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				String code = CommonUtils.getString(data.get("code"));
+				paramMap.put("code", code);
+				
+				String errMsg = commonService.returnRBCErrMsg(paramMap);
 				throw new Exception(errMsg);
 			} else {
 				String errMsg = CommonUtils.getString(result.get("message"));

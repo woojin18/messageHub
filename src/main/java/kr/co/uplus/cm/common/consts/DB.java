@@ -21,7 +21,8 @@ public class DB {
 	public final static String QRY_SELECT_USE_CH_GRP_INFO = "common.selectUseChGrpInfo";
 	public final static String QRY_SELECT_IMAGE_URL_INFO = "common.selectImageUrlInfo";
 	public final static String QRY_UPDATE_CM_CMD = "common.updateCmCmdForRedis";
-
+	public final static String QRY_SELECT_CM_CODE_EXT = "common.selectCmCodeExt";
+	
 	// 메인
 	public final static String QRY_SELECT_PRD_UNIT_INFO_LIST = "main.selectPrdUnitInfoList";
 
