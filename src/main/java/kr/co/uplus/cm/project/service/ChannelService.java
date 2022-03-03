@@ -1416,7 +1416,7 @@ public class ChannelService {
 					
  					if(callNumCheck == 0) {
 						generalDao.insertGernal(DB.QRY_INSERT_CALLNUM, params);
-						//generalDao.insertGernal(DB.QRY_INSERT_PROJECTCALLNUM, params);
+						generalDao.insertGernal(DB.QRY_INSERT_PROJECTCALLNUM, params);
 						generalDao.updateGernal(DB.QRY_UPDATE_CALLNUMFORCMD, params);
 					}
 					

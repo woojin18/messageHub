@@ -1145,7 +1145,7 @@
 			(
 				#{corpId}
 			,	#{chatbotId}
-			,	'10'
+			,	'80'
 			,	'RCS'
 			,	#{chatbotId}
 			,	#{userId}
