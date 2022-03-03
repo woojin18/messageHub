@@ -17,7 +17,7 @@
                 </div>
 						</div>
 						<div class="of_h consolMarginTop">
-							<h5 class="inline-block" style="width:18%">고객사명 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
+							<h5 class="inline-block" style="width:18%">회사명 <span class="color1" v-if="this.status != 'detail'">*</span></h5>
 							<h5 v-if="this.status == 'detail'" class="font-normal inline-block float-right" style="width:80%">{{ corpName }}</h5>
 							<div v-else class="float-right" style="width:80%">
 							  <input type="text" class="inputStyle" v-model="corpName" disabled>

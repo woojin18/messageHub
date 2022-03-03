@@ -504,3 +504,17 @@ p {letter-spacing:-0.5px}
 #subVisualWrap02 section {background:url(../images/subVisual02.png) no-repeat center/cover; height:370px; padding-top:150px}
 #subVisualWrap03 section {background:url(../images/subVisual03.png) no-repeat center/cover; height:370px; padding-top:140px}
 
+/* 2022.03.03 공지팝업 */
+.popStyle {width:760px; height:540px; box-sizing:border-box; padding:20px 40px}
+.popStyle > h3 {font-size:24px; font-weight:700; color:#000}
+.popStyle label {font-size:14px; font-weight:400; color:#707070}
+.popBox {border-top:solid 1px; border-bottom:solid 1px; margin-bottom:10px}
+.popTitle {background-color:#F1F1F1; padding:17px 20px; font-size:16px; font-weight:500; overflow:hidden}
+.CheckTitle {color:#fff; background-color:#93caf5; padding:3px 5px; border-radius:3px; font-size:10px; margin-right:5px; font-weight:300}
+.popDate {float:right; font-size:14px; font-weight:400}
+.popCont {max-height:315px; overflow-y:auto; padding:28px 22px; color:#8E8E8E; font-size:14px; height:350px; margin-bottom:28px}
+
+/* 2022.03.03 공지 레이어팝업 */
+.layerPopStyle {width:760px; box-sizing:border-box; padding-right:40px}
+.layerPopStyle > h3 {font-size:24px; font-weight:700; color:#000}
+.layerPopStyle label {font-size:14px; font-weight:400; color:#707070}
