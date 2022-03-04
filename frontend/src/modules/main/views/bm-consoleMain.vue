@@ -7,7 +7,7 @@
 				<li>
 					<div class="mainVisualTitle CloudIconlList">
 						<div>
-							<h2 class="wow animated fadeInUp" data-wow-duration="1s">모든 메시지를 한번에<br><strong>U+ 메시지허브</strong></h2>
+							<h2 class="wow animated fadeInUp" data-wow-duration="1s">모든 메시지를 한 번에<br><strong>U+ 메시지허브</strong></h2>
 							<div class="wow animated fadeInUp" data-wow-delay=".3s" data-wow-duration="1s">
                 <router-link :to="{ name: 'signUp' }" class="mvBtn" title="서비스 가입" style="margin-right: 3px;">가입하기</router-link>
 								<a class="mvBtn ml20" title="serviceCon05_2">도입문의</a>
@@ -107,7 +107,7 @@
 					<textarea class="form-textarea height180  mt15" placeholder="궁금하신 내용을 적어주세요." v-model="inqueiryInputData.content" maxlength="4000"></textarea>
 					<div class="quiryAgree float-left">
 						<input type="checkbox" id="agree1" class="checkStyle2" value="서비스 이용약관 동의" v-model="inqueiryInputData.agree">
-            <label for="agree1">[필수] 개인정보 수집 및 이용 동의에 동의합니다.</label> 
+            <label for="agree1">[필수] 개인정보 수집 및 이용에 동의합니다.</label> 
 					</div>
 					<a class="btnStyle2 backRed float-right" @click.prevent="fnRegisterInquiry" title="도입문의">도입문의</a>
 				</div>
