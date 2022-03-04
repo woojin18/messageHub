@@ -885,10 +885,6 @@ public class MultiSendTemplateService {
 			sParams.put("multiSendTmpltCode", tmpltCode);
 		}
 
-		if (sParams.get("otherProjectUseYn").equals("Y")) {// 타프로젝트와 같이 사용하면 projecdtId를 ALL로 잡는다.
-			sParams.put("projectId", "ALL");
-		}
-
 		resultCnt = generalDao.insertGernal(DB.QRY_INSERT_MULTISEND_TMPLT, sParams);
 
 		// redis 테이블 처리

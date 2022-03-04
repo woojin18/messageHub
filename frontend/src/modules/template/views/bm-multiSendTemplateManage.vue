@@ -2852,6 +2852,9 @@ export default {
 		},
 		async fnSaveMultiSendTemplate(){
 			var params = this.rowData;
+			if(params.projectId == ''){
+				params.projectId = this.projectUseChannelInfoData.projectId
+			}
 
 			//유효성 검사
 			params.tmpltStatus = 'SAVE';
@@ -2875,7 +2878,6 @@ export default {
 			var params = this.rowData;
 			if(params.projectId == ''){
 				params.projectId = this.projectUseChannelInfoData.projectId
-				console.log(params.projectId)
 			}
 		
 			// 유효성 검사
