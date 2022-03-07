@@ -574,7 +574,7 @@ export default {
             } else {
                 this.set.cardCmpName = jQuery("#cardCd option:selected").text();
             }
-            if (this.set.payMthdCd != "GR") {
+            if (this.set.payMthdCd == "GR") {
                 this.set.payDt = "";
             }
             var param = Object.assign({}, this.set);
