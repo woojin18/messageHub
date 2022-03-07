@@ -123,17 +123,17 @@ public class DB {
 	public final static String QRY_SELECT_RCS_BRAND_CON_LIST_CNT = "channel.selectRcsBrandConListCnt";
 	public final static String QRY_INSERT_RCS_PROJECT_BRAND = "channel.insertRcsProjectBrand";
 	public final static String QRY_SELECT_RCS_CAHTBOTID = "channel.selectRcsChatbotId";
-	public final static String QRY_INSERT_PROJECTCHATBOT = "channel.insertProjectChatbot";	
+	public final static String QRY_INSERT_PROJECTCHATBOT = "channel.insertProjectChatbot";
 	public final static String QRY_SELECT_CALLNUMCHECK = "channel.selectCallNumCheck";
-	public final static String QRY_INSERT_PROJECTCALLNUM = "channel.insertProjectCallNum";	
-	public final static String QRY_INSERT_CALLNUM = "channel.insertCallNum";	
-	public final static String QRY_UPDATE_CALLNUMFORCMD = "channel.updateCallnumForCmd";		
+	public final static String QRY_INSERT_PROJECTCALLNUM = "channel.insertProjectCallNum";
+	public final static String QRY_INSERT_CALLNUM = "channel.insertCallNum";
+	public final static String QRY_UPDATE_CALLNUMFORCMD = "channel.updateCallnumForCmd";
 	public final static String QRY_DELETE_PROJECTBRAND = "channel.deleteProjectbrand";
 	public final static String QRY_DELETE_PROJECTCHATBOT= "channel.deleteProjectchatbot";
 	public final static String QRY_DELETE_PROJECTCALLNUM= "channel.deleteProjectCallum";
 	public final static String QRY_SELECT_CONPROJECTLIST = "channel.selectConProjectList";
 	public final static String QRY_SELECT_CONPROJECTLISTCNT = "channel.selectConProjectListCnt";
-	
+
 	// RCS 등록 템플릿 조회
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST_CNT = "channel.selectRcsRegTmpltListCount";
@@ -159,10 +159,10 @@ public class DB {
 	public final static String QRY_INSERT_MO_CALLBACK = "channel.insertMoCallback";
 	public final static String QRY_UPDATE_MO_CALLBACK = "channel.updateMoCallback";
 	public final static String QRY_DELETE_MO_CALLBACK = "channel.deleteMoCallback";
-	
+
 	public final static String QRY_SELECT_APIKEY_LIST_MO = "channel.selectApiKeyList";
-	
-	// 카카오 채널 
+
+	// 카카오 채널
 	public final static String QRY_SELECT_EQUAL_KKOCHANNEL_CNT = "channel.selectEqualKkochannelCnt";
 	// 웹캐시
 	public final static String QRY_INSERT_WEB_CASH_INFO = "cash.insertWebCashInfo";
@@ -343,4 +343,9 @@ public class DB {
 	public final static String QRY_SELECT_STATIS_LIST_MONTH_KKO = "statisticsAdmin.selectStatisListMonthKko";
 	public final static String QRY_SELECT_STATIS_PROJECT_LIST = "statisticsAdmin.selectStatisProjectList";
 
+	// URL+ (단축URL)
+	public final static String QRY_SELECT_URL_INFO_LIST_CNT	= "urlInfo.selectUrlInfoListCnt";
+	public final static String QRY_SELECT_URL_INFO_LIST 			= "urlInfo.selectUrlInfoList";
+	public final static String QRY_INSERT_URL_INFO 					= "urlInfo.insertUrlInfo";
+	public final static String QRY_DELETE_URL_INFO 					= "urlInfo.deleteUrlInfo";
 }
