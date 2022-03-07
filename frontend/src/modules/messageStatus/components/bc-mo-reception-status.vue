@@ -34,9 +34,12 @@
           </select>
           <h4 class="inline-block ml30" style="width:8%; vertical-align: middle;">발신번호</h4>
           <input type="text" class="inputStyle ml10" id="searchSendNumber" name="searchSendNumber" v-model="searchData.searchSendNumber" style="width:25%" title="발신번호"  @keypress.enter="fnSearch(1)" placeholder="-를 제외하고 입력해주세요.">
-          <a @click="fnSearch()" class="btnStyle2 float-right mt20" title="검색" activity="READ">검색</a>
+          <a @click="fnSearch()" class="btnStyle2 float-right mt40" title="검색" activity="READ">검색</a>
           <br />
-          <h4 v-if="receptionCount != 0" class="inline-block" style="width:8%; vertical-align: middle;">수신번호 : </h4>
+          <h4 class="inline-block" style="width:8%; vertical-align: middle;">수신번호 : </h4>
+          <div v-if="receptionCount == 0" style="display:inline-block; margin-left:10px; margin-top: 20px !important; vertical-align: sub;">
+            MO 수신번호가 등록되어 있지 않습니다. 관리자콘솔에서 MO 수신번호를 등록해주세요.
+          </div>
           <div v-for="(data, idx) in receptionDatas" :key="idx" style="display:inline-block; margin-left:10px;" class="mt20">
             <input type="checkbox" :id="data.moNumber" name="searchReceptionNumber" class="checkStyle2" :value="data.moNumber" v-model="searchData.searchReceptionNumber" >
             <label :for="data.moNumber">{{ data.moNumber | hpNumberAddDash }}</label>
@@ -101,7 +104,7 @@
                   <td>{{totCnt-offset-data.rowNum+1 | formatComma}}</td>
                   <td class="text-center">{{data.moType}}</td>
                   <td class="text-center">{{data.moNumber | hpNumberAddDash}}</td>
-                  <td class="text-center">{{data.moCallback | hpNumberAddDash}}</td>
+                  <td class="text-center"><a @click.prevent="fnMessageModal(data.moKey)" title="메시지 확인" class="clickClass">{{data.moCallback | hpNumberAddDash}}</a></td>
                   <td class="text-center">{{data.productCode}}</td>
                   <td class="text-center">{{data.moTitle}}</td>
                   <td class="text-center">{{data.telco}}</td>
@@ -122,7 +125,10 @@
   <div id="pageContent">
       <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
   </div>
+
+  <DetailLayer :title="detailLayerTitle" :layerView.sync="detailLayerView" :detailMsgKey="detailLayerMsgKey"></DetailLayer>
 </div>
+
 </template>
 
 
@@ -132,12 +138,14 @@ import PageLayer from '@/components/PageLayer.vue';
 import SelectLayer from '@/components/SelectLayer.vue';
 import Calendar from "@/components/Calendar.vue";
 import tokenSvc from '@/common/token-service';
+import DetailLayer from '../components/bp-mo-message-detail.vue';
 
 export default {
   components: {
     SelectLayer,
     PageLayer,
-    Calendar
+    Calendar,
+    DetailLayer
   },
   props: {
     searchData : {
@@ -165,8 +173,12 @@ export default {
       datas: [],
       condiDatas: [],
       receptionDatas: [],
-      receptionCount: 0
+      receptionCount: 0,
       //testProjectId: '313431323336706A74' //test용 projectId 관리방법이 정해지면 변경필요 (세션이 좋을듯)
+
+      detailLayerView: false,
+      detailLayerTitle: "제목",
+      detailLayerMsgKey:""
     }
     
         
@@ -285,8 +297,13 @@ export default {
           //alert(result.message);
         }
       });
-    }
+    },
 
+    fnMessageModal(moKey){
+        this.detailLayerView = true;
+        this.detailLayerTitle = "메시지현황 상세";
+        this.detailLayerMsgKey = moKey; 
+    }
 
   }
 }

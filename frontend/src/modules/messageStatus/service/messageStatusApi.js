@@ -58,6 +58,9 @@ const selectConditionList = (params) => {
     return httpClient.post('/messageStatusApi/selectConditionList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
 
+const selectMoMessageDetail = (params) => {
+  return httpClient.post('/messageStatusApi/selectMoMessageDetail', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
 
 
 const excelDownloadWebSend = (params) => {
@@ -167,7 +170,8 @@ export default {
     selectMoReceptionStatusList,
     excelDownloadMoReceptionStatus,
     selectReceptionNumberList,
-    selectConditionList
+    selectConditionList,
+    selectMoMessageDetail
     
 };
 

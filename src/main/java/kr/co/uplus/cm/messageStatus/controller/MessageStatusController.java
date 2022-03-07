@@ -381,5 +381,17 @@ public class MessageStatusController {
 
 		return rtn;
 	}
+	
+	// MO 메시지 상세 조회
+	@PostMapping("/selectMoMessageDetail")
+	public RestResult<?> selectMoMessageDetail(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		rtn = messageStatusService.selectMoMessageDetail(params);
+		
+		return rtn;
+	}
 
 }

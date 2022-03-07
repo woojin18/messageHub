@@ -4,7 +4,7 @@
 			<div class="col-xs-12 mt10">
 				<div class="menuBox">
 					<div>
-						<h4 class="inline-block" style="width:6%">발송일</h4>
+						<h4 class="inline-block" style="width:7%">발송일</h4>
 						<div class="inline-block" style="width:25%">
 							<div v-show="searchData.searchDateType == 'DAY'">
 								<Calendar @update-date="fnUpdateStartDate" calendarId="searchStartDate" classProps="datepicker inputStyle" styleProps="width:40%" :initDate="searchData.searchStartDate" :maxDate="searchData.maxDate"></Calendar>
@@ -12,9 +12,9 @@
 								<Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle" styleProps="width:40%" :initDate="searchData.searchEndDate" :maxDate="searchData.maxDate"></Calendar>
 							</div>
 							<div v-show="searchData.searchDateType == 'MONTH'">
-								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchStartMonth" @change="fnSearch" readonly>
+								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" style="width:35%;" :value="searchStartMonth" @change="fnSearch" readonly>
 								<span style="padding:0 11px">~</span>
-								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchEndMonth" @change="fnSearch" readonly>
+								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" style="width:35%;" :value="searchEndMonth" @change="fnSearch" readonly>
 							</div>
 						</div>
 						<div class="inline-block" style="width:30%">
@@ -25,7 +25,7 @@
 						</div>
 					</div>
 					<div class="consolMarginTop">
-						<h4 class="inline-block" style="width:6%">프로젝트명</h4>
+						<h4 class="inline-block" style="width:7%">프로젝트명</h4>
 						<select class="selectStyle2" style="width:25%" v-model="searchData.searchProjectId">
 							<option value="">전체</option>
 							<option v-for="(content, index) in projectItems" :key="index" :value="content.projectId">

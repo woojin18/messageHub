@@ -343,5 +343,7 @@ public class DB {
 	public final static String QRY_SELECT_STATIS_LIST_DAY_KKO = "statisticsAdmin.selectStatisListDayKko";
 	public final static String QRY_SELECT_STATIS_LIST_MONTH_KKO = "statisticsAdmin.selectStatisListMonthKko";
 	public final static String QRY_SELECT_STATIS_PROJECT_LIST = "statisticsAdmin.selectStatisProjectList";
+	public final static String QRY_SELECT_STATIS_LIST_DAY_MO = "statisticsAdmin.selectStatisListDayMo";
+	public final static String QRY_SELECT_STATIS_LIST_MONTH_MO = "statisticsAdmin.selectStatisListMonthMo";
 
 }

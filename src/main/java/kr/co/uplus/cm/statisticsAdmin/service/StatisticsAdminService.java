@@ -134,6 +134,12 @@ public class StatisticsAdminService {
 			} else {
 				rtnList	= generalDao.selectGernalList(DB.QRY_SELECT_STATIS_LIST_MONTH_KKO, params);
 			}
+		} else if("MO".equals(searchChanType)) {
+			if("DAY".equals(searchDateType)) {
+				rtnList	= generalDao.selectGernalList(DB.QRY_SELECT_STATIS_LIST_DAY_MO, params);
+			} else {
+				rtnList	= generalDao.selectGernalList(DB.QRY_SELECT_STATIS_LIST_MONTH_MO, params);
+			}
 		} else {
 			if("DAY".equals(searchDateType)) {
 				rtnList	= generalDao.selectGernalList(DB.QRY_SELECT_STATIS_LIST_DAY, params);

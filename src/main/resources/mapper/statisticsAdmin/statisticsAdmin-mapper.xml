@@ -738,4 +738,216 @@
 		WHERE	A.USER_ID = #{userId}
 		AND		B.DEL_YN != 'Y'
 	</select>
+	
+	<select id="selectStatisListDayMo" resultType="camel">
+		/* statisticsAdmin.selectStatisListDayMo */
+		SELECT 	AA.SEND_DATE
+		,		AA.PROJECT_ID 
+		,		AA.PROJECT_NAME 
+		,		AA.PRODUCT_NAME 
+		,		AA.TOT_CNT
+		,		BB.DAY_COUNT
+		,		CC.PROJECT_COUNT 
+		FROM
+		(
+			SELECT	csmd.YMD AS SEND_DATE
+			,		csmd.PROJECT_ID 
+			,		cp.PROJECT_NAME
+			,		csmd.PRODUCT_CODE AS PRODUCT_NAME
+			,		SUM(csmd.TOT_CNT) AS TOT_CNT
+			,		CASE WHEN @GRP = csmd.YMD AND @GRP2 = csmd.PROJECT_ID  THEN @ROWNUM:=@ROWNUM + 1 ELSE @ROWNUM :=1 END AS ROWNUM
+			,		(@GRP := csmd.YMD) AS DUMMY
+			,		(@GRP2 := csmd.PROJECT_ID) AS DUMMY2
+			FROM cm.CM_STAT_MO_DAY csmd 
+			INNER JOIN cm_console.CM_PROJECT cp 
+				ON csmd.PROJECT_ID = cp.PROJECT_ID
+			, (SELECT @ROWNUM:=0, @GRP:='', @GRP2:='') TMP
+			WHERE csmd.CORP_ID = #{corpId}
+			<choose>
+					<when test="svcType=='UC'">
+				AND csmd.PROJECT_ID = #{projectId}
+					</when>
+					<otherwise>
+						<if test="searchProjectId != '' and searchProjectId != null">
+				AND csmd.PROJECT_ID = #{searchProjectId}	
+						</if>
+					</otherwise>
+				</choose>
+			AND csmd.YMD BETWEEN #{searchStartDate} AND #{searchEndDate}
+			AND	csmd.PRODUCT_CODE IN
+			<foreach item="item" index="index" collection="chArr" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			GROUP BY csmd.PROJECT_ID, csmd.PRODUCT_CODE, csmd.YMD
+			ORDER BY SEND_DATE, PROJECT_ID, ROWNUM
+		) AA
+		LEFT OUTER JOIN (
+			SELECT COUNT(Z.SEND_DATE) AS DAY_COUNT
+			,		Z.SEND_DATE
+			,		Z.PROJECT_ID 
+			FROM (
+				SELECT	csmd.YMD AS SEND_DATE
+				,		csmd.PROJECT_ID 
+				FROM cm.CM_STAT_MO_DAY csmd
+				WHERE csmd.CORP_ID = #{corpId}
+				<choose>
+					<when test="svcType=='UC'">
+				AND csmd.PROJECT_ID = #{projectId}
+					</when>
+					<otherwise>
+						<if test="searchProjectId != '' and searchProjectId != null">
+				AND csmd.PROJECT_ID = #{searchProjectId}	
+						</if>
+					</otherwise>
+				</choose>
+				AND csmd.YMD BETWEEN #{searchStartDate} AND #{searchEndDate}
+				AND	csmd.PRODUCT_CODE IN
+				<foreach item="item" index="index" collection="chArr" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				GROUP BY csmd.PROJECT_ID, csmd.PRODUCT_CODE, csmd.YMD
+			) Z
+			GROUP BY Z.SEND_DATE, Z.PROJECT_ID 
+		) BB
+			ON AA.SEND_DATE = BB.SEND_DATE
+			AND AA.PROJECT_ID = BB.PROJECT_ID 
+			AND AA.ROWNUM = 1
+		LEFT OUTER JOIN (
+			SELECT COUNT(Z.PROJECT_ID) AS PROJECT_COUNT
+			,		Z.PROJECT_ID
+			,		Z.YMD
+			FROM (
+				SELECT	csmd.PROJECT_ID AS PROJECT_ID 
+				,		csmd.YMD
+				FROM cm.CM_STAT_MO_DAY csmd
+				WHERE csmd.CORP_ID = #{corpId}
+				<choose>
+					<when test="svcType=='UC'">
+				AND csmd.PROJECT_ID = #{projectId}
+					</when>
+					<otherwise>
+						<if test="searchProjectId != '' and searchProjectId != null">
+				AND csmd.PROJECT_ID = #{searchProjectId}	
+						</if>
+					</otherwise>
+				</choose>
+				AND csmd.YMD BETWEEN #{searchStartDate} AND #{searchEndDate}
+				AND	csmd.PRODUCT_CODE IN
+				<foreach item="item" index="index" collection="chArr" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				GROUP BY csmd.PROJECT_ID, csmd.PRODUCT_CODE, csmd.YMD
+			) Z
+			GROUP BY Z.PROJECT_ID, Z.YMD 
+		) CC
+			ON AA.PROJECT_ID = CC.PROJECT_ID
+			AND AA.SEND_DATE = CC.YMD
+			AND AA.ROWNUM = 1
+	</select>
+	
+	<select id="selectStatisListMonthMo" resultType="camel">
+		/* statisticsAdmin.selectStatisListMonthMo */
+		SELECT 	DATE_FORMAT(AA.SEND_DATE, '%Y.%m') AS SEND_DATE 
+		,		AA.PROJECT_ID 
+		,		AA.PROJECT_NAME 
+		,		AA.PRODUCT_NAME 
+		,		AA.TOT_CNT
+		,		BB.DAY_COUNT
+		,		CC.PROJECT_COUNT 
+		FROM
+		(
+			SELECT	csmm.YM AS SEND_DATE
+			,		csmm.PROJECT_ID 
+			,		cp.PROJECT_NAME
+			,		csmm.PRODUCT_CODE AS PRODUCT_NAME
+			,		SUM(csmm.TOT_CNT) AS TOT_CNT
+			,		CASE WHEN @GRP = csmm.YM AND @GRP2 = csmm.PROJECT_ID  THEN @ROWNUM:=@ROWNUM + 1 ELSE @ROWNUM :=1 END AS ROWNUM
+			,		(@GRP := csmm.YM) AS DUMMY
+			,		(@GRP2 := csmm.PROJECT_ID) AS DUMMY2
+			FROM cm.CM_STAT_MO_MONTH csmm 
+			INNER JOIN cm_console.CM_PROJECT cp 
+				ON csmm.PROJECT_ID = cp.PROJECT_ID
+			, (SELECT @ROWNUM:=0, @GRP:='', @GRP2:='') TMP
+			WHERE csmm.CORP_ID = #{corpId}
+			<choose>
+					<when test="svcType=='UC'">
+				AND csmm.PROJECT_ID = #{projectId}
+					</when>
+					<otherwise>
+						<if test="searchProjectId != '' and searchProjectId != null">
+				AND csmm.PROJECT_ID = #{searchProjectId}	
+						</if>
+					</otherwise>
+				</choose>
+			AND csmm.YM BETWEEN CONCAT(#{searchStartMonth},'-01') AND CONCAT(#{searchEndMonth}, '-31')
+			AND	csmm.PRODUCT_CODE IN
+			<foreach item="item" index="index" collection="chArr" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			GROUP BY csmm.PROJECT_ID, csmm.PRODUCT_CODE, csmm.YM
+			ORDER BY SEND_DATE, PROJECT_ID, ROWNUM
+		) AA
+		LEFT OUTER JOIN (
+			SELECT COUNT(Z.SEND_DATE) AS DAY_COUNT
+			,		Z.SEND_DATE
+			,		Z.PROJECT_ID 
+			FROM (
+				SELECT	csmm.YM AS SEND_DATE
+				,		csmm.PROJECT_ID 
+				FROM cm.CM_STAT_MO_MONTH csmm
+				WHERE csmm.CORP_ID = #{corpId}
+				<choose>
+					<when test="svcType=='UC'">
+				AND csmm.PROJECT_ID = #{projectId}
+					</when>
+					<otherwise>
+						<if test="searchProjectId != '' and searchProjectId != null">
+				AND csmm.PROJECT_ID = #{searchProjectId}	
+						</if>
+					</otherwise>
+				</choose>
+				AND csmm.YM BETWEEN CONCAT(#{searchStartMonth},'-01') AND CONCAT(#{searchEndMonth}, '-31')
+				AND	csmm.PRODUCT_CODE IN
+				<foreach item="item" index="index" collection="chArr" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				GROUP BY csmm.PROJECT_ID, csmm.PRODUCT_CODE, csmm.YM
+			) Z
+			GROUP BY Z.SEND_DATE, Z.PROJECT_ID 
+		) BB
+			ON AA.SEND_DATE = BB.SEND_DATE
+			AND AA.PROJECT_ID = BB.PROJECT_ID 
+			AND AA.ROWNUM = 1
+		LEFT OUTER JOIN (
+			SELECT COUNT(Z.PROJECT_ID) AS PROJECT_COUNT
+			,		Z.PROJECT_ID
+			,		Z.YM
+			FROM (
+				SELECT	csmm.PROJECT_ID AS PROJECT_ID 
+				,		csmm.YM
+				FROM cm.CM_STAT_MO_MONTH csmm
+				WHERE csmm.CORP_ID = #{corpId}
+				<choose>
+					<when test="svcType=='UC'">
+				AND csmm.PROJECT_ID = #{projectId}
+					</when>
+					<otherwise>
+						<if test="searchProjectId != '' and searchProjectId != null">
+				AND csmm.PROJECT_ID = #{searchProjectId}	
+						</if>
+					</otherwise>
+				</choose>
+				AND csmm.YM BETWEEN CONCAT(#{searchStartMonth},'-01') AND CONCAT(#{searchEndMonth}, '-31')
+				AND	csmm.PRODUCT_CODE IN
+				<foreach item="item" index="index" collection="chArr" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				GROUP BY csmm.PROJECT_ID, csmm.PRODUCT_CODE, csmm.YM
+			) Z
+			GROUP BY Z.PROJECT_ID, Z.YM 
+		) CC
+			ON AA.PROJECT_ID = CC.PROJECT_ID
+			AND AA.SEND_DATE = CC.YM
+			AND AA.ROWNUM = 1
+	</select>
 </mapper>

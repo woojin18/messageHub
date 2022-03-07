@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.type.MongoConf;
 import kr.co.uplus.cm.common.utils.CmKeyMaker;
+import kr.co.uplus.cm.gw.model.mongo.CmMoMsgInfoDto;
 import kr.co.uplus.cm.gw.model.mongo.CmMsgInfoDto;
 import kr.co.uplus.cm.gw.model.mongo.msgInfo.AlimtalkMsg;
 import kr.co.uplus.cm.gw.model.mongo.msgInfo.FriendtalkMsg;
@@ -426,5 +427,28 @@ public class MessageStatusService {
         return rtn;
 	}
 	
-	
+	// 메시지 현황 상세 조회
+	@SuppressWarnings("unchecked")
+	public RestResult<Object> selectMoMessageDetail(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		Map<String, Object> rtnMap = new HashMap<String, Object>();
+		
+		String			moKey		= params.get("moKey").toString();
+		Query			query		= new Query(Criteria.where("moKey").is(moKey));
+		CmMoMsgInfoDto	msgInfo		= mongoCmd.findOne(query, CmMoMsgInfoDto.class, MongoConf.CM_MO_MSG_INFO.key + "_"+CmKeyMaker.getTime14(moKey).substring(0,10));
+
+		log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), msgInfo);
+		
+		if(msgInfo != null) {
+			rtnMap.put("msg", msgInfo.getMoMsg());
+			rtnMap.put("allMsg", msgInfo.toString());
+		}
+		
+		log.info("{} MessageStatusService Mongo rtmMap : {}", this.getClass(), rtnMap);
+		
+		rtn.setData(rtnMap);
+		
+		return rtn;
+	}	
 }
