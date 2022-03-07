@@ -7,9 +7,15 @@ import store from './store';
 import { coreUiMixin } from "@/common/vue-mixins";
 import common from '@/assets/js/common';
 import './filters'
+import moment from 'moment'
+import vueMomentJs from 'vue-momentjs'
 
 Vue.use(VueCookies);
 Vue.use(common);
+Vue.use(vueMomentJs, moment);
+
+moment.locale('ko')
+
 Vue.$cookies.config("1d");
 Vue.config.productionTip = false;
 
