@@ -55,7 +55,7 @@ public class SignUpService {
 		// 사업자 등록증 첨부파일
 		MultipartFile file = (MultipartFile) paramMap.get("attachFile");
 		String ext = commonService.getFileNameExt(file.getOriginalFilename(),1);
-		if (!(ext.equals("jpg") || ext.equals("jpeg") || ext.equals("pdf") || ext.equals("gif") || ext.equals("png") || ext.equals("tiff"))) {
+		if (!(ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg") || ext.equalsIgnoreCase("pdf") || ext.equalsIgnoreCase("gif") || ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("tiff"))) {
 			throw new Exception("파일은 jpg, jpeg, pdf, gif, png, tiff만 허용됩니다.");
 		}
 		if (file.getSize() > 5 * 1024 * 1024) {
@@ -63,7 +63,7 @@ public class SignUpService {
 		}
 		MultipartFile file1 = (MultipartFile) paramMap.get("attachFile1");
 		ext = commonService.getFileNameExt(file1.getOriginalFilename(),1);
-		if (!(ext.equals("jpg") || ext.equals("jpeg") || ext.equals("pdf") || ext.equals("gif") || ext.equals("png") || ext.equals("tiff"))) {
+		if (!(ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg") || ext.equalsIgnoreCase("pdf") || ext.equalsIgnoreCase("gif") || ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("tiff"))) {
 			throw new Exception("파일은 jpg, jpeg, pdf, gif, png, tiff만 허용됩니다.");
 		}
 		if (file1.getSize() > 5 * 1024 * 1024) {
@@ -71,7 +71,7 @@ public class SignUpService {
 		}
 		MultipartFile file2 = (MultipartFile) paramMap.get("attachFile2");
 		ext = commonService.getFileNameExt(file2.getOriginalFilename(),1);
-		if (!(ext.equals("jpg") || ext.equals("jpeg") || ext.equals("pdf") || ext.equals("gif") || ext.equals("png") || ext.equals("tiff"))) {
+		if (!(ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg") || ext.equalsIgnoreCase("pdf") || ext.equalsIgnoreCase("gif") || ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("tiff"))) {
 			throw new Exception("파일은 jpg, jpeg, pdf, gif, png, tiff만 허용됩니다.");
 		}
 		if (file2.getSize() > 5 * 1024 * 1024) {
@@ -80,7 +80,7 @@ public class SignUpService {
 		MultipartFile file3 = (MultipartFile) paramMap.get("attachFile3");
 		if (file3 != null) {
 			ext = commonService.getFileNameExt(file3.getOriginalFilename(),1);
-			if (!(ext.equals("jpg") || ext.equals("jpeg") || ext.equals("pdf") || ext.equals("gif") || ext.equals("png") || ext.equals("tiff"))) {
+			if (!(ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg") || ext.equalsIgnoreCase("pdf") || ext.equalsIgnoreCase("gif") || ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("tiff"))) {
 				throw new Exception("파일은 jpg, jpeg, pdf, gif, png, tiff만 허용됩니다.");
 			}
 			if (file3.getSize() > 5 * 1024 * 1024) {
