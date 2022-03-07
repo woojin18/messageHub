@@ -1071,11 +1071,22 @@ public class ChannelService {
 					throw new Exception(errMsg);
 				}
 			}
-//		} else if( "U".equals(sts) ) {
-//			String apiKey = CommonUtils.getString(params.get("apiKey")); 
-//			params.put("apiKey", apiKey);
-//			
-//			generalDao.updateGernal(DB.QRY_UPDATE_MO_CALLBACK, params);
+		} else if( "U".equals(sts) ) {
+			if(CommonUtils.getString(params.get("moNumber")).equals("")) {
+				throw new Exception("MO 수신번호가 입력되지 않았습니다. 다시 시도해주세요.");
+			}
+			
+			ArrayList<String> moTypes =  (ArrayList<String>) params.get("moTypes");
+			if(moTypes.size() == 0) {
+				throw new Exception("MO 유형이 없습니다. 다시 시도해주세요.");
+			}
+			String moType	= moTypes.get(0);
+			params.put("moType", moType);
+			
+			//webhook URL, api key update
+			generalDao.updateGernal(DB.QRY_UPDATE_MO_CALLBACK, params);
+			// redis 테이블 처리
+			commonService.updateCmCmdForRedis("CM_MO_CALLBACK");
 		} else if( "D".equals(sts) ) {
 			generalDao.updateGernal("channel.updateMoCallBackUseYn", params);
 			// redis 테이블 처리

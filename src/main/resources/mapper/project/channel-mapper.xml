@@ -576,12 +576,11 @@
 	<update id="updateMoCallback">
 	/* channel.updateMoCallback */
 		UPDATE	cm.CM_MO_CALLBACK
-		SET		MO_TYPE		= #{moType}
-		,		PROJECT_ID	= #{projectId}
-		,		MOD_ID		= #{userId}
-		,		MOD_DT		= NOW()
+		SET		API_KEY		= #{apiKey}
+		,		WEBHOOK_URL	= #{webhookUrl}
+		,		UPD_DT		= NOW()
 		WHERE	MO_NUMBER	= #{moNumber}
-		AND		API_KEY		= #{apiKey}
+		AND		MO_TYPE		= #{moType}
 	</update>
 	
 	<delete id="deleteMoCallback">

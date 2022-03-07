@@ -34,7 +34,7 @@
 							<col>
 							<col style="width:20%">
 							<col style="width:10%">
-							<col style="width:10%">
+							<col style="width:15%">
 							<!-- <col style="width:10%"> -->
 						</colgroup>
 						<thead>
@@ -44,7 +44,7 @@
 								<th class="text-center lc-1">웹훅 URL</th>
 								<th class="text-center lc-1">API KEY</th>
 								<th class="text-center lc-1">등록일시</th>
-								<th class="text-center lc-1 end">삭제</th>
+								<th class="text-center lc-1 end">관리</th>
 								<!-- <th class="text-center lc-1 end">수정일시</th> -->
 							</tr>
 						</thead>
@@ -56,7 +56,10 @@
 								<td class="text-left">{{item.webhookUrl}}</td>
 								<td class="text-left">{{item.apiKey}}</td>
 								<td class="text-center">{{item.regDt}}</td>
-								<td class="text-center end"><button class="btnStyle6 font13" @click="fnMod(item)">삭제</button></td>
+								<td class="text-center end">
+									<button class="btnStyle6 font13" @click="fnMod(item)">수정</button>&nbsp;
+									<button class="btnStyle6 font13" @click="fnDel(item)">삭제</button>
+								</td>
 								<!-- <td class="end">{{item.updDt}}</td> -->
 							</tr>
 							<tr v-if="data.length == 0">
@@ -153,19 +156,25 @@ export default {
 			this.save_status = "C";
 			this.row_data = { 
 				"appKey"    : "",
+				"apiKey"	: "",
 				"moNumber"  : "",
 				"moType"    : "SMSMO",
 				"pjtAllNo"  : "ALL" 
 			}
 			jQuery("#layerPopup").modal("show");
 		},
-		// mo 삭제 처리(useYn 수정)
 		fnMod(row_data){
+			this.save_status = "U";
+			this.row_data = row_data;
+			jQuery("#layerPopup").modal("show");
+		},
+		// mo 삭제 처리(useYn 수정)
+		fnDel(row_data){
 			this.del_data = row_data;
-			eventBus.$on('callbackEventBus', this.fnModCallBack);
+			eventBus.$on('callbackEventBus', this.fnDelCallBack);
      		confirm.fnConfirm( "", "삭제하시겠습니까?", "삭제");
 		},
-		fnModCallBack(){
+		fnDelCallBack(){
 			var row_data = this.del_data;
 			var params = {
 				sts : "D",
