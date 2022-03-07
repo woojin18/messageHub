@@ -77,6 +77,8 @@ export default {
             }
 
              messageStatusApi.selectMoMessageDetail(params).then(response=> {
+
+                console.log(response);
                 var result = response.data.data;
                 
                 console.log(result);
