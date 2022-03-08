@@ -104,11 +104,12 @@
                   <td>{{totCnt-offset-data.rowNum+1 | formatComma}}</td>
                   <td class="text-center">{{data.moType}}</td>
                   <td class="text-center">{{data.moNumber | hpNumberAddDash}}</td>
-                  <td class="text-center"><a @click.prevent="fnMessageModal(data.moKey)" title="메시지 확인" class="clickClass">{{data.moCallback | hpNumberAddDash}}</a></td>
+                  <!-- <td class="text-center"><a @click.prevent="fnMessageModal(data.moKey)" title="메시지 확인" class="clickClass">{{data.moCallback | hpNumberAddDash}}</a></td> -->
+                  <td class="text-center">{{data.moCallback | hpNumberAddDash}}</td>
                   <td class="text-center">{{data.productCode}}</td>
                   <td class="text-center">{{data.moTitle}}</td>
                   <td class="text-center">{{data.telco}}</td>
-                  <td class="text-center">{{data.codeVal}}</td>
+                  <td class="text-center">{{data.codeVal}}<button style="display:none;" @click="fnMessageModal(data.moKey)"></button></td>
                   <td class="text-center end">{{data.moRecvDt}}</td>
               </tr>
               <tr v-if="datas.length == 0">

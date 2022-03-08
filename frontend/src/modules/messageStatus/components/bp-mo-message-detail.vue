@@ -14,8 +14,13 @@
 									<div class="phoneTextWrap">
 										<div class="phoneText1">
                                             <p>{{title}}</p>
+                                            <!-- <div v-if="sendData.senderType == 'MMS'">
+                                                <div v-for="(imgInfo, idx) in sendData.imgInfoList" :key="idx" class="phoneText2 mt10 text-center simulatorImg"
+                                                :style="'padding:65px;background-image: url('+imgInfo.imgUrl+');'">
+                                                </div>
+                                            </div> -->
 										    <p class="color3">{{msg}}</p>
-                                            <p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNmArr[n-1]}}</p>
+                                            <!-- <p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNmArr[n-1]}}</p> -->
 										</div>
 									</div>
 								</div>
