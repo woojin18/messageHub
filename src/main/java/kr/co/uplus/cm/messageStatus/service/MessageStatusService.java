@@ -437,12 +437,23 @@ public class MessageStatusService {
 		String			moKey		= params.get("moKey").toString();
 		Query			query		= new Query(Criteria.where("moKey").is(moKey));
 		CmMoMsgInfoDto	msgInfo		= mongoCmd.findOne(query, CmMoMsgInfoDto.class, MongoConf.CM_MO_MSG_INFO.key + "_"+CmKeyMaker.getTime14(moKey).substring(0,10));
+		CmMoMsgInfoDto	msgInfo2		= mongoCmd.findOne(query, CmMoMsgInfoDto.class, "");
 
 		log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), msgInfo);
+		
+		rtnMap.put("msgInfo", msgInfo);
+		rtnMap.put("msgInfo2", msgInfo2);
 		
 		if(msgInfo != null) {
 			rtnMap.put("msg", msgInfo.getMoMsg());
 			rtnMap.put("allMsg", msgInfo.toString());
+			if(msgInfo.getMoType().equals("SMSMO")) {
+				
+			}else {
+				int contentCnt = msgInfo.getContentCnt();
+//				if(contentCnt > 0))
+			}
+			
 		}
 		
 		log.info("{} MessageStatusService Mongo rtmMap : {}", this.getClass(), rtnMap);
