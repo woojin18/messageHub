@@ -19,6 +19,7 @@ import kr.co.uplus.cm.common.type.MongoConf;
 import kr.co.uplus.cm.common.utils.CmKeyMaker;
 import kr.co.uplus.cm.gw.model.mongo.CmMoMsgInfoDto;
 import kr.co.uplus.cm.gw.model.mongo.CmMsgInfoDto;
+import kr.co.uplus.cm.gw.model.mongo.MmsMoContentInfo;
 import kr.co.uplus.cm.gw.model.mongo.msgInfo.AlimtalkMsg;
 import kr.co.uplus.cm.gw.model.mongo.msgInfo.FriendtalkMsg;
 import kr.co.uplus.cm.gw.model.mongo.msgInfo.MmsMsg;
@@ -436,24 +437,31 @@ public class MessageStatusService {
 		
 		String			moKey		= params.get("moKey").toString();
 		Query			query		= new Query(Criteria.where("moKey").is(moKey));
-		CmMoMsgInfoDto	msgInfo		= mongoCmd.findOne(query, CmMoMsgInfoDto.class, MongoConf.CM_MO_MSG_INFO.key + "_"+CmKeyMaker.getTime14(moKey).substring(0,10));
-		CmMoMsgInfoDto	msgInfo2		= mongoCmd.findOne(query, CmMoMsgInfoDto.class, "");
-
+		CmMoMsgInfoDto	msgInfo		= mongoCmd.findOne(query, CmMoMsgInfoDto.class, MongoConf.CM_MO_MSG_INFO.key + "_"+CmKeyMaker.getYMD(moKey));
+//		db.getCollection("CM_MO_MSG_INFO_20220308").find({ "moKey" : "m4sLx5AyYE.6cEyX3" });
+//
+//		{ "_id" : ObjectId("6226efc449c9522aab1fc351"), "moKey" : "m4sLx5AyYE.6cEyX3", "ymd" : "2022-03-08", "apiKey" : "GW_TEST_1", "corpId" : "COM2104142281316", 
+//		"projectId" : "313431323336706A74", "moNumber" : "1544536789", "moSn" : "306759", "moType" : "SMSMO", "moCallback" : "01041446110", "productCode" : "SMSMO", "moMsg" : "SMS 문자 테스트 123 !@#$%^&*()", 
+//		"telco" : "LGU", "contentCnt" : 0, "status" : "1000", "moRecvDt" : "2022-03-08T14:55:16", "_class" : "kr.co.uplus.cm.gw.model.mongo.CmMoMsgInfoDto" }
 		log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), msgInfo);
 		
-		rtnMap.put("msgInfo", msgInfo);
-		rtnMap.put("msgInfo2", msgInfo2);
-		
 		if(msgInfo != null) {
+			rtnMap.put("msgInfo",msgInfo);
 			rtnMap.put("msg", msgInfo.getMoMsg());
-			rtnMap.put("allMsg", msgInfo.toString());
-			if(msgInfo.getMoType().equals("SMSMO")) {
-				
-			}else {
+			if(msgInfo.getMoType().equals("MMSMO")) {
 				int contentCnt = msgInfo.getContentCnt();
-//				if(contentCnt > 0))
+				
+				if(contentCnt > 0) {
+					List<Object> mmsImg = new ArrayList<Object>();
+					List<MmsMoContentInfo> mmsInfoList = msgInfo.getMmsMoContentInfoLst();
+					int cnt = 0;
+					for(MmsMoContentInfo mmsInfo : mmsInfoList) {
+						rtnMap.put(cnt+"", mmsInfo);
+						mmsImg.add(mmsInfo.getContentImgUrl());
+					}
+					rtnMap.put("mmsImg", mmsImg);					
+				}
 			}
-			
 		}
 		
 		log.info("{} MessageStatusService Mongo rtmMap : {}", this.getClass(), rtnMap);
