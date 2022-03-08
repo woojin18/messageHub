@@ -438,28 +438,41 @@ public class MessageStatusService {
 		String			moKey		= params.get("moKey").toString();
 		Query			query		= new Query(Criteria.where("moKey").is(moKey));
 		CmMoMsgInfoDto	msgInfo		= mongoCmd.findOne(query, CmMoMsgInfoDto.class, MongoConf.CM_MO_MSG_INFO.key + "_"+CmKeyMaker.getYMD(moKey));
-//		db.getCollection("CM_MO_MSG_INFO_20220308").find({ "moKey" : "m4sLx5AyYE.6cEyX3" });
+//		db.getCollection("CM_MO_MSG_INFO_20220308").find({"moKey" : "H3hSQEZJKB.6cEyYj"});
 //
-//		{ "_id" : ObjectId("6226efc449c9522aab1fc351"), "moKey" : "m4sLx5AyYE.6cEyX3", "ymd" : "2022-03-08", "apiKey" : "GW_TEST_1", "corpId" : "COM2104142281316", 
-//		"projectId" : "313431323336706A74", "moNumber" : "1544536789", "moSn" : "306759", "moType" : "SMSMO", "moCallback" : "01041446110", "productCode" : "SMSMO", "moMsg" : "SMS 문자 테스트 123 !@#$%^&*()", 
-//		"telco" : "LGU", "contentCnt" : 0, "status" : "1000", "moRecvDt" : "2022-03-08T14:55:16", "_class" : "kr.co.uplus.cm.gw.model.mongo.CmMoMsgInfoDto" }
+//		{ "_id" : ObjectId("6226fd5b086e990af61587d3"), "moKey" : "H3hSQEZJKB.6cEyYj", "ymd" : "2022-03-08", "apiKey" : "APIpRmhtNV", "corpId" : "COMBB4XfyI", "projectId" : "PJTV7sEQe6", 
+//		"moNumber" : "1544536777", "moSn" : "20220308153343_MGR_003_1544536777_8338", "moType" : "MMSMO", "moCallback" : "01088259173", "productCode" : "MMSMO", "moTitle" : "mms mo 테스트", 
+//		"moMsg" : "mms mo 테스트\r\n", "telco" : "KT", "contentCnt" : 3, 
+//		"contentInfoLst" : [ { "contentName" : "FLGLWv6RhA_0.jpg", "contentSize" : "158887", "contentExt" : "jpg", "contentUrl" : "https://api.msghub.uplus.co.kr/mo/v1/file/H3hSQEZJKB.6cEyYj/0" }, 
+//		{ "contentName" : "FLGLWv6RhA_1.jpg", "contentSize" : "181033", "contentExt" : "jpg", "contentUrl" : "https://api.msghub.uplus.co.kr/mo/v1/file/H3hSQEZJKB.6cEyYj/1" },
+//		{ "contentName" : "FLGLWv6RhA_2.jpg", "contentSize" : "154799", "contentExt" : "jpg", "contentUrl" : "https://api.msghub.uplus.co.kr/mo/v1/file/H3hSQEZJKB.6cEyYj/2" } ], 
+//		"status" : "1000", "moRecvDt" : "2022-03-08T15:33:44", "_class" : "kr.co.uplus.cm.gw.model.mongo.CmMsgInfoDto" }
 		log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), msgInfo);
 		
 		if(msgInfo != null) {
 			rtnMap.put("msgInfo",msgInfo);
 			rtnMap.put("msg", msgInfo.getMoMsg());
+			rtnMap.put("title", msgInfo.getMoTitle());
+			rtnMap.put("contentCnt", msgInfo.getContentCnt());
 			if(msgInfo.getMoType().equals("MMSMO")) {
 				int contentCnt = msgInfo.getContentCnt();
 				
 				if(contentCnt > 0) {
-					List<Object> mmsImg = new ArrayList<Object>();
-					List<MmsMoContentInfo> mmsInfoList = msgInfo.getMmsMoContentInfoLst();
-					int cnt = 0;
-					for(MmsMoContentInfo mmsInfo : mmsInfoList) {
-						rtnMap.put(cnt+"", mmsInfo);
-						mmsImg.add(mmsInfo.getContentImgUrl());
+					try {
+						List<Object> mmsImg = new ArrayList<Object>();
+						List<MmsMoContentInfo> mmsInfoList = msgInfo.getContentInfoLst();
+						int cnt = 0;
+						for(MmsMoContentInfo mmsInfo : mmsInfoList) {
+							Map<String, Object> map = new HashMap<String, Object>();
+							rtnMap.put(cnt+"", mmsInfo);
+							map.put("imgUrl", mmsInfo.getContentUrl());
+							mmsImg.add(map);
+							cnt++;
+						}
+						rtnMap.put("mmsImg", mmsImg);			
+					}catch(Exception e) {
+						
 					}
-					rtnMap.put("mmsImg", mmsImg);					
 				}
 			}
 		}

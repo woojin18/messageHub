@@ -13,26 +13,25 @@
 									<img src="/se2/images/phoneMockup1.svg" alt="프리 템플릿">
 									<div class="phoneTextWrap">
 										<div class="phoneText1">
-                                            <p>{{title}}</p>
-                                            <!-- <div v-if="sendData.senderType == 'MMS'">
-                                                <div v-for="(imgInfo, idx) in sendData.imgInfoList" :key="idx" class="phoneText2 mt10 text-center simulatorImg"
-                                                :style="'padding:65px;background-image: url('+imgInfo.imgUrl+');'">
-                                                </div>
-                                            </div> -->
+                        <p>{{title}}</p>
+                        <div v-if="mmsImgCnt > 0">
+                            <div v-for="(imgInfo, idx) in mmsImgList" :key="idx" class="phoneText2 mt10 text-center simulatorImg"
+                            :style="'padding:65px;background-image: url('+imgInfo.imgUrl+');'">
+                            </div>
+                        </div>
 										    <p class="color3">{{msg}}</p>
-                                            <!-- <p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNmArr[n-1]}}</p> -->
 										</div>
 									</div>
 								</div>
-                                <div class="text-center">
-                                    <a class="btnStyle1 backBlack" @click.self="fnCloseLayer" title="닫기">닫기</a>	
-                                </div>
+                <div class="text-center">
+                    <a class="btnStyle1 backBlack" @click.self="fnCloseLayer" title="닫기">닫기</a>	
+                </div>
 							</div>
-					    </div>											
-				    </div>
-		    	</div>
+					  </div>											
+				  </div>
 		    </div>
-        </div>
+		  </div>
+    </div>
 	<!-- </div> -->
     <!-- //content -->
 </div>
@@ -60,15 +59,10 @@ export default {
   },
   data() {
     return {
-      senderTypeNm : '',
-      campaignId : '',
-      phoneNumber : '',
-      gwResultNm : '',
-      regDt : '',
       title : '',
       msg : '',
-      btnCnt : 0,
-      btnNmArr : []
+      mmsImgCnt : 0,
+      mmsImgList : []
     }
   },
   watch: {
@@ -82,30 +76,20 @@ export default {
             }
 
              messageStatusApi.selectMoMessageDetail(params).then(response=> {
-
-                console.log(response);
                 var result = response.data.data;
-                
-                console.log(result);
-                // var title         = result.title;
-                // var msg           = result.msg;
-                // var btnCnt        = result.btnCnt;
-                // var btnNmArr      = result.btnNmArr;
-                // var senderTypeNm  = result.senderTypeNm;
-                // var campaignId    = result.campaignId;
-                // var phoneNumber   = result.phoneNumber;
-                // var gwResultNm    = result.gwResultNm;
-                // var regDt         = result.regDt;
 
-                // this.title        = title;
-                // this.msg          = msg;
-                // this.btnCnt       = btnCnt;
-                // this.btnNmArr     = btnNmArr;
-                // this.senderTypeNm = senderTypeNm;
-                // this.campaignId   = campaignId;
-                // this.phoneNumber  = phoneNumber;
-                // this.gwResultNm   = gwResultNm;
-                // this.regDt        = regDt;
+                console.log(result);
+                
+                var title = result.title;
+                var msg = result.msg;
+                var mmsImgCnt = result.contentCnt;
+                var mmsImgList = result.mmsImg;
+
+                this.title = title;
+                this.msg = msg;
+                this.mmsImgCnt = mmsImgCnt;
+                this.mmsImgList = mmsImgList;
+
             });                    
    
         }
