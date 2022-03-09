@@ -64,7 +64,7 @@ public class UrlInfoService {
 		String urlId = SecureRandomStringUtils.randomAlphanumeric(6);
 		params.put("urlId", urlId);
 
-		int resultCnt = generalDao.insertGernal(DB.QRY_INSERT_ADDR_RCVR, params);
+		int resultCnt = generalDao.insertGernal(DB.QRY_INSERT_URL_INFO, params);
 
 		if (resultCnt <= 0) {
 			rtn.setSuccess(false);
@@ -89,7 +89,7 @@ public class UrlInfoService {
 	public RestResult<Object> deleteUrlInfo(Map<String, Object> params) throws Exception {
 
 		RestResult<Object> rtn = new RestResult<Object>();
-		int resultCnt = generalDao.insertGernal(DB.QRY_INSERT_URL_INFO, params);
+		int resultCnt = generalDao.insertGernal(DB.QRY_DELETE_URL_INFO, params);
 
 		if (resultCnt <= 0) {
 			rtn.setSuccess(false);

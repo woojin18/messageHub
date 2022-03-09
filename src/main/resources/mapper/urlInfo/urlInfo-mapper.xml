@@ -98,7 +98,7 @@
 			cm_console.CM_URL_INFO
 		SET
 			USE_YN 	= 'N',
-			UPD_ID 	= #{userId}
+			UPD_ID 	= #{userId},
 			UPD_DT 	= NOW()
 		WHERE
 			URL_ID 		= #{urlId}
