@@ -186,6 +186,7 @@ export default {
           }
           if(imgRatio < 0.5 || imgRatio > 0.75){
             confirm.fnAlert(this.componentsTitle, '이미지 비율은 가로:세로 2:1 이상, 4:3 이하여야 합니다.');
+            return;
           }
         }else if(this.chkboxUseCh.includes('RCS') || this.chkboxUseCh.includes('PUSH')){
           if(uploadFile.files[0].size>1048576){
@@ -200,6 +201,7 @@ export default {
           }
           if(imgRatio < 0.5 || imgRatio > 0.75){
             confirm.fnAlert(this.componentsTitle, '이미지 비율은 가로:세로 2:1 이상, 4:3 이하여야 합니다.');
+            return;
           }
         }
 
