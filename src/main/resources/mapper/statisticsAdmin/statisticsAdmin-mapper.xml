@@ -843,6 +843,7 @@
 			ON AA.PROJECT_ID = CC.PROJECT_ID
 			AND AA.SEND_DATE = CC.YMD
 			AND AA.ROWNUM = 1
+		ORDER BY SEND_DATE, PROJECT_ID, ROWNUM
 	</select>
 	
 	<select id="selectStatisListMonthMo" resultType="camel">
@@ -949,5 +950,6 @@
 			ON AA.PROJECT_ID = CC.PROJECT_ID
 			AND AA.SEND_DATE = CC.YM
 			AND AA.ROWNUM = 1
+		ORDER BY SEND_DATE, PROJECT_ID, ROWNUM
 	</select>
 </mapper>
