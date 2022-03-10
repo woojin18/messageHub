@@ -48,10 +48,6 @@ export default {
       require: true,
       default: false
     },
-    title: {
-      type: String,
-      require: false
-    },
     detailMsgKey: {
       type: String,
       require: true
@@ -69,8 +65,6 @@ export default {
     layerView: function(newVal) {
         // LayerView가 true를 반환해 팝업이 출력됫을 시에만 값을 세팅하여 수정 팝업을 만든다.
         if(newVal) {
-        
-            console.log("this.detailMsgKey : "+this.detailMsgKey);
             var params = {
             "moKey": this.detailMsgKey
             }
@@ -78,8 +72,6 @@ export default {
              messageStatusApi.selectMoMessageDetail(params).then(response=> {
                 var result = response.data.data;
 
-                console.log(result);
-                
                 var title = result.title;
                 var msg = result.msg;
                 var mmsImgCnt = result.contentCnt;

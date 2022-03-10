@@ -458,22 +458,20 @@ public class MessageStatusService {
 				int contentCnt = msgInfo.getContentCnt();
 				
 				if(contentCnt > 0) {
-					try {
-						List<Object> mmsImg = new ArrayList<Object>();
-						List<MmsMoContentInfo> mmsInfoList = msgInfo.getContentInfoLst();
-						int cnt = 0;
-						for(MmsMoContentInfo mmsInfo : mmsInfoList) {
-							Map<String, Object> map = new HashMap<String, Object>();
-							rtnMap.put(cnt+"", mmsInfo);
-							map.put("imgUrl", mmsInfo.getContentUrl());
-							mmsImg.add(map);
-							cnt++;
-						}
-						rtnMap.put("mmsImg", mmsImg);			
-					}catch(Exception e) {
-						
+					List<Object> mmsImg = new ArrayList<Object>();
+					List<MmsMoContentInfo> mmsInfoList = msgInfo.getContentInfoLst();
+					int cnt = 0;
+					for(MmsMoContentInfo mmsInfo : mmsInfoList) {
+						Map<String, Object> map = new HashMap<String, Object>();
+						rtnMap.put(cnt+"", mmsInfo);
+						map.put("imgUrl", mmsInfo.getContentUrl());
+						mmsImg.add(map);
+						cnt++;
 					}
+					rtnMap.put("mmsImg", mmsImg);
 				}
+			}else {
+				rtnMap.put("mmsImg", null);
 			}
 		}
 		
