@@ -53,7 +53,7 @@
 
             <input type="checkbox" id="imgtalk" class="checkStyle2" value="FRIENDTALK" v-model="chkboxUseCh">
             <label for="imgtalk" class="mr10 vertical-middle clear">친구톡
-            	<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:475px">
+            	<i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:500px">
 						* 이미지는 jpg, jpeg, png 형식만 지원합니다.<br>
 						* 이미지 용량은 Normal은 500KB 이하, Wide는 2MB 이하여야 합니다.<br>
 						* Normal 이미지 권장 사이즈는 가로 길이 최소 720px, 세로 길이는 최소 720px 이상입니다.<br>
