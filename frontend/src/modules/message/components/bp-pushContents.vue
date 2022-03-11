@@ -19,7 +19,7 @@
               <div class="float-right mt10" style="width:79%">
                 <input type="text" class="inputStyle" title="내용 입력란" placeholder="" v-model="rcvblcNumber">
               </div>
-              <p class="txtCaption color5 lc-1 mt7" style="margin-left:21%">푸시 수신거부 방법을 입력해주세요. 푸시 메시지에 (수신거부:거부 방법)이 포함됩니다.</p>
+              <p class="txtCaption color5 lc-1 mt7" style="margin-left:21%">PUSH 수신거부 방법을 입력해주세요. PUSH 메시지에 (수신거부:거부 방법)이 포함됩니다.</p>
             </div>
           </div>
           <div class="of_h mt7">
@@ -59,7 +59,7 @@ export default {
       type: String,
       require: false,
       default: function() {
-        return '푸시 발송 내용';
+        return 'PUSH 발송 내용';
       }
     },
   },
@@ -81,7 +81,7 @@ export default {
     //입력정보 callback
     fnCallbackInputData(){
       if(this.sendData.msgKind == 'A' && !this.rcvblcNumber){
-        confirm.fnAlert(this.componentsTitle, '푸시 수신거부 방법을 입력해주세요.');
+        confirm.fnAlert(this.componentsTitle, 'PUSH 수신거부 방법을 입력해주세요.');
         return false;
       }
       if(!this.pushContent){

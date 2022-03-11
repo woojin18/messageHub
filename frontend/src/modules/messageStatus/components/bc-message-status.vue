@@ -1,7 +1,7 @@
 <template>
 <div class="row row-no-margin">
   <div class="contentHeader">
-      <h2>조회 > 전체</h2><span>발송일자와 검색조건(수신자 전화번호, 앱아이디)는 검색 시 필수 입니다.</span>
+      <h2>조회 > 전체</h2><span>발송일자와 수신자정보는 검색 시 필수 입니다. (수신자정보는 수신자 전화번호 또는 PUSH 앱 아이디 입니다.)</span>
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="메시지 상세조회 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
   </div>
   <!-- 본문 -->
@@ -26,13 +26,15 @@
         </div>
 
         <div class="of_h consolMarginTop">
-          <div class="inline-block" style="width:8%"><h4 class="font-normal mt15">검색조건</h4></div>
-          <div class="inline-block" style="width:91%">
-            <select v-model="searchData.searchCondi" class="selectStyle2" style="width:15%" title="수신자정보 검색조건">
-                <option value="receiverPhone">수신자 전화번호</option>
-                <option value="receiverId">앱아이디</option>
-            </select>
-            <input type="text" class="inputStyle vertical-top ml10" id="searchText" name="searchText" v-model="searchData.searchText" style="width:37.5%" title="수신자정보">
+          <div class="inline-block" style="width:8%"><h4 class="font-normal mt15">수신자정보</h4></div>
+          <div class="inline-block" style="width:25%">
+            <input type="text" class="inputStyle" id="searchText" name="searchText" v-model="searchData.searchText">
+          </div>
+          <div class="inline-block" style="width:8%;">
+            <h4 class="font-normal mt15 ml50">태그</h4>
+          </div>
+          <div class="inline-block" style="width: 25%;">
+            <input type="text" id="srcTag" name="srcTag" title="태그" v-model="searchData.srcTag"  class="inputStyle">
           </div>
         </div>
         <div class="of_h consolMarginTop">
@@ -44,17 +46,6 @@
               <input type="checkbox" id="searchResultYn_FAIL" class="checkStyle2" v-model="searchData.searchResultN">
               <label for="searchResultYn_FAIL">실패</label>
             </div>
-
-            <h4 class="inline-block vertical-middle ml30 mr20">발송구분 :</h4>
-            <div class="inline-block" style="width:27%">
-                <!-- <div class="consolCheck vertical-middle"> -->
-                    <input type="checkbox" id="searchSendFlag_CLOUD" class="checkStyle2" v-model="searchData.searchSendCloud">
-                    <label for="searchSendFlag_CLOUD" class="mr30">웹 발송</label>
-                    <input type="checkbox" id="searchSendFlag_API" class="checkStyle2" v-model="searchData.searchSendAPI">
-                    <label for="searchSendFlag_API">API발송</label>
-                <!-- </div> -->
-            </div>
-
             <a @click="fnSearch()" class="btnStyle2 float-right" title="검색" activity="READ">검색</a>
           </div>
         </div>
@@ -74,8 +65,9 @@
       </div>
 
       <div class="of_h inline">
-        <div class="float-left">전체 : <span class="color1"><strong>{{totCnt}}</strong></span>건
+        <div class="float-left">전체 : <span class="color1"><strong>{{totCnt | formatComma}}</strong></span>건
           <SelectLayer @fnSelected="fnSelected" classProps="selectStyle2 width120 ml20"></SelectLayer>
+          <span class="ml20">총건수 : {{totCnt | formatComma}}건</span>  <span class="ml10">성공건수 : {{successCnt | formatComma}}건  </span><span class="ml10">실패건수 : {{failCnt | formatComma}}건</span>
         </div>
       </div>
 
@@ -84,40 +76,37 @@
           <!-- table -->
           <table class="table_skin1 bt-000 tbl-striped">
             <colgroup>
-                <col style="width:5%">
+                <col style="width:10%">
+                <col style="width:18%">
                 <col style="width:10%">
                 <col style="width:10%">
                 <col style="width:10%">
                 <col style="width:10%">
                 <col style="width:8%">
-                <col style="width:8%">
-                <col style="width:8%">
-                <col style="width:5%">
             </colgroup>
             <thead>
               <tr>
-                <th class="text-center lc-1">No.</th>
-                <th class="text-center lc-1">수신자휴대폰</th>
-                <th class="text-center lc-1">Push로그인ID</th>
-                <th class="text-center lc-1">클라이언트키</th>
+                <th class="text-center lc-1">수신자정보</th>
+                <th class="text-center lc-1">식별값</th>
                 <th class="text-center lc-1">발송일시</th>
-                <th class="text-center lc-1">발송타입</th>
+                <th class="text-center lc-1">발송구분</th>
+                <th class="text-center lc-1">요청채널</th>
                 <th class="text-center lc-1">발송채널</th>
-                <th class="text-center lc-1">태그</th>
                 <th class="text-center lc-1 end">결과</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(data, idx) in datas" :key="data.rowNum">
-                  <td>{{totCnt - ((pageNo-1) * listSize) - data.rowNum + 1 }}</td>
-                  <td class="text-center"><a @click="fnDetailPop(idx)"><u>{{data.phoneNumber}}</u></a></td>
-                  <td class="text-center"><a @click="fnDetailPop(idx)"><u>{{data.pushCuid}}</u></a></td>
+                  <td class="text-center"><a @click="fnDetailPop(idx)"><u>{{data.recvUserInfo}}</u></a></td>
                   <td class="text-center">{{data.cliKey}}</td>
                   <td class="text-center">{{data.regDt}}</td>
-                  <td class="text-center">{{data.senderTypeNm}}</td>
+                  <td class="text-center">{{data.sendType}}</td>
+                  <td class="text-center">{{data.reqCh}}</td>
                   <td class="text-center">{{data.finalCh}}</td>
-                  <td class="text-center">{{data.campaignId}}</td>
-                  <td class="text-center end">{{data.gwResultNm}}</td>
+                  <td class="text-center end">
+                    <span v-if="data.gwResultNm != '성공'"><a @click="fnResultDesc(data.gwResultDesc)"><u>{{data.gwResultNm}}</u></a></span>
+                    <span v-if="data.gwResultNm == '성공'">{{data.gwResultNm}}</span>
+                  </td>
               </tr>
               <tr v-if="datas.length == 0">
                   <td class="text-center" colspan="8">검색된 내용이 없습니다.</td>
@@ -159,7 +148,7 @@ export default {
       require: false,
       default: function() {
         return {
-          'searchCondi' : 'receiverPhone',
+          'srcTag' : '',
           'searchText' : '',
           'searchStartDate' : this.$gfnCommonUtils.getCurretDate(),
           'searchEndDate' : this.$gfnCommonUtils.getCurretDate(),
@@ -176,6 +165,8 @@ export default {
       listSize : 10,  // select 박스 value (출력 갯수 이벤트)
       pageNo : 1,  // 현재 페이징 위치
       totCnt : 0,  //전체 리스트 수
+      successCnt : 0,
+      failCnt : 0,
       offset : 0, //페이지 시작점
       searchDateInterval: 7,
       datas: [],
@@ -242,7 +233,7 @@ export default {
       }
 
       if(searchText == "") {
-        confirm.fnAlert("", "검색조건을 입력해주세요.");
+        confirm.fnAlert("", "수신자정보를 입력해주세요.");
         return false;
       }
 
@@ -263,6 +254,8 @@ export default {
         if(result.success) {
           this.datas = result.data;
           this.totCnt = result.pageInfo.totCnt;
+          this.successCnt = result.pageInfo.successCnt;
+          this.failCnt = result.pageInfo.failCnt;
           this.offset = result.pageInfo.offset;
         } else { 
           confirm.fnAlert("", result.message);
@@ -287,6 +280,9 @@ export default {
         this.detailLayerMsgKey = this.datas[row].msgKey; 
         
       },
+    fnResultDesc(desc){
+      confirm.fnAlert("",desc);
+    }
   }
 }
 </script>

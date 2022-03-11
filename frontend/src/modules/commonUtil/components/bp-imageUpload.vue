@@ -66,7 +66,7 @@
             </select>
 
             <input type="checkbox" id="imgPush" class="checkStyle2" value="PUSH" v-model="chkboxUseCh">
-            <label for="imgPush" class="mr20 vertical-middle clear">푸시
+            <label for="imgPush" class="mr20 vertical-middle clear">PUSH
               <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:330px">
 						* 이미지는 jpg, jpeg, png 형식만 지원합니다.<br>
 						* 이미지 용량은 1MB 이하여야 합니다.<br>

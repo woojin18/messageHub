@@ -2,7 +2,7 @@
   <!-- content -->
   <div class="row row-no-margin">
     <div class="contentHeader">
-      <h2>템플릿 > 푸시</h2>
+      <h2>템플릿 > PUSH</h2>
       <!-- <a href="#self" class="btnStyle1 absolute top0 right0" onClick="window.location.reload()" title="푸시 템플릿 등록/상세 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
     </div>
 
@@ -101,8 +101,8 @@
             <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="tmpltData.tmpltContent" maxlength="2000"></textarea>
             <div v-if="tmpltData.msgKind == 'A'">
               <p class="color5">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
-              <input type="text" id="rcvblcNumber" name="rcvblcNumber" class="inputStyle float-right mt10" title="내용 입력란" v-model="tmpltData.rcvblcNumber" placeholder="설정 > 푸시 알림 설정 변경" maxlength="45">
-              <p class="color5">푸시 수신거부 방법을 입력해주세요. 푸시 메시지에 (수신거부:거부 방법)이 포함됩니다.</p>
+              <input type="text" id="rcvblcNumber" name="rcvblcNumber" class="inputStyle float-right mt10" title="내용 입력란" v-model="tmpltData.rcvblcNumber" placeholder="설정 > PUSH 알림 설정 변경" maxlength="45">
+              <p class="color5">PUSH 수신거부 방법을 입력해주세요. PUSH 메시지에 (수신거부:거부 방법)이 포함됩니다.</p>
             </div>
           </div>
         </div>
@@ -164,7 +164,7 @@ export default {
       type: String,
       require: false,
       default: function() {
-        return '푸시 템플릿 관리';
+        return 'PUSH 템플릿 관리';
       }
     },
   },
@@ -290,7 +290,7 @@ export default {
         return false;
       }
       if(this.tmpltData.msgKind == 'A' && !this.tmpltData.rcvblcNumber){
-        confirm.fnAlert(this.componentsTitle, '푸시 수신거부 방법을 입력해주세요.');
+        confirm.fnAlert(this.componentsTitle, 'PUSH 수신거부 방법을 입력해주세요.');
         return false;
       }
       if(this.tmpltData.msgType == 'IMAGE' && !this.tmpltData.imgUrl){
@@ -310,7 +310,7 @@ export default {
 
       var saveType = (this.isInsert ? '등록' : '수정');
       eventBus.$on('callbackEventBus', this.fnProcSavePushTemplate);
-      confirm.fnConfirm(this.componentsTitle, "푸시 템플릿을 "+saveType+"하시겠습니까?", "확인");
+      confirm.fnConfirm(this.componentsTitle, "PUSH 템플릿을 "+saveType+"하시겠습니까?", "확인");
     },
     async fnProcSavePushTemplate(){
       //DATA Set

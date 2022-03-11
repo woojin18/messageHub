@@ -48,7 +48,7 @@
 								<input type="checkbox" id="searchMsgCh_FRIENDTALK" class="checkStyle2" value="FRIENDTALK" v-model="searchData.searchMsgCh">
 								<label for="searchMsgCh_FRIENDTALK" class="mr30">친구톡</label>
 								<input type="checkbox" id="searchMsgCh_PUSH" class="checkStyle2" value="PUSH" v-model="searchData.searchMsgCh">
-								<label for="searchMsgCh_PUSH" class="mr30">푸시</label>
+								<label for="searchMsgCh_PUSH" class="mr30">PUSH</label>
 							</div>
 						</div>
 					</div>

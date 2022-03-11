@@ -160,7 +160,7 @@
 					<div class="of_h consolMarginTop">
 						<div class="float-left" style="width:13%"><h4>수신거부방법 *</h4></div>
 						<div class="float-left" style="width:57%">
-							<input type="text" class="inputStyle" name="pushHowToDenyReceipt" v-model="rowData.pushHowToDenyReceipt" placeholder="설정 > 푸시 알림 설정 변경">
+							<input type="text" class="inputStyle" name="pushHowToDenyReceipt" v-model="rowData.pushHowToDenyReceipt" placeholder="설정 > PUSH 알림 설정 변경">
 							<p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
 						</div>
 					</div>
@@ -516,7 +516,7 @@
               <div class="of_h consolMarginTop">
                 <div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
                 <div class="float-left" style="width:57%">
-                  <input type="text" class="inputStyle" name="rcsSMSHowToDenyReceipt" v-model="rowData.rcsSMSHowToDenyReceipt" placeholder="설정 > 푸시 알림 설정 변경">
+                  <input type="text" class="inputStyle" name="rcsSMSHowToDenyReceipt" v-model="rowData.rcsSMSHowToDenyReceipt" placeholder="설정 > PUSH 알림 설정 변경">
                   <!--<p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>-->
                 </div>
               </div>
@@ -620,7 +620,7 @@
               <div class="of_h consolMarginTop">
                 <div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
                 <div class="float-left" style="width:57%">
-                  <input type="text" class="inputStyle" name="rcsLMSHowToDenyReceipt" v-model="rowData.rcsLMSHowToDenyReceipt" placeholder="설정 > 푸시 알림 설정 변경">
+                  <input type="text" class="inputStyle" name="rcsLMSHowToDenyReceipt" v-model="rowData.rcsLMSHowToDenyReceipt" placeholder="설정 > PUSH 알림 설정 변경">
                   <!--<p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>-->
                 </div>
               </div>
@@ -770,7 +770,7 @@
               <div class="of_h consolMarginTop">
                 <div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
                 <div class="float-left" style="width:57%">
-                  <input type="text" class="inputStyle" name="rcsShortHowToDenyReceipt" v-model="rowData.rcsShortHowToDenyReceipt" placeholder="설정 > 푸시 알림 설정 변경">
+                  <input type="text" class="inputStyle" name="rcsShortHowToDenyReceipt" v-model="rowData.rcsShortHowToDenyReceipt" placeholder="설정 > PUSH 알림 설정 변경">
                   <!--<p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>-->
                 </div>
               </div>
@@ -915,7 +915,7 @@
               <div class="of_h consolMarginTop">
                 <div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
                 <div class="float-left" style="width:57%">
-                  <input type="text" class="inputStyle" name="rcsTallHowToDenyReceipt" v-model="rowData.rcsTallHowToDenyReceipt" placeholder="설정 > 푸시 알림 설정 변경">
+                  <input type="text" class="inputStyle" name="rcsTallHowToDenyReceipt" v-model="rowData.rcsTallHowToDenyReceipt" placeholder="설정 > PUSH 알림 설정 변경">
                   <!--<p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>-->
                 </div>
               </div>
@@ -1704,7 +1704,7 @@
                 <div class="of_h consolMarginTop">
                   <div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
                   <div class="float-left" style="width:57%">
-                    <input type="text" class="inputStyle" name="rcs9HowToDenyReceipt" v-model="rowData.rcs9HowToDenyReceipt" placeholder="설정 > 푸시 알림 설정 변경">
+                    <input type="text" class="inputStyle" name="rcs9HowToDenyReceipt" v-model="rowData.rcs9HowToDenyReceipt" placeholder="설정 > PUSH 알림 설정 변경">
                     <!--<p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>-->
                   </div>
                 </div>
@@ -2464,7 +2464,7 @@
                 <div class="of_h consolMarginTop">
                   <div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
                   <div class="float-left" style="width:57%">
-                    <input type="text" class="inputStyle" name="rcs10HowToDenyReceipt" v-model="rowData.rcs10HowToDenyReceipt" placeholder="설정 > 푸시 알림 설정 변경">
+                    <input type="text" class="inputStyle" name="rcs10HowToDenyReceipt" v-model="rowData.rcs10HowToDenyReceipt" placeholder="설정 > PUSH 알림 설정 변경">
                     <!--<p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>-->
                   </div>
                 </div>

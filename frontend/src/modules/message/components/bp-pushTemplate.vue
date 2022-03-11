@@ -105,7 +105,7 @@ export default {
       type: String,
       require: false,
       default: function() {
-        return '푸시 템플릿 검색';
+        return 'PUSH 템플릿 검색';
       }
     },
   },

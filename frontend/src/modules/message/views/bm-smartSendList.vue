@@ -41,7 +41,7 @@
                 <input type="checkbox" id="searchMsgCh_all" class="checkStyle2" @change="fnSearchMsgChChkAll" v-model="msgChAllSelected">
                 <label for="searchMsgCh_all" class="mr30">전체</label>
                 <input type="checkbox" id="searchMsgCh_PUSH" class="checkStyle2" value="PUSH" v-model="searchData.searchMsgCh">
-                <label for="searchMsgCh_PUSH" class="mr30">푸시</label>
+                <label for="searchMsgCh_PUSH" class="mr30">PUSH</label>
                 <input type="checkbox" id="searchMsgCh_SMS" class="checkStyle2" value="SMS" v-model="searchData.searchMsgCh">
                 <label for="searchMsgCh_SMS" class="mr30">SMS</label>
                 <input type="checkbox" id="searchMsgCh_MMS" class="checkStyle2" value="MMS" v-model="searchData.searchMsgCh">
@@ -272,7 +272,7 @@ export default {
         const msgChList = map['msg_ch'];
         msgChList.forEach(e => {
           if(e.chType == 'PUSH'){
-            rtn += ',푸시';
+            rtn += ',PUSH';
           } else if(e.chType == 'SMS/MMS'){
             if(e.spec == 'mms'){
               rtn += ',MMS';

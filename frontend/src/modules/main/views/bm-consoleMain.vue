@@ -13,7 +13,7 @@
 								<a class="mvBtn ml20" title="serviceCon05_2">도입문의</a>
 							</div>
 							<p class="font-size20 font-normal mt40 wow animated fadeInUp" data-wow-delay=".6s" data-wow-duration="1s">메시지허브는 다양한 메시지 채널을 수용하여<br>발송부터 결과까지 한 번에 관리하는 기업 메시지 플랫폼입니다.</p>
-							<p class="font-size20 font-600 mt20 wow animated fadeInUp" data-wow-delay=".6s" data-wow-duration="1s">#문자<span class="ml20">#RCS</span><span class="ml20">#알림톡</span><span class="ml20">#친구톡</span><span class="ml20">#앱푸시</span></p>
+							<p class="font-size20 font-600 mt20 wow animated fadeInUp" data-wow-delay=".6s" data-wow-duration="1s">#문자<span class="ml20">#RCS</span><span class="ml20">#알림톡</span><span class="ml20">#친구톡</span><span class="ml20">#앱PUSH</span></p>
 					  </div>
 					</div>
 					<img src="/se2/images/mainVisual1.jpg" alt="">

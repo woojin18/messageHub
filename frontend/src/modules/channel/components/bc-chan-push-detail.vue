@@ -18,7 +18,7 @@
 			</div>
 			
 			<h4 class="mt40">안드로이드(FCM)</h4>
-			<p class="font-size12 color3 mt20 inline-block"><i class="far fa-info-circle"></i>Android 푸시 메시지 발송에 필요한 API Key입니다. 등록시 유효성을 검증합니다.</p>
+			<p class="font-size12 color3 mt20 inline-block"><i class="far fa-info-circle"></i>Android PUSH 메시지 발송에 필요한 API Key입니다. 등록시 유효성을 검증합니다.</p>
 			<div class="row mt10">
 				<div class="col-xs-12">
 					<div class="menuBox">						
@@ -70,7 +70,7 @@
 				</div>
 			</div>
 			
-			<p class="font-size12 color3 mt10 inline-block"><i class="far fa-info-circle"></i> 푸시 메시지를 이용할 OS 및 유형에 따라 각 인증서의 항목을 모두 입력해 주세요.</p>
+			<p class="font-size12 color3 mt10 inline-block"><i class="far fa-info-circle"></i> PUSH 메시지를 이용할 OS 및 유형에 따라 각 인증서의 항목을 모두 입력해 주세요.</p>
 			
 			<div class="mt50 text-center">
 				<a @click="fnSave" class="btnStyle5 red width120" activity="SAVE">저장</a>
