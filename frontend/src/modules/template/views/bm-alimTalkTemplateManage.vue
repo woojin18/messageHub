@@ -176,6 +176,14 @@
 
                       </td>
                       <td class="text-center end" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
+                        <a
+                          v-if="buttonInfo.linkType === 'WL'" 
+                          class="btnStyle1 backBlack" 
+                          title="단축 URL+" 
+                          data-toggle="modal" 
+                          data-target="#shortened_URL"
+                          @click="selIdx = idx"
+                        >단축 URL+</a> 
                         <a @click="fnDelButton(idx)" class="btnStyle1 backLightGray">삭제</a>
                       </td>
                     </tr>
@@ -228,6 +236,9 @@
 
         </div>
       </div>
+
+      <shortenedUrlListPopup @btnSelect="btnSelect" />
+      <shortenedUrlAddPopup/>
   </div>
 </template>
 
@@ -238,8 +249,15 @@ import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 import commonUtilApi from "@/modules/commonUtil/service/commonUtilApi";
 
+import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
+
 export default {
   name: 'alimTalkTemplateManage',
+  components: {
+		shortenedUrlListPopup,
+    shortenedUrlAddPopup,
+  },
   props: {
     tmpltKey: {
       type: String,
@@ -294,7 +312,8 @@ export default {
         categoryCode : '',
         tmpltMessageType : 'BA',  //BA: 기본형 고정
         buttonList:[],
-      }
+      },
+      selIdx : null
     }
   },
   async mounted() {
@@ -604,7 +623,6 @@ export default {
         }
       });
     },
-
     fnFileDown: function(fileId, name) {
       if(fileId != "") {
         var params = {
@@ -613,8 +631,6 @@ export default {
           };
 
         commonUtilApi.downloadFile(params).then(response =>{
-            var result = response;
-
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
             link.href = url;
@@ -623,6 +639,18 @@ export default {
             link.click();
         });
       }
+    },
+    //단축 URL 선택
+    btnSelect(shortendUrl){
+      if(this.tmpltData.buttonList.length > 0 && this.selIdx !== null && this.tmpltData.buttonList[this.selIdx]){
+        // mobile link
+        this.$set(this.tmpltData.buttonList[this.selIdx], 'linkMo', shortendUrl)
+
+        // pc link
+        this.$set(this.tmpltData.buttonList[this.selIdx], 'linkPc', shortendUrl)
+      }
+
+      this.selIdx = null
     },
   }
 }

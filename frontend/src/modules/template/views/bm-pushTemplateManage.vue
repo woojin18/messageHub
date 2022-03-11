@@ -74,17 +74,6 @@
             <label for="msgKind_I">정보성</label>
           </div>
         </div>
-        <div class="of_h user-phone" style="display:none;">
-          <div class="float-left" style="width:28%">
-            <h4>타 프로젝트 사용여부  *</h4>
-          </div>
-          <div class="float-left" style="width:72%">
-            <input type="radio" id="otherProjectUseYn_Y" name="otherProjectUseYn" value="Y" v-model="tmpltData.otherProjectUseYn">
-            <label for="otherProjectUseYn_Y" class="mr30">공용</label>
-            <input type="radio" id="otherProjectUseYn_N" name="otherProjectUseYn" value="N" v-model="tmpltData.otherProjectUseYn">
-            <label for="otherProjectUseYn_N">전용</label>
-          </div>
-        </div>
         <div class="of_h user-phone">
           <div class="float-left" style="width:28%">
             <h4>제목</h4>
@@ -96,9 +85,23 @@
         <div class="of_h user-phone">
           <div class="float-left" style="width:28%">
             <h4>내용 *</h4>
+            <a 
+              class="btnStyle1 backBlack" 
+              title="단축 URL+" 
+              data-toggle="modal" 
+              data-target="#shortened_URL"
+            >단축 URL</a>
+            <i class="fas fa-question-circle toolTip ml5">
+              <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+            </i>
           </div>
           <div class="float-left" style="width:72%">
-            <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="tmpltData.tmpltContent" maxlength="2000"></textarea>
+            <textarea 
+              class="textareaStyle height120" 
+              :placeholder="contentAreaPlaceholder" 
+              v-model="tmpltData.tmpltContent" 
+              maxlength="2000" 
+            ></textarea>
             <div v-if="tmpltData.msgKind == 'A'">
               <p class="color5">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
               <input type="text" id="rcvblcNumber" name="rcvblcNumber" class="inputStyle float-right mt10" title="내용 입력란" v-model="tmpltData.rcvblcNumber" placeholder="설정 > 푸시 알림 설정 변경" maxlength="45">
@@ -135,6 +138,9 @@
         </div>
       </div>
     </div>
+
+    <shortenedUrlListPopup @btnSelect="btnSelect" />
+    <shortenedUrlAddPopup/>
   </div>
   <!-- //content -->
 </template>
@@ -146,11 +152,16 @@ import ImageUploadPopUp from "@/modules/commonUtil/components/bp-imageUpload.vue
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
+import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
+
 export default {
   name: 'pushTemplateManage',
   components : {
     ImageManagePopUp,
-    ImageUploadPopUp
+    ImageUploadPopUp,
+    shortenedUrlListPopup,
+    shortenedUrlAddPopup,
   },
   props: {
     tmpltId: {
@@ -175,7 +186,10 @@ export default {
       useCh : 'PUSH',
       isInsert : true,
       contentAreaPlaceholder: '변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정\n:예) #{name}님 #{yyyymmdd} 출금 예정입니다.',
-      tmpltData : {imgUrl:'', otherProjectUseYn:'N'}
+      tmpltData : {
+        imgUrl:'', 
+        tmpltContent: '',
+      }
     }
   },
   mounted() {
@@ -230,7 +244,6 @@ export default {
           let tempData = Object.assign({}, this.tmpltData);
           result.data.forEach(function(obj){
             tempData = obj;
-            tempData.otherProjectUseYn = (obj.projectId == 'ALL' ? 'Y' : 'N');
             vm.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
           });
           this.tmpltData = Object.assign({}, tempData);
@@ -273,10 +286,6 @@ export default {
       }
       if(!this.tmpltData.msgKind){
         confirm.fnAlert(this.componentsTitle, '메시지구분을 선택해주세요.');
-        return false;
-      }
-      if(!this.tmpltData.otherProjectUseYn){
-        confirm.fnAlert(this.componentsTitle, '타 프로젝트 사용여부를 선택해주세요.');
         return false;
       }
       /*
@@ -338,8 +347,14 @@ export default {
       if(this.isInsert){
         this.$router.push('pushTemplateList')
       }
-    }
-
+    },
+    //단축 URL 선택
+    btnSelect(shortendUrl){
+      if(this.tmpltData.tmpltContent.length > 0)
+        this.tmpltData.tmpltContent += '\n'
+      
+      this.tmpltData.tmpltContent += shortendUrl
+    },
   }
 }
 </script>

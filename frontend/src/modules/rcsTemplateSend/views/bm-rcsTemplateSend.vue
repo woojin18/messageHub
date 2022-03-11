@@ -100,7 +100,7 @@
 							<div v-show="pushTab=='push'" class="phoneCardWrap">
 							<span v-if="sendData.adYn == 'yes'">[WEB발신](광고)</span>
 								<ul class="cardBxslider mt10">
-									<li v-for="n in carouselSelect" class="slide cardBox">
+									<li v-for="(n, idx) in carouselSelect" :key="idx" class="slide cardBox">
 										<img v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]==''" src="@/assets/images/common/cardThumImg.png" alt="프리 템플릿">
 										<div v-if="templateRadioBtn == 'carouselSmall' && sendData.carouselObj.imgUrl[n-1]!=''" :style="'background-image: url('+sendData.carouselObj.imgUrl[n-1]+');padding:81px;'" class="mt10 text-center simulatorImg"> </div>
 										<img v-if="templateRadioBtn == 'carouselMedium' && sendData.carouselObj.imgUrl[n-1]==''" src="@/assets/images/common/cardThumImg2_1.png" alt="프리 템플릿">
@@ -148,21 +148,20 @@
 								<div class="scroll-y">
 									<p class="mt15"><pre>{{text}}</pre></p>
 								</div>
-								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
+								<p v-for="(n, idx) in btnCnt" :key="idx" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
 							<div v-if="templateRadioBtn =='cell'" class="phoneText1">
 								<img :src="imgsrc" style="width:70px;">
 								<div class="scroll-y">
-									<div v-for="n in styleContentCnt" class="scroll-y3">
+									<div v-for="(n, idx) in styleContentCnt" :key="idx" class="scroll-y3">
 										<div>
 											<p class="lc-1 inline-block">{{styleInput[n-1]}}</p>
 											<p class="lc-1 inline-block float-right">{{styleInputSec[n-1]}}</p>
 										</div>
 										<hr v-if="styleChk[n-1]==true">
 									</div>
-									<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
+									<p v-for="(n, idx) in btnCnt" :key="idx" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 								</div>
-								 
 							</div>
 							<div v-if="templateRadioBtn =='text' || templateRadioBtn == 'SS000000' || templateRadioBtn == 'SL000000'" class="phoneText1">
 								<div class="scroll-y">
@@ -170,7 +169,7 @@
 									<p class="mt15"><pre>{{sendData.textContents}}</pre></p>
 									
 								</div>
-								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
+								<p v-for="(n, idx) in btnCnt" :key="idx" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
 							<div v-if="templateRadioBtn == 'SMwThM00'">
 								<img v-if="sendData.imgUrl == ''" :src="sendData.SMwThM00Img" alt="프리 템플릿">
@@ -182,7 +181,7 @@
 										
 									</div>								
 								</div>
-								<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
+								<p v-for="(n, idx) in btnCnt" :key="idx" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
 							<div v-if="templateRadioBtn == 'SMwThT00'">
 								<img v-if="sendData.imgUrl == ''" :src="sendData.SMwThM00Img" alt="프리 템플릿">
@@ -193,7 +192,7 @@
 										<p class="color6"><pre>{{sendData.textContents}}</pre></p>
 										
 									</div>		
-									<p v-for="n in btnCnt" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>						
+									<p v-for="(n, idx) in btnCnt" :key="idx" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>						
 								</div>
 								
 							</div>
@@ -230,7 +229,7 @@
 								</div>
 								<div style="width:82%">
 									<select v-model="sendData.brandId" name="userConsole_sub020201_1" class="selectStyle2" style="width:70%" :disabled="templateSet">
-										<option v-for="option in sendData.brandArr" v-bind:value="option.BRAND_ID">
+										<option v-for="(option, idx) in sendData.brandArr" :key="idx" v-bind:value="option.BRAND_ID">
 											{{option.BRAND_NAME}}
 										</option>
 									</select>
@@ -260,7 +259,7 @@
 							</div>
 							<div v-if="carouSelType==true" class="consolMarginTop">
 								<ul class="tab_s7" role="tablist">
-									<li @click="fnClickTab(n)" v-for="n in carouselSelect" role="presentation"><a href="#card" aria-controls="card" role="tab" data-toggle="tab">카드 {{n}}</a></li>
+									<li @click="fnClickTab(n)" v-for="(n, idx) in carouselSelect" :key="idx" role="presentation"><a href="#card" aria-controls="card" role="tab" data-toggle="tab">카드 {{n}}</a></li>
 								</ul>
 
 								<div class="tab-content">
@@ -303,7 +302,7 @@
 								</div>
 								<div style="width:82%">
 									<select @change="fnChangeDataSet" v-model="sendData.callback" name="userConsole_sub020201_1" class="selectStyle2" style="width:30%">
-										<option v-for="options in sendData.callbackArr">
+										<option v-for="(options, idx) in sendData.callbackArr" :key="idx">
 											{{options.callback | hpNumberAddDash}}
 										</option>
 									</select>
@@ -431,6 +430,9 @@
 			<DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
 			<AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
 			<TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" ref="testSendInputPopup"></TestSendInputPopup>
+
+			<shortenedUrlListPopup @btnSelect="btnSelect" />
+			<shortenedUrlAddPopup/>
 		</article>
 </template>
 
@@ -448,6 +450,8 @@ import Calendar from "@/components/Calendar.vue";
 import rcsTemplateSendApi from "@/modules/rcsTemplateSend/service/api.js";
 import messageApi from "@/modules/message/service/messageApi.js";
 import ConfirmPopup from "@/modules/rcsTemplateSend/components/bp-confirmPopup.vue";
+import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
 
 import XLSX from 'xlsx';
 
@@ -459,17 +463,19 @@ var slider;
 export default {
   name: "pushTemplateList",
   components: {
-	  RcsTemplatePopup,
-	  RcsMsgPopup,
-	  RcsContentPopup,
-	  RcsBtnPopup,
-	  RcsSenderPopup,
-	  RcsSavePopup,
-	  DirectInputPopup,
-	  AddressInputPopup,
-	  TestSendInputPopup,
-	  Calendar,
-	  ConfirmPopup
+		RcsTemplatePopup,
+		RcsMsgPopup,
+		RcsContentPopup,
+		RcsBtnPopup,
+		RcsSenderPopup,
+		RcsSavePopup,
+		DirectInputPopup,
+		AddressInputPopup,
+		TestSendInputPopup,
+		Calendar,
+		ConfirmPopup,
+		shortenedUrlListPopup,
+    shortenedUrlAddPopup,
   },
   filters: {
 	comma (val) {
@@ -478,179 +484,175 @@ export default {
   },
   data() {
     return {
-		newval : '',
-		oldval : '',
-		dataSet : false,				// dataSet (데이터가 입력될시 true로 변환 radio버튼으로 발송 스타일 변경시 true인 경우 경고)
-		templateSet : false,			// template 형 선택시 brand disabled처리를 위한 flag
-		pushTab : "push",				// push 버튼
-		imgsrc : require("@/assets/images/common/approve.png"),			// 이미지
-		text : "테스트입니다.[한글]",    //	미리보기 text (des형)
-		styleContentCnt: 0,				// 스타일형 inputLine count
-		styleInput: [],					// 스타일형 첫 input
-		styleInputSec: [],				// 스타일형 두번째 input
-		styleChk: [],	        	    // 스타일형 lineChk
-		contentTitle : "",				// 미승인 SMS,LMS TITLE
-		contentText : "",				// 미승인 SMS,LMS 내용
-        btnCnt: 0,			     	    // 버튼 개수
-		btnNm:[],			     	    // 버튼 이름
-		formatCard : false,				// 버튼입력 버튼
-		carouSelType : false,			// 캐러셀 영역 세팅
-		carouselSelect : 3,				// 캐러셀 selectBox
-		carouSelTabCnt : 1,				// 캐러셀 탭
-		messagebaseId : "",				// 템플릿 선택 Id
-		directInputOpen : false,		// 수신자 직접입력 버튼
-		addressInputOpen : false,		// 주소록 검색 버튼
-		testSendInputOpen : false,		// 테스트 발송 팝업 버튼
-		rcsTemplateSenderPopOpen : false, // 대체발송 팝업 버튼
-        templateRadioBtn : "des",       // 템플릿형 라디오 버튼
-		recvCnt : 0,  					// 수신자명수
-		carouselSmall : 'CMwShS0300',	// 캐러셀형 msgId
-		carouselMedium : 'CMwMhM0300',	// 캐러셀형 msgId
-		contentPopCnt : 0,				// 내용입력 폼 갯수
-		btnPopCnt : 0,					// 버튼입력 폼 갯수
-		tempFile: [],
-		beforeCuInputType: '',
-		monthAmount : 0,
-		monSenderLimitAmout : '없음',
-		feeType : false,
-		sendData : {
-			messagebaseId : "",							// MSG ID
-			brandId : "",								// 브랜드 ID
-			brandArr : [],								// 브랜드 Arr
-			textTitle : "",								// 텍스트 제목
-			textContents : "",							// 텍스트 내용
-			btnCnt : 0,                     			// 버튼 갯수
-      		selectBtn: [],		  			 			// selectBox
-			btnNm:[],			           				// 버튼 이름
-			contents:[],		           				// 내용
-			calendarTitle: [],	     
-			calendarDes: [],	 
-			initStartDate: [],
-			initEndDate: [],
+			newval : '',
+			oldval : '',
+			dataSet : false,				// dataSet (데이터가 입력될시 true로 변환 radio버튼으로 발송 스타일 변경시 true인 경우 경고)
+			templateSet : false,			// template 형 선택시 brand disabled처리를 위한 flag
+			pushTab : "push",				// push 버튼
+			imgsrc : require("@/assets/images/common/approve.png"),			// 이미지
+			text : "테스트입니다.[한글]",    //	미리보기 text (des형)
+			styleContentCnt: 0,				// 스타일형 inputLine count
+			styleInput: [],					// 스타일형 첫 input
+			styleInputSec: [],				// 스타일형 두번째 input
+			styleChk: [],	        	    // 스타일형 lineChk
+			contentTitle : "",				// 미승인 SMS,LMS TITLE
+			contentText : "",				// 미승인 SMS,LMS 내용
+      btnCnt: 0,			     	    // 버튼 개수
+			btnNm:[],			     	    // 버튼 이름
+			formatCard : false,				// 버튼입력 버튼
+			carouSelType : false,			// 캐러셀 영역 세팅
+			carouselSelect : 3,				// 캐러셀 selectBox
+			carouSelTabCnt : 1,				// 캐러셀 탭
+			messagebaseId : "",				// 템플릿 선택 Id
+			directInputOpen : false,		// 수신자 직접입력 버튼
+			addressInputOpen : false,		// 주소록 검색 버튼
+			testSendInputOpen : false,		// 테스트 발송 팝업 버튼
+			rcsTemplateSenderPopOpen : false, // 대체발송 팝업 버튼
+      templateRadioBtn : "des",       // 템플릿형 라디오 버튼
+			recvCnt : 0,  					// 수신자명수
+			carouselSmall : 'CMwShS0300',	// 캐러셀형 msgId
+			carouselMedium : 'CMwMhM0300',	// 캐러셀형 msgId
+			contentPopCnt : 0,				// 내용입력 폼 갯수
+			btnPopCnt : 0,					// 버튼입력 폼 갯수
+			tempFile: [],
+			beforeCuInputType: '',
+			monthAmount : 0,
+			monSenderLimitAmout : '없음',
+			feeType : false,
+			sendData : {
+				messagebaseId : "",							// MSG ID
+				brandId : "",								// 브랜드 ID
+				brandArr : [],								// 브랜드 Arr
+				textTitle : "",								// 텍스트 제목
+				textContents : "",							// 텍스트 내용
+				btnCnt : 0,                     			// 버튼 갯수
+				selectBtn: [],		  			 			// selectBox
+				btnNm:[],			           				// 버튼 이름
+				contents:[],		           				// 내용
+				calendarTitle: [],	     
+				calendarDes: [],	 
+				initStartDate: [],
+				initEndDate: [],
 
-			imgUrl : "",								// 이미지
-			fileId : "",								// 이미지
-			wideImgYn : "",								// 이미지
-			SMwThM00Img : require("@/assets/images/common/cardThumImg2_2.png"),	// 이미지 출력 src 세로형 Medium
-			SMwThT00Img : require("@/assets/images/common/cardThumImg2_1.png"),	// 이미지 출력 src 세로형 Tall
-			callback: '',  								// 발신번호
-			callbackArr: [],							// 발신번호 selectBox
-			copy: 'no',									// 복사 가능여부
-			adYn: 'no',									// 광고여부
-			freeReceiveNum: '',							// 무료수신거부
-			senderType : 'UNUSED',						// 대체발송
-			callbackTitle : "",							// 대체발송 TITLE
-			callbackContents : "",						// 대체발송 CONTENTS
-			callbackImgUrl : "",						// 대체발송 IMG			
-			callbackFileId : "",						// 대체발송 fileId
-			saveContent : "",							// 저장 메시지명
-			carouselObj : {
-				textTitle : ['','','','','',''],
-				textContents : ['','','','','',''],
-				imgUrl : ['','','','','',''],
-				fileId : [],
-				wideImgYn : [],
-				btnArr : [],
-			},							// 캐러셀형 데이터
+				imgUrl : "",								// 이미지
+				fileId : "",								// 이미지
+				wideImgYn : "",								// 이미지
+				SMwThM00Img : require("@/assets/images/common/cardThumImg2_2.png"),	// 이미지 출력 src 세로형 Medium
+				SMwThT00Img : require("@/assets/images/common/cardThumImg2_1.png"),	// 이미지 출력 src 세로형 Tall
+				callback: '',  								// 발신번호
+				callbackArr: [],							// 발신번호 selectBox
+				copy: 'no',									// 복사 가능여부
+				adYn: 'no',									// 광고여부
+				freeReceiveNum: '',							// 무료수신거부
+				senderType : 'UNUSED',						// 대체발송
+				callbackTitle : "",							// 대체발송 TITLE
+				callbackContents : "",						// 대체발송 CONTENTS
+				callbackImgUrl : "",						// 대체발송 IMG			
+				callbackFileId : "",						// 대체발송 fileId
+				saveContent : "",							// 저장 메시지명
+				carouselObj : {
+					textTitle : ['','','','','',''],
+					textContents : ['','','','','',''],
+					imgUrl : ['','','','','',''],
+					fileId : [],
+					wideImgYn : [],
+					btnArr : [],
+				},							// 캐러셀형 데이터
 
-			requiredCuid : false,  //app 로그인 ID 필수여부
-			requiredCuPhone : true,  //수신자 폰번호 필수여부
-			cuInputType:'',  //DICT, ADDR, EXCEL
-			cuInfo:'',
-			rsrvSendYn:'N',  //예약발송여부
-			rsrvDate:this.$gfnCommonUtils.getCurretDate(),
-			rsrvHH:'00',
-			rsrvMM:'00',
-			campaignId:'',
-			imgInfoList: [],
-			recvInfoLst: [],  //수신자정보
-			contsVarNms: [], //메세지 내용 변수명
-			testRecvInfoLst: [],  //테스트 수신자정보
-			excelLimitRow: 0
-		}
-
+				requiredCuid : false,  //app 로그인 ID 필수여부
+				requiredCuPhone : true,  //수신자 폰번호 필수여부
+				cuInputType:'',  //DICT, ADDR, EXCEL
+				cuInfo:'',
+				rsrvSendYn:'N',  //예약발송여부
+				rsrvDate:this.$gfnCommonUtils.getCurretDate(),
+				rsrvHH:'00',
+				rsrvMM:'00',
+				campaignId:'',
+				imgInfoList: [],
+				recvInfoLst: [],  //수신자정보
+				contsVarNms: [], //메세지 내용 변수명
+				testRecvInfoLst: [],  //테스트 수신자정보
+				excelLimitRow: 0
+			}
     }
   },
   watch : {
-	  carouselSelect(newval, oldval) {
-		  // type 변경
-		  this.carouselSelect = newval*1;
-	  },
-	  'sendData.campaignId'(newval, oldval) {
-		  return this.sendData.campaignId = this.sendData.campaignId.replace(/[^a-zA-Z0-9]/g, '');
-	  },
-	  templateRadioBtn (newval, oldval) {
-		  this.newval = newval;
-		  this.oldval = oldval;
+		carouselSelect(newval) {
+			// type 변경
+			this.carouselSelect = newval*1;
+		},
+		'sendData.campaignId'() {
+			return this.sendData.campaignId = this.sendData.campaignId.replace(/[^a-zA-Z0-9]/g, '');
+		},
+		templateRadioBtn (newval, oldval) {
+			this.newval = newval;
+			this.oldval = oldval;
 
-		  this.fnConfirmChangeRadioBtn(newval, oldval);
-	  },
-	  'sendData.brandId' (newval, oldval){
-		var vm = this;
-		var params = {
-			"approvalStatus" : "승인",
-			"brandId" : newval
-		}
-		rcsTemplateSendApi.selectCallbackList(params).then(response => {
-			var result = response.data;
-			vm.sendData.callbackArr = result.data;
-			if(vm.sendData.callbackArr.length > 0) {
-				vm.sendData.callback = result.data[0].callback;
-			} else { 
-				vm.sendData.callback = "";
+			this.fnConfirmChangeRadioBtn(newval, oldval);
+		},
+		'sendData.brandId' (newval){
+			var vm = this;
+			var params = {
+				"approvalStatus" : "승인",
+				"brandId" : newval
 			}
-			
-		});
-	  },
-	  'sendData.senderType' (newval, oldval) {
+			rcsTemplateSendApi.selectCallbackList(params).then(response => {
+				var result = response.data;
+				vm.sendData.callbackArr = result.data;
+				if(vm.sendData.callbackArr.length > 0) {
+					vm.sendData.callback = result.data[0].callback;
+				} else { 
+					vm.sendData.callback = "";
+				}
+				
+			});
+		},
+		'sendData.senderType' () {
 		// 대체발송 버튼 변경시 기존 내용 삭제
 		this.sendData.callbackTitle = "";
 		this.sendData.callbackContents = "";
 		this.sendData.callbackImgUrl = "";
 		this.sendData.callbackFileId = "";
-	  },
-	  recvCnt (newval, oldval) {
-		  if(newval>30000) {
-			  confirm.fnAlert("RCS 발송", "발송 최대 수신자 수는 30000명을 넘길 수 없습니다.");
-			  this.fnRemoveRecvInfo();
-		  }
-	  },
-	  'sendData.freeReceiveNum' (newval, oldval) {
-		  var senderType = this.sendData.senderType;
-		  var adYn = this.sendData.adYn;
-		  var callbackContents = this.sendData.callbackContents;
-		  if(adYn == "no") {
-			  if(newval != "") {
-				  callbackContents += "무료수신거부:" + newval;
-			  }
-		  } else {
-			  callbackContents += "무료수신거부:" + newval;
-		  }
-		  if(senderType == "SMS") {
-			  var byte = this.getByte(callbackContents);
-			  if(byte>90) {
-				  confirm.fnAlert("RCS 발송", '대체발송 내용이 90byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
-				  this.sendData.freeReceiveNum = oldval;
-			  }
-		  } else if(senderType == "LMS") {
-			  var byte = this.getByte(callbackContents);
-			  if(byte>1000) {
-				  confirm.fnAlert("RCS 발송", '대체발송 내용이 1000byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
-				  this.sendData.freeReceiveNum = oldval;
-			  }
-		  } else if(senderType == "MMS") {
-			  var byte = this.getByte(callbackContents);
-			  if(byte>2000) {
-				  confirm.fnAlert("RCS 발송", '대체발송 내용이 2000byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
-				  this.sendData.freeReceiveNum = oldval;
-			  }
-		  }
-
-	  }
+		},
+		recvCnt (newval) {
+			if(newval>30000) {
+				confirm.fnAlert("RCS 발송", "발송 최대 수신자 수는 30000명을 넘길 수 없습니다.");
+				this.fnRemoveRecvInfo();
+			}
+		},
+		'sendData.freeReceiveNum' (newval, oldval) {
+			var senderType = this.sendData.senderType;
+			var adYn = this.sendData.adYn;
+			var callbackContents = this.sendData.callbackContents;
+			var byte = this.getByte(callbackContents);
+			if(adYn == "no") {
+				if(newval != "") {
+					callbackContents += "무료수신거부:" + newval;
+				}
+			} else {
+				callbackContents += "무료수신거부:" + newval;
+			}
+			if(senderType == "SMS") {
+				if(byte>90) {
+					confirm.fnAlert("RCS 발송", '대체발송 내용이 90byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
+					this.sendData.freeReceiveNum = oldval;
+				}
+			} else if(senderType == "LMS") {
+				if(byte>1000) {
+					confirm.fnAlert("RCS 발송", '대체발송 내용이 1000byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
+					this.sendData.freeReceiveNum = oldval;
+				}
+			} else if(senderType == "MMS") {
+				if(byte>2000) {
+					confirm.fnAlert("RCS 발송", '대체발송 내용이 2000byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
+					this.sendData.freeReceiveNum = oldval;
+				}
+			}
+		}
   },
   mounted() {
-	  this.fnExistApiKey();
-	  this.fnInit();
+		this.fnExistApiKey();
+		this.fnInit();
   },
   methods: {
 	async fnExistApiKey(){
@@ -725,7 +727,7 @@ export default {
 		this.styleChk = [];	        	   
 		this.contentTitle = "";				
 		this.contentText = "";			
-        this.btnCnt = 0;		     	  
+    this.btnCnt = 0;		     	  
 		this.btnNm = [];		
 		this.carouselSelect = 3;
 		this.carouSelTabCnt = 1;
@@ -1058,40 +1060,40 @@ export default {
     },
 
 	fnSetContsVarNms(){
-	  var vm = this;
+		var vm = this;
       const rsvNmSet = new Set(['phone']);
 
 		// RCS 상품에 따라서 Validation 처리 및 textContents 확인해야됨.
-	  var templateRadioBtn = vm.templateRadioBtn;
-	  var conts = "";
+		var templateRadioBtn = vm.templateRadioBtn;
+		var conts = "";
 
-	  // 버튼 종류에 따른 validation 세팅
-	  if("des" == templateRadioBtn) {
-		  conts = this.text;
-	  } else if("cell" == templateRadioBtn) {
-		var styleContentCnt = vm.styleContentCnt;
-		for(var i=0; i<styleContentCnt; i++) {
-			conts += vm.styleInput[i];
-			conts += vm.styleInputSec[i];
+		// 버튼 종류에 따른 validation 세팅
+		if("des" == templateRadioBtn) {
+			conts = this.text;
+		} else if("cell" == templateRadioBtn) {
+			var styleContentCnt = vm.styleContentCnt;
+			for(var i=0; i<styleContentCnt; i++) {
+				conts += vm.styleInput[i];
+				conts += vm.styleInputSec[i];
+			}
+		} else if("text" == templateRadioBtn) {
+			conts = vm.sendData.textContents;
+		} else if("SS000000" == templateRadioBtn) {
+			conts = vm.sendData.textContents;
+		} else if("SL000000" == templateRadioBtn || "SMwThM00" == templateRadioBtn || "SMwThT00" == templateRadioBtn) {
+			conts = vm.sendData.textTitle;
+			conts += vm.sendData.textContents;
+		} else {
+			for(var i=0; i<vm.sendData.carouselObj.textTitle.length; i++) {
+				conts += vm.sendData.carouselObj.textTitle[i];
+				conts += vm.sendData.carouselObj.textContents[i];
+			}
 		}
-	  } else if("text" == templateRadioBtn) {
-		  conts = vm.sendData.textContents;
-	  } else if("SS000000" == templateRadioBtn) {
-		  conts = vm.sendData.textContents;
-	  } else if("SL000000" == templateRadioBtn || "SMwThM00" == templateRadioBtn || "SMwThT00" == templateRadioBtn) {
-		  conts = vm.sendData.textTitle;
-		  conts += vm.sendData.textContents;
-	  } else {
-		  for(var i=0; i<vm.sendData.carouselObj.textTitle.length; i++) {
-			  conts += vm.sendData.carouselObj.textTitle[i];
-			  conts += vm.sendData.carouselObj.textContents[i];
-		  }
-	  }
 
-	  if("" == conts) {
-		  confirm.fnAlert("RCS 발송", "전송하실 RCS 내용을 먼저 입력해 주세요.");
-		  return false;
-	  }
+		if("" == conts) {
+			confirm.fnAlert("RCS 발송", "전송하실 RCS 내용을 먼저 입력해 주세요.");
+			return false;
+		}
 
       let varNms = [];
       let containRsvNm = false;
@@ -1103,17 +1105,17 @@ export default {
         varNms.push($1);
       });
 
-	  var senderType = vm.sendData.senderType;
-	  if(senderType != "UNUSED") {
-		    var callbackContents = vm.sendData.callbackContents;
-		  	callbackContents.replace(/#\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}/g, function($0, $1) {
-			if(rsvNmSet.has($1)){
-			containRsvNm = true;
-			return false;
-			}
-			varNms.push($1);
-		});
-	  }
+		var senderType = vm.sendData.senderType;
+		if(senderType != "UNUSED") {
+			var callbackContents = vm.sendData.callbackContents;
+			callbackContents.replace(/#\{(([a-z|A-Z|0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|_])+)\}/g, function($0, $1) {
+				if(rsvNmSet.has($1)){
+					containRsvNm = true;
+					return false;
+				}
+				varNms.push($1);
+			});
+		}
 
       if(containRsvNm){
         confirm.fnAlert('RCS 발송', '발송 내용 변수 phone 은 예약어로 사용하실 수 없습니다.');
@@ -1133,11 +1135,11 @@ export default {
 
 	//SMS 템플릿 엑셀 다운로드
     async fnExcelTmplteDownLoad(){
-    	if(this.fnSetContsVarNms() == false) return;
-    	const params = {
-        	contsVarNms : this.sendData.contsVarNms
-      	};
-      	await rcsTemplateSendApi.excelDownSendRcsRecvTmplt(params);
+			if(this.fnSetContsVarNms() == false) return;
+			const params = {
+					contsVarNms : this.sendData.contsVarNms
+				};
+				await rcsTemplateSendApi.excelDownSendRcsRecvTmplt(params);
     },
 
 	// 저장 버튼 처리
@@ -1146,7 +1148,7 @@ export default {
 		vm.sendData.saveContent = saveContent;
 
 		eventBus.$on('callbackEventBus', this.fnSave);
-      	confirm.fnConfirm("RCS 메시지", "RCS 메시지를저장하시겠습니까?", "확인");
+		confirm.fnConfirm("RCS 메시지", "RCS 메시지를저장하시겠습니까?", "확인");
 	},
 
 	// 저장
@@ -1292,7 +1294,7 @@ export default {
 
 	},
 
-	fnConfirmChangeRadioBtn(oldval, newval) {
+	fnConfirmChangeRadioBtn() {
 		var dataSet = this.dataSet;
 		if(dataSet) {
 			jQuery("#confirm").modal("show");
@@ -1388,9 +1390,9 @@ export default {
 		// 캐러셀형 msgId 세팅
 		var templateRadioBtn = this.templateRadioBtn;
 		if(templateRadioBtn == "carouselSmall") {
-			templateRadioBtn = vm.carouselSmall;
+			templateRadioBtn = this.carouselSmall;
 		} else if(templateRadioBtn == "carouselMedium") {
-			templateRadioBtn = vm.carouselMedium;
+			templateRadioBtn = this.carouselMedium;
 		}
 
 		var params = {
@@ -1415,7 +1417,7 @@ export default {
 	},
 
 	fnOpenTestSendInputPopup(){
-	  this.fnSetContsVarNms();
+		this.fnSetContsVarNms();
       this.$refs.testSendInputPopup.fnSetTestRecvInfoLst(this.sendData.testRecvInfoLst);
       this.testSendInputOpen = !this.testSendInputOpen;
     },
@@ -1432,6 +1434,8 @@ export default {
 	validation(sendFlag) {
 		var vm = this;
 		var templateRadioBtn = this.templateRadioBtn;
+		var textTitle = vm.sendData.textTitle;
+		var textContents = vm.sendData.textContents;
 		if(templateRadioBtn == "des" || templateRadioBtn == "cell") {
 			var messagebaseId = vm.sendData.messagebaseId;
 			if("" == messagebaseId) {
@@ -1439,20 +1443,16 @@ export default {
 				return false;
 			}
 		} else if(templateRadioBtn == "text") {
-			var textContents = vm.sendData.textContents;
 			if("" == textContents) {
 				confirm.fnAlert("RCS 발송", "내용을 입력해주세요.");
 				return false;
 			}
 		} else if(templateRadioBtn == "SS000000") {
-			var textContents = vm.sendData.textContents;
 			if("" == textContents) {
 				confirm.fnAlert("RCS 발송", "내용을 입력해주세요.");
 				return false;
 			}
 		} else if(templateRadioBtn == "SL000000") {
-			var textTitle = vm.sendData.textTitle;
-			var textContents = vm.sendData.textContents;
 			if("" == textTitle) {
 				confirm.fnAlert("RCS 발송", "제목을 입력해주세요.");
 				return false;
@@ -1462,8 +1462,6 @@ export default {
 				return false;
 			}
 		} else if(templateRadioBtn == "SMwThM00" || templateRadioBtn == "SMwThT00") {
-			var textTitle = vm.sendData.textTitle;
-			var textContents = vm.sendData.textContents;
 			var imgUrl = vm.sendData.imgUrl;
 			if("" == textTitle) {
 				confirm.fnAlert("RCS 발송", "제목을 입력해주세요.");
@@ -1511,15 +1509,14 @@ export default {
 
 		// 대체 발송 validation
 		var senderType = vm.sendData.senderType;
+		var callbackContents = vm.sendData.callbackContents;
 		if(senderType == "SMS") {
-			var callbackContents = vm.sendData.callbackContents;
 			if(callbackContents == "") {
 				confirm.fnAlert("RCS 발송", "대체발송 내용을 입력해 주세요.");
 				return false;
 			}
 		} else if (senderType == "LMS") {
 			var callbackTitle = vm.sendData.callbackTitle;
-			var callbackContents = vm.sendData.callbackContents;
 			if(callbackTitle == "") {
 				confirm.fnAlert("RCS 발송", "대체발송 제목을 입력해 주세요.");
 				return false;
@@ -1567,7 +1564,7 @@ export default {
 			const file = this.$refs.excelFile.files[0];
 			let reader = new FileReader();
 
-			reader.onload = (e) => {
+			reader.onload = () => {
 			let data = reader.result;
 			let workbook = XLSX.read(data, {type: 'binary'});
 			let sheetName = '';
@@ -1597,12 +1594,19 @@ export default {
 		}
 	},
 
-	getByte(str) {
+		getByte(str) {
       return str
         .split('')
         .map(s => s.charCodeAt(0))
         .reduce((prev, c) => (prev + ((c === 10) ? 2 : ((c >> 7) ? 2 : 1))), 0);
-    }
+    },
+		//단축 URL 선택
+    btnSelect(shortendUrl){
+      if(this.contents.length > 0)
+        this.contents += '\n'
+      
+      this.contents += shortendUrl
+    },
   }
 }
 </script>

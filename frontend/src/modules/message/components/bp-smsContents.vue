@@ -26,12 +26,21 @@
               <span class="float-left color3 mt5"  v-if="sendData.msgKind == 'A' && sendData.senderType != 'SMS'">
                 광고성메시지 수신거부번호는<br>내용 하단에 포함됩니다.<br>또한 광고 표기는 제목 또는<br>내용에 포함되어 있어야 합니다.<br>
               </span>
-              <span class="float-left color3 mt5"  v-else-if="sendData.msgKind == 'A' && sendData.senderType == 'SMS'">
-                (광고) 문구가 내용 앞에 붙고<br>광고성메시지 수신거부번호는<br>내용 밑에 포함됩니다.
-              </span>
+              <p class="color3">(광고) 문구가 내용 앞에 붙고<br>광고성메시지 수신거부번호는<br>내용 밑에 포함됩니다.</p>
+							<a class="btnStyle1 backBlack mt10"
+                title="단축 URL+"
+                data-toggle="modal"
+                data-target="#shortened_URL"
+              >단축 URL+</a> <i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span></i>
             </div>
             <div class="float-right" style="width:66%">
-              <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="smsContent" maxlength="2000" @input="fnSetCurrByte"></textarea>
+              <textarea 
+                class="textareaStyle height120" 
+                :placeholder="contentAreaPlaceholder" 
+                v-model="smsContent" 
+                maxlength="2000" 
+                @input="fnSetCurrByte"
+              ></textarea>
               <strong class="letter">({{msgCurrByte | formatComma}} / {{msgLimitByte | formatComma}})</strong>
             </div>
           </div>
@@ -39,25 +48,34 @@
             <a @click="fnCallbackInputData" class="btnStyle2 backBlack" title="입력">입력</a>
             <a @click="fnClose" class="btnStyle2 backWhite" data-dismiss="modal" title="닫기">닫기</a>
           </div>
-
         </div>
       </div>
     </div>
 
-    <RcvblcNumPopup @callback-func="fnCallbackRcvblcNum" :rcvblcNumOpen.sync="rcvblcNumOpen"></RcvblcNumPopup>
+    <RcvblcNumPopup 
+      @callback-func="fnCallbackRcvblcNum" 
+      :rcvblcNumOpen.sync="rcvblcNumOpen"
+    ></RcvblcNumPopup>
+
+    <shortenedUrlListPopup @btnSelect="btnSelect" />
+    <shortenedUrlAddPopup/>
   </div>
 </template>
 
 <script>
-import RcvblcNumPopup from "@/modules/message/components/bp-rcvblcNumManage.vue";
+import RcvblcNumPopup from "@/modules/message/components/bp-rcvblcNumManage"
+import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
 
-import messageApi from "@/modules/message/service/messageApi.js";
-import confirm from "@/modules/commonUtil/service/confirm.js";
+// import messageApi from "@/modules/message/service/messageApi.js"
+import confirm from "@/modules/commonUtil/service/confirm.js"
 
 export default {
   name: "smsContentsPopup",
   components : {
-    RcvblcNumPopup
+    RcvblcNumPopup,
+    shortenedUrlListPopup,
+    shortenedUrlAddPopup,
   },
   props: {
     smsContsOpen: {
@@ -205,6 +223,13 @@ export default {
     //팝업 닫기
     fnClose(){
       this.$emit('update:smsContsOpen', false)
+    },
+    //단축 URL 선택
+    btnSelect(shortendUrl){
+      if(this.smsContent.length > 0)
+        this.smsContent += '\n'
+      
+      this.smsContent += shortendUrl
     },
   }
 }

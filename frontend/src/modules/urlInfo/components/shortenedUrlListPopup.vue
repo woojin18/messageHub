@@ -126,7 +126,7 @@
                 <!-- <a href="#" title="10페이지 이전 페이지로 이동"><i class="far fa-chevron-double-left"></i></a> -->
                 <a
                   v-if="hasPrevPageList"
-                  @click="goPage(pagingInfo.pageNo - 10)"
+                  @click="goPage(pageInfo.pageNo - 10)"
                   href="#"
                   title="10페이지 이전 페이지로 이동"
                 >
@@ -136,18 +136,18 @@
                 <a
                   v-for="(item, idx) in pagingList"
                   :key="idx"
-                  @click="goPage(item.pageNo)"
+                  @click="goPage(item)"
                   href="#"
-                  :title="`${item.pageNo}페이지로 이동`"
+                  :title="`${item}페이지로 이동`"
                   class="number"
-                  :class="item.pageNo === pagingInfo.pageNo ? 'active' : ''"
-                  >{{ item.pageNo }}</a
+                  :class="item === pageInfo.pageNo ? 'active' : ''"
+                  >{{ item }}</a
                 >
                 <!-- <a href="#" title="다음 페이지로 이동"><i class="far fa-chevron-right"></i></a> -->
                 <!-- <a href="#" title="10페이지 다음 페이지로 이동"><i class="far fa-chevron-double-right"></i></a> -->
                 <a
                   v-if="hasNextPageList"
-                  @click="goPage(pagingInfo.pageNo - 10)"
+                  @click="goPage(pageInfo.pageNo - 10)"
                   href="#"
                   title="10페이지 다음 페이지로 이동"
                   ><i class="far fa-chevron-double-right"></i
@@ -187,26 +187,41 @@ export default {
       else
         return ''
     },
+    totPages() {
+      return Math.ceil(this.pageInfo.totCnt / this.pageInfo.listSize)
+    },
+    startPage() {
+      return Math.ceil((this.pageInfo.offset / this.pageInfo.listSize) + 1)
+    },
     hasPrevPageList() {
-      return this.pagingInfo.length > 10 && this.pagingInfo.pageNo > 10
+      return this.pageInfo.pageNo - 10 > 0
     },
     hasNextPageList() {
-      return this.pagingInfo.length > 10 && this.pagingInfo.pageNo > 10
+      return this.pageInfo.pageNo + 10 <= this.totPages
+    },
+    pagingList() {
+      let pageNo = this.startPage
+      let pagingList = []
+
+      while(pageNo <= this.totPages && pageNo < this.startPage + 10) {
+        pagingList.push(pageNo++)
+      }
+
+      return pagingList
     },
   },
   data() {
     return {
-      pagingInfo: {
+      pageInfo: {
         pageNo: 1,
+        offset: 0,
         listSize: 10,
-        totalCnt: 200,
-        pageCnt: 20,
+        totCnt: 0,
       },
       componentsTitle: '단축URL',
       title: '',
       urlId: '',
       itemList: [],
-      pagingList: [{ pageNo: 1 }, { pageNo: 2 }],
     };
   },
   mounted() {
@@ -216,14 +231,15 @@ export default {
   methods: {
     async selectUrlInfoList() {
       let params = {};
-      params.pageNo = this.pagingInfo.pageNo;
-      params.listSize = this.pagingInfo.listSize;
+      params.pageNo = this.pageInfo.pageNo;
+      params.listSize = this.pageInfo.listSize;
       params.title = this.title;
 
       await urlInfoApi.selectUrlInfoList(params).then((response) => {
         const result = response.data;
         if (result.success) {
           this.itemList = result.data
+          this.pageInfo = result.pageInfo
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
@@ -236,7 +252,7 @@ export default {
       jQuery("#btnClose").trigger("click")
     },
     btnCopy(urlId) {
-      var t = document.createElement('textarea')
+      var t = document.createElement('input')
       document.body.appendChild(t)
       t.value = urlId
       t.select()
@@ -245,7 +261,6 @@ export default {
 
       // console.log('####### btnCopy######', urlId);
       confirm.fnAlert('', '단축URL+를 복사한 상태입니다. 메시지 또는 버튼 URL에 CTL+V 하십시오.')
-      // confirm.fnAlert('urlId', urlId)
     },
     btnDelete(urlId) {
       eventBus.$on('callbackEventBus', () => {

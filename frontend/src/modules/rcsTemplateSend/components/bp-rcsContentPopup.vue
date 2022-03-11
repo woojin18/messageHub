@@ -1,5 +1,5 @@
 <template>
-    <div class="modal modalStyle" id="contentPop" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal modalStyle" id="contentPop" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -14,7 +14,6 @@
                     </li>
                   </ul>
               </div>
-						
 						</div>
             <div v-if="templateRadioBtn!='text' && templateRadioBtn!='SS000000'" class="of_h consolMarginTop">
 							<div class="float-left" style="width:15%"><h5>제목</h5></div>
@@ -22,11 +21,30 @@
 								<input v-model="title" type="text" class="inputStyle" placeholder="타이틀 입력 (최대 30자)" title="제목 입력란">
 							</div>							
 						</div>
-						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:15%"><h5>내용</h5></div>
-							<div class="float-left" style="width:80%">
-								<textarea v-model="contents" class="textareaStyle height120" :placeholder="holder"></textarea>
-								<p class="color3"><i class="far fa-info-circle"></i> {{textCnt | formatComma}}자 입력 / 변수 포함 최대 {{txtMaxLength | formatComma}}글자 <i class="fas fa-question-circle toolTip"></i></p>
+						<div class="clear consolMarginTop">
+							<div class="float-left" style="width:25%">
+                <h5>내용</h5>
+                <template v-if="templateRadioBtn === 'text'">
+                  <a class="btnStyle1 backBlack mt60" 
+                    title="단축 URL+" 
+                    data-toggle="modal" 
+                    data-target="#shortened_URL"
+                  >단축 URL+</a>
+                  <i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span></i>
+                </template>
+                <p 
+                  v-else
+                  class="color3">버튼이 존재하는 RCS<br>상품은 단축URL+이 [버튼<br>입력]에 존재합니다.</p>
+              </div>
+							<div class="float-left" style="width:75%">
+								<textarea 
+                  v-model="contents" 
+                  class="textareaStyle height120" 
+                  :placeholder="holder"
+                ></textarea>
+								<p class="color3">
+                  <i class="far fa-info-circle"></i> {{textCnt | formatComma}}자 입력 / 변수 포함 최대 {{txtMaxLength | formatComma}}글자 <i class="fas fa-question-circle toolTip"></i>
+                </p>
 							</div>							
 						</div>
 					</div>	
@@ -37,19 +55,28 @@
 				</div>				
 			</div>
 		</div>
+
     <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" useCh="RCS" ref="imgMngPopup"></ImageManagePopUp>
+
+    <shortenedUrlListPopup @btnSelect="btnSelect" />
+    <shortenedUrlAddPopup/>
 	</div>
 </template>
 
 <script>
-import rcsTemplateSendApi from "@/modules/rcsTemplateSend/service/api.js";
+// import rcsTemplateSendApi from "@/modules/rcsTemplateSend/service/api.js";
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
 import confirm from "@/modules/commonUtil/service/confirm.js";
+
+import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
 
 export default {
   name: "rcsContentPop",
   components : {
-    ImageManagePopUp
+    ImageManagePopUp,
+    shortenedUrlListPopup,
+    shortenedUrlAddPopup,
   },
   props : {
         templateRadioBtn: {
@@ -83,7 +110,7 @@ export default {
     }
   },
   watch : {
-      contents : function(newVal, oldVal) {
+      contents : function(newVal) {
         this.textCnt = newVal.length;
       },
       templateRadioBtn(){
@@ -148,7 +175,7 @@ export default {
       var textCnt = vm.textCnt;
       var txtMaxLength = vm.txtMaxLength;
       var title = vm.title;
-      var fileId = vm.fileId;
+      // var fileId = vm.fileId;
       var params = {
         "title" : vm.title,
         "contents" : vm.contents,
@@ -158,13 +185,13 @@ export default {
       };
 
       var titleTf = false;
-      var imgTf = false;
+      // var imgTf = false;
 
       // validation
       if(templateRadioBtn == "SMwThM00" || templateRadioBtn == "SMwThT00" ||
         templateRadioBtn == "carouselSmall" || templateRadioBtn == "carouselMedium" ) {
           titleTf = true;
-          imgTf = true;
+          // imgTf = true;
         }
       if(templateRadioBtn == "SL000000") {
         titleTf = true;
@@ -216,6 +243,13 @@ export default {
         }
       }
       return shortStr;
+    },
+    //단축 URL 선택
+    btnSelect(shortendUrl){
+      if(this.contents.length > 0)
+        this.contents += '\n'
+      
+      this.contents += shortendUrl
     },
   }
 }

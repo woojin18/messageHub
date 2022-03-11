@@ -23,7 +23,11 @@
 						<div class="consolMarginTop">
 							<h4 class="inline-block" style="width:10%">브랜드명</h4>
 							<select v-model="brandNm" name="userConsole_sub040202_1" class="selectStyle2" style="width:24%" title="브랜드명 선택란">
-								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">
+								<option 
+									v-for="(option, idx) in brandNmList" 
+									:key="idx"
+									v-bind:value="option.BRAND_ID"
+								>
 									{{option.BRAND_NAME}}
 								</option>
 							</select>
@@ -54,7 +58,10 @@
 											<div class="scroll-y">
 												<p class="mt15 lc-1"><pre>{{desContentsExam}}</pre></p>
 											</div>
-											<div v-for="n in btnCnt">
+											<div 
+												v-for="(n, idx) in btnCnt"
+												:key="idx"
+											>
 												<p class="text-center" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 											</div>
 										</div>
@@ -70,7 +77,11 @@
 									<div class="float-left" style="width:78%">
 										<div class="of_h">
 											<select @change="fnSetDesformImg" v-model="desFormNm" name="userConsole_sub040202_2" class="selectStyle2">
-												<option v-for="option in desFormNmList" v-bind:value="option.MESSAGEBASEFORM_ID">
+												<option 
+													v-for="(option, idx) in desFormNmList" 
+													:key="idx"
+													v-bind:value="option.MESSAGEBASEFORM_ID"
+												>
 													{{option.FORM_NAME}}
 												</option>
 											</select>
@@ -111,7 +122,10 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="n in btnCnt">
+													<tr 
+														v-for="(n, idx) in btnCnt"
+														:key="idx"
+													>
 														<td class="text-center">
 															<select @change="fnBtnSelectEvent(n-1)" v-model="selectBtn[n-1]" name="userConsole04060202_1" class="selectStyle2" style="width:100%">
 																<option value="urlAction">URL 링크</option>
@@ -139,7 +153,21 @@
 																</div>
 															</div>
 														</td>
-														<td class="text-center end"><a href="#" @click.prevent="fnClickMinus(n-1)" title="이전버튼"><i class="far fa-minus channelBtn"></i></a></td>
+														<td class="text-center end">
+															<a href="#" @click.prevent="fnClickMinus(n-1)" title="이전버튼">
+																<a
+																	v-if="selectBtn[n-1] === 'urlAction'" 
+																	class="btnStyle1 backBlack" 
+																	title="단축 URL+" 
+																	data-toggle="modal" 
+																	data-target="#shortened_URL"
+																>단축 URL+</a> 
+																<i 
+																	class="far fa-minus channelBtn"
+																	:class="selectBtn[n-1] === 'urlAction' ? 'ml5' : ''"
+																></i>
+															</a>
+														</td>
 													</tr>
 												</tbody>
 											</table>
@@ -175,7 +203,11 @@
 									<div class="phoneTextWrap">
 										<div class="phoneText1 of_h scroll-y4 relative" style="padding:20px 15px 70px 15px;">
 											<p><img :src="styleImgSrc" alt="주문 아이콘" style="width:70px;"></p>
-											<div v-for="n in styleContentCnt" class="scroll-y3">
+											<div 
+												v-for="(n, idx) in styleContentCnt" 
+												:key="idx"
+												class="scroll-y3"
+											>
 												<div v-if="styleArr[n-1]==1">
 													<p class="lc-1 inline-block">{{styleInput[n-1]}}</p>
 												</div>
@@ -185,7 +217,12 @@
 												</div>
 												<hr v-if="styleChk[n-1]==true">
 												<div v-if="n==styleContentCnt" class="revert" style="bottom:25px; left:28%">
-													<p v-for="n in btnCnt" class="text-center" style="color:#69C8FF">{{btnNm[n-1]}}</p>
+													<p 
+														v-for="(n, idx) in btnCnt" 
+														:key="idx"
+														class="text-center" 
+														style="color:#69C8FF"
+													>{{btnNm[n-1]}}</p>
 												</div>
 											</div>
 										</div>
@@ -201,7 +238,11 @@
 									<div class="float-left" style="width:78%">
 										<div class="of_h">
 											<select @change="fnSetStyleformImg" v-model="styleFormNm" name="userConsole_sub040202_2" class="selectStyle2">
-												<option v-for="option in styleFormNmList" v-bind:value="option.MESSAGEBASEFORM_ID">
+												<option 
+													v-for="(option, idx) in styleFormNmList" 
+													:key="idx"
+													v-bind:value="option.MESSAGEBASEFORM_ID"
+												>
 													{{option.FORM_NAME}}
 												</option>
 											</select>
@@ -217,9 +258,12 @@
 											<p class="color4">{{styleContentText}}</p>
 											<p class="consolMarginTop">기변부 포함 90자 이내로 작성해 주세요.</p>
 										</div>
-										<div v-for="n in styleContentCnt">								
+										<div 
+											v-for="(n, idx) in styleContentCnt"
+											:key="idx"
+										>								
 											<div v-if="styleArr[n-1]==1" class="consolMarginTop">
-												<a @click.prevent="fnClickSquare(n, styleArr[n-1], false)" href="#_self"><img src="@/assets/images/common/square01.png" alt="사각형1"></a></a>
+												<a @click.prevent="fnClickSquare(n, styleArr[n-1], false)" href="#_self"><img src="@/assets/images/common/square01.png" alt="사각형1"></a>
 												<div class="inline-block ml10">
 													<a @click.prevent="fnClickSquare(n, styleArr[n-1], true)" href="#_self"><img src="@/assets/images/common/square02.png" alt="사각형2"></a>
 												</div>
@@ -265,7 +309,10 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="n in btnCnt">
+													<tr 
+														v-for="(n, idx) in btnCnt"
+														:key="idx"
+													>
 														<td class="text-center">
 															<select @change="fnBtnSelectEvent(n-1)" v-model="selectBtn[n-1]" name="userConsole04060202_1" class="selectStyle2" style="width:100%">
 																<option value="urlAction">URL 링크</option>
@@ -293,7 +340,21 @@
 																</div>
 															</div>
 														</td>
-														<td class="text-center end"><a href="#" @click.prevent="fnClickMinus(n-1)" title="이전버튼"><i class="far fa-minus channelBtn"></i></a></td>
+														<td class="text-center end">
+															<a href="#" @click.prevent="fnClickMinus(n-1)" title="이전버튼">
+																<a
+																	v-if="selectBtn[n-1] === 'urlAction'" 
+																	class="btnStyle1 backBlack" 
+																	title="단축 URL+" 
+																	data-toggle="modal" 
+																	data-target="#shortened_URL"
+																>단축 URL+</a> 
+																<i 
+																	class="far fa-minus channelBtn"
+																	:class="selectBtn[n-1] === 'urlAction' ? 'ml5' : ''"
+																></i>
+															</a>
+														</td>
 													</tr>
 												</tbody>
 											</table>
@@ -331,17 +392,17 @@ import Calendar from "@/components/Calendar.vue";
 export default {
   name: "rcsTemplateMod",
   components: {
-	  Calendar
+		Calendar
   },
   props: {
       status: {
           type: String,
           default: ""
       },
-	  msgId: {
-		  type: String,
-		  default: ""
-	  }
+		msgId: {
+			type: String,
+			default: ""
+		}
   },
   data() {
     return {
@@ -396,210 +457,220 @@ export default {
     }
   },
   mounted() {
-	  this.init();  
+		this.init();  
   },
 
   watch: {
-	  desContents: function(newVal, oldVal) {
-		  this.desContentsExam = newVal;
-		  this.desContentsCnt = newVal.length;
-		  if(!this.desTextChk) {
+		desContents: function(newVal) {
+			this.desContentsExam = newVal;
+			this.desContentsCnt = newVal.length;
+			if(!this.desTextChk) {
 			if(newVal.length > 90) {
-			  confirm.fnAlert("RCS", "템플릿 내용이 90자를 넘으면 템플릿 등록이 실패 될 수 있습니다.");
-			  this.desTextChk = true;
-		    }
-		  } 
-	  },
-	  styleInput: function(newVal, oldVal) {
-		  var styleText = newVal.join('');
-		  var styleTextSec = this.styleInputSec.join('');
-		  var confirmText = styleText + styleTextSec;
-		  this.styleContentsCnt = confirmText.length;
-		  if(!this.styleTextChk) {
+				confirm.fnAlert("RCS", "템플릿 내용이 90자를 넘으면 템플릿 등록이 실패 될 수 있습니다.");
+				this.desTextChk = true;
+				}
+			} 
+		},
+		styleInput: function(newVal) {
+			var styleText = newVal.join('');
+			var styleTextSec = this.styleInputSec.join('');
+			var confirmText = styleText + styleTextSec;
+			this.styleContentsCnt = confirmText.length;
+			if(!this.styleTextChk) {
 			if(confirmText.length > 90) {
-			  confirm.fnAlert("RCS", "템플릿 내용이 90자를 넘으면 템플릿 등록이 실패 될 수 있습니다.");
-			  this.styleTextChk = true;
-		    }
-		  }
-	  },
-	  styleInputSec: function(newVal, oldVal) {
-		  var styleText = this.styleInput.join('');
-		  var styleTextSec = newVal.join('');
-		  var confirmText = styleText + styleTextSec;
-		  this.styleContentsCnt = confirmText.length;
-		  if(!this.styleTextChk) {
+				confirm.fnAlert("RCS", "템플릿 내용이 90자를 넘으면 템플릿 등록이 실패 될 수 있습니다.");
+				this.styleTextChk = true;
+				}
+			}
+		},
+		styleInputSec: function(newVal) {
+			var styleText = this.styleInput.join('');
+			var styleTextSec = newVal.join('');
+			var confirmText = styleText + styleTextSec;
+			this.styleContentsCnt = confirmText.length;
+			if(!this.styleTextChk) {
 			if(confirmText.length > 90) {
-			  confirm.fnAlert("RCS", "템플릿 내용이 90자를 넘으면 템플릿 등록이 실패 될 수 있습니다.");
-			  this.styleTextChk = true;
-		    }
-		  }
-	  },
-	  templateNm: function(newVal, oldVal) {
-		  this.titleCnt = newVal.length;
-	  }
+				confirm.fnAlert("RCS", "템플릿 내용이 90자를 넘으면 템플릿 등록이 실패 될 수 있습니다.");
+				this.styleTextChk = true;
+				}
+			}
+		},
+		templateNm: function(newVal) {
+			this.titleCnt = newVal.length;
+		}
   },
 
   methods: {
-	  init() {
-		var params = {};
-		var vm = this;
+		init() {
+			var params = {};
+			var vm = this;
 
-		// 승인요청 버튼 활성화
-		if(vm.status == "INS") {
-			vm.insertBtn = true;
-		}
-		templateApi.rcsTemplateInit(params).then(response => {
-			var result = response.data;
-			var resultData = result.data;
-			var status = vm.status;
-			// 생성, 복사인 경우 템플릿 코드 세팅
-			if(status!="UPT") {
-				vm.templateCode = resultData.templateCode;
-			}
-			vm.brandNm = resultData.brandList[0].BRAND_ID;
-			vm.brandNmList = resultData.brandList;
-			vm.desFormNm = resultData.desFormList[0].MESSAGEBASEFORM_ID;
-			vm.desFormNmList = resultData.desFormList;
-			vm.styleFormNm = resultData.styleFormList[0].MESSAGEBASEFORM_ID;
-			vm.styleFormNmList = resultData.styleFormList;
-
-			if(status=="UPT" || status=="CPY") {
-				this.updateInit();
-			}
-		});
-	  },
-
-	  updateInit() {
-		var vm = this;
-		var status = vm.status;
-		var params = {
-			"msgId" : this.msgId
-		};
-		templateApi.rcsTemplateUpdateInit(params).then(response => {
-			var result = response.data;
-			var resultData = result.data;
-			// 상태값에 따라서 버튼 표시 처리해야됨. (승인, 반려, 반려(수정), 저장 상태 -> 수정요청, 삭제요청) (승인대기, 승인대기(수정), 반려(수정) -> 취소 요청)
-			var approvalStatus = resultData.approvalStatus;
-			if("UPT" == status) {
-				if("승인" == approvalStatus) {
-					vm.updateBtn = true;
-				} 
-				if("승인" == approvalStatus || "반려" == approvalStatus || "반려(수정)" == approvalStatus || "저장" == approvalStatus) {
-					vm.deleteBtn = true;
-				}
-				if("승인대기" == approvalStatus || "승인대기(수정)" == approvalStatus || "반려(수정)" == approvalStatus) {
-					vm.cancelBtn = true;
-				}
-			} else if("CPY" == status) {
+			// 승인요청 버튼 활성화
+			if(vm.status == "INS") {
 				vm.insertBtn = true;
 			}
+			templateApi.rcsTemplateInit(params).then(response => {
+				var result = response.data;
+				var resultData = result.data;
+				var status = vm.status;
+				// 생성, 복사인 경우 템플릿 코드 세팅
+				if(status!="UPT") {
+					vm.templateCode = resultData.templateCode;
+				}
+				vm.brandNm = resultData.brandList[0].BRAND_ID;
+				vm.brandNmList = resultData.brandList;
+				vm.desFormNm = resultData.desFormList[0].MESSAGEBASEFORM_ID;
+				vm.desFormNmList = resultData.desFormList;
+				vm.styleFormNm = resultData.styleFormList[0].MESSAGEBASEFORM_ID;
+				vm.styleFormNmList = resultData.styleFormList;
 
-			vm.templateNm = resultData.templateNm;
-			vm.titleCnt = resultData.templateNm.length;
-			if(vm.status=="UPT") vm.templateCode = resultData.templateCode;
-			vm.brandNm = resultData.brandNm;
-			var cardType = resultData.cardType;
+				if(status=="UPT" || status=="CPY") {
+					this.updateInit();
+				}
+			});
+		},
 
-			// 서술형, 스타일형 내용 세팅
-			if(cardType=="description") {
-				vm.desFormNm = resultData.desNm;
-				vm.desContents = resultData.textContents;
-				this.fnSetDesformImg();
+		updateInit() {
+			var vm = this;
+			var status = vm.status;
+			var params = {
+				"msgId" : this.msgId
+			};
+			templateApi.rcsTemplateUpdateInit(params).then(response => {
+				var result = response.data;
+				var resultData = result.data;
+				// 상태값에 따라서 버튼 표시 처리해야됨. (승인, 반려, 반려(수정), 저장 상태 -> 수정요청, 삭제요청) (승인대기, 승인대기(수정), 반려(수정) -> 취소 요청)
+				var approvalStatus = resultData.approvalStatus;
+				if("UPT" == status) {
+					if("승인" == approvalStatus) {
+						vm.updateBtn = true;
+					} 
+					if("승인" == approvalStatus || "반려" == approvalStatus || "반려(수정)" == approvalStatus || "저장" == approvalStatus) {
+						vm.deleteBtn = true;
+					}
+					if("승인대기" == approvalStatus || "승인대기(수정)" == approvalStatus || "반려(수정)" == approvalStatus) {
+						vm.cancelBtn = true;
+					}
+				} else if("CPY" == status) {
+					vm.insertBtn = true;
+				}
 
-				// Tab 이벤트 처리
-				jQuery("#styleTab").remove();
-			} else if(cardType=="cell") {
-				vm.styleFormNm = resultData.styleNm;
-				vm.styleContentCnt = resultData.styleContentCnt;
-				vm.styleArr = resultData.styleArr;
-				vm.styleInput = resultData.styleInput;
-				vm.styleInputSec = resultData.styleInputSec;
-				vm.styleChk = resultData.styleChk;
-				this.fnSetStyleformImg();
+				vm.templateNm = resultData.templateNm;
+				vm.titleCnt = resultData.templateNm.length;
+				if(vm.status=="UPT") vm.templateCode = resultData.templateCode;
+				vm.brandNm = resultData.brandNm;
+				var cardType = resultData.cardType;
 
-				// Tab 이벤트 처리
-				jQuery("#styleTab").tab("show");
-				jQuery("#desTab").remove();
-				jQuery("#productCate1").removeClass("active");
-				jQuery("#productCate2").addClass("active");
-			}
+				// 서술형, 스타일형 내용 세팅
+				if(cardType=="description") {
+					vm.desFormNm = resultData.desNm;
+					vm.desContents = resultData.textContents;
+					this.fnSetDesformImg();
 
-			// 버튼 세팅
-			vm.btnCnt = resultData.btnCnt;
-			vm.selectBtn = resultData.selectBtn;
-			vm.btnNm = resultData.btnNm;
-			vm.contents = resultData.contents;
-			vm.calendarTitle = resultData.calendarTitle;
-			vm.calendarDes = resultData.calendarDes;
-			if(cardType=="description") {
-				vm.desInitStartDate = resultData.startDate;
-				vm.desInitEndDate = resultData.endDate;
-			} else if(cardType=="cell") {
-				vm.styleInitStartDate = resultData.startDate;
-				vm.styleInitEndDate = resultData.endDate;
-			}
-		});
-	  },
+					// Tab 이벤트 처리
+					jQuery("#styleTab").remove();
+				} else if(cardType=="cell") {
+					vm.styleFormNm = resultData.styleNm;
+					vm.styleContentCnt = resultData.styleContentCnt;
+					vm.styleArr = resultData.styleArr;
+					vm.styleInput = resultData.styleInput;
+					vm.styleInputSec = resultData.styleInputSec;
+					vm.styleChk = resultData.styleChk;
+					this.fnSetStyleformImg();
 
-	  // 추가 버튼 클릭 이벤트 처리  
-	  fnClickAddBtn() {
-		var vm = this;
-		var btnCnt = this.btnCnt;
-		if(btnCnt==0) {
-			vm.btnCnt = 1;
-			vm.selectBtn.push("urlAction");
-			vm.btnInputHolder.push("URL입력(http:// 또는 https:// 필수입력)");
-			vm.btnNm.push("");
-			vm.contents.push("");
-			vm.calendarTitle.push("");
-			vm.calendarDes.push("");
-		} else if(btnCnt==1) {
-			vm.btnCnt = 2;
-			vm.selectBtn.push("urlAction");
-			vm.btnInputHolder.push("URL입력(http:// 또는 https:// 필수입력)");
-			vm.btnNm.push("");
-			vm.contents.push("");
-			vm.calendarTitle.push("");
-			vm.calendarDes.push("");
-		}
-	  },
-	  // 버튼 타입 change 이벤트 처리
-	  fnBtnSelectEvent(n) {
-		var vm = this;
-		if(vm.selectBtn[n]=="urlAction") {
-			this.$set(vm.contents, n, "");
-			this.$set(vm.btnInputHolder, n, "URL입력(http:// 또는 https:// 필수입력)");
-		} else if(vm.selectBtn[n]=="clipboardAction") {
-			this.$set(vm.contents, n, "");
-			this.$set(vm.btnInputHolder, n, "복사할 값 입력");
-		} else if(vm.selectBtn[n]=="dialerAction") {
-			this.$set(vm.contents, n, "");
-			this.$set(vm.btnInputHolder, n, "전화번호 입력");
-		} else if(vm.selectBtn[n]=="mapAction") {
-			this.$set(vm.contents, n, "현재위치 공유");
-			this.$set(vm.btnInputHolder, n, "현재위치 공유");
-		}
-	  },
-	  // 버튼 삭제
-	  fnClickMinus(n) {
-		var vm = this;
-		if(n==0) {
-			if(vm.btnCnt==1) {
-				vm.btnCnt = 0;
-				vm.selectBtn.pop();
-				vm.btnInputHolder.pop();
-				vm.btnNm.pop();
-				vm.contents.pop();
-				vm.calendarTitle.pop();
-				vm.calendarDes.pop();
-			} else if(vm.btnCnt==2) {
+					// Tab 이벤트 처리
+					jQuery("#styleTab").tab("show");
+					jQuery("#desTab").remove();
+					jQuery("#productCate1").removeClass("active");
+					jQuery("#productCate2").addClass("active");
+				}
+
+				// 버튼 세팅
+				vm.btnCnt = resultData.btnCnt;
+				vm.selectBtn = resultData.selectBtn;
+				vm.btnNm = resultData.btnNm;
+				vm.contents = resultData.contents;
+				vm.calendarTitle = resultData.calendarTitle;
+				vm.calendarDes = resultData.calendarDes;
+				if(cardType=="description") {
+					vm.desInitStartDate = resultData.startDate;
+					vm.desInitEndDate = resultData.endDate;
+				} else if(cardType=="cell") {
+					vm.styleInitStartDate = resultData.startDate;
+					vm.styleInitEndDate = resultData.endDate;
+				}
+			});
+		},
+
+		// 추가 버튼 클릭 이벤트 처리  
+		fnClickAddBtn() {
+			var vm = this;
+			var btnCnt = this.btnCnt;
+			if(btnCnt==0) {
 				vm.btnCnt = 1;
-				this.$set(vm.selectBtn, n, vm.selectBtn[n+1]);
-				this.$set(vm.btnInputHolder, n, vm.btnInputHolder[n+1]);
-				this.$set(vm.btnNm, n, vm.btnNm[n+1]);
-				this.$set(vm.contents, n, vm.contents[n+1]);
-				this.$set(vm.calendarTitle, n, vm.calendarTitle[n+1]);
-				this.$set(vm.calendarDes, n, vm.calendarDes[n+1]);
+				vm.selectBtn.push("urlAction");
+				vm.btnInputHolder.push("URL입력(http:// 또는 https:// 필수입력)");
+				vm.btnNm.push("");
+				vm.contents.push("");
+				vm.calendarTitle.push("");
+				vm.calendarDes.push("");
+			} else if(btnCnt==1) {
+				vm.btnCnt = 2;
+				vm.selectBtn.push("urlAction");
+				vm.btnInputHolder.push("URL입력(http:// 또는 https:// 필수입력)");
+				vm.btnNm.push("");
+				vm.contents.push("");
+				vm.calendarTitle.push("");
+				vm.calendarDes.push("");
+			}
+		},
+		// 버튼 타입 change 이벤트 처리
+		fnBtnSelectEvent(n) {
+			var vm = this;
+			if(vm.selectBtn[n]=="urlAction") {
+				this.$set(vm.contents, n, "");
+				this.$set(vm.btnInputHolder, n, "URL입력(http:// 또는 https:// 필수입력)");
+			} else if(vm.selectBtn[n]=="clipboardAction") {
+				this.$set(vm.contents, n, "");
+				this.$set(vm.btnInputHolder, n, "복사할 값 입력");
+			} else if(vm.selectBtn[n]=="dialerAction") {
+				this.$set(vm.contents, n, "");
+				this.$set(vm.btnInputHolder, n, "전화번호 입력");
+			} else if(vm.selectBtn[n]=="mapAction") {
+				this.$set(vm.contents, n, "현재위치 공유");
+				this.$set(vm.btnInputHolder, n, "현재위치 공유");
+			}
+		},
+		// 버튼 삭제
+		fnClickMinus(n) {
+			var vm = this;
+			if(n==0) {
+				if(vm.btnCnt==1) {
+					vm.btnCnt = 0;
+					vm.selectBtn.pop();
+					vm.btnInputHolder.pop();
+					vm.btnNm.pop();
+					vm.contents.pop();
+					vm.calendarTitle.pop();
+					vm.calendarDes.pop();
+				} else if(vm.btnCnt==2) {
+					vm.btnCnt = 1;
+					this.$set(vm.selectBtn, n, vm.selectBtn[n+1]);
+					this.$set(vm.btnInputHolder, n, vm.btnInputHolder[n+1]);
+					this.$set(vm.btnNm, n, vm.btnNm[n+1]);
+					this.$set(vm.contents, n, vm.contents[n+1]);
+					this.$set(vm.calendarTitle, n, vm.calendarTitle[n+1]);
+					this.$set(vm.calendarDes, n, vm.calendarDes[n+1]);
+					vm.selectBtn.pop();
+					vm.btnInputHolder.pop();
+					vm.btnNm.pop();
+					vm.contents.pop();
+					vm.calendarTitle.pop();
+					vm.calendarDes.pop();
+				}
+
+			} else if(n==1) {
+				vm.btnCnt = 1;
 				vm.selectBtn.pop();
 				vm.btnInputHolder.pop();
 				vm.btnNm.pop();
@@ -607,32 +678,22 @@ export default {
 				vm.calendarTitle.pop();
 				vm.calendarDes.pop();
 			}
+		},
 
-		} else if(n==1) {
-			vm.btnCnt = 1;
-			vm.selectBtn.pop();
-			vm.btnInputHolder.pop();
-			vm.btnNm.pop();
-			vm.contents.pop();
-			vm.calendarTitle.pop();
-			vm.calendarDes.pop();
-		}
-	  },
-
-	  // 스타일형 사각형 버튼 이벤트
-	  fnClickSquare(n, style, styleFlag){
-		var vm = this;
-		if(styleFlag==true) {
-			if(style==1) {
-				this.$set(vm.styleArr, n-1, 2);
-			} else if(style==2) {
-				this.$set(vm.styleArr, n-1, 1);
+		// 스타일형 사각형 버튼 이벤트
+		fnClickSquare(n, style, styleFlag){
+			var vm = this;
+			if(styleFlag==true) {
+				if(style==1) {
+					this.$set(vm.styleArr, n-1, 2);
+				} else if(style==2) {
+					this.$set(vm.styleArr, n-1, 1);
+				}
 			}
-		}
-	  },
+		},
 
-	  // cell 추가
-	  fnCellAdd() {
+		// cell 추가
+		fnCellAdd() {
 		var vm = this;
 		var styleContentCnt = this.styleContentCnt;
 
@@ -643,34 +704,34 @@ export default {
 			this.$set(vm.styleChk, styleContentCnt, false);
 			vm.styleContentCnt++;
 		}		
-	  },
+		},
 
-	  //fnDesUpdateStartDate
-	  fnDesUpdateStartDate(date, n) {
-		var vm = this;
-		this.$set(vm.desInitStartDate, n, date);
-	  },
-	  fnDesUpdateEndDate(n, m) {
-		var vm = this;
-		this.$set(vm.desInitEndDate, n, date);
-	  },
-	  fnStyleUpdateStartDate(n, m) {
-		var vm = this;
-		this.$set(vm.styleInitStartDate, n, date);
-	  },
-	  fnStyleUpdateEndDate(n, m) {
-		var vm = this;
-		this.$set(vm.styleInitEndDate, n, date);
-	  },
+		//fnDesUpdateStartDate
+		fnDesUpdateStartDate(date, n) {
+			var vm = this;
+			this.$set(vm.desInitStartDate, n, date);
+		},
+		fnDesUpdateEndDate(date, n) {
+			var vm = this;
+			this.$set(vm.desInitEndDate, n, date);
+		},
+		fnStyleUpdateStartDate(date, n) {
+			var vm = this;
+			this.$set(vm.styleInitStartDate, n, date);
+		},
+		fnStyleUpdateEndDate(date, n) {
+			var vm = this;
+			this.$set(vm.styleInitEndDate, n, date);
+		},
 
-	  // 템플릿 취소
-	  rcsTemplateCancel() {
+		// 템플릿 취소
+		rcsTemplateCancel() {
 		eventBus.$on('callbackEventBus', this.fnRcsTemplateCancelApi);
-      	confirm.fnConfirm("RCS 템플릿 취소", "RCS 템플릿을 취소 하시겠습니까?", "확인");
-	  },
+				confirm.fnConfirm("RCS 템플릿 취소", "RCS 템플릿을 취소 하시겠습니까?", "확인");
+		},
 
-	  fnRcsTemplateCancelApi() {
-		  	var vm = this;
+		fnRcsTemplateCancelApi() {
+			var vm = this;
 			var params = {
 				"brandId" : vm.brandNm,
 				"messagebaseId" : vm.templateCode
@@ -688,234 +749,235 @@ export default {
 					this.$router.push({name : "rcsTemplateList"});
 				}
 			});
-	  },
+		},
 
-	  // 템플릿 삭제
-	  rcsTemplateDelete() {
+		// 템플릿 삭제
+		rcsTemplateDelete() {
 		eventBus.$on('callbackEventBus', this.fnRcsTemplateDeleteApi);
-      	confirm.fnConfirm("RCS 템플릿 삭제", "RCS 템플릿을 삭제 하시겠습니까?", "확인");
-	  },
+				confirm.fnConfirm("RCS 템플릿 삭제", "RCS 템플릿을 삭제 하시겠습니까?", "확인");
+		},
 
-	  fnRcsTemplateDeleteApi() {
-		var vm = this;
-		var params = {
-			"brandId" : vm.brandNm,
-			"messagebaseId" : vm.templateCode
-		}
-		
-		templateApi.rcsTemplateDeleteApi(params).then(response => {
-			var result = response.data;
-			var success = result.success;
-			var message = result.message;
-			if(success) {
-				confirm.fnAlert("삭제요청이 완료되었습니다.","");
-				this.$router.push({name : "rcsTemplateList"});
-			} else {
-				confirm.fnAlert(message,"");
-				this.$router.push({name : "rcsTemplateList"});
+		fnRcsTemplateDeleteApi() {
+			var vm = this;
+			var params = {
+				"brandId" : vm.brandNm,
+				"messagebaseId" : vm.templateCode
 			}
-		});
-	  },
+			
+			templateApi.rcsTemplateDeleteApi(params).then(response => {
+				var result = response.data;
+				var success = result.success;
+				var message = result.message;
+				if(success) {
+					confirm.fnAlert("삭제요청이 완료되었습니다.","");
+					this.$router.push({name : "rcsTemplateList"});
+				} else {
+					confirm.fnAlert(message,"");
+					this.$router.push({name : "rcsTemplateList"});
+				}
+			});
+		},
 
-	  fnSetDesformImg() {
-		  var vm = this;
-		  var desFormNm = this.desFormNm;
-		  if("CC001D" == desFormNm) {	// 출고
+		fnSetDesformImg() {
+			var vm = this;
+			var desFormNm = this.desFormNm;
+			if("CC001D" == desFormNm) {	// 출고
 			vm.desImgSrc = require("@/assets/images/common/delivery.png");
-		  } else if("CC002D" == desFormNm) { // 주문
+			} else if("CC002D" == desFormNm) { // 주문
 			vm.desImgSrc = require("@/assets/images/common/order.png");
-		  } else if("CC003D" == desFormNm) { // 배송
+			} else if("CC003D" == desFormNm) { // 배송
 			vm.desImgSrc = require("@/assets/images/common/ship.png");
-		  } else if("EE001D" == desFormNm) { // 예약
+			} else if("EE001D" == desFormNm) { // 예약
 			vm.desImgSrc = require("@/assets/images/common/reservation.png");
-		  } else if("FF001D" == desFormNm) { // 승인
+			} else if("FF001D" == desFormNm) { // 승인
 			vm.desImgSrc = require("@/assets/images/common/approve.png");
-		  } else if("FF002D" == desFormNm) { // 입금
+			} else if("FF002D" == desFormNm) { // 입금
 			vm.desImgSrc = require("@/assets/images/common/receipts.png");
-		  } else if("FF003D" == desFormNm) { // 출금
+			} else if("FF003D" == desFormNm) { // 출금
 			vm.desImgSrc = require("@/assets/images/common/payment.png");
-		  } else if("FF005D" == desFormNm) { // 취소
+			} else if("FF005D" == desFormNm) { // 취소
 			vm.desImgSrc = require("@/assets/images/common/cancel.png");
-		  } else if("FF006D" == desFormNm) { // 명세서
+			} else if("FF006D" == desFormNm) { // 명세서
 			vm.desImgSrc = require("@/assets/images/common/specifications.png");
-		  } else if("GG001D" == desFormNm) { // 회원가입
+			} else if("GG001D" == desFormNm) { // 회원가입
 			vm.desImgSrc = require("@/assets/images/common/join.png");
-		  } else if("GG002D" == desFormNm) { // 인증
+			} else if("GG002D" == desFormNm) { // 인증
 			vm.desImgSrc = require("@/assets/images/common/certification.png");
-		  } else if("GG003D" == desFormNm) { // 안내
+			} else if("GG003D" == desFormNm) { // 안내
 			vm.desImgSrc = require("@/assets/images/common/infomation.png");
-		  }
-	  },
+			}
+		},
 
-	  fnSetStyleformImg() {
-		  var vm = this;
-		  var styleFormNm = this.styleFormNm;
-		  if("CC001C" == styleFormNm) {	// 출고
+		fnSetStyleformImg() {
+			var vm = this;
+			var styleFormNm = this.styleFormNm;
+			if("CC001C" == styleFormNm) {	// 출고
 			vm.styleImgSrc = require("@/assets/images/common/delivery.png");
-		  } else if("CC002C" == styleFormNm) { // 주문
+			} else if("CC002C" == styleFormNm) { // 주문
 			vm.styleImgSrc = require("@/assets/images/common/order.png");
-		  } else if("CC003C" == styleFormNm) { // 배송
+			} else if("CC003C" == styleFormNm) { // 배송
 			vm.styleImgSrc = require("@/assets/images/common/ship.png");
-		  } else if("EE001C" == styleFormNm) { // 예약
+			} else if("EE001C" == styleFormNm) { // 예약
 			vm.styleImgSrc = require("@/assets/images/common/reservation.png");
-		  } else if("FF001C" == styleFormNm) { // 승인
+			} else if("FF001C" == styleFormNm) { // 승인
 			vm.styleImgSrc = require("@/assets/images/common/approve.png");
-		  } else if("FF002C" == styleFormNm) { // 입금
+			} else if("FF002C" == styleFormNm) { // 입금
 			vm.styleImgSrc = require("@/assets/images/common/receipts.png");
-		  } else if("FF003C" == styleFormNm) { // 출금
+			} else if("FF003C" == styleFormNm) { // 출금
 			vm.styleImgSrc = require("@/assets/images/common/payment.png");
-		  } else if("FF005C" == styleFormNm) { // 취소
+			} else if("FF005C" == styleFormNm) { // 취소
 			vm.styleImgSrc = require("@/assets/images/common/cancel.png");
-		  } else if("FF006C" == styleFormNm) { // 명세서
+			} else if("FF006C" == styleFormNm) { // 명세서
 			vm.styleImgSrc = require("@/assets/images/common/specifications.png");
-		  } else if("GG001C" == styleFormNm) { // 회원가입
+			} else if("GG001C" == styleFormNm) { // 회원가입
 			vm.styleImgSrc = require("@/assets/images/common/join.png");
-		  } else if("GG002C" == styleFormNm) { // 인증
+			} else if("GG002C" == styleFormNm) { // 인증
 			vm.styleImgSrc = require("@/assets/images/common/certification.png");
-		  } else if("GG003C" == styleFormNm) { // 안내
+			} else if("GG003C" == styleFormNm) { // 안내
 			vm.styleImgSrc = require("@/assets/images/common/infomation.png");
-		  }
-	  },
-
-	  // 목록
-	  returnRcsTemplateList() {
-		  this.$router.push({name : "rcsTemplateList"});
-	  },
-
-	  // 템플릿 승인, 수정요청
-	  recTemplateIns(flag, paramCardType) {
-		this.flag = flag;
-		this.paramCardType = paramCardType;
-		var agreeChk = this.agreeChk;
-
-
-		// 승인, 수정시 validation 처리
-		if("des" == paramCardType) {
-			var title = this.templateNm;
-			var contents = this.desContents;
-
-			if("" == title) {
-				confirm.fnAlert("RCS 템플릿", "템플릿 명을 입력해 주세요.");
-				return false;
 			}
+		},
 
-			if("" == contents) {
-				confirm.fnAlert("RCS 템플릿", "내용을 입력해 주세요.");
-				return false;
-			}
-		} else {
-			var title = this.templateNm;
-			var styleText = this.styleInput.join('');
-			var styleTextSec = this.styleInputSec.join('');
-			var contents = styleText + styleTextSec;
+		// 목록
+		returnRcsTemplateList() {
+			this.$router.push({name : "rcsTemplateList"});
+		},
 
-			if("" == title) {
-				confirm.fnAlert("RCS 템플릿", "템플릿 명을 입력해 주세요.");
-				return false;
-			}
+		// 템플릿 승인, 수정요청
+		recTemplateIns(flag, paramCardType) {
+			this.flag = flag;
+			this.paramCardType = paramCardType;
+			var agreeChk = this.agreeChk;
 
-			if("" == contents) {
-				confirm.fnAlert("RCS 템플릿", "내용을 입력해 주세요.");
-				return false;
-			}
-		}
+			// 승인, 수정시 validation 처리
+			var title = null
+			var contents = null
+			if("des" == paramCardType) {
+				title = this.templateNm;
+				contents = this.desContents;
 
-		if(!agreeChk) {
-			confirm.fnAlert("RCS 템플릿", "정보성 메시지 동의 버튼을 눌러주세요.");
-			return false;
-		}
+				if("" == title) {
+					confirm.fnAlert("RCS 템플릿", "템플릿 명을 입력해 주세요.");
+					return false;
+				}
 
-		if("INS" == flag) {
-			eventBus.$on('callbackEventBus', this.fnRcsTemplateApi);
-			confirm.fnConfirm("RCS 템플릿 승인", "RCS 템플릿을 승인 요청 하시겠습니까?", "승인");
-		} else {
-			eventBus.$on('callbackEventBus', this.fnRcsTemplateApi);
-			confirm.fnConfirm("RCS 템플릿 수정", "RCS 템플릿을 수정 요청 하시겠습니까?", "수정");
-		}
-	  },
-
-	  // 승인, 수정요청
-	  fnRcsTemplateApi() {
-		var vm = this;
-		var flag = vm.flag;
-		var paramCardType = vm.paramCardType;
-		var messagebaseformId = paramCardType == "des" ? vm.desFormNm : vm.styleFormNm;
-		var messagebaseId = vm.templateCode;
-		var custTmpltId = vm.templateCode;
-		if(flag == "UPT") {
-			var custTmpltIdArr = custTmpltId.split("-");
-			custTmpltId = custTmpltIdArr[1];
-		}
-		var tmpltName = vm.templateNm;
-		var brandId = vm.brandNm;
-	  	var agencyId = "uplus";
-
-		// 서술형 내용
-		var desContents = vm.desContents;
-		// 스타일형 내용
-		var styleContentCnt = vm.styleContentCnt;
-		var styleArr = vm.styleArr;
-		var styleInput = vm.styleInput;
-		var styleInputSec = vm.styleInputSec;
-		var styleChk = vm.styleChk;
-
-		// 버튼 세팅
-		var btnCnt = vm.btnCnt;
-		var selectBtn = vm.selectBtn;
-		var btnNm = vm.btnNm;
-		var contents = vm.contents;
-		var calendarTitle = vm.calendarTitle;
-		var calendarDes = vm.calendarDes;
-		var desInitStartDate = vm.desInitStartDate;
-		var desInitEndDate = vm.desInitEndDate;
-		var styleInitStartDate = vm.styleInitStartDate;
-		var styleInitEndDate = vm.styleInitEndDate;
-
-		var params = {
-			// 구분
-			"paramCardType" : paramCardType,
-			"flag" : flag,
-			// 공통 처리
-			"messagebaseformId" : messagebaseformId,
-			"messagebaseId" : messagebaseId,
-			"custTmpltId" : custTmpltId,
-			"tmpltName" : tmpltName,
-			"brandId" : brandId,
-			"agencyId" : agencyId,
-			// 서술형 내용
-			"desContents" : desContents,
-			// 스타일형 내용
-			"styleContentCnt": styleContentCnt,
-			"styleArr": styleArr,
-			"styleInput": styleInput,
-			"styleInputSec": styleInputSec,
-			"styleChk": styleChk,
-			// 버튼 세팅
-			"btnCnt" : btnCnt,
-			"selectBtn" : selectBtn,
-			"btnNm" : btnNm,
-			"contents" : contents,
-			"calendarTitle" : calendarTitle,
-			"calendarDes" : calendarDes,
-			"desInitStartDate" : desInitStartDate,
-			"desInitEndDate" : desInitEndDate,
-			"styleInitStartDate" : styleInitStartDate,
-			"styleInitEndDate" : styleInitEndDate
-		}
-	  
-	    templateApi.rcsTemplateApi(params).then(response => {
-			var result = response.data;
-			var success = result.success;
-			var message = result.message;
-			var flagNm = flag== "INS" ? "등록" : "수정";
-			if(success) {
-				confirm.fnAlert(flagNm + "이 완료되었습니다.","");
-				this.$router.push({name : "rcsTemplateList"});
+				if("" == contents) {
+					confirm.fnAlert("RCS 템플릿", "내용을 입력해 주세요.");
+					return false;
+				}
 			} else {
-				confirm.fnAlert(message,"");
+				title = this.templateNm;
+				var styleText = this.styleInput.join('');
+				var styleTextSec = this.styleInputSec.join('');
+				contents = styleText + styleTextSec;
+
+				if("" == title) {
+					confirm.fnAlert("RCS 템플릿", "템플릿 명을 입력해 주세요.");
+					return false;
+				}
+
+				if("" == contents) {
+					confirm.fnAlert("RCS 템플릿", "내용을 입력해 주세요.");
+					return false;
+				}
 			}
-		});	  
-	  }
+
+			if(!agreeChk) {
+				confirm.fnAlert("RCS 템플릿", "정보성 메시지 동의 버튼을 눌러주세요.");
+				return false;
+			}
+
+			if("INS" == flag) {
+				eventBus.$on('callbackEventBus', this.fnRcsTemplateApi);
+				confirm.fnConfirm("RCS 템플릿 승인", "RCS 템플릿을 승인 요청 하시겠습니까?", "승인");
+			} else {
+				eventBus.$on('callbackEventBus', this.fnRcsTemplateApi);
+				confirm.fnConfirm("RCS 템플릿 수정", "RCS 템플릿을 수정 요청 하시겠습니까?", "수정");
+			}
+		},
+
+		// 승인, 수정요청
+		fnRcsTemplateApi() {
+			var vm = this;
+			var flag = vm.flag;
+			var paramCardType = vm.paramCardType;
+			var messagebaseformId = paramCardType == "des" ? vm.desFormNm : vm.styleFormNm;
+			var messagebaseId = vm.templateCode;
+			var custTmpltId = vm.templateCode;
+			if(flag == "UPT") {
+				var custTmpltIdArr = custTmpltId.split("-");
+				custTmpltId = custTmpltIdArr[1];
+			}
+			var tmpltName = vm.templateNm;
+			var brandId = vm.brandNm;
+			var agencyId = "uplus";
+
+			// 서술형 내용
+			var desContents = vm.desContents;
+			// 스타일형 내용
+			var styleContentCnt = vm.styleContentCnt;
+			var styleArr = vm.styleArr;
+			var styleInput = vm.styleInput;
+			var styleInputSec = vm.styleInputSec;
+			var styleChk = vm.styleChk;
+
+			// 버튼 세팅
+			var btnCnt = vm.btnCnt;
+			var selectBtn = vm.selectBtn;
+			var btnNm = vm.btnNm;
+			var contents = vm.contents;
+			var calendarTitle = vm.calendarTitle;
+			var calendarDes = vm.calendarDes;
+			var desInitStartDate = vm.desInitStartDate;
+			var desInitEndDate = vm.desInitEndDate;
+			var styleInitStartDate = vm.styleInitStartDate;
+			var styleInitEndDate = vm.styleInitEndDate;
+
+			var params = {
+				// 구분
+				"paramCardType" : paramCardType,
+				"flag" : flag,
+				// 공통 처리
+				"messagebaseformId" : messagebaseformId,
+				"messagebaseId" : messagebaseId,
+				"custTmpltId" : custTmpltId,
+				"tmpltName" : tmpltName,
+				"brandId" : brandId,
+				"agencyId" : agencyId,
+				// 서술형 내용
+				"desContents" : desContents,
+				// 스타일형 내용
+				"styleContentCnt": styleContentCnt,
+				"styleArr": styleArr,
+				"styleInput": styleInput,
+				"styleInputSec": styleInputSec,
+				"styleChk": styleChk,
+				// 버튼 세팅
+				"btnCnt" : btnCnt,
+				"selectBtn" : selectBtn,
+				"btnNm" : btnNm,
+				"contents" : contents,
+				"calendarTitle" : calendarTitle,
+				"calendarDes" : calendarDes,
+				"desInitStartDate" : desInitStartDate,
+				"desInitEndDate" : desInitEndDate,
+				"styleInitStartDate" : styleInitStartDate,
+				"styleInitEndDate" : styleInitEndDate
+			}
+			
+				templateApi.rcsTemplateApi(params).then(response => {
+				var result = response.data;
+				var success = result.success;
+				var message = result.message;
+				var flagNm = flag== "INS" ? "등록" : "수정";
+				if(success) {
+					confirm.fnAlert(flagNm + "이 완료되었습니다.","");
+					this.$router.push({name : "rcsTemplateList"});
+				} else {
+					confirm.fnAlert(message,"");
+				}
+			});	  
+		}
   }
 }
 </script>

@@ -63,15 +63,6 @@
           </div>
         </div>
         <div class="of_h">
-          <div class="float-left" style="width:31%"><h4>타 프로젝트 사용여부 *</h4></div>
-          <div class="float-left" style="width:69%">
-            <input type="radio" id="otherProjectUseYn_Y" name="otherProjectUseYn" value="Y" v-model="tmpltData.otherProjectUseYn">
-            <label for="otherProjectUseYn_Y" class="mr30">공용</label>
-            <input type="radio" id="otherProjectUseYn_N" name="otherProjectUseYn" value="N" v-model="tmpltData.otherProjectUseYn">
-            <label for="otherProjectUseYn_N">전용</label>
-          </div>
-        </div>
-        <div class="of_h">
           <div class="float-left" style="width:31%"><h4>메시지구분 *</h4></div>
           <div class="float-left" style="width:69%">
             <input type="radio" id="msgKind_A" name="msgKind" value="A" v-model="tmpltData.msgKind">
@@ -87,9 +78,27 @@
           </div>
         </div>
         <div class="of_h">
-          <div class="float-left" style="width:31%"><h4>내용 *</h4></div>
+          <div class="float-left" style="width:31%">
+            <h4>내용 *</h4>
+            <a 
+              class="btnStyle1 backBlack" 
+              style="margin-top:120px" 
+              title="단축 URL+" 
+              data-toggle="modal" 
+              data-target="#shortened_URL"
+            >단축 URL</a>
+            <i class="fas fa-question-circle toolTip ml5">
+              <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+            </i>
+          </div>
           <div class="float-left" style="width:69%">
-            <textarea class="textareaStyle height190" :placeholder="contentAreaPlaceholder" v-model="tmpltData.tmpltContent" maxlength="2000" @input="fnSetCurrByte"></textarea>
+            <textarea 
+              class="textareaStyle height190" 
+              :placeholder="contentAreaPlaceholder" 
+              v-model="tmpltData.tmpltContent" 
+              maxlength="2000" 
+              @input="fnSetCurrByte"
+            ></textarea>
             <strong class="letter">({{msgCurrByte | formatComma}} / {{msgLimitByte | formatComma}})</strong>
           </div>
         </div>
@@ -134,6 +143,9 @@
 
     <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
     <RcvblcNumPopup @callback-func="fnCallbackRcvblcNum" :rcvblcNumOpen.sync="rcvblcNumOpen"></RcvblcNumPopup>
+
+    <shortenedUrlListPopup @btnSelect="btnSelect" />
+    <shortenedUrlAddPopup/>
   </div>
 
 </template>
@@ -146,11 +158,16 @@ import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import templateApi from "@/modules/template/service/templateApi.js";
 
+import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
+
 export default {
   name: 'smsTemplateManage',
   components : {
     RcvblcNumPopup,
-    ImageManagePopUp
+    ImageManagePopUp,
+    shortenedUrlListPopup,
+    shortenedUrlAddPopup,
   },
   props: {
     tmpltId: {
@@ -182,7 +199,7 @@ export default {
       beforemsgKind: 'I',
       isInsert : true,
       contentAreaPlaceholder: '변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n:예) 이름과 출금일을 변수 설정\n:예) #{name}님 #{yyyymmdd} 출금 예정입니다.',
-      tmpltData : {otherProjectUseYn: 'N', msgKind: 'I', senderType: 'SMS', imgInfoList:[]}
+      tmpltData : {tmpltContent: '', msgKind: 'I', senderType: 'SMS', imgInfoList:[]}
     }
   },
   watch: {
@@ -269,7 +286,6 @@ export default {
             } else {
               tempData.imgInfoList = [];
             }
-            tempData.otherProjectUseYn = (obj.projectId == 'ALL' ? 'Y' : 'N');
             vm.$gfnCommonUtils.unescapeXssFields(tempData, targetField);
           });
           this.tmpltData = Object.assign({}, tempData);
@@ -289,10 +305,6 @@ export default {
       }
       if(!this.tmpltData.senderType){
         confirm.fnAlert(this.componentsTitle, '발송유형을 선택해주세요.');
-        return false;
-      }
-      if(!this.tmpltData.otherProjectUseYn){
-        confirm.fnAlert(this.componentsTitle, '타 프로젝트 사용여부를 선택해주세요.');
         return false;
       }
       if(!this.tmpltData.msgKind){
@@ -434,6 +446,13 @@ export default {
         .split('')
         .map(s => s.charCodeAt(0))
         .reduce((prev, c) => (prev + ((c === 10) ? 2 : ((c >> 7) ? 2 : 1))), 0);
+    },
+    //단축 URL 선택
+    btnSelect(shortendUrl){
+      if(this.tmpltData.tmpltContent.length > 0)
+        this.tmpltData.tmpltContent += '\n'
+      
+      this.tmpltData.tmpltContent += shortendUrl
     },
   }
 }

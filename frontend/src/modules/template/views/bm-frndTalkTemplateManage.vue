@@ -147,6 +147,14 @@
                       <td v-else>
                       </td>
                       <td class="text-center end" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
+                        <a
+                          v-if="buttonInfo.linkType === 'WL'" 
+                          class="btnStyle1 backBlack" 
+                          title="단축 URL+" 
+                          data-toggle="modal" 
+                          data-target="#shortened_URL"
+                          @click="selIdx = idx"
+                        >단축 URL+</a> 
                         <a @click="fnDelButton(idx)" class="btnStyle1 backLightGray">삭제</a>
                       </td>
                     </tr>
@@ -177,6 +185,9 @@
       </div>
       <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMng"></ImageManagePopUp>
     </div>
+
+    <shortenedUrlListPopup @btnSelect="btnSelect" />
+    <shortenedUrlAddPopup/>
   </div>
 </template>
 
@@ -187,10 +198,15 @@ import templateApi from "@/modules/template/service/templateApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
+import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
+
 export default {
   name: 'frndTalkTemplateManage',
   components : {
-    ImageManagePopUp
+    ImageManagePopUp,
+    shortenedUrlListPopup,
+    shortenedUrlAddPopup,
   },
   props: {
     tmpltId: {
@@ -224,7 +240,8 @@ export default {
         {linkType:'BK', name:'봇 키워드'},
         {linkType:'MD', name:'메시지전달'}
       ],
-      tmpltData : {imgUrl:'', imgLink: '', buttonList:[], otherProjectUseYn: 'N'}
+      tmpltData : {imgUrl:'', imgLink: '', buttonList:[], otherProjectUseYn: 'N'},
+      selIdx : null
     }
   },
   async mounted() {
@@ -476,6 +493,18 @@ export default {
       this.tmpltData.fileId = imgInfo.fileId;
       this.tmpltData.wideImgYn = imgInfo.wideImgYn;
       this.fnGetLimitLength();
+    },
+    //단축 URL 선택
+    btnSelect(shortendUrl){
+      if(this.tmpltData.buttonList.length > 0 && this.selIdx !== null && this.tmpltData.buttonList[this.selIdx]){
+        // mobile link
+        this.$set(this.tmpltData.buttonList[this.selIdx], 'linkMo', shortendUrl)
+
+        // pc link
+        this.$set(this.tmpltData.buttonList[this.selIdx], 'linkPc', shortendUrl)
+      }
+
+      this.selIdx = null
     },
   }
 }

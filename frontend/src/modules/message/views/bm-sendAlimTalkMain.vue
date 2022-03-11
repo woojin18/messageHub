@@ -380,12 +380,12 @@ export default {
     }
   },
   watch : {
-	  recvCnt (newval, oldval) {
-		  if(newval>30000) {
-			  confirm.fnAlert(this.componentsTitle, "발송 최대 수신자 수는 30000명을 넘길 수 없습니다.");
-			  this.fnRemoveRecvInfo();
-		  }
-	  }
+    recvCnt (newval) {
+      if(newval>30000) {
+        confirm.fnAlert(this.componentsTitle, "발송 최대 수신자 수는 30000명을 넘길 수 없습니다.");
+        this.fnRemoveRecvInfo();
+      }
+    }
   },
   async mounted() {
     await this.fnExistApiKey();
@@ -403,7 +403,7 @@ export default {
         const file = this.$refs.excelFile.files[0];
         let reader = new FileReader();
 
-        reader.onload = (e) => {
+        reader.onload = () => {
           let data = reader.result;
           let workbook = XLSX.read(data, {type: 'binary'});
           let sheetName = '';
