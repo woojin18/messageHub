@@ -3,24 +3,21 @@
     <div class="modal-dialog" style="width:800px">
       <div class="modal-content">
         <div class="modal-body">
-          <div>
-            <h2>공지사항</h2>
-            <hr>
-            <div class="boardWrite">
-              <div class="title">
-                <p>
-                  <span v-if="!$gfnCommonUtils.isEmpty(noticeData.noticeTypeCdName)" :class="noticeData.noticeType | getNotiTypeClass">{{noticeData.noticeTypeCdName}}</span>
-                  {{noticeData.title | unescapeXss}}
-                </p>
-                <span class="date">{{noticeData.regDt}}</span>
+          <div id="layerPopup1" class="layerPopStyle">	
+            <h3>공지사항</h3>
+            <div class="popBox">
+              <div class="popTitle">
+                <span v-if="!$gfnCommonUtils.isEmpty(noticeData.noticeTypeCdName)" :class="noticeData.noticeType | getNotiTypeClass">{{noticeData.noticeTypeCdName}}</span>
+                <span>{{noticeData.title | unescapeXss}}</span>
+                <span class="popDate">{{noticeData.regDt}}</span>
               </div>
-              <div class="content scroll-y">
+              <div class="popCont">
                 <p v-html="noticeData.content"></p>
               </div>
             </div>
-          </div>
-          <div class="text-center mt20">
-            <a href="#self" class="btnStyle1 backWhite" data-dismiss="modal" title="닫기">닫기</a>
+            <div class="text-center" style="padding-top: 20px;">
+              <a href="#" data-dismiss="modal" class="btnStyle3 white font14" title="닫기">닫기</a>						
+            </div>
           </div>
         </div>
       </div>

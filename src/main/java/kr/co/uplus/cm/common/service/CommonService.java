@@ -253,7 +253,7 @@ public class CommonService {
 
         try {
             InputStream resizeImgStream = null;
-            BufferedImage image = ImageIO.read(files.getInputStream());
+//            BufferedImage image = ImageIO.read(files.getInputStream());
             JSONArray jsonArray = new JSONArray();
             JSONObject jsonObject = null;
 
@@ -290,8 +290,9 @@ public class CommonService {
                         || !resizeInfo.containsKey(Const.IMG_RESIZE_HEIGHT)) {
                     throw new Exception("유효하지 않은 이미지 리사이즈 정보 : 채널(" + chNm + ")");
                 }
-                resizeImgStream = ImageUtil.imageResize(image, fileExten, resizeInfo.get(Const.IMG_RESIZE_WIDTH),
-                        resizeInfo.get(Const.IMG_RESIZE_HEIGHT));
+//                resizeImgStream = ImageUtil.imageResize(image, fileExten, resizeInfo.get(Const.IMG_RESIZE_WIDTH),
+//                        resizeInfo.get(Const.IMG_RESIZE_HEIGHT));
+                resizeImgStream = files.getInputStream();
                 if (resizeImgStream == null) {
                     throw new Exception("유효하지 않은 리사이즈 이미지");
                 }
@@ -1111,5 +1112,26 @@ public class CommonService {
 		restResult.setData(returnMap);
 		
 		return restResult;
+	}
+	
+	/**
+	 * RBC 연동오류시 해당 코드의 리턴 Message 가져오는 메소드
+	 * @param code
+	 * @return returnMessage String
+	 * @throws Exception
+	 */
+	public String returnRBCErrMsg(Map<String, Object> params) throws Exception {
+		Map<String, Object> resultMap = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_CM_CODE_EXT, params);
+		// DB에 저장되어있지 않은 code인 경우 case 처리
+		if(resultMap == null) {
+			return "RCS Biz Center 연동 오류";
+		} else {
+			String extCode = CommonUtils.getString(resultMap.get("extCode"));
+			String extMessage = CommonUtils.getString(resultMap.get("extMessage"));
+			
+			String returnStr = extMessage + " (" + extCode + ")";
+			
+			return returnStr;
+		}
 	}
 }

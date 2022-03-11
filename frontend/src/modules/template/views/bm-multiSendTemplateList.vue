@@ -48,7 +48,7 @@
 								<input type="checkbox" id="searchMsgCh_FRIENDTALK" class="checkStyle2" value="FRIENDTALK" v-model="searchData.searchMsgCh">
 								<label for="searchMsgCh_FRIENDTALK" class="mr30">친구톡</label>
 								<input type="checkbox" id="searchMsgCh_PUSH" class="checkStyle2" value="PUSH" v-model="searchData.searchMsgCh">
-								<label for="searchMsgCh_PUSH" class="mr30">푸시</label>
+								<label for="searchMsgCh_PUSH" class="mr30">PUSH</label>
 							</div>
 						</div>
 					</div>
@@ -113,7 +113,7 @@
 								<col style="width:14%">
 								<col style="width:7%">
 								<col style="width:7%">
-								<col style="width:11%">
+								<!-- <col style="width:11%"> -->
 								<col style="width:7%">
 								<col style="width:7%">
 								<col style="width:12%">
@@ -127,7 +127,7 @@
 									<th class="text-center lc-1">템플릿 채널(발송순)</th>
 									<th class="text-center lc-1">메시지 구분</th>
 									<th class="text-center lc-1">메시지 타입</th>
-									<th class="text-center lc-1">타 프로젝트 사용여부</th>
+									<!-- <th class="text-center lc-1">타 프로젝트 사용여부</th> -->
 									<th class="text-center lc-1">상태</th>
 									<th class="text-center lc-1">등록자</th>
 									<th class="text-center lc-1 end">등록일자</th>
@@ -142,7 +142,7 @@
 									<td class="text-center">{{fnJsonArrayToChannelLit(data.checkedChannel)}}</td>
 									<td class="text-center">{{data.msgKindName}}</td>
 									<td class="text-center">{{data.msgTypeName}}</td>
-									<td class="text-center">{{data.otherProjectUseYnName}}</td>
+									<!-- <td class="text-center">{{data.otherProjectUseYnName}}</td> -->
 									<td class="text-center">{{data.tmpltStatusName}}</td>
 									<td class="text-center">{{data.regNm}}</td>
 									<td class="text-center end">{{data.regDt}}</td>

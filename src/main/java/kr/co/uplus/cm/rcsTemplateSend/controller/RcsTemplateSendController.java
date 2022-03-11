@@ -218,7 +218,7 @@ public class RcsTemplateSendController {
 			boolean real = (boolean) params.get("real"); // 테스트 발송일 경우 테스트 발신자 리스트로 치환
 			if(!real) {
 				Map<String, Object> data = (Map<String, Object>) params.get("data");
-				String testRecvInfoLst = CommonUtils.getString(data.get("testRecvInfoLst"));
+				ArrayList<Map<String, Object>> testRecvInfoLst = (ArrayList<Map<String, Object>>) data.get("testRecvInfoLst");
 				data.put("recvInfoLst", testRecvInfoLst);
 			}
 			

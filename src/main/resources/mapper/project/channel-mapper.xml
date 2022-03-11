@@ -90,18 +90,23 @@
 								END AS RANKING_DT 
 						]]>
 						,      IFNULL((
-							        SELECT   MIN(CP.PROJECT_NAME)
+							        SELECT   CP.PROJECT_NAME
 						         	FROM    cm_console.CM_PROJECT_BRAND CPB
-						         	LEFT OUTER JOIN cm_console.CM_PROJECT CP
+						         	INNER JOIN cm_console.CM_PROJECT CP
 						         		ON	CP.PROJECT_ID = CPB.PROJECT_ID 
 						         		AND	CP.DEL_YN = 'N'
 						         	WHERE	CPB.BRAND_ID = A.BRAND_ID
+						         	ORDER BY CP.REG_DT DESC
+						         	LIMIT 1
 						      ),'') AS PROJECT_NAME
 						,		(	
-									SELECT   COUNT(1)
+									SELECT   COUNT(*)
 						         	FROM    cm_console.CM_PROJECT_BRAND CPB
-						         	WHERE   CPB.BRAND_ID = A.BRAND_ID
-						         	AND	 EXISTS(SELECT 1 FROM cm_console.CM_PROJECT WHERE PROJECT_ID=CPB.PROJECT_ID AND DEL_YN = 'N')
+						         	INNER JOIN cm_console.CM_PROJECT CP
+						         		ON	CP.PROJECT_ID = CPB.PROJECT_ID 
+						         		AND	CP.DEL_YN = 'N'
+						         	WHERE	CPB.BRAND_ID = A.BRAND_ID
+						         	ORDER BY CP.REG_DT DESC
 						      ) AS PROJECT_CNT
 						from 	cm.CM_RCS_BRAND A
 						LEFT OUTER JOIN cm_console.CM_PROJECT_BRAND B 
@@ -571,12 +576,11 @@
 	<update id="updateMoCallback">
 	/* channel.updateMoCallback */
 		UPDATE	cm.CM_MO_CALLBACK
-		SET		MO_TYPE		= #{moType}
-		,		PROJECT_ID	= #{projectId}
-		,		MOD_ID		= #{userId}
-		,		MOD_DT		= NOW()
+		SET		API_KEY		= #{apiKey}
+		,		WEBHOOK_URL	= #{webhookUrl}
+		,		UPD_DT		= NOW()
 		WHERE	MO_NUMBER	= #{moNumber}
-		AND		API_KEY		= #{apiKey}
+		AND		MO_TYPE		= #{moType}
 	</update>
 	
 	<delete id="deleteMoCallback">
@@ -1140,7 +1144,7 @@
 			(
 				#{corpId}
 			,	#{chatbotId}
-			,	'10'
+			,	'80'
 			,	'RCS'
 			,	#{chatbotId}
 			,	#{userId}
@@ -1205,11 +1209,9 @@
 		FROM    cm_console.CM_PROJECT_BRAND cpb
 		INNER JOIN cm_console.CM_PROJECT cp
 		ON cpb.PROJECT_ID = cp.PROJECT_ID 
+		AND	 cp.DEL_YN ='N'
 		WHERE   cpb.BRAND_ID = #{brandId}
-		AND	 EXISTS(SELECT 1 
-		FROM cm_console.CM_PROJECT 
-		WHERE PROJECT_ID=cpb.PROJECT_ID 
-		AND DEL_YN = 'N')
+		ORDER BY cp.REG_DT DESC
 		LIMIT #{offset}, #{listSize}
 		</select>
 		
@@ -1219,11 +1221,8 @@
 		FROM    cm_console.CM_PROJECT_BRAND cpb
 		INNER JOIN cm_console.CM_PROJECT cp
 		ON cpb.PROJECT_ID = cp.PROJECT_ID 
+		AND	 cp.DEL_YN = 'N'
 		WHERE   cpb.BRAND_ID = #{brandId}
-		AND	 EXISTS(SELECT 1 
-		FROM cm_console.CM_PROJECT 
-		WHERE PROJECT_ID=cpb.PROJECT_ID 
-		AND DEL_YN = 'N')
 		</select>
 		
 		<select id="selectApiKeyList" resultType="camel">

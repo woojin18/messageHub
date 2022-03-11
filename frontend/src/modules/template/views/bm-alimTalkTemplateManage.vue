@@ -41,13 +41,13 @@
             <!-- //phoneWrap -->
           </div>
         </div>
-        <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
+     <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
           <div class="of_h">
-            <!-- 발신프로필그룹관리 기능 제외 -->
-            <!-- <div class="float-left" style="width:22%"><h4>발신 프로필/그룹 *</h4></div> -->
+            <!-- 카카오채널그룹관리 기능 제외 -->
+            <!-- <div class="float-left" style="width:22%"><h4>카카오채널/그룹 *</h4></div> -->
             <div class="float-left" style="width:22%"><h4>카카오 채널 *</h4></div>
             <div class="float-left" style="width:78%">
-              <!-- 발신프로필그룹관리 기능 제외
+              <!-- 카카오채널그룹관리 기능 제외
               <select
                 class="float-left selectStyle2"
                 style="width:20%"
@@ -426,11 +426,11 @@ export default {
     },
     fnIsValidApprvReqTmplt(){
       if(this.isInsert && !this.tmpltData.senderKeyType){
-        confirm.fnAlert(this.componentsTitle, '발신프로필타입을 선택해주세요.');
+        confirm.fnAlert(this.componentsTitle, '카카오 채널타입을 선택해주세요.');
         return false;
       }
       if(!this.tmpltData.senderKey){
-        confirm.fnAlert(this.componentsTitle, '발신프로필키를 선택해주세요.');
+        confirm.fnAlert(this.componentsTitle, '카카오 채널키를 선택해주세요.');
         return false;
       }
       if(!this.tmpltData.tmpltName){
@@ -585,7 +585,7 @@ export default {
         }
       });
     },
-    //카카오톡 발신 프로필키 리스트 조회
+    //카카오톡 카카오채널키 리스트 조회
     fnSelectSenderKeyList(){
       const params = {kkoSvc: this.useCh, senderKeyType: this.tmpltData.senderKeyType};
       templateApi.selectSenderKeyList(params).then(response => {

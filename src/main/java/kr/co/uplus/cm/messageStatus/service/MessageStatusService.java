@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.type.MongoConf;
 import kr.co.uplus.cm.common.utils.CmKeyMaker;
+import kr.co.uplus.cm.gw.model.mongo.CmMoMsgInfoDto;
 import kr.co.uplus.cm.gw.model.mongo.CmMsgInfoDto;
+import kr.co.uplus.cm.gw.model.mongo.MmsMoContentInfo;
 import kr.co.uplus.cm.gw.model.mongo.msgInfo.AlimtalkMsg;
 import kr.co.uplus.cm.gw.model.mongo.msgInfo.FriendtalkMsg;
 import kr.co.uplus.cm.gw.model.mongo.msgInfo.MmsMsg;
@@ -59,6 +61,18 @@ public class MessageStatusService {
 	            //카운트 쿼리 실행
 	            int listCnt = generalDao.selectGernalCount("messageStatus.selectMessageStatusListCnt", params);
 	            rtn.getPageInfo().put("totCnt", listCnt);
+	            
+	            params.put("searchResultY",true);
+	            params.put("searchResultN",false);
+	            int successCnt = generalDao.selectGernalCount("messageStatus.selectMessageStatusListCnt", params);
+	            rtn.getPageInfo().put("successCnt", successCnt);
+	            
+	            params.put("searchResultY",false);
+	            params.put("searchResultN",true);
+	            int failCnt = generalDao.selectGernalCount("messageStatus.selectMessageStatusListCnt", params);
+	            rtn.getPageInfo().put("failCnt", failCnt);
+	            
+	            params.put("searchResultY",true);
         	}
         }
         
@@ -417,14 +431,66 @@ public class MessageStatusService {
         	}
         }
         //System.out.println(">>>>receptionNumberStr ["+receptionNumberStr+"]");
-        HashMap<String,Object> hMap = (HashMap<String, Object>) rtnList.get(0);
-    	hMap.put("receptionNumber", receptionNumberStr);
-    	rtnList.set(0, hMap);
+//        HashMap<String,Object> hMap = (HashMap<String, Object>) rtnList.get(0);
+//    	hMap.put("receptionNumber", receptionNumberStr);
+//    	rtnList.set(0, hMap);
     	
         rtn.setData(rtnList);
 
         return rtn;
 	}
 	
-	
+	// 메시지 현황 상세 조회
+	@SuppressWarnings("unchecked")
+	public RestResult<Object> selectMoMessageDetail(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		Map<String, Object> rtnMap = new HashMap<String, Object>();
+		
+		String			moKey		= params.get("moKey").toString();
+		Query			query		= new Query(Criteria.where("moKey").is(moKey));
+		CmMoMsgInfoDto	msgInfo		= mongoCmd.findOne(query, CmMoMsgInfoDto.class, MongoConf.CM_MO_MSG_INFO.key + "_"+CmKeyMaker.getYMD(moKey));
+//		db.getCollection("CM_MO_MSG_INFO_20220308").find({"moKey" : "H3hSQEZJKB.6cEyYj"});
+//
+//		{ "_id" : ObjectId("6226fd5b086e990af61587d3"), "moKey" : "H3hSQEZJKB.6cEyYj", "ymd" : "2022-03-08", "apiKey" : "APIpRmhtNV", "corpId" : "COMBB4XfyI", "projectId" : "PJTV7sEQe6", 
+//		"moNumber" : "1544536777", "moSn" : "20220308153343_MGR_003_1544536777_8338", "moType" : "MMSMO", "moCallback" : "01088259173", "productCode" : "MMSMO", "moTitle" : "mms mo 테스트", 
+//		"moMsg" : "mms mo 테스트\r\n", "telco" : "KT", "contentCnt" : 3, 
+//		"contentInfoLst" : [ { "contentName" : "FLGLWv6RhA_0.jpg", "contentSize" : "158887", "contentExt" : "jpg", "contentUrl" : "https://api.msghub.uplus.co.kr/mo/v1/file/H3hSQEZJKB.6cEyYj/0" }, 
+//		{ "contentName" : "FLGLWv6RhA_1.jpg", "contentSize" : "181033", "contentExt" : "jpg", "contentUrl" : "https://api.msghub.uplus.co.kr/mo/v1/file/H3hSQEZJKB.6cEyYj/1" },
+//		{ "contentName" : "FLGLWv6RhA_2.jpg", "contentSize" : "154799", "contentExt" : "jpg", "contentUrl" : "https://api.msghub.uplus.co.kr/mo/v1/file/H3hSQEZJKB.6cEyYj/2" } ], 
+//		"status" : "1000", "moRecvDt" : "2022-03-08T15:33:44", "_class" : "kr.co.uplus.cm.gw.model.mongo.CmMsgInfoDto" }
+		log.info("{} MessageStatusService Mongo Buttons : {}", this.getClass(), msgInfo);
+		
+		if(msgInfo != null) {
+			rtnMap.put("msgInfo",msgInfo);
+			rtnMap.put("msg", msgInfo.getMoMsg());
+			rtnMap.put("title", msgInfo.getMoTitle());
+			rtnMap.put("contentCnt", msgInfo.getContentCnt());
+			if(msgInfo.getMoType().equals("MMSMO")) {
+				int contentCnt = msgInfo.getContentCnt();
+				
+				if(contentCnt > 0) {
+					List<Object> mmsImg = new ArrayList<Object>();
+					List<MmsMoContentInfo> mmsInfoList = msgInfo.getContentInfoLst();
+					int cnt = 0;
+					for(MmsMoContentInfo mmsInfo : mmsInfoList) {
+						Map<String, Object> map = new HashMap<String, Object>();
+						rtnMap.put(cnt+"", mmsInfo);
+						map.put("imgUrl", mmsInfo.getContentUrl());
+						mmsImg.add(map);
+						cnt++;
+					}
+					rtnMap.put("mmsImg", mmsImg);
+				}
+			}else {
+				rtnMap.put("mmsImg", null);
+			}
+		}
+		
+		log.info("{} MessageStatusService Mongo rtmMap : {}", this.getClass(), rtnMap);
+		
+		rtn.setData(rtnMap);
+		
+		return rtn;
+	}	
 }

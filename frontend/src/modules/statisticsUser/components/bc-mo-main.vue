@@ -12,9 +12,9 @@
 								<Calendar @update-date="fnUpdateEndDate" calendarId="searchEndDate" classProps="datepicker inputStyle" styleProps="width:40%" :initDate="searchData.searchEndDate" :maxDate="searchData.maxDate"></Calendar>
 							</div>
 							<div v-show="searchData.searchDateType == 'MONTH'">
-								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchStartMonth" @change="fnSearch" readonly>
+								<input type="text" id="startDate" class="monthpicker inputStyle maxWidth120 mr5" style="width:35%;" :value="searchStartMonth" @change="fnSearch" readonly>
 								<span style="padding:0 11px">~</span>
-								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" :value="searchEndMonth" @change="fnSearch" readonly>
+								<input type="text" id="endDate" class="monthpicker inputStyle maxWidth120 mr5" style="width:35%;" :value="searchEndMonth" @change="fnSearch" readonly>
 							</div>
 						</div>
 						<div class="inline-block" style="width:30%">
@@ -24,6 +24,7 @@
 							<label for="month">월별</label>
 						</div>
 					</div>
+					<a @click="fnSearch" class="btnStyle1 float-right" style="margin-top:3px;" activity="READ">조회</a>
 					<div class="consolMarginTop">
 						<div class="inline-block" style="width:50%">
 							<h4 class="inline-block" style="width:13%">서비스</h4>
@@ -36,7 +37,6 @@
 							<input type="checkbox" id="mmsMo" class="checkStyle2" v-model="searchData.mmsMo">
 							<label for="mmsMo" class="mr30">MMS MO</label>
 						</div>
-						<a @click="fnSearch" class="btnStyle1 float-right" activity="READ">조회</a>
 					</div>
 				</div>
 			</div>
@@ -163,6 +163,7 @@ export default {
 
 			await statisticsUserApi.selectStatisList(params).then(response =>{
 				let result = response.data;
+				console.log(result);
 				if (result.success) {
 					this.statisItem = result.data;
 					this.fnSumCalc();

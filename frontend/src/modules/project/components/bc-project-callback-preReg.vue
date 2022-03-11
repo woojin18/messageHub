@@ -1,7 +1,7 @@
 <template>
   <div>
     <article>
-      <h4 class="mt40">발신번호 사전 등록<button @click="fnPopup">test</button><input type="hidden" id="message"><button id="nice" style="display:none;" @click="fnMessage"></button></h4>
+      <h4 class="mt40">발신번호 사전 등록<input type="hidden" id="message"><button id="nice" style="display:none;" @click="fnMessage"></button></h4>
       <p class="font-size12 color3 mt30 inline-block">
         <i class="far fa-info-circle"></i> 발신번호 사전등록제의 시행으로 인하여, 2015년 10월 16일부로 사전에 등록하지 않은 발신번호는 SMS/LMS/MMS/RCS 발송이 제한됩니다.<br>
         <i class="far fa-info-circle"></i> 발신번호 등록을 위해서는 RCS Biz Center 가입 후, 브랜드를 생성해야 합니다. 발신번호는 브랜드 1개당 N개 추가할 수 있습니다.

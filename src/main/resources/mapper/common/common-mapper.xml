@@ -350,4 +350,12 @@
 		SET UPD_DT = NOW()
 		WHERE CMD_TGT = #{cmdTgt}
 	</update>
+	
+	<select id="selectCmCodeExt" resultType="camel">
+		/* common.selectCmCodeExt */
+		SELECT	EXT_CODE
+		,		EXT_MESSAGE
+		FROM	cm.CM_CODE_EXT
+		WHERE	EXT_CODE = #{code}
+	</select>
 </mapper>

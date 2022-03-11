@@ -1,33 +1,21 @@
 <template>
-  <div style="width:800px">
-    <div>
-      <div class="modal-body">
-        <div>
-          <h2>공지사항</h2>
-          <hr>
-          <div class="boardWrite">
-            <div class="title">
-              <p>
-                <span v-if="!$gfnCommonUtils.isEmpty(noticeData.noticeTypeCdName)" :class="noticeData.noticeType | getNotiTypeClass">{{noticeData.noticeTypeCdName}}</span>
-                {{noticeData.title | unescapeXss}}
-              </p>
-              <span class="date">{{noticeData.regDt}}</span>
-            </div>
-            <div class="content scroll-y">
-              <p v-html="noticeData.content"></p>
-            </div>
-          </div>
-        </div>
-        <div class="quiryAgree">
-          <input type="checkbox" id="chk_stop" class="checkStyle2" @click="fnStopPopup">
-          <label for="chk_stop">오늘 그만 보기</label><br/>
-        </div>
-        <div class="text-center">
-          <a href="#" @click.prevent="fnClose" class="btnStyle1 backWhite" title="닫기">닫기</a>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div id="layerPopup1" class="popStyle">	
+		<h3>공지사항</h3>
+		<div class="popBox">
+			<div class="popTitle">
+        <span v-if="!$gfnCommonUtils.isEmpty(noticeData.noticeTypeCdName)" :class="noticeData.noticeType | getNotiTypeClass">{{noticeData.noticeTypeCdName}}</span>
+        <span>{{noticeData.title | unescapeXss}}</span>
+        <span class="popDate">{{noticeData.regDt}}</span>
+			</div>
+			<div class="popCont">
+				<p v-html="noticeData.content"></p>
+			</div>
+		</div>
+		<input name="chkbox1" id="chkbox1" @click="fnStopPopup" type="checkbox" class="checkStyle2"><label for="chkbox1">하루 동안 보지 않음</label>
+		<div class="text-center">
+			<a href="#" @click.prevent="fnClose" class="btnStyle3 white font14" title="닫기">닫기</a>						
+		</div>
+	</div>
 </template>
 
 <script>
@@ -55,7 +43,7 @@ export default {
   methods: {
     fnSetCss(){
       document.body.style.minWidth = "auto";
-      document.getElementById('publicLayout').style.width = "800px"
+      document.getElementById('publicLayout').style.width = "760px"
     },
     fnSelectNoticeInfo(){
       if(!this.$gfnCommonUtils.isEmpty(this.noticeId)){

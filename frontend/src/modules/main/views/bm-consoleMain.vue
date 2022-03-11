@@ -7,13 +7,13 @@
 				<li>
 					<div class="mainVisualTitle CloudIconlList">
 						<div>
-							<h2 class="wow animated fadeInUp" data-wow-duration="1s">모든 메시지를 한번에<br><strong>U+ 메시지허브</strong></h2>
+							<h2 class="wow animated fadeInUp" data-wow-duration="1s">모든 메시지를 한 번에<br><strong>U+ 메시지허브</strong></h2>
 							<div class="wow animated fadeInUp" data-wow-delay=".3s" data-wow-duration="1s">
                 <router-link :to="{ name: 'signUp' }" class="mvBtn" title="서비스 가입" style="margin-right: 3px;">가입하기</router-link>
 								<a class="mvBtn ml20" title="serviceCon05_2">도입문의</a>
 							</div>
 							<p class="font-size20 font-normal mt40 wow animated fadeInUp" data-wow-delay=".6s" data-wow-duration="1s">메시지허브는 다양한 메시지 채널을 수용하여<br>발송부터 결과까지 한 번에 관리하는 기업 메시지 플랫폼입니다.</p>
-							<p class="font-size20 font-600 mt20 wow animated fadeInUp" data-wow-delay=".6s" data-wow-duration="1s">#문자<span class="ml20">#RCS</span><span class="ml20">#알림톡</span><span class="ml20">#친구톡</span><span class="ml20">#앱푸시</span></p>
+							<p class="font-size20 font-600 mt20 wow animated fadeInUp" data-wow-delay=".6s" data-wow-duration="1s">#문자<span class="ml20">#RCS</span><span class="ml20">#알림톡</span><span class="ml20">#친구톡</span><span class="ml20">#앱PUSH</span></p>
 					  </div>
 					</div>
 					<img src="/se2/images/mainVisual1.jpg" alt="">
@@ -62,7 +62,7 @@
 			<section id="userIndex1-1">	
 				<img src="/se2/images/Message_icon_or2.png" alt="메세지아이콘 파란색">
 	      <h3 class="subTitle">메시지 도입하고 운영하는데<br>소중한 리소스를 낭비하지 마세요.</h3>
-				<p class="subText">메시지허브만 통하면 다양한 메시징 채널을 모두 활용할 수 있습니다.<br>
+				<p class="subText">메시지허브만 통하면 다양한 메시지 채널을 모두 활용할 수 있습니다.<br>
         계약, 운영, 정산 뿐만 아니라 장애 대응, 발송 모니터링, 통계까지<br>
         일원화하여 한 번에 관리하고 서비스 받으세요.</p>			
         <div class="chartWrap">					
@@ -98,26 +98,16 @@
     <div class="serviceCon05_2 wow animated fadeInUp">
 			<section id="serviceCon05_2">	
 				<div><img src="/se2/images/Message_icon_pink.png" alt="메세지아이콘 핑크색"></div>
-				<h3 class="subTitle">U+ 메시지 허브를 지금 바로 사용해보세요!</h3>
-				<div class="quiryList of_h">	
-          <div class="of_h">
-              <h5 class="inline-block  text-left float-left font-size16" style="width:13%">문의유형</h5>
-              <div class="inline-block float-left">
-                <template v-for="(inqueiryType, idx) in inqueiryTypeList">
-                  <input :key="idx" type="radio" name="inqueiryTypeC" :value="inqueiryType.codeVal1" :id="'inqueiryTypeC_'+inqueiryType.codeVal1" v-model="inqueiryInputData.questType">
-                  <label :key="idx+'_sub'" :for="'inqueiryTypeC_'+inqueiryType.codeVal1" class="mr20 font-size14">{{inqueiryType.codeName1}}</label>
-                </template>
-              </div>
-          </div>		
-					<input type="text" class="form-control mt15 float-left" style="width:48%" placeholder="회사명" v-model="inqueiryInputData.corpName" maxlength="50" :disabled="isLogin">
+				<h3 class="subTitle">U+ 메시지허브를 지금 바로 사용해보세요!</h3>
+				<div class="quiryList of_h">		
+					<input type="text" class="form-control mt15 float-left" style="width:48%" placeholder="회사명" v-model="inqueiryInputData.corpName" maxlength="50">
 					<input type="text" class="form-control mt15 float-right" style="width:48%" placeholder="이름" v-model="inqueiryInputData.inputName" maxlength="20">
 					<input type="text" class="form-control mt15 float-left" style="width:48%" placeholder="휴대폰 번호 ( - 없이 입력)" v-model="inqueiryInputData.hpNumber" maxlength="20">
 					<input type="text" class="form-control mt15 float-right" style="width:48%" placeholder="E-mail" v-model="inqueiryInputData.email" maxlength="40">
-          <input type="text" class="form-control mt15 float-left" placeholder="제목" v-model="inqueiryInputData.title" maxlength="100">
 					<textarea class="form-textarea height180  mt15" placeholder="궁금하신 내용을 적어주세요." v-model="inqueiryInputData.content" maxlength="4000"></textarea>
 					<div class="quiryAgree float-left">
 						<input type="checkbox" id="agree1" class="checkStyle2" value="서비스 이용약관 동의" v-model="inqueiryInputData.agree">
-            <label for="agree1">[필수] 개인정보 수집 및 이용 동의에 동의합니다.</label> 
+            <label for="agree1">[필수] 개인정보 수집 및 이용에 동의합니다.</label> 
 					</div>
 					<a class="btnStyle2 backRed float-right" @click.prevent="fnRegisterInquiry" title="도입문의">도입문의</a>
 				</div>
@@ -139,7 +129,6 @@ import customereApi from "@/modules/customer/service/customerApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import tokenSvc from '@/common/token-service';
-import myPageApi from '@/modules/myPage/service/myPageApi';
 
 export default {
   name: 'consoleMain',
@@ -158,9 +147,9 @@ export default {
         hpNumber : '',
         emailId : '',
         emailDomain : '',
-        questType : '',
+        questType : '999',
         email : '',
-        title : '',
+        title : '도입문의',
         content :'',
         corpName : ''
       }
@@ -189,11 +178,6 @@ export default {
 			touchEnabled : (navigator.maxTouchPoints > 0),
 			pause: 6000
 		});
-
-    this.fnSelectFaqType()
-    if(this.isLogin){
-      this.fnSetUserInfo()
-    }
     this.fnOpenNoticePopup()
   },
   methods: {
@@ -209,12 +193,8 @@ export default {
 			this.$router.push({name : "signUp"})
 		},
     fnIsValid(){
-       if(!this.inqueiryInputData.questType){
-        confirm.fnAlert(this.componentsTitle, '문의유형를 선택해주세요.');
-        return false;
-      }
       if(!this.inqueiryInputData.corpName){
-        confirm.fnAlert(this.componentsTitle, '고객사명을 입력해주세요.');
+        confirm.fnAlert(this.componentsTitle, '회사명을 입력해주세요.');
         return false;
       }
       if(!this.inqueiryInputData.inputName){
@@ -231,10 +211,6 @@ export default {
       }
       if(!this.inqueiryInputData.email){
         confirm.fnAlert(this.componentsTitle, 'E-mail 을 입력해주세요.');
-        return false;
-      }
-      if(!this.inqueiryInputData.title){
-        confirm.fnAlert(this.componentsTitle, '제목을 입력해주세요.');
         return false;
       }
       if(!this.inqueiryInputData.content){
@@ -260,42 +236,10 @@ export default {
         const result = response.data;
         if(result.success) {
           confirm.fnAlert(this.componentsTitle, '문의 되었습니다.');
-          this.fnSetUserInfo();
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
-    },
-    async fnSelectFaqType(){
-      const params = {
-        codeTypeCd : "QNA_TYPE",
-        useYN : "Y"
-      }
-      await customereApi.selectCodeList(params).then(response =>{
-        const result = response.data;
-        if(result.success) {
-          this.inqueiryTypeList = Object.assign({}, result.data);
-        } else {
-          confirm.fnAlert(this.componentsTitle, result.message);
-        }
-      });
-    },
-    fnSetUserInfo(){
-      Object.assign(this.$data.inqueiryInputData, this.$options.data().inqueiryInputData);
-      if(this.isLogin){
-        var params = {
-          userId : tokenSvc.getToken().principal.userId
-        };
-        myPageApi.selectMemberInfo(params).then(response => {
-          var result = response.data;
-          if(result.success){
-            this.inqueiryInputData.inputName  = result.data.userName;
-            this.inqueiryInputData.hpNumber   = result.data.hpNumber;
-            this.inqueiryInputData.email      = result.data.loginId;
-            this.inqueiryInputData.corpName   = result.data.corpName;
-          }
-        });
-      }
     },
         async fnOpenNoticePopup(){
       let noticePopupList = [];
@@ -321,7 +265,7 @@ export default {
       const vm = this;
       let routeData = '';
       const noticePopupNm = 'noticePopup';
-      const popupOtion = 'width=820,height=640,left=20,top=20,scrollbars=yes';
+      const popupOtion = 'width=760,height=580,left=20,top=20,scrollbars=yes';
       noticePopupList.forEach(function(info){
         routeData = vm.$router.resolve({name: noticePopupNm, query: {noticeId: info.noticeId}});
         vm.fnOpenWindowPop(routeData.href, noticePopupNm+info.noticeId, popupOtion);

@@ -9,12 +9,9 @@
 		
 		AND A.YMD IN (<foreach collection="dateArr" item="item" separator="," >#{item}</foreach>)
          <if test="searchText != '' and searchText != null ">
-            <if test="searchCondi == 'receiverId' ">
-            AND A.PUSH_CUID = #{searchText}
-            </if>
-            <if test="searchCondi == 'receiverPhone' ">
-            AND A.PHONE = #{searchText}
-            </if>
+            AND (	A.PUSH_CUID = #{searchText}
+            	OR	A.PHONE = #{searchText}
+            )
         </if>
         <if test='searchResultY and !searchResultN'>
         	AND A.GW_RESULT_CODE = '10000'
@@ -28,6 +25,10 @@
         <if test='searchSendAPI and !searchSendCloud'>
         	AND A.WEB_REQ_ID IS NULL
         </if>
+        <if test="srcTag != '' and srcTag != null">
+        	AND A.CAMPAIGN_ID = #{srcTag}
+        </if>
+       
     </sql>
 
     <select id="selectMessageStatusListCnt" parameterType="hashmap" resultType="int">
@@ -39,7 +40,7 @@
     </select>
 
 	<select id="selectMessageStatusList" parameterType="hashmap" resultType="camel">
-		/* 메시지 현황 리스트 조회 */
+		/* messageStatus.selectMessageStatusList 메시지 현황 리스트 조회 */
 		SELECT A.*
 		     , @rownum:=@rownum+1 AS ROW_NUM
 		  FROM (
@@ -48,7 +49,7 @@
 		,		A.CORP_ID
 		,		A.PROJECT_ID
 		,		A.REQ_CH  /*채널구분*/
-		,		DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%s') AS REG_DT /*발송일시*/
+		,		DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i') AS REG_DT /*발송일시*/
 		,		A.SENDER_TYPE /*발송타입*/
 		,		CASE
 					WHEN A.SENDER_TYPE = 'C' THEN '개별발송'
@@ -60,13 +61,22 @@
 					WHEN A.GW_RESULT_CODE = '10000' THEN '성공'
 					ELSE '실패'
 					END AS GW_RESULT_NM  /*결과명*/
-		,			A.PUSH_CUID /*push수신자ID
-		,			B.CAMPAIGN_ID /*테그*/
+		,			A.PUSH_CUID /*push수신자ID*/
+		,			A.CAMPAIGN_ID /*테그*/
 		,			A.PHONE /*수신자전화번호*/
 		,			CONCAT(SUBSTR(A.PHONE,1,3), '-',  SUBSTR(A.PHONE,4,4), '-', SUBSTR(A.PHONE,8,4)) AS PHONE_NUMBER
 		,			'' AS MESSAGE
 		,			A.FINAL_CH
 		,			A.CLI_KEY
+		,			CASE 
+						WHEN A.FINAL_CH = 'PUSH' THEN A.PUSH_CUID 
+						ELSE CONCAT(SUBSTR(A.PHONE,1,3), '-',  SUBSTR(A.PHONE,4,4), '-', SUBSTR(A.PHONE,8,4)) 
+					END AS RECV_USER_INFO
+		,			CASE
+						WHEN A.WEB_REQ_ID IS NULL THEN '웹'
+						ELSE 'API'
+					END AS SEND_TYPE
+		,			A.GW_RESULT_DESC
 		FROM	cm.CM_MSG A
 		WHERE	1=1
 		<include refid="whereSelectMessageStatusList"/>

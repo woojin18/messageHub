@@ -45,6 +45,7 @@
 		      , B.STATUS
 		      , C.CODE_NAME_1 AS CODE_VAL
 		      , DATE_FORMAT(B.MO_RECV_DT, '%Y.%m.%d %H:%i:%s') AS MO_RECV_DT /*발송일시*/
+		      ,	B.MO_KEY
 		FROM cm.CM_MO_CALLBACK A LEFT OUTER JOIN cm.CM_MO_MSG B
 		                         ON A.MO_NUMBER = B.MO_NUMBER
 		                         AND A.PROJECT_ID = B.PROJECT_ID

@@ -302,7 +302,7 @@
 								</div>
 								<div style="width:82%">
 									<select @change="fnChangeDataSet" v-model="sendData.callback" name="userConsole_sub020201_1" class="selectStyle2" style="width:30%">
-										<option v-for="(options, idx) in sendData.callbackArr" :key="idx">
+										<option v-for="(options, idx) in sendData.callbackArr" :key="idx" :value="options.callback">
 											{{options.callback | hpNumberAddDash}}
 										</option>
 									</select>
@@ -1403,7 +1403,9 @@ export default {
 			"real" : false
 		}
 
-		rcsTemplateSendApi.sendRcsData(params).then(response => {
+		let fd = new FormData();
+		fd.append('paramString', JSON.stringify(params));
+		rcsTemplateSendApi.sendRcsData(fd).then(response => {
 			var result = response.data;
 			var success = result.success;
 			if(success) {

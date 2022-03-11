@@ -21,7 +21,8 @@ public class DB {
 	public final static String QRY_SELECT_USE_CH_GRP_INFO = "common.selectUseChGrpInfo";
 	public final static String QRY_SELECT_IMAGE_URL_INFO = "common.selectImageUrlInfo";
 	public final static String QRY_UPDATE_CM_CMD = "common.updateCmCmdForRedis";
-
+	public final static String QRY_SELECT_CM_CODE_EXT = "common.selectCmCodeExt";
+	
 	// 메인
 	public final static String QRY_SELECT_PRD_UNIT_INFO_LIST = "main.selectPrdUnitInfoList";
 
@@ -342,6 +343,8 @@ public class DB {
 	public final static String QRY_SELECT_STATIS_LIST_DAY_KKO = "statisticsAdmin.selectStatisListDayKko";
 	public final static String QRY_SELECT_STATIS_LIST_MONTH_KKO = "statisticsAdmin.selectStatisListMonthKko";
 	public final static String QRY_SELECT_STATIS_PROJECT_LIST = "statisticsAdmin.selectStatisProjectList";
+	public final static String QRY_SELECT_STATIS_LIST_DAY_MO = "statisticsAdmin.selectStatisListDayMo";
+	public final static String QRY_SELECT_STATIS_LIST_MONTH_MO = "statisticsAdmin.selectStatisListMonthMo";
 
 	// URL+ (단축URL)
 	public final static String QRY_SELECT_URL_INFO_LIST_CNT	= "urlInfo.selectUrlInfoListCnt";

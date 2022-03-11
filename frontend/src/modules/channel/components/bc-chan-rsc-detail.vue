@@ -71,7 +71,8 @@
 							<p class="font-size12 color3 mt5">
 								RBC(RCS Biz Cetner)와 작업을 위해 RBC 로그인 ID와 RBC API Key 정보가 필요합니다.<br>
 								RBC 로그인 후 "내 정보관리"에서 API Key를 확인 할 수 있습니다.<br>
-								연동이 원활하지 않은 경우 <router-link to="/ac/project/callbackPreReg">[여기]</router-link>를 참고하세요.
+								RCS 회원 등록을 위해서는 <a @click.prevent="fnOpenRBCPop">[여기]</a>를 클릭해 주십시오.
+								
 							</p>
 						</div>
 					</div>
@@ -801,6 +802,9 @@ export default {
 	fnHpNumberAddDash(event){
 		var arrId = event.target.id.substr(3);
 		this.inputVal.chatbots[arrId].mdn = this.$gfnCommonUtils.hpNumberAddDash(event.target.value.replace(/[^0-9]/g, ''));
+	},
+	fnOpenRBCPop() {
+		window.open("https://www.rcsbizcenter.com/login");
 	}
   }
 }

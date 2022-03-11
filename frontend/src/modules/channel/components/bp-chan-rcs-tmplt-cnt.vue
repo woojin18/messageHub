@@ -116,7 +116,7 @@ export default {
     },
     row_data: function(newVal, oldVal) {
       this.tmpltItems = [];
-      this.fnSearchRegTmplt(1);
+      this.$refs.updatePaging.fnAllDecrease();
     }
   },
   mounted() {
