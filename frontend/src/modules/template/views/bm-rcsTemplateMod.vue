@@ -111,7 +111,7 @@
 													<col style="width:22%">
 													<col style="width:20%">
 													<col>
-													<col style="width:15%">
+													<col style="width:120px">
 												</colgroup>
 												<thead>
 													<tr>
@@ -154,18 +154,16 @@
 															</div>
 														</td>
 														<td class="text-center end">
+															<a
+																v-if="selectBtn[n-1] === 'urlAction'" 
+																class="btnStyle1 backBlack" 
+																title="단축 URL+" 
+																data-toggle="modal" 
+																data-target="#shortened_URL"
+																@click="selIdx = idx"
+															>단축 URL+</a> 
 															<a href="#" @click.prevent="fnClickMinus(n-1)" title="이전버튼">
-																<a
-																	v-if="selectBtn[n-1] === 'urlAction'" 
-																	class="btnStyle1 backBlack" 
-																	title="단축 URL+" 
-																	data-toggle="modal" 
-																	data-target="#shortened_URL"
-																>단축 URL+</a> 
-																<i 
-																	class="far fa-minus channelBtn"
-																	:class="selectBtn[n-1] === 'urlAction' ? 'ml5' : ''"
-																></i>
+																<i class="far fa-minus channelBtn" :class="selectBtn[n-1] === 'urlAction' ? 'ml5' : ''"></i>
 															</a>
 														</td>
 													</tr>
@@ -298,7 +296,7 @@
 													<col style="width:22%">
 													<col style="width:20%">
 													<col>
-													<col style="width:15%">
+													<col style="width:120px">
 												</colgroup>
 												<thead>
 													<tr>
@@ -341,18 +339,16 @@
 															</div>
 														</td>
 														<td class="text-center end">
+															<a
+																v-if="selectBtn[n-1] === 'urlAction'" 
+																class="btnStyle1 backBlack" 
+																title="단축 URL+" 
+																data-toggle="modal" 
+																data-target="#shortened_URL"
+																@click="selIdx = idx"
+															>단축 URL+</a> 
 															<a href="#" @click.prevent="fnClickMinus(n-1)" title="이전버튼">
-																<a
-																	v-if="selectBtn[n-1] === 'urlAction'" 
-																	class="btnStyle1 backBlack" 
-																	title="단축 URL+" 
-																	data-toggle="modal" 
-																	data-target="#shortened_URL"
-																>단축 URL+</a> 
-																<i 
-																	class="far fa-minus channelBtn"
-																	:class="selectBtn[n-1] === 'urlAction' ? 'ml5' : ''"
-																></i>
+																<i class="far fa-minus channelBtn" :class="selectBtn[n-1] === 'urlAction' ? 'ml5' : ''"></i>
 															</a>
 														</td>
 													</tr>
@@ -380,6 +376,9 @@
 				</div>
 			</div>
 		</article>
+
+			<shortenedUrlListPopup @btnSelect="btnSelect" />
+      <shortenedUrlAddPopup/>
     </div>
 </template>
 
@@ -389,10 +388,15 @@ import confirm from "@/modules/commonUtil/service/confirm";
 import templateApi from "@/modules/template/service/templateApi.js";
 import Calendar from "@/components/Calendar.vue";
 
+import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
+
 export default {
   name: "rcsTemplateMod",
   components: {
-		Calendar
+		Calendar,
+		shortenedUrlListPopup,
+    shortenedUrlAddPopup,
   },
   props: {
       status: {
@@ -406,60 +410,59 @@ export default {
   },
   data() {
     return {
-		titleCnt : 0,
-		desImgSrc : require("@/assets/images/common/delivery.png"),
-		styleImgSrc : require("@/assets/images/common/delivery.png"),
-		deleteBtn: false,
-		cancelBtn: false,
-		insertBtn: false,
-		updateBtn: false,
-		templateNm: "",			// 템플릿 명
-		templateCode: "",		// 템플릿 코드
-		brandNm: "",			// 브랜드 명
-		brandNmList: [],		// 브랜드 명 selectBox
-		// 서술형 Data 세팅
-		desFormNm: "",			// 서술형 유형
-		desFormNmList: [],		// 서술형 유형 selectBox
-		desContentsExam: "{{name}}입니다.{{date}} 할인/특가 상품을 안내해 드립니다. 본 알림은 {{name}} 회원전용 서비스 입니다.",	// 서술형 sampleView
-		desContents: "",	// 서술형 내용
-		desContentsPlaceHoder: "변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오. 예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",	// 서술형 내용 holder
-		desContentsCnt: 0,	// 글자 수
-		// 스타일형 Data 세팅
-		styleFormNm: "",			// 스타일형 유형
-		styleFormNmList: [],		// 스타일형 유형 selectBox
-		styleContentCnt: 2,			// 스타일형 inputLine count
-		styleArr: [1,2],			// 스타일형 inputLine input count
-		styleInput: [],				// 스타일형 첫 input
-		styleInputSec: [],			// 스타일형 두번째 input
-		styleChk: [true, false],	// 스타일형 lineChk
-		styleContentsCnt: 0,		// 글자 수
-		styleContentText: "변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.<br>예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",	// 스타일형 내용 Text
-		// 버튼 세팅
-		btnCnt: 0,			// 버튼 개수
-		selectBtn: [],		// selectBox
-		btnNm:[],			// 버튼 이름
-		contents:[],		// 내용
-		btnInputHolder:[],	// 내용 holder
-		calendarTitle: [],	// 
-		calendarDes: [],	//
-		desStartDate: ["desFirstStartDate","desSecondStartDate"],	// 서술형 달력 id
-		desEndDate: ["desFirstEndDate","desSecondEndDate"],			// 서술형 달력 id
-		desInitStartDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
-		desInitEndDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
-		styleStartDate: ["styleFirstStartDate","styleSecondStartDate"],	// 서술형 달력 id
-		styleEndDate: ["styleFirstEndDate","styleSecondEndDate"],			// 서술형 달력 id
-		styleInitStartDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
-		styleInitEndDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
-		flag : '',
-		paramCardType : '',
-		agreeChk : false		// 정보성 동의
-
+			titleCnt : 0,
+			desImgSrc : require("@/assets/images/common/delivery.png"),
+			styleImgSrc : require("@/assets/images/common/delivery.png"),
+			deleteBtn: false,
+			cancelBtn: false,
+			insertBtn: false,
+			updateBtn: false,
+			templateNm: "",			// 템플릿 명
+			templateCode: "",		// 템플릿 코드
+			brandNm: "",			// 브랜드 명
+			brandNmList: [],		// 브랜드 명 selectBox
+			// 서술형 Data 세팅
+			desFormNm: "",			// 서술형 유형
+			desFormNmList: [],		// 서술형 유형 selectBox
+			desContentsExam: "{{name}}입니다.{{date}} 할인/특가 상품을 안내해 드립니다. 본 알림은 {{name}} 회원전용 서비스 입니다.",	// 서술형 sampleView
+			desContents: "",	// 서술형 내용
+			desContentsPlaceHoder: "변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오. 예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",	// 서술형 내용 holder
+			desContentsCnt: 0,	// 글자 수
+			// 스타일형 Data 세팅
+			styleFormNm: "",			// 스타일형 유형
+			styleFormNmList: [],		// 스타일형 유형 selectBox
+			styleContentCnt: 2,			// 스타일형 inputLine count
+			styleArr: [1,2],			// 스타일형 inputLine input count
+			styleInput: [],				// 스타일형 첫 input
+			styleInputSec: [],			// 스타일형 두번째 input
+			styleChk: [true, false],	// 스타일형 lineChk
+			styleContentsCnt: 0,		// 글자 수
+			styleContentText: "변수로 설정하고자 하는 내용을 {{ }}표시로 작성해 주십시오.<br>예) 이름과 출금일을 변수 설정: 예) {{고객}}님 {{YYMMDD}} 출금 예정입니다.",	// 스타일형 내용 Text
+			// 버튼 세팅
+			btnCnt: 0,			// 버튼 개수
+			selectBtn: [],		// selectBox
+			btnNm:[],			// 버튼 이름
+			contents:[],		// 내용
+			btnInputHolder:[],	// 내용 holder
+			calendarTitle: [],	// 
+			calendarDes: [],	//
+			desStartDate: ["desFirstStartDate","desSecondStartDate"],	// 서술형 달력 id
+			desEndDate: ["desFirstEndDate","desSecondEndDate"],			// 서술형 달력 id
+			desInitStartDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
+			desInitEndDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
+			styleStartDate: ["styleFirstStartDate","styleSecondStartDate"],	// 서술형 달력 id
+			styleEndDate: ["styleFirstEndDate","styleSecondEndDate"],			// 서술형 달력 id
+			styleInitStartDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
+			styleInitEndDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	// 서술형 달력
+			flag : '',
+			paramCardType : '',
+			agreeChk : false,		// 정보성 동의
+			selIdx : null,
     }
   },
   mounted() {
 		this.init();  
   },
-
   watch: {
 		desContents: function(newVal) {
 			this.desContentsExam = newVal;
@@ -977,7 +980,15 @@ export default {
 					confirm.fnAlert(message,"");
 				}
 			});	  
-		}
+		},
+		//단축 URL 선택
+    btnSelect(shortendUrl){
+			if(this.contents.length > 0 && this.selIdx !== null){
+        this.$set(this.contents, this.selIdx, shortendUrl)
+      }
+
+      this.selIdx = null
+    },
   }
 }
 </script>

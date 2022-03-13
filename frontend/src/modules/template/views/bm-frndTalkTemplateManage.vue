@@ -38,10 +38,10 @@
       </div>
       <div class="of_h inline-block vertical-top consoleCon" style="width:60%">
         <div class="of_h user-phone">
-          <div class="float-left" style="width:27%">
+          <div class="float-left" style="width:22%">
             <h4>템플릿명 *</h4>
           </div>
-          <div class="float-left" style="width:73%">
+          <div class="float-left" style="width:78%">
             <input type="text" class="inputStyle float-right" title="템플릿명 입력란" v-model="tmpltData.tmpltName" maxlength="100">
           </div>
         </div>
@@ -113,7 +113,7 @@
                   <col style="width:20%">
                   <col style="width:20%">
                   <col>
-                  <col style="width:80px">
+                  <col style="width:120px">
                 </colgroup>
                 <thead>
                 <tr>

@@ -135,7 +135,7 @@
                   <col style="width:20%">
                   <col style="width:20%">
                   <col>
-                  <col style="width:18%">
+                  <col style="width:120px">
                 </colgroup>
                 <thead>
                   <tr>

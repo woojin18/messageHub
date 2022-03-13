@@ -134,7 +134,7 @@
 						<div class="of_h">
 							<div class="float-right text-center" style="width:100%">발송순서</div>
 						</div>
-						<div v-for="(channel, index) in rowData.checkedChannel" :key="channel" class="of_h mt13">
+						<div v-for="channel in rowData.checkedChannel" :key="channel" class="of_h mt13">
 							<div class="float-left" style="width:100%"><a class="btnStyle1 borderLightGray" style="min-width:auto; width:100%"  @click="putData(index)" :id="channelName(index)">{{channel}}</a></div>
 						</div>
 					</div>
@@ -195,22 +195,35 @@
 			</div>
 			<div class="float-left consoleCon" style="width:72%">
 				<div class="of_h">
-					<div class="float-left" style="width:13%"><h4>발송 정책 *</h4></div>
-					<div class="float-left" style="width:57%">
+					<div class="float-left" style="width:18%"><h4>발송 정책 *</h4></div>
+					<div class="float-left" style="width:52%">
 						<input type="radio" name="sendP" value="ALL" id="sendP1" checked="" v-model="rowData.pushSend"> <label for="sendP1" class="mr30">ALL</label>
 						<input type="radio" name="sendP" value="FCM" id="sendP2" v-model="rowData.pushSend"> <label for="sendP2" class="mr30">FCM(안드로이드)</label>
 						<input type="radio" name="sendP" value="APNS" id="sendP3" v-model="rowData.pushSend"> <label for="sendP3">APNS(IOS)</label>
 					</div>
 				</div>
 				<div class="of_h">
-					<div class="float-left" style="width:13%"><h4>제목</h4></div>
-					<div class="float-left" style="width:57%">
+					<div class="float-left" style="width:18%"><h4>제목</h4></div>
+					<div class="float-left" style="width:52%">
 						<input type="text" class="inputStyle" name="pushTitle" v-model="rowData.pushTitle" placeholder="최대 50자 입력 가능합니다." @input="fnSetPushCurrByte">
 					</div>
 				</div>
 				<div class="of_h">
-					<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
-					<div class="float-left" style="width:57%">
+					<div class="float-left" style="width:18%">
+						<h4>내용 *</h4>
+						<a 
+              class="btnStyle1 backBlack" 
+              style="margin-top:120px" 
+              title="단축 URL+" 
+              data-toggle="modal" 
+              data-target="#shortened_URL"
+							@click="selCh = 'push'"
+            >단축 URL</a>
+            <i class="fas fa-question-circle toolTip ml5">
+              <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+            </i>
+					</div>
+					<div class="float-left" style="width:52%">
 						<textarea class="textareaStyle height190" :placeholder="pushPlaceHoder" v-model="rowData.pushContent" @input="fnSetPushCurrByte"></textarea>
 						<strong class="letter">({{msgPushCurrByte}} / 512)</strong>
 						<p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
@@ -218,8 +231,8 @@
 				</div>
 				<div v-if="rowData.msgKind == 'A'">
 					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:13%"><h4>수신거부방법 *</h4></div>
-						<div class="float-left" style="width:57%">
+						<div class="float-left" style="width:18%"><h4>수신거부방법 *</h4></div>
+						<div class="float-left" style="width:52%">
 							<input type="text" class="inputStyle" name="pushHowToDenyReceipt" v-model="rowData.pushHowToDenyReceipt" placeholder="설정 > PUSH 알림 설정 변경">
 							<p class="color5 txtCaption">광고성 메시지 발송시, 자동으로 (광고)가 표시되오니, 내용에 (광고)문구는 입력하지 않아도 됩니다.</p>
 						</div>
@@ -227,16 +240,16 @@
 				</div>
 				<div class="of_h">
 					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:13%"><h4>부가정보(EXT)</h4></div>
-						<div class="float-left" style="width:57%">
+						<div class="float-left" style="width:18%"><h4>부가정보(EXT)</h4></div>
+						<div class="float-left" style="width:52%">
 							<input type="text" class="inputStyle" name="adtnInfo" v-model="rowData.adtnInfo">
 						</div>
 					</div>
 				</div>
 				<div v-if="rowData.msgType == 'IMAGE'">
 					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:13%"><h4>이미지</h4></div>
-						<div class="float-left" style="width:57%">
+						<div class="float-left" style="width:18%"><h4>이미지</h4></div>
+						<div class="float-left" style="width:52%">
 							<div class="float-left" style="width:25%">
 								<a @click="fnPushOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
 							</div>
@@ -247,8 +260,8 @@
 					</div>
 				</div>
 				<div class="of_h consolMarginTop">
-					<div class="float-left" style="width:13%"><h4>APP_ID</h4></div>
-					<div class="float-left" style="width:57%">
+					<div class="float-left" style="width:18%"><h4>APP_ID</h4></div>
+					<div class="float-left" style="width:52%">
 						<div class="float-left" style="width:49%">
 							<select class="selectStyle2 width100_" style="width:30%" v-model="rowData.pushAppId">
 								<option v-for="aplnId in aplnIdList" :key="aplnId.aplnId" :value="aplnId.aplnId">{{aplnId.aplnId}}</option>
@@ -348,28 +361,41 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>브랜드명 *</h4></div>
+							<div class="float-left" style="width:18%"><h4>브랜드명 *</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
-								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
+								<option v-for="(option, idx) in brandNmList" :key="idx" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 							</select>
 						</div>
 						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%">
+								<h4>내용 *</h4>
+								<a 
+									class="btnStyle1 backBlack" 
+									style="margin-top:120px" 
+									title="단축 URL+" 
+									data-toggle="modal" 
+									data-target="#shortened_URL"
+									@click="selCh = 'push'"
+								>단축 URL-1</a>
+								<i class="fas fa-question-circle toolTip ml5">
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+								</i>
+							</div>
+							<div class="float-left" style="width:52%">
 								<textarea class="textareaStyle height190" maxlength="90" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsFreeContentId" @keyup="fnTextLength('내용', '#rcsFreeContentId', '#rcsFreeTextLength', '90')"></textarea>
 								<strong class="letter" id="rcsFreeTextLength">(00 / 90)</strong>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">
-							<div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>무료수신거부 *</h4></div>
+							<div class="float-left" style="width:52%">
 								<input type="text" class="inputStyle" v-model="rowData.rcsBlockNumber" placeholder="수신거부번호 설정" maxlength="15">
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h4>발신번호 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>발신번호 *</h4></div>
+							<div class="float-left" style="width:52%">
 								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 									<option value="">선택해주세요.</option>
 									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
@@ -413,27 +439,40 @@
 						</div>
 						<div v-if="selectedRcsDesTemplate">
 							<div class="of_h mt20">
-								<div class="float-left" style="width:13%"><h4>브랜드명</h4></div>
+								<div class="float-left" style="width:18%"><h4>브랜드명</h4></div>
 								<select class="selectStyle2" v-model="rowData.brandNm" style="width:24%" title="브랜드명 선택란" disabled>
-									<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
+									<option v-for="(option, idx) in brandNmList" :key="idx" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 								</select>
 							</div>
 							<div class="of_h">						
-								<div class="float-left" style="width:13%"><h4>유형</h4></div>
+								<div class="float-left" style="width:18%"><h4>유형</h4></div>
 								<select class="selectStyle2" v-model="rowData.rcsDesMessagebaseformId" title="유형 선택란" disabled>
-									<option v-for="rcsType in rcsDesFormNmList" v-bind:value="rcsType.MESSAGEBASEFORM_ID">{{rcsType.FORM_NAME}}</option>
+									<option v-for="(rcsType, idx) in rcsDesFormNmList" :key="idx" v-bind:value="rcsType.MESSAGEBASEFORM_ID">{{rcsType.FORM_NAME}}</option>
 								</select>
 							</div>
 							<div class="of_h">
-								<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
-								<div class="float-left" style="width:57%">
+								<div class="float-left" style="width:18%">
+									<h4>내용 *</h4>
+									<a 
+										class="btnStyle1 backBlack" 
+										style="margin-top:120px" 
+										title="단축 URL+" 
+										data-toggle="modal" 
+										data-target="#shortened_URL"
+										@click="selCh = 'push'"
+									>단축 URL-2</a>
+									<i class="fas fa-question-circle toolTip ml5">
+										<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+									</i>
+								</div>
+								<div class="float-left" style="width:52%">
 									<textarea class="textareaStyle height190"  v-model="rowData.rcs0Content" disabled></textarea>
 									<strong class="letter" id="rcs1TextLength">(00 / 90)</strong>
 								</div>
 							</div>
 							<div class="of_h consolMarginTop">
-								<div class="float-left" style="width:13%"><h4>버튼</h4></div>
-								<div class="float-left" style="width:57%">
+								<div class="float-left" style="width:18%"><h4>버튼</h4></div>
+								<div class="float-left" style="width:52%">
 									<table class="table_skin1 mt0" style="width:100%">
 										<colgroup>
 											<col style="width:22%">
@@ -448,7 +487,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr v-for="(buttonInfo, index) in rowData.rcsDesButtons" v-bind:key="index">
+											<tr v-for="(buttonInfo, idx) in rowData.rcsDesButtons" :key="idx">
 												<td class="text-center">
 													<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" disabled>
 														<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
@@ -481,8 +520,8 @@
 								</div>
 							</div>
 							<div class="of_h consolMarginTop">
-								<div class="float-left" style="width:13%"><h4>발신번호 *</h4></div>
-								<div class="float-left" style="width:57%">
+								<div class="float-left" style="width:18%"><h4>발신번호 *</h4></div>
+								<div class="float-left" style="width:52%">
 									<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 										<option value="">선택해주세요.</option>
 										<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
@@ -508,7 +547,7 @@
 							<div class="phoneTextWrap">
 								<div class="phoneText1 of_h">
 									<p><img :src="rowData.rcsStyleFormNm | getIconURlByFormNm" style="width:70px;"></p>
-									<div v-for="n in rowData.rcsStyleContentCnt" class="of_h consolMarginTop">
+									<div v-for="(n, idx) in rowData.rcsStyleContentCnt" :key="idx" class="of_h consolMarginTop">
 										<pre class="mt15 lc-1">{{rowData.rcsStyleInput[n-1]}}</pre>
 										<pre class="float-right">{{rowData.rcsStyleInputSec[n-1]}}</pre>
 										<hr v-if="rowData.rcsStyleChk[n-1]">
@@ -532,28 +571,28 @@
 						</div>
 						<div v-if="selectedRcsStyTemplate">
 							<div class="of_h mt20">
-								<div class="float-left" style="width:13%"><h4>브랜드명</h4></div>
+								<div class="float-left" style="width:18%"><h4>브랜드명</h4></div>
 								<select class="selectStyle2" v-model="rowData.brandNm" style="width:24%" title="브랜드명 선택란" disabled>
-									<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
+									<option v-for="(option, idx) in brandNmList" :key="idx" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 								</select>
 							</div>
 							<div class="of_h mt20">						
-								<div class="float-left" style="width:13%"><h4>유형</h4></div>
+								<div class="float-left" style="width:18%"><h4>유형</h4></div>
 								<select class="selectStyle2" v-model="rowData.rcsStyleMessagebaseformId" title="유형 선택란" disabled>
-									<option v-for="rcsType in rcsStyleFormNmList" v-bind:value="rcsType.MESSAGEBASEFORM_ID">{{rcsType.FORM_NAME}}</option>
+									<option v-for="(rcsType, idx) in rcsStyleFormNmList" :key="idx" v-bind:value="rcsType.MESSAGEBASEFORM_ID">{{rcsType.FORM_NAME}}</option>
 								</select>
 							</div>
 							<div class="of_h">
-								<div class="float-left" style="width:13%"><h4>내용</h4></div>
-								<div class="float-left of_h consolMarginTop" style="width:57%" v-for="n in rowData.rcsStyleContentCnt">
+								<div class="float-left" style="width:18%"><h4>내용</h4></div>
+								<div class="float-left of_h consolMarginTop" style="width:52%" v-for="(n, idx) in rowData.rcsStyleContentCnt" :key="idx">
 									<input v-if="rowData.rcsStyleChk[n-1] == true" type="text" class="inputStyle" v-model="rowData.rcsStyleInput[n-1]" disabled>
 									<input v-if="rowData.rcsStyleChk[n-1] == false" type="text" class="inputStyle" style="width:49%" v-model="rowData.rcsStyleInput[n-1]" disabled>
 									<input v-if="rowData.rcsStyleChk[n-1] == false" type="text" class="inputStyle float-right" style="width:49%" v-model="rowData.rcsStyleInputSec[n-1]" disabled>
 								</div>
 							</div>
 							<div class="of_h consolMarginTop">
-								<div class="float-left" style="width:13%"><h4>버튼</h4></div>
-								<div class="float-left" style="width:57%">
+								<div class="float-left" style="width:18%"><h4>버튼</h4></div>
+								<div class="float-left" style="width:52%">
 									<table class="table_skin1 mt0" style="width:100%">
 										<colgroup>
 											<col style="width:22%">
@@ -568,7 +607,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr v-for="(buttonInfo, index) in rowData.rcsStyleButtons" v-bind:key="index">
+											<tr v-for="(buttonInfo, idx) in rowData.rcsStyleButtons" :key="idx">
 												<td class="text-center">
 													<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" disabled>
 														<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
@@ -601,8 +640,8 @@
 								</div>
 							</div>
 							<div class="of_h consolMarginTop">
-								<div class="float-left" style="width:13%"><h4>발신번호 *</h4></div>
-								<div class="float-left" style="width:57%">
+								<div class="float-left" style="width:18%"><h4>발신번호 *</h4></div>
+								<div class="float-left" style="width:52%">
 									<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 										<option value="">선택해주세요.</option>
 										<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
@@ -647,28 +686,41 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>브랜드명 *</h4></div>
+							<div class="float-left" style="width:18%"><h4>브랜드명 *</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
-								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
+								<option v-for="(option, idx) in brandNmList" :key="idx" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 							</select>
 						</div>
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%">
+								<h4>내용 *</h4>
+								<a 
+									class="btnStyle1 backBlack" 
+									style="margin-top:120px" 
+									title="단축 URL+" 
+									data-toggle="modal" 
+									data-target="#shortened_URL"
+									@click="selCh = 'push'"
+								>단축 URL-3</a>
+								<i class="fas fa-question-circle toolTip ml5">
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+								</i>
+							</div>
+							<div class="float-left" style="width:52%">
 								<textarea class="textareaStyle height190" maxlength="100" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsSMSContentId" @keyup="fnTextLength('내용', '#rcsSMSContentId', '#rcsSMSTextLength', '100')"></textarea>
 								<strong class="letter" id="rcsSMSTextLength">(00 / 100)</strong>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">
-							<div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>무료수신거부 *</h4></div>
+							<div class="float-left" style="width:52%">
 								<input type="text" class="inputStyle" v-model="rowData.rcsBlockNumber" placeholder="수신거부번호 설정">
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('SMS')" class="btnStyle1 backBlack">추가 +</a></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>버튼</h4><a @click="addRowRcsButton('SMS')" class="btnStyle1 backBlack">추가 +</a></div>
+							<div class="float-left" style="width:52%">
 								<table class="table_skin1 mt0" style="width:100%" v-if="buttonSMSFlag">
 									<colgroup>
 										<col style="width:22%">
@@ -685,7 +737,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr v-for="(buttonInfo, index) in rowData.rcsSMSButtons" v-bind:key="index">
+										<tr v-for="(buttonInfo, idx) in rowData.rcsSMSButtons" :key="idx">
 											<td class="text-center">
 												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" @change="fnChgRcsButtonType('SMS', index, buttonInfo.action.postback.data)">
 													<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
@@ -712,15 +764,15 @@
 												</div>
 											</td>
 											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
-											<td class="text-center end"><a @click="addRowRcsButton('SMS')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('SMS', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
+											<td class="text-center end"><a @click="addRowRcsButton('SMS')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('SMS', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h4>발신번호 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>발신번호 *</h4></div>
+							<div class="float-left" style="width:52%">
 								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 									<option value="">선택해주세요.</option>
 									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
@@ -764,34 +816,47 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>브랜드명 *</h4></div>
+							<div class="float-left" style="width:18%"><h4>브랜드명 *</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
-								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
+								<option v-for="(option, idx) in brandNmList" :key="idx" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 							</select>
 						</div>
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>제목 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>제목 *</h4></div>
+							<div class="float-left" style="width:52%">
 								<input type="text" class="inputStyle" v-model="rowData.rcs0Title" placeholder="최대 30자 입력 가능니다." maxlength="30">
 							</div>
 						</div>
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%">
+								<h4>내용 *</h4>
+								<a 
+									class="btnStyle1 backBlack" 
+									style="margin-top:120px" 
+									title="단축 URL+" 
+									data-toggle="modal" 
+									data-target="#shortened_URL"
+									@click="selCh = 'push'"
+								>단축 URL-4</a>
+								<i class="fas fa-question-circle toolTip ml5">
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+								</i>
+							</div>
+							<div class="float-left" style="width:52%">
 								<textarea class="textareaStyle height190" maxlength="1300" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsLMSContentId" @keyup="fnTextLength('내용', '#rcsLMSContentId', '#rcsLMSTextLength', '1300')"></textarea>
 								<strong class="letter" id="rcsLMSTextLength">(00 / 1,300)</strong>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">
-							<div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>무료수신거부 *</h4></div>
+							<div class="float-left" style="width:52%">
 								<input type="text" class="inputStyle" v-model="rowData.rcsBlockNumber" placeholder="수신거부번호 설정">
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('LMS')" class="btnStyle1 backBlack">추가 +</a></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>버튼</h4><a @click="addRowRcsButton('LMS')" class="btnStyle1 backBlack">추가 +</a></div>
+							<div class="float-left" style="width:52%">
 								<table class="table_skin1 mt0" style="width:100%" v-if="buttonLMSFlag">
 									<colgroup>
 										<col style="width:22%">
@@ -808,7 +873,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr v-for="(buttonInfo, index) in rowData.rcsLMSButtons" v-bind:key="index">
+										<tr v-for="(buttonInfo, idx) in rowData.rcsLMSButtons" :key="idx">
 											<td class="text-center">
 												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" @change="fnChgRcsButtonType('LMS', index, buttonInfo.action.postback.data)">
 													<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
@@ -832,22 +897,22 @@
 												<div class="consolMarginTop of_h">
 													<span class="float-left mt5" style="width:20%">종료일</span>
 													<div class="float-right" style="width:80%">
-														<Calendar v-if="index == 0" @update-date="fnRcsLmsButtonED1" :calendarId="fnCalendarEndDateId(index)"classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-														<Calendar v-else-if="index == 1" @update-date="fnRcsLmsButtonED2" :calendarId="fnCalendarEndDateId(index)"classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-														<Calendar v-else-if="index == 2" @update-date="fnRcsLmsButtonED3" :calendarId="fnCalendarEndDateId(index)"classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+														<Calendar v-if="index == 0" @update-date="fnRcsLmsButtonED1" :calendarId="fnCalendarEndDateId(index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+														<Calendar v-else-if="index == 1" @update-date="fnRcsLmsButtonED2" :calendarId="fnCalendarEndDateId(index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+														<Calendar v-else-if="index == 2" @update-date="fnRcsLmsButtonED3" :calendarId="fnCalendarEndDateId(index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
 													</div>
 												</div>
 											</td>
 											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
-											<td class="text-center end"><a @click="addRowRcsButton('LMS')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('LMS', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
+											<td class="text-center end"><a @click="addRowRcsButton('LMS')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('LMS', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h4>발신번호 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>발신번호 *</h4></div>
+							<div class="float-left" style="width:52%">
 								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 									<option value="">선택해주세요.</option>
 									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
@@ -899,28 +964,41 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>브랜드명 *</h4></div>
+							<div class="float-left" style="width:18%"><h4>브랜드명 *</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
-								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
+								<option v-for="(option, idx) in brandNmList" :key="idx" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 							</select>
 						</div>
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>제목</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>제목</h4></div>
+							<div class="float-left" style="width:52%">
 								<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs0Title">
 							</div>
 						</div>
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%">
+								<h4>내용 *</h4>
+								<a 
+									class="btnStyle1 backBlack" 
+									style="margin-top:120px" 
+									title="단축 URL+" 
+									data-toggle="modal" 
+									data-target="#shortened_URL"
+									@click="selCh = 'push'"
+								>단축 URL-5</a>
+								<i class="fas fa-question-circle toolTip ml5">
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+								</i>
+							</div>
+							<div class="float-left" style="width:52%">
 								<textarea class="textareaStyle height190" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsShortContentId" @keyup="fnTextLength('내용', '#rcsShortContentId', '#rcsShortTextLength', '1300')"></textarea>
 								<strong class="letter" id="rcsShortTextLength">(00 / 1,300)</strong>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h4>이미지</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>이미지</h4></div>
+							<div class="float-left" style="width:52%">
 								<div class="float-left" style="width:25%">
 									<a @click="fnRcsShortOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
 								</div>
@@ -935,14 +1013,14 @@
 							</div>
 						</div>
 						<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">
-							<div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>무료수신거부 *</h4></div>
+							<div class="float-left" style="width:52%">
 								<input type="text" class="inputStyle" v-model="rowData.rcsBlockNumber" placeholder="수신거부번호 설정">
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('SHORT')" class="btnStyle1 backBlack">추가 +</a></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>버튼</h4><a @click="addRowRcsButton('SHORT')" class="btnStyle1 backBlack">추가 +</a></div>
+							<div class="float-left" style="width:52%">
 								<table class="table_skin1 mt0" style="width:100%" v-if="buttonShortFlag">
 									<colgroup>
 										<col style="width:22%">
@@ -959,7 +1037,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr v-for="(buttonInfo, index) in rowData.rcsShortButtons" v-bind:key="index">
+										<tr v-for="(buttonInfo, idx) in rowData.rcsShortButtons" :key="idx">
 											<td class="text-center">
 												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" @change="fnChgRcsButtonType('SHORT', index, buttonInfo.action.postback.data)">
 													<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
@@ -988,15 +1066,15 @@
 												</div>
 											</td>
 											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
-											<td class="text-center end"><a @click="addRowRcsButton('SHORT')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('SHORT', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
+											<td class="text-center end"><a @click="addRowRcsButton('SHORT')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('SHORT', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h4>발신번호 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>발신번호 *</h4></div>
+							<div class="float-left" style="width:52%">
 								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 									<option value="">선택해주세요.</option>
 									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
@@ -1048,28 +1126,41 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>브랜드명 *</h4></div>
+							<div class="float-left" style="width:18%"><h4>브랜드명 *</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
-								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
+								<option v-for="(option, idx) in brandNmList" :key="idx" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 							</select>
 						</div>
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>제목</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>제목</h4></div>
+							<div class="float-left" style="width:52%">
 								<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcs0Title">
 							</div>
 						</div>
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%">
+								<h4>내용 *</h4>
+								<a 
+									class="btnStyle1 backBlack" 
+									style="margin-top:120px" 
+									title="단축 URL+" 
+									data-toggle="modal" 
+									data-target="#shortened_URL"
+									@click="selCh = 'push'"
+								>단축 URL-6</a>
+								<i class="fas fa-question-circle toolTip ml5">
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+								</i>
+							</div>
+							<div class="float-left" style="width:52%">
 								<textarea class="textareaStyle height190" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsTallContentId" @keyup="fnTextLength('내용', '#rcsTallContentId', '#rcsTallTextLength', '1300')"></textarea>
 								<strong class="letter" id="rcsTallTextLength">(00 / 1,300)</strong>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-							<div class="float-left" style="width:13%"><h4>이미지</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>이미지</h4></div>
+							<div class="float-left" style="width:52%">
 								<div class="float-left" style="width:25%">
 									<a @click="fnRcsTallOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
 								</div>
@@ -1084,14 +1175,14 @@
 							</div>
 						</div>
 						<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">
-							<div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>무료수신거부 *</h4></div>
+							<div class="float-left" style="width:52%">
 								<input type="text" class="inputStyle" v-model="rowData.rcsBlockNumber" placeholder="수신거부번호 설정">
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton('TALL')" class="btnStyle1 backBlack">추가 +</a></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>버튼</h4><a @click="addRowRcsButton('TALL')" class="btnStyle1 backBlack">추가 +</a></div>
+							<div class="float-left" style="width:52%">
 								<table class="table_skin1 mt0" style="width:100%" v-if="buttonTallFlag">
 									<colgroup>
 										<col style="width:22%">
@@ -1108,7 +1199,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr v-for="(buttonInfo, index) in rowData.rcsTallButtons" v-bind:key="index">
+										<tr v-for="(buttonInfo, idx) in rowData.rcsTallButtons" :key="idx">
 											<td class="text-center">
 												<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" @change="fnChgRcsButtonType('TALL', index, buttonInfo.action.postback.data)">
 													<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
@@ -1137,15 +1228,15 @@
 												</div>
 											</td>
 											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
-											<td class="text-center end"><a @click="addRowRcsButton('TALL')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('TALL', index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
+											<td class="text-center end"><a @click="addRowRcsButton('TALL')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('TALL', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:13%"><h4>발신번호 *</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>발신번호 *</h4></div>
+							<div class="float-left" style="width:52%">
 								<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 									<option value="">선택해주세요.</option>
 									<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
@@ -1195,15 +1286,15 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>브랜드명 *</h4></div>
+							<div class="float-left" style="width:18%"><h4>브랜드명 *</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
-								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
+								<option v-for="(option, idx) in brandNmList" :key="idx" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 							</select>
 						</div>
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>카드개수</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>카드개수</h4></div>
+							<div class="float-left" style="width:52%">
 								<select class="selectStyle2" style="width:70px" v-model="rcs9CardCount" @change="fnChgCShortCardCount(rcs9CardCount)">
 									<option value="3">3</option>
 									<option value="4">4</option>
@@ -1228,21 +1319,34 @@
 							<!--  testTab -->
 							<div v-for="(rcsCShortImgInfo, tabIdx) in rowData.rcsCShortImgInfoList" :key="tabIdx" class="tab-pane" role="tabpanel" :id="fnCarouselString('card9', tabIdx, '')">
 								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>제목</h4></div>
-									<div class="float-left" style="width:57%">
+									<div class="float-left" style="width:18%"><h4>제목</h4></div>
+									<div class="float-left" style="width:52%">
 										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcsCShortImgInfoList[tabIdx].rcsTitle">
 									</div>
 								</div>
 								<div class="of_h">
-									<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
-									<div class="float-left" style="width:57%">
+									<div class="float-left" style="width:18%">
+										<h4>내용 *</h4>
+										<a 
+											class="btnStyle1 backBlack" 
+											style="margin-top:120px" 
+											title="단축 URL+" 
+											data-toggle="modal" 
+											data-target="#shortened_URL"
+											@click="selCh = 'push'"
+										>단축 URL-7</a>
+										<i class="fas fa-question-circle toolTip ml5">
+											<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+										</i>
+									</div>
+									<div class="float-left" style="width:52%">
 										<textarea class="textareaStyle height190" v-model="rowData.rcsCShortImgInfoList[tabIdx].rcsContent" :placeholder="rcsPlaceHoder" :id="fnCarouselString('rcsCarouselTab', tabIdx, '')" @keyup="fnTextLength('내용', fnCarouselString('#rcsCarouselTab', tabIdx, ''), fnCarouselString('#rcsCarouselTab', tabIdx, 'TextLength'), '1300')"></textarea>
 										<strong class="letter" :id="fnCarouselString('rcsCarouselTab', tabIdx, 'TextLength')">(00 / 1,300)</strong>
 									</div>
 								</div>
 								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-									<div class="float-left" style="width:13%"><h4>이미지</h4></div>
-									<div class="float-left" style="width:57%">
+									<div class="float-left" style="width:18%"><h4>이미지</h4></div>
+									<div class="float-left" style="width:52%">
 										<div class="float-left" style="width:25%">
 											<a @click="fnRcsCarouselShortOpenImageManagePopUp(tabIdx)" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
 										</div>
@@ -1257,8 +1361,8 @@
 									</div>
 								</div>
 								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton(fnCarouselString('CSHORT_TAB', tabIdx, ''))" class="btnStyle1 backBlack">추가 +</a></div>
-									<div class="float-left" style="width:57%">
+									<div class="float-left" style="width:18%"><h4>버튼</h4><a @click="addRowRcsButton(fnCarouselString('CSHORT_TAB', tabIdx, ''))" class="btnStyle1 backBlack">추가 +</a></div>
+									<div class="float-left" style="width:52%">
 										<table class="table_skin1 mt0" style="width:100%" v-if="fnCarouselString('button9', tabIdx, 'Flag')">
 											<colgroup>
 												<col style="width:22%">
@@ -1275,7 +1379,7 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr v-for="(buttonInfo, index) in rowData.rcsCShortImgInfoList[tabIdx].rcsButtons" v-bind:key="index">
+												<tr v-for="(buttonInfo, idx) in rowData.rcsCShortImgInfoList[tabIdx].rcsButtons" :key="idx">
 													<td class="text-center">
 														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" @change="fnChgRcsButtonType(fnCarouselString('CSHORT_TAB', tabIdx, ''), index, buttonInfo.action.postback.data)">
 															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
@@ -1291,42 +1395,42 @@
 														<div class="consolMarginTop of_h">
 															<span class="float-left mt5" style="width:20%">시작일</span>
 															<div class="float-right" style="width:80%">
-																<Calendar v-if="tabIdx == 0 && index == 0" @update-date="fnRcsCShortButtonSD1_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 0 && index == 1" @update-date="fnRcsCShortButtonSD1_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 1 && index == 0" @update-date="fnRcsCShortButtonSD2_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 1 && index == 1" @update-date="fnRcsCShortButtonSD2_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 2 && index == 0" @update-date="fnRcsCShortButtonSD3_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 2 && index == 1" @update-date="fnRcsCShortButtonSD3_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 3 && index == 0" @update-date="fnRcsCShortButtonSD4_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 3 && index == 1" @update-date="fnRcsCShortButtonSD4_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 4 && index == 0" @update-date="fnRcsCShortButtonSD5_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 4 && index == 1" @update-date="fnRcsCShortButtonSD5_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 5 && index == 0" @update-date="fnRcsCShortButtonSD6_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 5 && index == 1" @update-date="fnRcsCShortButtonSD6_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-if="tabIdx == 0 && index == 0" @update-date="fnRcsCShortButtonSD1_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 0 && index == 1" @update-date="fnRcsCShortButtonSD1_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 1 && index == 0" @update-date="fnRcsCShortButtonSD2_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 1 && index == 1" @update-date="fnRcsCShortButtonSD2_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 2 && index == 0" @update-date="fnRcsCShortButtonSD3_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 2 && index == 1" @update-date="fnRcsCShortButtonSD3_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 3 && index == 0" @update-date="fnRcsCShortButtonSD4_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 3 && index == 1" @update-date="fnRcsCShortButtonSD4_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 4 && index == 0" @update-date="fnRcsCShortButtonSD5_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 4 && index == 1" @update-date="fnRcsCShortButtonSD5_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 5 && index == 0" @update-date="fnRcsCShortButtonSD6_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 5 && index == 1" @update-date="fnRcsCShortButtonSD6_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
 															</div>
 														</div>
 														<div class="consolMarginTop of_h">
 															<span class="float-left mt5" style="width:20%">종료일</span>
 															<div class="float-right" style="width:80%">
-																<Calendar v-if="tabIdx == 0 && index == 0" @update-date="fnRcsCShortButtonED1_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 0 && index == 1" @update-date="fnRcsCShortButtonED1_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 1 && index == 0" @update-date="fnRcsCShortButtonED2_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 1 && index == 1" @update-date="fnRcsCShortButtonED2_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 2 && index == 0" @update-date="fnRcsCShortButtonED3_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 2 && index == 1" @update-date="fnRcsCShortButtonED3_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 3 && index == 0" @update-date="fnRcsCShortButtonED4_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 3 && index == 1" @update-date="fnRcsCShortButtonED4_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 4 && index == 0" @update-date="fnRcsCShortButtonED5_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 4 && index == 1" @update-date="fnRcsCShortButtonED5_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 5 && index == 0" @update-date="fnRcsCShortButtonED6_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 5 && index == 1" @update-date="fnRcsCShortButtonED6_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-if="tabIdx == 0 && index == 0" @update-date="fnRcsCShortButtonED1_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 0 && index == 1" @update-date="fnRcsCShortButtonED1_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 1 && index == 0" @update-date="fnRcsCShortButtonED2_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 1 && index == 1" @update-date="fnRcsCShortButtonED2_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 2 && index == 0" @update-date="fnRcsCShortButtonED3_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 2 && index == 1" @update-date="fnRcsCShortButtonED3_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 3 && index == 0" @update-date="fnRcsCShortButtonED4_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 3 && index == 1" @update-date="fnRcsCShortButtonED4_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 4 && index == 0" @update-date="fnRcsCShortButtonED5_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 4 && index == 1" @update-date="fnRcsCShortButtonED5_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 5 && index == 0" @update-date="fnRcsCShortButtonED6_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 5 && index == 1" @update-date="fnRcsCShortButtonED6_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
 															</div>
 														</div>
 													</td>
 													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
 													<td class="text-center end">
 														<a @click="addRowRcsButton(fnCarouselString('CSHORT_TAB', tabIdx, ''))" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
-														<a @click="removeRowRcsButton(fnCarouselString('CSHORT_TAB', tabIdx, ''), index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
+														<a @click="removeRowRcsButton(fnCarouselString('CSHORT_TAB', tabIdx, ''), idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
 													</td>
 												</tr>
 											</tbody>
@@ -1336,14 +1440,14 @@
 							</div>
 							<!--  //testTab -->
 							<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">
-								<div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
-								<div class="float-left" style="width:57%">
+								<div class="float-left" style="width:18%"><h4>무료수신거부 *</h4></div>
+								<div class="float-left" style="width:52%">
 									<input type="text" class="inputStyle" v-model="rowData.rcsBlockNumber" placeholder="수신거부번호 설정">
 								</div>
 							</div>
 							<div class="of_h consolMarginTop">
-								<div class="float-left" style="width:13%"><h4>발신번호 *</h4></div>
-								<div class="float-left" style="width:57%">
+								<div class="float-left" style="width:18%"><h4>발신번호 *</h4></div>
+								<div class="float-left" style="width:52%">
 									<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 										<option value="">선택해주세요.</option>
 										<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
@@ -1394,15 +1498,15 @@
 					</div>
 					<div class="float-left consoleCon" style="width:72%">
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>브랜드명 *</h4></div>
+							<div class="float-left" style="width:18%"><h4>브랜드명 *</h4></div>
 							<select class="selectStyle2" v-model="rowData.brandNm" @change="fnChgBrandValue(rowData.brandNm)" style="width:24%" title="브랜드명 선택란">
 								<option value="">선택해주세요.</option>
-								<option v-for="option in brandNmList" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
+								<option v-for="(option, idx) in brandNmList" :key="idx" v-bind:value="option.BRAND_ID">{{option.BRAND_NAME}}</option>
 							</select>
 						</div>
 						<div class="of_h">
-							<div class="float-left" style="width:13%"><h4>카드개수</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:18%"><h4>카드개수</h4></div>
+							<div class="float-left" style="width:52%">
 								<select class="selectStyle2" style="width:70px" v-model="rcs10CardCount" @change="fnChgCTallCardCount(rcs10CardCount)">
 									<option value="3">3</option>
 									<option value="4">4</option>
@@ -1427,21 +1531,23 @@
 							<!--  testTab -->
 							<div v-for="(rcsCTallImgInfo, tabIdx) in rowData.rcsCTallImgInfoList" :key="tabIdx" class="tab-pane" role="tabpanel" :id="fnCarouselString('card10', tabIdx, '')">
 								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>제목</h4></div>
-									<div class="float-left" style="width:57%">
+									<div class="float-left" style="width:18%"><h4>제목</h4></div>
+									<div class="float-left" style="width:52%">
 										<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.rcsCTallImgInfoList[tabIdx].rcsTitle">
 									</div>
 								</div>
 								<div class="of_h">
-									<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
-									<div class="float-left" style="width:57%">
+									<div class="float-left" style="width:18%">
+										<h4>내용 *</h4>
+									</div>
+									<div class="float-left" style="width:52%">
 										<textarea class="textareaStyle height190" v-model="rowData.rcsCTallImgInfoList[tabIdx].rcsContent" :placeholder="rcsPlaceHoder" :id="fnCarouselString('rcsCarouselTab', tabIdx, '')" @keyup="fnTextLength('내용', fnCarouselString('#rcsCarouselTab', tabIdx, ''), fnCarouselString('#rcsCarouselTab', tabIdx, 'TextLength'), '1300')"></textarea>
 										<strong class="letter" :id="fnCarouselString('rcsCarouselTab', tabIdx, 'TextLength')">(00 / 1,300)</strong>
 									</div>
 								</div>
 								<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-									<div class="float-left" style="width:13%"><h4>이미지</h4></div>
-									<div class="float-left" style="width:57%">
+									<div class="float-left" style="width:18%"><h4>이미지</h4></div>
+									<div class="float-left" style="width:52%">
 										<div class="float-left" style="width:25%">
 											<a @click="fnRcsCarouselTallOpenImageManagePopUp(tabIdx)" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
 										</div>
@@ -1456,8 +1562,8 @@
 									</div>
 								</div>
 								<div class="of_h consolMarginTop">
-									<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowRcsButton(fnCarouselString('CTALL_TAB', tabIdx, ''))" class="btnStyle1 backBlack">추가 +</a></div>
-									<div class="float-left" style="width:57%">
+									<div class="float-left" style="width:18%"><h4>버튼</h4><a @click="addRowRcsButton(fnCarouselString('CTALL_TAB', tabIdx, ''))" class="btnStyle1 backBlack">추가 +</a></div>
+									<div class="float-left" style="width:52%">
 										<table class="table_skin1 mt0" style="width:100%" v-if="fnCarouselString('button10', tabIdx, 'Flag')">
 											<colgroup>
 												<col style="width:22%">
@@ -1474,7 +1580,7 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr v-for="(buttonInfo, index) in rowData.rcsCTallImgInfoList[tabIdx].rcsButtons" v-bind:key="index">
+												<tr v-for="(buttonInfo, idx) in rowData.rcsCTallImgInfoList[tabIdx].rcsButtons" :key="idx">
 													<td class="text-center">
 														<select class="selectStyle2" style="width:100%" v-model="buttonInfo.action.postback.data" @change="fnChgRcsButtonType(fnCarouselString('CTALL_TAB', tabIdx, ''), index, buttonInfo.action.postback.data)">
 															<option v-for="rcsButtonType in rcsButtonTypeList" :key="rcsButtonType.type" :value="rcsButtonType.type">{{rcsButtonType.name}}</option>
@@ -1490,42 +1596,49 @@
 														<div class="consolMarginTop of_h">
 															<span class="float-left mt5" style="width:20%">시작일</span>
 															<div class="float-right" style="width:80%">
-																<Calendar v-if="tabIdx == 0 && index == 0" @update-date="fnRcsCTallButtonSD1_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 0 && index == 1" @update-date="fnRcsCTallButtonSD1_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 1 && index == 0" @update-date="fnRcsCTallButtonSD2_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 1 && index == 1" @update-date="fnRcsCTallButtonSD2_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 2 && index == 0" @update-date="fnRcsCTallButtonSD3_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 2 && index == 1" @update-date="fnRcsCTallButtonSD3_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 3 && index == 0" @update-date="fnRcsCTallButtonSD4_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 3 && index == 1" @update-date="fnRcsCTallButtonSD4_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 4 && index == 0" @update-date="fnRcsCTallButtonSD5_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 4 && index == 1" @update-date="fnRcsCTallButtonSD5_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 5 && index == 0" @update-date="fnRcsCTallButtonSD6_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 5 && index == 1" @update-date="fnRcsCTallButtonSD6_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-if="tabIdx == 0 && index == 0" @update-date="fnRcsCTallButtonSD1_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 0 && index == 1" @update-date="fnRcsCTallButtonSD1_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 1 && index == 0" @update-date="fnRcsCTallButtonSD2_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 1 && index == 1" @update-date="fnRcsCTallButtonSD2_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 2 && index == 0" @update-date="fnRcsCTallButtonSD3_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 2 && index == 1" @update-date="fnRcsCTallButtonSD3_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 3 && index == 0" @update-date="fnRcsCTallButtonSD4_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 3 && index == 1" @update-date="fnRcsCTallButtonSD4_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 4 && index == 0" @update-date="fnRcsCTallButtonSD5_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 4 && index == 1" @update-date="fnRcsCTallButtonSD5_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 5 && index == 0" @update-date="fnRcsCTallButtonSD6_0" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 5 && index == 1" @update-date="fnRcsCTallButtonSD6_1" :calendarId="fnCarouselCalendarStartDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.startTime"></Calendar>
 															</div>
 														</div>
 														<div class="consolMarginTop of_h">
 															<span class="float-left mt5" style="width:20%">종료일</span>
 															<div class="float-right" style="width:80%">
-																<Calendar v-if="tabIdx == 0 && index == 0" @update-date="fnRcsCTallButtonED1_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 0 && index == 1" @update-date="fnRcsCTallButtonED1_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 1 && index == 0" @update-date="fnRcsCTallButtonED2_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 1 && index == 1" @update-date="fnRcsCTallButtonED2_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 2 && index == 0" @update-date="fnRcsCTallButtonED3_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 2 && index == 1" @update-date="fnRcsCTallButtonED3_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 3 && index == 0" @update-date="fnRcsCTallButtonED4_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 3 && index == 1" @update-date="fnRcsCTallButtonED4_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 4 && index == 0" @update-date="fnRcsCTallButtonED5_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 4 && index == 1" @update-date="fnRcsCTallButtonED5_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 5 && index == 0" @update-date="fnRcsCTallButtonED6_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
-																<Calendar v-else-if="tabIdx == 5 && index == 1" @update-date="fnRcsCTallButtonED6_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, index)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-if="tabIdx == 0 && index == 0" @update-date="fnRcsCTallButtonED1_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 0 && index == 1" @update-date="fnRcsCTallButtonED1_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 1 && index == 0" @update-date="fnRcsCTallButtonED2_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 1 && index == 1" @update-date="fnRcsCTallButtonED2_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 2 && index == 0" @update-date="fnRcsCTallButtonED3_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 2 && index == 1" @update-date="fnRcsCTallButtonED3_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 3 && index == 0" @update-date="fnRcsCTallButtonED4_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 3 && index == 1" @update-date="fnRcsCTallButtonED4_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 4 && index == 0" @update-date="fnRcsCTallButtonED5_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 4 && index == 1" @update-date="fnRcsCTallButtonED5_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 5 && index == 0" @update-date="fnRcsCTallButtonED6_0" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
+																<Calendar v-else-if="tabIdx == 5 && index == 1" @update-date="fnRcsCTallButtonED6_1" :calendarId="fnCarouselCalendarEndDateId(tabIdx, idx)" classProps="datepicker inputStyle" :initDate="buttonInfo.action.calendarAction.createCalendarEvent.endTime"></Calendar>
 															</div>
 														</div>
 													</td>
 													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
 													<td class="text-center end">
+														<a
+															class="btnStyle1 backBlack" 
+															title="단축 URL+" 
+															data-toggle="modal" 
+															data-target="#shortened_URL"
+															@click="selCh = 'kakaotalk'; selIdx = idx"
+														>단축 URL+</a> 
 														<a @click="addRowRcsButton(fnCarouselString('CTALL_TAB', tabIdx, ''))" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
-														<a @click="removeRowRcsButton(fnCarouselString('CTALL_TAB', tabIdx, ''), index)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
+														<a @click="removeRowRcsButton(fnCarouselString('CTALL_TAB', tabIdx, ''), idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
 													</td>
 												</tr>
 											</tbody>
@@ -1536,14 +1649,14 @@
 							<!--  //testTab -->
 
 							<div class="of_h consolMarginTop" v-if="rowData.msgKind == 'A'">
-								<div class="float-left" style="width:13%"><h4>무료수신거부 *</h4></div>
-								<div class="float-left" style="width:57%">
+								<div class="float-left" style="width:18%"><h4>무료수신거부 *</h4></div>
+								<div class="float-left" style="width:52%">
 									<input type="text" class="inputStyle" v-model="rowData.rcsBlockNumber" placeholder="수신거부번호 설정">
 								</div>
 							</div>
 							<div class="of_h consolMarginTop">
-								<div class="float-left" style="width:13%"><h4>발신번호 *</h4></div>
-								<div class="float-left" style="width:57%">
+								<div class="float-left" style="width:18%"><h4>발신번호 *</h4></div>
+								<div class="float-left" style="width:52%">
 									<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 										<option value="">선택해주세요.</option>
 										<option v-for="info in rcsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
@@ -1605,7 +1718,7 @@
 				</div>
 				<div class="float-left consoleCon" style="width:72%">
 					<div class="of_h">
-						<div class="float-left" style="width:13%"><h4>카카오 채널 *</h4></div>
+						<div class="float-left" style="width:18%"><h4>카카오 채널 *</h4></div>
 						<div class="float-left" style="width:59%">
 							<select class="float-left selectStyle2" style="width:100%" v-model="rowData.friendTalkSenderKey">
 								<option value="">선택해주세요.</option>
@@ -1614,7 +1727,7 @@
 						</div>
 					</div>
 					<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-						<div class="float-left" style="width:13%"><h4>이미지</h4></div>
+						<div class="float-left" style="width:18%"><h4>이미지</h4></div>
 						<div class="float-left" style="width:59%">
 							<div class="float-left" style="width:25%">
 								<a @click="fnFriendTalkOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
@@ -1625,20 +1738,33 @@
 						</div>
 					</div>
 					<div class="of_h consolMarginTop" v-if="rowData.msgType == 'IMAGE'">
-						<div class="float-left" style="width:13%"><h4>이미지 링크</h4></div>
+						<div class="float-left" style="width:18%"><h4>이미지 링크</h4></div>
 						<div class="float-left" style="width:59%">
 							<input type="text" class="inputStyle" placeholder="https://..." v-model="rowData.friendTalkImageLink">
 						</div>
 					</div>
 					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:13%"><h4>내용 *</h4></div>
+						<div class="float-left" style="width:18%">
+							<h4>내용 *</h4>
+							<a 
+								class="btnStyle1 backBlack" 
+								style="margin-top:120px" 
+								title="단축 URL+" 
+								data-toggle="modal" 
+								data-target="#shortened_URL"
+								@click="selCh = 'push'"
+							>단축 URL-8</a>
+							<i class="fas fa-question-circle toolTip ml5">
+								<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+							</i>
+						</div>
 						<div class="float-left" style="width:59%">
 							<textarea class="textareaStyle height190" v-model="rowData.friendTalkContent" :placeholder="kakaoPlaceHoder" @input="fnSetFrndTalkCurrByte" :maxlength="msgFrndTalkLimitByte"></textarea>
 							<strong class="letter">({{msgFrndTalkCurrByte | formatComma}} / {{msgFrndTalkLimitByte | formatComma}})</strong>
 						</div>
 					</div>					
 					<div class="of_h consolMarginTop">
-						<div class="float-left" style="width:13%"><h4>버튼</h4><a @click="addRowFriendTalk" class="btnStyle1 backBlack">추가 +</a></div>
+						<div class="float-left" style="width:18%"><h4>버튼</h4><a @click="addRowFriendTalk" class="btnStyle1 backBlack">추가 +</a></div>
 						<div class="float-left" style="width:59%">
 							<table class="table_skin1 mt0" style="width:100%" v-if="buttonFriendTalkFlag">
 								<colgroup>
@@ -1733,7 +1859,7 @@
 					<div v-if="selectedAlimTalkTemplate">
 						<div class="of_h mt20">
 							<div class="float-left" style="width:15%"><h4>카카오 채널</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:52%">
 								<select class="float-left selectStyle2" style="width:100%" v-model="rowData.senderKey" disabled>
 									<option value="">선택해주세요.</option>
 									<option v-for="senderKeyInfo in friendTalkSenderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.kkoChId}}</option>
@@ -1742,25 +1868,25 @@
 						</div>
 						<div class="of_h consolMarginTop">
 							<div class="float-left" style="width:15%"><h4>템플릿 명</h4></div>
-							<div class="float-left" style="width:57%"><input type="text" class="inputStyle" v-model="rowData.tmpltName" disabled></div>
+							<div class="float-left" style="width:52%"><input type="text" class="inputStyle" v-model="rowData.tmpltName" disabled></div>
 						</div>
 						<div class="of_h consolMarginTop" v-if="rowData.emphasizeType == 'TEXT'">
 							<div class="float-left" style="width:15%"><h4>템플릿강조제목</h4></div>
-							<div class="float-left" style="width:57%"><input type="text" class="inputStyle" v-model="rowData.tmpltEmpsTitle" disabled></div>
+							<div class="float-left" style="width:52%"><input type="text" class="inputStyle" v-model="rowData.tmpltEmpsTitle" disabled></div>
 						</div>
 						<div class="of_h consolMarginTop" v-if="rowData.emphasizeType == 'TEXT'">
 							<div class="float-left" style="width:15%"><h4>템플릿강조부제목</h4></div>
-							<div class="float-left" style="width:57%"><input type="text" class="inputStyle" v-model="rowData.tmpltEmpsSubTitle" disabled></div>
+							<div class="float-left" style="width:52%"><input type="text" class="inputStyle" v-model="rowData.tmpltEmpsSubTitle" disabled></div>
 						</div>
 						<div class="of_h consolMarginTop">
 							<div class="float-left" style="width:15%"><h4>내용</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:52%">
 								<textarea class="textareaStyle height190" v-model="rowData.tmpltContent" disabled></textarea>
 							</div>
 						</div>
 						<div class="of_h consolMarginTop">
 							<div class="float-left" style="width:15%"><h4>버튼</h4></div>
-							<div class="float-left" style="width:57%">
+							<div class="float-left" style="width:52%">
 								<table class="table_skin1 mt0" style="width:100%" v-if="buttonAlimTalkFlag">
 									<colgroup>
 										<col style="width:22%">
@@ -1846,15 +1972,15 @@
 			</div>
 			<div class="float-left consoleCon" style="width:72%">
 				<div class="of_h">
-					<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>발송 유형 *</h4></div>
-					<div class="float-left" style="width:57%">
+					<div class="float-left" :style="rowData.msgKind=='I' ? 'width:18%' : 'width:25%'"><h4>발송 유형 *</h4></div>
+					<div class="float-left" style="width:52%">
 						<input type="radio" name="smsSendType" value="S" id="smsSendType1"  v-on:click="checkSmsSend('S')" v-model="rowData.smsSendType"> <label for="smsSendType1" class="mr30">SMS</label>
 						<input type="radio" name="smsSendType" value="M" id="smsSendType2"  v-on:click="checkSmsSend('M')" v-model="rowData.smsSendType"> <label for="smsSendType2"><p v-if="rowData.msgType=='IMAGE'">MMS</P><p v-else>LMS</P></label>
 					</div>
 				</div>				
 				<div class="of_h consolMarginTop" v-if="!checkedRCS">
-					<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>발신번호 *</h4></div>
-					<div class="float-left" style="width:57%">
+					<div class="float-left" :style="rowData.msgKind=='I' ? 'width:18%' : 'width:25%'"><h4>발신번호 *</h4></div>
+					<div class="float-left" style="width:52%">
 						<select v-model="rowData.callback" class="selectStyle2 float-right" style="width:100%">
 							<option value="">선택해주세요.</option>
 							<option v-for="info in smsCallbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
@@ -1863,10 +1989,10 @@
 				</div>
 				<div v-if="smsTemplateTable === 0">
 					<div class="of_h" v-if="rowData.msgKind == 'A'">
-						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'">
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:18%' : 'width:25%'">
 							<h4>광고성메시지 수신거부번호 *</h4>
 						</div>
-						<div class="float-left mt10" style="width:57%">
+						<div class="float-left mt10" style="width:52%">
 							<div class="float-left" style="width:15%">
 								<button class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</button>
 							</div>
@@ -1876,12 +2002,12 @@
 						</div>
 					</div>
 					<div class="of_h consolMarginTop">
-						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>내용 *</h4>						
-						    <span class="float-left color3"  v-if="rowData.msgKind == 'A'">
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:18%' : 'width:25%'"><h4>내용 *</h4>						
+							<span class="float-left color3"  v-if="rowData.msgKind == 'A'">
 								(광고) 문구가 내용 앞에 붙고<br>광고성메시지 수신거부번호는<br>내용 밑에 포함됩니다.
 							</span>
 						</div>
-						<div class="float-left" style="width:57%">
+						<div class="float-left" style="width:52%">
 							<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" @input="fnSetSmsCurrByte"></textarea>
 							<strong class="letter">({{msgSmsCurrByte | formatComma}} / {{msgSmsLimitByte | formatComma}})</strong>
 						</div>
@@ -1889,17 +2015,17 @@
 				</div>
 				<div v-else-if="smsTemplateTable === 1">
 					<div class="of_h" >
-						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>제목 *</h4></div>
-						<div class="float-left" style="width:57%">
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:18%' : 'width:25%'"><h4>제목 *</h4></div>
+						<div class="float-left" style="width:52%">
 							<input type="text" class="inputStyle" placeholder="최대 30자 입력 가능니다." v-model="rowData.smsTitle" @input="fnSetTitleSmsCurrByte">
 							<strong class="letter">({{titleSmsCurrByte | formatComma}} / {{titleSmsLimitByte | formatComma}})</strong>
 						</div>
 					</div>
 					<div class="of_h" v-if="rowData.msgKind == 'A'">
-						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'">
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:18%' : 'width:25%'">
 							<h4>광고성메시지 수신거부번호 *</h4>
 						</div>
-						<div class="float-left mt10" style="width:57%">
+						<div class="float-left mt10" style="width:52%">
 							<div class="float-left" style="width:15%">
 								<button class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</button>
 							</div>
@@ -1909,19 +2035,19 @@
 						</div>
 					</div>
 					<div class="of_h consolMarginTop" >
-						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>내용 *</h4>
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:18%' : 'width:25%'"><h4>내용 *</h4>
 							<span class="float-left color3"  v-if="rowData.msgKind == 'A'">
 								광고성메시지 수신거부번호는<br>내용 하단에 포함됩니다.<br>또한 광고 표기는 제목 또는 내용에<br>포함되어 있어야 합니다.
 							</span>
 						</div>
-						<div class="float-left" style="width:57%">
+						<div class="float-left" style="width:52%">
 							<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" @input="fnSetSmsCurrByte"></textarea>
 							<strong class="letter">({{msgSmsCurrByte | formatComma}} / {{msgSmsLimitByte | formatComma}})</strong>
 						</div>
 					</div>
 					<div class="of_h consolMarginTop"  v-if="rowData.msgType == 'IMAGE'">
-						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:13%' : 'width:25%'"><h4>이미지</h4></div>
-						<div class="float-left" style="width:57%">
+						<div class="float-left" :style="rowData.msgKind=='I' ? 'width:18%' : 'width:25%'"><h4>이미지</h4></div>
+						<div class="float-left" style="width:52%">
 							<div class="float-left" style="width:25%">
 								<a @click="fnSmsOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
 							</div>
@@ -1948,6 +2074,9 @@
 		<RcsTemplatePopup :templateRadioBtn.sync="templateRadioBtn" ref="rcsTemplatePop" @fnResult="fnSetRcsTemplate"></RcsTemplatePopup>
 		<AlimTalkTemplatePopup :alimTalkTemplateOpen.sync="alimTalkTemplateOpen" ref="alimTalkTmplPopup"></AlimTalkTemplatePopup>
 		<RcvblcNumPopup @callback-func="fnCallbackRcvblcNum" :rcvblcNumOpen.sync="rcvblcNumOpen"></RcvblcNumPopup>
+
+		<shortenedUrlListPopup @btnSelect="btnSelect" />
+    <shortenedUrlAddPopup/>
 	</div>
 </template>
 
@@ -1998,12 +2127,15 @@ import ImageFriendTalkUploadPopUp from "@/modules/commonUtil/components/bp-image
 import ImageSmsManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
 import ImageSmsUploadPopUp from "@/modules/commonUtil/components/bp-imageUpload.vue";
 
-import tokenSvc from '@/common/token-service';
+// import tokenSvc from '@/common/token-service';
 import confirm from "@/modules/commonUtil/service/confirm";
-import * as utils from '@/common/utils';
-import { consts } from '@/common/config';
+// import * as utils from '@/common/utils';
+// import { consts } from '@/common/config';
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import Calendar from "@/components/Calendar.vue";
+
+import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
 
 var slider;
 
@@ -2035,7 +2167,10 @@ export default {
 		ImageFriendTalkManagePopUp,  ImageFriendTalkUploadPopUp,  /* kakao friend talk */
 		ImageSmsManagePopUp, ImageSmsUploadPopUp,  /* sms/mms mms */
 
-		Calendar
+		Calendar,
+
+		shortenedUrlListPopup,
+    shortenedUrlAddPopup,
 	},
 	props: {
 		tmpltCodeP: {
@@ -2275,6 +2410,8 @@ export default {
 			smsmmsPlaceHoder: "변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오.\n예) 이름과 출금일을 변수 설정: 예) #{고객}님 #{YYMMDD} 출금 예정입니다.",
 
 			buttonDSDescription : '카카오 메세지에 택배사 명과 송장번호를 기재한 후, 배송 조회 버튼을 추가하시면 메세지에서 택배사 명과 송장번호를 추출하여 배송 조회 카카오 검색페이지 링크가 자동으로 생성됩니다. 카카오에서 지원하는 택배사명과 운송장번호가 알림톡 메시지 내에 포함된 경우에만 배송조회 버튼이 표시됩니다. 배송 조회가 가능한 택배사는 <span style="color:#e11d21"><strong>카카오와 해당 택배사와의 계약 관계에 의해 변동될 수 있음을 유의해주시기 바랍니다.</strong></span>',
+			selCh: null,
+			selIdx: null,
 		}
 	},
 	watch: {
@@ -2322,7 +2459,6 @@ export default {
 			}
 		},
 		channelTab(val){
-			var vm = this;
 			if (val === 0) {//channelTab === 0 PUSH
 			} else if(val === 1) {//channelTab === 1 RCS
 				if (this.rcsTemplateTable == 9) {
@@ -2766,19 +2902,19 @@ export default {
 					this.rowData.checkedChannel[3] = '문자';
 					jQuery(".borderLightGray").removeClass("active");
 				} else if (this.rowData.checkedChannel.length == 3) {
-					for (var i=0; i < this.rowData.checkedChannel.length; i++) {
-						if (this.rowData.checkedChannel[i] == 'PUSH') {
+					for (var n=0; n < this.rowData.checkedChannel.length; n++) {
+						if (this.rowData.checkedChannel[n] == 'PUSH') {
 							pushFlag = true;
-						} else if(this.rowData.checkedChannel[i] == 'RCS') {
+						} else if(this.rowData.checkedChannel[n] == 'RCS') {
 							rcsFlag = true;
-						} else if(this.rowData.checkedChannel[i] == 'KAKAO') {
+						} else if(this.rowData.checkedChannel[n] == 'KAKAO') {
 							kakaoFlag = true;
-						} else if(this.rowData.checkedChannel[i] == '문자') {
+						} else if(this.rowData.checkedChannel[n] == '문자') {
 							smsFlag = true;
 						}
 					}
-					for (var i=0; i < this.rowData.checkedChannel.length; i++) {
-						this.rowData.checkedChannel.splice(i, 1);
+					for (var j=0; j < this.rowData.checkedChannel.length; j++) {
+						this.rowData.checkedChannel.splice(j, 1);
 					}
 					if (pushFlag == false) {
 						this.rowData.checkedChannel[0] = 'KAKAO';
@@ -2802,19 +2938,19 @@ export default {
 					}
 					jQuery(".borderLightGray").removeClass("active");
 				} else if (this.rowData.checkedChannel.length == 2) {
-					for (var i=0; i < this.rowData.checkedChannel.length; i++) {
-						if (this.rowData.checkedChannel[i] == 'PUSH') {
+					for (var k=0; k < this.rowData.checkedChannel.length; k++) {
+						if (this.rowData.checkedChannel[k] == 'PUSH') {
 							pushFlag = true;
-						} else if(this.rowData.checkedChannel[i] == 'RCS') {
+						} else if(this.rowData.checkedChannel[k] == 'RCS') {
 							rcsFlag = true;
-						} else if(this.rowData.checkedChannel[i] == 'KAKAO') {
+						} else if(this.rowData.checkedChannel[k] == 'KAKAO') {
 							kakaoFlag = true;
-						} else if(this.rowData.checkedChannel[i] == '문자') {
+						} else if(this.rowData.checkedChannel[k] == '문자') {
 							smsFlag = true;
 						}
 					}
-					for (var i=0; i < this.rowData.checkedChannel.length; i++) {
-						this.rowData.checkedChannel.splice(i, 1);
+					for (var l=0; l < this.rowData.checkedChannel.length; l++) {
+						this.rowData.checkedChannel.splice(l, 1);
 					}
 					if (pushFlag == true) {
 						if (kakaoFlag == true) {
@@ -4911,7 +5047,26 @@ export default {
 				return true;
 			else
 				return false ;
-		}
+		},
+		//단축 URL 선택
+    btnSelect(shortendUrl){
+			if(this.rowData){
+				if(this.selCh === 'push'){
+					this.$set(this.rowData, 'pushContent', shortendUrl)
+				} else if(this.selCh === 'kakaotalk') {
+					if(this.tmpltData.buttonList.length > 0 && this.selIdx !== null && this.tmpltData.buttonList[this.selIdx]){
+						// mobile link
+						this.$set(this.tmpltData.buttonList[this.selIdx], 'linkMo', shortendUrl)
+
+						// pc link
+						this.$set(this.tmpltData.buttonList[this.selIdx], 'linkPc', shortendUrl)
+					}
+				}
+      }
+
+			this.selCh = null
+			this.selIdx = null
+    },
 	}
 }
 </script>

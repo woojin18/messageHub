@@ -145,10 +145,10 @@
               <div  class="of_h consolMarginTop">
                 <table class="table_skin1" style="border-top: 1px solid #D5D5D5; border-bottom: 1px solid #D5D5D5;">
                   <colgroup>
-                    <col style="width:21%">
+                    <col style="width:110px">
                     <col style="width:17%">
-                    <col style="width:*%">
-                    <col style="width:15%">
+                    <col>
+                    <col style="width:120px">
                   </colgroup>
                   <thead>
                   <tr>
@@ -182,6 +182,14 @@
                       <td v-else>
                       </td>
                       <td class="text-center end" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
+                        <a
+													v-if="buttonInfo.linkType === 'WL'"
+													class="btnStyle1 backBlack" 
+													title="단축 URL+" 
+													data-toggle="modal" 
+													data-target="#shortened_URL"
+													@click="selIdx = idx"
+												>단축 URL+</a> 
                         <a @click="fnDelButton(idx)" class="btnStyle1 backLightGray" style="padding:0px 15px;">삭제</a>
                       </td>
                     </tr>
@@ -337,6 +345,9 @@
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
     <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
     <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" ref="testSendInputPopup"></TestSendInputPopup>
+
+    <shortenedUrlListPopup @btnSelect="btnSelect" />
+    <shortenedUrlAddPopup/>
   </div>
 </template>
 
@@ -356,6 +367,9 @@ import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import messageApi from "@/modules/message/service/messageApi.js";
 import templateApi from "@/modules/template/service/templateApi.js";
 
+import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
+
 export default {
   name: 'sendFrndTalkMain',
   components : {
@@ -366,7 +380,9 @@ export default {
     DirectInputPopup,
     AddressInputPopup,
     Calendar,
-    TestSendInputPopup
+    TestSendInputPopup,
+    shortenedUrlListPopup,
+    shortenedUrlAddPopup,
   },
   props: {
     componentsTitle: {
@@ -434,16 +450,17 @@ export default {
         buttonList : [],
         testRecvInfoLst: [],  //테스트 수신자정보
         excelLimitRow: 0
-      }
+      },
+      selIdx : null,
     }
   },
   watch : {
-	  recvCnt (newval, oldval) {
-		  if(newval>30000) {
-			  confirm.fnAlert(this.componentsTitle, "발송 최대 수신자 수는 30000명을 넘길 수 없습니다.");
-			  this.fnRemoveRecvInfo();
-		  }
-	  }
+    recvCnt (newval) {
+      if(newval>30000) {
+        confirm.fnAlert(this.componentsTitle, "발송 최대 수신자 수는 30000명을 넘길 수 없습니다.");
+        this.fnRemoveRecvInfo();
+      }
+    }
   },
   async mounted() {
     await this.fnExistApiKey();
@@ -462,7 +479,7 @@ export default {
         const file = this.$refs.excelFile.files[0];
         let reader = new FileReader();
 
-        reader.onload = (e) => {
+        reader.onload = () => {
           let data = reader.result;
           let workbook = XLSX.read(data, {type: 'binary'});
           let sheetName = '';
@@ -627,6 +644,7 @@ export default {
               return false;
             }
             if(this.$gfnCommonUtils.isUrl(buttonList[i].linkAnd) && this.$gfnCommonUtils.isUrl(buttonList[i].linkIos)) {
+              //
             } else {
               confirm.fnAlert(this.componentsTitle, '유효하지 않은 버튼 링크 URL 입니다.\n[http://, https://]를 포함한 URL을 입력해주세요.');
               return false;
@@ -1002,6 +1020,26 @@ export default {
         requiredCuPhone: this.sendData.requiredCuPhone
       };
       await messageApi.excelDownSendFrndTalkRecvTmplt(params);
+    },
+    //단축 URL 선택
+    btnSelect(shortendUrl){
+      if(this.sendData.buttonList.length > 0 && this.selIdx !== null && this.sendData.buttonList[this.selIdx]){
+        // mobile link
+        this.$set(this.sendData.buttonList[this.selIdx], 'linkMo', shortendUrl)
+
+        // pc link
+        this.$set(this.sendData.buttonList[this.selIdx], 'linkPc', shortendUrl)
+      }
+
+      this.selIdx = null
+    },
+    fnChgBtnType(idx){
+      // const vm = this
+      Object.keys(this.sendData.buttonList[idx]).forEach((key) => {
+        if(key != 'linkType'){
+          delete this.sendData.buttonList[idx][key];
+        }
+      })
     },
   }
 }
