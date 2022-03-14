@@ -461,7 +461,7 @@ import {eventBus} from "@/modules/commonUtil/service/eventBus";
 var slider;
 
 export default {
-  name: "pushTemplateList",
+  name: "rcsTemplateSend",
   components: {
 		RcsTemplatePopup,
 		RcsMsgPopup,
@@ -477,10 +477,19 @@ export default {
 		shortenedUrlListPopup,
     shortenedUrlAddPopup,
   },
+	props: {
+    componentsTitle: {
+      type: String,
+      require: false,
+      default: () => {
+        return 'RCS 발송'
+      }
+    },
+  },
   filters: {
-	comma (val) {
-		return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-	}
+		comma (val) {
+			return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+		}
   },
   data() {
     return {
@@ -616,7 +625,7 @@ export default {
 		},
 		recvCnt (newval) {
 			if(newval>30000) {
-				confirm.fnAlert("RCS 발송", "발송 최대 수신자 수는 30000명을 넘길 수 없습니다.");
+				confirm.fnAlert(this.componentsTitle, "발송 최대 수신자 수는 30000명을 넘길 수 없습니다.");
 				this.fnRemoveRecvInfo();
 			}
 		},
@@ -634,17 +643,17 @@ export default {
 			}
 			if(senderType == "SMS") {
 				if(byte>90) {
-					confirm.fnAlert("RCS 발송", '대체발송 내용이 90byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
+					confirm.fnAlert(this.componentsTitle, '대체발송 내용이 90byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
 					this.sendData.freeReceiveNum = oldval;
 				}
 			} else if(senderType == "LMS") {
 				if(byte>1000) {
-					confirm.fnAlert("RCS 발송", '대체발송 내용이 1000byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
+					confirm.fnAlert(this.componentsTitle, '대체발송 내용이 1000byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
 					this.sendData.freeReceiveNum = oldval;
 				}
 			} else if(senderType == "MMS") {
 				if(byte>2000) {
-					confirm.fnAlert("RCS 발송", '대체발송 내용이 2000byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
+					confirm.fnAlert(this.componentsTitle, '대체발송 내용이 2000byte를 넘지 않아야됩니다.\n(현재 : '+byte+'byte)');
 					this.sendData.freeReceiveNum = oldval;
 				}
 			}
@@ -1084,14 +1093,14 @@ export default {
 			conts = vm.sendData.textTitle;
 			conts += vm.sendData.textContents;
 		} else {
-			for(var i=0; i<vm.sendData.carouselObj.textTitle.length; i++) {
-				conts += vm.sendData.carouselObj.textTitle[i];
-				conts += vm.sendData.carouselObj.textContents[i];
+			for(var j=0; j<vm.sendData.carouselObj.textTitle.length; j++) {
+				conts += vm.sendData.carouselObj.textTitle[j];
+				conts += vm.sendData.carouselObj.textContents[j];
 			}
 		}
 
 		if("" == conts) {
-			confirm.fnAlert("RCS 발송", "전송하실 RCS 내용을 먼저 입력해 주세요.");
+			confirm.fnAlert(this.componentsTitle, "전송하실 RCS 내용을 먼저 입력해 주세요.");
 			return false;
 		}
 
@@ -1117,30 +1126,30 @@ export default {
 			});
 		}
 
-      if(containRsvNm){
-        confirm.fnAlert('RCS 발송', '발송 내용 변수 phone 은 예약어로 사용하실 수 없습니다.');
-        return false;
-      } else {
-        this.sendData.contsVarNms = this.fnSetArrayRemoveDupliVal(varNms);
-        return true;
-      }
-    },
+		if(containRsvNm){
+			confirm.fnAlert(this.componentsTitle, '발송 내용 변수 phone 은 예약어로 사용하실 수 없습니다.');
+			return false;
+		} else {
+			this.sendData.contsVarNms = this.fnSetArrayRemoveDupliVal(varNms);
+			return true;
+		}
+	},
 	//array에 중복 항목을 제거한다.
-    fnSetArrayRemoveDupliVal(array){
-      let seen = {};
-      return array.filter(function(item) {
-        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
-      });
-    },
+	fnSetArrayRemoveDupliVal(array){
+		let seen = {};
+		return array.filter(function(item) {
+			return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+		});
+	},
 
 	//SMS 템플릿 엑셀 다운로드
-    async fnExcelTmplteDownLoad(){
-			if(this.fnSetContsVarNms() == false) return;
-			const params = {
-					contsVarNms : this.sendData.contsVarNms
-				};
-				await rcsTemplateSendApi.excelDownSendRcsRecvTmplt(params);
-    },
+	async fnExcelTmplteDownLoad(){
+		if(this.fnSetContsVarNms() == false) return;
+		const params = {
+				contsVarNms : this.sendData.contsVarNms
+			};
+			await rcsTemplateSendApi.excelDownSendRcsRecvTmplt(params);
+	},
 
 	// 저장 버튼 처리
 	fnSaveRcsMsg(saveContent) {
@@ -1181,8 +1190,6 @@ export default {
 				confirm.fnAlert(result.message,"관리자에게 문의하세요.");
 			}
 		});
-
-
 	},
 
 	// 저장 유효성 검사
@@ -1258,7 +1265,6 @@ export default {
 				vm.sendData.carouselObj.imgUrl = data.imgUrl;				// 이미지
 				vm.sendData.carouselObj.fileId = data.fileId;				// 이미지
 				vm.sendData.carouselObj.btnArr = data.btnArr;				// 버튼
-
 			}
 		});
 	},
@@ -1291,7 +1297,6 @@ export default {
 		setTimeout(function() {
 			vm.fnSetSlider();
 		}, 10)
-
 	},
 
 	fnConfirmChangeRadioBtn() {
@@ -1370,11 +1375,11 @@ export default {
 			var result = response.data;
 			var success = result.success;
 			if(success) {
-				confirm.fnAlert("RCS 발송", "메시지 발송처리를 완료하였습니다. 메시지 발송 성공/실패는 조회의 '전체' 메뉴에서 확인이 가능합니다.");
+				confirm.fnAlert(this.componentsTitle, "메시지 발송처리를 완료하였습니다. 메시지 발송 성공/실패는 조회의 '전체' 메뉴에서 확인이 가능합니다.");
 				// 발송 완료 후 데이터 리셋처리
 				this.fnResetData();
 			} else {
-				confirm.fnAlert("RCS 발송", result.message);
+				confirm.fnAlert(this.componentsTitle, result.message);
 			}
 		});
 
@@ -1409,11 +1414,11 @@ export default {
 			var result = response.data;
 			var success = result.success;
 			if(success) {
-				if("" == result.message || null == result.message) confirm.fnAlert("RCS 발송", "테스트 메세지 발송처리를 완료하였습니다.");
-				else confirm.fnAlert("RCS 발송", result.message);
+				if("" == result.message || null == result.message) confirm.fnAlert(this.componentsTitle, "테스트 메세지 발송처리를 완료하였습니다.");
+				else confirm.fnAlert(this.componentsTitle, result.message);
 
 			} else {
-				confirm.fnAlert("RCS 발송", result.message);
+				confirm.fnAlert(this.componentsTitle, result.message);
 			}
 		});
 	},
@@ -1434,109 +1439,110 @@ export default {
     },
 
 	validation(sendFlag) {
-		var vm = this;
+		const {
+			textTitle, textContents, messagebaseId,
+			imgUrl, carouselObj, adYn,
+			freeReceiveNum, callback, senderType,
+			callbackContents, callbackTitle,
+			rplcSendType, recvInfoLst, cuInputType, 
+		} = this.sendData
+
 		var templateRadioBtn = this.templateRadioBtn;
-		var textTitle = vm.sendData.textTitle;
-		var textContents = vm.sendData.textContents;
 		if(templateRadioBtn == "des" || templateRadioBtn == "cell") {
-			var messagebaseId = vm.sendData.messagebaseId;
 			if("" == messagebaseId) {
-				confirm.fnAlert("RCS 발송", "템플릿을 선택해주세요.");
+				confirm.fnAlert(this.componentsTitle, "템플릿을 선택해주세요.");
 				return false;
 			}
 		} else if(templateRadioBtn == "text") {
 			if("" == textContents) {
-				confirm.fnAlert("RCS 발송", "내용을 입력해주세요.");
+				confirm.fnAlert(this.componentsTitle, "내용을 입력해주세요.");
 				return false;
 			}
 		} else if(templateRadioBtn == "SS000000") {
 			if("" == textContents) {
-				confirm.fnAlert("RCS 발송", "내용을 입력해주세요.");
+				confirm.fnAlert(this.componentsTitle, "내용을 입력해주세요.");
 				return false;
 			}
 		} else if(templateRadioBtn == "SL000000") {
 			if("" == textTitle) {
-				confirm.fnAlert("RCS 발송", "제목을 입력해주세요.");
+				confirm.fnAlert(this.componentsTitle, "제목을 입력해주세요.");
 				return false;
 			}
 			if("" == textContents) {
-				confirm.fnAlert("RCS 발송", "내용을 입력해주세요.");
+				confirm.fnAlert(this.componentsTitle, "내용을 입력해주세요.");
 				return false;
 			}
 		} else if(templateRadioBtn == "SMwThM00" || templateRadioBtn == "SMwThT00") {
-			var imgUrl = vm.sendData.imgUrl;
 			if("" == textTitle) {
-				confirm.fnAlert("RCS 발송", "제목을 입력해주세요.");
+				confirm.fnAlert(this.componentsTitle, "제목을 입력해주세요.");
 				return false;
 			}
 			if("" == textContents) {
-				confirm.fnAlert("RCS 발송", "내용을 입력해주세요.");
+				confirm.fnAlert(this.componentsTitle, "내용을 입력해주세요.");
 				return false;
 			}
 			if("" == imgUrl) {
-				confirm.fnAlert("RCS 발송", "이미지를 선택해주세요.");
+				confirm.fnAlert(this.componentsTitle, "이미지를 선택해주세요.");
 				return false;
 			}
 		} else {
-			var carouselObj = vm.sendData.carouselObj;
-			var carouselSelect = vm.carouselSelect;
+			var carouselSelect = this.carouselSelect;
 			for(var i=0; i<carouselSelect; i++) {
 				if("" == carouselObj.textTitle[i]) {
-					confirm.fnAlert("RCS 발송", "내용입력을 완료해주세요.");
+					confirm.fnAlert(this.componentsTitle, "내용입력을 완료해주세요.");
 					return false;
 				}
 				if("" == carouselObj.textContents[i]) {
-					confirm.fnAlert("RCS 발송", "내용입력을 완료해주세요.");
+					confirm.fnAlert(this.componentsTitle, "내용입력을 완료해주세요.");
 					return false;
 				}
 			}
 		}
 
 		// 무료 수신 거부 validation
-		var adYn = vm.sendData.adYn;
 		if(adYn == "yes") {
-			var freeReceiveNum = vm.sendData.freeReceiveNum;
 			if(freeReceiveNum == "") {
-				confirm.fnAlert("RCS 발송", "무료수신거부 번호를 입력해 주세요.");
+				confirm.fnAlert(this.componentsTitle, "무료수신거부 번호를 입력해 주세요.");
 				return false;
 			}
 		}
 
 		// 발신번호 validation
-		var callback = vm.sendData.callback;
 		if(callback == "") {
-			confirm.fnAlert("RCS 발송", "발신번호를 선택해 주세요.");
+			confirm.fnAlert(this.componentsTitle, "발신번호를 선택해 주세요.");
 			return false;
 		}
 
 		// 대체 발송 validation
-		var senderType = vm.sendData.senderType;
-		var callbackContents = vm.sendData.callbackContents;
 		if(senderType == "SMS") {
 			if(callbackContents == "") {
-				confirm.fnAlert("RCS 발송", "대체발송 내용을 입력해 주세요.");
+				confirm.fnAlert(this.componentsTitle, "대체발송 내용을 입력해 주세요.");
 				return false;
 			}
 		} else if (senderType == "LMS") {
-			var callbackTitle = vm.sendData.callbackTitle;
 			if(callbackTitle == "") {
-				confirm.fnAlert("RCS 발송", "대체발송 제목을 입력해 주세요.");
+				confirm.fnAlert(this.componentsTitle, "대체발송 제목을 입력해 주세요.");
 				return false;
 			}
 			if(callbackContents == "") {
-				confirm.fnAlert("RCS 발송", "대체발송 내용을 입력해 주세요.");
+				confirm.fnAlert(this.componentsTitle, "대체발송 내용을 입력해 주세요.");
+				return false;
+			}
+		}
+
+		// 광고 : 표시, 무료수신거부번호 미입력 시
+		if(adYn && adYn === 'yes' && rplcSendType !== 'NONE'){
+			if(!freeReceiveNum || freeReceiveNum === '') {
+				confirm.fnAlert(this.componentsTitle, '광고성 문자는 무료수신거부번호를 필수로 입력해야 합니다.');
 				return false;
 			}
 		}
 
 		// 수신자 목록 validation 실제 발송일 경우에만 체크
 		if(sendFlag == "real") {
-			var recvInfoLst = vm.sendData.recvInfoLst;
-			var cuInputType = vm.sendData.cuInputType;
-
 			if(cuInputType != "EXCEL") {
 				if(recvInfoLst.length==0) {
-					confirm.fnAlert("RCS 발송", "수신자를 입력해 주세요.");
+					confirm.fnAlert(this.componentsTitle, "수신자를 입력해 주세요.");
 					return false;
 				}
 			} else {
@@ -1546,11 +1552,10 @@ export default {
 				}
 				var excelFile = this.tempFile[0];
 				if(excelFile == null) {
-					confirm.fnAlert("RCS 발송", "수신자를 입력해 주세요.");
+					confirm.fnAlert(this.componentsTitle, "수신자를 입력해 주세요.");
 					return false;
 				}
 			}
-
 		}
 
 		return true;

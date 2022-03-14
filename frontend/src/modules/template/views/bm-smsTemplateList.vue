@@ -151,7 +151,7 @@ import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
-  name: "pushTemplateList",
+  name: "smsTemplateList",
   components: {
     SelectLayer,
     PageLayer,

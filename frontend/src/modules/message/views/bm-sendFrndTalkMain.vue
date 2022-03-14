@@ -572,47 +572,54 @@ export default {
     },
     //발송 정보 유효성 체크
     fnValidSendMsgData(testSendYn){
+      const {
+        senderKey, msgKind, frndTalkContent,
+        fileId, imgUrl, imgLink,
+        buttonList, fbInfo, testRecvInfoLst,
+        cuInputType, recvInfoLst, rplcSendType,
+      } = this.sendData
+
       if(this.fnSetContsVarNms() == false){
         return false;
       }
-      if(!this.sendData.senderKey){
+      if(!senderKey){
         confirm.fnAlert(this.componentsTitle, '카카오 채널을 선택해주세요.');
         return false;
       }
-      if(!this.sendData.msgKind){
+      if(!msgKind){
         confirm.fnAlert(this.componentsTitle, '메시지구분을 선택해주세요.');
         return false;
       }
-      if(!this.sendData.frndTalkContent){
+      if(!frndTalkContent){
         confirm.fnAlert(this.componentsTitle, '메시지 내용을 입력해주세요.');
         return false;
       }
 
-      if(!this.sendData.frndTalkContent){
+      if(!frndTalkContent){
         confirm.fnAlert(this.componentsTitle, '메시지 내용을 입력해주세요.');
         return false;
       }
-      if(this.fnGetLimitLength() < this.sendData.frndTalkContent.length){
-        const alertMsg = '메시지 내용은 '+this.fnGetLimitLength()+'자를 넘지 않아야됩니다.\n(현재 : '+this.sendData.frndTalkContent.length+'자)';
+      if(this.fnGetLimitLength() < frndTalkContent.length){
+        const alertMsg = '메시지 내용은 '+this.fnGetLimitLength()+'자를 넘지 않아야됩니다.\n(현재 : '+frndTalkContent.length+'자)';
         confirm.fnAlert(this.componentsTitle, alertMsg);
         return false;
       }
-      if(!this.$gfnCommonUtils.isEmpty(this.sendData.fileId)){
-        if(!this.sendData.imgUrl){
+      if(!this.$gfnCommonUtils.isEmpty(fileId)){
+        if(!imgUrl){
           confirm.fnAlert(this.componentsTitle, '잘못된 이미지 정보입니다.');
           return false;
         }
-        // if(!this.sendData.imgLink){
+        // if(!imgLink){
         //   confirm.fnAlert(this.componentsTitle, '이미지 파일 선택시 이미지 링크 URL은 필수입니다.');
         //   return false;
         // }
-        if(!this.$gfnCommonUtils.isEmpty(this.sendData.imgLink) && (this.$gfnCommonUtils.isUrl(this.sendData.imgLink) == false)){
+        if(!this.$gfnCommonUtils.isEmpty(imgLink) && (this.$gfnCommonUtils.isUrl(imgLink) == false)){
           confirm.fnAlert(this.componentsTitle, '유효하지 않은 이미지 링크 URL 입니다.');
           return false;
         }
       }
-      if(this.sendData.buttonList.length > 0){
-        var buttonList = this.sendData.buttonList;
+      if(buttonList.length > 0){
+        // var buttonList = buttonList;
         var btnLength = buttonList.length;
         for(var i = 0; i < btnLength; i++){
           if(this.$gfnCommonUtils.isEmpty(buttonList[i].name)){
@@ -652,20 +659,27 @@ export default {
           }
         }
       }
+      // 메시지 구분 : 광고성, 대체발송 : 미사용이 아니고, 수신거부번호 미입력 시
+      if(msgKind && msgKind === 'A' && rplcSendType !== 'NONE'){
+        if(!fbInfo.rcvblcNumber || fbInfo.rcvblcNumber === '') {
+          confirm.fnAlert(this.componentsTitle, '대체발송 광고성 문자는 수신거부번호를 필수로 입력해야 합니다.');
+          return false;
+        }
+      }
 
       if(testSendYn == 'Y'){
-        if(!this.sendData.testRecvInfoLst == null || this.sendData.testRecvInfoLst.length == 0){
+        if(!testRecvInfoLst == null || testRecvInfoLst.length == 0){
           confirm.fnAlert(this.componentsTitle, '테스트 수신자 정보를 입력해주세요.');
           return false;
         }
       } else {
-        if(this.sendData.cuInputType == 'DICT' || this.sendData.cuInputType == 'ADDR'){
-          if(!this.sendData.recvInfoLst == null || this.sendData.recvInfoLst.length == 0){
+        if(cuInputType == 'DICT' || cuInputType == 'ADDR'){
+          if(!recvInfoLst == null || recvInfoLst.length == 0){
             confirm.fnAlert(this.componentsTitle, '수신자 정보를 입력해주세요.');
             return false;
           }
         }
-        if(this.sendData.cuInputType == 'EXCEL'){
+        if(cuInputType == 'EXCEL'){
           if(this.$refs.excelFile.value != 0){
             this.tempFile = [];
             this.tempFile.push.apply(this.tempFile, this.$refs.excelFile.files);
@@ -683,12 +697,12 @@ export default {
             return false;
           }
         }
-        if(this.sendData.rplcSendType != 'NONE'){
-          if(!this.sendData.fbInfo.callback){
+        if(rplcSendType != 'NONE'){
+          if(!fbInfo.callback){
             confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 발신번호를 입력해주세요.');
             return false;
           }
-          if(!this.sendData.fbInfo.msg){
+          if(!fbInfo.msg){
             confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 내용을 입력해주세요.');
             return false;
           }

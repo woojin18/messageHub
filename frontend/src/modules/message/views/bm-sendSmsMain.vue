@@ -413,34 +413,48 @@ export default {
     },
     //발송 정보 유효성 체크
     fnValidSendMsgData(testSendYn){
+      const {
+        callback, senderType, smsTitle, 
+        smsContent, msgKind, rcvblcNumber, 
+        testRecvInfoLst, cuInputType, recvInfoLst, 
+      } = this.sendData
+
       if(this.fnSetContsVarNms() == false){
         return false;
       }
-      if(!this.sendData.callback && !this.isSpecialBusi){
+      if(!callback && !this.isSpecialBusi){
         confirm.fnAlert(this.componentsTitle, '발신번호를 선택해주세요.');
         return false;
       }
-      if(this.sendData.senderType == 'MMS' && !this.sendData.smsTitle){
+      if(senderType == 'MMS' && !smsTitle){
         confirm.fnAlert(this.componentsTitle, '제목을 입력해주세요.');
         return false;
       }
-      if(!this.sendData.smsContent){
+      if(!smsContent){
         confirm.fnAlert(this.componentsTitle, '내용을 입력해주세요.');
         return false;
       }
+      // 메시지 구분 : 광고성, 수신거부번호 미입력 시
+      if(msgKind && msgKind === 'A'){
+        if(!rcvblcNumber || rcvblcNumber === '') {
+          confirm.fnAlert(this.componentsTitle, '광고성 문자는 수신거부번호를 필수로 입력해야 합니다.');
+          return false;
+        }
+      }
+
       if(testSendYn == 'Y'){
-        if(!this.sendData.testRecvInfoLst == null || this.sendData.testRecvInfoLst.length == 0){
+        if(!testRecvInfoLst == null || testRecvInfoLst.length == 0){
           confirm.fnAlert(this.componentsTitle, '테스트 수신자 정보를 입력해주세요.');
           return false;
         }
       } else {
-        if(this.sendData.cuInputType == 'DICT' || this.sendData.cuInputType == 'ADDR'){
-          if(!this.sendData.recvInfoLst == null || this.sendData.recvInfoLst.length == 0){
+        if(cuInputType == 'DICT' || cuInputType == 'ADDR'){
+          if(!recvInfoLst == null || recvInfoLst.length == 0){
             confirm.fnAlert(this.componentsTitle, '수신자 정보를 입력해주세요.');
             return false;
           }
         }
-        if(this.sendData.cuInputType == 'EXCEL'){
+        if(cuInputType == 'EXCEL'){
           if(this.$refs.excelFile.value != 0){
             this.tempFile = [];
             this.tempFile.push.apply(this.tempFile, this.$refs.excelFile.files);

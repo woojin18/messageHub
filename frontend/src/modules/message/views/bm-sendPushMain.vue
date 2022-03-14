@@ -364,12 +364,12 @@ export default {
     }
   },
   watch : {
-	  recvCnt (newval, oldval) {
-		  if(newval>30000) {
-			  confirm.fnAlert(this.componentsTitle, "발송 최대 수신자 수는 30000명을 넘길 수 없습니다.");
-			  this.fnRemoveRecvInfo();
-		  }
-	  }
+    recvCnt (newval) {
+      if(newval>30000) {
+        confirm.fnAlert(this.componentsTitle, "발송 최대 수신자 수는 30000명을 넘길 수 없습니다.");
+        this.fnRemoveRecvInfo();
+      }
+    }
   },
   async mounted() {
     await this.fnExistApiKey();
@@ -388,7 +388,7 @@ export default {
         const file = this.$refs.excelFile.files[0];
         let reader = new FileReader();
 
-        reader.onload = (e) => {
+        reader.onload = () => {
           let data = reader.result;
           let workbook = XLSX.read(data, {type: 'binary'});
           let sheetName = '';
@@ -469,30 +469,51 @@ export default {
     },
     //발송 정보 유효성 체크
     fnValidSendMsgData(testSendYn){
+      const {
+        pushContent, appId, msgKind, rcvblcNumber,
+        testRecvInfoLst, cuInputType, recvInfoLst, 
+        contsVarNms, rplcSendType, fbInfo, 
+      } = this.sendData
+
       if(this.fnSetContsVarNms() == false){
         return false;
       }
-      if(!this.sendData.pushContent){
+      if(!pushContent){
         confirm.fnAlert(this.componentsTitle, '푸시메시지 내용을 입력해주세요.');
         return false;
       }
-      if(!this.sendData.appId){
+      if(!appId){
         confirm.fnAlert(this.componentsTitle, 'APP ID를 입력해주세요.');
         return false;
       }
+      // 메시지 구분 : 광고성, 대체발송 : 미사용이 아니고, 수신거부번호 미입력 시
+      if(msgKind && msgKind === 'A'){
+        if(!rcvblcNumber || rcvblcNumber === '') {
+          confirm.fnAlert(this.componentsTitle, '광고성 문자는 수신거부방법을 입력해야 합니다.');
+          return false;
+        }
+
+        if(rplcSendType !== 'NONE') {
+          if(!fbInfo.rcvblcNumber || fbInfo.rcvblcNumber === '') {
+            confirm.fnAlert(this.componentsTitle, '대체발송 광고성 문자는 수신거부번호를 필수로 입력해야 합니다.');
+            return false;
+          }
+        }
+      }
+
       if(testSendYn == 'Y'){
-        if(!this.sendData.testRecvInfoLst == null || this.sendData.testRecvInfoLst.length == 0){
+        if(!testRecvInfoLst == null || testRecvInfoLst.length == 0){
           confirm.fnAlert(this.componentsTitle, '테스트 수신자 정보를 입력해주세요.');
           return false;
         }
       } else {
-        if(this.sendData.cuInputType == 'DICT' || this.sendData.cuInputType == 'ADDR'){
-          if(!this.sendData.recvInfoLst == null || this.sendData.recvInfoLst.length == 0){
+        if(cuInputType == 'DICT' || cuInputType == 'ADDR'){
+          if(!recvInfoLst == null || recvInfoLst.length == 0){
             confirm.fnAlert(this.componentsTitle, '수신자 정보를 입력해주세요.');
             return false;
           }
         }
-        if(this.sendData.cuInputType == 'EXCEL'){
+        if(cuInputType == 'EXCEL'){
           if(this.$refs.excelFile.value != 0){
             this.tempFile = [];
             this.tempFile.push.apply(this.tempFile, this.$refs.excelFile.files);
@@ -511,18 +532,18 @@ export default {
           }
         }
         //앱사용자 전체발송시 메시지 변수 사용금지
-        if(this.sendData.cuInputType == 'ALL'){
-          if(this.sendData.contsVarNms.length > 0){
+        if(cuInputType == 'ALL'){
+          if(contsVarNms.length > 0){
             confirm.fnAlert(this.componentsTitle, '앱사용자 전체발송시 메시지 내용에 변수를 사용하실 수 없습니다.');
             return false;
           }
         }
-        if(this.sendData.rplcSendType != 'NONE'){
-          if(!this.sendData.fbInfo.callback){
+        if(rplcSendType != 'NONE'){
+          if(!fbInfo.callback){
             confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 발신번호를 입력해주세요.');
             return false;
           }
-          if(!this.sendData.fbInfo.msg){
+          if(!fbInfo.msg){
             confirm.fnAlert(this.componentsTitle, '대체발송시 대체발송 내용을 입력해주세요.');
             return false;
           }
