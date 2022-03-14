@@ -399,7 +399,12 @@ public class ChannelController {
 			channelService.saveMoCallback(params);
 		} catch (Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage(e.getMessage());
+			if(e.getMessage().indexOf("21406") > -1) {
+				rtn.setMessage(e.getMessage().replace("21406", ""));
+				rtn.setData("21406");
+			}else {
+				rtn.setMessage(e.getMessage());
+			}
 		}
 		return rtn;
 	}

@@ -194,6 +194,15 @@ public class RcsTemplateSendController {
 				}
 			}
 			
+			/** 야간메시지 발송 제한 여부 체크, 실 발송인 경우에만 */
+			if(real) {
+	            boolean nightSendYn = sendMsgService.checkNightSendMsgValid(params);
+	            if(!nightSendYn) {
+	            	rtn.setFail("야간 메시지 발송 제한으로 발송할 수 없습니다.");
+	                return rtn;
+	            }
+			}
+			
 			// 예약 발송일 경우 금액 계산을 하지 않음. (DB insert 처리는 service에서 처리)
 			String rsrvSendYn = CommonUtils.getString(data.get("rsrvSendYn"));
 			if("N".equals(rsrvSendYn)) {

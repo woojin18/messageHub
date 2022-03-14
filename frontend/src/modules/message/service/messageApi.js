@@ -92,6 +92,14 @@ const setSentAmout = (params) => {
   return httpClient.post('/commonApi/setSentAmout', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 }
 
+const selectNightSendTime = (params) => {
+	return httpClient.post('/baseInfoApi/manage/selectNightSendTime', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
+const checkNightSendTime = (params) =>{
+  return fnNightSendLimitChk(params);
+}
+
 export default {
   selectAppIdList,
   selectCallbackList,
@@ -118,7 +126,9 @@ export default {
   selectRejectPhoneList,
   deleteRejectPhoneList,
   selectSmartChProductList,
-  setSentAmout
+  setSentAmout,
+  selectNightSendTime,
+  checkNightSendTime
 };
 
 function fnExcelDownCallback(response){
@@ -153,4 +163,47 @@ function fnGetFileName (contentDisposition) {
         .split('=')[1]
     })
   return fileName[0] ? fileName[0] : null
+}
+
+//야간메시지 제한 유무, 예약전송여부, 예약시간 : 시, 예약시간 : 분, 야간메시지 제한 시작시간 : 시, 야간메시지 제한 시작시간 : 분, 야간메시지 제한 종료시간 : 시, 야간메시지 제한 종료시간 : 분
+function fnNightSendLimitChk(params){
+  var nightSendYn = params.nightSendYn;
+  var rsrvSendYn = params.rsrvSendYn;
+  var rsrvHH = params.rsrvHH;
+  var rsrvMM = params.rsrvMM;
+  var nightSendSthh = params.nightSendSthh;
+  var nightSendStmm = params.nightSendStmm;
+  var nightSendEdhh = params.nightSendEdhh;
+  var nightSendEdmm = params.nightSendEdmm;
+
+  var nightSendLimitYn = false;
+  if(nightSendYn == 'Y'){
+    if(rsrvSendYn != 'N'){
+      //예약
+      var rsrvTime = rsrvHH+ "" +rsrvMM;
+      var nightSendLimitStTime = nightSendSthh + "" + nightSendStmm
+      var nightSendLimitEdTime = nightSendEdhh + "" + nightSendEdmm
+
+      if(nightSendLimitStTime <= rsrvTime){
+        nightSendLimitYn = true;
+      }
+      if(nightSendLimitEdTime > rsrvTime){
+        nightSendLimitYn = true;
+      }
+    }else{
+      //즉시
+      var date = new Date();
+      var currTime = date.getHours() + "" + date.getMinutes();
+      var nightSendLimitStTime = nightSendSthh + "" + nightSendStmm
+      var nightSendLimitEdTime = nightSendEdhh + "" + nightSendEdmm
+      
+      if(nightSendLimitStTime <= currTime){
+        nightSendLimitYn = true;
+      }
+      if(nightSendLimitEdTime > currTime){
+        nightSendLimitYn = true;
+      }
+    }
+  }
+  return nightSendLimitYn;
 }

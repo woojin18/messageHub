@@ -29,6 +29,15 @@
 								<p class="color4 consolMarginTop">{{ baseInfoData.payTypeName }}</p>
 							</div>
 						</div>
+
+						<!-- <div class="clear consolMarginTop">
+							<h5 class="inline-block" style="width:10%">야간 메시지 발송제한<i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:250px">{{nightSendSthh}}:{{nightSendStmm}} ~ 다음날 {{nightSendEdhh}}:{{nightSendEdmm}} 까지 야간 메시지<br>발송 제한에 대한 여부</span></i></h5>
+							<div style="width:88%" class="float-right">
+								<input type="radio" name="nightSendYn" value="Y" id="nightSendY" @click="fnModalView"><label for="nightSendY" class="mr30">예</label>
+								<input type="radio" name="nightSendYn" value="N" id="nightSendN"> <label for="nightSendN">아니요</label>	
+							</div>
+						</div> -->
+
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:10%">사용여부</h5>
 							<div style="width:88%" class="float-right">
@@ -146,6 +155,27 @@
 
 		<!--  Modal -->
 		<apiKeyPop :saveStatus="saveStatus" :apiKeyData="apiKeyData" :apiKeyOpen="apiKeyOpen"></apiKeyPop>
+
+		<div class="modal fade modalStyle" id="nightSendModal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" style="width: 410px;">
+				<div class="modal-content">
+					<div class="modal-body">
+						<h2>야간 메시지 발송 동의</h2>
+						<hr>
+
+						<div class="of_h consolMarginTop">
+							<p>정보통신망 이용촉진 및 정보보호 등에 관한 법률 제50조(영리목적의 광고성 정보 전송 제한)에 의거 야간({{nightSendSthh}}:{{nightSendStmm}} ~ 다음날 {{nightSendEdhh}}:{{nightSendEdmm}})에 광고 메세지를 보낼 경우 야간 광고 메시지 별도 수신 동의를 받은 고객에 한해서만 메시지를 발송하겠습니다.</p>
+						</div>
+
+						<div class="text-center mt20">
+							<a @click="fnRadioChg('Y')" class="btnStyle2 backBlack" data-dismiss="modal" title="확인">확인</a>	
+							<a @click="fnRadioChg('N')" class="btnStyle2 backPink" data-dismiss="modal" title="거부">거부</a>	
+						</div>	
+
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<!-- //content -->
 </template>
@@ -172,10 +202,15 @@ export default {
 			apiKeyData: {},
 			apiKeyOpen: false,
 			title: 'API Key 관리',
+			nightSendSthh: '',
+			nightSendStmm: '',
+			nightSendEdhh: '',
+			nightSendEdmm: ''
 		}
 	},
 	mounted() {
 		this.fnSearchProject();
+		//this.fnNightSendTime();
 	},
 	watch: {
 		baseInfoData: function() {
@@ -187,6 +222,7 @@ export default {
 			jQuery('input:radio[name=radioPush]:input[value="' + this.baseInfoData.pushYn + '"]').prop('checked', true);
 			jQuery('input:radio[name=radioKakao]:input[value="' + this.baseInfoData.kakaoYn + '"]').prop('checked', true);
 			jQuery('input:radio[name=radioMo]:input[value="' + this.baseInfoData.moYn + '"]').prop('checked', true);
+			//jQuery('input:radio[name=nightSendYn]:input[value="' + this.baseInfoData.nightSendYn + '"]').prop('checked', true);
 		}
 	},
 	methods: {
@@ -228,6 +264,7 @@ export default {
 				'radioPush'		: jQuery('input[name="radioPush"]:checked').val(),
 				'radioKko'		: jQuery('input[name="radioKakao"]:checked').val(),
 				'radioMo'		: jQuery('input[name="radioMo"]:checked').val(),
+				//'nightSendYN'	: jQuery('input[name="nightSendYn"]:checked').val(),
 			};
 
 			baseInfoApi.saveProjectBaseInfo(params).then(response =>{
@@ -259,7 +296,29 @@ export default {
 			this.apiKeyOpen = !this.apiKeyOpen;
 			this.apiKeyData = data;
 			this.saveStatus = 'U';
-		}
+		},
+		fnRadioChg(value){
+			jQuery('input:radio[name=nightSendYn]:input[value="'+value+'"]').prop('checked', true);
+		},
+		fnModalView($event){
+			$event.preventDefault();
+			jQuery('#nightSendModal').modal('show');
+		},
+		// 야간 메시지 전송 시간 확인
+		async fnNightSendTime() {
+			let params = {};
+			await baseInfoApi.selectNightSendTime(params).then(response =>{
+				var result = response.data;
+				if(result.success) {
+					this.nightSendSthh = result.data.nightSendSthh;
+					this.nightSendStmm = result.data.nightSendStmm;
+					this.nightSendEdhh = result.data.nightSendEdhh;
+					this.nightSendEdmm = result.data.nightSendEdmm;
+				} else {
+					confirm.fnAlert(this.title, result.message);
+				}
+			});
+		},
 	}
 }
 </script>

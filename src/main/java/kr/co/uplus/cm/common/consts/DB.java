@@ -159,6 +159,7 @@ public class DB {
 	public final static String QRY_SELECT_MO_CALLBACK_DUPL = "channel.selectMoCallbackDupl";
 	public final static String QRY_INSERT_MO_CALLBACK = "channel.insertMoCallback";
 	public final static String QRY_UPDATE_MO_CALLBACK = "channel.updateMoCallback";
+	public final static String QRY_UPDATE_REREQUEST_MO_CALLBACK = "channel.updateReRequestMoCallback";
 	public final static String QRY_DELETE_MO_CALLBACK = "channel.deleteMoCallback";
 
 	public final static String QRY_SELECT_APIKEY_LIST_MO = "channel.selectApiKeyList";
@@ -289,6 +290,7 @@ public class DB {
 	public final static String QRY_UPDATE_APIKEY_WEBSENDER = "baseInfo.updateApiKeyWebSender";
 	public final static String QRY_SELECT_APIKEY_PASSWORD = "baseInfo.selectApiKeyPassword";
 	public final static String QRY_SELECT_PROJECT_USE_CNT = "baseInfo.selectProjectUseCnt";
+	public final static String QRY_SELECT_PROJECT_NIGHT_SEND_YN = "baseInfo.selectProjectNightSendYn";
 
 	// 프로젝트 멤버
 	public final static String QRY_SELECT_PROJECT_MEMBER_LIST_CNT = "member.selectProjectMemberListCnt";

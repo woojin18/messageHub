@@ -260,6 +260,13 @@ public class SendMessageController {
             }
             log.info(Const.PRIVACY_MARKER, "{}.sendPushMessage pushRequestData: {}", this.getClass(), requestData.toString());
 
+            /** 야간메시지 발송 제한 여부 체크 */
+            boolean nightSendYn = sendMsgService.checkNightSendMsgValid(params);
+            if(!nightSendYn) {
+            	rtn.setFail("야간 메시지 발송 제한으로 발송할 수 없습니다.");
+                return rtn;
+            }
+            
             /** 푸시 수신자 리스트*/
             recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
             if(recvInfoLst == null || recvInfoLst.size() == 0) {
@@ -415,6 +422,13 @@ public class SendMessageController {
                 return rtn;
             }
             log.info(Const.PRIVACY_MARKER, "{}.sendSmsMessage requestData: {}", this.getClass(), requestData.toString());
+            
+            /** 야간메시지 발송 제한 여부 체크 */
+            boolean nightSendYn = sendMsgService.checkNightSendMsgValid(params);
+            if(!nightSendYn) {
+            	rtn.setFail("야간 메시지 발송 제한으로 발송할 수 없습니다.");
+                return rtn;
+            }
 
             /** SMS 수신자 리스트*/
             recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
@@ -524,6 +538,13 @@ public class SendMessageController {
             requestData = sendMsgService.setMmsSendData(rtn, params);
             if(rtn.isSuccess() == false) {
                 log.info("{}.sendMmsMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
+                return rtn;
+            }
+            
+            /** 야간메시지 발송 제한 여부 체크 */
+            boolean nightSendYn = sendMsgService.checkNightSendMsgValid(params);
+            if(!nightSendYn) {
+            	rtn.setFail("야간 메시지 발송 제한으로 발송할 수 없습니다.");
                 return rtn;
             }
 
@@ -677,6 +698,13 @@ public class SendMessageController {
             requestData = sendMsgService.setFrndTalkSendData(rtn, params);
             if(rtn.isSuccess() == false) {
                 log.info("{}.sendFrndTalkMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
+                return rtn;
+            }
+            
+            /** 야간메시지 발송 제한 여부 체크 */
+            boolean nightSendYn = sendMsgService.checkNightSendMsgValid(params);
+            if(!nightSendYn) {
+            	rtn.setFail("야간 메시지 발송 제한으로 발송할 수 없습니다.");
                 return rtn;
             }
 
@@ -844,6 +872,13 @@ public class SendMessageController {
                 log.info("{}.sendAlimTalkMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
                 return rtn;
             }
+            
+            /** 야간메시지 발송 제한 여부 체크 */
+            boolean nightSendYn = sendMsgService.checkNightSendMsgValid(params);
+            if(!nightSendYn) {
+            	rtn.setFail("야간 메시지 발송 제한으로 발송할 수 없습니다.");
+                return rtn;
+            }
 
             /** 알림톡 수신자 리스트*/
             recvInfoLst = sendMsgService.getRecvInfoLst(params, multipartFileDTO.getFile());
@@ -951,6 +986,13 @@ public class SendMessageController {
             requestData = sendMsgService.setSmartSendData(rtn, params);
             if(rtn.isSuccess() == false) {
                 log.info(Const.PRIVACY_MARKER, "{}.sendSmartMessage validation Check fail: {}", this.getClass(), rtn.getMessage());
+                return rtn;
+            }
+            
+            /** 야간메시지 발송 제한 여부 체크 */
+            boolean nightSendYn = sendMsgService.checkNightSendMsgValid(params);
+            if(!nightSendYn) {
+            	rtn.setFail("야간 메시지 발송 제한으로 발송할 수 없습니다.");
                 return rtn;
             }
 

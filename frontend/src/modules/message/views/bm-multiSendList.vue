@@ -2,6 +2,7 @@
 <div class="row row-no-margin">
   <div class="contentHeader">
       <h2>발송 > 통합</h2>
+      <!-- <h2>발송 > 통합 <span v-if="nightSendYn == 'Y'" class="ml20 font-size12 color1">야간 메시지 발송 제한으로 {{nightSendSthh}}:{{nightSendStmm}} ~ 다음날 {{nightSendEdhh}}:{{nightSendEdmm}} 까지 메시지 발송을 할 수 없습니다.<i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:260px">야간 메시지 발송 제한 해제는 [관리자 콘솔] 프로젝트 기본정보에서 세팅 할 수 있습니다.</span></i></span></h2> -->
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="메시지 상세조회 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
   </div>
   <!-- 본문 -->
@@ -50,7 +51,7 @@
               <input type="checkbox" id="searchMsgCh_FRIENDTALK" class="checkStyle2" value="FRIENDTALK" v-model="searchData.searchMsgCh">
               <label for="searchMsgCh_FRIENDTALK" class="mr30">친구톡</label>
               <input type="checkbox" id="searchMsgCh_PUSH" class="checkStyle2" value="PUSH" v-model="searchData.searchMsgCh">
-              <label for="searchMsgCh_PUSH" class="mr30">푸시</label>
+              <label for="searchMsgCh_PUSH" class="mr30">PUSH</label>
             </div>
           </div>
         </div>
@@ -213,7 +214,12 @@ export default {
       datas: [],
       msgKindCdAllSelected: true,
       msgChAllSelected: true,
-      chkBox: ''
+      chkBox: '',
+      // nightSendSthh: '',
+      // nightSendStmm: '',
+      // nightSendEdhh: '',
+      // nightSendEdmm: '',
+      // nightSendYn : 'N',
     }
   },
   mounted() {
@@ -222,6 +228,7 @@ export default {
     this.fnSearchMsgKindCdChkAll();
     this.fnSearchMsgChChkAll();
     this.fnPageNoResetSearch();
+    //this.fnNightSendTime();
   },
   methods: {
     fnSearchMsgChChkAll(){
@@ -349,7 +356,25 @@ export default {
     fnSearch(pageNum) {
       this.pageNo = (this.$gfnCommonUtils.defaultIfEmpty(pageNum, '1'))*1;
       this.fnSelectMultiSendList();
-    }
+    },
+    // 야간 메시지 전송 시간 확인
+		async fnNightSendTime() {
+			let params = {
+        isChk : "Y"
+      };
+			await messageApi.selectNightSendTime(params).then(response =>{
+				var result = response.data;
+				if(result.success) {
+					this.nightSendSthh = result.data.nightSendSthh;
+					this.nightSendStmm = result.data.nightSendStmm;
+					this.nightSendEdhh = result.data.nightSendEdhh;
+					this.nightSendEdmm = result.data.nightSendEdmm;
+          this.nightSendYn = result.data.nightSendYn;
+				} else {
+					confirm.fnAlert(this.title, result.message);
+				}
+			});
+		},
   }
 }
 </script>
