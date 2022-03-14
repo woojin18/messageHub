@@ -203,6 +203,12 @@ export default {
           // 부모창 리스트 조회
           this.$parent.fnSearch();
           // 창닫기
+        } else if (result.success == false && result.data != null){
+
+          confirm.fnAlert("", result.message);
+          this.$refs.closeBtn.click();
+          this.$parent.fnSearch();
+
         } else {
           confirm.fnAlert("", result.message);
         }

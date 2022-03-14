@@ -57,8 +57,9 @@
 								<td class="text-left">{{item.apiKey}}</td>
 								<td class="text-center">{{item.regDt}}</td>
 								<td class="text-center end">
-									<button class="btnStyle6 font13" @click="fnMod(item)">수정</button>&nbsp;
-									<button class="btnStyle6 font13" @click="fnDel(item)">삭제</button>
+									<button v-if="item.useYn != 'D'" class="btnStyle6 font13" @click="fnMod(item)">수정</button>
+									<button v-if="item.useYn == 'D'" class="btnStyle6 font13" @click="fnReReg(item)">재처리</button>
+									&nbsp;<button class="btnStyle6 font13" @click="fnDel(item)">삭제</button>
 								</td>
 								<!-- <td class="end">{{item.updDt}}</td> -->
 							</tr>
@@ -167,6 +168,30 @@ export default {
 			this.save_status = "U";
 			this.row_data = row_data;
 			jQuery("#layerPopup").modal("show");
+		},
+		fnReReg(row_data){
+			this.row_data = row_data;
+			eventBus.$on('callbackEventBus', this.fnReRegCallBack);
+     		confirm.fnConfirm( "", "재처리하시겠습니까?", "재처리");
+		},
+		fnReRegCallBack(){
+			var row_data = this.row_data;
+			var params = {
+				sts : "R",
+				apiKey : row_data.apiKey,
+				moNumber : row_data.moNumber,
+				moType : row_data.moType
+			};
+
+			Api.saveMoCallback(params).then(response =>{
+				var result = response.data;
+				if(result.success){
+					confirm.fnAlert("", "재처리되었습니다.");
+					this.fnSearch();
+				} else {
+					confirm.fnAlert("", result.message);
+				}
+			});
 		},
 		// mo 삭제 처리(useYn 수정)
 		fnDel(row_data){

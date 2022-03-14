@@ -515,7 +515,7 @@
 		FROM	cm.CM_MO_CALLBACK A
 		WHERE	PROJECT_ID = #{projectId}
 		AND		A.CORP_ID = #{corpId}
-		AND		A.USE_YN = 'Y'
+		AND		A.USE_YN IN ( 'Y' , 'D' )
 	</select>
 	
 	<select id="selectMoCallbackList" resultType="camel">
@@ -535,7 +535,7 @@
 		FROM	cm.CM_MO_CALLBACK A
 		WHERE	PROJECT_ID = #{projectId}
 		AND		A.CORP_ID = #{corpId}
-		AND		A.USE_YN = 'Y'
+		AND		A.USE_YN IN ( 'Y' , 'D' )
 	</select>
 	
 	<insert id="insertMoCallback">
@@ -559,19 +559,43 @@
 		,	#{corpId}
 		,	#{moType}
 		,	#{projectId}
-		,	'Y'
+		<choose>
+			<when test="useYn != null and useYn != ''">
+		,	#{useYn}
+			</when>
+			<otherwise>
+		,	'Y'		
+			</otherwise>
+		</choose>
 		,	NOW()
 		,	#{webhookUrl}
 		,	#{serviceId}
 		)ON DUPLICATE KEY UPDATE
 			API_KEY = #{apiKey}
 		,	CORP_ID = #{corpId}
+		,	MO_TYPE = #{moType}
 		,	PROJECT_ID = #{projectId}
-		,	USE_YN = 'Y'
+		<choose>
+			<when test="useYn != null and useYn != ''">
+		,	USE_YN = #{useYn}
+			</when>
+			<otherwise>
+		,	USE_YN = 'Y'		
+			</otherwise>
+		</choose>
 		,	UPD_DT = NOW()
 		,	WEBHOOK_URL = #{webhookUrl}
 		,	SERVICE_ID = #{serviceId}
 	</insert>
+	
+	<update id="updateReRequestMoCallback">
+	/* channel.updateReRequestMoCallback */
+		UPDATE	cm.CM_MO_CALLBACK
+		SET		USE_YN = 'Y'
+		,		UPD_DT		= NOW()
+		WHERE	MO_NUMBER	= #{moNumber}
+		AND		MO_TYPE		= #{moType}
+	</update>
 	
 	<update id="updateMoCallback">
 	/* channel.updateMoCallback */

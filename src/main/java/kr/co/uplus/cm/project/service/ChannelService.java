@@ -1066,12 +1066,75 @@ public class ChannelService {
 					generalDao.insertGernal(DB.QRY_INSERT_MO_CALLBACK, params);
 					// redis 테이블 처리
 					commonService.updateCmCmdForRedis("CM_MO_CALLBACK");
+				} else if( "21406".equals(result.get("code")) ) {
+					//서비스 가입이 지연되고있습니다. 다시 시도해주세요 return일 경우
+					Map<String, Object> data = (Map<String, Object>)result.get("data");
+					ArrayList<Map<String, Object>> arr = (ArrayList<Map<String, Object>>) data.get("resultList");
+					params.put("serviceId",arr.get(0).get("entrNo"));
+					params.put("useYn", "D");
+					generalDao.insertGernal(DB.QRY_INSERT_MO_CALLBACK, params);
+					// redis 테이블 처리
+					commonService.updateCmCmdForRedis("CM_MO_CALLBACK");
+					
+					String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(data.get("resultMsg") + " " + CommonUtils.getString(result.get("code")));
+					throw new Exception(errMsg);
 				} else {
 					String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
 					throw new Exception(errMsg);
 				}
 			}
-		} else if( "U".equals(sts) ) {
+		}else if( "R".equals(sts)) {
+			//상태값 D에 대한 재 처리
+			String salesId	= CommonUtils.getString(generalDao.selectGernalObject("project.selectSalesIdForSaveProject", params));
+			Map<String, Object> projectMap = (Map<String, Object>) generalDao.selectGernalObject("channel.selectProjectDataForSaveMoCallback", params);
+			
+			Map<String, Object> joinMap = new HashMap<>();
+			
+			joinMap.put("entrNo",			projectMap.get("serviceId"));	// 가입번호
+			joinMap.put("billAcntNo",		projectMap.get("billId"));		// 청구계정 번호
+			joinMap.put("logid",			params.get("projectId"));		// 가입인식번호1(본인 서비스의 유니크 아이디)
+			joinMap.put("indcId",			salesId);						// 유치자아이디
+			joinMap.put("mngrId",			salesId);						// 관리자아이디
+			
+			
+			// MO 서비스정보 타입 (SMS, LMS, MMS)
+			if( "SMSMO".equals(params.get("moType")) ) {
+				joinMap.put("serviceType",		"SMS");
+			} else if( "LMSMO".equals(params.get("moType")) ) {
+				joinMap.put("serviceType",		"LMS");
+			} else if( "MMSMO".equals(params.get("moType")) ) {
+				joinMap.put("serviceType",		"MMS");
+			}
+			
+			Map<String, Object> priceInfo = (Map<String, Object>) generalDao.selectGernalObject("channel.selectPriceInfoForSaveMoCallback", params);
+			
+			JSONParser jParser = new JSONParser();
+			JSONObject postFeeInfo = (JSONObject) jParser.parse(CommonUtils.getString(priceInfo.get("postFeeInfo")));
+			
+			Map<String, Object> serviceInfo = new HashMap<>();
+			serviceInfo.put("callback",	params.get("moNumber"));
+			serviceInfo.put("monBasicYn",	"Y");
+			serviceInfo.put("monBasicFee",	priceInfo.get("preFee"));
+			serviceInfo.put("unitPrice",	postFeeInfo.get("POST_FEE"));
+			
+			joinMap.put("serviceInfo",		serviceInfo);
+			
+			Map<String, Object> result =  apiInterface.post("/console/v1/ucube/service/join/mo", joinMap, null);
+			
+			if( "10000".equals(result.get("code")) ) {
+				Map<String, Object> data = (Map<String, Object>)result.get("data");
+				ArrayList<Map<String, Object>> arr = (ArrayList<Map<String, Object>>) data.get("resultList");
+				params.put("serviceId",arr.get(0).get("entrNo"));
+				generalDao.updateGernal(DB.QRY_UPDATE_REREQUEST_MO_CALLBACK, params);
+				
+				// redis 테이블 처리
+				commonService.updateCmCmdForRedis("CM_MO_CALLBACK");
+			}else {
+				String errMsg = CommonUtils.getString(result.get("message")) + " : " + CommonUtils.getString(result.get("data"));
+				throw new Exception(errMsg);
+			}
+		
+		}else if( "U".equals(sts) ) {
 			if(CommonUtils.getString(params.get("moNumber")).equals("")) {
 				throw new Exception("MO 수신번호가 입력되지 않았습니다. 다시 시도해주세요.");
 			}
