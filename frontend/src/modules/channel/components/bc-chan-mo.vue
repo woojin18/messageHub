@@ -57,8 +57,8 @@
 								<td class="text-left">{{item.apiKey}}</td>
 								<td class="text-center">{{item.regDt}}</td>
 								<td class="text-center end">
-									<button v-if="item.useYn != 'D'" class="btnStyle6 font13" @click="fnMod(item)">수정</button>
-									<button v-if="item.useYn == 'D'" class="btnStyle6 font13" @click="fnReReg(item)">재처리</button>
+									<button v-if="item.retryY != 'Y'" class="btnStyle6 font13" @click="fnMod(item)">수정</button>
+									<button v-if="item.retryY == 'Y'" class="btnStyle6 font13" @click="fnReReg(item)">재처리</button>
 									&nbsp;<button class="btnStyle6 font13" @click="fnDel(item)">삭제</button>
 								</td>
 								<!-- <td class="end">{{item.updDt}}</td> -->

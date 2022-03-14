@@ -515,7 +515,7 @@
 		FROM	cm.CM_MO_CALLBACK A
 		WHERE	PROJECT_ID = #{projectId}
 		AND		A.CORP_ID = #{corpId}
-		AND		A.USE_YN IN ( 'Y' , 'D' )
+		AND		A.USE_YN IN ( 'Y' )
 	</select>
 	
 	<select id="selectMoCallbackList" resultType="camel">
@@ -532,10 +532,14 @@
 		,		date_format(A.REG_DT, '%Y-%m-%d') AS REG_DT
 		,		date_format(A.UPD_DT, '%Y-%m-%d') AS UPD_DT
 		,		A.WEBHOOK_URL
+		,		A.RETRY_Y
 		FROM	cm.CM_MO_CALLBACK A
 		WHERE	PROJECT_ID = #{projectId}
 		AND		A.CORP_ID = #{corpId}
-		AND		A.USE_YN IN ( 'Y' , 'D' )
+		AND		A.USE_YN IN ( 'Y' )
+		<if test='pagingYn == "Y" '>
+        LIMIT #{offset}, #{listSize}
+        </if>
 	</select>
 	
 	<insert id="insertMoCallback">
@@ -551,6 +555,7 @@
 		,	REG_DT
 		,	WEBHOOK_URL
 		,	SERVICE_ID
+		,	RETRY_Y
 		)
 		VALUES
 		(
@@ -559,30 +564,18 @@
 		,	#{corpId}
 		,	#{moType}
 		,	#{projectId}
-		<choose>
-			<when test="useYn != null and useYn != ''">
-		,	#{useYn}
-			</when>
-			<otherwise>
 		,	'Y'		
-			</otherwise>
-		</choose>
 		,	NOW()
 		,	#{webhookUrl}
 		,	#{serviceId}
+		,	#{retryY}
 		)ON DUPLICATE KEY UPDATE
 			API_KEY = #{apiKey}
 		,	CORP_ID = #{corpId}
 		,	MO_TYPE = #{moType}
 		,	PROJECT_ID = #{projectId}
-		<choose>
-			<when test="useYn != null and useYn != ''">
-		,	USE_YN = #{useYn}
-			</when>
-			<otherwise>
 		,	USE_YN = 'Y'		
-			</otherwise>
-		</choose>
+		,	RETRY_Y = #{retryY}
 		,	UPD_DT = NOW()
 		,	WEBHOOK_URL = #{webhookUrl}
 		,	SERVICE_ID = #{serviceId}
@@ -591,8 +584,8 @@
 	<update id="updateReRequestMoCallback">
 	/* channel.updateReRequestMoCallback */
 		UPDATE	cm.CM_MO_CALLBACK
-		SET		USE_YN = 'Y'
-		,		UPD_DT		= NOW()
+		SET		UPD_DT		= NOW()
+		,		RETRY_Y = ''
 		WHERE	MO_NUMBER	= #{moNumber}
 		AND		MO_TYPE		= #{moType}
 	</update>

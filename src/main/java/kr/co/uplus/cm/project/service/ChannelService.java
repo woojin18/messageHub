@@ -1063,6 +1063,7 @@ public class ChannelService {
 					Map<String, Object> data = (Map<String, Object>)result.get("data");
 					ArrayList<Map<String, Object>> arr = (ArrayList<Map<String, Object>>) data.get("resultList");
 					params.put("serviceId",arr.get(0).get("entrNo"));
+					params.put("retryY","");
 					generalDao.insertGernal(DB.QRY_INSERT_MO_CALLBACK, params);
 					// redis 테이블 처리
 					commonService.updateCmCmdForRedis("CM_MO_CALLBACK");
@@ -1071,7 +1072,7 @@ public class ChannelService {
 					Map<String, Object> data = (Map<String, Object>)result.get("data");
 					ArrayList<Map<String, Object>> arr = (ArrayList<Map<String, Object>>) data.get("resultList");
 					params.put("serviceId",arr.get(0).get("entrNo"));
-					params.put("useYn", "D");
+					params.put("retryY", "Y");
 					generalDao.insertGernal(DB.QRY_INSERT_MO_CALLBACK, params);
 					// redis 테이블 처리
 					commonService.updateCmCmdForRedis("CM_MO_CALLBACK");
@@ -1125,6 +1126,7 @@ public class ChannelService {
 				Map<String, Object> data = (Map<String, Object>)result.get("data");
 				ArrayList<Map<String, Object>> arr = (ArrayList<Map<String, Object>>) data.get("resultList");
 				params.put("serviceId",arr.get(0).get("entrNo"));
+				params.put("retryY", "");
 				generalDao.updateGernal(DB.QRY_UPDATE_REREQUEST_MO_CALLBACK, params);
 				
 				// redis 테이블 처리

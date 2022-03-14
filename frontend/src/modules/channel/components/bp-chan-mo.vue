@@ -204,8 +204,7 @@ export default {
           this.$parent.fnSearch();
           // 창닫기
         } else if (result.success == false && result.data != null){
-
-          confirm.fnAlert("", result.message);
+          confirm.fnAlert("", result.message + "\n\n유큐브 서비스 지연으로 인해 MO 서비스 가입이 정상적으로 등록되지 않았습니다. \nMO수신번호 현황에서 [ 재처리 ] 버튼을 이용하여 정상 가입 부탁드립니다.");
           this.$refs.closeBtn.click();
           this.$parent.fnSearch();
 
