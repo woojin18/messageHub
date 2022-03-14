@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="contentHeader">
-      <h2>발송 > 친구톡 <span v-if="nightSendYn == 'Y'" class="ml20 font-size12 color1">야간 메시지 발송 제한으로 {{nightSendSthh}}:{{nightSendStmm}} ~ 다음날 {{nightSendEdhh}}:{{nightSendEdmm}} 까지 메시지 발송을 할 수 없습니다.<i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:260px">야간 메시지 발송 제한 해제는 [관리자 콘솔] 프로젝트 기본정보에서 세팅 할 수 있습니다.</span></i></span></h2>
+      <h2>발송 > 친구톡</h2>
+      <!-- <h2>발송 > 친구톡 <span v-if="nightSendYn == 'Y'" class="ml20 font-size12 color1">야간 메시지 발송 제한으로 {{nightSendSthh}}:{{nightSendStmm}} ~ 다음날 {{nightSendEdhh}}:{{nightSendEdmm}} 까지 메시지 발송을 할 수 없습니다.<i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:260px">야간 메시지 발송 제한 해제는 [관리자 콘솔] 프로젝트 기본정보에서 세팅 할 수 있습니다.</span></i></span></h2> -->
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="친구톡 발송 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
     </div>
 
@@ -337,7 +338,7 @@
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
     <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
     <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" ref="testSendInputPopup"></TestSendInputPopup>
-    <nightSendLimitPopup :nightSendLimitY.sync="nightSendLimitYn" :nightSendSthh="this.nightSendSthh" :nightSendStmm="this.nightSendStmm" :nightSendEdhh="this.nightSendEdhh" :nightSendEdmm="this.nightSendEdmm"/>
+    <!-- <nightSendLimitPopup :nightSendLimitY.sync="nightSendLimitYn" :nightSendSthh="this.nightSendSthh" :nightSendStmm="this.nightSendStmm" :nightSendEdhh="this.nightSendEdhh" :nightSendEdmm="this.nightSendEdmm"/> -->
   </div>
 </template>
 
@@ -351,7 +352,7 @@ import AddressInputPopup from "@/modules/message/components/bp-addressInput.vue"
 import Calendar from "@/components/Calendar.vue";
 import TestSendInputPopup from "@/modules/message/components/bc-testSendInput.vue";
 import XLSX from 'xlsx';
-import nightSendLimitPopup from "@/modules/message/components/bp-nightSendLimit.vue";
+//import nightSendLimitPopup from "@/modules/message/components/bp-nightSendLimit.vue";
 
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
@@ -369,7 +370,7 @@ export default {
     AddressInputPopup,
     Calendar,
     TestSendInputPopup,
-    nightSendLimitPopup
+    //nightSendLimitPopup
   },
   props: {
     componentsTitle: {
@@ -438,12 +439,12 @@ export default {
         testRecvInfoLst: [],  //테스트 수신자정보
         excelLimitRow: 0
       },
-      nightSendSthh: '',
-			nightSendStmm: '',
-			nightSendEdhh: '',
-			nightSendEdmm: '',
-      nightSendYn : 'N',
-      nightSendLimitYn : false
+      // nightSendSthh: '',
+			// nightSendStmm: '',
+			// nightSendEdhh: '',
+			// nightSendEdmm: '',
+      // nightSendYn : 'N',
+      // nightSendLimitYn : false
     }
   },
   watch : {
@@ -459,7 +460,7 @@ export default {
     await this.fnValidUseChGrp();
     await this.fnGetSenderKeyList();
     // await this.fnAddButton();
-    await this.fnNightSendTime();
+    //await this.fnNightSendTime();
   },
   methods: {
     fnRemoveRecvInfo(){
@@ -699,7 +700,7 @@ export default {
       //유효성 체크
       if(this.fnValidSendMsgData(testSendYn) == false) return;
 
-      if(this.fnNightSendCheck() == false) return;
+      //if(this.fnNightSendCheck() == false) return;
 
       //광고성 야간발송 확인
       if(this.sendData.msgKind == 'A'){

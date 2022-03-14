@@ -102,7 +102,7 @@ public class BaseInfoService {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
 		} else {
-			commonService.updateCmCmdForRedis("CM_PROJECT");
+			//commonService.updateCmCmdForRedis("CM_PROJECT");
 			rtn.setSuccess(true);
 			rtn.setData(params);
 		}

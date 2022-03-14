@@ -30,13 +30,13 @@
 							</div>
 						</div>
 
-						<div class="clear consolMarginTop">
+						<!-- <div class="clear consolMarginTop">
 							<h5 class="inline-block" style="width:10%">야간 메시지 발송제한<i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:250px">{{nightSendSthh}}:{{nightSendStmm}} ~ 다음날 {{nightSendEdhh}}:{{nightSendEdmm}} 까지 야간 메시지<br>발송 제한에 대한 여부</span></i></h5>
 							<div style="width:88%" class="float-right">
 								<input type="radio" name="nightSendYn" value="Y" id="nightSendY" @click="fnModalView"><label for="nightSendY" class="mr30">예</label>
 								<input type="radio" name="nightSendYn" value="N" id="nightSendN"> <label for="nightSendN">아니요</label>	
 							</div>
-						</div>
+						</div> -->
 
 						<div class="of_h consolMarginTop">
 							<h5 class="inline-block" style="width:10%">사용여부</h5>
@@ -202,15 +202,15 @@ export default {
 			apiKeyData: {},
 			apiKeyOpen: false,
 			title: 'API Key 관리',
-			nightSendSthh: '',
-			nightSendStmm: '',
-			nightSendEdhh: '',
-			nightSendEdmm: ''
+			// nightSendSthh: '',
+			// nightSendStmm: '',
+			// nightSendEdhh: '',
+			// nightSendEdmm: ''
 		}
 	},
 	mounted() {
 		this.fnSearchProject();
-		this.fnNightSendTime();
+		//this.fnNightSendTime();
 	},
 	watch: {
 		baseInfoData: function() {
@@ -222,7 +222,7 @@ export default {
 			jQuery('input:radio[name=radioPush]:input[value="' + this.baseInfoData.pushYn + '"]').prop('checked', true);
 			jQuery('input:radio[name=radioKakao]:input[value="' + this.baseInfoData.kakaoYn + '"]').prop('checked', true);
 			jQuery('input:radio[name=radioMo]:input[value="' + this.baseInfoData.moYn + '"]').prop('checked', true);
-			jQuery('input:radio[name=nightSendYn]:input[value="' + this.baseInfoData.nightSendYn + '"]').prop('checked', true);
+			//jQuery('input:radio[name=nightSendYn]:input[value="' + this.baseInfoData.nightSendYn + '"]').prop('checked', true);
 		}
 	},
 	methods: {
@@ -264,7 +264,7 @@ export default {
 				'radioPush'		: jQuery('input[name="radioPush"]:checked').val(),
 				'radioKko'		: jQuery('input[name="radioKakao"]:checked').val(),
 				'radioMo'		: jQuery('input[name="radioMo"]:checked').val(),
-				'nightSendYN'	: jQuery('input[name="nightSendYn"]:checked').val(),
+				//'nightSendYN'	: jQuery('input[name="nightSendYn"]:checked').val(),
 			};
 
 			baseInfoApi.saveProjectBaseInfo(params).then(response =>{

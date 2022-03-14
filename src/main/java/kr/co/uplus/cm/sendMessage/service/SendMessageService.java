@@ -3099,46 +3099,46 @@ public class SendMessageService {
     	// all : {cuInputType=DICT, chString=FRIENDTALK,RCS,SMS, cuInfo=[{"phone":"01054113739","mergeData":{}}], corpId=COM2104142281316, campaignId=, recvInfoLst=[{phone=01054113739, mergeData={}}], tmpltCode=TPLHMCtokK, chTypeList=[FRIENDTALK, RCS, SMS], requiredCuid=false, requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, chMappingVarList=[{ch=FRIENDTALK, varNms=[]}, {ch=RCS, varNms=[]}, {ch=SMS, varNms=[]}], webReqId=ITGMV4lOPQ, smartPrdFee=0, userId=MBR2104261075129, excelLimitRow=0, testRecvInfoLst=[], rsrvHH=00, rsrvMM=00, senderType=M, contsVarNms=[], projectId=313431323336706A74, rsrvSendYn=N}
     	
     	//테스트발송인 경우 패스(sms, lms, mms, alimTalk, frndTalk, push, all(통합))
-    	if(params.containsKey("testSendYn") && CommonUtils.getString(params.get("testSendYn")).equals("Y")) {
-    		return true;
-    	}else {
-    	
-	    	//야간발송 제한 프로젝트인지 확인
-	    	String nightSendYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_NIGHT_SEND_YN, params));
-	    	
-	    	if(nightSendYn.equals("Y")) {
-	    		String nightSendLimitSt = nightSendSthh + nightSendStmm;
-	    		String nightSendLimitEd = nightSendEdhh + nightSendEdmm;
-	
-		    	if(CommonUtils.getString(params.get("rsrvSendYn")).equals("Y")) {
-		    		//예약발송
-		    		String rsrvTime = CommonUtils.getString(params.get("rsrvHH")) + CommonUtils.getString(params.get("rsrvMM"));
-		    		
-		    		if(CommonUtils.getInt(rsrvTime) >= CommonUtils.getInt(nightSendLimitSt)) {
-		    			return false;
-		    		}
-		    		
-		    		if(CommonUtils.getInt(rsrvTime) < CommonUtils.getInt(nightSendLimitEd)) {
-		    			return false;
-		    		}
-		    		
-		    	}else {
-		    		//즉시발송
-		    		LocalTime now = LocalTime.now();
-		    		DateTimeFormatter format = DateTimeFormatter.ofPattern("HHmm");
-		    		
-		    		String currTime = now.format(format);
-		    		
-		    		if(CommonUtils.getInt(currTime) >= CommonUtils.getInt(nightSendLimitSt)) {
-		    			return false;
-		    		}
-		    		
-		    		if(CommonUtils.getInt(currTime) < CommonUtils.getInt(nightSendLimitEd)) {
-		    			return false;
-		    		}
-		    	}
-	    	}
-    	}
+//    	if(params.containsKey("testSendYn") && CommonUtils.getString(params.get("testSendYn")).equals("Y")) {
+//    		return true;
+//    	}else {
+//    	
+//	    	//야간발송 제한 프로젝트인지 확인
+//	    	String nightSendYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_NIGHT_SEND_YN, params));
+//	    	
+//	    	if(nightSendYn.equals("Y")) {
+//	    		String nightSendLimitSt = nightSendSthh + nightSendStmm;
+//	    		String nightSendLimitEd = nightSendEdhh + nightSendEdmm;
+//	
+//		    	if(CommonUtils.getString(params.get("rsrvSendYn")).equals("Y")) {
+//		    		//예약발송
+//		    		String rsrvTime = CommonUtils.getString(params.get("rsrvHH")) + CommonUtils.getString(params.get("rsrvMM"));
+//		    		
+//		    		if(CommonUtils.getInt(rsrvTime) >= CommonUtils.getInt(nightSendLimitSt)) {
+//		    			return false;
+//		    		}
+//		    		
+//		    		if(CommonUtils.getInt(rsrvTime) < CommonUtils.getInt(nightSendLimitEd)) {
+//		    			return false;
+//		    		}
+//		    		
+//		    	}else {
+//		    		//즉시발송
+//		    		LocalTime now = LocalTime.now();
+//		    		DateTimeFormatter format = DateTimeFormatter.ofPattern("HHmm");
+//		    		
+//		    		String currTime = now.format(format);
+//		    		
+//		    		if(CommonUtils.getInt(currTime) >= CommonUtils.getInt(nightSendLimitSt)) {
+//		    			return false;
+//		    		}
+//		    		
+//		    		if(CommonUtils.getInt(currTime) < CommonUtils.getInt(nightSendLimitEd)) {
+//		    			return false;
+//		    		}
+//		    	}
+//	    	}
+//    	}
         return true;
     }
 
