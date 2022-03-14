@@ -202,10 +202,10 @@ export default {
 			apiKeyData: {},
 			apiKeyOpen: false,
 			title: 'API Key 관리',
-			// nightSendSthh: '',
-			// nightSendStmm: '',
-			// nightSendEdhh: '',
-			// nightSendEdmm: ''
+			nightSendSthh: '',
+			nightSendStmm: '',
+			nightSendEdhh: '',
+			nightSendEdmm: ''
 		}
 	},
 	mounted() {
