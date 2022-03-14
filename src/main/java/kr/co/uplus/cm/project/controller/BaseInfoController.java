@@ -1,11 +1,13 @@
 package kr.co.uplus.cm.project.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +19,7 @@ import kr.co.uplus.cm.common.consts.Const;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.project.service.BaseInfoService;
+import kr.co.uplus.cm.utils.CommonUtils;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -31,6 +34,11 @@ public class BaseInfoController {
 	@Autowired
 	private CommonService commonService;
 
+	@Value("${night.send.st.hh}") String nightSendSthh;
+	@Value("${night.send.st.mm}") String nightSendStmm;
+	@Value("${night.send.ed.hh}") String nightSendEdhh;
+	@Value("${night.send.ed.mm}") String nightSendEdmm;
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
@@ -124,6 +132,30 @@ public class BaseInfoController {
 			log.error("{} Error : {}", this.getClass(), e);
 		}
 
+		return rtn;
+	}
+	
+	//야간 메시지 발송 제한 확인
+	@PostMapping("/selectNightSendTime")
+	public RestResult<?> selectNightSendTime(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> params) {
+
+		RestResult<Object> rtn = new RestResult<Object>();
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("nightSendSthh", nightSendSthh);
+			map.put("nightSendStmm", nightSendStmm);
+			map.put("nightSendEdhh", nightSendEdhh);
+			map.put("nightSendEdmm", nightSendEdmm);
+			
+			if(params.containsKey("isChk") && CommonUtils.getString(params.get("isChk")).equals("Y")){
+				map.put("nightSendYn", baseInfoSvc.selectProjectNightSendYn(params));
+			}
+			rtn.setData(map);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
 		return rtn;
 	}
 }

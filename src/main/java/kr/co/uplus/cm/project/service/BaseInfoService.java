@@ -102,6 +102,7 @@ public class BaseInfoService {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
 		} else {
+			commonService.updateCmCmdForRedis("CM_PROJECT");
 			rtn.setSuccess(true);
 			rtn.setData(params);
 		}
@@ -220,5 +221,20 @@ public class BaseInfoService {
 			rtn.setData(params);
 		}
 		return rtn;
+	}
+	
+	/**
+	 * 프로젝트 기본정보 야간 메시지 발송 플래그 조회
+	 * 
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public String selectProjectNightSendYn(Map<String, Object> params) throws Exception {
+		
+		String nightSendYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_NIGHT_SEND_YN, params));
+
+		return nightSendYn;
 	}
 }

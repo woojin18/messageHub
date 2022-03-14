@@ -16,9 +16,14 @@ const saveApiKey = (params) => {
 	return httpClient.post('/baseInfoApi/manage/saveApiKey', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 
+const selectNightSendTime = (params) => {
+	return httpClient.post('/baseInfoApi/manage/selectNightSendTime', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
+};
+
 export default {
 	selectProjectBaseInfo,
 	saveProjectBaseInfo,
 	selectApiKeyList,
 	saveApiKey,
+	selectNightSendTime
 };

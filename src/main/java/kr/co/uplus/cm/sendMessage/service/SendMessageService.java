@@ -2,6 +2,8 @@ package kr.co.uplus.cm.sendMessage.service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,6 +27,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -89,6 +92,12 @@ public class SendMessageService {
     private RcsTemplateSendService rcsTemplateSendSvc;
     
     private long second = 1000;
+    
+    @Value("${night.send.st.hh}") String nightSendSthh;
+	@Value("${night.send.st.mm}") String nightSendStmm;
+	@Value("${night.send.ed.hh}") String nightSendEdhh;
+	@Value("${night.send.ed.mm}") String nightSendEdmm;
+	
 
     /**
      * APP ID 리스트 조회
@@ -3073,5 +3082,64 @@ public class SendMessageService {
 		
 	}
 
+    /**
+     * 야간 메시지 발송 제한 유효성 체크
+     * @param rtn
+     * @param params
+     */
+    @SuppressWarnings("rawtypes")
+    public boolean checkNightSendMsgValid(Map<String, Object> params) throws Exception {
+    	// sms : {imgInfoList=[], smsTitle=, cuInfo=[{"phone":"01054113739","mergeData":{}}], recvInfoLst=[{phone=01054113739, mergeData={}}], requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, webReqId=SMSPHek03q, rsrvHH=00, smsContent=test, rsrvSendYn=N, callbackList=[{callback=01050959083}, {callback=01080806316}, {callback=01088259173}, {callback=021112222}, {callback=0215421144}, {callback=022223333}, {callback=023334444}, {callback=0243113369}, {callback=0269496227}, {callback=0269496229}, {callback=027204650}, {callback=027204651}, {callback=0274125555}, {callback=0295957878}, {callback=0297974511}, {callback=03147848548}, {callback=0317849152}, {callback=0318513285}, {callback=06143113369}, {callback=07052227696}, {callback=32145215321}], cuInputType=DICT, rcvblcNumber=, chGrp=SMS/MMS, corpId=COM2104142281316, msgKind=I, campaignId=, requiredCuid=false, userId=MBR2104261075129, excelLimitRow=0, testRecvInfoLst=[], rsrvMM=00, callback=027204650, senderType=SMS, contsVarNms=[], projectId=PJTDojV8sw}
+        // lms : {imgInfoList=[], smsTitle=test, cuInfo=[{"phone":"01054113739","mergeData":{}}], recvInfoLst=[{phone=01054113739, mergeData={}}], requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, webReqId=MMSYMa2Bx7, rsrvHH=00, smsContent=test, rsrvSendYn=N, callbackList=[{callback=01050959083}, {callback=01080806316}, {callback=01088259173}, {callback=021112222}, {callback=0215421144}, {callback=022223333}, {callback=023334444}, {callback=0243113369}, {callback=0269496227}, {callback=0269496229}, {callback=027204650}, {callback=027204651}, {callback=0274125555}, {callback=0295957878}, {callback=0297974511}, {callback=03147848548}, {callback=0317849152}, {callback=0318513285}, {callback=06143113369}, {callback=07052227696}, {callback=32145215321}], cuInputType=DICT, rcvblcNumber=, chGrp=SMS/MMS, corpId=COM2104142281316, msgKind=I, campaignId=, requiredCuid=false, userId=MBR2104261075129, excelLimitRow=0, testRecvInfoLst=[], rsrvMM=00, callback=027204650, senderType=LMS, contsVarNms=[], projectId=PJTDojV8sw}
+    	// mms : {imgInfoList=[], smsTitle=test, cuInfo=[{"phone":"01054113739","mergeData":{}}], recvInfoLst=[{phone=01054113739, mergeData={}}], requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, webReqId=MMSqd1MhTZ, rsrvHH=00, smsContent=test, rsrvSendYn=N, callbackList=[{callback=01050959083}, {callback=01080806316}, {callback=01088259173}, {callback=021112222}, {callback=0215421144}, {callback=022223333}, {callback=023334444}, {callback=0243113369}, {callback=0269496227}, {callback=0269496229}, {callback=027204650}, {callback=027204651}, {callback=0274125555}, {callback=0295957878}, {callback=0297974511}, {callback=03147848548}, {callback=0317849152}, {callback=0318513285}, {callback=06143113369}, {callback=07052227696}, {callback=32145215321}], cuInputType=DICT, rcvblcNumber=, chGrp=SMS/MMS, corpId=COM2104142281316, msgKind=I, campaignId=, requiredCuid=false, userId=MBR2104261075129, excelLimitRow=0, testRecvInfoLst=[], rsrvMM=00, callback=027204650, senderType=MMS, contsVarNms=[], projectId=PJTDojV8sw}
+    	// rcs : {templateRadioBtn=text, data={messagebaseId=, brandId=BR.LsrxlRxNny, brandArr=[{BRAND_ID=BR.p8IrdTOxu3, BRAND_NAME=이커머스검수D브랜드}, {BRAND_ID=BR.2aduLMOx1Y, BRAND_NAME=제임스 브랜드2_검수기}, {BRAND_ID=BR.D9YV4wegIy, BRAND_NAME=0528 test 11111}, {BRAND_ID=BR.FYFqO2v1fT, BRAND_NAME=비트큐브}, {BRAND_ID=BR.q7U3H8JeN5, BRAND_NAME=0609 공용 브랜드}, {BRAND_ID=BR.v7ZBN27VMZ, BRAND_NAME=0601 test 1}, {BRAND_ID=BR.vC475jIdAh, BRAND_NAME=이커머스테크1 검수기}, {BRAND_ID=BR.W0ewiPMBSD, BRAND_NAME=이커머스테크2 검수기}, {BRAND_ID=BR.Z21Ir8v6He, BRAND_NAME=비트큐브 브랜드_검수기}, {BRAND_ID=BR.LsrxlRxNny, BRAND_NAME=MRO 비즈니스}], textTitle=, textContents=test, btnCnt=0, selectBtn=[], btnNm=[], contents=[], calendarTitle=[], calendarDes=[], initStartDate=[], initEndDate=[], imgUrl=, fileId=, wideImgYn=N, SMwThM00Img=data:image/png;base64,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, SMwThT00Img=data:image/png;base64,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, callback=03143113369, callbackArr=[{callback=03143113369}], copy=no, adYn=no, freeReceiveNum=, senderType=SMS, callbackTitle=, callbackContents=test, callbackImgUrl=, callbackFileId=, saveContent=, carouselObj={textTitle=[, , , , , ], textContents=[, , , , , ], imgUrl=[, , , , , ], fileId=[], wideImgYn=[], btnArr=[]}, requiredCuid=false, requiredCuPhone=true, cuInputType=DICT, cuInfo=[{"phone":"01054113739","mergeData":{}}], rsrvSendYn=N, rsrvDate=2022-03-14, rsrvHH=00, rsrvMM=00, campaignId=, imgInfoList=[], recvInfoLst=[{phone=01054113739, mergeData={}}], contsVarNms=[], testRecvInfoLst=[], excelLimitRow=0}, corpId=COM2104142281316, carouselSelect=3, brandId=BR.LsrxlRxNny, real=true, userId=MBR2104261075129, projectId=PJTDojV8sw}
+    	// alimtalk : {senderKey=da17d231bbf13f83174a36a4bb0353476ae012b3, reason=, kkoChId=@이커머스테크, senderKeyTypeName=일반, existsRejResnYn=N, tmpltCode=LMSG_20210923180747000579, webReqId=ALMr1NCzYF, tmpltStatCode=A, senderKeyType=S, tmpltEmpsTitle=, rsrvHH=00, tmpltReqDt=null, fbInfo={ch=SMS, callback=01080806316, msg=tes}, corpId=COM2104142281316, tmpltCategoryCode=001001, msgKind=I, campaignId=, tmpltStatCodeName=승인, requiredCuid=false, tmpltEmpsSubTitle=, buttonList=[], rownum=4, regDt=2021-09-23T09:07:47.000+0000, rsrvMM=00, contsVarNms=[], updDt=2021-09-27 09:00:00, projectId=313431323336706A74, emphasizeType=NONE, tmpltInfo=, cuInfo=[{"phone":"01054113739","mergeData":{}}], tmpltMsgType=BA, recvInfoLst=[{phone=01054113739, mergeData={}}], requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, tmpltContent=testtest, tmpltKey=TPnbGM0R4B, approvalDt=null, useYn=Y, rsrvSendYn=N, cuInputType=DICT, chGrp=KKO, ch=ALIMTALK, tmpltName=test-3, rplcSendType=SMS, userId=MBR2104261075129, excelLimitRow=0, testRecvInfoLst=[], categoryGrpName=회원}
+    	// fndTalk : {senderKey=da17d231bbf13f83174a36a4bb0353476ae012b3, cuInfo=[{"phone":"01054113739","mergeData":{}}], recvInfoLst=[{phone=01054113739, mergeData={}}], requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, webReqId=FRDzBX7Mqp, wideImgYn=N, rsrvHH=00, fbInfo={}, rsrvSendYn=N, cuInputType=DICT, chGrp=KKO, imgLink=, corpId=COM2104142281316, ch=FRIENDTALK, msgKind=I, rplcSendType=NONE, campaignId=, frndTalkContent=tesetttt, requiredCuid=false, buttonList=[{name=aaa, linkMo=https://m.naver.com, linkPc=https://www.naver.com, linkType=WL}], userId=MBR2104261075129, imgUrl=, excelLimitRow=0, testRecvInfoLst=[], rsrvMM=00, contsVarNms=[], projectId=313431323336706A74, fileId=}
+    	// push : {senderKey=da17d231bbf13f83174a36a4bb0353476ae012b3, cuInfo=[{"phone":"01054113739","mergeData":{}}], recvInfoLst=[{phone=01054113739, mergeData={}}], requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, webReqId=FRDzBX7Mqp, wideImgYn=N, rsrvHH=00, fbInfo={}, rsrvSendYn=N, cuInputType=DICT, chGrp=KKO, imgLink=, corpId=COM2104142281316, ch=FRIENDTALK, msgKind=I, rplcSendType=NONE, campaignId=, frndTalkContent=tesetttt, requiredCuid=false, buttonList=[{name=aaa, linkMo=https://m.naver.com, linkPc=https://www.naver.com, linkType=WL}], userId=MBR2104261075129, imgUrl=, excelLimitRow=0, testRecvInfoLst=[], rsrvMM=00, contsVarNms=[], projectId=313431323336706A74, fileId=}
+    	// all : {cuInputType=DICT, chString=FRIENDTALK,RCS,SMS, cuInfo=[{"phone":"01054113739","mergeData":{}}], corpId=COM2104142281316, campaignId=, recvInfoLst=[{phone=01054113739, mergeData={}}], tmpltCode=TPLHMCtokK, chTypeList=[FRIENDTALK, RCS, SMS], requiredCuid=false, requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, chMappingVarList=[{ch=FRIENDTALK, varNms=[]}, {ch=RCS, varNms=[]}, {ch=SMS, varNms=[]}], webReqId=ITGMV4lOPQ, smartPrdFee=0, userId=MBR2104261075129, excelLimitRow=0, testRecvInfoLst=[], rsrvHH=00, rsrvMM=00, senderType=M, contsVarNms=[], projectId=313431323336706A74, rsrvSendYn=N}
+    	
+    	//테스트발송인 경우 패스(sms, lms, mms, alimTalk, frndTalk, push, all(통합))
+    	if(params.containsKey("testSendYn") && CommonUtils.getString(params.get("testSendYn")).equals("Y")) {
+    		return true;
+    	}else {
+    	
+	    	//야간발송 제한 프로젝트인지 확인
+	    	String nightSendYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_NIGHT_SEND_YN, params));
+	    	
+	    	if(nightSendYn.equals("Y")) {
+	    		String nightSendLimitSt = nightSendSthh + nightSendStmm;
+	    		String nightSendLimitEd = nightSendEdhh + nightSendEdmm;
+	
+		    	if(CommonUtils.getString(params.get("rsrvSendYn")).equals("Y")) {
+		    		//예약발송
+		    		String rsrvTime = CommonUtils.getString(params.get("rsrvHH")) + CommonUtils.getString(params.get("rsrvMM"));
+		    		
+		    		if(CommonUtils.getInt(rsrvTime) >= CommonUtils.getInt(nightSendLimitSt)) {
+		    			return false;
+		    		}
+		    		
+		    		if(CommonUtils.getInt(rsrvTime) < CommonUtils.getInt(nightSendLimitEd)) {
+		    			return false;
+		    		}
+		    		
+		    	}else {
+		    		//즉시발송
+		    		LocalTime now = LocalTime.now();
+		    		DateTimeFormatter format = DateTimeFormatter.ofPattern("HHmm");
+		    		
+		    		String currTime = now.format(format);
+		    		
+		    		if(CommonUtils.getInt(currTime) >= CommonUtils.getInt(nightSendLimitSt)) {
+		    			return false;
+		    		}
+		    		
+		    		if(CommonUtils.getInt(currTime) < CommonUtils.getInt(nightSendLimitEd)) {
+		    			return false;
+		    		}
+		    	}
+	    	}
+    	}
+        return true;
+    }
 
 }
