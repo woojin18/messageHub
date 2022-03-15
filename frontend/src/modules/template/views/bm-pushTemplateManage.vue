@@ -85,15 +85,15 @@
         <div class="of_h user-phone">
           <div class="float-left" style="width:28%">
             <h4>내용 *</h4>
-            <!-- <a 
+            <a 
               class="btnStyle1 backBlack" 
               title="단축 URL+" 
               data-toggle="modal" 
               data-target="#shortened_URL"
-            >단축 URL</a> -->
-            <!-- <i class="fas fa-question-circle toolTip ml5">
+            >단축 URL</a>
+            <i class="fas fa-question-circle toolTip ml5">
               <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
-            </i> -->
+            </i>
           </div>
           <div class="float-left" style="width:72%">
             <textarea 

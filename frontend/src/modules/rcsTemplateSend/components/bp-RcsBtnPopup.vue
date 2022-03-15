@@ -52,13 +52,13 @@
 								</td>
 								<td class="text-center end">
 									<a href="#" @click.prevent="fnClickMinus(n-1)" title="이전버튼">
-										<!-- <a
+										<a
 											v-if="selectBtn[n-1] === 'urlAction'" 
 											class="btnStyle1 backBlack" 
 											title="단축 URL+" 
 											data-toggle="modal" 
 											data-target="#shortened_URL"
-										>단축 URL+</a>  -->
+										>단축 URL+</a> 
 										<i 
 											class="far fa-minus channelBtn"
 											:class="selectBtn[n-1] === 'urlAction' ? 'ml5' : ''"
