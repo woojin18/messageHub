@@ -1,7 +1,7 @@
 <template>
 <div class="row row-no-margin">
   <div class="contentHeader">
-      <h2>조회 > 전체</h2><span>발송일자와 수신자정보는 검색 시 필수 입니다. (수신자정보는 수신자 전화번호 또는 PUSH 앱 아이디 입니다.)</span>
+      <h2>조회 > 전체</h2>
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="메시지 상세조회 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
   </div>
   <!-- 본문 -->
@@ -24,29 +24,28 @@
 
           </div>
         </div>
-
+        <a @click="fnSearch()" class="btnStyle2 float-right" title="검색" activity="READ" style="margin-top: 18px;">검색</a>
         <div class="of_h consolMarginTop">
           <div class="inline-block" style="width:8%"><h4 class="font-normal mt15">수신자정보</h4></div>
-          <div class="inline-block" style="width:25%">
+          <div class="inline-block" style="width:25%; margin-left: 6px;">
             <input type="text" class="inputStyle" id="searchText" name="searchText" v-model="searchData.searchText">
           </div>
           <div class="inline-block" style="width:8%;">
-            <h4 class="font-normal mt15 ml50">태그</h4>
+            <h4 class="font-normal mt15 ml30">태그</h4>
           </div>
           <div class="inline-block" style="width: 25%;">
             <input type="text" id="srcTag" name="srcTag" title="태그" v-model="searchData.srcTag"  class="inputStyle">
           </div>
-        </div>
-        <div class="of_h consolMarginTop">
-          <div class="inline-block" style="width:8%"><h4 class="font-normal mt3">결과</h4></div>
-          <div class="inline-block" style="width:91%">
+          <div class="inline-block" style="width:8%">
+            <h4 class="font-normal mt15 ml30">결과</h4>
+          </div>
+          <div class="inline-block" style="width:25%">
             <div class="consolCheck">
               <input type="checkbox" id="searchResultYn_SUCC" class="checkStyle2" v-model="searchData.searchResultY">
               <label for="searchResultYn_SUCC" class="mr30">성공</label>
               <input type="checkbox" id="searchResultYn_FAIL" class="checkStyle2" v-model="searchData.searchResultN">
               <label for="searchResultYn_FAIL">실패</label>
             </div>
-            <a @click="fnSearch()" class="btnStyle2 float-right" title="검색" activity="READ">검색</a>
           </div>
         </div>
       </div>
@@ -122,6 +121,8 @@
   <div id="pageContent">
       <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
   </div>
+  <br/>
+  <span>발송일자와 수신자정보는 검색 시 필수 입니다. (수신자정보는 수신자 전화번호 또는 PUSH 앱 아이디 입니다.)</span>
 </div>
 </template>
 
