@@ -256,6 +256,7 @@ export default {
       document.body.appendChild(t)
       t.value = urlId
       t.select()
+      t.focus()
       document.execCommand('copy')
       document.body.removeChild(t)
 
