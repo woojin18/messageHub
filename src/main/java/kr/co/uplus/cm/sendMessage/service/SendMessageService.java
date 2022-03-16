@@ -87,17 +87,17 @@ public class SendMessageService {
 
     @Autowired
     ApiInterface apiInterface;
-    
+
     @Autowired
     private RcsTemplateSendService rcsTemplateSendSvc;
-    
+
     private long second = 1000;
-    
+
     @Value("${night.send.st.hh}") String nightSendSthh;
 	@Value("${night.send.st.mm}") String nightSendStmm;
 	@Value("${night.send.ed.hh}") String nightSendEdhh;
 	@Value("${night.send.ed.mm}") String nightSendEdmm;
-	
+
 
     /**
      * APP ID 리스트 조회
@@ -131,7 +131,7 @@ public class SendMessageService {
 
         return rtn;
     }
-    
+
     /**
      * RCS 발신 번호 조회
      * @param params
@@ -260,18 +260,18 @@ public class SendMessageService {
                         log.error("{}.getRecvInfoLst get excelLimitRow Exception : {}", this.getClass(), e);
                     }
                 }
-                
+
                 if(limitRow > 0) {
                     excelList = commonService.getExcelDataList(excelFile, excelHeader, limitRow+excelHeader, colKeys);
                 } else {
                     excelList = commonService.getExcelDataList(excelFile, excelHeader, colKeys);
                 }
-                
+
                 // excel업로드 중복 데이터 제거 (전화번호, 앱ID가 중복인 경우 해당 번호의 중복 데이터를 지움)
                 // 전화번호, 앱 아이디가 전부 들어가는경우만 case 처리
                 if(params.containsKey("requiredCuid") && (Boolean) params.get("requiredCuid")
                 	&& params.containsKey("requiredCuPhone") && (Boolean) params.get("requiredCuPhone")) {
-                	
+
                 	// tempList -> 중복 키가 들어가는 list 생성
                 	// resultTemplist -> 중복 데이터 제거된 실제 excel 데이터
                 	List<Map<String, Object>> tempList = new ArrayList<Map<String, Object>>();
@@ -328,7 +328,7 @@ public class SendMessageService {
                     recvInfo.setMergeData(mergeData);
                     recvInfoLst.add(recvInfo);
                 }
-                
+
 
             //전체발송
             } else if(StringUtils.equals("ALL", (String)params.get("cuInputType"))) {
@@ -531,6 +531,10 @@ public class SendMessageService {
             pushRequestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
         }
 
+        // 단축URL 여부 체크
+	    if(pushContent.contains("#URL{"))
+	    	pushRequestData.setClickUrlYn("Y");
+
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
@@ -579,9 +583,9 @@ public class SendMessageService {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date rsrvDate = dateFormat.parse(rsrvDateStr);
             Date currentDate = new Date();
-            
+
             currentDate = DateUtils.addMinutes(currentDate, 9);
-            
+
             if(currentDate.compareTo(rsrvDate) > 0) {
                 rtn.setSuccess(false);
                 rtn.setMessage("잘못된 예약시간입니다. 현재시간 10분 이후로 설정해주세요.");
@@ -842,7 +846,7 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
-        
+
         int cps = NumberUtils.toInt(strCps, 30);
         if (cps <= 0) cps = 30;
         int sendCnt = 0;
@@ -882,7 +886,7 @@ public class SendMessageService {
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
-            
+
             if (sendCnt >= cps || toIndex >= listSize) {
             	end = System.currentTimeMillis();
             	long diff  = end - start;
@@ -946,6 +950,10 @@ public class SendMessageService {
             msg = (CommonUtils.getStrValue(adMap, "msg"));
         }
         requestData.setMsg(msg);
+
+        // 단축URL 여부 체크
+        if(smsContent.contains("#URL{"))
+        	requestData.setClickUrlYn("Y");
 
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -1036,7 +1044,7 @@ public class SendMessageService {
 
         return rtn;
     }
-    
+
     private Vector sms = new Vector();
 
     /**
@@ -1078,13 +1086,13 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
-        
+
         int cps = NumberUtils.toInt(strCps, 30);
         if (cps <= 0) cps = 30;
         int sendCnt = 0;
         long start = System.currentTimeMillis();
         long end = 0;
-        
+
         while (toIndex < listSize) {
             isDone = false;
             isServerError = false;
@@ -1118,7 +1126,7 @@ public class SendMessageService {
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
-            
+
             if (sendCnt >= cps || toIndex >= listSize) {
             	end = System.currentTimeMillis();
             	long diff  = end - start;
@@ -1130,7 +1138,7 @@ public class SendMessageService {
             	start = System.currentTimeMillis();
             }
         }
-        
+
 
         if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
             try {
@@ -1145,7 +1153,7 @@ public class SendMessageService {
                 log.error("{}.sendSmsMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
             }
         }
-        
+
         //웹 발송 내역 등록
         if(isAllFail) sParams.put("allFailYn", Const.COMM_YES);
         insertSmsCmWebMsg(rtn, sParams, requestData, recvInfoLst);
@@ -1198,6 +1206,10 @@ public class SendMessageService {
                 }
             }
         }
+
+	    // 단축URL 여부 체크
+	    if(smsContent.contains("#URL{"))
+	    	requestData.setClickUrlYn("Y");
 
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -1369,7 +1381,7 @@ public class SendMessageService {
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
-            
+
             if (sendCnt >= cps || toIndex >= listSize) {
             	end = System.currentTimeMillis();
             	long diff  = end - start;
@@ -1395,7 +1407,7 @@ public class SendMessageService {
                 log.error("{}.sendMmsMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
             }
         }
-        
+
         //웹 발송 내역 등록
         if(isAllFail) sParams.put("allFailYn", Const.COMM_YES);
         insertMmsCmWebMsg(rtn, sParams, requestData, recvInfoLst);
@@ -1584,7 +1596,8 @@ public class SendMessageService {
         requestData.setAdFlag(adFlag);
 
         //메시지
-        requestData.setMsg(CommonUtils.getStrValue(params, "frndTalkContent"));
+        String frndTalkContent = CommonUtils.getStrValue(params, "frndTalkContent");
+        requestData.setMsg(frndTalkContent);
 
         //카카오톡 발신 프로필키
         requestData.setSenderKey(CommonUtils.getStrValue(params, "senderKey"));
@@ -1641,6 +1654,10 @@ public class SendMessageService {
             requestData.setFbInfoLst(fbInfoLst);
             requestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
         }
+
+        // 단축URL 여부 체크
+	    if(frndTalkContent.contains("#URL{"))
+	    	requestData.setClickUrlYn("Y");
 
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -1784,7 +1801,7 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
-        
+
         int cps = NumberUtils.toInt(strCps, 30);
         if (cps <= 0) cps = 30;
         int sendCnt = 0;
@@ -1824,7 +1841,7 @@ public class SendMessageService {
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
-            
+
             if (sendCnt >= cps || toIndex >= listSize) {
             	end = System.currentTimeMillis();
             	long diff  = end - start;
@@ -1958,7 +1975,8 @@ public class SendMessageService {
         //title
         requestData.setTitle(CommonUtils.getStrValue(tmpltInfo, "templateTitle"));
         //msg
-        requestData.setMsg(CommonUtils.getStrValue(tmpltInfo, "templateContent"));
+        String templateContent = CommonUtils.getStrValue(tmpltInfo, "templateContent");
+        requestData.setMsg(templateContent);
         //senderKey
         requestData.setSenderKey(CommonUtils.getStrValue(tmpltMap, "senderKey"));
         //tmpltKey
@@ -2029,6 +2047,10 @@ public class SendMessageService {
             requestData.setFbInfoLst(fbInfoLst);
             requestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
         }
+
+        // 단축URL 여부 체크
+	    if(templateContent.contains("#URL{"))
+	    	requestData.setClickUrlYn("Y");
 
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -2161,7 +2183,7 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
-        
+
         int cps = NumberUtils.toInt(strCps, 30);
         if (cps <= 0) cps = 30;
         int sendCnt = 0;
@@ -2201,7 +2223,7 @@ public class SendMessageService {
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
-            
+
             if (sendCnt >= cps || toIndex >= listSize) {
             	end = System.currentTimeMillis();
             	long diff  = end - start;
@@ -2538,7 +2560,7 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
-        
+
         int cps = NumberUtils.toInt(strCps, 30);
         if (cps <= 0) cps = 30;
         int sendCnt = 0;
@@ -2578,7 +2600,7 @@ public class SendMessageService {
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
-            
+
             if (sendCnt >= cps || toIndex >= listSize) {
             	end = System.currentTimeMillis();
             	long diff  = end - start;
@@ -2590,7 +2612,7 @@ public class SendMessageService {
             	start = System.currentTimeMillis();
             }
         }
-        
+
         if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
             try {
                 //CM_MSG Insert
@@ -2966,7 +2988,7 @@ public class SendMessageService {
         rtn.setData(rtnList);
         return rtn;
     }
-    
+
     /**
      * RCS 비동기 발송
      * @param params
@@ -2992,7 +3014,7 @@ public class SendMessageService {
 		int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
 		int listSize = recvInfoLst.size();
 		int toIndex = fromIndex;
-		
+
         String corpId = CommonUtils.getStrValue(params, "corpId");
         String projectId = CommonUtils.getStrValue(params, "projectId");
         Map apiData = commonService.getApiKey2(corpId, projectId);
@@ -3004,11 +3026,11 @@ public class SendMessageService {
         long start = System.currentTimeMillis();
         long end = 0;
         long second = 1000;
-		
+
 		params.put("recvInfoLstCnt", listSize);
 		apiMap.put("msgRecvInfoLst", recvInfoLst);
 		apiMap.put("msgFbInfoLst", fbInfoLst);
-		
+
 		while (toIndex < listSize) {
 			isDone = false;
 			isServerError = false;
@@ -3030,7 +3052,7 @@ public class SendMessageService {
 				isServerError = true;
 				if(retryCnt == ApiConfig.GW_RETRY_CNT) sendMsgErrorNoti(Const.ApiWatchNotiMsg.API_CONNECTION_FAIL);
 			}
-			
+
 			if(isDone) {
             	sendCnt++;
 				retryCnt = NumberUtils.INTEGER_ZERO;
@@ -3045,7 +3067,7 @@ public class SendMessageService {
 				toIndex = fromIndex;
 				if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
 			}
-	        
+
 	        if (sendCnt >= cps || toIndex >= listSize) {
 	        	end = System.currentTimeMillis();
 	        	long diff  = end - start;
@@ -3057,7 +3079,7 @@ public class SendMessageService {
 	        	start = System.currentTimeMillis();
 	        }
 		}
-		
+
 		if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
 			try {
 				//CM_MSG Insert
@@ -3072,14 +3094,14 @@ public class SendMessageService {
 				log.error("{}.sendRCSMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
 			}
 		}
-		
+
 		//웹 발송 내역 등록
 		if(isAllFail) {
 			rcsTemplateSendSvc.insertPushCmWebMsg(headerMap, apiMap, params, "FAIL");
 		} else {
 			rcsTemplateSendSvc.insertPushCmWebMsg(headerMap, apiMap, params, "COMPLETED");
 		}
-		
+
 	}
 
     /**
@@ -3097,42 +3119,42 @@ public class SendMessageService {
     	// fndTalk : {senderKey=da17d231bbf13f83174a36a4bb0353476ae012b3, cuInfo=[{"phone":"01054113739","mergeData":{}}], recvInfoLst=[{phone=01054113739, mergeData={}}], requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, webReqId=FRDzBX7Mqp, wideImgYn=N, rsrvHH=00, fbInfo={}, rsrvSendYn=N, cuInputType=DICT, chGrp=KKO, imgLink=, corpId=COM2104142281316, ch=FRIENDTALK, msgKind=I, rplcSendType=NONE, campaignId=, frndTalkContent=tesetttt, requiredCuid=false, buttonList=[{name=aaa, linkMo=https://m.naver.com, linkPc=https://www.naver.com, linkType=WL}], userId=MBR2104261075129, imgUrl=, excelLimitRow=0, testRecvInfoLst=[], rsrvMM=00, contsVarNms=[], projectId=313431323336706A74, fileId=}
     	// push : {senderKey=da17d231bbf13f83174a36a4bb0353476ae012b3, cuInfo=[{"phone":"01054113739","mergeData":{}}], recvInfoLst=[{phone=01054113739, mergeData={}}], requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, webReqId=FRDzBX7Mqp, wideImgYn=N, rsrvHH=00, fbInfo={}, rsrvSendYn=N, cuInputType=DICT, chGrp=KKO, imgLink=, corpId=COM2104142281316, ch=FRIENDTALK, msgKind=I, rplcSendType=NONE, campaignId=, frndTalkContent=tesetttt, requiredCuid=false, buttonList=[{name=aaa, linkMo=https://m.naver.com, linkPc=https://www.naver.com, linkType=WL}], userId=MBR2104261075129, imgUrl=, excelLimitRow=0, testRecvInfoLst=[], rsrvMM=00, contsVarNms=[], projectId=313431323336706A74, fileId=}
     	// all : {cuInputType=DICT, chString=FRIENDTALK,RCS,SMS, cuInfo=[{"phone":"01054113739","mergeData":{}}], corpId=COM2104142281316, campaignId=, recvInfoLst=[{phone=01054113739, mergeData={}}], tmpltCode=TPLHMCtokK, chTypeList=[FRIENDTALK, RCS, SMS], requiredCuid=false, requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, chMappingVarList=[{ch=FRIENDTALK, varNms=[]}, {ch=RCS, varNms=[]}, {ch=SMS, varNms=[]}], webReqId=ITGMV4lOPQ, smartPrdFee=0, userId=MBR2104261075129, excelLimitRow=0, testRecvInfoLst=[], rsrvHH=00, rsrvMM=00, senderType=M, contsVarNms=[], projectId=313431323336706A74, rsrvSendYn=N}
-    	
+
     	//테스트발송인 경우 패스(sms, lms, mms, alimTalk, frndTalk, push, all(통합))
 //    	if(params.containsKey("testSendYn") && CommonUtils.getString(params.get("testSendYn")).equals("Y")) {
 //    		return true;
 //    	}else {
-//    	
+//
 //	    	//야간발송 제한 프로젝트인지 확인
 //	    	String nightSendYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_NIGHT_SEND_YN, params));
-//	    	
+//
 //	    	if(nightSendYn.equals("Y")) {
 //	    		String nightSendLimitSt = nightSendSthh + nightSendStmm;
 //	    		String nightSendLimitEd = nightSendEdhh + nightSendEdmm;
-//	
+//
 //		    	if(CommonUtils.getString(params.get("rsrvSendYn")).equals("Y")) {
 //		    		//예약발송
 //		    		String rsrvTime = CommonUtils.getString(params.get("rsrvHH")) + CommonUtils.getString(params.get("rsrvMM"));
-//		    		
+//
 //		    		if(CommonUtils.getInt(rsrvTime) >= CommonUtils.getInt(nightSendLimitSt)) {
 //		    			return false;
 //		    		}
-//		    		
+//
 //		    		if(CommonUtils.getInt(rsrvTime) < CommonUtils.getInt(nightSendLimitEd)) {
 //		    			return false;
 //		    		}
-//		    		
+//
 //		    	}else {
 //		    		//즉시발송
 //		    		LocalTime now = LocalTime.now();
 //		    		DateTimeFormatter format = DateTimeFormatter.ofPattern("HHmm");
-//		    		
+//
 //		    		String currTime = now.format(format);
-//		    		
+//
 //		    		if(CommonUtils.getInt(currTime) >= CommonUtils.getInt(nightSendLimitSt)) {
 //		    			return false;
 //		    		}
-//		    		
+//
 //		    		if(CommonUtils.getInt(currTime) < CommonUtils.getInt(nightSendLimitEd)) {
 //		    			return false;
 //		    		}
