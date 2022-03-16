@@ -81,7 +81,7 @@
 		,		@ROWNUM := @ROWNUM + 1 AS ROWNUM
 		from (
 			SELECT	CASH_CHARG_AMOUNT							AS AMOUNT
-			,		'충전캐시'									AS CASH_TYPE
+			,		'결재캐시'									AS CASH_TYPE
 			,		B.CODE_NAME_1								AS PAY_MTD
 			,		DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%s')	AS REG_DT
 			,		'-'											AS EVENT_DT

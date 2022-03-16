@@ -59,20 +59,26 @@ public class MessageStatusService {
         	rtn.setPageProps(params);
         	if(rtn.getPageInfo() != null) {
 	            //카운트 쿼리 실행
+        		boolean oriSrcResultY = (boolean) params.get("searchResultY");
+        		boolean oriSrcResultN = (boolean) params.get("searchResultN");
 	            int listCnt = generalDao.selectGernalCount("messageStatus.selectMessageStatusListCnt", params);
 	            rtn.getPageInfo().put("totCnt", listCnt);
 	            
-	            params.put("searchResultY",true);
-	            params.put("searchResultN",false);
-	            int successCnt = generalDao.selectGernalCount("messageStatus.selectMessageStatusListCnt", params);
-	            rtn.getPageInfo().put("successCnt", successCnt);
+	            if(oriSrcResultY) {
+		            params.put("searchResultY",true);
+		            params.put("searchResultN",false);
+		            int successCnt = generalDao.selectGernalCount("messageStatus.selectMessageStatusListCnt", params);
+		            rtn.getPageInfo().put("successCnt", successCnt);
+	            }
 	            
-	            params.put("searchResultY",false);
-	            params.put("searchResultN",true);
-	            int failCnt = generalDao.selectGernalCount("messageStatus.selectMessageStatusListCnt", params);
-	            rtn.getPageInfo().put("failCnt", failCnt);
-	            
-	            params.put("searchResultY",true);
+	            if(oriSrcResultN) {
+		            params.put("searchResultY",false);
+		            params.put("searchResultN",true);
+		            int failCnt = generalDao.selectGernalCount("messageStatus.selectMessageStatusListCnt", params);
+		            rtn.getPageInfo().put("failCnt", failCnt);
+	            }
+	            params.put("searchResultY",oriSrcResultY);
+	            params.put("searchResultN",oriSrcResultN);
         	}
         }
         

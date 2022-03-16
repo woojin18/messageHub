@@ -73,10 +73,14 @@
 						ELSE CONCAT(SUBSTR(A.PHONE,1,3), '-',  SUBSTR(A.PHONE,4,4), '-', SUBSTR(A.PHONE,8,4)) 
 					END AS RECV_USER_INFO
 		,			CASE
-						WHEN A.WEB_REQ_ID IS NULL THEN '웹'
+						WHEN A.WEB_REQ_ID IS NOT NULL THEN '웹'
 						ELSE 'API'
 					END AS SEND_TYPE
 		,			A.GW_RESULT_DESC
+		,			CASE
+					WHEN A.GW_RESULT_CODE = '10000' THEN '성공'
+					ELSE CONCAT('실패( ' , A.GW_RESULT_DESC , ' )')
+					END AS EXCEL_GW_RESULT_NM 
 		FROM	cm.CM_MSG A
 		WHERE	1=1
 		<include refid="whereSelectMessageStatusList"/>
