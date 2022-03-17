@@ -2,7 +2,7 @@
   <div>
     <div class="contentHeader">
       <h2>{{componentsTitle}}&nbsp;<span style="font-size: 12px;color: red;">(친구톡 광고 메시지는 20시~8시 발송 시 실패 처리 됩니다.)</span></h2>
-      <!-- <h2>{{componentsTitle}}&nbsp;<span style="font-size: 12px;color: red;">(친구톡 광고 메시지는 20시~8시 발송 시 실패 처리 됩니다.)</span><span v-if="nightSendYn == 'Y'" class="ml20 font-size12 color1">야간 메시지 발송 제한으로 {{nightSendSthh}}:{{nightSendStmm}} ~ 다음날 {{nightSendEdhh}}:{{nightSendEdmm}} 까지 메시지 발송을 할 수 없습니다.<i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:260px">야간 메시지 발송 제한 해제는 [관리자 콘솔] 프로젝트 기본정보에서 세팅 할 수 있습니다.</span></i></span></h2> -->
+      <!-- <h2>{{componentsTitle}}&nbsp;<span style="font-size: 12px;color: red;">(친구톡 광고 메시지는 20시~8시 발송 시 실패 처리 됩니다.)</span><span v-if="nightSendYn == 'N'" class="ml20 font-size12 color1">야간 메시지 발송 제한으로 {{nightSendSthh}}:{{nightSendStmm}} ~ 다음날 {{nightSendEdhh}}:{{nightSendEdmm}} 까지 메시지 발송을 할 수 없습니다.<i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:260px">야간 메시지 발송 제한 해제는 [관리자 콘솔] 프로젝트 기본정보에서 세팅 할 수 있습니다.</span></i></span></h2> -->
       <!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="통합 발송 이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
     </div>
 

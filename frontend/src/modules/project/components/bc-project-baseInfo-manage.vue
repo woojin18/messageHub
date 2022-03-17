@@ -31,7 +31,7 @@
 						</div>
 
 						<!-- <div class="clear consolMarginTop">
-							<h5 class="inline-block" style="width:10%">야간 메시지 발송제한<i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:250px">{{nightSendSthh}}:{{nightSendStmm}} ~ 다음날 {{nightSendEdhh}}:{{nightSendEdmm}} 까지 야간 메시지<br>발송 제한에 대한 여부</span></i></h5>
+							<h5 class="inline-block" style="width:10%">야간 메시지 발송<i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:250px">{{nightSendSthh}}:{{nightSendStmm}} ~ 다음날 {{nightSendEdhh}}:{{nightSendEdmm}} 까지 야간 메시지<br>발송에 대한 여부</span></i></h5>
 							<div style="width:88%" class="float-right">
 								<input type="radio" name="nightSendYn" value="Y" id="nightSendY" @click="fnModalView"><label for="nightSendY" class="mr30">예</label>
 								<input type="radio" name="nightSendYn" value="N" id="nightSendN"> <label for="nightSendN">아니요</label>	

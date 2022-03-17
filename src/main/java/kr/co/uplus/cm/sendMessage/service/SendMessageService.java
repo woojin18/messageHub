@@ -3128,7 +3128,7 @@ public class SendMessageService {
 //	    	//야간발송 제한 프로젝트인지 확인
 //	    	String nightSendYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_NIGHT_SEND_YN, params));
 //
-//	    	if(nightSendYn.equals("Y")) {
+//	    	if(nightSendYn.equals("N")) {
 //	    		String nightSendLimitSt = nightSendSthh + nightSendStmm;
 //	    		String nightSendLimitEd = nightSendEdhh + nightSendEdmm;
 //
