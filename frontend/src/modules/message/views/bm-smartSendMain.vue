@@ -755,6 +755,7 @@ export default {
     fnReset(){
       Object.assign(this.$data, this.$options.data.apply(this));
       this.fnGetTmpltInfo();
+      this.fnNightSendTime();
     },
     async fnExistApiKey(){
       let params = {};
@@ -886,7 +887,7 @@ export default {
       //유효성 체크
       if(this.fnValidSendMsgData(testSendYn) == false) return;
 
-      if(this.fnNightSendCheck() == false) return;
+      if(testSendYn != 'Y' && this.fnNightSendCheck() == false) return;
 
       //친구톡 광고성 야간발송 확인
       if(this.tmpltData.msgKind == 'A' && this.fnContainsChannel('FRIENDTALK')){

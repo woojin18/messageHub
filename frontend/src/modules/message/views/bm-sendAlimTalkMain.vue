@@ -443,6 +443,8 @@ export default {
     },
     fnReset(){
       Object.assign(this.$data, this.$options.data.apply(this));
+      this.fnGetSenderKeyList();
+      this.fnNightSendTime();
     },
     async fnExistApiKey(){
       let params = {};
@@ -574,7 +576,7 @@ export default {
       //유효성 체크
       if(this.fnValidSendMsgData(testSendYn) == false) return;
 
-      if(this.fnNightSendCheck() == false) return;
+      if(testSendYn != 'Y' && this.fnNightSendCheck() == false) return;
 
       //발송처리
       let params = Object.assign({}, this.sendData);

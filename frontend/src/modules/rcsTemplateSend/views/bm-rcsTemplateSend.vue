@@ -734,6 +734,8 @@ export default {
 			vm.fnSetFormatCard();
 		}
 
+		this.fnNightSendTime();
+
 		// 데이터 초기화
 		this.dataSet = false;
 		this.templateSet = false;
