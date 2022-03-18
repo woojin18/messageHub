@@ -42,7 +42,7 @@
 		,		PROJECT_DESC		= #{projectDesc}
 		,		USE_YN				= #{useYn}
 		,		USE_CH_GRP_INFO		= #{jsonInfo}
-		<!-- ,		NIGHT_SEND_YN		= #{nightSendYN} -->
+		,		NIGHT_SEND_YN		= #{nightSendYN}
 		WHERE	PROJECT_ID			= #{projectId}
 	</update>
 	

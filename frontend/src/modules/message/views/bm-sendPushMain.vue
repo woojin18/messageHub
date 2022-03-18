@@ -1,8 +1,7 @@
 <template>
   <div>
     <div class="contentHeader">
-      <h2>발송 > 푸시</h2>
-      <!-- <h2>발송 > PUSH <span v-if="nightSendYn == 'N'" class="ml20 font-size12 color1">야간 메시지 발송 제한으로 {{nightSendSthh}}:{{nightSendStmm}} ~ 다음날 {{nightSendEdhh}}:{{nightSendEdmm}} 까지 메시지 발송을 할 수 없습니다.<i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:260px">야간 메시지 발송 제한 해제는 [관리자 콘솔] 프로젝트 기본정보에서 세팅 할 수 있습니다.</span></i></span></h2> -->
+      <h2>발송 > PUSH <span v-if="nightSendYn == 'N'" class="ml20 font-size12 color1">야간 메시지 발송 제한으로 {{nightSendSthh}}:{{nightSendStmm}} ~ 다음날 {{nightSendEdhh}}:{{nightSendEdmm}} 까지 메시지 발송을 할 수 없습니다.<i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:260px">야간 메시지 발송 제한 해제는 [관리자 콘솔] 프로젝트 기본정보에서 세팅 할 수 있습니다.</span></i></span></h2>
     </div>
 
     <!-- 본문 -->
@@ -270,7 +269,7 @@
     <DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
     <AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
     <TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="false" :requiredCuid="sendData.requiredCuid" ref="testSendInputPopup"></TestSendInputPopup>
-    <!-- <nightSendLimitPopup :nightSendLimitY.sync="nightSendLimitYn" :nightSendSthh="this.nightSendSthh" :nightSendStmm="this.nightSendStmm" :nightSendEdhh="this.nightSendEdhh" :nightSendEdmm="this.nightSendEdmm"/> -->
+    <nightSendLimitPopup :nightSendLimitY.sync="nightSendLimitYn" :nightSendSthh="this.nightSendSthh" :nightSendStmm="this.nightSendStmm" :nightSendEdhh="this.nightSendEdhh" :nightSendEdmm="this.nightSendEdmm"/>
   </div>
   <!-- //본문 -->
 </template>
@@ -288,7 +287,7 @@ import Calendar from "@/components/Calendar.vue";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 import XLSX from 'xlsx';
-//import nightSendLimitPopup from "@/modules/message/components/bp-nightSendLimit.vue";
+import nightSendLimitPopup from "@/modules/message/components/bp-nightSendLimit.vue";
 
 export default {
   name: "sendPushMain",
@@ -301,7 +300,7 @@ export default {
     AddressInputPopup,
     TestSendInputPopup,
     Calendar,
-    //nightSendLimitPopup
+    nightSendLimitPopup
   },
   props: {
     componentsTitle: {
@@ -365,12 +364,12 @@ export default {
         testRecvInfoLst: [],  //테스트 수신자정보
         excelLimitRow: 0
       },
-      // nightSendSthh: '',
-			// nightSendStmm: '',
-			// nightSendEdhh: '',
-			// nightSendEdmm: '',
-      // nightSendYn : 'N',
-      // nightSendLimitYn : false
+      nightSendSthh: '',
+			nightSendStmm: '',
+			nightSendEdhh: '',
+			nightSendEdmm: '',
+      nightSendYn : 'N',
+      nightSendLimitYn : false
     }
   },
   watch : {
@@ -385,7 +384,7 @@ export default {
     await this.fnExistApiKey();
     await this.fnValidUseChGrp();
     await this.fnGetAppId();
-    //await this.fnNightSendTime();
+    await this.fnNightSendTime();
 
   },
   methods: {
@@ -572,7 +571,7 @@ export default {
 
       if(this.fnValidSendMsgData(testSendYn) == false) return;
 
-      //if(this.fnNightSendCheck() == false) return;
+      if(this.fnNightSendCheck() == false) return;
 
       //발송처리
       let params = Object.assign({}, this.sendData);
