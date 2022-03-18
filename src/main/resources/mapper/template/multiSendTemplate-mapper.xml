@@ -7,6 +7,7 @@
 		AND A.TMPLT_TYPE = 'M'
 		AND A.CORP_ID = #{corpId}
 		AND (A.PROJECT_ID = #{projectId} || A.PROJECT_ID = 'ALL')
+		AND A.TMPLT_STATUS != 'DEL'
 		<if test='pushYn == "N"'>
 		AND A.TMPLT_INFO ->> '$[0].chTypeList' NOT LIKE CONCAT('%', UPPER('PUSH'), '%')
 		</if>
