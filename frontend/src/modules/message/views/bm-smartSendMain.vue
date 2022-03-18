@@ -950,7 +950,11 @@ export default {
             }
           }
         } else {
+          let valiChk = result.data;
           confirm.fnAlert(this.componentsTitle, result.message);
+          if(valiChk) {
+            this.$router.push({name : "multiSendList"});
+          }
         }
       })
       .catch(function () {
