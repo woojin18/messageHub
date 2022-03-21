@@ -5,7 +5,10 @@
         <div class="modal-body">
           
           <div class="of_h">
-            <div class="float-left" style="width:20%"><h5>내용 *</h5></div>
+            <div class="float-left" style="width:20%">
+              <h5>내용 *</h5>
+              <p class="color3">버튼이 존재하는 친구톡 단축URL+는 버튼에 존재합니다.</p>
+            </div>
             <div class="float-right" style="width:79%">
               <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="frndTalkContent" :maxlength="msgLimitLength" @input="fnSetCurrLength"></textarea>
               <strong class="letter">({{msgCurrLength | formatComma}} / {{msgLimitLength | formatComma}})</strong><br/>
@@ -92,7 +95,7 @@ export default {
     },
     fnResetData(){
       Object.assign(this.$data, this.$options.data());
-    }
+    },
   }
 }
 </script>

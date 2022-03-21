@@ -38,6 +38,14 @@
               <span class="float-left color3 mt5"  v-else-if="msgKind == 'A' && fbInfo.ch == 'SMS'">
                 (광고) 문구가 내용 앞에 붙고<br>광고성메시지 수신거부번호는<br>내용 밑에 포함됩니다.
               </span>
+              <a class="btnStyle1 backBlack mt10"
+                title="단축 URL+"
+                data-toggle="modal"
+                data-target="#shortened_URL"
+              >단축 URL+</a> 
+              <i class="fas fa-question-circle toolTip ml5">
+                <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+              </i>
             </div>
             <div class="float-right" style="width:66%">
               <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="fbInfo.msg" @input="fnSetCurrByte"></textarea>
@@ -67,6 +75,8 @@
     <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
     <RcvblcNumPopup @callback-func="fnCallbackRcvblcNum" :rcvblcNumOpen.sync="rcvblcNumOpen"></RcvblcNumPopup>
 
+    <shortenedUrlListPopup @btnSelect="btnSelect" />
+    <shortenedUrlAddPopup/>
   </div>
 </template>
 
@@ -76,11 +86,16 @@ import MessageApi from "@/modules/message/service/messageApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
 
+import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
+
 export default {
   name: "replacedSenderPopup",
   components : {
     ImageManagePopUp,
-    RcvblcNumPopup
+    RcvblcNumPopup,
+    shortenedUrlListPopup,
+    shortenedUrlAddPopup,
   },
   props: {
     rplcSendOpen: {
@@ -266,7 +281,14 @@ export default {
     fnIsEmpty(str){
       if(str) return false;
       else return true
-    }
+    },
+    //단축 URL 선택
+    btnSelect(shortendUrl){
+      if(this.fbInfo && this.fbInfo.msg && this.fbInfo.msg.length > 0)
+        this.fbInfo.msg += '\n'
+      
+      this.$set(this.fbInfo, 'msg', this.fbInfo.msg + shortendUrl)
+    },
   }
 }
 </script>

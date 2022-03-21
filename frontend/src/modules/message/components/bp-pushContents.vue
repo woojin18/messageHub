@@ -10,7 +10,17 @@
             </div>
           </div>
           <div class="of_h mt7">
-            <div class="float-left" style="width:20%"><h5>내용 *</h5></div>
+            <div class="float-left" style="width:20%">
+              <h5>내용 *</h5>
+              <a class="btnStyle1 backBlack mt10"
+                title="단축 URL+"
+                data-toggle="modal"
+                data-target="#shortened_URL"
+              >단축 URL+</a> 
+              <i class="fas fa-question-circle toolTip ml5">
+                <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+              </i>
+            </div>
             <div class="float-right" style="width:79%">
               <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="pushContent" maxlength="2000"></textarea>
             </div>
@@ -36,14 +46,24 @@
         </div>
       </div>
     </div>
+
+    <shortenedUrlListPopup @btnSelect="btnSelect" />
+    <shortenedUrlAddPopup/>
   </div>
 </template>
 
 <script>
+import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
+
 import confirm from "@/modules/commonUtil/service/confirm.js";
 
 export default {
   name: "pushContentsPopup",
+  components : {
+    shortenedUrlListPopup,
+    shortenedUrlAddPopup,
+  },
   props: {
     useCh: String,
     pushContsOpen: {
@@ -101,7 +121,14 @@ export default {
     //팝업 닫기
     fnClose(){
       this.$emit('update:pushContsOpen', false)
-    }
+    },
+    //단축 URL 선택
+    btnSelect(shortendUrl){
+      if(this.pushContent.length > 0)
+        this.pushContent += '\n'
+      
+      this.pushContent += shortendUrl
+    },
   }
 }
 </script>
