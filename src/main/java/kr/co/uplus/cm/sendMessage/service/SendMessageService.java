@@ -2377,6 +2377,165 @@ public class SendMessageService {
         if(StringUtils.isNotBlank(errorMsg)) {
             rtn.setFail(errorMsg);
         }
+        
+        
+        // #13636 일감 관련 validation 추가
+        // 1. RCS, 문자
+        // 1-1. 문자만 사용하는경우 (RCS X)
+        // 문자 발신번호의 유효성 검사
+		List<Map<String, Object>> tmpltInfoList = mapper.readValue(CommonUtils.getStrValue(tmpltInfo, "tmpltInfo"), List.class);
+        Map<String, Object> valiMap = new HashMap<String, Object>();
+        if(!chTypeList.contains("RCS") && chTypeList.contains("SMS")){
+        	for(Map<String, Object> map : tmpltInfoList) {
+        		String ch = CommonUtils.getString(map.get("ch"));
+        		if("SMS".equals(ch)) {
+        			Map<String, Object> data = (Map<String, Object>) map.get("data");
+        			valiMap.put("callback", data.get("callback"));
+        			break;
+        		}
+        	}
+        	
+        	int callbackCnt = generalDao.selectGernalCount(DB.QRY_SELECT_USE_CALLBACK_CNT, valiMap);
+        	// 해당 유효 문자발신번호가 없는 경우 해당 템플릿을 미사용처리 하고 미발송처리 및 로직 종료
+        	if(callbackCnt == 0) {
+        		generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+        		rtn.setData(true);
+        		rtn.setFail("선택하신 문자발송 발신번호가 사용불가 상태입니다. 해당 템플릿은 삭제 처리됩니다.");
+                return requestData;
+        	}
+        }
+        
+        if(!chTypeList.contains("RCS") && chTypeList.contains("MMS")){
+        	for(Map<String, Object> map : tmpltInfoList) {
+        		String ch = CommonUtils.getString(map.get("ch"));
+        		if("MMS".equals(ch)) {
+        			Map<String, Object> data = (Map<String, Object>) map.get("data");
+        			valiMap.put("callback", data.get("callback"));
+        			break;
+        		}
+        	}
+        	
+        	int callbackCnt = generalDao.selectGernalCount(DB.QRY_SELECT_USE_CALLBACK_CNT, valiMap);
+        	// 해당 유효 문자발신번호가 없는 경우 해당 템플릿을 삭제상태 처리 하고 로직 종료
+        	if(callbackCnt == 0) {
+        		generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+        		rtn.setData(true);
+        		rtn.setFail("선택하신 문자발송 발신번호가 사용불가 상태입니다. 해당 템플릿은 삭제 처리됩니다.");
+        		return requestData;
+        	}
+        }
+        
+        // 1-2. RCS가 포함되는경우
+        // RCS 발신번호의 유효성 검사
+        // 선택 브랜드의 사용 유무 검사
+        // 템플릿의 사용 유무 검사
+        if(chTypeList.contains("RCS")){
+        	for(Map<String, Object> map : tmpltInfoList) {
+        		String ch = CommonUtils.getString(map.get("ch"));
+        		if("RCS".equals(ch)) {
+        			Map<String, Object> data = (Map<String, Object>) map.get("data");
+        			valiMap.put("callback", data.get("callback"));
+        			valiMap.put("brandId", data.get("brandNm"));
+        			valiMap.put("messagebaseId", data.get("messagebaseId"));
+        			break;
+        		}
+        	}
+        	
+        	// 1. RCS 발신번호 유효성 검사
+        	int callbackCnt = generalDao.selectGernalCount(DB.QRY_SELECT_USE_RCS_CALLBACK_CNT, valiMap);
+        	// 해당 유효 RCS 발신번호가 없는 경우 해당 템플릿을 삭제상태 처리 하고 로직 종료
+        	if(callbackCnt == 0) {
+        		generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+        		rtn.setData(true);
+        		rtn.setFail("선택하신 RCS 발신번호가 사용불가 상태입니다. 해당 템플릿은 삭제 처리됩니다.");
+        		return requestData;
+        	}
+        	
+        	// 2. 선택 브랜드의 사용 유무 검사
+        	int brandCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_BRAND_USE_CNT, valiMap);
+        	if(brandCnt == 0) {
+        		generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+        		rtn.setData(true);
+        		rtn.setFail("선택하신 RCS 브랜드가 사용불가 상태입니다. 해당 템플릿은 삭제 처리됩니다.");
+        		return requestData;
+        	}
+        	
+        	// 3. 템플릿의 사용 유무 검사
+        	int tmpltCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_TMPLT_USE_CNT, valiMap);
+        	if(tmpltCnt == 0) {
+        		generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+        		rtn.setData(true);
+        		rtn.setFail("선택하신 RCS 템플릿이 사용불가 상태입니다. 해당 통합 템플릿은 삭제 처리됩니다.");
+        		return requestData;
+        	}
+        }
+        // 2. 카카오(친구톡)
+        // 카카오채널 사용 유무 검사
+        if(chTypeList.contains("FRIENDTALK")){
+        	for(Map<String, Object> map : tmpltInfoList) {
+        		String ch = CommonUtils.getString(map.get("ch"));
+        		if("FRIENDTALK".equals(ch)) {
+        			Map<String, Object> data = (Map<String, Object>) map.get("data");
+        			valiMap.put("senderKey", data.get("senderKey"));
+        			valiMap.put("projectId", params.get("projectId"));
+        			break;
+        		}
+        	}
+        	
+        	int kkoChCnt = generalDao.selectGernalCount(DB.QRY_SELECT_KKO_CH_USE_CNT, valiMap);
+        	if(kkoChCnt == 0) {
+        		generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+        		rtn.setData(true);
+        		rtn.setFail("선택하신 카카오 채널이 사용불가 상태입니다. 해당 통합 템플릿은 삭제 처리됩니다.");
+        		return requestData;
+        	}
+        	
+        }
+        
+        // 3. 카카오(알림톡)
+        // 선택한 템플릿 사용 유무 검사
+        
+        if(chTypeList.contains("ALIMTALK")){
+        	for(Map<String, Object> map : tmpltInfoList) {
+        		String ch = CommonUtils.getString(map.get("ch"));
+        		if("ALIMTALK".equals(ch)) {
+        			Map<String, Object> data = (Map<String, Object>) map.get("data");
+        			valiMap.put("tmpltKey", data.get("tmpltKey"));
+        			valiMap.put("projectId", params.get("projectId"));
+        			break;
+        		}
+        	}
+        	
+        	int kkoTmpltCnt = generalDao.selectGernalCount(DB.QRY_SELECT_KKO_TMPLT_USE_CNT, valiMap);
+        	if(kkoTmpltCnt == 0) {
+        		generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+        		rtn.setData(true);
+        		rtn.setFail("선택하신 알림톡 템플릿이 사용불가 상태입니다. 해당 통합 템플릿은 삭제 처리됩니다.");
+        		return requestData;
+        	}
+        }
+        
+        // 4. PUSH
+        // APP_ID 사용 유무 검사
+        if(chTypeList.contains("PUSH")){
+        	for(Map<String, Object> map : tmpltInfoList) {
+        		String ch = CommonUtils.getString(map.get("ch"));
+        		if("PUSH".equals(ch)) {
+        			Map<String, Object> data = (Map<String, Object>) map.get("data");
+        			valiMap.put("appId", data.get("appId"));
+        			valiMap.put("projectId", params.get("projectId"));
+        			break;
+        		}
+        	}
+        	
+        	int pushIdCnt = generalDao.selectGernalCount(DB.QRY_SELECT_PUSH_ID_USE_CNT, valiMap);
+        	if(pushIdCnt == 0) {
+        		generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+        		rtn.setData(true);
+        		rtn.setFail("선택하신 PUSH ID가 사용불가 상태입니다. 해당 통합 템플릿은 삭제 처리됩니다.");
+        		return requestData;
+        	}
+        }
 
         return requestData;
     }
@@ -3121,46 +3280,46 @@ public class SendMessageService {
     	// all : {cuInputType=DICT, chString=FRIENDTALK,RCS,SMS, cuInfo=[{"phone":"01054113739","mergeData":{}}], corpId=COM2104142281316, campaignId=, recvInfoLst=[{phone=01054113739, mergeData={}}], tmpltCode=TPLHMCtokK, chTypeList=[FRIENDTALK, RCS, SMS], requiredCuid=false, requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, chMappingVarList=[{ch=FRIENDTALK, varNms=[]}, {ch=RCS, varNms=[]}, {ch=SMS, varNms=[]}], webReqId=ITGMV4lOPQ, smartPrdFee=0, userId=MBR2104261075129, excelLimitRow=0, testRecvInfoLst=[], rsrvHH=00, rsrvMM=00, senderType=M, contsVarNms=[], projectId=313431323336706A74, rsrvSendYn=N}
 
     	//테스트발송인 경우 패스(sms, lms, mms, alimTalk, frndTalk, push, all(통합))
-//    	if(params.containsKey("testSendYn") && CommonUtils.getString(params.get("testSendYn")).equals("Y")) {
-//    		return true;
-//    	}else {
-//
-//	    	//야간발송 제한 프로젝트인지 확인
-//	    	String nightSendYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_NIGHT_SEND_YN, params));
-//
-//	    	if(nightSendYn.equals("Y")) {
-//	    		String nightSendLimitSt = nightSendSthh + nightSendStmm;
-//	    		String nightSendLimitEd = nightSendEdhh + nightSendEdmm;
-//
-//		    	if(CommonUtils.getString(params.get("rsrvSendYn")).equals("Y")) {
-//		    		//예약발송
-//		    		String rsrvTime = CommonUtils.getString(params.get("rsrvHH")) + CommonUtils.getString(params.get("rsrvMM"));
-//
-//		    		if(CommonUtils.getInt(rsrvTime) >= CommonUtils.getInt(nightSendLimitSt)) {
-//		    			return false;
-//		    		}
-//
-//		    		if(CommonUtils.getInt(rsrvTime) < CommonUtils.getInt(nightSendLimitEd)) {
-//		    			return false;
-//		    		}
-//
-//		    	}else {
-//		    		//즉시발송
-//		    		LocalTime now = LocalTime.now();
-//		    		DateTimeFormatter format = DateTimeFormatter.ofPattern("HHmm");
-//
-//		    		String currTime = now.format(format);
-//
-//		    		if(CommonUtils.getInt(currTime) >= CommonUtils.getInt(nightSendLimitSt)) {
-//		    			return false;
-//		    		}
-//
-//		    		if(CommonUtils.getInt(currTime) < CommonUtils.getInt(nightSendLimitEd)) {
-//		    			return false;
-//		    		}
-//		    	}
-//	    	}
-//    	}
+    	if(params.containsKey("testSendYn") && CommonUtils.getString(params.get("testSendYn")).equals("Y")) {
+    		return true;
+    	}else {
+
+	    	//야간발송 제한 프로젝트인지 확인
+	    	String nightSendYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_NIGHT_SEND_YN, params));
+
+	    	if(nightSendYn.equals("N")) {
+	    		String nightSendLimitSt = nightSendSthh + nightSendStmm;
+	    		String nightSendLimitEd = nightSendEdhh + nightSendEdmm;
+
+		    	if(CommonUtils.getString(params.get("rsrvSendYn")).equals("Y")) {
+		    		//예약발송
+		    		String rsrvTime = CommonUtils.getString(params.get("rsrvHH")) + CommonUtils.getString(params.get("rsrvMM"));
+
+		    		if(CommonUtils.getInt(rsrvTime) >= CommonUtils.getInt(nightSendLimitSt)) {
+		    			return false;
+		    		}
+
+		    		if(CommonUtils.getInt(rsrvTime) < CommonUtils.getInt(nightSendLimitEd)) {
+		    			return false;
+		    		}
+
+		    	}else {
+		    		//즉시발송
+		    		LocalTime now = LocalTime.now();
+		    		DateTimeFormatter format = DateTimeFormatter.ofPattern("HHmm");
+
+		    		String currTime = now.format(format);
+
+		    		if(CommonUtils.getInt(currTime) >= CommonUtils.getInt(nightSendLimitSt)) {
+		    			return false;
+		    		}
+
+		    		if(CommonUtils.getInt(currTime) < CommonUtils.getInt(nightSendLimitEd)) {
+		    			return false;
+		    		}
+		    	}
+	    	}
+    	}
         return true;
     }
 

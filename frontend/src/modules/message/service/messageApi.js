@@ -177,7 +177,7 @@ function fnNightSendLimitChk(params){
   var nightSendEdmm = params.nightSendEdmm;
 
   var nightSendLimitYn = false;
-  if(nightSendYn == 'Y'){
+  if(nightSendYn == 'N'){
     if(rsrvSendYn != 'N'){
       //예약
       var rsrvTime = rsrvHH+ "" +rsrvMM;

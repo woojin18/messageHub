@@ -13,6 +13,7 @@
 					<li :class="{active:(selMainTab == 3)}" @click="selMainTab=3; selMidTab=1; selSubTab==1"><a>멤버관리</a></li>
 					<li :class="{active:(selMainTab == 4)}" @click="selMainTab=4; selMidTab=1; selSubTab==1"><a>채널관리</a></li>
 					<li :class="{active:(selMainTab == 5)}" @click="selMainTab=5; selMidTab=1; selSubTab==1"><a>발신번호관리</a></li>
+					<li :class="{active:(selMainTab == 6)}" @click="selMainTab=6; selMidTab=1; selSubTab==1"><a>API KEY 관리</a></li>
 				</ul>			
 			</div>
 			<ul v-if="selMainTab==4" class="tabStyle tab6 bgColor_tapGray">
@@ -70,6 +71,10 @@
 			<callnum3 v-if="selMainTab==5&&selMidTab==3&&selSubTab==1"></callnum3>
 			<callnum4 v-if="selMainTab==5&&selMidTab==4&&selSubTab==1"></callnum4>
 			<!-- 발신번호관리 탭 -->
+
+			<!-- APIKEY관리 탭 -->
+			<apikeyManage v-if="selMainTab==6"></apikeyManage>
+			<!-- APIKEY관리 탭 -->
 		</article>
 	</div>
 </template>
@@ -95,6 +100,8 @@ import callnum1     from "@/modules/project/components/bc-project-callnum1.vue";
 import callnum2     from "@/modules/project/components/bc-project-callnum2.vue";
 import callnum3     from "@/modules/project/components/bc-project-callnum3.vue";
 import callnum4     from "@/modules/project/components/bc-project-callnum4.vue";
+// APIKEY관리
+import apikeyManage     from "@/modules/project/components/bc-project-apikey-manage.vue";
 
 import projectApi from '../service/projectApi'
 import tokenSvc from '@/common/token-service';
@@ -115,6 +122,7 @@ export default {
     , dashboardManage
     , baseInfoManage
 	, memberManage
+	,apikeyManage
   },
   data() {
     return {
