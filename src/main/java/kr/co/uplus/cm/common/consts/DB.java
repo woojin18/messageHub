@@ -22,7 +22,7 @@ public class DB {
 	public final static String QRY_SELECT_IMAGE_URL_INFO = "common.selectImageUrlInfo";
 	public final static String QRY_UPDATE_CM_CMD = "common.updateCmCmdForRedis";
 	public final static String QRY_SELECT_CM_CODE_EXT = "common.selectCmCodeExt";
-	
+
 	// 메인
 	public final static String QRY_SELECT_PRD_UNIT_INFO_LIST = "main.selectPrdUnitInfoList";
 
@@ -349,8 +349,13 @@ public class DB {
 	public final static String QRY_SELECT_STATIS_LIST_MONTH_MO = "statisticsAdmin.selectStatisListMonthMo";
 
 	// URL+ (단축URL)
-	public final static String QRY_SELECT_URL_INFO_LIST_CNT	= "urlInfo.selectUrlInfoListCnt";
-	public final static String QRY_SELECT_URL_INFO_LIST 			= "urlInfo.selectUrlInfoList";
-	public final static String QRY_INSERT_URL_INFO 					= "urlInfo.insertUrlInfo";
-	public final static String QRY_DELETE_URL_INFO 					= "urlInfo.deleteUrlInfo";
+	public final static String QRY_SELECT_URL_INFO_LIST_CNT				= "urlInfo.selectUrlInfoListCnt";
+	public final static String QRY_SELECT_URL_INFO_LIST 						= "urlInfo.selectUrlInfoList";
+//	public final static String QRY_SELECT_URL_INFO_STAT_LIST_CNT	= "urlInfo.selectUrlInfoStatListCnt";
+	public final static String QRY_SELECT_URL_INFO_STAT_LIST 			= "urlInfo.selectUrlInfoStatList";
+	public final static String QRY_SELECT_URL_INFO_STAT_CHART1		= "urlInfo.selectUrlInfoStatChart1";
+	public final static String QRY_SELECT_URL_INFO_STAT_CHART2		= "urlInfo.selectUrlInfoStatChart2";
+	public final static String QRY_SELECT_URL_INFO_STAT_CHART3		= "urlInfo.selectUrlInfoStatChart3";
+	public final static String QRY_INSERT_URL_INFO 								= "urlInfo.insertUrlInfo";
+	public final static String QRY_DELETE_URL_INFO 								= "urlInfo.deleteUrlInfo";
 }
