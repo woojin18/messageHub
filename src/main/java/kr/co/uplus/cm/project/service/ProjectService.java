@@ -1104,4 +1104,16 @@ public class ProjectService {
 		}
 	}
 
+	//API KEY 관리 리스트
+	public RestResult<?> selectApikeyManageList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_APIKEY_MAANAGE_LIST, params);
+
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
+	
+	
 }

@@ -197,6 +197,8 @@ import customereApi from "@/modules/customer/service/customerApi.js";
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import signUpApi from "@/modules/signUp/service/api";
 
+import {eventBus} from "@/modules/commonUtil/service/eventBus";
+
 export default {
     name : 'billRegPopup',
 	components: {
@@ -251,6 +253,7 @@ export default {
 				, handleId : ''
 				, handleDt : ''
                 , isCert : false
+                , isCertPass : false
                 , isAgree : false
 			},
 			napCustKdCdArr : [],
@@ -365,6 +368,7 @@ export default {
 		},
         fnCngCertInfo() {
             this.set.isCert = this.set.payMthdCd == 'GR'
+            this.set.isCertPass = false;
         },
         fnBank() {
             if(this.set.napCustKdCd == ""){
@@ -404,7 +408,13 @@ export default {
                     vm.set.isCert = true;
 				} else {
                     if (result.data != null) {
-				        confirm.fnAlert("", result.data.msgText + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.');
+                        var text = "\n\n만약 인증오류가 계속 발생한다면 작성한 내용으로 회원가입을 진행할 수도 있습니다.";
+                        text += "\n이때 청구 정보 등록 작업을 위해 별도 연락을 드리겠습니다.";
+                        text += "\n청구 정보 등록 전까지는 서비스 일부 기능은 제한됩니다.";
+                        text += "\n[계좌 인증] 없이 청구정보 작성을 하시겠습니까?";
+
+                        eventBus.$on('callbackEventBus', this.fnUnCertSign);
+				        confirm.fnConfirm("", result.data.msgText + '\n인증에 실패했습니다.정확한 정보를 입력바랍니다.' + text, "확인");
                     } else {
                         confirm.fnAlert("", '인증에 실패했습니다.정확한 정보를 입력바랍니다.');
                     }
@@ -590,6 +600,10 @@ export default {
         },
         fnClose() {
             jQuery("#billRegPopup").modal("hide")
+        },
+        fnUnCertSign(){
+            this.set.isCert = true;
+            this.set.isCertPass = true;
         }
     }
 }

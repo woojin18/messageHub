@@ -361,6 +361,7 @@ export default {
 				, handleId : ''
 				, handleDt : ''
                 , isCert : false
+				, isCertPass : false
                 , isAgree : false
 			}
 		}
@@ -744,7 +745,8 @@ export default {
 			fd.append('monthExpAmount', this.bill.monthExpAmount);  
 			fd.append('handleReason', this.bill.handleReason);    
 			fd.append('handleId', this.bill.handleId);        
-			fd.append('handleDt', this.bill.handleDt);     
+			fd.append('handleDt', this.bill.handleDt);
+			fd.append('isUnCertSign', this.bill.isCertPass);     
 
 			await axios.post('/api/public/signUp/insertSignUp',
 				fd,

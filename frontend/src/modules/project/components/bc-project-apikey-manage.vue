@@ -5,7 +5,7 @@
 			<div class="row">
 				<div class="Dashboard01 pd0 of_h"><h4 class="inline-block">API Key 관리</h4>
                 <div class="float-right h4Button">
-                <a class="btnStyle2 borderGray">KEY 생성<i class="far fa-plus-circle ml10"></i></a></div>
+                <a class="btnStyle2 borderGray" @click="fnApikeyGeneration">KEY 생성<i class="far fa-plus-circle ml10"></i></a></div>
                 <p style="opacity: 0.5;">* 프로젝트 API Key는 5개까지 발급받을 수 있으며, 서비스 이용 시 인증에 사용됩니다.</p>
 				</div>
            <table cellspacing="0" id="list" class="table_skin1 bt-000 tbl-striped" style="width:100%; margin-top : 10px;">
@@ -15,56 +15,49 @@
               <th class="text-center lc-1">TPS</th>
               <th class="text-center lc-1">라인타입</th>
               <th class="text-center lc-1">상태</th>
-              <th class="text-center lc-1 end">생성일</th>
+              <th class="text-center lc-1 end" style=" width: 200px;">생성일</th>
             </thead>
             <tbody>
-              <!-- <tr v-for="(data, index) in items" :key="index"> --> 
-             <tr> 
-                <td>
-                  data,apiKey
+              <tr v-for="(data, index) in rowData" :key="index"> 
+                <td style="text-decoration: underline; cursor: pointer;">
+                    <a @click="fnApikeyDetail(data)">{{data.apiKey}}</a>
                 </td>
                 <td>
-                  data.apiKeyName
+                    {{data.apiKeyName}} 
                 </td>
                 <td>
-                  data.tps
+                     {{data.tps}} 
                 </td>
                 <td>
-                   data.lineType 
+                     {{data.lineType}}  
                 </td>
                 <td>
-                   data.status 
+                     {{data.status}} 
                 </td>
                 <td  class="end">
-                    data.regDt     
+                      {{data.regDt}}     
                 </td>
               </tr>
-              <!-- <tr v-if="items.length == 0">
+               <tr v-if="rowData.length == 0">
                 <td class="text-center" colspan="9">검색된 내용이 없습니다.</td>
-              </tr> -->
+              </tr> 
             </tbody>
           </table>
       <!-- 리스트 -->
-
-
               </div>
 		</article>
-
+<apikeyGeneration ></apikeyGeneration>
 
 	</div>
 </template>
 
 <script>
-import PageLayer from '@/components/PageLayer.vue';
-import SelectLayer from '@/components/SelectLayer.vue';
 import confirm from '@/modules/commonUtil/service/confirm';
-
+import projectApi from '../service/projectApi'
+import apikeyGeneration from './bp-apikey-generation.vue'
 export default {
-	name: 'MemberLayer',
 	components: {
-		SelectLayer,
-		PageLayer,
-
+    apikeyGeneration
 	},
 	props: {
 		searchData : {
@@ -89,15 +82,36 @@ export default {
 			totCnt : 0,		// 전체 리스트 수
 			offset : 0,		// 페이지 시작점
 			projectId : this.$parent.projectId,
+      rowData : [],
+      popBool : false
 		}
 	},
 	mounted() {
-
-	},
+        this.fnApikeyManageList()
+    }
+    ,
 	watch: {
 	},
 	methods: {
+    fnApikeyManageList(){
+      var vm = this;
 
+      var params = {
+      projectId : this.projectId
+      }
+
+        projectApi.selectApikeyManageList(params).then(response =>{
+        vm.rowData = response.data.data;
+        });
+	  },
+    fnApikeyDetail(rowData){
+      this.popBool = !this.popBool
+    },
+    fnApikeyGeneration(){
+      jQuery('#apikeyGeneration').show()
+    }      
+
+        }
 	}
-}
+
 </script>
