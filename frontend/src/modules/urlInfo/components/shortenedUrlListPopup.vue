@@ -252,15 +252,16 @@ export default {
       jQuery("#btnClose").trigger("click")
     },
     btnCopy(urlId) {
+      this.urlId = urlId
+      
       var t = document.createElement('input')
       document.body.appendChild(t)
-      t.value = urlId
+      t.value = this.shortendUrl
       t.select()
       t.focus()
       document.execCommand('copy')
       document.body.removeChild(t)
 
-      // console.log('####### btnCopy######', urlId);
       confirm.fnAlert('', '단축URL+를 복사한 상태입니다. 메시지 또는 버튼 URL에 CTL+V 하십시오.')
     },
     btnDelete(urlId) {
