@@ -4,7 +4,7 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div class="of_h API_delete">
-						<h5 class="lc-1 inline-block">API KEY 생성</h5>
+						<h2 class="lc-1 inline-block">API KEY 생성</h2>
 					</div>
 
 					<div class="of_h mt10 text-center" style="padding:20px 0;">
@@ -51,10 +51,10 @@
 
 					<div class="of_h text-center">
 						<div class="of_h">
-							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 0px;margin-bottom: 16px;">IP 체크</h4></div>
+							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 5px;margin-bottom: 16px;">IP 체크</h4></div>
 							<div style="width:50%" class="float-right">
-						    	<input type="radio"  name="ipChkYn" value="사용" id="ipChkY" @change="fnIpValueChange($event)"> <label for="ipChkY" class="mt5 ml5">사용</label>
-						    	<input type="radio"  name="ipChkYn" value="미사용" id="ipChkN" @change="fnIpValueChange($event)"> <label for="ipChkN" class="mt5 ml50">미사용</label>
+						    	<input type="radio"  name="ipChkYn" value="Y" id="ipChkY" @change="fnIpValueChange($event)"> <label for="ipChkY" class="mt5 ml5">사용</label>
+						    	<input type="radio"  name="ipChkYn" value="N" id="ipChkN" @change="fnIpValueChange($event)"> <label for="ipChkN" class="mt5 ml50">미사용</label>
 							</div>
 						</div>
 						<div class="of_h mt10">
@@ -67,26 +67,26 @@
 							</div>
 						</div>
 						<div class="of_h mt10">
-							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 0px;margin-bottom: 16px;">상태</h4></div>
+							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 5px;margin-bottom: 16px;">상태</h4></div>
 							<div style="width:50%" class="float-right">
-								<input type="radio"  name="statusYn" value="사용" id="statsY"> <label for="statsY" class="mt5 ml5">사용</label>
-					        	<input type="radio"  name="statusYn" value="미사용" id="statsN"> <label for="statsN" class="mt5 ml50">미사용</label>
+								<input type="radio"  name="statusYn" value="USE" id="statsY"> <label for="statsY" class="mt5 ml5">사용</label>
+					        	<input type="radio"  name="statusYn" value="CANCEL" id="statsN"> <label for="statsN" class="mt5 ml50">미사용</label>
 							</div>
 						</div>
 						<div class="of_h mt10">
-							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 0px;margin-bottom: 16px;">결과수신 여부
+							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 5px;margin-bottom: 16px;">결과수신 여부
                                 <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:350px">
 						            * 이미지는 jpg, jpeg 형식만 지원합니다.
                                 </span></i>       
                             </h4>
                             </div>
 							<div style="width:50%" class="float-right">
-					        	<input type="radio"  name="rptYn" value="사용" id="rptY"> <label for="rptY" class="mt5 ml5">사용</label>
-						        <input type="radio"  name="rptYn" value="미사용" id="rptN"> <label for="rptN" class="mt5 ml50">미사용</label>
+					        	<input type="radio"  name="rptYn" value="Y" id="rptY"> <label for="rptY" class="mt5 ml5">사용</label>
+						        <input type="radio"  name="rptYn" value="N" id="rptN"> <label for="rptN" class="mt5 ml50">미사용</label>
 							</div>
 						</div>
 						<div class="of_h mt10">
-							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 0px;margin-bottom: 16px;">중복체크
+							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 5px;margin-bottom: 16px;">중복체크
                                 <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:350px">
 						            * 이미지는 jpg, jpeg 형식만 지원합니다.
                                 </span></i>    
@@ -118,7 +118,7 @@ export default {
         apikeyPwChk : '',
         TPS         : '',
         ipChk       : '',
-        ipList      : [],
+        ipList      : [''],
         status      : '',
         rptYn       : '',
         dupChkYn    : ''
