@@ -77,8 +77,8 @@
                     <td class="text-center">{{ item.title }}</td>   <!-- 제목 -->
                     <td class="text-center">{{ item.urlId }}</td>   <!-- URL ID -->
                     <td class="text-left">{{ item.orgUrl }}</td>    <!-- 원본 URL -->
-                    <td class="text-center">{{ $moment(item.regDt).format('L') }}</td>   <!-- 등록일 -->
-                    <td class="text-center">{{ $moment(item.expDt).format('L') }}</td>   <!-- 만료일 -->
+                    <td class="text-center">{{ $moment(item.regDt).format('yyyy.mm.DD') }}</td>   <!-- 등록일 -->
+                    <td class="text-center">{{ $moment(item.expDt).format('yyyy.mm.DD') }}</td>   <!-- 만료일 -->
                     <td class="text-center end">
                       <a
                         @click="btnSelect(item.urlId)"

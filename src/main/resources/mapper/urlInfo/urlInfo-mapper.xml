@@ -8,7 +8,7 @@
             AND TITLE LIKE CONCAT('%', #{title}, '%')
         </if>
         <if test="urlId != null and urlId != ''">
-            AND URL_ID = #{urlId}
+            AND A.URL_ID = #{urlId}
         </if>
         <if test="orgUrl != null and orgUrl != ''">
             AND ORG_URL LIKE CONCAT('%', #{orgUrl}, '%')
@@ -31,7 +31,7 @@
     	/* urlInfo.selectUrlInfoListCnt - 단축URL 목록 카운트 */
         SELECT
             COUNT(*) AS CNT
-        FROM cm_console.CM_URL_INFO
+        FROM cm_console.CM_URL_INFO A
         WHERE
         	USE_YN = 'Y'
         <include refid="whereSelectUrlInfoList"/>
@@ -53,7 +53,7 @@
 			UPD_ID,
 			UPD_DT
         FROM
-        	cm_console.CM_URL_INFO,
+        	cm_console.CM_URL_INFO A,
         (SELECT @ROWNUM := #{totCnt} - #{offset} + 1) TMP
         WHERE
         	USE_YN = 'Y'
@@ -77,8 +77,8 @@
 	            CORP_ID,
 	            PROJECT_ID,
 	            TITLE,
-	            IFNULL(SUM(TOT_CNT), 0) AS TOT_CNT,
-	            IFNULL(SUM(CON_CNT), 0) AS CON_CNT,
+	            SUM(IFNULL(TOT_CNT, 0)) AS TOT_CNT,
+	            SUM(IFNULL(CON_CNT, 0)) AS CON_CNT,
 				USE_YN,
 				EXP_DT,
 				A.REG_ID,
@@ -94,13 +94,14 @@
 	        WHERE
 	        	USE_YN = 'Y'
 	        <include refid="whereSelectUrlInfoList"/>
+	        GROUP BY
+	        	A.URL_ID
 	        ORDER BY
 	        	REG_DT DESC
 	        LIMIT #{offset}, #{listSize}
 		) AA,
 		(SELECT @ROWNUM := #{totCnt} - #{offset} + 1) TMP
     </select>
-
 
     <select id="selectUrlInfoStatChart1" parameterType="hashmap" resultType="camel">
     	/* urlInfo.selectUrlInfoStatChart1 - 단축URL 통계 / 유입채널 조회 */
