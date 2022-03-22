@@ -134,8 +134,8 @@
 						<div class="of_h">
 							<div class="float-right text-center" style="width:100%">발송순서</div>
 						</div>
-						<div v-for="channel in rowData.checkedChannel" :key="channel" class="of_h mt13">
-							<div class="float-left" style="width:100%"><a class="btnStyle1 borderLightGray" style="min-width:auto; width:100%"  @click="putData(index)" :id="channelName(index)">{{channel}}</a></div>
+						<div v-for="(channel, idx) in rowData.checkedChannel" :key="channel" class="of_h mt13">
+							<div class="float-left" style="width:100%"><a class="btnStyle1 borderLightGray" style="min-width:auto; width:100%"  @click="putData(idx)" :id="channelName(idx)">{{channel}}</a></div>
 						</div>
 					</div>
 				</div>
@@ -218,9 +218,9 @@
               data-toggle="modal" 
               data-target="#shortened_URL"
 							@click="selCh = 'push'"
-            >단축 URL</a>
+            >단축 URL+</a>
             <i class="fas fa-question-circle toolTip ml5">
-              <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+              <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(PUSH)</span>
             </i>
 					</div>
 					<div class="float-left" style="width:52%">
@@ -376,10 +376,10 @@
 									title="단축 URL+" 
 									data-toggle="modal" 
 									data-target="#shortened_URL"
-									@click="selCh = 'push'"
-								>단축 URL-1</a>
+									@click="selCh = 'rcs'"
+								>단축 URL+</a>
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_프리템플릿)</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -459,10 +459,10 @@
 										title="단축 URL+" 
 										data-toggle="modal" 
 										data-target="#shortened_URL"
-										@click="selCh = 'push'"
-									>단축 URL-2</a>
+										@click="selCh = 'rcs'"
+									>단축 URL+</a>
 									<i class="fas fa-question-circle toolTip ml5">
-										<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+										<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_템플릿승인(서술))</span>
 									</i>
 								</div>
 								<div class="float-left" style="width:52%">
@@ -701,10 +701,10 @@
 									title="단축 URL+" 
 									data-toggle="modal" 
 									data-target="#shortened_URL"
-									@click="selCh = 'push'"
-								>단축 URL-3</a>
+									@click="selCh = 'rcs'"
+								>단축 URL+</a>
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_SMS)</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -837,10 +837,10 @@
 									title="단축 URL+" 
 									data-toggle="modal" 
 									data-target="#shortened_URL"
-									@click="selCh = 'push'"
-								>단축 URL-4</a>
+									@click="selCh = 'rcs'"
+								>단축 URL+</a>
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_LMS)</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -985,10 +985,10 @@
 									title="단축 URL+" 
 									data-toggle="modal" 
 									data-target="#shortened_URL"
-									@click="selCh = 'push'"
-								>단축 URL-5</a>
+									@click="selCh = 'rcs'"
+								>단축 URL+</a>
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_세로형_SHORT)</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -1147,10 +1147,10 @@
 									title="단축 URL+" 
 									data-toggle="modal" 
 									data-target="#shortened_URL"
-									@click="selCh = 'push'"
-								>단축 URL-6</a>
+									@click="selCh = 'rcs'"
+								>단축 URL+</a>
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_세로형_TALL)</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -1333,10 +1333,10 @@
 											title="단축 URL+" 
 											data-toggle="modal" 
 											data-target="#shortened_URL"
-											@click="selCh = 'push'"
-										>단축 URL-7</a>
+											@click="selCh = 'rcs'"
+										>단축 URL+</a>
 										<i class="fas fa-question-circle toolTip ml5">
-											<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+											<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_캐러셀_SHORT)</span>
 										</i>
 									</div>
 									<div class="float-left" style="width:52%">
@@ -1539,6 +1539,17 @@
 								<div class="of_h">
 									<div class="float-left" style="width:18%">
 										<h4>내용 *</h4>
+										<a 
+											class="btnStyle1 backBlack" 
+											style="margin-top:120px" 
+											title="단축 URL+" 
+											data-toggle="modal" 
+											data-target="#shortened_URL"
+											@click="selCh = 'rcs'"
+										>단축 URL+</a>
+										<i class="fas fa-question-circle toolTip ml5">
+											<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_캐러셀_Tall)</span>
+										</i>
 									</div>
 									<div class="float-left" style="width:52%">
 										<textarea class="textareaStyle height190" v-model="rowData.rcsCTallImgInfoList[tabIdx].rcsContent" :placeholder="rcsPlaceHoder" :id="fnCarouselString('rcsCarouselTab', tabIdx, '')" @keyup="fnTextLength('내용', fnCarouselString('#rcsCarouselTab', tabIdx, ''), fnCarouselString('#rcsCarouselTab', tabIdx, 'TextLength'), '1300')"></textarea>
@@ -1752,10 +1763,10 @@
 								title="단축 URL+" 
 								data-toggle="modal" 
 								data-target="#shortened_URL"
-								@click="selCh = 'push'"
-							>단축 URL-8</a>
+								@click="selCh = 'kakaotalk'"
+							>단축 URL+</a>
 							<i class="fas fa-question-circle toolTip ml5">
-								<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+								<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(KKO)</span>
 							</i>
 						</div>
 						<div class="float-left" style="width:59%">
@@ -1771,7 +1782,7 @@
 									<col style="width:22%">
 									<col style="width:20%">
 									<col>
-									<col style="width:15%">
+									<col style="width:120px">
 								</colgroup>
 								<thead>
 									<tr>
@@ -1805,6 +1816,14 @@
 											<td v-else>
 											</td>
 											<td class="text-center end" :rowspan="buttonInfo.type == 'WL' || buttonInfo.type == 'AL' ? '2' : '1'">
+												<a
+													v-if="buttonInfo.type === 'WL'"
+													class="btnStyle1 backBlack" 
+													title="단축 URL+" 
+													data-toggle="modal" 
+													data-target="#shortened_URL"
+													@click="selCh = 'kakaotalk'; selIdx = idx"
+												>단축 URL+</a> 
 												<a @click="addRowFriendTalk" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
 												<a @click="removeRowFriendTalk(idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
 											</td>
@@ -5052,17 +5071,31 @@ export default {
     btnSelect(shortendUrl){
 			if(this.rowData){
 				if(this.selCh === 'push'){
-					this.$set(this.rowData, 'pushContent', shortendUrl)
-				} else if(this.selCh === 'kakaotalk') {
-					if(this.tmpltData.buttonList.length > 0 && this.selIdx !== null && this.tmpltData.buttonList[this.selIdx]){
-						// mobile link
-						this.$set(this.tmpltData.buttonList[this.selIdx], 'linkMo', shortendUrl)
+					if(this.rowData.pushContent && this.rowData.pushContent.length > 0)
+						this.rowData.pushContent += '\n'
 
-						// pc link
-						this.$set(this.tmpltData.buttonList[this.selIdx], 'linkPc', shortendUrl)
-					}
+					this.$set(this.rowData, 'pushContent', this.rowData.pushContent + shortendUrl)
+				// } else if(this.selCh === 'rcs') {
+				} else if(this.selCh === 'kakaotalk') {
+					if(this.rowData.friendTalkContent && this.rowData.friendTalkContent.length > 0)
+						this.rowData.friendTalkContent += '\n'
+      
+					this.$set(this.rowData, 'friendTalkContent', this.rowData.friendTalkContent + shortendUrl)
+				} else if(this.selCh === 'sms'){
+					if(this.rowData.smsContent && this.rowData.smsContent.length > 0)
+						this.rowData.smsContent += '\n'
+      
+					this.$set(this.rowData, 'smsContent', this.rowData.smsContent + shortendUrl)
 				}
       }
+
+			// if(this.rowData.friendTalkButtons.length > 0 && this.selIdx !== null && this.rowData.friendTalkButtons[this.selIdx]){
+			// 			// mobile link
+			// 			this.$set(this.rowData.friendTalkButtons[this.selIdx], 'linkUrl1', shortendUrl)
+
+			// 			// pc link
+			// 			this.$set(this.rowData.friendTalkButtons[this.selIdx], 'linkUrl2', shortendUrl)
+			// 		}
 
 			this.selCh = null
 			this.selIdx = null

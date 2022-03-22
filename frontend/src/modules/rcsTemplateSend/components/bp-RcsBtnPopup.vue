@@ -78,8 +78,8 @@
 			</div>
 		</div>
 
-		<!-- <shortenedUrlListPopup @btnSelect="btnSelect" /> -->
-    <!-- <shortenedUrlAddPopup/> -->
+		<shortenedUrlListPopup @btnSelect="btnSelect" />
+    <shortenedUrlAddPopup/>
 	</div>
 </template>
 
@@ -87,15 +87,15 @@
 // import confirm from "@/modules/commonUtil/service/confirm.js";
 import Calendar from "@/components/Calendar.vue";
 
-// import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
-// import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
+import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
 
 export default {
   name: "rcsBtnPop",
   components: {
 		Calendar,
-		// shortenedUrlListPopup,
-    // shortenedUrlAddPopup,
+		shortenedUrlListPopup,
+    shortenedUrlAddPopup,
   },
   props : {
         templateRadioBtn: {
@@ -319,12 +319,12 @@ export default {
 			this.$set(vm.initEndDate, n, date);
 		},
 		//단축 URL 선택
-    // btnSelect(shortendUrl){
-    //   if(this.contents.length > 0)
-    //     this.contents += '\n'
+    btnSelect(shortendUrl){
+      if(this.contents.length > 0)
+        this.contents += '\n'
       
-    //   this.contents += shortendUrl
-    // },
+      this.contents += shortendUrl
+    },
   }
 }
 </script>

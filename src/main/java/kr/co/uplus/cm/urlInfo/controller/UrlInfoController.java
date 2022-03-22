@@ -48,6 +48,42 @@ public class UrlInfoController {
     }
 
     /**
+     * 단축URL 통계 목록 조회
+     * @param params
+     * @return RestResult
+     */
+    @PostMapping("/selectUrlInfoStatList")
+    public RestResult<?> selectUrlInfoStatList(@RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = urlInfoService.selectUrlInfoStatList(params);
+        } catch (Exception e) {
+            rtn.setFail();
+            log.error("{}.selectUrlInfoStatList Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 단축URL 통계 상세 조회
+     * @param params
+     * @return RestResult
+     */
+    @PostMapping("/selectUrlInfoStatDetail")
+    public RestResult<?> selectUrlInfoStatDetail(@RequestBody Map<String, Object> params) {
+        RestResult<Object> rtn = new RestResult<Object>();
+        try {
+            rtn = urlInfoService.selectUrlInfoStatDetail(params);
+        } catch (Exception e) {
+            rtn.setFail();
+            log.error("{}.selectUrlInfoStatDetail Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+
+    /**
      * 단축URL 생성
      * @param params
      * @return RestResult

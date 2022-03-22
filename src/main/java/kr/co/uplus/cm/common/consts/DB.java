@@ -22,7 +22,7 @@ public class DB {
 	public final static String QRY_SELECT_IMAGE_URL_INFO = "common.selectImageUrlInfo";
 	public final static String QRY_UPDATE_CM_CMD = "common.updateCmCmdForRedis";
 	public final static String QRY_SELECT_CM_CODE_EXT = "common.selectCmCodeExt";
-	
+
 	// 메인
 	public final static String QRY_SELECT_PRD_UNIT_INFO_LIST = "main.selectPrdUnitInfoList";
 
@@ -112,6 +112,14 @@ public class DB {
 	public final static String QRY_DELETE_REJECT_PHONE_LIST = "sendMessage.deleteRejectPhoneList";
 	public final static String QRY_SELECT_NOTI_RECIPIENT = "sendMessage.selectNotiRecipient";
 	public final static String QRY_SELECT_SMART_CH_PRODUCT = "sendMessage.selectSmartChProduct";
+	public final static String QRY_SELECT_USE_CALLBACK_CNT = "sendMessage.selectUseCallbackCnt";
+	public final static String QRY_SELECT_USE_RCS_CALLBACK_CNT = "sendMessage.selectUseRcsCallbackCnt";
+	public final static String QRY_SELECT_RCS_BRAND_USE_CNT = "sendMessage.selectRcsBrandUseCnt";
+	public final static String QRY_SELECT_RCS_TMPLT_USE_CNT = "sendMessage.selectRcsTmpltUseCnt";
+	public final static String QRY_SELECT_KKO_CH_USE_CNT = "sendMessage.selectKkoChUseCnt";
+	public final static String QRY_SELECT_KKO_TMPLT_USE_CNT = "sendMessage.selectKkoTmpltUseCnt";
+	public final static String QRY_SELECT_PUSH_ID_USE_CNT = "sendMessage.selectPushIdUseCnt";
+	public final static String QRY_UPDATE_SMART_TMPLT_STATUS = "sendMessage.updateSmartTmpltStatus";
 
 	// RCS 채널 브랜드 정보
 	public final static String QRY_SELECT_RCS_BRANDLIST_CNT = "channel.selectRcsBrandListCnt";
@@ -350,8 +358,13 @@ public class DB {
 	public final static String QRY_SELECT_STATIS_LIST_MONTH_MO = "statisticsAdmin.selectStatisListMonthMo";
 
 	// URL+ (단축URL)
-	public final static String QRY_SELECT_URL_INFO_LIST_CNT	= "urlInfo.selectUrlInfoListCnt";
-	public final static String QRY_SELECT_URL_INFO_LIST 			= "urlInfo.selectUrlInfoList";
-	public final static String QRY_INSERT_URL_INFO 					= "urlInfo.insertUrlInfo";
-	public final static String QRY_DELETE_URL_INFO 					= "urlInfo.deleteUrlInfo";
+	public final static String QRY_SELECT_URL_INFO_LIST_CNT				= "urlInfo.selectUrlInfoListCnt";
+	public final static String QRY_SELECT_URL_INFO_LIST 						= "urlInfo.selectUrlInfoList";
+//	public final static String QRY_SELECT_URL_INFO_STAT_LIST_CNT	= "urlInfo.selectUrlInfoStatListCnt";
+	public final static String QRY_SELECT_URL_INFO_STAT_LIST 			= "urlInfo.selectUrlInfoStatList";
+	public final static String QRY_SELECT_URL_INFO_STAT_CHART1		= "urlInfo.selectUrlInfoStatChart1";
+	public final static String QRY_SELECT_URL_INFO_STAT_CHART2		= "urlInfo.selectUrlInfoStatChart2";
+	public final static String QRY_SELECT_URL_INFO_STAT_CHART3		= "urlInfo.selectUrlInfoStatChart3";
+	public final static String QRY_INSERT_URL_INFO 								= "urlInfo.insertUrlInfo";
+	public final static String QRY_DELETE_URL_INFO 								= "urlInfo.deleteUrlInfo";
 }
