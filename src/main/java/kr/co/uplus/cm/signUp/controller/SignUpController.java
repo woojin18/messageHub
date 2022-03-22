@@ -152,7 +152,8 @@ public class SignUpController implements Serializable{
 			@RequestParam(required=false) String monthExpAmount,
 			@RequestParam(required=false) String handleReason,
 			@RequestParam(required=false) String handleId,
-			@RequestParam(required=false) String handleDt
+			@RequestParam(required=false) String handleDt,
+			@RequestParam(required=false) String isUnCertSign
 			) throws Exception {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -209,7 +210,8 @@ public class SignUpController implements Serializable{
 		paramMap.put("monthExpAmount", monthExpAmount);  
 		paramMap.put("handleReason", handleReason);    
 		paramMap.put("handleId", handleId);        
-		paramMap.put("handleDt", handleDt);     
+		paramMap.put("handleDt", handleDt);
+		paramMap.put("isUnCertSign", isUnCertSign.equals("true") ? "Y" : "");
 		
 		// 유큐브 파라미터
 		paramMap.put("custKdCd", custKdCd);

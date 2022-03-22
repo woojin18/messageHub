@@ -222,6 +222,9 @@
           , MONTH_EXP_AMOUNT
           , REG_ID
           , REG_DT
+          <if test="isUnCertSign != '' and isUnCertSign != null">
+          , UNCERTIFIED_Y
+          </if>
         ) VALUES (
             #{corpId}
           , #{billId}
@@ -253,6 +256,9 @@
           , #{monthExpAmount}
           , #{userId}   
           , now()
+          <if test="isUnCertSign != '' and isUnCertSign != null">
+          , #{isUnCertSign}
+          </if>
         )
 	</insert>
 	
