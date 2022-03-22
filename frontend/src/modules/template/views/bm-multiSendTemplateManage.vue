@@ -5071,21 +5071,27 @@ export default {
     btnSelect(shortendUrl){
 			if(this.rowData){
 				if(this.selCh === 'push'){
-					if(this.rowData.pushContent && this.rowData.pushContent.length > 0)
+					if(this.rowData.pushContent && this.rowData.pushContent.length > 0){
 						this.rowData.pushContent += '\n'
+						shortendUrl = this.rowData.pushContent + shortendUrl
+					}
 
-					this.$set(this.rowData, 'pushContent', this.rowData.pushContent + shortendUrl)
+					this.$set(this.rowData, 'pushContent', shortendUrl)
 				// } else if(this.selCh === 'rcs') {
 				} else if(this.selCh === 'kakaotalk') {
-					if(this.rowData.friendTalkContent && this.rowData.friendTalkContent.length > 0)
+					if(this.rowData.friendTalkContent && this.rowData.friendTalkContent.length > 0){
 						this.rowData.friendTalkContent += '\n'
+						shortendUrl = this.rowData.friendTalkContent + shortendUrl
+					}
       
-					this.$set(this.rowData, 'friendTalkContent', this.rowData.friendTalkContent + shortendUrl)
+					this.$set(this.rowData, 'friendTalkContent', shortendUrl)
 				} else if(this.selCh === 'sms'){
-					if(this.rowData.smsContent && this.rowData.smsContent.length > 0)
+					if(this.rowData.smsContent && this.rowData.smsContent.length > 0){
 						this.rowData.smsContent += '\n'
+						shortendUrl = this.rowData.smsContent + shortendUrl
+					}
       
-					this.$set(this.rowData, 'smsContent', this.rowData.smsContent + shortendUrl)
+					this.$set(this.rowData, 'smsContent', shortendUrl)
 				}
       }
 

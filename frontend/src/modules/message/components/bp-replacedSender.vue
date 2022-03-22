@@ -284,10 +284,12 @@ export default {
     },
     //단축 URL 선택
     btnSelect(shortendUrl){
-      if(this.fbInfo && this.fbInfo.msg && this.fbInfo.msg.length > 0)
+      if(this.fbInfo && this.fbInfo.msg && this.fbInfo.msg.length > 0){
         this.fbInfo.msg += '\n'
+        shortendUrl = this.fbInfo.msg + shortendUrl
+      }
       
-      this.$set(this.fbInfo, 'msg', this.fbInfo.msg + shortendUrl)
+      this.$set(this.fbInfo, 'msg', shortendUrl)
     },
   }
 }
