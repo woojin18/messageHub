@@ -16,9 +16,9 @@
         <if test="projectId != null and projectId != ''">
             AND PROJECT_ID = #{projectId}
         </if>
-<!--         <if test="corpId != null and corpId != ''"> -->
-<!--             AND CORP_ID = #{corpId} -->
-<!--         </if> -->
+        <if test="corpId != null and corpId != ''">
+            AND CORP_ID = #{corpId}
+        </if>
 <!--         <if test="userId != null and userId != ''"> -->
 <!--             AND REG_ID = #{userId} -->
 <!--         </if> -->
@@ -40,7 +40,7 @@
     <select id="selectUrlInfoList" parameterType="hashmap" resultType="camel">
     	/* urlInfo.selectUrlInfoList - 단축URL 목록 조회 */
         SELECT
-            @ROWNUM := @ROWNUM + 1 AS ROWNUM,
+            @ROWNUM := @ROWNUM - 1 AS ROWNUM,
             URL_ID,
             ORG_URL,
             CORP_ID,
@@ -54,7 +54,7 @@
 			UPD_DT
         FROM
         	cm_console.CM_URL_INFO,
-        (SELECT @ROWNUM:=0) TMP
+        (SELECT @ROWNUM := #{totCnt} - #{offset} + 1) TMP
         WHERE
         	USE_YN = 'Y'
         <include refid="whereSelectUrlInfoList"/>
@@ -64,17 +64,6 @@
         LIMIT #{offset}, #{listSize}
         </if>
     </select>
-
-<!--     <select id="selectUrlInfoStatListCnt" parameterType="hashmap" resultType="int"> -->
-<!--     	/* urlInfo.selectUrlInfoStatListCnt - 단축URL 통계 목록 카운트 */ -->
-<!--         SELECT  -->
-<!--         	COUNT(URL_ID) AS CNT -->
-<!--         FROM -->
-<!--         	cm_console.CM_URL_INFO -->
-<!--        WHERE  -->
-<!--         	A.USE_YN = 'Y' -->
-<!--         <include refid="whereSelectUrlInfoList"/> -->
-<!--     </select> -->
 
     <select id="selectUrlInfoStatList" parameterType="hashmap" resultType="camel">
     	/* urlInfo.selectUrlInfoStatList - 단축URL 통계 목록 조회 */
@@ -109,7 +98,7 @@
 	        	REG_DT DESC
 	        LIMIT #{offset}, #{listSize}
 		) AA,
-		(SELECT @ROWNUM := #{totCnt}+1) TMP
+		(SELECT @ROWNUM := #{totCnt} - #{offset} + 1) TMP
     </select>
 
 

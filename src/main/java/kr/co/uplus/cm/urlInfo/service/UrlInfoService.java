@@ -41,6 +41,7 @@ public class UrlInfoService {
             if(rtn.getPageInfo() != null) {
                 //카운트 쿼리 실행
                 int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_URL_INFO_LIST_CNT, params);
+                params.put("totCnt", listCnt);
                 rtn.getPageInfo().put("totCnt", listCnt);
             }
         }
