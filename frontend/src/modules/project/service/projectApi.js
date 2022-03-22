@@ -92,6 +92,9 @@ const saveProjectCallNum = (params) => {
 const delCallNum = (params) => {
     return httpClient.post('/projectApi/manage/delCallNum', params, { headers: {"show-layer": "Yes", "activity": "SAVE" } });
 }
+const selectApikeyManageList = (params) => {
+    return httpClient.post('/projectApi/manage/selectApikeyManageList', params, { headers: { "show-layer": "Yes", "activity": "READ" } });
+};
 
 export default {
     selectProjectList,
@@ -119,5 +122,6 @@ export default {
     getSmsCallNumList,
     saveCallNumPro,
     saveProjectCallNum,
-    delCallNum
+    delCallNum,
+    selectApikeyManageList
 };

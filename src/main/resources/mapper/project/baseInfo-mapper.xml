@@ -191,4 +191,31 @@
 		WHERE	A.PROJECT_ID	= #{projectId}
 		AND		A.CORP_ID		= #{corpId}
 	</select>
+	
+	<select id="selectApikeyManageList" resultType="camel">
+		/* baseInfo.selectApikeyManageList*/
+				SELECT	API_KEY
+		,		API_KEY_NAME 
+		,		FORMAT(CPS, 0) AS TPS
+		,		CASE LINE_TYPE 
+					WHEN 'NORMAL'
+					THEN '일반'
+					WHEN 'BATCH'
+					THEN '배치'
+					WHEN 'DUMMY'
+					THEN '더미'
+					WHEN 'REAL'
+					THEN '실시간'
+				END AS LINE_TYPE 
+		,		CASE STATUS
+					WHEN 'USE' 
+					THEN '사용' 
+					ELSE '미사용'
+				END			STATUS
+		,		DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
+		FROM cm.CM_APIKEY
+		WHERE CORP_ID = #{corpId}
+		AND PROJECT_ID = #{projectId}
+	
+	</select>
 </mapper>
