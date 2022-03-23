@@ -23,7 +23,7 @@
 <!--             AND REG_ID = #{userId} -->
 <!--         </if> -->
         <if test="startDt != null and startDt != '' and endDt != null and endDt != ''">
-            AND REG_DT BETWEEN #{startDt} AND #{endDt}
+            AND REG_DT BETWEEN #{startDt} AND DATE_ADD(#{endDt}, INTERVAL 1 DAY)
         </if>
     </sql>
 
@@ -135,7 +135,7 @@
 	        (SELECT @ROWNUM:=0) TMP
 	        WHERE
 	        	URL_ID = #{urlId}
-	        AND YMD BETWEEN #{startDt} AND #{endDt}
+	        AND YMD BETWEEN #{startDt} AND DATE_ADD(#{endDt}, INTERVAL 1 DAY)
 	        GROUP BY
 	        	CH,
 	        	YMD
@@ -149,7 +149,7 @@
 	        FROM cm.CM_STAT_URL B
 	        WHERE
 	        	URL_ID = #{urlId}
-          	AND YMD BETWEEN #{startDt} AND #{endDt}
+          	AND YMD BETWEEN #{startDt} AND DATE_ADD(#{endDt}, INTERVAL 1 DAY)
 	        GROUP BY
 	        	YMD
 		) A
@@ -182,7 +182,7 @@
 	        (SELECT @ROWNUM:=0) TMP
 	        WHERE
 	        	URL_ID = #{urlId}
-	        AND YMD BETWEEN #{startDt} AND #{endDt}
+	        AND YMD BETWEEN #{startDt} AND DATE_ADD(#{endDt}, INTERVAL 1 DAY)
 	        GROUP BY
 	        	CH,
 	        	HOUR
@@ -202,7 +202,7 @@
 	        FROM CM.CM_STAT_URL B
 	        WHERE
 				URL_ID = #{urlId}
-            AND YMD BETWEEN #{startDt} AND #{endDt}
+            AND YMD BETWEEN #{startDt} AND DATE_ADD(#{endDt}, INTERVAL 1 DAY)
 	        GROUP BY
 	        	HOUR
 		) A
