@@ -1873,4 +1873,64 @@ public class RcsTemplateSendService {
 			generalDao.insertGernal(DB.QRY_INSERT_CM_MSG, params);
 		}
 	}
+
+	// rcs 발송 전 유효성 검사 
+	// 이미지 발송시 이미지 체크 
+	public void setRcsSendData(Map<String, Object> params) throws Exception {
+		String templateRadioBtn = CommonUtils.getString(params.get("templateRadioBtn"));
+		Map<String, Object> paramMap = (Map<String, Object>) params.get("data");
+		
+		String rsrvSendYn = (CommonUtils.getStrValue(paramMap, "rsrvSendYn"));
+		String rsrvDate = "";
+		String rsrvHH = "";
+		String rsrvMM = "";
+		String rsrvDt = "";
+		if(rsrvSendYn.equals("Y")){
+			
+			rsrvDate = (CommonUtils.getStrValue(paramMap, "rsrvDate"));
+			rsrvHH = (CommonUtils.getStrValue(paramMap, "rsrvHH"));
+			rsrvMM = (CommonUtils.getStrValue(paramMap, "rsrvMM"));
+			rsrvDt = rsrvDate + " " + rsrvHH + ":" + rsrvMM + ":00";
+		}
+		
+		// 캐러셀형인 경우 carouselMap에서 이미지 FileId를 가지고 validation 체크
+		if("CMwShS0300".equals(templateRadioBtn) || "CMwShS0400".equals(templateRadioBtn) || "CMwShS0500".equals(templateRadioBtn) || "CMwShS0600".equals(templateRadioBtn) ||
+			"CMwMhM0300".equals(templateRadioBtn) || "CMwMhM0400".equals(templateRadioBtn) || "CMwMhM0500".equals(templateRadioBtn) || "CMwMhM0600".equals(templateRadioBtn)) {
+			
+			int imgExpCnt = 0;
+			Map<String, Object> carouselMap = (Map<String, Object>) paramMap.get("carouselObj");
+			List<String> fileList = (List<String>) carouselMap.get("fileId");
+			for(int i=0; i<fileList.size(); i++) {
+				Map<String, Object> expImgMap = new HashMap<String, Object>();
+				// 이미지가 있는경우 이미지 세팅전 해당 이미지의 사용여부를 확인하고 이미지의 유효기간이 지난경우 예외처리
+				// 즉시 발송인경우 현재시간과 비교하여 사용여부를체크, 예약 발송인경우 해당 예약 발송기간에 따른 이미지 사용여부를 체크
+				expImgMap.put("ch", "rcs");
+				expImgMap.put("fileId", fileList.get(i));
+				expImgMap.put("rsrvSendYn", rsrvSendYn);
+				expImgMap.put("rsrvDt", rsrvDt);
+				int imgCnt = generalDao.selectGernalCount(DB.QRY_SELECT_EXP_IMG_CNT, expImgMap);
+				if(imgCnt>0) imgExpCnt++;
+			}
+			
+			if(imgExpCnt != fileList.size()) {
+				throw new Exception("선택하신 이미지를 사용할 수 없습니다. 이미지를 다시 선택해 주세요.");
+			}
+		} else {
+			String fileId = CommonUtils.getString(paramMap.get("fileId"));
+			if(!"".equals(fileId)) {
+				Map<String, Object> expImgMap = new HashMap<String, Object>();
+				// 이미지가 있는경우 이미지 세팅전 해당 이미지의 사용여부를 확인하고 이미지의 유효기간이 지난경우 예외처리
+				// 즉시 발송인경우 현재시간과 비교하여 사용여부를체크, 예약 발송인경우 해당 예약 발송기간에 따른 이미지 사용여부를 체크
+				expImgMap.put("ch", "rcs");
+				expImgMap.put("fileId", fileId);
+				expImgMap.put("rsrvSendYn", rsrvSendYn);
+				expImgMap.put("rsrvDt", rsrvDt);
+				
+				int imgCnt = generalDao.selectGernalCount(DB.QRY_SELECT_EXP_IMG_CNT, expImgMap);
+				if(!(imgCnt>0)) {
+					throw new Exception("선택하신 이미지를 사용할 수 없습니다. 이미지를 다시 선택해 주세요.");
+				}
+			}
+		}
+	}
 }

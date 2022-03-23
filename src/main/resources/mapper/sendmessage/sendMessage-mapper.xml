@@ -663,5 +663,19 @@
     	,		UPD_DT = NOW()
     	WHERE	TMPLT_CODE = #{tmpltCode}
     </update>
+    
+    <select id="selectExpImgCnt" resultType="int">
+    	/* sendMessage.selectExpImgCnt */
+    	SELECT	COUNT(*)
+    	FROM	cm.CM_FILE
+    	WHERE	FILE_ID = #{fileId}
+    	AND		CH = #{ch}
+    	<if test='rsrvSendYn != null and rsrvSendYn.equals("Y")'>
+    	AND		EXP_DT > #{rsrvDt}
+    	</if>
+    	<if test='rsrvSendYn != null and rsrvSendYn.equals("N")'>
+    	AND		EXP_DT > NOW()
+    	</if>
+    </select>
 
 </mapper>

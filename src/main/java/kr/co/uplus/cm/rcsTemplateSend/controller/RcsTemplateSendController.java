@@ -182,8 +182,11 @@ public class RcsTemplateSendController {
 			// params 세팅
 			params = commonService.setUserInfo(multipartFileDTO.getUnescapeParams());
 			
+			// 발송 이미지 validation 처리
+			rcsTemplateSendSvc.setRcsSendData(params);
+			
 			Map<String, Object> data = (Map<String, Object>) params.get("data");
-			/** 알림톡 수신자 리스트*/
+			/** 수신자 리스트*/
 			boolean real = (boolean) params.get("real");
 			if(real) {
 				recvInfoLst = sendMsgService.getRecvInfoLst(data, multipartFileDTO.getFile());
