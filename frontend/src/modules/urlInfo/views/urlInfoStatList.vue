@@ -77,6 +77,16 @@
 
     <div class="row">
       <div class="col-xs-12 consolMarginTop">
+        <div class="of_h mt20">
+          <a
+            class="float-right btnStyle1 backBlack"
+            data-toggle="modal"
+            data-target="#shortened_URL_add"
+            title="단축 URL 생성"
+            @click="initPop()"
+          >단축 URL+ 생성</a>
+        </div>
+
         <!-- 엑셀 다운로드 -->
         <div 
           v-if="excelDownFlag"
@@ -92,26 +102,12 @@
           </div>
         </div>
 
-        <!-- 15개씩 보기 -->
+        <!-- 페이지당 리스트 개수 -->
         <div class="of_h inline">
-          <div class="float-left">전체 : 
-            <span class="color1">
-              <strong>{{ pageInfo.totCnt }}</strong>
-            </span>건
-            <select 
-              v-model="pageInfo.listSize"
-              name="userConsole_sub0302_1" 
-              class="selectStyle2 width120 ml20"
-            >
-              <option 
-                v-for="(item, idx) in pagingSize" 
-                :key="idx"
-                :value="item"
-              >{{ item }}개씩 보기</option>
-            </select>
+          <div class="float-left">전체 : <span class="color1"><strong>{{ pageInfo.totCnt |formatComma }}</strong></span>건
+            <SelectLayer @fnSelected="(selCnt)=>{pageInfo.listSize = selCnt}" classProps="selectStyle2 width120 ml20"/>
           </div>
         </div>
-        <!-- //15개씩 보기 -->
         
         <div class="row">
           <div class="col-xs-12 consolMarginTop">
@@ -238,6 +234,8 @@
     </div>
     <!-- //본문 -->
 
+    <shortenedUrlAddPopup ref="shortenedUrlAddPopup"/>
+
     <!-- <footer>Copyright©LG Plus Corp. All Rights Reserved.</footer> -->
   </article>
 </template>
@@ -245,12 +243,17 @@
 <script>
 import confirm from '@/modules/commonUtil/service/confirm.js'
 import urlInfoApi from '@/modules/urlInfo/service/urlInfoApi.js'
+
 import Calendar from '@/components/Calendar'
+import SelectLayer from '@/components/SelectLayer'
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
 
 export default {
   name: 'urlInfoStatList',
   components: {
     Calendar,
+    SelectLayer,
+    shortenedUrlAddPopup,
   },
   props: {},
   computed: {
@@ -341,16 +344,18 @@ export default {
       this.selectUrlInfoStatList()
     },
     goUrl(item) {
-      const path = `${this.$router.currentRoute.path}/${item.urlId}`
-      // const path = `/uc/message/sendSms/${item.urlId}`
-      const params = { urlInfo: {...item} }
-
-      // console.log('########### params #########', params);
-      this.$router.push({path, params})
+      const params = {
+        urlId: item.urlId,
+        urlInfo: {...item}
+      }
+      this.$router.push({name: 'urlInfoStatDetail', params})
     },
     // 엑셀 다운로드 (미구현)
     downloadExcel() {
       console.log('########## downloadExcel ########')
+    },
+    initPop() {
+      this.$refs['shortenedUrlAddPopup'].initVal()
     },
   },
 };

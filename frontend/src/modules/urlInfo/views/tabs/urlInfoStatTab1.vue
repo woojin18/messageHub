@@ -31,30 +31,6 @@
 							<td class="text-center">{{ item.conCnt }}</td>
 							<td class="text-center end">{{ item.per }}%</td>
 						</tr>	
-						<!-- <tr>
-							<td class="text-center">전체</td>
-							<td class="text-center">100</td>
-							<td class="text-center">10</td>
-							<td class="text-center end">10.00%</td>
-						</tr>	
-						<tr>
-							<td class="text-center">전체</td>
-							<td class="text-center">100</td>
-							<td class="text-center">10</td>
-							<td class="text-center end">10.00%</td>
-						</tr>	
-						<tr>
-							<td class="text-center">전체</td>
-							<td class="text-center">100</td>
-							<td class="text-center">10</td>
-							<td class="text-center end">10.00%</td>
-						</tr>	
-						<tr>
-							<td class="text-center">전체</td>
-							<td class="text-center">100</td>
-							<td class="text-center">10</td>
-							<td class="text-center end">10.00%</td>
-						</tr>	 -->
 					</tbody>
 				</table>
 				<!-- //table -->
@@ -83,8 +59,7 @@ export default {
 	},
   computed: {},
 	watch: {
-		'urlId' (curVal) {
-			console.log('############ watch / urlId ############', curVal);
+		'urlId' () {
       this.selectUrlInfoStatDetail()
 		},
 	},
@@ -96,8 +71,6 @@ export default {
     };
   },
   mounted() {
-		console.log('############## mounted / urlId #############', this.urlId);
-		// if(this.urlId)
 			this.selectUrlInfoStatDetail()
   },
   methods: {
@@ -112,11 +85,33 @@ export default {
         if (result.success) {
           this.itemList = result.data.chart1
           this.chartList = result.data.chart1
+
+					this.makeSumRow()
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }
       });
     },
+		makeSumRow() {
+			let conCntSum = 0
+			let totCntSum = 0
+			this.itemList.forEach((item) => {
+				if(item.conCnt && item.conCnt > 0)
+					conCntSum += item.conCnt
+
+				if(item.totCnt && item.totCnt > 0)
+					totCntSum += item.totCnt
+			})
+
+			const sumRow = {
+				ch: '전체',
+				conCnt: conCntSum,
+				totCnt: totCntSum,
+				per: (totCntSum === 0) ? 0 : Math.trunc(conCntSum / totCntSum * 100)
+			}
+
+			this.itemList.splice(0, 0, sumRow)
+		},
   },
 };
 </script>
