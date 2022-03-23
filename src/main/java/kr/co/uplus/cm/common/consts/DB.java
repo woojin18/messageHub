@@ -300,6 +300,10 @@ public class DB {
 	public final static String QRY_SELECT_PROJECT_USE_CNT = "baseInfo.selectProjectUseCnt";
 	public final static String QRY_SELECT_PROJECT_NIGHT_SEND_YN = "baseInfo.selectProjectNightSendYn";
 	public final static String QRY_SELECT_APIKEY_MAANAGE_LIST = "baseInfo.selectApikeyManageList";
+	public final static String QRY_INSERT_APIKEY_MAANAGE = "baseInfo.insertApikeyManage";
+	public final static String QRY_UPDATE_CMD_APIKEY = "baseInfo.updateCmdApikey";
+	
+	
 	
 	// 프로젝트 멤버
 	public final static String QRY_SELECT_PROJECT_MEMBER_LIST_CNT = "member.selectProjectMemberListCnt";

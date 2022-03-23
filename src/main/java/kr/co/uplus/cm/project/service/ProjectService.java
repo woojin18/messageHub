@@ -1,6 +1,9 @@
 package kr.co.uplus.cm.project.service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -39,6 +42,7 @@ import kr.co.uplus.cm.utils.ApiInterface;
 import kr.co.uplus.cm.utils.CommonUtils;
 import kr.co.uplus.cm.utils.GeneralDao;
 import lombok.extern.log4j.Log4j2;
+import yoyozo.security.SHA;
 
 @Log4j2
 @Service
@@ -1113,6 +1117,41 @@ public class ProjectService {
 		rtn.setData(rtnList);
 
 		return rtn;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void saveApikeyManageGenerate(Map<String, Object> params) {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+		int apiKeyCnt = 0;
+		try {
+			apiKeyCnt = generalDao.selectGernalList(DB.QRY_SELECT_APIKEY_LIST, params).size();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if( apiKeyCnt >= 5 ) {
+			rtn.setSuccess(false);
+			rtn.setMessage("API Key는 5개까지 발급됩니다.");
+		}
+		
+		String apiKey = CommonUtils.getCommonId("API", 5); // APIKEY 생성
+		params.put("apikey", apiKey);
+		
+		AesEncryptor encrypt = new AesEncryptor(); 
+		String apikeyPwd = encrypt.encrypt((String) params.get("apikeyPwd"));
+		params.put("apikeyPwd", apikeyPwd);
+		
+		try {
+			generalDao.insertGernal(DB.QRY_INSERT_APIKEY_MAANAGE, params);
+			generalDao.updateGernal(DB.QRY_UPDATE_CMD_APIKEY, params);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	

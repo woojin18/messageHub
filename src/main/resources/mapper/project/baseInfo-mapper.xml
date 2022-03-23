@@ -216,6 +216,52 @@
 		FROM cm.CM_APIKEY
 		WHERE CORP_ID = #{corpId}
 		AND PROJECT_ID = #{projectId}
-	
+		ORDER BY REG_DT DESC
 	</select>
+	
+	<insert id="insertApikeyManage">
+	/* baseInfo.insertApikeyManage*/
+			INSERT INTO	cm.CM_APIKEY (
+			API_KEY 
+		,		CORP_ID 
+		,		PROJECT_ID 
+		,		API_KEY_NAME 
+		,		API_PWD 
+		,		CPS 
+		,		LINE_TYPE 
+		,		IP_CHK_YN 
+		<if test="IP_CHK_YN == 'Y'">
+		,		IP_LIST 
+		</if>
+		,		STATUS 
+		,		RPT_YN 
+		,		DUP_CHK_YN
+		,		REG_DT 
+		)VALUES(
+				#{apikey}
+		,		#{corpId}
+		,		#{projectId}
+		,		#{apikeyName}
+		,		#{apikeyPwd}
+		,		#{tps}
+		,		'NORMAL'
+		,		#{ipChkYn}
+		<if test="IP_CHK_YN == 'Y'">
+		,		#{ipList} 
+		</if>	
+		,		#{status}
+		,		#{rptYn}
+		,		#{dupChkYn}
+		,		NOW()
+		)	
+	</insert>
+	
+	<update id="updateCmdApikey">
+		/* baseInfo.updateCmdApikey*/
+		UPDATE cm.CM_CMD SET
+		UPD_DT = NOW()
+		WHERE CMD_TGT ='CM_APIKEY'
+	</update>
+
+	
 </mapper>

@@ -734,4 +734,22 @@ public class ProjectController {
 		return projectService.selectApikeyManageList(params);
     }
 	
+	@PostMapping("/saveApikeyManageGenerate")
+	public RestResult<?> saveApikeyManageGenerate(@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		try {
+				projectService.saveApikeyManageGenerate(params);
+			
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+
+		return rtn;
+	}
+	
+	
+	
+	
 }
