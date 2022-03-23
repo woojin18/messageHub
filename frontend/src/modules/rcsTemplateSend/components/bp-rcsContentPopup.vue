@@ -22,7 +22,7 @@
 							</div>							
 						</div>
 						<div class="clear consolMarginTop">
-							<div class="float-left" style="width:25%">
+							<div class="float-left" style="width:20%">
                 <h5>내용</h5>
                 <template v-if="templateRadioBtn === 'text'">
                   <a class="btnStyle1 backBlack mt60" 
@@ -34,7 +34,7 @@
                 </template>
                 <p 
                   v-else
-                  class="color3">버튼이 존재하는 RCS<br>상품은 단축URL+이 [버튼<br>입력]에 존재합니다.</p>
+                  class="color3">버튼이 존재하는 <br>RCS 상품은 단축<br>URL+이 [버튼 입력]<br>에 존재합니다.</p>
               </div>
 							<div class="float-left" style="width:75%">
 								<textarea 
