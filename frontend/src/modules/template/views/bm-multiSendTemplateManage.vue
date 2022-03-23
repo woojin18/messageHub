@@ -378,8 +378,9 @@
 									data-target="#shortened_URL"
 									@click="selCh = 'rcs'"
 								>단축 URL+</a>
+								<!-- RCS(프리 템플릿) -->
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_프리템플릿)</span>
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -461,8 +462,9 @@
 										data-target="#shortened_URL"
 										@click="selCh = 'rcs'"
 									>단축 URL+</a>
+									<!-- RCS_템플릿승인(서술) -->
 									<i class="fas fa-question-circle toolTip ml5">
-										<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_템플릿승인(서술))</span>
+										<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 									</i>
 								</div>
 								<div class="float-left" style="width:52%">
@@ -703,8 +705,9 @@
 									data-target="#shortened_URL"
 									@click="selCh = 'rcs'"
 								>단축 URL+</a>
+								<!-- RCS(SMS) -->
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_SMS)</span>
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -839,8 +842,9 @@
 									data-target="#shortened_URL"
 									@click="selCh = 'rcs'"
 								>단축 URL+</a>
+								<!-- RCS(LMS) -->
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_LMS)</span>
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -987,8 +991,9 @@
 									data-target="#shortened_URL"
 									@click="selCh = 'rcs'"
 								>단축 URL+</a>
+								<!-- RCS(세로형 SHORT) -->
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_세로형_SHORT)</span>
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -1149,8 +1154,9 @@
 									data-target="#shortened_URL"
 									@click="selCh = 'rcs'"
 								>단축 URL+</a>
+								<!-- RCS(세로형 TALL) -->
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_세로형_TALL)</span>
+									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -1333,10 +1339,11 @@
 											title="단축 URL+" 
 											data-toggle="modal" 
 											data-target="#shortened_URL"
-											@click="selCh = 'rcs'"
+											@click="selCh = 'rcsCShort'; selIdx = tabIdx"
 										>단축 URL+</a>
+										<!-- RCS(캐러셀 SHORT) -->
 										<i class="fas fa-question-circle toolTip ml5">
-											<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_캐러셀_SHORT)</span>
+											<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 										</i>
 									</div>
 									<div class="float-left" style="width:52%">
@@ -1545,10 +1552,11 @@
 											title="단축 URL+" 
 											data-toggle="modal" 
 											data-target="#shortened_URL"
-											@click="selCh = 'rcs'"
+											@click="selCh = 'rcsCTall'; selIdx = tabIdx"
 										>단축 URL+</a>
+										<!-- RCS(캐러셀 Tall) -->
 										<i class="fas fa-question-circle toolTip ml5">
-											<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(RCS_캐러셀_Tall)</span>
+											<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 										</i>
 									</div>
 									<div class="float-left" style="width:52%">
@@ -1641,13 +1649,13 @@
 													</td>
 													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
 													<td class="text-center end">
-														<a
+														<!-- <a
 															class="btnStyle1 backBlack" 
 															title="단축 URL+" 
 															data-toggle="modal" 
 															data-target="#shortened_URL"
 															@click="selCh = 'kakaotalk'; selIdx = idx"
-														>단축 URL+</a> 
+														>단축 URL+</a>  -->
 														<a @click="addRowRcsButton(fnCarouselString('CTALL_TAB', tabIdx, ''))" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
 														<a @click="removeRowRcsButton(fnCarouselString('CTALL_TAB', tabIdx, ''), idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
 													</td>
@@ -1757,17 +1765,6 @@
 					<div class="of_h consolMarginTop">
 						<div class="float-left" style="width:18%">
 							<h4>내용 *</h4>
-							<a 
-								class="btnStyle1 backBlack" 
-								style="margin-top:120px" 
-								title="단축 URL+" 
-								data-toggle="modal" 
-								data-target="#shortened_URL"
-								@click="selCh = 'kakaotalk'"
-							>단축 URL+</a>
-							<i class="fas fa-question-circle toolTip ml5">
-								<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(KKO)</span>
-							</i>
 						</div>
 						<div class="float-left" style="width:59%">
 							<textarea class="textareaStyle height190" v-model="rowData.friendTalkContent" :placeholder="kakaoPlaceHoder" @input="fnSetFrndTalkCurrByte" :maxlength="msgFrndTalkLimitByte"></textarea>
@@ -2025,6 +2022,13 @@
 							<span class="float-left color3"  v-if="rowData.msgKind == 'A'">
 								(광고) 문구가 내용 앞에 붙고<br>광고성메시지 수신거부번호는<br>내용 밑에 포함됩니다.
 							</span>
+							<a
+								class="btnStyle1 backBlack" 
+								title="단축 URL+" 
+								data-toggle="modal" 
+								data-target="#shortened_URL"
+								@click="selCh = 'sms'"
+							>단축 URL+</a> 
 						</div>
 						<div class="float-left" style="width:52%">
 							<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" @input="fnSetSmsCurrByte"></textarea>
@@ -2058,6 +2062,13 @@
 							<span class="float-left color3"  v-if="rowData.msgKind == 'A'">
 								광고성메시지 수신거부번호는<br>내용 하단에 포함됩니다.<br>또한 광고 표기는 제목 또는 내용에<br>포함되어 있어야 합니다.
 							</span>
+							<a
+								class="btnStyle1 backBlack" 
+								title="단축 URL+" 
+								data-toggle="modal" 
+								data-target="#shortened_URL"
+								@click="selCh = 'sms'"
+							>단축 URL+</a> 
 						</div>
 						<div class="float-left" style="width:52%">
 							<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" @input="fnSetSmsCurrByte"></textarea>
@@ -5070,38 +5081,71 @@ export default {
 		//단축 URL 선택
     btnSelect(shortendUrl){
 			if(this.rowData){
-				if(this.selCh === 'push'){
-					if(this.rowData.pushContent && this.rowData.pushContent.length > 0){
-						this.rowData.pushContent += '\n'
-						shortendUrl = this.rowData.pushContent + shortendUrl
+				let {
+					pushContent,
+					rcs0Content,
+					rcsCShortImgInfoList,
+					rcsCTallImgInfoList,
+					friendTalkButtons,
+					smsContent,
+				} = this.rowData
+
+				if(this.selCh === 'push'){										// PUSH
+					if(pushContent && pushContent.length > 0){
+						pushContent += '\n'
+						shortendUrl = pushContent + shortendUrl
 					}
 
 					this.$set(this.rowData, 'pushContent', shortendUrl)
-				// } else if(this.selCh === 'rcs') {
-				} else if(this.selCh === 'kakaotalk') {
-					if(this.rowData.friendTalkContent && this.rowData.friendTalkContent.length > 0){
-						this.rowData.friendTalkContent += '\n'
-						shortendUrl = this.rowData.friendTalkContent + shortendUrl
+				} else if(this.selCh === 'rcs') {							// RCS
+					if(rcs0Content && rcs0Content.length > 0){
+						rcs0Content += '\n'
+						shortendUrl = rcs0Content + shortendUrl
 					}
-      
-					this.$set(this.rowData, 'friendTalkContent', shortendUrl)
-				} else if(this.selCh === 'sms'){
-					if(this.rowData.smsContent && this.rowData.smsContent.length > 0){
-						this.rowData.smsContent += '\n'
-						shortendUrl = this.rowData.smsContent + shortendUrl
+
+					this.$set(this.rowData, 'rcs0Content', shortendUrl)
+				} else if(this.selCh === 'rcsCShort') {				// RCS(캐러셀 SHORT)
+					if(this.selIdx !== null && rcsCShortImgInfoList && rcsCShortImgInfoList[this.selIdx]){
+						if(rcsCShortImgInfoList[this.selIdx].rcsContent && rcsCShortImgInfoList[this.selIdx].rcsContent.length > 0){
+							rcsCShortImgInfoList[this.selIdx].rcsContent += '\n'
+							shortendUrl = rcsCShortImgInfoList[this.selIdx].rcsContent + shortendUrl
+						}
+
+						this.$set(rcsCShortImgInfoList[this.selIdx], 'rcsContent', shortendUrl)
 					}
+				} else if(this.selCh === 'rcsCTall') {				// RCS(캐러셀 Tall)
+					if(this.selIdx !== null && rcsCTallImgInfoList && rcsCTallImgInfoList[this.selIdx]){
+						if(rcsCTallImgInfoList[this.selIdx].rcsContent && rcsCTallImgInfoList[this.selIdx].rcsContent.length > 0){
+							rcsCTallImgInfoList[this.selIdx].rcsContent += '\n'
+							shortendUrl = rcsCTallImgInfoList[this.selIdx].rcsContent + shortendUrl
+						}
+
+						this.$set(rcsCTallImgInfoList[this.selIdx], 'rcsContent', shortendUrl)
+					}
+				} else if(this.selCh === 'kakaotalk') {				// KakaoTalk
+					// 버튼 입력
+					// if(this.rowData.friendTalkContent && this.rowData.friendTalkContent.length > 0){
+					// 	this.rowData.friendTalkContent += '\n'
+					// 	shortendUrl = this.rowData.friendTalkContent + shortendUrl
+					// }
       
+					// this.$set(this.rowData, 'friendTalkContent', shortendUrl)
+
+					if(friendTalkButtons.length > 0 && this.selIdx !== null && friendTalkButtons[this.selIdx]){
+						// mobile link
+						this.$set(friendTalkButtons[this.selIdx], 'linkUrl1', shortendUrl)
+						// pc link
+						this.$set(friendTalkButtons[this.selIdx], 'linkUrl2', shortendUrl)
+					}
+				} else if(this.selCh === 'sms'){							// SMS
+					if(smsContent && smsContent.length > 0){
+						smsContent += '\n'
+						shortendUrl = smsContent + shortendUrl
+					}
+
 					this.$set(this.rowData, 'smsContent', shortendUrl)
 				}
       }
-
-			// if(this.rowData.friendTalkButtons.length > 0 && this.selIdx !== null && this.rowData.friendTalkButtons[this.selIdx]){
-			// 			// mobile link
-			// 			this.$set(this.rowData.friendTalkButtons[this.selIdx], 'linkUrl1', shortendUrl)
-
-			// 			// pc link
-			// 			this.$set(this.rowData.friendTalkButtons[this.selIdx], 'linkUrl2', shortendUrl)
-			// 		}
 
 			this.selCh = null
 			this.selIdx = null
