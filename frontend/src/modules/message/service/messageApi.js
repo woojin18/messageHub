@@ -194,6 +194,9 @@ function fnNightSendLimitChk(params){
       //즉시
       var date = new Date();
       var currTime = date.getHours() + "" + date.getMinutes();
+      if(currTime.length < 4){
+        currTime = "0"+currTime;
+      }
       var nightSendLimitStTime = nightSendSthh + "" + nightSendStmm
       var nightSendLimitEdTime = nightSendEdhh + "" + nightSendEdmm
       
