@@ -172,7 +172,7 @@
 								<p v-for="(n, idx) in btnCnt" :key="idx" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
 							<div v-if="templateRadioBtn == 'SMwThM00'">
-								<img v-if="sendData.imgUrl == ''" :src="sendData.SMwThM00Img" alt="프리 템플릿">
+								<img v-if="sendData.imgUrl == ''" :src="SMwThM00Img" alt="프리 템플릿">
 								<div v-if="sendData.imgUrl != ''" :style="'background-image: url('+sendData.imgUrl+');padding:65px;'" class="mt10 text-center simulatorImg"> </div>
 								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
 									<h5>{{sendData.textTitle}}</h5>
@@ -184,7 +184,7 @@
 								<p v-for="(n, idx) in btnCnt" :key="idx" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
 							<div v-if="templateRadioBtn == 'SMwThT00'">
-								<img v-if="sendData.imgUrl == ''" :src="sendData.SMwThM00Img" alt="프리 템플릿">
+								<img v-if="sendData.imgUrl == ''" :src="SMwThT00Img" alt="프리 템플릿">
 								<div v-if="sendData.imgUrl != ''" :style="'background-image: url('+sendData.imgUrl+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
 								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20">
 									<h5>{{sendData.textTitle}}</h5>
@@ -525,6 +525,8 @@ export default {
 			monthAmount : 0,
 			monSenderLimitAmout : '없음',
 			feeType : false,
+			SMwThM00Img : require("@/assets/images/common/cardThumImg2_2.png"),	// 이미지 출력 src 세로형 Medium
+			SMwThT00Img : require("@/assets/images/common/cardThumImg2_1.png"),	// 이미지 출력 src 세로형 Tall
 			sendData : {
 				messagebaseId : "",							// MSG ID
 				brandId : "",								// 브랜드 ID
@@ -543,8 +545,6 @@ export default {
 				imgUrl : "",								// 이미지
 				fileId : "",								// 이미지
 				wideImgYn : "",								// 이미지
-				SMwThM00Img : require("@/assets/images/common/cardThumImg2_2.png"),	// 이미지 출력 src 세로형 Medium
-				SMwThT00Img : require("@/assets/images/common/cardThumImg2_1.png"),	// 이미지 출력 src 세로형 Tall
 				callback: '',  								// 발신번호
 				callbackArr: [],							// 발신번호 selectBox
 				copy: 'no',									// 복사 가능여부
@@ -768,8 +768,8 @@ export default {
 		this.sendData.imgUrl = "";
 		this.sendData.fileId = "";
 		this.sendData.wideImgYn = "";
-		this.sendData.SMwThM00Img = require("@/assets/images/common/cardThumImg2_2.png");
-		this.sendData.SMwThT00Img = require("@/assets/images/common/cardThumImg2_1.png");
+		this.SMwThM00Img = require("@/assets/images/common/cardThumImg2_2.png");
+		this.SMwThT00Img = require("@/assets/images/common/cardThumImg2_1.png");
 		//this.sendData.callback = "";
 		//this.sendData.callbackArr = [];
 		this.sendData.copy = "no";
