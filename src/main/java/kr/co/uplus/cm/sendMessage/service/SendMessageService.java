@@ -3307,8 +3307,6 @@ public class SendMessageService {
         long second = 1000;
 
 		params.put("recvInfoLstCnt", listSize);
-		apiMap.put("msgRecvInfoLst", recvInfoLst);
-		apiMap.put("msgFbInfoLst", fbInfoLst);
 
 		while (toIndex < listSize) {
 			isDone = false;
@@ -3321,6 +3319,7 @@ public class SendMessageService {
 					apiMap.put("fbInfoLst", fbInfoLst.subList(fromIndex, toIndex));
 				}
 				jsonString = gson.toJson(apiMap);
+				
 				responseBody = apiInterface.sendMsg(ApiConfig.SEND_RCS_API_URI, headerMap, jsonString);
 				isDone = isApiRequestAgain(responseBody, reSendCdList);
 				isAllFail = !isSendSuccess(responseBody);
@@ -3373,7 +3372,10 @@ public class SendMessageService {
 				log.error("{}.sendRCSMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
 			}
 		}
-
+		
+		// web insert시 전체 목록을 insert하기 위해서 apiMap에 insert용 object 세팅
+		apiMap.put("msgRecvInfoLst", recvInfoLst);
+		apiMap.put("msgFbInfoLst", fbInfoLst);
 		//웹 발송 내역 등록
 		if(isAllFail) {
 			rcsTemplateSendSvc.insertPushCmWebMsg(headerMap, apiMap, params, "FAIL");
