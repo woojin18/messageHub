@@ -1,5 +1,5 @@
 <template>
-    <div class="modal modalStyle" id="recipient" tabindex="-1" role="dialog" aria-hidden="true">
+  <div v-if="rcsBtnOpen" @click.self="fnClose" class="modalStyle" id="recipient" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog" style="width:670px">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -33,7 +33,9 @@
 									</select>
 								</td>
 								<td class="text-left"><input v-model="btnNm[n-1]" type="text" class="inputStyle"></td>
-								<td v-if="selectBtn[n-1]!='calendarAction'" class="text-center"><input v-model="contents[n-1]" type="text" class="inputStyle" :placeholder="btnInputHolder[n-1]" :disabled="selectBtn[n-1]=='mapAction'"></td>
+								<td v-if="selectBtn[n-1]!='calendarAction'" class="text-center">
+									<input v-model="contents[n-1]" type="text" class="inputStyle" :placeholder="btnInputHolder[n-1]" :disabled="selectBtn[n-1]=='mapAction'">
+								</td>
 								<td v-if="selectBtn[n-1]=='calendarAction'" class="text-center">
 									<input v-model="calendarTitle[n-1]" type="text" class="inputStyle" placeholder="제목입력">
 									<input v-model="calendarDes[n-1]" type="text" class="inputStyle consolMarginTop" placeholder="내용입력">
@@ -51,18 +53,16 @@
 									</div>
 								</td>
 								<td class="text-center end">
+									<a
+										v-if="selectBtn[n-1] === 'urlAction'" 
+										class="btnStyle1 backBlack" 
+										title="단축 URL+" 
+										data-toggle="modal" 
+										data-target="#shortened_URL"
+										@click="selIdx = idx"
+									>단축 URL+</a>
 									<a href="#" @click.prevent="fnClickMinus(n-1)" title="이전버튼">
-										<a
-											v-if="selectBtn[n-1] === 'urlAction'" 
-											class="btnStyle1 backBlack" 
-											title="단축 URL+" 
-											data-toggle="modal" 
-											data-target="#shortened_URL"
-										>단축 URL+</a> 
-										<i 
-											class="far fa-minus channelBtn"
-											:class="selectBtn[n-1] === 'urlAction' ? 'ml5' : ''"
-										></i>
+										<i class="far fa-minus channelBtn" :class="selectBtn[n-1] === 'urlAction' ? 'ml5' : ''" ></i>
 									</a>
 								</td>
 							</tr>
@@ -98,15 +98,20 @@ export default {
     shortenedUrlAddPopup,
   },
   props : {
-        templateRadioBtn: {
-            type: String,
-            require: true,
-            default: "",
-        },
-        btnPopCnt: {
-            type: Number,
-            default: 0
-        }
+		templateRadioBtn: {
+				type: String,
+				require: true,
+				default: "",
+		},
+		btnPopCnt: {
+				type: Number,
+				default: 0
+		},
+		rcsBtnOpen: {
+      type: Boolean,
+      require: true,
+      default: false,
+    },
   },
   data() {
     return { 
@@ -121,6 +126,7 @@ export default {
       endDate: ["firstEndDate","secondEndDate","thirdEndDate"],			// 달력 id
       initStartDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	//  달력
       initEndDate: [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()],	//  달력
+			selIdx: null,
     }
   },
 
@@ -293,6 +299,8 @@ export default {
 			this.endDate = ["firstEndDate","secondEndDate","thirdEndDate"];
 			this.initStartDate = [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()];
 			this.initEndDate = [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()];
+
+			this.$emit('update:rcsBtnOpen', false)
 		},
 		fnAdd() {
 			var vm = this;
@@ -320,10 +328,10 @@ export default {
 		},
 		//단축 URL 선택
     btnSelect(shortendUrl){
-      if(this.contents.length > 0)
-        this.contents += '\n'
-      
-      this.contents += shortendUrl
+			if(this.contents.length > 0 && this.selIdx !== null)
+        this.$set(this.contents, this.selIdx, shortendUrl)
+
+			this.selIdx = null
     },
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="modal modalStyle" id="contentPop" tabindex="-1" role="dialog" aria-hidden="true">
+  <div v-if="rcsContsOpen" @click.self="fnClose" class="modalStyle" id="contentPop" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -50,7 +50,7 @@
 					</div>	
 					<div class="text-center mt20">
 						<a @click.prevent="fnAdd" href="#self" class="btnStyle2 backBlack" title="입력">입력</a>
-						<a @click.prevent="fnClose" href="#self" class="btnStyle2 backWhite ml20" data-dismiss="modal" title="닫기">닫기</a>																
+						<a @click.prevent="fnClose" class="btnStyle2 backWhite ml20" data-dismiss="modal" title="닫기">닫기</a>																
 					</div>
 				</div>				
 			</div>
@@ -79,22 +79,27 @@ export default {
     shortenedUrlAddPopup,
   },
   props : {
-        templateRadioBtn: {
-            type: String,
-            require: true,
-            default: "",
-        },
-        contentPopCnt: {
-            type: Number,
-            default: 0
-        },
-        sendData: {
-            type: Object
-        },
-        dataSet: {
-            type: Boolean,
-            default: false
-        }
+    templateRadioBtn: {
+        type: String,
+        require: true,
+        default: "",
+    },
+    contentPopCnt: {
+        type: Number,
+        default: 0
+    },
+    sendData: {
+        type: Object
+    },
+    dataSet: {
+        type: Boolean,
+        default: false
+    },
+    rcsContsOpen: {
+      type: Boolean,
+      require: true,
+      default: false,
+    },
   },
   data() {
     return { 
@@ -164,7 +169,8 @@ export default {
       this.fileId = "";
       this.wideImgYn = "N"; 
 
-      jQuery("#contentPop").modal("hide");
+      // jQuery("#contentPop").modal("hide");
+      this.$emit('update:rcsContsOpen', false)
     },
 
     // 입력 버튼

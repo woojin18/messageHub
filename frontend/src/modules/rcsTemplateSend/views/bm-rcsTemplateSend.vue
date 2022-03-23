@@ -245,9 +245,9 @@
 						<div class="float-left" style="width:76%">
 							<a v-if="templateRadioBtn=='des' || templateRadioBtn=='cell'" @click.prevent="fnOpenRcsTemplatePopup" activity="READ" href="#self" class="btnStyle1 backLightGray mr10" data-toggle="modal" data-target="#templatePop" title="RCS 템플릿 선택">RCS 템플릿 선택</a>
 							<a v-if="formatCard==true" @click.prevent="fnOpenMsgPop" activity="READ" href="#self" class="btnStyle1 backLightGray mr10" data-toggle="modal" data-target="#message" title="메세지보관함">메세지보관함</a>
-							<a v-if="formatCard==true && carouSelType==false" @click.prevent="fnOpenRcsContentPop(0)" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" title="내용입력">내용입력</a>
-							<a v-if="formatCard==true && carouSelType==false && templateRadioBtn!='text'" @click.prevent="fnOpenRcsBtnPop(0)" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" data-toggle="modal" data-target="#Recipient" title="버튼입력">버튼입력</a>
-							<a v-if="sendData.senderType != 'UNUSED'" href="#self" @click.prevent="fnOpenSenderPop" activity="SAVE" class="btnStyle1 borderLightGray mr10" data-toggle="modal" title="대체발송 내용입력">대체발송 내용입력</a>
+							<a v-if="formatCard==true && carouSelType==false" @click.prevent="fnOpenRcsContentPop(0);" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" title="내용입력">내용입력</a>
+							<a v-if="formatCard==true && carouSelType==false && templateRadioBtn!='text'" @click.prevent="fnOpenRcsBtnPop(0)" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" title="버튼입력">버튼입력</a>
+							<a v-if="sendData.senderType != 'UNUSED'" href="#self" @click.prevent="fnOpenSenderPop" activity="SAVE" class="btnStyle1 borderLightGray mr10" title="대체발송 내용입력">대체발송 내용입력</a>
 							<div v-if="carouSelType==true" class="inline-block ml20">
 								<p class="inline-block mr10">카드개수</p>
 								<select v-model="carouselSelect" name="userConsole_sub020204_1" class="selectStyle2" @change="changeCarousel">
@@ -422,8 +422,8 @@
 
 			<RcsTemplatePopup :propBrandId.sync="sendData.brandId" :templateRadioBtn.sync="templateRadioBtn" ref="rcsTemplatePop" @fnResult="fnSetTemplate"></RcsTemplatePopup>
 			<RcsMsgPopup :templateRadioBtn.sync="templateRadioBtn" :carouselSmall.sync="carouselSmall" :carouselMedium.sync="carouselMedium" ref="rcsMsgPop" @fnTmpMsgSet="fnTmpMsgSet" ></RcsMsgPopup>
-			<RcsContentPopup :templateRadioBtn.sync="templateRadioBtn" :contentPopCnt.sync="contentPopCnt" :dataSet.sync="dataSet" :sendData.sync="sendData" ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
-			<RcsBtnPopup :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
+			<RcsContentPopup :rcsContsOpen.sync="rcsContsOpen" :templateRadioBtn.sync="templateRadioBtn" :contentPopCnt.sync="contentPopCnt" :dataSet.sync="dataSet" :sendData.sync="sendData" ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
+			<RcsBtnPopup :rcsBtnOpen.sync="rcsBtnOpen" :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
 			<RcsSenderPopup :sendData.sync="sendData" :rcsTemplateSenderPopOpen.sync="rcsTemplateSenderPopOpen" ref="rcsSenderPop"></RcsSenderPopup>
 			<RcsSavePopup ref="rcsSavePop"></RcsSavePopup>
 			<ConfirmPopup :newval.sync="newval" :oldval.sync="oldval" ref="confirmPop"></ConfirmPopup>
@@ -432,8 +432,6 @@
 			<TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" ref="testSendInputPopup"></TestSendInputPopup>
 			<nightSendLimitPopup :nightSendLimitY.sync="nightSendLimitYn" :nightSendSthh="this.nightSendSthh" :nightSendStmm="this.nightSendStmm" :nightSendEdhh="this.nightSendEdhh" :nightSendEdmm="this.nightSendEdmm"/>
 
-			<shortenedUrlListPopup @btnSelect="btnSelect" />
-			<shortenedUrlAddPopup/>
 		</article>
 </template>
 
@@ -452,8 +450,6 @@ import rcsTemplateSendApi from "@/modules/rcsTemplateSend/service/api.js";
 import messageApi from "@/modules/message/service/messageApi.js";
 import ConfirmPopup from "@/modules/rcsTemplateSend/components/bp-confirmPopup.vue";
 import nightSendLimitPopup from "@/modules/message/components/bp-nightSendLimit.vue";
-import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
-import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
 
 import XLSX from 'xlsx';
 
@@ -476,9 +472,7 @@ export default {
 		TestSendInputPopup,
 		Calendar,
 		ConfirmPopup,
-		shortenedUrlListPopup,
-    shortenedUrlAddPopup,
-     nightSendLimitPopup
+     nightSendLimitPopup,
   },
 	props: {
     componentsTitle: {
@@ -591,7 +585,9 @@ export default {
 			nightSendEdhh: '',
 			nightSendEdmm: '',
 			nightSendYn : 'N',
-			nightSendLimitYn : false
+			nightSendLimitYn : false,
+			rcsContsOpen: false,
+			rcsBtnOpen: false,
     }
   },
   watch : {
@@ -669,9 +665,9 @@ export default {
 		}
   },
   mounted() {
-	  this.fnExistApiKey();
-	  this.fnInit();
-	  this.fnNightSendTime();
+		this.fnExistApiKey();
+		this.fnInit();
+		this.fnNightSendTime();
   },
   methods: {
 	async fnExistApiKey(){
@@ -858,12 +854,16 @@ export default {
 	fnOpenRcsContentPop(cnt) {
 		this.contentPopCnt = cnt;
 		this.$refs.rcsContentPop.fnInit(cnt);
-		jQuery("#contentPop").modal("show");
+
+		this.rcsContsOpen = !this.rcsContsOpen;
+		// jQuery("#contentPop").modal("show");
 	},
 
 	fnOpenRcsBtnPop(cnt) {
 		this.btnPopCnt = cnt;
-		jQuery("#recipient").modal("show");
+
+		this.rcsBtnOpen = !this.rcsBtnOpen;
+		// jQuery("#recipient").modal("show");
 	},
 	
 	fnOpenSenderPop() {
@@ -1652,7 +1652,7 @@ export default {
 	async fnNightSendTime() {
 		let params = {
 			isChk : "Y"
-      	};
+				};
 		await messageApi.selectNightSendTime(params).then(response =>{
 			var result = response.data;
 			if(result.success) {
@@ -1660,7 +1660,7 @@ export default {
 				this.nightSendStmm = result.data.nightSendStmm;
 				this.nightSendEdhh = result.data.nightSendEdhh;
 				this.nightSendEdmm = result.data.nightSendEdmm;
-         		 this.nightSendYn = result.data.nightSendYn;
+							this.nightSendYn = result.data.nightSendYn;
 			} else {
 				confirm.fnAlert(this.title, result.message);
 			}
