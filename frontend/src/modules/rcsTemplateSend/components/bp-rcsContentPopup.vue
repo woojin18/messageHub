@@ -16,8 +16,8 @@
               </div>
 						</div>
             <div v-if="templateRadioBtn!='text' && templateRadioBtn!='SS000000'" class="of_h consolMarginTop">
-							<div class="float-left" style="width:15%"><h5>제목</h5></div>
-							<div class="float-left" style="width:80%">
+							<div class="float-left" style="width:20%"><h5>제목</h5></div>
+							<div class="float-left" style="width:75%">
 								<input v-model="title" type="text" class="inputStyle" placeholder="타이틀 입력 (최대 30자)" title="제목 입력란">
 							</div>							
 						</div>
