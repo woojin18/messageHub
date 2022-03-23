@@ -507,6 +507,10 @@ public class SendMessageService {
             String fbRcvblcNumber = CommonUtils.getStrValue(fbInfo, "rcvblcNumber");
             String fbMsgBody = fbMsg;
 
+            // 단축URL 여부 체크
+    	    if(fbMsgBody.contains("#URL{"))
+    	    	pushRequestData.setClickUrlYn("Y");
+
             //광고성일 경우
             if(StringUtils.equals(msgKind, Const.MsgKind.AD)) {
                 Map<String, Object> adMap = SetAdText(fbTitle, fbMsgBody, fbRcvblcNumber);
@@ -1209,7 +1213,7 @@ public class SendMessageService {
             rsrvMM = (CommonUtils.getStrValue(params, "rsrvMM"));
             rsrvDt = rsrvDate + " " + rsrvHH + ":" + rsrvMM + ":00";
         }
-        
+
         if(params.containsKey("imgInfoList")) {
             imgInfoList = (List<Map<String, Object>>) params.get("imgInfoList");
             int imgExpCnt = 0;
@@ -1657,6 +1661,10 @@ public class SendMessageService {
             String fbRcvblcNumber = CommonUtils.getStrValue(fbInfo, "rcvblcNumber");
             String fbMsgBody = fbMsg;
 
+            // 단축URL 여부 체크
+    	    if(fbMsgBody.contains("#URL{"))
+    	    	requestData.setClickUrlYn("Y");
+
             //광고성일 경우
             if(StringUtils.equals(msgKind, Const.MsgKind.AD)) {
                 Map<String, Object> adMap = SetAdText(fbTitle, fbMsgBody, fbRcvblcNumber);
@@ -2057,6 +2065,10 @@ public class SendMessageService {
             Map<String, Object> fbInfo = (Map<String, Object>) params.get("fbInfo");
             String fbMsg = CommonUtils.getStrValue(fbInfo, "msg");
 
+            // 단축URL 여부 체크
+    	    if(fbMsg.contains("#URL{"))
+    	    	requestData.setClickUrlYn("Y");
+
             FbInfo pushFbInfo = new FbInfo();
             pushFbInfo.setCh(rplcSendType);
             pushFbInfo.setMsg(fbMsg);
@@ -2401,8 +2413,8 @@ public class SendMessageService {
 		if(StringUtils.isNotBlank(errorMsg)) {
 			rtn.setFail(errorMsg);
 		}
-		
-		
+
+
 		// #13636 일감 관련 validation 추가
 		// 1. RCS, 문자
 		// 1-1. 문자만 사용하는경우 (RCS X)
@@ -2418,7 +2430,7 @@ public class SendMessageService {
 					break;
 				}
 			}
-			
+
 			int callbackCnt = generalDao.selectGernalCount(DB.QRY_SELECT_USE_CALLBACK_CNT, valiMap);
 			// 해당 유효 문자발신번호가 없는 경우 해당 템플릿을 미사용처리 하고 미발송처리 및 로직 종료
 			if(callbackCnt == 0) {
@@ -2428,7 +2440,7 @@ public class SendMessageService {
 				return requestData;
 			}
 		}
-		
+
 		if(!chTypeList.contains("RCS") && chTypeList.contains("MMS")){
 			for(Map<String, Object> map : tmpltInfoList) {
 				String ch = CommonUtils.getString(map.get("ch"));
@@ -2438,7 +2450,7 @@ public class SendMessageService {
 					break;
 				}
 			}
-			
+
 			int callbackCnt = generalDao.selectGernalCount(DB.QRY_SELECT_USE_CALLBACK_CNT, valiMap);
 			// 해당 유효 문자발신번호가 없는 경우 해당 템플릿을 삭제상태 처리 하고 로직 종료
 			if(callbackCnt == 0) {
@@ -2464,7 +2476,7 @@ public class SendMessageService {
 					break;
 				}
 			}
-			
+
 			// 1. RCS 발신번호 유효성 검사
 			int callbackCnt = generalDao.selectGernalCount(DB.QRY_SELECT_USE_RCS_CALLBACK_CNT, valiMap);
 			// 해당 유효 RCS 발신번호가 없는 경우 해당 템플릿을 삭제상태 처리 하고 로직 종료
@@ -2474,7 +2486,7 @@ public class SendMessageService {
 				rtn.setFail("선택하신 RCS 발신번호가 사용불가 상태입니다. 해당 템플릿은 삭제 처리됩니다.");
 				return requestData;
 			}
-			
+
 			// 2. 선택 브랜드의 사용 유무 검사
 			int brandCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_BRAND_USE_CNT, valiMap);
 			if(brandCnt == 0) {
@@ -2483,7 +2495,7 @@ public class SendMessageService {
 				rtn.setFail("선택하신 RCS 브랜드가 사용불가 상태입니다. 해당 템플릿은 삭제 처리됩니다.");
 				return requestData;
 			}
-			
+
 			// 3. 템플릿의 사용 유무 검사
 			int tmpltCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_TMPLT_USE_CNT, valiMap);
 			if(tmpltCnt == 0) {
@@ -2505,7 +2517,7 @@ public class SendMessageService {
 					break;
 				}
 			}
-			
+
 			int kkoChCnt = generalDao.selectGernalCount(DB.QRY_SELECT_KKO_CH_USE_CNT, valiMap);
 			if(kkoChCnt == 0) {
 				generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
@@ -2513,12 +2525,12 @@ public class SendMessageService {
 				rtn.setFail("선택하신 카카오 채널이 사용불가 상태입니다. 해당 통합 템플릿은 삭제 처리됩니다.");
 				return requestData;
 			}
-			
+
 		}
-		
+
 		// 3. 카카오(알림톡)
 		// 선택한 템플릿 사용 유무 검사
-		
+
 		if(chTypeList.contains("ALIMTALK")){
 			for(Map<String, Object> map : tmpltInfoList) {
 				String ch = CommonUtils.getString(map.get("ch"));
@@ -2529,7 +2541,7 @@ public class SendMessageService {
 					break;
 				}
 			}
-			
+
 			int kkoTmpltCnt = generalDao.selectGernalCount(DB.QRY_SELECT_KKO_TMPLT_USE_CNT, valiMap);
 			if(kkoTmpltCnt == 0) {
 				generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
@@ -2538,7 +2550,7 @@ public class SendMessageService {
 				return requestData;
 			}
 		}
-		
+
 		// 4. PUSH
 		// APP_ID 사용 유무 검사
 		if(chTypeList.contains("PUSH")){
@@ -2551,7 +2563,7 @@ public class SendMessageService {
 					break;
 				}
 			}
-			
+
 			int pushIdCnt = generalDao.selectGernalCount(DB.QRY_SELECT_PUSH_ID_USE_CNT, valiMap);
 			if(pushIdCnt == 0) {
 				generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
@@ -2560,7 +2572,7 @@ public class SendMessageService {
 				return requestData;
 			}
 		}
-		
+
 		// 이미지가 들어간 템플릿의 경우 해당 이미지의 유효성 검사 (이미지 유효기간이 있는 MMS, RCS만 체크한다)
 		String msgType = CommonUtils.getStrValue(tmpltInfo, "msgType");
 		if("IMAGE".equals(msgType)) {
@@ -2574,7 +2586,7 @@ public class SendMessageService {
 						break;
 					}
 				}
-				
+
 				String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
 				String rsrvDate = "";
 				String rsrvHH = "";
@@ -2586,7 +2598,7 @@ public class SendMessageService {
 					rsrvMM = (CommonUtils.getStrValue(params, "rsrvMM"));
 					rsrvDt = rsrvDate + " " + rsrvHH + ":" + rsrvMM + ":00";
 				}
-				
+
 				int imgExpCnt = 0;
 				for(int i=0; i<imgFileIdLst.size(); i++) {
 					// 이미지가 있는경우 이미지 세팅전 해당 이미지의 사용여부를 확인하고 이미지의 유효기간이 지난경우 예외처리
@@ -2599,7 +2611,7 @@ public class SendMessageService {
 					int imgCnt = generalDao.selectGernalCount(DB.QRY_SELECT_EXP_IMG_CNT, paramMap);
 					if(imgCnt>0) imgExpCnt++;
 				}
-				
+
 				if(imgExpCnt != imgFileIdLst.size()) {
 					rtn.setSuccess(false);
 					rtn.setFail("선택하신 통합 템플릿의 MMS 이미지가 사용이 만료되었습니다. 템플릿의 이미지를 변경해주세요.");
@@ -2614,17 +2626,17 @@ public class SendMessageService {
 					if("RCS".equals(ch)) {
 						Map<String, Object> data = (Map<String, Object>) map.get("data");
 						List<Map<String, Object>> mergeData = (List<Map<String, Object>>) data.get("mergeData");
-						
+
 						for(Map<String, Object> mergeMap : mergeData) {
 							String fileId = CommonUtils.getString(mergeMap.get("media"));
 							fileId = fileId.replace("maapfile://", "");
 							imgFileIdLst.add(fileId);
 						}
-						
+
 						break;
 					}
 				}
-				
+
 				String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
 				String rsrvDate = "";
 				String rsrvHH = "";
@@ -2636,7 +2648,7 @@ public class SendMessageService {
 					rsrvMM = (CommonUtils.getStrValue(params, "rsrvMM"));
 					rsrvDt = rsrvDate + " " + rsrvHH + ":" + rsrvMM + ":00";
 				}
-				
+
 				int imgExpCnt = 0;
 				for(int i=0; i<imgFileIdLst.size(); i++) {
 					// 이미지가 있는경우 이미지 세팅전 해당 이미지의 사용여부를 확인하고 이미지의 유효기간이 지난경우 예외처리
@@ -2649,7 +2661,7 @@ public class SendMessageService {
 					int imgCnt = generalDao.selectGernalCount(DB.QRY_SELECT_EXP_IMG_CNT, paramMap);
 					if(imgCnt>0) imgExpCnt++;
 				}
-				
+
 				if(imgExpCnt != imgFileIdLst.size()) {
 					rtn.setSuccess(false);
 					rtn.setFail("선택하신 통합 템플릿의 RCS 이미지가 사용이 만료되었습니다. 템플릿의 이미지를 변경해주세요.");
