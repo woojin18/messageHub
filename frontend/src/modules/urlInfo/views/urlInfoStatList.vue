@@ -158,7 +158,7 @@
                   <td class="text-center">{{ item.title }}</td>
                   <td class="text-center">{{ item.urlId }}</td>
                   <td>{{ item.orgUrl }}</td>
-                  <td class="text-center">{{ `${$moment(item.regDt).format('yyyy.mm.DD')}/${$moment(item.expDt).format('yyyy.mm.DD')}` }}</td>
+                  <td class="text-center">{{ `${$moment(item.regDt).format('YYYY.MM.DD')}/${$moment(item.expDt).format('YYYY.MM.DD')}` }}</td>
                   <td class="text-right">{{ item.totCnt }}</td>
                   <td class="text-right">{{ item.conCnt }}</td>
                   <td class="text-right">{{ (item.totCnt === 0) ? 0 : Math.trunc(item.conCnt / item.totCnt * 100) }}%</td>

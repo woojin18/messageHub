@@ -34,7 +34,7 @@
 								<td class="text-center">{{ urlInfo.title }}</td><!-- 제목 -->
 								<td class="text-center">{{ urlInfo.urlId }}</td><!-- 단축URL+ ID -->
 								<td>{{ urlInfo.orgUrl }}</td><!-- 원본URL -->
-								<td class="text-center">{{ `${$moment(urlInfo.regDt).format('yyyy.mm.DD')}/${$moment(urlInfo.expDt).format('yyyy.mm.DD')}` }}</td><!-- 등록일/만료일 -->
+								<td class="text-center">{{ `${$moment(urlInfo.regDt).format('YYYY.MM.DD')}/${$moment(urlInfo.expDt).format('YYYY.MM.DD')}` }}</td><!-- 등록일/만료일 -->
 								<td class="text-right">{{ urlInfo.totCnt }}</td><!-- 총 발송수 -->
 								<td class="text-right">{{ urlInfo.conCnt }}</td><!-- 클릭수 -->
 								<td class="text-right end">{{ (urlInfo.totCnt === 0) ? 0 : Math.trunc(urlInfo.conCnt / urlInfo.totCnt * 100) }}%</td><!-- 클릭율 -->
