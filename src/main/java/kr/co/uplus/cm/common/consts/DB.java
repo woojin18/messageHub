@@ -120,6 +120,7 @@ public class DB {
 	public final static String QRY_SELECT_KKO_TMPLT_USE_CNT = "sendMessage.selectKkoTmpltUseCnt";
 	public final static String QRY_SELECT_PUSH_ID_USE_CNT = "sendMessage.selectPushIdUseCnt";
 	public final static String QRY_UPDATE_SMART_TMPLT_STATUS = "sendMessage.updateSmartTmpltStatus";
+	public final static String QRY_SELECT_EXP_IMG_CNT = "sendMessage.selectExpImgCnt";
 
 	// RCS 채널 브랜드 정보
 	public final static String QRY_SELECT_RCS_BRANDLIST_CNT = "channel.selectRcsBrandListCnt";
@@ -300,6 +301,10 @@ public class DB {
 	public final static String QRY_SELECT_PROJECT_USE_CNT = "baseInfo.selectProjectUseCnt";
 	public final static String QRY_SELECT_PROJECT_NIGHT_SEND_YN = "baseInfo.selectProjectNightSendYn";
 	public final static String QRY_SELECT_APIKEY_MAANAGE_LIST = "baseInfo.selectApikeyManageList";
+	public final static String QRY_INSERT_APIKEY_MAANAGE = "baseInfo.insertApikeyManage";
+	public final static String QRY_UPDATE_CMD_APIKEY = "baseInfo.updateCmdApikey";
+	
+	
 	
 	// 프로젝트 멤버
 	public final static String QRY_SELECT_PROJECT_MEMBER_LIST_CNT = "member.selectProjectMemberListCnt";
