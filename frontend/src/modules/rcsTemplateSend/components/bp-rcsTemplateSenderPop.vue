@@ -18,14 +18,14 @@
               <span class="float-left color3 mt5">
                 광고성 메시지 및 <br>무료수신거부의 내용이 <br>내용제한에 포함됩니다.
               </span>
-              <a class="btnStyle1 backBlack mt10"
+              <!-- <a class="btnStyle1 backBlack mt10"
                 title="단축 URL+"
                 data-toggle="modal"
                 data-target="#shortened_URL"
               >단축 URL+</a> 
               <i class="fas fa-question-circle toolTip ml5">
                 <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
-              </i>
+              </i> -->
             </div>
 						<div class="float-right" style="width:75%">
 							<textarea @input="fnSetCheckTextCnt" v-model="senderPopData.senderContents" class="textareaStyle height120" :placeholder="preText" ></textarea>
