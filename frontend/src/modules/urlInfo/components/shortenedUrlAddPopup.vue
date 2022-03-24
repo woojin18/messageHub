@@ -153,6 +153,8 @@ export default {
 
             if(filterList.length > 0)
               filterList[0].selectUrlInfoList()
+
+              jQuery('#shortened_URL_add').modal('hide')
           } else {
             confirm.fnAlert(this.componentsTitle, result.message);
           }
