@@ -31,7 +31,10 @@
                 title="단축 URL+"
                 data-toggle="modal"
                 data-target="#shortened_URL"
-              >단축 URL+</a> <i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span></i> -->
+              >단축 URL+</a> 
+              <i class="fas fa-question-circle toolTip ml5">
+                <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+              </i> -->
             </div>
             <div class="float-right" style="width:66%">
               <textarea 

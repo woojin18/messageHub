@@ -177,7 +177,7 @@ function fnNightSendLimitChk(params){
   var nightSendEdmm = params.nightSendEdmm;
 
   var nightSendLimitYn = false;
-  if(nightSendYn == 'Y'){
+  if(nightSendYn == 'N'){
     if(rsrvSendYn != 'N'){
       //예약
       var rsrvTime = rsrvHH+ "" +rsrvMM;
@@ -193,7 +193,9 @@ function fnNightSendLimitChk(params){
     }else{
       //즉시
       var date = new Date();
-      var currTime = date.getHours() + "" + date.getMinutes();
+      var hh = date.getHours() <= 9 ? "0"+date.getHours() : date.getHours();
+      var mm = date.getMinutes() <= 9 ? "0"+date.getMinutes() : date.getMinutes();
+      var currTime = hh + "" + mm;
       var nightSendLimitStTime = nightSendSthh + "" + nightSendStmm
       var nightSendLimitEdTime = nightSendEdhh + "" + nightSendEdmm
       

@@ -86,8 +86,8 @@
               title="단축 URL+" 
               data-toggle="modal" 
               data-target="#shortened_URL"
-            >단축 URL</a> -->
-            <!-- <i class="fas fa-question-circle toolTip ml5">
+            >단축 URL</a>
+            <i class="fas fa-question-circle toolTip ml5">
               <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
             </i> -->
           </div>
@@ -105,10 +105,10 @@
         <div v-if="tmpltData.msgKind == 'A'" class="of_h consolMarginTop">
           <div class="float-left" style="width:31%">
             <h4>광고성메시지 수신거부번호</h4>
-            <a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</a>
           </div>
           <div class="float-left" style="width:69%">
-            <input type="text" class="inputStyle" v-model="tmpltData.rcvblcNumber" maxlength="10" placeholder="ex) 수신거부번호 : 080-0000-0000" @input="fnSetCurrByte">
+            <input type="text" class="inputStyle" v-model="tmpltData.rcvblcNumber" maxlength="10" placeholder="ex) 수신거부번호 : 080-0000-0000" @input="fnSetCurrByte" style="width:89%;">
+            <div style="float:right;"><a href="#" class="btnStyle1 backLightGray" @click.prevent="rcvblcNumOpen=true" title="수신거부번호 선택" activity="READ">선택</a></div>
           </div>
         </div>
 

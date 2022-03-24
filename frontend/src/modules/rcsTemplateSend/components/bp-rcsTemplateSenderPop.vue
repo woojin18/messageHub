@@ -5,7 +5,7 @@
 			<div class="modal-content">
 				<div class="modal-body">								
 					
-					<div v-if="sendData.senderType=='LMS' || sendData.senderType=='MMS'"class="of_h">
+					<div v-if="sendData.senderType=='LMS' || sendData.senderType=='MMS'" class="of_h">
 						<div class="float-left" style="width:25%"><h5>제목</h5></div>
 						<div class="float-right" style="width:75%">
 							<input v-model="senderPopData.senderTitle" type="text" class="inputStyle" placeholder="LMS 문자로 대체발송 될 제목입력" title="제목 입력란">
@@ -18,6 +18,14 @@
               <span class="float-left color3 mt5">
                 광고성 메시지 및 <br>무료수신거부의 내용이 <br>내용제한에 포함됩니다.
               </span>
+              <!-- <a class="btnStyle1 backBlack mt10"
+                title="단축 URL+"
+                data-toggle="modal"
+                data-target="#shortened_URL"
+              >단축 URL+</a> 
+              <i class="fas fa-question-circle toolTip ml5">
+                <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+              </i> -->
             </div>
 						<div class="float-right" style="width:75%">
 							<textarea @input="fnSetCheckTextCnt" v-model="senderPopData.senderContents" class="textareaStyle height120" :placeholder="preText" ></textarea>
@@ -25,7 +33,7 @@
 						</div>
 					</div>
 
-          <div v-if="sendData.senderType=='MMS'"class="of_h">
+          <div v-if="sendData.senderType=='MMS'" class="of_h">
 						<div class="float-left" style="width:25%"><h5>이미지</h5></div>
             <div class="of_h float-right" style="width:75%">
               <a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray" title="메시지 내용 이미지선택">이미지선택</a>
@@ -43,7 +51,11 @@
 				</div>
 			</div>
 		</div>
-      <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
+
+    <ImageManagePopUp @img-callback="fnCallbackImgInfo" :imgMngOpen.sync="imgMngOpen" :useCh="useCh" ref="imgMngPopup"></ImageManagePopUp>
+
+    <shortenedUrlListPopup @btnSelect="btnSelect" />
+    <shortenedUrlAddPopup/>
 	</div>
 </template>
 
@@ -51,21 +63,26 @@
 import confirm from "@/modules/commonUtil/service/confirm.js";
 import ImageManagePopUp from "@/modules/commonUtil/components/bp-imageManage.vue";
 
+import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
+import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
+
 export default {
   name: "rcsSenderPop",
   components : {
-      ImageManagePopUp
+    ImageManagePopUp,
+    shortenedUrlListPopup,
+    shortenedUrlAddPopup,
   },
   props : {
-        sendData: {
-            type: Object,
-            require: true
-        },
-        rcsTemplateSenderPopOpen: {
-          type: Boolean,
-          require: true,
-          default: false,
-        }
+    sendData: {
+        type: Object,
+        require: true
+    },
+    rcsTemplateSenderPopOpen: {
+      type: Boolean,
+      require: true,
+      default: false,
+    }
   },
   watch: {
     rcsTemplateSenderPopOpen(val){
@@ -77,18 +94,18 @@ export default {
   },
   data() {
     return {
-        preText : "변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오. 예) 이름과 출금일을 변수 설정: 예) #{고객}님 #{YYMMDD} 출금 예정입니다.",
-        imgMngOpen : false,
-        shortImgUrl : "",
-        useCh : "MMS",
-        msgCurrByte : 0,
-        msgLimitByte : 0,
-        senderPopData : {
-            senderTitle : "",
-            senderContents : "",
-            senderImgUrl : "",
-            senderFileId : "",
-        }
+      preText : "변수로 설정하고자 하는 내용을 #{ }표시로 작성해 주십시오. 예) 이름과 출금일을 변수 설정: 예) #{고객}님 #{YYMMDD} 출금 예정입니다.",
+      imgMngOpen : false,
+      shortImgUrl : "",
+      useCh : "MMS",
+      msgCurrByte : 0,
+      msgLimitByte : 0,
+      senderPopData : {
+        senderTitle : "",
+        senderContents : "",
+        senderImgUrl : "",
+        senderFileId : "",
+      }
     }
   },
   methods: {
@@ -181,7 +198,7 @@ export default {
       }
 
       var senderType = this.sendData.senderType;
-      var adYn = this.sendData.adYn;
+      // var adYn = this.sendData.adYn;
       if(senderType == "SMS") {
         if(this.senderPopData.senderContents == "") {
           confirm.fnAlert("RCS 템플릿", "내용을 입력해 주세요.");
@@ -242,20 +259,26 @@ export default {
       }
       return shortStr;
     },
-
     //빈값확인
     fnIsEmpty(str){
       if(str) return false;
       else return true
     },
-
     getByte(str) {
       return str
         .split('')
         .map(s => s.charCodeAt(0))
         .reduce((prev, c) => (prev + ((c === 10) ? 2 : ((c >> 7) ? 2 : 1))), 0);
-    }
-
+    },
+    //단축 URL 선택
+    btnSelect(shortendUrl){
+      if(this.senderPopData && this.senderPopData.senderContents && this.senderPopData.senderContents.length > 0){
+        this.senderPopData.senderContents += '\n'
+        shortendUrl = this.senderPopData.senderContents + shortendUrl
+      }
+      
+      this.$set(this.senderPopData, 'senderContents', shortendUrl)
+    },
   }
 }
 </script>

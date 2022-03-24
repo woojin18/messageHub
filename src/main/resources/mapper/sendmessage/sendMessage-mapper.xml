@@ -589,5 +589,93 @@
             AND CPU.PRODUCT_CODE = #{productCode}
         </if>
     </select>
+    
+    <select id="selectUseCallbackCnt" resultType="int">
+    	/* sendMessage.selectUseCallbackCnt -통합발송 문자 발신번호 조회 */
+    	SELECT	COUNT(*)
+    	FROM	cm_console.CM_CALL_NUM
+    	WHERE	CALL_NUM = #{callback}
+    	AND		STATE = '80'
+    </select>
+    
+    <select id="selectUseRcsCallbackCnt" resultType="int">
+    	/* sendMessage.selectUseRcsCallbackCnt -통합발송 RCS 발신번호 조회 */
+    	SELECT	COUNT(*)
+    	FROM	cm.CM_RCS_CHATBOT
+    	WHERE	CHATBOT_ID = #{callback}
+    	AND		USE_YN = 'Y'
+    	AND		APPROVAL_STATUS = '승인'
+    </select>
+    
+    <select id="selectRcsBrandUseCnt" resultType="int">
+    	/* sendMessage.selectRcsBrandUseCnt */
+    	SELECT	COUNT(*)
+    	FROM	cm.CM_RCS_BRAND
+    	WHERE	BRAND_ID = #{brandId}
+    	AND		USE_YN = 'Y'
+		AND		APPROVAL_STATUS = '승인'
+    </select>
+    
+    <select id="selectRcsTmpltUseCnt" resultType="int">
+    	/* sendMessage.selectRcsTmpltUseCnt */
+    	SELECT	COUNT(*)
+    	FROM	cm.CM_RCS_MSGBASE
+    	WHERE	MESSAGEBASE_ID = #{messagebaseId}
+    	AND		APPROVAL_STATUS IN ('승인', '반려(수정)')
+		AND		USE_YN = 'Y'
+    </select>
+    
+    <select id="selectKkoChUseCnt" resultType="int">
+    	/* sendMessage.selectKkoChUseCnt */
+    	SELECT	COUNT(*)
+    	FROM	cm.CM_KKO_CH
+    	WHERE	SENDER_KEY = #{senderKey}
+    	AND		PROJECT_ID IN (#{projectId}, 'ALL')
+    	AND		USE_YN = 'Y'
+    	AND		STAT = 'A'
+    	AND		KKO_CH_STAT = 'A'
+    </select>
+    
+    <select id="selectKkoTmpltUseCnt" resultType="int">
+    	/* sendMessage.selectKkoTmpltUseCnt */
+    	SELECT	COUNT(*)
+    	FROM	cm.CM_KKO_TMPLT
+    	WHERE	TMPLT_KEY = #{tmpltKey}
+    	AND		PROJECT_ID IN (#{projectId}, 'ALL')
+    	AND		TMPLT_STAT_CODE = 'A'
+    	AND		USE_YN = 'Y'
+    </select>
+    
+    <select id="selectPushIdUseCnt" resultType="int">
+    	/* sendMessage.selectPushIdUseCnt */
+    	SELECT	COUNT(*)
+    	FROM	cm_push.T_PUSH_CONFIG
+    	WHERE	APP_ID = #{appId}
+    	AND		PROJECT_ID IN (#{projectId}, 'ALL')
+    	AND		SERVICE_STATUS = 'ON'
+    </select>
+    
+    <update id="updateSmartTmpltStatus">
+    	/* sendMessage.updateSmartTmpltStatus */
+    	UPDATE	cm.CM_SMART_TMPLT
+    	SET		TMPLT_STATUS = 'DEL'
+    	,		UPD_ID = #{userId}
+    	,		UPD_DT = NOW()
+    	WHERE	TMPLT_CODE = #{tmpltCode}
+    </update>
+    
+    <select id="selectExpImgCnt" resultType="int">
+    	/* sendMessage.selectExpImgCnt */
+    	SELECT	COUNT(*)
+    	FROM	cm.CM_FILE
+    	WHERE	FILE_ID = #{fileId}
+    	AND		CH = #{ch}
+    	<if test='rsrvSendYn != null and rsrvSendYn.equals("Y")'>
+    	AND		EXP_DT > #{rsrvDt}
+    	</if>
+    	<if test='rsrvSendYn != null and rsrvSendYn.equals("N")'>
+    	AND		EXP_DT > NOW()
+    	</if>
+    </select>
 
 </mapper>

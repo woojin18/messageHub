@@ -1,5 +1,5 @@
 <template>
-  <div class="modal modalStyle" id="contentPop" tabindex="-1" role="dialog" aria-hidden="true">
+  <div v-if="rcsContsOpen" @click.self="fnClose" class="modalStyle" id="contentPop" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -7,7 +7,7 @@
             <div v-if="templateRadioBtn!='text' && templateRadioBtn!='SS000000' && templateRadioBtn!='SL000000'" class="of_h consolMarginTop">
 							<div class="float-left" style="width:15%"><h5>이미지선택</h5></div>
 							<div class="float-left" style="width:85%">
-                <div class="float-left" style="width:24%"><a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지 선택">이미지선택</a></div>
+                <div class="float-left" style="width:24%;margin-left: 25px;"><a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지 선택">이미지선택</a></div>
                   <ul class="float-right attachList" style="width: 61%; margin: 0px 25px 0px 0px;padding: 5px 15px; height: 30px;">
                     <li v-if="imgUrl">
                       <a @click="fnDelImg">{{fnSubString(imgUrl, 0, 40)}} <i class="fal fa-times"></i></a>
@@ -16,13 +16,13 @@
               </div>
 						</div>
             <div v-if="templateRadioBtn!='text' && templateRadioBtn!='SS000000'" class="of_h consolMarginTop">
-							<div class="float-left" style="width:15%"><h5>제목</h5></div>
-							<div class="float-left" style="width:80%">
+							<div class="float-left" style="width:20%"><h5>제목</h5></div>
+							<div class="float-left" style="width:75%">
 								<input v-model="title" type="text" class="inputStyle" placeholder="타이틀 입력 (최대 30자)" title="제목 입력란">
 							</div>							
 						</div>
 						<div class="clear consolMarginTop">
-							<div class="float-left" style="width:25%">
+							<div class="float-left" style="width:20%">
                 <h5>내용</h5>
                 <!-- <template v-if="templateRadioBtn === 'text'">
                   <a class="btnStyle1 backBlack mt60" 
@@ -34,7 +34,7 @@
                 </template>
                 <p 
                   v-else
-                  class="color3">버튼이 존재하는 RCS<br>상품은 단축URL+이 [버튼<br>입력]에 존재합니다.</p> -->
+                  class="color3">버튼이 존재하는 <br>RCS 상품은 단축<br>URL+이 [버튼 입력]<br>에 존재합니다.</p> -->
               </div>
 							<div class="float-left" style="width:75%">
 								<textarea 
@@ -50,7 +50,7 @@
 					</div>	
 					<div class="text-center mt20">
 						<a @click.prevent="fnAdd" href="#self" class="btnStyle2 backBlack" title="입력">입력</a>
-						<a @click.prevent="fnClose" href="#self" class="btnStyle2 backWhite ml20" data-dismiss="modal" title="닫기">닫기</a>																
+						<a @click.prevent="fnClose" class="btnStyle2 backWhite ml20" data-dismiss="modal" title="닫기">닫기</a>																
 					</div>
 				</div>				
 			</div>
@@ -79,22 +79,27 @@ export default {
     shortenedUrlAddPopup,
   },
   props : {
-        templateRadioBtn: {
-            type: String,
-            require: true,
-            default: "",
-        },
-        contentPopCnt: {
-            type: Number,
-            default: 0
-        },
-        sendData: {
-            type: Object
-        },
-        dataSet: {
-            type: Boolean,
-            default: false
-        }
+    templateRadioBtn: {
+        type: String,
+        require: true,
+        default: "",
+    },
+    contentPopCnt: {
+        type: Number,
+        default: 0
+    },
+    sendData: {
+        type: Object
+    },
+    dataSet: {
+        type: Boolean,
+        default: false
+    },
+    rcsContsOpen: {
+      type: Boolean,
+      require: true,
+      default: false,
+    },
   },
   data() {
     return { 
@@ -164,7 +169,8 @@ export default {
       this.fileId = "";
       this.wideImgYn = "N"; 
 
-      jQuery("#contentPop").modal("hide");
+      // jQuery("#contentPop").modal("hide");
+      this.$emit('update:rcsContsOpen', false)
     },
 
     // 입력 버튼

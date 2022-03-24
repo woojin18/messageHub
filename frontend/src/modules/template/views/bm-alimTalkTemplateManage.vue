@@ -183,7 +183,8 @@
                           data-toggle="modal" 
                           data-target="#shortened_URL"
                           @click="selIdx = idx"
-                        >단축 URL+</a>  -->
+                        >단축 URL+</a>
+                        <p>&nbsp;</p> -->
                         <a @click="fnDelButton(idx)" class="btnStyle1 backLightGray">삭제</a>
                       </td>
                     </tr>

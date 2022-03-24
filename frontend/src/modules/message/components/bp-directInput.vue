@@ -21,14 +21,14 @@
                 <div class="consolMarginTop" v-for="rowIdx in loopCnt" :key="rowIdx">
                   <div v-if="recvInfoLst.length >= rowIdx">
                     <input v-if="header == 'phone'" type="text" class="inputStyle" 
-                      :ref="header+'_'+rowIdx" v-model="recvInfoLst[rowIdx-1][header]" @keyup="fnOnlyNumber($event)" @keypress="fnOnlyNumber($event)" autocomplete="off">
+                      :ref="header+'_'+rowIdx" v-model="recvInfoLst[rowIdx-1][header]" @keyup="fnOnlyNumber" @keypress="fnOnlyNumber" autocomplete="off">
                     <input v-else-if="header == 'cuid'" type="text" class="inputStyle" 
                       :ref="header+'_'+rowIdx" v-model="recvInfoLst[rowIdx-1][header]">
                     <input v-else type="text" class="inputStyle" 
                       :ref="header+'_'+rowIdx" v-model="recvInfoLst[rowIdx-1].mergeData[header]">
                   </div>
                   <div v-else>
-                    <input v-if="header == 'phone'" type="text" class="inputStyle" :ref="header+'_'+rowIdx" @keyup="fnOnlyNumber($event)" @keypress="fnOnlyNumber($event)" autocomplete="off">
+                    <input v-if="header == 'phone'" type="text" class="inputStyle" :ref="header+'_'+rowIdx" @keyup="fnOnlyNumber" @keypress="fnOnlyNumber" autocomplete="off">
                     <input v-else type="text" class="inputStyle" :ref="header+'_'+rowIdx">
                   </div>
                 </div>
@@ -138,15 +138,20 @@ export default {
       if(Object.keys(obj).length === 0) return true;
       return false;
     },
-    fnOnlyNumber(event) {
+    fnOnlyNumber($event) {
       // var keyCode = $event.which;
       // if(keyCode != "8" && keyCode != "46") {
       //   if (!/\d/.test($event.key)){
       //     return $event.preventDefault();
       //   }
-      if((event.keyCode >= 48 && event.keyCode <= 57 ) || (event.keyCode >= 96 && event.keyCode <= 105 )){
-        event.target.value = this.$gfnCommonUtils.hpNumberAddDash(event.target.value);
-      }
+      // if((event.keyCode >= 48 && event.keyCode <= 57 ) || (event.keyCode >= 96 && event.keyCode <= 105 )){
+      //   event.target.value = this.$gfnCommonUtils.hpNumberAddDash(event.target.value);
+      // }
+      let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+      if ((keyCode < 48 || keyCode > 57) && keyCode !== 45 && keyCode !== 8 && (keyCode < 94 || keyCode > 105) && keyCode !== 46 && (keyCode < 37 || keyCode > 40) ) {
+ 					$event.preventDefault();
+ 			}
+      $event.target.value = this.$gfnCommonUtils.hpNumberAddDash($event.target.value);
     },
     //직접입력 팝업 내 선택 버튼 클릭시
     fnCallbackInputData(){

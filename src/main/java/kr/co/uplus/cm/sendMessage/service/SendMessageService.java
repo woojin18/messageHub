@@ -87,17 +87,17 @@ public class SendMessageService {
 
     @Autowired
     ApiInterface apiInterface;
-    
+
     @Autowired
     private RcsTemplateSendService rcsTemplateSendSvc;
-    
+
     private long second = 1000;
-    
+
     @Value("${night.send.st.hh}") String nightSendSthh;
 	@Value("${night.send.st.mm}") String nightSendStmm;
 	@Value("${night.send.ed.hh}") String nightSendEdhh;
 	@Value("${night.send.ed.mm}") String nightSendEdmm;
-	
+
 
     /**
      * APP ID 리스트 조회
@@ -131,7 +131,7 @@ public class SendMessageService {
 
         return rtn;
     }
-    
+
     /**
      * RCS 발신 번호 조회
      * @param params
@@ -260,18 +260,18 @@ public class SendMessageService {
                         log.error("{}.getRecvInfoLst get excelLimitRow Exception : {}", this.getClass(), e);
                     }
                 }
-                
+
                 if(limitRow > 0) {
                     excelList = commonService.getExcelDataList(excelFile, excelHeader, limitRow+excelHeader, colKeys);
                 } else {
                     excelList = commonService.getExcelDataList(excelFile, excelHeader, colKeys);
                 }
-                
+
                 // excel업로드 중복 데이터 제거 (전화번호, 앱ID가 중복인 경우 해당 번호의 중복 데이터를 지움)
                 // 전화번호, 앱 아이디가 전부 들어가는경우만 case 처리
                 if(params.containsKey("requiredCuid") && (Boolean) params.get("requiredCuid")
                 	&& params.containsKey("requiredCuPhone") && (Boolean) params.get("requiredCuPhone")) {
-                	
+
                 	// tempList -> 중복 키가 들어가는 list 생성
                 	// resultTemplist -> 중복 데이터 제거된 실제 excel 데이터
                 	List<Map<String, Object>> tempList = new ArrayList<Map<String, Object>>();
@@ -328,7 +328,7 @@ public class SendMessageService {
                     recvInfo.setMergeData(mergeData);
                     recvInfoLst.add(recvInfo);
                 }
-                
+
 
             //전체발송
             } else if(StringUtils.equals("ALL", (String)params.get("cuInputType"))) {
@@ -507,6 +507,10 @@ public class SendMessageService {
             String fbRcvblcNumber = CommonUtils.getStrValue(fbInfo, "rcvblcNumber");
             String fbMsgBody = fbMsg;
 
+            // 단축URL 여부 체크
+    	    if(fbMsgBody.contains("#URL{"))
+    	    	pushRequestData.setClickUrlYn("Y");
+
             //광고성일 경우
             if(StringUtils.equals(msgKind, Const.MsgKind.AD)) {
                 Map<String, Object> adMap = SetAdText(fbTitle, fbMsgBody, fbRcvblcNumber);
@@ -530,6 +534,10 @@ public class SendMessageService {
             pushRequestData.setFbInfoLst(fbInfoLst);
             pushRequestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
         }
+
+        // 단축URL 여부 체크
+	    if(pushContent.contains("#URL{"))
+	    	pushRequestData.setClickUrlYn("Y");
 
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -579,9 +587,9 @@ public class SendMessageService {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date rsrvDate = dateFormat.parse(rsrvDateStr);
             Date currentDate = new Date();
-            
+
             currentDate = DateUtils.addMinutes(currentDate, 9);
-            
+
             if(currentDate.compareTo(rsrvDate) > 0) {
                 rtn.setSuccess(false);
                 rtn.setMessage("잘못된 예약시간입니다. 현재시간 10분 이후로 설정해주세요.");
@@ -842,7 +850,7 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
-        
+
         int cps = NumberUtils.toInt(strCps, 30);
         if (cps <= 0) cps = 30;
         int sendCnt = 0;
@@ -882,7 +890,7 @@ public class SendMessageService {
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
-            
+
             if (sendCnt >= cps || toIndex >= listSize) {
             	end = System.currentTimeMillis();
             	long diff  = end - start;
@@ -946,6 +954,10 @@ public class SendMessageService {
             msg = (CommonUtils.getStrValue(adMap, "msg"));
         }
         requestData.setMsg(msg);
+
+        // 단축URL 여부 체크
+        if(smsContent.contains("#URL{"))
+        	requestData.setClickUrlYn("Y");
 
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -1036,7 +1048,7 @@ public class SendMessageService {
 
         return rtn;
     }
-    
+
     private Vector sms = new Vector();
 
     /**
@@ -1078,13 +1090,13 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
-        
+
         int cps = NumberUtils.toInt(strCps, 30);
         if (cps <= 0) cps = 30;
         int sendCnt = 0;
         long start = System.currentTimeMillis();
         long end = 0;
-        
+
         while (toIndex < listSize) {
             isDone = false;
             isServerError = false;
@@ -1118,7 +1130,7 @@ public class SendMessageService {
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
-            
+
             if (sendCnt >= cps || toIndex >= listSize) {
             	end = System.currentTimeMillis();
             	long diff  = end - start;
@@ -1130,7 +1142,7 @@ public class SendMessageService {
             	start = System.currentTimeMillis();
             }
         }
-        
+
 
         if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
             try {
@@ -1145,7 +1157,7 @@ public class SendMessageService {
                 log.error("{}.sendSmsMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
             }
         }
-        
+
         //웹 발송 내역 등록
         if(isAllFail) sParams.put("allFailYn", Const.COMM_YES);
         insertSmsCmWebMsg(rtn, sParams, requestData, recvInfoLst);
@@ -1158,7 +1170,7 @@ public class SendMessageService {
      * @return
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public MmsRequestData setMmsSendData(RestResult<Object> rtn, Map<String, Object> params) {
+    public MmsRequestData setMmsSendData(RestResult<Object> rtn, Map<String, Object> params) throws Exception {
         MmsRequestData requestData = new MmsRequestData();
 
         //webReqId
@@ -1190,14 +1202,44 @@ public class SendMessageService {
 
         //File List
         List<Map<String, Object>> imgInfoList = null;
+        String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
+        String rsrvDate = "";
+        String rsrvHH = "";
+        String rsrvMM = "";
+        String rsrvDt = "";
+        if(rsrvSendYn.equals("Y")){
+            rsrvDate = (CommonUtils.getStrValue(params, "rsrvDate"));
+            rsrvHH = (CommonUtils.getStrValue(params, "rsrvHH"));
+            rsrvMM = (CommonUtils.getStrValue(params, "rsrvMM"));
+            rsrvDt = rsrvDate + " " + rsrvHH + ":" + rsrvMM + ":00";
+        }
+
         if(params.containsKey("imgInfoList")) {
             imgInfoList = (List<Map<String, Object>>) params.get("imgInfoList");
+            int imgExpCnt = 0;
             for(Map<String, Object> imgInfo : imgInfoList) {
                 if(imgInfo.containsKey("fileId")) {
+                	// 이미지가 있는경우 이미지 세팅전 해당 이미지의 사용여부를 확인하고 이미지의 유효기간이 지난경우 예외처리
+                	// 즉시 발송인경우 현재시간과 비교하여 사용여부를체크, 예약 발송인경우 해당 예약 발송기간에 따른 이미지 사용여부를 체크
+                	Map<String, Object> paramMap = new HashMap<String, Object>();
+                	paramMap.put("ch", "mms");
+                	paramMap.put("fileId", imgInfo.get("fileId"));
+                	paramMap.put("rsrvSendYn", rsrvSendYn);
+                	paramMap.put("rsrvDt", rsrvDt);
+                	int imgCnt = generalDao.selectGernalCount(DB.QRY_SELECT_EXP_IMG_CNT, paramMap);
+                	if(imgCnt>0) imgExpCnt++;
                     requestData.getFileIdLst().add(CommonUtils.getStrValue(imgInfo, "fileId"));
                 }
             }
+            if(imgExpCnt != imgInfoList.size()) {
+            	rtn.setSuccess(false);
+            	rtn.setFail("선택하신 이미지를 사용할 수 없습니다. 이미지를 다시 선택해 주세요.");
+            }
         }
+
+	    // 단축URL 여부 체크
+	    if(smsContent.contains("#URL{"))
+	    	requestData.setClickUrlYn("Y");
 
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -1369,7 +1411,7 @@ public class SendMessageService {
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
-            
+
             if (sendCnt >= cps || toIndex >= listSize) {
             	end = System.currentTimeMillis();
             	long diff  = end - start;
@@ -1395,7 +1437,7 @@ public class SendMessageService {
                 log.error("{}.sendMmsMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
             }
         }
-        
+
         //웹 발송 내역 등록
         if(isAllFail) sParams.put("allFailYn", Const.COMM_YES);
         insertMmsCmWebMsg(rtn, sParams, requestData, recvInfoLst);
@@ -1584,7 +1626,8 @@ public class SendMessageService {
         requestData.setAdFlag(adFlag);
 
         //메시지
-        requestData.setMsg(CommonUtils.getStrValue(params, "frndTalkContent"));
+        String frndTalkContent = CommonUtils.getStrValue(params, "frndTalkContent");
+        requestData.setMsg(frndTalkContent);
 
         //카카오톡 발신 프로필키
         requestData.setSenderKey(CommonUtils.getStrValue(params, "senderKey"));
@@ -1618,6 +1661,10 @@ public class SendMessageService {
             String fbRcvblcNumber = CommonUtils.getStrValue(fbInfo, "rcvblcNumber");
             String fbMsgBody = fbMsg;
 
+            // 단축URL 여부 체크
+    	    if(fbMsgBody.contains("#URL{"))
+    	    	requestData.setClickUrlYn("Y");
+
             //광고성일 경우
             if(StringUtils.equals(msgKind, Const.MsgKind.AD)) {
                 Map<String, Object> adMap = SetAdText(fbTitle, fbMsgBody, fbRcvblcNumber);
@@ -1641,6 +1688,10 @@ public class SendMessageService {
             requestData.setFbInfoLst(fbInfoLst);
             requestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
         }
+
+        // 단축URL 여부 체크
+	    if(frndTalkContent.contains("#URL{"))
+	    	requestData.setClickUrlYn("Y");
 
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -1784,7 +1835,7 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
-        
+
         int cps = NumberUtils.toInt(strCps, 30);
         if (cps <= 0) cps = 30;
         int sendCnt = 0;
@@ -1824,7 +1875,7 @@ public class SendMessageService {
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
-            
+
             if (sendCnt >= cps || toIndex >= listSize) {
             	end = System.currentTimeMillis();
             	long diff  = end - start;
@@ -1958,7 +2009,8 @@ public class SendMessageService {
         //title
         requestData.setTitle(CommonUtils.getStrValue(tmpltInfo, "templateTitle"));
         //msg
-        requestData.setMsg(CommonUtils.getStrValue(tmpltInfo, "templateContent"));
+        String templateContent = CommonUtils.getStrValue(tmpltInfo, "templateContent");
+        requestData.setMsg(templateContent);
         //senderKey
         requestData.setSenderKey(CommonUtils.getStrValue(tmpltMap, "senderKey"));
         //tmpltKey
@@ -2013,6 +2065,10 @@ public class SendMessageService {
             Map<String, Object> fbInfo = (Map<String, Object>) params.get("fbInfo");
             String fbMsg = CommonUtils.getStrValue(fbInfo, "msg");
 
+            // 단축URL 여부 체크
+    	    if(fbMsg.contains("#URL{"))
+    	    	requestData.setClickUrlYn("Y");
+
             FbInfo pushFbInfo = new FbInfo();
             pushFbInfo.setCh(rplcSendType);
             pushFbInfo.setMsg(fbMsg);
@@ -2029,6 +2085,10 @@ public class SendMessageService {
             requestData.setFbInfoLst(fbInfoLst);
             requestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
         }
+
+        // 단축URL 여부 체크
+	    if(templateContent.contains("#URL{"))
+	    	requestData.setClickUrlYn("Y");
 
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -2161,7 +2221,7 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
-        
+
         int cps = NumberUtils.toInt(strCps, 30);
         if (cps <= 0) cps = 30;
         int sendCnt = 0;
@@ -2201,7 +2261,7 @@ public class SendMessageService {
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
-            
+
             if (sendCnt >= cps || toIndex >= listSize) {
             	end = System.currentTimeMillis();
             	long diff  = end - start;
@@ -2299,65 +2359,318 @@ public class SendMessageService {
         return apiInterface.sendMsg(ApiConfig.SEND_ALIM_TALK_API_URI, headerMap, jsonString);
     }
 
-    /**
-     * 통합/스마트 데이터 유효성 체크
-     * @param rtn
-     * @param params
-     * @return
-     * @throws Exception
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public SmartRequestData setSmartSendData(RestResult<Object> rtn, Map<String, Object> params) throws Exception {
-        SmartRequestData requestData = new SmartRequestData();
+	/**
+	 * 통합/스마트 데이터 유효성 체크
+	 * @param rtn
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public SmartRequestData setSmartSendData(RestResult<Object> rtn, Map<String, Object> params) throws Exception {
+		SmartRequestData requestData = new SmartRequestData();
+		//통합/스마트 정보 Get
+		Map<String, Object> tmpltInfo = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_INFO, params);
+		if(tmpltInfo == null || StringUtils.isBlank(CommonUtils.getStrValue(tmpltInfo, "tmpltCode"))) {
+			rtn.setFail("유효하지 않은 템플릿 정보입니다.");
+			return requestData;
+		}
 
-        //통합/스마트 정보 Get
-        Map<String, Object> tmpltInfo = (Map<String, Object>) generalDao.selectGernalObject(DB.QRY_SELECT_SMART_TMPLT_INFO, params);
-        if(tmpltInfo == null || StringUtils.isBlank(CommonUtils.getStrValue(tmpltInfo, "tmpltCode"))) {
-            rtn.setFail("유효하지 않은 템플릿 정보입니다.");
-            return requestData;
-        }
+		String senderType = CommonUtils.getStrValue(tmpltInfo, "tmpltType");
+		String smartPrdFee = CommonUtils.getStrValue(tmpltInfo, "smartPrdFee");
 
-        String senderType = CommonUtils.getStrValue(tmpltInfo, "tmpltType");
-        String smartPrdFee = CommonUtils.getStrValue(tmpltInfo, "smartPrdFee");
+		//tmpltCode
+		requestData.setTmpltCode(CommonUtils.getStrValue(params, "tmpltCode"));
 
-        //tmpltCode
-        requestData.setTmpltCode(CommonUtils.getStrValue(params, "tmpltCode"));
+		//campaignId
+		requestData.setCampaignId(CommonUtils.getStrValue(params, "campaignId"));
 
-        //campaignId
-        requestData.setCampaignId(CommonUtils.getStrValue(params, "campaignId"));
+		//webReqId
+		String prefix = (StringUtils.equals(senderType, Const.SenderType.SMART) ? Const.WebReqIdPrefix.SMT_PREFIX : Const.WebReqIdPrefix.ITG_PREFIX);
+		String webReqId = CommonUtils.getCommonId(prefix, 5);
+		requestData.setWebReqId(webReqId);
+		params.put("webReqId", webReqId);
 
-        //webReqId
-        String prefix = (StringUtils.equals(senderType, Const.SenderType.SMART) ? Const.WebReqIdPrefix.SMT_PREFIX : Const.WebReqIdPrefix.ITG_PREFIX);
-        String webReqId = CommonUtils.getCommonId(prefix, 5);
-        requestData.setWebReqId(webReqId);
-        params.put("webReqId", webReqId);
+		//내부용 데이터 Set
+		ObjectMapper mapper = new ObjectMapper();
+		List<String> chTypeList = mapper.readValue(CommonUtils.getStrValue(tmpltInfo, "chTypeList"), List.class);
+		String chString = chTypeList.stream().map(n -> String.valueOf(n)).collect(Collectors.joining(","));
+		params.put("chTypeList", chTypeList);
+		params.put("chString", chString);
+		params.put("senderType", senderType);
+		params.put("smartPrdFee", smartPrdFee);
 
-        //내부용 데이터 Set
-        ObjectMapper mapper = new ObjectMapper();
-        List<String> chTypeList = mapper.readValue(CommonUtils.getStrValue(tmpltInfo, "chTypeList"), List.class);
-        String chString = chTypeList.stream().map(n -> String.valueOf(n)).collect(Collectors.joining(","));
-        params.put("chTypeList", chTypeList);
-        params.put("chString", chString);
-        params.put("senderType", senderType);
-        params.put("smartPrdFee", smartPrdFee);
+		//유효성 체크
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		Validator validator = factory.getValidator();
+		Set<ConstraintViolation<SmartRequestData>> violations = validator.validate(requestData);
+		String errorMsg = "";
 
-        //유효성 체크
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<SmartRequestData>> violations = validator.validate(requestData);
-        String errorMsg = "";
+		for (ConstraintViolation violation : violations) {
+			errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + violation.getMessage();
+		}
 
-        for (ConstraintViolation violation : violations) {
-            errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + violation.getMessage();
-            //log.info("path : [{}], message : [{}]", violation.getPropertyPath(), violation.getMessage());
-        }
+		if(StringUtils.isNotBlank(errorMsg)) {
+			rtn.setFail(errorMsg);
+		}
 
-        if(StringUtils.isNotBlank(errorMsg)) {
-            rtn.setFail(errorMsg);
-        }
 
-        return requestData;
-    }
+		// #13636 일감 관련 validation 추가
+		// 1. RCS, 문자
+		// 1-1. 문자만 사용하는경우 (RCS X)
+		// 문자 발신번호의 유효성 검사
+		List<Map<String, Object>> tmpltInfoList = mapper.readValue(CommonUtils.getStrValue(tmpltInfo, "tmpltInfo"), List.class);
+		Map<String, Object> valiMap = new HashMap<String, Object>();
+		if(!chTypeList.contains("RCS") && chTypeList.contains("SMS")){
+			for(Map<String, Object> map : tmpltInfoList) {
+				String ch = CommonUtils.getString(map.get("ch"));
+				if("SMS".equals(ch)) {
+					Map<String, Object> data = (Map<String, Object>) map.get("data");
+					valiMap.put("callback", data.get("callback"));
+					break;
+				}
+			}
+
+			int callbackCnt = generalDao.selectGernalCount(DB.QRY_SELECT_USE_CALLBACK_CNT, valiMap);
+			// 해당 유효 문자발신번호가 없는 경우 해당 템플릿을 미사용처리 하고 미발송처리 및 로직 종료
+			if(callbackCnt == 0) {
+				generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+				rtn.setData(true);
+				rtn.setFail("선택하신 문자발송 발신번호가 사용불가 상태입니다. 해당 템플릿은 삭제 처리됩니다.");
+				return requestData;
+			}
+		}
+
+		if(!chTypeList.contains("RCS") && chTypeList.contains("MMS")){
+			for(Map<String, Object> map : tmpltInfoList) {
+				String ch = CommonUtils.getString(map.get("ch"));
+				if("MMS".equals(ch)) {
+					Map<String, Object> data = (Map<String, Object>) map.get("data");
+					valiMap.put("callback", data.get("callback"));
+					break;
+				}
+			}
+
+			int callbackCnt = generalDao.selectGernalCount(DB.QRY_SELECT_USE_CALLBACK_CNT, valiMap);
+			// 해당 유효 문자발신번호가 없는 경우 해당 템플릿을 삭제상태 처리 하고 로직 종료
+			if(callbackCnt == 0) {
+				generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+				rtn.setData(true);
+				rtn.setFail("선택하신 문자발송 발신번호가 사용불가 상태입니다. 해당 템플릿은 삭제 처리됩니다.");
+				return requestData;
+			}
+		}
+
+		// 1-2. RCS가 포함되는경우
+		// RCS 발신번호의 유효성 검사
+		// 선택 브랜드의 사용 유무 검사
+		// 템플릿의 사용 유무 검사
+		if(chTypeList.contains("RCS")){
+			for(Map<String, Object> map : tmpltInfoList) {
+				String ch = CommonUtils.getString(map.get("ch"));
+				if("RCS".equals(ch)) {
+					Map<String, Object> data = (Map<String, Object>) map.get("data");
+					valiMap.put("callback", data.get("callback"));
+					valiMap.put("brandId", data.get("brandNm"));
+					valiMap.put("messagebaseId", data.get("messagebaseId"));
+					break;
+				}
+			}
+
+			// 1. RCS 발신번호 유효성 검사
+			int callbackCnt = generalDao.selectGernalCount(DB.QRY_SELECT_USE_RCS_CALLBACK_CNT, valiMap);
+			// 해당 유효 RCS 발신번호가 없는 경우 해당 템플릿을 삭제상태 처리 하고 로직 종료
+			if(callbackCnt == 0) {
+				generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+				rtn.setData(true);
+				rtn.setFail("선택하신 RCS 발신번호가 사용불가 상태입니다. 해당 템플릿은 삭제 처리됩니다.");
+				return requestData;
+			}
+
+			// 2. 선택 브랜드의 사용 유무 검사
+			int brandCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_BRAND_USE_CNT, valiMap);
+			if(brandCnt == 0) {
+				generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+				rtn.setData(true);
+				rtn.setFail("선택하신 RCS 브랜드가 사용불가 상태입니다. 해당 템플릿은 삭제 처리됩니다.");
+				return requestData;
+			}
+
+			// 3. 템플릿의 사용 유무 검사
+			int tmpltCnt = generalDao.selectGernalCount(DB.QRY_SELECT_RCS_TMPLT_USE_CNT, valiMap);
+			if(tmpltCnt == 0) {
+				generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+				rtn.setData(true);
+				rtn.setFail("선택하신 RCS 템플릿이 사용불가 상태입니다. 해당 통합 템플릿은 삭제 처리됩니다.");
+				return requestData;
+			}
+		}
+		// 2. 카카오(친구톡)
+		// 카카오채널 사용 유무 검사
+		if(chTypeList.contains("FRIENDTALK")){
+			for(Map<String, Object> map : tmpltInfoList) {
+				String ch = CommonUtils.getString(map.get("ch"));
+				if("FRIENDTALK".equals(ch)) {
+					Map<String, Object> data = (Map<String, Object>) map.get("data");
+					valiMap.put("senderKey", data.get("senderKey"));
+					valiMap.put("projectId", params.get("projectId"));
+					break;
+				}
+			}
+
+			int kkoChCnt = generalDao.selectGernalCount(DB.QRY_SELECT_KKO_CH_USE_CNT, valiMap);
+			if(kkoChCnt == 0) {
+				generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+				rtn.setData(true);
+				rtn.setFail("선택하신 카카오 채널이 사용불가 상태입니다. 해당 통합 템플릿은 삭제 처리됩니다.");
+				return requestData;
+			}
+
+		}
+
+		// 3. 카카오(알림톡)
+		// 선택한 템플릿 사용 유무 검사
+
+		if(chTypeList.contains("ALIMTALK")){
+			for(Map<String, Object> map : tmpltInfoList) {
+				String ch = CommonUtils.getString(map.get("ch"));
+				if("ALIMTALK".equals(ch)) {
+					Map<String, Object> data = (Map<String, Object>) map.get("data");
+					valiMap.put("tmpltKey", data.get("tmpltKey"));
+					valiMap.put("projectId", params.get("projectId"));
+					break;
+				}
+			}
+
+			int kkoTmpltCnt = generalDao.selectGernalCount(DB.QRY_SELECT_KKO_TMPLT_USE_CNT, valiMap);
+			if(kkoTmpltCnt == 0) {
+				generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+				rtn.setData(true);
+				rtn.setFail("선택하신 알림톡 템플릿이 사용불가 상태입니다. 해당 통합 템플릿은 삭제 처리됩니다.");
+				return requestData;
+			}
+		}
+
+		// 4. PUSH
+		// APP_ID 사용 유무 검사
+		if(chTypeList.contains("PUSH")){
+			for(Map<String, Object> map : tmpltInfoList) {
+				String ch = CommonUtils.getString(map.get("ch"));
+				if("PUSH".equals(ch)) {
+					Map<String, Object> data = (Map<String, Object>) map.get("data");
+					valiMap.put("appId", data.get("appId"));
+					valiMap.put("projectId", params.get("projectId"));
+					break;
+				}
+			}
+
+			int pushIdCnt = generalDao.selectGernalCount(DB.QRY_SELECT_PUSH_ID_USE_CNT, valiMap);
+			if(pushIdCnt == 0) {
+				generalDao.deleteGernal(DB.QRY_UPDATE_SMART_TMPLT_STATUS, params);
+				rtn.setData(true);
+				rtn.setFail("선택하신 PUSH ID가 사용불가 상태입니다. 해당 통합 템플릿은 삭제 처리됩니다.");
+				return requestData;
+			}
+		}
+
+		// 이미지가 들어간 템플릿의 경우 해당 이미지의 유효성 검사 (이미지 유효기간이 있는 MMS, RCS만 체크한다)
+		String msgType = CommonUtils.getStrValue(tmpltInfo, "msgType");
+		if("IMAGE".equals(msgType)) {
+			if(chTypeList.contains("MMS")) {
+				List<Object> imgFileIdLst = new ArrayList<Object>();
+				for(Map<String, Object> map : tmpltInfoList) {
+					String ch = CommonUtils.getString(map.get("ch"));
+					if("MMS".equals(ch)) {
+						Map<String, Object> data = (Map<String, Object>) map.get("data");
+						imgFileIdLst = (List<Object>) data.get("fileIdLst");
+						break;
+					}
+				}
+
+				String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
+				String rsrvDate = "";
+				String rsrvHH = "";
+				String rsrvMM = "";
+				String rsrvDt = "";
+				if(rsrvSendYn.equals("Y")){
+					rsrvDate = (CommonUtils.getStrValue(params, "rsrvDate"));
+					rsrvHH = (CommonUtils.getStrValue(params, "rsrvHH"));
+					rsrvMM = (CommonUtils.getStrValue(params, "rsrvMM"));
+					rsrvDt = rsrvDate + " " + rsrvHH + ":" + rsrvMM + ":00";
+				}
+
+				int imgExpCnt = 0;
+				for(int i=0; i<imgFileIdLst.size(); i++) {
+					// 이미지가 있는경우 이미지 세팅전 해당 이미지의 사용여부를 확인하고 이미지의 유효기간이 지난경우 예외처리
+					// 즉시 발송인경우 현재시간과 비교하여 사용여부를체크, 예약 발송인경우 해당 예약 발송기간에 따른 이미지 사용여부를 체크
+					Map<String, Object> paramMap = new HashMap<String, Object>();
+					paramMap.put("ch", "mms");
+					paramMap.put("fileId", imgFileIdLst.get(i));
+					paramMap.put("rsrvSendYn", rsrvSendYn);
+					paramMap.put("rsrvDt", rsrvDt);
+					int imgCnt = generalDao.selectGernalCount(DB.QRY_SELECT_EXP_IMG_CNT, paramMap);
+					if(imgCnt>0) imgExpCnt++;
+				}
+
+				if(imgExpCnt != imgFileIdLst.size()) {
+					rtn.setSuccess(false);
+					rtn.setFail("선택하신 통합 템플릿의 MMS 이미지가 사용이 만료되었습니다. 템플릿의 이미지를 변경해주세요.");
+					return requestData;
+				}
+			}
+
+			if(chTypeList.contains("RCS")) {
+				List<Object> imgFileIdLst = new ArrayList<Object>();
+				for(Map<String, Object> map : tmpltInfoList) {
+					String ch = CommonUtils.getString(map.get("ch"));
+					if("RCS".equals(ch)) {
+						Map<String, Object> data = (Map<String, Object>) map.get("data");
+						List<Map<String, Object>> mergeData = (List<Map<String, Object>>) data.get("mergeData");
+
+						for(Map<String, Object> mergeMap : mergeData) {
+							String fileId = CommonUtils.getString(mergeMap.get("media"));
+							fileId = fileId.replace("maapfile://", "");
+							imgFileIdLst.add(fileId);
+						}
+
+						break;
+					}
+				}
+
+				String rsrvSendYn = (CommonUtils.getStrValue(params, "rsrvSendYn"));
+				String rsrvDate = "";
+				String rsrvHH = "";
+				String rsrvMM = "";
+				String rsrvDt = "";
+				if(rsrvSendYn.equals("Y")){
+					rsrvDate = (CommonUtils.getStrValue(params, "rsrvDate"));
+					rsrvHH = (CommonUtils.getStrValue(params, "rsrvHH"));
+					rsrvMM = (CommonUtils.getStrValue(params, "rsrvMM"));
+					rsrvDt = rsrvDate + " " + rsrvHH + ":" + rsrvMM + ":00";
+				}
+
+				int imgExpCnt = 0;
+				for(int i=0; i<imgFileIdLst.size(); i++) {
+					// 이미지가 있는경우 이미지 세팅전 해당 이미지의 사용여부를 확인하고 이미지의 유효기간이 지난경우 예외처리
+					// 즉시 발송인경우 현재시간과 비교하여 사용여부를체크, 예약 발송인경우 해당 예약 발송기간에 따른 이미지 사용여부를 체크
+					Map<String, Object> paramMap = new HashMap<String, Object>();
+					paramMap.put("ch", "rcs");
+					paramMap.put("fileId", imgFileIdLst.get(i));
+					paramMap.put("rsrvSendYn", rsrvSendYn);
+					paramMap.put("rsrvDt", rsrvDt);
+					int imgCnt = generalDao.selectGernalCount(DB.QRY_SELECT_EXP_IMG_CNT, paramMap);
+					if(imgCnt>0) imgExpCnt++;
+				}
+
+				if(imgExpCnt != imgFileIdLst.size()) {
+					rtn.setSuccess(false);
+					rtn.setFail("선택하신 통합 템플릿의 RCS 이미지가 사용이 만료되었습니다. 템플릿의 이미지를 변경해주세요.");
+					return requestData;
+				}
+			}
+		}
+		return requestData;
+	}
 
     /**
      * 통합/스마트 발송 내역 등록
@@ -2538,7 +2851,7 @@ public class SendMessageService {
         int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
         int listSize = recvInfoLst.size();
         int toIndex = fromIndex;
-        
+
         int cps = NumberUtils.toInt(strCps, 30);
         if (cps <= 0) cps = 30;
         int sendCnt = 0;
@@ -2578,7 +2891,7 @@ public class SendMessageService {
                 toIndex = fromIndex;
                 if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
             }
-            
+
             if (sendCnt >= cps || toIndex >= listSize) {
             	end = System.currentTimeMillis();
             	long diff  = end - start;
@@ -2590,7 +2903,7 @@ public class SendMessageService {
             	start = System.currentTimeMillis();
             }
         }
-        
+
         if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
             try {
                 //CM_MSG Insert
@@ -2966,7 +3279,7 @@ public class SendMessageService {
         rtn.setData(rtnList);
         return rtn;
     }
-    
+
     /**
      * RCS 비동기 발송
      * @param params
@@ -2992,7 +3305,7 @@ public class SendMessageService {
 		int cutSize = ApiConfig.DEFAULT_RECV_LIMIT_SIZE;
 		int listSize = recvInfoLst.size();
 		int toIndex = fromIndex;
-		
+
         String corpId = CommonUtils.getStrValue(params, "corpId");
         String projectId = CommonUtils.getStrValue(params, "projectId");
         Map apiData = commonService.getApiKey2(corpId, projectId);
@@ -3004,11 +3317,9 @@ public class SendMessageService {
         long start = System.currentTimeMillis();
         long end = 0;
         long second = 1000;
-		
+
 		params.put("recvInfoLstCnt", listSize);
-		apiMap.put("msgRecvInfoLst", recvInfoLst);
-		apiMap.put("msgFbInfoLst", fbInfoLst);
-		
+
 		while (toIndex < listSize) {
 			isDone = false;
 			isServerError = false;
@@ -3020,6 +3331,7 @@ public class SendMessageService {
 					apiMap.put("fbInfoLst", fbInfoLst.subList(fromIndex, toIndex));
 				}
 				jsonString = gson.toJson(apiMap);
+				
 				responseBody = apiInterface.sendMsg(ApiConfig.SEND_RCS_API_URI, headerMap, jsonString);
 				isDone = isApiRequestAgain(responseBody, reSendCdList);
 				isAllFail = !isSendSuccess(responseBody);
@@ -3030,7 +3342,7 @@ public class SendMessageService {
 				isServerError = true;
 				if(retryCnt == ApiConfig.GW_RETRY_CNT) sendMsgErrorNoti(Const.ApiWatchNotiMsg.API_CONNECTION_FAIL);
 			}
-			
+
 			if(isDone) {
             	sendCnt++;
 				retryCnt = NumberUtils.INTEGER_ZERO;
@@ -3045,7 +3357,7 @@ public class SendMessageService {
 				toIndex = fromIndex;
 				if(!isServerError) TimeUnit.MILLISECONDS.sleep(ApiConfig.GW_RETRY_DELAY_MILLISECONDS);
 			}
-	        
+
 	        if (sendCnt >= cps || toIndex >= listSize) {
 	        	end = System.currentTimeMillis();
 	        	long diff  = end - start;
@@ -3057,7 +3369,7 @@ public class SendMessageService {
 	        	start = System.currentTimeMillis();
 	        }
 		}
-		
+
 		if(CollectionUtils.isNotEmpty(errorRecvInfoLst)) {
 			try {
 				//CM_MSG Insert
@@ -3073,13 +3385,16 @@ public class SendMessageService {
 			}
 		}
 		
+		// web insert시 전체 목록을 insert하기 위해서 apiMap에 insert용 object 세팅
+		apiMap.put("msgRecvInfoLst", recvInfoLst);
+		apiMap.put("msgFbInfoLst", fbInfoLst);
 		//웹 발송 내역 등록
 		if(isAllFail) {
 			rcsTemplateSendSvc.insertPushCmWebMsg(headerMap, apiMap, params, "FAIL");
 		} else {
 			rcsTemplateSendSvc.insertPushCmWebMsg(headerMap, apiMap, params, "COMPLETED");
 		}
-		
+
 	}
 
     /**
@@ -3097,48 +3412,48 @@ public class SendMessageService {
     	// fndTalk : {senderKey=da17d231bbf13f83174a36a4bb0353476ae012b3, cuInfo=[{"phone":"01054113739","mergeData":{}}], recvInfoLst=[{phone=01054113739, mergeData={}}], requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, webReqId=FRDzBX7Mqp, wideImgYn=N, rsrvHH=00, fbInfo={}, rsrvSendYn=N, cuInputType=DICT, chGrp=KKO, imgLink=, corpId=COM2104142281316, ch=FRIENDTALK, msgKind=I, rplcSendType=NONE, campaignId=, frndTalkContent=tesetttt, requiredCuid=false, buttonList=[{name=aaa, linkMo=https://m.naver.com, linkPc=https://www.naver.com, linkType=WL}], userId=MBR2104261075129, imgUrl=, excelLimitRow=0, testRecvInfoLst=[], rsrvMM=00, contsVarNms=[], projectId=313431323336706A74, fileId=}
     	// push : {senderKey=da17d231bbf13f83174a36a4bb0353476ae012b3, cuInfo=[{"phone":"01054113739","mergeData":{}}], recvInfoLst=[{phone=01054113739, mergeData={}}], requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, webReqId=FRDzBX7Mqp, wideImgYn=N, rsrvHH=00, fbInfo={}, rsrvSendYn=N, cuInputType=DICT, chGrp=KKO, imgLink=, corpId=COM2104142281316, ch=FRIENDTALK, msgKind=I, rplcSendType=NONE, campaignId=, frndTalkContent=tesetttt, requiredCuid=false, buttonList=[{name=aaa, linkMo=https://m.naver.com, linkPc=https://www.naver.com, linkType=WL}], userId=MBR2104261075129, imgUrl=, excelLimitRow=0, testRecvInfoLst=[], rsrvMM=00, contsVarNms=[], projectId=313431323336706A74, fileId=}
     	// all : {cuInputType=DICT, chString=FRIENDTALK,RCS,SMS, cuInfo=[{"phone":"01054113739","mergeData":{}}], corpId=COM2104142281316, campaignId=, recvInfoLst=[{phone=01054113739, mergeData={}}], tmpltCode=TPLHMCtokK, chTypeList=[FRIENDTALK, RCS, SMS], requiredCuid=false, requiredCuPhone=true, rsrvDate=2022-03-14, testSendYn=N, chMappingVarList=[{ch=FRIENDTALK, varNms=[]}, {ch=RCS, varNms=[]}, {ch=SMS, varNms=[]}], webReqId=ITGMV4lOPQ, smartPrdFee=0, userId=MBR2104261075129, excelLimitRow=0, testRecvInfoLst=[], rsrvHH=00, rsrvMM=00, senderType=M, contsVarNms=[], projectId=313431323336706A74, rsrvSendYn=N}
-    	
+
     	//테스트발송인 경우 패스(sms, lms, mms, alimTalk, frndTalk, push, all(통합))
-//    	if(params.containsKey("testSendYn") && CommonUtils.getString(params.get("testSendYn")).equals("Y")) {
-//    		return true;
-//    	}else {
-//    	
-//	    	//야간발송 제한 프로젝트인지 확인
-//	    	String nightSendYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_NIGHT_SEND_YN, params));
-//	    	
-//	    	if(nightSendYn.equals("Y")) {
-//	    		String nightSendLimitSt = nightSendSthh + nightSendStmm;
-//	    		String nightSendLimitEd = nightSendEdhh + nightSendEdmm;
-//	
-//		    	if(CommonUtils.getString(params.get("rsrvSendYn")).equals("Y")) {
-//		    		//예약발송
-//		    		String rsrvTime = CommonUtils.getString(params.get("rsrvHH")) + CommonUtils.getString(params.get("rsrvMM"));
-//		    		
-//		    		if(CommonUtils.getInt(rsrvTime) >= CommonUtils.getInt(nightSendLimitSt)) {
-//		    			return false;
-//		    		}
-//		    		
-//		    		if(CommonUtils.getInt(rsrvTime) < CommonUtils.getInt(nightSendLimitEd)) {
-//		    			return false;
-//		    		}
-//		    		
-//		    	}else {
-//		    		//즉시발송
-//		    		LocalTime now = LocalTime.now();
-//		    		DateTimeFormatter format = DateTimeFormatter.ofPattern("HHmm");
-//		    		
-//		    		String currTime = now.format(format);
-//		    		
-//		    		if(CommonUtils.getInt(currTime) >= CommonUtils.getInt(nightSendLimitSt)) {
-//		    			return false;
-//		    		}
-//		    		
-//		    		if(CommonUtils.getInt(currTime) < CommonUtils.getInt(nightSendLimitEd)) {
-//		    			return false;
-//		    		}
-//		    	}
-//	    	}
-//    	}
+    	if(params.containsKey("testSendYn") && CommonUtils.getString(params.get("testSendYn")).equals("Y")) {
+    		return true;
+    	}else {
+
+	    	//야간발송 제한 프로젝트인지 확인
+	    	String nightSendYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_NIGHT_SEND_YN, params));
+
+	    	if(nightSendYn.equals("N")) {
+	    		String nightSendLimitSt = nightSendSthh + nightSendStmm;
+	    		String nightSendLimitEd = nightSendEdhh + nightSendEdmm;
+
+		    	if(CommonUtils.getString(params.get("rsrvSendYn")).equals("Y")) {
+		    		//예약발송
+		    		String rsrvTime = CommonUtils.getString(params.get("rsrvHH")) + CommonUtils.getString(params.get("rsrvMM"));
+
+		    		if(CommonUtils.getInt(rsrvTime) >= CommonUtils.getInt(nightSendLimitSt)) {
+		    			return false;
+		    		}
+
+		    		if(CommonUtils.getInt(rsrvTime) < CommonUtils.getInt(nightSendLimitEd)) {
+		    			return false;
+		    		}
+
+		    	}else {
+		    		//즉시발송
+		    		LocalTime now = LocalTime.now();
+		    		DateTimeFormatter format = DateTimeFormatter.ofPattern("HHmm");
+
+		    		String currTime = now.format(format);
+
+		    		if(CommonUtils.getInt(currTime) >= CommonUtils.getInt(nightSendLimitSt)) {
+		    			return false;
+		    		}
+
+		    		if(CommonUtils.getInt(currTime) < CommonUtils.getInt(nightSendLimitEd)) {
+		    			return false;
+		    		}
+		    	}
+	    	}
+    	}
         return true;
     }
 

@@ -86,7 +86,7 @@
             <thead>
               <tr>
                 <th class="text-center lc-1">수신자정보</th>
-                <th class="text-center lc-1">식별값</th>
+                <th class="text-center lc-1">식별값 ( 클라이언트 키 )</th>
                 <th class="text-center lc-1">발송일시</th>
                 <th class="text-center lc-1">발송구분</th>
                 <th class="text-center lc-1">요청채널</th>

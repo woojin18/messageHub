@@ -725,4 +725,30 @@ public class ProjectController {
 		return rtn;
 	}
 	
+	// API KEY 관리 리스트 
+	@PostMapping("/selectApikeyManageList")
+	public RestResult<?> selectApikeyManageList(
+				@RequestBody Map<String, Object> params,
+				HttpServletRequest request,
+				HttpServletResponse response) throws Exception {
+		return projectService.selectApikeyManageList(params);
+    }
+	
+	// API KEY 생성
+	@PostMapping("/saveApikeyManageGenerate")
+	public RestResult<?> saveApikeyManageGenerate(@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		try {
+				projectService.saveApikeyManageGenerate(params);
+			
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+
+		return rtn;
+	}
+
+	
 }

@@ -1,8 +1,7 @@
 <template>
 		<article>
 			<div class="contentHeader">
-				<h2>발송 > RCS</h2>
-				<!-- <h2>발송 > RCS <span v-if="nightSendYn == 'Y'" class="ml20 font-size12 color1">야간 메시지 발송 제한으로 {{nightSendSthh}}:{{nightSendStmm}} ~ 다음날 {{nightSendEdhh}}:{{nightSendEdmm}} 까지 메시지 발송을 할 수 없습니다.<i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:260px">야간 메시지 발송 제한 해제는 [관리자 콘솔] 프로젝트 기본정보에서 세팅 할 수 있습니다.</span></i></span></h2> -->
+				<h2>발송 > RCS <span v-if="nightSendYn == 'N'" class="ml20 font-size12 color1">야간 메시지 발송 제한으로 {{nightSendSthh}}:{{nightSendStmm}} ~ 다음날 {{nightSendEdhh}}:{{nightSendEdmm}} 까지 메시지 발송을 할 수 없습니다.<i class="fas fa-question-circle toolTip ml5"><span class="toolTipText" style="width:260px">야간 메시지 발송 제한 해제는 [관리자 콘솔] 프로젝트 기본정보에서 세팅 할 수 있습니다.</span></i></span></h2>
 				<!-- <a href="#self" class="btnStyle2 backPink absolute top0 right0" onClick="window.location.reload()" title="이용안내">이용안내 <i class="fal fa-book-open"></i></a> -->
 			</div>
 			<!-- 본문 -->
@@ -173,7 +172,7 @@
 								<p v-for="(n, idx) in btnCnt" :key="idx" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
 							<div v-if="templateRadioBtn == 'SMwThM00'">
-								<img v-if="sendData.imgUrl == ''" :src="sendData.SMwThM00Img" alt="프리 템플릿">
+								<img v-if="sendData.imgUrl == ''" :src="SMwThM00Img" alt="프리 템플릿">
 								<div v-if="sendData.imgUrl != ''" :style="'background-image: url('+sendData.imgUrl+');padding:65px;'" class="mt10 text-center simulatorImg"> </div>
 								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:180px" class="pd20">
 									<h5>{{sendData.textTitle}}</h5>
@@ -185,7 +184,7 @@
 								<p v-for="(n, idx) in btnCnt" :key="idx" class="text-center mt20" style="color:#69C8FF">{{btnNm[n-1]}}</p>
 							</div>
 							<div v-if="templateRadioBtn == 'SMwThT00'">
-								<img v-if="sendData.imgUrl == ''" :src="sendData.SMwThM00Img" alt="프리 템플릿">
+								<img v-if="sendData.imgUrl == ''" :src="SMwThT00Img" alt="프리 템플릿">
 								<div v-if="sendData.imgUrl != ''" :style="'background-image: url('+sendData.imgUrl+');padding:85px;'" class="mt10 text-center simulatorImg"> </div>
 								<div style="background:#fff; border-radius: 0 0 5px 5px; min-height:170px" class="pd20">
 									<h5>{{sendData.textTitle}}</h5>
@@ -246,9 +245,9 @@
 						<div class="float-left" style="width:76%">
 							<a v-if="templateRadioBtn=='des' || templateRadioBtn=='cell'" @click.prevent="fnOpenRcsTemplatePopup" activity="READ" href="#self" class="btnStyle1 backLightGray mr10" data-toggle="modal" data-target="#templatePop" title="RCS 템플릿 선택">RCS 템플릿 선택</a>
 							<a v-if="formatCard==true" @click.prevent="fnOpenMsgPop" activity="READ" href="#self" class="btnStyle1 backLightGray mr10" data-toggle="modal" data-target="#message" title="메세지보관함">메세지보관함</a>
-							<a v-if="formatCard==true && carouSelType==false" @click.prevent="fnOpenRcsContentPop(0)" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" title="내용입력">내용입력</a>
-							<a v-if="formatCard==true && carouSelType==false && templateRadioBtn!='text'" @click.prevent="fnOpenRcsBtnPop(0)" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" data-toggle="modal" data-target="#Recipient" title="버튼입력">버튼입력</a>
-							<a v-if="sendData.senderType != 'UNUSED'" href="#self" @click.prevent="fnOpenSenderPop" activity="SAVE" class="btnStyle1 borderLightGray mr10" data-toggle="modal" title="대체발송 내용입력">대체발송 내용입력</a>
+							<a v-if="formatCard==true && carouSelType==false" @click.prevent="fnOpenRcsContentPop(0);" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" title="내용입력">내용입력</a>
+							<a v-if="formatCard==true && carouSelType==false && templateRadioBtn!='text'" @click.prevent="fnOpenRcsBtnPop(0)" activity="READ" href="#self" class="btnStyle1 borderLightGray mr10" title="버튼입력">버튼입력</a>
+							<a v-if="sendData.senderType != 'UNUSED'" href="#self" @click.prevent="fnOpenSenderPop" activity="SAVE" class="btnStyle1 borderLightGray mr10" title="대체발송 내용입력">대체발송 내용입력</a>
 							<div v-if="carouSelType==true" class="inline-block ml20">
 								<p class="inline-block mr10">카드개수</p>
 								<select v-model="carouselSelect" name="userConsole_sub020204_1" class="selectStyle2" @change="changeCarousel">
@@ -423,18 +422,16 @@
 
 			<RcsTemplatePopup :propBrandId.sync="sendData.brandId" :templateRadioBtn.sync="templateRadioBtn" ref="rcsTemplatePop" @fnResult="fnSetTemplate"></RcsTemplatePopup>
 			<RcsMsgPopup :templateRadioBtn.sync="templateRadioBtn" :carouselSmall.sync="carouselSmall" :carouselMedium.sync="carouselMedium" ref="rcsMsgPop" @fnTmpMsgSet="fnTmpMsgSet" ></RcsMsgPopup>
-			<RcsContentPopup :templateRadioBtn.sync="templateRadioBtn" :contentPopCnt.sync="contentPopCnt" :dataSet.sync="dataSet" :sendData.sync="sendData" ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
-			<RcsBtnPopup :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
+			<RcsContentPopup :rcsContsOpen.sync="rcsContsOpen" :templateRadioBtn.sync="templateRadioBtn" :contentPopCnt.sync="contentPopCnt" :dataSet.sync="dataSet" :sendData.sync="sendData" ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
+			<RcsBtnPopup :rcsBtnOpen.sync="rcsBtnOpen" :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
 			<RcsSenderPopup :sendData.sync="sendData" :rcsTemplateSenderPopOpen.sync="rcsTemplateSenderPopOpen" ref="rcsSenderPop"></RcsSenderPopup>
 			<RcsSavePopup ref="rcsSavePop"></RcsSavePopup>
 			<ConfirmPopup :newval.sync="newval" :oldval.sync="oldval" ref="confirmPop"></ConfirmPopup>
 			<DirectInputPopup :directInputOpen.sync="directInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" :recvInfoLst="sendData.recvInfoLst"></DirectInputPopup>
 			<AddressInputPopup :addressInputOpen.sync="addressInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid"></AddressInputPopup>
 			<TestSendInputPopup :testSendInputOpen.sync="testSendInputOpen" :contsVarNms="sendData.contsVarNms" :requiredCuPhone="sendData.requiredCuPhone" :requiredCuid="sendData.requiredCuid" ref="testSendInputPopup"></TestSendInputPopup>
-			<!-- <nightSendLimitPopup :nightSendLimitY.sync="nightSendLimitYn" :nightSendSthh="this.nightSendSthh" :nightSendStmm="this.nightSendStmm" :nightSendEdhh="this.nightSendEdhh" :nightSendEdmm="this.nightSendEdmm"/> -->
+			<nightSendLimitPopup :nightSendLimitY.sync="nightSendLimitYn" :nightSendSthh="this.nightSendSthh" :nightSendStmm="this.nightSendStmm" :nightSendEdhh="this.nightSendEdhh" :nightSendEdmm="this.nightSendEdmm"/>
 
-			<shortenedUrlListPopup @btnSelect="btnSelect" />
-			<shortenedUrlAddPopup/>
 		</article>
 </template>
 
@@ -452,9 +449,7 @@ import Calendar from "@/components/Calendar.vue";
 import rcsTemplateSendApi from "@/modules/rcsTemplateSend/service/api.js";
 import messageApi from "@/modules/message/service/messageApi.js";
 import ConfirmPopup from "@/modules/rcsTemplateSend/components/bp-confirmPopup.vue";
-//import nightSendLimitPopup from "@/modules/message/components/bp-nightSendLimit.vue";
-import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
-import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
+import nightSendLimitPopup from "@/modules/message/components/bp-nightSendLimit.vue";
 
 import XLSX from 'xlsx';
 
@@ -477,9 +472,7 @@ export default {
 		TestSendInputPopup,
 		Calendar,
 		ConfirmPopup,
-		shortenedUrlListPopup,
-    shortenedUrlAddPopup,
-//      nightSendLimitPopup
+     nightSendLimitPopup,
   },
 	props: {
     componentsTitle: {
@@ -532,6 +525,8 @@ export default {
 			monthAmount : 0,
 			monSenderLimitAmout : '없음',
 			feeType : false,
+			SMwThM00Img : require("@/assets/images/common/cardThumImg2_2.png"),	// 이미지 출력 src 세로형 Medium
+			SMwThT00Img : require("@/assets/images/common/cardThumImg2_1.png"),	// 이미지 출력 src 세로형 Tall
 			sendData : {
 				messagebaseId : "",							// MSG ID
 				brandId : "",								// 브랜드 ID
@@ -550,8 +545,6 @@ export default {
 				imgUrl : "",								// 이미지
 				fileId : "",								// 이미지
 				wideImgYn : "",								// 이미지
-				SMwThM00Img : require("@/assets/images/common/cardThumImg2_2.png"),	// 이미지 출력 src 세로형 Medium
-				SMwThT00Img : require("@/assets/images/common/cardThumImg2_1.png"),	// 이미지 출력 src 세로형 Tall
 				callback: '',  								// 발신번호
 				callbackArr: [],							// 발신번호 selectBox
 				copy: 'no',									// 복사 가능여부
@@ -587,12 +580,14 @@ export default {
 				testRecvInfoLst: [],  //테스트 수신자정보
 				excelLimitRow: 0
 			},
-			// nightSendSthh: '',
-			// nightSendStmm: '',
-			// nightSendEdhh: '',
-			// nightSendEdmm: '',
-			// nightSendYn : 'N',
-			// nightSendLimitYn : false
+			nightSendSthh: '',
+			nightSendStmm: '',
+			nightSendEdhh: '',
+			nightSendEdmm: '',
+			nightSendYn : 'N',
+			nightSendLimitYn : false,
+			rcsContsOpen: false,
+			rcsBtnOpen: false,
     }
   },
   watch : {
@@ -670,9 +665,9 @@ export default {
 		}
   },
   mounted() {
-	  this.fnExistApiKey();
-	  this.fnInit();
-	  //this.fnNightSendTime();
+		this.fnExistApiKey();
+		this.fnInit();
+		this.fnNightSendTime();
   },
   methods: {
 	async fnExistApiKey(){
@@ -735,6 +730,8 @@ export default {
 			vm.fnSetFormatCard();
 		}
 
+		this.fnNightSendTime();
+
 		// 데이터 초기화
 		this.dataSet = false;
 		this.templateSet = false;
@@ -771,8 +768,8 @@ export default {
 		this.sendData.imgUrl = "";
 		this.sendData.fileId = "";
 		this.sendData.wideImgYn = "";
-		this.sendData.SMwThM00Img = require("@/assets/images/common/cardThumImg2_2.png");
-		this.sendData.SMwThT00Img = require("@/assets/images/common/cardThumImg2_1.png");
+		this.SMwThM00Img = require("@/assets/images/common/cardThumImg2_2.png");
+		this.SMwThT00Img = require("@/assets/images/common/cardThumImg2_1.png");
 		//this.sendData.callback = "";
 		//this.sendData.callbackArr = [];
 		this.sendData.copy = "no";
@@ -857,12 +854,16 @@ export default {
 	fnOpenRcsContentPop(cnt) {
 		this.contentPopCnt = cnt;
 		this.$refs.rcsContentPop.fnInit(cnt);
-		jQuery("#contentPop").modal("show");
+
+		this.rcsContsOpen = !this.rcsContsOpen;
+		// jQuery("#contentPop").modal("show");
 	},
 
 	fnOpenRcsBtnPop(cnt) {
 		this.btnPopCnt = cnt;
-		jQuery("#recipient").modal("show");
+
+		this.rcsBtnOpen = !this.rcsBtnOpen;
+		// jQuery("#recipient").modal("show");
 	},
 	
 	fnOpenSenderPop() {
@@ -1356,7 +1357,7 @@ export default {
 		var vali = this.validation("real");
 		if(!vali) return false;
 		
-		//if(this.fnNightSendCheck() == false) return;
+		if(this.fnNightSendCheck() == false) return;
 
 		var vm = this;
 
@@ -1651,7 +1652,7 @@ export default {
 	async fnNightSendTime() {
 		let params = {
 			isChk : "Y"
-      	};
+				};
 		await messageApi.selectNightSendTime(params).then(response =>{
 			var result = response.data;
 			if(result.success) {
@@ -1659,7 +1660,7 @@ export default {
 				this.nightSendStmm = result.data.nightSendStmm;
 				this.nightSendEdhh = result.data.nightSendEdhh;
 				this.nightSendEdmm = result.data.nightSendEdmm;
-         		 this.nightSendYn = result.data.nightSendYn;
+							this.nightSendYn = result.data.nightSendYn;
 			} else {
 				confirm.fnAlert(this.title, result.message);
 			}

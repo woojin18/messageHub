@@ -73,25 +73,12 @@
                     v-for="(item, idx) in itemList"
                     :key="idx"
                   >
-                  <!-- <tr
-                    v-for="(item, idx) in [
-                      {
-                        rownum: 1,
-                        title: '11월 메인이벤트',
-                        urlId: 'le64tz',
-                        orgUrl: 'https://ko.reactjs.org/blog/2021/06/08/the-plan-for-react-18.html',
-                        regDt: '2021.12.21',
-                        expDt: '2021.12.21',
-                      },
-                    ]"
-                    :key="idx"
-                  > -->
                     <td class="text-center">{{ item.rownum }}</td>  <!-- NO -->
                     <td class="text-center">{{ item.title }}</td>   <!-- 제목 -->
                     <td class="text-center">{{ item.urlId }}</td>   <!-- URL ID -->
                     <td class="text-left">{{ item.orgUrl }}</td>    <!-- 원본 URL -->
-                    <td class="text-center">{{ $moment(item.regDt).format('L') }}</td>   <!-- 등록일 -->
-                    <td class="text-center">{{ $moment(item.expDt).format('L') }}</td>   <!-- 만료일 -->
+                    <td class="text-center">{{ $moment(item.regDt).format('YYYY.MM.DD') }}</td>   <!-- 등록일 -->
+                    <td class="text-center">{{ $moment(item.expDt).format('YYYY.MM.DD') }}</td>   <!-- 만료일 -->
                     <td class="text-center end">
                       <a
                         @click="btnSelect(item.urlId)"
@@ -102,13 +89,13 @@
                       <a
                         @click="btnCopy(item.urlId)"
                         class="btnStyle1 backLightGray"
-                        style="min-width: auto; width: 30%"
+                        style="min-width: auto; width: 30%;margin-left: 3px;"
                         title="복사"
                       >복사</a>
                       <a
                         @click="btnDelete(item.urlId)"
                         class="btnStyle1 backPink"
-                        style="min-width: auto; width: 30%"
+                        style="min-width: auto; width: 30%;margin-left: 3px;"
                         title="삭제"
                       >삭제</a>
                     </td>
@@ -123,31 +110,43 @@
           <div class="row mt10">
             <div class="col-xs-12">
               <div class="pagination1 text-center">
-                <!-- <a href="#" title="10페이지 이전 페이지로 이동"><i class="far fa-chevron-double-left"></i></a> -->
                 <a
                   v-if="hasPrevPageList"
-                  @click="goPage(pageInfo.pageNo - 10)"
+                  @click.prevent="goPage(pageInfo.pageNo - 10)"
                   href="#"
                   title="10페이지 이전 페이지로 이동"
                 >
                   <i class="far fa-chevron-double-left"></i>
                 </a>
-                <!-- <a href="#" title="이전 페이지로 이동"><i class="far fa-chevron-left"></i></a> -->
+                <a 
+                  v-if="hasPrevPage"
+                  @click.prevent="goPage(pageInfo.pageNo - 1)"
+                  href="#" 
+                  title="이전 페이지로 이동"
+                >
+                  <i class="far fa-chevron-left"></i>
+                </a>
                 <a
                   v-for="(item, idx) in pagingList"
                   :key="idx"
-                  @click="goPage(item)"
+                  @click.prevent="goPage(item)"
                   href="#"
                   :title="`${item}페이지로 이동`"
                   class="number"
                   :class="item === pageInfo.pageNo ? 'active' : ''"
                   >{{ item }}</a
                 >
-                <!-- <a href="#" title="다음 페이지로 이동"><i class="far fa-chevron-right"></i></a> -->
-                <!-- <a href="#" title="10페이지 다음 페이지로 이동"><i class="far fa-chevron-double-right"></i></a> -->
+                <a 
+                  v-if="hasNextPage"
+                  @click.prevent="goPage(pageInfo.pageNo + 1)"
+                  href="#" 
+                  title="다음 페이지로 이동"
+                >
+                  <i class="far fa-chevron-right"></i>
+                </a>
                 <a
                   v-if="hasNextPageList"
-                  @click="goPage(pageInfo.pageNo - 10)"
+                  @click.prevent="goPage(pageInfo.pageNo - 10)"
                   href="#"
                   title="10페이지 다음 페이지로 이동"
                   ><i class="far fa-chevron-double-right"></i
@@ -190,8 +189,11 @@ export default {
     totPages() {
       return Math.ceil(this.pageInfo.totCnt / this.pageInfo.listSize)
     },
-    startPage() {
-      return Math.ceil((this.pageInfo.offset / this.pageInfo.listSize) + 1)
+    hasPrevPage() {
+      return this.pageInfo.pageNo-1 > 0
+    },
+    hasNextPage() {
+      return this.pageInfo.pageNo+1 <= this.totPages
     },
     hasPrevPageList() {
       return this.pageInfo.pageNo - 10 > 0
@@ -200,11 +202,11 @@ export default {
       return this.pageInfo.pageNo + 10 <= this.totPages
     },
     pagingList() {
-      let pageNo = this.startPage
       let pagingList = []
 
-      while(pageNo <= this.totPages && pageNo < this.startPage + 10) {
-        pagingList.push(pageNo++)
+      let idx = 1
+      while(idx <= this.totPages) {
+        pagingList.push(idx++)
       }
 
       return pagingList
@@ -245,6 +247,10 @@ export default {
         }
       });
     },
+    goPage(pageNo) {
+      this.pageInfo.pageNo = pageNo
+      this.selectUrlInfoList()
+    },
     btnSelect(urlId) {
       this.urlId = urlId
       this.$emit('btnSelect', this.shortendUrl)
@@ -252,14 +258,16 @@ export default {
       jQuery("#btnClose").trigger("click")
     },
     btnCopy(urlId) {
+      this.urlId = urlId
+      
       var t = document.createElement('input')
       document.body.appendChild(t)
-      t.value = urlId
+      t.value = this.shortendUrl
       t.select()
+      t.focus()
       document.execCommand('copy')
       document.body.removeChild(t)
 
-      // console.log('####### btnCopy######', urlId);
       confirm.fnAlert('', '단축URL+를 복사한 상태입니다. 메시지 또는 버튼 URL에 CTL+V 하십시오.')
     },
     btnDelete(urlId) {
