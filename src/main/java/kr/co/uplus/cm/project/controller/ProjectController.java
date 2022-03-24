@@ -734,6 +734,7 @@ public class ProjectController {
 		return projectService.selectApikeyManageList(params);
     }
 	
+	// API KEY 생성
 	@PostMapping("/saveApikeyManageGenerate")
 	public RestResult<?> saveApikeyManageGenerate(@RequestBody Map<String, Object> params) {
 		RestResult<Object> rtn = new RestResult<Object>();
@@ -748,8 +749,6 @@ public class ProjectController {
 
 		return rtn;
 	}
-	
-	
-	
+
 	
 }

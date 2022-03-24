@@ -89,13 +89,13 @@
                       <a
                         @click="btnCopy(item.urlId)"
                         class="btnStyle1 backLightGray"
-                        style="min-width: auto; width: 30%"
+                        style="min-width: auto; width: 30%;margin-left: 3px;"
                         title="복사"
                       >복사</a>
                       <a
                         @click="btnDelete(item.urlId)"
                         class="btnStyle1 backPink"
-                        style="min-width: auto; width: 30%"
+                        style="min-width: auto; width: 30%;margin-left: 3px;"
                         title="삭제"
                       >삭제</a>
                     </td>

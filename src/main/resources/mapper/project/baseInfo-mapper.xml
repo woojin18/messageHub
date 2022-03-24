@@ -213,9 +213,17 @@
 					ELSE '미사용'
 				END			STATUS
 		,		DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
+		,		IP_CHK_YN
+		,		IP_LIST 
+		,		STATUS 
+		,		RPT_YN 
+		,		DUP_CHK_YN 
 		FROM cm.CM_APIKEY
 		WHERE CORP_ID = #{corpId}
 		AND PROJECT_ID = #{projectId}
+		<if test="apiKey != null and apiKey != ''">
+		AND API_KEY = #{apiKey}	
+		</if>
 		ORDER BY REG_DT DESC
 	</select>
 	
@@ -263,5 +271,4 @@
 		WHERE CMD_TGT ='CM_APIKEY'
 	</update>
 
-	
 </mapper>
