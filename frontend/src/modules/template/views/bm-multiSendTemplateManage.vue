@@ -219,8 +219,9 @@
               data-target="#shortened_URL"
 							@click="selCh = 'push'"
             >단축 URL+</a>
+						<!-- PUSH -->
             <i class="fas fa-question-circle toolTip ml5">
-              <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.(PUSH)</span>
+              <span class="toolTipText" style="width:250px" data="PUSH">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
             </i>
 					</div>
 					<div class="float-left" style="width:52%">
@@ -380,7 +381,7 @@
 								>단축 URL+</a>
 								<!-- RCS(프리 템플릿) -->
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+									<span class="toolTipText" style="width:250px" data="RCS(프리 템플릿)">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -707,7 +708,7 @@
 								>단축 URL+</a>
 								<!-- RCS(SMS) -->
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+									<span class="toolTipText" style="width:250px" data="RCS(SMS)">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -767,7 +768,19 @@
 												</div>
 											</td>
 											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
-											<td class="text-center end"><a @click="addRowRcsButton('SMS')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('SMS', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
+											<td class="text-center end">
+												<a
+													v-if="buttonInfo.action.postback.data=='set_by_chatbot_open_url'"
+													class="btnStyle1 backBlack" 
+													title="단축 URL+" 
+													data-toggle="modal" 
+													data-target="#shortened_URL"
+													@click="selCh = 'rcs_sms_btn'; selIdx = idx"
+												>단축 URL+</a>
+												<p>&nbsp;</p>
+												<a @click="addRowRcsButton('SMS')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> 
+												<a @click="removeRowRcsButton('SMS', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
+											</td>
 										</tr>
 									</tbody>
 								</table>
@@ -844,7 +857,7 @@
 								>단축 URL+</a>
 								<!-- RCS(LMS) -->
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+									<span class="toolTipText" style="width:250px" data="RCS(LMS)">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -908,7 +921,19 @@
 												</div>
 											</td>
 											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
-											<td class="text-center end"><a @click="addRowRcsButton('LMS')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('LMS', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
+											<td class="text-center end">
+												<a
+													v-if="buttonInfo.action.postback.data=='set_by_chatbot_open_url'"
+													class="btnStyle1 backBlack" 
+													title="단축 URL+" 
+													data-toggle="modal" 
+													data-target="#shortened_URL"
+													@click="selCh = 'rcs_lms_btn'; selIdx = idx"
+												>단축 URL+</a>
+												<p>&nbsp;</p>
+												<a @click="addRowRcsButton('LMS')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
+												<a @click="removeRowRcsButton('LMS', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
+											</td>
 										</tr>
 									</tbody>
 								</table>
@@ -993,7 +1018,7 @@
 								>단축 URL+</a>
 								<!-- RCS(세로형 SHORT) -->
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+									<span class="toolTipText" style="width:250px" data="RCS(세로형 SHORT)">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -1071,7 +1096,19 @@
 												</div>
 											</td>
 											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
-											<td class="text-center end"><a @click="addRowRcsButton('SHORT')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('SHORT', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
+											<td class="text-center end">
+												<a
+													v-if="buttonInfo.action.postback.data=='set_by_chatbot_open_url'"
+													class="btnStyle1 backBlack" 
+													title="단축 URL+" 
+													data-toggle="modal" 
+													data-target="#shortened_URL"
+													@click="selCh = 'rcs_short_btn'; selIdx = idx"
+												>단축 URL+</a>
+												<p>&nbsp;</p>
+												<a @click="addRowRcsButton('SHORT')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> 
+												<a @click="removeRowRcsButton('SHORT', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
+											</td>
 										</tr>
 									</tbody>
 								</table>
@@ -1156,7 +1193,7 @@
 								>단축 URL+</a>
 								<!-- RCS(세로형 TALL) -->
 								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+									<span class="toolTipText" style="width:250px" data="RCS(세로형 TALL)">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 								</i>
 							</div>
 							<div class="float-left" style="width:52%">
@@ -1234,7 +1271,19 @@
 												</div>
 											</td>
 											<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
-											<td class="text-center end"><a @click="addRowRcsButton('TALL')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> <a @click="removeRowRcsButton('TALL', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a></td>
+											<td class="text-center end">
+												<a
+													v-if="buttonInfo.action.postback.data=='set_by_chatbot_open_url'"
+													class="btnStyle1 backBlack" 
+													title="단축 URL+" 
+													data-toggle="modal" 
+													data-target="#shortened_URL"
+													@click="selCh = 'rcs_tall_btn'; selIdx = idx"
+												>단축 URL+</a>
+												<p>&nbsp;</p>
+												<a @click="addRowRcsButton('TALL')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> 
+												<a @click="removeRowRcsButton('TALL', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
+											</td>
 										</tr>
 									</tbody>
 								</table>
@@ -1343,7 +1392,7 @@
 										>단축 URL+</a>
 										<!-- RCS(캐러셀 SHORT) -->
 										<i class="fas fa-question-circle toolTip ml5">
-											<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+											<span class="toolTipText" style="width:250px" data="RCS(캐러셀 SHORT)">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 										</i>
 									</div>
 									<div class="float-left" style="width:52%">
@@ -1556,7 +1605,7 @@
 										>단축 URL+</a>
 										<!-- RCS(캐러셀 Tall) -->
 										<i class="fas fa-question-circle toolTip ml5">
-											<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+											<span class="toolTipText" style="width:250px" data="RCS(캐러셀 Tall)">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
 										</i>
 									</div>
 									<div class="float-left" style="width:52%">
@@ -1820,7 +1869,8 @@
 													data-toggle="modal" 
 													data-target="#shortened_URL"
 													@click="selCh = 'kakaotalk'; selIdx = idx"
-												>단축 URL+</a> 
+												>단축 URL+</a>
+												<p>&nbsp;</p>
 												<a @click="addRowFriendTalk" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
 												<a @click="removeRowFriendTalk(idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
 											</td>
@@ -2030,6 +2080,9 @@
 								@click="selCh = 'sms'"
 							>단축 URL+</a> 
 						</div>
+						<i class="fas fa-question-circle toolTip ml5">
+              <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+            </i>
 						<div class="float-left" style="width:52%">
 							<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" @input="fnSetSmsCurrByte"></textarea>
 							<strong class="letter">({{msgSmsCurrByte | formatComma}} / {{msgSmsLimitByte | formatComma}})</strong>
@@ -2069,6 +2122,9 @@
 								data-target="#shortened_URL"
 								@click="selCh = 'sms'"
 							>단축 URL+</a> 
+							<i class="fas fa-question-circle toolTip ml5">
+								<span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
+							</i>
 						</div>
 						<div class="float-left" style="width:52%">
 							<textarea class="textareaStyle height190" :placeholder="smsmmsPlaceHoder" v-model="rowData.smsContent" @input="fnSetSmsCurrByte"></textarea>
@@ -5086,6 +5142,10 @@ export default {
 					rcs0Content,
 					rcsCShortImgInfoList,
 					rcsCTallImgInfoList,
+					rcsSMSButtons,
+					rcsLMSButtons,
+					rcsShortButtons,
+					rcsTallButtons,
 					friendTalkButtons,
 					smsContent,
 				} = this.rowData
@@ -5122,15 +5182,20 @@ export default {
 
 						this.$set(rcsCTallImgInfoList[this.selIdx], 'rcsContent', shortendUrl)
 					}
-				} else if(this.selCh === 'kakaotalk') {				// KakaoTalk
+				} else if(this.selCh === 'rcs_sms_btn') {				// RCS(SMS) 버튼
+					if(rcsSMSButtons.length > 0 && this.selIdx !== null && rcsSMSButtons[this.selIdx])
+						this.$set(rcsSMSButtons[this.selIdx].action.urlAction.openUrl, 'url', shortendUrl)
+				} else if(this.selCh === 'rcs_lms_btn') {				// RCS(LMS) 버튼
+					if(rcsLMSButtons.length > 0 && this.selIdx !== null && rcsLMSButtons[this.selIdx])
+						this.$set(rcsLMSButtons[this.selIdx].action.urlAction.openUrl, 'url', shortendUrl)
+				} else if(this.selCh === 'rcs_short_btn') {			// RCS(캐러셀 Short) 버튼
+					if(rcsShortButtons.length > 0 && this.selIdx !== null && rcsShortButtons[this.selIdx])
+						this.$set(rcsShortButtons[this.selIdx].action.urlAction.openUrl, 'url', shortendUrl)
+				} else if(this.selCh === 'rcs_tall_btn') {			// RCS(캐러셀 Tall) 버튼
+					if(rcsTallButtons.length > 0 && this.selIdx !== null && rcsTallButtons[this.selIdx])
+						this.$set(rcsTallButtons[this.selIdx].action.urlAction.openUrl, 'url', shortendUrl)
+				} else if(this.selCh === 'kakaotalk') {					// KakaoTalk
 					// 버튼 입력
-					// if(this.rowData.friendTalkContent && this.rowData.friendTalkContent.length > 0){
-					// 	this.rowData.friendTalkContent += '\n'
-					// 	shortendUrl = this.rowData.friendTalkContent + shortendUrl
-					// }
-      
-					// this.$set(this.rowData, 'friendTalkContent', shortendUrl)
-
 					if(friendTalkButtons.length > 0 && this.selIdx !== null && friendTalkButtons[this.selIdx]){
 						// mobile link
 						this.$set(friendTalkButtons[this.selIdx], 'linkUrl1', shortendUrl)
