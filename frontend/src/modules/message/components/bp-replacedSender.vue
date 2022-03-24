@@ -7,7 +7,7 @@
           <div class="of_h">
             <div class="float-left" style="width:32%"><h5>대체발송 발신번호</h5></div>
             <select v-model="fbInfo.callback" class="selectStyle2 float-right" style="width:66%">
-              <option :value="fbInfo.callback" selected>선택해주세요.</option>
+              <option value="" selected>선택해주세요.</option>
               <option v-for="info in callbackList" :key="info.callback" :value="info.callback">{{info.callback | hpNumberAddDash}}</option>
             </select>
           </div>
@@ -177,6 +177,7 @@ export default {
     //대체발송 정보 Set
     fnSetfbInfo(sendData){
       this.msgKind = sendData.msgKind;
+      if(sendData.fbInfo.callback === undefined) sendData.fbInfo.callback = '';
       this.fbInfo = Object.assign({}, sendData.fbInfo);
     },
     //입력정보 callback
