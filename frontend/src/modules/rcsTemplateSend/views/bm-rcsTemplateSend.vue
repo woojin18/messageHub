@@ -1666,6 +1666,10 @@ export default {
 			}
 		});
 	},
+
+	fnUpdateRsrvDate(sltDate){
+      this.sendData.rsrvDate = sltDate;
+    },
   }
 }
 </script>
