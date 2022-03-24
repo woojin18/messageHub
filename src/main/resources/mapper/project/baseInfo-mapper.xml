@@ -43,6 +43,8 @@
 		,		USE_YN				= #{useYn}
 		,		USE_CH_GRP_INFO		= #{jsonInfo}
 		,		NIGHT_SEND_YN		= #{nightSendYN}
+		,		UPD_ID				= #{userId}
+		,		UPD_DT				= NOW()
 		WHERE	PROJECT_ID			= #{projectId}
 	</update>
 	
