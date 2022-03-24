@@ -271,8 +271,6 @@ export default {
 			dupChkYn   : dupChkYn,
 			projectId  : this.projectId
 		}  
-		console.log(params)
-
 		projectApi.saveApikeyManageGenerate(params).then(response =>{
 				let result = response.data
 				if(result.success) {

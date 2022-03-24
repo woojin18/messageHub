@@ -71,11 +71,11 @@
                                 <h5  class="color4">{{rowData.ipChkYn}}</h5>
                             </div>
 							<div v-if="this.update == true" style="width:50%" class="float-right">
-						    	<input v-if="this.update == true" type="radio"  name="ipChkYn" value="Y" id="ipChkY" @change="fnIpValueChange($event)"> <label for="ipChkY" class="mt5 ml5">사용</label>
-						    	<input v-if="this.update == true" type="radio"  name="ipChkYn" value="N" id="ipChkN" @change="fnIpValueChange($event)"> <label for="ipChkN" class="mt5 ml50">미사용</label>
+						    	<input  type="radio"  name="ipChkYn" value="Y" id="ipChkY" @change="fnIpValueChange($event)"> <label for="ipChkY" class="mt5 ml5">사용</label>
+						    	<input  type="radio"  name="ipChkYn" value="N" id="ipChkN" @change="fnIpValueChange($event)"> <label for="ipChkN" class="mt5 ml50">미사용</label>
 							</div>
 						</div>
-						<div v-if="this.ipChkYn == 'Y'" class="of_h mt10" style="margin-bottom: 20px;">
+						<div v-if="this.ipChkYn == 'Y' && this.update == true" class="of_h mt10" style="margin-bottom: 20px;">
 							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 6px;margin-bottom: 16px;">고객 접속 IP
 							<a  @click="fnIpListPlus" class="btnStyle10 inline-block font-size14 urlAdd1_on ml10">추가</a>	
 							</h4>
@@ -133,8 +133,8 @@
 						<a @click="fnClose" class="btnStyle3 white font14 ml5" title="닫기">닫기</a>						
 					</div>
                     <div v-if="this.update == true" class="text-center mt30">
-						<a @click="fnUpdate" class="btnStyle3 black font14" data-toggle="modal" data-target="#correction" title="수정" >저장</a>
-						<a @click="fnClose" class="btnStyle3 white font14 ml5" title="닫기">닫기</a>						
+						<a @click="fnSave" class="btnStyle3 black font14" data-toggle="modal" data-target="#correction" title="저장" >저장</a>
+						<a @click="fnCancel" class="btnStyle3 white font14 ml5" title="취소">취소</a>						
 					</div>
 				</div>
 			</div>
@@ -173,7 +173,6 @@ data(){
 },
 watch:{
     apiKey(){
-        console.log(this.apiKey)
         let params = {
             apiKey : this.apiKey,
             projectId : this.$parent.projectId,
@@ -182,7 +181,6 @@ watch:{
         projectApi.selectApikeyManageList(params).then(response =>{
         this.rowData = response.data.data[0];
         console.log(this.rowData)
-        console.log(this.projectId)
         });
 
     }
@@ -190,7 +188,6 @@ watch:{
 methods:{
     fnClose(){
         jQuery('#apikeyManageDetail').modal('hide')
-        console.log('탐')
     },
     fnIpListPlus(){
 		if(this.ipList.length > 9){
@@ -208,6 +205,7 @@ methods:{
 		}else{
 			this.ipChkYn = 'N'
 		}       
+        console.log(this.ipChkYn)
     },
 	changeNum(value){
           return value = this.comma(this.uncomma(value));
@@ -220,6 +218,15 @@ methods:{
          str = String(str);
          return str.replace(/[^\d]+/g, '');
   	},
+    fnUpdate(){
+        this.update = true
+    },
+    fnCancel(){
+        this.update = false
+    },
+    fnSave(){
+
+    }
 
 }
 
