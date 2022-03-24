@@ -112,7 +112,7 @@ export default {
       jQuery('#apikeyManageDetail').show() 
     },
     fnApikeyGeneration(){
-      jQuery('#apikeyGeneration').show()
+      jQuery('#key').show()
     }      
 }
 
