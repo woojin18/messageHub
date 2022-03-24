@@ -43,6 +43,8 @@
 		,		USE_YN				= #{useYn}
 		,		USE_CH_GRP_INFO		= #{jsonInfo}
 		,		NIGHT_SEND_YN		= #{nightSendYN}
+		,		UPD_ID				= #{userId}
+		,		UPD_DT				= NOW()
 		WHERE	PROJECT_ID			= #{projectId}
 	</update>
 	
@@ -211,11 +213,45 @@
 					WHEN 'USE' 
 					THEN '사용' 
 					ELSE '미사용'
-				END			STATUS
+				END	STATUS
 		,		DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
+		,		CASE IP_CHK_YN
+					WHEN 'Y'
+					THEN '사용'
+					WHEN 'N'
+					THEN '미사용'
+				END AS IP_CHK_YN
+		,		IP_LIST 
+		,		CASE STATUS 
+					WHEN 'USE'
+					THEN '사용'
+					WHEN 'CANCEL'
+					THEN '미사용'
+				END AS STATUS
+		,		CASE RPT_YN 
+					WHEN 'Y'
+					THEN '사용'
+					WHEN 'N'
+					THEN '미사용'
+				END AS RPT_YN
+		,		CASE DUP_CHK_YN 
+					WHEN 'Y'
+					THEN '사용'
+					WHEN 'N'
+					THEN '미사용'
+				END AS DUP_CHK_YN	
+		,		CASE WEB_SENDER_YN 
+					WHEN 'Y'
+					THEN '사용'
+					WHEN 'N'
+					THEN '미사용'
+				END AS WEB_SENDER_YN	
 		FROM cm.CM_APIKEY
 		WHERE CORP_ID = #{corpId}
 		AND PROJECT_ID = #{projectId}
+		<if test="apiKey != null and apiKey != ''">
+		AND API_KEY = #{apiKey}	
+		</if>
 		ORDER BY REG_DT DESC
 	</select>
 	
@@ -263,5 +299,4 @@
 		WHERE CMD_TGT ='CM_APIKEY'
 	</update>
 
-	
 </mapper>

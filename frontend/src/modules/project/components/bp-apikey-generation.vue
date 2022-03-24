@@ -39,7 +39,7 @@
 							</div>
 						</div>
                         <div class="of_h mt10">
-							<div style="width:52%" class="float-left color000"><h4 class="font-normal" style="margin-bottom: 0px; margin-top: 15px;">라인타입</h4>
+							<div style="width:52%;margin-bottom: 20px;" class="float-left color000"><h4 class="font-normal" style="margin-bottom: 0px; margin-top: 15px;">라인타입</h4>
                              <font style="font-size: 10px; color: red;">(라인타입 변경은 영업팀과 별도협의가 필요합니다.)</font>
                             </div>
 							<div style="width:48%" class="float-right">
@@ -102,8 +102,8 @@
 					</div>	
 				
 					<div class="text-center mt30">
-						<a class="btnStyle3 black font14" data-toggle="modal" data-target="#correction" title="수정" @click="fnApikeyGeneration">수정</a>
-						<a @click="fnClose()" class="btnStyle3 white font14 ml5" title="닫기" data-dissmiss="modal">닫기</a>						
+						<a class="btnStyle3 black font14" data-toggle="modal" data-target="#correction" title="수정" @click="fnApikeyGeneration">생성</a>
+						<a @click="fnClose" class="btnStyle3 white font14 ml5" title="닫기">닫기</a>						
 					</div>
 				</div>
 			</div>
@@ -133,9 +133,14 @@ export default {
   },
   methods: {
     fnClose(){
-      jQuery('#apikeyGeneration').modal('hide')
+		this.fnInit()
+		jQuery('#apikeyGeneration').modal('hide')
     },
 	fnIpListPlus(){
+		if(this.ipList.length > 9){
+			alert("IP 주소는 10개까지 입력 할 수 있습니다.")
+			return
+		}	
 				this.ipList.push('')
 	   },
 	   fnIpListMinus(index){
@@ -155,10 +160,21 @@ export default {
            str = String(str);
            return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
 	},
-	 uncomma(str) {
+	uncomma(str) {
          str = String(str);
          return str.replace(/[^\d]+/g, '');
   	},
+	fnInit(){
+		this.apikeyName =''
+      	this.apikeyPwd = ''
+        this.apikeyPwdChk = ''
+      	this.ipList = ['']
+		this.value = ''
+		jQuery('input:radio[name="ipChkYn"]:checked').prop('checked',false)
+		jQuery('input:radio[name="statusYn"]:checked').prop('checked',false)
+		jQuery('input:radio[name="rptYn"]:checked').prop('checked',false)
+		jQuery('input:radio[name="dupChkYn"]:checked').prop('checked',false)
+	},
 	fnApikeyGeneration(){
 
 		const ipChkYn = jQuery('input:radio[name="ipChkYn"]:checked').val()
@@ -230,17 +246,17 @@ export default {
 		} 	
 
 		if(status == undefined){
-			alert('상태를 선택해 주세요')
+			alert('상태를 선택해 주세요.')
 			return
 		} 	
 
 		if(rptYn == undefined){
-			alert('결과수신을 선택해 주세요')
+			alert('결과수신을 선택해 주세요.')
 			return
 		} 	
 
 		if(dupChkYn == undefined){
-			alert('중복체크를 선택해 주세요')
+			alert('중복체크를 선택해 주세요.')
 			return
 		} 	
 
@@ -261,7 +277,9 @@ export default {
 				let result = response.data
 				if(result.success) {
 					this.$parent.fnApikeyManageList()
+					jQuery('#apikeyGeneration').modal('hide')
 					confirm.fnAlert('', 'API KEY 생성을 성공하였습니다.')
+				this.fnInit()
 				} else {
 					confirm.fnAlert('', 'API KEY 생성을 실패하였습니다')
 				}

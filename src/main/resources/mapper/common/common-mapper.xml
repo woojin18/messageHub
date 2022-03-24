@@ -35,7 +35,9 @@
     <sql id ="whereSelectImageList">
         AND B.CORP_ID = #{corpId}
         AND A.CH = #{useChInfo}
+        <if test="useChInfo == 'MMS' or useChInfo == 'RCS'">
         AND A.EXP_DT > NOW()
+        </if>
 <!--         AND JSON_CONTAINS(USE_CH_INFO, JSON_OBJECT('CH', #{useChInfo})) -->
         <if test="fileIds != null and fileIds.size != 0 ">
             AND FILE_ID IN

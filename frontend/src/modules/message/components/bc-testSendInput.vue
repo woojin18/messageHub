@@ -210,11 +210,13 @@ export default {
       // if(keyCode != "8" && keyCode != "46") {
       //   if (!/\d/.test($event.key)) return $event.preventDefault();
       // }
-      if((event.keyCode >= 48 && event.keyCode <= 57 ) || (event.keyCode >= 96 && event.keyCode <= 105 )){
-        var hp = this.$gfnCommonUtils.hpNumberAddDash(event.target.value);
-        event.target.value = hp;
-        this.testRecvInfoLst[index-1].phone = hp;
-      }
+      let keyCode = (event.keyCode ? event.keyCode : event.which);
+      if ((keyCode < 48 || keyCode > 57) && keyCode !== 45 && keyCode !== 8 && (keyCode < 94 || keyCode > 105) && keyCode !== 46 && (keyCode < 37 || keyCode > 40) ) {
+ 					event.preventDefault();
+ 			}
+      var hp = this.$gfnCommonUtils.hpNumberAddDash(event.target.value);
+      event.target.value = hp;
+      this.testRecvInfoLst[index-1].phone = hp;
     },
     //빈값확인
     fnIsEmpty(str){

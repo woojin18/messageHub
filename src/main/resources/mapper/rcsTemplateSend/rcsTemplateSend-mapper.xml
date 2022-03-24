@@ -90,7 +90,9 @@
 		INNER JOIN cm.CM_RCS_BRAND B 
 			ON	A.BRAND_ID  = B.BRAND_ID 
 		INNER JOIN cm_console.CM_USER C
-			ON	A.REG_ID = C.USER_ID 
+			ON	A.REG_ID = C.USER_ID
+		INNER JOIN cm_console.CM_PROJECT_BRAND D
+			ON	D.BRAND_ID = B.BRAND_ID 
 		WHERE	1=1
 		<include refid="rcsTepMsgbaseSql"/>
 		LIMIT #{offset}, #{listSize}
@@ -104,6 +106,8 @@
 			ON	A.BRAND_ID  = B.BRAND_ID 
 		INNER JOIN cm_console.CM_USER C
 			ON	A.REG_ID = C.USER_ID
+		INNER JOIN cm_console.CM_PROJECT_BRAND D
+			ON	D.BRAND_ID = B.BRAND_ID 
 		WHERE	1=1
 		<include refid="rcsTepMsgbaseSql"/>
 	</select>
@@ -111,6 +115,7 @@
 	<sql id="rcsTepMsgbaseSql">
 		AND		A.CORP_ID = #{corpId}
 		AND		B.APPROVAL_STATUS = '승인'
+		AND		D.PROJECT_ID= #{projectId}
 		<if test="msgIdArr != null and msgIdArr != ''">
 		AND		A.MESSAGEBASE_ID NOT IN 
 			<foreach collection="msgIdArr" item="type" open="(" close=")" separator=",">
