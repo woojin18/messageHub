@@ -60,9 +60,7 @@
         <include refid="whereSelectUrlInfoList"/>
         ORDER BY
         	REG_DT DESC
-        <if test='pagingYn == "Y" '>
         LIMIT #{offset}, #{listSize}
-        </if>
     </select>
 
     <select id="selectUrlInfoStatList" parameterType="hashmap" resultType="camel">
@@ -247,4 +245,43 @@
 		WHERE
 			URL_ID 		= #{urlId}
 	</delete>
+
+	<select id="excelDownUrlInfoStatList" parameterType="hashmap" resultType="camel">
+    	/* urlInfo.excelDownUrlInfoStatList - 단축URL 통계 목록 엑셀 다운로드 */
+    	SELECT
+    		A.*,
+    		CASE WHEN TOT_CNT = 0
+    		THEN 0
+    		ELSE TRUNCATE(CON_CNT / TOT_CNT * 100, 0)
+    		END AS PER
+    	FROM (
+			SELECT
+	            A.URL_ID,
+	            ORG_URL,
+	            CORP_ID,
+	            PROJECT_ID,
+	            TITLE,
+	            SUM(IFNULL(TOT_CNT, 0)) AS TOT_CNT,
+	            SUM(IFNULL(CON_CNT, 0)) AS CON_CNT,
+				USE_YN,
+				DATE_FORMAT(EXP_DT, '%Y-%m-%d %H:%i:%s') AS EXP_DT,
+				A.REG_ID,
+				DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT,
+				A.UPD_ID,
+				DATE_FORMAT(A.UPD_DT, '%Y-%m-%d %H:%i:%s') AS UPD_DT
+	        FROM
+	        	cm_console.CM_URL_INFO A
+	       	LEFT OUTER JOIN
+	       		cm.CM_STAT_URL B
+	       	ON
+	       		A.URL_ID = B.URL_ID
+	        WHERE
+	        	USE_YN = 'Y'
+	        <include refid="whereSelectUrlInfoList"/>
+	        GROUP BY
+	        	A.URL_ID
+	        ORDER BY
+	        	REG_DT DESC
+		) A
+    </select>
 </mapper>

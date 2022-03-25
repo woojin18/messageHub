@@ -77,28 +77,29 @@
 
     <div class="row">
       <div class="col-xs-12 consolMarginTop">
-        <div class="of_h mt20">
-          <a
-            class="float-right btnStyle1 backBlack"
-            data-toggle="modal"
-            data-target="#shortened_URL_add"
-            title="단축 URL 생성"
-            @click="initPop()"
-          >단축 URL+ 생성</a>
-        </div>
-
         <!-- 엑셀 다운로드 -->
-        <div 
-          v-if="excelDownFlag"
-          class="of_h inline">
+        <div class="of_h inline">
           <div class="float-right">
             <a
-              href="#self" 
               class="btnStyle2 borderGray" 
               title="엑셀 다운로드"
+              activity="READ"
               @click.prevent="downloadExcel()" 
             >엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i>
             </a>
+          </div>
+        </div>
+
+        <!-- 단축 URL+ 생성 -->
+        <div class="of_h inline">
+          <div class="float-right">
+            <a
+              data-toggle="modal"
+              data-target="#shortened_URL_add"
+              class="float-right btnStyle1 backBlack"
+              title="단축 URL+ 생성"
+              @click.prevent="initPop()" 
+            >단축 URL+ 생성</a>
           </div>
         </div>
 
@@ -316,7 +317,6 @@ export default {
       periodMonthList: [3, 6, 12],
       componentsTitle: '단축 URL+ & 통계',
       itemList: [],
-      excelDownFlag: false,  // 엑셀 다운로드 사용유무
     };
   },
   mounted() {
@@ -350,10 +350,11 @@ export default {
       }
       this.$router.push({name: 'urlInfoStatDetail', params})
     },
-    // 엑셀 다운로드 (미구현)
-    downloadExcel() {
-      console.log('########## downloadExcel ########')
-    },
+    //엑셀 다운로드
+		downloadExcel() {			
+      const params = {...this.searchCond}
+			urlInfoApi.excelDownUrlInfoStatList(params);
+		},
     initPop() {
       this.$refs['shortenedUrlAddPopup'].initVal()
     },

@@ -163,4 +163,19 @@ public class UrlInfoService {
 
 		return rtn;
 	}
+
+	/**
+	 * 단축URL 통계 목록 엑셀 다운로드
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public RestResult<Object> excelDownUrlInfoStatList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+        List<Object> rtnList = generalDao.selectGernalList(DB.QRY_EXCEL_DOWN_URL_INFO_STAT_LIST, params);
+		rtn.setData(rtnList);
+
+		return rtn;
+	}
 }
