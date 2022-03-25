@@ -33,11 +33,6 @@ public class BaseInfoController {
 
 	@Autowired
 	private CommonService commonService;
-
-	@Value("${night.send.st.hh}") String nightSendSthh;
-	@Value("${night.send.st.mm}") String nightSendStmm;
-	@Value("${night.send.ed.hh}") String nightSendEdhh;
-	@Value("${night.send.ed.mm}") String nightSendEdmm;
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -142,11 +137,7 @@ public class BaseInfoController {
 
 		RestResult<Object> rtn = new RestResult<Object>();
 		try {
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("nightSendSthh", nightSendSthh);
-			map.put("nightSendStmm", nightSendStmm);
-			map.put("nightSendEdhh", nightSendEdhh);
-			map.put("nightSendEdmm", nightSendEdmm);
+			Map<String, Object> map = commonService.selectNightSendTime();
 			
 			if(params.containsKey("isChk") && CommonUtils.getString(params.get("isChk")).equals("Y")){
 				map.put("nightSendYn", baseInfoSvc.selectProjectNightSendYn(params));

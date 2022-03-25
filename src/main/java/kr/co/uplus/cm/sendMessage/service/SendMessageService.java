@@ -27,7 +27,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -92,12 +91,6 @@ public class SendMessageService {
     private RcsTemplateSendService rcsTemplateSendSvc;
 
     private long second = 1000;
-
-    @Value("${night.send.st.hh}") String nightSendSthh;
-	@Value("${night.send.st.mm}") String nightSendStmm;
-	@Value("${night.send.ed.hh}") String nightSendEdhh;
-	@Value("${night.send.ed.mm}") String nightSendEdmm;
-
 
     /**
      * APP ID 리스트 조회
@@ -3422,8 +3415,11 @@ public class SendMessageService {
 	    	String nightSendYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_NIGHT_SEND_YN, params));
 
 	    	if(nightSendYn.equals("N")) {
-	    		String nightSendLimitSt = nightSendSthh + nightSendStmm;
-	    		String nightSendLimitEd = nightSendEdhh + nightSendEdmm;
+	    		
+	    		Map<String, Object> nightSendMap = commonService.selectNightSendTime();
+	    		
+	    		String nightSendLimitSt = CommonUtils.getString(nightSendMap.get("nightSendSthh")) + CommonUtils.getString(nightSendMap.get("nightSendStmm"));
+	    		String nightSendLimitEd = CommonUtils.getString(nightSendMap.get("nightSendEdhh")) + CommonUtils.getString(nightSendMap.get("nightSendEdmm"));
 
 		    	if(CommonUtils.getString(params.get("rsrvSendYn")).equals("Y")) {
 		    		//예약발송
