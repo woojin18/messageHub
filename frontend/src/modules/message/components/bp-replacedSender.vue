@@ -38,14 +38,14 @@
               <span class="float-left color3 mt5"  v-else-if="msgKind == 'A' && fbInfo.ch == 'SMS'">
                 (광고) 문구가 내용 앞에 붙고<br>광고성메시지 수신거부번호는<br>내용 밑에 포함됩니다.
               </span>
-              <!-- <a class="btnStyle1 backBlack mt10"
+              <a class="btnStyle1 backBlack mt10"
                 title="단축 URL+"
                 data-toggle="modal"
                 data-target="#shortened_URL"
               >단축 URL+</a> 
               <i class="fas fa-question-circle toolTip ml5">
                 <span class="toolTipText" style="width:250px">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
-              </i> -->
+              </i>
             </div>
             <div class="float-right" style="width:66%">
               <textarea class="textareaStyle height120" :placeholder="contentAreaPlaceholder" v-model="fbInfo.msg" @input="fnSetCurrByte"></textarea>

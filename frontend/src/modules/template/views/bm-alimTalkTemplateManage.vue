@@ -176,7 +176,7 @@
 
                       </td>
                       <td class="text-center end" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
-                        <!-- <a
+                        <a
                           v-if="buttonInfo.linkType === 'WL'" 
                           class="btnStyle1 backBlack" 
                           title="단축 URL+" 
@@ -184,7 +184,7 @@
                           data-target="#shortened_URL"
                           @click="selIdx = idx"
                         >단축 URL+</a>
-                        <p>&nbsp;</p> -->
+                        <p>&nbsp;</p>
                         <a @click="fnDelButton(idx)" class="btnStyle1 backLightGray">삭제</a>
                       </td>
                     </tr>
