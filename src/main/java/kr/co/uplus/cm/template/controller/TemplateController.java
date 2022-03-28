@@ -11,13 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.uplus.cm.common.consts.Const;
+import kr.co.uplus.cm.common.dto.MultipartFileDTO;
 import kr.co.uplus.cm.common.dto.RestResult;
 import kr.co.uplus.cm.common.service.CommonService;
 import kr.co.uplus.cm.sendMessage.dto.AlimTalkTmpltRequestData;
@@ -486,14 +489,55 @@ public class TemplateController {
             log.info("{}.procApprvRequestKkoTmplt Unescape ====> params : {}", this.getClass(), params);
 
             /** 유효성 체크 */
-            requestData = tmpltSvc.setAlimTalkTmpltRequestData(rtn, params);
+            requestData = tmpltSvc.setAlimTalkTmpltRequestData(rtn, params, null);
             if(rtn.isSuccess() == false) {
                 log.info("{}.procApprvRequestKkoTmplt validation Check fail: {}", this.getClass(), rtn.getMessage());
                 return rtn;
             }
 
             /** 알림톡 템플릿 등록요청 처리 */
-            return tmpltSvc.procApprvRequestKkoTmplt(requestData, params);
+            return tmpltSvc.procApprvRequestKkoTmplt(requestData, params, null);
+
+        } catch (Exception e) {
+            rtn.setFail(CommonUtils.getCMExceptionMsg(e, "실패하였습니다."));
+            log.error("{}.procApprvRequestKkoTmplt Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+    
+    /**
+     * 알림톡 이미지형 템플릿 등록요청
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/procApprvRequestKkoImgTmplt")
+    public RestResult<?> procApprvRequestKkoImgTmplt(HttpServletRequest request, HttpServletResponse response,
+    		@ModelAttribute MultipartFileDTO multipartFileDTO) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+        AlimTalkTmpltRequestData requestData = null;
+        
+        MultipartFile files = multipartFileDTO.getFile();
+        Map<String, Object> params = commonService.setUserInfo(multipartFileDTO.getParams());
+
+        try {
+            log.info("{}.procApprvRequestKkoTmplt Start ====> params : {}", this.getClass(), params);
+            params = XssPreventer.unescapeMap(params);
+            log.info("{}.procApprvRequestKkoTmplt Unescape ====> params : {}", this.getClass(), params);
+
+            /** 유효성 체크 */
+            requestData = tmpltSvc.setAlimTalkTmpltRequestData(rtn, params, files);
+            if(rtn.isSuccess() == false) {
+                log.info("{}.procApprvRequestKkoTmplt validation Check fail: {}", this.getClass(), rtn.getMessage());
+                return rtn;
+            }
+
+            /** 알림톡 템플릿 등록요청 처리 */
+            return tmpltSvc.procApprvRequestKkoTmplt(requestData, params, files);
 
         } catch (Exception e) {
             rtn.setFail(CommonUtils.getCMExceptionMsg(e, "실패하였습니다."));
@@ -645,14 +689,59 @@ public class TemplateController {
             log.info("{}.procUpdateRequestKkoTmplt Set User Info ====> params : {}", this.getClass(), params);
 
             /** 유효성 체크 */
-            requestData = tmpltSvc.setAlimTalkTmpltRequestData(rtn, params);
+            requestData = tmpltSvc.setAlimTalkTmpltRequestData(rtn, params, null);
             if(rtn.isSuccess() == false) {
                 log.info("{}.procUpdateRequestKkoTmplt validation Check fail: {}", this.getClass(), rtn.getMessage());
                 return rtn;
             }
 
             /** 알림톡 템플릿 수정 요청 처리 */
-            return tmpltSvc.procUpdateRequestKkoTmplt(requestData, params);
+            return tmpltSvc.procUpdateRequestKkoTmplt(requestData, params, null);
+
+        } catch (Exception e) {
+            rtn.setFail(CommonUtils.getCMExceptionMsg(e, "실패하였습니다."));
+            log.error("{}.procUpdateRequestKkoTmplt Error : {}", this.getClass(), e);
+        }
+
+        return rtn;
+    }
+    
+    /**
+     * 알림톡 이미지형 템플릿 수정 요청 처리
+     * @param request
+     * @param response
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/procUpdateRequestKkoImgTmplt")
+    public RestResult<?> procUpdateRequestKkoImgTmplt(HttpServletRequest request, HttpServletResponse response,
+    		@ModelAttribute MultipartFileDTO multipartFileDTO) throws Exception {
+
+        RestResult<Object> rtn = new RestResult<Object>();
+        AlimTalkTmpltRequestData requestData = null;
+
+        MultipartFile files = multipartFileDTO.getFile();
+        Map<String, Object> params = commonService.setUserInfo(multipartFileDTO.getParams());
+        
+        try {
+            log.info("{}.procUpdateRequestKkoTmplt Start ====> params : {}", this.getClass(), params);
+            params = XssPreventer.unescapeMap(params);
+            log.info("{}.procUpdateRequestKkoTmplt Unescape ====> params : {}", this.getClass(), params);
+
+            /** Set User Info */
+            params = commonService.setUserInfo(params);
+            log.info("{}.procUpdateRequestKkoTmplt Set User Info ====> params : {}", this.getClass(), params);
+
+            /** 유효성 체크 */
+            requestData = tmpltSvc.setAlimTalkTmpltRequestData(rtn, params, files);
+            if(rtn.isSuccess() == false) {
+                log.info("{}.procUpdateRequestKkoTmplt validation Check fail: {}", this.getClass(), rtn.getMessage());
+                return rtn;
+            }
+
+            /** 알림톡 템플릿 수정 요청 처리 */
+            return tmpltSvc.procUpdateRequestKkoTmplt(requestData, params, files);
 
         } catch (Exception e) {
             rtn.setFail(CommonUtils.getCMExceptionMsg(e, "실패하였습니다."));

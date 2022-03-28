@@ -750,5 +750,37 @@ public class ProjectController {
 		return rtn;
 	}
 
+	// API KEY 수정
+	@PostMapping("/checkApiKeyPwd")
+	public RestResult<?> checkApiKeyPwd(@RequestBody Map<String, Object> params) {
+		RestResult<?> rtn = new RestResult<Object>();
+
+		try {
+			rtn  =	projectService.checkApiKeyPwd(params);
+			
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("API Key 암호가 일치하지 않습니다.");
+		}
+
+		return rtn;
+	}
+
+	
+	// API KEY 수정
+	@PostMapping("/updateApikeyManage")
+	public RestResult<?> updateApikeyManage(@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		try {
+			projectService.updateApikeyManage(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("수정을 실패하였습니다.");
+		}
+
+		return rtn;
+	}
+	
 	
 }

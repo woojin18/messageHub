@@ -245,7 +245,8 @@
 					THEN '사용'
 					WHEN 'N'
 					THEN '미사용'
-				END AS WEB_SENDER_YN	
+				END AS WEB_SENDER_YN
+		,		API_PWD	
 		FROM cm.CM_APIKEY
 		WHERE CORP_ID = #{corpId}
 		AND PROJECT_ID = #{projectId}
@@ -266,13 +267,14 @@
 		,		CPS 
 		,		LINE_TYPE 
 		,		IP_CHK_YN 
-		<if test="IP_CHK_YN == 'Y'">
+		<if test='ipChkYn == "Y"'>
 		,		IP_LIST 
 		</if>
 		,		STATUS 
 		,		RPT_YN 
 		,		DUP_CHK_YN
 		,		REG_DT 
+		,		WEB_SENDER_YN
 		)VALUES(
 				#{apikey}
 		,		#{corpId}
@@ -282,13 +284,14 @@
 		,		#{tps}
 		,		'NORMAL'
 		,		#{ipChkYn}
-		<if test="IP_CHK_YN == 'Y'">
+		<if test='ipChkYn == "Y"'>
 		,		#{ipList} 
 		</if>	
 		,		#{status}
 		,		#{rptYn}
 		,		#{dupChkYn}
 		,		NOW()
+		,		'N'
 		)	
 	</insert>
 	
@@ -297,6 +300,21 @@
 		UPDATE cm.CM_CMD SET
 		UPD_DT = NOW()
 		WHERE CMD_TGT ='CM_APIKEY'
+	</update>
+
+	<update id="updateApikeyManage">
+		/* baseInfo.updateApikeyManage*/
+		UPDATE cm.CM_APIKEY SET  
+		<if test='pwdChk == "Y"'>
+				API_PWD =#{apiNewPwd}
+		</if>		
+		,		CPS = #{cps}
+		,		IP_CHK_YN = #{ipChkYn}
+		,		IP_LIST = #{ipList}
+		,		STATUS = #{status}
+		,		RPT_YN = #{rptYn}
+		,		DUP_CHK_YN = #{dupChkYn}
+		WHERE API_KEY =#{apikey}
 	</update>
 
 </mapper>

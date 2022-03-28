@@ -28,6 +28,11 @@
                     <p v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltEmpsSubTitle)" class="text-sub_1">{{tmpltData.tmpltEmpsSubTitle}}</p>
                     <p v-if="!$gfnCommonUtils.isEmpty(tmpltData.tmpltEmpsTitle)" class="text-sub scroll-y3">{{tmpltData.tmpltEmpsTitle}}</p>
                   </div>
+                  <div v-if="tmpltData.emphasizeType == 'IMAGE'">
+                    <div v-if="this.tmpltData.tmpltImgUrl != ''" class="phoneText2 mt10 text-center simulatorImg"
+                      :style="'padding:48px;border-radius:0px;background-image: url('+this.tmpltData.tmpltImgUrl+');'">
+                    </div>
+                  </div>
                   <div class="text-sub-wrap" style="padding:10px;">
                     <span><pre>{{tmpltData.tmpltContent}}</pre></span>
                   </div>
@@ -81,9 +86,12 @@
             <div class="float-left" style="width:22%"><h4>템플릿강조유형</h4></div>
             <div class="float-left" style="width:78%">
               <input type="radio" id="emphasizeType_NONE" name="emphasizeType" value="NONE" v-model="tmpltData.emphasizeType">
-              <label for="emphasizeType_NONE" class="mr30">선택 안 함</label>
+              <label for="emphasizeType_NONE" class="mr30">기본형</label>
               <input type="radio" id="emphasizeType_TEXT" name="emphasizeType" value="TEXT" v-model="tmpltData.emphasizeType">
-              <label for="emphasizeType_TEXT">강조 표기형</label>
+              <label for="emphasizeType_TEXT" class="mr30">강조 표기형</label>
+              <input type="radio" id="emphasizeType_IMAGE" name="emphasizeType" value="IMAGE" v-model="tmpltData.emphasizeType">
+              <label for="emphasizeType_IMAGE">이미지형</label>
+              <span v-if="tmpltData.emphasizeType == 'IMAGE'" style="float:right; color:red; padding-bottom: 7px;">카카오톡 8.7.5 버전(안드로이드, iOS 공통) 이상에서만 노출됩니다.</span>
             </div>
           </div>
           <div v-if="tmpltData.emphasizeType == 'TEXT'" class="of_h">
@@ -97,6 +105,34 @@
             <div class="float-left" style="width:78%">
               <input type="text" class="inputStyle" v-model="tmpltData.tmpltEmpsSubTitle" maxlength="50">
             </div>
+          </div>
+          <div v-if="tmpltData.emphasizeType == 'IMAGE'" class="of_h">
+            <div class="float-left" style="width:22%"><h4>이미지 *</h4></div>
+            <div class="float-left" style="width:78%">
+              <div class="float-left" style="width:22%">
+                <input ref="imageInput" type="file" @change="fnImagePreview" style="display:none;" accept=".jpg,.png">
+                <img>
+                <a @click="fnImgReg" class="btnStyle1 backLightGray width100_" title="이미지선택">이미지선택</a>
+              </div>
+              <ul class="float-right attachList" style="width:75%; padding:5px 15px; height:30px;">
+                <li>
+                  <a href="#">{{fnSubString(this.tmpltData.tmpltImgPath, 0, 50)}}</a><a v-show="this.tmpltData.tmpltImgPath != ''" @click="fnDelImg"><i class="fal fa-times"></i></a>
+                </li>
+              </ul>
+              <img ref="imgChk" src="" @load="fnImgLoad" style="display:none;">
+            </div>
+          </div>
+          <div v-if="tmpltData.emphasizeType == 'IMAGE'" class="of_h">
+            <div class="float-left" style="width: 22%;">
+							<a href="https://kakaobusiness.gitbook.io/main/ad/bizmessage/notice-friend/content-guide/image" class="btnStyle1 backPink" target="_blank">이미지형 제작 가이드</a>
+						</div>
+						<div class="float-left" style="width: 78%;">
+							<p>이미지 제작시 왼쪽의 ‘이미지 제작 가이드’를 참고해 주세요.</p>
+							<p class="consolMarginTop mb10">이미지는 JPG, PNG 형식만 지원합니다.<br>
+							이미지 용량은 500KB 이하여야 합니다.<br>
+							이미지 권장 사이즈는 가로 800 x 세로 400px 입니다.<br>
+							가로:세로 비율이 2:1이 아닐 경우, 가로 500px, 세로 250px 이하일 경우, 업로드가 불가능 합니다.</p>
+						</div>
           </div>
           <div class="of_h">
             <div class="float-left" style="width:22%"><h4>내용 *</h4></div>
@@ -313,6 +349,8 @@ export default {
         categoryCode : '',
         tmpltMessageType : 'BA',  //BA: 기본형 고정
         buttonList:[],
+        tmpltImgUrl : '',
+        tmpltImgPath : ''        
       },
       selIdx : null
     }
@@ -382,6 +420,8 @@ export default {
             rtnData.tmpltEmpsSubTitle = tmpltInfo.templateSubtitle;
             rtnData.tmpltContent = tmpltInfo.templateContent;
             rtnData.buttonList = tmpltInfo.buttons;
+            rtnData.tmpltImgUrl = tmpltInfo.templateImageUrl;
+            rtnData.tmpltImgPath = '';
 
             this.tmpltData = Object.assign({}, rtnData);
             this.tmpltData.tmpltInfo = '';
@@ -469,6 +509,12 @@ export default {
           return false;
         }
       }
+      if(this.tmpltData.emphasizeType == 'IMAGE'){
+        if(!this.tmpltData.tmpltImgPath){
+          confirm.fnAlert(this.componentsTitle, '템플릿강조유형이 이미지형일때 이미지 선택은 필수입니다.');
+          return false;
+        }
+      }
       const vm = this;
       let buttonValid = true;
       this.tmpltData.buttonList.forEach(function(buttonInfo){
@@ -525,15 +571,28 @@ export default {
       params.tmpltKey = this.tmpltKey;
       params.tmpltButtonsStr = JSON.stringify(this.tmpltData.buttonList);
 
-      await templateApi.procUpdateRequestKkoTmplt(params).then(response => {
-        const result = response.data;
-        if(result.success) {
-          eventBus.$on('callbackEventBus', this.fnMovePage);
-          confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 수정요청 하였습니다.'+'\n'+this.reflectionMsg, 'CALLBACK');
-        } else {
-          confirm.fnAlert(this.componentsTitle, result.message);
-        }
-      });
+      if(this.tmpltData.emphasizeType == 'IMAGE'){
+        let fd = this.fnParamSetting(params);
+        await templateApi.procUpdateRequestKkoImgTmplt(fd).then(response => {
+          const result = response.data;
+          if(result.success) {
+            eventBus.$on('callbackEventBus', this.fnMovePage);
+            confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 수정요청 하였습니다.'+'\n'+this.reflectionMsg, 'CALLBACK');
+          } else {
+            confirm.fnAlert(this.componentsTitle, result.message);
+          }
+        });
+      }else{
+        await templateApi.procUpdateRequestKkoTmplt(params).then(response => {
+          const result = response.data;
+          if(result.success) {
+            eventBus.$on('callbackEventBus', this.fnMovePage);
+            confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 수정요청 하였습니다.'+'\n'+this.reflectionMsg, 'CALLBACK');
+          } else {
+            confirm.fnAlert(this.componentsTitle, result.message);
+          }
+        });
+      }
     },
     fnApprvReqTmplt(){
       if(this.fnIsValidApprvReqTmplt() == false) return;
@@ -545,15 +604,28 @@ export default {
       let params = Object.assign({}, this.tmpltData);
       params.tmpltButtonsStr = JSON.stringify(this.tmpltData.buttonList);
 
-      await templateApi.procApprvRequestKkoTmplt(params).then(response => {
-        const result = response.data;
-        if(result.success) {
-          eventBus.$on('callbackEventBus', this.fnMovePage);
-          confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 등록요청 하였습니다.'+'\n'+this.reflectionMsg, 'CALLBACK');
-        } else {
-          confirm.fnAlert(this.componentsTitle, result.message);
-        }
-      });
+      if(this.tmpltData.emphasizeType == 'IMAGE'){
+        let fd = this.fnParamSetting(params);
+        await templateApi.procApprvRequestKkoImgTmplt(fd).then(response => {
+          const result = response.data;
+          if(result.success) {
+            eventBus.$on('callbackEventBus', this.fnMovePage);
+            confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 등록요청 하였습니다.'+'\n'+this.reflectionMsg, 'CALLBACK');
+          } else {
+            confirm.fnAlert(this.componentsTitle, result.message);
+          }
+        });
+      }else{
+        await templateApi.procApprvRequestKkoTmplt(params).then(response => {
+          const result = response.data;
+          if(result.success) {
+            eventBus.$on('callbackEventBus', this.fnMovePage);
+            confirm.fnAlert(this.componentsTitle, '알림톡 템플릿을 등록요청 하였습니다.'+'\n'+this.reflectionMsg, 'CALLBACK');
+          } else {
+            confirm.fnAlert(this.componentsTitle, result.message);
+          }
+        });
+      }
     },
     fnMovePage(){
       this.$router.push('alimTalkTemplateList');
@@ -653,6 +725,86 @@ export default {
 
       this.selIdx = null
     },
+    //이미지선택 팝업
+    fnImgReg(){
+      this.$refs.imageInput.click();
+    },
+    fnDelImg(){
+      this.tmpltData.tmpltImgUrl = '';
+      this.tmpltData.tmpltImgPath = '';
+      this.$refs.imageInput.value = '';
+    },
+    fnSubString(str, sIdx, length){
+      let shortStr = ''
+      if(!this.$gfnCommonUtils.isEmpty(str)){
+        shortStr = str.toString();
+        if(shortStr.length > length){
+          shortStr = shortStr.substring(sIdx, length) + '...  ';
+        } else {
+          shortStr = shortStr + '  ';
+        }
+      }
+      return shortStr;
+    },
+    //이미지선택 후 이벤트
+    fnImagePreview(e) {
+      if(e.target.files && e.target.files.length > 0){
+        var file = e.target.files[0];
+        const permitExten = 'jpg,png'.split(',');
+        const extnIdx = file.name.lastIndexOf('.');
+        const extn = file.name.substring(extnIdx+1).toLowerCase();
+
+        if((permitExten.indexOf(extn) < 0)){
+          confirm.fnAlert('', '허용되지 않는 확장자입니다.\n(이미지는 .jpg, .png 확장자 지원합니다.)');
+          this.fnDelImg();
+          return;
+        }
+
+        if(file.size > 512000){
+          confirm.fnAlert("", "이미지 용량은 500KB 이하여야합니다.");
+          this.fnDelImg();
+          return;
+        }
+
+        //이미지 로드 후 비율 및 사이즈 체크
+        var imgUrl = URL.createObjectURL(file);
+        this.$refs.imgChk.src=imgUrl;
+
+      } else {
+        this.fnDelImg();
+      }
+    },
+    fnImgLoad(){
+      var img = this.$refs.imgChk;
+
+      var imgWidth = img.width;
+      var imgHeight = img.height;
+      var imgRatio = img.height / img.width;
+
+      if(imgRatio != 0.5){
+        confirm.fnAlert("", "이미지 비율은 2:1 이여야합니다.");
+        this.fnDelImg();
+        return;
+      }
+
+      if(imgWidth <= 500 && imgHeight <= 250){
+        confirm.fnAlert("", "이미지의 가로 길이 * 세로 길이는 500 * 250 초과 이여야합니다.");
+        this.fnDelImg();
+        return;
+      }
+
+      this.tmpltData.tmpltImgUrl = this.$refs.imgChk.src;
+      this.tmpltData.tmpltImgPath = this.$refs.imgChk.src;
+    },
+    fnParamSetting(params){
+      const uploadFile = this.$refs.imageInput;
+
+      let fd = new FormData();
+      fd.append('file', uploadFile.files[0]);
+      fd.append('paramString', JSON.stringify(params));
+
+      return fd;
+    }
   }
 }
 </script>

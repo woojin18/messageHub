@@ -1141,11 +1141,71 @@ public class ProjectService {
 		params.put("apikey", apiKey);
 		
 		AesEncryptor encrypt = new AesEncryptor(); 
-		String apikeyPwd = encrypt.encrypt((String) params.get("apikeyPwd"));
+		SHA sha512 = new SHA(512);
+		String apikeyPwd = sha512.encryptToBase64(CommonUtils.getString(params.get("apikeyPwd")));
 		params.put("apikeyPwd", apikeyPwd);
-		
+		 
 		try {
 			generalDao.insertGernal(DB.QRY_INSERT_APIKEY_MAANAGE, params);
+			generalDao.updateGernal(DB.QRY_UPDATE_CMD_APIKEY, params);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<?> checkApiKeyPwd(Map<String, Object> params) {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		SHA sha512 = new SHA(512);
+
+		Map<String, Object> rtnList = null;
+		try {
+			rtnList = (Map<String, Object>)generalDao.selectGernalList(DB.QRY_SELECT_APIKEY_MAANAGE_LIST, params).get(0);
+		} catch (Exception e1) {
+
+			e1.printStackTrace();
+		}
+
+		String currentAikeyPwd = sha512.encryptToBase64(CommonUtils.getString(params.get("apiPwd")));
+		String previousApikeyPwd = rtnList.get("apiPwd").toString();
+
+		if(!currentAikeyPwd.equals(previousApikeyPwd)) {
+			rtn.setSuccess(false);
+			rtn.setMessage("API Key 암호가 일치하지 않습니다.");
+		}else {
+			try {
+				updateApikeyManage(params);
+			}catch(Exception e) {
+				rtn.setSuccess(false);
+				rtn.setMessage("수정에 실패하였습니다.");				
+			}
+			
+		}
+		
+		
+		return rtn;
+		
+
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void updateApikeyManage(Map<String, Object> params) {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		SHA sha512 = new SHA(512);
+		String apiNewPwd = sha512.encryptToBase64(CommonUtils.getString(params.get("apiNewPwd")));
+		params.put("apikeyPwd", apiNewPwd);
+		 
+		try {
+			generalDao.updateGernal(DB.QRY_UPDATE_APIKEY_MANAGE, params);
 			generalDao.updateGernal(DB.QRY_UPDATE_CMD_APIKEY, params);
 			
 		} catch (Exception e) {
