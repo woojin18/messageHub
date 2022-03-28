@@ -516,6 +516,9 @@
                 <if test='item != "RQ" '>#{item}</if>
             </foreach>
         </if>
+        <if test="tmpLtEmphasizeType != '' and tmpLtEmphasizeType != null ">
+            AND JSON_EXTRACT(TMPLT_INFO, CONCAT('$.templateEmphasizeType')) = #{tmpLtEmphasizeType}
+        </if>
     </sql>
 
     <sql id ="whereSelectAlimTalkTemplateList">

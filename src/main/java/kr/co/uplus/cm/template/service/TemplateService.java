@@ -1,9 +1,11 @@
 package kr.co.uplus.cm.template.service;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -374,7 +377,7 @@ public class TemplateService {
      * @throws Exception
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public AlimTalkTmpltRequestData setAlimTalkTmpltRequestData(RestResult<Object> rtn, Map<String, Object> params) throws Exception {
+    public AlimTalkTmpltRequestData setAlimTalkTmpltRequestData(RestResult<Object> rtn, Map<String, Object> params, MultipartFile files) throws Exception {
         AlimTalkTmpltRequestData requestData = new AlimTalkTmpltRequestData();
 
         //templateCode
@@ -444,6 +447,23 @@ public class TemplateService {
                 errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + "템플릿강조부제목은 강조표기형 일때 필수입니다.";
             }
         }
+        
+        //이미지형 이미지 체크
+        if(StringUtils.equals(Const.KkoTmpltEmphasizeType.IMAGE, requestData.getTemplateEmphasizeType())) {
+        	Map<String, Object> imgUploadSet = (Map<String, Object>) commonService.selectFileUploadSet(Const.FileUploadSet.SEND_IMAGE);
+        	String imgPermitExten = CommonUtils.getStrValue(imgUploadSet, Const.FileUploadSetKey.PERMIT_EXTEN);
+        	
+	        String pattern = "[\"!@#$%^&'.*]";
+	        String preFileName = commonService.getFileNameExt(files.getOriginalFilename(), 0).replaceAll(pattern, "");
+	        String fileExten = commonService.getFileNameExt(files.getOriginalFilename(), 1);
+	        String originFileName = preFileName + "." + fileExten;
+	
+	        // 이미지 업로드 확장자 유효성 체크
+	        if (Stream.of(imgPermitExten.split(",")).map(String::trim)
+	                .noneMatch(s -> s.toLowerCase().contains(fileExten.toLowerCase()))) {
+	        	errorMsg += (StringUtils.isNotBlank(errorMsg) ? "\n" : "") + "허용되지 않는 확장자입니다.";
+	        }
+        }
 
         if(StringUtils.isNotBlank(errorMsg)) {
             rtn.setSuccess(false);
@@ -460,7 +480,7 @@ public class TemplateService {
      * @throws Exception
      */
     @SuppressWarnings({ "unchecked" })
-    public RestResult<Object> procApprvRequestKkoTmplt(AlimTalkTmpltRequestData requestData, Map<String, Object> params) throws Exception {
+    public RestResult<Object> procApprvRequestKkoTmplt(AlimTalkTmpltRequestData requestData, Map<String, Object> params, MultipartFile files) throws Exception {
         log.info("{}.procApprvRequestKkoTmplt requestData: {}", this.getClass(), requestData.toString());
 
         RestResult<Object> rtn = new RestResult<Object>();
@@ -473,8 +493,25 @@ public class TemplateService {
 
         Gson gson = new Gson();
         String jsonString = gson.toJson(requestData);
-        Map<String, Object> responseBody = apiInterface.sendMsg(ApiConfig.CREATE_KKO_TMPLT_REQ_API_URI, headerMap, jsonString);
-
+        
+        Map<String, Object> responseBody = null;
+        if(files != null) {	//이미지형
+	        InputStream resizeImgStream = null;
+	        resizeImgStream = files.getInputStream();
+	        if (resizeImgStream == null) {
+	            throw new Exception("유효하지 않은 리사이즈 이미지");
+	        }
+	        
+	        String pattern = "[\"!@#$%^&'.*]";
+	        String preFileName = commonService.getFileNameExt(files.getOriginalFilename(), 0).replaceAll(pattern, "");
+	        String fileExten = commonService.getFileNameExt(files.getOriginalFilename(), 1);
+	        String originFileName = preFileName + "." + fileExten;
+	        
+	        responseBody = apiInterface.sendAlimTemplt(ApiConfig.CREATE_KKO_TMPLT_REQ_API_URI, headerMap, resizeImgStream, originFileName, jsonString);
+        }else {	//이미지형 제외 다른 유형
+        	responseBody = apiInterface.sendMsg(ApiConfig.CREATE_KKO_TMPLT_REQ_API_URI, headerMap, jsonString);
+        }
+        
         String rsltCode = "";
         if(responseBody != null) {
             rsltCode = CommonUtils.getStrValue(responseBody, ApiConfig.GW_RESULT_CODE_FIELD_NM);
@@ -662,7 +699,7 @@ public class TemplateService {
      * @throws Exception
      */
     @SuppressWarnings({ "unchecked" })
-    public RestResult<Object> procUpdateRequestKkoTmplt(AlimTalkTmpltRequestData requestData, Map<String, Object> params) throws Exception {
+    public RestResult<Object> procUpdateRequestKkoTmplt(AlimTalkTmpltRequestData requestData, Map<String, Object> params, MultipartFile files) throws Exception {
         log.info("{}.procUpdateRequestKkoTmplt requestData: {}", this.getClass(), requestData.toString());
 
         RestResult<Object> rtn = new RestResult<Object>();
@@ -675,8 +712,26 @@ public class TemplateService {
 
         Gson gson = new Gson();
         String jsonString = gson.toJson(requestData);
-        Map<String, Object> responseBody = apiInterface.sendMsg(ApiConfig.CREATE_KKO_TMPLT_UPDATE_API_URI, headerMap, jsonString);
-
+        
+        Map<String, Object> responseBody = null;
+        
+        if(files != null) {	//이미지형
+	        InputStream resizeImgStream = null;
+	        resizeImgStream = files.getInputStream();
+	        if (resizeImgStream == null) {
+	            throw new Exception("유효하지 않은 리사이즈 이미지");
+	        }
+	        
+	        String pattern = "[\"!@#$%^&'.*]";
+	        String preFileName = commonService.getFileNameExt(files.getOriginalFilename(), 0).replaceAll(pattern, "");
+	        String fileExten = commonService.getFileNameExt(files.getOriginalFilename(), 1);
+	        String originFileName = preFileName + "." + fileExten;
+	        
+	        responseBody = apiInterface.sendAlimTemplt(ApiConfig.CREATE_KKO_TMPLT_UPDATE_API_URI, headerMap, resizeImgStream, originFileName, jsonString);
+        }else {	//이미지형 제외 다른 유형
+        	responseBody = apiInterface.sendMsg(ApiConfig.CREATE_KKO_TMPLT_UPDATE_API_URI, headerMap, jsonString);
+        }
+        
         String rtltCode = "";
         if(responseBody != null) {
             rtltCode = CommonUtils.getStrValue(responseBody, ApiConfig.GW_RESULT_CODE_FIELD_NM);

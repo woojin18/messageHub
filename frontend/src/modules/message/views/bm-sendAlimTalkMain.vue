@@ -20,6 +20,11 @@
                   <p v-if="!$gfnCommonUtils.isEmpty(sendData.tmpltEmpsSubTitle)" class="text-sub_1">{{sendData.tmpltEmpsSubTitle}}</p>
                   <p v-if="!$gfnCommonUtils.isEmpty(sendData.tmpltEmpsTitle)" class="text-sub scroll-y3">{{sendData.tmpltEmpsTitle}}</p>
                 </div>
+                <div v-if="sendData.emphasizeType == 'IMAGE'">
+                    <div v-if="sendData.templateImageUrl != ''" class="phoneText2 mt10 text-center simulatorImg"
+                      :style="'padding:48px;border-radius:0px;background-image: url('+sendData.templateImageUrl+');'">
+                    </div>
+                </div>
                 <div class="text-sub-wrap" style="padding:10px;">
                   <span><pre>{{sendData.tmpltContent}}</pre></span>
                 </div>
@@ -59,8 +64,7 @@
             <h4>01  발송정보</h4>
           </div>
           <div class="float-left" style="width:76%">
-            <a href="#" @click.prevent="fnOpenAlimTalkTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기" activity="READ">템플릿 불러오기</a>
-            <div class="of_h consolMarginTop">
+            <div class="of_h">
               <div style="width:20%" class="float-left">
                 <h5>카카오 채널 *</h5>
               </div>
@@ -69,6 +73,14 @@
                   <option value="" selected>선택해주세요.</option>
                   <option v-for="senderKeyInfo in senderKeyList" :key="senderKeyInfo.senderKey" :value="senderKeyInfo.senderKey">{{senderKeyInfo.kkoChId}}</option>
                 </select>
+              </div>
+            </div>
+            <div class="of_h consolMarginTop">
+              <div class="float-left" style="width: 20%;">
+                <h5>템플릿</h5>
+              </div>
+              <div style="width: 80%;">
+                <a href="#" @click.prevent="fnOpenAlimTalkTemplatePopup" class="btnStyle1 backLightGray" title="템플릿 불러오기" activity="READ">템플릿 선택</a>
               </div>
             </div>
           </div>
@@ -81,8 +93,7 @@
           </div>
           <div class="float-left" style="width:76%">
             <a href="#" @click.prevent="fnOpenAlimTalkContentsPopup" :class="fnIsEmptyObj(sendData.tmpltContent) ? 'btnStyle1 backLightGray mr5' : 'btnStyle1 backWhite mr5'" title="메시지 내용입력" activity="READ">내용보기</a>
-            <a v-if="sendData.rplcSendType!='NONE'" @click="fnOpenReplacedSenderPopup" :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="대체발송 내용입력" activity="READ">대체발송 내용입력</a>
-            <div class="of_h consolMarginTop">
+            <div class="of_h consolMarginTop" style="min-height:33px;">
               <div style="width:20%" class="float-left">
                 <h5 class="inline-block mr10">버튼</h5>
                 <!-- <a href="#self" class="btnStyle1 backBlack">추가 +</a> -->
@@ -140,7 +151,7 @@
             </div>
 
 
-            <div class="of_h consolMarginTop">
+            <div class="of_h consolMarginTop" style="min-height:33px;">
               <div style="width:20%" class="float-left">
                 <h5>대체발송</h5>
               </div>
@@ -155,12 +166,20 @@
                 <label for="rplcSendType_MMS">MMS</label>
               </div>
             </div>
-            <div v-if="!$gfnCommonUtils.isEmpty(sendData.fbInfo.callback)" class="of_h consolMarginTop">
+            <div v-if="sendData.rplcSendType!='NONE'" class="of_h consolMarginTop" style="min-height:33px;">
+              <div class="float-left" style="width: 20%;">
+                <h5>대체발송 메시지</h5>
+              </div>
+              <div style="width: 80%;">
+                <a @click="fnOpenReplacedSenderPopup" :class="fnIsEmptyObj(sendData.fbInfo.callback) ? 'btnStyle1 backLightGray' : 'btnStyle1 backWhite'" title="대체발송 내용입력" activity="READ">대체발송 내용입력</a>
+              </div>
+						</div>
+            <div v-if="!$gfnCommonUtils.isEmpty(sendData.fbInfo.callback)" class="of_h consolMarginTop" style="min-height:33px;">
               <div style="width:20%" class="float-left">
                 <h5>발신번호</h5>
               </div>
               <div style="width:80%" class="float-left">
-                <h5>{{sendData.fbInfo.callback}}</h5>
+                <h5>{{sendData.fbInfo.callback | hpNumberAddDash}}</h5>
               </div>
             </div>
           </div>
@@ -194,10 +213,11 @@
             </div>
             <div class="of_h">
               <div class="of_h float-right" style="width:82%">
-                <p>수신자 : {{recvCnt}}명<a @click="fnRemoveRecvInfo();" class="btnStyle1 small backWhite ml10" title="수신자 삭제">수신자 삭제</a></p>
-                <div class="float-right consolMarginTop" style="width:100%">
+                <p style="float:right;padding-top: 5px;">수신자 : {{recvCnt}}명</p>
+                <div class="float-right consolMarginTop" style="width:100%;margin-top:1px;">
                   <textarea class="textareaStyle height120" v-model="sendData.cuInfo" disabled></textarea>
                 </div>
+                <p style="float:right;margin-top:6px;"><a @click="fnRemoveRecvInfo();" class="btnStyle1 small backWhite ml10" title="수신자 삭제">수신자 삭제</a></p>
               </div>
             </div>
           </div>
@@ -372,6 +392,7 @@ export default {
         emphasizeType: '',
         tmpltEmpsTitle: '',
         tmpltEmpsSubTitle: '',
+        templateImageUrl : '',
         tmpltContent: '',
         contsVarNms: [], //메세지 내용 변수명
         buttonList : [],

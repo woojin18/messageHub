@@ -75,6 +75,9 @@ const selectKkoTmpltCatList = (params) => {
 const procApprvRequestKkoTmplt = (params) => {
   return httpClient.post('/uc/template/procApprvRequestKkoTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
+const procApprvRequestKkoImgTmplt = (params) => {
+  return httpClient.post('/uc/template/procApprvRequestKkoImgTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+};
 const selectAlimTalkTmpltList = (params) => {
   return httpClient.post('/uc/template/selectAlimTalkTmpltList', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
 };
@@ -93,6 +96,9 @@ const procInspectRequestKkoTmplt = (params) => {
 };
 const procUpdateRequestKkoTmplt = (params) => {
   return httpClient.post('/uc/template/procUpdateRequestKkoTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
+};
+const procUpdateRequestKkoImgTmplt = (params) => {
+  return httpClient.post('/uc/template/procUpdateRequestKkoImgTmplt', params, { headers: {"show-layer": "Yes", "activity":"SAVE"} });
 };
 const selectKkoTmpltRejResn = (params) => {
   return httpClient.post('/uc/template/selectKkoTmpltRejResn', params, { headers: {"show-layer": "Yes", "activity":"READ"} });
@@ -285,7 +291,9 @@ export default {
     excelDownloadSmartTemplate,
     insertSmartTemplate,
     updateSmartTemplate,
-    deleteSmartTemplate
+    deleteSmartTemplate,
+    procUpdateRequestKkoImgTmplt,
+    procApprvRequestKkoImgTmplt
 };
 
 function fnExcelDownCallback(response){
