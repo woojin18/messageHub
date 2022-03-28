@@ -597,7 +597,7 @@ public class SignUpController implements Serializable{
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage(e.getMessage());
-			rtn.setData(active);
+			rtn.setData(active.equals("prd"));
 		}
 		return rtn;
 	}

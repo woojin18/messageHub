@@ -803,7 +803,7 @@ export default {
 						vm.selCorp = {};
 					}
 				} else{
-					if(result.data != 'prd'){
+					if(!result.data){
 						//실서버가 아닌 경우 무조건 신규처리
 						confirm.fnAlert("","신규 고객사 정보를 입력해주세요.");
 						vm.selCorpCnt = 0;
