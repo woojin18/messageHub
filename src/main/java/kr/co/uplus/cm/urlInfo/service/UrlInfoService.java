@@ -89,19 +89,21 @@ public class UrlInfoService {
      * @throws Exception
      */
     public RestResult<Object> selectUrlInfoStatDetail(Map<String, Object> params) throws Exception {
-    	// 유입채널 조회
-        List<Object> rtnList1 = generalDao.selectGernalList(DB.QRY_SELECT_URL_INFO_STAT_CHART1, params);
+    	String tabId = (String)params.get("tabId");
+    	List<Object> rtnList = null;
 
-        // 타임라인(일) 조회
-        List<Object> rtnList2 = generalDao.selectGernalList(DB.QRY_SELECT_URL_INFO_STAT_CHART2, params);
-
-        // 타임라인(시간) 조회
-//        List<Object> rtnList3 = generalDao.selectGernalList(DB.QRY_SELECT_URL_INFO_STAT_CHART3, params);
+    	if("tab1".equals(tabId)) {				// 유입채널 조회
+    		rtnList = generalDao.selectGernalList(DB.QRY_SELECT_URL_INFO_STAT_CHART1, params);
+    	} else if("tab2".equals(tabId)) {		// 타임라인(일) 조회
+    		rtnList = generalDao.selectGernalList(DB.QRY_SELECT_URL_INFO_STAT_CHART2, params);
+    	} else if("tab3".equals(tabId)) {		// 타임라인(시간) 조회
+    		rtnList = generalDao.selectGernalList(DB.QRY_SELECT_URL_INFO_STAT_CHART3, params);
+    	} else if("tab4".equals(tabId)) {		// 클릭 수신자
+    		rtnList = generalDao.selectGernalList(DB.QRY_SELECT_URL_INFO_STAT_CHART4, params);
+    	}
 
         Map<String, List<Object>> rtnMap = new HashMap<String, List<Object>>();
-        rtnMap.put("chart1", rtnList1);
-        rtnMap.put("chart2", rtnList2);
-//        rtnMap.put("chart3", rtnList3);
+        rtnMap.put("chartData", rtnList);
 
         RestResult<Object> rtn = new RestResult<Object>();
         rtn.setData(rtnMap);

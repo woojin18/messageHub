@@ -4,7 +4,11 @@
       <h2>LAB > {{ componentsTitle }}</h2>
     </div>
     <div class="border-line2 pd10">
-      <p class="color4">* 메시지에 링크된 단축URL+를 고객에게 보내고 고객이 클릭한 통계를 수치화하여 보여줍니다.<br>* [상세보기] 버튼을 누르면 유입 채널 별 그리고 타임라인  클릭 통계정보를 보실 수 있습니다.</p>
+      <p class="color4">
+        * 메시지에 링크된 단축URL+를 고객에게 보내고 고객이 클릭한 통계를 수치화하여 보여줍니다.<br>
+        * [상세보기] 버튼을 누르면 유입 채널 별 그리고 타임라인  클릭 통계정보를 보실 수 있습니다.<br>
+        * 발송 개수 및 클릭 수 등의 수치는 전일 기준 Data 입니다.
+      </p>
     </div>
 
     <!-- 본문 -->
@@ -40,18 +44,7 @@
                 classProps="datepicker inputStyle maxWidth160"
                 :initDate="searchCond.endDt"
               ></Calendar>
-              <!-- <input 
-                type="text" 
-                class="datepicker inputStyle hasDatepicker" 
-                title="시작날짜 입력란" id="dp1623916254295" style="width:48%">
-                  ~ 
-              <input 
-                type="text" 
-                class="datepicker inputStyle hasDatepicker" 
-                title="시작날짜 입력란" 
-                id="dp1623916254295" 
-                style="width:48%"> -->
-            </div>		
+            </div>
             <ul class="tab_s2 ml10">
               <li
                 v-for="(item, idx) in periodMonthList" 

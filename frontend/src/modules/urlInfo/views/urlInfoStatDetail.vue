@@ -56,50 +56,48 @@
 						:aria-controls="`productCate${idx+1}`" 
 						role="tab" 
 						data-toggle="tab"
+						@click.prevent="selTabId = (idx+1)"
 					>{{ item.tabNm }}</a>
 				</li>
 			</ul>
 
 			<div class="tab-content" style="border-top:1px solid #D5D5D5">
-
 				<!--  tab1 -->
 				<div role="tabpanel" class="tab-pane active" id="productCate1">
 					<urlInfoStatTab1 v-if="selTabId === 1" :urlId="urlId"/>
 				</div>
 
 				<!--  tab2 -->
-				<div role="tabpanel" class="tab-pane" id="productCate2">
+				<div role="tabpanel" class="tab-pane active" id="productCate2">
 					<urlInfoStatTab2 v-if="selTabId === 2" :urlId="urlId"/>
 				</div>
 
 				<!--  tab3 -->
-				<div role="tabpanel" class="tab-pane" id="productCate3">
+				<div role="tabpanel" class="tab-pane active" id="productCate3">
 					<urlInfoStatTab3 v-if="selTabId === 3" :urlId="urlId"/>
 				</div>
 
 				<!--  tab4 -->
-				<div role="tabpanel" class="tab-pane" id="productCate4">
+				<div role="tabpanel" class="tab-pane active" id="productCate4">
 					<urlInfoStatTab4 v-if="selTabId === 4" :urlId="urlId"/>
 				</div>
 			</div>
 			<!-- //본문 -->
-
-		<!-- <footer>Copyright©LG Plus Corp. All Rights Reserved.</footer> -->
 	</article>
 </template>
 
 <script>
 import urlInfoStatTab1 from "@/modules/urlInfo/views/tabs/urlInfoStatTab1"
-// import urlInfoStatTab2 from "@/modules/urlInfo/views/tabs/urlInfoStatTab2"
-// import urlInfoStatTab3 from "@/modules/urlInfo/views/tabs/urlInfoStatTab3"
+import urlInfoStatTab2 from "@/modules/urlInfo/views/tabs/urlInfoStatTab2"
+import urlInfoStatTab3 from "@/modules/urlInfo/views/tabs/urlInfoStatTab3"
 // import urlInfoStatTab4 from "@/modules/urlInfo/views/tabs/urlInfoStatTab4"
 
 export default {
   name: 'urlInfoStatDetail',
   components: {
 		urlInfoStatTab1,
-		// urlInfoStatTab2,
-		// urlInfoStatTab3,
+		urlInfoStatTab2,
+		urlInfoStatTab3,
 		// urlInfoStatTab4,
 	},
   props: {
@@ -128,11 +126,10 @@ export default {
   data() {
     return {
       componentsTitle: '단축 URL+ & 통계',
-      itemList: [],
 			tabList: [
 				{tabNm: '유입채널'},
-				// {tabNm: '타임라인(일)'},
-				// {tabNm: '타임라인(시간)'},
+				{tabNm: '타임라인(일)'},
+				{tabNm: '타임라인(시간)'},
 				// {tabNm: '클릭 수신자'},
 			],
 			selTabId: 1,
