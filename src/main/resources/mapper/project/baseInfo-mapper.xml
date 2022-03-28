@@ -307,13 +307,15 @@
 		UPDATE cm.CM_APIKEY SET  
 		<if test='pwdChk == "Y"'>
 				API_PWD =#{apiNewPwd}
+		,		
 		</if>		
-		,		CPS = #{cps}
+				CPS = #{cps}
 		,		IP_CHK_YN = #{ipChkYn}
 		,		IP_LIST = #{ipList}
 		,		STATUS = #{status}
 		,		RPT_YN = #{rptYn}
 		,		DUP_CHK_YN = #{dupChkYn}
+		,		UPD_DT = NOW()
 		WHERE API_KEY =#{apikey}
 	</update>
 

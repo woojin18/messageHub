@@ -50,10 +50,15 @@
                                 <h4 class="font-normal" style="margin-top: 10px;margin-bottom: 0px;">초당발송건수 TPS <br>입력범위 0 ~ 100</h4>
                                  
                                 </div>
-							<div v-if="this.update == false" style="width:48%" class="float-right">
-                                <h5 class="color4" style="margin-top: 10px">{{rowData.tps}}</h5>
-								<font v-if="this.rowData.webSenderYn == '미사용'" style="font-size: 10px; color: red;">(TPS 증속은 영업팀과 별도협의가 필요합니다)</font>
+							<div v-if="this.update == false && this.rowData.webSenderYn == '사용'" style="width:48%" class="float-right">
+                                <h5 class="color4" style="margin-top: 20px">{{rowData.tps}}</h5>
 							</div>
+
+							<div v-if="this.update == false && this.rowData.webSenderYn == '미사용'" style="width:48%" class="float-right">
+                                <h5 class="color4" style="margin-top: 10px;margin-bottom: 0px;">{{rowData.tps}}</h5>
+								<font style="font-size: 10px; color: red;">(TPS 증속은 영업팀과 별도협의가 필요합니다)</font>
+							</div>
+
 							<div v-if="this.update == true" style="width:48%" class="float-right">
 								<input  class="inputStyle" v-model="value" @input="e=>value=changeNum(e.target.value)" style="margin-top: 15px; width:182px;"/>
 								<br>
@@ -232,16 +237,21 @@ methods:{
         jQuery('#apikeyManageDetail').modal('hide')
     },
     fnIpListPlus(){
-		if(this.ipList.length > 9){
-			alert("IP 주소는 10개까지 입력 가능합니다.")
-			return
-		}	
-		   	else if(this.rowData.ipChkYn == '사용' && this.ipList == null){
+		if(this.rowData.ipChkYn == '사용' && this.ipList == null){
 				this.ipList = []
 				this.ipList.push('')
-			}else{
-				this.ipList.push('')
 			}
+		else if(!Array.isArray(this.ipList)){
+			this.ipList = []
+			this.ipList.push('')
+		}	
+		else if(this.ipList.length > 9){
+			alert("IP 주소는 10개까지 입력 가능합니다.")
+			return
+		}
+		else{
+			this.ipList.push('')
+		}
 	   },
 	   fnIpListMinus(index){
  			 this.ipList.splice(index, 1);
@@ -249,7 +259,7 @@ methods:{
     fnIpValueChange(event){
 		const chkValue = event.target.value;
 			  if(chkValue == '사용' && this.ipList == null){
-				this.ipList = []
+				this.ipList = {}
 				this.ipList.push('')	
 			  }     
     },
@@ -313,6 +323,11 @@ methods:{
 					}
 				}
 			}
+			if(this.rowData.ipChkYn == '사용' && !Array.isArray(this.ipList) ){
+				alert("고객 접속 IP 추가. 또는 IP 체크를 미사용으로 변경해 주시기 바랍니다.")
+				return				
+			}
+
 			if(this.rowData.ipChkYn == '사용' && this.ipList.length == 0){
 				alert("고객 접속 IP 추가. 또는 IP 체크를 미사용으로 변경해 주시기 바랍니다.")
 				return
@@ -327,13 +342,13 @@ methods:{
 				rptYn	  : this.rowData.rptYn =='사용'? 'Y' : 'N',
 				dupChkYn  : this.rowData.dupChkYn =='사용'? 'Y' : 'N',
 				apikey    : this.rowData.apiKey,
-				pwdChk	  : this.this.newPwd == true ? 'Y' : 'N'
+				pwdChk	  : this.newPwd == true ? 'Y' : 'N'
 			}
 
 
 		console.log(params)	
 		let result = {}
-        projectApi.checkApiKeyPwd(params).then(response =>{
+        projectApi.updateApikeyManage(params).then(response =>{
         result = response.data
 		console.log(result)
 			if(result.success){
@@ -344,25 +359,6 @@ methods:{
 			alert(result.message)
 			}
 		})
-
-		// console.log(result.success)
-		// if(result.success == false){
-		// 	return
-		// }else if(result.success == true){
-		// 	projectApi.updateApikeyManage(params).then(response =>{
-        //    	 let result = response.data
-		// 	 console.log(result)
-        //    	 if(result.success) {
-		// 		confirm.fnAlert('', '수정 되었습니다.')
-		// 		this.$parent.fnApikeyManageList()
-        //         jQuery('#apikeyManageDetail').modal('hide')
-        //     }else{
-		// 			confirm.fnAlert('', '수정을 실패하였습니다.\n')
-		// 		}
-       	// 	})
-		// }
-
-
 
     },
 	fnNewPwd(){

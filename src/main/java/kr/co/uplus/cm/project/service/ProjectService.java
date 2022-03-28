@@ -1196,22 +1196,23 @@ public class ProjectService {
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-	public void updateApikeyManage(Map<String, Object> params) {
+	public RestResult<?> updateApikeyManage(Map<String, Object> params) {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
 
 		SHA sha512 = new SHA(512);
 		String apiNewPwd = sha512.encryptToBase64(CommonUtils.getString(params.get("apiNewPwd")));
-		params.put("apikeyPwd", apiNewPwd);
+		params.put("apiNewPwd", apiNewPwd);
 		 
 		try {
 			generalDao.updateGernal(DB.QRY_UPDATE_APIKEY_MANAGE, params);
 			generalDao.updateGernal(DB.QRY_UPDATE_CMD_APIKEY, params);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			rtn.setSuccess(false);
+			rtn.setMessage("수정에 실패하였습니다.");		
 		}
-
+		return rtn;
 	}
 	
 	
