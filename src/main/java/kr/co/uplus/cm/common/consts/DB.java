@@ -304,8 +304,8 @@ public class DB {
 	public final static String QRY_INSERT_APIKEY_MAANAGE = "baseInfo.insertApikeyManage";
 	public final static String QRY_UPDATE_CMD_APIKEY = "baseInfo.updateCmdApikey";
 	public final static String QRY_UPDATE_APIKEY_MANAGE= "baseInfo.updateApikeyManage";
-	
-	
+
+
 	// 프로젝트 멤버
 	public final static String QRY_SELECT_PROJECT_MEMBER_LIST_CNT = "member.selectProjectMemberListCnt";
 	public final static String QRY_SELECT_PROJECT_MEMBER_LIST = "member.selectProjectMemberList";
@@ -365,11 +365,13 @@ public class DB {
 	// URL+ (단축URL)
 	public final static String QRY_SELECT_URL_INFO_LIST_CNT				= "urlInfo.selectUrlInfoListCnt";
 	public final static String QRY_SELECT_URL_INFO_LIST 						= "urlInfo.selectUrlInfoList";
-//	public final static String QRY_SELECT_URL_INFO_STAT_LIST_CNT	= "urlInfo.selectUrlInfoStatListCnt";
 	public final static String QRY_SELECT_URL_INFO_STAT_LIST 			= "urlInfo.selectUrlInfoStatList";
 	public final static String QRY_SELECT_URL_INFO_STAT_CHART1		= "urlInfo.selectUrlInfoStatChart1";
 	public final static String QRY_SELECT_URL_INFO_STAT_CHART2		= "urlInfo.selectUrlInfoStatChart2";
 	public final static String QRY_SELECT_URL_INFO_STAT_CHART3		= "urlInfo.selectUrlInfoStatChart3";
+	public final static String QRY_SELECT_URL_INFO_STAT_CHART4		= "urlInfo.selectUrlInfoStatChart4";
 	public final static String QRY_INSERT_URL_INFO 								= "urlInfo.insertUrlInfo";
 	public final static String QRY_DELETE_URL_INFO 								= "urlInfo.deleteUrlInfo";
+	public final static String QRY_EXCEL_DOWN_URL_INFO_STAT_LIST 	= "urlInfo.excelDownUrlInfoStatList";
+	public final static String QRY_EXCEL_DOWN_CLICK_RECV_LIST 		= "urlInfo.excelDownClickRecvList";
 }
