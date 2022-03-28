@@ -55,6 +55,8 @@ public class SignUpController implements Serializable{
 	
 	@Value("${console.domain.baseUrl}") String baseUrl;
 	
+	@Value("${spring.profiles.active}") String active;
+	
     @InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.setDisallowedFields(Const.DISALLOWED_FIELDS);
@@ -595,6 +597,7 @@ public class SignUpController implements Serializable{
 		} catch (Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage(e.getMessage());
+			rtn.setData(active);
 		}
 		return rtn;
 	}
