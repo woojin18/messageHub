@@ -751,22 +751,36 @@ public class ProjectController {
 	}
 
 	// API KEY 수정
-	@PostMapping("/updateApikeyManageList")
-	public RestResult<?> updateApikeyManageGenerate(@RequestBody Map<String, Object> params) {
+	@PostMapping("/checkApiKeyPwd")
+	public RestResult<?> checkApiKeyPwd(@RequestBody Map<String, Object> params) {
 		RestResult<?> rtn = new RestResult<Object>();
 
 		try {
-			rtn  =	projectService.updateApikeyManageGenerate(params);
+			rtn  =	projectService.checkApiKeyPwd(params);
 			
 		} catch (Exception e) {
 			rtn.setSuccess(false);
-			rtn.setMessage("실패하였습니다.");
+			rtn.setMessage("API Key 암호가 일치하지 않습니다.");
 		}
 
 		return rtn;
 	}
 
 	
+	// API KEY 수정
+	@PostMapping("/updateApikeyManage")
+	public RestResult<?> updateApikeyManage(@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		try {
+			projectService.updateApikeyManage(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("수정을 실패하였습니다.");
+		}
+
+		return rtn;
+	}
 	
 	
 }

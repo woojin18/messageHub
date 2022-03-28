@@ -1157,7 +1157,7 @@ public class ProjectService {
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
-	public RestResult<?> updateApikeyManageGenerate(Map<String, Object> params) throws Exception {
+	public RestResult<?> checkApiKeyPwd(Map<String, Object> params) {
 		
 		RestResult<Object> rtn = new RestResult<Object>();
 
@@ -1173,18 +1173,19 @@ public class ProjectService {
 
 		String currentAikeyPwd = sha512.encryptToBase64(CommonUtils.getString(params.get("apiPwd")));
 		String previousApikeyPwd = rtnList.get("apiPwd").toString();
-		System.out.println("맞고 틀림 : " + currentAikeyPwd.equals(previousApikeyPwd));
-		
-		
-		try {
-			if(!currentAikeyPwd.equals(previousApikeyPwd)) {
-				throw new Exception("API KEY 암호가 일치하지 않습니다."); 
-			}
-		}catch (Exception e) {
-			rtn.setSuccess(false);
-			rtn.setMessage("API KEY 암호가 일치하지 않습니다.");
-		}
 
+		if(!currentAikeyPwd.equals(previousApikeyPwd)) {
+			rtn.setSuccess(false);
+			rtn.setMessage("API Key 암호가 일치하지 않습니다.");
+		}else {
+			try {
+				updateApikeyManage(params);
+			}catch(Exception e) {
+				rtn.setSuccess(false);
+				rtn.setMessage("수정에 실패하였습니다.");				
+			}
+			
+		}
 		
 		
 		return rtn;
@@ -1192,6 +1193,26 @@ public class ProjectService {
 
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public void updateApikeyManage(Map<String, Object> params) {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		SHA sha512 = new SHA(512);
+		String apiNewPwd = sha512.encryptToBase64(CommonUtils.getString(params.get("apiNewPwd")));
+		params.put("apikeyPwd", apiNewPwd);
+		 
+		try {
+			generalDao.updateGernal(DB.QRY_UPDATE_APIKEY_MANAGE, params);
+			generalDao.updateGernal(DB.QRY_UPDATE_CMD_APIKEY, params);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 	
 	
 }

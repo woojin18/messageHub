@@ -98,8 +98,11 @@ const selectApikeyManageList = (params) => {
 const saveApikeyManageGenerate = (params) => {
     return httpClient.post('/projectApi/manage/saveApikeyManageGenerate', params, { headers: {"show-layer": "Yes", "activity": "SAVE" } });
 }
-const updateApikeyManageList = (params) => {
-    return httpClient.post('/projectApi/manage/updateApikeyManageList', params, { headers: {"show-layer": "Yes", "activity": "SAVE" } });
+const checkApiKeyPwd = (params) => {
+    return httpClient.post('/projectApi/manage/checkApiKeyPwd', params, { headers: { "show-layer": "Yes", "activity": "READ" } });
+}
+const updateApikeyManage = (params) => {
+    return httpClient.post('/projectApi/manage/updateApikeyManage', params, { headers: {"show-layer": "Yes", "activity": "SAVE" } });
 }
 
 export default {
@@ -131,5 +134,6 @@ export default {
     delCallNum,
     selectApikeyManageList,
     saveApikeyManageGenerate,
-    updateApikeyManageList
+    checkApiKeyPwd,
+    updateApikeyManage
 };

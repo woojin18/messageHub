@@ -303,7 +303,7 @@ public class DB {
 	public final static String QRY_SELECT_APIKEY_MAANAGE_LIST = "baseInfo.selectApikeyManageList";
 	public final static String QRY_INSERT_APIKEY_MAANAGE = "baseInfo.insertApikeyManage";
 	public final static String QRY_UPDATE_CMD_APIKEY = "baseInfo.updateCmdApikey";
-	
+	public final static String QRY_UPDATE_APIKEY_MANAGE= "baseInfo.updateApikeyManage";
 	
 	
 	// 프로젝트 멤버

@@ -223,8 +223,6 @@ watch:{
 		}
 		this.value  = this.rowData.tps
 
-        console.log(this.rowData)
-		console.log(this.ipList)
         });
 
     }
@@ -328,18 +326,44 @@ methods:{
 				status	  : this.rowData.status  =='사용'? 'USE' : 'CANCEL',
 				rptYn	  : this.rowData.rptYn =='사용'? 'Y' : 'N',
 				dupChkYn  : this.rowData.dupChkYn =='사용'? 'Y' : 'N',
-				apikey    : this.rowData.apiKey
+				apikey    : this.rowData.apiKey,
+				pwdChk	  : this.this.newPwd == true ? 'Y' : 'N'
 			}
 
 
 		console.log(params)	
-
-        projectApi.updateApikeyManageList(params).then(response =>{
-        this.rowData = response.data
-		console.log(this.rowData)
+		let result = {}
+        projectApi.checkApiKeyPwd(params).then(response =>{
+        result = response.data
+		console.log(result)
+			if(result.success){
+				confirm.fnAlert('', '수정 되었습니다.')
+				this.$parent.fnApikeyManageList()
+                jQuery('#apikeyManageDetail').modal('hide')
+			}else{
+			alert(result.message)
+			}
 		})
 
-		
+		// console.log(result.success)
+		// if(result.success == false){
+		// 	return
+		// }else if(result.success == true){
+		// 	projectApi.updateApikeyManage(params).then(response =>{
+        //    	 let result = response.data
+		// 	 console.log(result)
+        //    	 if(result.success) {
+		// 		confirm.fnAlert('', '수정 되었습니다.')
+		// 		this.$parent.fnApikeyManageList()
+        //         jQuery('#apikeyManageDetail').modal('hide')
+        //     }else{
+		// 			confirm.fnAlert('', '수정을 실패하였습니다.\n')
+		// 		}
+       	// 	})
+		// }
+
+
+
     },
 	fnNewPwd(){
 		this.newPwd = !this.newPwd
