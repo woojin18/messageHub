@@ -91,7 +91,6 @@ export default {
 	},
 	mounted() {
       this.fnApikeyManageList()
-      
     }
     ,
 	watch: {
@@ -112,7 +111,13 @@ export default {
       jQuery('#apikeyManageDetail').show() 
     },
     fnApikeyGeneration(){
-      jQuery('#key').show()
+
+      if(this.rowData.length > 4){
+        confirm.fnAlert('', 'API KEY는 5개까지 발급받을 수 있습니다.')
+        return
+      }
+
+      jQuery('#apikeyGeneration').show()
     }      
 }
 

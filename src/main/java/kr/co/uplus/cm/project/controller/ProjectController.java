@@ -750,5 +750,23 @@ public class ProjectController {
 		return rtn;
 	}
 
+	// API KEY 수정
+	@PostMapping("/updateApikeyManageList")
+	public RestResult<?> updateApikeyManageGenerate(@RequestBody Map<String, Object> params) {
+		RestResult<?> rtn = new RestResult<Object>();
+
+		try {
+			rtn  =	projectService.updateApikeyManageGenerate(params);
+			
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("실패하였습니다.");
+		}
+
+		return rtn;
+	}
+
+	
+	
 	
 }

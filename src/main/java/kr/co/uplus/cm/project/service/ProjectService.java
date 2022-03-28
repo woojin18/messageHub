@@ -1141,9 +1141,10 @@ public class ProjectService {
 		params.put("apikey", apiKey);
 		
 		AesEncryptor encrypt = new AesEncryptor(); 
-		String apikeyPwd = encrypt.encrypt((String) params.get("apikeyPwd"));
+		SHA sha512 = new SHA(512);
+		String apikeyPwd = sha512.encryptToBase64(CommonUtils.getString(params.get("apikeyPwd")));
 		params.put("apikeyPwd", apikeyPwd);
-		
+		 
 		try {
 			generalDao.insertGernal(DB.QRY_INSERT_APIKEY_MAANAGE, params);
 			generalDao.updateGernal(DB.QRY_UPDATE_CMD_APIKEY, params);
@@ -1153,6 +1154,44 @@ public class ProjectService {
 		}
 
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<?> updateApikeyManageGenerate(Map<String, Object> params) throws Exception {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		SHA sha512 = new SHA(512);
+
+		Map<String, Object> rtnList = null;
+		try {
+			rtnList = (Map<String, Object>)generalDao.selectGernalList(DB.QRY_SELECT_APIKEY_MAANAGE_LIST, params).get(0);
+		} catch (Exception e1) {
+
+			e1.printStackTrace();
+		}
+
+		String currentAikeyPwd = sha512.encryptToBase64(CommonUtils.getString(params.get("apiPwd")));
+		String previousApikeyPwd = rtnList.get("apiPwd").toString();
+		System.out.println("맞고 틀림 : " + currentAikeyPwd.equals(previousApikeyPwd));
+		
+		
+		try {
+			if(!currentAikeyPwd.equals(previousApikeyPwd)) {
+				throw new Exception("API KEY 암호가 일치하지 않습니다."); 
+			}
+		}catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("API KEY 암호가 일치하지 않습니다.");
+		}
+
+		
+		
+		return rtn;
+		
+
+	}
+	
 	
 	
 }

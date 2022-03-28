@@ -1,96 +1,118 @@
 <template>
-<div class="modal fade modalStyle" id="key" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 10000;">
-		<div class="modal-dialog" style="width: 550px;">
+	<div class="modal fade modalStyle in" id="apikeyGeneration" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" style="width:550px">
 			<div class="modal-content">
 				<div class="modal-body">
-					<h2>API Key 생성</h2>
-					<hr>
-					<div class="of_h text-center" style="padding:0 20px">
-						<div class="of_h">
-							<div class="float-left" style="width:40%"><h5>API KEY 명</h5></div>
-							<div class="float-left" style="width:60%">
-								<input type="text" class="inputStyle">
-							</div>
-						</div>
-						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:40%"><h5>API KEY 암호</h5></div>
-							<div class="float-left" style="width:60%">
-								<input type="password" maxlength="89" class="inputStyle">
-							</div>
-						</div>
-						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:40%"><h5>API KEY 암호 확인</h5></div>
-							<div class="float-left" style="width:60%">
-								<input type="password" maxlength="89" class="inputStyle">
-							</div>
-						</div>
+					<div class="of_h API_delete">
+						<h2 class="lc-1 inline-block">API KEY 생성</h2>
 					</div>
 
-					<div class="of_h bgColor_f1 text-center consolMarginTop" style="padding:20px;">
+					<div class="of_h mt10 text-center" style="padding:20px 0;">
 						<div class="of_h">
-							<div class="float-left" style="width:40%; margin-top:-7px"><h5>초당발송건수 TPS<br>입력범위 0 ~ 100</h5><p style="font-size: 10px; color: red;">(TPS 증속은 영업팀과<br>별도협의가 필요합니다)</p></div>
-							<div class="float-left" style="width:60%">
-								<input type="text" class="inputStyle">
+							<div style="width:52%;" class="float-left color000"><h4 class="font-normal" style="margin-top: 12px;">API KEY 명</h4></div>
+							<div style="width:48%" class="float-right">
+								<input class="inputStyle" v-model="apikeyName" maxlength="25" style="margin-top: 7px;margin-bottom: 16px; width:182px"/>
 							</div>
 						</div>
-						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:40%"><h5>라인타입</h5><p style="font-size: 10px; color: red;">(라인타입 변경은 영업팀과<br>별도협의가 필요합니다.)</p></div>
-							<div class="float-left" style="width:60%">
-								<h5 class="color4">일반</h5>
+						<div class="of_h mt10">
+							<div style="width:52%" class="float-left color000">
+                                <h4 class="font-normal" style="margin-top: 12px;margin-bottom: 0px;">API KEY 암호</h4></div>
+							<div style="width:48%" class="float-right">
+								<input type="password" v-model="apikeyPwd" maxlength="89" class="inputStyle" style="margin-top: 7px;margin-bottom: 16px;width:182px"/>
 							</div>
 						</div>
-					</div>
+						<div class="of_h mt10">
+							<div style="width:52%" class="float-left color000">
+                                <h4 class="font-normal" style="margin-top: 12px;margin-bottom: 0px;">API KEY 암호 확인</h4></div>
+							<div style="width:48%" class="float-right">
+								<input type="password" v-model="apikeyPwdChk" maxlength="89" class="inputStyle" style="margin-top: 7px;margin-bottom: 16px; width:182px"/>
+							</div>
+						</div>
+                        <div class="of_h bgColor_f1 text-center" style="padding: 5px 0px;">
+						<div class="of_h mt10">
+							<div style="width:52%" class="float-left color000" >
+                                <h4 class="font-normal" style="margin-top: 10px;margin-bottom: 0px;">초당발송건수 TPS <br>입력범위 0 ~ 100</h4>
+                                 <font style="font-size: 10px; color: red;">(TPS 증속은 영업팀과 별도협의가 필요합니다)</font>
+                                </div>
+							<div style="width:48%" class="float-right">
+								<input class="inputStyle" v-model="value" @input="e=>value=changeNum(e.target.value)" style="margin-top: 15px; width:182px;"/>
+							</div>
+						</div>
+                        <div class="of_h mt10">
+							<div style="width:52%;margin-bottom: 20px;" class="float-left color000"><h4 class="font-normal" style="margin-bottom: 0px; margin-top: 15px;">라인타입</h4>
+                             <font style="font-size: 10px; color: red;">(라인타입 변경은 영업팀과 별도협의가 필요합니다.)</font>
+                            </div>
+							<div style="width:48%" class="float-right">
+								<h5 class="color4" style="margin-top: 20px;">일반</h5>
+							</div>
+						</div>
+                        </div>
+					</div>	
 
-					<div class="of_h mt10 text-center" style="padding:0 20px">
-						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:40%"><h5>IP 체크</h5></div>
-							<div class="float-left" style="width:60%">
-								<input type="radio" name="ipChkYn" value="Y" id="ipChkY"><label for="ipChkY" class="mt5 ml5">사용</label><input type="radio" name="ipChkYn" value="N" id="ipChkN"><label for="ipChkN" class="mt5 ml50">미사용</label>
+					<div class="of_h text-center">
+						<div class="of_h">
+							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 5px;margin-bottom: 16px;">IP 체크</h4></div>
+							<div style="width:50%" class="float-right">
+						    	<input type="radio"  name="ipChkYn" value="Y" id="ipChkY" @change="fnIpValueChange($event)"> <label for="ipChkY" class="mt5 ml5">사용</label>
+						    	<input type="radio"  name="ipChkYn" value="N" id="ipChkN" @change="fnIpValueChange($event)"> <label for="ipChkN" class="mt5 ml50">미사용</label>
 							</div>
 						</div>
-						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:40%"><h5>고객사 접속 IP</h5></div>
-							<div class="float-right" style="width:60%">
-								<div class="float-right" style="width:15%">
-									<a href="#self" class="btnStyle1 borderGray" style="padding:0 10px" title="고객사 접속IP 입력란 삭제"><i class="far fa-minus"></i></a>
-								</div>
-								<div class="float-right" style="width:70%"><input type="text" class="inputStyle"></div>
-								<div class="float-right" style="width:15%">
-									<a href="#self" class="btnStyle1 borderGray" style="padding:0 10px" title="고객사 접속IP 입력란 추가"><i class="far fa-plus"></i></a>
-								</div>
+						<div v-if="this.ipChkYn == 'Y'" class="of_h mt10" style="margin-bottom: 20px;">
+							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 6px;margin-bottom: 16px;">고객 접속 IP
+							<a @click="fnIpListPlus"><i class="far fa-plus channelBtn ml10" style="margin-bottom: 4px;"></i></a>								
+							</h4>
 							</div>
-							<div class="float-right mt5" style="width:60%">	
-								<div class="float-right" style="width:15%">
-									<a href="#self" class="btnStyle1 borderGray" style="padding:0 10px" title="고객사 접속IP 입력란 삭제"><i class="far fa-minus"></i></a>
-								</div>							
-								<div class="float-right" style="width:70%"><input type="text" class="inputStyle"></div>
+							<div style="width:50%" class="float-right">
+							<div v-for="(ip,index) in ipList" :key="index">
+							<input class="inputStyle" style="margin-top: 3px;width:140px;" v-model="ipList[index]"/>
+							<a @click="fnIpListMinus(index)"><i class="far fa-minus channelBtn ml10" style="margin-bottom: 4px;"></i></a>
+						    </div>
 							</div>
 						</div>
-						<div class="of_h consolMarginTop">
-							<div class="float-left" style="width:40%"><h5>상태</h5></div>
-							<div class="float-left" style="width:60%">
-								<input type="radio" name="statusYn" value="USE" id="statsY"><label for="statsY" class="mt5 ml5">사용</label><input type="radio" name="statusYn" value="CANCEL" id="statsN"><label for="statsN" class="mt5 ml50">미사용</label>
+						<div class="of_h mt10">
+							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 5px;margin-bottom: 16px;">상태</h4></div>
+							<div style="width:50%" class="float-right">
+								<input type="radio"  name="statusYn" value="USE" id="statsY"> <label for="statsY" class="mt5 ml5">사용</label>
+					        	<input type="radio"  name="statusYn" value="CANCEL" id="statsN"> <label for="statsN" class="mt5 ml50">미사용</label>
 							</div>
 						</div>
 						<div class="clear consolMarginTop">
-							<div class="float-left" style="width:40%"><h5>결과수신 여부 <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width:250px;">* 이미지는 jpg, jpeg 형식만 지원합니다. </span></i></h5></div>
-							<div class="float-left" style="width:60%">
-								<input type="radio" name="rptYn" value="Y" id="rptY"><label for="rptY" class="mt5 ml5">사용</label><input type="radio" name="rptYn" value="N" id="rptN"><label for="rptN" class="mt5 ml50">미사용</label>
+							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 5px;margin-bottom: 16px;">결과수신 여부
+								<i class="fas fa-question-circle toolTip">
+									<span class="toolTipText" style="width:270px;">
+										* 결과 수신 여부를 사용으로 설정 시 
+										<br>  &nbsp; 리포트 처리 결과를 API로 받을 수 있습니다.
+									</span>
+								</i>   
+                            </h4>
+                            </div>
+							<div style="width:50%" class="float-right">
+					        	<input type="radio" name="rptYn" value="Y" id="rptY"> <label for="rptY" class="mt5 ml5">사용</label>
+						        <input type="radio"  name="rptYn" value="N" id="rptN"> <label for="rptN" class="mt5 ml50">미사용</label>
 							</div>
 						</div>
 						<div class="clear consolMarginTop">
-							<div class="float-left" style="width:40%"><h5>중복체크 <i class="fas fa-question-circle toolTip"><span class="toolTipText" style="width: 250px;">* 이미지는 jpg, jpeg 형식만 지원합니다. </span></i></h5></div>
-							<div class="float-left" style="width:60%">
-								<input type="radio" name="dupChkYn" value="Y" id="dupChkY"><label for="dupChkY" class="mt5 ml5">사용</label><input type="radio" name="dupChkYn" value="N" id="dupChkN"><label for="dupChkN" class="mt5 ml50">미사용</label>
+							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 5px;margin-bottom: 16px;">중복체크
+                                <i class="fas fa-question-circle toolTip">
+									<span class="toolTipText" style="width:330px">
+						            * 중복체크를 사용으로 설정 시 API로 메시지가 발송 될 때 	
+									<br> &nbsp; 1시간 내 'CLIKEY' 가 동일하면 실패로 처리됩니다.
+                                </span>
+								</i>    
+                                </h4>
+							</div>
+							<div style="width:50%" class="float-right">
+					        	<input type="radio"  name="dupChkYn" value="Y" id="dupChkY"> <label for="dupChkY" class="mt5 ml5">사용</label>
+						        <input type="radio"  name="dupChkYn" value="N" id="dupChkN"> <label for="dupChkN" class="mt5 ml50">미사용</label>
 							</div>
 						</div>
 					</div>	
 				
-					<div class="text-center mt20">
-						<a href="#self" class="btnStyle1 backBlack" data-toggle="modal" data-target="#Register">생성</a>
-						<a href="#self" class="btnStyle1 backWhite" data-dismiss="modal">취소</a>						
+					<div class="text-center mt30">
+						<a class="btnStyle3 white font14" data-toggle="modal" data-target="#correction" title="수정" @click="fnApiKeyGenerateConfirm">생성</a>
+						<a href="#self" class="btnStyle3 black font14 ml5" title="닫기">닫기</a>						
 					</div>
-				</div>				
+				</div>
 			</div>
 		</div>
 	</div>
@@ -98,7 +120,8 @@
 
 <script>
 import projectApi from '../service/projectApi'
-import confirm from '@/modules/commonUtil/service/confirm';
+import confirm from '@/modules/commonUtil/service/confirm'
+import {eventBus} from "@/modules/commonUtil/service/eventBus"
 export default {
   data() {
     return {
@@ -159,6 +182,10 @@ export default {
 		jQuery('input:radio[name="statusYn"]:checked').prop('checked',false)
 		jQuery('input:radio[name="rptYn"]:checked').prop('checked',false)
 		jQuery('input:radio[name="dupChkYn"]:checked').prop('checked',false)
+	},
+	fnApiKeyGenerateConfirm(){
+		  eventBus.$on('callbackEventBus', this.fnApikeyGeneration);
+          confirm.fnConfirm('입력한 내용으로 API KEY를 생성하시겠습니까?',"","생성")
 	},
 	fnApikeyGeneration(){
 
@@ -262,7 +289,7 @@ export default {
 					this.$parent.fnApikeyManageList()
 					jQuery('#apikeyGeneration').modal('hide')
 					confirm.fnAlert('', 'API KEY 생성을 성공하였습니다.')
-				this.fnInit()
+					this.fnInit()
 				} else {
 					confirm.fnAlert('', 'API KEY 생성을 실패하였습니다')
 				}
